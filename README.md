@@ -146,9 +146,7 @@ cmake_build_install Release "$cmakeInstallPrefix"
 cmake_build_install RelWithDebInfo "$cmakeInstallPrefix"
 ```
 
-To build with Clang instead of the default native C++ compiler (usually GCC), prepend CXX=<clang++Path>:
-
-`CXX=/usr/bin/clang++ ./LinuxBuildAndInstallZenUnit.sh`
+To build with Clang instead of the default native C++ compiler (usually GCC), prepend CXX=<clang++Path>.
 
 Abridged output from running `sudo CXX=/usr/bin/clang++ ./LinuxBuildAndInstallZenUnit.sh /usr/local`:
 
