@@ -112,16 +112,16 @@ int main(int argc, char* argv[])
 
 Step 1 of 1:
 
-Run `./LinuxBuildAndInstallZenUnit.sh` to CMake, build, and install the ZenUnit include tree and Debug, Release, and RelWithDebInfo static libraries.
+Run `./LinuxCMakeBuildInstall.sh` to CMake with Ninja, build with the default C++ compiler, and install with Linux the ZenUnit include tree and Debug, Release, and RelWithDebInfo static libraries.
 
-`LinuxBuildAndInstallZenUnit.sh` performs these actions:
+`LinuxCMakeBuildInstall.sh` performs these actions:
 
 ```bash
 #!/bin/bash
 set -euo pipefail
 
 if [ $# -ne 1 ]; then
-   echo 'Usage: ./LinuxBuildAndInstallZenUnit.sh <InstallDirectory>'
+   echo 'Usage: ./LinuxCMakeBuildInstall.sh <InstallDirectory>'
    exit 1
 fi
 
@@ -132,9 +132,7 @@ function cmake_build_install
    cmakeInstallPrefix=$(realpath "$2")
    mkdir -p "$buildType"
    cd "$buildType"
-   CXX=/usr/bin/clang++ cmake .. -GNinja \
-      -DCMAKE_BUILD_TYPE="$buildType" \
-      -DCMAKE_INSTALL_PREFIX="$cmakeInstallPrefix"
+   cmake .. -GNinja -DCMAKE_BUILD_TYPE="$buildType" -DCMAKE_INSTALL_PREFIX="$cmakeInstallPrefix"
    cd ..
    cmake --build "$buildType" --target ZenUnit
    cmake --build "$buildType" --target install
@@ -146,12 +144,12 @@ cmake_build_install Release "$cmakeInstallPrefix"
 cmake_build_install RelWithDebInfo "$cmakeInstallPrefix"
 ```
 
-To build with Clang instead of the default native C++ compiler (usually GCC), prepend CXX=<clang++Path>.
+To build ZenUnit with Clang instead of the default C++ compiler (usually GCC), prepend CXX=<clang++Path>.
 
-Abridged output from running `sudo CXX=/usr/bin/clang++ ./LinuxBuildAndInstallZenUnit.sh /usr/local`:
+Abridged output from running `sudo CXX=/usr/bin/clang++ ./LinuxCMakeBuildInstall.sh /usr/local`:
 
 ```
-~/code/ZenUnitAndZenMock$ sudo CXX=/usr/bin/clang++ ./LinuxBuildAndInstallZenUnit.sh /usr/local
+~/code/ZenUnitAndZenMock$ sudo CXX=/usr/bin/clang++ ./LinuxCMakeBuildInstall.sh /usr/local
 <...CMake Output...>
 <...Include Tree Copying...>
 -- Installing: /usr/local/include/ZenUnit/ZenUnit/./ZenMock.h
@@ -172,14 +170,14 @@ ZenUnit installed on Linux:
 
 ### Building and Installing ZenUnit and ZenMock On Windows
 
-Step 1 of 1: Run with PowerShell `WindowsBuildAndInstallZenUnit.ps1 <InstallDirectory>` to CMake with Visual Studio 14 2015 Win64, build with MSBuild, and install with Windows the ZenUnit include tree and Debug, Release, and RelWithDebInfo static libraries and .pdb files.
+Step 1 of 1: Run with PowerShell `WindowsCMakeBuildInstall.ps1 <InstallDirectory>` to CMake with Visual Studio 14 2015 Win64, build with MSBuild, and install with Windows the ZenUnit include tree and Debug, Release, and RelWithDebInfo static libraries and .pdb files.
 
-`WindowsBuildAndInstallZenUnit.ps1` performs these CMake, build, and install actions:
+`WindowsCMakeBuildInstall.ps1` performs these CMake, build, and install actions:
 
 ```powershell
 if ($Args.Count -ne 1)
 {
-   Write-Host "Usage: .\WindowsBuildAndInstallZenUnit.ps1 <InstallDirectory>"
+   Write-Host "Usage: .\WindowsCMakeBuildInstallZenUnit.ps1 <InstallDirectory>"
    Exit 1
 }
 
@@ -192,10 +190,10 @@ cmake --build . --target install --config Release
 cmake --build . --target install --config RelWithDebInfo
 ```
 
-Abridged output from running `powershell -file WindowsBuildAndInstallZenUnit.ps1 C:/install` from a Git Bash prompt:
+Abridged output from running `powershell -file WindowsCMakeBuildInstall.ps1 C:/install` from a Git Bash prompt:
 
 ```
-~/code/ZenUnitAndZenMock$ powershell -file WindowsBuildAndInstallZenUnit.ps1 C:/install
+~/code/ZenUnitAndZenMock$ powershell -file WindowsCMakeBuildInstall.ps1 C:/install
 <...CMake Output...>
 <...Build Output...>
 <...Include Tree Copying...>
@@ -237,3 +235,4 @@ ZenUnit installed on Windows:
 ### License
 
 Public domain
+
