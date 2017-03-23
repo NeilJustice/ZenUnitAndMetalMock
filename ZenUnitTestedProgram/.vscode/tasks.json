@@ -1,0 +1,46 @@
+{
+   "version": "0.1.0",
+   "command": "bash",
+   "args": [ "-c" ],
+   "options":
+   {
+      "cwd": "${fileDirname}"
+   },
+   "echoCommand": true,
+   "suppressTaskName": true,
+   "tasks":
+   [
+      {
+         "taskName": "Build",
+         "args": [ "cd ${workspaceRoot}/Debug && time ninja -v" ],
+         //"args": [ "cd ${workspaceRoot}/Release && time ninja -v" ],
+         "isBuildCommand": true,
+         "problemMatcher":
+         {
+            "owner": "cpp",
+            "fileLocation": [ "relative", "${workspaceRoot}/DebugOrRelease" ],
+            "pattern": {
+               "regexp": "^(.*):(\\d+):(\\d+):\\s+(error|fatal error|warning):\\s+(.*)$",
+               "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
+            }
+         }
+      },
+      {
+         "taskName": "Run Binary",
+         //"isTestCommand": true,
+         "args": [ "${workspaceRoot}/Debug/Binary/Binary" ]
+         //"args": [ "${workspaceRoot}/Release/Binary/Binary" ]
+      },
+      {
+         "taskName": "Run Tests",
+         "isTestCommand": true,
+         "args": [ "${workspaceRoot}/Debug/StaticLibrary.Test/StaticLibrary.Test" ]
+         //"args": [ "${workspaceRoot}/Release/StaticLibrary.Test/StaticLibrary.Test" ]
+      },
+      {
+         "taskName": "Clean",
+         "args": [ "cd ${workspaceRoot}/Debug && ninja clean" ]
+         //"args": [ "cd ${workspaceRoot}/Release && ninja clean" ]
+      }
+   ]
+}

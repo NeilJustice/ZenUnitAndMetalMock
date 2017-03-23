@@ -1,0 +1,81 @@
+#include "pch.h"
+#include "Test.h"
+#include "ZenUnit/TestRunners/TryCatchCaller.h"
+#include "ZenUnit/Results/TestResultFactory.h"
+
+namespace ZenUnit
+{
+   Test::Test(const char* testClassName, const char* testName)
+      : _tryCatchCaller(new TryCatchCaller)
+      , _testResultFactory(new TestResultFactory)
+      , _fullName(testClassName, testName)
+   {
+   }
+
+   Test::~Test() {}
+
+   const char* Test::Name() const
+   {
+      return _fullName.testName;
+   }
+
+   const std::string& Test::TestClassTestNameLines() const
+   {
+      return _fullName.testClassTestNameLines;
+   }
+
+   string Test::FileLineString() const
+   {
+      string fileLineString = _fileLine.ToString();
+      return fileLineString;
+   }
+
+   void Test::CallNewTestClass(Test* test)
+   {
+      test->NewTestClass();
+   }
+
+   void Test::CallStartup(Test* test)
+   {
+      test->Startup();
+   }
+
+   void Test::CallTestBody(Test* test)
+   {
+      test->TestBody();
+   }
+
+   void Test::CallCleanup(Test* test)
+   {
+      test->Cleanup();
+   }
+
+   void Test::CallDeleteTestClass(Test* test)
+   {
+      test->DeleteTestClass();
+   }
+
+   TestResult Test::RunTestCase()
+   {
+      CallResult constructorCallResult = _tryCatchCaller->Call(&Test::CallNewTestClass, this, TestPhase::Constructor);
+      if (constructorCallResult.testOutcome != TestOutcome::Success)
+      {
+         TestResult constructorFail = _testResultFactory->ConstructorFail(_fullName, constructorCallResult);
+         return constructorFail;
+      }
+      CallResult startupCallResult = _tryCatchCaller->Call(&Test::CallStartup, this, TestPhase::Startup);
+      if (startupCallResult.testOutcome != TestOutcome::Success)
+      {
+         CallResult destructorCallResult = _tryCatchCaller->Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+         TestResult startupFail = _testResultFactory->StartupFail(
+            _fullName, constructorCallResult, startupCallResult, destructorCallResult);
+         return startupFail;
+      }
+      CallResult testBodyCallResult = _tryCatchCaller->Call(&Test::CallTestBody, this, TestPhase::TestBody);
+      CallResult cleanupCallResult = _tryCatchCaller->Call(&Test::CallCleanup, this, TestPhase::Cleanup);
+      CallResult destructorCallResult = _tryCatchCaller->Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+      TestResult testResult = _testResultFactory->FullCtor(
+         _fullName, constructorCallResult, startupCallResult, testBodyCallResult, cleanupCallResult, destructorCallResult);
+      return testResult;
+   }
+}

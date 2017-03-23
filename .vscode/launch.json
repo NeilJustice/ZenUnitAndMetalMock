@@ -1,0 +1,37 @@
+{
+   "version": "0.2.0",
+   "configurations":
+   [
+      {
+         "name": "C++ Launch",
+         "request": "launch",
+         "type": "cppdbg",
+         "preLaunchTask": "Build Debug",
+         "program": "${workspaceRoot}/Debug/ZenUnit.Test/ZenUnit.Test",
+         //"args": [ "-exit0"],
+         "stopAtEntry": false,
+         "cwd": "${fileDirname}",
+         "environment": [],
+         "externalConsole": false,
+         "linux": { "MIMode": "gdb" }
+      }
+      // {
+      //    "name": "Python",
+      //    "request": "launch",
+      //    "type": "python",
+      //    "pythonPath": "/usr/bin/python3",
+      //    "program": "${file}",
+      //    //"args": [ "Ninja", "Debug", "ZenUnit", "ZenUnit.Test" ,"\"clang version\"", "\"\"", "NoInstall" ],
+      //    "args": [ "Ninja", "Debug", "ZenUnitTestedProgram", "StaticLibrary.Test" ,"\"\"", "\"\"", "NoInstall" ],
+      //    "cwd": "${workspaceRoot}",
+      //    "env": { "PYTHONPATH": "ZenUnitPy" },
+      //    "stopOnEntry": false,
+      //    "console": "externalTerminal",//integratedTerminal",
+      //    "debugOptions": [
+      //       "WaitOnAbnormalExit",
+      //       "WaitOnNormalExit",
+      //       "RedirectOutput"
+      //    ]
+      // }
+   ]
+}

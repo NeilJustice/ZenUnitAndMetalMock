@@ -1,0 +1,24 @@
+[flake8]
+# E111 indentation is not a multiple of 4
+# E114 indentation is not a multiple of 4 (comment)
+# E121 continuation line under-indented for hanging indent
+# E122 continuation line missing indentation or outdented
+# E127 continuation line over-indented for visual indent
+# E128 continuation line under-indented for visual indent
+# E201 whitespace after '['
+# E202 whitespace before ']'
+# E261 at least two spaces before inline comment
+# E265 block comment should start with '# '
+# E302 expected 2 blank lines, found 1
+# E305 expected 2 blank lines after class or function definition, found 1
+# E402 module level import not at top of file
+# E501 line too long
+# E502 the backslash is redundant between brackets
+# N802 function name should be lowercase
+# N803 argument name should be lowercase
+# N806 variable in function should be lowercase
+# W291 trailing whitespace
+# W292 no newline at end of file
+# W293 blank line contains whitespace
+# W391 blank line at end of file
+ignore=E111,E114,E121,E122,E127,E128,E201,E202,E261,E265,E302,E305,E402,E501,N802,N803,N806,W291,W292,W293,W391

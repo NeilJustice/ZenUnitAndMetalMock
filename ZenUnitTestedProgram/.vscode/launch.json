@@ -1,0 +1,16 @@
+{
+   "version": "0.2.0",
+   "configurations":
+   [
+      {
+         "name": "C++ Launch",
+         "request": "launch",
+         "type": "cppdbg",
+         "preLaunchTask": "Build Debug",
+         "program": "${workspaceRoot}/Debug/StaticLibrary.Test/StaticLibrary.Test",
+         "stopAtEntry": false,
+         "cwd": "${fileDirname}",
+         "linux": { "MIMode": "gdb" }
+      }
+   ]
+}

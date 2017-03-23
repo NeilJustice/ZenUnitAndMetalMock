@@ -1,0 +1,9 @@
+{
+   "configurations":
+   [
+      {
+         "name": "Linux",
+         "includePath": [ "/usr/include", "/usr/local/include/windows_potemkin_village" ]
+      }
+   ]
+}

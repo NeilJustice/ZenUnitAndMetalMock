@@ -1,0 +1,15 @@
+macro(append variable value)
+   set(${variable} "${${variable}} ${value}")
+endmacro()
+
+macro(replace variable str replacement)
+   string(REPLACE "${str}" "${replacement}" ${variable} ${${variable}})
+endmacro()
+
+if(UNIX)
+   set(ZenUnitIncludeDirectory /usr/local/include/ZenUnit)
+   set(ZenUnitLibraryPath /usr/local/lib/ZenUnit/libZenUnit${CMAKE_BUILD_TYPE}.a)
+elseif(MSVC)
+   set(ZenUnitIncludeDirectory C:\\install\\include\\ZenUnit)
+   set(ZenUnitLibraryPath C:\\install\\lib\\ZenUnit\\ZenUnit$(Configuration).lib)
+endif()

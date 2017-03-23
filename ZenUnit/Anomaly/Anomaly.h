@@ -1,0 +1,142 @@
+#pragma once
+#include <sstream>
+#include <vector>
+#include <cstring>
+#include "ZenUnit/Utils/FileLine.h"
+#include "ZenUnit/Enums/ExpectedActualFormat.h"
+#include "ZenUnit/Utils/assert_true.h"
+#include "ZenUnit/Utils/StringUtil.h"
+#include "ZenUnit/ToStringer/ToStringer.h"
+
+namespace ZenUnit
+{
+   struct Anomaly : public std::exception
+   {
+      std::string assertExpression;
+      std::string expected;
+      std::string actual;
+      std::string message;
+      std::string why;
+      FileLine fileLine;
+
+      Anomaly();
+
+      template<typename... MessageTypes>
+      Anomaly(
+         const std::string& failedLinePrefix,
+         const std::string& whyBody,
+         FileLine fileLine,
+         const char* messagePrefixSpaces,
+         const char* messagesText,
+         const MessageTypes&... messages)
+      {
+         std::ostringstream whyBuilder;
+         whyBuilder << '\n' << failedLinePrefix;
+         bool messagesNonEmpty = strlen(messagesText) > 0;
+         if (messagesNonEmpty)
+         {
+            whyBuilder << ", " << messagesText;
+         }
+         whyBuilder << ")\n";
+         if (!whyBody.empty())
+         {
+            whyBuilder << whyBody << '\n';
+         }
+         if (messagesNonEmpty)
+         {
+            this->message = ToStringer::ToStringConcat(messages...);         
+            whyBuilder << messagePrefixSpaces << "Message: " << this->message << '\n';
+         }
+         whyBuilder << fileLine;
+         this->why = whyBuilder.str();
+         this->fileLine = fileLine;
+      }
+
+      template<typename... MessageTypes>
+      Anomaly(
+         const char* assertionName,
+         const char* arg1Text,
+         const char* arg2Text,
+         const char* arg3Text,
+         const char* messagesText,
+         const Anomaly& becauseAnomaly,
+         const std::string& expected,
+         const std::string& actual,
+         ExpectedActualFormat expectedActualFormat,
+         FileLine fileLine,
+         const MessageTypes&... messages)
+      {
+         this->assertExpression = MakeAssertExpression(
+            assertionName, arg1Text, arg2Text, arg3Text, messagesText);;
+         this->expected = expected;
+         this->actual = actual;
+         this->message = ToStringer::ToStringConcat(messages...);
+         this->fileLine = fileLine;
+         std::ostringstream whyBuilder;
+         whyBuilder << '\n' <<
+            "  Failed: " << this->assertExpression << '\n';
+         bool becauseAnomalyPresent = &becauseAnomaly != &Anomaly::Default;
+         if (becauseAnomalyPresent)
+         {
+            whyBuilder <<
+               "Expected: " << expected << '\n' <<
+               "  Actual: " << actual << '\n' <<
+               " Because: " << becauseAnomaly.assertExpression << " failed\n" <<
+               "Expected: " << becauseAnomaly.expected << '\n' <<
+               "  Actual: " << becauseAnomaly.actual << '\n';
+            if (!becauseAnomaly.message.empty())
+            {
+               whyBuilder << " Message: " << becauseAnomaly.message << '\n';
+            }
+         }
+         else
+         {
+            if (expectedActualFormat == ExpectedActualFormat::Fields)
+            {
+               whyBuilder <<
+                  "Expected: " << expected << '\n' <<
+                  "  Actual: " << actual << '\n';
+            }
+            else
+            {
+               assert_true(expectedActualFormat == ExpectedActualFormat::WholeLines);
+               whyBuilder <<
+                  expected << '\n' <<
+                  actual << '\n';
+            }
+         }
+         if (!this->message.empty())
+         {
+            whyBuilder << " Message: " << this->message << '\n';
+         }
+         if (becauseAnomalyPresent)
+         {
+            whyBuilder << becauseAnomaly.fileLine << '\n';
+         }
+         whyBuilder << fileLine;
+         this->why = whyBuilder.str();
+      }
+
+      virtual const char* what() const noexcept override;
+
+      static std::string MakeAssertExpression(
+         const char* assertionName,
+         const char* arg1Text,
+         const char* arg2Text,
+         const char* arg3Text,
+         const char* messagesText);
+
+      static Anomaly ZENWrapped(
+         const std::string& zenMockAssertExpression,
+         const Anomaly& zenWrappedAnomaly,
+         FileLine fileLine);
+
+      static const Anomaly Default;
+   };
+}
+
+template<>
+struct ZenUnitEqualizer<ZenUnit::Anomaly>
+{
+   static void AssertEqual(const ZenUnit::Anomaly& expectedAnomaly, const ZenUnit::Anomaly& actualAnomaly);
+};

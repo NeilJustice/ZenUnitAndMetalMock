@@ -1,0 +1,16 @@
+#pragma once
+
+namespace ZenUnit
+{
+   class Watch
+   {
+   public:
+      virtual std::string TimeZoneDateTimeNow() const;
+      virtual ~Watch() {}
+   private:
+      virtual tm TMNow() const;
+      virtual std::string TimeZone(const tm& tmValue) const;
+      static const char* TMWeekDayToWeekDayString(int tm_wday);
+      static const char* TMMonthToMonthString(int tm_mon);
+   };
+}
