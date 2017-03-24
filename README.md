@@ -48,8 +48,8 @@ TEST(LowerBoundGreaterThanUpperBound_Throws)
       "lowerBound=21\n"
       "upperBound=20");
 
-   // NA<T>() is equivalent to T{} and is syntactic sugar for emphasizing
-   // that a certain value does not have bearing on the test at hand.
+   // NA<T>() is equivalent to T{} and is a syntactic sugar for emphasizing
+   // that a certain value is not applicable to the behavior being tested.
 }
 
 // TEST4X4 is a 4-by-4 value-parameterized test.
