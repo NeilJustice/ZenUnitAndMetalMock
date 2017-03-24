@@ -14,7 +14,7 @@ class UnitTesterTests(unittest.TestCase):
       textTestRunnerMock = Mock(spec=['run'])
       unittest.TextTestRunner.return_value = textTestRunnerMock
       map.return_value = sentinel.testCaseMapObject
-      unittest.TestSuite.return_value = Mock(spec=[''])
+      unittest.TestSuite.return_value = sentinel.testSuite
       TestCaseName = 'WidgetTests'
       TestNames = ['A_Test', 'B_Test']
       #
@@ -23,7 +23,7 @@ class UnitTesterTests(unittest.TestCase):
       unittest.TextTestRunner.assert_called_once_with(verbosity=3)
       map.assert_called_once_with(TestCaseName, TestNames)
       unittest.TestSuite.assert_called_once_with(sentinel.testCaseMapObject)
-      textTestRunnerMock.run.assert_called_once_with(unittest.TestSuite.return_value)
+      textTestRunnerMock.run.assert_called_once_with(sentinel.testSuite)
 
 if __name__ == '__main__': # pragma nocover
    UnitTester.run_tests(UnitTesterTests, testNames)
