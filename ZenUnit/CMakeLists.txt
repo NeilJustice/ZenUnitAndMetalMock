@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 project(ZenUnit)
-include(${CMAKE_SOURCE_DIR}/CMakeMacros.txt)
+include(${CMAKE_SOURCE_DIR}/ZenUnitTestedProgram/CMakeMacros.cmake)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(${CMAKE_SOURCE_DIR})
@@ -40,11 +40,7 @@ file(GLOB_RECURSE Sources *.h *.cpp)
 
 add_library(ZenUnit ${Sources})
 
-if(UNIX)
-   EnableClangOrGCCPrecompiledHeaders()
-elseif(MSVC)
-   EnableMSVCPrecompiledHeaders()
-endif()
+EnablePrecompiledHeaders()
 
 install(DIRECTORY .
         CONFIGURATIONS Debug

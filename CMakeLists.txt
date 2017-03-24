@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 project(ZenUnit)
-include(CMakeMacros.txt)
+include(${CMAKE_SOURCE_DIR}/ZenUnitTestedProgram/CMakeMacros.cmake)
 
 set(CMAKE_CONFIGURATION_TYPES Debug;Release;RelWithDebInfo)
 

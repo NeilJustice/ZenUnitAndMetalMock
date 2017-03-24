@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
-include(CMakeMacros.txt)
 project(ZenUnitTestedProgram)
+include(CMakeMacros.cmake)
 
 set(CMAKE_CONFIGURATION_TYPES Debug;Release;RelWithDebInfo)
 

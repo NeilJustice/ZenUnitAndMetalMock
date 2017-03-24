@@ -3,6 +3,7 @@ CMakeFiles/
 Debug/
 Release/
 *.cmake
+!CMakeMacros.cmake
 CMakeCache.txt
 
 # Linux
