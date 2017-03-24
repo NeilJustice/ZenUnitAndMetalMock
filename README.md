@@ -52,11 +52,11 @@ TEST(LowerBoundGreaterThanUpperBound_Throws)
    // that a certain value is not applicable to the behavior being tested.
 }
 
-// TEST4X4 is a 4-by-4 value-parameterized test.
-// An N-by-N value-parameterized test processes
-// its type-safe variadic test case arguments list N-by-N.
-// This TEST4X4 processes the list 4-by-4, forming 9 independent test cases
-// for function IsInclusiveBetween().
+// ZenUnit N-by-N value-parameterized tests process
+// their type-safe variadic test case arguments list N-by-N.
+// This TEST4X4 processes the list 4-by-4, forming 9 test cases
+// for function IsInclusiveBetween(), each of which will be run
+// using a fresh instance of test class IsInclusiveBetweenTests.
 TEST4X4(ReturnsTrueIfNumberIsInclusiveBetween,
    bool expectedReturnValue, unsigned lowerBound, unsigned number, unsigned upperBound,
    true, 0, 0, 0,
@@ -71,9 +71,9 @@ TEST4X4(ReturnsTrueIfNumberIsInclusiveBetween,
 {
    ARE_EQUAL(expectedReturnValue, IsInclusiveBetween(lowerBound, number, upperBound));
    // ZenUnit uses declarative-style assertion names
-   // such as ARE_EQUAL instead of ASSERT_EQUAL
-   // to make ZenUnit read less similar to procedural code
-   // and more similar to an executable specification document.
+   // such as ARE_EQUAL and IS_TRUE instead of ASSERT_EQUAL and ASSERT_TRUE
+   // to give ZenUnit a reading experience similar to
+   // reading an executable specification document.
 }
 
 }; RUN(IsInclusiveBetweenTests)
@@ -93,7 +93,7 @@ bool IsInclusiveBetween(unsigned lowerBound, unsigned number, unsigned upperBoun
    return isInclusiveBetween;
 }
 
-int main(int argc, char* argv[])
+int main(int argc, char* argv[]
 {
    // Returns 0 if all test classes registered to run with RUN and TEMPLATERUN pass
    return ZenUnit::RunTests(argc, argv);
