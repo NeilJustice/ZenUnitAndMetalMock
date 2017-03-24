@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.5)
 include(CMakeMacros.txt)
 project(ZenUnitTestedProgram)
 
+set(CMAKE_CONFIGURATION_TYPES Debug;Release;RelWithDebInfo)
+
 if(UNIX)
    set(CMAKE_CXX_FLAGS "-std=c++1z -Wall -Wextra -Werror -pthread")
 elseif(MSVC)
@@ -13,4 +15,3 @@ endif()
 add_subdirectory(ZenUnitTestedProgram)
 add_subdirectory(StaticLibrary)
 add_subdirectory(StaticLibrary.Test)
-

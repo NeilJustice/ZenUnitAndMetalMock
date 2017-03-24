@@ -8,6 +8,7 @@ SPECEND
 TEST(Test)
 {
    ARE_EQUAL(0, 0);
+   IS_TRUE(true);
 }
 
 }; RUN(ProgramTests)

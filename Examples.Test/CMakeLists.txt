@@ -3,7 +3,6 @@ project(Examples.Test)
 include(${CMAKE_SOURCE_DIR}/CMakeMacros.txt)
 
 include_directories(${CMAKE_SOURCE_DIR})
-
 file(GLOB Sources *.h *.cpp)
 source_group("" FILES ${Sources})
 

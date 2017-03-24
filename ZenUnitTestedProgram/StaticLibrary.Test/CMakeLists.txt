@@ -11,9 +11,7 @@ source_group("" FILES ${Sources})
 add_executable(StaticLibrary.Test ${Sources})
 target_link_libraries(StaticLibrary.Test StaticLibrary ${ZenUnitLibraryPath})
 
-if(UNIX)
-   # See ZenUnitAndZenMock/CMakeMacros.txt for CMake to configure Clang and GCC precompiled headers
-elseif(MSVC)
+if(MSVC)
    set_target_properties(StaticLibrary.Test PROPERTIES COMPILE_FLAGS "/Yupch.h")
    set_source_files_properties(pch.cpp PROPERTIES COMPILE_FLAGS "/Yc")
    add_custom_command(TARGET StaticLibrary.Test POST_BUILD COMMAND $(TargetPath) -exit0)

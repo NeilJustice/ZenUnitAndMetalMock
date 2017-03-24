@@ -4,7 +4,6 @@ include(${CMAKE_SOURCE_DIR}/CMakeMacros.txt)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(${CMAKE_SOURCE_DIR})
-
 folder_source_group(Anomaly)
 folder_source_group(Args)
 folder_source_group(Console)
