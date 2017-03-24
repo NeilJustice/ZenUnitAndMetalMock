@@ -59,12 +59,11 @@ set_target_properties(ZenUnit PROPERTIES RELWITHDEBINFO_OUTPUT_NAME "ZenUnitRelW
 install(TARGETS ZenUnit DESTINATION "lib/ZenUnit")
 
 if(MSVC)
-   install(FILES ZenUnit.dir/Debug/ZenUnit.pdb 
-           CONFIGURATIONS Debug 
-           DESTINATION "lib/ZenUnit" 
-           RENAME "ZenUnitDebug.pdb")
-   install(FILES ZenUnit.dir/RelWithDebInfo/ZenUnit.pdb 
+   append(CMAKE_CXX_FLAGS "/FdZenUnit.dir/$(Configuration)/ZenUnit$(Configuration).pdb")
+   install(FILES ZenUnit.dir/Debug/ZenUnitDebug.pdb
+           CONFIGURATIONS Debug
+           DESTINATION "lib/ZenUnit")
+   install(FILES ZenUnit.dir/RelWithDebInfo/ZenUnitRelWithDebInfo.pdb 
            CONFIGURATIONS RelWithDebInfo 
-           DESTINATION "lib/ZenUnit" 
-           RENAME "ZenUnitRelWithDebInfo.pdb")
+           DESTINATION "lib/ZenUnit")
 endif()
