@@ -15,7 +15,6 @@ bool IsInclusiveBetween(unsigned lowerBound, unsigned number, unsigned upperBoun
 TESTS(IsInclusiveBetweenTests)
 // ZenUnit test classes start with the SPEC section
 // that specifies the test names defined in the TEST section.
-
 // By making all test names immediately readable in a list
 // at the top of large test files instead of scattering
 // test names throughout large test files,
@@ -24,7 +23,7 @@ TESTS(IsInclusiveBetweenTests)
 // test name cohesion, and most importantly and by extension, 
 // class-under-test quality and cohesion of responsibilities, 
 // resulting in better software over the long term.
-.
+
 // The SPEC macro specifies your standard-issue void test:
 SPEC(LowerBoundGreaterThanUpperBound_Throws)
 // The SPECX macro specifies an N-by-N value-parameterized test:
