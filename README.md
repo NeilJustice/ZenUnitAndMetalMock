@@ -16,21 +16,18 @@ TESTS(IsInclusiveBetweenTests)
 // ZenUnit test classes start with the SPEC section
 // that specifies the test names defined in the TEST section.
 
-// By design this design involves a writability cost
-// of test name duplication between the SPEC section and the TEST section.
-
-// Over the long term as a project's code base and test base grows large,
-// it has been my experience that code and test reviewability eclipses
-// in importance initial code and test writability.
-
-// This design of grouping the test names at the top of the file
-// instead of scattering the test names throughout
-// makes it a breeze to quickly review a test class for
-// what it tests, its test name quality, and test name cohesion.
-
-// SPEC specifies your standard-issue void test:
+// By making all test names immediately readable in a list
+// at the top of large test files instead of scattering
+// test names throughout large test files,
+// this design makes it a breeze to quickly review
+// test classes for what all they test, their test name quality,
+// test name cohesion, and most importantly and by extension, 
+// class-under-test quality and cohesion of responsibilities, 
+// resulting in better software over the long term.
+.
+// The SPEC macro specifies your standard-issue void test:
 SPEC(LowerBoundGreaterThanUpperBound_Throws)
-// SPECX specifies an N-by-N value-parameterized test:
+// The SPECX macro specifies an N-by-N value-parameterized test:
 SPECX(ReturnsTrueIfNumberIsInclusiveBetween)
 SPECEND
 
