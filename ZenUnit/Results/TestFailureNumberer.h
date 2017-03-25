@@ -9,6 +9,6 @@ namespace ZenUnit
       unsigned _testFailureNumber = 1u;
    public:
       virtual string Next();
-      virtual ~TestFailureNumberer() {}
+      virtual ~TestFailureNumberer() = default;
    };
 }

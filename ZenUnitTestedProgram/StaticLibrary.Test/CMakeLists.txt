@@ -7,7 +7,7 @@ include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${ZenUnitIncludeDirectory})
 
 folder_source_group(Mock)
-file(GLOB Sources *.h *.cpp)
+file(GLOB_RECURSE Sources *.h *.cpp)
 source_group("" FILES ${Sources})
 
 add_executable(StaticLibrary.Test ${Sources})
