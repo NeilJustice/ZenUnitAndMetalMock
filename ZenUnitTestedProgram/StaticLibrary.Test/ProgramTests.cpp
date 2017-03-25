@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "StaticLibrary/Program.h"
+#include "Mock/ComponentMock.h"
 
 TESTS(ProgramTests)
 SPEC(Test)
@@ -7,8 +8,12 @@ SPECEND
 
 TEST(Test)
 {
-   ARE_EQUAL(0, 0);
-   IS_TRUE(true);
+   ComponentMock componentMock;
+   componentMock.VirtualFunctionMock.Expect();
+   //
+   componentMock.VirtualFunction();
+   //
+   ZEN(componentMock.VirtualFunctionMock.AssertCalledOnce());
 }
 
 }; RUN(ProgramTests)
