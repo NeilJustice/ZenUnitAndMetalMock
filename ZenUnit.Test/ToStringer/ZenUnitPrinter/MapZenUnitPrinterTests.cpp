@@ -47,6 +47,6 @@ namespace ZenUnit
    }
 
    };
-   TEMPLATERUN(MapZenUnitPrinterTests, int, int)
-   TEMPLATERUN(MapZenUnitPrinterTests, char, unsigned)
+   RUNTEMPLATE(MapZenUnitPrinterTests, int, int)
+   RUNTEMPLATE(MapZenUnitPrinterTests, char, unsigned)
 }

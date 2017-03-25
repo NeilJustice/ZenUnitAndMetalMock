@@ -101,6 +101,6 @@ File.cpp(1))");
    }
 
    };
-   TEMPLATERUN(VECTORS_EQUALTests, int)
-   TEMPLATERUN(VECTORS_EQUALTests, UserType)
+   RUNTEMPLATE(VECTORS_EQUALTests, int)
+   RUNTEMPLATE(VECTORS_EQUALTests, UserType)
 }

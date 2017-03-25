@@ -32,6 +32,6 @@ namespace ZenMock
    }
 
    };
-   TEMPLATERUN(TemplateThrowableTests, runtime_error)
-   TEMPLATERUN(TemplateThrowableTests, logic_error)
+   RUNTEMPLATE(TemplateThrowableTests, runtime_error)
+   RUNTEMPLATE(TemplateThrowableTests, logic_error)
 }

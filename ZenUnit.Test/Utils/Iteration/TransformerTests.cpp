@@ -58,6 +58,6 @@ namespace ZenUnit
 
    };
 
-   TEMPLATERUN(TransformerTests, vector, int)
-   TEMPLATERUN(TransformerTests, list, char)
+   RUNTEMPLATE(TransformerTests, vector, int)
+   RUNTEMPLATE(TransformerTests, list, char)
 }

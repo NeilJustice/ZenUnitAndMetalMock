@@ -119,6 +119,6 @@ File.cpp(1))");
    }
 
    };
-   TEMPLATERUN(SETS_EQUALTests, set)
-   TEMPLATERUN(SETS_EQUALTests, unordered_set)
+   RUNTEMPLATE(SETS_EQUALTests, set)
+   RUNTEMPLATE(SETS_EQUALTests, unordered_set)
 }

@@ -67,8 +67,8 @@ namespace ZenUnit
    }
 
    };
-   TEMPLATERUN(MemberForEacherExtraArgTests, vector, int, int)
-   TEMPLATERUN(MemberForEacherExtraArgTests, vector, double, char)
-   TEMPLATERUN(MemberForEacherExtraArgTests, set, int, int)
-   TEMPLATERUN(MemberForEacherExtraArgTests, set, double, char)
+   RUNTEMPLATE(MemberForEacherExtraArgTests, vector, int, int)
+   RUNTEMPLATE(MemberForEacherExtraArgTests, vector, double, char)
+   RUNTEMPLATE(MemberForEacherExtraArgTests, set, int, int)
+   RUNTEMPLATE(MemberForEacherExtraArgTests, set, double, char)
 }

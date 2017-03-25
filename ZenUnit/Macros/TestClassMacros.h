@@ -118,7 +118,7 @@
    std::nullptr_t ZenUnit_TestClassSkipper_##CrystalClearTestClassName = \
       ZenUnit::TestRunner::Instance().SkipTestClass(#CrystalClearTestClassName, Reason);
 
-#define TEMPLATERUN(CrystalClearTestClassName, ...) \
+#define RUNTEMPLATE(CrystalClearTestClassName, ...) \
    template<> bool CrystalClearTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
    template<> std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> \
       CrystalClearTestClassName<__VA_ARGS__>::s_testNXNPmfTokenToTest; \
@@ -126,7 +126,7 @@
       ZenUnit::TestRunner::Instance().RegisterTestClassRunner( \
          new ZenUnit::TemplateTestClassRunner<CrystalClearTestClassName<__VA_ARGS__>>(#CrystalClearTestClassName"<"#__VA_ARGS__">"));
 
-#define SKIPTEMPLATERUN(CrystalClearTestClassName, Reason, ...) \
+#define SKIPRUNTEMPLATE(CrystalClearTestClassName, Reason, ...) \
    template<> bool CrystalClearTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
    template<> std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> \
       CrystalClearTestClassName<__VA_ARGS__>::s_testNXNPmfTokenToTest; \

@@ -29,8 +29,8 @@ namespace ZenUnit
    }
 
    };
-   TEMPLATERUN(SetTests, set, int)
-   TEMPLATERUN(SetTests, set, unsigned long long)
-   TEMPLATERUN(SetTests, unordered_set, int)
-   TEMPLATERUN(SetTests, unordered_set, unsigned long long)
+   RUNTEMPLATE(SetTests, set, int)
+   RUNTEMPLATE(SetTests, set, unsigned long long)
+   RUNTEMPLATE(SetTests, unordered_set, int)
+   RUNTEMPLATE(SetTests, unordered_set, unsigned long long)
 }

@@ -42,7 +42,7 @@ namespace ZenUnit
    }
 
    };
-   TEMPLATERUN(SorterTests, vector<int>)
-   TEMPLATERUN(SorterTests, vector<int, CustomAllocator<int>>)
-   TEMPLATERUN(SorterTests, vector<SortableStruct>)   
+   RUNTEMPLATE(SorterTests, vector<int>)
+   RUNTEMPLATE(SorterTests, vector<int, CustomAllocator<int>>)
+   RUNTEMPLATE(SorterTests, vector<SortableStruct>)   
 }

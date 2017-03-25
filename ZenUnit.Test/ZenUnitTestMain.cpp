@@ -19,13 +19,13 @@ TESTS(SkippedTestClassB) SPECEND }; SKIPRUN(SkippedTestClassB, Reason)
 
 template<typename T>
 TEMPLATETESTS(SkippedTemplateTestClassA, T) SPECEND };
-SKIPTEMPLATERUN(SkippedTemplateTestClassA, Reason, int)
-SKIPTEMPLATERUN(SkippedTemplateTestClassA, Reason, double)
+SKIPRUNTEMPLATE(SkippedTemplateTestClassA, Reason, int)
+SKIPRUNTEMPLATE(SkippedTemplateTestClassA, Reason, double)
 
 template<template<typename...> class MapType>
 TEMPLATETESTS(SkippedTemplateTestClassB, MapType) SPECEND };
-SKIPTEMPLATERUN(SkippedTemplateTestClassB, Reason, map)
-SKIPTEMPLATERUN(SkippedTemplateTestClassB, Reason, unordered_map)
+SKIPRUNTEMPLATE(SkippedTemplateTestClassB, Reason, map)
+SKIPRUNTEMPLATE(SkippedTemplateTestClassB, Reason, unordered_map)
 
 int main(int argc, char* argv[])
 {

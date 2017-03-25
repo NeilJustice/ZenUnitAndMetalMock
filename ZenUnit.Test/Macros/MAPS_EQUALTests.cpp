@@ -150,6 +150,6 @@ File.cpp(1))");
    }
 
    };
-   TEMPLATERUN(MAPS_EQUALTests, map)
-   TEMPLATERUN(MAPS_EQUALTests, unordered_map)
+   RUNTEMPLATE(MAPS_EQUALTests, map)
+   RUNTEMPLATE(MAPS_EQUALTests, unordered_map)
 }

@@ -83,7 +83,7 @@ namespace ZenUnit
       if (totalNumberOfTestCases == 0)
       {
          _console->WriteColor("[ZenUnit] ", Color::Green);
-         _console->WriteLine("Zero test classes (TESTS or TEMPLATETESTS) are registered to run (RUN or TEMPLATERUN).");
+         _console->WriteLine("Zero test classes (TESTS or TEMPLATETESTS) are registered to run (RUN or RUNTEMPLATE).");
       }
       else
       {

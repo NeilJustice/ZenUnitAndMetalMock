@@ -217,7 +217,7 @@ namespace ZenUnit
       //
       ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("[ZenUnit] ", Color::Green));
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
-         "Zero test classes (TESTS or TEMPLATETESTS) are registered to run (RUN or TEMPLATERUN)."));
+         "Zero test classes (TESTS or TEMPLATETESTS) are registered to run (RUN or RUNTEMPLATE)."));
    }
 
    TEST8X8(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds,

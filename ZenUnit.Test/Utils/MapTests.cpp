@@ -80,12 +80,12 @@ namespace ZenUnit
    }
 
    };
-   TEMPLATERUN(MapTests, map, int, int)
-   TEMPLATERUN(MapTests, map, UserType, int)
-   TEMPLATERUN(MapTests, map, int, UserType)
-   TEMPLATERUN(MapTests, map, UserType, UserType)
-   TEMPLATERUN(MapTests, unordered_map, int, int)
-   TEMPLATERUN(MapTests, unordered_map, UserType, int)
-   TEMPLATERUN(MapTests, unordered_map, int, UserType)
-   TEMPLATERUN(MapTests, unordered_map, UserType, UserType)
+   RUNTEMPLATE(MapTests, map, int, int)
+   RUNTEMPLATE(MapTests, map, UserType, int)
+   RUNTEMPLATE(MapTests, map, int, UserType)
+   RUNTEMPLATE(MapTests, map, UserType, UserType)
+   RUNTEMPLATE(MapTests, unordered_map, int, int)
+   RUNTEMPLATE(MapTests, unordered_map, UserType, int)
+   RUNTEMPLATE(MapTests, unordered_map, int, UserType)
+   RUNTEMPLATE(MapTests, unordered_map, UserType, UserType)
 }
