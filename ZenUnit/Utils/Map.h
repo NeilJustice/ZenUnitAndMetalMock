@@ -15,10 +15,7 @@ namespace ZenUnit
             = m.insert(std::make_pair(key, value));
          if (!insertIterAndDidInsert.second)
          {
-            std::string toStringedKey = ToStringer::ToString(key);
-            std::string what = String::Concat(
-               "ZenUnit::Map::InsertNoOverwrite: Key already present in map: ", toStringedKey);
-            throw std::invalid_argument(what);
+            InsertNoOverwrite_Throw(key);
          }
          const ValueType* constPointerToValueInMap = &(*insertIterAndDidInsert.first).second;
          return constPointerToValueInMap;
@@ -38,9 +35,7 @@ namespace ZenUnit
          }
          catch (const std::out_of_range&)
          {
-            std::string toStringedKey = ToStringer::ToString(key);
-            std::string what = String::Concat("ZenUnit::Map::At: Key not found in map: ", toStringedKey);
-            throw std::out_of_range(what);
+            At_Throw(key);
          }
       }
 
@@ -65,6 +60,24 @@ namespace ZenUnit
             }
             return { true, true };
          }
+      }
+
+   private:
+      template<typename KeyType>
+      [[noreturn]] static NOINLINE void At_Throw(const KeyType& key)
+      {
+         std::string toStringedKey = ToStringer::ToString(key);
+         std::string what = String::Concat("ZenUnit::Map::At: Key not found in map: ", toStringedKey);
+         throw std::out_of_range(what);
+      }
+
+      template<typename KeyType>
+      static NOINLINE void InsertNoOverwrite_Throw(const KeyType& key)
+      {
+         std::string toStringedKey = ToStringer::ToString(key);
+         std::string what = String::Concat(
+            "ZenUnit::Map::InsertNoOverwrite: Key already present in map: ", toStringedKey);
+         throw std::invalid_argument(what);
       }
    };
 }

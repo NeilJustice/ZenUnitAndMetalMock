@@ -39,6 +39,59 @@ namespace ZenUnit
       throw anomaly;
    }
 
+   template<typename ExpectedExceptionType>
+   NOINLINE std::string THROWS_MakeWhyBody_DerivedButNotExactExpectedExceptionTypeThrown(
+      const ExpectedExceptionType& e)
+   {
+      std::ostringstream whyBodyBuilder;
+      const std::string* actualExceptionTypeName = Type::GetName(e);
+      THROWS_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, actualExceptionTypeName);
+      const char* actualExactExceptionWhat = e.what();
+      whyBodyBuilder << '\n' <<
+         "  what(): \"" << actualExactExceptionWhat << "\"";
+      std::string whyBody = whyBodyBuilder.str();
+      return whyBody;
+   }
+
+   template<typename ExpectedExceptionType>
+   NOINLINE std::string THROWS_MakeWhyBody_ExpectedWhatNotEqualToActualWhat(
+      const ExpectedExceptionType& e,
+      const std::string& expectedWhat,
+      const char* actualExactExceptionWhat)
+   {
+      std::ostringstream whyBodyBuilder;
+      const std::string* actualExceptionTypeName = Type::GetName(e);
+      THROWS_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, actualExceptionTypeName);
+      whyBodyBuilder << " exactly\n" <<
+         "Expected what(): \"" << expectedWhat << "\"\n" <<
+         "  Actual what(): \"" << actualExactExceptionWhat << "\"";
+      std::string whyBody = whyBodyBuilder.str();
+      return whyBody;
+   }
+
+   template<typename ExpectedExceptionType, typename ActualExceptionType>
+   NOINLINE std::string THROWS_MakeWhyBody_ExpectedExceptionTypeNotThrown(
+      const ActualExceptionType& e)
+   {
+      std::ostringstream whyBodyBuilder;
+      const std::string* actualExceptionTypeName = Type::GetName(e);
+      THROWS_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, actualExceptionTypeName);
+      whyBodyBuilder << '\n' <<
+         "  what(): \"" << e.what() << "\"";
+      std::string whyBody = whyBodyBuilder.str();
+      return whyBody;
+   }
+
+   template<typename ExpectedExceptionType>
+   NOINLINE std::string THROWS_MakeWhyBody_NoExceptionThrown()
+   {
+      std::ostringstream whyBodyBuilder;
+      static const std::string NoneThrown("No exception thrown");
+      THROWS_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, &NoneThrown);
+      std::string whyBody = whyBodyBuilder.str();
+      return whyBody;
+   }
+
    template<typename ExpectedExceptionType, typename... MessageTypes>
    void THROWS_Defined(
       std::function<void()> expression,
@@ -50,7 +103,6 @@ namespace ZenUnit
       const char* messagesText,
       const MessageTypes&... messages)
    {
-      std::ostringstream whyBodyBuilder;
       struct NeverThrownType { const char* what() const noexcept { return nullptr; } };
       try
       {
@@ -62,45 +114,29 @@ namespace ZenUnit
             std::type_index(typeid(e)) == std::type_index(typeid(ExpectedExceptionType));
          if (!exactExpectedExceptionTypeThrown)
          {
-            const std::string* actualExceptionTypeName = Type::GetName(e);
-            THROWS_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, actualExceptionTypeName);
-            const char* actualExactExceptionWhat = e.what();
-            whyBodyBuilder << '\n' <<
-               "  what(): \"" << actualExactExceptionWhat << "\"";
-            std::string whyBody = whyBodyBuilder.str();
             THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedWhatText,
-               whyBody, fileLine, messagesText, messages...);
+               THROWS_MakeWhyBody_DerivedButNotExactExpectedExceptionTypeThrown(e), 
+               fileLine, messagesText, messages...);
          }
          const char* actualExactExceptionWhat = e.what();
          int compareResult = expectedWhat.compare(actualExactExceptionWhat);
          if (compareResult != 0)
          {
-            const std::string* actualExceptionTypeName = Type::GetName(e);
-            THROWS_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, actualExceptionTypeName);
-            whyBodyBuilder << " exactly\n" <<
-               "Expected what(): \"" << expectedWhat << "\"\n" <<
-               "  Actual what(): \"" << actualExactExceptionWhat << "\"";
-            std::string whyBody = whyBodyBuilder.str();
             THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedWhatText,
-               whyBody, fileLine, messagesText, messages...);
+               THROWS_MakeWhyBody_ExpectedWhatNotEqualToActualWhat(e, expectedWhat, actualExactExceptionWhat), 
+               fileLine, messagesText, messages...);
          }
          return;
       }
       catch (const typename std::conditional<std::is_same<
          ExpectedExceptionType, std::exception>::value, NeverThrownType, std::exception>::type& e)
       {
-         const std::string* actualExceptionTypeName = Type::GetName(e);
-         THROWS_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, actualExceptionTypeName);
-         whyBodyBuilder << '\n' <<
-            "  what(): \"" << e.what() << "\"";
-         std::string whyBody = whyBodyBuilder.str();
+         std::string whyBody = THROWS_MakeWhyBody_ExpectedExceptionTypeNotThrown<ExpectedExceptionType>(e);
          THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedWhatText,
             whyBody, fileLine, messagesText, messages...);
       }
-      static const std::string NoneThrown("No exception thrown");
-      THROWS_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, &NoneThrown);
-      std::string whyBody = whyBodyBuilder.str();
       THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedWhatText,
-         whyBody, fileLine, messagesText, messages...);
+         THROWS_MakeWhyBody_NoExceptionThrown<ExpectedExceptionType>(), 
+         fileLine, messagesText, messages...);
    }
 }

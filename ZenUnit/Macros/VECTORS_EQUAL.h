@@ -12,6 +12,25 @@ namespace ZenUnit
    template<
       template<typename...>
       class VectorType, typename T, typename Allocator, typename... MessageTypes>
+   NOINLINE void VECTORS_EQUAL_Throw(
+      const Anomaly& becauseAnomaly,
+      const VectorType<T, Allocator>& expectedVector, const char* expectedVectorText,
+      const VectorType<T, Allocator>& actualVector, const char* actualVectorText,
+      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+   {
+      std::string toStringedExpectedVector = ToStringer::ToString(expectedVector);
+      std::string toStringedActualVector = ToStringer::ToString(actualVector);
+      Anomaly anomaly("VECTORS_EQUAL", expectedVectorText, actualVectorText, "", messagesText,
+         becauseAnomaly,
+         toStringedExpectedVector,
+         toStringedActualVector,
+         ExpectedActualFormat::Fields, fileLine, messages...);
+      throw anomaly;
+   }
+
+   template<
+      template<typename...>
+      class VectorType, typename T, typename Allocator, typename... MessageTypes>
    void VECTORS_EQUAL_Defined(
       const VectorType<T, Allocator>& expectedVector, const char* expectedVectorText,
       const VectorType<T, Allocator>& actualVector, const char* actualVectorText,
@@ -23,14 +42,10 @@ namespace ZenUnit
       }
       catch (const Anomaly& becauseAnomaly)
       {
-         std::string toStringedExpectedVector = ToStringer::ToString(expectedVector);
-         std::string toStringedActualVector = ToStringer::ToString(actualVector);
-         Anomaly anomaly("VECTORS_EQUAL", expectedVectorText, actualVectorText, "", messagesText,
-            becauseAnomaly,
-            toStringedExpectedVector,
-            toStringedActualVector,
-            ExpectedActualFormat::Fields, fileLine, messages...);
-         throw anomaly;
+         VECTORS_EQUAL_Throw(becauseAnomaly,
+            expectedVector, expectedVectorText,
+            actualVector, actualVectorText,
+            fileLine, messagesText, messages...);
       }
       size_t expectedVectorSize = expectedVector.size();
       for (size_t i = 0; i < expectedVectorSize; ++i)
@@ -44,14 +59,10 @@ namespace ZenUnit
          }
          catch (const Anomaly& becauseAnomaly)
          {
-            std::string toStringedExpectedVector = ToStringer::ToString(expectedVector);
-            std::string toStringedActualVector = ToStringer::ToString(actualVector);
-            Anomaly anomaly("VECTORS_EQUAL", expectedVectorText, actualVectorText, "", messagesText,
-               becauseAnomaly,
-               toStringedExpectedVector,
-               toStringedActualVector,
-               ExpectedActualFormat::Fields, fileLine, messages...);
-            throw anomaly;
+            VECTORS_EQUAL_Throw(becauseAnomaly,
+               expectedVector, expectedVectorText,
+               actualVector, actualVectorText,
+               fileLine, messagesText, messages...);
          }
       }
    }

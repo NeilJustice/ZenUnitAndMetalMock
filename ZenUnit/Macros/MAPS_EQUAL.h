@@ -11,7 +11,7 @@
 namespace ZenUnit
 {
    template<typename... MessageTypes>
-   void MAPS_EQUAL_ThrowAnomaly(
+   NOINLINE void MAPS_EQUAL_Throw(
       const char* failedPrefixSpaces,
       const char* expectedMapText,
       const char* actualMapText,
@@ -25,6 +25,38 @@ namespace ZenUnit
          failedPrefixSpaces, "Failed: MAPS_EQUAL(", expectedMapText, ", ", actualMapText);
       Anomaly anomaly(failedLinePrefix, whyBody, fileLine, messagePrefixSpaces, messagesText, messages...);
       throw anomaly;
+   }
+
+   NOINLINE std::string MAPS_EQUAL_MakeWhyBody_SizesNotEqual(size_t expectedMapSize, size_t actualMapSize);
+
+   template<typename KeyType>
+   NOINLINE std::string MAPS_EQUAL_MakeWhyBody_ExpectedKeyNotInActualMap(const KeyType& expectedKey)
+   {
+      std::string toStringedExpectedKey = ToStringer::ToString<KeyType>(expectedKey);
+      std::string whyBody = String::Concat(
+         "Because: Actual map does not contain expected key\n",
+         "Expected key: ", toStringedExpectedKey);
+      return whyBody;
+   }
+
+   template<typename KeyType, typename ValueType, typename MapType>
+   NOINLINE std::string MAPS_EQUAL_MakeWhyBody_KeysEqualValuesNotEqual(
+      const KeyType& expectedKey, const ValueType& expectedValue, const MapType& actualMap)
+   {
+      std::string toStringedExpectedKey = ToStringer::ToString<KeyType>(expectedKey);
+      const std::string& toStringedActualKey = toStringedExpectedKey;
+      std::string toStringedExpectedValue =
+         ToStringer::ToString<typename std::decay<decltype(expectedValue)>::type>(expectedValue);
+      const auto& actualValue = Map::At(actualMap, expectedKey);
+      std::string toStringedActualValue =
+         ToStringer::ToString<typename std::decay<decltype(actualValue)>::type>(actualValue);
+      std::string whyBody = String::Concat(
+         "Because: Actual map contains expected key but with an unexpected value\n",
+         "  Expected key: ", toStringedExpectedKey, '\n',
+         "    Actual key: ", toStringedActualKey, '\n',
+         "Expected value: ", toStringedExpectedValue, '\n',
+         "  Actual value: ", toStringedActualValue);
+      return whyBody;
    }
 
    template<typename MapType, typename... MessageTypes>
@@ -43,12 +75,9 @@ namespace ZenUnit
       }
       catch (const Anomaly&)
       {
-         std::string whyBody = String::Concat(
-             " Because: ARE_EQUAL(expectedMap.size(), actualMap.size()) failed\n",
-             "Expected: ", expectedMap.size(), '\n',
-             "  Actual: ", actualMap.size());
-         MAPS_EQUAL_ThrowAnomaly("  ", expectedMapText, actualMapText,
-            whyBody, fileLine, " ", messagesText, messages...);
+         MAPS_EQUAL_Throw("  ", expectedMapText, actualMapText,
+            MAPS_EQUAL_MakeWhyBody_SizesNotEqual(expectedMap.size(), actualMap.size()), 
+            fileLine, " ", messagesText, messages...);
       }
       for (const auto& expectedKeyValuePair : expectedMapVRT.value)
       {
@@ -60,32 +89,17 @@ namespace ZenUnit
          using KeyType = typename std::decay<decltype(expectedKey)>::type;
          if (!mapContainsKey)
          {
-            std::string toStringedExpectedKey = ToStringer::ToString<KeyType>(expectedKey);
-            std::string whyBody = String::Concat(
-               "Because: Actual map does not contain expected key\n",
-               "Expected key: ", toStringedExpectedKey);
-            MAPS_EQUAL_ThrowAnomaly(" ", expectedMapText, actualMapText,
-               whyBody, fileLine, "", messagesText, messages...);
+            MAPS_EQUAL_Throw(" ", expectedMapText, actualMapText,
+               MAPS_EQUAL_MakeWhyBody_ExpectedKeyNotInActualMap(expectedKey), 
+               fileLine, "", messagesText, messages...);
          }
          bool mapContainsValue = containsKeyValue.second;
          if (!mapContainsValue)
          {
             assert_true(containsKeyValue.first);
-            std::string toStringedExpectedKey = ToStringer::ToString<KeyType>(expectedKey);
-            const std::string& toStringedActualKey = toStringedExpectedKey;
-            std::string toStringedExpectedValue =
-               ToStringer::ToString<typename std::decay<decltype(expectedValue)>::type>(expectedValue);
-            const auto& actualValue = Map::At(actualMap, expectedKey);
-            std::string toStringedActualValue =
-               ToStringer::ToString<typename std::decay<decltype(actualValue)>::type>(actualValue);
-            std::string whyBody = String::Concat(
-                "Because: Actual map contains expected key but with an unexpected value\n",
-                "  Expected key: ", toStringedExpectedKey, '\n',
-                "    Actual key: ", toStringedActualKey, '\n',
-                "Expected value: ", toStringedExpectedValue, '\n',
-                "  Actual value: ", toStringedActualValue);
-            MAPS_EQUAL_ThrowAnomaly(" ", expectedMapText, actualMapText,
-               whyBody, fileLine, "", messagesText, messages...);
+            MAPS_EQUAL_Throw(" ", expectedMapText, actualMapText,
+               MAPS_EQUAL_MakeWhyBody_KeysEqualValuesNotEqual(expectedKey, expectedValue, actualMap), 
+               fileLine, "", messagesText, messages...);
          }
       }
    }

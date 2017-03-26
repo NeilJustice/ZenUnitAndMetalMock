@@ -8,18 +8,26 @@
 
 namespace ZenUnit
 {
+   template<typename... MessageTypes>
+   NOINLINE void IS_TRUE_Throw(
+      const char* valueText, FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+   {
+      Anomaly anomaly("IS_TRUE", valueText, "", "", messagesText,
+         Anomaly::Default,
+         "true",
+         "false",
+         ExpectedActualFormat::Fields, fileLine, messages...);
+      throw anomaly;
+   }
+
    template<typename ConvertibleToBoolType, typename... MessageTypes>
-   void IS_TRUE_Defined(const ConvertibleToBoolType& value, const char* valueText,
+   void IS_TRUE_Defined(
+      const ConvertibleToBoolType& value, const char* valueText,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
       if (!value)
       {
-         Anomaly anomaly("IS_TRUE", valueText, "", "", messagesText,
-            Anomaly::Default,
-            "true",
-            "false",
-            ExpectedActualFormat::Fields, fileLine, messages...);
-         throw anomaly;
+         IS_TRUE_Throw(valueText, fileLine, messagesText, messages...);
       }
    }
 }

@@ -7,6 +7,7 @@ struct ZenUnitPrinter<std::map<TKey, TValue, LessComparator, Allocator>>
 {
    static void Print(std::ostream& os, const std::map<TKey, TValue, LessComparator, Allocator>&)
    {
+      // Placeholder
       os << "std::map<TKey, TValue>";
    }
 };
@@ -16,6 +17,7 @@ struct ZenUnitPrinter<std::unordered_map<TKey, TValue, Hasher, EqualityComparato
 {
    static void Print(std::ostream& os, const std::unordered_map<TKey, TValue, Hasher, EqualityComparator, Allocator>&)
    {
+      // Placeholder
       os << "std::unordered_map<TKey, TValue>";
    }
 };

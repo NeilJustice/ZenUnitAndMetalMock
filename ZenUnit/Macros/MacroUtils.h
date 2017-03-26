@@ -9,8 +9,8 @@
 
 #define Comma ,
 
-// Outlining / noinlining of error-handling code adjacent to hot path code is used to
-// increase the performance on hot path code
+// Noinlining error-handling code adjacent to hot path code
+// can increase the performance of hot path code
 // by minimizing the error-handling code's load on instruction caches
 #ifdef __linux__
    #define NOINLINE __attribute__((noinline))

@@ -11,19 +11,26 @@
 namespace ZenUnit
 {
    template<typename PointerType, typename... MessageTypes>
+   NOINLINE void IS_NULL_Throw(VRText<PointerType> pointerVRT,
+      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+   {
+      std::string actualField = ToStringer::ToString(pointerVRT.value);
+      Anomaly anomaly("IS_NULL", pointerVRT.text, "", "", messagesText,
+         Anomaly::Default,
+         "nullptr",
+         actualField,
+         ExpectedActualFormat::Fields, fileLine, messages...);
+      throw anomaly;
+   }
+
+   template<typename PointerType, typename... MessageTypes>
    void IS_NULL_Defined(VRText<PointerType> pointerVRT,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
       bool pointerIsNull = pointerVRT.value == nullptr;
       if (!pointerIsNull)
       {
-         std::string toStringedActual = ToStringer::ToString(pointerVRT.value);
-         Anomaly anomaly("IS_NULL", pointerVRT.text, "", "", messagesText,
-            Anomaly::Default,
-            "nullptr",
-            toStringedActual,
-            ExpectedActualFormat::Fields, fileLine, messages...);
-         throw anomaly;
+         IS_NULL_Throw(pointerVRT, fileLine, messagesText, messages...);
       }
    }
 }

@@ -10,17 +10,25 @@
 namespace ZenUnit
 {
    template<typename... MessageTypes>
-   void IS_NOT_NULL_Defined(bool pointerIsNullptr, const char* pointerMacroText,
+   NOINLINE void IS_NOT_NULL_Throw(
+      const char* pointerText, 
+      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+   {
+      Anomaly anomaly("IS_NOT_NULL", pointerText, "", "", messagesText,
+         Anomaly::Default,
+         "not nullptr",
+         "nullptr",
+         ExpectedActualFormat::Fields, fileLine, messages...);
+      throw anomaly;
+   }
+
+   template<typename... MessageTypes>
+   void IS_NOT_NULL_Defined(bool pointerIsNullptr, const char* pointerText,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
       if (pointerIsNullptr)
       {
-         Anomaly anomaly("IS_NOT_NULL", pointerMacroText, "", "", messagesText,
-            Anomaly::Default,
-            "not nullptr",
-            "nullptr",
-            ExpectedActualFormat::Fields, fileLine, messages...);
-         throw anomaly;
+         IS_NOT_NULL_Throw(pointerText, fileLine, messagesText, messages...);
       }
    }
 }

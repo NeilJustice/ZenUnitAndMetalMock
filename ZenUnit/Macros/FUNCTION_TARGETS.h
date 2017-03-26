@@ -11,6 +11,24 @@
 namespace ZenUnit
 {
    template<typename ExpectedStdFunctionTargetType, typename StdFunctionType, typename... MessageTypes>
+   NOINLINE void FUNCTION_TARGETS_Throw(
+      const ExpectedStdFunctionTargetType* expectedStdFunctionTargetValue,
+      const char* expectedStdFunctionTargetText,
+      VRText<StdFunctionType> stdFunctionVRT,
+      const Anomaly& becauseAnomaly,
+      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+   {
+      std::string expectedField = ToStringer::ToString(expectedStdFunctionTargetValue);
+      std::string actualField = ToStringer::ToString(stdFunctionVRT.value);
+      Anomaly anomaly("FUNCTION_TARGETS", expectedStdFunctionTargetText, stdFunctionVRT.text, "", messagesText,
+         becauseAnomaly,
+         expectedField,
+         actualField,
+         ExpectedActualFormat::Fields, fileLine, messages...);
+      throw anomaly;
+   }
+
+   template<typename ExpectedStdFunctionTargetType, typename StdFunctionType, typename... MessageTypes>
    void FUNCTION_TARGETS_Defined(
       const ExpectedStdFunctionTargetType* expectedStdFunctionTargetValue,
       const char* expectedStdFunctionTargetText,
@@ -28,14 +46,12 @@ namespace ZenUnit
       }
       catch (const Anomaly& becauseAnomaly)
       {
-         std::string toStringedExpectedFunction = ToStringer::ToString(expectedStdFunctionTargetValue);
-         std::string toStringedActualFunction = ToStringer::ToString(stdFunction);
-         Anomaly anomaly("FUNCTION_TARGETS", expectedStdFunctionTargetText, stdFunctionVRT.text, "", messagesText,
+         FUNCTION_TARGETS_Throw(
+            expectedStdFunctionTargetValue,
+            expectedStdFunctionTargetText,
+            stdFunctionVRT, 
             becauseAnomaly,
-            toStringedExpectedFunction,
-            toStringedActualFunction,
-            ExpectedActualFormat::Fields, fileLine, messages...);
-         throw anomaly;
+            fileLine, messagesText, messages...);
       }
    }
 }

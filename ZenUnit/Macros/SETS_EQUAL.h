@@ -9,6 +9,22 @@
 namespace ZenUnit
 {
    template<typename SetType, typename... MessageTypes>
+   NOINLINE void SETS_EQUAL_Throw(
+      const Anomaly& becauseAnomaly,
+      VRText<SetType> expectedSetVRT, VRText<SetType> actualSetVRT,
+      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+   {
+      std::string toStringedExpectedSet = ToStringer::ToString(expectedSetVRT.value);
+      std::string toStringedActualSet = ToStringer::ToString(actualSetVRT.value);
+      Anomaly anomaly("SETS_EQUAL", expectedSetVRT.text, actualSetVRT.text, "", messagesText,
+         becauseAnomaly,
+         toStringedExpectedSet,
+         toStringedActualSet,
+         ExpectedActualFormat::Fields, fileLine, messages...);
+      throw anomaly;
+   }
+
+   template<typename SetType, typename... MessageTypes>
    void SETS_EQUAL_Defined(VRText<SetType> expectedSetVRT, VRText<SetType> actualSetVRT,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
@@ -24,14 +40,10 @@ namespace ZenUnit
       }
       catch (const Anomaly& becauseAnomaly)
       {
-         std::string toStringedExpectedSet = ToStringer::ToString(expectedSetVRT.value);
-         std::string toStringedActualSet = ToStringer::ToString(actualSetVRT.value);
-         Anomaly anomaly("SETS_EQUAL", expectedSetVRT.text, actualSetVRT.text, "", messagesText,
+         SETS_EQUAL_Throw(
             becauseAnomaly,
-            toStringedExpectedSet,
-            toStringedActualSet,
-            ExpectedActualFormat::Fields, fileLine, messages...);
-         throw anomaly;
+            expectedSetVRT, actualSetVRT,
+            fileLine, messagesText, messages...);
       }
    }
 }

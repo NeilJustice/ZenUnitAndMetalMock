@@ -7,6 +7,7 @@ struct ZenUnitPrinter<std::set<T, LessComparator, Allocator>>
 {
    static void Print(std::ostream& os, const std::set<T, LessComparator, Allocator>&)
    {
+      // Placeholder
       os << "SetType<T>";
    }
 };
@@ -16,6 +17,7 @@ struct ZenUnitPrinter<std::unordered_set<T, Hasher, EqualityComparator, Allocato
 {
    static void Print(std::ostream& os, const std::unordered_set<T, Hasher, EqualityComparator, Allocator>&)
    {
+      // Placeholder
       os << "SetType<T>";
    }
 };

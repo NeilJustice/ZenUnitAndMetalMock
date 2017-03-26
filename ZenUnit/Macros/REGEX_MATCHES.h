@@ -10,6 +10,24 @@
 namespace ZenUnit
 {
    template<typename PatternStringType, typename StrStringType, typename... MessageTypes>
+   NOINLINE void REGEX_MATCHES_Throw(
+      VRText<PatternStringType> expectedPatternVRT, VRText<StrStringType> strVRT,
+      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+   {
+      std::string expectedLine = String::Concat(
+         "Expected string to match: \"", expectedPatternVRT.value, "\"");
+      std::string actualLine = String::Concat(
+         "     Non-matching string: \"", strVRT.value, "\"");
+      Anomaly anomaly(
+         "REGEX_MATCHES", expectedPatternVRT.text, strVRT.text, "", messagesText,
+         Anomaly::Default,
+         expectedLine,
+         actualLine,
+         ExpectedActualFormat::WholeLines, fileLine, messages...);
+      throw anomaly;
+   }
+
+   template<typename PatternStringType, typename StrStringType, typename... MessageTypes>
    void REGEX_MATCHES_Defined(
       VRText<PatternStringType> expectedPatternVRT,
       VRText<StrStringType> strVRT,
@@ -18,17 +36,9 @@ namespace ZenUnit
       std::regex regexPattern(expectedPatternVRT.value);
       if (!std::regex_match(strVRT.value, regexPattern))
       {
-         std::string expectedLine = String::Concat(
-            "Expected string to match: \"", expectedPatternVRT.value, "\"");
-         std::string actualLine = String::Concat(
-            "     Non-matching string: \"", strVRT.value, "\"");
-         Anomaly anomaly(
-            "REGEX_MATCHES", expectedPatternVRT.text, strVRT.text, "", messagesText,
-            Anomaly::Default,
-            expectedLine,
-            actualLine,
-            ExpectedActualFormat::WholeLines, fileLine, messages...);
-         throw anomaly;
+         REGEX_MATCHES_Throw(
+            expectedPatternVRT, strVRT,
+            fileLine, messagesText, messages...);
       }
    }
 }

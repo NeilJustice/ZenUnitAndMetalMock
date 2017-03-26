@@ -1,0 +1,15 @@
+#include "pch.h"
+#include "MAPS_EQUAL.h"
+
+namespace ZenUnit
+{
+   NOINLINE string MAPS_EQUAL_MakeWhyBody_SizesNotEqual(
+      size_t expectedMapSize, size_t actualMapSize)
+   {
+      string whyBody = String::Concat(
+         " Because: ARE_EQUAL(expectedMap.size(), actualMap.size()) failed\n",
+         "Expected: ", expectedMapSize, '\n',
+         "  Actual: ", actualMapSize);
+      return whyBody;
+   }
+}

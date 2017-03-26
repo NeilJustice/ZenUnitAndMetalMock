@@ -4,7 +4,7 @@
 
 #define EQUALIZER_THROWS_INIT(typeName) \
    typeName equalizerTestObjectA, equalizerTestObjectB; \
-   ARE_EQUAL(equalizerTestObjectA, equalizerTestObjectB);
+   ARE_EQUAL(equalizerTestObjectA, equalizerTestObjectB)
 
 #define EQUALIZER_THROWS(typeName, fieldName, nonDefaultFieldValue) \
    ZenUnit::EQUALIZER_THROWS_Defined(equalizerTestObjectA, equalizerTestObjectB, \
@@ -12,6 +12,19 @@
 
 namespace ZenUnit
 {
+   NOINLINE void EQUALIZER_THROWS_ThrowA(
+      const char* typeName,
+      const char* fieldName,
+      const char* nonDefaultFieldValueText,
+      FileLine fileLine,
+      const ZenUnit::Anomaly& becauseAnomaly);
+
+   NOINLINE void EQUALIZER_THROWS_ThrowB(
+      const char* typeName,
+      const char* fieldName,
+      const char* nonDefaultFieldValueText,
+      FileLine fileLine);
+
    template<
       typename ExpectedType,
       typename ActualType,
@@ -43,23 +56,12 @@ namespace ZenUnit
          }
          catch (const ZenUnit::Anomaly& becauseAnomaly)
          {
-            Anomaly wrappingAnomaly(
-               "EQUALIZER_THROWS", typeName, fieldName, nonDefaultFieldValueText, "",
-               becauseAnomaly, "N/A", "N/A", ExpectedActualFormat::Fields, fileLine);
-            throw wrappingAnomaly;
+            EQUALIZER_THROWS_ThrowA(
+               typeName, fieldName, nonDefaultFieldValueText, fileLine, becauseAnomaly);
          }
          return;
       }
-      std::string expectedField = String::Concat(
-         "Function ZenUnitEqualizer<", typeName, ">::AssertEqual to throw a ZenUnit::Anomaly\n"
-"          from an ARE_EQUAL or similar field assertion when ", typeName, '\n',
-"          field '", fieldName, "' differs between two ", typeName, " objects.");
-      std::string actualField("No ZenUnit::Anomaly thrown");
-      Anomaly anomaly("EQUALIZER_THROWS", typeName, fieldName, nonDefaultFieldValueText, "", 
-         Anomaly::Default, 
-         expectedField,
-         actualField,
-         ExpectedActualFormat::Fields, fileLine);
-      throw anomaly;
+      EQUALIZER_THROWS_ThrowB(
+         typeName, fieldName, nonDefaultFieldValueText, fileLine);
    }
 }

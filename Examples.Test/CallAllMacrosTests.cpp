@@ -1,5 +1,21 @@
 #include "pch.h"
 
+struct Struct
+{
+   int firstField = 0;
+   char secondField = 0;
+};
+
+template<>
+struct ZenUnitEqualizer<Struct>
+{
+   static void AssertEqual(const Struct& expectedStruct, const Struct& actualStruct)
+   {
+      ARE_EQUAL(expectedStruct.firstField, actualStruct.firstField);
+      ARE_EQUAL(expectedStruct.secondField, actualStruct.secondField);
+   }
+};
+
 TESTS(CallAllMacrosTests)
 SPEC(CallAllMacros)
 SPECEND
@@ -41,6 +57,11 @@ TEST(CallAllMacros)
 
    // Regular Expressions
    REGEX_MATCHES(R"(\d\d\d)", "123");
+
+   // ZenUnitEqualizer
+   EQUALIZER_THROWS_INIT(Struct);
+   EQUALIZER_THROWS(Struct, firstField, 1);
+   EQUALIZER_THROWS(Struct, secondField, 'A');
 }
 
 }; RUN(CallAllMacrosTests)

@@ -24,6 +24,16 @@ namespace ZenUnit
       }
    };
 
+   template<typename... MessageTypes>
+   NOINLINE void WAS_ARRAY_NEWED_Throw(
+      const char* smartOrRawArrayPointerText,
+      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+   {
+      Anomaly anomaly("WAS_ARRAY_NEWED", smartOrRawArrayPointerText, "", "", messagesText, Anomaly::Default,
+         "not a nullptr", "nullptr", ExpectedActualFormat::Fields, fileLine, messages...);
+      throw anomaly;
+   }
+
    template<typename PointerType, typename... MessageTypes>
    void WAS_ARRAY_NEWED_Defined(
       PointerType& smartOrRawArrayPointer, const char* smartOrRawArrayPointerText,
@@ -31,9 +41,8 @@ namespace ZenUnit
    {
       if (smartOrRawArrayPointer == nullptr)
       {
-         Anomaly anomaly("WAS_ARRAY_NEWED", smartOrRawArrayPointerText, "", "", messagesText, Anomaly::Default,
-            "not a nullptr", "nullptr", ExpectedActualFormat::Fields, fileLine, messages...);
-         throw anomaly;
+         WAS_ARRAY_NEWED_Throw(smartOrRawArrayPointerText, 
+            fileLine, messagesText, messages...);
       }
       ArrayDeleter<typename std::remove_reference<
          decltype(smartOrRawArrayPointer)>::type>::Delete(smartOrRawArrayPointer);

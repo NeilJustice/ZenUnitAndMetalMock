@@ -11,6 +11,22 @@
 namespace ZenUnit
 {
    template<typename NotExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
+   NOINLINE void ARE_NOT_SAME_Throw(
+      const VRText<NotExpectedObjectType>& notExpectedObjectVRT,
+      const VRText<ActualObjectType>& actualObjectVRT,
+      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+   {
+      std::string expectedField = "Not " + ToStringer::ToString(&notExpectedObjectVRT.value);
+      std::string actualField = "    " + ToStringer::ToString(&actualObjectVRT.value);
+      Anomaly anomaly("ARE_NOT_SAME", notExpectedObjectVRT.text, actualObjectVRT.text, "", messagesText,
+         Anomaly::Default,
+         expectedField,
+         actualField,
+         ExpectedActualFormat::Fields, fileLine, messages...);
+      throw anomaly;
+   }
+
+   template<typename NotExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
    void ARE_NOT_SAME_Defined(
       const VRText<NotExpectedObjectType>& notExpectedObjectVRT,
       const VRText<ActualObjectType>& actualObjectVRT,
@@ -18,14 +34,10 @@ namespace ZenUnit
    {
       if (&notExpectedObjectVRT.value == &actualObjectVRT.value)
       {
-         std::string toStringedNotExpectedObjectAddress = ToStringer::ToString(&notExpectedObjectVRT.value);
-         std::string toStringedActualObjectBAddress = ToStringer::ToString(&actualObjectVRT.value);
-         Anomaly anomaly("ARE_NOT_SAME", notExpectedObjectVRT.text, actualObjectVRT.text, "", messagesText,
-            Anomaly::Default,
-            "Not " + toStringedNotExpectedObjectAddress,
-            "    " + toStringedActualObjectBAddress,
-            ExpectedActualFormat::Fields, fileLine, messages...);
-         throw anomaly;
+         ARE_NOT_SAME_Throw(
+            notExpectedObjectVRT, 
+            actualObjectVRT, 
+            fileLine, messagesText, messages...);
       }
    }
 }
