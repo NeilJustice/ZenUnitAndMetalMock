@@ -44,10 +44,7 @@
 #define STARTUP virtual void Startup() override
 #define CLEANUP virtual void Cleanup() override
 
-#define TEST(CrystalClearTestName) \
-   std::nullptr_t ZenUnit_TestLocationRegistrar_##CrystalClearTestName = \
-      ZenUnit::TestClass<TestClassType>::RegisterTestLocation(#CrystalClearTestName, __FILE__, __LINE__); \
-   void CrystalClearTestName()
+#define TEST(CrystalClearTestName) void CrystalClearTestName()
 
 #define REGISTER_TESTNXN_ARGS(CrystalClearTestName, ...) \
    PMFTOKEN(&TestClassType::CrystalClearTestName), \
@@ -104,8 +101,6 @@
       RegisterTest10X10(REGISTER_TESTNXN_ARGS(CrystalClearTestName, __VA_ARGS__)); \
    void CrystalClearTestName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)
 
-// The definition of RUN does not begin with "};" as would be ideal
-// because when it does begin with "};", Visual Studio breakpoints set inside TESTs become hollow red circles
 #define RUN(CrystalClearTestClassName) \
    bool CrystalClearTestClassName::s_allNXNTestsRegistered = false; \
    std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> \
@@ -137,8 +132,6 @@
    TESTS(CrystalClearTestName##_ZenUnit) \
    SPEC(CrystalClearTestName) \
    SPECEND \
-   std::nullptr_t ZenUnit_TestLocationRegistrar_##CrystalClearTestName = \
-      ZenUnit::TestClass<CrystalClearTestName##_ZenUnit>::RegisterTestLocation(#CrystalClearTestName, __FILE__, __LINE__); \
    void CrystalClearTestName(); \
    }; RUN(CrystalClearTestName##_ZenUnit) \
    void CrystalClearTestName##_ZenUnit::CrystalClearTestName()
