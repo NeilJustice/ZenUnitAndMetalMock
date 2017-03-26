@@ -37,8 +37,8 @@ namespace ZenMock
       ValueReturner<int> valueReturner(ZenMockedFunctionSignature);
       //
       ARE_EQUAL(ZenMockedFunctionSignature, valueReturner.ZenMockedFunctionSignature);
-      ARE_EQUAL(0, valueReturner.returnValueIndex);
-      IS_EMPTY(valueReturner.returnValues);
+      ARE_EQUAL(0, valueReturner._returnValueIndex);
+      IS_EMPTY(valueReturner._returnValues);
    }
 
    TEST(PrivateNextReturnValue_DefConReturnType_NoReturnValuesSpecified_ReturnsDefaultValue)

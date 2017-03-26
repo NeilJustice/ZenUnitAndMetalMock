@@ -54,25 +54,26 @@ namespace ZenMock
       {
       }
 
-      void ExpectAndReturn(const ReturnType& value)
+      void ExpectAndReturn(const ReturnType& returnValue)
       {
          FourArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::Expect();
-         ValueReturner<ReturnType>::PrivatePushBackReturnValue(value);
+         ValueReturner<ReturnType>::PrivatePushBackReturnValue(returnValue);
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ExpectAndReturnValues(
-         const FirstReturnValue& firstValue,
-         const SubsequentReturnValues&... subsequentValues)
+         const FirstReturnValue& firstReturnValue,
+         const SubsequentReturnValues&... subsequentReturnValues)
       {
          FourArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::Expect();
-         ValueReturner<ReturnType>::PrivatePushBackReturnValues(firstValue, subsequentValues...);
+         ValueReturner<ReturnType>::PrivatePushBackReturnValues(firstReturnValue, subsequentReturnValues...);
       }
 
-      void ExpectAndReturnValues(const std::vector<typename std::decay<ReturnType>::type>& values)
+      void ExpectAndReturnValues(
+         const std::vector<typename std::decay<ReturnType>::type>& returnValues)
       {
          FourArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::Expect();
-         ValueReturner<ReturnType>::PrivatePushBackReturnValues(values);
+         ValueReturner<ReturnType>::PrivatePushBackReturnValues(returnValues);
       }
 
       ReturnType PrivateZenMockAndReturnValue(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4)

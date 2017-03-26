@@ -54,25 +54,26 @@ namespace ZenMock
       {
       }
 
-      void ExpectAndReturn(const ReturnType& value)
+      void ExpectAndReturn(const ReturnType& returnValue)
       {
          ZeroArgMocker::Expect();
-         ValueReturner<ReturnType>::PrivatePushBackReturnValue(value);
+         ValueReturner<ReturnType>::PrivatePushBackReturnValue(returnValue);
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ExpectAndReturnValues(
-         const FirstReturnValue& firstValue,
-         const SubsequentReturnValues&... subsequentValues)
+         const FirstReturnValue& firstReturnValue,
+         const SubsequentReturnValues&... subsequentReturnValues)
       {
          ZeroArgMocker::Expect();
-         ValueReturner<ReturnType>::PrivatePushBackReturnValues(firstValue, subsequentValues...);
+         ValueReturner<ReturnType>::PrivatePushBackReturnValues(firstReturnValue, subsequentReturnValues...);
       }
 
-      void ExpectAndReturnValues(const std::vector<typename std::decay<ReturnType>::type>& values)
+      void ExpectAndReturnValues(
+         const std::vector<typename std::decay<ReturnType>::type>& returnValues)
       {
          ZeroArgMocker::Expect();
-         ValueReturner<ReturnType>::PrivatePushBackReturnValues(values);
+         ValueReturner<ReturnType>::PrivatePushBackReturnValues(returnValues);
       }
 
       ReturnType PrivateZenMockAndReturnValue()

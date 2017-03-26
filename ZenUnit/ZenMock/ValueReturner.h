@@ -11,18 +11,18 @@ namespace ZenMock
    private:
       const std::string ZenMockedFunctionSignature;
       using DecayedReturnType = typename std::decay<ReturnType>::type;
-      std::vector<DecayedReturnType> returnValues;
-      size_t returnValueIndex;
+      std::vector<DecayedReturnType> _returnValues;
+      size_t _returnValueIndex;
    public:
       ValueReturner(const std::string& zenMockedFunctionSignature)
          : ZenMockedFunctionSignature(zenMockedFunctionSignature)
-         , returnValueIndex(0)
+         , _returnValueIndex(0)
       {
       }
 
       void PrivatePushBackReturnValue(const ReturnType& returnValue)
       {
-         returnValues.push_back(returnValue);
+         _returnValues.push_back(returnValue);
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
@@ -42,14 +42,14 @@ namespace ZenMock
             throw std::invalid_argument(
                "ZenMock::ValueReturner::PrivatePushBackReturnValues(): Return values vector cannot be empty");
          }
-         returnValues.insert(end(returnValues), values.cbegin(), values.cend());
+         _returnValues.insert(end(_returnValues), values.cbegin(), values.cend());
       }
 
       template<typename FunctionReturnType = ReturnType>
       typename std::enable_if<std::is_default_constructible<
          FunctionReturnType>::value, FunctionReturnType>::type PrivateNextReturnValue()
       {
-         if (returnValues.empty())
+         if (_returnValues.empty())
          {
             FunctionReturnType defaultReturnValue{};
             return defaultReturnValue;
@@ -61,7 +61,7 @@ namespace ZenMock
       typename std::enable_if<!std::is_default_constructible<
          FunctionReturnType>::value, FunctionReturnType>::type PrivateNextReturnValue()
       {
-         if (returnValues.empty())
+         if (_returnValues.empty())
          {
             throw ZenMock::ReturnValueMustBeSpecifiedException(ZenMockedFunctionSignature);
          }
@@ -71,7 +71,7 @@ namespace ZenMock
       ReturnType NextReturnValue()
       {
          const DecayedReturnType& nextReturnValue =
-            returnValueIndex < returnValues.size() ? returnValues[returnValueIndex++] : returnValues.back();
+            _returnValueIndex < _returnValues.size() ? _returnValues[_returnValueIndex++] : _returnValues.back();
          return nextReturnValue;
       }
    };

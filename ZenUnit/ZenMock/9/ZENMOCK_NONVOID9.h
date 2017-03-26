@@ -67,31 +67,32 @@ namespace ZenMock
       {
       }
 
-      void ExpectAndReturn(const ReturnType& value)
+      void ExpectAndReturn(const ReturnType& returnValue)
       {
          NineArgMocker<
             Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
             Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>::Expect();
-         ValueReturner<ReturnType>::DoAddReturnValue(value);
+         ValueReturner<ReturnType>::DoAddReturnValue(returnValue);
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ExpectAndReturnValues(
-         const FirstReturnValue& firstValue,
-         const SubsequentReturnValues&... subsequentValues)
+         const FirstReturnValue& firstReturnValue,
+         const SubsequentReturnValues&... subsequentReturnValues)
       {
          NineArgMocker<
             Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
             Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>::Expect();
-         ValueReturner<ReturnType>::PrivatePushBackReturnValues(firstValue, subsequentValues...);
+         ValueReturner<ReturnType>::PrivatePushBackReturnValues(firstReturnValue, subsequentReturnValues...);
       }
 
-      void ExpectAndReturnValues(const std::vector<typename std::decay<ReturnType>::type>& values)
+      void ExpectAndReturnValues(
+         const std::vector<typename std::decay<ReturnType>::type>& returnValues)
       {
          NineArgMocker<
             Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
             Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>::Expect();
-         ValueReturner<ReturnType>::PrivatePushBackReturnValues(values);
+         ValueReturner<ReturnType>::PrivatePushBackReturnValues(returnValues);
       }
 
       ReturnType PrivateZenMockAndReturnValue(
