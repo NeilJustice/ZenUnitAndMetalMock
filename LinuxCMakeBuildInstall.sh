@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -eu
 
 if [ $# -ne 1 ]; then
    echo "Usage: ./LinuxBuildAndInstallZenUnit.sh <InstallDirectory>"

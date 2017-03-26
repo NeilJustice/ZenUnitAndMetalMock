@@ -1,10 +1,10 @@
-## ZenUnit
+# ZenUnit
 ZenUnit is a cross-platform C++ unit testing framework designed for behavior specification exactness, readability of tests and test results, and writability of type and value parameterized tests.
 
-## ZenMock
-ZenMock is a cross-platform C++ mocking framework feature of ZenUnit that allows one to isolate software components for targeted unit testing by way of virtual, template, global, and static function mocking using an Arrange-Act-Assert syntax.
+# ZenMock
+ZenMock is a cross-platform C++ mocking framework feature of ZenUnit that allows you to isolate software components for targeted unit testing by way of virtual, template, global, and static function mocking using an Arrange-Act-Assert syntax.
 
-### ZenUnit syntax, design commentary, and test run output
+### ZenUnit syntax and design commentary
 
 ```Cpp
 #include "ZenUnit/ZenUnit.h"
@@ -16,32 +16,35 @@ TESTS(IsInclusiveBetweenTests)
 // ZenUnit test classes start with the SPEC section
 // that specifies the test names defined in the TEST section.
 // By making all test names immediately readable in a list
-// at the top of large test files instead of scattering
-// test names throughout large test files,
+// at the top of often-large test files (instead of scattering
+// test names throughout often-large test files),
 // this design makes it a breeze to quickly review
-// test classes for what all they test, their test name quality,
-// test name cohesion, and most importantly and by extension, 
-// class-under-test quality and cohesion of responsibilities, 
+// test classes for what they test, their test name quality and cohesion,
+// and most importantly by extension,
+// easily review classes-under-test for quality and cohesion,
 // resulting in better software over the long term.
 
-// The SPEC macro specifies your standard-issue void test:
+// The SPEC macro specifies a standard-issue void test:
 SPEC(LowerBoundGreaterThanUpperBound_Throws)
-// The SPECX macro specifies an N-by-N value-parameterized test:
+// The SPECX macro specifies an N-by-N value-parameterized test such as a TEST4X4:
 SPECX(ReturnsTrueIfNumberIsInclusiveBetween)
 SPECEND
 
 TEST(LowerBoundGreaterThanUpperBound_Throws)
 {
    // ZenUnit is in part designed for writing tests that are impervious
-   // to the breaking code mutations that will be induced by future
-   // LLVM-powered automated mutation testing frameworks.
+   // to the breaking code mutations that will be automatically induced by
+   // future LLVM-powered mutation testing frameworks.
 
-   // Because of this design philosophy, ZenUnit assertion THROWS asserts
-   // that an expression throws *exactly* an expected exception type
-   // (not a derived class), with *exactly* an expected what() text.
+   // Because of this defend-against-code-mutants design philosophy,
+   // ZenUnit assertion THROWS asserts that an expression throws
+   // exactly an expected exception type (not a derived class),
+   // with exactly an expected what() text.
 
-   // Because of this double exactness, THROWS does not leave unslain
-   // the code mutations mutate-exception-type and mutate-exception-what-text.
+   // Because of this double exactness, code mutations
+   // mutate-exception-type and mutate-exception-what-text,
+   // manually inducible today and automatically inducible tomorrow by LLVM,
+   // are slain by THROWS, ensuring the rigorousness of the test base.
 
    THROWS(IsInclusiveBetween(21, NA<unsigned>(), 20), std::invalid_argument,
       "IsInclusiveBetween(): lowerBound must be <= upperBound.\n"
@@ -70,7 +73,7 @@ TEST4X4(ReturnsTrueIfNumberIsInclusiveBetween,
    false, 10, 12, 11)
 {
    ARE_EQUAL(expectedReturnValue, IsInclusiveBetween(lowerBound, number, upperBound));
-   // ZenUnit uses declarative-style assertion names
+   // ZenUnit uses declarative-style instead of procedural-style assertion names
    // such as ARE_EQUAL and IS_TRUE instead of ASSERT_EQUAL and ASSERT_TRUE
    // to give ZenUnit a reading experience similar to
    // reading an executable specification document.
@@ -114,7 +117,7 @@ Run `./LinuxCMakeBuildInstall.sh` to CMake with Ninja, build with the default C+
 
 ```bash
 #!/bin/bash
-set -euo pipefail
+set -eu
 
 if [ $# -ne 1 ]; then
    echo 'Usage: ./LinuxCMakeBuildInstall.sh <InstallDirectory>'
@@ -210,7 +213,8 @@ ZenUnit installed on Windows:
 
 ![ZenUnit Installed On Windows](Screenshots/ZenUnitInstalledOnWindows.png "ZenUnit Installed On Windows")
 
-### Test Matrix
+Test Matrix
+-----------
 
 |Operating System|Compilers|
 |----------------|--------|
@@ -220,13 +224,6 @@ ZenUnit installed on Windows:
 
 ### [Work In Progress Guide to ZenUnit](Docs/ZenUnit.md)
 ### [Work In Progress Guide to ZenMock](Docs/ZenMock.md)
-
-### Version History
-
-|Version|Date|
-|-------|----|
-|0.2.0  |Approaching|
-|0.1.0  |January 1, 2017|
 
 ### License
 
