@@ -205,7 +205,7 @@ namespace ZenUnit
 
    TEST(PrintTestOutcome_InvalidTestOutcome_TriggersAssertion)
    {
-      const ConsoleMock consoleMock;
+      const ConsoleMock consoleMock{};
       _testResult.testOutcome = TestOutcome::Unset;
       //
       THROWS(_testResult.PrintTestOutcome(&consoleMock), logic_error,

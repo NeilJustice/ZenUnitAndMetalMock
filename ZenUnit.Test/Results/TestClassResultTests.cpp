@@ -131,7 +131,7 @@ namespace ZenUnit
    TEST(PrintResultLine_0FailedTest_WritesOKInGreen)
    {
       _testClassResultSelfMocked.NumberOfFailedTestCasesMock.ExpectAndReturn(0);
-      const ConsoleMock consoleMock;
+      ConsoleMock consoleMock;
       consoleMock.WriteColorMock.Expect();
       consoleMock.WriteNewlineMock.Expect();
       //
@@ -149,7 +149,7 @@ namespace ZenUnit
       3ULL)
    {
       _testClassResultSelfMocked.NumberOfFailedTestCasesMock.ExpectAndReturn(numberOfFailedTestCases);
-      const ConsoleMock consoleMock;
+      ConsoleMock consoleMock;
       consoleMock.WriteColorMock.Expect();
       consoleMock.WriteNewlineMock.Expect();
       //

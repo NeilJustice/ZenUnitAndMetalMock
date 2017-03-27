@@ -298,7 +298,7 @@ namespace ZenUnit
 
    TEST(ToString_TypeDoesNotHaveOStreamInsertionOperatorAndHasZenUnitPrint_ReturnsQuotedZenUnitPrintResult)
    {
-      const UserTypeOnlyZenUnitPrintable zenUnitPrintOnly;
+      const UserTypeOnlyZenUnitPrintable zenUnitPrintOnly{};
       //
       const string toStringResult = ZenUnit::ToStringer::ToString(zenUnitPrintOnly);
       //
@@ -311,7 +311,7 @@ namespace ZenUnit
 
    TEST(ToString_TypeHasOStreamInsertionOperatorAndZenUnitPrint_ReturnsQuotedZenUnitPrintResult)
    {
-      const UserTypeInsOpAndZenUnitPrintable userTypeInsOpAndZenUnitPrintable;
+      const UserTypeInsOpAndZenUnitPrintable userTypeInsOpAndZenUnitPrintable{};
       //
       const string toStringResult = ZenUnit::ToStringer::ToString(userTypeInsOpAndZenUnitPrintable);
       //

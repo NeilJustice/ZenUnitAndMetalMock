@@ -46,7 +46,7 @@ namespace ZenUnit
       {
          _consoleMock->WriteNewlineMock.Expect();
       }
-      const TestClassMultiRunnerMock multiTestClassRunnerMock;
+      TestClassMultiRunnerMock multiTestClassRunnerMock;
       multiTestClassRunnerMock.NumberOfTestClassesMock.ExpectAndReturn(numberOfTestClasses);
 
       const string TimeZoneDateTimeNow = "TimeZoneDateTimeNow";

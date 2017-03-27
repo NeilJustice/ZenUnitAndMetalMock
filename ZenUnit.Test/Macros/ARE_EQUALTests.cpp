@@ -63,7 +63,7 @@ namespace ZenUnit
 
    TEST(OneTypeEqualizerDefined_CallsIt)
    {
-      const EqualizerOneTypeTestStruct expected, actual;
+      const EqualizerOneTypeTestStruct expected{}, actual{};
       THROWS(ARE_EQUAL(expected, actual), Anomaly, R"(
   Failed: ARE_EQUAL(expected, actual)
 Expected: <EqualizerOneTypeTestStruct>
@@ -77,7 +77,7 @@ File.cpp(1))");
 
    TEST(TwoTypeEqualizerDefined_CallsIt)
    {
-      const EqualizerTwoTypeTestStruct expected;
+      const EqualizerTwoTypeTestStruct expected{};
       THROWS(ARE_EQUAL(expected, 1), Anomaly, R"(
   Failed: ARE_EQUAL(expected, 1)
 Expected: <EqualizerTwoTypeTestStruct>
@@ -91,7 +91,7 @@ File.cpp(1))");
 
    TEST(BothOneAndTwoTypeEqualizersDefined_CallsTheOneTypeEqualizer)
    {
-      const EqualizerBothOneAndTwoTypeTestStruct expected, actual;
+      const EqualizerBothOneAndTwoTypeTestStruct expected{}, actual{};
       THROWS(ARE_EQUAL(expected, actual), Anomaly, R"(
   Failed: ARE_EQUAL(expected, actual)
 Expected: <EqualizerBothOneAndTwoTypeTestStruct>

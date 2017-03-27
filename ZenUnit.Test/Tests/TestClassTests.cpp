@@ -29,7 +29,7 @@ namespace ZenUnit
 
    TEST(DefaultConstructor_DoesNotThrow)
    {
-      const TestClass testClass;
+      const TestClass testClass{};
    }
 
    TEST(Startup_DoesNotThrow)
@@ -46,7 +46,7 @@ namespace ZenUnit
    {
       IS_FALSE(TestingDerivedTestClassType::s_allNXNTestsRegistered);
       {
-         const TestClass<TestingDerivedTestClassType> testClass;
+         const TestClass<TestingDerivedTestClassType> testClass{};
       }
       IS_TRUE(TestingDerivedTestClassType::s_allNXNTestsRegistered);
    }

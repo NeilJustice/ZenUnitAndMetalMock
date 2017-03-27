@@ -285,7 +285,7 @@ namespace ZenUnit
       2ULL, 1ULL, 2ULL, 1)
    {
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
-      const ZenUnitArgs Args;
+      const ZenUnitArgs Args{};
       //
       const int exitCode = _testRunResult.DetermineExitCode(Args);
       //

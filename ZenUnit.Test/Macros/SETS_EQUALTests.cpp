@@ -18,7 +18,7 @@ namespace ZenUnit
 
    TEST(EmptySets_DoesNotThrow)
    {
-      const SetType<int> expectedSet, actualSet;
+      SetType<int> expectedSet, actualSet;
       SETS_EQUAL(expectedSet, actualSet);
    }
 

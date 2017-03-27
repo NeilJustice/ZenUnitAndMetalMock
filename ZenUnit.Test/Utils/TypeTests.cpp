@@ -64,7 +64,7 @@ namespace ZenUnit
 
    TEST(GetName_DeclaredAndRuntimeTypeIsDerived_ReturnsDerived)
    {
-      const TypeTestsDerived derived;
+      const TypeTestsDerived derived{};
       ARE_EQUAL("TypeTestsDerived", *Type::GetName(derived));
    }
 

@@ -68,7 +68,7 @@ namespace ZenUnit
 
    TEST(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
    {
-      TemplateTestClassRunner<const TestingTestClass> templateTestClassRunner(TestClassName);
+      TemplateTestClassRunner<TestingTestClass> templateTestClassRunner(TestClassName);
       //
       CONFIRM_NEWED(templateTestClassRunner._console);
       CONFIRM_NEWED(templateTestClassRunner._testsMemberForEacherExtraArg);

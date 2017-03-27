@@ -83,7 +83,7 @@ namespace ZenUnit
    TEST(RegisterTestClassRunner_EmplacesBackTestClassRunner)
    {
       _multiTestClassRunnerMock->AddTestClassRunnerMock.Expect();
-      TemplateTestClassRunner<const TestingTestClass> testClassRunner("TestClassName");
+      TemplateTestClassRunner<TestingTestClass> testClassRunner("TestClassName");
       //
       _testRunner.RegisterTestClassRunner(&testClassRunner);
       //
