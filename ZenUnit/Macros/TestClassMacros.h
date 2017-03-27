@@ -36,9 +36,10 @@
    tests.emplace_back(new ZenUnit::SpecSectionTestNXN<TestClassType>( \
       ZenUnitTestClassName, #CrystalClearTestName, PMFTOKEN(&TestClassType::CrystalClearTestName)));
 
-#define DOSKIP(CrystalClearTestName, Reason) ZenUnit::TestRunner::Instance().SkipTest(ZenUnitTestClassName, #CrystalClearTestName, Reason);
-#define SKIPSPEC(CrystalClearTestName, Reason) DOSKIP(CrystalClearTestName, Reason)
-#define SKIPSPECX(CrystalClearTestName, Reason) DOSKIP(CrystalClearTestName, Reason)
+#define DOSKIP(Reason, CrystalClearTestName) \
+   ZenUnit::TestRunner::Instance().SkipTest(ZenUnitTestClassName, #CrystalClearTestName, Reason);
+#define SKIPSPEC(Reason, CrystalClearTestName) DOSKIP(Reason, CrystalClearTestName)
+#define SKIPSPECX(Reason, CrystalClearTestName) DOSKIP(Reason, CrystalClearTestName)
 
 #define SPECEND return tests; }
 #define STARTUP virtual void Startup() override
@@ -109,7 +110,7 @@
       ZenUnit::TestRunner::Instance().RegisterTestClassRunner( \
          new ZenUnit::TemplateTestClassRunner<CrystalClearTestClassName>(#CrystalClearTestClassName));
 
-#define SKIPRUN(CrystalClearTestClassName, Reason) \
+#define SKIPRUN(Reason, CrystalClearTestClassName) \
    std::nullptr_t ZenUnit_TestClassSkipper_##CrystalClearTestClassName = \
       ZenUnit::TestRunner::Instance().SkipTestClass(#CrystalClearTestClassName, Reason);
 
@@ -121,7 +122,7 @@
       ZenUnit::TestRunner::Instance().RegisterTestClassRunner( \
          new ZenUnit::TemplateTestClassRunner<CrystalClearTestClassName<__VA_ARGS__>>(#CrystalClearTestClassName"<"#__VA_ARGS__">"));
 
-#define SKIPRUNTEMPLATE(CrystalClearTestClassName, Reason, ...) \
+#define SKIPRUNTEMPLATE(Reason, CrystalClearTestClassName, ...) \
    template<> bool CrystalClearTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
    template<> std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> \
       CrystalClearTestClassName<__VA_ARGS__>::s_testNXNPmfTokenToTest; \

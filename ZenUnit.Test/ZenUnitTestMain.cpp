@@ -4,30 +4,33 @@ const char* Reason = "Test of skip feature";
 
 TESTS(SkippedTestsTestClass)
 SPEC(NonSkippedTest)
-SKIPSPEC(SkippedNormalTest, Reason)
-SKIPSPECX(SkippedTest1X1, Reason)
-SKIPSPECX(SkippedTest2X2, Reason)
+SPECX(NonSkipped1X1Test)
+SKIPSPEC(Reason, SkippedNormalTest)
+SKIPSPECX(Reason, SkippedTest1X1)
+SKIPSPECX(Reason, SkippedTest2X2)
 SPECEND
+
 TEST(NonSkippedTest) {}
+TEST1X1(NonSkipped1X1Test, bool, true, false) {}
 TEST(SkippedNormalTest) {}
 TEST1X1(SkippedTest1X1, int, 0) {}
 TEST2X2(SkippedTest2X2, int, int, 0, 0) {}
 }; RUN(SkippedTestsTestClass)
 
-TESTS(SkippedTestClassA) SPECEND }; SKIPRUN(SkippedTestClassA, Reason)
-TESTS(SkippedTestClassB) SPECEND }; SKIPRUN(SkippedTestClassB, Reason)
+TESTS(SkippedTestClassA) SPECEND }; SKIPRUN(Reason, SkippedTestClassA)
+TESTS(SkippedTestClassB) SPECEND }; SKIPRUN(Reason, SkippedTestClassB)
 
 template<typename T>
 TEMPLATETESTS(SkippedTemplateTestClassA, T) SPECEND };
-SKIPRUNTEMPLATE(SkippedTemplateTestClassA, Reason, int)
-SKIPRUNTEMPLATE(SkippedTemplateTestClassA, Reason, double)
+SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassA, int)
+SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassA, double)
 
 template<template<typename...> class MapType>
 TEMPLATETESTS(SkippedTemplateTestClassB, MapType) SPECEND };
-SKIPRUNTEMPLATE(SkippedTemplateTestClassB, Reason, map)
-SKIPRUNTEMPLATE(SkippedTemplateTestClassB, Reason, unordered_map)
+SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, map)
+SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, unordered_map)
 
-int main(int argc, char* argv[])
+int main()
 {
    ZenUnit::FileLiner::selfTestMode = true;
    int exitCode = ZenUnit::RunTests(argc, argv);
