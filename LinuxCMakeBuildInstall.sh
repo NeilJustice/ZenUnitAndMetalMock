@@ -25,4 +25,4 @@ cmakeInstallPrefix="$1"
 cmake_build_install Debug "$cmakeInstallPrefix"
 cmake_build_install Release "$cmakeInstallPrefix"
 cmake_build_install RelWithDebInfo "$cmakeInstallPrefix"
-
+cmake_build_install MinSizeRel "$cmakeInstallPrefix"

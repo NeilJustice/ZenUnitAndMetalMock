@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.5)
 project(ZenUnit)
 include(${CMAKE_SOURCE_DIR}/ZenUnitTestedProgram/CMakeMacros.cmake)
 
-set(CMAKE_CONFIGURATION_TYPES Debug;Release;RelWithDebInfo)
-
 if(UNIX)
    set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra -Werror -pthread")
    if(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")

@@ -111,7 +111,7 @@ int main(int argc, char* argv[]
 
 Step 1 of 1:
 
-Run `./LinuxCMakeBuildInstall.sh` to CMake with Ninja, build with the default C++ compiler, and install with Linux the ZenUnit include tree and Debug, Release, and RelWithDebInfo static libraries.
+Run `./LinuxCMakeBuildInstall.sh` to CMake with Ninja, build with the default C++ compiler, and install with Linux the ZenUnit include tree and Debug, Release, RelWithDebInfo, and MinSizeRel static libraries.
 
 `LinuxCMakeBuildInstall.sh` performs these actions:
 
@@ -141,6 +141,7 @@ cmakeInstallPrefix="$1"
 cmake_build_install Debug "$cmakeInstallPrefix"
 cmake_build_install Release "$cmakeInstallPrefix"
 cmake_build_install RelWithDebInfo "$cmakeInstallPrefix"
+cmake_build_install MinSizeRel "$cmakeInstallPrefix"
 ```
 
 To build ZenUnit with Clang instead of the default C++ compiler (usually GCC), prepend CXX=<clang++Path>.
@@ -160,6 +161,9 @@ Abridged output from running `sudo CXX=/usr/bin/clang++ ./LinuxCMakeBuildInstall
 <...CMake Output...>
 <...Build Output...>
 -- Installing: /usr/local/lib/ZenUnit/libZenUnitRelWithDebInfo.a
+<...CMake Output...>
+<...Build Output...>
+-- Installing: /usr/local/lib/ZenUnit/libZenUnitMinSizeRel.a
 ~/code/ZenUnitAndZenMock$
 ```
 
@@ -169,7 +173,7 @@ ZenUnit installed on Linux:
 
 ### Building and Installing ZenUnit and ZenMock On Windows
 
-Step 1 of 1: Run with PowerShell `WindowsCMakeBuildInstall.ps1 <InstallDirectory>` to CMake with Visual Studio 14 2015 Win64, build with MSBuild, and install with Windows the ZenUnit include tree and Debug, Release, and RelWithDebInfo static libraries and .pdb files.
+Step 1 of 1: Run with PowerShell `WindowsCMakeBuildInstall.ps1 <InstallDirectory>` to CMake with Visual Studio 14 2015 Win64, build with MSBuild, and install with Windows the ZenUnit include tree and Debug, Release, RelWithDebInfo, and MinSizeRel static libraries and .pdb files.
 
 `WindowsCMakeBuildInstall.ps1` performs these CMake, build, and install actions:
 
@@ -182,11 +186,13 @@ if ($Args.Count -ne 1)
 
 cmake . -G"Visual Studio 14 2015 Win64" -DCMAKE_INSTALL_PREFIX="$($Args[0])"
 cmake --build . --target ZenUnit --config Debug
-cmake --build . --target ZenUnit --config Release
-cmake --build . --target ZenUnit --config RelWithDebInfo
 cmake --build . --target install --config Debug
+cmake --build . --target ZenUnit --config Release
 cmake --build . --target install --config Release
+cmake --build . --target ZenUnit --config RelWithDebInfo
 cmake --build . --target install --config RelWithDebInfo
+cmake --build . --target ZenUnit --config MinSizeRel
+cmake --build . --target install --config MinSizeRel
 ```
 
 Abridged output from running `powershell -file WindowsCMakeBuildInstall.ps1 C:/install` from a Git Bash prompt:
@@ -206,6 +212,8 @@ Abridged output from running `powershell -file WindowsCMakeBuildInstall.ps1 C:/i
   -- Installing: C:/install/lib/ZenUnit/ZenUnitRelWithDebInfo.lib
   -- Installing: C:/install/lib/ZenUnit/ZenUnitRelWithDebInfo.pdb
 <...Build Output...>
+  -- Installing: C:/install/lib/ZenUnit/ZenUnitMinSizeRel.lib
+<...Build Output...>
 Build succeeded.
 ```
 
@@ -222,10 +230,11 @@ Test Matrix
 |Ubuntu 16.10    |Clang 3.8.1 and GCC 6.2.0|
 |Windows 10      |Visual Studio 2015 Update 3 x64 (MSVC 14.0)|
 
+Test Matrix road map: Travis CI Linux and macOS, AppVeyor, MinGW, and Visual Studio 2017.
+
 ### [Work In Progress Guide to ZenUnit](Docs/ZenUnit.md)
 ### [Work In Progress Guide to ZenMock](Docs/ZenMock.md)
 
 ### License
 
 Public domain
-
