@@ -21,7 +21,7 @@ namespace ZenUnit
       }
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.commandLine = Vector::Join(args, ' ');
-      size_t numberOfArgs = args.size();
+      const size_t numberOfArgs = args.size();
       for (size_t argIndex = 1; argIndex < numberOfArgs; ++argIndex)
       {
          const string& arg = args[argIndex];

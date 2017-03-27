@@ -15,7 +15,7 @@ namespace ZenUnit
 
    using TransformerType = Transformer<
       typename DataStructureType<T>::const_iterator,
-      typename DataStructureType<T>::iterator, T(*)(T)>;
+      typename DataStructureType<T>, T(*)(T)>;
 
    TransformerType _transformer;
 
@@ -29,7 +29,7 @@ namespace ZenUnit
       DataStructureType<T> source;
       DataStructureType<T> dest;
       //
-      _transformer.Transform(source.cbegin(), source.cend(), dest.begin(), PlusOne);
+      _transformer.Transform(source.cbegin(), source.cend(), &dest, PlusOne);
       //
       IS_EMPTY(dest);
    }
@@ -39,7 +39,7 @@ namespace ZenUnit
       DataStructureType<T> source = { 1 };
       DataStructureType<T> dest(source.size());
       //
-      _transformer.Transform(source.cbegin(), source.cend(), dest.begin(), PlusOne);
+      _transformer.Transform(source.cbegin(), source.cend(), &dest, PlusOne);
       //
       DataStructureType<T> expectedDest = { 2 };
       ARE_EQUAL(expectedDest, dest);
@@ -50,14 +50,13 @@ namespace ZenUnit
       DataStructureType<T> source = { 1, 2 };
       DataStructureType<T> dest(source.size());
       //
-      _transformer.Transform(source.cbegin(), source.cend(), dest.begin(), PlusOne);
+      _transformer.Transform(source.cbegin(), source.cend(), &dest, PlusOne);
       //
       DataStructureType<T> expectedDest = { 2, 3 };
       ARE_EQUAL(expectedDest, dest);
    }
 
    };
-
    RUNTEMPLATE(TransformerTests, vector, int)
    RUNTEMPLATE(TransformerTests, list, char)
 }

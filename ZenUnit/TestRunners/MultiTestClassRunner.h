@@ -14,7 +14,7 @@ namespace ZenUnit
    private:
       std::unique_ptr<const Transformer<
          std::vector<std::unique_ptr<TestClassRunner>>::const_iterator,
-         std::vector<TestClassResult>::iterator,
+         std::vector<TestClassResult>,
          TestClassResult (*)(const std::unique_ptr<TestClassRunner>&)>> _transformer;
       std::vector<std::unique_ptr<TestClassRunner>> _testClassRunners;
       std::unique_ptr<const Sorter<decltype(_testClassRunners)>> _sorter;

@@ -18,7 +18,7 @@ namespace ZenUnit
 
    using TypdefTransformerMock = TransformerMock<
       vector<unique_ptr<TestClassRunner>>::const_iterator,
-      vector<TestClassResult>::iterator,
+      std::vector<TestClassResult>,
       TestClassResult (*)(const unique_ptr<TestClassRunner>&)>;
    SorterMock<std::vector<std::unique_ptr<TestClassRunner>>>* _sorterMock;
    TypdefTransformerMock* _transformerMock;
@@ -89,10 +89,9 @@ namespace ZenUnit
       vector<TestClassResult> testClassResults = _multiTestClassRunner.RunTestClasses();
       //
       ZEN(_sorterMock->SortMock.AssertCalledOnceWith(&_multiTestClassRunner._testClassRunners));
-      ARE_EQUAL(TestClassRunnersSize, _multiTestClassRunner._testClassResults.size());
       ZEN(_transformerMock->TransformMock.AssertCalledOnceWith(
          _multiTestClassRunner._testClassRunners.cbegin(), _multiTestClassRunner._testClassRunners.cend(),
-         _multiTestClassRunner._testClassResults.begin(), &MultiTestClassRunner::RunTestClassRunner));
+         &_multiTestClassRunner._testClassResults, &MultiTestClassRunner::RunTestClassRunner));
       vector<TestClassResult> expectedTestClassResults(TestClassRunnersSize);
       VECTORS_EQUAL(expectedTestClassResults, testClassResults);
    }

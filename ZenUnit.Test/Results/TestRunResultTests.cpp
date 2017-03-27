@@ -12,7 +12,7 @@ namespace ZenUnit
    SPEC(Constructor_NewsComponents)
    SPEC(AddSkippedTest_AddsTestClassNameDotTestNameToSkippedFullTestNamesVector)
    SPEC(AddSkippedTestClassNameAndReason_AddsTestClassNameAndReasonToSkippedTestClassNamesAndReasonsVector)
-   SPECX(SetTestClassResults_SetsTestClassResultsAndNumberofFailedTestCases)
+   SPECX(SetTestClassResults_SetsNumberofFailedTestCases_MovesTestClassResultsIntoField)
    SPEC(NumberOfFailedTestCases_ZeroTestClassResults_Returns0)
    SPEC(NumberOfFailedTestCases_ThreeTestClassResults_ReturnsSumOfNumberOfFailedTestCases)
    SPECX(PrintTestFailuresAndSkips_PrintsTestFailures_PrintsSkippedTestClassNames_PrintsSkippedFullTestNames);
@@ -112,7 +112,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedTestRunResultB, _testRunResult);
    }
 
-   TEST1X1(SetTestClassResults_SetsTestClassResultsAndNumberofFailedTestCases,
+   TEST1X1(SetTestClassResults_SetsNumberofFailedTestCases_MovesTestClassResultsIntoField,
       size_t numberOfFailedTestCases,
       0ULL,
       1ULL,
@@ -123,12 +123,15 @@ namespace ZenUnit
          ZENMOCK_NONVOID1_CONST(size_t, NumberOfFailedTestCases, const vector<TestClassResult>&)
       } testRunResultSelfMocked;
       testRunResultSelfMocked.NumberOfFailedTestCasesMock.ExpectAndReturn(numberOfFailedTestCases);
+
       vector<TestClassResult> testClassResults = { TestClassResult() };
+      const vector<TestClassResult> NonMovedFromTestClassResults = testClassResults;
       //
       testRunResultSelfMocked.SetTestClassResults(testClassResults);
       //
-      ZEN(testRunResultSelfMocked.NumberOfFailedTestCasesMock.AssertCalledOnceWith(testClassResults));
-      VECTORS_EQUAL(testClassResults, testRunResultSelfMocked._testClassResults);
+      IS_EMPTY(testClassResults); // Assertion that testClassResults was moved from
+      ZEN(testRunResultSelfMocked.NumberOfFailedTestCasesMock.AssertCalledOnceWith(NonMovedFromTestClassResults));
+      VECTORS_EQUAL(NonMovedFromTestClassResults, testRunResultSelfMocked._testClassResults);
       ARE_EQUAL(numberOfFailedTestCases, testRunResultSelfMocked._numberOfFailedTestCases);
    }
 

@@ -9,7 +9,7 @@ namespace ZenUnit
    MultiTestClassRunner::MultiTestClassRunner()
       : _transformer(new Transformer<
          vector<unique_ptr<TestClassRunner>>::const_iterator,
-         vector<TestClassResult>::iterator,
+         vector<TestClassResult>,
          TestClassResult(*)(const unique_ptr<TestClassRunner>&)>)
       , _sorter(new Sorter<decltype(_testClassRunners)>)
    {
@@ -45,8 +45,8 @@ namespace ZenUnit
       _sorter->Sort(&_testClassRunners);
       _testClassResults.resize(_testClassRunners.size());
       _transformer->Transform(_testClassRunners.cbegin(), _testClassRunners.cend(),
-         begin(_testClassResults), &MultiTestClassRunner::RunTestClassRunner);
-      return _testClassResults;
+         &_testClassResults, &MultiTestClassRunner::RunTestClassRunner);
+      return std::move(_testClassResults);
    }
 
    TestClassResult MultiTestClassRunner::RunTestClassRunner(const unique_ptr<TestClassRunner>& testClassRunner)
