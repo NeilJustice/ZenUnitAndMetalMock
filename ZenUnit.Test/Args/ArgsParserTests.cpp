@@ -19,7 +19,10 @@ namespace ZenUnit
    ArgsParser _argsParser;
    const ConsoleMock* _consoleMock;
    const string TestProgramPath = "Folder/TestProgramName";
-   const string ExpectedUsage = R"(ZenUnit and ZenMock
+   const string ExpectedUsage = R"(
+C++ unit testing framework ZenUnit and C++ mocking framework ZenMock
+Version 0.1.1 2017-02-14
+
 Usage: ./<TestsBinaryName> [Options...]
 
 Options:
@@ -28,13 +31,13 @@ None
    Run all non-skipped tests.
 -exit0
    Always exit 0 regardless of test run outcome.
-   This option can be useful to always allow the launch of a debugger
+   This option is useful for always allowing the launch of a debugger
    or non-debugging console window after running tests in a post-build step.
 -noskips
    Exit 1 regardless of test run outcome if any tests are skipped.
-   This option can be useful for continuous integration servers
-   to defend against the possibility of a culture of complacency
-   developing with respect to committed skipped tests.)";
+   This option is useful for continuous integration servers
+   to defend against the possibility of a quality-compromising
+   culture of complacency developing around committed skipped tests.)";
 
    STARTUP
    {

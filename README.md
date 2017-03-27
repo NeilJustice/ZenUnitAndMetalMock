@@ -235,6 +235,14 @@ Test Matrix road map: Travis CI Linux and macOS, AppVeyor, MinGW, and Visual Stu
 ### [Work In Progress Guide to ZenUnit](Docs/ZenUnit.md)
 ### [Work In Progress Guide to ZenMock](Docs/ZenMock.md)
 
+### Version History
+
+|Version|Date|
+|-------|----|
+|0.2.0|Approaching|
+|0.1.1|February 14, 2017|
+|0.1.0|January 1, 2017|
+
 ### License
 
-Public domain
+ZenUnit and ZenMock are public domain software.

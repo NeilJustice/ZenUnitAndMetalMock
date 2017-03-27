@@ -216,8 +216,28 @@ int main(int argc, char* argv[])
 |`ZENMOCK_NONVOID10_STATIC(returnType, qualifiedClassNameOrNamespace, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
 
 |ZENBIND For Mocking Global And Static Functions|
-|---------------------------------------------------------|
-|ZENBIND0(FunctionName_ZenMock)|
-|ZENBIND1(FunctionName_ZenMock)|
+|-----------------------------------------------|
+|`ZENBIND0(FunctionName_ZenMock)`|
+|`ZENBIND1(FunctionName_ZenMock)`|
 |...|
-|ZENBIND10(FunctionName_ZenMock)|
+|`ZENBIND10(FunctionName_ZenMock)`|
+
+|ZenMock Object Expectation Functions|
+|-----------------------------|
+|`FunctionMock.Expect()`|
+|`FunctionMock.ExpectAndReturn(returnValue)`|
+|`FunctionMock.ExpectAndReturnValues(returnValues...)`|
+|`FunctionMock.ExpectAndReturnValues(const vector<T>& returnValues)`|
+|`FunctionMock.ExpectAndThrow\<ExceptionTypes\>(ExceptionArgs&&...)`|
+
+|ZenMock Object Assertion Functions|
+|---------------------------|
+|`FunctionMock.AssertCalledOnce()`|
+|`FunctionMock.AssertCalledOnceWith(expectedArguments...)`|
+|`FunctionMock.AssertCalledNTimes(n)`|
+|`FunctionMock.AssertCalledNTimesWith(n, expectedArguments...)`|
+|`FunctionMock.AssertCalls(expectedCallsVectors)`|
+
+|ZEN|
+|-------------|
+|`ZEN(ZenMockAssertion)` // Should the asserted-about ZenMocked function not have been called as expected, ZEN adorns the error message with \_\_FILE\_\_ and \_\_LINE\_\_ information.|
