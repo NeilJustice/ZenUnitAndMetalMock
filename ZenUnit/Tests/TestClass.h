@@ -29,7 +29,7 @@ namespace ZenUnit
             Test* newTestNXN = operatorNewTestNXN();
             std::unordered_map<const PmfToken*, std::unique_ptr<Test>>&
                testNXNPmfToTest = DerivedTestClass::s_testNXNPmfTokenToTest;
-            bool didEmplaceTestNXN = testNXNPmfToTest.emplace(pmfToken, newTestNXN).second;
+            const bool didEmplaceTestNXN = testNXNPmfToTest.emplace(pmfToken, newTestNXN).second;
             assert_true(didEmplaceTestNXN);
          }
          return nullptr;
@@ -39,10 +39,10 @@ namespace ZenUnit
       {
          const std::unordered_map<const PmfToken*, std::unique_ptr<Test>>&
             testNXNPmfToTest = DerivedTestClass::s_testNXNPmfTokenToTest;
-         std::unordered_map<const PmfToken*, std::unique_ptr<Test>>::const_iterator
+         const std::unordered_map<const PmfToken*, std::unique_ptr<Test>>::const_iterator
             findIter = testNXNPmfToTest.find(pmfToken);
          assert_true(findIter != DerivedTestClass::s_testNXNPmfTokenToTest.end());
-         const std::unique_ptr<Test>* testNXN = &findIter->second;
+         const std::unique_ptr<Test>* const testNXN = &findIter->second;
          return testNXN;
       }
 

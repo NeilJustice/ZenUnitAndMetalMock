@@ -24,7 +24,7 @@ namespace ZenUnit
          has_to_string<T>::value, std::string>::type 
          ToString(const T& value)
       {
-         std::string valueString(std::to_string(value));
+         const std::string valueString(std::to_string(value));
          return valueString;
       }
 
@@ -41,7 +41,7 @@ namespace ZenUnit
          !has_to_string<T>::value && std::is_enum<T>::value, std::string>::type
          ToString(const T& value)
       {
-         std::string valueString = std::to_string(
+         const std::string valueString = std::to_string(
             static_cast<typename std::underlying_type<T>::type>(value));
          return valueString;
       }
@@ -69,20 +69,22 @@ namespace ZenUnit
       {
          if (stdFunction)
          {
-            return "<non-empty std::function>";
+            static const std::string NonEmptyStdFunction("<non-empty std::function>");
+            return NonEmptyStdFunction;
          }
          else
          {
-            return "<empty std::function>";
+            static const std::string EmptyStdFunction("<empty std::function>");
+            return EmptyStdFunction;
          }
       }
 
       template<typename FirstType, typename SecondType>
       static std::string ToString(const std::pair<FirstType, SecondType>& p)
       {
-         std::string toStringedFirst = ToStringer::ToString(p.first);
-         std::string toStringedSecond = ToStringer::ToString(p.second);
-         std::string toStringedPair = String::Concat("(", toStringedFirst, ", ", toStringedSecond, ")");
+         const std::string toStringedFirst = ToStringer::ToString(p.first);
+         const std::string toStringedSecond = ToStringer::ToString(p.second);
+         const std::string toStringedPair = String::Concat("(", toStringedFirst, ", ", toStringedSecond, ")");
          return toStringedPair;
       }
 
@@ -91,7 +93,7 @@ namespace ZenUnit
       {
          std::ostringstream oss;
          DoToStringConcat(oss, values...);
-         std::string toStringedValues = oss.str();
+         const std::string toStringedValues = oss.str();
          return toStringedValues;
       }
 
@@ -122,7 +124,7 @@ namespace ZenUnit
       {
          std::ostringstream oss;
          ZenUnitPrinterOrOStreamInsertionOperatorOrPrintTypeName(oss, value);
-         std::string valueString(oss.str());
+         const std::string valueString(oss.str());
          return valueString;
       }
       
@@ -163,7 +165,7 @@ namespace ZenUnit
          !has_ZenUnitPrinter<T>::value && !has_ostream_left_shift<T>::value>::type
          ZenUnitPrinterOrOStreamInsertionOperatorOrPrintTypeName(std::ostream& os, const T&)
       {
-         const std::string* typeName = Type::GetName<T>();
+         const std::string* const typeName = Type::GetName<T>();
          os << "<" << *typeName << ">";
       }
 
@@ -181,7 +183,7 @@ namespace ZenUnit
          oss << "0x";
 #endif
          oss << pointer;
-         std::string pointerAddressString(oss.str());
+         const std::string pointerAddressString(oss.str());
          return pointerAddressString;
       }
    };

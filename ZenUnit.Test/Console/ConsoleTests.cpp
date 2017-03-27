@@ -20,7 +20,7 @@ namespace ZenUnit
    SPECEND
 
    Console _console;
-   ConsoleColorerMock* _consoleColorerMock;
+   const ConsoleColorerMock* _consoleColorerMock;
    const string Message = "Message";
 
    struct ConsoleSelfMocked : public Zen::Mock<Console>
@@ -178,7 +178,7 @@ namespace ZenUnit
       IsDebuggerPresent_ZenMock.ExpectAndReturn(isDebuggerPresentReturnValue);
       _console.IsDebuggerPresent_ZenMockable = ZENBIND0(IsDebuggerPresent_ZenMock);
       //
-      bool debuggerIsPresent = _console.DebuggerIsPresent();
+      const bool debuggerIsPresent = _console.DebuggerIsPresent();
       //
       ZEN(IsDebuggerPresent_ZenMock.AssertCalledOnce());
       ARE_EQUAL(expectedReturnValue, debuggerIsPresent);

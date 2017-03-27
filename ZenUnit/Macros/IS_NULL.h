@@ -14,8 +14,8 @@ namespace ZenUnit
    NOINLINE void IS_NULL_Throw(VRText<PointerType> pointerVRT,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      std::string actualField = ToStringer::ToString(pointerVRT.value);
-      Anomaly anomaly("IS_NULL", pointerVRT.text, "", "", messagesText,
+      const std::string actualField = ToStringer::ToString(pointerVRT.value);
+      const Anomaly anomaly("IS_NULL", pointerVRT.text, "", "", messagesText,
          Anomaly::Default,
          "nullptr",
          actualField,
@@ -27,7 +27,7 @@ namespace ZenUnit
    void IS_NULL_Defined(VRText<PointerType> pointerVRT,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      bool pointerIsNull = pointerVRT.value == nullptr;
+      const bool pointerIsNull = pointerVRT.value == nullptr;
       if (!pointerIsNull)
       {
          IS_NULL_Throw(pointerVRT, fileLine, messagesText, messages...);

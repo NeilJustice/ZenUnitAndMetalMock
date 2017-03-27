@@ -16,9 +16,9 @@ namespace ZenUnit
       const VRText<ActualObjectType>& actualObjectVRT,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      std::string expectedField = ToStringer::ToString(&expectedObjectVRT.value);
-      std::string actualField = ToStringer::ToString(&actualObjectVRT.value);
-      Anomaly anomaly("ARE_SAME", expectedObjectVRT.text, actualObjectVRT.text, "", messagesText,
+      const std::string expectedField = ToStringer::ToString(&expectedObjectVRT.value);
+      const std::string actualField = ToStringer::ToString(&actualObjectVRT.value);
+      const Anomaly anomaly("ARE_SAME", expectedObjectVRT.text, actualObjectVRT.text, "", messagesText,
          Anomaly::Default,
          expectedField,
          actualField,

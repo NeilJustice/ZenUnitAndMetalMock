@@ -13,13 +13,13 @@ UserTypeNonPrintable::UserTypeNonPrintable(int x)
 
 bool operator<(const UserTypeNonPrintable& left, const UserTypeNonPrintable& right)
 {
-   bool isLessThan = left.x < right.x;
+   const bool isLessThan = left.x < right.x;
    return isLessThan;
 }
 
 bool operator==(const UserTypeNonPrintable& left, const UserTypeNonPrintable& right)
 {
-   bool isEqual = left.x == right.x;
+   const bool isEqual = left.x == right.x;
    return isEqual;
 }
 

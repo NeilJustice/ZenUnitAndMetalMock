@@ -11,7 +11,7 @@ namespace ZenUnit
 
    TEST(DefaultConstructor_SetsClassNameAndTestNameToNullptr)
    {
-      FullName defaultTestName;
+      const FullName defaultTestName;
       FullName expectedDefaultTestName;
       expectedDefaultTestName.testClassName = nullptr;
       expectedDefaultTestName.testName = nullptr;
@@ -21,7 +21,7 @@ namespace ZenUnit
 
    TEST(TwoArgConstructor_SetsClassNameAndTestName)
    {
-      FullName testName("TestClassName", "TestName");
+      const FullName testName("TestClassName", "TestName");
       FullName expectedTestName;
       expectedTestName.testClassName = "TestClassName";
       expectedTestName.testName = "TestName";

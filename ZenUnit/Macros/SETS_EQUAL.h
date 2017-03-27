@@ -14,9 +14,9 @@ namespace ZenUnit
       VRText<SetType> expectedSetVRT, VRText<SetType> actualSetVRT,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      std::string toStringedExpectedSet = ToStringer::ToString(expectedSetVRT.value);
-      std::string toStringedActualSet = ToStringer::ToString(actualSetVRT.value);
-      Anomaly anomaly("SETS_EQUAL", expectedSetVRT.text, actualSetVRT.text, "", messagesText,
+      const std::string toStringedExpectedSet = ToStringer::ToString(expectedSetVRT.value);
+      const std::string toStringedActualSet = ToStringer::ToString(actualSetVRT.value);
+      const Anomaly anomaly("SETS_EQUAL", expectedSetVRT.text, actualSetVRT.text, "", messagesText,
          becauseAnomaly,
          toStringedExpectedSet,
          toStringedActualSet,

@@ -22,7 +22,7 @@ CLEANUP
 
 TEST(NullRawPointer_Throws)
 {
-   char* nullRawPointer = nullptr;
+   const char* nullRawPointer = nullptr;
    THROWS(WAS_ARRAY_NEWED(nullRawPointer), Anomaly, R"(
   Failed: WAS_ARRAY_NEWED(nullRawPointer)
 Expected: not a nullptr
@@ -32,7 +32,7 @@ File.cpp(1))");
 
 TEST(NullRawPointer_Throws_MessagesTestCase)
 {
-   char* nullRawPointer = nullptr;
+   const char* nullRawPointer = nullptr;
    const string MessageA = "A", MessageB = "B";
    THROWS(WAS_ARRAY_NEWED(nullRawPointer, MessageA, MessageB), Anomaly, R"(
   Failed: WAS_ARRAY_NEWED(nullRawPointer, MessageA, MessageB)
@@ -44,7 +44,7 @@ File.cpp(1))");
 
 TEST(EmptyUniqueArrayPtr_Throws)
 {
-   unique_ptr<int[]> emptyUniqueArrayPtr;
+   unique_ptr<const int[]> emptyUniqueArrayPtr;
    THROWS(WAS_ARRAY_NEWED(emptyUniqueArrayPtr), Anomaly, R"(
   Failed: WAS_ARRAY_NEWED(emptyUniqueArrayPtr)
 Expected: not a nullptr
@@ -67,7 +67,7 @@ TEST(NonNullRawPointer_DestructsEachElement_NotCallableTwiceWithoutUndefinedBeha
 
 TEST(NonNullUniqueArrayPointer_DestructsEachElement_ThrowsWhenCalledTwice)
 {
-   unique_ptr<Deletable[]> nonNullUniqueArrayPtr(new Deletable[5]);
+   unique_ptr<const Deletable[]> nonNullUniqueArrayPtr(new Deletable[5]);
    ARE_EQUAL(0, Deletable::s_destructorCallCount);
    //
    WAS_ARRAY_NEWED(nonNullUniqueArrayPtr);
@@ -80,7 +80,7 @@ Expected: not a nullptr
   Actual: nullptr
 File.cpp(1))");
 
-   unique_ptr<int[]> ints(new int[1]);
+   unique_ptr<const int[]> ints(new int[1]);
    WAS_ARRAY_NEWED(ints);
    THROWS(WAS_ARRAY_NEWED(ints), Anomaly, R"(
   Failed: WAS_ARRAY_NEWED(ints)

@@ -7,7 +7,7 @@ namespace ZenMock
    class UnexpectedCallException : public ZenMockException
    {
    private:
-      std::string _what;
+      const std::string _what;
    public:
       template<typename... ArgTypes>
       UnexpectedCallException(
@@ -25,7 +25,7 @@ namespace ZenMock
          whatBuilder << R"(
 Fix for this: Add before the unexpected call a call to
 [ZenMockObjectName].[Expect or )";
-         bool isVoid = zenMockedFunctionSignature.find("void ") != std::string::npos;
+         const bool isVoid = zenMockedFunctionSignature.find("void ") != std::string::npos;
          if (isVoid)
          {
             whatBuilder << "ExpectAndThrow";
@@ -35,7 +35,7 @@ Fix for this: Add before the unexpected call a call to
             whatBuilder << "ExpectAndReturn or ExpectAndReturnValues or ExpectAndThrow";
          }
          whatBuilder << "]()";
-         std::string what = whatBuilder.str();
+         const std::string what = whatBuilder.str();
          return what;
       }
 
@@ -51,7 +51,7 @@ Fix for this: Add before the unexpected call a call to
          const ArgType& arg,
          const SubsequentArgTypes&... args)
       {
-         std::string toStringedArg = ZenUnit::ToStringer::ToString(arg);
+         const std::string toStringedArg = ZenUnit::ToStringer::ToString(arg);
          outWhatBuilder << "\nArg" << ++argIndex << ": " << toStringedArg;
          AppendToStringedArgs(outWhatBuilder, argIndex, args...);
       }

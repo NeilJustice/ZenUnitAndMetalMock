@@ -103,7 +103,7 @@ namespace ZenMock
             Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
             Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>::
             ZenMock(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
-         ReturnType returnValue = ValueReturner<ReturnType>::PrivateNextReturnValue();
+         const ReturnType returnValue = ValueReturner<ReturnType>::PrivateNextReturnValue();
          return returnValue;
       }
    };

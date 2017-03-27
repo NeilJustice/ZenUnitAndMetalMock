@@ -35,7 +35,7 @@ namespace ZenMock
       void AssertCalledOnce()
       {
          this->SetAsserted();
-         size_t expectedNumberOfCalls = 1;
+         const size_t expectedNumberOfCalls = 1;
          ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature);
       }
 

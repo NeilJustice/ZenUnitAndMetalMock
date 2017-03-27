@@ -23,3 +23,12 @@
 
 #include "ZenUnit/ZenMock/7/ZENMOCK_VOID7.h"
 #include "ZenUnit/ZenMock/7/ZENMOCK_NONVOID7.h"
+
+#include "ZenUnit/ZenMock/8/ZENMOCK_VOID8.h"
+#include "ZenUnit/ZenMock/8/ZENMOCK_NONVOID8.h"
+
+#include "ZenUnit/ZenMock/9/ZENMOCK_VOID9.h"
+#include "ZenUnit/ZenMock/9/ZENMOCK_NONVOID9.h"
+
+#include "ZenUnit/ZenMock/10/ZENMOCK_VOID10.h"
+#include "ZenUnit/ZenMock/10/ZENMOCK_NONVOID10.h"

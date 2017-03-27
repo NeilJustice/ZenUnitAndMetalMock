@@ -31,13 +31,13 @@ namespace ZenUnit
       ARE_EQUAL("decltype(nullptr)", *Type::GetName(nullptr));
       ARE_EQUAL("char [1]", *Type::GetName(""));
       ARE_EQUAL("char [2]", *Type::GetName("a"));
-      const char* ccp = "hello";
+      const char* const ccp = "hello";
       ARE_EQUAL("char const*", *Type::GetName(ccp));
    #elif _WIN32
       ARE_EQUAL("std::nullptr_t", *Type::GetName(nullptr));
       ARE_EQUAL("char const [1]", *Type::GetName(""));
       ARE_EQUAL("char const [2]", *Type::GetName("a"));
-      const char* ccp = "hello";
+      const char* const ccp = "hello";
       ARE_EQUAL("char const * __ptr64", *Type::GetName(ccp));
    #endif
    }
@@ -64,7 +64,7 @@ namespace ZenUnit
 
    TEST(GetName_DeclaredAndRuntimeTypeIsDerived_ReturnsDerived)
    {
-      TypeTestsDerived derived;
+      const TypeTestsDerived derived;
       ARE_EQUAL("TypeTestsDerived", *Type::GetName(derived));
    }
 

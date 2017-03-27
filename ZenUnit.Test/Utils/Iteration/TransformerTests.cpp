@@ -17,7 +17,7 @@ namespace ZenUnit
       typename DataStructureType<T>::const_iterator,
       typename DataStructureType<T>, T(*)(T)>;
 
-   TransformerType _transformer;
+   const TransformerType _transformer;
 
    static T PlusOne(T i)
    {
@@ -36,23 +36,23 @@ namespace ZenUnit
 
    TEST(Transform_OneItemRange_CallsTransformerOnce)
    {
-      DataStructureType<T> source = { 1 };
+      const DataStructureType<T> source = { 1 };
       DataStructureType<T> dest(source.size());
       //
       _transformer.Transform(source.cbegin(), source.cend(), &dest, PlusOne);
       //
-      DataStructureType<T> expectedDest = { 2 };
+      const DataStructureType<T> expectedDest = { 2 };
       ARE_EQUAL(expectedDest, dest);
    }
 
    TEST(Transform_TwoItemRange_CallsTransformerTwice)
    {
-      DataStructureType<T> source = { 1, 2 };
+      const DataStructureType<T> source = { 1, 2 };
       DataStructureType<T> dest(source.size());
       //
       _transformer.Transform(source.cbegin(), source.cend(), &dest, PlusOne);
       //
-      DataStructureType<T> expectedDest = { 2, 3 };
+      const DataStructureType<T> expectedDest = { 2, 3 };
       ARE_EQUAL(expectedDest, dest);
    }
 

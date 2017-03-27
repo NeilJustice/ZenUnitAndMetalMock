@@ -43,13 +43,13 @@ namespace ZenUnit
       }
       catch (...)
       {
-         long long milliseconds = _stopwatch->StopMilliseconds();
-         string testPhaseSuffix = TestPhaseToTestPhaseSuffix(testPhase);
+         const long long milliseconds = _stopwatch->StopMilliseconds();
+         const string testPhaseSuffix = TestPhaseToTestPhaseSuffix(testPhase);
          _console->WriteLineColor("FATALITY!", Color::Red);
-         string exitLine = String::Concat(
+         const string exitLine = String::Concat(
             "Fatal ... exception. Exiting now with exit code 1.",
             testPhaseSuffix, " (", milliseconds, " ms)");
-         ZenUnitArgs zenUnitArgs = _getArgs();
+         const ZenUnitArgs zenUnitArgs = _getArgs();
          _console->WriteLineAndExit(exitLine, zenUnitArgs.exit0 ? 0 : 1);
       }
       return callResult;

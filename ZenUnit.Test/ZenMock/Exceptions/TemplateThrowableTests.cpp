@@ -15,7 +15,7 @@ namespace ZenMock
 
    TEST(New_ReturnsNewInstanceOfSelfAsThrowablePointerWithExceptionCreatedFromExceptionArgs)
    {
-      const Throwable* throwable = TemplateThrowable<ExceptionType>::New(ExceptionWhat);
+      const Throwable* const throwable = TemplateThrowable<ExceptionType>::New(ExceptionWhat);
       THROWS(throwable->Throw(), ExceptionType, ExceptionWhat);
       delete throwable;
    }

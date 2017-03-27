@@ -25,8 +25,9 @@ namespace ZenUnit
 
    struct UserType
    {
-      int x;
+      const int x;
       UserType(int x) : x(x) {}
+
       friend ostream& operator<<(ostream& os, const UserType& userType)
       {
          os << userType.x;
@@ -40,9 +41,9 @@ namespace ZenUnit
       ARE_EQUAL("1", String::Concat("1"));
       ARE_EQUAL("12", String::Concat("1", "2"));
       ARE_EQUAL("123", String::Concat("1", "2", "3"));
-      UserType userType1(1);
-      string str = "hello";
-      UserType userType3(3);
+      const UserType userType1(1);
+      const string str = "hello";
+      const UserType userType3(3);
       ARE_EQUAL("1hello3", String::Concat(userType1, str, userType3));
    }
 

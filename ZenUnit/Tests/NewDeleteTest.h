@@ -28,14 +28,18 @@ namespace ZenUnit
 
       virtual std::vector<TestResult> Run() override
       {
-         CallResult constructorCallResult = _tryCatchCaller->Call(&Test::CallNewTestClass, this, TestPhase::Constructor);
+         const CallResult constructorCallResult = _tryCatchCaller->
+            Call(&Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorCallResult.testOutcome != TestOutcome::Success)
          {
-            TestResult constructorFail = _testResultFactory->ConstructorFail(_fullName, constructorCallResult);
+            const TestResult constructorFail = _testResultFactory->
+               ConstructorFail(_fullName, constructorCallResult);
             return { constructorFail };
          }
-         CallResult destructorCallResult = _tryCatchCaller->Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-         TestResult testResult = _testResultFactory->CtorDtorSuccess(_fullName, constructorCallResult, destructorCallResult);
+         const CallResult destructorCallResult = _tryCatchCaller->
+            Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+         const TestResult testResult = _testResultFactory->
+            CtorDtorSuccess(_fullName, constructorCallResult, destructorCallResult);
          return { testResult };
       }
 

@@ -18,7 +18,7 @@ namespace ZenUnit
 #elif _WIN32
       caseInsensitiveComparisonResult = _strcmpi(leftTestClassName, rightTestClassName);
 #endif
-      bool isLessThan = caseInsensitiveComparisonResult < 0;
+      const bool isLessThan = caseInsensitiveComparisonResult < 0;
       return isLessThan;
    }
 }

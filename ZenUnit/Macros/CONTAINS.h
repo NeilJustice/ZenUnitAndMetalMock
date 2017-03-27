@@ -16,9 +16,9 @@ namespace ZenUnit
       VRText<ElementType> dataStructureVRT,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      std::string expectedField =
+      const std::string expectedField =
          "Contains element " + ToStringer::ToString(expectedElementVRT.value);
-      Anomaly anomaly("CONTAINS", expectedElementVRT.text, dataStructureVRT.text, "", messagesText,
+      const Anomaly anomaly("CONTAINS", expectedElementVRT.text, dataStructureVRT.text, "", messagesText,
          Anomaly::Default,
          expectedField,
          "Contains no such element",
@@ -32,24 +32,16 @@ namespace ZenUnit
       VRText<ElementType> dataStructureVRT,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      auto findIter = std::find(
+      const auto findIter = std::find(
          dataStructureVRT.value.cbegin(), 
          dataStructureVRT.value.cend(), 
          expectedElementVRT.value);
       if (findIter == dataStructureVRT.value.end())
       {
-         std::string expectedText =
-            "Contains element " + ToStringer::ToString(expectedElementVRT.value);
-         Anomaly anomaly("CONTAINS", expectedElementVRT.text, dataStructureVRT.text, "", messagesText,
-            Anomaly::Default,
-            expectedText,
-            "Contains no such element",
-            ExpectedActualFormat::Fields, fileLine, messages...);
-         throw anomaly;
-         //CONTAINS_Throw(
-         //   expectedElementVRT, 
-         //   dataStructureVRT,
-         //   fileLine, messagesText, messages...);
+         CONTAINS_Throw(
+            expectedElementVRT, 
+            dataStructureVRT,
+            fileLine, messagesText, messages...);
       }
    }
 }

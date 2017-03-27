@@ -63,7 +63,7 @@ namespace ZenUnit
 
    TEST(OneTypeEqualizerDefined_CallsIt)
    {
-      EqualizerOneTypeTestStruct expected, actual;
+      const EqualizerOneTypeTestStruct expected, actual;
       THROWS(ARE_EQUAL(expected, actual), Anomaly, R"(
   Failed: ARE_EQUAL(expected, actual)
 Expected: <EqualizerOneTypeTestStruct>
@@ -77,7 +77,7 @@ File.cpp(1))");
 
    TEST(TwoTypeEqualizerDefined_CallsIt)
    {
-      EqualizerTwoTypeTestStruct expected;
+      const EqualizerTwoTypeTestStruct expected;
       THROWS(ARE_EQUAL(expected, 1), Anomaly, R"(
   Failed: ARE_EQUAL(expected, 1)
 Expected: <EqualizerTwoTypeTestStruct>
@@ -91,7 +91,7 @@ File.cpp(1))");
 
    TEST(BothOneAndTwoTypeEqualizersDefined_CallsTheOneTypeEqualizer)
    {
-      EqualizerBothOneAndTwoTypeTestStruct expected, actual;
+      const EqualizerBothOneAndTwoTypeTestStruct expected, actual;
       THROWS(ARE_EQUAL(expected, actual), Anomaly, R"(
   Failed: ARE_EQUAL(expected, actual)
 Expected: <EqualizerBothOneAndTwoTypeTestStruct>
@@ -125,9 +125,9 @@ File.cpp(1))");
 
    TEST(IntVariablesNotEqual_Throws_MessagesTestCase)
    {
-      int expected = 0;
-      int actual = 1;
-      string messageA = "A", messageB = "B";
+      const int expected = 0;
+      const int actual = 1;
+      const string messageA = "A", messageB = "B";
       THROWS(ARE_EQUAL(expected, actual, messageA, messageB), Anomaly, R"(
   Failed: ARE_EQUAL(expected, actual, messageA, messageB)
 Expected: 0
@@ -138,8 +138,8 @@ File.cpp(1))");
 
    TEST(StringsNotEqual_ThrowsWithStringsInQuotesToConfirmedToStringed)
    {
-      string expected = "expected";
-      string actual = "actual";
+      const string expected = "expected";
+      const string actual = "actual";
       THROWS(ARE_EQUAL(expected, actual), Anomaly, R"(
   Failed: ARE_EQUAL(expected, actual)
 Expected: "expected"

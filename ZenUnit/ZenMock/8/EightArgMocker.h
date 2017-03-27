@@ -58,8 +58,8 @@ namespace ZenMock
          const Arg8Type& expectedArg8)
       {
          this->SetAsserted();
-         size_t expectedNumberOfCalls = 1;
-         size_t numberOfCalls = eightArgCalls.size();
+         const size_t expectedNumberOfCalls = 1;
+         const size_t numberOfCalls = eightArgCalls.size();
          ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature);
          ARE_EQUAL(expectedArg1, eightArgCalls[0].arg1, this->ZenMockedFunctionSignature);
          ARE_EQUAL(expectedArg2, eightArgCalls[0].arg2, this->ZenMockedFunctionSignature);
@@ -84,11 +84,11 @@ namespace ZenMock
       {
          this->ThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
          this->SetAsserted();
-         size_t numberOfCalls = eightArgCalls.size();
+         const size_t numberOfCalls = eightArgCalls.size();
          ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCalls; ++i)
          {
-            std::string zenMockedFunctionSignatureAndCallIndex
+            const std::string zenMockedFunctionSignatureAndCallIndex
                = ZenUnit::String::Concat(this->ZenMockedFunctionSignature, " at i=", i);
             ARE_EQUAL(expectedArg1, eightArgCalls[i].arg1, zenMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedArg2, eightArgCalls[i].arg2, zenMockedFunctionSignatureAndCallIndex);
@@ -107,7 +107,7 @@ namespace ZenMock
       {
          this->ThrowIfExpectedCallsSizeIsZero(expectedEightArgCalls.size());
          this->SetAsserted();
-         std::vector<EightArgCallRef<
+         const std::vector<EightArgCallRef<
             Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
             Arg5Type, Arg6Type, Arg7Type, Arg8Type>> 
             actualEightArgCalls = PrivateCallsToCallRefs(eightArgCalls);

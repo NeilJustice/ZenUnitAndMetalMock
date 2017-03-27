@@ -18,9 +18,9 @@ namespace ZenUnit
       const Anomaly& becauseAnomaly,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      std::string expectedField = ToStringer::ToString(expectedStdFunctionTargetValue);
-      std::string actualField = ToStringer::ToString(stdFunctionVRT.value);
-      Anomaly anomaly("FUNCTION_TARGETS", expectedStdFunctionTargetText, stdFunctionVRT.text, "", messagesText,
+      const std::string expectedField = ToStringer::ToString(expectedStdFunctionTargetValue);
+      const std::string actualField = ToStringer::ToString(stdFunctionVRT.value);
+      const Anomaly anomaly("FUNCTION_TARGETS", expectedStdFunctionTargetText, stdFunctionVRT.text, "", messagesText,
          becauseAnomaly,
          expectedField,
          actualField,
@@ -35,7 +35,7 @@ namespace ZenUnit
       VRText<StdFunctionType> stdFunctionVRT,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      StdFunctionType stdFunction = stdFunctionVRT.value;
+      const StdFunctionType stdFunction = stdFunctionVRT.value;
       try
       {
          IS_TRUE(stdFunction);

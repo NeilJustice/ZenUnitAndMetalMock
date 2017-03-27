@@ -18,9 +18,9 @@ namespace ZenUnit
       const VectorType<T, Allocator>& actualVector, const char* actualVectorText,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      std::string toStringedExpectedVector = ToStringer::ToString(expectedVector);
-      std::string toStringedActualVector = ToStringer::ToString(actualVector);
-      Anomaly anomaly("VECTORS_EQUAL", expectedVectorText, actualVectorText, "", messagesText,
+      const std::string toStringedExpectedVector = ToStringer::ToString(expectedVector);
+      const std::string toStringedActualVector = ToStringer::ToString(actualVector);
+      const Anomaly anomaly("VECTORS_EQUAL", expectedVectorText, actualVectorText, "", messagesText,
          becauseAnomaly,
          toStringedExpectedVector,
          toStringedActualVector,
@@ -47,12 +47,12 @@ namespace ZenUnit
             actualVector, actualVectorText,
             fileLine, messagesText, messages...);
       }
-      size_t expectedVectorSize = expectedVector.size();
+      const size_t expectedVectorSize = expectedVector.size();
       for (size_t i = 0; i < expectedVectorSize; ++i)
       {
          const T& ithExpectedElement = expectedVector[i];
          const T& ithActualElement = actualVector[i];
-         std::string iEqualsIndexMessage = "i=" + std::to_string(i);
+         const std::string iEqualsIndexMessage = "i=" + std::to_string(i);
          try
          {
             ARE_EQUAL(ithExpectedElement, ithActualElement, iEqualsIndexMessage);

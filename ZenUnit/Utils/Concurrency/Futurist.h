@@ -18,7 +18,7 @@ namespace ZenUnit
       virtual std::future_status WaitMilliseconds(
          std::future<void>* voidFuture, long long milliseconds) const
       {
-         std::future_status waitResult 
+         const std::future_status waitResult 
             = voidFuture->wait_for(std::chrono::milliseconds(milliseconds));
          return waitResult;
       }

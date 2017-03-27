@@ -12,7 +12,7 @@ namespace ZenUnit
 
    TEST(DefaultConstructor_SetsFieldsTo0)
    {
-      CallResult defaultCallResult;
+      const CallResult defaultCallResult;
       CallResult expectedDefaultCallResult;
       expectedDefaultCallResult.testPhase = TestPhase::Unset;
       expectedDefaultCallResult.testOutcome = TestOutcome::Success;
@@ -25,7 +25,7 @@ namespace ZenUnit
 
    TEST(TestPhaseConstructor_SetsTestPhase_SetsOtherFieldsTo0)
    {
-      CallResult callResult(TestPhase::Constructor);
+      const CallResult callResult(TestPhase::Constructor);
       CallResult expectedCallResult;
       expectedCallResult.testPhase = TestPhase::Constructor;
       expectedCallResult.testOutcome = TestOutcome::Success;

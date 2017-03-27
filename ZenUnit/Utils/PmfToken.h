@@ -11,7 +11,7 @@ namespace ZenUnit
       template<typename PmfType, PmfType>
       static const PmfToken* Instantiate()
       {
-         static PmfToken pmfToken;
+         const static PmfToken pmfToken;
          return &pmfToken;
       }
    };

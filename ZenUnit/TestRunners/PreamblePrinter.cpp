@@ -24,13 +24,13 @@ namespace ZenUnit
       _console->WriteColor("[ZenUnit]", Color::Green);
       _console->WriteLine(" Running " + commandLine);
       _console->WriteColor("[ZenUnit]", Color::Green);
-      string timeZoneDateTimeNow = _watch->TimeZoneDateTimeNow();
+      const string timeZoneDateTimeNow = _watch->TimeZoneDateTimeNow();
       _console->WriteLine(" Running at " + timeZoneDateTimeNow);
       _console->WriteColor("[ZenUnit]", Color::Green);
-      size_t numberOfTestClasses = multiTestClassRunner->NumberOfTestClasses();
-      bool testClassesPlural = numberOfTestClasses > 1 || numberOfTestClasses == 0;
-      string machineName = _machineNameGetter->GetMachineName();
-      string runningTestClassesLine = String::Concat(
+      const size_t numberOfTestClasses = multiTestClassRunner->NumberOfTestClasses();
+      const bool testClassesPlural = numberOfTestClasses > 1 || numberOfTestClasses == 0;
+      const string machineName = _machineNameGetter->GetMachineName();
+      const string runningTestClassesLine = String::Concat(
          " Running ", numberOfTestClasses, " test ", (testClassesPlural ? "classes" : "class"),
          " on machine ", machineName);
       _console->WriteLine(runningTestClassesLine);

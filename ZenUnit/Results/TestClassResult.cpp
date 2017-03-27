@@ -27,7 +27,7 @@ namespace ZenUnit
 
    long long TestClassResult::Milliseconds() const
    {
-      long long milliseconds = std::accumulate(_testResults.cbegin(), _testResults.cend(), 0ll,
+      const long long milliseconds = std::accumulate(_testResults.cbegin(), _testResults.cend(), 0ll,
          [](long long cumulativeMilliseconds, const TestResult& testResult)
          {
             return cumulativeMilliseconds + testResult.milliseconds;
@@ -37,7 +37,7 @@ namespace ZenUnit
 
    void TestClassResult::PrintResultLine(const Console* console) const
    {
-      size_t numberOfFailedTestCases = NumberOfFailedTestCases();
+      const size_t numberOfFailedTestCases = NumberOfFailedTestCases();
       if (numberOfFailedTestCases == 0)
       {
          console->WriteColor("[ OK ]", Color::Green);
@@ -51,7 +51,7 @@ namespace ZenUnit
 
    size_t TestClassResult::NumberOfFailedTestCases() const
    {
-      long long numberOfFailedTestCases = std::count_if(
+      const long long numberOfFailedTestCases = std::count_if(
          _testResults.cbegin(), _testResults.cend(), [](const TestResult& testResult)
          {
             return testResult.testOutcome != TestOutcome::Success;

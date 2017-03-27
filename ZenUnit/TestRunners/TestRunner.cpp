@@ -69,18 +69,18 @@ namespace ZenUnit
          RunTests();
       }
       _testRunResult->PrintTestFailuresAndSkips();
-      size_t totalNumberOfTestCases = _multiTestClassRunner->TotalNumberOfTestCases();
-      long long testRunMilliseconds = _testRunStopwatch->StopMilliseconds();
+      const size_t totalNumberOfTestCases = _multiTestClassRunner->TotalNumberOfTestCases();
+      const long long testRunMilliseconds = _testRunStopwatch->StopMilliseconds();
       _testRunResult->PrintClosingLines(totalNumberOfTestCases, testRunMilliseconds, _args.commandLine);
       _console->PauseForAnyKeyIfDebuggerIsPresent();
-      int exitCode = _testRunResult->DetermineExitCode(_args);
+      const int exitCode = _testRunResult->DetermineExitCode(_args);
       return exitCode;
    }
 
    void TestRunner::RunTestsWithWaitableRunnerThread(unsigned maxtotalseconds)
    {
-      shared_ptr<VoidFuture> testClassRunnerDoneFuture = _futurist->Async(&TestRunner::RunTests, this);
-      future_status waitResult = testClassRunnerDoneFuture->WaitAtMostSeconds(maxtotalseconds);
+      const shared_ptr<const VoidFuture> testClassRunnerDoneFuture = _futurist->Async(&TestRunner::RunTests, this);
+      const future_status waitResult = testClassRunnerDoneFuture->WaitAtMostSeconds(maxtotalseconds);
       if (waitResult == future_status::timeout)
       {
          _testRunResult->PrintTestFailuresAndSkips();

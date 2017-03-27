@@ -12,7 +12,7 @@ namespace ZenUnit
    TEST(AssertEqual_IntVectors_CallsVECTORS_EQUAL)
    {
       vector<int> expectedIntVector;
-      vector<int> actualIntVector;
+      const vector<int> actualIntVector;
       ZenUnitEqualizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector);
       expectedIntVector.push_back(1);
       THROWS(ZenUnitEqualizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector), Anomaly, R"(
@@ -29,7 +29,7 @@ File.cpp(1))");
    TEST(AssertEqual_StringVectors_CallsVECTORS_EQUAL)
    {
       vector<string> expectedStringVector;
-      vector<string> actualStringVector;
+      const vector<string> actualStringVector;
       ZenUnitEqualizer<vector<string>>::AssertEqual(expectedStringVector, actualStringVector);
       expectedStringVector.push_back("");
       THROWS(ZenUnitEqualizer<vector<string>>::AssertEqual(
@@ -47,7 +47,7 @@ File.cpp(1))");
    TEST(AssertEqual_UserTypeVectors_CallsVECTORS_EQUAL)
    {
       vector<UserType> expectedUserTypeVector;
-      vector<UserType> actualUserTypeVector;
+      const vector<UserType> actualUserTypeVector;
       ZenUnitEqualizer<vector<UserType>>::AssertEqual(expectedUserTypeVector, actualUserTypeVector);
       expectedUserTypeVector.push_back(UserType());
       THROWS(ZenUnitEqualizer<vector<UserType>>::AssertEqual(

@@ -27,7 +27,7 @@ namespace ZenUnit
 
    TEST(ForEach_EmptyIterable_DoesNothing)
    {
-      vector<int> emptyVector;
+      const vector<int> emptyVector;
       //
       _forEacherTwoExtraArgs.ForEach(&emptyVector, Bind(), '0', string());
       //
@@ -36,11 +36,11 @@ namespace ZenUnit
 
    TEST(ForEach_OneItemIterable_CallsFuncOnItemOnce)
    {
-      vector<int> oneItemVector = { 1 };
+      const vector<int> oneItemVector = { 1 };
       //
       _forEacherTwoExtraArgs.ForEach(&oneItemVector, Bind(), '0', string());
       //
-      vector<tuple<int, char, string>> expectedFuncCalls =
+      const vector<tuple<int, char, string>> expectedFuncCalls =
       {
          { 1, '0', string() }
       };
@@ -49,11 +49,11 @@ namespace ZenUnit
 
    TEST(ForEach_TwoItemIterable_CallsFuncOnItemTwice)
    {
-      vector<int> oneItemVector = { 1, 2 };
+      const vector<int> oneItemVector = { 1, 2 };
       //
       _forEacherTwoExtraArgs.ForEach(&oneItemVector, Bind(), 'a', "message");
       //
-      vector<tuple<int, char, string>> expectedFuncCalls =
+      const vector<tuple<int, char, string>> expectedFuncCalls =
       {
          { 1, 'a', "message" },
          { 2, 'a', "message" }

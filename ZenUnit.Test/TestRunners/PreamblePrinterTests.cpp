@@ -13,9 +13,9 @@ namespace ZenUnit
    SPECEND
 
    PreamblePrinter _preamblePrinter;
-   MachineNameGetterMock* _machineNameGetterMock;
-   ConsoleMock* _consoleMock;
-   WatchMock* _watchMock;
+   const MachineNameGetterMock* _machineNameGetterMock;
+   const ConsoleMock* _consoleMock;
+   const WatchMock* _watchMock;
 
    STARTUP
    {
@@ -46,7 +46,7 @@ namespace ZenUnit
       {
          _consoleMock->WriteNewlineMock.Expect();
       }
-      TestClassMultiRunnerMock multiTestClassRunnerMock;
+      const TestClassMultiRunnerMock multiTestClassRunnerMock;
       multiTestClassRunnerMock.NumberOfTestClassesMock.ExpectAndReturn(numberOfTestClasses);
 
       const string TimeZoneDateTimeNow = "TimeZoneDateTimeNow";
@@ -63,7 +63,7 @@ namespace ZenUnit
       ZEN(multiTestClassRunnerMock.NumberOfTestClassesMock.AssertCalledOnce());
       ZEN(_consoleMock->WriteColorMock.AssertCalledNTimesWith(3, "[ZenUnit]", expectedTextColor));
       ZEN(_machineNameGetterMock->GetMachineNameMock.AssertCalledOnce());
-      string expectedRunningTestClassesLine = String::Concat(
+      const string expectedRunningTestClassesLine = String::Concat(
          " Running ", numberOfTestClasses, " test ", expectTestClassesPlural ? "classes" : "class", " on machine ",
          MachineName);
       ZEN(_consoleMock->WriteLineMock.AssertCalls(

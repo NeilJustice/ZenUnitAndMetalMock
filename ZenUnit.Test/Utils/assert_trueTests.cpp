@@ -12,7 +12,7 @@ namespace ZenUnit
    TEST(assert_true_IsTrue_DoesNothing)
    {
       assert_true(true);
-      bool trueBool = true;
+      const bool trueBool = true;
       assert_true(trueBool);
       assert_true(1 == 1);
    }
@@ -53,9 +53,10 @@ namespace ZenUnit
       }
       catch (const logic_error& e)
       {
-         string expectedWhatPattern = String::Concat("assert_true\\(false\\) failed in ", expectedOperatorParenthesesName, '\n',
+         const string expectedWhatPattern = String::Concat(
+            "assert_true\\(false\\) failed in ", expectedOperatorParenthesesName, '\n',
             ".*File.cpp\\(1\\)");
-         const char* what = e.what();
+         const char* const what = e.what();
          REGEX_MATCHES(expectedWhatPattern, what);
       }
    }

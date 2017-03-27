@@ -5,7 +5,7 @@ namespace ZenUnit
 {
    string TestFailureNumberer::Next()
    {
-      string nextTestFailureNumber = "<" + to_string(_testFailureNumber++) + ">";
+      const string nextTestFailureNumber = "<" + to_string(_testFailureNumber++) + ">";
       return nextTestFailureNumber;
    }
 }

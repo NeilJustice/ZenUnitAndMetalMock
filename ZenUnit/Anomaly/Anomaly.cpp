@@ -30,7 +30,7 @@ namespace ZenUnit
          assertExpressionBuilder << ", " << messagesText;
       }
       assertExpressionBuilder << ")";
-      std::string assertExpression = assertExpressionBuilder.str();
+      const std::string assertExpression = assertExpressionBuilder.str();
       return assertExpression;
    }
 

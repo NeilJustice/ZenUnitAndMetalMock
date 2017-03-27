@@ -5,7 +5,7 @@ namespace ZenUnit
 {
    ZENUNIT(EqualizerException_what_ReturnsEmptyString)
    {
-      EqualizerException equalizerException;
+      const EqualizerException equalizerException;
       ARE_EQUAL("", equalizerException.what());
    }
 }

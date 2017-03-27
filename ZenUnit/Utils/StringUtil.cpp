@@ -5,7 +5,7 @@ namespace ZenUnit
 {
    bool String::Contains(const char* str, const char* substring)
    {
-      const char* strstrResult = strstr(str, substring);
+      const char* const strstrResult = strstr(str, substring);
       return strstrResult != nullptr;
    }
 

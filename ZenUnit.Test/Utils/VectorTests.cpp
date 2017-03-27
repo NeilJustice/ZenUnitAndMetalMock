@@ -24,14 +24,14 @@ namespace ZenUnit
 
    TEST(Join_EmptyIntVector_ReturnsEmptyStringRegardlessOfSeparator)
    {
-      vector<int> emptyIntVector = {};
+      const vector<int> emptyIntVector = {};
       ARE_EQUAL("", Vector::Join(emptyIntVector, ' '));
       ARE_EQUAL("", Vector::Join(emptyIntVector, ','));
    }
 
    TEST(Join_1ElementIntVector_ReturnsFirstElementRegardlessOfSeparator)
    {
-      vector<int> intVec = { 1 };
+      const vector<int> intVec = { 1 };
       ARE_EQUAL("1", Vector::Join(intVec, ' '));
       ARE_EQUAL("1", Vector::Join(intVec, ','));
    }
@@ -43,7 +43,7 @@ namespace ZenUnit
       "1 2 3", vector<int>{ 1, 2, 3 }, ' ',
       "1,2,3", vector<int>{ 1, 2, 3 }, ',')
    {
-      string joinedVector = Vector::Join(vec, separator);
+      const string joinedVector = Vector::Join(vec, separator);
       ARE_EQUAL(expectedJoinedVector, joinedVector);
    }
 

@@ -24,7 +24,7 @@ namespace ZenUnit
 
    void Console::WriteColor(const string& message, Color color) const
    {
-      bool didSetColor = _consoleColorer->SetColor(color);
+      const bool didSetColor = _consoleColorer->SetColor(color);
       printf("%s", message.c_str());
       cout.flush(); // Explicit flush needed on Linux to show test run progress output immediately
       _consoleColorer->UnsetColor(didSetColor);
@@ -37,7 +37,7 @@ namespace ZenUnit
 
    void Console::WriteLineColor(const string& message, Color color) const
    {
-      bool didSetColor = _consoleColorer->SetColor(color);
+      const bool didSetColor = _consoleColorer->SetColor(color);
       // With VS2015.3 debug and release mode, printf("%s\n") measured as ~15% faster
       // and with less speed variance relative to "cout << message << '\n'".
       // On Linux, no significant difference measured between printf and cout.
@@ -92,8 +92,8 @@ namespace ZenUnit
 #ifdef __linux__
       return false;
 #elif _WIN32
-      int isDebuggerPresentReturnValue = IsDebuggerPresent_ZenMockable();
-      bool isDebuggerPresent = isDebuggerPresentReturnValue == 1;
+      const int isDebuggerPresentReturnValue = IsDebuggerPresent_ZenMockable();
+      const bool isDebuggerPresent = isDebuggerPresentReturnValue == 1;
       return isDebuggerPresent;
 #endif
    }

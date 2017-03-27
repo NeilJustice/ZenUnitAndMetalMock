@@ -52,10 +52,10 @@ namespace ZenUnit
 
    TEST(ThreeArgConstructor_SetsTestName_SetsTestNXNPmf)
    {
-      const char* TestClassName = "TestClassName";
-      const char* TestName = "TestName";
+      const char* const TestClassName = "TestClassName";
+      const char* const TestName = "TestName";
       //
-      SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests> specifiedTestNXN(
+      const SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests> specifiedTestNXN(
          TestClassName, TestName, PmfToken::Instantiate<decltype(
             &TestingTestClass_SpecSectionTestNXNTests::TestFunction),
             &TestingTestClass_SpecSectionTestNXNTests::TestFunction>());
@@ -63,7 +63,7 @@ namespace ZenUnit
       ARE_EQUAL(TestName, specifiedTestNXN.Name());
       ARE_EQUAL("TESTS(TestClassName)\nTEST(TestName)", specifiedTestNXN.TestClassTestNameLines());
       ARE_EQUAL("(0)", specifiedTestNXN.FileLineString());
-      const PmfToken* expectedTestNXNPmfToken = ZenUnit::PmfToken::Instantiate<
+      const PmfToken* const expectedTestNXNPmfToken = ZenUnit::PmfToken::Instantiate<
          decltype(&TestingTestClass_SpecSectionTestNXNTests::TestFunction),
          &TestingTestClass_SpecSectionTestNXNTests::TestFunction>();
       ARE_EQUAL(expectedTestNXNPmfToken, specifiedTestNXN._testNXNPmfToken);
@@ -76,10 +76,10 @@ namespace ZenUnit
    {
       TestMock* testMock = new TestMock;
       testMock->NumberOfTestCasesMock.ExpectAndReturn(testNumberOfTestCases);
-      unique_ptr<Test> testMockUniquePtr((Test*)testMock);
+      const unique_ptr<Test> testMockUniquePtr((Test*)testMock);
       _specSectionTestNXNSelfMocked->GetTestNXNFromPmfTokenMock.ExpectAndReturn(&testMockUniquePtr);
       //
-      size_t numberOfTestCases = _specSectionTestNXNSelfMocked->NumberOfTestCases();
+      const size_t numberOfTestCases = _specSectionTestNXNSelfMocked->NumberOfTestCases();
       //
       ZEN(_specSectionTestNXNSelfMocked->GetTestNXNFromPmfTokenMock.AssertCalledOnce());
       ZEN(testMock->NumberOfTestCasesMock.AssertCalledOnce());
@@ -98,13 +98,13 @@ namespace ZenUnit
 
    TEST(Run_GetsTestFromAddress_RunsTest_ReturnsTestResults)
    {
-      TestMock* testMock = new TestMock;
-      vector<TestResult> testTestResults = { TestResult::TestingNonDefault };
+      TestMock* const testMock = new TestMock;
+      const vector<TestResult> testTestResults = { TestResult::TestingNonDefault };
       testMock->RunMock.ExpectAndReturn(testTestResults);
-      unique_ptr<Test> testMockUniquePtr((Test*)testMock);
+      const unique_ptr<Test> testMockUniquePtr((Test*)testMock);
       _specSectionTestNXNSelfMocked->GetTestNXNFromPmfTokenMock.ExpectAndReturn(&testMockUniquePtr);
       //
-      vector<TestResult> testResults = _specSectionTestNXNSelfMocked->Run();
+      const vector<TestResult> testResults = _specSectionTestNXNSelfMocked->Run();
       //
       ZEN(_specSectionTestNXNSelfMocked->GetTestNXNFromPmfTokenMock.AssertCalledOnce());
       ZEN(testMock->RunMock.AssertCalledOnce());

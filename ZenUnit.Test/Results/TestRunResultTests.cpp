@@ -29,7 +29,7 @@ namespace ZenUnit
    SPECEND
 
    TestRunResult _testRunResult;
-   ConsoleMock* _consoleMock;
+   const ConsoleMock* _consoleMock;
    TestFailureNumberer* _testFailureNumbererMock;
 
    using TypedefMemberForEacherTestClassResultsMock = MemberForEacherMock<vector<TestClassResult>,
@@ -137,7 +137,7 @@ namespace ZenUnit
 
    TEST(NumberOfFailedTestCases_ZeroTestClassResults_Returns0)
    {
-      size_t numberOfFailedTestCases = _testRunResult.NumberOfFailedTestCases(vector<TestClassResult>());
+      const size_t numberOfFailedTestCases = _testRunResult.NumberOfFailedTestCases(vector<TestClassResult>());
       ARE_EQUAL(0, numberOfFailedTestCases);
    }
 
@@ -166,14 +166,14 @@ namespace ZenUnit
       TestClassResult testClassResultC;
       testClassResultC.AddTestResults({ testResultC1, testResultC2, testResultC3 });
 
-      vector<TestClassResult> testClassResults =
+      const vector<TestClassResult> testClassResults =
       {
          testClassResultA,
          testClassResultB,
          testClassResultC
       };
       //
-      size_t numberOfFailedTestCases = _testRunResult.NumberOfFailedTestCases(testClassResults);
+      const size_t numberOfFailedTestCases = _testRunResult.NumberOfFailedTestCases(testClassResults);
       //
       ARE_EQUAL(5, numberOfFailedTestCases);
    }
@@ -254,7 +254,7 @@ namespace ZenUnit
          { expectedClosingLinePrefix, expectedPrefixColor },
          { expectedBottomLineAsciiArt + " ", expectedPrefixColor }
       }));
-      string expectedClosingLineBody = expectedClosingLineTestsCountText +
+      const string expectedClosingLineBody = expectedClosingLineTestsCountText +
          " in " + to_string(testRunMilliseconds) + " " + expectedMillisecondOrMilliseconds;
       ZEN(_consoleMock->WriteLineMock.AssertCalls(
       {
@@ -285,9 +285,9 @@ namespace ZenUnit
       2ULL, 1ULL, 2ULL, 1)
    {
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
-      ZenUnitArgs args;
+      const ZenUnitArgs Args;
       //
-      int exitCode = _testRunResult.DetermineExitCode(args);
+      const int exitCode = _testRunResult.DetermineExitCode(Args);
       //
       ARE_EQUAL(expectedExitCode, exitCode);
    }
@@ -306,7 +306,7 @@ namespace ZenUnit
       ZenUnitArgs args;
       args.exit0 = true;
       //
-      int exitCode = _testRunResult.DetermineExitCode(args);
+      const int exitCode = _testRunResult.DetermineExitCode(args);
       //
       ARE_EQUAL(expectedExitCode, exitCode);
    }
@@ -326,7 +326,7 @@ namespace ZenUnit
       args.exit0 = true;
       args.noskips = true;
       //
-      int exitCode = _testRunResult.DetermineExitCode(args);
+      const int exitCode = _testRunResult.DetermineExitCode(args);
       //
       ARE_EQUAL(expectedExitCode, exitCode);
    }
@@ -350,7 +350,7 @@ namespace ZenUnit
       ZenUnitArgs args;
       args.noskips = true;
       //
-      int exitCode = _testRunResult.DetermineExitCode(args);
+      const int exitCode = _testRunResult.DetermineExitCode(args);
       //
       ARE_EQUAL(expectedExitCode, exitCode);
    }

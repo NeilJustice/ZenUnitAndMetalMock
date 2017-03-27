@@ -29,8 +29,8 @@ namespace ZenUnit
       {
          return 0;
       }
-      chrono::time_point<chrono::high_resolution_clock> stopTime = _highres_now_ZenMockable();
-      chrono::duration<long long, std::nano> elapsedTime = stopTime - _startTime;
+      const chrono::time_point<chrono::high_resolution_clock> stopTime = _highres_now_ZenMockable();
+      const chrono::duration<long long, std::nano> elapsedTime = stopTime - _startTime;
       long long elapsedNanosOrMillis = 0;
       if (trueNanosecondsFalseMilliseconds)
       {

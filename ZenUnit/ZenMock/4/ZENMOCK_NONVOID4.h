@@ -79,7 +79,7 @@ namespace ZenMock
       ReturnType PrivateZenMockAndReturnValue(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4)
       {
          FourArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::PrivateZenMock(arg1, arg2, arg3, arg4);
-         ReturnType nextReturnValue = ValueReturner<ReturnType>::PrivateNextReturnValue();
+         const ReturnType nextReturnValue = ValueReturner<ReturnType>::PrivateNextReturnValue();
          return nextReturnValue;
       }
    };

@@ -1,6 +1,6 @@
 #include "pch.h"
 
-const char* Reason = "Test of skip feature";
+const char* const Reason = "Test of skip feature";
 
 TESTS(SkippedTestsTestClass)
 SPEC(NonSkippedTest)
@@ -30,7 +30,7 @@ TEMPLATETESTS(SkippedTemplateTestClassB, MapType) SPECEND };
 SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, map)
 SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, unordered_map)
 
-int main()
+int main(int argc, char* argv[])
 {
    ZenUnit::FileLiner::selfTestMode = true;
    int exitCode = ZenUnit::RunTests(argc, argv);

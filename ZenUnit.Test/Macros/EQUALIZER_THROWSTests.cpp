@@ -7,7 +7,6 @@ namespace Namespace
    {
       int fieldA;
       int fieldB;
-
       TestStruct() : fieldA(0), fieldB(0) {}
    };
 }

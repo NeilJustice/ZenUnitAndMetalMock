@@ -95,7 +95,7 @@ namespace ZenMock
       {
          if (expected && !asserted && !zenMockExceptionIsInPlay)
          {
-            ZenUnit::Console console;
+            const ZenUnit::Console console;
             std::cout << "\n\n";
             console.WriteLineColor("Fatal Unasserted ZenMock Expectation:", ZenUnit::Color::Red);
             std::cout << '\n' <<

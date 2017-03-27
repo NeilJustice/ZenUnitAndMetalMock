@@ -42,7 +42,7 @@ namespace ZenUnit
 
    TEST(WhyConstructor_EmptyMessagesTextAndEmptyMessages_SetsWhy_DoesNotSetMessage)
    {
-      Anomaly anomaly(StartOfFailedLine, WhyBody, FileLineValue, "", "");
+      const Anomaly anomaly(StartOfFailedLine, WhyBody, FileLineValue, "", "");
       //
       Anomaly expectedAnomaly;
       expectedAnomaly.why = String::Concat('\n', "StartOfFailedLine)\n",
@@ -54,7 +54,7 @@ FileLineValue);
 
    TEST(WhyConstructor_EmptyMessagesTextAndEmptyMessages_EmptyWhyBody_SetsWhy_DoesNotSetMessage)
    {
-      Anomaly anomaly(StartOfFailedLine, "", FileLineValue, "", "");
+      const Anomaly anomaly(StartOfFailedLine, "", FileLineValue, "", "");
       //
       Anomaly expectedAnomaly;
       expectedAnomaly.why = String::Concat('\n', "StartOfFailedLine)\n",
@@ -67,7 +67,7 @@ FileLineValue);
    {
       const string MessageA = "A";
       //
-      Anomaly anomaly(StartOfFailedLine, WhyBody, FileLineValue, "", "MessageA", MessageA);
+      const Anomaly anomaly(StartOfFailedLine, WhyBody, FileLineValue, "", "MessageA", MessageA);
       //
       Anomaly expectedAnomaly;
       expectedAnomaly.message = "\"A\"";
@@ -87,7 +87,7 @@ FileLineValue);
    {
       const string MessageA = "A", MessageB = "B";
       //
-      Anomaly anomaly(
+      const Anomaly anomaly(
          StartOfFailedLine, WhyBody, FileLineValue,
          messagePrefixSpaces, "MessageA, MessageB", MessageA, MessageB);
       //
@@ -184,7 +184,7 @@ Expected
 Actual
 FilePath(1))")
    {
-      Anomaly anomaly(
+      const Anomaly anomaly(
          AssertionName,
          Arg1Text,
          "",
@@ -258,7 +258,7 @@ FilePath(1))")
       becauseAnomaly.message = becauseMessage;
       becauseAnomaly.fileLine = FileLine("BecauseFilePath", 123);
       //
-      Anomaly anomaly(
+      const Anomaly anomaly(
          AssertionName,
          Arg1Text,
          "",
@@ -303,7 +303,7 @@ FilePath(1))")
       zenWrappedAnomaly.message = "\"virtual void ZenUnit::Console::WriteLine(const string&) const\"";
       zenWrappedAnomaly.fileLine = FileLine("BecauseFilePath", 20);
       //
-      Anomaly anomaly = Anomaly::ZENWrapped(ZenMockAssertExpression, zenWrappedAnomaly, FileLineValue);
+      const Anomaly anomaly = Anomaly::ZENWrapped(ZenMockAssertExpression, zenWrappedAnomaly, FileLineValue);
       //
       Anomaly expectedAnomaly;
       expectedAnomaly.assertExpression = ZenMockAssertExpression;

@@ -24,14 +24,16 @@ namespace ZenUnit
    void TestRunResult::AddSkippedTest(
       const char* testClassName, const char* testName, const char* reason)
    {
-      string fullTestNameAndReason = String::Concat(testClassName, ".", testName, " because: ", reason);
+      const string fullTestNameAndReason = String::Concat(
+         testClassName, ".", testName, " because: ", reason);
       _skippedFullTestNamesAndReasons.push_back(fullTestNameAndReason);
    }
 
    void TestRunResult::AddSkippedTestClassNameAndReason(
       const char* testClassName, const char* reason)
    {
-      string testClassNameAndReason = String::Concat(testClassName, " because: ", reason);
+      const string testClassNameAndReason = String::Concat(
+         testClassName, " because: ", reason);
       _skippedTestClassNamesAndReasons.push_back(testClassNameAndReason);
    }
 
@@ -43,7 +45,7 @@ namespace ZenUnit
 
    size_t TestRunResult::NumberOfFailedTestCases(const vector<TestClassResult>& testClassResults) const
    {
-      size_t numberOfFailedTestCases = std::accumulate(
+      const size_t numberOfFailedTestCases = std::accumulate(
          testClassResults.cbegin(), testClassResults.cend(), size_t(),
          [](size_t cumulativeNumberOfFailedTestCases, const TestClassResult& testClassResult)
       {
@@ -56,7 +58,7 @@ namespace ZenUnit
    {
       if (_numberOfFailedTestCases > 0)
       {
-         string numberOfTestFailuresLine = String::Concat(
+         const string numberOfTestFailuresLine = String::Concat(
             _numberOfFailedTestCases, " test ", _numberOfFailedTestCases == 1 ? "failure" : "failures", ":\n");
          _console->WriteLineColor(numberOfTestFailuresLine, Color::Red);
          _memberForEacherTestClassResults->ForEach(
@@ -79,7 +81,7 @@ namespace ZenUnit
       const string& comamndLine) const
    {
       assert_true(_numberOfFailedTestCases <= totalNumberOfTestCases);
-      Color prefixColor = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
+      const Color prefixColor = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
       if (totalNumberOfTestCases == 0)
       {
          _console->WriteColor("[ZenUnit] ", Color::Green);
@@ -87,16 +89,16 @@ namespace ZenUnit
       }
       else
       {
-         string testOrTests = totalNumberOfTestCases == 1 ? "test" : "tests";
-         string millisecondOrMilliseconds = testRunMilliseconds == 1 ? "millisecond" : "milliseconds";
-         string inMillisecondsPart = String::Concat("in ", testRunMilliseconds, ' ', millisecondOrMilliseconds);
+         const string testOrTests = totalNumberOfTestCases == 1 ? "test" : "tests";
+         const string millisecondOrMilliseconds = testRunMilliseconds == 1 ? "millisecond" : "milliseconds";
+         const string inMillisecondsPart = String::Concat("in ", testRunMilliseconds, ' ', millisecondOrMilliseconds);
          string closingLineBody;
          string prefixAsciiArt;
          if (_numberOfFailedTestCases == 0)
          {
             _console->WriteColor(" SUCCESS  ", prefixColor);
             closingLineBody = String::Concat(totalNumberOfTestCases,
-            ' ', testOrTests, " passed ", inMillisecondsPart);
+               ' ', testOrTests, " passed ", inMillisecondsPart);
             prefixAsciiArt = "+===+===+ ";
          }
          else
@@ -119,14 +121,14 @@ namespace ZenUnit
       {
          return 0;
       }
-      bool haveSkippedTestsOrTestClasses =
+      const bool haveSkippedTestsOrTestClasses =
          !_skippedFullTestNamesAndReasons.empty() ||
          !_skippedTestClassNamesAndReasons.empty();
       if (args.noskips && haveSkippedTestsOrTestClasses)
       {
          return 1;
       }
-      int exitCode = _numberOfFailedTestCases > 0 ? 1 : 0;
+      const int exitCode = _numberOfFailedTestCases > 0 ? 1 : 0;
       return exitCode;
    }
 

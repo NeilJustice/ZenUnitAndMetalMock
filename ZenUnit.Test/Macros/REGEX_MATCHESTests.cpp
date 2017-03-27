@@ -31,14 +31,14 @@ Expected string to match: "a"
      Non-matching string: "1"
 File.cpp(1))");
 
-      string pattern = "a";
+      const string pattern = "a";
       THROWS(REGEX_MATCHES(pattern, "1"), Anomaly, R"(
   Failed: REGEX_MATCHES(pattern, "1")
 Expected string to match: "a"
      Non-matching string: "1"
 File.cpp(1))");
 
-      string str = "1";
+      const string str = "1";
       THROWS(REGEX_MATCHES("a", str), Anomaly, R"(
   Failed: REGEX_MATCHES("a", str)
 Expected string to match: "a"
@@ -57,7 +57,7 @@ File.cpp(1))");
 
    TEST(PatternMismatchesOnCase_Throws_MessagesTestCase)
    {
-      string messageA = "A", messageB = "B";
+      const string messageA = "A", messageB = "B";
       THROWS(REGEX_MATCHES("a", "A", messageA, messageB), Anomaly, R"(
   Failed: REGEX_MATCHES("a", "A", messageA, messageB)
 Expected string to match: "a"

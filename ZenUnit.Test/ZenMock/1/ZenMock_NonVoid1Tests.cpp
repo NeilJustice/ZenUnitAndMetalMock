@@ -140,7 +140,7 @@ namespace ZenMock
 
    TEST(ExpectAndReturn_CalledTwice_Throws)
    {
-      auto test = [](auto& zenMockObject, const string& expectedSignature)
+      const auto test = [](auto& zenMockObject, const string& expectedSignature)
       {
          zenMockObject.ExpectAndReturn(0);
          THROWS(zenMockObject.ExpectAndReturn(0), FunctionAlreadyExpectedException,
@@ -159,7 +159,7 @@ namespace ZenMock
 
    TEST(ExpectAndReturn_CausesFunctionToReturnValueThereafter)
    {
-      auto test = [&](auto& zenMockObject, auto zenMockedFunctionCall)
+      const auto test = [&](auto& zenMockObject, auto zenMockedFunctionCall)
       {
          zenMockObject.ExpectAndReturn(1);
          ARE_EQUAL(1, zenMockedFunctionCall());
@@ -179,7 +179,7 @@ namespace ZenMock
 
    TEST(ExpectAndReturnValues_CalledTwice_Throws)
    {
-      auto test = [&](auto& zenMockObject, const string& expectedSignature)
+      const auto test = [&](auto& zenMockObject, const string& expectedSignature)
       {
          zenMockObject.ExpectAndReturnValues(0);
          THROWS(zenMockObject.ExpectAndReturnValues(0), FunctionAlreadyExpectedException,
@@ -198,7 +198,7 @@ namespace ZenMock
 
    TEST(ExpectAndReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereafter)
    {
-      auto test = [&](auto& zenMockObject, auto zenMockedFunctionCall)
+      const auto test = [&](auto& zenMockObject, auto zenMockedFunctionCall)
       {
          zenMockObject.ExpectAndReturnValues(1, 2);
          ARE_EQUAL(1, zenMockedFunctionCall());
@@ -219,7 +219,7 @@ namespace ZenMock
 
    TEST(ExpectAndReturnValuesVector_CalledTwice_Throws)
    {
-      auto test = [](auto& zenMockObject, const string& expectedSignature)
+      const auto test = [](auto& zenMockObject, const string& expectedSignature)
       {
          zenMockObject.ExpectAndReturnValues({0});
          THROWS(zenMockObject.ExpectAndReturnValues({0}), FunctionAlreadyExpectedException,
@@ -238,9 +238,9 @@ namespace ZenMock
 
    TEST(ExpectAndReturnValuesVector_CausesFunctionToReturnValuesInSequenceThenLastValueThereafter)
    {
-      auto test = [&](auto& zenMockObject, auto zenMockedFunctionCall)
+      const auto test = [&](auto& zenMockObject, auto zenMockedFunctionCall)
       {
-         vector<int> values = { 1, 2 };
+         const vector<int> values = { 1, 2 };
          zenMockObject.ExpectAndReturnValues(values);
          ARE_EQUAL(1, zenMockedFunctionCall());
          ARE_EQUAL(2, zenMockedFunctionCall());

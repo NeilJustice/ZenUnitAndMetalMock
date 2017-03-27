@@ -8,15 +8,14 @@ namespace ZenUnit
    class TestNXN : public Test
    {
       friend class TestNXNTests;
-      static_assert(sizeof...(TestCaseArgTypes) > 0, "NumberOfTestCaseArgs > 0");
+      static_assert(sizeof...(TestCaseArgTypes) > 0, "NumberOfTestCaseArgs > 0");            
    private:
+      const size_t NumberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
       std::unique_ptr<const Console> _console;
       std::unique_ptr<TestClassType> _testClass;
       const char* const _testCaseArgsText;
       size_t _testCaseArgsIndex;
-      std::vector<TestResult> _testResults;
       std::vector<std::string> _testCaseArgStrings;
-      const size_t NumberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
    protected:
       std::tuple<typename std::decay<TestCaseArgTypes>::type...> _testCaseArgs;
    public:

@@ -12,7 +12,7 @@ namespace ZenUnit
 
    TEST(NullRawPointer_Throws)
    {
-      int* nullRawPointer = nullptr;
+      const int* const nullRawPointer = nullptr;
       THROWS(IS_NOT_NULL(nullRawPointer), Anomaly, R"(
   Failed: IS_NOT_NULL(nullRawPointer)
 Expected: not nullptr
@@ -22,8 +22,8 @@ File.cpp(1))");
 
    TEST(NullUniquePointer_Throws_MessagesTestCase)
    {
-      unique_ptr<int> nullUniquePtr = nullptr;
-      string messageA = "A", messageB = "B";
+      const unique_ptr<const int> nullUniquePtr = nullptr;
+      const string messageA = "A", messageB = "B";
       THROWS(IS_NOT_NULL(nullUniquePtr, messageA, messageB), Anomaly, R"(
   Failed: IS_NOT_NULL(nullUniquePtr, messageA, messageB)
 Expected: not nullptr
@@ -34,13 +34,13 @@ File.cpp(1))");
 
    TEST(NonNullRawPointer_DoesNotThrow)
    {
-      int* nonNullRawPointer = (int*)0x1;
+      const int* const nonNullRawPointer = (int*)0x1;
       IS_NOT_NULL(nonNullRawPointer);
    }
 
    TEST(NonNullUniquePointer_DoesNotThrow)
    {
-      unique_ptr<char> nonNullUniquePtr(new char);
+      const unique_ptr<const char> nonNullUniquePtr(new char);
       IS_NOT_NULL(nonNullUniquePtr);
    }
 

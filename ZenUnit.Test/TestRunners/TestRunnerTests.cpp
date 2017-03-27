@@ -83,7 +83,7 @@ namespace ZenUnit
    TEST(RegisterTestClassRunner_EmplacesBackTestClassRunner)
    {
       _multiTestClassRunnerMock->AddTestClassRunnerMock.Expect();
-      TemplateTestClassRunner<TestingTestClass> testClassRunner("TestClassName");
+      TemplateTestClassRunner<const TestingTestClass> testClassRunner("TestClassName");
       //
       _testRunner.RegisterTestClassRunner(&testClassRunner);
       //
@@ -131,7 +131,7 @@ namespace ZenUnit
       _testRunnerRunTestsMocked._args.commandLine = "CommandLine";
       const vector<string> Args = { "NonEmpty" };
       //
-      int exitCode = _testRunnerRunTestsMocked.ParseArgsRunTestsPrintResults(Args);
+      const int exitCode = _testRunnerRunTestsMocked.ParseArgsRunTestsPrintResults(Args);
       //
       ZEN(_testRunnerRunTestsMocked.testRunStopwatchMock->StartMock.AssertCalledOnce());
       ZEN(_testRunnerRunTestsMocked.argsParserMock->ParseMock.AssertCalledOnceWith(Args));
@@ -164,9 +164,9 @@ namespace ZenUnit
    TEST(SkipTest_CallsTestRunResultAddSkippedFullTestName)
    {
       _testRunResultMock->AddSkippedTestMock.Expect();
-      const char* TestClassName = "TestClassName";
-      const char* TestName = "TestName";
-      const char* Reason = "Reason";
+      const char* const TestClassName = "TestClassName";
+      const char* const TestName = "TestName";
+      const char* const Reason = "Reason";
       //
       _testRunner.SkipTest(TestClassName, TestName, Reason);
       //
@@ -177,8 +177,8 @@ namespace ZenUnit
    TEST(SkipTestClass_CallsTestRunResultAddSkippedTestClassNameAndReason)
    {
       _testRunResultMock->AddSkippedTestClassNameAndReasonMock.Expect();
-      const char* SkippedTestClassName = "SkippedTestClassName";
-      const char* Reason = "Reason";
+      const char* const SkippedTestClassName = "SkippedTestClassName";
+      const char* const Reason = "Reason";
       //
       _testRunner.SkipTestClass(SkippedTestClassName, Reason);
       //
@@ -188,9 +188,9 @@ namespace ZenUnit
 
    TEST(RunTests_RunsTestClasses)
    {
-      ZenUnitArgs Args;
-      Args.commandLine = "commandLine";
-      _testRunner._args = Args;
+      ZenUnitArgs args;
+      args.commandLine = "commandLine";
+      _testRunner._args = args;
 
       vector<TestClassResult> testClassResults(1);
       _multiTestClassRunnerMock->RunTestClassesMock.ExpectAndReturn(testClassResults);
@@ -207,7 +207,7 @@ namespace ZenUnit
       future_status::ready, false,
       future_status::timeout, true)
    {
-      shared_ptr<VoidFutureMock> testClassRunnerDoneFutureMock(new VoidFutureMock);
+      const shared_ptr<VoidFutureMock> testClassRunnerDoneFutureMock(new VoidFutureMock);
       testClassRunnerDoneFutureMock->WaitAtMostSecondsMock.ExpectAndReturn(runnerThreadWaitResult);
       _futuristMock->AsyncMock.ExpectAndReturn(testClassRunnerDoneFutureMock);
       if (expectTimeoutHandling)

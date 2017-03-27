@@ -11,7 +11,7 @@ namespace ZenUnit
 
    TEST(ExpectedAndActualAddressesEqual_DoesNotThrow)
    {
-      int expectedObject = 0;
+      const int expectedObject = 0;
       const int& actualObject = expectedObject;
       ARE_SAME(expectedObject, expectedObject);
       ARE_SAME(expectedObject, actualObject);
@@ -19,20 +19,20 @@ namespace ZenUnit
 
    TEST(ExpectedAndActualValuesEqual_AddressesNotEqual_Throws)
    {
-      int expectedObject = 0;
-      int actualObject = 0;
-      string expectedWhat = MakeExpectedWhat(
+      const int expectedObject = 0;
+      const int actualObject = 0;
+      const string expectedWhat = MakeExpectedWhat(
          "expectedObject", "actualObject", &expectedObject, &actualObject, false);
       THROWS(ARE_SAME(expectedObject, actualObject), Anomaly, expectedWhat);
    }
 
    TEST(ExpectedAndActualValuesNotEqual_AddressesNotEqual_Throws_MessagesTestCase)
    {
-      string expectedObject = "a";
-      string actualObject = "b";
-      string expectedWhat = MakeExpectedWhat(
+      const string expectedObject = "a";
+      const string actualObject = "b";
+      const string expectedWhat = MakeExpectedWhat(
          "expectedObject", "actualObject", &expectedObject, &actualObject, true);
-      string messageA = "A", messageB = "B";
+      const string messageA = "A", messageB = "B";
       THROWS(ARE_SAME(expectedObject, actualObject, messageA, messageB), Anomaly, expectedWhat);
    }
 
@@ -61,7 +61,7 @@ Expected: )";
          expectedWhatPatternBuilder << "\n Message: \"A\", \"B\"";
       }
       expectedWhatPatternBuilder << "\nFile.cpp(1)";
-      string expectedWhatPattern = expectedWhatPatternBuilder.str();
+      const string expectedWhatPattern = expectedWhatPatternBuilder.str();
       return expectedWhatPattern;
    }
 

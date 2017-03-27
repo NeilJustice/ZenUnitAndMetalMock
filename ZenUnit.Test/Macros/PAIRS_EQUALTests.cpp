@@ -16,8 +16,8 @@ namespace ZenUnit
 
    TEST(FirstNotEqual_SecondEqual_Throws)
    {
-      pair<int, int> expectedPair{1, 0};
-      pair<int, int> actualPair{0, 0};
+      const pair<int, int> expectedPair{1, 0};
+      const pair<int, int> actualPair{0, 0};
       THROWS(PAIRS_EQUAL(expectedPair, actualPair), Anomaly, R"(
   Failed: PAIRS_EQUAL(expectedPair, actualPair)
 Expected: (1, 0)
@@ -31,9 +31,9 @@ File.cpp(1))");
 
    TEST(FirstNotEqual_SecondEqual_Throws_MessagesTestCase)
    {
-      pair<int, int> expectedPair{1, 0};
-      pair<int, int> actualPair{0, 0};
-      string messageA = "A", messageB = "B";
+      const pair<int, int> expectedPair{1, 0};
+      const pair<int, int> actualPair{0, 0};
+      const string messageA = "A", messageB = "B";
       THROWS(PAIRS_EQUAL(expectedPair, actualPair, messageA, messageB), Anomaly, R"(
   Failed: PAIRS_EQUAL(expectedPair, actualPair, messageA, messageB)
 Expected: (1, 0)
@@ -48,8 +48,8 @@ File.cpp(1))");
 
    TEST(FirstNotEqual_SecondNotEqual_Throws)
    {
-      pair<int, int> expectedPair{1, 1};
-      pair<int, int> actualPair{0, 0};
+      const pair<int, int> expectedPair{1, 1};
+      const pair<int, int> actualPair{0, 0};
       THROWS(PAIRS_EQUAL(expectedPair, actualPair), Anomaly, R"(
   Failed: PAIRS_EQUAL(expectedPair, actualPair)
 Expected: (1, 1)
@@ -63,8 +63,8 @@ File.cpp(1))");
 
    TEST(FirstEqual_SecondNotEqual_Throws)
    {
-      pair<int, int> expectedPair{1, 1};
-      pair<int, int> actualPair{1, 0};
+      const pair<int, int> expectedPair{1, 1};
+      const pair<int, int> actualPair{1, 0};
       THROWS(PAIRS_EQUAL(expectedPair, actualPair), Anomaly, R"(
   Failed: PAIRS_EQUAL(expectedPair, actualPair)
 Expected: (1, 1)
@@ -78,15 +78,15 @@ File.cpp(1))");
 
    TEST(FirstEqual_SecondEqual_DoesNotThrow)
    {
-      pair<int, int> expectedPair;
-      pair<int, int> actualPair;
+      const pair<int, int> expectedPair;
+      const pair<int, int> actualPair;
       PAIRS_EQUAL(expectedPair, actualPair);
    }
 
    TEST(FirstNotEqual_SecondEqual_Throws_UserTypeTestCase)
    {
-      pair<UserType, UserType> expectedPair{1,0};
-      pair<UserType, UserType> actualPair{0,0};
+      const pair<UserType, UserType> expectedPair{1,0};
+      const pair<UserType, UserType> actualPair{0,0};
       THROWS(PAIRS_EQUAL(expectedPair, actualPair), Anomaly, R"(
   Failed: PAIRS_EQUAL(expectedPair, actualPair)
 Expected: (UserType@1, UserType@0)
@@ -100,8 +100,8 @@ File.cpp(1))");
 
    TEST(FirstEqual_SecondNotEqual_Throws_UserTypeTestCase)
    {
-      pair<UserType, UserType> expectedPair{0,0};
-      pair<UserType, UserType> actualPair{0,1};
+      const pair<UserType, UserType> expectedPair{0,0};
+      const pair<UserType, UserType> actualPair{0,1};
       THROWS(PAIRS_EQUAL(expectedPair, actualPair), Anomaly, R"(
   Failed: PAIRS_EQUAL(expectedPair, actualPair)
 Expected: (UserType@0, UserType@0)
@@ -115,8 +115,8 @@ File.cpp(1))");
 
    TEST(FirstEqual_SecondEqual_DoesNotThrow_UserTypeTestCase)
    {
-      pair<UserType, UserType> expectedPair{10,10};
-      pair<UserType, UserType> actualPair{10,10};
+      const pair<UserType, UserType> expectedPair{10,10};
+      const pair<UserType, UserType> actualPair{10,10};
       PAIRS_EQUAL(expectedPair, actualPair);
    }
 

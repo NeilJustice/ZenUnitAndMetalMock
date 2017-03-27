@@ -90,7 +90,7 @@ namespace ZenUnit
    TEST(ToString_EnumClass_ReturnsStdToStringOnTheValue)
    {
       ARE_EQUAL("0", ToStringer::ToString(EnumClass::EC0));
-      string expected = to_string(static_cast<long long>(numeric_limits<int>::max()) + 1);
+      const string expected = to_string(static_cast<long long>(numeric_limits<int>::max()) + 1);
       ARE_EQUAL("2147483648", expected);
       ARE_EQUAL(expected, ToStringer::ToString(EnumClass::EC1));
    }
@@ -113,10 +113,10 @@ namespace ZenUnit
 
    TEST(ToString_Pointer_ReturnsNullptrIfNullptrOtherwiseMemoryAddress)
    {
-      int* intPointerNullptr = nullptr;
+      const int* const intPointerNullptr = nullptr;
       ARE_EQUAL("nullptr", ToStringer::ToString(intPointerNullptr));
 
-      const int* constIntPointerNullptr = nullptr;
+      const int* const constIntPointerNullptr = nullptr;
       ARE_EQUAL("nullptr", ToStringer::ToString(constIntPointerNullptr));
 
       const int* const constIntPointerNullptrConst = nullptr;
@@ -132,30 +132,30 @@ namespace ZenUnit
       int* intPointerMaxAsBinary = reinterpret_cast<int*>(0b1111111111111111111111111111111111111111111111111111111111111111);
       ARE_EQUAL("0xffffffffffffffff", ToStringer::ToString(intPointerMaxAsBinary));
    #elif _WIN32
-      int* intPointer1 = reinterpret_cast<int*>(0x1);
+      const int* const intPointer1 = reinterpret_cast<const int*>(0x1);
       ARE_EQUAL("0x0000000000000001", ToStringer::ToString(intPointer1));
-      int* intPointerFF = reinterpret_cast<int*>(0xFF);
+      const int* const intPointerFF = reinterpret_cast<const int*>(0xFF);
       ARE_EQUAL("0x00000000000000FF", ToStringer::ToString(intPointerFF));
-      int* intPointerMaxAsHex = reinterpret_cast<int*>(0xFFFFFFFFFFFFFFFF);
+      const int* const intPointerMaxAsHex = reinterpret_cast<const int*>(0xFFFFFFFFFFFFFFFF);
       ARE_EQUAL("0xFFFFFFFFFFFFFFFF", ToStringer::ToString(intPointerMaxAsHex));
-      int* intPointerMaxAsBinary = reinterpret_cast<int*>(0b1111111111111111111111111111111111111111111111111111111111111111);
+      const int* intPointerMaxAsBinary = reinterpret_cast<const int*>(0b1111111111111111111111111111111111111111111111111111111111111111);
       ARE_EQUAL("0xFFFFFFFFFFFFFFFF", ToStringer::ToString(intPointerMaxAsBinary));
    #endif
-      int* intPointerMid = reinterpret_cast<int*>(0x1111111111111111);
+      const int* intPointerMid = reinterpret_cast<const int*>(0x1111111111111111);
       ARE_EQUAL("0x1111111111111111", ToStringer::ToString(intPointerMid));
    }
 
    TEST(ToString_UniquePtr_ReturnsPointeeAddress)
    {
-      unique_ptr<int> nullUniquePtr(nullptr);
+      const unique_ptr<int> nullUniquePtr(nullptr);
       ARE_EQUAL("nullptr", ToStringer::ToString(nullUniquePtr));
 
-      unique_ptr<int> nonNullUniquePtr(new int);
-      string nonNullUniquePtrString = ToStringer::ToString(nonNullUniquePtr);
+      const unique_ptr<int> nonNullUniquePtr(new int);
+      const string nonNullUniquePtrString = ToStringer::ToString(nonNullUniquePtr);
       REGEX_MATCHES(MemoryAddressPattern(), nonNullUniquePtrString);
 
-      unique_ptr<const int> const constNonNullUniquePtr(new int);
-      string constNonNullUniquePtrString = ToStringer::ToString(constNonNullUniquePtr);
+      const unique_ptr<const int> constNonNullUniquePtr(new int);
+      const string constNonNullUniquePtrString = ToStringer::ToString(constNonNullUniquePtr);
       REGEX_MATCHES(MemoryAddressPattern(), constNonNullUniquePtrString);
    }
 
@@ -170,15 +170,15 @@ namespace ZenUnit
 
    TEST(ToString_UniquePtrWithCustomDeleter_ReturnsPointeeAddress)
    {
-      unique_ptr<int, CustomDeleter> nullUniquePtr(nullptr);
+      const unique_ptr<int, CustomDeleter> nullUniquePtr(nullptr);
       ARE_EQUAL("nullptr", ToStringer::ToString(nullUniquePtr));
 
-      unique_ptr<int, CustomDeleter> nonNullUniquePtr(new int);
-      string nonNullUniquePtrString = ToStringer::ToString(nonNullUniquePtr);
+      const unique_ptr<int, CustomDeleter> nonNullUniquePtr(new int);
+      const string nonNullUniquePtrString = ToStringer::ToString(nonNullUniquePtr);
       REGEX_MATCHES(MemoryAddressPattern(), nonNullUniquePtrString);
 
-      unique_ptr<const int, CustomDeleter> const constNonNullUniquePtr(new int);
-      string constNonNullUniquePtrString = ToStringer::ToString(constNonNullUniquePtr);
+      const unique_ptr<const int, CustomDeleter> constNonNullUniquePtr(new int);
+      const string constNonNullUniquePtrString = ToStringer::ToString(constNonNullUniquePtr);
       REGEX_MATCHES(MemoryAddressPattern(), constNonNullUniquePtrString);
    }
 
@@ -193,15 +193,15 @@ namespace ZenUnit
 
    TEST(ToString_SharedPtr_ReturnsPointeeAddress)
    {
-      shared_ptr<int> nullSharedPtr(nullptr);
+      const shared_ptr<const int> nullSharedPtr(nullptr);
       ARE_EQUAL("nullptr", ToStringer::ToString(nullSharedPtr));
 
-      shared_ptr<int> nonNullSharedPtr(new int);
-      string nonNullSharedPtrString = ToStringer::ToString(nonNullSharedPtr);
+      const shared_ptr<const int> nonNullSharedPtr(new int);
+      const string nonNullSharedPtrString = ToStringer::ToString(nonNullSharedPtr);
       REGEX_MATCHES(MemoryAddressPattern(), nonNullSharedPtrString);
 
-      shared_ptr<const int> const constNonNullSharedPtr(new int);
-      string constNonNullSharedPtrString = ToStringer::ToString(constNonNullSharedPtr);
+      const shared_ptr<const int> constNonNullSharedPtr(new int);
+      const string constNonNullSharedPtrString = ToStringer::ToString(constNonNullSharedPtr);
       REGEX_MATCHES(MemoryAddressPattern(), constNonNullSharedPtrString);
    }
 
@@ -236,9 +236,9 @@ namespace ZenUnit
    TEST(ToString_CharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)
    {
       ARE_EQUAL("nullptr", ToStringer::ToString(static_cast<char*>(nullptr)));
-      char chars[] = { 0 };
+      const char chars[] = { 0 };
       ARE_EQUAL("\"\"", ToStringer::ToString(chars));
-      char charsABC[] = { 'A', 'B', 'C', 0 };
+      const char charsABC[] = { 'A', 'B', 'C', 0 };
       ARE_EQUAL("\"ABC\"", ToStringer::ToString(charsABC));
    }
 
@@ -280,44 +280,44 @@ namespace ZenUnit
 
    TEST(ToString_TypeHasNeitherOStreamInsertionOperatorOrZenUnitPrint_ReturnsRTTINameInBrackets)
    {
-      UserTypeNonPrintable userTypeNonPrintable;
+      const UserTypeNonPrintable userTypeNonPrintable;
       //
-      string toStringResult = ZenUnit::ToStringer::ToString(userTypeNonPrintable);
+      const string toStringResult = ZenUnit::ToStringer::ToString(userTypeNonPrintable);
       //
       ARE_EQUAL("<UserTypeNonPrintable>", toStringResult);
    }
 
    TEST(ToString_TypeHasOStreamInsertionOperatorAndNotZenUnitPrint_ReturnsOStreamLeftShiftResult)
    {
-      UserType userType(1);
+      const UserType userType(1);
       //
-      string toStringResult = ZenUnit::ToStringer::ToString(userType);
+      const string toStringResult = ZenUnit::ToStringer::ToString(userType);
       //
       ARE_EQUAL("UserType@1", toStringResult);
    }
 
    TEST(ToString_TypeDoesNotHaveOStreamInsertionOperatorAndHasZenUnitPrint_ReturnsQuotedZenUnitPrintResult)
    {
-      UserTypeOnlyZenUnitPrintable zenUnitPrintOnly;
+      const UserTypeOnlyZenUnitPrintable zenUnitPrintOnly;
       //
-      string toStringResult = ZenUnit::ToStringer::ToString(zenUnitPrintOnly);
+      const string toStringResult = ZenUnit::ToStringer::ToString(zenUnitPrintOnly);
       //
       ostringstream oss;
       ZenUnitPrinter<UserTypeOnlyZenUnitPrintable>::Print(oss, zenUnitPrintOnly);
-      string zenUnitPrintResult = oss.str();
+      const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(zenUnitPrintResult, toStringResult);
       ARE_EQUAL("UserTypeOnlyZenUnitPrintable", toStringResult);
    }
 
    TEST(ToString_TypeHasOStreamInsertionOperatorAndZenUnitPrint_ReturnsQuotedZenUnitPrintResult)
    {
-      UserTypeInsOpAndZenUnitPrintable userTypeInsOpAndZenUnitPrintable;
+      const UserTypeInsOpAndZenUnitPrintable userTypeInsOpAndZenUnitPrintable;
       //
-      string toStringResult = ZenUnit::ToStringer::ToString(userTypeInsOpAndZenUnitPrintable);
+      const string toStringResult = ZenUnit::ToStringer::ToString(userTypeInsOpAndZenUnitPrintable);
       //
       ostringstream oss;
       ZenUnitPrinter<UserTypeInsOpAndZenUnitPrintable>::Print(oss, userTypeInsOpAndZenUnitPrintable);
-      string zenUnitPrintResult = oss.str();
+      const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(zenUnitPrintResult, toStringResult);
       ARE_EQUAL("UserTypeInsOpAndZenUnitPrintable", toStringResult);
    }

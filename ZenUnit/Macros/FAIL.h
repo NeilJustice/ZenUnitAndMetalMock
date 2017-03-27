@@ -14,16 +14,16 @@ namespace ZenUnit
    void FAIL_Defined(VRText<StringType> testFailureReasonVRT,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      std::string failedLinePrefix = String::Concat(
+      const std::string failedLinePrefix = String::Concat(
          " Failed: FAIL(", testFailureReasonVRT.text);
       std::ostringstream whyBodyBuilder;
-      std::string quotedTestFailureReason = String::Concat('"', testFailureReasonVRT.value, '"');
+      const std::string quotedTestFailureReason = String::Concat('"', testFailureReasonVRT.value, '"');
       if (quotedTestFailureReason != testFailureReasonVRT.text)
       {
          whyBodyBuilder << "Because: " << quotedTestFailureReason;
       }
-      std::string whyBody = whyBodyBuilder.str();
-      Anomaly anomaly(failedLinePrefix, whyBody, fileLine, "", messagesText, messages...);
+      const std::string whyBody = whyBodyBuilder.str();
+      const Anomaly anomaly(failedLinePrefix, whyBody, fileLine, "", messagesText, messages...);
       throw anomaly;
    }
 }

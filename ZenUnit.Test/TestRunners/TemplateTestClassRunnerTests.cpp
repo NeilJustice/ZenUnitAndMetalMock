@@ -40,14 +40,14 @@ namespace ZenUnit
       ZENMOCK_NONVOID2_CONST(bool, ConfirmNewabilityDeletabilityAndRegisterNXNTests, Test*, TestClassResult*)
       ZENMOCK_VOID1_CONST(PrintTestClassResultLine, const TestClassResult*)
 
-      ConsoleMock* consoleMock;
+      const ConsoleMock* consoleMock;
 
       using TestsMemberForEacherExtraArgMockType = MemberForEacherExtraArgMock<
          std::vector<std::unique_ptr<Test>>,
          TemplateTestClassRunner<TestingTestClass>,
          void (TemplateTestClassRunner<TestingTestClass>::*)(
             const std::unique_ptr<Test>& test, TestClassResult*) const, TestClassResult*>;
-      TestsMemberForEacherExtraArgMockType* testsMemberForEacherExtraArgMock;
+      const TestsMemberForEacherExtraArgMockType* testsMemberForEacherExtraArgMock;
 
       TemplateTestClassRunnerSelfMocked()
          : Zen::Mock<ZenUnit::TemplateTestClassRunner<TestingTestClass>>("")
@@ -68,7 +68,7 @@ namespace ZenUnit
 
    TEST(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
    {
-      TemplateTestClassRunner<TestingTestClass> templateTestClassRunner(TestClassName);
+      TemplateTestClassRunner<const TestingTestClass> templateTestClassRunner(TestClassName);
       //
       WAS_NEWED(templateTestClassRunner._console);
       WAS_NEWED(templateTestClassRunner._testsMemberForEacherExtraArg);
@@ -88,17 +88,17 @@ namespace ZenUnit
    TEST(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
    {
       _templateTestClassRunner->_tests.resize(3);
-      TestMock* testMockA = new TestMock;
+      TestMock* const testMockA = new TestMock;
       testMockA->NumberOfTestCasesMock.ExpectAndReturn(10);
-      TestMock* testMockB = new TestMock;
+      TestMock* const testMockB = new TestMock;
       testMockB->NumberOfTestCasesMock.ExpectAndReturn(0);
-      TestMock* testMockC = new TestMock;
+      TestMock* const testMockC = new TestMock;
       testMockC->NumberOfTestCasesMock.ExpectAndReturn(20);
       _templateTestClassRunner->_tests[0].reset(testMockA);
       _templateTestClassRunner->_tests[1].reset(testMockB);
       _templateTestClassRunner->_tests[2].reset(testMockC);
       //
-      size_t numberOfTestCases = _templateTestClassRunner->NumberOfTestCases();
+      const size_t numberOfTestCases = _templateTestClassRunner->NumberOfTestCases();
       //
       ZEN(testMockA->NumberOfTestCasesMock.AssertCalledOnce());
       ZEN(testMockB->NumberOfTestCasesMock.AssertCalledOnce());
@@ -122,7 +122,7 @@ namespace ZenUnit
       _templateTestClassRunnerSelfMocked->consoleMock->WriteNewlineMock.Expect();
       _templateTestClassRunnerSelfMocked->_testClassResult = TestClassResult::TestingNonDefault();
       //
-      TestClassResult testClassResult = _templateTestClassRunnerSelfMocked->RunTests();
+      const TestClassResult testClassResult = _templateTestClassRunnerSelfMocked->RunTests();
       //
       ZEN(_templateTestClassRunnerSelfMocked->PrintTestClassNameAndNumberOfTestsMock.AssertCalledOnce());
       ZEN(_templateTestClassRunnerSelfMocked->ConfirmNewabilityDeletabilityAndRegisterNXNTestsMock.AssertCalledOnceWith(
@@ -180,13 +180,13 @@ namespace ZenUnit
 
       TestResult testResult;
       testResult.testOutcome = newDeleteTestOutcome;
-      vector<TestResult> testResults = { testResult };
+      const vector<TestResult> testResults = { testResult };
       testMock.RunMock.ExpectAndReturn(testResults);
 
       TestClassResultMock testClassResultMock;
       testClassResultMock.AddTestResultsMock.Expect();
       //
-      bool testClassTypeIsNewableAndDeletable = _templateTestClassRunner->
+      const bool testClassTypeIsNewableAndDeletable = _templateTestClassRunner->
          ConfirmNewabilityDeletabilityAndRegisterNXNTests(&testMock, &testClassResultMock);
       //
       ZEN(testMock.RunMock.AssertCalledOnce());
@@ -208,7 +208,7 @@ namespace ZenUnit
       const vector<TestResult> TestResults = { test0, TestResult() };
       testMock->RunMock.ExpectAndReturn(TestResults);
       testMock->PrintPostTestCompletionMessageMock.Expect();
-      unique_ptr<Test> test(testMock);
+      const unique_ptr<Test> test(testMock);
 
       TestClassResultMock testClassResultMock;
       testClassResultMock.AddTestResultsMock.Expect();

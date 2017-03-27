@@ -28,7 +28,7 @@ namespace ZenUnit
       {
          outCallResult.milliseconds = _stopwatch->StopMilliseconds();
          outCallResult.exceptionTypeName = Type::GetName(e);
-         const char* what = e.what();
+         const char* const what = e.what();
          outCallResult.exceptionWhat.assign(what);
          outCallResult.testOutcome = TestOutcome::Exception;
       }

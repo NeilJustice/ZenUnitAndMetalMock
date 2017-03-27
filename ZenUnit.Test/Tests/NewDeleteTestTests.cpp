@@ -52,16 +52,16 @@ namespace ZenUnit
       failedConstructorCallResult.testOutcome = nonSuccessOutcome;
       _tryCatchCallerMock->CallMock.ExpectAndReturn(failedConstructorCallResult);
 
-      TestResult constructorFailTestResult;
+      const TestResult constructorFailTestResult = TestResult::TestingNonDefault;
       _testResultFactoryMock->ConstructorFailMock.ExpectAndReturn(constructorFailTestResult);
       //
-      vector<TestResult> testResults = _newDeleteTest->Run();
+      const vector<TestResult> testResults = _newDeleteTest->Run();
       //
       ZEN(_tryCatchCallerMock->CallMock.AssertCalledOnceWith(
          &Test::CallNewTestClass, _newDeleteTest.get(), TestPhase::Constructor));
       ZEN(_testResultFactoryMock->ConstructorFailMock.AssertCalledOnceWith(
          _newDeleteTest->_fullName, failedConstructorCallResult));
-      vector<TestResult> expectedTestResults = { constructorFailTestResult };
+      const vector<TestResult> expectedTestResults = { constructorFailTestResult };
       VECTORS_EQUAL(expectedTestResults, testResults);
    }
 
@@ -73,10 +73,10 @@ namespace ZenUnit
       CallResult destructorCallResult;
       _tryCatchCallerMock->CallMock.ExpectAndReturnValues(successConstructorCallResult, destructorCallResult);
 
-      TestResult sixArgCtorTestResult = TestResult::TestingNonDefault;
+      const TestResult sixArgCtorTestResult = TestResult::TestingNonDefault;
       _testResultFactoryMock->CtorDtorSuccessMock.ExpectAndReturn(sixArgCtorTestResult);
       //
-      vector<TestResult> testResults = _newDeleteTest->Run();
+      const vector<TestResult> testResults = _newDeleteTest->Run();
       //
       ZEN(_tryCatchCallerMock->CallMock.AssertCalls(
       {
@@ -85,7 +85,7 @@ namespace ZenUnit
       }));
       ZEN(_testResultFactoryMock->CtorDtorSuccessMock.AssertCalledOnceWith(
          _newDeleteTest->_fullName, successConstructorCallResult, destructorCallResult));
-      vector<TestResult> expectedTestResults = { sixArgCtorTestResult };
+      const vector<TestResult> expectedTestResults = { sixArgCtorTestResult };
       VECTORS_EQUAL(expectedTestResults, testResults);
    }
 

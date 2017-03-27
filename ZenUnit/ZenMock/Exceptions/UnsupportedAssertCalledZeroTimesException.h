@@ -6,7 +6,7 @@ namespace ZenMock
    class UnsupportedAssertCalledZeroTimesException : public ZenMockException
    {
    private:
-      std::string _what;
+      const std::string _what;
    public:
       UnsupportedAssertCalledZeroTimesException(const std::string& zenMockedFunctionSignature);
       static std::string MakeWhat(const std::string& zenMockedFunctionSignature);

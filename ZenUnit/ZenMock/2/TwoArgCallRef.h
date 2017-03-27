@@ -40,8 +40,8 @@ struct ZenUnitPrinter<ZenMock::TwoArgCallRef<Arg1Type, Arg2Type>>
 {
    static void Print(std::ostream& os, const ZenMock::TwoArgCallRef<Arg1Type, Arg2Type>& twoArgCallRef)
    {
-      std::string toStringedArg1 = ZenUnit::ToStringer::ToString(twoArgCallRef.arg1);
-      std::string toStringedArg2 = ZenUnit::ToStringer::ToString(twoArgCallRef.arg2);
+      const std::string toStringedArg1 = ZenUnit::ToStringer::ToString(twoArgCallRef.arg1);
+      const std::string toStringedArg2 = ZenUnit::ToStringer::ToString(twoArgCallRef.arg2);
       os << "ZenMock::TwoArgCall:\n"
          "Arg1: " << toStringedArg1 << '\n' <<
          "Arg2: " << toStringedArg2;

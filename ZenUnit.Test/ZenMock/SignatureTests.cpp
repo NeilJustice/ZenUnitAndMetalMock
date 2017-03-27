@@ -15,11 +15,11 @@ namespace ZenMock
       "int ZenMockedClassName::Function(int, double) const", "", "const",
       "virtual int ZenMockedClassName::Function(int, double) const", "virtual", "const")
    {
-      const char* ReturnType = "int";
+      const char* const ReturnType = "int";
       const string ZenMockedClassName = "ZenMockedClassName";
-      const char* UnadornedFunctionSignature = "Function(int, double)";
+      const char* const UnadornedFunctionSignature = "Function(int, double)";
       //
-      string funtionSignature = Signature::Function(
+      const string funtionSignature = Signature::Function(
          virtualOrEmptyString, ReturnType, &ZenMockedClassName, UnadornedFunctionSignature, constOrEmptyString);
       //
       ARE_EQUAL(expectedFunctionSignature, funtionSignature);
@@ -27,10 +27,11 @@ namespace ZenMock
 
    TEST(FunctionPointer_ReturnsExpected)
    {
-      const char* ReturnType = "ReturnType";
-      const char* UnadornedFunctionSignature = "FunctionSignature";
+      const char* const ReturnType = "ReturnType";
+      const char* const UnadornedFunctionSignature = "FunctionSignature";
       //
-      string functionPointerSignature = Signature::FunctionPointer(ReturnType, UnadornedFunctionSignature);
+      const string functionPointerSignature = Signature::FunctionPointer(
+         ReturnType, UnadornedFunctionSignature);
       //
       ARE_EQUAL("ReturnType FunctionSignature", functionPointerSignature);
    }

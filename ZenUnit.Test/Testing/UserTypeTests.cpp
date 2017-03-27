@@ -15,20 +15,20 @@ SPECEND
 
 TEST(DefaultConstructor_SetsValueTo0)
 {
-   UserType userType;
+   const UserType userType;
    IS_ZERO(userType.value);
 }
 
 TEST(OneArgConstructor_SetsValue)
 {
-   UserType userType(1);
+   const UserType userType(1);
    ARE_EQUAL(1, userType.value);
 }
 
 TEST(OperatorLessThan_ReturnsTrueIfLeftXLessThanRightX)
 {
-   UserType userType1(1);
-   UserType userType2(2);
+   const UserType userType1(1);
+   const UserType userType2(2);
    IS_TRUE(userType1 < userType2);
    IS_FALSE(userType2 < userType1);
    IS_FALSE(userType1 < userType1);
@@ -36,16 +36,16 @@ TEST(OperatorLessThan_ReturnsTrueIfLeftXLessThanRightX)
 
 TEST(OperatorEquals_ReturnsTrueIfLeftXEqualsRightX)
 {
-   UserType userType1(1);
-   UserType userType2(2);
+   const UserType userType1(1);
+   const UserType userType2(2);
    IS_TRUE(userType1 == userType1);
    IS_FALSE(userType1 == userType2);
 }
 
 TEST(ZenUnitPrint_WritesExpected_ReturnOStream)
 {
-   UserType userType1(1);
-   UserType userTypeNegative1(-1);
+   const UserType userType1(1);
+   const UserType userTypeNegative1(-1);
    ostringstream oss;
    //
    ZenUnitPrinter<UserType>::Print(oss, userType1);
@@ -57,22 +57,22 @@ TEST(ZenUnitPrint_WritesExpected_ReturnOStream)
 
 TEST(OperatorBool_ValueIs1_ReturnsTrue)
 {
-   UserType userType1(1);
+   const UserType userType1(1);
    IS_TRUE(userType1);
    IS_TRUE(userType1);
 }
 
 TEST(OperatorBool_ValueIsNot1_ReturnsFalse)
 {
-   UserType userTypeNegative1(-1);
+   const UserType userTypeNegative1(-1);
    IS_FALSE(userTypeNegative1);
    IS_FALSE(userTypeNegative1);
 
-   UserType userType0(0);
+   const UserType userType0(0);
    IS_FALSE(userType0);
    IS_FALSE(userType0);
 
-   UserType userType2(2);
+   const UserType userType2(2);
    IS_FALSE(userType2);
    IS_FALSE(userType2);
 }

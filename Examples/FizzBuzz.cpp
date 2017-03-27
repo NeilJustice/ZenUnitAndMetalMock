@@ -10,8 +10,8 @@ std::string FizzBuzz(unsigned endNumber)
    std::ostringstream oss;
    for (unsigned i = 1; i <= endNumber; ++i)
    {
-      bool divisibleBy3 = i % 3 == 0;
-      bool divisibleBy5 = i % 5 == 0;
+      const bool divisibleBy3 = i % 3 == 0;
+      const bool divisibleBy5 = i % 5 == 0;
       if (divisibleBy3)
       {
          oss << "Fizz";
@@ -29,6 +29,6 @@ std::string FizzBuzz(unsigned endNumber)
          oss << ' ';
       }
    }
-   std::string fizzBuzzSequence(oss.str());
+   const std::string fizzBuzzSequence(oss.str());
    return fizzBuzzSequence;
 }

@@ -13,7 +13,7 @@ namespace ZenUnit
    public:
       using Test1X1MemberFunction = void (TestClassType::*)(Arg1Type);
    private:
-      Test1X1MemberFunction _test1X1MemberFunction;
+      const Test1X1MemberFunction _test1X1MemberFunction;
    public:
       Test1X1(
          const char* testClassName, const char* testName, Test1X1MemberFunction test1X1MemberFunction,
@@ -41,7 +41,7 @@ namespace ZenUnit
    public:
       using Test2X2MemberFunction = void (TestClassType::*)(Arg1Type, Arg2Type);
    private:
-      Test2X2MemberFunction _test2X2MemberFunction;
+      const Test2X2MemberFunction _test2X2MemberFunction;
    public:
       Test2X2(
          const char* testClassName, const char* testName, Test2X2MemberFunction test2X2MemberFunction,
@@ -70,7 +70,7 @@ namespace ZenUnit
    public:
       using Test3X3MemberFunction = void (TestClassType::*)(Arg1Type, Arg2Type, Arg3Type);
    private:
-      Test3X3MemberFunction _test3X3MemberFunction;
+      const Test3X3MemberFunction _test3X3MemberFunction;
    public:
       Test3X3(
          const char* testClassName, const char* testName, Test3X3MemberFunction test3X3MemberFunction,
@@ -100,7 +100,7 @@ namespace ZenUnit
    public:
       using Test4X4MemberFunction = void (TestClassType::*)(Arg1Type, Arg2Type, Arg3Type, Arg4Type);
    private:
-      Test4X4MemberFunction _test4X4MemberFunction;
+      const Test4X4MemberFunction _test4X4MemberFunction;
    public:
       Test4X4(
          const char* testClassName, const char* testName, Test4X4MemberFunction test4X4MemberFunction,
@@ -131,7 +131,7 @@ namespace ZenUnit
    public:
       using Test5X5MemberFunction = void (TestClassType::*)(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type);
    private:
-      Test5X5MemberFunction _test5X5MemberFunction;
+      const Test5X5MemberFunction _test5X5MemberFunction;
    public:
       Test5X5(
          const char* testClassName, const char* testName, Test5X5MemberFunction test5X5MemberFunction,
@@ -163,7 +163,7 @@ namespace ZenUnit
    public:
       using Test6X6MemberFunction = void (TestClassType::*)(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type);
    private:
-      Test6X6MemberFunction _test6X6MemberFunction;
+      const Test6X6MemberFunction _test6X6MemberFunction;
    public:
       Test6X6(
          const char* testClassName, const char* testName, Test6X6MemberFunction test6X6MemberFunction,
@@ -196,7 +196,7 @@ namespace ZenUnit
    public:
       using Test7X7MemberFunction = void (TestClassType::*)(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type);
    private:
-      Test7X7MemberFunction _test7X7MemberFunction;
+      const Test7X7MemberFunction _test7X7MemberFunction;
    public:
       Test7X7(
          const char* testClassName, const char* testName, Test7X7MemberFunction test7X7MemberFunction,
@@ -230,7 +230,7 @@ namespace ZenUnit
    public:
       using Test8X8MemberFunction = void (TestClassType::*)(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type);
    private:
-      Test8X8MemberFunction _test8X8MemberFunction;
+      const Test8X8MemberFunction _test8X8MemberFunction;
    public:
       Test8X8(
          const char* testClassName, const char* testName, Test8X8MemberFunction test8X8MemberFunction,
@@ -265,7 +265,7 @@ namespace ZenUnit
    public:
       using Test9X9MemberFunction = void (TestClassType::*)(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type);
    private:
-      Test9X9MemberFunction _test9X9MemberFunction;
+      const Test9X9MemberFunction _test9X9MemberFunction;
    public:
       Test9X9(
          const char* testClassName, const char* testName, Test9X9MemberFunction test9X9MemberFunction,
@@ -301,7 +301,7 @@ namespace ZenUnit
    public:
       using Test10X10MemberFunction = void (TestClassType::*)(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type);
    private:
-      Test10X10MemberFunction _test10X10MemberFunction;
+      const Test10X10MemberFunction _test10X10MemberFunction;
    public:
       Test10X10(
          const char* testClassName, const char* testName, Test10X10MemberFunction test10X10MemberFunction,

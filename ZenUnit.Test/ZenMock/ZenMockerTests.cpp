@@ -41,7 +41,7 @@ namespace ZenMock
 
    TEST(Constructor_SetsFields)
    {
-      ZenMocker<ExceptionThrower> zenMocker(ZenMockedFunctionSignature);
+      const ZenMocker<ExceptionThrower> zenMocker(ZenMockedFunctionSignature);
       //
       FUNCTION_TARGETS(exit, zenMocker.zenMockableExitFunction);
       FUNCTION_TARGETS(ZenUnit::TestRunner::GetArgs, zenMocker.zenMockableGetZenUnitArgs);

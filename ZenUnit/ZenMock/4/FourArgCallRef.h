@@ -49,10 +49,10 @@ struct ZenUnitPrinter<ZenMock::FourArgCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4
    static void Print(std::ostream& os, const ZenMock::FourArgCallRef<
       Arg1Type, Arg2Type, Arg3Type, Arg4Type>& fourArgCallRef)
    {
-      std::string toStringedArg1 = ZenUnit::ToStringer::ToString(fourArgCallRef.arg1);
-      std::string toStringedArg2 = ZenUnit::ToStringer::ToString(fourArgCallRef.arg2);
-      std::string toStringedArg3 = ZenUnit::ToStringer::ToString(fourArgCallRef.arg3);
-      std::string toStringedArg4 = ZenUnit::ToStringer::ToString(fourArgCallRef.arg4);
+      const std::string toStringedArg1 = ZenUnit::ToStringer::ToString(fourArgCallRef.arg1);
+      const std::string toStringedArg2 = ZenUnit::ToStringer::ToString(fourArgCallRef.arg2);
+      const std::string toStringedArg3 = ZenUnit::ToStringer::ToString(fourArgCallRef.arg3);
+      const std::string toStringedArg4 = ZenUnit::ToStringer::ToString(fourArgCallRef.arg4);
       os << "ZenMock::FourArgCall:\n"
             "Arg1: " << toStringedArg1 << '\n' <<
             "Arg2: " << toStringedArg2 << '\n' <<

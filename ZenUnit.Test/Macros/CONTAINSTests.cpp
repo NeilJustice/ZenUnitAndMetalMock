@@ -14,7 +14,7 @@ namespace ZenUnit
 
    TEST(Vector_DoesContain_DoesNotThrow)
    {
-      vector<int> ints = { 1, 2 };
+      const vector<int> ints = { 1, 2 };
       CONTAINS(1, ints);
       CONTAINS(2, ints);
       for (int i : ints)
@@ -25,7 +25,7 @@ namespace ZenUnit
 
    TEST(Vector_DoesNotContain_Throws)
    {
-      vector<int> emptyIntVector;
+      const vector<int> emptyIntVector;
       THROWS(CONTAINS(0, emptyIntVector), Anomaly, R"(
   Failed: CONTAINS(0, emptyIntVector)
 Expected: Contains element 0
@@ -35,9 +35,9 @@ File.cpp(1))");
 
    TEST(Map_DoesContain_DoesNotThrow)
    {
-      map<int, int> intIntMap = { { 0, 0 }, { 1, 1 } };
-      pair<const int, int> kvp0(0, 0);
-      pair<const int, int> kvp1(1, 1);
+      const map<int, int> intIntMap = { { 0, 0 }, { 1, 1 } };
+      const pair<const int, int> kvp0(0, 0);
+      const pair<const int, int> kvp1(1, 1);
       CONTAINS(kvp0, intIntMap);
       CONTAINS(kvp1, intIntMap);
       for (const auto& kvp : intIntMap)
@@ -48,8 +48,8 @@ File.cpp(1))");
 
    TEST(Map_DoesNotContain_Throws)
    {
-      map<int, int> emptyIntIntMap;
-      pair<const int, int> kvp(0, 0);
+      const map<int, int> emptyIntIntMap;
+      const pair<const int, int> kvp(0, 0);
       THROWS(CONTAINS(kvp, emptyIntIntMap), Anomaly, R"(
   Failed: CONTAINS(kvp, emptyIntIntMap)
 Expected: Contains element (0, 0)
@@ -59,7 +59,7 @@ File.cpp(1))");
 
    TEST(Set_DoesContain_DoesNotThrow)
    {
-      set<int> intSet = { 1, 2 };
+      const set<int> intSet = { 1, 2 };
       CONTAINS(1, intSet);
       CONTAINS(2, intSet);
       for (int i : intSet)
@@ -70,8 +70,8 @@ File.cpp(1))");
 
    TEST(Set_DoesNotContain_Throws_MessagesTestCase)
    {
-      set<int> emptyIntSet;
-      string messageA = "A", messageB = "B";
+      const set<int> emptyIntSet;
+      const string messageA = "A", messageB = "B";
       THROWS(CONTAINS(0, emptyIntSet, messageA, messageB), Anomaly, R"(
   Failed: CONTAINS(0, emptyIntSet, messageA, messageB)
 Expected: Contains element 0

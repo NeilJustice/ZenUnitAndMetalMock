@@ -13,9 +13,9 @@ namespace ZenUnit
       VRText<PairType> expectedPairVRT, VRText<PairType> actualPairVRT,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      std::string expected = ToStringer::ToString(expectedPairVRT.value);
-      std::string actual = ToStringer::ToString(actualPairVRT.value);
-      Anomaly anomaly("PAIRS_EQUAL", expectedPairVRT.text, actualPairVRT.text, "", messagesText,
+      const std::string expected = ToStringer::ToString(expectedPairVRT.value);
+      const std::string actual = ToStringer::ToString(actualPairVRT.value);
+      const Anomaly anomaly("PAIRS_EQUAL", expectedPairVRT.text, actualPairVRT.text, "", messagesText,
          becauseAnomaly, expected, actual, ExpectedActualFormat::Fields, fileLine, messages...);
       throw anomaly;
    }

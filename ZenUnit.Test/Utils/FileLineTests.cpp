@@ -11,12 +11,12 @@ namespace ZenUnit
    SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    SPECEND
 
-   const char* FilePath = "Folder\\File.ext";
+   const char* const FilePath = "Folder\\File.ext";
    const unsigned LineNumber = 1;
 
    TEST(DefaultConstructor_SetsFieldsTo0)
    {
-      FileLine fileLine;
+      const FileLine fileLine;
       FileLine expectedFileLine;
       expectedFileLine.filePath = "";
       expectedFileLine.lineNumber = 0;
@@ -28,7 +28,7 @@ namespace ZenUnit
       nullptr, "", 1u, 1u,
       "FilePath", "FilePath", 10u, 10u)
    {
-      FileLine fileLine(filePath, lineNumber);
+      const FileLine fileLine(filePath, lineNumber);
       //
       FileLine expectedFileLine;
       expectedFileLine.filePath = expectedFilePathField;
@@ -38,12 +38,12 @@ namespace ZenUnit
 
    TEST(OStreamInsertionOperator_WritesExpected)
    {
-      FileLine fileLine("File", 1);
+      const FileLine fileLine("File", 1);
       //
       ostringstream oss;
       oss << fileLine;
       //
-      string result = oss.str();
+      const string result = oss.str();
       ARE_EQUAL("File(1)", result);
    }
 

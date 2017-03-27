@@ -23,7 +23,7 @@ namespace ZenUnit
 
    bool ConsoleColorer::SetColor(Color color) const
    {
-      bool doSetTextColor = color != Color::White && SupportsColor();
+      const bool doSetTextColor = color != Color::White && SupportsColor();
       if (doSetTextColor)
       {
          SetTextColor(color);
@@ -42,9 +42,9 @@ namespace ZenUnit
 
    bool ConsoleColorer::SupportsColor() const
    {
-      int stdoutFileHandle = fileno_ZenMockable(stdout);
-      int isAtty = isatty_ZenMockable(stdoutFileHandle);
-      bool supportsColor = isAtty != 0;
+      const int stdoutFileHandle = fileno_ZenMockable(stdout);
+      const int isAtty = isatty_ZenMockable(stdoutFileHandle);
+      const bool supportsColor = isAtty != 0;
       return supportsColor;
    }
 
@@ -54,9 +54,9 @@ namespace ZenUnit
       const char* linuxColor = ColorToLinuxColor(color);
       cout << linuxColor;
 #elif _WIN32
-      HANDLE stdOutHandle = GetStdHandle_ZenMockable(STD_OUTPUT_HANDLE);
-      WindowsColor windowsColor = ColorToWindowsColor(color);
-      BOOL didSetConsoleTextAttr = SetConsoleTextAttribute_ZenMockable(
+      const HANDLE stdOutHandle = GetStdHandle_ZenMockable(STD_OUTPUT_HANDLE);
+      const WindowsColor windowsColor = ColorToWindowsColor(color);
+      const BOOL didSetConsoleTextAttr = SetConsoleTextAttribute_ZenMockable(
          stdOutHandle, static_cast<WORD>(windowsColor));
       assert_true(didSetConsoleTextAttr == TRUE);
 #endif

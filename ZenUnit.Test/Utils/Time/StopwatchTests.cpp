@@ -32,7 +32,7 @@ namespace ZenUnit
 
    TEST(Start_SetsStartTimeToNow)
    {
-      chrono::time_point<chrono::high_resolution_clock>
+      const chrono::time_point<chrono::high_resolution_clock>
          nonDefaultTimePoint = chrono::high_resolution_clock::now();
       now_ZenMock.ExpectAndReturn(nonDefaultTimePoint);
       //
@@ -52,11 +52,11 @@ namespace ZenUnit
    {
       chrono::time_point<chrono::high_resolution_clock> startTime;
       startTime += chrono::milliseconds(100);
-      chrono::time_point<chrono::high_resolution_clock> stopTime = startTime + chrono::milliseconds(1234);
+      const chrono::time_point<chrono::high_resolution_clock> stopTime = startTime + chrono::milliseconds(1234);
       now_ZenMock.ExpectAndReturn(stopTime);
       _stopwatch._startTime = startTime;
       //
-      long long elapsedMilliseconds = _stopwatch.StopMilliseconds();
+      const long long elapsedMilliseconds = _stopwatch.StopMilliseconds();
       //
       ZEN(now_ZenMock.AssertCalledOnce());
       ARE_EQUAL(1234ll, elapsedMilliseconds);
@@ -72,11 +72,11 @@ namespace ZenUnit
    {
       chrono::time_point<chrono::high_resolution_clock> startTime;
       startTime += chrono::nanoseconds(100);
-      chrono::time_point<chrono::high_resolution_clock> stopTime = startTime + chrono::nanoseconds(5678);
+      const chrono::time_point<chrono::high_resolution_clock> stopTime = startTime + chrono::nanoseconds(5678);
       now_ZenMock.ExpectAndReturn(stopTime);
       _stopwatch._startTime = startTime;
       //
-      long long elapsedNanoseconds = _stopwatch.StopNanoseconds();
+      const long long elapsedNanoseconds = _stopwatch.StopNanoseconds();
       //
       ZEN(now_ZenMock.AssertCalledOnce());
       ARE_EQUAL(5678ll, elapsedNanoseconds);

@@ -36,15 +36,15 @@ namespace ZenUnit
    private:
       static const std::string* TypeInfoToTypeName(const std::type_info& typeInfo)
       {
-         const char* mangledTypeName = typeInfo.name();
-         std::unordered_map<const char*, std::string>::const_iterator findIter
+         const char* const mangledTypeName = typeInfo.name();
+         const std::unordered_map<const char*, std::string>::const_iterator findIter
             = s_mangledToDemangledTypeName.find(mangledTypeName);
          if (findIter == s_mangledToDemangledTypeName.end())
          {
-            std::string demangledTypeName = Demangle(mangledTypeName);
-            std::pair<std::unordered_map<const char*, std::string>::const_iterator, bool>
+            const std::string demangledTypeName = Demangle(mangledTypeName);
+            const std::pair<std::unordered_map<const char*, std::string>::const_iterator, bool>
                emplaceResult = s_mangledToDemangledTypeName.emplace(mangledTypeName, demangledTypeName);
-            const std::string* cachedDemangledTypeName = &emplaceResult.first->second;
+            const std::string* const cachedDemangledTypeName = &emplaceResult.first->second;
             return cachedDemangledTypeName;
          }
          const std::string* cachedDemangledTypeName = &findIter->second;
@@ -66,7 +66,8 @@ namespace ZenUnit
       static std::string Demangle(const char* mangledTypeName)
       {
          static const std::regex classStructPattern("(class |struct )");
-         std::string typeNameMinusClassAndStruct = std::regex_replace(mangledTypeName, classStructPattern, "");
+         const std::string typeNameMinusClassAndStruct 
+            = std::regex_replace(mangledTypeName, classStructPattern, "");
          return typeNameMinusClassAndStruct;
       }
 #endif

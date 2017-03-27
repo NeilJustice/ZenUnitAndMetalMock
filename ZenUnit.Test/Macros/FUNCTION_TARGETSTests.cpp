@@ -23,8 +23,8 @@ namespace ZenUnit
 
    TEST(FunctionDoesNotPointToAFunction_Throws_MessagesTestsCase)
    {
-      function<void()> emptyStdFunction;
-      string messageA = "A", messageB = "B";
+      const function<void()> emptyStdFunction;
+      const string messageA = "A", messageB = "B";
       try
       {
          FUNCTION_TARGETS(FunctionA, emptyStdFunction, messageA, messageB);
@@ -60,7 +60,7 @@ File.cpp\(1\))", anomaly.why);
 
    TEST(FunctionPointsToFunctionWithDifferentSignatureThanExpected_Throws)
    {
-      function<void()> stdFunctionA(FunctionA);
+      const function<void()> stdFunctionA(FunctionA);
       try
       {
          FUNCTION_TARGETS(FunctionB, stdFunctionA);
@@ -94,7 +94,7 @@ File.cpp\(1\))", anomaly.why);
 
    TEST(FunctionPointsToFunctionWithSameSignatureButDifferentFunctionThanExpected_Throws)
    {
-      function<void()> stdFunctionA(FunctionA);
+      const function<void()> stdFunctionA(FunctionA);
    #ifdef __linux__
       THROWS(FUNCTION_TARGETS(FunctionC, stdFunctionA), Anomaly, R"(
   Failed: FUNCTION_TARGETS(FunctionC, stdFunctionA)
@@ -128,7 +128,7 @@ File.cpp\(1\))", anomaly.why);
 
    TEST(FunctionPointsToSameFunctionAsExpected_DoesNotThrow)
    {
-      function<void()> stdFunctionA(FunctionA);
+      const function<void()> stdFunctionA(FunctionA);
       FUNCTION_TARGETS(FunctionA, stdFunctionA);
    }
 

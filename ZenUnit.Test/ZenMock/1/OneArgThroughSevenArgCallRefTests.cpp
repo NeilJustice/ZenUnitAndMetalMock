@@ -20,16 +20,16 @@ namespace ZenMock
    {
       int x;
       //
-      OneArgCallRef<int> callRef(x);
+      const OneArgCallRef<int> callRef(x);
       //
       ARE_SAME(x, callRef.arg);
    }
 
    TEST(OneArgCallConstructor_SetsReferencesToOneArgCallArg)
    {
-      OneArgCall<int> call(1);
+      const OneArgCall<int> call(1);
       //
-      OneArgCallRef<int> callRef(call);
+      const OneArgCallRef<int> callRef(call);
       //
       ARE_SAME(call.arg, callRef.arg);
    }
@@ -37,22 +37,22 @@ namespace ZenMock
    TEST(ZenUnitEqualizer_ThrowsIfArgFieldNotEqual)
    {
       int x = 1;
-      OneArgCallRef<int> callRef(x);
+      const OneArgCallRef<int> callRef(x);
 
       int y = 2;
-      OneArgCallRef<int> callRef_arg(y);
+      const OneArgCallRef<int> callRef_arg(y);
       try { ARE_EQUAL(callRef, callRef_arg); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg")); }
    }
 
    TEST(ZenUnitPrinter_WritesToStringedArg)
    {
       const string Arg = "ArgValue";
-      OneArgCallRef<string> callRef(Arg);
+      const OneArgCallRef<string> callRef(Arg);
       ostringstream oss;
       //
       ZenUnitPrinter<OneArgCallRef<string>>::Print(oss, callRef);
       //
-      string zenUnitPrintResult = oss.str();
+      const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::OneArgCall:
 Arg: "ArgValue")", zenUnitPrintResult);
    }
@@ -71,7 +71,7 @@ Arg: "ArgValue")", zenUnitPrintResult);
    {
       int a, b;
       //
-      TwoArgCallRef<int, int> callRef(a, b);
+      const TwoArgCallRef<int, int> callRef(a, b);
       //
       ARE_SAME(a, callRef.arg1);
       ARE_SAME(b, callRef.arg2);
@@ -79,9 +79,9 @@ Arg: "ArgValue")", zenUnitPrintResult);
 
    TEST(TwoArgCallConstructor_SetsReferencesToTwoArgCallArgs)
    {
-      TwoArgCall<int, int> twoArgCall(1, 2);
+      const TwoArgCall<int, int> twoArgCall(1, 2);
       //
-      TwoArgCallRef<int, int> callRef(twoArgCall);
+      const TwoArgCallRef<int, int> callRef(twoArgCall);
       //
       ARE_SAME(twoArgCall.arg1, callRef.arg1);
       ARE_SAME(twoArgCall.arg2, callRef.arg2);
@@ -91,12 +91,12 @@ Arg: "ArgValue")", zenUnitPrintResult);
    {
       string a = "a";
       string b = "b";
-      TwoArgCallRef<string, string> callRef(a, b);
+      const TwoArgCallRef<string, string> callRef(a, b);
       ostringstream oss;
       //
       ZenUnitPrinter<TwoArgCallRef<string, string>>::Print(oss, callRef);
       //
-      string zenUnitPrintResult = oss.str();
+      const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::TwoArgCall:
 Arg1: "a"
 Arg2: "b")", zenUnitPrintResult);
@@ -126,7 +126,7 @@ Arg2: "b")", zenUnitPrintResult);
    {
       int a, b, c;
       //
-      ThreeArgCallRef<int, int, int> callRef(a, b, c);
+      const ThreeArgCallRef<int, int, int> callRef(a, b, c);
       //
       ARE_SAME(a, callRef.arg1);
       ARE_SAME(b, callRef.arg2);
@@ -135,9 +135,9 @@ Arg2: "b")", zenUnitPrintResult);
 
    TEST(ThreeArgCallConstructor_SetsReferencesToThreeArgCallArgs)
    {
-      ThreeArgCall<int, int, int> threeArgCall(1, 2, 3);
+      const ThreeArgCall<int, int, int> threeArgCall(1, 2, 3);
       //
-      ThreeArgCallRef<int, int, int> callRef(threeArgCall);
+      const ThreeArgCallRef<int, int, int> callRef(threeArgCall);
       //
       ARE_SAME(threeArgCall.arg1, callRef.arg1);
       ARE_SAME(threeArgCall.arg2, callRef.arg2);
@@ -149,12 +149,12 @@ Arg2: "b")", zenUnitPrintResult);
       string a = "a";
       string b = "b";
       string c = "c";
-      ThreeArgCallRef<string, string, string> callRef(a, b, c);
+      const ThreeArgCallRef<string, string, string> callRef(a, b, c);
       ostringstream oss;
       //
       ZenUnitPrinter<ThreeArgCallRef<string, string, string>>::Print(oss, callRef);
       //
-      string zenUnitPrintResult = oss.str();
+      const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::ThreeArgCall:
 Arg1: "a"
 Arg2: "b"
@@ -164,12 +164,12 @@ Arg3: "c")", zenUnitPrintResult);
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
       int a = 1, b = 2, c = 3;
-      ThreeArgCallRef<int, int, int> callRef(a, b, c);
-      ThreeArgCallRef<int, int, int> callRef_arg1(10, b, c);
+      const ThreeArgCallRef<int, int, int> callRef(a, b, c);
+      const ThreeArgCallRef<int, int, int> callRef_arg1(10, b, c);
       try { ARE_EQUAL(callRef, callRef_arg1); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg1")); }
-      ThreeArgCallRef<int, int, int> callRef_arg2(a, 10, c);
+      const ThreeArgCallRef<int, int, int> callRef_arg2(a, 10, c);
       try { ARE_EQUAL(callRef, callRef_arg2); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg2")); }
-      ThreeArgCallRef<int, int, int> callRef_arg3(a, b, 10);
+      const ThreeArgCallRef<int, int, int> callRef_arg3(a, b, 10);
       try { ARE_EQUAL(callRef, callRef_arg3); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg3")); }
    }
 
@@ -187,7 +187,7 @@ Arg3: "c")", zenUnitPrintResult);
    {
       int a, b, c, d;
       //
-      FourArgCallRef<int, int, int, int> callRef(a, b, c, d);
+      const FourArgCallRef<int, int, int, int> callRef(a, b, c, d);
       //
       ARE_SAME(a, callRef.arg1);
       ARE_SAME(b, callRef.arg2);
@@ -197,9 +197,9 @@ Arg3: "c")", zenUnitPrintResult);
 
    TEST(FourArgCallConstructor_SetsReferencesToFourArgCallArgs)
    {
-      FourArgCall<int, int, int, int> call(1, 2, 3, 4);
+      const FourArgCall<int, int, int, int> call(1, 2, 3, 4);
       //
-      FourArgCallRef<int, int, int, int> callRef(call);
+      const FourArgCallRef<int, int, int, int> callRef(call);
       //
       ARE_SAME(call.arg1, callRef.arg1);
       ARE_SAME(call.arg2, callRef.arg2);
@@ -213,12 +213,12 @@ Arg3: "c")", zenUnitPrintResult);
       string y = "2";
       string z = "3";
       string q = "4";
-      FourArgCallRef<string, string, string, string> callRef(x, y, z, q);
+      const FourArgCallRef<string, string, string, string> callRef(x, y, z, q);
       ostringstream oss;
       //
       ZenUnitPrinter<FourArgCallRef<string, string, string, string>>::Print(oss, callRef);
       //
-      string zenUnitPrintResult = oss.str();
+      const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::FourArgCall:
 Arg1: "1"
 Arg2: "2"
@@ -229,14 +229,14 @@ Arg4: "4")", zenUnitPrintResult);
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
       int a = 1, b = 2, c = 3, d = 4;
-      FourArgCallRef<int, int, int, int> callRef(a, b, c, d);
-      FourArgCallRef<int, int, int, int> callRef_arg1(10, b, c, d);
+      const FourArgCallRef<int, int, int, int> callRef(a, b, c, d);
+      const FourArgCallRef<int, int, int, int> callRef_arg1(10, b, c, d);
       try { ARE_EQUAL(callRef, callRef_arg1); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg1")); }
-      FourArgCallRef<int, int, int, int> callRef_arg2(a, 10, c, d);
+      const FourArgCallRef<int, int, int, int> callRef_arg2(a, 10, c, d);
       try { ARE_EQUAL(callRef, callRef_arg2); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg2")); }
-      FourArgCallRef<int, int, int, int> callRef_arg3(a, b, 10, d);
+      const FourArgCallRef<int, int, int, int> callRef_arg3(a, b, 10, d);
       try { ARE_EQUAL(callRef, callRef_arg3); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg3")); }
-      FourArgCallRef<int, int, int, int> callRef_arg4(a, b, c, 10);
+      const FourArgCallRef<int, int, int, int> callRef_arg4(a, b, c, 10);
       try { ARE_EQUAL(callRef, callRef_arg4); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg4")); }
    }
 
@@ -254,7 +254,7 @@ Arg4: "4")", zenUnitPrintResult);
    {
       int a, b, c, d, e;
       //
-      FiveArgCallRef<int, int, int, int, int> callRef(a, b, c, d, e);
+      const FiveArgCallRef<int, int, int, int, int> callRef(a, b, c, d, e);
       //
       ARE_SAME(a, callRef.arg1);
       ARE_SAME(b, callRef.arg2);
@@ -265,9 +265,9 @@ Arg4: "4")", zenUnitPrintResult);
 
    TEST(FiveArgCallConstructor_SetsReferencesToFiveArgCallArgs)
    {
-      FiveArgCall<int, int, int, int, int> call(1, 2, 3, 4, 5);
+      const FiveArgCall<int, int, int, int, int> call(1, 2, 3, 4, 5);
       //
-      FiveArgCallRef<int, int, int, int, int> callRef(call);
+      const FiveArgCallRef<int, int, int, int, int> callRef(call);
       //
       ARE_SAME(call.arg1, callRef.arg1);
       ARE_SAME(call.arg2, callRef.arg2);
@@ -283,12 +283,12 @@ Arg4: "4")", zenUnitPrintResult);
       string z = "3";
       string q = "4";
       string e = "5";
-      FiveArgCallRef<string, string, string, string, string> callRef(x, y, z, q, e);
+      const FiveArgCallRef<string, string, string, string, string> callRef(x, y, z, q, e);
       ostringstream oss;
       //
       ZenUnitPrinter<FiveArgCallRef<string, string, string, string, string>>::Print(oss, callRef);
       //
-      string zenUnitPrintResult = oss.str();
+      const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::FiveArgCall:
 Arg1: "1"
 Arg2: "2"
@@ -300,16 +300,16 @@ Arg5: "5")", zenUnitPrintResult);
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
       int a = 1, b = 2, c = 3, d = 4, e = 5;
-      FiveArgCallRef<int, int, int, int, int> callRef(a, b, c, d, e);
-      FiveArgCallRef<int, int, int, int, int> callRef_arg1(10, b, c, d, e);
+      const FiveArgCallRef<int, int, int, int, int> callRef(a, b, c, d, e);
+      const FiveArgCallRef<int, int, int, int, int> callRef_arg1(10, b, c, d, e);
       try { ARE_EQUAL(callRef, callRef_arg1); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg1")); }
-      FiveArgCallRef<int, int, int, int, int> callRef_arg2(a, 10, c, d, e);
+      const FiveArgCallRef<int, int, int, int, int> callRef_arg2(a, 10, c, d, e);
       try { ARE_EQUAL(callRef, callRef_arg2); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg2")); }
-      FiveArgCallRef<int, int, int, int, int> callRef_arg3(a, b, 10, d, e);
+      const FiveArgCallRef<int, int, int, int, int> callRef_arg3(a, b, 10, d, e);
       try { ARE_EQUAL(callRef, callRef_arg3); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg3")); }
-      FiveArgCallRef<int, int, int, int, int> callRef_arg4(a, b, c, 10, e);
+      const FiveArgCallRef<int, int, int, int, int> callRef_arg4(a, b, c, 10, e);
       try { ARE_EQUAL(callRef, callRef_arg4); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg4")); }
-      FiveArgCallRef<int, int, int, int, int> callRef_arg5(a, b, c, d, 10);
+      const FiveArgCallRef<int, int, int, int, int> callRef_arg5(a, b, c, d, 10);
       try { ARE_EQUAL(callRef, callRef_arg5); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg5")); }
    }
 
@@ -327,7 +327,7 @@ Arg5: "5")", zenUnitPrintResult);
    {
       int a, b, c, d, e, f;
       //
-      SixArgCallRef<int, int, int, int, int, int> callRef(a, b, c, d, e, f);
+      const SixArgCallRef<int, int, int, int, int, int> callRef(a, b, c, d, e, f);
       //
       ARE_SAME(a, callRef.arg1);
       ARE_SAME(b, callRef.arg2);
@@ -341,7 +341,7 @@ Arg5: "5")", zenUnitPrintResult);
    {
       SixArgCall<int, int, int, int, int, int> call(1, 2, 3, 4, 5, 6);
       //
-      SixArgCallRef<int, int, int, int, int, int> callRef(call);
+      const SixArgCallRef<int, int, int, int, int, int> callRef(call);
       //
       ARE_SAME(call.arg1, callRef.arg1);
       ARE_SAME(call.arg2, callRef.arg2);
@@ -359,12 +359,12 @@ Arg5: "5")", zenUnitPrintResult);
       string q = "4";
       string e = "5";
       string f = "6";
-      SixArgCallRef<string, string, string, string, string, string> callRef(x, y, z, q, e, f);
+      const SixArgCallRef<string, string, string, string, string, string> callRef(x, y, z, q, e, f);
       ostringstream oss;
       //
       ZenUnitPrinter<SixArgCallRef<string, string, string, string, string, string>>::Print(oss, callRef);
       //
-      string zenUnitPrintResult = oss.str();
+      const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::SixArgCall:
 Arg1: "1"
 Arg2: "2"
@@ -377,18 +377,18 @@ Arg6: "6")", zenUnitPrintResult);
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
       int a = 1, b = 2, c = 3, d = 4, e = 5, f = 6;
-      SixArgCallRef<int, int, int, int, int, int> callRef(a, b, c, d, e, f);
-      SixArgCallRef<int, int, int, int, int, int> callRef_arg1(10, b, c, d, e, f);
+      const SixArgCallRef<int, int, int, int, int, int> callRef(a, b, c, d, e, f);
+      const SixArgCallRef<int, int, int, int, int, int> callRef_arg1(10, b, c, d, e, f);
       try { ARE_EQUAL(callRef, callRef_arg1); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg1")); }
-      SixArgCallRef<int, int, int, int, int, int> callRef_arg2(a, 10, c, d, e, f);
+      const SixArgCallRef<int, int, int, int, int, int> callRef_arg2(a, 10, c, d, e, f);
       try { ARE_EQUAL(callRef, callRef_arg2); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg2")); }
-      SixArgCallRef<int, int, int, int, int, int> callRef_arg3(a, b, 10, d, e, f);
+      const SixArgCallRef<int, int, int, int, int, int> callRef_arg3(a, b, 10, d, e, f);
       try { ARE_EQUAL(callRef, callRef_arg3); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg3")); }
-      SixArgCallRef<int, int, int, int, int, int> callRef_arg4(a, b, c, 10, e, f);
+      const SixArgCallRef<int, int, int, int, int, int> callRef_arg4(a, b, c, 10, e, f);
       try { ARE_EQUAL(callRef, callRef_arg4); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg4")); }
-      SixArgCallRef<int, int, int, int, int, int> callRef_arg5(a, b, c, d, 10, f);
+      const SixArgCallRef<int, int, int, int, int, int> callRef_arg5(a, b, c, d, 10, f);
       try { ARE_EQUAL(callRef, callRef_arg5); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg5")); }
-      SixArgCallRef<int, int, int, int, int, int> callRef_arg6(a, b, c, d, e, 10);
+      const SixArgCallRef<int, int, int, int, int, int> callRef_arg6(a, b, c, d, e, 10);
       try { ARE_EQUAL(callRef, callRef_arg6); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg6")); }
    }
 
@@ -406,7 +406,7 @@ Arg6: "6")", zenUnitPrintResult);
    {
       int a, b, c, d, e, f, g;
       //
-      SevenArgCallRef<int, int, int, int, int, int, int> callRef(a, b, c, d, e, f, g);
+      const SevenArgCallRef<int, int, int, int, int, int, int> callRef(a, b, c, d, e, f, g);
       //
       ARE_SAME(a, callRef.arg1);
       ARE_SAME(b, callRef.arg2);
@@ -421,7 +421,7 @@ Arg6: "6")", zenUnitPrintResult);
    {
       SevenArgCall<int, int, int, int, int, int, int> call(1, 2, 3, 4, 5, 6, 7);
       //
-      SevenArgCallRef<int, int, int, int, int, int, int> callRef(call);
+      const SevenArgCallRef<int, int, int, int, int, int, int> callRef(call);
       //
       ARE_SAME(call.arg1, callRef.arg1);
       ARE_SAME(call.arg2, callRef.arg2);
@@ -441,12 +441,12 @@ Arg6: "6")", zenUnitPrintResult);
       string e = "5";
       string f = "6";
       string g = "7";
-      SevenArgCallRef<string, string, string, string, string, string, string> callRef(x, y, z, q, e, f, g);
+      const SevenArgCallRef<string, string, string, string, string, string, string> callRef(x, y, z, q, e, f, g);
       ostringstream oss;
       //
       ZenUnitPrinter<SevenArgCallRef<string, string, string, string, string, string, string>>::Print(oss, callRef);
       //
-      string zenUnitPrintResult = oss.str();
+      const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::SevenArgCall:
 Arg1: "1"
 Arg2: "2"
@@ -460,20 +460,20 @@ Arg7: "7")", zenUnitPrintResult);
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
       int a = 1, b = 2, c = 3, d = 4, e = 5, f = 6, g = 7;
-      SevenArgCallRef<int, int, int, int, int, int, int> callRef(a, b, c, d, e, f, g);
-      SevenArgCallRef<int, int, int, int, int, int, int> callRef_arg1(10, b, c, d, e, f, g);
+      const SevenArgCallRef<int, int, int, int, int, int, int> callRef(a, b, c, d, e, f, g);
+      const SevenArgCallRef<int, int, int, int, int, int, int> callRef_arg1(10, b, c, d, e, f, g);
       try { ARE_EQUAL(callRef, callRef_arg1); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg1")); }
-      SevenArgCallRef<int, int, int, int, int, int, int> callRef_arg2(a, 10, c, d, e, f, g);
+      const SevenArgCallRef<int, int, int, int, int, int, int> callRef_arg2(a, 10, c, d, e, f, g);
       try { ARE_EQUAL(callRef, callRef_arg2); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg2")); }
-      SevenArgCallRef<int, int, int, int, int, int, int> callRef_arg3(a, b, 10, d, e, f, g);
+      const SevenArgCallRef<int, int, int, int, int, int, int> callRef_arg3(a, b, 10, d, e, f, g);
       try { ARE_EQUAL(callRef, callRef_arg3); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg3")); }
-      SevenArgCallRef<int, int, int, int, int, int, int> callRef_arg4(a, b, c, 10, e, f, g);
+      const SevenArgCallRef<int, int, int, int, int, int, int> callRef_arg4(a, b, c, 10, e, f, g);
       try { ARE_EQUAL(callRef, callRef_arg4); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg4")); }
-      SevenArgCallRef<int, int, int, int, int, int, int> callRef_arg5(a, b, c, d, 10, f, g);
+      const SevenArgCallRef<int, int, int, int, int, int, int> callRef_arg5(a, b, c, d, 10, f, g);
       try { ARE_EQUAL(callRef, callRef_arg5); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg5")); }
-      SevenArgCallRef<int, int, int, int, int, int, int> callRef_arg6(a, b, c, d, e, 10, g);
+      const SevenArgCallRef<int, int, int, int, int, int, int> callRef_arg6(a, b, c, d, e, 10, g);
       try { ARE_EQUAL(callRef, callRef_arg6); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg6")); }
-      SevenArgCallRef<int, int, int, int, int, int, int> callRef_arg7(a, b, c, d, e, f, 10);
+      const SevenArgCallRef<int, int, int, int, int, int, int> callRef_arg7(a, b, c, d, e, f, 10);
       try { ARE_EQUAL(callRef, callRef_arg7); } catch (const Anomaly& anomaly) { IS_TRUE(String::Contains(anomaly.what(), "arg7")); }
    }
 

@@ -37,7 +37,7 @@ namespace ZenMock
 
    TEST(Constructor_SetsFields)
    {
-      OneArgMocker<int, ExceptionThrowerMock> oneArgMocker(ZenMockedFunctionSignature);
+      const OneArgMocker<int, ExceptionThrowerMock> oneArgMocker(ZenMockedFunctionSignature);
       //
       ARE_EQUAL(ZenMockedFunctionSignature, oneArgMocker.ZenMockedFunctionSignature);
       IS_FALSE(oneArgMocker.expected);
@@ -98,7 +98,7 @@ namespace ZenMock
       //
       _oneArgMocker->PrivateZenMock(10);
       //
-      vector<OneArgCall<int>> expectedOneArgCalls = { OneArgCall<int>(10) };
+      const vector<OneArgCall<int>> expectedOneArgCalls = { OneArgCall<int>(10) };
       VECTORS_EQUAL(expectedOneArgCalls, _oneArgMocker->oneArgCalls);
       ZEN(_oneArgMocker->exceptionThrower.AssertThrowIfExceptionSetCalledOnce());
       SetAssertedTrueToNotFailDueToExpectedButNotAsesrted();
@@ -169,7 +169,7 @@ File.cpp(1))");
       //
       if (expectThrow)
       {
-         string expectedWhat = String::Concat(R"(
+         const string expectedWhat = String::Concat(R"(
   Failed: ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature)
 Expected: )", expectedNumberOfCalls, R"(
   Actual: )", numberOfCalls, R"(
@@ -229,7 +229,7 @@ File.cpp(1))");
    TEST(AssertCalls_SetsAssertedTrue_ExpectedCallsSizeNon0AndNotEqualToActualCallsSize_Throws_DoesNotCopyTheExpectedArg)
    {
       IS_FALSE(_oneArgMocker->asserted);
-      vector<OneArgCallRef<int>> expectedOneArgCalls = { 0 };
+      const vector<OneArgCallRef<int>> expectedOneArgCalls = { 0 };
       //
       THROWS(_oneArgMocker->AssertCalls(expectedOneArgCalls), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedOneArgCalls, actualOneArgCalls, this->ZenMockedFunctionSignature)
@@ -248,8 +248,8 @@ File.cpp(1))");
    TEST(AssertCalls_SetsAssertedTrue_ExpectedCallsSizeNon0AndEqualToNumberOfCalls_ArgsNotEqual_Throws_DoesNotCopyTheExpectedArg)
    {
       IS_FALSE(_oneArgMocker->asserted);
-      int x = 10, y = 10;
-      vector<OneArgCallRef<int>> expectedOneArgCalls = { x, y };
+      const int x = 10, y = 10;
+      const vector<OneArgCallRef<int>> expectedOneArgCalls = { x, y };
       _oneArgMocker->oneArgCalls = { 10, 20 };
       //
       THROWS(_oneArgMocker->AssertCalls(expectedOneArgCalls), Anomaly, R"(
@@ -272,7 +272,7 @@ File.cpp(1))");
    TEST(AssertCalls_SetsAssertedTrue_ExpectedCallsSizeNon0AndEqualToNumberOfCalls_ArgsEqual_DoesNotThrow_DoesNotCopyTheExpectedArg)
    {
       IS_FALSE(_oneArgMocker->asserted);
-      vector<OneArgCallRef<int>> expectedOneArgCalls = { 10, 10 };
+      const vector<OneArgCallRef<int>> expectedOneArgCalls = { 10, 10 };
       _oneArgMocker->oneArgCalls = { 10, 10 };
       //
       _oneArgMocker->AssertCalls(expectedOneArgCalls);

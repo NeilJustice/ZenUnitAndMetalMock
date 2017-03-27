@@ -8,9 +8,6 @@ namespace ZenUnit
    SPEC(StringVariableBecause_MessagesTestCase_Throws)
    SPECEND
 
-   int variableA = 10;
-   string variableB = "valueB";
-
    TEST(StringLiteralBecause_Throws)
    {
       THROWS(FAIL("Because"), Anomaly, R"(
@@ -21,7 +18,7 @@ File.cpp(1))");
    TEST(StringVariableBecause_MessagesTestCase_Throws)
    {
       const string Because = "BecauseValue";
-      string messageA = "A", messageB = "B";
+      const string messageA = "A", messageB = "B";
       THROWS(FAIL(Because, messageA, messageB), Anomaly, R"(
  Failed: FAIL(Because, messageA, messageB)
 Because: "BecauseValue"

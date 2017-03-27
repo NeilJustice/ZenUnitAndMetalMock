@@ -32,9 +32,9 @@ namespace ZenUnit
    {
       char hostname[HOST_NAME_MAX + 1];
       assert_true(sizeof(hostname) == 65);
-      int gethostnameResult = gethostname_ZenMockable(hostname, sizeof(hostname));
+      const int gethostnameResult = gethostname_ZenMockable(hostname, sizeof(hostname));
       assert_true(gethostnameResult == 0);
-      string linuxMachineName(hostname);
+      const string linuxMachineName(hostname);
       return linuxMachineName;
    }
 #elif _WIN32
@@ -43,9 +43,9 @@ namespace ZenUnit
       const size_t Windows10MaxPCNameLength = 40;
       TCHAR computerNameChars[Windows10MaxPCNameLength + 1];
       DWORD size = sizeof(computerNameChars);
-      BOOL didGetComputerName = GetComputerName_ZenMockable(computerNameChars, &size);
+      const BOOL didGetComputerName = GetComputerName_ZenMockable(computerNameChars, &size);
       assert_true(didGetComputerName == TRUE);
-      string windowsMachineName(computerNameChars);
+      const string windowsMachineName(computerNameChars);
       return windowsMachineName;
    }
 #endif

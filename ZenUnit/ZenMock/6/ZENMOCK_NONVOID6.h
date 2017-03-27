@@ -80,7 +80,7 @@ namespace ZenMock
       {
          SixArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ExceptionThrower>::
             PrivateZenMock(arg1, arg2, arg3, arg4, arg5, arg6);
-         ReturnType returnValue = ValueReturner<ReturnType>::PrivateNextReturnValue();
+         const ReturnType returnValue = ValueReturner<ReturnType>::PrivateNextReturnValue();
          return returnValue;
       }
    };

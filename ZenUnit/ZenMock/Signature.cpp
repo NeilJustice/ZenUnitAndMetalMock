@@ -23,13 +23,13 @@ namespace ZenMock
       {
          builder << ' ' << constOrEmptyString;
       }
-      std::string zenMockedFunctionSignature = builder.str();
+      const std::string zenMockedFunctionSignature = builder.str();
       return zenMockedFunctionSignature;
    }
 
    std::string Signature::FunctionPointer(const char* returnType, const char* unadornedFunctionSignature)
    {
-      std::string zenMockedFunctionPointerSignature = 
+      const std::string zenMockedFunctionPointerSignature = 
          ZenUnit::String::Concat(returnType, " ", unadornedFunctionSignature);
       return zenMockedFunctionPointerSignature;
    }

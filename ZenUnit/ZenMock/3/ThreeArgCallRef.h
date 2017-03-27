@@ -45,9 +45,9 @@ struct ZenUnitPrinter<ZenMock::ThreeArgCallRef<Arg1Type, Arg2Type, Arg3Type>>
    static void Print(std::ostream& os, const ZenMock::ThreeArgCallRef<
       Arg1Type, Arg2Type, Arg3Type>& threeArgCallRef)
    {
-      std::string toStringedArg1 = ZenUnit::ToStringer::ToString(threeArgCallRef.arg1);
-      std::string toStringedArg2 = ZenUnit::ToStringer::ToString(threeArgCallRef.arg2);
-      std::string toStringedArg3 = ZenUnit::ToStringer::ToString(threeArgCallRef.arg3);
+      const std::string toStringedArg1 = ZenUnit::ToStringer::ToString(threeArgCallRef.arg1);
+      const std::string toStringedArg2 = ZenUnit::ToStringer::ToString(threeArgCallRef.arg2);
+      const std::string toStringedArg3 = ZenUnit::ToStringer::ToString(threeArgCallRef.arg3);
       os << "ZenMock::ThreeArgCall:\n"
             "Arg1: " << toStringedArg1 << '\n' <<
             "Arg2: " << toStringedArg2 << '\n' <<

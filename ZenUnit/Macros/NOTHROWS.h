@@ -14,12 +14,12 @@ namespace ZenUnit
       const char* expressionText,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      std::string failedLinePrefix = String::Concat("  Failed: NOTHROWS(", expressionText);
-      const std::string* actualExceptionTypeName = Type::GetName(e);
-      std::string whyBody = String::Concat("Expected: No exception thrown\n",
+      const std::string failedLinePrefix = String::Concat("  Failed: NOTHROWS(", expressionText);
+      const std::string* const actualExceptionTypeName = Type::GetName(e);
+      const std::string whyBody = String::Concat("Expected: No exception thrown\n",
          "  Actual: ", *actualExceptionTypeName, " thrown\n",
          "  what(): \"", e.what(), "\"");
-      Anomaly anomaly(failedLinePrefix, whyBody, fileLine, " ", messagesText, messages...);
+      const Anomaly anomaly(failedLinePrefix, whyBody, fileLine, " ", messagesText, messages...);
       throw anomaly;
    }
 

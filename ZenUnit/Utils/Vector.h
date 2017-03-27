@@ -13,7 +13,7 @@ namespace ZenUnit
       template<typename T>
       static std::string Join(const std::vector<T>& vec, char separator)
       {
-         size_t vectorSize = vec.size();
+         const size_t vectorSize = vec.size();
          if (vectorSize == 0)
          {
             return std::string();
@@ -28,7 +28,7 @@ namespace ZenUnit
                oss << separator;
             }
          }
-         std::string joinedVectorString = oss.str();
+         const std::string joinedVectorString = oss.str();
          return joinedVectorString;
       }
 

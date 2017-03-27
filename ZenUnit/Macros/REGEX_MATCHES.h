@@ -14,11 +14,11 @@ namespace ZenUnit
       VRText<PatternStringType> expectedPatternVRT, VRText<StrStringType> strVRT,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      std::string expectedLine = String::Concat(
+      const std::string expectedLine = String::Concat(
          "Expected string to match: \"", expectedPatternVRT.value, "\"");
-      std::string actualLine = String::Concat(
+      const std::string actualLine = String::Concat(
          "     Non-matching string: \"", strVRT.value, "\"");
-      Anomaly anomaly(
+      const Anomaly anomaly(
          "REGEX_MATCHES", expectedPatternVRT.text, strVRT.text, "", messagesText,
          Anomaly::Default,
          expectedLine,
@@ -33,7 +33,7 @@ namespace ZenUnit
       VRText<StrStringType> strVRT,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      std::regex regexPattern(expectedPatternVRT.value);
+      const std::regex regexPattern(expectedPatternVRT.value);
       if (!std::regex_match(strVRT.value, regexPattern))
       {
          REGEX_MATCHES_Throw(

@@ -28,7 +28,7 @@ File.cpp(1))");
 
    TEST(StringIsNotEmpty_Throws_MessagesTestCase)
    {
-      string messageA = "A", messageB = "B";
+      const string messageA = "A", messageB = "B";
       THROWS(IS_EMPTY(string(10, 'a'), messageA, messageB), Anomaly, R"(
   Failed: IS_EMPTY(string(10, 'a'), messageA, messageB)
 Expected: empty() == true

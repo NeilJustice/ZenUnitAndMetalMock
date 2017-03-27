@@ -49,8 +49,8 @@ namespace ZenMock
          const Arg5Type& expectedArg5)
       {
          this->SetAsserted();
-         size_t expectedNumberOfCalls = 1;
-         size_t numberOfCalls = fiveArgCalls.size();
+         const size_t expectedNumberOfCalls = 1;
+         const size_t numberOfCalls = fiveArgCalls.size();
          ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature);
          ARE_EQUAL(expectedArg1, fiveArgCalls[0].arg1, this->ZenMockedFunctionSignature);
          ARE_EQUAL(expectedArg2, fiveArgCalls[0].arg2, this->ZenMockedFunctionSignature);
@@ -69,7 +69,7 @@ namespace ZenMock
       {
          this->ThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
          this->SetAsserted();
-         size_t numberOfCalls = fiveArgCalls.size();
+         const size_t numberOfCalls = fiveArgCalls.size();
          ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCalls; ++i)
          {
@@ -88,7 +88,8 @@ namespace ZenMock
       {
          this->ThrowIfExpectedCallsSizeIsZero(expectedFiveArgCalls.size());
          this->SetAsserted();
-         std::vector<FiveArgCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>> actualFiveArgCalls = PrivateCallsToCallRefs(fiveArgCalls);
+         const std::vector<FiveArgCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>> 
+            actualFiveArgCalls = PrivateCallsToCallRefs(fiveArgCalls);
          VECTORS_EQUAL(expectedFiveArgCalls, actualFiveArgCalls, this->ZenMockedFunctionSignature);
       }
 

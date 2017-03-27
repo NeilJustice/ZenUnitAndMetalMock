@@ -71,7 +71,7 @@ namespace ZenUnit
    {
       ExpectStopwatchStartAndStop();
       //
-      CallResult callResult = _tryCatchCaller.Call(NoThrow, _testMock.get(), TestPhase::Startup);
+      const CallResult callResult = _tryCatchCaller.Call(NoThrow, _testMock.get(), TestPhase::Startup);
       //
       ARE_EQUAL(1, TryCatchCallerTests::numberOfNoThrowCalls);
       AssertStartAndStopCalled();
@@ -85,7 +85,7 @@ namespace ZenUnit
    static void ThrowAnomaly(Test* test)
    {
       IS_NOT_NULL(test);
-      Anomaly anomaly("NonDefault", "NonDefault", FileLine(), "", "");
+      const Anomaly anomaly("NonDefault", "NonDefault", FileLine(), "", "");
       throw anomaly;
    }
 
@@ -93,7 +93,8 @@ namespace ZenUnit
    {
       ExpectStopwatchStartAndStop();
       //
-      CallResult callResult = _tryCatchCaller.Call(ThrowAnomaly, _testMock.get(), TestPhase::TestBody);
+      const CallResult callResult = _tryCatchCaller.Call(
+         ThrowAnomaly, _testMock.get(), TestPhase::TestBody);
       //
       AssertStartAndStopCalled();
       CallResult expectedCallResult;
@@ -114,7 +115,8 @@ namespace ZenUnit
    {
       ExpectStopwatchStartAndStop();
       //
-      CallResult callResult = _tryCatchCaller.Call(ThrowStdException, _testMock.get(), TestPhase::TestBody);
+      const CallResult callResult = _tryCatchCaller.Call(
+         ThrowStdException, _testMock.get(), TestPhase::TestBody);
       //
       AssertStartAndStopCalled();
       CallResult expectedCallResult;
@@ -135,7 +137,8 @@ namespace ZenUnit
    {
       ExpectStopwatchStartAndStop();
       //
-      CallResult callResult = _tryCatchCaller.Call(ThrowInvalidArgument, _testMock.get(), TestPhase::TestBody);
+      const CallResult callResult = _tryCatchCaller.Call(
+         ThrowInvalidArgument, _testMock.get(), TestPhase::TestBody);
       //
       AssertStartAndStopCalled();
       CallResult expectedCallResult;
@@ -151,7 +154,7 @@ namespace ZenUnit
    {
       ExpectStopwatchStartAndStop();
       //
-      CallResult callResult = _tryCatchCaller.Call([](Test*)
+      const CallResult callResult = _tryCatchCaller.Call([](Test*)
       {
          throw ZenMock::FunctionAlreadyExpectedException("ZenMockedFunctionSignature");
       }, _testMock.get(), TestPhase::TestBody);

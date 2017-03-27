@@ -61,7 +61,7 @@ namespace ZenMock
 
       void Expect_CalledTwice_Throws()
       {
-         auto test = [](auto& zenMockObject, const string& expectedSignature)
+         const auto test = [](auto& zenMockObject, const string& expectedSignature)
          {
             zenMockObject.Expect();
             THROWS(zenMockObject.Expect(), FunctionAlreadyExpectedException,
@@ -79,7 +79,7 @@ namespace ZenMock
 
       void Function_NotExpected_Throws()
       {
-         auto test = [](auto functionCallLambda, const string& expectedSignature)
+         const auto test = [](auto functionCallLambda, const string& expectedSignature)
          {
             THROWS(functionCallLambda(), UnexpectedCallException,
             UnexpectedCallException::MakeWhat(expectedSignature, 0));
@@ -100,7 +100,7 @@ namespace ZenMock
 
       void Function_Expected_DoesNotThrow()
       {
-         auto test = [](auto& zenMockObject)
+         const auto test = [](auto& zenMockObject)
          {
             zenMockObject.Expect();
             zenMockObject.PrivateZenMock(0);
@@ -119,7 +119,7 @@ namespace ZenMock
 
       void ExpectAndThrow_CalledTwice_Throws()
       {
-         auto test = [](auto& zenMockObject, const string& expectedSignature)
+         const auto test = [](auto& zenMockObject, const string& expectedSignature)
          {
             zenMockObject.template ExpectAndThrow<exception>();
             THROWS(zenMockObject.template ExpectAndThrow<exception>(), FunctionAlreadyExpectedException,
@@ -138,7 +138,7 @@ namespace ZenMock
       const string What = "what";
       void ExpectAndThrow_ThenFunction_ThrowsTheException()
       {
-         auto assertCalledOnce = [](auto& zenMockObject)
+         const auto assertCalledOnce = [](auto& zenMockObject)
          {
             zenMockObject.AssertCalledOnceWith(0);
             zenMockObject.AssertCalledNTimesWith(1, 0);
@@ -183,7 +183,7 @@ namespace ZenMock
 
       void FunctionNotCalled_AssertCalledOnceWithThrows_AssertCalledNTimesWithThrows()
       {
-         auto test = [](auto& zenMockObject, const string& expectedSignature)
+         const auto test = [](auto& zenMockObject, const string& expectedSignature)
          {
             THROWS(zenMockObject.AssertCalledOnceWith(0), Anomaly, R"(
   Failed: ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature)
@@ -218,14 +218,14 @@ File.cpp(1))");
 
       void Function_ExpectedFunctionCalledOnceThenTwice_AssertCallsOnceWithDoesNotThrow_AssertCalledNTimesWithDoesNotThrow()
       {
-         auto assertAfterFirstCall = [](auto& zenMockObject, const string& expectedSignature)
+         const auto assertAfterFirstCall = [](auto& zenMockObject, const string& expectedSignature)
          {
             zenMockObject.AssertCalledOnceWith(0);
             zenMockObject.AssertCalledNTimesWith(1, 0);
             THROWS(zenMockObject.AssertCalledNTimesWith(2, 0), Anomaly,
                ZenMockTester::ExpectedCallCountMismatchWhat(expectedSignature, 2, 1));
          };
-         auto assertAfterSecondCall = [](auto& zenMockObject, const string& expectedSignature)
+         const auto assertAfterSecondCall = [](auto& zenMockObject, const string& expectedSignature)
          {
             THROWS(zenMockObject.AssertCalledOnceWith(0), Anomaly,
                ZenMockTester::ExpectedCallCountMismatchWhat(expectedSignature, 1, 2));
@@ -258,28 +258,28 @@ File.cpp(1))");
          mock.NonVirtualConst(0);
          assertAfterSecondCall(mock.NonVirtualConstMock, nonVirtualConstSignature);
 
-         std::function<void(int)> zenBoundGlobalMock = ZENBIND1(globalMock);
+         const std::function<void(int)> zenBoundGlobalMock = ZENBIND1(globalMock);
          globalMock.Expect();
          zenBoundGlobalMock(0);
          assertAfterFirstCall(globalMock, globalSignature);
          zenBoundGlobalMock(0);
          assertAfterSecondCall(globalMock, globalSignature);
 
-         std::function<void(int)> zenBoundNamespaceMock = ZENBIND1(namespaceMock);
+         const std::function<void(int)> zenBoundNamespaceMock = ZENBIND1(namespaceMock);
          namespaceMock.Expect();
          zenBoundNamespaceMock(0);
          assertAfterFirstCall(namespaceMock, namespaceSignature);
          zenBoundNamespaceMock(0);
          assertAfterSecondCall(namespaceMock, namespaceSignature);
 
-         std::function<void(int)> zenBoundStaticNameClashMock = ZENBIND1(staticNameClashMock);
+         const std::function<void(int)> zenBoundStaticNameClashMock = ZENBIND1(staticNameClashMock);
          staticNameClashMock.Expect();
          zenBoundStaticNameClashMock(0);
          assertAfterFirstCall(staticNameClashMock, staticNameClashSignature);
          zenBoundStaticNameClashMock(0);
          assertAfterSecondCall(staticNameClashMock, staticNameClashSignature);
 
-         std::function<void(int)> zenBoundStaticMock = ZENBIND1(staticMock);
+         const std::function<void(int)> zenBoundStaticMock = ZENBIND1(staticMock);
          staticMock.Expect();
          zenBoundStaticMock(0);
          assertAfterFirstCall(staticMock, staticSignature);
@@ -291,14 +291,14 @@ File.cpp(1))");
 
       void AssertCalledOnceWith_ExpectedFunctionCalled0Or2OrMoreTimes_Throws(size_t numberOfCalls)
       {
-         auto test = [&](auto& zenMockObject, const string& expectedSignature)
+         const auto test = [&](auto& zenMockObject, const string& expectedSignature)
          {
             zenMockObject.Expect();
             for (size_t i = 0; i < numberOfCalls; ++i)
             {
                zenMockObject.PrivateZenMock(0);
             }
-           string expectedWhat = String::Concat(R"(
+           const string expectedWhat = String::Concat(R"(
   Failed: ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature)
 Expected: 1
   Actual: )", numberOfCalls, R"(
@@ -318,13 +318,13 @@ File.cpp(1))");
 
       void AssertCalledOnceWith_ExpectedFunctionCalledOnceWithMistmatchingArg_Throws()
       {
-         auto test = [](auto& zenMockObject, const string& expectedSignature)
+         const auto test = [](auto& zenMockObject, const string& expectedSignature)
          {
             zenMockObject.Expect();
             //
             zenMockObject.PrivateZenMock(10);
             //
-            string expectedWhat = String::Concat(R"(
+            const string expectedWhat = String::Concat(R"(
   Failed: ARE_EQUAL(expectedArg, oneArgCalls[0].arg, this->ZenMockedFunctionSignature)
 Expected: 20
   Actual: 10
@@ -344,7 +344,7 @@ File.cpp(1))");
 
       void AssertCalledOnceWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrow()
       {
-         auto test = [](auto& zenMockObject)
+         const auto test = [](auto& zenMockObject)
          {
             zenMockObject.Expect();
             //
@@ -364,7 +364,7 @@ File.cpp(1))");
 
       void AssertCalledNTimesWith_N0_Throws()
       {
-         auto test = [](auto& zenMockObject, const string& expectedSignature)
+         const auto test = [](auto& zenMockObject, const string& expectedSignature)
          {
             THROWS(zenMockObject.AssertCalledNTimesWith(0, 0), UnsupportedAssertCalledZeroTimesException,
                UnsupportedAssertCalledZeroTimesException::MakeWhat(expectedSignature));
@@ -381,7 +381,7 @@ File.cpp(1))");
 
       void AssertCalledNTimesWith_N1OrGreater_FunctionCalledNotNTimes_Throws(size_t n, size_t numberOfCalls)
       {
-         auto test = [&](auto& zenMockObject, const string& expectedSignature)
+         const auto test = [&](auto& zenMockObject, const string& expectedSignature)
          {
             zenMockObject.Expect();
             for (size_t i = 0; i < numberOfCalls; ++i)
@@ -409,7 +409,7 @@ File.cpp(1))");
       void AssertCalledNTimesWith_N1OrGreater_FunctionCalledNTimesWithOneOfTheCallsMismatching_Throws(
          size_t n, size_t mismatchingCallIndex)
       {
-         auto test = [&](auto& zenMockObject, const string& expectedSignature)
+         const auto test = [&](auto& zenMockObject, const string& expectedSignature)
          {
             zenMockObject.Expect();
             //
@@ -425,7 +425,7 @@ File.cpp(1))");
                }
             }
             //
-            string expectedWhat = String::Concat(R"(
+            const string expectedWhat = String::Concat(R"(
   Failed: ARE_EQUAL(expectedArg, oneArgCalls[i].arg, zenMockedFunctionSignatureAndCallIndex)
 Expected: 10
   Actual: 20
@@ -445,7 +445,7 @@ File.cpp(1))");
 
       void AssertCalledNTimesWith_N1OrGreater_FunctionCalledNTimesWithMatchingArg_DoesNotThrow(size_t n)
       {
-         auto test = [&](auto& zenMockObject)
+         const auto test = [&](auto& zenMockObject)
          {
             zenMockObject.Expect();
             //
@@ -468,7 +468,7 @@ File.cpp(1))");
 
       void AssertCalls_EmptyCalls_Throws()
       {
-         auto test = [](auto& zenMockObject, const string& expectedSignature)
+         const auto test = [](auto& zenMockObject, const string& expectedSignature)
          {
             THROWS(zenMockObject.AssertCalls({}), UnsupportedAssertCalledZeroTimesException,
                UnsupportedAssertCalledZeroTimesException::MakeWhat(expectedSignature));
@@ -486,13 +486,13 @@ File.cpp(1))");
       void AssertCalls_NonEmptyCalls_FunctionCalledNotCallsSizeTimes_Throws(
          size_t expectedCallsSize, size_t numberOfCalls)
       {
-         auto test = [&](auto& zenMockObject, const string& expectedSignature)
+         const auto test = [&](auto& zenMockObject, const string& expectedSignature)
          {
             zenMockObject.Expect();
             //
             ZenMockTester::call_n_times(numberOfCalls, [&]{ zenMockObject.PrivateZenMock(0); });
             //
-            string expectedWhat = String::Concat(R"(
+            const string expectedWhat = String::Concat(R"(
   Failed: VECTORS_EQUAL(expectedOneArgCalls, actualOneArgCalls, this->ZenMockedFunctionSignature)
 Expected: vector<T>
   Actual: vector<T>
@@ -520,7 +520,7 @@ File.cpp(1))");
       void AssertCalls_NonEmptyCalls_FunctionCalledCallsSizeTimesWithOneOfTheCallsMismatching_Throws(
          size_t expectedCallsSize, size_t mismatchingCallIndex)
       {
-         auto test = [&](auto& zenMockObject, const string& expectedSignature)
+         const auto test = [&](auto& zenMockObject, const string& expectedSignature)
          {
             zenMockObject.Expect();
             //
@@ -536,7 +536,7 @@ File.cpp(1))");
                }
             }
             //
-            string expectedWhat = String::Concat(R"(
+            const string expectedWhat = String::Concat(R"(
   Failed: VECTORS_EQUAL(expectedOneArgCalls, actualOneArgCalls, this->ZenMockedFunctionSignature)
 Expected: vector<T>
   Actual: vector<T>
@@ -549,7 +549,7 @@ Arg: 20
  Message: ")", expectedSignature, R"("
 File.cpp(1)
 File.cpp(1))");
-            int expectedArg = 10;
+            const int expectedArg = 10;
             vector<OneArgCallRef<int>> expectedCalls;
             ZenMockTester::call_n_times(expectedCallsSize, [&]{ expectedCalls.emplace_back(expectedArg); });
             THROWS(zenMockObject.AssertCalls(expectedCalls), Anomaly, expectedWhat);
@@ -567,13 +567,13 @@ File.cpp(1))");
       void AssertCalls_NonEmptyCalls_FunctionCalledCallsSizeTimesMatchingArgs_DoesNotThrow(
          size_t expectedCallsSize)
       {
-         auto test = [&](auto& zenMockObject)
+         const auto test = [&](auto& zenMockObject)
          {
             zenMockObject.Expect();
             //
             ZenMockTester::call_n_times(expectedCallsSize, [&]{ zenMockObject.PrivateZenMock(10); });
             //
-            int expectedArg = 10;
+            const int expectedArg = 10;
             vector<OneArgCallRef<int>> expectedCalls;
             ZenMockTester::call_n_times(expectedCallsSize, [&]{ expectedCalls.emplace_back(expectedArg); });
             zenMockObject.AssertCalls(expectedCalls);

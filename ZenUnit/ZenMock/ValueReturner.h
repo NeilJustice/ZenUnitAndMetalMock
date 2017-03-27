@@ -51,7 +51,7 @@ namespace ZenMock
       {
          if (_returnValues.empty())
          {
-            FunctionReturnType defaultReturnValue{};
+            const FunctionReturnType defaultReturnValue{};
             return defaultReturnValue;
          }
          return NextReturnValue();

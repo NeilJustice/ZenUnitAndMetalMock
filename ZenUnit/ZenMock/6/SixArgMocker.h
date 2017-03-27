@@ -52,8 +52,8 @@ namespace ZenMock
          const Arg6Type& expectedArg6)
       {
          this->SetAsserted();
-         size_t expectedNumberOfCalls = 1;
-         size_t numberOfCalls = sixArgCalls.size();
+         const size_t expectedNumberOfCalls = 1;
+         const size_t numberOfCalls = sixArgCalls.size();
          ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature);
          ARE_EQUAL(expectedArg1, sixArgCalls[0].arg1, this->ZenMockedFunctionSignature);
          ARE_EQUAL(expectedArg2, sixArgCalls[0].arg2, this->ZenMockedFunctionSignature);
@@ -74,11 +74,11 @@ namespace ZenMock
       {
          this->ThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
          this->SetAsserted();
-         size_t numberOfCalls = sixArgCalls.size();
+         const size_t numberOfCalls = sixArgCalls.size();
          ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCalls; ++i)
          {
-            std::string zenMockedFunctionSignatureAndCallIndex
+            const std::string zenMockedFunctionSignatureAndCallIndex
                = ZenUnit::String::Concat(this->ZenMockedFunctionSignature, " at i=", i);
             ARE_EQUAL(expectedArg1, sixArgCalls[i].arg1, zenMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedArg2, sixArgCalls[i].arg2, zenMockedFunctionSignatureAndCallIndex);
@@ -94,7 +94,8 @@ namespace ZenMock
       {
          this->ThrowIfExpectedCallsSizeIsZero(expectedSixArgCalls.size());
          this->SetAsserted();
-         std::vector<SixArgCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>> actualSixArgCalls = PrivateCallsToCallRefs(sixArgCalls);
+         const std::vector<SixArgCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>> 
+            actualSixArgCalls = PrivateCallsToCallRefs(sixArgCalls);
          VECTORS_EQUAL(expectedSixArgCalls, actualSixArgCalls, this->ZenMockedFunctionSignature);
       }
 

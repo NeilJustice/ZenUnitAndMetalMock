@@ -14,7 +14,7 @@ namespace ZenUnit
    {
       ostringstream oss;
       oss << *this;
-      string fileLineAsString = oss.str();
+      const string fileLineAsString = oss.str();
       return fileLineAsString;
    }
 

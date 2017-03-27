@@ -84,7 +84,7 @@ namespace ZenUnit
       testFailure3.testOutcome = TestOutcome::Exception;
       _testClassResult._testResults = { testFailure1, testSuccess1, testFailure2, testSuccess2, testFailure3 };
       //
-      size_t numberOfFailedTestCases = _testClassResult.NumberOfFailedTestCases();
+      const size_t numberOfFailedTestCases = _testClassResult.NumberOfFailedTestCases();
       //
       ARE_EQUAL(3, numberOfFailedTestCases);
    }
@@ -94,10 +94,10 @@ namespace ZenUnit
       using TypedefForEacherTwoExtraArgsMock = ForEacherTwoExtraArgsMock<vector<TestResult>,
          void (*)(const TestResult&, const Console*, TestFailureNumberer*),
          const Console*, TestFailureNumberer*>;
-      TypedefForEacherTwoExtraArgsMock* forEacherTwoExtraArgsMock = new TypedefForEacherTwoExtraArgsMock;
+      const TypedefForEacherTwoExtraArgsMock* const forEacherTwoExtraArgsMock = new TypedefForEacherTwoExtraArgsMock;
       forEacherTwoExtraArgsMock->ForEachMock.Expect();
       _testClassResult._forEacherTwoExtraArgs.reset(forEacherTwoExtraArgsMock);
-      Console console;
+      const Console console;
       TestFailureNumberer testFailureNumberer;
       //
       _testClassResult.PrintTestFailures(&console, &testFailureNumberer);
@@ -110,7 +110,7 @@ namespace ZenUnit
    {
       ARE_EQUAL(0, _testClassResult._testResults.size());
       //
-      long long milliseconds = _testClassResult.Milliseconds();
+      const long long milliseconds = _testClassResult.Milliseconds();
       //
       ARE_EQUAL(0, milliseconds);
    }
@@ -123,7 +123,7 @@ namespace ZenUnit
       testResultB.milliseconds = 2;
       _testClassResult._testResults = { testResultA, testResultB };
       //
-      long long milliseconds = _testClassResult.Milliseconds();
+      const long long milliseconds = _testClassResult.Milliseconds();
       //
       ARE_EQUAL(3, milliseconds);
    }
@@ -131,7 +131,7 @@ namespace ZenUnit
    TEST(PrintResultLine_0FailedTest_WritesOKInGreen)
    {
       _testClassResultSelfMocked.NumberOfFailedTestCasesMock.ExpectAndReturn(0);
-      ConsoleMock consoleMock;
+      const ConsoleMock consoleMock;
       consoleMock.WriteColorMock.Expect();
       consoleMock.WriteNewlineMock.Expect();
       //
@@ -149,7 +149,7 @@ namespace ZenUnit
       3ULL)
    {
       _testClassResultSelfMocked.NumberOfFailedTestCasesMock.ExpectAndReturn(numberOfFailedTestCases);
-      ConsoleMock consoleMock;
+      const ConsoleMock consoleMock;
       consoleMock.WriteColorMock.Expect();
       consoleMock.WriteNewlineMock.Expect();
       //
@@ -164,7 +164,7 @@ namespace ZenUnit
    {
       TestResultMock testResultMock;
       testResultMock.PrintIfFailureMock.Expect();
-      Console console;
+      const Console console;
       TestFailureNumberer testFailureNumberer;
       //
       _testClassResult.PrintTestResultIfFailure(testResultMock, &console, &testFailureNumberer);

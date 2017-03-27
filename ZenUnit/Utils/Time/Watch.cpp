@@ -7,31 +7,31 @@ namespace ZenUnit
    // Returns now in format "Monday January 1, 2016 at 00:00:00 <Timezone>"
    string Watch::TimeZoneDateTimeNow() const
    {
-      tm tmNow = TMNow();
+      const tm tmNow = TMNow();
       ostringstream builder;
-      const char* weekDayString = TMWeekDayToWeekDayString(tmNow.tm_wday);
-      const char* monthString = TMMonthToMonthString(tmNow.tm_mon);
-      string timeZone = TimeZone(tmNow);
+      const char* const weekDayString = TMWeekDayToWeekDayString(tmNow.tm_wday);
+      const char* const monthString = TMMonthToMonthString(tmNow.tm_mon);
+      const string timeZone = TimeZone(tmNow);
       builder << setw(2) << setfill('0') << tmNow.tm_hour << ':'
               << setw(2) << setfill('0') << tmNow.tm_min << ':'
               << setw(2) << setfill('0') << tmNow.tm_sec << ' '
               << timeZone << " on " << weekDayString << ' ' << monthString << ' ' << tmNow.tm_mday << ", " << (tmNow.tm_year + 1900);
-      string weekdayDateTimeZoneNow = builder.str();
+      const string weekdayDateTimeZoneNow = builder.str();
       return weekdayDateTimeZoneNow;
    }
 
    tm Watch::TMNow() const
    {
-      chrono::time_point<chrono::system_clock> nowTimePoint = chrono::system_clock::now();
+      const chrono::time_point<chrono::system_clock> nowTimePoint = chrono::system_clock::now();
 #ifdef __linux__
       tm* tmNow = nullptr;
       long nowTimeT = chrono::system_clock::to_time_t(nowTimePoint);
       tmNow = localtime(&nowTimeT);
       return *tmNow;
 #elif _WIN32
+      const __time64_t nowTimeT = chrono::system_clock::to_time_t(nowTimePoint);
       tm tmNow;
-      __time64_t nowTimeT = chrono::system_clock::to_time_t(nowTimePoint);
-      errno_t localtimeResult = localtime_s(&tmNow, &nowTimeT);
+      const errno_t localtimeResult = localtime_s(&tmNow, &nowTimeT);
       assert_true(localtimeResult == 0);
       return tmNow;
 #endif
@@ -41,7 +41,7 @@ namespace ZenUnit
    {
       char timeZoneChars[128];
       strftime(timeZoneChars, sizeof(timeZoneChars), "%Z", &tmValue);
-      string timeZone(timeZoneChars);
+      const string timeZone(timeZoneChars);
       return timeZone;
    }
 

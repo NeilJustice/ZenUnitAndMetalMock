@@ -12,7 +12,7 @@ namespace ZenUnit
    NOINLINE void IS_FALSE_Throw(
       const char* valueText, FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      Anomaly anomaly("IS_FALSE", valueText, "", "", messagesText,
+      const Anomaly anomaly("IS_FALSE", valueText, "", "", messagesText,
          Anomaly::Default,
          "false",
          "true",

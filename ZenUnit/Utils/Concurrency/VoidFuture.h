@@ -9,8 +9,8 @@ namespace ZenUnit
       std::future<void> _voidFuture;
    public:
       VoidFuture();
-      virtual ~VoidFuture() {}
       VoidFuture(std::future<void>&& voidFuture);
+      virtual ~VoidFuture() {}
       virtual std::future_status WaitAtMostSeconds(unsigned seconds) const;
       virtual void Get();
    };

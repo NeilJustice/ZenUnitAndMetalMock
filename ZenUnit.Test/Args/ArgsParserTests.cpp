@@ -17,7 +17,7 @@ namespace ZenUnit
    SPECEND
 
    ArgsParser _argsParser;
-   ConsoleMock* _consoleMock;
+   const ConsoleMock* _consoleMock;
    const string TestProgramPath = "Folder/TestProgramName";
    const string ExpectedUsage = R"(ZenUnit and ZenMock
 Usage: ./<TestsBinaryName> [Options...]
@@ -51,7 +51,7 @@ None
    {
       vector<string> args = { TestProgramPath };
       //
-      ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
+      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = TestProgramPath;
@@ -62,9 +62,9 @@ None
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
-      vector<string> args(1 + ZenUnitArgs::ValidArgs.size() + 1);
+      const vector<string> Args(1 + ZenUnitArgs::ValidArgs.size() + 1);
       //
-      THROWS(_argsParser.Parse(args), WriteLineAndExitException, "");
+      THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
       //
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
          "ZenUnit argument error: Too many arguments"));
@@ -75,9 +75,9 @@ None
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
-      vector<string> args = { TestProgramPath, "-Exit0" };
+      const vector<string> Args = { TestProgramPath, "-Exit0" };
       //
-      THROWS(_argsParser.Parse(args), WriteLineAndExitException, "");
+      THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
       //
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
          "ZenUnit argument error: Invalid argument \"-Exit0\""));
@@ -98,17 +98,17 @@ None
 
    TEST(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
    {
-      vector<string> args =
+      const vector<string> Args =
       {
          TestProgramPath,
          "-exit0",
          "-noskips"
       };
       //
-      ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
+      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
       //
       ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
+      expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
       expectedZenUnitArgs.exit0 = true;
       expectedZenUnitArgs.noskips = true;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
@@ -121,9 +121,9 @@ None
 
    void AssertArgSetsField(string arg, bool ZenUnitArgs::* expectedFieldToBeSet)
    {
-      vector<string> args = { TestProgramPath, arg };
+      const vector<string> Args = { TestProgramPath, arg };
       //
-      ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
+      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
       //
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = TestProgramPath + " " + arg;
@@ -133,17 +133,17 @@ None
 
    TEST(Parse_ValidFlagArgSpecifiedTwice_ReturnsZenUnitArgs)
    {
-      vector<string> args =
+      const vector<string> Args =
       {
          TestProgramPath,
          "-exit0",
          "-exit0"
       };
       //
-      ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
+      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
       //
       ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
+      expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
       expectedZenUnitArgs.exit0 = true;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }

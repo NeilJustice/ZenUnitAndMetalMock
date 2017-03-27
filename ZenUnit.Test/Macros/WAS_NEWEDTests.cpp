@@ -15,7 +15,7 @@ SPECEND
 
 struct Deletable
 {
-   function<void()> _incrementDestructorCallCount;
+   const function<void()> _incrementDestructorCallCount;
 
    Deletable(function<void()> incrementDestructorCallCount)
       : _incrementDestructorCallCount(incrementDestructorCallCount)
@@ -30,7 +30,7 @@ struct Deletable
 
 TEST(NullRawPointer_Throws)
 {
-   int* nullRawPointer = nullptr;
+   const int* nullRawPointer = nullptr;
    THROWS(WAS_NEWED(nullRawPointer), Anomaly, R"(
   Failed: WAS_NEWED(nullRawPointer)
 Expected: not a nullptr
@@ -40,7 +40,7 @@ File.cpp(1))");
 
 TEST(NullRawPointer_Throws_MessagesTestCase)
 {
-   char* nullRawPointer = nullptr;
+   const char* nullRawPointer = nullptr;
    const string MessageA = "A", MessageB = "B";
    THROWS(WAS_NEWED(nullRawPointer, MessageA, MessageB), Anomaly, R"(
   Failed: WAS_NEWED(nullRawPointer, MessageA, MessageB)
@@ -52,7 +52,7 @@ File.cpp(1))");
 
 TEST(EmptyUniquePointer_Throws)
 {
-   unique_ptr<int> emptyUniquePtr;
+   unique_ptr<const int> emptyUniquePtr;
    THROWS(WAS_NEWED(emptyUniquePtr), Anomaly, R"(
   Failed: WAS_NEWED(emptyUniquePtr)
 Expected: not a nullptr
@@ -62,7 +62,7 @@ File.cpp(1))");
 
 TEST(EmptySharedPointer_Throws)
 {
-   shared_ptr<int> emptySharedPtr;
+   shared_ptr<const int> emptySharedPtr;
    THROWS(WAS_NEWED(emptySharedPtr), Anomaly, R"(
   Failed: WAS_NEWED(emptySharedPtr)
 Expected: not a nullptr
@@ -73,7 +73,7 @@ File.cpp(1))");
 TEST(NonNullRawPointer_DoesNotThrow_CannotBeCalledTwiceWithoutUndefinedBehavior)
 {
    unsigned destructorCallCount = 0;
-   Deletable* nonNullRawPointer = new Deletable([&] { ++destructorCallCount; });
+   const Deletable* nonNullRawPointer = new Deletable([&] { ++destructorCallCount; });
    //
    WAS_NEWED(nonNullRawPointer);
    //
@@ -82,7 +82,7 @@ TEST(NonNullRawPointer_DoesNotThrow_CannotBeCalledTwiceWithoutUndefinedBehavior)
 
 TEST(NonEmptyUniquePointer_DoesNotThrow_ThrowsWhenCalledAgain)
 {
-   unique_ptr<int> nonEmptyUniquePtr(new int);
+   unique_ptr<const int> nonEmptyUniquePtr(new int);
    WAS_NEWED(nonEmptyUniquePtr);
 
    THROWS(WAS_NEWED(nonEmptyUniquePtr), Anomaly, R"(
@@ -94,7 +94,7 @@ File.cpp(1))");
 
 TEST(NonEmptySharedPointer_DoesNotThrow_ThrowsWhenCalledAgain)
 {
-   shared_ptr<int> nonEmptySharedPtr(new int);
+   shared_ptr<const int> nonEmptySharedPtr(new int);
    WAS_NEWED(nonEmptySharedPtr);
 
    THROWS(WAS_NEWED(nonEmptySharedPtr), Anomaly, R"(
@@ -107,7 +107,7 @@ File.cpp(1))");
 TEST(NonEmptyUserTypeUniquePointer_CallsDestructor_ThrowsWhenCalledAgain)
 {
    unsigned destructorCallCount = 0;
-   unique_ptr<Deletable> uniquePtr(new Deletable([&] { ++destructorCallCount; }));
+   unique_ptr<const Deletable> uniquePtr(new Deletable([&] { ++destructorCallCount; }));
    //
    WAS_NEWED(uniquePtr);
    //
@@ -122,7 +122,7 @@ File.cpp(1))");
 TEST(NonEmptyUserTypeSharedPointer_CallsDestructor_ThrowsWhenCalledAgain)
 {
    unsigned destructorCallCount = 0;
-   shared_ptr<Deletable> sharedPtr(new Deletable([&] { ++destructorCallCount; }));
+   shared_ptr<const Deletable> sharedPtr(new Deletable([&] { ++destructorCallCount; }));
    //
    WAS_NEWED(sharedPtr);
    //

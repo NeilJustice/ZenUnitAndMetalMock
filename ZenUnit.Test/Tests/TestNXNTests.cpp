@@ -27,9 +27,9 @@ namespace ZenUnit
 
    unique_ptr<TestNXN<TestingTestClass, N, int>> _testNXN;
    ConsoleMock* _consoleMock;
-   const char* TestClassName = "TestClassName";
-   const char* TestName = "TestName";
-   const char* TestCaseArgsText = "1, 2, 3";
+   const char* const TestClassName = "TestClassName";
+   const char* const TestName = "TestName";
+   const char* const TestCaseArgsText = "1, 2, 3";
 
    STARTUP
    {
@@ -39,7 +39,8 @@ namespace ZenUnit
 
    TEST(Constructor_NewsConsole_SetsFields_GettersReturnExpected_2X2With4Args)
    {
-      TestNXN<TestingTestClass, 2, int, int, int, int> testNXN(TestClassName, TestName, TestCaseArgsText, 0, 0, 0, 0);
+      TestNXN<TestingTestClass, 2, int, int, int, int> testNXN(
+         TestClassName, TestName, TestCaseArgsText, 0, 0, 0, 0);
       //
       WAS_NEWED(testNXN._console);
       IS_NULL(testNXN._testClass);
@@ -53,50 +54,50 @@ namespace ZenUnit
 
    TEST(Constructor_NewsConsole_SetsFields_GettersReturnExpected_1X1With1Arg)
    {
-      TestNXN<TestingTestClass, 1, int> testNXN(TestClassName, TestName, TestCaseArgsText, 0);
+      const TestNXN<TestingTestClass, 1, int> testNXN(TestClassName, TestName, TestCaseArgsText, 0);
       ARE_EQUAL(1, testNXN.NumberOfTestCaseArgs);
    }
 
    TEST(Constructor_NewsConsole_SetsFields_GettersReturnExpected_1X1With2Args)
    {
-      TestNXN<TestingTestClass, 1, int, int> testNXN(TestClassName, TestName, TestCaseArgsText, 0, 0);
+      const TestNXN<TestingTestClass, 1, int, int> testNXN(TestClassName, TestName, TestCaseArgsText, 0, 0);
       ARE_EQUAL(2, testNXN.NumberOfTestCaseArgs);
    }
 
    TEST(Constructor_StoresDecayedTypeCopiesOfTestCaseArguments)
    {
-      TestNXN<TestingTestClass, 1, int> testNXN_1X1_1Arg(TestClassName, TestName, TestCaseArgsText, 0);
+      const TestNXN<TestingTestClass, 1, int> testNXN_1X1_1Arg(TestClassName, TestName, TestCaseArgsText, 0);
       ARE_EQUAL(tuple<int>(0), testNXN_1X1_1Arg._testCaseArgs);
 
-      TestNXN<TestingTestClass, 1, int, int> testNXN_1X1_2Args(TestClassName, TestName, TestCaseArgsText, 0, 0);
-      tuple<int, int> expectedTestCaseArgs1(0, 0);
+      const TestNXN<TestingTestClass, 1, int, int> testNXN_1X1_2Args(TestClassName, TestName, TestCaseArgsText, 0, 0);
+      const tuple<int, int> expectedTestCaseArgs1(0, 0);
       ARE_EQUAL(expectedTestCaseArgs1, testNXN_1X1_2Args._testCaseArgs);
 
-      TestNXN<TestingTestClass, 2, const string&, volatile int> testNXN_2X2_4Args(
+      const TestNXN<TestingTestClass, 2, const string&, volatile int> testNXN_2X2_4Args(
          TestClassName, TestName, TestCaseArgsText, string(), 100);
-      tuple<string, int> expectedTestCaseArgs2(string(), 100);
+      const tuple<string, int> expectedTestCaseArgs2(string(), 100);
       ARE_EQUAL(expectedTestCaseArgs2, testNXN_2X2_4Args._testCaseArgs);
    }
 
    TEST(NumberOfTestCases_ReturnsNumberOfTestCaseArgsDividedByN)
    {
-      TestNXN<TestingTestClass, 1, int>
+      const TestNXN<TestingTestClass, 1, int>
          test1X1(TestClassName, TestName, TestCaseArgsText, 0);
       ARE_EQUAL(1, test1X1.NumberOfTestCases());
 
-      TestNXN<TestingTestClass, 1, int, int>
+      const TestNXN<TestingTestClass, 1, int, int>
          test1X1_2Args(TestClassName, TestName, TestCaseArgsText, 0, 0);
       ARE_EQUAL(2, test1X1_2Args.NumberOfTestCases());
 
-      TestNXN<TestingTestClass, 2, int, int>
+      const TestNXN<TestingTestClass, 2, int, int>
          test2X2_2Args(TestClassName, TestName, TestCaseArgsText, 0, 0);
       ARE_EQUAL(1, test2X2_2Args.NumberOfTestCases());
 
-      TestNXN<TestingTestClass, 2, int, int, int, int>
+      const TestNXN<TestingTestClass, 2, int, int, int, int>
          test2X2_4Args(TestClassName, TestName, TestCaseArgsText, 0, 0, 0, 0);
       ARE_EQUAL(2, test2X2_4Args.NumberOfTestCases());
 
-      TestNXN<TestingTestClass, 3, int, int, int, int, int, int, int, int, int>
+      const TestNXN<TestingTestClass, 3, int, int, int, int, int, int, int, int, int>
          test3X3_9Args(TestClassName, TestName, TestCaseArgsText, 0, 0, 0, 0, 0, 0, 0, 0, 0);
       ARE_EQUAL(3, test3X3_9Args.NumberOfTestCases());
    }
@@ -120,7 +121,7 @@ namespace ZenUnit
       test1X1SelfMocked.MockableCallBaseRunTestCaseMock.ExpectAndReturnValues(firstTestResult, secondTestResult);
       test1X1SelfMocked.PrintTestResultOutcomeMock.Expect();
       //
-      vector<TestResult> testResults = test1X1SelfMocked.Run();
+      const vector<TestResult> testResults = test1X1SelfMocked.Run();
       //
       ZEN(test1X1SelfMocked.PrintTestCaseNumberArgsArrowMock.AssertCalls({ 0, 1 }));
       TestResult expectedFirstTestResult = firstTestResult;
@@ -133,7 +134,7 @@ namespace ZenUnit
          expectedFirstTestResult,
          expectedSecondTestResult
       }));
-      vector<TestResult> expectedTestResults =
+      const vector<TestResult> expectedTestResults =
       {
          expectedFirstTestResult,
          expectedSecondTestResult,

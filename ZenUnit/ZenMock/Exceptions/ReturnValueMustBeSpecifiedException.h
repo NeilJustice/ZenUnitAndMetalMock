@@ -6,7 +6,7 @@ namespace ZenMock
    class ReturnValueMustBeSpecifiedException : public ZenMockException
    {
    private:
-      std::string _what;
+      const std::string _what;
    public:
       ReturnValueMustBeSpecifiedException(const std::string& zenMockedFunctionSignature);
       const char* what() const noexcept override;

@@ -16,7 +16,7 @@ namespace ZenUnit
    TEST(BoolIsFalse_DoesNotThrow)
    {
       IS_FALSE(false);
-      bool falseBool = false;
+      const bool falseBool = false;
       IS_FALSE(falseBool);
    }
 
@@ -31,8 +31,8 @@ File.cpp(1))");
 
    TEST(BoolVariableIsTrue_Throws_MessagesTestCase)
    {
-      bool trueBool = true;
-      string messageA = "A", messageB = "B";
+      const bool trueBool = true;
+      const string messageA = "A", messageB = "B";
       THROWS(IS_FALSE(trueBool, messageA, messageB), Anomaly, R"(
   Failed: IS_FALSE(trueBool, messageA, messageB)
 Expected: false
@@ -43,13 +43,13 @@ File.cpp(1))");
 
    TEST(StdFunctionDoesNotPointToAFunction_DoesNotThrow)
    {
-      std::function<void()> barrenStdFunction;
+      const std::function<void()> barrenStdFunction;
       IS_FALSE(barrenStdFunction);
    }
 
    TEST(StdFunctionPointsToAFunction_Throws)
    {
-      std::function<void(int)> nonemptyStdFunction = exit;
+      const std::function<void(int)> nonemptyStdFunction = exit;
       THROWS(IS_FALSE(nonemptyStdFunction), Anomaly, R"(
   Failed: IS_FALSE(nonemptyStdFunction)
 Expected: false
@@ -59,13 +59,13 @@ File.cpp(1))");
 
    TEST(UserTypeConvertsToFalse_DoesNotThrow)
    {
-      UserType falseUserType(0);
+      const UserType falseUserType(0);
       IS_FALSE(falseUserType);
    }
 
    TEST(UserTypeConvertsToTrue_Throws)
    {
-      UserType trueUserType(1);
+      const UserType trueUserType(1);
       THROWS(IS_FALSE(trueUserType), Anomaly, R"(
   Failed: IS_FALSE(trueUserType)
 Expected: false

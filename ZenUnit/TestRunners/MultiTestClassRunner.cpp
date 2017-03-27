@@ -21,13 +21,13 @@ namespace ZenUnit
 
    size_t MultiTestClassRunner::NumberOfTestClasses() const
    {
-      size_t numberOfTestClasses = _testClassRunners.size();
+      const size_t numberOfTestClasses = _testClassRunners.size();
       return numberOfTestClasses;
    }
 
    size_t MultiTestClassRunner::TotalNumberOfTestCases() const
    {
-      size_t numberOfTestCases = std::accumulate(_testClassRunners.cbegin(), _testClassRunners.cend(),
+      const size_t numberOfTestCases = std::accumulate(_testClassRunners.cbegin(), _testClassRunners.cend(),
          size_t(0), [](size_t cumulativeNumberOfTestCases, const unique_ptr<TestClassRunner>& testClassRunner)
       {
          return cumulativeNumberOfTestCases + testClassRunner->NumberOfTestCases();
@@ -51,7 +51,7 @@ namespace ZenUnit
 
    TestClassResult MultiTestClassRunner::RunTestClassRunner(const unique_ptr<TestClassRunner>& testClassRunner)
    {
-      TestClassResult testClassResult = testClassRunner->RunTests();
+      const TestClassResult testClassResult = testClassRunner->RunTests();
       return testClassResult;
    }
 }

@@ -29,11 +29,11 @@ namespace ZenMock
       VoidSignature0,
       VirtualVoidSignature0)
    {
-      UnexpectedCallException e(zenMockedFunctionSignature);
+      const UnexpectedCallException e(zenMockedFunctionSignature);
       //
       const string ExpectedWhat = ExpectedUnexpectedCallPrefix + zenMockedFunctionSignature + R"("
 )" + ExpectedFixForThisPrefix + ExpectedVoidFixForThisSuffix;
-      const char* what = e.what();
+      const char* const what = e.what();
       ARE_EQUAL(ExpectedWhat, what);
       IS_TRUE((is_base_of<ZenMockException, UnexpectedCallException>::value));
    }
@@ -43,11 +43,11 @@ namespace ZenMock
       NonVoidASignature0,
       NonVoidBSignature0)
    {
-      UnexpectedCallException e(zenMockedFunctionSignature);
+      const UnexpectedCallException e(zenMockedFunctionSignature);
       //
       const string ExpectedWhat = ExpectedUnexpectedCallPrefix + zenMockedFunctionSignature + R"("
 )" + ExpectedFixForThisPrefix + ExpectedNonVoidFixForThisSuffix;
-      const char* what = e.what();
+      const char* const what = e.what();
       ARE_EQUAL(ExpectedWhat, what);
    }
 
@@ -55,12 +55,12 @@ namespace ZenMock
    {
       const UserType Arg1(1);
       //
-      UnexpectedCallException e(VoidSignature0, Arg1);
+      const UnexpectedCallException e(VoidSignature0, Arg1);
       //
       const string ExpectedWhat = ExpectedUnexpectedCallPrefix + VoidSignature0 + R"("
 Arg1: UserType@1
 )" + ExpectedFixForThisPrefix + ExpectedVoidFixForThisSuffix;
-      const char* what = e.what();
+      const char* const what = e.what();
       ARE_EQUAL(ExpectedWhat, what);
    }
 
@@ -69,13 +69,13 @@ Arg1: UserType@1
       const UserType Arg1(1);
       const UserType Arg2(2);
       //
-      UnexpectedCallException e(VoidSignature0, Arg1, Arg2);
+      const UnexpectedCallException e(VoidSignature0, Arg1, Arg2);
       //
       const string ExpectedWhat = ExpectedUnexpectedCallPrefix + VoidSignature0 + R"("
 Arg1: UserType@1
 Arg2: UserType@2
 )" + ExpectedFixForThisPrefix + ExpectedVoidFixForThisSuffix;
-      const char* what = e.what();
+      const char* const what = e.what();
       ARE_EQUAL(ExpectedWhat, what);
    }
 

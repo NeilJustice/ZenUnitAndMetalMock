@@ -37,7 +37,7 @@ namespace ZenUnit
 
       virtual std::vector<TestResult> Run() override
       {
-         TestResult testResult = RunTestCase();
+         const TestResult testResult = RunTestCase();
          return { testResult };
       }
 

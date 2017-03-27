@@ -14,7 +14,7 @@ namespace ZenUnit
       const char* pointerText, 
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      Anomaly anomaly("IS_NOT_NULL", pointerText, "", "", messagesText,
+      const Anomaly anomaly("IS_NOT_NULL", pointerText, "", "", messagesText,
          Anomaly::Default,
          "not nullptr",
          "nullptr",

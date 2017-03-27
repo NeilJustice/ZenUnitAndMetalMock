@@ -25,13 +25,13 @@ namespace ZenMock
 
    TEST(DefaultConstructor_DefaultInitializesArg)
    {
-      OneArgCall<int> intOneArgCall;
+      const OneArgCall<int> intOneArgCall;
       ARE_EQUAL(0, intOneArgCall.arg);
    }
 
    TEST(Constructor_CopiesArgToDecayedTypeArgField)
    {
-      OneArgCall<const string&> call(Arg1);
+      const OneArgCall<const string&> call(Arg1);
       //
       ARE_NOT_SAME(Arg1, call.arg);
       ARE_EQUAL(Arg1, call.arg);
@@ -55,21 +55,21 @@ namespace ZenMock
 
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      TwoArgCall<int, int> twoArgCall;
+      const TwoArgCall<int, int> twoArgCall;
       ARE_EQUAL(0, twoArgCall.arg1);
       ARE_EQUAL(0, twoArgCall.arg2);
    }
 
    TEST(Constructor_CopiesArgsToDecayedTypeArgFields)
    {
-      TwoArgCall<const string&, const string&> call(Arg1, Arg2);
+      const TwoArgCall<const string&, const string&> call(Arg1, Arg2);
       //
       ARE_NOT_SAME(Arg1, call.arg1);
       ARE_NOT_SAME(Arg2, call.arg2);
       ARE_EQUAL(Arg1, call.arg1);
       ARE_EQUAL(Arg2, call.arg2);
-      bool b1 = (is_same<string, decltype(call.arg1)>::value);
-      bool b2 = (is_same<string, decltype(call.arg2)>::value);
+      const bool b1 = (is_same<string, decltype(call.arg1)>::value);
+      const bool b2 = (is_same<string, decltype(call.arg2)>::value);
       IS_TRUE(b1);
       IS_TRUE(b2);
    }
@@ -92,7 +92,7 @@ namespace ZenMock
 
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      ThreeArgCall<int, int, int> threeArgCall;
+      const ThreeArgCall<int, int, int> threeArgCall;
       ARE_EQUAL(0, threeArgCall.arg1);
       ARE_EQUAL(0, threeArgCall.arg2);
       ARE_EQUAL(0, threeArgCall.arg3);
@@ -100,7 +100,7 @@ namespace ZenMock
 
    TEST(Constructor_CopiesValuesToDecayTypeFields)
    {
-      ThreeArgCall<const string&, const string&, const string&> call(Arg1, Arg2, Arg3);
+      const ThreeArgCall<const string&, const string&, const string&> call(Arg1, Arg2, Arg3);
       //
       ARE_NOT_SAME(Arg1, call.arg1);
       ARE_NOT_SAME(Arg2, call.arg2);
@@ -108,9 +108,9 @@ namespace ZenMock
       ARE_EQUAL(Arg1, call.arg1);
       ARE_EQUAL(Arg2, call.arg2);
       ARE_EQUAL(Arg3, call.arg3);
-      bool b1 = (is_same<string, decltype(call.arg1)>::value);
-      bool b2 = (is_same<string, decltype(call.arg2)>::value);
-      bool b3 = (is_same<string, decltype(call.arg3)>::value);
+      const bool b1 = (is_same<string, decltype(call.arg1)>::value);
+      const bool b2 = (is_same<string, decltype(call.arg2)>::value);
+      const bool b3 = (is_same<string, decltype(call.arg3)>::value);
       IS_TRUE(b1);
       IS_TRUE(b2);
       IS_TRUE(b3);
@@ -134,7 +134,7 @@ namespace ZenMock
 
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      FourArgCall<int, int, int, int> fourArgCall;
+      const FourArgCall<int, int, int, int> fourArgCall;
       ARE_EQUAL(0, fourArgCall.arg1);
       ARE_EQUAL(0, fourArgCall.arg2);
       ARE_EQUAL(0, fourArgCall.arg3);
@@ -143,7 +143,7 @@ namespace ZenMock
 
    TEST(FourArgConstructor_CopiesValuesToDecayTypeFields)
    {
-      FourArgCall<const string&, const string&, const string&, const string&> call(Arg1, Arg2, Arg3, Arg4);
+      const FourArgCall<const string&, const string&, const string&, const string&> call(Arg1, Arg2, Arg3, Arg4);
       //
       ARE_NOT_SAME(Arg1, call.arg1);
       ARE_NOT_SAME(Arg2, call.arg2);
@@ -153,10 +153,10 @@ namespace ZenMock
       ARE_EQUAL(Arg2, call.arg2);
       ARE_EQUAL(Arg3, call.arg3);
       ARE_EQUAL(Arg4, call.arg4);
-      bool b1 = (is_same<string, decltype(call.arg1)>::value);
-      bool b2 = (is_same<string, decltype(call.arg2)>::value);
-      bool b3 = (is_same<string, decltype(call.arg3)>::value);
-      bool b4 = (is_same<string, decltype(call.arg4)>::value);
+      const bool b1 = (is_same<string, decltype(call.arg1)>::value);
+      const bool b2 = (is_same<string, decltype(call.arg2)>::value);
+      const bool b3 = (is_same<string, decltype(call.arg3)>::value);
+      const bool b4 = (is_same<string, decltype(call.arg4)>::value);
       IS_TRUE(b1);
       IS_TRUE(b2);
       IS_TRUE(b3);
@@ -183,7 +183,7 @@ namespace ZenMock
 
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      FiveArgCall<int, int, int, int, int> fiveArgCall;
+      const FiveArgCall<int, int, int, int, int> fiveArgCall;
       ARE_EQUAL(0, fiveArgCall.arg1);
       ARE_EQUAL(0, fiveArgCall.arg2);
       ARE_EQUAL(0, fiveArgCall.arg3);
@@ -193,7 +193,7 @@ namespace ZenMock
 
    TEST(FiveArgConstructor_CopiesValuesToDecayTypeFields)
    {
-      FiveArgCall<const string&, const string&, const string&, const string&, const string&> call(Arg1, Arg2, Arg3, Arg4, Arg5);
+      const FiveArgCall<const string&, const string&, const string&, const string&, const string&> call(Arg1, Arg2, Arg3, Arg4, Arg5);
       //
       ARE_NOT_SAME(Arg1, call.arg1);
       ARE_NOT_SAME(Arg2, call.arg2);
@@ -205,11 +205,11 @@ namespace ZenMock
       ARE_EQUAL(Arg3, call.arg3);
       ARE_EQUAL(Arg4, call.arg4);
       ARE_EQUAL(Arg5, call.arg5);
-      bool b1 = (is_same<string, decltype(call.arg1)>::value);
-      bool b2 = (is_same<string, decltype(call.arg2)>::value);
-      bool b3 = (is_same<string, decltype(call.arg3)>::value);
-      bool b4 = (is_same<string, decltype(call.arg4)>::value);
-      bool b5 = (is_same<string, decltype(call.arg5)>::value);
+      const bool b1 = (is_same<string, decltype(call.arg1)>::value);
+      const bool b2 = (is_same<string, decltype(call.arg2)>::value);
+      const bool b3 = (is_same<string, decltype(call.arg3)>::value);
+      const bool b4 = (is_same<string, decltype(call.arg4)>::value);
+      const bool b5 = (is_same<string, decltype(call.arg5)>::value);
       IS_TRUE(b1);
       IS_TRUE(b2);
       IS_TRUE(b3);
@@ -238,7 +238,7 @@ namespace ZenMock
 
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      SixArgCall<int, int, int, int, int, int> sixArgCall;
+      const SixArgCall<int, int, int, int, int, int> sixArgCall;
       ARE_EQUAL(0, sixArgCall.arg1);
       ARE_EQUAL(0, sixArgCall.arg2);
       ARE_EQUAL(0, sixArgCall.arg3);
@@ -249,7 +249,7 @@ namespace ZenMock
 
    TEST(Constructor_CopiesValuesToDecayTypeFields)
    {
-      SixArgCall<const string&, const string&, const string&, const string&, const string&, const string&>
+      const SixArgCall<const string&, const string&, const string&, const string&, const string&, const string&>
          call(Arg1, Arg2, Arg3, Arg4, Arg5, Arg6);
       //
       ARE_NOT_SAME(Arg1, call.arg1);
@@ -264,12 +264,12 @@ namespace ZenMock
       ARE_EQUAL(Arg4, call.arg4);
       ARE_EQUAL(Arg5, call.arg5);
       ARE_EQUAL(Arg6, call.arg6);
-      bool b1 = (is_same<string, decltype(call.arg1)>::value);
-      bool b2 = (is_same<string, decltype(call.arg2)>::value);
-      bool b3 = (is_same<string, decltype(call.arg3)>::value);
-      bool b4 = (is_same<string, decltype(call.arg4)>::value);
-      bool b5 = (is_same<string, decltype(call.arg5)>::value);
-      bool b6 = (is_same<string, decltype(call.arg6)>::value);
+      const bool b1 = (is_same<string, decltype(call.arg1)>::value);
+      const bool b2 = (is_same<string, decltype(call.arg2)>::value);
+      const bool b3 = (is_same<string, decltype(call.arg3)>::value);
+      const bool b4 = (is_same<string, decltype(call.arg4)>::value);
+      const bool b5 = (is_same<string, decltype(call.arg5)>::value);
+      const bool b6 = (is_same<string, decltype(call.arg6)>::value);
       IS_TRUE(b1);
       IS_TRUE(b2);
       IS_TRUE(b3);
@@ -300,7 +300,7 @@ namespace ZenMock
 
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      SevenArgCall<int, int, int, int, int, int, int> sevenArgCall;
+      const SevenArgCall<int, int, int, int, int, int, int> sevenArgCall;
       ARE_EQUAL(0, sevenArgCall.arg1);
       ARE_EQUAL(0, sevenArgCall.arg2);
       ARE_EQUAL(0, sevenArgCall.arg3);
@@ -312,7 +312,7 @@ namespace ZenMock
 
    TEST(Constructor_CopiesValuesToDecayTypeFields)
    {
-      SevenArgCall<const string&, const string&, const string&, const string&, const string&, const string&, const string&>
+      const SevenArgCall<const string&, const string&, const string&, const string&, const string&, const string&, const string&>
          call(Arg1, Arg2, Arg3, Arg4, Arg5, Arg6, Arg7);
       //
       ARE_NOT_SAME(Arg1, call.arg1);
@@ -329,13 +329,13 @@ namespace ZenMock
       ARE_EQUAL(Arg5, call.arg5);
       ARE_EQUAL(Arg6, call.arg6);
       ARE_EQUAL(Arg7, call.arg7);
-      bool b1 = (is_same<string, decltype(call.arg1)>::value);
-      bool b2 = (is_same<string, decltype(call.arg2)>::value);
-      bool b3 = (is_same<string, decltype(call.arg3)>::value);
-      bool b4 = (is_same<string, decltype(call.arg4)>::value);
-      bool b5 = (is_same<string, decltype(call.arg5)>::value);
-      bool b6 = (is_same<string, decltype(call.arg6)>::value);
-      bool b7 = (is_same<string, decltype(call.arg7)>::value);
+      const bool b1 = (is_same<string, decltype(call.arg1)>::value);
+      const bool b2 = (is_same<string, decltype(call.arg2)>::value);
+      const bool b3 = (is_same<string, decltype(call.arg3)>::value);
+      const bool b4 = (is_same<string, decltype(call.arg4)>::value);
+      const bool b5 = (is_same<string, decltype(call.arg5)>::value);
+      const bool b6 = (is_same<string, decltype(call.arg6)>::value);
+      const bool b7 = (is_same<string, decltype(call.arg7)>::value);
       IS_TRUE(b1);
       IS_TRUE(b2);
       IS_TRUE(b3);

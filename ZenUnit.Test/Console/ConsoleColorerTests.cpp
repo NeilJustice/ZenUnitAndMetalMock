@@ -28,7 +28,7 @@ namespace ZenUnit
    SPECEND
 
    unique_ptr<ConsoleColorer> _consoleColorer;
-   unique_ptr<ConsoleColorerSelfMocked> _consoleColorerSelfMocked;
+   unique_ptr<const ConsoleColorerSelfMocked> _consoleColorerSelfMocked;
 
    STARTUP
    {
@@ -38,7 +38,7 @@ namespace ZenUnit
 
    TEST(Constructor_SetsFunctionPointers)
    {
-      ConsoleColorer consoleColorer;
+      const ConsoleColorer consoleColorer;
       FUNCTION_TARGETS(::fileno, consoleColorer.fileno_ZenMockable);
       FUNCTION_TARGETS(::isatty, consoleColorer.isatty_ZenMockable);
 #ifdef _WIN32
@@ -109,7 +109,7 @@ namespace ZenUnit
       _consoleColorer->fileno_ZenMockable = ZENBIND1(fileno_ZenMock);
       _consoleColorer->isatty_ZenMockable = ZENBIND1(isatty_ZenMock);
       //
-      bool consoleSupportsColor = _consoleColorer->SupportsColor();
+      const bool consoleSupportsColor = _consoleColorer->SupportsColor();
       //
       ZEN(fileno_ZenMock.AssertCalledOnceWith(stdout));
       ZEN(isatty_ZenMock.AssertCalledOnceWith(StdoutFileHandle));

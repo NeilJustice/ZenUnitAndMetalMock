@@ -33,7 +33,7 @@ namespace ZenUnit
 
    TEST(ForEach_EmptyIterable_DoesNotCallFunc)
    {
-      ClassTypeMock classInstance;
+      const ClassTypeMock classInstance;
       _memberForEacher.ForEach(&classInstance.iterable, &classInstance, &ClassType::Func);
    }
 

@@ -18,7 +18,7 @@ namespace ZenUnit
 
    TEST(EmptySets_DoesNotThrow)
    {
-      SetType<int> expectedSet, actualSet;
+      const SetType<int> expectedSet, actualSet;
       SETS_EQUAL(expectedSet, actualSet);
    }
 
@@ -69,7 +69,7 @@ File.cpp(1))");
       expectedSet.insert(1);
       SetType<int> actualSet;
       actualSet.insert(2);
-      string messageA = "A", messageB = "B";
+      const string messageA = "A", messageB = "B";
       THROWS(SETS_EQUAL(expectedSet, actualSet, messageA, messageB), Anomaly, R"(
   Failed: SETS_EQUAL(expectedSet, actualSet, messageA, messageB)
 Expected: SetType<T>

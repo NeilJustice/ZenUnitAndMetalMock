@@ -31,7 +31,7 @@ namespace ZenMock
 
    TEST(Constructor_SetsFields)
    {
-      ZeroArgMocker<ExceptionThrowerMock> zeroArgMocker(ZenMockedFunctionSignature);
+      const ZeroArgMocker<ExceptionThrowerMock> zeroArgMocker(ZenMockedFunctionSignature);
       //
       ARE_EQUAL(ZenMockedFunctionSignature, zeroArgMocker.ZenMockedFunctionSignature);
       IS_FALSE(zeroArgMocker.expected);

@@ -37,8 +37,8 @@ namespace ZenMock
       void AssertCalledOnceWith(const ArgType& expectedArg)
       {
          this->SetAsserted();
-         size_t expectedNumberOfCalls = 1;
-         size_t numberOfCalls = oneArgCalls.size();
+         const size_t expectedNumberOfCalls = 1;
+         const size_t numberOfCalls = oneArgCalls.size();
          ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature);
          ARE_EQUAL(expectedArg, oneArgCalls[0].arg, this->ZenMockedFunctionSignature);
       }
@@ -47,11 +47,11 @@ namespace ZenMock
       {
          this->ThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
          this->SetAsserted();
-         size_t numberOfCalls = oneArgCalls.size();
+         const size_t numberOfCalls = oneArgCalls.size();
          ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCalls; ++i)
          {
-            std::string zenMockedFunctionSignatureAndCallIndex
+            const std::string zenMockedFunctionSignatureAndCallIndex
                = ZenUnit::String::Concat(this->ZenMockedFunctionSignature, " at i=", i);
             ARE_EQUAL(expectedArg, oneArgCalls[i].arg, zenMockedFunctionSignatureAndCallIndex);
          }
@@ -61,7 +61,8 @@ namespace ZenMock
       {
          this->ThrowIfExpectedCallsSizeIsZero(expectedOneArgCalls.size());
          this->SetAsserted();
-         std::vector<OneArgCallRef<ArgType>> actualOneArgCalls = PrivateCallsToCallRefs(oneArgCalls);
+         const std::vector<OneArgCallRef<ArgType>> 
+            actualOneArgCalls = PrivateCallsToCallRefs(oneArgCalls);
          VECTORS_EQUAL(expectedOneArgCalls, actualOneArgCalls, this->ZenMockedFunctionSignature);
       }
    private:

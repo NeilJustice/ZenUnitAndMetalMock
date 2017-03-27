@@ -18,9 +18,9 @@ namespace ZenUnit
       FileLine fileLine, const Anomaly& becauseAnomaly,
       const char* messagesText, const MessageTypes&... messages)
    {
-      std::string expectedField = ToStringer::ToString(expectedVRT.value);
-      std::string actualField = ToStringer::ToString(actualVRT.value);
-      Anomaly anomaly("ARE_EQUAL", expectedVRT.text, actualVRT.text, "",
+      const std::string expectedField = ToStringer::ToString(expectedVRT.value);
+      const std::string actualField = ToStringer::ToString(actualVRT.value);
+      const Anomaly anomaly("ARE_EQUAL", expectedVRT.text, actualVRT.text, "",
          messagesText, becauseAnomaly,
          expectedField,
          actualField,

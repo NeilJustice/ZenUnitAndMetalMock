@@ -15,7 +15,7 @@ namespace ZenUnit
       {
          std::ostringstream oss;
          OStringStreamConcat(oss, values...);
-         std::string concatenatedValues = oss.str();
+         const std::string concatenatedValues = oss.str();
          return concatenatedValues;
       }
 

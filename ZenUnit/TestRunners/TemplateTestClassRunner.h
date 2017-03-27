@@ -45,7 +45,7 @@ namespace ZenUnit
 
       virtual size_t NumberOfTestCases() const override
       {
-         size_t totalNumberOfTestCases = std::accumulate(_tests.cbegin(), _tests.cend(), size_t(),
+         const size_t totalNumberOfTestCases = std::accumulate(_tests.cbegin(), _tests.cend(), size_t(),
             [](size_t cumulativeNumberOfTestCases, const std::unique_ptr<Test>& test)
             {
                size_t numberOfTestCases = test->NumberOfTestCases();
@@ -78,20 +78,20 @@ namespace ZenUnit
       virtual bool ConfirmNewabilityDeletabilityAndRegisterNXNTests(
          Test* newDeleteTest, TestClassResult* outTestClassResult) const
       {
-         std::vector<TestResult> newDeleteTestResult = newDeleteTest->Run();
+         const std::vector<TestResult> newDeleteTestResult = newDeleteTest->Run();
          assert_true(newDeleteTestResult.size() == 1);
          outTestClassResult->AddTestResults(newDeleteTestResult);
-         bool testClassTypeIsNewableAndDeletable = newDeleteTestResult[0].testOutcome == TestOutcome::Success;
+         const bool testClassTypeIsNewableAndDeletable = newDeleteTestResult[0].testOutcome == TestOutcome::Success;
          return testClassTypeIsNewableAndDeletable;
       }
 
       void RunTest(const std::unique_ptr<Test>& test, TestClassResult* outTestClassResult) const
       {
          _console->WriteColor("|", Color::Green);
-         const char* testName = test->Name();
+         const char* const testName = test->Name();
          _console->Write(testName);
          test->PrintPostTestNameMessage(_console.get());
-         std::vector<TestResult> testResults = test->Run();
+         const std::vector<TestResult> testResults = test->Run();
          test->PrintPostTestCompletionMessage(_console.get(), testResults[0]);
          outTestClassResult->AddTestResults(testResults);
       }

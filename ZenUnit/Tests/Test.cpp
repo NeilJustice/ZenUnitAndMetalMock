@@ -57,25 +57,33 @@ namespace ZenUnit
 
    TestResult Test::RunTestCase()
    {
-      CallResult constructorCallResult = _tryCatchCaller->Call(&Test::CallNewTestClass, this, TestPhase::Constructor);
+      const CallResult constructorCallResult = _tryCatchCaller->
+         Call(&Test::CallNewTestClass, this, TestPhase::Constructor);
       if (constructorCallResult.testOutcome != TestOutcome::Success)
       {
-         TestResult constructorFail = _testResultFactory->ConstructorFail(_fullName, constructorCallResult);
+         const TestResult constructorFail = _testResultFactory->
+            ConstructorFail(_fullName, constructorCallResult);
          return constructorFail;
       }
-      CallResult startupCallResult = _tryCatchCaller->Call(&Test::CallStartup, this, TestPhase::Startup);
+      const CallResult startupCallResult = _tryCatchCaller->
+         Call(&Test::CallStartup, this, TestPhase::Startup);
       if (startupCallResult.testOutcome != TestOutcome::Success)
       {
-         CallResult destructorCallResult = _tryCatchCaller->Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-         TestResult startupFail = _testResultFactory->StartupFail(
-            _fullName, constructorCallResult, startupCallResult, destructorCallResult);
+         const CallResult destructorCallResult = _tryCatchCaller->
+            Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+         const TestResult startupFail = _testResultFactory->
+            StartupFail(_fullName, constructorCallResult, startupCallResult, destructorCallResult);
          return startupFail;
       }
-      CallResult testBodyCallResult = _tryCatchCaller->Call(&Test::CallTestBody, this, TestPhase::TestBody);
-      CallResult cleanupCallResult = _tryCatchCaller->Call(&Test::CallCleanup, this, TestPhase::Cleanup);
-      CallResult destructorCallResult = _tryCatchCaller->Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-      TestResult testResult = _testResultFactory->FullCtor(
-         _fullName, constructorCallResult, startupCallResult, testBodyCallResult, cleanupCallResult, destructorCallResult);
+      const CallResult testBodyCallResult = _tryCatchCaller->
+         Call(&Test::CallTestBody, this, TestPhase::TestBody);
+      const CallResult cleanupCallResult = _tryCatchCaller->
+         Call(&Test::CallCleanup, this, TestPhase::Cleanup);
+      const CallResult destructorCallResult = _tryCatchCaller->
+         Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+      const TestResult testResult = _testResultFactory->
+         FullCtor(_fullName, constructorCallResult, startupCallResult, 
+            testBodyCallResult, cleanupCallResult, destructorCallResult);
       return testResult;
    }
 }

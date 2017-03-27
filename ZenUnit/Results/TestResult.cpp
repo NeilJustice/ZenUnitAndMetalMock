@@ -122,7 +122,7 @@ namespace ZenUnit
          assert_true(testBodyCallResult.testOutcome == TestOutcome::Success);
          assert_true(cleanupCallResult.testOutcome == TestOutcome::Success);
          assert_true(destructorCallResult.testOutcome == TestOutcome::Success);
-         ZenUnitArgs args = getArgs();
+         const ZenUnitArgs args = getArgs();
          if (args.maxtestmilliseconds == 0 || milliseconds <= args.maxtestmilliseconds)
          {
             testOutcome = TestOutcome::Success;
@@ -171,12 +171,12 @@ namespace ZenUnit
       }
       case TestOutcome::Anomaly:
       {
-         string testFailureNumber = testFailureNumberer->Next();
+         const string testFailureNumber = testFailureNumberer->Next();
          console->WriteLine(testFailureNumber);
          console->Write(fullName.testClassTestNameLines);
          WriteTestCaseNumberIfAny(console, testCaseIndex);
          const CallResult& responsibleCallResult = (this->*responsibleCallResultField);
-         string responsibleTestPhaseSuffix = TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
+         const string responsibleTestPhaseSuffix = TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
          console->Write(responsibleTestPhaseSuffix);
          console->WriteLine(responsibleCallResult.anomaly.why);
          console->WriteNewline();
@@ -184,15 +184,15 @@ namespace ZenUnit
       }
       case TestOutcome::Exception:
       {
-         string testFailureNumber = testFailureNumberer->Next();
+         const string testFailureNumber = testFailureNumberer->Next();
          console->WriteLine(testFailureNumber);
          console->Write(fullName.testClassTestNameLines);
          WriteTestCaseNumberIfAny(console, testCaseIndex);
          const CallResult& responsibleCallResult = this->*responsibleCallResultField;
-         string responsibleTestPhaseSuffix = TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
-         string uncaughtExceptionTypeLine = String::Concat(
+         const string responsibleTestPhaseSuffix = TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
+         const string uncaughtExceptionTypeLine = String::Concat(
             "Threw exception: ", *responsibleCallResult.exceptionTypeName);
-         string exceptionwWhatLine = String::Concat("what(): \"", responsibleCallResult.exceptionWhat, "\"");
+         const string exceptionwWhatLine = String::Concat("what(): \"", responsibleCallResult.exceptionWhat, "\"");
          console->WriteLine(responsibleTestPhaseSuffix);
          console->WriteLine(uncaughtExceptionTypeLine);
          console->WriteLine(exceptionwWhatLine);
@@ -202,7 +202,7 @@ namespace ZenUnit
       default:
       {
          assert_true(testOutcome == TestOutcome::SuccessButMissedDeadline);
-         string testFailureNumber = testFailureNumberer->Next();
+         const string testFailureNumber = testFailureNumberer->Next();
          console->WriteLine(testFailureNumber);
          console->WriteLine(fullName.testClassTestNameLines);
          WriteTestCaseNumberIfAny(console, testCaseIndex);

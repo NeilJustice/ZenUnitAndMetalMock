@@ -54,7 +54,7 @@ namespace ZenUnit
       _watchSelfMocked->TMNowMock.ExpectAndReturn(tmNow);
       _watchSelfMocked->TimeZoneMock.ExpectAndReturn("TimeZone");
       //
-      string timeZoneDateTimeNow = _watchSelfMocked->TimeZoneDateTimeNow();
+      const string timeZoneDateTimeNow = _watchSelfMocked->TimeZoneDateTimeNow();
       //
       ZEN(_watchSelfMocked->TMNowMock.AssertCalledOnce());
       ZEN(_watchSelfMocked->TimeZoneMock.AssertCalledOnceWith(tmNow));

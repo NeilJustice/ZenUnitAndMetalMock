@@ -55,7 +55,7 @@ namespace ZenUnit
 
    TEST(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)
    {
-      NormalTest<TestingTestClass> normalTest(TestClassName, TestName, &TestingTestClass::Test);
+      const NormalTest<TestingTestClass> normalTest(TestClassName, TestName, &TestingTestClass::Test);
       ARE_EQUAL(TestName, normalTest.Name());
       ARE_EQUAL("TESTS(TestClassName)\nTEST(TestName)", normalTest.TestClassTestNameLines());
       ARE_EQUAL("(0)", normalTest.FileLineString());

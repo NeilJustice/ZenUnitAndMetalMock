@@ -70,7 +70,7 @@ namespace ZenUnit
       _multiTestClassRunner.AddTestClassRunner(testClassRunnerBMock);
       _multiTestClassRunner.AddTestClassRunner(testClassRunnerCMock);
       //
-      size_t totalNumberOfTestCases = _multiTestClassRunner.TotalNumberOfTestCases();
+      const size_t totalNumberOfTestCases = _multiTestClassRunner.TotalNumberOfTestCases();
       //
       ZEN(testClassRunnerAMock->NumberOfTestCasesMock.AssertCalledOnce());
       ZEN(testClassRunnerBMock->NumberOfTestCasesMock.AssertCalledOnce());
@@ -86,13 +86,13 @@ namespace ZenUnit
       _sorterMock->SortMock.Expect();
       _transformerMock->TransformMock.Expect();
       //
-      vector<TestClassResult> testClassResults = _multiTestClassRunner.RunTestClasses();
+      const vector<TestClassResult> testClassResults = _multiTestClassRunner.RunTestClasses();
       //
       ZEN(_sorterMock->SortMock.AssertCalledOnceWith(&_multiTestClassRunner._testClassRunners));
       ZEN(_transformerMock->TransformMock.AssertCalledOnceWith(
          _multiTestClassRunner._testClassRunners.cbegin(), _multiTestClassRunner._testClassRunners.cend(),
          &_multiTestClassRunner._testClassResults, &MultiTestClassRunner::RunTestClassRunner));
-      vector<TestClassResult> expectedTestClassResults(TestClassRunnersSize);
+      const vector<TestClassResult> expectedTestClassResults(TestClassRunnersSize);
       VECTORS_EQUAL(expectedTestClassResults, testClassResults);
    }
 
@@ -102,7 +102,7 @@ namespace ZenUnit
       testClassRunnerMock->RunTestsMock.ExpectAndReturn(TestClassResult::TestingNonDefault());
       const unique_ptr<TestClassRunner> testClassRunnerReallyAMock(testClassRunnerMock);
       //
-      TestClassResult testClassResult = MultiTestClassRunner::RunTestClassRunner(testClassRunnerReallyAMock);
+      const TestClassResult testClassResult = MultiTestClassRunner::RunTestClassRunner(testClassRunnerReallyAMock);
       //
       ZEN(testClassRunnerMock->RunTestsMock.AssertCalledOnce());
       ARE_EQUAL(TestClassResult::TestingNonDefault(), testClassResult);

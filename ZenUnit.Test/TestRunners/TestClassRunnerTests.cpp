@@ -24,10 +24,10 @@ namespace ZenUnit
       TestClassRunnerMock* rightTestClassRunnerMock = new TestClassRunnerMock;
       leftTestClassRunnerMock->TestClassNameMock.ExpectAndReturn(leftTestClassName);
       rightTestClassRunnerMock->TestClassNameMock.ExpectAndReturn(rightTestClassName);
-      unique_ptr<TestClassRunner> leftTestClassRunner(leftTestClassRunnerMock);
-      unique_ptr<TestClassRunner> rightTestClassRunner(rightTestClassRunnerMock);
+      const unique_ptr<TestClassRunner> leftTestClassRunner(leftTestClassRunnerMock);
+      const unique_ptr<TestClassRunner> rightTestClassRunner(rightTestClassRunnerMock);
       //
-      bool isLessThan = leftTestClassRunner < rightTestClassRunner;
+      const bool isLessThan = leftTestClassRunner < rightTestClassRunner;
       //
       ZEN(leftTestClassRunnerMock->TestClassNameMock.AssertCalledOnce());
       ZEN(rightTestClassRunnerMock->TestClassNameMock.AssertCalledOnce());

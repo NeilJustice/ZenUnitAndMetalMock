@@ -20,7 +20,7 @@ namespace ZenUnit
       virtual size_t NumberOfTestCases() const override
       {
          const std::unique_ptr<Test>* testNXN = GetTestNXNFromPmfToken();
-         size_t numberOfTestCases = (*testNXN)->NumberOfTestCases();
+         const size_t numberOfTestCases = (*testNXN)->NumberOfTestCases();
          return numberOfTestCases;
       }
 
@@ -32,7 +32,7 @@ namespace ZenUnit
       virtual std::vector<TestResult> Run() override
       {
          const std::unique_ptr<Test>* testNXN = GetTestNXNFromPmfToken();
-         std::vector<TestResult> testResults = (*testNXN)->Run();
+         const std::vector<TestResult> testResults = (*testNXN)->Run();
          return testResults;
       }
 

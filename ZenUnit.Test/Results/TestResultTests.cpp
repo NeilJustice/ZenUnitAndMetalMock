@@ -27,7 +27,7 @@ namespace ZenUnit
    CallResult ConstructorCallResult;
    CallResult StartupCallResult;
    CallResult DestructorCallResult;
-   ConsoleMock _consoleMock;
+   const ConsoleMock _consoleMock;
    TestFailureNumbererMock _testFailureNumbererMock;
    const long long ExpectedMilliseconds = 1 + 2 + 3 + 4 + 5;
 
@@ -51,7 +51,7 @@ namespace ZenUnit
 
    TEST(DefaultConstructor_SetsFieldsTo0)
    {
-      TestResult defaultTestResult;
+      const TestResult defaultTestResult;
       TestResult expectedDefaultTestResult;
       expectedDefaultTestResult.fullName = FullName();
       expectedDefaultTestResult.constructorCallResult = CallResult();
@@ -73,7 +73,8 @@ namespace ZenUnit
    {
       ConstructorCallResult.testOutcome = constructorOutcome;
       //
-      TestResult constructorFailTestResult = TestResult::ConstructorFail(FullNameValue, ConstructorCallResult);
+      const TestResult constructorFailTestResult = 
+         TestResult::ConstructorFail(FullNameValue, ConstructorCallResult);
       //
       TestResult expectedTestResult;
       expectedTestResult.fullName = FullNameValue;
@@ -91,7 +92,7 @@ namespace ZenUnit
    {
       StartupCallResult.testOutcome = startupOutcome;
       //
-      TestResult startupFailTestResult = TestResult::StartupFail(
+      const TestResult startupFailTestResult = TestResult::StartupFail(
          FullNameValue, ConstructorCallResult, StartupCallResult, DestructorCallResult);
       //
       TestResult expectedTestResult;
@@ -113,7 +114,8 @@ namespace ZenUnit
       CallResult destructorCallResult(TestPhase::Destructor);
       destructorCallResult.milliseconds = 20;
       //
-      TestResult testResult = TestResult::CtorDtorSuccess(FullNameValue, constructorCallResult, destructorCallResult);
+      const TestResult testResult = TestResult::CtorDtorSuccess(
+         FullNameValue, constructorCallResult, destructorCallResult);
       //
       TestResult expectedTestResult;
       expectedTestResult.fullName = FullNameValue;
@@ -126,7 +128,8 @@ namespace ZenUnit
    }
 
    TEST6X6(SixArgConstructor_SetsFields,
-      TestOutcome testBodyOutcome, TestOutcome cleanupOutcome, long long maxtestmilliseconds, int relativeMilliseconds, TestOutcome expectedOverallOutcome, CallResult TestResult::* expectedResponsibleCallResultField,
+      TestOutcome testBodyOutcome, TestOutcome cleanupOutcome, long long maxtestmilliseconds, 
+      int relativeMilliseconds, TestOutcome expectedOverallOutcome, CallResult TestResult::* expectedResponsibleCallResultField,
       TestOutcome::Success, TestOutcome::Success, 0ll, 0, TestOutcome::Success, nullptr,
       TestOutcome::Success, TestOutcome::Success, 0ll, 1, TestOutcome::Success, nullptr,
       TestOutcome::Success, TestOutcome::Success, ExpectedMilliseconds, -1, TestOutcome::Success, nullptr,
@@ -156,9 +159,9 @@ namespace ZenUnit
       {
          GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
       }
-      function<ZenUnitArgs()> boundMockGetArgs = ZENBIND0(GetArgs_ZenMock);
+      const function<ZenUnitArgs()> boundMockGetArgs = ZENBIND0(GetArgs_ZenMock);
       //
-      TestResult testResult(
+      const TestResult testResult(
          FullNameValue,
          ConstructorCallResult,
          StartupCallResult,
@@ -203,7 +206,7 @@ namespace ZenUnit
 
    TEST(PrintTestOutcome_InvalidTestOutcome_TriggersAssertion)
    {
-      ConsoleMock consoleMock;
+      const ConsoleMock consoleMock;
       _testResult.testOutcome = TestOutcome::Unset;
       //
       THROWS(_testResult.PrintTestOutcome(&consoleMock), logic_error,

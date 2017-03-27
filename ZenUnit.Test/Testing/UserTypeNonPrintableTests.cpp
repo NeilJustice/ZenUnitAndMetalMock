@@ -14,20 +14,20 @@ namespace ZenUnit
 
    TEST(DefaultConstructor_SetsXTo0)
    {
-      UserTypeNonPrintable userType;
+      const UserTypeNonPrintable userType;
       IS_ZERO(userType.x);
    }
 
    TEST(OneArgConstructor_SetsX)
    {
-      UserTypeNonPrintable userType(1);
+      const UserTypeNonPrintable userType(1);
       ARE_EQUAL(1, userType.x);
    }
 
    TEST(OperatorLessThan_ReturnsTrueIfLeftXLessThanRightX)
    {
-      UserTypeNonPrintable userType1(1);
-      UserTypeNonPrintable userType2(2);
+      const UserTypeNonPrintable userType1(1);
+      const UserTypeNonPrintable userType2(2);
       IS_TRUE(userType1 < userType2);
       IS_FALSE(userType2 < userType1);
       IS_FALSE(userType1 < userType1);
@@ -35,8 +35,8 @@ namespace ZenUnit
 
    TEST(OperatorEquals_ReturnsTrueIfLeftXEqualsRightX)
    {
-      UserTypeNonPrintable userType1(1);
-      UserTypeNonPrintable userType2(2);
+      const UserTypeNonPrintable userType1(1);
+      const UserTypeNonPrintable userType2(2);
       IS_TRUE(userType1 == userType1);
       IS_FALSE(userType1 == userType2);
    }

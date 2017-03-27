@@ -14,7 +14,7 @@ namespace ZenUnit
       WindowsColor::Green, Color::Green,
       WindowsColor::Red, Color::Red)
    {
-      WindowsColor windowsColor = ZenUnit::ColorToWindowsColor(color);
+      const WindowsColor windowsColor = ZenUnit::ColorToWindowsColor(color);
       ARE_EQUAL(expectedWindowsColor, windowsColor);
    }
 

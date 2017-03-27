@@ -14,10 +14,10 @@ namespace ZenUnit
       VRText<DataStructureType> dataStructureVRT,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      size_t size = dataStructureVRT.value.size();
-      std::string expectedField = "empty() == true";
-      std::string actualField = "empty() == false (size() == " + std::to_string(size) + ")";
-      Anomaly anomaly("IS_EMPTY", dataStructureVRT.text, "", "", messagesText,
+      const size_t size = dataStructureVRT.value.size();
+      const std::string expectedField = "empty() == true";
+      const std::string actualField = "empty() == false (size() == " + std::to_string(size) + ")";
+      const Anomaly anomaly("IS_EMPTY", dataStructureVRT.text, "", "", messagesText,
          Anomaly::Default,
          expectedField,
          actualField,

@@ -9,12 +9,12 @@ namespace ZenMock
       template<typename T>
       friend class TemplateThrowableTests;
    private:
-      std::unique_ptr<ExpectedExceptionType> _exception;
+      std::unique_ptr<const ExpectedExceptionType> _exception;
    public:
       template<typename... ExceptionArgTypes>
       static const Throwable* New(ExceptionArgTypes&&... exceptionArgs)
       {
-         TemplateThrowable<ExpectedExceptionType>* templateThrowable = 
+         TemplateThrowable<ExpectedExceptionType>* const templateThrowable = 
             new TemplateThrowable<ExpectedExceptionType>;
          templateThrowable->_exception.reset(
             new ExpectedExceptionType(std::forward<ExceptionArgTypes>(exceptionArgs)...));

@@ -55,8 +55,8 @@ namespace ZenMock
          const Arg7Type& expectedArg7)
       {
          this->SetAsserted();
-         size_t expectedNumberOfCalls = 1;
-         size_t numberOfCalls = sevenArgCalls.size();
+         const size_t expectedNumberOfCalls = 1;
+         const size_t numberOfCalls = sevenArgCalls.size();
          ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature);
          ARE_EQUAL(expectedArg1, sevenArgCalls[0].arg1, this->ZenMockedFunctionSignature);
          ARE_EQUAL(expectedArg2, sevenArgCalls[0].arg2, this->ZenMockedFunctionSignature);
@@ -79,11 +79,11 @@ namespace ZenMock
       {
          this->ThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
          this->SetAsserted();
-         size_t numberOfCalls = sevenArgCalls.size();
+         const size_t numberOfCalls = sevenArgCalls.size();
          ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCalls; ++i)
          {
-            std::string zenMockedFunctionSignatureAndCallIndex
+            const std::string zenMockedFunctionSignatureAndCallIndex
                = ZenUnit::String::Concat(this->ZenMockedFunctionSignature, " at i=", i);
             ARE_EQUAL(expectedArg1, sevenArgCalls[i].arg1, zenMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedArg2, sevenArgCalls[i].arg2, zenMockedFunctionSignatureAndCallIndex);
@@ -100,7 +100,8 @@ namespace ZenMock
       {
          this->ThrowIfExpectedCallsSizeIsZero(expectedSevenArgCalls.size());
          this->SetAsserted();
-         std::vector<SevenArgCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>> actualSevenArgCalls = PrivateCallsToCallRefs(sevenArgCalls);
+         const std::vector<SevenArgCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>> 
+            actualSevenArgCalls = PrivateCallsToCallRefs(sevenArgCalls);
          VECTORS_EQUAL(expectedSevenArgCalls, actualSevenArgCalls, this->ZenMockedFunctionSignature);
       }
 

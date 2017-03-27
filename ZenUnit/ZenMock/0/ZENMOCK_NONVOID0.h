@@ -79,7 +79,7 @@ namespace ZenMock
       ReturnType PrivateZenMockAndReturnValue()
       {
          ZeroArgMocker::PrivateZenMock();
-         ReturnType returnValue = ValueReturner<ReturnType>::PrivateNextReturnValue();
+         const ReturnType returnValue = ValueReturner<ReturnType>::PrivateNextReturnValue();
          return returnValue;
       }
    };

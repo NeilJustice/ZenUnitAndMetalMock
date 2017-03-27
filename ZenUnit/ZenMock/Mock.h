@@ -16,7 +16,7 @@ namespace Zen
 
       static const std::string* ZenMockedClassName()
       {
-         const std::string* zenMockedClassName = ZenUnit::Type::GetName<ZenMockedClass>();
+         const std::string* const zenMockedClassName = ZenUnit::Type::GetName<ZenMockedClass>();
          return zenMockedClassName;
       }
 

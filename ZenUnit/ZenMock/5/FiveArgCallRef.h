@@ -58,11 +58,11 @@ struct ZenUnitPrinter<ZenMock::FiveArgCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4
    static void Print(std::ostream& os, const ZenMock::FiveArgCallRef<
       Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& fiveArgCallRef)
    {
-      std::string toStringedArg1 = ZenUnit::ToStringer::ToString(fiveArgCallRef.arg1);
-      std::string toStringedArg2 = ZenUnit::ToStringer::ToString(fiveArgCallRef.arg2);
-      std::string toStringedArg3 = ZenUnit::ToStringer::ToString(fiveArgCallRef.arg3);
-      std::string toStringedArg4 = ZenUnit::ToStringer::ToString(fiveArgCallRef.arg4);
-      std::string toStringedArg5 = ZenUnit::ToStringer::ToString(fiveArgCallRef.arg5);
+      const std::string toStringedArg1 = ZenUnit::ToStringer::ToString(fiveArgCallRef.arg1);
+      const std::string toStringedArg2 = ZenUnit::ToStringer::ToString(fiveArgCallRef.arg2);
+      const std::string toStringedArg3 = ZenUnit::ToStringer::ToString(fiveArgCallRef.arg3);
+      const std::string toStringedArg4 = ZenUnit::ToStringer::ToString(fiveArgCallRef.arg4);
+      const std::string toStringedArg5 = ZenUnit::ToStringer::ToString(fiveArgCallRef.arg5);
       os << "ZenMock::FiveArgCall:\n"
             "Arg1: " << toStringedArg1 << '\n' <<
             "Arg2: " << toStringedArg2 << '\n' <<

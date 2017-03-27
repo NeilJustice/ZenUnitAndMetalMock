@@ -21,7 +21,7 @@ namespace ZenUnit
       }
       ostringstream oss;
       oss << '\'' << value << "\' (" << static_cast<int>(value) << ")";
-      string valueString(oss.str());
+      const string valueString(oss.str());
       return valueString;
    };
 

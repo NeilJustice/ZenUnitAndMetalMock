@@ -20,8 +20,8 @@ vector<int> TestingTestClass1X1::s_calls;
 
 namespace ZenUnit
 {
-   const char* TestClassName = "TestClassName";
-   const char* TestName = "TestName";
+   const char* const TestClassName = "TestClassName";
+   const char* const TestName = "TestName";
 
    TESTS(Test1X1TestTests)
    SPEC(Constructor_SetsFields_GettersReturnExpected_RunCallsTest1By1)
@@ -52,7 +52,7 @@ namespace ZenUnit
          2);
       AssertTestNXNState(test1X1_2TestCases, 2);
 
-      vector<TestResult> testResults = test1X1_2TestCases.Run();
+      const vector<TestResult> testResults = test1X1_2TestCases.Run();
       ARE_EQUAL(2, testResults.size());
       ARE_EQUAL(FullName(TestClassName, TestName), testResults[0].fullName);
       ARE_EQUAL(FullName(TestClassName, TestName), testResults[1].fullName);
@@ -107,14 +107,14 @@ namespace ZenUnit
          3, string());
       AssertTestNXNState(test2X2_2TestCases, 2);
 
-      vector<TestResult> testResults = test2X2_2TestCases.Run();
+      const vector<TestResult> testResults = test2X2_2TestCases.Run();
       ARE_EQUAL(2, testResults.size());
       ARE_EQUAL(FullName(TestClassName, TestName), testResults[0].fullName);
       ARE_EQUAL(FullName(TestClassName, TestName), testResults[1].fullName);
       ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
       ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
-      tuple<int, string> expectedFirstCall(1, string());
-      tuple<int, string> expectedSecondCall(3, string());
+      const tuple<int, string> expectedFirstCall(1, string());
+      const tuple<int, string> expectedSecondCall(3, string());
       ARE_EQUAL(2, TestingTestClass2X2::s_calls.size());
       ARE_EQUAL(expectedFirstCall, TestingTestClass2X2::s_calls[0]);
       ARE_EQUAL(expectedSecondCall, TestingTestClass2X2::s_calls[1]);
@@ -164,14 +164,14 @@ namespace ZenUnit
          4, 5, string());
       AssertTestNXNState(test3X3_2TestCases, 2);
 
-      vector<TestResult> testResults = test3X3_2TestCases.Run();
+      const vector<TestResult> testResults = test3X3_2TestCases.Run();
       ARE_EQUAL(2, testResults.size());
       ARE_EQUAL(FullName(TestClassName, TestName), testResults[0].fullName);
       ARE_EQUAL(FullName(TestClassName, TestName), testResults[1].fullName);
       ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
       ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
-      tuple<int, int, string> expectedFirstCall(1, 2, string());
-      tuple<int, int, string> expectedSecondCall(4, 5, string());
+      const tuple<int, int, string> expectedFirstCall(1, 2, string());
+      const tuple<int, int, string> expectedSecondCall(4, 5, string());
       ARE_EQUAL(2, TestingTestClass3X3::s_calls.size());
       ARE_EQUAL(expectedFirstCall, TestingTestClass3X3::s_calls[0]);
       ARE_EQUAL(expectedSecondCall, TestingTestClass3X3::s_calls[1]);
@@ -221,14 +221,14 @@ namespace ZenUnit
          5, 6, 7, string());
       AssertTestNXNState(test4X4_2TestCases, 2);
 
-      vector<TestResult> testResults = test4X4_2TestCases.Run();
+      const vector<TestResult> testResults = test4X4_2TestCases.Run();
       ARE_EQUAL(2, testResults.size());
       ARE_EQUAL(FullName(TestClassName, TestName), testResults[0].fullName);
       ARE_EQUAL(FullName(TestClassName, TestName), testResults[1].fullName);
       ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
       ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
-      tuple<int, int, int, string> expectedFirstCall(1, 2, 3, string());
-      tuple<int, int, int, string> expectedSecondCall(5, 6, 7, string());
+      const tuple<int, int, int, string> expectedFirstCall(1, 2, 3, string());
+      const tuple<int, int, int, string> expectedSecondCall(5, 6, 7, string());
       ARE_EQUAL(2, TestingTestClass4X4::s_calls.size());
       ARE_EQUAL(expectedFirstCall, TestingTestClass4X4::s_calls[0]);
       ARE_EQUAL(expectedSecondCall, TestingTestClass4X4::s_calls[1]);
@@ -278,14 +278,14 @@ namespace ZenUnit
          6, 7, 8, 9, string());
       AssertTestNXNState(test5X5_2TestCases, 2);
 
-      vector<TestResult> testResults = test5X5_2TestCases.Run();
+      const vector<TestResult> testResults = test5X5_2TestCases.Run();
       ARE_EQUAL(2, testResults.size());
       ARE_EQUAL(FullName(TestClassName, TestName), testResults[0].fullName);
       ARE_EQUAL(FullName(TestClassName, TestName), testResults[1].fullName);
       ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
       ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
-      tuple<int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, string());
-      tuple<int, int, int, int, string> expectedSecondCall(6, 7, 8, 9, string());
+      const tuple<int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, string());
+      const tuple<int, int, int, int, string> expectedSecondCall(6, 7, 8, 9, string());
       ARE_EQUAL(2, TestingTestClass5X5::s_calls.size());
       ARE_EQUAL(expectedFirstCall, TestingTestClass5X5::s_calls[0]);
       ARE_EQUAL(expectedSecondCall, TestingTestClass5X5::s_calls[1]);
@@ -335,14 +335,14 @@ namespace ZenUnit
          7, 8, 9, 10, 11, string());
       AssertTestNXNState(test6X6_2TestCases, 2);
 
-      vector<TestResult> testResults = test6X6_2TestCases.Run();
+      const vector<TestResult> testResults = test6X6_2TestCases.Run();
       ARE_EQUAL(2, testResults.size());
       ARE_EQUAL(FullName(TestClassName, TestName), testResults[0].fullName);
       ARE_EQUAL(FullName(TestClassName, TestName), testResults[1].fullName);
       ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
       ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
-      tuple<int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, string());
-      tuple<int, int, int, int, int, string> expectedSecondCall(7, 8, 9, 10, 11, string());
+      const tuple<int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, string());
+      const tuple<int, int, int, int, int, string> expectedSecondCall(7, 8, 9, 10, 11, string());
       ARE_EQUAL(2, TestingTestClass6X6::s_calls.size());
       ARE_EQUAL(expectedFirstCall, TestingTestClass6X6::s_calls[0]);
       ARE_EQUAL(expectedSecondCall, TestingTestClass6X6::s_calls[1]);
@@ -392,14 +392,14 @@ namespace ZenUnit
          8, 9, 10, 11, 12, 13, string());
       AssertTestNXNState(test7X7_2TestCases, 2);
 
-      vector<TestResult> testResults = test7X7_2TestCases.Run();
+      const vector<TestResult> testResults = test7X7_2TestCases.Run();
       ARE_EQUAL(2, testResults.size());
       ARE_EQUAL(FullName(TestClassName, TestName), testResults[0].fullName);
       ARE_EQUAL(FullName(TestClassName, TestName), testResults[1].fullName);
       ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
       ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
-      tuple<int, int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, 6, string());
-      tuple<int, int, int, int, int, int, string> expectedSecondCall(8, 9, 10, 11, 12, 13, string());
+      const tuple<int, int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, 6, string());
+      const tuple<int, int, int, int, int, int, string> expectedSecondCall(8, 9, 10, 11, 12, 13, string());
       ARE_EQUAL(2, TestingTestClass7X7::s_calls.size());
       ARE_EQUAL(expectedFirstCall, TestingTestClass7X7::s_calls[0]);
       ARE_EQUAL(expectedSecondCall, TestingTestClass7X7::s_calls[1]);
@@ -449,14 +449,14 @@ namespace ZenUnit
          9, 10, 11, 12, 13, 14, 15, string());
       AssertTestNXNState(test8X8_2TestCases, 2);
 
-      vector<TestResult> testResults = test8X8_2TestCases.Run();
+      const vector<TestResult> testResults = test8X8_2TestCases.Run();
       ARE_EQUAL(2, testResults.size());
       ARE_EQUAL(FullName(TestClassName, TestName), testResults[0].fullName);
       ARE_EQUAL(FullName(TestClassName, TestName), testResults[1].fullName);
       ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
       ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
-      tuple<int, int, int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, 6, 7, string());
-      tuple<int, int, int, int, int, int, int, string> expectedSecondCall(9, 10, 11, 12, 13, 14, 15, string());
+      const tuple<int, int, int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, 6, 7, string());
+      const tuple<int, int, int, int, int, int, int, string> expectedSecondCall(9, 10, 11, 12, 13, 14, 15, string());
       ARE_EQUAL(2, TestingTestClass8X8::s_calls.size());
       ARE_EQUAL(expectedFirstCall, TestingTestClass8X8::s_calls[0]);
       ARE_EQUAL(expectedSecondCall, TestingTestClass8X8::s_calls[1]);
@@ -506,14 +506,14 @@ namespace ZenUnit
          10, 11, 12, 13, 14, 15, 16, 17, string());
       AssertTestNXNState(test9X9_2TestCases, 2);
 
-      vector<TestResult> testResults = test9X9_2TestCases.Run();
+      const vector<TestResult> testResults = test9X9_2TestCases.Run();
       ARE_EQUAL(2, testResults.size());
       ARE_EQUAL(FullName(TestClassName, TestName), testResults[0].fullName);
       ARE_EQUAL(FullName(TestClassName, TestName), testResults[1].fullName);
       ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
       ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
-      tuple<int, int, int, int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, 6, 7, 8, string());
-      tuple<int, int, int, int, int, int, int, int, string> expectedSecondCall(10, 11, 12, 13, 14, 15, 16, 17, string());
+      const tuple<int, int, int, int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, 6, 7, 8, string());
+      const tuple<int, int, int, int, int, int, int, int, string> expectedSecondCall(10, 11, 12, 13, 14, 15, 16, 17, string());
       ARE_EQUAL(2, TestingTestClass9X9::s_calls.size());
       ARE_EQUAL(expectedFirstCall, TestingTestClass9X9::s_calls[0]);
       ARE_EQUAL(expectedSecondCall, TestingTestClass9X9::s_calls[1]);
@@ -563,14 +563,14 @@ namespace ZenUnit
          11, 12, 13, 14, 15, 16, 17, 18, 19, string());
       AssertTestNXNState(test10X10_2TestCases, 2);
 
-      vector<TestResult> testResults = test10X10_2TestCases.Run();
+      const vector<TestResult> testResults = test10X10_2TestCases.Run();
       ARE_EQUAL(2, testResults.size());
       ARE_EQUAL(FullName(TestClassName, TestName), testResults[0].fullName);
       ARE_EQUAL(FullName(TestClassName, TestName), testResults[1].fullName);
       ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
       ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
-      tuple<int, int, int, int, int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, 6, 7, 8, 9, string());
-      tuple<int, int, int, int, int, int, int, int, int, string> expectedSecondCall(11, 12, 13, 14, 15, 16, 17, 18, 19, string());
+      const tuple<int, int, int, int, int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, 6, 7, 8, 9, string());
+      const tuple<int, int, int, int, int, int, int, int, int, string> expectedSecondCall(11, 12, 13, 14, 15, 16, 17, 18, 19, string());
       ARE_EQUAL(2, TestingTestClass10X10::s_calls.size());
       ARE_EQUAL(expectedFirstCall, TestingTestClass10X10::s_calls[0]);
       ARE_EQUAL(expectedSecondCall, TestingTestClass10X10::s_calls[1]);

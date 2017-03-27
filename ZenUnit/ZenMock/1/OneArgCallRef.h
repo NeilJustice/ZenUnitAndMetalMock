@@ -36,7 +36,7 @@ struct ZenUnitPrinter<ZenMock::OneArgCallRef<ArgType>>
 {
    static void Print(std::ostream& os, const ZenMock::OneArgCallRef<ArgType>& oneArgCall)
    {
-      std::string toStringedArg = ZenUnit::ToStringer::ToString(oneArgCall.arg);
+      const std::string toStringedArg = ZenUnit::ToStringer::ToString(oneArgCall.arg);
       os << "ZenMock::OneArgCall:\n"
          << "Arg: " << toStringedArg;
    }

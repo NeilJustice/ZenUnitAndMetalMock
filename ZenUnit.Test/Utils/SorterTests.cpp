@@ -37,7 +37,7 @@ namespace ZenUnit
       //
       _sorter.Sort(&dataStructure);
       //
-      DataStructureType expectedSortedDataStructure = { 1, 2, 3 };
+      const DataStructureType expectedSortedDataStructure = { 1, 2, 3 };
       VECTORS_EQUAL(expectedSortedDataStructure, dataStructure);
    }
 

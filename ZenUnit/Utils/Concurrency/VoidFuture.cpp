@@ -14,9 +14,9 @@ namespace ZenUnit
 
    future_status VoidFuture::WaitAtMostSeconds(unsigned seconds) const
    {
-      chrono::duration<unsigned long long> waitTime = seconds > 0 ? chrono::seconds(seconds)
+      const chrono::duration<unsigned long long> waitTime = seconds > 0 ? chrono::seconds(seconds)
          : chrono::seconds(numeric_limits<unsigned long long>::max());
-      future_status waitResult = _voidFuture.wait_for(waitTime);
+      const future_status waitResult = _voidFuture.wait_for(waitTime);
       return waitResult;
    }
 

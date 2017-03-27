@@ -53,52 +53,52 @@
    #CrystalClearTestName, __FILE__, __LINE__, #__VA_ARGS__, __VA_ARGS__ \
 
 #define TEST1X1(CrystalClearTestName, Arg1Type, ...) \
-   std::nullptr_t ZenUnit_Test1X1Registrar_##CrystalClearTestName = \
+   const std::nullptr_t ZenUnit_Test1X1Registrar_##CrystalClearTestName = \
       RegisterTest1X1(REGISTER_TESTNXN_ARGS(CrystalClearTestName, __VA_ARGS__)); \
    void CrystalClearTestName(Arg1Type)
 
 #define TEST2X2(CrystalClearTestName, Arg1Type, Arg2Type, ...) \
-   std::nullptr_t ZenUnit_Test2X2Registrar_##CrystalClearTestName = \
+   const std::nullptr_t ZenUnit_Test2X2Registrar_##CrystalClearTestName = \
       RegisterTest2X2(REGISTER_TESTNXN_ARGS(CrystalClearTestName, __VA_ARGS__)); \
    void CrystalClearTestName(Arg1Type, Arg2Type)
 
 #define TEST3X3(CrystalClearTestName, Arg1Type, Arg2Type, Arg3Type, ...) \
-   std::nullptr_t ZenUnit_Test3X3Registrar_##CrystalClearTestName = \
+   const std::nullptr_t ZenUnit_Test3X3Registrar_##CrystalClearTestName = \
       RegisterTest3X3(REGISTER_TESTNXN_ARGS(CrystalClearTestName, __VA_ARGS__)); \
    void CrystalClearTestName(Arg1Type, Arg2Type, Arg3Type)
 
 #define TEST4X4(CrystalClearTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
-   std::nullptr_t ZenUnit_Test4X4Registrar_##CrystalClearTestName = \
+   const std::nullptr_t ZenUnit_Test4X4Registrar_##CrystalClearTestName = \
       RegisterTest4X4(REGISTER_TESTNXN_ARGS(CrystalClearTestName, __VA_ARGS__)); \
    void CrystalClearTestName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)
 
 #define TEST5X5(CrystalClearTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
-   std::nullptr_t ZenUnit_Test5X5Registrar_##CrystalClearTestName = \
+   const std::nullptr_t ZenUnit_Test5X5Registrar_##CrystalClearTestName = \
       RegisterTest5X5(REGISTER_TESTNXN_ARGS(CrystalClearTestName, __VA_ARGS__)); \
    void CrystalClearTestName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)
 
 #define TEST6X6(CrystalClearTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
-   std::nullptr_t ZenUnit_Test6X6Registrar_##CrystalClearTestName = \
+   const std::nullptr_t ZenUnit_Test6X6Registrar_##CrystalClearTestName = \
       RegisterTest6X6(REGISTER_TESTNXN_ARGS(CrystalClearTestName, __VA_ARGS__)); \
    void CrystalClearTestName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)
 
 #define TEST7X7(CrystalClearTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
-   std::nullptr_t ZenUnit_Test7X7Registrar_##CrystalClearTestName = \
+   const std::nullptr_t ZenUnit_Test7X7Registrar_##CrystalClearTestName = \
       RegisterTest7X7(REGISTER_TESTNXN_ARGS(CrystalClearTestName, __VA_ARGS__)); \
    void CrystalClearTestName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)
 
 #define TEST8X8(CrystalClearTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
-   std::nullptr_t ZenUnit_Test8X8Registrar_##CrystalClearTestName = \
+   const std::nullptr_t ZenUnit_Test8X8Registrar_##CrystalClearTestName = \
       RegisterTest8X8(REGISTER_TESTNXN_ARGS(CrystalClearTestName, __VA_ARGS__)); \
    void CrystalClearTestName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)
 
 #define TEST9X9(CrystalClearTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...) \
-   std::nullptr_t ZenUnit_Test9X9Registrar_##CrystalClearTestName = \
+   const std::nullptr_t ZenUnit_Test9X9Registrar_##CrystalClearTestName = \
       RegisterTest9X9(REGISTER_TESTNXN_ARGS(CrystalClearTestName, __VA_ARGS__)); \
    void CrystalClearTestName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9)
 
 #define TEST10X10(CrystalClearTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...) \
-   std::nullptr_t ZenUnit_Test10X10Registrar_##CrystalClearTestName = \
+   const std::nullptr_t ZenUnit_Test10X10Registrar_##CrystalClearTestName = \
       RegisterTest10X10(REGISTER_TESTNXN_ARGS(CrystalClearTestName, __VA_ARGS__)); \
    void CrystalClearTestName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)
 
@@ -111,7 +111,7 @@
          new ZenUnit::TemplateTestClassRunner<CrystalClearTestClassName>(#CrystalClearTestClassName));
 
 #define SKIPRUN(Reason, CrystalClearTestClassName) \
-   std::nullptr_t ZenUnit_TestClassSkipper_##CrystalClearTestClassName = \
+   const std::nullptr_t ZenUnit_TestClassSkipper_##CrystalClearTestClassName = \
       ZenUnit::TestRunner::Instance().SkipTestClass(#CrystalClearTestClassName, Reason);
 
 #define RUNTEMPLATE(CrystalClearTestClassName, ...) \

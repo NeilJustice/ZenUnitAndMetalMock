@@ -194,28 +194,28 @@ File.cpp(1))");
          mock.NonVirtualConst();
          AssertAfterSecondCall(mock.NonVirtualConstMock, nonVirtualConstSignature);
 
-         std::function<void()> zenBoundGlobalMock = ZENBIND0(globalMock);
+         const std::function<void()> zenBoundGlobalMock = ZENBIND0(globalMock);
          globalMock.Expect();
          zenBoundGlobalMock();
          AssertAfterFirstCall(globalMock, globalSignature);
          zenBoundGlobalMock();
          AssertAfterSecondCall(globalMock, globalSignature);
 
-         std::function<void()> zenBoundNamespaceMock = ZENBIND0(namespaceMock);
+         const std::function<void()> zenBoundNamespaceMock = ZENBIND0(namespaceMock);
          namespaceMock.Expect();
          zenBoundNamespaceMock();
          AssertAfterFirstCall(namespaceMock, namespaceSignature);
          zenBoundNamespaceMock();
          AssertAfterSecondCall(namespaceMock, namespaceSignature);
 
-         std::function<void()> zenBoundStaticNameClashMock = ZENBIND0(staticNameClashMock);
+         const std::function<void()> zenBoundStaticNameClashMock = ZENBIND0(staticNameClashMock);
          staticNameClashMock.Expect();
          zenBoundStaticNameClashMock();
          AssertAfterFirstCall(staticNameClashMock, staticNameClashSignature);
          zenBoundStaticNameClashMock();
          AssertAfterSecondCall(staticNameClashMock, staticNameClashSignature);
 
-         std::function<void()> zenBoundStaticMock = ZENBIND0(staticMock);
+         const std::function<void()> zenBoundStaticMock = ZENBIND0(staticMock);
          staticMock.Expect();
          zenBoundStaticMock();
          AssertAfterFirstCall(staticMock, staticSignature);
@@ -237,19 +237,19 @@ File.cpp(1))");
          THROWS(mock.NonVirtualConst(), UnexpectedCallException,
             UnexpectedCallException::MakeWhat(nonVirtualConstSignature));
 
-         std::function<void()> zenBoundGlobalMock = ZENBIND0(globalMock);
+         const std::function<void()> zenBoundGlobalMock = ZENBIND0(globalMock);
          THROWS(zenBoundGlobalMock(), UnexpectedCallException,
             UnexpectedCallException::MakeWhat(globalSignature));
 
-         std::function<void()> zenBoundNamespaceMock = ZENBIND0(namespaceMock);
+         const std::function<void()> zenBoundNamespaceMock = ZENBIND0(namespaceMock);
          THROWS(zenBoundNamespaceMock(), UnexpectedCallException,
             UnexpectedCallException::MakeWhat(namespaceSignature));
 
-         std::function<void()> zenBoundStaticNameClashMock = ZENBIND0(staticNameClashMock);
+         const std::function<void()> zenBoundStaticNameClashMock = ZENBIND0(staticNameClashMock);
          THROWS(zenBoundStaticNameClashMock(), UnexpectedCallException,
             UnexpectedCallException::MakeWhat(staticNameClashSignature));
 
-         std::function<void()> zenBoundStaticMock = ZENBIND0(staticMock);
+         const std::function<void()> zenBoundStaticMock = ZENBIND0(staticMock);
          THROWS(zenBoundStaticMock(), UnexpectedCallException,
             UnexpectedCallException::MakeWhat(staticSignature));
       }
@@ -280,22 +280,22 @@ File.cpp(1))");
          THROWS(mock.NonVirtualConst(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(mock.NonVirtualConstMock);
 
-         std::function<void()> zenBoundGlobalVoid0 = ZENBIND0(globalMock);
+         const std::function<void()> zenBoundGlobalVoid0 = ZENBIND0(globalMock);
          globalMock.template ExpectAndThrow<runtime_error>(What);
          THROWS(zenBoundGlobalVoid0(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(globalMock);
 
-         std::function<void()> zenBoundNamespaceVoid0 = ZENBIND0(namespaceMock);
+         const std::function<void()> zenBoundNamespaceVoid0 = ZENBIND0(namespaceMock);
          namespaceMock.template ExpectAndThrow<runtime_error>(What);
          THROWS(zenBoundNamespaceVoid0(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(namespaceMock);
 
-         std::function<void()> zenBoundStaticVoid0 = ZENBIND0(staticNameClashMock);
+         const std::function<void()> zenBoundStaticVoid0 = ZENBIND0(staticNameClashMock);
          staticNameClashMock.template ExpectAndThrow<runtime_error>(What);
          THROWS(zenBoundStaticVoid0(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(staticNameClashMock);
 
-         std::function<void()> zenBoundStatic = ZENBIND0(staticMock);
+         const std::function<void()> zenBoundStatic = ZENBIND0(staticMock);
          staticMock.template ExpectAndThrow<runtime_error>(What);
          THROWS(zenBoundStatic(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(staticMock);
