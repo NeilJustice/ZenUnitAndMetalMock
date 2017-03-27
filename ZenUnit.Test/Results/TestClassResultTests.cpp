@@ -32,7 +32,7 @@ namespace ZenUnit
    TEST(DefaultConstructor_NewsForEacher)
    {
       TestClassResult testClassResult;
-      WAS_NEWED(testClassResult._forEacherTwoExtraArgs);
+      CONFIRM_NEWED(testClassResult._forEacherTwoExtraArgs);
    }
 
    TEST(Assign_CopiesArgumentToThis)

@@ -76,8 +76,7 @@ STARTUP
 TEST(Constructor_NewsComponentA)
 {
    ClassUnderTest classUnderTest;
-   // WAS_NEWED operator deletes _componentA to confirm that it was operator newed
-   WAS_NEWED(classUnderTest._componentA);
+   CONFIRM_NEWED(classUnderTest._componentA);
 }
 
 TEST3X3(InteractWithComponentA_CallsEveryFunction_ReturnsSumOfReturnValues,

@@ -38,9 +38,9 @@ TEST(CallAllMacros)
    IS_NULL(nullptr);
    IS_NOT_NULL(std::make_unique<int>());
    const int* dynamicallyAllocatedInt = new int;
-   WAS_NEWED(dynamicallyAllocatedInt);
+   CONFIRM_NEWED(dynamicallyAllocatedInt);
    const int* dynamicallyAllocatedArray = new int[3];
-   WAS_ARRAY_NEWED(dynamicallyAllocatedArray);
+   CONFIRM_ARRAY_NEWED(dynamicallyAllocatedArray);
 
    // Data Structures
    IS_EMPTY(std::vector<int>());

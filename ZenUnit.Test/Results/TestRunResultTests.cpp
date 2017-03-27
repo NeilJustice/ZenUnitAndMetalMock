@@ -53,10 +53,10 @@ namespace ZenUnit
    TEST(Constructor_NewsComponents)
    {
       TestRunResult testRunResult;
-      WAS_NEWED(testRunResult._console);
-      WAS_NEWED(testRunResult._memberForEacherTestClassResults);
-      WAS_NEWED(testRunResult._memberForEacherSkippedTests);
-      WAS_NEWED(testRunResult._testFailureNumberer);
+      CONFIRM_NEWED(testRunResult._console);
+      CONFIRM_NEWED(testRunResult._memberForEacherTestClassResults);
+      CONFIRM_NEWED(testRunResult._memberForEacherSkippedTests);
+      CONFIRM_NEWED(testRunResult._testFailureNumberer);
       IS_EMPTY(testRunResult._testClassResults);
       IS_EMPTY(testRunResult._skippedTestClassNamesAndReasons);
       IS_EMPTY(testRunResult._skippedFullTestNamesAndReasons);

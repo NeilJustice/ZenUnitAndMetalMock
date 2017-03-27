@@ -31,8 +31,8 @@ namespace ZenUnit
 
    TEST(Constructor_NewsComponents)
    {
-      WAS_NEWED(_multiTestClassRunner._sorter);
-      WAS_NEWED(_multiTestClassRunner._transformer);
+      CONFIRM_NEWED(_multiTestClassRunner._sorter);
+      CONFIRM_NEWED(_multiTestClassRunner._transformer);
       IS_EMPTY(_multiTestClassRunner._testClassRunners);
       IS_EMPTY(_multiTestClassRunner._testClassResults);
    }

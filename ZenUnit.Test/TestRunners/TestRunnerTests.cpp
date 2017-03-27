@@ -70,13 +70,13 @@ namespace ZenUnit
    TEST(Constructor_NewsComponents)
    {
       TestRunner testRunner;
-      WAS_NEWED(testRunner._console);
-      WAS_NEWED(testRunner._preamblePrinter);
-      WAS_NEWED(testRunner._argsParser);
-      WAS_NEWED(testRunner._futurist);
-      WAS_NEWED(testRunner._multiTestClassRunner);
-      WAS_NEWED(testRunner._testRunResult);
-      WAS_NEWED(testRunner._testRunStopwatch);
+      CONFIRM_NEWED(testRunner._console);
+      CONFIRM_NEWED(testRunner._preamblePrinter);
+      CONFIRM_NEWED(testRunner._argsParser);
+      CONFIRM_NEWED(testRunner._futurist);
+      CONFIRM_NEWED(testRunner._multiTestClassRunner);
+      CONFIRM_NEWED(testRunner._testRunResult);
+      CONFIRM_NEWED(testRunner._testRunStopwatch);
       ARE_EQUAL(ZenUnitArgs(), testRunner._args);
    }
 

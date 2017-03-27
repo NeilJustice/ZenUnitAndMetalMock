@@ -53,8 +53,8 @@ namespace ZenUnit
    TEST(TwoArgConstructor_NewsComponents_SetsFullName_NameFunctionReturnsTestName)
    {
       TestingTest testingTest("TestClass", "TestName");
-      WAS_NEWED(testingTest._tryCatchCaller);
-      WAS_NEWED(testingTest._testResultFactory);
+      CONFIRM_NEWED(testingTest._tryCatchCaller);
+      CONFIRM_NEWED(testingTest._testResultFactory);
       ARE_EQUAL(FileLine(), testingTest._fileLine);
 
       const char* testName = testingTest.Name();

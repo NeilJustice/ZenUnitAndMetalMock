@@ -38,8 +38,8 @@
 |------- |
 |`IS_NULL(pointer, messages...)`|
 |`IS_NOT_NULL(pointer, messages...)`|
-|`WAS_NEWED(smartOrRawPointer, messages...)` // Asserts not null then resets or operator deletes the pointer to confirm it was operator newed (or make_uniqued or make_shared)|
-|`WAS_ARRAY_NEWED(smartOrRawArrayPointer, messages...)` // Asserts not null then resets or operator array deletes the pointer to confirm it was array operator newed (or make_uniqued)|
+|`CONFIRM_NEWED(smartOrRawPointer, messages...)` // Asserts not null then resets or operator deletes the pointer to confirm it was operator newed (or make_uniqued or make_shared)|
+|`CONFIRM_ARRAY_NEWED(smartOrRawArrayPointer, messages...)` // Asserts not null then resets or operator array deletes the pointer to confirm it was array operator newed (or make_uniqued)|
 
 |Data Structures|
 |---------------|

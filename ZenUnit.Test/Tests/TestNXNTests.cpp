@@ -42,7 +42,7 @@ namespace ZenUnit
       TestNXN<TestingTestClass, 2, int, int, int, int> testNXN(
          TestClassName, TestName, TestCaseArgsText, 0, 0, 0, 0);
       //
-      WAS_NEWED(testNXN._console);
+      CONFIRM_NEWED(testNXN._console);
       IS_NULL(testNXN._testClass);
       ARE_EQUAL(TestCaseArgsText, testNXN._testCaseArgsText);
       ARE_EQUAL(0, testNXN._testCaseArgsIndex);
@@ -149,7 +149,7 @@ namespace ZenUnit
       //
       _testNXN->NewTestClass();
       //
-      WAS_NEWED(_testNXN->_testClass);
+      CONFIRM_NEWED(_testNXN->_testClass);
       _testNXN->_testClass.reset();
    }
 
