@@ -113,7 +113,7 @@ Step 1 of 1:
 
 Run `./LinuxCMakeBuildInstall.sh` to CMake with Ninja, build with the default C++ compiler, and install with Linux the ZenUnit include tree and Debug, Release, RelWithDebInfo, and MinSizeRel static libraries.
 
-`LinuxCMakeBuildInstall.sh` performs these actions:
+`LinuxCMakeBuildInstall.sh` performs these CMake, build, and install actions:
 
 ```bash
 #!/bin/bash
@@ -220,6 +220,8 @@ Build succeeded.
 ZenUnit installed on Windows:
 
 ![ZenUnit Installed On Windows](Screenshots/ZenUnitInstalledOnWindows.png "ZenUnit Installed On Windows")
+
+Editor's note: ZenUnit as a header-only unit testing framework would of course be much more convenient than the current building and linking against static libraries, which is why header-only is on the roadmap for ZenUnit.
 
 Test Matrix
 -----------
