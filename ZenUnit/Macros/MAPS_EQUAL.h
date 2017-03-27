@@ -76,7 +76,7 @@ namespace ZenUnit
       catch (const Anomaly&)
       {
          MAPS_EQUAL_Throw("  ", expectedMapText, actualMapText,
-            MAPS_EQUAL_MakeWhyBody_SizesNotEqual(expectedMap.size(), actualMap.size()), 
+            MAPS_EQUAL_MakeWhyBody_SizesNotEqual(expectedMap.size(), actualMap.size()),
             fileLine, " ", messagesText, messages...);
       }
       for (const auto& expectedKeyValuePair : expectedMapVRT.value)
@@ -86,11 +86,10 @@ namespace ZenUnit
          const std::pair<bool, bool> containsKeyValue =
             Map::ContainsKeyWithValue(actualMap, expectedKey, expectedValue);
          const bool mapContainsKey = containsKeyValue.first;
-         using KeyType = typename std::decay<decltype(expectedKey)>::type;
          if (!mapContainsKey)
          {
             MAPS_EQUAL_Throw(" ", expectedMapText, actualMapText,
-               MAPS_EQUAL_MakeWhyBody_ExpectedKeyNotInActualMap(expectedKey), 
+               MAPS_EQUAL_MakeWhyBody_ExpectedKeyNotInActualMap(expectedKey),
                fileLine, "", messagesText, messages...);
          }
          const bool mapContainsValue = containsKeyValue.second;
@@ -98,7 +97,7 @@ namespace ZenUnit
          {
             assert_true(containsKeyValue.first);
             MAPS_EQUAL_Throw(" ", expectedMapText, actualMapText,
-               MAPS_EQUAL_MakeWhyBody_KeysEqualValuesNotEqual(expectedKey, expectedValue, actualMap), 
+               MAPS_EQUAL_MakeWhyBody_KeysEqualValuesNotEqual(expectedKey, expectedValue, actualMap),
                fileLine, "", messagesText, messages...);
          }
       }

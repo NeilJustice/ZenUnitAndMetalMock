@@ -28,13 +28,20 @@ macro(EnablePrecompiledHeaders)
       endif()
       if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
          if(CMAKE_BUILD_TYPE STREQUAL "" OR CMAKE_BUILD_TYPE STREQUAL "Debug")
-            add_custom_target(${PROJECT_NAME}Pch /usr/bin/clang++ -std=c++14 -Wall -Wextra -Werror -pthread -Wno-pragma-once-outside-header
+            add_custom_target(${PROJECT_NAME}Pch /usr/bin/clang++ -std=c++14 -Wall -Wextra -Werror -pthread
+               -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments
                ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
          elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-            add_custom_target(${PROJECT_NAME}Pch /usr/bin/clang++ -std=c++14 -Wall -Wextra -Werror -pthread -O3 -Wno-pragma-once-outside-header
+            add_custom_target(${PROJECT_NAME}Pch /usr/bin/clang++ -std=c++14 -Wall -Wextra -Werror -pthread -O3
+               -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments
                ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
          elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-            add_custom_target(${PROJECT_NAME}Pch /usr/bin/clang++ -std=c++14 -Wall -Wextra -Werror -pthread -O3 -g -Wno-pragma-once-outside-header
+            add_custom_target(${PROJECT_NAME}Pch /usr/bin/clang++ -std=c++14 -Wall -Wextra -Werror -pthread -O3 -g
+               -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments
+               ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
+         elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
+            add_custom_target(${PROJECT_NAME}Pch /usr/bin/clang++ -std=c++14 -Wall -Wextra -Werror -pthread -Os
+               -Wno-pragma-once-outside-header  -pedantic -Wno-gnu-zero-variadic-macro-arguments
                ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
          endif()
          append(CMAKE_CXX_FLAGS "-include-pch ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h.gch")
@@ -48,6 +55,9 @@ macro(EnablePrecompiledHeaders)
          elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
             add_custom_target(${PROJECT_NAME}Pch g++ -std=c++14 -Wall -Wextra -Werror -pthread -O3 -DNDEBUG -g
                ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
+         elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
+            add_custom_target(${PROJECT_NAME}Pch g++ -std=c++14 -Wall -Wextra -Werror -pthread -Os -DNDEBUG
+               ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
          endif()
       endif()
       add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}Pch)
@@ -58,7 +68,9 @@ macro(EnablePrecompiledHeaders)
 endmacro()
 
 macro(IfMSVCAddRunTestsPostBuildStep)
-   add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND $(TargetPath) -exit0)
+   if(MSVC)
+      add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND $(TargetPath) -exit0)
+   endif()
 endmacro()
 
 if(UNIX)

@@ -23,14 +23,13 @@ namespace ZenUnit
    SPECEND
 
    TestResult _testResult;
-   const FullName FullNameValue = FullName("ClassName", "TestClassName");
    CallResult ConstructorCallResult;
    CallResult StartupCallResult;
    CallResult DestructorCallResult;
-   const ConsoleMock _consoleMock;
+   ConsoleMock _consoleMock;
    TestFailureNumbererMock _testFailureNumbererMock;
+   const FullName FullNameValue = FullName("ClassName", "TestClassName");
    const long long ExpectedMilliseconds = 1 + 2 + 3 + 4 + 5;
-
    ZENMOCK_NONVOID0_STATIC(ZenUnitArgs, ZenUnit::TestRunner, GetArgs)
 
    struct TestResult_WriteTestCaseNumberIfAnyMocked : public Zen::Mock<TestResult>
@@ -73,7 +72,7 @@ namespace ZenUnit
    {
       ConstructorCallResult.testOutcome = constructorOutcome;
       //
-      const TestResult constructorFailTestResult = 
+      const TestResult constructorFailTestResult =
          TestResult::ConstructorFail(FullNameValue, ConstructorCallResult);
       //
       TestResult expectedTestResult;
@@ -128,7 +127,7 @@ namespace ZenUnit
    }
 
    TEST6X6(SixArgConstructor_SetsFields,
-      TestOutcome testBodyOutcome, TestOutcome cleanupOutcome, long long maxtestmilliseconds, 
+      TestOutcome testBodyOutcome, TestOutcome cleanupOutcome, long long maxtestmilliseconds,
       int relativeMilliseconds, TestOutcome expectedOverallOutcome, CallResult TestResult::* expectedResponsibleCallResultField,
       TestOutcome::Success, TestOutcome::Success, 0ll, 0, TestOutcome::Success, nullptr,
       TestOutcome::Success, TestOutcome::Success, 0ll, 1, TestOutcome::Success, nullptr,

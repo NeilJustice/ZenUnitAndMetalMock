@@ -32,7 +32,7 @@ namespace ZenUnit
       IterableType<ElementType>, ClassType,
       void (ClassType::*)(ElementType, ExtraArgType) const, ExtraArgType>;
 
-   const MemberForEacherExtraArgType _memberForEacherExtraArg;
+   MemberForEacherExtraArgType _memberForEacherExtraArg;
 
    TEST(ForEach_EmptyIterable_DoesNotCallFunc)
    {

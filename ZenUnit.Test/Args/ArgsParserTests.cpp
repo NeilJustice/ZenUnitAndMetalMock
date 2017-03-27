@@ -19,8 +19,7 @@ namespace ZenUnit
    ArgsParser _argsParser;
    const ConsoleMock* _consoleMock;
    const string TestProgramPath = "Folder/TestProgramName";
-   const string ExpectedUsage = R"(
-C++ unit testing framework ZenUnit and C++ mocking framework ZenMock
+   const string ExpectedUsage = R"(C++ unit testing framework ZenUnit and C++ mocking framework ZenMock
 Version 0.1.1 2017-02-14
 
 Usage: ./<TestsBinaryName> [Options...]

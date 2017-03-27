@@ -15,9 +15,10 @@ namespace ZenUnit
 
    using TransformerType = Transformer<
       typename DataStructureType<T>::const_iterator,
-      typename DataStructureType<T>, T(*)(T)>;
+      DataStructureType<T>, T(*)(T)>;
 
    const TransformerType _transformer;
+   TransformerTests() {}
 
    static T PlusOne(T i)
    {

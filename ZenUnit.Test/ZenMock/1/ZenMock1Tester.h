@@ -549,7 +549,7 @@ Arg: 20
  Message: ")", expectedSignature, R"("
 File.cpp(1)
 File.cpp(1))");
-            const int expectedArg = 10;
+            int expectedArg = 10;
             vector<OneArgCallRef<int>> expectedCalls;
             ZenMockTester::call_n_times(expectedCallsSize, [&]{ expectedCalls.emplace_back(expectedArg); });
             THROWS(zenMockObject.AssertCalls(expectedCalls), Anomaly, expectedWhat);
@@ -573,7 +573,7 @@ File.cpp(1))");
             //
             ZenMockTester::call_n_times(expectedCallsSize, [&]{ zenMockObject.PrivateZenMock(10); });
             //
-            const int expectedArg = 10;
+            int expectedArg = 10;
             vector<OneArgCallRef<int>> expectedCalls;
             ZenMockTester::call_n_times(expectedCallsSize, [&]{ expectedCalls.emplace_back(expectedArg); });
             zenMockObject.AssertCalls(expectedCalls);

@@ -18,7 +18,7 @@ namespace ZenUnit
 
    TEST(ExpectedAndActualAddressesEqual_Throws)
    {
-      const int notExpectedObject = 0;
+      int notExpectedObject = 0;
       const int& actualObject = notExpectedObject;
       string expectedWhat = MakeExpectedWhat(
          "notExpectedObject", "actualObject", &notExpectedObject, &actualObject, false);
