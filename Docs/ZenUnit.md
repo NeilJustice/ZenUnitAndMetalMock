@@ -31,8 +31,9 @@
 |`IS_ZERO(value, messages...)`|
 
 |Values Road Map|
-|`ARE_WITHIN(expectedValue, actualValue, absoluteMaxDifference, ...)`|
-|`ARE_WITHIN_PERCENT(expectedValue, actualValue, absoluteMaxPercentDifference, ...)`|
+|---------------|
+|`ARE_WITHIN(expectedValue, actualValue, maxDifference, ...)`|
+|`ARE_WITHIN_PERCENT(expectedValue, actualValue, maxPercentDifference, ...)`|
 |`DOUBLES_CLOSE(expectedCloseDouble, actualDouble, ...)`|
 |`FLOATS_CLOSE(expectedCloseFloat, actualFloat, ...)`|
 

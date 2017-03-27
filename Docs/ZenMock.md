@@ -240,4 +240,4 @@ int main(int argc, char* argv[])
 
 |ZEN|
 |-------------|
-|`ZEN(ZenMockAssertion)` // Should the asserted-about ZenMocked function not have been called as expected, ZEN adorns the error message with \_\_FILE\_\_ and \_\_LINE\_\_ information.|
+|`ZEN(ZenMockAssertion)` // ZEN adorns error messages with \_\_FILE\_\_ and \_\_LINE\_\_ information.|
