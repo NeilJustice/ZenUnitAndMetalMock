@@ -1,8 +1,8 @@
 # ZenUnit
-ZenUnit is a cross-platform C++ unit testing framework designed for behavior specification exactness, readability of tests and test results, and writability of type and value parameterized tests.
+ZenUnit is a cross-platform C++ unit testing framework designed for specifying program behavior exactly, test and test result readability, and writability of type and value parameterized tests.
 
 # ZenMock
-ZenMock is a cross-platform C++ mocking framework feature of ZenUnit that allows you to isolate software components for targeted unit testing by way of virtual, template, global, and static function mocking using an Arrange-Act-Assert syntax.
+ZenMock is a cross-platform C++ mocking framework powered by ZenUnit for isolating software components for targeted unit testing by way of virtual, template, global, and static function mocking using an arrange-act-assert syntax.
 
 ### ZenUnit syntax and design commentary
 
