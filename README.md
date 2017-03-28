@@ -223,7 +223,7 @@ ZenUnit installed on Windows:
 
 ![ZenUnit Installed On Windows](Screenshots/ZenUnitInstalledOnWindows.png "ZenUnit Installed On Windows")
 
-Editor's note: ZenUnit and ZenMock as a header-only unit testing framework and a header-only mocking framework would of course be much more convenient than the current building and linking against static libraries, which is why ZenUnit and ZenMock will be made header-only following the further laying down of their foundations.
+Editor's note: ZenUnit and ZenMock as header-only would of course be much more convenient than the current building and linking against static libraries, which is why ZenUnit and ZenMock will be made header-only following further laying down of their foundations.
 
 Test Matrix
 -----------
@@ -244,7 +244,7 @@ Test Matrix road map: Travis CI Linux and macOS, AppVeyor, MinGW, and Visual Stu
 |Version|Date|Features|
 |-------|----|--------|
 |0.2.0|Approaching|Travis CI and AppVeyor, floating point assertions, test filtering|
-|0.1.1|February 14, 2017|Fixes, refactorings, and design improvements|
+|0.1.1|February 14, 2017|Fixes, refactorings, design improvements|
 |0.1.0|January 1, 2017|Launch|
 
 ### License
