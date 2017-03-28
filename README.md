@@ -221,7 +221,7 @@ ZenUnit installed on Windows:
 
 ![ZenUnit Installed On Windows](Screenshots/ZenUnitInstalledOnWindows.png "ZenUnit Installed On Windows")
 
-Editor's note: ZenUnit as a header-only unit testing framework would of course be much more convenient than the current building and linking against static libraries, which is why ZenUnit will be made header-only following the further laying down of its foundation.
+Editor's note: ZenUnit and ZenMock as a header-only unit testing framework and a header-only mocking framework would of course be much more convenient than the current building and linking against static libraries, which is why ZenUnit and ZenMock will be made header-only following the further laying down of their foundations.
 
 Test Matrix
 -----------
