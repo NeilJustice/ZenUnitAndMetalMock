@@ -173,7 +173,9 @@ ZenUnit installed on Linux:
 
 ### Building and Installing ZenUnit and ZenMock On Windows
 
-Step 1 of 1: Run with PowerShell `WindowsCMakeBuildInstall.ps1 <InstallDirectory>` to CMake with Visual Studio 14 2015 Win64, build with MSBuild, and install with Windows the ZenUnit include tree and Debug, Release, RelWithDebInfo, and MinSizeRel static libraries and .pdb files.
+Step 1 of 1: 
+
+Run with PowerShell `WindowsCMakeBuildInstall.ps1 <InstallDirectory>` to CMake with Visual Studio 14 2015 Win64, build with MSBuild, and install with Windows the ZenUnit include tree and Debug, Release, RelWithDebInfo, and MinSizeRel static libraries and .pdb files.
 
 `WindowsCMakeBuildInstall.ps1` performs these CMake, build, and install actions:
 
