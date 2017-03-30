@@ -27,6 +27,6 @@ namespace ZenMock
          }
       }
 
-      virtual ~ExceptionThrower() {}
+      virtual ~ExceptionThrower() = default;
    };
 }

@@ -17,7 +17,7 @@ namespace ZenUnit
    {
    public:
       virtual void Func(ElementType) const {}
-      virtual ~ClassType() {}
+      virtual ~ClassType() = default;
    };
 
    class ClassTypeMock : public Zen::Mock<ClassType>

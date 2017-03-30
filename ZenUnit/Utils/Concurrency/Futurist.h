@@ -23,6 +23,6 @@ namespace ZenUnit
          return waitResult;
       }
 
-      virtual ~Futurist() {}
+      virtual ~Futurist() = default;
    };
 }

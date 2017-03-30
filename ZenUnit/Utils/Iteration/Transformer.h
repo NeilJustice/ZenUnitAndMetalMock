@@ -20,6 +20,6 @@ namespace ZenUnit
          }
       }
 
-      virtual ~Transformer() {}
+      virtual ~Transformer() = default;
    };
 }

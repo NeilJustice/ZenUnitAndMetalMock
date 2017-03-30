@@ -18,6 +18,6 @@ namespace ZenUnit
          }
       }
 
-      virtual ~MemberForEacher() {}
+      virtual ~MemberForEacher() = default;
    };
 }

@@ -14,7 +14,7 @@ namespace ZenUnit
    public:
       MachineNameGetter();
       virtual std::string GetMachineName() const;
-      virtual ~MachineNameGetter() {}
+      virtual ~MachineNameGetter() = default;
    private:
 #ifdef __linux__
       virtual string GetLinuxMachineName() const;

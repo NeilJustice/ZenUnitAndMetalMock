@@ -20,6 +20,6 @@ namespace Zen
          return zenMockedClassName;
       }
 
-      virtual ~Mock() {}
+      virtual ~Mock() = default;
    };
 }

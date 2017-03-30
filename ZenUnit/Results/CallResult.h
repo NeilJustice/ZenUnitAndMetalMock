@@ -17,7 +17,7 @@ namespace ZenUnit
 
       CallResult();
       CallResult(TestPhase testPhase);
-      virtual ~CallResult() {}
+      virtual ~CallResult() = default;
       virtual void Assign(const CallResult& callResult);
    };
 }

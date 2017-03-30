@@ -25,7 +25,7 @@ namespace ZenUnit
       long long milliseconds;
 
       TestResult();
-      virtual ~TestResult() {}
+      virtual ~TestResult() = default;
 
       static TestResult ConstructorFail(
          const FullName& fullName,

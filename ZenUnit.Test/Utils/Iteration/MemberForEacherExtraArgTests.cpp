@@ -18,7 +18,7 @@ namespace ZenUnit
    {
    public:
       virtual void TwoArgFunction(ElementType, ExtraArgType) const {}
-      virtual ~ClassType() {}
+      virtual ~ClassType() = default;
    };
 
    class ClassTypeMock : public Zen::Mock<ClassType>

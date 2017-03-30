@@ -10,7 +10,7 @@ namespace ZenUnit
    public:
       VoidFuture();
       VoidFuture(std::future<void>&& voidFuture);
-      virtual ~VoidFuture() {}
+      virtual ~VoidFuture() = default;
       virtual std::future_status WaitAtMostSeconds(unsigned seconds) const;
       virtual void Get();
    };

@@ -19,6 +19,6 @@ namespace ZenUnit
          }
       }
 
-      virtual ~ForEacherExtraArg() {}
+      virtual ~ForEacherExtraArg() = default;
    };
 }

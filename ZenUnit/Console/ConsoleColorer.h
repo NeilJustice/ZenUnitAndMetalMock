@@ -16,7 +16,7 @@ namespace ZenUnit
 #endif
    public:
       ConsoleColorer();
-      virtual ~ConsoleColorer() {}
+      virtual ~ConsoleColorer() = default;
       virtual bool SetColor(Color color) const;
       virtual void UnsetColor(bool didSetTextColor) const;
    private:

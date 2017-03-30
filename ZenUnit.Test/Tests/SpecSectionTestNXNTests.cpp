@@ -16,7 +16,7 @@ public:
    }
 
    void TestFunction(int) {}
-   virtual ~TestingTestClass_SpecSectionTestNXNTests() {}
+   virtual ~TestingTestClass_SpecSectionTestNXNTests() = default;
 };
 
 bool TestingTestClass_SpecSectionTestNXNTests::didCallTestNXNPmfToTest;

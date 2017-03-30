@@ -117,7 +117,7 @@ namespace ZenUnit
          this->why = whyBuilder.str();
       }
 
-      virtual const char* what() const noexcept final override;
+      virtual const char* what() const noexcept final;
 
       static std::string MakeAssertExpression(
          const char* assertionName,

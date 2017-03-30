@@ -33,7 +33,7 @@ namespace ZenUnit
       {
       }
 
-      virtual ~TestNXN() {}
+      virtual ~TestNXN() = default;
 
       virtual size_t NumberOfTestCases() const override
       {

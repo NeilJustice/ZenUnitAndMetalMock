@@ -6,6 +6,6 @@ namespace ZenMock
    {
    public:
       virtual void Throw() const = 0;
-      virtual ~Throwable() {}
+      virtual ~Throwable() = default;
    };
 }

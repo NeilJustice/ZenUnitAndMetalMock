@@ -34,6 +34,6 @@ namespace ZenUnit
          const CallResult& cleanupCallResult,
          const CallResult& destructorCallResult) const;
 
-      virtual ~TestResultFactory() {}
+      virtual ~TestResultFactory() = default;
    };
 }

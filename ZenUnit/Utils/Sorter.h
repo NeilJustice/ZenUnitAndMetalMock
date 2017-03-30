@@ -11,6 +11,6 @@ namespace ZenUnit
          std::sort(dataStructure->begin(), dataStructure->end());
       }
 
-      virtual ~Sorter() {}
+      virtual ~Sorter() = default;
    };
 }

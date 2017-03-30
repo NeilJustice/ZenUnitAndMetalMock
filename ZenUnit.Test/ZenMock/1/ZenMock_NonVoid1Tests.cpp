@@ -18,7 +18,7 @@ namespace ZenMock
       virtual int VirtualConst(int) const { return 0; }
       int NonVirtual(int) { return 0; }
       int NonVirtualConst(int) const { return 0; }
-      virtual ~NonVoid1Functions() {}
+      virtual ~NonVoid1Functions() = default;
    };
 
    struct NonVoid1FunctionsMock : public Zen::Mock<NonVoid1Functions>

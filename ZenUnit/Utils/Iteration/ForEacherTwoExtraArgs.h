@@ -21,6 +21,6 @@ namespace ZenUnit
          }
       }
 
-      virtual ~ForEacherTwoExtraArgs() {}
+      virtual ~ForEacherTwoExtraArgs() = default;
    };
 }
