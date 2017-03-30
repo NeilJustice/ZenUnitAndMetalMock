@@ -12,13 +12,13 @@ public:
    TestingTest(const char* testClassName, const char* testName)
       : Test(testClassName, testName) {}
 
-   virtual size_t NumberOfTestCases() const override { return 0; }
-   virtual std::vector<TestResult> Run() override { return std::vector<TestResult>(); }
-   virtual void NewTestClass() override {}
-   virtual void Startup() override {}
-   virtual void TestBody() override {}
-   virtual void Cleanup() override {}
-   virtual void DeleteTestClass() override {}
+   virtual size_t NumberOfTestCases() const final { return 0; }
+   virtual std::vector<TestResult> Run() final { return std::vector<TestResult>(); }
+   virtual void NewTestClass() final {}
+   virtual void Startup() final {}
+   virtual void TestBody() final {}
+   virtual void Cleanup() final {}
+   virtual void DeleteTestClass() final {}
 };
 
 namespace ZenUnit

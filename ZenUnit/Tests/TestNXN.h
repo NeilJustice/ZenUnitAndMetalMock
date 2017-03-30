@@ -35,13 +35,13 @@ namespace ZenUnit
 
       virtual ~TestNXN() = default;
 
-      virtual size_t NumberOfTestCases() const override
+      virtual size_t NumberOfTestCases() const final
       {
          size_t numberOfTestCases = NumberOfTestCaseArgs / N;
          return numberOfTestCases;
       }
 
-      virtual std::vector<TestResult> Run() override
+      virtual std::vector<TestResult> Run() final
       {
          std::vector<TestResult> testResults;
          size_t numberOfTestCases = NumberOfTestCases();
@@ -61,28 +61,28 @@ namespace ZenUnit
          return testResults;
       }
 
-      virtual void NewTestClass() override
+      virtual void NewTestClass() final
       {
          _testClass.reset(new TestClassType);
       }
 
-      virtual void Startup() override
+      virtual void Startup() final
       {
          _testClass->Startup();
       }
 
-      virtual void TestBody() override
+      virtual void TestBody() final
       {
          NXNTestBody(_testClass.get(), _testCaseArgsIndex);
       }
       virtual void NXNTestBody(TestClassType*, size_t) { throw std::logic_error("N/A"); }
 
-      virtual void Cleanup() override
+      virtual void Cleanup() final
       {
          _testClass->Cleanup();
       }
 
-      virtual void DeleteTestClass() override
+      virtual void DeleteTestClass() final
       {
          _testClass.reset();
       }

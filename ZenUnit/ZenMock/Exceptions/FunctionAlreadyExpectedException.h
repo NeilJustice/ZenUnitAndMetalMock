@@ -10,6 +10,6 @@ namespace ZenMock
    public:
       FunctionAlreadyExpectedException(const std::string& zenMockedFunctionSignature);
       static std::string MakeWhat(const std::string& zenMockedFunctionSignature);
-      virtual const char* what() const noexcept override;
+      virtual const char* what() const noexcept final;
    };
 }
