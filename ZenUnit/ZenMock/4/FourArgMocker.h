@@ -6,7 +6,7 @@
 #include "ZenUnit/Macros/VECTORS_EQUAL.h"
 
 #define ZENBIND4(FunctionName_ZenMock) \
-   std::bind(&decltype(FunctionName_ZenMock)::PrivateZenMockFunctionPointer, &FunctionName_ZenMock, \
+   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &FunctionName_ZenMock, \
    std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)
 
 namespace ZenMock
@@ -21,22 +21,22 @@ namespace ZenMock
    {
       friend class FourArgMockerTests;
    private:
-      std::vector<FourArgCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> fourArgCalls;
+      std::vector<FourArgCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> _fourArgCalls;
    public:
       FourArgMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
       }
 
-      void PrivateZenMock(
+      void ZenMockIt(
          const Arg1Type& arg1,
          const Arg2Type& arg2,
          const Arg3Type& arg3,
          const Arg4Type& arg4)
       {
-         this->ThrowIfNotExpected(arg1, arg2, arg3, arg4);
-         fourArgCalls.emplace_back(arg1, arg2, arg3, arg4);
-         this->ThrowIfExceptionSet();
+         this->ZenMockThrowIfNotExpected(arg1, arg2, arg3, arg4);
+         _fourArgCalls.emplace_back(arg1, arg2, arg3, arg4);
+         this->ZenMockThrowIfExceptionSet();
       }
 
       void AssertCalledOnceWith(
@@ -45,14 +45,13 @@ namespace ZenMock
          const Arg3Type& expectedArg3,
          const Arg4Type& expectedArg4)
       {
-         this->SetAsserted();
+         this->ZenMockSetAsserted();
          const size_t expectedNumberOfCalls = 1;
-         const size_t numberOfCalls = fourArgCalls.size();
-         ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArg1, fourArgCalls[0].arg1, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArg2, fourArgCalls[0].arg2, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArg3, fourArgCalls[0].arg3, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArg4, fourArgCalls[0].arg4, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCalls, _fourArgCalls.size(), this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedArg1, _fourArgCalls[0].arg1, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedArg2, _fourArgCalls[0].arg2, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedArg3, _fourArgCalls[0].arg3, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedArg4, _fourArgCalls[0].arg4, this->ZenMockedFunctionSignature);
       }
 
       void AssertCalledNTimesWith(
@@ -62,28 +61,27 @@ namespace ZenMock
          const Arg3Type& expectedArg3,
          const Arg4Type& expectedArg4)
       {
-         this->ThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
-         this->SetAsserted();
-         const size_t numberOfCalls = fourArgCalls.size();
-         ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature);
+         this->ZenMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
+         this->ZenMockSetAsserted();
+         ARE_EQUAL(expectedNumberOfCalls, _fourArgCalls.size(), this->ZenMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCalls; ++i)
          {
             const std::string zenMockedFunctionSignatureAndCallIndex
                = ZenUnit::String::Concat(this->ZenMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedArg1, fourArgCalls[i].arg1, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArg2, fourArgCalls[i].arg2, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArg3, fourArgCalls[i].arg3, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArg4, fourArgCalls[i].arg4, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedArg1, _fourArgCalls[i].arg1, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedArg2, _fourArgCalls[i].arg2, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedArg3, _fourArgCalls[i].arg3, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedArg4, _fourArgCalls[i].arg4, zenMockedFunctionSignatureAndCallIndex);
          }
       }
 
       void AssertCalls(const std::vector<
          FourArgCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>& expectedFourArgCalls)
       {
-         this->ThrowIfExpectedCallsSizeIsZero(expectedFourArgCalls.size());
-         this->SetAsserted();
+         this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedFourArgCalls.size());
+         this->ZenMockSetAsserted();
          const std::vector<FourArgCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> 
-            actualFourArgCalls = PrivateCallsToCallRefs(fourArgCalls);
+            actualFourArgCalls = PrivateCallsToCallRefs(_fourArgCalls);
          VECTORS_EQUAL(expectedFourArgCalls, actualFourArgCalls, this->ZenMockedFunctionSignature);
       }
 

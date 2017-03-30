@@ -32,7 +32,7 @@
 #define ZENMOCK_VOID8_DEFINED(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, virtualness, constness, mutableness, overrideness, ...) \
 virtualness void functionName(arg1Type arg1, arg2Type arg2, arg3Type arg3, arg4Type arg4, arg5Type arg5, arg6Type arg6, arg7Type arg7, arg8Type arg8) constness overrideness \
 { \
-   functionName##Mock##__VA_ARGS__.PrivateZenMock(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8); \
+   functionName##Mock##__VA_ARGS__.ZenMockIt(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8); \
 } \
 struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::ZenMockVoidEightArgs<arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type> \
 { \
@@ -86,7 +86,7 @@ namespace ZenMock
       {
       }
 
-      static void PrivateZenMockFunctionPointer(
+      static void ZenMockItFunctionPointer(
          VoidEightArgFunctionPointerMocker<
             Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
             Arg5Type, Arg6Type, Arg7Type, Arg8Type>* functionMocker,

@@ -20,59 +20,59 @@ namespace ZenMock
       {
       }
 
-      void PrivatePushBackReturnValue(const ReturnType& returnValue)
+      void ZenMockPushBackReturnValue(const ReturnType& returnValue)
       {
          _returnValues.push_back(returnValue);
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
-      void PrivatePushBackReturnValues(
+      void ZenMockPushBackReturnValues(
          const FirstReturnValue& firstReturnValue,
          const SubsequentReturnValues&... subsequentReturnValues)
       {
-         PrivatePushBackReturnValue(firstReturnValue);
-         PrivatePushBackReturnValues(subsequentReturnValues...);
+         ZenMockPushBackReturnValue(firstReturnValue);
+         ZenMockPushBackReturnValues(subsequentReturnValues...);
       }
-      void PrivatePushBackReturnValues() {}
+      void ZenMockPushBackReturnValues() {}
 
-      void PrivatePushBackReturnValues(const std::vector<DecayedReturnType>& values)
+      void ZenMockPushBackReturnValues(const std::vector<DecayedReturnType>& values)
       {
          if (values.empty())
          {
             throw std::invalid_argument(
-               "ZenMock::ValueReturner::PrivatePushBackReturnValues(): Return values vector cannot be empty");
+               "ZenMock::ValueReturner::ZenMockPushBackReturnValues(): Return values vector cannot be empty");
          }
          _returnValues.insert(end(_returnValues), values.cbegin(), values.cend());
       }
 
       template<typename FunctionReturnType = ReturnType>
       typename std::enable_if<std::is_default_constructible<
-         FunctionReturnType>::value, FunctionReturnType>::type PrivateNextReturnValue()
+         FunctionReturnType>::value, FunctionReturnType>::type ZenMockZenMockNextReturnValue()
       {
          if (_returnValues.empty())
          {
             const FunctionReturnType defaultReturnValue{};
             return defaultReturnValue;
          }
-         return NextReturnValue();
+         return ZenMockNextReturnValue();
       }
 
       template<typename FunctionReturnType = ReturnType>
       typename std::enable_if<!std::is_default_constructible<
-         FunctionReturnType>::value, FunctionReturnType>::type PrivateNextReturnValue()
+         FunctionReturnType>::value, FunctionReturnType>::type ZenMockZenMockNextReturnValue()
       {
          if (_returnValues.empty())
          {
             throw ZenMock::ReturnValueMustBeSpecifiedException(ZenMockedFunctionSignature);
          }
-         return NextReturnValue();
+         return ZenMockNextReturnValue();
       }
-
-      ReturnType NextReturnValue()
+   protected:
+      ReturnType ZenMockNextReturnValue()
       {
-         const DecayedReturnType& nextReturnValue =
+         const DecayedReturnType& ZenMockNextReturnValue =
             _returnValueIndex < _returnValues.size() ? _returnValues[_returnValueIndex++] : _returnValues.back();
-         return nextReturnValue;
+         return ZenMockNextReturnValue;
       }
    };
 }

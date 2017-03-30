@@ -32,7 +32,7 @@
 #define ZENMOCK_VOID3_DEFINED(functionName, arg1Type, arg2Type, arg3Type, virtualness, constness, mutableness, overrideness, ...) \
 virtualness void functionName(arg1Type arg1, arg2Type arg2, arg3Type arg3) constness overrideness \
 { \
-   functionName##Mock##__VA_ARGS__.PrivateZenMock(arg1, arg2, arg3); \
+   functionName##Mock##__VA_ARGS__.ZenMockIt(arg1, arg2, arg3); \
 } \
 struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidThreeArgMocker<arg1Type, arg2Type, arg3Type> \
 { \
@@ -62,7 +62,7 @@ namespace ZenMock
       {
       }
 
-      static void PrivateZenMockFunctionPointer(
+      static void ZenMockItFunctionPointer(
          VoidThreeArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type>* functionMocker,
          Arg1Type arg1, Arg2Type arg2, Arg3Type arg3)
       {

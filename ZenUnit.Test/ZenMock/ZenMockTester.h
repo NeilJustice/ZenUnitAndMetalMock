@@ -15,7 +15,7 @@ struct ZenMockTester
       const string& expectedSignature, size_t expectedCallCount, size_t actualCallCount)
    {
       const string expectedWhat = String::Concat(R"(
-  Failed: ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCalls, _numberOfCalls, this->ZenMockedFunctionSignature)
 Expected: )", expectedCallCount, R"(
   Actual: )", actualCallCount, R"(
  Message: ")", expectedSignature, R"("

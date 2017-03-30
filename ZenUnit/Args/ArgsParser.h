@@ -13,7 +13,7 @@ namespace ZenUnit
       std::unique_ptr<const Console> _console;
    public:
       ArgsParser();
-      virtual ~ArgsParser() {}
+      virtual ~ArgsParser() = default;
       virtual ZenUnitArgs Parse(const std::vector<std::string>& args) const;
       static const std::string Usage;
    };

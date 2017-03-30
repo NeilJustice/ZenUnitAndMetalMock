@@ -33,7 +33,7 @@
 #define ZENMOCK_NONVOID5_DEFINED(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, virtualness, constness, mutableness, overrideness, ...) \
 virtualness returnType functionName(arg1Type arg1, arg2Type arg2, arg3Type arg3, arg4Type arg4, arg5Type arg5) constness overrideness \
 { \
-   return functionName##Mock##__VA_ARGS__.PrivateZenMockAndReturnValue(arg1, arg2, arg3, arg4, arg5); \
+   return functionName##Mock##__VA_ARGS__.ZenMockItAndReturnValue(arg1, arg2, arg3, arg4, arg5); \
 } \
 struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidFiveArgMocker<returnType, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type> \
 { \
@@ -65,20 +65,20 @@ namespace ZenMock
          const SubsequentReturnValues&... subsequentReturnValues)
       {
          FiveArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::Expect();
-         ValueReturner<ReturnType>::PrivatePushBackReturnValues(firstReturnValue, subsequentReturnValues...);
+         ValueReturner<ReturnType>::ZenMockPushBackReturnValues(firstReturnValue, subsequentReturnValues...);
       }
 
       void ExpectAndReturnValues(
          const std::vector<typename std::decay<ReturnType>::type>& returnValues)
       {
          FiveArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::Expect();
-         ValueReturner<ReturnType>::PrivatePushBackReturnValues(returnValues);
+         ValueReturner<ReturnType>::ZenMockPushBackReturnValues(returnValues);
       }
 
-      ReturnType PrivateZenMockAndReturnValue(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5)
+      ReturnType ZenMockItAndReturnValue(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5)
       {
          FiveArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::ZenMock(arg1, arg2, arg3, arg4, arg5);
-         const ReturnType returnValue = ValueReturner<ReturnType>::PrivateNextReturnValue();
+         const ReturnType returnValue = ValueReturner<ReturnType>::ZenMockZenMockNextReturnValue();
          return returnValue;
       }
    };
@@ -92,11 +92,11 @@ namespace ZenMock
       {
       }
 
-      static ReturnType PrivateZenMockFunctionPointer(
+      static ReturnType ZenMockItFunctionPointer(
          NonVoidFiveArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>* functionMocker,
          Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5)
       {
-         return functionMocker->PrivateZenMockAndReturnValue(arg1, arg2, arg3, arg4, arg5);
+         return functionMocker->ZenMockItAndReturnValue(arg1, arg2, arg3, arg4, arg5);
       }
    };
 }

@@ -19,7 +19,7 @@ namespace ZenMock
             std::forward<ExceptionArgTypes>(exceptionArgs)...));
       }
 
-      void ThrowIfExceptionSet() const
+      void ZenMockThrowIfExceptionSet() const
       {
          if (_throwable != nullptr)
          {

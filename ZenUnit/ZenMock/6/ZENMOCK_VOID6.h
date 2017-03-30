@@ -32,7 +32,7 @@
 #define ZENMOCK_VOID6_DEFINED(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, virtualness, constness, mutableness, overrideness, ...) \
 virtualness void functionName(arg1Type arg1, arg2Type arg2, arg3Type arg3, arg4Type arg4, arg5Type arg5, arg6Type arg6) constness overrideness \
 { \
-   functionName##Mock##__VA_ARGS__.PrivateZenMock(arg1, arg2, arg3, arg4, arg5, arg6); \
+   functionName##Mock##__VA_ARGS__.ZenMockIt(arg1, arg2, arg3, arg4, arg5, arg6); \
 } \
 struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::ZenMockVoidSixArgs<arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type> \
 { \
@@ -62,7 +62,7 @@ namespace ZenMock
       {
       }
 
-      static void PrivateZenMockFunctionPointer(
+      static void ZenMockItFunctionPointer(
          VoidSixArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>* functionMocker,
          Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5, Arg6Type arg6)
       {

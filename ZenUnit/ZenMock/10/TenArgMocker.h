@@ -6,7 +6,7 @@
 #include "ZenUnit/Macros/VECTORS_EQUAL.h"
 
 #define ZENBIND10(FunctionName_ZenMock) \
-   std::bind(&decltype(FunctionName_ZenMock)::PrivateZenMockFunctionPointer, &FunctionName_ZenMock, \
+   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &FunctionName_ZenMock, \
    std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, \
    std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8, std::placeholders::_9, std::placeholders::_10)
 
@@ -30,14 +30,14 @@ namespace ZenMock
    private:
       std::vector<TenArgCall<
          Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
-         Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>> tenArgCalls;
+         Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>> _tenArgCalls;
    public:
       TenArgMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
       }
 
-      void PrivateZenMock(
+      void ZenMockIt(
          const Arg1Type& arg1,
          const Arg2Type& arg2,
          const Arg3Type& arg3,
@@ -49,9 +49,9 @@ namespace ZenMock
          const Arg9Type& arg9,
          const Arg10Type& arg10)
       {
-         this->ThrowIfNotExpected(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
-         tenArgCalls.emplace_back(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
-         this->ThrowIfExceptionSet();
+         this->ZenMockThrowIfNotExpected(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
+         _tenArgCalls.emplace_back(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
+         this->ZenMockThrowIfExceptionSet();
       }
 
       void AssertCalledOnceWith(
@@ -66,20 +66,19 @@ namespace ZenMock
          const Arg9Type& expectedArg9,
          const Arg10Type& expectedArg10)
       {
-         this->SetAsserted();
+         this->ZenMockSetAsserted();
          const size_t expectedNumberOfCalls = 1;
-         const size_t numberOfCalls = tenArgCalls.size();
-         ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArg1, tenArgCalls[0].arg1, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArg2, tenArgCalls[0].arg2, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArg3, tenArgCalls[0].arg3, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArg4, tenArgCalls[0].arg4, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArg5, tenArgCalls[0].arg5, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArg6, tenArgCalls[0].arg6, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArg7, tenArgCalls[0].arg7, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArg8, tenArgCalls[0].arg8, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArg9, tenArgCalls[0].arg9, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArg10, tenArgCalls[0].arg10, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCalls, _tenArgCalls.size(), this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedArg1, _tenArgCalls[0].arg1, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedArg2, _tenArgCalls[0].arg2, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedArg3, _tenArgCalls[0].arg3, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedArg4, _tenArgCalls[0].arg4, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedArg5, _tenArgCalls[0].arg5, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedArg6, _tenArgCalls[0].arg6, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedArg7, _tenArgCalls[0].arg7, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedArg8, _tenArgCalls[0].arg8, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedArg9, _tenArgCalls[0].arg9, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedArg10, _tenArgCalls[0].arg10, this->ZenMockedFunctionSignature);
       }
 
       void AssertCalledNTimesWith(
@@ -95,24 +94,23 @@ namespace ZenMock
          const Arg9Type& expectedArg9,
          const Arg10Type& expectedArg10)
       {
-         this->ThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
-         this->SetAsserted();
-         const size_t numberOfCalls = tenArgCalls.size();
-         ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature);
+         this->ZenMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
+         this->ZenMockSetAsserted();
+         ARE_EQUAL(expectedNumberOfCalls, _tenArgCalls.size(), this->ZenMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCalls; ++i)
          {
             const std::string zenMockedFunctionSignatureAndCallIndex
                = ZenUnit::String::Concat(this->ZenMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedArg1, tenArgCalls[i].arg1, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArg2, tenArgCalls[i].arg2, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArg3, tenArgCalls[i].arg3, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArg4, tenArgCalls[i].arg4, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArg5, tenArgCalls[i].arg5, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArg6, tenArgCalls[i].arg6, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArg7, tenArgCalls[i].arg7, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArg8, tenArgCalls[i].arg8, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArg9, tenArgCalls[i].arg9, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArg10, tenArgCalls[i].arg10, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedArg1, _tenArgCalls[i].arg1, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedArg2, _tenArgCalls[i].arg2, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedArg3, _tenArgCalls[i].arg3, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedArg4, _tenArgCalls[i].arg4, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedArg5, _tenArgCalls[i].arg5, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedArg6, _tenArgCalls[i].arg6, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedArg7, _tenArgCalls[i].arg7, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedArg8, _tenArgCalls[i].arg8, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedArg9, _tenArgCalls[i].arg9, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedArg10, _tenArgCalls[i].arg10, zenMockedFunctionSignatureAndCallIndex);
          }
       }
 
@@ -120,12 +118,12 @@ namespace ZenMock
          Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
          Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>& expectedTenArgCalls)
       {
-         this->ThrowIfExpectedCallsSizeIsZero(expectedTenArgCalls.size());
-         this->SetAsserted();
+         this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedTenArgCalls.size());
+         this->ZenMockSetAsserted();
          const std::vector<TenArgCallRef<
             Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
             Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
-            actualTenArgCalls = PrivateCallsToCallRefs(tenArgCalls);
+            actualTenArgCalls = PrivateCallsToCallRefs(_tenArgCalls);
          VECTORS_EQUAL(expectedTenArgCalls, actualTenArgCalls, this->ZenMockedFunctionSignature);
       }
 

@@ -12,88 +12,88 @@ namespace ZenMock
    {
       friend class ZenMockerTests;
    private:
-      std::function<void(int)> zenMockableExitFunction;
-      std::function<ZenUnit::ZenUnitArgs()> zenMockableGetZenUnitArgs;
-      bool zenMockExceptionIsInPlay;
+      std::function<void(int)> _zenMockableExitFunction;
+      std::function<ZenUnit::ZenUnitArgs()> _zenMockableGetZenUnitArgs;
+      bool _zenMockExceptionIsInPlay;
    protected:
-      MockableExceptionThrowerType exceptionThrower;
+      MockableExceptionThrowerType _exceptionThrower;
       bool expected;
-      bool asserted;
+      bool _asserted;
       const std::string ZenMockedFunctionSignature;
    public:
       ZenMocker(const std::string& zenMockedFunctionSignature)
-         : zenMockableExitFunction(::exit)
-         , zenMockableGetZenUnitArgs(ZenUnit::TestRunner::GetArgs)
-         , zenMockExceptionIsInPlay(false)
+         : _zenMockableExitFunction(::exit)
+         , _zenMockableGetZenUnitArgs(ZenUnit::TestRunner::GetArgs)
+         , _zenMockExceptionIsInPlay(false)
          , expected(false)
-         , asserted(false)
+         , _asserted(false)
          , ZenMockedFunctionSignature(zenMockedFunctionSignature)
       {
       }
 
       void Expect()
       {
-         ThrowIfAlreadyExpected();
+         ZenMockThrowIfAlreadyExpected();
          expected = true;
       }
 
       template<typename ExceptionType, typename... ExceptionArgTypes>
       void ExpectAndThrow(ExceptionArgTypes&&... exceptionArgs)
       {
-         ThrowIfAlreadyExpected();
-         exceptionThrower.template ExpectAndThrow<ExceptionType>(
+         ZenMockThrowIfAlreadyExpected();
+         _exceptionThrower.template ExpectAndThrow<ExceptionType>(
             std::forward<ExceptionArgTypes>(exceptionArgs)...);
          expected = true;
       }
 
-      void ThrowIfExceptionSet()
-      {
-         exceptionThrower.ThrowIfExceptionSet();
-      }
-
       ~ZenMocker()
       {
-         ExitIfExpectedAndNotAsserted();
+         ZenMockExitIfExpectedAndNotAsserted();
       }
 
    protected:
+      void ZenMockThrowIfExceptionSet()
+      {
+         _exceptionThrower.ZenMockThrowIfExceptionSet();
+      }
+
       template<typename... ArgTypes>
-      void ThrowIfNotExpected(const ArgTypes&... args)
+      void ZenMockThrowIfNotExpected(const ArgTypes&... args)
       {
          if (!expected)
          {
-            zenMockExceptionIsInPlay = true;
+            _zenMockExceptionIsInPlay = true;
             throw UnexpectedCallException(ZenMockedFunctionSignature, args...);
          }
       }
 
-      void SetAsserted()
+      void ZenMockSetAsserted()
       {
-         asserted = true;
+         _asserted = true;
       }
 
-      void ThrowIfExpectedNumberOfCalls0(size_t expectedNumberOfCalls)
+      void ZenMockThrowIfExpectedNumberOfCalls0(size_t expectedNumberOfCalls)
       {
          if (expectedNumberOfCalls == 0)
          {
-            zenMockExceptionIsInPlay = true;
+            _zenMockExceptionIsInPlay = true;
             throw UnsupportedAssertCalledZeroTimesException(ZenMockedFunctionSignature);
          }
       }
 
-      void ThrowIfExpectedCallsSizeIsZero(size_t expectedCallsSize)
+      void ZenMockThrowIfExpectedCallsSizeIsZero(size_t expectedCallsSize)
       {
          if (expectedCallsSize == 0)
          {
-            zenMockExceptionIsInPlay = true;
+            _zenMockExceptionIsInPlay = true;
             throw UnsupportedAssertCalledZeroTimesException(ZenMockedFunctionSignature);
          }
       }
 
    private:
-      void ExitIfExpectedAndNotAsserted() const
+      void ZenMockExitIfExpectedAndNotAsserted() const
       {
-         if (expected && !asserted && !zenMockExceptionIsInPlay)
+         if (expected && !_asserted && !_zenMockExceptionIsInPlay)
          {
             const ZenUnit::Console console;
             std::cout << "\n\n";
@@ -105,16 +105,16 @@ This ZenMocked function was expected then not later asserted as having been call
 Fail fasting with exit code 1.
 
 )";
-            ZenUnit::ZenUnitArgs zenUnitArgs = zenMockableGetZenUnitArgs();
-            zenMockableExitFunction(zenUnitArgs.exit0 ? 0 : 1);
+            ZenUnit::ZenUnitArgs zenUnitArgs = _zenMockableGetZenUnitArgs();
+            _zenMockableExitFunction(zenUnitArgs.exit0 ? 0 : 1);
          }
       }
 
-      void ThrowIfAlreadyExpected()
+      void ZenMockThrowIfAlreadyExpected()
       {
          if (expected)
          {
-            zenMockExceptionIsInPlay = true;
+            _zenMockExceptionIsInPlay = true;
             throw FunctionAlreadyExpectedException(ZenMockedFunctionSignature);
          }
       }

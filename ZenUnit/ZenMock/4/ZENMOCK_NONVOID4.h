@@ -33,7 +33,7 @@
 #define ZENMOCK_NONVOID4_DEFINED(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, virtualness, constness, mutableness, overrideness, ...) \
 virtualness returnType functionName(arg1Type arg1, arg2Type arg2, arg3Type arg3, arg4Type arg4) constness overrideness \
 { \
-   return functionName##Mock##__VA_ARGS__.PrivateZenMockAndReturnValue(arg1, arg2, arg3, arg4); \
+   return functionName##Mock##__VA_ARGS__.ZenMockItAndReturnValue(arg1, arg2, arg3, arg4); \
 } \
 struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidFourArgMocker<returnType, arg1Type, arg2Type, arg3Type, arg4Type> \
 { \
@@ -57,7 +57,7 @@ namespace ZenMock
       void ExpectAndReturn(const ReturnType& returnValue)
       {
          FourArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::Expect();
-         ValueReturner<ReturnType>::PrivatePushBackReturnValue(returnValue);
+         ValueReturner<ReturnType>::ZenMockPushBackReturnValue(returnValue);
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
@@ -66,21 +66,21 @@ namespace ZenMock
          const SubsequentReturnValues&... subsequentReturnValues)
       {
          FourArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::Expect();
-         ValueReturner<ReturnType>::PrivatePushBackReturnValues(firstReturnValue, subsequentReturnValues...);
+         ValueReturner<ReturnType>::ZenMockPushBackReturnValues(firstReturnValue, subsequentReturnValues...);
       }
 
       void ExpectAndReturnValues(
          const std::vector<typename std::decay<ReturnType>::type>& returnValues)
       {
          FourArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::Expect();
-         ValueReturner<ReturnType>::PrivatePushBackReturnValues(returnValues);
+         ValueReturner<ReturnType>::ZenMockPushBackReturnValues(returnValues);
       }
 
-      ReturnType PrivateZenMockAndReturnValue(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4)
+      ReturnType ZenMockItAndReturnValue(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4)
       {
-         FourArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::PrivateZenMock(arg1, arg2, arg3, arg4);
-         const ReturnType nextReturnValue = ValueReturner<ReturnType>::PrivateNextReturnValue();
-         return nextReturnValue;
+         FourArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::ZenMockIt(arg1, arg2, arg3, arg4);
+         const ReturnType ZenMockNextReturnValue = ValueReturner<ReturnType>::ZenMockZenMockNextReturnValue();
+         return ZenMockNextReturnValue;
       }
    };
 
@@ -93,11 +93,11 @@ namespace ZenMock
       {
       }
 
-      static ReturnType PrivateZenMockFunctionPointer(
+      static ReturnType ZenMockItFunctionPointer(
          NonVoidFourArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>* functionMocker,
          Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4)
       {
-         return functionMocker->PrivateZenMockAndReturnValue(arg1, arg2, arg3, arg4);
+         return functionMocker->ZenMockItAndReturnValue(arg1, arg2, arg3, arg4);
       }
    };
 }

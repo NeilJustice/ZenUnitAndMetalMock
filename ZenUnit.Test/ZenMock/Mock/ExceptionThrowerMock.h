@@ -9,15 +9,15 @@ namespace ZenMock
       string exceptionTypeName;
       size_t exceptionArgCount;
       string stringConcattedExceptionArgs;
-      unsigned numberOfCallsToThrowIfExceptionSet;
+      unsigned numberOfCallsToZenMockThrowIfExceptionSet;
       bool expectCallToExpectAndThrow;
-      bool expectCallToThrowIfExceptionSet;
+      bool expectCallToZenMockThrowIfExceptionSet;
    public:
       ExceptionThrowerMock()
          : exceptionArgCount(0)
-         , numberOfCallsToThrowIfExceptionSet(0)
+         , numberOfCallsToZenMockThrowIfExceptionSet(0)
          , expectCallToExpectAndThrow(false)
-         , expectCallToThrowIfExceptionSet(false)
+         , expectCallToZenMockThrowIfExceptionSet(false)
       {
       }
 
@@ -26,9 +26,9 @@ namespace ZenMock
          expectCallToExpectAndThrow = true;
       }
 
-      void ExpectCallToThrowIfExceptionSet()
+      void ExpectCallToZenMockThrowIfExceptionSet()
       {
-         expectCallToThrowIfExceptionSet = true;
+         expectCallToZenMockThrowIfExceptionSet = true;
       }
 
       template<typename ExceptionType, typename... ExceptionArgTypes>
@@ -44,13 +44,13 @@ namespace ZenMock
          stringConcattedExceptionArgs = String::Concat(exceptionArgs...);
       }
 
-      void ThrowIfExceptionSet()
+      void ZenMockThrowIfExceptionSet()
       {
-         if (!expectCallToThrowIfExceptionSet)
+         if (!expectCallToZenMockThrowIfExceptionSet)
          {
-            throw runtime_error("Unexpected call to ExceptionThrowerMock::ThrowIfExceptionSet()");
+            throw runtime_error("Unexpected call to ExceptionThrowerMock::ZenMockThrowIfExceptionSet()");
          }
-         ++numberOfCallsToThrowIfExceptionSet;
+         ++numberOfCallsToZenMockThrowIfExceptionSet;
       }
 
       void AssertExpectAndThrowCalledOnceWith(
@@ -63,9 +63,9 @@ namespace ZenMock
          ARE_EQUAL(expectedStringConcattedExceptionArgs, stringConcattedExceptionArgs);
       }
 
-      void AssertThrowIfExceptionSetCalledOnce()
+      void AssertZenMockThrowIfExceptionSetCalledOnce()
       {
-         ARE_EQUAL(1, numberOfCallsToThrowIfExceptionSet);
+         ARE_EQUAL(1, numberOfCallsToZenMockThrowIfExceptionSet);
       }
    };
 

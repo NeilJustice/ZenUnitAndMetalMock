@@ -31,7 +31,7 @@
 #define ZENMOCK_VOID0_DEFINED(functionName, virtualness, constness, mutableness, overrideness) \
 virtualness void functionName() constness overrideness \
 { \
-   functionName##Mock.PrivateZenMock(); \
+   functionName##Mock.ZenMockIt(); \
 } \
 struct ZenMock_##functionName : public ZenMock::VoidZeroArgMocker \
 { \
@@ -59,9 +59,9 @@ namespace ZenMock
       {
       }
 
-      static void PrivateZenMockFunctionPointer(VoidZeroArgFunctionPointerMocker* functionPointerMocker)
+      static void ZenMockItFunctionPointer(VoidZeroArgFunctionPointerMocker* functionPointerMocker)
       {
-         functionPointerMocker->PrivateZenMock();
+         functionPointerMocker->ZenMockIt();
       }
    };
 }

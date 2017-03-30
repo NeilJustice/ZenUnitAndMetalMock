@@ -33,7 +33,7 @@
 #define ZENMOCK_NONVOID8_DEFINED(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, virtualness, constness, mutableness, overrideness, ...) \
 virtualness returnType functionName(arg1Type arg1, arg2Type arg2, arg3Type arg3, arg4Type arg4, arg5Type arg5, arg6Type arg6, arg7Type arg7, arg8Type arg8) constness overrideness \
 { \
-   return functionName##Mock##__VA_ARGS__.PrivateZenMockAndReturnValue(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8); \
+   return functionName##Mock##__VA_ARGS__.ZenMockItAndReturnValue(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8); \
 } \
 struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidEightArgMocker<returnType, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type> \
 { \
@@ -81,7 +81,7 @@ namespace ZenMock
          EightArgMocker<
             Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
             Arg5Type, Arg6Type, Arg7Type, Arg8Type>::Expect();
-         ValueReturner<ReturnType>::PrivatePushBackReturnValues(firstReturnValue, subsequentReturnValues...);
+         ValueReturner<ReturnType>::ZenMockPushBackReturnValues(firstReturnValue, subsequentReturnValues...);
       }
 
       void ExpectAndReturnValues(
@@ -90,10 +90,10 @@ namespace ZenMock
          EightArgMocker<
             Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
             Arg5Type, Arg6Type, Arg7Type, Arg8Type>::Expect();
-         ValueReturner<ReturnType>::PrivatePushBackReturnValues(returnValues);
+         ValueReturner<ReturnType>::ZenMockPushBackReturnValues(returnValues);
       }
 
-      ReturnType PrivateZenMockAndReturnValue(
+      ReturnType ZenMockItAndReturnValue(
          Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, 
          Arg5Type arg5, Arg6Type arg6, Arg7Type arg7, Arg8Type arg8)
       {
@@ -101,7 +101,7 @@ namespace ZenMock
             Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
             Arg5Type, Arg6Type, Arg7Type, Arg8Type>::
             ZenMock(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
-         ReturnType returnValue = ValueReturner<ReturnType>::PrivateNextReturnValue();
+         ReturnType returnValue = ValueReturner<ReturnType>::ZenMockZenMockNextReturnValue();
          return returnValue;
       }
    };
@@ -126,11 +126,11 @@ namespace ZenMock
       {
       }
 
-      static ReturnType PrivateZenMockFunctionPointer(NonVoidEightArgFunctionPointerMocker<
+      static ReturnType ZenMockItFunctionPointer(NonVoidEightArgFunctionPointerMocker<
          ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>* functionMocker,
          Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5, Arg6Type arg6, Arg7Type arg7, Arg8Type arg8)
       {
-         return functionMocker->PrivateZenMockAndReturnValue(
+         return functionMocker->ZenMockItAndReturnValue(
             arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
       }
    };

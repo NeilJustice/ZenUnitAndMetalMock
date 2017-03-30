@@ -23,11 +23,11 @@ namespace ZenMock
 {
    TESTS(ValueReturnerTests)
    SPEC(DefaultConstructor_SetsZenMockedFunctionSignature_SetsReturnValueIndexTo0)
-   SPEC(PrivateNextReturnValue_DefConReturnType_NoReturnValuesSpecified_ReturnsDefaultValue)
-   SPEC(PrivateNextReturnValue_DefConReturnType_ReturnValuesSpecified_ReturnsValuesThenLastValueThereafter)
-   SPEC(PrivateNextReturnValue_NonDefConReturnType_NoReturnValuesSpecified_Throws)
-   SPEC(PrivateNextReturnValue_NonDefConReturnType_ReturnValuesPreviouslySpecified_ReturnsValuesThenLastValueTherafter)
-   SPEC(PrivatePushBackReturnValues_ThrowsIfReturnValuesArgumentEmpty)
+   SPEC(ZenMockZenMockNextReturnValue_DefConReturnType_NoReturnValuesSpecified_ReturnsDefaultValue)
+   SPEC(ZenMockZenMockNextReturnValue_DefConReturnType_ReturnValuesSpecified_ReturnsValuesThenLastValueThereafter)
+   SPEC(ZenMockZenMockNextReturnValue_NonDefConReturnType_NoReturnValuesSpecified_Throws)
+   SPEC(ZenMockZenMockNextReturnValue_NonDefConReturnType_ReturnValuesPreviouslySpecified_ReturnsValuesThenLastValueTherafter)
+   SPEC(ZenMockPushBackReturnValues_ThrowsIfReturnValuesArgumentEmpty)
    SPECEND
 
    const string ZenMockedFunctionSignature = "ZenMockedFunctionSignature";
@@ -41,63 +41,63 @@ namespace ZenMock
       IS_EMPTY(valueReturner._returnValues);
    }
 
-   TEST(PrivateNextReturnValue_DefConReturnType_NoReturnValuesSpecified_ReturnsDefaultValue)
+   TEST(ZenMockZenMockNextReturnValue_DefConReturnType_NoReturnValuesSpecified_ReturnsDefaultValue)
    {
       ValueReturner<int> valueReturnerInt(ZenMockedFunctionSignature);
-      ARE_EQUAL(0, valueReturnerInt.PrivateNextReturnValue());
-      ARE_EQUAL(0, valueReturnerInt.PrivateNextReturnValue());
-      ARE_EQUAL(0, valueReturnerInt.PrivateNextReturnValue());
+      ARE_EQUAL(0, valueReturnerInt.ZenMockZenMockNextReturnValue());
+      ARE_EQUAL(0, valueReturnerInt.ZenMockZenMockNextReturnValue());
+      ARE_EQUAL(0, valueReturnerInt.ZenMockZenMockNextReturnValue());
 
       ValueReturner<vector<int>> valueReturnerVectorOfInt(ZenMockedFunctionSignature);
-      VECTORS_EQUAL(vector<int>(), valueReturnerVectorOfInt.PrivateNextReturnValue());
-      VECTORS_EQUAL(vector<int>(), valueReturnerVectorOfInt.PrivateNextReturnValue());
-      VECTORS_EQUAL(vector<int>(), valueReturnerVectorOfInt.PrivateNextReturnValue());
+      VECTORS_EQUAL(vector<int>(), valueReturnerVectorOfInt.ZenMockZenMockNextReturnValue());
+      VECTORS_EQUAL(vector<int>(), valueReturnerVectorOfInt.ZenMockZenMockNextReturnValue());
+      VECTORS_EQUAL(vector<int>(), valueReturnerVectorOfInt.ZenMockZenMockNextReturnValue());
    }
 
-   TEST(PrivateNextReturnValue_DefConReturnType_ReturnValuesSpecified_ReturnsValuesThenLastValueThereafter)
+   TEST(ZenMockZenMockNextReturnValue_DefConReturnType_ReturnValuesSpecified_ReturnsValuesThenLastValueThereafter)
    {
       ValueReturner<int> valueReturner(ZenMockedFunctionSignature);
-      valueReturner.PrivatePushBackReturnValue(1);
-      valueReturner.PrivatePushBackReturnValues(2, 3);
-      valueReturner.PrivatePushBackReturnValues(vector<int> { 4, 5 });
-      ARE_EQUAL(1, valueReturner.PrivateNextReturnValue());
-      ARE_EQUAL(2, valueReturner.PrivateNextReturnValue());
-      ARE_EQUAL(3, valueReturner.PrivateNextReturnValue());
-      ARE_EQUAL(4, valueReturner.PrivateNextReturnValue());
-      ARE_EQUAL(5, valueReturner.PrivateNextReturnValue());
-      ARE_EQUAL(5, valueReturner.PrivateNextReturnValue());
+      valueReturner.ZenMockPushBackReturnValue(1);
+      valueReturner.ZenMockPushBackReturnValues(2, 3);
+      valueReturner.ZenMockPushBackReturnValues(vector<int> { 4, 5 });
+      ARE_EQUAL(1, valueReturner.ZenMockZenMockNextReturnValue());
+      ARE_EQUAL(2, valueReturner.ZenMockZenMockNextReturnValue());
+      ARE_EQUAL(3, valueReturner.ZenMockZenMockNextReturnValue());
+      ARE_EQUAL(4, valueReturner.ZenMockZenMockNextReturnValue());
+      ARE_EQUAL(5, valueReturner.ZenMockZenMockNextReturnValue());
+      ARE_EQUAL(5, valueReturner.ZenMockZenMockNextReturnValue());
    }
 
-   TEST(PrivateNextReturnValue_NonDefConReturnType_NoReturnValuesSpecified_Throws)
+   TEST(ZenMockZenMockNextReturnValue_NonDefConReturnType_NoReturnValuesSpecified_Throws)
    {
       ValueReturner<NonDefaultConstructible> valueReturner(ZenMockedFunctionSignature);
-      THROWS(valueReturner.PrivateNextReturnValue(), ReturnValueMustBeSpecifiedException,
+      THROWS(valueReturner.ZenMockZenMockNextReturnValue(), ReturnValueMustBeSpecifiedException,
          ReturnValueMustBeSpecifiedException::MakeWhat(ZenMockedFunctionSignature));
    }
 
-   TEST(PrivateNextReturnValue_NonDefConReturnType_ReturnValuesPreviouslySpecified_ReturnsValuesThenLastValueTherafter)
+   TEST(ZenMockZenMockNextReturnValue_NonDefConReturnType_ReturnValuesPreviouslySpecified_ReturnsValuesThenLastValueTherafter)
    {
       ValueReturner<NonDefaultConstructible> valueReturner(ZenMockedFunctionSignature);
-      valueReturner.PrivatePushBackReturnValue(
+      valueReturner.ZenMockPushBackReturnValue(
          NonDefaultConstructible(1));
-      valueReturner.PrivatePushBackReturnValues(
+      valueReturner.ZenMockPushBackReturnValues(
          NonDefaultConstructible(2), NonDefaultConstructible(3));
-      valueReturner.PrivatePushBackReturnValues(
+      valueReturner.ZenMockPushBackReturnValues(
          vector<NonDefaultConstructible> { NonDefaultConstructible(4), NonDefaultConstructible(5) });
       //
-      ARE_EQUAL(NonDefaultConstructible(1), valueReturner.PrivateNextReturnValue());
-      ARE_EQUAL(NonDefaultConstructible(2), valueReturner.PrivateNextReturnValue());
-      ARE_EQUAL(NonDefaultConstructible(3), valueReturner.PrivateNextReturnValue());
-      ARE_EQUAL(NonDefaultConstructible(4), valueReturner.PrivateNextReturnValue());
-      ARE_EQUAL(NonDefaultConstructible(5), valueReturner.PrivateNextReturnValue());
-      ARE_EQUAL(NonDefaultConstructible(5), valueReturner.PrivateNextReturnValue());
+      ARE_EQUAL(NonDefaultConstructible(1), valueReturner.ZenMockZenMockNextReturnValue());
+      ARE_EQUAL(NonDefaultConstructible(2), valueReturner.ZenMockZenMockNextReturnValue());
+      ARE_EQUAL(NonDefaultConstructible(3), valueReturner.ZenMockZenMockNextReturnValue());
+      ARE_EQUAL(NonDefaultConstructible(4), valueReturner.ZenMockZenMockNextReturnValue());
+      ARE_EQUAL(NonDefaultConstructible(5), valueReturner.ZenMockZenMockNextReturnValue());
+      ARE_EQUAL(NonDefaultConstructible(5), valueReturner.ZenMockZenMockNextReturnValue());
    }
 
-   TEST(PrivatePushBackReturnValues_ThrowsIfReturnValuesArgumentEmpty)
+   TEST(ZenMockPushBackReturnValues_ThrowsIfReturnValuesArgumentEmpty)
    {
       ValueReturner<int> valueReturner(ZenMockedFunctionSignature);
-      THROWS(valueReturner.PrivatePushBackReturnValues({}), invalid_argument,
-         "ZenMock::ValueReturner::PrivatePushBackReturnValues(): Return values vector cannot be empty");
+      THROWS(valueReturner.ZenMockPushBackReturnValues({}), invalid_argument,
+         "ZenMock::ValueReturner::ZenMockPushBackReturnValues(): Return values vector cannot be empty");
    }
 
    }; RUN(ValueReturnerTests)

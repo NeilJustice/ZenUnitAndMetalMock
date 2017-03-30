@@ -8,7 +8,7 @@
 #include "ZenUnit/Macros/VECTORS_EQUAL.h"
 
 #define ZENBIND1(FunctionName_ZenMock) \
-   std::bind(&decltype(FunctionName_ZenMock)::PrivateZenMockFunctionPointer, &FunctionName_ZenMock, \
+   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &FunctionName_ZenMock, \
    std::placeholders::_1)
 
 namespace ZenMock
@@ -20,49 +20,47 @@ namespace ZenMock
    {
       friend class OneArgMockerTests;
    private:
-      std::vector<OneArgCall<ArgType>> oneArgCalls;
+      std::vector<OneArgCall<ArgType>> _oneArgCalls;
    public:
       OneArgMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
       }
 
-      void PrivateZenMock(const ArgType& arg)
+      void ZenMockIt(const ArgType& arg)
       {
-         this->ThrowIfNotExpected(arg);
-         oneArgCalls.emplace_back(arg);
-         this->ThrowIfExceptionSet();
+         this->ZenMockThrowIfNotExpected(arg);
+         _oneArgCalls.emplace_back(arg);
+         this->ZenMockThrowIfExceptionSet();
       }
 
       void AssertCalledOnceWith(const ArgType& expectedArg)
       {
-         this->SetAsserted();
+         this->ZenMockSetAsserted();
          const size_t expectedNumberOfCalls = 1;
-         const size_t numberOfCalls = oneArgCalls.size();
-         ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArg, oneArgCalls[0].arg, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCalls, _oneArgCalls.size(), this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedArg, _oneArgCalls[0].arg, this->ZenMockedFunctionSignature);
       }
 
       void AssertCalledNTimesWith(size_t expectedNumberOfCalls, const ArgType& expectedArg)
       {
-         this->ThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
-         this->SetAsserted();
-         const size_t numberOfCalls = oneArgCalls.size();
-         ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature);
+         this->ZenMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
+         this->ZenMockSetAsserted();
+         ARE_EQUAL(expectedNumberOfCalls, _oneArgCalls.size(), this->ZenMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCalls; ++i)
          {
             const std::string zenMockedFunctionSignatureAndCallIndex
                = ZenUnit::String::Concat(this->ZenMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedArg, oneArgCalls[i].arg, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedArg, _oneArgCalls[i].arg, zenMockedFunctionSignatureAndCallIndex);
          }
       }
 
       void AssertCalls(const std::vector<OneArgCallRef<ArgType>>& expectedOneArgCalls)
       {
-         this->ThrowIfExpectedCallsSizeIsZero(expectedOneArgCalls.size());
-         this->SetAsserted();
+         this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedOneArgCalls.size());
+         this->ZenMockSetAsserted();
          const std::vector<OneArgCallRef<ArgType>> 
-            actualOneArgCalls = PrivateCallsToCallRefs(oneArgCalls);
+            actualOneArgCalls = PrivateCallsToCallRefs(_oneArgCalls);
          VECTORS_EQUAL(expectedOneArgCalls, actualOneArgCalls, this->ZenMockedFunctionSignature);
       }
    private:

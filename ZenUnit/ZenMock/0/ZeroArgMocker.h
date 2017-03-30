@@ -6,7 +6,7 @@
 #include "ZenUnit/Macros/ARE_EQUAL.h"
 
 #define ZENBIND0(FunctionName_ZenMock) \
-   std::bind(&decltype(FunctionName_ZenMock)::PrivateZenMockFunctionPointer, &FunctionName_ZenMock)
+   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &FunctionName_ZenMock)
 
 namespace ZenMock
 {
@@ -17,33 +17,33 @@ namespace ZenMock
    {
       friend class ZeroArgMockerTests;
    private:
-      size_t numberOfCalls;
+      size_t _numberOfCalls;
    public:
       ZeroArgMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
-         , numberOfCalls(0)
+         , _numberOfCalls(0)
       {
       }
 
-      void PrivateZenMock()
+      void ZenMockIt()
       {
-         this->ThrowIfNotExpected();
-         ++numberOfCalls;
-         this->ThrowIfExceptionSet();
+         this->ZenMockThrowIfNotExpected();
+         ++_numberOfCalls;
+         this->ZenMockThrowIfExceptionSet();
       }
 
       void AssertCalledOnce()
       {
-         this->SetAsserted();
+         this->ZenMockSetAsserted();
          const size_t expectedNumberOfCalls = 1;
-         ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCalls, _numberOfCalls, this->ZenMockedFunctionSignature);
       }
 
       void AssertCalledNTimes(size_t expectedNumberOfCalls)
       {
-         this->ThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
-         this->SetAsserted();
-         ARE_EQUAL(expectedNumberOfCalls, numberOfCalls, this->ZenMockedFunctionSignature);
+         this->ZenMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
+         this->ZenMockSetAsserted();
+         ARE_EQUAL(expectedNumberOfCalls, _numberOfCalls, this->ZenMockedFunctionSignature);
       }
    };
 }
