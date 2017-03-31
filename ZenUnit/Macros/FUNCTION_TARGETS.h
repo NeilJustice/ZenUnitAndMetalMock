@@ -30,12 +30,11 @@ namespace ZenUnit
       {
          const std::string expectedField = ToStringer::ToString(expectedStdFunctionTargetValue);
          const std::string actualField = ToStringer::ToString(stdFunctionVRT.value);
-         const Anomaly anomaly("FUNCTION_TARGETS", expectedStdFunctionTargetText, stdFunctionVRT.text, "", messagesText,
+         throw Anomaly("FUNCTION_TARGETS", expectedStdFunctionTargetText, stdFunctionVRT.text, "", messagesText,
             becauseAnomaly,
             expectedField,
             actualField,
             ExpectedActualFormat::Fields, fileLine, messages...);
-         throw anomaly;
       }
    }
 }

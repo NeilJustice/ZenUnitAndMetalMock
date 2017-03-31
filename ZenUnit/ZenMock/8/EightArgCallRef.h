@@ -4,13 +4,13 @@
 namespace ZenMock
 {
    template<
-      typename Arg1Type, 
-      typename Arg2Type, 
-      typename Arg3Type, 
-      typename Arg4Type, 
-      typename Arg5Type, 
-      typename Arg6Type, 
-      typename Arg7Type, 
+      typename Arg1Type,
+      typename Arg2Type,
+      typename Arg3Type,
+      typename Arg4Type,
+      typename Arg5Type,
+      typename Arg6Type,
+      typename Arg7Type,
       typename Arg8Type>
    struct EightArgCallRef
    {
@@ -43,8 +43,8 @@ namespace ZenMock
       {
       }
 
-      EightArgCallRef(const EightArgCall<
-         Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+      explicit EightArgCallRef(const EightArgCall<
+         Arg1Type, Arg2Type, Arg3Type, Arg4Type,
          Arg5Type, Arg6Type, Arg7Type, Arg8Type>& eightArgCall)
          : arg1(eightArgCall.arg1)
          , arg2(eightArgCall.arg2)
@@ -60,18 +60,18 @@ namespace ZenMock
 }
 
 template<
-   typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, 
+   typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type,
    typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type>
 struct ZenUnitEqualizer<ZenMock::EightArgCallRef<
-   Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+   Arg1Type, Arg2Type, Arg3Type, Arg4Type,
    Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
 {
    static void AssertEqual(
       const ZenMock::EightArgCallRef<
-         Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+         Arg1Type, Arg2Type, Arg3Type, Arg4Type,
          Arg5Type, Arg6Type, Arg7Type, Arg8Type>& expectedEightArgCall,
       const ZenMock::EightArgCallRef<
-         Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+         Arg1Type, Arg2Type, Arg3Type, Arg4Type,
          Arg5Type, Arg6Type, Arg7Type, Arg8Type>& actualEightArgCall)
    {
       ARE_EQUAL(expectedEightArgCall.arg1, actualEightArgCall.arg1);
@@ -86,7 +86,7 @@ struct ZenUnitEqualizer<ZenMock::EightArgCallRef<
 };
 
 template<
-   typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, 
+   typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type,
    typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type>
 struct ZenUnitPrinter<ZenMock::EightArgCallRef<
    Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>

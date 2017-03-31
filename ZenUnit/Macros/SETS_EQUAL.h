@@ -16,12 +16,11 @@ namespace ZenUnit
    {
       const std::string toStringedExpectedSet = ToStringer::ToString(expectedSetVRT.value);
       const std::string toStringedActualSet = ToStringer::ToString(actualSetVRT.value);
-      const Anomaly anomaly("SETS_EQUAL", expectedSetVRT.text, actualSetVRT.text, "", messagesText,
+      throw Anomaly("SETS_EQUAL", expectedSetVRT.text, actualSetVRT.text, "", messagesText,
          becauseAnomaly,
          toStringedExpectedSet,
          toStringedActualSet,
          ExpectedActualFormat::Fields, fileLine, messages...);
-      throw anomaly;
    }
 
    template<typename SetType, typename... MessageTypes>

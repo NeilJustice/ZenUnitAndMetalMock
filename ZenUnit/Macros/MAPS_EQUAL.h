@@ -23,8 +23,7 @@ namespace ZenUnit
    {
       const std::string failedLinePrefix = String::Concat(
          failedPrefixSpaces, "Failed: MAPS_EQUAL(", expectedMapText, ", ", actualMapText);
-      const Anomaly anomaly(failedLinePrefix, whyBody, fileLine, messagePrefixSpaces, messagesText, messages...);
-      throw anomaly;
+      throw Anomaly(failedLinePrefix, whyBody, fileLine, messagePrefixSpaces, messagesText, messages...);
    }
 
    NOINLINE std::string MAPS_EQUAL_MakeWhyBody_SizesNotEqual(size_t expectedMapSize, size_t actualMapSize);

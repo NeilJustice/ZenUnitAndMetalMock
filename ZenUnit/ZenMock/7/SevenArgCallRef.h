@@ -32,7 +32,7 @@ namespace ZenMock
       {
       }
 
-      SevenArgCallRef(const SevenArgCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& sevenArgCall)
+      explicit SevenArgCallRef(const SevenArgCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& sevenArgCall)
          : arg1(sevenArgCall.arg1)
          , arg2(sevenArgCall.arg2)
          , arg3(sevenArgCall.arg3)

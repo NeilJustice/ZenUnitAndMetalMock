@@ -16,12 +16,11 @@ namespace ZenUnit
    {
       const std::string expectedField = ToStringer::ToString(zeroValue);
       const std::string actualField = ToStringer::ToString(valueVRT.value);
-      const Anomaly anomaly("IS_ZERO", valueVRT.text, "", "", messagesText,
+      throw Anomaly("IS_ZERO", valueVRT.text, "", "", messagesText,
          Anomaly::Default,
          expectedField,
          actualField,
          ExpectedActualFormat::Fields, fileLine, messages...);
-      throw anomaly;
    }
 
    template<typename ValueType, typename... MessageTypes>

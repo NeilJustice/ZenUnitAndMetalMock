@@ -19,7 +19,7 @@ namespace ZenMock
       {
       }
 
-      FourArgCallRef(const FourArgCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& fourArgCall)
+      explicit FourArgCallRef(const FourArgCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& fourArgCall)
          : arg1(fourArgCall.arg1)
          , arg2(fourArgCall.arg2)
          , arg3(fourArgCall.arg3)

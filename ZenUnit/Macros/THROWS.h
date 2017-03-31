@@ -35,8 +35,7 @@ namespace ZenUnit
       const std::string failedLinePrefix = String::Concat(
          "  Failed: THROWS(", expressionText, ", ", expectedExactExceptionTypeText, ",\n",
          "          ", expectedWhatText);
-      const Anomaly anomaly(failedLinePrefix, whyBody, fileLine, " ", messagesText, messages...);
-      throw anomaly;
+      throw Anomaly(failedLinePrefix, whyBody, fileLine, " ", messagesText, messages...);
    }
 
    template<typename ExpectedExceptionType>
@@ -115,7 +114,7 @@ namespace ZenUnit
          if (!exactExpectedExceptionTypeThrown)
          {
             THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedWhatText,
-               THROWS_MakeWhyBody_DerivedButNotExactExpectedExceptionTypeThrown(e), 
+               THROWS_MakeWhyBody_DerivedButNotExactExpectedExceptionTypeThrown(e),
                fileLine, messagesText, messages...);
          }
          const char* const actualExactExceptionWhat = e.what();
@@ -123,7 +122,7 @@ namespace ZenUnit
          if (compareResult != 0)
          {
             THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedWhatText,
-               THROWS_MakeWhyBody_ExpectedWhatNotEqualToActualWhat(e, expectedWhat, actualExactExceptionWhat), 
+               THROWS_MakeWhyBody_ExpectedWhatNotEqualToActualWhat(e, expectedWhat, actualExactExceptionWhat),
                fileLine, messagesText, messages...);
          }
          return;
@@ -136,7 +135,7 @@ namespace ZenUnit
             whyBody, fileLine, messagesText, messages...);
       }
       THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedWhatText,
-         THROWS_MakeWhyBody_NoExceptionThrown<ExpectedExceptionType>(), 
+         THROWS_MakeWhyBody_NoExceptionThrown<ExpectedExceptionType>(),
          fileLine, messagesText, messages...);
    }
 }

@@ -1,0 +1,2 @@
+Checks: '*,-llvm-namespace-comment,-llvm-header-guard,-google-global-names-in-headers,-google-build-using-namespace,-google-readability-namespace-comments,-google-runtime-int,-modernize-use-override,-cert-err58-cpp,-cppcoreguidelines-pro-type-vararg,-readability-named-parameter,-modernize-use-auto'
+

@@ -18,12 +18,11 @@ namespace ZenUnit
    {
       const std::string expectedField = ToStringer::ToString(&expectedObjectVRT.value);
       const std::string actualField = ToStringer::ToString(&actualObjectVRT.value);
-      const Anomaly anomaly("ARE_SAME", expectedObjectVRT.text, actualObjectVRT.text, "", messagesText,
+      throw Anomaly("ARE_SAME", expectedObjectVRT.text, actualObjectVRT.text, "", messagesText,
          Anomaly::Default,
          expectedField,
          actualField,
          ExpectedActualFormat::Fields, fileLine, messages...);
-      throw anomaly;
    }
 
    template<typename ExpectedObjectType, typename ActualObjectType, typename... MessageTypes>

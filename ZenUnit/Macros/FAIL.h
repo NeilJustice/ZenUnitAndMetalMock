@@ -23,7 +23,6 @@ namespace ZenUnit
          whyBodyBuilder << "Because: " << quotedTestFailureReason;
       }
       const std::string whyBody = whyBodyBuilder.str();
-      const Anomaly anomaly(failedLinePrefix, whyBody, fileLine, "", messagesText, messages...);
-      throw anomaly;
+      throw Anomaly(failedLinePrefix, whyBody, fileLine, "", messagesText, messages...);
    }
 }

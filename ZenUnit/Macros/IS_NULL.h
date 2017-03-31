@@ -15,12 +15,11 @@ namespace ZenUnit
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
       const std::string actualField = ToStringer::ToString(pointerVRT.value);
-      const Anomaly anomaly("IS_NULL", pointerVRT.text, "", "", messagesText,
+      throw Anomaly("IS_NULL", pointerVRT.text, "", "", messagesText,
          Anomaly::Default,
          "nullptr",
          actualField,
          ExpectedActualFormat::Fields, fileLine, messages...);
-      throw anomaly;
    }
 
    template<typename PointerType, typename... MessageTypes>

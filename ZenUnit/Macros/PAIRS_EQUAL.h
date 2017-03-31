@@ -15,9 +15,8 @@ namespace ZenUnit
    {
       const std::string expected = ToStringer::ToString(expectedPairVRT.value);
       const std::string actual = ToStringer::ToString(actualPairVRT.value);
-      const Anomaly anomaly("PAIRS_EQUAL", expectedPairVRT.text, actualPairVRT.text, "", messagesText,
+      throw Anomaly("PAIRS_EQUAL", expectedPairVRT.text, actualPairVRT.text, "", messagesText,
          becauseAnomaly, expected, actual, ExpectedActualFormat::Fields, fileLine, messages...);
-      throw anomaly;
    }
 
    template<typename PairType, typename... MessageTypes>

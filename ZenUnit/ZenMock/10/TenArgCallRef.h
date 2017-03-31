@@ -51,7 +51,7 @@ namespace ZenMock
       {
       }
 
-      TenArgCallRef(const TenArgCall<
+      explicit TenArgCallRef(const TenArgCall<
          Arg1Type, Arg2Type, Arg3Type, Arg4Type,
          Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& tenArgCall)
          : arg1(tenArgCall.arg1)

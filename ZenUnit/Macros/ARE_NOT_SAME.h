@@ -18,12 +18,11 @@ namespace ZenUnit
    {
       const std::string expectedField = "Not " + ToStringer::ToString(&notExpectedObjectVRT.value);
       const std::string actualField = "    " + ToStringer::ToString(&actualObjectVRT.value);
-      const Anomaly anomaly("ARE_NOT_SAME", notExpectedObjectVRT.text, actualObjectVRT.text, "", messagesText,
+      throw Anomaly("ARE_NOT_SAME", notExpectedObjectVRT.text, actualObjectVRT.text, "", messagesText,
          Anomaly::Default,
          expectedField,
          actualField,
          ExpectedActualFormat::Fields, fileLine, messages...);
-      throw anomaly;
    }
 
    template<typename NotExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
@@ -35,8 +34,8 @@ namespace ZenUnit
       if (&notExpectedObjectVRT.value == &actualObjectVRT.value)
       {
          ARE_NOT_SAME_Throw(
-            notExpectedObjectVRT, 
-            actualObjectVRT, 
+            notExpectedObjectVRT,
+            actualObjectVRT,
             fileLine, messagesText, messages...);
       }
    }

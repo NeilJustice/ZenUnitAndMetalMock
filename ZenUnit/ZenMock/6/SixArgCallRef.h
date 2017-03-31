@@ -29,7 +29,7 @@ namespace ZenMock
       {
       }
 
-      SixArgCallRef(const SixArgCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& sixArgCall)
+      explicit SixArgCallRef(const SixArgCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& sixArgCall)
          : arg1(sixArgCall.arg1)
          , arg2(sixArgCall.arg2)
          , arg3(sixArgCall.arg3)

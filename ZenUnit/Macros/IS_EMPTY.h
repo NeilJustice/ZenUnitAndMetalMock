@@ -17,12 +17,11 @@ namespace ZenUnit
       const size_t size = dataStructureVRT.value.size();
       const std::string expectedField = "empty() == true";
       const std::string actualField = "empty() == false (size() == " + std::to_string(size) + ")";
-      const Anomaly anomaly("IS_EMPTY", dataStructureVRT.text, "", "", messagesText,
+      throw Anomaly("IS_EMPTY", dataStructureVRT.text, "", "", messagesText,
          Anomaly::Default,
          expectedField,
          actualField,
          ExpectedActualFormat::Fields, fileLine, messages...);
-      throw anomaly;
    }
 
    template<typename DataStructureType, typename... MessageTypes>

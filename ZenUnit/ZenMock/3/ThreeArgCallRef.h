@@ -17,7 +17,7 @@ namespace ZenMock
       {
       }
 
-      ThreeArgCallRef(const ThreeArgCall<Arg1Type, Arg2Type, Arg3Type>& threeArgCall)
+      explicit ThreeArgCallRef(const ThreeArgCall<Arg1Type, Arg2Type, Arg3Type>& threeArgCall)
          : arg1(threeArgCall.arg1)
          , arg2(threeArgCall.arg2)
          , arg3(threeArgCall.arg3)

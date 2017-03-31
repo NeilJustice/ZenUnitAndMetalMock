@@ -19,8 +19,7 @@ namespace ZenUnit
       const std::string whyBody = String::Concat("Expected: No exception thrown\n",
          "  Actual: ", *actualExceptionTypeName, " thrown\n",
          "  what(): \"", e.what(), "\"");
-      const Anomaly anomaly(failedLinePrefix, whyBody, fileLine, " ", messagesText, messages...);
-      throw anomaly;
+      throw Anomaly(failedLinePrefix, whyBody, fileLine, " ", messagesText, messages...);
    }
 
    template<typename... MessageTypes>

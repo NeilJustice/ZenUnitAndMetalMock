@@ -15,7 +15,7 @@ namespace ZenMock
       {
       }
 
-      TwoArgCallRef(const TwoArgCall<Arg1Type, Arg2Type>& twoArgCall)
+      explicit TwoArgCallRef(const TwoArgCall<Arg1Type, Arg2Type>& twoArgCall)
          : arg1(twoArgCall.arg1)
          , arg2(twoArgCall.arg2)
       {

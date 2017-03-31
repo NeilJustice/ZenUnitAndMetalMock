@@ -10,10 +10,9 @@ namespace ZenUnit
       FileLine fileLine,
       const ZenUnit::Anomaly& becauseAnomaly)
    {
-      const Anomaly wrappingAnomaly(
+      throw Anomaly(
          "EQUALIZER_THROWS", typeName, fieldName, nonDefaultFieldValueText, "",
          becauseAnomaly, "N/A", "N/A", ExpectedActualFormat::Fields, fileLine);
-      throw wrappingAnomaly;
    }
 
    NOINLINE void EQUALIZER_THROWS_ThrowB(
@@ -27,11 +26,10 @@ namespace ZenUnit
 "          from an ARE_EQUAL or similar field assertion when ", typeName, '\n',
 "          field '", fieldName, "' differs between two ", typeName, " objects.");
       const std::string actualField("No ZenUnit::Anomaly thrown");
-      const Anomaly anomaly("EQUALIZER_THROWS", typeName, fieldName, nonDefaultFieldValueText, "", 
-         Anomaly::Default, 
+      throw Anomaly("EQUALIZER_THROWS", typeName, fieldName, nonDefaultFieldValueText, "",
+         Anomaly::Default,
          expectedField,
          actualField,
          ExpectedActualFormat::Fields, fileLine);
-      throw anomaly;
    }
 }

@@ -26,7 +26,7 @@ namespace ZenMock
       {
       }
 
-      FiveArgCallRef(const FiveArgCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& fiveArgCall)
+      explicit FiveArgCallRef(const FiveArgCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& fiveArgCall)
          : arg1(fiveArgCall.arg1)
          , arg2(fiveArgCall.arg2)
          , arg3(fiveArgCall.arg3)

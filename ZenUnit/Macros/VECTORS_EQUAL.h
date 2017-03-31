@@ -20,12 +20,11 @@ namespace ZenUnit
    {
       const std::string toStringedExpectedVector = ToStringer::ToString(expectedVector);
       const std::string toStringedActualVector = ToStringer::ToString(actualVector);
-      const Anomaly anomaly("VECTORS_EQUAL", expectedVectorText, actualVectorText, "", messagesText,
+      throw Anomaly("VECTORS_EQUAL", expectedVectorText, actualVectorText, "", messagesText,
          becauseAnomaly,
          toStringedExpectedVector,
          toStringedActualVector,
          ExpectedActualFormat::Fields, fileLine, messages...);
-      throw anomaly;
    }
 
    template<

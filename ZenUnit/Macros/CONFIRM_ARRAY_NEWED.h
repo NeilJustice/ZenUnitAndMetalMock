@@ -29,9 +29,8 @@ namespace ZenUnit
       const char* smartOrRawArrayPointerText,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      const Anomaly anomaly("CONFIRM_ARRAY_NEWED", smartOrRawArrayPointerText, "", "", messagesText, Anomaly::Default,
+      throw Anomaly("CONFIRM_ARRAY_NEWED", smartOrRawArrayPointerText, "", "", messagesText, Anomaly::Default,
          "not a nullptr", "nullptr", ExpectedActualFormat::Fields, fileLine, messages...);
-      throw anomaly;
    }
 
    template<typename PointerType, typename... MessageTypes>
@@ -41,7 +40,7 @@ namespace ZenUnit
    {
       if (smartOrRawArrayPointer == nullptr)
       {
-         CONFIRM_ARRAY_NEWED_Throw(smartOrRawArrayPointerText, 
+         CONFIRM_ARRAY_NEWED_Throw(smartOrRawArrayPointerText,
             fileLine, messagesText, messages...);
       }
       ArrayDeleter<typename std::remove_reference<

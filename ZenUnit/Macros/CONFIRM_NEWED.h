@@ -29,9 +29,8 @@ namespace ZenUnit
       const char* smartOrRawPointerText,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      const Anomaly anomaly("CONFIRM_NEWED", smartOrRawPointerText, "", "", messagesText, Anomaly::Default,
+      throw Anomaly("CONFIRM_NEWED", smartOrRawPointerText, "", "", messagesText, Anomaly::Default,
          "not a nullptr", "nullptr", ExpectedActualFormat::Fields, fileLine, messages...);
-      throw anomaly;
    }
 
    template<typename PointerType, typename... MessageTypes>

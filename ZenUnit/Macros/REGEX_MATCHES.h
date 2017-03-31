@@ -18,13 +18,12 @@ namespace ZenUnit
          "Expected string to match: \"", expectedPatternVRT.value, "\"");
       const std::string actualLine = String::Concat(
          "     Non-matching string: \"", strVRT.value, "\"");
-      const Anomaly anomaly(
+      throw Anomaly(
          "REGEX_MATCHES", expectedPatternVRT.text, strVRT.text, "", messagesText,
          Anomaly::Default,
          expectedLine,
          actualLine,
          ExpectedActualFormat::WholeLines, fileLine, messages...);
-      throw anomaly;
    }
 
    template<typename PatternStringType, typename StrStringType, typename... MessageTypes>

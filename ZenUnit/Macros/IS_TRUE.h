@@ -12,12 +12,11 @@ namespace ZenUnit
    NOINLINE void IS_TRUE_Throw(
       const char* valueText, FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      const Anomaly anomaly("IS_TRUE", valueText, "", "", messagesText,
+      throw Anomaly("IS_TRUE", valueText, "", "", messagesText,
          Anomaly::Default,
          "true",
          "false",
          ExpectedActualFormat::Fields, fileLine, messages...);
-      throw anomaly;
    }
 
    template<typename ConvertibleToBoolType, typename... MessageTypes>
