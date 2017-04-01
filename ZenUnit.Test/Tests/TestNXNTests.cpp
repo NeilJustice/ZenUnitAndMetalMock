@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "ZenUnit/Tests/TestNXN.h"
-#include "TestingTestClass.h"
 #include "ZenUnit.Test/Console/Mock/ConsoleMock.h"
 #include "ZenUnit.Test/Results/Mock/TestResultMock.h"
+#include "ZenUnit.Test/Tests/TestingTestClass.h"
+#include "ZenUnit/Tests/TestNXN.h"
 
 namespace ZenUnit
 {

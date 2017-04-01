@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+#include <vector>
 
 template<typename T, typename Allocator>
 struct ZenUnitPrinter<std::vector<T, Allocator>>

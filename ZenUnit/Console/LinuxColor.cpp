@@ -1,23 +1,16 @@
 #include "pch.h"
 #include "LinuxColor.h"
-#include "Utils/assert_true.h"
+#include "Utils/AssertTrue.h"
 
 namespace ZenUnit
 {
    const char* ColorToLinuxColor(Color color)
    {
-      if (color == Color::White)
+      switch (color)
       {
-         return "\033[0m"; // No alteration for white on Linux to prevent white text on a light background
-      }
-      else if (color == Color::Green)
-      {
-         return "\033[32m";
-      }
-      else
-      {
-         assert_true(color == Color::Red);
-         return "\033[31m";      
-      }
+      case Color::White: return "\033[0m";
+      case Color::Green: return "\033[32m";
+      default: assert_true(color == Color::Red); return "\033[31m";
+      };
    }
 }

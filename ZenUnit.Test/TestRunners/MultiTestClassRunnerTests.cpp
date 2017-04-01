@@ -1,8 +1,8 @@
 #include "pch.h"
+#include "ZenUnit.Test/TestRunners/Mock/TestClassRunnerMock.h"
+#include "ZenUnit.Test/Utils/Iteration/Mock/TransformerMock.h"
+#include "ZenUnit.Test/Utils/Mock/SorterMock.h"
 #include "ZenUnit/TestRunners/MultiTestClassRunner.h"
-#include "Utils/Iteration/Mock/TransformerMock.h"
-#include "TestRunners/Mock/TestClassRunnerMock.h"
-#include "Utils/Mock/SorterMock.h"
 
 namespace ZenUnit
 {

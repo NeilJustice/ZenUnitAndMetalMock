@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "ZenUnit/Tests/FullName.h"
-#include "ZenUnit/Tests/Test.h"
 #include "Mock/TestMock.h"
-#include "TestRunners/Mock/TryCatchCallerMock.h"
 #include "Results/Mock/TestResultFactoryMock.h"
 #include "Results/Mock/TestResultMock.h"
+#include "TestRunners/Mock/TryCatchCallerMock.h"
+#include "ZenUnit/Tests/FullName.h"
+#include "ZenUnit/Tests/Test.h"
 
 class TestingTest : public Test
 {
@@ -45,7 +45,7 @@ namespace ZenUnit
 
    STARTUP
    {
-      _test.reset(new TestingTest("", ""));
+      _test = make_unique<TestingTest>("", "");
       _test->_tryCatchCaller.reset(_tryCatchCallerMock = new TryCatchCallerMock);
       _test->_testResultFactory.reset(_testResultFactoryMock = new TestResultFactoryMock);
    }

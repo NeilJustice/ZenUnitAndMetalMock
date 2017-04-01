@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "ZenUnit/TestRunners/MultiTestClassRunner.h"
 #include "ZenUnit/TestRunners/TestClassRunner.h"
-#include "ZenUnit/Utils/Sorter.h"
 #include "ZenUnit/Utils/Iteration/Transformer.h"
+#include "ZenUnit/Utils/Sorter.h"
 
 namespace ZenUnit
 {

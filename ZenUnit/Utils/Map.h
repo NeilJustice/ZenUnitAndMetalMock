@@ -1,6 +1,6 @@
 #pragma once
-#include "ZenUnit/ToStringer/ToStringer.h"
 #include "ZenUnit/Macros/ARE_EQUAL.h"
+#include "ZenUnit/ToStringer/ToStringer.h"
 
 namespace ZenUnit
 {
@@ -48,18 +48,15 @@ namespace ZenUnit
          {
             return { false, false };
          }
-         else
+         try
          {
-            try
-            {
-               ARE_EQUAL(value, findIter->second);
-            }
-            catch (const Anomaly&)
-            {
-               return { true, false };
-            }
-            return { true, true };
+            ARE_EQUAL(value, findIter->second);
          }
+         catch (const Anomaly&)
+         {
+            return { true, false };
+         }
+         return { true, true };
       }
 
    private:

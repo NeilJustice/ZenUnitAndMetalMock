@@ -1,6 +1,6 @@
 #pragma once
-#include <memory>
 #include "ZenUnit/Args/ZenUnitArgs.h"
+#include <memory>
 
 namespace ZenUnit
 {

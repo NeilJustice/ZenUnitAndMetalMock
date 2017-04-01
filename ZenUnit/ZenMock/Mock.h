@@ -9,7 +9,7 @@ namespace Zen
    {
    public:
       template<typename... ArgTypes>
-      Mock(ArgTypes&&... args)
+      explicit Mock(ArgTypes&&... args)
          : ZenMockedClass(std::forward<ArgTypes>(args)...)
       {
       }

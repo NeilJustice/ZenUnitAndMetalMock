@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "ZenUnit/ToStringer/ToStringer.h"
-#include "ZenUnit.Test/Testing/UserTypeOnlyZenUnitPrintable.h"
 #include "ZenUnit.Test/Testing/UserTypeInsOpAndZenUnitPrintable.h"
+#include "ZenUnit.Test/Testing/UserTypeOnlyZenUnitPrintable.h"
+#include "ZenUnit/ToStringer/ToStringer.h"
 
 struct ToStringerTestStruct
 {

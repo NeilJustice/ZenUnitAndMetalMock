@@ -4,9 +4,7 @@
 
 namespace ZenUnit
 {
-   Anomaly::Anomaly()
-   {
-   }
+   Anomaly::Anomaly() = default;
 
    std::string Anomaly::MakeAssertExpression(
       const char* assertionName,

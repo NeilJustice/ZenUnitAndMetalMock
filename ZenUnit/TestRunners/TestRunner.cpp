@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "TestRunner.h"
-#include "Args/ArgsParser.h"
-#include "Results/TestRunResult.h"
-#include "TestRunners/PreamblePrinter.h"
-#include "TestRunners/MultiTestClassRunner.h"
-#include "Utils/Concurrency/Futurist.h"
-#include "Utils/Time/Stopwatch.h"
-#include "Console/Console.h"
+#include "ZenUnit/Args/ArgsParser.h"
+#include "ZenUnit/Console/Console.h"
+#include "ZenUnit/Results/TestRunResult.h"
+#include "ZenUnit/TestRunners/MultiTestClassRunner.h"
+#include "ZenUnit/TestRunners/PreamblePrinter.h"
+#include "ZenUnit/Utils/Concurrency/Futurist.h"
+#include "ZenUnit/Utils/Time/Stopwatch.h"
 
 namespace ZenUnit
 {

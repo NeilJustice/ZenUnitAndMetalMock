@@ -1,5 +1,5 @@
 #pragma once
-#include "ZenUnit/Utils/assert_true.h"
+#include "ZenUnit/Utils/AssertTrue.h"
 
 struct UserTypeInsOpAndZenUnitPrintable
 {

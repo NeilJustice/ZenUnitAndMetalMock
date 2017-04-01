@@ -33,7 +33,7 @@ namespace ZenUnit
 
    STARTUP
    {
-      _watchSelfMocked.reset(new WatchSelfMocked);
+      _watchSelfMocked = std::make_unique<WatchSelfMocked>();
    }
 
    TEST2X2(TimeZoneDateTimeNow_ReturnsLocalTimeNowWithTimeZoneAndTodaysDate,
@@ -63,7 +63,7 @@ namespace ZenUnit
 
    static tm Tm(int tmWeekDay, int tmMonth, int tmMonthDay, int tmYear, int tmHour, int tmMin, int tmSec)
    {
-      tm tmNow;
+      tm tmNow{};
       tmNow.tm_sec = tmSec;
       tmNow.tm_min = tmMin;
       tmNow.tm_hour = tmHour;

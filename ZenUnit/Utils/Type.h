@@ -2,7 +2,7 @@
 #include <regex>
 #include <unordered_map>
 #ifdef __linux__
-#include "ZenUnit/Utils/assert_true.h"
+#include "ZenUnit/Utils/AssertTrue.h"
 #include <cxxabi.h>
 #endif
 

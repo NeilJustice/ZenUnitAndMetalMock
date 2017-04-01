@@ -1,10 +1,10 @@
 #pragma once
+#include "ZenUnit/Anomaly/Anomaly.h"
 #include "ZenUnit/Equalizers/ZenUnitEqualizer.h"
-#include "ZenUnit/Utils/FileLine.h"
-#include "ZenUnit/Utils/VRText.h"
 #include "ZenUnit/Macros/MacroUtils.h"
 #include "ZenUnit/ToStringer/ToStringer.h"
-#include "ZenUnit/Anomaly/Anomaly.h"
+#include "ZenUnit/Utils/FileLine.h"
+#include "ZenUnit/Utils/VRText.h"
 
 #define ARE_EQUAL(expectedValue, actualValue, ...) \
    ZenUnit::ARE_EQUAL_Defined(VRT(expectedValue), VRT(actualValue), \

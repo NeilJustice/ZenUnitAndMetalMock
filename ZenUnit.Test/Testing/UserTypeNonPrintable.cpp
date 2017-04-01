@@ -1,10 +1,7 @@
 #include "pch.h"
 #include "UserTypeNonPrintable.h"
 
-UserTypeNonPrintable::UserTypeNonPrintable()
-   : x(0)
-{
-}
+UserTypeNonPrintable::UserTypeNonPrintable() = default;
 
 UserTypeNonPrintable::UserTypeNonPrintable(int x)
    : x(x)

@@ -22,7 +22,7 @@ namespace ZenUnit
       }
 
       static std::nullptr_t RegisterTestNXN(
-         const PmfToken* pmfToken, std::function<Test*()> operatorNewTestNXN)
+         const PmfToken* pmfToken, const std::function<Test*()>& operatorNewTestNXN)
       {
          if (!DerivedTestClass::s_allNXNTestsRegistered)
          {

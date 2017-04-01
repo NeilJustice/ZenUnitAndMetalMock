@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "TestRunResult.h"
-#include "Utils/Iteration/MemberForEacher.h"
-#include "Console/Console.h"
-#include "TestFailureNumberer.h"
-#include "Args/ZenUnitArgs.h"
-#include "Macros/VECTORS_EQUAL.h"
+#include "ZenUnit/Args/ZenUnitArgs.h"
+#include "ZenUnit/Console/Console.h"
+#include "ZenUnit/Macros/VECTORS_EQUAL.h"
+#include "ZenUnit/Results/TestFailureNumberer.h"
+#include "ZenUnit/Utils/Iteration/MemberForEacher.h"
 
 namespace ZenUnit
 {
@@ -146,9 +146,15 @@ namespace ZenUnit
       const ZenUnit::TestRunResult& expectedTestRunResult,
       const ZenUnit::TestRunResult& actualTestRunResult)
    {
-      VECTORS_EQUAL(expectedTestRunResult._testClassResults, actualTestRunResult._testClassResults);
-      VECTORS_EQUAL(expectedTestRunResult._skippedTestClassNamesAndReasons, actualTestRunResult._skippedTestClassNamesAndReasons);
-      VECTORS_EQUAL(expectedTestRunResult._skippedFullTestNamesAndReasons, actualTestRunResult._skippedFullTestNamesAndReasons);
+      VECTORS_EQUAL(
+         expectedTestRunResult._testClassResults,
+         actualTestRunResult._testClassResults);
+      VECTORS_EQUAL(
+         expectedTestRunResult._skippedTestClassNamesAndReasons,
+         actualTestRunResult._skippedTestClassNamesAndReasons);
+      VECTORS_EQUAL(
+         expectedTestRunResult._skippedFullTestNamesAndReasons,
+         actualTestRunResult._skippedFullTestNamesAndReasons);
    }
 }
 

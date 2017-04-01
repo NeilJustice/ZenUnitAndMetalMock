@@ -59,7 +59,7 @@ if(MSVC)
    install(FILES ZenUnit.dir/Debug/ZenUnitDebug.pdb
            CONFIGURATIONS Debug
            DESTINATION "lib/ZenUnit")
-   install(FILES ZenUnit.dir/RelWithDebInfo/ZenUnitRelWithDebInfo.pdb 
-           CONFIGURATIONS RelWithDebInfo 
+   install(FILES ZenUnit.dir/RelWithDebInfo/ZenUnitRelWithDebInfo.pdb
+           CONFIGURATIONS RelWithDebInfo
            DESTINATION "lib/ZenUnit")
 endif()

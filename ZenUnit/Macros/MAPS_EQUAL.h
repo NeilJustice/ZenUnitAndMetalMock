@@ -1,8 +1,8 @@
 #pragma once
-#include "ZenUnit/Macros/ARE_EQUAL.h"
 #include "ZenUnit/Anomaly/Anomaly.h"
+#include "ZenUnit/Macros/ARE_EQUAL.h"
+#include "ZenUnit/Utils/AssertTrue.h"
 #include "ZenUnit/Utils/Map.h"
-#include "ZenUnit/Utils/assert_true.h"
 
 #define MAPS_EQUAL(expectedMap, actualMap, ...) \
    ZenUnit::MAPS_EQUAL_Defined(VRT(expectedMap), VRT(actualMap), \

@@ -3,9 +3,9 @@
 template<typename T>
 struct ZenUnitPrinter;
 
-#include "ZenUnit/ToStringer/ZenUnitPrinter/VectorZenUnitPrinter.h"
 #include "ZenUnit/ToStringer/ZenUnitPrinter/MapZenUnitPrinter.h"
 #include "ZenUnit/ToStringer/ZenUnitPrinter/SetZenUnitPrinter.h"
+#include "ZenUnit/ToStringer/ZenUnitPrinter/VectorZenUnitPrinter.h"
 
 namespace ZenUnit
 {

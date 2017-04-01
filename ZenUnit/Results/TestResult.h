@@ -1,8 +1,8 @@
 #pragma once
-#include "ZenUnit/Tests/FullName.h"
-#include "ZenUnit/Results/CallResult.h"
 #include "ZenUnit/Enums/TestOutcome.h"
 #include "ZenUnit/Equalizers/ZenUnitEqualizer.h"
+#include "ZenUnit/Results/CallResult.h"
+#include "ZenUnit/Tests/FullName.h"
 #include <functional>
 
 namespace ZenUnit

@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "TestResult.h"
-#include "TestRunners/TestRunner.h"
-#include "Console/Console.h"
-#include "Macros/ARE_EQUAL.h"
-#include "Results/TestFailureNumberer.h"
+#include "ZenUnit/Console/Console.h"
+#include "ZenUnit/Macros/ARE_EQUAL.h"
+#include "ZenUnit/Results/TestFailureNumberer.h"
+#include "ZenUnit/TestRunners/TestRunner.h"
 
 namespace ZenUnit
 {

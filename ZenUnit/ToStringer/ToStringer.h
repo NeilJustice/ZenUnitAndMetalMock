@@ -3,8 +3,8 @@
 #include "ZenUnit/ToStringer/SFINAE/has_ostream_left_shift.h"
 #include "ZenUnit/ToStringer/SFINAE/has_to_string.h"
 #include "ZenUnit/ToStringer/is_quoted_when_printed.h"
-#include "ZenUnit/Utils/Type.h"
 #include "ZenUnit/Utils/StringUtil.h"
+#include "ZenUnit/Utils/Type.h"
 #include <functional>
 
 namespace ZenUnit

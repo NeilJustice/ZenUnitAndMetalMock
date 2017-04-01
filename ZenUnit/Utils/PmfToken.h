@@ -8,7 +8,7 @@ namespace ZenUnit
    //    const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> s_testNXNPmfTokenToTest;
    struct PmfToken
    {
-      PmfToken() {}
+      PmfToken() = default;
 
       template<typename PmfType, PmfType>
       static const PmfToken* Instantiate()

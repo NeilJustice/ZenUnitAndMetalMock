@@ -1,6 +1,6 @@
 #include "pch.h"
-#include <atomic>
 #include "ZenUnit/Utils/Type.h"
+#include <atomic>
 
 class TypeTestsBase {};
 class TypeTestsDerived : public TypeTestsBase {};

@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "ZenUnit/TestRunners/TryCatchCaller.h"
-#include "ZenUnit/TestRunners/TestRunner.h"
 #include "ZenUnit/Console/Console.h"
+#include "ZenUnit/TestRunners/TestRunner.h"
+#include "ZenUnit/TestRunners/TryCatchCaller.h"
 #include "ZenUnit/ZenMock/Exceptions/ZenMockException.h"
 
 namespace ZenUnit
@@ -13,9 +13,7 @@ namespace ZenUnit
    {
    }
 
-   TryCatchCaller::~TryCatchCaller()
-   {
-   }
+   TryCatchCaller::~TryCatchCaller() = default;
 
    CallResult TryCatchCaller::Call(
       void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const
@@ -35,11 +33,11 @@ namespace ZenUnit
       }
       catch (const exception& e)
       {
-         PopulateCallResult(callResult, e);
+         PopulateCallResult(e, &callResult);
       }
       catch (const ZenMock::ZenMockException& e)
       {
-         PopulateCallResult(callResult, e);
+         PopulateCallResult(e, &callResult);
       }
       catch (...)
       {

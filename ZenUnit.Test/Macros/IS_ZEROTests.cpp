@@ -18,7 +18,7 @@ namespace ZenUnit
       const int value;
 
       friend bool operator==(
-         const IntializerConstructable& lhs, 
+         const IntializerConstructable& lhs,
          const IntializerConstructable& rhs)
       {
          return lhs.value == rhs.value;
@@ -37,9 +37,9 @@ namespace ZenUnit
       const int intValue = 0;
       IS_ZERO(intValue);
 
-      IS_ZERO((int*)0);
-      const int* const intPointer = nullptr;
-      IS_ZERO(intPointer);
+      IS_ZERO(reinterpret_cast<int*>(0));
+      const int* const nullIntPointer = nullptr;
+      IS_ZERO(nullIntPointer);
 
       IS_ZERO(0.0f);
       const float floatZero = 0.0f;

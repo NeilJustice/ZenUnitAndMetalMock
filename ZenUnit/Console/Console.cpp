@@ -13,9 +13,7 @@ namespace ZenUnit
    {
    }
 
-   Console::~Console()
-   {
-   }
+   Console::~Console() = default;
 
    void Console::Write(const string& message) const
    {

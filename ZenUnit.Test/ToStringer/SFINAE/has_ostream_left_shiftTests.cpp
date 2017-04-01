@@ -1,7 +1,7 @@
 #include "pch.h"
+#include "ZenUnit.Test/Testing/UserTypeInsOpAndZenUnitPrintable.h"
+#include "ZenUnit.Test/Testing/UserTypeOnlyZenUnitPrintable.h"
 #include "ZenUnit/ToStringer/SFINAE/has_ostream_left_shift.h"
-#include "Testing/UserTypeOnlyZenUnitPrintable.h"
-#include "Testing/UserTypeInsOpAndZenUnitPrintable.h"
 
 namespace ZenUnit
 {

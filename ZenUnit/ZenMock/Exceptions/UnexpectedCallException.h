@@ -10,7 +10,7 @@ namespace ZenMock
       const std::string _what;
    public:
       template<typename... ArgTypes>
-      UnexpectedCallException(
+      explicit UnexpectedCallException(
          const std::string& zenMockedFunctionSignature, const ArgTypes&... args)
          : _what(MakeWhat(zenMockedFunctionSignature, args...))
       {

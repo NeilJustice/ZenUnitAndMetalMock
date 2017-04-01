@@ -34,4 +34,3 @@ add_subdirectory(Examples.Test)
 
 # Skips also building ZenUnit.Test when LinuxCMakeBuildInstall.sh requests that ZenUnit be installed
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
-

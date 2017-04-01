@@ -23,39 +23,43 @@ namespace ZenMock
       NamespaceMockType namespaceMock;
       const string namespaceSignature;
 
-      StaticNameClashMockType staticNameClashMock;
-      const string staticNameClashSignature;
-
       StaticMockType staticMock;
       const string staticSignature;
 
+      StaticNameClashMockType staticNameClashMock;
+      const string staticNameClashSignature;
+
       ZenMock0Tester(
-         const ZenMockObjectType& mock,
-         const GlobalMockType& globalMock,
-         const NamespaceMockType& namespaceMock,
-         const StaticNameClashMockType& staticNameClashMock,
-         const StaticMockType& staticMock,
-         const string& virtualSignature,
-         const string& virtualConstSignature,
-         const string& nonVirtualSignature,
-         const string& nonVirtualConstSignature,
-         const string& globalSignature,
-         const string& namespaceSignature,
-         const string& staticNameClashSignature,
-         const string& staticSignature)
-         : mock(mock)
-         , virtualSignature(virtualSignature)
-         , virtualConstSignature(virtualConstSignature)
-         , nonVirtualSignature(nonVirtualSignature)
-         , nonVirtualConstSignature(nonVirtualConstSignature)
-         , globalMock(globalMock)
-         , globalSignature(globalSignature)
-         , namespaceMock(namespaceMock)
-         , namespaceSignature(namespaceSignature)
-         , staticNameClashMock(staticNameClashMock)
-         , staticNameClashSignature(staticNameClashSignature)
-         , staticMock(staticMock)
-         , staticSignature(staticSignature)
+         ZenMockObjectType mock,
+         string virtualSignature,
+         string virtualConstSignature,
+         string nonVirtualSignature,
+         string nonVirtualConstSignature,
+         GlobalMockType globalMock,
+         string globalSignature,
+         NamespaceMockType namespaceMock,
+         string namespaceSignature,
+         StaticMockType staticMock,
+         string staticSignature,
+         StaticNameClashMockType staticNameClashMock,
+         string staticNameClashSignature)
+         : mock(std::move(mock))
+         , virtualSignature(std::move(virtualSignature))
+         , virtualConstSignature(std::move(virtualConstSignature))
+         , nonVirtualSignature(std::move(nonVirtualSignature))
+         , nonVirtualConstSignature(std::move(nonVirtualConstSignature))
+
+         , globalMock(std::move(globalMock))
+         , globalSignature(std::move(globalSignature))
+
+         , namespaceMock(std::move(namespaceMock))
+         , namespaceSignature(std::move(namespaceSignature))
+
+         , staticMock(std::move(staticMock))
+         , staticSignature(std::move(staticSignature))
+
+         , staticNameClashMock(std::move(staticNameClashMock))
+         , staticNameClashSignature(std::move(staticNameClashSignature))
       {
       }
 

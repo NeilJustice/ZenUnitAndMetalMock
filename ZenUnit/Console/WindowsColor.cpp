@@ -1,23 +1,16 @@
 #include "pch.h"
+#include "Utils/AssertTrue.h"
 #include "WindowsColor.h"
-#include "Utils/assert_true.h"
 
 namespace ZenUnit
 {
    WindowsColor ColorToWindowsColor(Color color)
    {
-      if (color == Color::White)
+      switch (color)
       {
-         return WindowsColor::White;
-      }
-      else if (color == Color::Green)
-      {
-         return WindowsColor::Green;
-      }      
-      else
-      {
-         assert_true(color == Color::Red);
-         return WindowsColor::Red;
-      }
+      case Color::White: return WindowsColor::White;
+      case Color::Green: return WindowsColor::Green;
+      default: assert_true(color == Color::Red); return WindowsColor::Red;
+      };
    }
 }

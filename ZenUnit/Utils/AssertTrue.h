@@ -11,5 +11,5 @@ namespace ZenUnit
 }
 
 #ifndef assert_true
-#define assert_true(predicate) ZenUnit::AssertTrue(predicate, #predicate, FILELINE, __func__)
+#define assert_true(predicate) ZenUnit::AssertTrue(predicate, #predicate, FILELINE, static_cast<const char*>(__func__))
 #endif

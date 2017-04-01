@@ -1,7 +1,7 @@
 #pragma once
-#include <functional>
 #include "ZenUnit/Results/CallResult.h"
 #include "ZenUnit/Utils/Time/Stopwatch.h"
+#include <functional>
 
 namespace ZenUnit
 {
@@ -24,13 +24,13 @@ namespace ZenUnit
          void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const;
    private:
       template<typename ExceptionType>
-      void PopulateCallResult(CallResult& outCallResult, const ExceptionType& e) const
+      void PopulateCallResult(const ExceptionType& e, CallResult* outCallResult) const
       {
-         outCallResult.milliseconds = _stopwatch->StopMilliseconds();
-         outCallResult.exceptionTypeName = Type::GetName(e);
+         outCallResult->milliseconds = _stopwatch->StopMilliseconds();
+         outCallResult->exceptionTypeName = Type::GetName(e);
          const char* const what = e.what();
-         outCallResult.exceptionWhat.assign(what);
-         outCallResult.testOutcome = TestOutcome::Exception;
+         outCallResult->exceptionWhat.assign(what);
+         outCallResult->testOutcome = TestOutcome::Exception;
       }
    };
 }

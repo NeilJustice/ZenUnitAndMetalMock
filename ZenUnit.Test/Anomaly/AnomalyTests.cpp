@@ -70,7 +70,7 @@ FileLineValue);
       const Anomaly anomaly(StartOfFailedLine, WhyBody, FileLineValue, "", "MessageA", MessageA);
       //
       Anomaly expectedAnomaly;
-      expectedAnomaly.message = "\"A\"";
+      expectedAnomaly.message = R"("A")";
       expectedAnomaly.why = String::Concat('\n', "StartOfFailedLine, MessageA)\n",
 "WhyBody\n",
 "Message: " + expectedAnomaly.message + "\n",
@@ -92,7 +92,7 @@ FileLineValue);
          messagePrefixSpaces, "MessageA, MessageB", MessageA, MessageB);
       //
       Anomaly expectedAnomaly;
-      expectedAnomaly.message = "\"A\", \"B\"";
+      expectedAnomaly.message = R"("A", "B")";
       expectedAnomaly.why = String::Concat('\n', "StartOfFailedLine, MessageA, MessageB)\n",
 "WhyBody\n",
 string(messagePrefixSpaces) + "Message: " + expectedAnomaly.message + "\n",

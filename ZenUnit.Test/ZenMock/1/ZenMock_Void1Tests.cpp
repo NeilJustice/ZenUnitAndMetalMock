@@ -63,12 +63,12 @@ namespace ZenMock
 
    STARTUP
    {
-      _zenMock1Tester.reset(new ZenMock1Tester<
+      _zenMock1Tester = make_unique<ZenMock1Tester<
          Void1FunctionsMock,
          decltype(Void1_ZenMock),
          decltype(Void1_ZenMock_namespace),
          decltype(Void1_ZenMock_static),
-         decltype(Static_ZenMock)>(
+         decltype(Static_ZenMock)>>(
             _mock,
             ExpectedVirtualSignature,
             ExpectedVirtualConstSignature,
@@ -81,7 +81,7 @@ namespace ZenMock
             Void1_ZenMock_static,
             ExpectedStaticNameClashSignature,
             Static_ZenMock,
-            ExpectedStaticUniqueSignature));
+            ExpectedStaticUniqueSignature);
    }
 
    }; RUN(ZenMock_Void1Tests)

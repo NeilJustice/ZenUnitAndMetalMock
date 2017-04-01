@@ -1,7 +1,7 @@
 #include "pch.h"
+#include "ZenUnit.Test/Results/Mock/TestResultFactoryMock.h"
+#include "ZenUnit.Test/TestRunners/Mock/TryCatchCallerMock.h"
 #include "ZenUnit/Tests/NewDeleteTest.h"
-#include "TestRunners/Mock/TryCatchCallerMock.h"
-#include "Results/Mock/TestResultFactoryMock.h"
 
 namespace ZenUnit
 {

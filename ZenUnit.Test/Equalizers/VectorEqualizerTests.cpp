@@ -31,7 +31,7 @@ File.cpp(1))");
       vector<string> expectedStringVector;
       const vector<string> actualStringVector;
       ZenUnitEqualizer<vector<string>>::AssertEqual(expectedStringVector, actualStringVector);
-      expectedStringVector.push_back("");
+      expectedStringVector.emplace_back();
       THROWS(ZenUnitEqualizer<vector<string>>::AssertEqual(
          expectedStringVector Comma actualStringVector), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedVector, actualVector)
@@ -49,7 +49,7 @@ File.cpp(1))");
       vector<UserType> expectedUserTypeVector;
       const vector<UserType> actualUserTypeVector;
       ZenUnitEqualizer<vector<UserType>>::AssertEqual(expectedUserTypeVector, actualUserTypeVector);
-      expectedUserTypeVector.push_back(UserType());
+      expectedUserTypeVector.emplace_back();
       THROWS(ZenUnitEqualizer<vector<UserType>>::AssertEqual(
          expectedUserTypeVector Comma actualUserTypeVector), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedVector, actualVector)

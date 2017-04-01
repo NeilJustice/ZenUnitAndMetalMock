@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "TestPhase.h"
-#include "Utils/assert_true.h"
+#include "Utils/AssertTrue.h"
 
 namespace ZenUnit
 {
@@ -8,15 +8,15 @@ namespace ZenUnit
    {
       switch (testPhase)
       {
-      case TestPhase::Constructor: 
+      case TestPhase::Constructor:
       {
          return " in test class constructor";
       }
-      case TestPhase::Startup: 
+      case TestPhase::Startup:
       {
          return " in STARTUP";
       }
-      case TestPhase::TestBody: 
+      case TestPhase::TestBody:
       {
          return "";
       }

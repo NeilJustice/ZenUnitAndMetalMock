@@ -34,7 +34,7 @@ File.cpp(1))");
 
    TEST(NonNullRawPointer_DoesNotThrow)
    {
-      const int* const nonNullRawPointer = (int*)0x1;
+      const int* const nonNullRawPointer = reinterpret_cast<const int*>(0x1);
       IS_NOT_NULL(nonNullRawPointer);
    }
 

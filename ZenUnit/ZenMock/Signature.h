@@ -15,6 +15,6 @@ namespace ZenMock
 
       static std::string FunctionPointer(
          const char* returnType,
-         const char* functionSignatureWithoutReturnType);
+         const char* unadornedFunctionSignature);
    };
 }

@@ -1,7 +1,7 @@
 #pragma once
-#include "ZenUnit/Enums/TestPhase.h"
-#include "ZenUnit/Enums/TestOutcome.h"
 #include "ZenUnit/Anomaly/Anomaly.h"
+#include "ZenUnit/Enums/TestOutcome.h"
+#include "ZenUnit/Enums/TestPhase.h"
 #include "ZenUnit/Equalizers/ZenUnitEqualizer.h"
 
 namespace ZenUnit

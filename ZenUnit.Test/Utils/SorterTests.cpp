@@ -1,6 +1,6 @@
 #include "pch.h"
+#include "ZenUnit.Test/Testing/CustomPolicyClasses.h"
 #include "ZenUnit/Utils/Sorter.h"
-#include "Testing/CustomPolicyClasses.h"
 
 namespace ZenUnit
 {
@@ -44,5 +44,5 @@ namespace ZenUnit
    };
    RUNTEMPLATE(SorterTests, vector<int>)
    RUNTEMPLATE(SorterTests, vector<int, CustomAllocator<int>>)
-   RUNTEMPLATE(SorterTests, vector<SortableStruct>)   
+   RUNTEMPLATE(SorterTests, vector<SortableStruct>)
 }

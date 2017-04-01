@@ -1,10 +1,10 @@
 #include "pch.h"
+#include "ZenUnit.Test/Console/Mock/ConsoleMock.h"
+#include "ZenUnit.Test/Results/Mock/CallResultMock.h"
+#include "ZenUnit.Test/Results/Mock/TestClassResultMock.h"
+#include "ZenUnit.Test/Results/Mock/TestFailureNumbererMock.h"
+#include "ZenUnit.Test/Utils/Iteration/Mock/MemberForEacherMock.h"
 #include "ZenUnit/Results/TestRunResult.h"
-#include "Utils/Iteration/Mock/MemberForEacherMock.h"
-#include "Results/Mock/TestClassResultMock.h"
-#include "Console/Mock/ConsoleMock.h"
-#include "Results/Mock/CallResultMock.h"
-#include "Mock/TestFailureNumbererMock.h"
 
 namespace ZenUnit
 {

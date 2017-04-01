@@ -27,7 +27,7 @@ namespace ZenMock
 
    TEST(Throw_ExceptionIsNotNullptr_ThrowsTheException)
    {
-      _templateThrowable._exception.reset(new ExceptionType(ExceptionWhat));
+      _templateThrowable._exception = make_unique<ExceptionType>(ExceptionWhat);
       THROWS(_templateThrowable.Throw(), ExceptionType, ExceptionWhat);
    }
 

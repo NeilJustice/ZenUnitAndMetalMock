@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ZenUnit/ToStringer/ZenUnitPrinter/MapZenUnitPrinter.h"
 #include "Testing/CustomPolicyClasses.h"
+#include "ZenUnit/ToStringer/ZenUnitPrinter/MapZenUnitPrinter.h"
 
 namespace ZenUnit
 {

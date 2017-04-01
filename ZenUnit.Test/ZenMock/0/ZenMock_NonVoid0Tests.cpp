@@ -85,18 +85,22 @@ namespace ZenMock
          decltype(NonVoid0_ZenMock_static),
          decltype(Static_ZenMock)>(
             _mock,
-            NonVoid0_ZenMock,
-            NonVoid0_ZenMock_namespace,
-            NonVoid0_ZenMock_static,
-            Static_ZenMock,
             VirtualSignature,
             VirtualConstSignature,
             NonVirtualSignature,
             NonVirtualConstSignature,
+
+            NonVoid0_ZenMock,
             GlobalSignature,
+
+            NonVoid0_ZenMock_namespace,
             NamespaceSignature,
-            StaticNameClashSignature,
-            StaticUniqueSignature));
+
+            Static_ZenMock,
+            StaticUniqueSignature,
+
+            NonVoid0_ZenMock_static,
+            StaticNameClashSignature));
    }
 
    // ZeroArgMocker Tests

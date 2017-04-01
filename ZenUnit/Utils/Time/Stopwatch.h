@@ -17,6 +17,6 @@ namespace ZenUnit
       virtual long long StopMilliseconds();
       virtual long long StopNanoseconds();
    private:
-      long long Stop(bool nanosecondsFalseMilliseconds);
+      long long Stop(bool trueNanosecondsFalseMilliseconds);
    };
 }

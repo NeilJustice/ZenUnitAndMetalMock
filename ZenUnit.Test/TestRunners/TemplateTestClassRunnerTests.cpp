@@ -1,9 +1,9 @@
 #include "pch.h"
+#include "ZenUnit.Test/Console/Mock/ConsoleMock.h"
+#include "ZenUnit.Test/Results/Mock/TestClassResultMock.h"
+#include "ZenUnit.Test/Tests/Mock/TestMock.h"
+#include "ZenUnit.Test/Utils/Iteration/Mock/MemberForEacherExtraArgMock.h"
 #include "ZenUnit/TestRunners/TemplateTestClassRunner.h"
-#include "Console/Mock/ConsoleMock.h"
-#include "Tests/Mock/TestMock.h"
-#include "Results/Mock/TestClassResultMock.h"
-#include "Utils/Iteration/Mock/MemberForEacherExtraArgMock.h"
 
 namespace ZenUnit
 {

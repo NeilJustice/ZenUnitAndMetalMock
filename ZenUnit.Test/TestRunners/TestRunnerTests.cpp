@@ -1,14 +1,14 @@
 #include "pch.h"
-#include "ZenUnit/TestRunners/TestRunner.h"
+#include "ZenUnit.Test/Args/Mock/ArgsParserMock.h"
+#include "ZenUnit.Test/Console/Mock/ConsoleMock.h"
+#include "ZenUnit.Test/Results/Mock/TestRunResultMock.h"
+#include "ZenUnit.Test/TestRunners/Mock/PreamblePrinterMock.h"
+#include "ZenUnit.Test/TestRunners/Mock/TestClassMultiRunnerMock.h"
+#include "ZenUnit.Test/Utils/Concurrency/Mock/FuturistMock.h"
+#include "ZenUnit.Test/Utils/Concurrency/Mock/VoidFutureMock.h"
+#include "ZenUnit.Test/Utils/Time/Mock/StopwatchMock.h"
 #include "ZenUnit/Args/ArgsParser.h"
-#include "Args/Mock/ArgsParserMock.h"
-#include "Results/Mock/TestRunResultMock.h"
-#include "TestRunners/Mock/PreamblePrinterMock.h"
-#include "TestRunners/Mock/TestClassMultiRunnerMock.h"
-#include "Utils/Concurrency/Mock/VoidFutureMock.h"
-#include "Utils/Concurrency/Mock/FuturistMock.h"
-#include "Console/Mock/ConsoleMock.h"
-#include "Utils/Time/Mock/StopwatchMock.h"
+#include "ZenUnit/TestRunners/TestRunner.h"
 
 namespace ZenUnit
 {

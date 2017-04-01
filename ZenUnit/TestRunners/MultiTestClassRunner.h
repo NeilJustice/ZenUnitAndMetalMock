@@ -1,6 +1,6 @@
 #pragma once
-#include "ZenUnit/Results/TestClassResult.h"
 #include "ZenUnit/Args/ZenUnitArgs.h"
+#include "ZenUnit/Results/TestClassResult.h"
 
 namespace ZenUnit
 {

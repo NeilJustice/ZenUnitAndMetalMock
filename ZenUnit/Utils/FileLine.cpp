@@ -27,7 +27,7 @@ namespace ZenUnit
 
 void ZenUnitEqualizer<ZenUnit::FileLine>::
 AssertEqual(
-   const ZenUnit::FileLine& expectedFileLine, 
+   const ZenUnit::FileLine& expectedFileLine,
    const ZenUnit::FileLine& actualFileLine)
 {
    ARE_EQUAL(expectedFileLine.filePath, actualFileLine.filePath);

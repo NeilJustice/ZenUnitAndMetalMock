@@ -8,7 +8,7 @@ namespace ZenUnit
    private:
       std::future<void> _voidFuture;
    public:
-      VoidFuture();
+      VoidFuture() = default;
       VoidFuture(std::future<void>&& voidFuture);
       virtual ~VoidFuture() = default;
       virtual std::future_status WaitAtMostSeconds(unsigned seconds) const;

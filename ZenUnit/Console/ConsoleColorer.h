@@ -1,6 +1,6 @@
 #pragma once
-#include <functional>
 #include "ZenUnit/Console/Color.h"
+#include <functional>
 
 namespace ZenUnit
 {

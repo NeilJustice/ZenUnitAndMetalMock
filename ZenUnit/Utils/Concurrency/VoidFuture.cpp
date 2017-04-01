@@ -3,10 +3,6 @@
 
 namespace ZenUnit
 {
-   VoidFuture::VoidFuture()
-   {
-   }
-
    VoidFuture::VoidFuture(future<void>&& voidFuture)
       : _voidFuture(std::move(voidFuture))
    {

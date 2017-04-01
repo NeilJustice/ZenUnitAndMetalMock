@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "ZenUnit/Utils/Iteration/ForEacherTwoExtraArgs.h"
 
 template<typename IterableType, typename FunctionType, typename ExtraArgType1, typename ExtraArgType2>

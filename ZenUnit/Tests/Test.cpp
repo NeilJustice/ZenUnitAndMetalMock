@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Test.h"
-#include "ZenUnit/TestRunners/TryCatchCaller.h"
 #include "ZenUnit/Results/TestResultFactory.h"
+#include "ZenUnit/TestRunners/TryCatchCaller.h"
 
 namespace ZenUnit
 {
@@ -12,7 +12,7 @@ namespace ZenUnit
    {
    }
 
-   Test::~Test() {}
+   Test::~Test() = default;
 
    const char* Test::Name() const
    {
@@ -82,7 +82,7 @@ namespace ZenUnit
       const CallResult destructorCallResult = _tryCatchCaller->
          Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
       const TestResult testResult = _testResultFactory->
-         FullCtor(_fullName, constructorCallResult, startupCallResult, 
+         FullCtor(_fullName, constructorCallResult, startupCallResult,
             testBodyCallResult, cleanupCallResult, destructorCallResult);
       return testResult;
    }

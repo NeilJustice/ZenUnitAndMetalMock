@@ -1,7 +1,7 @@
 #include "pch.h"
+#include "ZenUnit.Test/Console/Mock/ConsoleMock.h"
 #include "ZenUnit/Args/ArgsParser.h"
 #include "ZenUnit/Utils/Vector.h"
-#include "Console/Mock/ConsoleMock.h"
 
 namespace ZenUnit
 {
@@ -121,7 +121,7 @@ None
       AssertArgSetsField("-exit0", &ZenUnitArgs::exit0);
    }
 
-   void AssertArgSetsField(string arg, bool ZenUnitArgs::* expectedFieldToBeSet)
+   void AssertArgSetsField(const string& arg, bool ZenUnitArgs::* expectedFieldToBeSet)
    {
       const vector<string> Args = { TestProgramPath, arg };
       //

@@ -8,7 +8,7 @@ namespace ZenUnit
    class TestNXN : public Test
    {
       friend class TestNXNTests;
-      static_assert(sizeof...(TestCaseArgTypes) > 0, "NumberOfTestCaseArgs > 0");            
+      static_assert(sizeof...(TestCaseArgTypes) > 0, "NumberOfTestCaseArgs > 0");
    private:
       const size_t NumberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
       std::unique_ptr<const Console> _console;
@@ -63,7 +63,7 @@ namespace ZenUnit
 
       virtual void NewTestClass() final
       {
-         _testClass.reset(new TestClassType);
+         _testClass = std::make_unique<TestClassType>();
       }
 
       virtual void Startup() final

@@ -1,7 +1,7 @@
 #pragma once
+#include "Color.h"
 #include <functional>
 #include <memory>
-#include "Color.h"
 
 namespace ZenUnit
 {
@@ -24,7 +24,7 @@ namespace ZenUnit
       virtual void WriteNewline() const;
       virtual void WriteLineAndExit(const std::string& message, int exitCode) const;
       virtual void PrintStringsCommaSeparated(
-         const std::vector<std::string>& strings, size_t startIndex, size_t numberOfElementsToPrint) const;
+         const std::vector<std::string>& strings, size_t startIndex, size_t numberOfElements) const;
       virtual void PauseForAnyKeyIfDebuggerIsPresent() const;
       virtual bool DebuggerIsPresent() const;
       virtual void GetLine() const;

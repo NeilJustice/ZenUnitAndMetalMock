@@ -3,7 +3,7 @@
 
 struct UserTypeNonPrintable
 {
-   int x;
+   int x = 0;
    UserTypeNonPrintable();
    explicit UserTypeNonPrintable(int x);
 

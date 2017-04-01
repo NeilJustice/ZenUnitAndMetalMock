@@ -44,7 +44,7 @@ namespace ZenUnit
       virtual void NewTestClass() final
       {
          assert_true(_testClass == nullptr);
-         _testClass.reset(new TestClassType);
+         _testClass = std::make_unique<TestClassType>();
       }
 
       virtual void Startup() final

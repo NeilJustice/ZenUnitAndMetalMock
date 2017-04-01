@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "MachineNameGetter.h"
-#include "Utils/assert_true.h"
+#include "Utils/AssertTrue.h"
 
 #ifdef __linux__
-#include <unistd.h>
 #include <climits>
+#include <unistd.h>
 #endif
 
 namespace ZenUnit

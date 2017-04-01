@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ZenUnit/ToStringer/SFINAE/has_to_string.h"
 #include "Testing/UserType.h"
+#include "ZenUnit/ToStringer/SFINAE/has_to_string.h"
 
 namespace ZenUnit
 {
