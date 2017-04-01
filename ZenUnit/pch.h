@@ -8,11 +8,12 @@
 #include <algorithm>
 #include <chrono>
 #include <cmath>
+#include <cstring>
 #include <functional>
 #include <future>
 #include <iomanip>
 #include <iostream>
-#include <limits.h>
+#include <climits>
 #include <map>
 #include <memory>
 #include <mutex>
@@ -21,7 +22,6 @@
 #include <regex>
 #include <set>
 #include <sstream>
-#include <string.h>
 #include <thread>
 #include <type_traits>
 #include <unordered_set>

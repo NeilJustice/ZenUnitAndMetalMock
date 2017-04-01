@@ -4,7 +4,7 @@
 
 #ifdef __linux__
 #include <unistd.h>
-#include <limits.h>
+#include <climits>
 #endif
 
 namespace ZenUnit

@@ -14,7 +14,7 @@ namespace ZenMock
       std::vector<DecayedReturnType> _returnValues;
       size_t _returnValueIndex;
    public:
-      ValueReturner(const std::string& zenMockedFunctionSignature)
+      explicit ValueReturner(const std::string& zenMockedFunctionSignature)
          : ZenMockedFunctionSignature(zenMockedFunctionSignature)
          , _returnValueIndex(0)
       {

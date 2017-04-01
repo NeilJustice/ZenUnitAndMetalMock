@@ -37,7 +37,7 @@ virtualness returnType functionName(arg1Type arg1, arg2Type arg2, arg3Type arg3,
 } \
 struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidSixArgMocker<returnType, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type> \
 { \
-   ZenMock_##functionName##__VA_ARGS__(const std::string* zenMockedClassName) \
+   explicit ZenMock_##functionName##__VA_ARGS__(const std::string* zenMockedClassName) \
       : ZenMock::NonVoidSixArgMocker<returnType, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type>(ZenMock::Signature::Function( \
          #virtualness, #returnType, zenMockedClassName, #functionName"("#arg1Type", "#arg2Type", "#arg3Type", "#arg4Type", "#arg5Type", "#arg6Type")", #constness)) {} \
 } mutableness functionName##Mock##__VA_ARGS__ = ZenMock_##functionName##__VA_ARGS__(this->ZenMockedClassName());
@@ -48,7 +48,7 @@ namespace ZenMock
    class NonVoidSixArgMocker : public SixArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>, private ValueReturner<ReturnType>
    {
    public:
-      NonVoidSixArgMocker(const std::string& zenMockedFunctionSignature)
+      explicit NonVoidSixArgMocker(const std::string& zenMockedFunctionSignature)
          : SixArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>(zenMockedFunctionSignature)
          , ValueReturner<ReturnType>(zenMockedFunctionSignature)
       {
@@ -62,7 +62,7 @@ namespace ZenMock
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ExpectAndReturnValues(
-         const FirstReturnValue& firstReturnValue, 
+         const FirstReturnValue& firstReturnValue,
          const SubsequentReturnValues&... subsequentReturnValues)
       {
          SixArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::Expect();
@@ -89,7 +89,7 @@ namespace ZenMock
    class NonVoidSixArgFunctionPointerMocker : public NonVoidSixArgMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>
    {
    public:
-      NonVoidSixArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
+      explicit NonVoidSixArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
          : NonVoidSixArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>(zenMockedFunctionSignature)
       {
       }

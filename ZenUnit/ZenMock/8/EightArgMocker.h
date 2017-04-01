@@ -27,7 +27,7 @@ namespace ZenMock
    private:
       std::vector<EightArgCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>> _eightArgCalls;
    public:
-      EightArgMocker(const std::string& zenMockedFunctionSignature)
+      explicit EightArgMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
       }
@@ -100,28 +100,28 @@ namespace ZenMock
       }
 
       void AssertCalls(const std::vector<EightArgCallRef<
-         Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+         Arg1Type, Arg2Type, Arg3Type, Arg4Type,
          Arg5Type, Arg6Type, Arg7Type, Arg8Type>>& expectedEightArgCalls)
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedEightArgCalls.size());
          this->ZenMockSetAsserted();
          const std::vector<EightArgCallRef<
-            Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
-            Arg5Type, Arg6Type, Arg7Type, Arg8Type>> 
+            Arg1Type, Arg2Type, Arg3Type, Arg4Type,
+            Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
             actualEightArgCalls = PrivateCallsToCallRefs(_eightArgCalls);
          VECTORS_EQUAL(expectedEightArgCalls, actualEightArgCalls, this->ZenMockedFunctionSignature);
       }
 
    private:
       static std::vector<EightArgCallRef<
-         Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+         Arg1Type, Arg2Type, Arg3Type, Arg4Type,
          Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
          PrivateCallsToCallRefs(const std::vector<EightArgCall<
-            Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+            Arg1Type, Arg2Type, Arg3Type, Arg4Type,
             Arg5Type, Arg6Type, Arg7Type, Arg8Type>>& eightArgCalls)
       {
          std::vector<EightArgCallRef<
-            Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+            Arg1Type, Arg2Type, Arg3Type, Arg4Type,
             Arg5Type, Arg6Type, Arg7Type, Arg8Type>> eightArgCallRefs;
          eightArgCallRefs.reserve(eightArgCalls.size());
          std::for_each(eightArgCalls.cbegin(), eightArgCalls.cend(),

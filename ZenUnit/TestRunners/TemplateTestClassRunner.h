@@ -25,17 +25,13 @@ namespace ZenUnit
       std::vector<std::unique_ptr<Test>> _tests;
       TestClassResult _testClassResult;
    public:
-      TemplateTestClassRunner(const char* testClassName)
+      explicit TemplateTestClassRunner(const char* testClassName)
          : _console(new Console)
          , _testsMemberForEacherExtraArg(new TestsMemberForEacherExtraArgType)
          , _testClassName(testClassName)
          , _newDeleteTest(testClassName)
       {
          _tests = TestClassType::GetTests();
-      }
-
-      ~TemplateTestClassRunner()
-      {
       }
 
       virtual const char* TestClassName() const final

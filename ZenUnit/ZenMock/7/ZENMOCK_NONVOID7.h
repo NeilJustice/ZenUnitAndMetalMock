@@ -37,7 +37,7 @@ virtualness returnType functionName(arg1Type arg1, arg2Type arg2, arg3Type arg3,
 } \
 struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidSevenArgMocker<returnType, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type> \
 { \
-   ZenMock_##functionName##__VA_ARGS__(const std::string* zenMockedClassName) \
+   explicit ZenMock_##functionName##__VA_ARGS__(const std::string* zenMockedClassName) \
       : ZenMock::NonVoidSevenArgMocker<returnType, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type>(ZenMock::Signature::Function( \
          #virtualness, #returnType, zenMockedClassName, #functionName"("#arg1Type", "#arg2Type", "#arg3Type", "#arg4Type", "#arg5Type", "#arg6Type", "#arg7Type")", #constness)) {} \
 } mutableness functionName##Mock##__VA_ARGS__ = ZenMock_##functionName##__VA_ARGS__(this->ZenMockedClassName());
@@ -57,7 +57,7 @@ namespace ZenMock
       Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>, private ValueReturner<ReturnType>
    {
    public:
-      NonVoidSevenArgMocker(const std::string& zenMockedFunctionSignature)
+      explicit NonVoidSevenArgMocker(const std::string& zenMockedFunctionSignature)
          : SevenArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>(zenMockedFunctionSignature)
       {
       }
@@ -107,7 +107,7 @@ namespace ZenMock
       ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>
    {
    public:
-      NonVoidSevenArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
+      explicit NonVoidSevenArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
          : NonVoidSevenArgFunctionPointerMocker<
               ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>(zenMockedFunctionSignature)
       {

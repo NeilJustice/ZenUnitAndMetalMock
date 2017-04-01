@@ -26,7 +26,7 @@ namespace ZenMock
    private:
       std::vector<SevenArgCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>> _sevenArgCalls;
    public:
-      SevenArgMocker(const std::string& zenMockedFunctionSignature)
+      explicit SevenArgMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
       }
@@ -98,7 +98,7 @@ namespace ZenMock
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedSevenArgCalls.size());
          this->ZenMockSetAsserted();
-         const std::vector<SevenArgCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>> 
+         const std::vector<SevenArgCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>
             actualSevenArgCalls = PrivateCallsToCallRefs(_sevenArgCalls);
          VECTORS_EQUAL(expectedSevenArgCalls, actualSevenArgCalls, this->ZenMockedFunctionSignature);
       }

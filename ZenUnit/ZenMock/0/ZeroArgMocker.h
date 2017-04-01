@@ -19,7 +19,7 @@ namespace ZenMock
    private:
       size_t _numberOfCalls;
    public:
-      ZeroArgMocker(const std::string& zenMockedFunctionSignature)
+      explicit ZeroArgMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
          , _numberOfCalls(0)
       {

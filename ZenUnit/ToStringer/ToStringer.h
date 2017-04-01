@@ -1,11 +1,11 @@
 #pragma once
-#include <functional>
 #include "ZenUnit/ToStringer/SFINAE/has_ZenUnitPrinter.h"
 #include "ZenUnit/ToStringer/SFINAE/has_ostream_left_shift.h"
 #include "ZenUnit/ToStringer/SFINAE/has_to_string.h"
 #include "ZenUnit/ToStringer/is_quoted_when_printed.h"
 #include "ZenUnit/Utils/Type.h"
 #include "ZenUnit/Utils/StringUtil.h"
+#include <functional>
 
 namespace ZenUnit
 {
@@ -21,7 +21,7 @@ namespace ZenUnit
 
       template<typename T>
       static typename std::enable_if<
-         has_to_string<T>::value, std::string>::type 
+         has_to_string<T>::value, std::string>::type
          ToString(const T& value)
       {
          const std::string valueString(std::to_string(value));
@@ -72,11 +72,8 @@ namespace ZenUnit
             static const std::string NonEmptyStdFunction("<non-empty std::function>");
             return NonEmptyStdFunction;
          }
-         else
-         {
-            static const std::string EmptyStdFunction("<empty std::function>");
-            return EmptyStdFunction;
-         }
+         static const std::string EmptyStdFunction("<empty std::function>");
+         return EmptyStdFunction;
       }
 
       template<typename FirstType, typename SecondType>
@@ -127,7 +124,7 @@ namespace ZenUnit
          const std::string valueString(oss.str());
          return valueString;
       }
-      
+
       template<typename T>
       static typename std::enable_if<
          has_ZenUnitPrinter<T>::value && has_ostream_left_shift<T>::value>::type

@@ -37,7 +37,7 @@ virtualness returnType functionName(arg1Type arg1, arg2Type arg2, arg3Type arg3)
 } \
 struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidThreeArgMocker<returnType, arg1Type, arg2Type, arg3Type> \
 { \
-   ZenMock_##functionName##__VA_ARGS__(const std::string* zenMockedClassName) \
+   explicit ZenMock_##functionName##__VA_ARGS__(const std::string* zenMockedClassName) \
       : ZenMock::NonVoidThreeArgMocker<returnType, arg1Type, arg2Type, arg3Type>(ZenMock::Signature::Function( \
          #virtualness, #returnType, zenMockedClassName, #functionName"("#arg1Type", "#arg2Type", "#arg3Type")", #constness)) {} \
 } mutableness functionName##Mock##__VA_ARGS__ = ZenMock_##functionName##__VA_ARGS__(this->ZenMockedClassName());
@@ -48,7 +48,7 @@ namespace ZenMock
    class NonVoidThreeArgMocker : public ThreeArgMocker<Arg1Type, Arg2Type, Arg3Type>, private ValueReturner<ReturnType>
    {
    public:
-      NonVoidThreeArgMocker(const std::string& zenMockedFunctionSignature)
+      explicit NonVoidThreeArgMocker(const std::string& zenMockedFunctionSignature)
          : ThreeArgMocker<Arg1Type, Arg2Type, Arg3Type>(zenMockedFunctionSignature)
          , ValueReturner<ReturnType>(zenMockedFunctionSignature)
       {
@@ -88,7 +88,7 @@ namespace ZenMock
    class NonVoidThreeArgFunctionPointerMocker : public NonVoidThreeArgMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type>
    {
    public:
-      NonVoidThreeArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
+      explicit NonVoidThreeArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
          : NonVoidThreeArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type>(zenMockedFunctionSignature)
       {
       }

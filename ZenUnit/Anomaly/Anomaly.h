@@ -1,12 +1,12 @@
 #pragma once
-#include <sstream>
-#include <vector>
-#include <cstring>
 #include "ZenUnit/Utils/FileLine.h"
 #include "ZenUnit/Enums/ExpectedActualFormat.h"
 #include "ZenUnit/Utils/assert_true.h"
 #include "ZenUnit/Utils/StringUtil.h"
 #include "ZenUnit/ToStringer/ToStringer.h"
+#include <sstream>
+#include <vector>
+#include <cstring>
 
 namespace ZenUnit
 {
@@ -44,7 +44,7 @@ namespace ZenUnit
          }
          if (messagesNonEmpty)
          {
-            this->message = ToStringer::ToStringConcat(messages...);         
+            this->message = ToStringer::ToStringConcat(messages...);
             whyBuilder << messagePrefixSpaces << "Message: " << this->message << '\n';
          }
          whyBuilder << fileLine;

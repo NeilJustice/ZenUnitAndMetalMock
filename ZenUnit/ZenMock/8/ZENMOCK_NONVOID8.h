@@ -37,7 +37,7 @@ virtualness returnType functionName(arg1Type arg1, arg2Type arg2, arg3Type arg3,
 } \
 struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidEightArgMocker<returnType, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type> \
 { \
-   ZenMock_##functionName##__VA_ARGS__(const std::string* zenMockedClassName) \
+   explicit ZenMock_##functionName##__VA_ARGS__(const std::string* zenMockedClassName) \
       : ZenMock::NonVoidEightArgMocker<returnType, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type>(ZenMock::Signature::Function( \
          #virtualness, #returnType, zenMockedClassName, #functionName"("#arg1Type", "#arg2Type", "#arg3Type", "#arg4Type", "#arg5Type", "#arg6Type", "#arg7Type", "#arg8Type")", #constness)) {} \
 } mutableness functionName##Mock##__VA_ARGS__ = ZenMock_##functionName##__VA_ARGS__(this->ZenMockedClassName());
@@ -58,9 +58,9 @@ namespace ZenMock
       Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>, private ValueReturner<ReturnType>
    {
    public:
-      NonVoidEightArgMocker(const std::string& zenMockedFunctionSignature)
+      explicit NonVoidEightArgMocker(const std::string& zenMockedFunctionSignature)
          : EightArgMocker<
-            Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+            Arg1Type, Arg2Type, Arg3Type, Arg4Type,
             Arg5Type, Arg6Type, Arg7Type, Arg8Type>(zenMockedFunctionSignature)
       {
       }
@@ -68,7 +68,7 @@ namespace ZenMock
       void ExpectAndReturn(const ReturnType& returnValue)
       {
          EightArgMocker<
-            Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+            Arg1Type, Arg2Type, Arg3Type, Arg4Type,
             Arg5Type, Arg6Type, Arg7Type, Arg8Type>::Expect();
          ValueReturner<ReturnType>::DoAddReturnValue(returnValue);
       }
@@ -79,7 +79,7 @@ namespace ZenMock
          const SubsequentReturnValues&... subsequentReturnValues)
       {
          EightArgMocker<
-            Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+            Arg1Type, Arg2Type, Arg3Type, Arg4Type,
             Arg5Type, Arg6Type, Arg7Type, Arg8Type>::Expect();
          ValueReturner<ReturnType>::ZenMockPushBackReturnValues(firstReturnValue, subsequentReturnValues...);
       }
@@ -88,17 +88,17 @@ namespace ZenMock
          const std::vector<typename std::decay<ReturnType>::type>& returnValues)
       {
          EightArgMocker<
-            Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+            Arg1Type, Arg2Type, Arg3Type, Arg4Type,
             Arg5Type, Arg6Type, Arg7Type, Arg8Type>::Expect();
          ValueReturner<ReturnType>::ZenMockPushBackReturnValues(returnValues);
       }
 
       ReturnType ZenMockItAndReturnValue(
-         Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, 
+         Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4,
          Arg5Type arg5, Arg6Type arg6, Arg7Type arg7, Arg8Type arg8)
       {
          EightArgMocker<
-            Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+            Arg1Type, Arg2Type, Arg3Type, Arg4Type,
             Arg5Type, Arg6Type, Arg7Type, Arg8Type>::
             ZenMock(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
          ReturnType returnValue = ValueReturner<ReturnType>::ZenMockZenMockNextReturnValue();
@@ -120,7 +120,7 @@ namespace ZenMock
       ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>
    {
    public:
-      NonVoidEightArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
+      explicit NonVoidEightArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
          : NonVoidEightArgFunctionPointerMocker<
             ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>(zenMockedFunctionSignature)
       {

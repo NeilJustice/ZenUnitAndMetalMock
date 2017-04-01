@@ -22,7 +22,7 @@ namespace ZenMock
    private:
       std::vector<OneArgCall<ArgType>> _oneArgCalls;
    public:
-      OneArgMocker(const std::string& zenMockedFunctionSignature)
+      explicit OneArgMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
       }
@@ -59,7 +59,7 @@ namespace ZenMock
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedOneArgCalls.size());
          this->ZenMockSetAsserted();
-         const std::vector<OneArgCallRef<ArgType>> 
+         const std::vector<OneArgCallRef<ArgType>>
             actualOneArgCalls = PrivateCallsToCallRefs(_oneArgCalls);
          VECTORS_EQUAL(expectedOneArgCalls, actualOneArgCalls, this->ZenMockedFunctionSignature);
       }

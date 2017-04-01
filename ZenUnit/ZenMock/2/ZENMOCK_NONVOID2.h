@@ -37,7 +37,7 @@ virtualness returnType functionName(arg1Type arg1, arg2Type arg2) constness fina
 } \
 struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidTwoArgMocker<returnType, arg1Type, arg2Type> \
 { \
-   ZenMock_##functionName##__VA_ARGS__(const std::string* zenMockedClassName) \
+   explicit ZenMock_##functionName##__VA_ARGS__(const std::string* zenMockedClassName) \
       : ZenMock::NonVoidTwoArgMocker<returnType, arg1Type, arg2Type>(ZenMock::Signature::Function( \
          #virtualness, #returnType, zenMockedClassName, #functionName"("#arg1Type", "#arg2Type")", #constness)) {} \
 } mutableness functionName##Mock##__VA_ARGS__ = ZenMock_##functionName##__VA_ARGS__(this->ZenMockedClassName());
@@ -48,7 +48,7 @@ namespace ZenMock
    class NonVoidTwoArgMocker : public TwoArgMocker<Arg1Type, Arg2Type>, private ValueReturner<ReturnType>
    {
    public:
-      NonVoidTwoArgMocker(const std::string& zenMockedFunctionSignature)
+      explicit NonVoidTwoArgMocker(const std::string& zenMockedFunctionSignature)
          : TwoArgMocker<Arg1Type, Arg2Type>(zenMockedFunctionSignature)
          , ValueReturner<ReturnType>(zenMockedFunctionSignature)
       {
@@ -88,7 +88,7 @@ namespace ZenMock
    class NonVoidTwoArgFunctionPointerMocker : public NonVoidTwoArgMocker<ReturnType, Arg1Type, Arg2Type>
    {
    public:
-      NonVoidTwoArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
+      explicit NonVoidTwoArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
          : NonVoidTwoArgMocker<ReturnType, Arg1Type, Arg2Type>(zenMockedFunctionSignature)
       {
       }

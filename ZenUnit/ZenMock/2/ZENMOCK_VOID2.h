@@ -36,7 +36,7 @@ virtualness void functionName(arg1Type arg1, arg2Type arg2) constness finalness 
 } \
 struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidTwoArgMocker<arg1Type, arg2Type> \
 { \
-   ZenMock_##functionName##__VA_ARGS__(const std::string* zenMockedClassName) \
+   explicit ZenMock_##functionName##__VA_ARGS__(const std::string* zenMockedClassName) \
       : ZenMock::VoidTwoArgMocker<arg1Type, arg2Type>(ZenMock::Signature::Function( \
          #virtualness, "void", zenMockedClassName, #functionName"("#arg1Type", "#arg2Type")", #constness)) {} \
 } mutableness functionName##Mock##__VA_ARGS__ = ZenMock_##functionName##__VA_ARGS__(this->ZenMockedClassName());
@@ -47,7 +47,7 @@ namespace ZenMock
    class VoidTwoArgMocker : public TwoArgMocker<Arg1Type, Arg2Type>
    {
    public:
-      VoidTwoArgMocker(const std::string& zenMockedFunctionSignature)
+      explicit VoidTwoArgMocker(const std::string& zenMockedFunctionSignature)
          : TwoArgMocker<Arg1Type, Arg2Type>(zenMockedFunctionSignature)
       {
       }
@@ -62,7 +62,7 @@ namespace ZenMock
    class VoidTwoArgFunctionPointerMocker : public VoidTwoArgMocker<Arg1Type, Arg2Type>
    {
    public:
-      VoidTwoArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
+      explicit VoidTwoArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
          : VoidTwoArgMocker<Arg1Type, Arg2Type>(zenMockedFunctionSignature)
       {
       }

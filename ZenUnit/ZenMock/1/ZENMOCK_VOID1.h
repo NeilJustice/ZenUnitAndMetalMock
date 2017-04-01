@@ -37,7 +37,7 @@ virtualness void functionName(arg1Type arg) constness finalness \
 } \
 struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidOneArgMocker<arg1Type> \
 { \
-   ZenMock_##functionName##__VA_ARGS__(const std::string* zenMockedClassName) \
+   explicit ZenMock_##functionName##__VA_ARGS__(const std::string* zenMockedClassName) \
       : ZenMock::VoidOneArgMocker<arg1Type>(ZenMock::Signature::Function( \
          #virtualness, "void", zenMockedClassName, #functionName"("#arg1Type")", #constness)) {} \
 } mutableness functionName##Mock##__VA_ARGS__ = ZenMock_##functionName##__VA_ARGS__(this->ZenMockedClassName());
@@ -48,7 +48,7 @@ namespace ZenMock
    class VoidOneArgMocker : public OneArgMocker<ArgType>
    {
    public:
-      VoidOneArgMocker(const std::string& zenMockedFunctionSignature)
+      explicit VoidOneArgMocker(const std::string& zenMockedFunctionSignature)
          : OneArgMocker<ArgType>(zenMockedFunctionSignature)
       {
       }
@@ -58,7 +58,7 @@ namespace ZenMock
    class VoidOneArgFunctionPointerMocker : public VoidOneArgMocker<Arg1Type>
    {
    public:
-      VoidOneArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
+      explicit VoidOneArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
          : VoidOneArgMocker<Arg1Type>(zenMockedFunctionSignature)
       {
       }

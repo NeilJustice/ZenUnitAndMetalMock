@@ -36,7 +36,7 @@ virtualness void functionName(arg1Type arg1, arg2Type arg2, arg3Type arg3, arg4T
 } \
 struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidFiveArgMocker<arg1Type, arg2Type, arg3Type, arg4Type, arg5Type> \
 { \
-   ZenMock_##functionName##__VA_ARGS__(const std::string* zenMockedClassName) \
+   explicit ZenMock_##functionName##__VA_ARGS__(const std::string* zenMockedClassName) \
       : ZenMock::VoidFiveArgMocker<arg1Type, arg2Type, arg3Type, arg4Type, arg5Type>(ZenMock::Signature::Function( \
          #virtualness, "void", zenMockedClassName, #functionName"("#arg1Type", "#arg2Type", "#arg3Type", "#arg4Type", "#arg5Type")", #constness)) {} \
 } mutableness functionName##Mock##__VA_ARGS__ = ZenMock_##functionName##__VA_ARGS__(this->ZenMockedClassName());
@@ -47,7 +47,7 @@ namespace ZenMock
    class VoidFiveArgMocker : public FiveArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>
    {
    public:
-      VoidFiveArgMocker(const std::string& zenMockedFunctionSignature)
+      explicit VoidFiveArgMocker(const std::string& zenMockedFunctionSignature)
          : FiveArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>(zenMockedFunctionSignature)
       {
       }
@@ -57,7 +57,7 @@ namespace ZenMock
    class VoidFiveArgFunctionPointerMocker : public VoidFiveArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>
    {
    public:
-      VoidFiveArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
+      explicit VoidFiveArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
          : VoidFiveArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>(zenMockedFunctionSignature)
       {
       }

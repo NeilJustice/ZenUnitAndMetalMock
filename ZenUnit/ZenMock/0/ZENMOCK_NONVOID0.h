@@ -37,7 +37,7 @@ virtualness returnType functionName() constness finalness \
 } \
 struct ZenMock_##functionName : public ZenMock::NonVoidZeroArgMocker<returnType> \
 { \
-   ZenMock_##functionName(const std::string* zenMockedClassName) \
+   explicit ZenMock_##functionName(const std::string* zenMockedClassName) \
       : ZenMock::NonVoidZeroArgMocker<returnType>(ZenMock::Signature::Function( \
          #virtualness, #returnType, zenMockedClassName, #functionName"()", #constness)) {} \
 } mutableness functionName##Mock = ZenMock_##functionName(this->ZenMockedClassName());
@@ -48,7 +48,7 @@ namespace ZenMock
    class NonVoidZeroArgMocker : public ZeroArgMocker<ExceptionThrower>, private ValueReturner<ReturnType>
    {
    public:
-      NonVoidZeroArgMocker(const std::string& zenMockedFunctionSignature)
+      explicit NonVoidZeroArgMocker(const std::string& zenMockedFunctionSignature)
          : ZeroArgMocker(zenMockedFunctionSignature)
          , ValueReturner<ReturnType>(zenMockedFunctionSignature)
       {
@@ -88,7 +88,7 @@ namespace ZenMock
    class NonVoidZeroArgFunctionPointerMocker : public NonVoidZeroArgMocker<ReturnType>
    {
    public:
-      NonVoidZeroArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
+      explicit NonVoidZeroArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
          : NonVoidZeroArgMocker<ReturnType>(zenMockedFunctionSignature)
       {
       }

@@ -16,7 +16,7 @@ namespace ZenUnit
       std::string exceptionWhat;
 
       CallResult();
-      CallResult(TestPhase testPhase);
+      explicit CallResult(TestPhase testPhase);
       virtual ~CallResult() = default;
       virtual void Assign(const CallResult& callResult);
    };
@@ -26,6 +26,6 @@ template<>
 struct ZenUnitEqualizer<ZenUnit::CallResult>
 {
    static void AssertEqual(
-      const ZenUnit::CallResult& expectedCallResult, 
+      const ZenUnit::CallResult& expectedCallResult,
       const ZenUnit::CallResult& actualCallResult);
 };

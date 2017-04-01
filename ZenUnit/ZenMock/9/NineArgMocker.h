@@ -28,10 +28,10 @@ namespace ZenMock
       friend class NineArgMockerTests;
    private:
       std::vector<NineArgCall<
-         Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+         Arg1Type, Arg2Type, Arg3Type, Arg4Type,
          Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>> _nineArgCalls;
    public:
-      NineArgMocker(const std::string& zenMockedFunctionSignature)
+      explicit NineArgMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
       }
@@ -109,13 +109,13 @@ namespace ZenMock
       }
 
       void AssertCalls(const std::vector<NineArgCallRef<
-         Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+         Arg1Type, Arg2Type, Arg3Type, Arg4Type,
          Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>& expectedNineArgCalls)
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedNineArgCalls.size());
          this->ZenMockSetAsserted();
          const std::vector<NineArgCallRef<
-            Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+            Arg1Type, Arg2Type, Arg3Type, Arg4Type,
             Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
             actualNineArgCalls = PrivateCallsToCallRefs(_nineArgCalls);
          VECTORS_EQUAL(expectedNineArgCalls, actualNineArgCalls, this->ZenMockedFunctionSignature);
@@ -123,19 +123,19 @@ namespace ZenMock
 
    private:
       static std::vector<NineArgCallRef<
-         Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+         Arg1Type, Arg2Type, Arg3Type, Arg4Type,
          Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
          PrivateCallsToCallRefs(const std::vector<NineArgCall<
-            Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+            Arg1Type, Arg2Type, Arg3Type, Arg4Type,
             Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>& nineArgCalls)
       {
          std::vector<NineArgCallRef<
-            Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+            Arg1Type, Arg2Type, Arg3Type, Arg4Type,
             Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>> nineArgCallRefs;
          nineArgCallRefs.reserve(nineArgCalls.size());
          std::for_each(nineArgCalls.cbegin(), nineArgCalls.cend(),
             [&](const NineArgCall<
-               Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+               Arg1Type, Arg2Type, Arg3Type, Arg4Type,
                Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& nineArgCall)
             {
                nineArgCallRefs.emplace_back(nineArgCall);

@@ -20,9 +20,9 @@ namespace ZenUnit
       _testResults = testClassResult._testResults;
    }
 
-   void TestClassResult::AddTestResults(const vector<TestResult>& newTestResults)
+   void TestClassResult::AddTestResults(const vector<TestResult>& testResults)
    {
-      _testResults.insert(end(_testResults), newTestResults.cbegin(), newTestResults.cend());
+      _testResults.insert(end(_testResults), testResults.cbegin(), testResults.cend());
    }
 
    long long TestClassResult::Milliseconds() const
@@ -62,7 +62,7 @@ namespace ZenUnit
    void TestClassResult::PrintTestFailures(
       const Console* console, TestFailureNumberer* testFailureNumberer) const
    {
-      _forEacherTwoExtraArgs->ForEach(&_testResults, 
+      _forEacherTwoExtraArgs->ForEach(&_testResults,
          PrintTestResultIfFailure, console, testFailureNumberer);
    }
 

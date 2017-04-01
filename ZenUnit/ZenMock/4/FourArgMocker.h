@@ -23,7 +23,7 @@ namespace ZenMock
    private:
       std::vector<FourArgCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> _fourArgCalls;
    public:
-      FourArgMocker(const std::string& zenMockedFunctionSignature)
+      explicit FourArgMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
       }
@@ -80,7 +80,7 @@ namespace ZenMock
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedFourArgCalls.size());
          this->ZenMockSetAsserted();
-         const std::vector<FourArgCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> 
+         const std::vector<FourArgCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
             actualFourArgCalls = PrivateCallsToCallRefs(_fourArgCalls);
          VECTORS_EQUAL(expectedFourArgCalls, actualFourArgCalls, this->ZenMockedFunctionSignature);
       }

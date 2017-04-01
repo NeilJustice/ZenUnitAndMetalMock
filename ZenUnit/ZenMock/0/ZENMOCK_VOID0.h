@@ -35,7 +35,7 @@ virtualness void functionName() constness finalness \
 } \
 struct ZenMock_##functionName : public ZenMock::VoidZeroArgMocker \
 { \
-   ZenMock_##functionName(const std::string* zenMockedClassName) \
+   explicit ZenMock_##functionName(const std::string* zenMockedClassName) \
       : ZenMock::VoidZeroArgMocker(ZenMock::Signature::Function( \
          #virtualness, "void", zenMockedClassName, #functionName"()", #constness)) {} \
 } mutableness functionName##Mock = ZenMock_##functionName(this->ZenMockedClassName());
@@ -45,7 +45,7 @@ namespace ZenMock
    class VoidZeroArgMocker : public ZeroArgMocker<ExceptionThrower>
    {
    public:
-      VoidZeroArgMocker(const std::string& zenMockedFunctionSignature)
+      explicit VoidZeroArgMocker(const std::string& zenMockedFunctionSignature)
          : ZeroArgMocker(zenMockedFunctionSignature)
       {
       }
@@ -54,7 +54,7 @@ namespace ZenMock
    class VoidZeroArgFunctionPointerMocker : public VoidZeroArgMocker
    {
    public:
-      VoidZeroArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
+      explicit VoidZeroArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
          : VoidZeroArgMocker(zenMockedFunctionSignature)
       {
       }

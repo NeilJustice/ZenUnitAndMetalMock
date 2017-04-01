@@ -6,6 +6,7 @@
 #endif
 
 #include <array>
+#include <cstring>
 #include <functional>
 #include <iostream>
 #include <limits>
@@ -14,7 +15,6 @@
 #include <mutex>
 #include <set>
 #include <sstream>
-#include <string.h>
 #include <unordered_map>
 #include <vector>
 #include <thread>

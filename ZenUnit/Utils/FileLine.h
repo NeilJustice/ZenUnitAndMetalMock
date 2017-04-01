@@ -1,7 +1,7 @@
 #pragma once
-#include <string>
 #include "FileLiner.h"
 #include "ZenUnit/Equalizers/ZenUnitEqualizer.h"
+#include <string>
 
 namespace ZenUnit
 {
@@ -23,6 +23,6 @@ template<>
 struct ZenUnitEqualizer<ZenUnit::FileLine>
 {
    static void AssertEqual(
-      const ZenUnit::FileLine& expectedFileLine, 
+      const ZenUnit::FileLine& expectedFileLine,
       const ZenUnit::FileLine& actualFileLine);
 };

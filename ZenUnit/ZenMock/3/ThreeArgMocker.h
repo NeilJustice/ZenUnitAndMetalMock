@@ -22,7 +22,7 @@ namespace ZenMock
    private:
       std::vector<ThreeArgCall<Arg1Type, Arg2Type, Arg3Type>> _threeArgCalls;
    public:
-      ThreeArgMocker(const std::string& zenMockedFunctionSignature)
+      explicit ThreeArgMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
       }

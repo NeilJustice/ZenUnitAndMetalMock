@@ -24,7 +24,7 @@ namespace ZenUnit
 
    template<typename... MessageTypes>
    void NOTHROWS_Defined(
-      std::function<void()> expression,
+      const std::function<void()>& expression,
       const char* expressionText,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {

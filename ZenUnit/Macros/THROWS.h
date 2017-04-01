@@ -93,7 +93,7 @@ namespace ZenUnit
 
    template<typename ExpectedExceptionType, typename... MessageTypes>
    void THROWS_Defined(
-      std::function<void()> expression,
+      const std::function<void()>& expression,
       const char* expressionText,
       const char* expectedExactExceptionTypeText,
       const std::string& expectedWhat,

@@ -37,7 +37,7 @@ virtualness returnType functionName(arg1Type arg1, arg2Type arg2, arg3Type arg3,
 } \
 struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidTenArgMocker<returnType, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type> \
 { \
-   ZenMock_##functionName##__VA_ARGS__(const std::string* zenMockedClassName) \
+   explicit ZenMock_##functionName##__VA_ARGS__(const std::string* zenMockedClassName) \
       : ZenMock::NonVoidTenArgMocker<returnType, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type>(ZenMock::Signature::Function( \
          #virtualness, #returnType, zenMockedClassName, #functionName"("#arg1Type", "#arg2Type", "#arg3Type", "#arg4Type", "#arg5Type", "#arg6Type", "#arg7Type", "#arg8Type", "#arg9Type", "#arg10Type")", #constness)) {} \
 } mutableness functionName##Mock##__VA_ARGS__ = ZenMock_##functionName##__VA_ARGS__(this->ZenMockedClassName());
@@ -57,13 +57,13 @@ namespace ZenMock
       typename Arg9Type,
       typename Arg10Type>
    class NonVoidTenArgMocker : public TenArgMocker<
-      Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+      Arg1Type, Arg2Type, Arg3Type, Arg4Type,
       Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>, private ValueReturner<ReturnType>
    {
    public:
-      NonVoidTenArgMocker(const std::string& zenMockedFunctionSignature)
+      explicit NonVoidTenArgMocker(const std::string& zenMockedFunctionSignature)
          : TenArgMocker<
-            Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+            Arg1Type, Arg2Type, Arg3Type, Arg4Type,
             Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>(zenMockedFunctionSignature)
       {
       }
@@ -71,7 +71,7 @@ namespace ZenMock
       void ExpectAndReturn(const ReturnType& returnValue)
       {
          TenArgMocker<
-            Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+            Arg1Type, Arg2Type, Arg3Type, Arg4Type,
             Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>::Expect();
          ValueReturner<ReturnType>::DoAddReturnValue(returnValue);
       }
@@ -82,7 +82,7 @@ namespace ZenMock
          const SubsequentReturnValues&... subsequentReturnValues)
       {
          TenArgMocker<
-            Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+            Arg1Type, Arg2Type, Arg3Type, Arg4Type,
             Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>::Expect();
          ValueReturner<ReturnType>::ZenMockPushBackReturnValues(firstReturnValue, subsequentReturnValues...);
       }
@@ -91,17 +91,17 @@ namespace ZenMock
          const std::vector<typename std::decay<ReturnType>::type>& returnValues)
       {
          TenArgMocker<
-            Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+            Arg1Type, Arg2Type, Arg3Type, Arg4Type,
             Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>::Expect();
          ValueReturner<ReturnType>::ZenMockPushBackReturnValues(returnValues);
       }
 
       ReturnType ZenMockItAndReturnValue(
-         Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, 
+         Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4,
          Arg5Type arg5, Arg6Type arg6, Arg7Type arg7, Arg8Type arg8, Arg9Type arg9, Arg10Type arg10)
       {
          TenArgMocker<
-            Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+            Arg1Type, Arg2Type, Arg3Type, Arg4Type,
             Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>::
             ZenMock(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
          const ReturnType returnValue = ValueReturner<ReturnType>::ZenMockZenMockNextReturnValue();
@@ -125,17 +125,17 @@ namespace ZenMock
       ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>
    {
    public:
-      NonVoidTenArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
+      explicit NonVoidTenArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
          : NonVoidTenArgFunctionPointerMocker<
-            ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+            ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type,
             Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>(zenMockedFunctionSignature)
       {
       }
 
       static ReturnType ZenMockItFunctionPointer(NonVoidTenArgFunctionPointerMocker<
-         ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, 
+         ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type,
          Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>* functionMocker,
-         Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, 
+         Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4,
          Arg5Type arg5, Arg6Type arg6, Arg7Type arg7, Arg8Type arg8, Arg9Type arg9, Arg10Type arg10)
       {
          return functionMocker->ZenMockItAndReturnValue(

@@ -24,7 +24,7 @@ namespace ZenMock
    private:
       std::vector<FiveArgCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>> _fiveArgCalls;
    public:
-      FiveArgMocker(const std::string& zenMockedFunctionSignature)
+      explicit FiveArgMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
       }
@@ -86,7 +86,7 @@ namespace ZenMock
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedFiveArgCalls.size());
          this->ZenMockSetAsserted();
-         const std::vector<FiveArgCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>> 
+         const std::vector<FiveArgCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
             actualFiveArgCalls = PrivateCallsToCallRefs(_fiveArgCalls);
          VECTORS_EQUAL(expectedFiveArgCalls, actualFiveArgCalls, this->ZenMockedFunctionSignature);
       }

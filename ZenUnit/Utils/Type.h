@@ -2,8 +2,8 @@
 #include <regex>
 #include <unordered_map>
 #ifdef __linux__
-#include <cxxabi.h>
 #include "ZenUnit/Utils/assert_true.h"
+#include <cxxabi.h>
 #endif
 
 namespace ZenUnit
@@ -56,7 +56,7 @@ namespace ZenUnit
       {
          int demangleStatus = -1;
          std::unique_ptr<char, void(*)(void*)> demangledTypeNamePointer(
-            abi::__cxa_demangle(mangledTypeName, 0, 0, &demangleStatus),
+            abi::__cxa_demangle(mangledTypeName, nullptr, nullptr, &demangleStatus),
             std::free);
          assert_true(demangleStatus == 0);
          std::string demangledTypeName(demangledTypeNamePointer.get());
@@ -66,7 +66,7 @@ namespace ZenUnit
       static std::string Demangle(const char* mangledTypeName)
       {
          static const std::regex classStructPattern("(class |struct )");
-         const std::string typeNameMinusClassAndStruct 
+         const std::string typeNameMinusClassAndStruct
             = std::regex_replace(mangledTypeName, classStructPattern, "");
          return typeNameMinusClassAndStruct;
       }

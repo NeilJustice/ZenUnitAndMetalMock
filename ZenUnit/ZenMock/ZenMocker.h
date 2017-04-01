@@ -21,7 +21,7 @@ namespace ZenMock
       bool _asserted;
       const std::string ZenMockedFunctionSignature;
    public:
-      ZenMocker(const std::string& zenMockedFunctionSignature)
+      explicit ZenMocker(const std::string& zenMockedFunctionSignature)
          : _zenMockableExitFunction(::exit)
          , _zenMockableGetZenUnitArgs(ZenUnit::TestRunner::GetArgs)
          , _zenMockExceptionIsInPlay(false)

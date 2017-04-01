@@ -21,7 +21,7 @@ namespace ZenMock
    private:
       std::vector<TwoArgCall<Arg1Type, Arg2Type>> _twoArgCalls;
    public:
-      TwoArgMocker(const std::string& zenMockedFunctionSignature)
+      explicit TwoArgMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
       }
@@ -65,7 +65,7 @@ namespace ZenMock
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedTwoArgCalls.size());
          this->ZenMockSetAsserted();
-         const std::vector<TwoArgCallRef<Arg1Type, Arg2Type>> 
+         const std::vector<TwoArgCallRef<Arg1Type, Arg2Type>>
             actualTwoArgCalls = PrivateCallsToCallRefs(_twoArgCalls);
          VECTORS_EQUAL(expectedTwoArgCalls, actualTwoArgCalls, this->ZenMockedFunctionSignature);
       }

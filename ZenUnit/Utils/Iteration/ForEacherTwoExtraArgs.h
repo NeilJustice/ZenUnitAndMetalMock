@@ -6,7 +6,7 @@ namespace ZenUnit
    class ForEacherTwoExtraArgs
    {
    public:
-      ForEacherTwoExtraArgs() {}
+      ForEacherTwoExtraArgs() = default;
 
       virtual void ForEach(
          const IterableType* iterable,
