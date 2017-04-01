@@ -20,9 +20,8 @@ TESTS(IsInclusiveBetweenTests)
 // test names throughout often-large test files),
 // this design makes it a breeze to quickly review
 // test classes for what they test, their test name quality and cohesion,
-// and most importantly by extension,
-// easily review classes-under-test for quality and cohesion,
-// resulting in better software over the long term.
+// and by extension easily review classes under test 
+// for continued quality and cohesion of responsibilities.
 
 // The SPEC macro specifies a standard-issue void test:
 SPEC(LowerBoundGreaterThanUpperBound_Throws)
@@ -46,13 +45,10 @@ TEST(LowerBoundGreaterThanUpperBound_Throws)
    // manually inducible today and automatically inducible tomorrow by LLVM,
    // are slain by THROWS, ensuring the rigorousness of the test base.
 
-   THROWS(IsInclusiveBetween(21, NA<unsigned>(), 20), std::invalid_argument,
+   THROWS(IsInclusiveBetween(21, 20, 20), std::invalid_argument,
       "IsInclusiveBetween(): lowerBound must be <= upperBound.\n"
       "lowerBound=21\n"
       "upperBound=20");
-
-   // NA<T>() is equivalent to T{} and is a syntactic sugar for emphasizing
-   // that a certain value is not applicable to the behavior being tested.
 }
 
 // ZenUnit N-by-N value-parameterized tests process
@@ -76,7 +72,7 @@ TEST4X4(ReturnsTrueIfNumberIsInclusiveBetween,
    // ZenUnit uses declarative-style instead of procedural-style assertion names
    // such as ARE_EQUAL and IS_TRUE instead of ASSERT_EQUAL and ASSERT_TRUE
    // to give ZenUnit a reading experience similar to
-   // reading an executable specification document.
+   // reading a executable specification document.
 }
 
 }; RUN(IsInclusiveBetweenTests)
@@ -98,7 +94,6 @@ bool IsInclusiveBetween(unsigned lowerBound, unsigned number, unsigned upperBoun
 
 int main(int argc, char* argv[]
 {
-   // Returns 0 if all test classes registered to run with RUN and TEMPLATERUN pass
    return ZenUnit::RunTests(argc, argv);
 }
 
@@ -249,5 +244,5 @@ Test Matrix road map: Travis CI Linux and macOS, AppVeyor, MinGW, and Visual Stu
 
 ### License
 
-Free and open source public domain software
+ZenUnit and ZenMock are free and open source public domain software.
 
