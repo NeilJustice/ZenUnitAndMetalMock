@@ -15,7 +15,7 @@ namespace ZenUnit
 
    struct IntializerConstructable
    {
-      const int value;
+      int value;
 
       friend bool operator==(
          const IntializerConstructable& lhs,
