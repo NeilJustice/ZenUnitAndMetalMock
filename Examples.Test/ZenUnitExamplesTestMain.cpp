@@ -1,6 +1,6 @@
 #include "pch.h"
 
-int main(int argc, const char* argv[])
+int main(int argc, char* argv[])
 {
    return ZenUnit::RunTests(argc, argv);
 }

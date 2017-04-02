@@ -12,28 +12,31 @@ namespace ZenUnit
 
    TEST(ToArgcArgv_ReturnsArgsVector)
    {
-      ToArgcArgvTestCase(1, new const char*[1]
+      const char* argvA[1] =
       {
          "ExePath"
-      }, vector<string>{ "ExePath" });
+      };
+      ToArgcArgvTestCase(1, argvA, vector<string>{ "ExePath" });
 
-      ToArgcArgvTestCase(2, new const char*[2]
+      const char* argvB[2] =
       {
-         "ExePath", "Arg1"
-      }, vector<string>{ "ExePath", "Arg1" });
+         "ExePath",
+         "Arg1"
+      };
+      ToArgcArgvTestCase(2, argvB, vector<string>{ "ExePath", "Arg1" });
 
-      ToArgcArgvTestCase(3, new const char*[3]
+      const char* argvC[3] =
       {
          "ExePath",
          "Arg1",
          "Arg2"
-      }, vector<string>{ "ExePath", "Arg1", "Arg2" });
+      };
+      ToArgcArgvTestCase(3, argvC, vector<string>{ "ExePath", "Arg1", "Arg2" });
    }
    static void ToArgcArgvTestCase(
-      int argc, const char** argv, const vector<string>& expectedStringVector)
+      int argc, const char* argv[], const vector<string>& expectedStringVector)
    {
-      VECTORS_EQUAL(expectedStringVector, Vector::FromArgcArgv(argc, argv));
-      delete[] argv;
+      VECTORS_EQUAL(expectedStringVector, Vector::FromArgcArgv(argc, const_cast<char**>(argv)));
    }
 
    TEST(Join_EmptyIntVector_ReturnsEmptyStringRegardlessOfSeparator)
@@ -51,7 +54,7 @@ namespace ZenUnit
    }
 
    TEST3X3(Join_2ElementIntVector_ReturnsElementsJoinedBySeparator,
-      string expectedJoinedVector, const vector<int>& vec, char separator,
+      const string& expectedJoinedVector, const vector<int>& vec, char separator,
       "1 2", vector<int>{ 1, 2 }, ' ',
       "1,2", vector<int>{ 1, 2 }, ',',
       "1 2 3", vector<int>{ 1, 2, 3 }, ' ',

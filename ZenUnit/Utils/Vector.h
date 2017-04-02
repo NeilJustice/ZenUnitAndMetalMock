@@ -8,7 +8,7 @@ namespace ZenUnit
    class Vector
    {
    public:
-      static std::vector<std::string> FromArgcArgv(int argc, const char* argv[]);
+      static std::vector<std::string> FromArgcArgv(int argc, char* argv[]);
 
       template<typename T>
       static std::string Join(const std::vector<T>& vec, char separator)
