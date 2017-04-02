@@ -5,7 +5,10 @@
 namespace ZenUnit
 {
    FileLine::FileLine()
-      : filePath(""), lineNumber(0) {}
+      : filePath("")
+      , lineNumber(0)
+   {
+   }
 
    FileLine::FileLine(const char* filePath, unsigned lineNumber)
       : filePath(filePath == nullptr ? "" : filePath), lineNumber(lineNumber) {}

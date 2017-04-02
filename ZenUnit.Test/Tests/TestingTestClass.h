@@ -11,7 +11,7 @@ public:
       s_destructorCalled = false;
    }
 
-   ~TestingTestClass()
+   ~TestingTestClass() final
    {
       s_destructorCalled = true;
    }

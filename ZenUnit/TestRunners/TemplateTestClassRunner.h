@@ -34,12 +34,12 @@ namespace ZenUnit
          _tests = TestClassType::GetTests();
       }
 
-      virtual const char* TestClassName() const final
+      const char* TestClassName() const final
       {
          return _testClassName;
       }
 
-      virtual size_t NumberOfTestCases() const final
+      size_t NumberOfTestCases() const final
       {
          const size_t totalNumberOfTestCases = std::accumulate(_tests.cbegin(), _tests.cend(), size_t(),
             [](size_t cumulativeNumberOfTestCases, const std::unique_ptr<Test>& test)

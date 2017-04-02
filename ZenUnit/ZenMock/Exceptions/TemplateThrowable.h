@@ -14,14 +14,13 @@ namespace ZenMock
       template<typename... ExceptionArgTypes>
       static const Throwable* New(ExceptionArgTypes&&... exceptionArgs)
       {
-         TemplateThrowable<ExpectedExceptionType>* const templateThrowable =
-            new TemplateThrowable<ExpectedExceptionType>;
+         auto* templateThrowable = new TemplateThrowable<ExpectedExceptionType>;
          templateThrowable->_exception = std::make_unique<ExpectedExceptionType>(
             std::forward<ExceptionArgTypes>(exceptionArgs)...);
          return templateThrowable;
       }
 
-      virtual void Throw() const final
+      void Throw() const final
       {
          if (_exception != nullptr)
          {

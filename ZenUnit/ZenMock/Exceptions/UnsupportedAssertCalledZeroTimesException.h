@@ -10,6 +10,6 @@ namespace ZenMock
    public:
       explicit UnsupportedAssertCalledZeroTimesException(const std::string& zenMockedFunctionSignature);
       static std::string MakeWhat(const std::string& zenMockedFunctionSignature);
-      virtual const char* what() const noexcept final;
+      const char* what() const noexcept final;
    };
 }

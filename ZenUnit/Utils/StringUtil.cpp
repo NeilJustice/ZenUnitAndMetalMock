@@ -17,7 +17,7 @@ namespace ZenUnit
       while (stringStream >> std::ws && !stringStream.eof())
       {
          std::string element;
-         char peekChar = static_cast<char>(stringStream.peek());
+         auto peekChar = static_cast<char>(stringStream.peek());
          if (peekChar == '"')
          {
             stringStream >> std::quoted(element);

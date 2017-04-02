@@ -19,7 +19,5 @@ namespace Zen
          const std::string* const zenMockedClassName = ZenUnit::Type::GetName<ZenMockedClass>();
          return zenMockedClassName;
       }
-
-      virtual ~Mock() = default;
    };
 }

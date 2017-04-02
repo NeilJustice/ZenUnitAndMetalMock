@@ -6,6 +6,6 @@ namespace ZenUnit
    {
    public:
       EqualizerException() {}
-      virtual const char* what() const noexcept final { return ""; }
+      const char* what() const noexcept final { return ""; }
    };
 }
