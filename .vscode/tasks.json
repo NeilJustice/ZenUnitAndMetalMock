@@ -52,8 +52,7 @@
       {
          "taskName": "Run Python",
          //"isTestCommand": true,
-         //"args": [ "export PYTHONPATH=.. && python3 ${file}" ]
-         "args": [ "export PYTHONPATH=.. && python3 ${file} Ninja Debug ZenUnitTestedProgram StaticLibrary.Test \"\" \"\" NoInstall" ]
+         "args": [ "export PYTHONPATH=.. && python3 ${file}" ]
       },
       {
          "taskName": "pylint File",
