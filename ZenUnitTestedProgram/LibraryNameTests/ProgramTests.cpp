@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "StaticLibrary/Program.h"
+#include "LibraryName/Program.h"
 #include "Mock/ComponentMock.h"
 
 TESTS(ProgramTests)

@@ -1,4 +1,4 @@
-#include "StaticLibrary/Program.h"
+#include "LibraryName/Program.h"
 
 int main(int argc, char* argv[])
 {

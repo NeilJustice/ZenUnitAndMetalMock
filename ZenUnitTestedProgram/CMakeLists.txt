@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(ZenUnitTestedProgram)
+project(ProgramName)
 include(CMakeMacros.cmake)
 
 if(UNIX)
@@ -13,6 +13,7 @@ elseif(MSVC)
    set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 endif()
 
-add_subdirectory(ZenUnitTestedProgram)
-add_subdirectory(StaticLibrary)
-add_subdirectory(StaticLibrary.Test)
+add_subdirectory(ProgramName)
+add_subdirectory(LibraryName)
+add_subdirectory(LibraryNameTests)
+

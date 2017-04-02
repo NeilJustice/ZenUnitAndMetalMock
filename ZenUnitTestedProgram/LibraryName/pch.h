@@ -1,5 +1,5 @@
-#ifndef PCH_STATICLIBRARY
-#define PCH_STATICLIBRARY
+#ifndef PCH_PROGRAMNAME
+#define PCH_PROGRAMNAME
 #include <algorithm>
 #include <iostream>
 #include <string>

@@ -1,5 +1,5 @@
 #pragma once
-#include "StaticLibrary/Component.h"
+#include "LibraryName/Component.h"
 
 class ComponentMock : public Zen::Mock<Component>
 {

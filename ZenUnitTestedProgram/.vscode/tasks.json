@@ -34,8 +34,8 @@
       {
          "taskName": "Run Tests",
          "isTestCommand": true,
-         "args": [ "${workspaceRoot}/Debug/StaticLibrary.Test/StaticLibrary.Test" ]
-         //"args": [ "${workspaceRoot}/Release/StaticLibrary.Test/StaticLibrary.Test" ]
+         "args": [ "${workspaceRoot}/Debug/LibraryNameTests/LibraryNameTests" ]
+         //"args": [ "${workspaceRoot}/Release/LibraryNameTests/LibraryNameTests" ]
       },
       {
          "taskName": "Clean",
