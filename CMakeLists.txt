@@ -32,5 +32,11 @@ add_subdirectory(ZenUnit.Test)
 add_subdirectory(Examples)
 add_subdirectory(Examples.Test)
 
-# Skips also building ZenUnit.Test when LinuxCMakeBuildInstall.sh requests that ZenUnit be installed
+# Allows LinuxCMakeBuildInstall.sh to just build ZenUnit and not also ZenUnit.Test
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
+
+add_custom_target(clang-tidy DEPENDS COMMAND 
+   ag -g "\.cpp$" -0 | xargs -0 -n 1 -P 0 -t clang-tidy -header-filter=.* -p ${CMAKE_BUILD_TYPE}
+   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} VERBATIM USES_TERMINAL)
+add_dependencies(clang-tidy ZenUnitPch ZenUnit.TestPch Examples.TestPch)
+

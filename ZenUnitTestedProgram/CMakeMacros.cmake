@@ -28,7 +28,7 @@ macro(EnablePrecompiledHeaders)
       endif()
       if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
          if(CMAKE_BUILD_TYPE STREQUAL "" OR CMAKE_BUILD_TYPE STREQUAL "Debug")
-            add_custom_target(${PROJECT_NAME}Pch /usr/local/bin/clang++ -std=c++14 -Wall -Wextra -Werror -pthread
+            add_custom_target(${PROJECT_NAME}Pch /usr/bin/clang++ -std=c++14 -Wall -Wextra -Werror -pthread
                -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments
                ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
          elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
