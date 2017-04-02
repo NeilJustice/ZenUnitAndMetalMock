@@ -25,23 +25,23 @@ struct TestStructB
 {
    int field;
    TestStructB() : field(0) {}
-   static const int ThrowWithoutFieldName;
-   static const int ThrowWithFieldName;
+   static const int ThrowWithoutFieldNameInWhatText;
+   static const int ThrowWithFieldNameInWhatText;
 };
 
-const int TestStructB::ThrowWithoutFieldName = 1;
-const int TestStructB::ThrowWithFieldName = 2;
+const int TestStructB::ThrowWithoutFieldNameInWhatText = 1;
+const int TestStructB::ThrowWithFieldNameInWhatText = 2;
 
 template<>
 struct ZenUnitEqualizer<TestStructB>
 {
    static void AssertEqual(const TestStructB& expected, const TestStructB&)
    {
-      if (expected.field == TestStructB::ThrowWithoutFieldName)
+      if (expected.field == TestStructB::ThrowWithoutFieldNameInWhatText)
       {
          throw Anomaly();
       }
-      if (expected.field == TestStructB::ThrowWithFieldName)
+      if (expected.field == TestStructB::ThrowWithFieldNameInWhatText)
       {
          Anomaly anomaly;
          anomaly.expected = "field";
@@ -74,8 +74,8 @@ File.cpp(1))");
    TEST(EqualizerThrowsAnomalyThatDoesNotContainFieldName_Throws)
    {
       EQUALIZER_THROWS_INIT(TestStructB);
-      THROWS(EQUALIZER_THROWS(TestStructB, field, TestStructB::ThrowWithoutFieldName), Anomaly, R"(
-  Failed: EQUALIZER_THROWS(TestStructB, field, TestStructB::ThrowWithoutFieldName)
+      THROWS(EQUALIZER_THROWS(TestStructB, field, TestStructB::ThrowWithoutFieldNameInWhatText), Anomaly, R"(
+  Failed: EQUALIZER_THROWS(TestStructB, field, TestStructB::ThrowWithoutFieldNameInWhatText)
 Expected: N/A
   Actual: N/A
  Because: IS_TRUE(String::Contains(anomalyWhat, fieldName)) failed
@@ -88,8 +88,8 @@ File.cpp(1))");
    TEST(EqualizerThrowsAnomalyThatContainsFieldName_ButStillThrowsThatAnomalyWhenAllFieldsEqual_Throws)
    {
       EQUALIZER_THROWS_INIT(TestStructB);
-      THROWS(EQUALIZER_THROWS(TestStructB, field, TestStructB::ThrowWithFieldName), Anomaly, R"(
-  Failed: EQUALIZER_THROWS(TestStructB, field, TestStructB::ThrowWithFieldName)
+      THROWS(EQUALIZER_THROWS(TestStructB, field, TestStructB::ThrowWithFieldNameInWhatText), Anomaly, R"(
+  Failed: EQUALIZER_THROWS(TestStructB, field, TestStructB::ThrowWithFieldNameInWhatText)
 Expected: N/A
   Actual: N/A
  Because: ARE_EQUAL(equalizerTestObjectA, equalizerTestObjectB) failed

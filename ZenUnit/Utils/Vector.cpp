@@ -3,7 +3,7 @@
 
 namespace ZenUnit
 {
-   vector<string> Vector::FromArgcArgv(int argc, char* argv[])
+   vector<string> Vector::FromArgcArgv(int argc, const char* argv[])
    {
       vector<string> args;
       const size_t argcSizeT = static_cast<size_t>(argc);

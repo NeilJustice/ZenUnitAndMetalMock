@@ -27,7 +27,7 @@ namespace std
 template<>
 struct ZenUnitEqualizer<UserType>
 {
-   static void AssertEqual(const UserType& expected, const UserType& actual);
+   static void AssertEqual(const UserType& expectedUserType, const UserType& actualUserType);
 };
 
 template<>

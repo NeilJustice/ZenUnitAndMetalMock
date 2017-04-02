@@ -179,7 +179,9 @@ namespace ZenUnit
    }
 
    TEST3X3(PrintTestFailuresAndSkips_PrintsTestFailures_PrintsSkippedTestClassNames_PrintsSkippedFullTestNames,
-      size_t numberOfFailedTestCases, bool expectTestsFailedLineAndPrintFailuresCall, string expectedTestsFailedLine,
+      size_t numberOfFailedTestCases,
+      bool expectTestsFailedLineAndPrintFailuresCall,
+      const string& expectedTestsFailedLine,
       0ULL, false, "",
       1ULL, true, "1 test failure:\n",
       2ULL, true, "2 test failures:\n",
@@ -224,14 +226,14 @@ namespace ZenUnit
    }
 
    TEST8X8(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds,
-      string expectedClosingLinePrefix,
+      const string& expectedClosingLinePrefix,
       ZenUnit::Color expectedPrefixColor,
       size_t numberOfFailedTestCases,
       size_t numberOfTotalTests,
-      string expectedClosingLineTestsCountText,
+      const string& expectedClosingLineTestsCountText,
       long long testRunMilliseconds,
-      string expectedMillisecondOrMilliseconds,
-      string expectedBottomLineAsciiArt,
+      const string& expectedMillisecondOrMilliseconds,
+      const string& expectedBottomLineAsciiArt,
       " SUCCESS  ", Color::Green, 0ull, 1ull, "1 test passed", 0ll, "milliseconds", "+===+===+",
       " SUCCESS  ", Color::Green, 0ull, 2ull, "2 tests passed", 1ll, "millisecond", "+===+===+",
       " SUCCESS  ", Color::Green, 0ull, 3ull, "3 tests passed", 2ll, "milliseconds", "+===+===+",

@@ -27,7 +27,7 @@ namespace ZenUnit
    void IS_ZERO_Defined(VRText<ValueType> valueVRT,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      const typename std::remove_reference<ValueType>::type zeroValue { 0 };
+      const typename std::remove_reference<ValueType>::type zeroValue{};
       const bool valueIsZero = valueVRT.value == zeroValue;
       if (!valueIsZero)
       {

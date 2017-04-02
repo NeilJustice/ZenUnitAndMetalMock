@@ -48,7 +48,7 @@ namespace ZenUnit
    }
 
    TEST2X2(CommaSplitExceptQuotedCommas_ReturnsStringSplitOnCommasWithQuotedCommasIgnored,
-      const char* text, vector<string> expectedReturnValue,
+      const char* text, const vector<string>& expectedReturnValue,
       "", vector<string>{},
       ",", vector<string>{ "" },
       "1, 2, 3", vector<string>{"1", "2", "3"},

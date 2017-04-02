@@ -2,5 +2,5 @@
 
 namespace ZenUnit
 {
-   int RunTests(int argc, char* argv[]);
+   int RunTests(int argc, const char* argv[]);
 }

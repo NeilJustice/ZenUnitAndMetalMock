@@ -27,7 +27,7 @@ namespace ZenMock
 
    STARTUP
    {
-      _oneArgMocker.reset(new OneArgMocker<int, ExceptionThrowerMock>(ZenMockedFunctionSignature));
+      _oneArgMocker = make_unique<OneArgMocker<int, ExceptionThrowerMock>>(ZenMockedFunctionSignature);
    }
 
    void SetAssertedTrueToNotFailDueToExpectedButNotAsesrted()

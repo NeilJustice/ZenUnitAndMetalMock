@@ -32,7 +32,7 @@ namespace ZenUnit
       _tryCatchCaller._console.reset(_consoleMock = new ConsoleMock);
       _tryCatchCaller._stopwatch.reset(_stopwatchMock = new StopwatchMock);
       _tryCatchCaller._getArgs = ZENBIND0(GetArgs_ZenMock);
-      _testMock.reset(new TestMock);
+      _testMock = make_unique<TestMock>();
    }
 
    CLEANUP
@@ -85,8 +85,7 @@ namespace ZenUnit
    static void ThrowAnomaly(Test* test)
    {
       IS_NOT_NULL(test);
-      const Anomaly anomaly("NonDefault", "NonDefault", FileLine(), "", "");
-      throw anomaly;
+      throw Anomaly("NonDefault", "NonDefault", FileLine(), "", "");
    }
 
    TEST(Call_FunctionThrowsAnomaly_ReturnsAnomalyResult)
@@ -176,7 +175,7 @@ namespace ZenUnit
    }
 
    TEST4X4(Call_FunctionThrowsAnIntToTriggerDotDotDotHandler_PrintsFailureDetailsImmediately_Exits1,
-      TestPhase testPhase, string expectedTestPhaseSuffix, bool exit0, int expectedExitCode,
+      TestPhase testPhase, const string& expectedTestPhaseSuffix, bool exit0, int expectedExitCode,
       TestPhase::Constructor, " in test class constructor", false, 1,
       TestPhase::Constructor, " in test class constructor", true, 0,
       TestPhase::Startup, " in STARTUP", false, 1,

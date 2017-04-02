@@ -21,9 +21,7 @@ namespace ZenUnit
    {
    }
 
-   TestRunner::~TestRunner()
-   {
-   }
+   TestRunner::~TestRunner() = default;
 
    TestRunner& TestRunner::Instance()
    {

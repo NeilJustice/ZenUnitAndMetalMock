@@ -61,9 +61,9 @@ namespace ZenUnit
 
    STARTUP
    {
-      _templateTestClassRunner.reset(new TemplateTestClassRunner<TestingTestClass>(TestClassName));
+      _templateTestClassRunner = make_unique<TemplateTestClassRunner<TestingTestClass>>(TestClassName);
       _templateTestClassRunner->_console.reset(_consoleMock = new ConsoleMock);
-      _templateTestClassRunnerSelfMocked.reset(new TemplateTestClassRunnerSelfMocked);
+      _templateTestClassRunnerSelfMocked = make_unique<TemplateTestClassRunnerSelfMocked>();
    }
 
    TEST(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)

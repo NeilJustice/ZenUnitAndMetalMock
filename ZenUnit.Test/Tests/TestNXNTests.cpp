@@ -33,7 +33,7 @@ namespace ZenUnit
 
    STARTUP
    {
-      _testNXN.reset(new TestNXN<TestingTestClass, N, int>("", "", "", 0));
+      _testNXN = make_unique<TestNXN<TestingTestClass, N, int>>("", "", "", 0);
       _testNXN->_console.reset(_consoleMock = new ConsoleMock);
    }
 
@@ -155,7 +155,7 @@ namespace ZenUnit
 
    TEST(Startup_CallsTestClassStartup)
    {
-      _testNXN->_testClass.reset(new TestingTestClass);
+      _testNXN->_testClass = make_unique<TestingTestClass>();
       _testNXN->_testClass->StartupMock.Expect();
       //
       _testNXN->Startup();
@@ -172,7 +172,7 @@ namespace ZenUnit
             : Zen::Mock<TestNXN<TestingTestClass, 1, int>>("", "", "", 0) {}
       } testNXN_NXNTestBodyMocked;
 
-      testNXN_NXNTestBodyMocked._testClass.reset(new TestingTestClass);
+      testNXN_NXNTestBodyMocked._testClass = make_unique<TestingTestClass>();
       testNXN_NXNTestBodyMocked._testCaseArgsIndex = 1;
       testNXN_NXNTestBodyMocked.NXNTestBodyMock.Expect();
       //
@@ -189,7 +189,7 @@ namespace ZenUnit
 
    TEST(Cleanup_CallsCleanup)
    {
-      _testNXN->_testClass.reset(new TestingTestClass);
+      _testNXN->_testClass = make_unique<TestingTestClass>();
       _testNXN->_testClass->CleanupMock.Expect();
       //
       _testNXN->Cleanup();
@@ -199,7 +199,7 @@ namespace ZenUnit
 
    TEST(DeleteTestClass_DeletesTestClass)
    {
-      _testNXN->_testClass.reset(new TestingTestClass);
+      _testNXN->_testClass = make_unique<TestingTestClass>();
       IS_FALSE(TestingTestClass::s_destructorCalled);
       //
       _testNXN->DeleteTestClass();

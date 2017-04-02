@@ -18,7 +18,7 @@ struct Deletable
    const function<void()> _incrementDestructorCallCount;
 
    Deletable(function<void()> incrementDestructorCallCount)
-      : _incrementDestructorCallCount(incrementDestructorCallCount)
+      : _incrementDestructorCallCount(std::move(incrementDestructorCallCount))
    {
    }
 

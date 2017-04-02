@@ -11,9 +11,7 @@ namespace ZenUnit
    {
    }
 
-   TestClassResult::~TestClassResult()
-   {
-   }
+   TestClassResult::~TestClassResult() = default;
 
    void TestClassResult::Assign(const TestClassResult& testClassResult)
    {
@@ -22,7 +20,7 @@ namespace ZenUnit
 
    void TestClassResult::AddTestResults(const vector<TestResult>& testResults)
    {
-      _testResults.insert(end(_testResults), testResults.cbegin(), testResults.cend());
+      _testResults.insert(_testResults.end(), testResults.cbegin(), testResults.cend());
    }
 
    long long TestClassResult::Milliseconds() const

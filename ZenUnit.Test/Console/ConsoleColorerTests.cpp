@@ -32,8 +32,8 @@ namespace ZenUnit
 
    STARTUP
    {
-      _consoleColorer.reset(new ConsoleColorer);
-      _consoleColorerSelfMocked.reset(new ConsoleColorerSelfMocked);
+      _consoleColorer = make_unique<ConsoleColorer>();
+      _consoleColorerSelfMocked = make_unique<ConsoleColorerSelfMocked>();
    }
 
    TEST(Constructor_SetsFunctionPointers)

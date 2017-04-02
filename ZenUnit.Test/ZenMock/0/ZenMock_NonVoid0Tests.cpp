@@ -78,12 +78,12 @@ namespace ZenMock
 
    STARTUP
    {
-      _zenMock0Tester.reset(new ZenMock0Tester<
+      _zenMock0Tester = make_unique<ZenMock0Tester<
          NonVoid0FunctionsMock,
          decltype(NonVoid0_ZenMock),
          decltype(NonVoid0_ZenMock_namespace),
          decltype(NonVoid0_ZenMock_static),
-         decltype(Static_ZenMock)>(
+         decltype(Static_ZenMock)>>(
             _mock,
             VirtualSignature,
             VirtualConstSignature,
@@ -100,7 +100,7 @@ namespace ZenMock
             StaticUniqueSignature,
 
             NonVoid0_ZenMock_static,
-            StaticNameClashSignature));
+            StaticNameClashSignature);
    }
 
    // ZeroArgMocker Tests

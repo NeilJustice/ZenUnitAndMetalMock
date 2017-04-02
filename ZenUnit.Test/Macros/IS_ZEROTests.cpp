@@ -34,10 +34,13 @@ namespace ZenUnit
    TEST(ValueIsZero_DoesNotThrow)
    {
       IS_ZERO(0);
-      const int intValue = 0;
-      IS_ZERO(intValue);
 
-      IS_ZERO(reinterpret_cast<int*>(0));
+      int nonConstIntValue = 0;
+      IS_ZERO(nonConstIntValue);
+
+      const int constIntValue = 0;
+      IS_ZERO(constIntValue);
+
       const int* const nullIntPointer = nullptr;
       IS_ZERO(nullIntPointer);
 

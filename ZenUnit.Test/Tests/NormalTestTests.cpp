@@ -24,7 +24,7 @@ namespace ZenUnit
 
    STARTUP
    {
-      _normalTest.reset(new NormalTest<TestingTestClass>(TestClassName, TestName, &TestingTestClass::Test));
+      _normalTest = make_unique<NormalTest<TestingTestClass>>(TestClassName, TestName, &TestingTestClass::Test);
    }
 
    TEST(NumberOfTestCases_Returns1)
@@ -75,7 +75,7 @@ namespace ZenUnit
 
    TEST(Startup_CallsStartupOnTestClass)
    {
-      _normalTest->_testClass.reset(new TestingTestClass);
+      _normalTest->_testClass = make_unique<TestingTestClass>();
       _normalTest->_testClass->StartupMock.Expect();
       //
       _normalTest->Startup();
@@ -86,7 +86,7 @@ namespace ZenUnit
    TEST(TestBody_CallsMemberTestFunctionBoundToTestClassPointer)
    {
       _normalTest->_testMemberFunction = &TestingTestClass::Test;
-      _normalTest->_testClass.reset(new TestingTestClass);
+      _normalTest->_testClass = make_unique<TestingTestClass>();
       _normalTest->_testClass->TestMock.Expect();
       //
       _normalTest->TestBody();
@@ -96,7 +96,7 @@ namespace ZenUnit
 
    TEST(Cleanup_CallsCleanupOnTestClass)
    {
-      _normalTest->_testClass.reset(new TestingTestClass);
+      _normalTest->_testClass = make_unique<TestingTestClass>();
       _normalTest->_testClass->CleanupMock.Expect();
       //
       _normalTest->Cleanup();
@@ -106,7 +106,7 @@ namespace ZenUnit
 
    TEST(DeleteTestClass_DeletesTestClass)
    {
-      _normalTest->_testClass.reset(new TestingTestClass);
+      _normalTest->_testClass = make_unique<TestingTestClass>();
       IS_FALSE(TestingTestClass::s_destructorCalled);
       //
       _normalTest->DeleteTestClass();

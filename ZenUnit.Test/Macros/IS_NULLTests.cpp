@@ -32,16 +32,16 @@ namespace ZenUnit
 
    TEST(NonNullRawPointer_Throws_MessagesTestCase)
    {
-      const int* const nonNullRawPointer = (int*)0x123;
+      const int* const nonNullRawPointer = reinterpret_cast<const int*>(0x123);
       string expectedWhat = R"(
   Failed: IS_NULL(nonNullRawPointer, messageA, messageB)
 Expected: nullptr
   Actual: )";
-   #ifdef __linux__
+#ifdef __linux__
       expectedWhat += "0x123\n";
-   #elif _WIN32
+#elif _WIN32
       expectedWhat += "0x0000000000000123\n";
-   #endif
+#endif
       expectedWhat += " Message: \"A\", \"B\"\n";
       expectedWhat += "File.cpp(1)";
       const string messageA = "A", messageB = "B";

@@ -12,22 +12,22 @@ namespace ZenUnit
    {
    public:
       virtual TestResult ConstructorFail(
-         const FullName& fullName,
+         FullName fullName,
          const CallResult& constructorCallResult) const;
 
       virtual TestResult StartupFail(
-         const FullName& fullName,
+         FullName fullName,
          const CallResult& constructorCallResult,
          const CallResult& startupCallResult,
          const CallResult& destructorCallResult) const;
 
       virtual TestResult CtorDtorSuccess(
-         const FullName& fullName,
+         FullName fullName,
          const CallResult& constructorCallResult,
          const CallResult& destructorCallResult) const;
 
       virtual TestResult FullCtor(
-         const FullName& fullName,
+         FullName fullName,
          const CallResult& constructorCallResult,
          const CallResult& startupCallResult,
          const CallResult& testBodyCallResult,

@@ -103,7 +103,7 @@ FileLineValue);
 
    TEST5X5(FullConstructor_FirstSecondThirdTest_MessagesPresentNotPresentTest,
       bool arg2TextPresent, bool arg3TextPresent, bool messagesTextAndMessagesPresent,
-      string expectedAssertExpression, string expectedWhy,
+      const string& expectedAssertExpression, const string& expectedWhy,
       false, false, false, "ASSERTION_NAME(Arg1Text)", R"(
 Expected: Expected
   Actual: Actual
@@ -164,15 +164,15 @@ FilePath(1))")
       expectedAnomaly.expected = Expected;
       expectedAnomaly.actual = Actual;
       expectedAnomaly.message = messagesTextAndMessagesPresent ? "UserType@0, UserType@1" : "";
-      expectedWhy = R"(
+      string totalExpectedWhy = R"(
   Failed: )" + expectedAssertExpression + expectedWhy;
-      expectedAnomaly.why = expectedWhy;
+      expectedAnomaly.why = totalExpectedWhy;
       expectedAnomaly.fileLine = FileLineValue;
       ARE_EQUAL(expectedAnomaly, anomaly);
    }
 
    TEST2X2(FullConstructor_BecauseAnomalyNotPresent_SetsFields,
-      ExpectedActualFormat expectedActualFormat, string expectedWhy,
+      ExpectedActualFormat expectedActualFormat, const string& expectedWhy,
       ExpectedActualFormat::Fields, R"(
   Failed: ASSERTION_NAME(Arg1Text)
 Expected: Expected
@@ -207,7 +207,9 @@ FilePath(1))")
    }
 
    TEST3X3(FullConstructor_BecauseAnomalyPresent_UnaffectedByExpectedActualFormat_SetsFields,
-      string becauseMessage, ExpectedActualFormat expectedActualFormat, string expectedWhy,
+      const string& becauseMessage,
+      ExpectedActualFormat expectedActualFormat,
+      const string& expectedWhy,
 
       "", ExpectedActualFormat::Fields, R"(
   Failed: ASSERTION_NAME(Arg1Text)

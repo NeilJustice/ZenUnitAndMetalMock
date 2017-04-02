@@ -34,7 +34,7 @@ namespace ZenMock
 
    STARTUP
    {
-      _zenMocker.reset(new ZenMocker<ExceptionThrowerMock>(ZenMockedFunctionSignature));
+      _zenMocker = make_unique<ZenMocker<ExceptionThrowerMock>>(ZenMockedFunctionSignature);
       _zenMocker->_zenMockableExitFunction = ZENBIND1(exit_ZenMock);
       _zenMocker->_zenMockableGetZenUnitArgs = ZENBIND0(GetArgs_ZenMock);
    }

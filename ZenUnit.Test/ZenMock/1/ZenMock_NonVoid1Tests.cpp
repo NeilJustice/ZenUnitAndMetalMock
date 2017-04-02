@@ -88,12 +88,12 @@ namespace ZenMock
 
    STARTUP
    {
-      _zenMock1Tester.reset(new ZenMock1Tester<
+      _zenMock1Tester = make_unique<ZenMock1Tester<
          NonVoid1FunctionsMock,
          decltype(NonVoid1_ZenMock),
          decltype(NonVoid1_ZenMock_namespace),
          decltype(NonVoid1_ZenMock_static),
-         decltype(Static_ZenMock)>(
+         decltype(Static_ZenMock)>>(
             mock,
             VirtualSignature,
             VirtualConstSignature,
@@ -106,7 +106,7 @@ namespace ZenMock
             NonVoid1_ZenMock_static,
             StaticNameClashSignature,
             Static_ZenMock,
-            StaticUniqueSignature));
+            StaticUniqueSignature);
    }
 
    // Expect Tests
@@ -260,10 +260,10 @@ namespace ZenMock
 
    // Assertion Tests
 
-   TEST1X1(AssertCalledOnceWith_ExpectedFunctionCalled0Or2OrMoreTimes_Throws, 
-      size_t numberOfCalls, 
-      0ull, 
-      2ull, 
+   TEST1X1(AssertCalledOnceWith_ExpectedFunctionCalled0Or2OrMoreTimes_Throws,
+      size_t numberOfCalls,
+      0ull,
+      2ull,
       3ull)
    {
       _zenMock1Tester->AssertCalledOnceWith_ExpectedFunctionCalled0Or2OrMoreTimes_Throws(numberOfCalls);

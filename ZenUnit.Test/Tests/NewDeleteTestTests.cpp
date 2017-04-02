@@ -22,7 +22,7 @@ namespace ZenUnit
 
    STARTUP
    {
-      _newDeleteTest.reset(new NewDeleteTest<TestingTestClass>(TestClassName));
+      _newDeleteTest = make_unique<NewDeleteTest<TestingTestClass>>(TestClassName);
       _newDeleteTest->_tryCatchCaller.reset(_tryCatchCallerMock = new TryCatchCallerMock);
       _newDeleteTest->_testResultFactory.reset(_testResultFactoryMock = new TestResultFactoryMock);
    }

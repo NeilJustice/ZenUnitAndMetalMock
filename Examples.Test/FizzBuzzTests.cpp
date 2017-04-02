@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "Examples/FizzBuzz.h"
 
-std::string FizzBuzz(unsigned endNumber);
-
 TESTS(FizzBuzzTests)
 SPEC(FizzBuzz_EndNumber0_Throws)
 SPECX(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)

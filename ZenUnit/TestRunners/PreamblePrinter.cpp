@@ -14,9 +14,7 @@ namespace ZenUnit
    {
    }
 
-   PreamblePrinter::~PreamblePrinter()
-   {
-   }
+   PreamblePrinter::~PreamblePrinter() = default;
 
    void PreamblePrinter::PrintOpeningThreeLines(
       const MultiTestClassRunner* multiTestClassRunner, const string& commandLine) const

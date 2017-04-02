@@ -33,13 +33,13 @@ namespace ZenUnit
       virtual void AddSkippedTest(
          const char* testClassName, const char* testName, const char* reason);
       virtual void AddSkippedTestClassNameAndReason(
-         const char* skippedTestClassName, const char* reason);
+         const char* testClassName, const char* reason);
       virtual void SetTestClassResults(vector<TestClassResult>& testClassResults);
       virtual void PrintTestFailuresAndSkips() const;
       virtual void PrintClosingLines(
          size_t totalNumberOfTestCases,
          long long testRunMilliseconds,
-         const string& testProgramName) const;
+         const string& comamndLine) const;
       virtual int DetermineExitCode(const ZenUnitArgs& args) const;
       static void AssertEqual(
          const ZenUnit::TestRunResult& expectedTestRunResult,

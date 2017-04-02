@@ -54,9 +54,9 @@ namespace ZenMock
       }
 
       void AssertExpectAndThrowCalledOnceWith(
-         string expectedExceptionTypeName,
+         const string& expectedExceptionTypeName,
          size_t expectedExceptionArgCount,
-         string expectedStringConcattedExceptionArgs)
+         const string& expectedStringConcattedExceptionArgs)
       {
          ARE_EQUAL(expectedExceptionTypeName, exceptionTypeName);
          ARE_EQUAL(expectedExceptionArgCount, exceptionArgCount);
@@ -71,6 +71,6 @@ namespace ZenMock
 
    struct TwoArgTestingException
    {
-      TwoArgTestingException(string, int) {}
+      TwoArgTestingException(const string&, int) {}
    };
 }

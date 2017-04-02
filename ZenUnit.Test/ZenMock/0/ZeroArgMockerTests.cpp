@@ -21,7 +21,7 @@ namespace ZenMock
 
    STARTUP
    {
-      _zeroArgMocker.reset(new ZeroArgMocker<ExceptionThrowerMock>(ZenMockedFunctionSignature));
+      _zeroArgMocker = make_unique<ZeroArgMocker<ExceptionThrowerMock>>(ZenMockedFunctionSignature);
    }
 
    void SetAssertedTrueToNotFailDueToExpectedButNotAsesrted()
@@ -79,7 +79,7 @@ namespace ZenMock
    TEST(ZenMockIt_ExpectedFalse_Throws)
    {
       IS_FALSE(_zeroArgMocker->expected);
-      THROWS(_zeroArgMocker->ZenMockIt(), UnexpectedCallException, 
+      THROWS(_zeroArgMocker->ZenMockIt(), UnexpectedCallException,
          UnexpectedCallException::MakeWhat(ZenMockedFunctionSignature));
    }
 

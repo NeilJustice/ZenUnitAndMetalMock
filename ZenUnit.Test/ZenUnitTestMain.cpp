@@ -30,7 +30,7 @@ TEMPLATETESTS(SkippedTemplateTestClassB, MapType) SPECEND };
 SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, map)
 SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, unordered_map)
 
-int main(int argc, char* argv[])
+int main(int argc, const char* argv[])
 {
    ZenUnit::FileLiner::selfTestMode = true;
    int exitCode = ZenUnit::RunTests(argc, argv);

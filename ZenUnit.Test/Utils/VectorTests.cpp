@@ -12,11 +12,25 @@ namespace ZenUnit
 
    TEST(ToArgcArgv_ReturnsArgsVector)
    {
-      ToArgcArgvTestCase(1, new char*[1]{ (char*)"ExePath" }, vector<string>{ "ExePath" });
-      ToArgcArgvTestCase(2, new char*[2]{ (char*)"ExePath", (char*)"Arg1" }, vector<string>{ "ExePath", "Arg1" });
-      ToArgcArgvTestCase(3, new char*[3]{ (char*)"ExePath", (char*)"Arg1", (char*)"Arg2" }, vector<string>{ "ExePath", "Arg1", "Arg2" });
+      ToArgcArgvTestCase(1, new const char*[1]
+      {
+         "ExePath"
+      }, vector<string>{ "ExePath" });
+
+      ToArgcArgvTestCase(2, new const char*[2]
+      {
+         "ExePath", "Arg1"
+      }, vector<string>{ "ExePath", "Arg1" });
+
+      ToArgcArgvTestCase(3, new const char*[3]
+      {
+         "ExePath",
+         "Arg1",
+         "Arg2"
+      }, vector<string>{ "ExePath", "Arg1", "Arg2" });
    }
-   static void ToArgcArgvTestCase(int argc, char** argv, const vector<string>& expectedStringVector)
+   static void ToArgcArgvTestCase(
+      int argc, const char** argv, const vector<string>& expectedStringVector)
    {
       VECTORS_EQUAL(expectedStringVector, Vector::FromArgcArgv(argc, argv));
       delete[] argv;
@@ -24,20 +38,20 @@ namespace ZenUnit
 
    TEST(Join_EmptyIntVector_ReturnsEmptyStringRegardlessOfSeparator)
    {
-      const vector<int> emptyIntVector = {};
+      const vector<int> emptyIntVector;
       ARE_EQUAL("", Vector::Join(emptyIntVector, ' '));
       ARE_EQUAL("", Vector::Join(emptyIntVector, ','));
    }
 
    TEST(Join_1ElementIntVector_ReturnsFirstElementRegardlessOfSeparator)
    {
-      const vector<int> intVec = { 1 };
+      const vector<int> intVec{ 1 };
       ARE_EQUAL("1", Vector::Join(intVec, ' '));
       ARE_EQUAL("1", Vector::Join(intVec, ','));
    }
 
    TEST3X3(Join_2ElementIntVector_ReturnsElementsJoinedBySeparator,
-      string expectedJoinedVector, vector<int> vec, char separator,
+      string expectedJoinedVector, const vector<int>& vec, char separator,
       "1 2", vector<int>{ 1, 2 }, ' ',
       "1,2", vector<int>{ 1, 2 }, ',',
       "1 2 3", vector<int>{ 1, 2, 3 }, ' ',

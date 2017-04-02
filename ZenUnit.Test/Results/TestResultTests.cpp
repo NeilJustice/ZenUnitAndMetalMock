@@ -127,10 +127,14 @@ namespace ZenUnit
    }
 
    TEST6X6(SixArgConstructor_SetsFields,
-      TestOutcome testBodyOutcome, TestOutcome cleanupOutcome, long long maxtestmilliseconds,
-      int relativeMilliseconds, TestOutcome expectedOverallOutcome, CallResult TestResult::* expectedResponsibleCallResultField,
-      TestOutcome::Success, TestOutcome::Success, 0ll, 0, TestOutcome::Success, nullptr,
-      TestOutcome::Success, TestOutcome::Success, 0ll, 1, TestOutcome::Success, nullptr,
+      TestOutcome testBodyOutcome,
+      TestOutcome cleanupOutcome,
+      long long maxtestmilliseconds,
+      long long relativeMilliseconds,
+      TestOutcome expectedOverallOutcome,
+      CallResult TestResult::* expectedResponsibleCallResultField,
+      TestOutcome::Success, TestOutcome::Success, 0ll, 0ll, TestOutcome::Success, nullptr,
+      TestOutcome::Success, TestOutcome::Success, 0ll, 1ll, TestOutcome::Success, nullptr,
       TestOutcome::Success, TestOutcome::Success, ExpectedMilliseconds, -1, TestOutcome::Success, nullptr,
       TestOutcome::Success, TestOutcome::Success, ExpectedMilliseconds, 0, TestOutcome::Success, nullptr,
       TestOutcome::Success, TestOutcome::Success, ExpectedMilliseconds, 1, TestOutcome::SuccessButMissedDeadline, nullptr,
@@ -149,7 +153,7 @@ namespace ZenUnit
       testBodyCallResult.milliseconds = 4ll;
       CallResult cleanupCallResult(TestPhase::Cleanup);
       cleanupCallResult.testOutcome = cleanupOutcome;
-      cleanupCallResult.milliseconds = static_cast<long long>(5 + relativeMilliseconds);
+      cleanupCallResult.milliseconds = 5ll + relativeMilliseconds;
 
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.maxtestmilliseconds = maxtestmilliseconds;
@@ -189,7 +193,9 @@ namespace ZenUnit
    }
 
    TEST3X3(PrintTestOutcome_PrintsOutcome,
-      TestOutcome testOutcome, string expectedTestCaseResultConsoleWrite, Color expectedColor,
+      TestOutcome testOutcome,
+      const string& expectedTestCaseResultConsoleWrite,
+      Color expectedColor,
       TestOutcome::Success, "OK", Color::White,
       TestOutcome::Anomaly, "Anomaly", Color::Red,
       TestOutcome::Exception, "Exception", Color::Red,
@@ -220,7 +226,9 @@ File.cpp(1))");
    }
 
    TEST3X3(PrintIfFailure_Anomaly_PrintsExpected,
-      CallResult TestResult::* expectedResponsibleCallResultField, TestPhase testPhase, string expectedResponsibleTestPhaseSuffix,
+      CallResult TestResult::* expectedResponsibleCallResultField,
+      TestPhase testPhase,
+      const string& expectedResponsibleTestPhaseSuffix,
       &TestResult::constructorCallResult, TestPhase::Constructor, " in test class constructor",
       &TestResult::startupCallResult, TestPhase::Startup, " in STARTUP",
       &TestResult::testBodyCallResult, TestPhase::TestBody, "",
@@ -263,7 +271,9 @@ File.cpp(1))");
    }
 
    TEST3X3(PrintIfFailure_Exception_PrintsExpected,
-      CallResult TestResult::* expectedResponsibleCallResultField, TestPhase testPhase, string expectedTestPhaseSuffix,
+      CallResult TestResult::* expectedResponsibleCallResultField,
+      TestPhase testPhase,
+      const string& expectedTestPhaseSuffix,
       &TestResult::constructorCallResult, TestPhase::Constructor, " in test class constructor",
       &TestResult::startupCallResult, TestPhase::Startup, " in STARTUP",
       &TestResult::testBodyCallResult, TestPhase::TestBody, "",

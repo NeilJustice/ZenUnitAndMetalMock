@@ -28,28 +28,28 @@ namespace ZenUnit
       virtual ~TestResult() = default;
 
       static TestResult ConstructorFail(
-         const FullName& fullName,
+         FullName fullName,
          const CallResult& constructorCallResult);
 
       static TestResult StartupFail(
-         const FullName& fullName,
+         FullName fullName,
          const CallResult& constructorCallResult,
          const CallResult& startupCallResult,
          const CallResult& destructorCallResult);
 
       static TestResult CtorDtorSuccess(
-         const FullName& fullName,
+         FullName fullName,
          const CallResult& constructorCallResult,
          const CallResult& destructorCallResult);
 
       TestResult(
-         const FullName& fullName,
+         FullName fullName,
          const CallResult& constructorCallResult,
          const CallResult& startupCallResult,
          const CallResult& testBodyCallResult,
          const CallResult& cleanupCallResult,
          const CallResult& destructorCallResult,
-         std::function<ZenUnitArgs()> getArgs);
+         const std::function<ZenUnitArgs()>& getArgs);
 
       virtual void PrintTestOutcome(const Console* console) const;
       virtual void PrintIfFailure(const Console* console, TestFailureNumberer* testFailureNumberer) const;

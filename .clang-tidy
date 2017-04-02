@@ -1,2 +1,6 @@
-Checks: '*,-llvm-namespace-comment,-llvm-header-guard,-google-global-names-in-headers,-google-build-using-namespace,-google-readability-namespace-comments,-google-runtime-int,-modernize-use-override,-cert-err58-cpp,-cppcoreguidelines-pro-type-vararg,-readability-named-parameter,-modernize-use-auto,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,-google-explicit-constructor,-modernize-use-default-member-init,-cppcoreguidelines-special-member-functions'
+Checks: '*,-llvm-namespace-comment,-llvm-header-guard,-google-global-names-in-headers,-google-build-using-namespace,-google-readability-namespace-comments,-google-runtime-int,-modernize-use-override,-cert-err58-cpp,-cppcoreguidelines-pro-type-vararg,-readability-named-parameter,-modernize-use-auto,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,-google-explicit-constructor,-modernize-use-default-member-init,-cppcoreguidelines-special-member-functions,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-google-runtime-references,-cppcoreguidelines-pro-type-member-init,-cert-err09-cpp,-cppcoreguidelines-pro-type-reinterpret-cast,-cert-err61-cpp,-misc-throw-by-value-catch-by-reference'
+# cert-err09-cpp : throw expression should throw anonymous temporary values instead
+# cert-err61-cpp : throw expression should throw anonymous temporary values instead
+WarningsAsErrors: 'true'
+HeaderFilterRegex: ''
 

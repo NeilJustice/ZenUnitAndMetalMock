@@ -46,8 +46,8 @@ namespace ZenUnit
 
    STARTUP
    {
-      _specSectionTestNXN.reset(new SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests>("", "", nullptr));
-      _specSectionTestNXNSelfMocked.reset(new SpecSectionTestNXNSelfMocked);
+      _specSectionTestNXN = make_unique<SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests>>("", "", nullptr);
+      _specSectionTestNXNSelfMocked = make_unique<SpecSectionTestNXNSelfMocked>();
    }
 
    TEST(ThreeArgConstructor_SetsTestName_SetsTestNXNPmf)
@@ -76,7 +76,7 @@ namespace ZenUnit
    {
       TestMock* testMock = new TestMock;
       testMock->NumberOfTestCasesMock.ExpectAndReturn(testNumberOfTestCases);
-      const unique_ptr<Test> testMockUniquePtr((Test*)testMock);
+      const unique_ptr<Test> testMockUniquePtr(testMock);
       _specSectionTestNXNSelfMocked->GetTestNXNFromPmfTokenMock.ExpectAndReturn(&testMockUniquePtr);
       //
       const size_t numberOfTestCases = _specSectionTestNXNSelfMocked->NumberOfTestCases();
@@ -101,7 +101,7 @@ namespace ZenUnit
       TestMock* const testMock = new TestMock;
       const vector<TestResult> testTestResults = { TestResult::TestingNonDefault };
       testMock->RunMock.ExpectAndReturn(testTestResults);
-      const unique_ptr<Test> testMockUniquePtr((Test*)testMock);
+      const unique_ptr<Test> testMockUniquePtr(testMock);
       _specSectionTestNXNSelfMocked->GetTestNXNFromPmfTokenMock.ExpectAndReturn(&testMockUniquePtr);
       //
       const vector<TestResult> testResults = _specSectionTestNXNSelfMocked->Run();

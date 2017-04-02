@@ -15,9 +15,7 @@ namespace ZenUnit
    {
    }
 
-   MultiTestClassRunner::~MultiTestClassRunner()
-   {
-   }
+   MultiTestClassRunner::~MultiTestClassRunner() = default;
 
    size_t MultiTestClassRunner::NumberOfTestClasses() const
    {

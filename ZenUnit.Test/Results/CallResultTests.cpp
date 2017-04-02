@@ -61,7 +61,8 @@ namespace ZenUnit
       Anomaly nonDefaultAnomaly;
       nonDefaultAnomaly.why = "why";
       EQUALIZER_THROWS(CallResult, anomaly, nonDefaultAnomaly);
-      EQUALIZER_THROWS(CallResult, exceptionTypeName, reinterpret_cast<const string*>(0x123));
+      const string exceptionTypeName = "exceptionTypeName";
+      EQUALIZER_THROWS(CallResult, exceptionTypeName, &exceptionTypeName);
       EQUALIZER_THROWS(CallResult, exceptionWhat, "exceptionWhat");
       EQUALIZER_THROWS(CallResult, milliseconds, 1u);
    }

@@ -111,7 +111,7 @@ namespace ZenUnit
    }
 
    TEST2X2(PrintStringsCommaSeparated_StartIndexGTEStringsSize_Throws,
-      vector<string> strings, size_t startIndex,
+      const vector<string>& strings, size_t startIndex,
       vector<string>{}, 0ull,
       vector<string>{}, 1ull,
       vector<string>{ "Arg1" }, 1ull,
@@ -123,7 +123,10 @@ namespace ZenUnit
    }
 
    TEST4X4(PrintStringsCommaSeparated_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset,
-      vector<string> strings, size_t startIndex, size_t numberOfElements, vector<string> expectedConsoleWrites,
+      const vector<string>& strings,
+      size_t startIndex,
+      size_t numberOfElements,
+      const vector<string>& expectedConsoleWrites,
       vector<string>{ "Arg1" }, 0ull, 1ull, vector<string>{ "Arg1" },
       vector<string>{ "Arg1", "Arg2" }, 0ull, 2ull, vector<string>{ "Arg1", ", ", "Arg2" },
       vector<string>{ "Arg1", "Arg2" }, 1ull, 1ull, vector<string>{ "Arg2" },

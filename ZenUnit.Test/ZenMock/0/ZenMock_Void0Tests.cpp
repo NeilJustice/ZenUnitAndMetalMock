@@ -71,12 +71,12 @@ namespace ZenMock
 
    STARTUP
    {
-      _zenMock0Tester.reset(new ZenMock0Tester<
+      _zenMock0Tester = make_unique<ZenMock0Tester<
          Void0FunctionsMock,
          decltype(Void0_ZenMock),
          decltype(Void0_ZenMock_namespace),
          decltype(Void0_ZenMock_static),
-         decltype(Static_ZenMock)>(
+         decltype(Static_ZenMock)>>(
             _mock,
             VirtualSignature,
             VirtualConstSignature,
@@ -93,7 +93,7 @@ namespace ZenMock
             StaticNameClashSignature,
 
             Static_ZenMock,
-            StaticUniqueSignature));
+            StaticUniqueSignature);
    }
 
    TEST(Expect_CalledTwice_Throws)

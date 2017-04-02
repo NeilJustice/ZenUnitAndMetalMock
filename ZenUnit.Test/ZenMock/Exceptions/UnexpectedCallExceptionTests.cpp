@@ -25,7 +25,7 @@ namespace ZenMock
       "ExpectAndReturn or ExpectAndReturnValues or ExpectAndThrow]()";
 
    TEST1X1(Constructor_Void0Args_SetsWhatToJustExpectAndExpectAndThrow_ClassIsSubclassOfZenMockException,
-      string zenMockedFunctionSignature,
+      const string& zenMockedFunctionSignature,
       VoidSignature0,
       VirtualVoidSignature0)
    {
@@ -39,7 +39,7 @@ namespace ZenMock
    }
 
    TEST1X1(Constructor_NonVoid0Args_SetsWhatToAlsoIncludeExpectAndReturnValue,
-      string zenMockedFunctionSignature,
+      const string& zenMockedFunctionSignature,
       NonVoidASignature0,
       NonVoidBSignature0)
    {

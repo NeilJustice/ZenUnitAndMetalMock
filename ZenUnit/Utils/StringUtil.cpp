@@ -21,13 +21,14 @@ namespace ZenUnit
          if (peekChar == '"')
          {
             stringStream >> std::quoted(element);
-            element = "\"" + element + "\"";
+            element = string("\"").append(element).append("\"");
             std::getline(stringStream, devNull, ',');
          }
          else if (peekChar == '\'')
          {
-            element.resize(3);
-            stringStream.read(const_cast<char*>(element.c_str()), 3);
+            char singleQuotedValueChars[3];
+            stringStream.read(singleQuotedValueChars, sizeof(singleQuotedValueChars));
+            element.assign(singleQuotedValueChars, sizeof(singleQuotedValueChars));
             std::getline(stringStream, devNull, ',');
          }
          else

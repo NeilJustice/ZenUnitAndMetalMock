@@ -17,9 +17,7 @@ namespace ZenUnit
    {
    }
 
-   TestRunResult::~TestRunResult()
-   {
-   }
+   TestRunResult::~TestRunResult() = default;
 
    void TestRunResult::AddSkippedTest(
       const char* testClassName, const char* testName, const char* reason)
