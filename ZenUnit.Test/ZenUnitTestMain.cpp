@@ -30,16 +30,6 @@ TEMPLATETESTS(SkippedTemplateTestClassB, MapType) SPECEND };
 SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, map)
 SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, unordered_map)
 
-struct X
-{
-   virtual void f() {}
-};
-
-struct Y : public X
-{
-   virtual void f() {}
-};
-
 int main(int argc, char* argv[])
 {
    ZenUnit::FileLiner::selfTestMode = true;
