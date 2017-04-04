@@ -46,7 +46,7 @@ None
    TEST(DefaultConstructor_NewsConsole)
    {
       ArgsParser argsParser;
-      CONFIRM_NEWED(argsParser._console);
+      WAS_NEWED(argsParser._console);
    }
 
    TEST(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)

@@ -39,7 +39,7 @@ namespace ZenUnit
    TEST(Constructor_NewsConsoleColorer_SetsFunctionPointers)
    {
       Console console;
-      CONFIRM_NEWED(console._consoleColorer);
+      WAS_NEWED(console._consoleColorer);
       FUNCTION_TARGETS(::exit, console.exit_ZenMockable);
    #ifdef _WIN32
       FUNCTION_TARGETS(::IsDebuggerPresent, console.IsDebuggerPresent_ZenMockable);

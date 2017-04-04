@@ -43,8 +43,8 @@ namespace ZenUnit
    TEST(Constructor_NewsConsoleAndStopwatch_SetsGetArgsFunction)
    {
       TryCatchCaller tryCatchCaller;
-      CONFIRM_NEWED(tryCatchCaller._console);
-      CONFIRM_NEWED(tryCatchCaller._stopwatch);
+      WAS_NEWED(tryCatchCaller._console);
+      WAS_NEWED(tryCatchCaller._stopwatch);
       FUNCTION_TARGETS(TestRunner::GetArgs, tryCatchCaller._getArgs);
    }
 

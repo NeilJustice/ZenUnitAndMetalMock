@@ -33,8 +33,8 @@ namespace ZenUnit
       ARE_EQUAL("ImplicitFirstTestForNewabilityAndDeletability", newDeleteTest.Name());
       ARE_EQUAL("TESTS(TestClassName)\nTEST(ImplicitFirstTestForNewabilityAndDeletability)", newDeleteTest.TestClassTestNameLines());
       ARE_EQUAL("(0)", newDeleteTest.FileLineString());
-      CONFIRM_NEWED(newDeleteTest._testResultFactory);
-      CONFIRM_NEWED(newDeleteTest._tryCatchCaller);
+      WAS_NEWED(newDeleteTest._testResultFactory);
+      WAS_NEWED(newDeleteTest._tryCatchCaller);
       IS_NULL(newDeleteTest._firstInstanceOfTestClass);
    }
 

@@ -70,8 +70,8 @@ namespace ZenUnit
    {
       TemplateTestClassRunner<TestingTestClass> templateTestClassRunner(TestClassName);
       //
-      CONFIRM_NEWED(templateTestClassRunner._console);
-      CONFIRM_NEWED(templateTestClassRunner._testsMemberForEacherExtraArg);
+      WAS_NEWED(templateTestClassRunner._console);
+      WAS_NEWED(templateTestClassRunner._testsMemberForEacherExtraArg);
       ARE_EQUAL(TestClassName, templateTestClassRunner._testClassName);
 
       vector<unique_ptr<Test>> expectedTests;

@@ -11,8 +11,8 @@
 // Pointers
 #include "ZenUnit/Macros/IS_NULL.h"
 #include "ZenUnit/Macros/IS_NOT_NULL.h"
-#include "ZenUnit/Macros/CONFIRM_NEWED.h"
-#include "ZenUnit/Macros/CONFIRM_ARRAY_NEWED.h"
+#include "ZenUnit/Macros/WAS_NEWED.h"
+#include "ZenUnit/Macros/WAS_ARRAY_NEWED.h"
 // Data Structures
 #include "ZenUnit/Macros/IS_EMPTY.h"
 #include "ZenUnit/Macros/CONTAINS.h"

@@ -76,7 +76,7 @@ STARTUP
 TEST(Constructor_NewsComponentA)
 {
    ClassUnderTest classUnderTest;
-   CONFIRM_NEWED(classUnderTest._componentA);
+   WAS_NEWED(classUnderTest._componentA);
 }
 
 TEST3X3(InteractWithComponentA_CallsEveryFunction_ReturnsSumOfReturnValues,
