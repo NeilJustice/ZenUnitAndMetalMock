@@ -72,7 +72,7 @@ TEST4X4(ReturnsTrueIfNumberIsInclusiveBetween,
    // ZenUnit uses declarative-style instead of procedural-style assertion names
    // such as ARE_EQUAL and IS_TRUE instead of ASSERT_EQUAL and ASSERT_TRUE
    // to give ZenUnit a reading experience similar to
-   // reading a executable specification document.
+   // reading an executable specification document.
 }
 
 }; RUN(IsInclusiveBetweenTests)
@@ -106,7 +106,7 @@ int main(int argc, char* argv[]
 
 Step 1 of 1:
 
-Run `./LinuxCMakeBuildInstall.sh` to CMake with Ninja, build with the default C++ compiler, and install with Linux the ZenUnit include tree and Debug, Release, RelWithDebInfo, and MinSizeRel static libraries.
+Run `./LinuxCMakeBuildInstall.sh <InstallDirectory>` to CMake with Ninja, build with the default C++ compiler, and install with Linux the ZenUnit include tree and Debug, Release, RelWithDebInfo, and MinSizeRel static libraries.
 
 `LinuxCMakeBuildInstall.sh` performs these CMake, build, and install actions:
 

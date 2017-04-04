@@ -13,7 +13,7 @@
 |`CLEANUP` // Function run after each test|
 |`TEST(CrystalClearTestName)` // Standard-issue void test|
 |`TEST1X1(CrystalClearTestName, Arg1Type, ...)` // 1-by-1 value-parameterized test|
-|`TEST2X2(CrystalClearTestName, Arg1Type, Arg2Type, ...)`|
+|`TEST2X2(CrystalClearTestName, Arg1Type, Arg2Type, ...)` // 2-by-2 value-parameterized test|
 |...|
 |`TEST10X10(CrystalClearTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
 |`RUNTESTS(CrystalClearTestClassName)`|
@@ -66,8 +66,8 @@
 |------- |
 |`IS_NULL(pointer, messages...)`|
 |`IS_NOT_NULL(pointer, messages...)`|
-|`CONFIRM_NEWED(smartOrRawPointer, messages...)` // Asserts not null then resets or operator deletes the pointer to confirm it was operator newed / make_uniqued / make_shared|
-|`CONFIRM_ARRAY_NEWED(smartOrRawArrayPointer, messages...)` // Asserts not null then resets or operator array deletes the pointer to confirm it was array operator newed / make_uniqued|
+|`CONFIRM_NEWED(smartOrRawPointer, messages...)` // Asserts not null then resets or operator deletes the pointer to confirm it was make_uniqued / make_shared / operator newed|
+|`CONFIRM_ARRAY_NEWED(smartOrRawArrayPointer, messages...)` // Asserts not null then resets or operator array deletes the pointer to confirm it was array make_uniqued / array operator newed|
 
 |Regular Expressions|
 |-------------------|
@@ -100,7 +100,7 @@ None
    Exit 1 regardless of test run outcome if any tests are skipped.
    This option is useful for continuous integration servers
    to defend against the possibility of a quality-compromising
-   culture of complacency developing around committed skipped tests.)";
+   culture of complacency developing around committed skipped tests.;
 ```
 
 |Command Line Arguments Road Map|
@@ -113,7 +113,7 @@ None
 |-breakfast|
 |-maxtestms=\<Milliseconds\>|
 |-maxtotalseconds=\<Seconds\>|
-|-junitxml=\<FilePath\>|
+|-xml=\<FilePath\>|
 |-parallel|
 
 ### [Work In Progress Guide to ZenMock](ZenMock.md)
