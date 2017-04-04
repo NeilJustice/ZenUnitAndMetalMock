@@ -25,14 +25,14 @@ namespace ZenMock
       typename std::decay<Arg6Type>::type arg8;
 
       EightArgCall()
-         : arg1(0)
-         , arg2(0)
-         , arg3(0)
-         , arg4(0)
-         , arg5(0)
-         , arg6(0)
-         , arg7(0)
-         , arg8(0)
+         : arg1()
+         , arg2()
+         , arg3()
+         , arg4()
+         , arg5()
+         , arg6()
+         , arg7()
+         , arg8()
       {
       }
 

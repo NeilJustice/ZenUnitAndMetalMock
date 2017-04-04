@@ -13,10 +13,10 @@ namespace ZenMock
       typename std::decay<Arg4Type>::type arg4;
 
       FourArgCall()
-         : arg1(0)
-         , arg2(0)
-         , arg3(0)
-         , arg4(0)
+         : arg1()
+         , arg2()
+         , arg3()
+         , arg4()
       {
       }
 

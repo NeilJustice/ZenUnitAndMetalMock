@@ -14,11 +14,11 @@ namespace ZenMock
       typename std::decay<Arg5Type>::type arg5;
 
       FiveArgCall()
-         : arg1(0)
-         , arg2(0)
-         , arg3(0)
-         , arg4(0)
-         , arg5(0)
+         : arg1()
+         , arg2()
+         , arg3()
+         , arg4()
+         , arg5()
       {
       }
 
