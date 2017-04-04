@@ -165,9 +165,8 @@ class BuildAndInstallTests(unittest.TestCase):
       #
       CMake.generate.assert_called_once_with(
          '.', self.CMakeGenerator, self.CMakeBuildType, self.CMakeDefinitions, '.')
-      expectedMSBuildCommand = 'MSBuild {0}.sln /p:Configuration={1} /m'.\
-         format(self.StaticLibraryName, self.CMakeBuildType)
-      Process.run.assert_called_once_with(expectedMSBuildCommand)
+      expectedCMakeBuildCommand = 'cmake --build . --config {0}'.format(self.CMakeBuildType)
+      Process.run.assert_called_once_with(expectedCMakeBuildCommand)
 
    @patch('ZenUnitPy.Process.run', spec_set=True)
    def windows_runtests_RunsTestExe_test(self, _1):

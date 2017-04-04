@@ -5,20 +5,20 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>7442c4b6-4d10-4aea-a009-421f7252d55e</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>
-    </StartupFile>
+    <StartupFile>BuildAndInstall.py</StartupFile>
     <SearchPath>..\</SearchPath>
     <OutputPath>.</OutputPath>
     <Name>ZenUnitPy</Name>
     <RootNamespace>ZenUnitPy</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-G"Visual Studio 14 2015 Win64" -DCMAKE_INSTALL_PREFIX</CommandLineArguments>
+    <CommandLineArguments>"Visual Studio 14 2015 Win64" Debug ZenUnitTestedProgram LibraryNameTests "" -DCMAKE_INSTALL_PREFIX=. Install</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>
     <InterpreterId>
     </InterpreterId>
     <InterpreterVersion>
     </InterpreterVersion>
+    <WorkingDirectory>.</WorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>

@@ -61,8 +61,8 @@ def linux_install(cmakeBuildType, doInstall):
 def windows_cmake_and_build(
    cmakeGenerator, cmakeBuildType, staticLibraryName, cmakeDefinitions):
    CMake.generate('.', cmakeGenerator, cmakeBuildType, cmakeDefinitions, '.')
-   msbuildCommand = 'MSBuild {0}.sln /p:Configuration={1} /m'.format(staticLibraryName, cmakeBuildType)
-   Process.run(msbuildCommand)
+   cmakeBuildCommand = 'cmake --build . --config {0}'.format(cmakeBuildType)
+   Process.run(cmakeBuildCommand)
 
 def windows_runtests(cmakeBuildType, staticLibraryTestName):
    runTestsCommand = '{0}/{1}/{0}.exe'.format(staticLibraryTestName, cmakeBuildType)
