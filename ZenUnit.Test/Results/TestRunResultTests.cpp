@@ -375,7 +375,7 @@ namespace ZenUnit
       _testRunResult.PrintSkippedTestClassReminder(SkippedTestClassNameAndReason);
       //
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
-         "[Warning] Skipped test class " + SkippedTestClassNameAndReason));
+         "[SKIPPED] Skipped test class " + SkippedTestClassNameAndReason));
    }
 
    TEST(PrintSkippedTestReminder_PrintsExpectedToConsole)
@@ -386,7 +386,7 @@ namespace ZenUnit
       _testRunResult.PrintSkippedTestReminder(SkippedTestName);
       //
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
-         String::Concat("[Warning] Skipped test ", SkippedTestName)));
+         String::Concat("[SKIPPED] Skipped test ", SkippedTestName)));
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)

@@ -132,12 +132,12 @@ namespace ZenUnit
 
    void TestRunResult::PrintSkippedTestReminder(const string& skippedFullTestNameAndReason) const
    {
-      _console->WriteLine(String::Concat("[Warning] Skipped test ", skippedFullTestNameAndReason));
+      _console->WriteLine(String::Concat("[SKIPPED] Skipped test ", skippedFullTestNameAndReason));
    }
 
    void TestRunResult::PrintSkippedTestClassReminder(const string& skippedTestClassNameAndReason) const
    {
-      _console->WriteLine(String::Concat("[Warning] Skipped test class ", skippedTestClassNameAndReason));
+      _console->WriteLine(String::Concat("[SKIPPED] Skipped test class ", skippedTestClassNameAndReason));
    }
 
    void TestRunResult::AssertEqual(
