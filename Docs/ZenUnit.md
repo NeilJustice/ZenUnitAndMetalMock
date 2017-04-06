@@ -33,10 +33,10 @@
 
 |Values Road Map|
 |---------------|
-|`ARE_WITHIN(expectedValue, actualValue, maxDifference, ...)`|
-|`ARE_WITHIN_PERCENT(expectedValue, actualValue, maxPercentDifference, ...)`|
-|`DOUBLES_CLOSE(expectedCloseDouble, actualDouble, ...)`|
-|`FLOATS_CLOSE(expectedCloseFloat, actualFloat, ...)`|
+|`ARE_WITHIN(expectedValue, actualValue, maxDifference, messages...)`|
+|`ARE_WITHIN_PERCENT(expectedValue, actualValue, maxPercentDifference, messages...)`|
+|`DOUBLES_CLOSE(expectedCloseDouble, actualDouble, messages...)`|
+|`FLOATS_CLOSE(expectedCloseFloat, actualFloat, messages...)`|
 
 |Data Structures|
 |---------------|
@@ -49,10 +49,10 @@
 
 |Data Structures Road Map|
 |------------------------|
-|`ARRAYS_EQUAL(expectedArray, actualArray, ...)`|
-|`ARRAYS_EQUAL_N(expectedArray, actualArray, count, ...)`|
-|`BYTES_EQUAL(expectedBytes, actualBytes, length, ...)`|
-|`TUPLES_EQUAL(expectedTuple, actualTuple, ...)`|
+|`ARRAYS_EQUAL(expectedArray, actualArray, messages...)`|
+|`ARRAYS_EQUAL_N(expectedArray, actualArray, count, messages...)`|
+|`BYTES_EQUAL(expectedBytes, actualBytes, length, messages...)`|
+|`TUPLES_EQUAL(expectedTuple, actualTuple, messages...)`|
 
 |Exceptions|
 |----------|
