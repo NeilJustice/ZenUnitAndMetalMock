@@ -101,7 +101,7 @@ None
    Exit 1 regardless of test run outcome if any tests are skipped.
    This option is useful for continuous integration servers
    to defend against the possibility of a quality-compromising
-   culture of complacency developing around committed skipped tests.;
+   culture of complacency developing around committed skipped tests.
 ```
 
 |Command Line Arguments Road Map|
