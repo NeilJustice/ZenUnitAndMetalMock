@@ -29,9 +29,11 @@ namespace ZenMock
    SPEC(ZenUnitEqualizer_ThrowsIfArg1NotEqual)
    SPECEND
 
+   using Call1 = OneArgCall<int>;
+
    TEST(DefaultConstructor_DefaultInitializesArg)
    {
-      const OneArgCall<int> intOneArgCall;
+      const Call1 intOneArgCall;
       ARE_EQUAL(0, intOneArgCall.arg);
    }
 
@@ -46,8 +48,8 @@ namespace ZenMock
 
    TEST(ZenUnitEqualizer_ThrowsIfArg1NotEqual)
    {
-      EQUALIZER_THROWS_INIT(OneArgCall<int>);
-      EQUALIZER_THROWS(OneArgCall<int>, arg, 1);
+      EQUALIZER_THROWS_INIT(Call1);
+      EQUALIZER_THROWS(Call1, arg, 1);
    }
 
    }; RUN(OneArgCallTests)
@@ -59,9 +61,11 @@ namespace ZenMock
    SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    SPECEND
 
+   using Call2 = TwoArgCall<int, int>;
+
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      const TwoArgCall<int, int> twoArgCall;
+      const Call2 twoArgCall;
       ARE_EQUAL(0, twoArgCall.arg1);
       ARE_EQUAL(0, twoArgCall.arg2);
    }
@@ -72,17 +76,15 @@ namespace ZenMock
       //
       ARE_COPIES(Arg1, call.arg1);
       ARE_COPIES(Arg2, call.arg2);
-      const bool b1 = (is_same<string, decltype(call.arg1)>::value);
-      const bool b2 = (is_same<string, decltype(call.arg2)>::value);
-      IS_TRUE(b1);
-      IS_TRUE(b2);
+      IS_TRUE((is_same<string, decltype(call.arg1)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg2)>::value));
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      EQUALIZER_THROWS_INIT(TwoArgCall<int Comma int>);
-      EQUALIZER_THROWS(TwoArgCall<int Comma int>, arg1, 1);
-      EQUALIZER_THROWS(TwoArgCall<int Comma int>, arg2, 2);
+      EQUALIZER_THROWS_INIT(Call2);
+      EQUALIZER_THROWS(Call2, arg1, 1);
+      EQUALIZER_THROWS(Call2, arg2, 2);
    }
 
    }; RUN(TwoArgCallTests)
@@ -94,9 +96,11 @@ namespace ZenMock
    SPEC(ZenUnitEqualizer_CallsAreEqualOnEachField)
    SPECEND
 
+   using Call3 = ThreeArgCall<int, int, int>;
+
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      const ThreeArgCall<int, int, int> threeArgCall;
+      const Call3 threeArgCall;
       ARE_EQUAL(0, threeArgCall.arg1);
       ARE_EQUAL(0, threeArgCall.arg2);
       ARE_EQUAL(0, threeArgCall.arg3);
@@ -109,20 +113,17 @@ namespace ZenMock
       ARE_COPIES(Arg1, call.arg1);
       ARE_COPIES(Arg2, call.arg2);
       ARE_COPIES(Arg3, call.arg3);
-      const bool b1 = (is_same<string, decltype(call.arg1)>::value);
-      const bool b2 = (is_same<string, decltype(call.arg2)>::value);
-      const bool b3 = (is_same<string, decltype(call.arg3)>::value);
-      IS_TRUE(b1);
-      IS_TRUE(b2);
-      IS_TRUE(b3);
+      IS_TRUE((is_same<string, decltype(call.arg1)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg2)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg3)>::value));
    }
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
-      EQUALIZER_THROWS_INIT(ThreeArgCall<int Comma int Comma int>);
-      EQUALIZER_THROWS(ThreeArgCall<int Comma int Comma int>, arg1, 1);
-      EQUALIZER_THROWS(ThreeArgCall<int Comma int Comma int>, arg2, 2);
-      EQUALIZER_THROWS(ThreeArgCall<int Comma int Comma int>, arg3, 3);
+      EQUALIZER_THROWS_INIT(Call3);
+      EQUALIZER_THROWS(Call3, arg1, 1);
+      EQUALIZER_THROWS(Call3, arg2, 2);
+      EQUALIZER_THROWS(Call3, arg3, 3);
    }
 
    }; RUN(ThreeArgCallTests)
@@ -133,9 +134,11 @@ namespace ZenMock
    SPEC(ZenUnitEqualizer_CallsAreEqualOnEachField)
    SPECEND
 
+   using Call4 = FourArgCall<int, int, int, int>;
+
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      const FourArgCall<int, int, int, int> fourArgCall;
+      const Call4 fourArgCall;
       ARE_EQUAL(0, fourArgCall.arg1);
       ARE_EQUAL(0, fourArgCall.arg2);
       ARE_EQUAL(0, fourArgCall.arg3);
@@ -150,23 +153,19 @@ namespace ZenMock
       ARE_COPIES(Arg2, call.arg2);
       ARE_COPIES(Arg3, call.arg3);
       ARE_COPIES(Arg4, call.arg4);
-      const bool b1 = (is_same<string, decltype(call.arg1)>::value);
-      const bool b2 = (is_same<string, decltype(call.arg2)>::value);
-      const bool b3 = (is_same<string, decltype(call.arg3)>::value);
-      const bool b4 = (is_same<string, decltype(call.arg4)>::value);
-      IS_TRUE(b1);
-      IS_TRUE(b2);
-      IS_TRUE(b3);
-      IS_TRUE(b4);
+      IS_TRUE((is_same<string, decltype(call.arg1)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg2)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg3)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg4)>::value));
    }
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
-      EQUALIZER_THROWS_INIT(FourArgCall<int Comma int Comma int Comma int>);
-      EQUALIZER_THROWS(FourArgCall<int Comma int Comma int Comma int>, arg1, 1);
-      EQUALIZER_THROWS(FourArgCall<int Comma int Comma int Comma int>, arg2, 2);
-      EQUALIZER_THROWS(FourArgCall<int Comma int Comma int Comma int>, arg3, 3);
-      EQUALIZER_THROWS(FourArgCall<int Comma int Comma int Comma int>, arg4, 4);
+      EQUALIZER_THROWS_INIT(Call4);
+      EQUALIZER_THROWS(Call4, arg1, 1);
+      EQUALIZER_THROWS(Call4, arg2, 2);
+      EQUALIZER_THROWS(Call4, arg3, 3);
+      EQUALIZER_THROWS(Call4, arg4, 4);
    }
 
 
@@ -178,9 +177,11 @@ namespace ZenMock
    SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    SPECEND
 
+   using Call5 = FiveArgCall<int, int, int, int, int>;
+
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      const FiveArgCall<int, int, int, int, int> fiveArgCall;
+      const Call5 fiveArgCall;
       ARE_EQUAL(0, fiveArgCall.arg1);
       ARE_EQUAL(0, fiveArgCall.arg2);
       ARE_EQUAL(0, fiveArgCall.arg3);
@@ -197,26 +198,21 @@ namespace ZenMock
       ARE_COPIES(Arg3, call.arg3);
       ARE_COPIES(Arg4, call.arg4);
       ARE_COPIES(Arg5, call.arg5);
-      const bool b1 = (is_same<string, decltype(call.arg1)>::value);
-      const bool b2 = (is_same<string, decltype(call.arg2)>::value);
-      const bool b3 = (is_same<string, decltype(call.arg3)>::value);
-      const bool b4 = (is_same<string, decltype(call.arg4)>::value);
-      const bool b5 = (is_same<string, decltype(call.arg5)>::value);
-      IS_TRUE(b1);
-      IS_TRUE(b2);
-      IS_TRUE(b3);
-      IS_TRUE(b4);
-      IS_TRUE(b5);
+      IS_TRUE((is_same<string, decltype(call.arg1)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg2)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg3)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg4)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg5)>::value));
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      EQUALIZER_THROWS_INIT(FiveArgCall<int Comma int Comma int Comma int Comma int>);
-      EQUALIZER_THROWS(FiveArgCall<int Comma int Comma int Comma int Comma int>, arg1, 1);
-      EQUALIZER_THROWS(FiveArgCall<int Comma int Comma int Comma int Comma int>, arg2, 2);
-      EQUALIZER_THROWS(FiveArgCall<int Comma int Comma int Comma int Comma int>, arg3, 3);
-      EQUALIZER_THROWS(FiveArgCall<int Comma int Comma int Comma int Comma int>, arg4, 4);
-      EQUALIZER_THROWS(FiveArgCall<int Comma int Comma int Comma int Comma int>, arg5, 5);
+      EQUALIZER_THROWS_INIT(Call5);
+      EQUALIZER_THROWS(Call5, arg1, 1);
+      EQUALIZER_THROWS(Call5, arg2, 2);
+      EQUALIZER_THROWS(Call5, arg3, 3);
+      EQUALIZER_THROWS(Call5, arg4, 4);
+      EQUALIZER_THROWS(Call5, arg5, 5);
    }
 
    }; RUN(FiveArgCallTests)
@@ -228,9 +224,11 @@ namespace ZenMock
    SPEC(ZenUnitEqualizer_CallsAreEqualOnEachField)
    SPECEND
 
+   using Call6 = SixArgCall<int, int, int, int, int, int>;
+
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      const SixArgCall<int, int, int, int, int, int> sixArgCall;
+      const Call6 sixArgCall;
       ARE_EQUAL(0, sixArgCall.arg1);
       ARE_EQUAL(0, sixArgCall.arg2);
       ARE_EQUAL(0, sixArgCall.arg3);
@@ -250,29 +248,23 @@ namespace ZenMock
       ARE_COPIES(Arg4, call.arg4);
       ARE_COPIES(Arg5, call.arg5);
       ARE_COPIES(Arg6, call.arg6);
-      const bool b1 = (is_same<string, decltype(call.arg1)>::value);
-      const bool b2 = (is_same<string, decltype(call.arg2)>::value);
-      const bool b3 = (is_same<string, decltype(call.arg3)>::value);
-      const bool b4 = (is_same<string, decltype(call.arg4)>::value);
-      const bool b5 = (is_same<string, decltype(call.arg5)>::value);
-      const bool b6 = (is_same<string, decltype(call.arg6)>::value);
-      IS_TRUE(b1);
-      IS_TRUE(b2);
-      IS_TRUE(b3);
-      IS_TRUE(b4);
-      IS_TRUE(b5);
-      IS_TRUE(b6);
+      IS_TRUE((is_same<string, decltype(call.arg1)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg2)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg3)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg4)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg5)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg6)>::value));
    }
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
-      EQUALIZER_THROWS_INIT(SixArgCall<int Comma int Comma int Comma int Comma int Comma int>);
-      EQUALIZER_THROWS(SixArgCall<int Comma int Comma int Comma int Comma int Comma int>, arg1, 1);
-      EQUALIZER_THROWS(SixArgCall<int Comma int Comma int Comma int Comma int Comma int>, arg2, 2);
-      EQUALIZER_THROWS(SixArgCall<int Comma int Comma int Comma int Comma int Comma int>, arg3, 3);
-      EQUALIZER_THROWS(SixArgCall<int Comma int Comma int Comma int Comma int Comma int>, arg4, 4);
-      EQUALIZER_THROWS(SixArgCall<int Comma int Comma int Comma int Comma int Comma int>, arg5, 5);
-      EQUALIZER_THROWS(SixArgCall<int Comma int Comma int Comma int Comma int Comma int>, arg6, 6);
+      EQUALIZER_THROWS_INIT(Call6);
+      EQUALIZER_THROWS(Call6, arg1, 1);
+      EQUALIZER_THROWS(Call6, arg2, 2);
+      EQUALIZER_THROWS(Call6, arg3, 3);
+      EQUALIZER_THROWS(Call6, arg4, 4);
+      EQUALIZER_THROWS(Call6, arg5, 5);
+      EQUALIZER_THROWS(Call6, arg6, 6);
    }
 
    }; RUN(SixArgCallTests)
@@ -284,9 +276,11 @@ namespace ZenMock
    SPEC(ZenUnitEqualizer_CallsAreEqualOnEachField)
    SPECEND
 
+   using Call7 = SevenArgCall<int, int, int, int, int, int, int>;
+
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      const SevenArgCall<int, int, int, int, int, int, int> sevenArgCall;
+      const Call7 sevenArgCall;
       ARE_EQUAL(0, sevenArgCall.arg1);
       ARE_EQUAL(0, sevenArgCall.arg2);
       ARE_EQUAL(0, sevenArgCall.arg3);
@@ -308,32 +302,25 @@ namespace ZenMock
       ARE_COPIES(Arg5, call.arg5);
       ARE_COPIES(Arg6, call.arg6);
       ARE_COPIES(Arg7, call.arg7);
-      const bool b1 = (is_same<string, decltype(call.arg1)>::value);
-      const bool b2 = (is_same<string, decltype(call.arg2)>::value);
-      const bool b3 = (is_same<string, decltype(call.arg3)>::value);
-      const bool b4 = (is_same<string, decltype(call.arg4)>::value);
-      const bool b5 = (is_same<string, decltype(call.arg5)>::value);
-      const bool b6 = (is_same<string, decltype(call.arg6)>::value);
-      const bool b7 = (is_same<string, decltype(call.arg7)>::value);
-      IS_TRUE(b1);
-      IS_TRUE(b2);
-      IS_TRUE(b3);
-      IS_TRUE(b4);
-      IS_TRUE(b5);
-      IS_TRUE(b6);
-      IS_TRUE(b7);
+      IS_TRUE((is_same<string, decltype(call.arg1)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg2)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg3)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg4)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg5)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg6)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg7)>::value));
    }
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
-      EQUALIZER_THROWS_INIT(SevenArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int>);
-      EQUALIZER_THROWS(SevenArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int>, arg1, 1);
-      EQUALIZER_THROWS(SevenArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int>, arg2, 2);
-      EQUALIZER_THROWS(SevenArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int>, arg3, 3);
-      EQUALIZER_THROWS(SevenArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int>, arg4, 4);
-      EQUALIZER_THROWS(SevenArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int>, arg5, 5);
-      EQUALIZER_THROWS(SevenArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int>, arg6, 6);
-      EQUALIZER_THROWS(SevenArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int>, arg7, 7);
+      EQUALIZER_THROWS_INIT(Call7);
+      EQUALIZER_THROWS(Call7, arg1, 1);
+      EQUALIZER_THROWS(Call7, arg2, 2);
+      EQUALIZER_THROWS(Call7, arg3, 3);
+      EQUALIZER_THROWS(Call7, arg4, 4);
+      EQUALIZER_THROWS(Call7, arg5, 5);
+      EQUALIZER_THROWS(Call7, arg6, 6);
+      EQUALIZER_THROWS(Call7, arg7, 7);
    }
 
    }; RUN(SevenArgCallTests)
@@ -345,9 +332,11 @@ namespace ZenMock
    SPEC(ZenUnitEqualizer_CallsAreEqualOnEachField)
    SPECEND
 
+   using Call8 = EightArgCall<int, int, int, int, int, int, int, int>;
+
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      const EightArgCall<int, int, int, int, int, int, int, int> eightArgCall;
+      const Call8 eightArgCall;
       ARE_EQUAL(0, eightArgCall.arg1);
       ARE_EQUAL(0, eightArgCall.arg2);
       ARE_EQUAL(0, eightArgCall.arg3);
@@ -371,35 +360,27 @@ namespace ZenMock
       ARE_COPIES(Arg6, call.arg6);
       ARE_COPIES(Arg7, call.arg7);
       ARE_COPIES(Arg8, call.arg8);
-      const bool b1 = (is_same<string, decltype(call.arg1)>::value);
-      const bool b2 = (is_same<string, decltype(call.arg2)>::value);
-      const bool b3 = (is_same<string, decltype(call.arg3)>::value);
-      const bool b4 = (is_same<string, decltype(call.arg4)>::value);
-      const bool b5 = (is_same<string, decltype(call.arg5)>::value);
-      const bool b6 = (is_same<string, decltype(call.arg6)>::value);
-      const bool b7 = (is_same<string, decltype(call.arg7)>::value);
-      const bool b8 = (is_same<string, decltype(call.arg8)>::value);
-      IS_TRUE(b1);
-      IS_TRUE(b2);
-      IS_TRUE(b3);
-      IS_TRUE(b4);
-      IS_TRUE(b5);
-      IS_TRUE(b6);
-      IS_TRUE(b7);
-      IS_TRUE(b8);
+      IS_TRUE((is_same<string, decltype(call.arg1)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg2)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg3)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg4)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg5)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg6)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg7)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg8)>::value));
    }
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
-      EQUALIZER_THROWS_INIT(EightArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>);
-      EQUALIZER_THROWS(EightArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg1, 1);
-      EQUALIZER_THROWS(EightArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg2, 2);
-      EQUALIZER_THROWS(EightArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg3, 3);
-      EQUALIZER_THROWS(EightArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg4, 4);
-      EQUALIZER_THROWS(EightArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg5, 5);
-      EQUALIZER_THROWS(EightArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg6, 6);
-      EQUALIZER_THROWS(EightArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg7, 7);
-      EQUALIZER_THROWS(EightArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg8, 8);
+      EQUALIZER_THROWS_INIT(Call8);
+      EQUALIZER_THROWS(Call8, arg1, 1);
+      EQUALIZER_THROWS(Call8, arg2, 2);
+      EQUALIZER_THROWS(Call8, arg3, 3);
+      EQUALIZER_THROWS(Call8, arg4, 4);
+      EQUALIZER_THROWS(Call8, arg5, 5);
+      EQUALIZER_THROWS(Call8, arg6, 6);
+      EQUALIZER_THROWS(Call8, arg7, 7);
+      EQUALIZER_THROWS(Call8, arg8, 8);
    }
 
    }; RUN(EightArgCallTests)
@@ -411,9 +392,11 @@ namespace ZenMock
    SPEC(ZenUnitEqualizer_CallsAreEqualOnEachField)
    SPECEND
 
+   using Call9 = NineArgCall<int, int, int, int, int, int, int, int, int>;
+
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      const NineArgCall<int, int, int, int, int, int, int, int, int> nineArgCall;
+      const Call9 nineArgCall;
       ARE_EQUAL(0, nineArgCall.arg1);
       ARE_EQUAL(0, nineArgCall.arg2);
       ARE_EQUAL(0, nineArgCall.arg3);
@@ -439,38 +422,29 @@ namespace ZenMock
       ARE_COPIES(Arg7, call.arg7);
       ARE_COPIES(Arg8, call.arg8);
       ARE_COPIES(Arg9, call.arg9);
-      const bool b1 = (is_same<string, decltype(call.arg1)>::value);
-      const bool b2 = (is_same<string, decltype(call.arg2)>::value);
-      const bool b3 = (is_same<string, decltype(call.arg3)>::value);
-      const bool b4 = (is_same<string, decltype(call.arg4)>::value);
-      const bool b5 = (is_same<string, decltype(call.arg5)>::value);
-      const bool b6 = (is_same<string, decltype(call.arg6)>::value);
-      const bool b7 = (is_same<string, decltype(call.arg7)>::value);
-      const bool b8 = (is_same<string, decltype(call.arg8)>::value);
-      const bool b9 = (is_same<string, decltype(call.arg9)>::value);
-      IS_TRUE(b1);
-      IS_TRUE(b2);
-      IS_TRUE(b3);
-      IS_TRUE(b4);
-      IS_TRUE(b5);
-      IS_TRUE(b6);
-      IS_TRUE(b7);
-      IS_TRUE(b8);
-      IS_TRUE(b9);
+      IS_TRUE((is_same<string, decltype(call.arg1)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg2)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg3)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg4)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg5)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg6)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg7)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg8)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg9)>::value));
    }
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
-      EQUALIZER_THROWS_INIT(NineArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>);
-      EQUALIZER_THROWS(NineArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg1, 1);
-      EQUALIZER_THROWS(NineArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg2, 2);
-      EQUALIZER_THROWS(NineArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg3, 3);
-      EQUALIZER_THROWS(NineArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg4, 4);
-      EQUALIZER_THROWS(NineArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg5, 5);
-      EQUALIZER_THROWS(NineArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg6, 6);
-      EQUALIZER_THROWS(NineArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg7, 7);
-      EQUALIZER_THROWS(NineArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg8, 8);
-      EQUALIZER_THROWS(NineArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg9, 9);
+      EQUALIZER_THROWS_INIT(Call9);
+      EQUALIZER_THROWS(Call9, arg1, 1);
+      EQUALIZER_THROWS(Call9, arg2, 2);
+      EQUALIZER_THROWS(Call9, arg3, 3);
+      EQUALIZER_THROWS(Call9, arg4, 4);
+      EQUALIZER_THROWS(Call9, arg5, 5);
+      EQUALIZER_THROWS(Call9, arg6, 6);
+      EQUALIZER_THROWS(Call9, arg7, 7);
+      EQUALIZER_THROWS(Call9, arg8, 8);
+      EQUALIZER_THROWS(Call9, arg9, 9);
    }
 
    }; RUN(NineArgCallTests)
@@ -481,9 +455,11 @@ namespace ZenMock
    SPEC(ZenUnitEqualizer_CallsAreEqualOnEachField)
    SPECEND
 
+   using Call10 = TenArgCall<int, int, int, int, int, int, int, int, int, int>;
+
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      const TenArgCall<int, int, int, int, int, int, int, int, int, int> tenArgCall;
+      const Call10 tenArgCall;
       ARE_EQUAL(0, tenArgCall.arg1);
       ARE_EQUAL(0, tenArgCall.arg2);
       ARE_EQUAL(0, tenArgCall.arg3);
@@ -513,41 +489,31 @@ namespace ZenMock
       ARE_COPIES(Arg8, call.arg8);
       ARE_COPIES(Arg9, call.arg9);
       ARE_COPIES(Arg10, call.arg10);
-      const bool b1 = (is_same<string, decltype(call.arg1)>::value);
-      const bool b2 = (is_same<string, decltype(call.arg2)>::value);
-      const bool b3 = (is_same<string, decltype(call.arg3)>::value);
-      const bool b4 = (is_same<string, decltype(call.arg4)>::value);
-      const bool b5 = (is_same<string, decltype(call.arg5)>::value);
-      const bool b6 = (is_same<string, decltype(call.arg6)>::value);
-      const bool b7 = (is_same<string, decltype(call.arg7)>::value);
-      const bool b8 = (is_same<string, decltype(call.arg8)>::value);
-      const bool b9 = (is_same<string, decltype(call.arg9)>::value);
-      const bool b10 = (is_same<string, decltype(call.arg10)>::value);
-      IS_TRUE(b1);
-      IS_TRUE(b2);
-      IS_TRUE(b3);
-      IS_TRUE(b4);
-      IS_TRUE(b5);
-      IS_TRUE(b6);
-      IS_TRUE(b7);
-      IS_TRUE(b8);
-      IS_TRUE(b9);
-      IS_TRUE(b10);
+      IS_TRUE((is_same<string, decltype(call.arg1)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg2)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg3)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg4)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg5)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg6)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg7)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg8)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg9)>::value));
+      IS_TRUE((is_same<string, decltype(call.arg10)>::value));
    }
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
-      EQUALIZER_THROWS_INIT(TenArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>);
-      EQUALIZER_THROWS(TenArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg1, 1);
-      EQUALIZER_THROWS(TenArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg2, 2);
-      EQUALIZER_THROWS(TenArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg3, 3);
-      EQUALIZER_THROWS(TenArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg4, 4);
-      EQUALIZER_THROWS(TenArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg5, 5);
-      EQUALIZER_THROWS(TenArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg6, 6);
-      EQUALIZER_THROWS(TenArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg7, 7);
-      EQUALIZER_THROWS(TenArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg8, 8);
-      EQUALIZER_THROWS(TenArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg9, 9);
-      EQUALIZER_THROWS(TenArgCall<int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int Comma int>, arg10, 10);
+      EQUALIZER_THROWS_INIT(Call10);
+      EQUALIZER_THROWS(Call10, arg1, 1);
+      EQUALIZER_THROWS(Call10, arg2, 2);
+      EQUALIZER_THROWS(Call10, arg3, 3);
+      EQUALIZER_THROWS(Call10, arg4, 4);
+      EQUALIZER_THROWS(Call10, arg5, 5);
+      EQUALIZER_THROWS(Call10, arg6, 6);
+      EQUALIZER_THROWS(Call10, arg7, 7);
+      EQUALIZER_THROWS(Call10, arg8, 8);
+      EQUALIZER_THROWS(Call10, arg9, 9);
+      EQUALIZER_THROWS(Call10, arg10, 10);
    }
 
    }; RUN(TenArgCallTests)
