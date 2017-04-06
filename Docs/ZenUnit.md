@@ -26,6 +26,7 @@
 |`ARE_EQUAL(expectedValue, actualValue, messages...)` // messages... are variables of any type writable with operator<<(ostream&, const T&) or ZenUnitPrinter\<T\>::Print(ostream&, const T&)|
 |`ARE_SAME(expectedObject, actualObject, messages...)`|
 |`ARE_NOT_SAME(notExpectedObject, actualObject, messages...)`|
+|`ARE_COPIES(expectedObject, actualObject, messages...)` // Asserts that objects ARE_NOT_SAME and ARE_EQUAL|
 |`IS_TRUE(value, messages...)`|
 |`IS_FALSE(value, messages...)`|
 |`IS_ZERO(value, messages...)`|

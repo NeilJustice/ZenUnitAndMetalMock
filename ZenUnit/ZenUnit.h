@@ -4,6 +4,7 @@
 #include "ZenUnit/Macros/ARE_EQUAL.h"
 #include "ZenUnit/Macros/ARE_SAME.h"
 #include "ZenUnit/Macros/ARE_NOT_SAME.h"
+#include "ZenUnit/Macros/ARE_COPIES.h"
 #include "ZenUnit/Macros/IS_TRUE.h"
 #include "ZenUnit/Macros/IS_FALSE.h"
 #include "ZenUnit/Macros/IS_ZERO.h"

@@ -13,14 +13,14 @@
 namespace ZenUnit
 {
    template<typename ExpectedType, typename ActualType, typename... MessageTypes>
-   NOINLINE void ARE_EQUAL_ToStringAndRethrow(
-      VRText<ExpectedType> expectedVRT, VRText<ActualType> actualVRT,
+   NOINLINE void ARE_EQUAL_Throw(
+      VRText<ExpectedType> expectedValueVRT, VRText<ActualType> actualValueVRT,
       FileLine fileLine, const Anomaly& becauseAnomaly,
       const char* messagesText, const MessageTypes&... messages)
    {
-      const std::string expectedField = ToStringer::ToString(expectedVRT.value);
-      const std::string actualField = ToStringer::ToString(actualVRT.value);
-      throw Anomaly("ARE_EQUAL", expectedVRT.text, actualVRT.text, "",
+      const std::string expectedField = ToStringer::ToString(expectedValueVRT.value);
+      const std::string actualField = ToStringer::ToString(actualValueVRT.value);
+      throw Anomaly("ARE_EQUAL", expectedValueVRT.text, actualValueVRT.text, "",
          messagesText, becauseAnomaly,
          expectedField,
          actualField,
@@ -28,7 +28,7 @@ namespace ZenUnit
    }
 
    template<typename ExpectedType, typename ActualType, typename... MessageTypes>
-   void ARE_EQUAL_Defined(VRText<ExpectedType> expectedVRT, VRText<ActualType> actualVRT,
+   void ARE_EQUAL_Defined(VRText<ExpectedType> expectedValueVRT, VRText<ActualType> actualValueVRT,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
       try
@@ -38,16 +38,16 @@ namespace ZenUnit
          std::conditional<std::is_same<DecayedExpectedType, DecayedActualType>::value,
             ::ZenUnitEqualizer<DecayedExpectedType>,
             ::TwoTypeZenUnitEqualizer<DecayedExpectedType, DecayedActualType>>
-            ::type::AssertEqual(expectedVRT.value, actualVRT.value);
+            ::type::AssertEqual(expectedValueVRT.value, actualValueVRT.value);
       }
       catch (const EqualizerException&)
       {
-         ARE_EQUAL_ToStringAndRethrow(expectedVRT, actualVRT, fileLine,
+         ARE_EQUAL_Throw(expectedValueVRT, actualValueVRT, fileLine,
             Anomaly::Default, messagesText, messages...);
       }
       catch (const Anomaly& becauseAnomaly)
       {
-         ARE_EQUAL_ToStringAndRethrow(expectedVRT, actualVRT, fileLine,
+         ARE_EQUAL_Throw(expectedValueVRT, actualValueVRT, fileLine,
             becauseAnomaly, messagesText, messages...);
       }
    }

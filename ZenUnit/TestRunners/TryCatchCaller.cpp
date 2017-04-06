@@ -31,11 +31,11 @@ namespace ZenUnit
          callResult.anomaly = anomaly;
          callResult.testOutcome = TestOutcome::Anomaly;
       }
-      catch (const exception& e)
+      catch (const ZenMock::ZenMockException& e)
       {
          PopulateCallResult(e, &callResult);
       }
-      catch (const ZenMock::ZenMockException& e)
+      catch (const exception& e)
       {
          PopulateCallResult(e, &callResult);
       }
