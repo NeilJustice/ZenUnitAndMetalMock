@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/ZenMock/1/OneArgCall.h"
+#include "ZenUnit/ZenMock/10/TenArgCall.h"
 #include "ZenUnit/ZenMock/2/TwoArgCall.h"
 #include "ZenUnit/ZenMock/3/ThreeArgCall.h"
 #include "ZenUnit/ZenMock/4/FourArgCall.h"
@@ -8,7 +9,6 @@
 #include "ZenUnit/ZenMock/7/SevenArgCall.h"
 #include "ZenUnit/ZenMock/8/EightArgCall.h"
 #include "ZenUnit/ZenMock/9/NineArgCall.h"
-#include "ZenUnit/ZenMock/10/TenArgCall.h"
 
 namespace ZenMock
 {
@@ -475,7 +475,7 @@ namespace ZenMock
    TEST(Constructor_CopiesValuesToDecayTypeFields)
    {
       const TenArgCall<
-         const string&, const string&, const string&, const string&, const string&, 
+         const string&, const string&, const string&, const string&, const string&,
          const string&, const string&, const string&, const string&, const string&>
          call(Arg1, Arg2, Arg3, Arg4, Arg5, Arg6, Arg7, Arg8, Arg9, Arg10);
       //

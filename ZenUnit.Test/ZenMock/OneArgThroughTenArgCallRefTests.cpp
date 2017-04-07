@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/ZenMock/1/OneArgCallRef.h"
+#include "ZenUnit/ZenMock/10/TenArgCallRef.h"
 #include "ZenUnit/ZenMock/2/TwoArgCallRef.h"
 #include "ZenUnit/ZenMock/3/ThreeArgCallRef.h"
 #include "ZenUnit/ZenMock/4/FourArgCallRef.h"
@@ -8,14 +9,14 @@
 #include "ZenUnit/ZenMock/7/SevenArgCallRef.h"
 #include "ZenUnit/ZenMock/8/EightArgCallRef.h"
 #include "ZenUnit/ZenMock/9/NineArgCallRef.h"
-#include "ZenUnit/ZenMock/10/TenArgCallRef.h"
 
 namespace ZenMock
 {
    int a1 = 1, a2 = 2, a3 = 3, a4 = 4, a5 = 5, a6 = 6, a7 = 7, a8 = 8, a9 = 9, a10 = 10;
    string s1 = "1", s2 = "2", s3 = "3", s4 = "4", s5 = "5", s6 = "6", s7 = "7", s8 = "8", s9 = "9", s10 = "10";
 
-   void AssertARE_EQUALThrowsAnomalyContaining(function<void()> areEqualCall, const char* expectedWhatContains)
+   void AssertARE_EQUALThrowsAnomalyContaining(
+      const function<void()>& areEqualCall, const char* expectedWhatContains)
    {
       try
       {
