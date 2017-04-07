@@ -13,7 +13,7 @@ namespace ZenUnit
 
    TEST(ObjectsHaveSameAddress_Throws)
    {
-      const int x = 0;
+      int x = 0;
       const string expectedAreNotSameWhatText = MakeExpectedARE_NOT_SAME_WhatText(&x, &x);
       const string expectedWhat = R"(
   Failed: ARE_COPIES(x, x)
@@ -27,7 +27,7 @@ File.cpp(1))";
 
    TEST(ObjectsHaveSameAddress_Throws_MessagesTestCase)
    {
-      const int x = 0;
+      int x = 0;
       const string messageA = "A", messageB = "B";
       const string expectedAreNotSameWhatText = MakeExpectedARE_NOT_SAME_WhatText(&x, &x);
       const string expectedWhat = R"(
@@ -44,7 +44,7 @@ File.cpp(1))";
    static string MakeExpectedARE_NOT_SAME_WhatText(const void* notExpectedAddress, const void* actualAddress)
    {
       ostringstream expectedWhatPatternBuilder;
-      expectedWhatPatternBuilder << 
+      expectedWhatPatternBuilder <<
          " Because: ARE_NOT_SAME(expectedObject, actualObject) failed\n" <<
 "Expected: Not ";
 #ifdef __linux__
