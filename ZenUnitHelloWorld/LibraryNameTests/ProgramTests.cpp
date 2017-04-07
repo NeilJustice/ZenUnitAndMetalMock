@@ -3,11 +3,17 @@
 #include "Mock/ComponentMock.h"
 
 TESTS(ProgramTests)
-SPEC(Test)
-SPECX(ValueParameterizedTest)
+SPEC(HelloZenUnit)
+SPEC(HelloZenMock)
 SPECEND
 
-TEST(Test)
+TEST(HelloZenUnit)
+{
+   THROWS([] { throw std::runtime_error("Hello ZenUnit"); }(), 
+      std::runtime_error, "Hello ZenUnit");
+}
+
+TEST(HelloZenMock)
 {
    ComponentMock componentMock;
    componentMock.VirtualFunctionMock.Expect();
@@ -15,16 +21,6 @@ TEST(Test)
    componentMock.VirtualFunction();
    //
    ZEN(componentMock.VirtualFunctionMock.AssertCalledOnce());
-}
-
-TEST3X3(ValueParameterizedTest,
-   int x, int y, int z,
-   0, 0, 0,
-   1, 1, 0,
-   1, 0, 1,
-   2, 1, 1)
-{
-   ARE_EQUAL(x, y + z);
 }
 
 }; RUN(ProgramTests)

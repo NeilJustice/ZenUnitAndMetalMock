@@ -17,4 +17,3 @@ target_link_libraries(LibraryNameTests LibraryName ${ZenUnitLibraryPath})
 
 EnablePrecompiledHeaders()
 IfMSVCAddRunTestsPostBuildStep()
-

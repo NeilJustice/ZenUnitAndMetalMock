@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 project(Examples.Test)
-include(${CMAKE_SOURCE_DIR}/ZenUnitTestedProgram/CMakeMacros.cmake)
+include(${CMAKE_SOURCE_DIR}/ZenUnitHelloWorld/CMakeMacros.cmake)
 
 include_directories(${CMAKE_SOURCE_DIR})
 file(GLOB Sources *.h *.cpp)

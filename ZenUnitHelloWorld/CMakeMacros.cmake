@@ -80,4 +80,3 @@ elseif(MSVC)
    set(ZenUnitIncludeDirectory C:\\install\\include\\ZenUnit)
    set(ZenUnitLibraryPath C:\\install\\lib\\ZenUnit\\ZenUnit$(Configuration).lib)
 endif()
-

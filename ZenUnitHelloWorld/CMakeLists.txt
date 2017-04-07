@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(ProgramName)
+project(ExecutableName)
 include(CMakeMacros.cmake)
 
 if(UNIX)
@@ -18,7 +18,7 @@ elseif(MSVC)
    set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 endif()
 
-add_subdirectory(ProgramName)
+add_subdirectory(ExecutableName)
 add_subdirectory(LibraryName)
 add_subdirectory(LibraryNameTests)
 
