@@ -14,8 +14,8 @@ namespace ZenMock
       {
       }
 
-      OneArgCall(Arg1Type arg)
-         : arg(std::move(arg))
+      OneArgCall(const Arg1Type& arg)
+         : arg(arg)
       {
       }
    };

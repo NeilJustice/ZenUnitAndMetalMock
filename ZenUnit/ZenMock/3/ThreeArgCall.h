@@ -18,10 +18,10 @@ namespace ZenMock
       {
       }
 
-      ThreeArgCall(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3)
-         : arg1(std::move(arg1))
-         , arg2(std::move(arg2))
-         , arg3(std::move(arg3))
+      ThreeArgCall(const Arg1Type& arg1, const Arg2Type& arg2, const Arg3Type& arg3)
+         : arg1(arg1)
+         , arg2(arg2)
+         , arg3(arg3)
       {
       }
    };
