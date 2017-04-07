@@ -8,6 +8,3 @@ source_group("" FILES ${Sources})
 
 add_executable(ExecutableName ${Sources})
 target_link_libraries(ExecutableName LibraryName)
-
-install(TARGETS ExecutableName DESTINATION ".")
-

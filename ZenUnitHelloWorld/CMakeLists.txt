@@ -21,4 +21,3 @@ endif()
 add_subdirectory(ExecutableName)
 add_subdirectory(LibraryName)
 add_subdirectory(LibraryNameTests)
-
