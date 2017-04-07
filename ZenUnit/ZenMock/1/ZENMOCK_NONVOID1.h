@@ -5,10 +5,10 @@
 
 // Virtual Functions
 #define ZENMOCK_NONVOID1(returnType, functionName, arg1Type, ...) \
-        ZENMOCK_NONVOID1_DEFINED(returnType, functionName, arg1Type, virtual,      ,        , final, __VA_ARGS__)
+        ZENMOCK_NONVOID1_DEFINED(returnType, functionName, arg1Type, virtual,      ,        , override final, __VA_ARGS__)
 
 #define ZENMOCK_NONVOID1_CONST(returnType, functionName, arg1Type, ...) \
-        ZENMOCK_NONVOID1_DEFINED(returnType, functionName, arg1Type, virtual, const, mutable, final, __VA_ARGS__)
+        ZENMOCK_NONVOID1_DEFINED(returnType, functionName, arg1Type, virtual, const, mutable, override final, __VA_ARGS__)
 
 // Non-Virtual Functions
 #define ZENMOCK_NONVOID1_NONVIRTUAL(returnType, functionName, arg1Type, ...) \
@@ -30,8 +30,8 @@
          ZenMock::Signature::FunctionPointer(#returnType, #qualifiedClassNameOrNamespace"::"#functionName"("#arg1Type")"));
 
 // Implementation
-#define ZENMOCK_NONVOID1_DEFINED(returnType, functionName, arg1Type, virtualness, constness, mutableness, finalness, ...) \
-virtualness returnType functionName(arg1Type arg) constness finalness \
+#define ZENMOCK_NONVOID1_DEFINED(returnType, functionName, arg1Type, virtualness, constness, mutableness, overridefinalness, ...) \
+virtualness returnType functionName(arg1Type arg) constness overridefinalness \
 { \
    return functionName##Mock##__VA_ARGS__.ZenMockItAndReturnValue(arg); \
 } \

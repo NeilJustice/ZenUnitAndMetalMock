@@ -4,10 +4,10 @@
 
 // Virtual Functions
 #define ZENMOCK_VOID0(functionName) \
-        ZENMOCK_VOID0_DEFINED(functionName, virtual,      ,        , final)
+        ZENMOCK_VOID0_DEFINED(functionName, virtual,      ,        , override final)
 
 #define ZENMOCK_VOID0_CONST(functionName) \
-        ZENMOCK_VOID0_DEFINED(functionName, virtual, const, mutable, final)
+        ZENMOCK_VOID0_DEFINED(functionName, virtual, const, mutable, override final)
 
 // Non-Virtual Functions
 #define ZENMOCK_VOID0_NONVIRTUAL(functionName) \
@@ -28,8 +28,8 @@
          ZenMock::Signature::FunctionPointer("void", #qualifiedClassNameOrNamespace"::"#functionName"()"));
 
 // Implementation
-#define ZENMOCK_VOID0_DEFINED(functionName, virtualness, constness, mutableness, finalness) \
-virtualness void functionName() constness finalness \
+#define ZENMOCK_VOID0_DEFINED(functionName, virtualness, constness, mutableness, overridefinalness) \
+virtualness void functionName() constness overridefinalness \
 { \
    functionName##Mock.ZenMockIt(); \
 } \
