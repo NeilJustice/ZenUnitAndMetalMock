@@ -115,8 +115,8 @@ SPECEND
 TEST(Contains_ReturnsTrueIfSetContainsElement)
 {
    SetType<T> s;
-   T element10{10};
-   T element20{20};
+   const T element10{10};
+   const T element20{20};
 
    IS_FALSE(Set::Contains(s, element10));
    IS_FALSE(Set::Contains(s, element20));
