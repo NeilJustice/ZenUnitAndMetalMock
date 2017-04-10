@@ -90,6 +90,10 @@ If your code-under-test is templatized, ZenUnit provides macros TEMPLATETESTS an
 Here is how the correctness of a function that returns whether a generic set contains an element can be confirmed using TEMPLATETESTS and RUNTEMPLATE:
 
 ```cpp
+#include "ZenUnit/ZenUnit.h"
+#include <set>
+#include <unordered_set>
+
 class Set
 {
 public:
@@ -100,9 +104,7 @@ public:
       return setContainsElement;
    }
 };
-```
 
-```cpp
 template<
    template<typename...>
    class SetType, typename T>
@@ -129,10 +131,15 @@ TEST(Contains_ReturnsTrueIfSetContainsElement)
 }
 
 };
-RUNTEMPLATE(SetTests, set, int)
-RUNTEMPLATE(SetTests, set, unsigned long long)
-RUNTEMPLATE(SetTests, unordered_set, int)
-RUNTEMPLATE(SetTests, unordered_set, unsigned long long)
+RUNTEMPLATE(SetTests, std::set, int)
+RUNTEMPLATE(SetTests, std::set, unsigned long long)
+RUNTEMPLATE(SetTests, std::unordered_set, int)
+RUNTEMPLATE(SetTests, std::unordered_set, unsigned long long)
+
+int main(int argc, char* argv[])
+{
+   return ZenUnit::RunTests(argc, argv);
+}
 ```
 
 ![ZenUnitTemplateTests](../Screenshots/ZenUnitTemplateTests.png "ZenUnit Type-Parameterized Test Classes")
