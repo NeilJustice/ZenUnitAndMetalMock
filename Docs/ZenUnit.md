@@ -83,6 +83,60 @@
 |`EQUALIZER_THROWS_INIT(typeName)`|
 |`EQUALIZER_THROWS(typeName, fieldName, nonDefaultFieldValue)`|
 
+### Type-Parameterized Test Classes
+
+If your code-under-test is templatized, ZenUnit provides macros TEMPLATETESTS and RUNTEMPLATE for writing type-parameterized test classes to test various template arguments.
+
+Here is how the correctness of a function that returns whether a generic set contains an element can be confirmed using TEMPLATETESTS and RUNTEMPLATE:
+
+```cpp
+class Set
+{
+public:
+   template<typename SetType, typename T>
+   static bool Contains(const SetType& s, const T& element)
+   {
+      const bool setContainsElement = s.find(element) != s.end();
+      return setContainsElement;
+   }
+};
+```
+
+```cpp
+template<
+   template<typename...>
+   class SetType, typename T>
+TEMPLATETESTS(SetTests, SetType, T)
+SPEC(Contains_ReturnsTrueIfSetContainsElement)
+SPECEND
+
+TEST(Contains_ReturnsTrueIfSetContainsElement)
+{
+   SetType<T> s;
+   T element10{10};
+   T element20{20};
+
+   IS_FALSE(Set::Contains(s, element10));
+   IS_FALSE(Set::Contains(s, element20));
+
+   s.insert(element10);
+   IS_TRUE(Set::Contains(s, element10));
+   IS_FALSE(Set::Contains(s, element20));
+
+   s.insert(element20);
+   IS_TRUE(Set::Contains(s, element10));
+   IS_TRUE(Set::Contains(s, element20));
+}
+
+};
+RUNTEMPLATE(SetTests, set, int)
+RUNTEMPLATE(SetTests, set, unsigned long long)
+RUNTEMPLATE(SetTests, unordered_set, int)
+RUNTEMPLATE(SetTests, unordered_set, unsigned long long)
+```
+
+![ZenUnitTemplateTests](../Screenshots/ZenUnitTemplateTests.png "ZenUnit Type-Parameterized Test Classes")
+
 ### Command Line Arguments
 
 ```
@@ -118,3 +172,4 @@ None
 |-parallel|
 
 ### [Work In Progress Guide to ZenMock](ZenMock.md)
+
