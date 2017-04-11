@@ -12,7 +12,7 @@ public:
       s_destructorCalled = false;
    }
 
-   ~TestingTestClass() override final
+   ~TestingTestClass() final
    {
       s_destructorCalled = true;
    }

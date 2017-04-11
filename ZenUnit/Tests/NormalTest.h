@@ -19,50 +19,50 @@ namespace ZenUnit
       {
       }
 
-      size_t NumberOfTestCases() const override final
+      size_t NumberOfTestCases() const final
       {
          return 1;
       }
 
-      void PrintPostTestNameMessage(const Console* console) const override final
+      void PrintPostTestNameMessage(const Console* console) const final
       {
          console->Write(" -> ");
       }
 
       void PrintPostTestCompletionMessage(
-         const Console* console, const TestResult& testResult) const override final
+         const Console* console, const TestResult& testResult) const final
       {
          testResult.PrintTestOutcome(console);
       }
 
-      std::vector<TestResult> Run() override final
+      std::vector<TestResult> Run() final
       {
          const TestResult testResult = RunTestCase();
          return { testResult };
       }
 
-      void NewTestClass() override final
+      void NewTestClass() final
       {
          assert_true(_testClass == nullptr);
          _testClass = std::make_unique<TestClassType>();
       }
 
-      void Startup() override final
+      void Startup() final
       {
          _testClass->Startup();
       }
 
-      void TestBody() override final
+      void TestBody() final
       {
          (_testClass.get()->*_testMemberFunction)();
       }
 
-      void Cleanup() override final
+      void Cleanup() final
       {
          _testClass->Cleanup();
       }
 
-      void DeleteTestClass() override final
+      void DeleteTestClass() final
       {
          _testClass.reset();
       }

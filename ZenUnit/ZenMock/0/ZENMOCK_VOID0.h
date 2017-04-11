@@ -4,10 +4,10 @@
 
 // Virtual Functions
 #define ZENMOCK_VOID0(functionName) \
-        ZENMOCK_VOID0_DEFINED(functionName, virtual,      ,        , override final)
+        ZENMOCK_VOID0_DEFINED(functionName, virtual,      ,        , final)
 
 #define ZENMOCK_VOID0_CONST(functionName) \
-        ZENMOCK_VOID0_DEFINED(functionName, virtual, const, mutable, override final)
+        ZENMOCK_VOID0_DEFINED(functionName, virtual, const, mutable, final)
 
 // Non-Virtual Functions
 #define ZENMOCK_VOID0_NONVIRTUAL(functionName) \

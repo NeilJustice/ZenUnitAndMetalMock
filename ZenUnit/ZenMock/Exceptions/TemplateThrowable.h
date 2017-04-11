@@ -20,7 +20,7 @@ namespace ZenMock
          return templateThrowable;
       }
 
-      void Throw() const override final
+      void Throw() const final
       {
          if (_exception != nullptr)
          {

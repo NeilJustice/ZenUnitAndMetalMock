@@ -21,12 +21,12 @@ namespace ZenUnit
       {
       }
 
-      size_t NumberOfTestCases() const override final
+      size_t NumberOfTestCases() const final
       {
          return 1;
       }
 
-      std::vector<TestResult> Run() override final
+      std::vector<TestResult> Run() final
       {
          const CallResult constructorCallResult = _tryCatchCaller->
             Call(&Test::CallNewTestClass, this, TestPhase::Constructor);
@@ -43,16 +43,16 @@ namespace ZenUnit
          return { testResult };
       }
 
-      void NewTestClass() override final
+      void NewTestClass() final
       {
          _firstInstanceOfTestClass = std::make_unique<TestClassType>();
       }
 
-      void Startup() override final {}
-      void TestBody() override final {}
-      void Cleanup() override final {}
+      void Startup() final {}
+      void TestBody() final {}
+      void Cleanup() final {}
 
-      void DeleteTestClass() override final
+      void DeleteTestClass() final
       {
          _firstInstanceOfTestClass.reset();
       }
