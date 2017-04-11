@@ -33,13 +33,13 @@ namespace ZenUnit
       {
       }
 
-      size_t NumberOfTestCases() const final
+      size_t NumberOfTestCases() const override final
       {
          size_t numberOfTestCases = NumberOfTestCaseArgs / N;
          return numberOfTestCases;
       }
 
-      std::vector<TestResult> Run() final
+      std::vector<TestResult> Run() override final
       {
          std::vector<TestResult> testResults;
          size_t numberOfTestCases = NumberOfTestCases();
@@ -59,28 +59,28 @@ namespace ZenUnit
          return testResults;
       }
 
-      void NewTestClass() final
+      void NewTestClass() override final
       {
          _testClass = std::make_unique<TestClassType>();
       }
 
-      void Startup() final
+      void Startup() override final
       {
          _testClass->Startup();
       }
 
-      void TestBody() final
+      void TestBody() override final
       {
          NXNTestBody(_testClass.get(), _testCaseArgsIndex);
       }
       virtual void NXNTestBody(TestClassType*, size_t) { throw std::logic_error("N/A"); }
 
-      void Cleanup() final
+      void Cleanup() override final
       {
          _testClass->Cleanup();
       }
 
-      void DeleteTestClass() final
+      void DeleteTestClass() override final
       {
          _testClass.reset();
       }

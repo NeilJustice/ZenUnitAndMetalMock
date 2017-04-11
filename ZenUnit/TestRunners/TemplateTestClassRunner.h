@@ -34,12 +34,12 @@ namespace ZenUnit
          _tests = TestClassType::GetTests();
       }
 
-      const char* TestClassName() const final
+      const char* TestClassName() const override final
       {
          return _testClassName;
       }
 
-      size_t NumberOfTestCases() const final
+      size_t NumberOfTestCases() const override final
       {
          const size_t totalNumberOfTestCases = std::accumulate(_tests.cbegin(), _tests.cend(), size_t(),
             [](size_t cumulativeNumberOfTestCases, const std::unique_ptr<Test>& test)
@@ -50,7 +50,7 @@ namespace ZenUnit
          return totalNumberOfTestCases;
       }
 
-      TestClassResult RunTests() final
+      TestClassResult RunTests() override final
       {
          PrintTestClassNameAndNumberOfTests();
          if (ConfirmNewabilityDeletabilityAndRegisterNXNTests(&_newDeleteTest, &_testClassResult))

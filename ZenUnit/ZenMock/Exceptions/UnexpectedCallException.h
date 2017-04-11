@@ -39,7 +39,7 @@ Fix for this: Add before the unexpected call a call to
          return what;
       }
 
-      const char* what() const noexcept final
+      const char* what() const noexcept override final
       {
          return _what.c_str();
       }

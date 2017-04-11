@@ -17,30 +17,30 @@ namespace ZenUnit
       {
       }
 
-      size_t NumberOfTestCases() const final
+      size_t NumberOfTestCases() const override final
       {
          const std::unique_ptr<Test>* testNXN = GetTestNXNFromPmfToken();
          const size_t numberOfTestCases = (*testNXN)->NumberOfTestCases();
          return numberOfTestCases;
       }
 
-      void PrintPostTestNameMessage(const Console* console) const final
+      void PrintPostTestNameMessage(const Console* console) const override final
       {
          console->WriteLine("...");
       }
 
-      std::vector<TestResult> Run() final
+      std::vector<TestResult> Run() override final
       {
          const std::unique_ptr<Test>* testNXN = GetTestNXNFromPmfToken();
          const std::vector<TestResult> testResults = (*testNXN)->Run();
          return testResults;
       }
 
-      void NewTestClass() final { throw std::logic_error("N/A"); }
-      void Startup() final { throw std::logic_error("N/A"); }
-      void TestBody() final { throw std::logic_error("N/A"); }
-      void Cleanup() final { throw std::logic_error("N/A"); }
-      void DeleteTestClass() final { throw std::logic_error("N/A"); }
+      void NewTestClass() override final { throw std::logic_error("N/A"); }
+      void Startup() override final { throw std::logic_error("N/A"); }
+      void TestBody() override final { throw std::logic_error("N/A"); }
+      void Cleanup() override final { throw std::logic_error("N/A"); }
+      void DeleteTestClass() override final { throw std::logic_error("N/A"); }
    private:
       virtual const std::unique_ptr<Test>* GetTestNXNFromPmfToken() const
       {
