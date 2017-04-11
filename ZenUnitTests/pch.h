@@ -29,8 +29,8 @@ using namespace std::experimental;
    #include "Windows.h"
 #endif
 
-#include "ZenUnit/ZenUnit.h"
 #include "ZenUnit/ZenMock.h"
+#include "ZenUnit/ZenUnit.h"
 using namespace ZenUnit;
 
 #include "ZenUnitTests/Testing/UserType.h"
