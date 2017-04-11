@@ -1,4 +1,5 @@
 #pragma once
+#include "ZenUnit/Console/Console.h"
 #include "ZenUnit/Tests/Test.h"
 #include <iostream>
 

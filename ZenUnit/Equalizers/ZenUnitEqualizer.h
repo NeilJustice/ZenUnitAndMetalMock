@@ -1,5 +1,6 @@
 #pragma once
 #include "ZenUnit/Anomaly/EqualizerException.h"
+#include <string>
 
 template<typename ExpectedAndActualType>
 struct ZenUnitEqualizer

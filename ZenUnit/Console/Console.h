@@ -2,6 +2,7 @@
 #include "Color.h"
 #include <functional>
 #include <memory>
+#include <vector>
 
 namespace ZenUnit
 {
