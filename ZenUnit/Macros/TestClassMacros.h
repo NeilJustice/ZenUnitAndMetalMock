@@ -1,10 +1,10 @@
 #pragma once
 #include "ZenUnit/Macros/MacroUtils.h"
+#include "ZenUnit/TestRunners/TemplateTestClassRunner.h"
+#include "ZenUnit/TestRunners/TestRunner.h"
 #include "ZenUnit/Tests/NormalTest.h"
 #include "ZenUnit/Tests/SpecSectionTestNXN.h"
 #include "ZenUnit/Tests/TestClass.h"
-#include "ZenUnit/TestRunners/TemplateTestClassRunner.h"
-#include "ZenUnit/TestRunners/TestRunner.h"
 #include "ZenUnit/Utils/NA.h"
 #include "ZenUnit/Utils/PmfToken.h"
 

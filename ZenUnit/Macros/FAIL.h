@@ -1,8 +1,8 @@
 #pragma once
-#include "ZenUnit/Utils/FileLine.h"
-#include "ZenUnit/Utils/VRText.h"
-#include "ZenUnit/Utils/StringUtil.h"
 #include "ZenUnit/Anomaly/Anomaly.h"
+#include "ZenUnit/Utils/FileLine.h"
+#include "ZenUnit/Utils/StringUtil.h"
+#include "ZenUnit/Utils/VRText.h"
 
 #define FAIL(testFailureReason, ...) \
    ZenUnit::FAIL_Defined(VRT(testFailureReason), \

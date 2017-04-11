@@ -1,8 +1,8 @@
 #pragma once
-#include "ZenUnit/Utils/FileLine.h"
-#include "ZenUnit/Utils/VRText.h"
 #include "ZenUnit/Anomaly/Anomaly.h"
 #include "ZenUnit/ToStringer/ToStringer.h"
+#include "ZenUnit/Utils/FileLine.h"
+#include "ZenUnit/Utils/VRText.h"
 
 #define ARE_SAME(expectedObject, actualObject, ...) \
    ARE_SAME_Defined(VRT(expectedObject), VRT(actualObject), \

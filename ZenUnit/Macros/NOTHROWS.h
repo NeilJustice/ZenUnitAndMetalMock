@@ -1,6 +1,6 @@
 #pragma once
-#include "ZenUnit/Utils/Type.h"
 #include "ZenUnit/Anomaly/Anomaly.h"
+#include "ZenUnit/Utils/Type.h"
 
 #define NOTHROWS(expression, ...) \
    NOTHROWS_Defined([&]{ expression; }, #expression, \

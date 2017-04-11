@@ -1,6 +1,6 @@
 #pragma once
-#include "ZenUnit/Macros/CONTAINS.h"
 #include "ZenUnit/Macros/ARE_EQUAL.h"
+#include "ZenUnit/Macros/CONTAINS.h"
 
 #define SETS_EQUAL(expectedSet, actualSet, ...) \
    ZenUnit::SETS_EQUAL_Defined(VRT(expectedSet), VRT(actualSet), \

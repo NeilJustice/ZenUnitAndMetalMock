@@ -1,7 +1,7 @@
 #pragma once
-#include "ZenUnit/Utils/FileLine.h"
-#include "ZenUnit/Macros/MacroUtils.h"
 #include "ZenUnit/Anomaly/Anomaly.h"
+#include "ZenUnit/Macros/MacroUtils.h"
+#include "ZenUnit/Utils/FileLine.h"
 
 #define IS_NOT_NULL(pointer, ...) \
    ZenUnit::IS_NOT_NULL_Defined(pointer == nullptr, #pointer, \

@@ -1,7 +1,7 @@
 #pragma once
-#include "ZenUnit/Utils/Type.h"
 #include "ZenUnit/Anomaly/Anomaly.h"
 #include "ZenUnit/Macros/MacroUtils.h"
+#include "ZenUnit/Utils/Type.h"
 #include <typeindex>
 
 #define THROWS(expression, expectedExactExceptionType, expectedWhat, ...) \

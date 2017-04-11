@@ -1,7 +1,7 @@
 #pragma once
+#include "ZenUnit/Anomaly/Anomaly.h"
 #include "ZenUnit/Utils/FileLine.h"
 #include "ZenUnit/Utils/VRText.h"
-#include "ZenUnit/Anomaly/Anomaly.h"
 
 #define REGEX_MATCHES(expectedPattern, str, ...) \
    ZenUnit::REGEX_MATCHES_Defined(VRT(expectedPattern), VRT(str), \

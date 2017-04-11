@@ -1,7 +1,7 @@
 #pragma once
-#include "ZenUnit/Macros/IS_TRUE.h"
-#include "ZenUnit/Macros/IS_NOT_NULL.h"
 #include "ZenUnit/Macros/ARE_EQUAL.h"
+#include "ZenUnit/Macros/IS_NOT_NULL.h"
+#include "ZenUnit/Macros/IS_TRUE.h"
 
 #define FUNCTION_TARGETS(expectedStdFunctionTarget, stdFunction, ...) \
    ZenUnit::FUNCTION_TARGETS_Defined<decltype(expectedStdFunctionTarget)>( \
