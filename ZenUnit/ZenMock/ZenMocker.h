@@ -19,7 +19,7 @@ namespace ZenMock
       bool _zenMockExceptionIsInPlay;
    protected:
       MockableExceptionThrowerType _exceptionThrower;
-      bool expected;
+      bool _expected;
       bool _asserted;
       const std::string ZenMockedFunctionSignature;
    public:
@@ -27,7 +27,7 @@ namespace ZenMock
          : _zenMockableExitFunction(::exit)
          , _zenMockableGetZenUnitArgs(ZenUnit::TestRunner::GetArgs)
          , _zenMockExceptionIsInPlay(false)
-         , expected(false)
+         , _expected(false)
          , _asserted(false)
          , ZenMockedFunctionSignature(std::move(zenMockedFunctionSignature))
       {
@@ -36,7 +36,7 @@ namespace ZenMock
       void Expect()
       {
          ZenMockThrowIfAlreadyExpected();
-         expected = true;
+         _expected = true;
       }
 
       template<typename ExceptionType, typename... ExceptionArgTypes>
@@ -45,7 +45,7 @@ namespace ZenMock
          ZenMockThrowIfAlreadyExpected();
          _exceptionThrower.template ExpectAndThrow<ExceptionType>(
             std::forward<ExceptionArgTypes>(exceptionArgs)...);
-         expected = true;
+         _expected = true;
       }
 
       ~ZenMocker()
@@ -62,7 +62,7 @@ namespace ZenMock
       template<typename... ArgTypes>
       void ZenMockThrowIfNotExpected(const ArgTypes&... args)
       {
-         if (!expected)
+         if (!_expected)
          {
             _zenMockExceptionIsInPlay = true;
             throw UnexpectedCallException(ZenMockedFunctionSignature, args...);
@@ -95,7 +95,7 @@ namespace ZenMock
    private:
       void ZenMockExitIfExpectedAndNotAsserted() const
       {
-         if (expected && !_asserted && !_zenMockExceptionIsInPlay)
+         if (_expected && !_asserted && !_zenMockExceptionIsInPlay)
          {
             const ZenUnit::Console console;
             std::cout << "\n\n";
@@ -114,7 +114,7 @@ Fail fasting with exit code 1.
 
       void ZenMockThrowIfAlreadyExpected()
       {
-         if (expected)
+         if (_expected)
          {
             _zenMockExceptionIsInPlay = true;
             throw FunctionAlreadyExpectedException(ZenMockedFunctionSignature);
