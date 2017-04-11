@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ZenUnitTests/Console/Mock/ConsoleColorerMock.h"
 #include "ZenUnit/Console/Console.h"
+#include "ZenUnitTests/Console/Mock/ConsoleColorerMock.h"
 
 namespace ZenUnit
 {

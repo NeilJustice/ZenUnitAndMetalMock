@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnit/Args/ArgsParser.h"
 #include "ZenUnit/Utils/Vector.h"
+#include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 
 namespace ZenUnit
 {

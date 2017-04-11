@@ -1,11 +1,11 @@
 #include "pch.h"
+#include "ZenUnit/Enums/TestOutcome.h"
+#include "ZenUnit/TestRunners/TryCatchCaller.h"
+#include "ZenUnit/Utils/Time/Stopwatch.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/CallResultMock.h"
 #include "ZenUnitTests/Tests/Mock/TestMock.h"
 #include "ZenUnitTests/Utils/Time/Mock/StopwatchMock.h"
-#include "ZenUnit/Enums/TestOutcome.h"
-#include "ZenUnit/TestRunners/TryCatchCaller.h"
-#include "ZenUnit/Utils/Time/Stopwatch.h"
 
 namespace ZenUnit
 {

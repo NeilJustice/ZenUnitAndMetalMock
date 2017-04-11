@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ZenUnitTests/Tests/TestNXNUtil.h"
 #include "ZenUnit/Tests/Test1X1ThroughTest10X10.h"
+#include "ZenUnitTests/Tests/TestNXNUtil.h"
 
 struct StartupCleanupMixin
 {

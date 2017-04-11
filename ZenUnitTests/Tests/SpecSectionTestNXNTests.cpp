@@ -1,7 +1,7 @@
 #include "pch.h"
+#include "ZenUnit/Tests/SpecSectionTestNXN.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Tests/Mock/TestMock.h"
-#include "ZenUnit/Tests/SpecSectionTestNXN.h"
 
 class TestingTestClass_SpecSectionTestNXNTests
 {

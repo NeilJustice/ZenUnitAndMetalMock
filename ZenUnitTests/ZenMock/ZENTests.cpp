@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnit/ZenMock/ZEN.h"
+#include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 
 namespace ZenMock
 {
