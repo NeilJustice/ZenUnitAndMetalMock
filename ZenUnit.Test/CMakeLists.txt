@@ -4,6 +4,8 @@ include(${CMAKE_SOURCE_DIR}/ZenUnitHelloWorld/CMakeMacros.cmake)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(${CMAKE_SOURCE_DIR})
+include_directories(${GoogleBenchmarkIncludeDirectory})
+
 folder_source_group(Anomaly)
 folder_source_group(Args)
 folder_source_group_subfolder(Args Mock)
@@ -48,6 +50,9 @@ file(GLOB_RECURSE Sources *.h *.cpp)
 
 add_executable(ZenUnit.Test ${Sources})
 target_link_libraries(ZenUnit.Test ZenUnit)
+if(EXISTS ${GoogleBenchmarkLibPath})
+   target_link_libraries(ZenUnit.Test ${GoogleBenchmarkLibPath})
+endif()
 
 EnablePrecompiledHeaders()
 IfMSVCAddRunTestsPostBuildStep()

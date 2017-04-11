@@ -20,8 +20,7 @@ namespace ZenUnit
    public:
       TryCatchCaller();
       virtual ~TryCatchCaller();
-      virtual CallResult Call(
-         void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const;
+      virtual CallResult Call(void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const;
    private:
       template<typename ExceptionType>
       void PopulateCallResult(const ExceptionType& e, CallResult* outCallResult) const
