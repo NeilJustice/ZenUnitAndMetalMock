@@ -1,6 +1,6 @@
 #pragma once
-#include "ZenUnit/ZenMock/Mock.h"
 #include "ZenUnit/ZenMock/3/ThreeArgMocker.h"
+#include "ZenUnit/ZenMock/Mock.h"
 #include "ZenUnit/ZenMock/ValueReturner.h"
 
 // Virtual Functions

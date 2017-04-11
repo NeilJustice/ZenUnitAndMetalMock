@@ -1,9 +1,9 @@
 #pragma once
-#include "ZenUnit/ZenMock/ZenMocker.h"
+#include "ZenUnit/Macros/VECTORS_EQUAL.h"
 #include "ZenUnit/ZenMock/3/ThreeArgCall.h"
 #include "ZenUnit/ZenMock/3/ThreeArgCallRef.h"
 #include "ZenUnit/ZenMock/Exceptions/UnexpectedCallException.h"
-#include "ZenUnit/Macros/VECTORS_EQUAL.h"
+#include "ZenUnit/ZenMock/ZenMocker.h"
 
 #define ZENBIND3(FunctionName_ZenMock) \
    std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \

@@ -1,7 +1,7 @@
 #pragma once
+#include "ZenUnit/Tests/FullName.h"
 #include "ZenUnit/Tests/Test.h"
 #include "ZenUnit/Tests/Test1X1ThroughTest10X10.h"
-#include "ZenUnit/Tests/FullName.h"
 #include "ZenUnit/Utils/Map.h"
 #include "ZenUnit/Utils/PmfToken.h"
 #include <unordered_map>

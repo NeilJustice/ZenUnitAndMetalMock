@@ -1,9 +1,9 @@
 #pragma once
-#include "ZenUnit/TestRunners/TestClassRunner.h"
-#include "ZenUnit/Results/TestResult.h"
-#include "ZenUnit/Tests/Test.h"
-#include "ZenUnit/Tests/NewDeleteTest.h"
 #include "ZenUnit/Console/Console.h"
+#include "ZenUnit/Results/TestResult.h"
+#include "ZenUnit/TestRunners/TestClassRunner.h"
+#include "ZenUnit/Tests/NewDeleteTest.h"
+#include "ZenUnit/Tests/Test.h"
 #include "ZenUnit/Utils/Iteration/MemberForEacherExtraArg.h"
 #include <numeric>
 

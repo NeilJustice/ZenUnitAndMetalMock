@@ -1,6 +1,6 @@
 #pragma once
-#include "ZenUnit/ToStringer/ToStringer.h"
 #include "ZenUnit/Macros/ARE_EQUAL.h"
+#include "ZenUnit/ToStringer/ToStringer.h"
 
 namespace ZenMock
 {

@@ -1,6 +1,6 @@
 #pragma once
-#include "ZenUnit/ZenMock/ZEN.h"
 #include "ZenUnit/Utils/Type.h"
+#include "ZenUnit/ZenMock/ZEN.h"
 
 namespace Zen
 {

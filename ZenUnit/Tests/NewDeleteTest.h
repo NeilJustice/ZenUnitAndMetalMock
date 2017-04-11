@@ -1,7 +1,7 @@
 #pragma once
-#include "Test.h"
-#include "ZenUnit/TestRunners/TryCatchCaller.h"
 #include "ZenUnit/Results/TestResultFactory.h"
+#include "ZenUnit/TestRunners/TryCatchCaller.h"
+#include "ZenUnit/Tests/Test.h"
 
 namespace ZenUnit
 {

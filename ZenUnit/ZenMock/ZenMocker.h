@@ -1,9 +1,9 @@
 #pragma once
+#include "ZenUnit/Console/Console.h"
 #include "ZenUnit/ZenMock/Exceptions/ExceptionThrower.h"
+#include "ZenUnit/ZenMock/Exceptions/FunctionAlreadyExpectedException.h"
 #include "ZenUnit/ZenMock/Exceptions/UnexpectedCallException.h"
 #include "ZenUnit/ZenMock/Exceptions/UnsupportedAssertCalledZeroTimesException.h"
-#include "ZenUnit/ZenMock/Exceptions/FunctionAlreadyExpectedException.h"
-#include "ZenUnit/Console/Console.h"
 
 namespace ZenMock
 {

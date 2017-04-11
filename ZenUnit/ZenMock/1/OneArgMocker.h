@@ -1,11 +1,11 @@
 #pragma once
-#include "ZenUnit/ZenMock/ZenMocker.h"
+#include "ZenUnit/Macros/VECTORS_EQUAL.h"
 #include "ZenUnit/ZenMock/1/OneArgCall.h"
 #include "ZenUnit/ZenMock/1/OneArgCallRef.h"
-#include "ZenUnit/ZenMock/Exceptions/UnexpectedCallException.h"
 #include "ZenUnit/ZenMock/Exceptions/FunctionAlreadyExpectedException.h"
+#include "ZenUnit/ZenMock/Exceptions/UnexpectedCallException.h"
 #include "ZenUnit/ZenMock/Exceptions/UnsupportedAssertCalledZeroTimesException.h"
-#include "ZenUnit/Macros/VECTORS_EQUAL.h"
+#include "ZenUnit/ZenMock/ZenMocker.h"
 
 #define ZENBIND1(FunctionName_ZenMock) \
    std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \

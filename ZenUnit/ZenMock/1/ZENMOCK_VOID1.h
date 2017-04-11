@@ -1,6 +1,6 @@
 #pragma once
-#include "ZenUnit/ZenMock/Mock.h"
 #include "ZenUnit/ZenMock/1/OneArgMocker.h"
+#include "ZenUnit/ZenMock/Mock.h"
 #include "ZenUnit/ZenMock/Signature.h"
 
 // Virtual Functions

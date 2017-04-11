@@ -1,6 +1,6 @@
 #pragma once
-#include "ZenUnit/ZenMock/Mock.h"
 #include "ZenUnit/ZenMock/4/FourArgMocker.h"
+#include "ZenUnit/ZenMock/Mock.h"
 
 // Virtual Functions
 #define ZENMOCK_VOID4(functionName, arg1Type, arg2Type, arg3Type, arg4Type, ...) \
