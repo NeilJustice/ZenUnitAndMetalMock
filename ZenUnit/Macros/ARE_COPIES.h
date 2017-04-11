@@ -1,5 +1,6 @@
 #pragma once
 #include "ZenUnit/Anomaly/Anomaly.h"
+#include "ZenUnit/Macros/ARE_NOT_SAME.h"
 #include "ZenUnit/Macros/MacroUtils.h"
 #include "ZenUnit/ToStringer/ToStringer.h"
 #include "ZenUnit/Utils/FileLine.h"
@@ -13,7 +14,7 @@ namespace ZenUnit
 {
    template<typename ExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
    NOINLINE void ARE_COPIES_Throw(
-      VRText<ExpectedObjectType> expectedObjectVRT, 
+      VRText<ExpectedObjectType> expectedObjectVRT,
       VRText<ActualObjectType> actualObjectVRT,
       FileLine fileLine, const Anomaly& becauseAnomaly,
       const char* messagesText, const MessageTypes&... messages)
@@ -29,7 +30,7 @@ namespace ZenUnit
 
    template<typename ExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
    void ARE_COPIES_Defined(
-      VRText<ExpectedObjectType> expectedObjectVRT, 
+      VRText<ExpectedObjectType> expectedObjectVRT,
       VRText<ActualObjectType> actualObjectVRT,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
@@ -41,7 +42,7 @@ namespace ZenUnit
       }
       catch (const Anomaly& becauseAnomaly)
       {
-         ARE_COPIES_Throw(expectedObjectVRT, actualObjectVRT, 
+         ARE_COPIES_Throw(expectedObjectVRT, actualObjectVRT,
             fileLine, becauseAnomaly, messagesText, messages...);
       }
       try
@@ -50,7 +51,7 @@ namespace ZenUnit
       }
       catch (const Anomaly& becauseAnomaly)
       {
-         ARE_COPIES_Throw(expectedObjectVRT, actualObjectVRT, 
+         ARE_COPIES_Throw(expectedObjectVRT, actualObjectVRT,
             fileLine, becauseAnomaly, messagesText, messages...);
       }
    }

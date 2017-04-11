@@ -1,5 +1,6 @@
 #pragma once
 #include "ZenUnit/Anomaly/Anomaly.h"
+#include "ZenUnit/Macros/MacroUtils.h"
 #include "ZenUnit/ToStringer/ToStringer.h"
 #include "ZenUnit/Utils/FileLine.h"
 #include "ZenUnit/Utils/VRText.h"
