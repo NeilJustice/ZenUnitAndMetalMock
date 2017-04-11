@@ -41,13 +41,13 @@
       {
          "taskName": "Run Debug",
          "isTestCommand": true,
-         "args": [ "${workspaceRoot}/Debug/ZenUnit.Test/ZenUnit.Test" ]
+         "args": [ "${workspaceRoot}/Debug/ZenUnitTests/ZenUnitTests" ]
          //"args": [ "${workspaceRoot}/Debug/Examples.Test/Examples.Test" ]
       },
       {
          "taskName": "Run Release",
          //"isTestCommand": true,
-         "args": [ "${workspaceRoot}/Release/ZenUnit.Test/ZenUnit.Test" ]
+         "args": [ "${workspaceRoot}/Release/ZenUnitTests/ZenUnitTests" ]
       },
       {
          "taskName": "Run Python",
@@ -77,11 +77,11 @@
       },
       {
          "taskName": "Clean Debug & Pch",
-         "args": [ "rm -f ${workspaceRoot}/ZenUnit/pch.h.gch && rm -f ${workspaceRoot}/ZenUnit.Test/pch.h.gch && cd ${workspaceRoot}/Debug && time ninja clean" ]
+         "args": [ "rm -f ${workspaceRoot}/ZenUnit/pch.h.gch && rm -f ${workspaceRoot}/ZenUnitTests/pch.h.gch && cd ${workspaceRoot}/Debug && time ninja clean" ]
       },
       {
          "taskName": "Clean Release & Pch",
-         "args": [ "rm -f ${workspaceRoot}/ZenUnit/pch.h.gch && rm -f ${workspaceRoot}/ZenUnit.Test/pch.h.gch && cd ${workspaceRoot}/Release && time ninja clean" ]
+         "args": [ "rm -f ${workspaceRoot}/ZenUnit/pch.h.gch && rm -f ${workspaceRoot}/ZenUnitTests/pch.h.gch && cd ${workspaceRoot}/Release && time ninja clean" ]
       },
       {
          "taskName": "clang++ Check Syntax",
@@ -89,15 +89,15 @@
       },
       {
          "taskName": "clang++ Compile File",
-         "args": [ "clang++ -c -std=c++1z -Wno-pragma-once-outside-header -I${workspaceRoot} -I${workspaceRoot}/ZenUnit -I${workspaceRoot}/ZenUnit.Test ${file}" ]
+         "args": [ "clang++ -c -std=c++1z -Wno-pragma-once-outside-header -I${workspaceRoot} -I${workspaceRoot}/ZenUnit -I${workspaceRoot}/ZenUnitTests ${file}" ]
       },
       {
          "taskName": "g++ Check Syntax",
-         "args": [ "g++ -fsyntax-only -std=c++1z -I${workspaceRoot} -I${workspaceRoot}/ZenUnit -I${workspaceRoot}/ZenUnit.Test ${file}" ]
+         "args": [ "g++ -fsyntax-only -std=c++1z -I${workspaceRoot} -I${workspaceRoot}/ZenUnit -I${workspaceRoot}/ZenUnitTests ${file}" ]
       },
       {
          "taskName": "g++ Compile File",
-         "args": [ "g++ -c -std=c++1z -I${workspaceRoot} -I${workspaceRoot}/ZenUnit -I${workspaceRoot}/ZenUnit.Test ${file}" ]
+         "args": [ "g++ -c -std=c++1z -I${workspaceRoot} -I${workspaceRoot}/ZenUnit -I${workspaceRoot}/ZenUnitTests ${file}" ]
       }
    ]
 }

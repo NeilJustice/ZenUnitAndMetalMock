@@ -28,17 +28,17 @@ elseif(MSVC)
 endif()
 
 add_subdirectory(ZenUnit)
-add_subdirectory(ZenUnit.Test)
+add_subdirectory(ZenUnitTests)
 add_subdirectory(Examples)
 add_subdirectory(Examples.Test)
 
-# Allows LinuxCMakeBuildInstall.sh to just build ZenUnit and not also ZenUnit.Test
+# Allows LinuxCMakeBuildInstall.sh to just build ZenUnit and not also ZenUnitTests
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
 
 if(UNIX)
    add_custom_target(clang-tidy COMMAND
       find -name "*.cpp" -print0 | xargs -0 -n 1 -P 0 -t /usr/local/bin/clang-tidy -header-filter=.* -p ${CMAKE_BUILD_TYPE}
       WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} VERBATIM USES_TERMINAL)
-   add_dependencies(clang-tidy ZenUnitPch ZenUnit.TestPch Examples.TestPch)
+   add_dependencies(clang-tidy ZenUnitPch ZenUnitTestsPch Examples.TestPch)
 endif()
 

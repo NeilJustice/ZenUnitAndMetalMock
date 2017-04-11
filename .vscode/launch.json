@@ -7,7 +7,7 @@
          "request": "launch",
          "type": "cppdbg",
          "preLaunchTask": "Build Debug",
-         "program": "${workspaceRoot}/Debug/ZenUnit.Test/ZenUnit.Test",
+         "program": "${workspaceRoot}/Debug/ZenUnitTests/ZenUnitTests",
          //"args": [ "-exit0"],
          "stopAtEntry": false,
          "cwd": "${fileDirname}",
