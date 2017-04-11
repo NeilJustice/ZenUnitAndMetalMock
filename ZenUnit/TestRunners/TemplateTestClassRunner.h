@@ -1,11 +1,11 @@
 #pragma once
-#include <numeric>
 #include "ZenUnit/TestRunners/TestClassRunner.h"
 #include "ZenUnit/Results/TestResult.h"
 #include "ZenUnit/Tests/Test.h"
 #include "ZenUnit/Tests/NewDeleteTest.h"
 #include "ZenUnit/Console/Console.h"
 #include "ZenUnit/Utils/Iteration/MemberForEacherExtraArg.h"
+#include <numeric>
 
 namespace ZenUnit
 {

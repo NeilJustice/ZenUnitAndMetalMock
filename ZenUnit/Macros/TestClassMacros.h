@@ -1,12 +1,12 @@
 #pragma once
-#include "ZenUnit/Tests/TestClass.h"
+#include "ZenUnit/Macros/MacroUtils.h"
 #include "ZenUnit/Tests/NormalTest.h"
 #include "ZenUnit/Tests/SpecSectionTestNXN.h"
-#include "ZenUnit/TestRunners/TestRunner.h"
+#include "ZenUnit/Tests/TestClass.h"
 #include "ZenUnit/TestRunners/TemplateTestClassRunner.h"
-#include "ZenUnit/Utils/PmfToken.h"
+#include "ZenUnit/TestRunners/TestRunner.h"
 #include "ZenUnit/Utils/NA.h"
-#include "ZenUnit/Macros/MacroUtils.h"
+#include "ZenUnit/Utils/PmfToken.h"
 
 #define TESTS(CrystalClearTestClassName) \
    class CrystalClearTestClassName : public ZenUnit::TestClass<CrystalClearTestClassName> \

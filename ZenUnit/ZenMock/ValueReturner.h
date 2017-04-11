@@ -1,6 +1,6 @@
 #pragma once
-#include <vector>
 #include "ZenUnit/ZenMock/Exceptions/ReturnValueMustBeSpecifiedException.h"
+#include <vector>
 
 namespace ZenMock
 {

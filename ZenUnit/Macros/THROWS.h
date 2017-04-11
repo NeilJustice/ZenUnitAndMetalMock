@@ -1,8 +1,8 @@
 #pragma once
-#include <typeindex>
 #include "ZenUnit/Utils/Type.h"
 #include "ZenUnit/Anomaly/Anomaly.h"
 #include "ZenUnit/Macros/MacroUtils.h"
+#include <typeindex>
 
 #define THROWS(expression, expectedExactExceptionType, expectedWhat, ...) \
    ZenUnit::THROWS_Defined<expectedExactExceptionType>([&]() { expression; }, \
