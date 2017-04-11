@@ -6,7 +6,7 @@
 #include "ZenUnit/Macros/ARE_EQUAL.h"
 
 #define ZENBIND0(FunctionName_ZenMock) \
-   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &FunctionName_ZenMock)
+   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock))
 
 namespace ZenMock
 {

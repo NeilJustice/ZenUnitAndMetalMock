@@ -9,11 +9,11 @@
 #include "ZenUnit/Macros/MacroUtils.h"
 
 #define TESTS(CrystalClearTestClassName) \
-   class CrystalClearTestClassName : public ZenUnit::TestClass<CrystalClearTestClassName> \
+   class (CrystalClearTestClassName) : public ZenUnit::TestClass<CrystalClearTestClassName> \
    TESTCLASSPREAMBLE(CrystalClearTestClassName)
 
 #define TEMPLATETESTS(CrystalClearTestClassName, ...) \
-   class CrystalClearTestClassName : public ZenUnit::TestClass<CrystalClearTestClassName<__VA_ARGS__>> \
+   class (CrystalClearTestClassName) : public ZenUnit::TestClass<CrystalClearTestClassName<__VA_ARGS__>> \
    TESTCLASSPREAMBLE(CrystalClearTestClassName)
 
 #define TESTCLASSPREAMBLE(CrystalClearTestClassName) \

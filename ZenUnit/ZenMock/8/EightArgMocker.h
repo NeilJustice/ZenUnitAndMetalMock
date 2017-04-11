@@ -6,7 +6,7 @@
 #include "ZenUnit/Macros/VECTORS_EQUAL.h"
 
 #define ZENBIND8(FunctionName_ZenMock) \
-   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &FunctionName_ZenMock, \
+   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
    std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8)
 
 namespace ZenMock
