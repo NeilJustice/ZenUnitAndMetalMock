@@ -229,7 +229,7 @@ Test Matrix
 |Ubuntu 16.10    |Clang 3.8.1 and GCC 6.2.0|
 |Windows 10      |Visual Studio 2015 Update 3 x64 (MSVC 14.0)|
 
-Test Matrix road map: Travis CI Linux and macOS, AppVeyor, MinGW, and Visual Studio 2017.
+Test Matrix road map: Travis CI Linux and macOS, AppVeyor, and Visual Studio 2017.
 
 ### [Work In Progress Guide to ZenUnit](Docs/ZenUnit.md)
 ### [Work In Progress Guide to ZenMock](Docs/ZenMock.md)
@@ -238,7 +238,7 @@ Test Matrix road map: Travis CI Linux and macOS, AppVeyor, MinGW, and Visual Stu
 
 |Version|Date|Features|
 |-------|----|--------|
-|0.2.0|Approaching|Travis CI and AppVeyor, floating point assertions, test filtering|
+|0.2.0|Approaching|Travis CI, AppVeyor, inlined as well as the current at-the-end test results, and colorized test results|
 |0.1.1|February 14, 2017|Fixes, refactorings, design improvements|
 |0.1.0|January 1, 2017|Launch|
 
