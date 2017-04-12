@@ -40,14 +40,14 @@ namespace ZenMock
       const OneArgMocker<int, ExceptionThrowerMock> oneArgMocker(ZenMockedFunctionSignature);
       //
       ARE_EQUAL(ZenMockedFunctionSignature, oneArgMocker.ZenMockedFunctionSignature);
-      IS_FALSE(oneArgMocker.expected);
+      IS_FALSE(oneArgMocker._expected);
       IS_FALSE(oneArgMocker._asserted);
       IS_EMPTY(oneArgMocker._oneArgCalls);
    }
 
    TEST(Expect_AlreadyExpected_Throws)
    {
-      _oneArgMocker->expected = true;
+      _oneArgMocker->_expected = true;
       THROWS(_oneArgMocker->Expect(), FunctionAlreadyExpectedException,
          FunctionAlreadyExpectedException::MakeWhat(ZenMockedFunctionSignature));
       SetAssertedTrueToNotFailDueToExpectedButNotAsesrted();
@@ -55,44 +55,44 @@ namespace ZenMock
 
    TEST(Expect_NotAlreadyExpected_SetsExpectedTrue)
    {
-      IS_FALSE(_oneArgMocker->expected);
+      IS_FALSE(_oneArgMocker->_expected);
       //
       _oneArgMocker->Expect();
       //
-      IS_TRUE(_oneArgMocker->expected);
+      IS_TRUE(_oneArgMocker->_expected);
       SetAssertedTrueToNotFailDueToExpectedButNotAsesrted();
    }
 
    TEST(ExpectAndThrow_ExpectedTrue_Throws)
    {
-      _oneArgMocker->expected = true;
+      _oneArgMocker->_expected = true;
       THROWS(_oneArgMocker->ExpectAndThrow<exception>(), FunctionAlreadyExpectedException,
          FunctionAlreadyExpectedException::MakeWhat(ZenMockedFunctionSignature));
    }
 
    TEST(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
    {
-      IS_FALSE(_oneArgMocker->expected);
+      IS_FALSE(_oneArgMocker->_expected);
       _oneArgMocker->_exceptionThrower.ExpectCallToExpectAndThrow();
       //
       _oneArgMocker->ExpectAndThrow<TwoArgTestingException>("arg", 100);
       //
       _oneArgMocker->_exceptionThrower.
          AssertExpectAndThrowCalledOnceWith("ZenMock::TwoArgTestingException", 2, "arg100");
-      IS_TRUE(_oneArgMocker->expected);
+      IS_TRUE(_oneArgMocker->_expected);
       SetAssertedTrueToNotFailDueToExpectedButNotAsesrted();
    }
 
    TEST(ZenMockIt_ExpectedFalse_Throws)
    {
-      IS_FALSE(_oneArgMocker->expected);
+      IS_FALSE(_oneArgMocker->_expected);
       THROWS(_oneArgMocker->ZenMockIt(0), UnexpectedCallException,
          UnexpectedCallException::MakeWhat(ZenMockedFunctionSignature, 0));
    }
 
    TEST(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsExpectAndThrow)
    {
-      _oneArgMocker->expected = true;
+      _oneArgMocker->_expected = true;
       _oneArgMocker->_exceptionThrower.ExpectCallToZenMockThrowIfExceptionSet();
       IS_EMPTY(_oneArgMocker->_oneArgCalls);
       //

@@ -46,18 +46,18 @@ namespace ZenMock
       FUNCTION_TARGETS(exit, zenMocker._zenMockableExitFunction);
       FUNCTION_TARGETS(ZenUnit::TestRunner::GetArgs, zenMocker._zenMockableGetZenUnitArgs);
       ARE_EQUAL(ZenMockedFunctionSignature, zenMocker.ZenMockedFunctionSignature);
-      IS_FALSE(zenMocker.expected);
+      IS_FALSE(zenMocker._expected);
       IS_FALSE(zenMocker._asserted);
       IS_FALSE(zenMocker._zenMockExceptionIsInPlay);
    }
 
    TEST(Expect_SetsExpectedTrue_ThrowsIfCalledTwice)
    {
-      IS_FALSE(_zenMocker->expected);
+      IS_FALSE(_zenMocker->_expected);
       //
       _zenMocker->Expect();
       //
-      IS_TRUE(_zenMocker->expected);
+      IS_TRUE(_zenMocker->_expected);
 
       THROWS(_zenMocker->Expect(), FunctionAlreadyExpectedException,
          FunctionAlreadyExpectedException::MakeWhat(ZenMockedFunctionSignature));
@@ -66,13 +66,13 @@ namespace ZenMock
    TEST(ExpectAndThrow_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue_ThrowsIfCalledTwice_runtime_error_testcase)
    {
       _zenMocker->_exceptionThrower.ExpectCallToExpectAndThrow();
-      IS_FALSE(_zenMocker->expected);
+      IS_FALSE(_zenMocker->_expected);
       //
       _zenMocker->ExpectAndThrow<runtime_error>("what");
       //
       _zenMocker->_exceptionThrower.AssertExpectAndThrowCalledOnceWith(
          "std::runtime_error", 1, "what");
-      IS_TRUE(_zenMocker->expected);
+      IS_TRUE(_zenMocker->_expected);
 
       THROWS(_zenMocker->ExpectAndThrow<invalid_argument>("what"), FunctionAlreadyExpectedException,
          FunctionAlreadyExpectedException::MakeWhat(ZenMockedFunctionSignature));
@@ -81,12 +81,12 @@ namespace ZenMock
    TEST(ExpectAndThrow_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue_ThrowsIfCalledTwice_CustomException_testcase)
    {
       _zenMocker->_exceptionThrower.ExpectCallToExpectAndThrow();
-      IS_FALSE(_zenMocker->expected);
+      IS_FALSE(_zenMocker->_expected);
       //
       _zenMocker->ExpectAndThrow<CustomException>(1, '2', 3.3);
       //
       _zenMocker->_exceptionThrower.AssertExpectAndThrowCalledOnceWith("CustomException", 3, "123.3");
-      IS_TRUE(_zenMocker->expected);
+      IS_TRUE(_zenMocker->_expected);
 
       THROWS(_zenMocker->ExpectAndThrow<invalid_argument>("what"), FunctionAlreadyExpectedException,
          FunctionAlreadyExpectedException::MakeWhat(ZenMockedFunctionSignature));
@@ -106,7 +106,7 @@ namespace ZenMock
 
    TEST(ZenMockThrowIfNotExpected_ExpectedTrue_DoesNotThrow)
    {
-      _zenMocker->expected = true;
+      _zenMocker->_expected = true;
       NOTHROWS(_zenMocker->ZenMockThrowIfNotExpected());
       NOTHROWS(_zenMocker->ZenMockThrowIfNotExpected(1, 2, 3));
       _zenMocker->_asserted = true;
@@ -114,7 +114,7 @@ namespace ZenMock
 
    TEST(ZenMockThrowIfNotExpected_ExpectedFalse_Throws)
    {
-      IS_FALSE(_zenMocker->expected);
+      IS_FALSE(_zenMocker->_expected);
       THROWS(_zenMocker->ZenMockThrowIfNotExpected(), UnexpectedCallException,
          UnexpectedCallException::MakeWhat(ZenMockedFunctionSignature));
       THROWS(_zenMocker->ZenMockThrowIfNotExpected(1, 2, 3), UnexpectedCallException,
@@ -165,7 +165,7 @@ namespace ZenMock
       false, true,
       true, true)
    {
-      _zenMocker->expected = false;
+      _zenMocker->_expected = false;
       _zenMocker->_asserted = asserted;
       _zenMocker->_zenMockExceptionIsInPlay = _zenMockExceptionIsInPlay;
       //
@@ -177,7 +177,7 @@ namespace ZenMock
       false,
       true)
    {
-      _zenMocker->expected = true;
+      _zenMocker->_expected = true;
       _zenMocker->_asserted = true;
       _zenMocker->_zenMockExceptionIsInPlay = _zenMockExceptionIsInPlay;
       //
@@ -189,7 +189,7 @@ namespace ZenMock
       false, 1,
       true, 0)
    {
-      _zenMocker->expected = true;
+      _zenMocker->_expected = true;
       _zenMocker->_asserted = false;
       _zenMocker->_zenMockExceptionIsInPlay = false;
 
@@ -210,7 +210,7 @@ namespace ZenMock
 
    TEST(ZenMockExitIfExpectedAndNotAsserted_ExpectedTrue_AssertedFalse_ZenMockExceptionIsInPlayTrue_DoesNothing)
    {
-      _zenMocker->expected = true;
+      _zenMocker->_expected = true;
       _zenMocker->_asserted = false;
       _zenMocker->_zenMockExceptionIsInPlay = true;
       //
