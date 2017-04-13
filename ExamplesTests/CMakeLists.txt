@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.5)
-project(Examples.Test)
+project(ExamplesTests)
 include(${CMAKE_SOURCE_DIR}/ZenUnitHelloWorld/CMakeMacros.cmake)
 
 include_directories(${CMAKE_SOURCE_DIR})
 file(GLOB Sources *.h *.cpp)
 source_group("" FILES ${Sources})
 
-add_executable(Examples.Test ${Sources})
-target_link_libraries(Examples.Test ZenUnit Examples)
+add_executable(ExamplesTests ${Sources})
+target_link_libraries(ExamplesTests ZenUnit Examples)
 
 EnablePrecompiledHeaders()
 IfMSVCAddRunTestsPostBuildStep()
