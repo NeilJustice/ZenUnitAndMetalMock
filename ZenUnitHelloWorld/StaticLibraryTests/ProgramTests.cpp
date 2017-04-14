@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "LibraryName/Program.h"
-#include "Mock/ComponentMock.h"
+#include "StaticLibrary/Program.h"
+#include "StaticLibraryTests/Mock/ComponentMock.h"
 
 TESTS(ProgramTests)
 SPEC(HelloZenUnit)
@@ -9,7 +9,7 @@ SPECEND
 
 TEST(HelloZenUnit)
 {
-   THROWS([] { throw std::runtime_error("Hello ZenUnit"); }(), 
+   THROWS([] { throw std::runtime_error("Hello ZenUnit"); }(),
       std::runtime_error, "Hello ZenUnit");
 }
 
