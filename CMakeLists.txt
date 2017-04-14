@@ -3,7 +3,7 @@ project(ZenUnit)
 include(${CMAKE_SOURCE_DIR}/ZenUnitHelloWorld/CMakeMacros.cmake)
 
 if(UNIX)
-   set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra -Werror -pthread")
+   set(CMAKE_CXX_FLAGS "-std=c++1z -Wall -Wextra -Werror -pthread")
    if(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
       append(CMAKE_CXX_FLAGS "-pedantic -Wno-gnu-zero-variadic-macro-arguments")
    endif()
