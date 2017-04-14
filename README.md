@@ -162,7 +162,7 @@ ZenUnit installed on Linux:
 
 Step 1 of 1: 
 
-Run with PowerShell `WindowsCMakeBuildInstall.ps1 <InstallDirectory>` to CMake with Visual Studio 14 2015 Win64, build with MSBuild, and install with Windows the ZenUnit include tree and Debug and Release static libraries and .pdb files.
+Run with PowerShell `WindowsCMakeBuildInstall.ps1 <InstallDirectory>` to CMake with Visual Studio 14 2015 Win64, build with MSBuild, and install with Windows the ZenUnit include tree and Debug and Release static libraries.
 
 `WindowsCMakeBuildInstall.ps1` performs these CMake, build, and install actions:
 
