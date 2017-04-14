@@ -73,6 +73,10 @@ macro(IfMSVCAddRunTestsPostBuildStep)
    endif()
 endmacro()
 
+if(NOT CMAKE_BUILD_TYPE)
+   set(CMAKE_BUILD_TYPE Debug)
+endif()
+
 if(UNIX)
    set(ZenUnitIncludeDirectory /usr/local/include/ZenUnit)
    set(ZenUnitLibraryPath /usr/local/lib/ZenUnit/libZenUnit${CMAKE_BUILD_TYPE}.a)
@@ -84,3 +88,4 @@ elseif(MSVC)
    set(GoogleBenchmarkIncludeDirectory C:/install/include/benchmark)
    set(GoogleBenchmarkLibPath C:/install/lib/benchmark/benchmark$(Configuration).lib)
 endif()
+   
