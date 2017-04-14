@@ -1,3 +1,57 @@
+if(NOT CMAKE_BUILD_TYPE)
+   set(CMAKE_BUILD_TYPE Debug)
+endif()
+
+if(UNIX)
+   set(ZenUnitIncludeDirectory /usr/local/include/ZenUnit)
+   set(ZenUnitLibraryPath /usr/local/lib/ZenUnit/libZenUnit${CMAKE_BUILD_TYPE}.a)
+   set(GoogleBenchmarkIncludeDirectory /usr/local/include/benchmark)
+   set(GoogleBenchmarkLibPath /usr/local/lib/benchmark/libbenchmark${CMAKE_BUILD_TYPE}.a)
+elseif(MSVC)
+   set(ZenUnitIncludeDirectory C:/install/include/ZenUnit)
+   set(ZenUnitLibraryPath C:/install/lib/ZenUnit/ZenUnit$(Configuration).lib)
+   set(GoogleBenchmarkIncludeDirectory C:/install/include/benchmark)
+   set(GoogleBenchmarkLibPath C:/install/lib/benchmark/benchmark$(Configuration).lib)
+endif()
+
+macro(EnablePrecompiledHeaders)
+   if(UNIX)
+      if(AddressSanitizerMode)
+         set(SanitizeAddressArg -fsanitize=address)
+      endif()
+      if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+         if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++14 -Wall -Wextra -Werror -pthread
+               -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments
+               ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
+         elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++14 -Wall -Wextra -Werror -pthread -O3
+               -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments
+               ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
+         endif()
+         append(CMAKE_CXX_FLAGS "-include-pch ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h.gch")
+      elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+         if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++14 -Wall -Wextra -Werror -pthread -g
+               ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
+         elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++14 -Wall -Wextra -Werror -pthread -O3 -DNDEBUG
+               ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
+         endif()
+      endif()
+      add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}Pch)
+   elseif(MSVC)
+      set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "/Yupch.h")
+      set_source_files_properties(pch.cpp PROPERTIES COMPILE_FLAGS "/Yc")
+   endif()
+endmacro()
+
+macro(IfMSVCAddRunTestsPostBuildStep)
+   if(MSVC)
+      add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND $(TargetPath) -exit0)
+   endif()
+endmacro()
+
 macro(append variable value)
    set(${variable} "${${variable}} ${value}")
 endmacro()
@@ -21,71 +75,3 @@ macro(folder_source_group_subsubfolder folderName subfolderName subsubFolderName
    source_group(${folderName}\\${subfolderName}\\${subsubFolderName} FILES ${${folderName}${subfolderName}${subsubFolderName}Files})
 endmacro()
 
-macro(EnablePrecompiledHeaders)
-   if(UNIX)
-      if(AddressSanitizerMode)
-         set(SanitizeAddressArg -fsanitize=address)
-      endif()
-      if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-         if(CMAKE_BUILD_TYPE STREQUAL "" OR CMAKE_BUILD_TYPE STREQUAL "Debug")
-            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++14 -Wall -Wextra -Werror -pthread
-               -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments
-               ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
-         elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++14 -Wall -Wextra -Werror -pthread -O3
-               -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments
-               ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
-         elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++14 -Wall -Wextra -Werror -pthread -O3 -g
-               -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments
-               ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
-         elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
-            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++14 -Wall -Wextra -Werror -pthread -Os
-               -Wno-pragma-once-outside-header  -pedantic -Wno-gnu-zero-variadic-macro-arguments
-               ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
-         endif()
-         append(CMAKE_CXX_FLAGS "-include-pch ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h.gch")
-      elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-         if(CMAKE_BUILD_TYPE STREQUAL "" OR CMAKE_BUILD_TYPE STREQUAL "Debug")
-            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++14 -Wall -Wextra -Werror -pthread -g
-               ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
-         elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++14 -Wall -Wextra -Werror -pthread -O3 -DNDEBUG
-               ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
-         elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++14 -Wall -Wextra -Werror -pthread -O3 -DNDEBUG -g
-               ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
-         elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
-            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++14 -Wall -Wextra -Werror -pthread -Os -DNDEBUG
-               ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
-         endif()
-      endif()
-      add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}Pch)
-   elseif(MSVC)
-      set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "/Yupch.h")
-      set_source_files_properties(pch.cpp PROPERTIES COMPILE_FLAGS "/Yc")
-   endif()
-endmacro()
-
-macro(IfMSVCAddRunTestsPostBuildStep)
-   if(MSVC)
-      add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND $(TargetPath) -exit0)
-   endif()
-endmacro()
-
-if(NOT CMAKE_BUILD_TYPE)
-   set(CMAKE_BUILD_TYPE Debug)
-endif()
-
-if(UNIX)
-   set(ZenUnitIncludeDirectory /usr/local/include/ZenUnit)
-   set(ZenUnitLibraryPath /usr/local/lib/ZenUnit/libZenUnit${CMAKE_BUILD_TYPE}.a)
-   set(GoogleBenchmarkIncludeDirectory /usr/local/include/benchmark)
-   set(GoogleBenchmarkLibPath /usr/local/lib/benchmark/libbenchmark${CMAKE_BUILD_TYPE}.a)
-elseif(MSVC)
-   set(ZenUnitIncludeDirectory C:/install/include/ZenUnit)
-   set(ZenUnitLibraryPath C:/install/lib/ZenUnit/ZenUnit$(Configuration).lib)
-   set(GoogleBenchmarkIncludeDirectory C:/install/include/benchmark)
-   set(GoogleBenchmarkLibPath C:/install/lib/benchmark/benchmark$(Configuration).lib)
-endif()
-   
