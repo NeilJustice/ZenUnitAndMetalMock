@@ -24,4 +24,4 @@
 #include "ZenUnit/Macros/VECTORS_EQUAL.h"
 #include "ZenUnit/Macros/WAS_ARRAY_NEWED.h"
 #include "ZenUnit/Macros/WAS_NEWED.h"
-#include "ZenUnit/RunTests.h"
+#include "ZenUnit/TestRunners/RunTests.h"

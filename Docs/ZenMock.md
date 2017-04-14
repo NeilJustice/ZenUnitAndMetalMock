@@ -228,7 +228,7 @@ int main(int argc, char* argv[])
 |`FunctionMock.ExpectAndReturn(returnValue)`|
 |`FunctionMock.ExpectAndReturnValues(returnValues...)`|
 |`FunctionMock.ExpectAndReturnValues(const vector<T>& returnValues)`|
-|`FunctionMock.ExpectAndThrow\<ExceptionTypes\>(ExceptionArgs&&...)`|
+|`FunctionMock.ExpectAndThrow<ExceptionTypes>(ExceptionArgs&&...)`|
 
 |ZenMock Object Assertion Functions|
 |---------------------------|

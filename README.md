@@ -106,7 +106,7 @@ int main(int argc, char* argv[]
 
 Step 1 of 1:
 
-Run `./LinuxCMakeBuildInstall.sh <InstallDirectory>` to CMake with Ninja, build with the default C++ compiler, and install with Linux the ZenUnit include tree and Debug, Release, RelWithDebInfo, and MinSizeRel static libraries.
+Run `./LinuxCMakeBuildInstall.sh <InstallDirectory>` to CMake with Ninja, build with the default C++ compiler, and install with Linux the ZenUnit include tree and Debug and Release static libraries.
 
 `LinuxCMakeBuildInstall.sh` performs these CMake, build, and install actions:
 
@@ -135,8 +135,6 @@ function cmake_build_install
 cmakeInstallPrefix="$1"
 cmake_build_install Debug "$cmakeInstallPrefix"
 cmake_build_install Release "$cmakeInstallPrefix"
-cmake_build_install RelWithDebInfo "$cmakeInstallPrefix"
-cmake_build_install MinSizeRel "$cmakeInstallPrefix"
 ```
 
 To build ZenUnit with Clang instead of the default C++ compiler (usually GCC), prepend CXX=<clang++Path>.
@@ -153,12 +151,6 @@ Abridged output from running `sudo CXX=/usr/bin/clang++ ./LinuxCMakeBuildInstall
 <...CMake Output...>
 <...Build Output...>
 -- Installing: /usr/local/lib/ZenUnit/libZenUnitRelease.a
-<...CMake Output...>
-<...Build Output...>
--- Installing: /usr/local/lib/ZenUnit/libZenUnitRelWithDebInfo.a
-<...CMake Output...>
-<...Build Output...>
--- Installing: /usr/local/lib/ZenUnit/libZenUnitMinSizeRel.a
 ~/code/ZenUnitAndZenMock$
 ```
 
@@ -170,7 +162,7 @@ ZenUnit installed on Linux:
 
 Step 1 of 1: 
 
-Run with PowerShell `WindowsCMakeBuildInstall.ps1 <InstallDirectory>` to CMake with Visual Studio 14 2015 Win64, build with MSBuild, and install with Windows the ZenUnit include tree and Debug, Release, RelWithDebInfo, and MinSizeRel static libraries and .pdb files.
+Run with PowerShell `WindowsCMakeBuildInstall.ps1 <InstallDirectory>` to CMake with Visual Studio 14 2015 Win64, build with MSBuild, and install with Windows the ZenUnit include tree and Debug and Release static libraries and .pdb files.
 
 `WindowsCMakeBuildInstall.ps1` performs these CMake, build, and install actions:
 
@@ -186,10 +178,6 @@ cmake --build . --target ZenUnit --config Debug
 cmake --build . --target install --config Debug
 cmake --build . --target ZenUnit --config Release
 cmake --build . --target install --config Release
-cmake --build . --target ZenUnit --config RelWithDebInfo
-cmake --build . --target install --config RelWithDebInfo
-cmake --build . --target ZenUnit --config MinSizeRel
-cmake --build . --target install --config MinSizeRel
 ```
 
 Abridged output from running `powershell -file WindowsCMakeBuildInstall.ps1 C:/install` from a Git Bash prompt:
@@ -205,12 +193,6 @@ Abridged output from running `powershell -file WindowsCMakeBuildInstall.ps1 C:/i
   -- Installing: C:/install/lib/ZenUnit/ZenUnitDebug.pdb
 <...Build Output...>
   -- Installing: C:/install/lib/ZenUnit/ZenUnitRelease.lib
-<...Build Output...>
-  -- Installing: C:/install/lib/ZenUnit/ZenUnitRelWithDebInfo.lib
-  -- Installing: C:/install/lib/ZenUnit/ZenUnitRelWithDebInfo.pdb
-<...Build Output...>
-  -- Installing: C:/install/lib/ZenUnit/ZenUnitMinSizeRel.lib
-<...Build Output...>
 Build succeeded.
 ```
 
@@ -218,7 +200,7 @@ ZenUnit installed on Windows:
 
 ![ZenUnit Installed On Windows](Screenshots/ZenUnitInstalledOnWindows.png "ZenUnit Installed On Windows")
 
-Editor's note: ZenUnit and ZenMock as header-only would of course be much more convenient than the current building and linking against static libraries, which is why ZenUnit and ZenMock will be made header-only following further laying down of their foundations.
+Editor's note: ZenUnit and ZenMock as header-only would of course be much more convenient than the current building and linking against a static library, which is why ZenUnit and ZenMock will be made header-only following further laying down of their foundations.
 
 Test Matrix
 -----------
@@ -238,7 +220,7 @@ Test Matrix road map: Travis CI Linux and macOS, AppVeyor, and Visual Studio 201
 
 |Version|Date|Features|
 |-------|----|--------|
-|0.2.0|Approaching|Travis CI, AppVeyor, inlined as well as the current at-the-end test results, and colorized test results|
+|0.2.0|Approaching|Travis CI, AppVeyor, inlined as well as at-the-end test results, and colorized test results|
 |0.1.1|February 14, 2017|Fixes, refactorings, design improvements|
 |0.1.0|January 1, 2017|Launch|
 

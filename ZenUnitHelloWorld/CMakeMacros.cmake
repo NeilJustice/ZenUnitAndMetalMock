@@ -28,35 +28,35 @@ macro(EnablePrecompiledHeaders)
       endif()
       if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
          if(CMAKE_BUILD_TYPE STREQUAL "" OR CMAKE_BUILD_TYPE STREQUAL "Debug")
-            add_custom_target(${PROJECT_NAME}Pch $ENV{CXX} -std=c++14 -Wall -Wextra -Werror -pthread
+            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++14 -Wall -Wextra -Werror -pthread
                -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments
                ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
          elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-            add_custom_target(${PROJECT_NAME}Pch $ENV{CXX} -std=c++14 -Wall -Wextra -Werror -pthread -O3
+            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++14 -Wall -Wextra -Werror -pthread -O3
                -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments
                ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
          elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-            add_custom_target(${PROJECT_NAME}Pch $ENV{CXX} -std=c++14 -Wall -Wextra -Werror -pthread -O3 -g
+            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++14 -Wall -Wextra -Werror -pthread -O3 -g
                -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments
                ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
          elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
-            add_custom_target(${PROJECT_NAME}Pch $ENV{CXX} -std=c++14 -Wall -Wextra -Werror -pthread -Os
+            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++14 -Wall -Wextra -Werror -pthread -Os
                -Wno-pragma-once-outside-header  -pedantic -Wno-gnu-zero-variadic-macro-arguments
                ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
          endif()
          append(CMAKE_CXX_FLAGS "-include-pch ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h.gch")
       elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
          if(CMAKE_BUILD_TYPE STREQUAL "" OR CMAKE_BUILD_TYPE STREQUAL "Debug")
-            add_custom_target(${PROJECT_NAME}Pch $ENV{CXX} -std=c++14 -Wall -Wextra -Werror -pthread -g
+            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++14 -Wall -Wextra -Werror -pthread -g
                ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
          elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-            add_custom_target(${PROJECT_NAME}Pch $ENV{CXX} -std=c++14 -Wall -Wextra -Werror -pthread -O3 -DNDEBUG
+            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++14 -Wall -Wextra -Werror -pthread -O3 -DNDEBUG
                ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
          elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-            add_custom_target(${PROJECT_NAME}Pch $ENV{CXX} -std=c++14 -Wall -Wextra -Werror -pthread -O3 -DNDEBUG -g
+            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++14 -Wall -Wextra -Werror -pthread -O3 -DNDEBUG -g
                ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
          elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
-            add_custom_target(${PROJECT_NAME}Pch $ENV{CXX} -std=c++14 -Wall -Wextra -Werror -pthread -Os -DNDEBUG
+            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++14 -Wall -Wextra -Werror -pthread -Os -DNDEBUG
                ${SanitizeAddressArg} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
          endif()
       endif()
