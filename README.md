@@ -236,7 +236,7 @@ ZenUnitHelloWorld is a folder contained in this repo that contains CMakeLists.tx
 |Ubuntu 16.10    |Clang 3.8.1 and GCC 6.2.0|
 |Windows 10      |Visual Studio 2015 Update 3 x64 (MSVC 14.0)|
 
-Test Matrix road map: Travis CI Linux and macOS, AppVeyor, and Visual Studio 2017.
+Test Matrix road map: Travis CI Linux and macOS, AppVeyor, Arch Linux, and Visual Studio 2017.
 
 ### [Work In Progress Guide to ZenUnit](Docs/ZenUnit.md)
 ### [Work In Progress Guide to ZenMock](Docs/ZenMock.md)
