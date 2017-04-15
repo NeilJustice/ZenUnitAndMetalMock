@@ -205,12 +205,22 @@ Editor's note: ZenUnit and ZenMock as header-only would of course be much more c
 
 ZenUnitHelloWorld is a folder contained in this repo that contains CMakeLists.txt files for example projects Executable, StaticLibrary, and StaticLibraryTests - with StaticLibraryTests configured to confirm the correctness of StaticLibrary using ZenUnit and ZenMock.
 
-## Building ZenUnitHelloWorld's StaticLibraryTests On Linux
-
-## Building ZenUnitHelloWorld's StaticLibraryTests On Windows
+## Building and Running ZenUnitHelloWorld's StaticLibraryTests on Linux
 
 ```bash
-~/code/ZenUnitZenMock$ cd ZenUnitHelloWorld/
+~/code/ZenUnitZenMock$ cd ZenUnitHelloWorld
+~/code/ZenUnitZenMock/ZenUnitHelloWorld$ CXX=/usr/bin/clang++ cmake -H. -BDebug -GNinja
+~/code/ZenUnitZenMock/ZenUnitHelloWorld$ cmake --build Debug
+~/code/ZenUnitZenMock/ZenUnitHelloWorld$ cd Debug/StaticLibraryTests
+~/code/ZenUnitZenMock/ZenUnitHelloWorld/Debug/StaticLibraryTests$ ./StaticLibraryTests
+```
+
+![ZenUnitHelloWorldLinux](Screenshots/ZenUnitHelloWorldLinux.png "ZenUnitHelloWorld on Linux")
+
+## Building and Running ZenUnitHelloWorld's StaticLibraryTests on Windows
+
+```bash
+~/code/ZenUnitZenMock$ cd ZenUnitHelloWorld
 ~/code/ZenUnitZenMock/ZenUnitHelloWorld$ cmake . -G"Visual Studio 14 2015 Win64"
 ~/code/ZenUnitZenMock/ZenUnitHelloWorld$ cmake --build . --config Debug
 ~/code/ZenUnitZenMock/ZenUnitHelloWorld$ cd StaticLibraryTests
