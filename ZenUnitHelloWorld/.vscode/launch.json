@@ -7,7 +7,7 @@
          "request": "launch",
          "type": "cppdbg",
          "preLaunchTask": "Build Debug",
-         "program": "${workspaceRoot}/Debug/LibraryNameTests/LibraryNameTests",
+         "program": "${workspaceRoot}/ZenUnitHelloWorld/Debug/StaticLibraryTests/StaticLibraryTests",
          "stopAtEntry": false,
          "cwd": "${fileDirname}",
          "linux": { "MIMode": "gdb" }

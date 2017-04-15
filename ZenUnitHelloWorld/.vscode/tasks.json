@@ -13,34 +13,31 @@
       {
          "taskName": "Build",
          "args": [ "cd ${workspaceRoot}/Debug && time ninja -v" ],
-         //"args": [ "cd ${workspaceRoot}/Release && time ninja -v" ],
          "isBuildCommand": true,
          "problemMatcher":
          {
             "owner": "cpp",
             "fileLocation": [ "relative", "${workspaceRoot}/DebugOrRelease" ],
-            "pattern": {
+            "pattern":
+            {
                "regexp": "^(.*):(\\d+):(\\d+):\\s+(error|fatal error|warning):\\s+(.*)$",
                "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
             }
          }
       },
       {
-         "taskName": "Run Binary",
+         "taskName": "Run",
          //"isTestCommand": true,
-         "args": [ "${workspaceRoot}/Debug/Binary/Binary" ]
-         //"args": [ "${workspaceRoot}/Release/Binary/Binary" ]
+         "args": [ "${workspaceRoot}/Debug/Executable/Executable" ]
       },
       {
          "taskName": "Run Tests",
          "isTestCommand": true,
-         "args": [ "${workspaceRoot}/Debug/LibraryNameTests/LibraryNameTests" ]
-         //"args": [ "${workspaceRoot}/Release/LibraryNameTests/LibraryNameTests" ]
+         "args": [ "${workspaceRoot}/Debug/StaticLibraryTests/StaticLibraryTests" ]
       },
       {
          "taskName": "Clean",
          "args": [ "cd ${workspaceRoot}/Debug && ninja clean" ]
-         //"args": [ "cd ${workspaceRoot}/Release && ninja clean" ]
       }
    ]
 }
