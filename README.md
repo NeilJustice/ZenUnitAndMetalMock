@@ -228,6 +228,8 @@ ZenUnitHelloWorld is a folder contained in this repo that contains CMakeLists.tx
 ~/code/ZenUnitZenMock/ZenUnitHelloWorld/StaticLibraryTests/Debug$ ./StaticLibraryTests.exe
 ```
 
+![ZenUnitHelloWorldWindows](Screenshots/ZenUnitHelloWorldWindows.png "ZenUnitHelloWorld on Windows")
+
 ## Test Matrix
 
 |Operating System|Compilers|
