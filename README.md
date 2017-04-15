@@ -222,9 +222,8 @@ ZenUnitHelloWorld is a folder contained in this repo that contains CMakeLists.tx
 ```bash
 ~/code/ZenUnitZenMock$ cd ZenUnitHelloWorld
 ~/code/ZenUnitZenMock/ZenUnitHelloWorld$ cmake . -G"Visual Studio 14 2015 Win64"
-~/code/ZenUnitZenMock/ZenUnitHelloWorld$ cmake --build . --config Debug
-~/code/ZenUnitZenMock/ZenUnitHelloWorld$ cd StaticLibraryTests
-~/code/ZenUnitZenMock/ZenUnitHelloWorld/StaticLibraryTests$ cd Debug
+~/code/ZenUnitZenMock/ZenUnitHelloWorld$ cmake --build .
+~/code/ZenUnitZenMock/ZenUnitHelloWorld$ cd StaticLibraryTests/Debug
 ~/code/ZenUnitZenMock/ZenUnitHelloWorld/StaticLibraryTests/Debug$ ./StaticLibraryTests.exe
 ```
 
