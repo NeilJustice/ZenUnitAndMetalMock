@@ -2,7 +2,7 @@
 set -eu
 
 if [ $# -ne 1 ]; then
-   echo "Usage: ./LinuxBuildAndInstallZenUnit.sh <InstallDirectory>"
+   echo "Usage: ./LinuxCMakeBuildInstall.sh <InstallDirectory>"
    exit 1
 fi
 
@@ -11,12 +11,9 @@ function cmake_build_install
    local buildType="$1"
    local cmakeInstallPrefix
    cmakeInstallPrefix=$(realpath "$2")
-   mkdir -p "$buildType"
-   cd "$buildType"
-   cmake .. -GNinja \
+   cmake -H. -B"$buildType" -GNinja \
       -DCMAKE_BUILD_TYPE="$buildType" \
       -DCMAKE_INSTALL_PREFIX="$cmakeInstallPrefix"
-   cd ..
    cmake --build "$buildType" --target ZenUnit
    cmake --build "$buildType" --target install
 }
