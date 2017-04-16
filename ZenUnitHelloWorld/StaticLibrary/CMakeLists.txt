@@ -8,4 +8,3 @@ source_group("" FILES ${Sources})
 add_library(StaticLibrary ${Sources})
 
 EnablePrecompiledHeaders()
-

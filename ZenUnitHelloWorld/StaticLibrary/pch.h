@@ -1,8 +1,6 @@
-#ifndef PCH_PROGRAMNAME
-#define PCH_PROGRAMNAME
+#pragma once
 #include <algorithm>
 #include <iostream>
+#include <memory>
 #include <string>
 #include <vector>
-using namespace std;
-#endif

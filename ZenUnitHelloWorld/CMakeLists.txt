@@ -16,4 +16,3 @@ endif()
 add_subdirectory(Executable)
 add_subdirectory(StaticLibrary)
 add_subdirectory(StaticLibraryTests)
-

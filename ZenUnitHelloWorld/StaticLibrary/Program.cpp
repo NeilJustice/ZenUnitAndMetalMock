@@ -1,20 +1,50 @@
 #include "pch.h"
 #include "Program.h"
+#include "Console.h"
+#include "ArgsParser.h"
+
+Program::Program()
+   : _console(new Console)
+   , _argsParser(new ArgsParser)
+{
+}
 
 int Program::Main(int argc, char* argv[]) const
 {
-   const vector<string> args = [&]()
+   const std::vector<std::string> args = [&]()
    {
-      vector<string> args;
+      std::vector<std::string> args;
       args.reserve(argc);
-      for_each(argv, argv + argc, [&](char* arg) { args.emplace_back(arg); });
+      std::for_each(argv, argv + argc, [&](char* arg)
+      {
+         args.emplace_back(arg);
+      });
       return args;
    }();
-   return Main(args);
+   return VectorMain(args);
 }
 
-int Program::Main(const vector<string>&) const
+int Program::VectorMain(const std::vector<std::string>& args) const
 {
-   cout << "Hello ZenUnit!\n";
+   int exitCode = 0;
+   try
+   {
+      ProgramArgs programArgs = _argsParser->Parse(args);
+      exitCode = ArgsMain(programArgs);
+   }
+   catch (const std::exception& e)
+   {
+      _console->WriteLine(e.what());
+      exitCode = 1;
+   }
+   return exitCode;
+}
+
+int Program::ArgsMain(const ProgramArgs&) const
+{
    return 0;
+}
+
+Program::~Program()
+{
 }

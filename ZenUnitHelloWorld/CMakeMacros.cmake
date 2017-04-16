@@ -74,4 +74,3 @@ macro(folder_source_group_subsubfolder folderName subfolderName subsubFolderName
    file(GLOB ${folderName}${subfolderName}${subsubFolderName}Files ${folderName}/${subfolderName}/${subsubFolderName}/*.*)
    source_group(${folderName}\\${subfolderName}\\${subsubFolderName} FILES ${${folderName}${subfolderName}${subsubFolderName}Files})
 endmacro()
-

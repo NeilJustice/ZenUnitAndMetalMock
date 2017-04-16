@@ -1,5 +1,3 @@
-#ifndef PCH_LIBRARYNAME_TEST
-#define PCH_LIBRARYNAME_TEST
-#include "ZenUnit/ZenUnit.h"
+#pragma once
 #include "ZenUnit/ZenMock.h"
-#endif
+#include "ZenUnit/ZenUnit.h"
