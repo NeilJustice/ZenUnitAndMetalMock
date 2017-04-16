@@ -1,15 +1,20 @@
 #include "pch.h"
 #include "ZenUnit/Equalizers/MapEqualizer.h"
 
-TESTS(MapEqualizerTests)
+template<
+   template<typename...>
+   class MapType>
+TEMPLATETESTS(MapEqualizerTests, MapType)
 SPEC(ARE_EQUAL_EqualStdMaps_CompilesAndDoesNotThrow)
 SPECEND
 
 TEST(ARE_EQUAL_EqualStdMaps_CompilesAndDoesNotThrow)
 {
-   const map<int, int> expectedMap;
-   const map<int, int> actualMap;
+   const MapType<int, int> expectedMap;
+   const MapType<int, int> actualMap;
    ARE_EQUAL(expectedMap, actualMap);
 }
 
-}; RUN(MapEqualizerTests)
+};
+RUNTEMPLATE(MapEqualizerTests, map)
+RUNTEMPLATE(MapEqualizerTests, unordered_map)

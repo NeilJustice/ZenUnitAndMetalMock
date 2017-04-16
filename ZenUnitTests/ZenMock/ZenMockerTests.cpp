@@ -70,8 +70,7 @@ namespace ZenMock
       //
       _zenMocker->ExpectAndThrow<runtime_error>("what");
       //
-      _zenMocker->_exceptionThrower.AssertExpectAndThrowCalledOnceWith(
-         "std::runtime_error", 1, "what");
+      _zenMocker->_exceptionThrower.AssertExpectAndThrowCalledOnceWith("std::runtime_error", 1, "what");
       IS_TRUE(_zenMocker->_expected);
 
       THROWS(_zenMocker->ExpectAndThrow<invalid_argument>("what"), FunctionAlreadyExpectedException,
@@ -90,6 +89,8 @@ namespace ZenMock
 
       THROWS(_zenMocker->ExpectAndThrow<invalid_argument>("what"), FunctionAlreadyExpectedException,
          FunctionAlreadyExpectedException::MakeWhat(ZenMockedFunctionSignature));
+
+      CustomException customException(1, '2', 3.3); // 100& code coverage
    }
 
    TEST(ZenMockSetAsserted_SetsAssertedTrue_CallableTwice)

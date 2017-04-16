@@ -11,6 +11,7 @@ namespace ZenUnit
    SPEC(ForEach_EmptyIterable_DoesNotCallFunc)
    SPEC(ForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
    SPEC(ForEach_TwoItemIterable_CallsThisPointerBoundFuncTwice)
+   SPEC(CodeCoverage_ClassTypeFunc)
    SPECEND
 
    class ClassType
@@ -60,6 +61,12 @@ namespace ZenUnit
       {
          1, 2
       });
+   }
+
+   TEST(CodeCoverage_ClassTypeFunc)
+   {
+      ClassType classType;
+      classType.Func(ElementType{});
    }
 
    };

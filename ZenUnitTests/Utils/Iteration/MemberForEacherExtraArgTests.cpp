@@ -12,6 +12,7 @@ namespace ZenUnit
    SPEC(ForEach_EmptyIterable_DoesNotCallFunc)
    SPEC(ForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
    SPEC(ForEach_TwoItemIterable_CallsThisPointerBoundFuncTwice)
+   SPEC(CodeCoverage_ClassTypeTwoArgFunction)
    SPECEND
 
    class ClassType
@@ -37,7 +38,8 @@ namespace ZenUnit
    TEST(ForEach_EmptyIterable_DoesNotCallFunc)
    {
       const ClassTypeMock classInstance{};
-      _memberForEacherExtraArg.ForEach(&classInstance.iterable, &classInstance, &ClassType::TwoArgFunction, 10);
+      _memberForEacherExtraArg.ForEach(
+         &classInstance.iterable, &classInstance, &ClassType::TwoArgFunction, 10);
    }
 
    TEST(ForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
@@ -46,7 +48,8 @@ namespace ZenUnit
       classInstance.iterable = { 1 };
       classInstance.TwoArgFunctionMock.Expect();
       //
-      _memberForEacherExtraArg.ForEach(&classInstance.iterable, &classInstance, &ClassType::TwoArgFunction, 20);
+      _memberForEacherExtraArg.ForEach(
+         &classInstance.iterable, &classInstance, &ClassType::TwoArgFunction, 20);
       //
       classInstance.TwoArgFunctionMock.AssertCalledOnceWith(1, 20);
    }
@@ -57,7 +60,8 @@ namespace ZenUnit
       classInstance.iterable = { 1, 2 };
       classInstance.TwoArgFunctionMock.Expect();
       //
-      _memberForEacherExtraArg.ForEach(&classInstance.iterable, &classInstance, &ClassType::TwoArgFunction, 30);
+      _memberForEacherExtraArg.ForEach(
+         &classInstance.iterable, &classInstance, &ClassType::TwoArgFunction, 30);
       //
       classInstance.TwoArgFunctionMock.AssertCalls(
       {
@@ -65,6 +69,12 @@ namespace ZenUnit
          { 2, 30 }
       });
    }
+
+   TEST(CodeCoverage_ClassTypeTwoArgFunction)
+   {
+      ClassType classType;
+      classType.TwoArgFunction(ElementType{}, ExtraArgType{});
+   };
 
    };
    RUNTEMPLATE(MemberForEacherExtraArgTests, vector, int, int)

@@ -48,11 +48,9 @@ namespace ZenUnit
    #ifdef __linux__
       ARE_EQUAL("std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >", *Type::GetName<string>());
       ARE_EQUAL("std::ostream", *Type::GetName<decltype(cout)>());
-      ARE_EQUAL("int (_IO_FILE*)", *Type::GetName<decltype(ferror)>());
    #elif _WIN32
       ARE_EQUAL("std::basic_string<char,std::char_traits<char>,std::allocator<char> >", *Type::GetName(string()));
       ARE_EQUAL("std::basic_ostream<char,std::char_traits<char> >", *Type::GetName(cout));
-      ARE_EQUAL("int __cdecl(_iobuf * __ptr64)", *Type::GetName(ferror));
    #endif
    }
 
@@ -104,11 +102,9 @@ namespace ZenUnit
    #ifdef __linux__
       ARE_EQUAL("std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >", *Type::GetName<string>());
       ARE_EQUAL("std::ostream", *Type::GetName<decltype(cout)>());
-      ARE_EQUAL("int (_IO_FILE*)", *Type::GetName<decltype(ferror)>());
    #elif _WIN32
       ARE_EQUAL("std::basic_string<char,std::char_traits<char>,std::allocator<char> >", *Type::GetName<string>());
       ARE_EQUAL("std::basic_ostream<char,std::char_traits<char> >", *Type::GetName<decltype(cout)>());
-      ARE_EQUAL("int __cdecl(_iobuf * __ptr64)", *Type::GetName<decltype(ferror)>());
    #endif
    }
 

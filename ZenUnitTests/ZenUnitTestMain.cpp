@@ -9,7 +9,6 @@ SKIPSPEC(Reason, SkippedNormalTest)
 SKIPSPECX(Reason, SkippedTest1X1)
 SKIPSPECX(Reason, SkippedTest2X2)
 SPECEND
-
 TEST(NonSkippedTest) {}
 TEST1X1(NonSkipped1X1Test, bool, true, false) {}
 TEST(SkippedNormalTest) {}
