@@ -15,7 +15,6 @@ namespace ZenUnit
       TestPhase::TestBody, "",
       TestPhase::Cleanup, " in CLEANUP")
    {
-      ARE_EQUAL(1, 0);
       ARE_EQUAL(expectedTestPhaseSuffix, TestPhaseToTestPhaseSuffix(testPhase));
    }
 

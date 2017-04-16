@@ -1,24 +1,25 @@
 #!/bin/bash
+set -u
 
 function run_debug_tests
 {
    echo "pre-commit: Building Debug $1."
-   osname=$(uname --operating-system)
-   if [ $osname == "Linux" ]; then
+   local osname="$(uname --operating-system)"
+   if [ "$osname" == "Linux" ]; then
       cmake --build Debug --config Debug
-   elif [ $osname == "Msys" ]; then
+   elif [ "$osname" == "Msys" ]; then
       cmake --build . --config Debug
    fi   
    echo "pre-commit: Running Debug $1."   
-   if [ $osname == "Linux" ]; then
+   if [ "$osname" == "Linux" ]; then
       Debug/"$1"/"$1" 1>/dev/null
-   elif [ $osname == "Msys" ]; then
-      "$1"/Debug/"$1".exe 1>/dev/null
+   elif [ "$osname" == "Msys" ]; then
+      "$1"/Debug/"$1".exe
    fi   
-   exitCode=$?
-   if [ $exitCode -ne 0 ]; then
-      echo "pre-commit: Debug $1 failed with exit code $exitCode. Disallowing commit."
-      #exit 1
+   testsExitCode=$?
+   if [ "$testsExitCode" -ne 0 ]; then
+      echo "pre-commit: Debug $1 failed with exit code $testsExitCode. Disallowing commit."
+      exit 1
    fi
    echo "pre-commit: Debug $1 passed. Allowing commit."
 }
