@@ -1,0 +1,18 @@
+#!/bin/bash
+
+function run_debug_tests
+{
+   echo "pre-commit: Building Debug $1."
+   cmake --build Debug --config Debug
+   echo "pre-commit: Running Debug $1."
+   Debug/"$1"/"$1" 1>/dev/null
+   exitCode=$?
+   if [ $exitCode -ne 0 ]; then
+      echo "pre-commit: Debug $1 failed with exit code $exitCode. Disallowing commit."
+      exit 1
+   fi
+   echo "pre-commit: Debug $1 passed. Allowing commit."
+}
+
+run_debug_tests ZenUnitTests
+
