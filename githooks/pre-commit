@@ -15,4 +15,5 @@ function run_debug_tests
 }
 
 run_debug_tests ZenUnitTests
+run_debug_tests ExamplesTests
 
