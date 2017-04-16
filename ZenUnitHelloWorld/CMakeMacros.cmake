@@ -1,3 +1,11 @@
+macro(append variable value)
+   set(${variable} "${${variable}} ${value}")
+endmacro()
+
+macro(replace variable str replacement)
+   string(REPLACE "${str}" "${replacement}" ${variable} ${${variable}})
+endmacro()
+
 if(NOT CMAKE_BUILD_TYPE)
    set(CMAKE_BUILD_TYPE Debug)
 endif()
@@ -50,14 +58,6 @@ macro(IfMSVCAddRunTestsPostBuildStep)
    if(MSVC)
       add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND $(TargetPath) -exit0)
    endif()
-endmacro()
-
-macro(append variable value)
-   set(${variable} "${${variable}} ${value}")
-endmacro()
-
-macro(replace variable str replacement)
-   string(REPLACE "${str}" "${replacement}" ${variable} ${${variable}})
 endmacro()
 
 macro(folder_source_group folderName)

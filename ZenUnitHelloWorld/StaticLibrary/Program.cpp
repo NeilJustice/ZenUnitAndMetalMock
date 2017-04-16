@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Program.h"
-#include "Console.h"
 #include "ArgsParser.h"
 
 Program::Program()

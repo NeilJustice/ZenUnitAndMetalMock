@@ -6,3 +6,7 @@ ProgramArgs ArgsParser::Parse(const std::vector<std::string>&) const
    ProgramArgs programArgs;
    return programArgs;
 }
+
+ArgsParser::~ArgsParser()
+{
+}

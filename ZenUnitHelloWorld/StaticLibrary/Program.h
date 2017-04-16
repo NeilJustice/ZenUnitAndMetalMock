@@ -1,4 +1,5 @@
 #pragma once
+#include "Console.h"
 #include <memory>
 #include <string>
 #include <vector>
@@ -8,6 +9,7 @@ struct ProgramArgs;
 
 class Program
 {
+   friend class ProgramTests;
 private:
    std::unique_ptr<const Console> _console;
    std::unique_ptr<const ArgsParser> _argsParser;

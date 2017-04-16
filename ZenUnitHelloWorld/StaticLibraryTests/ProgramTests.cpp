@@ -1,26 +1,30 @@
 #include "pch.h"
 #include "StaticLibrary/Program.h"
-#include "StaticLibraryTests/Mock/ComponentMock.h"
+#include "StaticLibraryTests/Mock/ArgsParserMock.h"
 
 TESTS(ProgramTests)
-SPEC(HelloZenUnit)
-SPEC(HelloZenMock)
+SPEC(Constructor_NewsComponents)
+SPEC(Main_ConvertsArgcArgvToStringVector_CallsVectorMain)
+SPEC(VectorMain_ParsesArgs_CallsArgsMain)
 SPECEND
 
-TEST(HelloZenUnit)
+Program _program;
+
+TEST(Constructor_NewsComponents)
 {
-   THROWS([] { throw std::runtime_error("Hello ZenUnit"); }(),
-      std::runtime_error, "Hello ZenUnit");
+   Program program;
+   WAS_NEWED(program._console);
+   WAS_NEWED(program._argsParser);
 }
 
-TEST(HelloZenMock)
+TEST(Main_ConvertsArgcArgvToStringVector_CallsVectorMain)
 {
-   ComponentMock componentMock;
-   componentMock.VirtualFunctionMock.Expect();
-   //
-   componentMock.VirtualFunction();
-   //
-   ZEN(componentMock.VirtualFunctionMock.AssertCalledOnce());
+
+}
+
+TEST(VectorMain_ParsesArgs_CallsArgsMain)
+{
+
 }
 
 }; RUN(ProgramTests)
