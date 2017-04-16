@@ -23,20 +23,26 @@ int Program::Main(int argc, char* argv[]) const
    return VectorMain(args);
 }
 
+const std::string Usage = "Usage";
+
 int Program::VectorMain(const std::vector<std::string>& args) const
 {
-   int exitCode = 0;
+   if (args.empty())
+   {
+      _console->WriteLine(Usage);
+      return 0;
+   }
    try
    {
       ProgramArgs programArgs = _argsParser->Parse(args);
-      exitCode = ArgsMain(programArgs);
+      int exitCode = ArgsMain(programArgs);
+      return exitCode;
    }
    catch (const std::exception& e)
    {
       _console->WriteLine(e.what());
-      exitCode = 1;
+      return 1;
    }
-   return exitCode;
 }
 
 int Program::ArgsMain(const ProgramArgs&) const

@@ -8,6 +8,7 @@ include_directories(
    ${ZenUnitIncludeDirectory})
 
 folder_source_group(Mock)
+folder_source_group(ZenUnit)
 
 file(GLOB_RECURSE Sources *.h *.cpp)
 source_group("" FILES ${Sources})
