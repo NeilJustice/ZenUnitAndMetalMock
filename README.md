@@ -233,8 +233,8 @@ ZenUnitHelloWorld is a folder contained in this repo that contains CMakeLists.tx
 
 |Operating System|Compilers|
 |----------------|--------|
-|Fedora 25       |Clang 3.9.1 and GCC 6.3.1|
-|Ubuntu 16.10    |Clang 3.8.1 and GCC 6.2.0|
+|Fedora 25       |Clang 3.9.1, Clang 5.0.0, and GCC 6.3.1|
+|Ubuntu 16.10    |Clang 3.8.1, Clang 5.0.0, and GCC 6.2.0|
 |Windows 10      |Visual Studio 2015 Update 3 x64 (MSVC 14.0)|
 
 Test Matrix road map: Travis CI Linux and macOS, AppVeyor, Arch Linux, and Visual Studio 2017.
