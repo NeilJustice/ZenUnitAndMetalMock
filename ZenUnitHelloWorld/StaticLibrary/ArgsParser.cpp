@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ArgsParser.h"
 
-ProgramArgs ArgsParser::Parse(const std::vector<std::string>& args) const
+ProgramArgs ArgsParser::ParseArgs(const std::vector<std::string>& args) const
 {
    assert(args.size() >= 2);
    ProgramArgs programArgs;

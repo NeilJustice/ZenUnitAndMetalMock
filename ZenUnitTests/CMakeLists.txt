@@ -50,8 +50,9 @@ file(GLOB_RECURSE Sources *.h *.cpp)
 
 add_executable(ZenUnitTests ${Sources})
 target_link_libraries(ZenUnitTests ZenUnit)
-if(EXISTS ${GoogleBenchmarkLibPath})
-   target_link_libraries(ZenUnitTests ${GoogleBenchmarkLibPath})
+if(EXISTS ${GoogleBenchmarkLibraryPath})
+   target_link_libraries(ZenUnitTests ${GoogleBenchmarkLibraryPath})
+   target_link_libraries(ZenUnitTests shlwapi)
 endif()
 
 EnablePrecompiledHeaders()

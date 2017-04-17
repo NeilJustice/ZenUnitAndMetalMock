@@ -18,6 +18,6 @@ public:
    Program();
    ~Program();
    int Main(int argc, char* argv[]) const;
-   int VectorMain(const std::vector<std::string>& args) const;
-   int ArgsMain(const ProgramArgs& programArgs) const;
+   virtual int VectorMain(const std::vector<std::string>& args) const;
+   virtual int ArgsMain(const ProgramArgs& programArgs) const;
 };

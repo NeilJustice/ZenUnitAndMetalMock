@@ -20,11 +20,12 @@ int Program::Main(int argc, char* argv[]) const
       });
       return args;
    }();
-   return VectorMain(args);
+   const int exitCode = VectorMain(args);
+   return exitCode;
 }
 
 const std::string Program::CommandLineUsage = R"(ProgramName 0.1.0
-Usage: ProgramName [-flag])";
+Usage: ProgramName <FilePath> [-flag])";
 
 int Program::VectorMain(const std::vector<std::string>& args) const
 {
@@ -36,9 +37,8 @@ int Program::VectorMain(const std::vector<std::string>& args) const
    }
    try
    {
-      ProgramArgs programArgs = _argsParser->Parse(args);
-      int exitCode = ArgsMain(programArgs);
-      return exitCode;
+      _argsParser->ParseArgs(args);
+      return 0;
    }
    catch (const std::exception& e)
    {
