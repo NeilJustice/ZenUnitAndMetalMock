@@ -173,7 +173,7 @@ namespace ZenUnit
       {
          const string testFailureNumber = testFailureNumberer->Next();
          console->WriteLine(testFailureNumber);
-         console->Write(fullName.testClassTestNameLines);
+         console->Write(fullName.TestsAndTestLines());
          WriteTestCaseNumberIfAny(console, testCaseIndex);
          const CallResult& responsibleCallResult = (this->*responsibleCallResultField);
          const string responsibleTestPhaseSuffix = TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
@@ -186,7 +186,7 @@ namespace ZenUnit
       {
          const string testFailureNumber = testFailureNumberer->Next();
          console->WriteLine(testFailureNumber);
-         console->Write(fullName.testClassTestNameLines);
+         console->Write(fullName.TestsAndTestLines());
          WriteTestCaseNumberIfAny(console, testCaseIndex);
          const CallResult& responsibleCallResult = this->*responsibleCallResultField;
          const string responsibleTestPhaseSuffix = TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
@@ -204,7 +204,7 @@ namespace ZenUnit
          assert_true(testOutcome == TestOutcome::SuccessButMissedDeadline);
          const string testFailureNumber = testFailureNumberer->Next();
          console->WriteLine(testFailureNumber);
-         console->WriteLine(fullName.testClassTestNameLines);
+         console->WriteLine(fullName.TestsAndTestLines());
          WriteTestCaseNumberIfAny(console, testCaseIndex);
          console->WriteLine(String::Concat(
             "Failed because test took longer than maxtestmilliseconds= (", milliseconds, " ms)"));

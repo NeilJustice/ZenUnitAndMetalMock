@@ -19,9 +19,9 @@ namespace ZenUnit
       return _fullName.testName;
    }
 
-   const std::string& Test::TestClassTestNameLines() const
+   std::string Test::TestsAndTestLines() const
    {
-      return _fullName.testClassTestNameLines;
+      return _fullName.TestsAndTestLines();
    }
 
    string Test::FileLineString() const

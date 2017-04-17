@@ -7,10 +7,10 @@ namespace ZenUnit
    {
       const char* testClassName;
       const char* testName;
-      std::string testClassTestNameLines;
 
       FullName();
       FullName(const char* testClassName, const char* testName);
+      std::string TestsAndTestLines() const;
    };
 }
 

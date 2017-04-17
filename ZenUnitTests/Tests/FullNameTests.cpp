@@ -6,6 +6,7 @@ namespace ZenUnit
    TESTS(FullNameTests)
    SPEC(DefaultConstructor_SetsClassNameAndTestNameToNullptr)
    SPEC(TwoArgConstructor_SetsClassNameAndTestName)
+   SPEC(TestsAndTestLines_ReturnsExpected)
    SPEC(ZenUnitEqualizer_ThrowsIfClassNameOrTestNameNotEqual)
    SPECEND
 
@@ -15,7 +16,6 @@ namespace ZenUnit
       FullName expectedDefaultTestName;
       expectedDefaultTestName.testClassName = nullptr;
       expectedDefaultTestName.testName = nullptr;
-      expectedDefaultTestName.testClassTestNameLines = string();
       ARE_EQUAL(expectedDefaultTestName, defaultTestName);
    }
 
@@ -25,10 +25,15 @@ namespace ZenUnit
       FullName expectedTestName;
       expectedTestName.testClassName = "TestClassName";
       expectedTestName.testName = "TestName";
-      expectedTestName.testClassTestNameLines =
-   "TESTS(TestClassName)\n"
-   "TEST(TestName)";
       ARE_EQUAL(expectedTestName, testName);
+   }
+
+   TEST(TestsAndTestLines_ReturnsExpected)
+   {
+      const FullName testName("TestClassName", "TestName");
+      ARE_EQUAL(
+         "TESTS(TestClassName)\n"
+         "TEST(TestName)", testName.TestsAndTestLines());
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfClassNameOrTestNameNotEqual)
@@ -36,7 +41,6 @@ namespace ZenUnit
       EQUALIZER_THROWS_INIT(FullName);
       EQUALIZER_THROWS(FullName, testClassName, "TestClassName");
       EQUALIZER_THROWS(FullName, testName, "TestName");
-      EQUALIZER_THROWS(FullName, testClassTestNameLines, "testClassTestNameLines");
    }
 
    }; RUN(FullNameTests)

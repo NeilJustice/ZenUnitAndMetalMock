@@ -234,7 +234,7 @@ File.cpp(1))");
       &TestResult::testBodyCallResult, TestPhase::TestBody, "",
       &TestResult::cleanupCallResult, TestPhase::Cleanup, " in CLEANUP")
    {
-      _testResult_WriteTestCaseNumberIfAnyMocked.fullName.testClassTestNameLines = "TestClassTestNameLines";
+      _testResult_WriteTestCaseNumberIfAnyMocked.fullName = FullName("TestClass", "Test");
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::Anomaly;
 
       const string AnomalyWhy = "AnomalyWhy";
@@ -259,7 +259,7 @@ File.cpp(1))");
          AssertCalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex));
       ZEN(_consoleMock.WriteMock.AssertCalls(
       {
-         _testResult_WriteTestCaseNumberIfAnyMocked.fullName.testClassTestNameLines,
+         _testResult_WriteTestCaseNumberIfAnyMocked.fullName.TestsAndTestLines(),
          expectedResponsibleTestPhaseSuffix
       }));
       ZEN(_consoleMock.WriteLineMock.AssertCalls(
@@ -279,7 +279,7 @@ File.cpp(1))");
       &TestResult::testBodyCallResult, TestPhase::TestBody, "",
       &TestResult::cleanupCallResult, TestPhase::Cleanup, " in CLEANUP")
    {
-      _testResult_WriteTestCaseNumberIfAnyMocked.fullName.testClassTestNameLines = "TestClassTestNameLines";
+      _testResult_WriteTestCaseNumberIfAnyMocked.fullName = FullName("TestClass", "Test");
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::Exception;
 
       const string ExceptionTypeName = "ExceptionType";
@@ -304,7 +304,8 @@ File.cpp(1))");
       ZEN(_testFailureNumbererMock.NextMock.AssertCalledOnce());
       ZEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
          AssertCalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex));
-      ZEN(_consoleMock.WriteMock.AssertCalledOnceWith(_testResult_WriteTestCaseNumberIfAnyMocked.fullName.testClassTestNameLines));
+      ZEN(_consoleMock.WriteMock.AssertCalledOnceWith(
+         _testResult_WriteTestCaseNumberIfAnyMocked.fullName.TestsAndTestLines()));
       ZEN(_consoleMock.WriteLineMock.AssertCalls(
       {
          TestFailureNumber,
@@ -317,7 +318,7 @@ File.cpp(1))");
 
    TEST(PrintIfFailure_SuccessButMissedDeadline_PrintsExpected)
    {
-      _testResult_WriteTestCaseNumberIfAnyMocked.fullName.testClassTestNameLines = "TestClassTestNameLines";
+      _testResult_WriteTestCaseNumberIfAnyMocked.fullName = FullName("TestClass", "Test");
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::SuccessButMissedDeadline;
       _testResult_WriteTestCaseNumberIfAnyMocked.milliseconds = 10;
 
@@ -338,7 +339,7 @@ File.cpp(1))");
       ZEN(_consoleMock.WriteLineMock.AssertCalls(
       {
          TestFailureNumber,
-         _testResult_WriteTestCaseNumberIfAnyMocked.fullName.testClassTestNameLines,
+         _testResult_WriteTestCaseNumberIfAnyMocked.fullName.TestsAndTestLines(),
          "Failed because test took longer than maxtestmilliseconds= (10 ms)"s
       }));
       ZEN(_consoleMock.WriteNewlineMock.AssertCalledOnce());
