@@ -133,6 +133,15 @@ namespace ZenUnit
 
       static const Anomaly Default;
    };
+
+   #ifdef __linux__
+   #elif _MSC_FULL_VER == 190024215 // VS2015 Update 3
+      #ifdef _DEBUG
+         static_assert(sizeof(Anomaly) == 240, "Debug sizeof(Anomaly) != 240");
+      #elif NDEBUG
+         static_assert(sizeof(Anomaly) == 200, "Release sizeof(Anomaly) != 200");
+      #endif
+   #endif
 }
 
 template<>

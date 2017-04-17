@@ -56,6 +56,15 @@ namespace ZenUnit
       virtual void WriteTestCaseNumberIfAny(const Console* console, int testCaseIndexArgument) const;
       static const TestResult TestingNonDefault;
    };
+
+   #ifdef __linux__
+   #elif _MSC_FULL_VER == 190024215 // VS2015 Update 3
+      #ifdef _DEBUG
+         static_assert(sizeof(TestResult) == 1608, "Debug sizeof(TestResult) != 1608");
+      #elif NDEBUG
+         static_assert(sizeof(TestResult) == 1368, "Release sizeof(TestResult) != 1368");
+      #endif
+   #endif
 }
 
 template<>

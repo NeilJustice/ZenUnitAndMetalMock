@@ -44,4 +44,13 @@ namespace ZenUnit
    protected:
       TestResult RunTestCase();
    };
+
+   #ifdef __linux__
+   #elif _MSC_FULL_VER == 190024215 // VS2015 Update 3
+      #ifdef _DEBUG
+         static_assert(sizeof(Test) == 56, "Debug sizeof(Test) != 56");
+      #elif NDEBUG
+         static_assert(sizeof(Test) == 56, "Release sizeof(Test) != 56");
+      #endif
+   #endif
 }

@@ -36,6 +36,15 @@ namespace ZenUnit
       static void PrintTestResultIfFailure(
          const TestResult& testResult, const Console* console, TestFailureNumberer* testFailureNumberer);
    };
+
+   #ifdef __linux__
+   #elif _MSC_FULL_VER == 190024215 // VS2015 Update 3
+      #ifdef _DEBUG
+         static_assert(sizeof(TestClassResult) == 56, "Debug sizeof(TestClassResult) != 56");
+      #elif NDEBUG
+         static_assert(sizeof(TestClassResult) == 48, "Release sizeof(TestClassResult) != 48");
+      #endif
+   #endif
 }
 
 template<>
