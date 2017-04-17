@@ -53,7 +53,7 @@ namespace ZenUnit
       TestClassResult RunTests() final
       {
          PrintTestClassNameAndNumberOfTests();
-         if (ConfirmNewabilityDeletabilityAndRegisterNXNTests(&_newDeleteTest, &_testClassResult))
+         if (ConfirmNewableAndDeletableAndRegisterNXNTests(&_newDeleteTest, &_testClassResult))
          {
             _testsMemberForEacherExtraArg->ForEach(
                &_tests, this, &TemplateTestClassRunner::RunTest, &_testClassResult);
@@ -71,7 +71,7 @@ namespace ZenUnit
             " | ", _tests.size(), _tests.size() == 1 ? " named test" : " named tests"));
       }
 
-      virtual bool ConfirmNewabilityDeletabilityAndRegisterNXNTests(
+      virtual bool ConfirmNewableAndDeletableAndRegisterNXNTests(
          Test* newDeleteTest, TestClassResult* outTestClassResult) const
       {
          const std::vector<TestResult> newDeleteTestResult = newDeleteTest->Run();

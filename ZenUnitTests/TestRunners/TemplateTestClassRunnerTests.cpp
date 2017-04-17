@@ -13,7 +13,7 @@ namespace ZenUnit
    SPEC(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
    SPECX(RunTests_PrintsTestClassNameAndNumberOfTests_ForEachRunsTests_PrintsTestClassResultLine_ReturnsTestClassResult)
    SPECX(PrintTestClassNameAndNumberOfTests_WritesTestClassNameVerticalBarNumberOfTests)
-   SPECX(ConfirmNewabilityDeletabilityAndRegisterNXNTests_RunsNewDeleteTest_AddsItResultToResults_ReturnsTrueIfSuccess)
+   SPECX(ConfirmNewableAndDeletableAndRegisterNXNTests_RunsNewDeleteTest_AddsItResultToResults_ReturnsTrueIfSuccess)
    SPEC(RunTest_WritesVerticalBarTestName_RunsTest_AddsTestResultsToTestClassResult_WriteLinesTestOutcome)
    SPEC(PrintTestClassResultLine_CallsTestClassResultPrintResultLine)
    SPECEND
@@ -37,7 +37,7 @@ namespace ZenUnit
    {
    public:
       ZENMOCK_VOID0_CONST(PrintTestClassNameAndNumberOfTests)
-      ZENMOCK_NONVOID2_CONST(bool, ConfirmNewabilityDeletabilityAndRegisterNXNTests, Test*, TestClassResult*)
+      ZENMOCK_NONVOID2_CONST(bool, ConfirmNewableAndDeletableAndRegisterNXNTests, Test*, TestClassResult*)
       ZENMOCK_VOID1_CONST(PrintTestClassResultLine, const TestClassResult*)
 
       const ConsoleMock* consoleMock;
@@ -112,7 +112,7 @@ namespace ZenUnit
       true, true)
    {
       _templateTestClassRunnerSelfMocked->PrintTestClassNameAndNumberOfTestsMock.Expect();
-      _templateTestClassRunnerSelfMocked->ConfirmNewabilityDeletabilityAndRegisterNXNTestsMock
+      _templateTestClassRunnerSelfMocked->ConfirmNewableAndDeletableAndRegisterNXNTestsMock
          .ExpectAndReturn(testClassTypeNewableAndDeletable);
       if (expectTestsRunForEachCall)
       {
@@ -125,7 +125,7 @@ namespace ZenUnit
       const TestClassResult testClassResult = _templateTestClassRunnerSelfMocked->RunTests();
       //
       ZEN(_templateTestClassRunnerSelfMocked->PrintTestClassNameAndNumberOfTestsMock.AssertCalledOnce());
-      ZEN(_templateTestClassRunnerSelfMocked->ConfirmNewabilityDeletabilityAndRegisterNXNTestsMock.AssertCalledOnceWith(
+      ZEN(_templateTestClassRunnerSelfMocked->ConfirmNewableAndDeletableAndRegisterNXNTestsMock.AssertCalledOnceWith(
           &_templateTestClassRunnerSelfMocked->_newDeleteTest, &_templateTestClassRunnerSelfMocked->_testClassResult));
       if (expectTestsRunForEachCall)
       {
@@ -170,7 +170,7 @@ namespace ZenUnit
       }
    }
 
-   TEST2X2(ConfirmNewabilityDeletabilityAndRegisterNXNTests_RunsNewDeleteTest_AddsItResultToResults_ReturnsTrueIfSuccess,
+   TEST2X2(ConfirmNewableAndDeletableAndRegisterNXNTests_RunsNewDeleteTest_AddsItResultToResults_ReturnsTrueIfSuccess,
       bool expectedReturnValue, TestOutcome newDeleteTestOutcome,
       false, TestOutcome::Anomaly,
       false, TestOutcome::Exception,
@@ -187,7 +187,7 @@ namespace ZenUnit
       testClassResultMock.AddTestResultsMock.Expect();
       //
       const bool testClassTypeIsNewableAndDeletable = _templateTestClassRunner->
-         ConfirmNewabilityDeletabilityAndRegisterNXNTests(&testMock, &testClassResultMock);
+         ConfirmNewableAndDeletableAndRegisterNXNTests(&testMock, &testClassResultMock);
       //
       ZEN(testMock.RunMock.AssertCalledOnce());
       ZEN(testClassResultMock.AddTestResultsMock.AssertCalledOnceWith(testResults));
