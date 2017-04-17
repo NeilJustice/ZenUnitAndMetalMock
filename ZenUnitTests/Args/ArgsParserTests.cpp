@@ -20,9 +20,9 @@ namespace ZenUnit
    const ConsoleMock* _consoleMock;
    const string TestProgramPath = "Folder/TestProgramName";
    const string ExpectedUsage = R"(C++ unit testing framework ZenUnit and C++ mocking framework ZenMock
-Version 0.1.1 2017-02-14
+Version 0.1.1
 
-Usage: ./<TestsBinaryName> [Options...]
+Usage: <TestsBinaryName> [Options...]
 
 Options:
 
@@ -36,7 +36,9 @@ None
    Exit 1 regardless of test run outcome if any tests are skipped.
    This option is useful for continuous integration servers
    to defend against the possibility of a quality-compromising
-   culture of complacency developing around committed skipped tests.)";
+   culture of complacency developing around committed skipped tests.
+-help or --help
+   Display this help.)";
 
    STARTUP
    {

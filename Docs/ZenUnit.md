@@ -148,7 +148,7 @@ int main(int argc, char* argv[])
 
 ```
 ZenUnit and ZenMock
-Usage: ./<TestsBinaryName> [Options...]
+Usage: <TestsBinaryName> [Options...]
 
 Options:
 
