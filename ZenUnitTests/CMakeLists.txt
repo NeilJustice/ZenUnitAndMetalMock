@@ -52,8 +52,11 @@ add_executable(ZenUnitTests ${Sources})
 target_link_libraries(ZenUnitTests ZenUnit)
 if(EXISTS ${GoogleBenchmarkLibraryPath})
    target_link_libraries(ZenUnitTests ${GoogleBenchmarkLibraryPath})
-   target_link_libraries(ZenUnitTests shlwapi)
+   if(WIN23)
+      target_link_libraries(ZenUnitTests shlwapi)
+   endif()
 endif()
 
 EnablePrecompiledHeaders()
 IfMSVCAddRunTestsPostBuildStep()
+
