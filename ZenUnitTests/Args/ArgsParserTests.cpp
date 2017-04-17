@@ -21,7 +21,6 @@ namespace ZenUnit
    const string TestProgramPath = "Folder/TestProgramName";
    const string ExpectedUsage = R"(C++ unit testing framework ZenUnit and C++ mocking framework ZenMock
 Version 0.1.1
-
 Usage: <TestsBinaryName> [Options...]
 
 Options:
