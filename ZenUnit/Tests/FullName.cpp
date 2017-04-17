@@ -25,7 +25,7 @@ namespace ZenUnit
 
 void ZenUnitEqualizer<ZenUnit::FullName>::
 AssertEqual(
-   const ZenUnit::FullName& expectedFullName, 
+   const ZenUnit::FullName& expectedFullName,
    const ZenUnit::FullName& actualFullName)
 {
    ARE_EQUAL(expectedFullName.testClassName, actualFullName.testClassName);

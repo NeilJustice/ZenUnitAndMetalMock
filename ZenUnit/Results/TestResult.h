@@ -58,6 +58,7 @@ namespace ZenUnit
    };
 
    #ifdef __linux__
+      static_assert(sizeof(TestResult) == 1296, "Release sizeof(TestResult) != 1296");
    #elif _MSC_FULL_VER == 190024215 // VS2015 Update 3
       #ifdef _DEBUG
          static_assert(sizeof(TestResult) == 1608, "Debug sizeof(TestResult) != 1608");
