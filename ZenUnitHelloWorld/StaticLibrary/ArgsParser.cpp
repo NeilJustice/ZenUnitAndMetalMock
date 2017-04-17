@@ -3,16 +3,18 @@
 
 ProgramArgs ArgsParser::Parse(const std::vector<std::string>& args) const
 {
+   assert(args.size() >= 2);
    ProgramArgs programArgs;
-   for (const std::string& arg : args)
+   for (size_t i = 1; i < args.size(); ++i)
    {
-      if (arg == "-flagA")
+      const std::string& arg = args[i];
+      if (arg == "-flag")
       {
-         programArgs.flagA = true;
+         programArgs.flag = true;
       }
-      else if (arg == "-flagB")
+      else
       {
-         programArgs.flagB = true;
+         throw std::invalid_argument("Invalid argument: " + arg);
       }
    }
    return programArgs;

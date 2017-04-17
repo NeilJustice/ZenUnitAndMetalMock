@@ -13,6 +13,7 @@ class Program
 private:
    std::unique_ptr<const Console> _console;
    std::unique_ptr<const ArgsParser> _argsParser;
+   static const std::string CommandLineUsage;
 public:
    Program();
    ~Program();

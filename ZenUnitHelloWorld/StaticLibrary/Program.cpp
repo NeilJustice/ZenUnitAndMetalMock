@@ -23,13 +23,15 @@ int Program::Main(int argc, char* argv[]) const
    return VectorMain(args);
 }
 
-const std::string Usage = "Usage";
+const std::string Program::CommandLineUsage = R"(ProgramName 0.1.0
+Usage: ProgramName [-flag])";
 
 int Program::VectorMain(const std::vector<std::string>& args) const
 {
-   if (args.empty())
+   assert(args.size() >= 1);
+   if (args.size() == 1)
    {
-      _console->WriteLine(Usage);
+      _console->WriteLine(CommandLineUsage);
       return 0;
    }
    try
@@ -41,6 +43,8 @@ int Program::VectorMain(const std::vector<std::string>& args) const
    catch (const std::exception& e)
    {
       _console->WriteLine(e.what());
+      _console->WriteNewline();
+      _console->WriteLine(CommandLineUsage);
       return 1;
    }
 }

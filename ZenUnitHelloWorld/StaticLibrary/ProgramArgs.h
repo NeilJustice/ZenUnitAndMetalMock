@@ -2,6 +2,5 @@
 
 struct ProgramArgs
 {
-   bool flagA = false;
-   bool flagB = false;
+   bool flag = false;
 };
