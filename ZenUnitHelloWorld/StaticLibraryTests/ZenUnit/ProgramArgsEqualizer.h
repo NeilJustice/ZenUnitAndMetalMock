@@ -2,9 +2,9 @@
 #include "StaticLibrary/ProgramArgs.h"
 
 template<>
-struct ZenUnitEqualizer
+struct ZenUnitEqualizer<ProgramArgs>
 {
    static void AssertEqual(
-      const ProgramArgs& expectedProgramArgs, 
+      const ProgramArgs& expectedProgramArgs,
       const ProgramArgs& actualProgramArgs);
 };

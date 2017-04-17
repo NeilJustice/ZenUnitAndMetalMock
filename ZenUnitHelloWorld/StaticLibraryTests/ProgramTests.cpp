@@ -42,9 +42,9 @@ TEST2X2(Main_ConvertsArgcArgvToStringVector_CallsVectorMain,
    } program_VectorMainMocked;
    program_VectorMainMocked.VectorMainMock.ExpectAndReturn(vectorMainReturnValue);
 
-   char* argv[] = { "BinaryPath" };
+   const char* argv[] = { "BinaryPath" };
    //
-   const int exitCode = program_VectorMainMocked.Main(1, argv);
+   const int exitCode = program_VectorMainMocked.Main(1, const_cast<char**>(argv));
    //
    ZEN(program_VectorMainMocked.VectorMainMock.AssertCalledOnceWith({ "BinaryPath" }));
    ARE_EQUAL(expectedExitCode, exitCode);
