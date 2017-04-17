@@ -42,8 +42,8 @@
 #define SKIPSPECX(Reason, CrystalClearTestName) DOSKIP(Reason, CrystalClearTestName)
 
 #define SPECEND return tests; }
-#define STARTUP void Startup() final
-#define CLEANUP void Cleanup() final
+#define STARTUP virtual void Startup() override
+#define CLEANUP virtual void Cleanup() override
 
 #define TEST(CrystalClearTestName) void CrystalClearTestName()
 

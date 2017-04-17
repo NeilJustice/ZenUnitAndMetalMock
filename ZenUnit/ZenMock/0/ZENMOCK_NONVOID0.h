@@ -5,10 +5,10 @@
 
 // Virtual Functions
 #define ZENMOCK_NONVOID0(returnType, functionName) \
-        ZENMOCK_NONVOID0_DEFINED(returnType, functionName, virtual,      ,        , final)
+        ZENMOCK_NONVOID0_DEFINED(returnType, functionName, virtual,      ,        , override final)
 
 #define ZENMOCK_NONVOID0_CONST(returnType, functionName) \
-        ZENMOCK_NONVOID0_DEFINED(returnType, functionName, virtual, const, mutable, final)
+        ZENMOCK_NONVOID0_DEFINED(returnType, functionName, virtual, const, mutable, override final)
 
 // Non-Virtual Functions
 #define ZENMOCK_NONVOID0_NONVIRTUAL(returnType, functionName) \
