@@ -57,11 +57,11 @@ namespace ZenUnit
       WAS_NEWED(testingTest._testResultFactory);
       ARE_EQUAL(FileLine(), testingTest._fileLine);
 
-      const char* testName = testingTest.Name();
+      const char* const testName = testingTest.Name();
       ARE_EQUAL(testName, testingTest._fullName.testName);
 
-      const string& testClassTestNameLines = testingTest.TestClassTestNameLines();
-      ARE_SAME(testClassTestNameLines, testingTest._fullName.testClassTestNameLines);
+      const string testsAndTestLines = testingTest.TestsAndTestLines();
+      ARE_EQUAL(testsAndTestLines, testingTest._fullName.TestsAndTestLines());
 
       testingTest._fileLine = FileLine("FilePath", 1);
       ARE_EQUAL(testingTest._fileLine.ToString(), testingTest.FileLineString());

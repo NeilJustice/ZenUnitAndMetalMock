@@ -147,7 +147,8 @@ int main(int argc, char* argv[])
 ### Command Line Arguments
 
 ```
-ZenUnit and ZenMock
+C++ unit testing framework ZenUnit and C++ mocking framework ZenMock
+Version 0.1.1
 Usage: <TestsBinaryName> [Options...]
 
 Options:
@@ -163,6 +164,8 @@ None
    This option is useful for continuous integration servers
    to defend against the possibility of a quality-compromising
    culture of complacency developing around committed skipped tests.
+-help or --help
+   Display this help.
 ```
 
 |Command Line Arguments Road Map|
@@ -175,7 +178,7 @@ None
 |-breakfast|
 |-maxtestms=\<Milliseconds\>|
 |-maxtotalseconds=\<Seconds\>|
-|-xml=\<FilePath\>|
+|-junitxml=\<FilePath\>|
 |-parallel|
 
 ### [Work In Progress Guide to ZenMock](ZenMock.md)

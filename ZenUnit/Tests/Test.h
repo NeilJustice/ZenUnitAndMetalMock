@@ -20,11 +20,10 @@ namespace ZenUnit
       Test(const char* testClassName, const char* testName);
       virtual ~Test();
       virtual const char* Name() const;
-      virtual const std::string& TestClassTestNameLines() const;
+      virtual std::string TestsAndTestLines() const;
       virtual std::string FileLineString() const;
       virtual void PrintPostTestNameMessage(const Console*) const {}
       virtual void PrintPostTestCompletionMessage(const Console*, const TestResult&) const {}
-      
       virtual size_t NumberOfTestCases() const = 0;
       virtual std::vector<TestResult> Run() = 0;
 

@@ -47,7 +47,7 @@ namespace ZenUnit
       ARE_EQUAL(TestCaseArgsText, testNXN._testCaseArgsText);
       ARE_EQUAL(0, testNXN._testCaseArgsIndex);
       ARE_EQUAL(TestName, testNXN.Name());
-      ARE_EQUAL("TESTS(TestClassName)\nTEST(TestName)", testNXN.TestClassTestNameLines());
+      ARE_EQUAL("TESTS(TestClassName)\nTEST(TestName)", testNXN.TestsAndTestLines());
       ARE_EQUAL("(0)", testNXN.FileLineString());
       ARE_EQUAL(4, testNXN.NumberOfTestCaseArgs);
    }

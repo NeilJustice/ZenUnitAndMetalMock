@@ -13,8 +13,13 @@ namespace ZenUnit
    FullName::FullName(const char* testClassName, const char* testName)
       : testClassName(testClassName)
       , testName(testName)
-      , testClassTestNameLines(String::Concat("TESTS(", testClassName, ")\nTEST(", testName, ")"))
    {
+   }
+
+   string FullName::TestsAndTestLines() const
+   {
+      string testsAndTestLines = String::Concat("TESTS(", testClassName, ")\nTEST(", testName, ")");
+      return testsAndTestLines;
    }
 }
 
@@ -25,5 +30,4 @@ AssertEqual(
 {
    ARE_EQUAL(expectedFullName.testClassName, actualFullName.testClassName);
    ARE_EQUAL(expectedFullName.testName, actualFullName.testName);
-   ARE_EQUAL(expectedFullName.testClassTestNameLines, actualFullName.testClassTestNameLines);
 }

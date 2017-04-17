@@ -13,7 +13,7 @@ namespace ZenUnit
 
    ZenUnitArgs ArgsParser::Parse(const vector<string>& args) const
    {
-      constexpr size_t ExeArgSize = 1;
+      const size_t ExeArgSize = 1;
       if (args.size() > ExeArgSize + ZenUnitArgs::ValidArgs.size())
       {
          _console->WriteLine("ZenUnit argument error: Too many arguments");
@@ -30,11 +30,7 @@ namespace ZenUnit
             _console->WriteLine("ZenUnit argument error: Invalid argument \"" + arg + "\"");
             _console->WriteLineAndExit(Usage, 2);
          }
-         if (arg == "-help" || arg == "--help")
-         {
-            _console->WriteLineAndExit(Usage, 0);
-         }
-         else if (arg == "-exit0")
+         if (arg == "-exit0")
          {
             zenUnitArgs.exit0 = true;
          }
@@ -42,13 +38,16 @@ namespace ZenUnit
          {
             zenUnitArgs.noskips = true;
          }
+         else if (arg == "-help" || arg == "--help")
+         {
+            _console->WriteLineAndExit(Usage, 0);
+         }
       }
       return zenUnitArgs;
    }
 
 const string ArgsParser::Usage = R"(C++ unit testing framework ZenUnit and C++ mocking framework ZenMock
 Version 0.1.1
-
 Usage: <TestsBinaryName> [Options...]
 
 Options:
