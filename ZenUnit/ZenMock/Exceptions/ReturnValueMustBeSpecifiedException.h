@@ -9,7 +9,7 @@ namespace ZenMock
       const std::string _what;
    public:
       explicit ReturnValueMustBeSpecifiedException(const std::string& zenMockedFunctionSignature);
-      virtual const char* what() const noexcept override;
+      const char* what() const noexcept override;
       static std::string MakeWhat(const std::string& zenMockedFunctionSignature);
    };
 }

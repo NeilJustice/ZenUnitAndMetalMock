@@ -16,11 +16,11 @@ namespace ZenUnit
    }
 
    TestResult TestResult::ConstructorFail(
-      FullName fullName,
+      const FullName& fullName,
       const CallResult& constructorCallResult)
    {
       TestResult constructorFailTestResult;
-      constructorFailTestResult.fullName = std::move(fullName);
+      constructorFailTestResult.fullName = fullName;
       constructorFailTestResult.constructorCallResult = constructorCallResult;
       constructorFailTestResult.testOutcome = constructorCallResult.testOutcome;
       constructorFailTestResult.milliseconds = constructorCallResult.milliseconds;
@@ -29,7 +29,7 @@ namespace ZenUnit
    }
 
    TestResult TestResult::StartupFail(
-      FullName fullName,
+      const FullName& fullName,
       const CallResult& constructorCallResult,
       const CallResult& startupCallResult,
       const CallResult& destructorCallResult)
@@ -37,7 +37,7 @@ namespace ZenUnit
       assert_true(constructorCallResult.testOutcome == TestOutcome::Success);
       assert_true(destructorCallResult.testOutcome == TestOutcome::Success);
       TestResult startupFail;
-      startupFail.fullName = std::move(fullName);
+      startupFail.fullName = fullName;
       startupFail.testOutcome = startupCallResult.testOutcome;
       startupFail.constructorCallResult = constructorCallResult;
       startupFail.startupCallResult = startupCallResult;
@@ -49,14 +49,14 @@ namespace ZenUnit
    }
 
    TestResult TestResult::CtorDtorSuccess(
-      FullName fullName,
+      const FullName& fullName,
       const CallResult& constructorCallResult,
       const CallResult& destructorCallResult)
    {
       assert_true(constructorCallResult.testOutcome == TestOutcome::Success);
       assert_true(destructorCallResult.testOutcome == TestOutcome::Success);
       TestResult ctorDtorSuccess;
-      ctorDtorSuccess.fullName = std::move(fullName);
+      ctorDtorSuccess.fullName = fullName;
       ctorDtorSuccess.testOutcome = TestOutcome::Success;
       ctorDtorSuccess.constructorCallResult = constructorCallResult;
       ctorDtorSuccess.destructorCallResult = destructorCallResult;
@@ -66,14 +66,14 @@ namespace ZenUnit
    }
 
    TestResult::TestResult(
-      FullName fullName,
+      const FullName& fullName,
       const CallResult& constructorCallResult,
       const CallResult& startupCallResult,
       const CallResult& testBodyCallResult,
       const CallResult& cleanupCallResult,
       const CallResult& destructorCallResult,
       const function<ZenUnitArgs()>& getArgs)
-      : fullName(std::move(fullName))
+      : fullName(fullName)
       , testCaseIndex(-1)
       , constructorCallResult(constructorCallResult)
       , startupCallResult(startupCallResult)
@@ -87,14 +87,12 @@ namespace ZenUnit
       assert_true(constructorCallResult.testOutcome == TestOutcome::Success);
       assert_true(startupCallResult.testOutcome == TestOutcome::Success);
       assert_true(destructorCallResult.testOutcome == TestOutcome::Success);
-
       milliseconds =
          constructorCallResult.milliseconds +
          startupCallResult.milliseconds +
          testBodyCallResult.milliseconds +
          cleanupCallResult.milliseconds +
          destructorCallResult.milliseconds;
-
       if (testBodyCallResult.testOutcome == TestOutcome::Exception)
       {
          testOutcome = TestOutcome::Exception;

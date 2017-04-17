@@ -28,22 +28,22 @@ namespace ZenUnit
       virtual ~TestResult() = default;
 
       static TestResult ConstructorFail(
-         FullName fullName,
+         const FullName& fullName,
          const CallResult& constructorCallResult);
 
       static TestResult StartupFail(
-         FullName fullName,
+         const FullName& fullName,
          const CallResult& constructorCallResult,
          const CallResult& startupCallResult,
          const CallResult& destructorCallResult);
 
       static TestResult CtorDtorSuccess(
-         FullName fullName,
+         const FullName& fullName,
          const CallResult& constructorCallResult,
          const CallResult& destructorCallResult);
 
       TestResult(
-         FullName fullName,
+         const FullName& fullName,
          const CallResult& constructorCallResult,
          const CallResult& startupCallResult,
          const CallResult& testBodyCallResult,

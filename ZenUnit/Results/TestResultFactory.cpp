@@ -5,33 +5,33 @@
 namespace ZenUnit
 {
    TestResult TestResultFactory::ConstructorFail(
-      FullName fullName,
+      const FullName& fullName,
       const CallResult& constructorCallResult) const
    {
-      return TestResult::ConstructorFail(std::move(fullName), constructorCallResult);
+      return TestResult::ConstructorFail(fullName, constructorCallResult);
    }
 
    TestResult TestResultFactory::StartupFail(
-      FullName fullName,
+      const FullName& fullName,
       const CallResult& constructorCallResult,
       const CallResult& startupCallResult,
       const CallResult& destructorCallResult) const
    {
       return TestResult::StartupFail(
-         std::move(fullName), constructorCallResult, startupCallResult, destructorCallResult);
+         fullName, constructorCallResult, startupCallResult, destructorCallResult);
    }
 
    TestResult TestResultFactory::CtorDtorSuccess(
-      FullName fullName,
+      const FullName& fullName,
       const CallResult& constructorCallResult,
       const CallResult& destructorCallResult) const
    {
       return TestResult::CtorDtorSuccess(
-         std::move(fullName), constructorCallResult, destructorCallResult);
+         fullName, constructorCallResult, destructorCallResult);
    }
 
    TestResult TestResultFactory::FullCtor(
-      FullName fullName,
+      const FullName& fullName,
       const CallResult& constructorCallResult,
       const CallResult& startupCallResult,
       const CallResult& testBodyCallResult,
@@ -39,7 +39,7 @@ namespace ZenUnit
       const CallResult& destructorCallResult) const
    {
       return TestResult(
-         std::move(fullName),
+         fullName,
          constructorCallResult,
          startupCallResult,
          testBodyCallResult,

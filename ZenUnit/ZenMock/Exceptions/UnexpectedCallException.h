@@ -39,7 +39,7 @@ Fix for this: Add before the unexpected call a call to
          return what;
       }
 
-      virtual const char* what() const noexcept override
+      const char* what() const noexcept override
       {
          return _what.c_str();
       }
