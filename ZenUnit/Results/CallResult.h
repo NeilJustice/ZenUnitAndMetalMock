@@ -27,9 +27,9 @@ namespace ZenUnit
       #endif
    #elif _MSC_FULL_VER == 190024215 // VS2015 Update 3
       #ifdef _DEBUG
-         static_assert(sizeof(CallResult) == 312, "Debug sizeof(CallResult) != 312");
+         static_assert(sizeof(CallResult) == 88, "Debug sizeof(CallResult) != 88");
       #elif NDEBUG
-         static_assert(sizeof(CallResult) == 264, "Release sizeof(CallResult) != 264");
+         static_assert(sizeof(CallResult) == 80, "Release sizeof(CallResult) != 80");
       #endif
    #endif
 }

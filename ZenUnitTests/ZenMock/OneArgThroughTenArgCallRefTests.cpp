@@ -127,8 +127,6 @@ Arg2: "2")", zenUnitPrintResult);
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      int a1 = 1, a2 = 2;
-
       CallRef2 callRef(a1, a2);
       CallRef2 callRef_arg1(ten, a2);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
