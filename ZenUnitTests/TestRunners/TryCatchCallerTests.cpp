@@ -99,7 +99,7 @@ namespace ZenUnit
       CallResult expectedCallResult;
       expectedCallResult.testPhase = TestPhase::TestBody;
       expectedCallResult.testOutcome = TestOutcome::Anomaly;
-      expectedCallResult.anomaly = Anomaly("NonDefault", "NonDefault", FileLine(), "", "");
+      expectedCallResult.anomaly = make_shared<Anomaly>("NonDefault", "NonDefault", FileLine(), "", "");
       expectedCallResult.milliseconds = Milliseconds;
       ARE_EQUAL(expectedCallResult, callResult);
    }

@@ -17,7 +17,7 @@ namespace ZenUnit
       expectedDefaultCallResult.testPhase = TestPhase::Unset;
       expectedDefaultCallResult.testOutcome = TestOutcome::Success;
       expectedDefaultCallResult.milliseconds = 0;
-      expectedDefaultCallResult.anomaly = Anomaly();
+      expectedDefaultCallResult.anomaly = nullptr;
       expectedDefaultCallResult.exceptionTypeName = nullptr;
       expectedDefaultCallResult.exceptionWhat = "";
       ARE_EQUAL(expectedDefaultCallResult, defaultCallResult);
@@ -30,7 +30,7 @@ namespace ZenUnit
       expectedCallResult.testPhase = TestPhase::Constructor;
       expectedCallResult.testOutcome = TestOutcome::Success;
       expectedCallResult.milliseconds = 0;
-      expectedCallResult.anomaly = Anomaly();
+      expectedCallResult.anomaly = nullptr;
       expectedCallResult.exceptionTypeName = nullptr;
       expectedCallResult.exceptionWhat = "";
       ARE_EQUAL(expectedCallResult, callResult);
@@ -43,13 +43,16 @@ namespace ZenUnit
       callResultArg.testPhase = TestPhase::Constructor;
       callResultArg.testOutcome = TestOutcome::Exception;
       callResultArg.milliseconds = 1;
-      callResultArg.anomaly.why = "why";
+      callResultArg.anomaly = make_shared<Anomaly>();
       string exceptionTypeName;
       callResultArg.exceptionTypeName = &exceptionTypeName;
       callResultArg.exceptionWhat = "excepWhat";
+      ARE_EQUAL(1, callResultArg.anomaly.use_count());
       //
       callResult.Assign(callResultArg);
       //
+      ARE_EQUAL(2, callResult.anomaly.use_count());
+      ARE_EQUAL(2, callResultArg.anomaly.use_count());
       ARE_EQUAL(callResultArg, callResult);
    }
 
@@ -58,8 +61,8 @@ namespace ZenUnit
       EQUALIZER_THROWS_INIT(CallResult);
       EQUALIZER_THROWS(CallResult, testPhase, TestPhase::Constructor);
       EQUALIZER_THROWS(CallResult, testOutcome, TestOutcome::Exception);
-      Anomaly nonDefaultAnomaly;
-      nonDefaultAnomaly.why = "why";
+      shared_ptr<Anomaly> nonDefaultAnomaly = make_shared<Anomaly>();
+      nonDefaultAnomaly->why = "why";
       EQUALIZER_THROWS(CallResult, anomaly, nonDefaultAnomaly);
       const string exceptionTypeName = "exceptionTypeName";
       EQUALIZER_THROWS(CallResult, exceptionTypeName, &exceptionTypeName);

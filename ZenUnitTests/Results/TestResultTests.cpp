@@ -238,7 +238,8 @@ File.cpp(1))");
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::Anomaly;
 
       const string AnomalyWhy = "AnomalyWhy";
-      (_testResult_WriteTestCaseNumberIfAnyMocked.*expectedResponsibleCallResultField).anomaly.why = AnomalyWhy;
+      (_testResult_WriteTestCaseNumberIfAnyMocked.*expectedResponsibleCallResultField).anomaly = make_shared<Anomaly>();
+      (_testResult_WriteTestCaseNumberIfAnyMocked.*expectedResponsibleCallResultField).anomaly->why = AnomalyWhy;
       (_testResult_WriteTestCaseNumberIfAnyMocked.*expectedResponsibleCallResultField).testPhase = testPhase;
       _testResult_WriteTestCaseNumberIfAnyMocked.responsibleCallResultField = expectedResponsibleCallResultField;
 

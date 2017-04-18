@@ -176,7 +176,7 @@ namespace ZenUnit
          const CallResult& responsibleCallResult = (this->*responsibleCallResultField);
          const string responsibleTestPhaseSuffix = TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
          console->Write(responsibleTestPhaseSuffix);
-         console->WriteLine(responsibleCallResult.anomaly.why);
+         console->WriteLine(responsibleCallResult.anomaly->why);
          console->WriteNewline();
          break;
       }

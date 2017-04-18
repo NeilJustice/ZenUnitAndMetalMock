@@ -28,7 +28,7 @@ namespace ZenUnit
       catch (const Anomaly& anomaly)
       {
          callResult.milliseconds = _stopwatch->StopMilliseconds();
-         callResult.anomaly = anomaly;
+         callResult.anomaly = make_shared<Anomaly>(anomaly);
          callResult.testOutcome = TestOutcome::Anomaly;
       }
       catch (const ZenMock::ZenMockException& e)
