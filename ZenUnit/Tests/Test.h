@@ -29,12 +29,12 @@ namespace ZenUnit
 
       static void CallNewTestClass(Test* test);
       virtual void NewTestClass() = 0;
-      
+
       static void CallStartup(Test* test);
       virtual void Startup() = 0;
 
       static void CallTestBody(Test* test);
-      virtual void TestBody() = 0;      
+      virtual void TestBody() = 0;
 
       static void CallCleanup(Test* test);
       virtual void Cleanup() = 0;
@@ -46,6 +46,9 @@ namespace ZenUnit
    };
 
    #ifdef __linux__
+      #if __clang_major__ == 3 && __clang_minor__ == 9
+         static_assert(sizeof(Test) == 56, "Debug sizeof(Test) != 56");
+      #endif
    #elif _MSC_FULL_VER == 190024215 // VS2015 Update 3
       #ifdef _DEBUG
          static_assert(sizeof(Test) == 56, "Debug sizeof(Test) != 56");
