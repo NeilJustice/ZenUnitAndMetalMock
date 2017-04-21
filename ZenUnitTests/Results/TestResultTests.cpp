@@ -238,9 +238,12 @@ File.cpp(1))");
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::Anomaly;
 
       const string AnomalyWhy = "AnomalyWhy";
-      (_testResult_WriteTestCaseNumberIfAnyMocked.*expectedResponsibleCallResultField).anomaly = make_shared<Anomaly>();
-      (_testResult_WriteTestCaseNumberIfAnyMocked.*expectedResponsibleCallResultField).anomaly->why = AnomalyWhy;
-      (_testResult_WriteTestCaseNumberIfAnyMocked.*expectedResponsibleCallResultField).testPhase = testPhase;
+      (_testResult_WriteTestCaseNumberIfAnyMocked.*
+         expectedResponsibleCallResultField).anomaly = make_shared<Anomaly>();
+      (_testResult_WriteTestCaseNumberIfAnyMocked.*
+         expectedResponsibleCallResultField).anomaly->why = AnomalyWhy;
+      (_testResult_WriteTestCaseNumberIfAnyMocked.*
+         expectedResponsibleCallResultField).testPhase = testPhase;
       _testResult_WriteTestCaseNumberIfAnyMocked.responsibleCallResultField = expectedResponsibleCallResultField;
 
       const string TestFailureNumber = "<10>";
@@ -285,10 +288,14 @@ File.cpp(1))");
 
       const string ExceptionTypeName = "ExceptionType";
       const string ExceptionWhat = "ExceptionWhat";
-      (_testResult_WriteTestCaseNumberIfAnyMocked.*expectedResponsibleCallResultField).exceptionTypeName = &ExceptionTypeName;
-      (_testResult_WriteTestCaseNumberIfAnyMocked.*expectedResponsibleCallResultField).exceptionWhat = ExceptionWhat;
-      (_testResult_WriteTestCaseNumberIfAnyMocked.*expectedResponsibleCallResultField).testPhase = testPhase;
-      _testResult_WriteTestCaseNumberIfAnyMocked.responsibleCallResultField = expectedResponsibleCallResultField;
+      (_testResult_WriteTestCaseNumberIfAnyMocked.*
+         expectedResponsibleCallResultField).exceptionTypeName = &ExceptionTypeName;
+      (_testResult_WriteTestCaseNumberIfAnyMocked.*
+         expectedResponsibleCallResultField).exceptionWhat = ExceptionWhat;
+      (_testResult_WriteTestCaseNumberIfAnyMocked.*
+         expectedResponsibleCallResultField).testPhase = testPhase;
+      _testResult_WriteTestCaseNumberIfAnyMocked.
+         responsibleCallResultField = expectedResponsibleCallResultField;
 
       const string TestFailureNumber = "<20>";
       _testFailureNumbererMock.NextMock.ExpectAndReturn(TestFailureNumber);
@@ -370,7 +377,8 @@ File.cpp(1))");
       //
       if (expectConsoleWrite)
       {
-         ZEN(_consoleMock.WriteMock.AssertCalledOnceWith(" test case " + to_string(expectedTestCaseNumberWritten)));
+         ZEN(_consoleMock.WriteMock.AssertCalledOnceWith(
+            " test case " + to_string(expectedTestCaseNumberWritten)));
       }
    }
 
