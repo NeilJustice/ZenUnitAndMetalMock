@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Stopwatch.h"
+#include "Utils/AssertTrue.h"
 
 namespace ZenUnit
 {
@@ -13,17 +14,7 @@ namespace ZenUnit
       _startTime = _highres_now_ZenMockable();
    }
 
-   long long Stopwatch::StopMilliseconds()
-   {
-      return Stop(false);
-   }
-
-   long long Stopwatch::StopNanoseconds()
-   {
-      return Stop(true);
-   }
-
-   long long Stopwatch::Stop(bool trueNanosecondsFalseMilliseconds)
+   unsigned Stopwatch::Stop()
    {
       if (_startTime == chrono::time_point<chrono::high_resolution_clock>())
       {
@@ -31,18 +22,10 @@ namespace ZenUnit
       }
       const chrono::time_point<chrono::high_resolution_clock> stopTime = _highres_now_ZenMockable();
       const chrono::duration<long long, std::nano> elapsedTime = stopTime - _startTime;
-      long long elapsedNanosOrMillis = 0;
-      if (trueNanosecondsFalseMilliseconds)
-      {
-         elapsedNanosOrMillis = chrono::duration_cast<
-            chrono::nanoseconds>(elapsedTime).count();
-      }
-      else
-      {
-         elapsedNanosOrMillis = chrono::duration_cast<
-            chrono::milliseconds>(elapsedTime).count();
-      }
+      long long elapsedMilliseconds = chrono::duration_cast<chrono::milliseconds>(elapsedTime).count();
       _startTime = chrono::time_point<chrono::high_resolution_clock>();
-      return elapsedNanosOrMillis;
+      assert_true(elapsedMilliseconds <= numeric_limits<unsigned>::max());
+      unsigned elapsedMillisecondsUnsigned = static_cast<unsigned>(elapsedMilliseconds);
+      return elapsedMillisecondsUnsigned;
    }
 }

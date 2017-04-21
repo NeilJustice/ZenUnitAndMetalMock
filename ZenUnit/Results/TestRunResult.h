@@ -38,7 +38,7 @@ namespace ZenUnit
       virtual void PrintTestFailuresAndSkips() const;
       virtual void PrintClosingLines(
          size_t totalNumberOfTestCases,
-         long long testRunMilliseconds,
+         unsigned testRunMilliseconds,
          const string& comamndLine) const;
       virtual int DetermineExitCode(const ZenUnitArgs& args) const;
       static void AssertEqual(

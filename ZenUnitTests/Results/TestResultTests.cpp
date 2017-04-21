@@ -29,7 +29,7 @@ namespace ZenUnit
    ConsoleMock _consoleMock;
    TestFailureNumbererMock _testFailureNumbererMock;
    const FullName FullNameValue = FullName("ClassName", "TestClassName");
-   const long long ExpectedMilliseconds = 1 + 2 + 3 + 4 + 5;
+   const unsigned ExpectedMilliseconds = 1 + 2 + 3 + 4 + 5;
    ZENMOCK_NONVOID0_STATIC(ZenUnitArgs, ZenUnit::TestRunner, GetArgs)
 
    struct TestResult_WriteTestCaseNumberIfAnyMocked : public Zen::Mock<TestResult>
@@ -129,12 +129,12 @@ namespace ZenUnit
    TEST6X6(SixArgConstructor_SetsFields,
       TestOutcome testBodyOutcome,
       TestOutcome cleanupOutcome,
-      long long maxtestmilliseconds,
-      long long relativeMilliseconds,
+      unsigned maxtestmilliseconds,
+      int relativeMilliseconds,
       TestOutcome expectedOverallOutcome,
       CallResult TestResult::* expectedResponsibleCallResultField,
-      TestOutcome::Success, TestOutcome::Success, 0ll, 0ll, TestOutcome::Success, nullptr,
-      TestOutcome::Success, TestOutcome::Success, 0ll, 1ll, TestOutcome::Success, nullptr,
+      TestOutcome::Success, TestOutcome::Success, 0, 0, TestOutcome::Success, nullptr,
+      TestOutcome::Success, TestOutcome::Success, 0, 1, TestOutcome::Success, nullptr,
       TestOutcome::Success, TestOutcome::Success, ExpectedMilliseconds, -1, TestOutcome::Success, nullptr,
       TestOutcome::Success, TestOutcome::Success, ExpectedMilliseconds, 0, TestOutcome::Success, nullptr,
       TestOutcome::Success, TestOutcome::Success, ExpectedMilliseconds, 1, TestOutcome::SuccessButMissedDeadline, nullptr,
@@ -153,7 +153,7 @@ namespace ZenUnit
       testBodyCallResult.milliseconds = 4ll;
       CallResult cleanupCallResult(TestPhase::Cleanup);
       cleanupCallResult.testOutcome = cleanupOutcome;
-      cleanupCallResult.milliseconds = 5ll + relativeMilliseconds;
+      cleanupCallResult.milliseconds = 5 + relativeMilliseconds;
 
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.maxtestmilliseconds = maxtestmilliseconds;

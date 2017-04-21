@@ -23,7 +23,7 @@ namespace ZenUnit
       virtual ~TestClassResult();
       virtual void Assign(const TestClassResult& testClassResult);
       virtual void AddTestResults(const std::vector<TestResult>& testResults);
-      virtual long long Milliseconds() const;
+      virtual unsigned Milliseconds() const;
       virtual void PrintResultLine(const Console* console) const;
       virtual size_t NumberOfFailedTestCases() const;
       virtual void PrintTestFailures(

@@ -14,9 +14,6 @@ namespace ZenUnit
       Stopwatch();
       virtual ~Stopwatch() = default;
       virtual void Start();
-      virtual long long StopMilliseconds();
-      virtual long long StopNanoseconds();
-   private:
-      long long Stop(bool trueNanosecondsFalseMilliseconds);
+      virtual unsigned Stop();
    };
 }

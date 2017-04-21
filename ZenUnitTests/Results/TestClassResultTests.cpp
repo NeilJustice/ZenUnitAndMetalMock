@@ -110,7 +110,7 @@ namespace ZenUnit
    {
       ARE_EQUAL(0, _testClassResult._testResults.size());
       //
-      const long long milliseconds = _testClassResult.Milliseconds();
+      const unsigned milliseconds = _testClassResult.Milliseconds();
       //
       ARE_EQUAL(0, milliseconds);
    }
@@ -123,7 +123,7 @@ namespace ZenUnit
       testResultB.milliseconds = 2;
       _testClassResult._testResults = { testResultA, testResultB };
       //
-      const long long milliseconds = _testClassResult.Milliseconds();
+      const unsigned milliseconds = _testClassResult.Milliseconds();
       //
       ARE_EQUAL(3, milliseconds);
    }

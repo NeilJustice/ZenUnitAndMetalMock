@@ -23,11 +23,11 @@ namespace ZenUnit
       try
       {
          testPhaseFunction(test);
-         callResult.milliseconds = _stopwatch->StopMilliseconds();
+         callResult.milliseconds = _stopwatch->Stop();
       }
       catch (const Anomaly& anomaly)
       {
-         callResult.milliseconds = _stopwatch->StopMilliseconds();
+         callResult.milliseconds = _stopwatch->Stop();
          callResult.anomaly = make_shared<Anomaly>(anomaly);
          callResult.testOutcome = TestOutcome::Anomaly;
       }
@@ -41,7 +41,7 @@ namespace ZenUnit
       }
       catch (...)
       {
-         const long long milliseconds = _stopwatch->StopMilliseconds();
+         const unsigned milliseconds = _stopwatch->Stop();
          const string testPhaseSuffix = TestPhaseToTestPhaseSuffix(testPhase);
          _console->WriteLineColor("FATALITY!", Color::Red);
          const string exitLine = String::Concat(

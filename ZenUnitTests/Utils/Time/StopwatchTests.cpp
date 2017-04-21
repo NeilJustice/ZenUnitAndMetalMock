@@ -6,10 +6,8 @@ namespace ZenUnit
    TESTS(StopwatchTests)
    SPEC(Constructor_SetsNowFunction)
    SPEC(Start_SetsStartTimeToNow)
-   SPEC(StopMilliseconds_StartNotPreviouslyCalled_Returns0)
-   SPEC(StopMilliseconds_StartPreviouslyCalled_ReturnsElapsedMilliseconds)
-   SPEC(StopNanoseconds_StartNotPreviouslyCalled_Returns0)
-   SPEC(StopNanoseconds_StartPreviouslyCalled_ReturnsElapsedNanoseconds)
+   SPEC(Stop_StartNotPreviouslyCalled_Returns0)
+   SPEC(Stop_StartPreviouslyCalled_ReturnsElapsedMilliseconds)
    SPECEND
 
    Stopwatch _stopwatch;
@@ -42,13 +40,13 @@ namespace ZenUnit
       ARE_EQUAL(nonDefaultTimePoint, _stopwatch._startTime);
    }
 
-   TEST(StopMilliseconds_StartNotPreviouslyCalled_Returns0)
+   TEST(Stop_StartNotPreviouslyCalled_Returns0)
    {
-      ARE_EQUAL(0, _stopwatch.StopMilliseconds());
-      ARE_EQUAL(0, _stopwatch.StopMilliseconds());
+      ARE_EQUAL(0, _stopwatch.Stop());
+      ARE_EQUAL(0, _stopwatch.Stop());
    }
 
-   TEST(StopMilliseconds_StartPreviouslyCalled_ReturnsElapsedMilliseconds)
+   TEST(Stop_StartPreviouslyCalled_ReturnsElapsedMilliseconds)
    {
       chrono::time_point<chrono::high_resolution_clock> startTime;
       startTime += chrono::milliseconds(100);
@@ -56,30 +54,10 @@ namespace ZenUnit
       now_ZenMock.ExpectAndReturn(stopTime);
       _stopwatch._startTime = startTime;
       //
-      const long long elapsedMilliseconds = _stopwatch.StopMilliseconds();
+      const unsigned elapsedMilliseconds = _stopwatch.Stop();
       //
       ZEN(now_ZenMock.AssertCalledOnce());
-      ARE_EQUAL(1234ll, elapsedMilliseconds);
-   }
-
-   TEST(StopNanoseconds_StartNotPreviouslyCalled_Returns0)
-   {
-      ARE_EQUAL(0, _stopwatch.StopNanoseconds());
-      ARE_EQUAL(0, _stopwatch.StopNanoseconds());
-   }
-
-   TEST(StopNanoseconds_StartPreviouslyCalled_ReturnsElapsedNanoseconds)
-   {
-      chrono::time_point<chrono::high_resolution_clock> startTime;
-      startTime += chrono::nanoseconds(100);
-      const chrono::time_point<chrono::high_resolution_clock> stopTime = startTime + chrono::nanoseconds(5678);
-      now_ZenMock.ExpectAndReturn(stopTime);
-      _stopwatch._startTime = startTime;
-      //
-      const long long elapsedNanoseconds = _stopwatch.StopNanoseconds();
-      //
-      ZEN(now_ZenMock.AssertCalledOnce());
-      ARE_EQUAL(5678ll, elapsedNanoseconds);
+      ARE_EQUAL(1234, elapsedMilliseconds);
    }
 
    }; RUN(StopwatchTests)

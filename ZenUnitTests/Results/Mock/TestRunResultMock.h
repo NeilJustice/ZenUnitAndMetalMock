@@ -7,6 +7,6 @@ struct TestRunResultMock : public Zen::Mock<TestRunResult>
    ZENMOCK_VOID2(AddSkippedTestClassNameAndReason, const char*, const char*)
    ZENMOCK_VOID1(SetTestClassResults, vector<TestClassResult>&)
    ZENMOCK_VOID0_CONST(PrintTestFailuresAndSkips)
-   ZENMOCK_VOID3_CONST(PrintClosingLines, size_t, long long, const string&)
+   ZENMOCK_VOID3_CONST(PrintClosingLines, size_t, unsigned, const string&)
    ZENMOCK_NONVOID1_CONST(int, DetermineExitCode, const ZenUnitArgs&)
 };

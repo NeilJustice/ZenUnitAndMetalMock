@@ -25,7 +25,7 @@ namespace ZenUnit
       template<typename ExceptionType>
       void PopulateCallResult(const ExceptionType& e, CallResult* outCallResult) const
       {
-         outCallResult->milliseconds = _stopwatch->StopMilliseconds();
+         outCallResult->milliseconds = _stopwatch->Stop();
          outCallResult->exceptionTypeName = Type::GetName(e);
          const char* const what = e.what();
          outCallResult->exceptionWhat.assign(what);

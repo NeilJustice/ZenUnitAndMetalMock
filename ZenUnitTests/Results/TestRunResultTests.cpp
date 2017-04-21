@@ -231,18 +231,18 @@ namespace ZenUnit
       size_t numberOfFailedTestCases,
       size_t numberOfTotalTests,
       const string& expectedClosingLineTestsCountText,
-      long long testRunMilliseconds,
+      unsigned testRunMilliseconds,
       const string& expectedMillisecondOrMilliseconds,
       const string& expectedBottomLineAsciiArt,
-      " SUCCESS  ", Color::Green, 0ull, 1ull, "1 test passed", 0ll, "milliseconds", "+===+===+",
-      " SUCCESS  ", Color::Green, 0ull, 2ull, "2 tests passed", 1ll, "millisecond", "+===+===+",
-      " SUCCESS  ", Color::Green, 0ull, 3ull, "3 tests passed", 2ll, "milliseconds", "+===+===+",
-      ">>-FAIL-> ", Color::Red, 1ull, 1ull, "1/1 test failed", 0ll, "milliseconds", ">>------>",
-      ">>-FAIL-> ", Color::Red, 1ull, 2ull, "1/2 tests failed", 1ll, "millisecond", ">>------>",
-      ">>-FAIL-> ", Color::Red, 1ull, 3ull, "1/3 tests failed", 2ll, "milliseconds", ">>------>",
-      ">>-FAIL-> ", Color::Red, 2ull, 2ull, "2/2 tests failed", 3ll, "milliseconds", ">>------>",
-      ">>-FAIL-> ", Color::Red, 2ull, 3ull, "2/3 tests failed", 4ll, "milliseconds", ">>------>",
-      ">>-FAIL-> ", Color::Red, 2ull, 4ull, "2/4 tests failed", 5ll, "milliseconds", ">>------>")
+      " SUCCESS  ", Color::Green, 0ull, 1ull, "1 test passed", 0, "milliseconds", "+===+===+",
+      " SUCCESS  ", Color::Green, 0ull, 2ull, "2 tests passed", 1, "millisecond", "+===+===+",
+      " SUCCESS  ", Color::Green, 0ull, 3ull, "3 tests passed", 2, "milliseconds", "+===+===+",
+      ">>-FAIL-> ", Color::Red, 1ull, 1ull, "1/1 test failed", 0, "milliseconds", ">>------>",
+      ">>-FAIL-> ", Color::Red, 1ull, 2ull, "1/2 tests failed", 1, "millisecond", ">>------>",
+      ">>-FAIL-> ", Color::Red, 1ull, 3ull, "1/3 tests failed", 2, "milliseconds", ">>------>",
+      ">>-FAIL-> ", Color::Red, 2ull, 2ull, "2/2 tests failed", 3, "milliseconds", ">>------>",
+      ">>-FAIL-> ", Color::Red, 2ull, 3ull, "2/3 tests failed", 4, "milliseconds", ">>------>",
+      ">>-FAIL-> ", Color::Red, 2ull, 4ull, "2/4 tests failed", 5, "milliseconds", ">>------>")
    {
       _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
       _consoleMock->WriteColorMock.Expect();

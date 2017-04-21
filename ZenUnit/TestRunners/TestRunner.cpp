@@ -68,7 +68,7 @@ namespace ZenUnit
       }
       _testRunResult->PrintTestFailuresAndSkips();
       const size_t totalNumberOfTestCases = _multiTestClassRunner->TotalNumberOfTestCases();
-      const long long testRunMilliseconds = _testRunStopwatch->StopMilliseconds();
+      const unsigned testRunMilliseconds = _testRunStopwatch->Stop();
       _testRunResult->PrintClosingLines(totalNumberOfTestCases, testRunMilliseconds, _args.commandLine);
       _console->PauseForAnyKeyIfDebuggerIsPresent();
       const int exitCode = _testRunResult->DetermineExitCode(_args);

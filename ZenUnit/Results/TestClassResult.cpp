@@ -23,10 +23,10 @@ namespace ZenUnit
       _testResults.insert(_testResults.end(), testResults.cbegin(), testResults.cend());
    }
 
-   long long TestClassResult::Milliseconds() const
+   unsigned TestClassResult::Milliseconds() const
    {
-      const long long milliseconds = std::accumulate(_testResults.cbegin(), _testResults.cend(), 0ll,
-         [](long long cumulativeMilliseconds, const TestResult& testResult)
+      const unsigned milliseconds = std::accumulate(_testResults.cbegin(), _testResults.cend(), 0u,
+         [](unsigned cumulativeMilliseconds, const TestResult& testResult)
          {
             return cumulativeMilliseconds + testResult.milliseconds;
          });
@@ -49,7 +49,7 @@ namespace ZenUnit
 
    size_t TestClassResult::NumberOfFailedTestCases() const
    {
-      const long long numberOfFailedTestCases = std::count_if(
+      const ptrdiff_t numberOfFailedTestCases = std::count_if(
          _testResults.cbegin(), _testResults.cend(), [](const TestResult& testResult)
          {
             return testResult.testOutcome != TestOutcome::Success;

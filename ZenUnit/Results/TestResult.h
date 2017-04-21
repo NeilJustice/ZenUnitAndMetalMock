@@ -22,7 +22,7 @@ namespace ZenUnit
       CallResult destructorCallResult;
       CallResult TestResult::* responsibleCallResultField;
       TestOutcome testOutcome;
-      long long milliseconds;
+      unsigned milliseconds;
 
       TestResult();
       virtual ~TestResult() = default;
@@ -63,7 +63,7 @@ namespace ZenUnit
       #endif
    #elif _MSC_FULL_VER == 190024215 // VS2015 Update 3
       #ifdef _DEBUG
-         static_assert(sizeof(TestResult) == 488, "Debug sizeof(TestResult) != 488");
+         static_assert(sizeof(TestResult) == 448, "Debug sizeof(TestResult) != 448");
       #elif NDEBUG
          static_assert(sizeof(TestResult) == 448, "Release sizeof(TestResult) != 448");
       #endif

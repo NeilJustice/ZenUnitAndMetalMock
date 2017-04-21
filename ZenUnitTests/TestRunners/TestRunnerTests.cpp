@@ -121,9 +121,8 @@ namespace ZenUnit
       _testRunnerRunTestsMocked.multiTestClassRunnerMock->TotalNumberOfTestCasesMock.
          ExpectAndReturn(TotalNumberOfTestCases);
 
-      const long long TestRunMilliseconds = 20;
-      _testRunnerRunTestsMocked.testRunStopwatchMock->
-         StopMillisecondsMock.ExpectAndReturn(TestRunMilliseconds);
+      const unsigned TestRunMilliseconds = 20;
+      _testRunnerRunTestsMocked.testRunStopwatchMock->StopMock.ExpectAndReturn(TestRunMilliseconds);
 
       _testRunnerRunTestsMocked.testRunResultMock->
          DetermineExitCodeMock.ExpectAndReturn(determineExitCodeReturnValue);
@@ -150,8 +149,7 @@ namespace ZenUnit
       ZEN(_testRunnerRunTestsMocked.testRunResultMock->PrintTestFailuresAndSkipsMock.AssertCalledOnce());
       ZEN(_testRunnerRunTestsMocked.multiTestClassRunnerMock->
          TotalNumberOfTestCasesMock.AssertCalledOnce());
-      ZEN(_testRunnerRunTestsMocked.testRunStopwatchMock->
-         StopMillisecondsMock.AssertCalledOnce());
+      ZEN(_testRunnerRunTestsMocked.testRunStopwatchMock->StopMock.AssertCalledOnce());
       ZEN(_testRunnerRunTestsMocked.testRunResultMock->PrintClosingLinesMock.AssertCalledOnceWith(
          TotalNumberOfTestCases, TestRunMilliseconds, zenUnitArgs.commandLine));
       ZEN(_testRunnerRunTestsMocked.consoleMock->

@@ -75,7 +75,7 @@ namespace ZenUnit
 
    void TestRunResult::PrintClosingLines(
       size_t totalNumberOfTestCases,
-      long long testRunMilliseconds,
+      unsigned testRunMilliseconds,
       const string& comamndLine) const
    {
       assert_true(_numberOfFailedTestCases <= totalNumberOfTestCases);
