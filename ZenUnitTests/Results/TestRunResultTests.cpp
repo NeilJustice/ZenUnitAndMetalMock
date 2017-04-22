@@ -95,7 +95,9 @@ namespace ZenUnit
       //
       TestRunResult expectedTestRunResultA;
       expectedTestRunResultA._skippedTestClassNamesAndReasons =
-         { String::Concat(SkippedTestClassNameA, " because: ", ReasonA) };
+      {
+         String::Concat(SkippedTestClassNameA, " because: ", ReasonA)
+      };
       ARE_EQUAL(expectedTestRunResultA, _testRunResult);
 
       const char* SkippedTestClassNameB = "SkippedTestClassB";
@@ -106,8 +108,8 @@ namespace ZenUnit
       TestRunResult expectedTestRunResultB;
       expectedTestRunResultB._skippedTestClassNamesAndReasons =
       {
-         { String::Concat(SkippedTestClassNameA, " because: ", ReasonA) },
-         { String::Concat(SkippedTestClassNameB, " because: ", ReasonB) },
+         String::Concat(SkippedTestClassNameA, " because: ", ReasonA),
+         String::Concat(SkippedTestClassNameB, " because: ", ReasonB)
       };
       ARE_EQUAL(expectedTestRunResultB, _testRunResult);
    }

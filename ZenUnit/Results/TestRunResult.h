@@ -24,8 +24,8 @@ namespace ZenUnit
       std::unique_ptr<const MemberForEacherSkippedTestsType> _memberForEacherSkippedTests;
       std::unique_ptr<TestFailureNumberer> _testFailureNumberer;
       std::vector<TestClassResult> _testClassResults;
-      std::vector<string> _skippedTestClassNamesAndReasons;
-      std::vector<string> _skippedFullTestNamesAndReasons;
+      std::vector<std::string> _skippedTestClassNamesAndReasons;
+      std::vector<std::string> _skippedFullTestNamesAndReasons;
       size_t _numberOfFailedTestCases;
    public:
       TestRunResult();
@@ -39,7 +39,7 @@ namespace ZenUnit
       virtual void PrintClosingLines(
          size_t totalNumberOfTestCases,
          unsigned testRunMilliseconds,
-         const string& comamndLine) const;
+         const std::string& comamndLine) const;
       virtual int DetermineExitCode(const ZenUnitArgs& args) const;
       static void AssertEqual(
          const ZenUnit::TestRunResult& expectedTestRunResult,

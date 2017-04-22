@@ -3,6 +3,7 @@
 #include "ZenUnit/TestRunners/TestRunner.h"
 #include "ZenUnit/TestRunners/TryCatchCaller.h"
 #include "ZenUnit/ZenMock/Exceptions/ZenMockException.h"
+#include <memory>
 
 namespace ZenUnit
 {
