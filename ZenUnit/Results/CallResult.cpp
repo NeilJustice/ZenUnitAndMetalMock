@@ -32,6 +32,7 @@ AssertEqual(
    ARE_EQUAL(expectedCallResult.testPhase, actualCallResult.testPhase);
    ARE_EQUAL(expectedCallResult.testOutcome, actualCallResult.testOutcome);
    ARE_EQUAL(expectedCallResult.milliseconds, actualCallResult.milliseconds);
+
    if (!expectedCallResult.anomaly)
    {
       IS_FALSE(actualCallResult.anomaly);
@@ -44,6 +45,19 @@ AssertEqual(
    {
       ARE_EQUAL(*expectedCallResult.anomaly, *actualCallResult.anomaly);
    }
+
    ARE_EQUAL(expectedCallResult.exceptionTypeName, actualCallResult.exceptionTypeName);
-   ARE_EQUAL(expectedCallResult.exceptionWhat, actualCallResult.exceptionWhat);
+
+   if (!expectedCallResult.exceptionWhat)
+   {
+      IS_FALSE(actualCallResult.exceptionWhat);
+   }
+   else if (!actualCallResult.exceptionWhat)
+   {
+      IS_FALSE(expectedCallResult.exceptionWhat);
+   }
+   else
+   {
+      ARE_EQUAL(*expectedCallResult.exceptionWhat, *actualCallResult.exceptionWhat);
+   }
 }

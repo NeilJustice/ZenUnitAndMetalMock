@@ -191,7 +191,7 @@ namespace ZenUnit
          const string uncaughtExceptionTypeLine = String::Concat(
             "Threw exception: ", *responsibleCallResult.exceptionTypeName);
          const string exceptionwWhatLine = String::Concat(
-            "what(): \"", responsibleCallResult.exceptionWhat, "\"");
+            "what(): \"", *responsibleCallResult.exceptionWhat, "\"");
          console->WriteLine(responsibleTestPhaseSuffix);
          console->WriteLine(uncaughtExceptionTypeLine);
          console->WriteLine(exceptionwWhatLine);

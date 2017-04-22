@@ -291,7 +291,7 @@ File.cpp(1))");
       (_testResult_WriteTestCaseNumberIfAnyMocked.*
          expectedResponsibleCallResultField).exceptionTypeName = &ExceptionTypeName;
       (_testResult_WriteTestCaseNumberIfAnyMocked.*
-         expectedResponsibleCallResultField).exceptionWhat = ExceptionWhat;
+         expectedResponsibleCallResultField).exceptionWhat = make_shared<string>(ExceptionWhat);
       (_testResult_WriteTestCaseNumberIfAnyMocked.*
          expectedResponsibleCallResultField).testPhase = testPhase;
       _testResult_WriteTestCaseNumberIfAnyMocked.

@@ -19,7 +19,7 @@ namespace ZenUnit
       expectedDefaultCallResult.milliseconds = 0;
       expectedDefaultCallResult.anomaly = nullptr;
       expectedDefaultCallResult.exceptionTypeName = nullptr;
-      expectedDefaultCallResult.exceptionWhat = "";
+      expectedDefaultCallResult.exceptionWhat = nullptr;
       ARE_EQUAL(expectedDefaultCallResult, defaultCallResult);
    }
 
@@ -32,7 +32,7 @@ namespace ZenUnit
       expectedCallResult.milliseconds = 0;
       expectedCallResult.anomaly = nullptr;
       expectedCallResult.exceptionTypeName = nullptr;
-      expectedCallResult.exceptionWhat = "";
+      expectedCallResult.exceptionWhat = nullptr;
       ARE_EQUAL(expectedCallResult, callResult);
    }
 
@@ -46,7 +46,7 @@ namespace ZenUnit
       callResultArg.anomaly = make_shared<Anomaly>();
       string exceptionTypeName;
       callResultArg.exceptionTypeName = &exceptionTypeName;
-      callResultArg.exceptionWhat = "excepWhat";
+      callResultArg.exceptionWhat = make_shared<string>("excepWhat");
       ARE_EQUAL(1, callResultArg.anomaly.use_count());
       //
       callResult.Assign(callResultArg);
@@ -61,12 +61,17 @@ namespace ZenUnit
       EQUALIZER_THROWS_INIT(CallResult);
       EQUALIZER_THROWS(CallResult, testPhase, TestPhase::Constructor);
       EQUALIZER_THROWS(CallResult, testOutcome, TestOutcome::Exception);
+
       shared_ptr<Anomaly> nonDefaultAnomaly = make_shared<Anomaly>();
       nonDefaultAnomaly->why = "why";
       EQUALIZER_THROWS(CallResult, anomaly, nonDefaultAnomaly);
+
       const string exceptionTypeName = "exceptionTypeName";
       EQUALIZER_THROWS(CallResult, exceptionTypeName, &exceptionTypeName);
-      EQUALIZER_THROWS(CallResult, exceptionWhat, "exceptionWhat");
+
+      shared_ptr<string> nonDefaultExceptionWhat = make_shared<string>("what");
+      EQUALIZER_THROWS(CallResult, exceptionWhat, nonDefaultExceptionWhat);
+
       EQUALIZER_THROWS(CallResult, milliseconds, 1u);
    }
 

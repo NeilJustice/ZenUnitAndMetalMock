@@ -122,7 +122,7 @@ namespace ZenUnit
       expectedCallResult.testPhase = TestPhase::TestBody;
       expectedCallResult.testOutcome = TestOutcome::Exception;
       expectedCallResult.exceptionTypeName = Type::GetName<runtime_error>();
-      expectedCallResult.exceptionWhat = "what";
+      expectedCallResult.exceptionWhat = make_shared<string>("what");
       expectedCallResult.milliseconds = Milliseconds;
       ARE_EQUAL(expectedCallResult, callResult);
    }
@@ -144,7 +144,7 @@ namespace ZenUnit
       expectedCallResult.testPhase = TestPhase::TestBody;
       expectedCallResult.testOutcome = TestOutcome::Exception;
       expectedCallResult.exceptionTypeName = Type::GetName<invalid_argument>();
-      expectedCallResult.exceptionWhat = "what";
+      expectedCallResult.exceptionWhat = make_shared<string>("what");
       expectedCallResult.milliseconds = Milliseconds;
       ARE_EQUAL(expectedCallResult, callResult);
    }
@@ -163,8 +163,8 @@ namespace ZenUnit
       expectedCallResult.testPhase = TestPhase::TestBody;
       expectedCallResult.testOutcome = TestOutcome::Exception;
       expectedCallResult.exceptionTypeName = Type::GetName<ZenMock::FunctionAlreadyExpectedException>();
-      expectedCallResult.exceptionWhat =
-         ZenMock::FunctionAlreadyExpectedException::MakeWhat("ZenMockedFunctionSignature");
+      expectedCallResult.exceptionWhat = make_shared<string>(
+         ZenMock::FunctionAlreadyExpectedException::MakeWhat("ZenMockedFunctionSignature"));
       expectedCallResult.milliseconds = Milliseconds;
       ARE_EQUAL(expectedCallResult, callResult);
    }

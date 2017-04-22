@@ -13,7 +13,7 @@ namespace ZenUnit
       unsigned milliseconds;
       std::shared_ptr<Anomaly> anomaly;
       const std::string* exceptionTypeName;
-      std::string exceptionWhat;
+      std::shared_ptr<std::string> exceptionWhat;
 
       CallResult();
       explicit CallResult(TestPhase testPhase);
@@ -27,9 +27,9 @@ namespace ZenUnit
       #endif
    #elif _MSC_FULL_VER == 190024215 // VS2015 Update 3
       #ifdef _DEBUG
-         static_assert(sizeof(CallResult) == 80, "Debug sizeof(CallResult) != 80");
+         static_assert(sizeof(CallResult) == 56, "Debug sizeof(CallResult) != 56");
       #elif NDEBUG
-         static_assert(sizeof(CallResult) == 80, "Release sizeof(CallResult) != 80");
+         static_assert(sizeof(CallResult) == 56, "Release sizeof(CallResult) != 56");
       #endif
    #endif
 }
