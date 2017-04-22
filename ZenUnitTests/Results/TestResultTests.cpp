@@ -34,7 +34,7 @@ namespace ZenUnit
 
    struct TestResult_WriteTestCaseNumberIfAnyMocked : public Zen::Mock<TestResult>
    {
-      ZENMOCK_VOID2_CONST(WriteTestCaseNumberIfAny, const Console*, int)
+      ZENMOCK_VOID2_CONST(WriteTestCaseNumberIfAny, const Console*, unsigned short)
    } _testResult_WriteTestCaseNumberIfAnyMocked;
 
    STARTUP
@@ -60,7 +60,7 @@ namespace ZenUnit
       expectedDefaultTestResult.destructorCallResult = CallResult();
       expectedDefaultTestResult.responsibleCallResultField = nullptr;
       expectedDefaultTestResult.testOutcome = TestOutcome::Unset;
-      expectedDefaultTestResult.testCaseIndex = -1;
+      expectedDefaultTestResult.testCaseIndex = numeric_limits<unsigned short>::max();
       expectedDefaultTestResult.milliseconds = 0;
       ARE_EQUAL(expectedDefaultTestResult, defaultTestResult);
    }
@@ -187,7 +187,7 @@ namespace ZenUnit
       expectedTestResult.destructorCallResult = DestructorCallResult;
       expectedTestResult.responsibleCallResultField = expectedResponsibleCallResultField;
       expectedTestResult.testOutcome = expectedOverallOutcome;
-      expectedTestResult.testCaseIndex = -1;
+      expectedTestResult.testCaseIndex = numeric_limits<unsigned short>::max();
       expectedTestResult.milliseconds = ExpectedMilliseconds + relativeMilliseconds;
       ARE_EQUAL(expectedTestResult, testResult);
    }
@@ -362,11 +362,11 @@ File.cpp(1))");
    }
 
    TEST3X3(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseIndexPlus1IfTestCaseIndexNotNegative1,
-      int testCaseIndex, bool expectConsoleWrite, int expectedTestCaseNumberWritten,
-      -1, false, NA<int>(),
-      0, true, 1,
-      1, true, 2,
-      2, true, 3)
+      unsigned short testCaseIndex, bool expectConsoleWrite, unsigned short expectedTestCaseNumberWritten,
+      unsigned short(numeric_limits<unsigned short>::max()), false, NA<unsigned short>(),
+      unsigned short(0), true, unsigned short(1),
+      unsigned short(1), true, unsigned short(2),
+      unsigned short(2), true, unsigned short(3))
    {
       if (expectConsoleWrite)
       {
@@ -409,7 +409,7 @@ File.cpp(1))");
 
       EQUALIZER_THROWS(TestResult, responsibleCallResultField, &TestResult::constructorCallResult);
       EQUALIZER_THROWS(TestResult, testOutcome, TestOutcome::Anomaly);
-      EQUALIZER_THROWS(TestResult, testCaseIndex, 10);
+      EQUALIZER_THROWS(TestResult, testCaseIndex, short(10));
       EQUALIZER_THROWS(TestResult, milliseconds, 20u);
    }
 

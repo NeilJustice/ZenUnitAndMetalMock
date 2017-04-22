@@ -14,15 +14,15 @@ namespace ZenUnit
    struct TestResult
    {
       FullName fullName;
-      int testCaseIndex;
       CallResult constructorCallResult;
       CallResult startupCallResult;
       CallResult testBodyCallResult;
       CallResult cleanupCallResult;
       CallResult destructorCallResult;
       CallResult TestResult::* responsibleCallResultField;
-      TestOutcome testOutcome;
+      TestOutcome testOutcome;      
       unsigned milliseconds;
+      unsigned short testCaseIndex;
 
       TestResult();
       virtual ~TestResult() = default;
@@ -53,19 +53,19 @@ namespace ZenUnit
 
       virtual void PrintTestOutcome(const Console* console) const;
       virtual void PrintIfFailure(const Console* console, TestFailureNumberer* testFailureNumberer) const;
-      virtual void WriteTestCaseNumberIfAny(const Console* console, int testCaseIndexArgument) const;
+      virtual void WriteTestCaseNumberIfAny(const Console* console, unsigned short testCaseIndexArgument) const;
       static const TestResult TestingNonDefault;
    };
 
    #ifdef __linux__
       #if __clang_major__ == 3 && __clang_minor__ == 9
-         static_assert(sizeof(TestResult) == 328, "sizeof(TestResult) != 328");
+         static_assert(sizeof(TestResult) == 320, "sizeof(TestResult) != 320");
       #endif
    #elif _MSC_FULL_VER == 190024215 // VS2015 Update 3
       #ifdef _DEBUG
-         static_assert(sizeof(TestResult) == 328, "Debug sizeof(TestResult) != 328");
+         static_assert(sizeof(TestResult) == 320, "Debug sizeof(TestResult) != 320");
       #elif NDEBUG
-         static_assert(sizeof(TestResult) == 328, "Release sizeof(TestResult) != 328");
+         static_assert(sizeof(TestResult) == 320, "Release sizeof(TestResult) != 320");
       #endif
    #endif
 }

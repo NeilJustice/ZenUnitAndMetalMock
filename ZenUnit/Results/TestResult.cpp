@@ -8,10 +8,10 @@
 namespace ZenUnit
 {
    TestResult::TestResult()
-      : testCaseIndex(-1)
-      , responsibleCallResultField(nullptr)
+      : responsibleCallResultField(nullptr)
       , testOutcome(TestOutcome::Unset)
       , milliseconds(0)
+      , testCaseIndex(numeric_limits<unsigned short>::max())
    {
    }
 
@@ -74,7 +74,7 @@ namespace ZenUnit
       const CallResult& destructorCallResult,
       const function<ZenUnitArgs()>& getArgs)
       : fullName(fullName)
-      , testCaseIndex(-1)
+      , testCaseIndex(numeric_limits<unsigned short>::max())
       , constructorCallResult(constructorCallResult)
       , startupCallResult(startupCallResult)
       , testBodyCallResult(testBodyCallResult)
@@ -213,10 +213,9 @@ namespace ZenUnit
       }
    }
 
-   void TestResult::WriteTestCaseNumberIfAny(const Console* console, int testCaseIndexArgument) const
+   void TestResult::WriteTestCaseNumberIfAny(const Console* console, unsigned short testCaseIndexArgument) const
    {
-      assert_true(testCaseIndexArgument >= -1);
-      if (testCaseIndexArgument != -1)
+      if (testCaseIndexArgument != numeric_limits<unsigned short>::max())
       {
          console->Write(" test case " + to_string(testCaseIndexArgument + 1));
       }

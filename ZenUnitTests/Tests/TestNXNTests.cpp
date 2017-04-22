@@ -107,7 +107,7 @@ namespace ZenUnit
       struct Test1X1SelfMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
       {
          ZENMOCK_NONVOID0(TestResult, MockableCallBaseRunTestCase)
-         ZENMOCK_VOID1_CONST(PrintTestCaseNumberArgsArrow, int)
+         ZENMOCK_VOID1_CONST(PrintTestCaseNumberArgsArrow, unsigned short)
          ZENMOCK_VOID1_CONST(PrintTestResultOutcome, const TestResult&)
          Test1X1SelfMocked()
             : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>("", "", "", 0, 0) {}
@@ -208,9 +208,9 @@ namespace ZenUnit
    }
 
    TEST3X3(PrintTestCaseNumberArgsArrow_WritesTestCaseNumberArrow,
-      int testCaseIndex, int expectedTestCaseNumber, size_t expectedTestCaseArgsPrintingStartIndex,
-      0, 1, 0ull,
-      1, 2, 1ull)
+      unsigned short testCaseIndex, int expectedTestCaseNumber, size_t expectedTestCaseArgsPrintingStartIndex,
+      unsigned short(0), 1, 0ull,
+      unsigned short(1), 2, 1ull)
    {
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteMock.Expect();

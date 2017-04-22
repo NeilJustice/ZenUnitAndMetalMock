@@ -31,7 +31,6 @@ SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, unordered_map)
 
 int main(int argc, char* argv[])
 {
-   ZenUnit::FileLiner::selfTestMode = true;
-   int exitCode = ZenUnit::RunTests(argc, argv);
-   return exitCode;
+   FileLiner::selfTestMode = true;
+   return ZenUnit::RunTests(argc, argv);
 }

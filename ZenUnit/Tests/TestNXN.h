@@ -45,7 +45,7 @@ namespace ZenUnit
          size_t numberOfTestCases = NumberOfTestCases();
          testResults.reserve(numberOfTestCases);
          assert_true(_testCaseArgsIndex == 0);
-         for (int testCaseIndex = 0;
+         for (unsigned short testCaseIndex = 0;
               _testCaseArgsIndex < NumberOfTestCaseArgs;
               _testCaseArgsIndex += N, ++testCaseIndex)
          {
@@ -91,7 +91,7 @@ namespace ZenUnit
          return testResult;
       }
 
-      virtual void PrintTestCaseNumberArgsArrow(int testCaseIndex) const
+      virtual void PrintTestCaseNumberArgsArrow(unsigned short testCaseIndex) const
       {
          assert_true(testCaseIndex >= 0);
          _console->WriteColor(" [", Color::Green);
