@@ -17,6 +17,7 @@
 #include "ZenUnit/Macros/MAPS_EQUAL.h"
 #include "ZenUnit/Macros/NOTHROWS.h"
 #include "ZenUnit/Macros/PAIRS_EQUAL.h"
+#include "ZenUnit/Macros/POINTEES_EQUAL.h"
 #include "ZenUnit/Macros/REGEX_MATCHES.h"
 #include "ZenUnit/Macros/SETS_EQUAL.h"
 #include "ZenUnit/Macros/THROWS.h"

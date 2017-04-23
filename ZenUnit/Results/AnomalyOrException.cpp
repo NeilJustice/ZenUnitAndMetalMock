@@ -2,6 +2,7 @@
 #include "Anomaly/Anomaly.h"
 #include "Macros/ARE_EQUAL.h"
 #include "Macros/IS_FALSE.h"
+#include "Macros/POINTEES_EQUAL.h"
 #include "Results/AnomalyOrException.h"
 
 namespace ZenUnit
@@ -23,31 +24,7 @@ void ZenUnitEqualizer<ZenUnit::AnomalyOrException>::AssertEqual(
    const ZenUnit::AnomalyOrException& expectedAnomalyOrException,
    const ZenUnit::AnomalyOrException& actualAnomalyOrException)
 {
-   if (!expectedAnomalyOrException.anomaly)
-   {
-      IS_FALSE(actualAnomalyOrException.anomaly);
-   }
-   else if (!actualAnomalyOrException.anomaly)
-   {
-      IS_FALSE(expectedAnomalyOrException.anomaly);
-   }
-   else
-   {
-      ARE_EQUAL(*expectedAnomalyOrException.anomaly, *actualAnomalyOrException.anomaly);
-   }
-
+   POINTEES_EQUAL(expectedAnomalyOrException.anomaly, actualAnomalyOrException.anomaly);
    ARE_EQUAL(expectedAnomalyOrException.exceptionTypeName, actualAnomalyOrException.exceptionTypeName);
-
-   if (!expectedAnomalyOrException.exceptionWhat)
-   {
-      IS_FALSE(actualAnomalyOrException.exceptionWhat);
-   }
-   else if (!actualAnomalyOrException.exceptionWhat)
-   {
-      IS_FALSE(expectedAnomalyOrException.exceptionWhat);
-   }
-   else
-   {
-      ARE_EQUAL(*expectedAnomalyOrException.exceptionWhat, *actualAnomalyOrException.exceptionWhat);
-   }
+   POINTEES_EQUAL(expectedAnomalyOrException.exceptionWhat, actualAnomalyOrException.exceptionWhat);
 }

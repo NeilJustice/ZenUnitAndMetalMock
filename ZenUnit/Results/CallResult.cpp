@@ -2,6 +2,7 @@
 #include "CallResult.h"
 #include "Macros/ARE_EQUAL.h"
 #include "Macros/IS_FALSE.h"
+#include "Macros/POINTEES_EQUAL.h"
 #include "Results/AnomalyOrException.h"
 
 namespace ZenUnit
@@ -31,17 +32,5 @@ void ZenUnitEqualizer<ZenUnit::CallResult>::AssertEqual(
    ARE_EQUAL(expectedCallResult.testPhase, actualCallResult.testPhase);
    ARE_EQUAL(expectedCallResult.testOutcome, actualCallResult.testOutcome);
    ARE_EQUAL(expectedCallResult.milliseconds, actualCallResult.milliseconds);
-
-   if (!expectedCallResult.anomalyOrException)
-   {
-      IS_FALSE(actualCallResult.anomalyOrException);
-   }
-   else if (!actualCallResult.anomalyOrException)
-   {
-      IS_FALSE(expectedCallResult.anomalyOrException);
-   }
-   else
-   {
-      ARE_EQUAL(*expectedCallResult.anomalyOrException, *actualCallResult.anomalyOrException);
-   }
+   POINTEES_EQUAL(expectedCallResult.anomalyOrException, actualCallResult.anomalyOrException);
 }
