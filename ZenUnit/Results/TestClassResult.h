@@ -48,6 +48,9 @@ namespace ZenUnit
          static_assert(sizeof(TestClassResult) == 48, "Release sizeof(TestClassResult) != 48");
       #endif
    #endif
+
+   static_assert(std::is_move_constructible<TestClassResult>::value, "!std::is_move_constructible<TestClassResult>::value");
+   static_assert(std::is_move_assignable<TestClassResult>::value, "!std::is_move_assignable<TestClassResult>::value");
 }
 
 template<>

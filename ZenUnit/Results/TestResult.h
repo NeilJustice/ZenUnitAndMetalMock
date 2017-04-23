@@ -59,15 +59,18 @@ namespace ZenUnit
 
    #ifdef __linux__
       #if __clang_major__ == 3 && __clang_minor__ == 9
-         static_assert(sizeof(TestResult) == 320, "sizeof(TestResult) != 320");
+         static_assert(sizeof(TestResult) == 200, "sizeof(TestResult) != 200");
       #endif
    #elif _MSC_FULL_VER == 190024215 // VS2015 Update 3
       #ifdef _DEBUG
-         static_assert(sizeof(TestResult) == 320, "Debug sizeof(TestResult) != 320");
+         static_assert(sizeof(TestResult) == 200, "Debug sizeof(TestResult) != 200");
       #elif NDEBUG
-         static_assert(sizeof(TestResult) == 320, "Release sizeof(TestResult) != 320");
+         static_assert(sizeof(TestResult) == 200, "Release sizeof(TestResult) != 200");
       #endif
    #endif
+
+   static_assert(std::is_move_constructible<TestResult>::value, "!std::is_move_constructible<TestResult>::value");
+   static_assert(std::is_move_assignable<TestResult>::value, "!std::is_move_assignable<TestResult>::value");
 }
 
 template<>

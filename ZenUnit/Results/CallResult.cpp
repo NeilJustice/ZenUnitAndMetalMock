@@ -2,6 +2,7 @@
 #include "CallResult.h"
 #include "Macros/ARE_EQUAL.h"
 #include "Macros/IS_FALSE.h"
+#include "Results/AnomalyOrException.h"
 
 namespace ZenUnit
 {
@@ -14,7 +15,6 @@ namespace ZenUnit
       : testPhase(testPhase)
       , testOutcome(TestOutcome::Success)
       , milliseconds(0)
-      , exceptionTypeName(nullptr)
    {
    }
 
@@ -24,8 +24,7 @@ namespace ZenUnit
    }
 }
 
-void ZenUnitEqualizer<ZenUnit::CallResult>::
-AssertEqual(
+void ZenUnitEqualizer<ZenUnit::CallResult>::AssertEqual(
    const ZenUnit::CallResult& expectedCallResult,
    const ZenUnit::CallResult& actualCallResult)
 {
@@ -33,31 +32,16 @@ AssertEqual(
    ARE_EQUAL(expectedCallResult.testOutcome, actualCallResult.testOutcome);
    ARE_EQUAL(expectedCallResult.milliseconds, actualCallResult.milliseconds);
 
-   if (!expectedCallResult.anomaly)
+   if (!expectedCallResult.anomalyOrException)
    {
-      IS_FALSE(actualCallResult.anomaly);
+      IS_FALSE(actualCallResult.anomalyOrException);
    }
-   else if (!actualCallResult.anomaly)
+   else if (!actualCallResult.anomalyOrException)
    {
-      IS_FALSE(expectedCallResult.anomaly);
-   }
-   else
-   {
-      ARE_EQUAL(*expectedCallResult.anomaly, *actualCallResult.anomaly);
-   }
-
-   ARE_EQUAL(expectedCallResult.exceptionTypeName, actualCallResult.exceptionTypeName);
-
-   if (!expectedCallResult.exceptionWhat)
-   {
-      IS_FALSE(actualCallResult.exceptionWhat);
-   }
-   else if (!actualCallResult.exceptionWhat)
-   {
-      IS_FALSE(expectedCallResult.exceptionWhat);
+      IS_FALSE(expectedCallResult.anomalyOrException);
    }
    else
    {
-      ARE_EQUAL(*expectedCallResult.exceptionWhat, *actualCallResult.exceptionWhat);
+      ARE_EQUAL(*expectedCallResult.anomalyOrException, *actualCallResult.anomalyOrException);
    }
 }

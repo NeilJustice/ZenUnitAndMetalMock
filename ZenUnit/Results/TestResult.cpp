@@ -4,6 +4,7 @@
 #include "ZenUnit/Macros/ARE_EQUAL.h"
 #include "ZenUnit/Results/TestFailureNumberer.h"
 #include "ZenUnit/TestRunners/TestRunner.h"
+#include "ZenUnit/Results/AnomalyOrException.h"
 
 namespace ZenUnit
 {
@@ -176,7 +177,7 @@ namespace ZenUnit
          const CallResult& responsibleCallResult = (this->*responsibleCallResultField);
          const string responsibleTestPhaseSuffix = TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
          console->Write(responsibleTestPhaseSuffix);
-         console->WriteLine(responsibleCallResult.anomaly->why);
+         console->WriteLine(responsibleCallResult.anomalyOrException->anomaly->why);
          console->WriteNewline();
          break;
       }
@@ -189,9 +190,9 @@ namespace ZenUnit
          const CallResult& responsibleCallResult = this->*responsibleCallResultField;
          const string responsibleTestPhaseSuffix = TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
          const string uncaughtExceptionTypeLine = String::Concat(
-            "Threw exception: ", *responsibleCallResult.exceptionTypeName);
+            "Threw exception: ", *responsibleCallResult.anomalyOrException->exceptionTypeName);
          const string exceptionwWhatLine = String::Concat(
-            "what(): \"", *responsibleCallResult.exceptionWhat, "\"");
+            "what(): \"", *responsibleCallResult.anomalyOrException->exceptionWhat, "\"");
          console->WriteLine(responsibleTestPhaseSuffix);
          console->WriteLine(uncaughtExceptionTypeLine);
          console->WriteLine(exceptionwWhatLine);

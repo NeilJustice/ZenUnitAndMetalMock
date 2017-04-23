@@ -1,5 +1,6 @@
 #pragma once
 #include "ZenUnit/Results/CallResult.h"
+#include "ZenUnit/Results/AnomalyOrException.h"
 #include "ZenUnit/Utils/Time/Stopwatch.h"
 #include <functional>
 
@@ -23,12 +24,12 @@ namespace ZenUnit
       virtual CallResult Call(void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const;
    private:
       template<typename ExceptionType>
-      void PopulateCallResult(const ExceptionType& e, CallResult* outCallResult) const
+      void PopulateCallResultWithExceptionInformation(const ExceptionType& e, CallResult* outCallResult) const
       {
          outCallResult->milliseconds = _stopwatch->Stop();
-         outCallResult->exceptionTypeName = Type::GetName(e);
+         const std::string* const exceptionTypeName = Type::GetName(e);
          const char* const what = e.what();
-         outCallResult->exceptionWhat = std::make_shared<std::string>(what);
+         outCallResult->anomalyOrException = make_shared<AnomalyOrException>(exceptionTypeName, what);
          outCallResult->testOutcome = TestOutcome::Exception;
       }
    };

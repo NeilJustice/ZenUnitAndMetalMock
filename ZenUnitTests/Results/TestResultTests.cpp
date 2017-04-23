@@ -238,12 +238,13 @@ File.cpp(1))");
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::Anomaly;
 
       const string AnomalyWhy = "AnomalyWhy";
+      Anomaly anomaly;
+      anomaly.why = AnomalyWhy;
       (_testResult_WriteTestCaseNumberIfAnyMocked.*
-         expectedResponsibleCallResultField).anomaly = make_shared<Anomaly>();
-      (_testResult_WriteTestCaseNumberIfAnyMocked.*
-         expectedResponsibleCallResultField).anomaly->why = AnomalyWhy;
+         expectedResponsibleCallResultField).anomalyOrException = make_shared<AnomalyOrException>(anomaly);
       (_testResult_WriteTestCaseNumberIfAnyMocked.*
          expectedResponsibleCallResultField).testPhase = testPhase;
+
       _testResult_WriteTestCaseNumberIfAnyMocked.responsibleCallResultField = expectedResponsibleCallResultField;
 
       const string TestFailureNumber = "<10>";
@@ -287,11 +288,9 @@ File.cpp(1))");
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::Exception;
 
       const string ExceptionTypeName = "ExceptionType";
-      const string ExceptionWhat = "ExceptionWhat";
+      const char* const ExceptionWhat = "ExceptionWhat";
       (_testResult_WriteTestCaseNumberIfAnyMocked.*
-         expectedResponsibleCallResultField).exceptionTypeName = &ExceptionTypeName;
-      (_testResult_WriteTestCaseNumberIfAnyMocked.*
-         expectedResponsibleCallResultField).exceptionWhat = make_shared<string>(ExceptionWhat);
+         expectedResponsibleCallResultField).anomalyOrException = make_shared<AnomalyOrException>(&ExceptionTypeName, ExceptionWhat);
       (_testResult_WriteTestCaseNumberIfAnyMocked.*
          expectedResponsibleCallResultField).testPhase = testPhase;
       _testResult_WriteTestCaseNumberIfAnyMocked.
@@ -319,7 +318,7 @@ File.cpp(1))");
          TestFailureNumber,
          expectedTestPhaseSuffix,
          "Threw exception: " + ExceptionTypeName,
-         "what(): \"" + ExceptionWhat + "\""
+         "what(): \""s + ExceptionWhat + "\""
       }));
       ZEN(_consoleMock.WriteNewlineMock.AssertCalledOnce());
    }

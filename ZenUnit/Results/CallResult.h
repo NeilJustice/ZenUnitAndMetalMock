@@ -6,14 +6,14 @@
 
 namespace ZenUnit
 {
+   struct AnomalyOrException;
+
    struct CallResult
    {
       TestPhase testPhase;
       TestOutcome testOutcome;
       unsigned milliseconds;
-      std::shared_ptr<Anomaly> anomaly;
-      const std::string* exceptionTypeName;
-      std::shared_ptr<std::string> exceptionWhat;
+      std::shared_ptr<AnomalyOrException> anomalyOrException;
 
       CallResult();
       explicit CallResult(TestPhase testPhase);
@@ -23,15 +23,18 @@ namespace ZenUnit
 
    #ifdef __linux__
       #if __clang_major__ == 3 && __clang_minor__ == 9
-         static_assert(sizeof(CallResult) == 56, "sizeof(CallResult) != 56");
+         static_assert(sizeof(CallResult) == 32, "sizeof(CallResult) != 32");
       #endif
    #elif _MSC_FULL_VER == 190024215 // VS2015 Update 3
       #ifdef _DEBUG
-         static_assert(sizeof(CallResult) == 56, "Debug sizeof(CallResult) != 56");
+         static_assert(sizeof(CallResult) == 32, "Debug sizeof(CallResult) != 32");
       #elif NDEBUG
-         static_assert(sizeof(CallResult) == 56, "Release sizeof(CallResult) != 56");
+         static_assert(sizeof(CallResult) == 32, "Release sizeof(CallResult) != 32");
       #endif
    #endif
+
+   static_assert(std::is_move_constructible<CallResult>::value, "!std::is_move_constructible<CallResult>::value");
+   static_assert(std::is_move_assignable<CallResult>::value, "!std::is_move_assignable<CallResult>::value");
 }
 
 template<>

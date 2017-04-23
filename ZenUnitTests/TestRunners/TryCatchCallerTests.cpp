@@ -99,7 +99,8 @@ namespace ZenUnit
       CallResult expectedCallResult;
       expectedCallResult.testPhase = TestPhase::TestBody;
       expectedCallResult.testOutcome = TestOutcome::Anomaly;
-      expectedCallResult.anomaly = make_shared<Anomaly>("NonDefault", "NonDefault", FileLine(), "", "");
+      Anomaly anomaly("NonDefault", "NonDefault", FileLine(), "", "");
+      expectedCallResult.anomalyOrException = make_shared<AnomalyOrException>(anomaly);
       expectedCallResult.milliseconds = Milliseconds;
       ARE_EQUAL(expectedCallResult, callResult);
    }
@@ -121,8 +122,7 @@ namespace ZenUnit
       CallResult expectedCallResult;
       expectedCallResult.testPhase = TestPhase::TestBody;
       expectedCallResult.testOutcome = TestOutcome::Exception;
-      expectedCallResult.exceptionTypeName = Type::GetName<runtime_error>();
-      expectedCallResult.exceptionWhat = make_shared<string>("what");
+      expectedCallResult.anomalyOrException = make_shared<AnomalyOrException>(Type::GetName<runtime_error>(), "what");
       expectedCallResult.milliseconds = Milliseconds;
       ARE_EQUAL(expectedCallResult, callResult);
    }
@@ -143,8 +143,7 @@ namespace ZenUnit
       CallResult expectedCallResult;
       expectedCallResult.testPhase = TestPhase::TestBody;
       expectedCallResult.testOutcome = TestOutcome::Exception;
-      expectedCallResult.exceptionTypeName = Type::GetName<invalid_argument>();
-      expectedCallResult.exceptionWhat = make_shared<string>("what");
+      expectedCallResult.anomalyOrException = make_shared<AnomalyOrException>(Type::GetName<invalid_argument>(), "what");
       expectedCallResult.milliseconds = Milliseconds;
       ARE_EQUAL(expectedCallResult, callResult);
    }
@@ -162,9 +161,9 @@ namespace ZenUnit
       CallResult expectedCallResult;
       expectedCallResult.testPhase = TestPhase::TestBody;
       expectedCallResult.testOutcome = TestOutcome::Exception;
-      expectedCallResult.exceptionTypeName = Type::GetName<ZenMock::FunctionAlreadyExpectedException>();
-      expectedCallResult.exceptionWhat = make_shared<string>(
-         ZenMock::FunctionAlreadyExpectedException::MakeWhat("ZenMockedFunctionSignature"));
+      expectedCallResult.anomalyOrException = make_shared<AnomalyOrException>(
+         Type::GetName<ZenMock::FunctionAlreadyExpectedException>(),
+         ZenMock::FunctionAlreadyExpectedException::MakeWhat("ZenMockedFunctionSignature").c_str());
       expectedCallResult.milliseconds = Milliseconds;
       ARE_EQUAL(expectedCallResult, callResult);
    }

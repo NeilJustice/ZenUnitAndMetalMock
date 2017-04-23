@@ -29,16 +29,16 @@ namespace ZenUnit
       catch (const Anomaly& anomaly)
       {
          callResult.milliseconds = _stopwatch->Stop();
-         callResult.anomaly = make_shared<Anomaly>(anomaly);
+         callResult.anomalyOrException = make_shared<AnomalyOrException>(anomaly);
          callResult.testOutcome = TestOutcome::Anomaly;
       }
       catch (const ZenMock::ZenMockException& e)
       {
-         PopulateCallResult(e, &callResult);
+         PopulateCallResultWithExceptionInformation(e, &callResult);
       }
       catch (const exception& e)
       {
-         PopulateCallResult(e, &callResult);
+         PopulateCallResultWithExceptionInformation(e, &callResult);
       }
       catch (...)
       {
