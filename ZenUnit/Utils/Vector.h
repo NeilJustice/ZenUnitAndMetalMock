@@ -31,14 +31,5 @@ namespace ZenUnit
          const std::string joinedVectorString = oss.str();
          return joinedVectorString;
       }
-
-      template<typename T>
-      static void Print(const std::vector<T>& vec)
-      {
-         for (const T& element : vec)
-         {
-            std::cout << element << '\n';
-         }
-      }
    };
 }

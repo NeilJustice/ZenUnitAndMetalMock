@@ -5,14 +5,16 @@ namespace ZenUnit
 {
    vector<string> Vector::FromArgcArgv(int argc, char* argv[])
    {
-      vector<string> args;
-      const auto argcSizeT = static_cast<size_t>(argc);
-      args.resize(argcSizeT);
-      for (size_t i = 0; i < argcSizeT; ++i)
+      const std::vector<std::string> args = [&]()
       {
-         const char* const ithArg = argv[i];
-         args[i].assign(ithArg);
-      }
+         std::vector<std::string> args;
+         args.reserve(argc);
+         std::for_each(argv, argv + argc, [&](char* arg)
+         {
+            args.emplace_back(arg);
+         });
+         return args;
+      }();
       return args;
    }
 }
