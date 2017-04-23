@@ -12,7 +12,7 @@ namespace ZenUnit
    {
       friend class ConsoleTests;
    private:
-      std::unique_ptr<const ConsoleColorer> _consoleColorer;
+      std::unique_ptr<ConsoleColorer> _consoleColorer;
       std::function<void(int)> exit_ZenMockable;
       std::function<int()> IsDebuggerPresent_ZenMockable;
    public:

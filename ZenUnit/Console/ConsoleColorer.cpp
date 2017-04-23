@@ -18,12 +18,24 @@ namespace ZenUnit
       , GetStdHandle_ZenMockable(::GetStdHandle)
       , SetConsoleTextAttribute_ZenMockable(::SetConsoleTextAttribute)
 #endif
+      , _supportsColor(false)
+      , _supportsColorSet(false)
    {
    }
 
-   bool ConsoleColorer::SetColor(Color color) const
+   void ConsoleColorer::SetSupportsColorIfUnset()
    {
-      const bool doSetTextColor = color != Color::White && SupportsColor();
+      if (!_supportsColorSet)
+      {
+        _supportsColor = SupportsColor();
+        _supportsColorSet = true;
+      }
+   }
+
+   bool ConsoleColorer::SetColor(Color color)
+   {
+      SetSupportsColorIfUnset();
+      const bool doSetTextColor = color != Color::White && _supportsColor;
       if (doSetTextColor)
       {
          SetTextColor(color);
@@ -32,9 +44,9 @@ namespace ZenUnit
       return false;
    }
 
-   void ConsoleColorer::UnsetColor(bool didSetTextColor) const
+   void ConsoleColorer::UnsetColor(bool didPreviouslySetTextColor) const
    {
-      if (didSetTextColor)
+      if (didPreviouslySetTextColor)
       {
          SetTextColor(Color::White);
       }

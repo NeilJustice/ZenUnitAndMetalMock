@@ -20,7 +20,7 @@ namespace ZenUnit
    SPECEND
 
    Console _console;
-   const ConsoleColorerMock* _consoleColorerMock;
+   ConsoleColorerMock* _consoleColorerMock;
    const string Message = "Message";
 
    struct ConsoleSelfMocked : public Zen::Mock<Console>
