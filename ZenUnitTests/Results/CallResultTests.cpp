@@ -6,7 +6,6 @@ namespace ZenUnit
    TESTS(CallResultTests)
    SPEC(DefaultConstructor_SetsFieldsTo0)
    SPEC(TestPhaseConstructor_SetsTestPhase_SetsOtherFieldsTo0)
-   SPEC(Assign_CopiesCallResultToSelf)
    SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    SPECEND
 
@@ -30,23 +29,6 @@ namespace ZenUnit
       expectedCallResult.milliseconds = 0;
       expectedCallResult.anomalyOrException = nullptr;
       ARE_EQUAL(expectedCallResult, callResult);
-   }
-
-   TEST(Assign_CopiesCallResultToSelf)
-   {
-      CallResult callResult;
-      CallResult callResultArg;
-      callResultArg.testPhase = TestPhase::Constructor;
-      callResultArg.testOutcome = TestOutcome::Exception;
-      callResultArg.milliseconds = 1;
-      callResultArg.anomalyOrException = make_shared<AnomalyOrException>(Anomaly());
-      ARE_EQUAL(1, callResultArg.anomalyOrException.use_count());
-      //
-      callResult.Assign(callResultArg);
-      //
-      ARE_EQUAL(2, callResult.anomalyOrException.use_count());
-      ARE_EQUAL(2, callResultArg.anomalyOrException.use_count());
-      ARE_EQUAL(callResultArg, callResult);
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)

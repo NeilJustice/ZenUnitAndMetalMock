@@ -18,11 +18,6 @@ namespace ZenUnit
       , milliseconds(0)
    {
    }
-
-   void CallResult::Assign(const CallResult& callResult)
-   {
-      *this = callResult;
-   }
 }
 
 void ZenUnitEqualizer<ZenUnit::CallResult>::AssertEqual(

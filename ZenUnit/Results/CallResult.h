@@ -17,19 +17,17 @@ namespace ZenUnit
 
       CallResult();
       explicit CallResult(TestPhase testPhase);
-      virtual ~CallResult() = default;
-      virtual void Assign(const CallResult& callResult);
    };
 
    #ifdef __linux__
       #if __clang_major__ == 3 && __clang_minor__ == 9
-         static_assert(sizeof(CallResult) == 32, "sizeof(CallResult) != 32");
+         static_assert(sizeof(CallResult) == 24, "sizeof(CallResult) != 24");
       #endif
    #elif _MSC_FULL_VER == 190024215 // VS2015 Update 3
       #ifdef _DEBUG
-         static_assert(sizeof(CallResult) == 32, "Debug sizeof(CallResult) != 32");
+         static_assert(sizeof(CallResult) == 24, "Debug sizeof(CallResult) != 24");
       #elif NDEBUG
-         static_assert(sizeof(CallResult) == 32, "Release sizeof(CallResult) != 32");
+         static_assert(sizeof(CallResult) == 24, "Release sizeof(CallResult) != 24");
       #endif
    #endif
 
