@@ -362,10 +362,10 @@ File.cpp(1))");
 
    TEST3X3(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseIndexPlus1IfTestCaseIndexNotNegative1,
       unsigned short testCaseIndex, bool expectConsoleWrite, unsigned short expectedTestCaseNumberWritten,
-      unsigned short(numeric_limits<unsigned short>::max()), false, NA<unsigned short>(),
-      unsigned short(0), true, unsigned short(1),
-      unsigned short(1), true, unsigned short(2),
-      unsigned short(2), true, unsigned short(3))
+      static_cast<unsigned short>(numeric_limits<unsigned short>::max()), false, NA<unsigned short>(),
+      static_cast<unsigned short>(0), true, static_cast<unsigned short>(1),
+      static_cast<unsigned short>(1), true, static_cast<unsigned short>(2),
+      static_cast<unsigned short>(2), true, static_cast<unsigned short>(3))
    {
       if (expectConsoleWrite)
       {

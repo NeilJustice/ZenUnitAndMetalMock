@@ -20,7 +20,7 @@ namespace ZenUnit
       CallResult cleanupCallResult;
       CallResult destructorCallResult;
       CallResult TestResult::* responsibleCallResultField;
-      TestOutcome testOutcome;      
+      TestOutcome testOutcome;
       unsigned milliseconds;
       unsigned short testCaseIndex;
 
@@ -59,7 +59,7 @@ namespace ZenUnit
 
    #ifdef __linux__
       #if __clang_major__ == 3 && __clang_minor__ == 9
-         static_assert(sizeof(TestResult) == 200, "sizeof(TestResult) != 200");
+         static_assert(sizeof(TestResult) == 208, "sizeof(TestResult) != 208");
       #endif
    #elif _MSC_FULL_VER == 190024215 // VS2015 Update 3
       #ifdef _DEBUG

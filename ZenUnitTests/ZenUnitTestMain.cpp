@@ -29,32 +29,6 @@ TEMPLATETESTS(SkippedTemplateTestClassB, MapType) SPECEND };
 SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, map)
 SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, unordered_map)
 
-struct X
-{
-   char* bytes;
-
-   X()
-      : bytes(new char[4] { 1, 2, 3, 0 })
-   {
-   }
-
-   X(X&& other)
-   {
-      *this = std::move(other);
-   }
-
-   X& operator=(X&& other)
-   {
-      this->bytes = std::exchange(other.bytes, nullptr);
-      return *this;
-   }
-};
-
-static_assert(!is_copy_constructible<X>::value, "is_copy_constructible<X>::value");
-static_assert(!is_copy_assignable<X>::value, "is_copy_assignable<X>::value");
-static_assert(std::is_move_constructible<X>::value, "!std::is_move_constructible<X>::value");
-static_assert(std::is_move_assignable<X>::value, "!std::is_move_assignable<X>::value");
-
 int main(int argc, char* argv[])
 {
    FileLiner::selfTestMode = true;

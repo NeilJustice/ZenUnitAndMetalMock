@@ -29,7 +29,7 @@ namespace ZenUnit
          outCallResult->milliseconds = _stopwatch->Stop();
          const std::string* const exceptionTypeName = Type::GetName(e);
          const char* const what = e.what();
-         outCallResult->anomalyOrException = make_shared<AnomalyOrException>(exceptionTypeName, what);
+         outCallResult->anomalyOrException = std::make_shared<AnomalyOrException>(exceptionTypeName, what);
          outCallResult->testOutcome = TestOutcome::Exception;
       }
    };
