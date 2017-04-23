@@ -11,13 +11,13 @@ namespace ZenUnit
 {
    template<typename ExpectedType, typename ActualType, typename... MessageTypes>
    NOINLINE void POINTEES_EQUAL_Throw_NullptrExpectedOrActual(
-      VRText<ExpectedType> expectedPointerVRT, 
+      VRText<ExpectedType> expectedPointerVRT,
       VRText<ActualType> actualPointerVRT,
       const char* expectedOrActual,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      const std::string expectedField = expectedOrActual + string(" pointer != nullptr");
-      const std::string actualField = expectedOrActual + string(" pointer == nullptr");
+      const std::string expectedField = expectedOrActual + std::string(" pointer != nullptr");
+      const std::string actualField = expectedOrActual + std::string(" pointer == nullptr");
       throw Anomaly("POINTEES_EQUAL", expectedPointerVRT.text, actualPointerVRT.text, "",
          messagesText, Anomaly::Default,
          expectedField,
@@ -27,7 +27,7 @@ namespace ZenUnit
 
    template<typename ExpectedType, typename ActualType, typename... MessageTypes>
    NOINLINE void POINTEES_EQUAL_Throw(
-      VRText<ExpectedType> expectedPointerVRT, 
+      VRText<ExpectedType> expectedPointerVRT,
       VRText<ActualType> actualPointerVRT,
       const Anomaly& becauseAnomaly,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
@@ -43,21 +43,21 @@ namespace ZenUnit
 
    template<typename ActualType, typename... MessageTypes>
    NOINLINE void POINTEES_EQUAL_Throw(
-      VRText<nullptr_t>, VRText<ActualType>, const Anomaly&, FileLine, const char*, const MessageTypes&...)
+      VRText<std::nullptr_t>, VRText<ActualType>, const Anomaly&, FileLine, const char*, const MessageTypes&...)
    {
       assert_true(false);
    }
 
    template<typename ExpectedType, typename... MessageTypes>
    NOINLINE void POINTEES_EQUAL_Throw(
-      VRText<ExpectedType>, VRText<nullptr_t>, const Anomaly&, FileLine, const char*, const MessageTypes&...)
+      VRText<ExpectedType>, VRText<std::nullptr_t>, const Anomaly&, FileLine, const char*, const MessageTypes&...)
    {
       assert_true(false);
    }
 
    template<typename... MessageTypes>
    NOINLINE void POINTEES_EQUAL_Throw(
-      VRText<nullptr_t>, VRText<nullptr_t>, const Anomaly&, FileLine, const char*, const MessageTypes&...)
+      VRText<std::nullptr_t>, VRText<std::nullptr_t>, const Anomaly&, FileLine, const char*, const MessageTypes&...)
    {
       assert_true(false);
    }
@@ -69,22 +69,22 @@ namespace ZenUnit
    }
 
    template<typename ExpectedType>
-   void POINTES_EQUAL_AssertAreEqual(const ExpectedType&, const nullptr_t&)
+   void POINTES_EQUAL_AssertAreEqual(const ExpectedType&, const std::nullptr_t&)
    {
       assert_true(false);
    }
 
    template<typename ActualType>
-   void POINTES_EQUAL_AssertAreEqual(const nullptr_t&, const ActualType&)
+   void POINTES_EQUAL_AssertAreEqual(const std::nullptr_t&, const ActualType&)
    {
       assert_true(false);
    }
 
-   void POINTES_EQUAL_AssertAreEqual(const nullptr_t&, const nullptr_t&);
+   void POINTES_EQUAL_AssertAreEqual(const std::nullptr_t&, const std::nullptr_t&);
 
    template<typename ExpectedType, typename ActualType, typename... MessageTypes>
    void POINTEES_EQUAL_Defined(
-      VRText<ExpectedType> expectedPointerVRT, 
+      VRText<ExpectedType> expectedPointerVRT,
       VRText<ActualType> actualPointerVRT,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
@@ -102,7 +102,7 @@ namespace ZenUnit
       }
       else if (actualPointerVRT.value == nullptr)
       {
-         POINTEES_EQUAL_Throw_NullptrExpectedOrActual(expectedPointerVRT, actualPointerVRT, "actual", 
+         POINTEES_EQUAL_Throw_NullptrExpectedOrActual(expectedPointerVRT, actualPointerVRT, "actual",
             fileLine, messagesText, messages...);
       }
       try
@@ -112,8 +112,8 @@ namespace ZenUnit
       catch (const Anomaly& becauseAnomaly)
       {
          POINTEES_EQUAL_Throw(
-            expectedPointerVRT, 
-            actualPointerVRT, 
+            expectedPointerVRT,
+            actualPointerVRT,
             becauseAnomaly, fileLine, messagesText, messages...);
       }
    }
