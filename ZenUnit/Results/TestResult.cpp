@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "TestResult.h"
+#include "Results/TestResult.h"
 #include "ZenUnit/Console/Console.h"
 #include "ZenUnit/Macros/ARE_EQUAL.h"
+#include "ZenUnit/Results/AnomalyOrException.h"
 #include "ZenUnit/Results/TestFailureNumberer.h"
 #include "ZenUnit/TestRunners/TestRunner.h"
-#include "ZenUnit/Results/AnomalyOrException.h"
 
 namespace ZenUnit
 {

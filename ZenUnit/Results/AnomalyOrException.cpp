@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "AnomalyOrException.h"
 #include "Anomaly/Anomaly.h"
 #include "Macros/ARE_EQUAL.h"
 #include "Macros/IS_FALSE.h"
+#include "Results/AnomalyOrException.h"
 
 namespace ZenUnit
 {
@@ -20,7 +20,7 @@ namespace ZenUnit
 }
 
 void ZenUnitEqualizer<ZenUnit::AnomalyOrException>::AssertEqual(
-   const ZenUnit::AnomalyOrException& expectedAnomalyOrException, 
+   const ZenUnit::AnomalyOrException& expectedAnomalyOrException,
    const ZenUnit::AnomalyOrException& actualAnomalyOrException)
 {
    if (!expectedAnomalyOrException.anomaly)
