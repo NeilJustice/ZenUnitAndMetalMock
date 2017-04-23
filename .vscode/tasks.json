@@ -98,7 +98,10 @@
       {
          "taskName": "g++ Compile File",
          "args": [ "g++ -c -std=c++1z -I${workspaceRoot} -I${workspaceRoot}/ZenUnit -I${workspaceRoot}/ZenUnitTests ${file}" ]
+      },
+      {
+         "taskName": "clang++ Dump Record Layouts",
+         "args": [ "/usr/local/bin/clang++ -cc1 -fdump-record-layouts -fcxx-exceptions -std=c++1z -I${workspaceRoot} -I${workspaceRoot}/ZenUnit -I/usr/include -I/usr/include/c++/6.3.1 -I/usr/include/c++/6.3.1/x86_64-redhat-linux -I/usr/local/lib/clang/5.0.0/include -I/usr/local/include/Utils -I/usr/local/include/boost164 -x c++-header ${file}" ]
       }
    ]
 }
-
