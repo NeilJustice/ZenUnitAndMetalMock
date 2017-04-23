@@ -99,17 +99,14 @@ namespace ZenMock
          {
             const ZenUnit::Console console;
             std::cout << "\n\n";
-            console.WriteLineColor("Unasserted ZenMock Expectation", ZenUnit::Color::Red);
-            std::cout << R"(
-The following ZenMocked function was expected then not later asserted as having been called:
-
-)" <<
+            console.WriteLineColor("Unasserted ZenMock Function Call Expectation:", ZenUnit::Color::Red);
+            std::cout << "\n" <<
 ZenMockedFunctionSignature << R"(
 
-Fix for this: Call <ZenMockedFunctionName>Mock.
+Fix for this: After calling the above function, call <ZenMockedFunctionName>Mock.
 [AssertCalledOnce|AssertCalledOnceWith|AssertCalledNTimes|AssertCalledNTimesWith|AssertCalls]();
 
-Fail fasting now with exit code 1.
+Fail fasting with exit code 1.
 )";
             ZenUnit::ZenUnitArgs zenUnitArgs = _zenMockableGetZenUnitArgs();
             _zenMockableExitFunction(zenUnitArgs.exit0 ? 0 : 1);
