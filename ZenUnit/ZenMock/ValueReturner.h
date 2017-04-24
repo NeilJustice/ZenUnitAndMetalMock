@@ -70,9 +70,9 @@ namespace ZenMock
    protected:
       ReturnType ZenMockNextReturnValue()
       {
-         const DecayedReturnType& ZenMockNextReturnValue =
+         const DecayedReturnType& nextReturnValue =
             _returnValueIndex < _returnValues.size() ? _returnValues[_returnValueIndex++] : _returnValues.back();
-         return ZenMockNextReturnValue;
+         return nextReturnValue;
       }
    };
 }

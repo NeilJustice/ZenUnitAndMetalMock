@@ -99,11 +99,11 @@ namespace ZenMock
          {
             const ZenUnit::Console console;
             std::cout << "\n\n";
-            console.WriteLineColor("Expected, Called, Then Unasserted ZenMocked Function:", ZenUnit::Color::Red);
+            console.WriteLineColor("Expected But Not Asserted ZenMocked Function:", ZenUnit::Color::Red);
             std::cout << "\n" <<
 ZenMockedFunctionSignature << R"(
 
-Fix for this: After calling the above ZenMock-expected function in your unit test, 
+Fix for this: After expecting then calling the above ZenMocked function in your unit test, 
 call [ZenMockedFunctionName]Mock.
 [AssertCalledOnce|AssertCalledOnceWith|AssertCalledNTimes|AssertCalledNTimesWith|AssertCalls]();
 

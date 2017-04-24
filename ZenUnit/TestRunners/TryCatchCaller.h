@@ -9,6 +9,7 @@ namespace ZenUnit
    class Console;
    class Stopwatch;
    class Test;
+   class TestPhaseSuffixer;
    struct ZenUnitArgs;
 
    class TryCatchCaller
@@ -16,6 +17,7 @@ namespace ZenUnit
       friend class TryCatchCallerTests;
    private:
       std::unique_ptr<const Console> _console;
+      std::unique_ptr<const TestPhaseSuffixer> _testPhaseSuffixer;
       std::unique_ptr<Stopwatch> _stopwatch;
       std::function<ZenUnitArgs()> _getArgs;
    public:

@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "ZenUnit/Console/Console.h"
+#include "ZenUnit/Enums/TestPhase.h"
+#include "ZenUnit/Results/TestPhaseSuffixer.h"
 #include "ZenUnit/TestRunners/TestRunner.h"
 #include "ZenUnit/TestRunners/TryCatchCaller.h"
 #include "ZenUnit/ZenMock/Exceptions/ZenMockException.h"
@@ -9,6 +11,7 @@ namespace ZenUnit
 {
    TryCatchCaller::TryCatchCaller()
       : _console(new Console)
+      , _testPhaseSuffixer(new TestPhaseSuffixer)
       , _stopwatch(new Stopwatch)
       , _getArgs(TestRunner::GetArgs)
    {
@@ -32,6 +35,8 @@ namespace ZenUnit
          callResult.anomalyOrException = make_shared<AnomalyOrException>(anomaly);
          callResult.testOutcome = TestOutcome::Anomaly;
          _console->WriteColor("\nAnomaly", Color::Red);
+         const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
+         _console->Write(testPhaseSuffix);
          _console->WriteLine(anomaly.why);
       }
       catch (const ZenMock::ZenMockException& e)
@@ -46,6 +51,8 @@ namespace ZenUnit
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
          _console->WriteColor("\nException", Color::Red);
+         const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
+         _console->Write(testPhaseSuffix);
          const string exceptionTypeNameAndWhat = String::Concat(
             "\n  Type: ", *Type::GetName(e), '\n',
             "what(): \"", e.what(), "\"");

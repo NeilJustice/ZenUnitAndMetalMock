@@ -156,7 +156,8 @@ namespace ZenUnit
          console->Write(fullName.TestsAndTestLines());
          WriteTestCaseNumberIfAny(console, testCaseIndex);
          const CallResult& responsibleCallResult = (this->*responsibleCallResultField);
-         const char* const responsibleTestPhaseSuffix = TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
+         const char* const responsibleTestPhaseSuffix = 
+            TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
          console->Write(responsibleTestPhaseSuffix);
          console->WriteLine(responsibleCallResult.anomalyOrException->anomaly->why);
          console->WriteNewline();
@@ -169,7 +170,8 @@ namespace ZenUnit
          console->Write(fullName.TestsAndTestLines());
          WriteTestCaseNumberIfAny(console, testCaseIndex);
          const CallResult& responsibleCallResult = this->*responsibleCallResultField;
-         const char* const responsibleTestPhaseSuffix = TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
+         const char* const responsibleTestPhaseSuffix = 
+            TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
          const string uncaughtExceptionTypeLine = String::Concat(
             "Threw exception: ", *responsibleCallResult.anomalyOrException->exceptionTypeName);
          const string exceptionwWhatLine = String::Concat(

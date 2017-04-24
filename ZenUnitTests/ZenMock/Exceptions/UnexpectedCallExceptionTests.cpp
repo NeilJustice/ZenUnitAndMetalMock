@@ -17,7 +17,7 @@ namespace ZenMock
    const string NonVoidBSignature0 = "void_prefixed_type ClassName::FunctionName()";
    const string VoidSignature1 = "void ClassName::FunctionName(int)";
    const string VoidSignature2 = "void ClassName::FunctionName(int, int)";
-   const string ExpectedFixForThisPrefix = R"(Fix for this: Add before the unexpected call a call to
+   const string ExpectedFixForThisPrefix = R"(Fix for this: Add before the above unexpected call a call to
 [ZenMockedFunctionName]Mock.[Expect|)";
    const string ExpectedVoidFixForThisSuffix =
       "ExpectAndThrow<T>]()";

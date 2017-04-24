@@ -30,8 +30,8 @@ namespace ZenUnit
    TEST(Constructor_NewsComponents)
    {
       NewDeleteTest<TestingTestClass> newDeleteTest(TestClassName);
-      ARE_EQUAL("ImplicitFirstTestForNewabilityAndDeletability", newDeleteTest.Name());
-      ARE_EQUAL("TESTS(TestClassName)\nTEST(ImplicitFirstTestForNewabilityAndDeletability)", newDeleteTest.TestsAndTestLines());
+      ARE_EQUAL("TestClassIsNewableAndDeletable", newDeleteTest.Name());
+      ARE_EQUAL("TESTS(TestClassName)\nTEST(TestClassIsNewableAndDeletable)", newDeleteTest.TestsAndTestLines());
       ARE_EQUAL("(0)", newDeleteTest.FileLineString());
       WAS_NEWED(newDeleteTest._testResultFactory);
       WAS_NEWED(newDeleteTest._tryCatchCaller);

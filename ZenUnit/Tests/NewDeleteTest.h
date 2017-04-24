@@ -15,7 +15,7 @@ namespace ZenUnit
       std::unique_ptr<TestClassType> _firstInstanceOfTestClass;
    public:
       explicit NewDeleteTest(const char* testClassName)
-         : Test(testClassName, "ImplicitFirstTestForNewabilityAndDeletability")
+         : Test(testClassName, "TestClassIsNewableAndDeletable")
          , _tryCatchCaller(new TryCatchCaller)
          , _testResultFactory(new TestResultFactory)
       {
