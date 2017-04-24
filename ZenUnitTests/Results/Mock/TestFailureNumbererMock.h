@@ -1,3 +1,4 @@
+#pragma once
 #include "ZenUnit/Results/TestFailureNumberer.h"
 
 struct TestFailureNumbererMock : public Zen::Mock<TestFailureNumberer>

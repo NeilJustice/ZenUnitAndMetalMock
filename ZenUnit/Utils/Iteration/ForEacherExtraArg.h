@@ -12,7 +12,8 @@ namespace ZenUnit
 
       virtual void ForEach(const IterableType* iterable, FunctionType func, const ExtraArgType& extraArg) const
       {
-         for (auto iter = iterable->cbegin(); iter != iterable->cend(); ++iter)
+         const auto iterableConstEnd = iterable->cend();
+         for (auto iter = iterable->cbegin(); iter != iterableConstEnd; ++iter)
          {
             const auto& element = *iter;
             func(element, extraArg);

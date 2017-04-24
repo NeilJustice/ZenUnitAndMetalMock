@@ -1,5 +1,6 @@
 #pragma once
 #include "ZenUnit/Anomaly/Anomaly.h"
+#include "ZenUnit/Macros/ARE_EQUAL.h"
 #include "ZenUnit/Macros/ARE_NOT_SAME.h"
 #include "ZenUnit/Macros/MacroUtils.h"
 #include "ZenUnit/ToStringer/ToStringer.h"

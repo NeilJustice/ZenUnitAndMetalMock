@@ -14,7 +14,7 @@ namespace ZenMock
       FunctionAlreadyExpectedException e(ZenMockedFunctionSignature);
       //
       const string expectedWhat = "For ZenMocked function \"" + ZenMockedFunctionSignature + R"(":
-[ZenMockObjectName].Expect[AndReturn or AndReturnValues or AndThrow]() already called.)";
+Already called [ZenMockedFunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)";
       ARE_EQUAL(expectedWhat, e.what());
       IS_TRUE((is_base_of<ZenMockException, FunctionAlreadyExpectedException>::value));
    }

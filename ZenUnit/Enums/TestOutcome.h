@@ -6,7 +6,7 @@ namespace ZenUnit
    {
       Unset,
       Success,
-      SuccessButMissedDeadline,
+      SuccessButPastDeadline,
       Anomaly,
       Exception
    };

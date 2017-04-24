@@ -31,14 +31,24 @@ namespace ZenUnit
          callResult.milliseconds = _stopwatch->Stop();
          callResult.anomalyOrException = make_shared<AnomalyOrException>(anomaly);
          callResult.testOutcome = TestOutcome::Anomaly;
+         //_console->WriteColor("Anomaly", Color::Red);
+         //_console->WriteLine(anomaly.why);
       }
       catch (const ZenMock::ZenMockException& e)
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
+         //_console->WriteColor("ZenMockException", Color::Red);
+         //const string exceptionTypeNameAndWhat = String::Concat(
+         //   "\nThrew exception: ", *Type::GetName(e), "\nwhat(): \"", e.what(), "\"");
+         //_console->WriteLine(exceptionTypeNameAndWhat);
       }
       catch (const exception& e)
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
+         //_console->WriteColor("Exception", Color::Red);
+         //const string exceptionTypeNameAndWhat = String::Concat(
+         //   "\nThrew exception: ", *Type::GetName(e), "\nwhat(): \"", e.what(), "\"");
+         //_console->WriteLine(exceptionTypeNameAndWhat);
       }
       catch (...)
       {
@@ -46,7 +56,7 @@ namespace ZenUnit
          const string testPhaseSuffix = TestPhaseToTestPhaseSuffix(testPhase);
          _console->WriteLineColor("FATALITY!", Color::Red);
          const string exitLine = String::Concat(
-            "Fatal ... exception. Exiting now with exit code 1.",
+            "Fatal ... exception. Fail fasting with exit code 1.",
             testPhaseSuffix, " (", milliseconds, " ms)");
          const ZenUnitArgs zenUnitArgs = _getArgs();
          _console->WriteLineAndExit(exitLine, zenUnitArgs.exit0 ? 0 : 1);

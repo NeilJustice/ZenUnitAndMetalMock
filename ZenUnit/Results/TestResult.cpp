@@ -128,7 +128,7 @@ namespace ZenUnit
          }
          else
          {
-            testOutcome = TestOutcome::SuccessButMissedDeadline;
+            testOutcome = TestOutcome::SuccessButPastDeadline;
          }
       }
    }
@@ -154,8 +154,8 @@ namespace ZenUnit
       }
       default:
       {
-         assert_true(testOutcome == TestOutcome::SuccessButMissedDeadline);
-         console->WriteLineColor("SuccessButMissedDeadline", Color::Red);
+         assert_true(testOutcome == TestOutcome::SuccessButPastDeadline);
+         console->WriteLineColor("SuccessButPastDeadline", Color::Red);
       }
       }
    }
@@ -175,7 +175,7 @@ namespace ZenUnit
          console->Write(fullName.TestsAndTestLines());
          WriteTestCaseNumberIfAny(console, testCaseIndex);
          const CallResult& responsibleCallResult = (this->*responsibleCallResultField);
-         const string responsibleTestPhaseSuffix = TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
+         const char* const responsibleTestPhaseSuffix = TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
          console->Write(responsibleTestPhaseSuffix);
          console->WriteLine(responsibleCallResult.anomalyOrException->anomaly->why);
          console->WriteNewline();
@@ -188,7 +188,7 @@ namespace ZenUnit
          console->Write(fullName.TestsAndTestLines());
          WriteTestCaseNumberIfAny(console, testCaseIndex);
          const CallResult& responsibleCallResult = this->*responsibleCallResultField;
-         const string responsibleTestPhaseSuffix = TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
+         const char* const responsibleTestPhaseSuffix = TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
          const string uncaughtExceptionTypeLine = String::Concat(
             "Threw exception: ", *responsibleCallResult.anomalyOrException->exceptionTypeName);
          const string exceptionwWhatLine = String::Concat(
@@ -201,7 +201,7 @@ namespace ZenUnit
       }
       default:
       {
-         assert_true(testOutcome == TestOutcome::SuccessButMissedDeadline);
+         assert_true(testOutcome == TestOutcome::SuccessButPastDeadline);
          const string testFailureNumber = testFailureNumberer->Next();
          console->WriteLine(testFailureNumber);
          console->WriteLine(fullName.TestsAndTestLines());

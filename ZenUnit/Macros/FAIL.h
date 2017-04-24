@@ -14,8 +14,7 @@ namespace ZenUnit
    void FAIL_Defined(VRText<StringType> testFailureReasonVRT,
       FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
    {
-      const std::string failedLinePrefix = String::Concat(
-         " Failed: FAIL(", testFailureReasonVRT.text);
+      const std::string failedLinePrefix = String::Concat(" Failed: FAIL(", testFailureReasonVRT.text);
       std::ostringstream whyBodyBuilder;
       const std::string quotedTestFailureReason = String::Concat('"', testFailureReasonVRT.value, '"');
       if (quotedTestFailureReason != testFailureReasonVRT.text)

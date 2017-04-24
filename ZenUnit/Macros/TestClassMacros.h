@@ -128,11 +128,3 @@
       CrystalClearTestClassName<__VA_ARGS__>::s_testNXNPmfTokenToTest; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassSkipper_, CrystalClearTestClassName), _Line), __LINE__) = \
       ZenUnit::TestRunner::Instance().SkipTestClass(#CrystalClearTestClassName"<"#__VA_ARGS__">", Reason);
-
-#define ZENUNIT(CrystalClearTestName) \
-   TESTS(CrystalClearTestName##_ZenUnit) \
-   SPEC(CrystalClearTestName) \
-   SPECEND \
-   void CrystalClearTestName(); \
-   }; RUN(CrystalClearTestName##_ZenUnit) \
-   void CrystalClearTestName##_ZenUnit::CrystalClearTestName()

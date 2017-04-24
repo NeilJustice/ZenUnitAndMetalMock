@@ -4,7 +4,11 @@
 
 namespace ZenUnit
 {
-   ZENUNIT(ZenUnitPrinter_Print_PrintsPlaceholderText)
+   TESTS(VectorZenUnitPrinterTests)
+   SPEC(ZenUnitPrinter_Print_PrintsPlaceholderText)
+   SPECEND
+
+   TEST(ZenUnitPrinter_Print_PrintsPlaceholderText)
    {
       ostringstream oss;
       ZenUnitPrinter<vector<int>>::Print(oss, {});
@@ -14,4 +18,6 @@ namespace ZenUnit
       ZenUnitPrinter<vector<int, CustomAllocator<int>>>::Print(oss, {});
       ARE_EQUAL("vector<T>", oss.str());
    }
+
+   }; RUN(VectorZenUnitPrinterTests)
 }

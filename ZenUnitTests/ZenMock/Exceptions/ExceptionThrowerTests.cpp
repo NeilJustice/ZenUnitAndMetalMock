@@ -16,7 +16,7 @@ namespace ZenMock
    {
       _exceptionThrower.ExpectAndThrow<runtime_error>("runtime_error_what");
       THROWS(_exceptionThrower.ExpectAndThrow<runtime_error>("runtime_error_what"), logic_error,
-         "ExceptionThrower::ExpectAndThrow() called twice");
+         "ExceptionThrower::ExpectAndThrow<T>() called twice");
    }
 
    TEST(ZenMockThrowIfExceptionSet_ExpectAndThrowNotPreviouslyCalled_DoesNothing)

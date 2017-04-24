@@ -7,16 +7,16 @@ namespace ZenUnit
    {
    public:
       virtual void Transform(
-         SourceIterType beginSourceIter,
-         SourceIterType endSourceIter,
-         DestType* outDest, 
+         SourceIterType beginSourceIterator,
+         SourceIterType endSourceIterator,
+         DestType* destinationContainer,
          FuncType transformer) const
       {
-         auto outDestIter = outDest->begin();
-         for (SourceIterType iter = beginSourceIter; iter != endSourceIter; ++iter)
+         auto destinationIterator = destinationContainer->begin();
+         for (SourceIterType iter = beginSourceIterator; iter != endSourceIterator; ++iter)
          {
             const auto& element = *iter;
-            *outDestIter++ = transformer(element);
+            *destinationIterator++ = transformer(element);
          }
       }
 

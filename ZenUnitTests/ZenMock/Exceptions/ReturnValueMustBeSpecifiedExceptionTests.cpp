@@ -16,7 +16,7 @@ namespace ZenMock
       const string ExpectedWhat = R"(For ZenMocked function "ZenMockedFunctionSignature":
  ZenMocked functions with non-default-constructible return types
  must have their return value set explicitly by calling
- [ZenMockObjectName].[ExpectAndReturn or ExpectAndReturnValues]())";
+ [ZenMockedFunctionName]Mock.[ExpectAndReturn|ExpectAndReturnValues]())";
       ARE_EQUAL(ExpectedWhat, e.what());
       IS_TRUE((is_base_of<ZenMockException, ReturnValueMustBeSpecifiedException>::value));
    }

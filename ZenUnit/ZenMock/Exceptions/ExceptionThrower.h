@@ -13,7 +13,7 @@ namespace ZenMock
       {
          if (_throwable != nullptr)
          {
-            throw std::logic_error("ExceptionThrower::ExpectAndThrow() called twice");
+            throw std::logic_error("ExceptionThrower::ExpectAndThrow<T>() called twice");
          }
          _throwable.reset(TemplateThrowable<ExceptionType>::New(
             std::forward<ExceptionArgTypes>(exceptionArgs)...));

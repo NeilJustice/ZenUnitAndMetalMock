@@ -14,7 +14,8 @@ namespace ZenUnit
          const ExtraArgType1& extraArg1,
          const ExtraArgType2& extraArg2) const
       {
-         for (auto iter = iterable->cbegin(); iter != iterable->cend(); ++iter)
+         const auto iterableConstEnd = iterable->cend();
+         for (auto iter = iterable->cbegin(); iter != iterableConstEnd; ++iter)
          {
             const auto& element = *iter;
             func(element, extraArg1, extraArg2);

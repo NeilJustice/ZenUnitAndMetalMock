@@ -16,7 +16,7 @@ namespace ZenUnit
    SPEC(PrintIfFailure_Success_PrintsNothing)
    SPECX(PrintIfFailure_Anomaly_PrintsExpected)
    SPECX(PrintIfFailure_Exception_PrintsExpected)
-   SPEC(PrintIfFailure_SuccessButMissedDeadline_PrintsExpected)
+   SPEC(PrintIfFailure_SuccessButPastDeadline_PrintsExpected)
    SPEC(PrintIfFailure_InvalidOutcome_Throws)
    SPECX(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseIndexPlus1IfTestCaseIndexNotNegative1)
    SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
@@ -137,8 +137,8 @@ namespace ZenUnit
       TestOutcome::Success, TestOutcome::Success, 0, 1, TestOutcome::Success, nullptr,
       TestOutcome::Success, TestOutcome::Success, ExpectedMilliseconds, -1, TestOutcome::Success, nullptr,
       TestOutcome::Success, TestOutcome::Success, ExpectedMilliseconds, 0, TestOutcome::Success, nullptr,
-      TestOutcome::Success, TestOutcome::Success, ExpectedMilliseconds, 1, TestOutcome::SuccessButMissedDeadline, nullptr,
-      TestOutcome::Success, TestOutcome::Success, ExpectedMilliseconds, 2, TestOutcome::SuccessButMissedDeadline, nullptr,
+      TestOutcome::Success, TestOutcome::Success, ExpectedMilliseconds, 1, TestOutcome::SuccessButPastDeadline, nullptr,
+      TestOutcome::Success, TestOutcome::Success, ExpectedMilliseconds, 2, TestOutcome::SuccessButPastDeadline, nullptr,
       TestOutcome::Exception, TestOutcome::Success, ExpectedMilliseconds, 1, TestOutcome::Exception, &TestResult::testBodyCallResult,
       TestOutcome::Exception, TestOutcome::Exception, ExpectedMilliseconds, 1, TestOutcome::Exception, &TestResult::testBodyCallResult,
       TestOutcome::Exception, TestOutcome::Anomaly, ExpectedMilliseconds, 1, TestOutcome::Exception, &TestResult::testBodyCallResult,
@@ -158,7 +158,7 @@ namespace ZenUnit
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.maxtestmilliseconds = maxtestmilliseconds;
       if (expectedOverallOutcome == TestOutcome::Success ||
-          expectedOverallOutcome == TestOutcome::SuccessButMissedDeadline)
+          expectedOverallOutcome == TestOutcome::SuccessButPastDeadline)
       {
          GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
       }
@@ -174,7 +174,7 @@ namespace ZenUnit
          boundMockGetArgs);
       //
       if (expectedOverallOutcome == TestOutcome::Success ||
-          expectedOverallOutcome == TestOutcome::SuccessButMissedDeadline)
+          expectedOverallOutcome == TestOutcome::SuccessButPastDeadline)
       {
          GetArgs_ZenMock.AssertCalledOnce();
       }
@@ -199,7 +199,7 @@ namespace ZenUnit
       TestOutcome::Success, "OK", Color::White,
       TestOutcome::Anomaly, "Anomaly", Color::Red,
       TestOutcome::Exception, "Exception", Color::Red,
-      TestOutcome::SuccessButMissedDeadline, "SuccessButMissedDeadline", Color::Red)
+      TestOutcome::SuccessButPastDeadline, "SuccessButPastDeadline", Color::Red)
    {
       _consoleMock.WriteLineColorMock.Expect();
       _testResult.testOutcome = testOutcome;
@@ -215,7 +215,7 @@ namespace ZenUnit
       _testResult.testOutcome = TestOutcome::Unset;
       //
       THROWS(_testResult.PrintTestOutcome(&consoleMock), logic_error,
-         R"(assert_true(testOutcome == TestOutcome::SuccessButMissedDeadline) failed in PrintTestOutcome()
+         R"(assert_true(testOutcome == TestOutcome::SuccessButPastDeadline) failed in PrintTestOutcome()
 File.cpp(1))");
    }
 
@@ -323,10 +323,10 @@ File.cpp(1))");
       ZEN(_consoleMock.WriteNewlineMock.AssertCalledOnce());
    }
 
-   TEST(PrintIfFailure_SuccessButMissedDeadline_PrintsExpected)
+   TEST(PrintIfFailure_SuccessButPastDeadline_PrintsExpected)
    {
       _testResult_WriteTestCaseNumberIfAnyMocked.fullName = FullName("TestClass", "Test");
-      _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::SuccessButMissedDeadline;
+      _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::SuccessButPastDeadline;
       _testResult_WriteTestCaseNumberIfAnyMocked.milliseconds = 10;
 
       const string TestFailureNumber = "<30>";
@@ -356,7 +356,7 @@ File.cpp(1))");
    {
       _testResult.testOutcome = TestOutcome::Unset;
       THROWS(_testResult.PrintIfFailure(nullptr, nullptr), logic_error,
-         R"(assert_true(testOutcome == TestOutcome::SuccessButMissedDeadline) failed in PrintIfFailure()
+         R"(assert_true(testOutcome == TestOutcome::SuccessButPastDeadline) failed in PrintIfFailure()
 File.cpp(1))");
    }
 

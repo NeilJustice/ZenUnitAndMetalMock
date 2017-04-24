@@ -42,7 +42,7 @@ namespace ZenUnit
       }
       else
       {
-         console->WriteColor("[FAIL]", Color::Red);
+         console->WriteColor("[FAILED]", Color::Red);
       }
       console->WriteNewline();
    }

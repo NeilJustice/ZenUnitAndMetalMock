@@ -20,19 +20,19 @@ namespace ZenMock
       static std::string MakeWhat(const std::string& zenMockedFunctionSignature, const ArgTypes&... args)
       {
          std::ostringstream whatBuilder;
-         whatBuilder << "Unexpected call to \"" << zenMockedFunctionSignature << "\"";
+         whatBuilder << "Unexpected call to ZenMocked function\n\"" << zenMockedFunctionSignature << "\"";
          AppendToStringedArgs(whatBuilder, 0, args...);
          whatBuilder << R"(
 Fix for this: Add before the unexpected call a call to
-[ZenMockObjectName].[Expect or )";
+[ZenMockedFunctionName]Mock.[Expect|)";
          const bool isVoid = zenMockedFunctionSignature.find("void ") != std::string::npos;
          if (isVoid)
          {
-            whatBuilder << "ExpectAndThrow";
+            whatBuilder << "ExpectAndThrow<T>";
          }
          else
          {
-            whatBuilder << "ExpectAndReturn or ExpectAndReturnValues or ExpectAndThrow";
+            whatBuilder << "ExpectAndReturn|ExpectAndReturnValues|ExpectAndThrow<T>";
          }
          whatBuilder << "]()";
          const std::string what = whatBuilder.str();

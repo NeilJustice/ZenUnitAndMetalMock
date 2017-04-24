@@ -77,7 +77,7 @@ namespace ZenUnit
       TestResult testSuccess1;
       testSuccess1.testOutcome = TestOutcome::Success;
       TestResult testFailure2;
-      testFailure2.testOutcome = TestOutcome::SuccessButMissedDeadline;
+      testFailure2.testOutcome = TestOutcome::SuccessButPastDeadline;
       TestResult testSuccess2;
       testSuccess2.testOutcome = TestOutcome::Success;
       TestResult testFailure3;
@@ -156,7 +156,7 @@ namespace ZenUnit
       _testClassResultSelfMocked.PrintResultLine(&consoleMock);
       //
       ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.AssertCalledOnce());
-      ZEN(consoleMock.WriteColorMock.AssertCalledOnceWith("[FAIL]", Color::Red));
+      ZEN(consoleMock.WriteColorMock.AssertCalledOnceWith("[FAILED]", Color::Red));
       ZEN(consoleMock.WriteNewlineMock.AssertCalledOnce());
    }
 

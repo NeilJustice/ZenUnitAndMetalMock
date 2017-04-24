@@ -23,10 +23,13 @@ SPECEND
 TEST(CallAllMacros)
 {
    // Values
+   std::string s1 = "Hello";
+   std::string s2 = s1;
+   ARE_COPIES(s1, s2);
    ARE_EQUAL(0, 0);
    int x = 0, y = 0;
    ARE_SAME(x, x);
-   ARE_NOT_SAME(x, y);
+   ARE_NOT_SAME(x, y);  
    IS_TRUE(true);
    IS_FALSE(false);
    IS_ZERO(0);
@@ -41,6 +44,7 @@ TEST(CallAllMacros)
    WAS_NEWED(dynamicallyAllocatedInt);
    const int* dynamicallyAllocatedArray = new int[3];
    WAS_ARRAY_NEWED(dynamicallyAllocatedArray);
+   POINTEES_EQUAL(&x, &x);
 
    // Data Structures
    IS_EMPTY(std::vector<int>());

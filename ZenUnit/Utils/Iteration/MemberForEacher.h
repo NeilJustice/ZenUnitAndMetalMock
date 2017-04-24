@@ -11,7 +11,8 @@ namespace ZenUnit
          const ClassType* thisPointer,
          FunctionType func) const
       {
-         for (auto iter = iterable->cbegin(); iter != iterable->cend(); ++iter)
+         const auto iterableConstEnd = iterable->cend();
+         for (auto iter = iterable->cbegin(); iter != iterableConstEnd; ++iter)
          {
             const auto& element = *iter;
             (thisPointer->*func)(element);

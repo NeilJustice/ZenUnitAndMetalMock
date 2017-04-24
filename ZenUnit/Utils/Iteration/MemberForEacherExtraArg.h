@@ -12,7 +12,8 @@ namespace ZenUnit
          FunctionType twoArgFunction,
          ExtraArgType extraArg) const
       {
-         for (auto iter = iterable->cbegin(); iter != iterable->cend(); ++iter)
+         const auto iterableConstEnd = iterable->cend();
+         for (auto iter = iterable->cbegin(); iter != iterableConstEnd; ++iter)
          {
             const auto& element = *iter;
             (thisPointer->*twoArgFunction)(element, extraArg);

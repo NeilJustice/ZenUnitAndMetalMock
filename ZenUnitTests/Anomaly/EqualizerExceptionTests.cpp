@@ -3,9 +3,15 @@
 
 namespace ZenUnit
 {
-   ZENUNIT(EqualizerException_what_ReturnsEmptyString)
+   TESTS(EqualizerExceptionTests)
+   SPEC(EqualizerException_what_ReturnsEmptyString)
+   SPECEND
+
+   TEST(EqualizerException_what_ReturnsEmptyString)
    {
       const EqualizerException equalizerException;
       ARE_EQUAL("", equalizerException.what());
    }
+
+   }; RUN(EqualizerExceptionTests)
 }

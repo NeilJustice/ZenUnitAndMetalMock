@@ -1,7 +1,5 @@
 #include "pch.h"
-#include "ZenUnit/Enums/TestOutcome.h"
 #include "ZenUnit/TestRunners/TryCatchCaller.h"
-#include "ZenUnit/Utils/Time/Stopwatch.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Tests/Mock/TestMock.h"
 #include "ZenUnitTests/Utils/Time/Mock/StopwatchMock.h"
@@ -90,6 +88,7 @@ namespace ZenUnit
    TEST(Call_FunctionThrowsAnomaly_ReturnsAnomalyResult)
    {
       ExpectStopwatchStartAndStop();
+      //_consoleMock->WriteLineMock.Expect();
       //
       const CallResult callResult = _tryCatchCaller.Call(
          ThrowAnomaly, _testMock.get(), TestPhase::TestBody);
@@ -97,22 +96,24 @@ namespace ZenUnit
       AssertStartAndStopCalled();
       CallResult expectedCallResult;
       expectedCallResult.testPhase = TestPhase::TestBody;
-      expectedCallResult.testOutcome = TestOutcome::Anomaly;
+      expectedCallResult.milliseconds = Milliseconds;
       Anomaly anomaly("NonDefault", "NonDefault", FileLine(), "", "");
       expectedCallResult.anomalyOrException = make_shared<AnomalyOrException>(anomaly);
-      expectedCallResult.milliseconds = Milliseconds;
+      expectedCallResult.testOutcome = TestOutcome::Anomaly;
+      //ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(anomaly.why));
       ARE_EQUAL(expectedCallResult, callResult);
    }
 
    static void ThrowStdException(Test* test)
    {
       IS_NOT_NULL(test);
-      throw runtime_error("what");
+      throw runtime_error("runtime_error_what");
    }
 
    TEST(Call_FunctionThrowsStdException_ReturnsExceptionResult)
    {
       ExpectStopwatchStartAndStop();
+      //_consoleMock->WriteLineMock.Expect();
       //
       const CallResult callResult = _tryCatchCaller.Call(
          ThrowStdException, _testMock.get(), TestPhase::TestBody);
@@ -120,20 +121,25 @@ namespace ZenUnit
       AssertStartAndStopCalled();
       CallResult expectedCallResult;
       expectedCallResult.testPhase = TestPhase::TestBody;
-      expectedCallResult.testOutcome = TestOutcome::Exception;
-      expectedCallResult.anomalyOrException = make_shared<AnomalyOrException>(Type::GetName<runtime_error>(), "what");
       expectedCallResult.milliseconds = Milliseconds;
+      expectedCallResult.anomalyOrException 
+         = make_shared<AnomalyOrException>(Type::GetName<runtime_error>(), "runtime_error_what");      
+      expectedCallResult.testOutcome = TestOutcome::Exception;
+      //ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
+      //   "\nThrew exception: std::runtime_error\n"
+      //   "what(): \"runtime_error_what\""));
       ARE_EQUAL(expectedCallResult, callResult);
    }
 
    static void ThrowInvalidArgument(Test*)
    {
-      throw invalid_argument("what");
+      throw invalid_argument("invalid_argument_what");
    }
 
    TEST(Call_FunctionThrowsStdInvalidArgument_ReturnsExceptionResult)
    {
       ExpectStopwatchStartAndStop();
+      //_consoleMock->WriteLineMock.Expect();
       //
       const CallResult callResult = _tryCatchCaller.Call(
          ThrowInvalidArgument, _testMock.get(), TestPhase::TestBody);
@@ -142,14 +148,19 @@ namespace ZenUnit
       CallResult expectedCallResult;
       expectedCallResult.testPhase = TestPhase::TestBody;
       expectedCallResult.testOutcome = TestOutcome::Exception;
-      expectedCallResult.anomalyOrException = make_shared<AnomalyOrException>(Type::GetName<invalid_argument>(), "what");
+      expectedCallResult.anomalyOrException
+         = make_shared<AnomalyOrException>(Type::GetName<invalid_argument>(), "invalid_argument_what");
       expectedCallResult.milliseconds = Milliseconds;
+      //ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
+      //   "\nThrew exception: std::invalid_argument\n"
+      //   "what(): \"invalid_argument_what\""));
       ARE_EQUAL(expectedCallResult, callResult);
    }
 
    TEST(Call_FunctionThrowsZenMockException_ReturnsExceptionResult)
    {
       ExpectStopwatchStartAndStop();
+      //_consoleMock->WriteLineMock.Expect();
       //
       const CallResult callResult = _tryCatchCaller.Call([](Test*)
       {
@@ -164,6 +175,11 @@ namespace ZenUnit
          Type::GetName<ZenMock::FunctionAlreadyExpectedException>(),
          ZenMock::FunctionAlreadyExpectedException::MakeWhat("ZenMockedFunctionSignature").c_str());
       expectedCallResult.milliseconds = Milliseconds;
+//      const char* const expectedWriteLine = R"(
+//Threw exception: ZenMock::FunctionAlreadyExpectedException
+//what(): "For ZenMocked function "ZenMockedFunctionSignature":
+//Already called [ZenMockedFunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().")";
+//      ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(expectedWriteLine));
       ARE_EQUAL(expectedCallResult, callResult);
    }
 
@@ -197,7 +213,7 @@ namespace ZenUnit
       ZEN(_consoleMock->WriteLineColorMock.AssertCalledOnceWith("FATALITY!", Color::Red));
       ZEN(GetArgs_ZenMock.AssertCalledOnce());
       ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(
-         String::Concat("Fatal ... exception. Exiting now with exit code 1.",
+         String::Concat("Fatal ... exception. Fail fasting with exit code 1.",
             expectedTestPhaseSuffix, " (", Milliseconds, " ms)"), expectedExitCode));
    }
 

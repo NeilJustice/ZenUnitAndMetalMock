@@ -10,7 +10,7 @@ namespace ZenMock
    SPEC(Constructor_Void2Args_SetsWhat_IncludesToStringedArg1AndArg2)
    SPECEND
 
-   const string ExpectedUnexpectedCallPrefix = "Unexpected call to \"";
+   const string ExpectedUnexpectedCallPrefix = "Unexpected call to ZenMocked function\n\"";
    const string VoidSignature0 = "void ClassName::FunctionName()";
    const string VirtualVoidSignature0 = "virtual void ClassName::FunctionName()";
    const string NonVoidASignature0 = "virtual int ClassName::FunctionName()";
@@ -18,11 +18,11 @@ namespace ZenMock
    const string VoidSignature1 = "void ClassName::FunctionName(int)";
    const string VoidSignature2 = "void ClassName::FunctionName(int, int)";
    const string ExpectedFixForThisPrefix = R"(Fix for this: Add before the unexpected call a call to
-[ZenMockObjectName].[Expect or )";
+[ZenMockedFunctionName]Mock.[Expect|)";
    const string ExpectedVoidFixForThisSuffix =
-      "ExpectAndThrow]()";
+      "ExpectAndThrow<T>]()";
    const string ExpectedNonVoidFixForThisSuffix =
-      "ExpectAndReturn or ExpectAndReturnValues or ExpectAndThrow]()";
+      "ExpectAndReturn|ExpectAndReturnValues|ExpectAndThrow<T>]()";
 
    TEST1X1(Constructor_Void0Args_SetsWhatToJustExpectAndExpectAndThrow_ClassIsSubclassOfZenMockException,
       const string& zenMockedFunctionSignature,
