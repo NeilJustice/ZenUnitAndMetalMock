@@ -6,5 +6,6 @@ namespace ZenUnit
    {
    public:
       virtual const char* TestPhaseToTestPhaseSuffix(TestPhase testPhase) const;
+      virtual ~TestPhaseSuffixer() = default;
    };
 }

@@ -112,7 +112,7 @@ namespace ZenUnit
       expectedCallResult.anomalyOrException = make_shared<AnomalyOrException>(anomaly);
       expectedCallResult.testOutcome = TestOutcome::Anomaly;
       ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nAnomaly", Color::Red));
-      //ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.AssertCalledOnceWith(nonHardcodedTestPhase));
+      ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.AssertCalledOnceWith(nonHardcodedTestPhase));
       ZEN(_consoleMock->WriteMock.AssertCalledOnceWith(TestPhaseSuffix));
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(anomaly.why));
       ARE_EQUAL(expectedCallResult, callResult);
@@ -142,7 +142,7 @@ namespace ZenUnit
       expectedCallResult.testPhase = nonHardcodedTestPhase;
       expectedCallResult.milliseconds = Milliseconds;
       expectedCallResult.anomalyOrException
-         = make_shared<AnomalyOrException>(Type::GetName<runtime_error>(), "runtime_error_what");      
+         = make_shared<AnomalyOrException>(Type::GetName<runtime_error>(), "runtime_error_what");
       expectedCallResult.testOutcome = TestOutcome::Exception;
       ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nException", Color::Red));
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.AssertCalledOnceWith(nonHardcodedTestPhase));
