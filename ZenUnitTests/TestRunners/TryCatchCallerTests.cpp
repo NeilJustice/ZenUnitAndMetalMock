@@ -88,7 +88,8 @@ namespace ZenUnit
    TEST(Call_FunctionThrowsAnomaly_ReturnsAnomalyResult)
    {
       ExpectStopwatchStartAndStop();
-      //_consoleMock->WriteLineMock.Expect();
+      _consoleMock->WriteColorMock.Expect();
+      _consoleMock->WriteLineMock.Expect();
       //
       const CallResult callResult = _tryCatchCaller.Call(
          ThrowAnomaly, _testMock.get(), TestPhase::TestBody);
@@ -100,7 +101,8 @@ namespace ZenUnit
       Anomaly anomaly("NonDefault", "NonDefault", FileLine(), "", "");
       expectedCallResult.anomalyOrException = make_shared<AnomalyOrException>(anomaly);
       expectedCallResult.testOutcome = TestOutcome::Anomaly;
-      //ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(anomaly.why));
+      ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nAnomaly", Color::Red));
+      ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(anomaly.why));
       ARE_EQUAL(expectedCallResult, callResult);
    }
 
@@ -113,7 +115,8 @@ namespace ZenUnit
    TEST(Call_FunctionThrowsStdException_ReturnsExceptionResult)
    {
       ExpectStopwatchStartAndStop();
-      //_consoleMock->WriteLineMock.Expect();
+      _consoleMock->WriteColorMock.Expect();
+      _consoleMock->WriteLineMock.Expect();
       //
       const CallResult callResult = _tryCatchCaller.Call(
          ThrowStdException, _testMock.get(), TestPhase::TestBody);
@@ -125,9 +128,10 @@ namespace ZenUnit
       expectedCallResult.anomalyOrException 
          = make_shared<AnomalyOrException>(Type::GetName<runtime_error>(), "runtime_error_what");      
       expectedCallResult.testOutcome = TestOutcome::Exception;
-      //ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
-      //   "\nThrew exception: std::runtime_error\n"
-      //   "what(): \"runtime_error_what\""));
+      ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nException", Color::Red));
+      ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(R"(
+  Type: std::runtime_error
+what(): "runtime_error_what")"));
       ARE_EQUAL(expectedCallResult, callResult);
    }
 
@@ -139,7 +143,8 @@ namespace ZenUnit
    TEST(Call_FunctionThrowsStdInvalidArgument_ReturnsExceptionResult)
    {
       ExpectStopwatchStartAndStop();
-      //_consoleMock->WriteLineMock.Expect();
+      _consoleMock->WriteColorMock.Expect();
+      _consoleMock->WriteLineMock.Expect();
       //
       const CallResult callResult = _tryCatchCaller.Call(
          ThrowInvalidArgument, _testMock.get(), TestPhase::TestBody);
@@ -151,16 +156,18 @@ namespace ZenUnit
       expectedCallResult.anomalyOrException
          = make_shared<AnomalyOrException>(Type::GetName<invalid_argument>(), "invalid_argument_what");
       expectedCallResult.milliseconds = Milliseconds;
-      //ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
-      //   "\nThrew exception: std::invalid_argument\n"
-      //   "what(): \"invalid_argument_what\""));
+      ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nException", Color::Red));
+      ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(R"(
+  Type: std::invalid_argument
+what(): "invalid_argument_what")"));
       ARE_EQUAL(expectedCallResult, callResult);
    }
 
    TEST(Call_FunctionThrowsZenMockException_ReturnsExceptionResult)
    {
       ExpectStopwatchStartAndStop();
-      //_consoleMock->WriteLineMock.Expect();
+      _consoleMock->WriteColorMock.Expect();
+      _consoleMock->WriteLineMock.Expect();
       //
       const CallResult callResult = _tryCatchCaller.Call([](Test*)
       {
@@ -175,11 +182,11 @@ namespace ZenUnit
          Type::GetName<ZenMock::FunctionAlreadyExpectedException>(),
          ZenMock::FunctionAlreadyExpectedException::MakeWhat("ZenMockedFunctionSignature").c_str());
       expectedCallResult.milliseconds = Milliseconds;
-//      const char* const expectedWriteLine = R"(
-//Threw exception: ZenMock::FunctionAlreadyExpectedException
-//what(): "For ZenMocked function "ZenMockedFunctionSignature":
-//Already called [ZenMockedFunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().")";
-//      ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(expectedWriteLine));
+      ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nZenMockException", Color::Red));
+      ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(R"(
+  Type: ZenMock::FunctionAlreadyExpectedException
+what(): "For ZenMocked function "ZenMockedFunctionSignature":
+Already called [ZenMockedFunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().")"));
       ARE_EQUAL(expectedCallResult, callResult);
    }
 

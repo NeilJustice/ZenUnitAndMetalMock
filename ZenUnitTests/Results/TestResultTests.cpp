@@ -12,7 +12,6 @@ namespace ZenUnit
    SPEC(CtorDtorSuccess_ReturnsExpectedTestResult);
    SPECX(SixArgConstructor_SetsFields)
    SPECX(PrintTestOutcome_PrintsOutcome)
-   SPEC(PrintTestOutcome_InvalidTestOutcome_TriggersAssertion)
    SPEC(PrintIfFailure_Success_PrintsNothing)
    SPECX(PrintIfFailure_Anomaly_PrintsExpected)
    SPECX(PrintIfFailure_Exception_PrintsExpected)
@@ -192,31 +191,26 @@ namespace ZenUnit
       ARE_EQUAL(expectedTestResult, testResult);
    }
 
-   TEST3X3(PrintTestOutcome_PrintsOutcome,
-      TestOutcome testOutcome,
-      const string& expectedTestCaseResultConsoleWrite,
-      Color expectedColor,
-      TestOutcome::Success, "OK", Color::White,
-      TestOutcome::Anomaly, "Anomaly", Color::Red,
-      TestOutcome::Exception, "Exception", Color::Red,
-      TestOutcome::SuccessButPastDeadline, "SuccessButPastDeadline", Color::Red)
+   TEST2X2(PrintTestOutcome_PrintsOutcome,
+      TestOutcome testOutcome, bool expectWriteLineOK,
+      TestOutcome::Success, true,
+      TestOutcome::Anomaly, false,
+      TestOutcome::Exception, false,
+      TestOutcome::SuccessButPastDeadline, false,
+      TestOutcome::Unset, false)
    {
-      _consoleMock.WriteLineColorMock.Expect();
       _testResult.testOutcome = testOutcome;
+      if (expectWriteLineOK)
+      {
+         _consoleMock.WriteLineColorMock.Expect();
+      }
       //
       _testResult.PrintTestOutcome(&_consoleMock);
       //
-      ZEN(_consoleMock.WriteLineColorMock.AssertCalledOnceWith(expectedTestCaseResultConsoleWrite, expectedColor));
-   }
-
-   TEST(PrintTestOutcome_InvalidTestOutcome_TriggersAssertion)
-   {
-      const ConsoleMock consoleMock{};
-      _testResult.testOutcome = TestOutcome::Unset;
-      //
-      THROWS(_testResult.PrintTestOutcome(&consoleMock), logic_error,
-         R"(assert_true(testOutcome == TestOutcome::SuccessButPastDeadline) failed in PrintTestOutcome()
-File.cpp(1))");
+      if (expectWriteLineOK)
+      {
+         ZEN(_consoleMock.WriteLineColorMock.AssertCalledOnceWith("OK", Color::White));
+      }
    }
 
    TEST(PrintIfFailure_Success_PrintsNothing)

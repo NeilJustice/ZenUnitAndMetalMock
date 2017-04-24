@@ -135,28 +135,9 @@ namespace ZenUnit
 
    void TestResult::PrintTestOutcome(const Console* console) const
    {
-      switch (testOutcome)
-      {
-      case TestOutcome::Success:
+      if (testOutcome == TestOutcome::Success)
       {
          console->WriteLineColor("OK", Color::White);
-         break;
-      }
-      case TestOutcome::Anomaly:
-      {
-         console->WriteLineColor("Anomaly", Color::Red);
-         break;
-      }
-      case TestOutcome::Exception:
-      {
-         console->WriteLineColor("Exception", Color::Red);
-         break;
-      }
-      default:
-      {
-         assert_true(testOutcome == TestOutcome::SuccessButPastDeadline);
-         console->WriteLineColor("SuccessButPastDeadline", Color::Red);
-      }
       }
    }
 

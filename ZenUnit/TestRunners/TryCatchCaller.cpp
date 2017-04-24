@@ -31,24 +31,25 @@ namespace ZenUnit
          callResult.milliseconds = _stopwatch->Stop();
          callResult.anomalyOrException = make_shared<AnomalyOrException>(anomaly);
          callResult.testOutcome = TestOutcome::Anomaly;
-         //_console->WriteColor("Anomaly", Color::Red);
-         //_console->WriteLine(anomaly.why);
+         _console->WriteColor("\nAnomaly", Color::Red);
+         _console->WriteLine(anomaly.why);
       }
       catch (const ZenMock::ZenMockException& e)
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
-         //_console->WriteColor("ZenMockException", Color::Red);
-         //const string exceptionTypeNameAndWhat = String::Concat(
-         //   "\nThrew exception: ", *Type::GetName(e), "\nwhat(): \"", e.what(), "\"");
-         //_console->WriteLine(exceptionTypeNameAndWhat);
+         _console->WriteColor("\nZenMockException", Color::Red);
+         const string exceptionTypeNameAndWhat = String::Concat(
+            "\n  Type: ", *Type::GetName(e), "\nwhat(): \"", e.what(), "\"");
+         _console->WriteLine(exceptionTypeNameAndWhat);
       }
       catch (const exception& e)
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
-         //_console->WriteColor("Exception", Color::Red);
-         //const string exceptionTypeNameAndWhat = String::Concat(
-         //   "\nThrew exception: ", *Type::GetName(e), "\nwhat(): \"", e.what(), "\"");
-         //_console->WriteLine(exceptionTypeNameAndWhat);
+         _console->WriteColor("\nException", Color::Red);
+         const string exceptionTypeNameAndWhat = String::Concat(
+            "\n  Type: ", *Type::GetName(e), '\n',
+            "what(): \"", e.what(), "\"");
+         _console->WriteLine(exceptionTypeNameAndWhat);
       }
       catch (...)
       {
