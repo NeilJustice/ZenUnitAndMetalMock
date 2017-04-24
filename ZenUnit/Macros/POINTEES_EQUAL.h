@@ -94,11 +94,8 @@ namespace ZenUnit
          {
             return;
          }
-         else
-         {
-            POINTEES_EQUAL_Throw_NullptrExpectedOrActual(expectedPointerVRT, actualPointerVRT, "expected",
-               fileLine, messagesText, messages...);
-         }
+         POINTEES_EQUAL_Throw_NullptrExpectedOrActual(expectedPointerVRT, actualPointerVRT, "expected",
+            fileLine, messagesText, messages...);
       }
       else if (actualPointerVRT.value == nullptr)
       {
