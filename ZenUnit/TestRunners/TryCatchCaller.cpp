@@ -43,6 +43,8 @@ namespace ZenUnit
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
          _console->WriteColor("\nZenMockException", Color::Red);
+         const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
+         _console->Write(testPhaseSuffix);
          const string exceptionTypeNameAndWhat = String::Concat(
             "\n  Type: ", *Type::GetName(e), "\nwhat(): \"", e.what(), "\"");
          _console->WriteLine(exceptionTypeNameAndWhat);

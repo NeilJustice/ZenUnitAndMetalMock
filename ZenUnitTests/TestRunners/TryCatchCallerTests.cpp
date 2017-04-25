@@ -11,8 +11,7 @@ namespace ZenUnit
    SPEC(Constructor_NewsComponents_SetsGetArgsFunction)
    SPEC(Call_FunctionDoesNotThrow_ReturnsNoExceptionThrownCallResult)
    SPECX(Call_FunctionThrowsAnomaly_ReturnsAnomalyResult)
-   SPECX(Call_FunctionThrowsStdRuntimeError_ReturnsExceptionResult)
-   SPECX(Call_FunctionThrowsStdInvalidArgument_ReturnsExceptionResult)
+   SPECX(Call_FunctionThrowsStdException_ReturnsExceptionResult)
    SPECX(Call_FunctionThrowsZenMockException_ReturnsExceptionResult)
    SPECX(Call_FunctionThrowsAnIntToTriggerDotDotDotHandler_PrintsFailureDetails_Exits1)
    SPEC(Call_FunctionThrowsAnIntToTriggerDotDotDotHandler_InvalidTestPhase_TriggersAssertion)
@@ -124,7 +123,7 @@ namespace ZenUnit
       throw runtime_error("runtime_error_what");
    }
 
-   TEST1X1(Call_FunctionThrowsStdRuntimeError_ReturnsExceptionResult,
+   TEST1X1(Call_FunctionThrowsStdException_ReturnsExceptionResult,
       TestPhase nonHardcodedTestPhase,
       TestPhase::Startup,
       TestPhase::TestBody)
@@ -141,49 +140,15 @@ namespace ZenUnit
       CallResult expectedCallResult;
       expectedCallResult.testPhase = nonHardcodedTestPhase;
       expectedCallResult.milliseconds = Milliseconds;
+      expectedCallResult.testOutcome = TestOutcome::Exception;
       expectedCallResult.anomalyOrException
          = make_shared<AnomalyOrException>(Type::GetName<runtime_error>(), "runtime_error_what");
-      expectedCallResult.testOutcome = TestOutcome::Exception;
       ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nException", Color::Red));
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.AssertCalledOnceWith(nonHardcodedTestPhase));
       ZEN(_consoleMock->WriteMock.AssertCalledOnceWith(TestPhaseSuffix));
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(R"(
   Type: std::runtime_error
 what(): "runtime_error_what")"));
-      ARE_EQUAL(expectedCallResult, callResult);
-   }
-
-   static void ThrowInvalidArgument(Test*)
-   {
-      throw invalid_argument("invalid_argument_what");
-   }
-
-   TEST1X1(Call_FunctionThrowsStdInvalidArgument_ReturnsExceptionResult,
-      TestPhase nonHardcodedTestPhase,
-      TestPhase::Startup,
-      TestPhase::TestBody)
-   {
-      ExpectStopwatchStartAndStop();
-      _consoleMock->WriteColorMock.Expect();
-      _consoleMock->WriteMock.Expect();
-      _consoleMock->WriteLineMock.Expect();
-      _testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.ExpectAndReturn(TestPhaseSuffix);
-      //
-      const CallResult callResult = _tryCatchCaller.Call(ThrowInvalidArgument, _testMock.get(), nonHardcodedTestPhase);
-      //
-      AssertStartAndStopCalled();
-      CallResult expectedCallResult;
-      expectedCallResult.testPhase = nonHardcodedTestPhase;
-      expectedCallResult.testOutcome = TestOutcome::Exception;
-      expectedCallResult.anomalyOrException
-         = make_shared<AnomalyOrException>(Type::GetName<invalid_argument>(), "invalid_argument_what");
-      expectedCallResult.milliseconds = Milliseconds;
-      ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nException", Color::Red));
-      ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.AssertCalledOnceWith(nonHardcodedTestPhase));
-      ZEN(_consoleMock->WriteMock.AssertCalledOnceWith(TestPhaseSuffix));
-      ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(R"(
-  Type: std::invalid_argument
-what(): "invalid_argument_what")"));
       ARE_EQUAL(expectedCallResult, callResult);
    }
 
@@ -194,7 +159,9 @@ what(): "invalid_argument_what")"));
    {
       ExpectStopwatchStartAndStop();
       _consoleMock->WriteColorMock.Expect();
+      _consoleMock->WriteMock.Expect();
       _consoleMock->WriteLineMock.Expect();
+      _testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.ExpectAndReturn(TestPhaseSuffix);
       //
       const CallResult callResult = _tryCatchCaller.Call([](Test*)
       {
@@ -210,6 +177,8 @@ what(): "invalid_argument_what")"));
          ZenMock::FunctionAlreadyExpectedException::MakeWhat("ZenMockedFunctionSignature").c_str());
       expectedCallResult.milliseconds = Milliseconds;
       ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nZenMockException", Color::Red));
+      ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.AssertCalledOnceWith(nonHardcodedTestPhase));
+      ZEN(_consoleMock->WriteMock.AssertCalledOnceWith(TestPhaseSuffix));
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(R"(
   Type: ZenMock::FunctionAlreadyExpectedException
 what(): "For ZenMocked function "ZenMockedFunctionSignature":
