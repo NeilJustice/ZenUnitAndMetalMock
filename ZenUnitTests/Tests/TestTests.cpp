@@ -3,7 +3,7 @@
 #include "Results/Mock/TestResultFactoryMock.h"
 #include "Results/Mock/TestResultMock.h"
 #include "TestRunners/Mock/TryCatchCallerMock.h"
-#include "ZenUnit/Tests/FullName.h"
+#include "ZenUnit/Tests/ClassNameTestName.h"
 #include "ZenUnit/Tests/Test.h"
 
 class TestingTest : public Test
@@ -58,10 +58,10 @@ namespace ZenUnit
       ARE_EQUAL(FileLine(), testingTest._fileLine);
 
       const char* const testName = testingTest.Name();
-      ARE_EQUAL(testName, testingTest._fullName.testName);
+      ARE_EQUAL(testName, testingTest._classNameTestName.testName);
 
       const string testsAndTestLines = testingTest.TestsAndTestLines();
-      ARE_EQUAL(testsAndTestLines, testingTest._fullName.TestsAndTestLines());
+      ARE_EQUAL(testsAndTestLines, testingTest._classNameTestName.TestsAndTestLines());
 
       testingTest._fileLine = FileLine("FilePath", 1);
       ARE_EQUAL(testingTest._fileLine.ToString(), testingTest.FileLineString());
@@ -99,7 +99,7 @@ namespace ZenUnit
       ZEN(_tryCatchCallerMock->CallMock.AssertCalledOnceWith(
          &Test::CallNewTestClass, _test.get(), TestPhase::Constructor));
       ZEN(_testResultFactoryMock->ConstructorFailMock.AssertCalledOnceWith(
-         _test->_fullName, constructorFailCallResult));
+         _test->_classNameTestName, constructorFailCallResult));
       ARE_EQUAL(constructorFailTestResult, testResult);
    }
 
@@ -115,7 +115,7 @@ namespace ZenUnit
 
       const TestResult startupFailTestResult = TestResult::TestingNonDefault;
       _testResultFactoryMock->StartupFailMock.ExpectAndReturn(startupFailTestResult);
-      _test->_fullName = FullName("Non", "Default");
+      _test->_classNameTestName = ClassNameTestName("Non", "Default");
       //
       const TestResult testResult = _test->RunTestCase();
       //
@@ -126,7 +126,7 @@ namespace ZenUnit
          { &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor }
       }));
       ZEN(_testResultFactoryMock->StartupFailMock.AssertCalledOnceWith(
-         _test->_fullName, constructorSuccessCallResult, startupFailCallResult, destructorCallResult));
+         _test->_classNameTestName, constructorSuccessCallResult, startupFailCallResult, destructorCallResult));
       ARE_EQUAL(startupFailTestResult, testResult);
    }
 
@@ -137,7 +137,7 @@ namespace ZenUnit
 
       const TestResult sixArgTestResult = TestResult::TestingNonDefault;
       _testResultFactoryMock->FullCtorMock.ExpectAndReturn(sixArgTestResult);
-      _test->_fullName = FullName("Non", "Default");
+      _test->_classNameTestName = ClassNameTestName("Non", "Default");
       //
       const TestResult testResult = _test->RunTestCase();
       //
@@ -150,7 +150,7 @@ namespace ZenUnit
          { &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor }
       }));
       ZEN(_testResultFactoryMock->FullCtorMock.AssertCalledOnceWith(
-         _test->_fullName,
+         _test->_classNameTestName,
          CallResultWithOutcome(TestOutcome::Success),
          CallResultWithOutcome(TestOutcome::Success),
          CallResultWithOutcome(TestOutcome::Success),

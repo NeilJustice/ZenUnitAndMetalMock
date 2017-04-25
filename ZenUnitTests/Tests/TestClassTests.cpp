@@ -18,7 +18,7 @@ namespace ZenUnit
    SPECEND
 
    TestClass _testClass;
-   const char* const FullName = "TestName";
+   const char* const ClassNameTestName = "TestName";
    const char* const FilePath = "FilePath";
    const unsigned LineNumber = 10;
 

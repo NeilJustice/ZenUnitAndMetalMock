@@ -2,7 +2,7 @@
 #include "ZenUnit/Enums/TestOutcome.h"
 #include "ZenUnit/Equalizers/ZenUnitEqualizer.h"
 #include "ZenUnit/Results/CallResult.h"
-#include "ZenUnit/Tests/FullName.h"
+#include "ZenUnit/Tests/ClassNameTestName.h"
 #include <functional>
 
 namespace ZenUnit
@@ -13,7 +13,7 @@ namespace ZenUnit
 
    struct TestResult
    {
-      FullName fullName;
+      ClassNameTestName classNameTestName;
       CallResult constructorCallResult;
       CallResult startupCallResult;
       CallResult testBodyCallResult;
@@ -28,22 +28,22 @@ namespace ZenUnit
       virtual ~TestResult() = default;
 
       static TestResult ConstructorFail(
-         const FullName& fullName,
+         const ClassNameTestName& classNameTestName,
          const CallResult& constructorCallResult);
 
       static TestResult StartupFail(
-         const FullName& fullName,
+         const ClassNameTestName& classNameTestName,
          const CallResult& constructorCallResult,
          const CallResult& startupCallResult,
          const CallResult& destructorCallResult);
 
       static TestResult CtorDtorSuccess(
-         const FullName& fullName,
+         const ClassNameTestName& classNameTestName,
          const CallResult& constructorCallResult,
          const CallResult& destructorCallResult);
 
       TestResult(
-         const FullName& fullName,
+         const ClassNameTestName& classNameTestName,
          const CallResult& constructorCallResult,
          const CallResult& startupCallResult,
          const CallResult& testBodyCallResult,

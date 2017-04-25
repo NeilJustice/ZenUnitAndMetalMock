@@ -114,7 +114,7 @@ namespace ZenUnit
       IS_TRUE(TestingTestClass::s_destructorCalled);
    }
 
-   const FullName FullNameValue = FullName("TestClass", "Test");
+   const ClassNameTestName FullNameValue = ClassNameTestName("TestClass", "Test");
 
    }; RUN(NormalTestTests)
 }

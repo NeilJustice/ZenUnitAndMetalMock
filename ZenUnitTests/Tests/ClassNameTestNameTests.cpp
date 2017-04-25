@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "ZenUnit/Tests/FullName.h"
+#include "ZenUnit/Tests/ClassNameTestName.h"
 
 namespace ZenUnit
 {
-   TESTS(FullNameTests)
+   TESTS(ClassNameTestNameTests)
    SPEC(DefaultConstructor_SetsClassNameAndTestNameToNullptr)
    SPEC(TwoArgConstructor_SetsClassNameAndTestName)
    SPEC(TestsAndTestLines_ReturnsExpected)
@@ -12,8 +12,8 @@ namespace ZenUnit
 
    TEST(DefaultConstructor_SetsClassNameAndTestNameToNullptr)
    {
-      const FullName defaultTestName;
-      FullName expectedDefaultTestName;
+      const ClassNameTestName defaultTestName;
+      ClassNameTestName expectedDefaultTestName;
       expectedDefaultTestName.testClassName = nullptr;
       expectedDefaultTestName.testName = nullptr;
       ARE_EQUAL(expectedDefaultTestName, defaultTestName);
@@ -21,8 +21,8 @@ namespace ZenUnit
 
    TEST(TwoArgConstructor_SetsClassNameAndTestName)
    {
-      const FullName testName("TestClassName", "TestName");
-      FullName expectedTestName;
+      const ClassNameTestName testName("TestClassName", "TestName");
+      ClassNameTestName expectedTestName;
       expectedTestName.testClassName = "TestClassName";
       expectedTestName.testName = "TestName";
       ARE_EQUAL(expectedTestName, testName);
@@ -30,7 +30,7 @@ namespace ZenUnit
 
    TEST(TestsAndTestLines_ReturnsExpected)
    {
-      const FullName testName("TestClassName", "TestName");
+      const ClassNameTestName testName("TestClassName", "TestName");
       ARE_EQUAL(
          "TESTS(TestClassName)\n"
          "TEST(TestName)", testName.TestsAndTestLines());
@@ -38,10 +38,10 @@ namespace ZenUnit
 
    TEST(ZenUnitEqualizer_ThrowsIfClassNameOrTestNameNotEqual)
    {
-      EQUALIZER_THROWS_INIT(FullName);
-      EQUALIZER_THROWS(FullName, testClassName, "TestClassName");
-      EQUALIZER_THROWS(FullName, testName, "TestName");
+      EQUALIZER_THROWS_INIT(ClassNameTestName);
+      EQUALIZER_THROWS(ClassNameTestName, testClassName, "TestClassName");
+      EQUALIZER_THROWS(ClassNameTestName, testName, "TestName");
    }
 
-   }; RUN(FullNameTests)
+   }; RUN(ClassNameTestNameTests)
 }

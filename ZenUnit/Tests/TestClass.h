@@ -1,5 +1,5 @@
 #pragma once
-#include "ZenUnit/Tests/FullName.h"
+#include "ZenUnit/Tests/ClassNameTestName.h"
 #include "ZenUnit/Tests/Test.h"
 #include "ZenUnit/Tests/Test1X1ThroughTest10X10.h"
 #include "ZenUnit/Utils/Map.h"

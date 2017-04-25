@@ -204,7 +204,7 @@ namespace ZenUnit
       testMock->NameMock.ExpectAndReturn(TestName);
       testMock->PrintPostTestNameMessageMock.Expect();
       TestResult test0;
-      test0.fullName = FullName("", "Test0");
+      test0.classNameTestName = ClassNameTestName("", "Test0");
       const vector<TestResult> TestResults = { test0, TestResult() };
       testMock->RunMock.ExpectAndReturn(TestResults);
       testMock->PrintPostTestCompletionMessageMock.Expect();

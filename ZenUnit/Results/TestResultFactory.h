@@ -4,7 +4,7 @@
 namespace ZenUnit
 {
    struct TestResult;
-   struct FullName;
+   struct ClassNameTestName;
    struct CallResult;
    struct ZenUnitArgs;
 
@@ -12,22 +12,22 @@ namespace ZenUnit
    {
    public:
       virtual TestResult ConstructorFail(
-         const FullName& fullName,
+         const ClassNameTestName& classNameTestName,
          const CallResult& constructorCallResult) const;
 
       virtual TestResult StartupFail(
-         const FullName& fullName,
+         const ClassNameTestName& classNameTestName,
          const CallResult& constructorCallResult,
          const CallResult& startupCallResult,
          const CallResult& destructorCallResult) const;
 
       virtual TestResult CtorDtorSuccess(
-         const FullName& fullName,
+         const ClassNameTestName& classNameTestName,
          const CallResult& constructorCallResult,
          const CallResult& destructorCallResult) const;
 
       virtual TestResult FullCtor(
-         const FullName& fullName,
+         const ClassNameTestName& classNameTestName,
          const CallResult& constructorCallResult,
          const CallResult& startupCallResult,
          const CallResult& testBodyCallResult,

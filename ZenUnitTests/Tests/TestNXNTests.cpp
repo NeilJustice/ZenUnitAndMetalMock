@@ -115,9 +115,9 @@ namespace ZenUnit
 
       test1X1SelfMocked.PrintTestCaseNumberArgsArrowMock.Expect();
       TestResult firstTestResult;
-      firstTestResult.fullName.testName = "FirstTest";
+      firstTestResult.classNameTestName.testName = "FirstTest";
       TestResult secondTestResult;
-      secondTestResult.fullName.testName = "SecondTest";
+      secondTestResult.classNameTestName.testName = "SecondTest";
       test1X1SelfMocked.MockableCallBaseRunTestCaseMock.ExpectAndReturnValues(firstTestResult, secondTestResult);
       test1X1SelfMocked.PrintTestResultOutcomeMock.Expect();
       //

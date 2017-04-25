@@ -11,7 +11,7 @@ namespace ZenUnit
    SPECEND
 
    TestResultFactory _testResultFactory;
-   const FullName FullNameValue = FullName("TestClass", "Test");
+   const ClassNameTestName FullNameValue = ClassNameTestName("TestClass", "Test");
    CallResult ConstructorCallResult;
    CallResult StartupCallResult;
    CallResult DestructorCallResult;

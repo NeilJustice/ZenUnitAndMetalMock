@@ -22,10 +22,10 @@ namespace ZenUnit
       }
       const chrono::time_point<chrono::high_resolution_clock> stopTime = _highres_now_ZenMockable();
       const chrono::duration<long long, std::nano> elapsedTime = stopTime - _startTime;
-      long long elapsedMilliseconds = chrono::duration_cast<chrono::milliseconds>(elapsedTime).count();
+      const long long elapsedMilliseconds = chrono::duration_cast<chrono::milliseconds>(elapsedTime).count();
       _startTime = chrono::time_point<chrono::high_resolution_clock>();
       assert_true(elapsedMilliseconds <= numeric_limits<unsigned>::max());
-      unsigned elapsedMillisecondsUnsigned = static_cast<unsigned>(elapsedMilliseconds);
+      const unsigned elapsedMillisecondsUnsigned = static_cast<unsigned>(elapsedMilliseconds);
       return elapsedMillisecondsUnsigned;
    }
 }

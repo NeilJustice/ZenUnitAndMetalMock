@@ -54,8 +54,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test1X1_2TestCases.Run();
       ARE_EQUAL(2, testResults.size());
-      ARE_EQUAL(FullName(TestClassName, TestName), testResults[0].fullName);
-      ARE_EQUAL(FullName(TestClassName, TestName), testResults[1].fullName);
+      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[0].classNameTestName);
+      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[1].classNameTestName);
       ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
       ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
       ARE_EQUAL(2, TestingTestClass1X1::s_calls.size());
@@ -109,8 +109,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test2X2_2TestCases.Run();
       ARE_EQUAL(2, testResults.size());
-      ARE_EQUAL(FullName(TestClassName, TestName), testResults[0].fullName);
-      ARE_EQUAL(FullName(TestClassName, TestName), testResults[1].fullName);
+      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[0].classNameTestName);
+      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[1].classNameTestName);
       ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
       ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
       const tuple<int, string> expectedFirstCall(1, string());
@@ -166,8 +166,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test3X3_2TestCases.Run();
       ARE_EQUAL(2, testResults.size());
-      ARE_EQUAL(FullName(TestClassName, TestName), testResults[0].fullName);
-      ARE_EQUAL(FullName(TestClassName, TestName), testResults[1].fullName);
+      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[0].classNameTestName);
+      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[1].classNameTestName);
       ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
       ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
       const tuple<int, int, string> expectedFirstCall(1, 2, string());
@@ -223,8 +223,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test4X4_2TestCases.Run();
       ARE_EQUAL(2, testResults.size());
-      ARE_EQUAL(FullName(TestClassName, TestName), testResults[0].fullName);
-      ARE_EQUAL(FullName(TestClassName, TestName), testResults[1].fullName);
+      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[0].classNameTestName);
+      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[1].classNameTestName);
       ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
       ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
       const tuple<int, int, int, string> expectedFirstCall(1, 2, 3, string());
@@ -280,8 +280,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test5X5_2TestCases.Run();
       ARE_EQUAL(2, testResults.size());
-      ARE_EQUAL(FullName(TestClassName, TestName), testResults[0].fullName);
-      ARE_EQUAL(FullName(TestClassName, TestName), testResults[1].fullName);
+      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[0].classNameTestName);
+      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[1].classNameTestName);
       ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
       ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
       const tuple<int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, string());
@@ -337,8 +337,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test6X6_2TestCases.Run();
       ARE_EQUAL(2, testResults.size());
-      ARE_EQUAL(FullName(TestClassName, TestName), testResults[0].fullName);
-      ARE_EQUAL(FullName(TestClassName, TestName), testResults[1].fullName);
+      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[0].classNameTestName);
+      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[1].classNameTestName);
       ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
       ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
       const tuple<int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, string());
@@ -394,8 +394,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test7X7_2TestCases.Run();
       ARE_EQUAL(2, testResults.size());
-      ARE_EQUAL(FullName(TestClassName, TestName), testResults[0].fullName);
-      ARE_EQUAL(FullName(TestClassName, TestName), testResults[1].fullName);
+      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[0].classNameTestName);
+      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[1].classNameTestName);
       ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
       ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
       const tuple<int, int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, 6, string());
@@ -451,8 +451,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test8X8_2TestCases.Run();
       ARE_EQUAL(2, testResults.size());
-      ARE_EQUAL(FullName(TestClassName, TestName), testResults[0].fullName);
-      ARE_EQUAL(FullName(TestClassName, TestName), testResults[1].fullName);
+      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[0].classNameTestName);
+      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[1].classNameTestName);
       ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
       ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
       const tuple<int, int, int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, 6, 7, string());
@@ -508,8 +508,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test9X9_2TestCases.Run();
       ARE_EQUAL(2, testResults.size());
-      ARE_EQUAL(FullName(TestClassName, TestName), testResults[0].fullName);
-      ARE_EQUAL(FullName(TestClassName, TestName), testResults[1].fullName);
+      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[0].classNameTestName);
+      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[1].classNameTestName);
       ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
       ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
       const tuple<int, int, int, int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, 6, 7, 8, string());
@@ -565,8 +565,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test10X10_2TestCases.Run();
       ARE_EQUAL(2, testResults.size());
-      ARE_EQUAL(FullName(TestClassName, TestName), testResults[0].fullName);
-      ARE_EQUAL(FullName(TestClassName, TestName), testResults[1].fullName);
+      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[0].classNameTestName);
+      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[1].classNameTestName);
       ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
       ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
       const tuple<int, int, int, int, int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, 6, 7, 8, 9, string());

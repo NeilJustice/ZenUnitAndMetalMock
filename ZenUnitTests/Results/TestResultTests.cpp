@@ -27,7 +27,7 @@ namespace ZenUnit
    CallResult DestructorCallResult;
    ConsoleMock _consoleMock;
    TestFailureNumbererMock _testFailureNumbererMock;
-   const FullName FullNameValue = FullName("ClassName", "TestClassName");
+   const ClassNameTestName FullNameValue = ClassNameTestName("ClassName", "TestClassName");
    const unsigned ExpectedMilliseconds = 1 + 2 + 3 + 4 + 5;
    ZENMOCK_NONVOID0_STATIC(ZenUnitArgs, ZenUnit::TestRunner, GetArgs)
 
@@ -44,14 +44,14 @@ namespace ZenUnit
       StartupCallResult.milliseconds = 2;
       DestructorCallResult = CallResult(TestPhase::Destructor);
       DestructorCallResult.milliseconds = 3;
-      _testResult.fullName = FullNameValue;
+      _testResult.classNameTestName = FullNameValue;
    }
 
    TEST(DefaultConstructor_SetsFieldsTo0)
    {
       const TestResult defaultTestResult;
       TestResult expectedDefaultTestResult;
-      expectedDefaultTestResult.fullName = FullName();
+      expectedDefaultTestResult.classNameTestName = ClassNameTestName();
       expectedDefaultTestResult.constructorCallResult = CallResult();
       expectedDefaultTestResult.startupCallResult = CallResult();
       expectedDefaultTestResult.testBodyCallResult = CallResult();
@@ -75,7 +75,7 @@ namespace ZenUnit
          TestResult::ConstructorFail(FullNameValue, ConstructorCallResult);
       //
       TestResult expectedTestResult;
-      expectedTestResult.fullName = FullNameValue;
+      expectedTestResult.classNameTestName = FullNameValue;
       expectedTestResult.constructorCallResult = ConstructorCallResult;
       expectedTestResult.responsibleCallResultField = &TestResult::constructorCallResult;
       expectedTestResult.testOutcome = expectedTestResultOutcome;
@@ -94,7 +94,7 @@ namespace ZenUnit
          FullNameValue, ConstructorCallResult, StartupCallResult, DestructorCallResult);
       //
       TestResult expectedTestResult;
-      expectedTestResult.fullName = FullNameValue;
+      expectedTestResult.classNameTestName = FullNameValue;
       expectedTestResult.constructorCallResult = ConstructorCallResult;
       expectedTestResult.startupCallResult = StartupCallResult;
       expectedTestResult.destructorCallResult = DestructorCallResult;
@@ -116,7 +116,7 @@ namespace ZenUnit
          FullNameValue, constructorCallResult, destructorCallResult);
       //
       TestResult expectedTestResult;
-      expectedTestResult.fullName = FullNameValue;
+      expectedTestResult.classNameTestName = FullNameValue;
       expectedTestResult.testOutcome = TestOutcome::Success;
       expectedTestResult.constructorCallResult = constructorCallResult;
       expectedTestResult.destructorCallResult = destructorCallResult;
@@ -178,7 +178,7 @@ namespace ZenUnit
          GetArgs_ZenMock.AssertCalledOnce();
       }
       TestResult expectedTestResult;
-      expectedTestResult.fullName = FullNameValue;
+      expectedTestResult.classNameTestName = FullNameValue;
       expectedTestResult.constructorCallResult = ConstructorCallResult;
       expectedTestResult.startupCallResult = StartupCallResult;
       expectedTestResult.testBodyCallResult = testBodyCallResult;
@@ -228,7 +228,7 @@ namespace ZenUnit
       &TestResult::testBodyCallResult, TestPhase::TestBody, "",
       &TestResult::cleanupCallResult, TestPhase::Cleanup, " in CLEANUP")
    {
-      _testResult_WriteTestCaseNumberIfAnyMocked.fullName = FullName("TestClass", "Test");
+      _testResult_WriteTestCaseNumberIfAnyMocked.classNameTestName = ClassNameTestName("TestClass", "Test");
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::Anomaly;
 
       const string AnomalyWhy = "AnomalyWhy";
@@ -258,7 +258,7 @@ namespace ZenUnit
          AssertCalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex));
       ZEN(_consoleMock.WriteMock.AssertCalls(
       {
-         _testResult_WriteTestCaseNumberIfAnyMocked.fullName.TestsAndTestLines(),
+         _testResult_WriteTestCaseNumberIfAnyMocked.classNameTestName.TestsAndTestLines(),
          expectedResponsibleTestPhaseSuffix
       }));
       ZEN(_consoleMock.WriteLineMock.AssertCalls(
@@ -278,7 +278,7 @@ namespace ZenUnit
       &TestResult::testBodyCallResult, TestPhase::TestBody, "",
       &TestResult::cleanupCallResult, TestPhase::Cleanup, " in CLEANUP")
    {
-      _testResult_WriteTestCaseNumberIfAnyMocked.fullName = FullName("TestClass", "Test");
+      _testResult_WriteTestCaseNumberIfAnyMocked.classNameTestName = ClassNameTestName("TestClass", "Test");
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::Exception;
 
       const string ExceptionTypeName = "ExceptionType";
@@ -306,7 +306,7 @@ namespace ZenUnit
       ZEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
          AssertCalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex));
       ZEN(_consoleMock.WriteMock.AssertCalledOnceWith(
-         _testResult_WriteTestCaseNumberIfAnyMocked.fullName.TestsAndTestLines()));
+         _testResult_WriteTestCaseNumberIfAnyMocked.classNameTestName.TestsAndTestLines()));
       ZEN(_consoleMock.WriteLineMock.AssertCalls(
       {
          TestFailureNumber,
@@ -319,7 +319,7 @@ namespace ZenUnit
 
    TEST(PrintIfFailure_SuccessButPastDeadline_PrintsExpected)
    {
-      _testResult_WriteTestCaseNumberIfAnyMocked.fullName = FullName("TestClass", "Test");
+      _testResult_WriteTestCaseNumberIfAnyMocked.classNameTestName = ClassNameTestName("TestClass", "Test");
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::SuccessButPastDeadline;
       _testResult_WriteTestCaseNumberIfAnyMocked.milliseconds = 10;
 
@@ -340,7 +340,7 @@ namespace ZenUnit
       ZEN(_consoleMock.WriteLineMock.AssertCalls(
       {
          TestFailureNumber,
-         _testResult_WriteTestCaseNumberIfAnyMocked.fullName.TestsAndTestLines(),
+         _testResult_WriteTestCaseNumberIfAnyMocked.classNameTestName.TestsAndTestLines(),
          "Failed because test took longer than maxtestmilliseconds= (10 ms)"s
       }));
       ZEN(_consoleMock.WriteNewlineMock.AssertCalledOnce());
@@ -378,7 +378,7 @@ File.cpp(1))");
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
       EQUALIZER_THROWS_INIT(TestResult);
-      EQUALIZER_THROWS(TestResult, fullName, FullName("ClassName", "TestName"));
+      EQUALIZER_THROWS(TestResult, classNameTestName, ClassNameTestName("ClassName", "TestName"));
 
       CallResult nonDefaultConstructorCallResult;
       nonDefaultConstructorCallResult.testPhase = TestPhase::Constructor;
