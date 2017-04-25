@@ -29,59 +29,6 @@ TEMPLATETESTS(SkippedTemplateTestClassB, MapType) SPECEND };
 SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, map)
 SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, unordered_map)
 
-struct A
-{
-   virtual int f() { return 0; }
-   virtual void g() {}
-};
-
-struct AMock : public Zen::Mock<A>
-{
-   ZENMOCK_NONVOID0(int, f)
-   ZENMOCK_VOID0(g)
-};
-
-TESTS(ZZZTests)
-SPEC(Test1)
-SPEC(Test2)
-SPECEND
-
-AMock aMock;
-
-ZZZTests()
-{
-   //ARE_EQUAL(1, 0);
-}
-
-STARTUP
-{
-   //ARE_EQUAL(1, 0);
-}
-
-CLEANUP
-{
-   //aMock.g();
-   //throw exception("Hello");
-}
-
-TEST(Test1)
-{
-   //ARE_EQUAL(1, 0);
-}
-
-TEST(Test2)
-{
-   //aMock.fMock.ExpectAndReturn(0);
-   //ARE_EQUAL(1, 0);
-
-   //aMock.g();
-   //ZEN(aMock.fMock.AssertCalledNTimes(2));
-   //ARE_EQUAL(1, 0);
-   //throw exception("Hello");
-}
-
-}; RUN(ZZZTests)
-
 int main(int argc, char* argv[])
 {
    FileLiner::selfTestMode = true;

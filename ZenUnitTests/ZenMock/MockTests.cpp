@@ -5,6 +5,7 @@ namespace Zen
 {
    struct X
    {
+      virtual ~X() = default;
    };
 
    TESTS(MockTests)

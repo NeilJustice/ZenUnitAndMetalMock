@@ -7,6 +7,7 @@ public:
    virtual void VirtualVoidConstTwoArgs(int, int) const {}
    virtual int VirtualNonVoid() { return 0; }
    virtual int VirtualNonVoidConst() const { return 0; }
+   virtual ~ComponentA() = default;
 };
 
 struct ComponentAMock : public Zen::Mock<ComponentA>
@@ -24,6 +25,7 @@ public:
    void VoidFunctionConst() const {}
    int NonVoidFunction() { return 0; }
    int NonVoidFunctionConst() { return 0; }
+   virtual ~ComponentB() = default;
 };
 
 struct ComponentBMock : public Zen::Mock<ComponentB>

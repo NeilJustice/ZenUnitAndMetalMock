@@ -19,5 +19,8 @@ namespace Zen
          const std::string* const zenMockedClassName = ZenUnit::Type::GetName<ZenMockedClass>();
          return zenMockedClassName;
       }
+
+      static_assert(std::has_virtual_destructor<ZenMockedClass>::value, 
+         "ZenMocked classes must define a virtual destructor so as to not introduce a memory leak and to enable the Expected But Not Asserted ZenMocked Function error message feature");
    };
 }
