@@ -50,6 +50,7 @@ namespace ZenMock
    public:
       explicit NonVoidFiveArgMocker(const std::string& zenMockedFunctionSignature)
          : FiveArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>(zenMockedFunctionSignature)
+         , ValueReturner<ReturnType>(zenMockedFunctionSignature)
       {
       }
 
