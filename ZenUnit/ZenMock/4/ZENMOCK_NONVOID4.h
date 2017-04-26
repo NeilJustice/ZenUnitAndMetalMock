@@ -88,7 +88,7 @@ namespace ZenMock
    {
    public:
       explicit NonVoidFourArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
-         : NonVoidFourArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>(zenMockedFunctionSignature)
+         : NonVoidFourArgMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>(zenMockedFunctionSignature)
       {
       }
 
