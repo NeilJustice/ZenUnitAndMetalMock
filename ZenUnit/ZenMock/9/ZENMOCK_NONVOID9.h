@@ -77,9 +77,8 @@ namespace ZenMock
 
       ReturnType ZenMockItAndReturnValue(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5, Arg6Type arg6, Arg7Type arg7, Arg8Type arg8, Arg9Type arg9)
       {
-         NineArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type,Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>::ZenMock(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
-         const ReturnType returnValue = ValueReturner<ReturnType>::ZenMockZenMockNextReturnValue();
-         return returnValue;
+         NineArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type,Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>::ZenMockIt(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
+         return ValueReturner<ReturnType>::ZenMockNextReturnValue();
       }
    };
 

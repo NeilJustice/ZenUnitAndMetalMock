@@ -78,8 +78,7 @@ namespace ZenMock
       ReturnType ZenMockItAndReturnValue(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4)
       {
          FourArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::ZenMockIt(arg1, arg2, arg3, arg4);
-         const ReturnType ZenMockNextReturnValue = ValueReturner<ReturnType>::ZenMockZenMockNextReturnValue();
-         return ZenMockNextReturnValue;
+         return ValueReturner<ReturnType>::ZenMockNextReturnValue();
       }
    };
 
