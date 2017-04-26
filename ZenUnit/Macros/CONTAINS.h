@@ -14,7 +14,7 @@ namespace ZenUnit
    NOINLINE void CONTAINS_Throw(
       VRText<DataStructureType> expectedElementVRT,
       VRText<ElementType> dataStructureVRT,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedField =
          "Contains element " + ToStringer::ToString(expectedElementVRT.value);
@@ -22,14 +22,14 @@ namespace ZenUnit
          Anomaly::Default,
          expectedField,
          "Contains no such element",
-         ExpectedActualFormat::Fields, fileLine, messages...);
+         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ElementType, typename DataStructureType, typename... MessageTypes>
    void CONTAINS_Defined(
       VRText<DataStructureType> expectedElementVRT,
       VRText<ElementType> dataStructureVRT,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const auto findIter = std::find(
          dataStructureVRT.value.cbegin(),
@@ -40,7 +40,7 @@ namespace ZenUnit
          CONTAINS_Throw(
             expectedElementVRT,
             dataStructureVRT,
-            fileLine, messagesText, messages...);
+            fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 }

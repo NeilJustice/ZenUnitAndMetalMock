@@ -27,20 +27,20 @@ namespace ZenUnit
    template<typename... MessageTypes>
    NOINLINE void WAS_NEWED_Throw(
       const char* smartOrRawPointerText,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       throw Anomaly("WAS_NEWED", smartOrRawPointerText, "", "", messagesText, Anomaly::Default,
-         "not a nullptr", "nullptr", ExpectedActualFormat::Fields, fileLine, messages...);
+         "not a nullptr", "nullptr", ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename PointerType, typename... MessageTypes>
    void WAS_NEWED_Defined(
       PointerType& smartOrRawPointer, const char* smartOrRawPointerText,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (smartOrRawPointer == nullptr)
       {
-         WAS_NEWED_Throw(smartOrRawPointerText, fileLine, messagesText, messages...);
+         WAS_NEWED_Throw(smartOrRawPointerText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
       ScalarDeleter<typename std::remove_reference<
          decltype(smartOrRawPointer)>::type>::Delete(smartOrRawPointer);

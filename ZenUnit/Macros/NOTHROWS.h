@@ -12,21 +12,21 @@ namespace ZenUnit
    NOINLINE void NOTHROWS_Throw(
       const std::exception& e,
       const char* expressionText,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string failedLinePrefix = String::Concat("  Failed: NOTHROWS(", expressionText);
       const std::string* const actualExceptionTypeName = Type::GetName(e);
       const std::string whyBody = String::Concat("Expected: No exception thrown\n",
          "  Actual: ", *actualExceptionTypeName, " thrown\n",
          "  what(): \"", e.what(), "\"");
-      throw Anomaly(failedLinePrefix, whyBody, fileLine, " ", messagesText, messages...);
+      throw Anomaly(failedLinePrefix, whyBody, fileLine, " ", messagesText, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename... MessageTypes>
    void NOTHROWS_Defined(
       const std::function<void()>& expression,
       const char* expressionText,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       try
       {
@@ -34,7 +34,7 @@ namespace ZenUnit
       }
       catch (const std::exception& e)
       {
-         NOTHROWS_Throw(e, expressionText, fileLine, messagesText, messages...);
+         NOTHROWS_Throw(e, expressionText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 }

@@ -12,7 +12,7 @@ namespace ZenUnit
 {
    template<typename ValueType, typename ZeroValueType, typename... MessageTypes>
    NOINLINE void IS_ZERO_Throw(VRText<ValueType> valueVRT, const ZeroValueType& zeroValue,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedField = ToStringer::ToString(zeroValue);
       const std::string actualField = ToStringer::ToString(valueVRT.value);
@@ -20,18 +20,18 @@ namespace ZenUnit
          Anomaly::Default,
          expectedField,
          actualField,
-         ExpectedActualFormat::Fields, fileLine, messages...);
+         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ValueType, typename... MessageTypes>
    void IS_ZERO_Defined(VRText<ValueType> valueVRT,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const typename std::remove_reference<ValueType>::type zeroValue{};
       const bool valueIsZero = valueVRT.value == zeroValue;
       if (!valueIsZero)
       {
-         IS_ZERO_Throw(valueVRT, zeroValue, fileLine, messagesText, messages...);
+         IS_ZERO_Throw(valueVRT, zeroValue, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 }

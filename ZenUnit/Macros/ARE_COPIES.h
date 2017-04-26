@@ -18,7 +18,7 @@ namespace ZenUnit
       VRText<ExpectedObjectType> expectedObjectVRT,
       VRText<ActualObjectType> actualObjectVRT,
       FileLine fileLine, const Anomaly& becauseAnomaly,
-      const char* messagesText, const MessageTypes&... messages)
+      const char* messagesText, MessageTypes&&... messages)
    {
       const std::string toStringedExpectedObject = ToStringer::ToString(expectedObjectVRT.value);
       const std::string toStringedActualObject = ToStringer::ToString(actualObjectVRT.value);
@@ -26,14 +26,14 @@ namespace ZenUnit
          messagesText, becauseAnomaly,
          toStringedExpectedObject,
          toStringedActualObject,
-         ExpectedActualFormat::Fields, fileLine, messages...);
+         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
    void ARE_COPIES_Defined(
       VRText<ExpectedObjectType> expectedObjectVRT,
       VRText<ActualObjectType> actualObjectVRT,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const ExpectedObjectType& expectedObject = expectedObjectVRT.value;
       const ActualObjectType& actualObject = actualObjectVRT.value;
@@ -44,7 +44,7 @@ namespace ZenUnit
       catch (const Anomaly& becauseAnomaly)
       {
          ARE_COPIES_Throw(expectedObjectVRT, actualObjectVRT,
-            fileLine, becauseAnomaly, messagesText, messages...);
+            fileLine, becauseAnomaly, messagesText, std::forward<MessageTypes>(messages)...);
       }
       try
       {
@@ -53,7 +53,7 @@ namespace ZenUnit
       catch (const Anomaly& becauseAnomaly)
       {
          ARE_COPIES_Throw(expectedObjectVRT, actualObjectVRT,
-            fileLine, becauseAnomaly, messagesText, messages...);
+            fileLine, becauseAnomaly, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 }

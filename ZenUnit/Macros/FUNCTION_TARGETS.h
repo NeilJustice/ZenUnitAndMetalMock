@@ -15,7 +15,7 @@ namespace ZenUnit
       const ExpectedStdFunctionTargetType* expectedStdFunctionTargetValue,
       const char* expectedStdFunctionTargetText,
       VRText<StdFunctionType> stdFunctionVRT,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const StdFunctionType stdFunction = stdFunctionVRT.value;
       try
@@ -34,7 +34,7 @@ namespace ZenUnit
             becauseAnomaly,
             expectedField,
             actualField,
-            ExpectedActualFormat::Fields, fileLine, messages...);
+            ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
       }
    }
 }

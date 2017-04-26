@@ -27,20 +27,20 @@ namespace ZenUnit
    template<typename... MessageTypes>
    NOINLINE void WAS_ARRAY_NEWED_Throw(
       const char* smartOrRawArrayPointerText,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       throw Anomaly("WAS_ARRAY_NEWED", smartOrRawArrayPointerText, "", "", messagesText, Anomaly::Default,
-         "not a nullptr", "nullptr", ExpectedActualFormat::Fields, fileLine, messages...);
+         "not a nullptr", "nullptr", ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename PointerType, typename... MessageTypes>
    void WAS_ARRAY_NEWED_Defined(
       PointerType& smartOrRawArrayPointer, const char* smartOrRawArrayPointerText,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (smartOrRawArrayPointer == nullptr)
       {
-         WAS_ARRAY_NEWED_Throw(smartOrRawArrayPointerText, fileLine, messagesText, messages...);
+         WAS_ARRAY_NEWED_Throw(smartOrRawArrayPointerText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
       ArrayDeleter<typename std::remove_reference<
          decltype(smartOrRawArrayPointer)>::type>::Delete(smartOrRawArrayPointer);

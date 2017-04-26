@@ -43,14 +43,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::ZenMockVoidSevenArg
 
 namespace ZenMock
 {
-   template<
-      typename Arg1Type,
-      typename Arg2Type,
-      typename Arg3Type,
-      typename Arg4Type,
-      typename Arg5Type,
-      typename Arg6Type,
-      typename Arg7Type>
+   template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type>
    class VoidSevenArgMocker : public SevenArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>
    {
    public:
@@ -60,16 +53,8 @@ namespace ZenMock
       }
    };
 
-   template<
-      typename Arg1Type,
-      typename Arg2Type,
-      typename Arg3Type,
-      typename Arg4Type,
-      typename Arg5Type,
-      typename Arg6Type,
-      typename Arg7Type>
-   class VoidSevenArgFunctionPointerMocker : public VoidSevenArgMocker<
-      Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>
+   template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type>
+   class VoidSevenArgFunctionPointerMocker : public VoidSevenArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>
    {
    public:
       explicit VoidSevenArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)

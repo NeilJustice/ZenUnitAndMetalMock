@@ -27,7 +27,7 @@ namespace ZenMock
    SPEC(ZenMockZenMockNextReturnValue_DefConReturnType_ReturnValuesSpecified_ReturnsValuesThenLastValueThereafter)
    SPEC(ZenMockZenMockNextReturnValue_NonDefConReturnType_NoReturnValuesSpecified_Throws)
    SPEC(ZenMockZenMockNextReturnValue_NonDefConReturnType_ReturnValuesPreviouslySpecified_ReturnsValuesThenLastValueTherafter)
-   SPEC(ZenMockPushBackReturnValues_ThrowsIfReturnValuesArgumentEmpty)
+   SPEC(ZenMockAddContainerReturnValues_ThrowsIfReturnValuesArgumentEmpty)
    SPECEND
 
    const string ZenMockedFunctionSignature = "ZenMockedFunctionSignature";
@@ -57,15 +57,24 @@ namespace ZenMock
    TEST(ZenMockZenMockNextReturnValue_DefConReturnType_ReturnValuesSpecified_ReturnsValuesThenLastValueThereafter)
    {
       ValueReturner<int> valueReturner(ZenMockedFunctionSignature);
-      valueReturner.ZenMockPushBackReturnValue(1);
-      valueReturner.ZenMockPushBackReturnValues(2, 3);
-      valueReturner.ZenMockPushBackReturnValues(vector<int> { 4, 5 });
+      valueReturner.ZenMockAddReturnValue(1);
+      valueReturner.ZenMockAddReturnValues(2, 3);
+      valueReturner.ZenMockAddContainerReturnValues(vector<int> { 4, 5 });
+      valueReturner.ZenMockAddContainerReturnValues(std::array<int, 2>{ 6, 7 });
+      vector<int> lvalueVector{8};
+      valueReturner.ZenMockAddContainerReturnValues(lvalueVector);
+      std::array<int, 1> lvalueArray{9};
+      valueReturner.ZenMockAddContainerReturnValues(lvalueArray);
       ARE_EQUAL(1, valueReturner.ZenMockZenMockNextReturnValue());
       ARE_EQUAL(2, valueReturner.ZenMockZenMockNextReturnValue());
       ARE_EQUAL(3, valueReturner.ZenMockZenMockNextReturnValue());
       ARE_EQUAL(4, valueReturner.ZenMockZenMockNextReturnValue());
       ARE_EQUAL(5, valueReturner.ZenMockZenMockNextReturnValue());
-      ARE_EQUAL(5, valueReturner.ZenMockZenMockNextReturnValue());
+      ARE_EQUAL(6, valueReturner.ZenMockZenMockNextReturnValue());
+      ARE_EQUAL(7, valueReturner.ZenMockZenMockNextReturnValue());
+      ARE_EQUAL(8, valueReturner.ZenMockZenMockNextReturnValue());
+      ARE_EQUAL(9, valueReturner.ZenMockZenMockNextReturnValue());
+      ARE_EQUAL(9, valueReturner.ZenMockZenMockNextReturnValue());
    }
 
    TEST(ZenMockZenMockNextReturnValue_NonDefConReturnType_NoReturnValuesSpecified_Throws)
@@ -78,12 +87,9 @@ namespace ZenMock
    TEST(ZenMockZenMockNextReturnValue_NonDefConReturnType_ReturnValuesPreviouslySpecified_ReturnsValuesThenLastValueTherafter)
    {
       ValueReturner<NonDefaultConstructible> valueReturner(ZenMockedFunctionSignature);
-      valueReturner.ZenMockPushBackReturnValue(
-         NonDefaultConstructible(1));
-      valueReturner.ZenMockPushBackReturnValues(
-         NonDefaultConstructible(2), NonDefaultConstructible(3));
-      valueReturner.ZenMockPushBackReturnValues(
-         vector<NonDefaultConstructible> { NonDefaultConstructible(4), NonDefaultConstructible(5) });
+      valueReturner.ZenMockAddReturnValue(NonDefaultConstructible(1));
+      valueReturner.ZenMockAddReturnValues(NonDefaultConstructible(2), NonDefaultConstructible(3));
+      valueReturner.ZenMockAddContainerReturnValues(vector<NonDefaultConstructible> { NonDefaultConstructible(4), NonDefaultConstructible(5) });
       //
       ARE_EQUAL(NonDefaultConstructible(1), valueReturner.ZenMockZenMockNextReturnValue());
       ARE_EQUAL(NonDefaultConstructible(2), valueReturner.ZenMockZenMockNextReturnValue());
@@ -93,11 +99,12 @@ namespace ZenMock
       ARE_EQUAL(NonDefaultConstructible(5), valueReturner.ZenMockZenMockNextReturnValue());
    }
 
-   TEST(ZenMockPushBackReturnValues_ThrowsIfReturnValuesArgumentEmpty)
+   TEST(ZenMockAddContainerReturnValues_ThrowsIfReturnValuesArgumentEmpty)
    {
       ValueReturner<int> valueReturner(ZenMockedFunctionSignature);
-      THROWS(valueReturner.ZenMockPushBackReturnValues({}), invalid_argument,
-         "ZenMock::ValueReturner::ZenMockPushBackReturnValues(): Return values vector cannot be empty");
+      const char* const ExpectedWhat = "ZenMock::ValueReturner::ZenMockAddContainerReturnValues(): Return values vector cannot be empty";
+      THROWS(valueReturner.ZenMockAddContainerReturnValues(vector<int>{}), invalid_argument, ExpectedWhat);
+      THROWS(valueReturner.ZenMockAddContainerReturnValues(list<int>{}), invalid_argument, ExpectedWhat);
    }
 
    }; RUN(ValueReturnerTests)

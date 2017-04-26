@@ -11,17 +11,17 @@ namespace ZenMock
    public:
       template<typename... ArgTypes>
       explicit UnexpectedCallException(
-         const std::string& zenMockedFunctionSignature, const ArgTypes&... args)
-         : _what(MakeWhat(zenMockedFunctionSignature, args...))
+         const std::string& zenMockedFunctionSignature, ArgTypes&&... args)
+         : _what(MakeWhat(zenMockedFunctionSignature, std::forward<ArgTypes>(args)...))
       {
       }
 
       template<typename... ArgTypes>
-      static std::string MakeWhat(const std::string& zenMockedFunctionSignature, const ArgTypes&... args)
+      static std::string MakeWhat(const std::string& zenMockedFunctionSignature, ArgTypes&&... args)
       {
          std::ostringstream whatBuilder;
          whatBuilder << "Unexpected call to ZenMocked function\n\"" << zenMockedFunctionSignature << "\"";
-         AppendToStringedArgs(whatBuilder, 0, args...);
+         AppendToStringedArgs(whatBuilder, 0, std::forward<ArgTypes>(args)...);
          whatBuilder << R"(
 Fix for this: Add before the above unexpected call a call to
 [ZenMockedFunctionName]Mock.[Expect|)";
@@ -48,12 +48,12 @@ Fix for this: Add before the above unexpected call a call to
       static void AppendToStringedArgs(
          std::ostringstream& outWhatBuilder,
          size_t argIndex,
-         const ArgType& arg,
-         const SubsequentArgTypes&... args)
+         ArgType&& arg,
+         SubsequentArgTypes&&... args)
       {
-         const std::string toStringedArg = ZenUnit::ToStringer::ToString(arg);
+         const std::string toStringedArg = ZenUnit::ToStringer::ToString(std::forward<ArgType>(arg));
          outWhatBuilder << "\nArg" << ++argIndex << ": " << toStringedArg;
-         AppendToStringedArgs(outWhatBuilder, argIndex, args...);
+         AppendToStringedArgs(outWhatBuilder, argIndex, std::forward<SubsequentArgTypes>(args)...);
       }
 
       static void AppendToStringedArgs(std::ostringstream&, size_t)

@@ -16,7 +16,7 @@ namespace ZenUnit
    NOINLINE void ARE_EQUAL_Throw(
       VRText<ExpectedType> expectedValueVRT, VRText<ActualType> actualValueVRT,
       FileLine fileLine, const Anomaly& becauseAnomaly,
-      const char* messagesText, const MessageTypes&... messages)
+      const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedField = ToStringer::ToString(expectedValueVRT.value);
       const std::string actualField = ToStringer::ToString(actualValueVRT.value);
@@ -24,12 +24,12 @@ namespace ZenUnit
          messagesText, becauseAnomaly,
          expectedField,
          actualField,
-         ExpectedActualFormat::Fields, fileLine, messages...);
+         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ExpectedType, typename ActualType, typename... MessageTypes>
    void ARE_EQUAL_Defined(VRText<ExpectedType> expectedValueVRT, VRText<ActualType> actualValueVRT,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       try
       {
@@ -43,12 +43,12 @@ namespace ZenUnit
       catch (const EqualizerException&)
       {
          ARE_EQUAL_Throw(expectedValueVRT, actualValueVRT, fileLine,
-            Anomaly::Default, messagesText, messages...);
+            Anomaly::Default, messagesText, std::forward<MessageTypes>(messages)...);
       }
       catch (const Anomaly& becauseAnomaly)
       {
          ARE_EQUAL_Throw(expectedValueVRT, actualValueVRT, fileLine,
-            becauseAnomaly, messagesText, messages...);
+            becauseAnomaly, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 }

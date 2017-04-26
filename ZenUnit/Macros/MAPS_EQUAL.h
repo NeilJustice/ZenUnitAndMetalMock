@@ -19,11 +19,11 @@ namespace ZenUnit
       FileLine fileLine,
       const char* messagePrefixSpaces,
       const char* messagesText,
-      const MessageTypes&... messages)
+      MessageTypes&&... messages)
    {
       const std::string failedLinePrefix = String::Concat(
          failedPrefixSpaces, "Failed: MAPS_EQUAL(", expectedMapText, ", ", actualMapText);
-      throw Anomaly(failedLinePrefix, whyBody, fileLine, messagePrefixSpaces, messagesText, messages...);
+      throw Anomaly(failedLinePrefix, whyBody, fileLine, messagePrefixSpaces, messagesText, std::forward<MessageTypes>(messages)...);
    }
 
    NOINLINE std::string MAPS_EQUAL_MakeWhyBody_SizesNotEqual(size_t expectedMapSize, size_t actualMapSize);
@@ -62,7 +62,7 @@ namespace ZenUnit
    void MAPS_EQUAL_Defined(
       VRText<MapType> expectedMapVRT,
       VRText<MapType> actualMapVRT,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const char* const expectedMapText = expectedMapVRT.text;
       const char* const actualMapText = actualMapVRT.text;
@@ -76,7 +76,7 @@ namespace ZenUnit
       {
          MAPS_EQUAL_Throw("  ", expectedMapText, actualMapText,
             MAPS_EQUAL_MakeWhyBody_SizesNotEqual(expectedMap.size(), actualMap.size()),
-            fileLine, " ", messagesText, messages...);
+            fileLine, " ", messagesText, std::forward<MessageTypes>(messages)...);
       }
       for (const auto& expectedKeyValuePair : expectedMapVRT.value)
       {
@@ -89,7 +89,7 @@ namespace ZenUnit
          {
             MAPS_EQUAL_Throw(" ", expectedMapText, actualMapText,
                MAPS_EQUAL_MakeWhyBody_ExpectedKeyNotInActualMap(expectedKey),
-               fileLine, "", messagesText, messages...);
+               fileLine, "", messagesText, std::forward<MessageTypes>(messages)...);
          }
          const bool mapContainsValue = containsKeyValue.second;
          if (!mapContainsValue)
@@ -97,7 +97,7 @@ namespace ZenUnit
             assert_true(containsKeyValue.first);
             MAPS_EQUAL_Throw(" ", expectedMapText, actualMapText,
                MAPS_EQUAL_MakeWhyBody_KeysEqualValuesNotEqual(expectedKey, expectedValue, actualMap),
-               fileLine, "", messagesText, messages...);
+               fileLine, "", messagesText, std::forward<MessageTypes>(messages)...);
          }
       }
    }

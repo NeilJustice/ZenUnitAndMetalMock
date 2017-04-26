@@ -60,12 +60,12 @@ namespace ZenMock
       }
 
       template<typename... ArgTypes>
-      void ZenMockThrowIfNotExpected(const ArgTypes&... args)
+      void ZenMockThrowIfNotExpected(ArgTypes&&... args)
       {
          if (!_expected)
          {
             _zenMockExceptionIsInPlay = true;
-            throw UnexpectedCallException(ZenMockedFunctionSignature, args...);
+            throw UnexpectedCallException(ZenMockedFunctionSignature, std::forward<ArgTypes>(args)...);
          }
       }
 

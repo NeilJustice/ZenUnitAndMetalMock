@@ -12,7 +12,7 @@ namespace ZenUnit
 {
    template<typename StringType, typename... MessageTypes>
    void FAIL_Defined(VRText<StringType> testFailureReasonVRT,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string failedLinePrefix = String::Concat(" Failed: FAIL(", testFailureReasonVRT.text);
       std::ostringstream whyBodyBuilder;
@@ -22,6 +22,6 @@ namespace ZenUnit
          whyBodyBuilder << "Because: " << quotedTestFailureReason;
       }
       const std::string whyBody = whyBodyBuilder.str();
-      throw Anomaly(failedLinePrefix, whyBody, fileLine, "", messagesText, messages...);
+      throw Anomaly(failedLinePrefix, whyBody, fileLine, "", messagesText, std::forward<MessageTypes>(messages)...);
    }
 }

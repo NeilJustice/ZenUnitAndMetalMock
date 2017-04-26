@@ -11,18 +11,18 @@ namespace ZenUnit
    NOINLINE void PAIRS_EQUAL_ToStringAndRethrow(
       const Anomaly& becauseAnomaly,
       VRText<PairType> expectedPairVRT, VRText<PairType> actualPairVRT,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expected = ToStringer::ToString(expectedPairVRT.value);
       const std::string actual = ToStringer::ToString(actualPairVRT.value);
       throw Anomaly("PAIRS_EQUAL", expectedPairVRT.text, actualPairVRT.text, "", messagesText,
-         becauseAnomaly, expected, actual, ExpectedActualFormat::Fields, fileLine, messages...);
+         becauseAnomaly, expected, actual, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename PairType, typename... MessageTypes>
    void PAIRS_EQUAL_Defined(
       VRText<PairType> expectedPairVRT, VRText<PairType> actualPairVRT,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       try
       {
@@ -35,7 +35,7 @@ namespace ZenUnit
       {
          PAIRS_EQUAL_ToStringAndRethrow(anomaly,
             expectedPairVRT, actualPairVRT,
-            fileLine, messagesText, messages...);
+            fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 }

@@ -86,10 +86,10 @@ namespace ZenUnit
       }
 
       template<typename... Types>
-      static std::string ToStringConcat(const Types&... values)
+      static std::string ToStringConcat(Types&&... values)
       {
          std::ostringstream oss;
-         DoToStringConcat(oss, values...);
+         DoToStringConcat(oss, std::forward<Types>(values)...);
          const std::string toStringedValues = oss.str();
          return toStringedValues;
       }
@@ -100,7 +100,7 @@ namespace ZenUnit
       }
 
       template<typename T, typename... Types>
-      static void DoToStringConcat(std::ostringstream& oss, const T& value, const Types&... values)
+      static void DoToStringConcat(std::ostringstream& oss, const T& value, Types&&... values)
       {
          oss << ToString(value);
          size_t numberOfRemainingValues = sizeof...(values);
@@ -108,7 +108,7 @@ namespace ZenUnit
          {
             oss << ", ";
          }
-         DoToStringConcat(oss, values...);
+         DoToStringConcat(oss, std::forward<Types>(values)...);
       }
 
       static void DoToStringConcat(std::ostringstream&)

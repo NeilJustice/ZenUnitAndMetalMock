@@ -28,7 +28,7 @@ namespace ZenUnit
          FileLine fileLine,
          const char* messagePrefixSpaces,
          const char* messagesText,
-         const MessageTypes&... messages)
+         MessageTypes&&... messages)
       {
          std::ostringstream whyBuilder;
          whyBuilder << '\n' << failedLinePrefix;
@@ -44,7 +44,7 @@ namespace ZenUnit
          }
          if (messagesNonEmpty)
          {
-            this->message = ToStringer::ToStringConcat(messages...);
+            this->message = ToStringer::ToStringConcat(std::forward<MessageTypes>(messages)...);
             whyBuilder << messagePrefixSpaces << "Message: " << this->message << '\n';
          }
          whyBuilder << fileLine;
@@ -64,13 +64,13 @@ namespace ZenUnit
          const std::string& actual,
          ExpectedActualFormat expectedActualFormat,
          FileLine fileLine,
-         const MessageTypes&... messages)
+         MessageTypes&&... messages)
       {
          this->assertExpression = MakeAssertExpression(
             assertionName, arg1Text, arg2Text, arg3Text, messagesText);;
          this->expected = expected;
          this->actual = actual;
-         this->message = ToStringer::ToStringConcat(messages...);
+         this->message = ToStringer::ToStringConcat(std::forward<MessageTypes>(messages)...);
          this->fileLine = fileLine;
          std::ostringstream whyBuilder;
          whyBuilder << '\n' <<

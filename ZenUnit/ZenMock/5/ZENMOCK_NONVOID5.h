@@ -53,26 +53,27 @@ namespace ZenMock
       {
       }
 
-      void ExpectAndReturn(const ReturnType& returnValue)
+      template<typename ReturnTypeURef>
+      void ExpectAndReturn(ReturnTypeURef&& returnValue)
       {
          FiveArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::Expect();
-         ValueReturner<ReturnType>::DoAddReturnValue(returnValue);
+         ValueReturner<ReturnType>::ZenMockAddReturnValue(std::forward<ReturnTypeURef>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
-      void ExpectAndReturnValues(
-         const FirstReturnValue& firstReturnValue,
-         const SubsequentReturnValues&... subsequentReturnValues)
+      void ExpectAndReturnValues(const FirstReturnValue& firstReturnValue, const SubsequentReturnValues&... subsequentReturnValues)
       {
          FiveArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::Expect();
-         ValueReturner<ReturnType>::ZenMockPushBackReturnValues(firstReturnValue, subsequentReturnValues...);
+         ValueReturner<ReturnType>::ZenMockAddReturnValues(
+            firstReturnValue, 
+            subsequentReturnValues...);
       }
 
-      void ExpectAndReturnValues(
-         const std::vector<typename std::decay<ReturnType>::type>& returnValues)
+      template<typename ContainerType>
+      void ExpectAndReturnValues(ContainerType&& returnValues)
       {
          FiveArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::Expect();
-         ValueReturner<ReturnType>::ZenMockPushBackReturnValues(returnValues);
+         ValueReturner<ReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       ReturnType ZenMockItAndReturnValue(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5)

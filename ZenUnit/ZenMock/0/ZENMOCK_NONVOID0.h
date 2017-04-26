@@ -54,26 +54,27 @@ namespace ZenMock
       {
       }
 
-      void ExpectAndReturn(const ReturnType& returnValue)
+      template<typename ReturnTypeURef>
+      void ExpectAndReturn(ReturnTypeURef&& returnValue)
       {
          ZeroArgMocker::Expect();
-         ValueReturner<ReturnType>::ZenMockPushBackReturnValue(returnValue);
+         ValueReturner<ReturnType>::ZenMockAddReturnValue(std::forward<ReturnTypeURef>(returnValue));
       }
 
-      template<typename FirstReturnValue, typename... SubsequentReturnValues>
-      void ExpectAndReturnValues(
-         const FirstReturnValue& firstReturnValue,
-         const SubsequentReturnValues&... subsequentReturnValues)
+      template<typename ContainerType>
+      void ExpectAndReturnValues(ContainerType&& returnValues)
       {
          ZeroArgMocker::Expect();
-         ValueReturner<ReturnType>::ZenMockPushBackReturnValues(firstReturnValue, subsequentReturnValues...);
+         ValueReturner<ReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
-      void ExpectAndReturnValues(
-         const std::vector<typename std::decay<ReturnType>::type>& returnValues)
+      template<typename ReturnTypeURef, typename... ReturnTypeURefs>
+      void ExpectAndReturnValues(ReturnTypeURef&& firstReturnValue, ReturnTypeURefs&&... subsequentReturnValues)
       {
          ZeroArgMocker::Expect();
-         ValueReturner<ReturnType>::ZenMockPushBackReturnValues(returnValues);
+         ValueReturner<ReturnType>::ZenMockAddReturnValues(
+            std::forward<ReturnTypeURef>(firstReturnValue), 
+            std::forward<ReturnTypeURefs>(subsequentReturnValues)...);
       }
 
       ReturnType ZenMockItAndReturnValue()

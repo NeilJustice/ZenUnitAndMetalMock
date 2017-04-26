@@ -12,22 +12,22 @@ namespace ZenUnit
    template<typename... MessageTypes>
    NOINLINE void IS_NOT_NULL_Throw(
       const char* pointerText,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       throw Anomaly("IS_NOT_NULL", pointerText, "", "", messagesText,
          Anomaly::Default,
          "not nullptr",
          "nullptr",
-         ExpectedActualFormat::Fields, fileLine, messages...);
+         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename... MessageTypes>
    void IS_NOT_NULL_Defined(bool pointerIsNullptr, const char* pointerText,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (pointerIsNullptr)
       {
-         IS_NOT_NULL_Throw(pointerText, fileLine, messagesText, messages...);
+         IS_NOT_NULL_Throw(pointerText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 }

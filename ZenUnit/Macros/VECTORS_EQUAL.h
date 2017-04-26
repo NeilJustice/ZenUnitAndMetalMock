@@ -16,7 +16,7 @@ namespace ZenUnit
       const Anomaly& becauseAnomaly,
       const VectorType<T, Allocator>& expectedVector, const char* expectedVectorText,
       const VectorType<T, Allocator>& actualVector, const char* actualVectorText,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string toStringedExpectedVector = ToStringer::ToString(expectedVector);
       const std::string toStringedActualVector = ToStringer::ToString(actualVector);
@@ -24,7 +24,7 @@ namespace ZenUnit
          becauseAnomaly,
          toStringedExpectedVector,
          toStringedActualVector,
-         ExpectedActualFormat::Fields, fileLine, messages...);
+         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<
@@ -33,7 +33,7 @@ namespace ZenUnit
    void VECTORS_EQUAL_Defined(
       const VectorType<T, Allocator>& expectedVector, const char* expectedVectorText,
       const VectorType<T, Allocator>& actualVector, const char* actualVectorText,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       try
       {
@@ -44,7 +44,7 @@ namespace ZenUnit
          VECTORS_EQUAL_Throw(becauseAnomaly,
             expectedVector, expectedVectorText,
             actualVector, actualVectorText,
-            fileLine, messagesText, messages...);
+            fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
       const size_t expectedVectorSize = expectedVector.size();
       for (size_t i = 0; i < expectedVectorSize; ++i)
@@ -61,7 +61,7 @@ namespace ZenUnit
             VECTORS_EQUAL_Throw(becauseAnomaly,
                expectedVector, expectedVectorText,
                actualVector, actualVectorText,
-               fileLine, messagesText, messages...);
+               fileLine, messagesText, std::forward<MessageTypes>(messages)...);
          }
       }
    }

@@ -44,17 +44,8 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidSevenArgMock
 
 namespace ZenMock
 {
-   template<
-      typename ReturnType,
-      typename Arg1Type,
-      typename Arg2Type,
-      typename Arg3Type,
-      typename Arg4Type,
-      typename Arg5Type,
-      typename Arg6Type,
-      typename Arg7Type>
-   class NonVoidSevenArgMocker : public SevenArgMocker<
-      Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>, private ValueReturner<ReturnType>
+   template<typename ReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type>
+   class NonVoidSevenArgMocker : public SevenArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>, private ValueReturner<ReturnType>
    {
    public:
       explicit NonVoidSevenArgMocker(const std::string& zenMockedFunctionSignature)
@@ -62,54 +53,41 @@ namespace ZenMock
       {
       }
 
-      void ExpectAndReturn(const ReturnType& returnValue)
+      template<typename ReturnTypeURef>
+      void ExpectAndReturn(ReturnTypeURef&& returnValue)
       {
          SevenArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>::Expect();
-         ValueReturner<ReturnType>::DoAddReturnValue(returnValue);
+         ValueReturner<ReturnType>::ZenMockAddReturnValue(std::forward<ReturnTypeURef>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
-      void ExpectAndReturnValues(
-         const FirstReturnValue& firstReturnValue,
-         const SubsequentReturnValues&... subsequentReturnValues)
+      void ExpectAndReturnValues(const FirstReturnValue& firstReturnValue, const SubsequentReturnValues&... subsequentReturnValues)
       {
          SevenArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>::Expect();
-         ValueReturner<ReturnType>::ZenMockPushBackReturnValues(firstReturnValue, subsequentReturnValues...);
+         ValueReturner<ReturnType>::ZenMockAddReturnValues(firstReturnValue, subsequentReturnValues...);
       }
 
-      void ExpectAndReturnValues(
-         const std::vector<typename std::decay<ReturnType>::type>& returnValues)
+      template<typename ContainerType>
+      void ExpectAndReturnValues(ContainerType&& returnValues)
       {
          SevenArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>::Expect();
-         ValueReturner<ReturnType>::ZenMockPushBackReturnValues(returnValues);
+         ValueReturner<ReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
-      ReturnType ZenMockItAndReturnValue(
-         Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5, Arg6Type arg6, Arg7Type arg7)
+      ReturnType ZenMockItAndReturnValue(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5, Arg6Type arg6, Arg7Type arg7)
       {
-         SevenArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>::
-            ZenMock(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+         SevenArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>::ZenMock(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
          const ReturnType returnValue = ValueReturner<ReturnType>::ZenMockZenMockNextReturnValue();
          return returnValue;
       }
    };
 
-   template<
-      typename ReturnType,
-      typename Arg1Type,
-      typename Arg2Type,
-      typename Arg3Type,
-      typename Arg4Type,
-      typename Arg5Type,
-      typename Arg6Type,
-      typename Arg7Type>
-   class NonVoidSevenArgFunctionPointerMocker : public NonVoidSevenArgMocker<
-      ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>
+   template<typename ReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type>
+   class NonVoidSevenArgFunctionPointerMocker : public NonVoidSevenArgMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>
    {
    public:
       explicit NonVoidSevenArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
-         : NonVoidSevenArgFunctionPointerMocker<
-              ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>(zenMockedFunctionSignature)
+         : NonVoidSevenArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>(zenMockedFunctionSignature)
       {
       }
 
@@ -117,8 +95,7 @@ namespace ZenMock
          ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>* functionMocker,
          Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5, Arg6Type arg6, Arg7Type arg7)
       {
-         return functionMocker->ZenMockItAndReturnValue(
-            arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+         return functionMocker->ZenMockItAndReturnValue(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
       }
    };
 }

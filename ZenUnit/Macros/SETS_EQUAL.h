@@ -12,7 +12,7 @@ namespace ZenUnit
    NOINLINE void SETS_EQUAL_Throw(
       const Anomaly& becauseAnomaly,
       VRText<SetType> expectedSetVRT, VRText<SetType> actualSetVRT,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string toStringedExpectedSet = ToStringer::ToString(expectedSetVRT.value);
       const std::string toStringedActualSet = ToStringer::ToString(actualSetVRT.value);
@@ -20,12 +20,12 @@ namespace ZenUnit
          becauseAnomaly,
          toStringedExpectedSet,
          toStringedActualSet,
-         ExpectedActualFormat::Fields, fileLine, messages...);
+         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename SetType, typename... MessageTypes>
    void SETS_EQUAL_Defined(VRText<SetType> expectedSetVRT, VRText<SetType> actualSetVRT,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const SetType& expectedSet = expectedSetVRT.value;
       const SetType& actualSet = actualSetVRT.value;
@@ -42,7 +42,7 @@ namespace ZenUnit
          SETS_EQUAL_Throw(
             becauseAnomaly,
             expectedSetVRT, actualSetVRT,
-            fileLine, messagesText, messages...);
+            fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 }

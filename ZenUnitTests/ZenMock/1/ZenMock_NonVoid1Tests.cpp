@@ -41,8 +41,8 @@ namespace ZenMock
    SPEC(ExpectAndReturn_CausesFunctionToReturnValueThereafter)
    SPEC(ExpectAndReturnValues_CalledTwice_Throws)
    SPEC(ExpectAndReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereafter)
-   SPEC(ExpectAndReturnValuesVector_CalledTwice_Throws)
-   SPEC(ExpectAndReturnValuesVector_CausesFunctionToReturnValuesInSequenceThenLastValueThereafter)
+   SPEC(ExpectAndReturnContainerValues_CalledTwice_Throws)
+   SPEC(ExpectAndReturnContainerValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereafter)
    // Assertion Tests
    SPECX(AssertCalledOnceWith_ExpectedFunctionCalled0Or2OrMoreTimes_Throws)
    SPEC(AssertCalledOnceWith_ExpectedFunctionCalledOnceWithMistmatchingArg_Throws)
@@ -181,8 +181,8 @@ namespace ZenMock
    {
       const auto test = [&](auto& zenMockObject, const string& expectedSignature)
       {
-         zenMockObject.ExpectAndReturnValues(0);
-         THROWS(zenMockObject.ExpectAndReturnValues(0), FunctionAlreadyExpectedException,
+         zenMockObject.ExpectAndReturnValues(0, 1);
+         THROWS(zenMockObject.ExpectAndReturnValues(2, 3), FunctionAlreadyExpectedException,
             FunctionAlreadyExpectedException::MakeWhat(expectedSignature));
       };
       test(mock.VirtualMock, VirtualSignature);
@@ -217,12 +217,12 @@ namespace ZenMock
       test(Static_ZenMock, [&]{ return ZENBIND1(Static_ZenMock)(0); });
    }
 
-   TEST(ExpectAndReturnValuesVector_CalledTwice_Throws)
+   TEST(ExpectAndReturnContainerValues_CalledTwice_Throws)
    {
       const auto test = [](auto& zenMockObject, const string& expectedSignature)
       {
-         zenMockObject.ExpectAndReturnValues({0});
-         THROWS(zenMockObject.ExpectAndReturnValues({0}), FunctionAlreadyExpectedException,
+         zenMockObject.ExpectAndReturnValues(vector<int>{0});
+         THROWS(zenMockObject.ExpectAndReturnValues(vector<int>{0}), FunctionAlreadyExpectedException,
             FunctionAlreadyExpectedException::MakeWhat(expectedSignature));
       };
       test(mock.VirtualMock, VirtualSignature);
@@ -236,7 +236,7 @@ namespace ZenMock
       test(Static_ZenMock, StaticUniqueSignature);
    }
 
-   TEST(ExpectAndReturnValuesVector_CausesFunctionToReturnValuesInSequenceThenLastValueThereafter)
+   TEST(ExpectAndReturnContainerValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereafter)
    {
       const auto test = [&](auto& zenMockObject, auto zenMockedFunctionCall)
       {

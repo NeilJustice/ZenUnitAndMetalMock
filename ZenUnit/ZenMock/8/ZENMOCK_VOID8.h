@@ -43,55 +43,28 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::ZenMockVoidEightArg
 
 namespace ZenMock
 {
-   template<
-      typename Arg1Type,
-      typename Arg2Type,
-      typename Arg3Type,
-      typename Arg4Type,
-      typename Arg5Type,
-      typename Arg6Type,
-      typename Arg7Type,
-      typename Arg8Type>
-   class VoidEightArgMocker : public EightArgMocker<
-      Arg1Type, Arg2Type, Arg3Type, Arg4Type,
-      Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>
+   template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type>
+   class VoidEightArgMocker : public EightArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>
    {
    public:
       explicit VoidEightArgMocker(const std::string& zenMockedFunctionSignature)
-         : EightArgMocker<
-            Arg1Type, Arg2Type, Arg3Type, Arg4Type,
-            Arg5Type, Arg6Type, Arg7Type, Arg8Type>(zenMockedFunctionSignature)
+         : EightArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>(zenMockedFunctionSignature)
       {
       }
    };
 
-   template<
-      typename Arg1Type,
-      typename Arg2Type,
-      typename Arg3Type,
-      typename Arg4Type,
-      typename Arg5Type,
-      typename Arg6Type,
-      typename Arg7Type,
-      typename Arg8Type>
-   class VoidEightArgFunctionPointerMocker : public VoidEightArgMocker<
-      Arg1Type, Arg2Type, Arg3Type, Arg4Type,
-      Arg5Type, Arg6Type, Arg7Type, Arg8Type>
+   template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type>
+   class VoidEightArgFunctionPointerMocker : public VoidEightArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>
    {
    public:
       explicit VoidEightArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
-         : VoidEightArgMocker<
-            Arg1Type, Arg2Type, Arg3Type, Arg4Type,
-            Arg5Type, Arg6Type, Arg7Type, Arg8Type>(zenMockedFunctionSignature)
+         : VoidEightArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>(zenMockedFunctionSignature)
       {
       }
 
       static void ZenMockItFunctionPointer(
-         VoidEightArgFunctionPointerMocker<
-            Arg1Type, Arg2Type, Arg3Type, Arg4Type,
-            Arg5Type, Arg6Type, Arg7Type, Arg8Type>* functionMocker,
-         Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4,
-         Arg5Type arg5, Arg6Type arg6, Arg7Type arg7, Arg8Type arg8)
+         VoidEightArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>* functionMocker,
+         Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5, Arg6Type arg6, Arg7Type arg7, Arg8Type arg8)
       {
          functionMocker->ZenMock(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
       }

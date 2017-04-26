@@ -12,24 +12,24 @@ namespace ZenUnit
 {
    template<typename PointerType, typename... MessageTypes>
    NOINLINE void IS_NULL_Throw(VRText<PointerType> pointerVRT,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string actualField = ToStringer::ToString(pointerVRT.value);
       throw Anomaly("IS_NULL", pointerVRT.text, "", "", messagesText,
          Anomaly::Default,
          "nullptr",
          actualField,
-         ExpectedActualFormat::Fields, fileLine, messages...);
+         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename PointerType, typename... MessageTypes>
    void IS_NULL_Defined(VRText<PointerType> pointerVRT,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const bool pointerIsNull = pointerVRT.value == nullptr;
       if (!pointerIsNull)
       {
-         IS_NULL_Throw(pointerVRT, fileLine, messagesText, messages...);
+         IS_NULL_Throw(pointerVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 }

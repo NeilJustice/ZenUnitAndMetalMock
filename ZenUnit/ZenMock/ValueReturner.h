@@ -20,29 +20,30 @@ namespace ZenMock
       {
       }
 
-      void ZenMockPushBackReturnValue(const ReturnType& returnValue)
+      template<typename ReturnTypeURef>
+      void ZenMockAddReturnValue(ReturnTypeURef&& returnValue)
       {
-         _returnValues.push_back(returnValue);
+         _returnValues.emplace_back(std::forward<ReturnTypeURef>(returnValue));
       }
 
-      template<typename FirstReturnValue, typename... SubsequentReturnValues>
-      void ZenMockPushBackReturnValues(
-         const FirstReturnValue& firstReturnValue,
-         const SubsequentReturnValues&... subsequentReturnValues)
+      template<typename ReturnTypeURef, typename... ReturnTypeURefs>
+      void ZenMockAddReturnValues(
+         ReturnTypeURef&& firstReturnValue, ReturnTypeURefs&&... subsequentReturnValues)
       {
-         ZenMockPushBackReturnValue(firstReturnValue);
-         ZenMockPushBackReturnValues(subsequentReturnValues...);
+         ZenMockAddReturnValue(std::forward<ReturnTypeURef>(firstReturnValue));
+         ZenMockAddReturnValues(std::forward<ReturnTypeURefs>(subsequentReturnValues)...);
       }
-      void ZenMockPushBackReturnValues() {}
+      void ZenMockAddReturnValues() {}
 
-      void ZenMockPushBackReturnValues(const std::vector<DecayedReturnType>& values)
+      template<typename ContainerType>
+      void ZenMockAddContainerReturnValues(ContainerType&& returnValues)
       {
-         if (values.empty())
+         if (returnValues.empty())
          {
             throw std::invalid_argument(
-               "ZenMock::ValueReturner::ZenMockPushBackReturnValues(): Return values vector cannot be empty");
+               "ZenMock::ValueReturner::ZenMockAddContainerReturnValues(): Return values vector cannot be empty");
          }
-         _returnValues.insert(end(_returnValues), values.cbegin(), values.cend());
+         _returnValues.insert(_returnValues.end(), returnValues.cbegin(), returnValues.cend());
       }
 
       template<typename FunctionReturnType = ReturnType>

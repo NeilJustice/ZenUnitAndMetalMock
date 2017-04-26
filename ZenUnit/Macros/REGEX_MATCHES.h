@@ -12,7 +12,7 @@ namespace ZenUnit
    template<typename PatternStringType, typename StrStringType, typename... MessageTypes>
    NOINLINE void REGEX_MATCHES_Throw(
       VRText<PatternStringType> expectedPatternVRT, VRText<StrStringType> strVRT,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedLine = String::Concat(
          "Expected string to match: \"", expectedPatternVRT.value, "\"");
@@ -23,21 +23,21 @@ namespace ZenUnit
          Anomaly::Default,
          expectedLine,
          actualLine,
-         ExpectedActualFormat::WholeLines, fileLine, messages...);
+         ExpectedActualFormat::WholeLines, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename PatternStringType, typename StrStringType, typename... MessageTypes>
    void REGEX_MATCHES_Defined(
       VRText<PatternStringType> expectedPatternVRT,
       VRText<StrStringType> strVRT,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::regex regexPattern(expectedPatternVRT.value);
       if (!std::regex_match(strVRT.value, regexPattern))
       {
          REGEX_MATCHES_Throw(
             expectedPatternVRT, strVRT,
-            fileLine, messagesText, messages...);
+            fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 }

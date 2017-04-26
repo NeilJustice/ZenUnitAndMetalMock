@@ -14,7 +14,7 @@ namespace ZenUnit
       VRText<ExpectedType> expectedPointerVRT,
       VRText<ActualType> actualPointerVRT,
       const char* expectedOrActual,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedField = expectedOrActual + std::string(" pointer != nullptr");
       const std::string actualField = expectedOrActual + std::string(" pointer == nullptr");
@@ -22,7 +22,7 @@ namespace ZenUnit
          messagesText, Anomaly::Default,
          expectedField,
          actualField,
-         ExpectedActualFormat::Fields, fileLine, messages...);
+         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ExpectedType, typename ActualType, typename... MessageTypes>
@@ -30,7 +30,7 @@ namespace ZenUnit
       VRText<ExpectedType> expectedPointerVRT,
       VRText<ActualType> actualPointerVRT,
       const Anomaly& becauseAnomaly,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedField = ToStringer::ToString(*expectedPointerVRT.value);
       const std::string actualField = ToStringer::ToString(*actualPointerVRT.value);
@@ -38,26 +38,26 @@ namespace ZenUnit
          messagesText, becauseAnomaly,
          expectedField,
          actualField,
-         ExpectedActualFormat::Fields, fileLine, messages...);
+         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ActualType, typename... MessageTypes>
    NOINLINE void POINTEES_EQUAL_Throw(
-      VRText<std::nullptr_t>, VRText<ActualType>, const Anomaly&, FileLine, const char*, const MessageTypes&...)
+      VRText<std::nullptr_t>, VRText<ActualType>, const Anomaly&, FileLine, const char*, MessageTypes&&...)
    {
       assert_true(false);
    }
 
    template<typename ExpectedType, typename... MessageTypes>
    NOINLINE void POINTEES_EQUAL_Throw(
-      VRText<ExpectedType>, VRText<std::nullptr_t>, const Anomaly&, FileLine, const char*, const MessageTypes&...)
+      VRText<ExpectedType>, VRText<std::nullptr_t>, const Anomaly&, FileLine, const char*, MessageTypes&&...)
    {
       assert_true(false);
    }
 
    template<typename... MessageTypes>
    NOINLINE void POINTEES_EQUAL_Throw(
-      VRText<std::nullptr_t>, VRText<std::nullptr_t>, const Anomaly&, FileLine, const char*, const MessageTypes&...)
+      VRText<std::nullptr_t>, VRText<std::nullptr_t>, const Anomaly&, FileLine, const char*, MessageTypes&&...)
    {
       assert_true(false);
    }
@@ -86,7 +86,7 @@ namespace ZenUnit
    void POINTEES_EQUAL_Defined(
       VRText<ExpectedType> expectedPointerVRT,
       VRText<ActualType> actualPointerVRT,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (expectedPointerVRT.value == nullptr)
       {
@@ -95,12 +95,12 @@ namespace ZenUnit
             return;
          }
          POINTEES_EQUAL_Throw_NullptrExpectedOrActual(expectedPointerVRT, actualPointerVRT, "expected",
-            fileLine, messagesText, messages...);
+            fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
       else if (actualPointerVRT.value == nullptr)
       {
          POINTEES_EQUAL_Throw_NullptrExpectedOrActual(expectedPointerVRT, actualPointerVRT, "actual",
-            fileLine, messagesText, messages...);
+            fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
       try
       {
@@ -111,7 +111,7 @@ namespace ZenUnit
          POINTEES_EQUAL_Throw(
             expectedPointerVRT,
             actualPointerVRT,
-            becauseAnomaly, fileLine, messagesText, messages...);
+            becauseAnomaly, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 }

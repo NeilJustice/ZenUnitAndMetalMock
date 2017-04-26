@@ -11,19 +11,19 @@ namespace ZenUnit
       static std::vector<std::string> CommaSplitExceptQuotedCommas(const char* text);
 
       template<typename... Types>
-      static std::string Concat(const Types&... values)
+      static std::string Concat(Types&&... values)
       {
          std::ostringstream oss;
-         OStringStreamConcat(oss, values...);
+         OStringStreamConcat(oss, std::forward<Types>(values)...);
          const std::string concatenatedValues = oss.str();
          return concatenatedValues;
       }
 
       template<typename T, typename... Types>
-      static void OStringStreamConcat(std::ostringstream& oss, const T& value, const Types&... values)
+      static void OStringStreamConcat(std::ostringstream& oss, const T& value, Types&&... values)
       {
          oss << value;
-         OStringStreamConcat(oss, values...);
+         OStringStreamConcat(oss, std::forward<Types>(values)...);
       }
 
       template<typename... T>

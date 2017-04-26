@@ -14,7 +14,7 @@ namespace ZenUnit
    NOINLINE void ARE_SAME_Throw(
       const VRText<ExpectedObjectType>& expectedObjectVRT,
       const VRText<ActualObjectType>& actualObjectVRT,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedField = ToStringer::ToString(&expectedObjectVRT.value);
       const std::string actualField = ToStringer::ToString(&actualObjectVRT.value);
@@ -22,21 +22,21 @@ namespace ZenUnit
          Anomaly::Default,
          expectedField,
          actualField,
-         ExpectedActualFormat::Fields, fileLine, messages...);
+         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
    void ARE_SAME_Defined(
       const VRText<ExpectedObjectType>& expectedObjectVRT,
       const VRText<ActualObjectType>& actualObjectVRT,
-      FileLine fileLine, const char* messagesText, const MessageTypes&... messages)
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (&expectedObjectVRT.value != &actualObjectVRT.value)
       {
          ARE_SAME_Throw(
             expectedObjectVRT,
             actualObjectVRT,
-            fileLine, messagesText, messages...);
+            fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 }
