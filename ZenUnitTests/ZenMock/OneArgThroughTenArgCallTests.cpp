@@ -15,14 +15,14 @@ namespace ZenMock
    template<size_t Value>
    struct T
    {
-      int x;
+      bool flag;
 
-      T() : x(0) {}
-      explicit T(int x) : x(x) {}
+      T() : flag(false) {}
+      explicit T(bool flag) : flag(flag) {}
 
       friend bool operator==(const T<Value>& lhs, const T<Value>& rhs)
       {
-         return lhs.x == rhs.x;
+         return lhs.flag == rhs.flag;
       }
    };
 
@@ -36,16 +36,16 @@ namespace ZenMock
    const T<8> DV8;
    const T<9> DV9;
    const T<10> DV10;
-   const T<1> V1 = T<1>(1);
-   const T<2> V2 = T<2>(1);
-   const T<3> V3 = T<3>(1);
-   const T<4> V4 = T<4>(1);
-   const T<5> V5 = T<5>(1);
-   const T<6> V6 = T<6>(1);
-   const T<7> V7 = T<7>(1);
-   const T<8> V8 = T<8>(1);
-   const T<9> V9 = T<9>(1);
-   const T<10> V10 = T<10>(1);
+   const T<1> V1 = T<1>(true);
+   const T<2> V2 = T<2>(true);
+   const T<3> V3 = T<3>(true);
+   const T<4> V4 = T<4>(true);
+   const T<5> V5 = T<5>(true);
+   const T<6> V6 = T<6>(true);
+   const T<7> V7 = T<7>(true);
+   const T<8> V8 = T<8>(true);
+   const T<9> V9 = T<9>(true);
+   const T<10> V10 = T<10>(true);
 
    TESTS(OneArgCallTests)
    SPEC(DefaultConstructor_DefaultInitializesArg)
