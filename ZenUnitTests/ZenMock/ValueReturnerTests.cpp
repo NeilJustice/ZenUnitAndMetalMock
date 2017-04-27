@@ -60,10 +60,10 @@ namespace ZenMock
       valueReturner.ZenMockAddReturnValue(1);
       valueReturner.ZenMockAddReturnValues(2, 3);
       valueReturner.ZenMockAddContainerReturnValues(vector<int> { 4, 5 });
-      valueReturner.ZenMockAddContainerReturnValues(std::array<int, 2>{ 6, 7 });
+      valueReturner.ZenMockAddContainerReturnValues(std::array<int, 2>{{ 6, 7 }});
       vector<int> lvalueVector{8};
       valueReturner.ZenMockAddContainerReturnValues(lvalueVector);
-      std::array<int, 1> lvalueArray{9};
+      std::array<int, 1> lvalueArray{{9}};
       valueReturner.ZenMockAddContainerReturnValues(lvalueArray);
       ARE_EQUAL(1, valueReturner.ZenMockZenMockNextReturnValue());
       ARE_EQUAL(2, valueReturner.ZenMockZenMockNextReturnValue());
@@ -104,7 +104,6 @@ namespace ZenMock
       ValueReturner<int> valueReturner(ZenMockedFunctionSignature);
       const char* const ExpectedWhat = "ZenMock::ValueReturner::ZenMockAddContainerReturnValues(): Return values vector cannot be empty";
       THROWS(valueReturner.ZenMockAddContainerReturnValues(vector<int>{}), invalid_argument, ExpectedWhat);
-      THROWS(valueReturner.ZenMockAddContainerReturnValues(list<int>{}), invalid_argument, ExpectedWhat);
    }
 
    }; RUN(ValueReturnerTests)
