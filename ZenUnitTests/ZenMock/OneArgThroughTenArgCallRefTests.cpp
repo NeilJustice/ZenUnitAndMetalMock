@@ -9,12 +9,21 @@
 #include "ZenUnit/ZenMock/7/SevenArgCallRef.h"
 #include "ZenUnit/ZenMock/8/EightArgCallRef.h"
 #include "ZenUnit/ZenMock/9/NineArgCallRef.h"
+#include "ZenUnitTests/ZenMock/T.h"
 
 namespace ZenMock
 {
-   const int a1 = 1, a2 = 2, a3 = 3, a4 = 4, a5 = 5, a6 = 6, a7 = 7, a8 = 8, a9 = 9, a10 = 10;
-   const string s1 = "1", s2 = "2", s3 = "3", s4 = "4", s5 = "5", s6 = "6", s7 = "7", s8 = "8", s9 = "9", s10 = "10";
-   const int ten = 10;
+   const T<1> V1 = T<1>(true);
+   const T<2> V2 = T<2>(true);
+   const T<3> V3 = T<3>(true);
+   const T<4> V4 = T<4>(true);
+   const T<5> V5 = T<5>(true);
+   const T<6> V6 = T<6>(true);
+   const T<7> V7 = T<7>(true);
+   const T<8> V8 = T<8>(true);
+   const T<9> V9 = T<9>(true);
+   const T<10> V10 = T<10>(true);
+   const string S1 = "1", S2 = "2", S3 = "3", S4 = "4", S5 = "5", S6 = "6", S7 = "7", S8 = "8", S9 = "9", S10 = "10";
 
    void AssertARE_EQUALThrowsAnomalyContaining(
       const function<void()>& areEqualCall, const char* expectedWhatContains)
@@ -36,31 +45,29 @@ namespace ZenMock
    SPEC(ZenUnitEqualizer_ThrowsIfArgFieldNotEqual)
    SPECEND
 
-   using Call1 = OneArgCall<int>;
-   using CallRef1 = OneArgCallRef<int>;
+   using Call1 = OneArgCall<T<1>>;
+   using CallRef1 = OneArgCallRef<T<1>>;
    using CallRefString1 = OneArgCallRef<string>;
 
    TEST(Constructor_SetsReferences)
    {
-      int x;
+      const CallRef1 callRef(V1);
       //
-      const CallRef1 callRef(x);
-      //
-      ARE_SAME(x, callRef.arg);
+      ARE_SAME(V1, callRef.arg1);
    }
 
    TEST(CallConstructor_SetsReferencesToOneArgCallArg)
    {
-      const Call1 call(1);
+      const Call1 call(V1);
       //
       const CallRef1 callRef(call);
       //
-      ARE_SAME(call.arg, callRef.arg);
+      ARE_SAME(call.arg1, callRef.arg1);
    }
 
    TEST(ZenUnitPrinter_WritesToStringedArg)
    {
-      CallRefString1 callRef(s1);
+      CallRefString1 callRef(S1);
       ostringstream oss;
       //
       ZenUnitPrinter<CallRefString1>::Print(oss, callRef);
@@ -72,11 +79,8 @@ Arg: "1")", zenUnitPrintResult);
 
    TEST(ZenUnitEqualizer_ThrowsIfArgFieldNotEqual)
    {
-      int x = 1;
-      const CallRef1 callRef(x);
-
-      int y = 2;
-      const CallRef1 callRef_arg1(y);
+      const CallRef1 callRef(V1);
+      const CallRef1 callRef_arg1(T<1>(false));
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
    }
 
@@ -90,21 +94,21 @@ Arg: "1")", zenUnitPrintResult);
    SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    SPECEND
 
-   using Call2 = TwoArgCall<int, int>;
-   using CallRef2 = TwoArgCallRef<int, int>;
+   using Call2 = TwoArgCall<T<1>, T<2>>;
+   using CallRef2 = TwoArgCallRef<T<1>, T<2>>;
    using CallRefString2 = TwoArgCallRef<string, string>;
 
    TEST(Constructor_SetsReferences)
    {
-      const CallRef2 callRef(a1, a2);
+      const CallRef2 callRef(V1, V2);
       //
-      ARE_SAME(a1, callRef.arg1);
-      ARE_SAME(a2, callRef.arg2);
+      ARE_SAME(V1, callRef.arg1);
+      ARE_SAME(V2, callRef.arg2);
    }
 
    TEST(CallConstructor_SetsReferencesToTwoArgCallArgs)
    {
-      const Call2 twoArgCall(1, 2);
+      const Call2 twoArgCall(V1, V2);
       //
       const CallRef2 callRef(twoArgCall);
       //
@@ -114,7 +118,7 @@ Arg: "1")", zenUnitPrintResult);
 
    TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)
    {
-      const CallRefString2 callRef(s1, s2);
+      const CallRefString2 callRef(S1, S2);
       ostringstream oss;
       //
       ZenUnitPrinter<CallRefString2>::Print(oss, callRef);
@@ -127,11 +131,12 @@ Arg2: "2")", zenUnitPrintResult);
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      CallRef2 callRef(a1, a2);
-      CallRef2 callRef_arg1(ten, a2);
+      CallRef2 callRef(V1, V2);
+
+      CallRef2 callRef_arg1(T<1>(false), V2);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
 
-      CallRef2 callRef_arg2(a1, ten);
+      CallRef2 callRef_arg2(V1, T<2>(false));
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
    }
 
@@ -145,22 +150,22 @@ Arg2: "2")", zenUnitPrintResult);
    SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    SPECEND
 
-   using Call3 = ThreeArgCall<int, int, int>;
-   using CallRef3 = ThreeArgCallRef<int, int, int>;
+   using Call3 = ThreeArgCall<T<1>, T<2>, T<3>>;
+   using CallRef3 = ThreeArgCallRef<T<1>, T<2>, T<3>>;
    using CallRefString3 = ThreeArgCallRef<string, string, string>;
 
    TEST(Constructor_SetsReferences)
    {
-      const CallRef3 callRef(a1, a2, a3);
+      const CallRef3 callRef(V1, V2, V3);
       //
-      ARE_SAME(a1, callRef.arg1);
-      ARE_SAME(a2, callRef.arg2);
-      ARE_SAME(a3, callRef.arg3);
+      ARE_SAME(V1, callRef.arg1);
+      ARE_SAME(V2, callRef.arg2);
+      ARE_SAME(V3, callRef.arg3);
    }
 
    TEST(CallConstructor_SetsReferencesToThreeArgCallArgs)
    {
-      const Call3 threeArgCall(1, 2, 3);
+      const Call3 threeArgCall(V1, V2, V3);
       //
       const CallRef3 callRef(threeArgCall);
       //
@@ -171,7 +176,7 @@ Arg2: "2")", zenUnitPrintResult);
 
    TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)
    {
-      const CallRefString3 callRef(s1, s2, s3);
+      const CallRefString3 callRef(S1, S2, S3);
       ostringstream oss;
       //
       ZenUnitPrinter<CallRefString3>::Print(oss, callRef);
@@ -185,14 +190,15 @@ Arg3: "3")", zenUnitPrintResult);
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      const CallRef3 callRef(a1, a2, a3);
-      const CallRef3 callRef_arg1(ten, a2, a3);
+      const CallRef3 callRef(V1, V2, V3);
+
+      const CallRef3 callRef_arg1(T<1>(false), V2, V3);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
 
-      const CallRef3 callRef_arg2(a1, ten, a3);
+      const CallRef3 callRef_arg2(V1, T<2>(false), V3);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
 
-      const CallRef3 callRef_arg3(a1, a2, ten);
+      const CallRef3 callRef_arg3(V1, V2, T<3>(false));
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "arg3");
    }
 
@@ -206,23 +212,23 @@ Arg3: "3")", zenUnitPrintResult);
    SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    SPECEND
 
-   using Call4 = FourArgCall<int, int, int, int>;
-   using CallRef4 = FourArgCallRef<int, int, int, int>;
+   using Call4 = FourArgCall<T<1>, T<2>, T<3>, T<4>>;
+   using CallRef4 = FourArgCallRef<T<1>, T<2>, T<3>, T<4>>;
    using CallRefString4 = FourArgCallRef<string, string, string, string>;
 
    TEST(Constructor_SetsReferences)
    {
-      const CallRef4 callRef(a1, a2, a3, a4);
+      const CallRef4 callRef(V1, V2, V3, V4);
       //
-      ARE_SAME(a1, callRef.arg1);
-      ARE_SAME(a2, callRef.arg2);
-      ARE_SAME(a3, callRef.arg3);
-      ARE_SAME(a4, callRef.arg4);
+      ARE_SAME(V1, callRef.arg1);
+      ARE_SAME(V2, callRef.arg2);
+      ARE_SAME(V3, callRef.arg3);
+      ARE_SAME(V4, callRef.arg4);
    }
 
    TEST(CallConstructor_SetsReferencesToFourArgCallArgs)
    {
-      const Call4 call(1, 2, 3, 4);
+      const Call4 call(V1, V2, V3, V4);
       //
       const CallRef4 callRef(call);
       //
@@ -234,11 +240,7 @@ Arg3: "3")", zenUnitPrintResult);
 
    TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)
    {
-      string x = "1";
-      string y = "2";
-      string z = "3";
-      string q = "4";
-      const CallRefString4 callRef(x, y, z, q);
+      const CallRefString4 callRef(S1, S2, S3, S4);
       ostringstream oss;
       //
       ZenUnitPrinter<CallRefString4>::Print(oss, callRef);
@@ -253,17 +255,18 @@ Arg4: "4")", zenUnitPrintResult);
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      const CallRef4 callRef(a1, a2, a3, a4);
-      const CallRef4 callRef_arg1(ten, a2, a3, a4);
+      const CallRef4 callRef(V1, V2, V3, V4);
+
+      const CallRef4 callRef_arg1(T<1>(false), V2, V3, V4);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
 
-      const CallRef4 callRef_arg2(a1, ten, a3, a4);
+      const CallRef4 callRef_arg2(V1, T<2>(false), V3, V4);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
 
-      const CallRef4 callRef_arg3(a1, a2, ten, a4);
+      const CallRef4 callRef_arg3(V1, V2, T<3>(false), V4);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "arg3");
 
-      const CallRef4 callRef_arg4(a1, a2, a3, ten);
+      const CallRef4 callRef_arg4(V1, V2, V3, T<4>(false));
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "arg4");
    }
 
@@ -277,24 +280,24 @@ Arg4: "4")", zenUnitPrintResult);
    SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    SPECEND
 
-   using Call5 = FiveArgCall<int, int, int, int, int>;
-   using CallRef5 = FiveArgCallRef<int, int, int, int, int>;
+   using Call5 = FiveArgCall<T<1>, T<2>, T<3>, T<4>, T<5>>;
+   using CallRef5 = FiveArgCallRef<T<1>, T<2>, T<3>, T<4>, T<5>>;
    using CallRefString5 = FiveArgCallRef<string, string, string, string, string>;
 
    TEST(Constructor_SetsReferences)
    {
-      const CallRef5 callRef(a1, a2, a3, a4, a5);
+      const CallRef5 callRef(V1, V2, V3, V4, V5);
       //
-      ARE_SAME(a1, callRef.arg1);
-      ARE_SAME(a2, callRef.arg2);
-      ARE_SAME(a3, callRef.arg3);
-      ARE_SAME(a4, callRef.arg4);
-      ARE_SAME(a5, callRef.arg5);
+      ARE_SAME(V1, callRef.arg1);
+      ARE_SAME(V2, callRef.arg2);
+      ARE_SAME(V3, callRef.arg3);
+      ARE_SAME(V4, callRef.arg4);
+      ARE_SAME(V5, callRef.arg5);
    }
 
    TEST(CallConstructor_SetsReferencesToFiveArgCallArgs)
    {
-      const Call5 call(1, 2, 3, 4, 5);
+      const Call5 call(V1, V2, V3, V4, V5);
       //
       const CallRef5 callRef(call);
       //
@@ -307,7 +310,7 @@ Arg4: "4")", zenUnitPrintResult);
 
    TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)
    {
-      const CallRefString5 callRef(s1, s2, s3, s4, s5);
+      const CallRefString5 callRef(S1, S2, S3, S4, S5);
       ostringstream oss;
       //
       ZenUnitPrinter<CallRefString5>::Print(oss, callRef);
@@ -323,20 +326,21 @@ Arg5: "5")", zenUnitPrintResult);
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      const CallRef5 callRef(a1, a2, a3, a4, a5);
-      const CallRef5 callRef_arg1(ten, a2, a3, a4, a5);
+      const CallRef5 callRef(V1, V2, V3, V4, V5);
+
+      const CallRef5 callRef_arg1(T<1>(false), V2, V3, V4, V5);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
 
-      const CallRef5 callRef_arg2(a1, ten, a3, a4, a5);
+      const CallRef5 callRef_arg2(V1, T<2>(false), V3, V4, V5);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
 
-      const CallRef5 callRef_arg3(a1, a2, ten, a4, a5);
+      const CallRef5 callRef_arg3(V1, V2, T<3>(false), V4, V5);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "arg3");
 
-      const CallRef5 callRef_arg4(a1, a2, a3, ten, a5);
+      const CallRef5 callRef_arg4(V1, V2, V3, T<4>(false), V5);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "arg4");
 
-      const CallRef5 callRef_arg5(a1, a2, a3, a4, ten);
+      const CallRef5 callRef_arg5(V1, V2, V3, V4, T<5>(false));
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "arg5");
    }
 
@@ -350,25 +354,25 @@ Arg5: "5")", zenUnitPrintResult);
    SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    SPECEND
 
-   using Call6 = SixArgCall<int, int, int, int, int, int>;
-   using CallRef6 = SixArgCallRef<int, int, int, int, int, int>;
+   using Call6 = SixArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>>;
+   using CallRef6 = SixArgCallRef<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>>;
    using CallRefString6 = SixArgCallRef<string, string, string, string, string, string>;
 
    TEST(Constructor_SetsReferences)
    {
-      const CallRef6 callRef(a1, a2, a3, a4, a5, a6);
+      const CallRef6 callRef(V1, V2, V3, V4, V5, V6);
       //
-      ARE_SAME(a1, callRef.arg1);
-      ARE_SAME(a2, callRef.arg2);
-      ARE_SAME(a3, callRef.arg3);
-      ARE_SAME(a4, callRef.arg4);
-      ARE_SAME(a5, callRef.arg5);
-      ARE_SAME(a6, callRef.arg6);
+      ARE_SAME(V1, callRef.arg1);
+      ARE_SAME(V2, callRef.arg2);
+      ARE_SAME(V3, callRef.arg3);
+      ARE_SAME(V4, callRef.arg4);
+      ARE_SAME(V5, callRef.arg5);
+      ARE_SAME(V6, callRef.arg6);
    }
 
    TEST(CallConstructor_SetsReferencesToFiveArgCallArgs)
    {
-      Call6 call(1, 2, 3, 4, 5, 6);
+      Call6 call(V1, V2, V3, V4, V5, V6);
       //
       const CallRef6 callRef(call);
       //
@@ -382,7 +386,7 @@ Arg5: "5")", zenUnitPrintResult);
 
    TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)
    {
-      const CallRefString6 callRef(s1, s2, s3, s4, s5, s6);
+      const CallRefString6 callRef(S1, S2, S3, S4, S5, S6);
       ostringstream oss;
       //
       ZenUnitPrinter<CallRefString6>::Print(oss, callRef);
@@ -399,23 +403,24 @@ Arg6: "6")", zenUnitPrintResult);
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      CallRef6 callRef(a1, a2, a3, a4, a5, a6);
-      CallRef6 callRef_arg1(ten, a2, a3, a4, a5, a6);
+      CallRef6 callRef(V1, V2, V3, V4, V5, V6);
+
+      CallRef6 callRef_arg1(T<1>(false), V2, V3, V4, V5, V6);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
 
-      CallRef6 callRef_arg2(a1, ten, a3, a4, a5, a6);
+      CallRef6 callRef_arg2(V1, T<2>(false), V3, V4, V5, V6);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
 
-      CallRef6 callRef_arg3(a1, a2, ten, a4, a5, a6);
+      CallRef6 callRef_arg3(V1, V2, T<3>(false), V4, V5, V6);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "arg3");
 
-      CallRef6 callRef_arg4(a1, a2, a3, ten, a5, a6);
+      CallRef6 callRef_arg4(V1, V2, V3, T<4>(false), V5, V6);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "arg4");
 
-      CallRef6 callRef_arg5(a1, a2, a3, a4, ten, a6);
+      CallRef6 callRef_arg5(V1, V2, V3, V4, T<5>(false), V6);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "arg5");
 
-      CallRef6 callRef_arg6(a1, a2, a3, a4, a5, ten);
+      CallRef6 callRef_arg6(V1, V2, V3, V4, V5, T<6>(false));
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "arg6");
    }
 
@@ -429,26 +434,26 @@ Arg6: "6")", zenUnitPrintResult);
    SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    SPECEND
 
-   using Call7 = SevenArgCall<int, int, int, int, int, int, int>;
-   using CallRef7 = SevenArgCallRef<int, int, int, int, int, int, int>;
+   using Call7 = SevenArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>>;
+   using CallRef7 = SevenArgCallRef<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>>;
    using CallRefString7 = SevenArgCallRef<string, string, string, string, string, string, string>;
 
    TEST(Constructor_SetsReferences)
    {
-      const CallRef7 callRef(a1, a2, a3, a4, a5, a6, a7);
+      const CallRef7 callRef(V1, V2, V3, V4, V5, V6, V7);
       //
-      ARE_SAME(a1, callRef.arg1);
-      ARE_SAME(a2, callRef.arg2);
-      ARE_SAME(a3, callRef.arg3);
-      ARE_SAME(a4, callRef.arg4);
-      ARE_SAME(a5, callRef.arg5);
-      ARE_SAME(a6, callRef.arg6);
-      ARE_SAME(a7, callRef.arg7);
+      ARE_SAME(V1, callRef.arg1);
+      ARE_SAME(V2, callRef.arg2);
+      ARE_SAME(V3, callRef.arg3);
+      ARE_SAME(V4, callRef.arg4);
+      ARE_SAME(V5, callRef.arg5);
+      ARE_SAME(V6, callRef.arg6);
+      ARE_SAME(V7, callRef.arg7);
    }
 
    TEST(CallConstructor_SetsReferencesToFiveArgCallArgs)
    {
-      const Call7 call(1, 2, 3, 4, 5, 6, 7);
+      const Call7 call(V1, V2, V3, V4, V5, V6, V7);
       //
       const CallRef7 callRef(call);
       //
@@ -463,7 +468,7 @@ Arg6: "6")", zenUnitPrintResult);
 
    TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)
    {
-      const CallRefString7 callRef(s1, s2, s3, s4, s5, s6, s7);
+      const CallRefString7 callRef(S1, S2, S3, S4, S5, S6, S7);
       ostringstream oss;
       //
       ZenUnitPrinter<CallRefString7>::Print(oss, callRef);
@@ -481,26 +486,27 @@ Arg7: "7")", zenUnitPrintResult);
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      const CallRef7 callRef(a1, a2, a3, a4, a5, a6, a7);
-      const CallRef7 callRef_arg1(ten, a2, a3, a4, a5, a6, a7);
+      const CallRef7 callRef(V1, V2, V3, V4, V5, V6, V7);
+
+      const CallRef7 callRef_arg1(T<1>(false), V2, V3, V4, V5, V6, V7);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
 
-      CallRef7 callRef_arg2(a1, ten, a3, a4, a5, a6, a7);
+      CallRef7 callRef_arg2(V1, T<2>(false), V3, V4, V5, V6, V7);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
 
-      CallRef7 callRef_arg3(a1, a2, ten, a4, a5, a6, a7);
+      CallRef7 callRef_arg3(V1, V2, T<3>(false), V4, V5, V6, V7);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "arg3");
 
-      CallRef7 callRef_arg4(a1, a2, a3, ten, a5, a6, a7);
+      CallRef7 callRef_arg4(V1, V2, V3, T<4>(false), V5, V6, V7);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "arg4");
 
-      CallRef7 callRef_arg5(a1, a2, a3, a4, ten, a6, a7);
+      CallRef7 callRef_arg5(V1, V2, V3, V4, T<5>(false), V6, V7);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "arg5");
 
-      CallRef7 callRef_arg6(a1, a2, a3, a4, a5, ten, a7);
+      CallRef7 callRef_arg6(V1, V2, V3, V4, V5, T<6>(false), V7);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "arg6");
 
-      CallRef7 callRef_arg7(a1, a2, a3, a4, a5, a6, ten);
+      CallRef7 callRef_arg7(V1, V2, V3, V4, V5, V6, T<7>(false));
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg7); }, "arg7");
    }
 
@@ -514,27 +520,27 @@ Arg7: "7")", zenUnitPrintResult);
    SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    SPECEND
 
-   using Call8 = const EightArgCall<int, int, int, int, int, int, int, int>;
-   using CallRef8 = EightArgCallRef<int, int, int, int, int, int, int, int>;
+   using Call8 = const EightArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>>;
+   using CallRef8 = EightArgCallRef<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>>;
    using CallRefString8 = EightArgCallRef<string, string, string, string, string, string, string, string>;
 
    TEST(Constructor_SetsReferences)
    {
-      const CallRef8 callRef(a1, a2, a3, a4, a5, a6, a7, a8);
+      const CallRef8 callRef(V1, V2, V3, V4, V5, V6, V7, V8);
       //
-      ARE_SAME(a1, callRef.arg1);
-      ARE_SAME(a2, callRef.arg2);
-      ARE_SAME(a3, callRef.arg3);
-      ARE_SAME(a4, callRef.arg4);
-      ARE_SAME(a5, callRef.arg5);
-      ARE_SAME(a6, callRef.arg6);
-      ARE_SAME(a7, callRef.arg7);
-      ARE_SAME(a8, callRef.arg8);
+      ARE_SAME(V1, callRef.arg1);
+      ARE_SAME(V2, callRef.arg2);
+      ARE_SAME(V3, callRef.arg3);
+      ARE_SAME(V4, callRef.arg4);
+      ARE_SAME(V5, callRef.arg5);
+      ARE_SAME(V6, callRef.arg6);
+      ARE_SAME(V7, callRef.arg7);
+      ARE_SAME(V8, callRef.arg8);
    }
 
    TEST(CallConstructor_SetsReferencesToCallArgs)
    {
-      const Call8 call(1, 2, 3, 4, 5, 6, 7, 8);
+      const Call8 call(V1, V2, V3, V4, V5, V6, V7, V8);
       //
       const CallRef8 callRef(call);
       //
@@ -550,7 +556,7 @@ Arg7: "7")", zenUnitPrintResult);
 
    TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)
    {
-      const CallRefString8 callRef(s1, s2, s3, s4, s5, s6, s7, s8);
+      const CallRefString8 callRef(S1, S2, S3, S4, S5, S6, S7, S8);
       ostringstream oss;
       //
       ZenUnitPrinter<CallRefString8>::Print(oss, callRef);
@@ -569,29 +575,30 @@ Arg8: "8")", zenUnitPrintResult);
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      CallRef8 callRef(a1, a2, a3, a4, a5, a6, a7, a8);
-      CallRef8 callRef_arg1(ten, a2, a3, a4, a5, a6, a7, a8);
+      CallRef8 callRef(V1, V2, V3, V4, V5, V6, V7, V8);
+
+      CallRef8 callRef_arg1(T<1>(false), V2, V3, V4, V5, V6, V7, V8);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
 
-      CallRef8 callRef_arg2(a1, ten, a3, a4, a5, a6, a7, a8);
+      CallRef8 callRef_arg2(V1, T<2>(false), V3, V4, V5, V6, V7, V8);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
 
-      CallRef8 callRef_arg3(a1, a2, ten, a4, a5, a6, a7, a8);
+      CallRef8 callRef_arg3(V1, V2, T<3>(false), V4, V5, V6, V7, V8);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "arg3");
 
-      CallRef8 callRef_arg4(a1, a2, a3, ten, a5, a6, a7, a8);
+      CallRef8 callRef_arg4(V1, V2, V3, T<4>(false), V5, V6, V7, V8);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "arg4");
 
-      CallRef8 callRef_arg5(a1, a2, a3, a4, ten, a6, a7, a8);
+      CallRef8 callRef_arg5(V1, V2, V3, V4, T<5>(false), V6, V7, V8);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "arg5");
 
-      CallRef8 callRef_arg6(a1, a2, a3, a4, a5, ten, a7, a8);
+      CallRef8 callRef_arg6(V1, V2, V3, V4, V5, T<6>(false), V7, V8);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "arg6");
 
-      CallRef8 callRef_arg7(a1, a2, a3, a4, a5, a6, ten, a8);
+      CallRef8 callRef_arg7(V1, V2, V3, V4, V5, V6, T<7>(false), V8);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg7); }, "arg7");
 
-      CallRef8 callRef_arg8(a1, a2, a3, a4, a5, a6, a7, ten);
+      CallRef8 callRef_arg8(V1, V2, V3, V4, V5, V6, V7, T<8>(false));
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg8); }, "arg8");
    }
 
@@ -605,28 +612,28 @@ Arg8: "8")", zenUnitPrintResult);
    SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    SPECEND
 
-   using Call9 = const NineArgCall<int, int, int, int, int, int, int, int, int>;
-   using CallRef9 = NineArgCallRef<int, int, int, int, int, int, int, int, int>;
+   using Call9 = const NineArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>>;
+   using CallRef9 = NineArgCallRef<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>>;
    using CallRefString9 = NineArgCallRef<string, string, string, string, string, string, string, string, string>;
 
    TEST(Constructor_SetsReferences)
    {
-      const CallRef9 callRef(a1, a2, a3, a4, a5, a6, a7, a8, a9);
+      const CallRef9 callRef(V1, V2, V3, V4, V5, V6, V7, V8, V9);
       //
-      ARE_SAME(a1, callRef.arg1);
-      ARE_SAME(a2, callRef.arg2);
-      ARE_SAME(a3, callRef.arg3);
-      ARE_SAME(a4, callRef.arg4);
-      ARE_SAME(a5, callRef.arg5);
-      ARE_SAME(a6, callRef.arg6);
-      ARE_SAME(a7, callRef.arg7);
-      ARE_SAME(a8, callRef.arg8);
-      ARE_SAME(a9, callRef.arg9);
+      ARE_SAME(V1, callRef.arg1);
+      ARE_SAME(V2, callRef.arg2);
+      ARE_SAME(V3, callRef.arg3);
+      ARE_SAME(V4, callRef.arg4);
+      ARE_SAME(V5, callRef.arg5);
+      ARE_SAME(V6, callRef.arg6);
+      ARE_SAME(V7, callRef.arg7);
+      ARE_SAME(V8, callRef.arg8);
+      ARE_SAME(V9, callRef.arg9);
    }
 
    TEST(CallConstructor_SetsReferencesToCallArgs)
    {
-      const Call9 call(1, 2, 3, 4, 5, 6, 7, 8, 9);
+      const Call9 call(V1, V2, V3, V4, V5, V6, V7, V8, V9);
       //
       const CallRef9 callRef(call);
       //
@@ -643,7 +650,7 @@ Arg8: "8")", zenUnitPrintResult);
 
    TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)
    {
-      const CallRefString9 callRef(s1, s2, s3, s4, s5, s6, s7, s8, s9);
+      const CallRefString9 callRef(S1, S2, S3, S4, S5, S6, S7, S8, S9);
       ostringstream oss;
       //
       ZenUnitPrinter<CallRefString9>::Print(oss, callRef);
@@ -663,32 +670,33 @@ Arg9: "9")", zenUnitPrintResult);
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      CallRef9 callRef(a1, a2, a3, a4, a5, a6, a7, a8, a9);
-      CallRef9 callRef_arg1(ten, a2, a3, a4, a5, a6, a7, a8, a9);
+      CallRef9 callRef(V1, V2, V3, V4, V5, V6, V7, V8, V9);
+
+      CallRef9 callRef_arg1(T<1>(false), V2, V3, V4, V5, V6, V7, V8, V9);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
 
-      CallRef9 callRef_arg2(a1, ten, a3, a4, a5, a6, a7, a8, a9);
+      CallRef9 callRef_arg2(V1, T<2>(false), V3, V4, V5, V6, V7, V8, V9);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
 
-      CallRef9 callRef_arg3(a1, a2, ten, a4, a5, a6, a7, a8, a9);
+      CallRef9 callRef_arg3(V1, V2, T<3>(false), V4, V5, V6, V7, V8, V9);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "arg3");
 
-      CallRef9 callRef_arg4(a1, a2, a3, ten, a5, a6, a7, a8, a9);
+      CallRef9 callRef_arg4(V1, V2, V3, T<4>(false), V5, V6, V7, V8, V9);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "arg4");
 
-      CallRef9 callRef_arg5(a1, a2, a3, a4, ten, a6, a7, a8, a9);
+      CallRef9 callRef_arg5(V1, V2, V3, V4, T<5>(false), V6, V7, V8, V9);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "arg5");
 
-      CallRef9 callRef_arg6(a1, a2, a3, a4, a5, ten, a7, a8, a9);
+      CallRef9 callRef_arg6(V1, V2, V3, V4, V5, T<6>(false), V7, V8, V9);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "arg6");
 
-      CallRef9 callRef_arg7(a1, a2, a3, a4, a5, a6, ten, a8, a9);
+      CallRef9 callRef_arg7(V1, V2, V3, V4, V5, V6, T<7>(false), V8, V9);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg7); }, "arg7");
 
-      CallRef9 callRef_arg8(a1, a2, a3, a4, a5, a6, a7, ten, a9);
+      CallRef9 callRef_arg8(V1, V2, V3, V4, V5, V6, V7, T<8>(false), V9);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg8); }, "arg8");
 
-      CallRef9 callRef_arg9(a1, a2, a3, a4, a5, a6, a7, a8, ten);
+      CallRef9 callRef_arg9(V1, V2, V3, V4, V5, V6, V7, V8, T<9>(false));
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg9); }, "arg9");
    }
 
@@ -702,29 +710,29 @@ Arg9: "9")", zenUnitPrintResult);
    SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    SPECEND
 
-   using Call10 = const TenArgCall<int, int, int, int, int, int, int, int, int, int>;
-   using CallRef10 = TenArgCallRef<int, int, int, int, int, int, int, int, int, int>;
+   using Call10 = const TenArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>, T<10>>;
+   using CallRef10 = TenArgCallRef<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>, T<10>>;
    using CallRefString10 = TenArgCallRef<string, string, string, string, string, string, string, string, string, string>;
 
    TEST(Constructor_SetsReferences)
    {
-      const CallRef10 callRef(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10);
+      const CallRef10 callRef(V1, V2, V3, V4, V5, V6, V7, V8, V9, V10);
       //
-      ARE_SAME(a1, callRef.arg1);
-      ARE_SAME(a2, callRef.arg2);
-      ARE_SAME(a3, callRef.arg3);
-      ARE_SAME(a4, callRef.arg4);
-      ARE_SAME(a5, callRef.arg5);
-      ARE_SAME(a6, callRef.arg6);
-      ARE_SAME(a7, callRef.arg7);
-      ARE_SAME(a8, callRef.arg8);
-      ARE_SAME(a9, callRef.arg9);
-      ARE_SAME(a10, callRef.arg10);
+      ARE_SAME(V1, callRef.arg1);
+      ARE_SAME(V2, callRef.arg2);
+      ARE_SAME(V3, callRef.arg3);
+      ARE_SAME(V4, callRef.arg4);
+      ARE_SAME(V5, callRef.arg5);
+      ARE_SAME(V6, callRef.arg6);
+      ARE_SAME(V7, callRef.arg7);
+      ARE_SAME(V8, callRef.arg8);
+      ARE_SAME(V9, callRef.arg9);
+      ARE_SAME(V10, callRef.arg10);
    }
 
    TEST(CallConstructor_SetsReferencesToCallArgs)
    {
-      const Call10 call(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+      const Call10 call(V1, V2, V3, V4, V5, V6, V7, V8, V9, V10);
       //
       const CallRef10 callRef(call);
       //
@@ -742,7 +750,7 @@ Arg9: "9")", zenUnitPrintResult);
 
    TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)
    {
-      const CallRefString10 callRef(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10);
+      const CallRefString10 callRef(S1, S2, S3, S4, S5, S6, S7, S8, S9, S10);
       ostringstream oss;
       //
       ZenUnitPrinter<CallRefString10>::Print(oss, callRef);
@@ -763,35 +771,35 @@ Arg10: "10")", zenUnitPrintResult);
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      CallRef10 callRef(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10);
-      CallRef10 callRef_arg1(ten, a2, a3, a4, a5, a6, a7, a8, a9, a10);
+      CallRef10 callRef(V1, V2, V3, V4, V5, V6, V7, V8, V9, V10);
+      CallRef10 callRef_arg1(T<1>(false), V2, V3, V4, V5, V6, V7, V8, V9, V10);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
 
-      CallRef10 callRef_arg2(a1, ten, a3, a4, a5, a6, a7, a8, a9, a10);
+      CallRef10 callRef_arg2(V1, T<2>(false), V3, V4, V5, V6, V7, V8, V9, V10);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
 
-      CallRef10 callRef_arg3(a1, a2, ten, a4, a5, a6, a7, a8, a9, a10);
+      CallRef10 callRef_arg3(V1, V2, T<3>(false), V4, V5, V6, V7, V8, V9, V10);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "arg3");
 
-      CallRef10 callRef_arg4(a1, a2, a3, ten, a5, a6, a7, a8, a9, a10);
+      CallRef10 callRef_arg4(V1, V2, V3, T<4>(false), V5, V6, V7, V8, V9, V10);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "arg4");
 
-      CallRef10 callRef_arg5(a1, a2, a3, a4, ten, a6, a7, a8, a9, a10);
+      CallRef10 callRef_arg5(V1, V2, V3, V4, T<5>(false), V6, V7, V8, V9, V10);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "arg5");
 
-      CallRef10 callRef_arg6(a1, a2, a3, a4, a5, ten, a7, a8, a9, a10);
+      CallRef10 callRef_arg6(V1, V2, V3, V4, V5, T<6>(false), V7, V8, V9, V10);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "arg6");
 
-      CallRef10 callRef_arg7(a1, a2, a3, a4, a5, a6, ten, a8, a9, a10);
+      CallRef10 callRef_arg7(V1, V2, V3, V4, V5, V6, T<7>(false), V8, V9, V10);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg7); }, "arg7");
 
-      CallRef10 callRef_arg8(a1, a2, a3, a4, a5, a6, a7, ten, a9, a10);
+      CallRef10 callRef_arg8(V1, V2, V3, V4, V5, V6, V7, T<8>(false), V9, V10);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg8); }, "arg8");
 
-      CallRef10 callRef_arg9(a1, a2, a3, a4, a5, a6, a7, a8, ten, a10);
+      CallRef10 callRef_arg9(V1, V2, V3, V4, V5, V6, V7, V8, T<9>(false), V10);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg9); }, "arg9");
 
-      CallRef10 callRef_arg10(a1, a2, a3, a4, a5, a6, a7, a8, a9, ten);
+      CallRef10 callRef_arg10(V1, V2, V3, V4, V5, V6, V7, V8, V9, T<10>(false));
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg10); }, "arg10");
    }
 

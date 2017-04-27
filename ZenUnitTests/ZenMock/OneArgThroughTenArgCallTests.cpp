@@ -9,23 +9,10 @@
 #include "ZenUnit/ZenMock/7/SevenArgCall.h"
 #include "ZenUnit/ZenMock/8/EightArgCall.h"
 #include "ZenUnit/ZenMock/9/NineArgCall.h"
+#include "ZenUnitTests/ZenMock/T.h"
 
 namespace ZenMock
 {
-   template<size_t Value>
-   struct T
-   {
-      bool flag;
-
-      T() : flag(false) {}
-      explicit T(bool flag) : flag(flag) {}
-
-      friend bool operator==(const T<Value>& lhs, const T<Value>& rhs)
-      {
-         return lhs.flag == rhs.flag;
-      }
-   };
-
    const T<1> DV1;
    const T<2> DV2;
    const T<3> DV3;
@@ -58,21 +45,21 @@ namespace ZenMock
    TEST(DefaultConstructor_DefaultInitializesArg)
    {
       const Call1 intOneArgCall;
-      ARE_EQUAL(DV1, intOneArgCall.arg);
+      ARE_EQUAL(DV1, intOneArgCall.arg1);
    }
 
    TEST(Constructor_CopiesArgToDecayedTypeArgField)
    {
       const OneArgCall<const T<1>&> call(V1);
       //
-      ARE_COPIES(V1, call.arg);
-      IS_TRUE((is_same<T<1>, decltype(call.arg)>::value));
+      ARE_COPIES(V1, call.arg1);
+      IS_TRUE((is_same<T<1>, decltype(call.arg1)>::value));
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfArg1NotEqual)
    {
       EQUALIZER_THROWS_INIT(Call1);
-      EQUALIZER_THROWS(Call1, arg, V1);
+      EQUALIZER_THROWS(Call1, arg1, V1);
    }
 
    }; RUN(OneArgCallTests)
