@@ -22,9 +22,9 @@ namespace ZenMock
       typename std::decay<Arg4Type>::type arg4;
       typename std::decay<Arg5Type>::type arg5;
       typename std::decay<Arg6Type>::type arg6;
-      typename std::decay<Arg6Type>::type arg7;
-      typename std::decay<Arg6Type>::type arg8;
-      typename std::decay<Arg6Type>::type arg9;
+      typename std::decay<Arg7Type>::type arg7;
+      typename std::decay<Arg8Type>::type arg8;
+      typename std::decay<Arg9Type>::type arg9;
 
       NineArgCall()
          : arg1()
@@ -63,20 +63,12 @@ namespace ZenMock
    };
 }
 
-template<
-   typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type,
-   typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type>
-struct ZenUnitEqualizer<ZenMock::NineArgCall<
-   Arg1Type, Arg2Type, Arg3Type, Arg4Type,
-   Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
+template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type>
+struct ZenUnitEqualizer<ZenMock::NineArgCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
 {
    static void AssertEqual(
-      const ZenMock::NineArgCall<
-         Arg1Type, Arg2Type, Arg3Type, Arg4Type,
-         Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& expectedNineArgCall,
-      const ZenMock::NineArgCall<
-         Arg1Type, Arg2Type, Arg3Type, Arg4Type,
-         Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& actualNineArgCall)
+      const ZenMock::NineArgCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& expectedNineArgCall,
+      const ZenMock::NineArgCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& actualNineArgCall)
    {
       ARE_EQUAL(expectedNineArgCall.arg1, actualNineArgCall.arg1);
       ARE_EQUAL(expectedNineArgCall.arg2, actualNineArgCall.arg2);
