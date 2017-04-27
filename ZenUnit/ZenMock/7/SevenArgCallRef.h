@@ -65,8 +65,7 @@ struct ZenUnitEqualizer<ZenMock::SevenArgCallRef<Arg1Type, Arg2Type, Arg3Type, A
 template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type>
 struct ZenUnitPrinter<ZenMock::SevenArgCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>
 {
-   static void Print(std::ostream& os, const ZenMock::SevenArgCallRef<
-      Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& sevenArgCallRef)
+   static void Print(std::ostream& os, const ZenMock::SevenArgCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& sevenArgCallRef)
    {
       const std::string toStringedArg1 = ZenUnit::ToStringer::ToString(sevenArgCallRef.arg1);
       const std::string toStringedArg2 = ZenUnit::ToStringer::ToString(sevenArgCallRef.arg2);

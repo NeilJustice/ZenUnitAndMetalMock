@@ -50,6 +50,7 @@ namespace ZenMock
    public:
       explicit NonVoidSevenArgMocker(const std::string& zenMockedFunctionSignature)
          : SevenArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>(zenMockedFunctionSignature)
+         , ValueReturner<ReturnType>(zenMockedFunctionSignature)
       {
       }
 
@@ -76,9 +77,8 @@ namespace ZenMock
 
       ReturnType ZenMockItAndReturnValue(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5, Arg6Type arg6, Arg7Type arg7)
       {
-         SevenArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>::ZenMock(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-         const ReturnType returnValue = ValueReturner<ReturnType>::ZenMockZenMockNextReturnValue();
-         return returnValue;
+         SevenArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>::ZenMockIt(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+         return ValueReturner<ReturnType>::ZenMockNextReturnValue();
       }
    };
 
@@ -87,12 +87,12 @@ namespace ZenMock
    {
    public:
       explicit NonVoidSevenArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
-         : NonVoidSevenArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>(zenMockedFunctionSignature)
+         : NonVoidSevenArgMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>(zenMockedFunctionSignature)
       {
       }
 
-      static ReturnType ZenMockItFunctionPointer(NonVoidSevenArgFunctionPointerMocker<
-         ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>* functionMocker,
+      static ReturnType ZenMockItFunctionPointer(
+         NonVoidSevenArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>* functionMocker,
          Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5, Arg6Type arg6, Arg7Type arg7)
       {
          return functionMocker->ZenMockItAndReturnValue(arg1, arg2, arg3, arg4, arg5, arg6, arg7);

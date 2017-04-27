@@ -23,10 +23,10 @@ namespace ZenMock
       typename std::decay<Arg4Type>::type arg4;
       typename std::decay<Arg5Type>::type arg5;
       typename std::decay<Arg6Type>::type arg6;
-      typename std::decay<Arg6Type>::type arg7;
-      typename std::decay<Arg6Type>::type arg8;
-      typename std::decay<Arg6Type>::type arg9;
-      typename std::decay<Arg6Type>::type arg10;
+      typename std::decay<Arg7Type>::type arg7;
+      typename std::decay<Arg8Type>::type arg8;
+      typename std::decay<Arg9Type>::type arg9;
+      typename std::decay<Arg10Type>::type arg10;
 
       TenArgCall()
          : arg1()
@@ -52,7 +52,7 @@ namespace ZenMock
          const Arg7Type& arg7,
          const Arg8Type& arg8,
          const Arg9Type& arg9,
-         const Arg9Type& arg10)
+         const Arg10Type& arg10)
          : arg1(arg1)
          , arg2(arg2)
          , arg3(arg3)
@@ -68,20 +68,12 @@ namespace ZenMock
    };
 }
 
-template<
-   typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type,
-   typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type,
-   typename Arg9Type, typename Arg10Type>
-struct ZenUnitEqualizer<ZenMock::TenArgCall<
-   Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
+template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type, typename Arg10Type>
+struct ZenUnitEqualizer<ZenMock::TenArgCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
 {
    static void AssertEqual(
-      const ZenMock::TenArgCall<
-         Arg1Type, Arg2Type, Arg3Type, Arg4Type,
-         Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& expectedTenArgCall,
-      const ZenMock::TenArgCall<
-         Arg1Type, Arg2Type, Arg3Type, Arg4Type,
-         Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& actualTenArgCall)
+      const ZenMock::TenArgCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& expectedTenArgCall,
+      const ZenMock::TenArgCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& actualTenArgCall)
    {
       ARE_EQUAL(expectedTenArgCall.arg1, actualTenArgCall.arg1);
       ARE_EQUAL(expectedTenArgCall.arg2, actualTenArgCall.arg2);

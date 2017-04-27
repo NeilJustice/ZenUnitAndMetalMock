@@ -78,8 +78,7 @@ namespace ZenMock
       ReturnType ZenMockItAndReturnValue(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3)
       {
          ThreeArgMocker<Arg1Type, Arg2Type, Arg3Type>::ZenMockIt(arg1, arg2, arg3);
-         const ReturnType returnValue = ValueReturner<ReturnType>::ZenMockZenMockNextReturnValue();
-         return returnValue;
+         return ValueReturner<ReturnType>::ZenMockNextReturnValue();
       }
    };
 
@@ -88,7 +87,7 @@ namespace ZenMock
    {
    public:
       explicit NonVoidThreeArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
-         : NonVoidThreeArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type>(zenMockedFunctionSignature)
+         : NonVoidThreeArgMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type>(zenMockedFunctionSignature)
       {
       }
 

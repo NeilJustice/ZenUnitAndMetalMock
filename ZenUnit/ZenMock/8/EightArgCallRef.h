@@ -85,14 +85,10 @@ struct ZenUnitEqualizer<ZenMock::EightArgCallRef<
    }
 };
 
-template<
-   typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type,
-   typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type>
-struct ZenUnitPrinter<ZenMock::EightArgCallRef<
-   Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
+template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type>
+struct ZenUnitPrinter<ZenMock::EightArgCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
 {
-   static void Print(std::ostream& os, const ZenMock::EightArgCallRef<
-      Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& eightArgCallRef)
+   static void Print(std::ostream& os, const ZenMock::EightArgCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& eightArgCallRef)
    {
       const std::string toStringedArg1 = ZenUnit::ToStringer::ToString(eightArgCallRef.arg1);
       const std::string toStringedArg2 = ZenUnit::ToStringer::ToString(eightArgCallRef.arg2);

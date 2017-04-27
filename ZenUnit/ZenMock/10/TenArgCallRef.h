@@ -25,7 +25,7 @@ namespace ZenMock
       const Arg7Type& arg7;
       const Arg8Type& arg8;
       const Arg9Type& arg9;
-      const Arg9Type& arg10;
+      const Arg10Type& arg10;
 
       TenArgCallRef(
          const Arg1Type& arg1,
@@ -36,8 +36,8 @@ namespace ZenMock
          const Arg6Type& arg6,
          const Arg7Type& arg7,
          const Arg8Type& arg8,
-         const Arg8Type& arg9,
-         const Arg8Type& arg10)
+         const Arg9Type& arg9,
+         const Arg10Type& arg10)
          : arg1(arg1)
          , arg2(arg2)
          , arg3(arg3)
@@ -97,16 +97,10 @@ struct ZenUnitEqualizer<ZenMock::TenArgCallRef<
    }
 };
 
-template<
-   typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type,
-   typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type, typename Arg10Type>
-struct ZenUnitPrinter<ZenMock::TenArgCallRef<
-   Arg1Type, Arg2Type, Arg3Type, Arg4Type,
-   Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
+template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type, typename Arg10Type>
+struct ZenUnitPrinter<ZenMock::TenArgCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
 {
-   static void Print(std::ostream& os, const ZenMock::TenArgCallRef<
-      Arg1Type, Arg2Type, Arg3Type, Arg4Type,
-      Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& tenArgCallRef)
+   static void Print(std::ostream& os, const ZenMock::TenArgCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& tenArgCallRef)
    {
       const std::string toStringedArg1 = ZenUnit::ToStringer::ToString(tenArgCallRef.arg1);
       const std::string toStringedArg2 = ZenUnit::ToStringer::ToString(tenArgCallRef.arg2);

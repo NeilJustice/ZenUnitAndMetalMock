@@ -80,8 +80,7 @@ namespace ZenMock
       ReturnType ZenMockItAndReturnValue(ArgType arg1)
       {
          OneArgMocker<ArgType>::ZenMockIt(arg1);
-         const ReturnType returnValue = ValueReturner<ReturnType>::ZenMockZenMockNextReturnValue();
-         return returnValue;
+         return ValueReturner<ReturnType>::ZenMockNextReturnValue();
       }
    };
 

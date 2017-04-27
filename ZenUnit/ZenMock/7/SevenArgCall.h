@@ -13,7 +13,7 @@ namespace ZenMock
       typename std::decay<Arg4Type>::type arg4;
       typename std::decay<Arg5Type>::type arg5;
       typename std::decay<Arg6Type>::type arg6;
-      typename std::decay<Arg6Type>::type arg7;
+      typename std::decay<Arg7Type>::type arg7;
 
       SevenArgCall()
          : arg1()

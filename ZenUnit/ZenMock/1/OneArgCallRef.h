@@ -6,15 +6,15 @@ namespace ZenMock
    template<typename ArgType>
    struct OneArgCallRef
    {
-      const ArgType& arg;
+      const ArgType& arg1;
 
-      OneArgCallRef(const ArgType& arg)
-         : arg(arg)
+      OneArgCallRef(const ArgType& arg1)
+         : arg1(arg1)
       {
       }
 
       explicit OneArgCallRef(const OneArgCall<ArgType>& oneArgCall)
-         : arg(oneArgCall.arg)
+         : arg1(oneArgCall.arg1)
       {
       }
    };
@@ -27,7 +27,7 @@ struct ZenUnitEqualizer<ZenMock::OneArgCallRef<ArgType>>
       const ZenMock::OneArgCallRef<ArgType>& expectedOneArgCall,
       const ZenMock::OneArgCallRef<ArgType>& actualOneArgCall)
    {
-      ARE_EQUAL(expectedOneArgCall.arg, actualOneArgCall.arg);
+      ARE_EQUAL(expectedOneArgCall.arg1, actualOneArgCall.arg1);
    }
 };
 
@@ -36,7 +36,7 @@ struct ZenUnitPrinter<ZenMock::OneArgCallRef<ArgType>>
 {
    static void Print(std::ostream& os, const ZenMock::OneArgCallRef<ArgType>& oneArgCall)
    {
-      const std::string toStringedArg = ZenUnit::ToStringer::ToString(oneArgCall.arg);
+      const std::string toStringedArg = ZenUnit::ToStringer::ToString(oneArgCall.arg1);
       os << "ZenMock::OneArgCall:\n"
          << "Arg: " << toStringedArg;
    }

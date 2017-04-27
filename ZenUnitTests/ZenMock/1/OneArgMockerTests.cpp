@@ -133,7 +133,7 @@ File.cpp(1))");
          if (expectArgEqualityThrow)
          {
             THROWS(_oneArgMocker->AssertCalledOnceWith(expectedArg), Anomaly, R"(
-  Failed: ARE_EQUAL(expectedArg, _oneArgCalls[0].arg, this->ZenMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedArg, _oneArgCalls[0].arg1, this->ZenMockedFunctionSignature)
 Expected: )" + to_string(expectedArg) + R"(
   Actual: )" + to_string(actualArg) + R"(
  Message: ")" + ZenMockedFunctionSignature + R"("
@@ -186,7 +186,7 @@ File.cpp(1))");
    }
 
    TEST5X5(AssertCalledNTimesWith_SetsAssertedTrue_NEqualToNumberOfCalls_ThrowsIfArgsDoNotMatch,
-      size_t expectedNumberOfCalls, int expectedArg, vector<OneArgCall<int>> actualArgs,
+      size_t expectedNumberOfCalls, int expectedArg, const vector<OneArgCall<int>>& actualArgs,
       bool expectThrow, size_t expectedResponsibleCallIndex,
       1ull, 0, vector<OneArgCall<int>>{0}, false, NA<size_t>(),
       1ull, 0, vector<OneArgCall<int>>{1}, true, 0ull,
@@ -200,11 +200,11 @@ File.cpp(1))");
       _oneArgMocker->_oneArgCalls = actualArgs;
       if (expectThrow)
       {
-         int actualArg = actualArgs[expectedResponsibleCallIndex].arg;
+         int actualArg = actualArgs[expectedResponsibleCallIndex].arg1;
          string expectedSignatureAndCallIndex =
             ZenMockedFunctionSignature + " at i=" + to_string(expectedResponsibleCallIndex);
          THROWS(_oneArgMocker->AssertCalledNTimesWith(expectedNumberOfCalls, expectedArg), Anomaly, R"(
-  Failed: ARE_EQUAL(expectedArg, _oneArgCalls[i].arg, zenMockedFunctionSignatureAndCallIndex)
+  Failed: ARE_EQUAL(expectedArg, _oneArgCalls[i].arg1, zenMockedFunctionSignatureAndCallIndex)
 Expected: )" + to_string(expectedArg) + R"(
   Actual: )" + to_string(actualArg) + R"(
  Message: ")" + expectedSignatureAndCallIndex + R"("

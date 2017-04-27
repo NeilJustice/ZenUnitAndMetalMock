@@ -48,28 +48,28 @@ namespace ZenMock
 
       template<typename FunctionReturnType = ReturnType>
       typename std::enable_if<std::is_default_constructible<
-         FunctionReturnType>::value, FunctionReturnType>::type ZenMockZenMockNextReturnValue()
+         FunctionReturnType>::value, FunctionReturnType>::type ZenMockNextReturnValue()
       {
          if (_returnValues.empty())
          {
             const FunctionReturnType defaultReturnValue{};
             return defaultReturnValue;
          }
-         return ZenMockNextReturnValue();
+         return DoZenMockNextReturnValue();
       }
 
       template<typename FunctionReturnType = ReturnType>
       typename std::enable_if<!std::is_default_constructible<
-         FunctionReturnType>::value, FunctionReturnType>::type ZenMockZenMockNextReturnValue()
+         FunctionReturnType>::value, FunctionReturnType>::type ZenMockNextReturnValue()
       {
          if (_returnValues.empty())
          {
             throw ZenMock::ReturnValueMustBeSpecifiedException(ZenMockedFunctionSignature);
          }
-         return ZenMockNextReturnValue();
+         return DoZenMockNextReturnValue();
       }
    protected:
-      ReturnType ZenMockNextReturnValue()
+      ReturnType DoZenMockNextReturnValue()
       {
          const DecayedReturnType& nextReturnValue =
             _returnValueIndex < _returnValues.size() ? _returnValues[_returnValueIndex++] : _returnValues.back();

@@ -42,8 +42,7 @@ struct ZenUnitEqualizer<ZenMock::ThreeArgCallRef<Arg1Type, Arg2Type, Arg3Type>>
 template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
 struct ZenUnitPrinter<ZenMock::ThreeArgCallRef<Arg1Type, Arg2Type, Arg3Type>>
 {
-   static void Print(std::ostream& os, const ZenMock::ThreeArgCallRef<
-      Arg1Type, Arg2Type, Arg3Type>& threeArgCallRef)
+   static void Print(std::ostream& os, const ZenMock::ThreeArgCallRef<Arg1Type, Arg2Type, Arg3Type>& threeArgCallRef)
    {
       const std::string toStringedArg1 = ZenUnit::ToStringer::ToString(threeArgCallRef.arg1);
       const std::string toStringedArg2 = ZenUnit::ToStringer::ToString(threeArgCallRef.arg2);

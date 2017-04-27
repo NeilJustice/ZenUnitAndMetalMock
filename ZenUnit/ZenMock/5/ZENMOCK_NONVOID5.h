@@ -50,6 +50,7 @@ namespace ZenMock
    public:
       explicit NonVoidFiveArgMocker(const std::string& zenMockedFunctionSignature)
          : FiveArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>(zenMockedFunctionSignature)
+         , ValueReturner<ReturnType>(zenMockedFunctionSignature)
       {
       }
 
@@ -78,9 +79,8 @@ namespace ZenMock
 
       ReturnType ZenMockItAndReturnValue(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5)
       {
-         FiveArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::ZenMock(arg1, arg2, arg3, arg4, arg5);
-         const ReturnType returnValue = ValueReturner<ReturnType>::ZenMockZenMockNextReturnValue();
-         return returnValue;
+         FiveArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::ZenMockIt(arg1, arg2, arg3, arg4, arg5);
+         return ValueReturner<ReturnType>::ZenMockNextReturnValue();
       }
    };
 
@@ -89,7 +89,7 @@ namespace ZenMock
    {
    public:
       explicit NonVoidFiveArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
-         : NonVoidFiveArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>(zenMockedFunctionSignature)
+         : NonVoidFiveArgMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>(zenMockedFunctionSignature)
       {
       }
 
