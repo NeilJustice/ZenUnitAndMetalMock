@@ -16,10 +16,10 @@
 #define ZENMOCK_VOID0_CONST_NONVIRTUAL(functionName) \
         ZENMOCK_VOID0_DEFINED(functionName,        , const, mutable,         )
 
-// Global Functions
-#define ZENMOCK_VOID0_GLOBAL(globalFunctionName) \
-   ZenMock::VoidZeroArgFunctionPointerMocker globalFunctionName##_ZenMock = \
-      ZenMock::VoidZeroArgFunctionPointerMocker(ZenMock::Signature::FunctionPointer("void", "::"#globalFunctionName"()"));
+// Free Functions
+#define ZENMOCK_VOID0_FREE(freeFunctionName) \
+   ZenMock::VoidZeroArgFunctionPointerMocker freeFunctionName##_ZenMock = \
+      ZenMock::VoidZeroArgFunctionPointerMocker(ZenMock::Signature::FunctionPointer("void", "::"#freeFunctionName"()"));
 
 // Static and Namespaced Functions
 #define ZENMOCK_VOID0_STATIC(qualifiedClassNameOrNamespace, functionName, ...) \

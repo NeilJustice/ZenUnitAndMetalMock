@@ -17,8 +17,8 @@
 #define ZENMOCK_NONVOID1_CONST_NONVIRTUAL(returnType, functionName, arg1Type, ...) \
         ZENMOCK_NONVOID1_DEFINED(returnType, functionName, arg1Type,        , const, mutable,         , __VA_ARGS__)
 
-// Global Functions
-#define ZENMOCK_NONVOID1_GLOBAL(returnType, functionName, arg1Type, ...) \
+// Free Functions
+#define ZENMOCK_NONVOID1_FREE(returnType, functionName, arg1Type, ...) \
    ZenMock::NonVoidOneArgFunctionPointerMocker<returnType, arg1Type> \
       functionName##_ZenMock##__VA_ARGS__ = ZenMock::NonVoidOneArgFunctionPointerMocker<returnType, arg1Type>( \
          ZenMock::Signature::FunctionPointer(#returnType, "::"#functionName"("#arg1Type")"));

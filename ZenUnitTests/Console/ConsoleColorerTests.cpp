@@ -122,8 +122,8 @@ namespace ZenUnit
       0, false,
       1, true)
    {
-      ZENMOCK_NONVOID1_GLOBAL(int, fileno, FILE*);
-      ZENMOCK_NONVOID1_GLOBAL(int, isatty, int);
+      ZENMOCK_NONVOID1_FREE(int, fileno, FILE*);
+      ZENMOCK_NONVOID1_FREE(int, isatty, int);
       const int StdoutFileHandle = 1;
       fileno_ZenMock.ExpectAndReturn(StdoutFileHandle);
       isatty_ZenMock.ExpectAndReturn(isattyReturnValue);
@@ -144,8 +144,8 @@ namespace ZenUnit
       Color::Green, WindowsColor::Green,
       Color::Red, WindowsColor::Red)
    {
-      ZENMOCK_NONVOID1_GLOBAL(HANDLE, GetStdHandle, DWORD);
-      ZENMOCK_NONVOID2_GLOBAL(BOOL, SetConsoleTextAttribute, HANDLE, WORD);
+      ZENMOCK_NONVOID1_FREE(HANDLE, GetStdHandle, DWORD);
+      ZENMOCK_NONVOID2_FREE(BOOL, SetConsoleTextAttribute, HANDLE, WORD);
       _consoleColorer.GetStdHandle_ZenMockable = ZENBIND1(GetStdHandle_ZenMock);
       _consoleColorer.SetConsoleTextAttribute_ZenMockable = ZENBIND2(SetConsoleTextAttribute_ZenMock);
 

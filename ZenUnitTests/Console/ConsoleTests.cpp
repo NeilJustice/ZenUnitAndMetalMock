@@ -101,7 +101,7 @@ namespace ZenUnit
       0,
       1)
    {
-      ZENMOCK_VOID1_GLOBAL(exit, int);
+      ZENMOCK_VOID1_FREE(exit, int);
       exit_ZenMock.Expect();
       _console.exit_ZenMockable = ZENBIND1(exit_ZenMock);
       //
@@ -177,7 +177,7 @@ namespace ZenUnit
       1, true,
       2, false)
    {
-      ZENMOCK_NONVOID0_GLOBAL(int, IsDebuggerPresent);
+      ZENMOCK_NONVOID0_FREE(int, IsDebuggerPresent);
       IsDebuggerPresent_ZenMock.ExpectAndReturn(isDebuggerPresentReturnValue);
       _console.IsDebuggerPresent_ZenMockable = ZENBIND0(IsDebuggerPresent_ZenMock);
       //

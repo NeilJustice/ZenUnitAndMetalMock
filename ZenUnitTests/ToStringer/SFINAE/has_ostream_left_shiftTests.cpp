@@ -6,11 +6,11 @@
 namespace ZenUnit
 {
    TESTS(has_ostream_left_shiftTests)
-   SPEC(value_IsFalseIfGlobalOStreamInsertionOperatorNotDefinedForType)
-   SPEC(value_IsTrueIfGlobalOStreamInsertionOperatorIsDefinedForType)
+   SPEC(value_IsFalseIfFreeFunctionOStreamInsertionOperatorNotDefinedForType)
+   SPEC(value_IsTrueIfFreeFunctionOStreamInsertionOperatorIsDefinedForType)
    SPECEND
 
-   TEST(value_IsFalseIfGlobalOStreamInsertionOperatorNotDefinedForType)
+   TEST(value_IsFalseIfFreeFunctionOStreamInsertionOperatorNotDefinedForType)
    {
       IS_FALSE(has_ostream_left_shift<vector<int>>::value);
       IS_FALSE(has_ostream_left_shift<UserTypeNonPrintable>::value);
@@ -31,7 +31,7 @@ namespace ZenUnit
       IS_FALSE(has_ostream_left_shift<UserTypeOnlyZenUnitPrintable&&>::value);
    }
 
-   TEST(value_IsTrueIfGlobalOStreamInsertionOperatorIsDefinedForType)
+   TEST(value_IsTrueIfFreeFunctionOStreamInsertionOperatorIsDefinedForType)
    {
       IS_TRUE(has_ostream_left_shift<int>::value);
       IS_TRUE(has_ostream_left_shift<int*>::value);

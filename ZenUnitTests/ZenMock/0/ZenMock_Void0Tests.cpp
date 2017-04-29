@@ -41,7 +41,7 @@ namespace ZenMock
    SPECEND
 
    Void0FunctionsMock _mock;
-   ZENMOCK_VOID0_GLOBAL(Void0)
+   ZENMOCK_VOID0_FREE(Void0)
    ZENMOCK_VOID0_STATIC(ZenMock, Void0, _namespace)
    ZENMOCK_VOID0_STATIC(ZenMock::FunctionPointerTesting, Void0, _static)
    ZENMOCK_VOID0_STATIC(ZenMock::FunctionPointerTesting, Static)
@@ -60,7 +60,7 @@ namespace ZenMock
       "void ZenMock::Void0Functions::NonVirtual()";
    const string NonVirtualConstSignature =
       "void ZenMock::Void0Functions::NonVirtualConst() const";
-   const string GlobalSignature =
+   const string FreeSignature =
       "void ::Void0()";
    const string NamespaceSignature =
       "void ZenMock::Void0()";
@@ -84,7 +84,7 @@ namespace ZenMock
             NonVirtualConstSignature,
 
             Void0_ZenMock,
-            GlobalSignature,
+            FreeSignature,
 
             Void0_ZenMock_namespace,
             NamespaceSignature,

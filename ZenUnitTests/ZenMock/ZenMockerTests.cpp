@@ -28,7 +28,7 @@ namespace ZenMock
    SPECEND
 
    unique_ptr<ZenMocker<ExceptionThrowerMock>> _zenMocker;
-   ZENMOCK_VOID1_GLOBAL(exit, int)
+   ZENMOCK_VOID1_FREE(exit, int)
    ZENMOCK_NONVOID0_STATIC(ZenUnit::ZenUnitArgs, ZenUnit::TestRunner, GetArgs)
    const string ZenMockedFunctionSignature = "virtual void ClassName::FunctionName() const";
 

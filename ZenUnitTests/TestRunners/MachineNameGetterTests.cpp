@@ -23,9 +23,9 @@ namespace ZenUnit
 
    MachineNameGetter _machineNameGetter;
 #ifdef __linux__
-   ZENMOCK_NONVOID2_GLOBAL(int, gethostname, char*, size_t)
+   ZENMOCK_NONVOID2_FREE(int, gethostname, char*, size_t)
 #elif _WIN32
-   ZENMOCK_NONVOID2_GLOBAL(BOOL, GetComputerName, LPSTR, LPDWORD)
+   ZENMOCK_NONVOID2_FREE(BOOL, GetComputerName, LPSTR, LPDWORD)
 #endif
 
    STARTUP

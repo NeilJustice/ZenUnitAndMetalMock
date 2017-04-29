@@ -33,7 +33,7 @@ namespace ZenMock
    SPECEND
 
    Void1FunctionsMock _mock;
-   ZENMOCK_VOID1_GLOBAL(Void1, int)
+   ZENMOCK_VOID1_FREE(Void1, int)
    ZENMOCK_VOID1_STATIC(ZenMock, Void1, int, _namespace)
    ZENMOCK_VOID1_STATIC(ZenMock::FunctionPointerTesting, Void1, int, _static)
    ZENMOCK_VOID1_STATIC(ZenMock::FunctionPointerTesting, Static, int)
@@ -52,7 +52,7 @@ namespace ZenMock
       "void ZenMock::Void1Functions::NonVirtual(int)";
    const string ExpectedNonVirtualConstSignature =
       "void ZenMock::Void1Functions::NonVirtualConst(int) const";
-   const string ExpectedGlobalSignature =
+   const string ExpectedFreeSignature =
       "void ::Void1(int)";
    const string ExpectedNamespaceSignature =
       "void ZenMock::Void1(int)";
@@ -75,7 +75,7 @@ namespace ZenMock
             ExpectedNonVirtualSignature,
             ExpectedNonVirtualConstSignature,
             Void1_ZenMock,
-            ExpectedGlobalSignature,
+            ExpectedFreeSignature,
             Void1_ZenMock_namespace,
             ExpectedNamespaceSignature,
             Void1_ZenMock_static,

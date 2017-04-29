@@ -16,11 +16,11 @@
 #define ZENMOCK_VOID2_CONST_NONVIRTUAL(functionName, arg1Type, arg2Type, ...) \
         ZENMOCK_VOID2_DEFINED(functionName, arg1Type, arg2Type,        , const, mutable,         , __VA_ARGS__)
 
-// Global Functions
-#define ZENMOCK_VOID2_GLOBAL(globalFunctionName, arg1Type, arg2Type, ...) \
-   ZenMock::VoidTwoArgFunctionPointerMocker<arg1Type, arg2Type> globalFunctionName##_ZenMock##__VA_ARGS__ = \
+// Free Functions
+#define ZENMOCK_VOID2_FREE(freeFunctionName, arg1Type, arg2Type, ...) \
+   ZenMock::VoidTwoArgFunctionPointerMocker<arg1Type, arg2Type> freeFunctionName##_ZenMock##__VA_ARGS__ = \
       ZenMock::VoidTwoArgFunctionPointerMocker<arg1Type, arg2Type>( \
-         ZenMock::Signature::FunctionPointer("void", "::"#globalFunctionName"("#arg1Type", "#arg2Type")"));
+         ZenMock::Signature::FunctionPointer("void", "::"#freeFunctionName"("#arg1Type", "#arg2Type")"));
 
 // Static and Namespaced Functions
 #define ZENMOCK_VOID2_STATIC(qualifiedClassNameOrNamespace, functionName, arg1Type, arg2Type, ...) \

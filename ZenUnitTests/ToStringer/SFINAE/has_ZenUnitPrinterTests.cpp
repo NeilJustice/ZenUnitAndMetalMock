@@ -30,11 +30,11 @@ struct ZenUnitPrinter<Namespace::StructInsideNamespace_ZenUnitPrintOutsideNamesp
 namespace ZenUnit
 {
    TESTS(has_ZenUnitPrinterTests)
-   SPEC(value_FalseIfGlobalZenUnitPrinterNotDefinedForType)
-   SPEC(value_TrueIfGlobalZenUnitPrinterIsDefinedForType)
+   SPEC(value_FalseIfZenUnitPrinterNotDefinedForType)
+   SPEC(value_TrueIfZenUnitPrinterIsDefinedForType)
    SPECEND
 
-   TEST(value_FalseIfGlobalZenUnitPrinterNotDefinedForType)
+   TEST(value_FalseIfZenUnitPrinterNotDefinedForType)
    {
       IS_FALSE(has_ZenUnitPrinter<int>::value);
       IS_FALSE(has_ZenUnitPrinter<string>::value);
@@ -43,7 +43,7 @@ namespace ZenUnit
       IS_FALSE(has_ZenUnitPrinter<RValueReferenceZenUnitPrint>::value);
    }
 
-   TEST(value_TrueIfGlobalZenUnitPrinterIsDefinedForType)
+   TEST(value_TrueIfZenUnitPrinterIsDefinedForType)
    {
       IS_TRUE(has_ZenUnitPrinter<vector<int>>::value);
       IS_TRUE(has_ZenUnitPrinter<vector<string>>::value);

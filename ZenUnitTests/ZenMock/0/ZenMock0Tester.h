@@ -5,7 +5,7 @@ namespace ZenMock
 {
    template<
       typename ZenMockObjectType,
-      typename GlobalMockType,
+      typename FreeMockType,
       typename NamespaceMockType,
       typename StaticNameClashMockType,
       typename StaticMockType>
@@ -17,8 +17,8 @@ namespace ZenMock
       const string nonVirtualSignature;
       const string nonVirtualConstSignature;
 
-      GlobalMockType globalMock;
-      const string globalSignature;
+      FreeMockType freeMock;
+      const string freeSignature;
 
       NamespaceMockType namespaceMock;
       const string namespaceSignature;
@@ -35,8 +35,8 @@ namespace ZenMock
          string virtualConstSignature,
          string nonVirtualSignature,
          string nonVirtualConstSignature,
-         GlobalMockType globalMock,
-         string globalSignature,
+         FreeMockType freeMock,
+         string freeSignature,
          NamespaceMockType namespaceMock,
          string namespaceSignature,
          StaticMockType staticMock,
@@ -49,8 +49,8 @@ namespace ZenMock
          , nonVirtualSignature(std::move(nonVirtualSignature))
          , nonVirtualConstSignature(std::move(nonVirtualConstSignature))
 
-         , globalMock(std::move(globalMock))
-         , globalSignature(std::move(globalSignature))
+         , freeMock(std::move(freeMock))
+         , freeSignature(std::move(freeSignature))
 
          , namespaceMock(std::move(namespaceMock))
          , namespaceSignature(std::move(namespaceSignature))
@@ -76,7 +76,7 @@ namespace ZenMock
          test(mock.NonVirtualMock, nonVirtualSignature);
          test(mock.NonVirtualConstMock, nonVirtualConstSignature);
 
-         test(globalMock, globalSignature);
+         test(freeMock, freeSignature);
          test(namespaceMock, namespaceSignature);
          test(staticNameClashMock, staticNameClashSignature);
          test(staticMock, staticSignature);
@@ -95,7 +95,7 @@ namespace ZenMock
          test(mock.NonVirtualMock, nonVirtualSignature);
          test(mock.NonVirtualConstMock, nonVirtualConstSignature);
 
-         test(globalMock, globalSignature);
+         test(freeMock, freeSignature);
          test(namespaceMock, namespaceSignature);
          test(staticNameClashMock, staticNameClashSignature);
          test(staticMock, staticSignature);
@@ -113,7 +113,7 @@ namespace ZenMock
          test(mock.NonVirtualMock, nonVirtualSignature);
          test(mock.NonVirtualConstMock, nonVirtualConstSignature);
 
-         test(globalMock, globalSignature);
+         test(freeMock, freeSignature);
          test(namespaceMock, namespaceSignature);
          test(staticNameClashMock, staticNameClashSignature);
          test(staticMock, staticSignature);
@@ -149,7 +149,7 @@ File.cpp(1))");
          test(mock.NonVirtualMock, nonVirtualSignature);
          test(mock.NonVirtualConstMock, nonVirtualConstSignature);
 
-         test(globalMock, globalSignature);
+         test(freeMock, freeSignature);
          test(namespaceMock, namespaceSignature);
          test(staticNameClashMock, staticNameClashSignature);
          test(staticMock, staticSignature);
@@ -198,12 +198,12 @@ File.cpp(1))");
          mock.NonVirtualConst();
          AssertAfterSecondCall(mock.NonVirtualConstMock, nonVirtualConstSignature);
 
-         const std::function<void()> zenBoundGlobalMock = ZENBIND0(globalMock);
-         globalMock.Expect();
-         zenBoundGlobalMock();
-         AssertAfterFirstCall(globalMock, globalSignature);
-         zenBoundGlobalMock();
-         AssertAfterSecondCall(globalMock, globalSignature);
+         const std::function<void()> zenBoundFreeMock = ZENBIND0(freeMock);
+         freeMock.Expect();
+         zenBoundFreeMock();
+         AssertAfterFirstCall(freeMock, freeSignature);
+         zenBoundFreeMock();
+         AssertAfterSecondCall(freeMock, freeSignature);
 
          const std::function<void()> zenBoundNamespaceMock = ZENBIND0(namespaceMock);
          namespaceMock.Expect();
@@ -241,9 +241,9 @@ File.cpp(1))");
          THROWS(mock.NonVirtualConst(), UnexpectedCallException,
             UnexpectedCallException::MakeWhat(nonVirtualConstSignature));
 
-         const std::function<void()> zenBoundGlobalMock = ZENBIND0(globalMock);
-         THROWS(zenBoundGlobalMock(), UnexpectedCallException,
-            UnexpectedCallException::MakeWhat(globalSignature));
+         const std::function<void()> zenBoundFreeMock = ZENBIND0(freeMock);
+         THROWS(zenBoundFreeMock(), UnexpectedCallException,
+            UnexpectedCallException::MakeWhat(freeSignature));
 
          const std::function<void()> zenBoundNamespaceMock = ZENBIND0(namespaceMock);
          THROWS(zenBoundNamespaceMock(), UnexpectedCallException,
@@ -284,10 +284,10 @@ File.cpp(1))");
          THROWS(mock.NonVirtualConst(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(mock.NonVirtualConstMock);
 
-         const std::function<void()> zenBoundGlobalVoid0 = ZENBIND0(globalMock);
-         globalMock.template ExpectAndThrow<runtime_error>(What);
-         THROWS(zenBoundGlobalVoid0(), runtime_error, What);
-         assertCalledOnceAndNTimesOnce(globalMock);
+         const std::function<void()> zenBoundFreeVoid0 = ZENBIND0(freeMock);
+         freeMock.template ExpectAndThrow<runtime_error>(What);
+         THROWS(zenBoundFreeVoid0(), runtime_error, What);
+         assertCalledOnceAndNTimesOnce(freeMock);
 
          const std::function<void()> zenBoundNamespaceVoid0 = ZENBIND0(namespaceMock);
          namespaceMock.template ExpectAndThrow<runtime_error>(What);

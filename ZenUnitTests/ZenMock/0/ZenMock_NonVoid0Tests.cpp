@@ -48,7 +48,7 @@ namespace ZenMock
    SPECEND
 
    NonVoid0FunctionsMock _mock;
-   ZENMOCK_NONVOID0_GLOBAL(int, NonVoid0)
+   ZENMOCK_NONVOID0_FREE(int, NonVoid0)
    ZENMOCK_NONVOID0_STATIC(int, ZenMock, NonVoid0, _namespace)
    ZENMOCK_NONVOID0_STATIC(int, ZenMock::FunctionPointerTesting, NonVoid0, _static)
    ZENMOCK_NONVOID0_STATIC(int, ZenMock::FunctionPointerTesting, Static)
@@ -67,7 +67,7 @@ namespace ZenMock
       "int ZenMock::NonVoid0Functions::NonVirtual()";
    const string NonVirtualConstSignature =
       "int ZenMock::NonVoid0Functions::NonVirtualConst() const";
-   const string GlobalSignature =
+   const string FreeSignature =
       "int ::NonVoid0()";
    const string NamespaceSignature =
       "int ZenMock::NonVoid0()";
@@ -91,7 +91,7 @@ namespace ZenMock
             NonVirtualConstSignature,
 
             NonVoid0_ZenMock,
-            GlobalSignature,
+            FreeSignature,
 
             NonVoid0_ZenMock_namespace,
             NamespaceSignature,
@@ -155,7 +155,7 @@ namespace ZenMock
       test(_mock.NonVirtualMock, NonVirtualSignature);
       test(_mock.NonVirtualConstMock, NonVirtualConstSignature);
 
-      test(NonVoid0_ZenMock, GlobalSignature);
+      test(NonVoid0_ZenMock, FreeSignature);
       test(NonVoid0_ZenMock_namespace, NamespaceSignature);
       test(NonVoid0_ZenMock_static, StaticNameClashSignature);
       test(Static_ZenMock, StaticUniqueSignature);
@@ -174,7 +174,7 @@ namespace ZenMock
       test(_mock.NonVirtualMock, NonVirtualSignature);
       test(_mock.NonVirtualConstMock, NonVirtualConstSignature);
 
-      test(NonVoid0_ZenMock, GlobalSignature);
+      test(NonVoid0_ZenMock, FreeSignature);
       test(NonVoid0_ZenMock_namespace, NamespaceSignature);
       test(NonVoid0_ZenMock_static, StaticNameClashSignature);
       test(Static_ZenMock, StaticUniqueSignature);
@@ -193,7 +193,7 @@ namespace ZenMock
       test(_mock.NonVirtualMock, NonVirtualSignature);
       test(_mock.NonVirtualConstMock, NonVirtualConstSignature);
 
-      test(NonVoid0_ZenMock, GlobalSignature);
+      test(NonVoid0_ZenMock, FreeSignature);
       test(NonVoid0_ZenMock_namespace, NamespaceSignature);
       test(NonVoid0_ZenMock_static, StaticNameClashSignature);
       test(Static_ZenMock, StaticUniqueSignature);

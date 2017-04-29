@@ -187,19 +187,19 @@ int main(int argc, char* argv[])
 |...|
 |`ZENMOCK_NONVOID10_CONST_NONVIRTUAL(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
 
-|Global Void Functions|
+|Free Void Functions|
 |---------------------|
-|`ZENMOCK_VOID0_GLOBAL(functionName)`|
-|`ZENMOCK_VOID1_GLOBAL(functionName, arg1Type, ...)`|
+|`ZENMOCK_VOID0_FREE(functionName)`|
+|`ZENMOCK_VOID1_FREE(functionName, arg1Type, ...)`|
 |...|
-|`ZENMOCK_VOID10_GLOBAL(globalFunctionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
+|`ZENMOCK_VOID10_FREE(freeFunctionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
 
-|Global Non-Void Functions|
+|Free Non-Void Functions|
 |-------------------------|
-|`ZENMOCK_NONVOID0_GLOBAL(returnType, functionName)`|
-|`ZENMOCK_NONVOID1_GLOBAL(returnType, functionName, arg1Type, ...)`|
+|`ZENMOCK_NONVOID0_FREE(returnType, functionName)`|
+|`ZENMOCK_NONVOID1_FREE(returnType, functionName, arg1Type, ...)`|
 |...|
-|`ZENMOCK_NONVOID10_GLOBAL(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
+|`ZENMOCK_NONVOID10_FREE(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
 
 |Static and Namespaced Void Functions|
 |------------------------------------|
@@ -215,7 +215,7 @@ int main(int argc, char* argv[])
 |...|
 |`ZENMOCK_NONVOID10_STATIC(returnType, qualifiedClassNameOrNamespace, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
 
-|ZENBIND For Mocking Global And Static Functions|
+|ZENBIND For Mocking Static and Free Functions|
 |-----------------------------------------------|
 |`ZENBIND0(FunctionName_ZenMock)`|
 |`ZENBIND1(FunctionName_ZenMock)`|
