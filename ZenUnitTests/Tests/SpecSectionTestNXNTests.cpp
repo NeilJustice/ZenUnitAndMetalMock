@@ -72,8 +72,8 @@ namespace ZenUnit
 
    TEST1X1(NumberOfTestCases_GetsTestFromAddress_ReturnsTestNumberOfTestCases,
       size_t testNumberOfTestCases,
-      1ULL,
-      2ULL)
+      1ull,
+      2ull)
    {
       TestMock* testMock = new TestMock;
       testMock->NumberOfTestCasesMock.ExpectAndReturn(testNumberOfTestCases);

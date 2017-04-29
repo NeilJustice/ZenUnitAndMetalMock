@@ -1,5 +1,5 @@
-#ifndef ZENUNITTEST_PCH_H
-#define ZENUNITTEST_PCH_H
+#ifndef ZENUNITTEST_PCH
+#define ZENUNITTEST_PCH
 
 #ifdef _WIN32
 #include "ZenUnit/Utils/IgnoredMSVCWallWarnings.h"

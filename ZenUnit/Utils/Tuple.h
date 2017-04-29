@@ -4,179 +4,181 @@
 class Tuple
 {
 public:
-   template<typename ClassType, typename MemberFunction, size_t I = 0ULL, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, size_t I = 0ull, typename... ArgTypes>
    static typename std::enable_if<I < sizeof...(ArgTypes)>::type
    Call1ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, size_t argsIndex, const std::tuple<ArgTypes...>& args)
    {
-      if (argsIndex == 0ULL)
+      if (argsIndex == 0ull)
       {
          (classPtr->*std::forward<MemberFunction>(memberFunction))(
+            I + 1ull,
             std::get<I>(args));
       }
-      Call1ArgMemberFunction<ClassType, MemberFunction, I + 1ULL, ArgTypes...>(
-         classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 1ULL, args);
+      Call1ArgMemberFunction<ClassType, MemberFunction, I + 1ull, ArgTypes...>(
+         classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 1ull, args);
    }
 
-   template<typename ClassType, typename MemberFunction, size_t I = 0ULL, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, size_t I = 0ull, typename... ArgTypes>
    static typename std::enable_if<I < sizeof...(ArgTypes)>::type
    Call2ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, size_t argsIndex, const std::tuple<ArgTypes...>& args)
    {
-      if (argsIndex == 0ULL)
+      if (argsIndex == 0ull)
       {
          (classPtr->*std::forward<MemberFunction>(memberFunction))(
+            I / 2ull + 1ull,
             std::get<I>(args),
-            std::get<I + 1ULL>(args));
+            std::get<I + 1ull>(args));
       }
-      Call2ArgMemberFunction<ClassType, MemberFunction, I + 2ULL, ArgTypes...>(
+      Call2ArgMemberFunction<ClassType, MemberFunction, I + 2ull, ArgTypes...>(
          classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 2, args);
    }
 
-   template<typename ClassType, typename MemberFunction, size_t I = 0ULL, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, size_t I = 0ull, typename... ArgTypes>
    static typename std::enable_if<I < sizeof...(ArgTypes)>::type
    Call3ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, size_t argsIndex, const std::tuple<ArgTypes...>& args)
    {
-      if (argsIndex == 0ULL)
+      if (argsIndex == 0ull)
       {
          (classPtr->*std::forward<MemberFunction>(memberFunction))(
             std::get<I>(args),
-            std::get<I + 1ULL>(args),
-            std::get<I + 2ULL>(args));
+            std::get<I + 1ull>(args),
+            std::get<I + 2ull>(args));
       }
-      Call3ArgMemberFunction<ClassType, MemberFunction, I + 3ULL, ArgTypes...>(
-         classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 3ULL, args);
+      Call3ArgMemberFunction<ClassType, MemberFunction, I + 3ull, ArgTypes...>(
+         classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 3ull, args);
    }
 
-   template<typename ClassType, typename MemberFunction, size_t I = 0ULL, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, size_t I = 0ull, typename... ArgTypes>
    static typename std::enable_if<I < sizeof...(ArgTypes)>::type
    Call4ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, size_t argsIndex, const std::tuple<ArgTypes...>& args)
    {
-      if (argsIndex == 0ULL)
+      if (argsIndex == 0ull)
       {
          (classPtr->*std::forward<MemberFunction>(memberFunction))(
             std::get<I>(args),
-            std::get<I + 1ULL>(args),
-            std::get<I + 2ULL>(args),
-            std::get<I + 3ULL>(args));
+            std::get<I + 1ull>(args),
+            std::get<I + 2ull>(args),
+            std::get<I + 3ull>(args));
       }
-      Call4ArgMemberFunction<ClassType, MemberFunction, I + 4ULL, ArgTypes...>(
-         classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 4ULL, args);
+      Call4ArgMemberFunction<ClassType, MemberFunction, I + 4ull, ArgTypes...>(
+         classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 4ull, args);
    }
 
-   template<typename ClassType, typename MemberFunction, size_t I = 0ULL, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, size_t I = 0ull, typename... ArgTypes>
    static typename std::enable_if<I < sizeof...(ArgTypes)>::type
    Call5ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, size_t argsIndex, const std::tuple<ArgTypes...>& args)
    {
-      if (argsIndex == 0ULL)
+      if (argsIndex == 0ull)
       {
          (classPtr->*std::forward<MemberFunction>(memberFunction))(
             std::get<I>(args),
-            std::get<I + 1ULL>(args),
-            std::get<I + 2ULL>(args),
-            std::get<I + 3ULL>(args),
-            std::get<I + 4ULL>(args));
+            std::get<I + 1ull>(args),
+            std::get<I + 2ull>(args),
+            std::get<I + 3ull>(args),
+            std::get<I + 4ull>(args));
       }
-      Call5ArgMemberFunction<ClassType, MemberFunction, I + 5ULL, ArgTypes...>(
-         classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 5ULL, args);
+      Call5ArgMemberFunction<ClassType, MemberFunction, I + 5ull, ArgTypes...>(
+         classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 5ull, args);
    }
 
-   template<typename ClassType, typename MemberFunction, size_t I = 0ULL, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, size_t I = 0ull, typename... ArgTypes>
    static typename std::enable_if<I < sizeof...(ArgTypes)>::type
    Call6ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, size_t argsIndex, const std::tuple<ArgTypes...>& args)
    {
-      if (argsIndex == 0ULL)
+      if (argsIndex == 0ull)
       {
          (classPtr->*std::forward<MemberFunction>(memberFunction))(
             std::get<I>(args),
-            std::get<I + 1ULL>(args),
-            std::get<I + 2ULL>(args),
-            std::get<I + 3ULL>(args),
-            std::get<I + 4ULL>(args),
-            std::get<I + 5ULL>(args));
+            std::get<I + 1ull>(args),
+            std::get<I + 2ull>(args),
+            std::get<I + 3ull>(args),
+            std::get<I + 4ull>(args),
+            std::get<I + 5ull>(args));
       }
-      Call6ArgMemberFunction<ClassType, MemberFunction, I + 6ULL, ArgTypes...>(
-         classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 6ULL, args);
+      Call6ArgMemberFunction<ClassType, MemberFunction, I + 6ull, ArgTypes...>(
+         classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 6ull, args);
    }
 
-   template<typename ClassType, typename MemberFunction, size_t I = 0ULL, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, size_t I = 0ull, typename... ArgTypes>
    static typename std::enable_if<I < sizeof...(ArgTypes)>::type
    Call7ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, size_t argsIndex, const std::tuple<ArgTypes...>& args)
    {
-      if (argsIndex == 0ULL)
+      if (argsIndex == 0ull)
       {
          (classPtr->*std::forward<MemberFunction>(memberFunction))(
             std::get<I>(args),
-            std::get<I + 1ULL>(args),
-            std::get<I + 2ULL>(args),
-            std::get<I + 3ULL>(args),
-            std::get<I + 4ULL>(args),
-            std::get<I + 5ULL>(args),
-            std::get<I + 6ULL>(args));
+            std::get<I + 1ull>(args),
+            std::get<I + 2ull>(args),
+            std::get<I + 3ull>(args),
+            std::get<I + 4ull>(args),
+            std::get<I + 5ull>(args),
+            std::get<I + 6ull>(args));
       }
-      Call7ArgMemberFunction<ClassType, MemberFunction, I + 7ULL, ArgTypes...>(
-         classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 7ULL, args);
+      Call7ArgMemberFunction<ClassType, MemberFunction, I + 7ull, ArgTypes...>(
+         classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 7ull, args);
    }
 
-   template<typename ClassType, typename MemberFunction, size_t I = 0ULL, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, size_t I = 0ull, typename... ArgTypes>
    static typename std::enable_if<I < sizeof...(ArgTypes)>::type
    Call8ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, size_t argsIndex, const std::tuple<ArgTypes...>& args)
    {
-      if (argsIndex == 0ULL)
+      if (argsIndex == 0ull)
       {
          (classPtr->*std::forward<MemberFunction>(memberFunction))(
             std::get<I>(args),
-            std::get<I + 1ULL>(args),
-            std::get<I + 2ULL>(args),
-            std::get<I + 3ULL>(args),
-            std::get<I + 4ULL>(args),
-            std::get<I + 5ULL>(args),
-            std::get<I + 6ULL>(args),
-            std::get<I + 7ULL>(args));
+            std::get<I + 1ull>(args),
+            std::get<I + 2ull>(args),
+            std::get<I + 3ull>(args),
+            std::get<I + 4ull>(args),
+            std::get<I + 5ull>(args),
+            std::get<I + 6ull>(args),
+            std::get<I + 7ull>(args));
       }
-      Call8ArgMemberFunction<ClassType, MemberFunction, I + 8ULL, ArgTypes...>(
-         classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 8ULL, args);
+      Call8ArgMemberFunction<ClassType, MemberFunction, I + 8ull, ArgTypes...>(
+         classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 8ull, args);
    }
 
-   template<typename ClassType, typename MemberFunction, size_t I = 0ULL, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, size_t I = 0ull, typename... ArgTypes>
    static typename std::enable_if<I < sizeof...(ArgTypes)>::type
    Call9ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, size_t argsIndex, const std::tuple<ArgTypes...>& args)
    {
-      if (argsIndex == 0ULL)
+      if (argsIndex == 0ull)
       {
          (classPtr->*std::forward<MemberFunction>(memberFunction))(
             std::get<I>(args),
-            std::get<I + 1ULL>(args),
-            std::get<I + 2ULL>(args),
-            std::get<I + 3ULL>(args),
-            std::get<I + 4ULL>(args),
-            std::get<I + 5ULL>(args),
-            std::get<I + 6ULL>(args),
-            std::get<I + 7ULL>(args),
-            std::get<I + 8ULL>(args));
+            std::get<I + 1ull>(args),
+            std::get<I + 2ull>(args),
+            std::get<I + 3ull>(args),
+            std::get<I + 4ull>(args),
+            std::get<I + 5ull>(args),
+            std::get<I + 6ull>(args),
+            std::get<I + 7ull>(args),
+            std::get<I + 8ull>(args));
       }
-      Call9ArgMemberFunction<ClassType, MemberFunction, I + 9ULL, ArgTypes...>(
-         classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 9ULL, args);
+      Call9ArgMemberFunction<ClassType, MemberFunction, I + 9ull, ArgTypes...>(
+         classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 9ull, args);
    }
 
-   template<typename ClassType, typename MemberFunction, size_t I = 0ULL, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, size_t I = 0ull, typename... ArgTypes>
    static typename std::enable_if<I < sizeof...(ArgTypes)>::type
    Call10ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, size_t argsIndex, const std::tuple<ArgTypes...>& args)
    {
-      if (argsIndex == 0ULL)
+      if (argsIndex == 0ull)
       {
          (classPtr->*std::forward<MemberFunction>(memberFunction))(
             std::get<I>(args),
-            std::get<I + 1ULL>(args),
-            std::get<I + 2ULL>(args),
-            std::get<I + 3ULL>(args),
-            std::get<I + 4ULL>(args),
-            std::get<I + 5ULL>(args),
-            std::get<I + 6ULL>(args),
-            std::get<I + 7ULL>(args),
-            std::get<I + 8ULL>(args),
-            std::get<I + 9ULL>(args));
+            std::get<I + 1ull>(args),
+            std::get<I + 2ull>(args),
+            std::get<I + 3ull>(args),
+            std::get<I + 4ull>(args),
+            std::get<I + 5ull>(args),
+            std::get<I + 6ull>(args),
+            std::get<I + 7ull>(args),
+            std::get<I + 8ull>(args),
+            std::get<I + 9ull>(args));
       }
-      Call10ArgMemberFunction<ClassType, MemberFunction, I + 10ULL, ArgTypes...>(
-         classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 10ULL, args);
+      Call10ArgMemberFunction<ClassType, MemberFunction, I + 10ull, ArgTypes...>(
+         classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 10ull, args);
    }
 
    template<typename ClassType, typename MemberFunction, size_t I, typename... ArgTypes>

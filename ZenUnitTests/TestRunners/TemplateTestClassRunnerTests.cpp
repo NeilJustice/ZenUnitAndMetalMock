@@ -143,10 +143,10 @@ namespace ZenUnit
 
    TEST2X2(PrintTestClassNameAndNumberOfTests_WritesTestClassNameVerticalBarNumberOfTests,
       size_t numberOfTests, bool expectTestsPlural,
-      0ULL, true,
-      1ULL, false,
-      2ULL, true,
-      3ULL, true)
+      0ull, true,
+      1ull, false,
+      2ull, true,
+      3ull, true)
    {
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteLineMock.Expect();

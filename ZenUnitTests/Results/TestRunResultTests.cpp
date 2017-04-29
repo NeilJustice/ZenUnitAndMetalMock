@@ -115,9 +115,9 @@ namespace ZenUnit
 
    TEST1X1(SetTestClassResults_SetsNumberofFailedTestCases_MovesTestClassResultsIntoField,
       size_t numberOfFailedTestCases,
-      0ULL,
-      1ULL,
-      2ULL)
+      0ull,
+      1ull,
+      2ull)
    {
       struct TestRunResultSelfMocked : public Zen::Mock<TestRunResult>
       {
@@ -183,10 +183,10 @@ namespace ZenUnit
       size_t numberOfFailedTestCases,
       bool expectTestsFailedLineAndPrintFailuresCall,
       const string& expectedTestsFailedLine,
-      0ULL, false, "",
-      1ULL, true, "1 test failure:\n",
-      2ULL, true, "2 test failures:\n",
-      3ULL, true, "3 test failures:\n")
+      0ull, false, "",
+      1ull, true, "1 test failure:\n",
+      2ull, true, "2 test failures:\n",
+      3ull, true, "3 test failures:\n")
    {
       _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
       if (expectTestsFailedLineAndPrintFailuresCall)
@@ -282,10 +282,10 @@ namespace ZenUnit
       size_t numberOfSkippedTests,
       size_t numberOfSkippedTestClasses,
       int expectedExitCode,
-      0ULL, 0ULL, 0ULL, 0,
-      0ULL, 1ULL, 2ULL, 0,
-      1ULL, 0ULL, 0ULL, 1,
-      2ULL, 1ULL, 2ULL, 1)
+      0ull, 0ull, 0ull, 0,
+      0ull, 1ull, 2ull, 0,
+      1ull, 0ull, 0ull, 1,
+      2ull, 1ull, 2ull, 1)
    {
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
       const ZenUnitArgs Args{};
@@ -300,10 +300,10 @@ namespace ZenUnit
       size_t numberOfSkippedTests,
       size_t numberOfSkippedTestClasses,
       int expectedExitCode,
-      0ULL, 0ULL, 0ULL, 0,
-      0ULL, 1ULL, 2ULL, 0,
-      1ULL, 0ULL, 0ULL, 0,
-      2ULL, 1ULL, 2ULL, 0)
+      0ull, 0ull, 0ull, 0,
+      0ull, 1ull, 2ull, 0,
+      1ull, 0ull, 0ull, 0,
+      2ull, 1ull, 2ull, 0)
    {
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
       ZenUnitArgs args;
@@ -319,10 +319,10 @@ namespace ZenUnit
       size_t numberOfSkippedTests,
       size_t numberOfSkippedTestClasses,
       int expectedExitCode,
-      0ULL, 0ULL, 0ULL, 0,
-      0ULL, 1ULL, 2ULL, 0,
-      1ULL, 0ULL, 0ULL, 0,
-      2ULL, 1ULL, 2ULL, 0)
+      0ull, 0ull, 0ull, 0,
+      0ull, 1ull, 2ull, 0,
+      1ull, 0ull, 0ull, 0,
+      2ull, 1ull, 2ull, 0)
    {
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
       ZenUnitArgs args;
@@ -339,15 +339,15 @@ namespace ZenUnit
       size_t numberOfSkippedTests,
       size_t numberOfSkippedTestClasses,
       int expectedExitCode,
-      0ULL, 0ULL, 0ULL, 0,
-      1ULL, 0ULL, 0ULL, 1,
-      2ULL, 0ULL, 0ULL, 1,
-      0ULL, 1ULL, 0ULL, 1,
-      0ULL, 2ULL, 0ULL, 1,
-      0ULL, 0ULL, 1ULL, 1,
-      0ULL, 0ULL, 2ULL, 1,
-      0ULL, 1ULL, 1ULL, 1,
-      2ULL, 3ULL, 4ULL, 1)
+      0ull, 0ull, 0ull, 0,
+      1ull, 0ull, 0ull, 1,
+      2ull, 0ull, 0ull, 1,
+      0ull, 1ull, 0ull, 1,
+      0ull, 2ull, 0ull, 1,
+      0ull, 0ull, 1ull, 1,
+      0ull, 0ull, 2ull, 1,
+      0ull, 1ull, 1ull, 1,
+      2ull, 3ull, 4ull, 1)
    {
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
       ZenUnitArgs args;

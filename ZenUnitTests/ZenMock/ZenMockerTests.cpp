@@ -160,7 +160,7 @@ namespace ZenMock
    }
 
    TEST2X2(ZenMockExitIfExpectedAndNotAsserted_ExpectedFalse_DoesNothing,
-      bool asserted, bool _zenMockExceptionIsInPlay,
+      bool asserted, bool zenMockExceptionIsInPlay,
       false, false,
       true, false,
       false, true,
@@ -168,7 +168,7 @@ namespace ZenMock
    {
       _zenMocker->_expected = false;
       _zenMocker->_asserted = asserted;
-      _zenMocker->_zenMockExceptionIsInPlay = _zenMockExceptionIsInPlay;
+      _zenMocker->_zenMockExceptionIsInPlay = zenMockExceptionIsInPlay;
       //
       _zenMocker->ZenMockExitIfExpectedAndNotAsserted();
    }

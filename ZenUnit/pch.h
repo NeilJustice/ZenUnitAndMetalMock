@@ -1,5 +1,5 @@
-#ifndef ZENUNIT_PCH_H // Classic include guard to work around GCC's lack of equivalent to Clang's -Wno-pragma-once-outside-header
-#define ZENUNIT_PCH_H
+#ifndef ZENUNIT_PCH
+#define ZENUNIT_PCH
 
 #ifdef _WIN32
 #include "Utils/IgnoredMSVCWallWarnings.h"

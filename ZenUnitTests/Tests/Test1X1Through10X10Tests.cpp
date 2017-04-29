@@ -1,27 +1,54 @@
 #include "pch.h"
 #include "ZenUnit/Tests/Test1X1ThroughTest10X10.h"
-#include "ZenUnitTests/Tests/TestNXNUtil.h"
 
-struct StartupCleanupMixin
+struct StartupAndCleanup
 {
    void Startup() {}
    void Cleanup() {}
 };
 
-struct TestingTestClass1X1 : public StartupCleanupMixin
+struct TestingTestClass1X1 : public StartupAndCleanup
 {
-   static vector<int> s_calls;
-   void Test(int arg)
+   static vector<tuple<size_t, int>> s_calls;
+   void Test(size_t __testCase, int arg)
    {
-      s_calls.push_back(arg);
+      s_calls.emplace_back(__testCase, arg);
    }
 };
-vector<int> TestingTestClass1X1::s_calls;
+vector<tuple<size_t, int>> TestingTestClass1X1::s_calls;
 
 namespace ZenUnit
 {
    const char* const TestClassName = "TestClassName";
    const char* const TestName = "TestName";
+
+   template<typename TestNXNType>
+   void AssertTestNXNState(const TestNXNType& testNXN, size_t expectedNumberOfTestCases)
+   {
+      ARE_EQUAL("TestName", testNXN.Name());
+      ARE_EQUAL("TESTS(TestClassName)\nTEST(TestName)", testNXN.TestsAndTestLines());
+      ARE_EQUAL("(0)", testNXN.FileLineString());
+      ARE_EQUAL(expectedNumberOfTestCases, testNXN.NumberOfTestCases());
+   }
+
+   void AssertTwoExpectedTestResults(const vector<TestResult>& testResults)
+   {
+      ARE_EQUAL(2, testResults.size());
+      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[0].classNameTestName);
+      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[1].classNameTestName);
+      ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
+      ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
+   }
+
+   template<typename TestingTestClassType, typename TupleCallType>
+   void AssertExpectedCalls(const TupleCallType& expectedFirstCall, const TupleCallType& expectedSecondCall)
+   {
+      ARE_EQUAL(2, TestingTestClassType::s_calls.size());
+      const auto& actualFirstCall = TestingTestClassType::s_calls[0];
+      const auto& actualSecondCall = TestingTestClassType::s_calls[1];
+      ARE_EQUAL(expectedFirstCall, actualFirstCall);
+      ARE_EQUAL(expectedSecondCall, actualSecondCall);
+   }
 
    TESTS(Test1X1TestTests)
    SPEC(Constructor_SetsFields_GettersReturnExpected_RunCallsTest1By1)
@@ -34,47 +61,35 @@ namespace ZenUnit
 
    TEST(Constructor_SetsFields_GettersReturnExpected_RunCallsTest1By1)
    {
-      Test1X1<TestingTestClass1X1,
-         int,
-         int> test1X1_1TestCase(
+      Test1X1<TestingTestClass1X1, int, int> test1X1_1TestCase(
          TestClassName, TestName, &TestingTestClass1X1::Test,
-         "1",
-         1);
+         "1", 1);
       AssertTestNXNState(test1X1_1TestCase, 1);
 
-      Test1X1<TestingTestClass1X1,
-         int,
-         int,
-         int> test1X1_2TestCases(
+      Test1X1<TestingTestClass1X1, int, int, int> test1X1_2TestCases(
          TestClassName, TestName, &TestingTestClass1X1::Test,
-         "1, 2",
-         1,
-         2);
+         "10, 20", 10, 20);
       AssertTestNXNState(test1X1_2TestCases, 2);
 
       const vector<TestResult> testResults = test1X1_2TestCases.Run();
-      ARE_EQUAL(2, testResults.size());
-      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[0].classNameTestName);
-      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[1].classNameTestName);
-      ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
-      ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
-      ARE_EQUAL(2, TestingTestClass1X1::s_calls.size());
-      ARE_EQUAL(1, TestingTestClass1X1::s_calls[0]);
-      ARE_EQUAL(2, TestingTestClass1X1::s_calls[1]);
+      AssertTwoExpectedTestResults(testResults);
+      const tuple<size_t, int> expectedFirstCall(1, 10);
+      const tuple<size_t, int> expectedSecondCall(2, 20);
+      AssertExpectedCalls<TestingTestClass1X1>(expectedFirstCall, expectedSecondCall);
    }
 
    }; RUN(Test1X1TestTests)
 }
 
-struct TestingTestClass2X2 : public StartupCleanupMixin
+struct TestingTestClass2X2 : public StartupAndCleanup
 {
-   static vector<tuple<int, string>> s_calls;
-   void Test(int arg1, string arg2)
+   static vector<tuple<size_t, int, string>> s_calls;
+   void Test(size_t __testCase, int arg1, string arg2)
    {
-      s_calls.push_back(make_tuple(arg1, arg2));
+      s_calls.emplace_back(__testCase, arg1, arg2);
    }
 };
-vector<tuple<int, string>> TestingTestClass2X2::s_calls;
+vector<tuple<size_t, int, string>> TestingTestClass2X2::s_calls;
 
 namespace ZenUnit
 {
@@ -102,33 +117,27 @@ namespace ZenUnit
          int, string,
          int, string> test2X2_2TestCases(
          TestClassName, TestName, &TestingTestClass2X2::Test,
-         "1, string(), 3, string()",
-         1, string(),
-         3, string());
+         "10, string(), 30, string()",
+         10, string(),
+         30, string());
       AssertTestNXNState(test2X2_2TestCases, 2);
 
       const vector<TestResult> testResults = test2X2_2TestCases.Run();
-      ARE_EQUAL(2, testResults.size());
-      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[0].classNameTestName);
-      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[1].classNameTestName);
-      ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
-      ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
-      const tuple<int, string> expectedFirstCall(1, string());
-      const tuple<int, string> expectedSecondCall(3, string());
-      ARE_EQUAL(2, TestingTestClass2X2::s_calls.size());
-      ARE_EQUAL(expectedFirstCall, TestingTestClass2X2::s_calls[0]);
-      ARE_EQUAL(expectedSecondCall, TestingTestClass2X2::s_calls[1]);
+      AssertTwoExpectedTestResults(testResults);
+      const tuple<size_t, int, string> expectedFirstCall(1, 10, string());
+      const tuple<size_t, int, string> expectedSecondCall(2, 30, string());
+      AssertExpectedCalls<TestingTestClass2X2>(expectedFirstCall, expectedSecondCall);
    }
 
    }; RUN(Test2X2TestTests)
 }
 
-struct TestingTestClass3X3 : public StartupCleanupMixin
+struct TestingTestClass3X3 : public StartupAndCleanup
 {
    static vector<tuple<int, int, string>> s_calls;
    void Test(int arg1, int arg2, string arg3)
    {
-      s_calls.push_back(make_tuple(arg1, arg2, arg3));
+      s_calls.emplace_back(arg1, arg2, arg3);
    }
 };
 vector<tuple<int, int, string>> TestingTestClass3X3::s_calls;
@@ -165,27 +174,21 @@ namespace ZenUnit
       AssertTestNXNState(test3X3_2TestCases, 2);
 
       const vector<TestResult> testResults = test3X3_2TestCases.Run();
-      ARE_EQUAL(2, testResults.size());
-      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[0].classNameTestName);
-      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[1].classNameTestName);
-      ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
-      ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
+      AssertTwoExpectedTestResults(testResults);
       const tuple<int, int, string> expectedFirstCall(1, 2, string());
       const tuple<int, int, string> expectedSecondCall(4, 5, string());
-      ARE_EQUAL(2, TestingTestClass3X3::s_calls.size());
-      ARE_EQUAL(expectedFirstCall, TestingTestClass3X3::s_calls[0]);
-      ARE_EQUAL(expectedSecondCall, TestingTestClass3X3::s_calls[1]);
+      AssertExpectedCalls<TestingTestClass3X3>(expectedFirstCall, expectedSecondCall);
    }
 
    }; RUN(Test3X3TestTests)
 }
 
-struct TestingTestClass4X4 : public StartupCleanupMixin
+struct TestingTestClass4X4 : public StartupAndCleanup
 {
    static vector<tuple<int, int, int, string>> s_calls;
    void Test(int arg1, int arg2, int arg3, string arg4)
    {
-      s_calls.push_back(make_tuple(arg1, arg2, arg3, arg4));
+      s_calls.emplace_back(arg1, arg2, arg3, arg4);
    }
 };
 vector<tuple<int, int, int, string>> TestingTestClass4X4::s_calls;
@@ -222,27 +225,21 @@ namespace ZenUnit
       AssertTestNXNState(test4X4_2TestCases, 2);
 
       const vector<TestResult> testResults = test4X4_2TestCases.Run();
-      ARE_EQUAL(2, testResults.size());
-      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[0].classNameTestName);
-      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[1].classNameTestName);
-      ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
-      ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
+      AssertTwoExpectedTestResults(testResults);
       const tuple<int, int, int, string> expectedFirstCall(1, 2, 3, string());
       const tuple<int, int, int, string> expectedSecondCall(5, 6, 7, string());
-      ARE_EQUAL(2, TestingTestClass4X4::s_calls.size());
-      ARE_EQUAL(expectedFirstCall, TestingTestClass4X4::s_calls[0]);
-      ARE_EQUAL(expectedSecondCall, TestingTestClass4X4::s_calls[1]);
+      AssertExpectedCalls<TestingTestClass4X4>(expectedFirstCall, expectedSecondCall);
    }
 
    }; RUN(Test4X4TestTests)
 }
 
-struct TestingTestClass5X5 : public StartupCleanupMixin
+struct TestingTestClass5X5 : public StartupAndCleanup
 {
    static vector<tuple<int, int, int, int, string>> s_calls;
    void Test(int arg1, int arg2, int arg3, int arg4, string arg5)
    {
-      s_calls.push_back(make_tuple(arg1, arg2, arg3, arg4, arg5));
+      s_calls.emplace_back(arg1, arg2, arg3, arg4, arg5);
    }
 };
 vector<tuple<int, int, int, int, string>> TestingTestClass5X5::s_calls;
@@ -279,27 +276,21 @@ namespace ZenUnit
       AssertTestNXNState(test5X5_2TestCases, 2);
 
       const vector<TestResult> testResults = test5X5_2TestCases.Run();
-      ARE_EQUAL(2, testResults.size());
-      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[0].classNameTestName);
-      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[1].classNameTestName);
-      ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
-      ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
+      AssertTwoExpectedTestResults(testResults);
       const tuple<int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, string());
       const tuple<int, int, int, int, string> expectedSecondCall(6, 7, 8, 9, string());
-      ARE_EQUAL(2, TestingTestClass5X5::s_calls.size());
-      ARE_EQUAL(expectedFirstCall, TestingTestClass5X5::s_calls[0]);
-      ARE_EQUAL(expectedSecondCall, TestingTestClass5X5::s_calls[1]);
+      AssertExpectedCalls<TestingTestClass5X5>(expectedFirstCall, expectedSecondCall);
    }
 
    }; RUN(Test5X5TestTests)
 }
 
-struct TestingTestClass6X6 : public StartupCleanupMixin
+struct TestingTestClass6X6 : public StartupAndCleanup
 {
    static vector<tuple<int, int, int, int, int, string>> s_calls;
    void Test(int arg1, int arg2, int arg3, int arg4, int arg5, string arg6)
    {
-      s_calls.push_back(make_tuple(arg1, arg2, arg3, arg4, arg5, arg6));
+      s_calls.emplace_back(arg1, arg2, arg3, arg4, arg5, arg6);
    }
 };
 vector<tuple<int, int, int, int, int, string>> TestingTestClass6X6::s_calls;
@@ -336,27 +327,21 @@ namespace ZenUnit
       AssertTestNXNState(test6X6_2TestCases, 2);
 
       const vector<TestResult> testResults = test6X6_2TestCases.Run();
-      ARE_EQUAL(2, testResults.size());
-      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[0].classNameTestName);
-      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[1].classNameTestName);
-      ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
-      ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
+      AssertTwoExpectedTestResults(testResults);
       const tuple<int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, string());
       const tuple<int, int, int, int, int, string> expectedSecondCall(7, 8, 9, 10, 11, string());
-      ARE_EQUAL(2, TestingTestClass6X6::s_calls.size());
-      ARE_EQUAL(expectedFirstCall, TestingTestClass6X6::s_calls[0]);
-      ARE_EQUAL(expectedSecondCall, TestingTestClass6X6::s_calls[1]);
+      AssertExpectedCalls<TestingTestClass6X6>(expectedFirstCall, expectedSecondCall);
    }
 
    }; RUN(Test6X6TestTests)
 }
 
-struct TestingTestClass7X7 : public StartupCleanupMixin
+struct TestingTestClass7X7 : public StartupAndCleanup
 {
    static vector<tuple<int, int, int, int, int, int, string>> s_calls;
    void Test(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, string arg7)
    {
-      s_calls.push_back(make_tuple(arg1, arg2, arg3, arg4, arg5, arg6, arg7));
+      s_calls.emplace_back(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
    }
 };
 vector<tuple<int, int, int, int, int, int, string>> TestingTestClass7X7::s_calls;
@@ -393,27 +378,21 @@ namespace ZenUnit
       AssertTestNXNState(test7X7_2TestCases, 2);
 
       const vector<TestResult> testResults = test7X7_2TestCases.Run();
-      ARE_EQUAL(2, testResults.size());
-      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[0].classNameTestName);
-      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[1].classNameTestName);
-      ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
-      ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
+      AssertTwoExpectedTestResults(testResults);
       const tuple<int, int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, 6, string());
       const tuple<int, int, int, int, int, int, string> expectedSecondCall(8, 9, 10, 11, 12, 13, string());
-      ARE_EQUAL(2, TestingTestClass7X7::s_calls.size());
-      ARE_EQUAL(expectedFirstCall, TestingTestClass7X7::s_calls[0]);
-      ARE_EQUAL(expectedSecondCall, TestingTestClass7X7::s_calls[1]);
+      AssertExpectedCalls<TestingTestClass7X7>(expectedFirstCall, expectedSecondCall);
    }
 
    }; RUN(Test7X7TestTests)
 }
 
-struct TestingTestClass8X8 : public StartupCleanupMixin
+struct TestingTestClass8X8 : public StartupAndCleanup
 {
    static vector<tuple<int, int, int, int, int, int, int, string>> s_calls;
-   void Test(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, string eighthArg)
+   void Test(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, string arg8)
    {
-      s_calls.push_back(make_tuple(arg1, arg2, arg3, arg4, arg5, arg6, arg7, eighthArg));
+      s_calls.emplace_back(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
    }
 };
 vector<tuple<int, int, int, int, int, int, int, string>> TestingTestClass8X8::s_calls;
@@ -450,27 +429,21 @@ namespace ZenUnit
       AssertTestNXNState(test8X8_2TestCases, 2);
 
       const vector<TestResult> testResults = test8X8_2TestCases.Run();
-      ARE_EQUAL(2, testResults.size());
-      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[0].classNameTestName);
-      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[1].classNameTestName);
-      ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
-      ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
+      AssertTwoExpectedTestResults(testResults);
       const tuple<int, int, int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, 6, 7, string());
       const tuple<int, int, int, int, int, int, int, string> expectedSecondCall(9, 10, 11, 12, 13, 14, 15, string());
-      ARE_EQUAL(2, TestingTestClass8X8::s_calls.size());
-      ARE_EQUAL(expectedFirstCall, TestingTestClass8X8::s_calls[0]);
-      ARE_EQUAL(expectedSecondCall, TestingTestClass8X8::s_calls[1]);
+      AssertExpectedCalls<TestingTestClass8X8>(expectedFirstCall, expectedSecondCall);
    }
 
    }; RUN(Test8X8TestTests)
 }
 
-struct TestingTestClass9X9 : public StartupCleanupMixin
+struct TestingTestClass9X9 : public StartupAndCleanup
 {
    static vector<tuple<int, int, int, int, int, int, int, int, string>> s_calls;
-   void Test(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int eighthArg, string ninthArg)
+   void Test(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int arg8, string arg9)
    {
-      s_calls.push_back(make_tuple(arg1, arg2, arg3, arg4, arg5, arg6, arg7, eighthArg, ninthArg));
+      s_calls.emplace_back(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
    }
 };
 vector<tuple<int, int, int, int, int, int, int, int, string>> TestingTestClass9X9::s_calls;
@@ -507,27 +480,21 @@ namespace ZenUnit
       AssertTestNXNState(test9X9_2TestCases, 2);
 
       const vector<TestResult> testResults = test9X9_2TestCases.Run();
-      ARE_EQUAL(2, testResults.size());
-      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[0].classNameTestName);
-      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[1].classNameTestName);
-      ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
-      ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
+      AssertTwoExpectedTestResults(testResults);
       const tuple<int, int, int, int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, 6, 7, 8, string());
       const tuple<int, int, int, int, int, int, int, int, string> expectedSecondCall(10, 11, 12, 13, 14, 15, 16, 17, string());
-      ARE_EQUAL(2, TestingTestClass9X9::s_calls.size());
-      ARE_EQUAL(expectedFirstCall, TestingTestClass9X9::s_calls[0]);
-      ARE_EQUAL(expectedSecondCall, TestingTestClass9X9::s_calls[1]);
+      AssertExpectedCalls<TestingTestClass9X9>(expectedFirstCall, expectedSecondCall);
    }
 
    }; RUN(Test9X9TestTests)
 }
 
-struct TestingTestClass10X10 : public StartupCleanupMixin
+struct TestingTestClass10X10 : public StartupAndCleanup
 {
    static vector<tuple<int, int, int, int, int, int, int, int, int, string>> s_calls;
-   void Test(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int eighthArg, int ninthArg, string tenthArg)
+   void Test(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int arg8, int arg9, string arg10)
    {
-      s_calls.push_back(make_tuple(arg1, arg2, arg3, arg4, arg5, arg6, arg7, eighthArg, ninthArg, tenthArg));
+      s_calls.emplace_back(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
    }
 };
 vector<tuple<int, int, int, int, int, int, int, int, int, string>> TestingTestClass10X10::s_calls;
@@ -564,16 +531,10 @@ namespace ZenUnit
       AssertTestNXNState(test10X10_2TestCases, 2);
 
       const vector<TestResult> testResults = test10X10_2TestCases.Run();
-      ARE_EQUAL(2, testResults.size());
-      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[0].classNameTestName);
-      ARE_EQUAL(ClassNameTestName(TestClassName, TestName), testResults[1].classNameTestName);
-      ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
-      ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
+      AssertTwoExpectedTestResults(testResults);
       const tuple<int, int, int, int, int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, 6, 7, 8, 9, string());
       const tuple<int, int, int, int, int, int, int, int, int, string> expectedSecondCall(11, 12, 13, 14, 15, 16, 17, 18, 19, string());
-      ARE_EQUAL(2, TestingTestClass10X10::s_calls.size());
-      ARE_EQUAL(expectedFirstCall, TestingTestClass10X10::s_calls[0]);
-      ARE_EQUAL(expectedSecondCall, TestingTestClass10X10::s_calls[1]);
+      AssertExpectedCalls<TestingTestClass10X10>(expectedFirstCall, expectedSecondCall);
    }
 
    }; RUN(Test10X10TestTests)

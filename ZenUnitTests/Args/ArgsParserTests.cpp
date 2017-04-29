@@ -88,7 +88,7 @@ None
    }
 
    TEST1X1(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0,
-      string helpArg,
+      const string& helpArg,
       "-help",
       "--help")
    {

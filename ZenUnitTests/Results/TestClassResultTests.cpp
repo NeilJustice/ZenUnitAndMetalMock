@@ -144,9 +144,9 @@ namespace ZenUnit
 
    TEST1X1(PrintResultLine_1OrMoreFailedTests_WritesFailedInRed,
       size_t numberOfFailedTestCases,
-      1ULL,
-      2ULL,
-      3ULL)
+      1ull,
+      2ull,
+      3ull)
    {
       _testClassResultSelfMocked.NumberOfFailedTestCasesMock.ExpectAndReturn(numberOfFailedTestCases);
       ConsoleMock consoleMock;
