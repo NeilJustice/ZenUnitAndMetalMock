@@ -3,6 +3,8 @@
 #include "StaticLibraryTests/Mock/ConsoleMock.h"
 #include "StaticLibraryTests/Mock/ArgsParserMock.h"
 
+#pragma warning(disable: 4100) // '__testCase' unreferenced formal parameter, until [[maybe_unused]]
+
 TESTS(ProgramTests)
 SPEC(Constructor_NewsComponents)
 SPECX(Main_ConvertsArgcArgvToStringVector_CallsVectorMain)

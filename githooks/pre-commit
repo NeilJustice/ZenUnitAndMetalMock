@@ -1,28 +1,15 @@
 #!/bin/bash
 set -u
 
-function run_debug_tests
-{
-   echo "pre-commit: Building Debug $1."
-   local osname="$(uname --operating-system)"
-   if [ "$osname" == "Linux" ]; then
-      cmake --build Debug --config Debug
-   elif [ "$osname" == "Msys" ]; then
-      cmake --build . --config Debug
-   fi   
-   echo "pre-commit: Running Debug $1."   
-   if [ "$osname" == "Linux" ]; then
-      Debug/"$1"/"$1" 1>/dev/null
-   elif [ "$osname" == "Msys" ]; then
-      "$1"/Debug/"$1".exe
-   fi   
-   testsExitCode=$?
-   if [ "$testsExitCode" -ne 0 ]; then
-      echo "pre-commit: Debug $1 failed with exit code $testsExitCode. Disallowing commit."
-      exit 1
-   fi
-   echo "pre-commit: Debug $1 passed. Allowing commit."
-}
-
-run_debug_tests ZenUnitTests
-run_debug_tests ExamplesTests
+osname="$(uname --operating-system)"
+if [ "$osname" == "Linux" ]; then
+   Jenkins/LinuxZenUnitDebugClang.sh
+elif [ "$osname" == "Msys" ]; then
+   Jenkins/WindowsZenUnitDebug.sh
+fi
+jenkinsJobExitCode=$?
+if [ "$jenkinsJobExitCode" -ne 0 ]; then
+   echo "pre-commit: Jenkins job failed with exit code $jenkinsJobExitCode. Disallowing commit."
+   exit 1
+fi
+echo "pre-commit: Jenkins job succeeded. Allowing commit."
