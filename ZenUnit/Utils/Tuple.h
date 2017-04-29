@@ -56,6 +56,7 @@ public:
       if (argsIndex == 0ull)
       {
          (classPtr->*std::forward<MemberFunction>(memberFunction))(
+            I / 4ull + 1ull,
             std::get<I>(args),
             std::get<I + 1ull>(args),
             std::get<I + 2ull>(args),
@@ -72,6 +73,7 @@ public:
       if (argsIndex == 0ull)
       {
          (classPtr->*std::forward<MemberFunction>(memberFunction))(
+            I / 5ull + 1ull,
             std::get<I>(args),
             std::get<I + 1ull>(args),
             std::get<I + 2ull>(args),
@@ -89,6 +91,7 @@ public:
       if (argsIndex == 0ull)
       {
          (classPtr->*std::forward<MemberFunction>(memberFunction))(
+            I / 6ull + 1ull,
             std::get<I>(args),
             std::get<I + 1ull>(args),
             std::get<I + 2ull>(args),
@@ -107,6 +110,7 @@ public:
       if (argsIndex == 0ull)
       {
          (classPtr->*std::forward<MemberFunction>(memberFunction))(
+            I / 7ull + 1ull,
             std::get<I>(args),
             std::get<I + 1ull>(args),
             std::get<I + 2ull>(args),
@@ -126,6 +130,7 @@ public:
       if (argsIndex == 0ull)
       {
          (classPtr->*std::forward<MemberFunction>(memberFunction))(
+            I / 8ull + 1ull,
             std::get<I>(args),
             std::get<I + 1ull>(args),
             std::get<I + 2ull>(args),
@@ -146,6 +151,7 @@ public:
       if (argsIndex == 0ull)
       {
          (classPtr->*std::forward<MemberFunction>(memberFunction))(
+            I / 9ull + 1ull,
             std::get<I>(args),
             std::get<I + 1ull>(args),
             std::get<I + 2ull>(args),
@@ -167,6 +173,7 @@ public:
       if (argsIndex == 0ull)
       {
          (classPtr->*std::forward<MemberFunction>(memberFunction))(
+            I / 10ull + 1ull,
             std::get<I>(args),
             std::get<I + 1ull>(args),
             std::get<I + 2ull>(args),

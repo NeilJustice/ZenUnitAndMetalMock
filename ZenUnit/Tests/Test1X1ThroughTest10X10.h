@@ -95,7 +95,7 @@ namespace ZenUnit
    class Test4X4 : public TestNXN<TestClassType, 4, TestCaseArgTypes...>
    {
    public:
-      using Test4X4MemberFunction = void (TestClassType::*)(Arg1Type, Arg2Type, Arg3Type, Arg4Type);
+      using Test4X4MemberFunction = void (TestClassType::*)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type);
    private:
       const Test4X4MemberFunction _test4X4MemberFunction;
    public:
@@ -125,7 +125,7 @@ namespace ZenUnit
    class Test5X5 : public TestNXN<TestClassType, 5, TestCaseArgTypes...>
    {
    public:
-      using Test5X5MemberFunction = void (TestClassType::*)(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type);
+      using Test5X5MemberFunction = void (TestClassType::*)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type);
    private:
       const Test5X5MemberFunction _test5X5MemberFunction;
    public:
@@ -156,7 +156,7 @@ namespace ZenUnit
    class Test6X6 : public TestNXN<TestClassType, 6, TestCaseArgTypes...>
    {
    public:
-      using Test6X6MemberFunction = void (TestClassType::*)(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type);
+      using Test6X6MemberFunction = void (TestClassType::*)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type);
    private:
       const Test6X6MemberFunction _test6X6MemberFunction;
    public:
@@ -188,7 +188,7 @@ namespace ZenUnit
    class Test7X7 : public TestNXN<TestClassType, 7, TestCaseArgTypes...>
    {
    public:
-      using Test7X7MemberFunction = void (TestClassType::*)(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type);
+      using Test7X7MemberFunction = void (TestClassType::*)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type);
    private:
       const Test7X7MemberFunction _test7X7MemberFunction;
    public:
@@ -221,7 +221,7 @@ namespace ZenUnit
    class Test8X8 : public TestNXN<TestClassType, 8, TestCaseArgTypes...>
    {
    public:
-      using Test8X8MemberFunction = void (TestClassType::*)(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type);
+      using Test8X8MemberFunction = void (TestClassType::*)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type);
    private:
       const Test8X8MemberFunction _test8X8MemberFunction;
    public:
@@ -255,7 +255,7 @@ namespace ZenUnit
    class Test9X9 : public TestNXN<TestClassType, 9, TestCaseArgTypes...>
    {
    public:
-      using Test9X9MemberFunction = void (TestClassType::*)(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type);
+      using Test9X9MemberFunction = void (TestClassType::*)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type);
    private:
       const Test9X9MemberFunction _test9X9MemberFunction;
    public:
@@ -290,7 +290,7 @@ namespace ZenUnit
    class Test10X10 : public TestNXN<TestClassType, 10, TestCaseArgTypes...>
    {
    public:
-      using Test10X10MemberFunction = void (TestClassType::*)(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type);
+      using Test10X10MemberFunction = void (TestClassType::*)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type);
    private:
       const Test10X10MemberFunction _test10X10MemberFunction;
    public:

@@ -7,16 +7,6 @@ struct StartupAndCleanup
    void Cleanup() {}
 };
 
-struct TestingTestClass1X1 : public StartupAndCleanup
-{
-   static vector<tuple<size_t, int>> s_calls;
-   void Test(size_t __testCase, int arg)
-   {
-      s_calls.emplace_back(__testCase, arg);
-   }
-};
-vector<tuple<size_t, int>> TestingTestClass1X1::s_calls;
-
 namespace ZenUnit
 {
    const char* const TestClassName = "TestClassName";
@@ -49,6 +39,16 @@ namespace ZenUnit
       ARE_EQUAL(expectedFirstCall, actualFirstCall);
       ARE_EQUAL(expectedSecondCall, actualSecondCall);
    }
+
+   struct TestingTestClass1X1 : public StartupAndCleanup
+   {
+      static vector<tuple<size_t, int>> s_calls;
+      void Test(size_t __testCase, int arg)
+      {
+         s_calls.emplace_back(__testCase, arg);
+      }
+   };
+   vector<tuple<size_t, int>> TestingTestClass1X1::s_calls;
 
    TESTS(Test1X1TestTests)
    SPEC(Constructor_SetsFields_GettersReturnExpected_RunCallsTest1By1)
@@ -185,13 +185,13 @@ namespace ZenUnit
 
 struct TestingTestClass4X4 : public StartupAndCleanup
 {
-   static vector<tuple<int, int, int, string>> s_calls;
-   void Test(int arg1, int arg2, int arg3, string arg4)
+   static vector<tuple<size_t, int, int, int, string>> s_calls;
+   void Test(size_t __testCase, int arg1, int arg2, int arg3, string arg4)
    {
-      s_calls.emplace_back(arg1, arg2, arg3, arg4);
+      s_calls.emplace_back(__testCase, arg1, arg2, arg3, arg4);
    }
 };
-vector<tuple<int, int, int, string>> TestingTestClass4X4::s_calls;
+vector<tuple<size_t, int, int, int, string>> TestingTestClass4X4::s_calls;
 
 namespace ZenUnit
 {
@@ -226,8 +226,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test4X4_2TestCases.Run();
       AssertTwoExpectedTestResults(testResults);
-      const tuple<int, int, int, string> expectedFirstCall(1, 2, 3, string());
-      const tuple<int, int, int, string> expectedSecondCall(5, 6, 7, string());
+      const tuple<size_t, int, int, int, string> expectedFirstCall(1, 1, 2, 3, string());
+      const tuple<size_t, int, int, int, string> expectedSecondCall(2, 5, 6, 7, string());
       AssertExpectedCalls<TestingTestClass4X4>(expectedFirstCall, expectedSecondCall);
    }
 
@@ -236,13 +236,13 @@ namespace ZenUnit
 
 struct TestingTestClass5X5 : public StartupAndCleanup
 {
-   static vector<tuple<int, int, int, int, string>> s_calls;
-   void Test(int arg1, int arg2, int arg3, int arg4, string arg5)
+   static vector<tuple<size_t, int, int, int, int, string>> s_calls;
+   void Test(size_t __testCase, int arg1, int arg2, int arg3, int arg4, string arg5)
    {
-      s_calls.emplace_back(arg1, arg2, arg3, arg4, arg5);
+      s_calls.emplace_back(__testCase, arg1, arg2, arg3, arg4, arg5);
    }
 };
-vector<tuple<int, int, int, int, string>> TestingTestClass5X5::s_calls;
+vector<tuple<size_t, int, int, int, int, string>> TestingTestClass5X5::s_calls;
 
 namespace ZenUnit
 {
@@ -277,8 +277,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test5X5_2TestCases.Run();
       AssertTwoExpectedTestResults(testResults);
-      const tuple<int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, string());
-      const tuple<int, int, int, int, string> expectedSecondCall(6, 7, 8, 9, string());
+      const tuple<size_t, int, int, int, int, string> expectedFirstCall(1, 1, 2, 3, 4, string());
+      const tuple<size_t, int, int, int, int, string> expectedSecondCall(2, 6, 7, 8, 9, string());
       AssertExpectedCalls<TestingTestClass5X5>(expectedFirstCall, expectedSecondCall);
    }
 
@@ -287,13 +287,13 @@ namespace ZenUnit
 
 struct TestingTestClass6X6 : public StartupAndCleanup
 {
-   static vector<tuple<int, int, int, int, int, string>> s_calls;
-   void Test(int arg1, int arg2, int arg3, int arg4, int arg5, string arg6)
+   static vector<tuple<size_t, int, int, int, int, int, string>> s_calls;
+   void Test(size_t __testCase, int arg1, int arg2, int arg3, int arg4, int arg5, string arg6)
    {
-      s_calls.emplace_back(arg1, arg2, arg3, arg4, arg5, arg6);
+      s_calls.emplace_back(__testCase, arg1, arg2, arg3, arg4, arg5, arg6);
    }
 };
-vector<tuple<int, int, int, int, int, string>> TestingTestClass6X6::s_calls;
+vector<tuple<size_t, int, int, int, int, int, string>> TestingTestClass6X6::s_calls;
 
 namespace ZenUnit
 {
@@ -328,8 +328,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test6X6_2TestCases.Run();
       AssertTwoExpectedTestResults(testResults);
-      const tuple<int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, string());
-      const tuple<int, int, int, int, int, string> expectedSecondCall(7, 8, 9, 10, 11, string());
+      const tuple<size_t, int, int, int, int, int, string> expectedFirstCall(1, 1, 2, 3, 4, 5, string());
+      const tuple<size_t, int, int, int, int, int, string> expectedSecondCall(2, 7, 8, 9, 10, 11, string());
       AssertExpectedCalls<TestingTestClass6X6>(expectedFirstCall, expectedSecondCall);
    }
 
@@ -338,13 +338,13 @@ namespace ZenUnit
 
 struct TestingTestClass7X7 : public StartupAndCleanup
 {
-   static vector<tuple<int, int, int, int, int, int, string>> s_calls;
-   void Test(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, string arg7)
+   static vector<tuple<size_t, int, int, int, int, int, int, string>> s_calls;
+   void Test(size_t __testCase, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, string arg7)
    {
-      s_calls.emplace_back(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+      s_calls.emplace_back(__testCase, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
    }
 };
-vector<tuple<int, int, int, int, int, int, string>> TestingTestClass7X7::s_calls;
+vector<tuple<size_t, int, int, int, int, int, int, string>> TestingTestClass7X7::s_calls;
 
 namespace ZenUnit
 {
@@ -379,8 +379,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test7X7_2TestCases.Run();
       AssertTwoExpectedTestResults(testResults);
-      const tuple<int, int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, 6, string());
-      const tuple<int, int, int, int, int, int, string> expectedSecondCall(8, 9, 10, 11, 12, 13, string());
+      const tuple<size_t, int, int, int, int, int, int, string> expectedFirstCall(1, 1, 2, 3, 4, 5, 6, string());
+      const tuple<size_t, int, int, int, int, int, int, string> expectedSecondCall(2, 8, 9, 10, 11, 12, 13, string());
       AssertExpectedCalls<TestingTestClass7X7>(expectedFirstCall, expectedSecondCall);
    }
 
@@ -389,13 +389,13 @@ namespace ZenUnit
 
 struct TestingTestClass8X8 : public StartupAndCleanup
 {
-   static vector<tuple<int, int, int, int, int, int, int, string>> s_calls;
-   void Test(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, string arg8)
+   static vector<tuple<size_t, int, int, int, int, int, int, int, string>> s_calls;
+   void Test(size_t __testCase, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, string arg8)
    {
-      s_calls.emplace_back(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+      s_calls.emplace_back(__testCase, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
    }
 };
-vector<tuple<int, int, int, int, int, int, int, string>> TestingTestClass8X8::s_calls;
+vector<tuple<size_t, int, int, int, int, int, int, int, string>> TestingTestClass8X8::s_calls;
 
 namespace ZenUnit
 {
@@ -430,8 +430,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test8X8_2TestCases.Run();
       AssertTwoExpectedTestResults(testResults);
-      const tuple<int, int, int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, 6, 7, string());
-      const tuple<int, int, int, int, int, int, int, string> expectedSecondCall(9, 10, 11, 12, 13, 14, 15, string());
+      const tuple<size_t, int, int, int, int, int, int, int, string> expectedFirstCall(1, 1, 2, 3, 4, 5, 6, 7, string());
+      const tuple<size_t, int, int, int, int, int, int, int, string> expectedSecondCall(2, 9, 10, 11, 12, 13, 14, 15, string());
       AssertExpectedCalls<TestingTestClass8X8>(expectedFirstCall, expectedSecondCall);
    }
 
@@ -440,13 +440,13 @@ namespace ZenUnit
 
 struct TestingTestClass9X9 : public StartupAndCleanup
 {
-   static vector<tuple<int, int, int, int, int, int, int, int, string>> s_calls;
-   void Test(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int arg8, string arg9)
+   static vector<tuple<size_t, int, int, int, int, int, int, int, int, string>> s_calls;
+   void Test(size_t __testCase, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int arg8, string arg9)
    {
-      s_calls.emplace_back(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
+      s_calls.emplace_back(__testCase, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
    }
 };
-vector<tuple<int, int, int, int, int, int, int, int, string>> TestingTestClass9X9::s_calls;
+vector<tuple<size_t, int, int, int, int, int, int, int, int, string>> TestingTestClass9X9::s_calls;
 
 namespace ZenUnit
 {
@@ -481,8 +481,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test9X9_2TestCases.Run();
       AssertTwoExpectedTestResults(testResults);
-      const tuple<int, int, int, int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, 6, 7, 8, string());
-      const tuple<int, int, int, int, int, int, int, int, string> expectedSecondCall(10, 11, 12, 13, 14, 15, 16, 17, string());
+      const tuple<size_t, int, int, int, int, int, int, int, int, string> expectedFirstCall(1, 1, 2, 3, 4, 5, 6, 7, 8, string());
+      const tuple<size_t, int, int, int, int, int, int, int, int, string> expectedSecondCall(2, 10, 11, 12, 13, 14, 15, 16, 17, string());
       AssertExpectedCalls<TestingTestClass9X9>(expectedFirstCall, expectedSecondCall);
    }
 
@@ -491,13 +491,13 @@ namespace ZenUnit
 
 struct TestingTestClass10X10 : public StartupAndCleanup
 {
-   static vector<tuple<int, int, int, int, int, int, int, int, int, string>> s_calls;
-   void Test(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int arg8, int arg9, string arg10)
+   static vector<tuple<size_t, int, int, int, int, int, int, int, int, int, string>> s_calls;
+   void Test(size_t __testCase, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int arg8, int arg9, string arg10)
    {
-      s_calls.emplace_back(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
+      s_calls.emplace_back(__testCase, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
    }
 };
-vector<tuple<int, int, int, int, int, int, int, int, int, string>> TestingTestClass10X10::s_calls;
+vector<tuple<size_t, int, int, int, int, int, int, int, int, int, string>> TestingTestClass10X10::s_calls;
 
 namespace ZenUnit
 {
@@ -532,8 +532,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test10X10_2TestCases.Run();
       AssertTwoExpectedTestResults(testResults);
-      const tuple<int, int, int, int, int, int, int, int, int, string> expectedFirstCall(1, 2, 3, 4, 5, 6, 7, 8, 9, string());
-      const tuple<int, int, int, int, int, int, int, int, int, string> expectedSecondCall(11, 12, 13, 14, 15, 16, 17, 18, 19, string());
+      const tuple<size_t, int, int, int, int, int, int, int, int, int, string> expectedFirstCall(1, 1, 2, 3, 4, 5, 6, 7, 8, 9, string());
+      const tuple<size_t, int, int, int, int, int, int, int, int, int, string> expectedSecondCall(2, 11, 12, 13, 14, 15, 16, 17, 18, 19, string());
       AssertExpectedCalls<TestingTestClass10X10>(expectedFirstCall, expectedSecondCall);
    }
 
