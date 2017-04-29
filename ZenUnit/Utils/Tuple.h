@@ -40,6 +40,7 @@ public:
       if (argsIndex == 0ull)
       {
          (classPtr->*std::forward<MemberFunction>(memberFunction))(
+            I / 3ull + 1ull,
             std::get<I>(args),
             std::get<I + 1ull>(args),
             std::get<I + 2ull>(args));

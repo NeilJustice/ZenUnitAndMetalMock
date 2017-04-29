@@ -72,7 +72,7 @@ namespace ZenUnit
 
       template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename... TestCaseArgTypes>
       std::nullptr_t RegisterTest3X3(const PmfToken* pmfToken,
-         void (DerivedTestClass::*nxnTestFunction)(Arg1Type, Arg2Type, Arg3Type),
+         void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type),
          const char* testName, const char*, unsigned, const char* testCaseArgsText, 
          TestCaseArgTypes&&... testCaseArgs)
       {

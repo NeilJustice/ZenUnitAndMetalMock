@@ -134,13 +134,13 @@ namespace ZenUnit
 
 struct TestingTestClass3X3 : public StartupAndCleanup
 {
-   static vector<tuple<int, int, string>> s_calls;
-   void Test(int arg1, int arg2, string arg3)
+   static vector<tuple<size_t, int, int, string>> s_calls;
+   void Test(size_t __testCase, int arg1, int arg2, string arg3)
    {
-      s_calls.emplace_back(arg1, arg2, arg3);
+      s_calls.emplace_back(__testCase, arg1, arg2, arg3);
    }
 };
-vector<tuple<int, int, string>> TestingTestClass3X3::s_calls;
+vector<tuple<size_t, int, int, string>> TestingTestClass3X3::s_calls;
 
 namespace ZenUnit
 {
@@ -175,8 +175,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test3X3_2TestCases.Run();
       AssertTwoExpectedTestResults(testResults);
-      const tuple<int, int, string> expectedFirstCall(1, 2, string());
-      const tuple<int, int, string> expectedSecondCall(4, 5, string());
+      const tuple<size_t, int, int, string> expectedFirstCall(1, 1, 2, string());
+      const tuple<size_t, int, int, string> expectedSecondCall(2, 4, 5, string());
       AssertExpectedCalls<TestingTestClass3X3>(expectedFirstCall, expectedSecondCall);
    }
 

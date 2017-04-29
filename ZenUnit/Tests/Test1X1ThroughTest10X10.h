@@ -66,7 +66,7 @@ namespace ZenUnit
    class Test3X3 : public TestNXN<TestClassType, 3, TestCaseArgTypes...>
    {
    public:
-      using Test3X3MemberFunction = void (TestClassType::*)(Arg1Type, Arg2Type, Arg3Type);
+      using Test3X3MemberFunction = void (TestClassType::*)(size_t, Arg1Type, Arg2Type, Arg3Type);
    private:
       const Test3X3MemberFunction _test3X3MemberFunction;
    public:

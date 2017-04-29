@@ -65,7 +65,7 @@
 #define TEST3X3(CrystalClearTestName, Arg1Type, Arg2Type, Arg3Type, ...) \
    const std::nullptr_t ZenUnit_Test3X3Registrar_##CrystalClearTestName = \
       RegisterTest3X3(REGISTER_TESTNXN_ARGS(CrystalClearTestName, __VA_ARGS__)); \
-   void CrystalClearTestName(Arg1Type, Arg2Type, Arg3Type)
+   void CrystalClearTestName(size_t __testCase, Arg1Type, Arg2Type, Arg3Type)
 
 #define TEST4X4(CrystalClearTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
    const std::nullptr_t ZenUnit_Test4X4Registrar_##CrystalClearTestName = \

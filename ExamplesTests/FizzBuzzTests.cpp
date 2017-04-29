@@ -11,9 +11,6 @@ TEST(FizzBuzz_EndNumber0_Throws)
    THROWS(FizzBuzz(0), std::invalid_argument, "FizzBuzz(): endNumber must be 1 or greater");
 }
 
-// Ignore '__testCase': unreferenced formal parameter	in TESTNXNs until quelling with [[maybe_unused]]
-#pragma warning(disable: 4100)
-
 TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    unsigned endNumber, std::string expectedFizzBuzzSequence,
    1, "1",
