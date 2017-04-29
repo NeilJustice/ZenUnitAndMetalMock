@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef _WIN32
+
 // /Wall warnings reported above those reported by /W4
 #pragma warning(disable: 4061) // enumerator in switch of enum is not explicitly handled by a case label
 #pragma warning(disable: 4265) // class has virtual functions, but destructor is not virtual
@@ -26,3 +28,5 @@
 
 // Ignore '__testCase': unreferenced formal parameter	in TESTNXNs until quelling with [[maybe_unused]]
 #pragma warning(disable: 4100)
+
+#endif

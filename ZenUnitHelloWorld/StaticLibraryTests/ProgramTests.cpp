@@ -3,7 +3,9 @@
 #include "StaticLibraryTests/Mock/ConsoleMock.h"
 #include "StaticLibraryTests/Mock/ArgsParserMock.h"
 
-#pragma warning(disable: 4100) // '__testCase' unreferenced formal parameter, until [[maybe_unused]]
+#ifdef _WIN32
+   #pragma warning(disable: 4100) // '__testCase' unreferenced formal parameter, until [[maybe_unused]]
+#endif
 
 TESTS(ProgramTests)
 SPEC(Constructor_NewsComponents)

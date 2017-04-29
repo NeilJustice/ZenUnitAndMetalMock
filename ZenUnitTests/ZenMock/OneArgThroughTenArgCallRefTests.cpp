@@ -23,6 +23,16 @@ namespace ZenMock
    const T<8> V8 = T<8>(true);
    const T<9> V9 = T<9>(true);
    const T<10> V10 = T<10>(true);
+   const T<1> VF1 = T<1>(false);
+   const T<2> VF2 = T<2>(false);
+   const T<3> VF3 = T<3>(false);
+   const T<4> VF4 = T<4>(false);
+   const T<5> VF5 = T<5>(false);
+   const T<6> VF6 = T<6>(false);
+   const T<7> VF7 = T<7>(false);
+   const T<8> VF8 = T<8>(false);
+   const T<9> VF9 = T<9>(false);
+   const T<10> VF10 = T<10>(false);
    const string S1 = "1", S2 = "2", S3 = "3", S4 = "4", S5 = "5", S6 = "6", S7 = "7", S8 = "8", S9 = "9", S10 = "10";
 
    void AssertARE_EQUALThrowsAnomalyContaining(
@@ -80,7 +90,7 @@ Arg: "1")", zenUnitPrintResult);
    TEST(ZenUnitEqualizer_ThrowsIfArgFieldNotEqual)
    {
       const CallRef1 callRef(V1);
-      const CallRef1 callRef_arg1(T<1>(false));
+      const CallRef1 callRef_arg1(VF1);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
    }
 
@@ -133,10 +143,10 @@ Arg2: "2")", zenUnitPrintResult);
    {
       CallRef2 callRef(V1, V2);
 
-      CallRef2 callRef_arg1(T<1>(false), V2);
+      CallRef2 callRef_arg1(VF1, V2);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
 
-      CallRef2 callRef_arg2(V1, T<2>(false));
+      CallRef2 callRef_arg2(V1, VF2);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
    }
 
@@ -192,13 +202,13 @@ Arg3: "3")", zenUnitPrintResult);
    {
       const CallRef3 callRef(V1, V2, V3);
 
-      const CallRef3 callRef_arg1(T<1>(false), V2, V3);
+      const CallRef3 callRef_arg1(VF1, V2, V3);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
 
-      const CallRef3 callRef_arg2(V1, T<2>(false), V3);
+      const CallRef3 callRef_arg2(V1, VF2, V3);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
 
-      const CallRef3 callRef_arg3(V1, V2, T<3>(false));
+      const CallRef3 callRef_arg3(V1, V2, VF3);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "arg3");
    }
 
@@ -257,16 +267,16 @@ Arg4: "4")", zenUnitPrintResult);
    {
       const CallRef4 callRef(V1, V2, V3, V4);
 
-      const CallRef4 callRef_arg1(T<1>(false), V2, V3, V4);
+      const CallRef4 callRef_arg1(VF1, V2, V3, V4);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
 
-      const CallRef4 callRef_arg2(V1, T<2>(false), V3, V4);
+      const CallRef4 callRef_arg2(V1, VF2, V3, V4);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
 
-      const CallRef4 callRef_arg3(V1, V2, T<3>(false), V4);
+      const CallRef4 callRef_arg3(V1, V2, VF3, V4);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "arg3");
 
-      const CallRef4 callRef_arg4(V1, V2, V3, T<4>(false));
+      const CallRef4 callRef_arg4(V1, V2, V3, VF4);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "arg4");
    }
 
@@ -328,19 +338,19 @@ Arg5: "5")", zenUnitPrintResult);
    {
       const CallRef5 callRef(V1, V2, V3, V4, V5);
 
-      const CallRef5 callRef_arg1(T<1>(false), V2, V3, V4, V5);
+      const CallRef5 callRef_arg1(VF1, V2, V3, V4, V5);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
 
-      const CallRef5 callRef_arg2(V1, T<2>(false), V3, V4, V5);
+      const CallRef5 callRef_arg2(V1, VF2, V3, V4, V5);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
 
-      const CallRef5 callRef_arg3(V1, V2, T<3>(false), V4, V5);
+      const CallRef5 callRef_arg3(V1, V2, VF3, V4, V5);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "arg3");
 
-      const CallRef5 callRef_arg4(V1, V2, V3, T<4>(false), V5);
+      const CallRef5 callRef_arg4(V1, V2, V3, VF4, V5);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "arg4");
 
-      const CallRef5 callRef_arg5(V1, V2, V3, V4, T<5>(false));
+      const CallRef5 callRef_arg5(V1, V2, V3, V4, VF5);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "arg5");
    }
 
@@ -405,22 +415,22 @@ Arg6: "6")", zenUnitPrintResult);
    {
       CallRef6 callRef(V1, V2, V3, V4, V5, V6);
 
-      CallRef6 callRef_arg1(T<1>(false), V2, V3, V4, V5, V6);
+      CallRef6 callRef_arg1(VF1, V2, V3, V4, V5, V6);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
 
-      CallRef6 callRef_arg2(V1, T<2>(false), V3, V4, V5, V6);
+      CallRef6 callRef_arg2(V1, VF2, V3, V4, V5, V6);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
 
-      CallRef6 callRef_arg3(V1, V2, T<3>(false), V4, V5, V6);
+      CallRef6 callRef_arg3(V1, V2, VF3, V4, V5, V6);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "arg3");
 
-      CallRef6 callRef_arg4(V1, V2, V3, T<4>(false), V5, V6);
+      CallRef6 callRef_arg4(V1, V2, V3, VF4, V5, V6);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "arg4");
 
-      CallRef6 callRef_arg5(V1, V2, V3, V4, T<5>(false), V6);
+      CallRef6 callRef_arg5(V1, V2, V3, V4, VF5, V6);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "arg5");
 
-      CallRef6 callRef_arg6(V1, V2, V3, V4, V5, T<6>(false));
+      CallRef6 callRef_arg6(V1, V2, V3, V4, V5, VF6);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "arg6");
    }
 
@@ -488,25 +498,25 @@ Arg7: "7")", zenUnitPrintResult);
    {
       const CallRef7 callRef(V1, V2, V3, V4, V5, V6, V7);
 
-      const CallRef7 callRef_arg1(T<1>(false), V2, V3, V4, V5, V6, V7);
+      const CallRef7 callRef_arg1(VF1, V2, V3, V4, V5, V6, V7);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
 
-      CallRef7 callRef_arg2(V1, T<2>(false), V3, V4, V5, V6, V7);
+      CallRef7 callRef_arg2(V1, VF2, V3, V4, V5, V6, V7);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
 
-      CallRef7 callRef_arg3(V1, V2, T<3>(false), V4, V5, V6, V7);
+      CallRef7 callRef_arg3(V1, V2, VF3, V4, V5, V6, V7);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "arg3");
 
-      CallRef7 callRef_arg4(V1, V2, V3, T<4>(false), V5, V6, V7);
+      CallRef7 callRef_arg4(V1, V2, V3, VF4, V5, V6, V7);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "arg4");
 
-      CallRef7 callRef_arg5(V1, V2, V3, V4, T<5>(false), V6, V7);
+      CallRef7 callRef_arg5(V1, V2, V3, V4, VF5, V6, V7);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "arg5");
 
-      CallRef7 callRef_arg6(V1, V2, V3, V4, V5, T<6>(false), V7);
+      CallRef7 callRef_arg6(V1, V2, V3, V4, V5, VF6, V7);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "arg6");
 
-      CallRef7 callRef_arg7(V1, V2, V3, V4, V5, V6, T<7>(false));
+      CallRef7 callRef_arg7(V1, V2, V3, V4, V5, V6, VF7);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg7); }, "arg7");
    }
 
@@ -577,28 +587,28 @@ Arg8: "8")", zenUnitPrintResult);
    {
       CallRef8 callRef(V1, V2, V3, V4, V5, V6, V7, V8);
 
-      CallRef8 callRef_arg1(T<1>(false), V2, V3, V4, V5, V6, V7, V8);
+      CallRef8 callRef_arg1(VF1, V2, V3, V4, V5, V6, V7, V8);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
 
-      CallRef8 callRef_arg2(V1, T<2>(false), V3, V4, V5, V6, V7, V8);
+      CallRef8 callRef_arg2(V1, VF2, V3, V4, V5, V6, V7, V8);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
 
-      CallRef8 callRef_arg3(V1, V2, T<3>(false), V4, V5, V6, V7, V8);
+      CallRef8 callRef_arg3(V1, V2, VF3, V4, V5, V6, V7, V8);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "arg3");
 
-      CallRef8 callRef_arg4(V1, V2, V3, T<4>(false), V5, V6, V7, V8);
+      CallRef8 callRef_arg4(V1, V2, V3, VF4, V5, V6, V7, V8);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "arg4");
 
-      CallRef8 callRef_arg5(V1, V2, V3, V4, T<5>(false), V6, V7, V8);
+      CallRef8 callRef_arg5(V1, V2, V3, V4, VF5, V6, V7, V8);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "arg5");
 
-      CallRef8 callRef_arg6(V1, V2, V3, V4, V5, T<6>(false), V7, V8);
+      CallRef8 callRef_arg6(V1, V2, V3, V4, V5, VF6, V7, V8);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "arg6");
 
-      CallRef8 callRef_arg7(V1, V2, V3, V4, V5, V6, T<7>(false), V8);
+      CallRef8 callRef_arg7(V1, V2, V3, V4, V5, V6, VF7, V8);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg7); }, "arg7");
 
-      CallRef8 callRef_arg8(V1, V2, V3, V4, V5, V6, V7, T<8>(false));
+      CallRef8 callRef_arg8(V1, V2, V3, V4, V5, V6, V7, VF8);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg8); }, "arg8");
    }
 
@@ -672,31 +682,31 @@ Arg9: "9")", zenUnitPrintResult);
    {
       CallRef9 callRef(V1, V2, V3, V4, V5, V6, V7, V8, V9);
 
-      CallRef9 callRef_arg1(T<1>(false), V2, V3, V4, V5, V6, V7, V8, V9);
+      CallRef9 callRef_arg1(VF1, V2, V3, V4, V5, V6, V7, V8, V9);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
 
-      CallRef9 callRef_arg2(V1, T<2>(false), V3, V4, V5, V6, V7, V8, V9);
+      CallRef9 callRef_arg2(V1, VF2, V3, V4, V5, V6, V7, V8, V9);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
 
-      CallRef9 callRef_arg3(V1, V2, T<3>(false), V4, V5, V6, V7, V8, V9);
+      CallRef9 callRef_arg3(V1, V2, VF3, V4, V5, V6, V7, V8, V9);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "arg3");
 
-      CallRef9 callRef_arg4(V1, V2, V3, T<4>(false), V5, V6, V7, V8, V9);
+      CallRef9 callRef_arg4(V1, V2, V3, VF4, V5, V6, V7, V8, V9);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "arg4");
 
-      CallRef9 callRef_arg5(V1, V2, V3, V4, T<5>(false), V6, V7, V8, V9);
+      CallRef9 callRef_arg5(V1, V2, V3, V4, VF5, V6, V7, V8, V9);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "arg5");
 
-      CallRef9 callRef_arg6(V1, V2, V3, V4, V5, T<6>(false), V7, V8, V9);
+      CallRef9 callRef_arg6(V1, V2, V3, V4, V5, VF6, V7, V8, V9);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "arg6");
 
-      CallRef9 callRef_arg7(V1, V2, V3, V4, V5, V6, T<7>(false), V8, V9);
+      CallRef9 callRef_arg7(V1, V2, V3, V4, V5, V6, VF7, V8, V9);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg7); }, "arg7");
 
-      CallRef9 callRef_arg8(V1, V2, V3, V4, V5, V6, V7, T<8>(false), V9);
+      CallRef9 callRef_arg8(V1, V2, V3, V4, V5, V6, V7, VF8, V9);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg8); }, "arg8");
 
-      CallRef9 callRef_arg9(V1, V2, V3, V4, V5, V6, V7, V8, T<9>(false));
+      CallRef9 callRef_arg9(V1, V2, V3, V4, V5, V6, V7, V8, VF9);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg9); }, "arg9");
    }
 
@@ -772,34 +782,34 @@ Arg10: "10")", zenUnitPrintResult);
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
       CallRef10 callRef(V1, V2, V3, V4, V5, V6, V7, V8, V9, V10);
-      CallRef10 callRef_arg1(T<1>(false), V2, V3, V4, V5, V6, V7, V8, V9, V10);
+      CallRef10 callRef_arg1(VF1, V2, V3, V4, V5, V6, V7, V8, V9, V10);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
 
-      CallRef10 callRef_arg2(V1, T<2>(false), V3, V4, V5, V6, V7, V8, V9, V10);
+      CallRef10 callRef_arg2(V1, VF2, V3, V4, V5, V6, V7, V8, V9, V10);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
 
-      CallRef10 callRef_arg3(V1, V2, T<3>(false), V4, V5, V6, V7, V8, V9, V10);
+      CallRef10 callRef_arg3(V1, V2, VF3, V4, V5, V6, V7, V8, V9, V10);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "arg3");
 
-      CallRef10 callRef_arg4(V1, V2, V3, T<4>(false), V5, V6, V7, V8, V9, V10);
+      CallRef10 callRef_arg4(V1, V2, V3, VF4, V5, V6, V7, V8, V9, V10);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "arg4");
 
-      CallRef10 callRef_arg5(V1, V2, V3, V4, T<5>(false), V6, V7, V8, V9, V10);
+      CallRef10 callRef_arg5(V1, V2, V3, V4, VF5, V6, V7, V8, V9, V10);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "arg5");
 
-      CallRef10 callRef_arg6(V1, V2, V3, V4, V5, T<6>(false), V7, V8, V9, V10);
+      CallRef10 callRef_arg6(V1, V2, V3, V4, V5, VF6, V7, V8, V9, V10);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "arg6");
 
-      CallRef10 callRef_arg7(V1, V2, V3, V4, V5, V6, T<7>(false), V8, V9, V10);
+      CallRef10 callRef_arg7(V1, V2, V3, V4, V5, V6, VF7, V8, V9, V10);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg7); }, "arg7");
 
-      CallRef10 callRef_arg8(V1, V2, V3, V4, V5, V6, V7, T<8>(false), V9, V10);
+      CallRef10 callRef_arg8(V1, V2, V3, V4, V5, V6, V7, VF8, V9, V10);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg8); }, "arg8");
 
-      CallRef10 callRef_arg9(V1, V2, V3, V4, V5, V6, V7, V8, T<9>(false), V10);
+      CallRef10 callRef_arg9(V1, V2, V3, V4, V5, V6, V7, V8, VF9, V10);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg9); }, "arg9");
 
-      CallRef10 callRef_arg10(V1, V2, V3, V4, V5, V6, V7, V8, V9, T<10>(false));
+      CallRef10 callRef_arg10(V1, V2, V3, V4, V5, V6, V7, V8, V9, VF10);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg10); }, "arg10");
    }
 

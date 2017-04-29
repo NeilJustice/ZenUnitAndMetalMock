@@ -158,7 +158,8 @@ namespace ZenMock
 
    TEST(FourArgConstructor_CopiesValuesToDecayTypeFields)
    {
-      const FourArgCall<const T<1>&, const T<2>&, const T<3>&, const T<4>&> call(V1, V2, V3, V4);
+      const FourArgCall<const T<1>&, const T<2>&, const T<3>&, const T<4>&>
+         call(V1, V2, V3, V4);
       //
       ARE_COPIES(V1, call.arg1);
       ARE_COPIES(V2, call.arg2);
@@ -202,8 +203,8 @@ namespace ZenMock
 
    TEST(FiveArgConstructor_CopiesValuesToDecayTypeFields)
    {
-      const FiveArgCall<const T<1>&, const T<2>&, const T<3>&, const T<4>&, const T<5>&> call(
-         V1, V2, V3, V4, V5);
+      const FiveArgCall<const T<1>&, const T<2>&, const T<3>&, const T<4>&, const T<5>&>
+         call(V1, V2, V3, V4, V5);
       //
       ARE_COPIES(V1, call.arg1);
       ARE_COPIES(V2, call.arg2);
