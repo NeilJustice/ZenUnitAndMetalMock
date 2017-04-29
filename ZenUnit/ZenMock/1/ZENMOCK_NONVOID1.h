@@ -64,7 +64,7 @@ namespace ZenMock
       template<typename ContainerType>
       void ExpectAndReturnValues(ContainerType&& returnValues)
       {
-         OneArgMocker::Expect();
+         OneArgMocker<ArgType>::Expect();
          ValueReturner<ReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
@@ -73,7 +73,7 @@ namespace ZenMock
       {
          OneArgMocker<ArgType>::Expect();
          ValueReturner<ReturnType>::ZenMockAddReturnValues(
-            std::forward<ReturnValueURef>(firstReturnValue), 
+            std::forward<ReturnValueURef>(firstReturnValue),
             std::forward<ReturnValueURef>(subsequentReturnValues)...);
       }
 

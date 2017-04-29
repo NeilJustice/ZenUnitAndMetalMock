@@ -185,7 +185,7 @@ namespace ZenMock
       const auto test = [](auto& zenMockObject, const string& expectedSignature)
       {
          zenMockObject.ExpectAndReturnValues(vector<int>{1, 2, 3});
-         THROWS(zenMockObject.ExpectAndReturnValues(array<int, 3>{4, 5, 6}), FunctionAlreadyExpectedException,
+         THROWS(zenMockObject.ExpectAndReturnValues(array<int, 3>{{4, 5, 6}}), FunctionAlreadyExpectedException,
             FunctionAlreadyExpectedException::MakeWhat(expectedSignature));
       };
       test(_mock.VirtualMock, VirtualSignature);
@@ -244,7 +244,7 @@ namespace ZenMock
    {
       const auto test = [](auto& zenMockObject, auto zenMockedFunctionCall)
       {
-         array<int, 2> values { 1, 2 };
+         array<int, 2> values { {1, 2} };
          zenMockObject.ExpectAndReturnValues(values);
          ARE_EQUAL(1, zenMockedFunctionCall());
          ARE_EQUAL(2, zenMockedFunctionCall());
