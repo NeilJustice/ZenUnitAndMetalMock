@@ -27,6 +27,8 @@ namespace ZenUnit
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
+   size_t ULongLongToChars(unsigned long long value, char* outChars);
+
    template<
       template<typename...>
       class VectorType, typename T, typename Allocator, typename... MessageTypes>
@@ -47,11 +49,14 @@ namespace ZenUnit
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
       const size_t expectedVectorSize = expectedVector.size();
+      const size_t IEqualsSignLength = 2;
+      const size_t SizeTMaxValueLength = 21; // strlen("18446744073709551615")
+      char iEqualsIndexMessage[IEqualsSignLength + SizeTMaxValueLength] = { "i=" };
       for (size_t i = 0; i < expectedVectorSize; ++i)
       {
          const T& ithExpectedElement = expectedVector[i];
          const T& ithActualElement = actualVector[i];
-         const std::string iEqualsIndexMessage = "i=" + std::to_string(i);
+         ULongLongToChars(i, iEqualsIndexMessage + IEqualsSignLength);
          try
          {
             ARE_EQUAL(ithExpectedElement, ithActualElement, iEqualsIndexMessage);
