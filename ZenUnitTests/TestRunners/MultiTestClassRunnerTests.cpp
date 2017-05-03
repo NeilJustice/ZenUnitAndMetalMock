@@ -10,7 +10,7 @@ namespace ZenUnit
    SPEC(Constructor_NewsComponents)
    SPEC(TotalNumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
    SPEC(AddTestClassRunner_EmplacesBackTestClassRunner_MakesNumberOfTestClassesReturnAnIncreasingNumber)
-   SPEC(RunTestClasses_SortsTestClassRunnersByName_RunsTestClasses_ReturnsTestClassResultsVector)
+   SPEC(RunTestClasses_SortsTestClassRunnersByName_RunsTestClasses_MoveReturnsTestClassResultsVector)
    SPEC(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)
    SPECEND
 
@@ -78,7 +78,7 @@ namespace ZenUnit
       ARE_EQUAL(30, totalNumberOfTestCases);
    }
 
-   TEST(RunTestClasses_SortsTestClassRunnersByName_RunsTestClasses_ReturnsTestClassResultsVector)
+   TEST(RunTestClasses_SortsTestClassRunnersByName_RunsTestClasses_MoveReturnsTestClassResultsVector)
    {
       ARE_EQUAL(0, _multiTestClassRunner._testClassResults.size());
       const size_t TestClassRunnersSize = 10;
@@ -94,6 +94,7 @@ namespace ZenUnit
          &_multiTestClassRunner._testClassResults, &MultiTestClassRunner::RunTestClassRunner));
       const vector<TestClassResult> expectedTestClassResults(TestClassRunnersSize);
       VECTORS_EQUAL(expectedTestClassResults, testClassResults);
+      ARE_EQUAL(0, _multiTestClassRunner._testClassResults.size());
    }
 
    TEST(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)
