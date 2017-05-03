@@ -10,7 +10,6 @@ namespace ZenUnit
 {
    TESTS(TestClassResultTests)
    SPEC(DefaultConstructor_NewsForEacher)
-   SPEC(Assign_CopiesArgumentToThis)
    SPEC(AddTestResults_AppendTestResultsToEndOfTestResultsVector)
    SPEC(NumberOfFailedTestCases_ReturnsNumberOfNonSuccessTestsInTestResultsVector)
    SPEC(Milliseconds_EmptyTestResultsVector_Returns0)
@@ -33,16 +32,6 @@ namespace ZenUnit
    {
       TestClassResult testClassResult;
       WAS_NEWED(testClassResult._forEacherTwoExtraArgs);
-   }
-
-   TEST(Assign_CopiesArgumentToThis)
-   {
-      TestClassResult otherTestClassResult;
-      otherTestClassResult._testResults.resize(1);
-      //
-      _testClassResult.Assign(otherTestClassResult);
-      //
-      ARE_EQUAL(otherTestClassResult, _testClassResult);
    }
 
    TEST(AddTestResults_AppendTestResultsToEndOfTestResultsVector)

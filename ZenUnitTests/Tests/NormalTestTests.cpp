@@ -9,7 +9,7 @@ namespace ZenUnit
    TESTS(NormalTestTests)
    SPEC(NumberOfTestCases_Returns1)
    SPEC(PrintPostTestNameMessage_WritesSpaceArrowSpace)
-   SPEC(PrintPostTestCompletionMessage_CallsTestResultPrintTestOutcome)
+   SPEC(PrintPostTestCompletionMessage_CallsTestResultPrintOKIfTestPassed)
    SPEC(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)
    SPEC(NewTestClass_NewsTestClass)
    SPEC(Startup_CallsStartupOnTestClass)
@@ -42,15 +42,15 @@ namespace ZenUnit
       ZEN(consoleMock.WriteMock.AssertCalledOnceWith(" -> "));
    }
 
-   TEST(PrintPostTestCompletionMessage_CallsTestResultPrintTestOutcome)
+   TEST(PrintPostTestCompletionMessage_CallsTestResultPrintOKIfTestPassed)
    {
       ConsoleMock consoleMock;
       TestResultMock testResultMock;
-      testResultMock.PrintTestOutcomeMock.Expect();
+      testResultMock.PrintOKIfTestPassedMock.Expect();
       //
       _normalTest->PrintPostTestCompletionMessage(&consoleMock, testResultMock);
       //
-      ZEN(testResultMock.PrintTestOutcomeMock.AssertCalledOnceWith(&consoleMock));
+      ZEN(testResultMock.PrintOKIfTestPassedMock.AssertCalledOnceWith(&consoleMock));
    }
 
    TEST(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)

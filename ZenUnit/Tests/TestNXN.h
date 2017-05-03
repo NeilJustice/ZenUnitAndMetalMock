@@ -53,7 +53,7 @@ namespace ZenUnit
             TestResult testResult = MockableCallBaseRunTestCase();
             testResult.testCaseIndex = testCaseIndex;
             testResults.push_back(testResult);
-            PrintTestResultOutcome(testResult);
+            PrintOKIfTestPassed(testResult);
          }
          _testCaseArgsIndex = 0;
          return testResults;
@@ -104,9 +104,9 @@ namespace ZenUnit
          _console->Write(") -> ");
       }
 
-      virtual void PrintTestResultOutcome(const TestResult& testResult) const
+      virtual void PrintOKIfTestPassed(const TestResult& testResult) const
       {
-         testResult.PrintTestOutcome(_console.get());
+         testResult.PrintOKIfTestPassed(_console.get());
       }
    };
 }

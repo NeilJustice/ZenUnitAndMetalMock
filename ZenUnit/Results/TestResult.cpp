@@ -133,7 +133,7 @@ namespace ZenUnit
       }
    }
 
-   void TestResult::PrintTestOutcome(const Console* console) const
+   void TestResult::PrintOKIfTestPassed(const Console* console) const
    {
       if (testOutcome == TestOutcome::Success)
       {
@@ -154,11 +154,11 @@ namespace ZenUnit
          const string testFailureNumber = testFailureNumberer->Next();
          console->WriteLine(testFailureNumber);
          console->Write(classNameTestName.TestsAndTestLines());
-         WriteTestCaseNumberIfAny(console, testCaseIndex);
          const CallResult& responsibleCallResult = (this->*responsibleCallResultField);
          const char* const responsibleTestPhaseSuffix = 
             TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
          console->Write(responsibleTestPhaseSuffix);
+         WriteTestCaseNumberIfAny(console, testCaseIndex);
          console->WriteLine(responsibleCallResult.anomalyOrException->anomaly->why);
          console->WriteNewline();
          break;
@@ -168,15 +168,15 @@ namespace ZenUnit
          const string testFailureNumber = testFailureNumberer->Next();
          console->WriteLine(testFailureNumber);
          console->Write(classNameTestName.TestsAndTestLines());
-         WriteTestCaseNumberIfAny(console, testCaseIndex);
          const CallResult& responsibleCallResult = this->*responsibleCallResultField;
          const char* const responsibleTestPhaseSuffix = 
             TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
+         console->Write(responsibleTestPhaseSuffix);
+         WriteTestCaseNumberIfAny(console, testCaseIndex);
+         console->WriteLineColor("\nUncaught Exception", Color::Red);
          const string exceptionTypeAndWhatLines = String::Concat(
             "  Type: ", *responsibleCallResult.anomalyOrException->exceptionTypeName, '\n',
             "what(): \"", *responsibleCallResult.anomalyOrException->exceptionWhat, "\"");
-         console->WriteLine(responsibleTestPhaseSuffix);
-         console->WriteLineColor("Uncaught Exception", Color::Red);
          console->WriteLine(exceptionTypeAndWhatLines);
          console->WriteNewline();
          break;
@@ -189,7 +189,7 @@ namespace ZenUnit
          console->WriteLine(classNameTestName.TestsAndTestLines());
          WriteTestCaseNumberIfAny(console, testCaseIndex);
          console->WriteLine(String::Concat(
-            "Failed because test took longer than maxtestmilliseconds= (", milliseconds, " ms)"));
+            "\nFailed because test took longer than -maxtestms= (", milliseconds, " ms)"));
          console->WriteNewline();
          break;
       }

@@ -3,7 +3,6 @@
 
 struct TestClassResultMock : public Zen::Mock<TestClassResult>
 {
-   ZENMOCK_VOID1(Assign, const TestClassResult&)
    ZENMOCK_VOID1(AddTestResults, const vector<TestResult>&)
    ZENMOCK_NONVOID0_CONST(size_t, NumberOfFailedTestCases)
    ZENMOCK_NONVOID0_CONST(unsigned, Milliseconds)

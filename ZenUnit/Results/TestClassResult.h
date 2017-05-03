@@ -21,7 +21,6 @@ namespace ZenUnit
    public:
       TestClassResult();
       virtual ~TestClassResult();
-      virtual void Assign(const TestClassResult& testClassResult);
       virtual void AddTestResults(const std::vector<TestResult>& testResults);
       virtual unsigned Milliseconds() const;
       virtual void PrintResultLine(const Console* console) const;

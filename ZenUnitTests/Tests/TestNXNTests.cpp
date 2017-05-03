@@ -22,7 +22,7 @@ namespace ZenUnit
    SPEC(Cleanup_CallsCleanup)
    SPEC(DeleteTestClass_DeletesTestClass)
    SPECX(PrintTestCaseNumberArgsArrow_WritesTestCaseNumberArrow)
-   SPEC(PrintTestResultOutcome_CallsTestResultPrintTestOutcome)
+   SPEC(PrintOKIfTestPassed_CallsTestResultPrintOKIfTestPassed)
    SPECEND
 
    unique_ptr<TestNXN<TestingTestClass, N, int>> _testNXN;
@@ -108,7 +108,7 @@ namespace ZenUnit
       {
          ZENMOCK_NONVOID0(TestResult, MockableCallBaseRunTestCase)
          ZENMOCK_VOID1_CONST(PrintTestCaseNumberArgsArrow, unsigned short)
-         ZENMOCK_VOID1_CONST(PrintTestResultOutcome, const TestResult&)
+         ZENMOCK_VOID1_CONST(PrintOKIfTestPassed, const TestResult&)
          Test1X1SelfMocked()
             : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>("", "", "", 0, 0) {}
       } test1X1SelfMocked;
@@ -119,7 +119,7 @@ namespace ZenUnit
       TestResult secondTestResult;
       secondTestResult.classNameTestName.testName = "SecondTest";
       test1X1SelfMocked.MockableCallBaseRunTestCaseMock.ExpectAndReturnValues(firstTestResult, secondTestResult);
-      test1X1SelfMocked.PrintTestResultOutcomeMock.Expect();
+      test1X1SelfMocked.PrintOKIfTestPassedMock.Expect();
       //
       const vector<TestResult> testResults = test1X1SelfMocked.Run();
       //
@@ -129,7 +129,7 @@ namespace ZenUnit
       TestResult expectedSecondTestResult = secondTestResult;
       expectedSecondTestResult.testCaseIndex = 1;
       ZEN(test1X1SelfMocked.MockableCallBaseRunTestCaseMock.AssertCalledNTimes(2));
-      ZEN(test1X1SelfMocked.PrintTestResultOutcomeMock.AssertCalls(
+      ZEN(test1X1SelfMocked.PrintOKIfTestPassedMock.AssertCalls(
       {
          expectedFirstTestResult,
          expectedSecondTestResult
@@ -234,14 +234,14 @@ namespace ZenUnit
       }));
    }
 
-   TEST(PrintTestResultOutcome_CallsTestResultPrintTestOutcome)
+   TEST(PrintOKIfTestPassed_CallsTestResultPrintOKIfTestPassed)
    {
       TestResultMock testResultMock;
-      testResultMock.PrintTestOutcomeMock.Expect();
+      testResultMock.PrintOKIfTestPassedMock.Expect();
       //
-      _testNXN->PrintTestResultOutcome(testResultMock);
+      _testNXN->PrintOKIfTestPassed(testResultMock);
       //
-      ZEN(testResultMock.PrintTestOutcomeMock.AssertCalledOnceWith(_testNXN->_console.get()));
+      ZEN(testResultMock.PrintOKIfTestPassedMock.AssertCalledOnceWith(_testNXN->_console.get()));
    }
 
    }; RUN(TestNXNTests)

@@ -33,7 +33,7 @@ namespace ZenUnit
       void PrintPostTestCompletionMessage(
          const Console* console, const TestResult& testResult) const override
       {
-         testResult.PrintTestOutcome(console);
+         testResult.PrintOKIfTestPassed(console);
       }
 
       std::vector<TestResult> Run() override

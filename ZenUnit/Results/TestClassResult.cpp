@@ -13,11 +13,6 @@ namespace ZenUnit
 
    TestClassResult::~TestClassResult() = default;
 
-   void TestClassResult::Assign(const TestClassResult& testClassResult)
-   {
-      _testResults = testClassResult._testResults;
-   }
-
    void TestClassResult::AddTestResults(const vector<TestResult>& testResults)
    {
       _testResults.insert(_testResults.end(), testResults.cbegin(), testResults.cend());
