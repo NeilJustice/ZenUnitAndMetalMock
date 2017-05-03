@@ -375,29 +375,25 @@ namespace ZenUnit
       //
       _testRunResult.PrintSkippedTestClassReminder(SkippedTestClassNameAndReason);
       //
-      ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
-         "[SKIPPED] Skipped test class " + SkippedTestClassNameAndReason));
+      ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith("[SKIPPED] Test class " + SkippedTestClassNameAndReason));
    }
 
    TEST(PrintSkippedTestReminder_PrintsExpectedToConsole)
    {
       _consoleMock->WriteLineMock.Expect();
-      const char* SkippedTestName = "SkippedTestName";
+      const string SkippedTestName = "SkippedTestName";
       //
       _testRunResult.PrintSkippedTestReminder(SkippedTestName);
       //
-      ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
-         String::Concat("[SKIPPED] Skipped test ", SkippedTestName)));
+      ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith("[SKIPPED] Test " + SkippedTestName));
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
       EQUALIZER_THROWS_INIT(TestRunResult);
       EQUALIZER_THROWS(TestRunResult, _testClassResults, vector<TestClassResult> { TestClassResult() });
-      EQUALIZER_THROWS(TestRunResult, _skippedTestClassNamesAndReasons,
-         vector<string> { "SkippedTestClassName because: Reason" });
-      EQUALIZER_THROWS(TestRunResult, _skippedFullTestNamesAndReasons,
-         vector<string> { "SkippedFullTestName because: Reason" });
+      EQUALIZER_THROWS(TestRunResult, _skippedTestClassNamesAndReasons, vector<string> { "" });
+      EQUALIZER_THROWS(TestRunResult, _skippedFullTestNamesAndReasons, vector<string> { "" });
    }
 
    }; RUN(TestRunResultTests)
