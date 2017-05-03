@@ -1,8 +1,6 @@
 #pragma once
-#include "ZenUnit/Tests/FullTestName.h"
 #include "ZenUnit/Tests/Test.h"
 #include "ZenUnit/Tests/Test1X1ThroughTest10X10.h"
-#include "ZenUnit/Utils/Map.h"
 #include "ZenUnit/Utils/PmfToken.h"
 #include <unordered_map>
 
@@ -47,7 +45,7 @@ namespace ZenUnit
       }
 
       template<typename Arg1Type, typename... TestCaseArgTypes>
-      std::nullptr_t RegisterTest1X1(const PmfToken* pmfToken,
+      static std::nullptr_t RegisterTest1X1(const PmfToken* pmfToken,
          void (DerivedTestClass::*test1X1Function)(size_t, Arg1Type),
          const char* testName, const char*, unsigned, const char* testCaseArgsText, 
          TestCaseArgTypes&&... testCaseArgs)
@@ -59,7 +57,7 @@ namespace ZenUnit
       }
 
       template<typename Arg1Type, typename Arg2Type, typename... TestCaseArgTypes>
-      std::nullptr_t RegisterTest2X2(const PmfToken* pmfToken,
+      static std::nullptr_t RegisterTest2X2(const PmfToken* pmfToken,
          void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type),
          const char* testName, const char*, unsigned, const char* testCaseArgsText, 
          TestCaseArgTypes&&... testCaseArgs)
@@ -71,7 +69,7 @@ namespace ZenUnit
       }
 
       template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename... TestCaseArgTypes>
-      std::nullptr_t RegisterTest3X3(const PmfToken* pmfToken,
+      static std::nullptr_t RegisterTest3X3(const PmfToken* pmfToken,
          void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type),
          const char* testName, const char*, unsigned, const char* testCaseArgsText, 
          TestCaseArgTypes&&... testCaseArgs)
@@ -83,7 +81,7 @@ namespace ZenUnit
       }
 
       template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename... TestCaseArgTypes>
-      std::nullptr_t RegisterTest4X4(const PmfToken* pmfToken,
+      static std::nullptr_t RegisterTest4X4(const PmfToken* pmfToken,
          void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type),
          const char* testName, const char*, unsigned, const char* testCaseArgsText, 
          TestCaseArgTypes&&... testCaseArgs)
@@ -95,7 +93,7 @@ namespace ZenUnit
       }
 
       template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename... TestCaseArgTypes>
-      std::nullptr_t RegisterTest5X5(const PmfToken* pmfToken,
+      static std::nullptr_t RegisterTest5X5(const PmfToken* pmfToken,
          void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type),
          const char* testName, const char*, unsigned, const char* testCaseArgsText, 
          TestCaseArgTypes&&... testCaseArgs)
@@ -107,7 +105,7 @@ namespace ZenUnit
       }
 
       template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename... TestCaseArgTypes>
-      std::nullptr_t RegisterTest6X6(const PmfToken* pmfToken,
+      static std::nullptr_t RegisterTest6X6(const PmfToken* pmfToken,
          void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type),
          const char* testName, const char*, unsigned, const char* testCaseArgsText, 
          TestCaseArgTypes&&... testCaseArgs)
@@ -119,7 +117,7 @@ namespace ZenUnit
       }
 
       template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename... TestCaseArgTypes>
-      std::nullptr_t RegisterTest7X7(const PmfToken* pmfToken,
+      static std::nullptr_t RegisterTest7X7(const PmfToken* pmfToken,
          void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type),
          const char* testName, const char*, unsigned, const char* testCaseArgsText, 
          TestCaseArgTypes&&... testCaseArgs)
@@ -131,7 +129,7 @@ namespace ZenUnit
       }
 
       template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename... TestCaseArgTypes>
-      std::nullptr_t RegisterTest8X8(const PmfToken* pmfToken,
+      static std::nullptr_t RegisterTest8X8(const PmfToken* pmfToken,
          void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type),
          const char* testName, const char*, unsigned, const char* testCaseArgsText, 
          TestCaseArgTypes&&... testCaseArgs)
@@ -143,7 +141,7 @@ namespace ZenUnit
       }
 
       template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type, typename... TestCaseArgTypes>
-      std::nullptr_t RegisterTest9X9(const PmfToken* pmfToken,
+      static std::nullptr_t RegisterTest9X9(const PmfToken* pmfToken,
          void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type),
          const char* testName, const char*, unsigned, const char* testCaseArgsText, 
          TestCaseArgTypes&&... testCaseArgs)
@@ -155,7 +153,7 @@ namespace ZenUnit
       }
 
       template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type, typename Arg10Type, typename... TestCaseArgTypes>
-      std::nullptr_t RegisterTest10X10(const PmfToken* pmfToken,
+      static std::nullptr_t RegisterTest10X10(const PmfToken* pmfToken,
          void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type),
          const char* testName, const char*, unsigned, const char* testCaseArgsText, 
          TestCaseArgTypes&&... testCaseArgs)
