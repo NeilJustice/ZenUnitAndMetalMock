@@ -138,7 +138,7 @@ namespace ZenUnit
       _testClassResultSelfMocked.PrintResultLine(&consoleMock);
       //
       ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.AssertCalledOnce());
-      ZEN(consoleMock.WriteColorMock.AssertCalledOnceWith("[ OK ]", Color::Green));
+      ZEN(consoleMock.WriteColorMock.AssertCalledOnceWith("[  OK  ]", Color::Green));
       ZEN(consoleMock.WriteNewlineMock.AssertCalledOnce());
    }
 

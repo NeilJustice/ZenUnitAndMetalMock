@@ -38,7 +38,7 @@ namespace ZenUnit
       const size_t numberOfFailedTestCases = NumberOfFailedTestCases();
       if (numberOfFailedTestCases == 0)
       {
-         console->WriteColor("[ OK ]", Color::Green);
+         console->WriteColor("[  OK  ]", Color::Green);
       }
       else
       {
