@@ -12,7 +12,7 @@ namespace ZenUnit
       const PmfToken* _testNXNPmfToken;
    public:
       SpecSectionTestNXN(const char* testClassName, const char* testName, const PmfToken* pmfToken)
-         : Test(testClassName, testName)
+         : Test(testClassName, testName, 0)
          , _testNXNPmfToken(pmfToken)
       {
       }

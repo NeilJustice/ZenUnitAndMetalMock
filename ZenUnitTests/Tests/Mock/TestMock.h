@@ -3,10 +3,10 @@
 
 struct TestMock : public Zen::Mock<Test>
 {
-   TestMock() : Zen::Mock<Test>("", "") {}
+   TestMock() : Zen::Mock<Test>("", "", unsigned char(0)) {}
 
    ZENMOCK_NONVOID0_CONST(const char*, Name)
-   ZENMOCK_NONVOID0_CONST(string, TestsAndTestLines)
+   ZENMOCK_NONVOID0_CONST(string, FullTestName)
    ZENMOCK_NONVOID0_CONST(string, FileLineString)
    ZENMOCK_NONVOID0_CONST(size_t, NumberOfTestCases)
    ZENMOCK_VOID1_CONST(PrintPostTestNameMessage, const Console*)

@@ -8,7 +8,6 @@ namespace ZenUnit
    class TestNXN : public Test
    {
       friend class TestNXNTests;
-      static_assert(sizeof...(TestCaseArgTypes) > 0, "NumberOfTestCaseArgs > 0");
    private:
       const size_t NumberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
       std::unique_ptr<const Console> _console;
@@ -17,14 +16,14 @@ namespace ZenUnit
       size_t _testCaseArgsIndex;
       std::vector<std::string> _testCaseArgStrings;
    protected:
-      std::tuple<typename std::decay<TestCaseArgTypes>::type...> _testCaseArgs;
+      const std::tuple<typename std::decay<TestCaseArgTypes>::type...> _testCaseArgs;
    public:
       TestNXN(
          const char* testClassName,
          const char* testName,
          const char* testCaseArgsText,
          TestCaseArgTypes&&... testCaseArgs)
-         : Test(testClassName, testName)
+         : Test(testClassName, testName, N)
          , _console(new Console)
          , _testCaseArgsText(testCaseArgsText)
          , _testCaseArgsIndex(0)
@@ -35,28 +34,8 @@ namespace ZenUnit
 
       size_t NumberOfTestCases() const override
       {
-         size_t numberOfTestCases = NumberOfTestCaseArgs / N;
+         const size_t numberOfTestCases = NumberOfTestCaseArgs / N;
          return numberOfTestCases;
-      }
-
-      std::vector<TestResult> Run() override
-      {
-         std::vector<TestResult> testResults;
-         size_t numberOfTestCases = NumberOfTestCases();
-         testResults.reserve(numberOfTestCases);
-         assert_true(_testCaseArgsIndex == 0);
-         for (unsigned short testCaseIndex = 0;
-              _testCaseArgsIndex < NumberOfTestCaseArgs;
-              _testCaseArgsIndex += N, ++testCaseIndex)
-         {
-            PrintTestCaseNumberArgsArrow(testCaseIndex);
-            TestResult testResult = MockableCallBaseRunTestCase();
-            testResult.testCaseIndex = testCaseIndex;
-            testResults.push_back(testResult);
-            PrintOKIfTestPassed(testResult);
-         }
-         _testCaseArgsIndex = 0;
-         return testResults;
       }
 
       void NewTestClass() override
@@ -73,7 +52,31 @@ namespace ZenUnit
       {
          NXNTestBody(_testClass.get(), _testCaseArgsIndex);
       }
-      virtual void NXNTestBody(TestClassType*, size_t) { throw std::logic_error("N/A"); }
+      
+      virtual void NXNTestBody(TestClassType*, size_t) 
+      { 
+         throw std::logic_error("N/A"); 
+      }
+
+      std::vector<TestResult> Run() override
+      {
+         std::vector<TestResult> testResults;
+         const size_t numberOfTestCases = NumberOfTestCases();
+         testResults.reserve(numberOfTestCases);
+         assert_true(_testCaseArgsIndex == 0);
+         for (unsigned short testCaseIndex = 0;
+              _testCaseArgsIndex < NumberOfTestCaseArgs;
+              _testCaseArgsIndex += N, ++testCaseIndex)
+         {
+            PrintTestCaseNumberArgsThenArrow(testCaseIndex);
+            TestResult testResult = MockableCallBaseRunTestCase();
+            testResult.testCaseIndex = testCaseIndex;
+            testResults.push_back(testResult);
+            PrintOKIfTestPassed(testResult);
+         }
+         _testCaseArgsIndex = 0;
+         return testResults;
+      }
 
       void Cleanup() override
       {
@@ -87,19 +90,19 @@ namespace ZenUnit
    private:
       virtual TestResult MockableCallBaseRunTestCase()
       {
-         TestResult testResult = RunTestCase();
+         const TestResult testResult = RunTestCase();
          return testResult;
       }
 
-      virtual void PrintTestCaseNumberArgsArrow(unsigned short testCaseIndex) const
+      virtual void PrintTestCaseNumberArgsThenArrow(unsigned short testCaseIndex) const
       {
          assert_true(testCaseIndex >= 0);
          _console->WriteColor(" [", Color::Green);
-         std::string testCaseNumber = std::to_string(testCaseIndex + 1);
+         const std::string testCaseNumber = std::to_string(testCaseIndex + 1);
          _console->Write(testCaseNumber);
          _console->WriteColor("]", Color::Green);
          _console->Write(" (");
-         size_t testCaseArgsPrintingStartIndex = static_cast<size_t>(testCaseIndex) * N;
+         const size_t testCaseArgsPrintingStartIndex = static_cast<size_t>(testCaseIndex) * N;
          _console->PrintStringsCommaSeparated(_testCaseArgStrings, testCaseArgsPrintingStartIndex, N);
          _console->Write(") -> ");
       }

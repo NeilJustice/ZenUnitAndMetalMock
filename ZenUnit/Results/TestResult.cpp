@@ -153,7 +153,7 @@ namespace ZenUnit
       {
          const string testFailureNumber = testFailureNumberer->Next();
          console->WriteLine(testFailureNumber);
-         console->Write(classNameTestName.TestsAndTestLines());
+         console->Write(classNameTestName.Value());
          const CallResult& responsibleCallResult = (this->*responsibleCallResultField);
          const char* const responsibleTestPhaseSuffix = 
             TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
@@ -167,7 +167,7 @@ namespace ZenUnit
       {
          const string testFailureNumber = testFailureNumberer->Next();
          console->WriteLine(testFailureNumber);
-         console->Write(classNameTestName.TestsAndTestLines());
+         console->Write(classNameTestName.Value());
          const CallResult& responsibleCallResult = this->*responsibleCallResultField;
          const char* const responsibleTestPhaseSuffix = 
             TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
@@ -186,7 +186,7 @@ namespace ZenUnit
          assert_true(testOutcome == TestOutcome::SuccessButPastDeadline);
          const string testFailureNumber = testFailureNumberer->Next();
          console->WriteLine(testFailureNumber);
-         console->WriteLine(classNameTestName.TestsAndTestLines());
+         console->WriteLine(classNameTestName.Value());
          WriteTestCaseNumberIfAny(console, testCaseIndex);
          console->WriteLine(String::Concat(
             "\nFailed because test took longer than -maxtestms= (", milliseconds, " ms)"));
@@ -206,7 +206,7 @@ namespace ZenUnit
    }
 
    const TestResult TestResult::TestingNonDefault =
-      TestResult::ConstructorFail(ClassNameTestName("Non", "Default"), CallResult());
+      TestResult::ConstructorFail(ClassNameTestName("Non", "Default", 0), CallResult());
 }
 
 void ZenUnitEqualizer<ZenUnit::TestResult>::

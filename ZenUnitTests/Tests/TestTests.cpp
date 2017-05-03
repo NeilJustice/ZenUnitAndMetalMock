@@ -10,7 +10,7 @@ class TestingTest : public Test
 {
 public:
    TestingTest(const char* testClassName, const char* testName)
-      : Test(testClassName, testName) {}
+      : Test(testClassName, testName, 0) {}
 
    size_t NumberOfTestCases() const override { return 0; }
    std::vector<TestResult> Run() override { return std::vector<TestResult>(); }
@@ -52,7 +52,7 @@ namespace ZenUnit
 
    TEST(TwoArgConstructor_NewsComponents_SetsFullName_NameFunctionReturnsTestName)
    {
-      TestingTest testingTest("TestClass", "TestName");
+      TestingTest testingTest("Tests", "Test");
       WAS_NEWED(testingTest._tryCatchCaller);
       WAS_NEWED(testingTest._testResultFactory);
       ARE_EQUAL(FileLine(), testingTest._fileLine);
@@ -60,8 +60,8 @@ namespace ZenUnit
       const char* const testName = testingTest.Name();
       ARE_EQUAL(testName, testingTest._classNameTestName.testName);
 
-      const string testsAndTestLines = testingTest.TestsAndTestLines();
-      ARE_EQUAL(testsAndTestLines, testingTest._classNameTestName.TestsAndTestLines());
+      const string fullTestName = testingTest.FullTestName();
+      ARE_EQUAL(fullTestName, testingTest._classNameTestName.Value());
 
       testingTest._fileLine = FileLine("FilePath", 1);
       ARE_EQUAL(testingTest._fileLine.ToString(), testingTest.FileLineString());
@@ -74,7 +74,7 @@ namespace ZenUnit
 
    TEST(PrintPostTestCompletionMessage_DoesNothing)
    {
-      TestResultMock testResultMock;
+      const TestResultMock testResultMock;
       _test->PrintPostTestCompletionMessage(nullptr, testResultMock);
    }
 
@@ -115,7 +115,7 @@ namespace ZenUnit
 
       const TestResult startupFailTestResult = TestResult::TestingNonDefault;
       _testResultFactoryMock->StartupFailMock.ExpectAndReturn(startupFailTestResult);
-      _test->_classNameTestName = ClassNameTestName("Non", "Default");
+      _test->_classNameTestName = ClassNameTestName("Non", "Default", 0);
       //
       const TestResult testResult = _test->RunTestCase();
       //
@@ -137,7 +137,7 @@ namespace ZenUnit
 
       const TestResult sixArgTestResult = TestResult::TestingNonDefault;
       _testResultFactoryMock->FullCtorMock.ExpectAndReturn(sixArgTestResult);
-      _test->_classNameTestName = ClassNameTestName("Non", "Default");
+      _test->_classNameTestName = ClassNameTestName("Non", "Default", 0);
       //
       const TestResult testResult = _test->RunTestCase();
       //

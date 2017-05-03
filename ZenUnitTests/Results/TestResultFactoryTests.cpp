@@ -11,7 +11,7 @@ namespace ZenUnit
    SPECEND
 
    TestResultFactory _testResultFactory;
-   const ClassNameTestName FullNameValue = ClassNameTestName("TestClass", "Test");
+   const ClassNameTestName ClassNameTestNameValue = ClassNameTestName("TestClass", "Test", 0);
    CallResult ConstructorCallResult;
    CallResult StartupCallResult;
    CallResult DestructorCallResult;
@@ -29,40 +29,40 @@ namespace ZenUnit
    TEST(ConstructorFail_ReturnsTestResultConstructorFail)
    {
       const TestResult constructorFailTestResult = 
-         _testResultFactory.ConstructorFail(FullNameValue, ConstructorCallResult);
+         _testResultFactory.ConstructorFail(ClassNameTestNameValue, ConstructorCallResult);
       //
-      const TestResult expectedTestResult = TestResult::ConstructorFail(FullNameValue, ConstructorCallResult);
+      const TestResult expectedTestResult = TestResult::ConstructorFail(ClassNameTestNameValue, ConstructorCallResult);
       ARE_EQUAL(expectedTestResult, constructorFailTestResult);
    }
 
    TEST(StartupFail_ReturnsTestResultStartupFail)
    {
       const TestResult startupFailTestResult = _testResultFactory.StartupFail(
-         FullNameValue, ConstructorCallResult, StartupCallResult, DestructorCallResult);
+         ClassNameTestNameValue, ConstructorCallResult, StartupCallResult, DestructorCallResult);
       //
       const TestResult expectedTestResult = TestResult::StartupFail(
-         FullNameValue, ConstructorCallResult, StartupCallResult, DestructorCallResult);
+         ClassNameTestNameValue, ConstructorCallResult, StartupCallResult, DestructorCallResult);
       ARE_EQUAL(expectedTestResult, startupFailTestResult);
    }
 
    TEST(CtorDtorSuccess_ReturnsTestResultCtorDtorSuccess)
    {
       const TestResult ctorDtorSuccessResult = _testResultFactory.CtorDtorSuccess(
-         FullNameValue, ConstructorCallResult, DestructorCallResult);
+         ClassNameTestNameValue, ConstructorCallResult, DestructorCallResult);
       //
       const TestResult expectedTestResult = TestResult::CtorDtorSuccess(
-         FullNameValue, ConstructorCallResult, DestructorCallResult);
+         ClassNameTestNameValue, ConstructorCallResult, DestructorCallResult);
       ARE_EQUAL(expectedTestResult, ctorDtorSuccessResult);
    }
 
    TEST(FullConstructor_ReturnsTestResultSixArgCtor)
    {
       const TestResult testResult = _testResultFactory.FullCtor(
-         FullNameValue, ConstructorCallResult, StartupCallResult,
+         ClassNameTestNameValue, ConstructorCallResult, StartupCallResult,
          TestBodyCallResult, CleanupCallResult, DestructorCallResult);
       //
       const TestResult expectedTestResult(
-         FullNameValue, ConstructorCallResult, StartupCallResult,
+         ClassNameTestNameValue, ConstructorCallResult, StartupCallResult,
          TestBodyCallResult, CleanupCallResult, DestructorCallResult, TestRunner::GetArgs);
       ARE_EQUAL(expectedTestResult, testResult);
    }

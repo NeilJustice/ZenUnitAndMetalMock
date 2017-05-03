@@ -53,8 +53,8 @@ namespace ZenUnit
 
    TEST(ThreeArgConstructor_SetsTestName_SetsTestNXNPmf)
    {
-      const char* const TestClassName = "TestClassName";
-      const char* const TestName = "TestName";
+      const char* const TestClassName = "Tests";
+      const char* const TestName = "Test";
       //
       const SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests> specifiedTestNXN(
          TestClassName, TestName, PmfToken::Instantiate<decltype(
@@ -62,7 +62,7 @@ namespace ZenUnit
             &TestingTestClass_SpecSectionTestNXNTests::TestFunction>());
       //
       ARE_EQUAL(TestName, specifiedTestNXN.Name());
-      ARE_EQUAL("TESTS(TestClassName)\nTEST(TestName)", specifiedTestNXN.TestsAndTestLines());
+      ARE_EQUAL("TESTS(Tests)\nTEST(Test)", specifiedTestNXN.FullTestName());
       ARE_EQUAL("(0)", specifiedTestNXN.FileLineString());
       const PmfToken* const expectedTestNXNPmfToken = ZenUnit::PmfToken::Instantiate<
          decltype(&TestingTestClass_SpecSectionTestNXNTests::TestFunction),

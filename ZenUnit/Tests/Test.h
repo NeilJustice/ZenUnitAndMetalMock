@@ -17,10 +17,10 @@ namespace ZenUnit
       ClassNameTestName _classNameTestName;
       FileLine _fileLine;
    public:
-      Test(const char* testClassName, const char* testName);
+      Test(const char* testClassName, const char* testName, unsigned char arity);
       virtual ~Test();
       virtual const char* Name() const;
-      virtual std::string TestsAndTestLines() const;
+      virtual std::string FullTestName() const;
       virtual std::string FileLineString() const;
       virtual void PrintPostTestNameMessage(const Console*) const {}
       virtual void PrintPostTestCompletionMessage(const Console*, const TestResult&) const {}
@@ -47,13 +47,13 @@ namespace ZenUnit
 
    #ifdef __linux__
       #if __clang_major__ == 3 && __clang_minor__ == 9
-         static_assert(sizeof(Test) == 56, "Debug sizeof(Test) != 56");
+         static_assert(sizeof(Test) == 64, "Debug sizeof(Test) != 64");
       #endif
    #elif _MSC_FULL_VER == 190024215 // VS2015 Update 3
       #ifdef _DEBUG
-         static_assert(sizeof(Test) == 56, "Debug sizeof(Test) != 56");
+         static_assert(sizeof(Test) == 64, "Debug sizeof(Test) != 64");
       #elif NDEBUG
-         static_assert(sizeof(Test) == 56, "Release sizeof(Test) != 56");
+         static_assert(sizeof(Test) == 64, "Release sizeof(Test) != 64");
       #endif
    #endif
 }

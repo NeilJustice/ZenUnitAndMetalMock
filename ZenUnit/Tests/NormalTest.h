@@ -15,7 +15,7 @@ namespace ZenUnit
    public:
       template<typename TestMemberFunctionType>
       NormalTest(const char* testClassName, const char* testName, TestMemberFunctionType testMemberFunction)
-         : Test(testClassName, testName)
+         : Test(testClassName, testName, 0)
          , _testMemberFunction(testMemberFunction)
       {
       }

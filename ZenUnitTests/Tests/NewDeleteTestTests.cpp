@@ -31,7 +31,7 @@ namespace ZenUnit
    {
       NewDeleteTest<TestingTestClass> newDeleteTest(TestClassName);
       ARE_EQUAL("TestClassIsNewableAndDeletable", newDeleteTest.Name());
-      ARE_EQUAL("TESTS(TestClassName)\nTEST(TestClassIsNewableAndDeletable)", newDeleteTest.TestsAndTestLines());
+      ARE_EQUAL("TESTS(TestClassName)\nTEST(TestClassIsNewableAndDeletable)", newDeleteTest.FullTestName());
       ARE_EQUAL("(0)", newDeleteTest.FileLineString());
       WAS_NEWED(newDeleteTest._testResultFactory);
       WAS_NEWED(newDeleteTest._tryCatchCaller);

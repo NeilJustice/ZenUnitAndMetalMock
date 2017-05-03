@@ -21,14 +21,14 @@ namespace ZenUnit
    SPEC(NXNTestBody_ThrowsLogicError)
    SPEC(Cleanup_CallsCleanup)
    SPEC(DeleteTestClass_DeletesTestClass)
-   SPECX(PrintTestCaseNumberArgsArrow_WritesTestCaseNumberArrow)
+   SPECX(PrintTestCaseNumberArgsThenArrow_WritesTestCaseNumberArrow)
    SPEC(PrintOKIfTestPassed_CallsTestResultPrintOKIfTestPassed)
    SPECEND
 
    unique_ptr<TestNXN<TestingTestClass, N, int>> _testNXN;
    ConsoleMock* _consoleMock;
-   const char* const TestClassName = "TestClassName";
-   const char* const TestName = "TestName";
+   const char* const TestClassName = "Tests";
+   const char* const TestName = "Test";
    const char* const TestCaseArgsText = "1, 2, 3";
 
    STARTUP
@@ -47,7 +47,7 @@ namespace ZenUnit
       ARE_EQUAL(TestCaseArgsText, testNXN._testCaseArgsText);
       ARE_EQUAL(0, testNXN._testCaseArgsIndex);
       ARE_EQUAL(TestName, testNXN.Name());
-      ARE_EQUAL("TESTS(TestClassName)\nTEST(TestName)", testNXN.TestsAndTestLines());
+      ARE_EQUAL("TESTS(Tests)\nTEST2X2(Test)", testNXN.FullTestName());
       ARE_EQUAL("(0)", testNXN.FileLineString());
       ARE_EQUAL(4, testNXN.NumberOfTestCaseArgs);
    }
@@ -107,13 +107,13 @@ namespace ZenUnit
       struct Test1X1SelfMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
       {
          ZENMOCK_NONVOID0(TestResult, MockableCallBaseRunTestCase)
-         ZENMOCK_VOID1_CONST(PrintTestCaseNumberArgsArrow, unsigned short)
+         ZENMOCK_VOID1_CONST(PrintTestCaseNumberArgsThenArrow, unsigned short)
          ZENMOCK_VOID1_CONST(PrintOKIfTestPassed, const TestResult&)
          Test1X1SelfMocked()
             : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>("", "", "", 0, 0) {}
       } test1X1SelfMocked;
 
-      test1X1SelfMocked.PrintTestCaseNumberArgsArrowMock.Expect();
+      test1X1SelfMocked.PrintTestCaseNumberArgsThenArrowMock.Expect();
       TestResult firstTestResult;
       firstTestResult.classNameTestName.testName = "FirstTest";
       TestResult secondTestResult;
@@ -123,7 +123,7 @@ namespace ZenUnit
       //
       const vector<TestResult> testResults = test1X1SelfMocked.Run();
       //
-      ZEN(test1X1SelfMocked.PrintTestCaseNumberArgsArrowMock.AssertCalls({ 0, 1 }));
+      ZEN(test1X1SelfMocked.PrintTestCaseNumberArgsThenArrowMock.AssertCalls({ 0, 1 }));
       TestResult expectedFirstTestResult = firstTestResult;
       expectedFirstTestResult.testCaseIndex = 0;
       TestResult expectedSecondTestResult = secondTestResult;
@@ -207,7 +207,7 @@ namespace ZenUnit
       IS_TRUE(TestingTestClass::s_destructorCalled);
    }
 
-   TEST3X3(PrintTestCaseNumberArgsArrow_WritesTestCaseNumberArrow,
+   TEST3X3(PrintTestCaseNumberArgsThenArrow_WritesTestCaseNumberArrow,
       unsigned short testCaseIndex, int expectedTestCaseNumber, size_t expectedTestCaseArgsPrintingStartIndex,
       static_cast<unsigned short>(0), 1, 0ull,
       static_cast<unsigned short>(1), 2, 1ull)
@@ -217,7 +217,7 @@ namespace ZenUnit
       _consoleMock->PrintStringsCommaSeparatedMock.Expect();
       _testNXN->_testCaseArgStrings = { "Arg0", "Arg1" };
       //
-      _testNXN->PrintTestCaseNumberArgsArrow(testCaseIndex);
+      _testNXN->PrintTestCaseNumberArgsThenArrow(testCaseIndex);
       //
       ZEN(_consoleMock->WriteColorMock.AssertCalls(
       {

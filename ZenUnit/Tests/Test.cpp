@@ -5,10 +5,10 @@
 
 namespace ZenUnit
 {
-   Test::Test(const char* testClassName, const char* testName)
+   Test::Test(const char* testClassName, const char* testName, unsigned char arity)
       : _tryCatchCaller(new TryCatchCaller)
       , _testResultFactory(new TestResultFactory)
-      , _classNameTestName(testClassName, testName)
+      , _classNameTestName(testClassName, testName, arity)
    {
    }
 
@@ -19,9 +19,9 @@ namespace ZenUnit
       return _classNameTestName.testName;
    }
 
-   std::string Test::TestsAndTestLines() const
+   std::string Test::FullTestName() const
    {
-      return _classNameTestName.TestsAndTestLines();
+      return _classNameTestName.Value();
    }
 
    string Test::FileLineString() const
