@@ -5,33 +5,33 @@
 namespace ZenUnit
 {
    TestResult TestResultFactory::ConstructorFail(
-      const ClassNameTestName& classNameTestName,
+      const FullTestName& fullTestName,
       const CallResult& constructorCallResult) const
    {
-      return TestResult::ConstructorFail(classNameTestName, constructorCallResult);
+      return TestResult::ConstructorFail(fullTestName, constructorCallResult);
    }
 
    TestResult TestResultFactory::StartupFail(
-      const ClassNameTestName& classNameTestName,
+      const FullTestName& fullTestName,
       const CallResult& constructorCallResult,
       const CallResult& startupCallResult,
       const CallResult& destructorCallResult) const
    {
       return TestResult::StartupFail(
-         classNameTestName, constructorCallResult, startupCallResult, destructorCallResult);
+         fullTestName, constructorCallResult, startupCallResult, destructorCallResult);
    }
 
    TestResult TestResultFactory::CtorDtorSuccess(
-      const ClassNameTestName& classNameTestName,
+      const FullTestName& fullTestName,
       const CallResult& constructorCallResult,
       const CallResult& destructorCallResult) const
    {
       return TestResult::CtorDtorSuccess(
-         classNameTestName, constructorCallResult, destructorCallResult);
+         fullTestName, constructorCallResult, destructorCallResult);
    }
 
    TestResult TestResultFactory::FullCtor(
-      const ClassNameTestName& classNameTestName,
+      const FullTestName& fullTestName,
       const CallResult& constructorCallResult,
       const CallResult& startupCallResult,
       const CallResult& testBodyCallResult,
@@ -39,7 +39,7 @@ namespace ZenUnit
       const CallResult& destructorCallResult) const
    {
       return TestResult(
-         classNameTestName,
+         fullTestName,
          constructorCallResult,
          startupCallResult,
          testBodyCallResult,

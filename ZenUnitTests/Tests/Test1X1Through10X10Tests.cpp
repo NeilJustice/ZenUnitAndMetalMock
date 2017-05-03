@@ -27,8 +27,8 @@ namespace ZenUnit
    void AssertTwoExpectedTestResults(const vector<TestResult>& testResults, unsigned char expectedArity)
    {
       ARE_EQUAL(2, testResults.size());
-      ARE_EQUAL(ClassNameTestName(TestClassName, TestName, expectedArity), testResults[0].classNameTestName);
-      ARE_EQUAL(ClassNameTestName(TestClassName, TestName, expectedArity), testResults[1].classNameTestName);
+      ARE_EQUAL(FullTestName(TestClassName, TestName, expectedArity), testResults[0].fullTestName);
+      ARE_EQUAL(FullTestName(TestClassName, TestName, expectedArity), testResults[1].fullTestName);
       ARE_EQUAL(TestOutcome::Success, testResults[0].testOutcome);
       ARE_EQUAL(TestOutcome::Success, testResults[1].testOutcome);
    }

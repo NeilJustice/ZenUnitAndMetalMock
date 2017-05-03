@@ -33,13 +33,13 @@ namespace ZenUnit
          if (constructorCallResult.testOutcome != TestOutcome::Success)
          {
             const TestResult constructorFail = _testResultFactory->
-               ConstructorFail(_classNameTestName, constructorCallResult);
+               ConstructorFail(_fullTestName, constructorCallResult);
             return { constructorFail };
          }
          const CallResult destructorCallResult = _tryCatchCaller->
             Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
          const TestResult testResult = _testResultFactory->
-            CtorDtorSuccess(_classNameTestName, constructorCallResult, destructorCallResult);
+            CtorDtorSuccess(_fullTestName, constructorCallResult, destructorCallResult);
          return { testResult };
       }
 

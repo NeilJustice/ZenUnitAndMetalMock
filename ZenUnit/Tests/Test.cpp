@@ -8,7 +8,7 @@ namespace ZenUnit
    Test::Test(const char* testClassName, const char* testName, unsigned char arity)
       : _tryCatchCaller(new TryCatchCaller)
       , _testResultFactory(new TestResultFactory)
-      , _classNameTestName(testClassName, testName, arity)
+      , _fullTestName(testClassName, testName, arity)
    {
    }
 
@@ -16,12 +16,12 @@ namespace ZenUnit
 
    const char* Test::Name() const
    {
-      return _classNameTestName.testName;
+      return _fullTestName.testName;
    }
 
    std::string Test::FullTestName() const
    {
-      return _classNameTestName.Value();
+      return _fullTestName.Value();
    }
 
    string Test::FileLineString() const
@@ -62,7 +62,7 @@ namespace ZenUnit
       if (constructorCallResult.testOutcome != TestOutcome::Success)
       {
          const TestResult constructorFail = _testResultFactory->
-            ConstructorFail(_classNameTestName, constructorCallResult);
+            ConstructorFail(_fullTestName, constructorCallResult);
          return constructorFail;
       }
       const CallResult startupCallResult = _tryCatchCaller->
@@ -72,7 +72,7 @@ namespace ZenUnit
          const CallResult destructorCallResult = _tryCatchCaller->
             Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
          const TestResult startupFail = _testResultFactory->
-            StartupFail(_classNameTestName, constructorCallResult, startupCallResult, destructorCallResult);
+            StartupFail(_fullTestName, constructorCallResult, startupCallResult, destructorCallResult);
          return startupFail;
       }
       const CallResult testBodyCallResult = _tryCatchCaller->
@@ -82,7 +82,7 @@ namespace ZenUnit
       const CallResult destructorCallResult = _tryCatchCaller->
          Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
       const TestResult testResult = _testResultFactory->
-         FullCtor(_classNameTestName, constructorCallResult, startupCallResult,
+         FullCtor(_fullTestName, constructorCallResult, startupCallResult,
             testBodyCallResult, cleanupCallResult, destructorCallResult);
       return testResult;
    }

@@ -42,7 +42,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedTestClassResult, _testClassResult);
 
       TestResult testResult1;
-      testResult1.classNameTestName.testName = "Test1";
+      testResult1.fullTestName.testName = "Test1";
       //
       _testClassResult.AddTestResults({ testResult1 });
       //
@@ -50,7 +50,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedTestClassResult, _testClassResult);
 
       TestResult testResult2;
-      testResult2.classNameTestName.testName = "Test2";
+      testResult2.fullTestName.testName = "Test2";
       //
       _testClassResult.AddTestResults({ testResult1, testResult2 });
       //

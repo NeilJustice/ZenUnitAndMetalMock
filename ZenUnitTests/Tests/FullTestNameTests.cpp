@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "ZenUnit/Tests/ClassNameTestName.h"
+#include "ZenUnit/Tests/FullTestName.h"
 
 namespace ZenUnit
 {
-   TESTS(ClassNameTestNameTests)
+   TESTS(FullTestNameTests)
    SPEC(DefaultConstructor_SetsClassNameAndTestNameToNullptr)
    SPEC(ThreeArgConstructor_SetsFields)
    SPECX(Value_ReturnsExpected)
@@ -12,8 +12,8 @@ namespace ZenUnit
 
    TEST(DefaultConstructor_SetsClassNameAndTestNameToNullptr)
    {
-      const ClassNameTestName defaultTestName;
-      ClassNameTestName expectedDefaultTestName;
+      const FullTestName defaultTestName;
+      FullTestName expectedDefaultTestName;
       expectedDefaultTestName.testClassName = nullptr;
       expectedDefaultTestName.testName = nullptr;
       expectedDefaultTestName.arity = 0;
@@ -22,7 +22,7 @@ namespace ZenUnit
 
    TEST(ThreeArgConstructor_SetsFields)
    {
-      const ClassNameTestName testName("TestClassName", "TestName", 1);
+      const FullTestName testName("TestClassName", "TestName", 1);
       ARE_EQUAL("TestClassName", testName.testClassName);
       ARE_EQUAL("TestName", testName.testName);
       ARE_EQUAL(1, testName.arity);
@@ -35,7 +35,7 @@ namespace ZenUnit
       unsigned char(2), "TEST2X2",
       unsigned char(3), "TEST3X3")
    {
-      const ClassNameTestName testName("Tests", "Test", arity);
+      const FullTestName testName("Tests", "Test", arity);
       string expectedValue = "TESTS(Tests)\n" + 
          expectedTestTypeName + "(Test)";
       ARE_EQUAL(expectedValue, testName.Value());
@@ -43,11 +43,11 @@ namespace ZenUnit
 
    TEST(ZenUnitEqualizer_ThrowsIfClassNameOrTestNameNotEqual)
    {
-      EQUALIZER_THROWS_INIT(ClassNameTestName);
-      EQUALIZER_THROWS(ClassNameTestName, testClassName, "TestClassName");
-      EQUALIZER_THROWS(ClassNameTestName, testName, "TestName");
-      EQUALIZER_THROWS(ClassNameTestName, arity, unsigned char(1));
+      EQUALIZER_THROWS_INIT(FullTestName);
+      EQUALIZER_THROWS(FullTestName, testClassName, "TestClassName");
+      EQUALIZER_THROWS(FullTestName, testName, "TestName");
+      EQUALIZER_THROWS(FullTestName, arity, unsigned char(1));
    }
 
-   }; RUN(ClassNameTestNameTests)
+   }; RUN(FullTestNameTests)
 }

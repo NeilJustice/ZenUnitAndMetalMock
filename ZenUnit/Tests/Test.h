@@ -1,6 +1,6 @@
 #pragma once
 #include "ZenUnit/Results/TestResult.h"
-#include "ZenUnit/Tests/ClassNameTestName.h"
+#include "ZenUnit/Tests/FullTestName.h"
 
 namespace ZenUnit
 {
@@ -14,7 +14,7 @@ namespace ZenUnit
       std::unique_ptr<const TryCatchCaller> _tryCatchCaller;
       std::unique_ptr<const TestResultFactory> _testResultFactory;
    protected:
-      ClassNameTestName _classNameTestName;
+      FullTestName _fullTestName;
       FileLine _fileLine;
    public:
       Test(const char* testClassName, const char* testName, unsigned char arity);

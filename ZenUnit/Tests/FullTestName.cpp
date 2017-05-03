@@ -1,24 +1,24 @@
 #include "pch.h"
-#include "ClassNameTestName.h"
+#include "FullTestName.h"
 #include "ZenUnit/Macros/ARE_EQUAL.h"
 
 namespace ZenUnit
 {
-   ClassNameTestName::ClassNameTestName()
+   FullTestName::FullTestName()
       : testClassName(nullptr)
       , testName(nullptr)
       , arity(0)
    {
    }
 
-   ClassNameTestName::ClassNameTestName(const char* testClassName, const char* testName, unsigned char arity)
+   FullTestName::FullTestName(const char* testClassName, const char* testName, unsigned char arity)
       : testClassName(testClassName)
       , testName(testName)
       , arity(arity)
    {
    }
 
-   string ClassNameTestName::Value() const
+   string FullTestName::Value() const
    {
       if (arity == 0)
       {
@@ -34,12 +34,12 @@ namespace ZenUnit
    }
 }
 
-void ZenUnitEqualizer<ZenUnit::ClassNameTestName>::
+void ZenUnitEqualizer<ZenUnit::FullTestName>::
 AssertEqual(
-   const ZenUnit::ClassNameTestName& expectedClassNameTestName,
-   const ZenUnit::ClassNameTestName& actualClassNameTestName)
+   const ZenUnit::FullTestName& expectedFullTestName,
+   const ZenUnit::FullTestName& actualFullTestName)
 {
-   ARE_EQUAL(expectedClassNameTestName.testClassName, actualClassNameTestName.testClassName);
-   ARE_EQUAL(expectedClassNameTestName.testName, actualClassNameTestName.testName);
-   ARE_EQUAL(expectedClassNameTestName.arity, actualClassNameTestName.arity);
+   ARE_EQUAL(expectedFullTestName.testClassName, actualFullTestName.testClassName);
+   ARE_EQUAL(expectedFullTestName.testName, actualFullTestName.testName);
+   ARE_EQUAL(expectedFullTestName.arity, actualFullTestName.arity);
 }

@@ -17,11 +17,11 @@ namespace ZenUnit
    }
 
    TestResult TestResult::ConstructorFail(
-      const ClassNameTestName& classNameTestName,
+      const FullTestName& fullTestName,
       const CallResult& constructorCallResult)
    {
       TestResult constructorFailTestResult;
-      constructorFailTestResult.classNameTestName = classNameTestName;
+      constructorFailTestResult.fullTestName = fullTestName;
       constructorFailTestResult.constructorCallResult = constructorCallResult;
       constructorFailTestResult.testOutcome = constructorCallResult.testOutcome;
       constructorFailTestResult.milliseconds = constructorCallResult.milliseconds;
@@ -30,7 +30,7 @@ namespace ZenUnit
    }
 
    TestResult TestResult::StartupFail(
-      const ClassNameTestName& classNameTestName,
+      const FullTestName& fullTestName,
       const CallResult& constructorCallResult,
       const CallResult& startupCallResult,
       const CallResult& destructorCallResult)
@@ -38,7 +38,7 @@ namespace ZenUnit
       assert_true(constructorCallResult.testOutcome == TestOutcome::Success);
       assert_true(destructorCallResult.testOutcome == TestOutcome::Success);
       TestResult startupFail;
-      startupFail.classNameTestName = classNameTestName;
+      startupFail.fullTestName = fullTestName;
       startupFail.testOutcome = startupCallResult.testOutcome;
       startupFail.constructorCallResult = constructorCallResult;
       startupFail.startupCallResult = startupCallResult;
@@ -50,14 +50,14 @@ namespace ZenUnit
    }
 
    TestResult TestResult::CtorDtorSuccess(
-      const ClassNameTestName& classNameTestName,
+      const FullTestName& fullTestName,
       const CallResult& constructorCallResult,
       const CallResult& destructorCallResult)
    {
       assert_true(constructorCallResult.testOutcome == TestOutcome::Success);
       assert_true(destructorCallResult.testOutcome == TestOutcome::Success);
       TestResult ctorDtorSuccess;
-      ctorDtorSuccess.classNameTestName = classNameTestName;
+      ctorDtorSuccess.fullTestName = fullTestName;
       ctorDtorSuccess.testOutcome = TestOutcome::Success;
       ctorDtorSuccess.constructorCallResult = constructorCallResult;
       ctorDtorSuccess.destructorCallResult = destructorCallResult;
@@ -67,14 +67,14 @@ namespace ZenUnit
    }
 
    TestResult::TestResult(
-      const ClassNameTestName& classNameTestName,
+      const FullTestName& fullTestName,
       const CallResult& constructorCallResult,
       const CallResult& startupCallResult,
       const CallResult& testBodyCallResult,
       const CallResult& cleanupCallResult,
       const CallResult& destructorCallResult,
       const function<ZenUnitArgs()>& getArgs)
-      : classNameTestName(classNameTestName)
+      : fullTestName(fullTestName)
       , constructorCallResult(constructorCallResult)
       , startupCallResult(startupCallResult)
       , testBodyCallResult(testBodyCallResult)
@@ -153,7 +153,7 @@ namespace ZenUnit
       {
          const string testFailureNumber = testFailureNumberer->Next();
          console->WriteLine(testFailureNumber);
-         console->Write(classNameTestName.Value());
+         console->Write(fullTestName.Value());
          const CallResult& responsibleCallResult = (this->*responsibleCallResultField);
          const char* const responsibleTestPhaseSuffix = 
             TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
@@ -167,7 +167,7 @@ namespace ZenUnit
       {
          const string testFailureNumber = testFailureNumberer->Next();
          console->WriteLine(testFailureNumber);
-         console->Write(classNameTestName.Value());
+         console->Write(fullTestName.Value());
          const CallResult& responsibleCallResult = this->*responsibleCallResultField;
          const char* const responsibleTestPhaseSuffix = 
             TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
@@ -186,7 +186,7 @@ namespace ZenUnit
          assert_true(testOutcome == TestOutcome::SuccessButPastDeadline);
          const string testFailureNumber = testFailureNumberer->Next();
          console->WriteLine(testFailureNumber);
-         console->WriteLine(classNameTestName.Value());
+         console->WriteLine(fullTestName.Value());
          WriteTestCaseNumberIfAny(console, testCaseIndex);
          console->WriteLine(String::Concat(
             "\nFailed because test took longer than -maxtestms= (", milliseconds, " ms)"));
@@ -206,13 +206,13 @@ namespace ZenUnit
    }
 
    const TestResult TestResult::TestingNonDefault =
-      TestResult::ConstructorFail(ClassNameTestName("Non", "Default", 0), CallResult());
+      TestResult::ConstructorFail(FullTestName("Non", "Default", 0), CallResult());
 }
 
 void ZenUnitEqualizer<ZenUnit::TestResult>::
 AssertEqual(const ZenUnit::TestResult& expectedTestResult, const ZenUnit::TestResult& actualTestResult)
 {
-   ARE_EQUAL(expectedTestResult.classNameTestName, actualTestResult.classNameTestName);
+   ARE_EQUAL(expectedTestResult.fullTestName, actualTestResult.fullTestName);
    ARE_EQUAL(expectedTestResult.constructorCallResult, actualTestResult.constructorCallResult);
    ARE_EQUAL(expectedTestResult.startupCallResult, actualTestResult.startupCallResult);
    ARE_EQUAL(expectedTestResult.testBodyCallResult, actualTestResult.testBodyCallResult);
