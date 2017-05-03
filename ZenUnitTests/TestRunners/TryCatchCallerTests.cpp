@@ -143,7 +143,7 @@ namespace ZenUnit
       expectedCallResult.testOutcome = TestOutcome::Exception;
       expectedCallResult.anomalyOrException
          = make_shared<AnomalyOrException>(Type::GetName<runtime_error>(), "runtime_error_what");
-      ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nException", Color::Red));
+      ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nUncaught Exception", Color::Red));
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.AssertCalledOnceWith(nonHardcodedTestPhase));
       ZEN(_consoleMock->WriteMock.AssertCalledOnceWith(TestPhaseSuffix));
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(R"(

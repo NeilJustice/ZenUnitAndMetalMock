@@ -297,6 +297,7 @@ namespace ZenUnit
       _testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.Expect();
 
       _consoleMock.WriteMock.Expect();
+      _consoleMock.WriteLineColorMock.Expect();
       _consoleMock.WriteLineMock.Expect();
       _consoleMock.WriteNewlineMock.Expect();
       //
@@ -307,12 +308,13 @@ namespace ZenUnit
          AssertCalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex));
       ZEN(_consoleMock.WriteMock.AssertCalledOnceWith(
          _testResult_WriteTestCaseNumberIfAnyMocked.classNameTestName.TestsAndTestLines()));
+      ZEN(_consoleMock.WriteLineColorMock.AssertCalledOnceWith("Uncaught Exception", Color::Red));
       ZEN(_consoleMock.WriteLineMock.AssertCalls(
       {
          TestFailureNumber,
          expectedTestPhaseSuffix,
-         "Threw exception: " + ExceptionTypeName,
-         "what(): \""s + ExceptionWhat + "\""
+         "  Type: " + ExceptionTypeName + "\n"
+         "what(): \"" + ExceptionWhat + "\""
       }));
       ZEN(_consoleMock.WriteNewlineMock.AssertCalledOnce());
    }

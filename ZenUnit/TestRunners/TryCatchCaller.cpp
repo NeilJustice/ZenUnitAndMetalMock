@@ -52,7 +52,7 @@ namespace ZenUnit
       catch (const exception& e)
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
-         _console->WriteColor("\nException", Color::Red);
+         _console->WriteColor("\nUncaught Exception", Color::Red);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          const string exceptionTypeNameAndWhat = String::Concat(

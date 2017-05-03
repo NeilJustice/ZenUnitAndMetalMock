@@ -172,13 +172,12 @@ namespace ZenUnit
          const CallResult& responsibleCallResult = this->*responsibleCallResultField;
          const char* const responsibleTestPhaseSuffix = 
             TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
-         const string uncaughtExceptionTypeLine = String::Concat(
-            "Threw exception: ", *responsibleCallResult.anomalyOrException->exceptionTypeName);
-         const string exceptionwWhatLine = String::Concat(
+         const string exceptionTypeAndWhatLines = String::Concat(
+            "  Type: ", *responsibleCallResult.anomalyOrException->exceptionTypeName, '\n',
             "what(): \"", *responsibleCallResult.anomalyOrException->exceptionWhat, "\"");
          console->WriteLine(responsibleTestPhaseSuffix);
-         console->WriteLine(uncaughtExceptionTypeLine);
-         console->WriteLine(exceptionwWhatLine);
+         console->WriteLineColor("Uncaught Exception", Color::Red);
+         console->WriteLine(exceptionTypeAndWhatLines);
          console->WriteNewline();
          break;
       }
