@@ -17,8 +17,8 @@ namespace ZenUnit
    SPEC(Run_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
    SPEC(NewTestClass_NewsTestClass)
    SPEC(Startup_CallsTestClassStartup)
-   SPEC(TestBody_CallsNXNTestBody)
-   SPEC(NXNTestBody_ThrowsLogicError)
+   SPEC(TestBody_CallsRunNXNTestCase)
+   SPEC(RunNXNTestCase_ThrowsLogicError)
    SPEC(Cleanup_CallsCleanup)
    SPEC(DeleteTestClass_DeletesTestClass)
    SPECX(PrintTestCaseNumberArgsThenArrow_WritesTestCaseNumberArrow)
@@ -163,28 +163,28 @@ namespace ZenUnit
       ZEN(_testNXN->_testClass->StartupMock.AssertCalledOnce());
    }
 
-   TEST(TestBody_CallsNXNTestBody)
+   TEST(TestBody_CallsRunNXNTestCase)
    {
-      struct TestNXN_NXNTestBodyMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int>>
+      struct TestNXN_RunNXNTestCaseMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int>>
       {
-         ZENMOCK_VOID2(NXNTestBody, TestingTestClass*, size_t)
-         TestNXN_NXNTestBodyMocked()
+         ZENMOCK_VOID2(RunNXNTestCase, TestingTestClass*, size_t)
+         TestNXN_RunNXNTestCaseMocked()
             : Zen::Mock<TestNXN<TestingTestClass, 1, int>>("", "", "", 0) {}
-      } testNXN_NXNTestBodyMocked;
+      } testNXN_RunNXNTestCaseMocked;
 
-      testNXN_NXNTestBodyMocked._testClass = make_unique<TestingTestClass>();
-      testNXN_NXNTestBodyMocked._testCaseArgsIndex = 1;
-      testNXN_NXNTestBodyMocked.NXNTestBodyMock.Expect();
+      testNXN_RunNXNTestCaseMocked._testClass = make_unique<TestingTestClass>();
+      testNXN_RunNXNTestCaseMocked._testCaseArgsIndex = 1;
+      testNXN_RunNXNTestCaseMocked.RunNXNTestCaseMock.Expect();
       //
-      testNXN_NXNTestBodyMocked.TestBody();
+      testNXN_RunNXNTestCaseMocked.TestBody();
       //
-      ZEN(testNXN_NXNTestBodyMocked.NXNTestBodyMock.AssertCalledOnceWith(
-         testNXN_NXNTestBodyMocked._testClass.get(), testNXN_NXNTestBodyMocked._testCaseArgsIndex));
+      ZEN(testNXN_RunNXNTestCaseMocked.RunNXNTestCaseMock.AssertCalledOnceWith(
+         testNXN_RunNXNTestCaseMocked._testClass.get(), testNXN_RunNXNTestCaseMocked._testCaseArgsIndex));
    }
 
-   TEST(NXNTestBody_ThrowsLogicError)
+   TEST(RunNXNTestCase_ThrowsLogicError)
    {
-      THROWS(_testNXN->NXNTestBody(nullptr, 0), logic_error, "N/A");
+      THROWS(_testNXN->RunNXNTestCase(nullptr, 0), logic_error, "N/A");
    }
 
    TEST(Cleanup_CallsCleanup)

@@ -26,9 +26,9 @@ namespace ZenUnit
       {
          if (!DerivedTestClass::s_allNXNTestsRegistered)
          {
-            Test* newTestNXN = operatorNewTestNXN();
-            std::unordered_map<const PmfToken*, std::unique_ptr<Test>>&
-               testNXNPmfToTest = DerivedTestClass::s_testNXNPmfTokenToTest;
+            Test* const newTestNXN = operatorNewTestNXN();
+            std::unordered_map<const PmfToken*, std::unique_ptr<Test>>& testNXNPmfToTest
+               = DerivedTestClass::s_testNXNPmfTokenToTest;
             const bool didEmplaceTestNXN = testNXNPmfToTest.emplace(pmfToken, newTestNXN).second;
             assert_true(didEmplaceTestNXN);
          }
@@ -37,10 +37,10 @@ namespace ZenUnit
 
       static const std::unique_ptr<ZenUnit::Test>* TestNXNPmfToTest(const PmfToken* pmfToken)
       {
-         const std::unordered_map<const PmfToken*, std::unique_ptr<Test>>&
-            testNXNPmfToTest = DerivedTestClass::s_testNXNPmfTokenToTest;
-         const std::unordered_map<const PmfToken*, std::unique_ptr<Test>>::const_iterator
-            findIter = testNXNPmfToTest.find(pmfToken);
+         const std::unordered_map<const PmfToken*, std::unique_ptr<Test>>& testNXNPmfToTest
+            = DerivedTestClass::s_testNXNPmfTokenToTest;
+         const std::unordered_map<const PmfToken*, std::unique_ptr<Test>>::const_iterator findIter
+            = testNXNPmfToTest.find(pmfToken);
          assert_true(findIter != DerivedTestClass::s_testNXNPmfTokenToTest.end());
          const std::unique_ptr<Test>* const testNXN = &findIter->second;
          return testNXN;
@@ -48,13 +48,13 @@ namespace ZenUnit
 
       template<typename Arg1Type, typename... TestCaseArgTypes>
       std::nullptr_t RegisterTest1X1(const PmfToken* pmfToken,
-         void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type),
+         void (DerivedTestClass::*test1X1Function)(size_t, Arg1Type),
          const char* testName, const char*, unsigned, const char* testCaseArgsText, 
          TestCaseArgTypes&&... testCaseArgs)
       {
          return RegisterTestNXN(pmfToken, [&]{ return new ZenUnit::Test1X1<
             DerivedTestClass, Arg1Type, TestCaseArgTypes...>(
-               DerivedTestClass::ZenUnitTestClassName, testName, nxnTestFunction,
+               DerivedTestClass::ZenUnitTestClassName, testName, test1X1Function,
                testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...); });
       }
 

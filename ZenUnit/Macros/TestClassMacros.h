@@ -21,7 +21,7 @@
    private: \
       using TestClassType = CrystalClearTestClassName; \
    public: \
-      static constexpr const char* ZenUnitTestClassName = #CrystalClearTestClassName; \
+      static constexpr const char* const ZenUnitTestClassName = #CrystalClearTestClassName; \
       static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> s_testNXNPmfTokenToTest; \
       static bool s_allNXNTestsRegistered; \
       static std::vector<std::unique_ptr<ZenUnit::Test>> GetTests() \

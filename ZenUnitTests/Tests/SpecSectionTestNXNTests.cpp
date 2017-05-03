@@ -29,7 +29,7 @@ namespace ZenUnit
    SPECX(NumberOfTestCases_GetsTestFromAddress_ReturnsTestNumberOfTestCases)
    SPEC(PrintPostTestNameMessage_WriteNewline)
    SPEC(Run_GetsTestFromAddress_RunsTest_ReturnsTestResults)
-   SPEC(GetTestNXNFromPmfToken_ReturnsTestClassTypeTestNXNPmfToTestReturnValue);
+   SPEC(PmfTokenToTest_ReturnsTestClassTypeTestNXNPmfToTestReturnValue);
    SPEC(TestOverrides_EachThrow)
    SPEC(CodeCoverage_TestFunction)
    SPECEND
@@ -39,7 +39,7 @@ namespace ZenUnit
    public:
       SpecSectionTestNXNSelfMocked() : Zen::Mock<SpecSectionTestNXN<
          TestingTestClass_SpecSectionTestNXNTests>>("", "", nullptr) {}
-      ZENMOCK_NONVOID0_CONST(const std::unique_ptr<Test>*, GetTestNXNFromPmfToken)
+      ZENMOCK_NONVOID0_CONST(const std::unique_ptr<Test>*, PmfTokenToTest)
    };
 
    unique_ptr<SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests>> _specSectionTestNXN;
@@ -78,11 +78,11 @@ namespace ZenUnit
       TestMock* testMock = new TestMock;
       testMock->NumberOfTestCasesMock.ExpectAndReturn(testNumberOfTestCases);
       const unique_ptr<Test> testMockUniquePtr(testMock);
-      _specSectionTestNXNSelfMocked->GetTestNXNFromPmfTokenMock.ExpectAndReturn(&testMockUniquePtr);
+      _specSectionTestNXNSelfMocked->PmfTokenToTestMock.ExpectAndReturn(&testMockUniquePtr);
       //
       const size_t numberOfTestCases = _specSectionTestNXNSelfMocked->NumberOfTestCases();
       //
-      ZEN(_specSectionTestNXNSelfMocked->GetTestNXNFromPmfTokenMock.AssertCalledOnce());
+      ZEN(_specSectionTestNXNSelfMocked->PmfTokenToTestMock.AssertCalledOnce());
       ZEN(testMock->NumberOfTestCasesMock.AssertCalledOnce());
       ARE_EQUAL(testNumberOfTestCases, numberOfTestCases);
    }
@@ -103,20 +103,20 @@ namespace ZenUnit
       const vector<TestResult> testTestResults = { TestResult::TestingNonDefault };
       testMock->RunMock.ExpectAndReturn(testTestResults);
       const unique_ptr<Test> testMockUniquePtr(testMock);
-      _specSectionTestNXNSelfMocked->GetTestNXNFromPmfTokenMock.ExpectAndReturn(&testMockUniquePtr);
+      _specSectionTestNXNSelfMocked->PmfTokenToTestMock.ExpectAndReturn(&testMockUniquePtr);
       //
       const vector<TestResult> testResults = _specSectionTestNXNSelfMocked->Run();
       //
-      ZEN(_specSectionTestNXNSelfMocked->GetTestNXNFromPmfTokenMock.AssertCalledOnce());
+      ZEN(_specSectionTestNXNSelfMocked->PmfTokenToTestMock.AssertCalledOnce());
       ZEN(testMock->RunMock.AssertCalledOnce());
       VECTORS_EQUAL(testTestResults, testResults);
    }
 
-   TEST(GetTestNXNFromPmfToken_ReturnsTestClassTypeTestNXNPmfToTestReturnValue)
+   TEST(PmfTokenToTest_ReturnsTestClassTypeTestNXNPmfToTestReturnValue)
    {
       TestingTestClass_SpecSectionTestNXNTests::didCallTestNXNPmfToTest = false;
       //
-      const std::unique_ptr<Test>* testNXN = _specSectionTestNXN->GetTestNXNFromPmfToken();
+      const std::unique_ptr<Test>* testNXN = _specSectionTestNXN->PmfTokenToTest();
       //
       IS_TRUE(TestingTestClass_SpecSectionTestNXNTests::didCallTestNXNPmfToTest);
       ARE_EQUAL(testNXN, &TestingTestClass_SpecSectionTestNXNTests::TestNXNPmfToTestReturnValue);

@@ -9,7 +9,7 @@ namespace ZenUnit
    {
       friend class SpecSectionTestNXNTests;
    private:
-      const PmfToken* _testNXNPmfToken;
+      const PmfToken* const _testNXNPmfToken;
    public:
       SpecSectionTestNXN(const char* testClassName, const char* testName, const PmfToken* pmfToken)
          : Test(testClassName, testName, 0)
@@ -19,7 +19,7 @@ namespace ZenUnit
 
       size_t NumberOfTestCases() const override
       {
-         const std::unique_ptr<Test>* testNXN = GetTestNXNFromPmfToken();
+         const std::unique_ptr<Test>* const testNXN = PmfTokenToTest();
          const size_t numberOfTestCases = (*testNXN)->NumberOfTestCases();
          return numberOfTestCases;
       }
@@ -31,8 +31,8 @@ namespace ZenUnit
 
       std::vector<TestResult> Run() override
       {
-         const std::unique_ptr<Test>* testNXN = GetTestNXNFromPmfToken();
-         const std::vector<TestResult> testResults = (*testNXN)->Run();
+         const std::unique_ptr<Test>* const test = PmfTokenToTest();
+         const std::vector<TestResult> testResults = (*test)->Run();
          return testResults;
       }
 
@@ -42,11 +42,11 @@ namespace ZenUnit
       void Cleanup() override { throw std::logic_error("N/A"); }
       void DeleteTestClass() override { throw std::logic_error("N/A"); }
    private:
-      virtual const std::unique_ptr<Test>* GetTestNXNFromPmfToken() const
+      virtual const std::unique_ptr<Test>* PmfTokenToTest() const
       {
-         const std::unique_ptr<Test>* testNXN = TestClassType::TestNXNPmfToTest(_testNXNPmfToken);
-         assert_true(testNXN != nullptr);
-         return testNXN;
+         const std::unique_ptr<Test>* const test = TestClassType::TestNXNPmfToTest(_testNXNPmfToken);
+         assert_true(test != nullptr);
+         return test;
       }
    };
 }

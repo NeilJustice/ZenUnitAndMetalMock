@@ -24,7 +24,7 @@ namespace ZenUnit
       {
       }
 
-      void NXNTestBody(TestClassType* testClass, size_t testCaseArgsIndex) override
+      void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
          Tuple::Call1ArgMemberFunction(testClass, _test1X1MemberFunction, testCaseArgsIndex, this->_testCaseArgs);
       }
@@ -51,7 +51,7 @@ namespace ZenUnit
       {
       }
 
-      void NXNTestBody(TestClassType* testClass, size_t testCaseArgsIndex) override
+      void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
          Tuple::Call2ArgMemberFunction(testClass, _test2X2MemberFunction, testCaseArgsIndex, this->_testCaseArgs);
       }
@@ -79,7 +79,7 @@ namespace ZenUnit
       {
       }
 
-      void NXNTestBody(TestClassType* testClass, size_t testCaseArgsIndex) override
+      void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
          Tuple::Call3ArgMemberFunction(testClass, _test3X3MemberFunction, testCaseArgsIndex, this->_testCaseArgs);
       }
@@ -108,7 +108,7 @@ namespace ZenUnit
       {
       }
 
-      void NXNTestBody(TestClassType* testClass, size_t testCaseArgsIndex) override
+      void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
          Tuple::Call4ArgMemberFunction(testClass, _test4X4MemberFunction, testCaseArgsIndex, this->_testCaseArgs);
       }
@@ -138,7 +138,7 @@ namespace ZenUnit
       {
       }
 
-      void NXNTestBody(TestClassType* testClass, size_t testCaseArgsIndex) override
+      void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
          Tuple::Call5ArgMemberFunction(testClass, _test5X5MemberFunction, testCaseArgsIndex, this->_testCaseArgs);
       }
@@ -169,7 +169,7 @@ namespace ZenUnit
       {
       }
 
-      void NXNTestBody(TestClassType* testClass, size_t testCaseArgsIndex) override
+      void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
          Tuple::Call6ArgMemberFunction(testClass, _test6X6MemberFunction, testCaseArgsIndex, this->_testCaseArgs);
       }
@@ -201,7 +201,7 @@ namespace ZenUnit
       {
       }
 
-      void NXNTestBody(TestClassType* testClass, size_t testCaseArgsIndex) override
+      void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
          Tuple::Call7ArgMemberFunction(testClass, _test7X7MemberFunction, testCaseArgsIndex, this->_testCaseArgs);
       }
@@ -234,7 +234,7 @@ namespace ZenUnit
       {
       }
 
-      void NXNTestBody(TestClassType* testClass, size_t testCaseArgsIndex) override
+      void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
          Tuple::Call8ArgMemberFunction(testClass, _test8X8MemberFunction, testCaseArgsIndex, this->_testCaseArgs);
       }
@@ -268,7 +268,7 @@ namespace ZenUnit
       {
       }
 
-      void NXNTestBody(TestClassType* testClass, size_t testCaseArgsIndex) override
+      void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
          Tuple::Call9ArgMemberFunction(testClass, _test9X9MemberFunction, testCaseArgsIndex, this->_testCaseArgs);
       }
@@ -303,7 +303,7 @@ namespace ZenUnit
       {
       }
 
-      void NXNTestBody(TestClassType* testClass, size_t testCaseArgsIndex) override
+      void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
          Tuple::Call10ArgMemberFunction(testClass, _test10X10MemberFunction, testCaseArgsIndex, this->_testCaseArgs);
       }

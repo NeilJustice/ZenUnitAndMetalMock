@@ -50,10 +50,10 @@ namespace ZenUnit
 
       void TestBody() override
       {
-         NXNTestBody(_testClass.get(), _testCaseArgsIndex);
+         RunNXNTestCase(_testClass.get(), _testCaseArgsIndex);
       }
       
-      virtual void NXNTestBody(TestClassType*, size_t) 
+      virtual void RunNXNTestCase(TestClassType*, size_t) 
       { 
          throw std::logic_error("N/A"); 
       }
