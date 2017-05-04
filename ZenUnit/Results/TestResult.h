@@ -59,7 +59,7 @@ namespace ZenUnit
 
    #ifdef __linux__
       #if __clang_major__ == 3 && __clang_minor__ == 9
-         static_assert(sizeof(TestResult) == 168, "sizeof(TestResult) != 168");
+         static_assert(sizeof(TestResult) == 176, "sizeof(TestResult) != 176");
       #endif
    #elif _MSC_FULL_VER == 190024215 // VS2015 Update 3
       #ifdef _DEBUG

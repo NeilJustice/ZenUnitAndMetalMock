@@ -30,7 +30,7 @@ namespace ZenUnit
 
    STARTUP
    {
-      _test = make_unique<Test>("", "", unsigned char());
+      _test = make_unique<Test>("", "", static_cast<unsigned char>(0));
       _test->_tryCatchCaller.reset(_tryCatchCallerMock = new TryCatchCallerMock);
       _test->_testResultFactory.reset(_testResultFactoryMock = new TestResultFactoryMock);
    }

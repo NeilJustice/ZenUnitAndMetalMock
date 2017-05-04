@@ -30,13 +30,13 @@ namespace ZenUnit
 
    TEST2X2(Value_ReturnsExpected,
       unsigned char arity, const string& expectedTestTypeName,
-      unsigned char(0), "TEST",
-      unsigned char(1), "TEST1X1",
-      unsigned char(2), "TEST2X2",
-      unsigned char(3), "TEST3X3")
+      static_cast<unsigned char>(0), "TEST",
+      static_cast<unsigned char>(1), "TEST1X1",
+      static_cast<unsigned char>(2), "TEST2X2",
+      static_cast<unsigned char>(3), "TEST3X3")
    {
       const FullTestName testName("Tests", "Test", arity);
-      string expectedValue = "TESTS(Tests)\n" + 
+      string expectedValue = "TESTS(Tests)\n" +
          expectedTestTypeName + "(Test)";
       ARE_EQUAL(expectedValue, testName.Value());
    }
@@ -46,7 +46,7 @@ namespace ZenUnit
       EQUALIZER_THROWS_INIT(FullTestName);
       EQUALIZER_THROWS(FullTestName, testClassName, "TestClassName");
       EQUALIZER_THROWS(FullTestName, testName, "TestName");
-      EQUALIZER_THROWS(FullTestName, arity, unsigned char(1));
+      EQUALIZER_THROWS(FullTestName, arity, static_cast<unsigned char>(1));
    }
 
    }; RUN(FullTestNameTests)
