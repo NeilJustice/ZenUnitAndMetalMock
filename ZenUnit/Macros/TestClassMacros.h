@@ -104,8 +104,7 @@
 
 #define RUN(HighQualityTestClassName) \
    bool HighQualityTestClassName::s_allNXNTestsRegistered = false; \
-   std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> \
-      HighQualityTestClassName::s_testNXNPmfTokenToTest; \
+   std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> HighQualityTestClassName::s_testNXNPmfTokenToTest; \
    std::nullptr_t ZenUnit_TestClassRegistrar_##HighQualityTestClassName = \
       ZenUnit::TestRunner::Instance().RegisterTestClassRunner( \
          new ZenUnit::TemplateTestClassRunner<HighQualityTestClassName>(#HighQualityTestClassName));
@@ -116,15 +115,13 @@
 
 #define RUNTEMPLATE(HighQualityTestClassName, ...) \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
-   template<> std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> \
-      HighQualityTestClassName<__VA_ARGS__>::s_testNXNPmfTokenToTest; \
+   template<> std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> HighQualityTestClassName<__VA_ARGS__>::s_testNXNPmfTokenToTest; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassRegistrar_, HighQualityTestClassName), _Line), __LINE__) = \
       ZenUnit::TestRunner::Instance().RegisterTestClassRunner( \
          new ZenUnit::TemplateTestClassRunner<HighQualityTestClassName<__VA_ARGS__>>(#HighQualityTestClassName"<"#__VA_ARGS__">"));
 
 #define SKIPRUNTEMPLATE(Reason, HighQualityTestClassName, ...) \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
-   template<> std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> \
-      HighQualityTestClassName<__VA_ARGS__>::s_testNXNPmfTokenToTest; \
+   template<> std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> HighQualityTestClassName<__VA_ARGS__>::s_testNXNPmfTokenToTest; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassSkipper_, HighQualityTestClassName), _Line), __LINE__) = \
       ZenUnit::TestRunner::Instance().SkipTestClass(#HighQualityTestClassName"<"#__VA_ARGS__">", Reason);

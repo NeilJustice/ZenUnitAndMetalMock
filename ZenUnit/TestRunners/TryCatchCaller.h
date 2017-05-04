@@ -2,7 +2,6 @@
 #include "ZenUnit/Results/AnomalyOrException.h"
 #include "ZenUnit/Results/CallResult.h"
 #include "ZenUnit/Utils/Time/Stopwatch.h"
-#include <functional>
 
 namespace ZenUnit
 {

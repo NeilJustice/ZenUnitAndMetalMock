@@ -55,8 +55,7 @@ namespace ZenUnit
    void TestClassResult::PrintTestFailures(
       const Console* console, TestFailureNumberer* testFailureNumberer) const
    {
-      _forEacherTwoExtraArgs->ForEach(&_testResults,
-         PrintTestResultIfFailure, console, testFailureNumberer);
+      _forEacherTwoExtraArgs->ForEach(&_testResults, PrintTestResultIfFailure, console, testFailureNumberer);
    }
 
    void TestClassResult::PrintTestResultIfFailure(

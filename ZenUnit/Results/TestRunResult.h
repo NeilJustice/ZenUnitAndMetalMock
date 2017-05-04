@@ -1,6 +1,5 @@
 #pragma once
 #include "ZenUnit/Equalizers/ZenUnitEqualizer.h"
-#include "ZenUnit/Results/CallResult.h"
 #include "ZenUnit/Results/TestClassResult.h"
 
 namespace ZenUnit

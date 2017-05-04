@@ -3,7 +3,6 @@
 #include "ZenUnit/Equalizers/ZenUnitEqualizer.h"
 #include "ZenUnit/Results/CallResult.h"
 #include "ZenUnit/Tests/FullTestName.h"
-#include <functional>
 
 namespace ZenUnit
 {

@@ -12,7 +12,6 @@
 #include <climits>
 #include <map>
 #include <memory>
-#include <mutex>
 #include <numeric>
 #include <vector>
 #include <regex>
