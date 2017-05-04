@@ -14,12 +14,12 @@ namespace ZenUnit
 
    template<typename TestNXNType>
    void AssertTestNXNState(
-      const TestNXNType& testNXN, 
+      const TestNXNType& testNXN,
       const string& expectedFullTestName,
       size_t expectedNumberOfTestCases)
    {
       ARE_EQUAL("Test", testNXN.Name());
-      ARE_EQUAL(expectedFullTestName, testNXN.FullTestName());
+      ARE_EQUAL(expectedFullTestName, testNXN.FullTestNameValue());
       ARE_EQUAL("(0)", testNXN.FileLineString());
       ARE_EQUAL(expectedNumberOfTestCases, testNXN.NumberOfTestCases());
    }

@@ -19,7 +19,7 @@ namespace ZenUnit
       return _fullTestName.testName;
    }
 
-   std::string Test::FullTestName() const
+   std::string Test::FullTestNameValue() const
    {
       return _fullTestName.Value();
    }

@@ -45,7 +45,7 @@ namespace ZenUnit
       const char* const testName = test.Name();
       ARE_EQUAL("Test", testName);
 
-      const string fullTestName = test.FullTestName();
+      const string fullTestName = test.FullTestNameValue();
       ARE_EQUAL(fullTestName, test._fullTestName.Value());
 
       test._fileLine = FileLine("FilePath", 1);
