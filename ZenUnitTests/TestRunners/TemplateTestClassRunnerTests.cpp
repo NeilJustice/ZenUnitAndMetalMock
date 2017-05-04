@@ -13,7 +13,7 @@ namespace ZenUnit
    SPEC(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
    SPECX(RunTests_PrintsTestClassNameAndNumberOfTests_ForEachRunsTests_PrintsTestClassResultLine_ReturnsTestClassResult)
    SPECX(PrintTestClassNameAndNumberOfTests_WritesTestClassNameVerticalBarNumberOfTests)
-   SPECX(ConfirmNewableAndDeletableAndRegisterNXNTests_RunsNewDeleteTest_AddsItResultToResults_ReturnsTrueIfSuccess)
+   SPECX(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewDeleteTest_AddsItResultToResults_ReturnsTrueIfSuccess)
    SPEC(RunTest_WritesVerticalBarTestName_RunsTest_AddsTestResultsToTestClassResult_WriteLinesTestOutcome)
    SPEC(PrintTestClassResultLine_CallsTestClassResultPrintResultLine)
    SPECEND
@@ -37,7 +37,7 @@ namespace ZenUnit
    {
    public:
       ZENMOCK_VOID0_CONST(PrintTestClassNameAndNumberOfTests)
-      ZENMOCK_NONVOID2_CONST(bool, ConfirmNewableAndDeletableAndRegisterNXNTests, Test*, TestClassResult*)
+      ZENMOCK_NONVOID2_CONST(bool, ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests, Test*, TestClassResult*)
       ZENMOCK_VOID1_CONST(PrintTestClassResultLine, const TestClassResult*)
 
       const ConsoleMock* consoleMock;
@@ -112,7 +112,7 @@ namespace ZenUnit
       true, true)
    {
       _templateTestClassRunnerSelfMocked->PrintTestClassNameAndNumberOfTestsMock.Expect();
-      _templateTestClassRunnerSelfMocked->ConfirmNewableAndDeletableAndRegisterNXNTestsMock
+      _templateTestClassRunnerSelfMocked->ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock
          .ExpectAndReturn(testClassTypeNewableAndDeletable);
       if (expectTestsRunForEachCall)
       {
@@ -125,7 +125,7 @@ namespace ZenUnit
       const TestClassResult testClassResult = _templateTestClassRunnerSelfMocked->RunTests();
       //
       ZEN(_templateTestClassRunnerSelfMocked->PrintTestClassNameAndNumberOfTestsMock.AssertCalledOnce());
-      ZEN(_templateTestClassRunnerSelfMocked->ConfirmNewableAndDeletableAndRegisterNXNTestsMock.AssertCalledOnceWith(
+      ZEN(_templateTestClassRunnerSelfMocked->ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock.AssertCalledOnceWith(
           &_templateTestClassRunnerSelfMocked->_newDeleteTest, &_templateTestClassRunnerSelfMocked->_testClassResult));
       if (expectTestsRunForEachCall)
       {
@@ -170,12 +170,18 @@ namespace ZenUnit
       }
    }
 
-   TEST2X2(ConfirmNewableAndDeletableAndRegisterNXNTests_RunsNewDeleteTest_AddsItResultToResults_ReturnsTrueIfSuccess,
-      bool expectedReturnValue, TestOutcome newDeleteTestOutcome,
-      false, TestOutcome::Anomaly,
-      false, TestOutcome::Exception,
-      true, TestOutcome::Success)
+   TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewDeleteTest_AddsItResultToResults_ReturnsTrueIfSuccess,
+      bool expectedReturnValue, TestOutcome newDeleteTestOutcome, bool expectedWriteLineTrue,
+      false, TestOutcome::Anomaly, false,
+      false, TestOutcome::Exception, false,
+      true, TestOutcome::Success, true)
    {
+      _consoleMock->WriteColorMock.Expect();
+      _consoleMock->WriteMock.Expect();
+      if (expectedWriteLineTrue)
+      {
+         _consoleMock->WriteLineMock.Expect();
+      }
       TestMock testMock;
 
       TestResult testResult;
@@ -187,8 +193,14 @@ namespace ZenUnit
       testClassResultMock.AddTestResultsMock.Expect();
       //
       const bool testClassTypeIsNewableAndDeletable = _templateTestClassRunner->
-         ConfirmNewableAndDeletableAndRegisterNXNTests(&testMock, &testClassResultMock);
+         ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(&testMock, &testClassResultMock);
       //
+      ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("|", Color::Green));
+      ZEN(_consoleMock->WriteMock.AssertCalledOnceWith("TestClassIsNewableAndDeletable -> "));
+      if (expectedWriteLineTrue)
+      {
+         ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith("True"));
+      }
       ZEN(testMock.RunMock.AssertCalledOnce());
       ZEN(testClassResultMock.AddTestResultsMock.AssertCalledOnceWith(testResults));
       ARE_EQUAL(expectedReturnValue, testClassTypeIsNewableAndDeletable);

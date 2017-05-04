@@ -53,7 +53,7 @@ namespace ZenUnit
       TestClassResult RunTests() override
       {
          PrintTestClassNameAndNumberOfTests();
-         if (ConfirmNewableAndDeletableAndRegisterNXNTests(&_newDeleteTest, &_testClassResult))
+         if (ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(&_newDeleteTest, &_testClassResult))
          {
             _testsMemberForEacherExtraArg->ForEach(
                &_tests, this, &TemplateTestClassRunner::RunTest, &_testClassResult);
@@ -71,14 +71,21 @@ namespace ZenUnit
             " | ", _tests.size(), _tests.size() == 1 ? " named test" : " named tests"));
       }
 
-      virtual bool ConfirmNewableAndDeletableAndRegisterNXNTests(
+      virtual bool ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(
          Test* newDeleteTest, TestClassResult* outTestClassResult) const
       {
+         _console->WriteColor("|", Color::Green);
+         static const std::string TestClassIsNewableAndDeletableString = "TestClassIsNewableAndDeletable -> ";
+         _console->Write(TestClassIsNewableAndDeletableString);
          const std::vector<TestResult> newDeleteTestResult = newDeleteTest->Run();
          assert_true(newDeleteTestResult.size() == 1);
          outTestClassResult->AddTestResults(newDeleteTestResult);
-         const bool testClassTypeIsNewableAndDeletable = newDeleteTestResult[0].testOutcome == TestOutcome::Success;
-         return testClassTypeIsNewableAndDeletable;
+         const bool testClassIsNewableAndDeletable = newDeleteTestResult[0].testOutcome == TestOutcome::Success;
+         if (testClassIsNewableAndDeletable)
+         {
+            _console->WriteLine("True");
+         }
+         return testClassIsNewableAndDeletable;
       }
 
       void RunTest(const std::unique_ptr<Test>& test, TestClassResult* outTestClassResult) const
