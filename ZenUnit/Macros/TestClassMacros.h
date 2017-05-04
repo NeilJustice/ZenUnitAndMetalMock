@@ -1,6 +1,6 @@
 #pragma once
 #include "ZenUnit/Macros/MacroUtils.h"
-#include "ZenUnit/TestRunners/TemplateTestClassRunner.h"
+#include "ZenUnit/TestRunners/SpecificTestClassRunner.h"
 #include "ZenUnit/TestRunners/TestRunner.h"
 #include "ZenUnit/Tests/NormalTest.h"
 #include "ZenUnit/Tests/SpecSectionTestNXN.h"
@@ -107,7 +107,7 @@
    std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> HighQualityTestClassName::s_testNXNPmfTokenToTest; \
    std::nullptr_t ZenUnit_TestClassRegistrar_##HighQualityTestClassName = \
       ZenUnit::TestRunner::Instance().RegisterTestClassRunner( \
-         new ZenUnit::TemplateTestClassRunner<HighQualityTestClassName>(#HighQualityTestClassName));
+         new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName>(#HighQualityTestClassName));
 
 #define SKIPRUN(Reason, HighQualityTestClassName) \
    const std::nullptr_t ZenUnit_TestClassSkipper_##HighQualityTestClassName = \
@@ -118,7 +118,7 @@
    template<> std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> HighQualityTestClassName<__VA_ARGS__>::s_testNXNPmfTokenToTest; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassRegistrar_, HighQualityTestClassName), _Line), __LINE__) = \
       ZenUnit::TestRunner::Instance().RegisterTestClassRunner( \
-         new ZenUnit::TemplateTestClassRunner<HighQualityTestClassName<__VA_ARGS__>>(#HighQualityTestClassName"<"#__VA_ARGS__">"));
+         new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName<__VA_ARGS__>>(#HighQualityTestClassName"<"#__VA_ARGS__">"));
 
 #define SKIPRUNTEMPLATE(Reason, HighQualityTestClassName, ...) \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnit/TestRunners/TemplateTestClassRunner.h"
+#include "ZenUnit/TestRunners/SpecificTestClassRunner.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestClassResultMock.h"
 #include "ZenUnitTests/Tests/Mock/TestMock.h"
@@ -7,7 +7,7 @@
 
 namespace ZenUnit
 {
-   TESTS(TemplateTestClassRunnerTests)
+   TESTS(SpecificTestClassRunnerTests)
    SPEC(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
    SPEC(TestClassName_ReturnsTestClassName)
    SPEC(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
@@ -29,11 +29,11 @@ namespace ZenUnit
       }
    };
 
-   unique_ptr<TemplateTestClassRunner<TestingTestClass>> _templateTestClassRunner;
+   unique_ptr<SpecificTestClassRunner<TestingTestClass>> _specificTestClassRunner;
    ConsoleMock* _consoleMock;
    const char* TestClassName = "TestClassName";
 
-   class TemplateTestClassRunnerSelfMocked : public Zen::Mock<ZenUnit::TemplateTestClassRunner<TestingTestClass>>
+   class SpecificTestClassRunnerSelfMocked : public Zen::Mock<ZenUnit::SpecificTestClassRunner<TestingTestClass>>
    {
    public:
       ZENMOCK_VOID0_CONST(PrintTestClassNameAndNumberOfTests)
@@ -44,31 +44,31 @@ namespace ZenUnit
 
       using TestsMemberForEacherExtraArgMockType = MemberForEacherExtraArgMock<
          std::vector<std::unique_ptr<Test>>,
-         TemplateTestClassRunner<TestingTestClass>,
-         void (TemplateTestClassRunner<TestingTestClass>::*)(
+         SpecificTestClassRunner<TestingTestClass>,
+         void (SpecificTestClassRunner<TestingTestClass>::*)(
             const std::unique_ptr<Test>& test, TestClassResult*) const, TestClassResult*>;
       const TestsMemberForEacherExtraArgMockType* testsMemberForEacherExtraArgMock;
 
-      TemplateTestClassRunnerSelfMocked()
-         : Zen::Mock<ZenUnit::TemplateTestClassRunner<TestingTestClass>>("")
+      SpecificTestClassRunnerSelfMocked()
+         : Zen::Mock<ZenUnit::SpecificTestClassRunner<TestingTestClass>>("")
       {
          _console.reset(consoleMock = new ConsoleMock);
          _testsMemberForEacherExtraArg.reset(
             testsMemberForEacherExtraArgMock = new TestsMemberForEacherExtraArgMockType);
       }
    };
-   unique_ptr<TemplateTestClassRunnerSelfMocked> _templateTestClassRunnerSelfMocked;
+   unique_ptr<SpecificTestClassRunnerSelfMocked> _specificTestClassRunnerSelfMocked;
 
    STARTUP
    {
-      _templateTestClassRunner = make_unique<TemplateTestClassRunner<TestingTestClass>>(TestClassName);
-      _templateTestClassRunner->_console.reset(_consoleMock = new ConsoleMock);
-      _templateTestClassRunnerSelfMocked = make_unique<TemplateTestClassRunnerSelfMocked>();
+      _specificTestClassRunner = make_unique<SpecificTestClassRunner<TestingTestClass>>(TestClassName);
+      _specificTestClassRunner->_console.reset(_consoleMock = new ConsoleMock);
+      _specificTestClassRunnerSelfMocked = make_unique<SpecificTestClassRunnerSelfMocked>();
    }
 
    TEST(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
    {
-      TemplateTestClassRunner<TestingTestClass> templateTestClassRunner(TestClassName);
+      SpecificTestClassRunner<TestingTestClass> templateTestClassRunner(TestClassName);
       //
       WAS_NEWED(templateTestClassRunner._console);
       WAS_NEWED(templateTestClassRunner._testsMemberForEacherExtraArg);
@@ -81,24 +81,24 @@ namespace ZenUnit
 
    TEST(TestClassName_ReturnsTestClassName)
    {
-      const char* testClassName = _templateTestClassRunner->TestClassName();
+      const char* testClassName = _specificTestClassRunner->TestClassName();
       ARE_EQUAL(TestClassName, testClassName);
    }
 
    TEST(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
    {
-      _templateTestClassRunner->_tests.resize(3);
+      _specificTestClassRunner->_tests.resize(3);
       TestMock* const testMockA = new TestMock;
       testMockA->NumberOfTestCasesMock.ExpectAndReturn(10);
       TestMock* const testMockB = new TestMock;
       testMockB->NumberOfTestCasesMock.ExpectAndReturn(0);
       TestMock* const testMockC = new TestMock;
       testMockC->NumberOfTestCasesMock.ExpectAndReturn(20);
-      _templateTestClassRunner->_tests[0].reset(testMockA);
-      _templateTestClassRunner->_tests[1].reset(testMockB);
-      _templateTestClassRunner->_tests[2].reset(testMockC);
+      _specificTestClassRunner->_tests[0].reset(testMockA);
+      _specificTestClassRunner->_tests[1].reset(testMockB);
+      _specificTestClassRunner->_tests[2].reset(testMockC);
       //
-      const size_t numberOfTestCases = _templateTestClassRunner->NumberOfTestCases();
+      const size_t numberOfTestCases = _specificTestClassRunner->NumberOfTestCases();
       //
       ZEN(testMockA->NumberOfTestCasesMock.AssertCalledOnce());
       ZEN(testMockB->NumberOfTestCasesMock.AssertCalledOnce());
@@ -111,34 +111,34 @@ namespace ZenUnit
       false, false,
       true, true)
    {
-      _templateTestClassRunnerSelfMocked->PrintTestClassNameAndNumberOfTestsMock.Expect();
-      _templateTestClassRunnerSelfMocked->ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock
+      _specificTestClassRunnerSelfMocked->PrintTestClassNameAndNumberOfTestsMock.Expect();
+      _specificTestClassRunnerSelfMocked->ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock
          .ExpectAndReturn(testClassTypeNewableAndDeletable);
       if (expectTestsRunForEachCall)
       {
-         _templateTestClassRunnerSelfMocked->testsMemberForEacherExtraArgMock->ForEachMock.Expect();
+         _specificTestClassRunnerSelfMocked->testsMemberForEacherExtraArgMock->ForEachMock.Expect();
       }
-      _templateTestClassRunnerSelfMocked->PrintTestClassResultLineMock.Expect();
-      _templateTestClassRunnerSelfMocked->consoleMock->WriteNewlineMock.Expect();
-      _templateTestClassRunnerSelfMocked->_testClassResult = TestClassResult::TestingNonDefault();
+      _specificTestClassRunnerSelfMocked->PrintTestClassResultLineMock.Expect();
+      _specificTestClassRunnerSelfMocked->consoleMock->WriteNewlineMock.Expect();
+      _specificTestClassRunnerSelfMocked->_testClassResult = TestClassResult::TestingNonDefault();
       //
-      const TestClassResult testClassResult = _templateTestClassRunnerSelfMocked->RunTests();
+      const TestClassResult testClassResult = _specificTestClassRunnerSelfMocked->RunTests();
       //
-      ZEN(_templateTestClassRunnerSelfMocked->PrintTestClassNameAndNumberOfTestsMock.AssertCalledOnce());
-      ZEN(_templateTestClassRunnerSelfMocked->ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock.AssertCalledOnceWith(
-          &_templateTestClassRunnerSelfMocked->_newDeleteTest, &_templateTestClassRunnerSelfMocked->_testClassResult));
+      ZEN(_specificTestClassRunnerSelfMocked->PrintTestClassNameAndNumberOfTestsMock.AssertCalledOnce());
+      ZEN(_specificTestClassRunnerSelfMocked->ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock.AssertCalledOnceWith(
+          &_specificTestClassRunnerSelfMocked->_newDeleteTest, &_specificTestClassRunnerSelfMocked->_testClassResult));
       if (expectTestsRunForEachCall)
       {
-         ZEN(_templateTestClassRunnerSelfMocked->testsMemberForEacherExtraArgMock->ForEachMock.AssertCalledOnceWith(
-            &_templateTestClassRunnerSelfMocked->_tests,
-            _templateTestClassRunnerSelfMocked.get(),
-            &TemplateTestClassRunner<TestingTestClass>::RunTest,
-            &_templateTestClassRunnerSelfMocked->_testClassResult));
+         ZEN(_specificTestClassRunnerSelfMocked->testsMemberForEacherExtraArgMock->ForEachMock.AssertCalledOnceWith(
+            &_specificTestClassRunnerSelfMocked->_tests,
+            _specificTestClassRunnerSelfMocked.get(),
+            &SpecificTestClassRunner<TestingTestClass>::RunTest,
+            &_specificTestClassRunnerSelfMocked->_testClassResult));
       }
-      ZEN(_templateTestClassRunnerSelfMocked->PrintTestClassResultLineMock.
-         AssertCalledOnceWith(&_templateTestClassRunnerSelfMocked->_testClassResult));
-      ZEN(_templateTestClassRunnerSelfMocked->consoleMock->WriteNewlineMock.AssertCalledOnce());
-      ARE_EQUAL(_templateTestClassRunnerSelfMocked->_testClassResult, testClassResult);
+      ZEN(_specificTestClassRunnerSelfMocked->PrintTestClassResultLineMock.
+         AssertCalledOnceWith(&_specificTestClassRunnerSelfMocked->_testClassResult));
+      ZEN(_specificTestClassRunnerSelfMocked->consoleMock->WriteNewlineMock.AssertCalledOnce());
+      ARE_EQUAL(_specificTestClassRunnerSelfMocked->_testClassResult, testClassResult);
    }
 
    TEST2X2(PrintTestClassNameAndNumberOfTests_WritesTestClassNameVerticalBarNumberOfTests,
@@ -150,10 +150,10 @@ namespace ZenUnit
    {
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteLineMock.Expect();
-      _templateTestClassRunner->_testClassName = TestClassName;
-      _templateTestClassRunner->_tests.resize(numberOfTests);
+      _specificTestClassRunner->_testClassName = TestClassName;
+      _specificTestClassRunner->_tests.resize(numberOfTests);
       //
-      _templateTestClassRunner->PrintTestClassNameAndNumberOfTests();
+      _specificTestClassRunner->PrintTestClassNameAndNumberOfTests();
       //
       ZEN(_consoleMock->WriteColorMock.AssertCalls(
       {
@@ -192,7 +192,7 @@ namespace ZenUnit
       TestClassResultMock testClassResultMock;
       testClassResultMock.AddTestResultsMock.Expect();
       //
-      const bool testClassTypeIsNewableAndDeletable = _templateTestClassRunner->
+      const bool testClassTypeIsNewableAndDeletable = _specificTestClassRunner->
          ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(&testMock, &testClassResultMock);
       //
       ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("|", Color::Green));
@@ -208,8 +208,8 @@ namespace ZenUnit
 
    TEST(RunTest_WritesVerticalBarTestName_RunsTest_AddsTestResultsToTestClassResult_WriteLinesTestOutcome)
    {
-      _templateTestClassRunnerSelfMocked->consoleMock->WriteColorMock.Expect();
-      _templateTestClassRunnerSelfMocked->consoleMock->WriteMock.Expect();
+      _specificTestClassRunnerSelfMocked->consoleMock->WriteColorMock.Expect();
+      _specificTestClassRunnerSelfMocked->consoleMock->WriteMock.Expect();
 
       TestMock* testMock = new TestMock;
       const char* TestName = "TestName";
@@ -225,16 +225,16 @@ namespace ZenUnit
       TestClassResultMock testClassResultMock;
       testClassResultMock.AddTestResultsMock.Expect();
       //
-      _templateTestClassRunnerSelfMocked->RunTest(test, &testClassResultMock);
+      _specificTestClassRunnerSelfMocked->RunTest(test, &testClassResultMock);
       //
-      ZEN(_templateTestClassRunnerSelfMocked->consoleMock->WriteColorMock.AssertCalledOnceWith("|", Color::Green));
-      ZEN(_templateTestClassRunnerSelfMocked->consoleMock->WriteMock.AssertCalledOnceWith(TestName));
+      ZEN(_specificTestClassRunnerSelfMocked->consoleMock->WriteColorMock.AssertCalledOnceWith("|", Color::Green));
+      ZEN(_specificTestClassRunnerSelfMocked->consoleMock->WriteMock.AssertCalledOnceWith(TestName));
       ZEN(testMock->NameMock.AssertCalledOnce());
-      ZEN(testMock->PrintPostTestNameMessageMock.AssertCalledOnceWith(_templateTestClassRunnerSelfMocked->_console.get()));
+      ZEN(testMock->PrintPostTestNameMessageMock.AssertCalledOnceWith(_specificTestClassRunnerSelfMocked->_console.get()));
       ZEN(testMock->RunMock.AssertCalledOnce());
       ZEN(testClassResultMock.AddTestResultsMock.AssertCalledOnceWith(TestResults));
       ZEN(testMock->PrintPostTestCompletionMessageMock.AssertCalledOnceWith(
-         _templateTestClassRunnerSelfMocked->_console.get(), test0));
+         _specificTestClassRunnerSelfMocked->_console.get(), test0));
    }
 
    TEST(PrintTestClassResultLine_CallsTestClassResultPrintResultLine)
@@ -242,10 +242,10 @@ namespace ZenUnit
       TestClassResultMock testClassResultMock;
       testClassResultMock.PrintResultLineMock.Expect();
       //
-      _templateTestClassRunner->PrintTestClassResultLine(&testClassResultMock);
+      _specificTestClassRunner->PrintTestClassResultLine(&testClassResultMock);
       //
       ZEN(testClassResultMock.PrintResultLineMock.AssertCalledOnceWith(_consoleMock));
    }
 
-   }; RUN(TemplateTestClassRunnerTests)
+   }; RUN(SpecificTestClassRunnerTests)
 }

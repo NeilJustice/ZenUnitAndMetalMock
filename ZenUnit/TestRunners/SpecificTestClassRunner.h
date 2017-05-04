@@ -10,22 +10,22 @@
 namespace ZenUnit
 {
    template<typename TestClassType>
-   class TemplateTestClassRunner : public TestClassRunner
+   class SpecificTestClassRunner : public TestClassRunner
    {
-      friend class TemplateTestClassRunnerTests;
+      friend class SpecificTestClassRunnerTests;
    private:
       std::unique_ptr<const Console> _console;
       using TestsMemberForEacherExtraArgType = MemberForEacherExtraArg<
          std::vector<std::unique_ptr<Test>>,
-         TemplateTestClassRunner,
-         void (TemplateTestClassRunner::*)(const std::unique_ptr<Test>& test, TestClassResult*) const, TestClassResult*>;
+         SpecificTestClassRunner,
+         void (SpecificTestClassRunner::*)(const std::unique_ptr<Test>& test, TestClassResult*) const, TestClassResult*>;
       std::unique_ptr<const TestsMemberForEacherExtraArgType> _testsMemberForEacherExtraArg;
       const char* _testClassName;
       NewDeleteTest<TestClassType> _newDeleteTest;
       std::vector<std::unique_ptr<Test>> _tests;
       TestClassResult _testClassResult;
    public:
-      explicit TemplateTestClassRunner(const char* testClassName)
+      explicit SpecificTestClassRunner(const char* testClassName)
          : _console(new Console)
          , _testsMemberForEacherExtraArg(new TestsMemberForEacherExtraArgType)
          , _testClassName(testClassName)
@@ -56,7 +56,7 @@ namespace ZenUnit
          if (ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(&_newDeleteTest, &_testClassResult))
          {
             _testsMemberForEacherExtraArg->ForEach(
-               &_tests, this, &TemplateTestClassRunner::RunTest, &_testClassResult);
+               &_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult);
          }
          PrintTestClassResultLine(&_testClassResult);
          _console->WriteNewline();
