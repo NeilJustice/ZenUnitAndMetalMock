@@ -13,3 +13,4 @@ if [ "$jenkinsJobExitCode" -ne 0 ]; then
    exit 1
 fi
 echo "pre-commit: Jenkins job succeeded. Allowing commit."
+
