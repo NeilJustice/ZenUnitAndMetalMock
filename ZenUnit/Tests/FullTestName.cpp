@@ -25,12 +25,9 @@ namespace ZenUnit
          const string fullTestName = String::Concat("TESTS(", testClassName, ")\nTEST(", testName, ')');
          return fullTestName;
       }
-      else
-      {
-         const string fullTestName = String::Concat(
-            "TESTS(", testClassName, ")\nTEST", static_cast<int>(arity), 'X', static_cast<int>(arity), '(', testName, ')');
-         return fullTestName;
-      }
+      const string fullTestName = String::Concat(
+         "TESTS(", testClassName, ")\nTEST", static_cast<int>(arity), 'X', static_cast<int>(arity), '(', testName, ')');
+      return fullTestName;
    }
 }
 
