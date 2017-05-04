@@ -20,11 +20,12 @@
    { \
    public: \
       using TestClassType = HighQualityTestClassName; \
-      static constexpr const char* const ZenUnitTestClassName = #HighQualityTestClassName; \
-      static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> s_testNXNPmfTokenToTest; \
+      static const char* s_testClassNamePossiblyTemplatized; \
       static bool s_allNXNTestsRegistered; \
+      static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> s_testNXNPmfTokenToTest; \
       static std::vector<std::unique_ptr<ZenUnit::Test>> GetTests(const char* testClassNamePossiblyTemplatized) \
       { \
+         s_testClassNamePossiblyTemplatized = testClassNamePossiblyTemplatized; \
          std::vector<std::unique_ptr<ZenUnit::Test>> tests;
 
 #define SPEC(HighQualityTestName) \
@@ -49,7 +50,7 @@
 #define REGISTER_TESTNXN_ARGS(HighQualityTestName, ...) \
    PMFTOKEN(&TestClassType::HighQualityTestName), \
    &TestClassType::HighQualityTestName, \
-   #HighQualityTestName, __FILE__, __LINE__, #__VA_ARGS__, __VA_ARGS__ \
+   #HighQualityTestName, #__VA_ARGS__, __VA_ARGS__ \
 
 #define TEST1X1(HighQualityTestName, Arg1Type, ...) \
    const std::nullptr_t ZenUnit_Test1X1Registrar_##HighQualityTestName = \
@@ -102,6 +103,7 @@
    void HighQualityTestName(size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)
 
 #define RUN(HighQualityTestClassName) \
+   const char* HighQualityTestClassName::s_testClassNamePossiblyTemplatized = nullptr; \
    bool HighQualityTestClassName::s_allNXNTestsRegistered = false; \
    std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> HighQualityTestClassName::s_testNXNPmfTokenToTest; \
    std::nullptr_t ZenUnit_TestClassRegistrar_##HighQualityTestClassName = \
@@ -113,6 +115,7 @@
       ZenUnit::TestRunner::Instance().SkipTestClass(#HighQualityTestClassName, Reason);
 
 #define RUNTEMPLATE(HighQualityTestClassName, ...) \
+   template<> const char* HighQualityTestClassName<__VA_ARGS__>::s_testClassNamePossiblyTemplatized = nullptr; \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
    template<> std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> HighQualityTestClassName<__VA_ARGS__>::s_testNXNPmfTokenToTest; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassRegistrar_, HighQualityTestClassName), _Line), __LINE__) = \
@@ -120,6 +123,7 @@
          new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName<__VA_ARGS__>>(#HighQualityTestClassName"<"#__VA_ARGS__">"));
 
 #define SKIPRUNTEMPLATE(Reason, HighQualityTestClassName, ...) \
+   template<> const char* HighQualityTestClassName<__VA_ARGS__>::s_testClassNamePossiblyTemplatized = nullptr; \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
    template<> std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> HighQualityTestClassName<__VA_ARGS__>::s_testNXNPmfTokenToTest; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassSkipper_, HighQualityTestClassName), _Line), __LINE__) = \
