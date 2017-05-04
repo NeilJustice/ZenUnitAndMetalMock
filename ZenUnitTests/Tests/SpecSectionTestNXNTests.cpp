@@ -30,8 +30,7 @@ namespace ZenUnit
    SPEC(PrintPostTestNameMessage_WriteNewline)
    SPEC(Run_GetsTestFromAddress_RunsTest_ReturnsTestResults)
    SPEC(PmfTokenToTest_ReturnsTestClassTypeTestNXNPmfToTestReturnValue);
-   SPEC(TestOverrides_EachThrow)
-   SPEC(CodeCoverage_TestFunction)
+   SPEC(TestFunction_CodeCoverage)
    SPECEND
 
    class SpecSectionTestNXNSelfMocked : public Zen::Mock<SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests>>
@@ -122,16 +121,7 @@ namespace ZenUnit
       ARE_EQUAL(testNXN, &TestingTestClass_SpecSectionTestNXNTests::TestNXNPmfToTestReturnValue);
    }
 
-   TEST(TestOverrides_EachThrow)
-   {
-      THROWS(_specSectionTestNXN->NewTestClass(), logic_error, "N/A");
-      THROWS(_specSectionTestNXN->Startup(), logic_error, "N/A");
-      THROWS(_specSectionTestNXN->TestBody(), logic_error, "N/A");
-      THROWS(_specSectionTestNXN->Cleanup(), logic_error, "N/A");
-      THROWS(_specSectionTestNXN->DeleteTestClass(), logic_error, "N/A");
-   }
-
-   TEST(CodeCoverage_TestFunction)
+   TEST(TestFunction_CodeCoverage)
    {
       TestingTestClass_SpecSectionTestNXNTests t;
       t.TestFunction(0);

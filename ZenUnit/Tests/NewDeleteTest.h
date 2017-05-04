@@ -48,10 +48,6 @@ namespace ZenUnit
          _firstInstanceOfTestClass = std::make_unique<TestClassType>();
       }
 
-      void Startup() override {}
-      void TestBody() override {}
-      void Cleanup() override {}
-
       void DeleteTestClass() override
       {
          _firstInstanceOfTestClass.reset();

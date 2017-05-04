@@ -35,12 +35,6 @@ namespace ZenUnit
          const std::vector<TestResult> testResults = (*test)->Run();
          return testResults;
       }
-
-      void NewTestClass() override { throw std::logic_error("N/A"); }
-      void Startup() override { throw std::logic_error("N/A"); }
-      void TestBody() override { throw std::logic_error("N/A"); }
-      void Cleanup() override { throw std::logic_error("N/A"); }
-      void DeleteTestClass() override { throw std::logic_error("N/A"); }
    private:
       virtual const std::unique_ptr<Test>* PmfTokenToTest() const
       {

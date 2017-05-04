@@ -6,21 +6,6 @@
 #include "ZenUnit/Tests/FullTestName.h"
 #include "ZenUnit/Tests/Test.h"
 
-class TestingTest : public Test
-{
-public:
-   TestingTest(const char* testClassName, const char* testName)
-      : Test(testClassName, testName, 0) {}
-
-   size_t NumberOfTestCases() const override { return 0; }
-   std::vector<TestResult> Run() override { return std::vector<TestResult>(); }
-   void NewTestClass() override {}
-   void Startup() override {}
-   void TestBody() override {}
-   void Cleanup() override {}
-   void DeleteTestClass() override {}
-};
-
 namespace ZenUnit
 {
    TESTS(TestTests)
@@ -35,36 +20,36 @@ namespace ZenUnit
    SPEC(StaticTestBody_CallsTestBody)
    SPEC(StaticCallCleanup_CallsCleanup)
    SPEC(StaticCallDeleteTestClass_CallsDeleteTestClass)
-   SPEC(TestingTestAbstractFunctions_CodeCoverage)
+   SPEC(PseudoAbstractFunctions_DoNothingOrReturn0)
    SPECEND
 
-   unique_ptr<TestingTest> _test;
+   unique_ptr<Test> _test;
    TryCatchCallerMock* _tryCatchCallerMock;
    TestResultFactoryMock* _testResultFactoryMock;
    TestMock _testMock;
 
    STARTUP
    {
-      _test = make_unique<TestingTest>("", "");
+      _test = make_unique<Test>("", "", unsigned char());
       _test->_tryCatchCaller.reset(_tryCatchCallerMock = new TryCatchCallerMock);
       _test->_testResultFactory.reset(_testResultFactoryMock = new TestResultFactoryMock);
    }
 
    TEST(TwoArgConstructor_NewsComponents_SetsFullName_NameFunctionReturnsTestName)
    {
-      TestingTest testingTest("Tests", "Test");
-      WAS_NEWED(testingTest._tryCatchCaller);
-      WAS_NEWED(testingTest._testResultFactory);
-      ARE_EQUAL(FileLine(), testingTest._fileLine);
+      Test test("Tests", "Test", 0);
+      WAS_NEWED(test._tryCatchCaller);
+      WAS_NEWED(test._testResultFactory);
+      ARE_EQUAL(FileLine(), test._fileLine);
 
-      const char* const testName = testingTest.Name();
-      ARE_EQUAL(testName, testingTest._fullTestName.testName);
+      const char* const testName = test.Name();
+      ARE_EQUAL("Test", testName);
 
-      const string fullTestName = testingTest.FullTestName();
-      ARE_EQUAL(fullTestName, testingTest._fullTestName.Value());
+      const string fullTestName = test.FullTestName();
+      ARE_EQUAL(fullTestName, test._fullTestName.Value());
 
-      testingTest._fileLine = FileLine("FilePath", 1);
-      ARE_EQUAL(testingTest._fileLine.ToString(), testingTest.FileLineString());
+      test._fileLine = FileLine("FilePath", 1);
+      ARE_EQUAL(test._fileLine.ToString(), test.FileLineString());
    }
 
    TEST(PrintPostTestNameMessage_DoesNothing)
@@ -204,16 +189,16 @@ namespace ZenUnit
       ZEN(_testMock.DeleteTestClassMock.AssertCalledOnce());
    }
 
-   TEST(TestingTestAbstractFunctions_CodeCoverage)
+   TEST(PseudoAbstractFunctions_DoNothingOrReturn0)
    {
-      TestingTest testingTest("", "");
-      ARE_EQUAL(0, testingTest.NumberOfTestCases());
-      IS_EMPTY(testingTest.Run());
-      testingTest.NewTestClass();
-      testingTest.Startup();
-      testingTest.TestBody();
-      testingTest.Cleanup();
-      testingTest.DeleteTestClass();
+      Test test("", "", 0);
+      ARE_EQUAL(0, test.NumberOfTestCases());
+      IS_EMPTY(test.Run());
+      test.NewTestClass();
+      test.Startup();
+      test.TestBody();
+      test.Cleanup();
+      test.DeleteTestClass();
    }
 
    }; RUN(TestTests)

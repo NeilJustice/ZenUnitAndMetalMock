@@ -55,7 +55,6 @@ namespace ZenUnit
       
       virtual void RunNXNTestCase(TestClassType*, size_t) 
       { 
-         throw std::logic_error("N/A"); 
       }
 
       std::vector<TestResult> Run() override

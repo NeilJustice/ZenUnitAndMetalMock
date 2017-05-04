@@ -24,23 +24,23 @@ namespace ZenUnit
       virtual std::string FileLineString() const;
       virtual void PrintPostTestNameMessage(const Console*) const {}
       virtual void PrintPostTestCompletionMessage(const Console*, const TestResult&) const {}
-      virtual size_t NumberOfTestCases() const = 0;
-      virtual std::vector<TestResult> Run() = 0;
+      virtual size_t NumberOfTestCases() const { return 0; }
+      virtual std::vector<TestResult> Run() { return {}; }
 
       static void CallNewTestClass(Test* test);
-      virtual void NewTestClass() = 0;
+      virtual void NewTestClass() {}
 
       static void CallStartup(Test* test);
-      virtual void Startup() = 0;
+      virtual void Startup() {}
 
       static void CallTestBody(Test* test);
-      virtual void TestBody() = 0;
+      virtual void TestBody() {}
 
       static void CallCleanup(Test* test);
-      virtual void Cleanup() = 0;
+      virtual void Cleanup() {}
 
       static void CallDeleteTestClass(Test* test);
-      virtual void DeleteTestClass() = 0;
+      virtual void DeleteTestClass() {}
    protected:
       TestResult RunTestCase();
    };

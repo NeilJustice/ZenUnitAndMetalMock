@@ -18,7 +18,7 @@ namespace ZenUnit
    SPEC(NewTestClass_NewsTestClass)
    SPEC(Startup_CallsTestClassStartup)
    SPEC(TestBody_CallsRunNXNTestCase)
-   SPEC(RunNXNTestCase_ThrowsLogicError)
+   SPEC(RunNXNTestCase_DoesNothing)
    SPEC(Cleanup_CallsCleanup)
    SPEC(DeleteTestClass_DeletesTestClass)
    SPECX(PrintTestCaseNumberArgsThenArrow_WritesTestCaseNumberArrow)
@@ -182,9 +182,9 @@ namespace ZenUnit
          testNXN_RunNXNTestCaseMocked._testClass.get(), testNXN_RunNXNTestCaseMocked._testCaseArgsIndex));
    }
 
-   TEST(RunNXNTestCase_ThrowsLogicError)
+   TEST(RunNXNTestCase_DoesNothing)
    {
-      THROWS(_testNXN->RunNXNTestCase(nullptr, 0), logic_error, "N/A");
+      _testNXN->RunNXNTestCase(nullptr, 0);
    }
 
    TEST(Cleanup_CallsCleanup)

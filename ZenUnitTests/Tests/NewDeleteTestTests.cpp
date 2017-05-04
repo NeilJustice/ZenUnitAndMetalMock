@@ -11,7 +11,6 @@ namespace ZenUnit
    SPECX(Run_CallsNewTestClassWhichFails_DoesNotCallDeleteTestClass_ReturnsConstructorFailTestResult)
    SPEC(Run_CallsNewTestClassWhichSucceeds_CallsDeleteTestClass_ReturnsCtorDtorSuccessTestResult)
    SPEC(NewAndDeleteTestClass_NewsAndDeleteFirstInstanceOfTestClass)
-   SPEC(StartupTestBodyCleanup_EachDoNothing)
    SPECEND
 
    class TestingTestClass {};
@@ -100,13 +99,6 @@ namespace ZenUnit
       _newDeleteTest->DeleteTestClass();
       //
       IS_NULL(_newDeleteTest->_firstInstanceOfTestClass);
-   }
-
-   TEST(StartupTestBodyCleanup_EachDoNothing)
-   {
-      _newDeleteTest->Startup();
-      _newDeleteTest->TestBody();
-      _newDeleteTest->Cleanup();
    }
 
    }; RUN(NewDeleteTestTests)
