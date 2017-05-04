@@ -9,7 +9,7 @@ namespace ZenUnit
 {
    TESTS(SpecificTestClassRunnerTests)
    SPEC(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
-   SPEC(TestClassName_ReturnsTestClassName)
+   SPEC(TestClassNameForSorting_ReturnsTestClassName)
    SPEC(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
    SPECX(RunTests_PrintsTestClassNameAndNumberOfTests_ForEachRunsTests_PrintsTestClassResultLine_ReturnsTestClassResult)
    SPECX(PrintTestClassNameAndNumberOfTests_WritesTestClassNameVerticalBarNumberOfTests)
@@ -21,9 +21,10 @@ namespace ZenUnit
    class TestingTestClass
    {
    public:
-      static vector<unique_ptr<Test>> GetTests()
+      static vector<unique_ptr<Test>> GetTests(const char*)
       {
          vector<unique_ptr<Test>> tests;
+         // emplace one Test pointer to make tests vector non-default sized
          tests.emplace_back(nullptr);
          return tests;
       }
@@ -79,9 +80,9 @@ namespace ZenUnit
       VECTORS_EQUAL(expectedTests, templateTestClassRunner._tests);
    }
 
-   TEST(TestClassName_ReturnsTestClassName)
+   TEST(TestClassNameForSorting_ReturnsTestClassName)
    {
-      const char* testClassName = _specificTestClassRunner->TestClassName();
+      const char* testClassName = _specificTestClassRunner->TestClassNameForSorting();
       ARE_EQUAL(TestClassName, testClassName);
    }
 

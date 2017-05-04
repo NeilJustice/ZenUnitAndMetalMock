@@ -20,7 +20,7 @@ namespace ZenUnit
 
    string FullTestName::Value() const
    {
-      const bool testClassIsTemplated = String::Contains(testClassName, ",");
+      const bool testClassIsTemplated = String::Contains(testClassName, "<");
       const char* const testsOrTemplateTests = testClassIsTemplated ? "TEMPLATETESTS(" : "TESTS(";
       if (arity == 0)
       {

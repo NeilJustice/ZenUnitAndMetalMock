@@ -25,16 +25,16 @@ namespace ZenUnit
       std::vector<std::unique_ptr<Test>> _tests;
       TestClassResult _testClassResult;
    public:
-      explicit SpecificTestClassRunner(const char* testClassName)
+      explicit SpecificTestClassRunner(const char* testClassNamePossiblyTemplatized)
          : _console(new Console)
          , _testsMemberForEacherExtraArg(new TestsMemberForEacherExtraArgType)
-         , _testClassName(testClassName)
-         , _newDeleteTest(testClassName)
+         , _testClassName(testClassNamePossiblyTemplatized)
+         , _newDeleteTest(testClassNamePossiblyTemplatized)
       {
-         _tests = TestClassType::GetTests();
+         _tests = TestClassType::GetTests(testClassNamePossiblyTemplatized);
       }
 
-      const char* TestClassName() const override
+      const char* TestClassNameForSorting() const override
       {
          return _testClassName;
       }

@@ -30,7 +30,7 @@ namespace ZenUnit
    class TestingTestClass
    {
    public:
-      static vector<unique_ptr<Test>> GetTests() { return {}; }
+      static vector<unique_ptr<Test>> GetTests(const char*) { return {}; }
    };
 
    class TestRunnerRunTestsMocked : public Zen::Mock<TestRunner>
@@ -81,7 +81,7 @@ namespace ZenUnit
    TEST(RegisterTestClassRunner_EmplacesBackTestClassRunner)
    {
       _multiTestClassRunnerMock->AddTestClassRunnerMock.Expect();
-      SpecificTestClassRunner<TestingTestClass> testClassRunner("TestClassName");
+      SpecificTestClassRunner<TestingTestClass> testClassRunner("TestClassNamePossiblyTemplatized");
       //
       _testRunner.RegisterTestClassRunner(&testClassRunner);
       //

@@ -57,7 +57,7 @@ namespace ZenUnit
       if (_numberOfFailedTestCases > 0)
       {
          const string numberOfTestFailuresLine = String::Concat(
-            _numberOfFailedTestCases, " test ", _numberOfFailedTestCases == 1 ? "failure" : "failures", ":\n");
+            _numberOfFailedTestCases, " test failure", _numberOfFailedTestCases > 1 ? "s" : "", ":\n");
          _console->WriteLineColor(numberOfTestFailuresLine, Color::Red);
          _memberForEacherTestClassResults->ForEach(
             &_testClassResults, this, &TestRunResult::PrintTestClassResultFailures);

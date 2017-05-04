@@ -10,33 +10,33 @@
 
 #define TESTS(HighQualityTestClassName) \
    class HighQualityTestClassName : public ZenUnit::TestClass<HighQualityTestClassName> \
-   TESTCLASSPREAMBLE(HighQualityTestClassName, "")
+   TESTCLASSPREAMBLE(HighQualityTestClassName)
 
 #define TEMPLATETESTS(HighQualityTestClassName, ...) \
    class HighQualityTestClassName : public ZenUnit::TestClass<HighQualityTestClassName<__VA_ARGS__>> \
-   TESTCLASSPREAMBLE(HighQualityTestClassName, ", "#__VA_ARGS__)
+   TESTCLASSPREAMBLE(HighQualityTestClassName)
 
-#define TESTCLASSPREAMBLE(HighQualityTestClassName, templateArgumentsText) \
+#define TESTCLASSPREAMBLE(HighQualityTestClassName) \
    { \
    public: \
       using TestClassType = HighQualityTestClassName; \
-      static constexpr const char* const ZenUnitTestClassName = #HighQualityTestClassName templateArgumentsText; \
+      static constexpr const char* const ZenUnitTestClassName = #HighQualityTestClassName; \
       static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> s_testNXNPmfTokenToTest; \
       static bool s_allNXNTestsRegistered; \
-      static std::vector<std::unique_ptr<ZenUnit::Test>> GetTests() \
+      static std::vector<std::unique_ptr<ZenUnit::Test>> GetTests(const char* testClassNamePossiblyTemplatized) \
       { \
          std::vector<std::unique_ptr<ZenUnit::Test>> tests;
 
 #define SPEC(HighQualityTestName) \
    tests.emplace_back(new ZenUnit::NormalTest<TestClassType>( \
-      ZenUnitTestClassName, #HighQualityTestName, &TestClassType::HighQualityTestName));
+      testClassNamePossiblyTemplatized, #HighQualityTestName, &TestClassType::HighQualityTestName));
 
 #define SPECX(HighQualityTestName) \
    tests.emplace_back(new ZenUnit::SpecSectionTestNXN<TestClassType>( \
-      ZenUnitTestClassName, #HighQualityTestName, PMFTOKEN(&TestClassType::HighQualityTestName)));
+      testClassNamePossiblyTemplatized, #HighQualityTestName, PMFTOKEN(&TestClassType::HighQualityTestName)));
 
 #define DOSKIP(Reason, HighQualityTestName) \
-   ZenUnit::TestRunner::Instance().SkipTest(ZenUnitTestClassName, #HighQualityTestName, Reason);
+   ZenUnit::TestRunner::Instance().SkipTest(testClassNamePossiblyTemplatized, #HighQualityTestName, Reason);
 #define SKIPSPEC(Reason, HighQualityTestName) DOSKIP(Reason, HighQualityTestName)
 #define SKIPSPECX(Reason, HighQualityTestName) DOSKIP(Reason, HighQualityTestName)
 

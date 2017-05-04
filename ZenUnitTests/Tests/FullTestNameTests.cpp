@@ -33,9 +33,9 @@ namespace ZenUnit
       "TESTS(Tests)\nTEST(Test)", "Tests", static_cast<unsigned char>(0),
       "TESTS(Tests)\nTEST1X1(Test)", "Tests", static_cast<unsigned char>(1),
       "TESTS(Tests)\nTEST2X2(Test)", "Tests", static_cast<unsigned char>(2),
-      "TEMPLATETESTS(Tests, T1)\nTEST(Test)", "Tests, T1", static_cast<unsigned char>(0),
-      "TEMPLATETESTS(Tests,T1)\nTEST1X1(Test)", "Tests,T1", static_cast<unsigned char>(1),
-      "TEMPLATETESTS(Tests, T1, T2)\nTEST2X2(Test)", "Tests, T1, T2", static_cast<unsigned char>(2))
+      "TEMPLATETESTS(Tests<int>)\nTEST(Test)", "Tests<int>", static_cast<unsigned char>(0),
+      "TEMPLATETESTS(Tests<int, int>)\nTEST1X1(Test)", "Tests<int, int>", static_cast<unsigned char>(1),
+      "TEMPLATETESTS(Tests<std::vector<int>>)\nTEST2X2(Test)", "Tests<std::vector<int>>", static_cast<unsigned char>(2))
    {
       const FullTestName testName(testClassMacroArgument, "Test", arity);
       //

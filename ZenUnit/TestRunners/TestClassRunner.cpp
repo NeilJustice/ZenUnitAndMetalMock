@@ -10,8 +10,8 @@ namespace ZenUnit
       const unique_ptr<TestClassRunner>& leftTestClassRunner,
       const unique_ptr<TestClassRunner>& rightTestClassRunner)
    {
-      const char* leftTestClassName = leftTestClassRunner->TestClassName();
-      const char* rightTestClassName = rightTestClassRunner->TestClassName();
+      const char* leftTestClassName = leftTestClassRunner->TestClassNameForSorting();
+      const char* rightTestClassName = rightTestClassRunner->TestClassNameForSorting();
       int caseInsensitiveComparisonResult = 0;
 #ifdef __linux__
       caseInsensitiveComparisonResult = strcasecmp(leftTestClassName, rightTestClassName);
