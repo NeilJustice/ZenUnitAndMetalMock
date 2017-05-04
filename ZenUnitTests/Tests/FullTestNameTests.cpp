@@ -28,17 +28,20 @@ namespace ZenUnit
       ARE_EQUAL(1, testName.arity);
    }
 
-   TEST2X2(Value_ReturnsExpected,
-      unsigned char arity, const string& expectedTestTypeName,
-      static_cast<unsigned char>(0), "TEST",
-      static_cast<unsigned char>(1), "TEST1X1",
-      static_cast<unsigned char>(2), "TEST2X2",
-      static_cast<unsigned char>(3), "TEST3X3")
+   TEST3X3(Value_ReturnsExpected,
+      const string& expectedReturnValue, const char* testClassMacroArgument, unsigned char arity,
+      "TESTS(Tests)\nTEST(Test)", "Tests", static_cast<unsigned char>(0),
+      "TESTS(Tests)\nTEST1X1(Test)", "Tests", static_cast<unsigned char>(1),
+      "TESTS(Tests)\nTEST2X2(Test)", "Tests", static_cast<unsigned char>(2),
+      "TEMPLATETESTS(Tests, T1)\nTEST(Test)", "Tests, T1", static_cast<unsigned char>(0),
+      "TEMPLATETESTS(Tests,T1)\nTEST1X1(Test)", "Tests,T1", static_cast<unsigned char>(1),
+      "TEMPLATETESTS(Tests, T1, T2)\nTEST2X2(Test)", "Tests, T1, T2", static_cast<unsigned char>(2))
    {
-      const FullTestName testName("Tests", "Test", arity);
-      string expectedValue = "TESTS(Tests)\n" +
-         expectedTestTypeName + "(Test)";
-      ARE_EQUAL(expectedValue, testName.Value());
+      const FullTestName testName(testClassMacroArgument, "Test", arity);
+      //
+      const string value = testName.Value();
+      //
+      ARE_EQUAL(expectedReturnValue, value);
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfClassNameOrTestNameNotEqual)

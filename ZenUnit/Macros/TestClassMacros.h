@@ -10,18 +10,17 @@
 
 #define TESTS(HighQualityTestClassName) \
    class HighQualityTestClassName : public ZenUnit::TestClass<HighQualityTestClassName> \
-   TESTCLASSPREAMBLE(HighQualityTestClassName)
+   TESTCLASSPREAMBLE(HighQualityTestClassName, "")
 
 #define TEMPLATETESTS(HighQualityTestClassName, ...) \
    class HighQualityTestClassName : public ZenUnit::TestClass<HighQualityTestClassName<__VA_ARGS__>> \
-   TESTCLASSPREAMBLE(HighQualityTestClassName)
+   TESTCLASSPREAMBLE(HighQualityTestClassName, ", "#__VA_ARGS__)
 
-#define TESTCLASSPREAMBLE(HighQualityTestClassName) \
+#define TESTCLASSPREAMBLE(HighQualityTestClassName, templateArgumentsText) \
    { \
-   private: \
-      using TestClassType = HighQualityTestClassName; \
    public: \
-      static constexpr const char* const ZenUnitTestClassName = #HighQualityTestClassName; \
+      using TestClassType = HighQualityTestClassName; \
+      static constexpr const char* const ZenUnitTestClassName = #HighQualityTestClassName templateArgumentsText; \
       static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> s_testNXNPmfTokenToTest; \
       static bool s_allNXNTestsRegistered; \
       static std::vector<std::unique_ptr<ZenUnit::Test>> GetTests() \

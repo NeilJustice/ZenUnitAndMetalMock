@@ -29,24 +29,6 @@ TEMPLATETESTS(SkippedTemplateTestClassB, MapType) SPECEND };
 SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, map)
 SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, unordered_map)
 
-template<typename T>
-TEMPLATETESTS(ZZTests, T)
-SPEC(Test)
-SPECEND
-
-ZZTests()
-{
-}
-
-TEST(Test)
-{
-}
-
-}; 
-
-RUNTEMPLATE(ZZTests, int)
-RUNTEMPLATE(ZZTests, double)
-
 int main(int argc, char* argv[])
 {
    FileLiner::selfTestMode = true;
