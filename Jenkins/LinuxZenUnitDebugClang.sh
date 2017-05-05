@@ -5,4 +5,3 @@ python3 ZenUnitPy/ZenUnitPy/CoveragePylintFlake8.py ZenUnitPy/ZenUnitPy.Test Run
 python3 ZenUnitPy/ZenUnitPy/BuildAndInstall.py Ninja Debug ZenUnit ZenUnitTests "clang version" "" Install
 cd ZenUnitHelloWorld
 python3 ../ZenUnitPy/ZenUnitPy/BuildAndInstall.py Ninja Debug StaticLibrary StaticLibraryTests "" "" NoInstall
-
