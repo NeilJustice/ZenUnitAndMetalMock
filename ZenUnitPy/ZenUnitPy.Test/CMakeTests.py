@@ -33,8 +33,8 @@ class CMakeTests(unittest.TestCase):
          Process.run.assert_called_once_with(expectedCMakeCommand)
       testcase('Linux', '',
          'cmake -G"Generator" -DCMAKE_BUILD_TYPE=BuildType  CMakeListsFolderPath')
-      testcase('Linux', '-DSanitizerMode=ON',
-         'cmake -G"Generator" -DCMAKE_BUILD_TYPE=BuildType -DSanitizerMode=ON CMakeListsFolderPath')
+      testcase('Linux', '-DSanitizersMode=ON',
+         'cmake -G"Generator" -DCMAKE_BUILD_TYPE=BuildType -DSanitizersMode=ON CMakeListsFolderPath')
       testcase('linux', '',
          'cmake -G"Generator"  CMakeListsFolderPath')
       testcase('Windows', '',
