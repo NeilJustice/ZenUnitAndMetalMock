@@ -3,7 +3,7 @@ set -u
 
 osname="$(uname --operating-system)"
 if [[ "$osname" == *"Linux" ]]; then
-   Jenkins/LinuxZenUnitDebugClangASan.sh
+   Jenkins/LinuxZenUnitDebugClang.sh
 elif [ "$osname" == "Msys" ]; then
    Jenkins/WindowsZenUnitDebug.sh
 fi
