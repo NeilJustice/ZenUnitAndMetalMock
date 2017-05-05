@@ -29,15 +29,8 @@ TEMPLATETESTS(SkippedTemplateTestClassB, MapType) SPECEND };
 SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, map)
 SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, unordered_map)
 
-struct S
-{
-   void f() {}
-};
-
 int main(int argc, char* argv[])
 {
-   S* s = nullptr;
-   s->f();
    FileLiner::selfTestMode = true;
    return ZenUnit::RunTests(argc, argv);
 }
