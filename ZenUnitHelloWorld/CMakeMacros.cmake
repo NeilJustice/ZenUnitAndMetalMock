@@ -35,7 +35,7 @@ macro(EnablePrecompiledHeaders)
                -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments
                ${SanitizerArgs} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
          elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++1z -Wall -Wextra -Werror -pthread -O3
+            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++1z -Wall -Wextra -Werror -pthread -O2
                -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments
                ${SanitizerArgs} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
          endif()
@@ -45,7 +45,7 @@ macro(EnablePrecompiledHeaders)
             add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++1z -Wall -Wextra -Werror -pthread -g
                ${SanitizerArgs} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
          elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++1z -Wall -Wextra -Werror -pthread -O3 -DNDEBUG
+            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++1z -Wall -Wextra -Werror -pthread -O2 -DNDEBUG
                ${SanitizerArgs} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
          endif()
       endif()
