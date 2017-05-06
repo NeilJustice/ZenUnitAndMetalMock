@@ -201,34 +201,6 @@ ZenUnit installed on Windows:
 
 Editor's note: ZenUnit and ZenMock as header-only would of course be much more convenient than the current building and linking against a static library, which is why ZenUnit and ZenMock will be made header-only following further laying down of their foundations.
 
-## ZenUnitHelloWorld
-
-ZenUnitHelloWorld is a folder contained in this repo that contains CMakeLists.txt files for example projects Executable, StaticLibrary, and StaticLibraryTests - with StaticLibraryTests configured to confirm the correctness of StaticLibrary using ZenUnit and ZenMock.
-
-## Building and Running ZenUnitHelloWorld's StaticLibraryTests on Linux
-
-```bash
-~/code/ZenUnitZenMock$ cd ZenUnitHelloWorld
-~/code/ZenUnitZenMock/ZenUnitHelloWorld$ CXX=/usr/bin/clang++ cmake -H. -BDebug -GNinja
-~/code/ZenUnitZenMock/ZenUnitHelloWorld$ cmake --build Debug
-~/code/ZenUnitZenMock/ZenUnitHelloWorld$ cd Debug/StaticLibraryTests
-~/code/ZenUnitZenMock/ZenUnitHelloWorld/Debug/StaticLibraryTests$ ./StaticLibraryTests
-```
-
-![ZenUnitHelloWorldLinux](Screenshots/ZenUnitHelloWorldLinux.png "ZenUnitHelloWorld on Linux")
-
-## Building and Running ZenUnitHelloWorld's StaticLibraryTests on Windows
-
-```bash
-~/code/ZenUnitZenMock$ cd ZenUnitHelloWorld
-~/code/ZenUnitZenMock/ZenUnitHelloWorld$ cmake . -G"Visual Studio 14 2015 Win64"
-~/code/ZenUnitZenMock/ZenUnitHelloWorld$ cmake --build .
-~/code/ZenUnitZenMock/ZenUnitHelloWorld$ cd StaticLibraryTests/Debug
-~/code/ZenUnitZenMock/ZenUnitHelloWorld/StaticLibraryTests/Debug$ ./StaticLibraryTests.exe
-```
-
-![ZenUnitHelloWorldWindows](Screenshots/ZenUnitHelloWorldWindows.png "ZenUnitHelloWorld on Windows")
-
 ## Test Matrix
 
 |Operating System|Compilers|
@@ -253,3 +225,4 @@ Test Matrix road map: Travis CI Linux and macOS, AppVeyor, Arch Linux, and Visua
 ### License
 
 ZenUnit and ZenMock are free and open source public domain software.
+
