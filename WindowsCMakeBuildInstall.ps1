@@ -9,4 +9,3 @@ cmake --build . --target ZenUnit --config Debug
 cmake --build . --target ZenUnit --config Release
 cmake --build . --target install --config Debug
 cmake --build . --target install --config Release
-

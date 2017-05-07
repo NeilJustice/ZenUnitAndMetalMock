@@ -9,4 +9,3 @@ subprocess.call(shlex.split("""llvm-cov report
 
 subprocess.call(shlex.split("""llvm-cov show
    Debug/ZenUnitTests/ZenUnitTests -instr-profile=coverage.profdata -project-title=ZenUnit -format=html -output-dir=covhtml -show-line-counts-or-regions -Xdemangler c++filt"""))
-

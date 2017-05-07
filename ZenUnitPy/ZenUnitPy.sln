@@ -4,7 +4,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "ZenUnitPy", "ZenUnitPy\ZenUnitPy.pyproj", "{7442C4B6-4D10-4AEA-A009-421F7252D55E}"
 EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "ZenUnitPy.Test", "ZenUnitPy.Test\ZenUnitPy.Test.pyproj", "{5BE2BD06-B3D6-4E12-9D37-CB82AA0EF9D3}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "ZenUnitPyTests", "ZenUnitPyTests\ZenUnitPyTests.pyproj", "{5BE2BD06-B3D6-4E12-9D37-CB82AA0EF9D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
