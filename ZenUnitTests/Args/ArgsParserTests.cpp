@@ -113,19 +113,21 @@ None
 
    TEST(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
    {
+      ToUnsigned_ZenMock.ExpectAndReturn(1);
       const vector<string> Args 
       { 
          TestProgramPath, 
-         //"-times=1",
+         "-times=1",
          "-exit0",
          "-noskips"
       };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
       //
+      ZEN(ToUnsigned_ZenMock.AssertCalledOnceWith("1"));
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
-      //expectedZenUnitArgs.times = 1;
+      expectedZenUnitArgs.times = 1;
       expectedZenUnitArgs.exit0 = true;
       expectedZenUnitArgs.noskips = true;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
