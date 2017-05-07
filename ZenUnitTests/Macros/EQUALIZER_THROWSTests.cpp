@@ -64,10 +64,11 @@ namespace ZenUnit
       EQUALIZER_THROWS_INIT(Namespace::TestStruct);
       THROWS(EQUALIZER_THROWS(Namespace::TestStruct, fieldB, 1), Anomaly, R"(
   Failed: EQUALIZER_THROWS(Namespace::TestStruct, fieldB, 1)
-Expected: Function ZenUnitEqualizer<Namespace::TestStruct>::AssertEqual to throw a ZenUnit::Anomaly
-          from an ARE_EQUAL or similar field assertion when Namespace::TestStruct
-          field 'fieldB' differs between two Namespace::TestStruct objects.
-  Actual: No ZenUnit::Anomaly thrown
+Expected: Function ZenUnitEqualizer<Namespace::TestStruct>::AssertEqual(expected, actual)
+          to throw a ZenUnit::Anomaly from an
+          ARE_EQUAL(expected.fieldB, actual.fieldB) assert statement.
+  Actual: No ZenUnit::Anomaly thrown despite field 'fieldB'
+          differing between objects expected and actual.
 File.cpp(1))");
    }
 
