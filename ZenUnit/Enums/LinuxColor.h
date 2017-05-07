@@ -1,7 +1,8 @@
 #pragma once
-#include "ZenUnit/Console/Color.h"
 
 namespace ZenUnit
 {
+   enum class Color : unsigned char;
+
    const char* ColorToLinuxColor(Color color);
 }

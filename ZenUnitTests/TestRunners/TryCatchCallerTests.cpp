@@ -225,7 +225,7 @@ Already called [ZenMockedFunctionName]Mock.Expect[AndReturn|AndReturnValues|AndT
       ExpectStopwatchStartAndStop();
       //
       THROWS(_tryCatchCaller.Call(ThrowInt, _testMock.get(), TestPhase::Unset), logic_error,
-         R"(assert_true(testPhase == TestPhase::Cleanup) failed in TestPhaseToTestPhaseSuffix()
+         R"(assert_true(testPhase == TestPhase::Cleanup) failed in DoTestPhaseToTestPhaseSuffix()
 File.cpp(1))");
       //
       AssertStartAndStopCalled();

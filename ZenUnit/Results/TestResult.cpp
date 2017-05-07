@@ -1,9 +1,11 @@
 #include "pch.h"
-#include "Results/TestResult.h"
 #include "ZenUnit/Console/Console.h"
+#include "ZenUnit/Enums/TestOutcome.h"
 #include "ZenUnit/Macros/ARE_EQUAL.h"
 #include "ZenUnit/Results/AnomalyOrException.h"
 #include "ZenUnit/Results/TestFailureNumberer.h"
+#include "ZenUnit/Results/TestPhaseSuffixer.h"
+#include "ZenUnit/Results/TestResult.h"
 #include "ZenUnit/TestRunners/TestRunner.h"
 
 namespace ZenUnit
@@ -156,7 +158,7 @@ namespace ZenUnit
          console->Write(fullTestName.Value());
          const CallResult& responsibleCallResult = (this->*responsibleCallResultField);
          const char* const responsibleTestPhaseSuffix = 
-            TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
+            TestPhaseSuffixer::DoTestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
          console->Write(responsibleTestPhaseSuffix);
          WriteTestCaseNumberIfAny(console, testCaseIndex);
          console->WriteLine(responsibleCallResult.anomalyOrException->anomaly->why);
@@ -170,7 +172,7 @@ namespace ZenUnit
          console->Write(fullTestName.Value());
          const CallResult& responsibleCallResult = this->*responsibleCallResultField;
          const char* const responsibleTestPhaseSuffix = 
-            TestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
+            TestPhaseSuffixer::DoTestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
          console->Write(responsibleTestPhaseSuffix);
          WriteTestCaseNumberIfAny(console, testCaseIndex);
          console->WriteLineColor("\nUncaught Exception", Color::Red);

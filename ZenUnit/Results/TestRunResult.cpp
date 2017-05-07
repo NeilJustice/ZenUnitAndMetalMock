@@ -1,9 +1,10 @@
 #include "pch.h"
-#include "TestRunResult.h"
 #include "ZenUnit/Args/ZenUnitArgs.h"
 #include "ZenUnit/Console/Console.h"
 #include "ZenUnit/Macros/VECTORS_EQUAL.h"
+#include "ZenUnit/Results/TestClassResult.h"
 #include "ZenUnit/Results/TestFailureNumberer.h"
+#include "ZenUnit/Results/TestRunResult.h"
 #include "ZenUnit/Utils/Iteration/MemberForEacher.h"
 
 namespace ZenUnit

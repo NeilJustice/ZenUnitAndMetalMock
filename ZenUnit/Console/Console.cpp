@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Console.h"
-#include "Console/ConsoleColorer.h"
+#include "ZenUnit/Console/Console.h"
+#include "ZenUnit/Console/ConsoleColorer.h"
 
 namespace ZenUnit
 {

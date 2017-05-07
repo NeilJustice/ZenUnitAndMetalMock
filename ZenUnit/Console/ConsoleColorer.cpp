@@ -1,11 +1,12 @@
 #include "pch.h"
-#include "ConsoleColorer.h"
-#include "Utils/AssertTrue.h"
+#include "ZenUnit/Console/ConsoleColorer.h"
+#include "ZenUnit/Enums/Color.h"
+#include "ZenUnit/Utils/AssertTrue.h"
 #ifdef __linux__
 #include "LinuxColor.h"
 #include <unistd.h>
 #elif _WIN32
-#include "WindowsColor.h"
+#include "ZenUnit/Enums/WindowsColor.h"
 #include <io.h>
 #endif
 

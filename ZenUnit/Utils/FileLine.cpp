@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "FileLine.h"
-#include "Macros/ARE_EQUAL.h"
+#include "ZenUnit/Macros/ARE_EQUAL.h"
+#include "ZenUnit/Utils/FileLine.h"
 
 namespace ZenUnit
 {

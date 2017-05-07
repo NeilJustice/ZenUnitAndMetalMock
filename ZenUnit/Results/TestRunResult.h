@@ -1,6 +1,5 @@
 #pragma once
 #include "ZenUnit/Equalizers/ZenUnitEqualizer.h"
-#include "ZenUnit/Results/TestClassResult.h"
 
 namespace ZenUnit
 {
@@ -9,6 +8,7 @@ namespace ZenUnit
     class MemberForEacher;
     class TestFailureNumberer;
     struct ZenUnitArgs;
+    struct TestClassResult;
 
    class TestRunResult
    {
@@ -22,9 +22,9 @@ namespace ZenUnit
       std::unique_ptr<const MemberForEacherTestClassResultsType> _memberForEacherTestClassResults;
       std::unique_ptr<const MemberForEacherSkippedTestsType> _memberForEacherSkippedTests;
       std::unique_ptr<TestFailureNumberer> _testFailureNumberer;
-      std::vector<TestClassResult> _testClassResults;
       std::vector<std::string> _skippedTestClassNamesAndReasons;
       std::vector<std::string> _skippedFullTestNamesAndReasons;
+      std::vector<TestClassResult> _testClassResults;
       size_t _numberOfFailedTestCases;
    public:
       TestRunResult();

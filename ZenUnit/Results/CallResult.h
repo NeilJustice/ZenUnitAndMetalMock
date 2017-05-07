@@ -1,11 +1,10 @@
 #pragma once
-#include "ZenUnit/Anomaly/Anomaly.h"
-#include "ZenUnit/Enums/TestOutcome.h"
-#include "ZenUnit/Enums/TestPhase.h"
 #include "ZenUnit/Equalizers/ZenUnitEqualizer.h"
 
 namespace ZenUnit
 {
+   enum class TestOutcome : unsigned char;
+   enum class TestPhase : unsigned char;
    struct AnomalyOrException;
 
    struct CallResult

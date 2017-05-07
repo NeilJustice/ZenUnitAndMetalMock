@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "TestClassRunner.h"
+#include "ZenUnit/TestRunners/TestClassRunner.h"
 #ifdef __linux__
 #include <strings.h>
 #endif

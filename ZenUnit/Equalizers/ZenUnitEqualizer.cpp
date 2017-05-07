@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnitEqualizer.h"
+#include "ZenUnit/Equalizers/ZenUnitEqualizer.h"
 
 void ZenUnitEqualizer<const char*>::
 AssertEqual(const char* expected, const char* actual)

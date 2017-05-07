@@ -1,13 +1,14 @@
 #include "pch.h"
-#include "AssertTrue.h"
-#include "Macros/MacroUtils.h"
-#include "Utils/StringUtil.h"
+#include "ZenUnit/Macros/MacroUtils.h"
+#include "ZenUnit/Utils/AssertTrue.h"
+#include "ZenUnit/Utils/FileLine.h"
+#include "ZenUnit/Utils/StringUtil.h"
 
 namespace ZenUnit
 {
    NOINLINE void ThrowLogicError( 
       const char* predicateText,
-      FileLine fileLine,
+      const FileLine& fileLine,
       const char* functionName)
    {
       const string what = String::Concat(
@@ -19,7 +20,7 @@ namespace ZenUnit
    void AssertTrue(
       bool predicateResult,
       const char* predicateText,
-      FileLine fileLine,
+      const FileLine& fileLine,
       const char* functionName)
    {
       if (!predicateResult)

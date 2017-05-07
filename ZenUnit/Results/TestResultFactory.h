@@ -1,5 +1,4 @@
 #pragma once
-#include "ZenUnit/TestRunners/TestRunner.h"
 
 namespace ZenUnit
 {

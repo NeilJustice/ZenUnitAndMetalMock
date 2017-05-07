@@ -4,7 +4,7 @@
 #include <unistd.h>
 #elif _WIN32
 #include <io.h>
-#include "ZenUnit/Console/WindowsColor.h"
+#include "ZenUnit/Enums/WindowsColor.h"
 // fileno() and isatty() are Linux and Windows wheras _fileno() and _isatty() are Windows only
 #pragma warning(disable: 4996) // 'fileno': The POSIX name for this item is deprecated
 #endif

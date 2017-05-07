@@ -1,9 +1,7 @@
 #include "pch.h"
-#include "Anomaly/Anomaly.h"
-#include "Macros/ARE_EQUAL.h"
-#include "Macros/IS_FALSE.h"
-#include "Macros/POINTEES_EQUAL.h"
-#include "Results/AnomalyOrException.h"
+#include "ZenUnit/Macros/ARE_EQUAL.h"
+#include "ZenUnit/Macros/POINTEES_EQUAL.h"
+#include "ZenUnit/Results/AnomalyOrException.h"
 
 namespace ZenUnit
 {

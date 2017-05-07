@@ -7,6 +7,11 @@ namespace ZenUnit
 {
    const char* TestPhaseSuffixer::TestPhaseToTestPhaseSuffix(TestPhase testPhase) const
    {
+      return DoTestPhaseToTestPhaseSuffix(testPhase);
+   }
+
+   const char* TestPhaseSuffixer::DoTestPhaseToTestPhaseSuffix(TestPhase testPhase)
+   {
       switch (testPhase)
       {
       case TestPhase::Constructor:

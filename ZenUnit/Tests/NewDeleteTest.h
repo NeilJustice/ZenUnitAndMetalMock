@@ -1,4 +1,6 @@
 #pragma once
+#include "ZenUnit/Enums/TestPhase.h"
+#include "ZenUnit/Enums/TestOutcome.h"
 #include "ZenUnit/Results/TestResultFactory.h"
 #include "ZenUnit/TestRunners/TryCatchCaller.h"
 #include "ZenUnit/Tests/Test.h"

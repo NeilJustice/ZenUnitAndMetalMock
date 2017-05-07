@@ -1,6 +1,7 @@
 #include "pch.h"
-#include "LinuxColor.h"
-#include "Utils/AssertTrue.h"
+#include "ZenUnit/Enums/Color.h"
+#include "ZenUnit/Enums/LinuxColor.h"
+#include "ZenUnit/Utils/AssertTrue.h"
 
 namespace ZenUnit
 {

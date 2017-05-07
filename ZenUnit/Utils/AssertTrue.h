@@ -6,7 +6,7 @@ namespace ZenUnit
    void AssertTrue(
       bool predicateResult,
       const char* predicateText,
-      FileLine fileLine,
+      const FileLine& fileLine,
       const char* functionName);
 }
 

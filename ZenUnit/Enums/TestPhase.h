@@ -11,6 +11,4 @@ namespace ZenUnit
       Cleanup,
       Destructor
    };
-
-   const char* TestPhaseToTestPhaseSuffix(TestPhase testPhase);
 }

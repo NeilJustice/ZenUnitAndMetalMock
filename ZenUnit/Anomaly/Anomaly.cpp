@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Anomaly.h"
-#include "Macros/ARE_EQUAL.h"
+#include "ZenUnit/Anomaly/Anomaly.h"
+#include "ZenUnit/Macros/ARE_EQUAL.h"
 
 namespace ZenUnit
 {

@@ -1,5 +1,7 @@
 #include "pch.h"
-#include "Test.h"
+#include "ZenUnit/Enums/TestPhase.h"
+#include "ZenUnit/Enums/TestOutcome.h"
+#include "ZenUnit/Tests/Test.h"
 #include "ZenUnit/Results/TestResultFactory.h"
 #include "ZenUnit/TestRunners/TryCatchCaller.h"
 

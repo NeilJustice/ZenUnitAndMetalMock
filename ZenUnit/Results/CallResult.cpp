@@ -1,9 +1,11 @@
 #include "pch.h"
-#include "CallResult.h"
-#include "Macros/ARE_EQUAL.h"
-#include "Macros/IS_FALSE.h"
-#include "Macros/POINTEES_EQUAL.h"
-#include "Results/AnomalyOrException.h"
+#include "ZenUnit/Enums/TestOutcome.h"
+#include "ZenUnit/Enums/TestPhase.h"
+#include "ZenUnit/Macros/ARE_EQUAL.h"
+#include "ZenUnit/Macros/IS_FALSE.h"
+#include "ZenUnit/Macros/POINTEES_EQUAL.h"
+#include "ZenUnit/Results/AnomalyOrException.h"
+#include "ZenUnit/Results/CallResult.h"
 
 namespace ZenUnit
 {

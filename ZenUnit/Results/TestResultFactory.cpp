@@ -1,6 +1,7 @@
 #include "pch.h"
-#include "TestResultFactory.h"
 #include "ZenUnit/Results/TestResult.h"
+#include "ZenUnit/Results/TestResultFactory.h"
+#include "ZenUnit/TestRunners/TestRunner.h"
 
 namespace ZenUnit
 {

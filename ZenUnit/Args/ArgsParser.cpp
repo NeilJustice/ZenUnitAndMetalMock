@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "Args/ArgsParser.h"
-#include "Console/Console.h"
-#include "Utils/Set.h"
-#include "Utils/StringUtil.h"
-#include "Utils/Vector.h"
+#include "ZenUnit/Args/ArgsParser.h"
+#include "ZenUnit/Console/Console.h"
+#include "ZenUnit/Utils/Set.h"
+#include "ZenUnit/Utils/StringUtil.h"
+#include "ZenUnit/Utils/Vector.h"
 
 namespace ZenUnit
 {

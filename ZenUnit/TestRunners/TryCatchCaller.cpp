@@ -1,9 +1,13 @@
 #include "pch.h"
+#include "ZenUnit/Anomaly/Anomaly.h"
 #include "ZenUnit/Console/Console.h"
 #include "ZenUnit/Enums/TestPhase.h"
+#include "ZenUnit/Enums/TestOutcome.h"
 #include "ZenUnit/Results/TestPhaseSuffixer.h"
 #include "ZenUnit/TestRunners/TestRunner.h"
 #include "ZenUnit/TestRunners/TryCatchCaller.h"
+#include "ZenUnit/Utils/StringUtil.h"
+#include "ZenUnit/Utils/Type.h"
 #include "ZenUnit/ZenMock/Exceptions/ZenMockException.h"
 #include <memory>
 
@@ -63,7 +67,7 @@ namespace ZenUnit
       catch (...)
       {
          const unsigned milliseconds = _stopwatch->Stop();
-         const string testPhaseSuffix = TestPhaseToTestPhaseSuffix(testPhase);
+         const string testPhaseSuffix = TestPhaseSuffixer::DoTestPhaseToTestPhaseSuffix(testPhase);
          _console->WriteLineColor("FATALITY", Color::Red);
          const string exitLine = String::Concat(
             "Fatal ... exception. Fail fasting with exit code 1 unless -exit0 specified.",

@@ -24,7 +24,7 @@ TEST1X1(TestPhaseToTestPhaseSuffix_UnsetOrDestructorTestPhase_Throws,
    TestPhase::Destructor)
 {
    THROWS(_testPhaseSuffixer.TestPhaseToTestPhaseSuffix(testPhase),
-      logic_error, R"(assert_true(testPhase == TestPhase::Cleanup) failed in TestPhaseToTestPhaseSuffix()
+      logic_error, R"(assert_true(testPhase == TestPhase::Cleanup) failed in DoTestPhaseToTestPhaseSuffix()
 File.cpp(1))");
 }
 

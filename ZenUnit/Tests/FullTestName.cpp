@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "FullTestName.h"
 #include "ZenUnit/Macros/ARE_EQUAL.h"
+#include "ZenUnit/Tests/FullTestName.h"
 
 namespace ZenUnit
 {

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnit/Console/LinuxColor.h"
+#include "ZenUnit/Enums/LinuxColor.h"
 
 namespace ZenUnit
 {

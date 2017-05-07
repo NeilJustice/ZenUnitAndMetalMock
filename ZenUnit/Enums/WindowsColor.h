@@ -1,8 +1,9 @@
 #pragma once
-#include "ZenUnit/Console/Color.h"
 
 namespace ZenUnit
 {
+   enum class Color : unsigned char;
+
    enum class WindowsColor : unsigned char
    {
       Black,
