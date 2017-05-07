@@ -13,7 +13,7 @@ namespace ZenUnit
       unsigned maxtestmilliseconds = 0;
       unsigned maxtotalseconds = 0;
 
-      static const std::unordered_set<std::string> ValidArgs;
+      static const size_t NumberOfValidArgs = 5;
    };
 
    #ifdef __linux__

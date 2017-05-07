@@ -3,14 +3,13 @@
 
 namespace ZenUnit
 {
-   TESTS(StringUtilTests)
+   template<typename StringType>
+   TEMPLATETESTS(StringUtilContainsTests, StringType)
    SPECX(Contains_ReturnsTrueIfStrContainsSubstring)
-   SPEC(Concat_ConcatsValuesIntoString)
-   SPECX(CommaSplitExceptQuotedCommas_ReturnsStringSplitOnCommasWithQuotedCommasIgnored)
    SPECEND
 
    TEST3X3(Contains_ReturnsTrueIfStrContainsSubstring,
-      const char* str, const char* substring, bool expectedReturnValue,
+      StringType str, const char* substring, bool expectedReturnValue,
       "", "", true,
       "", "a", false,
       "a", "A", false,
@@ -21,6 +20,32 @@ namespace ZenUnit
       " ab01", "ab", true)
    {
       ARE_EQUAL(expectedReturnValue, String::Contains(str, substring));
+   }
+
+   }; 
+   RUNTEMPLATE(StringUtilContainsTests, const string&)
+   RUNTEMPLATE(StringUtilContainsTests, const char*)
+
+   TESTS(StringUtilTests)
+   SPECX(Split_ReturnsExpected)
+   SPEC(Concat_ConcatsValuesIntoString)
+   SPECX(CommaSplitExceptQuotedCommas_ReturnsStringSplitOnCommasWithQuotedCommasIgnored)
+   SPECEND
+
+   TEST3X3(Split_ReturnsExpected,
+      const string& str, char separator, const vector<string>& expectedReturnValue,
+      "", '\0', vector<string>{},
+      "", ',', vector<string>{},
+      ",", ',', vector<string>{""},
+      "|", '|', vector<string>{""},
+      "a", ',', vector<string>{"a"},
+      "a,b,c", ',', vector<string>{"a", "b", "c"},
+      ",a,b,,c,", ',', vector<string>{"", "a", "b", "", "c"},
+      "a", '|', vector<string>{"a"},
+      "a|b|c", '|', vector<string>{"a", "b", "c"},
+      ",a|b|c||", '|', vector<string>{",a", "b", "c", ""})
+   {
+      ARE_EQUAL(expectedReturnValue, String::Split(str, separator));
    }
 
    struct UserType

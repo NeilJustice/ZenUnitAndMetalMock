@@ -8,12 +8,17 @@ namespace ZenUnit
    TESTS(ArgsParserTests)
    SPEC(DefaultConstructor_NewsConsole)
    SPEC(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
-   SPEC(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_WritesErrorMessageAndUsageAndExits1)
-   SPECX(Parse_InvalidArg_WritesErrorMessageAndUsageAndExits1)
+   SPEC(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1)
+   SPECX(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1)
    SPECX(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0)
    SPEC(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
-   SPEC(Parse_ValidBoolArgs_ReturnsExpectedZenUnitArgs)
+   SPEC(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    SPEC(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
+   SPEC(Parse_TimesArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1)
+   SPEC(Parse_TimesArg_NegativeNumberValue_PrintsErrorMessageAndUsageAndExits1)
+   SPEC(Parse_TimesArg_NonNumberValue_PrintsErrorMessageAndUsageAndExits1)
+   SPEC(Parse_TimesArg_TwoEqualsSignsAndAPositiveValue_PrintsErrorMessageAndUsageAndExits1)
+   SPEC(Parse_TimesArg_PositiveValue_ReturnsExpectedZenUnitArgs)
    SPECEND
 
    ArgsParser _argsParser;
@@ -63,20 +68,19 @@ None
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_WritesErrorMessageAndUsageAndExits1)
+   TEST(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1)
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
-      const vector<string> Args(1 + ZenUnitArgs::ValidArgs.size() + 1);
+      const vector<string> Args(1 + ZenUnitArgs::NumberOfValidArgs + 1);
       //
       THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
       //
-      ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
-         "ZenUnit argument error: Too many arguments"));
+      ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith("ZenUnit argument error: Too many arguments.\n"));
       ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(ExpectedUsage, 1));
    }
 
-   TEST1X1(Parse_InvalidArg_WritesErrorMessageAndUsageAndExits1,
+   TEST1X1(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1,
       const string& invalidArg,
       "--exit0",
       "-Exit0")
@@ -109,25 +113,26 @@ None
       const vector<string> Args 
       { 
          TestProgramPath, 
-         "-exit0", 
-         "-noskips" 
+         "-times=0",
+         "-exit0",
+         "-noskips"
       };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
       //
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
+      expectedZenUnitArgs.times = 0;
       expectedZenUnitArgs.exit0 = true;
       expectedZenUnitArgs.noskips = true;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST(Parse_ValidBoolArgs_ReturnsExpectedZenUnitArgs)
+   TEST(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    {
       AssertArgSetsBoolField("-exit0", &ZenUnitArgs::exit0);
       AssertArgSetsBoolField("-noskips", &ZenUnitArgs::noskips);
    }
-
    void AssertArgSetsBoolField(const string& arg, bool ZenUnitArgs::* expectedFieldToBeSet)
    {
       const vector<string> Args { TestProgramPath, arg };
@@ -150,6 +155,39 @@ None
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
       expectedZenUnitArgs.exit0 = true;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
+   }
+
+   TEST(Parse_TimesArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1)
+   {
+      _consoleMock->WriteLineMock.Expect();
+      _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
+      const vector<string> Args { TestProgramPath, "-times=" };
+      //
+      THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
+      //
+      ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
+         "ZenUnit argument error: -name=value argument without an argument: -times="));
+      ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(ExpectedUsage, 1));
+   }
+
+   TEST(Parse_TimesArg_NegativeNumberValue_PrintsErrorMessageAndUsageAndExits1)
+   {
+
+   }
+
+   TEST(Parse_TimesArg_NonNumberValue_PrintsErrorMessageAndUsageAndExits1)
+   {
+
+   }
+
+   TEST(Parse_TimesArg_TwoEqualsSignsAndAPositiveValue_PrintsErrorMessageAndUsageAndExits1)
+   {
+
+   }
+
+   TEST(Parse_TimesArg_PositiveValue_ReturnsExpectedZenUnitArgs)
+   {
+
    }
 
    }; RUN(ArgsParserTests)

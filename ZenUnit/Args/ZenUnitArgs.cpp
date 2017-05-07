@@ -2,17 +2,6 @@
 #include "ZenUnit/Args/ZenUnitArgs.h"
 #include "ZenUnit/Macros/ARE_EQUAL.h"
 
-namespace ZenUnit
-{
-   const std::unordered_set<std::string> ZenUnitArgs::ValidArgs = std::unordered_set<std::string>
-   {
-      "-exit0",
-      "-noskips",
-      "-help",
-      "--help"
-   };
-}
-
 void ZenUnitEqualizer<ZenUnit::ZenUnitArgs>::
 AssertEqual(const ZenUnit::ZenUnitArgs& expectedArgs, const ZenUnit::ZenUnitArgs& actualArgs)
 {

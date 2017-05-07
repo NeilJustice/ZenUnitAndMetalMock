@@ -3,10 +3,27 @@
 
 namespace ZenUnit
 {
+   bool String::Contains(const string& str, const char* substring)
+   {
+      return Contains(str.c_str(), substring);
+   }
+
    bool String::Contains(const char* str, const char* substring)
    {
       const char* const strstrResult = strstr(str, substring);
       return strstrResult != nullptr;
+   }
+
+   vector<string> String::Split(const string& str, char separator)
+   {
+      vector<string> splitString;
+      istringstream is(str);
+      string token;
+      while (getline(is, token, separator))
+      {
+         splitString.push_back(token);
+      }
+      return splitString;
    }
 
    std::vector<std::string> String::CommaSplitExceptQuotedCommas(const char* text)

@@ -2,6 +2,7 @@
 #include "Args/ArgsParser.h"
 #include "Console/Console.h"
 #include "Utils/Set.h"
+#include "Utils/StringUtil.h"
 #include "Utils/Vector.h"
 
 namespace ZenUnit
@@ -14,9 +15,9 @@ namespace ZenUnit
    ZenUnitArgs ArgsParser::Parse(const vector<string>& args) const
    {
       const size_t ExeArgSize = 1;
-      if (args.size() > ExeArgSize + ZenUnitArgs::ValidArgs.size())
+      if (args.size() > ExeArgSize + ZenUnitArgs::NumberOfValidArgs)
       {
-         _console->WriteLine("ZenUnit argument error: Too many arguments");
+         _console->WriteLine("ZenUnit argument error: Too many arguments.\n");
          _console->WriteLineAndExit(Usage, 1);
       }
       ZenUnitArgs zenUnitArgs;
@@ -25,11 +26,6 @@ namespace ZenUnit
       for (size_t argIndex = 1; argIndex < numberOfArgs; ++argIndex)
       {
          const string& arg = args[argIndex];
-         if (!Set::Contains(ZenUnitArgs::ValidArgs, arg))
-         {
-            _console->WriteLine("ZenUnit argument error: Invalid argument \"" + arg + "\"");
-            _console->WriteLineAndExit(Usage, 1);
-         }
          if (arg == "-exit0")
          {
             zenUnitArgs.exit0 = true;
@@ -41,6 +37,20 @@ namespace ZenUnit
          else if (arg == "-help" || arg == "--help")
          {
             _console->WriteLineAndExit(Usage, 0);
+         }
+         else if (!String::Contains(arg, "="))
+         {
+            _console->WriteLine("ZenUnit argument error: Invalid argument \"" + arg + "\"");
+            _console->WriteLineAndExit(Usage, 1);
+         }         
+         else
+         {
+            const vector<string> splitArg = String::Split(arg, '=');
+            if (splitArg.size() == 1)
+            {
+               _console->WriteLine("ZenUnit argument error: -name=value argument without an argument: -times=");
+               _console->WriteLineAndExit(Usage, 1);
+            }
          }
       }
       return zenUnitArgs;

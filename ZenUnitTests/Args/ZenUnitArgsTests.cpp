@@ -5,7 +5,6 @@ namespace ZenUnit
 {
    TESTS(ZenUnitArgsTests)
    SPEC(DefaultConstructor_SetsFieldsTo0)
-   SPEC(ValidArgs_IsExpectedStringSet)
    SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    SPECEND
 
@@ -18,18 +17,7 @@ namespace ZenUnit
       IS_FALSE(zenUnitArgs.noskips);
       IS_ZERO(zenUnitArgs.maxtestmilliseconds);
       IS_ZERO(zenUnitArgs.maxtotalseconds);
-   }
-
-   TEST(ValidArgs_IsExpectedStringSet)
-   {
-      const unordered_set<string> ExpectedValidArgs
-      {
-         "-exit0",
-         "-noskips",
-         "-help",
-         "--help"
-      };
-      SETS_EQUAL(ExpectedValidArgs, ZenUnitArgs::ValidArgs);
+      ARE_EQUAL(5, ZenUnitArgs::NumberOfValidArgs);
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
