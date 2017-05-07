@@ -2,24 +2,24 @@
 
 |Test Classes|
 |----------------|
-|`TESTCLASS(CrystalClearTestClassName)`|
-|`TEMPLATETESTCLASS(CrystalClearTestClassName, TemplateParameterNames...)` // Precede with template\<parameter-list\>|
-|`SPEC(CrystalClearTestName)` // Standard-issue void test|
-|`SPECX(CrystalClearTestName)` // N-by-N value-parameterized test|
-|`SKIPSPEC(CrystalClearTestName, Reason)`|
-|`SKIPSPECX(CrystalClearTestName, Reason)`|
+|`TESTCLASS(HighQualityTestClassName)`|
+|`TEMPLATETESTCLASS(HighQualityTestClassName, TemplateParameterNames...)` // Precede with template\<parameter-list\>|
+|`SPEC(HighQualityTestName)` // Standard-issue void test|
+|`SPECX(HighQualityTestName)` // N-by-N value-parameterized test|
+|`SKIPSPEC(HighQualityTestName, Reason)`|
+|`SKIPSPECX(HighQualityTestName, Reason)`|
 |`SPECEND` // Ends the SPEC section and begins the TEST section|
 |`STARTUP` // Function run before each test|
 |`CLEANUP` // Function run after each test|
-|`TEST(CrystalClearTestName)` // Standard-issue void test|
-|`TEST1X1(CrystalClearTestName, Arg1Type, ...)` // 1-by-1 value-parameterized test|
-|`TEST2X2(CrystalClearTestName, Arg1Type, Arg2Type, ...)` // 2-by-2 value-parameterized test|
+|`TEST(HighQualityTestName)` // Standard-issue void test|
+|`TEST1X1(HighQualityTestName, Arg1Type, ...)` // 1-by-1 value-parameterized test|
+|`TEST2X2(HighQualityTestName, Arg1Type, Arg2Type, ...)` // 2-by-2 value-parameterized test|
 |...|
-|`TEST10X10(CrystalClearTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
-|`RUNTESTS(CrystalClearTestClassName)`|
-|`RUNTEMPLATETESTS(CrystalClearTestClassName, TemplateArguments...)`|
-|`SKIPRUNTESTS(CrystalClearTestClassName, Reason)`|
-|`SKIPRUNTEMPLATETESTS(CrystalClearTestClassName, Reason)`|
+|`TEST10X10(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
+|`RUNTESTS(HighQualityTestClassName)`|
+|`RUNTEMPLATETESTS(HighQualityTestClassName, TemplateArguments...)`|
+|`SKIPRUNTESTS(HighQualityTestClassName, Reason)`|
+|`SKIPRUNTEMPLATETESTS(HighQualityTestClassName, Reason)`|
 
 |Values|
 |------|
