@@ -95,7 +95,7 @@ namespace ZenUnit
       "1 ",
       "0  ")
    {
-	   THROWS(String::ToUnsigned(str), invalid_argument, 
+	   THROWS(String::ToUnsigned(str), invalid_argument,
          "String::ToUnsigned() called with string not convertible to unsigned integer: \"" + str + "\"");
    }
 
@@ -105,7 +105,7 @@ namespace ZenUnit
       to_string(static_cast<unsigned long long>(numeric_limits<unsigned int>::max()) + 2ull))
    {
 	   THROWS(String::ToUnsigned(expectedGreaterThanUnsignedMaxValue), invalid_argument,
-		   "String::ToUnsigned called with string containing number greater than numeric_limits<unsigned int>::max(): \"" 
+		   "String::ToUnsigned called with string containing number greater than numeric_limits<unsigned int>::max(): \""
          + expectedGreaterThanUnsignedMaxValue + "\"");
    }
 
@@ -130,7 +130,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedReturnValue, String::Contains(str, substring));
    }
 
-   }; 
+   };
    RUNTEMPLATE(StringUtilContainsTests, const string&)
    RUNTEMPLATE(StringUtilContainsTests, const char*)
 }

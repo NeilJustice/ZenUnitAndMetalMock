@@ -1,5 +1,6 @@
 #pragma once
 #include "ZenUnit/Enums/ExpectedActualFormat.h"
+#include "ZenUnit/ToStringer/ToStringer.h"
 #include "ZenUnit/Utils/AssertTrue.h"
 #include "ZenUnit/Utils/FileLine.h"
 #include <cstring>

@@ -13,7 +13,7 @@ namespace ZenUnit
       unsigned maxtestmilliseconds = 0;
       unsigned maxtotalseconds = 0;
 
-      static const size_t NumberOfValidArgs = 5;
+      static const size_t NumberOfValidArgs;
    };
 
    #ifdef __linux__

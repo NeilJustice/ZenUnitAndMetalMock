@@ -29,7 +29,7 @@ TEST(CallAllMacros)
    ARE_EQUAL(0, 0);
    int x = 0, y = 0;
    ARE_SAME(x, x);
-   ARE_NOT_SAME(x, y);  
+   ARE_NOT_SAME(x, y);
    IS_TRUE(true);
    IS_FALSE(false);
    IS_ZERO(0);

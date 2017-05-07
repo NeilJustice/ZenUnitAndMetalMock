@@ -3,7 +3,7 @@
 #include "ZenUnit/Enums/Color.h"
 #include "ZenUnit/Utils/AssertTrue.h"
 #ifdef __linux__
-#include "LinuxColor.h"
+#include "ZenUnit/Enums/LinuxColor.h"
 #include <unistd.h>
 #elif _WIN32
 #include "ZenUnit/Enums/WindowsColor.h"

@@ -6,7 +6,7 @@
 
 namespace ZenUnit
 {
-   NOINLINE void ThrowLogicError( 
+   NOINLINE void ThrowLogicError(
       const char* predicateText,
       const FileLine& fileLine,
       const char* functionName)

@@ -245,4 +245,34 @@ namespace ZenUnit
    }
 
    }; RUN(TestNXNTests)
+
+   template<typename T>
+   TEMPLATETESTS(AllTestNXNsWithinATemplateTestClass, T)
+   SPEC(Test)
+   SPECX(Test1X1)
+   SPECX(Test2X2)
+   SPECX(Test3X3)
+   SPECX(Test4X4)
+   SPECX(Test5X5)
+   SPECX(Test6X6)
+   SPECX(Test7X7)
+   SPECX(Test8X8)
+   SPECX(Test9X9)
+   SPECX(Test10X10)
+   SPECEND
+
+   TEST(Test) {}
+   TEST1X1(Test1X1, int, 0) {}
+   TEST2X2(Test2X2, int, int, 0, 0) {}
+   TEST3X3(Test3X3, int, int, int, 0, 0, 0) {}
+   TEST4X4(Test4X4, int, int, int, int, 0, 0, 0, 0) {}
+   TEST5X5(Test5X5, int, int, int, int, int, 0, 0, 0, 0, 0) {}
+   TEST6X6(Test6X6, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0) {}
+   TEST7X7(Test7X7, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0) {}
+   TEST8X8(Test8X8, int, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0, 0) {}
+   TEST9X9(Test9X9, int, int, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0, 0, 0) {}
+   TEST10X10(Test10X10, int, int, int, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0) {}
+
+   };
+   RUNTEMPLATE(AllTestNXNsWithinATemplateTestClass, int)
 }
