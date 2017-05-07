@@ -24,7 +24,7 @@ namespace ZenUnit
    {
       EQUALIZER_THROWS_INIT(ZenUnitArgs);
       EQUALIZER_THROWS(ZenUnitArgs, commandLine, "ZenUnitTests.exe");
-      EQUALIZER_THROWS(ZenUnitArgs, times, static_cast<unsigned short>(1));
+      EQUALIZER_THROWS(ZenUnitArgs, times, 1u);
       EQUALIZER_THROWS(ZenUnitArgs, exit0, true);
       EQUALIZER_THROWS(ZenUnitArgs, noskips, true);
       EQUALIZER_THROWS(ZenUnitArgs, maxtestmilliseconds, 2u);

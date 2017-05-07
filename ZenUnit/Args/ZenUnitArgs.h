@@ -7,7 +7,7 @@ namespace ZenUnit
    struct ZenUnitArgs
    {
       std::string commandLine;
-      unsigned short times = 0;
+      unsigned times = 0;
       bool exit0 = false;
       bool noskips = false;
       unsigned maxtestmilliseconds = 0;

@@ -11,6 +11,7 @@ namespace ZenUnit
       friend class ArgsParserTests;
    private:
       std::unique_ptr<const Console> _console;
+      std::function<unsigned(const std::string&)> _String_ToUnsigned;
    public:
       ArgsParser();
       virtual ~ArgsParser() = default;

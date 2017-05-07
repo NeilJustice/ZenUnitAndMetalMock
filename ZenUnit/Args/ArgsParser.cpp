@@ -9,6 +9,7 @@ namespace ZenUnit
 {
    ArgsParser::ArgsParser()
       : _console(new Console)
+      , _String_ToUnsigned(String::ToUnsigned)
    {
    }
 
@@ -51,9 +52,17 @@ namespace ZenUnit
                _console->WriteLine("ZenUnit argument error: Illformed -name=value argument: " + arg);
                _console->WriteLineAndExit(Usage, 1);
             }
-            //const string& arg = splitArg[0];
-            //unsigned timesValue = 
-            //zenUnitArgs.times = timesValue;
+            try
+            {
+               const string& valueString = splitArg[1];
+               unsigned value = _String_ToUnsigned(valueString);
+               zenUnitArgs.times = value;
+            }
+            catch (const invalid_argument&)
+            {
+               _console->WriteLine("ZenUnit argument error: Illformed -name=value argument: " + arg);
+               _console->WriteLineAndExit(Usage, 1);
+            }
          }
       }
       return zenUnitArgs;

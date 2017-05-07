@@ -6,7 +6,7 @@
 namespace ZenUnit
 {
    TESTS(ArgsParserTests)
-   SPEC(DefaultConstructor_NewsConsole)
+   SPEC(DefaultConstructor_NewsConsole_SetsStringToUnsignedFunction)
    SPEC(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
    SPEC(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1)
    SPECX(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1)
@@ -15,13 +15,10 @@ namespace ZenUnit
    SPEC(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    SPEC(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
    SPECX(Parse_TimesArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1)
-   SKIPSPECX("In progress", Parse_TimesArg_NonUnsignedValue_PrintsErrorMessageAndUsageAndExits1)
-   SPEC(Parse_TimesArg_TwoEqualsSignsAndAPositiveValue_PrintsErrorMessageAndUsageAndExits1)
-   SPEC(Parse_TimesArg_PositiveValue_ReturnsExpectedZenUnitArgs)
+   SPEC(Parse_TimesArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
+   SPECX(Parse_TimesArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
    SPECEND
 
-   ArgsParser _argsParser;
-   const ConsoleMock* _consoleMock;
    const string TestProgramPath = "Folder/TestProgramName";
    const string ExpectedUsage = R"(C++ unit testing framework ZenUnit and C++ mocking framework ZenMock
 Version 0.1.1
@@ -45,15 +42,21 @@ None
 -help or --help
    Display this help.)";
 
+   ArgsParser _argsParser;
+   const ConsoleMock* _consoleMock;
+   ZENMOCK_NONVOID1_STATIC(unsigned, String, ToUnsigned, const string&)
+
    STARTUP
    {
       _argsParser._console.reset(_consoleMock = new ConsoleMock);
+      _argsParser._String_ToUnsigned = ZENBIND1(ToUnsigned_ZenMock);
    }
 
-   TEST(DefaultConstructor_NewsConsole)
+   TEST(DefaultConstructor_NewsConsole_SetsStringToUnsignedFunction)
    {
       ArgsParser argsParser;
       WAS_NEWED(argsParser._console);
+      FUNCTION_TARGETS(String::ToUnsigned, argsParser._String_ToUnsigned);
    }
 
    TEST(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
@@ -113,7 +116,7 @@ None
       const vector<string> Args 
       { 
          TestProgramPath, 
-         "-times=0",
+         //"-times=1",
          "-exit0",
          "-noskips"
       };
@@ -122,7 +125,7 @@ None
       //
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
-      expectedZenUnitArgs.times = 0;
+      //expectedZenUnitArgs.times = 1;
       expectedZenUnitArgs.exit0 = true;
       expectedZenUnitArgs.noskips = true;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
@@ -173,31 +176,37 @@ None
       ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(ExpectedUsage, 1));
    }
 
-   TEST1X1(Parse_TimesArg_NonUnsignedValue_PrintsErrorMessageAndUsageAndExits1,
-      const string& arg,
-      "-times=-1")
-      //"-times=abc",
-      //"-times=1u")
+   TEST(Parse_TimesArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
-      const vector<string> Args { TestProgramPath, arg };
+      ToUnsigned_ZenMock.ExpectAndThrow<invalid_argument>("");
+      const string InvalidTimesArg = "-times=-1_for_example";
+      const vector<string> Args { TestProgramPath, InvalidTimesArg };
       //
       THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
       //
+      ZEN(ToUnsigned_ZenMock.AssertCalledOnceWith("-1_for_example"));
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
-         "ZenUnit argument error: Illformed -name=value argument. Not-a-number value: " + arg));
+         "ZenUnit argument error: Illformed -name=value argument: " + InvalidTimesArg));
       ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(ExpectedUsage, 1));
    }
 
-   TEST(Parse_TimesArg_TwoEqualsSignsAndAPositiveValue_PrintsErrorMessageAndUsageAndExits1)
+   TEST1X1(Parse_TimesArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs,
+      unsigned validTimesValue,
+      0u,
+      1u)
    {
-
-   }
-
-   TEST(Parse_TimesArg_PositiveValue_ReturnsExpectedZenUnitArgs)
-   {
-
+      ToUnsigned_ZenMock.ExpectAndReturn(validTimesValue);
+      const vector<string> Args { TestProgramPath, "-times=" + to_string(validTimesValue) };
+      //
+      ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
+      //
+      ZEN(ToUnsigned_ZenMock.AssertCalledOnceWith(to_string(validTimesValue)));
+      ZenUnitArgs expectedZenUnitArgs;
+      expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
+      expectedZenUnitArgs.times = validTimesValue;
+      ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
    }; RUN(ArgsParserTests)
