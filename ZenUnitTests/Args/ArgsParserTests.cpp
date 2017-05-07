@@ -8,12 +8,12 @@ namespace ZenUnit
    TESTS(ArgsParserTests)
    SPEC(DefaultConstructor_NewsConsole)
    SPEC(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
-   SPEC(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_WritesErrorMessageAndUsageAndExits2)
-   SPEC(Parse_InvalidArg_WritesErrorMessageAndUsageAndExits2)
+   SPEC(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_WritesErrorMessageAndUsageAndExits1)
+   SPECX(Parse_InvalidArg_WritesErrorMessageAndUsageAndExits1)
    SPECX(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0)
    SPEC(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
-   SPEC(Parse_ValidSingleArgs_ReturnsZenUnitArgs)
-   SPEC(Parse_ValidFlagArgSpecifiedTwice_ReturnsZenUnitArgs)
+   SPEC(Parse_ValidBoolArgs_ReturnsExpectedZenUnitArgs)
+   SPEC(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
    SPECEND
 
    ArgsParser _argsParser;
@@ -27,6 +27,8 @@ Options:
 
 None
    Run all non-skipped tests.
+-times=N
+   Run tests N times. Specify N as 0 to run forever.
 -exit0
    Always exit 0 regardless of test run outcome.
    This option is useful for always allowing the launch of a debugger
@@ -61,7 +63,7 @@ None
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_WritesErrorMessageAndUsageAndExits2)
+   TEST(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_WritesErrorMessageAndUsageAndExits1)
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
@@ -71,20 +73,23 @@ None
       //
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
          "ZenUnit argument error: Too many arguments"));
-      ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(ExpectedUsage, 2));
+      ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(ExpectedUsage, 1));
    }
 
-   TEST(Parse_InvalidArg_WritesErrorMessageAndUsageAndExits2)
+   TEST1X1(Parse_InvalidArg_WritesErrorMessageAndUsageAndExits1,
+      const string& invalidArg,
+      "--exit0",
+      "-Exit0")
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
-      const vector<string> Args = { TestProgramPath, "-Exit0" };
+      const vector<string> Args = { TestProgramPath, invalidArg };
       //
       THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
       //
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
-         "ZenUnit argument error: Invalid argument \"-Exit0\""));
-      ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(ExpectedUsage, 2));
+         "ZenUnit argument error: Invalid argument \"" + invalidArg + "\""));
+      ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(ExpectedUsage, 1));
    }
 
    TEST1X1(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0,
@@ -101,11 +106,11 @@ None
 
    TEST(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
    {
-      const vector<string> Args =
-      {
-         TestProgramPath,
-         "-exit0",
-         "-noskips"
+      const vector<string> Args 
+      { 
+         TestProgramPath, 
+         "-exit0", 
+         "-noskips" 
       };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
@@ -117,14 +122,15 @@ None
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST(Parse_ValidSingleArgs_ReturnsZenUnitArgs)
+   TEST(Parse_ValidBoolArgs_ReturnsExpectedZenUnitArgs)
    {
-      AssertArgSetsField("-exit0", &ZenUnitArgs::exit0);
+      AssertArgSetsBoolField("-exit0", &ZenUnitArgs::exit0);
+      AssertArgSetsBoolField("-noskips", &ZenUnitArgs::noskips);
    }
 
-   void AssertArgSetsField(const string& arg, bool ZenUnitArgs::* expectedFieldToBeSet)
+   void AssertArgSetsBoolField(const string& arg, bool ZenUnitArgs::* expectedFieldToBeSet)
    {
-      const vector<string> Args = { TestProgramPath, arg };
+      const vector<string> Args { TestProgramPath, arg };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
       //
@@ -134,14 +140,9 @@ None
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST(Parse_ValidFlagArgSpecifiedTwice_ReturnsZenUnitArgs)
+   TEST(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
    {
-      const vector<string> Args =
-      {
-         TestProgramPath,
-         "-exit0",
-         "-exit0"
-      };
+      const vector<string> Args { TestProgramPath, "-exit0", "-exit0" };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
       //

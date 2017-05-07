@@ -17,7 +17,7 @@ namespace ZenUnit
       if (args.size() > ExeArgSize + ZenUnitArgs::ValidArgs.size())
       {
          _console->WriteLine("ZenUnit argument error: Too many arguments");
-         _console->WriteLineAndExit(Usage, 2);
+         _console->WriteLineAndExit(Usage, 1);
       }
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.commandLine = Vector::Join(args, ' ');
@@ -28,7 +28,7 @@ namespace ZenUnit
          if (!Set::Contains(ZenUnitArgs::ValidArgs, arg))
          {
             _console->WriteLine("ZenUnit argument error: Invalid argument \"" + arg + "\"");
-            _console->WriteLineAndExit(Usage, 2);
+            _console->WriteLineAndExit(Usage, 1);
          }
          if (arg == "-exit0")
          {
@@ -54,6 +54,8 @@ Options:
 
 None
    Run all non-skipped tests.
+-times=N
+   Run tests N times. Specify N as 0 to run forever.
 -exit0
    Always exit 0 regardless of test run outcome.
    This option is useful for always allowing the launch of a debugger
