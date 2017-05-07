@@ -67,7 +67,7 @@ namespace ZenUnit
       catch (...)
       {
          const unsigned milliseconds = _stopwatch->Stop();
-         const string testPhaseSuffix = TestPhaseSuffixer::DoTestPhaseToTestPhaseSuffix(testPhase);
+         const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->WriteLineColor("FATALITY", Color::Red);
          const string exitLine = String::Concat(
             "Fatal ... exception. Fail fasting with exit code 1 unless -exit0 specified.",
