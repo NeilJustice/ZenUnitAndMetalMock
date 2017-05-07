@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ZenUnit/Utils/Time/Watch.h"
 #include "ZenUnit/Utils/AssertTrue.h"
+#include "ZenUnit/Utils/Time/Watch.h"
 
 namespace ZenUnit
 {

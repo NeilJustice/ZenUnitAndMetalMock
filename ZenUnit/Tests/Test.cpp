@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "ZenUnit/Enums/TestPhase.h"
 #include "ZenUnit/Enums/TestOutcome.h"
-#include "ZenUnit/Tests/Test.h"
+#include "ZenUnit/Enums/TestPhase.h"
 #include "ZenUnit/Results/TestResultFactory.h"
 #include "ZenUnit/TestRunners/TryCatchCaller.h"
+#include "ZenUnit/Tests/Test.h"
 
 namespace ZenUnit
 {
