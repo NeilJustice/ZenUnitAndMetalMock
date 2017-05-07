@@ -63,7 +63,7 @@ namespace ZenMock
    {
       const CallRef1 callRef(V1);
       //
-      ARE_SAME(V1, callRef.arg1);
+      ARE_SAME(V1, callRef.arg);
    }
 
    TEST(CallConstructor_SetsReferencesToOneArgCallArg)
@@ -72,7 +72,7 @@ namespace ZenMock
       //
       const CallRef1 callRef(call);
       //
-      ARE_SAME(call.arg1, callRef.arg1);
+      ARE_SAME(call.arg, callRef.arg);
    }
 
    TEST(ZenUnitPrinter_WritesToStringedArg)

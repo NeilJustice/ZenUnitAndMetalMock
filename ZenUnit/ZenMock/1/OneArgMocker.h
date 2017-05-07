@@ -39,7 +39,7 @@ namespace ZenMock
          this->ZenMockSetAsserted();
          const size_t expectedNumberOfCalls = 1;
          ARE_EQUAL(expectedNumberOfCalls, _oneArgCalls.size(), this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArg, _oneArgCalls[0].arg1, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedArg, _oneArgCalls[0].arg, this->ZenMockedFunctionSignature);
       }
 
       void AssertCalledNTimesWith(size_t expectedNumberOfCalls, const ArgType& expectedArg)
@@ -51,7 +51,7 @@ namespace ZenMock
          {
             const std::string zenMockedFunctionSignatureAndCallIndex
                = ZenUnit::String::Concat(this->ZenMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedArg, _oneArgCalls[i].arg1, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedArg, _oneArgCalls[i].arg, zenMockedFunctionSignatureAndCallIndex);
          }
       }
 

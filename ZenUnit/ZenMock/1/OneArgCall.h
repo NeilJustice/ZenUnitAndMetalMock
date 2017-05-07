@@ -7,15 +7,15 @@ namespace ZenMock
    template<typename Arg1Type>
    struct OneArgCall
    {
-      typename std::decay<Arg1Type>::type arg1;
+      typename std::decay<Arg1Type>::type arg;
 
       OneArgCall()
-         : arg1()
+         : arg()
       {
       }
 
-      OneArgCall(const Arg1Type& arg1)
-         : arg1(arg1)
+      OneArgCall(const Arg1Type& arg)
+         : arg(arg)
       {
       }
    };
@@ -28,6 +28,6 @@ struct ZenUnitEqualizer<ZenMock::OneArgCall<ArgType>>
       const ZenMock::OneArgCall<ArgType>& expectedOneArgCall,
       const ZenMock::OneArgCall<ArgType>& actualOneArgCall)
    {
-      ARE_EQUAL(expectedOneArgCall.arg1, actualOneArgCall.arg1);
+      ARE_EQUAL(expectedOneArgCall.arg, actualOneArgCall.arg);
    }
 };

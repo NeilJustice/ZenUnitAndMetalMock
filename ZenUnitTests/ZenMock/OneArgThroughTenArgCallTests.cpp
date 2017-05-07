@@ -45,21 +45,21 @@ namespace ZenMock
    TEST(DefaultConstructor_DefaultInitializesArg)
    {
       const Call1 intOneArgCall;
-      ARE_EQUAL(DV1, intOneArgCall.arg1);
+      ARE_EQUAL(DV1, intOneArgCall.arg);
    }
 
    TEST(Constructor_CopiesArgToDecayedTypeArgField)
    {
       const OneArgCall<const T<1>&> call(V1);
       //
-      ARE_COPIES(V1, call.arg1);
-      IS_TRUE((is_same<T<1>, decltype(call.arg1)>::value));
+      ARE_COPIES(V1, call.arg);
+      IS_TRUE((is_same<T<1>, decltype(call.arg)>::value));
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfArg1NotEqual)
    {
       EQUALIZER_THROWS_INIT(Call1);
-      EQUALIZER_THROWS(Call1, arg1, V1);
+      EQUALIZER_THROWS(Call1, arg, V1);
    }
 
    }; RUN(OneArgCallTests)
