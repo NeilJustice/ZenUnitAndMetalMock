@@ -10,6 +10,7 @@ namespace ZenUnit
       static bool Contains(const std::string& str, const char* substring);
       static bool Contains(const char* str, const char* substring);
       static std::vector<std::string> Split(const std::string& str, char separator);
+      static unsigned ToUnsigned(const std::string& str);
       static std::vector<std::string> CommaSplitExceptQuotedCommas(const char* text);
 
       template<typename... Types>

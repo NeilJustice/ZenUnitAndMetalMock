@@ -14,9 +14,8 @@ namespace ZenUnit
    SPEC(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
    SPEC(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    SPEC(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
-   SPEC(Parse_TimesArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1)
-   SPEC(Parse_TimesArg_NegativeNumberValue_PrintsErrorMessageAndUsageAndExits1)
-   SPEC(Parse_TimesArg_NonNumberValue_PrintsErrorMessageAndUsageAndExits1)
+   SPECX(Parse_TimesArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1)
+   SKIPSPECX("In progress", Parse_TimesArg_NonUnsignedValue_PrintsErrorMessageAndUsageAndExits1)
    SPEC(Parse_TimesArg_TwoEqualsSignsAndAPositiveValue_PrintsErrorMessageAndUsageAndExits1)
    SPEC(Parse_TimesArg_PositiveValue_ReturnsExpectedZenUnitArgs)
    SPECEND
@@ -83,7 +82,8 @@ None
    TEST1X1(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1,
       const string& invalidArg,
       "--exit0",
-      "-Exit0")
+      "-Exit0",
+      "-times")
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
@@ -157,27 +157,37 @@ None
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST(Parse_TimesArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1)
+   TEST1X1(Parse_TimesArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1,
+      const string& arg,
+      "-times=",
+      "-times===")
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
-      const vector<string> Args { TestProgramPath, "-times=" };
+      const vector<string> Args { TestProgramPath, arg };
       //
       THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
       //
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
-         "ZenUnit argument error: -name=value argument without an argument: -times="));
+         "ZenUnit argument error: Illformed -name=value argument: " + arg));
       ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(ExpectedUsage, 1));
    }
 
-   TEST(Parse_TimesArg_NegativeNumberValue_PrintsErrorMessageAndUsageAndExits1)
+   TEST1X1(Parse_TimesArg_NonUnsignedValue_PrintsErrorMessageAndUsageAndExits1,
+      const string& arg,
+      "-times=-1")
+      //"-times=abc",
+      //"-times=1u")
    {
-
-   }
-
-   TEST(Parse_TimesArg_NonNumberValue_PrintsErrorMessageAndUsageAndExits1)
-   {
-
+      _consoleMock->WriteLineMock.Expect();
+      _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
+      const vector<string> Args { TestProgramPath, arg };
+      //
+      THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
+      //
+      ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
+         "ZenUnit argument error: Illformed -name=value argument. Not-a-number value: " + arg));
+      ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(ExpectedUsage, 1));
    }
 
    TEST(Parse_TimesArg_TwoEqualsSignsAndAPositiveValue_PrintsErrorMessageAndUsageAndExits1)

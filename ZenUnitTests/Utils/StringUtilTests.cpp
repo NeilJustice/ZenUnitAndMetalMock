@@ -3,33 +3,14 @@
 
 namespace ZenUnit
 {
-   template<typename StringType>
-   TEMPLATETESTS(StringUtilContainsTests, StringType)
-   SPECX(Contains_ReturnsTrueIfStrContainsSubstring)
-   SPECEND
-
-   TEST3X3(Contains_ReturnsTrueIfStrContainsSubstring,
-      StringType str, const char* substring, bool expectedReturnValue,
-      "", "", true,
-      "", "a", false,
-      "a", "A", false,
-      "a", "b", false,
-      "abc", "a", true,
-      "abc", "bc", true,
-      "abc", "abc", true,
-      " ab01", "ab", true)
-   {
-      ARE_EQUAL(expectedReturnValue, String::Contains(str, substring));
-   }
-
-   }; 
-   RUNTEMPLATE(StringUtilContainsTests, const string&)
-   RUNTEMPLATE(StringUtilContainsTests, const char*)
-
    TESTS(StringUtilTests)
    SPECX(Split_ReturnsExpected)
    SPEC(Concat_ConcatsValuesIntoString)
    SPECX(CommaSplitExceptQuotedCommas_ReturnsStringSplitOnCommasWithQuotedCommasIgnored)
+   SPECX(ToUnsigned_StrIsUnsignedNumber_ReturnsNumber)
+   SPEC(ToUnsigned_EmptyString_Throws)
+   SPECX(ToUnsigned_StringNotConvertibleToUnsigned_Throws)
+   SPECX(ToUnsigned_StringIsValueGreaterThanUnsignedMax_Throws)
    SPECEND
 
    TEST3X3(Split_ReturnsExpected,
@@ -83,5 +64,73 @@ namespace ZenUnit
       VECTORS_EQUAL(expectedReturnValue, String::CommaSplitExceptQuotedCommas(text));
    }
 
+   TEST2X2(ToUnsigned_StrIsUnsignedNumber_ReturnsNumber,
+      unsigned expectedReturnValue, const string& str,
+      0u, "0",
+      1u, "1",
+      12u, "12",
+      123u, "123",
+      123u, "0123",
+      1230u, "1230",
+      numeric_limits<unsigned int>::max(), to_string(numeric_limits<unsigned int>::max()))
+   {
+	   ARE_EQUAL(expectedReturnValue, String::ToUnsigned(str));
+   }
+
+   TEST(ToUnsigned_EmptyString_Throws)
+   {
+	   THROWS(String::ToUnsigned(""), invalid_argument, "String::ToUnsigned() called with empty string");
+   }
+
+   TEST1X1(ToUnsigned_StringNotConvertibleToUnsigned_Throws,
+      const string& str,
+      " ",
+      "a",
+      "-1",
+      "-0",
+      "0.0",
+      "1.1",
+      " 1",
+      "  0",
+      "1 ",
+      "0  ")
+   {
+	   THROWS(String::ToUnsigned(str), invalid_argument, 
+         "String::ToUnsigned() called with string not convertible to unsigned integer: \"" + str + "\"");
+   }
+
+   TEST1X1(ToUnsigned_StringIsValueGreaterThanUnsignedMax_Throws,
+      const string& expectedGreaterThanUnsignedMaxValue,
+      to_string(static_cast<unsigned long long>(numeric_limits<unsigned int>::max()) + 1ull),
+      to_string(static_cast<unsigned long long>(numeric_limits<unsigned int>::max()) + 2ull))
+   {
+	   THROWS(String::ToUnsigned(expectedGreaterThanUnsignedMaxValue), invalid_argument,
+		   "String::ToUnsigned called with string containing number greater than numeric_limits<unsigned int>::max(): \"" 
+         + expectedGreaterThanUnsignedMaxValue + "\"");
+   }
+
    }; RUN(StringUtilTests)
+
+   template<typename StringType>
+   TEMPLATETESTS(StringUtilContainsTests, StringType)
+   SPECX(Contains_ReturnsTrueIfStrContainsSubstring)
+   SPECEND
+
+   TEST3X3(Contains_ReturnsTrueIfStrContainsSubstring,
+      StringType str, const char* substring, bool expectedReturnValue,
+      "", "", true,
+      "", "a", false,
+      "a", "A", false,
+      "a", "b", false,
+      "abc", "a", true,
+      "abc", "bc", true,
+      "abc", "abc", true,
+      " ab01", "ab", true)
+   {
+      ARE_EQUAL(expectedReturnValue, String::Contains(str, substring));
+   }
+
+   }; 
+   RUNTEMPLATE(StringUtilContainsTests, const string&)
+   RUNTEMPLATE(StringUtilContainsTests, const char*)
 }

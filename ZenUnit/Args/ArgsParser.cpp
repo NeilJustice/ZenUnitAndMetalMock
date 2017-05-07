@@ -46,11 +46,14 @@ namespace ZenUnit
          else
          {
             const vector<string> splitArg = String::Split(arg, '=');
-            if (splitArg.size() == 1)
+            if (splitArg.size() != 2)
             {
-               _console->WriteLine("ZenUnit argument error: -name=value argument without an argument: -times=");
+               _console->WriteLine("ZenUnit argument error: Illformed -name=value argument: " + arg);
                _console->WriteLineAndExit(Usage, 1);
             }
+            //const string& arg = splitArg[0];
+            //unsigned timesValue = 
+            //zenUnitArgs.times = timesValue;
          }
       }
       return zenUnitArgs;
