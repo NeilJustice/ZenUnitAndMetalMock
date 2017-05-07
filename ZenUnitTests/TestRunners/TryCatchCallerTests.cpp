@@ -213,10 +213,10 @@ Already called [ZenMockedFunctionName]Mock.Expect[AndReturn|AndReturnValues|AndT
       _tryCatchCaller.Call(ThrowInt, _testMock.get(), testPhase);
       //
       AssertStartAndStopCalled();
-      ZEN(_consoleMock->WriteLineColorMock.AssertCalledOnceWith("FATALITY!", Color::Red));
+      ZEN(_consoleMock->WriteLineColorMock.AssertCalledOnceWith("FATALITY", Color::Red));
       ZEN(GetArgs_ZenMock.AssertCalledOnce());
       ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(
-         String::Concat("Fatal ... exception. Fail fasting with exit code 1.",
+         String::Concat("Fatal ... exception. Fail fasting with exit code 1 unless -exit0 specified.",
             expectedTestPhaseSuffix, " (", Milliseconds, " ms)"), expectedExitCode));
    }
 

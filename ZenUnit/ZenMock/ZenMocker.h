@@ -107,7 +107,7 @@ Fix for this: After expecting then calling the above ZenMocked function in your 
 call [ZenMockedFunctionName]Mock.
 [AssertCalledOnce|AssertCalledOnceWith|AssertCalledNTimes|AssertCalledNTimesWith|AssertCalls]();
 
-Fail fasting with exit code 1.
+Fail fasting with exit code 1 unless -exit0 specified.
 )";
             ZenUnit::ZenUnitArgs zenUnitArgs = _zenMockableGetZenUnitArgs();
             _zenMockableExitFunction(zenUnitArgs.exit0 ? 0 : 1);
