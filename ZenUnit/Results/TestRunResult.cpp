@@ -36,7 +36,7 @@ namespace ZenUnit
       _skippedTestClassNamesAndReasons.push_back(testClassNameAndReason);
    }
 
-   void TestRunResult::SetTestClassResults(vector<TestClassResult>& testClassResults)
+   void TestRunResult::SetTestClassResults(vector<TestClassResult>&& testClassResults)
    {
       _numberOfFailedTestCases = NumberOfFailedTestCases(testClassResults);
       _testClassResults = std::move(testClassResults);

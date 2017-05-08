@@ -91,6 +91,6 @@ namespace ZenUnit
    void TestRunner::RunTests()
    {
       vector<TestClassResult> testClassResults = _multiTestClassRunner->RunTestClasses();
-      _testRunResult->SetTestClassResults(testClassResults);
+      _testRunResult->SetTestClassResults(std::move(testClassResults));
    }
 }

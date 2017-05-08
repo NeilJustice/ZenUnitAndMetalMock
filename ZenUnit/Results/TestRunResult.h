@@ -33,7 +33,7 @@ namespace ZenUnit
          const char* testClassName, const char* testName, const char* reason);
       virtual void AddSkippedTestClassNameAndReason(
          const char* testClassName, const char* reason);
-      virtual void SetTestClassResults(vector<TestClassResult>& testClassResults);
+      virtual void SetTestClassResults(std::vector<TestClassResult>&& testClassResults);
       virtual void PrintTestFailuresAndSkips() const;
       virtual void PrintClosingLines(
          size_t totalNumberOfTestCases,
