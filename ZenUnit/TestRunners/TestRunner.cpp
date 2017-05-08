@@ -84,7 +84,7 @@ namespace ZenUnit
       {
          _testRunResult->PrintTestFailuresAndSkips();
          _console->WriteLineAndExit(String::Concat(
-            "[ZenUnit] Total run time exceeded maximum of ", maxtotalseconds, " seconds."), 151);
+            "[ZenUnit] Total run time exceeded maximum of ", maxtotalseconds, " seconds."), 1);
       }
    }
 

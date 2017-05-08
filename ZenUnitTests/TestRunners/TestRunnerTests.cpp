@@ -17,7 +17,7 @@ namespace ZenUnit
    SPEC(SkipTestClass_CallsTestRunResultAddSkippedTestClassNameAndReason)
    SPECX(ParseArgsRunTestsPrintResults_ParsesArgs_RunsTests_PrintsResults_Returns0IfAllTestsPassedOrExit0_OtherwiseReturns1)
    SPEC(RunTests_RunsTestClasses)
-   SPECX(RunTestsWithWaitableRunnerThread_SpawnsThreadToCallRunTests_PrintsResultsAndExits151IfThreadTimesOut)
+   SPECX(RunTestsWithWaitableRunnerThread_SpawnsThreadToCallRunTests_PrintsResultsAndExits1IfThreadTimesOut)
    SPECEND
 
    TestRunner _testRunner;
@@ -198,7 +198,7 @@ namespace ZenUnit
       ZEN(_testRunResultMock->SetTestClassResultsMock.AssertCalledOnceWith(testClassResults));
    }
 
-   TEST2X2(RunTestsWithWaitableRunnerThread_SpawnsThreadToCallRunTests_PrintsResultsAndExits151IfThreadTimesOut,
+   TEST2X2(RunTestsWithWaitableRunnerThread_SpawnsThreadToCallRunTests_PrintsResultsAndExits1IfThreadTimesOut,
       future_status runnerThreadWaitResult, bool expectTimeoutHandling,
       future_status::ready, false,
       future_status::timeout, true)
@@ -222,7 +222,7 @@ namespace ZenUnit
          ZEN(_testRunResultMock->PrintTestFailuresAndSkipsMock.AssertCalledOnce());
          ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(
             "[ZenUnit] Total run time exceeded maximum of " +
-            to_string(MaxTotalSeconds) + " seconds.", 151));
+            to_string(MaxTotalSeconds) + " seconds.", 1));
       }
    }
 
