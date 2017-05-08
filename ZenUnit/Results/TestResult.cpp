@@ -154,7 +154,7 @@ namespace ZenUnit
       case TestOutcome::Anomaly:
       {
          const string testFailureNumber = testFailureNumberer->Next();
-         console->WriteLine(testFailureNumber);
+         console->WriteLineColor(testFailureNumber, Color::Red);
          console->Write(fullTestName.Value());
          const CallResult& responsibleCallResult = (this->*responsibleCallResultField);
          const char* const responsibleTestPhaseSuffix = 
@@ -168,7 +168,7 @@ namespace ZenUnit
       case TestOutcome::Exception:
       {
          const string testFailureNumber = testFailureNumberer->Next();
-         console->WriteLine(testFailureNumber);
+         console->WriteLineColor(testFailureNumber, Color::Red);
          console->Write(fullTestName.Value());
          const CallResult& responsibleCallResult = this->*responsibleCallResultField;
          const char* const responsibleTestPhaseSuffix = 
@@ -187,7 +187,7 @@ namespace ZenUnit
       {
          assert_true(testOutcome == TestOutcome::SuccessButPastDeadline);
          const string testFailureNumber = testFailureNumberer->Next();
-         console->WriteLine(testFailureNumber);
+         console->WriteLineColor(testFailureNumber, Color::Red);
          console->WriteLine(fullTestName.Value());
          WriteTestCaseNumberIfAny(console, testCaseIndex);
          console->WriteLine(String::Concat(

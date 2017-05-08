@@ -249,6 +249,7 @@ namespace ZenUnit
 
       _consoleMock.WriteMock.Expect();
       _consoleMock.WriteLineMock.Expect();
+      _consoleMock.WriteLineColorMock.Expect();
       _consoleMock.WriteNewlineMock.Expect();
       //
       _testResult_WriteTestCaseNumberIfAnyMocked.PrintIfFailure(&_consoleMock, &_testFailureNumbererMock);
@@ -261,11 +262,8 @@ namespace ZenUnit
       }));
       ZEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
          AssertCalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex));
-      ZEN(_consoleMock.WriteLineMock.AssertCalls(
-      {
-         TestFailureNumber,
-         AnomalyWhy
-      }));
+      ZEN(_consoleMock.WriteLineColorMock.AssertCalledOnceWith(TestFailureNumber, Color::Red));
+      ZEN(_consoleMock.WriteLineMock.AssertCalledOnceWith(AnomalyWhy));
       ZEN(_consoleMock.WriteNewlineMock.AssertCalledOnce());
    }
 
@@ -309,10 +307,13 @@ namespace ZenUnit
          _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value(),
          expectedTestPhaseSuffix
       }));
-      ZEN(_consoleMock.WriteLineColorMock.AssertCalledOnceWith("\nUncaught Exception", Color::Red));
+      ZEN(_consoleMock.WriteLineColorMock.AssertCalls(
+      {
+         { TestFailureNumber, Color::Red },
+         { "\nUncaught Exception", Color::Red }
+      }));
       ZEN(_consoleMock.WriteLineMock.AssertCalls(
       {
-         TestFailureNumber,
          "  Type: " + ExceptionTypeName + "\n"
          "what(): \"" + ExceptionWhat + "\""
       }));
@@ -330,6 +331,7 @@ namespace ZenUnit
       const string TestFailureNumber = "<30>";
       _testFailureNumbererMock.NextMock.ExpectAndReturn(TestFailureNumber);
 
+      _consoleMock.WriteLineColorMock.Expect();
       _consoleMock.WriteLineMock.Expect();
       _consoleMock.WriteNewlineMock.Expect();
 
@@ -341,9 +343,9 @@ namespace ZenUnit
       ZEN(_testFailureNumbererMock.NextMock.AssertCalledOnce());
       ZEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
          AssertCalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex));
+      ZEN(_consoleMock.WriteLineColorMock.AssertCalledOnceWith(TestFailureNumber, Color::Red));
       ZEN(_consoleMock.WriteLineMock.AssertCalls(
       {
-         TestFailureNumber,
          _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value(),
          "\nFailed because test took longer than -maxtestms= (10 ms)"s
       }));
