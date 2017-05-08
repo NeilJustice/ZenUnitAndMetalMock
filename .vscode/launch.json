@@ -8,11 +8,8 @@
          "type": "cppdbg",
          "preLaunchTask": "Build Debug",
          "program": "${workspaceRoot}/Debug/ZenUnitTests/ZenUnitTests",
-         //"args": [ "-exit0"],
-         "stopAtEntry": false,
+         "args": [ ""],
          "cwd": "${fileDirname}",
-         "environment": [],
-         "externalConsole": false,
          "linux": { "MIMode": "gdb" }
       }
       // {
@@ -24,9 +21,9 @@
       //    "args": [ "" ],
       //    "cwd": "${workspaceRoot}",
       //    "env": { "PYTHONPATH": "ZenUnitPy" },
-      //    "stopOnEntry": false,
       //    "console": "externalTerminal",//integratedTerminal",
-      //    "debugOptions": [
+      //    "debugOptions":
+      //    [
       //       "WaitOnAbnormalExit",
       //       "WaitOnNormalExit",
       //       "RedirectOutput"
