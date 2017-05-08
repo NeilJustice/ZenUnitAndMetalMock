@@ -24,12 +24,13 @@ namespace ZenUnit
    SPECX(DetermineExitCode_NoSkips_Returns1IfAnyTestsOrTestClassesSkipped)
    SPEC(PrintSkippedTestClassReminder_PrintsExpectedToConsole)
    SPEC(PrintSkippedTestReminder_PrintsExpectedToConsole)
+   SPEC(ResetStateExceptForSkips_ResetsTestFailureNumberer_ClearsTestClassResults_SetsNumberOfFailedTestCasesTo0)
    SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    SPECEND
 
    TestRunResult _testRunResult;
    const ConsoleMock* _consoleMock;
-   TestFailureNumberer* _testFailureNumbererMock;
+   TestFailureNumbererMock* _testFailureNumbererMock;
 
    using TypedefMemberForEacherTestClassResultsMock = MemberForEacherMock<vector<TestClassResult>,
       TestRunResult, void(TestRunResult::*)(const TestClassResult&) const>;
@@ -386,6 +387,19 @@ namespace ZenUnit
       _testRunResult.PrintSkippedTestReminder(SkippedTestName);
       //
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith("[SKIPPED] Test " + SkippedTestName));
+   }
+
+   TEST(ResetStateExceptForSkips_ResetsTestFailureNumberer_ClearsTestClassResults_SetsNumberOfFailedTestCasesTo0)
+   {
+      _testFailureNumbererMock->ResetMock.Expect();
+      _testRunResult._testClassResults.resize(1);
+      _testRunResult._numberOfFailedTestCases = 1;
+      //
+      _testRunResult.ResetStateExceptForSkips();
+      //
+      ZEN(_testFailureNumbererMock->ResetMock.AssertCalledOnce());
+      IS_EMPTY(_testRunResult._testClassResults);
+      ARE_EQUAL(0, _testRunResult._numberOfFailedTestCases);
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)

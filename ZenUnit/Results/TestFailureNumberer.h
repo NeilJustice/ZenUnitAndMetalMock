@@ -8,7 +8,8 @@ namespace ZenUnit
    private:
       unsigned _testFailureNumber = 1u;
    public:
-      virtual string Next();
+      virtual std::string Next();
+      virtual void Reset();
       virtual ~TestFailureNumberer() = default;
    };
 }

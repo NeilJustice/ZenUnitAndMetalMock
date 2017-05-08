@@ -8,4 +8,9 @@ namespace ZenUnit
       const string nextTestFailureNumber = "<" + to_string(_testFailureNumber++) + ">";
       return nextTestFailureNumber;
    }
+
+   void TestFailureNumberer::Reset()
+   {
+      _testFailureNumber = 1u;
+   }
 }

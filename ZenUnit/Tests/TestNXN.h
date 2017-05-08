@@ -9,12 +9,12 @@ namespace ZenUnit
    {
       friend class TestNXNTests;
    private:
-      const size_t NumberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
+      static const size_t NumberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
+      static const size_t NumberOfTestCasesValue = NumberOfTestCaseArgs / N;
       std::unique_ptr<const Console> _console;
       std::unique_ptr<TestClassType> _testClass;
-      const char* const _testCaseArgsText;
       size_t _testCaseArgsIndex;
-      std::vector<std::string> _testCaseArgStrings;
+      std::vector<std::string> _commaSplitTestCaseArgs;
    protected:
       const std::tuple<typename std::decay<TestCaseArgTypes>::type...> _testCaseArgs;
    public:
@@ -25,17 +25,15 @@ namespace ZenUnit
          TestCaseArgTypes&&... testCaseArgs)
          : Test(testClassName, testName, N)
          , _console(new Console)
-         , _testCaseArgsText(testCaseArgsText)
          , _testCaseArgsIndex(0)
-         , _testCaseArgStrings(String::CommaSplitExceptQuotedCommas(testCaseArgsText))
+         , _commaSplitTestCaseArgs(String::CommaSplitExceptQuotedCommas(testCaseArgsText))
          , _testCaseArgs(std::forward<TestCaseArgTypes>(testCaseArgs)...)
       {
       }
 
       size_t NumberOfTestCases() const override
       {
-         const size_t numberOfTestCases = NumberOfTestCaseArgs / N;
-         return numberOfTestCases;
+         return NumberOfTestCasesValue;
       }
 
       void NewTestClass() override
@@ -102,7 +100,7 @@ namespace ZenUnit
          _console->WriteColor("]", Color::Green);
          _console->Write(" (");
          const size_t testCaseArgsPrintingStartIndex = static_cast<size_t>(testCaseIndex) * N;
-         _console->PrintStringsCommaSeparated(_testCaseArgStrings, testCaseArgsPrintingStartIndex, N);
+         _console->PrintStringsCommaSeparated(_commaSplitTestCaseArgs, testCaseArgsPrintingStartIndex, N);
          _console->Write(") -> ");
       }
 

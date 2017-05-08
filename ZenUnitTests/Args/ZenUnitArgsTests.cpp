@@ -4,15 +4,15 @@
 namespace ZenUnit
 {
    TESTS(ZenUnitArgsTests)
-   SPEC(DefaultConstructor_SetsFieldsTo0)
+   SPEC(DefaultConstructor_SetsFieldsToDefaults)
    SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    SPECEND
 
-   TEST(DefaultConstructor_SetsFieldsTo0)
+   TEST(DefaultConstructor_SetsFieldsToDefaults)
    {
       ZenUnitArgs zenUnitArgs;
       IS_EMPTY(zenUnitArgs.commandLine);
-      IS_ZERO(zenUnitArgs.times);
+      ARE_EQUAL(1, zenUnitArgs.times);
       IS_FALSE(zenUnitArgs.exit0);
       IS_FALSE(zenUnitArgs.noskips);
       IS_ZERO(zenUnitArgs.maxtestmilliseconds);
@@ -24,11 +24,11 @@ namespace ZenUnit
    {
       EQUALIZER_THROWS_INIT(ZenUnitArgs);
       EQUALIZER_THROWS(ZenUnitArgs, commandLine, "ZenUnitTests.exe");
-      EQUALIZER_THROWS(ZenUnitArgs, times, 1u);
+      EQUALIZER_THROWS(ZenUnitArgs, times, 10u);
       EQUALIZER_THROWS(ZenUnitArgs, exit0, true);
       EQUALIZER_THROWS(ZenUnitArgs, noskips, true);
-      EQUALIZER_THROWS(ZenUnitArgs, maxtestmilliseconds, 2u);
-      EQUALIZER_THROWS(ZenUnitArgs, maxtotalseconds, 3u);
+      EQUALIZER_THROWS(ZenUnitArgs, maxtestmilliseconds, 20u);
+      EQUALIZER_THROWS(ZenUnitArgs, maxtotalseconds, 30u);
    }
 
    }; RUN(ZenUnitArgsTests)

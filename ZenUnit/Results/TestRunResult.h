@@ -40,6 +40,8 @@ namespace ZenUnit
          unsigned testRunMilliseconds,
          const std::string& comamndLine) const;
       virtual int DetermineExitCode(const ZenUnitArgs& args) const;
+      virtual void ResetStateExceptForSkips();
+
       static void AssertEqual(
          const ZenUnit::TestRunResult& expectedTestRunResult,
          const ZenUnit::TestRunResult& actualTestRunResult);

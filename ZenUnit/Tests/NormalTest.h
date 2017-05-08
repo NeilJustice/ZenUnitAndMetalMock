@@ -13,8 +13,7 @@ namespace ZenUnit
       std::unique_ptr<TestClassType> _testClass;
       void (TestClassType::*_testMemberFunction)();
    public:
-      template<typename TestMemberFunctionType>
-      NormalTest(const char* testClassName, const char* testName, TestMemberFunctionType testMemberFunction)
+      NormalTest(const char* testClassName, const char* testName, void (TestClassType::*testMemberFunction)())
          : Test(testClassName, testName, 0)
          , _testMemberFunction(testMemberFunction)
       {

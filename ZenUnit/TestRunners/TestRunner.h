@@ -36,6 +36,7 @@ namespace ZenUnit
       std::nullptr_t SkipTestClass(const char* skippedTestClassName, const char* reason);
       int ParseArgsRunTestsPrintResults(const std::vector<std::string>& commandLineArgs);
    private:
+      virtual int DoRunTestsPrintResults(size_t testRunIndex);
       virtual void RunTests();
       virtual void RunTestsWithWaitableRunnerThread(unsigned maxtotalseconds);
    };

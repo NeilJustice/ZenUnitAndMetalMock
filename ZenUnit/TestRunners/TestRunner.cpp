@@ -76,6 +76,26 @@ namespace ZenUnit
       return exitCode;
    }
 
+   int TestRunner::DoRunTestsPrintResults(size_t testRunIndex)
+   {
+      _testRunStopwatch->Start(); 
+      _preamblePrinter->PrintOpeningThreeLines(_args.commandLine, _multiTestClassRunner.get());
+      if (_args.maxtotalseconds > 0)
+      {
+         RunTestsWithWaitableRunnerThread(_args.maxtotalseconds);
+      }
+      else
+      {
+         RunTests();
+      }
+      _testRunResult->PrintTestFailuresAndSkips();
+      const size_t numberOfTestCases = _multiTestClassRunner->NumberOfTestCases();
+      const unsigned testRunMilliseconds = _testRunStopwatch->Stop();
+      _testRunResult->PrintClosingLines(numberOfTestCases, testRunMilliseconds, _args.commandLine);
+      const int testRunExitCode = _testRunResult->DetermineExitCode(_args);
+      return testRunExitCode;
+   }
+
    void TestRunner::RunTestsWithWaitableRunnerThread(unsigned maxtotalseconds)
    {
       const shared_ptr<const VoidFuture> testClassRunnerDoneFuture = _futurist->Async(&TestRunner::RunTests, this);
@@ -84,7 +104,7 @@ namespace ZenUnit
       {
          _testRunResult->PrintTestFailuresAndSkips();
          _console->WriteLineAndExit(String::Concat(
-            "[ZenUnit] Total run time exceeded maximum of ", maxtotalseconds, " seconds."), 1);
+            "[ZenUnit] Total run time exceeded maximum run time of ", maxtotalseconds, " seconds."), 1);
       }
    }
 

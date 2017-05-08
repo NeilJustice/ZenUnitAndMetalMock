@@ -52,9 +52,8 @@
 #define TEST(HighQualityTestName) void HighQualityTestName()
 
 #define REGISTER_TESTNXN_ARGS(HighQualityTestName, ...) \
-   PMFTOKEN(&TestClassType::HighQualityTestName), \
-   &TestClassType::HighQualityTestName, \
-   #HighQualityTestName, #__VA_ARGS__, __VA_ARGS__ \
+   PMFTOKEN(&TestClassType::HighQualityTestName), &TestClassType::HighQualityTestName, \
+   #HighQualityTestName, #__VA_ARGS__, __VA_ARGS__
 
 #define TEST1X1(HighQualityTestName, Arg1Type, ...) \
    const std::nullptr_t ZenUnit_Test1X1Registrar_##HighQualityTestName = \

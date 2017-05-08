@@ -44,7 +44,6 @@ namespace ZenUnit
       //
       WAS_NEWED(testNXN._console);
       IS_NULL(testNXN._testClass);
-      ARE_EQUAL(TestCaseArgsText, testNXN._testCaseArgsText);
       ARE_EQUAL(0, testNXN._testCaseArgsIndex);
       ARE_EQUAL(TestName, testNXN.Name());
       ARE_EQUAL("TESTS(Tests)\nTEST2X2(Test)", testNXN.FullTestNameValue());
@@ -215,7 +214,7 @@ namespace ZenUnit
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteMock.Expect();
       _consoleMock->PrintStringsCommaSeparatedMock.Expect();
-      _testNXN->_testCaseArgStrings = { "Arg0", "Arg1" };
+      _testNXN->_commaSplitTestCaseArgs = { "Arg0", "Arg1" };
       //
       _testNXN->PrintTestCaseNumberArgsThenArrow(testCaseIndex);
       //
@@ -225,7 +224,7 @@ namespace ZenUnit
          { "]", Color::Green }
       }));
       ZEN(_consoleMock->PrintStringsCommaSeparatedMock.AssertCalledOnceWith(
-         _testNXN->_testCaseArgStrings, expectedTestCaseArgsPrintingStartIndex, N));
+         _testNXN->_commaSplitTestCaseArgs, expectedTestCaseArgsPrintingStartIndex, N));
       ZEN(_consoleMock->WriteMock.AssertCalls(
       {
          to_string(expectedTestCaseNumber),

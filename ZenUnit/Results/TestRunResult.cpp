@@ -141,6 +141,13 @@ namespace ZenUnit
       _console->WriteLine("[SKIPPED] Test " + skippedFullTestNameAndReason);
    }
 
+   void TestRunResult::ResetStateExceptForSkips()
+   {
+      _testFailureNumberer->Reset();
+      _testClassResults.clear();
+      _numberOfFailedTestCases = 0;
+   }
+
    void TestRunResult::AssertEqual(
       const ZenUnit::TestRunResult& expectedTestRunResult,
       const ZenUnit::TestRunResult& actualTestRunResult)

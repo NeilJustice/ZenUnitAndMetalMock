@@ -28,7 +28,7 @@ namespace ZenUnit
 
    string Test::FileLineString() const
    {
-      string fileLineString = _fileLine.ToString();
+      const string fileLineString = _fileLine.ToString();
       return fileLineString;
    }
 
@@ -59,33 +59,33 @@ namespace ZenUnit
 
    TestResult Test::RunTestCase()
    {
-      const CallResult constructorCallResult = _tryCatchCaller->
-         Call(&Test::CallNewTestClass, this, TestPhase::Constructor);
+      const CallResult constructorCallResult = 
+         _tryCatchCaller->Call(&Test::CallNewTestClass, this, TestPhase::Constructor);
       if (constructorCallResult.testOutcome != TestOutcome::Success)
       {
-         const TestResult constructorFail = _testResultFactory->
-            ConstructorFail(_fullTestName, constructorCallResult);
-         return constructorFail;
+         const TestResult constructorFailTestResult = 
+            _testResultFactory->ConstructorFail(_fullTestName, constructorCallResult);
+         return constructorFailTestResult;
       }
-      const CallResult startupCallResult = _tryCatchCaller->
-         Call(&Test::CallStartup, this, TestPhase::Startup);
+      const CallResult startupCallResult = 
+         _tryCatchCaller->Call(&Test::CallStartup, this, TestPhase::Startup);
       if (startupCallResult.testOutcome != TestOutcome::Success)
       {
-         const CallResult destructorCallResult = _tryCatchCaller->
-            Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-         const TestResult startupFail = _testResultFactory->
-            StartupFail(_fullTestName, constructorCallResult, startupCallResult, destructorCallResult);
-         return startupFail;
+         const CallResult destructorCallResult = 
+            _tryCatchCaller->Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+         const TestResult startupFailTestResult = 
+            _testResultFactory->StartupFail(_fullTestName, constructorCallResult, startupCallResult, destructorCallResult);
+         return startupFailTestResult;
       }
-      const CallResult testBodyCallResult = _tryCatchCaller->
-         Call(&Test::CallTestBody, this, TestPhase::TestBody);
-      const CallResult cleanupCallResult = _tryCatchCaller->
-         Call(&Test::CallCleanup, this, TestPhase::Cleanup);
-      const CallResult destructorCallResult = _tryCatchCaller->
-         Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-      const TestResult testResult = _testResultFactory->
-         FullCtor(_fullTestName, constructorCallResult, startupCallResult,
-            testBodyCallResult, cleanupCallResult, destructorCallResult);
+      const CallResult testBodyCallResult = 
+         _tryCatchCaller->Call(&Test::CallTestBody, this, TestPhase::TestBody);
+      const CallResult cleanupCallResult = 
+         _tryCatchCaller->Call(&Test::CallCleanup, this, TestPhase::Cleanup);
+      const CallResult destructorCallResult = 
+         _tryCatchCaller->Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+      const TestResult testResult = _testResultFactory->FullCtor(
+         _fullTestName, constructorCallResult, startupCallResult, 
+         testBodyCallResult, cleanupCallResult, destructorCallResult);
       return testResult;
    }
 }

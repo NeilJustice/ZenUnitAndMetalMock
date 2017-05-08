@@ -11,8 +11,8 @@ namespace ZenUnit
    SPEC(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
    SPEC(TestClassNameForSorting_ReturnsTestClassName)
    SPEC(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
-   SPECX(RunTests_PrintsTestClassNameAndNumberOfTests_ForEachRunsTests_PrintsTestClassResultLine_ReturnsTestClassResult)
-   SPECX(PrintTestClassNameAndNumberOfTests_WritesTestClassNameVerticalBarNumberOfTests)
+   SPECX(RunTests_PrintsTestClassNameAndNumberOfNamedTests_ForEachRunsTests_PrintsTestClassResultLine_ReturnsTestClassResult)
+   SPECX(PrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVerticalBarNumberOfTests)
    SPECX(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewDeleteTest_AddsItResultToResults_ReturnsTrueIfSuccess)
    SPEC(RunTest_WritesVerticalBarTestName_RunsTest_AddsTestResultsToTestClassResult_WriteLinesTestOutcome)
    SPEC(PrintTestClassResultLine_CallsTestClassResultPrintResultLine)
@@ -37,7 +37,7 @@ namespace ZenUnit
    class SpecificTestClassRunnerSelfMocked : public Zen::Mock<ZenUnit::SpecificTestClassRunner<TestingTestClass>>
    {
    public:
-      ZENMOCK_VOID0_CONST(PrintTestClassNameAndNumberOfTests)
+      ZENMOCK_VOID0_CONST(PrintTestClassNameAndNumberOfNamedTests)
       ZENMOCK_NONVOID2_CONST(bool, ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests, Test*, TestClassResult*)
       ZENMOCK_VOID1_CONST(PrintTestClassResultLine, const TestClassResult*)
 
@@ -107,12 +107,12 @@ namespace ZenUnit
       ARE_EQUAL(30, numberOfTestCases);
    }
 
-   TEST2X2(RunTests_PrintsTestClassNameAndNumberOfTests_ForEachRunsTests_PrintsTestClassResultLine_ReturnsTestClassResult,
+   TEST2X2(RunTests_PrintsTestClassNameAndNumberOfNamedTests_ForEachRunsTests_PrintsTestClassResultLine_ReturnsTestClassResult,
       bool testClassTypeNewableAndDeletable, bool expectTestsRunForEachCall,
       false, false,
       true, true)
    {
-      _specificTestClassRunnerSelfMocked->PrintTestClassNameAndNumberOfTestsMock.Expect();
+      _specificTestClassRunnerSelfMocked->PrintTestClassNameAndNumberOfNamedTestsMock.Expect();
       _specificTestClassRunnerSelfMocked->ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock
          .ExpectAndReturn(testClassTypeNewableAndDeletable);
       if (expectTestsRunForEachCall)
@@ -125,7 +125,7 @@ namespace ZenUnit
       //
       const TestClassResult testClassResult = _specificTestClassRunnerSelfMocked->RunTests();
       //
-      ZEN(_specificTestClassRunnerSelfMocked->PrintTestClassNameAndNumberOfTestsMock.AssertCalledOnce());
+      ZEN(_specificTestClassRunnerSelfMocked->PrintTestClassNameAndNumberOfNamedTestsMock.AssertCalledOnce());
       ZEN(_specificTestClassRunnerSelfMocked->ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock.AssertCalledOnceWith(
           &_specificTestClassRunnerSelfMocked->_newDeleteTest, &_specificTestClassRunnerSelfMocked->_testClassResult));
       if (expectTestsRunForEachCall)
@@ -142,7 +142,7 @@ namespace ZenUnit
       ARE_EQUAL(_specificTestClassRunnerSelfMocked->_testClassResult, testClassResult);
    }
 
-   TEST2X2(PrintTestClassNameAndNumberOfTests_WritesTestClassNameVerticalBarNumberOfTests,
+   TEST2X2(PrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVerticalBarNumberOfTests,
       size_t numberOfTests, bool expectTestsPlural,
       0ull, true,
       1ull, false,
@@ -154,7 +154,7 @@ namespace ZenUnit
       _specificTestClassRunner->_testClassName = TestClassName;
       _specificTestClassRunner->_tests.resize(numberOfTests);
       //
-      _specificTestClassRunner->PrintTestClassNameAndNumberOfTests();
+      _specificTestClassRunner->PrintTestClassNameAndNumberOfNamedTests();
       //
       ZEN(_consoleMock->WriteColorMock.AssertCalls(
       {

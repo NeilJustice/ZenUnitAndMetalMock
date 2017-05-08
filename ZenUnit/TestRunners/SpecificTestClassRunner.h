@@ -52,7 +52,7 @@ namespace ZenUnit
 
       TestClassResult RunTests() override
       {
-         PrintTestClassNameAndNumberOfTests();
+         PrintTestClassNameAndNumberOfNamedTests();
          if (ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(&_newDeleteTest, &_testClassResult))
          {
             _testsMemberForEacherExtraArg->ForEach(
@@ -63,7 +63,7 @@ namespace ZenUnit
          return _testClassResult;
       }
    private:
-      virtual void PrintTestClassNameAndNumberOfTests() const
+      virtual void PrintTestClassNameAndNumberOfNamedTests() const
       {
          _console->WriteColor("@", Color::Green);
          _console->WriteColor(_testClassName, Color::Green);

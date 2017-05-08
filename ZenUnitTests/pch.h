@@ -4,6 +4,7 @@
 #include "ZenUnit/Utils/IgnoredMSVCWallWarnings.h"
 #include <array>
 #include <cstring>
+#include <exception>
 #include <functional>
 #include <iostream>
 #include <limits>
