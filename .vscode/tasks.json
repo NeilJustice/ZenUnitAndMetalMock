@@ -18,7 +18,8 @@
          {
             "owner": "cpp",
             "fileLocation": [ "relative", "${workspaceRoot}/DebugOrRelease" ],
-            "pattern": {
+            "pattern":
+            {
                "regexp": "^(.*):(\\d+):(\\d+):\\s+(error|fatal error|warning):\\s+(.*)$",
                "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
             }
@@ -27,12 +28,13 @@
       {
          "taskName": "Build Release",
          "args": [ "cd ${workspaceRoot}/Release && time ninja -v" ],
-         //"isBuildCommand": true,
+         "isBuildCommand": false,
          "problemMatcher":
          {
             "owner": "cpp",
             "fileLocation": [ "relative", "${workspaceRoot}/DebugOrRelease" ],
-            "pattern": {
+            "pattern":
+            {
                "regexp": "^(.*):(\\d+):(\\d+):\\s+(error|fatal error|warning):\\s+(.*)$",
                "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
             }
@@ -42,26 +44,25 @@
          "taskName": "Run Debug",
          "isTestCommand": true,
          "args": [ "${workspaceRoot}/Debug/ZenUnitTests/ZenUnitTests" ]
-         //"args": [ "${workspaceRoot}/Debug/Examples.Test/Examples.Test" ]
       },
       {
          "taskName": "Run Release",
-         //"isTestCommand": true,
+         "isTestCommand": false,
          "args": [ "${workspaceRoot}/Release/ZenUnitTests/ZenUnitTests" ]
       },
       {
          "taskName": "Run Python",
-         //"isTestCommand": true,
+         "isTestCommand": false,
          "args": [ "export PYTHONPATH=.. && python3 ${file}" ]
       },
       {
          "taskName": "pylint File",
-         //"isBuildCommand": true,
+         "isBuildCommand": false,
          "args": [ "pylint --rcfile=${workspaceRoot}/ZenUnitPy/.pylintrc --init-hook=\"sys.path.append('..')\" ${file}" ]
       },
       {
          "taskName": "pylint All",
-         "args": [ "cd ${workspaceRoot}/ZenUnitPy && time ag -g py$ -0 | xargs -0 -n 1 -P 0 --verbose pylint --rcfile=.pylintrc --init-hook=\"sys.path.append('.')\"" ]
+         "args": [ "cd ${workspaceRoot}/ZenUnitPy && time ag -g py$ -0 | xargs -0 -n 1 -P 32 --verbose pylint --rcfile=.pylintrc --score=n" ]
       },
       {
          "taskName": "flake8 All",
