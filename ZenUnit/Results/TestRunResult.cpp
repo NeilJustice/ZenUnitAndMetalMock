@@ -95,7 +95,7 @@ namespace ZenUnit
          string prefixAsciiArt;
          if (_numberOfFailedTestCases == 0)
          {
-            _console->WriteColor("[SUCCESS] ", prefixColor);
+            _console->WriteColor("[VICTORY] ", prefixColor);
             closingLineBody = String::Concat(totalNumberOfTestCases,
                ' ', testOrTests, " passed ", inMillisecondsPart);
             prefixAsciiArt = "+===+===+ ";
