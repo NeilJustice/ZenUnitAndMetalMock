@@ -23,7 +23,7 @@ namespace ZenUnit
       MultiTestClassRunner();
       virtual ~MultiTestClassRunner();
       virtual size_t NumberOfTestClasses() const;
-      virtual size_t TotalNumberOfTestCases() const;
+      virtual size_t NumberOfTestCases() const;
       virtual void AddTestClassRunner(TestClassRunner* testClassRunner);
       virtual vector<TestClassResult> RunTestClasses();
    private:

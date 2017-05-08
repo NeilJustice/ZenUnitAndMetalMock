@@ -88,14 +88,14 @@ namespace ZenUnit
       ZEN(_multiTestClassRunnerMock->AddTestClassRunnerMock.AssertCalledOnceWith(&testClassRunner));
    }
 
-   TEST4X4(ParseArgsRunTestsPrintResults_ParsesArgs_RunsTests_PrintsResults_Returns0IfAllTestsPassedOrExit0_OtherwiseReturns1,
-      unsigned maxtotalseconds, bool expectBackgroundThread, int determineExitCodeReturnValue, int expectedExitCode,
-      0U, false, 0, 0,
-      0U, false, 1, 1,
-      1U, true, 0, 0,
-      1U, true, 1, 1,
-      2U, true, 0, 0,
-      2U, true, 1, 1)
+   TEST3X3(ParseArgsRunTestsPrintResults_ParsesArgs_RunsTests_PrintsResults_Returns0IfAllTestsPassedOrExit0_OtherwiseReturns1,
+      unsigned maxtotalseconds, bool expectRunTestsWithWaitableRunnerThread, int determineExitCodeReturnValueAndExpectedExitCode,
+      0u, false, 0,
+      0u, false, 1,
+      1u, true, 0,
+      1u, true, 1,
+      2u, true, 0,
+      2u, true, 1)
    {
       _testRunnerRunTestsMocked.testRunStopwatchMock->StartMock.Expect();
       ZenUnitArgs zenUnitArgs;
@@ -103,7 +103,7 @@ namespace ZenUnit
       zenUnitArgs.maxtotalseconds = maxtotalseconds;
       _testRunnerRunTestsMocked.argsParserMock->ParseMock.ExpectAndReturn(zenUnitArgs);
       _testRunnerRunTestsMocked.preamblePrinterMock->PrintOpeningThreeLinesMock.Expect();
-      if (expectBackgroundThread)
+      if (expectRunTestsWithWaitableRunnerThread)
       {
          _testRunnerRunTestsMocked.RunTestsWithWaitableRunnerThreadMock.Expect();
       }
@@ -116,14 +116,13 @@ namespace ZenUnit
       _testRunnerRunTestsMocked.consoleMock->PauseForAnyKeyIfDebuggerIsPresentMock.Expect();
 
       const size_t TotalNumberOfTestCases = 10;
-      _testRunnerRunTestsMocked.multiTestClassRunnerMock->TotalNumberOfTestCasesMock.
-         ExpectAndReturn(TotalNumberOfTestCases);
+      _testRunnerRunTestsMocked.multiTestClassRunnerMock->NumberOfTestCasesMock.ExpectAndReturn(TotalNumberOfTestCases);
 
       const unsigned TestRunMilliseconds = 20;
       _testRunnerRunTestsMocked.testRunStopwatchMock->StopMock.ExpectAndReturn(TestRunMilliseconds);
 
       _testRunnerRunTestsMocked.testRunResultMock->
-         DetermineExitCodeMock.ExpectAndReturn(determineExitCodeReturnValue);
+         DetermineExitCodeMock.ExpectAndReturn(determineExitCodeReturnValueAndExpectedExitCode);
 
       _testRunnerRunTestsMocked._args.commandLine = "CommandLine";
       const vector<string> Args = { "NonEmpty" };
@@ -134,8 +133,8 @@ namespace ZenUnit
       ZEN(_testRunnerRunTestsMocked.argsParserMock->ParseMock.AssertCalledOnceWith(Args));
       ZEN(_testRunnerRunTestsMocked.preamblePrinterMock->
          PrintOpeningThreeLinesMock.AssertCalledOnceWith(
-         _testRunnerRunTestsMocked._multiTestClassRunner.get(), zenUnitArgs.commandLine));
-      if (expectBackgroundThread)
+            zenUnitArgs.commandLine, _testRunnerRunTestsMocked._multiTestClassRunner.get()));
+      if (expectRunTestsWithWaitableRunnerThread)
       {
          ZEN(_testRunnerRunTestsMocked.
             RunTestsWithWaitableRunnerThreadMock.AssertCalledOnceWith(zenUnitArgs.maxtotalseconds));
@@ -145,8 +144,7 @@ namespace ZenUnit
          ZEN(_testRunnerRunTestsMocked.RunTestsMock.AssertCalledOnce());
       }
       ZEN(_testRunnerRunTestsMocked.testRunResultMock->PrintTestFailuresAndSkipsMock.AssertCalledOnce());
-      ZEN(_testRunnerRunTestsMocked.multiTestClassRunnerMock->
-         TotalNumberOfTestCasesMock.AssertCalledOnce());
+      ZEN(_testRunnerRunTestsMocked.multiTestClassRunnerMock->NumberOfTestCasesMock.AssertCalledOnce());
       ZEN(_testRunnerRunTestsMocked.testRunStopwatchMock->StopMock.AssertCalledOnce());
       ZEN(_testRunnerRunTestsMocked.testRunResultMock->PrintClosingLinesMock.AssertCalledOnceWith(
          TotalNumberOfTestCases, TestRunMilliseconds, zenUnitArgs.commandLine));
@@ -154,7 +152,7 @@ namespace ZenUnit
          PauseForAnyKeyIfDebuggerIsPresentMock.AssertCalledOnce());
       ZEN(_testRunnerRunTestsMocked.testRunResultMock->
          DetermineExitCodeMock.AssertCalledOnceWith(zenUnitArgs));
-      ARE_EQUAL(expectedExitCode, exitCode);
+      ARE_EQUAL(determineExitCodeReturnValueAndExpectedExitCode, exitCode);
    }
 
    TEST(SkipTest_CallsTestRunResultAddSkippedFullTestName)

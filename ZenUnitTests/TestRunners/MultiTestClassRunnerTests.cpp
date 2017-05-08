@@ -8,7 +8,7 @@ namespace ZenUnit
 {
    TESTS(MultiTestClassRunnerTests)
    SPEC(Constructor_NewsComponents)
-   SPEC(TotalNumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
+   SPEC(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
    SPEC(AddTestClassRunner_EmplacesBackTestClassRunner_MakesNumberOfTestClassesReturnAnIncreasingNumber)
    SPEC(RunTestClasses_SortsTestClassRunnersByName_RunsTestClasses_MoveReturnsTestClassResultsVector)
    SPEC(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)
@@ -58,7 +58,7 @@ namespace ZenUnit
       ARE_EQUAL(2, _multiTestClassRunner.NumberOfTestClasses());
    }
 
-   TEST(TotalNumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
+   TEST(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
    {
       TestClassRunnerMock* testClassRunnerAMock = new TestClassRunnerMock;
       TestClassRunnerMock* testClassRunnerBMock = new TestClassRunnerMock;
@@ -70,7 +70,7 @@ namespace ZenUnit
       _multiTestClassRunner.AddTestClassRunner(testClassRunnerBMock);
       _multiTestClassRunner.AddTestClassRunner(testClassRunnerCMock);
       //
-      const size_t totalNumberOfTestCases = _multiTestClassRunner.TotalNumberOfTestCases();
+      const size_t totalNumberOfTestCases = _multiTestClassRunner.NumberOfTestCases();
       //
       ZEN(testClassRunnerAMock->NumberOfTestCasesMock.AssertCalledOnce());
       ZEN(testClassRunnerBMock->NumberOfTestCasesMock.AssertCalledOnce());

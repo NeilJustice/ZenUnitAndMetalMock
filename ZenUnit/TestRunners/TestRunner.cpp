@@ -58,7 +58,7 @@ namespace ZenUnit
    {
       _testRunStopwatch->Start();
       _args = _argsParser->Parse(commandLineArgs);
-      _preamblePrinter->PrintOpeningThreeLines(_multiTestClassRunner.get(), _args.commandLine);
+      _preamblePrinter->PrintOpeningThreeLines(_args.commandLine, _multiTestClassRunner.get());
       if (_args.maxtotalseconds > 0)
       {
          RunTestsWithWaitableRunnerThread(_args.maxtotalseconds);
@@ -68,9 +68,9 @@ namespace ZenUnit
          RunTests();
       }
       _testRunResult->PrintTestFailuresAndSkips();
-      const size_t totalNumberOfTestCases = _multiTestClassRunner->TotalNumberOfTestCases();
+      const size_t numberOfTestCases = _multiTestClassRunner->NumberOfTestCases();
       const unsigned testRunMilliseconds = _testRunStopwatch->Stop();
-      _testRunResult->PrintClosingLines(totalNumberOfTestCases, testRunMilliseconds, _args.commandLine);
+      _testRunResult->PrintClosingLines(numberOfTestCases, testRunMilliseconds, _args.commandLine);
       _console->PauseForAnyKeyIfDebuggerIsPresent();
       const int exitCode = _testRunResult->DetermineExitCode(_args);
       return exitCode;

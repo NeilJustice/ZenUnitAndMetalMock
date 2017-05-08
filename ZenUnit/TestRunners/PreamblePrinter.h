@@ -20,6 +20,6 @@ namespace ZenUnit
       PreamblePrinter();
       virtual ~PreamblePrinter();
       virtual void PrintOpeningThreeLines(
-         const MultiTestClassRunner* multiTestClassRunner, const string& commandLine) const;
+         const string& commandLine, const MultiTestClassRunner* multiTestClassRunner) const;
    };
 }

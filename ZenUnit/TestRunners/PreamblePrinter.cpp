@@ -18,7 +18,7 @@ namespace ZenUnit
    PreamblePrinter::~PreamblePrinter() = default;
 
    void PreamblePrinter::PrintOpeningThreeLines(
-      const MultiTestClassRunner* multiTestClassRunner, const string& commandLine) const
+      const string& commandLine, const MultiTestClassRunner* multiTestClassRunner) const
    {
       _console->WriteColor("[ZenUnit]", Color::Green);
       _console->WriteLine(" Running " + commandLine);

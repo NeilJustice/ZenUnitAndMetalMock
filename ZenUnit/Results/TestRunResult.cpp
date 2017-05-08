@@ -131,14 +131,14 @@ namespace ZenUnit
       return exitCode;
    }
 
-   void TestRunResult::PrintSkippedTestReminder(const string& skippedFullTestNameAndReason) const
-   {
-      _console->WriteLine("[SKIPPED] Test " + skippedFullTestNameAndReason);
-   }
-
    void TestRunResult::PrintSkippedTestClassReminder(const string& skippedTestClassNameAndReason) const
    {
       _console->WriteLine("[SKIPPED] Test class " + skippedTestClassNameAndReason);
+   }
+
+   void TestRunResult::PrintSkippedTestReminder(const string& skippedFullTestNameAndReason) const
+   {
+      _console->WriteLine("[SKIPPED] Test " + skippedFullTestNameAndReason);
    }
 
    void TestRunResult::AssertEqual(

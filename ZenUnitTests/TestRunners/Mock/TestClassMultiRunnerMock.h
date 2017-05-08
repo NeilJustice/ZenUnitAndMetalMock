@@ -4,7 +4,7 @@
 struct TestClassMultiRunnerMock : public Zen::Mock<MultiTestClassRunner>
 {
    ZENMOCK_VOID1(AddTestClassRunner, TestClassRunner*)
-   ZENMOCK_NONVOID0_CONST(size_t, TotalNumberOfTestCases)
    ZENMOCK_NONVOID0_CONST(size_t, NumberOfTestClasses)
+   ZENMOCK_NONVOID0_CONST(size_t, NumberOfTestCases)
    ZENMOCK_NONVOID0(vector<TestClassResult>, RunTestClasses)
 };

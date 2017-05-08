@@ -57,7 +57,7 @@ namespace ZenUnit
 
       const string CommandLine = "CommandLine";
       //
-      _preamblePrinter.PrintOpeningThreeLines(&multiTestClassRunnerMock, CommandLine);
+      _preamblePrinter.PrintOpeningThreeLines(CommandLine, &multiTestClassRunnerMock);
       //
       ZEN(_watchMock->TimeZoneDateTimeNowMock.AssertCalledOnce());
       ZEN(multiTestClassRunnerMock.NumberOfTestClassesMock.AssertCalledOnce());

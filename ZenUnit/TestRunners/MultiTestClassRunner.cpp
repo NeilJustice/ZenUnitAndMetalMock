@@ -23,7 +23,7 @@ namespace ZenUnit
       return numberOfTestClasses;
    }
 
-   size_t MultiTestClassRunner::TotalNumberOfTestCases() const
+   size_t MultiTestClassRunner::NumberOfTestCases() const
    {
       const size_t numberOfTestCases = std::accumulate(_testClassRunners.cbegin(), _testClassRunners.cend(),
          size_t(0), [](size_t cumulativeNumberOfTestCases, const unique_ptr<TestClassRunner>& testClassRunner)

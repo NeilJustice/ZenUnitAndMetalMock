@@ -46,8 +46,8 @@ namespace ZenUnit
    private:
       virtual size_t NumberOfFailedTestCases(const vector<TestClassResult>& testClassResults) const;
       void PrintTestClassResultFailures(const TestClassResult& testClassResult) const;
-      void PrintSkippedTestReminder(const std::string& skippedFullTestNameAndReason) const;
       void PrintSkippedTestClassReminder(const std::string& skippedTestClassNameAndReason) const;
+      void PrintSkippedTestReminder(const std::string& skippedFullTestNameAndReason) const;
    };
 }
 
