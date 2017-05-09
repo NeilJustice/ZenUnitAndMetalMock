@@ -168,12 +168,7 @@ namespace ZenUnit
       TestClassResult testClassResultC;
       testClassResultC.AddTestResults({ testResultC1, testResultC2, testResultC3 });
 
-      const vector<TestClassResult> testClassResults =
-      {
-         testClassResultA,
-         testClassResultB,
-         testClassResultC
-      };
+      const vector<TestClassResult> testClassResults { testClassResultA, testClassResultB, testClassResultC };
       //
       const size_t numberOfFailedTestCases = _testRunResult.NumberOfFailedTestCases(testClassResults);
       //

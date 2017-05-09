@@ -10,6 +10,11 @@ namespace ZenUnit
 {
    TESTS(TestClassResultTests)
    SPEC(DefaultConstructor_NewsForEacher)
+   SPEC(CopyConstructor_CopiesForEacherAndTestResults)
+   SPEC(AssignmentOperator_CopiesForEacherAndTestResults)
+   SPEC(AssignmentOperator_SelfAssignment_NothingHappens)
+   SPEC(MoveConstructor_MovesForEacherAndTestResults)
+   SPEC(MoveAssignmentOperator_MovesForEacherAndTestResults)
    SPEC(AddTestResults_AppendTestResultsToEndOfTestResultsVector)
    SPEC(NumberOfFailedTestCases_ReturnsNumberOfNonSuccessTestsInTestResultsVector)
    SPEC(Milliseconds_EmptyTestResultsVector_Returns0)
@@ -17,8 +22,8 @@ namespace ZenUnit
    SPEC(PrintTestFailures_PrintsJustTestFailedToConsole)
    SPEC(PrintResultLine_0FailedTest_WritesOKInGreen)
    SPECX(PrintResultLine_1OrMoreFailedTests_WritesFailedInRed)
-   SPEC(ZenUnitEqualizer_ThrowsIfTestResultsNotEqual)
    SPEC(PrintTestResultIfFailure_CallsTestResultPrintIfFailure)
+   SPEC(ZenUnitEqualizer_ThrowsIfTestResultsNotEqual)
    SPECEND
 
    TestClassResult _testClassResult;
@@ -32,6 +37,56 @@ namespace ZenUnit
    {
       TestClassResult testClassResult;
       WAS_NEWED(testClassResult._forEacherTwoExtraArgs);
+      IS_EMPTY(testClassResult._testResults);
+   }
+
+   TEST(CopyConstructor_CopiesForEacherAndTestResults)
+   {
+      TestClassResult testClassResult = TestClassResult::TestingNonDefault();
+      //
+      TestClassResult copy(testClassResult);
+      //
+      ARE_COPIES(copy, testClassResult);
+   }
+
+   TEST(AssignmentOperator_CopiesForEacherAndTestResults)
+   {
+      TestClassResult testClassResult = TestClassResult::TestingNonDefault();
+      TestClassResult copy;
+      //
+      copy = testClassResult;
+      //
+      ARE_COPIES(copy, testClassResult);
+   }
+
+   TEST(AssignmentOperator_SelfAssignment_NothingHappens)
+   {
+      TestClassResult testClassResult = TestClassResult::TestingNonDefault();
+      //
+      testClassResult = testClassResult;
+      //
+      ARE_EQUAL(TestClassResult::TestingNonDefault(), testClassResult);
+   }
+
+   TEST(MoveConstructor_MovesForEacherAndTestResults)
+   {
+      TestClassResult testClassResult = TestClassResult::TestingNonDefault();
+      //
+      TestClassResult moved(std::move(testClassResult));
+      //
+      ARE_EQUAL(TestClassResult(), testClassResult);
+      ARE_EQUAL(TestClassResult::TestingNonDefault(), moved);
+   }
+
+   TEST(MoveAssignmentOperator_MovesForEacherAndTestResults)
+   {
+      TestClassResult testClassResult = TestClassResult::TestingNonDefault();
+      TestClassResult moved;
+      //
+      moved = std::move(testClassResult);
+      //
+      ARE_EQUAL(TestClassResult(), testClassResult);
+      ARE_EQUAL(TestClassResult::TestingNonDefault(), moved);
    }
 
    TEST(AddTestResults_AppendTestResultsToEndOfTestResultsVector)

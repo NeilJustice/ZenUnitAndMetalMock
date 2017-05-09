@@ -60,7 +60,7 @@ namespace ZenUnit
          }
          PrintTestClassResultLine(&_testClassResult);
          _console->WriteNewline();
-         return _testClassResult;
+         return std::move(_testClassResult);
       }
    private:
       virtual void PrintTestClassNameAndNumberOfNamedTests() const

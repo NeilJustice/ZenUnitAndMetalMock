@@ -16,10 +16,14 @@ namespace ZenUnit
       using ForEacherTwoExtraArgsType = const ForEacherTwoExtraArgs<
          std::vector<TestResult>, void (*)(const TestResult&, const Console*, TestFailureNumberer*),
          const Console*, TestFailureNumberer*>;
-      std::shared_ptr<ForEacherTwoExtraArgsType> _forEacherTwoExtraArgs;
+      std::shared_ptr<const ForEacherTwoExtraArgsType> _forEacherTwoExtraArgs;
       std::vector<TestResult> _testResults;
    public:
       TestClassResult();
+      TestClassResult(const TestClassResult&);
+      TestClassResult& operator=(const TestClassResult&);
+      TestClassResult(TestClassResult&& testClassResult);
+      TestClassResult& operator=(TestClassResult&& testClassResult);
       virtual ~TestClassResult();
       virtual void AddTestResults(const std::vector<TestResult>& testResults);
       virtual unsigned Milliseconds() const;
@@ -47,9 +51,6 @@ namespace ZenUnit
          static_assert(sizeof(TestClassResult) == 48, "Release sizeof(TestClassResult) != 48");
       #endif
    #endif
-
-   static_assert(std::is_move_constructible<TestClassResult>::value, "!std::is_move_constructible<TestClassResult>::value");
-   static_assert(std::is_move_assignable<TestClassResult>::value, "!std::is_move_assignable<TestClassResult>::value");
 }
 
 template<>

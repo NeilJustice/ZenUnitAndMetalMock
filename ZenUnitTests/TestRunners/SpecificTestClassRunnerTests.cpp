@@ -11,7 +11,7 @@ namespace ZenUnit
    SPEC(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
    SPEC(TestClassNameForSorting_ReturnsTestClassName)
    SPEC(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
-   SPECX(RunTests_PrintsTestClassNameAndNumberOfNamedTests_ForEachRunsTests_PrintsTestClassResultLine_ReturnsTestClassResult)
+   SPECX(RunTests_PrintsTestClassNameAndNumberOfNamedTests_ForEachRunsTests_PrintsTestClassResultLine_MoveReturnsTestClassResult)
    SPECX(PrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVerticalBarNumberOfTests)
    SPECX(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewDeleteTest_AddsItResultToResults_ReturnsTrueIfSuccess)
    SPEC(RunTest_WritesVerticalBarTestName_RunsTest_AddsTestResultsToTestClassResult_WriteLinesTestOutcome)
@@ -107,7 +107,7 @@ namespace ZenUnit
       ARE_EQUAL(30, numberOfTestCases);
    }
 
-   TEST2X2(RunTests_PrintsTestClassNameAndNumberOfNamedTests_ForEachRunsTests_PrintsTestClassResultLine_ReturnsTestClassResult,
+   TEST2X2(RunTests_PrintsTestClassNameAndNumberOfNamedTests_ForEachRunsTests_PrintsTestClassResultLine_MoveReturnsTestClassResult,
       bool testClassTypeNewableAndDeletable, bool expectTestsRunForEachCall,
       false, false,
       true, true)
@@ -131,15 +131,14 @@ namespace ZenUnit
       if (expectTestsRunForEachCall)
       {
          ZEN(_specificTestClassRunnerSelfMocked->testsMemberForEacherExtraArgMock->ForEachMock.AssertCalledOnceWith(
-            &_specificTestClassRunnerSelfMocked->_tests,
-            _specificTestClassRunnerSelfMocked.get(),
-            &SpecificTestClassRunner<TestingTestClass>::RunTest,
-            &_specificTestClassRunnerSelfMocked->_testClassResult));
+            &_specificTestClassRunnerSelfMocked->_tests, _specificTestClassRunnerSelfMocked.get(),
+            &SpecificTestClassRunner<TestingTestClass>::RunTest, &_specificTestClassRunnerSelfMocked->_testClassResult));
       }
       ZEN(_specificTestClassRunnerSelfMocked->PrintTestClassResultLineMock.
          AssertCalledOnceWith(&_specificTestClassRunnerSelfMocked->_testClassResult));
       ZEN(_specificTestClassRunnerSelfMocked->consoleMock->WriteNewlineMock.AssertCalledOnce());
-      ARE_EQUAL(_specificTestClassRunnerSelfMocked->_testClassResult, testClassResult);
+      ARE_EQUAL(TestClassResult::TestingNonDefault(), testClassResult);
+      ARE_EQUAL(TestClassResult(), _specificTestClassRunnerSelfMocked->_testClassResult);
    }
 
    TEST2X2(PrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVerticalBarNumberOfTests,

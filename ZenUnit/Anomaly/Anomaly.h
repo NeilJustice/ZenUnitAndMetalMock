@@ -144,9 +144,6 @@ namespace ZenUnit
          static_assert(sizeof(Anomaly) == 200, "Release sizeof(Anomaly) != 200");
       #endif
    #endif
-
-   static_assert(std::is_move_constructible<Anomaly>::value, "!std::is_move_constructible<Anomaly>::value");
-   static_assert(std::is_move_assignable<Anomaly>::value, "!std::is_move_assignable<Anomaly>::value");
 }
 
 template<>

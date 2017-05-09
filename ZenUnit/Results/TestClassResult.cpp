@@ -13,6 +13,33 @@ namespace ZenUnit
    {
    }
 
+   TestClassResult::TestClassResult(const TestClassResult& testClassResult)
+   {
+      *this = testClassResult;
+   }
+
+   TestClassResult& TestClassResult::operator=(const TestClassResult& testClassResult)
+   {
+      if (this != &testClassResult)
+      {
+         _forEacherTwoExtraArgs = testClassResult._forEacherTwoExtraArgs;
+         _testResults = testClassResult._testResults;
+      }
+      return *this;
+   }
+
+   TestClassResult::TestClassResult(TestClassResult&& testClassResult)
+   {
+      *this = std::move(testClassResult);
+   }
+
+   TestClassResult& TestClassResult::operator=(TestClassResult&& testClassResult)
+   {
+      _forEacherTwoExtraArgs = std::exchange(testClassResult._forEacherTwoExtraArgs, nullptr);
+      _testResults = std::exchange(testClassResult._testResults, std::vector<TestResult>());
+      return *this;
+   }
+
    TestClassResult::~TestClassResult() = default;
 
    void TestClassResult::AddTestResults(const vector<TestResult>& testResults)
@@ -76,7 +103,8 @@ namespace ZenUnit
    TestClassResult TestClassResult::TestingNonDefault()
    {
       TestClassResult testClassResult;
-      testClassResult._testResults = { TestResult() };
+      testClassResult._forEacherTwoExtraArgs.reset(new ForEacherTwoExtraArgsType);
+      testClassResult._testResults.resize(1);
       return testClassResult;
    }
 }

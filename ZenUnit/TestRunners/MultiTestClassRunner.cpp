@@ -49,7 +49,7 @@ namespace ZenUnit
 
    TestClassResult MultiTestClassRunner::RunTestClassRunner(const unique_ptr<TestClassRunner>& testClassRunner)
    {
-      const TestClassResult testClassResult = testClassRunner->RunTests();
+      TestClassResult testClassResult = testClassRunner->RunTests();
       return testClassResult;
    }
 }

@@ -29,9 +29,6 @@ namespace ZenUnit
          static_assert(sizeof(CallResult) == 24, "Release sizeof(CallResult) != 24");
       #endif
    #endif
-
-   static_assert(std::is_move_constructible<CallResult>::value, "!std::is_move_constructible<CallResult>::value");
-   static_assert(std::is_move_assignable<CallResult>::value, "!std::is_move_assignable<CallResult>::value");
 }
 
 template<>
