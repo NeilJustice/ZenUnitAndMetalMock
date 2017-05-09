@@ -56,24 +56,35 @@ namespace ZenUnit
 
    int TestRunner::ParseArgsRunTestsPrintResults(const vector<string>& commandLineArgs)
    {
-      _testRunStopwatch->Start();
       _args = _argsParser->Parse(commandLineArgs);
-      _preamblePrinter->PrintOpeningThreeLines(_args.commandLine, _multiTestClassRunner.get());
-      if (_args.maxtotalseconds > 0)
+      int overallExitCode = 0;
+      for (size_t testRunIndex = 0; testRunIndex < _args.times; ++testRunIndex)
       {
-         RunTestsWithWaitableRunnerThread(_args.maxtotalseconds);
+         const int testRunExitCode = DoRunTestsPrintResults(testRunIndex);
+         overallExitCode &= testRunExitCode;
+         _testRunResult->ResetStateExceptForSkips();
       }
-      else
-      {
-         RunTests();
-      }
-      _testRunResult->PrintTestFailuresAndSkips();
-      const size_t numberOfTestCases = _multiTestClassRunner->NumberOfTestCases();
-      const unsigned testRunMilliseconds = _testRunStopwatch->Stop();
-      _testRunResult->PrintClosingLines(numberOfTestCases, testRunMilliseconds, _args.commandLine);
       _console->PauseForAnyKeyIfDebuggerIsPresent();
-      const int exitCode = _testRunResult->DetermineExitCode(_args);
-      return exitCode;
+      return overallExitCode;
+
+      //_testRunStopwatch->Start();
+      //_args = _argsParser->Parse(commandLineArgs);
+      //_preamblePrinter->PrintOpeningThreeLines(_args.commandLine, _multiTestClassRunner.get());
+      //if (_args.maxtotalseconds > 0)
+      //{
+      //   RunTestsWithWaitableRunnerThread(_args.maxtotalseconds);
+      //}
+      //else
+      //{
+      //   RunTests();
+      //}
+      //_testRunResult->PrintTestFailuresAndSkips();
+      //const size_t numberOfTestCases = _multiTestClassRunner->NumberOfTestCases();
+      //const unsigned testRunMilliseconds = _testRunStopwatch->Stop();
+      //_testRunResult->PrintClosingLines(numberOfTestCases, testRunMilliseconds, _args.commandLine);
+      //_console->PauseForAnyKeyIfDebuggerIsPresent();
+      //const int exitCode = _testRunResult->DetermineExitCode(_args);
+      //return exitCode;
    }
 
    int TestRunner::DoRunTestsPrintResults(size_t testRunIndex)

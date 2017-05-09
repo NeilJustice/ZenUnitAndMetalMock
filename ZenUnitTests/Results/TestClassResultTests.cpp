@@ -9,7 +9,6 @@
 namespace ZenUnit
 {
    TESTS(TestClassResultTests)
-   SPEC(DefaultConstructor_NewsForEacher)
    SPEC(CopyConstructor_CopiesForEacherAndTestResults)
    SPEC(AssignmentOperator_CopiesForEacherAndTestResults)
    SPEC(AssignmentOperator_SelfAssignment_NothingHappens)
@@ -32,13 +31,6 @@ namespace ZenUnit
    {
       ZENMOCK_NONVOID0_CONST(size_t, NumberOfFailedTestCases)
    } _testClassResultSelfMocked;
-
-   TEST(DefaultConstructor_NewsForEacher)
-   {
-      TestClassResult testClassResult;
-      WAS_NEWED(testClassResult._forEacherTwoExtraArgs);
-      IS_EMPTY(testClassResult._testResults);
-   }
 
    TEST(CopyConstructor_CopiesForEacherAndTestResults)
    {
@@ -138,15 +130,14 @@ namespace ZenUnit
       using TypedefForEacherTwoExtraArgsMock = ForEacherTwoExtraArgsMock<vector<TestResult>,
          void (*)(const TestResult&, const Console*, TestFailureNumberer*),
          const Console*, TestFailureNumberer*>;
-      const TypedefForEacherTwoExtraArgsMock* const forEacherTwoExtraArgsMock = new TypedefForEacherTwoExtraArgsMock;
-      forEacherTwoExtraArgsMock->ForEachMock.Expect();
-      _testClassResult._forEacherTwoExtraArgs.reset(forEacherTwoExtraArgsMock);
+      const TypedefForEacherTwoExtraArgsMock forEacherTwoExtraArgsMock;
+      forEacherTwoExtraArgsMock.ForEachMock.Expect();
       const Console console;
       TestFailureNumberer testFailureNumberer;
       //
-      _testClassResult.PrintTestFailures(&console, &testFailureNumberer);
+      _testClassResult.PrintTestFailures(&forEacherTwoExtraArgsMock, &console, &testFailureNumberer);
       //
-      ZEN(forEacherTwoExtraArgsMock->ForEachMock.AssertCalledOnceWith(
+      ZEN(forEacherTwoExtraArgsMock.ForEachMock.AssertCalledOnceWith(
          &_testClassResult._testResults, TestClassResult::PrintTestResultIfFailure, &console, &testFailureNumberer));
    }
 

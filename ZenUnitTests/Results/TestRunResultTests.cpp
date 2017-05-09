@@ -56,6 +56,7 @@ namespace ZenUnit
       WAS_NEWED(testRunResult._console);
       WAS_NEWED(testRunResult._memberForEacherTestClassResults);
       WAS_NEWED(testRunResult._memberForEacherSkippedTests);
+      WAS_NEWED(testRunResult._forEacherTwoExtraArgs);
       WAS_NEWED(testRunResult._testFailureNumberer);
       IS_EMPTY(testRunResult._testClassResults);
       IS_EMPTY(testRunResult._skippedTestClassNamesAndReasons);
@@ -270,7 +271,9 @@ namespace ZenUnit
       _testRunResult.PrintTestClassResultFailures(testClassResultMock);
       //
       ZEN(testClassResultMock.PrintTestFailuresMock.AssertCalledOnceWith(
-         _testRunResult._console.get(), _testRunResult._testFailureNumberer.get()));
+         _testRunResult._forEacherTwoExtraArgs.get(),
+         _testRunResult._console.get(), 
+         _testRunResult._testFailureNumberer.get()));
    }
 
    TEST4X4(DetermineExitCode_DefaultArgs_Returns1IfAnyTestFailures_OtherwiseReturns0,

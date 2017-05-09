@@ -1,14 +1,22 @@
 #pragma once
 #include "ZenUnit/Equalizers/ZenUnitEqualizer.h"
+#include "ZenUnit/Utils/Iteration/ForEacherTwoExtraArgs.h"
 
 namespace ZenUnit
 {
-    class Console;
-    template<typename DataStructureType, typename ClassType, typename FunctionType>
-    class MemberForEacher;
-    class TestFailureNumberer;
-    struct ZenUnitArgs;
-    struct TestClassResult;
+   class Console;
+   template<typename DataStructureType, typename ClassType, typename FunctionType>
+   class MemberForEacher;
+   template<typename IterableType, typename FunctionType, typename ExtraArgType1, typename ExtraArgType2>
+   class ForEacherTwoExtraArgs;
+   class TestFailureNumberer;
+   struct ZenUnitArgs;
+   struct TestClassResult;
+   struct TestResult;
+
+   using ForEacherTwoExtraArgsType = const ForEacherTwoExtraArgs<
+      std::vector<TestResult>, void (*)(const TestResult&, const Console*, TestFailureNumberer*),
+      const Console*, TestFailureNumberer*>;
 
    class TestRunResult
    {
@@ -21,6 +29,7 @@ namespace ZenUnit
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const MemberForEacherTestClassResultsType> _memberForEacherTestClassResults;
       std::unique_ptr<const MemberForEacherSkippedTestsType> _memberForEacherSkippedTests;
+      std::unique_ptr<const ForEacherTwoExtraArgsType> _forEacherTwoExtraArgs;
       std::unique_ptr<TestFailureNumberer> _testFailureNumberer;
       std::vector<std::string> _skippedTestClassNamesAndReasons;
       std::vector<std::string> _skippedFullTestNamesAndReasons;

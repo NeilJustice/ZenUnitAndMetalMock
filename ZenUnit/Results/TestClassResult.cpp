@@ -9,7 +9,6 @@
 namespace ZenUnit
 {
    TestClassResult::TestClassResult()
-      : _forEacherTwoExtraArgs(new ForEacherTwoExtraArgsType)
    {
    }
 
@@ -22,7 +21,6 @@ namespace ZenUnit
    {
       if (this != &testClassResult)
       {
-         _forEacherTwoExtraArgs = testClassResult._forEacherTwoExtraArgs;
          _testResults = testClassResult._testResults;
       }
       return *this;
@@ -35,7 +33,6 @@ namespace ZenUnit
 
    TestClassResult& TestClassResult::operator=(TestClassResult&& testClassResult)
    {
-      _forEacherTwoExtraArgs = std::exchange(testClassResult._forEacherTwoExtraArgs, nullptr);
       _testResults = std::exchange(testClassResult._testResults, std::vector<TestResult>());
       return *this;
    }
@@ -82,9 +79,12 @@ namespace ZenUnit
    }
 
    void TestClassResult::PrintTestFailures(
-      const Console* console, TestFailureNumberer* testFailureNumberer) const
+      const ForEacherTwoExtraArgsType* forEacherTwoExtraArgs,
+      const Console* console, 
+      TestFailureNumberer* testFailureNumberer) const
    {
-      _forEacherTwoExtraArgs->ForEach(&_testResults, PrintTestResultIfFailure, console, testFailureNumberer);
+      forEacherTwoExtraArgs->ForEach(
+         &_testResults, PrintTestResultIfFailure, console, testFailureNumberer);
    }
 
    void TestClassResult::PrintTestResultIfFailure(
@@ -103,7 +103,6 @@ namespace ZenUnit
    TestClassResult TestClassResult::TestingNonDefault()
    {
       TestClassResult testClassResult;
-      testClassResult._forEacherTwoExtraArgs.reset(new ForEacherTwoExtraArgsType);
       testClassResult._testResults.resize(1);
       return testClassResult;
    }

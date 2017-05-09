@@ -15,7 +15,7 @@ namespace ZenUnit
    SPEC(RegisterTestClassRunner_EmplacesBackTestClassRunner)
    SPEC(SkipTest_CallsTestRunResultAddSkippedFullTestName)
    SPEC(SkipTestClass_CallsTestRunResultAddSkippedTestClassNameAndReason)
-   SPECX(ParseArgsRunTestsPrintResults_ParsesArgs_RunsTests_PrintsResults_Returns0IfAllTestsPassedOrExit0_OtherwiseReturns1)
+   SKIPSPECX("", ParseArgsRunTestsPrintResults_ParsesArgs_RunsTests_PrintsResults_Returns0IfAllTestsPassedOrExit0_OtherwiseReturns1)
    SPEC(RunTests_RunsTestClasses)
    SPECX(RunTestsWithWaitableRunnerThread_SpawnsThreadToCallRunTests_PrintsResultsAndExits1IfThreadTimesOut)
    SPECEND
