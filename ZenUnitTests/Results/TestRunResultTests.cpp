@@ -127,7 +127,7 @@ namespace ZenUnit
       } testRunResultSelfMocked;
       testRunResultSelfMocked.NumberOfFailedTestCasesMock.ExpectAndReturn(numberOfFailedTestCases);
 
-      vector<TestClassResult> testClassResults = { TestClassResult() };
+      vector<TestClassResult> testClassResults { TestClassResult() };
       const vector<TestClassResult> NonMovedFromTestClassResults = testClassResults;
       //
       testRunResultSelfMocked.SetTestClassResults(std::move(testClassResults));

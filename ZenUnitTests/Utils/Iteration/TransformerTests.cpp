@@ -36,23 +36,23 @@ namespace ZenUnit
 
    TEST(Transform_OneItemRange_CallsTransformerOnce)
    {
-      const DataStructureType<T> source = { 1 };
+      const DataStructureType<T> source { 1 };
       DataStructureType<T> dest(source.size());
       //
       _transformer.Transform(source.cbegin(), source.cend(), &dest, PlusOne);
       //
-      const DataStructureType<T> expectedDest = { 2 };
+      const DataStructureType<T> expectedDest { 2 };
       ARE_EQUAL(expectedDest, dest);
    }
 
    TEST(Transform_TwoItemRange_CallsTransformerTwice)
    {
-      const DataStructureType<T> source = { 1, 2 };
+      const DataStructureType<T> source { 1, 2 };
       DataStructureType<T> dest(source.size());
       //
       _transformer.Transform(source.cbegin(), source.cend(), &dest, PlusOne);
       //
-      const DataStructureType<T> expectedDest = { 2, 3 };
+      const DataStructureType<T> expectedDest { 2, 3 };
       ARE_EQUAL(expectedDest, dest);
    }
 

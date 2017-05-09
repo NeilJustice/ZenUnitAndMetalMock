@@ -51,7 +51,7 @@ namespace ZenUnit
       const size_t expectedVectorSize = expectedVector.size();
       const size_t IEqualsSignLength = 2;
       const size_t SizeTMaxValueLength = 21; // strlen("18446744073709551615")
-      char iEqualsIndexMessage[IEqualsSignLength + SizeTMaxValueLength] = { "i=" };
+      char iEqualsIndexMessage[IEqualsSignLength + SizeTMaxValueLength] { "i=" };
       for (size_t i = 0; i < expectedVectorSize; ++i)
       {
          const T& ithExpectedElement = expectedVector[i];

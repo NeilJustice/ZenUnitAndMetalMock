@@ -33,11 +33,11 @@ namespace ZenUnit
 
    TEST(Sort_SortsTheDataStructure)
    {
-      DataStructureType dataStructure = { 2, 3, 1 };
+      DataStructureType dataStructure { 2, 3, 1 };
       //
       _sorter.Sort(&dataStructure);
       //
-      const DataStructureType expectedSortedDataStructure = { 1, 2, 3 };
+      const DataStructureType expectedSortedDataStructure { 1, 2, 3 };
       VECTORS_EQUAL(expectedSortedDataStructure, dataStructure);
    }
 

@@ -240,7 +240,7 @@ namespace ZenMock
    {
       const auto test = [&](auto& zenMockObject, auto zenMockedFunctionCall)
       {
-         const vector<int> values = { 1, 2 };
+         const vector<int> values { 1, 2 };
          zenMockObject.ExpectAndReturnValues(values);
          ARE_EQUAL(1, zenMockedFunctionCall());
          ARE_EQUAL(2, zenMockedFunctionCall());

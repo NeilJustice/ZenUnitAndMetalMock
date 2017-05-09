@@ -99,7 +99,7 @@ namespace ZenUnit
    TEST(Run_GetsTestFromAddress_RunsTest_ReturnsTestResults)
    {
       TestMock* const testMock = new TestMock;
-      const vector<TestResult> testTestResults = { TestResult::TestingNonDefault };
+      const vector<TestResult> testTestResults { TestResult::TestingNonDefault };
       testMock->RunMock.ExpectAndReturn(testTestResults);
       const unique_ptr<Test> testMockUniquePtr(testMock);
       _specSectionTestNXNSelfMocked->PmfTokenToTestMock.ExpectAndReturn(&testMockUniquePtr);

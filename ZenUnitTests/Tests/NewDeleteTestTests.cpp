@@ -60,7 +60,7 @@ namespace ZenUnit
          &Test::CallNewTestClass, _newDeleteTest.get(), TestPhase::Constructor));
       ZEN(_testResultFactoryMock->ConstructorFailMock.AssertCalledOnceWith(
          _newDeleteTest->_fullTestName, failedConstructorCallResult));
-      const vector<TestResult> expectedTestResults = { constructorFailTestResult };
+      const vector<TestResult> expectedTestResults { constructorFailTestResult };
       VECTORS_EQUAL(expectedTestResults, testResults);
    }
 
@@ -84,7 +84,7 @@ namespace ZenUnit
       }));
       ZEN(_testResultFactoryMock->CtorDtorSuccessMock.AssertCalledOnceWith(
          _newDeleteTest->_fullTestName, successConstructorCallResult, destructorCallResult));
-      const vector<TestResult> expectedTestResults = { sixArgCtorTestResult };
+      const vector<TestResult> expectedTestResults { sixArgCtorTestResult };
       VECTORS_EQUAL(expectedTestResults, testResults);
    }
 

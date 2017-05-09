@@ -5,6 +5,7 @@
 #include "ZenUnit/TestRunners/MultiTestClassRunner.h"
 #include "ZenUnit/TestRunners/PreamblePrinter.h"
 #include "ZenUnit/TestRunners/TestRunner.h"
+#include "ZenUnit/Utils/AssertTrue.h"
 #include "ZenUnit/Utils/Concurrency/Futurist.h"
 #include "ZenUnit/Utils/StringUtil.h"
 #include "ZenUnit/Utils/Time/Stopwatch.h"
@@ -58,36 +59,18 @@ namespace ZenUnit
    {
       _args = _argsParser->Parse(commandLineArgs);
       int overallExitCode = 0;
-      for (size_t testRunIndex = 0; testRunIndex < _args.times; ++testRunIndex)
+      for (unsigned testRunIndex = 0; testRunIndex < _args.times; ++testRunIndex)
       {
-         const int testRunExitCode = DoRunTestsPrintResults(testRunIndex);
-         overallExitCode &= testRunExitCode;
+         const int testRunExitCode = RunTestsAndPrintResults();
+         assert_true(testRunExitCode == 0 || testRunExitCode == 1);
+         overallExitCode |= testRunExitCode;
          _testRunResult->ResetStateExceptForSkips();
       }
       _console->PauseForAnyKeyIfDebuggerIsPresent();
       return overallExitCode;
-
-      //_testRunStopwatch->Start();
-      //_args = _argsParser->Parse(commandLineArgs);
-      //_preamblePrinter->PrintOpeningThreeLines(_args.commandLine, _multiTestClassRunner.get());
-      //if (_args.maxtotalseconds > 0)
-      //{
-      //   RunTestsWithWaitableRunnerThread(_args.maxtotalseconds);
-      //}
-      //else
-      //{
-      //   RunTests();
-      //}
-      //_testRunResult->PrintTestFailuresAndSkips();
-      //const size_t numberOfTestCases = _multiTestClassRunner->NumberOfTestCases();
-      //const unsigned testRunMilliseconds = _testRunStopwatch->Stop();
-      //_testRunResult->PrintClosingLines(numberOfTestCases, testRunMilliseconds, _args.commandLine);
-      //_console->PauseForAnyKeyIfDebuggerIsPresent();
-      //const int exitCode = _testRunResult->DetermineExitCode(_args);
-      //return exitCode;
    }
 
-   int TestRunner::DoRunTestsPrintResults(size_t testRunIndex)
+   int TestRunner::RunTestsAndPrintResults()
    {
       _testRunStopwatch->Start(); 
       _preamblePrinter->PrintOpeningThreeLines(_args.commandLine, _multiTestClassRunner.get());

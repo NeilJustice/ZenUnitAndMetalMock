@@ -9,4 +9,5 @@ struct TestRunResultMock : public Zen::Mock<TestRunResult>
    ZENMOCK_VOID0_CONST(PrintTestFailuresAndSkips)
    ZENMOCK_VOID3_CONST(PrintClosingLines, size_t, unsigned, const string&)
    ZENMOCK_NONVOID1_CONST(int, DetermineExitCode, const ZenUnitArgs&)
+   ZENMOCK_VOID0(ResetStateExceptForSkips)
 };

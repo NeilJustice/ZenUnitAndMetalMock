@@ -186,7 +186,7 @@ namespace ZenUnit
 
       TestResult testResult;
       testResult.testOutcome = newDeleteTestOutcome;
-      const vector<TestResult> testResults = { testResult };
+      const vector<TestResult> testResults { testResult };
       testMock.RunMock.ExpectAndReturn(testResults);
 
       TestClassResultMock testClassResultMock;
@@ -217,7 +217,7 @@ namespace ZenUnit
       testMock->PrintPostTestNameMessageMock.Expect();
       TestResult test0;
       test0.fullTestName = FullTestName("", "Test0", 0);
-      const vector<TestResult> TestResults = { test0, TestResult() };
+      const vector<TestResult> TestResults { test0, TestResult() };
       testMock->RunMock.ExpectAndReturn(TestResults);
       testMock->PrintPostTestCompletionMessageMock.Expect();
       const unique_ptr<Test> test(testMock);

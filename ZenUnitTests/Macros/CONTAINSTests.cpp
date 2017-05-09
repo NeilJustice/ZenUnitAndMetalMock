@@ -14,7 +14,7 @@ namespace ZenUnit
 
    TEST(Vector_DoesContain_DoesNotThrow)
    {
-      const vector<int> ints = { 1, 2 };
+      const vector<int> ints { 1, 2 };
       CONTAINS(1, ints);
       CONTAINS(2, ints);
       for (int i : ints)
@@ -35,7 +35,7 @@ File.cpp(1))");
 
    TEST(Map_DoesContain_DoesNotThrow)
    {
-      const map<int, int> intIntMap = { { 0, 0 }, { 1, 1 } };
+      const map<int, int> intIntMap { { 0, 0 }, { 1, 1 } };
       const pair<const int, int> kvp0(0, 0);
       const pair<const int, int> kvp1(1, 1);
       CONTAINS(kvp0, intIntMap);
@@ -59,7 +59,7 @@ File.cpp(1))");
 
    TEST(Set_DoesContain_DoesNotThrow)
    {
-      const set<int> intSet = { 1, 2 };
+      const set<int> intSet { 1, 2 };
       CONTAINS(1, intSet);
       CONTAINS(2, intSet);
       for (int i : intSet)

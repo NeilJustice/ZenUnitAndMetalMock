@@ -236,9 +236,9 @@ namespace ZenUnit
    TEST(ToString_CharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)
    {
       ARE_EQUAL("nullptr", ToStringer::ToString(static_cast<char*>(nullptr)));
-      const char chars[] = { 0 };
+      const char chars[] { 0 };
       ARE_EQUAL("\"\"", ToStringer::ToString(chars));
-      const char charsABC[] = { 'A', 'B', 'C', 0 };
+      const char charsABC[] { 'A', 'B', 'C', 0 };
       ARE_EQUAL("\"ABC\"", ToStringer::ToString(charsABC));
    }
 

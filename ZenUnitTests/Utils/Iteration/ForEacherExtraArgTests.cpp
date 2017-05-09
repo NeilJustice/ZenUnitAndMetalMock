@@ -33,11 +33,11 @@ namespace ZenUnit
 
    TEST(ForEach_OneItemIterable_CallsFuncOnItemOnce)
    {
-      const vector<int> oneItemVector = { 1 };
+      const vector<int> oneItemVector { 1 };
       //
       _forEacherExtraArg.ForEach(&oneItemVector, Bind(), 0);
       //
-      const vector<pair<int, int>> expectedCalls =
+      const vector<pair<int, int>> expectedCalls
       {
          { 1, 0 }
       };
@@ -46,11 +46,11 @@ namespace ZenUnit
 
    TEST(ForEach_TwoItemIterable_CallsFuncOnItemTwice)
    {
-      const vector<int> oneItemVector = { 1, 2 };
+      const vector<int> oneItemVector { 1, 2 };
       //
       _forEacherExtraArg.ForEach(&oneItemVector, Bind(), 0);
       //
-      const vector<pair<int, int>> expectedCalls =
+      const vector<pair<int, int>> expectedCalls
       {
          { 1, 0 },
          { 2, 0 }

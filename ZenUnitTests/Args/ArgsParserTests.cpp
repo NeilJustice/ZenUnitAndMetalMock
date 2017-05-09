@@ -61,7 +61,7 @@ None
 
    TEST(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
    {
-      vector<string> args = { TestProgramPath };
+      vector<string> args { TestProgramPath };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
@@ -90,7 +90,7 @@ None
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
-      const vector<string> Args = { TestProgramPath, invalidArg };
+      const vector<string> Args { TestProgramPath, invalidArg };
       //
       THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
       //

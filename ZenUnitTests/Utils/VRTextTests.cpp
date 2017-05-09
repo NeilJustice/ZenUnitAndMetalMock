@@ -54,14 +54,14 @@ namespace ZenUnit
 
    TEST(Constructor_NonConstCharacterArray_SetsFields)
    {
-      char chars2[] = { 'A', 0 };
+      char chars2[] { 'A', 0 };
       const VRText<decltype(chars2)> vrtext2(chars2, "text2");
       // Test for assignability to a non-const char*
       char* chars2Variable = vrtext2.value;
       ARE_EQUAL("A", chars2Variable);
       ARE_EQUAL("text2", vrtext2.text);
 
-      char chars3[] = { 'A', 'B', 0 };
+      char chars3[] { 'A', 'B', 0 };
       const VRText<decltype(chars3)> vrtext3(chars3, "text3");
       // Test for assignability to a non-const char*
       const char* const chars3Variable = vrtext3.value;
