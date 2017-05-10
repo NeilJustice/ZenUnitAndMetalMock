@@ -9,8 +9,6 @@ namespace ZenUnit
    {
       friend class TestNXNTests;
    private:
-      static const size_t NumberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
-      static const size_t NumberOfTestCasesValue = NumberOfTestCaseArgs / N;
       std::unique_ptr<const Console> _console;
       std::unique_ptr<TestClassType> _testClass;
       size_t _testCaseArgsIndex;
@@ -33,7 +31,8 @@ namespace ZenUnit
 
       size_t NumberOfTestCases() const override
       {
-         return NumberOfTestCasesValue;
+         constexpr size_t numberOfTestCases = sizeof...(TestCaseArgTypes) / N;
+         return numberOfTestCases;
       }
 
       void NewTestClass() override
@@ -50,9 +49,9 @@ namespace ZenUnit
       {
          RunNXNTestCase(_testClass.get(), _testCaseArgsIndex);
       }
-      
-      virtual void RunNXNTestCase(TestClassType*, size_t) 
-      { 
+
+      virtual void RunNXNTestCase(TestClassType*, size_t)
+      {
       }
 
       std::vector<TestResult> Run() override
@@ -61,6 +60,7 @@ namespace ZenUnit
          const size_t numberOfTestCases = NumberOfTestCases();
          testResults.reserve(numberOfTestCases);
          assert_true(_testCaseArgsIndex == 0);
+         constexpr size_t NumberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
          for (unsigned short testCaseIndex = 0;
               _testCaseArgsIndex < NumberOfTestCaseArgs;
               _testCaseArgsIndex += N, ++testCaseIndex)

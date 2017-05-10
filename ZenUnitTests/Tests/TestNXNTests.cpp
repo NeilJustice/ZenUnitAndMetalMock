@@ -10,8 +10,6 @@ namespace ZenUnit
 
    TESTS(TestNXNTests)
    SPEC(Constructor_NewsConsole_SetsFields_GettersReturnExpected_2X2With4Args)
-   SPEC(Constructor_NewsConsole_SetsFields_GettersReturnExpected_1X1With1Arg)
-   SPEC(Constructor_NewsConsole_SetsFields_GettersReturnExpected_1X1With2Args)
    SPEC(Constructor_StoresDecayedTypeCopiesOfTestCaseArguments)
    SPEC(NumberOfTestCases_ReturnsNumberOfTestCaseArgsDividedByN)
    SPEC(Run_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
@@ -48,19 +46,6 @@ namespace ZenUnit
       ARE_EQUAL(TestName, testNXN.Name());
       ARE_EQUAL("TESTS(Tests)\nTEST2X2(Test)", testNXN.FullTestNameValue());
       ARE_EQUAL("(0)", testNXN.FileLineString());
-      ARE_EQUAL(4, testNXN.NumberOfTestCaseArgs);
-   }
-
-   TEST(Constructor_NewsConsole_SetsFields_GettersReturnExpected_1X1With1Arg)
-   {
-      const TestNXN<TestingTestClass, 1, int> testNXN(TestClassName, TestName, TestCaseArgsText, 0);
-      ARE_EQUAL(1, testNXN.NumberOfTestCaseArgs);
-   }
-
-   TEST(Constructor_NewsConsole_SetsFields_GettersReturnExpected_1X1With2Args)
-   {
-      const TestNXN<TestingTestClass, 1, int, int> testNXN(TestClassName, TestName, TestCaseArgsText, 0, 0);
-      ARE_EQUAL(2, testNXN.NumberOfTestCaseArgs);
    }
 
    TEST(Constructor_StoresDecayedTypeCopiesOfTestCaseArguments)
