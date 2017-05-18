@@ -132,7 +132,7 @@ namespace ZenUnit
       //
       testRunResultSelfMocked.SetTestClassResults(std::move(testClassResults));
       //
-      IS_EMPTY(testClassResults); // Assertion that testClassResults was moved from
+      IS_EMPTY(testClassResults);
       ZEN(testRunResultSelfMocked.NumberOfFailedTestCasesMock.AssertCalledOnceWith(NonMovedFromTestClassResults));
       VECTORS_EQUAL(NonMovedFromTestClassResults, testRunResultSelfMocked._testClassResults);
       ARE_EQUAL(numberOfFailedTestCases, testRunResultSelfMocked._numberOfFailedTestCases);
@@ -272,7 +272,7 @@ namespace ZenUnit
       //
       ZEN(testClassResultMock.PrintTestFailuresMock.AssertCalledOnceWith(
          _testRunResult._forEacherTwoExtraArgs.get(),
-         _testRunResult._console.get(), 
+         _testRunResult._console.get(),
          _testRunResult._testFailureNumberer.get()));
    }
 

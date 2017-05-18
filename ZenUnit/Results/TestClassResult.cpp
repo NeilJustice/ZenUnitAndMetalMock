@@ -26,12 +26,12 @@ namespace ZenUnit
       return *this;
    }
 
-   TestClassResult::TestClassResult(TestClassResult&& testClassResult)
+   TestClassResult::TestClassResult(TestClassResult&& testClassResult) noexcept
    {
       *this = std::move(testClassResult);
    }
 
-   TestClassResult& TestClassResult::operator=(TestClassResult&& testClassResult)
+   TestClassResult& TestClassResult::operator=(TestClassResult&& testClassResult) noexcept
    {
       _testResults = std::exchange(testClassResult._testResults, std::vector<TestResult>());
       return *this;
@@ -80,7 +80,7 @@ namespace ZenUnit
 
    void TestClassResult::PrintTestFailures(
       const ForEacherTwoExtraArgsType* forEacherTwoExtraArgs,
-      const Console* console, 
+      const Console* console,
       TestFailureNumberer* testFailureNumberer) const
    {
       forEacherTwoExtraArgs->ForEach(

@@ -22,8 +22,8 @@ namespace ZenUnit
       TestClassResult();
       TestClassResult(const TestClassResult&);
       TestClassResult& operator=(const TestClassResult&);
-      TestClassResult(TestClassResult&& testClassResult);
-      TestClassResult& operator=(TestClassResult&& testClassResult);
+      TestClassResult(TestClassResult&& testClassResult) noexcept;
+      TestClassResult& operator=(TestClassResult&& testClassResult) noexcept;
       virtual ~TestClassResult();
       virtual void AddTestResults(const std::vector<TestResult>& testResults);
       virtual unsigned Milliseconds() const;
@@ -31,7 +31,7 @@ namespace ZenUnit
       virtual size_t NumberOfFailedTestCases() const;
       virtual void PrintTestFailures(
          const ForEacherTwoExtraArgsType* forEacherTwoExtraArgs,
-         const Console* console, 
+         const Console* console,
          TestFailureNumberer* testFailureNumberer) const;
       static void AssertEqual(
          const TestClassResult& expectedTestClassResult,
