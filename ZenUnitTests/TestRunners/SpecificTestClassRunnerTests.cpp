@@ -199,7 +199,7 @@ namespace ZenUnit
       ZEN(_consoleMock->WriteMock.AssertCalledOnceWith("TestClassIsNewableAndDeletable -> "));
       if (expectedWriteLineTrue)
       {
-         ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith("True"));
+         ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith("OK"));
       }
       ZEN(testMock.RunMock.AssertCalledOnce());
       ZEN(testClassResultMock.AddTestResultsMock.AssertCalledOnceWith(testResults));

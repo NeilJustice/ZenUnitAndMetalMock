@@ -88,7 +88,7 @@ namespace ZenUnit
          const bool testClassIsNewableAndDeletable = newDeleteTestResult[0].testOutcome == TestOutcome::Success;
          if (testClassIsNewableAndDeletable)
          {
-            _console->WriteLine("True");
+            _console->WriteLine("OK");
          }
          return testClassIsNewableAndDeletable;
       }
