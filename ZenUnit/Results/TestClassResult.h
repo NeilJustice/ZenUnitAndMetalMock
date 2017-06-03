@@ -46,7 +46,7 @@ namespace ZenUnit
       #if __clang_major__ == 3 && __clang_minor__ == 9
          static_assert(sizeof(TestClassResult) == 32, "Release sizeof(TestClassResult) != 32");
       #endif
-   #elif _MSC_FULL_VER == 190024215 // VS2015 Update 3
+   #elif _MSC_FULL_VER == 191025019 // VS2017 15.2
       #ifdef _DEBUG
          static_assert(sizeof(TestClassResult) == 40, "Debug sizeof(TestClassResult) != 40");
       #elif NDEBUG

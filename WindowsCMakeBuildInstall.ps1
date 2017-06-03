@@ -4,7 +4,7 @@ if ($Args.Count -ne 1)
    Exit 1
 }
 
-cmake . -G"Visual Studio 14 2015 Win64" -DCMAKE_INSTALL_PREFIX="$($Args[0])"
+cmake . -G"Visual Studio 15 2017 Win64" -DCMAKE_INSTALL_PREFIX="$($Args[0])"
 cmake --build . --target ZenUnit --config Debug
 cmake --build . --target ZenUnit --config Release
 cmake --build . --target install --config Debug

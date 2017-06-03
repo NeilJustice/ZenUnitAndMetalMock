@@ -161,7 +161,7 @@ ZenUnit installed on Linux:
 
 Step 1 of 1: 
 
-Run with PowerShell `WindowsCMakeBuildInstall.ps1 <InstallDirectory>` to CMake with Visual Studio 14 2015 Win64, build with MSBuild, and install with Windows the ZenUnit include tree and Debug and Release static libraries.
+Run with PowerShell `WindowsCMakeBuildInstall.ps1 <InstallDirectory>` to CMake with Visual Studio 15 2017 Win64, build with MSBuild, and install with Windows the ZenUnit include tree and Debug and Release static libraries.
 
 `WindowsCMakeBuildInstall.ps1` performs these CMake, build, and install actions:
 
@@ -172,7 +172,7 @@ if ($Args.Count -ne 1)
    Exit 1
 }
 
-cmake . -G"Visual Studio 14 2015 Win64" -DCMAKE_INSTALL_PREFIX="$($Args[0])"
+cmake . -G"Visual Studio 15 2017 Win64" -DCMAKE_INSTALL_PREFIX="$($Args[0])"
 cmake --build . --target ZenUnit --config Debug
 cmake --build . --target install --config Debug
 cmake --build . --target ZenUnit --config Release
@@ -207,9 +207,9 @@ Editor's note: ZenUnit and ZenMock as header-only would of course be much more c
 |----------------|--------|
 |Fedora 25       |Clang 3.9.1, Clang 5.0.0, and GCC 6.3.1|
 |Ubuntu 17.04    |Clang 4.0.0, Clang 5.0.0, and GCC 6.3.0|
-|Windows 10      |Visual Studio 2015 Update 3 x64 (MSVC 14.0)|
+|Windows 10      |Visual Studio 2017 Update 2 x64 (MSVC 15.2)|
 
-Test Matrix road map: Travis CI Linux and macOS, AppVeyor, Arch Linux, and Visual Studio 2017.
+Test Matrix road map: Travis CI Linux and macOS, AppVeyor, and Arch Linux.
 
 ### [Work In Progress Guide to ZenUnit](Docs/ZenUnit.md)
 ### [Work In Progress Guide to ZenMock](Docs/ZenMock.md)

@@ -36,7 +36,7 @@ namespace ZenUnit
    void Console::WriteLineColor(const string& message, Color color) const
    {
       const bool didSetColor = _consoleColorer->SetColor(color);
-      // With VS2015.3 debug and release mode, printf("%s\n") measured as ~15% faster
+      // With VS2017 15.2 Debug and Release mode, printf("%s\n") measured as ~15% faster
       // and with less speed variance relative to "cout << message << '\n'".
       // On Linux + Clang, no significant difference measured between printf and cout.
       printf("%s\n", message.c_str());
@@ -98,6 +98,7 @@ namespace ZenUnit
 
    void Console::GetLine() const
    {
+
       string devNull;
       getline(cin, devNull);
    }

@@ -5,7 +5,12 @@
 #include "ZenUnit/Tests/NewDeleteTest.h"
 #include "ZenUnit/Tests/Test.h"
 #include "ZenUnit/Utils/Iteration/MemberForEacherExtraArg.h"
+#ifdef _WIN32
+#pragma warning(push)
+#pragma warning(disable: 4365) // signed / unsigned mismatch
 #include <numeric>
+#pragma warning(pop)
+#endif
 
 namespace ZenUnit
 {
