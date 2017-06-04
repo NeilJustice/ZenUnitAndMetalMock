@@ -42,10 +42,10 @@ macro(EnablePrecompiledHeaders)
          append(CMAKE_CXX_FLAGS "-include-pch ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h.gch")
       elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
          if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++1z -Wall -Wextra -Werror -pthread -g
+            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++1z -Wall -Wextra -Werror -pthread -g -Wno-attributes
                ${SanitizerArgs} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
          elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++1z -Wall -Wextra -Werror -pthread -O2 -DNDEBUG
+            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++1z -Wall -Wextra -Werror -pthread -O2 -DNDEBUG -Wno-attributes
                ${SanitizerArgs} -I${CMAKE_SOURCE_DIR} -I/usr/local/include/ZenUnit -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
          endif()
       endif()
