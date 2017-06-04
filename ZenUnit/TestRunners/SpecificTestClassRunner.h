@@ -8,7 +8,9 @@
 #ifdef _WIN32
 #pragma warning(push)
 #pragma warning(disable: 4365) // signed / unsigned mismatch
+#endif
 #include <numeric>
+#ifdef _WIN32
 #pragma warning(pop)
 #endif
 

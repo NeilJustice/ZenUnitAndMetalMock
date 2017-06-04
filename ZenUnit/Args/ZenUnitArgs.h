@@ -1,6 +1,5 @@
 #pragma once
 #include "ZenUnit/Equalizers/ZenUnitEqualizer.h"
-#include <unordered_set>
 
 namespace ZenUnit
 {
