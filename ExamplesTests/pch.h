@@ -1,10 +1,6 @@
 #ifndef EXAMPLESTEST_PCH
 #define EXAMPLESTEST_PCH
+#include "ZenUnit/Utils/IgnoredMSVCWallWarnings.h"
 #include "ZenUnit/ZenUnit.h"
 #include "ZenUnit/ZenMock.h"
-#endif
-
-#ifdef _WIN32
-   // Ignore '__testCase': unreferenced formal parameter	in TESTNXNs until quelling with [[maybe_unused]]
-   #pragma warning(disable: 4100)
 #endif

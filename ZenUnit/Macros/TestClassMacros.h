@@ -58,52 +58,52 @@
 #define TEST1X1(HighQualityTestName, Arg1Type, ...) \
    const std::nullptr_t ZenUnit_Test1X1Registrar_##HighQualityTestName = \
       TestClassType::RegisterTest1X1(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
-   void HighQualityTestName(size_t __testCase, Arg1Type)
+   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type)
 
 #define TEST2X2(HighQualityTestName, Arg1Type, Arg2Type, ...) \
    const std::nullptr_t ZenUnit_Test2X2Registrar_##HighQualityTestName = \
       TestClassType::RegisterTest2X2(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
-   void HighQualityTestName(size_t __testCase, Arg1Type, Arg2Type)
+   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type)
 
 #define TEST3X3(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, ...) \
    const std::nullptr_t ZenUnit_Test3X3Registrar_##HighQualityTestName = \
       TestClassType::RegisterTest3X3(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
-   void HighQualityTestName(size_t __testCase, Arg1Type, Arg2Type, Arg3Type)
+   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type)
 
 #define TEST4X4(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
    const std::nullptr_t ZenUnit_Test4X4Registrar_##HighQualityTestName = \
       TestClassType::RegisterTest4X4(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
-   void HighQualityTestName(size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type)
+   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type)
 
 #define TEST5X5(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
    const std::nullptr_t ZenUnit_Test5X5Registrar_##HighQualityTestName = \
       TestClassType::RegisterTest5X5(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
-   void HighQualityTestName(size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)
+   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)
 
 #define TEST6X6(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
    const std::nullptr_t ZenUnit_Test6X6Registrar_##HighQualityTestName = \
       TestClassType::RegisterTest6X6(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
-   void HighQualityTestName(size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)
+   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)
 
 #define TEST7X7(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
    const std::nullptr_t ZenUnit_Test7X7Registrar_##HighQualityTestName = \
       TestClassType::RegisterTest7X7(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
-   void HighQualityTestName(size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)
+   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)
 
 #define TEST8X8(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
    const std::nullptr_t ZenUnit_Test8X8Registrar_##HighQualityTestName = \
       TestClassType::RegisterTest8X8(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
-   void HighQualityTestName(size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)
+   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)
 
 #define TEST9X9(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...) \
    const std::nullptr_t ZenUnit_Test9X9Registrar_##HighQualityTestName = \
       TestClassType::RegisterTest9X9(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
-   void HighQualityTestName(size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type)
+   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type)
 
 #define TEST10X10(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...) \
    const std::nullptr_t ZenUnit_Test10X10Registrar_##HighQualityTestName = \
       TestClassType::RegisterTest10X10(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
-   void HighQualityTestName(size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)
+   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)
 
 #define RUN(HighQualityTestClassName) \
    const char* HighQualityTestClassName::s_testClassNamePossiblyTemplatized = nullptr; \
