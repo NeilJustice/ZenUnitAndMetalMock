@@ -224,5 +224,4 @@ Test Matrix road map: Travis CI Linux and macOS, AppVeyor, and Arch Linux.
 
 ### License
 
-ZenUnit and ZenMock are free and open source public domain software.
-
+Public domain
