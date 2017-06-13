@@ -156,6 +156,11 @@ Options:
 
 None
    Run all non-skipped tests.
+-times=<N>
+   Run all non-skipped tests N times.
+   Useful for ensuring tests still pass when run a second time
+   and for increasing test run duration to allow for data-dense
+   performance profiling of ZenUnit and test code.
 -exit0
    Always exit 0 regardless of test run outcome.
    This option is useful for always allowing the launch of a debugger
@@ -173,7 +178,6 @@ None
 |-------------------------------------|
 |-verbosity=\<0\|1\|2\|3\>|
 |-run=\<TestClassName\>[.TestName][/TestCaseIndex]\>|
-|-times=\<NumberOfTestRuns\>|
 |-random[=Seed]|
 |-failfast|
 |-breakfast|

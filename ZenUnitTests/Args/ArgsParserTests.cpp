@@ -28,8 +28,11 @@ Options:
 
 None
    Run all non-skipped tests.
--times=N
-   Run tests N times. Specify N as 0 to run forever.
+-times=<N>
+   Run all non-skipped tests N times.
+   Useful for ensuring tests still pass when run a second time
+   and for increasing test run duration to allow for data-dense
+   performance profiling of ZenUnit and test code.
 -exit0
    Always exit 0 regardless of test run outcome.
    This option is useful for always allowing the launch of a debugger
@@ -174,7 +177,7 @@ None
       THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
       //
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
-         "ZenUnit argument error: Illformed -name=value argument: " + arg));
+         "ZenUnit argument error: Malformed -name=value argument: " + arg + "\n"));
       ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(ExpectedUsage, 1));
    }
 
@@ -190,7 +193,7 @@ None
       //
       ZEN(ToUnsigned_ZenMock.AssertCalledOnceWith("-1_for_example"));
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
-         "ZenUnit argument error: Illformed -name=value argument: " + InvalidTimesArg));
+         "ZenUnit argument error: Malformed -name=value argument: " + InvalidTimesArg + "\n"));
       ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(ExpectedUsage, 1));
    }
 

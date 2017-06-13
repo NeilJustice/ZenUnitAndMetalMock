@@ -4,15 +4,15 @@
 namespace ZenUnit
 {
    TESTS(CONTAINSTests)
-   SPEC(Vector_DoesContain_DoesNotThrow)
-   SPEC(Vector_DoesNotContain_Throws)
-   SPEC(Map_DoesContain_DoesNotThrow)
-   SPEC(Map_DoesNotContain_Throws)
-   SPEC(Set_DoesContain_DoesNotThrow)
-   SPEC(Set_DoesNotContain_Throws_MessagesTestCase)
+   SPEC(Vector_DoesContainElement_DoesNotThrow)
+   SPEC(Vector_DoesNotContainElement_Throws)
+   SPEC(Map_DoesContainElement_DoesNotThrow)
+   SPEC(Map_DoesNotContainElement_Throws)
+   SPEC(Set_DoesContainElement_DoesNotThrow)
+   SPEC(Set_DoesNotContainElement_Throws_MessagesTestCase)
    SPECEND
 
-   TEST(Vector_DoesContain_DoesNotThrow)
+   TEST(Vector_DoesContainElement_DoesNotThrow)
    {
       const vector<int> ints { 1, 2 };
       CONTAINS(1, ints);
@@ -23,7 +23,7 @@ namespace ZenUnit
       }
    }
 
-   TEST(Vector_DoesNotContain_Throws)
+   TEST(Vector_DoesNotContainElement_Throws)
    {
       const vector<int> emptyIntVector;
       THROWS(CONTAINS(0, emptyIntVector), Anomaly, R"(
@@ -33,7 +33,7 @@ Expected: Contains element 0
 File.cpp(1))");
    }
 
-   TEST(Map_DoesContain_DoesNotThrow)
+   TEST(Map_DoesContainElement_DoesNotThrow)
    {
       const map<int, int> intIntMap { { 0, 0 }, { 1, 1 } };
       const pair<const int, int> kvp0(0, 0);
@@ -46,7 +46,7 @@ File.cpp(1))");
       }
    }
 
-   TEST(Map_DoesNotContain_Throws)
+   TEST(Map_DoesNotContainElement_Throws)
    {
       const map<int, int> emptyIntIntMap;
       const pair<const int, int> kvp(0, 0);
@@ -57,7 +57,7 @@ Expected: Contains element (0, 0)
 File.cpp(1))");
    }
 
-   TEST(Set_DoesContain_DoesNotThrow)
+   TEST(Set_DoesContainElement_DoesNotThrow)
    {
       const set<int> intSet { 1, 2 };
       CONTAINS(1, intSet);
@@ -68,7 +68,7 @@ File.cpp(1))");
       }
    }
 
-   TEST(Set_DoesNotContain_Throws_MessagesTestCase)
+   TEST(Set_DoesNotContainElement_Throws_MessagesTestCase)
    {
       const set<int> emptyIntSet;
       const string messageA = "A", messageB = "B";
