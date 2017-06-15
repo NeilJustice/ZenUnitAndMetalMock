@@ -20,13 +20,13 @@ namespace ZenUnit
 
    #ifdef __linux__
       #if __clang_major__ == 3 && __clang_minor__ == 9
-         static_assert(sizeof(CallResult) == 24, "sizeof(CallResult) != 24");
+         static_assert(sizeof(CallResult) == 24);
       #endif
    #elif _MSC_FULL_VER == 191025019 // VS2017 15.2
       #ifdef _DEBUG
-         static_assert(sizeof(CallResult) == 24, "Debug sizeof(CallResult) != 24");
+         static_assert(sizeof(CallResult) == 24);
       #elif NDEBUG
-         static_assert(sizeof(CallResult) == 24, "Release sizeof(CallResult) != 24");
+         static_assert(sizeof(CallResult) == 24);
       #endif
    #endif
 }
