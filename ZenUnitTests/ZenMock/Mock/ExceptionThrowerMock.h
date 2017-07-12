@@ -1,8 +1,14 @@
 #pragma once
 #include "ZenUnit/ZenMock/Exceptions/ExceptionThrower.h"
+#include "ZenUnitTests/ZenMock/Mock/TestingException.h"
 
 namespace ZenMock
 {
+   struct Test
+   {
+      static const string Signature;
+   };
+
    class ExceptionThrowerMock : public Zen::Mock<ZenMock::ExceptionThrower>
    {
    private:
@@ -67,10 +73,5 @@ namespace ZenMock
       {
          ARE_EQUAL(1, numberOfCallsToZenMockThrowIfExceptionSet);
       }
-   };
-
-   struct TwoArgTestingException
-   {
-      TwoArgTestingException(const string&, int) {}
    };
 }

@@ -128,7 +128,7 @@ namespace ZenMock
 
    TEST(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)
    {
-      _zenMock0Tester->ExpectAndThrow_ZenMock_ThrowsTheException();
+      _zenMock0Tester->ExpectAndThrow_ThenMockedFunction_ThrowsTheException();
    }
 
    }; RUN(ZenMock_Void0Tests)

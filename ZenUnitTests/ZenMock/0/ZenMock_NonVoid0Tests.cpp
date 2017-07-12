@@ -37,7 +37,7 @@ namespace ZenMock
    SPEC(FunctionNotCalled_AssertCalledOnceThrows_AssertCalledNTimesThrows)
    SPEC(Function_NotExpected_Throws)
    SPEC(Function_Expected_DoesNotThrow_AssertCallsOnceDoesNotThrow_AssertCalledNTimes1DoesNotThrow)
-   SPEC(ExpectAndThrow_ZenMock_ThrowsTheException)
+   SPEC(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)
    // Value Return Tests
    SPEC(ExpectAndReturn_CalledTwice_Throws)
    SPEC(ExpectAndReturnValues_CalledTwice_Throws)
@@ -135,9 +135,9 @@ namespace ZenMock
       _zenMock0Tester->Function_Expected_DoesNotThrow_AssertCallsOnceDoesNotThrow_AssertCalledNTimes1DoesNotThrow();
    }
 
-   TEST(ExpectAndThrow_ZenMock_ThrowsTheException)
+   TEST(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)
    {
-      _zenMock0Tester->ExpectAndThrow_ZenMock_ThrowsTheException();
+      _zenMock0Tester->ExpectAndThrow_ThenMockedFunction_ThrowsTheException();
    }
 
    // Value Return Tests

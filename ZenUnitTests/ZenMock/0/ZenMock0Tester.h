@@ -48,16 +48,12 @@ namespace ZenMock
          , virtualConstSignature(std::move(virtualConstSignature))
          , nonVirtualSignature(std::move(nonVirtualSignature))
          , nonVirtualConstSignature(std::move(nonVirtualConstSignature))
-
          , freeMock(std::move(freeMock))
          , freeSignature(std::move(freeSignature))
-
          , namespaceMock(std::move(namespaceMock))
          , namespaceSignature(std::move(namespaceSignature))
-
          , staticMock(std::move(staticMock))
          , staticSignature(std::move(staticSignature))
-
          , staticNameClashMock(std::move(staticNameClashMock))
          , staticNameClashSignature(std::move(staticNameClashSignature))
       {
@@ -78,8 +74,8 @@ namespace ZenMock
 
          test(freeMock, freeSignature);
          test(namespaceMock, namespaceSignature);
-         test(staticNameClashMock, staticNameClashSignature);
          test(staticMock, staticSignature);
+         test(staticNameClashMock, staticNameClashSignature);         
       }
 
       void ExpectAndThrow_CalledTwice_Throws()
@@ -97,8 +93,8 @@ namespace ZenMock
 
          test(freeMock, freeSignature);
          test(namespaceMock, namespaceSignature);
-         test(staticNameClashMock, staticNameClashSignature);
          test(staticMock, staticSignature);
+         test(staticNameClashMock, staticNameClashSignature);
       }
 
       void FunctionNotCalled_AssertCalledNTimesWithN0_Throws()
@@ -115,8 +111,8 @@ namespace ZenMock
 
          test(freeMock, freeSignature);
          test(namespaceMock, namespaceSignature);
-         test(staticNameClashMock, staticNameClashSignature);
          test(staticMock, staticSignature);
+         test(staticNameClashMock, staticNameClashSignature);
       }
 
       void FunctionNotCalled_AssertCalledOnceThrows_AssertCalledNTimesThrows()
@@ -151,8 +147,8 @@ File.cpp(1))");
 
          test(freeMock, freeSignature);
          test(namespaceMock, namespaceSignature);
-         test(staticNameClashMock, staticNameClashSignature);
          test(staticMock, staticSignature);
+         test(staticNameClashMock, staticNameClashSignature);
       }
 
       template<typename InnerZenMockObjectType>
@@ -258,7 +254,7 @@ File.cpp(1))");
             UnexpectedCallException::MakeWhat(staticSignature));
       }
 
-      void ExpectAndThrow_ZenMock_ThrowsTheException()
+      void ExpectAndThrow_ThenMockedFunction_ThrowsTheException()
       {
          auto assertCalledOnceAndNTimesOnce = [](auto& zenMockObject)
          {
