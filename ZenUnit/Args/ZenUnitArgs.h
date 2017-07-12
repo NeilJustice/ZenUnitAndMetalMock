@@ -8,7 +8,7 @@ namespace ZenUnit
       std::string commandLine;
       unsigned times = 1;
       bool exit0 = false;
-      bool noskips = false;
+      bool failskips = false;
       unsigned maxtestmilliseconds = 0;
       unsigned maxtotalseconds = 0;
 

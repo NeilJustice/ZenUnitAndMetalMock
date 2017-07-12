@@ -125,7 +125,7 @@ namespace ZenUnit
       const bool haveSkippedTestsOrTestClasses =
          !_skippedFullTestNamesAndReasons.empty() ||
          !_skippedTestClassNamesAndReasons.empty();
-      if (args.noskips && haveSkippedTestsOrTestClasses)
+      if (args.failskips && haveSkippedTestsOrTestClasses)
       {
          return 1;
       }

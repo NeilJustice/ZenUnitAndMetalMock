@@ -14,7 +14,7 @@ namespace ZenUnit
       IS_EMPTY(zenUnitArgs.commandLine);
       ARE_EQUAL(1, zenUnitArgs.times);
       IS_FALSE(zenUnitArgs.exit0);
-      IS_FALSE(zenUnitArgs.noskips);
+      IS_FALSE(zenUnitArgs.failskips);
       IS_ZERO(zenUnitArgs.maxtestmilliseconds);
       IS_ZERO(zenUnitArgs.maxtotalseconds);
       ARE_EQUAL(5, ZenUnitArgs::NumberOfValidArgs);
@@ -26,7 +26,7 @@ namespace ZenUnit
       EQUALIZER_THROWS(ZenUnitArgs, commandLine, "ZenUnitTests.exe");
       EQUALIZER_THROWS(ZenUnitArgs, times, 10u);
       EQUALIZER_THROWS(ZenUnitArgs, exit0, true);
-      EQUALIZER_THROWS(ZenUnitArgs, noskips, true);
+      EQUALIZER_THROWS(ZenUnitArgs, failskips, true);
       EQUALIZER_THROWS(ZenUnitArgs, maxtestmilliseconds, 20u);
       EQUALIZER_THROWS(ZenUnitArgs, maxtotalseconds, 30u);
    }

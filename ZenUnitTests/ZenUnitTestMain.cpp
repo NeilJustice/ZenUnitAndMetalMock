@@ -29,9 +29,6 @@ TEMPLATETESTS(SkippedTemplateTestClassB, MapType) SPECEND };
 SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, map)
 SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, unordered_map)
 
-// FailSkips	2.1	[Optional][Boolean] Set to true to cause skipped tests to become failures.
-// IgnoreFailures	2.2	[Optional][Boolean] Set to true to allow the build to continue after tests have failed.
-
 int main(int argc, char* argv[])
 {
    FileLiner::selfTestMode = true;

@@ -19,9 +19,9 @@ namespace ZenUnit
    SPECX(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds)
    SPEC(PrintTestClassResultFailures_CallsTestClassResultPrintTestFailures)
    SPECX(DetermineExitCode_DefaultArgs_Returns1IfAnyTestFailures_OtherwiseReturns0)
-   SPECX(DetermineExitCode_Exit0_AlwaysReturns0)
-   SPECX(DetermineExitCode_Exit0AndNoSkips_AlwaysReturns0)
-   SPECX(DetermineExitCode_NoSkips_Returns1IfAnyTestsOrTestClassesSkipped)
+   SPECX(DetermineExitCode_Exit0True_AlwaysReturns0)
+   SPECX(DetermineExitCode_Exit0True_FailSkipsTrue_AlwaysReturns0)
+   SPECX(DetermineExitCode_FailSkipsTrue_Returns1IfAnyTestsOrTestClassesSkipped)
    SPEC(PrintSkippedTestClassReminder_PrintsExpectedToConsole)
    SPEC(PrintSkippedTestReminder_PrintsExpectedToConsole)
    SPEC(ResetStateExceptForSkips_ResetsTestFailureNumberer_ClearsTestClassResults_SetsNumberOfFailedTestCasesTo0)
@@ -294,7 +294,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedExitCode, exitCode);
    }
 
-   TEST4X4(DetermineExitCode_Exit0_AlwaysReturns0,
+   TEST4X4(DetermineExitCode_Exit0True_AlwaysReturns0,
       size_t numberOfFailedTestCases,
       size_t numberOfSkippedTests,
       size_t numberOfSkippedTestClasses,
@@ -313,7 +313,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedExitCode, exitCode);
    }
 
-   TEST4X4(DetermineExitCode_Exit0AndNoSkips_AlwaysReturns0,
+   TEST4X4(DetermineExitCode_Exit0True_FailSkipsTrue_AlwaysReturns0,
       size_t numberOfFailedTestCases,
       size_t numberOfSkippedTests,
       size_t numberOfSkippedTestClasses,
@@ -326,14 +326,14 @@ namespace ZenUnit
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
       ZenUnitArgs args;
       args.exit0 = true;
-      args.noskips = true;
+      args.failskips = true;
       //
       const int exitCode = _testRunResult.DetermineExitCode(args);
       //
       ARE_EQUAL(expectedExitCode, exitCode);
    }
 
-   TEST4X4(DetermineExitCode_NoSkips_Returns1IfAnyTestsOrTestClassesSkipped,
+   TEST4X4(DetermineExitCode_FailSkipsTrue_Returns1IfAnyTestsOrTestClassesSkipped,
       size_t numberOfFailedTestCases,
       size_t numberOfSkippedTests,
       size_t numberOfSkippedTestClasses,
@@ -350,7 +350,7 @@ namespace ZenUnit
    {
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
       ZenUnitArgs args;
-      args.noskips = true;
+      args.failskips = true;
       //
       const int exitCode = _testRunResult.DetermineExitCode(args);
       //
