@@ -207,7 +207,7 @@ Editor's note: ZenUnit and ZenMock as header-only would of course be much more c
 |----------------|--------|
 |Fedora 25       |Clang 3.9.1, Clang 5.0.0, and GCC 6.3.1|
 |Ubuntu 17.04    |Clang 4.0.0, Clang 5.0.0, and GCC 6.3.0|
-|Windows 10      |Visual Studio 2017 x64 (MSVC 15.2)|
+|Windows 10      |Visual Studio 2017 x64 and Win32 (MSVC 15.2)|
 
 Test Matrix road map: Travis CI Linux and macOS, AppVeyor, and Arch Linux.
 

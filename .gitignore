@@ -1,7 +1,5 @@
 # CMake
 CMakeFiles/
-Debug/
-Release/
 *.cmake
 CMakeCache.txt
 !CMakeMacros.cmake
@@ -26,6 +24,10 @@ Makefile
 
 # Windows
 x64/
+Win32/
+Debug/
+Release/
+MinSizeRel/
 RelWithDebInfo/
 !ZenUnitPy/ZenUnitPy.sln
 *.dir/
