@@ -14,8 +14,8 @@ namespace ZenMock
    {
       friend class ZenMockerTests;
    private:
-      std::function<void(int)> _zenMockableExitFunction;
-      std::function<ZenUnit::ZenUnitArgs()> _zenMockableGetZenUnitArgs;
+      std::function<void(int)> _exit_ZenMockable;
+      std::function<ZenUnit::ZenUnitArgs()> _GetArgs_ZenMockable;
       bool _zenMockExceptionIsInPlay;
    protected:
       MockableExceptionThrowerType _exceptionThrower;
@@ -24,8 +24,8 @@ namespace ZenMock
       const std::string ZenMockedFunctionSignature;
    public:
       explicit ZenMocker(std::string zenMockedFunctionSignature)
-         : _zenMockableExitFunction(::exit)
-         , _zenMockableGetZenUnitArgs(ZenUnit::TestRunner::GetArgs)
+         : _exit_ZenMockable(::exit)
+         , _GetArgs_ZenMockable(ZenUnit::TestRunner::GetArgs)
          , _zenMockExceptionIsInPlay(false)
          , _expected(false)
          , _asserted(false)
@@ -50,7 +50,7 @@ namespace ZenMock
 
       ~ZenMocker()
       {
-         ZenMockExitIfExpectedAndNotAsserted();
+         ZenMockExitIfExpectedButNotAsserted();
       }
 
    protected:
@@ -93,24 +93,23 @@ namespace ZenMock
       }
 
    private:
-      void ZenMockExitIfExpectedAndNotAsserted() const
+      void ZenMockExitIfExpectedButNotAsserted() const
       {
          if (_expected && !_asserted && !_zenMockExceptionIsInPlay)
          {
             const ZenUnit::Console console;
             std::cout << "\n\n";
-            console.WriteLineColor("Expected But Not Asserted ZenMocked Function:", ZenUnit::Color::Red);
-            std::cout << "\n" <<
-ZenMockedFunctionSignature << R"(
+            console.WriteLineColor("Expected-But-Not-Asserted ZenMocked Function:", ZenUnit::Color::Red);
+            console.WriteLineColor(ZenMockedFunctionSignature, ZenUnit::Color::Green);
+            std::cout << R"(
+Fix for this error: After Expect()ing then calling the above ZenMocked function in your test,
+call ZEN([ZenMockedFunctionName]Mock.
+[AssertCalledOnce|AssertCalledOnceWith|AssertCalledNTimes|AssertCalledNTimesWith|AssertCalls]());
 
-Fix for this: After expecting then calling the above ZenMocked function in your unit test, 
-call [ZenMockedFunctionName]Mock.
-[AssertCalledOnce|AssertCalledOnceWith|AssertCalledNTimes|AssertCalledNTimesWith|AssertCalls]();
-
-Fail fasting with exit code 1 unless -exit0 specified.
+Fast failing now with exit code 1 (unless -exit0 specified).
 )";
-            ZenUnit::ZenUnitArgs zenUnitArgs = _zenMockableGetZenUnitArgs();
-            _zenMockableExitFunction(zenUnitArgs.exit0 ? 0 : 1);
+            ZenUnit::ZenUnitArgs zenUnitArgs = _GetArgs_ZenMockable();
+            _exit_ZenMockable(zenUnitArgs.exit0 ? 0 : 1);
          }
       }
 

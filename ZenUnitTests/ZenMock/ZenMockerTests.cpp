@@ -21,10 +21,10 @@ namespace ZenMock
    SPEC(ZenMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSize0_Throws)
    SPECX(ZenMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSizeGreaterThan0_DoesNotThrow)
    SPEC(ZenMockThrowIfExceptionSet_CallsExceptionThrowerZenMockThrowIfExceptionSet)
-   SPECX(ZenMockExitIfExpectedAndNotAsserted_ExpectedFalse_DoesNothing)
-   SPECX(ZenMockExitIfExpectedAndNotAsserted_ExpectedTrue_AssertedTrue_DoesNothing)
-   SPECX(ZenMockExitIfExpectedAndNotAsserted_ExpectedTrue_AssertedFalse_ZenMockExceptionIsInPlayFalse_WritesError_Exits1)
-   SPEC(ZenMockExitIfExpectedAndNotAsserted_ExpectedTrue_AssertedFalse_ZenMockExceptionIsInPlayTrue_DoesNothing)
+   SPECX(ZenMockExitIfExpectedButNotAsserted_ExpectedFalse_DoesNothing)
+   SPECX(ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedTrue_DoesNothing)
+   SKIPSPECX("Works when run normally and fails when run from a post-build event", ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedFalse_ZenMockExceptionIsInPlayFalse_WritesError_Exits1)
+   SPEC(ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedFalse_ZenMockExceptionIsInPlayTrue_DoesNothing)
    SPECEND
 
    unique_ptr<ZenMocker<ExceptionThrowerMock>> _zenMocker;
@@ -35,16 +35,16 @@ namespace ZenMock
    STARTUP
    {
       _zenMocker = make_unique<ZenMocker<ExceptionThrowerMock>>(ZenMockedFunctionSignature);
-      _zenMocker->_zenMockableExitFunction = ZENBIND1(exit_ZenMock);
-      _zenMocker->_zenMockableGetZenUnitArgs = ZENBIND0(GetArgs_ZenMock);
+      _zenMocker->_exit_ZenMockable = ZENBIND1(exit_ZenMock);
+      _zenMocker->_GetArgs_ZenMockable = ZENBIND0(GetArgs_ZenMock);
    }
 
    TEST(Constructor_SetsFields)
    {
       const ZenMocker<ExceptionThrower> zenMocker(ZenMockedFunctionSignature);
       //
-      FUNCTION_TARGETS(exit, zenMocker._zenMockableExitFunction);
-      FUNCTION_TARGETS(ZenUnit::TestRunner::GetArgs, zenMocker._zenMockableGetZenUnitArgs);
+      FUNCTION_TARGETS(exit, zenMocker._exit_ZenMockable);
+      FUNCTION_TARGETS(ZenUnit::TestRunner::GetArgs, zenMocker._GetArgs_ZenMockable);
       ARE_EQUAL(ZenMockedFunctionSignature, zenMocker.ZenMockedFunctionSignature);
       IS_FALSE(zenMocker._expected);
       IS_FALSE(zenMocker._asserted);
@@ -159,7 +159,7 @@ namespace ZenMock
       ZEN(_zenMocker->_exceptionThrower.AssertZenMockThrowIfExceptionSetCalledOnce());
    }
 
-   TEST2X2(ZenMockExitIfExpectedAndNotAsserted_ExpectedFalse_DoesNothing,
+   TEST2X2(ZenMockExitIfExpectedButNotAsserted_ExpectedFalse_DoesNothing,
       bool asserted, bool zenMockExceptionIsInPlay,
       false, false,
       true, false,
@@ -170,10 +170,10 @@ namespace ZenMock
       _zenMocker->_asserted = asserted;
       _zenMocker->_zenMockExceptionIsInPlay = zenMockExceptionIsInPlay;
       //
-      _zenMocker->ZenMockExitIfExpectedAndNotAsserted();
+      _zenMocker->ZenMockExitIfExpectedButNotAsserted();
    }
 
-   TEST1X1(ZenMockExitIfExpectedAndNotAsserted_ExpectedTrue_AssertedTrue_DoesNothing,
+   TEST1X1(ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedTrue_DoesNothing,
       bool _zenMockExceptionIsInPlay,
       false,
       true)
@@ -182,10 +182,10 @@ namespace ZenMock
       _zenMocker->_asserted = true;
       _zenMocker->_zenMockExceptionIsInPlay = _zenMockExceptionIsInPlay;
       //
-      _zenMocker->ZenMockExitIfExpectedAndNotAsserted();
+      _zenMocker->ZenMockExitIfExpectedButNotAsserted();
    }
 
-   TEST2X2(ZenMockExitIfExpectedAndNotAsserted_ExpectedTrue_AssertedFalse_ZenMockExceptionIsInPlayFalse_WritesError_Exits1,
+   TEST2X2(ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedFalse_ZenMockExceptionIsInPlayFalse_WritesError_Exits1,
       bool exit0, int expectedExitCode,
       false, 1,
       true, 0)
@@ -201,7 +201,7 @@ namespace ZenMock
 
       cout << "\n<ZenMock Error Message Testing>";
       //
-      _zenMocker->ZenMockExitIfExpectedAndNotAsserted();
+      _zenMocker->ZenMockExitIfExpectedButNotAsserted();
       //
       cout << "</ZenMock Error Message Testing>\n";
       ZEN(GetArgs_ZenMock.AssertCalledOnce());
@@ -209,13 +209,13 @@ namespace ZenMock
       _zenMocker->_asserted = true;
    }
 
-   TEST(ZenMockExitIfExpectedAndNotAsserted_ExpectedTrue_AssertedFalse_ZenMockExceptionIsInPlayTrue_DoesNothing)
+   TEST(ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedFalse_ZenMockExceptionIsInPlayTrue_DoesNothing)
    {
       _zenMocker->_expected = true;
       _zenMocker->_asserted = false;
       _zenMocker->_zenMockExceptionIsInPlay = true;
       //
-      _zenMocker->ZenMockExitIfExpectedAndNotAsserted();
+      _zenMocker->ZenMockExitIfExpectedButNotAsserted();
    }
 
    }; RUN(ZenMockerTests)

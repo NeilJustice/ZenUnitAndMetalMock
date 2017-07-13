@@ -40,9 +40,9 @@ namespace ZenUnit
    {
       Console console;
       WAS_NEWED(console._consoleColorer);
-      FUNCTION_TARGETS(::exit, console.exit_ZenMockable);
+      FUNCTION_TARGETS(::exit, console._exit_ZenMockable);
    #ifdef _WIN32
-      FUNCTION_TARGETS(::IsDebuggerPresent, console.IsDebuggerPresent_ZenMockable);
+      FUNCTION_TARGETS(::IsDebuggerPresent, console._IsDebuggerPresent_ZenMockable);
    #endif
    }
 
@@ -103,7 +103,7 @@ namespace ZenUnit
    {
       ZENMOCK_VOID1_FREE(exit, int);
       exit_ZenMock.Expect();
-      _console.exit_ZenMockable = ZENBIND1(exit_ZenMock);
+      _console._exit_ZenMockable = ZENBIND1(exit_ZenMock);
       //
       _console.WriteLineAndExit(Message, exitCode);
       //
@@ -179,7 +179,7 @@ namespace ZenUnit
    {
       ZENMOCK_NONVOID0_FREE(int, IsDebuggerPresent);
       IsDebuggerPresent_ZenMock.ExpectAndReturn(isDebuggerPresentReturnValue);
-      _console.IsDebuggerPresent_ZenMockable = ZENBIND0(IsDebuggerPresent_ZenMock);
+      _console._IsDebuggerPresent_ZenMockable = ZENBIND0(IsDebuggerPresent_ZenMock);
       //
       const bool debuggerIsPresent = _console.DebuggerIsPresent();
       //

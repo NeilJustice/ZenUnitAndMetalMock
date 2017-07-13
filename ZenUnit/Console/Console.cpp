@@ -6,9 +6,9 @@ namespace ZenUnit
 {
    Console::Console()
       : _consoleColorer(new ConsoleColorer)
-      , exit_ZenMockable(::exit)
+      , _exit_ZenMockable(::exit)
 #ifdef _WIN32
-      , IsDebuggerPresent_ZenMockable(::IsDebuggerPresent)
+      , _IsDebuggerPresent_ZenMockable(::IsDebuggerPresent)
 #endif
    {
    }
@@ -52,7 +52,7 @@ namespace ZenUnit
    void Console::WriteLineAndExit(const std::string& message, int exitCode) const
    {
       cout << message << '\n';
-      exit_ZenMockable(exitCode);
+      _exit_ZenMockable(exitCode);
    }
 
    void Console::PrintStringsCommaSeparated(
@@ -90,7 +90,7 @@ namespace ZenUnit
 #ifdef __linux__
       return false;
 #elif _WIN32
-      const int isDebuggerPresentReturnValue = IsDebuggerPresent_ZenMockable();
+      const int isDebuggerPresentReturnValue = _IsDebuggerPresent_ZenMockable();
       const bool isDebuggerPresent = isDebuggerPresentReturnValue == 1;
       return isDebuggerPresent;
 #endif

@@ -51,7 +51,7 @@ struct TwoTypeZenUnitEqualizer<
 
 namespace ZenUnit
 {
-   TESTS(ARE_EQTests)
+   TESTS(ARE_EQUALTests)
    SPEC(OneTypeEqualizerDefined_CallsIt)
    SPEC(TwoTypeEqualizerDefined_CallsIt)
    SPEC(BothOneAndTwoTypeEqualizersDefined_CallsTheOneTypeEqualizer)
@@ -147,5 +147,5 @@ Expected: "expected"
 File.cpp(1))");
    }
 
-   }; RUN(ARE_EQTests)
+   }; RUN(ARE_EQUALTests)
 }

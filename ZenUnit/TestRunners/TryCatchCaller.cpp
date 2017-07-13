@@ -70,7 +70,7 @@ namespace ZenUnit
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->WriteLineColor("FATALITY", Color::Red);
          const string exitLine = String::Concat(
-            "Fatal ... exception. Fail fasting with exit code 1 unless -exit0 specified.",
+            "Fatal ... exception. Fast failing now with exit code 1 (unless -exit0 specified).",
             testPhaseSuffix, " (", milliseconds, " ms)");
          const ZenUnitArgs zenUnitArgs = _getArgs();
          _console->WriteLineAndExit(exitLine, zenUnitArgs.exit0 ? 0 : 1);

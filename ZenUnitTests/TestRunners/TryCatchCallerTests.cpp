@@ -214,7 +214,7 @@ Already called [ZenMockedFunctionName]Mock.Expect[AndReturn|AndReturnValues|AndT
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.AssertCalledOnceWith(arbitraryTestPhase));
       ZEN(GetArgs_ZenMock.AssertCalledOnce());
       ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(
-         String::Concat("Fatal ... exception. Fail fasting with exit code 1 unless -exit0 specified.",
+         String::Concat("Fatal ... exception. Fast failing now with exit code 1 (unless -exit0 specified).",
             TestPhaseSuffix, " (", Milliseconds, " ms)"), expectedExitCode));
    }
 
