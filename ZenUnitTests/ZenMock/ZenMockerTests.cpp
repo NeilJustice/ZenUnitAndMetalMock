@@ -130,8 +130,8 @@ namespace ZenMock
 
    TEST1X1(ZenMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCallsGreaterThan0_DoesNotThrow,
       size_t expectedNumberOfCalls,
-      1ull,
-      2ull)
+      size_t(1),
+      size_t(2))
    {
       NOTHROWS(_zenMocker->ZenMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls));
    }
@@ -144,8 +144,8 @@ namespace ZenMock
 
    TEST1X1(ZenMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSizeGreaterThan0_DoesNotThrow,
       size_t expectedCallsSize,
-      1ull,
-      2ull)
+      size_t(1),
+      size_t(2))
    {
       NOTHROWS(_zenMocker->ZenMockThrowIfExpectedCallsSizeIsZero(expectedCallsSize));
    }

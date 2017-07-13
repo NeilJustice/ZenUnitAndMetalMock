@@ -83,6 +83,8 @@ AssertEqual(int expected, unsigned actual)
    ZenUnitEqualizer<unsigned>::AssertEqual(static_cast<unsigned>(expected), actual);
 }
 
+#if defined(__linux__) || defined(_WIN64)
+
 void TwoTypeZenUnitEqualizer<int, size_t>::
 AssertEqual(int expected, size_t actual)
 {
@@ -92,3 +94,5 @@ AssertEqual(int expected, size_t actual)
    }
    ZenUnitEqualizer<size_t>::AssertEqual(static_cast<size_t>(expected), actual);
 }
+
+#endif

@@ -117,9 +117,9 @@ namespace ZenUnit
 
    TEST1X1(SetTestClassResults_SetsNumberofFailedTestCases_MovesTestClassResultsIntoField,
       size_t numberOfFailedTestCases,
-      0ull,
-      1ull,
-      2ull)
+      size_t(0),
+      size_t(1),
+      size_t(2))
    {
       struct TestRunResultSelfMocked : public Zen::Mock<TestRunResult>
       {
@@ -180,10 +180,10 @@ namespace ZenUnit
       size_t numberOfFailedTestCases,
       bool expectTestsFailedLineAndPrintFailuresCall,
       const string& expectedTestsFailedLine,
-      0ull, false, "",
-      1ull, true, "1 test failure:\n",
-      2ull, true, "2 test failures:\n",
-      3ull, true, "3 test failures:\n")
+      size_t(0), false, "",
+      size_t(1), true, "1 test failure:\n",
+      size_t(2), true, "2 test failures:\n",
+      size_t(3), true, "3 test failures:\n")
    {
       _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
       if (expectTestsFailedLineAndPrintFailuresCall)
@@ -232,15 +232,15 @@ namespace ZenUnit
       unsigned testRunMilliseconds,
       const string& expectedMillisecondOrMilliseconds,
       const string& expectedBottomLineAsciiArt,
-      "[VICTORY] ", Color::Green, 0ull, 1ull, "1 test passed", 0, "milliseconds", "+===+===+",
-      "[VICTORY] ", Color::Green, 0ull, 2ull, "2 tests passed", 1, "millisecond", "+===+===+",
-      "[VICTORY] ", Color::Green, 0ull, 3ull, "3 tests passed", 2, "milliseconds", "+===+===+",
-      ">>-FAIL-> ", Color::Red, 1ull, 1ull, "1/1 test failed", 0, "milliseconds", ">>------>",
-      ">>-FAIL-> ", Color::Red, 1ull, 2ull, "1/2 tests failed", 1, "millisecond", ">>------>",
-      ">>-FAIL-> ", Color::Red, 1ull, 3ull, "1/3 tests failed", 2, "milliseconds", ">>------>",
-      ">>-FAIL-> ", Color::Red, 2ull, 2ull, "2/2 tests failed", 3, "milliseconds", ">>------>",
-      ">>-FAIL-> ", Color::Red, 2ull, 3ull, "2/3 tests failed", 4, "milliseconds", ">>------>",
-      ">>-FAIL-> ", Color::Red, 2ull, 4ull, "2/4 tests failed", 5, "milliseconds", ">>------>")
+      "[VICTORY] ", Color::Green, size_t(0), size_t(1), "1 test passed", 0, "milliseconds", "+===+===+",
+      "[VICTORY] ", Color::Green, size_t(0), size_t(2), "2 tests passed", 1, "millisecond", "+===+===+",
+      "[VICTORY] ", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds", "+===+===+",
+      ">>-FAIL-> ", Color::Red, size_t(1), size_t(1), "1/1 test failed", 0, "milliseconds", ">>------>",
+      ">>-FAIL-> ", Color::Red, size_t(1), size_t(2), "1/2 tests failed", 1, "millisecond", ">>------>",
+      ">>-FAIL-> ", Color::Red, size_t(1), size_t(3), "1/3 tests failed", 2, "milliseconds", ">>------>",
+      ">>-FAIL-> ", Color::Red, size_t(2), size_t(2), "2/2 tests failed", 3, "milliseconds", ">>------>",
+      ">>-FAIL-> ", Color::Red, size_t(2), size_t(3), "2/3 tests failed", 4, "milliseconds", ">>------>",
+      ">>-FAIL-> ", Color::Red, size_t(2), size_t(4), "2/4 tests failed", 5, "milliseconds", ">>------>")
    {
       _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
       _consoleMock->WriteColorMock.Expect();
@@ -281,10 +281,10 @@ namespace ZenUnit
       size_t numberOfSkippedTests,
       size_t numberOfSkippedTestClasses,
       int expectedExitCode,
-      0ull, 0ull, 0ull, 0,
-      0ull, 1ull, 2ull, 0,
-      1ull, 0ull, 0ull, 1,
-      2ull, 1ull, 2ull, 1)
+      size_t(0), size_t(0), size_t(0), 0,
+      size_t(0), size_t(1), size_t(2), 0,
+      size_t(1), size_t(0), size_t(0), 1,
+      size_t(2), size_t(1), size_t(2), 1)
    {
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
       const ZenUnitArgs Args{};
@@ -299,10 +299,10 @@ namespace ZenUnit
       size_t numberOfSkippedTests,
       size_t numberOfSkippedTestClasses,
       int expectedExitCode,
-      0ull, 0ull, 0ull, 0,
-      0ull, 1ull, 2ull, 0,
-      1ull, 0ull, 0ull, 0,
-      2ull, 1ull, 2ull, 0)
+      size_t(0), size_t(0), size_t(0), 0,
+      size_t(0), size_t(1), size_t(2), 0,
+      size_t(1), size_t(0), size_t(0), 0,
+      size_t(2), size_t(1), size_t(2), 0)
    {
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
       ZenUnitArgs args;
@@ -318,10 +318,10 @@ namespace ZenUnit
       size_t numberOfSkippedTests,
       size_t numberOfSkippedTestClasses,
       int expectedExitCode,
-      0ull, 0ull, 0ull, 0,
-      0ull, 1ull, 2ull, 0,
-      1ull, 0ull, 0ull, 0,
-      2ull, 1ull, 2ull, 0)
+      size_t(0), size_t(0), size_t(0), 0,
+      size_t(0), size_t(1), size_t(2), 0,
+      size_t(1), size_t(0), size_t(0), 0,
+      size_t(2), size_t(1), size_t(2), 0)
    {
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
       ZenUnitArgs args;
@@ -338,15 +338,15 @@ namespace ZenUnit
       size_t numberOfSkippedTests,
       size_t numberOfSkippedTestClasses,
       int expectedExitCode,
-      0ull, 0ull, 0ull, 0,
-      1ull, 0ull, 0ull, 1,
-      2ull, 0ull, 0ull, 1,
-      0ull, 1ull, 0ull, 1,
-      0ull, 2ull, 0ull, 1,
-      0ull, 0ull, 1ull, 1,
-      0ull, 0ull, 2ull, 1,
-      0ull, 1ull, 1ull, 1,
-      2ull, 3ull, 4ull, 1)
+      size_t(0), size_t(0), size_t(0), 0,
+      size_t(1), size_t(0), size_t(0), 1,
+      size_t(2), size_t(0), size_t(0), 1,
+      size_t(0), size_t(1), size_t(0), 1,
+      size_t(0), size_t(2), size_t(0), 1,
+      size_t(0), size_t(0), size_t(1), 1,
+      size_t(0), size_t(0), size_t(2), 1,
+      size_t(0), size_t(1), size_t(1), 1,
+      size_t(2), size_t(3), size_t(4), 1)
    {
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
       ZenUnitArgs args;

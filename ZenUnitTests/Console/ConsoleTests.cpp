@@ -112,10 +112,10 @@ namespace ZenUnit
 
    TEST2X2(PrintStringsCommaSeparated_StartIndexGTEStringsSize_Throws,
       const vector<string>& strings, size_t startIndex,
-      vector<string>{}, 0ull,
-      vector<string>{}, 1ull,
-      vector<string>{ "Arg1" }, 1ull,
-      vector<string>{ "Arg1" }, 2ull)
+      vector<string>{}, size_t(0),
+      vector<string>{}, size_t(1),
+      vector<string>{ "Arg1" }, size_t(1),
+      vector<string>{ "Arg1" }, size_t(2))
    {
       THROWS(_console.PrintStringsCommaSeparated(strings, startIndex, 0), invalid_argument,
          "Console::PrintVectorValuesCommaSeparated(): startIndex must be < strings.size(). startIndex=" +
@@ -127,10 +127,10 @@ namespace ZenUnit
       size_t startIndex,
       size_t numberOfElements,
       const vector<string>& expectedConsoleWrites,
-      vector<string>{ "Arg1" }, 0ull, 1ull, vector<string>{ "Arg1" },
-      vector<string>{ "Arg1", "Arg2" }, 0ull, 2ull, vector<string>{ "Arg1", ", ", "Arg2" },
-      vector<string>{ "Arg1", "Arg2" }, 1ull, 1ull, vector<string>{ "Arg2" },
-      vector<string>{ "Arg1", "Arg2", "Arg3", "Arg4" }, 2ull, 2ull, vector<string>{ "Arg3", ", ", "Arg4" })
+      vector<string>{ "Arg1" }, size_t(0), size_t(1), vector<string>{ "Arg1" },
+      vector<string>{ "Arg1", "Arg2" }, size_t(0), size_t(2), vector<string>{ "Arg1", ", ", "Arg2" },
+      vector<string>{ "Arg1", "Arg2" }, size_t(1), size_t(1), vector<string>{ "Arg2" },
+      vector<string>{ "Arg1", "Arg2", "Arg3", "Arg4" }, size_t(2), size_t(2), vector<string>{ "Arg3", ", ", "Arg4" })
    {
       struct ConsoleSelfMocked : public Zen::Mock<Console>
       {

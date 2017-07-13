@@ -89,8 +89,12 @@ struct TwoTypeZenUnitEqualizer<int, unsigned>
    static void AssertEqual(int expected, unsigned actual);
 };
 
-template<>
-struct TwoTypeZenUnitEqualizer<int, size_t>
-{
-   static void AssertEqual(int expected, size_t actual);
-};
+#if defined(__linux__) || defined(_WIN64)
+
+   template<>
+   struct TwoTypeZenUnitEqualizer<int, size_t>
+   {
+      static void AssertEqual(int expected, size_t actual);
+   };
+
+#endif

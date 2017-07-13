@@ -34,11 +34,11 @@ namespace ZenUnit
 
    TEST4X4(PrintOpeningThreeLines_PrintsCommandLineAndTimeZoneAndTestAndTestClassCounts,
       size_t numberOfTestClasses, bool expectTestClassesPlural, Color expectedTextColor, bool expectWriteNewline,
-      0ull, true, Color::Green, false,
-      1ull, false, Color::Green, true,
-      1ull, false, Color::Green, true,
-      2ull, true, Color::Green, true,
-      2ull, true, Color::Green, true)
+      size_t(0), true, Color::Green, false,
+      size_t(1), false, Color::Green, true,
+      size_t(1), false, Color::Green, true,
+      size_t(2), true, Color::Green, true,
+      size_t(2), true, Color::Green, true)
    {
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteLineMock.Expect();

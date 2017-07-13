@@ -4,9 +4,9 @@
 class Tuple
 {
 public:
-   template<typename ClassType, typename MemberFunction, size_t I = 0ull, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
    static typename std::enable_if<I < sizeof...(ArgTypes)>::type
-   Call1ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, size_t argsIndex, const std::tuple<ArgTypes...>& args)
+   Call1ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
    {
       if (argsIndex == 0ull)
       {
@@ -18,9 +18,9 @@ public:
          classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 1ull, args);
    }
 
-   template<typename ClassType, typename MemberFunction, size_t I = 0ull, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
    static typename std::enable_if<I < sizeof...(ArgTypes)>::type
-   Call2ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, size_t argsIndex, const std::tuple<ArgTypes...>& args)
+   Call2ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
    {
       if (argsIndex == 0ull)
       {
@@ -33,9 +33,9 @@ public:
          classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 2, args);
    }
 
-   template<typename ClassType, typename MemberFunction, size_t I = 0ull, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
    static typename std::enable_if<I < sizeof...(ArgTypes)>::type
-   Call3ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, size_t argsIndex, const std::tuple<ArgTypes...>& args)
+   Call3ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
    {
       if (argsIndex == 0ull)
       {
@@ -49,9 +49,9 @@ public:
          classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 3ull, args);
    }
 
-   template<typename ClassType, typename MemberFunction, size_t I = 0ull, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
    static typename std::enable_if<I < sizeof...(ArgTypes)>::type
-   Call4ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, size_t argsIndex, const std::tuple<ArgTypes...>& args)
+   Call4ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
    {
       if (argsIndex == 0ull)
       {
@@ -66,9 +66,9 @@ public:
          classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 4ull, args);
    }
 
-   template<typename ClassType, typename MemberFunction, size_t I = 0ull, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
    static typename std::enable_if<I < sizeof...(ArgTypes)>::type
-   Call5ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, size_t argsIndex, const std::tuple<ArgTypes...>& args)
+   Call5ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
    {
       if (argsIndex == 0ull)
       {
@@ -84,9 +84,9 @@ public:
          classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 5ull, args);
    }
 
-   template<typename ClassType, typename MemberFunction, size_t I = 0ull, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
    static typename std::enable_if<I < sizeof...(ArgTypes)>::type
-   Call6ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, size_t argsIndex, const std::tuple<ArgTypes...>& args)
+   Call6ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
    {
       if (argsIndex == 0ull)
       {
@@ -103,9 +103,9 @@ public:
          classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 6ull, args);
    }
 
-   template<typename ClassType, typename MemberFunction, size_t I = 0ull, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
    static typename std::enable_if<I < sizeof...(ArgTypes)>::type
-   Call7ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, size_t argsIndex, const std::tuple<ArgTypes...>& args)
+   Call7ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
    {
       if (argsIndex == 0ull)
       {
@@ -123,9 +123,9 @@ public:
          classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 7ull, args);
    }
 
-   template<typename ClassType, typename MemberFunction, size_t I = 0ull, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
    static typename std::enable_if<I < sizeof...(ArgTypes)>::type
-   Call8ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, size_t argsIndex, const std::tuple<ArgTypes...>& args)
+   Call8ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
    {
       if (argsIndex == 0ull)
       {
@@ -144,9 +144,9 @@ public:
          classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 8ull, args);
    }
 
-   template<typename ClassType, typename MemberFunction, size_t I = 0ull, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
    static typename std::enable_if<I < sizeof...(ArgTypes)>::type
-   Call9ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, size_t argsIndex, const std::tuple<ArgTypes...>& args)
+   Call9ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
    {
       if (argsIndex == 0ull)
       {
@@ -166,9 +166,9 @@ public:
          classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 9ull, args);
    }
 
-   template<typename ClassType, typename MemberFunction, size_t I = 0ull, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
    static typename std::enable_if<I < sizeof...(ArgTypes)>::type
-   Call10ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, size_t argsIndex, const std::tuple<ArgTypes...>& args)
+   Call10ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
    {
       if (argsIndex == 0ull)
       {
@@ -189,43 +189,43 @@ public:
          classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 10ull, args);
    }
 
-   template<typename ClassType, typename MemberFunction, size_t I, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
    static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
-   Call1ArgMemberFunction(ClassType*, MemberFunction&&, size_t, const std::tuple<ArgTypes...>&) {}
+   Call1ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
 
-   template<typename ClassType, typename MemberFunction, size_t I, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
    static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
-   Call2ArgMemberFunction(ClassType*, MemberFunction&&, size_t, const std::tuple<ArgTypes...>&) {}
+   Call2ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
 
-   template<typename ClassType, typename MemberFunction, size_t I, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
    static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
-   Call3ArgMemberFunction(ClassType*, MemberFunction&&, size_t, const std::tuple<ArgTypes...>&) {}
+   Call3ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
 
-   template<typename ClassType, typename MemberFunction, size_t I, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
    static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
-   Call4ArgMemberFunction(ClassType*, MemberFunction&&, size_t, const std::tuple<ArgTypes...>&) {}
+   Call4ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
 
-   template<typename ClassType, typename MemberFunction, size_t I, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
    static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
-   Call5ArgMemberFunction(ClassType*, MemberFunction&&, size_t, const std::tuple<ArgTypes...>&) {}
+   Call5ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
 
-   template<typename ClassType, typename MemberFunction, size_t I, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
    static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
-   Call6ArgMemberFunction(ClassType*, MemberFunction&&, size_t, const std::tuple<ArgTypes...>&) {}
+   Call6ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
 
-   template<typename ClassType, typename MemberFunction, size_t I, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
    static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
-   Call7ArgMemberFunction(ClassType*, MemberFunction&&, size_t, const std::tuple<ArgTypes...>&) {}
+   Call7ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
 
-   template<typename ClassType, typename MemberFunction, size_t I, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
    static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
-   Call8ArgMemberFunction(ClassType*, MemberFunction&&, size_t, const std::tuple<ArgTypes...>&) {}
+   Call8ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
 
-   template<typename ClassType, typename MemberFunction, size_t I, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
    static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
-   Call9ArgMemberFunction(ClassType*, MemberFunction&&, size_t, const std::tuple<ArgTypes...>&) {}
+   Call9ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
 
-   template<typename ClassType, typename MemberFunction, size_t I, typename... ArgTypes>
+   template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
    static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
-   Call10ArgMemberFunction(ClassType*, MemberFunction&&, size_t, const std::tuple<ArgTypes...>&) {}
+   Call10ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
 };

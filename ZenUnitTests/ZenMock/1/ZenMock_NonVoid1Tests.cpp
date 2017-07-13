@@ -262,9 +262,9 @@ namespace ZenMock
 
    TEST1X1(AssertCalledOnceWith_ExpectedFunctionCalled0Or2OrMoreTimes_Throws,
       size_t numberOfCalls,
-      0ull,
-      2ull,
-      3ull)
+      size_t(0),
+      size_t(2),
+      size_t(3))
    {
       _zenMock1Tester->AssertCalledOnceWith_ExpectedFunctionCalled0Or2OrMoreTimes_Throws(numberOfCalls);
    }
@@ -286,20 +286,20 @@ namespace ZenMock
 
    TEST2X2(AssertCalledNTimesWith_N1OrGreater_FunctionCalledNotNTimes_Throws,
       size_t n, size_t numberOfCalls,
-      1ull, 0ull,
-      1ull, 2ull,
-      2ull, 0ull,
-      2ull, 1ull,
-      2ull, 3ull)
+      size_t(1), size_t(0),
+      size_t(1), size_t(2),
+      size_t(2), size_t(0),
+      size_t(2), size_t(1),
+      size_t(2), size_t(3))
    {
       _zenMock1Tester->AssertCalledNTimesWith_N1OrGreater_FunctionCalledNotNTimes_Throws(n, numberOfCalls);
    }
 
    TEST2X2(AssertCalledNTimesWith_N1OrGreater_FunctionCalledNTimesWithOneOfTheCallsMismatching_Throws,
       size_t n, size_t mismatchingCallIndex,
-      1ull, 0ull,
-      2ull, 0ull,
-      2ull, 1ull)
+      size_t(1), size_t(0),
+      size_t(2), size_t(0),
+      size_t(2), size_t(1))
    {
       _zenMock1Tester->AssertCalledNTimesWith_N1OrGreater_FunctionCalledNTimesWithOneOfTheCallsMismatching_Throws(
          n, mismatchingCallIndex);
@@ -307,8 +307,8 @@ namespace ZenMock
 
    TEST1X1(AssertCalledNTimesWith_N1OrGreater_FunctionCalledNTimesWithMatchingArg_DoesNotThrow,
       size_t n,
-      1ull,
-      2ull)
+      size_t(1),
+      size_t(2))
    {
       _zenMock1Tester->AssertCalledNTimesWith_N1OrGreater_FunctionCalledNTimesWithMatchingArg_DoesNotThrow(n);
    }
@@ -320,11 +320,11 @@ namespace ZenMock
 
    TEST2X2(AssertCalls_NonEmptyCalls_FunctionCalledNotCallsSizeTimes_Throws,
       size_t expectedCallsSize, size_t numberOfCalls,
-      1ull, 0ull,
-      1ull, 2ull,
-      2ull, 0ull,
-      2ull, 1ull,
-      2ull, 3ull)
+      size_t(1), size_t(0),
+      size_t(1), size_t(2),
+      size_t(2), size_t(0),
+      size_t(2), size_t(1),
+      size_t(2), size_t(3))
    {
       _zenMock1Tester->AssertCalls_NonEmptyCalls_FunctionCalledNotCallsSizeTimes_Throws(
          expectedCallsSize, numberOfCalls);
@@ -332,9 +332,9 @@ namespace ZenMock
 
    TEST2X2(AssertCalls_NonEmptyCalls_FunctionCalledCallsSizeTimesWithOneOfTheCallsMismatching_Throws,
       size_t expectedCallsSize, size_t mismatchingCallIndex,
-      1ull, 0ull,
-      2ull, 0ull,
-      2ull, 1ull)
+      size_t(1), size_t(0),
+      size_t(2), size_t(0),
+      size_t(2), size_t(1))
    {
       _zenMock1Tester->AssertCalls_NonEmptyCalls_FunctionCalledCallsSizeTimesWithOneOfTheCallsMismatching_Throws(
          expectedCallsSize, mismatchingCallIndex);
@@ -342,8 +342,8 @@ namespace ZenMock
 
    TEST1X1(AssertCalls_NonEmptyCalls_FunctionCalledCallsSizeTimesWithMatchingArgs_DoesNotThrow,
       size_t expectedCallsSize,
-      1ull,
-      2ull)
+      size_t(1),
+      size_t(2))
    {
       _zenMock1Tester->AssertCalls_NonEmptyCalls_FunctionCalledCallsSizeTimesMatchingArgs_DoesNotThrow(expectedCallsSize);
    }

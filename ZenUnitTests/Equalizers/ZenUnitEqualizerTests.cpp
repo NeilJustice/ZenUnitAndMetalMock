@@ -175,19 +175,6 @@ namespace ZenUnit
       THROWS(ZenUnitEqualizer<float>::AssertEqual(0.0f, 1.0f), EqualizerException, "");
    }
 
-   TEST(Int_SizeT_ThrowsIfIntNegative_OtherwiseCallsAssertEqualSizeTSizeT)
-   {
-     THROWS(TwoTypeZenUnitEqualizer<int Comma size_t>::AssertEqual(
-        -2 Comma static_cast<size_t>(0)), EqualizerException, "");
-     THROWS(TwoTypeZenUnitEqualizer<int Comma size_t>::AssertEqual(
-        -1 Comma static_cast<size_t>(0)), EqualizerException, "");
-
-     TwoTypeZenUnitEqualizer<int, size_t>::AssertEqual(0, static_cast<size_t>(0));
-     TwoTypeZenUnitEqualizer<int, size_t>::AssertEqual(1, static_cast<size_t>(1));
-     TwoTypeZenUnitEqualizer<int, size_t>::AssertEqual(
-        numeric_limits<int>::max(), static_cast<size_t>(numeric_limits<int>::max()));
-   }
-
    TEST(Int_Unsigned_ThrowsIfIntNegative_OtherwiseCallsAssertEqualUnsignedUnsigned)
    {
       THROWS(TwoTypeZenUnitEqualizer<int Comma unsigned>::AssertEqual(
@@ -199,6 +186,19 @@ namespace ZenUnit
       TwoTypeZenUnitEqualizer<int, unsigned>::AssertEqual(1, static_cast<unsigned>(1));
       TwoTypeZenUnitEqualizer<int, unsigned>::AssertEqual(
          numeric_limits<int>::max(), static_cast<unsigned>(numeric_limits<int>::max()));
+   }
+
+   TEST(Int_SizeT_ThrowsIfIntNegative_OtherwiseCallsAssertEqualSizeTSizeT)
+   {
+     THROWS(TwoTypeZenUnitEqualizer<int Comma size_t>::AssertEqual(
+        -2 Comma size_t(0)), EqualizerException, "");
+     THROWS(TwoTypeZenUnitEqualizer<int Comma size_t>::AssertEqual(
+        -1 Comma size_t(0)), EqualizerException, "");
+
+     TwoTypeZenUnitEqualizer<int, size_t>::AssertEqual(0, size_t(0));
+     TwoTypeZenUnitEqualizer<int, size_t>::AssertEqual(1, size_t(1));
+     TwoTypeZenUnitEqualizer<int, size_t>::AssertEqual(
+        numeric_limits<int>::max(), static_cast<size_t>(numeric_limits<int>::max()));
    }
 
    }; RUN(ZenUnitEqualizerTests)

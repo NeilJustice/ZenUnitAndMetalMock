@@ -193,8 +193,8 @@ namespace ZenUnit
 
    TEST3X3(PrintTestCaseNumberArgsThenArrow_WritesTestCaseNumberArrow,
       unsigned short testCaseIndex, int expectedTestCaseNumber, size_t expectedTestCaseArgsPrintingStartIndex,
-      static_cast<unsigned short>(0), 1, 0ull,
-      static_cast<unsigned short>(1), 2, 1ull)
+      static_cast<unsigned short>(0), 1, size_t(0),
+      static_cast<unsigned short>(1), 2, size_t(1))
    {
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteMock.Expect();

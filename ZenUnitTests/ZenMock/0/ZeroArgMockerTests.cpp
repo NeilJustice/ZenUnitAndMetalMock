@@ -99,9 +99,9 @@ namespace ZenMock
 
    TEST2X2(AssertCalledOnce_SetsAssertedTrue_FunctionWasCalledOnce_DoesNotThrow,
       size_t numberOfCalls, bool expectThrow,
-      0ull, true,
-      1ull, false,
-      2ull, true)
+      size_t(0), true,
+      size_t(1), false,
+      size_t(2), true)
    {
       IS_FALSE(_mocker->_asserted);
       //
@@ -131,14 +131,14 @@ File.cpp(1))");
 
    TEST3X3(AssertCalledNTimes_SetsAssertedTrue_FunctionWasCalledNTimes_DoesNotThrow,
       size_t expectedNumberOfCalls, size_t numberOfCalls, bool expectThrow,
-      1ull, 0ull, true,
+      size_t(1), size_t(0), true,
 
-      1ull, 1ull, false,
-      2ull, 1ull, true,
+      size_t(1), size_t(1), false,
+      size_t(2), size_t(1), true,
 
-      1ull, 2ull, true,
-      2ull, 2ull, false,
-      3ull, 2ull, true)
+      size_t(1), size_t(2), true,
+      size_t(2), size_t(2), false,
+      size_t(3), size_t(2), true)
    {
       IS_FALSE(_mocker->_asserted);
       //

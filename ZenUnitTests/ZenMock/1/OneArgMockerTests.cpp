@@ -112,11 +112,11 @@ namespace ZenMock
 
    TEST5X5(AssertCalledOnceWith_SetsAssertedTrue_FunctionWasCalledOnceWithExpectedArg_DoesNotThrow,
       size_t numberOfCalls, int expectedArg, int actualArg, bool expectCallCountThrow, bool expectArgEqualityThrow,
-      0ull, NA<int>(), NA<int>(), true, false,
-      2ull, NA<int>(), NA<int>(), true, false,
-      1ull, 1, 0, false, true,
-      1ull, 0, 0, false, false,
-      1ull, 1, 1, false, false)
+      size_t(0), NA<int>(), NA<int>(), true, false,
+      size_t(2), NA<int>(), NA<int>(), true, false,
+      size_t(1), 1, 0, false, true,
+      size_t(1), 0, 0, false, false,
+      size_t(1), 1, 1, false, false)
    {
       IS_FALSE(_mocker->_asserted);
       _mocker->_oneArgCalls.resize(numberOfCalls);
@@ -162,13 +162,13 @@ File.cpp(1))");
 
    TEST3X3(AssertCalledNTimesWith_SetsAssertedTrue_NDiffersFromActualCallCount_Throws,
       size_t expectedNumberOfCalls, size_t numberOfCalls, bool expectThrow,
-      1ull, 0ull, true,
-      1ull, 1ull, false,
-      1ull, 2ull, true,
-      2ull, 0ull, true,
-      2ull, 1ull, true,
-      2ull, 2ull, false,
-      2ull, 3ull, true)
+      size_t(1), size_t(0), true,
+      size_t(1), size_t(1), false,
+      size_t(1), size_t(2), true,
+      size_t(2), size_t(0), true,
+      size_t(2), size_t(1), true,
+      size_t(2), size_t(2), false,
+      size_t(2), size_t(3), true)
    {
       IS_FALSE(_mocker->_asserted);
       _mocker->_oneArgCalls.resize(numberOfCalls);
@@ -194,12 +194,12 @@ File.cpp(1))");
    TEST5X5(AssertCalledNTimesWith_SetsAssertedTrue_NEqualToNumberOfCalls_ThrowsIfArgsDoNotMatch,
       size_t expectedNumberOfCalls, int expectedArg, const vector<OneArgCall<int>>& actualArgs,
       bool expectThrow, size_t expectedResponsibleCallIndex,
-      1ull, 0, vector<OneArgCall<int>>{0}, false, NA<size_t>(),
-      1ull, 0, vector<OneArgCall<int>>{1}, true, 0ull,
-      1ull, 1, vector<OneArgCall<int>>{2}, true, 0ull,
-      2ull, 1, vector<OneArgCall<int>>{1 Comma 1}, false, NA<size_t>(),
-      2ull, 1, vector<OneArgCall<int>>{2 Comma 1}, true, 0ull,
-      2ull, 1, vector<OneArgCall<int>>{1 Comma 2}, true, 1ull)
+      size_t(1), 0, vector<OneArgCall<int>>{0}, false, NA<size_t>(),
+      size_t(1), 0, vector<OneArgCall<int>>{1}, true, size_t(0),
+      size_t(1), 1, vector<OneArgCall<int>>{2}, true, size_t(0),
+      size_t(2), 1, vector<OneArgCall<int>>{1 Comma 1}, false, NA<size_t>(),
+      size_t(2), 1, vector<OneArgCall<int>>{2 Comma 1}, true, size_t(0),
+      size_t(2), 1, vector<OneArgCall<int>>{1 Comma 2}, true, size_t(1))
    {
       IS_FALSE(_mocker->_asserted);
       //

@@ -12,7 +12,7 @@ namespace ZenUnit
 	   {
 		   tempValue = value;
 		   value /= 10;
-		   size_t index = 35 + (tempValue - value * 10);
+         unsigned long long index = 35 + (tempValue - value * 10);
 		   *ptrA++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"[index];
 		   ++numberOfCharsAppended;
 	   } while (value != 0);
