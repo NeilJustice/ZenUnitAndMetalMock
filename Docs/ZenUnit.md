@@ -157,18 +157,10 @@ None
    Run all non-skipped tests.
 -exit0
    Always exit 0 regardless of test run outcome.
-   This option is useful for always allowing the launch of a debugger
-   or non-debugging console window after running tests in a post-build step.
 -failskips
    Exit 1 regardless of test run outcome if any tests are skipped.
-   This option is useful for continuous integration servers
-   to defend against the possibility of a quality-compromising
-   culture of complacency developing around committed skipped tests.
--times=<N>
-   Run all non-skipped tests N times.
-   Useful for ensuring tests still pass when run a second time
-   and for increasing test run duration to allow for data-dense
-   performance profiling of your test code and ZenUnit.
+-testruns=<N>
+   Repeat the running of all non-skipped tests N times.
 -help or --help
    Display this help.
 ```

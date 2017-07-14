@@ -105,14 +105,14 @@ namespace ZenUnit
    }
 
    TEST4X4(ParseArgsRunTestsPrintResults_ParsesArgs_RunsTestsTimesNumberOfTimes_Returns0IfAllTestRunsPassOtherwiseReturns1,
-      int expectedOverallExitCode, unsigned timesArg, int firstTestRunExitCode, int secondTestRunExitCode,
+      int expectedOverallExitCode, unsigned testrunsArgs, int firstTestRunExitCode, int secondTestRunExitCode,
       0, 1, 0, NA<int>(),
       1, 2, 1, 0,
       1, 2, 0, 1,
       1, 2, 1, 1)
    {
       ZenUnitArgs zenUnitArgs;
-      zenUnitArgs.times = timesArg;
+      zenUnitArgs.testruns = testrunsArgs;
       _testRunnerSelfMocked.argsParserMock->ParseMock.ExpectAndReturn(zenUnitArgs);
       _testRunnerSelfMocked.RunTestsAndPrintResultsMock.ExpectAndReturnValues(firstTestRunExitCode, secondTestRunExitCode);
       _testRunnerSelfMocked.testRunResultMock->ResetStateExceptForSkipsMock.Expect();
@@ -122,8 +122,8 @@ namespace ZenUnit
       const int overallExitCode = _testRunnerSelfMocked.ParseArgsRunTestsPrintResults(CommandLineArgs);
       //
       ZEN(_testRunnerSelfMocked.argsParserMock->ParseMock.AssertCalledOnceWith(CommandLineArgs));
-      ZEN(_testRunnerSelfMocked.RunTestsAndPrintResultsMock.AssertCalledNTimes(timesArg));
-      ZEN(_testRunnerSelfMocked.testRunResultMock->ResetStateExceptForSkipsMock.AssertCalledNTimes(timesArg));
+      ZEN(_testRunnerSelfMocked.RunTestsAndPrintResultsMock.AssertCalledNTimes(testrunsArgs));
+      ZEN(_testRunnerSelfMocked.testRunResultMock->ResetStateExceptForSkipsMock.AssertCalledNTimes(testrunsArgs));
       ZEN(_testRunnerSelfMocked.consoleMock->PauseForAnyKeyIfDebuggerIsPresentMock.AssertCalledOnce());
       ARE_EQUAL(expectedOverallExitCode, overallExitCode);
    }

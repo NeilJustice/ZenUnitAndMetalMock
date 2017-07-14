@@ -6,9 +6,9 @@ namespace ZenUnit
    struct ZenUnitArgs
    {
       std::string commandLine;
-      unsigned times = 1;
       bool exit0 = false;
       bool failskips = false;
+      unsigned testruns = 1;
       unsigned maxtestmilliseconds = 0;
       unsigned maxtotalseconds = 0;
 

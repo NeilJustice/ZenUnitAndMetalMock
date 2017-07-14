@@ -8,9 +8,9 @@ void ZenUnitEqualizer<ZenUnit::ZenUnitArgs>::
 AssertEqual(const ZenUnit::ZenUnitArgs& expectedArgs, const ZenUnit::ZenUnitArgs& actualArgs)
 {
    ARE_EQUAL(expectedArgs.commandLine, actualArgs.commandLine);
-   ARE_EQUAL(expectedArgs.times, actualArgs.times);
    ARE_EQUAL(expectedArgs.exit0, actualArgs.exit0);
    ARE_EQUAL(expectedArgs.failskips, actualArgs.failskips);
+   ARE_EQUAL(expectedArgs.testruns, actualArgs.testruns);
    ARE_EQUAL(expectedArgs.maxtestmilliseconds, actualArgs.maxtestmilliseconds);
    ARE_EQUAL(expectedArgs.maxtotalseconds, actualArgs.maxtotalseconds);
 }

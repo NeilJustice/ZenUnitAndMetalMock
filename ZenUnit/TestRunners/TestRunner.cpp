@@ -59,7 +59,7 @@ namespace ZenUnit
    {
       _args = _argsParser->Parse(commandLineArgs);
       int overallExitCode = 0;
-      for (unsigned testRunIndex = 0; testRunIndex < _args.times; ++testRunIndex)
+      for (unsigned testRunIndex = 0; testRunIndex < _args.testruns; ++testRunIndex)
       {
          const int testRunExitCode = RunTestsAndPrintResults();
          assert_true(testRunExitCode == 0 || testRunExitCode == 1);

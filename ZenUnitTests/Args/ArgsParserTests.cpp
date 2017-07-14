@@ -29,18 +29,10 @@ None
    Run all non-skipped tests.
 -exit0
    Always exit 0 regardless of test run outcome.
-   This option is useful for always allowing the launch of a debugger
-   or non-debugging console window after running tests in a post-build step.
 -failskips
    Exit 1 regardless of test run outcome if any tests are skipped.
-   This option is useful for continuous integration servers
-   to defend against the possibility of a quality-compromising
-   culture of complacency developing around committed skipped tests.
--times=<N>
-   Run all non-skipped tests N times.
-   Useful for ensuring tests still pass when run a second time
-   and for increasing test run duration to allow for data-dense
-   performance profiling of your test code and ZenUnit.
+-testruns=<N>
+   Repeat the running of all non-skipped tests N times.
 -help or --help
    Display this help.)";
 
@@ -88,7 +80,7 @@ None
       const string& invalidArg,
       "--exit0",
       "-Exit0",
-      "-times")
+      "-testruns")
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
@@ -119,7 +111,7 @@ None
       const vector<string> Args 
       { 
          TestProgramPath, 
-         "-times=1",
+         "-testruns=1",
          "-exit0",
          "-failskips"
       };
@@ -129,7 +121,7 @@ None
       ZEN(ToUnsigned_ZenMock.AssertCalledOnceWith("1"));
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
-      expectedZenUnitArgs.times = 1;
+      expectedZenUnitArgs.testruns = 1;
       expectedZenUnitArgs.exit0 = true;
       expectedZenUnitArgs.failskips = true;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
@@ -166,8 +158,8 @@ None
 
    TEST1X1(Parse_TimesArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1,
       const string& arg,
-      "-times=",
-      "-times===")
+      "-testruns=",
+      "-testruns===")
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
@@ -185,7 +177,7 @@ None
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
       ToUnsigned_ZenMock.ExpectAndThrow<invalid_argument>("");
-      const string InvalidTimesArg = "-times=-1_for_example";
+      const string InvalidTimesArg = "-testruns=-1_for_example";
       const vector<string> Args { TestProgramPath, InvalidTimesArg };
       //
       THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
@@ -202,14 +194,14 @@ None
       1u)
    {
       ToUnsigned_ZenMock.ExpectAndReturn(validTimesValue);
-      const vector<string> Args { TestProgramPath, "-times=" + to_string(validTimesValue) };
+      const vector<string> Args { TestProgramPath, "-testruns=" + to_string(validTimesValue) };
       //
       ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
       //
       ZEN(ToUnsigned_ZenMock.AssertCalledOnceWith(to_string(validTimesValue)));
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
-      expectedZenUnitArgs.times = validTimesValue;
+      expectedZenUnitArgs.testruns = validTimesValue;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
