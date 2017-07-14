@@ -32,21 +32,17 @@ namespace ZenUnit
       }
       catch (const Anomaly& anomaly)
       {
+         string expectedPattern;
 #ifdef __linux__
-         REGEX_MATCHES(R"(
-  Failed: FUNCTION_TARGETS\(FunctionA, emptyStdFunction, messageA, messageB\)
-Expected: 1
-  Actual: <empty std::function>
- Because: IS_TRUE\(stdFunction\) failed
-Expected: true
-  Actual: false
- Message: "A", "B"
-File.cpp\(1\)
-File.cpp\(1\))", anomaly.why);
+         expectedPattern = "1";
+#elif _WIN64
+         expectedPattern = "0x\\w{16}";
 #elif _WIN32
+         expectedPattern = "0x\\w{8}";
+#endif
          REGEX_MATCHES(R"(
   Failed: FUNCTION_TARGETS\(FunctionA, emptyStdFunction, messageA, messageB\)
-Expected: 0x\w{16}
+Expected: )" + expectedPattern + R"(
   Actual: <empty std::function>
  Because: IS_TRUE\(stdFunction\) failed
 Expected: true
@@ -54,7 +50,6 @@ Expected: true
  Message: "A", "B"
 File.cpp\(1\)
 File.cpp\(1\))", anomaly.why);
-#endif
       }
    }
 
@@ -68,27 +63,23 @@ File.cpp\(1\))", anomaly.why);
       }
       catch (const Anomaly& anomaly)
       {
+         string expectedPattern;
 #ifdef __linux__
-         REGEX_MATCHES(R"(
-  Failed: FUNCTION_TARGETS\(FunctionB, stdFunctionA\)
-Expected: 1
-  Actual: <non-empty std::function>
- Because: IS_NOT_NULL\(stdFunction.template target<ExpectedStdFunctionTargetType\*>\(\)\) failed
-Expected: not nullptr
-  Actual: nullptr
-File.cpp\(1\)
-File.cpp\(1\))", anomaly.why);
+         expectedPattern = "1";
+#elif _WIN64
+         expectedPattern = "0x\\w{16}";
 #elif _WIN32
+         expectedPattern = "0x\\w{8}";
+#endif
          REGEX_MATCHES(R"(
   Failed: FUNCTION_TARGETS\(FunctionB, stdFunctionA\)
-Expected: 0x\w{16}
+Expected: )" + expectedPattern + R"(
   Actual: <non-empty std::function>
  Because: IS_NOT_NULL\(stdFunction.template target<ExpectedStdFunctionTargetType\*>\(\)\) failed
 Expected: not nullptr
   Actual: nullptr
 File.cpp\(1\)
 File.cpp\(1\))", anomaly.why);
-#endif
       }
    }
 
@@ -113,6 +104,7 @@ File.cpp(1))");
       }
       catch (const Anomaly& anomaly)
       {
+#ifdef _WIN64
          REGEX_MATCHES(R"(
   Failed: FUNCTION_TARGETS\(FunctionC, stdFunctionA\)
 Expected: 0x\w{16}
@@ -122,6 +114,17 @@ Expected: 0x\w{16}
   Actual: 0x\w{16}
 File.cpp\(1\)
 File.cpp\(1\))", anomaly.why);
+#elif _WIN32
+         REGEX_MATCHES(R"(
+  Failed: FUNCTION_TARGETS\(FunctionC, stdFunctionA\)
+Expected: 0x\w{8}
+  Actual: <non-empty std::function>
+ Because: ARE_EQUAL\(expectedStdFunctionTarget, \*stdFunction\.template target<ExpectedStdFunctionTargetType\*>\(\)\) failed
+Expected: 0x\w{8}
+  Actual: 0x\w{8}
+File.cpp\(1\)
+File.cpp\(1\))", anomaly.why);
+#endif
       }
    #endif
    }

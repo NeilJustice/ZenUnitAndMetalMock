@@ -2,10 +2,6 @@ cmake_minimum_required(VERSION 3.5)
 project(ZenUnit)
 include(${CMAKE_SOURCE_DIR}/ZenUnitHelloWorld/CMakeMacros.cmake)
 
-if(MSVC AND NOT ${CMAKE_GENERATOR} STREQUAL "Visual Studio 15 2017 Win64")
-   message(WARNING "ZenUnit on Windows is tested only with CMake generator \"Visual Studio 15 2017 Win64\".")
-endif()
-
 if(UNIX)
    set(CMAKE_CXX_FLAGS "-std=c++1z -Wall -Wextra -Werror -pthread -Wno-unused-parameter")
    if(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")

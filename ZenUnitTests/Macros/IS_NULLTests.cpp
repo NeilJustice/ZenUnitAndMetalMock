@@ -39,8 +39,10 @@ Expected: nullptr
   Actual: )";
 #ifdef __linux__
       expectedWhat += "0x123\n";
-#elif _WIN32
+#elif _WIN64
       expectedWhat += "0x0000000000000123\n";
+#elif _WIN32
+      expectedWhat += "0x00000123\n";
 #endif
       expectedWhat += " Message: \"A\", \"B\"\n";
       expectedWhat += "File.cpp(1)";
@@ -66,8 +68,10 @@ Expected: nullptr
   Actual: )";
    #ifdef __linux__
       expectedWhat += "0x1234567890123";
-   #elif _WIN32
+   #elif _WIN64
       expectedWhat += "0x0001234567890123";
+   #elif _WIN32
+      expectedWhat += "0x67890123";
    #endif
       expectedWhat += "\nFile.cpp(1)";
       THROWS(IS_NULL(nonNullUniquePointer), Anomaly, expectedWhat);
@@ -83,8 +87,10 @@ Expected: nullptr
   Actual: )";
    #ifdef __linux__
       expectedWhat += "0x1234567890123";
-   #elif _WIN32
+   #elif _WIN64
       expectedWhat += "0x0001234567890123";
+   #elif _WIN32
+      expectedWhat += "0x67890123";
    #endif
       expectedWhat += "\nFile.cpp(1)";
       THROWS(IS_NULL(nonNullSharedPointer), Anomaly, expectedWhat);
