@@ -20,13 +20,15 @@ namespace ZenUnit
    SPECEND
 
    const string TestProgramPath = "Folder/TestProgramName";
-   const string ExpectedUsage = R"(ZenUnit and ZenMock v0.1.1
+   const string ExpectedUsage = R"(ZenUnit and ZenMock v0.2.0
 Usage: <TestsBinaryName> [Options...]
 
 Options:
 
 None
    Run all non-skipped tests.
+-minimal
+   Print just test class names run instead of test class names and test names run.
 -exit0
    Always exit 0 regardless of test run outcome.
 -failskips
@@ -110,10 +112,11 @@ None
       ToUnsigned_ZenMock.ExpectAndReturn(1);
       const vector<string> Args 
       { 
-         TestProgramPath, 
-         "-testruns=1",
+         TestProgramPath,
+         "-minimal",
          "-exit0",
-         "-failskips"
+         "-failskips",
+         "-testruns=1"
       };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
@@ -121,14 +124,16 @@ None
       ZEN(ToUnsigned_ZenMock.AssertCalledOnceWith("1"));
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
-      expectedZenUnitArgs.testruns = 1;
+      expectedZenUnitArgs.minimal = true;
       expectedZenUnitArgs.exit0 = true;
       expectedZenUnitArgs.failskips = true;
+      expectedZenUnitArgs.testruns = 1;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
    TEST(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    {
+      AssertArgSetsBoolField("-minimal", &ZenUnitArgs::minimal);
       AssertArgSetsBoolField("-exit0", &ZenUnitArgs::exit0);
       AssertArgSetsBoolField("-failskips", &ZenUnitArgs::failskips);
    }

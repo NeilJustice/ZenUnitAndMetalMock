@@ -27,6 +27,7 @@ namespace ZenUnit
          SpecificTestClassRunner,
          void (SpecificTestClassRunner::*)(const std::unique_ptr<Test>& test, TestClassResult*) const, TestClassResult*>;
       std::unique_ptr<const TestsMemberForEacherExtraArgType> _testsMemberForEacherExtraArg;
+      std::function<const ZenUnitArgs&()> _TestRunner_GetArgs_ZenMockable;
       const char* _testClassName;
       NewDeleteTest<TestClassType> _newDeleteTest;
       std::vector<std::unique_ptr<Test>> _tests;
@@ -35,6 +36,7 @@ namespace ZenUnit
       explicit SpecificTestClassRunner(const char* testClassNamePossiblyTemplatized)
          : _console(new Console)
          , _testsMemberForEacherExtraArg(new TestsMemberForEacherExtraArgType)
+         , _TestRunner_GetArgs_ZenMockable(TestRunner::GetArgs)
          , _testClassName(testClassNamePossiblyTemplatized)
          , _newDeleteTest(testClassNamePossiblyTemplatized)
       {
@@ -74,32 +76,35 @@ namespace ZenUnit
       {
          _console->WriteColor("@", Color::Green);
          _console->WriteColor(_testClassName, Color::Green);
-         _console->WriteLine(String::Concat(
-            " | ", _tests.size(), _tests.size() == 1 ? " named test" : " named tests"));
+         std::string spacePipeSpaceNumberOfNamedTests = String::Concat(
+            " | ", _tests.size(), _tests.size() == 1 ? " named test" : " named tests");
+         _console->WriteLine(spacePipeSpaceNumberOfNamedTests);
       }
 
       virtual bool ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(
          Test* newDeleteTest, TestClassResult* outTestClassResult) const
       {
-         _console->WriteColor("|", Color::Green);
+         const ZenUnitArgs& args = _TestRunner_GetArgs_ZenMockable();
+         _console->OptionallyWriteColor("|", Color::Green, !args.minimal);
          static const std::string TestClassIsNewableAndDeletableString = "TestClassIsNewableAndDeletable -> ";
-         _console->Write(TestClassIsNewableAndDeletableString);
+         _console->OptionallyWrite(TestClassIsNewableAndDeletableString, !args.minimal);
          const std::vector<TestResult> newDeleteTestResult = newDeleteTest->Run();
          assert_true(newDeleteTestResult.size() == 1);
          outTestClassResult->AddTestResults(newDeleteTestResult);
          const bool testClassIsNewableAndDeletable = newDeleteTestResult[0].testOutcome == TestOutcome::Success;
          if (testClassIsNewableAndDeletable)
          {
-            _console->WriteLine("OK");
+            _console->OptionallyWriteLine("OK", !args.minimal);
          }
          return testClassIsNewableAndDeletable;
       }
 
       void RunTest(const std::unique_ptr<Test>& test, TestClassResult* outTestClassResult) const
       {
-         _console->WriteColor("|", Color::Green);
+         const ZenUnitArgs& args = _TestRunner_GetArgs_ZenMockable();
+         _console->OptionallyWriteColor("|", Color::Green, !args.minimal);
          const char* const testName = test->Name();
-         _console->Write(testName);
+         _console->OptionallyWrite(testName, !args.minimal);
          test->PrintPostTestNameMessage(_console.get());
          const std::vector<TestResult> testResults = test->Run();
          test->PrintPostTestCompletionMessage(_console.get(), testResults[0]);

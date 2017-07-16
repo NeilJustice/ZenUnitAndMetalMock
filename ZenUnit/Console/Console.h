@@ -19,8 +19,11 @@ namespace ZenUnit
       Console();
       virtual ~Console();
       virtual void Write(const std::string& message) const;
+      virtual void OptionallyWrite(const std::string& message, bool doWrite) const;
       virtual void WriteColor(const std::string& message, Color color) const;
+      virtual void OptionallyWriteColor(const std::string& message, Color color, bool doWriteColor) const;
       virtual void WriteLine(const std::string& message) const;
+      virtual void OptionallyWriteLine(const std::string& message, bool doWriteLine) const;
       virtual void WriteLineColor(const std::string& message, Color color) const;
       virtual void WriteNewline() const;
       virtual void WriteLineAndExit(const std::string& message, int exitCode) const;

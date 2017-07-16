@@ -29,14 +29,14 @@ namespace ZenMock
 
    unique_ptr<ZenMocker<ExceptionThrowerMock>> _zenMocker;
    ZENMOCK_VOID1_FREE(exit, int)
-   ZENMOCK_NONVOID0_STATIC(ZenUnit::ZenUnitArgs, ZenUnit::TestRunner, GetArgs)
+   ZENMOCK_NONVOID0_STATIC(const ZenUnit::ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
    const string ZenMockedFunctionSignature = "virtual void ClassName::FunctionName() const";
 
    STARTUP
    {
       _zenMocker = make_unique<ZenMocker<ExceptionThrowerMock>>(ZenMockedFunctionSignature);
       _zenMocker->_exit_ZenMockable = ZENBIND1(exit_ZenMock);
-      _zenMocker->_GetArgs_ZenMockable = ZENBIND0(GetArgs_ZenMock);
+      _zenMocker->_TestRunner_GetArgs_ZenMockable = ZENBIND0(GetArgs_ZenMock);
    }
 
    TEST(Constructor_SetsFields)
@@ -44,7 +44,7 @@ namespace ZenMock
       const ZenMocker<ExceptionThrower> zenMocker(ZenMockedFunctionSignature);
       //
       FUNCTION_TARGETS(exit, zenMocker._exit_ZenMockable);
-      FUNCTION_TARGETS(ZenUnit::TestRunner::GetArgs, zenMocker._GetArgs_ZenMockable);
+      FUNCTION_TARGETS(ZenUnit::TestRunner::GetArgs, zenMocker._TestRunner_GetArgs_ZenMockable);
       ARE_EQUAL(ZenMockedFunctionSignature, zenMocker.ZenMockedFunctionSignature);
       IS_FALSE(zenMocker._expected);
       IS_FALSE(zenMocker._asserted);
@@ -90,7 +90,7 @@ namespace ZenMock
       THROWS(_zenMocker->ExpectAndThrow<invalid_argument>("what"), FunctionAlreadyExpectedException,
          FunctionAlreadyExpectedException::MakeWhat(ZenMockedFunctionSignature));
 
-      CustomException customException(1, '2', 3.3); // 100& code coverage
+      CustomException customException(1, '2', 3.3); // 100% code coverage
    }
 
    TEST(ZenMockSetAsserted_SetsAssertedTrue_CallableTwice)

@@ -7,8 +7,11 @@ namespace ZenUnit
    TESTS(ConsoleTests)
    SPEC(Constructor_NewsConsoleColorer_SetsFunctionPointers)
    SPEC(Write_CallsWriteColorWithWhite)
+   SPECX(OptionallyWrite_CallsWriteColorIfDoWriteTrue)
    SPECX(WriteColor_WritesMessageInSpecifiedColor)
+   SPECX(OptionallyWriteColor_CallsWriteColorIfDoWriteColorTrue)
    SPEC(WriteLine_CallsWriteLineWithWhite)
+   SPECX(OptionallyWriteLine_CallsWriteLineIfDoWriteLineTrue)
    SPECX(WriteLineColor_WritesMessageInSpecifiedColorThenNewline)
    SPECX(WriteLineAndExit_CallsWriteLineAndExit)
    SPECX(PrintStringsCommaSeparated_StartIndexGTEStringsSize_Throws)
@@ -21,7 +24,7 @@ namespace ZenUnit
 
    Console _console;
    ConsoleColorerMock* _consoleColorerMock;
-   const string Message = "Message";
+   const string Message = "Message"; // Replace with Random::String();
 
    struct ConsoleSelfMocked : public Zen::Mock<Console>
    {
@@ -55,6 +58,28 @@ namespace ZenUnit
       ZEN(_consoleSelfMocked.WriteColorMock.AssertCalledOnceWith(Message, Color::White));
    }
 
+   TEST2X2(OptionallyWrite_CallsWriteColorIfDoWriteTrue,
+      bool doWrite, bool expectWriteCall,
+      false, false,
+      true, true)
+   {
+      struct ConsoleSelfMock_Write : public Zen::Mock<Console>
+      {
+         ZENMOCK_VOID1_CONST(Write, const string&)
+      } consoleSelfMock_Write;
+      if (expectWriteCall)
+      {
+         consoleSelfMock_Write.WriteMock.Expect();
+      }
+      //
+      consoleSelfMock_Write.OptionallyWrite(Message, doWrite);
+      //
+      if (expectWriteCall)
+      {
+         ZEN(consoleSelfMock_Write.WriteMock.AssertCalledOnceWith(Message));
+      }
+   }
+
    TEST2X2(WriteColor_WritesMessageInSpecifiedColor,
       Color color, bool setColorReturnValue,
       Color::Green, false,
@@ -71,6 +96,28 @@ namespace ZenUnit
       ZEN(_consoleColorerMock->UnsetColorMock.AssertCalledOnceWith(setColorReturnValue));
    }
 
+   TEST2X2(OptionallyWriteColor_CallsWriteColorIfDoWriteColorTrue,
+      bool doWriteColor, bool expectWriteColorCall,
+      false, false,
+      true, true)
+   {
+      struct ConsoleSelfMock_WriteColor : public Zen::Mock<Console>
+      {
+         ZENMOCK_VOID2_CONST(WriteColor, const string&, Color)
+      } consoleSelfMock_WriteColor;
+      if (expectWriteColorCall)
+      {
+         consoleSelfMock_WriteColor.WriteColorMock.Expect();
+      }
+      //
+      consoleSelfMock_WriteColor.OptionallyWriteColor(Message, Color::Green, doWriteColor);
+      //
+      if (expectWriteColorCall)
+      {
+         ZEN(consoleSelfMock_WriteColor.WriteColorMock.AssertCalledOnceWith(Message, Color::Green));
+      }
+   }
+
    TEST(WriteLine_CallsWriteLineWithWhite)
    {
       _consoleSelfMocked.WriteLineColorMock.Expect();
@@ -78,6 +125,28 @@ namespace ZenUnit
       _consoleSelfMocked.WriteLine(Message);
       //
       ZEN(_consoleSelfMocked.WriteLineColorMock.AssertCalledOnceWith(Message, Color::White));
+   }
+
+   TEST2X2(OptionallyWriteLine_CallsWriteLineIfDoWriteLineTrue,
+      bool doWriteLine, bool expectWriteLineCall,
+      false, false,
+      true, true)
+   {
+      struct ConsoleSelfMock_WriteColor : public Zen::Mock<Console>
+      {
+         ZENMOCK_VOID1_CONST(WriteLine, const string&)
+      } consoleSelfMock_WriteLine;
+      if (expectWriteLineCall)
+      {
+         consoleSelfMock_WriteLine.WriteLineMock.Expect();
+      }
+      //
+      consoleSelfMock_WriteLine.OptionallyWriteLine(Message, doWriteLine);
+      //
+      if (expectWriteLineCall)
+      {
+         ZEN(consoleSelfMock_WriteLine.WriteLineMock.AssertCalledOnceWith(Message));
+      }
    }
 
    TEST2X2(WriteLineColor_WritesMessageInSpecifiedColorThenNewline,

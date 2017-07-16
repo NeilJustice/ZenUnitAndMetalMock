@@ -31,7 +31,7 @@ namespace ZenUnit
       return testRunner;
    }
 
-   ZenUnitArgs TestRunner::GetArgs()
+   const ZenUnitArgs& TestRunner::GetArgs()
    {
       const TestRunner& testRunner = Instance();
       return testRunner._args;

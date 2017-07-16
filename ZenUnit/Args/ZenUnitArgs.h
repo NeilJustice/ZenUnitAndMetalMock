@@ -6,6 +6,7 @@ namespace ZenUnit
    struct ZenUnitArgs
    {
       std::string commandLine;
+      bool minimal = false;
       bool exit0 = false;
       bool failskips = false;
       unsigned testruns = 1;

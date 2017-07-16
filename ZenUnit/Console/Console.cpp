@@ -20,6 +20,14 @@ namespace ZenUnit
       WriteColor(message, Color::White);
    }
 
+   void Console::OptionallyWrite(const std::string& message, bool doWrite) const
+   {
+      if (doWrite)
+      {
+         Write(message);
+      }
+   }
+
    void Console::WriteColor(const string& message, Color color) const
    {
       const bool didSetColor = _consoleColorer->SetColor(color);
@@ -28,9 +36,25 @@ namespace ZenUnit
       _consoleColorer->UnsetColor(didSetColor);
    }
 
+   void Console::OptionallyWriteColor(const std::string& message, Color color, bool doWriteColor) const
+   {
+      if (doWriteColor)
+      {
+         WriteColor(message, color);
+      }
+   }
+
    void Console::WriteLine(const string& message) const
    {
       WriteLineColor(message, Color::White);
+   }
+
+   void Console::OptionallyWriteLine(const std::string& message, bool doWriteLine) const
+   {
+      if (doWriteLine)
+      {
+         WriteLine(message);
+      }
    }
 
    void Console::WriteLineColor(const string& message, Color color) const

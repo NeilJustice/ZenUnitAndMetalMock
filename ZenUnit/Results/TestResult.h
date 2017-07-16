@@ -47,7 +47,7 @@ namespace ZenUnit
          const CallResult& testBodyCallResult,
          const CallResult& cleanupCallResult,
          const CallResult& destructorCallResult,
-         const std::function<ZenUnitArgs()>& getArgs);
+         const std::function<const ZenUnitArgs&()>& getArgs);
 
       virtual void PrintOKIfTestPassed(const Console* console) const;
       virtual void PrintIfFailure(const Console* console, TestFailureNumberer* testFailureNumberer) const;

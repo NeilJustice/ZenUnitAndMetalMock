@@ -30,7 +30,7 @@ namespace ZenUnit
       TestRunner();
       virtual ~TestRunner();
       static TestRunner& Instance();
-      static ZenUnitArgs GetArgs();
+      static const ZenUnitArgs& GetArgs();
       std::nullptr_t RegisterTestClassRunner(TestClassRunner* testClassRunner);
       std::nullptr_t SkipTest(const char* testClassName, const char* testName, const char* reason);
       std::nullptr_t SkipTestClass(const char* skippedTestClassName, const char* reason);

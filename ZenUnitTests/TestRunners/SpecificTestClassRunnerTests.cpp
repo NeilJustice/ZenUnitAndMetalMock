@@ -13,8 +13,8 @@ namespace ZenUnit
    SPEC(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
    SPECX(RunTests_PrintsTestClassNameAndNumberOfNamedTests_ForEachRunsTests_PrintsTestClassResultLine_MoveReturnsTestClassResult)
    SPECX(PrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVerticalBarNumberOfTests)
-   SPECX(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewDeleteTest_AddsItResultToResults_ReturnsTrueIfSuccess)
-   SPEC(RunTest_WritesVerticalBarTestName_RunsTest_AddsTestResultsToTestClassResult_WriteLinesTestOutcome)
+   SPECX(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_WritesTestNameIfNotMinimal_RunsNewDeleteTest_AddsResultToResults_ReturnsTrueIfNewableAndDeletable)
+   SPECX(RunTest_WritesVerticalBarTestNameIfNotMinimal_RunsTest_AddsTestResultsToTestClassResult_WriteTestOutcomeIfNotMinimal)
    SPEC(PrintTestClassResultLine_CallsTestClassResultPrintResultLine)
    SPECEND
 
@@ -32,7 +32,8 @@ namespace ZenUnit
 
    unique_ptr<SpecificTestClassRunner<TestingTestClass>> _specificTestClassRunner;
    ConsoleMock* _consoleMock;
-   const char* TestClassName = "TestClassName";
+   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs);
+   const char* const TestClassName = "TestClassName";
 
    class SpecificTestClassRunnerSelfMocked : public Zen::Mock<ZenUnit::SpecificTestClassRunner<TestingTestClass>>
    {
@@ -40,9 +41,8 @@ namespace ZenUnit
       ZENMOCK_VOID0_CONST(PrintTestClassNameAndNumberOfNamedTests)
       ZENMOCK_NONVOID2_CONST(bool, ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests, Test*, TestClassResult*)
       ZENMOCK_VOID1_CONST(PrintTestClassResultLine, const TestClassResult*)
-
+      ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
       const ConsoleMock* consoleMock;
-
       using TestsMemberForEacherExtraArgMockType = MemberForEacherExtraArgMock<
          std::vector<std::unique_ptr<Test>>,
          SpecificTestClassRunner<TestingTestClass>,
@@ -56,6 +56,7 @@ namespace ZenUnit
          _console.reset(consoleMock = new ConsoleMock);
          _testsMemberForEacherExtraArg.reset(
             testsMemberForEacherExtraArgMock = new TestsMemberForEacherExtraArgMockType);
+         _TestRunner_GetArgs_ZenMockable = ZENBIND0(GetArgs_ZenMock);
       }
    };
    unique_ptr<SpecificTestClassRunnerSelfMocked> _specificTestClassRunnerSelfMocked;
@@ -64,20 +65,23 @@ namespace ZenUnit
    {
       _specificTestClassRunner = make_unique<SpecificTestClassRunner<TestingTestClass>>(TestClassName);
       _specificTestClassRunner->_console.reset(_consoleMock = new ConsoleMock);
+      _specificTestClassRunner->_TestRunner_GetArgs_ZenMockable = ZENBIND0(GetArgs_ZenMock);
+
       _specificTestClassRunnerSelfMocked = make_unique<SpecificTestClassRunnerSelfMocked>();
    }
 
    TEST(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
    {
-      SpecificTestClassRunner<TestingTestClass> templateTestClassRunner(TestClassName);
+      SpecificTestClassRunner<TestingTestClass> specificTestClassRunner(TestClassName);
       //
-      WAS_NEWED(templateTestClassRunner._console);
-      WAS_NEWED(templateTestClassRunner._testsMemberForEacherExtraArg);
-      ARE_EQUAL(TestClassName, templateTestClassRunner._testClassName);
+      WAS_NEWED(specificTestClassRunner._console);
+      WAS_NEWED(specificTestClassRunner._testsMemberForEacherExtraArg);
+      ARE_EQUAL(TestClassName, specificTestClassRunner._testClassName);
+      FUNCTION_TARGETS(TestRunner::GetArgs, specificTestClassRunner._TestRunner_GetArgs_ZenMockable);
 
       vector<unique_ptr<Test>> expectedTests;
       expectedTests.emplace_back(nullptr);
-      VECTORS_EQUAL(expectedTests, templateTestClassRunner._tests);
+      VECTORS_EQUAL(expectedTests, specificTestClassRunner._tests);
    }
 
    TEST(TestClassNameForSorting_ReturnsTestClassName)
@@ -170,17 +174,21 @@ namespace ZenUnit
       }
    }
 
-   TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewDeleteTest_AddsItResultToResults_ReturnsTrueIfSuccess,
-      bool expectedReturnValue, TestOutcome newDeleteTestOutcome, bool expectedWriteLineTrue,
-      false, TestOutcome::Anomaly, false,
-      false, TestOutcome::Exception, false,
-      true, TestOutcome::Success, true)
+   TEST4X4(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_WritesTestNameIfNotMinimal_RunsNewDeleteTest_AddsResultToResults_ReturnsTrueIfNewableAndDeletable,
+      bool expectedReturnValue, TestOutcome newDeleteTestOutcome, bool expectedWriteLineTrue, bool minimal,
+      false, TestOutcome::Anomaly, false, false,
+      false, TestOutcome::Exception, false, true,
+      true, TestOutcome::Success, true, true)
    {
-      _consoleMock->WriteColorMock.Expect();
-      _consoleMock->WriteMock.Expect();
+      ZenUnitArgs zenUnitArgs;
+      zenUnitArgs.minimal = minimal;
+      GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
+
+      _consoleMock->OptionallyWriteColorMock.Expect();
+      _consoleMock->OptionallyWriteMock.Expect();
       if (expectedWriteLineTrue)
       {
-         _consoleMock->WriteLineMock.Expect();
+         _consoleMock->OptionallyWriteLineMock.Expect();
       }
       TestMock testMock;
 
@@ -195,21 +203,29 @@ namespace ZenUnit
       const bool testClassTypeIsNewableAndDeletable = _specificTestClassRunner->
          ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(&testMock, &testClassResultMock);
       //
-      ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("|", Color::Green));
-      ZEN(_consoleMock->WriteMock.AssertCalledOnceWith("TestClassIsNewableAndDeletable -> "));
+      ZEN(GetArgs_ZenMock.AssertCalledOnce());
+      ZEN(_consoleMock->OptionallyWriteColorMock.AssertCalledOnceWith("|", Color::Green, !minimal));
+      ZEN(_consoleMock->OptionallyWriteMock.AssertCalledOnceWith("TestClassIsNewableAndDeletable -> ", !minimal));
       if (expectedWriteLineTrue)
       {
-         ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith("OK"));
+         ZEN(_consoleMock->OptionallyWriteLineMock.AssertCalledOnceWith("OK", !minimal));
       }
       ZEN(testMock.RunMock.AssertCalledOnce());
       ZEN(testClassResultMock.AddTestResultsMock.AssertCalledOnceWith(testResults));
       ARE_EQUAL(expectedReturnValue, testClassTypeIsNewableAndDeletable);
    }
 
-   TEST(RunTest_WritesVerticalBarTestName_RunsTest_AddsTestResultsToTestClassResult_WriteLinesTestOutcome)
+   TEST1X1(RunTest_WritesVerticalBarTestNameIfNotMinimal_RunsTest_AddsTestResultsToTestClassResult_WriteTestOutcomeIfNotMinimal,
+      bool minimal,
+      false,
+      true)
    {
-      _specificTestClassRunnerSelfMocked->consoleMock->WriteColorMock.Expect();
-      _specificTestClassRunnerSelfMocked->consoleMock->WriteMock.Expect();
+      ZenUnitArgs zenUnitArgs;
+      zenUnitArgs.minimal = minimal;
+      _specificTestClassRunnerSelfMocked->GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
+
+      _specificTestClassRunnerSelfMocked->consoleMock->OptionallyWriteColorMock.Expect();
+      _specificTestClassRunnerSelfMocked->consoleMock->OptionallyWriteMock.Expect();
 
       TestMock* testMock = new TestMock;
       const char* TestName = "TestName";
@@ -227,8 +243,9 @@ namespace ZenUnit
       //
       _specificTestClassRunnerSelfMocked->RunTest(test, &testClassResultMock);
       //
-      ZEN(_specificTestClassRunnerSelfMocked->consoleMock->WriteColorMock.AssertCalledOnceWith("|", Color::Green));
-      ZEN(_specificTestClassRunnerSelfMocked->consoleMock->WriteMock.AssertCalledOnceWith(TestName));
+      ZEN(_specificTestClassRunnerSelfMocked->GetArgs_ZenMock.AssertCalledOnce());
+      ZEN(_specificTestClassRunnerSelfMocked->consoleMock->OptionallyWriteColorMock.AssertCalledOnceWith("|", Color::Green, !minimal));
+      ZEN(_specificTestClassRunnerSelfMocked->consoleMock->OptionallyWriteMock.AssertCalledOnceWith(TestName, !minimal));
       ZEN(testMock->NameMock.AssertCalledOnce());
       ZEN(testMock->PrintPostTestNameMessageMock.AssertCalledOnceWith(_specificTestClassRunnerSelfMocked->_console.get()));
       ZEN(testMock->RunMock.AssertCalledOnce());

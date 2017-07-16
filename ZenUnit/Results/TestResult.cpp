@@ -75,7 +75,7 @@ namespace ZenUnit
       const CallResult& testBodyCallResult,
       const CallResult& cleanupCallResult,
       const CallResult& destructorCallResult,
-      const function<ZenUnitArgs()>& getArgs)
+      const function<const ZenUnitArgs&()>& getArgs)
       : fullTestName(fullTestName)
       , constructorCallResult(constructorCallResult)
       , startupCallResult(startupCallResult)
@@ -123,7 +123,7 @@ namespace ZenUnit
          assert_true(testBodyCallResult.testOutcome == TestOutcome::Success);
          assert_true(cleanupCallResult.testOutcome == TestOutcome::Success);
          assert_true(destructorCallResult.testOutcome == TestOutcome::Success);
-         const ZenUnitArgs args = getArgs();
+         const ZenUnitArgs& args = getArgs();
          if (args.maxtestmilliseconds == 0 || milliseconds <= args.maxtestmilliseconds)
          {
             testOutcome = TestOutcome::Success;

@@ -15,7 +15,7 @@ namespace ZenMock
       friend class ZenMockerTests;
    private:
       std::function<void(int)> _exit_ZenMockable;
-      std::function<ZenUnit::ZenUnitArgs()> _GetArgs_ZenMockable;
+      std::function<ZenUnit::ZenUnitArgs()> _TestRunner_GetArgs_ZenMockable;
       bool _zenMockExceptionIsInPlay;
    protected:
       MockableExceptionThrowerType _exceptionThrower;
@@ -25,7 +25,7 @@ namespace ZenMock
    public:
       explicit ZenMocker(std::string zenMockedFunctionSignature)
          : _exit_ZenMockable(::exit)
-         , _GetArgs_ZenMockable(ZenUnit::TestRunner::GetArgs)
+         , _TestRunner_GetArgs_ZenMockable(ZenUnit::TestRunner::GetArgs)
          , _zenMockExceptionIsInPlay(false)
          , _expected(false)
          , _asserted(false)
@@ -98,17 +98,18 @@ namespace ZenMock
          if (_expected && !_asserted && !_zenMockExceptionIsInPlay)
          {
             const ZenUnit::Console console;
-            std::cout << "\n\n";
-            console.WriteLineColor("Expected-But-Not-Asserted ZenMocked Function:", ZenUnit::Color::Red);
+            std::cout << "\n";
+            console.WriteLineColor("Fatal Expected-But-Not-Asserted ZenMocked Function:\n", ZenUnit::Color::Red);
             console.WriteLineColor(ZenMockedFunctionSignature, ZenUnit::Color::Green);
+            const ZenUnit::ZenUnitArgs& zenUnitArgs = _TestRunner_GetArgs_ZenMockable();
             std::cout << R"(
-Fix for this error: After Expect()ing then calling the above ZenMocked function in your test,
+Fix for Expected-But-Not-Asserted:
+After Expect()ing then calling the above ZenMocked function,
 call ZEN([ZenMockedFunctionName]Mock.
 [AssertCalledOnce|AssertCalledOnceWith|AssertCalledNTimes|AssertCalledNTimesWith|AssertCalls]());
 
-Fast failing now with exit code 1 (unless -exit0 specified).
-)";
-            ZenUnit::ZenUnitArgs zenUnitArgs = _GetArgs_ZenMockable();
+Fast failing now with exit code )" <<
+(zenUnitArgs.exit0 ? "0 (normally exit code 1 but -exit0 is specified)." : "1.");
             _exit_ZenMockable(zenUnitArgs.exit0 ? 0 : 1);
          }
       }

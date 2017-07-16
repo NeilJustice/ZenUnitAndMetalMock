@@ -29,7 +29,7 @@ namespace ZenUnit
    TestFailureNumbererMock _testFailureNumbererMock;
    const FullTestName FullTestNameValue = FullTestName("ClassName", "TestClassName", 0);
    const unsigned ExpectedMilliseconds = 1 + 2 + 3 + 4 + 5;
-   ZENMOCK_NONVOID0_STATIC(ZenUnitArgs, ZenUnit::TestRunner, GetArgs)
+   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
 
    struct TestResult_WriteTestCaseNumberIfAnyMocked : public Zen::Mock<TestResult>
    {
@@ -161,7 +161,7 @@ namespace ZenUnit
       {
          GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
       }
-      const function<ZenUnitArgs()> boundMockGetArgs = ZENBIND0(GetArgs_ZenMock);
+      const function<const ZenUnitArgs&()> boundMockGetArgs = ZENBIND0(GetArgs_ZenMock);
       //
       const TestResult testResult(
          FullTestNameValue,

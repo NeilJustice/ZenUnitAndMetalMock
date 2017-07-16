@@ -155,6 +155,8 @@ Options:
 
 None
    Run all non-skipped tests.
+-minimal
+   Print just test class names run instead of test class names and test names run.
 -exit0
    Always exit 0 regardless of test run outcome.
 -failskips

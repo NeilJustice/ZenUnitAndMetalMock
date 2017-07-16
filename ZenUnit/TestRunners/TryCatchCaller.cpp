@@ -17,7 +17,7 @@ namespace ZenUnit
       : _console(new Console)
       , _testPhaseSuffixer(new TestPhaseSuffixer)
       , _stopwatch(new Stopwatch)
-      , _getArgs(TestRunner::GetArgs)
+      , _TestRunner_GetArgs_ZenMockable(TestRunner::GetArgs)
    {
    }
 
@@ -72,7 +72,7 @@ namespace ZenUnit
          const string exitLine = String::Concat(
             "Fatal ... exception. Fast failing now with exit code 1 (unless -exit0 specified).",
             testPhaseSuffix, " (", milliseconds, " ms)");
-         const ZenUnitArgs zenUnitArgs = _getArgs();
+         const ZenUnitArgs& zenUnitArgs = _TestRunner_GetArgs_ZenMockable();
          _console->WriteLineAndExit(exitLine, zenUnitArgs.exit0 ? 0 : 1);
       }
       return callResult;

@@ -27,7 +27,11 @@ namespace ZenUnit
       for (size_t argIndex = 1; argIndex < numberOfArgs; ++argIndex)
       {
          const string& arg = args[argIndex];
-         if (arg == "-exit0")
+         if (arg == "-minimal")
+         {
+            zenUnitArgs.minimal = true;
+         }
+         else if (arg == "-exit0")
          {
             zenUnitArgs.exit0 = true;
          }
@@ -68,13 +72,15 @@ namespace ZenUnit
       return zenUnitArgs;
    }
 
-const string ArgsParser::Usage = R"(ZenUnit and ZenMock v0.1.1
+const string ArgsParser::Usage = R"(ZenUnit and ZenMock v0.2.0
 Usage: <TestsBinaryName> [Options...]
 
 Options:
 
 None
    Run all non-skipped tests.
+-minimal
+   Print just test class names run instead of test class names and test names run.
 -exit0
    Always exit 0 regardless of test run outcome.
 -failskips

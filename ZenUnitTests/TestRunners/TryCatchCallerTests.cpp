@@ -21,7 +21,7 @@ namespace ZenUnit
    TestPhaseSuffixerMock* _testPhaseSuffixerMock;
    StopwatchMock* _stopwatchMock;
    unique_ptr<TestMock> _testMock;
-   ZENMOCK_NONVOID0_STATIC(ZenUnitArgs, TestRunner, GetArgs)
+   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
 
    const unsigned Milliseconds = 1;
    const char* const TestPhaseSuffix = "TestPhaseSuffix";
@@ -31,7 +31,7 @@ namespace ZenUnit
       _tryCatchCaller._console.reset(_consoleMock = new ConsoleMock);
       _tryCatchCaller._testPhaseSuffixer.reset(_testPhaseSuffixerMock = new TestPhaseSuffixerMock);
       _tryCatchCaller._stopwatch.reset(_stopwatchMock = new StopwatchMock);
-      _tryCatchCaller._getArgs = ZENBIND0(GetArgs_ZenMock);
+      _tryCatchCaller._TestRunner_GetArgs_ZenMockable = ZENBIND0(GetArgs_ZenMock);
       _testMock = make_unique<TestMock>();
    }
 
@@ -46,7 +46,7 @@ namespace ZenUnit
       WAS_NEWED(tryCatchCaller._console);
       WAS_NEWED(tryCatchCaller._testPhaseSuffixer);
       WAS_NEWED(tryCatchCaller._stopwatch);
-      FUNCTION_TARGETS(TestRunner::GetArgs, tryCatchCaller._getArgs);
+      FUNCTION_TARGETS(TestRunner::GetArgs, tryCatchCaller._TestRunner_GetArgs_ZenMockable);
    }
 
    void ExpectStopwatchStartAndStop()

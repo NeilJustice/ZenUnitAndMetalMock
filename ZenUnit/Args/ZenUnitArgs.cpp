@@ -8,6 +8,7 @@ void ZenUnitEqualizer<ZenUnit::ZenUnitArgs>::
 AssertEqual(const ZenUnit::ZenUnitArgs& expectedArgs, const ZenUnit::ZenUnitArgs& actualArgs)
 {
    ARE_EQUAL(expectedArgs.commandLine, actualArgs.commandLine);
+   ARE_EQUAL(expectedArgs.minimal, actualArgs.minimal);
    ARE_EQUAL(expectedArgs.exit0, actualArgs.exit0);
    ARE_EQUAL(expectedArgs.failskips, actualArgs.failskips);
    ARE_EQUAL(expectedArgs.testruns, actualArgs.testruns);
