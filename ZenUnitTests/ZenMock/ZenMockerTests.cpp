@@ -23,7 +23,7 @@ namespace ZenMock
    SPEC(ZenMockThrowIfExceptionSet_CallsExceptionThrowerZenMockThrowIfExceptionSet)
    SPECX(ZenMockExitIfExpectedButNotAsserted_ExpectedFalse_DoesNothing)
    SPECX(ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedTrue_DoesNothing)
-   SKIPSPECX("Works when run normally and fails when run from a post-build event", ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedFalse_ZenMockExceptionIsInPlayFalse_WritesError_Exits1)
+   SPECX(ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedFalse_ZenMockExceptionIsInPlayFalse_WritesError_Exits1)
    SPEC(ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedFalse_ZenMockExceptionIsInPlayTrue_DoesNothing)
    SPECEND
 
