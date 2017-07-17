@@ -31,8 +31,8 @@ STARTUP
 TEST(Constructor_NewsComponents)
 {
    Program program;
-   WAS_NEWED(program._console);
-   WAS_NEWED(program._argsParser);
+   POINTER_WAS_NEWED(program._console);
+   POINTER_WAS_NEWED(program._argsParser);
 }
 
 TEST2X2(Main_ConvertsArgcArgvToStringVector_CallsVectorMain,
