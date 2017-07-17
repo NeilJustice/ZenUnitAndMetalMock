@@ -40,11 +40,11 @@ namespace ZenUnit
    TEST(Constructor_SetsFunctionPointers_SetsSupportsColorAndSupportsColorSetToFalse)
    {
       const ConsoleColorer consoleColorer;
-      FUNCTION_TARGETS(::fileno, consoleColorer.fileno_ZenMockable);
-      FUNCTION_TARGETS(::isatty, consoleColorer.isatty_ZenMockable);
+      STD_FUNCTION_TARGETS(::fileno, consoleColorer.fileno_ZenMockable);
+      STD_FUNCTION_TARGETS(::isatty, consoleColorer.isatty_ZenMockable);
 #ifdef _WIN32
-      FUNCTION_TARGETS(::GetStdHandle, consoleColorer.GetStdHandle_ZenMockable);
-      FUNCTION_TARGETS(::SetConsoleTextAttribute, consoleColorer.SetConsoleTextAttribute_ZenMockable);
+      STD_FUNCTION_TARGETS(::GetStdHandle, consoleColorer.GetStdHandle_ZenMockable);
+      STD_FUNCTION_TARGETS(::SetConsoleTextAttribute, consoleColorer.SetConsoleTextAttribute_ZenMockable);
 #endif
       IS_FALSE(consoleColorer._supportsColor);
       IS_FALSE(consoleColorer._supportsColorSet);

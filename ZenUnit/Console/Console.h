@@ -27,8 +27,8 @@ namespace ZenUnit
       virtual void WriteLineColor(const std::string& message, Color color) const;
       virtual void WriteNewline() const;
       virtual void WriteLineAndExit(const std::string& message, int exitCode) const;
-      virtual void PrintStringsCommaSeparated(
-         const std::vector<std::string>& strings, size_t startIndex, size_t numberOfElements) const;
+      virtual void OptionallyWriteStringsCommaSeparated(
+         const std::vector<std::string>& strings, size_t startIndex, size_t numberOfElements, bool doWrite) const;
       virtual void PauseForAnyKeyIfDebuggerIsPresent() const;
       virtual bool DebuggerIsPresent() const;
       virtual void GetLine() const;

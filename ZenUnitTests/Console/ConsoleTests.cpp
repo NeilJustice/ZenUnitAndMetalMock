@@ -14,8 +14,8 @@ namespace ZenUnit
    SPECX(OptionallyWriteLine_CallsWriteLineIfDoWriteLineTrue)
    SPECX(WriteLineColor_WritesMessageInSpecifiedColorThenNewline)
    SPECX(WriteLineAndExit_CallsWriteLineAndExit)
-   SPECX(PrintStringsCommaSeparated_StartIndexGTEStringsSize_Throws)
-   SPECX(PrintStringsCommaSeparated_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset)
+   SPEC(OptionallyWriteStringsCommaSeparated_DoWriteFalse_DoesNothing)
+   SPECX(OptionallyWriteStringsCommaSeparated_DoWriteTrue_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset)
    SPECX(PauseForAnyKeyIfDebuggerIsPresent_WritesPressAnyKeyAndGetsLineIfDebuggerIsPresent)
 #ifdef _WIN32
    SPECX(DebuggerIsPresent_ReturnsTrueIfIsDebuggerPresentFunctionReturns1)
@@ -24,7 +24,7 @@ namespace ZenUnit
 
    Console _console;
    ConsoleColorerMock* _consoleColorerMock;
-   const string Message = "Message"; // Replace with Random::String();
+   const string Message = "Message";
 
    struct ConsoleSelfMocked : public Zen::Mock<Console>
    {
@@ -42,10 +42,10 @@ namespace ZenUnit
    TEST(Constructor_NewsConsoleColorer_SetsFunctionPointers)
    {
       Console console;
-      WAS_NEWED(console._consoleColorer);
-      FUNCTION_TARGETS(::exit, console._exit_ZenMockable);
+      POINTER_WAS_NEWED(console._consoleColorer);
+      STD_FUNCTION_TARGETS(::exit, console._exit_ZenMockable);
    #ifdef _WIN32
-      FUNCTION_TARGETS(::IsDebuggerPresent, console._IsDebuggerPresent_ZenMockable);
+      STD_FUNCTION_TARGETS(::IsDebuggerPresent, console._IsDebuggerPresent_ZenMockable);
    #endif
    }
 
@@ -179,19 +179,12 @@ namespace ZenUnit
       ZEN(exit_ZenMock.AssertCalledOnceWith(exitCode));
    }
 
-   TEST2X2(PrintStringsCommaSeparated_StartIndexGTEStringsSize_Throws,
-      const vector<string>& strings, size_t startIndex,
-      vector<string>{}, size_t(0),
-      vector<string>{}, size_t(1),
-      vector<string>{ "Arg1" }, size_t(1),
-      vector<string>{ "Arg1" }, size_t(2))
+   TEST(OptionallyWriteStringsCommaSeparated_DoWriteFalse_DoesNothing)
    {
-      THROWS(_console.PrintStringsCommaSeparated(strings, startIndex, 0), invalid_argument,
-         "Console::PrintVectorValuesCommaSeparated(): startIndex must be < strings.size(). startIndex=" +
-         to_string(startIndex) + ", strings.size(): " + to_string(strings.size()));
+      _console.OptionallyWriteStringsCommaSeparated({ "" }, 0, 0, false);
    }
 
-   TEST4X4(PrintStringsCommaSeparated_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset,
+   TEST4X4(OptionallyWriteStringsCommaSeparated_DoWriteTrue_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset,
       const vector<string>& strings,
       size_t startIndex,
       size_t numberOfElements,
@@ -207,7 +200,7 @@ namespace ZenUnit
       } consoleSelfMocked;
       consoleSelfMocked.WriteMock.Expect();
       //
-      consoleSelfMocked.PrintStringsCommaSeparated(strings, startIndex, numberOfElements);
+      consoleSelfMocked.OptionallyWriteStringsCommaSeparated(strings, startIndex, numberOfElements, true);
       //
       vector<ZenMock::OneArgCallRef<const string&>> expectedConsoleWriteCalls;
       for (const string& expectedConsoleWrite : expectedConsoleWrites)

@@ -12,7 +12,7 @@ namespace ZenUnit
    SPEC(Constructor_NewsConsole_SetsFields_GettersReturnExpected_2X2With4Args)
    SPEC(Constructor_StoresDecayedTypeCopiesOfTestCaseArguments)
    SPEC(NumberOfTestCases_ReturnsNumberOfTestCaseArgsDividedByN)
-   SPEC(Run_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
+   SPECX(Run_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
    SPEC(NewTestClass_NewsTestClass)
    SPEC(Startup_CallsTestClassStartup)
    SPEC(TestBody_CallsRunNXNTestCase)
@@ -20,11 +20,12 @@ namespace ZenUnit
    SPEC(Cleanup_CallsCleanup)
    SPEC(DeleteTestClass_DeletesTestClass)
    SPECX(PrintTestCaseNumberArgsThenArrow_WritesTestCaseNumberArrow)
-   SPEC(PrintOKIfTestPassed_CallsTestResultPrintOKIfTestPassed)
+   SPECX(OptionallyWriteOKIfTestPassed_CallsTestResultPrintOKIfTestPassed)
    SPECEND
 
    unique_ptr<TestNXN<TestingTestClass, N, int>> _testNXN;
    ConsoleMock* _consoleMock;
+   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs);
    const char* const TestClassName = "Tests";
    const char* const TestName = "Test";
    const char* const TestCaseArgsText = "1, 2, 3";
@@ -33,6 +34,7 @@ namespace ZenUnit
    {
       _testNXN = make_unique<TestNXN<TestingTestClass, N, int>>("", "", "", 0);
       _testNXN->_console.reset(_consoleMock = new ConsoleMock);
+      _testNXN->_TestRunner_GetArgs_ZenMockable = ZENBIND0(GetArgs_ZenMock);
    }
 
    TEST(Constructor_NewsConsole_SetsFields_GettersReturnExpected_2X2With4Args)
@@ -40,9 +42,12 @@ namespace ZenUnit
       TestNXN<TestingTestClass, 2, int, int, int, int> testNXN(
          TestClassName, TestName, TestCaseArgsText, 0, 0, 0, 0);
       //
-      WAS_NEWED(testNXN._console);
+      POINTER_WAS_NEWED(testNXN._console);
+      STD_FUNCTION_TARGETS(TestRunner::GetArgs, testNXN._TestRunner_GetArgs_ZenMockable);
       IS_NULL(testNXN._testClass);
       ARE_EQUAL(0, testNXN._testCaseArgsIndex);
+      ARE_EQUAL(TestCaseArgsText, testNXN._testCaseArgsText);
+      STD_FUNCTION_TARGETS(String::CommaSplitExceptQuotedCommas, testNXN._String_CommaSplitExceptQuotedCommas);
       ARE_EQUAL(TestName, testNXN.Name());
       ARE_EQUAL("TESTS(Tests)\nTEST2X2(Test)", testNXN.FullTestNameValue());
       ARE_EQUAL("(0)", testNXN.FileLineString());
@@ -86,16 +91,30 @@ namespace ZenUnit
       ARE_EQUAL(3, test3X3_9Args.NumberOfTestCases());
    }
 
-   TEST(Run_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
+   TEST1X1(Run_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults,
+      bool minimal,
+      false,
+      true)
    {
       struct Test1X1SelfMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
       {
          ZENMOCK_NONVOID0(TestResult, MockableCallBaseRunTestCase)
-         ZENMOCK_VOID1_CONST(PrintTestCaseNumberArgsThenArrow, unsigned short)
-         ZENMOCK_VOID1_CONST(PrintOKIfTestPassed, const TestResult&)
+         ZENMOCK_VOID3_CONST(PrintTestCaseNumberArgsThenArrow, unsigned short, const vector<string>&, const ZenUnitArgs&)
+         ZENMOCK_VOID2_CONST(OptionallyWriteOKIfTestPassed, const TestResult&, bool)
          Test1X1SelfMocked()
             : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>("", "", "", 0, 0) {}
       } test1X1SelfMocked;
+
+      ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs, _SelfMocked);
+      ZenUnitArgs zenUnitArgs;
+      zenUnitArgs.minimal = minimal;
+      GetArgs_ZenMock_SelfMocked.ExpectAndReturn(zenUnitArgs);
+      test1X1SelfMocked._TestRunner_GetArgs_ZenMockable = ZENBIND0(GetArgs_ZenMock_SelfMocked);
+
+      ZENMOCK_NONVOID0_STATIC(vector<string>, ZenUnit::String, CommaSplitExceptQuotedCommas, _SelfMocked);
+      const vector<string> splitTestCaseArgs = { "1", "2", "3" };
+      CommaSplitExceptQuotedCommas_ZenMock_SelfMocked.ExpectAndReturn(splitTestCaseArgs);
+      test1X1SelfMocked._String_CommaSplitExceptQuotedCommas = ZENBIND0(CommaSplitExceptQuotedCommas_ZenMock_SelfMocked);
 
       test1X1SelfMocked.PrintTestCaseNumberArgsThenArrowMock.Expect();
       TestResult firstTestResult;
@@ -103,20 +122,26 @@ namespace ZenUnit
       TestResult secondTestResult;
       secondTestResult.fullTestName.testName = "SecondTest";
       test1X1SelfMocked.MockableCallBaseRunTestCaseMock.ExpectAndReturnValues(firstTestResult, secondTestResult);
-      test1X1SelfMocked.PrintOKIfTestPassedMock.Expect();
+      test1X1SelfMocked.OptionallyWriteOKIfTestPassedMock.Expect();
       //
       const vector<TestResult> testResults = test1X1SelfMocked.Run();
       //
-      ZEN(test1X1SelfMocked.PrintTestCaseNumberArgsThenArrowMock.AssertCalls({ 0, 1 }));
+      ZEN(CommaSplitExceptQuotedCommas_ZenMock_SelfMocked.AssertCalledOnce());
+      ZEN(test1X1SelfMocked.PrintTestCaseNumberArgsThenArrowMock.AssertCalls(
+      { 
+         { 0, splitTestCaseArgs, zenUnitArgs },
+         { 1, splitTestCaseArgs, zenUnitArgs }
+      }));
       TestResult expectedFirstTestResult = firstTestResult;
       expectedFirstTestResult.testCaseIndex = 0;
       TestResult expectedSecondTestResult = secondTestResult;
       expectedSecondTestResult.testCaseIndex = 1;
+      ZEN(GetArgs_ZenMock_SelfMocked.AssertCalledOnce());
       ZEN(test1X1SelfMocked.MockableCallBaseRunTestCaseMock.AssertCalledNTimes(2));
-      ZEN(test1X1SelfMocked.PrintOKIfTestPassedMock.AssertCalls(
+      ZEN(test1X1SelfMocked.OptionallyWriteOKIfTestPassedMock.AssertCalls(
       {
-         expectedFirstTestResult,
-         expectedSecondTestResult
+         { expectedFirstTestResult, !minimal },
+         { expectedSecondTestResult, !minimal }
       }));
       const vector<TestResult> expectedTestResults =
       {
@@ -133,7 +158,7 @@ namespace ZenUnit
       //
       _testNXN->NewTestClass();
       //
-      WAS_NEWED(_testNXN->_testClass);
+      POINTER_WAS_NEWED(_testNXN->_testClass);
       _testNXN->_testClass.reset();
    }
 
@@ -191,41 +216,46 @@ namespace ZenUnit
       IS_TRUE(TestingTestClass::s_destructorCalled);
    }
 
-   TEST3X3(PrintTestCaseNumberArgsThenArrow_WritesTestCaseNumberArrow,
-      unsigned short testCaseIndex, int expectedTestCaseNumber, size_t expectedTestCaseArgsPrintingStartIndex,
-      static_cast<unsigned short>(0), 1, size_t(0),
-      static_cast<unsigned short>(1), 2, size_t(1))
+   TEST4X4(PrintTestCaseNumberArgsThenArrow_WritesTestCaseNumberArrow,
+      unsigned short testCaseIndex, int expectedTestCaseNumber, size_t expectedTestCaseArgsPrintingStartIndex, bool minimal,
+      static_cast<unsigned short>(0), 1, size_t(0), false,
+      static_cast<unsigned short>(1), 2, size_t(1), true)
    {
-      _consoleMock->WriteColorMock.Expect();
-      _consoleMock->WriteMock.Expect();
-      _consoleMock->PrintStringsCommaSeparatedMock.Expect();
-      _testNXN->_commaSplitTestCaseArgs = { "Arg0", "Arg1" };
+      _consoleMock->OptionallyWriteColorMock.Expect();
+      _consoleMock->OptionallyWriteMock.Expect();
+      _consoleMock->OptionallyWriteStringsCommaSeparatedMock.Expect();
+      ZenUnitArgs zenUnitArgs;
+      zenUnitArgs.minimal = minimal;
+      vector<string> splitTestCaseArgs = { "Arg0", "Arg1" };
       //
-      _testNXN->PrintTestCaseNumberArgsThenArrow(testCaseIndex);
+      _testNXN->PrintTestCaseNumberArgsThenArrow(testCaseIndex, splitTestCaseArgs, zenUnitArgs);
       //
-      ZEN(_consoleMock->WriteColorMock.AssertCalls(
+      ZEN(_consoleMock->OptionallyWriteColorMock.AssertCalls(
       {
-         { " [", Color::Green },
-         { "]", Color::Green }
+         { " [", Color::Green, !minimal },
+         { "]", Color::Green, !minimal }
       }));
-      ZEN(_consoleMock->PrintStringsCommaSeparatedMock.AssertCalledOnceWith(
-         _testNXN->_commaSplitTestCaseArgs, expectedTestCaseArgsPrintingStartIndex, N));
-      ZEN(_consoleMock->WriteMock.AssertCalls(
+      ZEN(_consoleMock->OptionallyWriteStringsCommaSeparatedMock.AssertCalledOnceWith(
+         splitTestCaseArgs, expectedTestCaseArgsPrintingStartIndex, N, !minimal));
+      ZEN(_consoleMock->OptionallyWriteMock.AssertCalls(
       {
-         to_string(expectedTestCaseNumber),
-         " ("s,
-         ") -> "s
+         { to_string(expectedTestCaseNumber), !minimal },
+         { " ("s, !minimal },
+         { ") -> "s, !minimal }
       }));
    }
 
-   TEST(PrintOKIfTestPassed_CallsTestResultPrintOKIfTestPassed)
+   TEST1X1(OptionallyWriteOKIfTestPassed_CallsTestResultPrintOKIfTestPassed,
+      bool doPrintOK,
+      false,
+      true)
    {
       TestResultMock testResultMock;
-      testResultMock.PrintOKIfTestPassedMock.Expect();
+      testResultMock.OptionallyWriteOKIfTestPassedMock.Expect();
       //
-      _testNXN->PrintOKIfTestPassed(testResultMock);
+      _testNXN->OptionallyWriteOKIfTestPassed(testResultMock, doPrintOK);
       //
-      ZEN(testResultMock.PrintOKIfTestPassedMock.AssertCalledOnceWith(_testNXN->_console.get()));
+      ZEN(testResultMock.OptionallyWriteOKIfTestPassedMock.AssertCalledOnceWith(_testNXN->_console.get(), doPrintOK));
    }
 
    }; RUN(TestNXNTests)

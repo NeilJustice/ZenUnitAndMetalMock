@@ -8,8 +8,8 @@ namespace ZenUnit
 {
    TESTS(NormalTestTests)
    SPEC(NumberOfTestCases_Returns1)
-   SPEC(PrintPostTestNameMessage_WritesSpaceArrowSpace)
-   SPEC(PrintPostTestCompletionMessage_CallsTestResultPrintOKIfTestPassed)
+   SPECX(OptionallyWritePostTestNameMessage_WritesSpaceArrowSpace)
+   SPECX(OptionallyWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue)
    SPEC(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)
    SPEC(NewTestClass_NewsTestClass)
    SPEC(Startup_CallsStartupOnTestClass)
@@ -32,25 +32,37 @@ namespace ZenUnit
       ARE_EQUAL(1, _normalTest->NumberOfTestCases());
    }
 
-   TEST(PrintPostTestNameMessage_WritesSpaceArrowSpace)
+   TEST2X2(OptionallyWritePostTestNameMessage_WritesSpaceArrowSpace,
+      bool doWriteMessage, bool expectWriteCall,
+      false, false,
+      true, true)
    {
       ConsoleMock consoleMock;
-      consoleMock.WriteMock.Expect();
+      if (expectWriteCall)
+      {
+         consoleMock.WriteMock.Expect();
+      }
       //
-      _normalTest->PrintPostTestNameMessage(&consoleMock);
+      _normalTest->OptionallyWritePostTestNameMessage(&consoleMock, doWriteMessage);
       //
-      ZEN(consoleMock.WriteMock.AssertCalledOnceWith(" -> "));
+      if (expectWriteCall)
+      {
+         ZEN(consoleMock.WriteMock.AssertCalledOnceWith(" -> "));
+      }
    }
 
-   TEST(PrintPostTestCompletionMessage_CallsTestResultPrintOKIfTestPassed)
+   TEST1X1(OptionallyWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue,
+      bool doWriteMessage,
+      false,
+      true)
    {
       ConsoleMock consoleMock;
       TestResultMock testResultMock;
-      testResultMock.PrintOKIfTestPassedMock.Expect();
+      testResultMock.OptionallyWriteOKIfTestPassedMock.Expect();
       //
-      _normalTest->PrintPostTestCompletionMessage(&consoleMock, testResultMock);
+      _normalTest->OptionallyWritePostTestCompletionMessage(&consoleMock, testResultMock, doWriteMessage);
       //
-      ZEN(testResultMock.PrintOKIfTestPassedMock.AssertCalledOnceWith(&consoleMock));
+      ZEN(testResultMock.OptionallyWriteOKIfTestPassedMock.AssertCalledOnceWith(&consoleMock, doWriteMessage));
    }
 
    TEST(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)

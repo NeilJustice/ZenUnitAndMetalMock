@@ -43,8 +43,8 @@ namespace ZenMock
    {
       const ZenMocker<ExceptionThrower> zenMocker(ZenMockedFunctionSignature);
       //
-      FUNCTION_TARGETS(exit, zenMocker._exit_ZenMockable);
-      FUNCTION_TARGETS(ZenUnit::TestRunner::GetArgs, zenMocker._TestRunner_GetArgs_ZenMockable);
+      STD_FUNCTION_TARGETS(exit, zenMocker._exit_ZenMockable);
+      STD_FUNCTION_TARGETS(ZenUnit::TestRunner::GetArgs, zenMocker._TestRunner_GetArgs_ZenMockable);
       ARE_EQUAL(ZenMockedFunctionSignature, zenMocker.ZenMockedFunctionSignature);
       IS_FALSE(zenMocker._expected);
       IS_FALSE(zenMocker._asserted);

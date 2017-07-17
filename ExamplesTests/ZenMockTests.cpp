@@ -75,8 +75,8 @@ STARTUP
 TEST(Constructor_NewsComponentA)
 {
    ClassUnderTest classUnderTest;
-   // WAS_NEWED operator deletes _componentA to confirm that it was operator newed
-   WAS_NEWED(classUnderTest._componentA);
+   // POINTER_WAS_NEWED operator deletes _componentA to confirm that it was operator newed
+   POINTER_WAS_NEWED(classUnderTest._componentA);
 }
 
 // A 3-by-3 value-parameterized test processes its variadic test case arguments

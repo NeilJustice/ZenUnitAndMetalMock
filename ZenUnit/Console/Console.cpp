@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ZenUnit/Console/Console.h"
 #include "ZenUnit/Console/ConsoleColorer.h"
+#include "ZenUnit/Utils/AssertTrue.h"
 
 namespace ZenUnit
 {
@@ -79,23 +80,21 @@ namespace ZenUnit
       _exit_ZenMockable(exitCode);
    }
 
-   void Console::PrintStringsCommaSeparated(
-      const std::vector<std::string>& strings, size_t startIndex, size_t numberOfElements) const
+   void Console::OptionallyWriteStringsCommaSeparated(
+      const std::vector<std::string>& strings, size_t startIndex, size_t numberOfElements, bool doWrite) const
    {
-      if (startIndex >= strings.size())
+      assert_true(startIndex < strings.size());
+      if (doWrite)
       {
-         throw invalid_argument(
-            "Console::PrintVectorValuesCommaSeparated(): startIndex must be < strings.size(). startIndex=" +
-            to_string(startIndex) + ", strings.size(): " + to_string(strings.size()));
-      }
-      const size_t endIndex = startIndex + numberOfElements - 1;
-      for (size_t i = startIndex; i <= endIndex; ++i)
-      {
-         const std::string& str = strings[i];
-         Write(str);
-         if (i < endIndex)
+         const size_t endIndex = startIndex + numberOfElements - 1;
+         for (size_t i = startIndex; i <= endIndex; ++i)
          {
-            Write(", ");
+            const std::string& str = strings[i];
+            Write(str);
+            if (i < endIndex)
+            {
+               Write(", ");
+            }
          }
       }
    }

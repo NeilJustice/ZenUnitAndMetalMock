@@ -135,9 +135,9 @@ namespace ZenUnit
       }
    }
 
-   void TestResult::PrintOKIfTestPassed(const Console* console) const
+   void TestResult::OptionallyWriteOKIfTestPassed(const Console* console, bool doPrintOK) const
    {
-      if (testOutcome == TestOutcome::Success)
+      if (doPrintOK && testOutcome == TestOutcome::Success)
       {
          console->WriteLineColor("OK", Color::White);
       }

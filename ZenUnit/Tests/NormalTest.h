@@ -24,15 +24,19 @@ namespace ZenUnit
          return 1;
       }
 
-      void PrintPostTestNameMessage(const Console* console) const override
+      void OptionallyWritePostTestNameMessage(
+         const Console* console, bool doWriteMessage) const override
       {
-         console->Write(" -> ");
+         if (doWriteMessage)
+         {
+            console->Write(" -> ");
+         }
       }
 
-      void PrintPostTestCompletionMessage(
-         const Console* console, const TestResult& testResult) const override
+      void OptionallyWritePostTestCompletionMessage(
+         const Console* console, const TestResult& testResult, bool doWriteMessage) const override
       {
-         testResult.PrintOKIfTestPassed(console);
+         testResult.OptionallyWriteOKIfTestPassed(console, doWriteMessage);
       }
 
       std::vector<TestResult> Run() override

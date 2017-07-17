@@ -13,8 +13,8 @@ namespace ZenUnit
    SPECX(RunTestCase_ConstructorFails_DoesNotCallSubsequentTestPhases_ReturnsTestResultConstructorFail)
    SPECX(RunTestCase_ConstructorSucceeds_StartupFails_DoesNotCallTest_DoesNotCallCleanup_CallsDestructor_ReturnsTestResultStartupFail)
    SPEC(RunTestCase_AllTestPhasesSucceed_ReturnsExpectedTestResult)
-   SPEC(PrintPostTestNameMessage_DoesNothing)
-   SPEC(PrintPostTestCompletionMessage_DoesNothing)
+   SPEC(OptionallyWritePostTestNameMessage_DoesNothing)
+   SPECX(PrintPostTestCompletionMessage_DoesNothing)
    SPEC(StaticCallNewTestClass_CallsNewTestClass)
    SPEC(StaticCallStartup_CallsStartup)
    SPEC(StaticTestBody_CallsTestBody)
@@ -38,8 +38,8 @@ namespace ZenUnit
    TEST(TwoArgConstructor_NewsComponents_SetsFullName_NameFunctionReturnsTestName)
    {
       Test test("Tests", "Test", 0);
-      WAS_NEWED(test._tryCatchCaller);
-      WAS_NEWED(test._testResultFactory);
+      POINTER_WAS_NEWED(test._tryCatchCaller);
+      POINTER_WAS_NEWED(test._testResultFactory);
       ARE_EQUAL(FileLine(), test._fileLine);
 
       const char* const testName = test.Name();
@@ -52,15 +52,19 @@ namespace ZenUnit
       ARE_EQUAL(test._fileLine.ToString(), test.FileLineString());
    }
 
-   TEST(PrintPostTestNameMessage_DoesNothing)
+   TEST(OptionallyWritePostTestNameMessage_DoesNothing)
    {
-      _test->PrintPostTestNameMessage(nullptr);
+      _test->OptionallyWritePostTestNameMessage(nullptr, false);
+      _test->OptionallyWritePostTestNameMessage(nullptr, true);
    }
 
-   TEST(PrintPostTestCompletionMessage_DoesNothing)
+   TEST1X1(PrintPostTestCompletionMessage_DoesNothing,
+      bool doWriteMessage,
+      false,
+      true)
    {
       const TestResultMock testResultMock;
-      _test->PrintPostTestCompletionMessage(nullptr, testResultMock);
+      _test->OptionallyWritePostTestCompletionMessage(nullptr, testResultMock, doWriteMessage);
    }
 
    static CallResult CallResultWithOutcome(TestOutcome testOutcome)

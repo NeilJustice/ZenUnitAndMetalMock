@@ -24,9 +24,13 @@ namespace ZenUnit
          return numberOfTestCases;
       }
 
-      void PrintPostTestNameMessage(const Console* console) const override
+      void OptionallyWritePostTestNameMessage(
+         const Console* console, bool doWriteMessage) const override
       {
-         console->WriteLine("...");
+         if (doWriteMessage)
+         {
+            console->WriteLine("...");
+         }
       }
 
       std::vector<TestResult> Run() override

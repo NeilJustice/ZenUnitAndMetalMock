@@ -13,7 +13,7 @@ struct ConsoleMock : public Zen::Mock<Console>
    ZENMOCK_VOID0_CONST(WriteNewline)
    ZENMOCK_VOID2_CONST(WriteLineAndExit, const string&, int)
    ZENMOCK_VOID0_CONST(GetLine)
-   ZENMOCK_VOID3_CONST(PrintStringsCommaSeparated, const std::vector<std::string>&, size_t, size_t)
+   ZENMOCK_VOID4_CONST(OptionallyWriteStringsCommaSeparated, const std::vector<std::string>&, size_t, size_t, bool)
    ZENMOCK_VOID0_CONST(PauseForAnyKeyIfDebuggerIsPresent)
    ZENMOCK_NONVOID0_CONST(bool, DebuggerIsPresent)
 };

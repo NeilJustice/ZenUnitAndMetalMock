@@ -43,10 +43,10 @@ namespace ZenUnit
    TEST(Constructor_NewsComponents_SetsGetArgsFunction)
    {
       TryCatchCaller tryCatchCaller;
-      WAS_NEWED(tryCatchCaller._console);
-      WAS_NEWED(tryCatchCaller._testPhaseSuffixer);
-      WAS_NEWED(tryCatchCaller._stopwatch);
-      FUNCTION_TARGETS(TestRunner::GetArgs, tryCatchCaller._TestRunner_GetArgs_ZenMockable);
+      POINTER_WAS_NEWED(tryCatchCaller._console);
+      POINTER_WAS_NEWED(tryCatchCaller._testPhaseSuffixer);
+      POINTER_WAS_NEWED(tryCatchCaller._stopwatch);
+      STD_FUNCTION_TARGETS(TestRunner::GetArgs, tryCatchCaller._TestRunner_GetArgs_ZenMockable);
    }
 
    void ExpectStopwatchStartAndStop()

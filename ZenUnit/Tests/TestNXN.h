@@ -10,9 +10,11 @@ namespace ZenUnit
       friend class TestNXNTests;
    private:
       std::unique_ptr<const Console> _console;
+      std::function<const ZenUnitArgs&()> _TestRunner_GetArgs_ZenMockable;
       std::unique_ptr<TestClassType> _testClass;
+      const char* const _testCaseArgsText;
+      std::function<std::vector<std::string>(const char*)> _String_CommaSplitExceptQuotedCommas;
       size_t _testCaseArgsIndex;
-      std::vector<std::string> _commaSplitTestCaseArgs;
    protected:
       const std::tuple<typename std::decay<TestCaseArgTypes>::type...> _testCaseArgs;
    public:
@@ -23,8 +25,10 @@ namespace ZenUnit
          TestCaseArgTypes&&... testCaseArgs)
          : Test(testClassName, testName, N)
          , _console(new Console)
+         , _TestRunner_GetArgs_ZenMockable(TestRunner::GetArgs)
          , _testCaseArgsIndex(0)
-         , _commaSplitTestCaseArgs(String::CommaSplitExceptQuotedCommas(testCaseArgsText))
+         , _testCaseArgsText(testCaseArgsText)
+         , _String_CommaSplitExceptQuotedCommas(String::CommaSplitExceptQuotedCommas)
          , _testCaseArgs(std::forward<TestCaseArgTypes>(testCaseArgs)...)
       {
       }
@@ -60,16 +64,18 @@ namespace ZenUnit
          const size_t numberOfTestCases = NumberOfTestCases();
          testResults.reserve(numberOfTestCases);
          assert_true(_testCaseArgsIndex == 0);
+         std::vector<std::string> splitTestCaseArgs = _String_CommaSplitExceptQuotedCommas(_testCaseArgsText);
+         const ZenUnitArgs& zenUnitArgs = _TestRunner_GetArgs_ZenMockable();
          constexpr size_t NumberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
          for (unsigned short testCaseIndex = 0;
               _testCaseArgsIndex < NumberOfTestCaseArgs;
               _testCaseArgsIndex += N, ++testCaseIndex)
          {
-            PrintTestCaseNumberArgsThenArrow(testCaseIndex);
+            PrintTestCaseNumberArgsThenArrow(testCaseIndex, splitTestCaseArgs, zenUnitArgs);
             TestResult testResult = MockableCallBaseRunTestCase();
             testResult.testCaseIndex = testCaseIndex;
             testResults.push_back(testResult);
-            PrintOKIfTestPassed(testResult);
+            OptionallyWriteOKIfTestPassed(testResult, !zenUnitArgs.minimal);
          }
          _testCaseArgsIndex = 0;
          return testResults;
@@ -91,22 +97,24 @@ namespace ZenUnit
          return testResult;
       }
 
-      virtual void PrintTestCaseNumberArgsThenArrow(unsigned short testCaseIndex) const
+      virtual void PrintTestCaseNumberArgsThenArrow(
+         unsigned short testCaseIndex, const std::vector<std::string>& splitTestCaseArgs, const ZenUnitArgs& zenUnitArgs) const
       {
          assert_true(testCaseIndex >= 0);
-         _console->WriteColor(" [", Color::Green);
+         _console->OptionallyWriteColor(" [", Color::Green, !zenUnitArgs.minimal);
          const std::string testCaseNumber = std::to_string(testCaseIndex + 1);
-         _console->Write(testCaseNumber);
-         _console->WriteColor("]", Color::Green);
-         _console->Write(" (");
+         _console->OptionallyWrite(testCaseNumber, !zenUnitArgs.minimal);
+         _console->OptionallyWriteColor("]", Color::Green, !zenUnitArgs.minimal);
+         _console->OptionallyWrite(" (", !zenUnitArgs.minimal);
          const size_t testCaseArgsPrintingStartIndex = static_cast<size_t>(testCaseIndex) * N;
-         _console->PrintStringsCommaSeparated(_commaSplitTestCaseArgs, testCaseArgsPrintingStartIndex, N);
-         _console->Write(") -> ");
+         _console->OptionallyWriteStringsCommaSeparated(
+            splitTestCaseArgs, testCaseArgsPrintingStartIndex, N, !zenUnitArgs.minimal);
+         _console->OptionallyWrite(") -> ", !zenUnitArgs.minimal);
       }
 
-      virtual void PrintOKIfTestPassed(const TestResult& testResult) const
+      virtual void OptionallyWriteOKIfTestPassed(const TestResult& testResult, bool doPrintOK) const
       {
-         testResult.PrintOKIfTestPassed(_console.get());
+         testResult.OptionallyWriteOKIfTestPassed(_console.get(), doPrintOK);
       }
    };
 }

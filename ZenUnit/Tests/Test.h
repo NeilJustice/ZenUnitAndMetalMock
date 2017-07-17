@@ -23,8 +23,8 @@ namespace ZenUnit
       virtual const char* Name() const;
       virtual std::string FullTestNameValue() const;
       virtual std::string FileLineString() const;
-      virtual void PrintPostTestNameMessage(const Console*) const {}
-      virtual void PrintPostTestCompletionMessage(const Console*, const TestResult&) const {}
+      virtual void OptionallyWritePostTestNameMessage(const Console*, bool) const {}
+      virtual void OptionallyWritePostTestCompletionMessage(const Console*, const TestResult&, bool) const {}
       virtual size_t NumberOfTestCases() const { return 0; }
       virtual std::vector<TestResult> Run() { return {}; }
 

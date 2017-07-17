@@ -53,11 +53,11 @@ namespace ZenUnit
    TEST(Constructor_NewsComponents)
    {
       TestRunResult testRunResult;
-      WAS_NEWED(testRunResult._console);
-      WAS_NEWED(testRunResult._memberForEacherTestClassResults);
-      WAS_NEWED(testRunResult._memberForEacherSkippedTests);
-      WAS_NEWED(testRunResult._forEacherTwoExtraArgs);
-      WAS_NEWED(testRunResult._testFailureNumberer);
+      POINTER_WAS_NEWED(testRunResult._console);
+      POINTER_WAS_NEWED(testRunResult._memberForEacherTestClassResults);
+      POINTER_WAS_NEWED(testRunResult._memberForEacherSkippedTests);
+      POINTER_WAS_NEWED(testRunResult._forEacherTwoExtraArgs);
+      POINTER_WAS_NEWED(testRunResult._testFailureNumberer);
       IS_EMPTY(testRunResult._testClassResults);
       IS_EMPTY(testRunResult._skippedTestClassNamesAndReasons);
       IS_EMPTY(testRunResult._skippedFullTestNamesAndReasons);
@@ -287,9 +287,9 @@ namespace ZenUnit
       size_t(2), size_t(1), size_t(2), 1)
    {
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
-      const ZenUnitArgs Args{};
+      const ZenUnitArgs args;
       //
-      const int exitCode = _testRunResult.DetermineExitCode(Args);
+      const int exitCode = _testRunResult.DetermineExitCode(args);
       //
       ARE_EQUAL(expectedExitCode, exitCode);
    }

@@ -74,10 +74,10 @@ namespace ZenUnit
    {
       SpecificTestClassRunner<TestingTestClass> specificTestClassRunner(TestClassName);
       //
-      WAS_NEWED(specificTestClassRunner._console);
-      WAS_NEWED(specificTestClassRunner._testsMemberForEacherExtraArg);
+      POINTER_WAS_NEWED(specificTestClassRunner._console);
+      POINTER_WAS_NEWED(specificTestClassRunner._testsMemberForEacherExtraArg);
       ARE_EQUAL(TestClassName, specificTestClassRunner._testClassName);
-      FUNCTION_TARGETS(TestRunner::GetArgs, specificTestClassRunner._TestRunner_GetArgs_ZenMockable);
+      STD_FUNCTION_TARGETS(TestRunner::GetArgs, specificTestClassRunner._TestRunner_GetArgs_ZenMockable);
 
       vector<unique_ptr<Test>> expectedTests;
       expectedTests.emplace_back(nullptr);
@@ -230,12 +230,12 @@ namespace ZenUnit
       TestMock* testMock = new TestMock;
       const char* TestName = "TestName";
       testMock->NameMock.ExpectAndReturn(TestName);
-      testMock->PrintPostTestNameMessageMock.Expect();
+      testMock->OptionallyWritePostTestNameMessageMock.Expect();
       TestResult test0;
       test0.fullTestName = FullTestName("", "Test0", 0);
       const vector<TestResult> TestResults { test0, TestResult() };
       testMock->RunMock.ExpectAndReturn(TestResults);
-      testMock->PrintPostTestCompletionMessageMock.Expect();
+      testMock->OptionallyWritePostTestCompletionMessageMock.Expect();
       const unique_ptr<Test> test(testMock);
 
       TestClassResultMock testClassResultMock;
@@ -247,11 +247,12 @@ namespace ZenUnit
       ZEN(_specificTestClassRunnerSelfMocked->consoleMock->OptionallyWriteColorMock.AssertCalledOnceWith("|", Color::Green, !minimal));
       ZEN(_specificTestClassRunnerSelfMocked->consoleMock->OptionallyWriteMock.AssertCalledOnceWith(TestName, !minimal));
       ZEN(testMock->NameMock.AssertCalledOnce());
-      ZEN(testMock->PrintPostTestNameMessageMock.AssertCalledOnceWith(_specificTestClassRunnerSelfMocked->_console.get()));
+      ZEN(testMock->OptionallyWritePostTestNameMessageMock.
+         AssertCalledOnceWith(_specificTestClassRunnerSelfMocked->_console.get(), !minimal));
       ZEN(testMock->RunMock.AssertCalledOnce());
       ZEN(testClassResultMock.AddTestResultsMock.AssertCalledOnceWith(TestResults));
-      ZEN(testMock->PrintPostTestCompletionMessageMock.AssertCalledOnceWith(
-         _specificTestClassRunnerSelfMocked->_console.get(), test0));
+      ZEN(testMock->OptionallyWritePostTestCompletionMessageMock.AssertCalledOnceWith(
+         _specificTestClassRunnerSelfMocked->_console.get(), test0, !minimal));
    }
 
    TEST(PrintTestClassResultLine_CallsTestClassResultPrintResultLine)

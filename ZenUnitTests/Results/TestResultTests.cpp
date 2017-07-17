@@ -11,7 +11,7 @@ namespace ZenUnit
    SPECX(StartupFail_ReturnsExpectedTestResult)
    SPEC(CtorDtorSuccess_ReturnsExpectedTestResult);
    SPECX(SixArgConstructor_SetsFields)
-   SPECX(PrintOKIfTestPassed_PrintsOKIfTestPassed)
+   SPECX(OptionallyWriteOKIfTestPassed_PrintsOKIfTestPassed)
    SPEC(PrintIfFailure_Success_PrintsNothing)
    SPECX(PrintIfFailure_Anomaly_PrintsExpected)
    SPECX(PrintIfFailure_Exception_PrintsExpected)
@@ -191,13 +191,19 @@ namespace ZenUnit
       ARE_EQUAL(expectedTestResult, testResult);
    }
 
-   TEST2X2(PrintOKIfTestPassed_PrintsOKIfTestPassed,
-      TestOutcome testOutcome, bool expectWriteLineOK,
-      TestOutcome::Success, true,
-      TestOutcome::Anomaly, false,
-      TestOutcome::Exception, false,
-      TestOutcome::SuccessButPastDeadline, false,
-      TestOutcome::Unset, false)
+   TEST3X3(OptionallyWriteOKIfTestPassed_PrintsOKIfTestPassed,
+      TestOutcome testOutcome, bool doPrintOK, bool expectWriteLineOK,
+      TestOutcome::Success, true, true,
+      TestOutcome::Anomaly, true, false,
+      TestOutcome::Exception, true, false,
+      TestOutcome::SuccessButPastDeadline, true, false,
+      TestOutcome::Unset, true, false,
+
+      TestOutcome::Success, false, false,
+      TestOutcome::Anomaly, false, false,
+      TestOutcome::Exception, false, false,
+      TestOutcome::SuccessButPastDeadline, false, false,
+      TestOutcome::Unset, false, false)
    {
       _testResult.testOutcome = testOutcome;
       if (expectWriteLineOK)
@@ -205,7 +211,7 @@ namespace ZenUnit
          _consoleMock.WriteLineColorMock.Expect();
       }
       //
-      _testResult.PrintOKIfTestPassed(&_consoleMock);
+      _testResult.OptionallyWriteOKIfTestPassed(&_consoleMock, doPrintOK);
       //
       if (expectWriteLineOK)
       {

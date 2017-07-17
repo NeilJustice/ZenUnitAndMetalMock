@@ -27,9 +27,9 @@ namespace ZenUnit
    TEST(Constructor_NewsConsoleAndWatch)
    {
       PreamblePrinter preamblePrinter;
-      WAS_NEWED(preamblePrinter._console);
-      WAS_NEWED(preamblePrinter._watch);
-      WAS_NEWED(preamblePrinter._machineNameGetter);
+      POINTER_WAS_NEWED(preamblePrinter._console);
+      POINTER_WAS_NEWED(preamblePrinter._watch);
+      POINTER_WAS_NEWED(preamblePrinter._machineNameGetter);
    }
 
    TEST4X4(PrintOpeningThreeLines_PrintsCommandLineAndTimeZoneAndTestAndTestClassCounts,

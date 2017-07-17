@@ -23,7 +23,7 @@ namespace ZenUnit
    TEST(Constructor_SetsNowFunction)
    {
       Stopwatch stopwatch;
-      FUNCTION_TARGETS(chrono::high_resolution_clock::now, stopwatch._highres_now_ZenMockable);
+      STD_FUNCTION_TARGETS(chrono::high_resolution_clock::now, stopwatch._highres_now_ZenMockable);
       ARE_EQUAL(chrono::time_point<
          chrono::high_resolution_clock>(), stopwatch._startTime);
    }

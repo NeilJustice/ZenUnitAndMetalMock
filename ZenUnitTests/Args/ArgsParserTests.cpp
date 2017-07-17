@@ -51,8 +51,8 @@ None
    TEST(DefaultConstructor_NewsConsole_SetsStringToUnsignedFunction)
    {
       ArgsParser argsParser;
-      WAS_NEWED(argsParser._console);
-      FUNCTION_TARGETS(String::ToUnsigned, argsParser._String_ToUnsigned);
+      POINTER_WAS_NEWED(argsParser._console);
+      STD_FUNCTION_TARGETS(String::ToUnsigned, argsParser._String_ToUnsigned);
    }
 
    TEST(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)

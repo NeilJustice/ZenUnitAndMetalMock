@@ -27,7 +27,7 @@ namespace ZenUnit
    TESTS(SpecSectionTestNXNTests)
    SPEC(ThreeArgConstructor_SetsTestName_SetsTestNXNPmf)
    SPECX(NumberOfTestCases_GetsTestFromAddress_ReturnsTestNumberOfTestCases)
-   SPEC(PrintPostTestNameMessage_WriteNewline)
+   SPECX(OptionallyWritePostTestNameMessage_WritesEllipsisIfDoWriteMessageTrue)
    SPEC(Run_GetsTestFromAddress_RunsTest_ReturnsTestResults)
    SPEC(PmfTokenToTest_ReturnsTestClassTypeTestNXNPmfToTestReturnValue);
    SPEC(TestFunction_CodeCoverage)
@@ -86,14 +86,23 @@ namespace ZenUnit
       ARE_EQUAL(testNumberOfTestCases, numberOfTestCases);
    }
 
-   TEST(PrintPostTestNameMessage_WriteNewline)
+   TEST2X2(OptionallyWritePostTestNameMessage_WritesEllipsisIfDoWriteMessageTrue,
+      bool doWriteMessage, bool expectWriteLineCall,
+      false, false,
+      true, true)
    {
       ConsoleMock consoleMock;
-      consoleMock.WriteLineMock.Expect();
+      if (expectWriteLineCall)
+      {
+         consoleMock.WriteLineMock.Expect();
+      }
       //
-      _specSectionTestNXN->PrintPostTestNameMessage(&consoleMock);
+      _specSectionTestNXN->OptionallyWritePostTestNameMessage(&consoleMock, doWriteMessage);
       //
-      ZEN(consoleMock.WriteLineMock.AssertCalledOnceWith("..."));
+      if (expectWriteLineCall)
+      {
+         ZEN(consoleMock.WriteLineMock.AssertCalledOnceWith("..."));
+      }
    }
 
    TEST(Run_GetsTestFromAddress_RunsTest_ReturnsTestResults)

@@ -6,6 +6,7 @@
 #include "ZenUnit/Results/TestPhaseSuffixer.h"
 #include "ZenUnit/TestRunners/TestRunner.h"
 #include "ZenUnit/TestRunners/TryCatchCaller.h"
+#include "ZenUnit/Tests/Test.h"
 #include "ZenUnit/Utils/StringUtil.h"
 #include "ZenUnit/Utils/Type.h"
 #include "ZenUnit/ZenMock/Exceptions/ZenMockException.h"

@@ -3,6 +3,6 @@
 
 struct TestResultMock : public Zen::Mock<TestResult>
 {
-   ZENMOCK_VOID1_CONST(PrintOKIfTestPassed, const Console*)
+   ZENMOCK_VOID2_CONST(OptionallyWriteOKIfTestPassed, const Console*, bool)
    ZENMOCK_VOID2_CONST(PrintIfFailure, const Console*, TestFailureNumberer*)
 };

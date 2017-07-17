@@ -35,15 +35,15 @@ TEST(CallAllMacros)
    IS_ZERO(0);
 
    // Functions
-   FUNCTION_TARGETS(::exit, std::function<void(int)>(::exit));
+   STD_FUNCTION_TARGETS(::exit, std::function<void(int)>(::exit));
 
    // Pointers
    IS_NULL(nullptr);
    IS_NOT_NULL(std::make_unique<int>());
    const int* dynamicallyAllocatedInt = new int;
-   WAS_NEWED(dynamicallyAllocatedInt);
+   POINTER_WAS_NEWED(dynamicallyAllocatedInt);
    const int* dynamicallyAllocatedArray = new int[3];
-   WAS_ARRAY_NEWED(dynamicallyAllocatedArray);
+   ARRAY_WAS_NEWED(dynamicallyAllocatedArray);
    POINTEES_EQUAL(&x, &x);
 
    // Data Structures
