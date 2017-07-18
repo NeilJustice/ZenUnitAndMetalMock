@@ -25,7 +25,7 @@ namespace ZenUnit
 
    unique_ptr<TestNXN<TestingTestClass, N, int>> _testNXN;
    ConsoleMock* _consoleMock;
-   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs);
+   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
    const char* const TestClassName = "Tests";
    const char* const TestName = "Test";
    const char* const TestCaseArgsText = "1, 2, 3";
@@ -128,7 +128,7 @@ namespace ZenUnit
       //
       ZEN(CommaSplitExceptQuotedCommas_ZenMock_SelfMocked.AssertCalledOnce());
       ZEN(test1X1SelfMocked.PrintTestCaseNumberArgsThenArrowMock.AssertCalls(
-      { 
+      {
          { 0, splitTestCaseArgs, zenUnitArgs },
          { 1, splitTestCaseArgs, zenUnitArgs }
       }));

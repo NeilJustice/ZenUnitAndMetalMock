@@ -32,7 +32,7 @@ namespace ZenUnit
 
    unique_ptr<SpecificTestClassRunner<TestingTestClass>> _specificTestClassRunner;
    ConsoleMock* _consoleMock;
-   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs);
+   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
    const char* const TestClassName = "TestClassName";
 
    class SpecificTestClassRunnerSelfMocked : public Zen::Mock<ZenUnit::SpecificTestClassRunner<TestingTestClass>>
