@@ -90,15 +90,15 @@ namespace ZenUnit
       return testRunExitCode;
    }
 
-   void TestRunner::RunTestsWithWaitableRunnerThread(unsigned maxtotalseconds)
+   void TestRunner::RunTestsWithWaitableRunnerThread(unsigned maxtTotalSeconds)
    {
       const shared_ptr<const VoidFuture> testClassRunnerDoneFuture = _futurist->Async(&TestRunner::RunTests, this);
-      const future_status waitResult = testClassRunnerDoneFuture->WaitAtMostSeconds(maxtotalseconds);
+      const future_status waitResult = testClassRunnerDoneFuture->WaitAtMostSeconds(maxtTotalSeconds);
       if (waitResult == future_status::timeout)
       {
          _testRunResult->PrintTestFailuresAndSkips();
          _console->WriteLineAndExit(String::Concat(
-            "[ZenUnit] Total run time exceeded maximum run time of ", maxtotalseconds, " seconds."), 1);
+            "[ZenUnit] Total run time exceeded maximum run time of ", maxtTotalSeconds, " seconds."), 1);
       }
    }
 

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/Tests/NewDeleteTest.h"
+#include "ZenUnit/Utils/TestRandom.h"
 #include "ZenUnitTests/Results/Mock/TestResultFactoryMock.h"
 #include "ZenUnitTests/TestRunners/Mock/TryCatchCallerMock.h"
 
@@ -17,20 +18,20 @@ namespace ZenUnit
    unique_ptr<NewDeleteTest<TestingTestClass>> _newDeleteTest;
    TryCatchCallerMock* _tryCatchCallerMock;
    TestResultFactoryMock* _testResultFactoryMock;
-   const char* TestClassName = "TestClassName";
+   const string TestClassName = TestRandom<string>();
 
    STARTUP
    {
-      _newDeleteTest = make_unique<NewDeleteTest<TestingTestClass>>(TestClassName);
+      _newDeleteTest = make_unique<NewDeleteTest<TestingTestClass>>(TestClassName.c_str());
       _newDeleteTest->_tryCatchCaller.reset(_tryCatchCallerMock = new TryCatchCallerMock);
       _newDeleteTest->_testResultFactory.reset(_testResultFactoryMock = new TestResultFactoryMock);
    }
 
    TEST(Constructor_NewsComponents)
    {
-      NewDeleteTest<TestingTestClass> newDeleteTest(TestClassName);
+      NewDeleteTest<TestingTestClass> newDeleteTest(TestClassName.c_str());
       ARE_EQUAL("TestClassIsNewableAndDeletable", newDeleteTest.Name());
-      ARE_EQUAL("TESTS(TestClassName)\nTEST(TestClassIsNewableAndDeletable)", newDeleteTest.FullTestNameValue());
+      ARE_EQUAL("TESTS(" + TestClassName + ")\nTEST(TestClassIsNewableAndDeletable)", newDeleteTest.FullTestNameValue());
       ARE_EQUAL("(0)", newDeleteTest.FileLineString());
       POINTER_WAS_NEWED(newDeleteTest._testResultFactory);
       POINTER_WAS_NEWED(newDeleteTest._tryCatchCaller);

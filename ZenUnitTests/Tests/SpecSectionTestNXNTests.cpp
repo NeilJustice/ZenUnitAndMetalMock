@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/Tests/SpecSectionTestNXN.h"
+#include "ZenUnit/Utils/TestRandom.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Tests/Mock/TestMock.h"
 
@@ -52,16 +53,16 @@ namespace ZenUnit
 
    TEST(ThreeArgConstructor_SetsTestName_SetsTestNXNPmf)
    {
-      const char* const TestClassName = "Tests";
-      const char* const TestName = "Test";
+      const string TestClassName = TestRandom<string>();
+      const string TestName = TestRandom<string>();
       //
       const SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests> specifiedTestNXN(
-         TestClassName, TestName, PmfToken::Instantiate<decltype(
+         TestClassName.c_str(), TestName.c_str(), PmfToken::Instantiate<decltype(
             &TestingTestClass_SpecSectionTestNXNTests::TestFunction),
             &TestingTestClass_SpecSectionTestNXNTests::TestFunction>());
       //
       ARE_EQUAL(TestName, specifiedTestNXN.Name());
-      ARE_EQUAL("TESTS(Tests)\nTEST(Test)", specifiedTestNXN.FullTestNameValue());
+      ARE_EQUAL("TESTS(" + TestClassName + ")\nTEST(" + TestName + ")", specifiedTestNXN.FullTestNameValue());
       ARE_EQUAL("(0)", specifiedTestNXN.FileLineString());
       const PmfToken* const expectedTestNXNPmfToken = ZenUnit::PmfToken::Instantiate<
          decltype(&TestingTestClass_SpecSectionTestNXNTests::TestFunction),

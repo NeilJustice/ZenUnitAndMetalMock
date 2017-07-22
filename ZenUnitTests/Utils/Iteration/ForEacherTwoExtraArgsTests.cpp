@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/Utils/Iteration/ForEacherTwoExtraArgs.h"
+#include "ZenUnit/Utils/TestRandom.h"
 
 namespace ZenUnit
 {
@@ -37,12 +38,14 @@ namespace ZenUnit
    TEST(ForEach_OneItemIterable_CallsFuncOnItemOnce)
    {
       const vector<int> oneItemVector { 1 };
+      char c = TestRandom<char>();
+      string s = TestRandom<string>();
       //
-      _forEacherTwoExtraArgs.ForEach(&oneItemVector, Bind(), '0', string());
+      _forEacherTwoExtraArgs.ForEach(&oneItemVector, Bind(), c, s);
       //
       const vector<tuple<int, char, string>> expectedFuncCalls
       {
-         { 1, '0', string() }
+         { 1, c, s }
       };
       VECTORS_EQUAL(expectedFuncCalls, _funcCalls);
    }
@@ -50,13 +53,15 @@ namespace ZenUnit
    TEST(ForEach_TwoItemIterable_CallsFuncOnItemTwice)
    {
       const vector<int> oneItemVector { 1, 2 };
+      char c = TestRandom<char>();
+      string s = TestRandom<string>();
       //
-      _forEacherTwoExtraArgs.ForEach(&oneItemVector, Bind(), 'a', "message");
+      _forEacherTwoExtraArgs.ForEach(&oneItemVector, Bind(), c, s);
       //
       const vector<tuple<int, char, string>> expectedFuncCalls
       {
-         { 1, 'a', "message" },
-         { 2, 'a', "message" }
+         { 1, c, s },
+         { 2, c, s }
       };
       VECTORS_EQUAL(expectedFuncCalls, _funcCalls);
    }

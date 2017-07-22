@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/Tests/FullTestName.h"
+#include "ZenUnit/Utils/TestRandom.h"
 
 namespace ZenUnit
 {
@@ -22,9 +23,13 @@ namespace ZenUnit
 
    TEST(ThreeArgConstructor_SetsFields)
    {
-      const FullTestName testName("TestClassName", "TestName", 1);
-      ARE_EQUAL("TestClassName", testName.testClassName);
-      ARE_EQUAL("TestName", testName.testName);
+      const string TestClassName = TestRandom<string>();
+      const string TestName = TestRandom<string>();
+      //
+      const FullTestName testName(TestClassName.c_str(), TestName.c_str(), 1);
+      //
+      ARE_EQUAL(TestClassName, testName.testClassName);
+      ARE_EQUAL(TestName, testName.testName);
       ARE_EQUAL(1, testName.arity);
    }
 

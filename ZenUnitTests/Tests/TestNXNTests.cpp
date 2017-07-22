@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/Tests/TestNXN.h"
+#include "ZenUnit/Utils/TestRandom.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestResultMock.h"
 #include "ZenUnitTests/Tests/TestingTestClass.h"
@@ -26,9 +27,9 @@ namespace ZenUnit
    unique_ptr<TestNXN<TestingTestClass, N, int>> _testNXN;
    ConsoleMock* _consoleMock;
    ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs);
-   const char* const TestClassName = "Tests";
-   const char* const TestName = "Test";
-   const char* const TestCaseArgsText = "1, 2, 3";
+   const string TestClassName = TestRandom<string>();
+   const string TestName = TestRandom<string>();
+   const string TestCaseArgsText = TestRandom<string>();
 
    STARTUP
    {
@@ -40,7 +41,7 @@ namespace ZenUnit
    TEST(Constructor_NewsConsole_SetsFields_GettersReturnExpected_2X2With4Args)
    {
       TestNXN<TestingTestClass, 2, int, int, int, int> testNXN(
-         TestClassName, TestName, TestCaseArgsText, 0, 0, 0, 0);
+         TestClassName.c_str(), TestName.c_str(), TestCaseArgsText.c_str(), 0, 0, 0, 0);
       //
       POINTER_WAS_NEWED(testNXN._console);
       STD_FUNCTION_TARGETS(TestRunner::GetArgs, testNXN._TestRunner_GetArgs_ZenMockable);
@@ -49,21 +50,21 @@ namespace ZenUnit
       ARE_EQUAL(TestCaseArgsText, testNXN._testCaseArgsText);
       STD_FUNCTION_TARGETS(String::CommaSplitExceptQuotedCommas, testNXN._String_CommaSplitExceptQuotedCommas);
       ARE_EQUAL(TestName, testNXN.Name());
-      ARE_EQUAL("TESTS(Tests)\nTEST2X2(Test)", testNXN.FullTestNameValue());
+      ARE_EQUAL("TESTS(" + TestClassName + ")\nTEST2X2(" + TestName + ")", testNXN.FullTestNameValue());
       ARE_EQUAL("(0)", testNXN.FileLineString());
    }
 
    TEST(Constructor_StoresDecayedTypeCopiesOfTestCaseArguments)
    {
-      const TestNXN<TestingTestClass, 1, int> testNXN_1X1_1Arg(TestClassName, TestName, TestCaseArgsText, 0);
+      const TestNXN<TestingTestClass, 1, int> testNXN_1X1_1Arg(TestClassName.c_str(), TestName.c_str(), TestCaseArgsText.c_str(), 0);
       ARE_EQUAL(tuple<int>(0), testNXN_1X1_1Arg._testCaseArgs);
 
-      const TestNXN<TestingTestClass, 1, int, int> testNXN_1X1_2Args(TestClassName, TestName, TestCaseArgsText, 0, 0);
+      const TestNXN<TestingTestClass, 1, int, int> testNXN_1X1_2Args(TestClassName.c_str(), TestName.c_str(), TestCaseArgsText.c_str(), 0, 0);
       const tuple<int, int> expectedTestCaseArgs1(0, 0);
       ARE_EQUAL(expectedTestCaseArgs1, testNXN_1X1_2Args._testCaseArgs);
 
       const TestNXN<TestingTestClass, 2, const string&, volatile int> testNXN_2X2_4Args(
-         TestClassName, TestName, TestCaseArgsText, string(), 100);
+         TestClassName.c_str(), TestName.c_str(), TestCaseArgsText.c_str(), string(), 100);
       const tuple<string, int> expectedTestCaseArgs2(string(), 100);
       ARE_EQUAL(expectedTestCaseArgs2, testNXN_2X2_4Args._testCaseArgs);
    }
@@ -71,23 +72,23 @@ namespace ZenUnit
    TEST(NumberOfTestCases_ReturnsNumberOfTestCaseArgsDividedByN)
    {
       const TestNXN<TestingTestClass, 1, int>
-         test1X1(TestClassName, TestName, TestCaseArgsText, 0);
+         test1X1(TestClassName.c_str(), TestName.c_str(), TestCaseArgsText.c_str(), 0);
       ARE_EQUAL(1, test1X1.NumberOfTestCases());
 
       const TestNXN<TestingTestClass, 1, int, int>
-         test1X1_2Args(TestClassName, TestName, TestCaseArgsText, 0, 0);
+         test1X1_2Args(TestClassName.c_str(), TestName.c_str(), TestCaseArgsText.c_str(), 0, 0);
       ARE_EQUAL(2, test1X1_2Args.NumberOfTestCases());
 
       const TestNXN<TestingTestClass, 2, int, int>
-         test2X2_2Args(TestClassName, TestName, TestCaseArgsText, 0, 0);
+         test2X2_2Args(TestClassName.c_str(), TestName.c_str(), TestCaseArgsText.c_str(), 0, 0);
       ARE_EQUAL(1, test2X2_2Args.NumberOfTestCases());
 
       const TestNXN<TestingTestClass, 2, int, int, int, int>
-         test2X2_4Args(TestClassName, TestName, TestCaseArgsText, 0, 0, 0, 0);
+         test2X2_4Args(TestClassName.c_str(), TestName.c_str(), TestCaseArgsText.c_str(), 0, 0, 0, 0);
       ARE_EQUAL(2, test2X2_4Args.NumberOfTestCases());
 
       const TestNXN<TestingTestClass, 3, int, int, int, int, int, int, int, int, int>
-         test3X3_9Args(TestClassName, TestName, TestCaseArgsText, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+         test3X3_9Args(TestClassName.c_str(), TestName.c_str(), TestCaseArgsText.c_str(), 0, 0, 0, 0, 0, 0, 0, 0, 0);
       ARE_EQUAL(3, test3X3_9Args.NumberOfTestCases());
    }
 

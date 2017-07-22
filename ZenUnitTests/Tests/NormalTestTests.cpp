@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/Tests/NormalTest.h"
+#include "ZenUnit/Utils/TestRandom.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestResultMock.h"
 #include "ZenUnitTests/Tests/TestingTestClass.h"
@@ -19,12 +20,13 @@ namespace ZenUnit
    SPECEND
 
    unique_ptr<NormalTest<TestingTestClass>> _normalTest;
-   const char* TestClassName = "TestClassName";
-   const char* TestName = "TestName";
+   const string TestClassName = TestRandom<string>();
+   const string TestName = TestRandom<string>();
 
    STARTUP
    {
-      _normalTest = make_unique<NormalTest<TestingTestClass>>(TestClassName, TestName, &TestingTestClass::Test);
+      _normalTest = make_unique<NormalTest<TestingTestClass>>(
+         TestClassName.c_str(), TestName.c_str(), &TestingTestClass::Test);
    }
 
    TEST(NumberOfTestCases_Returns1)
@@ -67,9 +69,9 @@ namespace ZenUnit
 
    TEST(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)
    {
-      const NormalTest<TestingTestClass> normalTest(TestClassName, TestName, &TestingTestClass::Test);
+      const NormalTest<TestingTestClass> normalTest(TestClassName.c_str(), TestName.c_str(), &TestingTestClass::Test);
       ARE_EQUAL(TestName, normalTest.Name());
-      ARE_EQUAL("TESTS(TestClassName)\nTEST(TestName)", normalTest.FullTestNameValue());
+      ARE_EQUAL("TESTS(" + TestClassName + ")\nTEST(" + TestName + ")", normalTest.FullTestNameValue());
       ARE_EQUAL("(0)", normalTest.FileLineString());
       ARE_EQUAL(&TestingTestClass::Test, normalTest._testMemberFunction);
       IS_NULL(normalTest._testClass);

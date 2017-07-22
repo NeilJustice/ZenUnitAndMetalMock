@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/TestRunners/TryCatchCaller.h"
+#include "ZenUnit/Utils/TestRandom.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestPhaseSuffixerMock.h"
 #include "ZenUnitTests/Tests/Mock/TestMock.h"
@@ -23,8 +24,8 @@ namespace ZenUnit
    unique_ptr<TestMock> _testMock;
    ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
 
-   const unsigned Milliseconds = 1;
-   const char* const TestPhaseSuffix = "TestPhaseSuffix";
+   const unsigned Milliseconds = TestRandom<unsigned>();
+   const string TestPhaseSuffix = TestRandom<string>();
 
    STARTUP
    {
@@ -98,7 +99,7 @@ namespace ZenUnit
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteMock.Expect();
       _consoleMock->WriteLineMock.Expect();
-      _testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.ExpectAndReturn(TestPhaseSuffix);
+      _testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.ExpectAndReturn(TestPhaseSuffix.c_str());
       //
       const CallResult callResult = _tryCatchCaller.Call(ThrowAnomaly, _testMock.get(), arbitraryTestPhase);
       //
@@ -111,7 +112,7 @@ namespace ZenUnit
       expectedCallResult.testOutcome = TestOutcome::Anomaly;
       ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nAnomaly", Color::Red));
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.AssertCalledOnceWith(arbitraryTestPhase));
-      ZEN(_consoleMock->WriteMock.AssertCalledOnceWith(TestPhaseSuffix));
+      ZEN(_consoleMock->WriteMock.AssertCalledOnceWith(TestPhaseSuffix.c_str()));
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(anomaly.why));
       ARE_EQUAL(expectedCallResult, callResult);
    }
@@ -131,7 +132,7 @@ namespace ZenUnit
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteMock.Expect();
       _consoleMock->WriteLineMock.Expect();
-      _testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.ExpectAndReturn(TestPhaseSuffix);
+      _testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.ExpectAndReturn(TestPhaseSuffix.c_str());
       //
       const CallResult callResult = _tryCatchCaller.Call(ThrowStdException, _testMock.get(), arbitraryTestPhase);
       //
@@ -144,7 +145,7 @@ namespace ZenUnit
          = make_shared<AnomalyOrException>(Type::GetName<runtime_error>(), "runtime_error_what");
       ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nUncaught Exception", Color::Red));
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.AssertCalledOnceWith(arbitraryTestPhase));
-      ZEN(_consoleMock->WriteMock.AssertCalledOnceWith(TestPhaseSuffix));
+      ZEN(_consoleMock->WriteMock.AssertCalledOnceWith(TestPhaseSuffix.c_str()));
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(R"(
   Type: std::runtime_error
 what(): "runtime_error_what")"));
@@ -160,7 +161,7 @@ what(): "runtime_error_what")"));
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteMock.Expect();
       _consoleMock->WriteLineMock.Expect();
-      _testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.ExpectAndReturn(TestPhaseSuffix);
+      _testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.ExpectAndReturn(TestPhaseSuffix.c_str());
       //
       const CallResult callResult = _tryCatchCaller.Call([](Test*)
       {
@@ -177,7 +178,7 @@ what(): "runtime_error_what")"));
       expectedCallResult.milliseconds = Milliseconds;
       ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nZenMockException", Color::Red));
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.AssertCalledOnceWith(arbitraryTestPhase));
-      ZEN(_consoleMock->WriteMock.AssertCalledOnceWith(TestPhaseSuffix));
+      ZEN(_consoleMock->WriteMock.AssertCalledOnceWith(TestPhaseSuffix.c_str()));
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(R"(
   Type: ZenMock::FunctionAlreadyExpectedException
 what(): "For ZenMocked function "ZenMockedFunctionSignature":
@@ -201,7 +202,7 @@ Already called [ZenMockedFunctionName]Mock.Expect[AndReturn|AndReturnValues|AndT
       _consoleMock->WriteLineColorMock.Expect();
       _consoleMock->WriteLineAndExitMock.Expect();
 
-      _testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.ExpectAndReturn(TestPhaseSuffix);
+      _testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.ExpectAndReturn(TestPhaseSuffix.c_str());
 
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.exit0 = exit0;
@@ -215,7 +216,7 @@ Already called [ZenMockedFunctionName]Mock.Expect[AndReturn|AndReturnValues|AndT
       ZEN(GetArgs_ZenMock.AssertCalledOnce());
       ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(
          String::Concat("Fatal ... exception. Fast failing now with exit code 1 (unless -exit0 specified).",
-            TestPhaseSuffix, " (", Milliseconds, " ms)"), expectedExitCode));
+            TestPhaseSuffix.c_str(), " (", Milliseconds, " ms)"), expectedExitCode));
    }
 
    }; RUN(TryCatchCallerTests)

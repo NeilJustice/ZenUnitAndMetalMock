@@ -37,7 +37,7 @@ namespace ZenUnit
    }
 
    TEST2X2(TimeZoneDateTimeNow_ReturnsLocalTimeNowWithTimeZoneAndTodaysDate,
-      tm tmNow, string expectedReturnValue,
+      tm tmNow, const char* expectedReturnValue,
       Tm(0, 0, 1, 0, 00, 00, 00), "00:00:00 TimeZone on Sunday January 1, 1900",
       Tm(1, 1, 2, 1, 01, 01, 01), "01:01:01 TimeZone on Monday February 2, 1901",
       Tm(2, 2, 3, 2, 11, 11, 11), "11:11:11 TimeZone on Tuesday March 3, 1902",

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/TestRunners/SpecificTestClassRunner.h"
+#include "ZenUnit/Utils/TestRandom.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestClassResultMock.h"
 #include "ZenUnitTests/Tests/Mock/TestMock.h"
@@ -66,7 +67,6 @@ namespace ZenUnit
       _specificTestClassRunner = make_unique<SpecificTestClassRunner<TestingTestClass>>(TestClassName);
       _specificTestClassRunner->_console.reset(_consoleMock = new ConsoleMock);
       _specificTestClassRunner->_TestRunner_GetArgs_ZenMockable = ZENBIND0(GetArgs_ZenMock);
-
       _specificTestClassRunnerSelfMocked = make_unique<SpecificTestClassRunnerSelfMocked>();
    }
 
@@ -227,9 +227,9 @@ namespace ZenUnit
       _specificTestClassRunnerSelfMocked->consoleMock->OptionallyWriteColorMock.Expect();
       _specificTestClassRunnerSelfMocked->consoleMock->OptionallyWriteMock.Expect();
 
-      TestMock* testMock = new TestMock;
-      const char* TestName = "TestName";
-      testMock->NameMock.ExpectAndReturn(TestName);
+      TestMock* const testMock = new TestMock;
+      const string TestName = TestRandom<string>();
+      testMock->NameMock.ExpectAndReturn(TestName.c_str());
       testMock->OptionallyWritePostTestNameMessageMock.Expect();
       TestResult test0;
       test0.fullTestName = FullTestName("", "Test0", 0);

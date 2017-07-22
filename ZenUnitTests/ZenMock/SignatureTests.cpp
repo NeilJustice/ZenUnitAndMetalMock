@@ -5,35 +5,37 @@ namespace ZenMock
 {
    TESTS(SignatureTests)
    SPECX(Function_ReturnsFunctionSignature)
-   SPEC(FunctionPointer_ReturnsExpected)
+   SPECX(FunctionPointer_ReturnsExpected)
    SPECEND
 
-   TEST3X3(Function_ReturnsFunctionSignature,
-      string expectedFunctionSignature, const char* virtualOrEmptyString, const char* constOrEmptyString,
-      "int ZenMockedClassName::Function(int, double)", "", "",
-      "virtual int ZenMockedClassName::Function(int, double)", "virtual", "",
-      "int ZenMockedClassName::Function(int, double) const", "", "const",
-      "virtual int ZenMockedClassName::Function(int, double) const", "virtual", "const")
+   TEST6X6(Function_ReturnsFunctionSignature,
+      string expectedFunctionSignature,
+      const char* virtualOrEmptyString,
+      const char* returnType,
+      string zenMockedClassName,
+      const char* unadornedFunctionSignature,
+      const char* constOrEmptyString,
+      "int ZenMockedClassNameA::Function(int)",
+         "", "int", "ZenMockedClassNameA", "Function(int)", "",
+      "virtual char ZenMockedClassNameB::Function(int, int)",
+         "virtual", "char", "ZenMockedClassNameB", "Function(int, int)", "",
+      "double ZenMockedClassNameC::Function() const",
+         "", "double", "ZenMockedClassNameC", "Function()", "const",
+      "virtual pair<int, int> ZenMockedClassNameD::Function(const pair<int, int>&) const", 
+         "virtual", "pair<int, int>", "ZenMockedClassNameD", "Function(const pair<int, int>&)", "const")
    {
-      const char* const ReturnType = "int";
-      const string ZenMockedClassName = "ZenMockedClassName";
-      const char* const UnadornedFunctionSignature = "Function(int, double)";
-      //
       const string funtionSignature = Signature::Function(
-         virtualOrEmptyString, ReturnType, &ZenMockedClassName, UnadornedFunctionSignature, constOrEmptyString);
-      //
+         virtualOrEmptyString, returnType, &zenMockedClassName, unadornedFunctionSignature, constOrEmptyString);
       ARE_EQUAL(expectedFunctionSignature, funtionSignature);
    }
 
-   TEST(FunctionPointer_ReturnsExpected)
+   TEST3X3(FunctionPointer_ReturnsExpected,
+      string expectedFunctionPointerSignature, const char* returnType, const char* unadornedFunctionSignature,
+      "ReturnType FunctionNameA()", "ReturnType", "FunctionNameA()",
+      "int FunctionNameB(int)", "int", "FunctionNameB(int)")
    {
-      const char* const ReturnType = "ReturnType";
-      const char* const UnadornedFunctionSignature = "FunctionSignature";
-      //
-      const string functionPointerSignature = Signature::FunctionPointer(
-         ReturnType, UnadornedFunctionSignature);
-      //
-      ARE_EQUAL("ReturnType FunctionSignature", functionPointerSignature);
+      const string functionPointerSignature = Signature::FunctionPointer(returnType, unadornedFunctionSignature);
+      ARE_EQUAL(expectedFunctionPointerSignature, functionPointerSignature);
    }
 
    }; RUN(SignatureTests)

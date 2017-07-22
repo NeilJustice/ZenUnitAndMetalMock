@@ -1,5 +1,6 @@
 #include "pch.h"
-#include "Mock/ExceptionThrowerMock.h"
+#include "ZenUnit/Utils/TestRandom.h"
+#include "ZenUnitTests/ZenMock/Mock/ExceptionThrowerMock.h"
 
 struct CustomException
 {
@@ -67,13 +68,14 @@ namespace ZenMock
    {
       _zenMocker->_exceptionThrower.ExpectCallToExpectAndThrow();
       IS_FALSE(_zenMocker->_expected);
+      const string what = TestRandom<string>();
       //
-      _zenMocker->ExpectAndThrow<runtime_error>("what");
+      _zenMocker->ExpectAndThrow<runtime_error>(what);
       //
-      _zenMocker->_exceptionThrower.AssertExpectAndThrowCalledOnceWith("std::runtime_error", 1, "what");
+      _zenMocker->_exceptionThrower.AssertExpectAndThrowCalledOnceWith("std::runtime_error", 1, what);
       IS_TRUE(_zenMocker->_expected);
 
-      THROWS(_zenMocker->ExpectAndThrow<invalid_argument>("what"), FunctionAlreadyExpectedException,
+      THROWS(_zenMocker->ExpectAndThrow<invalid_argument>(what), FunctionAlreadyExpectedException,
          FunctionAlreadyExpectedException::MakeWhat(ZenMockedFunctionSignature));
    }
 

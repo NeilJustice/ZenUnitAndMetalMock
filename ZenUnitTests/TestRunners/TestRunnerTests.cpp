@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "ZenUnit/Utils/TestRandom.h"
 #include "ZenUnitTests/Args/Mock/ArgsParserMock.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestRunResultMock.h"
@@ -117,7 +118,7 @@ namespace ZenUnit
       _testRunnerSelfMocked.RunTestsAndPrintResultsMock.ExpectAndReturnValues(firstTestRunExitCode, secondTestRunExitCode);
       _testRunnerSelfMocked.testRunResultMock->ResetStateExceptForSkipsMock.Expect();
       _testRunnerSelfMocked.consoleMock->PauseForAnyKeyIfDebuggerIsPresentMock.Expect();
-      const vector<string> CommandLineArgs { "NonDefault" };
+      const vector<string> CommandLineArgs{ TestRandom<string>() };
       //
       const int overallExitCode = _testRunnerSelfMocked.ParseArgsRunTestsPrintResults(CommandLineArgs);
       //
@@ -139,7 +140,7 @@ namespace ZenUnit
    {
       _testRunnerSelfMocked2.testRunStopwatchMock->StartMock.Expect();
       ZenUnitArgs zenUnitArgs;
-      zenUnitArgs.commandLine = "NonDefault";
+      zenUnitArgs.commandLine = TestRandom<string>();
       zenUnitArgs.maxtotalseconds = maxtotalseconds;
       _testRunnerSelfMocked2._args = zenUnitArgs;
       _testRunnerSelfMocked2.preamblePrinterMock->PrintOpeningThreeLinesMock.Expect();
@@ -154,10 +155,10 @@ namespace ZenUnit
       _testRunnerSelfMocked2.testRunResultMock->PrintTestFailuresAndSkipsMock.Expect();
       _testRunnerSelfMocked2.testRunResultMock->PrintClosingLinesMock.Expect();
 
-      const size_t TotalNumberOfTestCases = 10;
+      const size_t TotalNumberOfTestCases = TestRandom<size_t>();
       _testRunnerSelfMocked2.multiTestClassRunnerMock->NumberOfTestCasesMock.ExpectAndReturn(TotalNumberOfTestCases);
 
-      const unsigned TestRunMilliseconds = 20;
+      const unsigned TestRunMilliseconds = TestRandom<unsigned>();
       _testRunnerSelfMocked2.testRunStopwatchMock->StopMock.ExpectAndReturn(TestRunMilliseconds);
 
       _testRunnerSelfMocked2.testRunResultMock->
@@ -189,32 +190,32 @@ namespace ZenUnit
    TEST(SkipTest_CallsTestRunResultAddSkippedFullTestName)
    {
       _testRunResultMock->AddSkippedTestMock.Expect();
-      const char* const TestClassName = "TestClassName";
-      const char* const TestName = "TestName";
-      const char* const Reason = "Reason";
+      const string TestClassName = TestRandom<string>();
+      const string TestName = TestRandom<string>();
+      const string Reason = TestRandom<string>();
       //
-      _testRunner.SkipTest(TestClassName, TestName, Reason);
+      _testRunner.SkipTest(TestClassName.c_str(), TestName.c_str(), Reason.c_str());
       //
       ZEN(_testRunResultMock->AddSkippedTestMock.
-         AssertCalledOnceWith(TestClassName, TestName, Reason));
+         AssertCalledOnceWith(TestClassName.c_str(), TestName.c_str(), Reason.c_str()));
    }
 
    TEST(SkipTestClass_CallsTestRunResultAddSkippedTestClassNameAndReason)
    {
       _testRunResultMock->AddSkippedTestClassNameAndReasonMock.Expect();
-      const char* const SkippedTestClassName = "SkippedTestClassName";
-      const char* const Reason = "Reason";
+      const string SkippedTestClassName = TestRandom<string>();
+      const string Reason = TestRandom<string>();
       //
-      _testRunner.SkipTestClass(SkippedTestClassName, Reason);
+      _testRunner.SkipTestClass(SkippedTestClassName.c_str(), Reason.c_str());
       //
       ZEN(_testRunResultMock->AddSkippedTestClassNameAndReasonMock.
-         AssertCalledOnceWith(SkippedTestClassName, Reason));
+         AssertCalledOnceWith(SkippedTestClassName.c_str(), Reason.c_str()));
    }
 
    TEST(RunTests_RunsTestClasses)
    {
       ZenUnitArgs args;
-      args.commandLine = "commandLine";
+      args.commandLine = TestRandom<string>();
       _testRunner._args = args;
 
       vector<TestClassResult> testClassResults(1);
@@ -240,7 +241,7 @@ namespace ZenUnit
          _testRunResultMock->PrintTestFailuresAndSkipsMock.Expect();
          _consoleMock->WriteLineAndExitMock.Expect();
       }
-      const unsigned MaxTotalSeconds = 2;
+      const unsigned MaxTotalSeconds = TestRandom<unsigned>();
       //
       _testRunner.RunTestsWithWaitableRunnerThread(MaxTotalSeconds);
       //

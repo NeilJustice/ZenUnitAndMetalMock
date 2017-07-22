@@ -22,7 +22,7 @@ namespace ZenMock
       ConsoleMock consoleMock;
       consoleMock.WriteLineMock.Expect();
       consoleMock.WriteLine("message");
-      string expectedMessage = "Message";
+      const string expectedMessage = "Message";
       THROWS(ZEN(consoleMock.WriteLineMock.AssertCalledOnceWith(expectedMessage)), Anomaly, R"(
   Failed: ZEN(consoleMock.WriteLineMock.AssertCalledOnceWith(expectedMessage))
  Because: ARE_EQUAL(expectedArg, _oneArgCalls[0].arg, this->ZenMockedFunctionSignature) failed

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/Results/TestRunResult.h"
+#include "ZenUnit/Utils/TestRandom.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestClassResultMock.h"
 #include "ZenUnitTests/Results/Mock/TestFailureNumbererMock.h"
@@ -66,31 +67,31 @@ namespace ZenUnit
 
    TEST(AddSkippedTest_AddsTestClassNameDotTestNameToSkippedFullTestNamesVector)
    {
-      const char* TestClassName = "TestClass";
-      const char* TestNameA = "TestA";
-      const char* ReasonA = "ReasonA";
+      const string TestClassName = TestRandom<string>();
+      const char* const TestNameA = "TestA";
+      const char* const ReasonA = "ReasonA";
       //
-      _testRunResult.AddSkippedTest(TestClassName, TestNameA, ReasonA);
+      _testRunResult.AddSkippedTest(TestClassName.c_str(), TestNameA, ReasonA);
       //
       TestRunResult expectedTestRunResultA;
-      expectedTestRunResultA._skippedFullTestNamesAndReasons = { "TestClass.TestA because: ReasonA" };
+      expectedTestRunResultA._skippedFullTestNamesAndReasons = { TestClassName + ".TestA because: ReasonA" };
       ARE_EQUAL(expectedTestRunResultA, _testRunResult);
 
-      const char* TestNameB = "TestB";
-      const char* ReasonB = "ReasonB";
+      const char* const TestNameB = "TestB";
+      const char* const ReasonB = "ReasonB";
       //
-      _testRunResult.AddSkippedTest(TestClassName, TestNameB, ReasonB);
+      _testRunResult.AddSkippedTest(TestClassName.c_str(), TestNameB, ReasonB);
       //
       TestRunResult expectedTestRunResultB;
       expectedTestRunResultB._skippedFullTestNamesAndReasons =
-         { "TestClass.TestA because: ReasonA", "TestClass.TestB because: ReasonB" };
+         { TestClassName + ".TestA because: ReasonA", TestClassName + ".TestB because: ReasonB" };
       ARE_EQUAL(expectedTestRunResultB, _testRunResult);
    }
 
    TEST(AddSkippedTestClassNameAndReason_AddsTestClassNameAndReasonToSkippedTestClassNamesAndReasonsVector)
    {
-      const char* SkippedTestClassNameA = "SkippedTestClassA";
-      const char* ReasonA = "ReasonA";
+      const char* const SkippedTestClassNameA = "SkippedTestClassA";
+      const char* const ReasonA = "ReasonA";
       //
       _testRunResult.AddSkippedTestClassNameAndReason(SkippedTestClassNameA, ReasonA);
       //
@@ -101,8 +102,8 @@ namespace ZenUnit
       };
       ARE_EQUAL(expectedTestRunResultA, _testRunResult);
 
-      const char* SkippedTestClassNameB = "SkippedTestClassB";
-      const char* ReasonB = "ReasonB";
+      const char* const SkippedTestClassNameB = "SkippedTestClassB";
+      const char* const ReasonB = "ReasonB";
       //
       _testRunResult.AddSkippedTestClassNameAndReason(SkippedTestClassNameB, ReasonB);
       //
@@ -245,7 +246,7 @@ namespace ZenUnit
       _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteLineMock.Expect();
-      const string CommandLine = "CommandLine";
+      const string CommandLine = TestRandom<string>();
       //
       _testRunResult.PrintClosingLines(numberOfTotalTests, testRunMilliseconds, CommandLine);
       //
@@ -370,7 +371,7 @@ namespace ZenUnit
    TEST(PrintSkippedTestClassReminder_PrintsExpectedToConsole)
    {
       _consoleMock->WriteLineMock.Expect();
-      const string SkippedTestClassNameAndReason = "SkippedTestClassName because: Reason";
+      const string SkippedTestClassNameAndReason = TestRandom<string>();
       //
       _testRunResult.PrintSkippedTestClassReminder(SkippedTestClassNameAndReason);
       //
@@ -380,7 +381,7 @@ namespace ZenUnit
    TEST(PrintSkippedTestReminder_PrintsExpectedToConsole)
    {
       _consoleMock->WriteLineMock.Expect();
-      const string SkippedTestName = "SkippedTestName";
+      const string SkippedTestName = TestRandom<string>();
       //
       _testRunResult.PrintSkippedTestReminder(SkippedTestName);
       //

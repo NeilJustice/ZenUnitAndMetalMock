@@ -1,10 +1,11 @@
 #include "pch.h"
-#include "Mock/TestMock.h"
-#include "Results/Mock/TestResultFactoryMock.h"
-#include "Results/Mock/TestResultMock.h"
-#include "TestRunners/Mock/TryCatchCallerMock.h"
+#include "ZenUnitTests/Results/Mock/TestResultFactoryMock.h"
+#include "ZenUnitTests/Results/Mock/TestResultMock.h"
+#include "ZenUnitTests/Tests/Mock/TestMock.h"
+#include "ZenUnitTests/TestRunners/Mock/TryCatchCallerMock.h"
 #include "ZenUnit/Tests/FullTestName.h"
 #include "ZenUnit/Tests/Test.h"
+#include "ZenUnit/Utils/TestRandom.h"
 
 namespace ZenUnit
 {
@@ -37,13 +38,16 @@ namespace ZenUnit
 
    TEST(TwoArgConstructor_NewsComponents_SetsFullName_NameFunctionReturnsTestName)
    {
-      Test test("Tests", "Test", 0);
+      const string TestClassName = TestRandom<string>();
+      const string TestName = TestRandom<string>();
+      //
+      Test test(TestClassName.c_str(), TestName.c_str(), 0);
       POINTER_WAS_NEWED(test._tryCatchCaller);
       POINTER_WAS_NEWED(test._testResultFactory);
       ARE_EQUAL(FileLine(), test._fileLine);
 
       const char* const testName = test.Name();
-      ARE_EQUAL("Test", testName);
+      ARE_EQUAL(TestName.c_str(), testName);
 
       const string fullTestName = test.FullTestNameValue();
       ARE_EQUAL(fullTestName, test._fullTestName.Value());
@@ -104,7 +108,9 @@ namespace ZenUnit
 
       const TestResult startupFailTestResult = TestResult::TestingNonDefault;
       _testResultFactoryMock->StartupFailMock.ExpectAndReturn(startupFailTestResult);
-      _test->_fullTestName = FullTestName("Non", "Default", 0);
+      const string testClassName = TestRandom<string>();
+      const string testName = TestRandom<string>();
+      _test->_fullTestName = FullTestName(testClassName.c_str(), testName.c_str(), 0);
       //
       const TestResult testResult = _test->RunTestCase();
       //
@@ -126,7 +132,9 @@ namespace ZenUnit
 
       const TestResult sixArgTestResult = TestResult::TestingNonDefault;
       _testResultFactoryMock->FullCtorMock.ExpectAndReturn(sixArgTestResult);
-      _test->_fullTestName = FullTestName("Non", "Default", 0);
+      const string testClassName = TestRandom<string>();
+      const string testName = TestRandom<string>();
+      _test->_fullTestName = FullTestName(testClassName.c_str(), testName.c_str(), 0);
       //
       const TestResult testResult = _test->RunTestCase();
       //

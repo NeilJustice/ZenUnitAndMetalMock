@@ -8,15 +8,9 @@ namespace ZenMock
    {
       const ArgType& arg;
 
-      OneArgCallRef(const ArgType& arg)
-         : arg(arg)
-      {
-      }
+      OneArgCallRef(const ArgType& arg) : arg(arg) {}
 
-      explicit OneArgCallRef(const OneArgCall<ArgType>& oneArgCall)
-         : arg(oneArgCall.arg)
-      {
-      }
+      explicit OneArgCallRef(const OneArgCall<ArgType>& oneArgCall) : arg(oneArgCall.arg) {}
    };
 }
 

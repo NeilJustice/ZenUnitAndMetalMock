@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/Results/TestResult.h"
+#include "ZenUnit/Utils/TestRandom.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestFailureNumbererMock.h"
 
@@ -237,7 +238,7 @@ namespace ZenUnit
       _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName = FullTestName("TestClass", "Test", 0);
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::Anomaly;
 
-      const string AnomalyWhy = "AnomalyWhy";
+      const string AnomalyWhy = TestRandom<string>();
       Anomaly anomaly;
       anomaly.why = AnomalyWhy;
       (_testResult_WriteTestCaseNumberIfAnyMocked.*
@@ -247,7 +248,7 @@ namespace ZenUnit
 
       _testResult_WriteTestCaseNumberIfAnyMocked.responsibleCallResultField = expectedResponsibleCallResultField;
 
-      const string TestFailureNumber = "<10>";
+      const string TestFailureNumber = TestRandom<string>(); // e.g. "<10>"
       _testFailureNumbererMock.NextMock.ExpectAndReturn(TestFailureNumber);
 
       _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex = 1;
@@ -285,8 +286,9 @@ namespace ZenUnit
       _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName = FullTestName("TestClass", "Test", 0);
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::Exception;
 
-      const string ExceptionTypeName = "ExceptionType";
-      const char* const ExceptionWhat = "ExceptionWhat";
+      const string ExceptionTypeName = TestRandom<string>();
+      const string ExceptionWhatString = TestRandom<string>();
+      const char* const ExceptionWhat = ExceptionWhatString.c_str();
       (_testResult_WriteTestCaseNumberIfAnyMocked.*
          expectedResponsibleCallResultField).anomalyOrException = make_shared<AnomalyOrException>(&ExceptionTypeName, ExceptionWhat);
       (_testResult_WriteTestCaseNumberIfAnyMocked.*
@@ -294,7 +296,7 @@ namespace ZenUnit
       _testResult_WriteTestCaseNumberIfAnyMocked.
          responsibleCallResultField = expectedResponsibleCallResultField;
 
-      const string TestFailureNumber = "<20>";
+      const string TestFailureNumber = TestRandom<string>();
       _testFailureNumbererMock.NextMock.ExpectAndReturn(TestFailureNumber);
 
       _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex = 1;
@@ -334,7 +336,7 @@ namespace ZenUnit
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::SuccessButPastDeadline;
       _testResult_WriteTestCaseNumberIfAnyMocked.milliseconds = 10;
 
-      const string TestFailureNumber = "<30>";
+      const string TestFailureNumber = TestRandom<string>();
       _testFailureNumbererMock.NextMock.ExpectAndReturn(TestFailureNumber);
 
       _consoleMock.WriteLineColorMock.Expect();

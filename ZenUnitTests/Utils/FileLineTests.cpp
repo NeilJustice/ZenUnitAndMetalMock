@@ -11,9 +11,6 @@ namespace ZenUnit
    SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    SPECEND
 
-   const char* const FilePath = "Folder\\File.ext";
-   const unsigned LineNumber = 1;
-
    TEST(DefaultConstructor_SetsFieldsTo0)
    {
       const FileLine fileLine;
