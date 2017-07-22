@@ -1,4 +1,5 @@
 #pragma once
+#include "ZenUnit/Anomaly/Anomaly.h"
 #include "ZenUnit/Macros/MacroUtils.h"
 #include "ZenUnit/Utils/FileLine.h"
 

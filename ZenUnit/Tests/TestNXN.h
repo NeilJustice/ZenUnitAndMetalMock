@@ -26,9 +26,9 @@ namespace ZenUnit
          : Test(testClassName, testName, N)
          , _console(new Console)
          , _TestRunner_GetArgs_ZenMockable(TestRunner::GetArgs)
-         , _testCaseArgsIndex(0)
          , _testCaseArgsText(testCaseArgsText)
          , _String_CommaSplitExceptQuotedCommas(String::CommaSplitExceptQuotedCommas)
+         , _testCaseArgsIndex(0)
          , _testCaseArgs(std::forward<TestCaseArgTypes>(testCaseArgs)...)
       {
       }

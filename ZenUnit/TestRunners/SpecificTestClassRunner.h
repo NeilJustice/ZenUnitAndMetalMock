@@ -2,6 +2,7 @@
 #include "ZenUnit/Console/Console.h"
 #include "ZenUnit/Results/TestResult.h"
 #include "ZenUnit/TestRunners/TestClassRunner.h"
+#include "ZenUnit/TestRunners/TestRunner.h"
 #include "ZenUnit/Tests/NewDeleteTest.h"
 #include "ZenUnit/Tests/Test.h"
 #include "ZenUnit/Utils/Iteration/MemberForEacherExtraArg.h"
