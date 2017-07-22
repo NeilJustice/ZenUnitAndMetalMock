@@ -75,7 +75,7 @@ namespace ZenUnit
             TestResult testResult = MockableCallBaseRunTestCase();
             testResult.testCaseIndex = testCaseIndex;
             testResults.push_back(testResult);
-            OptionallyWriteOKIfTestPassed(testResult, !zenUnitArgs.minimal);
+            OptionallyWriteOKIfTestPassed(testResult, !zenUnitArgs.abridged);
          }
          _testCaseArgsIndex = 0;
          return testResults;
@@ -101,15 +101,15 @@ namespace ZenUnit
          unsigned short testCaseIndex, const std::vector<std::string>& splitTestCaseArgs, const ZenUnitArgs& zenUnitArgs) const
       {
          assert_true(testCaseIndex >= 0);
-         _console->OptionallyWriteColor(" [", Color::Green, !zenUnitArgs.minimal);
+         _console->OptionallyWriteColor(" [", Color::Green, !zenUnitArgs.abridged);
          const std::string testCaseNumber = std::to_string(testCaseIndex + 1);
-         _console->OptionallyWrite(testCaseNumber, !zenUnitArgs.minimal);
-         _console->OptionallyWriteColor("]", Color::Green, !zenUnitArgs.minimal);
-         _console->OptionallyWrite(" (", !zenUnitArgs.minimal);
+         _console->OptionallyWrite(testCaseNumber, !zenUnitArgs.abridged);
+         _console->OptionallyWriteColor("]", Color::Green, !zenUnitArgs.abridged);
+         _console->OptionallyWrite(" (", !zenUnitArgs.abridged);
          const size_t testCaseArgsPrintingStartIndex = static_cast<size_t>(testCaseIndex) * N;
          _console->OptionallyWriteStringsCommaSeparated(
-            splitTestCaseArgs, testCaseArgsPrintingStartIndex, N, !zenUnitArgs.minimal);
-         _console->OptionallyWrite(") -> ", !zenUnitArgs.minimal);
+            splitTestCaseArgs, testCaseArgsPrintingStartIndex, N, !zenUnitArgs.abridged);
+         _console->OptionallyWrite(") -> ", !zenUnitArgs.abridged);
       }
 
       virtual void OptionallyWriteOKIfTestPassed(const TestResult& testResult, bool doPrintOK) const

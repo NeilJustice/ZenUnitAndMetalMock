@@ -86,16 +86,16 @@ namespace ZenUnit
          Test* newDeleteTest, TestClassResult* outTestClassResult) const
       {
          const ZenUnitArgs& zenUnitArgs = _TestRunner_GetArgs_ZenMockable();
-         _console->OptionallyWriteColor("|", Color::Green, !zenUnitArgs.minimal);
+         _console->OptionallyWriteColor("|", Color::Green, !zenUnitArgs.abridged);
          static const std::string TestClassIsNewableAndDeletableString = "TestClassIsNewableAndDeletable -> ";
-         _console->OptionallyWrite(TestClassIsNewableAndDeletableString, !zenUnitArgs.minimal);
+         _console->OptionallyWrite(TestClassIsNewableAndDeletableString, !zenUnitArgs.abridged);
          const std::vector<TestResult> newDeleteTestResult = newDeleteTest->Run();
          assert_true(newDeleteTestResult.size() == 1);
          outTestClassResult->AddTestResults(newDeleteTestResult);
          const bool testClassIsNewableAndDeletable = newDeleteTestResult[0].testOutcome == TestOutcome::Success;
          if (testClassIsNewableAndDeletable)
          {
-            _console->OptionallyWriteLine("OK", !zenUnitArgs.minimal);
+            _console->OptionallyWriteLine("OK", !zenUnitArgs.abridged);
          }
          return testClassIsNewableAndDeletable;
       }
@@ -103,12 +103,12 @@ namespace ZenUnit
       void RunTest(const std::unique_ptr<Test>& test, TestClassResult* outTestClassResult) const
       {
          const ZenUnitArgs& zenUnitArgs = _TestRunner_GetArgs_ZenMockable();
-         _console->OptionallyWriteColor("|", Color::Green, !zenUnitArgs.minimal);
+         _console->OptionallyWriteColor("|", Color::Green, !zenUnitArgs.abridged);
          const char* const testName = test->Name();
-         _console->OptionallyWrite(testName, !zenUnitArgs.minimal);
-         test->OptionallyWritePostTestNameMessage(_console.get(), !zenUnitArgs.minimal);
+         _console->OptionallyWrite(testName, !zenUnitArgs.abridged);
+         test->OptionallyWritePostTestNameMessage(_console.get(), !zenUnitArgs.abridged);
          const std::vector<TestResult> testResults = test->Run();
-         test->OptionallyWritePostTestCompletionMessage(_console.get(), testResults[0], !zenUnitArgs.minimal);
+         test->OptionallyWritePostTestCompletionMessage(_console.get(), testResults[0], !zenUnitArgs.abridged);
          outTestClassResult->AddTestResults(testResults);
       }
 

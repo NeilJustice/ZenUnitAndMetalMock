@@ -27,9 +27,11 @@ Usage: <TestsBinaryName> [Options...]
 Options:
 
 None
-   Run all non-skipped tests.
--minimal
-   Print just test class names run instead of test class names and test names run.
+   Run all non-skipped tests. Prints preamble, test class names and test names, and conclusion.
+-abridged
+   Print just preamble, test class names, and conclusion.
+-laconic
+   Print just preamble and conclusion.
 -exit0
    Always exit 0 regardless of test run outcome.
 -failskips
@@ -114,7 +116,7 @@ None
       const vector<string> Args 
       { 
          TestProgramPath,
-         "-minimal",
+         "-abridged",
          "-exit0",
          "-failskips",
          "-testruns=1"
@@ -125,7 +127,7 @@ None
       ZEN(ToUnsigned_ZenMock.AssertCalledOnceWith("1"));
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
-      expectedZenUnitArgs.minimal = true;
+      expectedZenUnitArgs.abridged = true;
       expectedZenUnitArgs.exit0 = true;
       expectedZenUnitArgs.failskips = true;
       expectedZenUnitArgs.testruns = 1;
@@ -134,7 +136,7 @@ None
 
    TEST(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    {
-      AssertArgSetsBoolField("-minimal", &ZenUnitArgs::minimal);
+      AssertArgSetsBoolField("-abridged", &ZenUnitArgs::abridged);
       AssertArgSetsBoolField("-exit0", &ZenUnitArgs::exit0);
       AssertArgSetsBoolField("-failskips", &ZenUnitArgs::failskips);
    }

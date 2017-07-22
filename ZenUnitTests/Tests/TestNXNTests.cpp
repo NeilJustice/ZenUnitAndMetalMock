@@ -93,7 +93,7 @@ namespace ZenUnit
    }
 
    TEST1X1(Run_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults,
-      bool minimal,
+      bool abridged,
       false,
       true)
    {
@@ -108,7 +108,7 @@ namespace ZenUnit
 
       ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs, _SelfMocked);
       ZenUnitArgs zenUnitArgs;
-      zenUnitArgs.minimal = minimal;
+      zenUnitArgs.abridged = abridged;
       GetArgs_ZenMock_SelfMocked.ExpectAndReturn(zenUnitArgs);
       test1X1SelfMocked._TestRunner_GetArgs_ZenMockable = ZENBIND0(GetArgs_ZenMock_SelfMocked);
 
@@ -141,8 +141,8 @@ namespace ZenUnit
       ZEN(test1X1SelfMocked.MockableCallBaseRunTestCaseMock.AssertCalledNTimes(2));
       ZEN(test1X1SelfMocked.OptionallyWriteOKIfTestPassedMock.AssertCalls(
       {
-         { expectedFirstTestResult, !minimal },
-         { expectedSecondTestResult, !minimal }
+         { expectedFirstTestResult, !abridged },
+         { expectedSecondTestResult, !abridged }
       }));
       const vector<TestResult> expectedTestResults =
       {
@@ -218,7 +218,7 @@ namespace ZenUnit
    }
 
    TEST4X4(PrintTestCaseNumberArgsThenArrow_WritesTestCaseNumberArrow,
-      unsigned short testCaseIndex, int expectedTestCaseNumber, size_t expectedTestCaseArgsPrintingStartIndex, bool minimal,
+      unsigned short testCaseIndex, int expectedTestCaseNumber, size_t expectedTestCaseArgsPrintingStartIndex, bool abridged,
       static_cast<unsigned short>(0), 1, size_t(0), false,
       static_cast<unsigned short>(1), 2, size_t(1), true)
    {
@@ -226,23 +226,23 @@ namespace ZenUnit
       _consoleMock->OptionallyWriteMock.Expect();
       _consoleMock->OptionallyWriteStringsCommaSeparatedMock.Expect();
       ZenUnitArgs zenUnitArgs;
-      zenUnitArgs.minimal = minimal;
+      zenUnitArgs.abridged = abridged;
       vector<string> splitTestCaseArgs = { "Arg0", "Arg1" };
       //
       _testNXN->PrintTestCaseNumberArgsThenArrow(testCaseIndex, splitTestCaseArgs, zenUnitArgs);
       //
       ZEN(_consoleMock->OptionallyWriteColorMock.AssertCalls(
       {
-         { " [", Color::Green, !minimal },
-         { "]", Color::Green, !minimal }
+         { " [", Color::Green, !abridged },
+         { "]", Color::Green, !abridged }
       }));
       ZEN(_consoleMock->OptionallyWriteStringsCommaSeparatedMock.AssertCalledOnceWith(
-         splitTestCaseArgs, expectedTestCaseArgsPrintingStartIndex, N, !minimal));
+         splitTestCaseArgs, expectedTestCaseArgsPrintingStartIndex, N, !abridged));
       ZEN(_consoleMock->OptionallyWriteMock.AssertCalls(
       {
-         { to_string(expectedTestCaseNumber), !minimal },
-         { " ("s, !minimal },
-         { ") -> "s, !minimal }
+         { to_string(expectedTestCaseNumber), !abridged },
+         { " ("s, !abridged },
+         { ") -> "s, !abridged }
       }));
    }
 

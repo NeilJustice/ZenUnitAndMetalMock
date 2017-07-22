@@ -102,105 +102,6 @@ int main(int argc, char* argv[]
 
 ![ZenUnitTestRunOutput](Screenshots/ZenUnitTestRunOutput.png "ZenUnit Test Run Output")
 
-### Building and Installing ZenUnit and ZenMock On Linux
-
-Step 1 of 1:
-
-Run `./LinuxCMakeBuildInstall.sh <InstallDirectory>` to CMake with Ninja, build with the default C++ compiler, and install with Linux the ZenUnit include tree and Debug and Release static libraries.
-
-`LinuxCMakeBuildInstall.sh` performs these CMake, build, and install actions:
-
-```bash
-#!/bin/bash
-set -eu
-
-if [ $# -ne 1 ]; then
-   echo "Usage: ./LinuxCMakeBuildInstall.sh <InstallDirectory>"
-   exit 1
-fi
-
-function cmake_build_install
-{
-   local buildType="$1"
-   local cmakeInstallPrefix
-   cmakeInstallPrefix=$(realpath "$2")
-   cmake -H. -B"$buildType" -GNinja \
-      -DCMAKE_BUILD_TYPE="$buildType" \
-      -DCMAKE_INSTALL_PREFIX="$cmakeInstallPrefix"
-   cmake --build "$buildType" --target ZenUnit
-   cmake --build "$buildType" --target install
-}
-
-cmakeInstallPrefix="$1"
-cmake_build_install Debug "$cmakeInstallPrefix"
-cmake_build_install Release "$cmakeInstallPrefix"
-```
-
-To build ZenUnit with Clang instead of the default C++ compiler (usually GCC), prepend CXX=<clang++Path>.
-
-Abridged output from running `sudo CXX=/usr/bin/clang++ ./LinuxCMakeBuildInstall.sh /usr/local`:
-
-```
-~/code/ZenUnitAndZenMock$ sudo CXX=/usr/bin/clang++ ./LinuxCMakeBuildInstall.sh /usr/local
-<...CMake Output...>
-<...Include Tree Copying...>
--- Installing: /usr/local/include/ZenUnit/ZenUnit/./ZenMock.h
--- Installing: /usr/local/include/ZenUnit/ZenUnit/./ZenUnit.h
--- Installing: /usr/local/lib/ZenUnit/libZenUnitDebug.a
-<...CMake Output...>
-<...Build Output...>
--- Installing: /usr/local/lib/ZenUnit/libZenUnitRelease.a
-~/code/ZenUnitAndZenMock$
-```
-
-ZenUnit installed on Linux:
-
-![ZenUnit Installed On Linux](Screenshots/ZenUnitInstalledOnLinux.png "ZenUnit Installed On Linux")
-
-### Building and Installing ZenUnit and ZenMock On Windows
-
-Step 1 of 1: 
-
-Run with PowerShell `WindowsCMakeBuildInstall.ps1 <InstallDirectory>` to CMake with Visual Studio 15 2017 Win64, build with MSBuild, and install with Windows the ZenUnit include tree and Debug and Release static libraries.
-
-`WindowsCMakeBuildInstall.ps1` performs these CMake, build, and install actions:
-
-```powershell
-if ($Args.Count -ne 1)
-{
-   Write-Host "Usage: .\WindowsCMakeBuildInstallZenUnit.ps1 <InstallDirectory>"
-   Exit 1
-}
-
-cmake . -G"Visual Studio 15 2017 Win64" -DCMAKE_INSTALL_PREFIX="$($Args[0])"
-cmake --build . --target ZenUnit --config Debug
-cmake --build . --target install --config Debug
-cmake --build . --target ZenUnit --config Release
-cmake --build . --target install --config Release
-```
-
-Abridged output from running `powershell -file WindowsCMakeBuildInstall.ps1 C:/install` from a Git Bash prompt:
-
-```
-~/code/ZenUnitAndZenMock$ powershell -file WindowsCMakeBuildInstall.ps1 C:/install
-<...CMake Output...>
-<...Build Output...>
-<...Include Tree Copying...>
-  -- Installing: C:/install/include/ZenUnit/ZenUnit/./ZenUnit.h
-  -- Installing: C:/install/include/ZenUnit/ZenUnit/./ZenMock.h
-  -- Installing: C:/install/lib/ZenUnit/ZenUnitDebug.lib
-  -- Installing: C:/install/lib/ZenUnit/ZenUnitDebug.pdb
-<...Build Output...>
-  -- Installing: C:/install/lib/ZenUnit/ZenUnitRelease.lib
-Build succeeded.
-```
-
-ZenUnit installed on Windows:
-
-![ZenUnit Installed On Windows](Screenshots/ZenUnitInstalledOnWindows.png "ZenUnit Installed On Windows")
-
-Editor's note: ZenUnit and ZenMock as header-only would of course be much more convenient than the current building and linking against a static library, which is why ZenUnit and ZenMock will be made header-only following further laying down of their foundations.
-
 ## Test Matrix
 
 |Operating System|Compilers|
@@ -208,16 +109,14 @@ Editor's note: ZenUnit and ZenMock as header-only would of course be much more c
 |Fedora 25       |Clang 3.9.1, Clang 5.0.0, and GCC 6.3.1|
 |Windows 10      |Visual Studio 2017 x64 and Win32 (MSVC 15.2)|
 
-Test Matrix road map: Travis CI Linux and macOS, AppVeyor, and Arch Linux.
-
-### [Work In Progress Guide to ZenUnit](Docs/ZenUnit.md)
-### [Work In Progress Guide to ZenMock](Docs/ZenMock.md)
+### [Guide to ZenUnit](ZenUnit.md)
+### [Guide to ZenMock](ZenMock.md)
 
 ### Version History
 
 |Version|Date|Features|
 |-------|----|--------|
-|0.2.0|Approaching|Numerous|
+|0.2.0|July 27, 2017|-abridged, -laconic, -testruns=<N>, vector<T> ZenUnitPrinter<T> printing|
 |0.1.1|February 14, 2017|Fixes, refactorings, design improvements|
 |0.1.0|January 1, 2017|Launch|
 
