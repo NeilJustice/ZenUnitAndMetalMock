@@ -27,9 +27,13 @@ namespace ZenUnit
       for (size_t argIndex = 1; argIndex < numberOfArgs; ++argIndex)
       {
          const string& arg = args[argIndex];
-         if (arg == "-abridged")
+         if (arg == "-laconic")
          {
-            zenUnitArgs.abridged = true;
+            zenUnitArgs.printMode = PrintMode::Laconic;
+         }
+         else if (arg == "-verbose")
+         {
+            zenUnitArgs.printMode = PrintMode::Verbose;
          }
          else if (arg == "-exit0")
          {
@@ -45,7 +49,7 @@ namespace ZenUnit
          }
          else if (!String::Contains(arg, "="))
          {
-            _console->WriteLine("ZenUnit argument error: Invalid argument \"" + arg + "\"");
+            _console->WriteLine("ZenUnit argument error: Invalid argument \"" + arg + "\"\n");
             _console->WriteLineAndExit(Usage, 1);
          } 
          else
@@ -78,11 +82,9 @@ Usage: <TestsBinaryName> [Options...]
 Options:
 
 None
-   Run all non-skipped tests. Prints preamble, test class names and test names, and conclusion.
--abridged
-   Print just preamble, test class names, and conclusion.
+   Print preamble, run all non-skipped tests with printing of test class names and test names, then print conclusion.
 -laconic
-   Print just preamble and conclusion.
+   Print preamble, run all non-skipped tests, then print conclusion.
 -exit0
    Always exit 0 regardless of test run outcome.
 -failskips

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ZenUnit/Console/Console.h"
 #include "ZenUnit/Console/ConsoleColorer.h"
+#include "ZenUnit/Enums/PrintMode.h"
 #include "ZenUnit/Utils/AssertTrue.h"
 
 namespace ZenUnit
@@ -21,9 +22,9 @@ namespace ZenUnit
       WriteColor(message, Color::White);
    }
 
-   void Console::OptionallyWrite(const std::string& message, bool doWrite) const
+   void Console::NonLaconicWrite(const std::string& message, PrintMode printMode) const
    {
-      if (doWrite)
+      if (printMode != PrintMode::Laconic)
       {
          Write(message);
       }
@@ -37,9 +38,9 @@ namespace ZenUnit
       _consoleColorer->UnsetColor(didSetColor);
    }
 
-   void Console::OptionallyWriteColor(const std::string& message, Color color, bool doWriteColor) const
+   void Console::NonLaconicWriteColor(const std::string& message, Color color, PrintMode printMode) const
    {
-      if (doWriteColor)
+      if (printMode != PrintMode::Laconic)
       {
          WriteColor(message, color);
       }
@@ -50,9 +51,9 @@ namespace ZenUnit
       WriteLineColor(message, Color::White);
    }
 
-   void Console::OptionallyWriteLine(const std::string& message, bool doWriteLine) const
+   void Console::NonLaconicWriteLine(const std::string& message, PrintMode printMode) const
    {
-      if (doWriteLine)
+      if (printMode != PrintMode::Laconic)
       {
          WriteLine(message);
       }
@@ -69,9 +70,17 @@ namespace ZenUnit
       _consoleColorer->UnsetColor(didSetColor);
    }
 
-   void Console::WriteNewline() const
+   void Console::WriteNewLine() const
    {
       printf("\n");
+   }
+
+   void Console::NonLaconicWriteNewLine(PrintMode printMode) const
+   {
+      if (printMode != PrintMode::Laconic)
+      {
+         WriteNewLine();
+      }
    }
 
    void Console::WriteLineAndExit(const std::string& message, int exitCode) const
@@ -80,11 +89,11 @@ namespace ZenUnit
       _exit_ZenMockable(exitCode);
    }
 
-   void Console::OptionallyWriteStringsCommaSeparated(
-      const std::vector<std::string>& strings, size_t startIndex, size_t numberOfElements, bool doWrite) const
+   void Console::NonLaconicWriteStringsCommaSeparated(
+      const std::vector<std::string>& strings, size_t startIndex, size_t numberOfElements, PrintMode printMode) const
    {
       assert_true(startIndex < strings.size());
-      if (doWrite)
+      if (printMode != PrintMode::Laconic)
       {
          const size_t endIndex = startIndex + numberOfElements - 1;
          for (size_t i = startIndex; i <= endIndex; ++i)

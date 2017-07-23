@@ -35,7 +35,7 @@ namespace ZenUnit
       _console->WriteLine(runningTestClassesLine);
       if (numberOfTestClasses > 0)
       {
-         _console->WriteNewline();
+         _console->WriteNewLine();
       }
    }
 }

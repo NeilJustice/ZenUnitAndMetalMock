@@ -24,10 +24,10 @@ namespace ZenUnit
          return numberOfTestCases;
       }
 
-      void OptionallyWritePostTestNameMessage(
-         const Console* console, bool doWriteMessage) const override
+      void NonLaconicWritePostTestNameMessage(
+         const Console* console, PrintMode printMode) const override
       {
-         if (doWriteMessage)
+         if (printMode != PrintMode::Laconic)
          {
             console->WriteLine("...");
          }

@@ -8,15 +8,16 @@ namespace ZenUnit
    TESTS(ConsoleTests)
    SPEC(Constructor_NewsConsoleColorer_SetsFunctionPointers)
    SPEC(Write_CallsWriteColorWithWhite)
-   SPECX(OptionallyWrite_CallsWriteColorIfDoWriteTrue)
+   SPECX(NonLaconicWrite_CallsWriteColorIfPrintModeNotLaconic)
    SPECX(WriteColor_WritesMessageInSpecifiedColor)
-   SPECX(OptionallyWriteColor_CallsWriteColorIfDoWriteColorTrue)
+   SPECX(NonLaconicWriteColor_CallsWriteColorIfPrintModeNotLaconic)
    SPEC(WriteLine_CallsWriteLineWithWhite)
-   SPECX(OptionallyWriteLine_CallsWriteLineIfDoWriteLineTrue)
-   SPECX(WriteLineColor_WritesMessageInSpecifiedColorThenNewline)
+   SPECX(NonLaconicWriteNewLine_CallsWriteLineWithWhite)
+   SPECX(NonLaconicWriteLine_CallsWriteLineIfPrintModeNotLaconic)
+   SPECX(WriteLineColor_WritesMessageInSpecifiedColorThenNewLine)
    SPECX(WriteLineAndExit_CallsWriteLineAndExit)
-   SPEC(OptionallyWriteStringsCommaSeparated_DoWriteFalse_DoesNothing)
-   SPECX(OptionallyWriteStringsCommaSeparated_DoWriteTrue_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset)
+   SPEC(NonLaconicWriteStringsCommaSeparated_PrintModeLaconic_DoesNothing)
+   SPECX(NonLaconicWriteStringsCommaSeparated_PrintModeNotLaconic_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset)
    SPECX(PauseForAnyKeyIfDebuggerIsPresent_WritesPressAnyKeyAndGetsLineIfDebuggerIsPresent)
 #ifdef _WIN32
    SPECX(DebuggerIsPresent_ReturnsTrueIfIsDebuggerPresentFunctionReturns1)
@@ -33,6 +34,7 @@ namespace ZenUnit
       ZENMOCK_VOID2_CONST(WriteLineColor, const string&, Color)
       ZENMOCK_NONVOID0_CONST(bool, DebuggerIsPresent)
       ZENMOCK_VOID0_CONST(GetLine)
+      ZENMOCK_VOID0_CONST(WriteNewLine)
    } _consoleSelfMocked;
 
    STARTUP
@@ -59,10 +61,11 @@ namespace ZenUnit
       ZEN(_consoleSelfMocked.WriteColorMock.AssertCalledOnceWith(Message, Color::White));
    }
 
-   TEST2X2(OptionallyWrite_CallsWriteColorIfDoWriteTrue,
-      bool doWrite, bool expectWriteCall,
-      false, false,
-      true, true)
+   TEST2X2(NonLaconicWrite_CallsWriteColorIfPrintModeNotLaconic,
+      PrintMode printMode, bool expectWriteCall,
+      PrintMode::Laconic, false,
+      PrintMode::Default, true,
+      PrintMode::Verbose, true)
    {
       struct ConsoleSelfMock_Write : public Zen::Mock<Console>
       {
@@ -73,7 +76,7 @@ namespace ZenUnit
          consoleSelfMock_Write.WriteMock.Expect();
       }
       //
-      consoleSelfMock_Write.OptionallyWrite(Message, doWrite);
+      consoleSelfMock_Write.NonLaconicWrite(Message, printMode);
       //
       if (expectWriteCall)
       {
@@ -97,10 +100,11 @@ namespace ZenUnit
       ZEN(_consoleColorerMock->UnsetColorMock.AssertCalledOnceWith(setColorReturnValue));
    }
 
-   TEST2X2(OptionallyWriteColor_CallsWriteColorIfDoWriteColorTrue,
-      bool doWriteColor, bool expectWriteColorCall,
-      false, false,
-      true, true)
+   TEST2X2(NonLaconicWriteColor_CallsWriteColorIfPrintModeNotLaconic,
+      PrintMode printMode, bool expectWriteColorCall,
+      PrintMode::Laconic, false,
+      PrintMode::Default, true,
+      PrintMode::Verbose, true)
    {
       struct ConsoleSelfMock_WriteColor : public Zen::Mock<Console>
       {
@@ -111,7 +115,7 @@ namespace ZenUnit
          consoleSelfMock_WriteColor.WriteColorMock.Expect();
       }
       //
-      consoleSelfMock_WriteColor.OptionallyWriteColor(Message, Color::Green, doWriteColor);
+      consoleSelfMock_WriteColor.NonLaconicWriteColor(Message, Color::Green, printMode);
       //
       if (expectWriteColorCall)
       {
@@ -128,10 +132,30 @@ namespace ZenUnit
       ZEN(_consoleSelfMocked.WriteLineColorMock.AssertCalledOnceWith(Message, Color::White));
    }
 
-   TEST2X2(OptionallyWriteLine_CallsWriteLineIfDoWriteLineTrue,
-      bool doWriteLine, bool expectWriteLineCall,
-      false, false,
-      true, true)
+   TEST2X2(NonLaconicWriteNewLine_CallsWriteLineWithWhite,
+      PrintMode printMode, bool expectWriteNewLineCall,
+      PrintMode::Laconic, false,
+      PrintMode::Default, true,
+      PrintMode::Verbose, true)
+   {
+      if (expectWriteNewLineCall)
+      {
+         _consoleSelfMocked.WriteNewLineMock.Expect();
+      }
+      //
+      _consoleSelfMocked.NonLaconicWriteNewLine(printMode);
+      //
+      if (expectWriteNewLineCall)
+      {
+         ZEN(_consoleSelfMocked.WriteNewLineMock.AssertCalledOnce());
+      }
+   }
+
+   TEST2X2(NonLaconicWriteLine_CallsWriteLineIfPrintModeNotLaconic,
+      PrintMode printMode, bool expectWriteLineCall,
+      PrintMode::Laconic, false,
+      PrintMode::Default, true,
+      PrintMode::Verbose, true)
    {
       struct ConsoleSelfMock_WriteColor : public Zen::Mock<Console>
       {
@@ -142,7 +166,7 @@ namespace ZenUnit
          consoleSelfMock_WriteLine.WriteLineMock.Expect();
       }
       //
-      consoleSelfMock_WriteLine.OptionallyWriteLine(Message, doWriteLine);
+      consoleSelfMock_WriteLine.NonLaconicWriteLine(Message, printMode);
       //
       if (expectWriteLineCall)
       {
@@ -150,7 +174,7 @@ namespace ZenUnit
       }
    }
 
-   TEST2X2(WriteLineColor_WritesMessageInSpecifiedColorThenNewline,
+   TEST2X2(WriteLineColor_WritesMessageInSpecifiedColorThenNewLine,
       Color color, bool setColorReturnValue,
       Color::Green, false,
       Color::Green, true,
@@ -180,20 +204,22 @@ namespace ZenUnit
       ZEN(exit_ZenMock.AssertCalledOnceWith(exitCode));
    }
 
-   TEST(OptionallyWriteStringsCommaSeparated_DoWriteFalse_DoesNothing)
+   TEST(NonLaconicWriteStringsCommaSeparated_PrintModeLaconic_DoesNothing)
    {
-      _console.OptionallyWriteStringsCommaSeparated({ "" }, 0, 0, false);
+      _console.NonLaconicWriteStringsCommaSeparated({ "" }, 0, 0, PrintMode::Laconic);
    }
 
-   TEST4X4(OptionallyWriteStringsCommaSeparated_DoWriteTrue_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset,
-      const vector<string>& strings,
-      size_t startIndex,
-      size_t numberOfElements,
-      const vector<string>& expectedConsoleWrites,
-      vector<string>{ "Arg1" }, size_t(0), size_t(1), vector<string>{ "Arg1" },
-      vector<string>{ "Arg1", "Arg2" }, size_t(0), size_t(2), vector<string>{ "Arg1", ", ", "Arg2" },
-      vector<string>{ "Arg1", "Arg2" }, size_t(1), size_t(1), vector<string>{ "Arg2" },
-      vector<string>{ "Arg1", "Arg2", "Arg3", "Arg4" }, size_t(2), size_t(2), vector<string>{ "Arg3", ", ", "Arg4" })
+   TEST5X5(NonLaconicWriteStringsCommaSeparated_PrintModeNotLaconic_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset,
+      PrintMode printMode, const vector<string>& strings, size_t startIndex, size_t numberOfElements, const vector<string>& expectedConsoleWrites,
+      PrintMode::Default, vector<string>{ "Arg1" }, size_t(0), size_t(1), vector<string>{ "Arg1" },
+      PrintMode::Default, vector<string>{ "Arg1", "Arg2" }, size_t(0), size_t(2), vector<string>{ "Arg1", ", ", "Arg2" },
+      PrintMode::Default, vector<string>{ "Arg1", "Arg2" }, size_t(1), size_t(1), vector<string>{ "Arg2" },
+      PrintMode::Default, vector<string>{ "Arg1", "Arg2", "Arg3", "Arg4" }, size_t(2), size_t(2), vector<string>{ "Arg3", ", ", "Arg4" },
+
+      PrintMode::Verbose, vector<string>{ "Arg1" }, size_t(0), size_t(1), vector<string>{ "Arg1" },
+      PrintMode::Verbose, vector<string>{ "Arg1", "Arg2" }, size_t(0), size_t(2), vector<string>{ "Arg1", ", ", "Arg2" },
+      PrintMode::Verbose, vector<string>{ "Arg1", "Arg2" }, size_t(1), size_t(1), vector<string>{ "Arg2" },
+      PrintMode::Verbose, vector<string>{ "Arg1", "Arg2", "Arg3", "Arg4" }, size_t(2), size_t(2), vector<string>{ "Arg3", ", ", "Arg4" })
    {
       struct ConsoleSelfMocked : public Zen::Mock<Console>
       {
@@ -201,7 +227,7 @@ namespace ZenUnit
       } consoleSelfMocked;
       consoleSelfMocked.WriteMock.Expect();
       //
-      consoleSelfMocked.OptionallyWriteStringsCommaSeparated(strings, startIndex, numberOfElements, true);
+      consoleSelfMocked.NonLaconicWriteStringsCommaSeparated(strings, startIndex, numberOfElements, printMode);
       //
       vector<ZenMock::OneArgCallRef<const string&>> expectedConsoleWriteCalls;
       for (const string& expectedConsoleWrite : expectedConsoleWrites)

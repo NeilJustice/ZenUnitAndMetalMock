@@ -14,8 +14,8 @@ namespace ZenUnit
    SPECX(RunTestCase_ConstructorFails_DoesNotCallSubsequentTestPhases_ReturnsTestResultConstructorFail)
    SPECX(RunTestCase_ConstructorSucceeds_StartupFails_DoesNotCallTest_DoesNotCallCleanup_CallsDestructor_ReturnsTestResultStartupFail)
    SPEC(RunTestCase_AllTestPhasesSucceed_ReturnsExpectedTestResult)
-   SPEC(OptionallyWritePostTestNameMessage_DoesNothing)
-   SPECX(PrintPostTestCompletionMessage_DoesNothing)
+   SPEC(NonLaconicWritePostTestNameMessage_DoesNothing)
+   SPEC(PrintPostTestCompletionMessage_DoesNothing)
    SPEC(StaticCallNewTestClass_CallsNewTestClass)
    SPEC(StaticCallStartup_CallsStartup)
    SPEC(StaticTestBody_CallsTestBody)
@@ -56,19 +56,19 @@ namespace ZenUnit
       ARE_EQUAL(test._fileLine.ToString(), test.FileLineString());
    }
 
-   TEST(OptionallyWritePostTestNameMessage_DoesNothing)
+   TEST(NonLaconicWritePostTestNameMessage_DoesNothing)
    {
-      _test->OptionallyWritePostTestNameMessage(nullptr, false);
-      _test->OptionallyWritePostTestNameMessage(nullptr, true);
+      _test->NonLaconicWritePostTestNameMessage(nullptr, PrintMode::Laconic);
+      _test->NonLaconicWritePostTestNameMessage(nullptr, PrintMode::Default);
+      _test->NonLaconicWritePostTestNameMessage(nullptr, PrintMode::Verbose);
    }
 
-   TEST1X1(PrintPostTestCompletionMessage_DoesNothing,
-      bool doWriteMessage,
-      false,
-      true)
+   TEST(PrintPostTestCompletionMessage_DoesNothing)
    {
-      const TestResultMock testResultMock;
-      _test->OptionallyWritePostTestCompletionMessage(nullptr, testResultMock, doWriteMessage);
+      TestResultMock testResultMock;
+      _test->NonLaconicWritePostTestCompletionMessage(nullptr, testResultMock, PrintMode::Laconic);
+      _test->NonLaconicWritePostTestCompletionMessage(nullptr, testResultMock, PrintMode::Default);
+      _test->NonLaconicWritePostTestCompletionMessage(nullptr, testResultMock, PrintMode::Verbose);
    }
 
    static CallResult CallResultWithOutcome(TestOutcome testOutcome)

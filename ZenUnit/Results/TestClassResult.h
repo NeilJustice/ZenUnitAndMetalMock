@@ -8,6 +8,7 @@ namespace ZenUnit
    class ForEacherTwoExtraArgs;
    class Console;
    class TestFailureNumberer;
+   enum class PrintMode : unsigned char;
 
    using ForEacherTwoExtraArgsType = const ForEacherTwoExtraArgs<
       std::vector<TestResult>, void (*)(const TestResult&, const Console*, TestFailureNumberer*),
@@ -27,7 +28,7 @@ namespace ZenUnit
       virtual ~TestClassResult();
       virtual void AddTestResults(const std::vector<TestResult>& testResults);
       virtual unsigned Milliseconds() const;
-      virtual void PrintResultLine(const Console* console) const;
+      virtual void NonLaconicPrintResultLine(const Console* console, PrintMode printMode) const;
       virtual size_t NumberOfFailedTestCases() const;
       virtual void PrintTestFailures(
          const ForEacherTwoExtraArgsType* forEacherTwoExtraArgs,

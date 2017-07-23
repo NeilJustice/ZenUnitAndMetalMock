@@ -135,9 +135,9 @@ namespace ZenUnit
       }
    }
 
-   void TestResult::OptionallyWriteOKIfTestPassed(const Console* console, bool doPrintOK) const
+   void TestResult::NonLaconicWriteLineOKIfSuccess(const Console* console, PrintMode printMode) const
    {
-      if (doPrintOK && testOutcome == TestOutcome::Success)
+      if (printMode != PrintMode::Laconic && testOutcome == TestOutcome::Success)
       {
          console->WriteLineColor("OK", Color::White);
       }
@@ -162,7 +162,7 @@ namespace ZenUnit
          console->Write(responsibleTestPhaseSuffix);
          WriteTestCaseNumberIfAny(console, testCaseIndex);
          console->WriteLine(responsibleCallResult.anomalyOrException->anomaly->why);
-         console->WriteNewline();
+         console->WriteNewLine();
          break;
       }
       case TestOutcome::Exception:
@@ -180,7 +180,7 @@ namespace ZenUnit
             "  Type: ", *responsibleCallResult.anomalyOrException->exceptionTypeName, '\n',
             "what(): \"", *responsibleCallResult.anomalyOrException->exceptionWhat, "\"");
          console->WriteLine(exceptionTypeAndWhatLines);
-         console->WriteNewline();
+         console->WriteNewLine();
          break;
       }
       default:
@@ -192,7 +192,7 @@ namespace ZenUnit
          WriteTestCaseNumberIfAny(console, testCaseIndex);
          console->WriteLine(String::Concat(
             "\nFailed because test took longer than -maxtestms= (", milliseconds, " ms)"));
-         console->WriteNewline();
+         console->WriteNewLine();
          break;
       }
       }

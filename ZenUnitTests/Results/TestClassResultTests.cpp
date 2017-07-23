@@ -2,6 +2,7 @@
 #include "ZenUnit/Console/Console.h"
 #include "ZenUnit/Results/TestClassResult.h"
 #include "ZenUnit/Results/TestFailureNumberer.h"
+#include "ZenUnit/Utils/TestRandom.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestResultMock.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/ForEacherTwoExtraArgsMock.h"
@@ -19,8 +20,8 @@ namespace ZenUnit
    SPEC(Milliseconds_EmptyTestResultsVector_Returns0)
    SPEC(Milliseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMilliseconds)
    SPEC(PrintTestFailures_PrintsJustTestFailedToConsole)
-   SPEC(PrintResultLine_0FailedTest_WritesOKInGreen)
-   SPECX(PrintResultLine_1OrMoreFailedTests_WritesFailedInRed)
+   SPEC(NonLaconicPrintResultLine_0FailedTest_WritesOKInGreen)
+   SPECX(NonLaconicPrintResultLine_1OrMoreFailedTests_WritesFailedInRed)
    SPEC(PrintTestResultIfFailure_CallsTestResultPrintIfFailure)
    SPEC(ZenUnitEqualizer_ThrowsIfTestResultsNotEqual)
    SPECEND
@@ -163,21 +164,22 @@ namespace ZenUnit
       ARE_EQUAL(3, milliseconds);
    }
 
-   TEST(PrintResultLine_0FailedTest_WritesOKInGreen)
+   TEST(NonLaconicPrintResultLine_0FailedTest_WritesOKInGreen)
    {
       _testClassResultSelfMocked.NumberOfFailedTestCasesMock.ExpectAndReturn(0);
       ConsoleMock consoleMock;
-      consoleMock.WriteColorMock.Expect();
-      consoleMock.WriteNewlineMock.Expect();
+      consoleMock.NonLaconicWriteColorMock.Expect();
+      consoleMock.NonLaconicWriteNewLineMock.Expect();
+      const PrintMode printMode = TestRandom<PrintMode>();
       //
-      _testClassResultSelfMocked.PrintResultLine(&consoleMock);
+      _testClassResultSelfMocked.NonLaconicPrintResultLine(&consoleMock, printMode);
       //
       ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.AssertCalledOnce());
-      ZEN(consoleMock.WriteColorMock.AssertCalledOnceWith("[  OK  ]", Color::Green));
-      ZEN(consoleMock.WriteNewlineMock.AssertCalledOnce());
+      ZEN(consoleMock.NonLaconicWriteColorMock.AssertCalledOnceWith("[  OK  ]", Color::Green, printMode));
+      ZEN(consoleMock.NonLaconicWriteNewLineMock.AssertCalledOnceWith(printMode));
    }
 
-   TEST1X1(PrintResultLine_1OrMoreFailedTests_WritesFailedInRed,
+   TEST1X1(NonLaconicPrintResultLine_1OrMoreFailedTests_WritesFailedInRed,
       size_t numberOfFailedTestCases,
       size_t(1),
       size_t(2),
@@ -185,14 +187,15 @@ namespace ZenUnit
    {
       _testClassResultSelfMocked.NumberOfFailedTestCasesMock.ExpectAndReturn(numberOfFailedTestCases);
       ConsoleMock consoleMock;
-      consoleMock.WriteColorMock.Expect();
-      consoleMock.WriteNewlineMock.Expect();
+      consoleMock.NonLaconicWriteColorMock.Expect();
+      consoleMock.NonLaconicWriteNewLineMock.Expect();
+      const PrintMode printMode = TestRandom<PrintMode>();
       //
-      _testClassResultSelfMocked.PrintResultLine(&consoleMock);
+      _testClassResultSelfMocked.NonLaconicPrintResultLine(&consoleMock, printMode);
       //
       ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.AssertCalledOnce());
-      ZEN(consoleMock.WriteColorMock.AssertCalledOnceWith("[FAILED]", Color::Red));
-      ZEN(consoleMock.WriteNewlineMock.AssertCalledOnce());
+      ZEN(consoleMock.NonLaconicWriteColorMock.AssertCalledOnceWith("[FAILED]", Color::Red, printMode));
+      ZEN(consoleMock.NonLaconicWriteNewLineMock.AssertCalledOnceWith(printMode));
    }
 
    TEST(PrintTestResultIfFailure_CallsTestResultPrintIfFailure)

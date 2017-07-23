@@ -9,8 +9,8 @@ namespace ZenUnit
 {
    TESTS(NormalTestTests)
    SPEC(NumberOfTestCases_Returns1)
-   SPECX(OptionallyWritePostTestNameMessage_WritesSpaceArrowSpace)
-   SPECX(OptionallyWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue)
+   SPEC(NonLaconicWritePostTestNameMessage_WritesSpaceArrowSpace)
+   SPECX(NonLaconicWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue)
    SPEC(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)
    SPEC(NewTestClass_NewsTestClass)
    SPEC(Startup_CallsStartupOnTestClass)
@@ -34,37 +34,30 @@ namespace ZenUnit
       ARE_EQUAL(1, _normalTest->NumberOfTestCases());
    }
 
-   TEST2X2(OptionallyWritePostTestNameMessage_WritesSpaceArrowSpace,
-      bool doWriteMessage, bool expectWriteCall,
-      false, false,
-      true, true)
+   TEST(NonLaconicWritePostTestNameMessage_WritesSpaceArrowSpace)
    {
       ConsoleMock consoleMock;
-      if (expectWriteCall)
-      {
-         consoleMock.WriteMock.Expect();
-      }
+      consoleMock.NonLaconicWriteMock.Expect();
+      const PrintMode printMode = TestRandom<PrintMode>();
       //
-      _normalTest->OptionallyWritePostTestNameMessage(&consoleMock, doWriteMessage);
+      _normalTest->NonLaconicWritePostTestNameMessage(&consoleMock, printMode);
       //
-      if (expectWriteCall)
-      {
-         ZEN(consoleMock.WriteMock.AssertCalledOnceWith(" -> "));
-      }
+      ZEN(consoleMock.NonLaconicWriteMock.AssertCalledOnceWith(" -> ", printMode));
    }
 
-   TEST1X1(OptionallyWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue,
+   TEST1X1(NonLaconicWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue,
       bool doWriteMessage,
       false,
       true)
    {
       ConsoleMock consoleMock;
       TestResultMock testResultMock;
-      testResultMock.OptionallyWriteOKIfTestPassedMock.Expect();
+      testResultMock.NonLaconicWriteLineOKIfSuccessMock.Expect();
+      const PrintMode printMode = TestRandom<PrintMode>();
       //
-      _normalTest->OptionallyWritePostTestCompletionMessage(&consoleMock, testResultMock, doWriteMessage);
+      _normalTest->NonLaconicWritePostTestCompletionMessage(&consoleMock, testResultMock, printMode);
       //
-      ZEN(testResultMock.OptionallyWriteOKIfTestPassedMock.AssertCalledOnceWith(&consoleMock, doWriteMessage));
+      ZEN(testResultMock.NonLaconicWriteLineOKIfSuccessMock.AssertCalledOnceWith(&consoleMock, printMode));
    }
 
    TEST(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)

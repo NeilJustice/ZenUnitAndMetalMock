@@ -13,6 +13,7 @@ namespace ZenUnit
    SPECX(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1)
    SPECX(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0)
    SPEC(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
+   SPECX(Parse_LaconicOrVerbose_ReturnsExpectedZenUnitArgs)
    SPEC(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    SPEC(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
    SPECX(Parse_TimesArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1)
@@ -27,11 +28,9 @@ Usage: <TestsBinaryName> [Options...]
 Options:
 
 None
-   Run all non-skipped tests. Prints preamble, test class names and test names, and conclusion.
--abridged
-   Print just preamble, test class names, and conclusion.
+   Print preamble, run all non-skipped tests with printing of test class names and test names, then print conclusion.
 -laconic
-   Print just preamble and conclusion.
+   Print preamble, run all non-skipped tests, then print conclusion.
 -exit0
    Always exit 0 regardless of test run outcome.
 -failskips
@@ -94,7 +93,7 @@ None
       THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
       //
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
-         "ZenUnit argument error: Invalid argument \"" + invalidArg + "\""));
+         "ZenUnit argument error: Invalid argument \"" + invalidArg + "\"\n"));
       ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(ExpectedUsage, 1));
    }
 
@@ -116,7 +115,8 @@ None
       const vector<string> Args 
       { 
          TestProgramPath,
-         "-abridged",
+         "-laconic",
+         "-verbose",
          "-exit0",
          "-failskips",
          "-testruns=1"
@@ -127,16 +127,29 @@ None
       ZEN(ToUnsigned_ZenMock.AssertCalledOnceWith("1"));
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
-      expectedZenUnitArgs.abridged = true;
+      expectedZenUnitArgs.printMode = PrintMode::Verbose;
       expectedZenUnitArgs.exit0 = true;
       expectedZenUnitArgs.failskips = true;
       expectedZenUnitArgs.testruns = 1;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
+   TEST2X2(Parse_LaconicOrVerbose_ReturnsExpectedZenUnitArgs,
+      vector<string> args, PrintMode expectedPrintMode,
+      vector<string>{ "ExePath" }, PrintMode::Default,
+      vector<string>{ "ExePath", "-laconic" }, PrintMode::Laconic,
+      vector<string>{ "ExePath", "-verbose" }, PrintMode::Verbose)
+   {
+      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
+      //
+      ZenUnitArgs expectedZenUnitArgs;
+      expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
+      expectedZenUnitArgs.printMode = expectedPrintMode;
+      ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
+   }
+
    TEST(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    {
-      AssertArgSetsBoolField("-abridged", &ZenUnitArgs::abridged);
       AssertArgSetsBoolField("-exit0", &ZenUnitArgs::exit0);
       AssertArgSetsBoolField("-failskips", &ZenUnitArgs::failskips);
    }

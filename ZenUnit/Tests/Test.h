@@ -7,6 +7,7 @@ namespace ZenUnit
 {
    class TryCatchCaller;
    class TestResultFactory;
+   enum class PrintMode : unsigned char;
 
    class Test
    {
@@ -23,8 +24,8 @@ namespace ZenUnit
       virtual const char* Name() const;
       virtual std::string FullTestNameValue() const;
       virtual std::string FileLineString() const;
-      virtual void OptionallyWritePostTestNameMessage(const Console*, bool) const {}
-      virtual void OptionallyWritePostTestCompletionMessage(const Console*, const TestResult&, bool) const {}
+      virtual void NonLaconicWritePostTestNameMessage(const Console*, PrintMode) const {}
+      virtual void NonLaconicWritePostTestCompletionMessage(const Console*, const TestResult&, PrintMode) const {}
       virtual size_t NumberOfTestCases() const { return 0; }
       virtual std::vector<TestResult> Run() { return {}; }
 

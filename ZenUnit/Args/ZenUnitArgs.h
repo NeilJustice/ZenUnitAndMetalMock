@@ -1,4 +1,5 @@
 #pragma once
+#include "ZenUnit/Enums/PrintMode.h"
 #include "ZenUnit/Equalizers/ZenUnitEqualizer.h"
 
 namespace ZenUnit
@@ -6,7 +7,7 @@ namespace ZenUnit
    struct ZenUnitArgs
    {
       std::string commandLine;
-      bool abridged = false;
+      PrintMode printMode = PrintMode::Default;
       bool exit0 = false;
       bool failskips = false;
       unsigned testruns = 1;

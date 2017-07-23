@@ -71,11 +71,11 @@ namespace ZenUnit
               _testCaseArgsIndex < NumberOfTestCaseArgs;
               _testCaseArgsIndex += N, ++testCaseIndex)
          {
-            PrintTestCaseNumberArgsThenArrow(testCaseIndex, splitTestCaseArgs, zenUnitArgs);
+            NonLaconicPrintTestCaseNumberArgsThenArrow(testCaseIndex, splitTestCaseArgs, zenUnitArgs.printMode);
             TestResult testResult = MockableCallBaseRunTestCase();
             testResult.testCaseIndex = testCaseIndex;
             testResults.push_back(testResult);
-            OptionallyWriteOKIfTestPassed(testResult, !zenUnitArgs.abridged);
+            NonLaconicWriteLineOKIfSuccess(testResult, zenUnitArgs.printMode);
          }
          _testCaseArgsIndex = 0;
          return testResults;
@@ -97,24 +97,24 @@ namespace ZenUnit
          return testResult;
       }
 
-      virtual void PrintTestCaseNumberArgsThenArrow(
-         unsigned short testCaseIndex, const std::vector<std::string>& splitTestCaseArgs, const ZenUnitArgs& zenUnitArgs) const
+      virtual void NonLaconicPrintTestCaseNumberArgsThenArrow(
+         unsigned short testCaseIndex, const std::vector<std::string>& splitTestCaseArgs, PrintMode printMode) const
       {
          assert_true(testCaseIndex >= 0);
-         _console->OptionallyWriteColor(" [", Color::Green, !zenUnitArgs.abridged);
+         _console->NonLaconicWriteColor(" [", Color::Green, printMode);
          const std::string testCaseNumber = std::to_string(testCaseIndex + 1);
-         _console->OptionallyWrite(testCaseNumber, !zenUnitArgs.abridged);
-         _console->OptionallyWriteColor("]", Color::Green, !zenUnitArgs.abridged);
-         _console->OptionallyWrite(" (", !zenUnitArgs.abridged);
+         _console->NonLaconicWrite(testCaseNumber, printMode);
+         _console->NonLaconicWriteColor("]", Color::Green, printMode);
+         _console->NonLaconicWrite(" (", printMode);
          const size_t testCaseArgsPrintingStartIndex = static_cast<size_t>(testCaseIndex) * N;
-         _console->OptionallyWriteStringsCommaSeparated(
-            splitTestCaseArgs, testCaseArgsPrintingStartIndex, N, !zenUnitArgs.abridged);
-         _console->OptionallyWrite(") -> ", !zenUnitArgs.abridged);
+         _console->NonLaconicWriteStringsCommaSeparated(
+            splitTestCaseArgs, testCaseArgsPrintingStartIndex, N, printMode);
+         _console->NonLaconicWrite(") -> ", printMode);
       }
 
-      virtual void OptionallyWriteOKIfTestPassed(const TestResult& testResult, bool doPrintOK) const
+      virtual void NonLaconicWriteLineOKIfSuccess(const TestResult& testResult, PrintMode printMode) const
       {
-         testResult.OptionallyWriteOKIfTestPassed(_console.get(), doPrintOK);
+         testResult.NonLaconicWriteLineOKIfSuccess(_console.get(), printMode);
       }
    };
 }

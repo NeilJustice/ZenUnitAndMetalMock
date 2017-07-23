@@ -7,11 +7,9 @@ Usage: <TestsBinaryName> [Options...]
 Options:
 
 None
-   Run all non-skipped tests. Prints preamble, test class names and test names, and conclusion.
--abridged
-   Print just preamble, test class names, and conclusion.
+   Print preamble, run all non-skipped tests with printing of test class names and test names, then print conclusion.
 -laconic
-   Print just preamble and conclusion.
+   Print preamble, run all non-skipped tests, then print conclusion.
 -exit0
    Always exit 0 regardless of test run outcome.
 -failskips

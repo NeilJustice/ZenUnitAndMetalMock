@@ -12,7 +12,7 @@ namespace ZenUnit
    SPECX(StartupFail_ReturnsExpectedTestResult)
    SPEC(CtorDtorSuccess_ReturnsExpectedTestResult);
    SPECX(SixArgConstructor_SetsFields)
-   SPECX(OptionallyWriteOKIfTestPassed_PrintsOKIfTestPassed)
+   SPECX(NonLaconicWriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess)
    SPEC(PrintIfFailure_Success_PrintsNothing)
    SPECX(PrintIfFailure_Anomaly_PrintsExpected)
    SPECX(PrintIfFailure_Exception_PrintsExpected)
@@ -192,19 +192,25 @@ namespace ZenUnit
       ARE_EQUAL(expectedTestResult, testResult);
    }
 
-   TEST3X3(OptionallyWriteOKIfTestPassed_PrintsOKIfTestPassed,
-      TestOutcome testOutcome, bool doPrintOK, bool expectWriteLineOK,
-      TestOutcome::Success, true, true,
-      TestOutcome::Anomaly, true, false,
-      TestOutcome::Exception, true, false,
-      TestOutcome::SuccessButPastDeadline, true, false,
-      TestOutcome::Unset, true, false,
+   TEST3X3(NonLaconicWriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess,
+      PrintMode printMode, TestOutcome testOutcome, bool expectWriteLineOK,
+      PrintMode::Laconic, TestOutcome::Success, false,
+      PrintMode::Laconic, TestOutcome::Anomaly, false,
+      PrintMode::Laconic, TestOutcome::Exception, false,
+      PrintMode::Laconic, TestOutcome::SuccessButPastDeadline, false,
+      PrintMode::Laconic, TestOutcome::Unset, false,
 
-      TestOutcome::Success, false, false,
-      TestOutcome::Anomaly, false, false,
-      TestOutcome::Exception, false, false,
-      TestOutcome::SuccessButPastDeadline, false, false,
-      TestOutcome::Unset, false, false)
+      PrintMode::Default, TestOutcome::Success, true,
+      PrintMode::Default, TestOutcome::Anomaly, false,
+      PrintMode::Default, TestOutcome::Exception, false,
+      PrintMode::Default, TestOutcome::SuccessButPastDeadline, false,
+      PrintMode::Default, TestOutcome::Unset, false,
+
+      PrintMode::Verbose, TestOutcome::Success, true,
+      PrintMode::Verbose, TestOutcome::Anomaly, false,
+      PrintMode::Verbose, TestOutcome::Exception, false,
+      PrintMode::Verbose, TestOutcome::SuccessButPastDeadline, false,
+      PrintMode::Verbose, TestOutcome::Unset, false)
    {
       _testResult.testOutcome = testOutcome;
       if (expectWriteLineOK)
@@ -212,7 +218,7 @@ namespace ZenUnit
          _consoleMock.WriteLineColorMock.Expect();
       }
       //
-      _testResult.OptionallyWriteOKIfTestPassed(&_consoleMock, doPrintOK);
+      _testResult.NonLaconicWriteLineOKIfSuccess(&_consoleMock, printMode);
       //
       if (expectWriteLineOK)
       {
@@ -257,7 +263,7 @@ namespace ZenUnit
       _consoleMock.WriteMock.Expect();
       _consoleMock.WriteLineMock.Expect();
       _consoleMock.WriteLineColorMock.Expect();
-      _consoleMock.WriteNewlineMock.Expect();
+      _consoleMock.WriteNewLineMock.Expect();
       //
       _testResult_WriteTestCaseNumberIfAnyMocked.PrintIfFailure(&_consoleMock, &_testFailureNumbererMock);
       //
@@ -271,7 +277,7 @@ namespace ZenUnit
          AssertCalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex));
       ZEN(_consoleMock.WriteLineColorMock.AssertCalledOnceWith(TestFailureNumber, Color::Red));
       ZEN(_consoleMock.WriteLineMock.AssertCalledOnceWith(AnomalyWhy));
-      ZEN(_consoleMock.WriteNewlineMock.AssertCalledOnce());
+      ZEN(_consoleMock.WriteNewLineMock.AssertCalledOnce());
    }
 
    TEST3X3(PrintIfFailure_Exception_PrintsExpected,
@@ -305,7 +311,7 @@ namespace ZenUnit
       _consoleMock.WriteMock.Expect();
       _consoleMock.WriteLineColorMock.Expect();
       _consoleMock.WriteLineMock.Expect();
-      _consoleMock.WriteNewlineMock.Expect();
+      _consoleMock.WriteNewLineMock.Expect();
       //
       _testResult_WriteTestCaseNumberIfAnyMocked.PrintIfFailure(&_consoleMock, &_testFailureNumbererMock);
       //
@@ -327,7 +333,7 @@ namespace ZenUnit
       }));
       ZEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
          AssertCalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex));
-      ZEN(_consoleMock.WriteNewlineMock.AssertCalledOnce());
+      ZEN(_consoleMock.WriteNewLineMock.AssertCalledOnce());
    }
 
    TEST(PrintIfFailure_SuccessButPastDeadline_PrintsExpected)
@@ -341,7 +347,7 @@ namespace ZenUnit
 
       _consoleMock.WriteLineColorMock.Expect();
       _consoleMock.WriteLineMock.Expect();
-      _consoleMock.WriteNewlineMock.Expect();
+      _consoleMock.WriteNewLineMock.Expect();
 
       _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex = 1;
       _testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.Expect();
@@ -357,7 +363,7 @@ namespace ZenUnit
          _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value(),
          "\nFailed because test took longer than -maxtestms= (10 ms)"s
       }));
-      ZEN(_consoleMock.WriteNewlineMock.AssertCalledOnce());
+      ZEN(_consoleMock.WriteNewLineMock.AssertCalledOnce());
    }
 
    TEST(PrintIfFailure_InvalidOutcome_Throws)

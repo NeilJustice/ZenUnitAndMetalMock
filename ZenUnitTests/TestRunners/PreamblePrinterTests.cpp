@@ -34,7 +34,7 @@ namespace ZenUnit
    }
 
    TEST4X4(PrintOpeningThreeLines_PrintsCommandLineAndTimeZoneAndTestAndTestClassCounts,
-      size_t numberOfTestClasses, bool expectTestClassesPlural, Color expectedTextColor, bool expectWriteNewline,
+      size_t numberOfTestClasses, bool expectTestClassesPlural, Color expectedTextColor, bool expectWriteNewLine,
       size_t(0), true, Color::Green, false,
       size_t(1), false, Color::Green, true,
       size_t(1), false, Color::Green, true,
@@ -43,9 +43,9 @@ namespace ZenUnit
    {
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteLineMock.Expect();
-      if (expectWriteNewline)
+      if (expectWriteNewLine)
       {
-         _consoleMock->WriteNewlineMock.Expect();
+         _consoleMock->WriteNewLineMock.Expect();
       }
       TestClassMultiRunnerMock multiTestClassRunnerMock;
       multiTestClassRunnerMock.NumberOfTestClassesMock.ExpectAndReturn(numberOfTestClasses);
@@ -73,9 +73,9 @@ namespace ZenUnit
          " Running at " + TimeZoneDateTimeNow,
          expectedRunningTestClassesLine
       }));
-      if (expectWriteNewline)
+      if (expectWriteNewLine)
       {
-         ZEN(_consoleMock->WriteNewlineMock.AssertCalledOnce());
+         ZEN(_consoleMock->WriteNewLineMock.AssertCalledOnce());
       }
    }
 
