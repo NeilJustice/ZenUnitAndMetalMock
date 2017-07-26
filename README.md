@@ -112,14 +112,6 @@ int main(int argc, char* argv[]
 ### [Guide to ZenUnit](ZenUnit.md)
 ### [Guide to ZenMock](ZenMock.md)
 
-### Version History
-
-|Version|Date|Features|
-|-------|----|--------|
-|0.2.0|July 27, 2017|-abridged, -laconic, -testruns=<N>, vector<T> ZenUnitPrinter<T> printing|
-|0.1.1|February 14, 2017|Fixes, refactorings, design improvements|
-|0.1.0|January 1, 2017|Launch|
-
 ### License
 
 Public domain

@@ -71,11 +71,11 @@ namespace ZenUnit
               _testCaseArgsIndex < NumberOfTestCaseArgs;
               _testCaseArgsIndex += N, ++testCaseIndex)
          {
-            NonLaconicPrintTestCaseNumberArgsThenArrow(testCaseIndex, splitTestCaseArgs, zenUnitArgs.printMode);
+            NonMinimalPrintTestCaseNumberArgsThenArrow(testCaseIndex, splitTestCaseArgs, zenUnitArgs.printMode);
             TestResult testResult = MockableCallBaseRunTestCase();
             testResult.testCaseIndex = testCaseIndex;
             testResults.push_back(testResult);
-            NonLaconicWriteLineOKIfSuccess(testResult, zenUnitArgs.printMode);
+            NonMinimalWriteLineOKIfSuccess(testResult, zenUnitArgs.printMode);
          }
          _testCaseArgsIndex = 0;
          return testResults;
@@ -97,24 +97,24 @@ namespace ZenUnit
          return testResult;
       }
 
-      virtual void NonLaconicPrintTestCaseNumberArgsThenArrow(
+      virtual void NonMinimalPrintTestCaseNumberArgsThenArrow(
          unsigned short testCaseIndex, const std::vector<std::string>& splitTestCaseArgs, PrintMode printMode) const
       {
          assert_true(testCaseIndex >= 0);
-         _console->NonLaconicWriteColor(" [", Color::Green, printMode);
+         _console->NonMinimalWriteColor(" [", Color::Green, printMode);
          const std::string testCaseNumber = std::to_string(testCaseIndex + 1);
-         _console->NonLaconicWrite(testCaseNumber, printMode);
-         _console->NonLaconicWriteColor("]", Color::Green, printMode);
-         _console->NonLaconicWrite(" (", printMode);
+         _console->NonMinimalWrite(testCaseNumber, printMode);
+         _console->NonMinimalWriteColor("]", Color::Green, printMode);
+         _console->NonMinimalWrite(" (", printMode);
          const size_t testCaseArgsPrintingStartIndex = static_cast<size_t>(testCaseIndex) * N;
-         _console->NonLaconicWriteStringsCommaSeparated(
+         _console->NonMinimalWriteStringsCommaSeparated(
             splitTestCaseArgs, testCaseArgsPrintingStartIndex, N, printMode);
-         _console->NonLaconicWrite(") -> ", printMode);
+         _console->NonMinimalWrite(") -> ", printMode);
       }
 
-      virtual void NonLaconicWriteLineOKIfSuccess(const TestResult& testResult, PrintMode printMode) const
+      virtual void NonMinimalWriteLineOKIfSuccess(const TestResult& testResult, PrintMode printMode) const
       {
-         testResult.NonLaconicWriteLineOKIfSuccess(_console.get(), printMode);
+         testResult.NonMinimalWriteLineOKIfSuccess(_console.get(), printMode);
       }
    };
 }

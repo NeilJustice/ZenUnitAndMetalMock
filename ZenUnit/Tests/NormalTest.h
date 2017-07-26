@@ -24,16 +24,16 @@ namespace ZenUnit
          return 1;
       }
 
-      void NonLaconicWritePostTestNameMessage(
+      void NonMinimalWritePostTestNameMessage(
          const Console* console, PrintMode printMode) const override
       {
-         console->NonLaconicWrite(" -> ", printMode);
+         console->NonMinimalWrite(" -> ", printMode);
       }
 
-      void NonLaconicWritePostTestCompletionMessage(
+      void NonMinimalWritePostTestCompletionMessage(
          const Console* console, const TestResult& testResult, PrintMode printMode) const override
       {
-         testResult.NonLaconicWriteLineOKIfSuccess(console, printMode);
+         testResult.NonMinimalWriteLineOKIfSuccess(console, printMode);
       }
 
       std::vector<TestResult> Run() override

@@ -135,9 +135,9 @@ namespace ZenUnit
       }
    }
 
-   void TestResult::NonLaconicWriteLineOKIfSuccess(const Console* console, PrintMode printMode) const
+   void TestResult::NonMinimalWriteLineOKIfSuccess(const Console* console, PrintMode printMode) const
    {
-      if (printMode != PrintMode::Laconic && testOutcome == TestOutcome::Success)
+      if (printMode != PrintMode::Minimal && testOutcome == TestOutcome::Success)
       {
          console->WriteLineColor("OK", Color::White);
       }

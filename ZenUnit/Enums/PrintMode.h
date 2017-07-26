@@ -5,7 +5,7 @@ namespace ZenUnit
    enum class PrintMode : unsigned char
    {
       Unset,
-      Laconic,
+      Minimal,
       Default,
       Verbose
    };

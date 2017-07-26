@@ -9,8 +9,8 @@ namespace ZenUnit
 {
    TESTS(NormalTestTests)
    SPEC(NumberOfTestCases_Returns1)
-   SPEC(NonLaconicWritePostTestNameMessage_WritesSpaceArrowSpace)
-   SPECX(NonLaconicWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue)
+   SPEC(NonMinimalWritePostTestNameMessage_WritesSpaceArrowSpace)
+   SPECX(NonMinimalWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue)
    SPEC(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)
    SPEC(NewTestClass_NewsTestClass)
    SPEC(Startup_CallsStartupOnTestClass)
@@ -34,30 +34,30 @@ namespace ZenUnit
       ARE_EQUAL(1, _normalTest->NumberOfTestCases());
    }
 
-   TEST(NonLaconicWritePostTestNameMessage_WritesSpaceArrowSpace)
+   TEST(NonMinimalWritePostTestNameMessage_WritesSpaceArrowSpace)
    {
       ConsoleMock consoleMock;
-      consoleMock.NonLaconicWriteMock.Expect();
+      consoleMock.NonMinimalWriteMock.Expect();
       const PrintMode printMode = TestRandom<PrintMode>();
       //
-      _normalTest->NonLaconicWritePostTestNameMessage(&consoleMock, printMode);
+      _normalTest->NonMinimalWritePostTestNameMessage(&consoleMock, printMode);
       //
-      ZEN(consoleMock.NonLaconicWriteMock.AssertCalledOnceWith(" -> ", printMode));
+      ZEN(consoleMock.NonMinimalWriteMock.AssertCalledOnceWith(" -> ", printMode));
    }
 
-   TEST1X1(NonLaconicWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue,
+   TEST1X1(NonMinimalWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue,
       bool doWriteMessage,
       false,
       true)
    {
       ConsoleMock consoleMock;
       TestResultMock testResultMock;
-      testResultMock.NonLaconicWriteLineOKIfSuccessMock.Expect();
+      testResultMock.NonMinimalWriteLineOKIfSuccessMock.Expect();
       const PrintMode printMode = TestRandom<PrintMode>();
       //
-      _normalTest->NonLaconicWritePostTestCompletionMessage(&consoleMock, testResultMock, printMode);
+      _normalTest->NonMinimalWritePostTestCompletionMessage(&consoleMock, testResultMock, printMode);
       //
-      ZEN(testResultMock.NonLaconicWriteLineOKIfSuccessMock.AssertCalledOnceWith(&consoleMock, printMode));
+      ZEN(testResultMock.NonMinimalWriteLineOKIfSuccessMock.AssertCalledOnceWith(&consoleMock, printMode));
    }
 
    TEST(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)

@@ -8,7 +8,7 @@ Options:
 
 None
    Print preamble, run all non-skipped tests with printing of test class names and test names, then print conclusion.
--laconic
+-minimal
    Print preamble, run all non-skipped tests, then print conclusion.
 -exit0
    Always exit 0 regardless of test run outcome.

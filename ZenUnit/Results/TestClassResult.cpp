@@ -54,18 +54,18 @@ namespace ZenUnit
       return milliseconds;
    }
 
-   void TestClassResult::NonLaconicPrintResultLine(const Console* console, PrintMode printMode) const
+   void TestClassResult::NonMinimalPrintResultLine(const Console* console, PrintMode printMode) const
    {
       const size_t numberOfFailedTestCases = NumberOfFailedTestCases();
       if (numberOfFailedTestCases == 0)
       {
-         console->NonLaconicWriteColor("[  OK  ]", Color::Green, printMode);
+         console->NonMinimalWriteColor("[  OK  ]", Color::Green, printMode);
       }
       else
       {
-         console->NonLaconicWriteColor("[FAILED]", Color::Red, printMode);
+         console->NonMinimalWriteColor("[FAILED]", Color::Red, printMode);
       }
-      console->NonLaconicWriteNewLine(printMode);
+      console->NonMinimalWriteNewLine(printMode);
    }
 
    size_t TestClassResult::NumberOfFailedTestCases() const

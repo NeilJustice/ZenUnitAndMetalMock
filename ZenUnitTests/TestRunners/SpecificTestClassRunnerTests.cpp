@@ -13,10 +13,10 @@ namespace ZenUnit
    SPEC(TestClassNameForSorting_ReturnsTestClassName)
    SPEC(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
    SPECX(RunTests_PrintsTestClassNameAndNumberOfNamedTests_ForEachRunsTests_PrintsTestClassResultLine_MoveReturnsTestClassResult)
-   SPECX(NonLaconicPrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVerticalBarNumberOfTests)
+   SPECX(NonMinimalPrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVerticalBarNumberOfTests)
    SPECX(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_WritesTestNameIfVerbose_RunsNewDeleteTest_AddsResultToResults_ReturnsTrueIfNewableAndDeletable)
-   SPEC(RunTest_NonLaconicWritesVerticalBarTestName_RunsTest_AddsTestResultsToTestClassResult_NonLaconicWriteTestOutcome)
-   SPEC(NonLaconicPrintResultLine_CallsTestClassResultPrintResultLine)
+   SPEC(RunTest_NonMinimalWritesVerticalBarTestName_RunsTest_AddsTestResultsToTestClassResult_NonMinimalWriteTestOutcome)
+   SPEC(NonMinimalPrintResultLine_CallsTestClassResultPrintResultLine)
    SPECEND
 
    class TestingTestClass
@@ -39,9 +39,9 @@ namespace ZenUnit
    class SpecificTestClassRunnerSelfMocked : public Zen::Mock<ZenUnit::SpecificTestClassRunner<TestingTestClass>>
    {
    public:
-      ZENMOCK_VOID0_CONST(NonLaconicPrintTestClassNameAndNumberOfNamedTests)
+      ZENMOCK_VOID0_CONST(NonMinimalPrintTestClassNameAndNumberOfNamedTests)
       ZENMOCK_NONVOID2_CONST(bool, ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests, Test*, TestClassResult*)
-      ZENMOCK_VOID2_CONST(NonLaconicPrintResultLine, const TestClassResult*, PrintMode)
+      ZENMOCK_VOID2_CONST(NonMinimalPrintResultLine, const TestClassResult*, PrintMode)
       ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
       const ConsoleMock* consoleMock;
       using TestsMemberForEacherExtraArgMockType = MemberForEacherExtraArgMock<
@@ -116,15 +116,15 @@ namespace ZenUnit
       false, false,
       true, true)
    {
-      _specificTestClassRunnerSelfMocked->NonLaconicPrintTestClassNameAndNumberOfNamedTestsMock.Expect();
+      _specificTestClassRunnerSelfMocked->NonMinimalPrintTestClassNameAndNumberOfNamedTestsMock.Expect();
       _specificTestClassRunnerSelfMocked->ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock
          .ExpectAndReturn(testClassTypeNewableAndDeletable);
       if (expectTestsRunForEachCall)
       {
          _specificTestClassRunnerSelfMocked->testsMemberForEacherExtraArgMock->ForEachMock.Expect();
       }
-      _specificTestClassRunnerSelfMocked->NonLaconicPrintResultLineMock.Expect();
-      _specificTestClassRunnerSelfMocked->consoleMock->NonLaconicWriteNewLineMock.Expect();
+      _specificTestClassRunnerSelfMocked->NonMinimalPrintResultLineMock.Expect();
+      _specificTestClassRunnerSelfMocked->consoleMock->NonMinimalWriteNewLineMock.Expect();
       _specificTestClassRunnerSelfMocked->_testClassResult = TestClassResult::TestingNonDefault();
 
       const ZenUnitArgs zenUnitArgs = []
@@ -137,7 +137,7 @@ namespace ZenUnit
       //
       const TestClassResult testClassResult = _specificTestClassRunnerSelfMocked->RunTests();
       //
-      ZEN(_specificTestClassRunnerSelfMocked->NonLaconicPrintTestClassNameAndNumberOfNamedTestsMock.AssertCalledOnce());
+      ZEN(_specificTestClassRunnerSelfMocked->NonMinimalPrintTestClassNameAndNumberOfNamedTestsMock.AssertCalledOnce());
       ZEN(_specificTestClassRunnerSelfMocked->ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock.AssertCalledOnceWith(
           &_specificTestClassRunnerSelfMocked->_newDeleteTest, &_specificTestClassRunnerSelfMocked->_testClassResult));
       if (expectTestsRunForEachCall)
@@ -147,22 +147,22 @@ namespace ZenUnit
             &SpecificTestClassRunner<TestingTestClass>::RunTest, &_specificTestClassRunnerSelfMocked->_testClassResult));
       }
       ZEN(_specificTestClassRunnerSelfMocked->GetArgs_ZenMock.AssertCalledOnce());
-      ZEN(_specificTestClassRunnerSelfMocked->NonLaconicPrintResultLineMock.
+      ZEN(_specificTestClassRunnerSelfMocked->NonMinimalPrintResultLineMock.
          AssertCalledOnceWith(&_specificTestClassRunnerSelfMocked->_testClassResult, zenUnitArgs.printMode));
-      ZEN(_specificTestClassRunnerSelfMocked->consoleMock->NonLaconicWriteNewLineMock.AssertCalledOnceWith(zenUnitArgs.printMode));
+      ZEN(_specificTestClassRunnerSelfMocked->consoleMock->NonMinimalWriteNewLineMock.AssertCalledOnceWith(zenUnitArgs.printMode));
       ARE_EQUAL(TestClassResult::TestingNonDefault(), testClassResult);
       ARE_EQUAL(TestClassResult(), _specificTestClassRunnerSelfMocked->_testClassResult);
    }
 
-   TEST2X2(NonLaconicPrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVerticalBarNumberOfTests,
+   TEST2X2(NonMinimalPrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVerticalBarNumberOfTests,
       size_t numberOfTests, bool expectTestsPlural,
       size_t(0), true,
       size_t(1), false,
       size_t(2), true,
       size_t(3), true)
    {
-      _consoleMock->NonLaconicWriteColorMock.Expect();
-      _consoleMock->NonLaconicWriteLineMock.Expect();
+      _consoleMock->NonMinimalWriteColorMock.Expect();
+      _consoleMock->NonMinimalWriteLineMock.Expect();
       _specificTestClassRunner->_testClassName = TestClassName;
       _specificTestClassRunner->_tests.resize(numberOfTests);
       const ZenUnitArgs zenUnitArgs = []
@@ -173,22 +173,22 @@ namespace ZenUnit
       }();
       GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
       //
-      _specificTestClassRunner->NonLaconicPrintTestClassNameAndNumberOfNamedTests();
+      _specificTestClassRunner->NonMinimalPrintTestClassNameAndNumberOfNamedTests();
       //
       ZEN(GetArgs_ZenMock.AssertCalledOnce());
-      ZEN(_consoleMock->NonLaconicWriteColorMock.AssertCalls(
+      ZEN(_consoleMock->NonMinimalWriteColorMock.AssertCalls(
       {
          { "@", Color::Green, zenUnitArgs.printMode },
          { TestClassName, Color::Green, zenUnitArgs.printMode }
       }));
       if (expectTestsPlural)
       {
-         ZEN(_consoleMock->NonLaconicWriteLineMock.AssertCalledOnceWith(
+         ZEN(_consoleMock->NonMinimalWriteLineMock.AssertCalledOnceWith(
             String::Concat(" | ", numberOfTests, " named tests"), zenUnitArgs.printMode));
       }
       else
       {
-         ZEN(_consoleMock->NonLaconicWriteLineMock.AssertCalledOnceWith(
+         ZEN(_consoleMock->NonMinimalWriteLineMock.AssertCalledOnceWith(
             String::Concat(" | ", numberOfTests, " named test"), zenUnitArgs.printMode));
       }
    }
@@ -207,11 +207,11 @@ namespace ZenUnit
       }();
       GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
 
-      _consoleMock->NonLaconicWriteColorMock.Expect();
-      _consoleMock->NonLaconicWriteMock.Expect();
+      _consoleMock->NonMinimalWriteColorMock.Expect();
+      _consoleMock->NonMinimalWriteMock.Expect();
       if (expectWriteLineOK)
       {
-         _consoleMock->NonLaconicWriteLineMock.Expect();
+         _consoleMock->NonMinimalWriteLineMock.Expect();
       }
       TestMock testMock;
 
@@ -227,18 +227,18 @@ namespace ZenUnit
          ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(&testMock, &testClassResultMock);
       //
       ZEN(GetArgs_ZenMock.AssertCalledOnce());
-      ZEN(_consoleMock->NonLaconicWriteColorMock.AssertCalledOnceWith("|", Color::Green, zenUnitArgs.printMode));
-      ZEN(_consoleMock->NonLaconicWriteMock.AssertCalledOnceWith("TestClassIsNewableAndDeletable -> ", zenUnitArgs.printMode));
+      ZEN(_consoleMock->NonMinimalWriteColorMock.AssertCalledOnceWith("|", Color::Green, zenUnitArgs.printMode));
+      ZEN(_consoleMock->NonMinimalWriteMock.AssertCalledOnceWith("TestClassIsNewableAndDeletable -> ", zenUnitArgs.printMode));
       if (expectWriteLineOK)
       {
-         ZEN(_consoleMock->NonLaconicWriteLineMock.AssertCalledOnceWith("OK", zenUnitArgs.printMode));
+         ZEN(_consoleMock->NonMinimalWriteLineMock.AssertCalledOnceWith("OK", zenUnitArgs.printMode));
       }
       ZEN(testMock.RunMock.AssertCalledOnce());
       ZEN(testClassResultMock.AddTestResultsMock.AssertCalledOnceWith(testResults));
       ARE_EQUAL(expectedReturnValue, testClassTypeIsNewableAndDeletable);
    }
 
-   TEST(RunTest_NonLaconicWritesVerticalBarTestName_RunsTest_AddsTestResultsToTestClassResult_NonLaconicWriteTestOutcome)
+   TEST(RunTest_NonMinimalWritesVerticalBarTestName_RunsTest_AddsTestResultsToTestClassResult_NonMinimalWriteTestOutcome)
    {
       const ZenUnitArgs zenUnitArgs = []
       {
@@ -248,18 +248,18 @@ namespace ZenUnit
       }();
       _specificTestClassRunnerSelfMocked->GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
 
-      _specificTestClassRunnerSelfMocked->consoleMock->NonLaconicWriteColorMock.Expect();
-      _specificTestClassRunnerSelfMocked->consoleMock->NonLaconicWriteMock.Expect();
+      _specificTestClassRunnerSelfMocked->consoleMock->NonMinimalWriteColorMock.Expect();
+      _specificTestClassRunnerSelfMocked->consoleMock->NonMinimalWriteMock.Expect();
 
       TestMock* const testMock = new TestMock;
       const string TestName = TestRandom<string>();
       testMock->NameMock.ExpectAndReturn(TestName.c_str());
-      testMock->NonLaconicWritePostTestNameMessageMock.Expect();
+      testMock->NonMinimalWritePostTestNameMessageMock.Expect();
       TestResult test0;
       test0.fullTestName = FullTestName("", "Test0", 0);
       const vector<TestResult> TestResults { test0, TestResult() };
       testMock->RunMock.ExpectAndReturn(TestResults);
-      testMock->NonLaconicWritePostTestCompletionMessageMock.Expect();
+      testMock->NonMinimalWritePostTestCompletionMessageMock.Expect();
       const unique_ptr<Test> test(testMock);
 
       TestClassResultMock testClassResultMock;
@@ -269,27 +269,27 @@ namespace ZenUnit
       //
       ZEN(_specificTestClassRunnerSelfMocked->GetArgs_ZenMock.AssertCalledOnce());
       ZEN(_specificTestClassRunnerSelfMocked->consoleMock->
-         NonLaconicWriteColorMock.AssertCalledOnceWith("|", Color::Green, zenUnitArgs.printMode));
+         NonMinimalWriteColorMock.AssertCalledOnceWith("|", Color::Green, zenUnitArgs.printMode));
       ZEN(_specificTestClassRunnerSelfMocked->consoleMock->
-         NonLaconicWriteMock.AssertCalledOnceWith(TestName, zenUnitArgs.printMode));
+         NonMinimalWriteMock.AssertCalledOnceWith(TestName, zenUnitArgs.printMode));
       ZEN(testMock->NameMock.AssertCalledOnce());
-      ZEN(testMock->NonLaconicWritePostTestNameMessageMock.AssertCalledOnceWith(
+      ZEN(testMock->NonMinimalWritePostTestNameMessageMock.AssertCalledOnceWith(
          _specificTestClassRunnerSelfMocked->_console.get(), zenUnitArgs.printMode));
       ZEN(testMock->RunMock.AssertCalledOnce());
       ZEN(testClassResultMock.AddTestResultsMock.AssertCalledOnceWith(TestResults));
-      ZEN(testMock->NonLaconicWritePostTestCompletionMessageMock.AssertCalledOnceWith(
+      ZEN(testMock->NonMinimalWritePostTestCompletionMessageMock.AssertCalledOnceWith(
          _specificTestClassRunnerSelfMocked->_console.get(), test0, zenUnitArgs.printMode));
    }
 
-   TEST(NonLaconicPrintResultLine_CallsTestClassResultPrintResultLine)
+   TEST(NonMinimalPrintResultLine_CallsTestClassResultPrintResultLine)
    {
       TestClassResultMock testClassResultMock;
-      testClassResultMock.NonLaconicPrintResultLineMock.Expect();
+      testClassResultMock.NonMinimalPrintResultLineMock.Expect();
       const PrintMode printMode = TestRandom<PrintMode>();
       //
-      _specificTestClassRunner->NonLaconicPrintResultLine(&testClassResultMock, printMode);
+      _specificTestClassRunner->NonMinimalPrintResultLine(&testClassResultMock, printMode);
       //
-      ZEN(testClassResultMock.NonLaconicPrintResultLineMock.AssertCalledOnceWith(_consoleMock, printMode));
+      ZEN(testClassResultMock.NonMinimalPrintResultLineMock.AssertCalledOnceWith(_consoleMock, printMode));
    }
 
    }; RUN(SpecificTestClassRunnerTests)

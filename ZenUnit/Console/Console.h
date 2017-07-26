@@ -20,16 +20,16 @@ namespace ZenUnit
       Console();
       virtual ~Console();
       virtual void Write(const std::string& message) const;
-      virtual void NonLaconicWrite(const std::string& message, PrintMode printMode) const;
+      virtual void NonMinimalWrite(const std::string& message, PrintMode printMode) const;
       virtual void WriteColor(const std::string& message, Color color) const;
-      virtual void NonLaconicWriteColor(const std::string& message, Color color, PrintMode printMode) const;
+      virtual void NonMinimalWriteColor(const std::string& message, Color color, PrintMode printMode) const;
       virtual void WriteLine(const std::string& message) const;
-      virtual void NonLaconicWriteLine(const std::string& message, PrintMode printMode) const;
+      virtual void NonMinimalWriteLine(const std::string& message, PrintMode printMode) const;
       virtual void WriteLineColor(const std::string& message, Color color) const;
       virtual void WriteNewLine() const;
-      virtual void NonLaconicWriteNewLine(PrintMode printMode) const;
+      virtual void NonMinimalWriteNewLine(PrintMode printMode) const;
       virtual void WriteLineAndExit(const std::string& message, int exitCode) const;
-      virtual void NonLaconicWriteStringsCommaSeparated(
+      virtual void NonMinimalWriteStringsCommaSeparated(
          const std::vector<std::string>& strings, size_t startIndex, size_t numberOfElements, PrintMode printMode) const;
       virtual void PauseForAnyKeyIfDebuggerIsPresent() const;
       virtual bool DebuggerIsPresent() const;

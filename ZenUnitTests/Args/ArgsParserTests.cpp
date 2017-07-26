@@ -13,7 +13,7 @@ namespace ZenUnit
    SPECX(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1)
    SPECX(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0)
    SPEC(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
-   SPECX(Parse_LaconicOrVerbose_ReturnsExpectedZenUnitArgs)
+   SPECX(Parse_MinimalOrVerbose_ReturnsExpectedZenUnitArgs)
    SPEC(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    SPEC(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
    SPECX(Parse_TimesArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1)
@@ -29,7 +29,7 @@ Options:
 
 None
    Print preamble, run all non-skipped tests with printing of test class names and test names, then print conclusion.
--laconic
+-minimal
    Print preamble, run all non-skipped tests, then print conclusion.
 -exit0
    Always exit 0 regardless of test run outcome.
@@ -115,7 +115,7 @@ None
       const vector<string> Args 
       { 
          TestProgramPath,
-         "-laconic",
+         "-minimal",
          "-verbose",
          "-exit0",
          "-failskips",
@@ -134,10 +134,10 @@ None
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST2X2(Parse_LaconicOrVerbose_ReturnsExpectedZenUnitArgs,
+   TEST2X2(Parse_MinimalOrVerbose_ReturnsExpectedZenUnitArgs,
       vector<string> args, PrintMode expectedPrintMode,
       vector<string>{ "ExePath" }, PrintMode::Default,
-      vector<string>{ "ExePath", "-laconic" }, PrintMode::Laconic,
+      vector<string>{ "ExePath", "-minimal" }, PrintMode::Minimal,
       vector<string>{ "ExePath", "-verbose" }, PrintMode::Verbose)
    {
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);

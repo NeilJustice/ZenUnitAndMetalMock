@@ -62,42 +62,42 @@ namespace ZenUnit
 
       TestClassResult RunTests() override
       {
-         NonLaconicPrintTestClassNameAndNumberOfNamedTests();
+         NonMinimalPrintTestClassNameAndNumberOfNamedTests();
          if (ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(&_newDeleteTest, &_testClassResult))
          {
             _testsMemberForEacherExtraArg->ForEach(
                &_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult);
          }
          const ZenUnitArgs& zenUnitArgs = _TestRunner_GetArgs_ZenMockable();
-         NonLaconicPrintResultLine(&_testClassResult, zenUnitArgs.printMode);
-         _console->NonLaconicWriteNewLine(zenUnitArgs.printMode);
+         NonMinimalPrintResultLine(&_testClassResult, zenUnitArgs.printMode);
+         _console->NonMinimalWriteNewLine(zenUnitArgs.printMode);
          return std::move(_testClassResult);
       }
    private:
-      virtual void NonLaconicPrintTestClassNameAndNumberOfNamedTests() const
+      virtual void NonMinimalPrintTestClassNameAndNumberOfNamedTests() const
       {
          const ZenUnitArgs& zenUnitArgs = _TestRunner_GetArgs_ZenMockable();
-         _console->NonLaconicWriteColor("@", Color::Green, zenUnitArgs.printMode);
-         _console->NonLaconicWriteColor(_testClassName, Color::Green, zenUnitArgs.printMode);
+         _console->NonMinimalWriteColor("@", Color::Green, zenUnitArgs.printMode);
+         _console->NonMinimalWriteColor(_testClassName, Color::Green, zenUnitArgs.printMode);
          std::string spacePipeSpaceNumberOfNamedTests = String::Concat(
             " | ", _tests.size(), _tests.size() == 1 ? " named test" : " named tests");
-         _console->NonLaconicWriteLine(spacePipeSpaceNumberOfNamedTests, zenUnitArgs.printMode);
+         _console->NonMinimalWriteLine(spacePipeSpaceNumberOfNamedTests, zenUnitArgs.printMode);
       }
 
       virtual bool ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(
          Test* newDeleteTest, TestClassResult* outTestClassResult) const
       {
          const ZenUnitArgs& zenUnitArgs = _TestRunner_GetArgs_ZenMockable();
-         _console->NonLaconicWriteColor("|", Color::Green, zenUnitArgs.printMode);
+         _console->NonMinimalWriteColor("|", Color::Green, zenUnitArgs.printMode);
          static const std::string TestClassIsNewableAndDeletableString = "TestClassIsNewableAndDeletable -> ";
-         _console->NonLaconicWrite(TestClassIsNewableAndDeletableString, zenUnitArgs.printMode);
+         _console->NonMinimalWrite(TestClassIsNewableAndDeletableString, zenUnitArgs.printMode);
          const std::vector<TestResult> newDeleteTestResult = newDeleteTest->Run();
          assert_true(newDeleteTestResult.size() == 1);
          outTestClassResult->AddTestResults(newDeleteTestResult);
          const bool testClassIsNewableAndDeletable = newDeleteTestResult[0].testOutcome == TestOutcome::Success;
          if (testClassIsNewableAndDeletable)
          {
-            _console->NonLaconicWriteLine("OK", zenUnitArgs.printMode);
+            _console->NonMinimalWriteLine("OK", zenUnitArgs.printMode);
          }
          return testClassIsNewableAndDeletable;
       }
@@ -105,18 +105,18 @@ namespace ZenUnit
       void RunTest(const std::unique_ptr<Test>& test, TestClassResult* outTestClassResult) const
       {
          const ZenUnitArgs& zenUnitArgs = _TestRunner_GetArgs_ZenMockable();
-         _console->NonLaconicWriteColor("|", Color::Green, zenUnitArgs.printMode);
+         _console->NonMinimalWriteColor("|", Color::Green, zenUnitArgs.printMode);
          const char* const testName = test->Name();
-         _console->NonLaconicWrite(testName, zenUnitArgs.printMode);
-         test->NonLaconicWritePostTestNameMessage(_console.get(), zenUnitArgs.printMode);
+         _console->NonMinimalWrite(testName, zenUnitArgs.printMode);
+         test->NonMinimalWritePostTestNameMessage(_console.get(), zenUnitArgs.printMode);
          const std::vector<TestResult> testResults = test->Run();
-         test->NonLaconicWritePostTestCompletionMessage(_console.get(), testResults[0], zenUnitArgs.printMode);
+         test->NonMinimalWritePostTestCompletionMessage(_console.get(), testResults[0], zenUnitArgs.printMode);
          outTestClassResult->AddTestResults(testResults);
       }
 
-      virtual void NonLaconicPrintResultLine(const TestClassResult* testClassResult, PrintMode printMode) const
+      virtual void NonMinimalPrintResultLine(const TestClassResult* testClassResult, PrintMode printMode) const
       {
-         testClassResult->NonLaconicPrintResultLine(_console.get(), printMode);
+         testClassResult->NonMinimalPrintResultLine(_console.get(), printMode);
       }
    };
 }

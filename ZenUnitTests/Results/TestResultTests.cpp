@@ -12,7 +12,7 @@ namespace ZenUnit
    SPECX(StartupFail_ReturnsExpectedTestResult)
    SPEC(CtorDtorSuccess_ReturnsExpectedTestResult);
    SPECX(SixArgConstructor_SetsFields)
-   SPECX(NonLaconicWriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess)
+   SPECX(NonMinimalWriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess)
    SPEC(PrintIfFailure_Success_PrintsNothing)
    SPECX(PrintIfFailure_Anomaly_PrintsExpected)
    SPECX(PrintIfFailure_Exception_PrintsExpected)
@@ -192,13 +192,13 @@ namespace ZenUnit
       ARE_EQUAL(expectedTestResult, testResult);
    }
 
-   TEST3X3(NonLaconicWriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess,
+   TEST3X3(NonMinimalWriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess,
       PrintMode printMode, TestOutcome testOutcome, bool expectWriteLineOK,
-      PrintMode::Laconic, TestOutcome::Success, false,
-      PrintMode::Laconic, TestOutcome::Anomaly, false,
-      PrintMode::Laconic, TestOutcome::Exception, false,
-      PrintMode::Laconic, TestOutcome::SuccessButPastDeadline, false,
-      PrintMode::Laconic, TestOutcome::Unset, false,
+      PrintMode::Minimal, TestOutcome::Success, false,
+      PrintMode::Minimal, TestOutcome::Anomaly, false,
+      PrintMode::Minimal, TestOutcome::Exception, false,
+      PrintMode::Minimal, TestOutcome::SuccessButPastDeadline, false,
+      PrintMode::Minimal, TestOutcome::Unset, false,
 
       PrintMode::Default, TestOutcome::Success, true,
       PrintMode::Default, TestOutcome::Anomaly, false,
@@ -218,7 +218,7 @@ namespace ZenUnit
          _consoleMock.WriteLineColorMock.Expect();
       }
       //
-      _testResult.NonLaconicWriteLineOKIfSuccess(&_consoleMock, printMode);
+      _testResult.NonMinimalWriteLineOKIfSuccess(&_consoleMock, printMode);
       //
       if (expectWriteLineOK)
       {

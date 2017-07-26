@@ -28,7 +28,7 @@ namespace ZenUnit
    TESTS(SpecSectionTestNXNTests)
    SPEC(ThreeArgConstructor_SetsTestName_SetsTestNXNPmf)
    SPECX(NumberOfTestCases_GetsTestFromAddress_ReturnsTestNumberOfTestCases)
-   SPECX(NonLaconicWritePostTestNameMessage_WritesEllipsisIfPrintModeNotLaconic)
+   SPECX(NonMinimalWritePostTestNameMessage_WritesEllipsisIfPrintModeNotMinimal)
    SPEC(Run_GetsTestFromAddress_RunsTest_ReturnsTestResults)
    SPEC(PmfTokenToTest_ReturnsTestClassTypeTestNXNPmfToTestReturnValue);
    SPEC(TestFunction_CodeCoverage)
@@ -87,9 +87,9 @@ namespace ZenUnit
       ARE_EQUAL(testNumberOfTestCases, numberOfTestCases);
    }
 
-   TEST2X2(NonLaconicWritePostTestNameMessage_WritesEllipsisIfPrintModeNotLaconic,
+   TEST2X2(NonMinimalWritePostTestNameMessage_WritesEllipsisIfPrintModeNotMinimal,
       PrintMode printMode, bool expectWriteLineCall,
-      PrintMode::Laconic, false,
+      PrintMode::Minimal, false,
       PrintMode::Default, true,
       PrintMode::Verbose, true)
    {
@@ -99,7 +99,7 @@ namespace ZenUnit
          consoleMock.WriteLineMock.Expect();
       }
       //
-      _specSectionTestNXN->NonLaconicWritePostTestNameMessage(&consoleMock, printMode);
+      _specSectionTestNXN->NonMinimalWritePostTestNameMessage(&consoleMock, printMode);
       //
       if (expectWriteLineCall)
       {

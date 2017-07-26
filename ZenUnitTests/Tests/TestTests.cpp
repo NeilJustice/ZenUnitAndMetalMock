@@ -14,7 +14,7 @@ namespace ZenUnit
    SPECX(RunTestCase_ConstructorFails_DoesNotCallSubsequentTestPhases_ReturnsTestResultConstructorFail)
    SPECX(RunTestCase_ConstructorSucceeds_StartupFails_DoesNotCallTest_DoesNotCallCleanup_CallsDestructor_ReturnsTestResultStartupFail)
    SPEC(RunTestCase_AllTestPhasesSucceed_ReturnsExpectedTestResult)
-   SPEC(NonLaconicWritePostTestNameMessage_DoesNothing)
+   SPEC(NonMinimalWritePostTestNameMessage_DoesNothing)
    SPEC(PrintPostTestCompletionMessage_DoesNothing)
    SPEC(StaticCallNewTestClass_CallsNewTestClass)
    SPEC(StaticCallStartup_CallsStartup)
@@ -56,19 +56,19 @@ namespace ZenUnit
       ARE_EQUAL(test._fileLine.ToString(), test.FileLineString());
    }
 
-   TEST(NonLaconicWritePostTestNameMessage_DoesNothing)
+   TEST(NonMinimalWritePostTestNameMessage_DoesNothing)
    {
-      _test->NonLaconicWritePostTestNameMessage(nullptr, PrintMode::Laconic);
-      _test->NonLaconicWritePostTestNameMessage(nullptr, PrintMode::Default);
-      _test->NonLaconicWritePostTestNameMessage(nullptr, PrintMode::Verbose);
+      _test->NonMinimalWritePostTestNameMessage(nullptr, PrintMode::Minimal);
+      _test->NonMinimalWritePostTestNameMessage(nullptr, PrintMode::Default);
+      _test->NonMinimalWritePostTestNameMessage(nullptr, PrintMode::Verbose);
    }
 
    TEST(PrintPostTestCompletionMessage_DoesNothing)
    {
       TestResultMock testResultMock;
-      _test->NonLaconicWritePostTestCompletionMessage(nullptr, testResultMock, PrintMode::Laconic);
-      _test->NonLaconicWritePostTestCompletionMessage(nullptr, testResultMock, PrintMode::Default);
-      _test->NonLaconicWritePostTestCompletionMessage(nullptr, testResultMock, PrintMode::Verbose);
+      _test->NonMinimalWritePostTestCompletionMessage(nullptr, testResultMock, PrintMode::Minimal);
+      _test->NonMinimalWritePostTestCompletionMessage(nullptr, testResultMock, PrintMode::Default);
+      _test->NonMinimalWritePostTestCompletionMessage(nullptr, testResultMock, PrintMode::Verbose);
    }
 
    static CallResult CallResultWithOutcome(TestOutcome testOutcome)

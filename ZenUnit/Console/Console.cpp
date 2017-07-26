@@ -22,9 +22,9 @@ namespace ZenUnit
       WriteColor(message, Color::White);
    }
 
-   void Console::NonLaconicWrite(const std::string& message, PrintMode printMode) const
+   void Console::NonMinimalWrite(const std::string& message, PrintMode printMode) const
    {
-      if (printMode != PrintMode::Laconic)
+      if (printMode != PrintMode::Minimal)
       {
          Write(message);
       }
@@ -38,9 +38,9 @@ namespace ZenUnit
       _consoleColorer->UnsetColor(didSetColor);
    }
 
-   void Console::NonLaconicWriteColor(const std::string& message, Color color, PrintMode printMode) const
+   void Console::NonMinimalWriteColor(const std::string& message, Color color, PrintMode printMode) const
    {
-      if (printMode != PrintMode::Laconic)
+      if (printMode != PrintMode::Minimal)
       {
          WriteColor(message, color);
       }
@@ -51,9 +51,9 @@ namespace ZenUnit
       WriteLineColor(message, Color::White);
    }
 
-   void Console::NonLaconicWriteLine(const std::string& message, PrintMode printMode) const
+   void Console::NonMinimalWriteLine(const std::string& message, PrintMode printMode) const
    {
-      if (printMode != PrintMode::Laconic)
+      if (printMode != PrintMode::Minimal)
       {
          WriteLine(message);
       }
@@ -75,9 +75,9 @@ namespace ZenUnit
       printf("\n");
    }
 
-   void Console::NonLaconicWriteNewLine(PrintMode printMode) const
+   void Console::NonMinimalWriteNewLine(PrintMode printMode) const
    {
-      if (printMode != PrintMode::Laconic)
+      if (printMode != PrintMode::Minimal)
       {
          WriteNewLine();
       }
@@ -89,11 +89,11 @@ namespace ZenUnit
       _exit_ZenMockable(exitCode);
    }
 
-   void Console::NonLaconicWriteStringsCommaSeparated(
+   void Console::NonMinimalWriteStringsCommaSeparated(
       const std::vector<std::string>& strings, size_t startIndex, size_t numberOfElements, PrintMode printMode) const
    {
       assert_true(startIndex < strings.size());
-      if (printMode != PrintMode::Laconic)
+      if (printMode != PrintMode::Minimal)
       {
          const size_t endIndex = startIndex + numberOfElements - 1;
          for (size_t i = startIndex; i <= endIndex; ++i)

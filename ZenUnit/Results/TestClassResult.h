@@ -28,7 +28,7 @@ namespace ZenUnit
       virtual ~TestClassResult();
       virtual void AddTestResults(const std::vector<TestResult>& testResults);
       virtual unsigned Milliseconds() const;
-      virtual void NonLaconicPrintResultLine(const Console* console, PrintMode printMode) const;
+      virtual void NonMinimalPrintResultLine(const Console* console, PrintMode printMode) const;
       virtual size_t NumberOfFailedTestCases() const;
       virtual void PrintTestFailures(
          const ForEacherTwoExtraArgsType* forEacherTwoExtraArgs,

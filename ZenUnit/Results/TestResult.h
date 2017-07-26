@@ -50,7 +50,7 @@ namespace ZenUnit
          const CallResult& destructorCallResult,
          const std::function<const ZenUnitArgs&()>& getArgs);
 
-      virtual void NonLaconicWriteLineOKIfSuccess(const Console* console, PrintMode printMode) const;
+      virtual void NonMinimalWriteLineOKIfSuccess(const Console* console, PrintMode printMode) const;
       virtual void PrintIfFailure(const Console* console, TestFailureNumberer* testFailureNumberer) const;
       virtual void WriteTestCaseNumberIfAny(const Console* console, unsigned short testCaseIndexArgument) const;
       static const TestResult TestingNonDefault;
