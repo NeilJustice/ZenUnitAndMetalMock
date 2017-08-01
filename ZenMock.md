@@ -126,7 +126,7 @@ int main(int argc, char* argv[])
 
 #### Test run output
 
-![ZenMockTestRunOutput](../Screenshots/ZenMockTestRunOutput.png "ZenMock Test Run Output")
+![ZenMockTestRunOutput](Screenshots/ZenMockTestRunOutput.png "ZenMock Test Run Output")
 
 ### ZenMock Function Mocking Macros
 
