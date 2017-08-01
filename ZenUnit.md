@@ -151,7 +151,7 @@ int main(int argc, char* argv[])
 }
 ```
 
-![ZenUnitTemplateTests](../Screenshots/ZenUnitTemplateTests.png "ZenUnit Type-Parameterized Test Classes")
+![ZenUnitTemplateTests](Screenshots/ZenUnitTemplateTests.png "ZenUnit Type-Parameterized Test Classes")
 
 ### Building and Installing ZenUnit and ZenMock On Linux
 
