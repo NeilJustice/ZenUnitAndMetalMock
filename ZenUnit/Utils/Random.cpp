@@ -4,17 +4,6 @@
 namespace ZenUnit
 {
    template<>
-   PrintMode Random<PrintMode>()
-   {
-      static std::default_random_engine defaultRandomEngine;
-      defaultRandomEngine.seed(static_cast<unsigned int>(time(NULL)));
-      static const std::uniform_int_distribution<int> distribution(0, 3);
-      const int randomInt = distribution(defaultRandomEngine);
-      PrintMode randomPrintMode = static_cast<PrintMode>(randomInt);
-      return randomPrintMode;
-   }
-
-   template<>
    char Random<char>()
    {
       return static_cast<char>(Random<int>());
@@ -43,8 +32,31 @@ namespace ZenUnit
    }
 
    template<>
+   float Random<float>()
+   {
+      return static_cast<float>(Random<int>());
+   }
+
+   template<>
+   double Random<double>()
+   {
+      return static_cast<double>(Random<int>());
+   }
+
+   template<>
    std::string Random<std::string>()
    {
       return "RandomString" + to_string(Random<int>());
+   }
+
+   template<>
+   PrintMode Random<PrintMode>()
+   {
+      static std::default_random_engine defaultRandomEngine;
+      defaultRandomEngine.seed(static_cast<unsigned int>(time(NULL)));
+      static const std::uniform_int_distribution<int> distribution(0, 3);
+      const int randomInt = distribution(defaultRandomEngine);
+      PrintMode randomPrintMode = static_cast<PrintMode>(randomInt);
+      return randomPrintMode;
    }
 }

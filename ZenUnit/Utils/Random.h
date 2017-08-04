@@ -8,9 +8,6 @@ namespace ZenUnit
    T Random();
 
    template<>
-   PrintMode Random<PrintMode>();
-
-   template<>
    char Random<char>();
 
    template<>
@@ -23,5 +20,14 @@ namespace ZenUnit
    size_t Random<size_t>();
 
    template<>
+   float Random<float>();
+
+   template<>
+   double Random<double>();
+
+   template<>
    std::string Random<std::string>();
+
+   template<>
+   PrintMode Random<PrintMode>();
 }
