@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/Utils/Iteration/ForEacherTwoExtraArgs.h"
-#include "ZenUnit/Utils/TestRandom.h"
+#include "ZenUnit/Utils/Random.h"
 
 namespace ZenUnit
 {
@@ -38,8 +38,8 @@ namespace ZenUnit
    TEST(ForEach_OneItemIterable_CallsFuncOnItemOnce)
    {
       const vector<int> oneItemVector { 1 };
-      char c = TestRandom<char>();
-      string s = TestRandom<string>();
+      char c = Random<char>();
+      string s = Random<string>();
       //
       _forEacherTwoExtraArgs.ForEach(&oneItemVector, Bind(), c, s);
       //
@@ -53,8 +53,8 @@ namespace ZenUnit
    TEST(ForEach_TwoItemIterable_CallsFuncOnItemTwice)
    {
       const vector<int> oneItemVector { 1, 2 };
-      char c = TestRandom<char>();
-      string s = TestRandom<string>();
+      char c = Random<char>();
+      string s = Random<string>();
       //
       _forEacherTwoExtraArgs.ForEach(&oneItemVector, Bind(), c, s);
       //

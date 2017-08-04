@@ -5,7 +5,7 @@
 #include "ZenUnitTests/TestRunners/Mock/TryCatchCallerMock.h"
 #include "ZenUnit/Tests/FullTestName.h"
 #include "ZenUnit/Tests/Test.h"
-#include "ZenUnit/Utils/TestRandom.h"
+#include "ZenUnit/Utils/Random.h"
 
 namespace ZenUnit
 {
@@ -38,8 +38,8 @@ namespace ZenUnit
 
    TEST(TwoArgConstructor_NewsComponents_SetsFullName_NameFunctionReturnsTestName)
    {
-      const string TestClassName = TestRandom<string>();
-      const string TestName = TestRandom<string>();
+      const string TestClassName = Random<string>();
+      const string TestName = Random<string>();
       //
       Test test(TestClassName.c_str(), TestName.c_str(), 0);
       POINTER_WAS_NEWED(test._tryCatchCaller);
@@ -108,8 +108,8 @@ namespace ZenUnit
 
       const TestResult startupFailTestResult = TestResult::TestingNonDefault;
       _testResultFactoryMock->StartupFailMock.ExpectAndReturn(startupFailTestResult);
-      const string testClassName = TestRandom<string>();
-      const string testName = TestRandom<string>();
+      const string testClassName = Random<string>();
+      const string testName = Random<string>();
       _test->_fullTestName = FullTestName(testClassName.c_str(), testName.c_str(), 0);
       //
       const TestResult testResult = _test->RunTestCase();
@@ -132,8 +132,8 @@ namespace ZenUnit
 
       const TestResult sixArgTestResult = TestResult::TestingNonDefault;
       _testResultFactoryMock->FullCtorMock.ExpectAndReturn(sixArgTestResult);
-      const string testClassName = TestRandom<string>();
-      const string testName = TestRandom<string>();
+      const string testClassName = Random<string>();
+      const string testName = Random<string>();
       _test->_fullTestName = FullTestName(testClassName.c_str(), testName.c_str(), 0);
       //
       const TestResult testResult = _test->RunTestCase();

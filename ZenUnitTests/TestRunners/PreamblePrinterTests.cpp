@@ -4,7 +4,7 @@
 #include "Utils/Mock/MachineNameGetterMock.h"
 #include "Utils/Time/Mock/WatchMock.h"
 #include "ZenUnit/TestRunners/PreamblePrinter.h"
-#include "ZenUnit/Utils/TestRandom.h"
+#include "ZenUnit/Utils/Random.h"
 
 namespace ZenUnit
 {
@@ -50,13 +50,13 @@ namespace ZenUnit
       TestClassMultiRunnerMock multiTestClassRunnerMock;
       multiTestClassRunnerMock.NumberOfTestClassesMock.ExpectAndReturn(numberOfTestClasses);
 
-      const string TimeZoneDateTimeNow = TestRandom<string>();
+      const string TimeZoneDateTimeNow = Random<string>();
       _watchMock->TimeZoneDateTimeNowMock.ExpectAndReturn(TimeZoneDateTimeNow);
 
-      const string MachineName = TestRandom<string>();
+      const string MachineName = Random<string>();
       _machineNameGetterMock->GetMachineNameMock.ExpectAndReturn(MachineName);
 
-      const string CommandLine = TestRandom<string>();
+      const string CommandLine = Random<string>();
       //
       _preamblePrinter.PrintOpeningThreeLines(CommandLine, &multiTestClassRunnerMock);
       //

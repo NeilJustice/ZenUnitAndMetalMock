@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "TestRandom.h"
+#include "Random.h"
 
 namespace ZenUnit
 {
    template<>
-   PrintMode TestRandom<PrintMode>()
+   PrintMode Random<PrintMode>()
    {
       static std::default_random_engine defaultRandomEngine;
       defaultRandomEngine.seed(static_cast<unsigned int>(time(NULL)));
@@ -15,13 +15,13 @@ namespace ZenUnit
    }
 
    template<>
-   char TestRandom<char>()
+   char Random<char>()
    {
-      return static_cast<char>(TestRandom<int>());
+      return static_cast<char>(Random<int>());
    }
 
    template<>
-   int TestRandom<int>()
+   int Random<int>()
    {
       static std::default_random_engine defaultRandomEngine;
       defaultRandomEngine.seed(static_cast<unsigned int>(time(NULL)));
@@ -31,20 +31,20 @@ namespace ZenUnit
    }
 
    template<>
-   unsigned TestRandom<unsigned>()
+   unsigned Random<unsigned>()
    {
-      return static_cast<unsigned>(TestRandom<int>());
+      return static_cast<unsigned>(Random<int>());
    }
 
    template<>
-   size_t TestRandom<size_t>()
+   size_t Random<size_t>()
    {
-      return static_cast<size_t>(TestRandom<int>());
+      return static_cast<size_t>(Random<int>());
    }
 
    template<>
-   std::string TestRandom<std::string>()
+   std::string Random<std::string>()
    {
-      return "RandomString" + to_string(TestRandom<int>());
+      return "RandomString" + to_string(Random<int>());
    }
 }

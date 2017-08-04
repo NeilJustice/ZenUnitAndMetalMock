@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnit/Utils/TestRandom.h"
+#include "ZenUnit/Utils/Random.h"
 #include "ZenUnitTests/ZenMock/Mock/ExceptionThrowerMock.h"
 
 struct CustomException
@@ -68,7 +68,7 @@ namespace ZenMock
    {
       _zenMocker->_exceptionThrower.ExpectCallToExpectAndThrow();
       IS_FALSE(_zenMocker->_expected);
-      const string what = TestRandom<string>();
+      const string what = Random<string>();
       //
       _zenMocker->ExpectAndThrow<runtime_error>(what);
       //

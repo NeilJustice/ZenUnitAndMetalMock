@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/Console/Console.h"
-#include "ZenUnit/Utils/TestRandom.h"
+#include "ZenUnit/Utils/Random.h"
 #include "ZenUnitTests/Console/Mock/ConsoleColorerMock.h"
 
 namespace ZenUnit
@@ -26,7 +26,7 @@ namespace ZenUnit
 
    Console _console;
    ConsoleColorerMock* _consoleColorerMock;
-   const string Message = TestRandom<string>();
+   const string Message = Random<string>();
 
    struct ConsoleSelfMocked : public Zen::Mock<Console>
    {

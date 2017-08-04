@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/Tests/NormalTest.h"
-#include "ZenUnit/Utils/TestRandom.h"
+#include "ZenUnit/Utils/Random.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestResultMock.h"
 #include "ZenUnitTests/Tests/TestingTestClass.h"
@@ -20,8 +20,8 @@ namespace ZenUnit
    SPECEND
 
    unique_ptr<NormalTest<TestingTestClass>> _normalTest;
-   const string TestClassName = TestRandom<string>();
-   const string TestName = TestRandom<string>();
+   const string TestClassName = Random<string>();
+   const string TestName = Random<string>();
 
    STARTUP
    {
@@ -38,7 +38,7 @@ namespace ZenUnit
    {
       ConsoleMock consoleMock;
       consoleMock.NonMinimalWriteMock.Expect();
-      const PrintMode printMode = TestRandom<PrintMode>();
+      const PrintMode printMode = Random<PrintMode>();
       //
       _normalTest->NonMinimalWritePostTestNameMessage(&consoleMock, printMode);
       //
@@ -53,7 +53,7 @@ namespace ZenUnit
       ConsoleMock consoleMock;
       TestResultMock testResultMock;
       testResultMock.NonMinimalWriteLineOKIfSuccessMock.Expect();
-      const PrintMode printMode = TestRandom<PrintMode>();
+      const PrintMode printMode = Random<PrintMode>();
       //
       _normalTest->NonMinimalWritePostTestCompletionMessage(&consoleMock, testResultMock, printMode);
       //

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/Results/TestRunResult.h"
-#include "ZenUnit/Utils/TestRandom.h"
+#include "ZenUnit/Utils/Random.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestClassResultMock.h"
 #include "ZenUnitTests/Results/Mock/TestFailureNumbererMock.h"
@@ -67,7 +67,7 @@ namespace ZenUnit
 
    TEST(AddSkippedTest_AddsTestClassNameDotTestNameToSkippedFullTestNamesVector)
    {
-      const string TestClassName = TestRandom<string>();
+      const string TestClassName = Random<string>();
       const char* const TestNameA = "TestA";
       const char* const ReasonA = "ReasonA";
       //
@@ -246,7 +246,7 @@ namespace ZenUnit
       _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteLineMock.Expect();
-      const string CommandLine = TestRandom<string>();
+      const string CommandLine = Random<string>();
       //
       _testRunResult.PrintClosingLines(numberOfTotalTests, testRunMilliseconds, CommandLine);
       //
@@ -371,7 +371,7 @@ namespace ZenUnit
    TEST(PrintSkippedTestClassReminder_PrintsExpectedToConsole)
    {
       _consoleMock->WriteLineMock.Expect();
-      const string SkippedTestClassNameAndReason = TestRandom<string>();
+      const string SkippedTestClassNameAndReason = Random<string>();
       //
       _testRunResult.PrintSkippedTestClassReminder(SkippedTestClassNameAndReason);
       //
@@ -381,7 +381,7 @@ namespace ZenUnit
    TEST(PrintSkippedTestReminder_PrintsExpectedToConsole)
    {
       _consoleMock->WriteLineMock.Expect();
-      const string SkippedTestName = TestRandom<string>();
+      const string SkippedTestName = Random<string>();
       //
       _testRunResult.PrintSkippedTestReminder(SkippedTestName);
       //

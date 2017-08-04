@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/Tests/NewDeleteTest.h"
-#include "ZenUnit/Utils/TestRandom.h"
+#include "ZenUnit/Utils/Random.h"
 #include "ZenUnitTests/Results/Mock/TestResultFactoryMock.h"
 #include "ZenUnitTests/TestRunners/Mock/TryCatchCallerMock.h"
 
@@ -18,7 +18,7 @@ namespace ZenUnit
    unique_ptr<NewDeleteTest<TestingTestClass>> _newDeleteTest;
    TryCatchCallerMock* _tryCatchCallerMock;
    TestResultFactoryMock* _testResultFactoryMock;
-   const string TestClassName = TestRandom<string>();
+   const string TestClassName = Random<string>();
 
    STARTUP
    {

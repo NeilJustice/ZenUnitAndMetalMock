@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/Tests/TestNXN.h"
-#include "ZenUnit/Utils/TestRandom.h"
+#include "ZenUnit/Utils/Random.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestResultMock.h"
 #include "ZenUnitTests/Tests/TestingTestClass.h"
@@ -26,9 +26,9 @@ namespace ZenUnit
 
    unique_ptr<TestNXN<TestingTestClass, N, int>> _testNXN;
    ConsoleMock* _consoleMock;
-   const string TestClassName = TestRandom<string>();
-   const string TestName = TestRandom<string>();
-   const string TestCaseArgsText = TestRandom<string>();
+   const string TestClassName = Random<string>();
+   const string TestName = Random<string>();
+   const string TestCaseArgsText = Random<string>();
    ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
 
    STARTUP
@@ -107,7 +107,7 @@ namespace ZenUnit
       const ZenUnitArgs zenUnitArgs = []
       {
          ZenUnitArgs zenUnitArgs;
-         zenUnitArgs.printMode = TestRandom<PrintMode>();
+         zenUnitArgs.printMode = Random<PrintMode>();
          return zenUnitArgs;
       }();
       GetArgs_ZenMock_SelfMocked.ExpectAndReturn(zenUnitArgs);
@@ -227,7 +227,7 @@ namespace ZenUnit
       _consoleMock->NonMinimalWriteColorMock.Expect();
       _consoleMock->NonMinimalWriteMock.Expect();
       _consoleMock->NonMinimalWriteStringsCommaSeparatedMock.Expect();
-      const PrintMode printMode = TestRandom<PrintMode>();
+      const PrintMode printMode = Random<PrintMode>();
       vector<string> splitTestCaseArgs = { "Arg0", "Arg1" };
       //
       _testNXN->NonMinimalPrintTestCaseNumberArgsThenArrow(testCaseIndex, splitTestCaseArgs, printMode);
@@ -251,7 +251,7 @@ namespace ZenUnit
    {
       TestResultMock testResultMock;
       testResultMock.NonMinimalWriteLineOKIfSuccessMock.Expect();
-      const PrintMode printMode = TestRandom<PrintMode>();
+      const PrintMode printMode = Random<PrintMode>();
       //
       _testNXN->NonMinimalWriteLineOKIfSuccess(testResultMock, printMode);
       //

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/TestRunners/TryCatchCaller.h"
-#include "ZenUnit/Utils/TestRandom.h"
+#include "ZenUnit/Utils/Random.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestPhaseSuffixerMock.h"
 #include "ZenUnitTests/Tests/Mock/TestMock.h"
@@ -24,8 +24,8 @@ namespace ZenUnit
    unique_ptr<TestMock> _testMock;
    ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
 
-   const unsigned Milliseconds = TestRandom<unsigned>();
-   const string TestPhaseSuffix = TestRandom<string>();
+   const unsigned Milliseconds = Random<unsigned>();
+   const string TestPhaseSuffix = Random<string>();
 
    STARTUP
    {

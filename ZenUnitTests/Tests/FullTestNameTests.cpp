@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/Tests/FullTestName.h"
-#include "ZenUnit/Utils/TestRandom.h"
+#include "ZenUnit/Utils/Random.h"
 
 namespace ZenUnit
 {
@@ -23,8 +23,8 @@ namespace ZenUnit
 
    TEST(ThreeArgConstructor_SetsFields)
    {
-      const string TestClassName = TestRandom<string>();
-      const string TestName = TestRandom<string>();
+      const string TestClassName = Random<string>();
+      const string TestName = Random<string>();
       //
       const FullTestName testName(TestClassName.c_str(), TestName.c_str(), 1);
       //

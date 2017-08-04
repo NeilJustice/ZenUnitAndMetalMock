@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnit/Utils/TestRandom.h"
+#include "ZenUnit/Utils/Random.h"
 #include "ZenUnit/Utils/Time/Stopwatch.h"
 
 namespace ZenUnit
@@ -50,8 +50,8 @@ namespace ZenUnit
    TEST(Stop_StartPreviouslyCalled_ReturnsElapsedMilliseconds)
    {
       chrono::time_point<chrono::high_resolution_clock> startTime;
-      startTime += chrono::milliseconds(TestRandom<unsigned>());
-      unsigned number = TestRandom<unsigned>();
+      startTime += chrono::milliseconds(Random<unsigned>());
+      unsigned number = Random<unsigned>();
       const chrono::time_point<chrono::high_resolution_clock> stopTime = startTime + chrono::milliseconds(number);
       now_ZenMock.ExpectAndReturn(stopTime);
       _stopwatch._startTime = startTime;

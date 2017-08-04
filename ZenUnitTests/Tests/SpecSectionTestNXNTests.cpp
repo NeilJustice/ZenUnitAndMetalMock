@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/Tests/SpecSectionTestNXN.h"
-#include "ZenUnit/Utils/TestRandom.h"
+#include "ZenUnit/Utils/Random.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Tests/Mock/TestMock.h"
 
@@ -53,8 +53,8 @@ namespace ZenUnit
 
    TEST(ThreeArgConstructor_SetsTestName_SetsTestNXNPmf)
    {
-      const string TestClassName = TestRandom<string>();
-      const string TestName = TestRandom<string>();
+      const string TestClassName = Random<string>();
+      const string TestName = Random<string>();
       //
       const SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests> specifiedTestNXN(
          TestClassName.c_str(), TestName.c_str(), PmfToken::Instantiate<decltype(

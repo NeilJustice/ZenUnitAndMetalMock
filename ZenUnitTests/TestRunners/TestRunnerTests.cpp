@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnit/Utils/TestRandom.h"
+#include "ZenUnit/Utils/Random.h"
 #include "ZenUnitTests/Args/Mock/ArgsParserMock.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestRunResultMock.h"
@@ -118,7 +118,7 @@ namespace ZenUnit
       _testRunnerSelfMocked.RunTestsAndPrintResultsMock.ExpectAndReturnValues(firstTestRunExitCode, secondTestRunExitCode);
       _testRunnerSelfMocked.testRunResultMock->ResetStateExceptForSkipsMock.Expect();
       _testRunnerSelfMocked.consoleMock->PauseForAnyKeyIfDebuggerIsPresentMock.Expect();
-      const vector<string> CommandLineArgs{ TestRandom<string>() };
+      const vector<string> CommandLineArgs{ Random<string>() };
       //
       const int overallExitCode = _testRunnerSelfMocked.ParseArgsRunTestsPrintResults(CommandLineArgs);
       //
@@ -140,7 +140,7 @@ namespace ZenUnit
    {
       _testRunnerSelfMocked2.testRunStopwatchMock->StartMock.Expect();
       ZenUnitArgs zenUnitArgs;
-      zenUnitArgs.commandLine = TestRandom<string>();
+      zenUnitArgs.commandLine = Random<string>();
       zenUnitArgs.maxtotalseconds = maxtotalseconds;
       _testRunnerSelfMocked2._args = zenUnitArgs;
       _testRunnerSelfMocked2.preamblePrinterMock->PrintOpeningThreeLinesMock.Expect();
@@ -155,10 +155,10 @@ namespace ZenUnit
       _testRunnerSelfMocked2.testRunResultMock->PrintTestFailuresAndSkipsMock.Expect();
       _testRunnerSelfMocked2.testRunResultMock->PrintClosingLinesMock.Expect();
 
-      const size_t TotalNumberOfTestCases = TestRandom<size_t>();
+      const size_t TotalNumberOfTestCases = Random<size_t>();
       _testRunnerSelfMocked2.multiTestClassRunnerMock->NumberOfTestCasesMock.ExpectAndReturn(TotalNumberOfTestCases);
 
-      const unsigned TestRunMilliseconds = TestRandom<unsigned>();
+      const unsigned TestRunMilliseconds = Random<unsigned>();
       _testRunnerSelfMocked2.testRunStopwatchMock->StopMock.ExpectAndReturn(TestRunMilliseconds);
 
       _testRunnerSelfMocked2.testRunResultMock->
@@ -190,9 +190,9 @@ namespace ZenUnit
    TEST(SkipTest_CallsTestRunResultAddSkippedFullTestName)
    {
       _testRunResultMock->AddSkippedTestMock.Expect();
-      const string TestClassName = TestRandom<string>();
-      const string TestName = TestRandom<string>();
-      const string Reason = TestRandom<string>();
+      const string TestClassName = Random<string>();
+      const string TestName = Random<string>();
+      const string Reason = Random<string>();
       //
       _testRunner.SkipTest(TestClassName.c_str(), TestName.c_str(), Reason.c_str());
       //
@@ -203,8 +203,8 @@ namespace ZenUnit
    TEST(SkipTestClass_CallsTestRunResultAddSkippedTestClassNameAndReason)
    {
       _testRunResultMock->AddSkippedTestClassNameAndReasonMock.Expect();
-      const string SkippedTestClassName = TestRandom<string>();
-      const string Reason = TestRandom<string>();
+      const string SkippedTestClassName = Random<string>();
+      const string Reason = Random<string>();
       //
       _testRunner.SkipTestClass(SkippedTestClassName.c_str(), Reason.c_str());
       //
@@ -215,7 +215,7 @@ namespace ZenUnit
    TEST(RunTests_RunsTestClasses)
    {
       ZenUnitArgs args;
-      args.commandLine = TestRandom<string>();
+      args.commandLine = Random<string>();
       _testRunner._args = args;
 
       vector<TestClassResult> testClassResults(1);
@@ -241,7 +241,7 @@ namespace ZenUnit
          _testRunResultMock->PrintTestFailuresAndSkipsMock.Expect();
          _consoleMock->WriteLineAndExitMock.Expect();
       }
-      const unsigned MaxTotalSeconds = TestRandom<unsigned>();
+      const unsigned MaxTotalSeconds = Random<unsigned>();
       //
       _testRunner.RunTestsWithWaitableRunnerThread(MaxTotalSeconds);
       //

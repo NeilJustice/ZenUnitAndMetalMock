@@ -23,6 +23,7 @@ rules.ninja
 Makefile
 
 # Windows
+.axoCover/
 x64/
 Win32/
 Debug/

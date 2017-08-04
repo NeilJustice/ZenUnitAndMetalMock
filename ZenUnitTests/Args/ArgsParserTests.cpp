@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/Args/ArgsParser.h"
-#include "ZenUnit/Utils/TestRandom.h"
+#include "ZenUnit/Utils/Random.h"
 #include "ZenUnit/Utils/Vector.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 
@@ -21,7 +21,7 @@ namespace ZenUnit
    SPECX(Parse_TimesArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
    SPECEND
 
-   const string TestProgramPath = TestRandom<string>();
+   const string TestProgramPath = Random<string>();
    const string ExpectedUsage = R"(ZenUnit and ZenMock v0.2.0
 Usage: <TestsBinaryName> [Options...]
 

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/Results/AnomalyOrException.h"
-#include "ZenUnit/Utils/TestRandom.h"
+#include "ZenUnit/Utils/Random.h"
 
 TESTS(AnomalyOrExceptionTests)
 SPEC(AnomalyConstructor_SetsAnomaly)
@@ -22,7 +22,7 @@ TEST(AnomalyConstructor_SetsAnomaly)
 TEST(ExceptionTypeNameAndExceptionWhatConstructor_SetsExceptionTypeNameAndExceptionWhat)
 {
    const string ExceptionTypeName;
-   const string ExceptionWhat = TestRandom<string>();
+   const string ExceptionWhat = Random<string>();
    //
    AnomalyOrException anomalyOrException(&ExceptionTypeName, ExceptionWhat.c_str());
    //

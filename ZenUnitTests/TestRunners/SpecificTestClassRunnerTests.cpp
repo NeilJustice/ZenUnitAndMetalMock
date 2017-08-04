@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/TestRunners/SpecificTestClassRunner.h"
-#include "ZenUnit/Utils/TestRandom.h"
+#include "ZenUnit/Utils/Random.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestClassResultMock.h"
 #include "ZenUnitTests/Tests/Mock/TestMock.h"
@@ -130,7 +130,7 @@ namespace ZenUnit
       const ZenUnitArgs zenUnitArgs = []
       {
          ZenUnitArgs zenUnitArgs;
-         zenUnitArgs.printMode = TestRandom<PrintMode>();
+         zenUnitArgs.printMode = Random<PrintMode>();
          return zenUnitArgs;
       }();
       _specificTestClassRunnerSelfMocked->GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
@@ -168,7 +168,7 @@ namespace ZenUnit
       const ZenUnitArgs zenUnitArgs = []
       {
          ZenUnitArgs zenUnitArgs;
-         zenUnitArgs.printMode = TestRandom<PrintMode>();
+         zenUnitArgs.printMode = Random<PrintMode>();
          return zenUnitArgs;
       }();
       GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
@@ -202,7 +202,7 @@ namespace ZenUnit
       const ZenUnitArgs zenUnitArgs = []
       {
          ZenUnitArgs zenUnitArgs;
-         zenUnitArgs.printMode = TestRandom<PrintMode>();
+         zenUnitArgs.printMode = Random<PrintMode>();
          return zenUnitArgs;
       }();
       GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
@@ -243,7 +243,7 @@ namespace ZenUnit
       const ZenUnitArgs zenUnitArgs = []
       {
          ZenUnitArgs zenUnitArgs;
-         zenUnitArgs.printMode = TestRandom<PrintMode>();
+         zenUnitArgs.printMode = Random<PrintMode>();
          return zenUnitArgs;
       }();
       _specificTestClassRunnerSelfMocked->GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
@@ -252,7 +252,7 @@ namespace ZenUnit
       _specificTestClassRunnerSelfMocked->consoleMock->NonMinimalWriteMock.Expect();
 
       TestMock* const testMock = new TestMock;
-      const string TestName = TestRandom<string>();
+      const string TestName = Random<string>();
       testMock->NameMock.ExpectAndReturn(TestName.c_str());
       testMock->NonMinimalWritePostTestNameMessageMock.Expect();
       TestResult test0;
@@ -285,7 +285,7 @@ namespace ZenUnit
    {
       TestClassResultMock testClassResultMock;
       testClassResultMock.NonMinimalPrintResultLineMock.Expect();
-      const PrintMode printMode = TestRandom<PrintMode>();
+      const PrintMode printMode = Random<PrintMode>();
       //
       _specificTestClassRunner->NonMinimalPrintResultLine(&testClassResultMock, printMode);
       //

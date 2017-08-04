@@ -2,7 +2,7 @@
 #include "ZenUnit/Console/Console.h"
 #include "ZenUnit/Results/TestClassResult.h"
 #include "ZenUnit/Results/TestFailureNumberer.h"
-#include "ZenUnit/Utils/TestRandom.h"
+#include "ZenUnit/Utils/Random.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestResultMock.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/ForEacherTwoExtraArgsMock.h"
@@ -170,7 +170,7 @@ namespace ZenUnit
       ConsoleMock consoleMock;
       consoleMock.NonMinimalWriteColorMock.Expect();
       consoleMock.NonMinimalWriteNewLineMock.Expect();
-      const PrintMode printMode = TestRandom<PrintMode>();
+      const PrintMode printMode = Random<PrintMode>();
       //
       _testClassResultSelfMocked.NonMinimalPrintResultLine(&consoleMock, printMode);
       //
@@ -189,7 +189,7 @@ namespace ZenUnit
       ConsoleMock consoleMock;
       consoleMock.NonMinimalWriteColorMock.Expect();
       consoleMock.NonMinimalWriteNewLineMock.Expect();
-      const PrintMode printMode = TestRandom<PrintMode>();
+      const PrintMode printMode = Random<PrintMode>();
       //
       _testClassResultSelfMocked.NonMinimalPrintResultLine(&consoleMock, printMode);
       //
