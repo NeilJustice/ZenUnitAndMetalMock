@@ -52,17 +52,12 @@ namespace ZenUnit
       VECTORS_EQUAL((vector<TransformedT>{ 2, 3 }), dest);
    }
 
-   static unsigned short TimeRandomSeed()
-   {
-      return static_cast<unsigned short>(chrono::system_clock::now().time_since_epoch().count());
-   }
-
    TEST(RandomTransform_EmptyRange_DoesNothing)
    {
       vector<T> source;
       vector<TransformedT> dest;
       //
-      _transformer.RandomTransform(&source, &dest, PlusOne, TimeRandomSeed());
+      _transformer.RandomTransform(&source, &dest, PlusOne, 0);
       //
       IS_EMPTY(dest);
    }
@@ -72,7 +67,7 @@ namespace ZenUnit
       vector<T> source{ 1 };
       vector<TransformedT> dest(source.size());
       //
-      _transformer.RandomTransform(&source, &dest, PlusOne, TimeRandomSeed());
+      _transformer.RandomTransform(&source, &dest, PlusOne, 0);
       //
       VECTORS_EQUAL(vector<TransformedT>{ 2 }, dest);
    }
@@ -82,7 +77,8 @@ namespace ZenUnit
       vector<T> source{ 1, 2, 3 };
       vector<TransformedT> dest(source.size());
       //
-      _transformer.RandomTransform(&source, &dest, PlusOne, TimeRandomSeed());
+      _transformer.RandomTransform(&source, &dest, PlusOne,
+         static_cast<unsigned short>(chrono::system_clock::now().time_since_epoch().count()));
       //
       ARE_EQUAL(3, dest.size());
       IS_TRUE(

@@ -23,11 +23,10 @@ namespace ZenUnit
       friend class SpecificTestClassRunnerTests;
    private:
       std::unique_ptr<const Console> _console;
-      using TestsMemberForEacherExtraArgType = MemberForEacherExtraArg<
-         std::vector<std::unique_ptr<Test>>,
-         SpecificTestClassRunner,
+      using TestsForEacherType = MemberForEacherExtraArg<
+         std::unique_ptr<Test>, SpecificTestClassRunner,
          void (SpecificTestClassRunner::*)(const std::unique_ptr<Test>& test, TestClassResult*) const, TestClassResult*>;
-      std::unique_ptr<const TestsMemberForEacherExtraArgType> _testsMemberForEacherExtraArg;
+      std::unique_ptr<const TestsForEacherType> _testsForEacher;
       std::function<const ZenUnitArgs&()> _TestRunner_GetArgs_ZenMockable;
       const char* _testClassName;
       NewDeleteTest<TestClassType> _newDeleteTest;
@@ -36,7 +35,7 @@ namespace ZenUnit
    public:
       explicit SpecificTestClassRunner(const char* testClassNamePossiblyTemplatized)
          : _console(new Console)
-         , _testsMemberForEacherExtraArg(new TestsMemberForEacherExtraArgType)
+         , _testsForEacher(new TestsForEacherType)
          , _TestRunner_GetArgs_ZenMockable(TestRunner::GetArgs)
          , _testClassName(testClassNamePossiblyTemplatized)
          , _newDeleteTest(testClassNamePossiblyTemplatized)
@@ -65,8 +64,7 @@ namespace ZenUnit
          NonMinimalPrintTestClassNameAndNumberOfNamedTests();
          if (ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(&_newDeleteTest, &_testClassResult))
          {
-            _testsMemberForEacherExtraArg->ForEach(
-               &_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult);
+             DoRunTests();
          }
          const ZenUnitArgs& zenUnitArgs = _TestRunner_GetArgs_ZenMockable();
          NonMinimalPrintResultLine(&_testClassResult, zenUnitArgs.printMode);
@@ -74,6 +72,21 @@ namespace ZenUnit
          return std::move(_testClassResult);
       }
    private:
+      virtual void DoRunTests()
+      {
+         const ZenUnitArgs& zenUnitArgs = _TestRunner_GetArgs_ZenMockable();
+         if (zenUnitArgs.random)
+         {
+            _testsForEacher->RandomForEach(
+               &_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult, zenUnitArgs.randomseed);
+         }
+         else
+         {
+            _testsForEacher->ForEach(
+               &_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult);
+         }
+      }
+
       virtual void NonMinimalPrintTestClassNameAndNumberOfNamedTests() const
       {
          const ZenUnitArgs& zenUnitArgs = _TestRunner_GetArgs_ZenMockable();

@@ -12,7 +12,8 @@ namespace ZenUnit
    SPEC(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
    SPEC(TestClassNameForSorting_ReturnsTestClassName)
    SPEC(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
-   SPECX(RunTests_PrintsTestClassNameAndNumberOfNamedTests_ForEachRunsTests_PrintsTestClassResultLine_MoveReturnsTestClassResult)
+   SPECX(RunTests_PrintsTestClassNameAndNumberOfNamedTests_CallsDoRunTests_PrintsTestClassResultLine_MoveReturnsTestClassResult)
+   SPECX(DoRunTests_RandomlyRunTestsIfRandomOtherwiseSequentiallyRunsTests)
    SPECX(NonMinimalPrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVerticalBarNumberOfTests)
    SPECX(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewDeleteTest_AddsResultToResults_ReturnsTrueIfNewableAndDeletable)
    SPEC(RunTest_NonMinimalWritesVerticalBarTestName_RunsTest_AddsTestResultsToTestClassResult_NonMinimalWriteTestOutcome)
@@ -36,6 +37,12 @@ namespace ZenUnit
    ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
    const char* const TestClassName = "TestClassName";
 
+   using TestsForEacherMockType = MemberForEacherExtraArgMock<
+      std::unique_ptr<Test>, SpecificTestClassRunner<TestingTestClass>,
+      void (SpecificTestClassRunner<TestingTestClass>::*)(
+         const std::unique_ptr<Test>& test, TestClassResult*) const, TestClassResult*>;
+   const TestsForEacherMockType* _testsForEacherMock;
+
    class SpecificTestClassRunnerSelfMocked : public Zen::Mock<ZenUnit::SpecificTestClassRunner<TestingTestClass>>
    {
    public:
@@ -43,20 +50,14 @@ namespace ZenUnit
       ZENMOCK_NONVOID2_CONST(bool, ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests, Test*, TestClassResult*)
       ZENMOCK_VOID2_CONST(NonMinimalPrintResultLine, const TestClassResult*, PrintMode)
       ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
+      ZENMOCK_VOID0(DoRunTests)
+
       const ConsoleMock* consoleMock;
-      using TestsMemberForEacherExtraArgMockType = MemberForEacherExtraArgMock<
-         std::vector<std::unique_ptr<Test>>,
-         SpecificTestClassRunner<TestingTestClass>,
-         void (SpecificTestClassRunner<TestingTestClass>::*)(
-            const std::unique_ptr<Test>& test, TestClassResult*) const, TestClassResult*>;
-      const TestsMemberForEacherExtraArgMockType* testsMemberForEacherExtraArgMock;
 
       SpecificTestClassRunnerSelfMocked()
          : Zen::Mock<ZenUnit::SpecificTestClassRunner<TestingTestClass>>("")
       {
          _console.reset(consoleMock = new ConsoleMock);
-         _testsMemberForEacherExtraArg.reset(
-            testsMemberForEacherExtraArgMock = new TestsMemberForEacherExtraArgMockType);
          _TestRunner_GetArgs_ZenMockable = ZENBIND0(GetArgs_ZenMock);
       }
    };
@@ -67,6 +68,7 @@ namespace ZenUnit
       _specificTestClassRunner = make_unique<SpecificTestClassRunner<TestingTestClass>>(TestClassName);
       _specificTestClassRunner->_console.reset(_consoleMock = new ConsoleMock);
       _specificTestClassRunner->_TestRunner_GetArgs_ZenMockable = ZENBIND0(GetArgs_ZenMock);
+      _specificTestClassRunner->_testsForEacher.reset(_testsForEacherMock = new TestsForEacherMockType);
       _specificTestClassRunnerSelfMocked = make_unique<SpecificTestClassRunnerSelfMocked>();
    }
 
@@ -75,7 +77,7 @@ namespace ZenUnit
       SpecificTestClassRunner<TestingTestClass> specificTestClassRunner(TestClassName);
       //
       POINTER_WAS_NEWED(specificTestClassRunner._console);
-      POINTER_WAS_NEWED(specificTestClassRunner._testsMemberForEacherExtraArg);
+      POINTER_WAS_NEWED(specificTestClassRunner._testsForEacher);
       ARE_EQUAL(TestClassName, specificTestClassRunner._testClassName);
       STD_FUNCTION_TARGETS(TestRunner::GetArgs, specificTestClassRunner._TestRunner_GetArgs_ZenMockable);
 
@@ -111,17 +113,17 @@ namespace ZenUnit
       ARE_EQUAL(30, numberOfTestCases);
    }
 
-   TEST2X2(RunTests_PrintsTestClassNameAndNumberOfNamedTests_ForEachRunsTests_PrintsTestClassResultLine_MoveReturnsTestClassResult,
-      bool testClassTypeNewableAndDeletable, bool expectTestsRunForEachCall,
+   TEST2X2(RunTests_PrintsTestClassNameAndNumberOfNamedTests_CallsDoRunTests_PrintsTestClassResultLine_MoveReturnsTestClassResult,
+      bool testClassTypeNewableAndDeletable, bool expectDoRunTestsCall,
       false, false,
       true, true)
    {
       _specificTestClassRunnerSelfMocked->NonMinimalPrintTestClassNameAndNumberOfNamedTestsMock.Expect();
       _specificTestClassRunnerSelfMocked->ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock
          .ExpectAndReturn(testClassTypeNewableAndDeletable);
-      if (expectTestsRunForEachCall)
+      if (expectDoRunTestsCall)
       {
-         _specificTestClassRunnerSelfMocked->testsMemberForEacherExtraArgMock->ForEachMock.Expect();
+         _specificTestClassRunnerSelfMocked->DoRunTestsMock.Expect();
       }
       _specificTestClassRunnerSelfMocked->NonMinimalPrintResultLineMock.Expect();
       _specificTestClassRunnerSelfMocked->consoleMock->NonMinimalWriteNewLineMock.Expect();
@@ -140,18 +142,55 @@ namespace ZenUnit
       ZEN(_specificTestClassRunnerSelfMocked->NonMinimalPrintTestClassNameAndNumberOfNamedTestsMock.AssertCalledOnce());
       ZEN(_specificTestClassRunnerSelfMocked->ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock.AssertCalledOnceWith(
           &_specificTestClassRunnerSelfMocked->_newDeleteTest, &_specificTestClassRunnerSelfMocked->_testClassResult));
-      if (expectTestsRunForEachCall)
+      if (expectDoRunTestsCall)
       {
-         ZEN(_specificTestClassRunnerSelfMocked->testsMemberForEacherExtraArgMock->ForEachMock.AssertCalledOnceWith(
-            &_specificTestClassRunnerSelfMocked->_tests, _specificTestClassRunnerSelfMocked.get(),
-            &SpecificTestClassRunner<TestingTestClass>::RunTest, &_specificTestClassRunnerSelfMocked->_testClassResult));
+         ZEN(_specificTestClassRunnerSelfMocked->DoRunTestsMock.AssertCalledOnce());
       }
       ZEN(_specificTestClassRunnerSelfMocked->GetArgs_ZenMock.AssertCalledOnce());
       ZEN(_specificTestClassRunnerSelfMocked->NonMinimalPrintResultLineMock.
          AssertCalledOnceWith(&_specificTestClassRunnerSelfMocked->_testClassResult, zenUnitArgs.printMode));
-      ZEN(_specificTestClassRunnerSelfMocked->consoleMock->NonMinimalWriteNewLineMock.AssertCalledOnceWith(zenUnitArgs.printMode));
+      ZEN(_specificTestClassRunnerSelfMocked->consoleMock->
+         NonMinimalWriteNewLineMock.AssertCalledOnceWith(zenUnitArgs.printMode));
       ARE_EQUAL(TestClassResult::TestingNonDefault(), testClassResult);
       ARE_EQUAL(TestClassResult(), _specificTestClassRunnerSelfMocked->_testClassResult);
+   }
+
+   TEST2X2(DoRunTests_RandomlyRunTestsIfRandomOtherwiseSequentiallyRunsTests,
+      bool random, bool expectRandomForEach,
+      false, false,
+      true, true)
+   {
+      ZenUnitArgs zenUnitArgs;
+      zenUnitArgs.random = random;
+      zenUnitArgs.randomseed = Random<unsigned short>();
+      GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
+      if (expectRandomForEach)
+      {
+         _testsForEacherMock->RandomForEachMock.Expect();
+      }
+      else
+      {
+         _testsForEacherMock->ForEachMock.Expect();
+      }
+      //
+      _specificTestClassRunner->DoRunTests();
+      //
+      ZEN(GetArgs_ZenMock.AssertCalledOnce());
+      if (expectRandomForEach)
+      {
+         ZEN(_testsForEacherMock->RandomForEachMock.AssertCalledOnceWith(
+             &_specificTestClassRunner->_tests, _specificTestClassRunner.get(),
+             &SpecificTestClassRunner<TestingTestClass>::RunTest,
+             &_specificTestClassRunner->_testClassResult,
+             zenUnitArgs.randomseed));
+      }
+      else
+      {
+         ZEN(_testsForEacherMock->ForEachMock.AssertCalledOnceWith(
+             &_specificTestClassRunner->_tests, _specificTestClassRunner.get(),
+             &SpecificTestClassRunner<TestingTestClass>::RunTest,
+             &_specificTestClassRunner->_testClassResult));
+      }
    }
 
    TEST2X2(NonMinimalPrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVerticalBarNumberOfTests,

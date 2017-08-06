@@ -2,21 +2,37 @@
 
 namespace ZenUnit
 {
-   template<typename IterableType, typename ClassType, typename FunctionType, typename ExtraArgType>
+   template<typename T, typename ClassType, typename FunctionType, typename ExtraArgType>
    class MemberForEacherExtraArg
    {
    public:
       virtual void ForEach(
-         const IterableType* iterable,
-         const ClassType* thisPointer,
+         const std::vector<T>* vec,
+         const ClassType* classPointer,
          FunctionType twoArgFunction,
          ExtraArgType extraArg) const
       {
-         const auto iterableConstEnd = iterable->cend();
-         for (auto iter = iterable->cbegin(); iter != iterableConstEnd; ++iter)
+         const std::vector<T>::const_iterator vecEnd = vec->cend();
+         for (std::vector<T>::const_iterator iter = vec->cbegin(); iter != vecEnd; ++iter)
          {
-            const auto& element = *iter;
-            (thisPointer->*twoArgFunction)(element, extraArg);
+            const T& element = *iter;
+            (classPointer->*twoArgFunction)(element, extraArg);
+         }
+      }
+
+      virtual void RandomForEach(
+         std::vector<T>* vec,
+         const ClassType* classPointer,
+         FunctionType twoArgFunction,
+         ExtraArgType extraArg,
+         unsigned seed) const
+      {
+         std::shuffle(vec->begin(), vec->end(), std::default_random_engine(seed));
+         const std::vector<T>::const_iterator vecEnd = vec->cend();
+         for (std::vector<T>::const_iterator iter = vec->begin(); iter != vecEnd; ++iter)
+         {
+            const T& element = *iter;
+            (classPointer->*twoArgFunction)(element, extraArg);
          }
       }
 

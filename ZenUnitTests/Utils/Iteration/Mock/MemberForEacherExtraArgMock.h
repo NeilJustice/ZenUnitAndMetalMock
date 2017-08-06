@@ -1,8 +1,9 @@
 #pragma once
 #include "ZenUnit/Utils/Iteration/MemberForEacherExtraArg.h"
 
-template<typename IterableType, typename ClassType, typename FunctionType, typename ExtraArgType>
-struct MemberForEacherExtraArgMock : public Zen::Mock<MemberForEacherExtraArg<IterableType, ClassType, FunctionType, ExtraArgType>>
+template<typename T, typename ClassType, typename FunctionType, typename ExtraArgType>
+struct MemberForEacherExtraArgMock : public Zen::Mock<MemberForEacherExtraArg<T, ClassType, FunctionType, ExtraArgType>>
 {
-   ZENMOCK_VOID4_CONST(ForEach, const IterableType*, const ClassType*, FunctionType, ExtraArgType)
+   ZENMOCK_VOID4_CONST(ForEach, const std::vector<T>*, const ClassType*, FunctionType, ExtraArgType)
+   ZENMOCK_VOID5_CONST(RandomForEach, std::vector<T>*, const ClassType*, FunctionType, ExtraArgType, unsigned)
 };

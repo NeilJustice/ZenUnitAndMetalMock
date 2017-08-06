@@ -109,7 +109,7 @@ call ZEN([ZenMockedFunctionName]Mock.
 [AssertCalledOnce|AssertCalledOnceWith|AssertCalledNTimes|AssertCalledNTimesWith|AssertCalls]());
 
 Fast failing now with exit code )" <<
-(zenUnitArgs.exit0 ? "0 (normally exit code 1 but -exit0 is specified)." : "1.");
+(zenUnitArgs.exit0 ? "0 (normally exit code 1 but -exit0 is specified).\n" : "1.\n");
             _exit_ZenMockable(zenUnitArgs.exit0 ? 0 : 1);
          }
       }

@@ -9,7 +9,9 @@ namespace ZenUnit
    {
    public:
       virtual void Transform(
-         const std::vector<T>* source, std::vector<TransformedT>* dest, TransformedT(*transformer)(const T&)) const
+         const std::vector<T>* source,
+         std::vector<TransformedT>* dest,
+         TransformedT(*transformer)(const T&)) const
       {
          size_t destSize = dest->size();
          assert_true(source->size() == destSize);
@@ -21,7 +23,10 @@ namespace ZenUnit
       }
 
       virtual void RandomTransform(
-         std::vector<T>* source, std::vector<TransformedT>* dest, TransformedT(*transformer)(const T&), unsigned seed) const
+         std::vector<T>* source,
+         std::vector<TransformedT>* dest,
+         TransformedT(*transformer)(const T&),
+         unsigned seed) const
       {
          std::shuffle(source->begin(), source->end(), std::default_random_engine(seed));
          size_t destSize = dest->size();
