@@ -45,6 +45,14 @@ namespace ZenUnit
       return timeZone;
    }
 
+   unsigned short Watch::SecondsSince1970CastToAnUnsignedShort() const
+   {
+      const time_t secondsSince1970 = std::time(nullptr);
+      const unsigned short secondsSince1970CastToAnUnsignedShort
+         = static_cast<unsigned short>(secondsSince1970);
+      return secondsSince1970CastToAnUnsignedShort;
+   }
+
    const char* Watch::TMWeekDayToWeekDayString(int tm_wday)
    {
       switch (tm_wday)

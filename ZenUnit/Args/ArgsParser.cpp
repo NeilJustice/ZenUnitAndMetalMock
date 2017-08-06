@@ -9,6 +9,7 @@ namespace ZenUnit
 {
    ArgsParser::ArgsParser()
       : _console(new Console)
+      , _watch(new Watch)
       , _String_ToUnsigned(String::ToUnsigned)
    {
    }
@@ -31,9 +32,9 @@ namespace ZenUnit
          {
             zenUnitArgs.printMode = PrintMode::Minimal;
          }
-         else if (arg == "-verbose")
+         else if (arg == "-detailed")
          {
-            zenUnitArgs.printMode = PrintMode::Verbose;
+            zenUnitArgs.printMode = PrintMode::Detailed;
          }
          else if (arg == "-exit0")
          {
@@ -43,6 +44,11 @@ namespace ZenUnit
          {
             zenUnitArgs.failskips = true;
          }
+         else if (arg == "-random")
+         {
+            zenUnitArgs.random = true;
+            zenUnitArgs.randomseed = _watch->SecondsSince1970CastToAnUnsignedShort();
+         }
          else if (arg == "-help" || arg == "--help")
          {
             _console->WriteLineAndExit(Usage, 0);
@@ -51,7 +57,7 @@ namespace ZenUnit
          {
             _console->WriteLine("ZenUnit argument error: Invalid argument \"" + arg + "\"\n");
             _console->WriteLineAndExit(Usage, 1);
-         } 
+         }
          else
          {
             const vector<string> splitArg = String::Split(arg, '=');
@@ -76,21 +82,28 @@ namespace ZenUnit
       return zenUnitArgs;
    }
 
-const string ArgsParser::Usage = R"(ZenUnit and ZenMock v0.2.0
+const string ArgsParser::Usage = R"(ZenUnit and ZenMock
 Usage: <TestsBinaryName> [Options...]
 
 Options:
 
 None
-   Print preamble, run all non-skipped tests with printing of test class names and test names, then print conclusion.
+   Run all non-skipped tests while printing detailed information.
 -minimal
-   Print preamble, run all non-skipped tests, then print conclusion.
+   Print only preamble and conclusion instead of detailed information.
 -exit0
    Always exit 0 regardless of test run outcome.
+   Useful for always allowing the Visual Studio debugger to launch.
 -failskips
    Exit 1 regardless of test run outcome if any tests are skipped.
+   Useful option for continuous integration servers to guard against
+   quality-compromising complacency with respect to skipped tests.
 -testruns=<N>
    Repeat the running of all non-skipped tests N times.
+   Key option for maximizing testing rigor.
+-random[=Seed]
+   Run test classes in a random order and run tests in a random order.
+   Key option for maximizing testing rigor.
 -help or --help
    Display this help.)";
 }

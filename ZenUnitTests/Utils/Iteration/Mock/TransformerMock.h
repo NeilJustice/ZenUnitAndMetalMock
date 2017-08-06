@@ -1,8 +1,10 @@
 #pragma once
 #include "ZenUnit/Utils/Iteration/Transformer.h"
 
-template<typename SourceIterType, typename DestType, typename FuncType>
-struct TransformerMock : public Zen::Mock<Transformer<SourceIterType, DestType, FuncType>>
+template<typename T, typename TransformedT>
+struct TransformerMock : public Zen::Mock<Transformer<T, TransformedT>>
 {
-   ZENMOCK_VOID4_CONST(Transform, SourceIterType, SourceIterType, DestType*, FuncType)
+   typedef TransformedT(*TransformerType)(const T&);
+   ZENMOCK_VOID3_CONST(Transform, const std::vector<T>*, std::vector<TransformedT>*, TransformerType)
+   ZENMOCK_VOID3_CONST(RandomTransform, const std::vector<T>*, std::vector<TransformedT>*, TransformerType)
 };

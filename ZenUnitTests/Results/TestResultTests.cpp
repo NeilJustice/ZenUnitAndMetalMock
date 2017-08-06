@@ -200,17 +200,17 @@ namespace ZenUnit
       PrintMode::Minimal, TestOutcome::SuccessButPastDeadline, false,
       PrintMode::Minimal, TestOutcome::Unset, false,
 
-      PrintMode::Default, TestOutcome::Success, true,
-      PrintMode::Default, TestOutcome::Anomaly, false,
-      PrintMode::Default, TestOutcome::Exception, false,
-      PrintMode::Default, TestOutcome::SuccessButPastDeadline, false,
-      PrintMode::Default, TestOutcome::Unset, false,
+      PrintMode::Normal, TestOutcome::Success, true,
+      PrintMode::Normal, TestOutcome::Anomaly, false,
+      PrintMode::Normal, TestOutcome::Exception, false,
+      PrintMode::Normal, TestOutcome::SuccessButPastDeadline, false,
+      PrintMode::Normal, TestOutcome::Unset, false,
 
-      PrintMode::Verbose, TestOutcome::Success, true,
-      PrintMode::Verbose, TestOutcome::Anomaly, false,
-      PrintMode::Verbose, TestOutcome::Exception, false,
-      PrintMode::Verbose, TestOutcome::SuccessButPastDeadline, false,
-      PrintMode::Verbose, TestOutcome::Unset, false)
+      PrintMode::Detailed, TestOutcome::Success, true,
+      PrintMode::Detailed, TestOutcome::Anomaly, false,
+      PrintMode::Detailed, TestOutcome::Exception, false,
+      PrintMode::Detailed, TestOutcome::SuccessButPastDeadline, false,
+      PrintMode::Detailed, TestOutcome::Unset, false)
    {
       _testResult.testOutcome = testOutcome;
       if (expectWriteLineOK)

@@ -20,6 +20,10 @@ namespace ZenUnit
       PreamblePrinter();
       virtual ~PreamblePrinter();
       virtual void PrintOpeningThreeLines(
-         const string& commandLine, const MultiTestClassRunner* multiTestClassRunner) const;
+         const ZenUnitArgs& zenUnitArgs,
+         const MultiTestClassRunner* multiTestClassRunner) const;
+   private:
+      virtual std::string MakeThirdLinePrefix(size_t numberOfTestClasses) const;
+      virtual std::string MakeThirdLineSuffix(bool random, unsigned short randomseed) const;
    };
 }

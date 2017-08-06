@@ -92,7 +92,7 @@ namespace ZenUnit
       POINTER_WAS_NEWED(testRunner._multiTestClassRunner);
       POINTER_WAS_NEWED(testRunner._testRunResult);
       POINTER_WAS_NEWED(testRunner._testRunStopwatch);
-      ARE_EQUAL(ZenUnitArgs(), testRunner._args);
+      ARE_EQUAL(ZenUnitArgs(), testRunner._zenUnitArgs);
    }
 
    TEST(RegisterTestClassRunner_EmplacesBackTestClassRunner)
@@ -142,7 +142,7 @@ namespace ZenUnit
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.commandLine = Random<string>();
       zenUnitArgs.maxtotalseconds = maxtotalseconds;
-      _testRunnerSelfMocked2._args = zenUnitArgs;
+      _testRunnerSelfMocked2._zenUnitArgs = zenUnitArgs;
       _testRunnerSelfMocked2.preamblePrinterMock->PrintOpeningThreeLinesMock.Expect();
       if (expectRunTestsWithWaitableRunnerThread)
       {
@@ -168,7 +168,7 @@ namespace ZenUnit
       //
       ZEN(_testRunnerSelfMocked2.testRunStopwatchMock->StartMock.AssertCalledOnce());
       ZEN(_testRunnerSelfMocked2.preamblePrinterMock->PrintOpeningThreeLinesMock.AssertCalledOnceWith(
-         _testRunnerSelfMocked2._args.commandLine, _testRunnerSelfMocked2._multiTestClassRunner.get()));
+         _testRunnerSelfMocked2._zenUnitArgs, _testRunnerSelfMocked2._multiTestClassRunner.get()));
       if (expectRunTestsWithWaitableRunnerThread)
       {
          ZEN(_testRunnerSelfMocked2.RunTestsWithWaitableRunnerThreadMock.
@@ -182,7 +182,7 @@ namespace ZenUnit
       ZEN(_testRunnerSelfMocked2.multiTestClassRunnerMock->NumberOfTestCasesMock.AssertCalledOnce());
       ZEN(_testRunnerSelfMocked2.testRunStopwatchMock->StopMock.AssertCalledOnce());
       ZEN(_testRunnerSelfMocked2.testRunResultMock->PrintClosingLinesMock.AssertCalledOnceWith(
-         TotalNumberOfTestCases, TestRunMilliseconds, _testRunnerSelfMocked2._args.commandLine));
+         TotalNumberOfTestCases, TestRunMilliseconds, _testRunnerSelfMocked2._zenUnitArgs.commandLine));
       ZEN(_testRunnerSelfMocked2.testRunResultMock->DetermineExitCodeMock.AssertCalledOnceWith(zenUnitArgs));
       ARE_EQUAL(determineExitCodeReturnValueAndExpectedExitCode, exitCode);
    }
@@ -214,9 +214,9 @@ namespace ZenUnit
 
    TEST(RunTests_RunsTestClasses)
    {
-      ZenUnitArgs args;
-      args.commandLine = Random<string>();
-      _testRunner._args = args;
+      ZenUnitArgs zenUnitArgs;
+      zenUnitArgs.commandLine = Random<string>();
+      _testRunner._zenUnitArgs = zenUnitArgs;
 
       vector<TestClassResult> testClassResults(1);
       _multiTestClassRunnerMock->RunTestClassesMock.ExpectAndReturn(testClassResults);
@@ -224,7 +224,7 @@ namespace ZenUnit
       //
       _testRunner.RunTests();
       //
-      ZEN(_multiTestClassRunnerMock->RunTestClassesMock.AssertCalledOnce());
+      ZEN(_multiTestClassRunnerMock->RunTestClassesMock.AssertCalledOnceWith(_testRunner._zenUnitArgs));
       ZEN(_testRunResultMock->SetTestClassResultsMock.AssertCalledOnceWith(testClassResults));
    }
 

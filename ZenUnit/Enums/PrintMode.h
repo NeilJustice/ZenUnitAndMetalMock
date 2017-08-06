@@ -6,8 +6,8 @@ namespace ZenUnit
    {
       Unset,
       Minimal,
-      Default,
-      Verbose,
+      Normal,
+      Detailed,
       MaxValue
    };
 }

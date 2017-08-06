@@ -1,22 +1,33 @@
 #pragma once
+#include "ZenUnit/Utils/AssertTrue.h"
 
 namespace ZenUnit
 {
-   template<typename SourceIterType, typename DestType, typename FuncType>
+   template<typename T, typename TransformedT>
    class Transformer
    {
    public:
       virtual void Transform(
-         SourceIterType beginSourceIterator,
-         SourceIterType endSourceIterator,
-         DestType* destinationContainer,
-         FuncType transformer) const
+         const std::vector<T>* source, std::vector<TransformedT>* dest, TransformedT(*transformer)(const T&)) const
       {
-         auto destinationIterator = destinationContainer->begin();
-         for (SourceIterType iter = beginSourceIterator; iter != endSourceIterator; ++iter)
+         size_t destSize = dest->size();
+         assert_true(source->size() == destSize);
+         for (size_t i = 0; i < destSize; ++i)
          {
-            const auto& element = *iter;
-            *destinationIterator++ = transformer(element);
+            const T& element = (*source)[i];
+            (*dest)[i] = transformer(element);
+         }
+      }
+
+      virtual void RandomTransform(
+         const std::vector<T>* source, std::vector<TransformedT>* dest, TransformedT(*transformer)(const T&)) const
+      {
+         size_t destSize = dest->size();
+         assert_true(source->size() == destSize);
+         for (size_t i = 0; i < destSize; ++i)
+         {
+            const T& element = (*source)[i];
+            (*dest)[i] = transformer(element);
          }
       }
 

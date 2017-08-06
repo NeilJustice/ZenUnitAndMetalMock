@@ -105,7 +105,7 @@ int main(int argc, char* argv[]
 ### ZenUnit Command Line Arguments
 
 ```
-ZenUnit and ZenMock v0.2.0
+ZenUnit and ZenMock
 Usage: <TestsBinaryName> [Options...]
 
 Options:
@@ -113,13 +113,20 @@ Options:
 None
    Run all non-skipped tests while printing detailed information.
 -minimal
-   Print minimal information during the test run.
+   Print only preamble and conclusion instead of detailed information.
 -exit0
    Always exit 0 regardless of test run outcome.
+   Useful for always allowing the Visual Studio debugger to launch.
 -failskips
    Exit 1 regardless of test run outcome if any tests are skipped.
+   Useful setting for continuous integration servers to guard against
+   the possibility of complacency with respect to skipped tests.
 -testruns=<N>
-   Repeat the running of all non-skipped tests N times.
+   Repeat the running of all non-skipped tests N times. 
+   Key option for maximizing testing rigor.
+-random[=Seed]
+   Run test classes in a random order and run tests in a random order.
+   Key option for maximizing testing rigor.
 -help or --help
    Display this help.
 ```

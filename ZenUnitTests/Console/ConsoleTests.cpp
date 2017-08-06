@@ -64,8 +64,8 @@ namespace ZenUnit
    TEST2X2(NonMinimalWrite_CallsWriteColorIfPrintModeNotMinimal,
       PrintMode printMode, bool expectWriteCall,
       PrintMode::Minimal, false,
-      PrintMode::Default, true,
-      PrintMode::Verbose, true)
+      PrintMode::Normal, true,
+      PrintMode::Detailed, true)
    {
       struct ConsoleSelfMock_Write : public Zen::Mock<Console>
       {
@@ -103,8 +103,8 @@ namespace ZenUnit
    TEST2X2(NonMinimalWriteColor_CallsWriteColorIfPrintModeNotMinimal,
       PrintMode printMode, bool expectWriteColorCall,
       PrintMode::Minimal, false,
-      PrintMode::Default, true,
-      PrintMode::Verbose, true)
+      PrintMode::Normal, true,
+      PrintMode::Detailed, true)
    {
       struct ConsoleSelfMock_WriteColor : public Zen::Mock<Console>
       {
@@ -135,8 +135,8 @@ namespace ZenUnit
    TEST2X2(NonMinimalWriteNewLine_CallsWriteLineWithWhite,
       PrintMode printMode, bool expectWriteNewLineCall,
       PrintMode::Minimal, false,
-      PrintMode::Default, true,
-      PrintMode::Verbose, true)
+      PrintMode::Normal, true,
+      PrintMode::Detailed, true)
    {
       if (expectWriteNewLineCall)
       {
@@ -154,8 +154,8 @@ namespace ZenUnit
    TEST2X2(NonMinimalWriteLine_CallsWriteLineIfPrintModeNotMinimal,
       PrintMode printMode, bool expectWriteLineCall,
       PrintMode::Minimal, false,
-      PrintMode::Default, true,
-      PrintMode::Verbose, true)
+      PrintMode::Normal, true,
+      PrintMode::Detailed, true)
    {
       struct ConsoleSelfMock_WriteColor : public Zen::Mock<Console>
       {
@@ -211,15 +211,15 @@ namespace ZenUnit
 
    TEST5X5(NonMinimalWriteStringsCommaSeparated_PrintModeNotMinimal_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset,
       PrintMode printMode, const vector<string>& strings, size_t startIndex, size_t numberOfElements, const vector<string>& expectedConsoleWrites,
-      PrintMode::Default, vector<string>{ "Arg1" }, size_t(0), size_t(1), vector<string>{ "Arg1" },
-      PrintMode::Default, vector<string>{ "Arg1", "Arg2" }, size_t(0), size_t(2), vector<string>{ "Arg1", ", ", "Arg2" },
-      PrintMode::Default, vector<string>{ "Arg1", "Arg2" }, size_t(1), size_t(1), vector<string>{ "Arg2" },
-      PrintMode::Default, vector<string>{ "Arg1", "Arg2", "Arg3", "Arg4" }, size_t(2), size_t(2), vector<string>{ "Arg3", ", ", "Arg4" },
+      PrintMode::Normal, vector<string>{ "Arg1" }, size_t(0), size_t(1), vector<string>{ "Arg1" },
+      PrintMode::Normal, vector<string>{ "Arg1", "Arg2" }, size_t(0), size_t(2), vector<string>{ "Arg1", ", ", "Arg2" },
+      PrintMode::Normal, vector<string>{ "Arg1", "Arg2" }, size_t(1), size_t(1), vector<string>{ "Arg2" },
+      PrintMode::Normal, vector<string>{ "Arg1", "Arg2", "Arg3", "Arg4" }, size_t(2), size_t(2), vector<string>{ "Arg3", ", ", "Arg4" },
 
-      PrintMode::Verbose, vector<string>{ "Arg1" }, size_t(0), size_t(1), vector<string>{ "Arg1" },
-      PrintMode::Verbose, vector<string>{ "Arg1", "Arg2" }, size_t(0), size_t(2), vector<string>{ "Arg1", ", ", "Arg2" },
-      PrintMode::Verbose, vector<string>{ "Arg1", "Arg2" }, size_t(1), size_t(1), vector<string>{ "Arg2" },
-      PrintMode::Verbose, vector<string>{ "Arg1", "Arg2", "Arg3", "Arg4" }, size_t(2), size_t(2), vector<string>{ "Arg3", ", ", "Arg4" })
+      PrintMode::Detailed, vector<string>{ "Arg1" }, size_t(0), size_t(1), vector<string>{ "Arg1" },
+      PrintMode::Detailed, vector<string>{ "Arg1", "Arg2" }, size_t(0), size_t(2), vector<string>{ "Arg1", ", ", "Arg2" },
+      PrintMode::Detailed, vector<string>{ "Arg1", "Arg2" }, size_t(1), size_t(1), vector<string>{ "Arg2" },
+      PrintMode::Detailed, vector<string>{ "Arg1", "Arg2", "Arg3", "Arg4" }, size_t(2), size_t(2), vector<string>{ "Arg3", ", ", "Arg4" })
    {
       struct ConsoleSelfMocked : public Zen::Mock<Console>
       {

@@ -10,23 +10,20 @@ namespace ZenUnit
    SPEC(Constructor_NewsComponents)
    SPEC(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
    SPEC(AddTestClassRunner_EmplacesBackTestClassRunner_MakesNumberOfTestClassesReturnAnIncreasingNumber)
-   SPEC(RunTestClasses_SortsTestClassRunnersByName_RunsTestClasses_MoveReturnsTestClassResultsVector)
+   SPECX(RunTestClasses_SortsTestClassRunnersByName_RunsTestClassesRandomlyIfRandomOtherwiseSequentially_MoveReturnsTestClassResultsVector)
    SPEC(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)
    SPECEND
 
    MultiTestClassRunner _multiTestClassRunner;
-
-   using TypdefTransformerMock = TransformerMock<
-      vector<unique_ptr<TestClassRunner>>::const_iterator,
-      std::vector<TestClassResult>,
-      TestClassResult (*)(const unique_ptr<TestClassRunner>&)>;
    SorterMock<std::vector<std::unique_ptr<TestClassRunner>>>* _sorterMock;
-   TypdefTransformerMock* _transformerMock;
+   using TransformerMockType = TransformerMock<std::unique_ptr<TestClassRunner>, TestClassResult>;
+   TransformerMockType* _transformerMock;
 
    STARTUP
    {
-      _multiTestClassRunner._sorter.reset(_sorterMock = new SorterMock<std::vector<std::unique_ptr<TestClassRunner>>>);
-      _multiTestClassRunner._transformer.reset(_transformerMock = new TypdefTransformerMock);
+      _multiTestClassRunner._sorter.reset(_sorterMock
+         = new SorterMock<std::vector<std::unique_ptr<TestClassRunner>>>);
+      _multiTestClassRunner._transformer.reset(_transformerMock = new TransformerMockType);
    }
 
    TEST(Constructor_NewsComponents)
@@ -78,20 +75,43 @@ namespace ZenUnit
       ARE_EQUAL(30, totalNumberOfTestCases);
    }
 
-   TEST(RunTestClasses_SortsTestClassRunnersByName_RunsTestClasses_MoveReturnsTestClassResultsVector)
+   TEST2X2(RunTestClasses_SortsTestClassRunnersByName_RunsTestClassesRandomlyIfRandomOtherwiseSequentially_MoveReturnsTestClassResultsVector,
+      bool random, bool expectRandomTestClassRun,
+      false, false,
+      true, true)
    {
       ARE_EQUAL(0, _multiTestClassRunner._testClassResults.size());
       const size_t TestClassRunnersSize = 10;
       _multiTestClassRunner._testClassRunners.resize(TestClassRunnersSize);
       _sorterMock->SortMock.Expect();
-      _transformerMock->TransformMock.Expect();
+      if (expectRandomTestClassRun)
+      {
+         _transformerMock->RandomTransformMock.Expect();
+      }
+      else
+      {
+         _transformerMock->TransformMock.Expect();
+      }
+      ZenUnitArgs zenUnitArgs;
+      zenUnitArgs.random = random;
       //
-      const vector<TestClassResult> testClassResults = _multiTestClassRunner.RunTestClasses();
+      const vector<TestClassResult> testClassResults = _multiTestClassRunner.RunTestClasses(zenUnitArgs);
       //
       ZEN(_sorterMock->SortMock.AssertCalledOnceWith(&_multiTestClassRunner._testClassRunners));
-      ZEN(_transformerMock->TransformMock.AssertCalledOnceWith(
-         _multiTestClassRunner._testClassRunners.cbegin(), _multiTestClassRunner._testClassRunners.cend(),
-         &_multiTestClassRunner._testClassResults, &MultiTestClassRunner::RunTestClassRunner));
+      if (expectRandomTestClassRun)
+      {
+         ZEN(_transformerMock->RandomTransformMock.AssertCalledOnceWith(
+             &_multiTestClassRunner._testClassRunners,
+             &_multiTestClassRunner._testClassResults,
+             &MultiTestClassRunner::RunTestClassRunner));
+      }
+      else
+      {
+         ZEN(_transformerMock->TransformMock.AssertCalledOnceWith(
+             &_multiTestClassRunner._testClassRunners,
+             &_multiTestClassRunner._testClassResults,
+             &MultiTestClassRunner::RunTestClassRunner));
+      }
       const vector<TestClassResult> expectedTestClassResults(TestClassRunnersSize);
       VECTORS_EQUAL(expectedTestClassResults, testClassResults);
       ARE_EQUAL(0, _multiTestClassRunner._testClassResults.size());

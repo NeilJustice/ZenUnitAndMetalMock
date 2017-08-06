@@ -14,7 +14,7 @@ namespace ZenUnit
    SPEC(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
    SPECX(RunTests_PrintsTestClassNameAndNumberOfNamedTests_ForEachRunsTests_PrintsTestClassResultLine_MoveReturnsTestClassResult)
    SPECX(NonMinimalPrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVerticalBarNumberOfTests)
-   SPECX(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_WritesTestNameIfVerbose_RunsNewDeleteTest_AddsResultToResults_ReturnsTrueIfNewableAndDeletable)
+   SPECX(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewDeleteTest_AddsResultToResults_ReturnsTrueIfNewableAndDeletable)
    SPEC(RunTest_NonMinimalWritesVerticalBarTestName_RunsTest_AddsTestResultsToTestClassResult_NonMinimalWriteTestOutcome)
    SPEC(NonMinimalPrintResultLine_CallsTestClassResultPrintResultLine)
    SPECEND
@@ -193,7 +193,7 @@ namespace ZenUnit
       }
    }
 
-   TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_WritesTestNameIfVerbose_RunsNewDeleteTest_AddsResultToResults_ReturnsTrueIfNewableAndDeletable,
+   TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewDeleteTest_AddsResultToResults_ReturnsTrueIfNewableAndDeletable,
       bool expectedReturnValue, TestOutcome newDeleteTestOutcome, bool expectWriteLineOK,
       false, TestOutcome::Anomaly, false,
       false, TestOutcome::Exception, false,

@@ -25,7 +25,7 @@ namespace ZenUnit
       std::unique_ptr<Stopwatch> _testRunStopwatch;
       std::unique_ptr<MultiTestClassRunner> _multiTestClassRunner;
       std::unique_ptr<TestRunResult> _testRunResult;
-      ZenUnitArgs _args;
+      ZenUnitArgs _zenUnitArgs;
    public:
       TestRunner();
       virtual ~TestRunner();

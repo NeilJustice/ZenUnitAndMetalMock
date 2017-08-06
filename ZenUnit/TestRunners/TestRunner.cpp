@@ -34,7 +34,7 @@ namespace ZenUnit
    const ZenUnitArgs& TestRunner::GetArgs()
    {
       const TestRunner& testRunner = Instance();
-      return testRunner._args;
+      return testRunner._zenUnitArgs;
    }
 
    std::nullptr_t TestRunner::RegisterTestClassRunner(TestClassRunner* testClassRunner)
@@ -57,9 +57,9 @@ namespace ZenUnit
 
    int TestRunner::ParseArgsRunTestsPrintResults(const vector<string>& commandLineArgs)
    {
-      _args = _argsParser->Parse(commandLineArgs);
+      _zenUnitArgs = _argsParser->Parse(commandLineArgs);
       int overallExitCode = 0;
-      for (unsigned testRunIndex = 0; testRunIndex < _args.testruns; ++testRunIndex)
+      for (unsigned testRunIndex = 0; testRunIndex < _zenUnitArgs.testruns; ++testRunIndex)
       {
          const int testRunExitCode = RunTestsAndPrintResults();
          assert_true(testRunExitCode == 0 || testRunExitCode == 1);
@@ -72,11 +72,11 @@ namespace ZenUnit
 
    int TestRunner::RunTestsAndPrintResults()
    {
-      _testRunStopwatch->Start(); 
-      _preamblePrinter->PrintOpeningThreeLines(_args.commandLine, _multiTestClassRunner.get());
-      if (_args.maxtotalseconds > 0)
+      _testRunStopwatch->Start();
+      _preamblePrinter->PrintOpeningThreeLines(_zenUnitArgs, _multiTestClassRunner.get());
+      if (_zenUnitArgs.maxtotalseconds > 0)
       {
-         RunTestsWithWaitableRunnerThread(_args.maxtotalseconds);
+         RunTestsWithWaitableRunnerThread(_zenUnitArgs.maxtotalseconds);
       }
       else
       {
@@ -85,8 +85,8 @@ namespace ZenUnit
       _testRunResult->PrintTestFailuresAndSkips();
       const size_t numberOfTestCases = _multiTestClassRunner->NumberOfTestCases();
       const unsigned testRunMilliseconds = _testRunStopwatch->Stop();
-      _testRunResult->PrintClosingLines(numberOfTestCases, testRunMilliseconds, _args.commandLine);
-      const int testRunExitCode = _testRunResult->DetermineExitCode(_args);
+      _testRunResult->PrintClosingLines(numberOfTestCases, testRunMilliseconds, _zenUnitArgs.commandLine);
+      const int testRunExitCode = _testRunResult->DetermineExitCode(_zenUnitArgs);
       return testRunExitCode;
    }
 
@@ -104,7 +104,7 @@ namespace ZenUnit
 
    void TestRunner::RunTests()
    {
-      vector<TestClassResult> testClassResults = _multiTestClassRunner->RunTestClasses();
+      vector<TestClassResult> testClassResults = _multiTestClassRunner->RunTestClasses(_zenUnitArgs);
       _testRunResult->SetTestClassResults(std::move(testClassResults));
    }
 }

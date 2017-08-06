@@ -7,11 +7,8 @@
 namespace ZenUnit
 {
    MultiTestClassRunner::MultiTestClassRunner()
-      : _transformer(new Transformer<
-         vector<unique_ptr<TestClassRunner>>::const_iterator,
-         vector<TestClassResult>,
-         TestClassResult(*)(const unique_ptr<TestClassRunner>&)>)
-      , _sorter(new Sorter<decltype(_testClassRunners)>)
+      : _sorter(new Sorter<std::vector<std::unique_ptr<TestClassRunner>>>)
+      , _transformer(new Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>)
    {
    }
 
@@ -38,16 +35,25 @@ namespace ZenUnit
       _testClassRunners.emplace_back(testClassRunner);
    }
 
-   vector<TestClassResult> MultiTestClassRunner::RunTestClasses()
+   vector<TestClassResult> MultiTestClassRunner::RunTestClasses(const ZenUnitArgs& zenUnitArgs)
    {
-      _sorter->Sort(&_testClassRunners);
+      _sorter->Sort(&_testClassRunners); // Sort test class runners by test class name
       _testClassResults.resize(_testClassRunners.size());
-      _transformer->Transform(_testClassRunners.cbegin(), _testClassRunners.cend(),
-         &_testClassResults, &MultiTestClassRunner::RunTestClassRunner);
+      if (zenUnitArgs.random)
+      {
+         _transformer->RandomTransform(
+            &_testClassRunners, &_testClassResults, &MultiTestClassRunner::RunTestClassRunner);
+      }
+      else
+      {
+         _transformer->Transform(
+            &_testClassRunners, &_testClassResults, &MultiTestClassRunner::RunTestClassRunner);
+      }
       return std::move(_testClassResults);
    }
 
-   TestClassResult MultiTestClassRunner::RunTestClassRunner(const unique_ptr<TestClassRunner>& testClassRunner)
+   TestClassResult MultiTestClassRunner::RunTestClassRunner(
+      const unique_ptr<TestClassRunner>& testClassRunner)
    {
       TestClassResult testClassResult = testClassRunner->RunTests();
       return testClassResult;

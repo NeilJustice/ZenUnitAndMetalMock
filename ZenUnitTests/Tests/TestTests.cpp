@@ -59,16 +59,16 @@ namespace ZenUnit
    TEST(NonMinimalWritePostTestNameMessage_DoesNothing)
    {
       _test->NonMinimalWritePostTestNameMessage(nullptr, PrintMode::Minimal);
-      _test->NonMinimalWritePostTestNameMessage(nullptr, PrintMode::Default);
-      _test->NonMinimalWritePostTestNameMessage(nullptr, PrintMode::Verbose);
+      _test->NonMinimalWritePostTestNameMessage(nullptr, PrintMode::Normal);
+      _test->NonMinimalWritePostTestNameMessage(nullptr, PrintMode::Detailed);
    }
 
    TEST(PrintPostTestCompletionMessage_DoesNothing)
    {
       TestResultMock testResultMock;
       _test->NonMinimalWritePostTestCompletionMessage(nullptr, testResultMock, PrintMode::Minimal);
-      _test->NonMinimalWritePostTestCompletionMessage(nullptr, testResultMock, PrintMode::Default);
-      _test->NonMinimalWritePostTestCompletionMessage(nullptr, testResultMock, PrintMode::Verbose);
+      _test->NonMinimalWritePostTestCompletionMessage(nullptr, testResultMock, PrintMode::Normal);
+      _test->NonMinimalWritePostTestCompletionMessage(nullptr, testResultMock, PrintMode::Detailed);
    }
 
    static CallResult CallResultWithOutcome(TestOutcome testOutcome)

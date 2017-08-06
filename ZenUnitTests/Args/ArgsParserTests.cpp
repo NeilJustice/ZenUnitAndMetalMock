@@ -3,17 +3,19 @@
 #include "ZenUnit/Utils/Random.h"
 #include "ZenUnit/Utils/Vector.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
+#include "ZenUnitTests/Utils/Time/Mock/WatchMock.h"
 
 namespace ZenUnit
 {
    TESTS(ArgsParserTests)
-   SPEC(DefaultConstructor_NewsConsole_SetsStringToUnsignedFunction)
+   SPEC(DefaultConstructor_NewsCompnents_SetsStringToUnsignedFunction)
    SPEC(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
    SPEC(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1)
    SPECX(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1)
    SPECX(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0)
    SPEC(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
-   SPECX(Parse_MinimalOrVerbose_ReturnsExpectedZenUnitArgs)
+   SPECX(Parse_MinimalOrDetailed_ReturnsExpectedZenUnitArgs)
+   SPEC(Parse_Random_SetsRandomTrueAndRandomSeedToSecondsSince1970CastToAnUnsignedShort)
    SPEC(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    SPEC(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
    SPECX(Parse_TimesArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1)
@@ -22,38 +24,48 @@ namespace ZenUnit
    SPECEND
 
    const string TestProgramPath = Random<string>();
-   const string ExpectedUsage = R"(ZenUnit and ZenMock v0.2.0
+   const string ExpectedUsage = R"(ZenUnit and ZenMock
 Usage: <TestsBinaryName> [Options...]
 
 Options:
 
 None
-   Print preamble, run all non-skipped tests with printing of test class names and test names, then print conclusion.
+   Run all non-skipped tests while printing detailed information.
 -minimal
-   Print preamble, run all non-skipped tests, then print conclusion.
+   Print only preamble and conclusion instead of detailed information.
 -exit0
    Always exit 0 regardless of test run outcome.
+   Useful for always allowing the Visual Studio debugger to launch.
 -failskips
    Exit 1 regardless of test run outcome if any tests are skipped.
+   Useful option for continuous integration servers to guard against
+   quality-compromising complacency with respect to skipped tests.
 -testruns=<N>
    Repeat the running of all non-skipped tests N times.
+   Key option for maximizing testing rigor.
+-random[=Seed]
+   Run test classes in a random order and run tests in a random order.
+   Key option for maximizing testing rigor.
 -help or --help
    Display this help.)";
 
    ArgsParser _argsParser;
    const ConsoleMock* _consoleMock;
+   const WatchMock* _watchMock;
    ZENMOCK_NONVOID1_STATIC(unsigned, String, ToUnsigned, const string&)
 
    STARTUP
    {
       _argsParser._console.reset(_consoleMock = new ConsoleMock);
+      _argsParser._watch.reset(_watchMock = new WatchMock);
       _argsParser._String_ToUnsigned = ZENBIND1(ToUnsigned_ZenMock);
    }
 
-   TEST(DefaultConstructor_NewsConsole_SetsStringToUnsignedFunction)
+   TEST(DefaultConstructor_NewsCompnents_SetsStringToUnsignedFunction)
    {
       ArgsParser argsParser;
       POINTER_WAS_NEWED(argsParser._console);
+      POINTER_WAS_NEWED(argsParser._watch);
       STD_FUNCTION_TARGETS(String::ToUnsigned, argsParser._String_ToUnsigned);
    }
 
@@ -112,39 +124,61 @@ None
    TEST(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
    {
       ToUnsigned_ZenMock.ExpectAndReturn(1);
-      const vector<string> Args 
-      { 
+      unsigned short randomseed = Random<unsigned short>();
+      _watchMock->SecondsSince1970CastToAnUnsignedShortMock.ExpectAndReturn(randomseed);
+      const vector<string> Args
+      {
          TestProgramPath,
          "-minimal",
-         "-verbose",
+         "-detailed",
          "-exit0",
          "-failskips",
-         "-testruns=1"
+         "-testruns=1",
+         "-random"
       };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
       //
       ZEN(ToUnsigned_ZenMock.AssertCalledOnceWith("1"));
+      ZEN(_watchMock->SecondsSince1970CastToAnUnsignedShortMock.AssertCalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
-      expectedZenUnitArgs.printMode = PrintMode::Verbose;
+      expectedZenUnitArgs.printMode = PrintMode::Detailed;
       expectedZenUnitArgs.exit0 = true;
       expectedZenUnitArgs.failskips = true;
       expectedZenUnitArgs.testruns = 1;
+      expectedZenUnitArgs.random = true;
+      expectedZenUnitArgs.randomseed = randomseed;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST2X2(Parse_MinimalOrVerbose_ReturnsExpectedZenUnitArgs,
+   TEST2X2(Parse_MinimalOrDetailed_ReturnsExpectedZenUnitArgs,
       vector<string> args, PrintMode expectedPrintMode,
-      vector<string>{ "ExePath" }, PrintMode::Default,
+      vector<string>{ "ExePath" }, PrintMode::Normal,
       vector<string>{ "ExePath", "-minimal" }, PrintMode::Minimal,
-      vector<string>{ "ExePath", "-verbose" }, PrintMode::Verbose)
+      vector<string>{ "ExePath", "-detailed" }, PrintMode::Detailed)
    {
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
       expectedZenUnitArgs.printMode = expectedPrintMode;
+      ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
+   }
+
+   TEST(Parse_Random_SetsRandomTrueAndRandomSeedToSecondsSince1970CastToAnUnsignedShort)
+   {
+      unsigned short randomseed = Random<unsigned short>();
+      _watchMock->SecondsSince1970CastToAnUnsignedShortMock.ExpectAndReturn(randomseed);
+      const vector<string> args = { "ExePath", "-random" };
+      //
+      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
+      //
+      ZEN(_watchMock->SecondsSince1970CastToAnUnsignedShortMock.AssertCalledOnce());
+      ZenUnitArgs expectedZenUnitArgs;
+      expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
+      expectedZenUnitArgs.random = true;
+      expectedZenUnitArgs.randomseed = randomseed;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 

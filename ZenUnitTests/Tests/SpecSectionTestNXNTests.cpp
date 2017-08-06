@@ -90,8 +90,8 @@ namespace ZenUnit
    TEST2X2(NonMinimalWritePostTestNameMessage_WritesEllipsisIfPrintModeNotMinimal,
       PrintMode printMode, bool expectWriteLineCall,
       PrintMode::Minimal, false,
-      PrintMode::Default, true,
-      PrintMode::Verbose, true)
+      PrintMode::Normal, true,
+      PrintMode::Detailed, true)
    {
       ConsoleMock consoleMock;
       if (expectWriteLineCall)
