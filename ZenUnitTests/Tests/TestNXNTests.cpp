@@ -107,7 +107,7 @@ namespace ZenUnit
       const ZenUnitArgs zenUnitArgs = []
       {
          ZenUnitArgs zenUnitArgs;
-         zenUnitArgs.printMode = Random<PrintMode>();
+         zenUnitArgs.printMode = RandomPrintMode();
          return zenUnitArgs;
       }();
       GetArgs_ZenMock_SelfMocked.ExpectAndReturn(zenUnitArgs);
@@ -227,7 +227,7 @@ namespace ZenUnit
       _consoleMock->NonMinimalWriteColorMock.Expect();
       _consoleMock->NonMinimalWriteMock.Expect();
       _consoleMock->NonMinimalWriteStringsCommaSeparatedMock.Expect();
-      const PrintMode printMode = Random<PrintMode>();
+      const PrintMode printMode = RandomPrintMode();
       vector<string> splitTestCaseArgs = { "Arg0", "Arg1" };
       //
       _testNXN->NonMinimalPrintTestCaseNumberArgsThenArrow(testCaseIndex, splitTestCaseArgs, printMode);
@@ -251,7 +251,9 @@ namespace ZenUnit
    {
       TestResultMock testResultMock;
       testResultMock.NonMinimalWriteLineOKIfSuccessMock.Expect();
-      const PrintMode printMode = Random<PrintMode>();
+      const PrintMode printMode = static_cast<PrintMode>(Random<underlying_type_t<PrintMode>>(
+         static_cast<underlying_type_t<PrintMode>>(PrintMode::Unset),
+         static_cast<underlying_type_t<PrintMode>>(PrintMode::MaxValue)));
       //
       _testNXN->NonMinimalWriteLineOKIfSuccess(testResultMock, printMode);
       //

@@ -38,7 +38,7 @@ namespace ZenUnit
    {
       ConsoleMock consoleMock;
       consoleMock.NonMinimalWriteMock.Expect();
-      const PrintMode printMode = Random<PrintMode>();
+      const PrintMode printMode = RandomPrintMode();
       //
       _normalTest->NonMinimalWritePostTestNameMessage(&consoleMock, printMode);
       //
@@ -53,7 +53,7 @@ namespace ZenUnit
       ConsoleMock consoleMock;
       TestResultMock testResultMock;
       testResultMock.NonMinimalWriteLineOKIfSuccessMock.Expect();
-      const PrintMode printMode = Random<PrintMode>();
+      const PrintMode printMode = RandomPrintMode();
       //
       _normalTest->NonMinimalWritePostTestCompletionMessage(&consoleMock, testResultMock, printMode);
       //

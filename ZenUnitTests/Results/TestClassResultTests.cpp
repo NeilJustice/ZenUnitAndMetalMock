@@ -170,7 +170,7 @@ namespace ZenUnit
       ConsoleMock consoleMock;
       consoleMock.NonMinimalWriteColorMock.Expect();
       consoleMock.NonMinimalWriteNewLineMock.Expect();
-      const PrintMode printMode = Random<PrintMode>();
+      const PrintMode printMode = RandomPrintMode();
       //
       _testClassResultSelfMocked.NonMinimalPrintResultLine(&consoleMock, printMode);
       //
@@ -189,8 +189,7 @@ namespace ZenUnit
       ConsoleMock consoleMock;
       consoleMock.NonMinimalWriteColorMock.Expect();
       consoleMock.NonMinimalWriteNewLineMock.Expect();
-      const PrintMode printMode = Random<PrintMode>();
-      //
+      const PrintMode printMode = RandomPrintMode();
       _testClassResultSelfMocked.NonMinimalPrintResultLine(&consoleMock, printMode);
       //
       ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.AssertCalledOnce());

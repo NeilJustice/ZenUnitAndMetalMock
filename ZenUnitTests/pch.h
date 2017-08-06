@@ -29,5 +29,6 @@ using namespace std::experimental;
 using namespace ZenUnit;
 #include "ZenUnitTests/Testing/UserType.h"
 #include "ZenUnitTests/Testing/UserTypeNonPrintable.h"
+#include "ZenUnitTests/Utils/RandomPrintMode.h"
 
 #endif

@@ -7,6 +7,7 @@ namespace ZenUnit
       Unset,
       Minimal,
       Default,
-      Verbose
+      Verbose,
+      MaxValue
    };
 }

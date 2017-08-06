@@ -130,7 +130,7 @@ namespace ZenUnit
       const ZenUnitArgs zenUnitArgs = []
       {
          ZenUnitArgs zenUnitArgs;
-         zenUnitArgs.printMode = Random<PrintMode>();
+         zenUnitArgs.printMode = RandomPrintMode();
          return zenUnitArgs;
       }();
       _specificTestClassRunnerSelfMocked->GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
@@ -168,7 +168,7 @@ namespace ZenUnit
       const ZenUnitArgs zenUnitArgs = []
       {
          ZenUnitArgs zenUnitArgs;
-         zenUnitArgs.printMode = Random<PrintMode>();
+         zenUnitArgs.printMode = RandomPrintMode();
          return zenUnitArgs;
       }();
       GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
@@ -202,7 +202,9 @@ namespace ZenUnit
       const ZenUnitArgs zenUnitArgs = []
       {
          ZenUnitArgs zenUnitArgs;
-         zenUnitArgs.printMode = Random<PrintMode>();
+         zenUnitArgs.printMode = static_cast<PrintMode>(Random<underlying_type_t<PrintMode>>(
+            static_cast<underlying_type_t<PrintMode>>(PrintMode::Unset),
+            static_cast<underlying_type_t<PrintMode>>(PrintMode::MaxValue)));
          return zenUnitArgs;
       }();
       GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
@@ -243,7 +245,7 @@ namespace ZenUnit
       const ZenUnitArgs zenUnitArgs = []
       {
          ZenUnitArgs zenUnitArgs;
-         zenUnitArgs.printMode = Random<PrintMode>();
+         zenUnitArgs.printMode = RandomPrintMode();
          return zenUnitArgs;
       }();
       _specificTestClassRunnerSelfMocked->GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
@@ -285,7 +287,7 @@ namespace ZenUnit
    {
       TestClassResultMock testClassResultMock;
       testClassResultMock.NonMinimalPrintResultLineMock.Expect();
-      const PrintMode printMode = Random<PrintMode>();
+      const PrintMode printMode = RandomPrintMode();
       //
       _specificTestClassRunner->NonMinimalPrintResultLine(&testClassResultMock, printMode);
       //

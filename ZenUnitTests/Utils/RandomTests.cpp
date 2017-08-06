@@ -2,26 +2,23 @@
 #include "ZenUnit/Utils/Random.h"
 
 TESTS(RandomTests)
-SPEC(Random_Int_ReturnsRandomInt)
-SPEC(Random_Unsigned_ReturnsRandomUnsigned)
+SPEC(Random_AllIntegerTypes_ReturnsRandomValueBetweenMinAndMaxForThatType)
 SPEC(Random_Float_ReturnsRandomFloat)
 SPEC(Random_Double_ReturnsRandomDouble)
-SPEC(Random_SizeT_ReturnsRandomSizeT)
-SPEC(Random_String_ReturnsRandomString)
+SPEC(Random_String_ReturnsRandomStringThatBeginsWithRandomString)
+SPEC(Random_2ArgOverload_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
 SPECEND
 
-TEST(Random_Int_ReturnsRandomInt)
+TEST(Random_AllIntegerTypes_ReturnsRandomValueBetweenMinAndMaxForThatType)
 {
+   Random<char>();
+   Random<unsigned char>();
+   Random<short>();
+   Random<unsigned short>();
    Random<int>();
-}
-
-TEST(Random_Unsigned_ReturnsRandomUnsigned)
-{
-   Random<unsigned>();
-}
-
-TEST(Random_SizeT_ReturnsRandomSizeT)
-{
+   Random<unsigned int>();
+   Random<long long>();
+   Random<unsigned long long>();
    Random<size_t>();
 }
 
@@ -35,9 +32,25 @@ TEST(Random_Double_ReturnsRandomDouble)
    Random<double>();
 }
 
-TEST(Random_String_ReturnsRandomString)
+TEST(Random_String_ReturnsRandomStringThatBeginsWithRandomString)
 {
-   Random<string>();
+   string randomString = Random<string>();
+   IS_TRUE(randomString.find("RandomString") != string::npos);
+}
+
+TEST(Random_2ArgOverload_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
+{
+   int randomInt = Random<int>(1, 3);
+   IS_TRUE(randomInt >= 1 && randomInt <= 3, "randomInt = " + to_string(randomInt));
+
+   enum Enum
+   {
+      A,
+      B,
+      C
+   };
+   Enum randomEnum = Random<Enum>(Enum::A, Enum::C);
+   IS_TRUE(randomEnum >= Enum::A && randomEnum <= Enum::C, "randomEnum = " + to_string(randomEnum));
 }
 
 }; RUN(RandomTests)
