@@ -47,7 +47,7 @@ namespace ZenUnit
          else if (arg == "-random")
          {
             zenUnitArgs.random = true;
-            zenUnitArgs.randomseed = _watch->SecondsSince1970CastToAnUnsignedShort();
+            zenUnitArgs.randomseed = _watch->SecondsSince1970CastToUnsignedShort();
          }
          else if (arg == "-help" || arg == "--help")
          {

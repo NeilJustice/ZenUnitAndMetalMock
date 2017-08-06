@@ -11,7 +11,7 @@ namespace ZenUnit
    SPEC(Transform_TwoItemRange_CallsTransformerTwice)
    SPEC(RandomTransform_EmptyRange_DoesNothing)
    SPEC(RandomTransform_OneItemRange_CallsTransformerOnce)
-   SPEC(RandomTransform_TwoItemRange_CallsTransformerTwiceInRandomOrder)
+   SPEC(RandomTransform_ThreeItemRange_CallsTransformerThreeTimesInRandomOrder)
    SPECEND
 
    using TransformerType = Transformer<T, TransformedT>;
@@ -52,38 +52,46 @@ namespace ZenUnit
       VECTORS_EQUAL((vector<T>{ 2, 3 }), dest);
    }
 
+   static unsigned short TimeRandomSeed()
+   {
+      return static_cast<unsigned short>(chrono::system_clock::now().time_since_epoch().count());
+   }
+
    TEST(RandomTransform_EmptyRange_DoesNothing)
    {
       vector<T> source;
       vector<TransformedT> dest;
       //
-      _transformer.RandomTransform(&source, &dest, PlusOne);
+      _transformer.RandomTransform(&source, &dest, PlusOne, TimeRandomSeed());
       //
       IS_EMPTY(dest);
    }
 
    TEST(RandomTransform_OneItemRange_CallsTransformerOnce)
    {
-      const vector<T> source{ 1 };
+      vector<T> source{ 1 };
       vector<TransformedT> dest(source.size());
       //
-      _transformer.RandomTransform(&source, &dest, PlusOne);
+      _transformer.RandomTransform(&source, &dest, PlusOne, TimeRandomSeed());
       //
       VECTORS_EQUAL(vector<TransformedT>{ 2 }, dest);
    }
 
-   TEST(RandomTransform_TwoItemRange_CallsTransformerTwiceInRandomOrder)
+   TEST(RandomTransform_ThreeItemRange_CallsTransformerThreeTimesInRandomOrder)
    {
-      const vector<T> source{ 1, 2 };
+      vector<T> source{ 1, 2, 3 };
       vector<TransformedT> dest(source.size());
       //
-      _transformer.RandomTransform(&source, &dest, PlusOne);
+      _transformer.RandomTransform(&source, &dest, PlusOne, TimeRandomSeed());
       //
-      const vector<TransformedT> expectedDestA{ 1, 2 };
-      const vector<TransformedT> expectedDestB{ 2, 1 };
-      ARE_EQUAL(2, dest.size());
-      IS_TRUE((dest[0] == 2 && dest[1] == 3) ||
-              (dest[0] == 3 && dest[1] == 2));
+      ARE_EQUAL(3, dest.size());
+      IS_TRUE(
+         (dest == vector<TransformedT>{2, 3, 4}) ||
+         (dest == vector<TransformedT>{2, 4, 3}) ||
+         (dest == vector<TransformedT>{3, 2, 4}) ||
+         (dest == vector<TransformedT>{3, 4, 2}) ||
+         (dest == vector<TransformedT>{4, 2, 3}) ||
+         (dest == vector<TransformedT>{4, 3, 2}));
    }
 
    };

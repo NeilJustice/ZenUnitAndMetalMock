@@ -6,7 +6,7 @@ namespace ZenUnit
    {
    public:
       virtual std::string TimeZoneDateTimeNow() const;
-      virtual unsigned short SecondsSince1970CastToAnUnsignedShort() const;
+      virtual unsigned short SecondsSince1970CastToUnsignedShort() const;
       virtual ~Watch() = default;
    private:
       virtual tm TMNow() const;

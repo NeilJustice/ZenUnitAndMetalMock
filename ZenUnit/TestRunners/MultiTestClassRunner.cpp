@@ -42,7 +42,7 @@ namespace ZenUnit
       if (zenUnitArgs.random)
       {
          _transformer->RandomTransform(
-            &_testClassRunners, &_testClassResults, &MultiTestClassRunner::RunTestClassRunner);
+            &_testClassRunners, &_testClassResults, &MultiTestClassRunner::RunTestClassRunner, zenUnitArgs.randomseed);
       }
       else
       {

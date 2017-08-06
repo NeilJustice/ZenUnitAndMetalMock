@@ -94,6 +94,7 @@ namespace ZenUnit
       }
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.random = random;
+      zenUnitArgs.randomseed = Random<unsigned short>();
       //
       const vector<TestClassResult> testClassResults = _multiTestClassRunner.RunTestClasses(zenUnitArgs);
       //
@@ -103,7 +104,8 @@ namespace ZenUnit
          ZEN(_transformerMock->RandomTransformMock.AssertCalledOnceWith(
              &_multiTestClassRunner._testClassRunners,
              &_multiTestClassRunner._testClassResults,
-             &MultiTestClassRunner::RunTestClassRunner));
+             &MultiTestClassRunner::RunTestClassRunner,
+             zenUnitArgs.randomseed));
       }
       else
       {

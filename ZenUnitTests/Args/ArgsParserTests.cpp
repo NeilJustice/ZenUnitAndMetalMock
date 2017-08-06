@@ -15,7 +15,7 @@ namespace ZenUnit
    SPECX(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0)
    SPEC(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
    SPECX(Parse_MinimalOrDetailed_ReturnsExpectedZenUnitArgs)
-   SPEC(Parse_Random_SetsRandomTrueAndRandomSeedToSecondsSince1970CastToAnUnsignedShort)
+   SPEC(Parse_Random_SetsRandomTrueAndRandomSeedToSecondsSince1970CastToUnsignedShort)
    SPEC(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    SPEC(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
    SPECX(Parse_TimesArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1)
@@ -125,7 +125,7 @@ None
    {
       ToUnsigned_ZenMock.ExpectAndReturn(1);
       unsigned short randomseed = Random<unsigned short>();
-      _watchMock->SecondsSince1970CastToAnUnsignedShortMock.ExpectAndReturn(randomseed);
+      _watchMock->SecondsSince1970CastToUnsignedShortMock.ExpectAndReturn(randomseed);
       const vector<string> Args
       {
          TestProgramPath,
@@ -140,7 +140,7 @@ None
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
       //
       ZEN(ToUnsigned_ZenMock.AssertCalledOnceWith("1"));
-      ZEN(_watchMock->SecondsSince1970CastToAnUnsignedShortMock.AssertCalledOnce());
+      ZEN(_watchMock->SecondsSince1970CastToUnsignedShortMock.AssertCalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
       expectedZenUnitArgs.printMode = PrintMode::Detailed;
@@ -166,15 +166,15 @@ None
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST(Parse_Random_SetsRandomTrueAndRandomSeedToSecondsSince1970CastToAnUnsignedShort)
+   TEST(Parse_Random_SetsRandomTrueAndRandomSeedToSecondsSince1970CastToUnsignedShort)
    {
       unsigned short randomseed = Random<unsigned short>();
-      _watchMock->SecondsSince1970CastToAnUnsignedShortMock.ExpectAndReturn(randomseed);
+      _watchMock->SecondsSince1970CastToUnsignedShortMock.ExpectAndReturn(randomseed);
       const vector<string> args = { "ExePath", "-random" };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
-      ZEN(_watchMock->SecondsSince1970CastToAnUnsignedShortMock.AssertCalledOnce());
+      ZEN(_watchMock->SecondsSince1970CastToUnsignedShortMock.AssertCalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
       expectedZenUnitArgs.random = true;

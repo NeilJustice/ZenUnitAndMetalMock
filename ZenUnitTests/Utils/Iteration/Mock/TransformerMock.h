@@ -4,7 +4,7 @@
 template<typename T, typename TransformedT>
 struct TransformerMock : public Zen::Mock<Transformer<T, TransformedT>>
 {
-   typedef TransformedT(*TransformerType)(const T&);
-   ZENMOCK_VOID3_CONST(Transform, const std::vector<T>*, std::vector<TransformedT>*, TransformerType)
-   ZENMOCK_VOID3_CONST(RandomTransform, const std::vector<T>*, std::vector<TransformedT>*, TransformerType)
+   typedef TransformedT(*TransformerFunctionType)(const T&);
+   ZENMOCK_VOID3_CONST(Transform, const std::vector<T>*, std::vector<TransformedT>*, TransformerFunctionType)
+   ZENMOCK_VOID4_CONST(RandomTransform, std::vector<T>*, std::vector<TransformedT>*, TransformerFunctionType, unsigned)
 };
