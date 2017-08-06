@@ -85,7 +85,7 @@ namespace ZenUnit
       _testRunResult->PrintTestFailuresAndSkips();
       const size_t numberOfTestCases = _multiTestClassRunner->NumberOfTestCases();
       const unsigned testRunMilliseconds = _testRunStopwatch->Stop();
-      _testRunResult->PrintClosingLines(numberOfTestCases, testRunMilliseconds, _zenUnitArgs.commandLine);
+      _testRunResult->PrintClosingLines(numberOfTestCases, testRunMilliseconds, _zenUnitArgs);
       const int testRunExitCode = _testRunResult->DetermineExitCode(_zenUnitArgs);
       return testRunExitCode;
    }

@@ -47,7 +47,7 @@ namespace ZenUnit
       virtual void PrintClosingLines(
          size_t totalNumberOfTestCases,
          unsigned testRunMilliseconds,
-         const std::string& comamndLine) const;
+         const ZenUnitArgs& zenUnitArgs) const;
       virtual int DetermineExitCode(const ZenUnitArgs& args) const;
       virtual void ResetStateExceptForSkips();
 

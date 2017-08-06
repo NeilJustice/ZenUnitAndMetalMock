@@ -182,7 +182,7 @@ namespace ZenUnit
       ZEN(_testRunnerSelfMocked2.multiTestClassRunnerMock->NumberOfTestCasesMock.AssertCalledOnce());
       ZEN(_testRunnerSelfMocked2.testRunStopwatchMock->StopMock.AssertCalledOnce());
       ZEN(_testRunnerSelfMocked2.testRunResultMock->PrintClosingLinesMock.AssertCalledOnceWith(
-         TotalNumberOfTestCases, TestRunMilliseconds, _testRunnerSelfMocked2._zenUnitArgs.commandLine));
+         TotalNumberOfTestCases, TestRunMilliseconds, _testRunnerSelfMocked2._zenUnitArgs));
       ZEN(_testRunnerSelfMocked2.testRunResultMock->DetermineExitCodeMock.AssertCalledOnceWith(zenUnitArgs));
       ARE_EQUAL(determineExitCodeReturnValueAndExpectedExitCode, exitCode);
    }

@@ -79,7 +79,7 @@ namespace ZenUnit
    void TestRunResult::PrintClosingLines(
       size_t totalNumberOfTestCases,
       unsigned testRunMilliseconds,
-      const string& comamndLine) const
+      const ZenUnitArgs& zenUnitArgs) const
    {
       assert_true(_numberOfFailedTestCases <= totalNumberOfTestCases);
       const Color prefixColor = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
@@ -112,7 +112,10 @@ namespace ZenUnit
          }
          _console->WriteLine(closingLineBody);
          _console->WriteColor(prefixAsciiArt, prefixColor);
-         _console->WriteLine(comamndLine);
+         _console->Write(zenUnitArgs.commandLine);
+         const string randomSeedWriteLine =
+            zenUnitArgs.random ? " (seed " + to_string(zenUnitArgs.randomseed) + ")" : "";
+         _console->WriteLine(randomSeedWriteLine);
       }
    }
 

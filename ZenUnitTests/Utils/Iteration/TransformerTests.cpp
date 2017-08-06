@@ -25,7 +25,7 @@ namespace ZenUnit
    TEST(Transform_EmptyRange_DoesNothing)
    {
       vector<T> source;
-      vector<T> dest;
+      vector<TransformedT> dest;
       //
       _transformer.Transform(&source, &dest, PlusOne);
       //
@@ -39,7 +39,7 @@ namespace ZenUnit
       //
       _transformer.Transform(&source, &dest, PlusOne);
       //
-      VECTORS_EQUAL(vector<T>{ 2 }, dest);
+      VECTORS_EQUAL(vector<TransformedT>{ 2 }, dest);
    }
 
    TEST(Transform_TwoItemRange_CallsTransformerTwice)
@@ -49,7 +49,7 @@ namespace ZenUnit
       //
       _transformer.Transform(&source, &dest, PlusOne);
       //
-      VECTORS_EQUAL((vector<T>{ 2, 3 }), dest);
+      VECTORS_EQUAL((vector<TransformedT>{ 2, 3 }), dest);
    }
 
    static unsigned short TimeRandomSeed()
@@ -95,6 +95,6 @@ namespace ZenUnit
    }
 
    };
-   RUNTEMPLATE(TransformerTests, int, int)
+   RUNTEMPLATE(TransformerTests, int, long long)
    RUNTEMPLATE(TransformerTests, unsigned long long, unsigned long long)
 }

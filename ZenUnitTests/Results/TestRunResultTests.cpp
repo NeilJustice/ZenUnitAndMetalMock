@@ -217,14 +217,14 @@ namespace ZenUnit
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteLineMock.Expect();
       //
-      _testRunResult.PrintClosingLines(0, 0, "CommandLine");
+      _testRunResult.PrintClosingLines(0, 0, ZenUnitArgs());
       //
       ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("[ZenUnit] ", Color::Green));
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
          "Zero test classes (TESTS or TEMPLATETESTS) are registered to run (RUN or RUNTEMPLATE)."));
    }
 
-   TEST8X8(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds,
+   TEST10X10(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds,
       const string& expectedClosingLinePrefix,
       ZenUnit::Color expectedPrefixColor,
       size_t numberOfFailedTestCases,
@@ -233,22 +233,28 @@ namespace ZenUnit
       unsigned testRunMilliseconds,
       const string& expectedMillisecondOrMilliseconds,
       const string& expectedBottomLineAsciiArt,
-      "[VICTORY] ", Color::Green, size_t(0), size_t(1), "1 test passed", 0, "milliseconds", "+===+===+",
-      "[VICTORY] ", Color::Green, size_t(0), size_t(2), "2 tests passed", 1, "millisecond", "+===+===+",
-      "[VICTORY] ", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds", "+===+===+",
-      ">>-FAIL-> ", Color::Red, size_t(1), size_t(1), "1/1 test failed", 0, "milliseconds", ">>------>",
-      ">>-FAIL-> ", Color::Red, size_t(1), size_t(2), "1/2 tests failed", 1, "millisecond", ">>------>",
-      ">>-FAIL-> ", Color::Red, size_t(1), size_t(3), "1/3 tests failed", 2, "milliseconds", ">>------>",
-      ">>-FAIL-> ", Color::Red, size_t(2), size_t(2), "2/2 tests failed", 3, "milliseconds", ">>------>",
-      ">>-FAIL-> ", Color::Red, size_t(2), size_t(3), "2/3 tests failed", 4, "milliseconds", ">>------>",
-      ">>-FAIL-> ", Color::Red, size_t(2), size_t(4), "2/4 tests failed", 5, "milliseconds", ">>------>")
+      bool random,
+      bool expectRandomSeedSuffixWrite,
+      "[VICTORY] ", Color::Green, size_t(0), size_t(1), "1 test passed", 0, "milliseconds", "+===+===+", false, false,
+      "[VICTORY] ", Color::Green, size_t(0), size_t(2), "2 tests passed", 1, "millisecond", "+===+===+", false, false,
+      "[VICTORY] ", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds", "+===+===+", true, true,
+      ">>-FAIL-> ", Color::Red, size_t(1), size_t(1), "1/1 test failed", 0, "milliseconds", ">>------>", false, false,
+      ">>-FAIL-> ", Color::Red, size_t(1), size_t(2), "1/2 tests failed", 1, "millisecond", ">>------>", false, false,
+      ">>-FAIL-> ", Color::Red, size_t(1), size_t(3), "1/3 tests failed", 2, "milliseconds", ">>------>", false, false,
+      ">>-FAIL-> ", Color::Red, size_t(2), size_t(2), "2/2 tests failed", 3, "milliseconds", ">>------>", false, false,
+      ">>-FAIL-> ", Color::Red, size_t(2), size_t(3), "2/3 tests failed", 4, "milliseconds", ">>------>", false, false,
+      ">>-FAIL-> ", Color::Red, size_t(2), size_t(4), "2/4 tests failed", 5, "milliseconds", ">>------>", true, true)
    {
       _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
       _consoleMock->WriteColorMock.Expect();
+      _consoleMock->WriteMock.Expect();
       _consoleMock->WriteLineMock.Expect();
-      const string CommandLine = Random<string>();
+      ZenUnitArgs zenUnitArgs;
+      zenUnitArgs.commandLine = Random<string>();
+      zenUnitArgs.random = random;
+      zenUnitArgs.randomseed = Random<unsigned short>();
       //
-      _testRunResult.PrintClosingLines(numberOfTotalTests, testRunMilliseconds, CommandLine);
+      _testRunResult.PrintClosingLines(numberOfTotalTests, testRunMilliseconds, zenUnitArgs);
       //
       ZEN(_consoleMock->WriteColorMock.AssertCalls(
       {
@@ -257,11 +263,14 @@ namespace ZenUnit
       }));
       const string expectedClosingLineBody = expectedClosingLineTestsCountText +
          " in " + to_string(testRunMilliseconds) + " " + expectedMillisecondOrMilliseconds;
+      const string expectedRandomSeedWriteLine = expectRandomSeedSuffixWrite ?
+         " (seed " + to_string(zenUnitArgs.randomseed) + ")" : "";
       ZEN(_consoleMock->WriteLineMock.AssertCalls(
       {
          expectedClosingLineBody,
-         CommandLine
+         expectedRandomSeedWriteLine
       }));
+      ZEN(_consoleMock->WriteMock.AssertCalledOnceWith(zenUnitArgs.commandLine));
    }
 
    TEST(PrintTestClassResultFailures_CallsTestClassResultPrintTestFailures)
