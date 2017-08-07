@@ -27,7 +27,7 @@ namespace ZenUnit
       #ifdef _DEBUG
          static_assert(sizeof(ZenUnitArgs) == 64);
       #elif NDEBUG
-         static_assert(sizeof(ZenUnitArgs) == 64);
+         static_assert(sizeof(ZenUnitArgs) == 56);
       #endif
    #endif
 }
