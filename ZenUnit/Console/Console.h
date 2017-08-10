@@ -30,9 +30,12 @@ namespace ZenUnit
       virtual void NonMinimalWriteNewLine(PrintMode printMode) const;
       virtual void WriteLineAndExit(const std::string& message, int exitCode) const;
       virtual void NonMinimalWriteStringsCommaSeparated(
-         const std::vector<std::string>& strings, size_t startIndex, size_t numberOfElements, PrintMode printMode) const;
+         const std::vector<std::string>& strings, size_t startIndex, size_t numberOfStringsToWrite, PrintMode printMode) const;
       virtual void PauseForAnyKeyIfDebuggerIsPresent() const;
       virtual bool DebuggerIsPresent() const;
       virtual void GetLine() const;
+   private:
+      virtual void DoWriteStringsCommaSeparated(
+         const std::vector<std::string>& strings, size_t startIndex, size_t numberOfStringsToWrite) const;
    };
 }

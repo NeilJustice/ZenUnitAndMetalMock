@@ -90,20 +90,25 @@ namespace ZenUnit
    }
 
    void Console::NonMinimalWriteStringsCommaSeparated(
-      const std::vector<std::string>& strings, size_t startIndex, size_t numberOfElements, PrintMode printMode) const
+      const std::vector<std::string>& strings, size_t startIndex, size_t numberOfStringsToWrite, PrintMode printMode) const
    {
-      assert_true(startIndex < strings.size());
       if (printMode != PrintMode::Minimal)
       {
-         const size_t endIndex = startIndex + numberOfElements - 1;
-         for (size_t i = startIndex; i <= endIndex; ++i)
+         DoWriteStringsCommaSeparated(strings, startIndex, numberOfStringsToWrite);
+      }
+   }
+
+   void Console::DoWriteStringsCommaSeparated(
+      const std::vector<std::string>& strings, size_t startIndex, size_t numberOfStringsToWrite) const
+   {
+      const size_t endIndex = startIndex + numberOfStringsToWrite - 1;
+      for (size_t i = startIndex; i <= endIndex; ++i)
+      {
+         const std::string& str = strings[i];
+         Write(str);
+         if (i < endIndex)
          {
-            const std::string& str = strings[i];
-            Write(str);
-            if (i < endIndex)
-            {
-               Write(", ");
-            }
+            Write(", ");
          }
       }
    }

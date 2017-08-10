@@ -16,8 +16,8 @@ namespace ZenUnit
    SPECX(NonMinimalWriteLine_CallsWriteLineIfPrintModeNotMinimal)
    SPECX(WriteLineColor_WritesMessageInSpecifiedColorThenNewLine)
    SPECX(WriteLineAndExit_CallsWriteLineAndExit)
-   SPEC(NonMinimalWriteStringsCommaSeparated_PrintModeMinimal_DoesNothing)
-   SPECX(NonMinimalWriteStringsCommaSeparated_PrintModeNotMinimal_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset)
+   SPECX(NonMinimalWriteStringsCommaSeparated_PrintModeNotMinimal_CallsDoWriteStringsCommaSeparated)
+   SPECX(DoWriteStringsCommaSeparated_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset)
    SPECX(PauseForAnyKeyIfDebuggerIsPresent_WritesPressAnyKeyAndGetsLineIfDebuggerIsPresent)
 #ifdef _WIN32
    SPECX(DebuggerIsPresent_ReturnsTrueIfIsDebuggerPresentFunctionReturns1)
@@ -204,22 +204,39 @@ namespace ZenUnit
       ZEN(exit_ZenMock.AssertCalledOnceWith(exitCode));
    }
 
-   TEST(NonMinimalWriteStringsCommaSeparated_PrintModeMinimal_DoesNothing)
+   TEST2X2(NonMinimalWriteStringsCommaSeparated_PrintModeNotMinimal_CallsDoWriteStringsCommaSeparated,
+      PrintMode printMode, bool expectDoWriteCall,
+      PrintMode::Minimal, false,
+      PrintMode::Normal, true,
+      PrintMode::Detailed, true)
    {
-      _console.NonMinimalWriteStringsCommaSeparated({ "" }, 0, 0, PrintMode::Minimal);
+      struct ConsoleSelfMocked : public Zen::Mock<Console>
+      {
+         ZENMOCK_VOID3_CONST(DoWriteStringsCommaSeparated, const std::vector<std::string>&, size_t, size_t)
+      } consoleSelfMocked;
+
+      vector<string> strings = { Random<string>() };
+      size_t startIndex = Random<size_t>();
+      size_t numberOfElements = Random<size_t>();
+      if (expectDoWriteCall)
+      {
+         consoleSelfMocked.DoWriteStringsCommaSeparatedMock.Expect();
+      }
+      //
+      consoleSelfMocked.NonMinimalWriteStringsCommaSeparated(strings, startIndex, numberOfElements, printMode);
+      //
+      if (expectDoWriteCall)
+      {
+         consoleSelfMocked.DoWriteStringsCommaSeparatedMock.AssertCalledOnceWith(strings, startIndex, numberOfElements);
+      }
    }
 
-   TEST5X5(NonMinimalWriteStringsCommaSeparated_PrintModeNotMinimal_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset,
-      PrintMode printMode, const vector<string>& strings, size_t startIndex, size_t numberOfElements, const vector<string>& expectedConsoleWrites,
-      PrintMode::Normal, vector<string>{ "Arg1" }, size_t(0), size_t(1), vector<string>{ "Arg1" },
-      PrintMode::Normal, vector<string>{ "Arg1", "Arg2" }, size_t(0), size_t(2), vector<string>{ "Arg1", ", ", "Arg2" },
-      PrintMode::Normal, vector<string>{ "Arg1", "Arg2" }, size_t(1), size_t(1), vector<string>{ "Arg2" },
-      PrintMode::Normal, vector<string>{ "Arg1", "Arg2", "Arg3", "Arg4" }, size_t(2), size_t(2), vector<string>{ "Arg3", ", ", "Arg4" },
-
-      PrintMode::Detailed, vector<string>{ "Arg1" }, size_t(0), size_t(1), vector<string>{ "Arg1" },
-      PrintMode::Detailed, vector<string>{ "Arg1", "Arg2" }, size_t(0), size_t(2), vector<string>{ "Arg1", ", ", "Arg2" },
-      PrintMode::Detailed, vector<string>{ "Arg1", "Arg2" }, size_t(1), size_t(1), vector<string>{ "Arg2" },
-      PrintMode::Detailed, vector<string>{ "Arg1", "Arg2", "Arg3", "Arg4" }, size_t(2), size_t(2), vector<string>{ "Arg3", ", ", "Arg4" })
+   TEST4X4(DoWriteStringsCommaSeparated_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset,
+      const vector<string>& strings, size_t startIndex, size_t numberOfElements, const vector<string>& expectedConsoleWrites,
+      vector<string>{ "Arg1" }, size_t(0), size_t(1), vector<string>{ "Arg1" },
+      vector<string>{ "Arg1", "Arg2" }, size_t(0), size_t(2), vector<string>{ "Arg1", ", ", "Arg2" },
+      vector<string>{ "Arg1", "Arg2" }, size_t(1), size_t(1), vector<string>{ "Arg2" },
+      vector<string>{ "Arg1", "Arg2", "Arg3", "Arg4" }, size_t(2), size_t(2), vector<string>{ "Arg3", ", ", "Arg4" })
    {
       struct ConsoleSelfMocked : public Zen::Mock<Console>
       {
@@ -227,7 +244,7 @@ namespace ZenUnit
       } consoleSelfMocked;
       consoleSelfMocked.WriteMock.Expect();
       //
-      consoleSelfMocked.NonMinimalWriteStringsCommaSeparated(strings, startIndex, numberOfElements, printMode);
+      consoleSelfMocked.DoWriteStringsCommaSeparated(strings, startIndex, numberOfElements);
       //
       vector<ZenMock::OneArgCallRef<const string&>> expectedConsoleWriteCalls;
       for (const string& expectedConsoleWrite : expectedConsoleWrites)
