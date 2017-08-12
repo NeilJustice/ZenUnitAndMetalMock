@@ -4,11 +4,11 @@
 namespace ZenUnit
 {
    TESTS(IS_NOT_NULLTests)
-   SPEC(NullRawPointer_Throws)
-   SPEC(NullUniquePointer_Throws_MessagesTestCase)
-   SPEC(NonNullRawPointer_DoesNotThrow)
-   SPEC(NonNullUniquePointer_DoesNotThrow)
-   SPECEND
+   FACT(NullRawPointer_Throws)
+   FACT(NullUniquePointer_Throws_MessagesTestCase)
+   FACT(NonNullRawPointer_DoesNotThrow)
+   FACT(NonNullUniquePointer_DoesNotThrow)
+   BEGINPROOF
 
    TEST(NullRawPointer_Throws)
    {

@@ -6,23 +6,23 @@
 namespace ZenUnit
 {
    TESTS(ConsoleTests)
-   SPEC(Constructor_NewsConsoleColorer_SetsFunctionPointers)
-   SPEC(Write_CallsWriteColorWithWhite)
-   SPECX(NonMinimalWrite_CallsWriteColorIfPrintModeNotMinimal)
-   SPECX(WriteColor_WritesMessageInSpecifiedColor)
-   SPECX(NonMinimalWriteColor_CallsWriteColorIfPrintModeNotMinimal)
-   SPEC(WriteLine_CallsWriteLineWithWhite)
-   SPECX(NonMinimalWriteNewLine_CallsWriteLineWithWhite)
-   SPECX(NonMinimalWriteLine_CallsWriteLineIfPrintModeNotMinimal)
-   SPECX(WriteLineColor_WritesMessageInSpecifiedColorThenNewLine)
-   SPECX(WriteLineAndExit_CallsWriteLineAndExit)
-   SPECX(NonMinimalWriteStringsCommaSeparated_PrintModeNotMinimal_CallsDoWriteStringsCommaSeparated)
-   SPECX(DoWriteStringsCommaSeparated_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset)
-   SPECX(PauseForAnyKeyIfDebuggerIsPresent_WritesPressAnyKeyAndGetsLineIfDebuggerIsPresent)
+   FACT(Constructor_NewsConsoleColorer_SetsFunctionPointers)
+   FACT(Write_CallsWriteColorWithWhite)
+   FACTS(NonMinimalWrite_CallsWriteColorIfPrintModeNotMinimal)
+   FACTS(WriteColor_WritesMessageInSpecifiedColor)
+   FACTS(NonMinimalWriteColor_CallsWriteColorIfPrintModeNotMinimal)
+   FACT(WriteLine_CallsWriteLineWithWhite)
+   FACTS(NonMinimalWriteNewLine_CallsWriteLineWithWhite)
+   FACTS(NonMinimalWriteLine_CallsWriteLineIfPrintModeNotMinimal)
+   FACTS(WriteLineColor_WritesMessageInSpecifiedColorThenNewLine)
+   FACTS(WriteLineAndExit_CallsWriteLineAndExit)
+   FACTS(NonMinimalWriteStringsCommaSeparated_PrintModeNotMinimal_CallsDoWriteStringsCommaSeparated)
+   FACTS(DoWriteStringsCommaSeparated_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset)
+   FACTS(PauseForAnyKeyIfDebuggerIsPresent_WritesPressAnyKeyAndGetsLineIfDebuggerIsPresent)
 #ifdef _WIN32
-   SPECX(DebuggerIsPresent_ReturnsTrueIfIsDebuggerPresentFunctionReturns1)
+   FACTS(DebuggerIsPresent_ReturnsTrueIfIsDebuggerPresentFunctionReturns1)
 #endif
-   SPECEND
+   BEGINPROOF
 
    Console _console;
    ConsoleColorerMock* _consoleColorerMock;

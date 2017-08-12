@@ -7,23 +7,22 @@
 
 namespace ZenUnit
 {
-   const size_t N = 1;
-
    TESTS(TestNXNTests)
-   SPEC(Constructor_NewsConsole_SetsFields_GettersReturnExpected_2X2With4Args)
-   SPEC(Constructor_StoresDecayedTypeCopiesOfTestCaseArguments)
-   SPEC(NumberOfTestCases_ReturnsNumberOfTestCaseArgsDividedByN)
-   SPEC(Run_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
-   SPEC(NewTestClass_NewsTestClass)
-   SPEC(Startup_CallsTestClassStartup)
-   SPEC(TestBody_CallsRunNXNTestCase)
-   SPEC(RunNXNTestCase_DoesNothing)
-   SPEC(Cleanup_CallsCleanup)
-   SPEC(DeleteTestClass_DeletesTestClass)
-   SPECX(NonMinimalPrintTestCaseNumberArgsThenArrow_WritesTestCaseNumberArrow)
-   SPEC(NonMinimalWriteLineOKIfSuccess_CallsTestResultNonMinimalWriteLineOKIfSuccess)
-   SPECEND
+   FACT(Constructor_NewsConsole_SetsFields_GettersReturnExpected_2X2With4Args)
+   FACT(Constructor_StoresDecayedTypeCopiesOfTestCaseArguments)
+   FACT(NumberOfTestCases_ReturnsNumberOfTestCaseArgsDividedByN)
+   FACT(Run_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
+   FACT(NewTestClass_NewsTestClass)
+   FACT(Startup_CallsTestClassStartup)
+   FACT(TestBody_CallsRunNXNTestCase)
+   FACT(RunNXNTestCase_DoesNothing)
+   FACT(Cleanup_CallsCleanup)
+   FACT(DeleteTestClass_DeletesTestClass)
+   FACTS(NonMinimalPrintTestCaseNumberArgsThenArrow_WritesTestCaseNumberArrow)
+   FACT(NonMinimalWriteLineOKIfSuccess_CallsTestResultNonMinimalWriteLineOKIfSuccess)
+   BEGINPROOF
 
+   static const size_t N = 1;
    unique_ptr<TestNXN<TestingTestClass, N, int>> _testNXN;
    ConsoleMock* _consoleMock;
    const string TestClassName = Random<string>();
@@ -265,18 +264,18 @@ namespace ZenUnit
 
    template<typename T>
    TEMPLATETESTS(AllTestNXNsWithinATemplateTestClass, T)
-   SPEC(Test)
-   SPECX(Test1X1)
-   SPECX(Test2X2)
-   SPECX(Test3X3)
-   SPECX(Test4X4)
-   SPECX(Test5X5)
-   SPECX(Test6X6)
-   SPECX(Test7X7)
-   SPECX(Test8X8)
-   SPECX(Test9X9)
-   SPECX(Test10X10)
-   SPECEND
+   FACT(Test)
+   FACTS(Test1X1)
+   FACTS(Test2X2)
+   FACTS(Test3X3)
+   FACTS(Test4X4)
+   FACTS(Test5X5)
+   FACTS(Test6X6)
+   FACTS(Test7X7)
+   FACTS(Test8X8)
+   FACTS(Test9X9)
+   FACTS(Test10X10)
+   BEGINPROOF
 
    TEST(Test) {}
    TEST1X1(Test1X1, int, 0) {}

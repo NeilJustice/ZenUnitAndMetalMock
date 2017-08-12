@@ -5,14 +5,14 @@ namespace ZenUnit
 {
    template<typename ElementType, typename ExtraArgType>
    TEMPLATETESTS(MemberForEacherExtraArgTests, ElementType, ExtraArgType)
-   SPEC(ForEach_EmptyIterable_DoesNotCallFunc)
-   SPEC(ForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
-   SPEC(ForEach_TwoItemIterable_CallsThisPointerBoundFuncTwice)
-   SPEC(RandomForEach_EmptyIterable_DoesNotCallFunc)
-   SPEC(RandomForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
-   SPEC(RandomForEach_TwoItemIterable_CallsThisPointerBoundFuncTwiceInRandomOrder)
-   SPEC(CodeCoverage_ClassTypeTwoArgFunction)
-   SPECEND
+   FACT(ForEach_EmptyIterable_DoesNotCallFunc)
+   FACT(ForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
+   FACT(ForEach_TwoItemIterable_CallsThisPointerBoundFuncTwice)
+   FACT(RandomForEach_EmptyIterable_DoesNotCallFunc)
+   FACT(RandomForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
+   FACT(RandomForEach_TwoItemIterable_CallsThisPointerBoundFuncTwiceInRandomOrder)
+   FACT(CodeCoverage_ClassTypeTwoArgFunction)
+   BEGINPROOF
 
    class ClassType
    {

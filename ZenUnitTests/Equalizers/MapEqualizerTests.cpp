@@ -5,8 +5,8 @@ template<
    template<typename...>
    class MapType>
 TEMPLATETESTS(MapEqualizerTests, MapType)
-SPEC(ARE_EQUAL_EqualStdMaps_CompilesAndDoesNotThrow)
-SPECEND
+FACT(ARE_EQUAL_EqualStdMaps_CompilesAndDoesNotThrow)
+BEGINPROOF
 
 TEST(ARE_EQUAL_EqualStdMaps_CompilesAndDoesNotThrow)
 {

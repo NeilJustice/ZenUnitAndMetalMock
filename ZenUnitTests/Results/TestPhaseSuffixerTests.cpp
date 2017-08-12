@@ -2,9 +2,9 @@
 #include "ZenUnit/Results/TestPhaseSuffixer.h"
 
 TESTS(TestPhaseSuffixerTests)
-SPECX(TestPhaseToTestPhaseSuffix_ReturnsTestPhaseSuffix)
-SPECX(TestPhaseToTestPhaseSuffix_UnsetOrDestructorTestPhase_Throws)
-SPECEND
+FACTS(TestPhaseToTestPhaseSuffix_ReturnsTestPhaseSuffix)
+FACTS(TestPhaseToTestPhaseSuffix_UnsetOrDestructorTestPhase_Throws)
+BEGINPROOF
 
 TestPhaseSuffixer _testPhaseSuffixer;
 

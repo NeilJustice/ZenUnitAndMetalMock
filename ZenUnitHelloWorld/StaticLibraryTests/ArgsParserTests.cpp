@@ -1,9 +1,9 @@
 #include "pch.h"
 
 TESTS(ArgsParserTests)
-SPEC(ParseArgs_InvalidArg_ThrowsInvalidArgument)
-SPEC(ParseArgs_Flag_ReturnsProgramArgsWithFlagASet)
-SPECEND
+FACT(ParseArgs_InvalidArg_ThrowsInvalidArgument)
+FACT(ParseArgs_Flag_ReturnsProgramArgsWithFlagASet)
+BEGINPROOF
 
 TEST(ParseArgs_InvalidArg_ThrowsInvalidArgument)
 {

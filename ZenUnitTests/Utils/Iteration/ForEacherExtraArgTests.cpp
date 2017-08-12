@@ -4,10 +4,10 @@
 namespace ZenUnit
 {
    TESTS(ForEacherExtraArgTests)
-   SPEC(ForEach_EmptyIterable_DoesNothing)
-   SPEC(ForEach_OneItemIterable_CallsFuncOnItemOnce)
-   SPEC(ForEach_TwoItemIterable_CallsFuncOnItemTwice)
-   SPECEND
+   FACT(ForEach_EmptyIterable_DoesNothing)
+   FACT(ForEach_OneItemIterable_CallsFuncOnItemOnce)
+   FACT(ForEach_TwoItemIterable_CallsFuncOnItemTwice)
+   BEGINPROOF
 
    ForEacherExtraArg<vector<int>, function<void(int, int)>, int> _forEacherExtraArg;
 

@@ -5,11 +5,11 @@
 namespace ZenUnit
 {
    TESTS(FullTestNameTests)
-   SPEC(DefaultConstructor_SetsClassNameAndTestNameToNullptr)
-   SPEC(ThreeArgConstructor_SetsFields)
-   SPECX(Value_ReturnsExpected)
-   SPEC(ZenUnitEqualizer_ThrowsIfClassNameOrTestNameNotEqual)
-   SPECEND
+   FACT(DefaultConstructor_SetsClassNameAndTestNameToNullptr)
+   FACT(ThreeArgConstructor_SetsFields)
+   FACTS(Value_ReturnsExpected)
+   FACT(ZenUnitEqualizer_ThrowsIfClassNameOrTestNameNotEqual)
+   BEGINPROOF
 
    TEST(DefaultConstructor_SetsClassNameAndTestNameToNullptr)
    {

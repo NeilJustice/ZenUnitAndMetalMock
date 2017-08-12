@@ -26,13 +26,13 @@ unique_ptr<Test> TestingTestClass_SpecSectionTestNXNTests::TestNXNPmfToTestRetur
 namespace ZenUnit
 {
    TESTS(SpecSectionTestNXNTests)
-   SPEC(ThreeArgConstructor_SetsTestName_SetsTestNXNPmf)
-   SPECX(NumberOfTestCases_GetsTestFromAddress_ReturnsTestNumberOfTestCases)
-   SPECX(NonMinimalWritePostTestNameMessage_WritesEllipsisIfPrintModeNotMinimal)
-   SPEC(Run_GetsTestFromAddress_RunsTest_ReturnsTestResults)
-   SPEC(PmfTokenToTest_ReturnsTestClassTypeTestNXNPmfToTestReturnValue);
-   SPEC(TestFunction_CodeCoverage)
-   SPECEND
+   FACT(ThreeArgConstructor_SetsTestName_SetsTestNXNPmf)
+   FACTS(NumberOfTestCases_GetsTestFromAddress_ReturnsTestNumberOfTestCases)
+   FACTS(NonMinimalWritePostTestNameMessage_WritesEllipsisIfPrintModeNotMinimal)
+   FACT(Run_GetsTestFromAddress_RunsTest_ReturnsTestResults)
+   FACT(PmfTokenToTest_ReturnsTestClassTypeTestNXNPmfToTestReturnValue);
+   FACT(TestFunction_CodeCoverage)
+   BEGINPROOF
 
    class SpecSectionTestNXNSelfMocked : public Zen::Mock<SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests>>
    {

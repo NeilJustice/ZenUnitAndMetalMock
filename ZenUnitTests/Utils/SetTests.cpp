@@ -7,8 +7,8 @@ namespace ZenUnit
       template<typename...>
       class SetType, typename T>
    TEMPLATETESTS(SetTests, SetType, T)
-   SPEC(Contains_ReturnsTrueIfSetContainsElement)
-   SPECEND
+   FACT(Contains_ReturnsTrueIfSetContainsElement)
+   BEGINPROOF
 
    TEST(Contains_ReturnsTrueIfSetContainsElement)
    {

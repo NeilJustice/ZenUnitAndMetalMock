@@ -5,11 +5,11 @@
 namespace ZenUnit
 {
    TESTS(StopwatchTests)
-   SPEC(Constructor_SetsNowFunction)
-   SPEC(Start_SetsStartTimeToNow)
-   SPEC(Stop_StartNotPreviouslyCalled_Returns0)
-   SPEC(Stop_StartPreviouslyCalled_ReturnsElapsedMilliseconds)
-   SPECEND
+   FACT(Constructor_SetsNowFunction)
+   FACT(Start_SetsStartTimeToNow)
+   FACT(Stop_StartNotPreviouslyCalled_Returns0)
+   FACT(Stop_StartPreviouslyCalled_ReturnsElapsedMilliseconds)
+   BEGINPROOF
 
    Stopwatch _stopwatch;
    ZENMOCK_NONVOID0_STATIC(

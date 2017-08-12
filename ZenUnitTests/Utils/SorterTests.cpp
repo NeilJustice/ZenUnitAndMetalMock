@@ -26,8 +26,8 @@ namespace ZenUnit
 
    template<typename DataStructureType>
    TEMPLATETESTS(SorterTests, DataStructureType)
-   SPEC(Sort_SortsTheDataStructure)
-   SPECEND
+   FACT(Sort_SortsTheDataStructure)
+   BEGINPROOF
 
    Sorter<DataStructureType> _sorter;
 

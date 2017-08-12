@@ -35,10 +35,10 @@ namespace ZenMock
    const T<10> V10 = T<10>(true);
 
    TESTS(OneArgCallTests)
-   SPEC(DefaultConstructor_DefaultInitializesArg)
-   SPEC(Constructor_CopiesArgToDecayedTypeArgField)
-   SPEC(ZenUnitEqualizer_ThrowsIfArg1NotEqual)
-   SPECEND
+   FACT(DefaultConstructor_DefaultInitializesArg)
+   FACT(Constructor_CopiesArgToDecayedTypeArgField)
+   FACT(ZenUnitEqualizer_ThrowsIfArg1NotEqual)
+   BEGINPROOF
 
    using Call1 = OneArgCall<T<1>>;
 
@@ -66,10 +66,10 @@ namespace ZenMock
 
 
    TESTS(TwoArgCallTests)
-   SPEC(DefaultConstructor_DefaultInitializesFields)
-   SPEC(Constructor_CopiesArgsToDecayedTypeArgFields)
-   SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   SPECEND
+   FACT(DefaultConstructor_DefaultInitializesFields)
+   FACT(Constructor_CopiesArgsToDecayedTypeArgFields)
+   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   BEGINPROOF
 
    using Call2 = TwoArgCall<T<1>, T<2>>;
 
@@ -101,10 +101,10 @@ namespace ZenMock
 
 
    TESTS(ThreeArgCallTests)
-   SPEC(DefaultConstructor_DefaultInitializesFields)
-   SPEC(Constructor_CopiesValuesToDecayTypeFields)
-   SPEC(ZenUnitEqualizer_CallsAreEqualOnEachField)
-   SPECEND
+   FACT(DefaultConstructor_DefaultInitializesFields)
+   FACT(Constructor_CopiesValuesToDecayTypeFields)
+   FACT(ZenUnitEqualizer_CallsAreEqualOnEachField)
+   BEGINPROOF
 
    using Call3 = ThreeArgCall<T<1>, T<2>, T<3>>;
 
@@ -140,10 +140,10 @@ namespace ZenMock
 
 
    TESTS(FourArgCallTests)
-   SPEC(DefaultConstructor_DefaultInitializesFields)
-   SPEC(FourArgConstructor_CopiesValuesToDecayTypeFields)
-   SPEC(ZenUnitEqualizer_CallsAreEqualOnEachField)
-   SPECEND
+   FACT(DefaultConstructor_DefaultInitializesFields)
+   FACT(FourArgConstructor_CopiesValuesToDecayTypeFields)
+   FACT(ZenUnitEqualizer_CallsAreEqualOnEachField)
+   BEGINPROOF
 
    using Call4 = FourArgCall<T<1>, T<2>, T<3>, T<4>>;
 
@@ -184,10 +184,10 @@ namespace ZenMock
    }; RUN(FourArgCallTests)
 
    TESTS(FiveArgCallTests)
-   SPEC(DefaultConstructor_DefaultInitializesFields)
-   SPEC(FiveArgConstructor_CopiesValuesToDecayTypeFields)
-   SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   SPECEND
+   FACT(DefaultConstructor_DefaultInitializesFields)
+   FACT(FiveArgConstructor_CopiesValuesToDecayTypeFields)
+   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   BEGINPROOF
 
    using Call5 = FiveArgCall<T<1>, T<2>, T<3>, T<4>, T<5>>;
 
@@ -232,10 +232,10 @@ namespace ZenMock
 
 
    TESTS(SixArgCallTests)
-   SPEC(DefaultConstructor_DefaultInitializesFields)
-   SPEC(Constructor_CopiesValuesToDecayTypeFields)
-   SPEC(ZenUnitEqualizer_CallsAreEqualOnEachField)
-   SPECEND
+   FACT(DefaultConstructor_DefaultInitializesFields)
+   FACT(Constructor_CopiesValuesToDecayTypeFields)
+   FACT(ZenUnitEqualizer_CallsAreEqualOnEachField)
+   BEGINPROOF
 
    using Call6 = SixArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>>;
 
@@ -284,10 +284,10 @@ namespace ZenMock
 
 
    TESTS(SevenArgCallTests)
-   SPEC(DefaultConstructor_DefaultInitializesFields)
-   SPEC(Constructor_CopiesValuesToDecayTypeFields)
-   SPEC(ZenUnitEqualizer_CallsAreEqualOnEachField)
-   SPECEND
+   FACT(DefaultConstructor_DefaultInitializesFields)
+   FACT(Constructor_CopiesValuesToDecayTypeFields)
+   FACT(ZenUnitEqualizer_CallsAreEqualOnEachField)
+   BEGINPROOF
 
    using Call7 = SevenArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>>;
 
@@ -340,10 +340,10 @@ namespace ZenMock
 
 
    TESTS(EightArgCallTests)
-   SPEC(DefaultConstructor_DefaultInitializesFields)
-   SPEC(Constructor_CopiesValuesToDecayTypeFields)
-   SPEC(ZenUnitEqualizer_CallsAreEqualOnEachField)
-   SPECEND
+   FACT(DefaultConstructor_DefaultInitializesFields)
+   FACT(Constructor_CopiesValuesToDecayTypeFields)
+   FACT(ZenUnitEqualizer_CallsAreEqualOnEachField)
+   BEGINPROOF
 
    using Call8 = EightArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>>;
 
@@ -400,10 +400,10 @@ namespace ZenMock
 
 
    TESTS(NineArgCallTests)
-   SPEC(DefaultConstructor_DefaultInitializesFields)
-   SPEC(Constructor_CopiesValuesToDecayTypeFields)
-   SPEC(ZenUnitEqualizer_CallsAreEqualOnEachField)
-   SPECEND
+   FACT(DefaultConstructor_DefaultInitializesFields)
+   FACT(Constructor_CopiesValuesToDecayTypeFields)
+   FACT(ZenUnitEqualizer_CallsAreEqualOnEachField)
+   BEGINPROOF
 
    using Call9 = NineArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>>;
 
@@ -463,10 +463,10 @@ namespace ZenMock
    }; RUN(NineArgCallTests)
 
    TESTS(TenArgCallTests)
-   SPEC(DefaultConstructor_DefaultInitializesFields)
-   SPEC(Constructor_CopiesValuesToDecayTypeFields)
-   SPEC(ZenUnitEqualizer_CallsAreEqualOnEachField)
-   SPECEND
+   FACT(DefaultConstructor_DefaultInitializesFields)
+   FACT(Constructor_CopiesValuesToDecayTypeFields)
+   FACT(ZenUnitEqualizer_CallsAreEqualOnEachField)
+   BEGINPROOF
 
    using Call10 = TenArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>, T<10>>;
 

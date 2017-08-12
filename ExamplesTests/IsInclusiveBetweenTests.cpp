@@ -2,9 +2,9 @@
 #include "Examples/IsInclusiveBetween.h"
 
 TESTS(IsInclusiveBetweenTests)
-SPEC(LowerBoundGreaterThanUpperBound_Throws)
-SPECX(ReturnsTrueIfNumberIsInclusiveBetween)
-SPECEND
+FACT(LowerBoundGreaterThanUpperBound_Throws)
+FACTS(ReturnsTrueIfNumberIsInclusiveBetween)
+BEGINPROOF
 
 TEST(LowerBoundGreaterThanUpperBound_Throws)
 {

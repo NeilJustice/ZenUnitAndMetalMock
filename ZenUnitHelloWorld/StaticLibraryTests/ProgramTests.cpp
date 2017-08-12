@@ -8,12 +8,12 @@
 #endif
 
 TESTS(ProgramTests)
-SPEC(Constructor_NewsComponents)
-SPECX(Main_ConvertsArgcArgvToStringVector_CallsVectorMain)
-SPEC(VectorMain_EmptyArgsExceptForBinaryPath_PrintsUsage_Returns0)
-SPEC(VectorMain_NonEmptyArgsWithInvalidArg_WritesInvalidArgMessage_WritesUsage_Returns1)
-SPEC(VectorMain_NonEmptyValidArgs_Returns0)
-SPECEND
+FACT(Constructor_NewsComponents)
+FACTS(Main_ConvertsArgcArgvToStringVector_CallsVectorMain)
+FACT(VectorMain_EmptyArgsExceptForBinaryPath_PrintsUsage_Returns0)
+FACT(VectorMain_NonEmptyArgsWithInvalidArg_WritesInvalidArgMessage_WritesUsage_Returns1)
+FACT(VectorMain_NonEmptyValidArgs_Returns0)
+BEGINPROOF
 
 Program _program;
 ConsoleMock* _consoleMock;

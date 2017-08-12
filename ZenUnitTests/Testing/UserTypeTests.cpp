@@ -2,16 +2,16 @@
 #include "UserType.h"
 
 TESTS(UserTypeTests)
-SPEC(DefaultConstructor_SetsValueTo0)
-SPEC(OneArgConstructor_SetsValue)
-SPEC(OperatorLessThan_ReturnsTrueIfLeftXLessThanRightX)
-SPEC(OperatorEquals_ReturnsTrueIfLeftXEqualsRightX)
-SPEC(ZenUnitPrint_WritesExpected_ReturnOStream)
-SPEC(OperatorBool_ValueIs1_ReturnsTrue)
-SPEC(OperatorBool_ValueIsNot1_ReturnsFalse)
-SPEC(has_ostream_left_shift_False)
-SPEC(has_ZenUnitPrinter_True)
-SPECEND
+FACT(DefaultConstructor_SetsValueTo0)
+FACT(OneArgConstructor_SetsValue)
+FACT(OperatorLessThan_ReturnsTrueIfLeftXLessThanRightX)
+FACT(OperatorEquals_ReturnsTrueIfLeftXEqualsRightX)
+FACT(ZenUnitPrint_WritesExpected_ReturnOStream)
+FACT(OperatorBool_ValueIs1_ReturnsTrue)
+FACT(OperatorBool_ValueIsNot1_ReturnsFalse)
+FACT(has_ostream_left_shift_False)
+FACT(has_ZenUnitPrinter_True)
+BEGINPROOF
 
 TEST(DefaultConstructor_SetsValueTo0)
 {

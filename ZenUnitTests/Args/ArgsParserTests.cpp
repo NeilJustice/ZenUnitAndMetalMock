@@ -8,20 +8,20 @@
 namespace ZenUnit
 {
    TESTS(ArgsParserTests)
-   SPEC(DefaultConstructor_NewsCompnents_SetsStringToUnsignedFunction)
-   SPEC(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
-   SPEC(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1)
-   SPECX(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1)
-   SPECX(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0)
-   SPEC(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
-   SPECX(Parse_MinimalOrDetailed_ReturnsExpectedZenUnitArgs)
-   SPEC(Parse_Random_SetsRandomTrueAndRandomSeedToSecondsSince1970CastToUnsignedShort)
-   SPEC(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
-   SPEC(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
-   SPECX(Parse_TimesArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1)
-   SPEC(Parse_TimesArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
-   SPECX(Parse_TimesArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
-   SPECEND
+   FACT(DefaultConstructor_NewsCompnents_SetsStringToUnsignedFunction)
+   FACT(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
+   FACT(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1)
+   FACTS(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1)
+   FACTS(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0)
+   FACT(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
+   FACTS(Parse_MinimalOrDetailed_ReturnsExpectedZenUnitArgs)
+   FACT(Parse_Random_SetsRandomTrueAndRandomSeedToSecondsSince1970CastToUnsignedShort)
+   FACT(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
+   FACT(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
+   FACTS(Parse_TimesArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1)
+   FACT(Parse_TimesArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
+   FACTS(Parse_TimesArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
+   BEGINPROOF
 
    const string TestProgramPath = Random<string>();
    const string ExpectedUsage = R"(ZenUnit and ZenMock

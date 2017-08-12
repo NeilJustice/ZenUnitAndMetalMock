@@ -3,13 +3,13 @@
 namespace ZenUnit
 {
    TESTS(ARE_COPIESTests)
-   SPEC(ObjectsHaveSameAddress_Throws)
-   SPEC(ObjectsHaveSameAddress_Throws_MessagesTestCase)
-   SPEC(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws)
-   SPEC(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws_UserTypeTestCase)
-   SPEC(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws_MessagesTestCase)
-   SPEC(ObjectsHaveDifferentAddresses_ObjectsAreEqual_DoesNotThrow)
-   SPECEND
+   FACT(ObjectsHaveSameAddress_Throws)
+   FACT(ObjectsHaveSameAddress_Throws_MessagesTestCase)
+   FACT(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws)
+   FACT(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws_UserTypeTestCase)
+   FACT(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws_MessagesTestCase)
+   FACT(ObjectsHaveDifferentAddresses_ObjectsAreEqual_DoesNotThrow)
+   BEGINPROOF
 
    TEST(ObjectsHaveSameAddress_Throws)
    {

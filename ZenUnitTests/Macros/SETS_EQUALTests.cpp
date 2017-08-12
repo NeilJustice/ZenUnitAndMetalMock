@@ -7,14 +7,14 @@ namespace ZenUnit
       template<typename...>
       class SetType>
    TEMPLATETESTS(SETS_EQUALTests, SetType)
-   SPEC(EmptySets_DoesNotThrow)
-   SPEC(OneEqualElement_DoesNotThrow)
-   SPEC(TwoEqualElements_DoesNotThrow)
-   SPEC(DifferentSize_Throws)
-   SPEC(SameSize1_ElementsNotEqual_Throws_MessagesTestCase)
-   SPEC(SameSize2_ElementsNotEqual_Throws)
-   SPEC(UserTypeSets_SameSize1_ElementsNotEqual_Throws)
-   SPECEND
+   FACT(EmptySets_DoesNotThrow)
+   FACT(OneEqualElement_DoesNotThrow)
+   FACT(TwoEqualElements_DoesNotThrow)
+   FACT(DifferentSize_Throws)
+   FACT(SameSize1_ElementsNotEqual_Throws_MessagesTestCase)
+   FACT(SameSize2_ElementsNotEqual_Throws)
+   FACT(UserTypeSets_SameSize1_ElementsNotEqual_Throws)
+   BEGINPROOF
 
    TEST(EmptySets_DoesNotThrow)
    {

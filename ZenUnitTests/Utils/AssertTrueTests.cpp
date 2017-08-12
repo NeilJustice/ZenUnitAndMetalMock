@@ -4,10 +4,10 @@
 namespace ZenUnit
 {
    TESTS(assert_trueTests)
-   SPEC(assert_true_IsTrue_DoesNothing)
-   SPEC(assert_true_IsFalse_FromOperatorParentheses_ThrowsLogicError)
-   SPEC(assert_true_IsFalse_FromFunction_ThrowsLogicError)
-   SPECEND
+   FACT(assert_true_IsTrue_DoesNothing)
+   FACT(assert_true_IsFalse_FromOperatorParentheses_ThrowsLogicError)
+   FACT(assert_true_IsFalse_FromFunction_ThrowsLogicError)
+   BEGINPROOF
 
    TEST(assert_true_IsTrue_DoesNothing)
    {

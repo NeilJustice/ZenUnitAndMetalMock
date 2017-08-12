@@ -9,13 +9,13 @@
 namespace ZenUnit
 {
    TESTS(TryCatchCallerTests)
-   SPEC(Constructor_NewsComponents_SetsGetArgsFunction)
-   SPEC(Call_FunctionDoesNotThrow_ReturnsNoExceptionThrownCallResult)
-   SPECX(Call_FunctionThrowsAnomaly_ReturnsAnomalyResult)
-   SPECX(Call_FunctionThrowsStdException_ReturnsExceptionResult)
-   SPECX(Call_FunctionThrowsZenMockException_ReturnsExceptionResult)
-   SPECX(Call_FunctionThrowsAnIntToTriggerDotDotDotHandler_PrintsFailureDetails_Exits1)
-   SPECEND
+   FACT(Constructor_NewsComponents_SetsGetArgsFunction)
+   FACT(Call_FunctionDoesNotThrow_ReturnsNoExceptionThrownCallResult)
+   FACTS(Call_FunctionThrowsAnomaly_ReturnsAnomalyResult)
+   FACTS(Call_FunctionThrowsStdException_ReturnsExceptionResult)
+   FACTS(Call_FunctionThrowsZenMockException_ReturnsExceptionResult)
+   FACTS(Call_FunctionThrowsAnIntToTriggerDotDotDotHandler_PrintsFailureDetails_Exits1)
+   BEGINPROOF
 
    TryCatchCaller _tryCatchCaller;
    ConsoleMock* _consoleMock;

@@ -4,10 +4,10 @@
 namespace ZenUnit
 {
    TESTS(ARE_SAMETests)
-   SPEC(ExpectedAndActualAddressesEqual_DoesNotThrow)
-   SPEC(ExpectedAndActualValuesEqual_AddressesNotEqual_Throws)
-   SPEC(ExpectedAndActualValuesNotEqual_AddressesNotEqual_Throws_MessagesTestCase)
-   SPECEND
+   FACT(ExpectedAndActualAddressesEqual_DoesNotThrow)
+   FACT(ExpectedAndActualValuesEqual_AddressesNotEqual_Throws)
+   FACT(ExpectedAndActualValuesNotEqual_AddressesNotEqual_Throws_MessagesTestCase)
+   BEGINPROOF
 
    TEST(ExpectedAndActualAddressesEqual_DoesNotThrow)
    {

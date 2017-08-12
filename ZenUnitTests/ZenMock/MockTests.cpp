@@ -9,8 +9,8 @@ namespace Zen
    };
 
    TESTS(MockTests)
-   SPEC(ZenMockedClassName_ReturnsPointerToCachedRTTINameOfZenMockedClass)
-   SPECEND
+   FACT(ZenMockedClassName_ReturnsPointerToCachedRTTINameOfZenMockedClass)
+   BEGINPROOF
 
    TEST(ZenMockedClassName_ReturnsPointerToCachedRTTINameOfZenMockedClass)
    {

@@ -4,18 +4,18 @@
 namespace ZenUnit
 {
    TESTS(AnomalyTests)
-   SPEC(DefaultConstructor_DoesNotSetAnyFieldsToNonDefaultValues)
-   SPEC(WhyConstructor_EmptyMessagesTextAndEmptyMessages_SetsWhy_DoesNotSetMessage)
-   SPEC(WhyConstructor_EmptyMessagesTextAndEmptyMessages_EmptyWhyBody_SetsWhy_DoesNotSetMessage)
-   SPEC(WhyConstructor_OneMessage_SetsWhy_SetsMessage)
-   SPECX(WhyConstructor_TwoMessages_SetsWhy_SetsMessage)
-   SPECX(FullConstructor_FirstSecondThirdTest_MessagesPresentNotPresentTest)
-   SPECX(FullConstructor_BecauseAnomalyNotPresent_SetsFields)
-   SPECX(FullConstructor_BecauseAnomalyPresent_UnaffectedByExpectedActualFormat_SetsFields)
-   SPEC(what_ReturnsWhyCStr)
-   SPEC(ZENWrapped_ReturnsExpectedAnomaly)
-   SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   SPECEND
+   FACT(DefaultConstructor_DoesNotSetAnyFieldsToNonDefaultValues)
+   FACT(WhyConstructor_EmptyMessagesTextAndEmptyMessages_SetsWhy_DoesNotSetMessage)
+   FACT(WhyConstructor_EmptyMessagesTextAndEmptyMessages_EmptyWhyBody_SetsWhy_DoesNotSetMessage)
+   FACT(WhyConstructor_OneMessage_SetsWhy_SetsMessage)
+   FACTS(WhyConstructor_TwoMessages_SetsWhy_SetsMessage)
+   FACTS(FullConstructor_FirstSecondThirdTest_MessagesPresentNotPresentTest)
+   FACTS(FullConstructor_BecauseAnomalyNotPresent_SetsFields)
+   FACTS(FullConstructor_BecauseAnomalyPresent_UnaffectedByExpectedActualFormat_SetsFields)
+   FACT(what_ReturnsWhyCStr)
+   FACT(ZENWrapped_ReturnsExpectedAnomaly)
+   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   BEGINPROOF
 
    const char* AssertionName = "ASSERTION_NAME";
    const char* Arg1Text = "Arg1Text";

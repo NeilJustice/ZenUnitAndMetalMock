@@ -4,10 +4,10 @@
 namespace ZenUnit
 {
    TESTS(IS_EMPTYTests)
-   SPEC(ContainerIsEmpty_DoesNotThrow)
-   SPEC(VectorIsNotEmpty_Throws)
-   SPEC(StringIsNotEmpty_Throws_MessagesTestCase)
-   SPECEND
+   FACT(ContainerIsEmpty_DoesNotThrow)
+   FACT(VectorIsNotEmpty_Throws)
+   FACT(StringIsNotEmpty_Throws_MessagesTestCase)
+   BEGINPROOF
 
    TEST(ContainerIsEmpty_DoesNotThrow)
    {

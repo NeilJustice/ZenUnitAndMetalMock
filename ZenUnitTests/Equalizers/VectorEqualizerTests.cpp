@@ -4,10 +4,10 @@
 namespace ZenUnit
 {
    TESTS(VectorEqualizerTests)
-   SPEC(AssertEqual_IntVectors_CallsVECTORS_EQUAL)
-   SPEC(AssertEqual_StringVectors_CallsVECTORS_EQUAL)
-   SPEC(AssertEqual_UserTypeVectors_CallsVECTORS_EQUAL)
-   SPECEND
+   FACT(AssertEqual_IntVectors_CallsVECTORS_EQUAL)
+   FACT(AssertEqual_StringVectors_CallsVECTORS_EQUAL)
+   FACT(AssertEqual_UserTypeVectors_CallsVECTORS_EQUAL)
+   BEGINPROOF
 
    TEST(AssertEqual_IntVectors_CallsVECTORS_EQUAL)
    {

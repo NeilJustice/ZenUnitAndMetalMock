@@ -4,14 +4,14 @@
 namespace ZenUnit
 {
    TESTS(StringUtilTests)
-   SPECX(Split_ReturnsExpected)
-   SPEC(Concat_ConcatsValuesIntoString)
-   SPECX(CommaSplitExceptQuotedCommas_ReturnsStringSplitOnCommasWithQuotedCommasIgnored)
-   SPECX(ToUnsigned_StrIsUnsignedNumber_ReturnsNumber)
-   SPEC(ToUnsigned_EmptyString_Throws)
-   SPECX(ToUnsigned_StringNotConvertibleToUnsigned_Throws)
-   SPECX(ToUnsigned_StringIsValueGreaterThanUnsignedMax_Throws)
-   SPECEND
+   FACTS(Split_ReturnsExpected)
+   FACT(Concat_ConcatsValuesIntoString)
+   FACTS(CommaSplitExceptQuotedCommas_ReturnsStringSplitOnCommasWithQuotedCommasIgnored)
+   FACTS(ToUnsigned_StrIsUnsignedNumber_ReturnsNumber)
+   FACT(ToUnsigned_EmptyString_Throws)
+   FACTS(ToUnsigned_StringNotConvertibleToUnsigned_Throws)
+   FACTS(ToUnsigned_StringIsValueGreaterThanUnsignedMax_Throws)
+   BEGINPROOF
 
    TEST3X3(Split_ReturnsExpected,
       const string& str, char separator, const vector<string>& expectedReturnValue,
@@ -113,8 +113,8 @@ namespace ZenUnit
 
    template<typename StringType>
    TEMPLATETESTS(StringUtilContainsTests, StringType)
-   SPECX(Contains_ReturnsTrueIfStrContainsSubstring)
-   SPECEND
+   FACTS(Contains_ReturnsTrueIfStrContainsSubstring)
+   BEGINPROOF
 
    TEST3X3(Contains_ReturnsTrueIfStrContainsSubstring,
       StringType str, const char* substring, bool expectedReturnValue,

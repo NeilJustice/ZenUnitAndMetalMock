@@ -4,13 +4,13 @@
 namespace ZenUnit
 {
    TESTS(MachineNameGetterTests)
-   SPEC(GetMachineName_ReturnsEitherCallToGetLinuxOrGetWindowsMachineName)
+   FACT(GetMachineName_ReturnsEitherCallToGetLinuxOrGetWindowsMachineName)
 #ifdef __linux__
-   SPEC(GetLinuxMachineName_ReturnsResultOfgethostname)
+   FACT(GetLinuxMachineName_ReturnsResultOfgethostname)
 #elif _WIN32
-   SPEC(GetWindowsMachineName_ReturnsResultOfGetComputerName)
+   FACT(GetWindowsMachineName_ReturnsResultOfGetComputerName)
 #endif
-   SPECEND
+   BEGINPROOF
 
    struct MachineNameGetterSelfMocked : public Zen::Mock<MachineNameGetter>
    {

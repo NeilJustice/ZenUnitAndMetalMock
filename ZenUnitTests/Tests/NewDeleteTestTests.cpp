@@ -7,12 +7,12 @@
 namespace ZenUnit
 {
    TESTS(NewDeleteTestTests)
-   SPEC(Constructor_NewsComponents)
-   SPEC(NumberOfTestCases_Returns1)
-   SPECX(Run_CallsNewTestClassWhichFails_DoesNotCallDeleteTestClass_ReturnsConstructorFailTestResult)
-   SPEC(Run_CallsNewTestClassWhichSucceeds_CallsDeleteTestClass_ReturnsCtorDtorSuccessTestResult)
-   SPEC(NewAndDeleteTestClass_NewsAndDeleteFirstInstanceOfTestClass)
-   SPECEND
+   FACT(Constructor_NewsComponents)
+   FACT(NumberOfTestCases_Returns1)
+   FACTS(Run_CallsNewTestClassWhichFails_DoesNotCallDeleteTestClass_ReturnsConstructorFailTestResult)
+   FACT(Run_CallsNewTestClassWhichSucceeds_CallsDeleteTestClass_ReturnsCtorDtorSuccessTestResult)
+   FACT(NewAndDeleteTestClass_NewsAndDeleteFirstInstanceOfTestClass)
+   BEGINPROOF
 
    class TestingTestClass {};
    unique_ptr<NewDeleteTest<TestingTestClass>> _newDeleteTest;

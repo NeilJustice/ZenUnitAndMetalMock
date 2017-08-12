@@ -54,8 +54,8 @@ namespace ZenUnit
    vector<tuple<size_t, int>> TestingTestClass1X1::s_calls;
 
    TESTS(Test1X1TestTests)
-   SPEC(Constructor_SetsFields_GettersReturnExpected_RunCallsTest1By1)
-   SPECEND
+   FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest1By1)
+   BEGINPROOF
 
    CLEANUP
    {
@@ -97,8 +97,8 @@ vector<tuple<size_t, int, string>> TestingTestClass2X2::s_calls;
 namespace ZenUnit
 {
    TESTS(Test2X2TestTests)
-   SPEC(Constructor_SetsFields_GettersReturnExpected_RunCallsTest2X2)
-   SPECEND
+   FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest2X2)
+   BEGINPROOF
 
    CLEANUP
    {
@@ -148,8 +148,8 @@ vector<tuple<size_t, int, int, string>> TestingTestClass3X3::s_calls;
 namespace ZenUnit
 {
    TESTS(Test3X3TestTests)
-   SPEC(Constructor_SetsFields_GettersReturnExpected_RunCallsTest3X3)
-   SPECEND
+   FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest3X3)
+   BEGINPROOF
 
    CLEANUP
    {
@@ -199,8 +199,8 @@ vector<tuple<size_t, int, int, int, string>> TestingTestClass4X4::s_calls;
 namespace ZenUnit
 {
    TESTS(Test4X4TestTests)
-   SPEC(Constructor_SetsFields_GettersReturnExpected_RunCallsTest4X4)
-   SPECEND
+   FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest4X4)
+   BEGINPROOF
 
    CLEANUP
    {
@@ -250,8 +250,8 @@ vector<tuple<size_t, int, int, int, int, string>> TestingTestClass5X5::s_calls;
 namespace ZenUnit
 {
    TESTS(Test5X5TestTests)
-   SPEC(Constructor_SetsFields_GettersReturnExpected_RunCallsTest5X5)
-   SPECEND
+   FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest5X5)
+   BEGINPROOF
 
    CLEANUP
    {
@@ -301,8 +301,8 @@ vector<tuple<size_t, int, int, int, int, int, string>> TestingTestClass6X6::s_ca
 namespace ZenUnit
 {
    TESTS(Test6X6TestTests)
-   SPEC(Constructor_SetsFields_GettersReturnExpected_RunCallsTest6X6)
-   SPECEND
+   FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest6X6)
+   BEGINPROOF
 
    CLEANUP
    {
@@ -352,8 +352,8 @@ vector<tuple<size_t, int, int, int, int, int, int, string>> TestingTestClass7X7:
 namespace ZenUnit
 {
    TESTS(Test7X7TestTests)
-   SPEC(Constructor_SetsFields_GettersReturnExpected_RunCallsTest7X7)
-   SPECEND
+   FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest7X7)
+   BEGINPROOF
 
    CLEANUP
    {
@@ -403,8 +403,8 @@ vector<tuple<size_t, int, int, int, int, int, int, int, string>> TestingTestClas
 namespace ZenUnit
 {
    TESTS(Test8X8TestTests)
-   SPEC(Constructor_SetsFields_GettersReturnExpected_RunCallsTest8X8)
-   SPECEND
+   FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest8X8)
+   BEGINPROOF
 
    CLEANUP
    {
@@ -454,8 +454,8 @@ vector<tuple<size_t, int, int, int, int, int, int, int, int, string>> TestingTes
 namespace ZenUnit
 {
    TESTS(Test9X9TestTests)
-   SPEC(Constructor_SetsFields_GettersReturnExpected_RunCallsTest9X9)
-   SPECEND
+   FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest9X9)
+   BEGINPROOF
 
    CLEANUP
    {
@@ -505,8 +505,8 @@ vector<tuple<size_t, int, int, int, int, int, int, int, int, int, string>> Testi
 namespace ZenUnit
 {
    TESTS(Test10X10TestTests)
-   SPEC(Constructor_SetsFields_GettersReturnExpected_RunCallsTest10X10)
-   SPECEND
+   FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest10X10)
+   BEGINPROOF
 
    CLEANUP
    {

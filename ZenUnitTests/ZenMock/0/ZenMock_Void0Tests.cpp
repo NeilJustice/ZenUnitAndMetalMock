@@ -31,14 +31,14 @@ namespace ZenMock
 
    TESTS(ZenMock_Void0Tests)
    // ZeroArgMocker Tests
-   SPEC(Expect_CalledTwice_Throws)
-   SPEC(ExpectAndThrow_CalledTwice_Throws)
-   SPEC(FunctionNotCalled_AssertCalledNTimesWithN0_Throws)
-   SPEC(FunctionNotCalled_AssertCalledOnceThrows_AssertCalledNTimesThrows)
-   SPEC(Function_NotExpected_Throws)
-   SPEC(Function_Expected_DoesNotThrow_AssertCallsOnceDoesNotThrow_AssertCalledNTimes1DoesNotThrow)
-   SPEC(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)
-   SPECEND
+   FACT(Expect_CalledTwice_Throws)
+   FACT(ExpectAndThrow_CalledTwice_Throws)
+   FACT(FunctionNotCalled_AssertCalledNTimesWithN0_Throws)
+   FACT(FunctionNotCalled_AssertCalledOnceThrows_AssertCalledNTimesThrows)
+   FACT(Function_NotExpected_Throws)
+   FACT(Function_Expected_DoesNotThrow_AssertCallsOnceDoesNotThrow_AssertCalledNTimes1DoesNotThrow)
+   FACT(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)
+   BEGINPROOF
 
    Void0FunctionsMock _mock;
    ZENMOCK_VOID0_FREE(Void0)

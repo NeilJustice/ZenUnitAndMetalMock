@@ -5,14 +5,14 @@
 namespace ZenMock
 {
    TESTS(FiveArgMockerTests)
-   SPEC(Constructor_SetsFields)
-   SPEC(Expect_AlreadyExpected_Throws)
-   SPEC(Expect_NotAlreadyExpected_SetsExpectedTrue)
-   SPEC(ExpectAndThrow_ExpectedTrue_Throws)
-   SPEC(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
-   SPEC(ZenMockIt_ExpectedFalse_Throws)
-   SPEC(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
-   SPECEND
+   FACT(Constructor_SetsFields)
+   FACT(Expect_AlreadyExpected_Throws)
+   FACT(Expect_NotAlreadyExpected_SetsExpectedTrue)
+   FACT(ExpectAndThrow_ExpectedTrue_Throws)
+   FACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   FACT(ZenMockIt_ExpectedFalse_Throws)
+   FACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
+   BEGINPROOF
 
    using MockerType = FiveArgMocker<int, int, int, int, int, ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;

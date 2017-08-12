@@ -7,12 +7,12 @@
 namespace ZenUnit
 {
    TESTS(MultiTestClassRunnerTests)
-   SPEC(Constructor_NewsComponents)
-   SPEC(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
-   SPEC(AddTestClassRunner_EmplacesBackTestClassRunner_MakesNumberOfTestClassesReturnAnIncreasingNumber)
-   SPECX(RunTestClasses_SortsTestClassRunnersByName_RunsTestClassesRandomlyIfRandomOtherwiseSequentially_MoveReturnsTestClassResultsVector)
-   SPEC(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)
-   SPECEND
+   FACT(Constructor_NewsComponents)
+   FACT(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
+   FACT(AddTestClassRunner_EmplacesBackTestClassRunner_MakesNumberOfTestClassesReturnAnIncreasingNumber)
+   FACTS(RunTestClasses_SortsTestClassRunnersByName_RunsTestClassesRandomlyIfRandomOtherwiseSequentially_MoveReturnsTestClassResultsVector)
+   FACT(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)
+   BEGINPROOF
 
    MultiTestClassRunner _multiTestClassRunner;
    SorterMock<std::vector<std::unique_ptr<TestClassRunner>>>* _sorterMock;

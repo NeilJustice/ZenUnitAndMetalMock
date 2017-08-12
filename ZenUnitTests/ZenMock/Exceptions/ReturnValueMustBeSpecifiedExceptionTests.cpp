@@ -4,8 +4,8 @@
 namespace ZenMock
 {
    TESTS(ReturnValueMustBeSpecifiedExceptionTests)
-   SPEC(DefaultConstructor_SetsWhatText_ClassIsSubclassOfZenMockException)
-   SPECEND
+   FACT(DefaultConstructor_SetsWhatText_ClassIsSubclassOfZenMockException)
+   BEGINPROOF
 
    TEST(DefaultConstructor_SetsWhatText_ClassIsSubclassOfZenMockException)
    {

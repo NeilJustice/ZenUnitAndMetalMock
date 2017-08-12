@@ -4,8 +4,8 @@
 namespace ZenUnit
 {
    TESTS(TestFailureNumbererTests)
-   SPEC(TestFailureNumberer_NextReturnsIncrementingAngleBracketedSequence)
-   SPECEND
+   FACT(TestFailureNumberer_NextReturnsIncrementingAngleBracketedSequence)
+   BEGINPROOF
 
    TEST(TestFailureNumberer_NextReturnsIncrementingAngleBracketedSequence)
    {

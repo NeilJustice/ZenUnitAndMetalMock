@@ -3,12 +3,12 @@
 const char* const Reason = "Test of skip feature";
 
 TESTS(SkippedTestsTestClass)
-SPEC(NonSkippedTest)
-SPECX(NonSkipped1X1Test)
+FACT(NonSkippedTest)
+FACTS(NonSkipped1X1Test)
 SKIPSPEC(Reason, SkippedNormalTest)
 SKIPSPECX(Reason, SkippedTest1X1)
 SKIPSPECX(Reason, SkippedTest2X2)
-SPECEND
+BEGINPROOF
 TEST(NonSkippedTest) {}
 TEST1X1(NonSkipped1X1Test, bool, true, false) {}
 TEST(SkippedNormalTest) {}
@@ -16,16 +16,16 @@ TEST1X1(SkippedTest1X1, int, 0) {}
 TEST2X2(SkippedTest2X2, int, int, 0, 0) {}
 }; RUN(SkippedTestsTestClass)
 
-TESTS(SkippedTestClassA) SPECEND }; SKIPRUN(Reason, SkippedTestClassA)
-TESTS(SkippedTestClassB) SPECEND }; SKIPRUN(Reason, SkippedTestClassB)
+TESTS(SkippedTestClassA) BEGINPROOF }; SKIPRUN(Reason, SkippedTestClassA)
+TESTS(SkippedTestClassB) BEGINPROOF }; SKIPRUN(Reason, SkippedTestClassB)
 
 template<typename T>
-TEMPLATETESTS(SkippedTemplateTestClassA, T) SPECEND };
+TEMPLATETESTS(SkippedTemplateTestClassA, T) BEGINPROOF };
 SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassA, int)
 SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassA, double)
 
 template<template<typename...> class MapType>
-TEMPLATETESTS(SkippedTemplateTestClassB, MapType) SPECEND };
+TEMPLATETESTS(SkippedTemplateTestClassB, MapType) BEGINPROOF };
 SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, map)
 SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, unordered_map)
 

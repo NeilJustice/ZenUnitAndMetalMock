@@ -4,11 +4,11 @@
 namespace ZenUnit
 {
    TESTS(REGEX_MATCHESTests)
-   SPEC(PatternMatchesAllOfInput_DoesNotThrow)
-   SPEC(PatternDoesNotMatchAnyOfInput_Throws)
-   SPEC(PatternMatchesOnlyPartOfInput_Throws)
-   SPEC(PatternMismatchesOnCase_Throws_MessagesTestCase)
-   SPECEND
+   FACT(PatternMatchesAllOfInput_DoesNotThrow)
+   FACT(PatternDoesNotMatchAnyOfInput_Throws)
+   FACT(PatternMatchesOnlyPartOfInput_Throws)
+   FACT(PatternMismatchesOnCase_Throws_MessagesTestCase)
+   BEGINPROOF
 
    TEST(PatternMatchesAllOfInput_DoesNotThrow)
    {

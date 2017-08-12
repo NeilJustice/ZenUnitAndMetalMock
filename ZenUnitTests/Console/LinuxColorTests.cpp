@@ -4,9 +4,9 @@
 namespace ZenUnit
 {
    TESTS(LinuxColorTests)
-   SPECX(ColorToLinuxColor_ReturnsExpected)
-   SPEC(ColorToLinuxColor_NonWhiteGreenRedColor_TriggersAssertion)
-   SPECEND
+   FACTS(ColorToLinuxColor_ReturnsExpected)
+   FACT(ColorToLinuxColor_NonWhiteGreenRedColor_TriggersAssertion)
+   BEGINPROOF
 
    TEST2X2(ColorToLinuxColor_ReturnsExpected,
       const char* expectedColorCode, Color color,

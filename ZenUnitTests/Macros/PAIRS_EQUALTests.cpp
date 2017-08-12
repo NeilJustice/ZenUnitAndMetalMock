@@ -4,15 +4,15 @@
 namespace ZenUnit
 {
    TESTS(PAIRS_EQUALTests)
-   SPEC(FirstNotEqual_SecondEqual_Throws)
-   SPEC(FirstNotEqual_SecondEqual_Throws_MessagesTestCase)
-   SPEC(FirstEqual_SecondNotEqual_Throws)
-   SPEC(FirstNotEqual_SecondNotEqual_Throws)
-   SPEC(FirstEqual_SecondEqual_DoesNotThrow)
-   SPEC(FirstNotEqual_SecondEqual_Throws_UserTypeTestCase)
-   SPEC(FirstEqual_SecondNotEqual_Throws_UserTypeTestCase)
-   SPEC(FirstEqual_SecondEqual_DoesNotThrow_UserTypeTestCase)
-   SPECEND
+   FACT(FirstNotEqual_SecondEqual_Throws)
+   FACT(FirstNotEqual_SecondEqual_Throws_MessagesTestCase)
+   FACT(FirstEqual_SecondNotEqual_Throws)
+   FACT(FirstNotEqual_SecondNotEqual_Throws)
+   FACT(FirstEqual_SecondEqual_DoesNotThrow)
+   FACT(FirstNotEqual_SecondEqual_Throws_UserTypeTestCase)
+   FACT(FirstEqual_SecondNotEqual_Throws_UserTypeTestCase)
+   FACT(FirstEqual_SecondEqual_DoesNotThrow_UserTypeTestCase)
+   BEGINPROOF
 
    TEST(FirstNotEqual_SecondEqual_Throws)
    {

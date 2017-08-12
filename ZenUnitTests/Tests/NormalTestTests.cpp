@@ -8,16 +8,16 @@
 namespace ZenUnit
 {
    TESTS(NormalTestTests)
-   SPEC(NumberOfTestCases_Returns1)
-   SPEC(NonMinimalWritePostTestNameMessage_WritesSpaceArrowSpace)
-   SPECX(NonMinimalWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue)
-   SPEC(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)
-   SPEC(NewTestClass_NewsTestClass)
-   SPEC(Startup_CallsStartupOnTestClass)
-   SPEC(TestBody_CallsMemberTestFunctionBoundToTestClassPointer)
-   SPEC(Cleanup_CallsCleanupOnTestClass)
-   SPEC(DeleteTestClass_DeletesTestClass)
-   SPECEND
+   FACT(NumberOfTestCases_Returns1)
+   FACT(NonMinimalWritePostTestNameMessage_WritesSpaceArrowSpace)
+   FACTS(NonMinimalWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue)
+   FACT(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)
+   FACT(NewTestClass_NewsTestClass)
+   FACT(Startup_CallsStartupOnTestClass)
+   FACT(TestBody_CallsMemberTestFunctionBoundToTestClassPointer)
+   FACT(Cleanup_CallsCleanupOnTestClass)
+   FACT(DeleteTestClass_DeletesTestClass)
+   BEGINPROOF
 
    unique_ptr<NormalTest<TestingTestClass>> _normalTest;
    const string TestClassName = Random<string>();

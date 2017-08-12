@@ -59,9 +59,9 @@ public:
 };
 
 TESTS(ClassUnderTestTests)
-SPEC(Constructor_NewsComponentA)
-SPECX(InteractWithComponentA_CallsEveryFunction_ReturnsSumOfReturnValues)
-SPECEND
+FACT(Constructor_NewsComponentA)
+FACTS(InteractWithComponentA_CallsEveryFunction_ReturnsSumOfReturnValues)
+BEGINPROOF
 
 ClassUnderTest _classUnderTest;
 ComponentAMock* _componentAMock;

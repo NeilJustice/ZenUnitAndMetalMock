@@ -22,13 +22,13 @@ struct ZenUnitEqualizer<NonDefaultConstructible>
 namespace ZenMock
 {
    TESTS(ValueReturnerTests)
-   SPEC(DefaultConstructor_SetsZenMockedFunctionSignature_SetsReturnValueIndexTo0)
-   SPEC(ZenMockNextReturnValue_DefConReturnType_NoReturnValuesSpecified_ReturnsDefaultValue)
-   SPEC(ZenMockNextReturnValue_DefConReturnType_ReturnValuesSpecified_ReturnsValuesThenLastValueThereafter)
-   SPEC(ZenMockNextReturnValue_NonDefConReturnType_NoReturnValuesSpecified_Throws)
-   SPEC(ZenMockNextReturnValue_NonDefConReturnType_ReturnValuesPreviouslySpecified_ReturnsValuesThenLastValueTherafter)
-   SPEC(ZenMockAddContainerReturnValues_ThrowsIfReturnValuesArgumentEmpty)
-   SPECEND
+   FACT(DefaultConstructor_SetsZenMockedFunctionSignature_SetsReturnValueIndexTo0)
+   FACT(ZenMockNextReturnValue_DefConReturnType_NoReturnValuesSpecified_ReturnsDefaultValue)
+   FACT(ZenMockNextReturnValue_DefConReturnType_ReturnValuesSpecified_ReturnsValuesThenLastValueThereafter)
+   FACT(ZenMockNextReturnValue_NonDefConReturnType_NoReturnValuesSpecified_Throws)
+   FACT(ZenMockNextReturnValue_NonDefConReturnType_ReturnValuesPreviouslySpecified_ReturnsValuesThenLastValueTherafter)
+   FACT(ZenMockAddContainerReturnValues_ThrowsIfReturnValuesArgumentEmpty)
+   BEGINPROOF
 
    const string ZenMockedFunctionSignature = "ZenMockedFunctionSignature";
 

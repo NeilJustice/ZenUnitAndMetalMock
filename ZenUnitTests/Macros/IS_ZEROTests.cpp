@@ -4,14 +4,14 @@
 namespace ZenUnit
 {
    TESTS(IS_ZEROTests)
-   SPEC(ValueIsZero_DoesNotThrow)
-   SPECX(IntNotZero_Throws)
-   SPECX(DoubleNotZero_Throws)
-   SPEC(UserTypeZero_DoesNotThrow)
-   SPEC(UserTypeNotZero_Throws_MessagesTestCase)
-   SPEC(IntializerConstructable_IsZero_DoesNotThrow)
-   SPEC(IntializerConstructable_IsNotZero_Throws)
-   SPECEND
+   FACT(ValueIsZero_DoesNotThrow)
+   FACTS(IntNotZero_Throws)
+   FACTS(DoubleNotZero_Throws)
+   FACT(UserTypeZero_DoesNotThrow)
+   FACT(UserTypeNotZero_Throws_MessagesTestCase)
+   FACT(IntializerConstructable_IsZero_DoesNotThrow)
+   FACT(IntializerConstructable_IsNotZero_Throws)
+   BEGINPROOF
 
    struct IntializerConstructable
    {

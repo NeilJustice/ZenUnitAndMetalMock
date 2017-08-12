@@ -4,9 +4,9 @@
 namespace ZenUnit
 {
    TESTS(FAILTests)
-   SPEC(StringLiteralBecause_Throws)
-   SPEC(StringVariableBecause_MessagesTestCase_Throws)
-   SPECEND
+   FACT(StringLiteralBecause_Throws)
+   FACT(StringVariableBecause_MessagesTestCase_Throws)
+   BEGINPROOF
 
    TEST(StringLiteralBecause_Throws)
    {

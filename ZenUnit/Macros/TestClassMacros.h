@@ -32,11 +32,11 @@
          s_testClassNamePossiblyTemplatized = testClassNamePossiblyTemplatized; \
          std::vector<std::unique_ptr<ZenUnit::Test>> tests;
 
-#define SPEC(HighQualityTestName) \
+#define FACT(HighQualityTestName) \
    tests.emplace_back(new ZenUnit::NormalTest<TestClassType>( \
       testClassNamePossiblyTemplatized, #HighQualityTestName, &TestClassType::HighQualityTestName));
 
-#define SPECX(HighQualityTestName) \
+#define FACTS(HighQualityTestName) \
    tests.emplace_back(new ZenUnit::SpecSectionTestNXN<TestClassType>( \
       testClassNamePossiblyTemplatized, #HighQualityTestName, PMFTOKEN(&TestClassType::HighQualityTestName)));
 
@@ -45,7 +45,7 @@
 #define SKIPSPEC(Reason, HighQualityTestName) DOSKIP(Reason, HighQualityTestName)
 #define SKIPSPECX(Reason, HighQualityTestName) DOSKIP(Reason, HighQualityTestName)
 
-#define SPECEND return tests; }
+#define BEGINPROOF return tests; }
 #define STARTUP void Startup() override
 #define CLEANUP void Cleanup() override
 

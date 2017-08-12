@@ -6,9 +6,9 @@ namespace ZenUnit
 {
    template<typename TKey, typename TValue>
    TEMPLATETESTS(MapZenUnitPrinterTests, TKey, TValue)
-   SPEC(Print_Map_PrintsPlaceholder)
-   SPEC(Print_UnorderedMap_PrintsPlaceholder)
-   SPECEND
+   FACT(Print_Map_PrintsPlaceholder)
+   FACT(Print_UnorderedMap_PrintsPlaceholder)
+   BEGINPROOF
 
    TEST(Print_Map_PrintsPlaceholder)
    {

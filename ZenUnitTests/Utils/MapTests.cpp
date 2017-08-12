@@ -7,14 +7,14 @@ namespace ZenUnit
       template<typename...>
       class MapType, typename KeyType, typename ValueType>
    TEMPLATETESTS(MapTests, MapType, KeyType, ValueType)
-   SPEC(InsertNoOverwrite_KeyAlreadyInMap_Throws)
-   SPEC(InsertNoOverwrite_KeyNotAlreadyInMap_InsertsKeyAndValue_ReturnsCostPointerToInsertedValue);
-   SPEC(At_KeyNotPresentInMap_Throws)
-   SPEC(At_KeyPresentInMap_ReturnsConstReferenceToValue)
-   SPEC(ContainsKeyWithValue_MapDoesNotContainKey_ReturnsFalseAndFalse)
-   SPEC(ContainsKeyWithValue_MapContainsKeyWithMismatchingValue_ReturnsTrueAndFalse)
-   SPEC(ContainsKeyWithValue_MapContainsKeyWithMatchingValue_ReturnsTrueAndTrue)
-   SPECEND
+   FACT(InsertNoOverwrite_KeyAlreadyInMap_Throws)
+   FACT(InsertNoOverwrite_KeyNotAlreadyInMap_InsertsKeyAndValue_ReturnsCostPointerToInsertedValue);
+   FACT(At_KeyNotPresentInMap_Throws)
+   FACT(At_KeyPresentInMap_ReturnsConstReferenceToValue)
+   FACT(ContainsKeyWithValue_MapDoesNotContainKey_ReturnsFalseAndFalse)
+   FACT(ContainsKeyWithValue_MapContainsKeyWithMismatchingValue_ReturnsTrueAndFalse)
+   FACT(ContainsKeyWithValue_MapContainsKeyWithMatchingValue_ReturnsTrueAndTrue)
+   BEGINPROOF
 
    MapType<KeyType, ValueType> _map;
 

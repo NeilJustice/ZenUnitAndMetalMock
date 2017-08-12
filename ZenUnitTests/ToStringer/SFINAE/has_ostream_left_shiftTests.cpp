@@ -6,9 +6,9 @@
 namespace ZenUnit
 {
    TESTS(has_ostream_left_shiftTests)
-   SPEC(value_IsFalseIfFreeFunctionOStreamInsertionOperatorNotDefinedForType)
-   SPEC(value_IsTrueIfFreeFunctionOStreamInsertionOperatorIsDefinedForType)
-   SPECEND
+   FACT(value_IsFalseIfFreeFunctionOStreamInsertionOperatorNotDefinedForType)
+   FACT(value_IsTrueIfFreeFunctionOStreamInsertionOperatorIsDefinedForType)
+   BEGINPROOF
 
    TEST(value_IsFalseIfFreeFunctionOStreamInsertionOperatorNotDefinedForType)
    {

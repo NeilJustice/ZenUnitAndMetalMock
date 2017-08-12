@@ -8,16 +8,16 @@ class TypeTestsDerived : public TypeTestsBase {};
 namespace ZenUnit
 {
    TESTS(TypeTests)
-   SPEC(GetName_NonClassNonStructType_ReturnsTypeName)
-   SPEC(GetName_ClassType_ReturnsTypeNameMinusClassSpace)
-   SPEC(GetName_StructType_ReturnsTypeNameMinusStructSpace)
-   SPEC(GetName_DeclaredAndRuntimeTypeIsDerived_ReturnsDerived)
-   SPEC(GetName_ThrownExceptionSubclass_ReturnsSubclassNameAndNotException)
-   SPEC(GetNameT_NonClassNonStructType_ReturnsTypeName)
-   SPEC(GetNameT_ClassType_ReturnsTypeNameMinusClassSpace)
-   SPEC(GetNameT_StructType_ReturnsTypeNameMinusStructSpace)
-   SPEC(GetNameT_ThrownExceptionSubclass_ReturnsBaseClassNameAndNotSubclassName)
-   SPECEND
+   FACT(GetName_NonClassNonStructType_ReturnsTypeName)
+   FACT(GetName_ClassType_ReturnsTypeNameMinusClassSpace)
+   FACT(GetName_StructType_ReturnsTypeNameMinusStructSpace)
+   FACT(GetName_DeclaredAndRuntimeTypeIsDerived_ReturnsDerived)
+   FACT(GetName_ThrownExceptionSubclass_ReturnsSubclassNameAndNotException)
+   FACT(GetNameT_NonClassNonStructType_ReturnsTypeName)
+   FACT(GetNameT_ClassType_ReturnsTypeNameMinusClassSpace)
+   FACT(GetNameT_StructType_ReturnsTypeNameMinusStructSpace)
+   FACT(GetNameT_ThrownExceptionSubclass_ReturnsBaseClassNameAndNotSubclassName)
+   BEGINPROOF
 
    class C {};
    struct S {};

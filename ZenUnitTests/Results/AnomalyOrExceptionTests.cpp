@@ -3,9 +3,9 @@
 #include "ZenUnit/Utils/Random.h"
 
 TESTS(AnomalyOrExceptionTests)
-SPEC(AnomalyConstructor_SetsAnomaly)
-SPEC(ExceptionTypeNameAndExceptionWhatConstructor_SetsExceptionTypeNameAndExceptionWhat)
-SPECEND
+FACT(AnomalyConstructor_SetsAnomaly)
+FACT(ExceptionTypeNameAndExceptionWhatConstructor_SetsExceptionTypeNameAndExceptionWhat)
+BEGINPROOF
 
 TEST(AnomalyConstructor_SetsAnomaly)
 {

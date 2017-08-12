@@ -10,19 +10,19 @@
 namespace ZenUnit
 {
    TESTS(TestTests)
-   SPEC(TwoArgConstructor_NewsComponents_SetsFullName_NameFunctionReturnsTestName)
-   SPECX(RunTestCase_ConstructorFails_DoesNotCallSubsequentTestPhases_ReturnsTestResultConstructorFail)
-   SPECX(RunTestCase_ConstructorSucceeds_StartupFails_DoesNotCallTest_DoesNotCallCleanup_CallsDestructor_ReturnsTestResultStartupFail)
-   SPEC(RunTestCase_AllTestPhasesSucceed_ReturnsExpectedTestResult)
-   SPEC(NonMinimalWritePostTestNameMessage_DoesNothing)
-   SPEC(PrintPostTestCompletionMessage_DoesNothing)
-   SPEC(StaticCallNewTestClass_CallsNewTestClass)
-   SPEC(StaticCallStartup_CallsStartup)
-   SPEC(StaticTestBody_CallsTestBody)
-   SPEC(StaticCallCleanup_CallsCleanup)
-   SPEC(StaticCallDeleteTestClass_CallsDeleteTestClass)
-   SPEC(PseudoAbstractFunctions_DoNothingOrReturn0)
-   SPECEND
+   FACT(TwoArgConstructor_NewsComponents_SetsFullName_NameFunctionReturnsTestName)
+   FACTS(RunTestCase_ConstructorFails_DoesNotCallSubsequentTestPhases_ReturnsTestResultConstructorFail)
+   FACTS(RunTestCase_ConstructorSucceeds_StartupFails_DoesNotCallTest_DoesNotCallCleanup_CallsDestructor_ReturnsTestResultStartupFail)
+   FACT(RunTestCase_AllTestPhasesSucceed_ReturnsExpectedTestResult)
+   FACT(NonMinimalWritePostTestNameMessage_DoesNothing)
+   FACT(PrintPostTestCompletionMessage_DoesNothing)
+   FACT(StaticCallNewTestClass_CallsNewTestClass)
+   FACT(StaticCallStartup_CallsStartup)
+   FACT(StaticTestBody_CallsTestBody)
+   FACT(StaticCallCleanup_CallsCleanup)
+   FACT(StaticCallDeleteTestClass_CallsDeleteTestClass)
+   FACT(PseudoAbstractFunctions_DoNothingOrReturn0)
+   BEGINPROOF
 
    unique_ptr<Test> _test;
    TryCatchCallerMock* _tryCatchCallerMock;

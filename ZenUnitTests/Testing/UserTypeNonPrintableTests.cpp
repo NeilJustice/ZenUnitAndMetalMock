@@ -5,12 +5,12 @@
 namespace ZenUnit
 {
    TESTS(UserTypeNonPrintableTests)
-   SPEC(DefaultConstructor_SetsXTo0)
-   SPEC(OneArgConstructor_SetsX)
-   SPEC(OperatorLessThan_ReturnsTrueIfLeftXLessThanRightX)
-   SPEC(OperatorEquals_ReturnsTrueIfLeftXEqualsRightX)
-   SPEC(has_ostream_left_shift_ValueEqualsFalse)
-   SPECEND
+   FACT(DefaultConstructor_SetsXTo0)
+   FACT(OneArgConstructor_SetsX)
+   FACT(OperatorLessThan_ReturnsTrueIfLeftXLessThanRightX)
+   FACT(OperatorEquals_ReturnsTrueIfLeftXEqualsRightX)
+   FACT(has_ostream_left_shift_ValueEqualsFalse)
+   BEGINPROOF
 
    TEST(DefaultConstructor_SetsXTo0)
    {

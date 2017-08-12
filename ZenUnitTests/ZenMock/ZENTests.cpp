@@ -5,9 +5,9 @@
 namespace ZenMock
 {
    TESTS(ZENTests)
-   SPEC(ZENWrappedAssertionDoesNotThrow_NothingHappens)
-   SPEC(ZENWrappedAssertionThrows_RethrowsZENWrappedAnomaly)
-   SPECEND
+   FACT(ZENWrappedAssertionDoesNotThrow_NothingHappens)
+   FACT(ZENWrappedAssertionThrows_RethrowsZENWrappedAnomaly)
+   BEGINPROOF
 
    TEST(ZENWrappedAssertionDoesNotThrow_NothingHappens)
    {

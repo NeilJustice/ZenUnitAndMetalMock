@@ -5,23 +5,23 @@
 namespace ZenMock
 {
    TESTS(OneArgMockerTests)
-   SPEC(Constructor_SetsFields)
-   SPEC(Expect_AlreadyExpected_Throws)
-   SPEC(Expect_NotAlreadyExpected_SetsExpectedTrue)
-   SPEC(ExpectAndThrow_ExpectedTrue_Throws)
-   SPEC(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
-   SPEC(ZenMockIt_ExpectedFalse_Throws)
-   SPEC(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
+   FACT(Constructor_SetsFields)
+   FACT(Expect_AlreadyExpected_Throws)
+   FACT(Expect_NotAlreadyExpected_SetsExpectedTrue)
+   FACT(ExpectAndThrow_ExpectedTrue_Throws)
+   FACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   FACT(ZenMockIt_ExpectedFalse_Throws)
+   FACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
 
-   SPECX(AssertCalledOnceWith_SetsAssertedTrue_FunctionWasCalledOnceWithExpectedArg_DoesNotThrow)
-   SPEC(AssertCalledNTimesWith_NIsZero_Throws)
-   SPECX(AssertCalledNTimesWith_SetsAssertedTrue_NDiffersFromActualCallCount_Throws)
-   SPECX(AssertCalledNTimesWith_SetsAssertedTrue_NEqualToNumberOfCalls_ThrowsIfArgsDoNotMatch)
-   SPEC(AssertCalls_ExpectedCallsSize0_Throws_DoesNotSetAssertedTrue)
-   SPEC(AssertCalls_SetsAssertedTrue_ExpectedCallsSizeNon0AndNotEqualToActualCallsSize_Throws_DoesNotCopyTheExpectedArg)
-   SPEC(AssertCalls_SetsAssertedTrue_ExpectedCallsSizeNon0AndEqualToNumberOfCalls_ArgsNotEqual_Throws_DoesNotCopyTheExpectedArg)
-   SPEC(AssertCalls_SetsAssertedTrue_ExpectedCallsSizeNon0AndEqualToNumberOfCalls_ArgsEqual_DoesNotThrow_DoesNotCopyTheExpectedArg)
-   SPECEND
+   FACTS(AssertCalledOnceWith_SetsAssertedTrue_FunctionWasCalledOnceWithExpectedArg_DoesNotThrow)
+   FACT(AssertCalledNTimesWith_NIsZero_Throws)
+   FACTS(AssertCalledNTimesWith_SetsAssertedTrue_NDiffersFromActualCallCount_Throws)
+   FACTS(AssertCalledNTimesWith_SetsAssertedTrue_NEqualToNumberOfCalls_ThrowsIfArgsDoNotMatch)
+   FACT(AssertCalls_ExpectedCallsSize0_Throws_DoesNotSetAssertedTrue)
+   FACT(AssertCalls_SetsAssertedTrue_ExpectedCallsSizeNon0AndNotEqualToActualCallsSize_Throws_DoesNotCopyTheExpectedArg)
+   FACT(AssertCalls_SetsAssertedTrue_ExpectedCallsSizeNon0AndEqualToNumberOfCalls_ArgsNotEqual_Throws_DoesNotCopyTheExpectedArg)
+   FACT(AssertCalls_SetsAssertedTrue_ExpectedCallsSizeNon0AndEqualToNumberOfCalls_ArgsEqual_DoesNotThrow_DoesNotCopyTheExpectedArg)
+   BEGINPROOF
 
    using MockerType = OneArgMocker<int, ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;

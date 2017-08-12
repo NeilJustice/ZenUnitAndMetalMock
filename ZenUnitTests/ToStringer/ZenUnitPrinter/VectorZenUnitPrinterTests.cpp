@@ -5,8 +5,8 @@
 namespace ZenUnit
 {
    TESTS(VectorZenUnitPrinterTests)
-   SPEC(ZenUnitPrinter_Print_PrintsPlaceholderText)
-   SPECEND
+   FACT(ZenUnitPrinter_Print_PrintsPlaceholderText)
+   BEGINPROOF
 
    TEST(ZenUnitPrinter_Print_PrintsPlaceholderText)
    {

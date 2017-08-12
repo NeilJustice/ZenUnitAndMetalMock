@@ -10,21 +10,21 @@
 namespace ZenUnit
 {
    TESTS(TestClassResultTests)
-   SPEC(CopyConstructor_CopiesForEacherAndTestResults)
-   SPEC(AssignmentOperator_CopiesForEacherAndTestResults)
-   SPEC(AssignmentOperator_SelfAssignment_NothingHappens)
-   SPEC(MoveConstructor_MovesForEacherAndTestResults)
-   SPEC(MoveAssignmentOperator_MovesForEacherAndTestResults)
-   SPEC(AddTestResults_AppendTestResultsToEndOfTestResultsVector)
-   SPEC(NumberOfFailedTestCases_ReturnsNumberOfNonSuccessTestsInTestResultsVector)
-   SPEC(Milliseconds_EmptyTestResultsVector_Returns0)
-   SPEC(Milliseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMilliseconds)
-   SPEC(PrintTestFailures_PrintsJustTestFailedToConsole)
-   SPEC(NonMinimalPrintResultLine_0FailedTest_WritesOKInGreen)
-   SPECX(NonMinimalPrintResultLine_1OrMoreFailedTests_WritesFailedInRed)
-   SPEC(PrintTestResultIfFailure_CallsTestResultPrintIfFailure)
-   SPEC(ZenUnitEqualizer_ThrowsIfTestResultsNotEqual)
-   SPECEND
+   FACT(CopyConstructor_CopiesForEacherAndTestResults)
+   FACT(AssignmentOperator_CopiesForEacherAndTestResults)
+   FACT(AssignmentOperator_SelfAssignment_NothingHappens)
+   FACT(MoveConstructor_MovesForEacherAndTestResults)
+   FACT(MoveAssignmentOperator_MovesForEacherAndTestResults)
+   FACT(AddTestResults_AppendTestResultsToEndOfTestResultsVector)
+   FACT(NumberOfFailedTestCases_ReturnsNumberOfNonSuccessTestsInTestResultsVector)
+   FACT(Milliseconds_EmptyTestResultsVector_Returns0)
+   FACT(Milliseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMilliseconds)
+   FACT(PrintTestFailures_PrintsJustTestFailedToConsole)
+   FACT(NonMinimalPrintResultLine_0FailedTest_WritesOKInGreen)
+   FACTS(NonMinimalPrintResultLine_1OrMoreFailedTests_WritesFailedInRed)
+   FACT(PrintTestResultIfFailure_CallsTestResultPrintIfFailure)
+   FACT(ZenUnitEqualizer_ThrowsIfTestResultsNotEqual)
+   BEGINPROOF
 
    TestClassResult _testClassResult;
 

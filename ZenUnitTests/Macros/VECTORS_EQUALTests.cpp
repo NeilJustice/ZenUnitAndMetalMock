@@ -5,13 +5,13 @@ namespace ZenUnit
 {
    template<typename T>
    TEMPLATETESTS(VECTORS_EQUALTests, T)
-   SPEC(VectorSizesNotEqual_Throws)
-   SPEC(VectorSizesNotEqual_Throws_MessagesTestCase)
-   SPEC(VectorSizesEqual_ElementsNotEqualAtIndex0_Throws_MessagesTestCase)
-   SPEC(VectorSizesEqual_ElementsNotEqualAtIndex1_Throws)
-   SPEC(TwoEmptyVectors_DoesNotThrow)
-   SPEC(VectorSizesEqual_VectorElementsEqual_DoesNotThrow)
-   SPECEND
+   FACT(VectorSizesNotEqual_Throws)
+   FACT(VectorSizesNotEqual_Throws_MessagesTestCase)
+   FACT(VectorSizesEqual_ElementsNotEqualAtIndex0_Throws_MessagesTestCase)
+   FACT(VectorSizesEqual_ElementsNotEqualAtIndex1_Throws)
+   FACT(TwoEmptyVectors_DoesNotThrow)
+   FACT(VectorSizesEqual_VectorElementsEqual_DoesNotThrow)
+   BEGINPROOF
 
    const string MessageA = "A", MessageB = "B";
 

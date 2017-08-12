@@ -4,13 +4,13 @@
 namespace ZenUnit
 {
    TESTS(CONTAINSTests)
-   SPEC(Vector_DoesContainElement_DoesNotThrow)
-   SPEC(Vector_DoesNotContainElement_Throws)
-   SPEC(Map_DoesContainElement_DoesNotThrow)
-   SPEC(Map_DoesNotContainElement_Throws)
-   SPEC(Set_DoesContainElement_DoesNotThrow)
-   SPEC(Set_DoesNotContainElement_Throws_MessagesTestCase)
-   SPECEND
+   FACT(Vector_DoesContainElement_DoesNotThrow)
+   FACT(Vector_DoesNotContainElement_Throws)
+   FACT(Map_DoesContainElement_DoesNotThrow)
+   FACT(Map_DoesNotContainElement_Throws)
+   FACT(Set_DoesContainElement_DoesNotThrow)
+   FACT(Set_DoesNotContainElement_Throws_MessagesTestCase)
+   BEGINPROOF
 
    TEST(Vector_DoesContainElement_DoesNotThrow)
    {

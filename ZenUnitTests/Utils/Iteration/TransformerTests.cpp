@@ -6,13 +6,13 @@ namespace ZenUnit
 {
    template<typename T, typename TransformedT>
    TEMPLATETESTS(TransformerTests, T, TransformedT)
-   SPEC(Transform_EmptyRange_DoesNothing)
-   SPEC(Transform_OneItemRange_CallsTransformerOnce)
-   SPEC(Transform_TwoItemRange_CallsTransformerTwice)
-   SPEC(RandomTransform_EmptyRange_DoesNothing)
-   SPEC(RandomTransform_OneItemRange_CallsTransformerOnce)
-   SPEC(RandomTransform_ThreeItemRange_CallsTransformerThreeTimesInRandomOrder)
-   SPECEND
+   FACT(Transform_EmptyRange_DoesNothing)
+   FACT(Transform_OneItemRange_CallsTransformerOnce)
+   FACT(Transform_TwoItemRange_CallsTransformerTwice)
+   FACT(RandomTransform_EmptyRange_DoesNothing)
+   FACT(RandomTransform_OneItemRange_CallsTransformerOnce)
+   FACT(RandomTransform_ThreeItemRange_CallsTransformerThreeTimesInRandomOrder)
+   BEGINPROOF
 
    using TransformerType = Transformer<T, TransformedT>;
    TransformerType _transformer;

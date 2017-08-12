@@ -21,8 +21,8 @@ struct ZenUnitEqualizer<tm>
 namespace ZenUnit
 {
    TESTS(WatchTests)
-   SPECX(TimeZoneDateTimeNow_ReturnsLocalTimeNowWithTimeZoneAndTodaysDate)
-   SPECEND
+   FACTS(TimeZoneDateTimeNow_ReturnsLocalTimeNowWithTimeZoneAndTodaysDate)
+   BEGINPROOF
 
    struct WatchSelfMocked : public Zen::Mock<ZenUnit::Watch>
    {

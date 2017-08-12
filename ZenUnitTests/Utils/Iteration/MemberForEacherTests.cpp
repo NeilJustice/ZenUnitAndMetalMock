@@ -8,11 +8,11 @@ namespace ZenUnit
       class IterableType,
       typename ElementType>
    TEMPLATETESTS(MemberForEacherTests, IterableType, ElementType)
-   SPEC(ForEach_EmptyIterable_DoesNotCallFunc)
-   SPEC(ForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
-   SPEC(ForEach_TwoItemIterable_CallsThisPointerBoundFuncTwice)
-   SPEC(CodeCoverage_ClassTypeFunc)
-   SPECEND
+   FACT(ForEach_EmptyIterable_DoesNotCallFunc)
+   FACT(ForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
+   FACT(ForEach_TwoItemIterable_CallsThisPointerBoundFuncTwice)
+   FACT(CodeCoverage_ClassTypeFunc)
+   BEGINPROOF
 
    class ClassType
    {

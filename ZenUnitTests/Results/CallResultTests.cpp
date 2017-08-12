@@ -4,10 +4,10 @@
 namespace ZenUnit
 {
    TESTS(CallResultTests)
-   SPEC(DefaultConstructor_SetsFieldsTo0)
-   SPEC(TestPhaseConstructor_SetsTestPhase_SetsOtherFieldsTo0)
-   SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   SPECEND
+   FACT(DefaultConstructor_SetsFieldsTo0)
+   FACT(TestPhaseConstructor_SetsTestPhase_SetsOtherFieldsTo0)
+   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   BEGINPROOF
 
    TEST(DefaultConstructor_SetsFieldsTo0)
    {

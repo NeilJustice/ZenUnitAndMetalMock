@@ -4,9 +4,9 @@
 namespace ZenMock
 {
    TESTS(SignatureTests)
-   SPECX(Function_ReturnsFunctionSignature)
-   SPECX(FunctionPointer_ReturnsExpected)
-   SPECEND
+   FACTS(Function_ReturnsFunctionSignature)
+   FACTS(FunctionPointer_ReturnsExpected)
+   BEGINPROOF
 
    TEST6X6(Function_ReturnsFunctionSignature,
       string expectedFunctionSignature,

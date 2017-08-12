@@ -7,20 +7,20 @@
 namespace ZenUnit
 {
    TESTS(TestResultTests)
-   SPEC(DefaultConstructor_SetsFieldsTo0)
-   SPECX(ConstructorFail_ReturnsExpectedTestResult)
-   SPECX(StartupFail_ReturnsExpectedTestResult)
-   SPEC(CtorDtorSuccess_ReturnsExpectedTestResult);
-   SPECX(SixArgConstructor_SetsFields)
-   SPECX(NonMinimalWriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess)
-   SPEC(PrintIfFailure_Success_PrintsNothing)
-   SPECX(PrintIfFailure_Anomaly_PrintsExpected)
-   SPECX(PrintIfFailure_Exception_PrintsExpected)
-   SPEC(PrintIfFailure_SuccessButPastDeadline_PrintsExpected)
-   SPEC(PrintIfFailure_InvalidOutcome_Throws)
-   SPECX(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseIndexPlus1IfTestCaseIndexNotMaxValue)
-   SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   SPECEND
+   FACT(DefaultConstructor_SetsFieldsTo0)
+   FACTS(ConstructorFail_ReturnsExpectedTestResult)
+   FACTS(StartupFail_ReturnsExpectedTestResult)
+   FACT(CtorDtorSuccess_ReturnsExpectedTestResult);
+   FACTS(SixArgConstructor_SetsFields)
+   FACTS(NonMinimalWriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess)
+   FACT(PrintIfFailure_Success_PrintsNothing)
+   FACTS(PrintIfFailure_Anomaly_PrintsExpected)
+   FACTS(PrintIfFailure_Exception_PrintsExpected)
+   FACT(PrintIfFailure_SuccessButPastDeadline_PrintsExpected)
+   FACT(PrintIfFailure_InvalidOutcome_Throws)
+   FACTS(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseIndexPlus1IfTestCaseIndexNotMaxValue)
+   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   BEGINPROOF
 
    TestResult _testResult;
    CallResult ConstructorCallResult;

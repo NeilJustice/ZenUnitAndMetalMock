@@ -4,11 +4,11 @@
 namespace ZenUnit
 {
    TESTS(TestResultFactoryTests)
-   SPEC(ConstructorFail_ReturnsTestResultConstructorFail)
-   SPEC(StartupFail_ReturnsTestResultStartupFail)
-   SPEC(CtorDtorSuccess_ReturnsTestResultCtorDtorSuccess)
-   SPEC(FullConstructor_ReturnsTestResultSixArgCtor)
-   SPECEND
+   FACT(ConstructorFail_ReturnsTestResultConstructorFail)
+   FACT(StartupFail_ReturnsTestResultStartupFail)
+   FACT(CtorDtorSuccess_ReturnsTestResultCtorDtorSuccess)
+   FACT(FullConstructor_ReturnsTestResultSixArgCtor)
+   BEGINPROOF
 
    TestResultFactory _testResultFactory;
    const FullTestName FullTestNameValue = FullTestName("TestClass", "Test", 0);

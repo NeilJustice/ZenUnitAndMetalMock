@@ -4,9 +4,9 @@
 namespace ZenUnit
 {
    TESTS(WindowsColorTests)
-   SPECX(ColorToWindowsColor_ReturnsExpectedWindowsColor)
-   SPEC(ColorToWindowsColor_NonWhiteGreenRedColor_TriggersAssertion)
-   SPECEND
+   FACTS(ColorToWindowsColor_ReturnsExpectedWindowsColor)
+   FACT(ColorToWindowsColor_NonWhiteGreenRedColor_TriggersAssertion)
+   BEGINPROOF
 
    TEST2X2(ColorToWindowsColor_ReturnsExpectedWindowsColor,
       WindowsColor expectedWindowsColor, Color color, 

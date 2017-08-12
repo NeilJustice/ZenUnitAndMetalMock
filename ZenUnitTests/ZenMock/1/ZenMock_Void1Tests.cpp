@@ -30,7 +30,7 @@ namespace ZenMock
    };
 
    TESTS(ZenMock_Void1Tests)
-   SPECEND
+   BEGINPROOF
 
    Void1FunctionsMock _mock;
    ZENMOCK_VOID1_FREE(Void1, int)

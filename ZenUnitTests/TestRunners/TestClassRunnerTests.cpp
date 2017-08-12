@@ -5,8 +5,8 @@
 namespace ZenUnit
 {
    TESTS(TestClassRunnerTests)
-   SPECX(OperatorLessThan_ReturnsTrueIfTestClassNameStrcmpResultIsLessThanZero)
-   SPECEND
+   FACTS(OperatorLessThan_ReturnsTrueIfTestClassNameStrcmpResultIsLessThanZero)
+   BEGINPROOF
 
    TEST3X3(OperatorLessThan_ReturnsTrueIfTestClassNameStrcmpResultIsLessThanZero,
       bool expectedIsLessThan, const char* leftTestClassName, const char* rightTestClassName,

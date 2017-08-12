@@ -5,9 +5,9 @@
 namespace ZenUnit
 {
    TESTS(has_to_stringTests)
-   SPEC(HasStdToString_ValueIsTrue)
-   SPEC(DoesNotHaveStdToSTring_ValueIsFalse)
-   SPECEND
+   FACT(HasStdToString_ValueIsTrue)
+   FACT(DoesNotHaveStdToSTring_ValueIsFalse)
+   BEGINPROOF
 
    TEST(HasStdToString_ValueIsTrue)
    {

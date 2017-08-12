@@ -4,8 +4,8 @@
 namespace ZenMock
 {
    TESTS(UnsupportedAssertCalledZeroTimesExceptionTests)
-   SPEC(Constructor_SetsWhat_ClassIsSubclassOfZenMockException)
-   SPECEND
+   FACT(Constructor_SetsWhat_ClassIsSubclassOfZenMockException)
+   BEGINPROOF
 
    TEST(Constructor_SetsWhat_ClassIsSubclassOfZenMockException)
    {

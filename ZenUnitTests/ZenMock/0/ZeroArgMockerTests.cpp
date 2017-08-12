@@ -4,18 +4,18 @@
 namespace ZenMock
 {
    TESTS(ZeroArgMockerTests)
-   SPEC(Constructor_SetsFields)
-   SPEC(Expect_AlreadyExpected_Throws)
-   SPEC(Expect_NotAlreadyExpected_SetsExpectedTrue)
-   SPEC(ExpectAndThrow_ExpectedTrue_Throws)
-   SPEC(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
-   SPEC(ZenMockIt_ExpectedFalse_Throws)
-   SPEC(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
+   FACT(Constructor_SetsFields)
+   FACT(Expect_AlreadyExpected_Throws)
+   FACT(Expect_NotAlreadyExpected_SetsExpectedTrue)
+   FACT(ExpectAndThrow_ExpectedTrue_Throws)
+   FACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   FACT(ZenMockIt_ExpectedFalse_Throws)
+   FACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
 
-   SPECX(AssertCalledOnce_SetsAssertedTrue_FunctionWasCalledOnce_DoesNotThrow)
-   SPEC(AssertCalledNTimes_NIsZero_Throws)
-   SPECX(AssertCalledNTimes_SetsAssertedTrue_FunctionWasCalledNTimes_DoesNotThrow)
-   SPECEND
+   FACTS(AssertCalledOnce_SetsAssertedTrue_FunctionWasCalledOnce_DoesNotThrow)
+   FACT(AssertCalledNTimes_NIsZero_Throws)
+   FACTS(AssertCalledNTimes_SetsAssertedTrue_FunctionWasCalledNTimes_DoesNotThrow)
+   BEGINPROOF
 
    using MockerType = ZeroArgMocker<ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;

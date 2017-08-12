@@ -6,9 +6,9 @@ namespace ZenUnit
 {
    template<typename T>
    TEMPLATETESTS(SetZenUnitPrinterTests, T)
-   SPEC(Print_Set_PrintsPlaceholder)
-   SPEC(Print_UnorderedSet_PrintsPlaceholder)
-   SPECEND
+   FACT(Print_Set_PrintsPlaceholder)
+   FACT(Print_UnorderedSet_PrintsPlaceholder)
+   BEGINPROOF
 
    TEST(Print_Set_PrintsPlaceholder)
    {

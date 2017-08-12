@@ -5,10 +5,10 @@ namespace ZenMock
 {
    template<typename ExceptionType>
    TEMPLATETESTS(TemplateThrowableTests, ExceptionType)
-   SPEC(New_ReturnsNewInstanceOfSelfAsThrowablePointerWithExceptionCreatedFromExceptionArgs)
-   SPEC(Throw_ExceptionIsNullptr_DoesNothing)
-   SPEC(Throw_ExceptionIsNotNullptr_ThrowsTheException)
-   SPECEND
+   FACT(New_ReturnsNewInstanceOfSelfAsThrowablePointerWithExceptionCreatedFromExceptionArgs)
+   FACT(Throw_ExceptionIsNullptr_DoesNothing)
+   FACT(Throw_ExceptionIsNotNullptr_ThrowsTheException)
+   BEGINPROOF
 
    TemplateThrowable<ExceptionType> _templateThrowable;
    const string ExceptionWhat = "ExceptionWhat";

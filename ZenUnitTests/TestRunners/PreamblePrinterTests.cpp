@@ -9,11 +9,11 @@
 namespace ZenUnit
 {
    TESTS(PreamblePrinterTests)
-   SPEC(Constructor_NewsConsoleAndWatch)
-   SPEC(PrintOpeningThreeLines_PrintsCommandLineAndTimeZoneAndTestAndTestClassCounts)
-   SPECX(MakeThirdLinePrefix_ReturnsNumberOfTestClassesBeingRunAndMachineName)
-   SPECX(MakeThirdLineSuffix_ReturnsRandomSeedIfRandomModeOtherwiseEmptyString)
-   SPECEND
+   FACT(Constructor_NewsConsoleAndWatch)
+   FACT(PrintOpeningThreeLines_PrintsCommandLineAndTimeZoneAndTestAndTestClassCounts)
+   FACTS(MakeThirdLinePrefix_ReturnsNumberOfTestClassesBeingRunAndMachineName)
+   FACTS(MakeThirdLineSuffix_ReturnsRandomSeedIfRandomModeOtherwiseEmptyString)
+   BEGINPROOF
 
    struct PreamblePrinterSelfMocked : public Zen::Mock<PreamblePrinter>
    {

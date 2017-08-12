@@ -12,15 +12,15 @@
 namespace ZenUnit
 {
    TESTS(TestRunnerTests)
-   SPEC(Constructor_NewsComponents)
-   SPEC(RegisterTestClassRunner_EmplacesBackTestClassRunner)
-   SPEC(SkipTest_CallsTestRunResultAddSkippedFullTestName)
-   SPEC(SkipTestClass_CallsTestRunResultAddSkippedTestClassNameAndReason)
-   SPECX(ParseArgsRunTestsPrintResults_ParsesArgs_RunsTestsTimesNumberOfTimes_Returns0IfAllTestRunsPassOtherwiseReturns1)
-   SPECX(RunTestsAndPrintResults_RunsTestsAndPrintsResults_Returns0IfAllTestsPassedOtherwiseReturns1)
-   SPEC(RunTests_RunsTestClasses)
-   SPECX(RunTestsWithWaitableRunnerThread_SpawnsThreadToCallRunTests_PrintsResultsAndExits1IfThreadTimesOut)
-   SPECEND
+   FACT(Constructor_NewsComponents)
+   FACT(RegisterTestClassRunner_EmplacesBackTestClassRunner)
+   FACT(SkipTest_CallsTestRunResultAddSkippedFullTestName)
+   FACT(SkipTestClass_CallsTestRunResultAddSkippedTestClassNameAndReason)
+   FACTS(ParseArgsRunTestsPrintResults_ParsesArgs_RunsTestsTimesNumberOfTimes_Returns0IfAllTestRunsPassOtherwiseReturns1)
+   FACTS(RunTestsAndPrintResults_RunsTestsAndPrintsResults_Returns0IfAllTestsPassedOtherwiseReturns1)
+   FACT(RunTests_RunsTestClasses)
+   FACTS(RunTestsWithWaitableRunnerThread_SpawnsThreadToCallRunTests_PrintsResultsAndExits1IfThreadTimesOut)
+   BEGINPROOF
 
    TestRunner _testRunner;
    ConsoleMock* _consoleMock;

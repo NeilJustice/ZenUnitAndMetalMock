@@ -4,14 +4,14 @@
 namespace ZenUnit
 {
    TESTS(THROWSTests)
-   SPEC(CallDoesNotThrow_Throws)
-   SPEC(CallDoesNotThrow_Throws_MessagesTestCase)
-   SPEC(CallThrowsSubclassOfExpectedException_Throws)
-   SPEC(CallThrowsNonSubclassOfExpectedException_Throws)
-   SPEC(CallThrowsExactExpectedException_WhatDoesNotMatch_Throws)
-   SPEC(CallThrowsExactExpectedException_WhatTextMatchesExceptForCase_Throws)
-   SPEC(CallThrowsExactExpectedException_WhatTextMatchesExactly_DoesNotThrow)
-   SPECEND
+   FACT(CallDoesNotThrow_Throws)
+   FACT(CallDoesNotThrow_Throws_MessagesTestCase)
+   FACT(CallThrowsSubclassOfExpectedException_Throws)
+   FACT(CallThrowsNonSubclassOfExpectedException_Throws)
+   FACT(CallThrowsExactExpectedException_WhatDoesNotMatch_Throws)
+   FACT(CallThrowsExactExpectedException_WhatTextMatchesExceptForCase_Throws)
+   FACT(CallThrowsExactExpectedException_WhatTextMatchesExactly_DoesNotThrow)
+   BEGINPROOF
 
    const string MessageA = "A", MessageB = "B";
 

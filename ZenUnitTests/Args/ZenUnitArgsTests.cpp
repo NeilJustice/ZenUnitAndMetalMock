@@ -4,9 +4,9 @@
 namespace ZenUnit
 {
    TESTS(ZenUnitArgsTests)
-   SPEC(DefaultConstructor_SetsFieldsToDefaults)
-   SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   SPECEND
+   FACT(DefaultConstructor_SetsFieldsToDefaults)
+   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   BEGINPROOF
 
    TEST(DefaultConstructor_SetsFieldsToDefaults)
    {

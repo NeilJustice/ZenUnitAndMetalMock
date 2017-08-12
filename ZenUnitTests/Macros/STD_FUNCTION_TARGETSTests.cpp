@@ -4,12 +4,12 @@
 namespace ZenUnit
 {
    TESTS(STD_FUNCTION_TARGETSTests)
-   SPEC(FunctionDoesNotPointToAFunction_Throws_MessagesTestsCase)
-   SPEC(FunctionPointsToFunctionWithDifferentSignatureThanExpected_Throws)
-   SPEC(FunctionPointsToFunctionWithSameSignatureButDifferentFunctionThanExpected_Throws)
-   SPEC(FunctionPointsToSameFunctionAsExpected_DoesNotThrow)
-   SPEC(FunctionABC_CodeCoverage)
-   SPECEND
+   FACT(FunctionDoesNotPointToAFunction_Throws_MessagesTestsCase)
+   FACT(FunctionPointsToFunctionWithDifferentSignatureThanExpected_Throws)
+   FACT(FunctionPointsToFunctionWithSameSignatureButDifferentFunctionThanExpected_Throws)
+   FACT(FunctionPointsToSameFunctionAsExpected_DoesNotThrow)
+   FACT(FunctionABC_CodeCoverage)
+   BEGINPROOF
 
    static void FunctionA() {}
    static void FunctionB(int) {}

@@ -2,9 +2,9 @@
 #include "Examples/FizzBuzz.h"
 
 TESTS(FizzBuzzTests)
-SPEC(FizzBuzz_EndNumber0_Throws)
-SPECX(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)
-SPECEND
+FACT(FizzBuzz_EndNumber0_Throws)
+FACTS(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)
+BEGINPROOF
 
 TEST(FizzBuzz_EndNumber0_Throws)
 {

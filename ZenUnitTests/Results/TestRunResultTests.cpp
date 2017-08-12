@@ -9,25 +9,25 @@
 namespace ZenUnit
 {
    TESTS(TestRunResultTests)
-   SPEC(Constructor_NewsComponents)
-   SPEC(AddSkippedTest_AddsTestClassNameDotTestNameToSkippedFullTestNamesVector)
-   SPEC(AddSkippedTestClassNameAndReason_AddsTestClassNameAndReasonToSkippedTestClassNamesAndReasonsVector)
-   SPECX(SetTestClassResults_SetsNumberofFailedTestCases_MovesTestClassResultsIntoField)
-   SPEC(NumberOfFailedTestCases_ZeroTestClassResults_Returns0)
-   SPEC(NumberOfFailedTestCases_ThreeTestClassResults_ReturnsSumOfNumberOfFailedTestCases)
-   SPECX(PrintTestFailuresAndSkips_PrintsTestFailures_PrintsSkippedTestClassNames_PrintsSkippedFullTestNames);
-   SPEC(PrintClosingLines_0TotalNumberOfTests_PrintsZeroTestClassesRegisteredToRun)
-   SPECX(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds)
-   SPEC(PrintTestClassResultFailures_CallsTestClassResultPrintTestFailures)
-   SPECX(DetermineExitCode_DefaultArgs_Returns1IfAnyTestFailures_OtherwiseReturns0)
-   SPECX(DetermineExitCode_Exit0True_AlwaysReturns0)
-   SPECX(DetermineExitCode_Exit0True_FailSkipsTrue_AlwaysReturns0)
-   SPECX(DetermineExitCode_FailSkipsTrue_Returns1IfAnyTestsOrTestClassesSkipped)
-   SPEC(PrintSkippedTestClassReminder_PrintsExpectedToConsole)
-   SPEC(PrintSkippedTestReminder_PrintsExpectedToConsole)
-   SPEC(ResetStateExceptForSkips_ResetsTestFailureNumberer_ClearsTestClassResults_SetsNumberOfFailedTestCasesTo0)
-   SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   SPECEND
+   FACT(Constructor_NewsComponents)
+   FACT(AddSkippedTest_AddsTestClassNameDotTestNameToSkippedFullTestNamesVector)
+   FACT(AddSkippedTestClassNameAndReason_AddsTestClassNameAndReasonToSkippedTestClassNamesAndReasonsVector)
+   FACTS(SetTestClassResults_SetsNumberofFailedTestCases_MovesTestClassResultsIntoField)
+   FACT(NumberOfFailedTestCases_ZeroTestClassResults_Returns0)
+   FACT(NumberOfFailedTestCases_ThreeTestClassResults_ReturnsSumOfNumberOfFailedTestCases)
+   FACTS(PrintTestFailuresAndSkips_PrintsTestFailures_PrintsSkippedTestClassNames_PrintsSkippedFullTestNames);
+   FACT(PrintClosingLines_0TotalNumberOfTests_PrintsZeroTestClassesRegisteredToRun)
+   FACTS(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds)
+   FACT(PrintTestClassResultFailures_CallsTestClassResultPrintTestFailures)
+   FACTS(DetermineExitCode_DefaultArgs_Returns1IfAnyTestFailures_OtherwiseReturns0)
+   FACTS(DetermineExitCode_Exit0True_AlwaysReturns0)
+   FACTS(DetermineExitCode_Exit0True_FailSkipsTrue_AlwaysReturns0)
+   FACTS(DetermineExitCode_FailSkipsTrue_Returns1IfAnyTestsOrTestClassesSkipped)
+   FACT(PrintSkippedTestClassReminder_PrintsExpectedToConsole)
+   FACT(PrintSkippedTestReminder_PrintsExpectedToConsole)
+   FACT(ResetStateExceptForSkips_ResetsTestFailureNumberer_ClearsTestClassResults_SetsNumberOfFailedTestCasesTo0)
+   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   BEGINPROOF
 
    TestRunResult _testRunResult;
    const ConsoleMock* _consoleMock;

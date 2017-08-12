@@ -4,11 +4,11 @@
 namespace ZenMock
 {
    TESTS(UnexpectedCallExceptionTests)
-   SPECX(Constructor_Void0Args_SetsWhatToJustExpectAndExpectAndThrow_ClassIsSubclassOfZenMockException)
-   SPECX(Constructor_NonVoid0Args_SetsWhatToAlsoIncludeExpectAndReturnValue)
-   SPEC(Constructor_Void1Arg_SetsWhat_IncludesToStringedArg1)
-   SPEC(Constructor_Void2Args_SetsWhat_IncludesToStringedArg1AndArg2)
-   SPECEND
+   FACTS(Constructor_Void0Args_SetsWhatToJustExpectAndExpectAndThrow_ClassIsSubclassOfZenMockException)
+   FACTS(Constructor_NonVoid0Args_SetsWhatToAlsoIncludeExpectAndReturnValue)
+   FACT(Constructor_Void1Arg_SetsWhat_IncludesToStringedArg1)
+   FACT(Constructor_Void2Args_SetsWhat_IncludesToStringedArg1AndArg2)
+   BEGINPROOF
 
    const string ExpectedUnexpectedCallPrefix = "Unexpected call to ZenMocked function\n\"";
    const string VoidSignature0 = "void ClassName::FunctionName()";

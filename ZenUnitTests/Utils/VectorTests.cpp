@@ -4,11 +4,11 @@
 namespace ZenUnit
 {
    TESTS(VectorTests)
-   SPEC(ToArgcArgv_ReturnsArgsVector)
-   SPEC(Join_EmptyIntVector_ReturnsEmptyStringRegardlessOfSeparator)
-   SPEC(Join_1ElementIntVector_ReturnsFirstElementRegardlessOfSeparator)
-   SPECX(Join_2ElementIntVector_ReturnsElementsJoinedBySeparator)
-   SPECEND
+   FACT(ToArgcArgv_ReturnsArgsVector)
+   FACT(Join_EmptyIntVector_ReturnsEmptyStringRegardlessOfSeparator)
+   FACT(Join_1ElementIntVector_ReturnsFirstElementRegardlessOfSeparator)
+   FACTS(Join_2ElementIntVector_ReturnsElementsJoinedBySeparator)
+   BEGINPROOF
 
    TEST(ToArgcArgv_ReturnsArgsVector)
    {

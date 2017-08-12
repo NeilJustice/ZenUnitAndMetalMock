@@ -49,11 +49,11 @@ namespace ZenMock
    }
 
    TESTS(OneArgCallRefTests)
-   SPEC(Constructor_SetsReferences)
-   SPEC(CallConstructor_SetsReferencesToOneArgCallArg)
-   SPEC(ZenUnitPrinter_WritesToStringedArg)
-   SPEC(ZenUnitEqualizer_ThrowsIfArgFieldNotEqual)
-   SPECEND
+   FACT(Constructor_SetsReferences)
+   FACT(CallConstructor_SetsReferencesToOneArgCallArg)
+   FACT(ZenUnitPrinter_WritesToStringedArg)
+   FACT(ZenUnitEqualizer_ThrowsIfArgFieldNotEqual)
+   BEGINPROOF
 
    using Call1 = OneArgCall<T<1>>;
    using CallRef1 = OneArgCallRef<T<1>>;
@@ -98,11 +98,11 @@ Arg: "1")", zenUnitPrintResult);
 
 
    TESTS(TwoArgCallRefTests)
-   SPEC(Constructor_SetsReferences)
-   SPEC(CallConstructor_SetsReferencesToTwoArgCallArgs)
-   SPEC(ZenUnitPrinterPrint_WritesToStringeredArgs)
-   SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   SPECEND
+   FACT(Constructor_SetsReferences)
+   FACT(CallConstructor_SetsReferencesToTwoArgCallArgs)
+   FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
+   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   BEGINPROOF
 
    using Call2 = TwoArgCall<T<1>, T<2>>;
    using CallRef2 = TwoArgCallRef<T<1>, T<2>>;
@@ -154,11 +154,11 @@ Arg2: "2")", zenUnitPrintResult);
 
 
    TESTS(ThreeArgCallRefTests)
-   SPEC(Constructor_SetsReferences)
-   SPEC(CallConstructor_SetsReferencesToThreeArgCallArgs)
-   SPEC(ZenUnitPrinterPrint_WritesToStringeredArgs)
-   SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   SPECEND
+   FACT(Constructor_SetsReferences)
+   FACT(CallConstructor_SetsReferencesToThreeArgCallArgs)
+   FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
+   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   BEGINPROOF
 
    using Call3 = ThreeArgCall<T<1>, T<2>, T<3>>;
    using CallRef3 = ThreeArgCallRef<T<1>, T<2>, T<3>>;
@@ -216,11 +216,11 @@ Arg3: "3")", zenUnitPrintResult);
 
 
    TESTS(FourArgCallRefTests)
-   SPEC(Constructor_SetsReferences)
-   SPEC(CallConstructor_SetsReferencesToFourArgCallArgs)
-   SPEC(ZenUnitPrinterPrint_WritesToStringeredArgs)
-   SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   SPECEND
+   FACT(Constructor_SetsReferences)
+   FACT(CallConstructor_SetsReferencesToFourArgCallArgs)
+   FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
+   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   BEGINPROOF
 
    using Call4 = FourArgCall<T<1>, T<2>, T<3>, T<4>>;
    using CallRef4 = FourArgCallRef<T<1>, T<2>, T<3>, T<4>>;
@@ -284,11 +284,11 @@ Arg4: "4")", zenUnitPrintResult);
 
 
    TESTS(FiveArgCallRefTests)
-   SPEC(Constructor_SetsReferences)
-   SPEC(CallConstructor_SetsReferencesToFiveArgCallArgs)
-   SPEC(ZenUnitPrinterPrint_WritesToStringeredArgs)
-   SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   SPECEND
+   FACT(Constructor_SetsReferences)
+   FACT(CallConstructor_SetsReferencesToFiveArgCallArgs)
+   FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
+   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   BEGINPROOF
 
    using Call5 = FiveArgCall<T<1>, T<2>, T<3>, T<4>, T<5>>;
    using CallRef5 = FiveArgCallRef<T<1>, T<2>, T<3>, T<4>, T<5>>;
@@ -358,11 +358,11 @@ Arg5: "5")", zenUnitPrintResult);
 
 
    TESTS(SixArgCallRefTests)
-   SPEC(Constructor_SetsReferences)
-   SPEC(CallConstructor_SetsReferencesToFiveArgCallArgs)
-   SPEC(ZenUnitPrinterPrint_WritesToStringeredArgs)
-   SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   SPECEND
+   FACT(Constructor_SetsReferences)
+   FACT(CallConstructor_SetsReferencesToFiveArgCallArgs)
+   FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
+   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   BEGINPROOF
 
    using Call6 = SixArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>>;
    using CallRef6 = SixArgCallRef<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>>;
@@ -438,11 +438,11 @@ Arg6: "6")", zenUnitPrintResult);
 
 
    TESTS(SevenArgCallRefTests)
-   SPEC(Constructor_SetsReferences)
-   SPEC(CallConstructor_SetsReferencesToFiveArgCallArgs)
-   SPEC(ZenUnitPrinterPrint_WritesToStringeredArgs)
-   SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   SPECEND
+   FACT(Constructor_SetsReferences)
+   FACT(CallConstructor_SetsReferencesToFiveArgCallArgs)
+   FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
+   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   BEGINPROOF
 
    using Call7 = SevenArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>>;
    using CallRef7 = SevenArgCallRef<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>>;
@@ -524,11 +524,11 @@ Arg7: "7")", zenUnitPrintResult);
 
 
    TESTS(EightArgCallRefTests)
-   SPEC(Constructor_SetsReferences)
-   SPEC(CallConstructor_SetsReferencesToCallArgs)
-   SPEC(ZenUnitPrinterPrint_WritesToStringeredArgs)
-   SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   SPECEND
+   FACT(Constructor_SetsReferences)
+   FACT(CallConstructor_SetsReferencesToCallArgs)
+   FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
+   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   BEGINPROOF
 
    using Call8 = const EightArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>>;
    using CallRef8 = EightArgCallRef<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>>;
@@ -616,11 +616,11 @@ Arg8: "8")", zenUnitPrintResult);
 
 
    TESTS(NineArgCallRefTests)
-   SPEC(Constructor_SetsReferences)
-   SPEC(CallConstructor_SetsReferencesToCallArgs)
-   SPEC(ZenUnitPrinterPrint_WritesToStringeredArgs)
-   SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   SPECEND
+   FACT(Constructor_SetsReferences)
+   FACT(CallConstructor_SetsReferencesToCallArgs)
+   FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
+   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   BEGINPROOF
 
    using Call9 = const NineArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>>;
    using CallRef9 = NineArgCallRef<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>>;
@@ -714,11 +714,11 @@ Arg9: "9")", zenUnitPrintResult);
 
 
    TESTS(TenArgCallRefTests)
-   SPEC(Constructor_SetsReferences)
-   SPEC(CallConstructor_SetsReferencesToCallArgs)
-   SPEC(ZenUnitPrinterPrint_WritesToStringeredArgs)
-   SPEC(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   SPECEND
+   FACT(Constructor_SetsReferences)
+   FACT(CallConstructor_SetsReferencesToCallArgs)
+   FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
+   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   BEGINPROOF
 
    using Call10 = const TenArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>, T<10>>;
    using CallRef10 = TenArgCallRef<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>, T<10>>;

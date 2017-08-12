@@ -4,12 +4,12 @@
 namespace ZenUnit
 {
    TESTS(NOTHROWSTests)
-   SPEC(LambdaCallThrows_Throws)
-   SPEC(LambdaCallThrows_Throws_MessagesTestCase)
-   SPEC(FunctionCallThrows_Throws)
-   SPEC(LambdaCallDoesNotThrow_DoesNotThrow)
-   SPEC(FunctionCallDoesNotThrow_DoesNotThrow)
-   SPECEND
+   FACT(LambdaCallThrows_Throws)
+   FACT(LambdaCallThrows_Throws_MessagesTestCase)
+   FACT(FunctionCallThrows_Throws)
+   FACT(LambdaCallDoesNotThrow_DoesNotThrow)
+   FACT(FunctionCallDoesNotThrow_DoesNotThrow)
+   BEGINPROOF
 
    TEST(LambdaCallThrows_Throws)
    {

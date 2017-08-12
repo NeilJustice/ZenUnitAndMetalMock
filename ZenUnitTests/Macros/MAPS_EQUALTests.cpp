@@ -7,16 +7,16 @@ namespace ZenUnit
       template<typename...>
       class MapType>
    TEMPLATETESTS(MAPS_EQUALTests, MapType)
-   SPEC(BothEmpty_DoesNotThrow)
-   SPEC(SizesDifferent_Throws)
-   SPEC(SizesDifferent_Throws_MessagesTestCase)
-   SPEC(SizesEqual_KeysNotEqual_Throws)
-   SPEC(SizesEqual_KeysNotEqual_Throws_MessagesTestCase)
-   SPEC(SizesEqual_KeysEqual_ValuesNotEqual_Throws)
-   SPEC(SizesEqual_KeysEqual_ValuesNotEqual_Throws_MessagesTestCase)
-   SPEC(SizesEqual_UserTypeKeysNotEqual_Throws)
-   SPEC(SizesEqual_UserTypeKeysEqual_ValuesNotEqual_Throws)
-   SPECEND
+   FACT(BothEmpty_DoesNotThrow)
+   FACT(SizesDifferent_Throws)
+   FACT(SizesDifferent_Throws_MessagesTestCase)
+   FACT(SizesEqual_KeysNotEqual_Throws)
+   FACT(SizesEqual_KeysNotEqual_Throws_MessagesTestCase)
+   FACT(SizesEqual_KeysEqual_ValuesNotEqual_Throws)
+   FACT(SizesEqual_KeysEqual_ValuesNotEqual_Throws_MessagesTestCase)
+   FACT(SizesEqual_UserTypeKeysNotEqual_Throws)
+   FACT(SizesEqual_UserTypeKeysEqual_ValuesNotEqual_Throws)
+   BEGINPROOF
 
    const string MessageA = "A", MessageB = "B";
 

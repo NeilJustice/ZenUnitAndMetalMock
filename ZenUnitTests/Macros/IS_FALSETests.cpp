@@ -4,14 +4,14 @@
 namespace ZenUnit
 {
    TESTS(IS_FALSETests)
-   SPEC(BoolIsFalse_DoesNotThrow)
-   SPEC(BoolIsTrue_Throws)
-   SPEC(BoolVariableIsTrue_Throws_MessagesTestCase)
-   SPEC(StdFunctionDoesNotPointToAFunction_DoesNotThrow)
-   SPEC(StdFunctionPointsToAFunction_Throws)
-   SPEC(UserTypeConvertsToFalse_DoesNotThrow)
-   SPEC(UserTypeConvertsToTrue_Throws)
-   SPECEND
+   FACT(BoolIsFalse_DoesNotThrow)
+   FACT(BoolIsTrue_Throws)
+   FACT(BoolVariableIsTrue_Throws_MessagesTestCase)
+   FACT(StdFunctionDoesNotPointToAFunction_DoesNotThrow)
+   FACT(StdFunctionPointsToAFunction_Throws)
+   FACT(UserTypeConvertsToFalse_DoesNotThrow)
+   FACT(UserTypeConvertsToTrue_Throws)
+   BEGINPROOF
 
    TEST(BoolIsFalse_DoesNotThrow)
    {

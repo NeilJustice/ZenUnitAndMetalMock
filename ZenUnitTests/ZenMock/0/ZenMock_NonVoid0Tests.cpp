@@ -31,21 +31,21 @@ namespace ZenMock
 
    TESTS(ZenMock_NonVoid0Tests)
    // ZeroArgMocker Tests
-   SPEC(Expect_CalledTwice_Throws)
-   SPEC(ExpectAndThrow_CalledTwice_Throws)
-   SPEC(FunctionNotCalled_AssertCalledNTimesWithN0_Throws)
-   SPEC(FunctionNotCalled_AssertCalledOnceThrows_AssertCalledNTimesThrows)
-   SPEC(Function_NotExpected_Throws)
-   SPEC(Function_Expected_DoesNotThrow_AssertCallsOnceDoesNotThrow_AssertCalledNTimes1DoesNotThrow)
-   SPEC(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)
+   FACT(Expect_CalledTwice_Throws)
+   FACT(ExpectAndThrow_CalledTwice_Throws)
+   FACT(FunctionNotCalled_AssertCalledNTimesWithN0_Throws)
+   FACT(FunctionNotCalled_AssertCalledOnceThrows_AssertCalledNTimesThrows)
+   FACT(Function_NotExpected_Throws)
+   FACT(Function_Expected_DoesNotThrow_AssertCallsOnceDoesNotThrow_AssertCalledNTimes1DoesNotThrow)
+   FACT(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)
    // Value Return Tests
-   SPEC(ExpectAndReturn_CalledTwice_Throws)
-   SPEC(ExpectAndReturnValues_CalledTwice_Throws)
-   SPEC(ExpectAndReturnValuesVector_CalledTwice_Throws)
-   SPEC(ExpectAndReturn_CausesFunctionToReturnValue)
-   SPEC(ExpectAndReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
-   SPEC(ExpectAndReturnValuesVector_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
-   SPECEND
+   FACT(ExpectAndReturn_CalledTwice_Throws)
+   FACT(ExpectAndReturnValues_CalledTwice_Throws)
+   FACT(ExpectAndReturnValuesVector_CalledTwice_Throws)
+   FACT(ExpectAndReturn_CausesFunctionToReturnValue)
+   FACT(ExpectAndReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
+   FACT(ExpectAndReturnValuesVector_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
+   BEGINPROOF
 
    NonVoid0FunctionsMock _mock;
    ZENMOCK_NONVOID0_FREE(int, NonVoid0)

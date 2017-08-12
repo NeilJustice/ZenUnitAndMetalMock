@@ -12,15 +12,15 @@
 namespace ZenUnit
 {
    TESTS(ConsoleColorerTests)
-   SPEC(Constructor_SetsFunctionPointers_SetsSupportsColorAndSupportsColorSetToFalse)
-   SPECX(SetSupportsColorIfUnset)
-   SPECX(SetColor_CallsSupportsColorAndSetTextColorIfColorNotWhite)
-   SPECX(UnsetColor_CallsSetTextColorWhiteIfDidSetTextColorTrue)
-   SPECX(SupportsColor_ReturnsTrueIfStdoutIsATTY)
+   FACT(Constructor_SetsFunctionPointers_SetsSupportsColorAndSupportsColorSetToFalse)
+   FACTS(SetSupportsColorIfUnset)
+   FACTS(SetColor_CallsSupportsColorAndSetTextColorIfColorNotWhite)
+   FACTS(UnsetColor_CallsSetTextColorWhiteIfDidSetTextColorTrue)
+   FACTS(SupportsColor_ReturnsTrueIfStdoutIsATTY)
 #ifdef _WIN32
-   SPECX(SetTextColor_WIN32_CallsWin32ApiToSetColorTextColor)
+   FACTS(SetTextColor_WIN32_CallsWin32ApiToSetColorTextColor)
 #endif
-   SPECEND
+   BEGINPROOF
 
    struct ConsoleColorer_SupportsColorMocked : public Zen::Mock<ConsoleColorer>
    {

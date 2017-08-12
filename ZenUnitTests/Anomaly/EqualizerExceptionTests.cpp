@@ -4,8 +4,8 @@
 namespace ZenUnit
 {
    TESTS(EqualizerExceptionTests)
-   SPEC(EqualizerException_what_ReturnsEmptyString)
-   SPECEND
+   FACT(EqualizerException_what_ReturnsEmptyString)
+   BEGINPROOF
 
    TEST(EqualizerException_what_ReturnsEmptyString)
    {
