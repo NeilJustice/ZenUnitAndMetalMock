@@ -43,8 +43,6 @@ namespace ZenUnit
 
    TEST(Constructor_NewsComponents_SetsGetArgsFunction)
    {
-      ARE_EQUAL(1, 0, "Test AppVeyor build failure notification email");
-
       TryCatchCaller tryCatchCaller;
       POINTER_WAS_NEWED(tryCatchCaller._console);
       POINTER_WAS_NEWED(tryCatchCaller._testPhaseSuffixer);
