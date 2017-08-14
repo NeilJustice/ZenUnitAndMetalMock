@@ -58,7 +58,7 @@ endmacro()
 
 macro(IfMSVCAddRunTestsPostBuildStep)
    if(MSVC)
-      add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND $(TargetPath) -random -exit0)
+      add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND $(TargetPath) -random)
    endif()
 endmacro()
 
@@ -76,3 +76,4 @@ macro(folder_source_group_subsubfolder folderName subfolderName subsubFolderName
    file(GLOB ${folderName}${subfolderName}${subsubFolderName}Files ${folderName}/${subfolderName}/${subsubFolderName}/*.*)
    source_group(${folderName}\\${subfolderName}\\${subsubFolderName} FILES ${${folderName}${subfolderName}${subsubFolderName}Files})
 endmacro()
+
