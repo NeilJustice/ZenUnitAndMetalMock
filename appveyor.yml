@@ -1,12 +1,14 @@
 image: Visual Studio 2017
 
+shallow_clone: true
+
 build_script:
-  - cmake --version
+  - git rev-list HEAD --count
   - cmake -G"Visual Studio 15 2017 Win64"
   - msbuild ZenUnit.sln /p:Configuration=Debug /m
-  - msbuild ZenUnit.sln /p:Configuration=Release /m
-  - cd ZenUnitHelloWorld
-  - cmake -G"Visual Studio 15 2017 Win64"
-  - msbuild Executable.sln /p:configuration=Debug /m
-  - msbuild Executable.sln /p:Configuration=Release /m
+#  - msbuild ZenUnit.sln /p:Configuration=Release /m
+#  - cd ZenUnitHelloWorld
+#  - cmake -G"Visual Studio 15 2017 Win64"
+#  - msbuild Executable.sln /p:configuration=Debug /m
+#  - msbuild Executable.sln /p:Configuration=Release /m
 
