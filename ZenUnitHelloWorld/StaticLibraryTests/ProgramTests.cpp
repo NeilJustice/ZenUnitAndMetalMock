@@ -13,7 +13,7 @@ FACTS(Main_ConvertsArgcArgvToStringVector_CallsVectorMain)
 FACT(VectorMain_EmptyArgsExceptForBinaryPath_PrintsUsage_Returns0)
 FACT(VectorMain_NonEmptyArgsWithInvalidArg_WritesInvalidArgMessage_WritesUsage_Returns1)
 FACT(VectorMain_NonEmptyValidArgs_Returns0)
-BEGINPROOF
+EVIDENCE
 
 Program _program;
 ConsoleMock* _consoleMock;
@@ -97,4 +97,4 @@ TEST(VectorMain_NonEmptyValidArgs_Returns0)
    ARE_EQUAL(0, exitCode);
 }
 
-}; RUN(ProgramTests)
+RUNTESTS(ProgramTests)

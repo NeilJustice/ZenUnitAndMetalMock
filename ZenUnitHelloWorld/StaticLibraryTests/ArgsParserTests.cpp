@@ -3,7 +3,7 @@
 TESTS(ArgsParserTests)
 FACT(ParseArgs_InvalidArg_ThrowsInvalidArgument)
 FACT(ParseArgs_Flag_ReturnsProgramArgsWithFlagASet)
-BEGINPROOF
+EVIDENCE
 
 TEST(ParseArgs_InvalidArg_ThrowsInvalidArgument)
 {
@@ -15,4 +15,4 @@ TEST(ParseArgs_Flag_ReturnsProgramArgsWithFlagASet)
 
 }
 
-}; RUN(ArgsParserTests)
+RUNTESTS(ArgsParserTests)
