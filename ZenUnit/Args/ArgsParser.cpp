@@ -68,9 +68,21 @@ namespace ZenUnit
             }
             try
             {
-               const string& valueString = splitArg[1];
-               const unsigned value = _String_ToUnsigned(valueString);
-               zenUnitArgs.testruns = value;
+               const string& argName = splitArg[0];
+               const string& argValueString = splitArg[1];
+               unsigned argValue = 0;
+               if (argName == "-testruns")
+               {
+                  argValue = _String_ToUnsigned(argValueString);
+                  zenUnitArgs.testruns = argValue;
+               }
+               else if (argName == "-random")
+               {
+                  zenUnitArgs.random = true;
+                  argValue = _String_ToUnsigned(argValueString);
+                  zenUnitArgs.randomseed = static_cast<unsigned short>(argValue);
+               }
+               else throw invalid_argument("");
             }
             catch (const invalid_argument&)
             {
@@ -105,5 +117,5 @@ None
    Run test classes in a random order and run tests in a random order.
    Key option for maximizing testing rigor.
 -help or --help
-   Display this help.)";
+   Display this message.)";
 }

@@ -18,9 +18,12 @@ namespace ZenUnit
    FACT(Parse_Random_SetsRandomTrueAndRandomSeedToSecondsSince1970CastToUnsignedShort)
    FACT(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    FACT(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
-   FACTS(Parse_TimesArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1)
-   FACT(Parse_TimesArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
-   FACTS(Parse_TimesArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
+   FACTS(Parse_EqualsSignContainingArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1)
+   FACT(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
+   FACT(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
+   FACT(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
+   FACTS(Parse_RandomEqualsArg_ValidUnsignedValue_DowncastsValueToUnsignedShort_ReturnsExpectedZenUnitArgs)
+   FACT(Parse_InvalidEqualsSignArgName_PrintsUsageAndExits1)
    BEGINPROOF
 
    const string TestProgramPath = Random<string>();
@@ -47,7 +50,7 @@ None
    Run test classes in a random order and run tests in a random order.
    Key option for maximizing testing rigor.
 -help or --help
-   Display this help.)";
+   Display this message.)";
 
    ArgsParser _argsParser;
    const ConsoleMock* _consoleMock;
@@ -211,10 +214,12 @@ None
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST1X1(Parse_TimesArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1,
+   TEST1X1(Parse_EqualsSignContainingArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1,
       const string& arg,
       "-testruns=",
-      "-testruns===")
+      "-testruns===",
+      "-random=",
+      "-random===")
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
@@ -227,7 +232,7 @@ None
       ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(ExpectedUsage, 1));
    }
 
-   TEST(Parse_TimesArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
+   TEST(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
@@ -243,21 +248,68 @@ None
       ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(ExpectedUsage, 1));
    }
 
-   TEST1X1(Parse_TimesArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs,
-      unsigned validTimesValue,
-      0u,
-      1u)
+   TEST(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
    {
-      ToUnsigned_ZenMock.ExpectAndReturn(validTimesValue);
-      const vector<string> Args { TestProgramPath, "-testruns=" + to_string(validTimesValue) };
+      const unsigned timesArgValue = Random<unsigned>();
+      ToUnsigned_ZenMock.ExpectAndReturn(timesArgValue);
+      const vector<string> Args { TestProgramPath, "-testruns=" + to_string(timesArgValue) };
       //
-      ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
+      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
       //
-      ZEN(ToUnsigned_ZenMock.AssertCalledOnceWith(to_string(validTimesValue)));
+      ZEN(ToUnsigned_ZenMock.AssertCalledOnceWith(to_string(timesArgValue)));
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
-      expectedZenUnitArgs.testruns = validTimesValue;
+      expectedZenUnitArgs.testruns = timesArgValue;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
+   }
+
+   TEST(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
+   {
+      const unsigned randomSeedArgValue = Random<unsigned>();
+      ToUnsigned_ZenMock.ExpectAndReturn(randomSeedArgValue);
+      const vector<string> Args{ TestProgramPath, "-random=" + to_string(randomSeedArgValue) };
+      //
+      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
+      //
+      ZEN(ToUnsigned_ZenMock.AssertCalledOnceWith(to_string(randomSeedArgValue)));
+      ZenUnitArgs expectedZenUnitArgs;
+      expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
+      expectedZenUnitArgs.random = true;
+      expectedZenUnitArgs.randomseed = static_cast<unsigned short>(randomSeedArgValue);
+      ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
+   }
+
+   TEST2X2(Parse_RandomEqualsArg_ValidUnsignedValue_DowncastsValueToUnsignedShort_ReturnsExpectedZenUnitArgs,
+      unsigned randomSeedArgValue, unsigned short expectedZenUnitArgsRandomseedValue,
+      numeric_limits<unsigned short>::max(), numeric_limits<unsigned short>::max(),
+      numeric_limits<unsigned short>::max() + 1, unsigned short(0),
+      numeric_limits<unsigned short>::max() + 2, unsigned short(1))
+   {
+      ToUnsigned_ZenMock.ExpectAndReturn(randomSeedArgValue);
+      const vector<string> Args{ TestProgramPath, "-random=" + to_string(randomSeedArgValue) };
+      //
+      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
+      //
+      ZEN(ToUnsigned_ZenMock.AssertCalledOnceWith(to_string(randomSeedArgValue)));
+      ZenUnitArgs expectedZenUnitArgs;
+      expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
+      expectedZenUnitArgs.random = true;
+      expectedZenUnitArgs.randomseed = expectedZenUnitArgsRandomseedValue;
+      ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
+   }
+
+   TEST(Parse_InvalidEqualsSignArgName_PrintsUsageAndExits1)
+   {
+      _consoleMock->WriteLineMock.Expect();
+      _consoleMock->WriteLineAndExitMock.Expect();
+      const string InvalidNameArg = "-invalid_name=123";
+      const vector<string> Args{ TestProgramPath, InvalidNameArg };
+      //
+      _argsParser.Parse(Args);
+      //
+      ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
+         "ZenUnit argument error: Malformed -name=value argument: " + InvalidNameArg + "\n"));
+      ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(ExpectedUsage, 1));
    }
 
    }; RUN(ArgsParserTests)
