@@ -27,7 +27,7 @@ namespace ZenUnit
    FACT(PrintSkippedTestReminder_PrintsExpectedToConsole)
    FACT(ResetStateExceptForSkips_ResetsTestFailureNumberer_ClearsTestClassResults_SetsNumberOfFailedTestCasesTo0)
    FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   BEGINPROOF
+   EVIDENCE
 
    TestRunResult _testRunResult;
    const ConsoleMock* _consoleMock;
@@ -418,5 +418,5 @@ namespace ZenUnit
       EQUALIZER_THROWS(TestRunResult, _skippedFullTestNamesAndReasons, vector<string> { "" });
    }
 
-   }; RUN(TestRunResultTests)
+   RUNTESTS(TestRunResultTests)
 }

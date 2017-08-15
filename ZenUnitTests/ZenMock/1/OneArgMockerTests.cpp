@@ -21,7 +21,7 @@ namespace ZenMock
    FACT(AssertCalls_SetsAssertedTrue_ExpectedCallsSizeNon0AndNotEqualToActualCallsSize_Throws_DoesNotCopyTheExpectedArg)
    FACT(AssertCalls_SetsAssertedTrue_ExpectedCallsSizeNon0AndEqualToNumberOfCalls_ArgsNotEqual_Throws_DoesNotCopyTheExpectedArg)
    FACT(AssertCalls_SetsAssertedTrue_ExpectedCallsSizeNon0AndEqualToNumberOfCalls_ArgsEqual_DoesNotThrow_DoesNotCopyTheExpectedArg)
-   BEGINPROOF
+   EVIDENCE
 
    using MockerType = OneArgMocker<int, ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;
@@ -291,5 +291,5 @@ File.cpp(1))");
       IS_TRUE(_mocker->_asserted);
    }
 
-   }; RUN(OneArgMockerTests)
+   RUNTESTS(OneArgMockerTests)
 }

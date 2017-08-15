@@ -8,7 +8,7 @@ namespace ZenUnit
    FACT(PatternDoesNotMatchAnyOfInput_Throws)
    FACT(PatternMatchesOnlyPartOfInput_Throws)
    FACT(PatternMismatchesOnCase_Throws_MessagesTestCase)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(PatternMatchesAllOfInput_DoesNotThrow)
    {
@@ -66,5 +66,5 @@ Expected string to match: "a"
 File.cpp(1))");
    }
 
-   }; RUN(REGEX_MATCHESTests)
+   RUNTESTS(REGEX_MATCHESTests)
 }

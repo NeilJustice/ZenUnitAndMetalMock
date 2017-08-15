@@ -7,7 +7,7 @@ namespace ZenUnit
    FACT(AssertEqual_IntVectors_CallsVECTORS_EQUAL)
    FACT(AssertEqual_StringVectors_CallsVECTORS_EQUAL)
    FACT(AssertEqual_UserTypeVectors_CallsVECTORS_EQUAL)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(AssertEqual_IntVectors_CallsVECTORS_EQUAL)
    {
@@ -62,5 +62,5 @@ File.cpp(1)
 File.cpp(1))");
    }
 
-   }; RUN(VectorEqualizerTests)
+   RUNTESTS(VectorEqualizerTests)
 }

@@ -13,7 +13,7 @@ namespace ZenUnit
    FACT(PrintOpeningThreeLines_PrintsCommandLineAndTimeZoneAndTestAndTestClassCounts)
    FACTS(MakeThirdLinePrefix_ReturnsNumberOfTestClassesBeingRunAndMachineName)
    FACTS(MakeThirdLineSuffix_ReturnsRandomSeedIfRandomModeOtherwiseEmptyString)
-   BEGINPROOF
+   EVIDENCE
 
    struct PreamblePrinterSelfMocked : public Zen::Mock<PreamblePrinter>
    {
@@ -111,5 +111,5 @@ namespace ZenUnit
       ARE_EQUAL(expectedReturnValue, thirdLineSuffix);
    }
 
-   }; RUN(PreamblePrinterTests)
+   RUNTESTS(PreamblePrinterTests)
 }

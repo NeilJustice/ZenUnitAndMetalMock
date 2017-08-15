@@ -11,7 +11,7 @@ FACT(OperatorBool_ValueIs1_ReturnsTrue)
 FACT(OperatorBool_ValueIsNot1_ReturnsFalse)
 FACT(has_ostream_left_shift_False)
 FACT(has_ZenUnitPrinter_True)
-BEGINPROOF
+EVIDENCE
 
 TEST(DefaultConstructor_SetsValueTo0)
 {
@@ -87,4 +87,4 @@ TEST(has_ZenUnitPrinter_True)
    IS_TRUE(ZenUnit::has_ZenUnitPrinter<UserType>::value);
 }
 
-}; RUN(UserTypeTests)
+RUNTESTS(UserTypeTests)

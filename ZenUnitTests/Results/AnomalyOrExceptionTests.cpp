@@ -5,7 +5,7 @@
 TESTS(AnomalyOrExceptionTests)
 FACT(AnomalyConstructor_SetsAnomaly)
 FACT(ExceptionTypeNameAndExceptionWhatConstructor_SetsExceptionTypeNameAndExceptionWhat)
-BEGINPROOF
+EVIDENCE
 
 TEST(AnomalyConstructor_SetsAnomaly)
 {
@@ -31,4 +31,4 @@ TEST(ExceptionTypeNameAndExceptionWhatConstructor_SetsExceptionTypeNameAndExcept
    ARE_EQUAL(ExceptionWhat, *anomalyOrException.exceptionWhat);
 }
 
-}; RUN(AnomalyOrExceptionTests)
+RUNTESTS(AnomalyOrExceptionTests)

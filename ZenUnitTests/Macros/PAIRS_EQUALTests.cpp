@@ -12,7 +12,7 @@ namespace ZenUnit
    FACT(FirstNotEqual_SecondEqual_Throws_UserTypeTestCase)
    FACT(FirstEqual_SecondNotEqual_Throws_UserTypeTestCase)
    FACT(FirstEqual_SecondEqual_DoesNotThrow_UserTypeTestCase)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(FirstNotEqual_SecondEqual_Throws)
    {
@@ -120,5 +120,5 @@ File.cpp(1))");
       PAIRS_EQUAL(expectedPair, actualPair);
    }
 
-   }; RUN(PAIRS_EQUALTests)
+   RUNTESTS(PAIRS_EQUALTests)
 }

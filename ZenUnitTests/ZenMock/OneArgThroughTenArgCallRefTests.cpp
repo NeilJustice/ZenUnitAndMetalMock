@@ -53,7 +53,7 @@ namespace ZenMock
    FACT(CallConstructor_SetsReferencesToOneArgCallArg)
    FACT(ZenUnitPrinter_WritesToStringedArg)
    FACT(ZenUnitEqualizer_ThrowsIfArgFieldNotEqual)
-   BEGINPROOF
+   EVIDENCE
 
    using Call1 = OneArgCall<T<1>>;
    using CallRef1 = OneArgCallRef<T<1>>;
@@ -94,7 +94,7 @@ Arg: "1")", zenUnitPrintResult);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
    }
 
-   }; RUN(OneArgCallRefTests)
+   RUNTESTS(OneArgCallRefTests)
 
 
    TESTS(TwoArgCallRefTests)
@@ -102,7 +102,7 @@ Arg: "1")", zenUnitPrintResult);
    FACT(CallConstructor_SetsReferencesToTwoArgCallArgs)
    FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
    FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   BEGINPROOF
+   EVIDENCE
 
    using Call2 = TwoArgCall<T<1>, T<2>>;
    using CallRef2 = TwoArgCallRef<T<1>, T<2>>;
@@ -150,7 +150,7 @@ Arg2: "2")", zenUnitPrintResult);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
    }
 
-   }; RUN(TwoArgCallRefTests)
+   RUNTESTS(TwoArgCallRefTests)
 
 
    TESTS(ThreeArgCallRefTests)
@@ -158,7 +158,7 @@ Arg2: "2")", zenUnitPrintResult);
    FACT(CallConstructor_SetsReferencesToThreeArgCallArgs)
    FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
    FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   BEGINPROOF
+   EVIDENCE
 
    using Call3 = ThreeArgCall<T<1>, T<2>, T<3>>;
    using CallRef3 = ThreeArgCallRef<T<1>, T<2>, T<3>>;
@@ -212,7 +212,7 @@ Arg3: "3")", zenUnitPrintResult);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "arg3");
    }
 
-   }; RUN(ThreeArgCallRefTests)
+   RUNTESTS(ThreeArgCallRefTests)
 
 
    TESTS(FourArgCallRefTests)
@@ -220,7 +220,7 @@ Arg3: "3")", zenUnitPrintResult);
    FACT(CallConstructor_SetsReferencesToFourArgCallArgs)
    FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
    FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   BEGINPROOF
+   EVIDENCE
 
    using Call4 = FourArgCall<T<1>, T<2>, T<3>, T<4>>;
    using CallRef4 = FourArgCallRef<T<1>, T<2>, T<3>, T<4>>;
@@ -280,7 +280,7 @@ Arg4: "4")", zenUnitPrintResult);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "arg4");
    }
 
-   }; RUN(FourArgCallRefTests)
+   RUNTESTS(FourArgCallRefTests)
 
 
    TESTS(FiveArgCallRefTests)
@@ -288,7 +288,7 @@ Arg4: "4")", zenUnitPrintResult);
    FACT(CallConstructor_SetsReferencesToFiveArgCallArgs)
    FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
    FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   BEGINPROOF
+   EVIDENCE
 
    using Call5 = FiveArgCall<T<1>, T<2>, T<3>, T<4>, T<5>>;
    using CallRef5 = FiveArgCallRef<T<1>, T<2>, T<3>, T<4>, T<5>>;
@@ -354,7 +354,7 @@ Arg5: "5")", zenUnitPrintResult);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "arg5");
    }
 
-   }; RUN(FiveArgCallRefTests)
+   RUNTESTS(FiveArgCallRefTests)
 
 
    TESTS(SixArgCallRefTests)
@@ -362,7 +362,7 @@ Arg5: "5")", zenUnitPrintResult);
    FACT(CallConstructor_SetsReferencesToFiveArgCallArgs)
    FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
    FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   BEGINPROOF
+   EVIDENCE
 
    using Call6 = SixArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>>;
    using CallRef6 = SixArgCallRef<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>>;
@@ -434,7 +434,7 @@ Arg6: "6")", zenUnitPrintResult);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "arg6");
    }
 
-   }; RUN(SixArgCallRefTests)
+   RUNTESTS(SixArgCallRefTests)
 
 
    TESTS(SevenArgCallRefTests)
@@ -442,7 +442,7 @@ Arg6: "6")", zenUnitPrintResult);
    FACT(CallConstructor_SetsReferencesToFiveArgCallArgs)
    FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
    FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   BEGINPROOF
+   EVIDENCE
 
    using Call7 = SevenArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>>;
    using CallRef7 = SevenArgCallRef<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>>;
@@ -520,7 +520,7 @@ Arg7: "7")", zenUnitPrintResult);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg7); }, "arg7");
    }
 
-   }; RUN(SevenArgCallRefTests)
+   RUNTESTS(SevenArgCallRefTests)
 
 
    TESTS(EightArgCallRefTests)
@@ -528,7 +528,7 @@ Arg7: "7")", zenUnitPrintResult);
    FACT(CallConstructor_SetsReferencesToCallArgs)
    FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
    FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   BEGINPROOF
+   EVIDENCE
 
    using Call8 = const EightArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>>;
    using CallRef8 = EightArgCallRef<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>>;
@@ -612,7 +612,7 @@ Arg8: "8")", zenUnitPrintResult);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg8); }, "arg8");
    }
 
-   }; RUN(EightArgCallRefTests)
+   RUNTESTS(EightArgCallRefTests)
 
 
    TESTS(NineArgCallRefTests)
@@ -620,7 +620,7 @@ Arg8: "8")", zenUnitPrintResult);
    FACT(CallConstructor_SetsReferencesToCallArgs)
    FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
    FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   BEGINPROOF
+   EVIDENCE
 
    using Call9 = const NineArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>>;
    using CallRef9 = NineArgCallRef<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>>;
@@ -710,7 +710,7 @@ Arg9: "9")", zenUnitPrintResult);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg9); }, "arg9");
    }
 
-   }; RUN(NineArgCallRefTests)
+   RUNTESTS(NineArgCallRefTests)
 
 
    TESTS(TenArgCallRefTests)
@@ -718,7 +718,7 @@ Arg9: "9")", zenUnitPrintResult);
    FACT(CallConstructor_SetsReferencesToCallArgs)
    FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
    FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   BEGINPROOF
+   EVIDENCE
 
    using Call10 = const TenArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>, T<10>>;
    using CallRef10 = TenArgCallRef<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>, T<10>>;
@@ -813,5 +813,5 @@ Arg10: "10")", zenUnitPrintResult);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg10); }, "arg10");
    }
 
-   }; RUN(TenArgCallRefTests)
+   RUNTESTS(TenArgCallRefTests)
 }

@@ -15,7 +15,7 @@ namespace ZenMock
    FACTS(AssertCalledOnce_SetsAssertedTrue_FunctionWasCalledOnce_DoesNotThrow)
    FACT(AssertCalledNTimes_NIsZero_Throws)
    FACTS(AssertCalledNTimes_SetsAssertedTrue_FunctionWasCalledNTimes_DoesNotThrow)
-   BEGINPROOF
+   EVIDENCE
 
    using MockerType = ZeroArgMocker<ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;
@@ -160,5 +160,5 @@ File.cpp(1))");
       IS_TRUE(_mocker->_asserted);
    }
 
-   }; RUN(ZeroArgMockerTests)
+   RUNTESTS(ZeroArgMockerTests)
 }

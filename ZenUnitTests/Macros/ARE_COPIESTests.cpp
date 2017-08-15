@@ -9,7 +9,7 @@ namespace ZenUnit
    FACT(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws_UserTypeTestCase)
    FACT(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws_MessagesTestCase)
    FACT(ObjectsHaveDifferentAddresses_ObjectsAreEqual_DoesNotThrow)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(ObjectsHaveSameAddress_Throws)
    {
@@ -112,5 +112,5 @@ File.cpp(1))");
       ARE_COPIES(x, y);
    }
 
-   }; RUN(ARE_COPIESTests)
+   RUNTESTS(ARE_COPIESTests)
 }

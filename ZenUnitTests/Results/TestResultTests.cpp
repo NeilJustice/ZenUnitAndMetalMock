@@ -20,7 +20,7 @@ namespace ZenUnit
    FACT(PrintIfFailure_InvalidOutcome_Throws)
    FACTS(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseIndexPlus1IfTestCaseIndexNotMaxValue)
    FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   BEGINPROOF
+   EVIDENCE
 
    TestResult _testResult;
    CallResult ConstructorCallResult;
@@ -426,5 +426,5 @@ File.cpp(1))");
       EQUALIZER_THROWS(TestResult, milliseconds, 20u);
    }
 
-   }; RUN(TestResultTests)
+   RUNTESTS(TestResultTests)
 }

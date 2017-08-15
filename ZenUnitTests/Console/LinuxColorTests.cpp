@@ -6,7 +6,7 @@ namespace ZenUnit
    TESTS(LinuxColorTests)
    FACTS(ColorToLinuxColor_ReturnsExpected)
    FACT(ColorToLinuxColor_NonWhiteGreenRedColor_TriggersAssertion)
-   BEGINPROOF
+   EVIDENCE
 
    TEST2X2(ColorToLinuxColor_ReturnsExpected,
       const char* expectedColorCode, Color color,
@@ -24,5 +24,5 @@ namespace ZenUnit
 File.cpp(1))");
    }
 
-   }; RUN(LinuxColorTests)
+   RUNTESTS(LinuxColorTests)
 }

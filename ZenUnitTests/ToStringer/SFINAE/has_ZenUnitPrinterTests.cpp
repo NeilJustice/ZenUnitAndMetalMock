@@ -32,7 +32,7 @@ namespace ZenUnit
    TESTS(has_ZenUnitPrinterTests)
    FACT(value_FalseIfZenUnitPrinterNotDefinedForType)
    FACT(value_TrueIfZenUnitPrinterIsDefinedForType)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(value_FalseIfZenUnitPrinterNotDefinedForType)
    {
@@ -64,5 +64,5 @@ namespace ZenUnit
       IS_TRUE(has_ZenUnitPrinter<Namespace::StructInsideNamespace_ZenUnitPrintOutsideNamespace>::value);
    }
 
-   }; RUN(has_ZenUnitPrinterTests)
+   RUNTESTS(has_ZenUnitPrinterTests)
 }

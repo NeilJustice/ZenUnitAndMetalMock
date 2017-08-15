@@ -5,7 +5,7 @@ namespace ZenMock
 {
    TESTS(FunctionAlreadyExpectedExceptionTests)
    FACT(Constructor_SetsWhatText_ClassIsSubclassOfZenMockException)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(Constructor_SetsWhatText_ClassIsSubclassOfZenMockException)
    {
@@ -19,5 +19,5 @@ Already called [ZenMockedFunctionName]Mock.Expect[AndReturn|AndReturnValues|AndT
       IS_TRUE((is_base_of<ZenMockException, FunctionAlreadyExpectedException>::value));
    }
 
-   }; RUN(FunctionAlreadyExpectedExceptionTests)
+   RUNTESTS(FunctionAlreadyExpectedExceptionTests)
 }

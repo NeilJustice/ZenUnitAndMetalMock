@@ -59,7 +59,7 @@ namespace ZenUnit
    FACT(IntLiteralsNotEqual_Throws)
    FACT(IntVariablesNotEqual_Throws_MessagesTestCase)
    FACT(StringsNotEqual_ThrowsWithStringsInQuotesToConfirmedToStringed)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(OneTypeEqualizerDefined_CallsIt)
    {
@@ -147,5 +147,5 @@ Expected: "expected"
 File.cpp(1))");
    }
 
-   }; RUN(ARE_EQUALTests)
+   RUNTESTS(ARE_EQUALTests)
 }

@@ -45,7 +45,7 @@
 #define SKIPSPEC(Reason, HighQualityTestName) DOSKIP(Reason, HighQualityTestName)
 #define SKIPSPECX(Reason, HighQualityTestName) DOSKIP(Reason, HighQualityTestName)
 
-#define BEGINPROOF return tests; }
+#define EVIDENCE return tests; }
 #define STARTUP void Startup() override
 #define CLEANUP void Cleanup() override
 
@@ -105,25 +105,25 @@
       TestClassType::RegisterTest10X10(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
    void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)
 
-#define RUN(HighQualityTestClassName) \
+#define RUNTESTS(HighQualityTestClassName) }; \
    const char* HighQualityTestClassName::s_testClassNamePossiblyTemplatized = nullptr; \
    bool HighQualityTestClassName::s_allNXNTestsRegistered = false; \
    std::nullptr_t ZenUnit_TestClassRegistrar_##HighQualityTestClassName = \
       ZenUnit::TestRunner::Instance().RegisterTestClassRunner( \
          new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName>(#HighQualityTestClassName));
 
-#define SKIPRUN(Reason, HighQualityTestClassName) \
+#define SKIPTESTS(Reason, HighQualityTestClassName) \
    const std::nullptr_t ZenUnit_TestClassSkipper_##HighQualityTestClassName = \
       ZenUnit::TestRunner::Instance().SkipTestClass(#HighQualityTestClassName, Reason);
 
-#define RUNTEMPLATE(HighQualityTestClassName, ...) \
+#define RUNTEMPLATETESTS(HighQualityTestClassName, ...) \
    template<> const char* HighQualityTestClassName<__VA_ARGS__>::s_testClassNamePossiblyTemplatized = nullptr; \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassRegistrar_, HighQualityTestClassName), _Line), __LINE__) = \
       ZenUnit::TestRunner::Instance().RegisterTestClassRunner( \
          new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName<__VA_ARGS__>>(#HighQualityTestClassName"<"#__VA_ARGS__">"));
 
-#define SKIPRUNTEMPLATE(Reason, HighQualityTestClassName, ...) \
+#define SKIPTEMPLATETESTS(Reason, HighQualityTestClassName, ...) \
    template<> const char* HighQualityTestClassName<__VA_ARGS__>::s_testClassNamePossiblyTemplatized = nullptr; \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassSkipper_, HighQualityTestClassName), _Line), __LINE__) = \

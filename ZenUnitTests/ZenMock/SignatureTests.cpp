@@ -6,7 +6,7 @@ namespace ZenMock
    TESTS(SignatureTests)
    FACTS(Function_ReturnsFunctionSignature)
    FACTS(FunctionPointer_ReturnsExpected)
-   BEGINPROOF
+   EVIDENCE
 
    TEST6X6(Function_ReturnsFunctionSignature,
       string expectedFunctionSignature,
@@ -38,5 +38,5 @@ namespace ZenMock
       ARE_EQUAL(expectedFunctionPointerSignature, functionPointerSignature);
    }
 
-   }; RUN(SignatureTests)
+   RUNTESTS(SignatureTests)
 }

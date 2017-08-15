@@ -22,7 +22,7 @@ namespace ZenUnit
 {
    TESTS(WatchTests)
    FACTS(TimeZoneDateTimeNow_ReturnsLocalTimeNowWithTimeZoneAndTodaysDate)
-   BEGINPROOF
+   EVIDENCE
 
    struct WatchSelfMocked : public Zen::Mock<ZenUnit::Watch>
    {
@@ -76,5 +76,5 @@ namespace ZenUnit
       return tmNow;
    }
 
-   }; RUN(WatchTests)
+   RUNTESTS(WatchTests)
 }

@@ -12,7 +12,7 @@ namespace ZenUnit
    FACT(ForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
    FACT(ForEach_TwoItemIterable_CallsThisPointerBoundFuncTwice)
    FACT(CodeCoverage_ClassTypeFunc)
-   BEGINPROOF
+   EVIDENCE
 
    class ClassType
    {
@@ -70,8 +70,8 @@ namespace ZenUnit
    }
 
    };
-   RUNTEMPLATE(MemberForEacherTests, vector, int)
-   RUNTEMPLATE(MemberForEacherTests, vector, double)
-   RUNTEMPLATE(MemberForEacherTests, set, int)
-   RUNTEMPLATE(MemberForEacherTests, set, double)
+   RUNTEMPLATETESTS(MemberForEacherTests, vector, int)
+   RUNTEMPLATETESTS(MemberForEacherTests, vector, double)
+   RUNTEMPLATETESTS(MemberForEacherTests, set, int)
+   RUNTEMPLATETESTS(MemberForEacherTests, set, double)
 }

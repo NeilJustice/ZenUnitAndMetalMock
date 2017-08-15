@@ -24,7 +24,7 @@ namespace ZenUnit
    FACTS(NonMinimalPrintResultLine_1OrMoreFailedTests_WritesFailedInRed)
    FACT(PrintTestResultIfFailure_CallsTestResultPrintIfFailure)
    FACT(ZenUnitEqualizer_ThrowsIfTestResultsNotEqual)
-   BEGINPROOF
+   EVIDENCE
 
    TestClassResult _testClassResult;
 
@@ -215,5 +215,5 @@ namespace ZenUnit
       EQUALIZER_THROWS(TestClassResult, _testResults, vector<TestResult> { TestResult() });
    }
 
-   }; RUN(TestClassResultTests)
+   RUNTESTS(TestClassResultTests)
 }

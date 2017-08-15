@@ -10,7 +10,7 @@ namespace ZenUnit
 #elif _WIN32
    FACT(GetWindowsMachineName_ReturnsResultOfGetComputerName)
 #endif
-   BEGINPROOF
+   EVIDENCE
 
    struct MachineNameGetterSelfMocked : public Zen::Mock<MachineNameGetter>
    {
@@ -67,5 +67,5 @@ namespace ZenUnit
    }
 #endif
 
-   }; RUN(MachineNameGetterTests)
+   RUNTESTS(MachineNameGetterTests)
 }

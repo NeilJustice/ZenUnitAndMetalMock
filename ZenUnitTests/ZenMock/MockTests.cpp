@@ -10,12 +10,12 @@ namespace Zen
 
    TESTS(MockTests)
    FACT(ZenMockedClassName_ReturnsPointerToCachedRTTINameOfZenMockedClass)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(ZenMockedClassName_ReturnsPointerToCachedRTTINameOfZenMockedClass)
    {
       ARE_EQUAL("Zen::X", *Mock<Zen::X>::ZenMockedClassName());
    }
 
-   }; RUN(MockTests)
+   RUNTESTS(MockTests)
 }

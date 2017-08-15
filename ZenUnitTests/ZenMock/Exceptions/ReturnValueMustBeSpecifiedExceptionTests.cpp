@@ -5,7 +5,7 @@ namespace ZenMock
 {
    TESTS(ReturnValueMustBeSpecifiedExceptionTests)
    FACT(DefaultConstructor_SetsWhatText_ClassIsSubclassOfZenMockException)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(DefaultConstructor_SetsWhatText_ClassIsSubclassOfZenMockException)
    {
@@ -21,5 +21,5 @@ namespace ZenMock
       IS_TRUE((is_base_of<ZenMockException, ReturnValueMustBeSpecifiedException>::value));
    }
 
-   }; RUN(ReturnValueMustBeSpecifiedExceptionTests)
+   RUNTESTS(ReturnValueMustBeSpecifiedExceptionTests)
 }

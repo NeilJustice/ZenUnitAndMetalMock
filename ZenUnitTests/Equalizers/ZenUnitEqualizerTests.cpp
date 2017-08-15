@@ -26,7 +26,7 @@ namespace ZenUnit
    FACT(Double_Float_NotExactlyEqual_Throws)
    FACT(Int_SizeT_ThrowsIfIntNegative_OtherwiseCallsAssertEqualSizeTSizeT)
    FACT(Int_Unsigned_ThrowsIfIntNegative_OtherwiseCallsAssertEqualUnsignedUnsigned)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(TemplateZenUnitEqualizer_ValuesAreEqualityOperatorEqual_DoesNotThrow)
    {
@@ -201,5 +201,5 @@ namespace ZenUnit
         numeric_limits<int>::max(), static_cast<size_t>(numeric_limits<int>::max()));
    }
 
-   }; RUN(ZenUnitEqualizerTests)
+   RUNTESTS(ZenUnitEqualizerTests)
 }

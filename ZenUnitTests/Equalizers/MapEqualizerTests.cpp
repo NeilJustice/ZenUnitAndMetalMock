@@ -6,7 +6,7 @@ template<
    class MapType>
 TEMPLATETESTS(MapEqualizerTests, MapType)
 FACT(ARE_EQUAL_EqualStdMaps_CompilesAndDoesNotThrow)
-BEGINPROOF
+EVIDENCE
 
 TEST(ARE_EQUAL_EqualStdMaps_CompilesAndDoesNotThrow)
 {
@@ -16,5 +16,5 @@ TEST(ARE_EQUAL_EqualStdMaps_CompilesAndDoesNotThrow)
 }
 
 };
-RUNTEMPLATE(MapEqualizerTests, map)
-RUNTEMPLATE(MapEqualizerTests, unordered_map)
+RUNTEMPLATETESTS(MapEqualizerTests, map)
+RUNTEMPLATETESTS(MapEqualizerTests, unordered_map)

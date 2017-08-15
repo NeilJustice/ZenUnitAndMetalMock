@@ -8,7 +8,7 @@ namespace ZenUnit
    FACT(ForEach_EmptyIterable_DoesNothing)
    FACT(ForEach_OneItemIterable_CallsFuncOnItemOnce)
    FACT(ForEach_TwoItemIterable_CallsFuncOnItemTwice)
-   BEGINPROOF
+   EVIDENCE
 
    using ForEacherType = ForEacherTwoExtraArgs<vector<int>,
       function<void(int, char, string)>, char, string>;
@@ -66,6 +66,6 @@ namespace ZenUnit
       VECTORS_EQUAL(expectedFuncCalls, _funcCalls);
    }
 
-   }; RUN(ForEacherTwoExtraArgsTests)
+   RUNTESTS(ForEacherTwoExtraArgsTests)
 }
 

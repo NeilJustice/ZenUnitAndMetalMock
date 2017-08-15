@@ -8,7 +8,7 @@ namespace ZenMock
    FACTS(Constructor_NonVoid0Args_SetsWhatToAlsoIncludeExpectAndReturnValue)
    FACT(Constructor_Void1Arg_SetsWhat_IncludesToStringedArg1)
    FACT(Constructor_Void2Args_SetsWhat_IncludesToStringedArg1AndArg2)
-   BEGINPROOF
+   EVIDENCE
 
    const string ExpectedUnexpectedCallPrefix = "Unexpected call to ZenMocked function\n\"";
    const string VoidSignature0 = "void ClassName::FunctionName()";
@@ -79,5 +79,5 @@ Arg2: UserType@2
       ARE_EQUAL(ExpectedWhat, what);
    }
 
-   }; RUN(UnexpectedCallExceptionTests)
+   RUNTESTS(UnexpectedCallExceptionTests)
 }

@@ -10,7 +10,7 @@ namespace ZenUnit
    FACT(Constructor_ConstCharPointer_SetsFields)
    FACT(Constructor_String_SetsFields)
    FACT(Constructor_NonConstCharacterArray_SetsFields)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(Constructor_Int_SetsFields)
    {
@@ -69,5 +69,5 @@ namespace ZenUnit
       ARE_EQUAL("text3", vrtext3.text);
    }
 
-   }; RUN(VRTextTests)
+   RUNTESTS(VRTextTests)
 }

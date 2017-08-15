@@ -5,7 +5,7 @@ namespace ZenUnit
 {
    TESTS(EqualizerExceptionTests)
    FACT(EqualizerException_what_ReturnsEmptyString)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(EqualizerException_what_ReturnsEmptyString)
    {
@@ -13,5 +13,5 @@ namespace ZenUnit
       ARE_EQUAL("", equalizerException.what());
    }
 
-   }; RUN(EqualizerExceptionTests)
+   RUNTESTS(EqualizerExceptionTests)
 }

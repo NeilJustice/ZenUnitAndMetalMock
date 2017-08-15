@@ -7,7 +7,7 @@ namespace ZenMock
    TESTS(ZENTests)
    FACT(ZENWrappedAssertionDoesNotThrow_NothingHappens)
    FACT(ZENWrappedAssertionThrows_RethrowsZENWrappedAnomaly)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(ZENWrappedAssertionDoesNotThrow_NothingHappens)
    {
@@ -32,5 +32,5 @@ Expected: "Message"
 File.cpp(1))");
    }
 
-   }; RUN(ZENTests)
+   RUNTESTS(ZENTests)
 }

@@ -7,7 +7,7 @@ namespace ZenUnit
    FACT(ExpectedAndActualAddressesEqual_DoesNotThrow)
    FACT(ExpectedAndActualValuesEqual_AddressesNotEqual_Throws)
    FACT(ExpectedAndActualValuesNotEqual_AddressesNotEqual_Throws_MessagesTestCase)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(ExpectedAndActualAddressesEqual_DoesNotThrow)
    {
@@ -65,5 +65,5 @@ Expected: )";
       return expectedWhatPattern;
    }
 
-   }; RUN(ARE_SAMETests)
+   RUNTESTS(ARE_SAMETests)
 }

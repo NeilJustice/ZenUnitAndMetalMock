@@ -11,7 +11,7 @@ namespace ZenUnit
    FACT(ToUnsigned_EmptyString_Throws)
    FACTS(ToUnsigned_StringNotConvertibleToUnsigned_Throws)
    FACTS(ToUnsigned_StringIsValueGreaterThanUnsignedMax_Throws)
-   BEGINPROOF
+   EVIDENCE
 
    TEST3X3(Split_ReturnsExpected,
       const string& str, char separator, const vector<string>& expectedReturnValue,
@@ -109,12 +109,12 @@ namespace ZenUnit
          + expectedGreaterThanUnsignedMaxValue + "\"");
    }
 
-   }; RUN(StringUtilTests)
+   RUNTESTS(StringUtilTests)
 
    template<typename StringType>
    TEMPLATETESTS(StringUtilContainsTests, StringType)
    FACTS(Contains_ReturnsTrueIfStrContainsSubstring)
-   BEGINPROOF
+   EVIDENCE
 
    TEST3X3(Contains_ReturnsTrueIfStrContainsSubstring,
       StringType str, const char* substring, bool expectedReturnValue,
@@ -131,6 +131,6 @@ namespace ZenUnit
    }
 
    };
-   RUNTEMPLATE(StringUtilContainsTests, const string&)
-   RUNTEMPLATE(StringUtilContainsTests, const char*)
+   RUNTEMPLATETESTS(StringUtilContainsTests, const string&)
+   RUNTEMPLATETESTS(StringUtilContainsTests, const char*)
 }

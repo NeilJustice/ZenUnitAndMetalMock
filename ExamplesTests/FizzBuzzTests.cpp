@@ -4,7 +4,7 @@
 TESTS(FizzBuzzTests)
 FACT(FizzBuzz_EndNumber0_Throws)
 FACTS(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)
-BEGINPROOF
+EVIDENCE
 
 TEST(FizzBuzz_EndNumber0_Throws)
 {
@@ -32,4 +32,4 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    ARE_EQUAL(expectedFizzBuzzSequence, FizzBuzz(endNumber));
 }
 
-}; RUN(FizzBuzzTests)
+RUNTESTS(FizzBuzzTests)

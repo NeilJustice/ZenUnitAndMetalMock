@@ -45,7 +45,7 @@ namespace ZenMock
    FACT(ExpectAndReturn_CausesFunctionToReturnValue)
    FACT(ExpectAndReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
    FACT(ExpectAndReturnValuesVector_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
-   BEGINPROOF
+   EVIDENCE
 
    NonVoid0FunctionsMock _mock;
    ZENMOCK_NONVOID0_FREE(int, NonVoid0)
@@ -262,6 +262,6 @@ namespace ZenMock
       test(Static_ZenMock, [&]{ return ZENBIND0(Static_ZenMock)(); });
    }
 
-}; RUN(ZenMock_NonVoid0Tests)
+RUNTESTS(ZenMock_NonVoid0Tests)
 
 }

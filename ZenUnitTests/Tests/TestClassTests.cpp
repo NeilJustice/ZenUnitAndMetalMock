@@ -15,7 +15,7 @@ namespace ZenUnit
    FACT(Startup_DoesNotThrow)
    FACT(Cleanup_DoesNotThrow)
    FACT(Destructor_SetsDerviedTestClassTypeAllTestCasesRegisteredToTrue)
-   BEGINPROOF
+   EVIDENCE
 
    TestClass _testClass;
 
@@ -48,5 +48,5 @@ namespace ZenUnit
       IS_TRUE(TestingDerivedTestClassType::s_allNXNTestsRegistered);
    }
 
-   }; RUN(TestClassTests)
+   RUNTESTS(TestClassTests)
 }

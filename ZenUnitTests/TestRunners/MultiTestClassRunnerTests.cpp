@@ -12,7 +12,7 @@ namespace ZenUnit
    FACT(AddTestClassRunner_EmplacesBackTestClassRunner_MakesNumberOfTestClassesReturnAnIncreasingNumber)
    FACTS(RunTestClasses_SortsTestClassRunnersByName_RunsTestClassesRandomlyIfRandomOtherwiseSequentially_MoveReturnsTestClassResultsVector)
    FACT(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)
-   BEGINPROOF
+   EVIDENCE
 
    MultiTestClassRunner _multiTestClassRunner;
    SorterMock<std::vector<std::unique_ptr<TestClassRunner>>>* _sorterMock;
@@ -131,5 +131,5 @@ namespace ZenUnit
       ARE_EQUAL(TestClassResult::TestingNonDefault(), testClassResult);
    }
 
-   }; RUN(MultiTestClassRunnerTests)
+   RUNTESTS(MultiTestClassRunnerTests)
 }

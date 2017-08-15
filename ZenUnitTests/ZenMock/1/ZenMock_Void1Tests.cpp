@@ -30,7 +30,7 @@ namespace ZenMock
    };
 
    TESTS(ZenMock_Void1Tests)
-   BEGINPROOF
+   EVIDENCE
 
    Void1FunctionsMock _mock;
    ZENMOCK_VOID1_FREE(Void1, int)
@@ -84,5 +84,5 @@ namespace ZenMock
             ExpectedStaticUniqueSignature);
    }
 
-   }; RUN(ZenMock_Void1Tests)
+   RUNTESTS(ZenMock_Void1Tests)
 }

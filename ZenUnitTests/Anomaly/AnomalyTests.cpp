@@ -15,7 +15,7 @@ namespace ZenUnit
    FACT(what_ReturnsWhyCStr)
    FACT(ZENWrapped_ReturnsExpectedAnomaly)
    FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   BEGINPROOF
+   EVIDENCE
 
    const char* AssertionName = "ASSERTION_NAME";
    const char* Arg1Text = "Arg1Text";
@@ -329,5 +329,5 @@ FilePath(1))";
       EQUALIZER_THROWS(Anomaly, why, "whyValue");
    }
 
-   }; RUN(AnomalyTests)
+   RUNTESTS(AnomalyTests)
 }

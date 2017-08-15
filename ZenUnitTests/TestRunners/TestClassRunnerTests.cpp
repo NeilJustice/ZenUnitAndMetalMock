@@ -6,7 +6,7 @@ namespace ZenUnit
 {
    TESTS(TestClassRunnerTests)
    FACTS(OperatorLessThan_ReturnsTrueIfTestClassNameStrcmpResultIsLessThanZero)
-   BEGINPROOF
+   EVIDENCE
 
    TEST3X3(OperatorLessThan_ReturnsTrueIfTestClassNameStrcmpResultIsLessThanZero,
       bool expectedIsLessThan, const char* leftTestClassName, const char* rightTestClassName,
@@ -34,5 +34,5 @@ namespace ZenUnit
       ARE_EQUAL(expectedIsLessThan, isLessThan);
    }
 
-   }; RUN(TestClassRunnerTests)
+   RUNTESTS(TestClassRunnerTests)
 }

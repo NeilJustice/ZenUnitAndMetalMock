@@ -32,7 +32,7 @@ namespace ZenUnit
    FACT(Run_GetsTestFromAddress_RunsTest_ReturnsTestResults)
    FACT(PmfTokenToTest_ReturnsTestClassTypeTestNXNPmfToTestReturnValue);
    FACT(TestFunction_CodeCoverage)
-   BEGINPROOF
+   EVIDENCE
 
    class SpecSectionTestNXNSelfMocked : public Zen::Mock<SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests>>
    {
@@ -138,5 +138,5 @@ namespace ZenUnit
       t.TestFunction(0);
    }
 
-   }; RUN(SpecSectionTestNXNTests)
+   RUNTESTS(SpecSectionTestNXNTests)
 }

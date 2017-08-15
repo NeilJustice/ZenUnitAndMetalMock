@@ -14,7 +14,7 @@ namespace ZenUnit
    FACT(SameSize1_ElementsNotEqual_Throws_MessagesTestCase)
    FACT(SameSize2_ElementsNotEqual_Throws)
    FACT(UserTypeSets_SameSize1_ElementsNotEqual_Throws)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(EmptySets_DoesNotThrow)
    {
@@ -119,6 +119,6 @@ File.cpp(1))");
    }
 
    };
-   RUNTEMPLATE(SETS_EQUALTests, set)
-   RUNTEMPLATE(SETS_EQUALTests, unordered_set)
+   RUNTEMPLATETESTS(SETS_EQUALTests, set)
+   RUNTEMPLATETESTS(SETS_EQUALTests, unordered_set)
 }

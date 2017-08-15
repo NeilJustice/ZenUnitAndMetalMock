@@ -17,7 +17,7 @@ namespace ZenUnit
    FACT(GetNameT_ClassType_ReturnsTypeNameMinusClassSpace)
    FACT(GetNameT_StructType_ReturnsTypeNameMinusStructSpace)
    FACT(GetNameT_ThrownExceptionSubclass_ReturnsBaseClassNameAndNotSubclassName)
-   BEGINPROOF
+   EVIDENCE
 
    class C {};
    struct S {};
@@ -142,5 +142,5 @@ namespace ZenUnit
       }
    }
 
-   }; RUN(TypeTests)
+   RUNTESTS(TypeTests)
 }

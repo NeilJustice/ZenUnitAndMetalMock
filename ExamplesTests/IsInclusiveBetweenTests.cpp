@@ -4,7 +4,7 @@
 TESTS(IsInclusiveBetweenTests)
 FACT(LowerBoundGreaterThanUpperBound_Throws)
 FACTS(ReturnsTrueIfNumberIsInclusiveBetween)
-BEGINPROOF
+EVIDENCE
 
 TEST(LowerBoundGreaterThanUpperBound_Throws)
 {
@@ -29,4 +29,4 @@ TEST4X4(ReturnsTrueIfNumberIsInclusiveBetween,
    ARE_EQUAL(expectedReturnValue, IsInclusiveBetween(lowerBound, number, upperBound));
 }
 
-}; RUN(IsInclusiveBetweenTests)
+RUNTESTS(IsInclusiveBetweenTests)

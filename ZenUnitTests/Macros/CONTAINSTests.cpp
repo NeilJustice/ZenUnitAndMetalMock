@@ -10,7 +10,7 @@ namespace ZenUnit
    FACT(Map_DoesNotContainElement_Throws)
    FACT(Set_DoesContainElement_DoesNotThrow)
    FACT(Set_DoesNotContainElement_Throws_MessagesTestCase)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(Vector_DoesContainElement_DoesNotThrow)
    {
@@ -80,5 +80,5 @@ Expected: Contains element 0
 File.cpp(1))");
    }
 
-   }; RUN(CONTAINSTests)
+   RUNTESTS(CONTAINSTests)
 }

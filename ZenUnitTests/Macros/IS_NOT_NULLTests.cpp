@@ -8,7 +8,7 @@ namespace ZenUnit
    FACT(NullUniquePointer_Throws_MessagesTestCase)
    FACT(NonNullRawPointer_DoesNotThrow)
    FACT(NonNullUniquePointer_DoesNotThrow)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(NullRawPointer_Throws)
    {
@@ -45,5 +45,5 @@ File.cpp(1))");
       IS_NOT_NULL(nonNullUniquePtr);
    }
 
-   }; RUN(IS_NOT_NULLTests)
+   RUNTESTS(IS_NOT_NULLTests)
 }

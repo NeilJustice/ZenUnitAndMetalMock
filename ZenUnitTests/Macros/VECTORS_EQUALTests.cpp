@@ -11,7 +11,7 @@ namespace ZenUnit
    FACT(VectorSizesEqual_ElementsNotEqualAtIndex1_Throws)
    FACT(TwoEmptyVectors_DoesNotThrow)
    FACT(VectorSizesEqual_VectorElementsEqual_DoesNotThrow)
-   BEGINPROOF
+   EVIDENCE
 
    const string MessageA = "A", MessageB = "B";
 
@@ -101,6 +101,6 @@ File.cpp(1))");
    }
 
    };
-   RUNTEMPLATE(VECTORS_EQUALTests, int)
-   RUNTEMPLATE(VECTORS_EQUALTests, UserType)
+   RUNTEMPLATETESTS(VECTORS_EQUALTests, int)
+   RUNTEMPLATETESTS(VECTORS_EQUALTests, UserType)
 }

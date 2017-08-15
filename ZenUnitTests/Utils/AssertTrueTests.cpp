@@ -7,7 +7,7 @@ namespace ZenUnit
    FACT(assert_true_IsTrue_DoesNothing)
    FACT(assert_true_IsFalse_FromOperatorParentheses_ThrowsLogicError)
    FACT(assert_true_IsFalse_FromFunction_ThrowsLogicError)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(assert_true_IsTrue_DoesNothing)
    {
@@ -66,5 +66,5 @@ namespace ZenUnit
       f();
    }
 
-   }; RUN(assert_trueTests)
+   RUNTESTS(assert_trueTests)
 }

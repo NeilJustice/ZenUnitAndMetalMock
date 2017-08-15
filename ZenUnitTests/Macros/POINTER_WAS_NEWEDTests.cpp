@@ -11,7 +11,7 @@ FACT(NonEmptyUniquePointer_DoesNotThrow_ThrowsWhenCalledAgain)
 FACT(NonEmptySharedPointer_DoesNotThrow_ThrowsWhenCalledAgain)
 FACT(NonEmptyUserTypeUniquePointer_CallsDestructor_ThrowsWhenCalledAgain)
 FACT(NonEmptyUserTypeSharedPointer_CallsDestructor_ThrowsWhenCalledAgain)
-BEGINPROOF
+EVIDENCE
 
 struct Deletable
 {
@@ -134,4 +134,4 @@ Expected: not a nullptr
 File.cpp(1))");
 }
 
-}; RUN(POINTER_WAS_NEWEDTests_RawPointers)
+RUNTESTS(POINTER_WAS_NEWEDTests_RawPointers)

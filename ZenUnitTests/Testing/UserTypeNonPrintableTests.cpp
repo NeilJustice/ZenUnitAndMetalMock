@@ -10,7 +10,7 @@ namespace ZenUnit
    FACT(OperatorLessThan_ReturnsTrueIfLeftXLessThanRightX)
    FACT(OperatorEquals_ReturnsTrueIfLeftXEqualsRightX)
    FACT(has_ostream_left_shift_ValueEqualsFalse)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(DefaultConstructor_SetsXTo0)
    {
@@ -46,5 +46,5 @@ namespace ZenUnit
       IS_FALSE(has_ostream_left_shift<UserTypeNonPrintable>::value);
    }
 
-   }; RUN(UserTypeNonPrintableTests)
+   RUNTESTS(UserTypeNonPrintableTests)
 }

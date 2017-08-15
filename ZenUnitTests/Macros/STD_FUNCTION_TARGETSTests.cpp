@@ -9,7 +9,7 @@ namespace ZenUnit
    FACT(FunctionPointsToFunctionWithSameSignatureButDifferentFunctionThanExpected_Throws)
    FACT(FunctionPointsToSameFunctionAsExpected_DoesNotThrow)
    FACT(FunctionABC_CodeCoverage)
-   BEGINPROOF
+   EVIDENCE
 
    static void FunctionA() {}
    static void FunctionB(int) {}
@@ -142,5 +142,5 @@ File.cpp\(1\))", anomaly.why);
       FunctionC();
    }
 
-   }; RUN(STD_FUNCTION_TARGETSTests)
+   RUNTESTS(STD_FUNCTION_TARGETSTests)
 }

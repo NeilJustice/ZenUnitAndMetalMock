@@ -18,7 +18,7 @@ struct ZenUnitEqualizer<Struct>
 
 TESTS(CallAllMacrosTests)
 FACT(CallAllMacros)
-BEGINPROOF
+EVIDENCE
 
 TEST(CallAllMacros)
 {
@@ -68,4 +68,4 @@ TEST(CallAllMacros)
    EQUALIZER_THROWS(Struct, secondField, 'A');
 }
 
-}; RUN(CallAllMacrosTests)
+RUNTESTS(CallAllMacrosTests)

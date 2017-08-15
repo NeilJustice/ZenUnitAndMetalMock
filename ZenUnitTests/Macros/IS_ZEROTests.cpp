@@ -11,7 +11,7 @@ namespace ZenUnit
    FACT(UserTypeNotZero_Throws_MessagesTestCase)
    FACT(IntializerConstructable_IsZero_DoesNotThrow)
    FACT(IntializerConstructable_IsNotZero_Throws)
-   BEGINPROOF
+   EVIDENCE
 
    struct IntializerConstructable
    {
@@ -111,5 +111,5 @@ Expected: InitializerConstructable@0
 File.cpp(1))");
    }
 
-   }; RUN(IS_ZEROTests)
+   RUNTESTS(IS_ZEROTests)
 }

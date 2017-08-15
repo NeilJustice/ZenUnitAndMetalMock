@@ -8,7 +8,7 @@ namespace ZenUnit
    FACT(StartupFail_ReturnsTestResultStartupFail)
    FACT(CtorDtorSuccess_ReturnsTestResultCtorDtorSuccess)
    FACT(FullConstructor_ReturnsTestResultSixArgCtor)
-   BEGINPROOF
+   EVIDENCE
 
    TestResultFactory _testResultFactory;
    const FullTestName FullTestNameValue = FullTestName("TestClass", "Test", 0);
@@ -67,5 +67,5 @@ namespace ZenUnit
       ARE_EQUAL(expectedTestResult, testResult);
    }
 
-   }; RUN(TestResultFactoryTests)
+   RUNTESTS(TestResultFactoryTests)
 }

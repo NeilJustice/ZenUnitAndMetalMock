@@ -9,7 +9,7 @@ namespace ZenUnit
    FACT(ToString_ReturnsFilePathLeftParenLineNumberRightParen)
    FACT(OStreamInsertionOperator_WritesExpected)
    FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(DefaultConstructor_SetsFieldsTo0)
    {
@@ -61,5 +61,5 @@ namespace ZenUnit
       EQUALIZER_THROWS(FileLine, lineNumber, 1u);
    }
 
-   }; RUN(FileLineTests)
+   RUNTESTS(FileLineTests)
 }

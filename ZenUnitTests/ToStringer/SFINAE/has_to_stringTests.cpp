@@ -7,7 +7,7 @@ namespace ZenUnit
    TESTS(has_to_stringTests)
    FACT(HasStdToString_ValueIsTrue)
    FACT(DoesNotHaveStdToSTring_ValueIsFalse)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(HasStdToString_ValueIsTrue)
    {
@@ -25,5 +25,5 @@ namespace ZenUnit
       IS_FALSE(has_to_string<UserType>::value);
    }
 
-   }; RUN(has_to_stringTests)
+   RUNTESTS(has_to_stringTests)
 }

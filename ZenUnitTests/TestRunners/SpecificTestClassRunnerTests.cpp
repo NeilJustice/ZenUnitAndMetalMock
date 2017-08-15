@@ -18,7 +18,7 @@ namespace ZenUnit
    FACTS(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewDeleteTest_AddsResultToResults_ReturnsTrueIfNewableAndDeletable)
    FACT(RunTest_NonMinimalWritesVerticalBarTestName_RunsTest_AddsTestResultsToTestClassResult_NonMinimalWriteTestOutcome)
    FACT(NonMinimalPrintResultLine_CallsTestClassResultPrintResultLine)
-   BEGINPROOF
+   EVIDENCE
 
    class TestingTestClass
    {
@@ -333,5 +333,5 @@ namespace ZenUnit
       ZEN(testClassResultMock.NonMinimalPrintResultLineMock.AssertCalledOnceWith(_consoleMock, printMode));
    }
 
-   }; RUN(SpecificTestClassRunnerTests)
+   RUNTESTS(SpecificTestClassRunnerTests)
 }

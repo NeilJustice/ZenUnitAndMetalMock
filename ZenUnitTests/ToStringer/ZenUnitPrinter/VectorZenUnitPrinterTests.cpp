@@ -6,7 +6,7 @@ namespace ZenUnit
 {
    TESTS(VectorZenUnitPrinterTests)
    FACT(ZenUnitPrinter_Print_PrintsPlaceholderText)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(ZenUnitPrinter_Print_PrintsPlaceholderText)
    {
@@ -19,5 +19,5 @@ namespace ZenUnit
       ARE_EQUAL("vector<T>", oss.str());
    }
 
-   }; RUN(VectorZenUnitPrinterTests)
+   RUNTESTS(VectorZenUnitPrinterTests)
 }

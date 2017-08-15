@@ -5,7 +5,7 @@ namespace ZenMock
 {
    TESTS(UnsupportedAssertCalledZeroTimesExceptionTests)
    FACT(Constructor_SetsWhat_ClassIsSubclassOfZenMockException)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(Constructor_SetsWhat_ClassIsSubclassOfZenMockException)
    {
@@ -24,5 +24,5 @@ namespace ZenMock
       IS_TRUE((is_base_of<ZenMockException, UnsupportedAssertCalledZeroTimesException>::value));
    }
 
-   }; RUN(UnsupportedAssertCalledZeroTimesExceptionTests)
+   RUNTESTS(UnsupportedAssertCalledZeroTimesExceptionTests)
 }

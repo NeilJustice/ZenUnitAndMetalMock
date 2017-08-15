@@ -10,7 +10,7 @@ namespace ZenUnit
    FACT(NonNullRawPointer_Throws_MessagesTestCase)
    FACT(NonNullUniquePtr_Throws)
    FACT(NonNullSharedPtr_Throws)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(NullRawPointer_DoesNotThrow)
    {
@@ -96,5 +96,5 @@ Expected: nullptr
       THROWS(IS_NULL(nonNullSharedPointer), Anomaly, expectedWhat);
    }
 
-   }; RUN(IS_NULL_Tests)
+   RUNTESTS(IS_NULL_Tests)
 }

@@ -22,7 +22,7 @@ namespace ZenUnit
 #ifdef _WIN32
    FACTS(DebuggerIsPresent_ReturnsTrueIfIsDebuggerPresentFunctionReturns1)
 #endif
-   BEGINPROOF
+   EVIDENCE
 
    Console _console;
    ConsoleColorerMock* _consoleColorerMock;
@@ -294,5 +294,5 @@ namespace ZenUnit
    }
 #endif
 
-   }; RUN(ConsoleTests)
+   RUNTESTS(ConsoleTests)
 }

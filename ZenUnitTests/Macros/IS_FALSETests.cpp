@@ -11,7 +11,7 @@ namespace ZenUnit
    FACT(StdFunctionPointsToAFunction_Throws)
    FACT(UserTypeConvertsToFalse_DoesNotThrow)
    FACT(UserTypeConvertsToTrue_Throws)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(BoolIsFalse_DoesNotThrow)
    {
@@ -73,5 +73,5 @@ Expected: false
 File.cpp(1))");
    }
 
-   }; RUN(IS_FALSETests)
+   RUNTESTS(IS_FALSETests)
 }

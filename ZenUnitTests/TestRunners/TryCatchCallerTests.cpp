@@ -15,7 +15,7 @@ namespace ZenUnit
    FACTS(Call_FunctionThrowsStdException_ReturnsExceptionResult)
    FACTS(Call_FunctionThrowsZenMockException_ReturnsExceptionResult)
    FACTS(Call_FunctionThrowsAnIntToTriggerDotDotDotHandler_PrintsFailureDetails_Exits1)
-   BEGINPROOF
+   EVIDENCE
 
    TryCatchCaller _tryCatchCaller;
    ConsoleMock* _consoleMock;
@@ -219,7 +219,7 @@ Already called [ZenMockedFunctionName]Mock.Expect[AndReturn|AndReturnValues|AndT
             TestPhaseSuffix.c_str(), " (", Milliseconds, " ms)"), expectedExitCode));
    }
 
-   }; RUN(TryCatchCallerTests)
+   RUNTESTS(TryCatchCallerTests)
 
    int TryCatchCallerTests::s_numberOfNoThrowCalls;
 }

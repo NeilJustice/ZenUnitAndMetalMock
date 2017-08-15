@@ -20,7 +20,7 @@ namespace ZenUnit
 #ifdef _WIN32
    FACTS(SetTextColor_WIN32_CallsWin32ApiToSetColorTextColor)
 #endif
-   BEGINPROOF
+   EVIDENCE
 
    struct ConsoleColorer_SupportsColorMocked : public Zen::Mock<ConsoleColorer>
    {
@@ -71,7 +71,7 @@ namespace ZenUnit
    }
 
    TEST3X3(SetColor_CallsSupportsColorAndSetTextColorIfColorNotWhite,
-      Color color, 
+      Color color,
       bool supportsColor,
       bool expectSetTextColorCallAndExpectedReturnValue,
       Color::White, false, false,
@@ -162,5 +162,5 @@ namespace ZenUnit
    }
 #endif
 
-   }; RUN(ConsoleColorerTests)
+   RUNTESTS(ConsoleColorerTests)
 }

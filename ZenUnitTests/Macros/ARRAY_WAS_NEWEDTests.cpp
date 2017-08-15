@@ -7,7 +7,7 @@ FACT(NullRawPointer_Throws_MessagesTestCase)
 FACT(EmptyUniqueArrayPtr_Throws)
 FACT(NonNullRawPointer_DestructsEachElement_NotCallableTwiceWithoutUndefinedBehavior)
 FACT(NonNullUniqueArrayPointer_DestructsEachElement_ThrowsWhenCalledTwice)
-BEGINPROOF
+EVIDENCE
 
 struct Deletable
 {
@@ -89,6 +89,6 @@ Expected: not a nullptr
 File.cpp(1))");
 }
 
-}; RUN(ARRAY_WAS_NEWEDTests)
+RUNTESTS(ARRAY_WAS_NEWEDTests)
 
 unsigned ARRAY_WAS_NEWEDTests::Deletable::s_destructorCallCount = 0;

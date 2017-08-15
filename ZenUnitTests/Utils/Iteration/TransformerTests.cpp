@@ -12,7 +12,7 @@ namespace ZenUnit
    FACT(RandomTransform_EmptyRange_DoesNothing)
    FACT(RandomTransform_OneItemRange_CallsTransformerOnce)
    FACT(RandomTransform_ThreeItemRange_CallsTransformerThreeTimesInRandomOrder)
-   BEGINPROOF
+   EVIDENCE
 
    using TransformerType = Transformer<T, TransformedT>;
    TransformerType _transformer;
@@ -91,6 +91,6 @@ namespace ZenUnit
    }
 
    };
-   RUNTEMPLATE(TransformerTests, int, long long)
-   RUNTEMPLATE(TransformerTests, unsigned long long, unsigned long long)
+   RUNTEMPLATETESTS(TransformerTests, int, long long)
+   RUNTEMPLATETESTS(TransformerTests, unsigned long long, unsigned long long)
 }

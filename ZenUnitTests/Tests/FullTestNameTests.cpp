@@ -9,7 +9,7 @@ namespace ZenUnit
    FACT(ThreeArgConstructor_SetsFields)
    FACTS(Value_ReturnsExpected)
    FACT(ZenUnitEqualizer_ThrowsIfClassNameOrTestNameNotEqual)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(DefaultConstructor_SetsClassNameAndTestNameToNullptr)
    {
@@ -57,5 +57,5 @@ namespace ZenUnit
       EQUALIZER_THROWS(FullTestName, arity, static_cast<unsigned char>(1));
    }
 
-   }; RUN(FullTestNameTests)
+   RUNTESTS(FullTestNameTests)
 }

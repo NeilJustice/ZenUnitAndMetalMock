@@ -22,7 +22,7 @@ namespace ZenUnit
    FACT(StaticCallCleanup_CallsCleanup)
    FACT(StaticCallDeleteTestClass_CallsDeleteTestClass)
    FACT(PseudoAbstractFunctions_DoNothingOrReturn0)
-   BEGINPROOF
+   EVIDENCE
 
    unique_ptr<Test> _test;
    TryCatchCallerMock* _tryCatchCallerMock;
@@ -213,5 +213,5 @@ namespace ZenUnit
       test.DeleteTestClass();
    }
 
-   }; RUN(TestTests)
+   RUNTESTS(TestTests)
 }

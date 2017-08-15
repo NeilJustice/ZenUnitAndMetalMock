@@ -12,7 +12,7 @@ namespace ZenUnit
    FACT(RandomForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
    FACT(RandomForEach_TwoItemIterable_CallsThisPointerBoundFuncTwiceInRandomOrder)
    FACT(CodeCoverage_ClassTypeTwoArgFunction)
-   BEGINPROOF
+   EVIDENCE
 
    class ClassType
    {
@@ -122,6 +122,6 @@ namespace ZenUnit
    };
 
    };
-   RUNTEMPLATE(MemberForEacherExtraArgTests, int, int)
-   RUNTEMPLATE(MemberForEacherExtraArgTests, double, char)
+   RUNTEMPLATETESTS(MemberForEacherExtraArgTests, int, int)
+   RUNTEMPLATETESTS(MemberForEacherExtraArgTests, double, char)
 }

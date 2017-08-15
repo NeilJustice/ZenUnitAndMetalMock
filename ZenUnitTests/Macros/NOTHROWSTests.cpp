@@ -9,7 +9,7 @@ namespace ZenUnit
    FACT(FunctionCallThrows_Throws)
    FACT(LambdaCallDoesNotThrow_DoesNotThrow)
    FACT(FunctionCallDoesNotThrow_DoesNotThrow)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(LambdaCallThrows_Throws)
    {
@@ -60,5 +60,5 @@ File.cpp(1))");
       NOTHROWS(NoThrow());
    }
 
-   }; RUN(NOTHROWSTests)
+   RUNTESTS(NOTHROWSTests)
 }

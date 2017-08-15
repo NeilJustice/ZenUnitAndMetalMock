@@ -12,7 +12,7 @@ namespace ZenMock
    FACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
    FACT(ZenMockIt_ExpectedFalse_Throws)
    FACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
-   BEGINPROOF
+   EVIDENCE
 
    using MockerType = NineArgMocker<int, int, int, int, int, int, int, int, int, ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;
@@ -101,5 +101,5 @@ namespace ZenMock
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-   }; RUN(NineArgMockerTests)
+   RUNTESTS(NineArgMockerTests)
 }

@@ -7,7 +7,7 @@ namespace ZenUnit
    FACT(ContainerIsEmpty_DoesNotThrow)
    FACT(VectorIsNotEmpty_Throws)
    FACT(StringIsNotEmpty_Throws_MessagesTestCase)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(ContainerIsEmpty_DoesNotThrow)
    {
@@ -37,5 +37,5 @@ Expected: empty() == true
 File.cpp(1))");
    }
 
-   }; RUN(IS_EMPTYTests)
+   RUNTESTS(IS_EMPTYTests)
 }

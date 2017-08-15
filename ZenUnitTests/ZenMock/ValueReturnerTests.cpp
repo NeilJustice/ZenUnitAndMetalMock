@@ -28,7 +28,7 @@ namespace ZenMock
    FACT(ZenMockNextReturnValue_NonDefConReturnType_NoReturnValuesSpecified_Throws)
    FACT(ZenMockNextReturnValue_NonDefConReturnType_ReturnValuesPreviouslySpecified_ReturnsValuesThenLastValueTherafter)
    FACT(ZenMockAddContainerReturnValues_ThrowsIfReturnValuesArgumentEmpty)
-   BEGINPROOF
+   EVIDENCE
 
    const string ZenMockedFunctionSignature = "ZenMockedFunctionSignature";
 
@@ -106,5 +106,5 @@ namespace ZenMock
       THROWS(valueReturner.ZenMockAddContainerReturnValues(vector<int>{}), invalid_argument, ExpectedWhat);
    }
 
-   }; RUN(ValueReturnerTests)
+   RUNTESTS(ValueReturnerTests)
 }

@@ -7,7 +7,7 @@ namespace ZenUnit
    FACT(DefaultConstructor_SetsFieldsTo0)
    FACT(TestPhaseConstructor_SetsTestPhase_SetsOtherFieldsTo0)
    FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(DefaultConstructor_SetsFieldsTo0)
    {
@@ -43,5 +43,5 @@ namespace ZenUnit
       EQUALIZER_THROWS(CallResult, anomalyOrException, nonDefaultAnomalyOrException);
    }
 
-   }; RUN(CallResultTests)
+   RUNTESTS(CallResultTests)
 }

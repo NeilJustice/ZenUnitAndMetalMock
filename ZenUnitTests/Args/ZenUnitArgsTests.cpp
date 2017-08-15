@@ -6,7 +6,7 @@ namespace ZenUnit
    TESTS(ZenUnitArgsTests)
    FACT(DefaultConstructor_SetsFieldsToDefaults)
    FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(DefaultConstructor_SetsFieldsToDefaults)
    {
@@ -37,5 +37,5 @@ namespace ZenUnit
       EQUALIZER_THROWS(ZenUnitArgs, maxtotalseconds, 5u);
    }
 
-   }; RUN(ZenUnitArgsTests)
+   RUNTESTS(ZenUnitArgsTests)
 }

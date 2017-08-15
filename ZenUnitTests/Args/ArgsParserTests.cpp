@@ -24,7 +24,7 @@ namespace ZenUnit
    FACT(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
    FACTS(Parse_RandomEqualsArg_ValidUnsignedValue_DowncastsValueToUnsignedShort_ReturnsExpectedZenUnitArgs)
    FACT(Parse_InvalidEqualsSignArgName_PrintsUsageAndExits1)
-   BEGINPROOF
+   EVIDENCE
 
    const string TestProgramPath = Random<string>();
    const string ExpectedUsage = R"(ZenUnit and ZenMock
@@ -312,5 +312,5 @@ None
       ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(ExpectedUsage, 1));
    }
 
-   }; RUN(ArgsParserTests)
+   RUNTESTS(ArgsParserTests)
 }

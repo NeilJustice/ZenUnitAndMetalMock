@@ -10,7 +10,7 @@ FACT(ExpectedPointerNotNull_ActualPointerNotNull_PointeesNotEqual_Throws_Message
 FACT(ExpectedPointerNotNull_ActualPointerNotNull_PointeesNotEqual_UserTypes_Throws)
 FACT(ExpectedPointerNotNull_ActualPointerNotNull_PointeesEqual_DoesNotThrow)
 FACT(ExpectedPointerNotNull_ActualPointerNotNull_PointeesEqual_UserTypes_DoesNotThrow)
-BEGINPROOF
+EVIDENCE
 
 TEST(ExpectedPointerNullptr_ActualPointerNullptr_DoesNotThrow)
 {
@@ -109,4 +109,4 @@ TEST(ExpectedPointerNotNull_ActualPointerNotNull_PointeesEqual_UserTypes_DoesNot
    POINTEES_EQUAL(expectedPointer, actualPointer);
 }
 
-}; RUN(POINTEES_EQUALTests)
+RUNTESTS(POINTEES_EQUALTests)

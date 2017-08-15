@@ -8,7 +8,7 @@ namespace ZenMock
    FACT(ZenMockThrowIfExceptionSet_ExpectAndThrowNotPreviouslyCalled_DoesNothing)
    FACT(ZenMockThrowIfExceptionSet_ExpectAndThrowPreviousCalled_ThrowsTheException_TestCaseRuntimeError)
    FACT(ZenMockThrowIfExceptionSet_ExpectAndThrowPreviousCalled_ThrowsTheException_TestCaseLogicError)
-   BEGINPROOF
+   EVIDENCE
 
    ExceptionThrower _exceptionThrower;
 
@@ -36,5 +36,5 @@ namespace ZenMock
       THROWS(_exceptionThrower.ZenMockThrowIfExceptionSet(), logic_error, "logic_error_what");
    }
 
-   }; RUN(ExceptionThrowerTests)
+   RUNTESTS(ExceptionThrowerTests)
 }

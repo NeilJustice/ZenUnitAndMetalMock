@@ -6,7 +6,7 @@ namespace ZenUnit
    TESTS(WindowsColorTests)
    FACTS(ColorToWindowsColor_ReturnsExpectedWindowsColor)
    FACT(ColorToWindowsColor_NonWhiteGreenRedColor_TriggersAssertion)
-   BEGINPROOF
+   EVIDENCE
 
    TEST2X2(ColorToWindowsColor_ReturnsExpectedWindowsColor,
       WindowsColor expectedWindowsColor, Color color, 
@@ -25,5 +25,5 @@ namespace ZenUnit
 File.cpp(1))");
    }
 
-   }; RUN(WindowsColorTests)
+   RUNTESTS(WindowsColorTests)
 }

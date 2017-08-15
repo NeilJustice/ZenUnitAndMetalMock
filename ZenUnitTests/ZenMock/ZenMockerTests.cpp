@@ -26,7 +26,7 @@ namespace ZenMock
    FACTS(ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedTrue_DoesNothing)
    FACTS(ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedFalse_ZenMockExceptionIsInPlayFalse_WritesError_Exits1)
    FACT(ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedFalse_ZenMockExceptionIsInPlayTrue_DoesNothing)
-   BEGINPROOF
+   EVIDENCE
 
    unique_ptr<ZenMocker<ExceptionThrowerMock>> _zenMocker;
    ZENMOCK_VOID1_FREE(exit, int)
@@ -220,5 +220,5 @@ namespace ZenMock
       _zenMocker->ZenMockExitIfExpectedButNotAsserted();
    }
 
-   }; RUN(ZenMockerTests)
+   RUNTESTS(ZenMockerTests)
 }

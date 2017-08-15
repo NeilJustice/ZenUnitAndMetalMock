@@ -8,7 +8,7 @@ namespace ZenMock
    FACT(New_ReturnsNewInstanceOfSelfAsThrowablePointerWithExceptionCreatedFromExceptionArgs)
    FACT(Throw_ExceptionIsNullptr_DoesNothing)
    FACT(Throw_ExceptionIsNotNullptr_ThrowsTheException)
-   BEGINPROOF
+   EVIDENCE
 
    TemplateThrowable<ExceptionType> _templateThrowable;
    const string ExceptionWhat = "ExceptionWhat";
@@ -32,6 +32,6 @@ namespace ZenMock
    }
 
    };
-   RUNTEMPLATE(TemplateThrowableTests, runtime_error)
-   RUNTEMPLATE(TemplateThrowableTests, logic_error)
+   RUNTEMPLATETESTS(TemplateThrowableTests, runtime_error)
+   RUNTEMPLATETESTS(TemplateThrowableTests, logic_error)
 }

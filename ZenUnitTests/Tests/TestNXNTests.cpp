@@ -20,7 +20,7 @@ namespace ZenUnit
    FACT(DeleteTestClass_DeletesTestClass)
    FACTS(NonMinimalPrintTestCaseNumberArgsThenArrow_WritesTestCaseNumberArrow)
    FACT(NonMinimalWriteLineOKIfSuccess_CallsTestResultNonMinimalWriteLineOKIfSuccess)
-   BEGINPROOF
+   EVIDENCE
 
    static const size_t N = 1;
    unique_ptr<TestNXN<TestingTestClass, N, int>> _testNXN;
@@ -260,7 +260,7 @@ namespace ZenUnit
          AssertCalledOnceWith(_testNXN->_console.get(), printMode));
    }
 
-   }; RUN(TestNXNTests)
+   RUNTESTS(TestNXNTests)
 
    template<typename T>
    TEMPLATETESTS(AllTestNXNsWithinATemplateTestClass, T)
@@ -275,7 +275,7 @@ namespace ZenUnit
    FACTS(Test8X8)
    FACTS(Test9X9)
    FACTS(Test10X10)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(Test) {}
    TEST1X1(Test1X1, int, 0) {}
@@ -290,5 +290,5 @@ namespace ZenUnit
    TEST10X10(Test10X10, int, int, int, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0) {}
 
    };
-   RUNTEMPLATE(AllTestNXNsWithinATemplateTestClass, int)
+   RUNTEMPLATETESTS(AllTestNXNsWithinATemplateTestClass, int)
 }

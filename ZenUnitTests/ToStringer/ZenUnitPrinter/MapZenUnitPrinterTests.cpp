@@ -8,7 +8,7 @@ namespace ZenUnit
    TEMPLATETESTS(MapZenUnitPrinterTests, TKey, TValue)
    FACT(Print_Map_PrintsPlaceholder)
    FACT(Print_UnorderedMap_PrintsPlaceholder)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(Print_Map_PrintsPlaceholder)
    {
@@ -47,6 +47,6 @@ namespace ZenUnit
    }
 
    };
-   RUNTEMPLATE(MapZenUnitPrinterTests, int, int)
-   RUNTEMPLATE(MapZenUnitPrinterTests, char, unsigned)
+   RUNTEMPLATETESTS(MapZenUnitPrinterTests, int, int)
+   RUNTEMPLATETESTS(MapZenUnitPrinterTests, char, unsigned)
 }

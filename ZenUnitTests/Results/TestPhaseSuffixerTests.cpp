@@ -4,7 +4,7 @@
 TESTS(TestPhaseSuffixerTests)
 FACTS(TestPhaseToTestPhaseSuffix_ReturnsTestPhaseSuffix)
 FACTS(TestPhaseToTestPhaseSuffix_UnsetOrDestructorTestPhase_Throws)
-BEGINPROOF
+EVIDENCE
 
 TestPhaseSuffixer _testPhaseSuffixer;
 
@@ -28,4 +28,4 @@ TEST1X1(TestPhaseToTestPhaseSuffix_UnsetOrDestructorTestPhase_Throws,
 File.cpp(1))");
 }
 
-}; RUN(TestPhaseSuffixerTests)
+RUNTESTS(TestPhaseSuffixerTests)

@@ -27,7 +27,7 @@ namespace ZenUnit
    template<typename DataStructureType>
    TEMPLATETESTS(SorterTests, DataStructureType)
    FACT(Sort_SortsTheDataStructure)
-   BEGINPROOF
+   EVIDENCE
 
    Sorter<DataStructureType> _sorter;
 
@@ -42,7 +42,7 @@ namespace ZenUnit
    }
 
    };
-   RUNTEMPLATE(SorterTests, vector<int>)
-   RUNTEMPLATE(SorterTests, vector<int, CustomAllocator<int>>)
-   RUNTEMPLATE(SorterTests, vector<SortableStruct>)
+   RUNTEMPLATETESTS(SorterTests, vector<int>)
+   RUNTEMPLATETESTS(SorterTests, vector<int, CustomAllocator<int>>)
+   RUNTEMPLATETESTS(SorterTests, vector<SortableStruct>)
 }

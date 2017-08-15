@@ -55,7 +55,7 @@ namespace ZenMock
    FACTS(AssertCalls_NonEmptyCalls_FunctionCalledNotCallsSizeTimes_Throws)
    FACTS(AssertCalls_NonEmptyCalls_FunctionCalledCallsSizeTimesWithOneOfTheCallsMismatching_Throws)
    FACTS(AssertCalls_NonEmptyCalls_FunctionCalledCallsSizeTimesWithMatchingArgs_DoesNotThrow)
-   BEGINPROOF
+   EVIDENCE
 
    NonVoid1FunctionsMock mock;
    ZENMOCK_NONVOID1_FREE(int, NonVoid1, int)
@@ -348,5 +348,5 @@ namespace ZenMock
       _zenMock1Tester->AssertCalls_NonEmptyCalls_FunctionCalledCallsSizeTimesMatchingArgs_DoesNotThrow(expectedCallsSize);
    }
 
-   }; RUN(ZenMock_NonVoid1Tests)
+   RUNTESTS(ZenMock_NonVoid1Tests)
 }

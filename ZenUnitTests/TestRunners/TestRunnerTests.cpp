@@ -20,7 +20,7 @@ namespace ZenUnit
    FACTS(RunTestsAndPrintResults_RunsTestsAndPrintsResults_Returns0IfAllTestsPassedOtherwiseReturns1)
    FACT(RunTests_RunsTestClasses)
    FACTS(RunTestsWithWaitableRunnerThread_SpawnsThreadToCallRunTests_PrintsResultsAndExits1IfThreadTimesOut)
-   BEGINPROOF
+   EVIDENCE
 
    TestRunner _testRunner;
    ConsoleMock* _consoleMock;
@@ -255,5 +255,5 @@ namespace ZenUnit
       }
    }
 
-   }; RUN(TestRunnerTests)
+   RUNTESTS(TestRunnerTests)
 }

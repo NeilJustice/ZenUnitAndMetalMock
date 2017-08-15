@@ -9,7 +9,7 @@ namespace ZenUnit
    FACT(Start_SetsStartTimeToNow)
    FACT(Stop_StartNotPreviouslyCalled_Returns0)
    FACT(Stop_StartPreviouslyCalled_ReturnsElapsedMilliseconds)
-   BEGINPROOF
+   EVIDENCE
 
    Stopwatch _stopwatch;
    ZENMOCK_NONVOID0_STATIC(
@@ -62,5 +62,5 @@ namespace ZenUnit
       ARE_EQUAL(number, elapsedMilliseconds);
    }
 
-   }; RUN(StopwatchTests)
+   RUNTESTS(StopwatchTests)
 }

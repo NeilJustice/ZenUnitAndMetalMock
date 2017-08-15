@@ -8,26 +8,26 @@ FACTS(NonSkipped1X1Test)
 SKIPSPEC(Reason, SkippedNormalTest)
 SKIPSPECX(Reason, SkippedTest1X1)
 SKIPSPECX(Reason, SkippedTest2X2)
-BEGINPROOF
+EVIDENCE
 TEST(NonSkippedTest) {}
 TEST1X1(NonSkipped1X1Test, bool, true, false) {}
 TEST(SkippedNormalTest) {}
 TEST1X1(SkippedTest1X1, int, 0) {}
 TEST2X2(SkippedTest2X2, int, int, 0, 0) {}
-}; RUN(SkippedTestsTestClass)
+RUNTESTS(SkippedTestsTestClass)
 
-TESTS(SkippedTestClassA) BEGINPROOF }; SKIPRUN(Reason, SkippedTestClassA)
-TESTS(SkippedTestClassB) BEGINPROOF }; SKIPRUN(Reason, SkippedTestClassB)
+TESTS(SkippedTestClassA) EVIDENCE }; SKIPTESTS(Reason, SkippedTestClassA)
+TESTS(SkippedTestClassB) EVIDENCE }; SKIPTESTS(Reason, SkippedTestClassB)
 
 template<typename T>
-TEMPLATETESTS(SkippedTemplateTestClassA, T) BEGINPROOF };
-SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassA, int)
-SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassA, double)
+TEMPLATETESTS(SkippedTemplateTestClassA, T) EVIDENCE };
+SKIPTEMPLATETESTS(Reason, SkippedTemplateTestClassA, int)
+SKIPTEMPLATETESTS(Reason, SkippedTemplateTestClassA, double)
 
 template<template<typename...> class MapType>
-TEMPLATETESTS(SkippedTemplateTestClassB, MapType) BEGINPROOF };
-SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, map)
-SKIPRUNTEMPLATE(Reason, SkippedTemplateTestClassB, unordered_map)
+TEMPLATETESTS(SkippedTemplateTestClassB, MapType) EVIDENCE };
+SKIPTEMPLATETESTS(Reason, SkippedTemplateTestClassB, map)
+SKIPTEMPLATETESTS(Reason, SkippedTemplateTestClassB, unordered_map)
 
 int main(int argc, char* argv[])
 {

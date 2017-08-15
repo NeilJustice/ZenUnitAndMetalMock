@@ -14,7 +14,7 @@ namespace ZenUnit
    FACT(ContainsKeyWithValue_MapDoesNotContainKey_ReturnsFalseAndFalse)
    FACT(ContainsKeyWithValue_MapContainsKeyWithMismatchingValue_ReturnsTrueAndFalse)
    FACT(ContainsKeyWithValue_MapContainsKeyWithMatchingValue_ReturnsTrueAndTrue)
-   BEGINPROOF
+   EVIDENCE
 
    MapType<KeyType, ValueType> _map;
 
@@ -80,12 +80,12 @@ namespace ZenUnit
    }
 
    };
-   RUNTEMPLATE(MapTests, map, int, int)
-   RUNTEMPLATE(MapTests, map, UserType, int)
-   RUNTEMPLATE(MapTests, map, int, UserType)
-   RUNTEMPLATE(MapTests, map, UserType, UserType)
-   RUNTEMPLATE(MapTests, unordered_map, int, int)
-   RUNTEMPLATE(MapTests, unordered_map, UserType, int)
-   RUNTEMPLATE(MapTests, unordered_map, int, UserType)
-   RUNTEMPLATE(MapTests, unordered_map, UserType, UserType)
+   RUNTEMPLATETESTS(MapTests, map, int, int)
+   RUNTEMPLATETESTS(MapTests, map, UserType, int)
+   RUNTEMPLATETESTS(MapTests, map, int, UserType)
+   RUNTEMPLATETESTS(MapTests, map, UserType, UserType)
+   RUNTEMPLATETESTS(MapTests, unordered_map, int, int)
+   RUNTEMPLATETESTS(MapTests, unordered_map, UserType, int)
+   RUNTEMPLATETESTS(MapTests, unordered_map, int, UserType)
+   RUNTEMPLATETESTS(MapTests, unordered_map, UserType, UserType)
 }

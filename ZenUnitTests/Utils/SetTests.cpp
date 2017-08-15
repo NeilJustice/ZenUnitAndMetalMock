@@ -8,7 +8,7 @@ namespace ZenUnit
       class SetType, typename T>
    TEMPLATETESTS(SetTests, SetType, T)
    FACT(Contains_ReturnsTrueIfSetContainsElement)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(Contains_ReturnsTrueIfSetContainsElement)
    {
@@ -29,8 +29,8 @@ namespace ZenUnit
    }
 
    };
-   RUNTEMPLATE(SetTests, set, int)
-   RUNTEMPLATE(SetTests, set, unsigned long long)
-   RUNTEMPLATE(SetTests, unordered_set, int)
-   RUNTEMPLATE(SetTests, unordered_set, unsigned long long)
+   RUNTEMPLATETESTS(SetTests, set, int)
+   RUNTEMPLATETESTS(SetTests, set, unsigned long long)
+   RUNTEMPLATETESTS(SetTests, unordered_set, int)
+   RUNTEMPLATETESTS(SetTests, unordered_set, unsigned long long)
 }

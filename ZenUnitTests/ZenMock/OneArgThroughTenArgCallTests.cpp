@@ -38,7 +38,7 @@ namespace ZenMock
    FACT(DefaultConstructor_DefaultInitializesArg)
    FACT(Constructor_CopiesArgToDecayedTypeArgField)
    FACT(ZenUnitEqualizer_ThrowsIfArg1NotEqual)
-   BEGINPROOF
+   EVIDENCE
 
    using Call1 = OneArgCall<T<1>>;
 
@@ -62,14 +62,14 @@ namespace ZenMock
       EQUALIZER_THROWS(Call1, arg, V1);
    }
 
-   }; RUN(OneArgCallTests)
+   RUNTESTS(OneArgCallTests)
 
 
    TESTS(TwoArgCallTests)
    FACT(DefaultConstructor_DefaultInitializesFields)
    FACT(Constructor_CopiesArgsToDecayedTypeArgFields)
    FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   BEGINPROOF
+   EVIDENCE
 
    using Call2 = TwoArgCall<T<1>, T<2>>;
 
@@ -97,14 +97,14 @@ namespace ZenMock
       EQUALIZER_THROWS(Call2, arg2, V2);
    }
 
-   }; RUN(TwoArgCallTests)
+   RUNTESTS(TwoArgCallTests)
 
 
    TESTS(ThreeArgCallTests)
    FACT(DefaultConstructor_DefaultInitializesFields)
    FACT(Constructor_CopiesValuesToDecayTypeFields)
    FACT(ZenUnitEqualizer_CallsAreEqualOnEachField)
-   BEGINPROOF
+   EVIDENCE
 
    using Call3 = ThreeArgCall<T<1>, T<2>, T<3>>;
 
@@ -136,14 +136,14 @@ namespace ZenMock
       EQUALIZER_THROWS(Call3, arg3, V3);
    }
 
-   }; RUN(ThreeArgCallTests)
+   RUNTESTS(ThreeArgCallTests)
 
 
    TESTS(FourArgCallTests)
    FACT(DefaultConstructor_DefaultInitializesFields)
    FACT(FourArgConstructor_CopiesValuesToDecayTypeFields)
    FACT(ZenUnitEqualizer_CallsAreEqualOnEachField)
-   BEGINPROOF
+   EVIDENCE
 
    using Call4 = FourArgCall<T<1>, T<2>, T<3>, T<4>>;
 
@@ -181,13 +181,13 @@ namespace ZenMock
    }
 
 
-   }; RUN(FourArgCallTests)
+   RUNTESTS(FourArgCallTests)
 
    TESTS(FiveArgCallTests)
    FACT(DefaultConstructor_DefaultInitializesFields)
    FACT(FiveArgConstructor_CopiesValuesToDecayTypeFields)
    FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   BEGINPROOF
+   EVIDENCE
 
    using Call5 = FiveArgCall<T<1>, T<2>, T<3>, T<4>, T<5>>;
 
@@ -228,14 +228,14 @@ namespace ZenMock
       EQUALIZER_THROWS(Call5, arg5, V5);
    }
 
-   }; RUN(FiveArgCallTests)
+   RUNTESTS(FiveArgCallTests)
 
 
    TESTS(SixArgCallTests)
    FACT(DefaultConstructor_DefaultInitializesFields)
    FACT(Constructor_CopiesValuesToDecayTypeFields)
    FACT(ZenUnitEqualizer_CallsAreEqualOnEachField)
-   BEGINPROOF
+   EVIDENCE
 
    using Call6 = SixArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>>;
 
@@ -280,14 +280,14 @@ namespace ZenMock
       EQUALIZER_THROWS(Call6, arg6, V6);
    }
 
-   }; RUN(SixArgCallTests)
+   RUNTESTS(SixArgCallTests)
 
 
    TESTS(SevenArgCallTests)
    FACT(DefaultConstructor_DefaultInitializesFields)
    FACT(Constructor_CopiesValuesToDecayTypeFields)
    FACT(ZenUnitEqualizer_CallsAreEqualOnEachField)
-   BEGINPROOF
+   EVIDENCE
 
    using Call7 = SevenArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>>;
 
@@ -336,14 +336,14 @@ namespace ZenMock
       EQUALIZER_THROWS(Call7, arg7, V7);
    }
 
-   }; RUN(SevenArgCallTests)
+   RUNTESTS(SevenArgCallTests)
 
 
    TESTS(EightArgCallTests)
    FACT(DefaultConstructor_DefaultInitializesFields)
    FACT(Constructor_CopiesValuesToDecayTypeFields)
    FACT(ZenUnitEqualizer_CallsAreEqualOnEachField)
-   BEGINPROOF
+   EVIDENCE
 
    using Call8 = EightArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>>;
 
@@ -396,14 +396,14 @@ namespace ZenMock
       EQUALIZER_THROWS(Call8, arg8, V8);
    }
 
-   }; RUN(EightArgCallTests)
+   RUNTESTS(EightArgCallTests)
 
 
    TESTS(NineArgCallTests)
    FACT(DefaultConstructor_DefaultInitializesFields)
    FACT(Constructor_CopiesValuesToDecayTypeFields)
    FACT(ZenUnitEqualizer_CallsAreEqualOnEachField)
-   BEGINPROOF
+   EVIDENCE
 
    using Call9 = NineArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>>;
 
@@ -460,13 +460,13 @@ namespace ZenMock
       EQUALIZER_THROWS(Call9, arg9, V9);
    }
 
-   }; RUN(NineArgCallTests)
+   RUNTESTS(NineArgCallTests)
 
    TESTS(TenArgCallTests)
    FACT(DefaultConstructor_DefaultInitializesFields)
    FACT(Constructor_CopiesValuesToDecayTypeFields)
    FACT(ZenUnitEqualizer_CallsAreEqualOnEachField)
-   BEGINPROOF
+   EVIDENCE
 
    using Call10 = TenArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>, T<10>>;
 
@@ -529,5 +529,5 @@ namespace ZenMock
       EQUALIZER_THROWS(Call10, arg10, V10);
    }
 
-   }; RUN(TenArgCallTests)
+   RUNTESTS(TenArgCallTests)
 }

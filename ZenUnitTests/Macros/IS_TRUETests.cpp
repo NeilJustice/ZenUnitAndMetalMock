@@ -12,7 +12,7 @@ namespace ZenUnit
    FACT(StdFunctionDoesNotPointToAFunction_Throws)
    FACT(UserTypeConvertsToTrue_DoesNotThrow)
    FACT(UserTypeConvertsToFalse_Throws)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(TrueBoolLiteral_DoesNotThrow)
    {
@@ -78,5 +78,5 @@ Expected: true
 File.cpp(1))");
    }
 
-   }; RUN(IS_TRUETests)
+   RUNTESTS(IS_TRUETests)
 }

@@ -5,7 +5,7 @@ namespace ZenUnit
 {
    TESTS(TestFailureNumbererTests)
    FACT(TestFailureNumberer_NextReturnsIncrementingAngleBracketedSequence)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(TestFailureNumberer_NextReturnsIncrementingAngleBracketedSequence)
    {
@@ -19,5 +19,5 @@ namespace ZenUnit
       ARE_EQUAL("<3>", testFailureNumberer.Next());
    }
 
-   }; RUN(TestFailureNumbererTests)
+   RUNTESTS(TestFailureNumbererTests)
 }

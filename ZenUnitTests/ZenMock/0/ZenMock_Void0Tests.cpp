@@ -38,7 +38,7 @@ namespace ZenMock
    FACT(Function_NotExpected_Throws)
    FACT(Function_Expected_DoesNotThrow_AssertCallsOnceDoesNotThrow_AssertCalledNTimes1DoesNotThrow)
    FACT(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)
-   BEGINPROOF
+   EVIDENCE
 
    Void0FunctionsMock _mock;
    ZENMOCK_VOID0_FREE(Void0)
@@ -131,5 +131,5 @@ namespace ZenMock
       _zenMock0Tester->ExpectAndThrow_ThenMockedFunction_ThrowsTheException();
    }
 
-   }; RUN(ZenMock_Void0Tests)
+   RUNTESTS(ZenMock_Void0Tests)
 }

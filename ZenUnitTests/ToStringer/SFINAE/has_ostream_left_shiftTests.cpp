@@ -8,7 +8,7 @@ namespace ZenUnit
    TESTS(has_ostream_left_shiftTests)
    FACT(value_IsFalseIfFreeFunctionOStreamInsertionOperatorNotDefinedForType)
    FACT(value_IsTrueIfFreeFunctionOStreamInsertionOperatorIsDefinedForType)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(value_IsFalseIfFreeFunctionOStreamInsertionOperatorNotDefinedForType)
    {
@@ -42,5 +42,5 @@ namespace ZenUnit
       IS_TRUE(has_ostream_left_shift<UserTypeInsOpAndZenUnitPrintable&&>::value);
    }
 
-   }; RUN(has_ostream_left_shiftTests)
+   RUNTESTS(has_ostream_left_shiftTests)
 }

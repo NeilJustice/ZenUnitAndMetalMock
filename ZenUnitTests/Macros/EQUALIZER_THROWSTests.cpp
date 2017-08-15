@@ -57,7 +57,7 @@ namespace ZenUnit
    FACT(EqualizerThrowsAnomalyThatDoesNotContainFieldName_Throws)
    FACT(EqualizerThrowsAnomalyThatContainsFieldName_ButStillThrowsThatAnomalyWhenAllFieldsEqual_Throws)
    FACT(EqualizerAssertsSpecifiedFieldEqual_DoesNotThrow)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(EqualizerDoesNotAssertSpecifiedFieldEqual_Throws)
    {
@@ -106,5 +106,5 @@ File.cpp(1))");
       EQUALIZER_THROWS(Namespace::TestStruct, fieldA, 1);
    }
 
-   }; RUN(EQUALIZER_THROWSTests)
+   RUNTESTS(EQUALIZER_THROWSTests)
 }

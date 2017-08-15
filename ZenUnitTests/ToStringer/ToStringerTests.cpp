@@ -62,7 +62,7 @@ namespace ZenUnit
    FACT(ToString_TypeDoesNotHaveOStreamInsertionOperatorAndHasZenUnitPrint_ReturnsQuotedZenUnitPrintResult)
    FACT(ToString_TypeHasOStreamInsertionOperatorAndZenUnitPrint_ReturnsQuotedZenUnitPrintResult)
    FACT(ToStringConcat_ReturnsCommaSeparatedToStringedValues)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(ToString_Arithmetic_ReturnsResultOfStdToString)
    {
@@ -348,5 +348,5 @@ namespace ZenUnit
          UserType(1), UserTypeNonPrintable(), UserTypeOnlyZenUnitPrintable()));
    }
 
-   }; RUN(ToStringerTests)
+   RUNTESTS(ToStringerTests)
 }

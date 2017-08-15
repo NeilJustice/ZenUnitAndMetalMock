@@ -7,7 +7,7 @@ FACT(Random_Float_ReturnsRandomFloat)
 FACT(Random_Double_ReturnsRandomDouble)
 FACT(Random_String_ReturnsRandomStringThatBeginsWithRandomString)
 FACT(Random_2ArgOverload_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
-BEGINPROOF
+EVIDENCE
 
 TEST(Random_AllIntegerTypes_ReturnsRandomValueBetweenMinAndMaxForThatType)
 {
@@ -53,4 +53,4 @@ TEST(Random_2ArgOverload_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiv
    IS_TRUE(randomEnum >= Enum::A && randomEnum <= Enum::C, "randomEnum = " + to_string(randomEnum));
 }
 
-}; RUN(RandomTests)
+RUNTESTS(RandomTests)

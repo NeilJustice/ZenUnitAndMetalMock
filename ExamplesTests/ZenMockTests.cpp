@@ -61,7 +61,7 @@ public:
 TESTS(ClassUnderTestTests)
 FACT(Constructor_NewsComponentA)
 FACTS(InteractWithComponentA_CallsEveryFunction_ReturnsSumOfReturnValues)
-BEGINPROOF
+EVIDENCE
 
 ClassUnderTest _classUnderTest;
 ComponentAMock* _componentAMock;
@@ -118,4 +118,4 @@ TEST3X3(InteractWithComponentA_CallsEveryFunction_ReturnsSumOfReturnValues,
    ARE_EQUAL(expectedReturnValue, returnValue);
 }
 
-}; RUN(ClassUnderTestTests)
+RUNTESTS(ClassUnderTestTests)

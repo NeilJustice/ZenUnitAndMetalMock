@@ -12,7 +12,7 @@ namespace ZenUnit
    FACTS(Run_CallsNewTestClassWhichFails_DoesNotCallDeleteTestClass_ReturnsConstructorFailTestResult)
    FACT(Run_CallsNewTestClassWhichSucceeds_CallsDeleteTestClass_ReturnsCtorDtorSuccessTestResult)
    FACT(NewAndDeleteTestClass_NewsAndDeleteFirstInstanceOfTestClass)
-   BEGINPROOF
+   EVIDENCE
 
    class TestingTestClass {};
    unique_ptr<NewDeleteTest<TestingTestClass>> _newDeleteTest;
@@ -102,5 +102,5 @@ namespace ZenUnit
       IS_NULL(_newDeleteTest->_firstInstanceOfTestClass);
    }
 
-   }; RUN(NewDeleteTestTests)
+   RUNTESTS(NewDeleteTestTests)
 }

@@ -11,7 +11,7 @@ namespace ZenUnit
    FACT(CallThrowsExactExpectedException_WhatDoesNotMatch_Throws)
    FACT(CallThrowsExactExpectedException_WhatTextMatchesExceptForCase_Throws)
    FACT(CallThrowsExactExpectedException_WhatTextMatchesExactly_DoesNotThrow)
-   BEGINPROOF
+   EVIDENCE
 
    const string MessageA = "A", MessageB = "B";
 
@@ -136,5 +136,5 @@ File.cpp(1))", anomaly.why);
       THROWS([]{ throw logic_error("what"); }(), logic_error, "what");
    }
 
-   }; RUN(THROWSTests)
+   RUNTESTS(THROWSTests)
 }

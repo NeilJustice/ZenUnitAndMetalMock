@@ -6,7 +6,7 @@ namespace ZenUnit
    TESTS(FAILTests)
    FACT(StringLiteralBecause_Throws)
    FACT(StringVariableBecause_MessagesTestCase_Throws)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(StringLiteralBecause_Throws)
    {
@@ -26,5 +26,5 @@ Message: "A", "B"
 File.cpp(1))");
    }
 
-   }; RUN(FAILTests)
+   RUNTESTS(FAILTests)
 }

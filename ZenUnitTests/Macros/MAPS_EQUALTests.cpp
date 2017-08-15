@@ -16,7 +16,7 @@ namespace ZenUnit
    FACT(SizesEqual_KeysEqual_ValuesNotEqual_Throws_MessagesTestCase)
    FACT(SizesEqual_UserTypeKeysNotEqual_Throws)
    FACT(SizesEqual_UserTypeKeysEqual_ValuesNotEqual_Throws)
-   BEGINPROOF
+   EVIDENCE
 
    const string MessageA = "A", MessageB = "B";
 
@@ -150,6 +150,6 @@ File.cpp(1))");
    }
 
    };
-   RUNTEMPLATE(MAPS_EQUALTests, map)
-   RUNTEMPLATE(MAPS_EQUALTests, unordered_map)
+   RUNTEMPLATETESTS(MAPS_EQUALTests, map)
+   RUNTEMPLATETESTS(MAPS_EQUALTests, unordered_map)
 }

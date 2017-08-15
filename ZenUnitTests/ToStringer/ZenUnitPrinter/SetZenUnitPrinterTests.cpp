@@ -8,7 +8,7 @@ namespace ZenUnit
    TEMPLATETESTS(SetZenUnitPrinterTests, T)
    FACT(Print_Set_PrintsPlaceholder)
    FACT(Print_UnorderedSet_PrintsPlaceholder)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(Print_Set_PrintsPlaceholder)
    {
@@ -47,6 +47,6 @@ namespace ZenUnit
    }
 
    };
-   RUNTEMPLATE(SetZenUnitPrinterTests, int)
-   RUNTEMPLATE(SetZenUnitPrinterTests, string)
+   RUNTEMPLATETESTS(SetZenUnitPrinterTests, int)
+   RUNTEMPLATETESTS(SetZenUnitPrinterTests, string)
 }

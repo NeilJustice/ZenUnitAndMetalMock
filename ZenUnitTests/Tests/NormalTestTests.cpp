@@ -17,7 +17,7 @@ namespace ZenUnit
    FACT(TestBody_CallsMemberTestFunctionBoundToTestClassPointer)
    FACT(Cleanup_CallsCleanupOnTestClass)
    FACT(DeleteTestClass_DeletesTestClass)
-   BEGINPROOF
+   EVIDENCE
 
    unique_ptr<NormalTest<TestingTestClass>> _normalTest;
    const string TestClassName = Random<string>();
@@ -121,5 +121,5 @@ namespace ZenUnit
       IS_TRUE(TestingTestClass::s_destructorCalled);
    }
 
-   }; RUN(NormalTestTests)
+   RUNTESTS(NormalTestTests)
 }

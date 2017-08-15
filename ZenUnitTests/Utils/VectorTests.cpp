@@ -8,7 +8,7 @@ namespace ZenUnit
    FACT(Join_EmptyIntVector_ReturnsEmptyStringRegardlessOfSeparator)
    FACT(Join_1ElementIntVector_ReturnsFirstElementRegardlessOfSeparator)
    FACTS(Join_2ElementIntVector_ReturnsElementsJoinedBySeparator)
-   BEGINPROOF
+   EVIDENCE
 
    TEST(ToArgcArgv_ReturnsArgsVector)
    {
@@ -64,5 +64,5 @@ namespace ZenUnit
       ARE_EQUAL(expectedJoinedVector, joinedVector);
    }
 
-   }; RUN(VectorTests)
+   RUNTESTS(VectorTests)
 }

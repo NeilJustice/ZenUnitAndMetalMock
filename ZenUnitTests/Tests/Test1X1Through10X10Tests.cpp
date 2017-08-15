@@ -55,7 +55,7 @@ namespace ZenUnit
 
    TESTS(Test1X1TestTests)
    FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest1By1)
-   BEGINPROOF
+   EVIDENCE
 
    CLEANUP
    {
@@ -81,7 +81,7 @@ namespace ZenUnit
       AssertExpectedCalls<TestingTestClass1X1>(expectedFirstCall, expectedSecondCall);
    }
 
-   }; RUN(Test1X1TestTests)
+   RUNTESTS(Test1X1TestTests)
 }
 
 struct TestingTestClass2X2 : public StartupAndCleanup
@@ -98,7 +98,7 @@ namespace ZenUnit
 {
    TESTS(Test2X2TestTests)
    FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest2X2)
-   BEGINPROOF
+   EVIDENCE
 
    CLEANUP
    {
@@ -132,7 +132,7 @@ namespace ZenUnit
       AssertExpectedCalls<TestingTestClass2X2>(expectedFirstCall, expectedSecondCall);
    }
 
-   }; RUN(Test2X2TestTests)
+   RUNTESTS(Test2X2TestTests)
 }
 
 struct TestingTestClass3X3 : public StartupAndCleanup
@@ -149,7 +149,7 @@ namespace ZenUnit
 {
    TESTS(Test3X3TestTests)
    FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest3X3)
-   BEGINPROOF
+   EVIDENCE
 
    CLEANUP
    {
@@ -183,7 +183,7 @@ namespace ZenUnit
       AssertExpectedCalls<TestingTestClass3X3>(expectedFirstCall, expectedSecondCall);
    }
 
-   }; RUN(Test3X3TestTests)
+   RUNTESTS(Test3X3TestTests)
 }
 
 struct TestingTestClass4X4 : public StartupAndCleanup
@@ -200,7 +200,7 @@ namespace ZenUnit
 {
    TESTS(Test4X4TestTests)
    FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest4X4)
-   BEGINPROOF
+   EVIDENCE
 
    CLEANUP
    {
@@ -234,7 +234,7 @@ namespace ZenUnit
       AssertExpectedCalls<TestingTestClass4X4>(expectedFirstCall, expectedSecondCall);
    }
 
-   }; RUN(Test4X4TestTests)
+   RUNTESTS(Test4X4TestTests)
 }
 
 struct TestingTestClass5X5 : public StartupAndCleanup
@@ -251,7 +251,7 @@ namespace ZenUnit
 {
    TESTS(Test5X5TestTests)
    FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest5X5)
-   BEGINPROOF
+   EVIDENCE
 
    CLEANUP
    {
@@ -285,7 +285,7 @@ namespace ZenUnit
       AssertExpectedCalls<TestingTestClass5X5>(expectedFirstCall, expectedSecondCall);
    }
 
-   }; RUN(Test5X5TestTests)
+   RUNTESTS(Test5X5TestTests)
 }
 
 struct TestingTestClass6X6 : public StartupAndCleanup
@@ -302,7 +302,7 @@ namespace ZenUnit
 {
    TESTS(Test6X6TestTests)
    FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest6X6)
-   BEGINPROOF
+   EVIDENCE
 
    CLEANUP
    {
@@ -336,7 +336,7 @@ namespace ZenUnit
       AssertExpectedCalls<TestingTestClass6X6>(expectedFirstCall, expectedSecondCall);
    }
 
-   }; RUN(Test6X6TestTests)
+   RUNTESTS(Test6X6TestTests)
 }
 
 struct TestingTestClass7X7 : public StartupAndCleanup
@@ -353,7 +353,7 @@ namespace ZenUnit
 {
    TESTS(Test7X7TestTests)
    FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest7X7)
-   BEGINPROOF
+   EVIDENCE
 
    CLEANUP
    {
@@ -387,7 +387,7 @@ namespace ZenUnit
       AssertExpectedCalls<TestingTestClass7X7>(expectedFirstCall, expectedSecondCall);
    }
 
-   }; RUN(Test7X7TestTests)
+   RUNTESTS(Test7X7TestTests)
 }
 
 struct TestingTestClass8X8 : public StartupAndCleanup
@@ -404,7 +404,7 @@ namespace ZenUnit
 {
    TESTS(Test8X8TestTests)
    FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest8X8)
-   BEGINPROOF
+   EVIDENCE
 
    CLEANUP
    {
@@ -438,7 +438,7 @@ namespace ZenUnit
       AssertExpectedCalls<TestingTestClass8X8>(expectedFirstCall, expectedSecondCall);
    }
 
-   }; RUN(Test8X8TestTests)
+   RUNTESTS(Test8X8TestTests)
 }
 
 struct TestingTestClass9X9 : public StartupAndCleanup
@@ -455,7 +455,7 @@ namespace ZenUnit
 {
    TESTS(Test9X9TestTests)
    FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest9X9)
-   BEGINPROOF
+   EVIDENCE
 
    CLEANUP
    {
@@ -489,7 +489,7 @@ namespace ZenUnit
       AssertExpectedCalls<TestingTestClass9X9>(expectedFirstCall, expectedSecondCall);
    }
 
-   }; RUN(Test9X9TestTests)
+   RUNTESTS(Test9X9TestTests)
 }
 
 struct TestingTestClass10X10 : public StartupAndCleanup
@@ -506,7 +506,7 @@ namespace ZenUnit
 {
    TESTS(Test10X10TestTests)
    FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest10X10)
-   BEGINPROOF
+   EVIDENCE
 
    CLEANUP
    {
@@ -540,5 +540,5 @@ namespace ZenUnit
       AssertExpectedCalls<TestingTestClass10X10>(expectedFirstCall, expectedSecondCall);
    }
 
-   }; RUN(Test10X10TestTests)
+   RUNTESTS(Test10X10TestTests)
 }
