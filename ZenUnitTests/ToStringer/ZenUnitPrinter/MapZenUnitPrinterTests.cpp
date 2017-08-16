@@ -22,7 +22,7 @@ namespace ZenUnit
       ARE_EQUAL("std::map<TKey, TValue>", oss.str());
       oss = ostringstream();
 
-      ZenUnitPrinter<map<TKey, TValue, CustomLessComparator<TKey>, CustomAllocator<TKey>>>::Print(oss, {});
+      ZenUnitPrinter<map<TKey, TValue, CustomLessComparator<TKey>, CustomAllocator<pair<const TKey, TValue>>>>::Print(oss, {});
       ARE_EQUAL("std::map<TKey, TValue>", oss.str());
    }
 
