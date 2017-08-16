@@ -47,7 +47,7 @@ namespace ZenUnit
       #if __clang_major__ == 3 && __clang_minor__ == 9
          static_assert(sizeof(TestClassResult) == 32);
       #endif
-   #elif _MSC_FULL_VER == 191025019 && defined(_WIN64) // VS2017 15.2
+   #elif _MSC_FULL_VER == VS2017Update3 && defined(_WIN64) // VS2017 15.3
       #ifdef _DEBUG
          static_assert(sizeof(TestClassResult) == 40);
       #elif NDEBUG
