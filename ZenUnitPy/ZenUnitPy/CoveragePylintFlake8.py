@@ -5,12 +5,12 @@ from ZenUnitPy import Process, Python, Util
 
 def main(args):
    if len(args) != 3:
-      Util.print_and_exit('Usage: python3 CoveragePylintFlake8.py <TestProjectFolderName> <RunAllWithCoveragePyFileName>', 1)
+      Util.print_and_exit('Usage: python CoveragePylintFlake8.py <TestProjectFolderName> <RunAllWithCoveragePyFileName>', 1)
    else:
       testProjectFolderName = args[1]
       runAllWithCoveragePyFileName = args[2]
       os.chdir(testProjectFolderName)
-      runTestsWithCoverageCommand = 'python3 ' + runAllWithCoveragePyFileName
+      runTestsWithCoverageCommand = 'python ' + runAllWithCoveragePyFileName
       Process.run(runTestsWithCoverageCommand)
       os.chdir('..')
       #Python.PylintAll() # Uncomment when pylint supports Python 3.6

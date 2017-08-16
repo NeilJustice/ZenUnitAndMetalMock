@@ -36,7 +36,7 @@ class BuildAndInstallTests(unittest.TestCase):
          #
          Util.print_and_exit.assert_called_once_with(
 'Invalid args: ' + ' '.join(invalidArgs) + '\n' +
-"""Usage: python3 CMakeBuildRunTestsInstall.py
+"""Usage: python BuildAndInstall.py
 <CMakeGenerator>
 <CMakeBuildType>
 <StaticLibraryName>

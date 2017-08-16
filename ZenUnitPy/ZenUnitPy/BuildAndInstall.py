@@ -9,7 +9,7 @@ def main(args):
    if len(args) != 8:
       Util.print_and_exit(
 'Invalid args: ' + ' '.join(args) + '\n' +
-"""Usage: python3 CMakeBuildRunTestsInstall.py
+"""Usage: python BuildAndInstall.py
 <CMakeGenerator>
 <CMakeBuildType>
 <StaticLibraryName>

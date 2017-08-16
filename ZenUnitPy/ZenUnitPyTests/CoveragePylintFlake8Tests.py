@@ -15,7 +15,7 @@ class CoveragePylintFlake8Tests(unittest.TestCase):
       def testcase(argsLength, _1):
          CoveragePylintFlake8.main(['arg'] * argsLength)
          Util.print_and_exit.assert_called_once_with(
-            'Usage: python3 CoveragePylintFlake8.py <TestProjectFolderName> <RunAllWithCoveragePyFileName>', 1)
+            'Usage: python CoveragePylintFlake8.py <TestProjectFolderName> <RunAllWithCoveragePyFileName>', 1)
       testcase(0)
       testcase(2)
       testcase(4)
@@ -35,7 +35,7 @@ class CoveragePylintFlake8Tests(unittest.TestCase):
       os.chdir.assert_has_calls([
          call(TestProjectFolderName),
          call('..')])
-      expectedRunTestsWithCoverageCommand = 'python3 ' + RunAllWithCoveragePyFileName
+      expectedRunTestsWithCoverageCommand = 'python ' + RunAllWithCoveragePyFileName
       Process.run.assert_called_once_with(expectedRunTestsWithCoverageCommand)
       Python.pylint_all.assert_not_called()
       Python.flake8_all.assert_called_once_with()
