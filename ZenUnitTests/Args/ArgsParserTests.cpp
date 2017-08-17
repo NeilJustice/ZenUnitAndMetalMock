@@ -276,6 +276,7 @@ None
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
       expectedZenUnitArgs.random = true;
       expectedZenUnitArgs.randomseed = static_cast<unsigned short>(randomSeedArgValue);
+      expectedZenUnitArgs.randomseedsetbyuser = true;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
@@ -295,6 +296,7 @@ None
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
       expectedZenUnitArgs.random = true;
       expectedZenUnitArgs.randomseed = expectedZenUnitArgsRandomseedValue;
+      expectedZenUnitArgs.randomseedsetbyuser = true;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 

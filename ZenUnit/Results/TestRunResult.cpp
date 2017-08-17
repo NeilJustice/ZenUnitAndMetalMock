@@ -114,7 +114,8 @@ namespace ZenUnit
          _console->WriteColor(prefixAsciiArt, prefixColor);
          _console->Write(zenUnitArgs.commandLine);
          const string randomSeedWriteLine =
-            zenUnitArgs.random ? " (seed " + to_string(zenUnitArgs.randomseed) + ")" : "";
+            (zenUnitArgs.random && !zenUnitArgs.randomseedsetbyuser) ?
+            " (seed " + to_string(zenUnitArgs.randomseed) + ")" : "";
          _console->WriteLine(randomSeedWriteLine);
       }
    }

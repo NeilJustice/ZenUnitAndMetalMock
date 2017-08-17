@@ -226,24 +226,26 @@ namespace ZenUnit
 
    TEST10X10(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds,
       const string& expectedClosingLinePrefix,
-      ZenUnit::Color expectedPrefixColor,
+      ZenUnit::Color expectedColor,
       size_t numberOfFailedTestCases,
       size_t numberOfTotalTests,
       const string& expectedClosingLineTestsCountText,
       unsigned testRunMilliseconds,
       const string& expectedMillisecondOrMilliseconds,
-      const string& expectedBottomLineAsciiArt,
       bool random,
+      bool randomseedsetbyuser,
       bool expectRandomSeedSuffixWrite,
-      "[VICTORY] ", Color::Green, size_t(0), size_t(1), "1 test passed", 0, "milliseconds", "+===+===+", false, false,
-      "[VICTORY] ", Color::Green, size_t(0), size_t(2), "2 tests passed", 1, "millisecond", "+===+===+", false, false,
-      "[VICTORY] ", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds", "+===+===+", true, true,
-      ">>-FAIL-> ", Color::Red, size_t(1), size_t(1), "1/1 test failed", 0, "milliseconds", ">>------>", false, false,
-      ">>-FAIL-> ", Color::Red, size_t(1), size_t(2), "1/2 tests failed", 1, "millisecond", ">>------>", false, false,
-      ">>-FAIL-> ", Color::Red, size_t(1), size_t(3), "1/3 tests failed", 2, "milliseconds", ">>------>", false, false,
-      ">>-FAIL-> ", Color::Red, size_t(2), size_t(2), "2/2 tests failed", 3, "milliseconds", ">>------>", false, false,
-      ">>-FAIL-> ", Color::Red, size_t(2), size_t(3), "2/3 tests failed", 4, "milliseconds", ">>------>", false, false,
-      ">>-FAIL-> ", Color::Red, size_t(2), size_t(4), "2/4 tests failed", 5, "milliseconds", ">>------>", true, true)
+      "[VICTORY]", Color::Green, size_t(0), size_t(1), "1 test passed", 0, "milliseconds", false, false, false,
+      "[VICTORY]", Color::Green, size_t(0), size_t(2), "2 tests passed", 1, "millisecond", false, false, false,
+      "[VICTORY]", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds", true, false, true,
+      "[VICTORY]", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds", true, true, false,
+      ">>-FAIL->", Color::Red, size_t(1), size_t(1), "1/1 test failed", 0, "milliseconds", false, false, false,
+      ">>-FAIL->", Color::Red, size_t(1), size_t(2), "1/2 tests failed", 1, "millisecond", false, false, false,
+      ">>-FAIL->", Color::Red, size_t(1), size_t(3), "1/3 tests failed", 2, "milliseconds", false, false, false,
+      ">>-FAIL->", Color::Red, size_t(2), size_t(2), "2/2 tests failed", 3, "milliseconds", false, false, false,
+      ">>-FAIL->", Color::Red, size_t(2), size_t(3), "2/3 tests failed", 4, "milliseconds", false, false, false,
+      ">>-FAIL->", Color::Red, size_t(2), size_t(3), "2/3 tests failed", 4, "milliseconds", true, false, true,
+      ">>-FAIL->", Color::Red, size_t(2), size_t(4), "2/4 tests failed", 5, "milliseconds", true, true, false)
    {
       _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
       _consoleMock->WriteColorMock.Expect();
@@ -253,13 +255,16 @@ namespace ZenUnit
       zenUnitArgs.commandLine = Random<string>();
       zenUnitArgs.random = random;
       zenUnitArgs.randomseed = Random<unsigned short>();
+      zenUnitArgs.randomseedsetbyuser = randomseedsetbyuser;
       //
       _testRunResult.PrintClosingLines(numberOfTotalTests, testRunMilliseconds, zenUnitArgs);
       //
+      const string expectedBottomLineAsciiArt =
+         expectedClosingLinePrefix == "[VICTORY]" ? "+===+===+" : ">>------>";
       ZEN(_consoleMock->WriteColorMock.AssertCalls(
       {
-         { expectedClosingLinePrefix, expectedPrefixColor },
-         { expectedBottomLineAsciiArt + " ", expectedPrefixColor }
+         { expectedClosingLinePrefix + " ", expectedColor },
+         { expectedBottomLineAsciiArt + " ", expectedColor }
       }));
       const string expectedClosingLineBody = expectedClosingLineTestsCountText +
          " in " + to_string(testRunMilliseconds) + " " + expectedMillisecondOrMilliseconds;

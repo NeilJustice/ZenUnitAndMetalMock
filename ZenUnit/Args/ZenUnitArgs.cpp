@@ -14,6 +14,7 @@ AssertEqual(const ZenUnit::ZenUnitArgs& expectedArgs, const ZenUnit::ZenUnitArgs
    ARE_EQUAL(expectedArgs.testruns, actualArgs.testruns);
    ARE_EQUAL(expectedArgs.random, actualArgs.random);
    ARE_EQUAL(expectedArgs.randomseed, actualArgs.randomseed);
+   ARE_EQUAL(expectedArgs.randomseedsetbyuser, actualArgs.randomseedsetbyuser);
    ARE_EQUAL(expectedArgs.maxtestmilliseconds, actualArgs.maxtestmilliseconds);
    ARE_EQUAL(expectedArgs.maxtotalseconds, actualArgs.maxtotalseconds);
 }

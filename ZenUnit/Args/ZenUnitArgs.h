@@ -13,6 +13,7 @@ namespace ZenUnit
       unsigned testruns = 1;
       bool random = false;
       unsigned short randomseed = 0;
+      bool randomseedsetbyuser = false;
       unsigned maxtestmilliseconds = 0;
       unsigned maxtotalseconds = 0;
 

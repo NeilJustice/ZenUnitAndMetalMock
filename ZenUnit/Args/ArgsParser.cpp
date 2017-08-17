@@ -81,6 +81,7 @@ namespace ZenUnit
                   zenUnitArgs.random = true;
                   argValue = _String_ToUnsigned(argValueString);
                   zenUnitArgs.randomseed = static_cast<unsigned short>(argValue);
+                  zenUnitArgs.randomseedsetbyuser = true;
                }
                else throw invalid_argument("");
             }
