@@ -65,7 +65,7 @@ namespace ZenUnit
       }
 
       template<typename ReturnType, typename... ArgumentTypes>
-      static std::string ToString(const std::function<ReturnType(ArgumentTypes...)> stdFunction)
+      static std::string ToString(const std::function<ReturnType(ArgumentTypes...)>& stdFunction)
       {
          if (stdFunction)
          {
@@ -126,44 +126,33 @@ namespace ZenUnit
       }
 
       template<typename T>
-      static typename std::enable_if<
-         has_ZenUnitPrinter<T>::value && has_ostream_left_shift<T>::value>::type
-         ZenUnitPrinterOrOStreamInsertionOperatorOrPrintTypeName(std::ostream& os, const T& value)
+      static void ZenUnitPrinterOrOStreamInsertionOperatorOrPrintTypeName(std::ostream& os, const T& value)
       {
-         ::ZenUnitPrinter<T>::Print(os, value);
-      }
-
-      template<typename T>
-      static typename std::enable_if<
-         has_ZenUnitPrinter<T>::value && !has_ostream_left_shift<T>::value>::type
-         ZenUnitPrinterOrOStreamInsertionOperatorOrPrintTypeName(std::ostream& os, const T& value)
-      {
-         ::ZenUnitPrinter<T>::Print(os, value);
-      }
-
-      template<typename T>
-      static typename std::enable_if<
-         !has_ZenUnitPrinter<T>::value && has_ostream_left_shift<T>::value>::type
-         ZenUnitPrinterOrOStreamInsertionOperatorOrPrintTypeName(std::ostream& os, const T& value)
-      {
-         if (is_quoted_when_printed<T>::value)
+         if constexpr (has_ZenUnitPrinter<T>::value && has_ostream_left_shift<T>::value)
          {
-            os << '\"';
+            ::ZenUnitPrinter<T>::Print(os, value);
          }
-         os << value;
-         if (is_quoted_when_printed<T>::value)
+         if constexpr (has_ZenUnitPrinter<T>::value && !has_ostream_left_shift<T>::value)
          {
-            os << '\"';
+            ::ZenUnitPrinter<T>::Print(os, value);
          }
-      }
-
-      template<typename T>
-      static typename std::enable_if<
-         !has_ZenUnitPrinter<T>::value && !has_ostream_left_shift<T>::value>::type
-         ZenUnitPrinterOrOStreamInsertionOperatorOrPrintTypeName(std::ostream& os, const T&)
-      {
-         const std::string* const typeName = Type::GetName<T>();
-         os << "<" << *typeName << ">";
+         else if constexpr (!has_ZenUnitPrinter<T>::value && has_ostream_left_shift<T>::value)
+         {
+            if (is_quoted_when_printed<T>::value)
+            {
+               os << '\"';
+            }
+            os << value;
+            if (is_quoted_when_printed<T>::value)
+            {
+               os << '\"';
+            }
+         }
+         else if constexpr (!has_ZenUnitPrinter<T>::value && !has_ostream_left_shift<T>::value)
+         {
+            const std::string* const typeName = Type::GetName<T>();
+            os << "<" << *typeName << ">";
+         }
       }
 
       template<typename T>
