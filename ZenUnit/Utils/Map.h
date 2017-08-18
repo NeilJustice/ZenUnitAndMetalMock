@@ -11,12 +11,13 @@ namespace ZenUnit
       static const ValueType* InsertNoOverwrite(
          MapType& m, const KeyType& key, const ValueType& value)
       {
-         const auto [insertIter, didInsert] = m.insert(std::make_pair(key, value));
-         if (!didInsert)
+         const std::pair<typename MapType::const_iterator, bool> insertIterAndDidInsert
+            = m.insert(std::make_pair(key, value));
+         if (!insertIterAndDidInsert.second)
          {
             InsertNoOverwrite_Throw(key);
          }
-         const ValueType* const constPointerToValueInMap = &(*insertIter).second;
+         const ValueType* const constPointerToValueInMap = &(*insertIterAndDidInsert.first).second;
          return constPointerToValueInMap;
       }
 

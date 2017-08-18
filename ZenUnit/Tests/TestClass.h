@@ -35,10 +35,10 @@ namespace ZenUnit
 
       static const std::unique_ptr<ZenUnit::Test>* TestNXNPmfToTest(const PmfToken* pmfToken)
       {
-         const std::unordered_map<const PmfToken*, std::unique_ptr<Test>>&
-            testNXNPmfToTest = DerivedTestClass::TestNXNPmfTokenToTestMap();
-         const std::unordered_map<const PmfToken*, std::unique_ptr<Test>>::const_iterator
-            findIter = testNXNPmfToTest.find(pmfToken);
+         const std::unordered_map<const PmfToken*, std::unique_ptr<Test>>& testNXNPmfToTest
+            = DerivedTestClass::TestNXNPmfTokenToTestMap();
+         const std::unordered_map<const PmfToken*, std::unique_ptr<Test>>::const_iterator findIter
+            = testNXNPmfToTest.find(pmfToken);
          assert_true(findIter != testNXNPmfToTest.end());
          const std::unique_ptr<Test>* const testNXN = &findIter->second;
          return testNXN;

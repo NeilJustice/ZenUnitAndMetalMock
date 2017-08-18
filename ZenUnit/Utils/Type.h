@@ -5,7 +5,6 @@
 #include "ZenUnit/Utils/AssertTrue.h"
 #include <cxxabi.h>
 #endif
-#include "ZenUnit/Utils/AssertTrue.h"
 
 namespace ZenUnit
 {
@@ -38,15 +37,14 @@ namespace ZenUnit
       static const std::string* TypeInfoToTypeName(const std::type_info& typeInfo)
       {
          const char* const mangledTypeName = typeInfo.name();
-         const std::unordered_map<const char*, std::string>::const_iterator
-            findIter = s_mangledToDemangledTypeName.find(mangledTypeName);
+         const std::unordered_map<const char*, std::string>::const_iterator findIter
+            = s_mangledToDemangledTypeName.find(mangledTypeName);
          if (findIter == s_mangledToDemangledTypeName.end())
          {
             const std::string demangledTypeName = Demangle(mangledTypeName);
-            const auto [emplaceIter, didEmplace]
-               = s_mangledToDemangledTypeName.emplace(mangledTypeName, demangledTypeName);
-            assert_true(didEmplace);
-            const std::string* const cachedDemangledTypeName = &emplaceIter->second;
+            const std::pair<std::unordered_map<const char*, std::string>::const_iterator, bool>
+               emplaceResult = s_mangledToDemangledTypeName.emplace(mangledTypeName, demangledTypeName);
+            const std::string* const cachedDemangledTypeName = &emplaceResult.first->second;
             return cachedDemangledTypeName;
          }
          const std::string* cachedDemangledTypeName = &findIter->second;
