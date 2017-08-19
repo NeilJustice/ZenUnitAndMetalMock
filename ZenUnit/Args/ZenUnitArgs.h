@@ -23,7 +23,7 @@ namespace ZenUnit
    static const int VS2017Update3 = 191125506;
    #ifdef __linux__
       #if __clang_major__ == 3 && __clang_minor__ == 9
-         static_assert(sizeof(ZenUnitArgs) == 64);
+         static_assert(sizeof(ZenUnitArgs) == 56);
       #endif
    #elif _MSC_FULL_VER == VS2017Update3 && defined(_WIN64)
       #ifdef _DEBUG

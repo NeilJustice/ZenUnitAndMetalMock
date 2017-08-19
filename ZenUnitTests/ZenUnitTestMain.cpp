@@ -31,8 +31,11 @@ SKIPTEMPLATETESTS(Reason, SkippedTemplateTestClassB, unordered_map)
 
 int main(int argc, char* argv[])
 {
-   FileLiner::selfTestMode = true;
-   FileLiner::File(__FILE__); // 100% code coverage
-   FileLiner::Line(__LINE__); // 100% code coverage
-   return ZenUnit::RunTests(argc, argv);
+   cout << sizeof(ZenUnitArgs) << '\n';
+   return 0;
+
+   // FileLiner::selfTestMode = true;
+   // FileLiner::File(__FILE__); // 100% code coverage
+   // FileLiner::Line(__LINE__); // 100% code coverage
+   // return ZenUnit::RunTests(argc, argv);
 }

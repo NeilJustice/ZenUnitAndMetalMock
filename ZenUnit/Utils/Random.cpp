@@ -7,8 +7,8 @@ namespace ZenUnit
    float Random<float>()
    {
       static std::default_random_engine defaultRandomEngine(static_cast<unsigned>(time(nullptr)));
-      static const std::uniform_real<float> uniformRealDistribution(-100.0f, 100.0f);
-      float randomFloat = uniformRealDistribution(defaultRandomEngine);
+      std::uniform_real_distribution<float> uniformFloatDistribution(-100.0f, 100.0f);
+      const float randomFloat = uniformFloatDistribution(defaultRandomEngine);
       return randomFloat;
    }
 
@@ -16,15 +16,15 @@ namespace ZenUnit
    double Random<double>()
    {
       static std::default_random_engine defaultRandomEngine(static_cast<unsigned>(time(nullptr)));
-      static const std::uniform_real<double> uniformRealDistribution(-100.0, 100.0);
-      double randomDouble = uniformRealDistribution(defaultRandomEngine);
+      std::uniform_real_distribution<double> uniformDoubleDistribution(-100.0, 100.0);
+      const double randomDouble = uniformDoubleDistribution(defaultRandomEngine);
       return randomDouble;
    }
 
    template<>
    std::string Random<std::string>()
    {
-      string randomString = "RandomString" + to_string(Random<unsigned char>());
+      const string randomString = "RandomString" + to_string(Random<unsigned char>());
       return randomString;
    }
 }

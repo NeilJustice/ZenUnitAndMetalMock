@@ -7,6 +7,8 @@
 
 namespace ZenUnit
 {
+   static const size_t N = 1;
+
    TESTS(TestNXNTests)
    FACT(Constructor_NewsConsole_SetsFields_GettersReturnExpected_2X2With4Args)
    FACT(Constructor_StoresDecayedTypeCopiesOfTestCaseArguments)
@@ -22,7 +24,6 @@ namespace ZenUnit
    FACT(NonMinimalWriteLineOKIfSuccess_CallsTestResultNonMinimalWriteLineOKIfSuccess)
    EVIDENCE
 
-   static const size_t N = 1;
    unique_ptr<TestNXN<TestingTestClass, N, int>> _testNXN;
    ConsoleMock* _consoleMock;
    const string TestClassName = Random<string>();

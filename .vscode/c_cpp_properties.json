@@ -1,18 +1,24 @@
 {
-    "configurations": [
+    "configurations":
+    [
         {
             "name": "Linux",
-            "includePath": [
+            "includePath":
+            [
                 "/usr/include",
                 "/usr/local/include/windows_potemkin_village"
             ],
-            "browse": {
-                "path": [
+            "browse":
+            {
+                "path":
+                [
                     "/usr/include",
-                    "/usr/local/include/windows_potemkin_village"
+                    "/usr/local/include/windows_potemkin_village",
+                    "${workspaceRoot}"
                 ]
             },
             "intelliSenseMode": "clang-x64"
         }
-    ]
+    ],
+    "version": 2
 }

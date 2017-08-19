@@ -1,4 +1,5 @@
 #pragma once
+#include <random>
 
 namespace ZenUnit
 {
@@ -12,8 +13,8 @@ namespace ZenUnit
          FunctionType twoArgFunction,
          ExtraArgType extraArg) const
       {
-         const std::vector<T>::const_iterator vecEnd = vec->cend();
-         for (std::vector<T>::const_iterator iter = vec->cbegin(); iter != vecEnd; ++iter)
+         const typename std::vector<T>::const_iterator vecEnd = vec->cend();
+         for (typename std::vector<T>::const_iterator iter = vec->cbegin(); iter != vecEnd; ++iter)
          {
             const T& element = *iter;
             (classPointer->*twoArgFunction)(element, extraArg);
@@ -28,8 +29,8 @@ namespace ZenUnit
          unsigned seed) const
       {
          std::shuffle(vec->begin(), vec->end(), std::default_random_engine(seed));
-         const std::vector<T>::const_iterator vecEnd = vec->cend();
-         for (std::vector<T>::const_iterator iter = vec->begin(); iter != vecEnd; ++iter)
+         const typename std::vector<T>::const_iterator vecEnd = vec->cend();
+         for (typename std::vector<T>::const_iterator iter = vec->begin(); iter != vecEnd; ++iter)
          {
             const T& element = *iter;
             (classPointer->*twoArgFunction)(element, extraArg);

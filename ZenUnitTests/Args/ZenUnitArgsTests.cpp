@@ -33,7 +33,7 @@ namespace ZenUnit
       EQUALIZER_THROWS(ZenUnitArgs, failskips, true);
       EQUALIZER_THROWS(ZenUnitArgs, testruns, 2u);
       EQUALIZER_THROWS(ZenUnitArgs, random, true);
-      EQUALIZER_THROWS(ZenUnitArgs, randomseed, unsigned short(3));
+      EQUALIZER_THROWS(ZenUnitArgs, randomseed, static_cast<unsigned short>(3));
       EQUALIZER_THROWS(ZenUnitArgs, randomseedsetbyuser, true);
       EQUALIZER_THROWS(ZenUnitArgs, maxtestmilliseconds, 4u);
       EQUALIZER_THROWS(ZenUnitArgs, maxtotalseconds, 5u);

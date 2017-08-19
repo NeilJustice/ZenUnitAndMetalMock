@@ -283,8 +283,8 @@ None
    TEST2X2(Parse_RandomEqualsArg_ValidUnsignedValue_DowncastsValueToUnsignedShort_ReturnsExpectedZenUnitArgs,
       unsigned randomSeedArgValue, unsigned short expectedZenUnitArgsRandomseedValue,
       numeric_limits<unsigned short>::max(), numeric_limits<unsigned short>::max(),
-      numeric_limits<unsigned short>::max() + 1, unsigned short(0),
-      numeric_limits<unsigned short>::max() + 2, unsigned short(1))
+      numeric_limits<unsigned short>::max() + 1, static_cast<unsigned short>(0),
+      numeric_limits<unsigned short>::max() + 2, static_cast<unsigned short>(1))
    {
       ToUnsigned_ZenMock.ExpectAndReturn(randomSeedArgValue);
       const vector<string> Args{ TestProgramPath, "-random=" + to_string(randomSeedArgValue) };
