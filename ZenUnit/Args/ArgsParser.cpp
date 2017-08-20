@@ -83,7 +83,10 @@ namespace ZenUnit
                   zenUnitArgs.randomseed = static_cast<unsigned short>(argValue);
                   zenUnitArgs.randomseedsetbyuser = true;
                }
-               else throw invalid_argument("");
+               else
+               {
+                  throw invalid_argument("");
+               }
             }
             catch (const invalid_argument&)
             {

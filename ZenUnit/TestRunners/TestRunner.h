@@ -38,6 +38,6 @@ namespace ZenUnit
    private:
       virtual int RunTestsAndPrintResults();
       virtual void RunTests();
-      virtual void RunTestsWithWaitableRunnerThread(unsigned maxtotalseconds);
+      virtual void RunTestsWithWaitableRunnerThread(unsigned maxtTotalSeconds);
    };
 }

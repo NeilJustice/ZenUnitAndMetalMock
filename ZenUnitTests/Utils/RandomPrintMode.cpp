@@ -3,5 +3,5 @@
 
 PrintMode RandomPrintMode()
 {
-   return Random<PrintMode>((int)PrintMode::Unset, (int)PrintMode::MaxValue);
+   return Random<PrintMode>(static_cast<int>(PrintMode::Unset), static_cast<int>(PrintMode::MaxValue));
 }
