@@ -9,7 +9,7 @@ ZenMock is a cross-platform C++ mocking framework powered by ZenUnit for isolati
 ### ZenUnit Command Line Usage
 
 ```
-const string ArgsParser::Usage = R"(ZenUnit and ZenMock v0.1.0
+ZenUnit and ZenMock v0.1.0
 Usage: <TestsBinaryName> [Options...]
 
 Options:
