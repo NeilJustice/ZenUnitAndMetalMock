@@ -73,7 +73,7 @@ namespace ZenMock
       {
          ZeroArgMocker::Expect();
          ValueReturner<ReturnType>::ZenMockAddReturnValues(
-            std::forward<ReturnTypeURef>(firstReturnValue), 
+            std::forward<ReturnTypeURef>(firstReturnValue),
             std::forward<ReturnTypeURefs>(subsequentReturnValues)...);
       }
 

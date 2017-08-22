@@ -21,7 +21,7 @@ namespace ZenMock
          "virtual", "char", "ZenMockedClassNameB", "Function(int, int)", "",
       "double ZenMockedClassNameC::Function() const",
          "", "double", "ZenMockedClassNameC", "Function()", "const",
-      "virtual pair<int, int> ZenMockedClassNameD::Function(const pair<int, int>&) const", 
+      "virtual pair<int, int> ZenMockedClassNameD::Function(const pair<int, int>&) const",
          "virtual", "pair<int, int>", "ZenMockedClassNameD", "Function(const pair<int, int>&)", "const")
    {
       const string funtionSignature = Signature::Function(

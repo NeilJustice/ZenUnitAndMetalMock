@@ -9,7 +9,7 @@ namespace ZenUnit
    EVIDENCE
 
    TEST2X2(ColorToWindowsColor_ReturnsExpectedWindowsColor,
-      WindowsColor expectedWindowsColor, Color color, 
+      WindowsColor expectedWindowsColor, Color color,
       WindowsColor::White, Color::White,
       WindowsColor::Green, Color::Green,
       WindowsColor::Red, Color::Red)

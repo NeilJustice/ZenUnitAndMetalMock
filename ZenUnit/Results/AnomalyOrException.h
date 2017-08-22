@@ -32,6 +32,6 @@ template<>
 struct ZenUnitEqualizer<ZenUnit::AnomalyOrException>
 {
    static void AssertEqual(
-      const ZenUnit::AnomalyOrException& expectedAnomalyOrException, 
+      const ZenUnit::AnomalyOrException& expectedAnomalyOrException,
       const ZenUnit::AnomalyOrException& actualAnomalyOrException);
 };

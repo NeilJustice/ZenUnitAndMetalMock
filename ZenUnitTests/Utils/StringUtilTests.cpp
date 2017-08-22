@@ -4,27 +4,27 @@
 namespace ZenUnit
 {
    TESTS(StringUtilTests)
-   FACTS(Split_ReturnsExpected)
-   FACT(Concat_ConcatsValuesIntoString)
-   FACTS(CommaSplitExceptQuotedCommas_ReturnsStringSplitOnCommasWithQuotedCommasIgnored)
-   FACTS(ToUnsigned_StrIsUnsignedNumber_ReturnsNumber)
-   FACT(ToUnsigned_EmptyString_Throws)
-   FACTS(ToUnsigned_StringNotConvertibleToUnsigned_Throws)
-   FACTS(ToUnsigned_StringIsValueGreaterThanUnsignedMax_Throws)
-   EVIDENCE
+      FACTS(Split_ReturnsExpected)
+      FACT(Concat_ConcatsValuesIntoString)
+      FACTS(CommaSplitExceptQuotedCommas_ReturnsStringSplitOnCommasWithQuotedCommasIgnored)
+      FACTS(ToUnsigned_StrIsUnsignedNumber_ReturnsNumber)
+      FACT(ToUnsigned_EmptyString_Throws)
+      FACTS(ToUnsigned_StringNotConvertibleToUnsigned_Throws)
+      FACTS(ToUnsigned_StringIsValueGreaterThanUnsignedMax_Throws)
+      EVIDENCE
 
-   TEST3X3(Split_ReturnsExpected,
-      const string& str, char separator, const vector<string>& expectedReturnValue,
-      "", '\0', vector<string>{},
-      "", ',', vector<string>{},
-      ",", ',', vector<string>{""},
-      "|", '|', vector<string>{""},
-      "a", ',', vector<string>{"a"},
-      "a,b,c", ',', vector<string>{"a", "b", "c"},
-      ",a,b,,c,", ',', vector<string>{"", "a", "b", "", "c"},
-      "a", '|', vector<string>{"a"},
-      "a|b|c", '|', vector<string>{"a", "b", "c"},
-      ",a|b|c||", '|', vector<string>{",a", "b", "c", ""})
+      TEST3X3(Split_ReturnsExpected,
+         const string& str, char separator, const vector<string>& expectedReturnValue,
+         "", '\0', vector<string>{},
+         "", ',', vector<string>{},
+         ",", ',', vector<string>{""},
+         "|", '|', vector<string>{""},
+         "a", ',', vector<string>{"a"},
+         "a,b,c", ',', vector<string>{"a", "b", "c"},
+         ",a,b,,c,", ',', vector<string>{"", "a", "b", "", "c"},
+         "a", '|', vector<string>{"a"},
+         "a|b|c", '|', vector<string>{"a", "b", "c"},
+         ",a|b|c||", '|', vector<string>{",a", "b", "c", ""})
    {
       ARE_EQUAL(expectedReturnValue, String::Split(str, separator));
    }
@@ -74,12 +74,12 @@ namespace ZenUnit
       1230u, "1230",
       numeric_limits<unsigned int>::max(), to_string(numeric_limits<unsigned int>::max()))
    {
-	   ARE_EQUAL(expectedReturnValue, String::ToUnsigned(str));
+      ARE_EQUAL(expectedReturnValue, String::ToUnsigned(str));
    }
 
    TEST(ToUnsigned_EmptyString_Throws)
    {
-	   THROWS(String::ToUnsigned(""), invalid_argument, "String::ToUnsigned() called with empty string");
+      THROWS(String::ToUnsigned(""), invalid_argument, "String::ToUnsigned() called with empty string");
    }
 
    TEST1X1(ToUnsigned_StringNotConvertibleToUnsigned_Throws,
@@ -95,7 +95,7 @@ namespace ZenUnit
       "1 ",
       "0  ")
    {
-	   THROWS(String::ToUnsigned(str), invalid_argument,
+      THROWS(String::ToUnsigned(str), invalid_argument,
          "String::ToUnsigned() called with string not convertible to unsigned integer: \"" + str + "\"");
    }
 
@@ -104,33 +104,33 @@ namespace ZenUnit
       to_string(static_cast<unsigned long long>(numeric_limits<unsigned int>::max()) + 1ull),
       to_string(static_cast<unsigned long long>(numeric_limits<unsigned int>::max()) + 2ull))
    {
-	   THROWS(String::ToUnsigned(expectedGreaterThanUnsignedMaxValue), invalid_argument,
-		   "String::ToUnsigned called with string containing number greater than numeric_limits<unsigned int>::max(): \""
+      THROWS(String::ToUnsigned(expectedGreaterThanUnsignedMaxValue), invalid_argument,
+         "String::ToUnsigned called with string containing number greater than numeric_limits<unsigned int>::max(): \""
          + expectedGreaterThanUnsignedMaxValue + "\"");
    }
 
    RUNTESTS(StringUtilTests)
 
-   template<typename StringType>
+      template<typename StringType>
    TEMPLATETESTS(StringUtilContainsTests, StringType)
-   FACTS(Contains_ReturnsTrueIfStrContainsSubstring)
-   EVIDENCE
+      FACTS(Contains_ReturnsTrueIfStrContainsSubstring)
+      EVIDENCE
 
-   TEST3X3(Contains_ReturnsTrueIfStrContainsSubstring,
-      StringType str, const char* substring, bool expectedReturnValue,
-      "", "", true,
-      "", "a", false,
-      "a", "A", false,
-      "a", "b", false,
-      "abc", "a", true,
-      "abc", "bc", true,
-      "abc", "abc", true,
-      " ab01", "ab", true)
+      TEST3X3(Contains_ReturnsTrueIfStrContainsSubstring,
+         StringType str, const char* substring, bool expectedReturnValue,
+         "", "", true,
+         "", "a", false,
+         "a", "A", false,
+         "a", "b", false,
+         "abc", "a", true,
+         "abc", "bc", true,
+         "abc", "abc", true,
+         " ab01", "ab", true)
    {
       ARE_EQUAL(expectedReturnValue, String::Contains(str, substring));
    }
 
-   };
-   RUNTEMPLATETESTS(StringUtilContainsTests, const string&)
-   RUNTEMPLATETESTS(StringUtilContainsTests, const char*)
+};
+RUNTEMPLATETESTS(StringUtilContainsTests, const string&)
+RUNTEMPLATETESTS(StringUtilContainsTests, const char*)
 }

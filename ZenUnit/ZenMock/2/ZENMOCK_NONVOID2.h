@@ -73,7 +73,7 @@ namespace ZenMock
       {
          TwoArgMocker<Arg1Type, Arg2Type>::Expect();
          ValueReturner<ReturnType>::ZenMockAddReturnValues(
-            firstReturnValue, 
+            firstReturnValue,
             subsequentReturnValues...);
       }
 

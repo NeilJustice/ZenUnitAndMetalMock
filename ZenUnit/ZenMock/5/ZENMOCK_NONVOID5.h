@@ -66,7 +66,7 @@ namespace ZenMock
       {
          FiveArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::Expect();
          ValueReturner<ReturnType>::ZenMockAddReturnValues(
-            firstReturnValue, 
+            firstReturnValue,
             subsequentReturnValues...);
       }
 

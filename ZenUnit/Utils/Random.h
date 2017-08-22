@@ -19,10 +19,10 @@ namespace ZenUnit
    }
 
    template<typename T>
-	T Random()
-	{
-		return Random<T>(std::numeric_limits<T>::min(), std::numeric_limits<T>::max());
-	}
+   T Random()
+   {
+      return Random<T>(std::numeric_limits<T>::min(), std::numeric_limits<T>::max());
+   }
 
    template<>
    float Random<float>();

@@ -6,7 +6,7 @@ namespace ZenUnit
 {
    struct FullTestName
    {
-      const char* testClassName;      
+      const char* testClassName;
       const char* testName;
       unsigned char arity;
 
@@ -32,6 +32,6 @@ template<>
 struct ZenUnitEqualizer<ZenUnit::FullTestName>
 {
    static void AssertEqual(
-      const ZenUnit::FullTestName& expectedFullTestName, 
+      const ZenUnit::FullTestName& expectedFullTestName,
       const ZenUnit::FullTestName& actualFullTestName);
 };
