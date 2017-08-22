@@ -27,7 +27,7 @@ namespace ZenUnit
       void NonMinimalWritePostTestNameMessage(
          const Console* console, PrintMode printMode) const override
       {
-         if (printMode != PrintMode::Minimal)
+         if (printMode != PrintMode::Minimalist)
          {
             console->WriteLine("...");
          }

@@ -63,7 +63,7 @@ namespace ZenUnit
 
    TEST2X2(NonMinimalWrite_CallsWriteColorIfPrintModeNotMinimal,
       PrintMode printMode, bool expectWriteCall,
-      PrintMode::Minimal, false,
+      PrintMode::Minimalist, false,
       PrintMode::Normal, true,
       PrintMode::Detailed, true)
    {
@@ -102,7 +102,7 @@ namespace ZenUnit
 
    TEST2X2(NonMinimalWriteColor_CallsWriteColorIfPrintModeNotMinimal,
       PrintMode printMode, bool expectWriteColorCall,
-      PrintMode::Minimal, false,
+      PrintMode::Minimalist, false,
       PrintMode::Normal, true,
       PrintMode::Detailed, true)
    {
@@ -134,7 +134,7 @@ namespace ZenUnit
 
    TEST2X2(NonMinimalWriteNewLine_CallsWriteLineWithWhite,
       PrintMode printMode, bool expectWriteNewLineCall,
-      PrintMode::Minimal, false,
+      PrintMode::Minimalist, false,
       PrintMode::Normal, true,
       PrintMode::Detailed, true)
    {
@@ -153,7 +153,7 @@ namespace ZenUnit
 
    TEST2X2(NonMinimalWriteLine_CallsWriteLineIfPrintModeNotMinimal,
       PrintMode printMode, bool expectWriteLineCall,
-      PrintMode::Minimal, false,
+      PrintMode::Minimalist, false,
       PrintMode::Normal, true,
       PrintMode::Detailed, true)
    {
@@ -206,7 +206,7 @@ namespace ZenUnit
 
    TEST2X2(NonMinimalWriteStringsCommaSeparated_PrintModeNotMinimal_CallsDoWriteStringsCommaSeparated,
       PrintMode printMode, bool expectDoWriteCall,
-      PrintMode::Minimal, false,
+      PrintMode::Minimalist, false,
       PrintMode::Normal, true,
       PrintMode::Detailed, true)
    {

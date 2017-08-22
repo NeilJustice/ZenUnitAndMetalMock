@@ -137,7 +137,7 @@ namespace ZenUnit
 
    void TestResult::NonMinimalWriteLineOKIfSuccess(const Console* console, PrintMode printMode) const
    {
-      if (printMode != PrintMode::Minimal && testOutcome == TestOutcome::Success)
+      if (printMode != PrintMode::Minimalist && testOutcome == TestOutcome::Success)
       {
          console->WriteLineColor("OK", Color::White);
       }

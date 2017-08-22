@@ -194,11 +194,11 @@ namespace ZenUnit
 
    TEST3X3(NonMinimalWriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess,
       PrintMode printMode, TestOutcome testOutcome, bool expectWriteLineOK,
-      PrintMode::Minimal, TestOutcome::Success, false,
-      PrintMode::Minimal, TestOutcome::Anomaly, false,
-      PrintMode::Minimal, TestOutcome::Exception, false,
-      PrintMode::Minimal, TestOutcome::SuccessButPastDeadline, false,
-      PrintMode::Minimal, TestOutcome::Unset, false,
+      PrintMode::Minimalist, TestOutcome::Success, false,
+      PrintMode::Minimalist, TestOutcome::Anomaly, false,
+      PrintMode::Minimalist, TestOutcome::Exception, false,
+      PrintMode::Minimalist, TestOutcome::SuccessButPastDeadline, false,
+      PrintMode::Minimalist, TestOutcome::Unset, false,
 
       PrintMode::Normal, TestOutcome::Success, true,
       PrintMode::Normal, TestOutcome::Anomaly, false,

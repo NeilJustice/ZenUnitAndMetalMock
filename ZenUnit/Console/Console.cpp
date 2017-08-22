@@ -24,7 +24,7 @@ namespace ZenUnit
 
    void Console::NonMinimalWrite(const std::string& message, PrintMode printMode) const
    {
-      if (printMode != PrintMode::Minimal)
+      if (printMode != PrintMode::Minimalist)
       {
          Write(message);
       }
@@ -40,7 +40,7 @@ namespace ZenUnit
 
    void Console::NonMinimalWriteColor(const std::string& message, Color color, PrintMode printMode) const
    {
-      if (printMode != PrintMode::Minimal)
+      if (printMode != PrintMode::Minimalist)
       {
          WriteColor(message, color);
       }
@@ -53,7 +53,7 @@ namespace ZenUnit
 
    void Console::NonMinimalWriteLine(const std::string& message, PrintMode printMode) const
    {
-      if (printMode != PrintMode::Minimal)
+      if (printMode != PrintMode::Minimalist)
       {
          WriteLine(message);
       }
@@ -77,7 +77,7 @@ namespace ZenUnit
 
    void Console::NonMinimalWriteNewLine(PrintMode printMode) const
    {
-      if (printMode != PrintMode::Minimal)
+      if (printMode != PrintMode::Minimalist)
       {
          WriteNewLine();
       }
@@ -92,7 +92,7 @@ namespace ZenUnit
    void Console::NonMinimalWriteStringsCommaSeparated(
       const std::vector<std::string>& strings, size_t startIndex, size_t numberOfStringsToWrite, PrintMode printMode) const
    {
-      if (printMode != PrintMode::Minimal)
+      if (printMode != PrintMode::Minimalist)
       {
          DoWriteStringsCommaSeparated(strings, startIndex, numberOfStringsToWrite);
       }

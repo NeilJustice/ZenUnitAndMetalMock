@@ -89,7 +89,7 @@ namespace ZenUnit
 
    TEST2X2(NonMinimalWritePostTestNameMessage_WritesEllipsisIfPrintModeNotMinimal,
       PrintMode printMode, bool expectWriteLineCall,
-      PrintMode::Minimal, false,
+      PrintMode::Minimalist, false,
       PrintMode::Normal, true,
       PrintMode::Detailed, true)
    {

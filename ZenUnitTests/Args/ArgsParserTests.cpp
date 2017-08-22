@@ -27,30 +27,29 @@ namespace ZenUnit
    EVIDENCE
 
    const string TestProgramPath = Random<string>();
-   const string ExpectedUsage = R"(ZenUnit and ZenMock
+   const string ExpectedUsage = R"(ZenUnit and ZenMock v0.1.0
 Usage: <TestsBinaryName> [Options...]
 
 Options:
 
 None
    Run all non-skipped tests while printing detailed information.
--minimal
-   Print only preamble and conclusion instead of detailed information.
+-minimalist
+   Print only preamble and conclusion.
 -exit0
    Always exit 0 regardless of test run outcome.
-   Useful for always allowing the Visual Studio debugger to launch.
+   Useful option for not blocking the launch of a debugger.
 -failskips
    Exit 1 regardless of test run outcome if any tests are skipped.
-   Useful option for continuous integration servers to guard against
-   quality-compromising complacency with respect to skipped tests.
+   Powerful option for continuous integration servers to guard against
+   the possibility of a quality-compromising culture of complacency
+   developing around skipped tests. "Skip it and ship it!"
 -testruns=<N>
    Repeat the running of all non-skipped tests N times.
-   Key option for maximizing testing rigor.
+   Powerful option for maximizing testing rigor.
 -random[=Seed]
    Run test classes in a random order and run tests in a random order.
-   Key option for maximizing testing rigor.
--help or --help
-   Display this message.)";
+   Powerful option for maximizing testing rigor.)";
 
    ArgsParser _argsParser;
    const ConsoleMock* _consoleMock;
@@ -132,7 +131,7 @@ None
       const vector<string> Args
       {
          TestProgramPath,
-         "-minimal",
+         "-minimalist",
          "-detailed",
          "-exit0",
          "-failskips",
@@ -158,7 +157,7 @@ None
    TEST2X2(Parse_MinimalOrDetailed_ReturnsExpectedZenUnitArgs,
       vector<string> args, PrintMode expectedPrintMode,
       vector<string>{ "ExePath" }, PrintMode::Normal,
-      vector<string>{ "ExePath", "-minimal" }, PrintMode::Minimal,
+      vector<string>{ "ExePath", "-minimalist" }, PrintMode::Minimalist,
       vector<string>{ "ExePath", "-detailed" }, PrintMode::Detailed)
    {
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
