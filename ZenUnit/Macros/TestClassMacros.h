@@ -42,8 +42,8 @@
 
 #define DOSKIP(Reason, HighQualityTestName) \
    ZenUnit::TestRunner::Instance().SkipTest(testClassNamePossiblyTemplatized, #HighQualityTestName, Reason);
-#define SKIPSPEC(Reason, HighQualityTestName) DOSKIP(Reason, HighQualityTestName)
-#define SKIPSPECX(Reason, HighQualityTestName) DOSKIP(Reason, HighQualityTestName)
+#define SKIPFACT(Reason, HighQualityTestName) DOSKIP(Reason, HighQualityTestName)
+#define SKIPFACTS(Reason, HighQualityTestName) DOSKIP(Reason, HighQualityTestName)
 
 #define EVIDENCE return tests; }
 #define STARTUP void Startup() override
