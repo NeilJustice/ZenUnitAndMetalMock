@@ -64,5 +64,5 @@ namespace ZenUnit
       IS_TRUE(has_ZenUnitPrinter<Namespace::StructInsideNamespace_ZenUnitPrintOutsideNamespace>::value);
    }
 
-   RUNTESTS(has_ZenUnitPrinterTests)
+   }; RUNTESTS(has_ZenUnitPrinterTests)
 }

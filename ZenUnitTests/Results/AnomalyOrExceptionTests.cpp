@@ -31,4 +31,4 @@ TEST(ExceptionTypeNameAndExceptionWhatConstructor_SetsExceptionTypeNameAndExcept
    ARE_EQUAL(ExceptionWhat, *anomalyOrException.exceptionWhat);
 }
 
-RUNTESTS(AnomalyOrExceptionTests)
+}; RUNTESTS(AnomalyOrExceptionTests)

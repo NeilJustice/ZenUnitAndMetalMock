@@ -66,6 +66,6 @@ namespace ZenUnit
       VECTORS_EQUAL(expectedFuncCalls, _funcCalls);
    }
 
-   RUNTESTS(ForEacherTwoExtraArgsTests)
+   }; RUNTESTS(ForEacherTwoExtraArgsTests)
 }
 

@@ -112,5 +112,5 @@ File.cpp(1))");
       ARE_COPIES(x, y);
    }
 
-   RUNTESTS(ARE_COPIESTests)
+   }; RUNTESTS(ARE_COPIESTests)
 }

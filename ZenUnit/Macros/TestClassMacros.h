@@ -105,7 +105,10 @@
       TestClassType::RegisterTest10X10(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
    void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)
 
-#define RUNTESTS(HighQualityTestClassName) }; \
+// RUNTESTS does not begin with "};" as would be ideal because
+// placing a class closing brace within a macro confuses the Visual Studio debugger,
+// leading to breakpoints sometimes and sometimes not being off by one line
+#define RUNTESTS(HighQualityTestClassName) \
    const char* HighQualityTestClassName::s_testClassNamePossiblyTemplatized = nullptr; \
    bool HighQualityTestClassName::s_allNXNTestsRegistered = false; \
    std::nullptr_t ZenUnit_TestClassRegistrar_##HighQualityTestClassName = \

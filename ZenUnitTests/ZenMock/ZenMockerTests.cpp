@@ -220,5 +220,5 @@ namespace ZenMock
       _zenMocker->ZenMockExitIfExpectedButNotAsserted();
    }
 
-   RUNTESTS(ZenMockerTests)
+   }; RUNTESTS(ZenMockerTests)
 }

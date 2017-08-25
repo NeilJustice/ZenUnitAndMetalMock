@@ -131,5 +131,5 @@ namespace ZenUnit
       ARE_EQUAL(TestClassResult::TestingNonDefault(), testClassResult);
    }
 
-   RUNTESTS(MultiTestClassRunnerTests)
+   }; RUNTESTS(MultiTestClassRunnerTests)
 }

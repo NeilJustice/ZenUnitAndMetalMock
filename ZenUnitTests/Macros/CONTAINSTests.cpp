@@ -80,5 +80,5 @@ Expected: Contains element 0
 File.cpp(1))");
    }
 
-   RUNTESTS(CONTAINSTests)
+   }; RUNTESTS(CONTAINSTests)
 }

@@ -426,5 +426,5 @@ File.cpp(1))");
       EQUALIZER_THROWS(TestResult, milliseconds, 20u);
    }
 
-   RUNTESTS(TestResultTests)
+   }; RUNTESTS(TestResultTests)
 }

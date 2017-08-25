@@ -111,5 +111,5 @@ Expected: InitializerConstructable@0
 File.cpp(1))");
    }
 
-   RUNTESTS(IS_ZEROTests)
+   }; RUNTESTS(IS_ZEROTests)
 }

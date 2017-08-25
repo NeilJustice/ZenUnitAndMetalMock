@@ -79,5 +79,5 @@ Arg2: UserType@2
       ARE_EQUAL(ExpectedWhat, what);
    }
 
-   RUNTESTS(UnexpectedCallExceptionTests)
+   }; RUNTESTS(UnexpectedCallExceptionTests)
 }

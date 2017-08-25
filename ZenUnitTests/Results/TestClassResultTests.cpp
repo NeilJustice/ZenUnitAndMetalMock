@@ -215,5 +215,5 @@ namespace ZenUnit
       EQUALIZER_THROWS(TestClassResult, _testResults, vector<TestResult> { TestResult() });
    }
 
-   RUNTESTS(TestClassResultTests)
+   }; RUNTESTS(TestClassResultTests)
 }

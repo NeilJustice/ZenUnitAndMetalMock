@@ -134,4 +134,4 @@ Expected: not a nullptr
 File.cpp(1))");
 }
 
-RUNTESTS(POINTER_WAS_NEWEDTests_RawPointers)
+}; RUNTESTS(POINTER_WAS_NEWEDTests_RawPointers)

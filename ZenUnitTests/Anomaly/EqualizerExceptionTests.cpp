@@ -13,5 +13,5 @@ namespace ZenUnit
       ARE_EQUAL("", equalizerException.what());
    }
 
-   RUNTESTS(EqualizerExceptionTests)
+   }; RUNTESTS(EqualizerExceptionTests)
 }

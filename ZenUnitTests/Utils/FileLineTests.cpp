@@ -61,5 +61,5 @@ namespace ZenUnit
       EQUALIZER_THROWS(FileLine, lineNumber, 1u);
    }
 
-   RUNTESTS(FileLineTests)
+   }; RUNTESTS(FileLineTests)
 }

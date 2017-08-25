@@ -38,5 +38,5 @@ namespace ZenMock
       ARE_EQUAL(expectedFunctionPointerSignature, functionPointerSignature);
    }
 
-   RUNTESTS(SignatureTests)
+   }; RUNTESTS(SignatureTests)
 }

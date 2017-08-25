@@ -329,5 +329,5 @@ FilePath(1))";
       EQUALIZER_THROWS(Anomaly, why, "whyValue");
    }
 
-   RUNTESTS(AnomalyTests)
+   }; RUNTESTS(AnomalyTests)
 }

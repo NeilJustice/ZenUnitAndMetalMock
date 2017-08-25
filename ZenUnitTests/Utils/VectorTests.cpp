@@ -64,5 +64,5 @@ namespace ZenUnit
       ARE_EQUAL(expectedJoinedVector, joinedVector);
    }
 
-   RUNTESTS(VectorTests)
+   }; RUNTESTS(VectorTests)
 }

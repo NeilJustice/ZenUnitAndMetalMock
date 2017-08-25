@@ -42,5 +42,5 @@ namespace ZenUnit
       IS_TRUE(has_ostream_left_shift<UserTypeInsOpAndZenUnitPrintable&&>::value);
    }
 
-   RUNTESTS(has_ostream_left_shiftTests)
+   }; RUNTESTS(has_ostream_left_shiftTests)
 }

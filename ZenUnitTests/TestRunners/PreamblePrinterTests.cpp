@@ -111,5 +111,5 @@ namespace ZenUnit
       ARE_EQUAL(expectedReturnValue, thirdLineSuffix);
    }
 
-   RUNTESTS(PreamblePrinterTests)
+   }; RUNTESTS(PreamblePrinterTests)
 }

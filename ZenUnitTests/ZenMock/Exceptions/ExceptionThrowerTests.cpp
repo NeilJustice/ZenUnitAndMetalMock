@@ -36,5 +36,5 @@ namespace ZenMock
       THROWS(_exceptionThrower.ZenMockThrowIfExceptionSet(), logic_error, "logic_error_what");
    }
 
-   RUNTESTS(ExceptionThrowerTests)
+   }; RUNTESTS(ExceptionThrowerTests)
 }

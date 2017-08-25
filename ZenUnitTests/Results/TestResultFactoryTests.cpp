@@ -67,5 +67,5 @@ namespace ZenUnit
       ARE_EQUAL(expectedTestResult, testResult);
    }
 
-   RUNTESTS(TestResultFactoryTests)
+   }; RUNTESTS(TestResultFactoryTests)
 }

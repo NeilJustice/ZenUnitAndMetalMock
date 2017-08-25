@@ -138,5 +138,5 @@ namespace ZenUnit
       t.TestFunction(0);
    }
 
-   RUNTESTS(SpecSectionTestNXNTests)
+   }; RUNTESTS(SpecSectionTestNXNTests)
 }

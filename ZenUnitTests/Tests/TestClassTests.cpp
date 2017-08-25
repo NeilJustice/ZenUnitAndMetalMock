@@ -48,5 +48,5 @@ namespace ZenUnit
       IS_TRUE(TestingDerivedTestClassType::s_allNXNTestsRegistered);
    }
 
-   RUNTESTS(TestClassTests)
+   }; RUNTESTS(TestClassTests)
 }

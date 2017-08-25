@@ -261,7 +261,7 @@ namespace ZenUnit
          AssertCalledOnceWith(_testNXN->_console.get(), printMode));
    }
 
-   RUNTESTS(TestNXNTests)
+   }; RUNTESTS(TestNXNTests)
 
    template<typename T>
    TEMPLATETESTS(AllTestNXNsWithinATemplateTestClass, T)

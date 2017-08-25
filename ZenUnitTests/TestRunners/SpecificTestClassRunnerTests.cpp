@@ -333,5 +333,5 @@ namespace ZenUnit
       ZEN(testClassResultMock.NonMinimalPrintResultLineMock.AssertCalledOnceWith(_consoleMock, printMode));
    }
 
-   RUNTESTS(SpecificTestClassRunnerTests)
+   }; RUNTESTS(SpecificTestClassRunnerTests)
 }

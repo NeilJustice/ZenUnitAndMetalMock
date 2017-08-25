@@ -57,5 +57,5 @@ namespace ZenUnit
       EQUALIZER_THROWS(FullTestName, arity, static_cast<unsigned char>(1));
    }
 
-   RUNTESTS(FullTestNameTests)
+   }; RUNTESTS(FullTestNameTests)
 }

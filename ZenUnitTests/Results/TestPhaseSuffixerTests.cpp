@@ -28,4 +28,4 @@ TEST1X1(TestPhaseToTestPhaseSuffix_UnsetOrDestructorTestPhase_Throws,
 File.cpp(1))");
 }
 
-RUNTESTS(TestPhaseSuffixerTests)
+}; RUNTESTS(TestPhaseSuffixerTests)

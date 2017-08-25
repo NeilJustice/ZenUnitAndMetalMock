@@ -142,5 +142,5 @@ File.cpp\(1\))", anomaly.why);
       FunctionC();
    }
 
-   RUNTESTS(STD_FUNCTION_TARGETSTests)
+   }; RUNTESTS(STD_FUNCTION_TARGETSTests)
 }

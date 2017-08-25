@@ -213,5 +213,5 @@ namespace ZenUnit
       test.DeleteTestClass();
    }
 
-   RUNTESTS(TestTests)
+   }; RUNTESTS(TestTests)
 }

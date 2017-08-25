@@ -109,4 +109,4 @@ TEST(ExpectedPointerNotNull_ActualPointerNotNull_PointeesEqual_UserTypes_DoesNot
    POINTEES_EQUAL(expectedPointer, actualPointer);
 }
 
-RUNTESTS(POINTEES_EQUALTests)
+}; RUNTESTS(POINTEES_EQUALTests)

@@ -94,7 +94,7 @@ Arg: "1")", zenUnitPrintResult);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
    }
 
-   RUNTESTS(OneArgCallRefTests)
+   }; RUNTESTS(OneArgCallRefTests)
 
 
    TESTS(TwoArgCallRefTests)
@@ -150,7 +150,7 @@ Arg2: "2")", zenUnitPrintResult);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
    }
 
-   RUNTESTS(TwoArgCallRefTests)
+   }; RUNTESTS(TwoArgCallRefTests)
 
 
    TESTS(ThreeArgCallRefTests)
@@ -212,7 +212,7 @@ Arg3: "3")", zenUnitPrintResult);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "arg3");
    }
 
-   RUNTESTS(ThreeArgCallRefTests)
+   }; RUNTESTS(ThreeArgCallRefTests)
 
 
    TESTS(FourArgCallRefTests)
@@ -280,7 +280,7 @@ Arg4: "4")", zenUnitPrintResult);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "arg4");
    }
 
-   RUNTESTS(FourArgCallRefTests)
+   }; RUNTESTS(FourArgCallRefTests)
 
 
    TESTS(FiveArgCallRefTests)
@@ -354,7 +354,7 @@ Arg5: "5")", zenUnitPrintResult);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "arg5");
    }
 
-   RUNTESTS(FiveArgCallRefTests)
+   }; RUNTESTS(FiveArgCallRefTests)
 
 
    TESTS(SixArgCallRefTests)
@@ -434,7 +434,7 @@ Arg6: "6")", zenUnitPrintResult);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "arg6");
    }
 
-   RUNTESTS(SixArgCallRefTests)
+   }; RUNTESTS(SixArgCallRefTests)
 
 
    TESTS(SevenArgCallRefTests)
@@ -520,7 +520,7 @@ Arg7: "7")", zenUnitPrintResult);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg7); }, "arg7");
    }
 
-   RUNTESTS(SevenArgCallRefTests)
+   }; RUNTESTS(SevenArgCallRefTests)
 
 
    TESTS(EightArgCallRefTests)
@@ -612,7 +612,7 @@ Arg8: "8")", zenUnitPrintResult);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg8); }, "arg8");
    }
 
-   RUNTESTS(EightArgCallRefTests)
+   }; RUNTESTS(EightArgCallRefTests)
 
 
    TESTS(NineArgCallRefTests)
@@ -710,7 +710,7 @@ Arg9: "9")", zenUnitPrintResult);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg9); }, "arg9");
    }
 
-   RUNTESTS(NineArgCallRefTests)
+   }; RUNTESTS(NineArgCallRefTests)
 
 
    TESTS(TenArgCallRefTests)
@@ -813,5 +813,5 @@ Arg10: "10")", zenUnitPrintResult);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg10); }, "arg10");
    }
 
-   RUNTESTS(TenArgCallRefTests)
+   }; RUNTESTS(TenArgCallRefTests)
 }

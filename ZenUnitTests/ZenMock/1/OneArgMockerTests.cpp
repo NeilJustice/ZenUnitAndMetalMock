@@ -291,5 +291,5 @@ File.cpp(1))");
       IS_TRUE(_mocker->_asserted);
    }
 
-   RUNTESTS(OneArgMockerTests)
+   }; RUNTESTS(OneArgMockerTests)
 }

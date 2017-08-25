@@ -67,5 +67,5 @@ namespace ZenUnit
    }
 #endif
 
-   RUNTESTS(MachineNameGetterTests)
+   }; RUNTESTS(MachineNameGetterTests)
 }

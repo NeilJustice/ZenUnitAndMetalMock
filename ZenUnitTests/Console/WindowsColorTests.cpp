@@ -25,5 +25,5 @@ namespace ZenUnit
 File.cpp(1))");
    }
 
-   RUNTESTS(WindowsColorTests)
+   }; RUNTESTS(WindowsColorTests)
 }

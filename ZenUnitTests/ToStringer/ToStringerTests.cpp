@@ -348,5 +348,5 @@ namespace ZenUnit
          UserType(1), UserTypeNonPrintable(), UserTypeOnlyZenUnitPrintable()));
    }
 
-   RUNTESTS(ToStringerTests)
+   }; RUNTESTS(ToStringerTests)
 }

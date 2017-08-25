@@ -423,5 +423,5 @@ namespace ZenUnit
       EQUALIZER_THROWS(TestRunResult, _skippedFullTestNamesAndReasons, vector<string> { "" });
    }
 
-   RUNTESTS(TestRunResultTests)
+   }; RUNTESTS(TestRunResultTests)
 }

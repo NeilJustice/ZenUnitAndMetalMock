@@ -21,5 +21,5 @@ namespace ZenMock
       IS_TRUE((is_base_of<ZenMockException, ReturnValueMustBeSpecifiedException>::value));
    }
 
-   RUNTESTS(ReturnValueMustBeSpecifiedExceptionTests)
+   }; RUNTESTS(ReturnValueMustBeSpecifiedExceptionTests)
 }

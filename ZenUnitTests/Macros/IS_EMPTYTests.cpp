@@ -37,5 +37,5 @@ Expected: empty() == true
 File.cpp(1))");
    }
 
-   RUNTESTS(IS_EMPTYTests)
+   }; RUNTESTS(IS_EMPTYTests)
 }

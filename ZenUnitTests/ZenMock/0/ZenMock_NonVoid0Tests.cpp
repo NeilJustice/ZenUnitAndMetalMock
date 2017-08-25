@@ -262,6 +262,6 @@ namespace ZenMock
       test(Static_ZenMock, [&]{ return ZENBIND0(Static_ZenMock)(); });
    }
 
-RUNTESTS(ZenMock_NonVoid0Tests)
+}; RUNTESTS(ZenMock_NonVoid0Tests)
 
 }

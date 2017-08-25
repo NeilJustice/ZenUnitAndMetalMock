@@ -109,7 +109,7 @@ namespace ZenUnit
          + expectedGreaterThanUnsignedMaxValue + "\"");
    }
 
-   RUNTESTS(StringUtilTests)
+   }; RUNTESTS(StringUtilTests)
 
       template<typename StringType>
    TEMPLATETESTS(StringUtilContainsTests, StringType)

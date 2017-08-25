@@ -24,5 +24,5 @@ namespace ZenMock
       IS_TRUE((is_base_of<ZenMockException, UnsupportedAssertCalledZeroTimesException>::value));
    }
 
-   RUNTESTS(UnsupportedAssertCalledZeroTimesExceptionTests)
+   }; RUNTESTS(UnsupportedAssertCalledZeroTimesExceptionTests)
 }

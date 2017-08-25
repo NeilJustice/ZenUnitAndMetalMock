@@ -62,7 +62,7 @@ namespace ZenMock
       EQUALIZER_THROWS(Call1, arg, V1);
    }
 
-   RUNTESTS(OneArgCallTests)
+   }; RUNTESTS(OneArgCallTests)
 
 
    TESTS(TwoArgCallTests)
@@ -97,7 +97,7 @@ namespace ZenMock
       EQUALIZER_THROWS(Call2, arg2, V2);
    }
 
-   RUNTESTS(TwoArgCallTests)
+   }; RUNTESTS(TwoArgCallTests)
 
 
    TESTS(ThreeArgCallTests)
@@ -136,7 +136,7 @@ namespace ZenMock
       EQUALIZER_THROWS(Call3, arg3, V3);
    }
 
-   RUNTESTS(ThreeArgCallTests)
+   }; RUNTESTS(ThreeArgCallTests)
 
 
    TESTS(FourArgCallTests)
@@ -181,7 +181,7 @@ namespace ZenMock
    }
 
 
-   RUNTESTS(FourArgCallTests)
+   }; RUNTESTS(FourArgCallTests)
 
    TESTS(FiveArgCallTests)
    FACT(DefaultConstructor_DefaultInitializesFields)
@@ -228,7 +228,7 @@ namespace ZenMock
       EQUALIZER_THROWS(Call5, arg5, V5);
    }
 
-   RUNTESTS(FiveArgCallTests)
+   }; RUNTESTS(FiveArgCallTests)
 
 
    TESTS(SixArgCallTests)
@@ -280,7 +280,7 @@ namespace ZenMock
       EQUALIZER_THROWS(Call6, arg6, V6);
    }
 
-   RUNTESTS(SixArgCallTests)
+   }; RUNTESTS(SixArgCallTests)
 
 
    TESTS(SevenArgCallTests)
@@ -336,7 +336,7 @@ namespace ZenMock
       EQUALIZER_THROWS(Call7, arg7, V7);
    }
 
-   RUNTESTS(SevenArgCallTests)
+   }; RUNTESTS(SevenArgCallTests)
 
 
    TESTS(EightArgCallTests)
@@ -396,7 +396,7 @@ namespace ZenMock
       EQUALIZER_THROWS(Call8, arg8, V8);
    }
 
-   RUNTESTS(EightArgCallTests)
+   }; RUNTESTS(EightArgCallTests)
 
 
    TESTS(NineArgCallTests)
@@ -460,7 +460,7 @@ namespace ZenMock
       EQUALIZER_THROWS(Call9, arg9, V9);
    }
 
-   RUNTESTS(NineArgCallTests)
+   }; RUNTESTS(NineArgCallTests)
 
    TESTS(TenArgCallTests)
    FACT(DefaultConstructor_DefaultInitializesFields)
@@ -529,5 +529,5 @@ namespace ZenMock
       EQUALIZER_THROWS(Call10, arg10, V10);
    }
 
-   RUNTESTS(TenArgCallTests)
+   }; RUNTESTS(TenArgCallTests)
 }

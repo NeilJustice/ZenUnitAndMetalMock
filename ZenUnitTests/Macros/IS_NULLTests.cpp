@@ -96,5 +96,5 @@ Expected: nullptr
       THROWS(IS_NULL(nonNullSharedPointer), Anomaly, expectedWhat);
    }
 
-   RUNTESTS(IS_NULL_Tests)
+   }; RUNTESTS(IS_NULL_Tests)
 }

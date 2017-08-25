@@ -32,5 +32,5 @@ Expected: "Message"
 File.cpp(1))");
    }
 
-   RUNTESTS(ZENTests)
+   }; RUNTESTS(ZENTests)
 }

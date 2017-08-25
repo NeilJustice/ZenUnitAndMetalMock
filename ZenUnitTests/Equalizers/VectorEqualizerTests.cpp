@@ -62,5 +62,5 @@ File.cpp(1)
 File.cpp(1))");
    }
 
-   RUNTESTS(VectorEqualizerTests)
+   }; RUNTESTS(VectorEqualizerTests)
 }

@@ -255,5 +255,5 @@ namespace ZenUnit
       }
    }
 
-   RUNTESTS(TestRunnerTests)
+   }; RUNTESTS(TestRunnerTests)
 }

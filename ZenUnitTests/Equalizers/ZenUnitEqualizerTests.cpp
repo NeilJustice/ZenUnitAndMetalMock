@@ -201,5 +201,5 @@ namespace ZenUnit
         numeric_limits<int>::max(), static_cast<size_t>(numeric_limits<int>::max()));
    }
 
-   RUNTESTS(ZenUnitEqualizerTests)
+   }; RUNTESTS(ZenUnitEqualizerTests)
 }

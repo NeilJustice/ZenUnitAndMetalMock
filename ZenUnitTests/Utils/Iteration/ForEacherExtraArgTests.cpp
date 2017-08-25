@@ -58,5 +58,5 @@ namespace ZenUnit
       VECTORS_EQUAL(expectedCalls, calls);
    }
 
-   RUNTESTS(ForEacherExtraArgTests)
+   }; RUNTESTS(ForEacherExtraArgTests)
 }

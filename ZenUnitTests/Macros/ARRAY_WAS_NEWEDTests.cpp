@@ -89,6 +89,6 @@ Expected: not a nullptr
 File.cpp(1))");
 }
 
-RUNTESTS(ARRAY_WAS_NEWEDTests)
+}; RUNTESTS(ARRAY_WAS_NEWEDTests)
 
 unsigned ARRAY_WAS_NEWEDTests::Deletable::s_destructorCallCount = 0;

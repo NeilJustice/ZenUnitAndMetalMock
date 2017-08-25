@@ -43,5 +43,5 @@ namespace ZenUnit
       EQUALIZER_THROWS(CallResult, anomalyOrException, nonDefaultAnomalyOrException);
    }
 
-   RUNTESTS(CallResultTests)
+   }; RUNTESTS(CallResultTests)
 }

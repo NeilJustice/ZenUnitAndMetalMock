@@ -87,4 +87,4 @@ TEST(has_ZenUnitPrinter_True)
    IS_TRUE(ZenUnit::has_ZenUnitPrinter<UserType>::value);
 }
 
-RUNTESTS(UserTypeTests)
+}; RUNTESTS(UserTypeTests)

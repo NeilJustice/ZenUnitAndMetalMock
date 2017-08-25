@@ -19,5 +19,5 @@ namespace ZenUnit
       ARE_EQUAL("<3>", testFailureNumberer.Next());
    }
 
-   RUNTESTS(TestFailureNumbererTests)
+   }; RUNTESTS(TestFailureNumbererTests)
 }

@@ -69,5 +69,5 @@ namespace ZenUnit
       ARE_EQUAL("text3", vrtext3.text);
    }
 
-   RUNTESTS(VRTextTests)
+   }; RUNTESTS(VRTextTests)
 }

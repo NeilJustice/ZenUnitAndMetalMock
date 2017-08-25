@@ -101,5 +101,5 @@ namespace ZenMock
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-   RUNTESTS(FiveArgMockerTests)
+   }; RUNTESTS(FiveArgMockerTests)
 }

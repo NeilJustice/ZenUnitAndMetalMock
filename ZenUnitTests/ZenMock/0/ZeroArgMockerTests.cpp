@@ -160,5 +160,5 @@ File.cpp(1))");
       IS_TRUE(_mocker->_asserted);
    }
 
-   RUNTESTS(ZeroArgMockerTests)
+   }; RUNTESTS(ZeroArgMockerTests)
 }

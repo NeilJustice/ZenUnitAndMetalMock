@@ -34,5 +34,5 @@ namespace ZenUnit
       ARE_EQUAL(expectedIsLessThan, isLessThan);
    }
 
-   RUNTESTS(TestClassRunnerTests)
+   }; RUNTESTS(TestClassRunnerTests)
 }

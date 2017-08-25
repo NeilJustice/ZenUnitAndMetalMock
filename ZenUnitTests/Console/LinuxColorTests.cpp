@@ -24,5 +24,5 @@ namespace ZenUnit
 File.cpp(1))");
    }
 
-   RUNTESTS(LinuxColorTests)
+   }; RUNTESTS(LinuxColorTests)
 }

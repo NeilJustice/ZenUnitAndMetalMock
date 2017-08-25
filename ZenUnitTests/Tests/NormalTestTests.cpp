@@ -121,5 +121,5 @@ namespace ZenUnit
       IS_TRUE(TestingTestClass::s_destructorCalled);
    }
 
-   RUNTESTS(NormalTestTests)
+   }; RUNTESTS(NormalTestTests)
 }

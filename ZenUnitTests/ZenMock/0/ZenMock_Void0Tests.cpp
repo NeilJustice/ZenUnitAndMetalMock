@@ -131,5 +131,5 @@ namespace ZenMock
       _zenMock0Tester->ExpectAndThrow_ThenMockedFunction_ThrowsTheException();
    }
 
-   RUNTESTS(ZenMock_Void0Tests)
+   }; RUNTESTS(ZenMock_Void0Tests)
 }

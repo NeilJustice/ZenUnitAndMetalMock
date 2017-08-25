@@ -162,5 +162,5 @@ namespace ZenUnit
    }
 #endif
 
-   RUNTESTS(ConsoleColorerTests)
+   }; RUNTESTS(ConsoleColorerTests)
 }

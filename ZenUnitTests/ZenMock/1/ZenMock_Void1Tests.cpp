@@ -84,5 +84,5 @@ namespace ZenMock
             ExpectedStaticUniqueSignature);
    }
 
-   RUNTESTS(ZenMock_Void1Tests)
+   }; RUNTESTS(ZenMock_Void1Tests)
 }

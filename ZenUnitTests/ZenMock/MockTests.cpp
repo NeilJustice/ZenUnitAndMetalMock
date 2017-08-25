@@ -17,5 +17,5 @@ namespace Zen
       ARE_EQUAL("Zen::X", *Mock<Zen::X>::ZenMockedClassName());
    }
 
-   RUNTESTS(MockTests)
+   }; RUNTESTS(MockTests)
 }

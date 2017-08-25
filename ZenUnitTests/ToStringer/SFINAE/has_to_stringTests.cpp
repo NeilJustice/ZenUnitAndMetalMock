@@ -25,5 +25,5 @@ namespace ZenUnit
       IS_FALSE(has_to_string<UserType>::value);
    }
 
-   RUNTESTS(has_to_stringTests)
+   }; RUNTESTS(has_to_stringTests)
 }

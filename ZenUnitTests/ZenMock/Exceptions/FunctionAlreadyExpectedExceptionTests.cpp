@@ -19,5 +19,5 @@ Already called [ZenMockedFunctionName]Mock.Expect[AndReturn|AndReturnValues|AndT
       IS_TRUE((is_base_of<ZenMockException, FunctionAlreadyExpectedException>::value));
    }
 
-   RUNTESTS(FunctionAlreadyExpectedExceptionTests)
+   }; RUNTESTS(FunctionAlreadyExpectedExceptionTests)
 }

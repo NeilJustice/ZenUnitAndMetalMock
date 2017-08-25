@@ -313,5 +313,5 @@ None
       ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(ExpectedUsage, 1));
    }
 
-   RUNTESTS(ArgsParserTests)
+   }; RUNTESTS(ArgsParserTests)
 }

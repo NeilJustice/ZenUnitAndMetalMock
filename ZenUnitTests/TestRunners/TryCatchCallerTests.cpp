@@ -219,7 +219,7 @@ Already called [ZenMockedFunctionName]Mock.Expect[AndReturn|AndReturnValues|AndT
             TestPhaseSuffix.c_str(), " (", Milliseconds, " ms)"), expectedExitCode));
    }
 
-   RUNTESTS(TryCatchCallerTests)
+   }; RUNTESTS(TryCatchCallerTests)
 
    int TryCatchCallerTests::s_numberOfNoThrowCalls;
 }

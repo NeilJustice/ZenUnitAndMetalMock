@@ -348,5 +348,5 @@ namespace ZenMock
       _zenMock1Tester->AssertCalls_NonEmptyCalls_FunctionCalledCallsSizeTimesMatchingArgs_DoesNotThrow(expectedCallsSize);
    }
 
-   RUNTESTS(ZenMock_NonVoid1Tests)
+   }; RUNTESTS(ZenMock_NonVoid1Tests)
 }

@@ -39,5 +39,5 @@ namespace ZenUnit
       EQUALIZER_THROWS(ZenUnitArgs, maxtotalseconds, 5u);
    }
 
-   RUNTESTS(ZenUnitArgsTests)
+   }; RUNTESTS(ZenUnitArgsTests)
 }

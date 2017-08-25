@@ -19,5 +19,5 @@ namespace ZenUnit
       ARE_EQUAL("vector<T>", oss.str());
    }
 
-   RUNTESTS(VectorZenUnitPrinterTests)
+   }; RUNTESTS(VectorZenUnitPrinterTests)
 }

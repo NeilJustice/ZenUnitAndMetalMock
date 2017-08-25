@@ -102,5 +102,5 @@ namespace ZenUnit
       IS_NULL(_newDeleteTest->_firstInstanceOfTestClass);
    }
 
-   RUNTESTS(NewDeleteTestTests)
+   }; RUNTESTS(NewDeleteTestTests)
 }

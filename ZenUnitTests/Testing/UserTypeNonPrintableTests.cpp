@@ -46,5 +46,5 @@ namespace ZenUnit
       IS_FALSE(has_ostream_left_shift<UserTypeNonPrintable>::value);
    }
 
-   RUNTESTS(UserTypeNonPrintableTests)
+   }; RUNTESTS(UserTypeNonPrintableTests)
 }

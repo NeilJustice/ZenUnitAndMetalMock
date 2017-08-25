@@ -294,5 +294,5 @@ namespace ZenUnit
    }
 #endif
 
-   RUNTESTS(ConsoleTests)
+   }; RUNTESTS(ConsoleTests)
 }

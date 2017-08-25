@@ -62,5 +62,5 @@ namespace ZenUnit
       ARE_EQUAL(number, elapsedMilliseconds);
    }
 
-   RUNTESTS(StopwatchTests)
+   }; RUNTESTS(StopwatchTests)
 }

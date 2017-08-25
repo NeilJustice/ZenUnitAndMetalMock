@@ -76,5 +76,5 @@ namespace ZenUnit
       return tmNow;
    }
 
-   RUNTESTS(WatchTests)
+   }; RUNTESTS(WatchTests)
 }
