@@ -126,7 +126,7 @@ namespace ZenUnit
       }
 
       template<typename T>
-      static void ZenUnitPrinterOrOStreamInsertionOperatorOrPrintTypeName(std::ostream& os, const T& value)
+      static void ZenUnitPrinterOrOStreamInsertionOperatorOrPrintTypeName(std::ostream& os, [[maybe_unused]]const T& value)
       {
          if constexpr (has_ZenUnitPrinter<T>::value && has_ostream_left_shift<T>::value)
          {
