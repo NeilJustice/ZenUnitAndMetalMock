@@ -97,4 +97,4 @@ TEST(VectorMain_NonEmptyValidArgs_Returns0)
    ARE_EQUAL(0, exitCode);
 }
 
-RUNTESTS(ProgramTests)
+}; RUNTESTS(ProgramTests)

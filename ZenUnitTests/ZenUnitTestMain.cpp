@@ -26,13 +26,15 @@ EVIDENCE
 
 template<typename T>
 TEMPLATETESTS(SkippedTemplateTestClassA, T)
-EVIDENCE };
+EVIDENCE
+};
 SKIPTEMPLATETESTS(Reason, SkippedTemplateTestClassA, int)
 SKIPTEMPLATETESTS(Reason, SkippedTemplateTestClassA, double)
 
 template<template<typename...> class MapType>
 TEMPLATETESTS(SkippedTemplateTestClassB, MapType)
-EVIDENCE };
+EVIDENCE
+};
 SKIPTEMPLATETESTS(Reason, SkippedTemplateTestClassB, map)
 SKIPTEMPLATETESTS(Reason, SkippedTemplateTestClassB, unordered_map)
 

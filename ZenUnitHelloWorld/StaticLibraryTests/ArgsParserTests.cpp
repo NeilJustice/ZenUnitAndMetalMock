@@ -15,4 +15,4 @@ TEST(ParseArgs_Flag_ReturnsProgramArgsWithFlagASet)
 
 }
 
-RUNTESTS(ArgsParserTests)
+}; RUNTESTS(ArgsParserTests)
