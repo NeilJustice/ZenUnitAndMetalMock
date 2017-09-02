@@ -17,8 +17,6 @@
 #include <vector>
 #include <thread>
 using namespace std;
-#include <experimental/filesystem>
-using namespace std::experimental;
 #ifdef _WIN32
    #define WIN32_LEAN_AND_MEAN
    #define NOGDI
