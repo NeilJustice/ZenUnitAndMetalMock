@@ -1,0 +1,53 @@
+dist: trusty
+sudo: false
+language: cpp
+cache: ccache
+
+matrix:
+  include:
+    - os: linux
+      compiler: clang
+      env: CMAKE_BUILD_TYPE=Debug CXXValue=clang++-4.0
+      addons:
+        apt:
+          sources: [ 'ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-4.0' ]
+          packages: [ 'ninja-build', 'clang-4.0', 'libc++-dev' ]
+
+    - os: linux
+      compiler: clang
+      env: CMAKE_BUILD_TYPE=Release CXXValue=clang++-4.0
+      addons:
+        apt:
+          sources: [ 'ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-4.0' ]
+          packages: [ 'ninja-build', 'clang-4.0', 'libc++-dev' ]
+
+    - os: linux
+      compiler: gcc
+      env: CMAKE_BUILD_TYPE=Debug CXXValue=g++-7
+      addons:
+        apt:
+          sources: [ 'ubuntu-toolchain-r-test' ]
+          packages: [ 'ninja-build', 'g++-7' ]
+
+    - os: linux
+      compiler: gcc
+      env: CMAKE_BUILD_TYPE=Release CXXValue=g++-7
+      addons:
+        apt:
+          sources: [ 'ubuntu-toolchain-r-test' ]
+          packages: [ 'ninja-build', 'g++-7' ]
+
+before_script:
+  - mkdir build
+  - cd build
+  - echo $CMAKE_BUILD_TYPE
+  - CXX="$CXXValue" cmake -Werror=dev -GNinja -DCMAKE_BUILD_TYPE="$CMAKE_BUILD_TYPE" ..
+
+script:
+  - ninja -v
+
+after_success:
+  - ./ZenUnitTests/ZenUnitTests
+
+notifications:
+  email: false
