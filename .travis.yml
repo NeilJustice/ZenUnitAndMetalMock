@@ -11,7 +11,7 @@ matrix:
       addons:
         apt:
           sources: [ 'ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-4.0' ]
-          packages: [ 'ninja-build', 'clang-4.0', 'libc++-dev', 'libstdc++-7-dev' ]
+          packages: [ 'ninja-build', 'clang-4.0', 'libc++-dev', 'libstdc++6' ]
 
     - os: linux
       compiler: clang
@@ -19,7 +19,7 @@ matrix:
       addons:
         apt:
           sources: [ 'ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-4.0' ]
-          packages: [ 'ninja-build', 'clang-4.0', 'libc++-dev', 'libstdc++-7-dev' ]
+          packages: [ 'ninja-build', 'clang-4.0', 'libc++-dev', 'libstdc++6' ]
 
     - os: linux
       compiler: gcc
