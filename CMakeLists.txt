@@ -1,9 +1,9 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.2)
 project(ZenUnit)
 include(${CMAKE_SOURCE_DIR}/ZenUnitHelloWorld/CMakeMacros.cmake)
 
 if(UNIX)
-   set(CMAKE_CXX_FLAGS "-std=c++1z -Wall -Wextra -Werror -pthread -Wno-unused-parameter")
+   set(CMAKE_CXX_FLAGS "-std=c++1z -stdlib=libc++ -Wall -Wextra -Werror -pthread -Wno-unused-parameter")
    if(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
       append(CMAKE_CXX_FLAGS "-pedantic -Wno-gnu-zero-variadic-macro-arguments")
    elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")

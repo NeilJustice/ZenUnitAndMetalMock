@@ -326,11 +326,9 @@ namespace ZenUnit
          { TestFailureNumber, Color::Red },
          { "\nUncaught Exception", Color::Red }
       }));
-      ZEN(_consoleMock.WriteLineMock.AssertCalls(
-      {
+      ZEN(_consoleMock.WriteLineMock.AssertCalledOnceWith(
          "  Type: " + ExceptionTypeName + "\n"
-         "what(): \"" + ExceptionWhat + "\""
-      }));
+         "what(): \""s + ExceptionWhat + "\""));
       ZEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
          AssertCalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex));
       ZEN(_consoleMock.WriteNewLineMock.AssertCalledOnce());
