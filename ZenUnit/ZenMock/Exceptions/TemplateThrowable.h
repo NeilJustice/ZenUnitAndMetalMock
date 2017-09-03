@@ -1,5 +1,6 @@
 #pragma once
 #include "ZenUnit/ZenMock/Exceptions/Throwable.h"
+#include <memory>
 
 namespace ZenMock
 {
