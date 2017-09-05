@@ -22,7 +22,7 @@ namespace ZenUnit
       WriteColor(message, Color::White);
    }
 
-   void Console::NonMinimalWrite(const std::string& message, PrintMode printMode) const
+   void Console::NonMinimalWrite(const string& message, PrintMode printMode) const
    {
       if (printMode != PrintMode::Minimalist)
       {
@@ -33,12 +33,12 @@ namespace ZenUnit
    void Console::WriteColor(const string& message, Color color) const
    {
       const bool didSetColor = _consoleColorer->SetColor(color);
-      printf("%s", message.c_str());
+      printf("%s", message.data());
       cout.flush(); // Explicit flush needed on Linux to show test run progress output immediately
       _consoleColorer->UnsetColor(didSetColor);
    }
 
-   void Console::NonMinimalWriteColor(const std::string& message, Color color, PrintMode printMode) const
+   void Console::NonMinimalWriteColor(const string& message, Color color, PrintMode printMode) const
    {
       if (printMode != PrintMode::Minimalist)
       {
@@ -51,7 +51,7 @@ namespace ZenUnit
       WriteLineColor(message, Color::White);
    }
 
-   void Console::NonMinimalWriteLine(const std::string& message, PrintMode printMode) const
+   void Console::NonMinimalWriteLine(const string& message, PrintMode printMode) const
    {
       if (printMode != PrintMode::Minimalist)
       {
@@ -65,7 +65,7 @@ namespace ZenUnit
       // With VS2017 15.2 Debug and Release mode, printf("%s\n") measured as ~15% faster
       // and with less speed variance relative to "cout << message << '\n'".
       // On Linux + Clang, no significant difference measured between printf and cout.
-      printf("%s\n", message.c_str());
+      printf("%s\n", message.data());
       cout.flush(); // Explicit flush needed on Linux to show test run output as it happens in VS Code
       _consoleColorer->UnsetColor(didSetColor);
    }
@@ -83,7 +83,7 @@ namespace ZenUnit
       }
    }
 
-   void Console::WriteLineAndExit(const std::string& message, int exitCode) const
+   void Console::WriteLineAndExit(const string& message, int exitCode) const
    {
       cout << message << '\n';
       _exit_ZenMockable(exitCode);

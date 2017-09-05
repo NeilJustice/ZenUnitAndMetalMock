@@ -24,8 +24,6 @@
 #include <unordered_set>
 #include <unordered_map>
 using namespace std;
-#include <experimental/filesystem>
-using namespace experimental;
 #ifdef _WIN32
    #define WIN32_LEAN_AND_MEAN // ~40% faster Windows.h compile speed
    #define NOGDI // ~10% faster Windows.h compile speed

@@ -10,10 +10,6 @@ static_assert(is_quoted_when_printed<string&>::value);
 static_assert(is_quoted_when_printed<const string>::value);
 static_assert(is_quoted_when_printed<const string&>::value);
 
-static_assert(is_quoted_when_printed<filesystem::path>::value);
-static_assert(is_quoted_when_printed<filesystem::path&>::value);
-static_assert(is_quoted_when_printed<const filesystem::path&>::value);
-
 static_assert(is_quoted_when_printed<char[1]>::value);
 static_assert(is_quoted_when_printed<const char[1]>::value);
 

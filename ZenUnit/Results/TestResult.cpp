@@ -157,7 +157,7 @@ namespace ZenUnit
          console->WriteLineColor(testFailureNumber, Color::Red);
          console->Write(fullTestName.Value());
          const CallResult& responsibleCallResult = (this->*responsibleCallResultField);
-         const char* const responsibleTestPhaseSuffix = 
+         const char* const responsibleTestPhaseSuffix =
             TestPhaseSuffixer::DoTestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
          console->Write(responsibleTestPhaseSuffix);
          WriteTestCaseNumberIfAny(console, testCaseIndex);
@@ -171,7 +171,7 @@ namespace ZenUnit
          console->WriteLineColor(testFailureNumber, Color::Red);
          console->Write(fullTestName.Value());
          const CallResult& responsibleCallResult = this->*responsibleCallResultField;
-         const char* const responsibleTestPhaseSuffix = 
+         const char* const responsibleTestPhaseSuffix =
             TestPhaseSuffixer::DoTestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
          console->Write(responsibleTestPhaseSuffix);
          WriteTestCaseNumberIfAny(console, testCaseIndex);

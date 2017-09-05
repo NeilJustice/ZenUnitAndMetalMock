@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.2)
 project(StaticLibraryTests)
 include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 

@@ -2,6 +2,7 @@
 #include "ZenUnit/Console/Console.h"
 #include "ZenUnit/Tests/Test.h"
 #include <iostream>
+#include <memory>
 
 namespace ZenUnit
 {

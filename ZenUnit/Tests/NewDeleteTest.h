@@ -4,6 +4,7 @@
 #include "ZenUnit/Results/TestResultFactory.h"
 #include "ZenUnit/TestRunners/TryCatchCaller.h"
 #include "ZenUnit/Tests/Test.h"
+#include <memory>
 
 namespace ZenUnit
 {

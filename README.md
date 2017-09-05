@@ -1,10 +1,10 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true)](https://ci.appveyor.com/project/NeilJustice/zenunitzenmock)
 
 # ZenUnit
-ZenUnit is a cross-platform C++ unit testing framework designed for specifying program behavior exactly, writability of type and value parameterized tests, and readability of tests and test results.
+ZenUnit is a C++ unit testing framework designed for specifying program behavior exactly, writability of type and value parameterized tests, and readability of tests and test results.
 
 # ZenMock
-ZenMock is a cross-platform C++ mocking framework powered by ZenUnit for isolating software components for targeted unit testing by way of virtual, template, static, and free function mocking using an arrange-act-assert syntax.
+ZenMock is a C++ mocking framework powered by ZenUnit for isolating software components for targeted unit testing by way of virtual, template, static, and free function mocking using an arrange-act-assert syntax.
 
 ### ZenUnit Command Line Usage
 
@@ -263,7 +263,7 @@ STARTUP
 TEST(Constructor_NewsComponentA)
 {
    ClassUnderTest classUnderTest;
-   WAS_NEWED(classUnderTest._componentA);
+   POINTER_WAS_NEWED(classUnderTest._componentA);
 }
 
 TEST3X3(InteractWithComponentA_CallsEveryFunction_ReturnsSumOfReturnValues,
@@ -423,3 +423,4 @@ int main(int argc, char* argv[])
 |ZEN|
 |-------------|
 |`ZEN(ZenMockAssertion)` // ZEN adorns error messages with \_\_FILE\_\_ and \_\_LINE\_\_ information.|
+
