@@ -4,17 +4,17 @@
 namespace ZenUnit
 {
    TESTS(AnomalyTests)
-   FACT(DefaultConstructor_DoesNotSetAnyFieldsToNonDefaultValues)
-   FACT(WhyConstructor_EmptyMessagesTextAndEmptyMessages_SetsWhy_DoesNotSetMessage)
-   FACT(WhyConstructor_EmptyMessagesTextAndEmptyMessages_EmptyWhyBody_SetsWhy_DoesNotSetMessage)
-   FACT(WhyConstructor_OneMessage_SetsWhy_SetsMessage)
+   AFACT(DefaultConstructor_DoesNotSetAnyFieldsToNonDefaultValues)
+   AFACT(WhyConstructor_EmptyMessagesTextAndEmptyMessages_SetsWhy_DoesNotSetMessage)
+   AFACT(WhyConstructor_EmptyMessagesTextAndEmptyMessages_EmptyWhyBody_SetsWhy_DoesNotSetMessage)
+   AFACT(WhyConstructor_OneMessage_SetsWhy_SetsMessage)
    FACTS(WhyConstructor_TwoMessages_SetsWhy_SetsMessage)
    FACTS(FullConstructor_FirstSecondThirdTest_MessagesPresentNotPresentTest)
    FACTS(FullConstructor_BecauseAnomalyNotPresent_SetsFields)
    FACTS(FullConstructor_BecauseAnomalyPresent_UnaffectedByExpectedActualFormat_SetsFields)
-   FACT(what_ReturnsWhyCStr)
-   FACT(ZENWrapped_ReturnsExpectedAnomaly)
-   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   AFACT(what_ReturnsWhyCStr)
+   AFACT(ZENWrapped_ReturnsExpectedAnomaly)
+   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
    const char* AssertionName = "ASSERTION_NAME";

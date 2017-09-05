@@ -11,10 +11,10 @@ bool TestingDerivedTestClassType::s_allNXNTestsRegistered = false;
 namespace ZenUnit
 {
    TESTS(TestClassTests)
-   FACT(DefaultConstructor_DoesNotThrow)
-   FACT(Startup_DoesNotThrow)
-   FACT(Cleanup_DoesNotThrow)
-   FACT(Destructor_SetsDerviedTestClassTypeAllTestCasesRegisteredToTrue)
+   AFACT(DefaultConstructor_DoesNotThrow)
+   AFACT(Startup_DoesNotThrow)
+   AFACT(Cleanup_DoesNotThrow)
+   AFACT(Destructor_SetsDerviedTestClassTypeAllTestCasesRegisteredToTrue)
    EVIDENCE
 
    TestClass _testClass;

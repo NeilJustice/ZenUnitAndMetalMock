@@ -9,7 +9,7 @@ namespace Zen
    };
 
    TESTS(MockTests)
-   FACT(ZenMockedClassName_ReturnsPointerToCachedRTTINameOfZenMockedClass)
+   AFACT(ZenMockedClassName_ReturnsPointerToCachedRTTINameOfZenMockedClass)
    EVIDENCE
 
    TEST(ZenMockedClassName_ReturnsPointerToCachedRTTINameOfZenMockedClass)

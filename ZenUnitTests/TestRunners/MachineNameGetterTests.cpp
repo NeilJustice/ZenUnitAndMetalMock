@@ -4,11 +4,11 @@
 namespace ZenUnit
 {
    TESTS(MachineNameGetterTests)
-   FACT(GetMachineName_ReturnsEitherCallToGetLinuxOrGetWindowsMachineName)
+   AFACT(GetMachineName_ReturnsEitherCallToGetLinuxOrGetWindowsMachineName)
 #ifdef __linux__
-   FACT(GetLinuxMachineName_ReturnsResultOfgethostname)
+   AFACT(GetLinuxMachineName_ReturnsResultOfgethostname)
 #elif _WIN32
-   FACT(GetWindowsMachineName_ReturnsResultOfGetComputerName)
+   AFACT(GetWindowsMachineName_ReturnsResultOfGetComputerName)
 #endif
    EVIDENCE
 

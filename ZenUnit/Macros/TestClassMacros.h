@@ -32,7 +32,7 @@
          s_testClassNamePossiblyTemplatized = testClassNamePossiblyTemplatized; \
          std::vector<std::unique_ptr<ZenUnit::Test>> tests;
 
-#define FACT(HighQualityTestName) \
+#define AFACT(HighQualityTestName) \
    tests.emplace_back(new ZenUnit::NormalTest<TestClassType>( \
       testClassNamePossiblyTemplatized, #HighQualityTestName, &TestClassType::HighQualityTestName));
 

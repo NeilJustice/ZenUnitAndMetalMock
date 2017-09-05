@@ -10,18 +10,18 @@ namespace ZenUnit
    static const size_t N = 1;
 
    TESTS(TestNXNTests)
-   FACT(Constructor_NewsConsole_SetsFields_GettersReturnExpected_2X2With4Args)
-   FACT(Constructor_StoresDecayedTypeCopiesOfTestCaseArguments)
-   FACT(NumberOfTestCases_ReturnsNumberOfTestCaseArgsDividedByN)
-   FACT(Run_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
-   FACT(NewTestClass_NewsTestClass)
-   FACT(Startup_CallsTestClassStartup)
-   FACT(TestBody_CallsRunNXNTestCase)
-   FACT(RunNXNTestCase_DoesNothing)
-   FACT(Cleanup_CallsCleanup)
-   FACT(DeleteTestClass_DeletesTestClass)
+   AFACT(Constructor_NewsConsole_SetsFields_GettersReturnExpected_2X2With4Args)
+   AFACT(Constructor_StoresDecayedTypeCopiesOfTestCaseArguments)
+   AFACT(NumberOfTestCases_ReturnsNumberOfTestCaseArgsDividedByN)
+   AFACT(Run_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
+   AFACT(NewTestClass_NewsTestClass)
+   AFACT(Startup_CallsTestClassStartup)
+   AFACT(TestBody_CallsRunNXNTestCase)
+   AFACT(RunNXNTestCase_DoesNothing)
+   AFACT(Cleanup_CallsCleanup)
+   AFACT(DeleteTestClass_DeletesTestClass)
    FACTS(NonMinimalPrintTestCaseNumberArgsThenArrow_WritesTestCaseNumberArrow)
-   FACT(NonMinimalWriteLineOKIfSuccess_CallsTestResultNonMinimalWriteLineOKIfSuccess)
+   AFACT(NonMinimalWriteLineOKIfSuccess_CallsTestResultNonMinimalWriteLineOKIfSuccess)
    EVIDENCE
 
    unique_ptr<TestNXN<TestingTestClass, N, int>> _testNXN;
@@ -265,7 +265,7 @@ namespace ZenUnit
 
    template<typename T>
    TEMPLATETESTS(AllTestNXNsWithinATemplateTestClass, T)
-   FACT(Test)
+   AFACT(Test)
    FACTS(Test1X1)
    FACTS(Test2X2)
    FACTS(Test3X3)

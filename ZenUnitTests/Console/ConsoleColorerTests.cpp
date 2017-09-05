@@ -12,7 +12,7 @@
 namespace ZenUnit
 {
    TESTS(ConsoleColorerTests)
-   FACT(Constructor_SetsFunctionPointers_SetsSupportsColorAndSupportsColorSetToFalse)
+   AFACT(Constructor_SetsFunctionPointers_SetsSupportsColorAndSupportsColorSetToFalse)
    FACTS(SetSupportsColorIfUnset)
    FACTS(SetColor_CallsSupportsColorAndSetTextColorIfColorNotWhite)
    FACTS(UnsetColor_CallsSetTextColorWhiteIfDidSetTextColorTrue)

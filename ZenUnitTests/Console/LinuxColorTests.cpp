@@ -5,7 +5,7 @@ namespace ZenUnit
 {
    TESTS(LinuxColorTests)
    FACTS(ColorToLinuxColor_ReturnsExpected)
-   FACT(ColorToLinuxColor_NonWhiteGreenRedColor_TriggersAssertion)
+   AFACT(ColorToLinuxColor_NonWhiteGreenRedColor_TriggersAssertion)
    EVIDENCE
 
    TEST2X2(ColorToLinuxColor_ReturnsExpected,

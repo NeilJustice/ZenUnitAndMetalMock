@@ -5,22 +5,22 @@
 namespace ZenMock
 {
    TESTS(OneArgMockerTests)
-   FACT(Constructor_SetsFields)
-   FACT(Expect_AlreadyExpected_Throws)
-   FACT(Expect_NotAlreadyExpected_SetsExpectedTrue)
-   FACT(ExpectAndThrow_ExpectedTrue_Throws)
-   FACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
-   FACT(ZenMockIt_ExpectedFalse_Throws)
-   FACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
+   AFACT(Constructor_SetsFields)
+   AFACT(Expect_AlreadyExpected_Throws)
+   AFACT(Expect_NotAlreadyExpected_SetsExpectedTrue)
+   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
+   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(ZenMockIt_ExpectedFalse_Throws)
+   AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
 
    FACTS(AssertCalledOnceWith_SetsAssertedTrue_FunctionWasCalledOnceWithExpectedArg_DoesNotThrow)
-   FACT(AssertCalledNTimesWith_NIsZero_Throws)
+   AFACT(AssertCalledNTimesWith_NIsZero_Throws)
    FACTS(AssertCalledNTimesWith_SetsAssertedTrue_NDiffersFromActualCallCount_Throws)
    FACTS(AssertCalledNTimesWith_SetsAssertedTrue_NEqualToNumberOfCalls_ThrowsIfArgsDoNotMatch)
-   FACT(AssertCalls_ExpectedCallsSize0_Throws_DoesNotSetAssertedTrue)
-   FACT(AssertCalls_SetsAssertedTrue_ExpectedCallsSizeNon0AndNotEqualToActualCallsSize_Throws_DoesNotCopyTheExpectedArg)
-   FACT(AssertCalls_SetsAssertedTrue_ExpectedCallsSizeNon0AndEqualToNumberOfCalls_ArgsNotEqual_Throws_DoesNotCopyTheExpectedArg)
-   FACT(AssertCalls_SetsAssertedTrue_ExpectedCallsSizeNon0AndEqualToNumberOfCalls_ArgsEqual_DoesNotThrow_DoesNotCopyTheExpectedArg)
+   AFACT(AssertCalls_ExpectedCallsSize0_Throws_DoesNotSetAssertedTrue)
+   AFACT(AssertCalls_SetsAssertedTrue_ExpectedCallsSizeNon0AndNotEqualToActualCallsSize_Throws_DoesNotCopyTheExpectedArg)
+   AFACT(AssertCalls_SetsAssertedTrue_ExpectedCallsSizeNon0AndEqualToNumberOfCalls_ArgsNotEqual_Throws_DoesNotCopyTheExpectedArg)
+   AFACT(AssertCalls_SetsAssertedTrue_ExpectedCallsSizeNon0AndEqualToNumberOfCalls_ArgsEqual_DoesNotThrow_DoesNotCopyTheExpectedArg)
    EVIDENCE
 
    using MockerType = OneArgMocker<int, ExceptionThrowerMock>;

@@ -5,13 +5,13 @@
 namespace ZenMock
 {
    TESTS(SevenArgMockerTests)
-   FACT(Constructor_SetsFields)
-   FACT(Expect_AlreadyExpected_Throws)
-   FACT(Expect_NotAlreadyExpected_SetsExpectedTrue)
-   FACT(ExpectAndThrow_ExpectedTrue_Throws)
-   FACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
-   FACT(ZenMockIt_ExpectedFalse_Throws)
-   FACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
+   AFACT(Constructor_SetsFields)
+   AFACT(Expect_AlreadyExpected_Throws)
+   AFACT(Expect_NotAlreadyExpected_SetsExpectedTrue)
+   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
+   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(ZenMockIt_ExpectedFalse_Throws)
+   AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
    EVIDENCE
 
    using MockerType = SevenArgMocker<int, int, int, int, int, int, int, ExceptionThrowerMock>;

@@ -9,8 +9,8 @@
 namespace ZenUnit
 {
    TESTS(PreamblePrinterTests)
-   FACT(Constructor_NewsConsoleAndWatch)
-   FACT(PrintOpeningThreeLines_PrintsCommandLineAndTimeZoneAndTestAndTestClassCounts)
+   AFACT(Constructor_NewsConsoleAndWatch)
+   AFACT(PrintOpeningThreeLines_PrintsCommandLineAndTimeZoneAndTestAndTestClassCounts)
    FACTS(MakeThirdLinePrefix_ReturnsNumberOfTestClassesBeingRunAndMachineName)
    FACTS(MakeThirdLineSuffix_ReturnsRandomSeedIfRandomModeOtherwiseEmptyString)
    EVIDENCE

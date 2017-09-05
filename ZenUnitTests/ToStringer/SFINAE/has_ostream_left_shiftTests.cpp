@@ -6,8 +6,8 @@
 namespace ZenUnit
 {
    TESTS(has_ostream_left_shiftTests)
-   FACT(value_IsFalseIfFreeFunctionOStreamInsertionOperatorNotDefinedForType)
-   FACT(value_IsTrueIfFreeFunctionOStreamInsertionOperatorIsDefinedForType)
+   AFACT(value_IsFalseIfFreeFunctionOStreamInsertionOperatorNotDefinedForType)
+   AFACT(value_IsTrueIfFreeFunctionOStreamInsertionOperatorIsDefinedForType)
    EVIDENCE
 
    TEST(value_IsFalseIfFreeFunctionOStreamInsertionOperatorNotDefinedForType)

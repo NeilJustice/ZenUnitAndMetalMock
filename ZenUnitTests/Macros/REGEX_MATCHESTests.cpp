@@ -4,10 +4,10 @@
 namespace ZenUnit
 {
    TESTS(REGEX_MATCHESTests)
-   FACT(PatternMatchesAllOfInput_DoesNotThrow)
-   FACT(PatternDoesNotMatchAnyOfInput_Throws)
-   FACT(PatternMatchesOnlyPartOfInput_Throws)
-   FACT(PatternMismatchesOnCase_Throws_MessagesTestCase)
+   AFACT(PatternMatchesAllOfInput_DoesNotThrow)
+   AFACT(PatternDoesNotMatchAnyOfInput_Throws)
+   AFACT(PatternMatchesOnlyPartOfInput_Throws)
+   AFACT(PatternMismatchesOnCase_Throws_MessagesTestCase)
    EVIDENCE
 
    TEST(PatternMatchesAllOfInput_DoesNotThrow)

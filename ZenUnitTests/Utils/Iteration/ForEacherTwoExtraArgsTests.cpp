@@ -5,9 +5,9 @@
 namespace ZenUnit
 {
    TESTS(ForEacherTwoExtraArgsTests)
-   FACT(ForEach_EmptyIterable_DoesNothing)
-   FACT(ForEach_OneItemIterable_CallsFuncOnItemOnce)
-   FACT(ForEach_TwoItemIterable_CallsFuncOnItemTwice)
+   AFACT(ForEach_EmptyIterable_DoesNothing)
+   AFACT(ForEach_OneItemIterable_CallsFuncOnItemOnce)
+   AFACT(ForEach_TwoItemIterable_CallsFuncOnItemTwice)
    EVIDENCE
 
    using ForEacherType = ForEacherTwoExtraArgs<vector<int>,

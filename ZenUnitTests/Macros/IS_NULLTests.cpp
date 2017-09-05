@@ -4,12 +4,12 @@
 namespace ZenUnit
 {
    TESTS(IS_NULL_Tests)
-   FACT(NullRawPointer_DoesNotThrow)
-   FACT(NullUniquePointer_DoesNotThrow)
-   FACT(NullSharedPointer_DoesNotThrow)
-   FACT(NonNullRawPointer_Throws_MessagesTestCase)
-   FACT(NonNullUniquePtr_Throws)
-   FACT(NonNullSharedPtr_Throws)
+   AFACT(NullRawPointer_DoesNotThrow)
+   AFACT(NullUniquePointer_DoesNotThrow)
+   AFACT(NullSharedPointer_DoesNotThrow)
+   AFACT(NonNullRawPointer_Throws_MessagesTestCase)
+   AFACT(NonNullUniquePtr_Throws)
+   AFACT(NonNullSharedPtr_Throws)
    EVIDENCE
 
    TEST(NullRawPointer_DoesNotThrow)

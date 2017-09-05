@@ -8,15 +8,15 @@
 namespace ZenUnit
 {
    TESTS(NormalTestTests)
-   FACT(NumberOfTestCases_Returns1)
-   FACT(NonMinimalWritePostTestNameMessage_WritesSpaceArrowSpace)
+   AFACT(NumberOfTestCases_Returns1)
+   AFACT(NonMinimalWritePostTestNameMessage_WritesSpaceArrowSpace)
    FACTS(NonMinimalWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue)
-   FACT(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)
-   FACT(NewTestClass_NewsTestClass)
-   FACT(Startup_CallsStartupOnTestClass)
-   FACT(TestBody_CallsMemberTestFunctionBoundToTestClassPointer)
-   FACT(Cleanup_CallsCleanupOnTestClass)
-   FACT(DeleteTestClass_DeletesTestClass)
+   AFACT(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)
+   AFACT(NewTestClass_NewsTestClass)
+   AFACT(Startup_CallsStartupOnTestClass)
+   AFACT(TestBody_CallsMemberTestFunctionBoundToTestClassPointer)
+   AFACT(Cleanup_CallsCleanupOnTestClass)
+   AFACT(DeleteTestClass_DeletesTestClass)
    EVIDENCE
 
    unique_ptr<NormalTest<TestingTestClass>> _normalTest;

@@ -7,7 +7,7 @@ namespace ZenUnit
       template<typename...>
       class SetType, typename T>
    TEMPLATETESTS(SetTests, SetType, T)
-   FACT(Contains_ReturnsTrueIfSetContainsElement)
+   AFACT(Contains_ReturnsTrueIfSetContainsElement)
    EVIDENCE
 
    TEST(Contains_ReturnsTrueIfSetContainsElement)

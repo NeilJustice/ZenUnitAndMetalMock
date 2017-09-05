@@ -3,12 +3,12 @@
 namespace ZenUnit
 {
    TESTS(ARE_COPIESTests)
-   FACT(ObjectsHaveSameAddress_Throws)
-   FACT(ObjectsHaveSameAddress_Throws_MessagesTestCase)
-   FACT(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws)
-   FACT(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws_UserTypeTestCase)
-   FACT(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws_MessagesTestCase)
-   FACT(ObjectsHaveDifferentAddresses_ObjectsAreEqual_DoesNotThrow)
+   AFACT(ObjectsHaveSameAddress_Throws)
+   AFACT(ObjectsHaveSameAddress_Throws_MessagesTestCase)
+   AFACT(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws)
+   AFACT(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws_UserTypeTestCase)
+   AFACT(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws_MessagesTestCase)
+   AFACT(ObjectsHaveDifferentAddresses_ObjectsAreEqual_DoesNotThrow)
    EVIDENCE
 
    TEST(ObjectsHaveSameAddress_Throws)

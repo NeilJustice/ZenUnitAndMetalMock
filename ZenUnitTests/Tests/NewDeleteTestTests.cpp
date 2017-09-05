@@ -7,11 +7,11 @@
 namespace ZenUnit
 {
    TESTS(NewDeleteTestTests)
-   FACT(Constructor_NewsComponents)
-   FACT(NumberOfTestCases_Returns1)
+   AFACT(Constructor_NewsComponents)
+   AFACT(NumberOfTestCases_Returns1)
    FACTS(Run_CallsNewTestClassWhichFails_DoesNotCallDeleteTestClass_ReturnsConstructorFailTestResult)
-   FACT(Run_CallsNewTestClassWhichSucceeds_CallsDeleteTestClass_ReturnsCtorDtorSuccessTestResult)
-   FACT(NewAndDeleteTestClass_NewsAndDeleteFirstInstanceOfTestClass)
+   AFACT(Run_CallsNewTestClassWhichSucceeds_CallsDeleteTestClass_ReturnsCtorDtorSuccessTestResult)
+   AFACT(NewAndDeleteTestClass_NewsAndDeleteFirstInstanceOfTestClass)
    EVIDENCE
 
    class TestingTestClass {};

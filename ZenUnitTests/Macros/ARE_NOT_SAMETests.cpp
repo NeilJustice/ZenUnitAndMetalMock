@@ -4,9 +4,9 @@
 namespace ZenUnit
 {
    TESTS(ARE_NOT_SAMETests)
-   FACT(ExpectedAndActualAddressesNotEqual_DoesNotThrow)
-   FACT(ExpectedAndActualAddressesEqual_Throws)
-   FACT(ExpectedAndActualAddressesEqual_Throws_MessagesTestCase)
+   AFACT(ExpectedAndActualAddressesNotEqual_DoesNotThrow)
+   AFACT(ExpectedAndActualAddressesEqual_Throws)
+   AFACT(ExpectedAndActualAddressesEqual_Throws_MessagesTestCase)
    EVIDENCE
 
    TEST(ExpectedAndActualAddressesNotEqual_DoesNotThrow)

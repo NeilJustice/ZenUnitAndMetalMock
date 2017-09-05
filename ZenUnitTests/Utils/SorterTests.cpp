@@ -26,7 +26,7 @@ namespace ZenUnit
 
    template<typename DataStructureType>
    TEMPLATETESTS(SorterTests, DataStructureType)
-   FACT(Sort_SortsTheDataStructure)
+   AFACT(Sort_SortsTheDataStructure)
    EVIDENCE
 
    Sorter<DataStructureType> _sorter;

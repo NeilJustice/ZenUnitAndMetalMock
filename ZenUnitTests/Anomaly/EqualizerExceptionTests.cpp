@@ -4,7 +4,7 @@
 namespace ZenUnit
 {
    TESTS(EqualizerExceptionTests)
-   FACT(EqualizerException_what_ReturnsEmptyString)
+   AFACT(EqualizerException_what_ReturnsEmptyString)
    EVIDENCE
 
    TEST(EqualizerException_what_ReturnsEmptyString)

@@ -4,9 +4,9 @@
 namespace ZenUnit
 {
    TESTS(CallResultTests)
-   FACT(DefaultConstructor_SetsFieldsTo0)
-   FACT(TestPhaseConstructor_SetsTestPhase_SetsOtherFieldsTo0)
-   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   AFACT(DefaultConstructor_SetsFieldsTo0)
+   AFACT(TestPhaseConstructor_SetsTestPhase_SetsOtherFieldsTo0)
+   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
    TEST(DefaultConstructor_SetsFieldsTo0)

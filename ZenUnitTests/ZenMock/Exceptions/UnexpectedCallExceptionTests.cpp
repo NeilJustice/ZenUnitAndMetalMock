@@ -6,8 +6,8 @@ namespace ZenMock
    TESTS(UnexpectedCallExceptionTests)
    FACTS(Constructor_Void0Args_SetsWhatToJustExpectAndExpectAndThrow_ClassIsSubclassOfZenMockException)
    FACTS(Constructor_NonVoid0Args_SetsWhatToAlsoIncludeExpectAndReturnValue)
-   FACT(Constructor_Void1Arg_SetsWhat_IncludesToStringedArg1)
-   FACT(Constructor_Void2Args_SetsWhat_IncludesToStringedArg1AndArg2)
+   AFACT(Constructor_Void1Arg_SetsWhat_IncludesToStringedArg1)
+   AFACT(Constructor_Void2Args_SetsWhat_IncludesToStringedArg1AndArg2)
    EVIDENCE
 
    const string ExpectedUnexpectedCallPrefix = "Unexpected call to ZenMocked function\n\"";

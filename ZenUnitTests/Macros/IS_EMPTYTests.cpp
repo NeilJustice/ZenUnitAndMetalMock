@@ -4,9 +4,9 @@
 namespace ZenUnit
 {
    TESTS(IS_EMPTYTests)
-   FACT(ContainerIsEmpty_DoesNotThrow)
-   FACT(VectorIsNotEmpty_Throws)
-   FACT(StringIsNotEmpty_Throws_MessagesTestCase)
+   AFACT(ContainerIsEmpty_DoesNotThrow)
+   AFACT(VectorIsNotEmpty_Throws)
+   AFACT(StringIsNotEmpty_Throws_MessagesTestCase)
    EVIDENCE
 
    TEST(ContainerIsEmpty_DoesNotThrow)

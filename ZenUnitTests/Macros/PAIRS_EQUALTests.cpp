@@ -4,14 +4,14 @@
 namespace ZenUnit
 {
    TESTS(PAIRS_EQUALTests)
-   FACT(FirstNotEqual_SecondEqual_Throws)
-   FACT(FirstNotEqual_SecondEqual_Throws_MessagesTestCase)
-   FACT(FirstEqual_SecondNotEqual_Throws)
-   FACT(FirstNotEqual_SecondNotEqual_Throws)
-   FACT(FirstEqual_SecondEqual_DoesNotThrow)
-   FACT(FirstNotEqual_SecondEqual_Throws_UserTypeTestCase)
-   FACT(FirstEqual_SecondNotEqual_Throws_UserTypeTestCase)
-   FACT(FirstEqual_SecondEqual_DoesNotThrow_UserTypeTestCase)
+   AFACT(FirstNotEqual_SecondEqual_Throws)
+   AFACT(FirstNotEqual_SecondEqual_Throws_MessagesTestCase)
+   AFACT(FirstEqual_SecondNotEqual_Throws)
+   AFACT(FirstNotEqual_SecondNotEqual_Throws)
+   AFACT(FirstEqual_SecondEqual_DoesNotThrow)
+   AFACT(FirstNotEqual_SecondEqual_Throws_UserTypeTestCase)
+   AFACT(FirstEqual_SecondNotEqual_Throws_UserTypeTestCase)
+   AFACT(FirstEqual_SecondEqual_DoesNotThrow_UserTypeTestCase)
    EVIDENCE
 
    TEST(FirstNotEqual_SecondEqual_Throws)

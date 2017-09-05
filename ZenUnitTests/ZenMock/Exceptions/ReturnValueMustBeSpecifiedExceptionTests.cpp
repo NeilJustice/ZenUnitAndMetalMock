@@ -4,7 +4,7 @@
 namespace ZenMock
 {
    TESTS(ReturnValueMustBeSpecifiedExceptionTests)
-   FACT(DefaultConstructor_SetsWhatText_ClassIsSubclassOfZenMockException)
+   AFACT(DefaultConstructor_SetsWhatText_ClassIsSubclassOfZenMockException)
    EVIDENCE
 
    TEST(DefaultConstructor_SetsWhatText_ClassIsSubclassOfZenMockException)

@@ -5,9 +5,9 @@ namespace ZenMock
 {
    template<typename ExceptionType>
    TEMPLATETESTS(TemplateThrowableTests, ExceptionType)
-   FACT(New_ReturnsNewInstanceOfSelfAsThrowablePointerWithExceptionCreatedFromExceptionArgs)
-   FACT(Throw_ExceptionIsNullptr_DoesNothing)
-   FACT(Throw_ExceptionIsNotNullptr_ThrowsTheException)
+   AFACT(New_ReturnsNewInstanceOfSelfAsThrowablePointerWithExceptionCreatedFromExceptionArgs)
+   AFACT(Throw_ExceptionIsNullptr_DoesNothing)
+   AFACT(Throw_ExceptionIsNotNullptr_ThrowsTheException)
    EVIDENCE
 
    TemplateThrowable<ExceptionType> _templateThrowable;

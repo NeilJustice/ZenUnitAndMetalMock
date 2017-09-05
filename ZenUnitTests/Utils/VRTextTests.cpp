@@ -4,12 +4,12 @@
 namespace ZenUnit
 {
    TESTS(VRTextTests)
-   FACT(Constructor_Int_SetsFields)
-   FACT(Constructor_Double_SetsFields)
-   FACT(Constructor_Float_SetsFields)
-   FACT(Constructor_ConstCharPointer_SetsFields)
-   FACT(Constructor_String_SetsFields)
-   FACT(Constructor_NonConstCharacterArray_SetsFields)
+   AFACT(Constructor_Int_SetsFields)
+   AFACT(Constructor_Double_SetsFields)
+   AFACT(Constructor_Float_SetsFields)
+   AFACT(Constructor_ConstCharPointer_SetsFields)
+   AFACT(Constructor_String_SetsFields)
+   AFACT(Constructor_NonConstCharacterArray_SetsFields)
    EVIDENCE
 
    TEST(Constructor_Int_SetsFields)

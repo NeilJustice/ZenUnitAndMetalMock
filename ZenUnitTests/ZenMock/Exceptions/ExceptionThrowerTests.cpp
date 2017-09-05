@@ -4,10 +4,10 @@
 namespace ZenMock
 {
    TESTS(ExceptionThrowerTests)
-   FACT(ExpectAndThrowCalledTwice_Throws)
-   FACT(ZenMockThrowIfExceptionSet_ExpectAndThrowNotPreviouslyCalled_DoesNothing)
-   FACT(ZenMockThrowIfExceptionSet_ExpectAndThrowPreviousCalled_ThrowsTheException_TestCaseRuntimeError)
-   FACT(ZenMockThrowIfExceptionSet_ExpectAndThrowPreviousCalled_ThrowsTheException_TestCaseLogicError)
+   AFACT(ExpectAndThrowCalledTwice_Throws)
+   AFACT(ZenMockThrowIfExceptionSet_ExpectAndThrowNotPreviouslyCalled_DoesNothing)
+   AFACT(ZenMockThrowIfExceptionSet_ExpectAndThrowPreviousCalled_ThrowsTheException_TestCaseRuntimeError)
+   AFACT(ZenMockThrowIfExceptionSet_ExpectAndThrowPreviousCalled_ThrowsTheException_TestCaseLogicError)
    EVIDENCE
 
    ExceptionThrower _exceptionThrower;

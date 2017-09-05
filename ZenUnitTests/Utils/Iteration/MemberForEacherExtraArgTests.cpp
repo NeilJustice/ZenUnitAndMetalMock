@@ -5,13 +5,13 @@ namespace ZenUnit
 {
    template<typename ElementType, typename ExtraArgType>
    TEMPLATETESTS(MemberForEacherExtraArgTests, ElementType, ExtraArgType)
-   FACT(ForEach_EmptyIterable_DoesNotCallFunc)
-   FACT(ForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
-   FACT(ForEach_TwoItemIterable_CallsThisPointerBoundFuncTwice)
-   FACT(RandomForEach_EmptyIterable_DoesNotCallFunc)
-   FACT(RandomForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
-   FACT(RandomForEach_TwoItemIterable_CallsThisPointerBoundFuncTwiceInRandomOrder)
-   FACT(CodeCoverage_ClassTypeTwoArgFunction)
+   AFACT(ForEach_EmptyIterable_DoesNotCallFunc)
+   AFACT(ForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
+   AFACT(ForEach_TwoItemIterable_CallsThisPointerBoundFuncTwice)
+   AFACT(RandomForEach_EmptyIterable_DoesNotCallFunc)
+   AFACT(RandomForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
+   AFACT(RandomForEach_TwoItemIterable_CallsThisPointerBoundFuncTwiceInRandomOrder)
+   AFACT(CodeCoverage_ClassTypeTwoArgFunction)
    EVIDENCE
 
    class ClassType

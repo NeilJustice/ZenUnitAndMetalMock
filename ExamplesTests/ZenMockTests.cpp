@@ -59,7 +59,7 @@ public:
 };
 
 TESTS(ClassUnderTestTests)
-FACT(Constructor_NewsComponentA)
+AFACT(Constructor_NewsComponentA)
 FACTS(InteractWithComponentA_CallsEveryFunction_ReturnsSumOfReturnValues)
 EVIDENCE
 

@@ -4,7 +4,7 @@
 namespace ZenMock
 {
    TESTS(FunctionAlreadyExpectedExceptionTests)
-   FACT(Constructor_SetsWhatText_ClassIsSubclassOfZenMockException)
+   AFACT(Constructor_SetsWhatText_ClassIsSubclassOfZenMockException)
    EVIDENCE
 
    TEST(Constructor_SetsWhatText_ClassIsSubclassOfZenMockException)

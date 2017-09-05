@@ -6,8 +6,8 @@ namespace ZenUnit
 {
    template<typename T>
    TEMPLATETESTS(SetZenUnitPrinterTests, T)
-   FACT(Print_Set_PrintsPlaceholder)
-   FACT(Print_UnorderedSet_PrintsPlaceholder)
+   AFACT(Print_Set_PrintsPlaceholder)
+   AFACT(Print_UnorderedSet_PrintsPlaceholder)
    EVIDENCE
 
    TEST(Print_Set_PrintsPlaceholder)

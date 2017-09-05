@@ -2,15 +2,15 @@
 #include "UserType.h"
 
 TESTS(UserTypeTests)
-FACT(DefaultConstructor_SetsValueTo0)
-FACT(OneArgConstructor_SetsValue)
-FACT(OperatorLessThan_ReturnsTrueIfLeftXLessThanRightX)
-FACT(OperatorEquals_ReturnsTrueIfLeftXEqualsRightX)
-FACT(ZenUnitPrint_WritesExpected_ReturnOStream)
-FACT(OperatorBool_ValueIs1_ReturnsTrue)
-FACT(OperatorBool_ValueIsNot1_ReturnsFalse)
-FACT(has_ostream_left_shift_False)
-FACT(has_ZenUnitPrinter_True)
+AFACT(DefaultConstructor_SetsValueTo0)
+AFACT(OneArgConstructor_SetsValue)
+AFACT(OperatorLessThan_ReturnsTrueIfLeftXLessThanRightX)
+AFACT(OperatorEquals_ReturnsTrueIfLeftXEqualsRightX)
+AFACT(ZenUnitPrint_WritesExpected_ReturnOStream)
+AFACT(OperatorBool_ValueIs1_ReturnsTrue)
+AFACT(OperatorBool_ValueIsNot1_ReturnsFalse)
+AFACT(has_ostream_left_shift_False)
+AFACT(has_ZenUnitPrinter_True)
 EVIDENCE
 
 TEST(DefaultConstructor_SetsValueTo0)

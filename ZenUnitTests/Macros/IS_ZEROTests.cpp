@@ -4,13 +4,13 @@
 namespace ZenUnit
 {
    TESTS(IS_ZEROTests)
-   FACT(ValueIsZero_DoesNotThrow)
+   AFACT(ValueIsZero_DoesNotThrow)
    FACTS(IntNotZero_Throws)
    FACTS(DoubleNotZero_Throws)
-   FACT(UserTypeZero_DoesNotThrow)
-   FACT(UserTypeNotZero_Throws_MessagesTestCase)
-   FACT(IntializerConstructable_IsZero_DoesNotThrow)
-   FACT(IntializerConstructable_IsNotZero_Throws)
+   AFACT(UserTypeZero_DoesNotThrow)
+   AFACT(UserTypeNotZero_Throws_MessagesTestCase)
+   AFACT(IntializerConstructable_IsZero_DoesNotThrow)
+   AFACT(IntializerConstructable_IsNotZero_Throws)
    EVIDENCE
 
    struct IntializerConstructable

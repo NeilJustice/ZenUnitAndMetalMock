@@ -30,8 +30,8 @@ struct ZenUnitPrinter<Namespace::StructInsideNamespace_ZenUnitPrintOutsideNamesp
 namespace ZenUnit
 {
    TESTS(has_ZenUnitPrinterTests)
-   FACT(value_FalseIfZenUnitPrinterNotDefinedForType)
-   FACT(value_TrueIfZenUnitPrinterIsDefinedForType)
+   AFACT(value_FalseIfZenUnitPrinterNotDefinedForType)
+   AFACT(value_TrueIfZenUnitPrinterIsDefinedForType)
    EVIDENCE
 
    TEST(value_FalseIfZenUnitPrinterNotDefinedForType)

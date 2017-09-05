@@ -4,10 +4,10 @@
 namespace ZenUnit
 {
    TESTS(TestResultFactoryTests)
-   FACT(ConstructorFail_ReturnsTestResultConstructorFail)
-   FACT(StartupFail_ReturnsTestResultStartupFail)
-   FACT(CtorDtorSuccess_ReturnsTestResultCtorDtorSuccess)
-   FACT(FullConstructor_ReturnsTestResultSixArgCtor)
+   AFACT(ConstructorFail_ReturnsTestResultConstructorFail)
+   AFACT(StartupFail_ReturnsTestResultStartupFail)
+   AFACT(CtorDtorSuccess_ReturnsTestResultCtorDtorSuccess)
+   AFACT(FullConstructor_ReturnsTestResultSixArgCtor)
    EVIDENCE
 
    TestResultFactory _testResultFactory;

@@ -12,13 +12,13 @@
 namespace ZenUnit
 {
    TESTS(TestRunnerTests)
-   FACT(Constructor_NewsComponents)
-   FACT(RegisterTestClassRunner_EmplacesBackTestClassRunner)
-   FACT(SkipTest_CallsTestRunResultAddSkippedFullTestName)
-   FACT(SkipTestClass_CallsTestRunResultAddSkippedTestClassNameAndReason)
+   AFACT(Constructor_NewsComponents)
+   AFACT(RegisterTestClassRunner_EmplacesBackTestClassRunner)
+   AFACT(SkipTest_CallsTestRunResultAddSkippedFullTestName)
+   AFACT(SkipTestClass_CallsTestRunResultAddSkippedTestClassNameAndReason)
    FACTS(ParseArgsRunTestsPrintResults_ParsesArgs_RunsTestsTimesNumberOfTimes_Returns0IfAllTestRunsPassOtherwiseReturns1)
    FACTS(RunTestsAndPrintResults_RunsTestsAndPrintsResults_Returns0IfAllTestsPassedOtherwiseReturns1)
-   FACT(RunTests_RunsTestClasses)
+   AFACT(RunTests_RunsTestClasses)
    FACTS(RunTestsWithWaitableRunnerThread_SpawnsThreadToCallRunTests_PrintsResultsAndExits1IfThreadTimesOut)
    EVIDENCE
 

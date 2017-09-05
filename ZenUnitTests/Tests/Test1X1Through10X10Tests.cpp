@@ -54,7 +54,7 @@ namespace ZenUnit
    vector<tuple<size_t, int>> TestingTestClass1X1::s_calls;
 
    TESTS(Test1X1TestTests)
-   FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest1By1)
+   AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest1By1)
    EVIDENCE
 
    CLEANUP
@@ -97,7 +97,7 @@ vector<tuple<size_t, int, string>> TestingTestClass2X2::s_calls;
 namespace ZenUnit
 {
    TESTS(Test2X2TestTests)
-   FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest2X2)
+   AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest2X2)
    EVIDENCE
 
    CLEANUP
@@ -148,7 +148,7 @@ vector<tuple<size_t, int, int, string>> TestingTestClass3X3::s_calls;
 namespace ZenUnit
 {
    TESTS(Test3X3TestTests)
-   FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest3X3)
+   AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest3X3)
    EVIDENCE
 
    CLEANUP
@@ -199,7 +199,7 @@ vector<tuple<size_t, int, int, int, string>> TestingTestClass4X4::s_calls;
 namespace ZenUnit
 {
    TESTS(Test4X4TestTests)
-   FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest4X4)
+   AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest4X4)
    EVIDENCE
 
    CLEANUP
@@ -250,7 +250,7 @@ vector<tuple<size_t, int, int, int, int, string>> TestingTestClass5X5::s_calls;
 namespace ZenUnit
 {
    TESTS(Test5X5TestTests)
-   FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest5X5)
+   AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest5X5)
    EVIDENCE
 
    CLEANUP
@@ -301,7 +301,7 @@ vector<tuple<size_t, int, int, int, int, int, string>> TestingTestClass6X6::s_ca
 namespace ZenUnit
 {
    TESTS(Test6X6TestTests)
-   FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest6X6)
+   AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest6X6)
    EVIDENCE
 
    CLEANUP
@@ -352,7 +352,7 @@ vector<tuple<size_t, int, int, int, int, int, int, string>> TestingTestClass7X7:
 namespace ZenUnit
 {
    TESTS(Test7X7TestTests)
-   FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest7X7)
+   AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest7X7)
    EVIDENCE
 
    CLEANUP
@@ -403,7 +403,7 @@ vector<tuple<size_t, int, int, int, int, int, int, int, string>> TestingTestClas
 namespace ZenUnit
 {
    TESTS(Test8X8TestTests)
-   FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest8X8)
+   AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest8X8)
    EVIDENCE
 
    CLEANUP
@@ -454,7 +454,7 @@ vector<tuple<size_t, int, int, int, int, int, int, int, int, string>> TestingTes
 namespace ZenUnit
 {
    TESTS(Test9X9TestTests)
-   FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest9X9)
+   AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest9X9)
    EVIDENCE
 
    CLEANUP
@@ -505,7 +505,7 @@ vector<tuple<size_t, int, int, int, int, int, int, int, int, int, string>> Testi
 namespace ZenUnit
 {
    TESTS(Test10X10TestTests)
-   FACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest10X10)
+   AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest10X10)
    EVIDENCE
 
    CLEANUP
