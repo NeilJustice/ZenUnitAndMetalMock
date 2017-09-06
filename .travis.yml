@@ -23,19 +23,19 @@ matrix:
 
     - os: linux
       compiler: gcc
-      env: CMAKE_BUILD_TYPE=Debug COMPILER=g++-6
+      env: CMAKE_BUILD_TYPE=Debug COMPILER=g++-7
       addons:
         apt:
           sources: [ 'ubuntu-toolchain-r-test' ]
-          packages: [ 'ninja-build', 'g++-6' ]
+          packages: [ 'ninja-build', 'g++-7' ]
 
     - os: linux
       compiler: gcc
-      env: CMAKE_BUILD_TYPE=Release COMPILER=g++-6
+      env: CMAKE_BUILD_TYPE=Release COMPILER=g++-7
       addons:
         apt:
           sources: [ 'ubuntu-toolchain-r-test' ]
-          packages: [ 'ninja-build', 'g++-6' ]
+          packages: [ 'ninja-build', 'g++-7' ]
 
 before_script:
   - mkdir build
