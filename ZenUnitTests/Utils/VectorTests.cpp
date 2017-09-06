@@ -4,9 +4,9 @@
 namespace ZenUnit
 {
    TESTS(VectorTests)
-   FACT(ToArgcArgv_ReturnsArgsVector)
-   FACT(Join_EmptyIntVector_ReturnsEmptyStringRegardlessOfSeparator)
-   FACT(Join_1ElementIntVector_ReturnsFirstElementRegardlessOfSeparator)
+   AFACT(ToArgcArgv_ReturnsArgsVector)
+   AFACT(Join_EmptyIntVector_ReturnsEmptyStringRegardlessOfSeparator)
+   AFACT(Join_1ElementIntVector_ReturnsFirstElementRegardlessOfSeparator)
    FACTS(Join_2ElementIntVector_ReturnsElementsJoinedBySeparator)
    EVIDENCE
 

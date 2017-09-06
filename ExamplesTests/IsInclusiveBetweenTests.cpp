@@ -2,7 +2,7 @@
 #include "Examples/IsInclusiveBetween.h"
 
 TESTS(IsInclusiveBetweenTests)
-FACT(LowerBoundGreaterThanUpperBound_Throws)
+AFACT(LowerBoundGreaterThanUpperBound_Throws)
 FACTS(ReturnsTrueIfNumberIsInclusiveBetween)
 EVIDENCE
 

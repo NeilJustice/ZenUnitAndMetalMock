@@ -4,8 +4,8 @@
 namespace ZenUnit
 {
    TESTS(ZenUnitArgsTests)
-   FACT(DefaultConstructor_SetsFieldsToDefaults)
-   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   AFACT(DefaultConstructor_SetsFieldsToDefaults)
+   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
    TEST(DefaultConstructor_SetsFieldsToDefaults)

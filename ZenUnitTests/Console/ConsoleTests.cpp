@@ -6,12 +6,12 @@
 namespace ZenUnit
 {
    TESTS(ConsoleTests)
-   FACT(Constructor_NewsConsoleColorer_SetsFunctionPointers)
-   FACT(Write_CallsWriteColorWithWhite)
+   AFACT(Constructor_NewsConsoleColorer_SetsFunctionPointers)
+   AFACT(Write_CallsWriteColorWithWhite)
    FACTS(NonMinimalWrite_CallsWriteColorIfPrintModeNotMinimal)
    FACTS(WriteColor_WritesMessageInSpecifiedColor)
    FACTS(NonMinimalWriteColor_CallsWriteColorIfPrintModeNotMinimal)
-   FACT(WriteLine_CallsWriteLineWithWhite)
+   AFACT(WriteLine_CallsWriteLineWithWhite)
    FACTS(NonMinimalWriteNewLine_CallsWriteLineWithWhite)
    FACTS(NonMinimalWriteLine_CallsWriteLineIfPrintModeNotMinimal)
    FACTS(WriteLineColor_WritesMessageInSpecifiedColorThenNewLine)

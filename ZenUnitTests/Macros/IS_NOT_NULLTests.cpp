@@ -4,10 +4,10 @@
 namespace ZenUnit
 {
    TESTS(IS_NOT_NULLTests)
-   FACT(NullRawPointer_Throws)
-   FACT(NullUniquePointer_Throws_MessagesTestCase)
-   FACT(NonNullRawPointer_DoesNotThrow)
-   FACT(NonNullUniquePointer_DoesNotThrow)
+   AFACT(NullRawPointer_Throws)
+   AFACT(NullUniquePointer_Throws_MessagesTestCase)
+   AFACT(NonNullRawPointer_DoesNotThrow)
+   AFACT(NonNullUniquePointer_DoesNotThrow)
    EVIDENCE
 
    TEST(NullRawPointer_Throws)

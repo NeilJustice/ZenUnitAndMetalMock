@@ -5,7 +5,7 @@ template<
    template<typename...>
    class MapType>
 TEMPLATETESTS(MapEqualizerTests, MapType)
-FACT(ARE_EQUAL_EqualStdMaps_CompilesAndDoesNotThrow)
+AFACT(ARE_EQUAL_EqualStdMaps_CompilesAndDoesNotThrow)
 EVIDENCE
 
 TEST(ARE_EQUAL_EqualStdMaps_CompilesAndDoesNotThrow)

@@ -4,13 +4,13 @@
 namespace ZenUnit
 {
    TESTS(THROWSTests)
-   FACT(CallDoesNotThrow_Throws)
-   FACT(CallDoesNotThrow_Throws_MessagesTestCase)
-   FACT(CallThrowsSubclassOfExpectedException_Throws)
-   FACT(CallThrowsNonSubclassOfExpectedException_Throws)
-   FACT(CallThrowsExactExpectedException_WhatDoesNotMatch_Throws)
-   FACT(CallThrowsExactExpectedException_WhatTextMatchesExceptForCase_Throws)
-   FACT(CallThrowsExactExpectedException_WhatTextMatchesExactly_DoesNotThrow)
+   AFACT(CallDoesNotThrow_Throws)
+   AFACT(CallDoesNotThrow_Throws_MessagesTestCase)
+   AFACT(CallThrowsSubclassOfExpectedException_Throws)
+   AFACT(CallThrowsNonSubclassOfExpectedException_Throws)
+   AFACT(CallThrowsExactExpectedException_WhatDoesNotMatch_Throws)
+   AFACT(CallThrowsExactExpectedException_WhatTextMatchesExceptForCase_Throws)
+   AFACT(CallThrowsExactExpectedException_WhatTextMatchesExactly_DoesNotThrow)
    EVIDENCE
 
    const string MessageA = "A", MessageB = "B";

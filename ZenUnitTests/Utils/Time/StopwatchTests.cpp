@@ -5,10 +5,10 @@
 namespace ZenUnit
 {
    TESTS(StopwatchTests)
-   FACT(Constructor_SetsNowFunction)
-   FACT(Start_SetsStartTimeToNow)
-   FACT(Stop_StartNotPreviouslyCalled_Returns0)
-   FACT(Stop_StartPreviouslyCalled_ReturnsElapsedMilliseconds)
+   AFACT(Constructor_SetsNowFunction)
+   AFACT(Start_SetsStartTimeToNow)
+   AFACT(Stop_StartNotPreviouslyCalled_Returns0)
+   AFACT(Stop_StartPreviouslyCalled_ReturnsElapsedMilliseconds)
    EVIDENCE
 
    Stopwatch _stopwatch;

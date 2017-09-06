@@ -2,7 +2,7 @@
 #include "Examples/FizzBuzz.h"
 
 TESTS(FizzBuzzTests)
-FACT(FizzBuzz_EndNumber0_Throws)
+AFACT(FizzBuzz_EndNumber0_Throws)
 FACTS(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)
 EVIDENCE
 

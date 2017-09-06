@@ -7,15 +7,15 @@ namespace ZenUnit
       template<typename...>
       class MapType>
    TEMPLATETESTS(MAPS_EQUALTests, MapType)
-   FACT(BothEmpty_DoesNotThrow)
-   FACT(SizesDifferent_Throws)
-   FACT(SizesDifferent_Throws_MessagesTestCase)
-   FACT(SizesEqual_KeysNotEqual_Throws)
-   FACT(SizesEqual_KeysNotEqual_Throws_MessagesTestCase)
-   FACT(SizesEqual_KeysEqual_ValuesNotEqual_Throws)
-   FACT(SizesEqual_KeysEqual_ValuesNotEqual_Throws_MessagesTestCase)
-   FACT(SizesEqual_UserTypeKeysNotEqual_Throws)
-   FACT(SizesEqual_UserTypeKeysEqual_ValuesNotEqual_Throws)
+   AFACT(BothEmpty_DoesNotThrow)
+   AFACT(SizesDifferent_Throws)
+   AFACT(SizesDifferent_Throws_MessagesTestCase)
+   AFACT(SizesEqual_KeysNotEqual_Throws)
+   AFACT(SizesEqual_KeysNotEqual_Throws_MessagesTestCase)
+   AFACT(SizesEqual_KeysEqual_ValuesNotEqual_Throws)
+   AFACT(SizesEqual_KeysEqual_ValuesNotEqual_Throws_MessagesTestCase)
+   AFACT(SizesEqual_UserTypeKeysNotEqual_Throws)
+   AFACT(SizesEqual_UserTypeKeysEqual_ValuesNotEqual_Throws)
    EVIDENCE
 
    const string MessageA = "A", MessageB = "B";

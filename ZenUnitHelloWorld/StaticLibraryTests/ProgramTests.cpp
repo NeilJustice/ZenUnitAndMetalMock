@@ -8,11 +8,11 @@
 #endif
 
 TESTS(ProgramTests)
-FACT(Constructor_NewsComponents)
+AFACT(Constructor_NewsComponents)
 FACTS(Main_ConvertsArgcArgvToStringVector_CallsVectorMain)
-FACT(VectorMain_EmptyArgsExceptForBinaryPath_PrintsUsage_Returns0)
-FACT(VectorMain_NonEmptyArgsWithInvalidArg_WritesInvalidArgMessage_WritesUsage_Returns1)
-FACT(VectorMain_NonEmptyValidArgs_Returns0)
+AFACT(VectorMain_EmptyArgsExceptForBinaryPath_PrintsUsage_Returns0)
+AFACT(VectorMain_NonEmptyArgsWithInvalidArg_WritesInvalidArgMessage_WritesUsage_Returns1)
+AFACT(VectorMain_NonEmptyValidArgs_Returns0)
 EVIDENCE
 
 Program _program;

@@ -9,8 +9,8 @@
 namespace ZenUnit
 {
    TESTS(TryCatchCallerTests)
-   FACT(Constructor_NewsComponents_SetsGetArgsFunction)
-   FACT(Call_FunctionDoesNotThrow_ReturnsNoExceptionThrownCallResult)
+   AFACT(Constructor_NewsComponents_SetsGetArgsFunction)
+   AFACT(Call_FunctionDoesNotThrow_ReturnsNoExceptionThrownCallResult)
    FACTS(Call_FunctionThrowsAnomaly_ReturnsAnomalyResult)
    FACTS(Call_FunctionThrowsStdException_ReturnsExceptionResult)
    FACTS(Call_FunctionThrowsZenMockException_ReturnsExceptionResult)

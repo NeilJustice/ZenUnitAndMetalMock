@@ -17,7 +17,7 @@ struct ZenUnitEqualizer<Struct>
 };
 
 TESTS(CallAllMacrosTests)
-FACT(CallAllMacros)
+AFACT(CallAllMacros)
 EVIDENCE
 
 TEST(CallAllMacros)

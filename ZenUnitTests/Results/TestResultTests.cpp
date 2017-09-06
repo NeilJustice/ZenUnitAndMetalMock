@@ -7,19 +7,19 @@
 namespace ZenUnit
 {
    TESTS(TestResultTests)
-   FACT(DefaultConstructor_SetsFieldsTo0)
+   AFACT(DefaultConstructor_SetsFieldsTo0)
    FACTS(ConstructorFail_ReturnsExpectedTestResult)
    FACTS(StartupFail_ReturnsExpectedTestResult)
-   FACT(CtorDtorSuccess_ReturnsExpectedTestResult);
+   AFACT(CtorDtorSuccess_ReturnsExpectedTestResult);
    FACTS(SixArgConstructor_SetsFields)
    FACTS(NonMinimalWriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess)
-   FACT(PrintIfFailure_Success_PrintsNothing)
+   AFACT(PrintIfFailure_Success_PrintsNothing)
    FACTS(PrintIfFailure_Anomaly_PrintsExpected)
    FACTS(PrintIfFailure_Exception_PrintsExpected)
-   FACT(PrintIfFailure_SuccessButPastDeadline_PrintsExpected)
-   FACT(PrintIfFailure_InvalidOutcome_Throws)
+   AFACT(PrintIfFailure_SuccessButPastDeadline_PrintsExpected)
+   AFACT(PrintIfFailure_InvalidOutcome_Throws)
    FACTS(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseIndexPlus1IfTestCaseIndexNotMaxValue)
-   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
    TestResult _testResult;

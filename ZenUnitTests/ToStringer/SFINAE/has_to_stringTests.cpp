@@ -5,8 +5,8 @@
 namespace ZenUnit
 {
    TESTS(has_to_stringTests)
-   FACT(HasStdToString_ValueIsTrue)
-   FACT(DoesNotHaveStdToSTring_ValueIsFalse)
+   AFACT(HasStdToString_ValueIsTrue)
+   AFACT(DoesNotHaveStdToSTring_ValueIsFalse)
    EVIDENCE
 
    TEST(HasStdToString_ValueIsTrue)

@@ -8,22 +8,22 @@
 namespace ZenUnit
 {
    TESTS(ArgsParserTests)
-   FACT(DefaultConstructor_NewsCompnents_SetsStringToUnsignedFunction)
-   FACT(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
-   FACT(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1)
+   AFACT(DefaultConstructor_NewsCompnents_SetsStringToUnsignedFunction)
+   AFACT(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
+   AFACT(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1)
    FACTS(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1)
    FACTS(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0)
-   FACT(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
+   AFACT(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
    FACTS(Parse_MinimalOrDetailed_ReturnsExpectedZenUnitArgs)
-   FACT(Parse_Random_SetsRandomTrueAndRandomSeedToSecondsSince1970CastToUnsignedShort)
-   FACT(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
-   FACT(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
+   AFACT(Parse_Random_SetsRandomTrueAndRandomSeedToSecondsSince1970CastToUnsignedShort)
+   AFACT(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
+   AFACT(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
    FACTS(Parse_EqualsSignContainingArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1)
-   FACT(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
-   FACT(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
-   FACT(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
+   AFACT(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
+   AFACT(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
+   AFACT(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
    FACTS(Parse_RandomEqualsArg_ValidUnsignedValue_DowncastsValueToUnsignedShort_ReturnsExpectedZenUnitArgs)
-   FACT(Parse_InvalidEqualsSignArgName_PrintsUsageAndExits1)
+   AFACT(Parse_InvalidEqualsSignArgName_PrintsUsageAndExits1)
    EVIDENCE
 
    const string TestProgramPath = Random<string>();

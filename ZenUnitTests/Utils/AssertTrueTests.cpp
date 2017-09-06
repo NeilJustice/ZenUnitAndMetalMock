@@ -4,9 +4,9 @@
 namespace ZenUnit
 {
    TESTS(assert_trueTests)
-   FACT(assert_true_IsTrue_DoesNothing)
-   FACT(assert_true_IsFalse_FromOperatorParentheses_ThrowsLogicError)
-   FACT(assert_true_IsFalse_FromFunction_ThrowsLogicError)
+   AFACT(assert_true_IsTrue_DoesNothing)
+   AFACT(assert_true_IsFalse_FromOperatorParentheses_ThrowsLogicError)
+   AFACT(assert_true_IsFalse_FromFunction_ThrowsLogicError)
    EVIDENCE
 
    TEST(assert_true_IsTrue_DoesNothing)

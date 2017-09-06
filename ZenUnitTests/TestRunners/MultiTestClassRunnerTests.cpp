@@ -7,11 +7,11 @@
 namespace ZenUnit
 {
    TESTS(MultiTestClassRunnerTests)
-   FACT(Constructor_NewsComponents)
-   FACT(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
-   FACT(AddTestClassRunner_EmplacesBackTestClassRunner_MakesNumberOfTestClassesReturnAnIncreasingNumber)
+   AFACT(Constructor_NewsComponents)
+   AFACT(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
+   AFACT(AddTestClassRunner_EmplacesBackTestClassRunner_MakesNumberOfTestClassesReturnAnIncreasingNumber)
    FACTS(RunTestClasses_SortsTestClassRunnersByName_RunsTestClassesRandomlyIfRandomOtherwiseSequentially_MoveReturnsTestClassResultsVector)
-   FACT(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)
+   AFACT(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)
    EVIDENCE
 
    MultiTestClassRunner _multiTestClassRunner;

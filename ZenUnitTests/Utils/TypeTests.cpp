@@ -8,15 +8,15 @@ class TypeTestsDerived : public TypeTestsBase {};
 namespace ZenUnit
 {
    TESTS(TypeTests)
-   FACT(GetName_NonClassNonStructType_ReturnsTypeName)
-   FACT(GetName_ClassType_ReturnsTypeNameMinusClassSpace)
-   FACT(GetName_StructType_ReturnsTypeNameMinusStructSpace)
-   FACT(GetName_DeclaredAndRuntimeTypeIsDerived_ReturnsDerived)
-   FACT(GetName_ThrownExceptionSubclass_ReturnsSubclassNameAndNotException)
-   FACT(GetNameT_NonClassNonStructType_ReturnsTypeName)
-   FACT(GetNameT_ClassType_ReturnsTypeNameMinusClassSpace)
-   FACT(GetNameT_StructType_ReturnsTypeNameMinusStructSpace)
-   FACT(GetNameT_ThrownExceptionSubclass_ReturnsBaseClassNameAndNotSubclassName)
+   AFACT(GetName_NonClassNonStructType_ReturnsTypeName)
+   AFACT(GetName_ClassType_ReturnsTypeNameMinusClassSpace)
+   AFACT(GetName_StructType_ReturnsTypeNameMinusStructSpace)
+   AFACT(GetName_DeclaredAndRuntimeTypeIsDerived_ReturnsDerived)
+   AFACT(GetName_ThrownExceptionSubclass_ReturnsSubclassNameAndNotException)
+   AFACT(GetNameT_NonClassNonStructType_ReturnsTypeName)
+   AFACT(GetNameT_ClassType_ReturnsTypeNameMinusClassSpace)
+   AFACT(GetNameT_StructType_ReturnsTypeNameMinusStructSpace)
+   AFACT(GetNameT_ThrownExceptionSubclass_ReturnsBaseClassNameAndNotSubclassName)
    EVIDENCE
 
    class C {};

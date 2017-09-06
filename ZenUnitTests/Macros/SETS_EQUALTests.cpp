@@ -7,13 +7,13 @@ namespace ZenUnit
       template<typename...>
       class SetType>
    TEMPLATETESTS(SETS_EQUALTests, SetType)
-   FACT(EmptySets_DoesNotThrow)
-   FACT(OneEqualElement_DoesNotThrow)
-   FACT(TwoEqualElements_DoesNotThrow)
-   FACT(DifferentSize_Throws)
-   FACT(SameSize1_ElementsNotEqual_Throws_MessagesTestCase)
-   FACT(SameSize2_ElementsNotEqual_Throws)
-   FACT(UserTypeSets_SameSize1_ElementsNotEqual_Throws)
+   AFACT(EmptySets_DoesNotThrow)
+   AFACT(OneEqualElement_DoesNotThrow)
+   AFACT(TwoEqualElements_DoesNotThrow)
+   AFACT(DifferentSize_Throws)
+   AFACT(SameSize1_ElementsNotEqual_Throws_MessagesTestCase)
+   AFACT(SameSize2_ElementsNotEqual_Throws)
+   AFACT(UserTypeSets_SameSize1_ElementsNotEqual_Throws)
    EVIDENCE
 
    TEST(EmptySets_DoesNotThrow)

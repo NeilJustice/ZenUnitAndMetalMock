@@ -3,8 +3,8 @@
 #include "ZenUnit/Utils/Random.h"
 
 TESTS(AnomalyOrExceptionTests)
-FACT(AnomalyConstructor_SetsAnomaly)
-FACT(ExceptionTypeNameAndExceptionWhatConstructor_SetsExceptionTypeNameAndExceptionWhat)
+AFACT(AnomalyConstructor_SetsAnomaly)
+AFACT(ExceptionTypeNameAndExceptionWhatConstructor_SetsExceptionTypeNameAndExceptionWhat)
 EVIDENCE
 
 TEST(AnomalyConstructor_SetsAnomaly)

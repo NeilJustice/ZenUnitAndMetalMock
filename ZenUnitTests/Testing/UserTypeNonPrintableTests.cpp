@@ -5,11 +5,11 @@
 namespace ZenUnit
 {
    TESTS(UserTypeNonPrintableTests)
-   FACT(DefaultConstructor_SetsXTo0)
-   FACT(OneArgConstructor_SetsX)
-   FACT(OperatorLessThan_ReturnsTrueIfLeftXLessThanRightX)
-   FACT(OperatorEquals_ReturnsTrueIfLeftXEqualsRightX)
-   FACT(has_ostream_left_shift_ValueEqualsFalse)
+   AFACT(DefaultConstructor_SetsXTo0)
+   AFACT(OneArgConstructor_SetsX)
+   AFACT(OperatorLessThan_ReturnsTrueIfLeftXLessThanRightX)
+   AFACT(OperatorEquals_ReturnsTrueIfLeftXEqualsRightX)
+   AFACT(has_ostream_left_shift_ValueEqualsFalse)
    EVIDENCE
 
    TEST(DefaultConstructor_SetsXTo0)

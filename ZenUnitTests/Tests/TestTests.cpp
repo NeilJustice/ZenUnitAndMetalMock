@@ -10,18 +10,18 @@
 namespace ZenUnit
 {
    TESTS(TestTests)
-   FACT(TwoArgConstructor_NewsComponents_SetsFullName_NameFunctionReturnsTestName)
+   AFACT(TwoArgConstructor_NewsComponents_SetsFullName_NameFunctionReturnsTestName)
    FACTS(RunTestCase_ConstructorFails_DoesNotCallSubsequentTestPhases_ReturnsTestResultConstructorFail)
    FACTS(RunTestCase_ConstructorSucceeds_StartupFails_DoesNotCallTest_DoesNotCallCleanup_CallsDestructor_ReturnsTestResultStartupFail)
-   FACT(RunTestCase_AllTestPhasesSucceed_ReturnsExpectedTestResult)
-   FACT(NonMinimalWritePostTestNameMessage_DoesNothing)
-   FACT(PrintPostTestCompletionMessage_DoesNothing)
-   FACT(StaticCallNewTestClass_CallsNewTestClass)
-   FACT(StaticCallStartup_CallsStartup)
-   FACT(StaticTestBody_CallsTestBody)
-   FACT(StaticCallCleanup_CallsCleanup)
-   FACT(StaticCallDeleteTestClass_CallsDeleteTestClass)
-   FACT(PseudoAbstractFunctions_DoNothingOrReturn0)
+   AFACT(RunTestCase_AllTestPhasesSucceed_ReturnsExpectedTestResult)
+   AFACT(NonMinimalWritePostTestNameMessage_DoesNothing)
+   AFACT(PrintPostTestCompletionMessage_DoesNothing)
+   AFACT(StaticCallNewTestClass_CallsNewTestClass)
+   AFACT(StaticCallStartup_CallsStartup)
+   AFACT(StaticTestBody_CallsTestBody)
+   AFACT(StaticCallCleanup_CallsCleanup)
+   AFACT(StaticCallDeleteTestClass_CallsDeleteTestClass)
+   AFACT(PseudoAbstractFunctions_DoNothingOrReturn0)
    EVIDENCE
 
    unique_ptr<Test> _test;

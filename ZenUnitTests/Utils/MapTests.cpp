@@ -7,13 +7,13 @@ namespace ZenUnit
       template<typename...>
       class MapType, typename KeyType, typename ValueType>
    TEMPLATETESTS(MapTests, MapType, KeyType, ValueType)
-   FACT(InsertNoOverwrite_KeyAlreadyInMap_Throws)
-   FACT(InsertNoOverwrite_KeyNotAlreadyInMap_InsertsKeyAndValue_ReturnsCostPointerToInsertedValue);
-   FACT(At_KeyNotPresentInMap_Throws)
-   FACT(At_KeyPresentInMap_ReturnsConstReferenceToValue)
-   FACT(ContainsKeyWithValue_MapDoesNotContainKey_ReturnsFalseAndFalse)
-   FACT(ContainsKeyWithValue_MapContainsKeyWithMismatchingValue_ReturnsTrueAndFalse)
-   FACT(ContainsKeyWithValue_MapContainsKeyWithMatchingValue_ReturnsTrueAndTrue)
+   AFACT(InsertNoOverwrite_KeyAlreadyInMap_Throws)
+   AFACT(InsertNoOverwrite_KeyNotAlreadyInMap_InsertsKeyAndValue_ReturnsCostPointerToInsertedValue);
+   AFACT(At_KeyNotPresentInMap_Throws)
+   AFACT(At_KeyPresentInMap_ReturnsConstReferenceToValue)
+   AFACT(ContainsKeyWithValue_MapDoesNotContainKey_ReturnsFalseAndFalse)
+   AFACT(ContainsKeyWithValue_MapContainsKeyWithMismatchingValue_ReturnsTrueAndFalse)
+   AFACT(ContainsKeyWithValue_MapContainsKeyWithMatchingValue_ReturnsTrueAndTrue)
    EVIDENCE
 
    MapType<KeyType, ValueType> _map;

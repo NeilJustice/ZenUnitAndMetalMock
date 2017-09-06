@@ -4,11 +4,11 @@
 namespace ZenUnit
 {
    TESTS(NOTHROWSTests)
-   FACT(LambdaCallThrows_Throws)
-   FACT(LambdaCallThrows_Throws_MessagesTestCase)
-   FACT(FunctionCallThrows_Throws)
-   FACT(LambdaCallDoesNotThrow_DoesNotThrow)
-   FACT(FunctionCallDoesNotThrow_DoesNotThrow)
+   AFACT(LambdaCallThrows_Throws)
+   AFACT(LambdaCallThrows_Throws_MessagesTestCase)
+   AFACT(FunctionCallThrows_Throws)
+   AFACT(LambdaCallDoesNotThrow_DoesNotThrow)
+   AFACT(FunctionCallDoesNotThrow_DoesNotThrow)
    EVIDENCE
 
    TEST(LambdaCallThrows_Throws)

@@ -2,11 +2,11 @@
 #include "ZenUnit/Macros/ARRAY_WAS_NEWED.h"
 
 TESTS(ARRAY_WAS_NEWEDTests)
-FACT(NullRawPointer_Throws)
-FACT(NullRawPointer_Throws_MessagesTestCase)
-FACT(EmptyUniqueArrayPtr_Throws)
-FACT(NonNullRawPointer_DestructsEachElement_NotCallableTwiceWithoutUndefinedBehavior)
-FACT(NonNullUniqueArrayPointer_DestructsEachElement_ThrowsWhenCalledTwice)
+AFACT(NullRawPointer_Throws)
+AFACT(NullRawPointer_Throws_MessagesTestCase)
+AFACT(EmptyUniqueArrayPtr_Throws)
+AFACT(NonNullRawPointer_DestructsEachElement_NotCallableTwiceWithoutUndefinedBehavior)
+AFACT(NonNullUniqueArrayPointer_DestructsEachElement_ThrowsWhenCalledTwice)
 EVIDENCE
 
 struct Deletable

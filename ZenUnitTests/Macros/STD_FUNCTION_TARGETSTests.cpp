@@ -4,11 +4,11 @@
 namespace ZenUnit
 {
    TESTS(STD_FUNCTION_TARGETSTests)
-   FACT(FunctionDoesNotPointToAFunction_Throws_MessagesTestsCase)
-   FACT(FunctionPointsToFunctionWithDifferentSignatureThanExpected_Throws)
-   FACT(FunctionPointsToFunctionWithSameSignatureButDifferentFunctionThanExpected_Throws)
-   FACT(FunctionPointsToSameFunctionAsExpected_DoesNotThrow)
-   FACT(FunctionABC_CodeCoverage)
+   AFACT(FunctionDoesNotPointToAFunction_Throws_MessagesTestsCase)
+   AFACT(FunctionPointsToFunctionWithDifferentSignatureThanExpected_Throws)
+   AFACT(FunctionPointsToFunctionWithSameSignatureButDifferentFunctionThanExpected_Throws)
+   AFACT(FunctionPointsToSameFunctionAsExpected_DoesNotThrow)
+   AFACT(FunctionABC_CodeCoverage)
    EVIDENCE
 
    static void FunctionA() {}

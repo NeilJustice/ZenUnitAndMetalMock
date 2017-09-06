@@ -9,24 +9,24 @@
 namespace ZenUnit
 {
    TESTS(TestRunResultTests)
-   FACT(Constructor_NewsComponents)
-   FACT(AddSkippedTest_AddsTestClassNameDotTestNameToSkippedFullTestNamesVector)
-   FACT(AddSkippedTestClassNameAndReason_AddsTestClassNameAndReasonToSkippedTestClassNamesAndReasonsVector)
+   AFACT(Constructor_NewsComponents)
+   AFACT(AddSkippedTest_AddsTestClassNameDotTestNameToSkippedFullTestNamesVector)
+   AFACT(AddSkippedTestClassNameAndReason_AddsTestClassNameAndReasonToSkippedTestClassNamesAndReasonsVector)
    FACTS(SetTestClassResults_SetsNumberofFailedTestCases_MovesTestClassResultsIntoField)
-   FACT(NumberOfFailedTestCases_ZeroTestClassResults_Returns0)
-   FACT(NumberOfFailedTestCases_ThreeTestClassResults_ReturnsSumOfNumberOfFailedTestCases)
+   AFACT(NumberOfFailedTestCases_ZeroTestClassResults_Returns0)
+   AFACT(NumberOfFailedTestCases_ThreeTestClassResults_ReturnsSumOfNumberOfFailedTestCases)
    FACTS(PrintTestFailuresAndSkips_PrintsTestFailures_PrintsSkippedTestClassNames_PrintsSkippedFullTestNames);
-   FACT(PrintClosingLines_0TotalNumberOfTests_PrintsZeroTestClassesRegisteredToRun)
+   AFACT(PrintClosingLines_0TotalNumberOfTests_PrintsZeroTestClassesRegisteredToRun)
    FACTS(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds)
-   FACT(PrintTestClassResultFailures_CallsTestClassResultPrintTestFailures)
+   AFACT(PrintTestClassResultFailures_CallsTestClassResultPrintTestFailures)
    FACTS(DetermineExitCode_DefaultArgs_Returns1IfAnyTestFailures_OtherwiseReturns0)
    FACTS(DetermineExitCode_Exit0True_AlwaysReturns0)
    FACTS(DetermineExitCode_Exit0True_FailSkipsTrue_AlwaysReturns0)
    FACTS(DetermineExitCode_FailSkipsTrue_Returns1IfAnyTestsOrTestClassesSkipped)
-   FACT(PrintSkippedTestClassReminder_PrintsExpectedToConsole)
-   FACT(PrintSkippedTestReminder_PrintsExpectedToConsole)
-   FACT(ResetStateExceptForSkips_ResetsTestFailureNumberer_ClearsTestClassResults_SetsNumberOfFailedTestCasesTo0)
-   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   AFACT(PrintSkippedTestClassReminder_PrintsExpectedToConsole)
+   AFACT(PrintSkippedTestReminder_PrintsExpectedToConsole)
+   AFACT(ResetStateExceptForSkips_ResetsTestFailureNumberer_ClearsTestClassResults_SetsNumberOfFailedTestCasesTo0)
+   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
    TestRunResult _testRunResult;

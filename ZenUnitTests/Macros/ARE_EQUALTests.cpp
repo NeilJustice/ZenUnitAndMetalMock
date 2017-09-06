@@ -52,13 +52,13 @@ struct TwoTypeZenUnitEqualizer<
 namespace ZenUnit
 {
    TESTS(ARE_EQUALTests)
-   FACT(OneTypeEqualizerDefined_CallsIt)
-   FACT(TwoTypeEqualizerDefined_CallsIt)
-   FACT(BothOneAndTwoTypeEqualizersDefined_CallsTheOneTypeEqualizer)
-   FACT(Int32sEqual_DoesNotThrow)
-   FACT(IntLiteralsNotEqual_Throws)
-   FACT(IntVariablesNotEqual_Throws_MessagesTestCase)
-   FACT(StringsNotEqual_ThrowsWithStringsInQuotesToConfirmedToStringed)
+   AFACT(OneTypeEqualizerDefined_CallsIt)
+   AFACT(TwoTypeEqualizerDefined_CallsIt)
+   AFACT(BothOneAndTwoTypeEqualizersDefined_CallsTheOneTypeEqualizer)
+   AFACT(Int32sEqual_DoesNotThrow)
+   AFACT(IntLiteralsNotEqual_Throws)
+   AFACT(IntVariablesNotEqual_Throws_MessagesTestCase)
+   AFACT(StringsNotEqual_ThrowsWithStringsInQuotesToConfirmedToStringed)
    EVIDENCE
 
    TEST(OneTypeEqualizerDefined_CallsIt)

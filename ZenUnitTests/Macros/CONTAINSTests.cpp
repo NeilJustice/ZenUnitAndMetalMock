@@ -4,12 +4,12 @@
 namespace ZenUnit
 {
    TESTS(CONTAINSTests)
-   FACT(Vector_DoesContainElement_DoesNotThrow)
-   FACT(Vector_DoesNotContainElement_Throws)
-   FACT(Map_DoesContainElement_DoesNotThrow)
-   FACT(Map_DoesNotContainElement_Throws)
-   FACT(Set_DoesContainElement_DoesNotThrow)
-   FACT(Set_DoesNotContainElement_Throws_MessagesTestCase)
+   AFACT(Vector_DoesContainElement_DoesNotThrow)
+   AFACT(Vector_DoesNotContainElement_Throws)
+   AFACT(Map_DoesContainElement_DoesNotThrow)
+   AFACT(Map_DoesNotContainElement_Throws)
+   AFACT(Set_DoesContainElement_DoesNotThrow)
+   AFACT(Set_DoesNotContainElement_Throws_MessagesTestCase)
    EVIDENCE
 
    TEST(Vector_DoesContainElement_DoesNotThrow)

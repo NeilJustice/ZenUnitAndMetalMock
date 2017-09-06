@@ -4,16 +4,16 @@
 namespace ZenMock
 {
    TESTS(ZeroArgMockerTests)
-   FACT(Constructor_SetsFields)
-   FACT(Expect_AlreadyExpected_Throws)
-   FACT(Expect_NotAlreadyExpected_SetsExpectedTrue)
-   FACT(ExpectAndThrow_ExpectedTrue_Throws)
-   FACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
-   FACT(ZenMockIt_ExpectedFalse_Throws)
-   FACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
+   AFACT(Constructor_SetsFields)
+   AFACT(Expect_AlreadyExpected_Throws)
+   AFACT(Expect_NotAlreadyExpected_SetsExpectedTrue)
+   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
+   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(ZenMockIt_ExpectedFalse_Throws)
+   AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
 
    FACTS(AssertCalledOnce_SetsAssertedTrue_FunctionWasCalledOnce_DoesNotThrow)
-   FACT(AssertCalledNTimes_NIsZero_Throws)
+   AFACT(AssertCalledNTimes_NIsZero_Throws)
    FACTS(AssertCalledNTimes_SetsAssertedTrue_FunctionWasCalledNTimes_DoesNotThrow)
    EVIDENCE
 

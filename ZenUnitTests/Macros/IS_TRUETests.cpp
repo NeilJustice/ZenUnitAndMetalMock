@@ -4,14 +4,14 @@
 namespace ZenUnit
 {
    TESTS(IS_TRUETests)
-   FACT(TrueBoolLiteral_DoesNotThrow)
-   FACT(TrueBoolVariable_DoesNotThrow)
-   FACT(FalseBoolLiteral_Throws)
-   FACT(FalseBoolVariable_Throws_MessagesTestCase)
-   FACT(StdFunctionPointsToAFunction_DoesNotThrow)
-   FACT(StdFunctionDoesNotPointToAFunction_Throws)
-   FACT(UserTypeConvertsToTrue_DoesNotThrow)
-   FACT(UserTypeConvertsToFalse_Throws)
+   AFACT(TrueBoolLiteral_DoesNotThrow)
+   AFACT(TrueBoolVariable_DoesNotThrow)
+   AFACT(FalseBoolLiteral_Throws)
+   AFACT(FalseBoolVariable_Throws_MessagesTestCase)
+   AFACT(StdFunctionPointsToAFunction_DoesNotThrow)
+   AFACT(StdFunctionDoesNotPointToAFunction_Throws)
+   AFACT(UserTypeConvertsToTrue_DoesNotThrow)
+   AFACT(UserTypeConvertsToFalse_Throws)
    EVIDENCE
 
    TEST(TrueBoolLiteral_DoesNotThrow)

@@ -5,10 +5,10 @@ namespace ZenUnit
 {
    TESTS(StringUtilTests)
       FACTS(Split_ReturnsExpected)
-      FACT(Concat_ConcatsValuesIntoString)
+      AFACT(Concat_ConcatsValuesIntoString)
       FACTS(CommaSplitExceptQuotedCommas_ReturnsStringSplitOnCommasWithQuotedCommasIgnored)
       FACTS(ToUnsigned_StrIsUnsignedNumber_ReturnsNumber)
-      FACT(ToUnsigned_EmptyString_Throws)
+      AFACT(ToUnsigned_EmptyString_Throws)
       FACTS(ToUnsigned_StringNotConvertibleToUnsigned_Throws)
       FACTS(ToUnsigned_StringIsValueGreaterThanUnsignedMax_Throws)
       EVIDENCE

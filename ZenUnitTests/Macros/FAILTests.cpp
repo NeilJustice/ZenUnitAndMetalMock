@@ -4,8 +4,8 @@
 namespace ZenUnit
 {
    TESTS(FAILTests)
-   FACT(StringLiteralBecause_Throws)
-   FACT(StringVariableBecause_MessagesTestCase_Throws)
+   AFACT(StringLiteralBecause_Throws)
+   AFACT(StringVariableBecause_MessagesTestCase_Throws)
    EVIDENCE
 
    TEST(StringLiteralBecause_Throws)

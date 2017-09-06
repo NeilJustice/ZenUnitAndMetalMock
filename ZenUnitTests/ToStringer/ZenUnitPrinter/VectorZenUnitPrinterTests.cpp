@@ -5,7 +5,7 @@
 namespace ZenUnit
 {
    TESTS(VectorZenUnitPrinterTests)
-   FACT(ZenUnitPrinter_Print_PrintsPlaceholderText)
+   AFACT(ZenUnitPrinter_Print_PrintsPlaceholderText)
    EVIDENCE
 
    TEST(ZenUnitPrinter_Print_PrintsPlaceholderText)

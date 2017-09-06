@@ -5,12 +5,12 @@ namespace ZenUnit
 {
    template<typename T>
    TEMPLATETESTS(VECTORS_EQUALTests, T)
-   FACT(VectorSizesNotEqual_Throws)
-   FACT(VectorSizesNotEqual_Throws_MessagesTestCase)
-   FACT(VectorSizesEqual_ElementsNotEqualAtIndex0_Throws_MessagesTestCase)
-   FACT(VectorSizesEqual_ElementsNotEqualAtIndex1_Throws)
-   FACT(TwoEmptyVectors_DoesNotThrow)
-   FACT(VectorSizesEqual_VectorElementsEqual_DoesNotThrow)
+   AFACT(VectorSizesNotEqual_Throws)
+   AFACT(VectorSizesNotEqual_Throws_MessagesTestCase)
+   AFACT(VectorSizesEqual_ElementsNotEqualAtIndex0_Throws_MessagesTestCase)
+   AFACT(VectorSizesEqual_ElementsNotEqualAtIndex1_Throws)
+   AFACT(TwoEmptyVectors_DoesNotThrow)
+   AFACT(VectorSizesEqual_VectorElementsEqual_DoesNotThrow)
    EVIDENCE
 
    const string MessageA = "A", MessageB = "B";

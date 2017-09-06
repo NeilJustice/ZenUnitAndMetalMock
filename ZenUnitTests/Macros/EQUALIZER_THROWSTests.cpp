@@ -53,10 +53,10 @@ struct ZenUnitEqualizer<TestStructB>
 namespace ZenUnit
 {
    TESTS(EQUALIZER_THROWSTests)
-   FACT(EqualizerDoesNotAssertSpecifiedFieldEqual_Throws)
-   FACT(EqualizerThrowsAnomalyThatDoesNotContainFieldName_Throws)
-   FACT(EqualizerThrowsAnomalyThatContainsFieldName_ButStillThrowsThatAnomalyWhenAllFieldsEqual_Throws)
-   FACT(EqualizerAssertsSpecifiedFieldEqual_DoesNotThrow)
+   AFACT(EqualizerDoesNotAssertSpecifiedFieldEqual_Throws)
+   AFACT(EqualizerThrowsAnomalyThatDoesNotContainFieldName_Throws)
+   AFACT(EqualizerThrowsAnomalyThatContainsFieldName_ButStillThrowsThatAnomalyWhenAllFieldsEqual_Throws)
+   AFACT(EqualizerAssertsSpecifiedFieldEqual_DoesNotThrow)
    EVIDENCE
 
    TEST(EqualizerDoesNotAssertSpecifiedFieldEqual_Throws)

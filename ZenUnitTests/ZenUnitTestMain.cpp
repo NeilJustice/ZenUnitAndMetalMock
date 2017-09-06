@@ -3,7 +3,7 @@
 const char* const Reason = "Test of skip feature";
 
 TESTS(SkippedTestsTestClass)
-FACT(NonSkippedTest)
+AFACT(NonSkippedTest)
 FACTS(NonSkipped1X1Test)
 SKIPFACT(Reason, SkippedNormalTest)
 SKIPFACTS(Reason, SkippedTest1X1)

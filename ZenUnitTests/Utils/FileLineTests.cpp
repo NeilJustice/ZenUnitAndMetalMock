@@ -4,11 +4,11 @@
 namespace ZenUnit
 {
    TESTS(FileLineTests)
-   FACT(DefaultConstructor_SetsFieldsTo0)
+   AFACT(DefaultConstructor_SetsFieldsTo0)
    FACTS(TwoArgConstructor_SetsFilePathAndLineNumber)
-   FACT(ToString_ReturnsFilePathLeftParenLineNumberRightParen)
-   FACT(OStreamInsertionOperator_WritesExpected)
-   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   AFACT(ToString_ReturnsFilePathLeftParenLineNumberRightParen)
+   AFACT(OStreamInsertionOperator_WritesExpected)
+   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
    TEST(DefaultConstructor_SetsFieldsTo0)

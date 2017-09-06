@@ -10,20 +10,20 @@
 namespace ZenUnit
 {
    TESTS(TestClassResultTests)
-   FACT(CopyConstructor_CopiesForEacherAndTestResults)
-   FACT(AssignmentOperator_CopiesForEacherAndTestResults)
-   FACT(AssignmentOperator_SelfAssignment_NothingHappens)
-   FACT(MoveConstructor_MovesForEacherAndTestResults)
-   FACT(MoveAssignmentOperator_MovesForEacherAndTestResults)
-   FACT(AddTestResults_AppendTestResultsToEndOfTestResultsVector)
-   FACT(NumberOfFailedTestCases_ReturnsNumberOfNonSuccessTestsInTestResultsVector)
-   FACT(Milliseconds_EmptyTestResultsVector_Returns0)
-   FACT(Milliseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMilliseconds)
-   FACT(PrintTestFailures_PrintsJustTestFailedToConsole)
-   FACT(NonMinimalPrintResultLine_0FailedTest_WritesOKInGreen)
+   AFACT(CopyConstructor_CopiesForEacherAndTestResults)
+   AFACT(AssignmentOperator_CopiesForEacherAndTestResults)
+   AFACT(AssignmentOperator_SelfAssignment_NothingHappens)
+   AFACT(MoveConstructor_MovesForEacherAndTestResults)
+   AFACT(MoveAssignmentOperator_MovesForEacherAndTestResults)
+   AFACT(AddTestResults_AppendTestResultsToEndOfTestResultsVector)
+   AFACT(NumberOfFailedTestCases_ReturnsNumberOfNonSuccessTestsInTestResultsVector)
+   AFACT(Milliseconds_EmptyTestResultsVector_Returns0)
+   AFACT(Milliseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMilliseconds)
+   AFACT(PrintTestFailures_PrintsJustTestFailedToConsole)
+   AFACT(NonMinimalPrintResultLine_0FailedTest_WritesOKInGreen)
    FACTS(NonMinimalPrintResultLine_1OrMoreFailedTests_WritesFailedInRed)
-   FACT(PrintTestResultIfFailure_CallsTestResultPrintIfFailure)
-   FACT(ZenUnitEqualizer_ThrowsIfTestResultsNotEqual)
+   AFACT(PrintTestResultIfFailure_CallsTestResultPrintIfFailure)
+   AFACT(ZenUnitEqualizer_ThrowsIfTestResultsNotEqual)
    EVIDENCE
 
    TestClassResult _testClassResult;

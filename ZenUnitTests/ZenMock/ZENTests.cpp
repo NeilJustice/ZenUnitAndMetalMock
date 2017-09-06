@@ -5,8 +5,8 @@
 namespace ZenMock
 {
    TESTS(ZENTests)
-   FACT(ZENWrappedAssertionDoesNotThrow_NothingHappens)
-   FACT(ZENWrappedAssertionThrows_RethrowsZENWrappedAnomaly)
+   AFACT(ZENWrappedAssertionDoesNotThrow_NothingHappens)
+   AFACT(ZENWrappedAssertionThrows_RethrowsZENWrappedAnomaly)
    EVIDENCE
 
    TEST(ZENWrappedAssertionDoesNotThrow_NothingHappens)

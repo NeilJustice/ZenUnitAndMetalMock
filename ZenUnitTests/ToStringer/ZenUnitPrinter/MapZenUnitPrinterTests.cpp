@@ -6,8 +6,8 @@ namespace ZenUnit
 {
    template<typename TKey, typename TValue>
    TEMPLATETESTS(MapZenUnitPrinterTests, TKey, TValue)
-   FACT(Print_Map_PrintsPlaceholder)
-   FACT(Print_UnorderedMap_PrintsPlaceholder)
+   AFACT(Print_Map_PrintsPlaceholder)
+   AFACT(Print_UnorderedMap_PrintsPlaceholder)
    EVIDENCE
 
    TEST(Print_Map_PrintsPlaceholder)

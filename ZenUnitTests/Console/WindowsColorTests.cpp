@@ -5,7 +5,7 @@ namespace ZenUnit
 {
    TESTS(WindowsColorTests)
    FACTS(ColorToWindowsColor_ReturnsExpectedWindowsColor)
-   FACT(ColorToWindowsColor_NonWhiteGreenRedColor_TriggersAssertion)
+   AFACT(ColorToWindowsColor_NonWhiteGreenRedColor_TriggersAssertion)
    EVIDENCE
 
    TEST2X2(ColorToWindowsColor_ReturnsExpectedWindowsColor,

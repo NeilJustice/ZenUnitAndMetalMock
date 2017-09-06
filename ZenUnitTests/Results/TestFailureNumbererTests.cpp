@@ -4,7 +4,7 @@
 namespace ZenUnit
 {
    TESTS(TestFailureNumbererTests)
-   FACT(TestFailureNumberer_NextReturnsIncrementingAngleBracketedSequence)
+   AFACT(TestFailureNumberer_NextReturnsIncrementingAngleBracketedSequence)
    EVIDENCE
 
    TEST(TestFailureNumberer_NextReturnsIncrementingAngleBracketedSequence)

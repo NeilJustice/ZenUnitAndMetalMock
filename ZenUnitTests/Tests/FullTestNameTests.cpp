@@ -5,10 +5,10 @@
 namespace ZenUnit
 {
    TESTS(FullTestNameTests)
-   FACT(DefaultConstructor_SetsClassNameAndTestNameToNullptr)
-   FACT(ThreeArgConstructor_SetsFields)
+   AFACT(DefaultConstructor_SetsClassNameAndTestNameToNullptr)
+   AFACT(ThreeArgConstructor_SetsFields)
    FACTS(Value_ReturnsExpected)
-   FACT(ZenUnitEqualizer_ThrowsIfClassNameOrTestNameNotEqual)
+   AFACT(ZenUnitEqualizer_ThrowsIfClassNameOrTestNameNotEqual)
    EVIDENCE
 
    TEST(DefaultConstructor_SetsClassNameAndTestNameToNullptr)

@@ -4,9 +4,9 @@
 namespace ZenUnit
 {
    TESTS(VectorEqualizerTests)
-   FACT(AssertEqual_IntVectors_CallsVECTORS_EQUAL)
-   FACT(AssertEqual_StringVectors_CallsVECTORS_EQUAL)
-   FACT(AssertEqual_UserTypeVectors_CallsVECTORS_EQUAL)
+   AFACT(AssertEqual_IntVectors_CallsVECTORS_EQUAL)
+   AFACT(AssertEqual_StringVectors_CallsVECTORS_EQUAL)
+   AFACT(AssertEqual_UserTypeVectors_CallsVECTORS_EQUAL)
    EVIDENCE
 
    TEST(AssertEqual_IntVectors_CallsVECTORS_EQUAL)

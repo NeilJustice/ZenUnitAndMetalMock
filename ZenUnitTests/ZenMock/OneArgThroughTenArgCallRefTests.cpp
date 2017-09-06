@@ -49,10 +49,10 @@ namespace ZenMock
    }
 
    TESTS(OneArgCallRefTests)
-   FACT(Constructor_SetsReferences)
-   FACT(CallConstructor_SetsReferencesToOneArgCallArg)
-   FACT(ZenUnitPrinter_WritesToStringedArg)
-   FACT(ZenUnitEqualizer_ThrowsIfArgFieldNotEqual)
+   AFACT(Constructor_SetsReferences)
+   AFACT(CallConstructor_SetsReferencesToOneArgCallArg)
+   AFACT(ZenUnitPrinter_WritesToStringedArg)
+   AFACT(ZenUnitEqualizer_ThrowsIfArgFieldNotEqual)
    EVIDENCE
 
    using Call1 = OneArgCall<T<1>>;
@@ -98,10 +98,10 @@ Arg: "1")", zenUnitPrintResult);
 
 
    TESTS(TwoArgCallRefTests)
-   FACT(Constructor_SetsReferences)
-   FACT(CallConstructor_SetsReferencesToTwoArgCallArgs)
-   FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
-   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   AFACT(Constructor_SetsReferences)
+   AFACT(CallConstructor_SetsReferencesToTwoArgCallArgs)
+   AFACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
+   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
    using Call2 = TwoArgCall<T<1>, T<2>>;
@@ -154,10 +154,10 @@ Arg2: "2")", zenUnitPrintResult);
 
 
    TESTS(ThreeArgCallRefTests)
-   FACT(Constructor_SetsReferences)
-   FACT(CallConstructor_SetsReferencesToThreeArgCallArgs)
-   FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
-   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   AFACT(Constructor_SetsReferences)
+   AFACT(CallConstructor_SetsReferencesToThreeArgCallArgs)
+   AFACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
+   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
    using Call3 = ThreeArgCall<T<1>, T<2>, T<3>>;
@@ -216,10 +216,10 @@ Arg3: "3")", zenUnitPrintResult);
 
 
    TESTS(FourArgCallRefTests)
-   FACT(Constructor_SetsReferences)
-   FACT(CallConstructor_SetsReferencesToFourArgCallArgs)
-   FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
-   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   AFACT(Constructor_SetsReferences)
+   AFACT(CallConstructor_SetsReferencesToFourArgCallArgs)
+   AFACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
+   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
    using Call4 = FourArgCall<T<1>, T<2>, T<3>, T<4>>;
@@ -284,10 +284,10 @@ Arg4: "4")", zenUnitPrintResult);
 
 
    TESTS(FiveArgCallRefTests)
-   FACT(Constructor_SetsReferences)
-   FACT(CallConstructor_SetsReferencesToFiveArgCallArgs)
-   FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
-   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   AFACT(Constructor_SetsReferences)
+   AFACT(CallConstructor_SetsReferencesToFiveArgCallArgs)
+   AFACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
+   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
    using Call5 = FiveArgCall<T<1>, T<2>, T<3>, T<4>, T<5>>;
@@ -358,10 +358,10 @@ Arg5: "5")", zenUnitPrintResult);
 
 
    TESTS(SixArgCallRefTests)
-   FACT(Constructor_SetsReferences)
-   FACT(CallConstructor_SetsReferencesToFiveArgCallArgs)
-   FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
-   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   AFACT(Constructor_SetsReferences)
+   AFACT(CallConstructor_SetsReferencesToFiveArgCallArgs)
+   AFACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
+   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
    using Call6 = SixArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>>;
@@ -438,10 +438,10 @@ Arg6: "6")", zenUnitPrintResult);
 
 
    TESTS(SevenArgCallRefTests)
-   FACT(Constructor_SetsReferences)
-   FACT(CallConstructor_SetsReferencesToFiveArgCallArgs)
-   FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
-   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   AFACT(Constructor_SetsReferences)
+   AFACT(CallConstructor_SetsReferencesToFiveArgCallArgs)
+   AFACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
+   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
    using Call7 = SevenArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>>;
@@ -524,10 +524,10 @@ Arg7: "7")", zenUnitPrintResult);
 
 
    TESTS(EightArgCallRefTests)
-   FACT(Constructor_SetsReferences)
-   FACT(CallConstructor_SetsReferencesToCallArgs)
-   FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
-   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   AFACT(Constructor_SetsReferences)
+   AFACT(CallConstructor_SetsReferencesToCallArgs)
+   AFACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
+   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
    using Call8 = const EightArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>>;
@@ -616,10 +616,10 @@ Arg8: "8")", zenUnitPrintResult);
 
 
    TESTS(NineArgCallRefTests)
-   FACT(Constructor_SetsReferences)
-   FACT(CallConstructor_SetsReferencesToCallArgs)
-   FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
-   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   AFACT(Constructor_SetsReferences)
+   AFACT(CallConstructor_SetsReferencesToCallArgs)
+   AFACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
+   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
    using Call9 = const NineArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>>;
@@ -714,10 +714,10 @@ Arg9: "9")", zenUnitPrintResult);
 
 
    TESTS(TenArgCallRefTests)
-   FACT(Constructor_SetsReferences)
-   FACT(CallConstructor_SetsReferencesToCallArgs)
-   FACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
-   FACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   AFACT(Constructor_SetsReferences)
+   AFACT(CallConstructor_SetsReferencesToCallArgs)
+   AFACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
+   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
    using Call10 = const TenArgCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>, T<10>>;
