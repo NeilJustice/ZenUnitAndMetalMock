@@ -38,6 +38,7 @@ matrix:
           packages: [ 'ninja-build', 'g++-7' ]
 
 before_script:
+  - apt list --installed | grep libstdc++
   - mkdir build
   - cd build
   - echo $CMAKE_BUILD_TYPE
