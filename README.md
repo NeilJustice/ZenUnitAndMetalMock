@@ -169,7 +169,7 @@ int main(int argc, char* argv[])
 
 Step 1 of 1:
 
-Run `./LinuxCMakeBuildInstall.sh <InstallDirectory>` to CMake with Ninja, build with the default C++ compiler, and install the ZenUnit include tree and Debug and Release static libraries to \<InstallDirectory\>, for example /usr/local for /usr/local/ZenUnit.
+Run './LinuxCMakeBuildInstall.sh <InstallDirectory>` to CMake with Ninja, build with the default C++ compiler, and install the ZenUnit include tree and Debug and Release static libraries to \<InstallDirectory\>, for example /usr/local for /usr/local/ZenUnit.
 
 ZenUnit and ZenMock installed on Linux:
 
@@ -424,3 +424,4 @@ int main(int argc, char* argv[])
 |-------------|
 |`ZEN(ZenMockAssertion)` // ZEN adorns error messages with \_\_FILE\_\_ and \_\_LINE\_\_ information.|
 
+2017 to-do list: Single header, -filter, ZenMock CallInstead(), and -parallel
