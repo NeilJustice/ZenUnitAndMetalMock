@@ -285,13 +285,10 @@ FilePath(1))")
    TEST(what_ReturnsWhyCStr)
    {
       Anomaly anomaly;
-
       const char* what = anomaly.what();
       ARE_EQUAL("", what);
       ARE_EQUAL(anomaly.why.c_str(), what);
-
       anomaly.why = "why";
-      ARE_EQUAL("why", what);
       ARE_EQUAL(anomaly.why.c_str(), what);
    }
 

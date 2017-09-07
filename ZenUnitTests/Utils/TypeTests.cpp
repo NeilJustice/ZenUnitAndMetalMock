@@ -49,13 +49,10 @@ namespace ZenUnit
    TEST(GetName_ClassType_ReturnsTypeNameMinusClassSpace)
    {
       ARE_EQUAL("ZenUnit::TypeTests::C", *Type::GetName(C()));
-#ifdef __linux__
-      ARE_EQUAL("std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >", *Type::GetName<string>());
-      ARE_EQUAL("std::ostream", *Type::GetName<decltype(cout)>());
-#elif _WIN32
+#if _WIN32
       ARE_EQUAL("std::basic_string<char,std::char_traits<char>,std::allocator<char> >", *Type::GetName(string()));
       ARE_EQUAL("std::basic_ostream<char,std::char_traits<char> >", *Type::GetName(cout));
-   #endif
+#endif
    }
 
    TEST(GetName_StructType_ReturnsTypeNameMinusStructSpace)
@@ -107,10 +104,9 @@ namespace ZenUnit
       ARE_EQUAL("ZenUnit::TypeTests::TemplateClass<ZenUnit::TypeTests::C>", *Type::GetName<TemplateClass<C>>());
       ARE_EQUAL("ZenUnit::TypeTests::TemplateClass<ZenUnit::TypeTests::S>", *Type::GetName<TemplateClass<S>>());
       ARE_EQUAL("ZenUnit::TypeTests::C", *Type::GetName<C>());
-   #ifdef __linux__
       ARE_EQUAL("std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >", *Type::GetName<string>());
       ARE_EQUAL("std::ostream", *Type::GetName<decltype(cout)>());
-   #elif _WIN32
+   #if _WIN32
       ARE_EQUAL("std::basic_string<char,std::char_traits<char>,std::allocator<char> >", *Type::GetName<string>());
       ARE_EQUAL("std::basic_ostream<char,std::char_traits<char> >", *Type::GetName<decltype(cout)>());
    #endif
