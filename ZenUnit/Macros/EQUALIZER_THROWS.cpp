@@ -22,9 +22,9 @@ namespace ZenUnit
       FileLine fileLine)
    {
       const std::string expectedField = String::Concat(
-         R"(Function ZenUnitEqualizer<Namespace::TestStruct>::AssertEqual(expected, actual)
+         R"%(Function ZenUnitEqualizer<Namespace::TestStruct>::AssertEqual(expected, actual)
           to throw a ZenUnit::Anomaly from an
-          ARE_EQUAL(expected.)", fieldName, ", actual.", fieldName, ") assert statement.");
+          ARE_EQUAL(expected.)%", fieldName, ", actual.", fieldName, ") assert statement.");
       const std::string actualField(String::Concat("No ZenUnit::Anomaly thrown despite field '", fieldName, R"('
           differing between objects expected and actual.)"));
       throw Anomaly("EQUALIZER_THROWS", typeName, fieldName, nonDefaultFieldValueText, "",

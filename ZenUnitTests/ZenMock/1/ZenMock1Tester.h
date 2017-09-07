@@ -190,22 +190,22 @@ namespace ZenMock
   Failed: ARE_EQUAL(expectedNumberOfCalls, _numberOfCalls, this->ZenMockedFunctionSignature)
 Expected: 1
   Actual: 0
- Message: ")" + expectedSignature + R"("
-File.cpp(1))");
+ Message: ")" + expectedSignature + R"%("
+File.cpp(1))%");
 
             THROWS(zenMockObject.AssertCalledNTimesWith(1, 0), Anomaly, R"(
   Failed: ARE_EQUAL(expectedNumberOfCalls, _numberOfCalls, this->ZenMockedFunctionSignature)
 Expected: 1
   Actual: 0
- Message: ")" + expectedSignature + R"("
-File.cpp(1))");
+ Message: ")" + expectedSignature + R"%("
+File.cpp(1))%");
 
             THROWS(zenMockObject.AssertCalledNTimesWith(2, 0), Anomaly, R"(
   Failed: ARE_EQUAL(expectedNumberOfCalls, _numberOfCalls, this->ZenMockedFunctionSignature)
 Expected: 2
   Actual: 0
- Message: ")" + expectedSignature + R"("
-File.cpp(1))");
+ Message: ")" + expectedSignature + R"%("
+File.cpp(1))%");
          };
          test(mock.VirtualMock, virtualSignature);
          test(mock.VirtualConstMock, virtualConstSignature);
@@ -329,8 +329,8 @@ File.cpp(1))");
   Failed: ARE_EQUAL(expectedArg, _oneArgCalls[0].arg, this->ZenMockedFunctionSignature)
 Expected: 20
   Actual: 10
- Message: ")", expectedSignature, R"("
-File.cpp(1))");
+ Message: ")", expectedSignature, R"%("
+File.cpp(1))%");
             THROWS(zenMockObject.AssertCalledOnceWith(20), Anomaly, expectedWhat);
          };
          test(mock.VirtualMock, virtualSignature);
@@ -389,12 +389,12 @@ File.cpp(1))");
             {
                zenMockObject.ZenMockIt(0);
             }
-            string expectedWhat = String::Concat(R"(
+            string expectedWhat = String::Concat(R"%(
   Failed: ARE_EQUAL(expectedNumberOfCalls, _oneArgCalls.size(), this->ZenMockedFunctionSignature)
-Expected: )", n, R"(
+Expected: )%", n, R"(
   Actual: )", numberOfCalls, R"(
- Message: ")", expectedSignature, R"("
-File.cpp(1))");
+ Message: ")", expectedSignature, R"%("
+File.cpp(1))%");
             THROWS(zenMockObject.AssertCalledNTimesWith(n, 123), Anomaly, expectedWhat);
          };
          test(mock.VirtualMock, virtualSignature);
@@ -430,8 +430,8 @@ File.cpp(1))");
   Failed: ARE_EQUAL(expectedArg, _oneArgCalls[i].arg, zenMockedFunctionSignatureAndCallIndex)
 Expected: 10
   Actual: 20
- Message: ")", expectedSignature, " at i=", mismatchingCallIndex, R"("
-File.cpp(1))");
+ Message: ")", expectedSignature, " at i=", mismatchingCallIndex, R"%("
+File.cpp(1))%");
             THROWS(zenMockObject.AssertCalledNTimesWith(n, 10), Anomaly, expectedWhat);
          };
          test(mock.VirtualMock, virtualSignature);

@@ -13,11 +13,11 @@ namespace ZenMock
    string UnsupportedAssertCalledZeroTimesException::MakeWhat(const string& zenMockedFunctionSignature)
    {
       const string what = ZenUnit::String::Concat(
-"For ZenMocked function \"", zenMockedFunctionSignature, R"(":
+"For ZenMocked function \"", zenMockedFunctionSignature, R"%(":
  ZenMock objects by design do not support the operation of asserting that
  their corresponding ZenMocked function was called zero times.
  To confirm that a ZenMocked function was called zero times,
- simply do not call any of the Expect() functions on a ZenMock object.)");
+ simply do not call any of the Expect() functions on a ZenMock object.)%");
       return what;
    }
 

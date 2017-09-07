@@ -14,12 +14,12 @@ struct ZenMockTester
    static string ExpectedCallCountMismatchWhat(
       const string& expectedSignature, size_t expectedCallCount, size_t actualCallCount)
    {
-      const string expectedWhat = String::Concat(R"(
+      const string expectedWhat = String::Concat(R"%(
   Failed: ARE_EQUAL(expectedNumberOfCalls, _numberOfCalls, this->ZenMockedFunctionSignature)
-Expected: )", expectedCallCount, R"(
+Expected: )%", expectedCallCount, R"(
   Actual: )", actualCallCount, R"(
- Message: ")", expectedSignature, R"("
-File.cpp(1))");
+ Message: ")", expectedSignature, R"%("
+File.cpp(1))%");
       return expectedWhat;
    }
 };
