@@ -368,8 +368,8 @@ namespace ZenUnit
    {
       _testResult.testOutcome = TestOutcome::Unset;
       THROWS(_testResult.PrintIfFailure(nullptr, nullptr), logic_error,
-         R"%(assert_true(testOutcome == TestOutcome::SuccessButPastDeadline) failed in PrintIfFailure()
-File.cpp(1))%");
+         R"(assert_true(testOutcome == TestOutcome::SuccessButPastDeadline) failed in PrintIfFailure()
+File.cpp(1))");
    }
 
    TEST3X3(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseIndexPlus1IfTestCaseIndexNotMaxValue,

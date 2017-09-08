@@ -13,23 +13,23 @@ namespace ZenUnit
    TEST(NullRawPointer_Throws)
    {
       const int* const nullRawPointer = nullptr;
-      THROWS(IS_NOT_NULL(nullRawPointer), Anomaly, R"%(
+      THROWS(IS_NOT_NULL(nullRawPointer), Anomaly, R"(
   Failed: IS_NOT_NULL(nullRawPointer)
 Expected: not nullptr
   Actual: nullptr
-File.cpp(1))%");
+File.cpp(1))");
    }
 
    TEST(NullUniquePointer_Throws_MessagesTestCase)
    {
       const unique_ptr<const int> nullUniquePtr = nullptr;
       const string messageA = "A", messageB = "B";
-      THROWS(IS_NOT_NULL(nullUniquePtr, messageA, messageB), Anomaly, R"%(
+      THROWS(IS_NOT_NULL(nullUniquePtr, messageA, messageB), Anomaly, R"(
   Failed: IS_NOT_NULL(nullUniquePtr, messageA, messageB)
 Expected: not nullptr
   Actual: nullptr
  Message: "A", "B"
-File.cpp(1))%");
+File.cpp(1))");
    }
 
    TEST(NonNullRawPointer_DoesNotThrow)

@@ -127,23 +127,23 @@ namespace ZenMock
       //
       if (expectCallCountThrow)
       {
-         THROWS(_mocker->AssertCalledOnceWith(expectedArg), Anomaly, R"%(
+         THROWS(_mocker->AssertCalledOnceWith(expectedArg), Anomaly, R"(
   Failed: ARE_EQUAL(expectedNumberOfCalls, _oneArgCalls.size(), this->ZenMockedFunctionSignature)
 Expected: 1
-  Actual: )%" + to_string(numberOfCalls) + R"(
- Message: ")" + Test::Signature + R"%("
-File.cpp(1))%");
+  Actual: )" + to_string(numberOfCalls) + R"(
+ Message: ")" + Test::Signature + R"("
+File.cpp(1))");
       }
       else
       {
          if (expectArgEqualityThrow)
          {
-            THROWS(_mocker->AssertCalledOnceWith(expectedArg), Anomaly, R"%(
+            THROWS(_mocker->AssertCalledOnceWith(expectedArg), Anomaly, R"(
   Failed: ARE_EQUAL(expectedArg, _oneArgCalls[0].arg, this->ZenMockedFunctionSignature)
-Expected: )%" + to_string(expectedArg) + R"(
+Expected: )" + to_string(expectedArg) + R"(
   Actual: )" + to_string(actualArg) + R"(
- Message: ")" + Test::Signature + R"%("
-File.cpp(1))%");
+ Message: ")" + Test::Signature + R"("
+File.cpp(1))");
          }
          else
          {
@@ -179,8 +179,8 @@ File.cpp(1))%");
   Failed: ARE_EQUAL(expectedNumberOfCalls, _oneArgCalls.size(), this->ZenMockedFunctionSignature)
 Expected: )", expectedNumberOfCalls, R"(
   Actual: )", numberOfCalls, R"(
- Message: ")", Test::Signature, R"%("
-File.cpp(1))%");
+ Message: ")", Test::Signature, R"("
+File.cpp(1))");
          THROWS(_mocker->AssertCalledNTimesWith(expectedNumberOfCalls, 0), Anomaly, expectedWhat);
       }
       else
@@ -209,12 +209,12 @@ File.cpp(1))%");
          int actualArg = actualArgs[expectedResponsibleCallIndex].arg;
          string expectedSignatureAndCallIndex =
             Test::Signature + " at i=" + to_string(expectedResponsibleCallIndex);
-         THROWS(_mocker->AssertCalledNTimesWith(expectedNumberOfCalls, expectedArg), Anomaly, R"%(
+         THROWS(_mocker->AssertCalledNTimesWith(expectedNumberOfCalls, expectedArg), Anomaly, R"(
   Failed: ARE_EQUAL(expectedArg, _oneArgCalls[i].arg, zenMockedFunctionSignatureAndCallIndex)
-Expected: )%" + to_string(expectedArg) + R"(
+Expected: )" + to_string(expectedArg) + R"(
   Actual: )" + to_string(actualArg) + R"(
- Message: ")" + expectedSignatureAndCallIndex + R"%("
-File.cpp(1))%");
+ Message: ")" + expectedSignatureAndCallIndex + R"("
+File.cpp(1))");
       }
       else
       {
@@ -237,16 +237,16 @@ File.cpp(1))%");
       IS_FALSE(_mocker->_asserted);
       const vector<OneArgCallRef<int>> expectedOneArgCalls { 0 };
       //
-      THROWS(_mocker->AssertCalls(expectedOneArgCalls), Anomaly, R"%(
+      THROWS(_mocker->AssertCalls(expectedOneArgCalls), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedOneArgCalls, actualOneArgCalls, this->ZenMockedFunctionSignature)
 Expected: vector<T>
   Actual: vector<T>
  Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
 Expected: 1
   Actual: 0
- Message: ")%" + Test::Signature + R"%("
+ Message: ")" + Test::Signature + R"("
 File.cpp(1)
-File.cpp(1))%");
+File.cpp(1))");
       //
       IS_TRUE(_mocker->_asserted);
    }
@@ -258,7 +258,7 @@ File.cpp(1))%");
       const vector<OneArgCallRef<int>> expectedOneArgCalls { x, y };
       _mocker->_oneArgCalls = { 10, 20 };
       //
-      THROWS(_mocker->AssertCalls(expectedOneArgCalls), Anomaly, R"%(
+      THROWS(_mocker->AssertCalls(expectedOneArgCalls), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedOneArgCalls, actualOneArgCalls, this->ZenMockedFunctionSignature)
 Expected: vector<T>
   Actual: vector<T>
@@ -268,9 +268,9 @@ Arg: 10
   Actual: ZenMock::OneArgCall:
 Arg: 20
  Message: "i=1"
- Message: ")%" + Test::Signature + R"%("
+ Message: ")" + Test::Signature + R"("
 File.cpp(1)
-File.cpp(1))%");
+File.cpp(1))");
       //
       IS_TRUE(_mocker->_asserted);
    }

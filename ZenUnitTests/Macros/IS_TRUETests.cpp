@@ -27,23 +27,23 @@ namespace ZenUnit
 
    TEST(FalseBoolLiteral_Throws)
    {
-      THROWS(IS_TRUE(false), Anomaly, R"%(
+      THROWS(IS_TRUE(false), Anomaly, R"(
   Failed: IS_TRUE(false)
 Expected: true
   Actual: false
-File.cpp(1))%");
+File.cpp(1))");
    }
 
    TEST(FalseBoolVariable_Throws_MessagesTestCase)
    {
       const bool falseBool = false;
       const string messageA = "A", messageB = "B";
-      THROWS(IS_TRUE(falseBool, messageA, messageB), Anomaly, R"%(
+      THROWS(IS_TRUE(falseBool, messageA, messageB), Anomaly, R"(
   Failed: IS_TRUE(falseBool, messageA, messageB)
 Expected: true
   Actual: false
  Message: "A", "B"
-File.cpp(1))%");
+File.cpp(1))");
    }
 
    TEST(StdFunctionPointsToAFunction_DoesNotThrow)
@@ -55,11 +55,11 @@ File.cpp(1))%");
    TEST(StdFunctionDoesNotPointToAFunction_Throws)
    {
       const std::function<void()> emptyStdFunction;
-      THROWS(IS_TRUE(emptyStdFunction), Anomaly, R"%(
+      THROWS(IS_TRUE(emptyStdFunction), Anomaly, R"(
   Failed: IS_TRUE(emptyStdFunction)
 Expected: true
   Actual: false
-File.cpp(1))%");
+File.cpp(1))");
    }
 
    TEST(UserTypeConvertsToTrue_DoesNotThrow)
@@ -71,11 +71,11 @@ File.cpp(1))%");
    TEST(UserTypeConvertsToFalse_Throws)
    {
       const UserType falseUserType(0);
-      THROWS(IS_TRUE(falseUserType), Anomaly, R"%(
+      THROWS(IS_TRUE(falseUserType), Anomaly, R"(
   Failed: IS_TRUE(falseUserType)
 Expected: true
   Actual: false
-File.cpp(1))%");
+File.cpp(1))");
    }
 
    }; RUNTESTS(IS_TRUETests)

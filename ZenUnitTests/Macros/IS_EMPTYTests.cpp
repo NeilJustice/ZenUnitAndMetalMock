@@ -19,22 +19,22 @@ namespace ZenUnit
 
    TEST(VectorIsNotEmpty_Throws)
    {
-      THROWS(IS_EMPTY(vector<int>(1)), Anomaly, R"%(
+      THROWS(IS_EMPTY(vector<int>(1)), Anomaly, R"(
   Failed: IS_EMPTY(vector<int>(1))
 Expected: empty() == true
   Actual: empty() == false (size() == 1)
-File.cpp(1))%");
+File.cpp(1))");
    }
 
    TEST(StringIsNotEmpty_Throws_MessagesTestCase)
    {
       const string messageA = "A", messageB = "B";
-      THROWS(IS_EMPTY(string(10, 'a'), messageA, messageB), Anomaly, R"%(
+      THROWS(IS_EMPTY(string(10, 'a'), messageA, messageB), Anomaly, R"(
   Failed: IS_EMPTY(string(10, 'a'), messageA, messageB)
 Expected: empty() == true
   Actual: empty() == false (size() == 10)
  Message: "A", "B"
-File.cpp(1))%");
+File.cpp(1))");
    }
 
    }; RUNTESTS(IS_EMPTYTests)

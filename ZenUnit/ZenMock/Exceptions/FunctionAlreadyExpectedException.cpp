@@ -11,8 +11,8 @@ namespace ZenMock
 
    string FunctionAlreadyExpectedException::MakeWhat(const std::string& zenMockedFunctionSignature)
    {
-      const string what = "For ZenMocked function \"" + zenMockedFunctionSignature + R"%(":
-Already called [ZenMockedFunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)%";
+      const string what = "For ZenMocked function \"" + zenMockedFunctionSignature + R"(":
+Already called [ZenMockedFunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)";
       return what;
    }
 

@@ -21,8 +21,8 @@ namespace ZenUnit
    TEST(ColorToWindowsColor_NonWhiteGreenRedColor_TriggersAssertion)
    {
       THROWS(ZenUnit::ColorToWindowsColor(Color::Unset),
-         logic_error, R"%(assert_true(color == Color::Red) failed in ColorToWindowsColor()
-File.cpp(1))%");
+         logic_error, R"(assert_true(color == Color::Red) failed in ColorToWindowsColor()
+File.cpp(1))");
    }
 
    }; RUNTESTS(WindowsColorTests)

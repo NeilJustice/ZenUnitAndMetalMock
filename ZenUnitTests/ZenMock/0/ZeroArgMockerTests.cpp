@@ -108,12 +108,12 @@ namespace ZenMock
       _mocker->_numberOfCalls = numberOfCalls;
       if (expectThrow)
       {
-         THROWS(_mocker->AssertCalledOnce(), Anomaly, R"%(
+         THROWS(_mocker->AssertCalledOnce(), Anomaly, R"(
   Failed: ARE_EQUAL(expectedNumberOfCalls, _numberOfCalls, this->ZenMockedFunctionSignature)
 Expected: 1
-  Actual: )%" + to_string(numberOfCalls) + R"(
- Message: ")" + Test::Signature + R"%("
-File.cpp(1))%");
+  Actual: )" + to_string(numberOfCalls) + R"(
+ Message: ")" + Test::Signature + R"("
+File.cpp(1))");
       }
       else
       {
@@ -145,12 +145,12 @@ File.cpp(1))%");
       _mocker->_numberOfCalls = numberOfCalls;
       if (expectThrow)
       {
-         THROWS(_mocker->AssertCalledNTimes(expectedNumberOfCalls), Anomaly, R"%(
+         THROWS(_mocker->AssertCalledNTimes(expectedNumberOfCalls), Anomaly, R"(
   Failed: ARE_EQUAL(expectedNumberOfCalls, _numberOfCalls, this->ZenMockedFunctionSignature)
-Expected: )%" + to_string(expectedNumberOfCalls) + R"(
+Expected: )" + to_string(expectedNumberOfCalls) + R"(
   Actual: )" + to_string(numberOfCalls) + R"(
- Message: ")" + Test::Signature + R"%("
-File.cpp(1))%");
+ Message: ")" + Test::Signature + R"("
+File.cpp(1))");
       }
       else
       {

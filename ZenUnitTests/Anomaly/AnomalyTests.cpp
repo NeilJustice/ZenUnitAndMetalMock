@@ -104,23 +104,23 @@ FileLineValue);
    TEST5X5(FullConstructor_FirstSecondThirdTest_MessagesPresentNotPresentTest,
       bool arg2TextPresent, bool arg3TextPresent, bool messagesTextAndMessagesPresent,
       const string& expectedAssertExpression, const string& expectedWhy,
-      false, false, false, "ASSERTION_NAME(Arg1Text)", R"%(
+      false, false, false, "ASSERTION_NAME(Arg1Text)", R"(
 Expected: Expected
   Actual: Actual
-FilePath(1))%",
-      true, false, false, "ASSERTION_NAME(Arg1Text, Arg2Text)", R"%(
+FilePath(1))",
+      true, false, false, "ASSERTION_NAME(Arg1Text, Arg2Text)", R"(
 Expected: Expected
   Actual: Actual
-FilePath(1))%",
-   true, true, false, "ASSERTION_NAME(Arg1Text, Arg2Text, Arg3Text)", R"%(
+FilePath(1))",
+   true, true, false, "ASSERTION_NAME(Arg1Text, Arg2Text, Arg3Text)", R"(
 Expected: Expected
   Actual: Actual
-FilePath(1))%",
-   true, true, true, "ASSERTION_NAME(Arg1Text, Arg2Text, Arg3Text, userType0, userType1)", R"%(
+FilePath(1))",
+   true, true, true, "ASSERTION_NAME(Arg1Text, Arg2Text, Arg3Text, userType0, userType1)", R"(
 Expected: Expected
   Actual: Actual
  Message: UserType@0, UserType@1
-FilePath(1))%")
+FilePath(1))")
    {
       const char* Arg2Text = "Arg2Text";
       const char* Arg3Text = "Arg3Text";
@@ -173,16 +173,16 @@ FilePath(1))%")
 
    TEST2X2(FullConstructor_BecauseAnomalyNotPresent_SetsFields,
       ExpectedActualFormat expectedActualFormat, const string& expectedWhy,
-      ExpectedActualFormat::Fields, R"%(
+      ExpectedActualFormat::Fields, R"(
   Failed: ASSERTION_NAME(Arg1Text)
 Expected: Expected
   Actual: Actual
-FilePath(1))%",
-   ExpectedActualFormat::WholeLines, R"%(
+FilePath(1))",
+   ExpectedActualFormat::WholeLines, R"(
   Failed: ASSERTION_NAME(Arg1Text)
 Expected
 Actual
-FilePath(1))%")
+FilePath(1))")
    {
       const Anomaly anomaly(
          AssertionName,
@@ -211,7 +211,7 @@ FilePath(1))%")
       ExpectedActualFormat expectedActualFormat,
       const string& expectedWhy,
 
-      "", ExpectedActualFormat::Fields, R"%(
+      "", ExpectedActualFormat::Fields, R"(
   Failed: ASSERTION_NAME(Arg1Text)
 Expected: Expected
   Actual: Actual
@@ -219,9 +219,9 @@ Expected: Expected
 Expected: BecauseExpected
   Actual: BecauseActual
 BecauseFilePath(123)
-FilePath(1))%",
+FilePath(1))",
 
-      "", ExpectedActualFormat::WholeLines, R"%(
+      "", ExpectedActualFormat::WholeLines, R"(
   Failed: ASSERTION_NAME(Arg1Text)
 Expected: Expected
   Actual: Actual
@@ -229,9 +229,9 @@ Expected: Expected
 Expected: BecauseExpected
   Actual: BecauseActual
 BecauseFilePath(123)
-FilePath(1))%",
+FilePath(1))",
 
-      "BecauseMessage", ExpectedActualFormat::Fields, R"%(
+      "BecauseMessage", ExpectedActualFormat::Fields, R"(
   Failed: ASSERTION_NAME(Arg1Text)
 Expected: Expected
   Actual: Actual
@@ -240,9 +240,9 @@ Expected: BecauseExpected
   Actual: BecauseActual
  Message: BecauseMessage
 BecauseFilePath(123)
-FilePath(1))%",
+FilePath(1))",
 
-      "BecauseMessage", ExpectedActualFormat::WholeLines, R"%(
+      "BecauseMessage", ExpectedActualFormat::WholeLines, R"(
   Failed: ASSERTION_NAME(Arg1Text)
 Expected: Expected
   Actual: Actual
@@ -251,7 +251,7 @@ Expected: BecauseExpected
   Actual: BecauseActual
  Message: BecauseMessage
 BecauseFilePath(123)
-FilePath(1))%")
+FilePath(1))")
    {
       Anomaly becauseAnomaly;
       becauseAnomaly.assertExpression = "BecauseAssertExpression";
@@ -307,13 +307,13 @@ FilePath(1))%")
       expectedAnomaly.expected = zenWrappedAnomaly.expected;
       expectedAnomaly.actual = zenWrappedAnomaly.actual;
       expectedAnomaly.message = zenWrappedAnomaly.message;
-      expectedAnomaly.why = R"%(
+      expectedAnomaly.why = R"(
   Failed: ZEN(zenMockObject.FunctionMock.AssertCalledOnce())
  Because: ARE_EQUAL(expectedArg, _oneArgCalls[0].arg1, this->ZenMockedFunctionSignature) failed
 Expected: "expected"
   Actual: "actual"
  Message: "virtual void ZenUnit::Console::WriteLine(const string&) const"
-FilePath(1))%";
+FilePath(1))";
       expectedAnomaly.fileLine = FileLineValue;
       ARE_EQUAL(expectedAnomaly, anomaly);
    }

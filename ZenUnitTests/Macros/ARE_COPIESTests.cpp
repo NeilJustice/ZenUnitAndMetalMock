@@ -15,13 +15,13 @@ namespace ZenUnit
    {
       int x = 0;
       const string expectedAreNotSameWhatText = MakeExpectedARE_NOT_SAME_WhatText(&x, &x);
-      const string expectedWhat = R"%(
+      const string expectedWhat = R"(
   Failed: ARE_COPIES(x, x)
 Expected: 0
   Actual: 0
-)%" + expectedAreNotSameWhatText + R"%(
+)" + expectedAreNotSameWhatText + R"(
 File.cpp(1)
-File.cpp(1))%";
+File.cpp(1))";
       THROWS(ARE_COPIES(x, x), Anomaly, expectedWhat);
    }
 
@@ -30,14 +30,14 @@ File.cpp(1))%";
       int x = 0;
       const string messageA = "A", messageB = "B";
       const string expectedAreNotSameWhatText = MakeExpectedARE_NOT_SAME_WhatText(&x, &x);
-      const string expectedWhat = R"%(
+      const string expectedWhat = R"(
   Failed: ARE_COPIES(x, x, messageA, messageB)
 Expected: 0
   Actual: 0
-)%" + expectedAreNotSameWhatText + R"%(
+)" + expectedAreNotSameWhatText + R"(
  Message: "A", "B"
 File.cpp(1)
-File.cpp(1))%";
+File.cpp(1))";
       THROWS(ARE_COPIES(x, x, messageA, messageB), Anomaly, expectedWhat);
    }
 
@@ -62,7 +62,7 @@ File.cpp(1))%";
    {
       const int x = 1;
       int y = 2;
-      THROWS(ARE_COPIES(x, y), Anomaly, R"%(
+      THROWS(ARE_COPIES(x, y), Anomaly, R"(
   Failed: ARE_COPIES(x, y)
 Expected: 1
   Actual: 2
@@ -70,14 +70,14 @@ Expected: 1
 Expected: 1
   Actual: 2
 File.cpp(1)
-File.cpp(1))%");
+File.cpp(1))");
    }
 
    TEST(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws_UserTypeTestCase)
    {
       UserType x(1);
       const UserType y(2);
-      THROWS(ARE_COPIES(x, y), Anomaly, R"%(
+      THROWS(ARE_COPIES(x, y), Anomaly, R"(
   Failed: ARE_COPIES(x, y)
 Expected: UserType@1
   Actual: UserType@2
@@ -85,7 +85,7 @@ Expected: UserType@1
 Expected: UserType@1
   Actual: UserType@2
 File.cpp(1)
-File.cpp(1))%");
+File.cpp(1))");
    }
 
    TEST(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws_MessagesTestCase)
@@ -93,7 +93,7 @@ File.cpp(1))%");
       UserType x(1);
       UserType y(2);
       const string messageA = "A", messageB = "B";
-      THROWS(ARE_COPIES(x, y, messageA, messageB), Anomaly, R"%(
+      THROWS(ARE_COPIES(x, y, messageA, messageB), Anomaly, R"(
   Failed: ARE_COPIES(x, y, messageA, messageB)
 Expected: UserType@1
   Actual: UserType@2
@@ -102,7 +102,7 @@ Expected: UserType@1
   Actual: UserType@2
  Message: "A", "B"
 File.cpp(1)
-File.cpp(1))%");
+File.cpp(1))");
    }
 
    TEST(ObjectsHaveDifferentAddresses_ObjectsAreEqual_DoesNotThrow)
