@@ -35,8 +35,8 @@ matrix:
 #      addons:
 #        apt:
 #          sources: [ 'ubuntu-toolchain-r-test' ]
-  - apt list --installed | grep g++
-          packages: [ 'ninja-build', 'g++-7' ]
+#  - apt list --installed | grep g++
+#          packages: [ 'ninja-build', 'g++-7' ]
 
 before_script:
   - mkdir build
