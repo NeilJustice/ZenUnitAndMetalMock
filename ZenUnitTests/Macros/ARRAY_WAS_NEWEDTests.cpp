@@ -23,33 +23,33 @@ CLEANUP
 TEST(NullRawPointer_Throws)
 {
    const char* nullRawPointer = nullptr;
-   THROWS(ARRAY_WAS_NEWED(nullRawPointer), Anomaly, R"(
+   THROWS(ARRAY_WAS_NEWED(nullRawPointer), Anomaly, R"%(
   Failed: ARRAY_WAS_NEWED(nullRawPointer)
 Expected: not a nullptr
   Actual: nullptr
-File.cpp(1))");
+File.cpp(1))%");
 }
 
 TEST(NullRawPointer_Throws_MessagesTestCase)
 {
    const char* nullRawPointer = nullptr;
    const string MessageA = "A", MessageB = "B";
-   THROWS(ARRAY_WAS_NEWED(nullRawPointer, MessageA, MessageB), Anomaly, R"(
+   THROWS(ARRAY_WAS_NEWED(nullRawPointer, MessageA, MessageB), Anomaly, R"%(
   Failed: ARRAY_WAS_NEWED(nullRawPointer, MessageA, MessageB)
 Expected: not a nullptr
   Actual: nullptr
  Message: "A", "B"
-File.cpp(1))");
+File.cpp(1))%");
 }
 
 TEST(EmptyUniqueArrayPtr_Throws)
 {
    unique_ptr<const int[]> emptyUniqueArrayPtr;
-   THROWS(ARRAY_WAS_NEWED(emptyUniqueArrayPtr), Anomaly, R"(
+   THROWS(ARRAY_WAS_NEWED(emptyUniqueArrayPtr), Anomaly, R"%(
   Failed: ARRAY_WAS_NEWED(emptyUniqueArrayPtr)
 Expected: not a nullptr
   Actual: nullptr
-File.cpp(1))");
+File.cpp(1))%");
 }
 
 TEST(NonNullRawPointer_DestructsEachElement_NotCallableTwiceWithoutUndefinedBehavior)
@@ -74,19 +74,19 @@ TEST(NonNullUniqueArrayPointer_DestructsEachElement_ThrowsWhenCalledTwice)
    //
    ARE_EQUAL(5, Deletable::s_destructorCallCount);
 
-   THROWS(ARRAY_WAS_NEWED(nonNullUniqueArrayPtr), Anomaly, R"(
+   THROWS(ARRAY_WAS_NEWED(nonNullUniqueArrayPtr), Anomaly, R"%(
   Failed: ARRAY_WAS_NEWED(nonNullUniqueArrayPtr)
 Expected: not a nullptr
   Actual: nullptr
-File.cpp(1))");
+File.cpp(1))%");
 
    unique_ptr<const int[]> ints(new int[1]);
    ARRAY_WAS_NEWED(ints);
-   THROWS(ARRAY_WAS_NEWED(ints), Anomaly, R"(
+   THROWS(ARRAY_WAS_NEWED(ints), Anomaly, R"%(
   Failed: ARRAY_WAS_NEWED(ints)
 Expected: not a nullptr
   Actual: nullptr
-File.cpp(1))");
+File.cpp(1))%");
 }
 
 }; RUNTESTS(ARRAY_WAS_NEWEDTests)

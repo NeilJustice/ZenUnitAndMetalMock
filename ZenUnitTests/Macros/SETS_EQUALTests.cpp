@@ -52,7 +52,7 @@ namespace ZenUnit
       SetType<int> expectedSet;
       expectedSet.insert(1);
       SetType<int> actualSet;
-      THROWS(SETS_EQUAL(expectedSet, actualSet), Anomaly, R"(
+      THROWS(SETS_EQUAL(expectedSet, actualSet), Anomaly, R"%(
   Failed: SETS_EQUAL(expectedSet, actualSet)
 Expected: SetType<T>
   Actual: SetType<T>
@@ -60,7 +60,7 @@ Expected: SetType<T>
 Expected: 1
   Actual: 0
 File.cpp(1)
-File.cpp(1))");
+File.cpp(1))%");
    }
 
    TEST(SameSize1_ElementsNotEqual_Throws_MessagesTestCase)
@@ -70,7 +70,7 @@ File.cpp(1))");
       SetType<int> actualSet;
       actualSet.insert(2);
       const string messageA = "A", messageB = "B";
-      THROWS(SETS_EQUAL(expectedSet, actualSet, messageA, messageB), Anomaly, R"(
+      THROWS(SETS_EQUAL(expectedSet, actualSet, messageA, messageB), Anomaly, R"%(
   Failed: SETS_EQUAL(expectedSet, actualSet, messageA, messageB)
 Expected: SetType<T>
   Actual: SetType<T>
@@ -79,7 +79,7 @@ Expected: Contains element 1
   Actual: Contains no such element
  Message: "A", "B"
 File.cpp(1)
-File.cpp(1))");
+File.cpp(1))%");
    }
 
    TEST(SameSize2_ElementsNotEqual_Throws)
@@ -90,7 +90,7 @@ File.cpp(1))");
       SetType<int> actualSet;
       actualSet.insert(1);
       actualSet.insert(2);
-      THROWS(SETS_EQUAL(expectedSet, actualSet), Anomaly, R"(
+      THROWS(SETS_EQUAL(expectedSet, actualSet), Anomaly, R"%(
   Failed: SETS_EQUAL(expectedSet, actualSet)
 Expected: SetType<T>
   Actual: SetType<T>
@@ -98,7 +98,7 @@ Expected: SetType<T>
 Expected: Contains element 3
   Actual: Contains no such element
 File.cpp(1)
-File.cpp(1))");
+File.cpp(1))%");
    }
 
    TEST(UserTypeSets_SameSize1_ElementsNotEqual_Throws)
@@ -107,7 +107,7 @@ File.cpp(1))");
       expectedSet.insert(UserType(1));
       SetType<UserType> actualSet;
       actualSet.insert(UserType(2));
-      THROWS(SETS_EQUAL(expectedSet, actualSet), Anomaly, R"(
+      THROWS(SETS_EQUAL(expectedSet, actualSet), Anomaly, R"%(
   Failed: SETS_EQUAL(expectedSet, actualSet)
 Expected: SetType<T>
   Actual: SetType<T>
@@ -115,7 +115,7 @@ Expected: SetType<T>
 Expected: Contains element UserType@1
   Actual: Contains no such element
 File.cpp(1)
-File.cpp(1))");
+File.cpp(1))%");
    }
 
    };

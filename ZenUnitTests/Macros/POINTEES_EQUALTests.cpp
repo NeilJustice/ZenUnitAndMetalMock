@@ -24,22 +24,22 @@ TEST(ExpectedPointerNullptr_ActualPointerNotNullptr_Throws)
 {
    const int i = 0;
    const int* const intPointer = &i;
-   THROWS(POINTEES_EQUAL(nullptr, intPointer), Anomaly, R"(
+   THROWS(POINTEES_EQUAL(nullptr, intPointer), Anomaly, R"%(
   Failed: POINTEES_EQUAL(nullptr, intPointer)
 Expected: expected pointer != nullptr
   Actual: expected pointer == nullptr
-File.cpp(1))");
+File.cpp(1))%");
 }
 
 TEST(ExpectedPointerNotNullptr_ActualPointerNullptr_Throws)
 {
    const int i = 0;
    const int* const intPointer = &i;
-   THROWS(POINTEES_EQUAL(intPointer, nullptr), Anomaly, R"(
+   THROWS(POINTEES_EQUAL(intPointer, nullptr), Anomaly, R"%(
   Failed: POINTEES_EQUAL(intPointer, nullptr)
 Expected: actual pointer != nullptr
   Actual: actual pointer == nullptr
-File.cpp(1))");
+File.cpp(1))%");
 }
 
 TEST(ExpectedPointerNotNull_ActualPointerNotNull_PointeesNotEqual_Throws)
@@ -48,7 +48,7 @@ TEST(ExpectedPointerNotNull_ActualPointerNotNull_PointeesNotEqual_Throws)
    const string actualPointee = "actual_text";
    const string* const expectedPointer = &expectedPointee;
    const string* const actualPointer = &actualPointee;
-   THROWS(POINTEES_EQUAL(expectedPointer, actualPointer), Anomaly, R"(
+   THROWS(POINTEES_EQUAL(expectedPointer, actualPointer), Anomaly, R"%(
   Failed: POINTEES_EQUAL(expectedPointer, actualPointer)
 Expected: "expected_text"
   Actual: "actual_text"
@@ -56,7 +56,7 @@ Expected: "expected_text"
 Expected: "expected_text"
   Actual: "actual_text"
 File.cpp(1)
-File.cpp(1))");
+File.cpp(1))%");
 }
 
 TEST(ExpectedPointerNotNull_ActualPointerNotNull_PointeesNotEqual_Throws_MessagesTestCase)
@@ -66,7 +66,7 @@ TEST(ExpectedPointerNotNull_ActualPointerNotNull_PointeesNotEqual_Throws_Message
    const string* const expectedPointer = &expectedPointee;
    const string* const actualPointer = &actualPointee;
    const string MessageA = "A", MessageB = "B";
-   THROWS(POINTEES_EQUAL(expectedPointer, actualPointer, MessageA, MessageB), Anomaly, R"(
+   THROWS(POINTEES_EQUAL(expectedPointer, actualPointer, MessageA, MessageB), Anomaly, R"%(
   Failed: POINTEES_EQUAL(expectedPointer, actualPointer, MessageA, MessageB)
 Expected: "expected_text"
   Actual: "actual_text"
@@ -75,14 +75,14 @@ Expected: "expected_text"
   Actual: "actual_text"
  Message: "A", "B"
 File.cpp(1)
-File.cpp(1))");
+File.cpp(1))%");
 }
 
 TEST(ExpectedPointerNotNull_ActualPointerNotNull_PointeesNotEqual_UserTypes_Throws)
 {
    const unique_ptr<const UserType> expectedPointer(new UserType(1));
    const unique_ptr<const UserType> actualPointer(new UserType(2));
-   THROWS(POINTEES_EQUAL(expectedPointer, actualPointer), Anomaly, R"(
+   THROWS(POINTEES_EQUAL(expectedPointer, actualPointer), Anomaly, R"%(
   Failed: POINTEES_EQUAL(expectedPointer, actualPointer)
 Expected: UserType@1
   Actual: UserType@2
@@ -90,7 +90,7 @@ Expected: UserType@1
 Expected: UserType@1
   Actual: UserType@2
 File.cpp(1)
-File.cpp(1))");
+File.cpp(1))%");
 }
 
 TEST(ExpectedPointerNotNull_ActualPointerNotNull_PointeesEqual_DoesNotThrow)

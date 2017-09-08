@@ -25,45 +25,45 @@ namespace ZenUnit
 
    TEST(PatternDoesNotMatchAnyOfInput_Throws)
    {
-      THROWS(REGEX_MATCHES("a", "1"), Anomaly, R"(
+      THROWS(REGEX_MATCHES("a", "1"), Anomaly, R"%(
   Failed: REGEX_MATCHES("a", "1")
 Expected string to match: "a"
      Non-matching string: "1"
-File.cpp(1))");
+File.cpp(1))%");
 
       const string pattern = "a";
-      THROWS(REGEX_MATCHES(pattern, "1"), Anomaly, R"(
+      THROWS(REGEX_MATCHES(pattern, "1"), Anomaly, R"%(
   Failed: REGEX_MATCHES(pattern, "1")
 Expected string to match: "a"
      Non-matching string: "1"
-File.cpp(1))");
+File.cpp(1))%");
 
       const string str = "1";
-      THROWS(REGEX_MATCHES("a", str), Anomaly, R"(
+      THROWS(REGEX_MATCHES("a", str), Anomaly, R"%(
   Failed: REGEX_MATCHES("a", str)
 Expected string to match: "a"
      Non-matching string: "1"
-File.cpp(1))");
+File.cpp(1))%");
    }
 
    TEST(PatternMatchesOnlyPartOfInput_Throws)
    {
-      THROWS(REGEX_MATCHES("a", "a1"), Anomaly, R"(
+      THROWS(REGEX_MATCHES("a", "a1"), Anomaly, R"%(
   Failed: REGEX_MATCHES("a", "a1")
 Expected string to match: "a"
      Non-matching string: "a1"
-File.cpp(1))");
+File.cpp(1))%");
    }
 
    TEST(PatternMismatchesOnCase_Throws_MessagesTestCase)
    {
       const string messageA = "A", messageB = "B";
-      THROWS(REGEX_MATCHES("a", "A", messageA, messageB), Anomaly, R"(
+      THROWS(REGEX_MATCHES("a", "A", messageA, messageB), Anomaly, R"%(
   Failed: REGEX_MATCHES("a", "A", messageA, messageB)
 Expected string to match: "a"
      Non-matching string: "A"
  Message: "A", "B"
-File.cpp(1))");
+File.cpp(1))%");
    }
 
    }; RUNTESTS(REGEX_MATCHESTests)

@@ -64,7 +64,7 @@ namespace ZenUnit
    TEST(OneTypeEqualizerDefined_CallsIt)
    {
       const EqualizerOneTypeTestStruct expected{}, actual{};
-      THROWS(ARE_EQUAL(expected, actual), Anomaly, R"(
+      THROWS(ARE_EQUAL(expected, actual), Anomaly, R"%(
   Failed: ARE_EQUAL(expected, actual)
 Expected: <EqualizerOneTypeTestStruct>
   Actual: <EqualizerOneTypeTestStruct>
@@ -72,13 +72,13 @@ Expected: <EqualizerOneTypeTestStruct>
 Expected: 10
   Actual: 20
 File.cpp(1)
-File.cpp(1))");
+File.cpp(1))%");
    }
 
    TEST(TwoTypeEqualizerDefined_CallsIt)
    {
       const EqualizerTwoTypeTestStruct expected{};
-      THROWS(ARE_EQUAL(expected, 1), Anomaly, R"(
+      THROWS(ARE_EQUAL(expected, 1), Anomaly, R"%(
   Failed: ARE_EQUAL(expected, 1)
 Expected: <EqualizerTwoTypeTestStruct>
   Actual: 1
@@ -86,13 +86,13 @@ Expected: <EqualizerTwoTypeTestStruct>
 Expected: 30
   Actual: 40
 File.cpp(1)
-File.cpp(1))");
+File.cpp(1))%");
    }
 
    TEST(BothOneAndTwoTypeEqualizersDefined_CallsTheOneTypeEqualizer)
    {
       const EqualizerBothOneAndTwoTypeTestStruct expected{}, actual{};
-      THROWS(ARE_EQUAL(expected, actual), Anomaly, R"(
+      THROWS(ARE_EQUAL(expected, actual), Anomaly, R"%(
   Failed: ARE_EQUAL(expected, actual)
 Expected: <EqualizerBothOneAndTwoTypeTestStruct>
   Actual: <EqualizerBothOneAndTwoTypeTestStruct>
@@ -100,7 +100,7 @@ Expected: <EqualizerBothOneAndTwoTypeTestStruct>
 Expected: 50
   Actual: 60
 File.cpp(1)
-File.cpp(1))");
+File.cpp(1))%");
    }
 
    TEST(Int32sEqual_DoesNotThrow)
@@ -116,11 +116,11 @@ File.cpp(1))");
 
    TEST(IntLiteralsNotEqual_Throws)
    {
-      THROWS(ARE_EQUAL(0, 1), Anomaly, R"(
+      THROWS(ARE_EQUAL(0, 1), Anomaly, R"%(
   Failed: ARE_EQUAL(0, 1)
 Expected: 0
   Actual: 1
-File.cpp(1))");
+File.cpp(1))%");
    }
 
    TEST(IntVariablesNotEqual_Throws_MessagesTestCase)
@@ -128,23 +128,23 @@ File.cpp(1))");
       const int expected = 0;
       const int actual = 1;
       const string messageA = "A", messageB = "B";
-      THROWS(ARE_EQUAL(expected, actual, messageA, messageB), Anomaly, R"(
+      THROWS(ARE_EQUAL(expected, actual, messageA, messageB), Anomaly, R"%(
   Failed: ARE_EQUAL(expected, actual, messageA, messageB)
 Expected: 0
   Actual: 1
  Message: "A", "B"
-File.cpp(1))");
+File.cpp(1))%");
    }
 
    TEST(StringsNotEqual_ThrowsWithStringsInQuotesToConfirmedToStringed)
    {
       const string expected = "expected";
       const string actual = "actual";
-      THROWS(ARE_EQUAL(expected, actual), Anomaly, R"(
+      THROWS(ARE_EQUAL(expected, actual), Anomaly, R"%(
   Failed: ARE_EQUAL(expected, actual)
 Expected: "expected"
   Actual: "actual"
-File.cpp(1))");
+File.cpp(1))%");
    }
 
    }; RUNTESTS(ARE_EQUALTests)

@@ -108,7 +108,7 @@ File.cpp(1))%");
   Failed: IS_ZERO(i)
 Expected: InitializerConstructable@0
   Actual: InitializerConstructable@1
-File.cpp(1))"%);
+File.cpp(1))%");
    }
 
    }; RUNTESTS(IS_ZEROTests)

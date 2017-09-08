@@ -87,7 +87,7 @@ File.cpp\(1\))", anomaly.why);
    {
       const function<void()> stdFunctionA(FunctionA);
    #ifdef __linux__
-      THROWS(STD_FUNCTION_TARGETS(FunctionC, stdFunctionA), Anomaly, R"(
+      THROWS(STD_FUNCTION_TARGETS(FunctionC, stdFunctionA), Anomaly, R"%(
   Failed: STD_FUNCTION_TARGETS(FunctionC, stdFunctionA)
 Expected: 1
   Actual: <non-empty std::function>
@@ -95,7 +95,7 @@ Expected: 1
 Expected: 1
   Actual: 1
 File.cpp(1)
-File.cpp(1))");
+File.cpp(1))%");
    #elif _WIN32
       try
       {
