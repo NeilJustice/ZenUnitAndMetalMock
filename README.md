@@ -41,8 +41,8 @@ None
 |----------------|
 |`TESTCLASS(HighQualityTestClassName)`|
 |`TEMPLATETESTCLASS(HighQualityTestClassName, TemplateParameterNames...)` // Precede with template\<parameter-list\>|
-|`FACT(HighQualityTestName)` // Standard-issue void test specification|
-|`FACTS(HighQualityTestName)` // N-by-N value-parameterized test specification|
+|`AFACT(HighQualityTestName)` // Standard-issue void test|
+|`FACTS(HighQualityTestName)` // N-by-N value-parameterized test, the signature feature of ZenUnit|
 |`SKIPFACT(HighQualityTestName, Reason)`|
 |`SKIPFACTS(HighQualityTestName, Reason)`|
 |`EVIDENCE` // Ends the FACT section and begins the TEST section|
@@ -133,7 +133,7 @@ template<
    template<typename...>
    class SetType, typename T>
 TEMPLATETESTS(SetTests, SetType, T)
-FACT(Contains_ReturnsTrueIfSetContainsElement)
+AFACT(Contains_ReturnsTrueIfSetContainsElement)
 EVIDENCE
 
 TEST(Contains_ReturnsTrueIfSetContainsElement)
