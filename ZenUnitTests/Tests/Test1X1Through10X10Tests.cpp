@@ -87,9 +87,9 @@ namespace ZenUnit
 struct TestingTestClass2X2 : public StartupAndCleanup
 {
    static vector<tuple<size_t, int, string>> s_calls;
-   void Test(size_t __testCase, int arg1, string arg2)
+   void Test(size_t __testCase, int argument1, string argument2)
    {
-      s_calls.emplace_back(__testCase, arg1, arg2);
+      s_calls.emplace_back(__testCase, argument1, argument2);
    }
 };
 vector<tuple<size_t, int, string>> TestingTestClass2X2::s_calls;
@@ -138,9 +138,9 @@ namespace ZenUnit
 struct TestingTestClass3X3 : public StartupAndCleanup
 {
    static vector<tuple<size_t, int, int, string>> s_calls;
-   void Test(size_t __testCase, int arg1, int arg2, string arg3)
+   void Test(size_t __testCase, int argument1, int argument2, string argument3)
    {
-      s_calls.emplace_back(__testCase, arg1, arg2, arg3);
+      s_calls.emplace_back(__testCase, argument1, argument2, argument3);
    }
 };
 vector<tuple<size_t, int, int, string>> TestingTestClass3X3::s_calls;
@@ -189,9 +189,9 @@ namespace ZenUnit
 struct TestingTestClass4X4 : public StartupAndCleanup
 {
    static vector<tuple<size_t, int, int, int, string>> s_calls;
-   void Test(size_t __testCase, int arg1, int arg2, int arg3, string arg4)
+   void Test(size_t __testCase, int argument1, int argument2, int argument3, string argument4)
    {
-      s_calls.emplace_back(__testCase, arg1, arg2, arg3, arg4);
+      s_calls.emplace_back(__testCase, argument1, argument2, argument3, argument4);
    }
 };
 vector<tuple<size_t, int, int, int, string>> TestingTestClass4X4::s_calls;
@@ -240,9 +240,9 @@ namespace ZenUnit
 struct TestingTestClass5X5 : public StartupAndCleanup
 {
    static vector<tuple<size_t, int, int, int, int, string>> s_calls;
-   void Test(size_t __testCase, int arg1, int arg2, int arg3, int arg4, string arg5)
+   void Test(size_t __testCase, int argument1, int argument2, int argument3, int argument4, string argument5)
    {
-      s_calls.emplace_back(__testCase, arg1, arg2, arg3, arg4, arg5);
+      s_calls.emplace_back(__testCase, argument1, argument2, argument3, argument4, argument5);
    }
 };
 vector<tuple<size_t, int, int, int, int, string>> TestingTestClass5X5::s_calls;
@@ -291,9 +291,9 @@ namespace ZenUnit
 struct TestingTestClass6X6 : public StartupAndCleanup
 {
    static vector<tuple<size_t, int, int, int, int, int, string>> s_calls;
-   void Test(size_t __testCase, int arg1, int arg2, int arg3, int arg4, int arg5, string arg6)
+   void Test(size_t __testCase, int argument1, int argument2, int argument3, int argument4, int argument5, string argument6)
    {
-      s_calls.emplace_back(__testCase, arg1, arg2, arg3, arg4, arg5, arg6);
+      s_calls.emplace_back(__testCase, argument1, argument2, argument3, argument4, argument5, argument6);
    }
 };
 vector<tuple<size_t, int, int, int, int, int, string>> TestingTestClass6X6::s_calls;
@@ -342,9 +342,9 @@ namespace ZenUnit
 struct TestingTestClass7X7 : public StartupAndCleanup
 {
    static vector<tuple<size_t, int, int, int, int, int, int, string>> s_calls;
-   void Test(size_t __testCase, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, string arg7)
+   void Test(size_t __testCase, int argument1, int argument2, int argument3, int argument4, int argument5, int argument6, string argument7)
    {
-      s_calls.emplace_back(__testCase, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+      s_calls.emplace_back(__testCase, argument1, argument2, argument3, argument4, argument5, argument6, argument7);
    }
 };
 vector<tuple<size_t, int, int, int, int, int, int, string>> TestingTestClass7X7::s_calls;
@@ -393,9 +393,9 @@ namespace ZenUnit
 struct TestingTestClass8X8 : public StartupAndCleanup
 {
    static vector<tuple<size_t, int, int, int, int, int, int, int, string>> s_calls;
-   void Test(size_t __testCase, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, string arg8)
+   void Test(size_t __testCase, int argument1, int argument2, int argument3, int argument4, int argument5, int argument6, int argument7, string argument8)
    {
-      s_calls.emplace_back(__testCase, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+      s_calls.emplace_back(__testCase, argument1, argument2, argument3, argument4, argument5, argument6, argument7, argument8);
    }
 };
 vector<tuple<size_t, int, int, int, int, int, int, int, string>> TestingTestClass8X8::s_calls;
@@ -444,9 +444,9 @@ namespace ZenUnit
 struct TestingTestClass9X9 : public StartupAndCleanup
 {
    static vector<tuple<size_t, int, int, int, int, int, int, int, int, string>> s_calls;
-   void Test(size_t __testCase, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int arg8, string arg9)
+   void Test(size_t __testCase, int argument1, int argument2, int argument3, int argument4, int argument5, int argument6, int argument7, int argument8, string argument9)
    {
-      s_calls.emplace_back(__testCase, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
+      s_calls.emplace_back(__testCase, argument1, argument2, argument3, argument4, argument5, argument6, argument7, argument8, argument9);
    }
 };
 vector<tuple<size_t, int, int, int, int, int, int, int, int, string>> TestingTestClass9X9::s_calls;
@@ -495,9 +495,9 @@ namespace ZenUnit
 struct TestingTestClass10X10 : public StartupAndCleanup
 {
    static vector<tuple<size_t, int, int, int, int, int, int, int, int, int, string>> s_calls;
-   void Test(size_t __testCase, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int arg8, int arg9, string arg10)
+   void Test(size_t __testCase, int argument1, int argument2, int argument3, int argument4, int argument5, int argument6, int argument7, int argument8, int argument9, string argument10)
    {
-      s_calls.emplace_back(__testCase, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
+      s_calls.emplace_back(__testCase, argument1, argument2, argument3, argument4, argument5, argument6, argument7, argument8, argument9, argument10);
    }
 };
 vector<tuple<size_t, int, int, int, int, int, int, int, int, int, string>> TestingTestClass10X10::s_calls;

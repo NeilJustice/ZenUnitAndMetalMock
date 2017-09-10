@@ -1,5 +1,5 @@
 #pragma once
-#include "ZenUnit/ZenMock/1/OneArgMocker.h"
+#include "ZenUnit/ZenMock/1/OneArgumentMocker.h"
 #include "ZenUnit/ZenMock/Mock.h"
 #include "ZenUnit/ZenMock/Signature.h"
 
@@ -35,38 +35,38 @@ void functionName(arg1Type arg) constness finalness \
 { \
    functionName##Mock##__VA_ARGS__.ZenMockIt(arg); \
 } \
-struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidOneArgMocker<arg1Type> \
+struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidOneArgumentMocker<arg1Type> \
 { \
    explicit ZenMock_##functionName##__VA_ARGS__(const std::string* zenMockedClassName) \
-      : ZenMock::VoidOneArgMocker<arg1Type>(ZenMock::Signature::Function( \
+      : ZenMock::VoidOneArgumentMocker<arg1Type>(ZenMock::Signature::Function( \
          #virtualness, "void", zenMockedClassName, #functionName"("#arg1Type")", #constness)) {} \
 } mutableness functionName##Mock##__VA_ARGS__ = ZenMock_##functionName##__VA_ARGS__(this->ZenMockedClassName());
 
 namespace ZenMock
 {
    template<typename ArgType>
-   class VoidOneArgMocker : public OneArgMocker<ArgType>
+   class VoidOneArgumentMocker : public OneArgumentMocker<ArgType>
    {
    public:
-      explicit VoidOneArgMocker(const std::string& zenMockedFunctionSignature)
-         : OneArgMocker<ArgType>(zenMockedFunctionSignature)
+      explicit VoidOneArgumentMocker(const std::string& zenMockedFunctionSignature)
+         : OneArgumentMocker<ArgType>(zenMockedFunctionSignature)
       {
       }
    };
 
    template<typename Arg1Type>
-   class VoidOneArgFunctionPointerMocker : public VoidOneArgMocker<Arg1Type>
+   class VoidOneArgFunctionPointerMocker : public VoidOneArgumentMocker<Arg1Type>
    {
    public:
       explicit VoidOneArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
-         : VoidOneArgMocker<Arg1Type>(zenMockedFunctionSignature)
+         : VoidOneArgumentMocker<Arg1Type>(zenMockedFunctionSignature)
       {
       }
 
       static void ZenMockItFunctionPointer(
-         VoidOneArgFunctionPointerMocker<Arg1Type>* functionMocker, Arg1Type arg1)
+         VoidOneArgFunctionPointerMocker<Arg1Type>* functionMocker, Arg1Type argument1)
       {
-         functionMocker->ZenMockIt(arg1);
+         functionMocker->ZenMockIt(argument1);
       }
    };
 }

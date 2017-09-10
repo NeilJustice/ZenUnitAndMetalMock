@@ -5,16 +5,16 @@
 const size_t ZenUnit::ZenUnitArgs::NumberOfValidArgs = 7;
 
 void ZenUnitEqualizer<ZenUnit::ZenUnitArgs>::
-AssertEqual(const ZenUnit::ZenUnitArgs& expectedArgs, const ZenUnit::ZenUnitArgs& actualArgs)
+AssertEqual(const ZenUnit::ZenUnitArgs& expectedArguments, const ZenUnit::ZenUnitArgs& actualArgs)
 {
-   ARE_EQUAL(expectedArgs.commandLine, actualArgs.commandLine);
-   ARE_EQUAL(expectedArgs.printMode, actualArgs.printMode);
-   ARE_EQUAL(expectedArgs.exit0, actualArgs.exit0);
-   ARE_EQUAL(expectedArgs.failskips, actualArgs.failskips);
-   ARE_EQUAL(expectedArgs.testruns, actualArgs.testruns);
-   ARE_EQUAL(expectedArgs.random, actualArgs.random);
-   ARE_EQUAL(expectedArgs.randomseed, actualArgs.randomseed);
-   ARE_EQUAL(expectedArgs.randomseedsetbyuser, actualArgs.randomseedsetbyuser);
-   ARE_EQUAL(expectedArgs.maxtestmilliseconds, actualArgs.maxtestmilliseconds);
-   ARE_EQUAL(expectedArgs.maxtotalseconds, actualArgs.maxtotalseconds);
+   ARE_EQUAL(expectedArguments.commandLine, actualArgs.commandLine);
+   ARE_EQUAL(expectedArguments.printMode, actualArgs.printMode);
+   ARE_EQUAL(expectedArguments.exit0, actualArgs.exit0);
+   ARE_EQUAL(expectedArguments.failskips, actualArgs.failskips);
+   ARE_EQUAL(expectedArguments.testruns, actualArgs.testruns);
+   ARE_EQUAL(expectedArguments.random, actualArgs.random);
+   ARE_EQUAL(expectedArguments.randomseed, actualArgs.randomseed);
+   ARE_EQUAL(expectedArguments.randomseedsetbyuser, actualArgs.randomseedsetbyuser);
+   ARE_EQUAL(expectedArguments.maxtestmilliseconds, actualArgs.maxtestmilliseconds);
+   ARE_EQUAL(expectedArguments.maxtotalseconds, actualArgs.maxtotalseconds);
 }

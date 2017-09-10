@@ -30,7 +30,7 @@ namespace ZenMock
    };
 
    TESTS(ZenMock_NonVoid0Tests)
-   // ZeroArgMocker Tests
+   // ZeroArgumentMocker Tests
    AFACT(Expect_CalledTwice_Throws)
    AFACT(ExpectAndThrow_CalledTwice_Throws)
    AFACT(FunctionNotCalled_AssertCalledNTimesWithN0_Throws)
@@ -103,7 +103,7 @@ namespace ZenMock
             StaticNameClashSignature);
    }
 
-   // ZeroArgMocker Tests
+   // ZeroArgumentMocker Tests
 
    TEST(Expect_CalledTwice_Throws)
    {

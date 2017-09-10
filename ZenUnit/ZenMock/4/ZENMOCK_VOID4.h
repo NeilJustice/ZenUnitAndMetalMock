@@ -1,5 +1,5 @@
 #pragma once
-#include "ZenUnit/ZenMock/4/FourArgMocker.h"
+#include "ZenUnit/ZenMock/4/FourArgumentMocker.h"
 #include "ZenUnit/ZenMock/Mock.h"
 
 // Virtual Functions
@@ -30,43 +30,43 @@
 
 // Implementation
 #define ZENMOCK_VOID4_DEFINED(functionName, arg1Type, arg2Type, arg3Type, arg4Type, virtualness, constness, mutableness, finalness, ...) \
-void functionName(arg1Type arg1, arg2Type arg2, arg3Type arg3, arg4Type arg4) constness finalness \
+void functionName(arg1Type argument1, arg2Type argument2, arg3Type argument3, arg4Type argument4) constness finalness \
 { \
-   functionName##Mock##__VA_ARGS__.ZenMockIt(arg1, arg2, arg3, arg4); \
+   functionName##Mock##__VA_ARGS__.ZenMockIt(argument1, argument2, argument3, argument4); \
 } \
-struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidFourArgMocker<arg1Type, arg2Type, arg3Type, arg4Type> \
+struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidFourArgumentMocker<arg1Type, arg2Type, arg3Type, arg4Type> \
 { \
    explicit ZenMock_##functionName##__VA_ARGS__(const std::string* zenMockedClassName) \
-      : ZenMock::VoidFourArgMocker<arg1Type, arg2Type, arg3Type, arg4Type>(ZenMock::Signature::Function( \
+      : ZenMock::VoidFourArgumentMocker<arg1Type, arg2Type, arg3Type, arg4Type>(ZenMock::Signature::Function( \
          #virtualness, "void", zenMockedClassName, #functionName"("#arg1Type", "#arg2Type", "#arg3Type", "#arg4Type")", #constness)) {} \
 } mutableness functionName##Mock##__VA_ARGS__ = ZenMock_##functionName##__VA_ARGS__(this->ZenMockedClassName());
 
 namespace ZenMock
 {
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
-   class VoidFourArgMocker : public FourArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>
+   class VoidFourArgumentMocker : public FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>
    {
    public:
-      explicit VoidFourArgMocker(const std::string& zenMockedFunctionSignature)
-         : FourArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>(zenMockedFunctionSignature)
+      explicit VoidFourArgumentMocker(const std::string& zenMockedFunctionSignature)
+         : FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>(zenMockedFunctionSignature)
       {
       }
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
-   class VoidFourArgFunctionPointerMocker : public VoidFourArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>
+   class VoidFourArgFunctionPointerMocker : public VoidFourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>
    {
    public:
       explicit VoidFourArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
-         : VoidFourArgMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>(zenMockedFunctionSignature)
+         : VoidFourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>(zenMockedFunctionSignature)
       {
       }
 
       static void ZenMockItFunctionPointer(
          VoidFourArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>* functionMocker,
-         Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4)
+         Arg1Type argument1, Arg2Type argument2, Arg3Type argument3, Arg4Type argument4)
       {
-         functionMocker->ZenMock(arg1, arg2, arg3, arg4);
+         functionMocker->ZenMock(argument1, argument2, argument3, argument4);
       }
    };
 }

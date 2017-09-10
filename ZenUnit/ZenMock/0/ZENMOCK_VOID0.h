@@ -1,5 +1,5 @@
 #pragma once
-#include "ZenUnit/ZenMock/0/ZeroArgMocker.h"
+#include "ZenUnit/ZenMock/0/ZeroArgumentMocker.h"
 #include "ZenUnit/ZenMock/Mock.h"
 
 // Virtual Functions
@@ -33,29 +33,29 @@ void functionName() constness finalness \
 { \
    functionName##Mock.ZenMockIt(); \
 } \
-struct ZenMock_##functionName : public ZenMock::VoidZeroArgMocker \
+struct ZenMock_##functionName : public ZenMock::VoidZeroArgumentMocker \
 { \
    explicit ZenMock_##functionName(const std::string* zenMockedClassName) \
-      : ZenMock::VoidZeroArgMocker(ZenMock::Signature::Function( \
+      : ZenMock::VoidZeroArgumentMocker(ZenMock::Signature::Function( \
          #virtualness, "void", zenMockedClassName, #functionName"()", #constness)) {} \
 } mutableness functionName##Mock = ZenMock_##functionName(this->ZenMockedClassName());
 
 namespace ZenMock
 {
-   class VoidZeroArgMocker : public ZeroArgMocker<ExceptionThrower>
+   class VoidZeroArgumentMocker : public ZeroArgumentMocker<ExceptionThrower>
    {
    public:
-      explicit VoidZeroArgMocker(const std::string& zenMockedFunctionSignature)
-         : ZeroArgMocker(zenMockedFunctionSignature)
+      explicit VoidZeroArgumentMocker(const std::string& zenMockedFunctionSignature)
+         : ZeroArgumentMocker(zenMockedFunctionSignature)
       {
       }
    };
 
-   class VoidZeroArgFunctionPointerMocker : public VoidZeroArgMocker
+   class VoidZeroArgFunctionPointerMocker : public VoidZeroArgumentMocker
    {
    public:
       explicit VoidZeroArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
-         : VoidZeroArgMocker(zenMockedFunctionSignature)
+         : VoidZeroArgumentMocker(zenMockedFunctionSignature)
       {
       }
 

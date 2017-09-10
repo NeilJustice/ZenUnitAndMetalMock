@@ -30,7 +30,7 @@ namespace ZenMock
    };
 
    TESTS(ZenMock_Void0Tests)
-   // ZeroArgMocker Tests
+   // ZeroArgumentMocker Tests
    AFACT(Expect_CalledTwice_Throws)
    AFACT(ExpectAndThrow_CalledTwice_Throws)
    AFACT(FunctionNotCalled_AssertCalledNTimesWithN0_Throws)

@@ -38,6 +38,6 @@ template<>
 struct ZenUnitEqualizer<ZenUnit::ZenUnitArgs>
 {
    static void AssertEqual(
-      const ZenUnit::ZenUnitArgs& expectedArgs,
+      const ZenUnit::ZenUnitArgs& expectedArguments,
       const ZenUnit::ZenUnitArgs& actualArgs);
 };

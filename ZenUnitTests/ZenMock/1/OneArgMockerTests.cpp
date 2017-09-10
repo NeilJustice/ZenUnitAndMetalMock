@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "ZenUnit/ZenMock/1/OneArgMocker.h"
+#include "ZenUnit/ZenMock/1/OneArgumentMocker.h"
 #include "ZenUnitTests/ZenMock/Mock/ExceptionThrowerMock.h"
 
 namespace ZenMock
 {
-   TESTS(OneArgMockerTests)
+   TESTS(OneArgumentMockerTests)
    AFACT(Constructor_SetsFields)
    AFACT(Expect_AlreadyExpected_Throws)
    AFACT(Expect_NotAlreadyExpected_SetsExpectedTrue)
@@ -23,7 +23,7 @@ namespace ZenMock
    AFACT(AssertCalls_SetsAssertedTrue_ExpectedCallsSizeNon0AndEqualToNumberOfCalls_ArgsEqual_DoesNotThrow_DoesNotCopyTheExpectedArg)
    EVIDENCE
 
-   using MockerType = OneArgMocker<int, ExceptionThrowerMock>;
+   using MockerType = OneArgumentMocker<int, ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;
 
    STARTUP
@@ -43,7 +43,7 @@ namespace ZenMock
       ARE_EQUAL(Test::Signature, mocker.ZenMockedFunctionSignature);
       IS_FALSE(mocker._expected);
       IS_FALSE(mocker._asserted);
-      IS_EMPTY(mocker._oneArgCalls);
+      IS_EMPTY(mocker.oneArgumentCalls);
    }
 
    TEST(Expect_AlreadyExpected_Throws)
@@ -76,10 +76,10 @@ namespace ZenMock
       IS_FALSE(_mocker->_expected);
       _mocker->_exceptionThrower.ExpectCallToExpectAndThrow();
       //
-      _mocker->ExpectAndThrow<TestingException>("arg", 100);
+      _mocker->ExpectAndThrow<TestingException>("argument", 100);
       //
       _mocker->_exceptionThrower.
-         AssertExpectAndThrowCalledOnceWith("ZenMock::TestingException", 2, "arg100");
+         AssertExpectAndThrowCalledOnceWith("ZenMock::TestingException", 2, "argument100");
       IS_TRUE(_mocker->_expected);
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
@@ -95,23 +95,23 @@ namespace ZenMock
    {
       _mocker->_expected = true;
       _mocker->_exceptionThrower.ExpectCallToZenMockThrowIfExceptionSet();
-      IS_EMPTY(_mocker->_oneArgCalls);
+      IS_EMPTY(_mocker->oneArgumentCalls);
       //
       _mocker->ZenMockIt(1);
       //
-      using CallType = OneArgCall<int>;
+      using CallType = OneArgumentCall<int>;
       const vector<CallType> expectedCalls
       {
          CallType(1)
       };
-      VECTORS_EQUAL(expectedCalls, _mocker->_oneArgCalls);
+      VECTORS_EQUAL(expectedCalls, _mocker->oneArgumentCalls);
       ZEN(_mocker->_exceptionThrower.AssertZenMockThrowIfExceptionSetCalledOnce());
       NOTHROWS(_mocker->AssertCalledOnceWith(1));
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
    TEST5X5(AssertCalledOnceWith_SetsAssertedTrue_FunctionWasCalledOnceWithExpectedArg_DoesNotThrow,
-      size_t numberOfCalls, int expectedArg, int actualArg, bool expectCallCountThrow, bool expectArgEqualityThrow,
+      size_t numberOfCalls, int expectedArgument, int actualArg, bool expectCallCountThrow, bool expectArgEqualityThrow,
       size_t(0), NA<int>(), NA<int>(), true, false,
       size_t(2), NA<int>(), NA<int>(), true, false,
       size_t(1), 1, 0, false, true,
@@ -119,16 +119,16 @@ namespace ZenMock
       size_t(1), 1, 1, false, false)
    {
       IS_FALSE(_mocker->_asserted);
-      _mocker->_oneArgCalls.resize(numberOfCalls);
+      _mocker->oneArgumentCalls.resize(numberOfCalls);
       if (numberOfCalls == 1)
       {
-         _mocker->_oneArgCalls = { OneArgCall<int>(actualArg) };
+         _mocker->oneArgumentCalls = { OneArgumentCall<int>(actualArg) };
       }
       //
       if (expectCallCountThrow)
       {
-         THROWS(_mocker->AssertCalledOnceWith(expectedArg), Anomaly, R"(
-  Failed: ARE_EQUAL(expectedNumberOfCalls, _oneArgCalls.size(), this->ZenMockedFunctionSignature)
+         THROWS(_mocker->AssertCalledOnceWith(expectedArgument), Anomaly, R"(
+  Failed: ARE_EQUAL(expectedNumberOfCalls, oneArgumentCalls.size(), this->ZenMockedFunctionSignature)
 Expected: 1
   Actual: )" + to_string(numberOfCalls) + R"(
  Message: ")" + Test::Signature + R"("
@@ -138,16 +138,16 @@ File.cpp(1))");
       {
          if (expectArgEqualityThrow)
          {
-            THROWS(_mocker->AssertCalledOnceWith(expectedArg), Anomaly, R"(
-  Failed: ARE_EQUAL(expectedArg, _oneArgCalls[0].arg, this->ZenMockedFunctionSignature)
-Expected: )" + to_string(expectedArg) + R"(
+            THROWS(_mocker->AssertCalledOnceWith(expectedArgument), Anomaly, R"(
+  Failed: ARE_EQUAL(expectedArgument, oneArgumentCalls[0].argument, this->ZenMockedFunctionSignature)
+Expected: )" + to_string(expectedArgument) + R"(
   Actual: )" + to_string(actualArg) + R"(
  Message: ")" + Test::Signature + R"("
 File.cpp(1))");
          }
          else
          {
-            _mocker->AssertCalledOnceWith(expectedArg);
+            _mocker->AssertCalledOnceWith(expectedArgument);
          }
       }
       //
@@ -171,12 +171,12 @@ File.cpp(1))");
       size_t(2), size_t(3), true)
    {
       IS_FALSE(_mocker->_asserted);
-      _mocker->_oneArgCalls.resize(numberOfCalls);
+      _mocker->oneArgumentCalls.resize(numberOfCalls);
       //
       if (expectThrow)
       {
          const string expectedWhat = String::Concat(R"(
-  Failed: ARE_EQUAL(expectedNumberOfCalls, _oneArgCalls.size(), this->ZenMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCalls, oneArgumentCalls.size(), this->ZenMockedFunctionSignature)
 Expected: )", expectedNumberOfCalls, R"(
   Actual: )", numberOfCalls, R"(
  Message: ")", Test::Signature, R"("
@@ -192,33 +192,33 @@ File.cpp(1))");
    }
 
    TEST5X5(AssertCalledNTimesWith_SetsAssertedTrue_NEqualToNumberOfCalls_ThrowsIfArgsDoNotMatch,
-      size_t expectedNumberOfCalls, int expectedArg, const vector<OneArgCall<int>>& actualArgs,
+      size_t expectedNumberOfCalls, int expectedArgument, const vector<OneArgumentCall<int>>& actualArgs,
       bool expectThrow, size_t expectedResponsibleCallIndex,
-      size_t(1), 0, vector<OneArgCall<int>>{0}, false, NA<size_t>(),
-      size_t(1), 0, vector<OneArgCall<int>>{1}, true, size_t(0),
-      size_t(1), 1, vector<OneArgCall<int>>{2}, true, size_t(0),
-      size_t(2), 1, vector<OneArgCall<int>>{1 Comma 1}, false, NA<size_t>(),
-      size_t(2), 1, vector<OneArgCall<int>>{2 Comma 1}, true, size_t(0),
-      size_t(2), 1, vector<OneArgCall<int>>{1 Comma 2}, true, size_t(1))
+      size_t(1), 0, vector<OneArgumentCall<int>>{0}, false, NA<size_t>(),
+      size_t(1), 0, vector<OneArgumentCall<int>>{1}, true, size_t(0),
+      size_t(1), 1, vector<OneArgumentCall<int>>{2}, true, size_t(0),
+      size_t(2), 1, vector<OneArgumentCall<int>>{1 Comma 1}, false, NA<size_t>(),
+      size_t(2), 1, vector<OneArgumentCall<int>>{2 Comma 1}, true, size_t(0),
+      size_t(2), 1, vector<OneArgumentCall<int>>{1 Comma 2}, true, size_t(1))
    {
       IS_FALSE(_mocker->_asserted);
       //
-      _mocker->_oneArgCalls = actualArgs;
+      _mocker->oneArgumentCalls = actualArgs;
       if (expectThrow)
       {
-         int actualArg = actualArgs[expectedResponsibleCallIndex].arg;
+         int actualArg = actualArgs[expectedResponsibleCallIndex].argument;
          string expectedSignatureAndCallIndex =
             Test::Signature + " at i=" + to_string(expectedResponsibleCallIndex);
-         THROWS(_mocker->AssertCalledNTimesWith(expectedNumberOfCalls, expectedArg), Anomaly, R"(
-  Failed: ARE_EQUAL(expectedArg, _oneArgCalls[i].arg, zenMockedFunctionSignatureAndCallIndex)
-Expected: )" + to_string(expectedArg) + R"(
+         THROWS(_mocker->AssertCalledNTimesWith(expectedNumberOfCalls, expectedArgument), Anomaly, R"(
+  Failed: ARE_EQUAL(expectedArgument, oneArgumentCalls[i].argument, zenMockedFunctionSignatureAndCallIndex)
+Expected: )" + to_string(expectedArgument) + R"(
   Actual: )" + to_string(actualArg) + R"(
  Message: ")" + expectedSignatureAndCallIndex + R"("
 File.cpp(1))");
       }
       else
       {
-         _mocker->AssertCalledNTimesWith(expectedNumberOfCalls, expectedArg);
+         _mocker->AssertCalledNTimesWith(expectedNumberOfCalls, expectedArgument);
       }
       //
       IS_TRUE(_mocker->_asserted);
@@ -235,10 +235,10 @@ File.cpp(1))");
    TEST(AssertCalls_SetsAssertedTrue_ExpectedCallsSizeNon0AndNotEqualToActualCallsSize_Throws_DoesNotCopyTheExpectedArg)
    {
       IS_FALSE(_mocker->_asserted);
-      const vector<OneArgCallRef<int>> expectedOneArgCalls { 0 };
+      const vector<OneArgumentCallRef<int>> expectedOneArgumentCalls { 0 };
       //
-      THROWS(_mocker->AssertCalls(expectedOneArgCalls), Anomaly, R"(
-  Failed: VECTORS_EQUAL(expectedOneArgCalls, actualOneArgCalls, this->ZenMockedFunctionSignature)
+      THROWS(_mocker->AssertCalls(expectedOneArgumentCalls), Anomaly, R"(
+  Failed: VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature)
 Expected: vector<T>
   Actual: vector<T>
  Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
@@ -255,18 +255,18 @@ File.cpp(1))");
    {
       IS_FALSE(_mocker->_asserted);
       const int x = 10, y = 10;
-      const vector<OneArgCallRef<int>> expectedOneArgCalls { x, y };
-      _mocker->_oneArgCalls = { 10, 20 };
+      const vector<OneArgumentCallRef<int>> expectedOneArgumentCalls { x, y };
+      _mocker->oneArgumentCalls = { 10, 20 };
       //
-      THROWS(_mocker->AssertCalls(expectedOneArgCalls), Anomaly, R"(
-  Failed: VECTORS_EQUAL(expectedOneArgCalls, actualOneArgCalls, this->ZenMockedFunctionSignature)
+      THROWS(_mocker->AssertCalls(expectedOneArgumentCalls), Anomaly, R"(
+  Failed: VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature)
 Expected: vector<T>
   Actual: vector<T>
  Because: ARE_EQUAL(ithExpectedElement, ithActualElement, iEqualsIndexMessage) failed
-Expected: ZenMock::OneArgCall:
-Arg: 10
-  Actual: ZenMock::OneArgCall:
-Arg: 20
+Expected: ZenMock::OneArgumentCall:
+Argument: 10
+  Actual: ZenMock::OneArgumentCall:
+Argument: 20
  Message: "i=1"
  Message: ")" + Test::Signature + R"("
 File.cpp(1)
@@ -278,18 +278,18 @@ File.cpp(1))");
    TEST(AssertCalls_SetsAssertedTrue_ExpectedCallsSizeNon0AndEqualToNumberOfCalls_ArgsEqual_DoesNotThrow_DoesNotCopyTheExpectedArg)
    {
       IS_FALSE(_mocker->_asserted);
-      int arg1 = 10;
-      int arg2 = 10;
-      const vector<OneArgCallRef<int>> expectedOneArgCalls
+      int argument1 = 10;
+      int argument2 = 10;
+      const vector<OneArgumentCallRef<int>> expectedOneArgumentCalls
       {
-         arg1, arg2
+         argument1, argument2
       };
-      _mocker->_oneArgCalls = { 10, 10 };
+      _mocker->oneArgumentCalls = { 10, 10 };
       //
-      _mocker->AssertCalls(expectedOneArgCalls);
+      _mocker->AssertCalls(expectedOneArgumentCalls);
       //
       IS_TRUE(_mocker->_asserted);
    }
 
-   }; RUNTESTS(OneArgMockerTests)
+   }; RUNTESTS(OneArgumentMockerTests)
 }

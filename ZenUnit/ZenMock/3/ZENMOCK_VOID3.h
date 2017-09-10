@@ -1,5 +1,5 @@
 #pragma once
-#include "ZenUnit/ZenMock/3/ThreeArgMocker.h"
+#include "ZenUnit/ZenMock/3/ThreeArgumentMocker.h"
 #include "ZenUnit/ZenMock/Mock.h"
 
 // Virtual Functions
@@ -30,43 +30,43 @@
 
 // Implementation
 #define ZENMOCK_VOID3_DEFINED(functionName, arg1Type, arg2Type, arg3Type, virtualness, constness, mutableness, finalness, ...) \
-void functionName(arg1Type arg1, arg2Type arg2, arg3Type arg3) constness finalness \
+void functionName(arg1Type argument1, arg2Type argument2, arg3Type argument3) constness finalness \
 { \
-   functionName##Mock##__VA_ARGS__.ZenMockIt(arg1, arg2, arg3); \
+   functionName##Mock##__VA_ARGS__.ZenMockIt(argument1, argument2, argument3); \
 } \
-struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidThreeArgMocker<arg1Type, arg2Type, arg3Type> \
+struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidThreeArgumentMocker<arg1Type, arg2Type, arg3Type> \
 { \
    explicit ZenMock_##functionName##__VA_ARGS__(const std::string* zenMockedClassName) \
-      : ZenMock::VoidThreeArgMocker<arg1Type, arg2Type, arg3Type>(ZenMock::Signature::Function( \
+      : ZenMock::VoidThreeArgumentMocker<arg1Type, arg2Type, arg3Type>(ZenMock::Signature::Function( \
          #virtualness, "void", zenMockedClassName, #functionName"("#arg1Type", "#arg2Type", "#arg3Type")", #constness)) {} \
 } mutableness functionName##Mock##__VA_ARGS__ = ZenMock_##functionName##__VA_ARGS__(this->ZenMockedClassName());
 
 namespace ZenMock
 {
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
-   class VoidThreeArgMocker : public ThreeArgMocker<Arg1Type, Arg2Type, Arg3Type>
+   class VoidThreeArgumentMocker : public ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>
    {
    public:
-      explicit VoidThreeArgMocker(const std::string& zenMockedFunctionSignature)
-         : ThreeArgMocker<Arg1Type, Arg2Type, Arg3Type>(zenMockedFunctionSignature)
+      explicit VoidThreeArgumentMocker(const std::string& zenMockedFunctionSignature)
+         : ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>(zenMockedFunctionSignature)
       {
       }
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
-   class VoidThreeArgFunctionPointerMocker : public VoidThreeArgMocker<Arg1Type, Arg2Type, Arg3Type>
+   class VoidThreeArgFunctionPointerMocker : public VoidThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>
    {
    public:
       explicit VoidThreeArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
-         : VoidThreeArgMocker<Arg1Type, Arg2Type, Arg3Type>(zenMockedFunctionSignature)
+         : VoidThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>(zenMockedFunctionSignature)
       {
       }
 
       static void ZenMockItFunctionPointer(
          VoidThreeArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type>* functionMocker,
-         Arg1Type arg1, Arg2Type arg2, Arg3Type arg3)
+         Arg1Type argument1, Arg2Type argument2, Arg3Type argument3)
       {
-         functionMocker->ZenMock(arg1, arg2, arg3);
+         functionMocker->ZenMock(argument1, argument2, argument3);
       }
    };
 }

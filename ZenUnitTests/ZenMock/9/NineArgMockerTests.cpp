@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "ZenUnit/ZenMock/9/NineArgMocker.h"
+#include "ZenUnit/ZenMock/9/NineArgumentMocker.h"
 #include "ZenUnitTests/ZenMock/Mock/ExceptionThrowerMock.h"
 
 namespace ZenMock
 {
-   TESTS(NineArgMockerTests)
+   TESTS(NineArgumentMockerTests)
    AFACT(Constructor_SetsFields)
    AFACT(Expect_AlreadyExpected_Throws)
    AFACT(Expect_NotAlreadyExpected_SetsExpectedTrue)
@@ -14,7 +14,7 @@ namespace ZenMock
    AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
    EVIDENCE
 
-   using MockerType = NineArgMocker<int, int, int, int, int, int, int, int, int, ExceptionThrowerMock>;
+   using MockerType = NineArgumentMocker<int, int, int, int, int, int, int, int, int, ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;
 
    STARTUP
@@ -34,7 +34,7 @@ namespace ZenMock
       ARE_EQUAL(Test::Signature, mocker.ZenMockedFunctionSignature);
       IS_FALSE(mocker._expected);
       IS_FALSE(mocker._asserted);
-      IS_EMPTY(mocker._nineArgCalls);
+      IS_EMPTY(mocker.nineArgumentCalls);
    }
 
    TEST(Expect_AlreadyExpected_Throws)
@@ -67,10 +67,10 @@ namespace ZenMock
       IS_FALSE(_mocker->_expected);
       _mocker->_exceptionThrower.ExpectCallToExpectAndThrow();
       //
-      _mocker->ExpectAndThrow<TestingException>("arg", 100);
+      _mocker->ExpectAndThrow<TestingException>("argument", 100);
       //
       _mocker->_exceptionThrower.
-         AssertExpectAndThrowCalledOnceWith("ZenMock::TestingException", 2, "arg100");
+         AssertExpectAndThrowCalledOnceWith("ZenMock::TestingException", 2, "argument100");
       IS_TRUE(_mocker->_expected);
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
@@ -86,20 +86,20 @@ namespace ZenMock
    {
       _mocker->_expected = true;
       _mocker->_exceptionThrower.ExpectCallToZenMockThrowIfExceptionSet();
-      IS_EMPTY(_mocker->_nineArgCalls);
+      IS_EMPTY(_mocker->nineArgumentCalls);
       //
       _mocker->ZenMockIt(1, 2, 3, 4, 5, 6, 7, 8, 9);
       //
-      using CallType = NineArgCall<int, int, int, int, int, int, int, int, int>;
+      using CallType = NineArgumentCall<int, int, int, int, int, int, int, int, int>;
       const vector<CallType> expectedCalls 
       { 
          CallType(1, 2, 3, 4, 5, 6, 7, 8, 9)
       };
-      VECTORS_EQUAL(expectedCalls, _mocker->_nineArgCalls);
+      VECTORS_EQUAL(expectedCalls, _mocker->nineArgumentCalls);
       ZEN(_mocker->_exceptionThrower.AssertZenMockThrowIfExceptionSetCalledOnce());
       NOTHROWS(_mocker->AssertCalledOnceWith(1, 2, 3, 4, 5, 6, 7, 8, 9));
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-   }; RUNTESTS(NineArgMockerTests)
+   }; RUNTESTS(NineArgumentMockerTests)
 }

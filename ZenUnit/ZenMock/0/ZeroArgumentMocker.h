@@ -10,16 +10,16 @@
 
 namespace ZenMock
 {
-   class ZeroArgMockerTests;
+   class ZeroArgumentMockerTests;
 
    template<typename MockableExceptionThrowerType = ExceptionThrower>
-   class ZeroArgMocker : public ZenMocker<MockableExceptionThrowerType>
+   class ZeroArgumentMocker : public ZenMocker<MockableExceptionThrowerType>
    {
-      friend class ZeroArgMockerTests;
+      friend class ZeroArgumentMockerTests;
    private:
       size_t _numberOfCalls;
    public:
-      explicit ZeroArgMocker(const std::string& zenMockedFunctionSignature)
+      explicit ZeroArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
          , _numberOfCalls(0)
       {

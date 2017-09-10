@@ -3,7 +3,7 @@
 
 namespace ZenMock
 {
-   TESTS(ZeroArgMockerTests)
+   TESTS(ZeroArgumentMockerTests)
    AFACT(Constructor_SetsFields)
    AFACT(Expect_AlreadyExpected_Throws)
    AFACT(Expect_NotAlreadyExpected_SetsExpectedTrue)
@@ -17,7 +17,7 @@ namespace ZenMock
    FACTS(AssertCalledNTimes_SetsAssertedTrue_FunctionWasCalledNTimes_DoesNotThrow)
    EVIDENCE
 
-   using MockerType = ZeroArgMocker<ExceptionThrowerMock>;
+   using MockerType = ZeroArgumentMocker<ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;
 
    STARTUP
@@ -69,10 +69,10 @@ namespace ZenMock
       IS_FALSE(_mocker->_expected);
       _mocker->_exceptionThrower.ExpectCallToExpectAndThrow();
       //
-      _mocker->ExpectAndThrow<TestingException>("arg", 100);
+      _mocker->ExpectAndThrow<TestingException>("argument", 100);
       //
       _mocker->_exceptionThrower.AssertExpectAndThrowCalledOnceWith(
-         "ZenMock::TestingException", 2, "arg100");
+         "ZenMock::TestingException", 2, "argument100");
       IS_TRUE(_mocker->_expected);
       SetAssertedTrueToNotFailDueToExpectedButNotAsesrted();
    }
@@ -160,5 +160,5 @@ File.cpp(1))");
       IS_TRUE(_mocker->_asserted);
    }
 
-   }; RUNTESTS(ZeroArgMockerTests)
+   }; RUNTESTS(ZeroArgumentMockerTests)
 }

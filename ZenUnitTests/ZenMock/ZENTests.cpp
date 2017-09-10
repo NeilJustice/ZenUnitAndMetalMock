@@ -25,7 +25,7 @@ namespace ZenMock
       const string expectedMessage = "Message";
       THROWS(ZEN(consoleMock.WriteLineMock.AssertCalledOnceWith(expectedMessage)), Anomaly, R"(
   Failed: ZEN(consoleMock.WriteLineMock.AssertCalledOnceWith(expectedMessage))
- Because: ARE_EQUAL(expectedArg, _oneArgCalls[0].arg, this->ZenMockedFunctionSignature) failed
+ Because: ARE_EQUAL(expectedArgument, oneArgumentCalls[0].argument, this->ZenMockedFunctionSignature) failed
 Expected: "Message"
   Actual: "message"
  Message: "virtual void ZenUnit::Console::WriteLine(const string&) const"
