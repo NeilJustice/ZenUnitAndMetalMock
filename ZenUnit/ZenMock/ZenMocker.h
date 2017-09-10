@@ -104,7 +104,7 @@ namespace ZenMock
             const ZenUnit::ZenUnitArgs& zenUnitArgs = _TestRunner_GetArgs_ZenMockable();
             std::cout << R"(
 Fix: After Expect()ing then calling the above ZenMocked function,
-call ZEN([ZenMockedFunctionName]Mock.
+call ZEN(<ZenMockObjectName>.<FunctionName>Mock.
 [AssertCalledOnce|AssertCalledOnceWith|AssertCalledNTimes|AssertCalledNTimesWith|AssertCalls]());
 
 Fast failing now with exit code )" <<
