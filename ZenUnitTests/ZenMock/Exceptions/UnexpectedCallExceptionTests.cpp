@@ -17,11 +17,11 @@ namespace ZenMock
    const string NonVoidBSignature0 = "void_prefixed_type ClassName::FunctionName()";
    const string VoidSignature1 = "void ClassName::FunctionName(int)";
    const string VoidSignature2 = "void ClassName::FunctionName(int, int)";
-   const string ExpectedFixForThisPrefix = R"(Fix for ZenMock::UnexpectedCallException:
-Add before the unexpected call a call to [ZenMockedFunctionName]Mock.[Expect|)";
-   const string ExpectedVoidFixForThisSuffix =
+   const string ExpectedFixPrefix =
+      R"(Fix: Add before the unexpected call a call to <ZenMockObjectName>.<FunctionName>Mock.[Expect|)";
+   const string ExpectedVoidFixSuffix =
       "ExpectAndThrow<T>]()";
-   const string ExpectedNonVoidFixForThisSuffix =
+   const string ExpectedNonVoidFixSuffix =
       "ExpectAndReturn|ExpectAndReturnValues|ExpectAndThrow<T>]()";
 
    TEST1X1(Constructor_Void0Args_SetsWhatToJustExpectAndExpectAndThrow_ClassIsSubclassOfZenMockException,
@@ -32,7 +32,7 @@ Add before the unexpected call a call to [ZenMockedFunctionName]Mock.[Expect|)";
       const UnexpectedCallException e(zenMockedFunctionSignature);
       //
       const string ExpectedWhat = ExpectedUnexpectedCallPrefix + zenMockedFunctionSignature + R"("
-)" + ExpectedFixForThisPrefix + ExpectedVoidFixForThisSuffix;
+)" + ExpectedFixPrefix + ExpectedVoidFixSuffix;
       const char* const what = e.what();
       ARE_EQUAL(ExpectedWhat, what);
       IS_TRUE((is_base_of<ZenMockException, UnexpectedCallException>::value));
@@ -46,7 +46,7 @@ Add before the unexpected call a call to [ZenMockedFunctionName]Mock.[Expect|)";
       const UnexpectedCallException e(zenMockedFunctionSignature);
       //
       const string ExpectedWhat = ExpectedUnexpectedCallPrefix + zenMockedFunctionSignature + R"("
-)" + ExpectedFixForThisPrefix + ExpectedNonVoidFixForThisSuffix;
+)" + ExpectedFixPrefix + ExpectedNonVoidFixSuffix;
       const char* const what = e.what();
       ARE_EQUAL(ExpectedWhat, what);
    }
@@ -59,7 +59,7 @@ Add before the unexpected call a call to [ZenMockedFunctionName]Mock.[Expect|)";
       //
       const string ExpectedWhat = ExpectedUnexpectedCallPrefix + VoidSignature0 + R"("
 Arg1: UserType@1
-)" + ExpectedFixForThisPrefix + ExpectedVoidFixForThisSuffix;
+)" + ExpectedFixPrefix + ExpectedVoidFixSuffix;
       const char* const what = e.what();
       ARE_EQUAL(ExpectedWhat, what);
    }
@@ -74,7 +74,7 @@ Arg1: UserType@1
       const string ExpectedWhat = ExpectedUnexpectedCallPrefix + VoidSignature0 + R"("
 Arg1: UserType@1
 Arg2: UserType@2
-)" + ExpectedFixForThisPrefix + ExpectedVoidFixForThisSuffix;
+)" + ExpectedFixPrefix + ExpectedVoidFixSuffix;
       const char* const what = e.what();
       ARE_EQUAL(ExpectedWhat, what);
    }

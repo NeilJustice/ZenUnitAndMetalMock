@@ -23,8 +23,7 @@ namespace ZenMock
          whatBuilder << "Unexpected call to ZenMocked function\n\"" << zenMockedFunctionSignature << "\"";
          AppendToStringedArgs(whatBuilder, 0, std::forward<ArgTypes>(args)...);
          whatBuilder << R"(
-Fix for ZenMock::UnexpectedCallException:
-Add before the unexpected call a call to [ZenMockedFunctionName]Mock.[Expect|)";
+Fix: Add before the unexpected call a call to <ZenMockObjectName>.<FunctionName>Mock.[Expect|)";
          const bool isVoid = zenMockedFunctionSignature.find("void ") != std::string::npos;
          if (isVoid)
          {
