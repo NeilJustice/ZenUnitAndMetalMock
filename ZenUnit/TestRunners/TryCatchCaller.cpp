@@ -47,7 +47,7 @@ namespace ZenUnit
       catch (const ZenMock::ZenMockException& e)
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
-         _console->WriteColor("\nZenMockException", Color::Red);
+         _console->WriteColor("\nZenMockException Thrown", Color::Red);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          const string exceptionTypeNameAndWhat = String::Concat(
@@ -57,7 +57,7 @@ namespace ZenUnit
       catch (const exception& e)
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
-         _console->WriteColor("\nUncaught Exception", Color::Red);
+         _console->WriteColor("\nException Thrown", Color::Red);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          const string exceptionTypeNameAndWhat = String::Concat(
