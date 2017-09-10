@@ -2,7 +2,7 @@
 
 namespace ZenUnit
 {
-   TESTS(CONTAINSTests)
+   TESTS(DOES_CONTAINTests)
    AFACT(Vector_DoesContainElement_DoesNotThrow)
    AFACT(Vector_DoesNotContainElement_Throws)
    AFACT(Map_DoesContainElement_DoesNotThrow)
@@ -14,19 +14,19 @@ namespace ZenUnit
    TEST(Vector_DoesContainElement_DoesNotThrow)
    {
       const vector<int> ints { 1, 2 };
-      CONTAINS(1, ints);
-      CONTAINS(2, ints);
+      DOES_CONTAIN(1, ints);
+      DOES_CONTAIN(2, ints);
       for (int i : ints)
       {
-         CONTAINS(i, ints);
+         DOES_CONTAIN(i, ints);
       }
    }
 
    TEST(Vector_DoesNotContainElement_Throws)
    {
       const vector<int> emptyIntVector;
-      THROWS(CONTAINS(0, emptyIntVector), Anomaly, R"(
-  Failed: CONTAINS(0, emptyIntVector)
+      THROWS(DOES_CONTAIN(0, emptyIntVector), Anomaly, R"(
+  Failed: DOES_CONTAIN(0, emptyIntVector)
 Expected: Contains element 0
   Actual: Contains no such element
 File.cpp(1))");
@@ -37,11 +37,11 @@ File.cpp(1))");
       const map<int, int> intIntMap { { 0, 0 }, { 1, 1 } };
       const pair<const int, int> kvp0(0, 0);
       const pair<const int, int> kvp1(1, 1);
-      CONTAINS(kvp0, intIntMap);
-      CONTAINS(kvp1, intIntMap);
+      DOES_CONTAIN(kvp0, intIntMap);
+      DOES_CONTAIN(kvp1, intIntMap);
       for (const auto& kvp : intIntMap)
       {
-         CONTAINS(kvp, intIntMap);
+         DOES_CONTAIN(kvp, intIntMap);
       }
    }
 
@@ -49,8 +49,8 @@ File.cpp(1))");
    {
       const map<int, int> emptyIntIntMap;
       const pair<const int, int> kvp(0, 0);
-      THROWS(CONTAINS(kvp, emptyIntIntMap), Anomaly, R"(
-  Failed: CONTAINS(kvp, emptyIntIntMap)
+      THROWS(DOES_CONTAIN(kvp, emptyIntIntMap), Anomaly, R"(
+  Failed: DOES_CONTAIN(kvp, emptyIntIntMap)
 Expected: Contains element (0, 0)
   Actual: Contains no such element
 File.cpp(1))");
@@ -59,11 +59,11 @@ File.cpp(1))");
    TEST(Set_DoesContainElement_DoesNotThrow)
    {
       const set<int> intSet { 1, 2 };
-      CONTAINS(1, intSet);
-      CONTAINS(2, intSet);
+      DOES_CONTAIN(1, intSet);
+      DOES_CONTAIN(2, intSet);
       for (int i : intSet)
       {
-         CONTAINS(i, intSet);
+         DOES_CONTAIN(i, intSet);
       }
    }
 
@@ -71,13 +71,13 @@ File.cpp(1))");
    {
       const set<int> emptyIntSet;
       const string messageA = "A", messageB = "B";
-      THROWS(CONTAINS(0, emptyIntSet, messageA, messageB), Anomaly, R"(
-  Failed: CONTAINS(0, emptyIntSet, messageA, messageB)
+      THROWS(DOES_CONTAIN(0, emptyIntSet, messageA, messageB), Anomaly, R"(
+  Failed: DOES_CONTAIN(0, emptyIntSet, messageA, messageB)
 Expected: Contains element 0
   Actual: Contains no such element
  Message: "A", "B"
 File.cpp(1))");
    }
 
-   }; RUNTESTS(CONTAINSTests)
+   }; RUNTESTS(DOES_CONTAINTests)
 }

@@ -45,10 +45,10 @@ None
 |`FACTS(HighQualityTestName)` // N-by-N value-parameterized test, the signature feature of ZenUnit|
 |`SKIPFACT(HighQualityTestName, Reason)`|
 |`SKIPFACTS(HighQualityTestName, Reason)`|
-|`EVIDENCE` // Ends the FACT section and begins the TEST section|
+|`EVIDENCE` // Ends the informal specification FACTS section and begins the TEST section|
 |`STARTUP` // Function run before each test|
 |`CLEANUP` // Function run after each test|
-|`TEST(HighQualityTestName)` // Standard-issue void test definition|
+|`TEST(HighQualityTestName)` // Void test definition|
 |`TEST1X1(HighQualityTestName, Arg1Type, ...)` // 1-by-1 value-parameterized test definition|
 |`TEST2X2(HighQualityTestName, Arg1Type, Arg2Type, ...)` // 2-by-2 value-parameterized test definition|
 |...|
@@ -71,11 +71,11 @@ None
 |Data Structures|
 |---------------|
 |`IS_EMPTY(dataStructure, messages...)`|
-|`CONTAINS(expectedElement, dataStructure, messages...)`|
 |`VECTORS_EQUAL(expectedVector, actualVector, messages...)`|
 |`MAPS_EQUAL(expectedMap, actualMap, messages...)`|
 |`PAIRS_EQUAL(expectedPair, actualPair, messages...)`|
 |`SETS_EQUAL(expectedSet, actualSet, messages...)`|
+|`DOES_CONTAIN(expectedElement, dataStructure, messages...)`|
 
 |Exceptions|
 |----------|

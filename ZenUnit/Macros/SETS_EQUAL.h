@@ -1,6 +1,6 @@
 #pragma once
 #include "ZenUnit/Macros/ARE_EQUAL.h"
-#include "ZenUnit/Macros/CONTAINS.h"
+#include "ZenUnit/Macros/DOES_CONTAIN.h"
 
 #define SETS_EQUAL(expectedSet, actualSet, ...) \
    ZenUnit::SETS_EQUAL_Defined(VRT(expectedSet), VRT(actualSet), \
@@ -34,7 +34,7 @@ namespace ZenUnit
          ARE_EQUAL(expectedSet.size(), actualSet.size());
          for (const auto& expectedElement : expectedSet)
          {
-            CONTAINS(expectedElement, actualSet);
+            DOES_CONTAIN(expectedElement, actualSet);
          }
       }
       catch (const Anomaly& becauseAnomaly)

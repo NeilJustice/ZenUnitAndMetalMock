@@ -73,7 +73,7 @@ File.cpp(1))");
   Failed: SETS_EQUAL(expectedSet, actualSet, messageA, messageB)
 Expected: SetType<T>
   Actual: SetType<T>
- Because: CONTAINS(expectedElement, actualSet) failed
+ Because: DOES_CONTAIN(expectedElement, actualSet) failed
 Expected: Contains element 1
   Actual: Contains no such element
  Message: "A", "B"
@@ -93,7 +93,7 @@ File.cpp(1))");
   Failed: SETS_EQUAL(expectedSet, actualSet)
 Expected: SetType<T>
   Actual: SetType<T>
- Because: CONTAINS(expectedElement, actualSet) failed
+ Because: DOES_CONTAIN(expectedElement, actualSet) failed
 Expected: Contains element 3
   Actual: Contains no such element
 File.cpp(1)
@@ -110,7 +110,7 @@ File.cpp(1))");
   Failed: SETS_EQUAL(expectedSet, actualSet)
 Expected: SetType<T>
   Actual: SetType<T>
- Because: CONTAINS(expectedElement, actualSet) failed
+ Because: DOES_CONTAIN(expectedElement, actualSet) failed
 Expected: Contains element UserType@1
   Actual: Contains no such element
 File.cpp(1)

@@ -48,7 +48,7 @@ TEST(CallAllMacros)
 
    // Data Structures
    IS_EMPTY(std::vector<int>());
-   CONTAINS(0, std::vector<int>{0});
+   DOES_CONTAIN(0, std::vector<int>{0});
    VECTORS_EQUAL(std::vector<int>{0}, std::vector<int>{0});
    MAPS_EQUAL((std::map<int, int>{}), (std::map<int, int>{}));
    MAPS_EQUAL((std::unordered_map<int, int>{}), (std::unordered_map<int, int>{}));

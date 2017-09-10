@@ -5,7 +5,7 @@
 #include "ZenUnit/Macros/ARE_EQUAL.h"
 #include "ZenUnit/Macros/ARE_NOT_SAME.h"
 #include "ZenUnit/Macros/ARE_SAME.h"
-#include "ZenUnit/Macros/CONTAINS.h"
+#include "ZenUnit/Macros/DOES_CONTAIN.h"
 #include "ZenUnit/Macros/EQUALIZER_THROWS.h"
 #include "ZenUnit/Macros/FAIL.h"
 #include "ZenUnit/Macros/STD_FUNCTION_TARGETS.h"

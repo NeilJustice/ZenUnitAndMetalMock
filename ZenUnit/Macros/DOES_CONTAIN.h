@@ -4,7 +4,7 @@
 #include "ZenUnit/Utils/FileLine.h"
 #include "ZenUnit/Utils/VRText.h"
 
-#define CONTAINS(expectedElement, dataStructure, ...) \
+#define DOES_CONTAIN(expectedElement, dataStructure, ...) \
    ZenUnit::CONTAINS_Defined(VRT(expectedElement), VRT(dataStructure), \
    FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
@@ -18,7 +18,7 @@ namespace ZenUnit
    {
       const std::string expectedField =
          "Contains element " + ToStringer::ToString(expectedElementVRT.value);
-      throw Anomaly("CONTAINS", expectedElementVRT.text, dataStructureVRT.text, "", messagesText,
+      throw Anomaly("DOES_CONTAIN", expectedElementVRT.text, dataStructureVRT.text, "", messagesText,
          Anomaly::Default,
          expectedField,
          "Contains no such element",
