@@ -99,12 +99,11 @@ namespace ZenMock
          {
             const ZenUnit::Console console;
             std::cout << "\n";
-            console.WriteLineColor("Fatal Expected-But-Not-Asserted ZenMocked Function:", ZenUnit::Color::Red);
+            console.WriteLineColor("Expected-But-Not-Asserted ZenMocked Function:", ZenUnit::Color::Red);
             console.WriteLineColor(ZenMockedFunctionSignature, ZenUnit::Color::Green);
             const ZenUnit::ZenUnitArgs& zenUnitArgs = _TestRunner_GetArgs_ZenMockable();
             std::cout << R"(
-Fix for Expected-But-Not-Asserted:
-After Expect()ing then calling the above ZenMocked function,
+Fix: After Expect()ing then calling the above ZenMocked function,
 call ZEN([ZenMockedFunctionName]Mock.
 [AssertCalledOnce|AssertCalledOnceWith|AssertCalledNTimes|AssertCalledNTimesWith|AssertCalls]());
 
