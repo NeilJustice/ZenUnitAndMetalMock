@@ -1,5 +1,4 @@
 #pragma once
-#include "ZenUnit/TestRunners/TryCatchCaller.h"
 
 struct TryCatchCallerMock : public Zen::Mock<TryCatchCaller>
 {

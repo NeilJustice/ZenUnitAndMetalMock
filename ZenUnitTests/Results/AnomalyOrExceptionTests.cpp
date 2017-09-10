@@ -1,6 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Results/AnomalyOrException.h"
-#include "ZenUnit/Utils/Random.h"
 
 TESTS(AnomalyOrExceptionTests)
 AFACT(AnomalyConstructor_SetsAnomaly)

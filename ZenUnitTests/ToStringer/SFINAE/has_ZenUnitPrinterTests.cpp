@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Testing/UserTypeInsOpAndZenUnitPrintable.h"
 #include "Testing/UserTypeOnlyZenUnitPrintable.h"
-#include "ZenUnit/ToStringer/SFINAE/has_ZenUnitPrinter.h"
 
 struct NonConstReferenceZenUnitPrint {};
 template<>

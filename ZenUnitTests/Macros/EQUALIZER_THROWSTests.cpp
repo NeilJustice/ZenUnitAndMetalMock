@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Macros/EQUALIZER_THROWS.h"
 
 namespace Namespace
 {

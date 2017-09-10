@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Macros/VECTORS_EQUAL.h"
 
 namespace ZenUnit
 {

@@ -1,30 +1,29 @@
 #include "pch.h"
-#include "ZenUnit/Utils/StringUtil.h"
 
 namespace ZenUnit
 {
    TESTS(StringUtilTests)
-      FACTS(Split_ReturnsExpected)
-      AFACT(Concat_ConcatsValuesIntoString)
-      FACTS(CommaSplitExceptQuotedCommas_ReturnsStringSplitOnCommasWithQuotedCommasIgnored)
-      FACTS(ToUnsigned_StrIsUnsignedNumber_ReturnsNumber)
-      AFACT(ToUnsigned_EmptyString_Throws)
-      FACTS(ToUnsigned_StringNotConvertibleToUnsigned_Throws)
-      FACTS(ToUnsigned_StringIsValueGreaterThanUnsignedMax_Throws)
-      EVIDENCE
+   FACTS(Split_ReturnsExpected)
+   AFACT(Concat_ConcatsValuesIntoString)
+   FACTS(CommaSplitExceptQuotedCommas_ReturnsStringSplitOnCommasWithQuotedCommasIgnored)
+   FACTS(ToUnsigned_StrIsUnsignedNumber_ReturnsNumber)
+   AFACT(ToUnsigned_EmptyString_Throws)
+   FACTS(ToUnsigned_StringNotConvertibleToUnsigned_Throws)
+   FACTS(ToUnsigned_StringIsValueGreaterThanUnsignedMax_Throws)
+   EVIDENCE
 
-      TEST3X3(Split_ReturnsExpected,
-         const string& str, char separator, const vector<string>& expectedReturnValue,
-         "", '\0', vector<string>{},
-         "", ',', vector<string>{},
-         ",", ',', vector<string>{""},
-         "|", '|', vector<string>{""},
-         "a", ',', vector<string>{"a"},
-         "a,b,c", ',', vector<string>{"a", "b", "c"},
-         ",a,b,,c,", ',', vector<string>{"", "a", "b", "", "c"},
-         "a", '|', vector<string>{"a"},
-         "a|b|c", '|', vector<string>{"a", "b", "c"},
-         ",a|b|c||", '|', vector<string>{",a", "b", "c", ""})
+   TEST3X3(Split_ReturnsExpected,
+      const string& str, char separator, const vector<string>& expectedReturnValue,
+      "", '\0', vector<string>{},
+      "", ',', vector<string>{},
+      ",", ',', vector<string>{""},
+      "|", '|', vector<string>{""},
+      "a", ',', vector<string>{"a"},
+      "a,b,c", ',', vector<string>{"a", "b", "c"},
+      ",a,b,,c,", ',', vector<string>{"", "a", "b", "", "c"},
+      "a", '|', vector<string>{"a"},
+      "a|b|c", '|', vector<string>{"a", "b", "c"},
+      ",a|b|c||", '|', vector<string>{",a", "b", "c", ""})
    {
       ARE_EQUAL(expectedReturnValue, String::Split(str, separator));
    }

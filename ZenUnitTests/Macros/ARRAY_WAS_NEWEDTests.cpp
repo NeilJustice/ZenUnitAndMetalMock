@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Macros/ARRAY_WAS_NEWED.h"
 
 TESTS(ARRAY_WAS_NEWEDTests)
 AFACT(NullRawPointer_Throws)

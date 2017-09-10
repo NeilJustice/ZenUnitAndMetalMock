@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Macros/POINTER_WAS_NEWED.h"
 
 TESTS(POINTER_WAS_NEWEDTests_RawPointers)
 AFACT(NullRawPointer_Throws)

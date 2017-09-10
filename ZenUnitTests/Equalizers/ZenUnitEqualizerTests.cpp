@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Equalizers/ZenUnitEqualizer.h"
 
 namespace ZenUnit
 {

@@ -1,3 +1,4 @@
+#pragma once
 #include "ZenUnit/Utils/Sorter.h"
 
 template<typename DataStructureType>

@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Macros/POINTEES_EQUAL.h"
 
 TESTS(POINTEES_EQUALTests)
 AFACT(ExpectedPointerNullptr_ActualPointerNullptr_DoesNotThrow)

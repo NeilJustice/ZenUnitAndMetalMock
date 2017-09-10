@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Results/CallResult.h"
 
 namespace ZenUnit
 {

@@ -1,6 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Tests/NewDeleteTest.h"
-#include "ZenUnit/Utils/Random.h"
 #include "ZenUnitTests/Results/Mock/TestResultFactoryMock.h"
 #include "ZenUnitTests/TestRunners/Mock/TryCatchCallerMock.h"
 

@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Macros/IS_NULL.h"
 
 namespace ZenUnit
 {

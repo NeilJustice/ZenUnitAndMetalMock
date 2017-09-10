@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Utils/Random.h"
 
 TESTS(RandomTests)
 AFACT(Random_AllIntegerTypes_ReturnsRandomValueBetweenMinAndMaxForThatType)

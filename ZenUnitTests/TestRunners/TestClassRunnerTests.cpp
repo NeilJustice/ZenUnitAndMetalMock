@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/TestRunners/TestClassRunner.h"
 #include "ZenUnitTests/TestRunners/Mock/TestClassRunnerMock.h"
 
 namespace ZenUnit

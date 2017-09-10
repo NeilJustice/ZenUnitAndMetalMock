@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Macros/NOTHROWS.h"
 
 namespace ZenUnit
 {

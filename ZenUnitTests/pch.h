@@ -3,6 +3,7 @@
 
 #include "ZenUnit/Utils/IgnoredMSVCWallWarnings.h"
 #include <array>
+#include <atomic>
 #include <chrono>
 #include <cstring>
 #include <exception>

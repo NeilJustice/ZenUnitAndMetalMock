@@ -1,5 +1,4 @@
 #pragma once
-#include "ZenUnit/Tests/TestClass.h"
 
 class TestingTestClass : public Zen::Mock<TestClass<TestingTestClass>>
 {

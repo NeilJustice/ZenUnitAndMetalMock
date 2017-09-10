@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Tests/TestClass.h"
 
 struct TestingDerivedTestClassType : public TestClass<TestingDerivedTestClassType>
 {

@@ -4,7 +4,6 @@
 #include "Utils/Mock/MachineNameGetterMock.h"
 #include "Utils/Time/Mock/WatchMock.h"
 #include "ZenUnit/TestRunners/PreamblePrinter.h"
-#include "ZenUnit/Utils/Random.h"
 
 namespace ZenUnit
 {

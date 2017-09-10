@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Tests/Test1X1ThroughTest10X10.h"
 
 struct StartupAndCleanup
 {

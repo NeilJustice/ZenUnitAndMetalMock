@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "UserTypeNonPrintable.h"
-#include "ZenUnit/ToStringer/SFINAE/has_ostream_left_shift.h"
 
 namespace ZenUnit
 {

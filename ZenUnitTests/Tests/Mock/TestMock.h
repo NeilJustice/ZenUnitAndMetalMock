@@ -1,5 +1,4 @@
 #pragma once
-#include "ZenUnit/Tests/Test.h"
 
 struct TestMock : public Zen::Mock<Test>
 {

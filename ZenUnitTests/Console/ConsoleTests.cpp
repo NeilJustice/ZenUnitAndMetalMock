@@ -1,6 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Console/Console.h"
-#include "ZenUnit/Utils/Random.h"
 #include "ZenUnitTests/Console/Mock/ConsoleColorerMock.h"
 
 namespace ZenUnit

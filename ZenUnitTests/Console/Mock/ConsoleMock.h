@@ -1,5 +1,4 @@
 #pragma once
-#include "ZenUnit/Console/Console.h"
 
 struct ConsoleMock : public Zen::Mock<Console>
 {

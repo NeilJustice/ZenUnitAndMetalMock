@@ -1,6 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Tests/FullTestName.h"
-#include "ZenUnit/Utils/Random.h"
 
 namespace ZenUnit
 {

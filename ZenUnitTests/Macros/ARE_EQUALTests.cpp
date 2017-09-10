@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Macros/ARE_EQUAL.h"
 
 struct EqualizerOneTypeTestStruct {};
 struct EqualizerTwoTypeTestStruct {};

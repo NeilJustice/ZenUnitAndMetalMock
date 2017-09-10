@@ -1,6 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Results/TestResult.h"
-#include "ZenUnit/Utils/Random.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestFailureNumbererMock.h"
 

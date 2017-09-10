@@ -1,5 +1,4 @@
 #pragma once
-#include "ZenUnit/Utils/Concurrency/VoidFuture.h"
 
 struct VoidFutureMock : public Zen::Mock<VoidFuture>
 {

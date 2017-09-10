@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/ToStringer/is_quoted_when_printed.h"
 
 static_assert(is_quoted_when_printed<char*>::value);
 static_assert(is_quoted_when_printed<char* const>::value);

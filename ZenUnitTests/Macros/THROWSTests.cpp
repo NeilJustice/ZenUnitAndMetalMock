@@ -1,5 +1,4 @@
 #include  "pch.h"
-#include "ZenUnit/Macros/THROWS.h"
 
 namespace ZenUnit
 {

@@ -1,5 +1,4 @@
 #pragma once
-#include "ZenUnit/Equalizers/ZenUnitEqualizer.h"
 
 struct UserType
 {
