@@ -2,14 +2,13 @@ import unittest
 from unittest.mock import Mock, patch, sentinel
 from ZenUnitPy import UnitTester
 
-testNames = [
-'run_tests_RunsTestSuiteWithTextTestRunner_test' ]
+testNames = ['run_tests_RunsTestSuiteWithTextTestRunner_test']
 
 class UnitTesterTests(unittest.TestCase):
 
    @patch('unittest.TextTestRunner', spec_set=True)
    @patch('builtins.map', spec_set=True)
-   @patch('unittest.TestSuite', spec_set=True)   
+   @patch('unittest.TestSuite', spec_set=True)
    def run_tests_RunsTestSuiteWithTextTestRunner_test(self, _1, _2, _3):
       textTestRunnerMock = Mock(spec=['run'])
       unittest.TextTestRunner.return_value = textTestRunnerMock

@@ -9,7 +9,8 @@ from ZenUnitPy import Python, Process, UnitTester
 testNames = [
 'pylint_file_CallsPylintOnAllPythonFilesInCurrentFolderAndSubFolders_test',
 'pylint_all_LinuxCallsMapParallelPylintFileWithAllPyFilePaths_WindowsCallsMapSequential_test',
-'flake8_all_RunsFlake8WithFlake8Config_test' ]
+'flake8_all_RunsFlake8WithFlake8Config_test'
+]
 
 class PythonTests(unittest.TestCase):
 
@@ -22,7 +23,7 @@ class PythonTests(unittest.TestCase):
       pylintExitCode = Python.pylint_file(PythonFilePath)
       #
       expectedPylintCommand =\
-         "pylint --rcfile=.pylintrc --init-hook=\"sys.path.append('.')\" {0}".format(PythonFilePath)
+         "pylint --rcfile=.pylintrc --score=n --init-hook=\"sys.path.append('.')\" {0}".format(PythonFilePath)
       Process.run_and_get_exitcode.assert_called_once_with(expectedPylintCommand)
       self.assertEqual(PylintExitCode, pylintExitCode)
 
@@ -32,32 +33,32 @@ class PythonTests(unittest.TestCase):
       @patch('ZenUnitPy.Process.map_parallel', spec_set=True)
       @patch('ZenUnitPy.Process.map_sequential', spec_set=True)
       @patch('sys.exit', spec_set=True)
-      def testcase(platformSystem, expectedMapParallel, allPylintsSucceeded, expectSysExit1,
-         _1, _2, _3, _4, _5):
-         Process.map_parallel.reset_mock()
-         Process.map_sequential.reset_mock()
-         PyFilePaths = ['a.py', 'b.py']
-         glob.glob.return_value = PyFilePaths
-         platform.system.return_value = platformSystem
-         if expectedMapParallel:
-            Process.map_parallel.return_value = allPylintsSucceeded
-         else:
-            Process.map_sequential.return_value = allPylintsSucceeded
-         #
-         Python.pylint_all()
-         #
-         glob.glob.assert_called_once_with('**/*.py', recursive=True)
-         platform.system.assert_called_once_with()
-         if expectedMapParallel:
-            Process.map_parallel.assert_called_once_with(Python.pylint_file, PyFilePaths)
-            Process.map_sequential.assert_not_called()
-         else:
-            Process.map_parallel.assert_not_called()
-            Process.map_sequential.assert_called_once_with(Python.pylint_file, PyFilePaths)
-         if expectSysExit1:
-            sys.exit.assert_called_once_with(1)
-         else:
-            sys.exit.assert_not_called()
+      def testcase(platformSystem, expectedMapParallel, allPylintsSucceeded, expectSysExit1, _1, _2, _3, _4, _5):
+         with self.subTest(f'{platformSystem}, {expectedMapParallel}, {allPylintsSucceeded}, {expectSysExit1}'):
+            Process.map_parallel.reset_mock()
+            Process.map_sequential.reset_mock()
+            PyFilePaths = ['a.py', 'b.py']
+            glob.glob.return_value = PyFilePaths
+            platform.system.return_value = platformSystem
+            if expectedMapParallel:
+               Process.map_parallel.return_value = allPylintsSucceeded
+            else:
+               Process.map_sequential.return_value = allPylintsSucceeded
+            #
+            Python.pylint_all()
+            #
+            glob.glob.assert_called_once_with('**/*.py', recursive=True)
+            platform.system.assert_called_once_with()
+            if expectedMapParallel:
+               Process.map_parallel.assert_called_once_with(Python.pylint_file, PyFilePaths)
+               Process.map_sequential.assert_not_called()
+            else:
+               Process.map_parallel.assert_not_called()
+               Process.map_sequential.assert_called_once_with(Python.pylint_file, PyFilePaths)
+            if expectSysExit1:
+               sys.exit.assert_called_once_with(1)
+            else:
+               sys.exit.assert_not_called()
       testcase('Linux', True, True, False)
       testcase('Windows', False, False, True)
       testcase('windows', True, False, True)

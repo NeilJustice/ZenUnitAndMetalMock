@@ -1,7 +1,5 @@
 #!/bin/bash
-set -eu
-export CXX=/usr/bin/clang++
-python3 ZenUnitPy/ZenUnitPy/CoveragePylintFlake8.py ZenUnitPy/ZenUnitPyTests RunAllWithCoverage.py
-python3 ZenUnitPy/ZenUnitPy/BuildAndInstall.py Ninja Debug ZenUnit ZenUnitTests "clang version" "" Install
-cd ZenUnitHelloWorld
-python3 ../ZenUnitPy/ZenUnitPy/BuildAndInstall.py Ninja Debug StaticLibrary StaticLibraryTests "" "" NoInstall
+set -e
+python3 ZenUnitPy/ZenUnitPy/RunTestsWithCoverageAndPylintFlake8.py
+python3 ZenUnitPy/ZenUnitPy/CMakeBuildZenUnit.py --compiler"/usr/bin/clang++" --generator=Ninja --buildType=Debug --installDirectory=/usr/local
+python3 ZenUnitPy/ZenUnitPy/CMakeBuildZenUnitHelloWorld.py --compiler=/usr/bin/clang++ --generator=Ninja --configuration=Debug

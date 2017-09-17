@@ -1,6 +1,4 @@
 *      text=auto
-*.h    text
-*.cpp  text
 *.sh   eol=lf
 *.ps1  eol=crlf
 

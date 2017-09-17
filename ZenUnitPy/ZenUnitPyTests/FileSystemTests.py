@@ -8,7 +8,8 @@ from ZenUnitPy import FileSystem, UnitTester
 testNames = [
 'delete_folder_if_exists_DeletesEmptyOrNonEmptyFolderIfItExists_test',
 'get_filepaths_ReturnsAllFilePathsInAndBelowFolderPath_test',
-'copy_file_to_folder_CreateDestFolderAndCopiesFile_test' ]
+'copy_file_to_folder_CreateDestFolderAndCopiesFile_test'
+]
 
 class FolderTests(unittest.TestCase):
 
@@ -16,29 +17,31 @@ class FolderTests(unittest.TestCase):
       @patch('os.path.exists', spec_set=True)
       @patch('shutil.rmtree', spec_set=True)
       def testcase(folderExists, expectrmtreeCall, _1, _2):
-         os.path.exists.return_value = folderExists
-         FolderPath = 'FolderPath'
-         #
-         FileSystem.delete_folder_if_exists(FolderPath)
-         #
-         os.path.exists.assert_called_once_with(FolderPath)
-         if expectrmtreeCall:
-            shutil.rmtree.assert_called_once_with(FolderPath)
-         else:
-            shutil.rmtree.assert_not_called()
+         with self.subTest(f'{folderExists}, {expectrmtreeCall}'):
+            os.path.exists.return_value = folderExists
+            FolderPath = 'FolderPath'
+            #
+            FileSystem.delete_folder_if_exists(FolderPath)
+            #
+            os.path.exists.assert_called_once_with(FolderPath)
+            if expectrmtreeCall:
+               shutil.rmtree.assert_called_once_with(FolderPath)
+            else:
+               shutil.rmtree.assert_not_called()
       testcase(False, False)
       testcase(True, True)
 
    def get_filepaths_ReturnsAllFilePathsInAndBelowFolderPath_test(self): # pragma nocover
       @patch('os.walk', spec_set=True)
       def testcase(expectedFilePaths, oswalkReturnValue, _1):
-         os.walk.return_value = oswalkReturnValue
-         FolderPath = 'FolderPath'
-         #
-         filePaths = FileSystem.get_filepaths(FolderPath)
-         #
-         os.walk.assert_called_once_with(FolderPath)
-         self.assertEqual(expectedFilePaths, filePaths)
+         with self.subTest(f'{expectedFilePaths}, {oswalkReturnValue}'):
+            os.walk.return_value = oswalkReturnValue
+            FolderPath = 'FolderPath'
+            #
+            filePaths = FileSystem.get_filepaths(FolderPath)
+            #
+            os.walk.assert_called_once_with(FolderPath)
+            self.assertEqual(expectedFilePaths, filePaths)
       testcase([], [])
       if platform.system() == 'Windows':
          testcase(['.\\a.txt'], [('.', [], ['a.txt'])])

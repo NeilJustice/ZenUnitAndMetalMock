@@ -1,0 +1,3 @@
+
+def string():
+   return ''

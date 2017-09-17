@@ -5,14 +5,13 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>7442c4b6-4d10-4aea-a009-421f7252d55e</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>BuildAndInstall.py</StartupFile>
+    <StartupFile>RunTestsWithCoverageAndPylintFlake8.py</StartupFile>
     <SearchPath>..\</SearchPath>
     <OutputPath>.</OutputPath>
     <Name>ZenUnitPy</Name>
     <RootNamespace>ZenUnitPy</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>
-    </CommandLineArguments>
+    <CommandLineArguments>--testProjectFolderPath=ZenUnitPy\ZenUnitPyTests --runAllWithCoveragePyFileName=RunAllWithCoverage.py</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>
     <WorkingDirectory>.</WorkingDirectory>
@@ -26,10 +25,13 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BuildAndInstall.py" />
+    <Compile Include="CMakeBuildZenUnit.py" />
+    <Compile Include="CMakeBuildZenUnitHelloWorld.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="CMake.py" />
     <Compile Include="FileSystem.py" />
-    <Compile Include="CoveragePylintFlake8.py" />
+    <Compile Include="RunTestsWithCoverageAndPylintFlake8.py" />
     <Compile Include="Process.py" />
     <Compile Include="Python.py" />
     <Compile Include="UnitTester.py">

@@ -6,7 +6,7 @@
     <ProjectGuid>5be2bd06-b3d6-4e12-9d37-cb82aa0ef9d3</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>RunAllWithCoverage.py</StartupFile>
+    <StartupFile>RunAll.py</StartupFile>
     <SearchPath>..\</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -29,14 +29,20 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BuildAndInstallTests.py" />
+    <Compile Include="CMakeBuildZenUnitHelloWorldTests.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CMakeBuildZenUnitTests.py" />
     <Compile Include="CMakeTests.py" />
     <Compile Include="FileSystemTests.py" />
     <Compile Include="ProcessTests.py" />
     <Compile Include="PythonTests.py" />
     <Compile Include="RunAll.py" />
     <Compile Include="RunAllWithCoverage.py" />
-    <Compile Include="CoveragePylintFlake8Tests.py" />
+    <Compile Include="RunTestsWithCoverageAndPylintFlake8Tests.py" />
+    <Compile Include="TestRandom.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="UnitTesterTests.py">
       <SubType>Code</SubType>
     </Compile>

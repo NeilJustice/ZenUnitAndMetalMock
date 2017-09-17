@@ -1,6 +1,4 @@
 #!/bin/bash
-set -eu
-export CXX=/usr/bin/clang++
-python3 ZenUnitPy/ZenUnitPy/BuildAndInstall.py Ninja Release ZenUnit ZenUnitTests "clang version" -DCMAKE_INSTALL_PREFIX=/usr/local Install
-cd ZenUnitHelloWorld
-python3 ../ZenUnitPy/ZenUnitPy/BuildAndInstall.py Ninja Release StaticLibrary StaticLibraryTests "" "" NoInstall
+set -e
+python3 ZenUnitPy/ZenUnitPy/CMakeBuildZenUnit.py --compiler=/usr/bin/clang++ --generator=Ninja --buildType=Release --installPrefix=/usr/local
+python3 ZenUnitPy/ZenUnitPy/CMakeBuildZenUnitHelloWorld.py --generator=Ninja --buildType=Release

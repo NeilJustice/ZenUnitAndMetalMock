@@ -8,7 +8,8 @@ from ZenUnitPy import UnitTester, Util
 testNames = [
 'home_folder_join_test',
 'code_folder_join_ReturnsHomeFolderCodeFolderSpecifiedFolder_test',
-'print_and_exit_PrintsMessageThenCallsExitWithExitCode_test' ]
+'print_and_exit_PrintsMessageThenCallsExitWithExitCode_test'
+]
 
 Message = 'Message'
 

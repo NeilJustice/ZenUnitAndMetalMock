@@ -2,8 +2,7 @@ import os
 import platform
 from ZenUnitPy import Process
 
-def generate(
-   folderPath, generator, buildType, cmakeDefinitions, cmakeListsFolderPath):
+def generate(folderPath, generator, buildType, cmakeDefinitions, cmakeListsFolderPath):
    os.makedirs(folderPath, exist_ok=True)
    os.chdir(folderPath)
    print('Generating CMake in folder', folderPath)
