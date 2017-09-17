@@ -21,7 +21,7 @@ class RunTestsWithCoverageAndPylintFlake8Tests(unittest.TestCase):
       #
       self.assertEqual(2, len(os.chdir.call_args_list))
       os.chdir.assert_has_calls([
-         call('ZenUnitPyTests'),
+         call('ZenUnitPy/ZenUnitPyTests'),
          call('..')])
       Process.run.assert_called_once_with('python3 RunAllWithCoverage.py')
       Python.pylint_all.assert_called_once_with()

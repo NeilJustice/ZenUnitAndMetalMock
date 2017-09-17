@@ -6,7 +6,7 @@ from ZenUnitPy import Process, Python
 Usage = 'Usage: python3 RunTestsWithCoverageAndPylintFlake8.py'
 
 def main(args):
-   os.chdir('ZenUnitPyTests')
+   os.chdir('ZenUnitPy/ZenUnitPyTests')
    Process.run('python3 RunAllWithCoverage.py')
    os.chdir('..')
    Python.pylint_all()
