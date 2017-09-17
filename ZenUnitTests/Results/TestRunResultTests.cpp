@@ -188,7 +188,7 @@ namespace ZenUnit
       _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
       if (expectTestsFailedLineAndPrintFailuresCall)
       {
-         _consoleMock->WriteLineMock.Expect();
+         _consoleMock->WriteLineColorMock.Expect();
          _memberForEacherTestClassResultsMock->ForEachMock.Expect();
       }
       _memberForEacherSkippedTestsMock->ForEachMock.Expect();
@@ -197,7 +197,7 @@ namespace ZenUnit
       //
       if (expectTestsFailedLineAndPrintFailuresCall)
       {
-         ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(expectedTestsFailedLine));
+         ZEN(_consoleMock->WriteLineColorMock.AssertCalledOnceWith(expectedTestsFailedLine, Color::Red));
          ZEN(_memberForEacherTestClassResultsMock->ForEachMock.
             AssertCalledOnceWith(&_testRunResult._testClassResults, &_testRunResult,
                &TestRunResult::PrintTestClassResultFailures));

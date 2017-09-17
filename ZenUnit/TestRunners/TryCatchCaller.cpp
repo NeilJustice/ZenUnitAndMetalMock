@@ -39,7 +39,7 @@ namespace ZenUnit
          callResult.milliseconds = _stopwatch->Stop();
          callResult.anomalyOrException = make_shared<AnomalyOrException>(anomaly);
          callResult.testOutcome = TestOutcome::Anomaly;
-         _console->WriteColor("\nAnomaly", Color::Red);
+         _console->WriteColor("\nAnomaly Found", Color::Red);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          _console->WriteLine(anomaly.why);

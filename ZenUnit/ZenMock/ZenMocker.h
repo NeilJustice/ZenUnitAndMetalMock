@@ -16,7 +16,7 @@ namespace ZenMock
    private:
       std::function<void(int)> _exit_ZenMockable;
       std::function<ZenUnit::ZenUnitArgs()> _TestRunner_GetArgs_ZenMockable;
-      bool _zenMockExceptionIsInPlay;
+      bool _zenMockExceptionIsInFlight;
    protected:
       MockableExceptionThrowerType _exceptionThrower;
       bool _expected;
@@ -26,7 +26,7 @@ namespace ZenMock
       explicit ZenMocker(std::string zenMockedFunctionSignature)
          : _exit_ZenMockable(::exit)
          , _TestRunner_GetArgs_ZenMockable(ZenUnit::TestRunner::GetArgs)
-         , _zenMockExceptionIsInPlay(false)
+         , _zenMockExceptionIsInFlight(false)
          , _expected(false)
          , _asserted(false)
          , ZenMockedFunctionSignature(std::move(zenMockedFunctionSignature))
@@ -64,7 +64,7 @@ namespace ZenMock
       {
          if (!_expected)
          {
-            _zenMockExceptionIsInPlay = true;
+            _zenMockExceptionIsInFlight = true;
             throw UnexpectedCallException(ZenMockedFunctionSignature, std::forward<ArgTypes>(args)...);
          }
       }
@@ -78,7 +78,7 @@ namespace ZenMock
       {
          if (expectedNumberOfCalls == 0)
          {
-            _zenMockExceptionIsInPlay = true;
+            _zenMockExceptionIsInFlight = true;
             throw UnsupportedAssertCalledZeroTimesException(ZenMockedFunctionSignature);
          }
       }
@@ -87,7 +87,7 @@ namespace ZenMock
       {
          if (expectedCallsSize == 0)
          {
-            _zenMockExceptionIsInPlay = true;
+            _zenMockExceptionIsInFlight = true;
             throw UnsupportedAssertCalledZeroTimesException(ZenMockedFunctionSignature);
          }
       }
@@ -95,7 +95,7 @@ namespace ZenMock
    private:
       void ZenMockExitIfExpectedButNotAsserted() const
       {
-         if (_expected && !_asserted && !_zenMockExceptionIsInPlay)
+         if (_expected && !_asserted && !_zenMockExceptionIsInFlight)
          {
             const ZenUnit::Console console;
             std::cout << "\n";
@@ -117,7 +117,7 @@ Fail fasting with exit code )" <<
       {
          if (_expected)
          {
-            _zenMockExceptionIsInPlay = true;
+            _zenMockExceptionIsInFlight = true;
             throw FunctionAlreadyExpectedException(ZenMockedFunctionSignature);
          }
       }
