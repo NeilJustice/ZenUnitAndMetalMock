@@ -1,5 +1,6 @@
 import sys
 import nose
+sys.path.append('..') # Jenkins
 
 noseConfig = nose.config.Config()
 noseConfig.testMatchPat = 'Tests|_test'
