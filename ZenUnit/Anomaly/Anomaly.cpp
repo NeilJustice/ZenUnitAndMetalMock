@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/Anomaly/Anomaly.h"
+#include "ZenUnit/Console/Console.h"
 #include "ZenUnit/Macros/ARE_EQUAL.h"
 
 namespace ZenUnit
@@ -35,6 +36,11 @@ namespace ZenUnit
    const char* Anomaly::what() const noexcept
    {
       return why.c_str();
+   }
+
+   void Anomaly::WriteLineWhy(const Console* console) const
+   {
+      console->WriteLine(why);
    }
 
    Anomaly Anomaly::ZENWrapped(

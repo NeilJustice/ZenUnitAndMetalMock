@@ -9,6 +9,8 @@
 
 namespace ZenUnit
 {
+   class Console;
+
    struct Anomaly : public std::exception
    {
       std::string assertExpression;
@@ -117,6 +119,8 @@ namespace ZenUnit
       }
 
       const char* what() const noexcept override;
+
+      virtual void WriteLineWhy(const Console* console) const;
 
       static std::string MakeAssertExpression(
          const char* assertionName,

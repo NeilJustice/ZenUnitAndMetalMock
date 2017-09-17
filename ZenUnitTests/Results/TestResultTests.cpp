@@ -242,9 +242,9 @@ namespace ZenUnit
       _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName = FullTestName("TestClass", "Test", 0);
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::Anomaly;
 
-      const string AnomalyWhy = Random<string>();
+      const string anomalyWhy = Random<string>();
       Anomaly anomaly;
-      anomaly.why = AnomalyWhy;
+      anomaly.why = anomalyWhy;
       (_testResult_WriteTestCaseNumberIfAnyMocked.*
          expectedResponsibleCallResultField).anomalyOrException = make_shared<AnomalyOrException>(anomaly);
       (_testResult_WriteTestCaseNumberIfAnyMocked.*
@@ -252,8 +252,8 @@ namespace ZenUnit
 
       _testResult_WriteTestCaseNumberIfAnyMocked.responsibleCallResultField = expectedResponsibleCallResultField;
 
-      const string TestFailureNumber = Random<string>(); // e.g. "<10>"
-      _testFailureNumbererMock.NextMock.ExpectAndReturn(TestFailureNumber);
+      const string testFailureNumber = Random<string>(); // e.g. "<10>"
+      _testFailureNumbererMock.NextMock.ExpectAndReturn(testFailureNumber);
 
       _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex = 1;
       _testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.Expect();
@@ -273,8 +273,8 @@ namespace ZenUnit
       }));
       ZEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
          AssertCalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex));
-      ZEN(_consoleMock.WriteLineColorMock.AssertCalledOnceWith(TestFailureNumber, Color::Red));
-      ZEN(_consoleMock.WriteLineMock.AssertCalledOnceWith(AnomalyWhy));
+      ZEN(_consoleMock.WriteLineColorMock.AssertCalledOnceWith(testFailureNumber, Color::Red));
+      ZEN(_consoleMock.WriteLineMock.AssertCalledOnceWith(anomalyWhy));
       ZEN(_consoleMock.WriteNewLineMock.AssertCalledOnce());
    }
 
@@ -290,18 +290,18 @@ namespace ZenUnit
       _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName = FullTestName("TestClass", "Test", 0);
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::Exception;
 
-      const string ExceptionTypeName = Random<string>();
-      const string ExceptionWhatString = Random<string>();
-      const char* const ExceptionWhat = ExceptionWhatString.c_str();
+      const string exceptionTypeName = Random<string>();
+      const string exceptionWhatString = Random<string>();
+      const char* const exceptionWhat = exceptionWhatString.c_str();
       (_testResult_WriteTestCaseNumberIfAnyMocked.*
-         expectedResponsibleCallResultField).anomalyOrException = make_shared<AnomalyOrException>(&ExceptionTypeName, ExceptionWhat);
+         expectedResponsibleCallResultField).anomalyOrException = make_shared<AnomalyOrException>(&exceptionTypeName, exceptionWhat);
       (_testResult_WriteTestCaseNumberIfAnyMocked.*
          expectedResponsibleCallResultField).testPhase = testPhase;
       _testResult_WriteTestCaseNumberIfAnyMocked.
          responsibleCallResultField = expectedResponsibleCallResultField;
 
-      const string TestFailureNumber = Random<string>();
-      _testFailureNumbererMock.NextMock.ExpectAndReturn(TestFailureNumber);
+      const string testFailureNumber = Random<string>();
+      _testFailureNumbererMock.NextMock.ExpectAndReturn(testFailureNumber);
 
       _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex = 1;
       _testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.Expect();
@@ -321,12 +321,12 @@ namespace ZenUnit
       }));
       ZEN(_consoleMock.WriteLineColorMock.AssertCalls(
       {
-         { TestFailureNumber, Color::Red },
+         { testFailureNumber, Color::Red },
          { "\nUncaught Exception", Color::Red }
       }));
       ZEN(_consoleMock.WriteLineMock.AssertCalledOnceWith(
-         "  Type: " + ExceptionTypeName + "\n"
-         "what(): \""s + ExceptionWhat + "\""));
+         "  Type: " + exceptionTypeName + "\n"
+         "what(): \""s + exceptionWhat + "\""));
       ZEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
          AssertCalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex));
       ZEN(_consoleMock.WriteNewLineMock.AssertCalledOnce());
@@ -338,8 +338,8 @@ namespace ZenUnit
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::SuccessButPastDeadline;
       _testResult_WriteTestCaseNumberIfAnyMocked.milliseconds = 10;
 
-      const string TestFailureNumber = Random<string>();
-      _testFailureNumbererMock.NextMock.ExpectAndReturn(TestFailureNumber);
+      const string testFailureNumber = Random<string>();
+      _testFailureNumbererMock.NextMock.ExpectAndReturn(testFailureNumber);
 
       _consoleMock.WriteLineColorMock.Expect();
       _consoleMock.WriteLineMock.Expect();
@@ -353,7 +353,7 @@ namespace ZenUnit
       ZEN(_testFailureNumbererMock.NextMock.AssertCalledOnce());
       ZEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
          AssertCalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex));
-      ZEN(_consoleMock.WriteLineColorMock.AssertCalledOnceWith(TestFailureNumber, Color::Red));
+      ZEN(_consoleMock.WriteLineColorMock.AssertCalledOnceWith(testFailureNumber, Color::Red));
       ZEN(_consoleMock.WriteLineMock.AssertCalls(
       {
          _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value(),

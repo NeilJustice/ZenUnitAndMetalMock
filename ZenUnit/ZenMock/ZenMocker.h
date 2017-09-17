@@ -109,7 +109,8 @@ call ZEN(<ZenMockObjectName>.<FunctionName>Mock.
 
 Fail fasting with exit code )" <<
 (zenUnitArgs.exit0 ? "0 (normally exit code 1 but -exit0 is specified).\n" : "1.\n");
-            _exit_ZenMockable(zenUnitArgs.exit0 ? 0 : 1);
+            int exitCode = zenUnitArgs.exit0 ? 0 : 1;
+            _exit_ZenMockable(exitCode);
          }
       }
 

@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Console/Mock/ConsoleMock.h"
 
 namespace ZenUnit
 {
@@ -12,6 +13,7 @@ namespace ZenUnit
    FACTS(FullConstructor_BecauseAnomalyNotPresent_SetsFields)
    FACTS(FullConstructor_BecauseAnomalyPresent_UnaffectedByExpectedActualFormat_SetsFields)
    AFACT(what_ReturnsWhyCStr)
+   AFACT(WriteLineWhy_CallsConsoleWriteLineWithWhy)
    AFACT(ZENWrapped_ReturnsExpectedAnomaly)
    AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
@@ -287,6 +289,18 @@ FilePath(1))")
       ARE_EQUAL("", anomaly.what());
       anomaly.why = "why";
       ARE_EQUAL(anomaly.why.c_str(), anomaly.what());
+   }
+
+   TEST(WriteLineWhy_CallsConsoleWriteLineWithWhy)
+   {
+      Anomaly anomaly;
+      anomaly.why = ZenUnit::Random<string>();
+      ConsoleMock consoleMock;
+      consoleMock.WriteLineMock.Expect();
+      //
+      anomaly.WriteLineWhy(&consoleMock);
+      //
+      ZEN(consoleMock.WriteLineMock.AssertCalledOnceWith(anomaly.why));
    }
 
    TEST(ZENWrapped_ReturnsExpectedAnomaly)

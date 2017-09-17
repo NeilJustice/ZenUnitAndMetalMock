@@ -161,7 +161,7 @@ namespace ZenUnit
             TestPhaseSuffixer::DoTestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
          console->Write(responsibleTestPhaseSuffix);
          WriteTestCaseNumberIfAny(console, testCaseIndex);
-         console->WriteLine(responsibleCallResult.anomalyOrException->anomaly->why);
+         responsibleCallResult.anomalyOrException->anomaly->WriteLineWhy(console);
          console->WriteNewLine();
          break;
       }
