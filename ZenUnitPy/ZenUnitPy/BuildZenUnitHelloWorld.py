@@ -3,7 +3,7 @@ import platform
 import sys
 sys.path.append('ZenUnitPy') # Jenkins
 sys.path.append('../ZenUnitPy') # Jenkins
-from ZenUnitPy import ArgParser, Util, BuildZenUnit
+from ZenUnitPy import ArgParser, Util, BuildZenUnit, Process
 
 def main(args):
    if len(args) != 4:
@@ -17,11 +17,11 @@ def main(args):
       casefoldedPlatformSystem = platform.system().casefold()
       if casefoldedPlatformSystem == 'linux':
          BuildZenUnit.linux_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions)
-         BuildZenUnit.linux_run_zenunit_tests('ZenUnitHelloWorldTests')
+         BuildZenUnit.linux_run_tests('ZenUnitHelloWorldTests')
          os.chdir('..')
       else:
          BuildZenUnit.windows_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions)
-         BuildZenUnit.windows_run_zenunit_tests(cmakeBuildType, 'ZenUnitHelloWorldTests')
+         Process.run(rf'ZenUnitHelloWorld\StaticLibraryTests\{cmakeBuildType}\StaticLibraryTests.exe')
 
 if __name__ == "__main__": # pragma nocover
    main(sys.argv)

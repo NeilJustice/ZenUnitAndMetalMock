@@ -11,42 +11,38 @@ def main(args):
 'Invalid args: ' + ' '.join(args) + '\n' +
 """Usage: python3 BuildZenUnit.py --generator=<CMakeGenerator> --buildType=<CMakeBuildType> --definitions=<QuotedSpaceSeparatedCMakeDefinitions> --installDirectory=<DirectoryOrNoInstall>""", 1)
    else:
-      generator = ArgParser.parse_arg('--generator', args[1])
-      buildType = ArgParser.parse_arg('--buildType', args[2])
-      definitions = ArgParser.parse_arg('--definitions', args[3])
+      cmakeGenerator = ArgParser.parse_arg('--generator', args[1])
+      cmakeBuildType = ArgParser.parse_arg('--buildType', args[2])
+      cmakeDefinitions = ArgParser.parse_arg('--definitions', args[3])
       installDirectory = ArgParser.parse_arg('--installDirectory', args[4])
       platformSystem = platform.system().casefold()
       if platformSystem == 'linux':
-         linux_cmake_and_build(generator, buildType, definitions)
-         linux_run_zenunit_tests('ZenUnitTests')
-         optionally_install(buildType, installDirectory)
+         linux_cmake_and_build(cmakeGenerator, cmakeGenerator, cmakeDefinitions)
+         linux_run_tests('ZenUnitTests')
+         optionally_install(cmakeBuildType, installDirectory)
          os.chdir('..')
       else:
-         windows_cmake_and_build(generator, buildType, definitions)
-         windows_run_zenunit_tests(buildType, 'ZenUnitTests')
-         optionally_install(buildType, installDirectory)
+         windows_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions)
+         Process.run(rf'ZenUnitTests\{cmakeBuildType}\ZenUnitTests.exe')
+         optionally_install(cmakeBuildType, installDirectory)
 
-def linux_cmake_and_build(generator, buildType, definitions):
-   CMake.generate(buildType, generator, buildType, definitions, '..')
+def linux_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions):
+   CMake.generate(cmakeBuildType, cmakeGenerator, cmakeBuildType, cmakeDefinitions, '..')
    Process.run('ninja -v')
 
-def linux_run_zenunit_tests(testsProjectName):
+def linux_run_tests(testsProjectName):
    Process.run(f'{testsProjectName}/{testsProjectName}')
 
-def optionally_install(buildType, installDirectory):
+def optionally_install(cmakeBuildType, installDirectory):
    casefoldedInstallDirectory = installDirectory.casefold()
    if casefoldedInstallDirectory != 'noinstall':
-      installCommand = f'cmake --build . --target install --config {buildType}'
+      installCommand = f'cmake --build . --target install --config {cmakeBuildType}'
       Process.run(installCommand)
 
-def windows_cmake_and_build(generator, buildType, definitions):
-   CMake.generate('.', generator, buildType, definitions, '.')
-   buildCommand = f'cmake --build . --config {buildType}'
+def windows_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions):
+   CMake.generate('.', cmakeGenerator, cmakeBuildType, cmakeDefinitions, '.')
+   buildCommand = f'cmake --build . --config {cmakeBuildType}'
    Process.run(buildCommand)
-
-def windows_run_zenunit_tests(buildType, testsProjectName):
-   runTestsCommand = f'{testsProjectName}/{buildType}/{testsProjectName}.exe'
-   Process.run(runTestsCommand)
 
 if __name__ == "__main__": # pragma nocover
    main(sys.argv)

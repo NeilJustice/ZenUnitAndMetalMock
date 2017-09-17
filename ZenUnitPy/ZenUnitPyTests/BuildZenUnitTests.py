@@ -11,18 +11,17 @@ testNames = [
 'main_ArgsLengthNot5_PrintsUsageAndExits1_test',
 'main_ArgsLength5_CMakes_Builds_InstallsIfInstallDirectoryNotNoInstall_test',
 'linux_cmake_and_build_CMakes_BuildsWithNinja_test',
-'linux_run_zenunit_tests_RunsTestExe_test',
+'linux_run_tests_RunsTestExe_test',
 'optionally_install_RunsCMakeInstallTarget_test',
-'windows_cmake_and_build_CMakes_BuildsWithMSBuild_test',
-'windows_run_zenunit_tests_RunsTestExe_test'
+'windows_cmake_and_build_CMakes_BuildsWithMSBuild_test'
 ]
 
 class BuildZenUnitTests(unittest.TestCase):
 
    def setUp(self):
-      self.generator = TestRandom.string()
-      self.buildType = TestRandom.string()
-      self.definitions = TestRandom.string()
+      self.cmakeGenerator = TestRandom.string()
+      self.cmakeBuildType = TestRandom.string()
+      self.cmakeDefinitions = TestRandom.string()
       self.installDirectory = TestRandom.string()
 
    def main_ArgsLengthNot5_PrintsUsageAndExits1_test(self):
@@ -44,16 +43,16 @@ class BuildZenUnitTests(unittest.TestCase):
       @patch('platform.system', spec_set=True)
       @patch('ZenUnitPy.ArgParser.parse_arg', spec_set=True)
       @patch('ZenUnitPy.BuildZenUnit.linux_cmake_and_build', spec_set=True)
-      @patch('ZenUnitPy.BuildZenUnit.linux_run_zenunit_tests', spec_set=True)
+      @patch('ZenUnitPy.BuildZenUnit.linux_run_tests', spec_set=True)
       @patch('ZenUnitPy.BuildZenUnit.windows_cmake_and_build', spec_set=True)
-      @patch('ZenUnitPy.BuildZenUnit.windows_run_zenunit_tests', spec_set=True)
+      @patch('ZenUnitPy.Process.run', spec_set=True)
       @patch('ZenUnitPy.BuildZenUnit.optionally_install', spec_true=True)
       @patch('os.chdir', spec_true=True)
       def testcase(platformSystem, expectLinux, _1, _2, _3, _4, _5, _6, _7, _8):
          with self.subTest(f'{platformSystem}, {expectLinux}'):
-            ArgParser.parse_arg.side_effect = [ self.generator, self.buildType, self.definitions, self.installDirectory ]
+            ArgParser.parse_arg.side_effect = [ self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions, self.installDirectory ]
             platform.system.return_value = platformSystem
-            args = [ '.py', self.generator, self.buildType, self.definitions, self.installDirectory ]
+            args = [ '.py', self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions, self.installDirectory ]
             #
             BuildZenUnit.main(args)
             #
@@ -66,14 +65,17 @@ class BuildZenUnitTests(unittest.TestCase):
             ])
             platform.system.assert_called_once_with()
             if expectLinux:
-               BuildZenUnit.linux_cmake_and_build.assert_called_once_with(self.generator, self.buildType, self.definitions)
-               BuildZenUnit.linux_run_zenunit_tests.assert_called_once_with('ZenUnitTests')
-               BuildZenUnit.optionally_install.assert_called_once_with(self.buildType, self.installDirectory)
+               BuildZenUnit.linux_cmake_and_build.assert_called_once_with(self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
+               BuildZenUnit.linux_run_tests.assert_called_once_with('ZenUnitTests')
+               BuildZenUnit.optionally_install.assert_called_once_with(self.cmakeBuildType, self.installDirectory)
                os.chdir.assert_called_once_with('..')
             else:
-               BuildZenUnit.windows_cmake_and_build.assert_called_once_with(self.generator, self.buildType, self.definitions)
-               BuildZenUnit.windows_run_zenunit_tests.assert_called_once_with(self.buildType, 'ZenUnitTests')
-               BuildZenUnit.optionally_install.assert_called_once_with(self.buildType, self.installDirectory)
+               BuildZenUnit.windows_cmake_and_build.assert_called_once_with(
+                  self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
+               Process.run.assert_called_once_with(
+                  rf'ZenUnitTests\{self.cmakeBuildType}\ZenUnitTests.exe')
+               BuildZenUnit.optionally_install.assert_called_once_with(
+                  self.cmakeBuildType, self.installDirectory)
                os.chdir.assert_not_called()
       testcase('Linux', True)
       testcase('linux', True)
@@ -84,16 +86,17 @@ class BuildZenUnitTests(unittest.TestCase):
    @patch('ZenUnitPy.Process.run', spec_set=True)
    def linux_cmake_and_build_CMakes_BuildsWithNinja_test(self, _1, _2):
       #
-      BuildZenUnit.linux_cmake_and_build(self.generator, self.buildType, self.definitions)
+      BuildZenUnit.linux_cmake_and_build(self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
       #
-      CMake.generate.assert_called_once_with(self.buildType, self.generator, self.buildType, self.definitions, '..')
+      CMake.generate.assert_called_once_with(
+         self.cmakeBuildType, self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions, '..')
       Process.run.assert_called_once_with('ninja -v')
 
    @patch('ZenUnitPy.Process.run', spec_set=True)
-   def linux_run_zenunit_tests_RunsTestExe_test(self, _1):
+   def linux_run_tests_RunsTestExe_test(self, _1):
       testsProjectName = TestRandom.string()
       #
-      BuildZenUnit.linux_run_zenunit_tests(testsProjectName)
+      BuildZenUnit.linux_run_tests(testsProjectName)
       #
       Process.run.assert_called_once_with(f'{testsProjectName}/{testsProjectName}')
 
@@ -102,10 +105,10 @@ class BuildZenUnitTests(unittest.TestCase):
       def testcase(installDirectory, expectCallToCMakeInstall, _1):
          with self.subTest(f'{installDirectory}, {expectCallToCMakeInstall}'):
             #
-            BuildZenUnit.optionally_install(self.buildType, installDirectory)
+            BuildZenUnit.optionally_install(self.cmakeBuildType, installDirectory)
             #
             if expectCallToCMakeInstall:
-               expectedInstallCommand = 'cmake --build . --target install --config {0}'.format(self.buildType)
+               expectedInstallCommand = 'cmake --build . --target install --config {0}'.format(self.cmakeBuildType)
                Process.run.assert_called_once_with(expectedInstallCommand)
             else:
                Process.run.assert_not_called()
@@ -118,20 +121,11 @@ class BuildZenUnitTests(unittest.TestCase):
    @patch('ZenUnitPy.Process.run', spec_set=True)
    def windows_cmake_and_build_CMakes_BuildsWithMSBuild_test(self, _1, _2):
       #
-      BuildZenUnit.windows_cmake_and_build(self.generator, self.buildType, self.definitions)
+      BuildZenUnit.windows_cmake_and_build(self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
       #
-      CMake.generate.assert_called_once_with('.', self.generator, self.buildType, self.definitions, '.')
-      expectedCMakeBuildCommand = 'cmake --build . --config {0}'.format(self.buildType)
+      CMake.generate.assert_called_once_with('.', self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions, '.')
+      expectedCMakeBuildCommand = 'cmake --build . --config {0}'.format(self.cmakeBuildType)
       Process.run.assert_called_once_with(expectedCMakeBuildCommand)
-
-   @patch('ZenUnitPy.Process.run', spec_set=True)
-   def windows_run_zenunit_tests_RunsTestExe_test(self, _1):
-      testsProjectName = TestRandom.string()
-      #
-      BuildZenUnit.windows_run_zenunit_tests(self.buildType, testsProjectName)
-      #
-      expectedRunTestsCommand = f'{testsProjectName}/{self.buildType}/{testsProjectName}.exe'
-      Process.run.assert_called_once_with(expectedRunTestsCommand)
 
 if __name__ == '__main__': # pragma nocover
    UnitTester.run_tests(BuildZenUnitTests, testNames)
