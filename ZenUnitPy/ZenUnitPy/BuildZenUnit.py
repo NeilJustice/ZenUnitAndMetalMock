@@ -3,7 +3,7 @@ import platform
 import sys
 sys.path.append('ZenUnitPy') # Jenkins
 sys.path.append('../ZenUnitPy') # Jenkins
-from ZenUnitPy import CMake, Process, Util
+from ZenUnitPy import ArgParser, CMake, Process, Util
 
 def main(args):
    if len(args) != 5:
@@ -11,10 +11,10 @@ def main(args):
 'Invalid args: ' + ' '.join(args) + '\n' +
 """Usage: python3 BuildZenUnit.py --generator=<CMakeGenerator> --buildType=<CMakeBuildType> --definitions=<QuotedSpaceSeparatedCMakeDefinitions> --installDirectory=<DirectoryOrNoInstall>""", 1)
    else:
-      generator = args[1]
-      buildType = args[2]
-      definitions = args[3]
-      installDirectory = args[4]
+      generator = ArgParser.parse_arg('--generator', args[1])
+      buildType = ArgParser.parse_arg('--buildType', args[2])
+      definitions = ArgParser.parse_arg('--definitions', args[3])
+      installDirectory = ArgParser.parse_arg('--installDirectory', args[4])
       platformSystem = platform.system().casefold()
       if platformSystem == 'linux':
          linux_cmake_and_build(generator, buildType, definitions)

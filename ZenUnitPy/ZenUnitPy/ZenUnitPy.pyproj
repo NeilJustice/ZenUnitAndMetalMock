@@ -25,6 +25,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ArgParser.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="BuildZenUnit.py" />
     <Compile Include="BuildZenUnitHelloWorld.py" />
     <Compile Include="CMake.py" />

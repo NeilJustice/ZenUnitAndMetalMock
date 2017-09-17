@@ -1,8 +1,8 @@
 import platform
 import os
 import unittest
-from unittest.mock import patch
-from ZenUnitPy import UnitTester, BuildZenUnit, BuildZenUnitHelloWorld, Util
+from unittest.mock import call, patch
+from ZenUnitPy import ArgParser, UnitTester, BuildZenUnit, BuildZenUnitHelloWorld, Util
 import TestRandom
 
 testNames = [
@@ -32,19 +32,26 @@ class BuildZenUnitHelloWorldTests(unittest.TestCase):
       testcase(5)
 
    def main_ArgsLength4_CMakes_Builds_InstallsIfInstallDirectoryNotNoInstall_test(self):
+      @patch('ZenUnitPy.ArgParser.parse_arg', spec_set=True)
       @patch('platform.system', spec_set=True)
       @patch('ZenUnitPy.BuildZenUnit.linux_cmake_and_build', spec_set=True)
       @patch('ZenUnitPy.BuildZenUnit.linux_run_zenunit_tests', spec_set=True)
       @patch('ZenUnitPy.BuildZenUnit.windows_cmake_and_build', spec_set=True)
       @patch('ZenUnitPy.BuildZenUnit.windows_run_zenunit_tests', spec_set=True)
       @patch('os.chdir', spec_true=True)
-      def testcase(platformSystem, expectLinux, _1, _2, _3, _4, _5, _6):
+      def testcase(platformSystem, expectLinux, _1, _2, _3, _4, _5, _6, _7):
          with self.subTest(f'{platformSystem}, {expectLinux}'):
+            ArgParser.parse_arg.side_effect = [ self.generator, self.buildType, self.definitions ]
             platform.system.return_value = platformSystem
             args = [ '.py', self.generator, self.buildType, self.definitions ]
             #
             BuildZenUnitHelloWorld.main(args)
             #
+            self.assertEqual(3, len(ArgParser.parse_arg.call_args_list))
+            ArgParser.parse_arg.assert_has_calls([
+               call('--generator', args[1]),
+               call('--buildType', args[2]),
+               call('--definitions', args[3])])
             platform.system.assert_called_once_with()
             if expectLinux:
                BuildZenUnit.linux_cmake_and_build.assert_called_once_with(self.generator, self.buildType, self.definitions)
