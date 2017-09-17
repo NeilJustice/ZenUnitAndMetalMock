@@ -59,11 +59,11 @@ class BuildZenUnitHelloWorldTests(unittest.TestCase):
                BuildZenUnit.linux_run_tests.assert_called_once_with('ZenUnitHelloWorldTests')
                os.chdir.assert_called_once_with('..')
             else:
+               os.chdir.assert_called_once_with('ZenUnitHelloWorld')
                BuildZenUnit.windows_cmake_and_build.assert_called_once_with(
                   self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
                Process.run.assert_called_once_with(
-                  rf'ZenUnitHelloWorld\StaticLibraryTests\{self.cmakeBuildType}\StaticLibraryTests.exe')
-               os.chdir.assert_not_called()
+                  rf'StaticLibraryTests\{self.cmakeBuildType}\StaticLibraryTests.exe')
       testcase('Linux', True)
       testcase('linux', True)
       testcase('Windows', False)

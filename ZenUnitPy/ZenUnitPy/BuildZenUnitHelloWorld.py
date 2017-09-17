@@ -20,8 +20,9 @@ def main(args):
          BuildZenUnit.linux_run_tests('ZenUnitHelloWorldTests')
          os.chdir('..')
       else:
+         os.chdir('ZenUnitHelloWorld')
          BuildZenUnit.windows_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions)
-         Process.run(rf'ZenUnitHelloWorld\StaticLibraryTests\{cmakeBuildType}\StaticLibraryTests.exe')
+         Process.run(rf'StaticLibraryTests\{cmakeBuildType}\StaticLibraryTests.exe')
 
 if __name__ == "__main__": # pragma nocover
    main(sys.argv)
