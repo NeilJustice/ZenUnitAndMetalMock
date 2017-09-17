@@ -9,7 +9,7 @@ def main(args):
    if len(args) != 5:
       Util.print_and_exit(
 'Invalid args: ' + ' '.join(args) + '\n' +
-"""Usage: python3 CMakeBuildZenUnit.py --generator=<CMakeGenerator> --buildType=<CMakeBuildType> --definitions=<QuotedSpaceSeparatedCMakeDefinitions> --installDirectory=<DirectoryOrNoInstall>""", 1)
+"""Usage: python3 BuildZenUnit.py --generator=<CMakeGenerator> --buildType=<CMakeBuildType> --definitions=<QuotedSpaceSeparatedCMakeDefinitions> --installDirectory=<DirectoryOrNoInstall>""", 1)
    else:
       generator = args[1]
       buildType = args[2]

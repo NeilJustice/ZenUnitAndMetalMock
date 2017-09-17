@@ -2,7 +2,7 @@ import platform
 import os
 import unittest
 from unittest.mock import patch
-from ZenUnitPy import UnitTester, CMakeBuildZenUnit, CMakeBuildZenUnitHelloWorld, Util
+from ZenUnitPy import UnitTester, BuildZenUnit, BuildZenUnitHelloWorld, Util
 import TestRandom
 
 testNames = [
@@ -10,7 +10,7 @@ testNames = [
 'main_ArgsLength4_CMakes_Builds_InstallsIfInstallDirectoryNotNoInstall_test'
 ]
 
-class CMakeBuildZenUnitHelloWorldTests(unittest.TestCase):
+class BuildZenUnitHelloWorldTests(unittest.TestCase):
 
    def setUp(self):
       self.generator = TestRandom.string()
@@ -22,37 +22,37 @@ class CMakeBuildZenUnitHelloWorldTests(unittest.TestCase):
       def testcase(argsLength, _1):
          invalidArgs = ['arg'] * argsLength
          #
-         CMakeBuildZenUnitHelloWorld.main(invalidArgs)
+         BuildZenUnitHelloWorld.main(invalidArgs)
          #
          Util.print_and_exit.assert_called_once_with(
 'Invalid args: ' + ' '.join(invalidArgs) + '\n' +
-"""Usage: python3 CMakeBuildZenUnitHelloWorld.py --generator=<CMakeGenerator> --buildType=<CMakeBuildType> --definitions=<QuotedSpaceSeparatedCMakeDefinitions>""", 1)
+"""Usage: python3 BuildZenUnitHelloWorld.py --generator=<CMakeGenerator> --buildType=<CMakeBuildType> --definitions=<QuotedSpaceSeparatedCMakeDefinitions>""", 1)
       testcase(0)
       testcase(3)
       testcase(5)
 
    def main_ArgsLength4_CMakes_Builds_InstallsIfInstallDirectoryNotNoInstall_test(self):
       @patch('platform.system', spec_set=True)
-      @patch('ZenUnitPy.CMakeBuildZenUnit.linux_cmake_and_build', spec_set=True)
-      @patch('ZenUnitPy.CMakeBuildZenUnit.linux_run_zenunit_tests', spec_set=True)
-      @patch('ZenUnitPy.CMakeBuildZenUnit.windows_cmake_and_build', spec_set=True)
-      @patch('ZenUnitPy.CMakeBuildZenUnit.windows_run_zenunit_tests', spec_set=True)
+      @patch('ZenUnitPy.BuildZenUnit.linux_cmake_and_build', spec_set=True)
+      @patch('ZenUnitPy.BuildZenUnit.linux_run_zenunit_tests', spec_set=True)
+      @patch('ZenUnitPy.BuildZenUnit.windows_cmake_and_build', spec_set=True)
+      @patch('ZenUnitPy.BuildZenUnit.windows_run_zenunit_tests', spec_set=True)
       @patch('os.chdir', spec_true=True)
       def testcase(platformSystem, expectLinux, _1, _2, _3, _4, _5, _6):
          with self.subTest(f'{platformSystem}, {expectLinux}'):
             platform.system.return_value = platformSystem
             args = [ '.py', self.generator, self.buildType, self.definitions ]
             #
-            CMakeBuildZenUnitHelloWorld.main(args)
+            BuildZenUnitHelloWorld.main(args)
             #
             platform.system.assert_called_once_with()
             if expectLinux:
-               CMakeBuildZenUnit.linux_cmake_and_build.assert_called_once_with(self.generator, self.buildType, self.definitions)
-               CMakeBuildZenUnit.linux_run_zenunit_tests.assert_called_once_with('ZenUnitHelloWorldTests')
+               BuildZenUnit.linux_cmake_and_build.assert_called_once_with(self.generator, self.buildType, self.definitions)
+               BuildZenUnit.linux_run_zenunit_tests.assert_called_once_with('ZenUnitHelloWorldTests')
                os.chdir.assert_called_once_with('..')
             else:
-               CMakeBuildZenUnit.windows_cmake_and_build.assert_called_once_with(self.generator, self.buildType, self.definitions)
-               CMakeBuildZenUnit.windows_run_zenunit_tests.assert_called_once_with(self.buildType, 'ZenUnitHelloWorldTests')
+               BuildZenUnit.windows_cmake_and_build.assert_called_once_with(self.generator, self.buildType, self.definitions)
+               BuildZenUnit.windows_run_zenunit_tests.assert_called_once_with(self.buildType, 'ZenUnitHelloWorldTests')
                os.chdir.assert_not_called()
       testcase('Linux', True)
       testcase('linux', True)
@@ -60,4 +60,4 @@ class CMakeBuildZenUnitHelloWorldTests(unittest.TestCase):
       testcase('OSX', False)
 
 if __name__ == '__main__': # pragma nocover
-   UnitTester.run_tests(CMakeBuildZenUnitHelloWorldTests, testNames)
+   UnitTester.run_tests(BuildZenUnitHelloWorldTests, testNames)

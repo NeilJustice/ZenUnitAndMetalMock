@@ -25,10 +25,8 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CMakeBuildZenUnit.py" />
-    <Compile Include="CMakeBuildZenUnitHelloWorld.py">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="BuildZenUnit.py" />
+    <Compile Include="BuildZenUnitHelloWorld.py" />
     <Compile Include="CMake.py" />
     <Compile Include="FileSystem.py" />
     <Compile Include="RunTestsWithCoverageAndPylintFlake8.py" />
