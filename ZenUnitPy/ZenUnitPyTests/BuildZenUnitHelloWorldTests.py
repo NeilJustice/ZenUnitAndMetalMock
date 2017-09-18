@@ -35,11 +35,10 @@ class BuildZenUnitHelloWorldTests(unittest.TestCase):
       @patch('ZenUnitPy.ArgParser.parse_arg', spec_set=True)
       @patch('platform.system', spec_set=True)
       @patch('ZenUnitPy.BuildZenUnit.linux_cmake_and_build', spec_set=True)
-      @patch('ZenUnitPy.BuildZenUnit.linux_run_tests', spec_set=True)
       @patch('ZenUnitPy.BuildZenUnit.windows_cmake_and_build', spec_set=True)
       @patch('ZenUnitPy.Process.run', spec_set=True)
       @patch('os.chdir', spec_true=True)
-      def testcase(platformSystem, expectLinux, _1, _2, _3, _4, _5, _6, _7):
+      def testcase(platformSystem, expectLinux, _1, _2, _3, _4, _5, _6):
          with self.subTest(f'{platformSystem}, {expectLinux}'):
             ArgParser.parse_arg.side_effect = [ self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions ]
             platform.system.return_value = platformSystem
@@ -56,7 +55,7 @@ class BuildZenUnitHelloWorldTests(unittest.TestCase):
             if expectLinux:
                BuildZenUnit.linux_cmake_and_build.assert_called_once_with(
                   self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
-               BuildZenUnit.linux_run_tests.assert_called_once_with('ZenUnitHelloWorldTests')
+               Process.run.assert_called_once_with('ZenUnitHelloWorldTests/ZenUnitHelloWorldTests')
                os.chdir.assert_called_once_with('..')
             else:
                os.chdir.assert_called_once_with('ZenUnitHelloWorld')

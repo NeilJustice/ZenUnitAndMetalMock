@@ -11,7 +11,6 @@ testNames = [
 'main_ArgsLengthNot5_PrintsUsageAndExits1_test',
 'main_ArgsLength5_CMakes_Builds_InstallsIfInstallDirectoryNotNoInstall_test',
 'linux_cmake_and_build_CMakes_BuildsWithNinja_test',
-'linux_run_tests_RunsTestExe_test',
 'optionally_install_RunsCMakeInstallTarget_test',
 'windows_cmake_and_build_CMakes_BuildsWithMSBuild_test'
 ]
@@ -43,12 +42,11 @@ class BuildZenUnitTests(unittest.TestCase):
       @patch('platform.system', spec_set=True)
       @patch('ZenUnitPy.ArgParser.parse_arg', spec_set=True)
       @patch('ZenUnitPy.BuildZenUnit.linux_cmake_and_build', spec_set=True)
-      @patch('ZenUnitPy.BuildZenUnit.linux_run_tests', spec_set=True)
       @patch('ZenUnitPy.BuildZenUnit.windows_cmake_and_build', spec_set=True)
       @patch('ZenUnitPy.Process.run', spec_set=True)
       @patch('ZenUnitPy.BuildZenUnit.optionally_install', spec_true=True)
       @patch('os.chdir', spec_true=True)
-      def testcase(platformSystem, expectLinux, _1, _2, _3, _4, _5, _6, _7, _8):
+      def testcase(platformSystem, expectLinux, _1, _2, _3, _4, _5, _6, _7):
          with self.subTest(f'{platformSystem}, {expectLinux}'):
             ArgParser.parse_arg.side_effect = [ self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions, self.installDirectory ]
             platform.system.return_value = platformSystem
@@ -67,7 +65,7 @@ class BuildZenUnitTests(unittest.TestCase):
             if expectLinux:
                BuildZenUnit.linux_cmake_and_build.assert_called_once_with(
                   self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
-               BuildZenUnit.linux_run_tests.assert_called_once_with('ZenUnitTests')
+               Process.run.assert_called_once_with('ZenUnitTests/ZenUnitTests')
                BuildZenUnit.optionally_install.assert_called_once_with(
                   self.cmakeBuildType, self.installDirectory)
                os.chdir.assert_called_once_with('..')
@@ -93,14 +91,6 @@ class BuildZenUnitTests(unittest.TestCase):
       CMake.generate.assert_called_once_with(
          self.cmakeBuildType, self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions, '..')
       Process.run.assert_called_once_with('ninja -v')
-
-   @patch('ZenUnitPy.Process.run', spec_set=True)
-   def linux_run_tests_RunsTestExe_test(self, _1):
-      testsProjectName = TestRandom.string()
-      #
-      BuildZenUnit.linux_run_tests(testsProjectName)
-      #
-      Process.run.assert_called_once_with(f'{testsProjectName}/{testsProjectName}')
 
    def optionally_install_RunsCMakeInstallTarget_test(self):
       @patch('ZenUnitPy.Process.run', spec_true=True)

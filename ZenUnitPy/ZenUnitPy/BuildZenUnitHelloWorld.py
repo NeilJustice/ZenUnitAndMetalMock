@@ -17,7 +17,7 @@ def main(args):
       casefoldedPlatformSystem = platform.system().casefold()
       if casefoldedPlatformSystem == 'linux':
          BuildZenUnit.linux_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions)
-         BuildZenUnit.linux_run_tests('ZenUnitHelloWorldTests')
+         Process.run('ZenUnitHelloWorldTests/ZenUnitHelloWorldTests')
          os.chdir('..')
       else:
          os.chdir('ZenUnitHelloWorld')

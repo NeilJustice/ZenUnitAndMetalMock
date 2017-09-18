@@ -18,7 +18,7 @@ def main(args):
       platformSystem = platform.system().casefold()
       if platformSystem == 'linux':
          linux_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions)
-         linux_run_tests('ZenUnitTests')
+         Process.run('ZenUnitTests/ZenUnitTests')
          optionally_install(cmakeBuildType, installDirectory)
          os.chdir('..')
       else:
@@ -29,9 +29,6 @@ def main(args):
 def linux_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions):
    CMake.generate(cmakeBuildType, cmakeGenerator, cmakeBuildType, cmakeDefinitions, '..')
    Process.run('ninja -v')
-
-def linux_run_tests(testsProjectName):
-   Process.run(f'{testsProjectName}/{testsProjectName}')
 
 def optionally_install(cmakeBuildType, installDirectory):
    casefoldedInstallDirectory = installDirectory.casefold()
