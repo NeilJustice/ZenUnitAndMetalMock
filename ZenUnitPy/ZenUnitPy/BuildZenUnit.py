@@ -17,7 +17,7 @@ def main(args):
       installDirectory = ArgParser.parse_arg('--installDirectory', args[4])
       platformSystem = platform.system().casefold()
       if platformSystem == 'linux':
-         linux_cmake_and_build(cmakeGenerator, cmakeGenerator, cmakeDefinitions)
+         linux_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions)
          linux_run_tests('ZenUnitTests')
          optionally_install(cmakeBuildType, installDirectory)
          os.chdir('..')

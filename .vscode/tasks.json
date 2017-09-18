@@ -13,7 +13,7 @@
       {
          "taskName": "Build Debug",
          "args": [ "cd ${workspaceRoot}/Debug && time ninja -v" ],
-         "isBuildCommand": true,
+         "isBuildCommand": false,
          "problemMatcher":
          {
             "owner": "cpp",
@@ -42,7 +42,7 @@
       },
       {
          "taskName": "Run Debug",
-         "isTestCommand": true,
+         "isTestCommand": false,
          "args": [ "${workspaceRoot}/Debug/ZenUnitTests/ZenUnitTests" ]
       },
       {
@@ -52,12 +52,12 @@
       },
       {
          "taskName": "Run Python",
-         "isTestCommand": false,
+         "isTestCommand": true,
          "args": [ "export PYTHONPATH=.. && python3 ${file}" ]
       },
       {
          "taskName": "pylint File",
-         "isBuildCommand": false,
+         "isBuildCommand": true,
          "args": [ "pylint --rcfile=${workspaceRoot}/ZenUnitPy/.pylintrc --init-hook=\"sys.path.append('..')\" ${file}" ]
       },
       {

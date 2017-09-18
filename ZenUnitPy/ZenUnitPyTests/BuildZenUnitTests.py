@@ -65,9 +65,11 @@ class BuildZenUnitTests(unittest.TestCase):
             ])
             platform.system.assert_called_once_with()
             if expectLinux:
-               BuildZenUnit.linux_cmake_and_build.assert_called_once_with(self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
+               BuildZenUnit.linux_cmake_and_build.assert_called_once_with(
+                  self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
                BuildZenUnit.linux_run_tests.assert_called_once_with('ZenUnitTests')
-               BuildZenUnit.optionally_install.assert_called_once_with(self.cmakeBuildType, self.installDirectory)
+               BuildZenUnit.optionally_install.assert_called_once_with(
+                  self.cmakeBuildType, self.installDirectory)
                os.chdir.assert_called_once_with('..')
             else:
                BuildZenUnit.windows_cmake_and_build.assert_called_once_with(
