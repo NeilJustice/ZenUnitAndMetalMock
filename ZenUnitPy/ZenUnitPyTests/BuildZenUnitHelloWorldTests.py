@@ -51,12 +51,12 @@ class BuildZenUnitHelloWorldTests(unittest.TestCase):
                call('--generator', args[1]),
                call('--buildType', args[2]),
                call('--definitions', args[3])])
+            os.chdir.assert_called_with('ZenUnitHelloWorld')
             platform.system.assert_called_once_with()
             if expectLinux:
                BuildZenUnit.linux_cmake_and_build.assert_called_once_with(
                   self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
-               Process.run.assert_called_once_with('ZenUnitHelloWorldTests/ZenUnitHelloWorldTests')
-               os.chdir.assert_called_once_with('..')
+               Process.run.assert_called_once_with('StaticLibraryTests/StaticLibraryTests')
             else:
                os.chdir.assert_called_once_with('ZenUnitHelloWorld')
                BuildZenUnit.windows_cmake_and_build.assert_called_once_with(

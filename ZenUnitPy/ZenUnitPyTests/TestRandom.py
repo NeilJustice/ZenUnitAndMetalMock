@@ -1,7 +1,7 @@
 import random
 
 def integer():
-   randomInteger = random.randrange(-100, 100, 1)
+   randomInteger = random.randint(-100, 100)
    return randomInteger
 
 def string():

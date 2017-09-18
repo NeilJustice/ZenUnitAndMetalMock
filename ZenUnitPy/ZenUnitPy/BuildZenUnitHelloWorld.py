@@ -14,13 +14,12 @@ def main(args):
       cmakeGenerator = ArgParser.parse_arg('--generator', args[1])
       cmakeBuildType = ArgParser.parse_arg('--buildType', args[2])
       cmakeDefinitions = ArgParser.parse_arg('--definitions', args[3])
+      os.chdir('ZenUnitHelloWorld')
       casefoldedPlatformSystem = platform.system().casefold()
       if casefoldedPlatformSystem == 'linux':
          BuildZenUnit.linux_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions)
-         Process.run('ZenUnitHelloWorldTests/ZenUnitHelloWorldTests')
-         os.chdir('..')
+         Process.run('StaticLibraryTests/StaticLibraryTests')
       else:
-         os.chdir('ZenUnitHelloWorld')
          BuildZenUnit.windows_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions)
          Process.run(rf'StaticLibraryTests\{cmakeBuildType}\StaticLibraryTests.exe')
 
