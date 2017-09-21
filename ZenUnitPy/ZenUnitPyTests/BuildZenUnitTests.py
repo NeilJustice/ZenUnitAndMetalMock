@@ -5,7 +5,7 @@ import unittest
 from unittest.mock import call, patch
 sys.path.append('..') # Jenkins
 from ZenUnitPy import ArgParser, CMake, BuildZenUnit, Process, UnitTester, Util
-import TestRandom
+import Random
 
 testNames = [
 'main_ArgsLengthNot5_PrintsUsageAndExits1_test',
@@ -18,10 +18,10 @@ testNames = [
 class BuildZenUnitTests(unittest.TestCase):
 
    def setUp(self):
-      self.cmakeGenerator = TestRandom.string()
-      self.cmakeBuildType = TestRandom.string()
-      self.cmakeDefinitions = TestRandom.string()
-      self.installDirectory = TestRandom.string()
+      self.cmakeGenerator = Random.string()
+      self.cmakeBuildType = Random.string()
+      self.cmakeDefinitions = Random.string()
+      self.installDirectory = Random.string()
 
    def main_ArgsLengthNot5_PrintsUsageAndExits1_test(self):
       @patch('ZenUnitPy.Util.print_and_exit', spec_set=True)
@@ -64,14 +64,14 @@ class BuildZenUnitTests(unittest.TestCase):
             platform.system.assert_called_once_with()
             if expectLinux:
                BuildZenUnit.linux_cmake_and_build.assert_called_once_with(
-                  self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
+                  self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions, self.installDirectory)
                Process.run.assert_called_once_with('ZenUnitTests/ZenUnitTests')
                BuildZenUnit.optionally_install.assert_called_once_with(
                   self.cmakeBuildType, self.installDirectory)
                os.chdir.assert_called_once_with('..')
             else:
                BuildZenUnit.windows_cmake_and_build.assert_called_once_with(
-                  self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
+                  self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions, self.installDirectory)
                Process.run.assert_called_once_with(
                   rf'ZenUnitTests\{self.cmakeBuildType}\ZenUnitTests.exe')
                BuildZenUnit.optionally_install.assert_called_once_with(
@@ -82,15 +82,24 @@ class BuildZenUnitTests(unittest.TestCase):
       testcase('Windows', False)
       testcase('OSX', False)
 
-   @patch('ZenUnitPy.CMake.generate', spec_set=True)
-   @patch('ZenUnitPy.Process.run', spec_set=True)
-   def linux_cmake_and_build_CMakes_BuildsWithNinja_test(self, _1, _2):
-      #
-      BuildZenUnit.linux_cmake_and_build(self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
-      #
-      CMake.generate.assert_called_once_with(
-         self.cmakeBuildType, self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions, '..')
-      Process.run.assert_called_once_with('ninja -v')
+   def linux_cmake_and_build_CMakes_BuildsWithNinja_test(self):
+      @patch('ZenUnitPy.CMake.generate', spec_set=True)
+      @patch('ZenUnitPy.Process.run', spec_set=True)
+      def testcase(cmakeDefinitions, installDirectory, expectedCMakeDefinitionsArgument, _1, _2):
+         with self.subTest(f'{cmakeDefinitions, installDirectory, expectedCMakeDefinitionsArgument}'):
+            #
+            BuildZenUnit.linux_cmake_and_build(
+               self.cmakeGenerator, self.cmakeBuildType, cmakeDefinitions, installDirectory)
+            #
+            CMake.generate.assert_called_once_with(
+               self.cmakeBuildType, self.cmakeGenerator, self.cmakeBuildType, expectedCMakeDefinitionsArgument, '..')
+            Process.run.assert_called_once_with('ninja -v')
+      testcase('', '', f' -DCMAKE_INSTALL_PREFIX=')
+      testcase('-DSanitizerMode=ON', '', '-DSanitizerMode=ON -DCMAKE_INSTALL_PREFIX=')
+      testcase('-DSanitizerMode=ON', 'NoInstall', '-DSanitizerMode=ON')
+      testcase('-DSanitizerMode=ON', 'noinstall', '-DSanitizerMode=ON')
+      testcase('-DSanitizerMode=ON', '/home/user/directory', '-DSanitizerMode=ON -DCMAKE_INSTALL_PREFIX=/home/user/directory')
+      testcase('', '/usr/local', ' -DCMAKE_INSTALL_PREFIX=/usr/local')
 
    def optionally_install_RunsCMakeInstallTarget_test(self):
       @patch('ZenUnitPy.Process.run', spec_true=True)
@@ -109,15 +118,23 @@ class BuildZenUnitTests(unittest.TestCase):
       testcase('NoInstall', False)
       testcase('noinstall', False)
 
-   @patch('ZenUnitPy.CMake.generate', spec_set=True)
-   @patch('ZenUnitPy.Process.run', spec_set=True)
-   def windows_cmake_and_build_CMakes_BuildsWithMSBuild_test(self, _1, _2):
-      #
-      BuildZenUnit.windows_cmake_and_build(self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
-      #
-      CMake.generate.assert_called_once_with('.', self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions, '.')
-      expectedCMakeBuildCommand = 'cmake --build . --config {0}'.format(self.cmakeBuildType)
-      Process.run.assert_called_once_with(expectedCMakeBuildCommand)
+   def windows_cmake_and_build_CMakes_BuildsWithMSBuild_test(self):
+      @patch('ZenUnitPy.CMake.generate', spec_set=True)
+      @patch('ZenUnitPy.Process.run', spec_set=True)
+      def testcase(cmakeDefinitions, installDirectory, expectedCMakeDefinitionsArgument, _1, _2):
+         with self.subTest(f'{cmakeDefinitions, installDirectory, expectedCMakeDefinitionsArgument, }'):
+            #
+            BuildZenUnit.windows_cmake_and_build(self.cmakeGenerator, self.cmakeBuildType, cmakeDefinitions, installDirectory)
+            #
+            CMake.generate.assert_called_once_with('.', self.cmakeGenerator, self.cmakeBuildType, expectedCMakeDefinitionsArgument, '.')
+            expectedCMakeBuildCommand = 'cmake --build . --config {0}'.format(self.cmakeBuildType)
+            Process.run.assert_called_once_with(expectedCMakeBuildCommand)
+      testcase('', '', f' -DCMAKE_INSTALL_PREFIX=')
+      testcase('-DSanitizerMode=ON', '', '-DSanitizerMode=ON -DCMAKE_INSTALL_PREFIX=')
+      testcase('-DSanitizerMode=ON', 'NoInstall', '-DSanitizerMode=ON')
+      testcase('-DSanitizerMode=ON', 'noinstall', '-DSanitizerMode=ON')
+      testcase('-DSanitizerMode=ON', 'C:\\Users\\UserName\\install', '-DSanitizerMode=ON -DCMAKE_INSTALL_PREFIX=C:\\Users\\UserName\\install')
+      testcase('', 'C:\\install', ' -DCMAKE_INSTALL_PREFIX=C:\\install')
 
 if __name__ == '__main__': # pragma nocover
    UnitTester.run_tests(BuildZenUnitTests, testNames)

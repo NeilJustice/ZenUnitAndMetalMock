@@ -17,10 +17,10 @@ def main(args):
       os.chdir('ZenUnitHelloWorld')
       casefoldedPlatformSystem = platform.system().casefold()
       if casefoldedPlatformSystem == 'linux':
-         BuildZenUnit.linux_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions)
+         BuildZenUnit.linux_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions, 'noinstall')
          Process.run('StaticLibraryTests/StaticLibraryTests')
       else:
-         BuildZenUnit.windows_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions)
+         BuildZenUnit.windows_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions, 'noinstall')
          Process.run(rf'StaticLibraryTests\{cmakeBuildType}\StaticLibraryTests.exe')
 
 if __name__ == "__main__": # pragma nocover

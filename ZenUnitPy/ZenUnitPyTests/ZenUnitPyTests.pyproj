@@ -6,7 +6,7 @@
     <ProjectGuid>5be2bd06-b3d6-4e12-9d37-cb82aa0ef9d3</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>BuildZenUnitHelloWorldTests.py</StartupFile>
+    <StartupFile>RunAllWithCoverage.py</StartupFile>
     <SearchPath>..\</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -43,7 +43,7 @@
     <Compile Include="RunAll.py" />
     <Compile Include="RunAllWithCoverage.py" />
     <Compile Include="RunTestsWithCoverageAndPylintFlake8Tests.py" />
-    <Compile Include="TestRandom.py">
+    <Compile Include="Random.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UnitTesterTests.py">

@@ -17,16 +17,19 @@ def main(args):
       installDirectory = ArgParser.parse_arg('--installDirectory', args[4])
       platformSystem = platform.system().casefold()
       if platformSystem == 'linux':
-         linux_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions)
+         linux_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions, installDirectory)
          Process.run('ZenUnitTests/ZenUnitTests')
          optionally_install(cmakeBuildType, installDirectory)
          os.chdir('..')
       else:
-         windows_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions)
+         windows_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions, installDirectory)
          Process.run(rf'ZenUnitTests\{cmakeBuildType}\ZenUnitTests.exe')
          optionally_install(cmakeBuildType, installDirectory)
 
-def linux_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions):
+def linux_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions, installDirectory):
+   casefoldedInstallDirectory = installDirectory.casefold()
+   if casefoldedInstallDirectory != 'noinstall':
+      cmakeDefinitions = f'{cmakeDefinitions} -DCMAKE_INSTALL_PREFIX={installDirectory}'
    CMake.generate(cmakeBuildType, cmakeGenerator, cmakeBuildType, cmakeDefinitions, '..')
    Process.run('ninja -v')
 
@@ -36,7 +39,10 @@ def optionally_install(cmakeBuildType, installDirectory):
       installCommand = f'cmake --build . --target install --config {cmakeBuildType}'
       Process.run(installCommand)
 
-def windows_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions):
+def windows_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions, installDirectory):
+   casefoldedInstallDirectory = installDirectory.casefold()
+   if casefoldedInstallDirectory != 'noinstall':
+      cmakeDefinitions = f'{cmakeDefinitions} -DCMAKE_INSTALL_PREFIX={installDirectory}'
    CMake.generate('.', cmakeGenerator, cmakeBuildType, cmakeDefinitions, '.')
    buildCommand = f'cmake --build . --config {cmakeBuildType}'
    Process.run(buildCommand)

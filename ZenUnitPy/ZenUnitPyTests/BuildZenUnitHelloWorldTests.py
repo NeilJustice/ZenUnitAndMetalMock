@@ -3,7 +3,7 @@ import os
 import unittest
 from unittest.mock import call, patch
 from ZenUnitPy import ArgParser, UnitTester, BuildZenUnit, BuildZenUnitHelloWorld, Util, Process
-import TestRandom
+import Random
 
 testNames = [
 'main_ArgsLengthNot4_PrintsUsageAndExits1_test',
@@ -13,9 +13,9 @@ testNames = [
 class BuildZenUnitHelloWorldTests(unittest.TestCase):
 
    def setUp(self):
-      self.cmakeGenerator = TestRandom.string()
-      self.cmakeBuildType = TestRandom.string()
-      self.cmakeDefinitions = TestRandom.string()
+      self.cmakeGenerator = Random.string()
+      self.cmakeBuildType = Random.string()
+      self.cmakeDefinitions = Random.string()
 
    def main_ArgsLengthNot4_PrintsUsageAndExits1_test(self):
       @patch('ZenUnitPy.Util.print_and_exit', spec_set=True)
@@ -55,12 +55,12 @@ class BuildZenUnitHelloWorldTests(unittest.TestCase):
             platform.system.assert_called_once_with()
             if expectLinux:
                BuildZenUnit.linux_cmake_and_build.assert_called_once_with(
-                  self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
+                  self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions, 'noinstall')
                Process.run.assert_called_once_with('StaticLibraryTests/StaticLibraryTests')
             else:
                os.chdir.assert_called_once_with('ZenUnitHelloWorld')
                BuildZenUnit.windows_cmake_and_build.assert_called_once_with(
-                  self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
+                  self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions, 'noinstall')
                Process.run.assert_called_once_with(
                   rf'StaticLibraryTests\{self.cmakeBuildType}\StaticLibraryTests.exe')
       testcase('Linux', True)
