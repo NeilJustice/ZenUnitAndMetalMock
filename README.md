@@ -170,11 +170,7 @@ int main(int argc, char* argv[])
 
 Step 1 of 1:
 
-<<<<<<< HEAD
 `./LinuxCMakeBuildInstall.sh <InstallDirectory>`
-=======
-`./LinuxCMakeBuildInstall.sh \<InstallDirectory\>`
->>>>>>> 89ae456a51e60cee7ce2eff2a003a4377cbca984
 
 ZenUnit and ZenMock installed on Linux:
 
