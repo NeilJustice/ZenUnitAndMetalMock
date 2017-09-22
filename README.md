@@ -170,7 +170,9 @@ int main(int argc, char* argv[])
 
 Step 1 of 1:
 
-'./LinuxCMakeBuildInstall.sh \<InstallDirectory\>`
+`./LinuxCMakeBuildInstall.sh \<InstallDirectory\>`
+
+ZenUnit and ZenMock installed on Linux:
 
 ![ZenUnit Installed On Linux](Screenshots/ZenUnitInstalledOnLinux.png "ZenUnit Installed On Linux")
 
@@ -179,6 +181,8 @@ Step 1 of 1:
 Step 1 of 1:
 
 `.\WindowsCMakeBuildInstall.ps1 <InstallDirectory>`
+
+ZenUnit and ZenMock installed on Windows:
 
 ![ZenUnit Installed On Windows](Screenshots/ZenUnitInstalledOnWindows.png "ZenUnit Installed On Windows")
 
