@@ -170,9 +170,7 @@ int main(int argc, char* argv[])
 
 Step 1 of 1:
 
-Run './LinuxCMakeBuildInstall.sh <InstallDirectory>` to CMake with Ninja, build with the default C++ compiler, and install the ZenUnit include tree and Debug and Release static libraries to \<InstallDirectory\>, for example /usr/local for /usr/local/ZenUnit.
-
-ZenUnit and ZenMock installed on Linux:
+'./LinuxCMakeBuildInstall.sh \<InstallDirectory\>`
 
 ![ZenUnit Installed On Linux](Screenshots/ZenUnitInstalledOnLinux.png "ZenUnit Installed On Linux")
 
@@ -180,9 +178,7 @@ ZenUnit and ZenMock installed on Linux:
 
 Step 1 of 1:
 
-Run `.\WindowsCMakeBuildInstall.ps1 <InstallDirectory>` to CMake with Visual Studio 15 2017 Win64, build with MSBuild, and install the ZenUnit include tree and Debug and Release static libraries to \<InstallDirectory\>, for example C:\install for C:\install\ZenUnit.
-
-ZenUnit and ZenMock installed on Windows:
+`.\WindowsCMakeBuildInstall.ps1 <InstallDirectory>`
 
 ![ZenUnit Installed On Windows](Screenshots/ZenUnitInstalledOnWindows.png "ZenUnit Installed On Windows")
 
