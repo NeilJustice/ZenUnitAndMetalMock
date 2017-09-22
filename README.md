@@ -166,27 +166,7 @@ int main(int argc, char* argv[])
 }
 ```
 
-### Building and Installing ZenUnit and ZenMock On Linux
-
-Step 1 of 1:
-
-`./LinuxCMakeBuildInstall.sh <InstallDirectory>`
-
-ZenUnit and ZenMock installed on Linux:
-
-![ZenUnit Installed On Linux](Screenshots/ZenUnitInstalledOnLinux.png "ZenUnit Installed On Linux")
-
-### Building and Installing ZenUnit and ZenMock On Windows
-
-Step 1 of 1:
-
-`.\WindowsCMakeBuildInstall.ps1 <InstallDirectory>`
-
-ZenUnit and ZenMock installed on Windows:
-
-![ZenUnit Installed On Windows](Screenshots/ZenUnitInstalledOnWindows.png "ZenUnit Installed On Windows")
-
-### Guide to ZenMock
+### ZenMock
 
 Consider classes ComponentA and ClassUnderTest:
 
@@ -425,4 +405,22 @@ int main(int argc, char* argv[])
 |-------------|
 |`ZEN(ZenMockAssertion)` // ZEN adorns error messages with \_\_FILE\_\_ and \_\_LINE\_\_ information.|
 
-2017 to-do list: Single header, -filter, ZenMock CallInstead(), and -parallel
+### Building and Installing ZenUnit and ZenMock On Linux
+
+Step 1 of 1:
+
+`./LinuxCMakeBuildInstall.sh <InstallDirectory>`
+
+ZenUnit and ZenMock installed on Linux:
+
+![ZenUnit Installed On Linux](Screenshots/ZenUnitInstalledOnLinux.png "ZenUnit Installed On Linux")
+
+### Building and Installing ZenUnit and ZenMock On Windows
+
+Step 1 of 1:
+
+`.\WindowsCMakeBuildInstall.ps1 <InstallDirectory>`
+
+ZenUnit and ZenMock installed on Windows:
+
+![ZenUnit Installed On Windows](Screenshots/ZenUnitInstalledOnWindows.png "ZenUnit Installed On Windows")
