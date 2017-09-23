@@ -13,8 +13,13 @@
 namespace ZenUnit
 {
    ConsoleColorer::ConsoleColorer()
+#ifdef _WIN32
+      : fileno_ZenMockable(::_fileno)
+      , isatty_ZenMockable(::_isatty)
+#else
       : fileno_ZenMockable(::fileno)
       , isatty_ZenMockable(::isatty)
+#endif
 #ifdef _WIN32
       , GetStdHandle_ZenMockable(::GetStdHandle)
       , SetConsoleTextAttribute_ZenMockable(::SetConsoleTextAttribute)

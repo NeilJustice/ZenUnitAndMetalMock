@@ -24,7 +24,7 @@
 #pragma warning(disable: 4774) // 'sprintf_s' : format string expected in argument 3 is not a string literal
 #pragma warning(disable: 4987) // nonstandard extension used: 'throw (...)'
 // fileno() and isatty() are available on Linux and Windows whereas _fileno() and _isatty() is available only on Windows
-#pragma warning(disable: 4996) // 'fileno': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _fileno
+//#pragma warning(disable: 4996) // 'fileno': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _fileno
 
 // Ignore '__testCase': unreferenced formal parameter in TESTNXNs until quelling with [[maybe_unused]]
 #pragma warning(disable: 4100)
