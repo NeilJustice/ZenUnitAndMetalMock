@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/Utils/StringUtil.h"
+#include <iomanip>
 
 namespace ZenUnit
 {
