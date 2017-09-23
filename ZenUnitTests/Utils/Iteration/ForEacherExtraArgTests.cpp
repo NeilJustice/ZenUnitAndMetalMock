@@ -19,7 +19,7 @@ namespace ZenUnit
 
    auto Bind()
    {
-      return std::bind(&ForEacherExtraArgTests::Func, this, placeholders::_1, placeholders::_2);
+      return bind(&ForEacherExtraArgTests::Func, this, placeholders::_1, placeholders::_2);
    }
 
    TEST(ForEach_EmptyIterable_DoesNothing)

@@ -24,7 +24,7 @@ namespace ZenUnit
    void TestRunResult::AddSkippedTest(
       const char* testClassName, const char* testName, const char* reason)
    {
-      const string fullTestNameAndReason = String::Concat(
+      const std::string fullTestNameAndReason = String::Concat(
          testClassName, ".", testName, " because: ", reason);
       _skippedFullTestNamesAndReasons.push_back(fullTestNameAndReason);
    }
@@ -32,18 +32,18 @@ namespace ZenUnit
    void TestRunResult::AddSkippedTestClassNameAndReason(
       const char* testClassName, const char* reason)
    {
-      const string testClassNameAndReason = String::Concat(
+      const std::string testClassNameAndReason = String::Concat(
          testClassName, " because: ", reason);
       _skippedTestClassNamesAndReasons.push_back(testClassNameAndReason);
    }
 
-   void TestRunResult::SetTestClassResults(vector<TestClassResult>&& testClassResults)
+   void TestRunResult::SetTestClassResults(std::vector<TestClassResult>&& testClassResults)
    {
       _numberOfFailedTestCases = NumberOfFailedTestCases(testClassResults);
       _testClassResults = std::move(testClassResults);
    }
 
-   size_t TestRunResult::NumberOfFailedTestCases(const vector<TestClassResult>& testClassResults) const
+   size_t TestRunResult::NumberOfFailedTestCases(const std::vector<TestClassResult>& testClassResults) const
    {
       const size_t numberOfFailedTestCases = std::accumulate(
          testClassResults.cbegin(), testClassResults.cend(), size_t(),
@@ -58,7 +58,7 @@ namespace ZenUnit
    {
       if (_numberOfFailedTestCases > 0)
       {
-         const string numberOfTestFailuresLine = String::Concat(
+         const std::string numberOfTestFailuresLine = String::Concat(
             _numberOfFailedTestCases, " test failure", _numberOfFailedTestCases > 1 ? "s" : "", ":\n");
          _console->WriteLineColor(numberOfTestFailuresLine, Color::Red);
          _memberForEacherTestClassResults->ForEach(
@@ -90,11 +90,11 @@ namespace ZenUnit
       }
       else
       {
-         const string testOrTests = totalNumberOfTestCases == 1 ? "test" : "tests";
-         const string millisecondOrMilliseconds = testRunMilliseconds == 1 ? "millisecond" : "milliseconds";
-         const string inMillisecondsPart = String::Concat("in ", testRunMilliseconds, ' ', millisecondOrMilliseconds);
-         string closingLineBody;
-         string prefixAsciiArt;
+         const std::string testOrTests = totalNumberOfTestCases == 1 ? "test" : "tests";
+         const std::string millisecondOrMilliseconds = testRunMilliseconds == 1 ? "millisecond" : "milliseconds";
+         const std::string inMillisecondsPart = String::Concat("in ", testRunMilliseconds, ' ', millisecondOrMilliseconds);
+         std::string closingLineBody;
+         std::string prefixAsciiArt;
          if (_numberOfFailedTestCases == 0)
          {
             _console->WriteColor("[VICTORY] ", prefixColor);
@@ -113,9 +113,9 @@ namespace ZenUnit
          _console->WriteLine(closingLineBody);
          _console->WriteColor(prefixAsciiArt, prefixColor);
          _console->Write(zenUnitArgs.commandLine);
-         const string randomSeedWriteLine =
+         const std::string randomSeedWriteLine =
             (zenUnitArgs.random && !zenUnitArgs.randomseedsetbyuser) ?
-            " (seed " + to_string(zenUnitArgs.randomseed) + ")" : "";
+            " (seed " + std::to_string(zenUnitArgs.randomseed) + ")" : "";
          _console->WriteLine(randomSeedWriteLine);
       }
    }
@@ -137,12 +137,12 @@ namespace ZenUnit
       return exitCode;
    }
 
-   void TestRunResult::PrintSkippedTestClassReminder(const string& skippedTestClassNameAndReason) const
+   void TestRunResult::PrintSkippedTestClassReminder(const std::string& skippedTestClassNameAndReason) const
    {
       _console->WriteLine("[SKIPPED] Test class " + skippedTestClassNameAndReason);
    }
 
-   void TestRunResult::PrintSkippedTestReminder(const string& skippedFullTestNameAndReason) const
+   void TestRunResult::PrintSkippedTestReminder(const std::string& skippedFullTestNameAndReason) const
    {
       _console->WriteLine("[SKIPPED] Test " + skippedFullTestNameAndReason);
    }

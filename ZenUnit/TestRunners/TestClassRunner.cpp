@@ -7,8 +7,8 @@
 namespace ZenUnit
 {
    bool operator<(
-      const unique_ptr<TestClassRunner>& leftTestClassRunner,
-      const unique_ptr<TestClassRunner>& rightTestClassRunner)
+      const std::unique_ptr<TestClassRunner>& leftTestClassRunner,
+      const std::unique_ptr<TestClassRunner>& rightTestClassRunner)
    {
       const char* leftTestClassName = leftTestClassRunner->TestClassNameForSorting();
       const char* rightTestClassName = rightTestClassRunner->TestClassNameForSorting();

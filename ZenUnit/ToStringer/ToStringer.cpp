@@ -3,34 +3,34 @@
 
 namespace ZenUnit
 {
-   string ToStringer::ToString(const nullptr_t&)
+   std::string ToStringer::ToString(const nullptr_t&)
    {
       return "nullptr";
    }
 
-   string ToStringer::ToString(const bool& value)
+   std::string ToStringer::ToString(const bool& value)
    {
       return value ? "true" : "false";
    }
 
-   string ToStringer::ToString(const char& value)
+   std::string ToStringer::ToString(const char& value)
    {
       if (value == 0)
       {
          return "'\\0' (0)";
       }
-      ostringstream oss;
+      std::ostringstream oss;
       oss << '\'' << value << "\' (" << static_cast<int>(value) << ")";
-      const string valueString(oss.str());
+      const std::string valueString(oss.str());
       return valueString;
    };
 
-   string ToStringer::ToString(char* str)
+   std::string ToStringer::ToString(char* str)
    {
       return CharPointerToString(str);
    }
 
-   string ToStringer::ToString(const char* str)
+   std::string ToStringer::ToString(const char* str)
    {
       return CharPointerToString(str);
    }

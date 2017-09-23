@@ -210,7 +210,7 @@ namespace ZenUnit
    {
       struct ConsoleSelfMocked : public Zen::Mock<Console>
       {
-         ZENMOCK_VOID3_CONST(DoWriteStringsCommaSeparated, const std::vector<std::string>&, size_t, size_t)
+         ZENMOCK_VOID3_CONST(DoWriteStringsCommaSeparated, const vector<string>&, size_t, size_t)
       } consoleSelfMocked;
 
       vector<string> strings = { Random<string>() };

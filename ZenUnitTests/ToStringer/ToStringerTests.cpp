@@ -96,7 +96,7 @@ namespace ZenUnit
 
    TEST(ToString_Nullptr_ReturnsNullptrInBrackets)
    {
-      std::nullptr_t nullPointerType;
+      nullptr_t nullPointerType;
       ARE_EQUAL("nullptr", ToStringer::ToString(nullPointerType));
       ARE_EQUAL("nullptr", ToStringer::ToString(nullptr));
    }
@@ -154,7 +154,7 @@ namespace ZenUnit
       ARE_EQUAL("0xFFFFFFFF", ToStringer::ToString(intPointerMaxAsBinary));
       const int* intPointerMid = reinterpret_cast<const int*>(0x1111111111111111);
       ARE_EQUAL("0x11111111", ToStringer::ToString(intPointerMid));
-   #endif      
+   #endif
    }
 
    TEST(ToString_UniquePtr_ReturnsPointeeAddress)
@@ -224,7 +224,7 @@ namespace ZenUnit
       "<empty std::function>", true,
       "<non-empty std::function>", false)
    {
-      std::function<void()> stdFunction;
+      function<void()> stdFunction;
       if (!stdFunctionIsEmpty)
       {
          stdFunction = []{};
@@ -238,7 +238,7 @@ namespace ZenUnit
       "<empty std::function>", true,
       "<non-empty std::function>", false)
    {
-      std::function<int(char, float, double)> stdFunction;
+      function<int(char, float, double)> stdFunction;
       if (!stdFunctionIsEmpty)
       {
          stdFunction = [](char, float, double) { return 0; };

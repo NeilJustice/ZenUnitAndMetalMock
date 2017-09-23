@@ -39,7 +39,7 @@ namespace ZenUnit
 
    TestClassResult::~TestClassResult() = default;
 
-   void TestClassResult::AddTestResults(const vector<TestResult>& testResults)
+   void TestClassResult::AddTestResults(const std::vector<TestResult>& testResults)
    {
       _testResults.insert(_testResults.end(), testResults.cbegin(), testResults.cend());
    }

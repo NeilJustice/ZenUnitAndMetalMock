@@ -18,16 +18,16 @@ namespace ZenUnit
    {
    }
 
-   string FullTestName::Value() const
+   std::string FullTestName::Value() const
    {
       const bool testClassIsTemplated = String::Contains(testClassName, "<");
       const char* const testsOrTemplateTests = testClassIsTemplated ? "TEMPLATETESTS(" : "TESTS(";
       if (arity == 0)
       {
-         const string fullTestName = String::Concat(testsOrTemplateTests, testClassName, ")\nTEST(", testName, ')');
+         const std::string fullTestName = String::Concat(testsOrTemplateTests, testClassName, ")\nTEST(", testName, ')');
          return fullTestName;
       }
-      const string fullTestName = String::Concat(
+      const std::string fullTestName = String::Concat(
          testsOrTemplateTests, testClassName, ")\nTEST", static_cast<int>(arity), 'X', static_cast<int>(arity), '(', testName, ')');
       return fullTestName;
    }

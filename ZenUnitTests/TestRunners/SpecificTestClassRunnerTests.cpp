@@ -36,9 +36,9 @@ namespace ZenUnit
    const char* const TestClassName = "TestClassName";
 
    using TestsForEacherMockType = MemberForEacherExtraArgMock<
-      std::unique_ptr<Test>, SpecificTestClassRunner<TestingTestClass>,
+      unique_ptr<Test>, SpecificTestClassRunner<TestingTestClass>,
       void (SpecificTestClassRunner<TestingTestClass>::*)(
-         const std::unique_ptr<Test>& test, TestClassResult*) const, TestClassResult*>;
+         const unique_ptr<Test>& test, TestClassResult*) const, TestClassResult*>;
    const TestsForEacherMockType* _testsForEacherMock;
 
    class SpecificTestClassRunnerSelfMocked : public Zen::Mock<ZenUnit::SpecificTestClassRunner<TestingTestClass>>

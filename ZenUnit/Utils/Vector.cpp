@@ -3,7 +3,7 @@
 
 namespace ZenUnit
 {
-   vector<string> Vector::FromArgcArgv(int argc, char* argv[])
+   std::vector<std::string> Vector::FromArgcArgv(int argc, char* argv[])
    {
       const std::vector<std::string> args = [&]()
       {

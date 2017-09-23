@@ -42,13 +42,13 @@ File.cpp(1))");
 
    TEST(StdFunctionDoesNotPointToAFunction_DoesNotThrow)
    {
-      const std::function<void()> barrenStdFunction;
+      const function<void()> barrenStdFunction;
       IS_FALSE(barrenStdFunction);
    }
 
    TEST(StdFunctionPointsToAFunction_Throws)
    {
-      const std::function<void(int)> nonemptyStdFunction = exit;
+      const function<void(int)> nonemptyStdFunction = exit;
       THROWS(IS_FALSE(nonemptyStdFunction), Anomaly, R"(
   Failed: IS_FALSE(nonemptyStdFunction)
 Expected: false

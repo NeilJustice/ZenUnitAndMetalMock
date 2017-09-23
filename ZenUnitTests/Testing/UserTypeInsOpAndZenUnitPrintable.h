@@ -12,5 +12,5 @@ struct UserTypeInsOpAndZenUnitPrintable
 template<>
 struct ZenUnitPrinter<UserTypeInsOpAndZenUnitPrintable>
 {
-   static void Print(std::ostream& os, const UserTypeInsOpAndZenUnitPrintable& value);
+   static void Print(ostream& os, const UserTypeInsOpAndZenUnitPrintable& value);
 };

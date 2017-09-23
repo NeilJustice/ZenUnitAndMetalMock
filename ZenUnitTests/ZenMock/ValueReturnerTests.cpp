@@ -60,10 +60,10 @@ namespace ZenMock
       valueReturner.ZenMockAddReturnValue(1);
       valueReturner.ZenMockAddReturnValues(2, 3);
       valueReturner.ZenMockAddContainerReturnValues(vector<int> { 4, 5 });
-      valueReturner.ZenMockAddContainerReturnValues(std::array<int, 2>{{ 6, 7 }});
+      valueReturner.ZenMockAddContainerReturnValues(array<int, 2>{{ 6, 7 }});
       vector<int> lvalueVector{8};
       valueReturner.ZenMockAddContainerReturnValues(lvalueVector);
-      std::array<int, 1> lvalueArray{{9}};
+      array<int, 1> lvalueArray{{9}};
       valueReturner.ZenMockAddContainerReturnValues(lvalueArray);
       ARE_EQUAL(1, valueReturner.ZenMockNextReturnValue());
       ARE_EQUAL(2, valueReturner.ZenMockNextReturnValue());

@@ -6,31 +6,31 @@
 namespace ZenUnit
 {
    // Returns now in format "Monday January 1, 2016 at 00:00:00 <Timezone>"
-   string Watch::TimeZoneDateTimeNow() const
+   std::string Watch::TimeZoneDateTimeNow() const
    {
       const tm tmNow = TMNow();
-      ostringstream builder;
+      std::ostringstream builder;
       const char* const weekDayString = TMWeekDayToWeekDayString(tmNow.tm_wday);
       const char* const monthString = TMMonthToMonthString(tmNow.tm_mon);
-      const string timeZone = TimeZone(tmNow);
-      builder << setw(2) << setfill('0') << tmNow.tm_hour << ':'
-              << setw(2) << setfill('0') << tmNow.tm_min << ':'
-              << setw(2) << setfill('0') << tmNow.tm_sec << ' '
+      const std::string timeZone = TimeZone(tmNow);
+      builder << std::setw(2) << std::setfill('0') << tmNow.tm_hour << ':'
+              << std::setw(2) << std::setfill('0') << tmNow.tm_min << ':'
+              << std::setw(2) << std::setfill('0') << tmNow.tm_sec << ' '
               << timeZone << " on " << weekDayString << ' ' << monthString << ' ' << tmNow.tm_mday << ", " << (tmNow.tm_year + 1900);
-      const string weekdayDateTimeZoneNow = builder.str();
+      const std::string weekdayDateTimeZoneNow = builder.str();
       return weekdayDateTimeZoneNow;
    }
 
    tm Watch::TMNow() const
    {
-      const chrono::time_point<chrono::system_clock> nowTimePoint = chrono::system_clock::now();
+      const std::chrono::time_point<std::chrono::system_clock> nowTimePoint = std::chrono::system_clock::now();
 #ifdef __linux__
       tm* tmNow = nullptr;
       long nowTimeT = chrono::system_clock::to_time_t(nowTimePoint);
       tmNow = localtime(&nowTimeT);
       return *tmNow;
 #elif _WIN32
-      const __time64_t nowTimeT = chrono::system_clock::to_time_t(nowTimePoint);
+      const __time64_t nowTimeT = std::chrono::system_clock::to_time_t(nowTimePoint);
       tm tmNow;
       const errno_t localtimeResult = localtime_s(&tmNow, &nowTimeT);
       assert_true(localtimeResult == 0);
@@ -38,11 +38,11 @@ namespace ZenUnit
 #endif
    }
 
-   string Watch::TimeZone(const tm& tmValue) const
+   std::string Watch::TimeZone(const tm& tmValue) const
    {
       char timeZoneChars[128];
       strftime(timeZoneChars, sizeof(timeZoneChars), "%Z", &tmValue);
-      const string timeZone(timeZoneChars);
+      const std::string timeZone(timeZoneChars);
       return timeZone;
    }
 
@@ -66,7 +66,7 @@ namespace ZenUnit
       case 4: return "Thursday";
       case 5: return "Friday";
       case 6: return "Saturday";
-      default: throw out_of_range("Invalid tm_wday: " + to_string(tm_wday));
+      default: throw std::out_of_range("Invalid tm_wday: " + std::to_string(tm_wday));
       }
    }
 
@@ -86,7 +86,7 @@ namespace ZenUnit
       case 9: return "October";
       case 10: return "November";
       case 11: return "December";
-      default: throw out_of_range("Invalid tm_mon: " + to_string(tm_mon));
+      default: throw std::out_of_range("Invalid tm_mon: " + std::to_string(tm_mon));
       }
    }
 }

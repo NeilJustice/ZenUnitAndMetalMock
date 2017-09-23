@@ -21,7 +21,7 @@ namespace ZenUnit
    class TestRunResult
    {
       friend class TestRunResultTests;
-      using MemberForEacherTestClassResultsType = MemberForEacher<vector<TestClassResult>,
+      using MemberForEacherTestClassResultsType = MemberForEacher<std::vector<TestClassResult>,
          TestRunResult, void(TestRunResult::*)(const TestClassResult&) const>;
       using MemberForEacherSkippedTestsType = MemberForEacher<std::vector<std::string>,
          TestRunResult, void(TestRunResult::*)(const std::string&) const>;
@@ -55,7 +55,7 @@ namespace ZenUnit
          const ZenUnit::TestRunResult& expectedTestRunResult,
          const ZenUnit::TestRunResult& actualTestRunResult);
    private:
-      virtual size_t NumberOfFailedTestCases(const vector<TestClassResult>& testClassResults) const;
+      virtual size_t NumberOfFailedTestCases(const std::vector<TestClassResult>& testClassResults) const;
       void PrintTestClassResultFailures(const TestClassResult& testClassResult) const;
       void PrintSkippedTestClassReminder(const std::string& skippedTestClassNameAndReason) const;
       void PrintSkippedTestReminder(const std::string& skippedFullTestNameAndReason) const;

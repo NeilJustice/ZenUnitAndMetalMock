@@ -4,7 +4,7 @@
 namespace ZenMock
 {
    ReturnValueMustBeSpecifiedException::ReturnValueMustBeSpecifiedException(
-      const string& zenMockedFunctionSignature)
+      const std::string& zenMockedFunctionSignature)
       : _what(MakeWhat(zenMockedFunctionSignature))
    {
    }
@@ -14,10 +14,10 @@ namespace ZenMock
       return _what.c_str();
    }
 
-   string ReturnValueMustBeSpecifiedException::MakeWhat(
-      const string& zenMockedFunctionSignature)
+   std::string ReturnValueMustBeSpecifiedException::MakeWhat(
+      const std::string& zenMockedFunctionSignature)
    {
-      const string what = "For ZenMocked function \"" + zenMockedFunctionSignature + R"(":
+      const std::string what = "For ZenMocked function \"" + zenMockedFunctionSignature + R"(":
  ZenMocked functions with non-default-constructible return types
  must have their return value set explicitly by calling
  [ZenMockedFunctionName]Mock.[ExpectAndReturn|ExpectAndReturnValues]())";

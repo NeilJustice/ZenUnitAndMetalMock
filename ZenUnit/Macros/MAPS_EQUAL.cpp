@@ -3,10 +3,10 @@
 
 namespace ZenUnit
 {
-   NOINLINE string MAPS_EQUAL_MakeWhyBody_SizesNotEqual(
+   NOINLINE std::string MAPS_EQUAL_MakeWhyBody_SizesNotEqual(
       size_t expectedMapSize, size_t actualMapSize)
    {
-      const string whyBody = String::Concat(
+      const std::string whyBody = String::Concat(
          " Because: ARE_EQUAL(expectedMap.size(), actualMap.size()) failed\n",
          "Expected: ", expectedMapSize, '\n',
          "  Actual: ", actualMapSize);

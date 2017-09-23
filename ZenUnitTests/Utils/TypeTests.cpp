@@ -81,12 +81,12 @@ namespace ZenUnit
    {
       ARE_EQUAL("int", *Type::GetName<int>());
 #ifdef __linux__
-      ARE_EQUAL("decltype(nullptr)", *Type::GetName<std::nullptr_t>());
+      ARE_EQUAL("decltype(nullptr)", *Type::GetName<nullptr_t>());
       ARE_EQUAL("char [1]", *Type::GetName<decltype("")>());
       ARE_EQUAL("char [2]", *Type::GetName<decltype("a")>());
       ARE_EQUAL("char const*", *Type::GetName<const char*>());
 #elif _WIN32
-      ARE_EQUAL("std::nullptr_t", *Type::GetName<std::nullptr_t>());
+      ARE_EQUAL("std::nullptr_t", *Type::GetName<nullptr_t>());
       ARE_EQUAL("char const [1]", *Type::GetName<decltype("")>());
       ARE_EQUAL("char const [2]", *Type::GetName<decltype("a")>());
    #if _WIN64

@@ -62,7 +62,7 @@ namespace ZenUnit
    {
       TestClassResult testClassResult = TestClassResult::TestingNonDefault();
       //
-      TestClassResult moved(std::move(testClassResult));
+      TestClassResult moved(move(testClassResult));
       //
       ARE_EQUAL(TestClassResult(), testClassResult);
       ARE_EQUAL(TestClassResult::TestingNonDefault(), moved);
@@ -73,7 +73,7 @@ namespace ZenUnit
       TestClassResult testClassResult = TestClassResult::TestingNonDefault();
       TestClassResult moved;
       //
-      moved = std::move(testClassResult);
+      moved = move(testClassResult);
       //
       ARE_EQUAL(TestClassResult(), testClassResult);
       ARE_EQUAL(TestClassResult::TestingNonDefault(), moved);

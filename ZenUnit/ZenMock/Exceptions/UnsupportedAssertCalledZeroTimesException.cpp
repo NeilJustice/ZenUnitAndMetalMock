@@ -5,14 +5,14 @@
 namespace ZenMock
 {
    UnsupportedAssertCalledZeroTimesException::
-      UnsupportedAssertCalledZeroTimesException(const string& zenMockedFunctionSignature)
+      UnsupportedAssertCalledZeroTimesException(const std::string& zenMockedFunctionSignature)
       : _what(MakeWhat(zenMockedFunctionSignature))
    {
    }
 
-   string UnsupportedAssertCalledZeroTimesException::MakeWhat(const string& zenMockedFunctionSignature)
+   std::string UnsupportedAssertCalledZeroTimesException::MakeWhat(const std::string& zenMockedFunctionSignature)
    {
-      const string what = ZenUnit::String::Concat(
+      const std::string what = ZenUnit::String::Concat(
 "For ZenMocked function \"", zenMockedFunctionSignature, R"(":
  ZenMock objects by design do not support the operation of asserting that
  their corresponding ZenMocked function was called zero times.

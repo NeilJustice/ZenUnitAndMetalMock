@@ -130,7 +130,7 @@ namespace ZenUnit
       vector<TestClassResult> testClassResults { TestClassResult() };
       const vector<TestClassResult> NonMovedFromTestClassResults = testClassResults;
       //
-      testRunResultSelfMocked.SetTestClassResults(std::move(testClassResults));
+      testRunResultSelfMocked.SetTestClassResults(move(testClassResults));
       //
       IS_EMPTY(testClassResults);
       ZEN(testRunResultSelfMocked.NumberOfFailedTestCasesMock.AssertCalledOnceWith(NonMovedFromTestClassResults));

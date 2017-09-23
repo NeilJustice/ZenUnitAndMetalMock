@@ -47,7 +47,7 @@ namespace ZenMock
          assert_true(exceptionTypeName.empty());
          exceptionTypeName = *Type::GetName<ExceptionType>();
          exceptionArgCount = sizeof...(ExceptionArgTypes);
-         stringConcattedExceptionArgs = String::Concat(std::forward<ExceptionArgTypes>(exceptionArgs)...);
+         stringConcattedExceptionArgs = String::Concat(forward<ExceptionArgTypes>(exceptionArgs)...);
       }
 
       void ZenMockThrowIfExceptionSet()

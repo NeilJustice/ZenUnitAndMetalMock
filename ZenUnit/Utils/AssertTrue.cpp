@@ -11,10 +11,10 @@ namespace ZenUnit
       const FileLine& fileLine,
       const char* functionName)
    {
-      const string what = String::Concat(
+      const std::string what = String::Concat(
          "assert_true(", predicateText, ") failed in ",
          functionName, "()\n", fileLine.filePath, "(", fileLine.lineNumber, ")");
-      throw logic_error(what);
+      throw std::logic_error(what);
    }
 
    void AssertTrue(

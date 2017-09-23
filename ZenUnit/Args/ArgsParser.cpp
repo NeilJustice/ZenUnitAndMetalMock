@@ -4,6 +4,7 @@
 #include "ZenUnit/Utils/Set.h"
 #include "ZenUnit/Utils/StringUtil.h"
 #include "ZenUnit/Utils/Vector.h"
+#include <vector>
 
 namespace ZenUnit
 {
@@ -14,7 +15,7 @@ namespace ZenUnit
    {
    }
 
-   ZenUnitArgs ArgsParser::Parse(const vector<string>& args) const
+   ZenUnitArgs ArgsParser::Parse(const std::vector<std::string>& args) const
    {
       const size_t ExeArgSize = 1;
       if (args.size() > ExeArgSize + ZenUnitArgs::NumberOfValidArgs)
@@ -27,7 +28,7 @@ namespace ZenUnit
       const size_t numberOfArgs = args.size();
       for (size_t argIndex = 1; argIndex < numberOfArgs; ++argIndex)
       {
-         const string& arg = args[argIndex];
+         const std::string& arg = args[argIndex];
          if (arg == "-minimalist")
          {
             zenUnitArgs.printMode = PrintMode::Minimalist;
@@ -60,7 +61,7 @@ namespace ZenUnit
          }
          else
          {
-            const vector<string> splitArg = String::Split(arg, '=');
+            const std::vector<std::string> splitArg = String::Split(arg, '=');
             if (splitArg.size() != 2)
             {
                _console->WriteLine("ZenUnit argument error: Malformed -name=value argument: " + arg + "\n");
@@ -68,8 +69,8 @@ namespace ZenUnit
             }
             try
             {
-               const string& argName = splitArg[0];
-               const string& argValueString = splitArg[1];
+               const std::string& argName = splitArg[0];
+               const std::string& argValueString = splitArg[1];
                unsigned argValue = 0;
                if (argName == "-testruns")
                {
@@ -85,10 +86,10 @@ namespace ZenUnit
                }
                else
                {
-                  throw invalid_argument("");
+                  throw std::invalid_argument("");
                }
             }
-            catch (const invalid_argument&)
+            catch (const std::invalid_argument&)
             {
                _console->WriteLine("ZenUnit argument error: Malformed -name=value argument: " + arg + "\n");
                _console->WriteLineAndExit(Usage(), 1);
@@ -98,9 +99,9 @@ namespace ZenUnit
       return zenUnitArgs;
    }
 
-   const string& ArgsParser::Usage()
+   const std::string& ArgsParser::Usage()
    {
-      static const string usage = R"(ZenUnit and ZenMock v0.1.0
+      static const std::string usage = R"(ZenUnit and ZenMock v0.1.0
 Usage: <TestsBinaryName> [Options...]
 
 Options:

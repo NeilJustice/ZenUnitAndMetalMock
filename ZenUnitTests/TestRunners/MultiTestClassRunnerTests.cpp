@@ -15,14 +15,14 @@ namespace ZenUnit
    EVIDENCE
 
    MultiTestClassRunner _multiTestClassRunner;
-   SorterMock<std::vector<std::unique_ptr<TestClassRunner>>>* _sorterMock;
-   using TransformerMockType = TransformerMock<std::unique_ptr<TestClassRunner>, TestClassResult>;
+   SorterMock<vector<unique_ptr<TestClassRunner>>>* _sorterMock;
+   using TransformerMockType = TransformerMock<unique_ptr<TestClassRunner>, TestClassResult>;
    TransformerMockType* _transformerMock;
 
    STARTUP
    {
       _multiTestClassRunner._sorter.reset(_sorterMock
-         = new SorterMock<std::vector<std::unique_ptr<TestClassRunner>>>);
+         = new SorterMock<vector<unique_ptr<TestClassRunner>>>);
       _multiTestClassRunner._transformer.reset(_transformerMock = new TransformerMockType);
    }
 

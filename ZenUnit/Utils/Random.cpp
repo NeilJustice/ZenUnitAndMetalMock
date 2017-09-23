@@ -24,7 +24,7 @@ namespace ZenUnit
    template<>
    std::string Random<std::string>()
    {
-      const string randomString = "RandomString" + to_string(Random<unsigned char>());
+      const std::string randomString = "RandomString" + std::to_string(Random<unsigned char>());
       return randomString;
    }
 }

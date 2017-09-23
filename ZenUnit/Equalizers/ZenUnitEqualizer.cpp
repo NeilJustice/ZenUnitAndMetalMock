@@ -41,14 +41,14 @@ AssertEqual(char* expected, const char* actual)
    ZenUnitEqualizer<const char*>::AssertEqual(expected, actual);
 }
 
-void TwoTypeZenUnitEqualizer<const char*, string>::
-AssertEqual(const char* expected, const string& actual)
+void TwoTypeZenUnitEqualizer<const char*, std::string>::
+AssertEqual(const char* expected, const std::string& actual)
 {
    ZenUnitEqualizer<const char*>::AssertEqual(expected, actual.c_str());
 }
 
-void TwoTypeZenUnitEqualizer<string, const char*>::
-AssertEqual(const string& expected, const char* actual)
+void TwoTypeZenUnitEqualizer<std::string, const char*>::
+AssertEqual(const std::string& expected, const char* actual)
 {
    ZenUnitEqualizer<const char*>::AssertEqual(expected.c_str(), actual);
 }

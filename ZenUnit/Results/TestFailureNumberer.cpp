@@ -3,9 +3,9 @@
 
 namespace ZenUnit
 {
-   string TestFailureNumberer::Next()
+   std::string TestFailureNumberer::Next()
    {
-      const string nextTestFailureNumber = "<" + to_string(_testFailureNumber++) + ">";
+      const std::string nextTestFailureNumber = "<" + std::to_string(_testFailureNumber++) + ">";
       return nextTestFailureNumber;
    }
 

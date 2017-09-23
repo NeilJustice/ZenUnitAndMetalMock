@@ -2,6 +2,7 @@
 #include "ZenUnit/Anomaly/Anomaly.h"
 #include "ZenUnit/Console/Console.h"
 #include "ZenUnit/Macros/ARE_EQUAL.h"
+#include <sstream>
 
 namespace ZenUnit
 {
@@ -54,7 +55,7 @@ namespace ZenUnit
       anomaly.actual = zenWrappedAnomaly.actual;
       anomaly.message = zenWrappedAnomaly.message;
       anomaly.fileLine = fileLine;
-      ostringstream whyBuilder;
+      std::ostringstream whyBuilder;
       whyBuilder << "\n"
          "  Failed: " << zenMockAssertExpression << '\n';
       whyBuilder <<

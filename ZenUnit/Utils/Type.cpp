@@ -3,9 +3,9 @@
 
 namespace ZenUnit
 {
-   unordered_map<const char*, string>& Type::MangledToDemangledTypeNameMap()
+   std::unordered_map<const char*, std::string>& Type::MangledToDemangledTypeNameMap()
    {
-      static unordered_map<const char*, string> mangledToDemangledTypeName;
+      static std::unordered_map<const char*, std::string> mangledToDemangledTypeName;
       return mangledToDemangledTypeName;
    }
 }

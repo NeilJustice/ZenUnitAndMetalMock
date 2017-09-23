@@ -55,7 +55,7 @@ namespace ZenUnit
       return nullptr;
    }
 
-   int TestRunner::ParseArgsRunTestsPrintResults(const vector<string>& commandLineArgs)
+   int TestRunner::ParseArgsRunTestsPrintResults(const std::vector<std::string>& commandLineArgs)
    {
       _zenUnitArgs = _argsParser->Parse(commandLineArgs);
       int overallExitCode = 0;
@@ -92,9 +92,9 @@ namespace ZenUnit
 
    void TestRunner::RunTestsWithWaitableRunnerThread(unsigned maxtTotalSeconds)
    {
-      const shared_ptr<const VoidFuture> testClassRunnerDoneFuture = _futurist->Async(&TestRunner::RunTests, this);
-      const future_status waitResult = testClassRunnerDoneFuture->WaitAtMostSeconds(maxtTotalSeconds);
-      if (waitResult == future_status::timeout)
+      const std::shared_ptr<const VoidFuture> testClassRunnerDoneFuture = _futurist->Async(&TestRunner::RunTests, this);
+      const std::future_status waitResult = testClassRunnerDoneFuture->WaitAtMostSeconds(maxtTotalSeconds);
+      if (waitResult == std::future_status::timeout)
       {
          _testRunResult->PrintTestFailuresAndSkips();
          _console->WriteLineAndExit(String::Concat(
@@ -104,7 +104,7 @@ namespace ZenUnit
 
    void TestRunner::RunTests()
    {
-      vector<TestClassResult> testClassResults = _multiTestClassRunner->RunTestClasses(_zenUnitArgs);
+      std::vector<TestClassResult> testClassResults = _multiTestClassRunner->RunTestClasses(_zenUnitArgs);
       _testRunResult->SetTestClassResults(std::move(testClassResults));
    }
 }

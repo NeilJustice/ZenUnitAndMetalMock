@@ -24,30 +24,30 @@ namespace ZenUnit
       _console->WriteColor("[ZenUnit]", Color::Green);
       _console->WriteLine(" Running " + zenUnitArgs.commandLine);
       _console->WriteColor("[ZenUnit]", Color::Green);
-      const string timeZoneDateTimeNow = _watch->TimeZoneDateTimeNow();
+      const std::string timeZoneDateTimeNow = _watch->TimeZoneDateTimeNow();
       _console->WriteLine(" Running at " + timeZoneDateTimeNow);
       _console->WriteColor("[ZenUnit]", Color::Green);
       const size_t numberOfTestClasses = multiTestClassRunner->NumberOfTestClasses();
-      const string thirdLinePrefix = MakeThirdLinePrefix(numberOfTestClasses);
-      const string thirdLineSuffix = MakeThirdLineSuffix(zenUnitArgs.random, zenUnitArgs.randomseed);
-      const string thirdLine = thirdLinePrefix + thirdLineSuffix;
+      const std::string thirdLinePrefix = MakeThirdLinePrefix(numberOfTestClasses);
+      const std::string thirdLineSuffix = MakeThirdLineSuffix(zenUnitArgs.random, zenUnitArgs.randomseed);
+      const std::string thirdLine = thirdLinePrefix + thirdLineSuffix;
       _console->WriteLine(thirdLine);
       _console->WriteNewLine();
    }
 
-   string PreamblePrinter::MakeThirdLinePrefix(size_t numberOfTestClasses) const
+   std::string PreamblePrinter::MakeThirdLinePrefix(size_t numberOfTestClasses) const
    {
       const bool testClassesPlural = numberOfTestClasses > 1 || numberOfTestClasses == 0;
-      const string machineName = _machineNameGetter->GetMachineName();
-      const string thirdLinePrefix = String::Concat(
+      const std::string machineName = _machineNameGetter->GetMachineName();
+      const std::string thirdLinePrefix = String::Concat(
          " Running ", numberOfTestClasses, " test ", testClassesPlural ? "classes" : "class",
          " on machine ", machineName);
       return thirdLinePrefix;
    }
 
-   string PreamblePrinter::MakeThirdLineSuffix(bool random, unsigned short randomseed) const
+   std::string PreamblePrinter::MakeThirdLineSuffix(bool random, unsigned short randomseed) const
    {
-      const string thirdLineSuffix = random ? " with random seed " + to_string(randomseed) : "";
+      const std::string thirdLineSuffix = random ? " with random seed " + std::to_string(randomseed) : "";
       return thirdLineSuffix;
    }
 }

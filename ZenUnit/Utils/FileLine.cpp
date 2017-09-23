@@ -15,9 +15,9 @@ namespace ZenUnit
 
    std::string FileLine::ToString() const
    {
-      ostringstream oss;
+      std::ostringstream oss;
       oss << *this;
-      const string fileLineAsString = oss.str();
+      const std::string fileLineAsString = oss.str();
       return fileLineAsString;
    }
 

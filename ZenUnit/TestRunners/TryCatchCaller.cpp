@@ -37,7 +37,7 @@ namespace ZenUnit
       catch (const Anomaly& anomaly)
       {
          callResult.milliseconds = _stopwatch->Stop();
-         callResult.anomalyOrException = make_shared<AnomalyOrException>(anomaly);
+         callResult.anomalyOrException = std::make_shared<AnomalyOrException>(anomaly);
          callResult.testOutcome = TestOutcome::Anomaly;
          _console->WriteColor("\nAnomaly Found", Color::Red);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
@@ -50,17 +50,17 @@ namespace ZenUnit
          _console->WriteColor("\nZenMockException Thrown", Color::Red);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
-         const string exceptionTypeNameAndWhat = String::Concat(
+         const std::string exceptionTypeNameAndWhat = String::Concat(
             "\n  Type: ", *Type::GetName(e), "\nwhat(): \"", e.what(), "\"");
          _console->WriteLine(exceptionTypeNameAndWhat);
       }
-      catch (const exception& e)
+      catch (const std::exception& e)
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
          _console->WriteColor("\nException Thrown", Color::Red);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
-         const string exceptionTypeNameAndWhat = String::Concat(
+         const std::string exceptionTypeNameAndWhat = String::Concat(
             "\n  Type: ", *Type::GetName(e), '\n',
             "what(): \"", e.what(), "\"");
          _console->WriteLine(exceptionTypeNameAndWhat);
@@ -70,7 +70,7 @@ namespace ZenUnit
          const unsigned milliseconds = _stopwatch->Stop();
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->WriteLineColor("FATALITY", Color::Red);
-         const string exitLine = String::Concat(
+         const std::string exitLine = String::Concat(
             "Fatal ... exception. Fast failing now with exit code 1 (unless -exit0 specified).",
             testPhaseSuffix, " (", milliseconds, " ms)");
          const ZenUnitArgs& zenUnitArgs = _TestRunner_GetArgs_ZenMockable();

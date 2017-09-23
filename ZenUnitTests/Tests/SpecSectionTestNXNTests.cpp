@@ -37,7 +37,7 @@ namespace ZenUnit
    public:
       SpecSectionTestNXNSelfMocked() : Zen::Mock<SpecSectionTestNXN<
          TestingTestClass_SpecSectionTestNXNTests>>("", "", nullptr) {}
-      ZENMOCK_NONVOID0_CONST(const std::unique_ptr<Test>*, PmfTokenToTest)
+      ZENMOCK_NONVOID0_CONST(const unique_ptr<Test>*, PmfTokenToTest)
    };
 
    unique_ptr<SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests>> _specSectionTestNXN;
@@ -124,7 +124,7 @@ namespace ZenUnit
    {
       TestingTestClass_SpecSectionTestNXNTests::didCallTestNXNPmfToTest = false;
       //
-      const std::unique_ptr<Test>* testNXN = _specSectionTestNXN->PmfTokenToTest();
+      const unique_ptr<Test>* testNXN = _specSectionTestNXN->PmfTokenToTest();
       //
       IS_TRUE(TestingTestClass_SpecSectionTestNXNTests::didCallTestNXNPmfToTest);
       ARE_EQUAL(testNXN, &TestingTestClass_SpecSectionTestNXNTests::TestNXNPmfToTestReturnValue);

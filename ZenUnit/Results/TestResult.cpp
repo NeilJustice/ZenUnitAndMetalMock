@@ -14,7 +14,7 @@ namespace ZenUnit
       : responsibleCallResultField(nullptr)
       , testOutcome(TestOutcome::Unset)
       , milliseconds(0)
-      , testCaseIndex(numeric_limits<unsigned short>::max())
+      , testCaseIndex(std::numeric_limits<unsigned short>::max())
    {
    }
 
@@ -75,7 +75,7 @@ namespace ZenUnit
       const CallResult& testBodyCallResult,
       const CallResult& cleanupCallResult,
       const CallResult& destructorCallResult,
-      const function<const ZenUnitArgs&()>& getArgs)
+      const std::function<const ZenUnitArgs&()>& getArgs)
       : fullTestName(fullTestName)
       , constructorCallResult(constructorCallResult)
       , startupCallResult(startupCallResult)
@@ -85,7 +85,7 @@ namespace ZenUnit
       , responsibleCallResultField(nullptr)
       , testOutcome(TestOutcome::Unset)
       , milliseconds(0)
-      , testCaseIndex(numeric_limits<unsigned short>::max())
+      , testCaseIndex(std::numeric_limits<unsigned short>::max())
    {
       assert_true(constructorCallResult.testOutcome == TestOutcome::Success);
       assert_true(startupCallResult.testOutcome == TestOutcome::Success);
@@ -153,7 +153,7 @@ namespace ZenUnit
       }
       case TestOutcome::Anomaly:
       {
-         const string testFailureNumber = testFailureNumberer->Next();
+         const std::string testFailureNumber = testFailureNumberer->Next();
          console->WriteLineColor(testFailureNumber, Color::Red);
          console->Write(fullTestName.Value());
          const CallResult& responsibleCallResult = (this->*responsibleCallResultField);
@@ -167,7 +167,7 @@ namespace ZenUnit
       }
       case TestOutcome::Exception:
       {
-         const string testFailureNumber = testFailureNumberer->Next();
+         const std::string testFailureNumber = testFailureNumberer->Next();
          console->WriteLineColor(testFailureNumber, Color::Red);
          console->Write(fullTestName.Value());
          const CallResult& responsibleCallResult = this->*responsibleCallResultField;
@@ -176,7 +176,7 @@ namespace ZenUnit
          console->Write(responsibleTestPhaseSuffix);
          WriteTestCaseNumberIfAny(console, testCaseIndex);
          console->WriteLineColor("\nUncaught Exception", Color::Red);
-         const string exceptionTypeAndWhatLines = String::Concat(
+         const std::string exceptionTypeAndWhatLines = String::Concat(
             "  Type: ", *responsibleCallResult.anomalyOrException->exceptionTypeName, '\n',
             "what(): \"", *responsibleCallResult.anomalyOrException->exceptionWhat, "\"");
          console->WriteLine(exceptionTypeAndWhatLines);
@@ -186,7 +186,7 @@ namespace ZenUnit
       default:
       {
          assert_true(testOutcome == TestOutcome::SuccessButPastDeadline);
-         const string testFailureNumber = testFailureNumberer->Next();
+         const std::string testFailureNumber = testFailureNumberer->Next();
          console->WriteLineColor(testFailureNumber, Color::Red);
          console->WriteLine(fullTestName.Value());
          WriteTestCaseNumberIfAny(console, testCaseIndex);
@@ -201,9 +201,9 @@ namespace ZenUnit
    void TestResult::WriteTestCaseNumberIfAny(
       const Console* console, unsigned short testCaseIndexArgument) const
    {
-      if (testCaseIndexArgument != numeric_limits<unsigned short>::max())
+      if (testCaseIndexArgument != std::numeric_limits<unsigned short>::max())
       {
-         console->Write(" test case " + to_string(testCaseIndexArgument + 1));
+         console->Write(" test case " + std::to_string(testCaseIndexArgument + 1));
       }
    }
 

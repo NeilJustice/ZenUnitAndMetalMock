@@ -26,9 +26,9 @@ namespace ZenUnit
       return _fullTestName.Value();
    }
 
-   string Test::FileLineString() const
+   std::string Test::FileLineString() const
    {
-      const string fileLineString = _fileLine.ToString();
+      const std::string fileLineString = _fileLine.ToString();
       return fileLineString;
    }
 

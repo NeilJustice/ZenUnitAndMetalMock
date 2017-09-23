@@ -17,12 +17,12 @@ namespace ZenUnit
 
    Console::~Console() = default;
 
-   void Console::Write(const string& message) const
+   void Console::Write(const std::string& message) const
    {
       WriteColor(message, Color::White);
    }
 
-   void Console::NonMinimalWrite(const string& message, PrintMode printMode) const
+   void Console::NonMinimalWrite(const std::string& message, PrintMode printMode) const
    {
       if (printMode != PrintMode::Minimalist)
       {
@@ -30,15 +30,15 @@ namespace ZenUnit
       }
    }
 
-   void Console::WriteColor(const string& message, Color color) const
+   void Console::WriteColor(const std::string& message, Color color) const
    {
       const bool didSetColor = _consoleColorer->SetColor(color);
       printf("%s", message.data());
-      cout.flush(); // Explicit flush needed on Linux to show test run progress output immediately
+      std::cout.flush(); // Explicit flush needed on Linux to show test run progress output immediately
       _consoleColorer->UnsetColor(didSetColor);
    }
 
-   void Console::NonMinimalWriteColor(const string& message, Color color, PrintMode printMode) const
+   void Console::NonMinimalWriteColor(const std::string& message, Color color, PrintMode printMode) const
    {
       if (printMode != PrintMode::Minimalist)
       {
@@ -46,12 +46,12 @@ namespace ZenUnit
       }
    }
 
-   void Console::WriteLine(const string& message) const
+   void Console::WriteLine(const std::string& message) const
    {
       WriteLineColor(message, Color::White);
    }
 
-   void Console::NonMinimalWriteLine(const string& message, PrintMode printMode) const
+   void Console::NonMinimalWriteLine(const std::string& message, PrintMode printMode) const
    {
       if (printMode != PrintMode::Minimalist)
       {
@@ -59,14 +59,14 @@ namespace ZenUnit
       }
    }
 
-   void Console::WriteLineColor(const string& message, Color color) const
+   void Console::WriteLineColor(const std::string& message, Color color) const
    {
       const bool didSetColor = _consoleColorer->SetColor(color);
       // With VS2017 15.2 Debug and Release mode, printf("%s\n") measured as ~15% faster
       // and with less speed variance relative to "cout << message << '\n'".
       // On Linux + Clang, no significant difference measured between printf and cout.
       printf("%s\n", message.data());
-      cout.flush(); // Explicit flush needed on Linux to show test run output as it happens in VS Code
+      std::cout.flush(); // Explicit flush needed on Linux to show test run output as it happens in VS Code
       _consoleColorer->UnsetColor(didSetColor);
    }
 
@@ -83,9 +83,9 @@ namespace ZenUnit
       }
    }
 
-   void Console::WriteLineAndExit(const string& message, int exitCode) const
+   void Console::WriteLineAndExit(const std::string& message, int exitCode) const
    {
-      cout << message << '\n';
+      std::cout << message << '\n';
       _exit_ZenMockable(exitCode);
    }
 
@@ -135,8 +135,7 @@ namespace ZenUnit
 
    void Console::GetLine() const
    {
-
-      string devNull;
-      getline(cin, devNull);
+      std::string devNull;
+      std::getline(std::cin, devNull);
    }
 }

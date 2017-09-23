@@ -17,9 +17,9 @@ namespace ZenUnit
       virtual ~MachineNameGetter() = default;
    private:
 #ifdef __linux__
-      virtual string GetLinuxMachineName() const;
+      virtual std::string GetLinuxMachineName() const;
 #elif _WIN32
-      virtual string GetWindowsMachineName() const;
+      virtual std::string GetWindowsMachineName() const;
 #endif
    };
 }

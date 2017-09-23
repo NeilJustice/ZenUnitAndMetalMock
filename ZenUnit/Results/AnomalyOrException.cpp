@@ -6,14 +6,14 @@
 namespace ZenUnit
 {
    AnomalyOrException::AnomalyOrException(const Anomaly& anomaly)
-      : anomaly(make_shared<Anomaly>(anomaly))
+      : anomaly(std::make_shared<Anomaly>(anomaly))
       , exceptionTypeName(nullptr)
    {
    }
 
    AnomalyOrException::AnomalyOrException(const std::string* exceptionTypeName, const char* exceptionWhat)
       : exceptionTypeName(exceptionTypeName)
-      , exceptionWhat(make_shared<string>(exceptionWhat))
+      , exceptionWhat(std::make_shared<std::string>(exceptionWhat))
    {
    }
 }
