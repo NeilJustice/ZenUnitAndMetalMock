@@ -20,7 +20,7 @@ namespace ZenUnit
       if (args.size() > ExeArgSize + ZenUnitArgs::NumberOfValidArgs)
       {
          _console->WriteLine("ZenUnit argument error: Too many arguments.\n");
-         _console->WriteLineAndExit(Usage, 1);
+         _console->WriteLineAndExit(Usage(), 1);
       }
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.commandLine = Vector::Join(args, ' ');
@@ -51,12 +51,12 @@ namespace ZenUnit
          }
          else if (arg == "-help" || arg == "--help")
          {
-            _console->WriteLineAndExit(Usage, 0);
+            _console->WriteLineAndExit(Usage(), 0);
          }
          else if (!String::Contains(arg, "="))
          {
             _console->WriteLine("ZenUnit argument error: Invalid argument \"" + arg + "\"\n");
-            _console->WriteLineAndExit(Usage, 1);
+            _console->WriteLineAndExit(Usage(), 1);
          }
          else
          {
@@ -64,7 +64,7 @@ namespace ZenUnit
             if (splitArg.size() != 2)
             {
                _console->WriteLine("ZenUnit argument error: Malformed -name=value argument: " + arg + "\n");
-               _console->WriteLineAndExit(Usage, 1);
+               _console->WriteLineAndExit(Usage(), 1);
             }
             try
             {
@@ -91,14 +91,16 @@ namespace ZenUnit
             catch (const invalid_argument&)
             {
                _console->WriteLine("ZenUnit argument error: Malformed -name=value argument: " + arg + "\n");
-               _console->WriteLineAndExit(Usage, 1);
+               _console->WriteLineAndExit(Usage(), 1);
             }
          }
       }
       return zenUnitArgs;
    }
 
-const string ArgsParser::Usage = R"(ZenUnit and ZenMock v0.1.0
+   const string& ArgsParser::Usage()
+   {
+      static const string usage = R"(ZenUnit and ZenMock v0.1.0
 Usage: <TestsBinaryName> [Options...]
 
 Options:
@@ -121,4 +123,6 @@ None
 -random[=Seed]
    Run test classes in a random order and run tests in a random order.
    Powerful option for maximizing testing rigor.)";
+      return usage;
+   }
 }

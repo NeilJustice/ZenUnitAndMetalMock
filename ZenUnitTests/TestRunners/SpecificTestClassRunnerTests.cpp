@@ -11,7 +11,7 @@ namespace ZenUnit
    AFACT(TestClassNameForSorting_ReturnsTestClassName)
    AFACT(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
    FACTS(RunTests_PrintsTestClassNameAndNumberOfNamedTests_CallsDoRunTests_PrintsTestClassResultLine_MoveReturnsTestClassResult)
-   FACTS(DoRunTests_RandomlyRunTestsIfRandomOtherwiseSequentiallyRunsTests)
+   FACTS(DoRunTests_RandomlyRunsTestsIfRandomOtherwiseSequentiallyRunsTests)
    FACTS(NonMinimalPrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVerticalBarNumberOfTests)
    FACTS(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewDeleteTest_AddsResultToResults_ReturnsTrueIfNewableAndDeletable)
    AFACT(RunTest_NonMinimalWritesVerticalBarTestName_RunsTest_AddsTestResultsToTestClassResult_NonMinimalWriteTestOutcome)
@@ -153,7 +153,7 @@ namespace ZenUnit
       ARE_EQUAL(TestClassResult(), _specificTestClassRunnerSelfMocked->_testClassResult);
    }
 
-   TEST2X2(DoRunTests_RandomlyRunTestsIfRandomOtherwiseSequentiallyRunsTests,
+   TEST2X2(DoRunTests_RandomlyRunsTestsIfRandomOtherwiseSequentiallyRunsTests,
       bool random, bool expectRandomForEach,
       false, false,
       true, true)

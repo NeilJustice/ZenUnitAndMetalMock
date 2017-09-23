@@ -76,7 +76,7 @@ namespace ZenUnit
          std::ostringstream whyBuilder;
          whyBuilder << '\n' <<
             "  Failed: " << this->assertExpression << '\n';
-         bool becauseAnomalyPresent = &becauseAnomaly != &Anomaly::Default;
+         bool becauseAnomalyPresent = &becauseAnomaly != &Anomaly::Default();
          if (becauseAnomalyPresent)
          {
             whyBuilder <<
@@ -134,7 +134,7 @@ namespace ZenUnit
          const Anomaly& zenWrappedAnomaly,
          FileLine fileLine);
 
-      static const Anomaly Default;
+      static const Anomaly& Default();
    };
 
    #ifdef __linux__

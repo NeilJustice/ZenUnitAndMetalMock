@@ -67,7 +67,11 @@ namespace ZenUnit
       return anomaly;
    }
 
-   const Anomaly Anomaly::Default;
+   const Anomaly& Anomaly::Default()
+   {
+      static Anomaly defaultAnomaly;
+      return defaultAnomaly;
+   }
 }
 
 void ZenUnitEqualizer<ZenUnit::Anomaly>::

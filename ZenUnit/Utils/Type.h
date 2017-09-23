@@ -13,7 +13,7 @@ namespace ZenUnit
       friend class TypeTests;
    private:
       // Demangling is expensive so this demangled type name cache exists
-      static std::unordered_map<const char*, std::string> s_mangledToDemangledTypeName;
+      static std::unordered_map<const char*, std::string>& MangledToDemangledTypeNameMap();
    public:
       template<typename T>
 #ifdef _WIN32
@@ -37,13 +37,15 @@ namespace ZenUnit
       static const std::string* TypeInfoToTypeName(const std::type_info& typeInfo)
       {
          const char* const mangledTypeName = typeInfo.name();
+         std::unordered_map<const char*, std::string>&
+            mangledToDemangledTypeName = MangledToDemangledTypeNameMap();
          const std::unordered_map<const char*, std::string>::const_iterator findIter
-            = s_mangledToDemangledTypeName.find(mangledTypeName);
-         if (findIter == s_mangledToDemangledTypeName.end())
+            = mangledToDemangledTypeName.find(mangledTypeName);
+         if (findIter == mangledToDemangledTypeName.end())
          {
             const std::string demangledTypeName = Demangle(mangledTypeName);
             const std::pair<std::unordered_map<const char*, std::string>::const_iterator, bool>
-               emplaceResult = s_mangledToDemangledTypeName.emplace(mangledTypeName, demangledTypeName);
+               emplaceResult = mangledToDemangledTypeName.emplace(mangledTypeName, demangledTypeName);
             const std::string* const cachedDemangledTypeName = &emplaceResult.first->second;
             return cachedDemangledTypeName;
          }

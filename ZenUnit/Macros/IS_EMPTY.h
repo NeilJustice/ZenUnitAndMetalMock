@@ -18,7 +18,7 @@ namespace ZenUnit
       const std::string expectedField = "empty() == true";
       const std::string actualField = "empty() == false (size() == " + std::to_string(size) + ")";
       throw Anomaly("IS_EMPTY", dataStructureVRT.text, "", "", messagesText,
-         Anomaly::Default,
+         Anomaly::Default(),
          expectedField,
          actualField,
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);

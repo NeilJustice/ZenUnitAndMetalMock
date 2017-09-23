@@ -20,7 +20,7 @@ namespace ZenUnit
          "     Non-matching string: \"", strVRT.value, "\"");
       throw Anomaly(
          "REGEX_MATCHES", expectedPatternVRT.text, strVRT.text, "", messagesText,
-         Anomaly::Default,
+         Anomaly::Default(),
          expectedLine,
          actualLine,
          ExpectedActualFormat::WholeLines, fileLine, std::forward<MessageTypes>(messages)...);

@@ -19,7 +19,7 @@ namespace ZenUnit
       const std::string expectedField =
          "Contains element " + ToStringer::ToString(expectedElementVRT.value);
       throw Anomaly("DOES_CONTAIN", expectedElementVRT.text, dataStructureVRT.text, "", messagesText,
-         Anomaly::Default,
+         Anomaly::Default(),
          expectedField,
          "Contains no such element",
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);

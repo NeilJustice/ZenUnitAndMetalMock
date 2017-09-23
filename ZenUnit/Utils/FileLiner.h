@@ -2,9 +2,18 @@
 
 namespace ZenUnit
 {
-   struct FileLiner
+   template<typename T>
+   struct ZenUnitTestingMode
    {
-      static bool selfTestMode;
+      static bool zenUnitTestingMode;
+   };
+
+   // Header-only friendly static variable
+   template<typename T>
+   T ZenUnitTestingMode<T>::zenUnitTestingMode;
+
+   struct FileLiner : public ZenUnitTestingMode<bool>
+   {
       static const char* File(const char* fileMacroValue);
       static unsigned Line(unsigned lineMacroValue);
    };

@@ -19,7 +19,7 @@ namespace ZenUnit
       const std::string expectedField = expectedOrActual + std::string(" pointer != nullptr");
       const std::string actualField = expectedOrActual + std::string(" pointer == nullptr");
       throw Anomaly("POINTEES_EQUAL", expectedPointerVRT.text, actualPointerVRT.text, "",
-         messagesText, Anomaly::Default,
+         messagesText, Anomaly::Default(),
          expectedField,
          actualField,
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);

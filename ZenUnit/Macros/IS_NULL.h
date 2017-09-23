@@ -16,7 +16,7 @@ namespace ZenUnit
    {
       const std::string actualField = ToStringer::ToString(pointerVRT.value);
       throw Anomaly("IS_NULL", pointerVRT.text, "", "", messagesText,
-         Anomaly::Default,
+         Anomaly::Default(),
          "nullptr",
          actualField,
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);

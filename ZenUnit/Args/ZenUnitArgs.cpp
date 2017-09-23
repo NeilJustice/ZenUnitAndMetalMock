@@ -2,8 +2,6 @@
 #include "ZenUnit/Args/ZenUnitArgs.h"
 #include "ZenUnit/Macros/ARE_EQUAL.h"
 
-const size_t ZenUnit::ZenUnitArgs::NumberOfValidArgs = 7;
-
 void ZenUnitEqualizer<ZenUnit::ZenUnitArgs>::
 AssertEqual(const ZenUnit::ZenUnitArgs& expectedArguments, const ZenUnit::ZenUnitArgs& actualArgs)
 {

@@ -43,7 +43,7 @@ namespace ZenUnit
       catch (const EqualizerException&)
       {
          ARE_EQUAL_Throw(expectedValueVRT, actualValueVRT, fileLine,
-            Anomaly::Default, messagesText, std::forward<MessageTypes>(messages)...);
+            Anomaly::Default(), messagesText, std::forward<MessageTypes>(messages)...);
       }
       catch (const Anomaly& becauseAnomaly)
       {

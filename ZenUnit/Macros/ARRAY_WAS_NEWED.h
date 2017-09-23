@@ -32,7 +32,7 @@ namespace ZenUnit
       const char* smartOrRawArrayPointerText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-      throw Anomaly("ARRAY_WAS_NEWED", smartOrRawArrayPointerText, "", "", messagesText, Anomaly::Default,
+      throw Anomaly("ARRAY_WAS_NEWED", smartOrRawArrayPointerText, "", "", messagesText, Anomaly::Default(),
          "not a nullptr", "nullptr", ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 

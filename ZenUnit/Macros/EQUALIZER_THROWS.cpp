@@ -28,7 +28,7 @@ namespace ZenUnit
       const std::string actualField(String::Concat("No ZenUnit::Anomaly thrown despite field '", fieldName, R"('
           differing between objects expected and actual.)"));
       throw Anomaly("EQUALIZER_THROWS", typeName, fieldName, nonDefaultFieldValueText, "",
-         Anomaly::Default,
+         Anomaly::Default(),
          expectedField,
          actualField,
          ExpectedActualFormat::Fields, fileLine);

@@ -13,7 +13,7 @@ namespace ZenUnit
       const char* valueText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       throw Anomaly("IS_FALSE", valueText, "", "", messagesText,
-         Anomaly::Default,
+         Anomaly::Default(),
          "false",
          "true",
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);

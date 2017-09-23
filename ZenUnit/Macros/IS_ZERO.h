@@ -17,7 +17,7 @@ namespace ZenUnit
       const std::string expectedField = ToStringer::ToString(zeroValue);
       const std::string actualField = ToStringer::ToString(valueVRT.value);
       throw Anomaly("IS_ZERO", valueVRT.text, "", "", messagesText,
-         Anomaly::Default,
+         Anomaly::Default(),
          expectedField,
          actualField,
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);

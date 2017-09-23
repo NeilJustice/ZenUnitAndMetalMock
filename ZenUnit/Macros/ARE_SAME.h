@@ -19,7 +19,7 @@ namespace ZenUnit
       const std::string expectedField = ToStringer::ToString(&expectedObjectVRT.value);
       const std::string actualField = ToStringer::ToString(&actualObjectVRT.value);
       throw Anomaly("ARE_SAME", expectedObjectVRT.text, actualObjectVRT.text, "", messagesText,
-         Anomaly::Default,
+         Anomaly::Default(),
          expectedField,
          actualField,
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);

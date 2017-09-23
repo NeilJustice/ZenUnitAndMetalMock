@@ -19,6 +19,6 @@ namespace ZenUnit
       ArgsParser();
       virtual ~ArgsParser() = default;
       virtual ZenUnitArgs Parse(const std::vector<std::string>& args) const;
-      static const std::string Usage;
+      static const std::string& Usage();
    };
 }

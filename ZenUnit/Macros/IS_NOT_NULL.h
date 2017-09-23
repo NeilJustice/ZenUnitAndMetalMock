@@ -15,7 +15,7 @@ namespace ZenUnit
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       throw Anomaly("IS_NOT_NULL", pointerText, "", "", messagesText,
-         Anomaly::Default,
+         Anomaly::Default(),
          "not nullptr",
          "nullptr",
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
