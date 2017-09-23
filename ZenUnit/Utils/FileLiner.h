@@ -9,7 +9,7 @@ namespace ZenUnit
    };
 
    // Header-only-friendly static variable
-   bool ZenUnitTestingMode<bool>::zenUnitTestingMode;
+   template<> bool ZenUnitTestingMode<bool>::zenUnitTestingMode;
 
    struct FileLiner : public ZenUnitTestingMode<bool>
    {
