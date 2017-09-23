@@ -25,5 +25,5 @@
 #include "ZenUnit/Macros/THROWS.h"
 #include "ZenUnit/Macros/TestClassMacros.h"
 #include "ZenUnit/Macros/VECTORS_EQUAL.h"
-#include "ZenUnit/TestRunners/RUNTESTS.h"
+#include "ZenUnit/TestRunners/RunTests.h"
 #include "ZenUnit/Utils/Random.h"
