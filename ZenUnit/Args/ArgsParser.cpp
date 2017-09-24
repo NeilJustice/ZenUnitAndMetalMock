@@ -17,8 +17,7 @@ namespace ZenUnit
 
    ZenUnitArgs ArgsParser::Parse(const std::vector<std::string>& args) const
    {
-      const size_t ExeArgSize = 1;
-      if (args.size() > ExeArgSize + ZenUnitArgs::NumberOfValidArgs)
+      if (args.size() > 8)
       {
          _console->WriteLine("ZenUnit argument error: Too many arguments.\n");
          _console->WriteLineAndExit(Usage(), 1);
@@ -101,7 +100,7 @@ namespace ZenUnit
 
    const std::string& ArgsParser::Usage()
    {
-      static const std::string usage = R"(ZenUnit and ZenMock v0.1.0
+      static const std::string usage = R"(ZenUnit v0.1.0
 Usage: <TestsBinaryName> [Options...]
 
 Options:
@@ -117,7 +116,7 @@ None
    Exit 1 regardless of test run outcome if any tests are skipped.
    Powerful option for continuous integration servers to guard against
    the possibility of a quality-compromising culture of complacency
-   developing around skipped tests. "Skip it and ship it!"
+   developing around skipped tests.
 -testruns=<N>
    Repeat the running of all non-skipped tests N times.
    Powerful option for maximizing testing rigor.

@@ -9,7 +9,7 @@ namespace ZenUnit
    TESTS(ArgsParserTests)
    AFACT(DefaultConstructor_NewsCompnents_SetsStringToUnsignedFunction)
    AFACT(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
-   AFACT(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1)
+   FACTS(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1)
    FACTS(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1)
    FACTS(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0)
    AFACT(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
@@ -26,7 +26,7 @@ namespace ZenUnit
    EVIDENCE
 
    const string TestProgramPath = Random<string>();
-   const string ExpectedUsage = R"(ZenUnit and ZenMock v0.1.0
+   const string ExpectedUsage = R"(ZenUnit v0.1.0
 Usage: <TestsBinaryName> [Options...]
 
 Options:
@@ -42,7 +42,7 @@ None
    Exit 1 regardless of test run outcome if any tests are skipped.
    Powerful option for continuous integration servers to guard against
    the possibility of a quality-compromising culture of complacency
-   developing around skipped tests. "Skip it and ship it!"
+   developing around skipped tests.
 -testruns=<N>
    Repeat the running of all non-skipped tests N times.
    Powerful option for maximizing testing rigor.
@@ -81,11 +81,14 @@ None
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1)
+   TEST1X1(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1,
+      size_t numberOfArgs,
+      9,
+      10)
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
-      const vector<string> Args(1 + ZenUnitArgs::NumberOfValidArgs + 1);
+      const vector<string> Args(numberOfArgs);
       //
       THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
       //

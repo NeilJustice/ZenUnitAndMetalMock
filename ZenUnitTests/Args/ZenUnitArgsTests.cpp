@@ -20,7 +20,6 @@ namespace ZenUnit
       IS_FALSE(zenUnitArgs.randomseedsetbyuser);
       IS_ZERO(zenUnitArgs.maxtestmilliseconds);
       IS_ZERO(zenUnitArgs.maxtotalseconds);
-      ARE_EQUAL(7, ZenUnitArgs::NumberOfValidArgs);
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)

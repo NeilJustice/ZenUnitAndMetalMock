@@ -26,7 +26,7 @@ namespace ZenUnit
       const std::chrono::time_point<std::chrono::system_clock> nowTimePoint = std::chrono::system_clock::now();
 #ifdef __linux__
       tm* tmNow = nullptr;
-      long nowTimeT = chrono::system_clock::to_time_t(nowTimePoint);
+      long nowTimeT = std::chrono::system_clock::to_time_t(nowTimePoint);
       tmNow = localtime(&nowTimeT);
       return *tmNow;
 #elif _WIN32

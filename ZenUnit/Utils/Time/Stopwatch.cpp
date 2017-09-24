@@ -5,7 +5,7 @@
 namespace ZenUnit
 {
    Stopwatch::Stopwatch()
-      : _highres_now_ZenMockable(chrono::high_resolution_clock::now)
+      : _highres_now_ZenMockable(std::chrono::high_resolution_clock::now)
    {
    }
 
@@ -16,15 +16,15 @@ namespace ZenUnit
 
    unsigned Stopwatch::Stop()
    {
-      if (_startTime == chrono::time_point<chrono::high_resolution_clock>())
+      if (_startTime == std::chrono::time_point<std::chrono::high_resolution_clock>())
       {
          return 0;
       }
-      const chrono::time_point<chrono::high_resolution_clock> stopTime = _highres_now_ZenMockable();
-      const chrono::duration<long long, std::nano> elapsedTime = stopTime - _startTime;
-      const long long elapsedMilliseconds = chrono::duration_cast<chrono::milliseconds>(elapsedTime).count();
-      _startTime = chrono::time_point<chrono::high_resolution_clock>();
-      assert_true(elapsedMilliseconds <= numeric_limits<unsigned>::max());
+      const std::chrono::time_point<std::chrono::high_resolution_clock> stopTime = _highres_now_ZenMockable();
+      const std::chrono::duration<long long, std::nano> elapsedTime = stopTime - _startTime;
+      const long long elapsedMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(elapsedTime).count();
+      _startTime = std::chrono::time_point<std::chrono::high_resolution_clock>();
+      assert_true(elapsedMilliseconds <= std::numeric_limits<unsigned>::max());
       const unsigned elapsedMillisecondsUnsigned = static_cast<unsigned>(elapsedMilliseconds);
       return elapsedMillisecondsUnsigned;
    }

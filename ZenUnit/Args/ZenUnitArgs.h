@@ -16,8 +16,6 @@ namespace ZenUnit
       bool randomseedsetbyuser = false;
       unsigned maxtestmilliseconds = 0;
       unsigned maxtotalseconds = 0;
-
-      static const size_t NumberOfValidArgs = 7;
    };
 
    static const int VS2017Update3 = 191125506;

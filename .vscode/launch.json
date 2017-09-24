@@ -2,32 +2,32 @@
    "version": "0.2.0",
    "configurations":
    [
-      // {
-      //    "name": "C++ Launch",
-      //    "request": "launch",
-      //    "type": "cppdbg",
-      //    "preLaunchTask": "Build Debug",
-      //    "program": "${workspaceRoot}/Debug/ZenUnitTests/ZenUnitTests",
-      //    "args": [ ""],
-      //    "cwd": "${fileDirname}",
-      //    "linux": { "MIMode": "gdb" }
-      // }
       {
-         "name": "Python",
+         "name": "C++ Launch",
          "request": "launch",
-         "type": "python",
-         "pythonPath": "/usr/bin/python3",
-         "program": "${file}",
-         "args": [ "" ],
-         "cwd": "${workspaceRoot}",
-         "env": { "PYTHONPATH": "ZenUnitPy" },
-         "console": "externalTerminal", // integratedTerminal
-         "debugOptions":
-         [
-            "WaitOnAbnormalExit",
-            "WaitOnNormalExit",
-            "RedirectOutput"
-         ]
+         "type": "cppdbg",
+         "preLaunchTask": "Build Debug",
+         "program": "${workspaceRoot}/Debug/ZenUnitTests/ZenUnitTests",
+         "args": [ ""],
+         "cwd": "${fileDirname}",
+         "linux": { "MIMode": "gdb" }
       }
+      // {
+      //    "name": "Python",
+      //    "request": "launch",
+      //    "type": "python",
+      //    "pythonPath": "/usr/bin/python3",
+      //    "program": "${file}",
+      //    "args": [ "" ],
+      //    "cwd": "${workspaceRoot}",
+      //    "env": { "PYTHONPATH": "ZenUnitPy" },
+      //    "console": "externalTerminal", // integratedTerminal
+      //    "debugOptions":
+      //    [
+      //       "WaitOnAbnormalExit",
+      //       "WaitOnNormalExit",
+      //       "RedirectOutput"
+      //    ]
+      // }
    ]
 }

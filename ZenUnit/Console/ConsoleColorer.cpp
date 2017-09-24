@@ -70,7 +70,7 @@ namespace ZenUnit
    {
 #ifdef __linux__
       const char* linuxColor = ColorToLinuxColor(color);
-      cout << linuxColor;
+      std::cout << linuxColor;
 #elif _WIN32
       const HANDLE stdOutHandle = GetStdHandle_ZenMockable(STD_OUTPUT_HANDLE);
       const WindowsColor windowsColor = ColorToWindowsColor(color);

@@ -2,14 +2,15 @@
 
 namespace ZenUnit
 {
+   // Header-only-friendly static variable
    template<typename T>
    struct ZenUnitTestingMode
    {
-      static bool zenUnitTestingMode;
+      static T zenUnitTestingMode;
    };
 
-   // Header-only-friendly static variable
-   template<> bool ZenUnitTestingMode<bool>::zenUnitTestingMode;
+   template<typename T>
+   T ZenUnitTestingMode<T>::zenUnitTestingMode;
 
    struct FileLiner : public ZenUnitTestingMode<bool>
    {
