@@ -39,9 +39,9 @@ namespace ZenUnit
          const char* const mangledTypeName = typeInfo.name();
          std::unordered_map<const char*, std::string>&
             mangledToDemangledTypeName = MangledToDemangledTypeNameMap();
-         const std::unordered_map<const char*, std::string>::const_iterator findIter
-            = mangledToDemangledTypeName.find(mangledTypeName);
-         if (findIter == mangledToDemangledTypeName.end())
+         if (const std::unordered_map<const char*, std::string>::const_iterator
+             findIter = mangledToDemangledTypeName.find(mangledTypeName);
+             findIter == mangledToDemangledTypeName.end())
          {
             const std::string demangledTypeName = Demangle(mangledTypeName);
             const std::pair<std::unordered_map<const char*, std::string>::const_iterator, bool>
@@ -49,8 +49,11 @@ namespace ZenUnit
             const std::string* const cachedDemangledTypeName = &emplaceResult.first->second;
             return cachedDemangledTypeName;
          }
-         const std::string* cachedDemangledTypeName = &findIter->second;
-         return cachedDemangledTypeName;
+         else
+         {
+            const std::string* cachedDemangledTypeName = &findIter->second;
+            return cachedDemangledTypeName;
+         }
       }
 
 #ifdef __linux__

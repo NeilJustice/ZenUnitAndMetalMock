@@ -43,20 +43,23 @@ namespace ZenUnit
       static std::pair<bool, bool> ContainsKeyWithValue(
          const MapType& m, const KeyType& key, const ValueType& value)
       {
-         const typename MapType::const_iterator findIter = m.find(key);
-         if (findIter == m.end())
+         if (const typename MapType::const_iterator findIter = m.find(key);
+             findIter == m.end())
          {
             return { false, false };
          }
-         try
+         else
          {
-            ARE_EQUAL(value, findIter->second);
+            try
+            {
+               ARE_EQUAL(value, findIter->second);
+            }
+            catch (const Anomaly&)
+            {
+               return { true, false };
+            }
+            return { true, true };
          }
-         catch (const Anomaly&)
-         {
-            return { true, false };
-         }
-         return { true, true };
       }
 
    private:
