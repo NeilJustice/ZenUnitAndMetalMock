@@ -3,7 +3,7 @@
 
 namespace ZenUnit
 {
-   std::string ToStringer::ToString(const nullptr_t&)
+   std::string ToStringer::ToString(const std::nullptr_t&)
    {
       return "nullptr";
    }
