@@ -240,4 +240,3 @@ ZenUnit and ZenMock installed on Windows:
 
 ![ZenUnit Installed On Windows](Screenshots/ZenUnitInstalledOnWindows.png "ZenUnit Installed On Windows")
 
-2017 to-do list for ZenUnit: Single header, -filter, -parallel
