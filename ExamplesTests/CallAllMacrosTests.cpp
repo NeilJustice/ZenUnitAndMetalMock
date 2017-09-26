@@ -68,4 +68,4 @@ TEST(CallAllMacros)
    EQUALIZER_THROWS(Struct, secondField, 'A');
 }
 
-}; RUNTESTS(CallAllMacrosTests)
+}; //RUNTESTS(CallAllMacrosTests)
