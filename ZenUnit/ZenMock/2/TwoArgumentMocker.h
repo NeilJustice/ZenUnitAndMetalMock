@@ -5,7 +5,7 @@
 #include "ZenUnit/ZenMock/Exceptions/UnexpectedCallException.h"
 #include "ZenUnit/ZenMock/ZenMocker.h"
 
-#define ZENBIND2(FunctionName_ZenMock) \
+#define ZENMOCK_BIND2(FunctionName_ZenMock) \
    std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
    std::placeholders::_1, std::placeholders::_2)
 

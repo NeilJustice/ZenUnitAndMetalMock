@@ -127,8 +127,8 @@ namespace ZenUnit
       const int StdoutFileHandle = 1;
       fileno_ZenMock.ExpectAndReturn(StdoutFileHandle);
       isatty_ZenMock.ExpectAndReturn(isattyReturnValue);
-      _consoleColorer.fileno_ZenMockable = ZENBIND1(fileno_ZenMock);
-      _consoleColorer.isatty_ZenMockable = ZENBIND1(isatty_ZenMock);
+      _consoleColorer.fileno_ZenMockable = ZENMOCK_BIND1(fileno_ZenMock);
+      _consoleColorer.isatty_ZenMockable = ZENMOCK_BIND1(isatty_ZenMock);
       //
       const bool consoleSupportsColor = _consoleColorer.SupportsColor();
       //
@@ -146,8 +146,8 @@ namespace ZenUnit
    {
       ZENMOCK_NONVOID1_FREE(HANDLE, GetStdHandle, DWORD);
       ZENMOCK_NONVOID2_FREE(BOOL, SetConsoleTextAttribute, HANDLE, WORD);
-      _consoleColorer.GetStdHandle_ZenMockable = ZENBIND1(GetStdHandle_ZenMock);
-      _consoleColorer.SetConsoleTextAttribute_ZenMockable = ZENBIND2(SetConsoleTextAttribute_ZenMock);
+      _consoleColorer.GetStdHandle_ZenMockable = ZENMOCK_BIND1(GetStdHandle_ZenMock);
+      _consoleColorer.SetConsoleTextAttribute_ZenMockable = ZENMOCK_BIND2(SetConsoleTextAttribute_ZenMock);
 
       const HANDLE GetStdHandleReturnValue = HANDLE(1);
       GetStdHandle_ZenMock.ExpectAndReturn(GetStdHandleReturnValue);

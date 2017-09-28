@@ -36,8 +36,8 @@ namespace ZenMock
    STARTUP
    {
       _zenMocker = make_unique<ZenMocker<ExceptionThrowerMock>>(ZenMockedFunctionSignature);
-      _zenMocker->_exit_ZenMockable = ZENBIND1(exit_ZenMock);
-      _zenMocker->_TestRunner_GetArgs_ZenMockable = ZENBIND0(GetArgs_ZenMock);
+      _zenMocker->_exit_ZenMockable = ZENMOCK_BIND1(exit_ZenMock);
+      _zenMocker->_TestRunner_GetArgs_ZenMockable = ZENMOCK_BIND0(GetArgs_ZenMock);
    }
 
    TEST(Constructor_SetsFields)

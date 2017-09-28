@@ -160,7 +160,7 @@ namespace ZenUnit
       {
          GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
       }
-      const function<const ZenUnitArgs&()> boundMockGetArgs = ZENBIND0(GetArgs_ZenMock);
+      const function<const ZenUnitArgs&()> boundMockGetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
       //
       const TestResult testResult(
          FullTestNameValue,

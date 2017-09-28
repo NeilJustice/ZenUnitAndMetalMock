@@ -56,7 +56,7 @@ namespace ZenUnit
          : Zen::Mock<ZenUnit::SpecificTestClassRunner<TestingTestClass>>("")
       {
          _console.reset(consoleMock = new ConsoleMock);
-         _TestRunner_GetArgs_ZenMockable = ZENBIND0(GetArgs_ZenMock);
+         _TestRunner_GetArgs_ZenMockable = ZENMOCK_BIND0(GetArgs_ZenMock);
       }
    };
    unique_ptr<SpecificTestClassRunnerSelfMocked> _specificTestClassRunnerSelfMocked;
@@ -65,7 +65,7 @@ namespace ZenUnit
    {
       _specificTestClassRunner = make_unique<SpecificTestClassRunner<TestingTestClass>>(TestClassName);
       _specificTestClassRunner->_console.reset(_consoleMock = new ConsoleMock);
-      _specificTestClassRunner->_TestRunner_GetArgs_ZenMockable = ZENBIND0(GetArgs_ZenMock);
+      _specificTestClassRunner->_TestRunner_GetArgs_ZenMockable = ZENMOCK_BIND0(GetArgs_ZenMock);
       _specificTestClassRunner->_testsForEacher.reset(_testsForEacherMock = new TestsForEacherMockType);
       _specificTestClassRunnerSelfMocked = make_unique<SpecificTestClassRunnerSelfMocked>();
    }

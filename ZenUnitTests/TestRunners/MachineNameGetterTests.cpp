@@ -31,9 +31,9 @@ namespace ZenUnit
    STARTUP
    {
 #ifdef __linux__
-      _machineNameGetter.gethostname_ZenMockable = ZENBIND2(gethostname_ZenMock);
+      _machineNameGetter.gethostname_ZenMockable = ZENMOCK_BIND2(gethostname_ZenMock);
 #elif _WIN32
-      _machineNameGetter.GetComputerName_ZenMockable = ZENBIND2(GetComputerName_ZenMock);
+      _machineNameGetter.GetComputerName_ZenMockable = ZENMOCK_BIND2(GetComputerName_ZenMock);
 #endif
    }
 

@@ -5,7 +5,7 @@
 #include "ZenUnit/ZenMock/Exceptions/UnsupportedAssertCalledZeroTimesException.h"
 #include "ZenUnit/ZenMock/ZenMocker.h"
 
-#define ZENBIND0(FunctionName_ZenMock) \
+#define ZENMOCK_BIND0(FunctionName_ZenMock) \
    std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock))
 
 namespace ZenMock

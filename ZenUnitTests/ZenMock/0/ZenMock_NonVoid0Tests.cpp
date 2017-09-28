@@ -213,10 +213,10 @@ namespace ZenMock
       test(_mock.NonVirtualMock, [&] { return _mock.NonVirtual(); });
       test(_mock.NonVirtualConstMock, [&] { return _mock.NonVirtualConst(); });
 
-      test(NonVoid0_ZenMock, [&] { return ZENBIND0(NonVoid0_ZenMock)(); });
-      test(NonVoid0_ZenMock_namespace, [&] { return ZENBIND0(NonVoid0_ZenMock_namespace)(); });
-      test(NonVoid0_ZenMock_static, [&] { return ZENBIND0(NonVoid0_ZenMock_static)(); });
-      test(Static_ZenMock, [&] { return ZENBIND0(Static_ZenMock)(); });
+      test(NonVoid0_ZenMock, [&] { return ZENMOCK_BIND0(NonVoid0_ZenMock)(); });
+      test(NonVoid0_ZenMock_namespace, [&] { return ZENMOCK_BIND0(NonVoid0_ZenMock_namespace)(); });
+      test(NonVoid0_ZenMock_static, [&] { return ZENMOCK_BIND0(NonVoid0_ZenMock_static)(); });
+      test(Static_ZenMock, [&] { return ZENMOCK_BIND0(Static_ZenMock)(); });
    }
 
    TEST(ExpectAndReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
@@ -234,10 +234,10 @@ namespace ZenMock
       test(_mock.NonVirtualMock, [&]{ return _mock.NonVirtual(); });
       test(_mock.NonVirtualConstMock, [&]{ return _mock.NonVirtualConst(); });
 
-      test(NonVoid0_ZenMock, [&]{ return ZENBIND0(NonVoid0_ZenMock)(); });
-      test(NonVoid0_ZenMock_namespace, [&]{ return ZENBIND0(NonVoid0_ZenMock_namespace)(); });
-      test(NonVoid0_ZenMock_static, [&]{ return ZENBIND0(NonVoid0_ZenMock_static)(); });
-      test(Static_ZenMock, [&]{ return ZENBIND0(Static_ZenMock)(); });
+      test(NonVoid0_ZenMock, [&]{ return ZENMOCK_BIND0(NonVoid0_ZenMock)(); });
+      test(NonVoid0_ZenMock_namespace, [&]{ return ZENMOCK_BIND0(NonVoid0_ZenMock_namespace)(); });
+      test(NonVoid0_ZenMock_static, [&]{ return ZENMOCK_BIND0(NonVoid0_ZenMock_static)(); });
+      test(Static_ZenMock, [&]{ return ZENMOCK_BIND0(Static_ZenMock)(); });
    }
 
    TEST(ExpectAndReturnValuesVector_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
@@ -256,10 +256,10 @@ namespace ZenMock
       test(_mock.NonVirtualMock, [&]{ return _mock.NonVirtual(); });
       test(_mock.NonVirtualConstMock, [&]{ return _mock.NonVirtualConst(); });
 
-      test(NonVoid0_ZenMock, [&]{ return ZENBIND0(NonVoid0_ZenMock)(); });
-      test(NonVoid0_ZenMock_namespace, [&]{ return ZENBIND0(NonVoid0_ZenMock_namespace)(); });
-      test(NonVoid0_ZenMock_static, [&]{ return ZENBIND0(NonVoid0_ZenMock_static)(); });
-      test(Static_ZenMock, [&]{ return ZENBIND0(Static_ZenMock)(); });
+      test(NonVoid0_ZenMock, [&]{ return ZENMOCK_BIND0(NonVoid0_ZenMock)(); });
+      test(NonVoid0_ZenMock_namespace, [&]{ return ZENMOCK_BIND0(NonVoid0_ZenMock_namespace)(); });
+      test(NonVoid0_ZenMock_static, [&]{ return ZENMOCK_BIND0(NonVoid0_ZenMock_static)(); });
+      test(Static_ZenMock, [&]{ return ZENMOCK_BIND0(Static_ZenMock)(); });
    }
 
 }; RUNTESTS(ZenMock_NonVoid0Tests)

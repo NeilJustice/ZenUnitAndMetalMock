@@ -30,7 +30,7 @@ namespace ZenUnit
       _tryCatchCaller._console.reset(_consoleMock = new ConsoleMock);
       _tryCatchCaller._testPhaseSuffixer.reset(_testPhaseSuffixerMock = new TestPhaseSuffixerMock);
       _tryCatchCaller._stopwatch.reset(_stopwatchMock = new StopwatchMock);
-      _tryCatchCaller._TestRunner_GetArgs_ZenMockable = ZENBIND0(GetArgs_ZenMock);
+      _tryCatchCaller._TestRunner_GetArgs_ZenMockable = ZENMOCK_BIND0(GetArgs_ZenMock);
       _testMock = make_unique<TestMock>();
    }
 

@@ -59,7 +59,7 @@ None
    {
       _argsParser._console.reset(_consoleMock = new ConsoleMock);
       _argsParser._watch.reset(_watchMock = new WatchMock);
-      _argsParser._String_ToUnsigned = ZENBIND1(ToUnsigned_ZenMock);
+      _argsParser._String_ToUnsigned = ZENMOCK_BIND1(ToUnsigned_ZenMock);
    }
 
    TEST(DefaultConstructor_NewsCompnents_SetsStringToUnsignedFunction)
