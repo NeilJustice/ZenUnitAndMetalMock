@@ -5,7 +5,7 @@
 #include "ZenUnit/TestRunners/TestRunner.h"
 #include "ZenUnit/Tests/NewDeleteTest.h"
 #include "ZenUnit/Tests/Test.h"
-#include "ZenUnit/Utils/Iteration/MemberForEacherExtraArg.h"
+#include "ZenUnit/Utils/Iteration/ExtraArgMemberForEacher.h"
 #ifdef _WIN32
 #pragma warning(push)
 #pragma warning(disable: 4365) // signed / unsigned mismatch
@@ -23,7 +23,7 @@ namespace ZenUnit
       friend class SpecificTestClassRunnerTests;
    private:
       std::unique_ptr<const Console> _console;
-      using TestsForEacherType = MemberForEacherExtraArg<
+      using TestsForEacherType = ExtraArgMemberForEacher<
          std::unique_ptr<Test>, SpecificTestClassRunner,
          void (SpecificTestClassRunner::*)(const std::unique_ptr<Test>& test, TestClassResult*) const, TestClassResult*>;
       std::unique_ptr<const TestsForEacherType> _testsForEacher;

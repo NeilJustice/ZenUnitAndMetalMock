@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnit/Utils/Iteration/ForEacherExtraArg.h"
+#include "ZenUnit/Utils/Iteration/ExtraArgForEacher.h"
 
 namespace ZenUnit
 {
@@ -9,7 +9,7 @@ namespace ZenUnit
    AFACT(ForEach_TwoItemIterable_CallsFuncOnItemTwice)
    EVIDENCE
 
-   ForEacherExtraArg<vector<int>, function<void(int, int)>, int> _forEacherExtraArg;
+   ExtraArgForEacher<vector<int>, function<void(int, int)>, int> _forEacherExtraArg;
 
    vector<pair<int, int>> calls;
    void Func(int element, int extraArg)

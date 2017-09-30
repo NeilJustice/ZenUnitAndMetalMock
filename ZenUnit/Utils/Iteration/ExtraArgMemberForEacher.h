@@ -4,7 +4,7 @@
 namespace ZenUnit
 {
    template<typename T, typename ClassType, typename FunctionType, typename ExtraArgType>
-   class MemberForEacherExtraArg
+   class ExtraArgMemberForEacher
    {
    public:
       virtual void ForEach(
@@ -37,6 +37,6 @@ namespace ZenUnit
          }
       }
 
-      virtual ~MemberForEacherExtraArg() = default;
+      virtual ~ExtraArgMemberForEacher() = default;
    };
 }

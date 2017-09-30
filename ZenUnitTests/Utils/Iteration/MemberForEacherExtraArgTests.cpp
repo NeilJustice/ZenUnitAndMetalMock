@@ -27,7 +27,7 @@ namespace ZenUnit
       ZENMOCK_VOID2_CONST(TwoArgFunction, ElementType, ExtraArgType)
    };
 
-   using MemberForEacherExtraArgType = MemberForEacherExtraArg<
+   using MemberForEacherExtraArgType = ExtraArgMemberForEacher<
       ElementType, ClassType, void (ClassType::*)(ElementType, ExtraArgType) const, ExtraArgType>;
 
    MemberForEacherExtraArgType _memberForEacherExtraArg;

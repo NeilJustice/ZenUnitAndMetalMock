@@ -5,12 +5,12 @@
 namespace ZenUnit
 {
    template<typename IterableType, typename FunctionType, typename ExtraArgType1, typename ExtraArgType2>
-   class ForEacherTwoExtraArgs;
+   class TwoExtraArgsForEacher;
    class Console;
    class TestFailureNumberer;
    enum class PrintMode : unsigned char;
 
-   using ForEacherTwoExtraArgsType = const ForEacherTwoExtraArgs<
+   using TwoExtraArgsForEacherType = const TwoExtraArgsForEacher<
       std::vector<TestResult>, void (*)(const TestResult&, const Console*, TestFailureNumberer*),
       const Console*, TestFailureNumberer*>;
 
@@ -31,7 +31,7 @@ namespace ZenUnit
       virtual void NonMinimalPrintResultLine(const Console* console, PrintMode printMode) const;
       virtual size_t NumberOfFailedTestCases() const;
       virtual void PrintTestFailures(
-         const ForEacherTwoExtraArgsType* forEacherTwoExtraArgs,
+         const TwoExtraArgsForEacherType* forEacherTwoExtraArgs,
          const Console* console,
          TestFailureNumberer* testFailureNumberer) const;
       static void AssertEqual(

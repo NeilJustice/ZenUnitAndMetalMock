@@ -3,12 +3,12 @@
 namespace ZenUnit
 {
    template<typename IterableType, typename FunctionType, typename ExtraArgType>
-   class ForEacherExtraArg
+   class ExtraArgForEacher
    {
    public:
       // Explictly defined default constructor required for Clang to quell error message
       // 'default initialization of an object of const type 'TypedefForEacherExtraArg' without a user-provided default constructor'
-      ForEacherExtraArg() = default;
+      ExtraArgForEacher() = default;
 
       virtual void ForEach(const IterableType* iterable, FunctionType func, const ExtraArgType& extraArg) const
       {
@@ -20,6 +20,6 @@ namespace ZenUnit
          }
       }
 
-      virtual ~ForEacherExtraArg() = default;
+      virtual ~ExtraArgForEacher() = default;
    };
 }

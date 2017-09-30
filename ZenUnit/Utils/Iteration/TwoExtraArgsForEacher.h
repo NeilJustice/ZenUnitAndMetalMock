@@ -3,10 +3,10 @@
 namespace ZenUnit
 {
    template<typename IterableType, typename FunctionType, typename ExtraArgType1, typename ExtraArgType2>
-   class ForEacherTwoExtraArgs
+   class TwoExtraArgsForEacher
    {
    public:
-      ForEacherTwoExtraArgs() {}
+      TwoExtraArgsForEacher() {}
 
       virtual void ForEach(
          const IterableType* iterable,
@@ -22,6 +22,6 @@ namespace ZenUnit
          }
       }
 
-      virtual ~ForEacherTwoExtraArgs() = default;
+      virtual ~TwoExtraArgsForEacher() = default;
    };
 }

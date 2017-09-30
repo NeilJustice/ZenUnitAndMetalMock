@@ -1,15 +1,15 @@
 #include "pch.h"
-#include "ZenUnit/Utils/Iteration/ForEacherTwoExtraArgs.h"
+#include "ZenUnit/Utils/Iteration/TwoExtraArgsForEacher.h"
 
 namespace ZenUnit
 {
-   TESTS(ForEacherTwoExtraArgsTests)
+   TESTS(TwoExtraArgsForEacherTests)
    AFACT(ForEach_EmptyIterable_DoesNothing)
    AFACT(ForEach_OneItemIterable_CallsFuncOnItemOnce)
    AFACT(ForEach_TwoItemIterable_CallsFuncOnItemTwice)
    EVIDENCE
 
-   using ForEacherType = ForEacherTwoExtraArgs<vector<int>,
+   using ForEacherType = TwoExtraArgsForEacher<vector<int>,
       function<void(int, char, string)>, char, string>;
    ForEacherType _forEacherTwoExtraArgs;
 
@@ -21,7 +21,7 @@ namespace ZenUnit
 
    auto Bind()
    {
-      return bind(&ForEacherTwoExtraArgsTests::Func,
+      return bind(&TwoExtraArgsForEacherTests::Func,
          this, placeholders::_1, placeholders::_2, placeholders::_3);
    }
 
@@ -65,6 +65,6 @@ namespace ZenUnit
       VECTORS_EQUAL(expectedFuncCalls, _funcCalls);
    }
 
-   }; RUNTESTS(ForEacherTwoExtraArgsTests)
+   }; RUNTESTS(TwoExtraArgsForEacherTests)
 }
 

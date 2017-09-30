@@ -13,7 +13,7 @@ namespace ZenUnit
       : _console(new Console)
       , _memberForEacherTestClassResults(new MemberForEacherTestClassResultsType)
       , _memberForEacherSkippedTests(new MemberForEacherSkippedTestsType)
-      , _forEacherTwoExtraArgs(new ForEacherTwoExtraArgsType)
+      , _twoExtraArgsForEacher(new TwoExtraArgsForEacherType)
       , _testFailureNumberer(new TestFailureNumberer)
       , _numberOfFailedTestCases(0)
    {
@@ -73,7 +73,7 @@ namespace ZenUnit
    void TestRunResult::PrintTestClassResultFailures(const TestClassResult& testClassResult) const
    {
       testClassResult.PrintTestFailures(
-         _forEacherTwoExtraArgs.get(), _console.get(), _testFailureNumberer.get());
+         _twoExtraArgsForEacher.get(), _console.get(), _testFailureNumberer.get());
    }
 
    void TestRunResult::PrintClosingLines(

@@ -4,7 +4,7 @@
 #include "ZenUnit/Macros/VECTORS_EQUAL.h"
 #include "ZenUnit/Results/TestClassResult.h"
 #include "ZenUnit/Results/TestResult.h"
-#include "ZenUnit/Utils/Iteration/ForEacherTwoExtraArgs.h"
+#include "ZenUnit/Utils/Iteration/TwoExtraArgsForEacher.h"
 
 namespace ZenUnit
 {
@@ -79,7 +79,7 @@ namespace ZenUnit
    }
 
    void TestClassResult::PrintTestFailures(
-      const ForEacherTwoExtraArgsType* forEacherTwoExtraArgs,
+      const TwoExtraArgsForEacherType* forEacherTwoExtraArgs,
       const Console* console,
       TestFailureNumberer* testFailureNumberer) const
    {

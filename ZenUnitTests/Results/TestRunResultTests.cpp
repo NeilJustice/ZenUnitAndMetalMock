@@ -56,7 +56,7 @@ namespace ZenUnit
       POINTER_WAS_NEWED(testRunResult._console);
       POINTER_WAS_NEWED(testRunResult._memberForEacherTestClassResults);
       POINTER_WAS_NEWED(testRunResult._memberForEacherSkippedTests);
-      POINTER_WAS_NEWED(testRunResult._forEacherTwoExtraArgs);
+      POINTER_WAS_NEWED(testRunResult._twoExtraArgsForEacher);
       POINTER_WAS_NEWED(testRunResult._testFailureNumberer);
       IS_EMPTY(testRunResult._testClassResults);
       IS_EMPTY(testRunResult._skippedTestClassNamesAndReasons);
@@ -285,7 +285,7 @@ namespace ZenUnit
       _testRunResult.PrintTestClassResultFailures(testClassResultMock);
       //
       ZEN(testClassResultMock.PrintTestFailuresMock.AssertCalledOnceWith(
-         _testRunResult._forEacherTwoExtraArgs.get(),
+         _testRunResult._twoExtraArgsForEacher.get(),
          _testRunResult._console.get(),
          _testRunResult._testFailureNumberer.get()));
    }

@@ -2,7 +2,7 @@
 #include "ZenUnit/Results/TestFailureNumberer.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestResultMock.h"
-#include "ZenUnitTests/Utils/Iteration/Mock/ForEacherTwoExtraArgsMock.h"
+#include "ZenUnitTests/Utils/Iteration/Mock/TwoExtraArgsForEacherMock.h"
 
 namespace ZenUnit
 {
@@ -125,10 +125,10 @@ namespace ZenUnit
 
    TEST(PrintTestFailures_PrintsJustTestFailedToConsole)
    {
-      using TypedefForEacherTwoExtraArgsMock = ForEacherTwoExtraArgsMock<vector<TestResult>,
+      using TypedefTwoExtraArgsForEacherMock = TwoExtraArgsForEacherMock<vector<TestResult>,
          void (*)(const TestResult&, const Console*, TestFailureNumberer*),
          const Console*, TestFailureNumberer*>;
-      const TypedefForEacherTwoExtraArgsMock forEacherTwoExtraArgsMock;
+      const TypedefTwoExtraArgsForEacherMock forEacherTwoExtraArgsMock;
       forEacherTwoExtraArgsMock.ForEachMock.Expect();
       const Console console;
       TestFailureNumberer testFailureNumberer;

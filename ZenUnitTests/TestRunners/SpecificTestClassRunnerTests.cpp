@@ -2,7 +2,7 @@
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestClassResultMock.h"
 #include "ZenUnitTests/Tests/Mock/TestMock.h"
-#include "ZenUnitTests/Utils/Iteration/Mock/MemberForEacherExtraArgMock.h"
+#include "ZenUnitTests/Utils/Iteration/Mock/ExtraArgMemberForEacherMock.h"
 
 namespace ZenUnit
 {
@@ -35,7 +35,7 @@ namespace ZenUnit
    ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
    const char* const TestClassName = "TestClassName";
 
-   using TestsForEacherMockType = MemberForEacherExtraArgMock<
+   using TestsForEacherMockType = ExtraArgMemberForEacherMock<
       unique_ptr<Test>, SpecificTestClassRunner<TestingTestClass>,
       void (SpecificTestClassRunner<TestingTestClass>::*)(
          const unique_ptr<Test>& test, TestClassResult*) const, TestClassResult*>;
