@@ -110,26 +110,26 @@ namespace ZenUnit
 
    }; RUNTESTS(StringUtilTests)
 
-      template<typename StringType>
+   template<typename StringType>
    TEMPLATETESTS(StringUtilContainsTests, StringType)
-      FACTS(Contains_ReturnsTrueIfStrContainsSubstring)
-      EVIDENCE
+   FACTS(Contains_ReturnsTrueIfStrContainsSubstring)
+   EVIDENCE
 
-      TEST3X3(Contains_ReturnsTrueIfStrContainsSubstring,
-         StringType str, const char* substring, bool expectedReturnValue,
-         "", "", true,
-         "", "a", false,
-         "a", "A", false,
-         "a", "b", false,
-         "abc", "a", true,
-         "abc", "bc", true,
-         "abc", "abc", true,
-         " ab01", "ab", true)
+   TEST3X3(Contains_ReturnsTrueIfStrContainsSubstring,
+      StringType str, const char* substring, bool expectedReturnValue,
+      "", "", true,
+      "", "a", false,
+      "a", "A", false,
+      "a", "b", false,
+      "abc", "a", true,
+      "abc", "bc", true,
+      "abc", "abc", true,
+      " ab01", "ab", true)
    {
       ARE_EQUAL(expectedReturnValue, String::Contains(str, substring));
    }
 
-};
-RUNTEMPLATETESTS(StringUtilContainsTests, const string&)
-RUNTEMPLATETESTS(StringUtilContainsTests, const char*)
+   };
+   RUNTEMPLATETESTS(StringUtilContainsTests, const string&)
+   RUNTEMPLATETESTS(StringUtilContainsTests, const char*)
 }

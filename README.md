@@ -2,16 +2,13 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true)](https://ci.appveyor.com/project/NeilJustice/zenunitzenmock)
 
 # ZenUnit
-ZenUnit is a C++ unit testing framework designed for assertion exactness, writability of value and type parameterized tests, and readability of tests and test results.
+
+ZenUnit is a C++ unit testing framework designed for writability of value and type parameterized tests, readability of tests and test results, and robustness in the face of code mutations inducible by future LLVM-powered mutation testing frameworks.
 
 # ZenMock
-ZenMock is a C++ mocking framework powered by ZenUnit for isolating software components for targeted unit testing by way of virtual, template, static, and free function mocking using an arrange-act-assert syntax.
+ZenMock is a C++ mocking framework powered by ZenUnit for confirming the correctness of software component interactions by way of virtual, template, static, and free function mocking using an arrange-act-assert syntax.
 
-### ZenUnit Imagery
-
-![ZenUnit](Screenshots/ZenUnitFizzBuzz.png "ZenUnit")
-
-### ZenUnit Command Line Usage
+### ZenUnit Command Line
 
 ```
 ZenUnit v0.1.0
@@ -28,23 +25,60 @@ None
    Useful option for not blocking the launch of a debugger.
 -failskips
    Exit 1 regardless of test run outcome if any tests are skipped.
-   Powerful option for continuous integration servers to guard against
-   the possibility of a quality-compromising culture of complacency
-   developing around skipped tests.
 -testruns=<N>
    Repeat the running of all non-skipped tests N times.
-   Powerful option for maximizing testing rigor.
 -random[=Seed]
    Run test classes in a random order and run tests in a random order.
-   Powerful option for maximizing testing rigor.
 ```
 
-### Type-Parameterized Test Classes
+### ZenUnit Syntax
 
 ```cpp
 #include "ZenUnit/ZenUnit.h"
-#include <set>
-#include <unordered_set>
+#include "Examples/FizzBuzz.h"
+
+TESTS(FizzBuzzTests)
+AFACT(FizzBuzz_EndNumber0_Throws)
+FACTS(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)
+EVIDENCE
+
+TEST(FizzBuzz_EndNumber0_Throws)
+{
+   THROWS(FizzBuzz(0), std::invalid_argument, "FizzBuzz(): endNumber must be 1 or greater");
+}
+
+TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
+   unsigned endNumber, const std::string& expectedFizzBuzzSequence,
+   1, "1",
+   2, "1 2" ,
+   3, "1 2 Fizz",
+   4, "1 2 Fizz 4",
+   5, "1 2 Fizz 4 Buzz",
+   6, "1 2 Fizz 4 Buzz Fizz",
+   7, "1 2 Fizz 4 Buzz Fizz 7",
+   8, "1 2 Fizz 4 Buzz Fizz 7 8",
+   9, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz",
+   10, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz",
+   11, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11",
+   12, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz",
+   13, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13",
+   14, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14",
+   15, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz")
+{
+   ARE_EQUAL(expectedFizzBuzzSequence, FizzBuzz(endNumber));
+}
+
+}; RUNTESTS(FizzBuzzTests)
+```
+
+### ZenUnit Imagery
+
+![ZenUnit](Screenshots/ZenUnitFizzBuzz.png "ZenUnit")
+
+### ZenUnit Type-Parameterized Test Class Syntax
+
+```cpp
+#include "ZenUnit/ZenUnit.h"
 
 class Set
 {
@@ -94,11 +128,15 @@ int main(int argc, char* argv[])
 }
 ```
 
-### ZenMock
+### ZenUnit Type-Parameterized Test Class Imagery
 
-Consider classes ComponentA and ClassUnderTest:
+![ZenUnit](Screenshots/ZenUnitTypeParameterizedTestClass.png "ZenUnit Type-Parameterized Test Class Imagery")
+
+#### ZenMock Syntax
 
 ```Cpp
+#include "ZenUnit/ZenMock.h"
+
 class ComponentA
 {
 public:
@@ -107,8 +145,15 @@ public:
    virtual int VirtualNonVoid() { return 0; }
    virtual int VirtualNonVoidConst() const { return 0; }
 };
-```
-```Cpp
+
+struct ComponentAMock : public Zen::Mock<ComponentA>
+{
+   ZENMOCK_VOID0(VirtualVoid)
+   ZENMOCK_VOID2_CONST(VirtualVoidConstTwoArgs, int, int)
+   ZENMOCK_NONVOID0(int, VirtualNonVoid)
+   ZENMOCK_NONVOID0_CONST(int, VirtualNonVoidConst)
+};
+
 class ClassUnderTest
 {
    friend class ClassUnderTestTests;
@@ -130,33 +175,11 @@ public:
       return sum;
    }
 };
-```
 
-How would you confirm the correctness of ClassUnderTest's interactions with ComponentA?
-
-One possible answer is by using ZenUnit and ZenMock.
-
-#### Syntax for mocking ComponentA with ZenMock:
-
-```Cpp
-#include "ZenUnit/ZenMock.h"
-
-struct ComponentAMock : public Zen::Mock<ComponentA>
-{
-   ZENMOCK_VOID0(VirtualVoid)
-   ZENMOCK_VOID2_CONST(VirtualVoidConstTwoArgs, int, int)
-   ZENMOCK_NONVOID0(int, VirtualNonVoid)
-   ZENMOCK_NONVOID0_CONST(int, VirtualNonVoidConst)
-};
-```
-
-#### Syntax for writing a ZenMock-enhanced ZenUnit test class for ClassUnderTest:
-
-```Cpp
 #include "ZenUnit/ZenUnit.h"
 
 TESTS(ClassUnderTestTests)
-FACT(Constructor_NewsComponentA)
+AFACT(Constructor_NewsComponentA)
 FACTS(InteractWithComponentA_CallsEveryFunction_ReturnsSumOfReturnValues)
 EVIDENCE
 
@@ -220,23 +243,38 @@ int main(int argc, char* argv[])
 }
 ```
 
-### Building and Installing ZenUnit and ZenMock On Linux
+### ZenMock Imagery
 
-Step 1 of 1:
+![ZenMock Imagery](Screenshots/ZenMockExampleTests.png "ZenMock Imagery")
+
+### Building ZenUnit and ZenMock On Linux
+
+Build and install command:
 
 `./LinuxCMakeBuildInstall.sh <InstallDirectory>`
 
+Build and install command example:
+
+`./LinuxCMakeBuildInstall.sh /usr/local`
+
 ZenUnit and ZenMock installed on Linux:
 
-![ZenUnit Installed On Linux](Screenshots/ZenUnitInstalledOnLinux.png "ZenUnit Installed On Linux")
+![ZenUnit Installed On Linux](Screenshots/ZenUnitInstalledOnLinux.png "ZenUnit and ZenMock Installed On Linux")
 
-### Building and Installing ZenUnit and ZenMock On Windows
+### Building ZenUnit and ZenMock On Windows
 
-Step 1 of 1:
+Build and install command:
 
 `.\WindowsCMakeBuildInstall.ps1 <InstallDirectory>`
 
+Build and install command example:
+
+`.\WindowsCMakeBuildInstall.ps1 C:\install`
+
 ZenUnit and ZenMock installed on Windows:
 
-![ZenUnit Installed On Windows](Screenshots/ZenUnitInstalledOnWindows.png "ZenUnit Installed On Windows")
+![ZenUnit Installed On Windows](Screenshots/ZenUnitInstalledOnWindows.png "ZenUnit and ZenMock Installed On Windows")
 
+### ZenUnit To-Do List
+
+Single header

@@ -40,15 +40,10 @@ None
    Useful option for not blocking the launch of a debugger.
 -failskips
    Exit 1 regardless of test run outcome if any tests are skipped.
-   Powerful option for continuous integration servers to guard against
-   the possibility of a quality-compromising culture of complacency
-   developing around skipped tests.
 -testruns=<N>
    Repeat the running of all non-skipped tests N times.
-   Powerful option for maximizing testing rigor.
 -random[=Seed]
-   Run test classes in a random order and run tests in a random order.
-   Powerful option for maximizing testing rigor.)";
+   Run test classes in a random order and run tests in a random order.)";
 
    ArgsParser _argsParser;
    const ConsoleMock* _consoleMock;
