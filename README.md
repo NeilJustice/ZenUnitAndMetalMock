@@ -132,7 +132,7 @@ int main(int argc, char* argv[])
 
 ![ZenUnit](Screenshots/ZenUnitTypeParameterizedTestClass.png "ZenUnit Type-Parameterized Test Class Imagery")
 
-#### ZenMock Syntax
+### ZenMock Syntax
 
 ```Cpp
 #include "ZenUnit/ZenMock.h"
@@ -278,3 +278,7 @@ ZenUnit and ZenMock installed on Windows:
 ### ZenUnit To-Do List
 
 Single header
+
+### License
+
+Public Domain
