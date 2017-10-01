@@ -120,21 +120,21 @@ namespace ZenMock
          auto test = [](auto& zenMockObject, const string& expectedSignature)
          {
             THROWS(zenMockObject.AssertCalledOnce(), Anomaly, R"(
-  Failed: ARE_EQUAL(expectedNumberOfCalls, _numberOfCalls, this->ZenMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCalls, actualNumberOfCalls, this->ZenMockedFunctionSignature)
 Expected: 1
   Actual: 0
  Message: ")" + expectedSignature + R"("
 File.cpp(1))");
 
             THROWS(zenMockObject.AssertCalledNTimes(1), Anomaly, R"(
-  Failed: ARE_EQUAL(expectedNumberOfCalls, _numberOfCalls, this->ZenMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCalls, actualNumberOfCalls, this->ZenMockedFunctionSignature)
 Expected: 1
   Actual: 0
  Message: ")" + expectedSignature + R"("
 File.cpp(1))");
 
             THROWS(zenMockObject.AssertCalledNTimes(2), Anomaly, R"(
-  Failed: ARE_EQUAL(expectedNumberOfCalls, _numberOfCalls, this->ZenMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCalls, actualNumberOfCalls, this->ZenMockedFunctionSignature)
 Expected: 2
   Actual: 0
  Message: ")" + expectedSignature + R"("

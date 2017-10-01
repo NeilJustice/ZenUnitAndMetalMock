@@ -37,7 +37,7 @@ namespace ZenMock
       ARE_EQUAL(Test::Signature, mocker.ZenMockedFunctionSignature);
       IS_FALSE(mocker._expected);
       IS_FALSE(mocker._asserted);
-      IS_ZERO(mocker._numberOfCalls);
+      IS_ZERO(mocker.actualNumberOfCalls);
    }
 
    TEST(Expect_AlreadyExpected_Throws)
@@ -88,11 +88,11 @@ namespace ZenMock
    {
       _mocker->_expected = true;
       _mocker->_exceptionThrower.ExpectCallToZenMockThrowIfExceptionSet();
-      ARE_EQUAL(0, _mocker->_numberOfCalls);
+      ARE_EQUAL(0, _mocker->actualNumberOfCalls);
       //
       _mocker->ZenMockIt();
       //
-      ARE_EQUAL(1, _mocker->_numberOfCalls);
+      ARE_EQUAL(1, _mocker->actualNumberOfCalls);
       ZEN(_mocker->_exceptionThrower.AssertZenMockThrowIfExceptionSetCalledOnce());
       NOTHROWS(_mocker->AssertCalledOnce());
    }
@@ -105,11 +105,11 @@ namespace ZenMock
    {
       IS_FALSE(_mocker->_asserted);
       //
-      _mocker->_numberOfCalls = numberOfCalls;
+      _mocker->actualNumberOfCalls = numberOfCalls;
       if (expectThrow)
       {
          THROWS(_mocker->AssertCalledOnce(), Anomaly, R"(
-  Failed: ARE_EQUAL(expectedNumberOfCalls, _numberOfCalls, this->ZenMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCalls, actualNumberOfCalls, this->ZenMockedFunctionSignature)
 Expected: 1
   Actual: )" + to_string(numberOfCalls) + R"(
  Message: ")" + Test::Signature + R"("
@@ -142,11 +142,11 @@ File.cpp(1))");
    {
       IS_FALSE(_mocker->_asserted);
       //
-      _mocker->_numberOfCalls = numberOfCalls;
+      _mocker->actualNumberOfCalls = numberOfCalls;
       if (expectThrow)
       {
          THROWS(_mocker->AssertCalledNTimes(expectedNumberOfCalls), Anomaly, R"(
-  Failed: ARE_EQUAL(expectedNumberOfCalls, _numberOfCalls, this->ZenMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCalls, actualNumberOfCalls, this->ZenMockedFunctionSignature)
 Expected: )" + to_string(expectedNumberOfCalls) + R"(
   Actual: )" + to_string(numberOfCalls) + R"(
  Message: ")" + Test::Signature + R"("

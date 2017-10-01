@@ -17,18 +17,18 @@ namespace ZenMock
    {
       friend class ZeroArgumentMockerTests;
    private:
-      size_t _numberOfCalls;
+      size_t actualNumberOfCalls;
    public:
       explicit ZeroArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
-         , _numberOfCalls(0)
+         , actualNumberOfCalls(0)
       {
       }
 
       void ZenMockIt()
       {
          this->ZenMockThrowIfNotExpected();
-         ++_numberOfCalls;
+         ++actualNumberOfCalls;
          this->ZenMockThrowIfExceptionSet();
       }
 
@@ -36,14 +36,14 @@ namespace ZenMock
       {
          this->ZenMockSetAsserted();
          const size_t expectedNumberOfCalls = 1;
-         ARE_EQUAL(expectedNumberOfCalls, _numberOfCalls, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCalls, actualNumberOfCalls, this->ZenMockedFunctionSignature);
       }
 
       void AssertCalledNTimes(size_t expectedNumberOfCalls)
       {
          this->ZenMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
          this->ZenMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCalls, _numberOfCalls, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCalls, actualNumberOfCalls, this->ZenMockedFunctionSignature);
       }
    };
 }
