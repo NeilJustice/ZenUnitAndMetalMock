@@ -26,7 +26,7 @@ namespace ZenMock
    {
       _mocker->_asserted = true;
    }
-   
+
    TEST(Constructor_SetsFields)
    {
       const MockerType mocker(Test::Signature);
@@ -91,8 +91,8 @@ namespace ZenMock
       _mocker->ZenMockIt(1, 2, 3, 4, 5, 6, 7, 8, 9);
       //
       using CallType = NineArgumentCall<int, int, int, int, int, int, int, int, int>;
-      const vector<CallType> expectedCalls 
-      { 
+      const vector<CallType> expectedCalls
+      {
          CallType(1, 2, 3, 4, 5, 6, 7, 8, 9)
       };
       VECTORS_EQUAL(expectedCalls, _mocker->nineArgumentCalls);

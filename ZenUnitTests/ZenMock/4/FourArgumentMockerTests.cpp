@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "ZenUnit/ZenMock/10/TenArgumentMocker.h"
+#include "ZenUnit/ZenMock/4/FourArgumentMocker.h"
 #include "ZenUnitTests/ZenMock/Mock/ExceptionThrowerMock.h"
 
 namespace ZenMock
 {
-   TESTS(TenArgumentMockerTests)
+   TESTS(FourArgumentMockerTests)
    AFACT(Constructor_SetsFields)
    AFACT(Expect_AlreadyExpected_Throws)
    AFACT(Expect_NotAlreadyExpected_SetsExpectedTrue)
@@ -14,7 +14,7 @@ namespace ZenMock
    AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
    EVIDENCE
 
-   using MockerType = TenArgumentMocker<int, int, int, int, int, int, int, int, int, int, ExceptionThrowerMock>;
+   using MockerType = FourArgumentMocker<int, int, int, int, ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;
 
    STARTUP
@@ -26,7 +26,7 @@ namespace ZenMock
    {
       _mocker->_asserted = true;
    }
-   
+
    TEST(Constructor_SetsFields)
    {
       const MockerType mocker(Test::Signature);
@@ -34,7 +34,7 @@ namespace ZenMock
       ARE_EQUAL(Test::Signature, mocker.ZenMockedFunctionSignature);
       IS_FALSE(mocker._expected);
       IS_FALSE(mocker._asserted);
-      IS_EMPTY(mocker.tenArgumentCalls);
+      IS_EMPTY(mocker.fourArgumentCalls);
    }
 
    TEST(Expect_AlreadyExpected_Throws)
@@ -78,28 +78,28 @@ namespace ZenMock
    TEST(ZenMockIt_ExpectedFalse_Throws)
    {
       IS_FALSE(_mocker->_expected);
-      THROWS(_mocker->ZenMockIt(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), UnexpectedCallException,
-         UnexpectedCallException::MakeWhat(Test::Signature, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
+      THROWS(_mocker->ZenMockIt(1, 2, 3, 4), UnexpectedCallException,
+         UnexpectedCallException::MakeWhat(Test::Signature, 1, 2, 3, 4));
    }
 
    TEST(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
    {
       _mocker->_expected = true;
       _mocker->_exceptionThrower.ExpectCallToZenMockThrowIfExceptionSet();
-      IS_EMPTY(_mocker->tenArgumentCalls);
+      IS_EMPTY(_mocker->fourArgumentCalls);
       //
-      _mocker->ZenMockIt(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+      _mocker->ZenMockIt(1, 2, 3, 4);
       //
-      using CallType = TenArgumentCall<int, int, int, int, int, int, int, int, int, int>;
-      const vector<CallType> expectedCalls 
-      { 
-         CallType(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+      using CallType = FourArgumentCall<int, int, int, int>;
+      const vector<CallType> expectedCalls
+      {
+         CallType(1, 2, 3, 4)
       };
-      VECTORS_EQUAL(expectedCalls, _mocker->tenArgumentCalls);
+      VECTORS_EQUAL(expectedCalls, _mocker->fourArgumentCalls);
       ZEN(_mocker->_exceptionThrower.AssertZenMockThrowIfExceptionSetCalledOnce());
-      NOTHROWS(_mocker->AssertCalledOnceWith(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
+      NOTHROWS(_mocker->AssertCalledOnceWith(1, 2, 3, 4));
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-   }; RUNTESTS(TenArgumentMockerTests)
+   }; RUNTESTS(FourArgumentMockerTests)
 }
