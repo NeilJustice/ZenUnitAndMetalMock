@@ -8,7 +8,7 @@ ZenUnit is a C++ unit testing framework designed for writability of value and ty
 # ZenMock
 ZenMock is a C++ mocking framework powered by ZenUnit for confirming the correctness of software component interactions by way of virtual, template, static, and free function mocking using an arrange-act-assert syntax.
 
-### ZenUnit Command Line
+### ZenUnit Command Line Usage
 
 ```
 ZenUnit v0.1.0
@@ -25,10 +25,15 @@ None
    Useful option for not blocking the launch of a debugger.
 -failskips
    Exit 1 regardless of test run outcome if any tests are skipped.
+   Useful option for continuous integration servers to reduce
+   the possibility of a quality-compromising culture of complacency
+   developing around skipped tests.
 -testruns=<N>
    Repeat the running of all non-skipped tests N times.
+   Useful option for increasing testing rigor.
 -random[=Seed]
    Run test classes in a random order and run tests in a random order.
+   Useful option for increasing testing rigor.
 ```
 
 ### ZenUnit Syntax
@@ -38,6 +43,16 @@ None
 #include "Examples/FizzBuzz.h"
 
 TESTS(FizzBuzzTests)
+// ZenUnit test classes begin with a FACTS section
+// that lists all test names in one place to maximize long term 
+// test code reviewability and to serve as an informal
+// specification document for the code under test.
+// This design features a purposeful cost of test name duplication
+// between the FACTS section and the EVIDENCE section.
+// What is gained from this cost is that each test name refactoring becomes
+// an opportunity to review all test names as a whole, 
+// leading to high-clarity high-cohesion test names, and by extension
+// high-clarity high-cohesion code under test.
 AFACT(FizzBuzz_EndNumber0_Throws)
 FACTS(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)
 EVIDENCE
@@ -47,6 +62,8 @@ TEST(FizzBuzz_EndNumber0_Throws)
    THROWS(FizzBuzz(0), std::invalid_argument, "FizzBuzz(): endNumber must be 1 or greater");
 }
 
+// TEST2X2 is a 2-by-2 value-parameterized test that processes
+// its typesafe variadic arguments list 2-by-2
 TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    unsigned endNumber, const std::string& expectedFizzBuzzSequence,
    1, "1",

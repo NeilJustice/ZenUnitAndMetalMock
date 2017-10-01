@@ -11,6 +11,8 @@ TEST(FizzBuzz_EndNumber0_Throws)
    THROWS(FizzBuzz(0), std::invalid_argument, "FizzBuzz(): endNumber must be 1 or greater");
 }
 
+// TEST2X2 is a 2-by-2 value-parameterized test that processes
+// its typesafe variadic arguments list 2-by-2
 TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    unsigned endNumber, const std::string& expectedFizzBuzzSequence,
    1, "1",
