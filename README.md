@@ -2,8 +2,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true)](https://ci.appveyor.com/project/NeilJustice/zenunitzenmock)
 
 # ZenUnit
-
-ZenUnit is a C++ unit testing framework designed for writability of value and type parameterized tests, readability of tests and test results, and robustness in the face of code mutations inducible by future LLVM-powered mutation testing frameworks.
+ZenUnit is a C++ unit testing framework designed for writability of value and type parameterized tests, readability of tests and test results, and for robustness to code mutations inducible by future LLVM-powered mutation testing frameworks.
 
 # ZenMock
 ZenMock is a C++ mocking framework powered by ZenUnit for confirming the correctness of software component interactions by way of virtual, template, static, and free function mocking using an arrange-act-assert syntax.
@@ -47,23 +46,25 @@ TESTS(FizzBuzzTests)
 // that lists all test names in one place to maximize long term 
 // test code reviewability and to serve as an informal
 // specification document for the code under test.
-// This design features a purposeful cost of test name duplication
+// This design features a by-design cost of test name duplication
 // between the FACTS section and the EVIDENCE section.
-// What is gained from this cost is that each test name refactoring becomes
-// an opportunity to review all test names as a whole, 
-// leading to high-clarity high-cohesion test names, and by extension
-// high-clarity high-cohesion code under test.
+// What is gained from this cost is that each test name refactoring,
+// of which there may be dozens over the course of a project,
+// becomes an opportunity to review all test names as a whole
+// for continued clarity and cohesion, and by extension,
+// the code under test is reviewed for continued clarity and cohesion.
 AFACT(FizzBuzz_EndNumber0_Throws)
 FACTS(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)
 EVIDENCE
 
 TEST(FizzBuzz_EndNumber0_Throws)
 {
-   THROWS(FizzBuzz(0), std::invalid_argument, "FizzBuzz(): endNumber must be 1 or greater");
+   THROWS(FizzBuzz(0), std::invalid_argument, 
+      "FizzBuzz(): endNumber must be 1 or greater");
 }
 
 // TEST2X2 is a 2-by-2 value-parameterized test that processes
-// its typesafe variadic arguments list 2-by-2
+// its typesafe variadic arguments list 2-by-2.
 TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    unsigned endNumber, const std::string& expectedFizzBuzzSequence,
    1, "1",
