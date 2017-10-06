@@ -137,6 +137,7 @@ None
          TestProgramPath,
          "-minimalist",
          "-detailed",
+         "-wait",
          "-exit0",
          "-failskips",
          "-testruns=1",
@@ -150,6 +151,7 @@ None
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
       expectedZenUnitArgs.printMode = PrintMode::Detailed;
+      expectedZenUnitArgs.wait = true;
       expectedZenUnitArgs.exit0 = true;
       expectedZenUnitArgs.failskips = true;
       expectedZenUnitArgs.testruns = 1;
@@ -190,6 +192,7 @@ None
 
    TEST(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    {
+      AssertArgSetsBoolField("-wait", &ZenUnitArgs::wait);
       AssertArgSetsBoolField("-exit0", &ZenUnitArgs::exit0);
       AssertArgSetsBoolField("-failskips", &ZenUnitArgs::failskips);
    }

@@ -16,7 +16,7 @@ namespace ZenUnit
    FACTS(WriteLineAndExit_CallsWriteLineAndExit)
    FACTS(NonMinimalWriteStringsCommaSeparated_PrintModeNotMinimal_CallsDoWriteStringsCommaSeparated)
    FACTS(DoWriteStringsCommaSeparated_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset)
-   FACTS(PauseForAnyKeyIfDebuggerIsPresent_WritesPressAnyKeyAndGetsLineIfDebuggerIsPresent)
+   FACTS(WaitForAnyKeyIfDebuggerPresentOrValueTrue_WritesPressAnyKeyAndGetsLineIfDebuggerPresentOrValueTrue)
 #ifdef _WIN32
    FACTS(DebuggerIsPresent_ReturnsTrueIfIsDebuggerPresentFunctionReturns1)
 #endif
@@ -252,21 +252,29 @@ namespace ZenUnit
       ZEN(consoleSelfMocked.WriteMock.AssertCalls(expectedConsoleWriteCalls));
    }
 
-   TEST2X2(PauseForAnyKeyIfDebuggerIsPresent_WritesPressAnyKeyAndGetsLineIfDebuggerIsPresent,
-      bool debuggerIsPresentReturnValue, bool expectPressAnyKeyAndGetLine,
-      false, false,
-      true, true)
+   TEST3X3(WaitForAnyKeyIfDebuggerPresentOrValueTrue_WritesPressAnyKeyAndGetsLineIfDebuggerPresentOrValueTrue,
+      bool doWait, bool debuggerIsPresent, bool expectPressAnyKeyAndGetLine,
+      false, false, false,
+      false, true, true,
+      true, false, true,
+      true, true, true)
    {
-      _consoleSelfMocked.DebuggerIsPresentMock.ExpectAndReturn(debuggerIsPresentReturnValue);
+      if (!doWait)
+      {
+         _consoleSelfMocked.DebuggerIsPresentMock.ExpectAndReturn(debuggerIsPresent);
+      }
       if (expectPressAnyKeyAndGetLine)
       {
          _consoleSelfMocked.WriteLineColorMock.Expect();
          _consoleSelfMocked.GetLineMock.Expect();
       }
       //
-      _consoleSelfMocked.PauseForAnyKeyIfDebuggerIsPresent();
+      _consoleSelfMocked.WaitForAnyKeyIfDebuggerPresentOrValueTrue(doWait);
       //
-      ZEN(_consoleSelfMocked.DebuggerIsPresentMock.AssertCalledOnce());
+      if (!doWait)
+      {
+         ZEN(_consoleSelfMocked.DebuggerIsPresentMock.AssertCalledOnce());
+      }
       if (expectPressAnyKeyAndGetLine)
       {
          ZEN(_consoleSelfMocked.WriteLineColorMock.AssertCalledOnceWith("Press any key to continue...", Color::White));

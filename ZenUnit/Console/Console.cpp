@@ -113,9 +113,9 @@ namespace ZenUnit
       }
    }
 
-   void Console::PauseForAnyKeyIfDebuggerIsPresent() const
+   void Console::WaitForAnyKeyIfDebuggerPresentOrValueTrue(bool doWait) const
    {
-      if (DebuggerIsPresent())
+      if (doWait || DebuggerIsPresent())
       {
          WriteLine("Press any key to continue...");
          GetLine();

@@ -66,7 +66,7 @@ namespace ZenUnit
          overallExitCode |= testRunExitCode;
          _testRunResult->ResetStateExceptForSkips();
       }
-      _console->PauseForAnyKeyIfDebuggerIsPresent();
+      _console->WaitForAnyKeyIfDebuggerPresentOrValueTrue(_zenUnitArgs.wait);
       return overallExitCode;
    }
 

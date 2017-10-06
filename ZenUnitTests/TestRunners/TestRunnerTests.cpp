@@ -112,11 +112,12 @@ namespace ZenUnit
       1, 2, 1, 1)
    {
       ZenUnitArgs zenUnitArgs;
+      zenUnitArgs.wait = ZenUnit::Random<bool>();
       zenUnitArgs.testruns = testrunsArgs;
       _testRunnerSelfMocked.argsParserMock->ParseMock.ExpectAndReturn(zenUnitArgs);
       _testRunnerSelfMocked.RunTestsAndPrintResultsMock.ExpectAndReturnValues(firstTestRunExitCode, secondTestRunExitCode);
       _testRunnerSelfMocked.testRunResultMock->ResetStateExceptForSkipsMock.Expect();
-      _testRunnerSelfMocked.consoleMock->PauseForAnyKeyIfDebuggerIsPresentMock.Expect();
+      _testRunnerSelfMocked.consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.Expect();
       const vector<string> CommandLineArgs{ Random<string>() };
       //
       const int overallExitCode = _testRunnerSelfMocked.ParseArgsRunTestsPrintResults(CommandLineArgs);
@@ -124,7 +125,7 @@ namespace ZenUnit
       ZEN(_testRunnerSelfMocked.argsParserMock->ParseMock.AssertCalledOnceWith(CommandLineArgs));
       ZEN(_testRunnerSelfMocked.RunTestsAndPrintResultsMock.AssertCalledNTimes(testrunsArgs));
       ZEN(_testRunnerSelfMocked.testRunResultMock->ResetStateExceptForSkipsMock.AssertCalledNTimes(testrunsArgs));
-      ZEN(_testRunnerSelfMocked.consoleMock->PauseForAnyKeyIfDebuggerIsPresentMock.AssertCalledOnce());
+      ZEN(_testRunnerSelfMocked.consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.AssertCalledOnceWith(zenUnitArgs.wait));
       ARE_EQUAL(expectedOverallExitCode, overallExitCode);
    }
 

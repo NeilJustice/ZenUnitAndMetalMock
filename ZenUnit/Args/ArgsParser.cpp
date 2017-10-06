@@ -36,10 +36,10 @@ namespace ZenUnit
          {
             zenUnitArgs.printMode = PrintMode::Detailed;
          }
-         //else if (arg == "-wait")
-         //{
-         //   zenUnitArgs.wait = true;
-         //}
+         else if (arg == "-wait")
+         {
+            zenUnitArgs.wait = true;
+         }
          else if (arg == "-exit0")
          {
             zenUnitArgs.exit0 = true;

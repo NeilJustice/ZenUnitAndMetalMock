@@ -14,7 +14,7 @@ struct ConsoleMock : public Zen::Mock<Console>
    ZENMOCK_VOID2_CONST(WriteLineAndExit, const string&, int)
    ZENMOCK_VOID0_CONST(GetLine)
    ZENMOCK_VOID4_CONST(NonMinimalWriteStringsCommaSeparated, const vector<string>&, size_t, size_t, PrintMode)
-   ZENMOCK_VOID0_CONST(PauseForAnyKeyIfDebuggerIsPresent)
+   ZENMOCK_VOID1_CONST(WaitForAnyKeyIfDebuggerPresentOrValueTrue, bool)
    ZENMOCK_NONVOID0_CONST(bool, DebuggerIsPresent)
 };
 
