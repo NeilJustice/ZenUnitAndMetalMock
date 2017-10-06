@@ -14,8 +14,8 @@ namespace ZenMock
    {
       friend class ZenMockerTests;
    private:
-      std::function<void(int)> _exit_ZenMockable;
-      std::function<ZenUnit::ZenUnitArgs()> _TestRunner_GetArgs_ZenMockable;
+      std::function<void(int)> call_exit;
+      std::function<ZenUnit::ZenUnitArgs()> call_TestRunner_GetArgs;
       bool _zenMockExceptionIsInFlight;
    protected:
       MockableExceptionThrowerType _exceptionThrower;
@@ -24,8 +24,8 @@ namespace ZenMock
       const std::string ZenMockedFunctionSignature;
    public:
       explicit ZenMocker(std::string zenMockedFunctionSignature)
-         : _exit_ZenMockable(::exit)
-         , _TestRunner_GetArgs_ZenMockable(ZenUnit::TestRunner::GetArgs)
+         : call_exit(::exit)
+         , call_TestRunner_GetArgs(ZenUnit::TestRunner::GetArgs)
          , _zenMockExceptionIsInFlight(false)
          , _expected(false)
          , _asserted(false)
@@ -101,7 +101,7 @@ namespace ZenMock
             std::cout << "\n";
             console.WriteLineColor("Expected-But-Not-Asserted ZenMocked Function:", ZenUnit::Color::Red);
             console.WriteLineColor(ZenMockedFunctionSignature, ZenUnit::Color::Green);
-            const ZenUnit::ZenUnitArgs& zenUnitArgs = _TestRunner_GetArgs_ZenMockable();
+            const ZenUnit::ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
             std::cout << R"(
 Fix: After Expect()ing then calling the above ZenMocked function,
 call ZEN(<ZenMockObjectName>.<FunctionName>Mock.
@@ -110,7 +110,7 @@ call ZEN(<ZenMockObjectName>.<FunctionName>Mock.
 Fail fasting with exit code )" <<
 (zenUnitArgs.exit0 ? "0 (normally exit code 1 but -exit0 is specified).\n" : "1.\n");
             int exitCode = zenUnitArgs.exit0 ? 0 : 1;
-            _exit_ZenMockable(exitCode);
+            call_exit(exitCode);
          }
       }
 

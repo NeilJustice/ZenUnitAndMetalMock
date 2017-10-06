@@ -11,7 +11,7 @@ namespace ZenUnit
    ArgsParser::ArgsParser()
       : _console(new Console)
       , _watch(new Watch)
-      , _String_ToUnsigned(String::ToUnsigned)
+      , call_String_ToUnsigned(String::ToUnsigned)
    {
    }
 
@@ -36,6 +36,10 @@ namespace ZenUnit
          {
             zenUnitArgs.printMode = PrintMode::Detailed;
          }
+         //else if (arg == "-wait")
+         //{
+         //   zenUnitArgs.wait = true;
+         //}
          else if (arg == "-exit0")
          {
             zenUnitArgs.exit0 = true;
@@ -73,13 +77,13 @@ namespace ZenUnit
                unsigned argValue = 0;
                if (argName == "-testruns")
                {
-                  argValue = _String_ToUnsigned(argValueString);
+                  argValue = call_String_ToUnsigned(argValueString);
                   zenUnitArgs.testruns = argValue;
                }
                else if (argName == "-random")
                {
                   zenUnitArgs.random = true;
-                  argValue = _String_ToUnsigned(argValueString);
+                  argValue = call_String_ToUnsigned(argValueString);
                   zenUnitArgs.randomseed = static_cast<unsigned short>(argValue);
                   zenUnitArgs.randomseedsetbyuser = true;
                }
@@ -109,6 +113,8 @@ None
    Run all non-skipped tests while printing detailed information.
 -minimalist
    Print only preamble and conclusion.
+-wait
+   Wait for input before closing console window.
 -exit0
    Always exit 0 regardless of test run outcome.
    Useful option for not blocking the launch of a debugger.

@@ -33,7 +33,7 @@ namespace ZenUnit
    {
       _testNXN = make_unique<TestNXN<TestingTestClass, N, int>>("", "", "", 0);
       _testNXN->_console.reset(_consoleMock = new ConsoleMock);
-      _testNXN->_TestRunner_GetArgs_ZenMockable = ZENMOCK_BIND0(GetArgs_ZenMock);
+      _testNXN->call_TestRunner_GetArgs= ZENMOCK_BIND0(GetArgs_ZenMock);
    }
 
    TEST(Constructor_NewsConsole_SetsFields_GettersReturnExpected_2X2With4Args)
@@ -42,11 +42,11 @@ namespace ZenUnit
          TestClassName.c_str(), TestName.c_str(), TestCaseArgsText.c_str(), 0, 0, 0, 0);
       //
       POINTER_WAS_NEWED(testNXN._console);
-      STD_FUNCTION_TARGETS(TestRunner::GetArgs, testNXN._TestRunner_GetArgs_ZenMockable);
+      STD_FUNCTION_TARGETS(TestRunner::GetArgs, testNXN.call_TestRunner_GetArgs);
       IS_NULL(testNXN._testClass);
       ARE_EQUAL(0, testNXN._testCaseArgsIndex);
       ARE_EQUAL(TestCaseArgsText, testNXN._testCaseArgsText);
-      STD_FUNCTION_TARGETS(String::CommaSplitExceptQuotedCommas, testNXN._String_CommaSplitExceptQuotedCommas);
+      STD_FUNCTION_TARGETS(String::CommaSplitExceptQuotedCommas, testNXN.call_String_CommaSplitExceptQuotedCommas);
       ARE_EQUAL(TestName, testNXN.Name());
       ARE_EQUAL("TESTS(" + TestClassName + ")\nTEST2X2(" + TestName + ")", testNXN.FullTestNameValue());
       ARE_EQUAL("(0)", testNXN.FileLineString());
@@ -109,12 +109,13 @@ namespace ZenUnit
          return zenUnitArgs;
       }();
       GetArgs_ZenMock_SelfMocked.ExpectAndReturn(zenUnitArgs);
-      test1X1SelfMocked._TestRunner_GetArgs_ZenMockable = ZENMOCK_BIND0(GetArgs_ZenMock_SelfMocked);
+      test1X1SelfMocked.call_TestRunner_GetArgs= ZENMOCK_BIND0(GetArgs_ZenMock_SelfMocked);
 
       ZENMOCK_NONVOID0_STATIC(vector<string>, ZenUnit::String, CommaSplitExceptQuotedCommas, _SelfMocked);
       const vector<string> splitTestCaseArgs = { "1", "2", "3" };
       CommaSplitExceptQuotedCommas_ZenMock_SelfMocked.ExpectAndReturn(splitTestCaseArgs);
-      test1X1SelfMocked._String_CommaSplitExceptQuotedCommas = ZENMOCK_BIND0(CommaSplitExceptQuotedCommas_ZenMock_SelfMocked);
+      test1X1SelfMocked.call_String_CommaSplitExceptQuotedCommas
+         = ZENMOCK_BIND0(CommaSplitExceptQuotedCommas_ZenMock_SelfMocked);
 
       test1X1SelfMocked.NonMinimalPrintTestCaseNumberArgsThenArrowMock.Expect();
       TestResult firstTestResult;

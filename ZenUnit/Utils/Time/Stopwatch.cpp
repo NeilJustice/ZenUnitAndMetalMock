@@ -5,13 +5,13 @@
 namespace ZenUnit
 {
    Stopwatch::Stopwatch()
-      : _highres_now_ZenMockable(std::chrono::high_resolution_clock::now)
+      : call_highres_now(std::chrono::high_resolution_clock::now)
    {
    }
 
    void Stopwatch::Start()
    {
-      _startTime = _highres_now_ZenMockable();
+      _startTime = call_highres_now();
    }
 
    unsigned Stopwatch::Stop()
@@ -20,7 +20,7 @@ namespace ZenUnit
       {
          return 0;
       }
-      const std::chrono::time_point<std::chrono::high_resolution_clock> stopTime = _highres_now_ZenMockable();
+      const std::chrono::time_point<std::chrono::high_resolution_clock> stopTime = call_highres_now();
       const std::chrono::duration<long long, std::nano> elapsedTime = stopTime - _startTime;
       const long long elapsedMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(elapsedTime).count();
       _startTime = std::chrono::time_point<std::chrono::high_resolution_clock>();

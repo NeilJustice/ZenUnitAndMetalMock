@@ -30,7 +30,7 @@ namespace ZenUnit
       _tryCatchCaller._console.reset(_consoleMock = new ConsoleMock);
       _tryCatchCaller._testPhaseSuffixer.reset(_testPhaseSuffixerMock = new TestPhaseSuffixerMock);
       _tryCatchCaller._stopwatch.reset(_stopwatchMock = new StopwatchMock);
-      _tryCatchCaller._TestRunner_GetArgs_ZenMockable = ZENMOCK_BIND0(GetArgs_ZenMock);
+      _tryCatchCaller.call_TestRunner_GetArgs= ZENMOCK_BIND0(GetArgs_ZenMock);
       _testMock = make_unique<TestMock>();
    }
 
@@ -45,7 +45,7 @@ namespace ZenUnit
       POINTER_WAS_NEWED(tryCatchCaller._console);
       POINTER_WAS_NEWED(tryCatchCaller._testPhaseSuffixer);
       POINTER_WAS_NEWED(tryCatchCaller._stopwatch);
-      STD_FUNCTION_TARGETS(TestRunner::GetArgs, tryCatchCaller._TestRunner_GetArgs_ZenMockable);
+      STD_FUNCTION_TARGETS(TestRunner::GetArgs, tryCatchCaller.call_TestRunner_GetArgs);
    }
 
    void ExpectStopwatchStartAndStop()

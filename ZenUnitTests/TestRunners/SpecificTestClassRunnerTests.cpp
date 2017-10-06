@@ -56,7 +56,7 @@ namespace ZenUnit
          : Zen::Mock<ZenUnit::SpecificTestClassRunner<TestingTestClass>>("")
       {
          _console.reset(consoleMock = new ConsoleMock);
-         _TestRunner_GetArgs_ZenMockable = ZENMOCK_BIND0(GetArgs_ZenMock);
+         call_TestRunner_GetArgs= ZENMOCK_BIND0(GetArgs_ZenMock);
       }
    };
    unique_ptr<SpecificTestClassRunnerSelfMocked> _specificTestClassRunnerSelfMocked;
@@ -65,7 +65,7 @@ namespace ZenUnit
    {
       _specificTestClassRunner = make_unique<SpecificTestClassRunner<TestingTestClass>>(TestClassName);
       _specificTestClassRunner->_console.reset(_consoleMock = new ConsoleMock);
-      _specificTestClassRunner->_TestRunner_GetArgs_ZenMockable = ZENMOCK_BIND0(GetArgs_ZenMock);
+      _specificTestClassRunner->call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
       _specificTestClassRunner->_testsForEacher.reset(_testsForEacherMock = new TestsForEacherMockType);
       _specificTestClassRunnerSelfMocked = make_unique<SpecificTestClassRunnerSelfMocked>();
    }
@@ -77,7 +77,7 @@ namespace ZenUnit
       POINTER_WAS_NEWED(specificTestClassRunner._console);
       POINTER_WAS_NEWED(specificTestClassRunner._testsForEacher);
       ARE_EQUAL(TestClassName, specificTestClassRunner._testClassName);
-      STD_FUNCTION_TARGETS(TestRunner::GetArgs, specificTestClassRunner._TestRunner_GetArgs_ZenMockable);
+      STD_FUNCTION_TARGETS(TestRunner::GetArgs, specificTestClassRunner.call_TestRunner_GetArgs);
 
       vector<unique_ptr<Test>> expectedTests;
       expectedTests.emplace_back(nullptr);

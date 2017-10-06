@@ -11,9 +11,9 @@ namespace ZenUnit
 {
    MachineNameGetter::MachineNameGetter()
 #ifdef __linux__
-      : gethostname_ZenMockable(::gethostname)
+      : call_gethostname(::gethostname)
 #elif _WIN32
-      : GetComputerName_ZenMockable(::GetComputerName)
+      : call_GetComputerName(::GetComputerName)
 #endif
    {
    }
@@ -32,7 +32,7 @@ namespace ZenUnit
    {
       char hostname[HOST_NAME_MAX + 1];
       assert_true(sizeof(hostname) == 65);
-      const int gethostnameResult = gethostname_ZenMockable(hostname, sizeof(hostname));
+      const int gethostnameResult = call_gethostname(hostname, sizeof(hostname));
       assert_true(gethostnameResult == 0);
       const std::string linuxMachineName(hostname);
       return linuxMachineName;
@@ -43,7 +43,7 @@ namespace ZenUnit
       const size_t Windows10MaxPCNameLength = 40;
       TCHAR computerNameChars[Windows10MaxPCNameLength + 1];
       DWORD size = sizeof(computerNameChars);
-      const BOOL didGetComputerName = GetComputerName_ZenMockable(computerNameChars, &size);
+      const BOOL didGetComputerName = call_GetComputerName(computerNameChars, &size);
       assert_true(didGetComputerName == TRUE);
       const std::string windowsMachineName(computerNameChars);
       return windowsMachineName;

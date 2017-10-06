@@ -13,7 +13,7 @@ namespace ZenUnit
    FACTS(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1)
    FACTS(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0)
    AFACT(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
-   FACTS(Parse_MinimalOrDetailed_ReturnsExpectedZenUnitArgs)
+   FACTS(Parse_MinimalistOrDetailed_ReturnsExpectedZenUnitArgs)
    AFACT(Parse_Random_SetsRandomTrueAndRandomSeedToSecondsSince1970CastToUnsignedShort)
    AFACT(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    AFACT(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
@@ -35,6 +35,8 @@ None
    Run all non-skipped tests while printing detailed information.
 -minimalist
    Print only preamble and conclusion.
+-wait
+   Wait for input before closing console window.
 -exit0
    Always exit 0 regardless of test run outcome.
    Useful option for not blocking the launch of a debugger.
@@ -59,7 +61,7 @@ None
    {
       _argsParser._console.reset(_consoleMock = new ConsoleMock);
       _argsParser._watch.reset(_watchMock = new WatchMock);
-      _argsParser._String_ToUnsigned = ZENMOCK_BIND1(ToUnsigned_ZenMock);
+      _argsParser.call_String_ToUnsigned = ZENMOCK_BIND1(ToUnsigned_ZenMock);
    }
 
    TEST(DefaultConstructor_NewsCompnents_SetsStringToUnsignedFunction)
@@ -67,7 +69,7 @@ None
       ArgsParser argsParser;
       POINTER_WAS_NEWED(argsParser._console);
       POINTER_WAS_NEWED(argsParser._watch);
-      STD_FUNCTION_TARGETS(String::ToUnsigned, argsParser._String_ToUnsigned);
+      STD_FUNCTION_TARGETS(String::ToUnsigned, argsParser.call_String_ToUnsigned);
    }
 
    TEST(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
@@ -156,7 +158,7 @@ None
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST2X2(Parse_MinimalOrDetailed_ReturnsExpectedZenUnitArgs,
+   TEST2X2(Parse_MinimalistOrDetailed_ReturnsExpectedZenUnitArgs,
       vector<string> args, PrintMode expectedPrintMode,
       vector<string>{ "ExePath" }, PrintMode::Normal,
       vector<string>{ "ExePath", "-minimalist" }, PrintMode::Minimalist,

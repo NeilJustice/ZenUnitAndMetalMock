@@ -40,11 +40,11 @@ namespace ZenUnit
    TEST(Constructor_SetsFunctionPointers_SetsSupportsColorAndSupportsColorSetToFalse)
    {
       const ConsoleColorer consoleColorer;
-      STD_FUNCTION_TARGETS(::fileno, consoleColorer.fileno_ZenMockable);
-      STD_FUNCTION_TARGETS(::isatty, consoleColorer.isatty_ZenMockable);
+      STD_FUNCTION_TARGETS(::fileno, consoleColorer.call_fileno);
+      STD_FUNCTION_TARGETS(::isatty, consoleColorer.call_isatty);
 #ifdef _WIN32
-      STD_FUNCTION_TARGETS(::GetStdHandle, consoleColorer.GetStdHandle_ZenMockable);
-      STD_FUNCTION_TARGETS(::SetConsoleTextAttribute, consoleColorer.SetConsoleTextAttribute_ZenMockable);
+      STD_FUNCTION_TARGETS(::GetStdHandle, consoleColorer.call_GetStdHandle);
+      STD_FUNCTION_TARGETS(::SetConsoleTextAttribute, consoleColorer.call_SetConsoleTextAttribute);
 #endif
       IS_FALSE(consoleColorer._supportsColor);
       IS_FALSE(consoleColorer._supportsColorSet);
@@ -127,8 +127,8 @@ namespace ZenUnit
       const int StdoutFileHandle = 1;
       fileno_ZenMock.ExpectAndReturn(StdoutFileHandle);
       isatty_ZenMock.ExpectAndReturn(isattyReturnValue);
-      _consoleColorer.fileno_ZenMockable = ZENMOCK_BIND1(fileno_ZenMock);
-      _consoleColorer.isatty_ZenMockable = ZENMOCK_BIND1(isatty_ZenMock);
+      _consoleColorer.call_fileno= ZENMOCK_BIND1(fileno_ZenMock);
+      _consoleColorer.call_isatty= ZENMOCK_BIND1(isatty_ZenMock);
       //
       const bool consoleSupportsColor = _consoleColorer.SupportsColor();
       //
@@ -146,8 +146,8 @@ namespace ZenUnit
    {
       ZENMOCK_NONVOID1_FREE(HANDLE, GetStdHandle, DWORD);
       ZENMOCK_NONVOID2_FREE(BOOL, SetConsoleTextAttribute, HANDLE, WORD);
-      _consoleColorer.GetStdHandle_ZenMockable = ZENMOCK_BIND1(GetStdHandle_ZenMock);
-      _consoleColorer.SetConsoleTextAttribute_ZenMockable = ZENMOCK_BIND2(SetConsoleTextAttribute_ZenMock);
+      _consoleColorer.call_GetStdHandle= ZENMOCK_BIND1(GetStdHandle_ZenMock);
+      _consoleColorer.call_SetConsoleTextAttribute= ZENMOCK_BIND2(SetConsoleTextAttribute_ZenMock);
 
       const HANDLE GetStdHandleReturnValue = HANDLE(1);
       GetStdHandle_ZenMock.ExpectAndReturn(GetStdHandleReturnValue);

@@ -7,9 +7,9 @@ namespace ZenUnit
       friend class MachineNameGetterTests;
    private:
 #ifdef __linux__
-      std::function<int(char*, size_t)> gethostname_ZenMockable;
+      std::function<int(char*, size_t)> call_gethostname;
 #elif _WIN32
-      std::function<BOOL(LPSTR, LPDWORD)> GetComputerName_ZenMockable;
+      std::function<BOOL(LPSTR, LPDWORD)> call_GetComputerName;
 #endif
    public:
       MachineNameGetter();

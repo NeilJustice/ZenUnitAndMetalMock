@@ -19,6 +19,8 @@ None
    Run all non-skipped tests while printing detailed information.
 -minimalist
    Print only preamble and conclusion.
+-wait
+   Wait for input before closing console window.
 -exit0
    Always exit 0 regardless of test run outcome.
    Useful option for not blocking the launch of a debugger.

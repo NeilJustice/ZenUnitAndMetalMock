@@ -36,16 +36,16 @@ namespace ZenMock
    STARTUP
    {
       _zenMocker = make_unique<ZenMocker<ExceptionThrowerMock>>(ZenMockedFunctionSignature);
-      _zenMocker->_exit_ZenMockable = ZENMOCK_BIND1(exit_ZenMock);
-      _zenMocker->_TestRunner_GetArgs_ZenMockable = ZENMOCK_BIND0(GetArgs_ZenMock);
+      _zenMocker->call_exit = ZENMOCK_BIND1(exit_ZenMock);
+      _zenMocker->call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
    }
 
    TEST(Constructor_SetsFields)
    {
       const ZenMocker<ExceptionThrower> zenMocker(ZenMockedFunctionSignature);
       //
-      STD_FUNCTION_TARGETS(exit, zenMocker._exit_ZenMockable);
-      STD_FUNCTION_TARGETS(ZenUnit::TestRunner::GetArgs, zenMocker._TestRunner_GetArgs_ZenMockable);
+      STD_FUNCTION_TARGETS(exit, zenMocker.call_exit);
+      STD_FUNCTION_TARGETS(ZenUnit::TestRunner::GetArgs, zenMocker.call_TestRunner_GetArgs);
       ARE_EQUAL(ZenMockedFunctionSignature, zenMocker.ZenMockedFunctionSignature);
       IS_FALSE(zenMocker._expected);
       IS_FALSE(zenMocker._asserted);

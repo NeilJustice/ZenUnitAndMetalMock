@@ -27,7 +27,7 @@ namespace ZenUnit
          std::unique_ptr<Test>, SpecificTestClassRunner,
          void (SpecificTestClassRunner::*)(const std::unique_ptr<Test>& test, TestClassResult*) const, TestClassResult*>;
       std::unique_ptr<const TestsForEacherType> _testsForEacher;
-      std::function<const ZenUnitArgs&()> _TestRunner_GetArgs_ZenMockable;
+      std::function<const ZenUnitArgs&()> call_TestRunner_GetArgs;
       const char* _testClassName;
       NewDeleteTest<TestClassType> _newDeleteTest;
       std::vector<std::unique_ptr<Test>> _tests;
@@ -36,7 +36,7 @@ namespace ZenUnit
       explicit SpecificTestClassRunner(const char* testClassNamePossiblyTemplatized)
          : _console(new Console)
          , _testsForEacher(new TestsForEacherType)
-         , _TestRunner_GetArgs_ZenMockable(TestRunner::GetArgs)
+         , call_TestRunner_GetArgs(TestRunner::GetArgs)
          , _testClassName(testClassNamePossiblyTemplatized)
          , _newDeleteTest(testClassNamePossiblyTemplatized)
       {
@@ -66,7 +66,7 @@ namespace ZenUnit
          {
              DoRunTests();
          }
-         const ZenUnitArgs& zenUnitArgs = _TestRunner_GetArgs_ZenMockable();
+         const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          NonMinimalPrintResultLine(&_testClassResult, zenUnitArgs.printMode);
          _console->NonMinimalWriteNewLine(zenUnitArgs.printMode);
          return std::move(_testClassResult);
@@ -74,7 +74,7 @@ namespace ZenUnit
    private:
       virtual void DoRunTests()
       {
-         const ZenUnitArgs& zenUnitArgs = _TestRunner_GetArgs_ZenMockable();
+         const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          if (zenUnitArgs.random)
          {
             _testsForEacher->RandomForEach(
@@ -89,7 +89,7 @@ namespace ZenUnit
 
       virtual void NonMinimalPrintTestClassNameAndNumberOfNamedTests() const
       {
-         const ZenUnitArgs& zenUnitArgs = _TestRunner_GetArgs_ZenMockable();
+         const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          _console->NonMinimalWriteColor("@", Color::Green, zenUnitArgs.printMode);
          _console->NonMinimalWriteColor(_testClassName, Color::Green, zenUnitArgs.printMode);
          std::string spacePipeSpaceNumberOfNamedTests = String::Concat(
@@ -100,7 +100,7 @@ namespace ZenUnit
       virtual bool ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(
          Test* newDeleteTest, TestClassResult* outTestClassResult) const
       {
-         const ZenUnitArgs& zenUnitArgs = _TestRunner_GetArgs_ZenMockable();
+         const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          _console->NonMinimalWriteColor("|", Color::Green, zenUnitArgs.printMode);
          static const std::string TestClassIsNewableAndDeletableString = "TestClassIsNewableAndDeletable -> ";
          _console->NonMinimalWrite(TestClassIsNewableAndDeletableString, zenUnitArgs.printMode);
@@ -117,7 +117,7 @@ namespace ZenUnit
 
       void RunTest(const std::unique_ptr<Test>& test, TestClassResult* outTestClassResult) const
       {
-         const ZenUnitArgs& zenUnitArgs = _TestRunner_GetArgs_ZenMockable();
+         const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          _console->NonMinimalWriteColor("|", Color::Green, zenUnitArgs.printMode);
          const char* const testName = test->Name();
          _console->NonMinimalWrite(testName, zenUnitArgs.printMode);

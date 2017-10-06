@@ -14,7 +14,7 @@ namespace ZenUnit
    private:
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const Watch> _watch;
-      std::function<unsigned(const std::string&)> _String_ToUnsigned;
+      std::function<unsigned(const std::string&)> call_String_ToUnsigned;
    public:
       ArgsParser();
       virtual ~ArgsParser() = default;

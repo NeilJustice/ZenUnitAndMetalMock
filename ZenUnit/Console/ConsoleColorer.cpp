@@ -14,15 +14,15 @@ namespace ZenUnit
 {
    ConsoleColorer::ConsoleColorer()
 #ifdef _WIN32
-      : fileno_ZenMockable(::_fileno)
-      , isatty_ZenMockable(::_isatty)
+      : call_fileno(::_fileno)
+      , call_isatty(::_isatty)
 #else
-      : fileno_ZenMockable(::fileno)
-      , isatty_ZenMockable(::isatty)
+      : call_fileno(::fileno)
+      , call_isatty(::isatty)
 #endif
 #ifdef _WIN32
-      , GetStdHandle_ZenMockable(::GetStdHandle)
-      , SetConsoleTextAttribute_ZenMockable(::SetConsoleTextAttribute)
+      , call_GetStdHandle(::GetStdHandle)
+      , call_SetConsoleTextAttribute(::SetConsoleTextAttribute)
 #endif
       , _supportsColor(false)
       , _supportsColorSet(false)
@@ -60,8 +60,8 @@ namespace ZenUnit
 
    bool ConsoleColorer::SupportsColor() const
    {
-      const int stdoutFileHandle = fileno_ZenMockable(stdout);
-      const int isAtty = isatty_ZenMockable(stdoutFileHandle);
+      const int stdoutFileHandle = call_fileno(stdout);
+      const int isAtty = call_isatty(stdoutFileHandle);
       const bool supportsColor = isAtty != 0;
       return supportsColor;
    }
@@ -72,9 +72,9 @@ namespace ZenUnit
       const char* linuxColor = ColorToLinuxColor(color);
       std::cout << linuxColor;
 #elif _WIN32
-      const HANDLE stdOutHandle = GetStdHandle_ZenMockable(STD_OUTPUT_HANDLE);
+      const HANDLE stdOutHandle = call_GetStdHandle(STD_OUTPUT_HANDLE);
       const WindowsColor windowsColor = ColorToWindowsColor(color);
-      const BOOL didSetConsoleTextAttr = SetConsoleTextAttribute_ZenMockable(
+      const BOOL didSetConsoleTextAttr = call_SetConsoleTextAttribute(
          stdOutHandle, static_cast<WORD>(windowsColor));
       assert_true(didSetConsoleTextAttr == TRUE);
 #endif

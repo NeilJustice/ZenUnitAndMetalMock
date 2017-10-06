@@ -8,7 +8,7 @@ namespace ZenUnit
       friend class StopwatchTests;
    private:
       std::function<std::chrono::time_point<
-         std::chrono::high_resolution_clock>()> _highres_now_ZenMockable;
+         std::chrono::high_resolution_clock>()> call_highres_now;
       std::chrono::time_point<std::chrono::high_resolution_clock> _startTime;
    public:
       Stopwatch();

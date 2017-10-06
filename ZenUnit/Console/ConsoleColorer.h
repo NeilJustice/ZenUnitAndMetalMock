@@ -8,11 +8,11 @@ namespace ZenUnit
    {
       friend class ConsoleColorerTests;
    private:
-      std::function<int(FILE*)> fileno_ZenMockable;
-      std::function<int(int)> isatty_ZenMockable;
+      std::function<int(FILE*)> call_fileno;
+      std::function<int(int)> call_isatty;
 #ifdef _WIN32
-      std::function<HANDLE(DWORD)> GetStdHandle_ZenMockable;
-      std::function<BOOL(HANDLE, WORD)> SetConsoleTextAttribute_ZenMockable;
+      std::function<HANDLE(DWORD)> call_GetStdHandle;
+      std::function<BOOL(HANDLE, WORD)> call_SetConsoleTextAttribute;
 #endif
       bool _supportsColor;
       bool _supportsColorSet;

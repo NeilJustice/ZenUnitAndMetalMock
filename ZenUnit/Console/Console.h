@@ -14,8 +14,8 @@ namespace ZenUnit
       friend class ConsoleTests;
    private:
       std::unique_ptr<ConsoleColorer> _consoleColorer;
-      std::function<void(int)> _exit_ZenMockable;
-      std::function<int()> _IsDebuggerPresent_ZenMockable;
+      std::function<void(int)> call_exit;
+      std::function<int()> call_IsDebuggerPresent;
    public:
       Console();
       virtual ~Console();

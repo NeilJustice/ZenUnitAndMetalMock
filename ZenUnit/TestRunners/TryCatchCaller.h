@@ -19,7 +19,7 @@ namespace ZenUnit
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const TestPhaseSuffixer> _testPhaseSuffixer;
       std::unique_ptr<Stopwatch> _stopwatch;
-      std::function<const ZenUnitArgs&()> _TestRunner_GetArgs_ZenMockable;
+      std::function<const ZenUnitArgs&()> call_TestRunner_GetArgs;
    public:
       TryCatchCaller();
       virtual ~TryCatchCaller();

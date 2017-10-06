@@ -11,10 +11,10 @@ namespace ZenUnit
       friend class TestNXNTests;
    private:
       std::unique_ptr<const Console> _console;
-      std::function<const ZenUnitArgs&()> _TestRunner_GetArgs_ZenMockable;
+      std::function<const ZenUnitArgs&()> call_TestRunner_GetArgs;
       std::unique_ptr<TestClassType> _testClass;
       const char* const _testCaseArgsText;
-      std::function<std::vector<std::string>(const char*)> _String_CommaSplitExceptQuotedCommas;
+      std::function<std::vector<std::string>(const char*)> call_String_CommaSplitExceptQuotedCommas;
       size_t _testCaseArgsIndex;
    protected:
       const std::tuple<typename std::decay<TestCaseArgTypes>::type...> _testCaseArgs;
@@ -26,9 +26,9 @@ namespace ZenUnit
          TestCaseArgTypes&&... testCaseArgs)
          : Test(testClassName, testName, N)
          , _console(new Console)
-         , _TestRunner_GetArgs_ZenMockable(TestRunner::GetArgs)
+         , call_TestRunner_GetArgs(TestRunner::GetArgs)
          , _testCaseArgsText(testCaseArgsText)
-         , _String_CommaSplitExceptQuotedCommas(String::CommaSplitExceptQuotedCommas)
+         , call_String_CommaSplitExceptQuotedCommas(String::CommaSplitExceptQuotedCommas)
          , _testCaseArgsIndex(0)
          , _testCaseArgs(std::forward<TestCaseArgTypes>(testCaseArgs)...)
       {
@@ -65,8 +65,8 @@ namespace ZenUnit
          const size_t numberOfTestCases = NumberOfTestCases();
          testResults.reserve(numberOfTestCases);
          assert_true(_testCaseArgsIndex == 0);
-         std::vector<std::string> splitTestCaseArgs = _String_CommaSplitExceptQuotedCommas(_testCaseArgsText);
-         const ZenUnitArgs& zenUnitArgs = _TestRunner_GetArgs_ZenMockable();
+         std::vector<std::string> splitTestCaseArgs = call_String_CommaSplitExceptQuotedCommas(_testCaseArgsText);
+         const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          constexpr size_t NumberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
          for (unsigned short testCaseIndex = 0;
               _testCaseArgsIndex < NumberOfTestCaseArgs;
