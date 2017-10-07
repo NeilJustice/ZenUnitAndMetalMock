@@ -5,7 +5,7 @@
 ZenUnit is a C++ unit testing framework designed for writability of value and type parameterized tests, readability of tests and test results, and for robustness to code mutations inducible by future LLVM-powered mutation testing frameworks.
 
 # ZenMock
-ZenMock is a C++ mocking framework powered by ZenUnit for confirming the correctness of software component interactions by way of virtual, template, static, and free function mocking using an arrange-act-assert syntax.
+ZenMock is a C++ mocking framework powered by ZenUnit for confirming the correctness of software component interactions by way of template, virtual, free, and static function mocking using an arrange-act-assert syntax and a strict mocking design for robustness to code mutations inducible by future LLVM-powered mutation testing frameworks.
 
 ### ZenUnit Command Line Usage
 
@@ -16,9 +16,9 @@ Usage: <TestsBinaryName> [Options...]
 Options:
 
 None
-   Run all non-skipped tests while printing detailed information.
+   Run all tests while printing detailed information.
 -minimalist
-   Print only preamble and conclusion.
+   Print only preamble, any test failure details, and conclusion.
 -pause
    Wait for input before running tests to allow attaching a profiler or debugger.
 -wait
@@ -36,7 +36,7 @@ None
    Run test classes in a random order and run tests in a random order.
    Useful option for increasing testing rigor.
 -testruns=<N>
-   Repeat the running of all non-skipped tests N times.
+   Repeat the running of all tests N times.
    Useful option for increasing testing rigor, especially when used with -random.
 ```
 
@@ -48,16 +48,18 @@ None
 
 TESTS(FizzBuzzTests)
 // ZenUnit test classes begin with a FACTS section
-// that lists all test names in one place to maximize long term 
-// test code reviewability and to serve as an informal
+// that specifies all test names in one place to maximize long term
+// code reviewability and to serve as an informal
 // specification document for the code under test.
 // This design features a by-design cost of test name duplication
 // between the FACTS section and the EVIDENCE section.
-// What is gained from this cost is that each test name refactoring,
-// of which there may be dozens over the course of a project,
+// What is gained from this cost is that each test name
+// addition, subtraction, or refactoring,
+// of which there may be hundreds over the course of a project,
 // becomes an opportunity to review all test names as a whole
-// for continued clarity and cohesion, and by extension,
-// the code under test is reviewed for continued clarity and cohesion.
+// for continued test name quality and cohesion - and by extension,
+// an opportunity to review the code under test for continued 
+// function name quality and cohesion.
 AFACT(FizzBuzz_EndNumber0_Throws)
 FACTS(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)
 EVIDENCE

@@ -33,7 +33,7 @@ Options:
 None
    Run all non-skipped tests while printing detailed information.
 -minimalist
-   Print only preamble and conclusion.
+   Print only preamble, any test failure details, and conclusion.
 -pause
    Wait for input before running tests to allow attaching a profiler or debugger.
 -wait
