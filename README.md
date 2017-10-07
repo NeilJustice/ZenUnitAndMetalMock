@@ -30,14 +30,14 @@ None
 -failskips
    Exit 1 regardless of test run outcome if any tests are skipped.
    Useful option for continuous integration servers to reduce
-   the possibility of a quality-compromising culture of complacency
+   the probability of a quality-compromising culture of complacency
    developing around skipped tests.
--testruns=<N>
-   Repeat the running of all non-skipped tests N times.
-   Useful option for increasing testing rigor.
 -random[=Seed]
    Run test classes in a random order and run tests in a random order.
    Useful option for increasing testing rigor.
+-testruns=<N>
+   Repeat the running of all non-skipped tests N times.
+   Useful option for increasing testing rigor, especially when used with -random.
 ```
 
 ### ZenUnit Syntax
