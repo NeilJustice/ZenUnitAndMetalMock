@@ -76,7 +76,6 @@ namespace ZenUnit
       _preamblePrinter->PrintOpeningThreeLines(_zenUnitArgs, _multiTestClassRunner.get());
       _havePaused = WaitForAnyKeyIfPauseModeAndHaveNotPaused(_zenUnitArgs.pause, _havePaused);
       _testRunStopwatch->Start();
-      //_zenUnitArgs.randomseed = _randomSeedGenerator->GenerateRandomSeed();
       if (_zenUnitArgs.maxtotalseconds > 0)
       {
          RunTestClassesWithWaitableRunnerThread(_zenUnitArgs.maxtotalseconds);

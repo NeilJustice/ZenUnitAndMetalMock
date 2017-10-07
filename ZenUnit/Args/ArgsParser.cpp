@@ -10,7 +10,6 @@ namespace ZenUnit
 {
    ArgsParser::ArgsParser()
       : _console(new Console)
-      , _watch(new Watch)
       , call_String_ToUnsigned(String::ToUnsigned)
    {
    }
@@ -19,7 +18,7 @@ namespace ZenUnit
    {
       if (args.size() > 9)
       {
-         _console->WriteLine("ZenUnit argument error: Too many arguments.\n");
+         _console->WriteLine("ZenUnit argument error. Too many arguments.\n");
          _console->WriteLineAndExit(Usage(), 1);
       }
       ZenUnitArgs zenUnitArgs;
@@ -55,7 +54,6 @@ namespace ZenUnit
          else if (arg == "-random")
          {
             zenUnitArgs.random = true;
-            zenUnitArgs.randomseed = _watch->SecondsSince1970CastToUnsignedShort();
          }
          else if (arg == "-help" || arg == "--help")
          {
@@ -63,16 +61,14 @@ namespace ZenUnit
          }
          else if (!String::Contains(arg, "="))
          {
-            _console->WriteLine("ZenUnit argument error: Invalid argument \"" + arg + "\"\n");
-            _console->WriteLineAndExit(Usage(), 1);
+            WriteZenUnitArgumentErrorAndUsageThenExit1("Invalid argument \"" + arg + "\"");
          }
          else
          {
             const std::vector<std::string> splitArg = String::Split(arg, '=');
             if (splitArg.size() != 2)
             {
-               _console->WriteLine("ZenUnit argument error: Malformed -name=value argument: " + arg + "\n");
-               _console->WriteLineAndExit(Usage(), 1);
+               WriteZenUnitArgumentErrorAndUsageThenExit1("Invalid -name=value argument value: " + arg);
             }
             try
             {
@@ -93,17 +89,22 @@ namespace ZenUnit
                }
                else
                {
-                  throw std::invalid_argument("");
+                  WriteZenUnitArgumentErrorAndUsageThenExit1("Unrecognized -name=value argument: " + arg);
                }
             }
             catch (const std::invalid_argument&)
             {
-               _console->WriteLine("ZenUnit argument error: Malformed -name=value argument: " + arg + "\n");
-               _console->WriteLineAndExit(Usage(), 1);
+               WriteZenUnitArgumentErrorAndUsageThenExit1("Invalid -name=value argument value: " + arg);
             }
          }
       }
       return zenUnitArgs;
+   }
+
+   void ArgsParser::WriteZenUnitArgumentErrorAndUsageThenExit1(const std::string& errorMessage) const
+   {
+      _console->WriteLine("ZenUnit argument error. " + errorMessage + "\n");
+      _console->WriteLineAndExit(Usage(), 1);
    }
 
    const std::string& ArgsParser::Usage()
