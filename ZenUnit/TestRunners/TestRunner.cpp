@@ -20,6 +20,7 @@ namespace ZenUnit
       , _testRunStopwatch(new Stopwatch)
       , _multiTestClassRunner(new MultiTestClassRunner)
       , _testRunResult(new TestRunResult)
+      , _havePaused(false)
    {
    }
 
@@ -55,13 +56,13 @@ namespace ZenUnit
       return nullptr;
    }
 
-   int TestRunner::ParseArgsRunTestsPrintResults(const std::vector<std::string>& commandLineArgs)
+   int TestRunner::ParseArgsRunTestClassesPrintResults(const std::vector<std::string>& commandLineArgs)
    {
       _zenUnitArgs = _argsParser->Parse(commandLineArgs);
       int overallExitCode = 0;
       for (unsigned testRunIndex = 0; testRunIndex < _zenUnitArgs.testruns; ++testRunIndex)
       {
-         const int testRunExitCode = RunTestsAndPrintResults();
+         const int testRunExitCode = RunTestClassesAndPrintResults();
          assert_true(testRunExitCode == 0 || testRunExitCode == 1);
          overallExitCode |= testRunExitCode;
          _testRunResult->ResetStateExceptForSkips();
@@ -70,17 +71,19 @@ namespace ZenUnit
       return overallExitCode;
    }
 
-   int TestRunner::RunTestsAndPrintResults()
+   int TestRunner::RunTestClassesAndPrintResults()
    {
-      _testRunStopwatch->Start();
       _preamblePrinter->PrintOpeningThreeLines(_zenUnitArgs, _multiTestClassRunner.get());
+      _havePaused = WaitForAnyKeyIfPauseModeAndHaveNotPaused(_zenUnitArgs.pause, _havePaused);
+      _testRunStopwatch->Start();
+      //_zenUnitArgs.randomseed = _randomSeedGenerator->GenerateRandomSeed();
       if (_zenUnitArgs.maxtotalseconds > 0)
       {
-         RunTestsWithWaitableRunnerThread(_zenUnitArgs.maxtotalseconds);
+         RunTestClassesWithWaitableRunnerThread(_zenUnitArgs.maxtotalseconds);
       }
       else
       {
-         RunTests();
+         RunTestClasses();
       }
       _testRunResult->PrintTestFailuresAndSkips();
       const size_t numberOfTestCases = _multiTestClassRunner->NumberOfTestCases();
@@ -90,9 +93,24 @@ namespace ZenUnit
       return testRunExitCode;
    }
 
-   void TestRunner::RunTestsWithWaitableRunnerThread(unsigned maxtTotalSeconds)
+   bool TestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPaused(bool pauseMode, bool havePaused) const
    {
-      const std::shared_ptr<const VoidFuture> testClassRunnerDoneFuture = _futurist->Async(&TestRunner::RunTests, this);
+      if (!pauseMode)
+      {
+         return false;
+      }
+      if (havePaused)
+      {
+         return true;
+      }
+      _console->WriteLine("ZenUnit test runner paused. Press any key to run.");
+      _console->WaitForAnyKey();
+      return true;
+   }
+
+   void TestRunner::RunTestClassesWithWaitableRunnerThread(unsigned maxtTotalSeconds)
+   {
+      const std::shared_ptr<const VoidFuture> testClassRunnerDoneFuture = _futurist->Async(&TestRunner::RunTestClasses, this);
       const std::future_status waitResult = testClassRunnerDoneFuture->WaitAtMostSeconds(maxtTotalSeconds);
       if (waitResult == std::future_status::timeout)
       {
@@ -102,7 +120,7 @@ namespace ZenUnit
       }
    }
 
-   void TestRunner::RunTests()
+   void TestRunner::RunTestClasses()
    {
       std::vector<TestClassResult> testClassResults = _multiTestClassRunner->RunTestClasses(_zenUnitArgs);
       _testRunResult->SetTestClassResults(std::move(testClassResults));

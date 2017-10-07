@@ -17,7 +17,7 @@ namespace ZenUnit
 
    ZenUnitArgs ArgsParser::Parse(const std::vector<std::string>& args) const
    {
-      if (args.size() > 8)
+      if (args.size() > 9)
       {
          _console->WriteLine("ZenUnit argument error: Too many arguments.\n");
          _console->WriteLineAndExit(Usage(), 1);
@@ -35,6 +35,10 @@ namespace ZenUnit
          else if (arg == "-detailed")
          {
             zenUnitArgs.printMode = PrintMode::Detailed;
+         }
+         else if (arg == "-pause")
+         {
+            zenUnitArgs.pause = true;
          }
          else if (arg == "-wait")
          {
@@ -113,11 +117,14 @@ None
    Run all non-skipped tests while printing detailed information.
 -minimalist
    Print only preamble and conclusion.
+-pause
+   Wait for input before running tests to allow attaching a profiler or debugger.
 -wait
    Wait for input before closing console window.
 -exit0
    Always exit 0 regardless of test run outcome.
-   Useful option for not blocking the launch of a debugger.
+   Useful option for never blocking the launch of the Visual Studio debugger
+   when running ZenUnit tests as a post-build event.
 -failskips
    Exit 1 regardless of test run outcome if any tests are skipped.
    Useful option for continuous integration servers to reduce

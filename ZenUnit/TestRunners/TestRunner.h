@@ -26,6 +26,7 @@ namespace ZenUnit
       std::unique_ptr<MultiTestClassRunner> _multiTestClassRunner;
       std::unique_ptr<TestRunResult> _testRunResult;
       ZenUnitArgs _zenUnitArgs;
+      bool _havePaused;
    public:
       TestRunner();
       virtual ~TestRunner();
@@ -34,10 +35,11 @@ namespace ZenUnit
       std::nullptr_t RegisterTestClassRunner(TestClassRunner* testClassRunner);
       std::nullptr_t SkipTest(const char* testClassName, const char* testName, const char* reason);
       std::nullptr_t SkipTestClass(const char* skippedTestClassName, const char* reason);
-      int ParseArgsRunTestsPrintResults(const std::vector<std::string>& commandLineArgs);
+      int ParseArgsRunTestClassesPrintResults(const std::vector<std::string>& commandLineArgs);
    private:
-      virtual int RunTestsAndPrintResults();
-      virtual void RunTests();
-      virtual void RunTestsWithWaitableRunnerThread(unsigned maxtTotalSeconds);
+      virtual bool WaitForAnyKeyIfPauseModeAndHaveNotPaused(bool pauseMode, bool havePaused) const;
+      virtual int RunTestClassesAndPrintResults();
+      virtual void RunTestClasses();
+      virtual void RunTestClassesWithWaitableRunnerThread(unsigned maxtTotalSeconds);
    };
 }

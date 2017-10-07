@@ -35,11 +35,14 @@ None
    Run all non-skipped tests while printing detailed information.
 -minimalist
    Print only preamble and conclusion.
+-pause
+   Wait for input before running tests to allow attaching a profiler or debugger.
 -wait
    Wait for input before closing console window.
 -exit0
    Always exit 0 regardless of test run outcome.
-   Useful option for not blocking the launch of a debugger.
+   Useful option for never blocking the launch of the Visual Studio debugger
+   when running ZenUnit tests as a post-build event.
 -failskips
    Exit 1 regardless of test run outcome if any tests are skipped.
    Useful option for continuous integration servers to reduce
@@ -85,8 +88,8 @@ None
 
    TEST1X1(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1,
       size_t numberOfArgs,
-      9,
-      10)
+      10,
+      11)
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
@@ -137,6 +140,7 @@ None
          TestProgramPath,
          "-minimalist",
          "-detailed",
+         "-pause",
          "-wait",
          "-exit0",
          "-failskips",
@@ -151,6 +155,7 @@ None
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
       expectedZenUnitArgs.printMode = PrintMode::Detailed;
+      expectedZenUnitArgs.pause = true;
       expectedZenUnitArgs.wait = true;
       expectedZenUnitArgs.exit0 = true;
       expectedZenUnitArgs.failskips = true;
@@ -192,6 +197,7 @@ None
 
    TEST(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    {
+      AssertArgSetsBoolField("-pause", &ZenUnitArgs::pause);
       AssertArgSetsBoolField("-wait", &ZenUnitArgs::wait);
       AssertArgSetsBoolField("-exit0", &ZenUnitArgs::exit0);
       AssertArgSetsBoolField("-failskips", &ZenUnitArgs::failskips);

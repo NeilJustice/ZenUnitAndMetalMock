@@ -117,9 +117,15 @@ namespace ZenUnit
    {
       if (doWait || DebuggerIsPresent())
       {
-         WriteLine("Press any key to continue...");
-         GetLine();
+         WriteLine("Press any key to continue . . .");
+         WaitForAnyKey();
       }
+   }
+
+   void Console::WaitForAnyKey() const
+   {
+      std::string devNull;
+      std::getline(std::cin, devNull);
    }
 
    bool Console::DebuggerIsPresent() const
@@ -131,11 +137,5 @@ namespace ZenUnit
       const bool isDebuggerPresent = isDebuggerPresentReturnValue == 1;
       return isDebuggerPresent;
 #endif
-   }
-
-   void Console::GetLine() const
-   {
-      std::string devNull;
-      std::getline(std::cin, devNull);
    }
 }

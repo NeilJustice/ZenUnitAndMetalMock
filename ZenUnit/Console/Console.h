@@ -32,8 +32,8 @@ namespace ZenUnit
       virtual void NonMinimalWriteStringsCommaSeparated(
          const std::vector<std::string>& strings, size_t startIndex, size_t numberOfStringsToWrite, PrintMode printMode) const;
       virtual void WaitForAnyKeyIfDebuggerPresentOrValueTrue(bool doWait) const;
+      virtual void WaitForAnyKey() const;
       virtual bool DebuggerIsPresent() const;
-      virtual void GetLine() const;
    private:
       virtual void DoWriteStringsCommaSeparated(
          const std::vector<std::string>& strings, size_t startIndex, size_t numberOfStringsToWrite) const;

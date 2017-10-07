@@ -7,9 +7,9 @@ namespace ZenUnit
 {
    int RunTests(int argc, char* argv[])
    {
-      TestRunner& testRunner = TestRunner::Instance();
+      TestRunner& zenUnitTestRunner = TestRunner::Instance();
       const std::vector<std::string> args = Vector::FromArgcArgv(argc, argv);
-      const int exitCode = testRunner.ParseArgsRunTestsPrintResults(args);
+      const int exitCode = zenUnitTestRunner.ParseArgsRunTestClassesPrintResults(args);
       return exitCode;
    }
 }

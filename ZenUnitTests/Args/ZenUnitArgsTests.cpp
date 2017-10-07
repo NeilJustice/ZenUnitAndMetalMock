@@ -28,6 +28,7 @@ namespace ZenUnit
       EQUALIZER_THROWS_INIT(ZenUnitArgs);
       EQUALIZER_THROWS(ZenUnitArgs, commandLine, "ZenUnitTests.exe");
       EQUALIZER_THROWS(ZenUnitArgs, printMode, PrintMode::Minimalist);
+      EQUALIZER_THROWS(ZenUnitArgs, pause, true);
       EQUALIZER_THROWS(ZenUnitArgs, wait, true);
       EQUALIZER_THROWS(ZenUnitArgs, exit0, true);
       EQUALIZER_THROWS(ZenUnitArgs, failskips, true);
