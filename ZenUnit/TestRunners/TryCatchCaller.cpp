@@ -70,11 +70,13 @@ namespace ZenUnit
          const unsigned milliseconds = _stopwatch->Stop();
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->WriteLineColor("FATALITY", Color::Red);
-         const std::string exitLine = String::Concat(
-            "Fatal ... exception. Fast failing now with exit code 1 (unless -exit0 specified).",
-            testPhaseSuffix, " (", milliseconds, " ms)");
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
-         _console->WriteLineAndExit(exitLine, zenUnitArgs.exit0 ? 0 : 1);
+         const std::string exitLine = String::Concat(
+            "Fatal ... exception. ", zenUnitArgs.exit0 ?
+            "Fast failing now with exit code 0 (due to -exit0 being specified)." :
+            "Fast failing now with exit code 1.", testPhaseSuffix, " (", milliseconds, " ms)");
+         const int exitCode = zenUnitArgs.exit0 ? 0 : 1;
+         _console->WriteLineAndExit(exitLine, exitCode);
       }
       return callResult;
    }

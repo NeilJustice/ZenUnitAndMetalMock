@@ -189,12 +189,12 @@ Already called [ZenMockedFunctionName]Mock.Expect[AndReturn|AndReturnValues|AndT
       throw 1;
    }
 
-   TEST3X3(Call_FunctionThrowsAnIntToTriggerDotDotDotHandler_PrintsFailureDetails_Exits1,
-      TestPhase arbitraryTestPhase, bool exit0, int expectedExitCode,
-      TestPhase::Constructor, false, 1,
-      TestPhase::Constructor, true, 0,
-      TestPhase::TestBody, false, 1,
-      TestPhase::TestBody, true, 0)
+   TEST4X4(Call_FunctionThrowsAnIntToTriggerDotDotDotHandler_PrintsFailureDetails_Exits1,
+      TestPhase arbitraryTestPhase, bool exit0, int expectedExitCode, const char* expectedMessageSuffix,
+      TestPhase::Constructor, false, 1, "Fast failing now with exit code 1.",
+      TestPhase::Constructor, true, 0, "Fast failing now with exit code 0 (due to -exit0 being specified).",
+      TestPhase::TestBody, false, 1, "Fast failing now with exit code 1.",
+      TestPhase::TestBody, true, 0, "Fast failing now with exit code 0 (due to -exit0 being specified).")
    {
       ExpectStopwatchStartAndStop();
       _consoleMock->WriteLineColorMock.Expect();
@@ -213,7 +213,7 @@ Already called [ZenMockedFunctionName]Mock.Expect[AndReturn|AndReturnValues|AndT
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.AssertCalledOnceWith(arbitraryTestPhase));
       ZEN(GetArgs_ZenMock.AssertCalledOnce());
       ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(
-         String::Concat("Fatal ... exception. Fast failing now with exit code 1 (unless -exit0 specified).",
+         String::Concat("Fatal ... exception. ", expectedMessageSuffix,
             TestPhaseSuffix.c_str(), " (", Milliseconds, " ms)"), expectedExitCode));
    }
 
