@@ -129,7 +129,7 @@ None
    TEST(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
    {
       const unsigned testruns = ZenUnit::Random<unsigned>();
-      unsigned short randomseed = ZenUnit::Random<unsigned short>();
+      unsigned randomseed = ZenUnit::Random<unsigned>();
       call_String_ToUnsigned_ZenMock.ExpectAndReturnValues(testruns, randomseed);
       const vector<string> Args
       {
@@ -161,7 +161,7 @@ None
       expectedZenUnitArgs.testruns = 1;
       expectedZenUnitArgs.random = true;
       expectedZenUnitArgs.testruns = testruns;
-      expectedZenUnitArgs.randomseed = randomseed;
+      expectedZenUnitArgs.randomseed = static_cast<unsigned short>(randomseed);
       expectedZenUnitArgs.randomseedsetbyuser = true;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
