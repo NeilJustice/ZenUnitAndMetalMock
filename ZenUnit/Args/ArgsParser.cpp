@@ -75,7 +75,11 @@ namespace ZenUnit
                const std::string& argName = splitArg[0];
                const std::string& argValueString = splitArg[1];
                unsigned argValue = 0;
-               if (argName == "-testruns")
+               if (argName == "-run")
+               {
+                  zenUnitArgs.runFilter = argValueString;
+               }
+               else if (argName == "-testruns")
                {
                   argValue = call_String_ToUnsigned(argValueString);
                   zenUnitArgs.testruns = argValue;
@@ -118,6 +122,8 @@ None
    Run all non-skipped tests while printing detailed information.
 -minimalist
    Print only preamble, any test failure details, and conclusion.
+-run=<TestClassName[.TestName]>
+   Run only specified test class or test, case-insensitive.
 -pause
    Wait for input before running tests to allow attaching a profiler or debugger.
 -wait

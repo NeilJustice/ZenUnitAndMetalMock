@@ -1,5 +1,10 @@
 #pragma once
 
+#define WIN32_LEAN_AND_MEAN
+#define NOGDI
+#define NOMINMAX
+#include "Windows.h"
+
 namespace ZenUnit
 {
    enum class Color : unsigned char;

@@ -13,6 +13,7 @@ namespace ZenUnit
    FACTS(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0)
    AFACT(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
    FACTS(Parse_MinimalistOrDetailed_ReturnsExpectedZenUnitArgs)
+   AFACT(Parse_Run_ReturnsExpectedZenUnitArgs)
    AFACT(Parse_Random_SetsRandomToTrue)
    AFACT(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    AFACT(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
@@ -34,6 +35,8 @@ None
    Run all non-skipped tests while printing detailed information.
 -minimalist
    Print only preamble, any test failure details, and conclusion.
+-run=<TestClassName[.TestName]>
+   Run only specified test class or test, case-insensitive.
 -pause
    Wait for input before running tests to allow attaching a profiler or debugger.
 -wait
@@ -129,7 +132,7 @@ None
    TEST(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
    {
       const unsigned testruns = ZenUnit::Random<unsigned>();
-      unsigned randomseed = ZenUnit::Random<unsigned>();
+      const unsigned randomseed = ZenUnit::Random<unsigned>();
       call_String_ToUnsigned_ZenMock.ExpectAndReturnValues(testruns, randomseed);
       const vector<string> Args
       {
@@ -177,6 +180,19 @@ None
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
       expectedZenUnitArgs.printMode = expectedPrintMode;
+      ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
+   }
+
+   TEST(Parse_Run_ReturnsExpectedZenUnitArgs)
+   {
+      const string runArgument = ZenUnit::Random<string>();
+      const vector<string> args = { "ExePath", "-run=" + runArgument };
+      //
+      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
+      //
+      ZenUnitArgs expectedZenUnitArgs;
+      expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
+      expectedZenUnitArgs.runFilter = runArgument;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
