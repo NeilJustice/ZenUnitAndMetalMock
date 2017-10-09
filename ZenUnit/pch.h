@@ -1,5 +1,6 @@
 #ifndef ZENUNIT_PCH
 #define ZENUNIT_PCH
+
 #include "ZenUnit/Utils/IgnoredMSVCWallWarnings.h"
 #include <algorithm>
 #include <chrono>
@@ -29,4 +30,5 @@
    #define NOMINMAX
    #include "Windows.h"
 #endif
+
 #endif
