@@ -7,6 +7,7 @@ AssertEqual(const ZenUnit::ZenUnitArgs& expectedArguments, const ZenUnit::ZenUni
 {
    ARE_EQUAL(expectedArguments.commandLine, actualArgs.commandLine);
    ARE_EQUAL(expectedArguments.printMode, actualArgs.printMode);
+   VECTORS_EQUAL(expectedArguments.runFilters, actualArgs.runFilters);
    ARE_EQUAL(expectedArguments.pause, actualArgs.pause);
    ARE_EQUAL(expectedArguments.wait, actualArgs.wait);
    ARE_EQUAL(expectedArguments.exit0, actualArgs.exit0);

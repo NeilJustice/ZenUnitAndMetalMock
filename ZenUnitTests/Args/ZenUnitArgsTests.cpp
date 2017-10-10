@@ -12,6 +12,7 @@ namespace ZenUnit
       ZenUnitArgs zenUnitArgs;
       ARE_EQUAL("", zenUnitArgs.commandLine);
       ARE_EQUAL(PrintMode::Normal, zenUnitArgs.printMode);
+      IS_EMPTY(zenUnitArgs.runFilters);
       IS_FALSE(zenUnitArgs.wait);
       IS_FALSE(zenUnitArgs.exit0);
       IS_FALSE(zenUnitArgs.failskips);
@@ -28,6 +29,7 @@ namespace ZenUnit
       EQUALIZER_THROWS_INIT(ZenUnitArgs);
       EQUALIZER_THROWS(ZenUnitArgs, commandLine, "ZenUnitTests.exe");
       EQUALIZER_THROWS(ZenUnitArgs, printMode, PrintMode::Minimalist);
+      EQUALIZER_THROWS(ZenUnitArgs, runFilters, vector<string> { "WidgetATests" });
       EQUALIZER_THROWS(ZenUnitArgs, pause, true);
       EQUALIZER_THROWS(ZenUnitArgs, wait, true);
       EQUALIZER_THROWS(ZenUnitArgs, exit0, true);

@@ -113,16 +113,16 @@ namespace ZenUnit
       }
    }
 
-   void Console::WaitForAnyKeyIfDebuggerPresentOrValueTrue(bool doWait) const
+   void Console::WaitForEnterKeyIfDebuggerPresentOrValueTrue(bool doWait) const
    {
       if (doWait || DebuggerIsPresent())
       {
-         WriteLine("Press any key to continue . . .");
-         WaitForAnyKey();
+         WriteLine("Press Enter to continue . . .");
+         WaitForEnterKey();
       }
    }
 
-   void Console::WaitForAnyKey() const
+   void Console::WaitForEnterKey() const
    {
       std::string devNull;
       std::getline(std::cin, devNull);

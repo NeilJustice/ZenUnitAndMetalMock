@@ -13,8 +13,8 @@ struct ConsoleMock : public Zen::Mock<Console>
    ZENMOCK_VOID1_CONST(NonMinimalWriteNewLine, PrintMode)
    ZENMOCK_VOID2_CONST(WriteLineAndExit, const string&, int)
    ZENMOCK_VOID4_CONST(NonMinimalWriteStringsCommaSeparated, const vector<string>&, size_t, size_t, PrintMode)
-   ZENMOCK_VOID1_CONST(WaitForAnyKeyIfDebuggerPresentOrValueTrue, bool)
-   ZENMOCK_VOID0_CONST(WaitForAnyKey)
+   ZENMOCK_VOID1_CONST(WaitForEnterKeyIfDebuggerPresentOrValueTrue, bool)
+   ZENMOCK_VOID0_CONST(WaitForEnterKey)
    ZENMOCK_NONVOID0_CONST(bool, DebuggerIsPresent)
 };
 

@@ -186,13 +186,15 @@ None
    TEST(Parse_Run_ReturnsExpectedZenUnitArgs)
    {
       const string runArgument = ZenUnit::Random<string>();
-      const vector<string> args = { "ExePath", "-run=" + runArgument };
+      const string runFilterA = ZenUnit::Random<string>();
+      const string runFilterB = ZenUnit::Random<string>();
+      const vector<string> args = { "ExePath", "-run=" + runFilterA + "," + runFilterB };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
-      expectedZenUnitArgs.runFilter = runArgument;
+      expectedZenUnitArgs.runFilters = { runFilterA, runFilterB };
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 

@@ -32,12 +32,12 @@ namespace ZenUnit
       virtual ~TestRunner();
       static TestRunner& Instance();
       static const ZenUnitArgs& GetArgs();
-      std::nullptr_t RegisterTestClassRunner(TestClassRunner* testClassRunner);
+      std::nullptr_t AddTestClassRunner(TestClassRunner* testClassRunner);
       std::nullptr_t SkipTest(const char* testClassName, const char* testName, const char* reason);
       std::nullptr_t SkipTestClass(const char* skippedTestClassName, const char* reason);
       int ParseArgsRunTestClassesPrintResults(const std::vector<std::string>& commandLineArgs);
    private:
-      virtual bool WaitForAnyKeyIfPauseModeAndHaveNotPaused(bool pauseMode, bool havePaused) const;
+      virtual bool WaitForEnterKeyIfPauseModeAndHaveNotPaused(bool pauseMode, bool havePaused) const;
       virtual int RunTestClassesAndPrintResults();
       virtual void RunTestClasses();
       virtual void RunTestClassesWithWaitableRunnerThread(unsigned maxtTotalSeconds);

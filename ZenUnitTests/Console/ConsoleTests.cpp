@@ -16,7 +16,7 @@ namespace ZenUnit
    FACTS(WriteLineAndExit_CallsWriteLineAndExit)
    FACTS(NonMinimalWriteStringsCommaSeparated_PrintModeNotMinimal_CallsDoWriteStringsCommaSeparated)
    FACTS(DoWriteStringsCommaSeparated_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset)
-   FACTS(WaitForAnyKeyIfDebuggerPresentOrValueTrue_WritesPressAnyKeyAndGetsCharIfDebuggerPresentOrValueTrue)
+   FACTS(WaitForEnterKeyIfDebuggerPresentOrValueTrue_WritesPressEnterKeyAndGetsCharIfDebuggerPresentOrValueTrue)
 #ifdef _WIN32
    FACTS(DebuggerIsPresent_ReturnsTrueIfIsDebuggerPresentFunctionReturns1)
 #endif
@@ -31,7 +31,7 @@ namespace ZenUnit
       ZENMOCK_VOID2_CONST(WriteColor, const string&, Color)
       ZENMOCK_VOID2_CONST(WriteLineColor, const string&, Color)
       ZENMOCK_NONVOID0_CONST(bool, DebuggerIsPresent)
-      ZENMOCK_VOID0_CONST(WaitForAnyKey)
+      ZENMOCK_VOID0_CONST(WaitForEnterKey)
       ZENMOCK_VOID0_CONST(WriteNewLine)
    } _consoleSelfMocked;
 
@@ -252,8 +252,8 @@ namespace ZenUnit
       ZEN(consoleSelfMocked.WriteMock.AssertCalls(expectedConsoleWriteCalls));
    }
 
-   TEST3X3(WaitForAnyKeyIfDebuggerPresentOrValueTrue_WritesPressAnyKeyAndGetsCharIfDebuggerPresentOrValueTrue,
-      bool doWait, bool debuggerIsPresent, bool expectPressAnyKeyAndGetChar,
+   TEST3X3(WaitForEnterKeyIfDebuggerPresentOrValueTrue_WritesPressEnterKeyAndGetsCharIfDebuggerPresentOrValueTrue,
+      bool doWait, bool debuggerIsPresent, bool expectPressEnterKeyAndGetChar,
       false, false, false,
       false, true, true,
       true, false, true,
@@ -263,22 +263,22 @@ namespace ZenUnit
       {
          _consoleSelfMocked.DebuggerIsPresentMock.ExpectAndReturn(debuggerIsPresent);
       }
-      if (expectPressAnyKeyAndGetChar)
+      if (expectPressEnterKeyAndGetChar)
       {
          _consoleSelfMocked.WriteLineColorMock.Expect();
-         _consoleSelfMocked.WaitForAnyKeyMock.Expect();
+         _consoleSelfMocked.WaitForEnterKeyMock.Expect();
       }
       //
-      _consoleSelfMocked.WaitForAnyKeyIfDebuggerPresentOrValueTrue(doWait);
+      _consoleSelfMocked.WaitForEnterKeyIfDebuggerPresentOrValueTrue(doWait);
       //
       if (!doWait)
       {
          ZEN(_consoleSelfMocked.DebuggerIsPresentMock.AssertCalledOnce());
       }
-      if (expectPressAnyKeyAndGetChar)
+      if (expectPressEnterKeyAndGetChar)
       {
-         ZEN(_consoleSelfMocked.WriteLineColorMock.AssertCalledOnceWith("Press any key to continue . . .", Color::White));
-         ZEN(_consoleSelfMocked.WaitForAnyKeyMock.AssertCalledOnce());
+         ZEN(_consoleSelfMocked.WriteLineColorMock.AssertCalledOnceWith("Press Enter to continue . . .", Color::White));
+         ZEN(_consoleSelfMocked.WaitForEnterKeyMock.AssertCalledOnce());
       }
    }
 

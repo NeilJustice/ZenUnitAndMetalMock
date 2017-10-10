@@ -38,7 +38,7 @@ namespace ZenUnit
       return testRunner._zenUnitArgs;
    }
 
-   std::nullptr_t TestRunner::RegisterTestClassRunner(TestClassRunner* testClassRunner)
+   std::nullptr_t TestRunner::AddTestClassRunner(TestClassRunner* testClassRunner)
    {
       _multiTestClassRunner->AddTestClassRunner(testClassRunner);
       return nullptr;
@@ -59,6 +59,7 @@ namespace ZenUnit
    int TestRunner::ParseArgsRunTestClassesPrintResults(const std::vector<std::string>& commandLineArgs)
    {
       _zenUnitArgs = _argsParser->Parse(commandLineArgs);
+      _multiTestClassRunner->ApplyRunFiltersIfAny(_zenUnitArgs.runFilters);
       int overallExitCode = 0;
       for (unsigned testRunIndex = 0; testRunIndex < _zenUnitArgs.testruns; ++testRunIndex)
       {
@@ -67,14 +68,14 @@ namespace ZenUnit
          overallExitCode |= testRunExitCode;
          _testRunResult->ResetStateExceptForSkips();
       }
-      _console->WaitForAnyKeyIfDebuggerPresentOrValueTrue(_zenUnitArgs.wait);
+      _console->WaitForEnterKeyIfDebuggerPresentOrValueTrue(_zenUnitArgs.wait);
       return overallExitCode;
    }
 
    int TestRunner::RunTestClassesAndPrintResults()
    {
       _preamblePrinter->PrintOpeningThreeLines(_zenUnitArgs, _multiTestClassRunner.get());
-      _havePaused = WaitForAnyKeyIfPauseModeAndHaveNotPaused(_zenUnitArgs.pause, _havePaused);
+      _havePaused = WaitForEnterKeyIfPauseModeAndHaveNotPaused(_zenUnitArgs.pause, _havePaused);
       _testRunStopwatch->Start();
       if (_zenUnitArgs.maxtotalseconds > 0)
       {
@@ -92,7 +93,7 @@ namespace ZenUnit
       return testRunExitCode;
    }
 
-   bool TestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPaused(bool pauseMode, bool havePaused) const
+   bool TestRunner::WaitForEnterKeyIfPauseModeAndHaveNotPaused(bool pauseMode, bool havePaused) const
    {
       if (!pauseMode)
       {
@@ -102,8 +103,8 @@ namespace ZenUnit
       {
          return true;
       }
-      _console->WriteLine("ZenUnit test runner paused. Press any key to run.");
-      _console->WaitForAnyKey();
+      _console->WriteLine("ZenUnit test runner paused. Press Enter to run tests.");
+      _console->WaitForEnterKey();
       return true;
    }
 

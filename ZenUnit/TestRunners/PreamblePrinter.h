@@ -23,7 +23,7 @@ namespace ZenUnit
          const ZenUnitArgs& zenUnitArgs,
          const MultiTestClassRunner* multiTestClassRunner) const;
    private:
-      virtual std::string MakeThirdLinePrefix(size_t numberOfTestClasses) const;
+      virtual std::string MakeThirdLinePrefix(size_t numberOfTestClassesToBeRun) const;
       virtual std::string MakeThirdLineSuffix(bool random, unsigned short randomseed) const;
    };
 }

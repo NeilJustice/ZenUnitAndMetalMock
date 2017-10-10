@@ -77,7 +77,7 @@ namespace ZenUnit
                unsigned argValue = 0;
                if (argName == "-run")
                {
-                  zenUnitArgs.runFilter = argValueString;
+                  zenUnitArgs.runFilters = String::Split(argValueString, ',');
                }
                else if (argName == "-testruns")
                {

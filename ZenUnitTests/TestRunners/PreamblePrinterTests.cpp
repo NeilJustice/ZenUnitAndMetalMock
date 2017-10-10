@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Console/Mock/ConsoleMock.h"
-#include "TestRunners/Mock/TestClassMultiRunnerMock.h"
+#include "TestRunners/Mock/MultiTestClassRunnerMock.h"
 #include "Utils/Mock/MachineNameGetterMock.h"
 #include "Utils/Time/Mock/WatchMock.h"
 #include "ZenUnit/TestRunners/PreamblePrinter.h"
@@ -48,17 +48,17 @@ namespace ZenUnit
       _preamblePrinterSelfMocked.consoleMock->WriteColorMock.Expect();
       _preamblePrinterSelfMocked.consoleMock->WriteLineMock.Expect();
       _preamblePrinterSelfMocked.consoleMock->WriteNewLineMock.Expect();
-      TestClassMultiRunnerMock multiTestClassRunnerMock;
-      const size_t NumberOfTestClasses = Random<size_t>();
-      multiTestClassRunnerMock.NumberOfTestClassesMock.ExpectAndReturn(NumberOfTestClasses);
+      MultiTestClassRunnerMock multiTestClassRunnerMock;
+      const size_t numberOfTestClassesToBeRun = Random<size_t>();
+      multiTestClassRunnerMock.NumberOfTestClassesToBeRunMock.ExpectAndReturn(numberOfTestClassesToBeRun);
 
-      const string TimeZoneDateTimeNow = Random<string>();
-      _preamblePrinterSelfMocked.watchMock->TimeZoneDateTimeNowMock.ExpectAndReturn(TimeZoneDateTimeNow);
+      const string timeZoneDateTimeNow = Random<string>();
+      _preamblePrinterSelfMocked.watchMock->TimeZoneDateTimeNowMock.ExpectAndReturn(timeZoneDateTimeNow);
 
-      const string ThirdLinePrefix = Random<string>();
-      _preamblePrinterSelfMocked.MakeThirdLinePrefixMock.ExpectAndReturn(ThirdLinePrefix);
-      const string ThirdLineSuffix = Random<string>();
-      _preamblePrinterSelfMocked.MakeThirdLineSuffixMock.ExpectAndReturn(ThirdLineSuffix);
+      const string thirdLinePrefix = Random<string>();
+      _preamblePrinterSelfMocked.MakeThirdLinePrefixMock.ExpectAndReturn(thirdLinePrefix);
+      const string thirdLineSuffix = Random<string>();
+      _preamblePrinterSelfMocked.MakeThirdLineSuffixMock.ExpectAndReturn(thirdLineSuffix);
 
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.commandLine = Random<string>();
@@ -68,18 +68,18 @@ namespace ZenUnit
       _preamblePrinterSelfMocked.PrintOpeningThreeLines(zenUnitArgs, &multiTestClassRunnerMock);
       //
       ZEN(_preamblePrinterSelfMocked.watchMock->TimeZoneDateTimeNowMock.AssertCalledOnce());
-      ZEN(multiTestClassRunnerMock.NumberOfTestClassesMock.AssertCalledOnce());
+      ZEN(multiTestClassRunnerMock.NumberOfTestClassesToBeRunMock.AssertCalledOnce());
       ZEN(_preamblePrinterSelfMocked.consoleMock->WriteColorMock.
           AssertCalledNTimesWith(3, "[ZenUnit]", Color::Green));
-      ZEN(_preamblePrinterSelfMocked.MakeThirdLinePrefixMock.AssertCalledOnceWith(NumberOfTestClasses));
+      ZEN(_preamblePrinterSelfMocked.MakeThirdLinePrefixMock.AssertCalledOnceWith(numberOfTestClassesToBeRun));
       ZEN(_preamblePrinterSelfMocked.MakeThirdLineSuffixMock.
          AssertCalledOnceWith(zenUnitArgs.random, zenUnitArgs.randomseed));
-      const string ExpectedThirdLine = ThirdLinePrefix + ThirdLineSuffix;
+      const string expectedThirdLine = thirdLinePrefix + thirdLineSuffix;
       ZEN(_preamblePrinterSelfMocked.consoleMock->WriteLineMock.AssertCalls(
       {
          " Running " + zenUnitArgs.commandLine,
-         " Running at " + TimeZoneDateTimeNow,
-         ExpectedThirdLine
+         " Running at " + timeZoneDateTimeNow,
+         expectedThirdLine
       }));
       ZEN(_preamblePrinterSelfMocked.consoleMock->WriteNewLineMock.AssertCalledOnce());
    }

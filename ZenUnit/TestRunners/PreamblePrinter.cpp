@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "ZenUnit/Args/ZenUnitArgs.h"
 #include "ZenUnit/Console/Console.h"
 #include "ZenUnit/TestRunners/MachineNameGetter.h"
 #include "ZenUnit/TestRunners/MultiTestClassRunner.h"
@@ -27,20 +28,24 @@ namespace ZenUnit
       const std::string timeZoneDateTimeNow = _watch->TimeZoneDateTimeNow();
       _console->WriteLine(" Running at " + timeZoneDateTimeNow);
       _console->WriteColor("[ZenUnit]", Color::Green);
-      const size_t numberOfTestClasses = multiTestClassRunner->NumberOfTestClasses();
-      const std::string thirdLinePrefix = MakeThirdLinePrefix(numberOfTestClasses);
+      const size_t numberOfTestClassesToBeRun = multiTestClassRunner->NumberOfTestClassesToBeRun();
+      const std::string thirdLinePrefix = MakeThirdLinePrefix(numberOfTestClassesToBeRun);
       const std::string thirdLineSuffix = MakeThirdLineSuffix(zenUnitArgs.random, zenUnitArgs.randomseed);
       const std::string thirdLine = thirdLinePrefix + thirdLineSuffix;
       _console->WriteLine(thirdLine);
       _console->WriteNewLine();
+      //if (numberOfTestClassesToBeRun == 0)
+      //{
+      //   _console->WriteLineAndExit("-run filter matches 0 test classes. Exiting.", 1);
+      //}
    }
 
-   std::string PreamblePrinter::MakeThirdLinePrefix(size_t numberOfTestClasses) const
+   std::string PreamblePrinter::MakeThirdLinePrefix(size_t numberOfTestClassesToBeRun) const
    {
-      const bool testClassesPlural = numberOfTestClasses > 1 || numberOfTestClasses == 0;
+      const bool testClassesPlural = numberOfTestClassesToBeRun > 1 || numberOfTestClassesToBeRun == 0;
       const std::string machineName = _machineNameGetter->GetMachineName();
       const std::string thirdLinePrefix = String::Concat(
-         " Running ", numberOfTestClasses, " test ", testClassesPlural ? "classes" : "class",
+         " Running ", numberOfTestClassesToBeRun, " test ", testClassesPlural ? "classes" : "class",
          " on machine ", machineName);
       return thirdLinePrefix;
    }

@@ -8,7 +8,7 @@ namespace ZenUnit
    {
       std::string commandLine;
       PrintMode printMode = PrintMode::Normal;
-      std::string runFilter;
+      std::vector<std::string> runFilters;
       bool pause = false;
       bool wait = false;
       bool exit0 = false;
