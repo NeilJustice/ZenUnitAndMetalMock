@@ -10,8 +10,7 @@
 namespace ZenUnit
 {
    MultiTestClassRunner::MultiTestClassRunner()
-      : _extraArgForEacher(new ExtraArgForEacherType)
-      , _sorter(new Sorter<std::vector<std::unique_ptr<TestClassRunner>>>)
+      : _sorter(new Sorter<std::vector<std::unique_ptr<TestClassRunner>>>)
       , _transformer(new Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>)
       , _watch(new Watch)
    {
@@ -21,36 +20,31 @@ namespace ZenUnit
 
    void MultiTestClassRunner::AddTestClassRunner(TestClassRunner* testClassRunner)
    {
-      _allTestClassRunners.emplace_back(testClassRunner);
+      _testClassRunners.emplace_back(testClassRunner);
    }
 
    void MultiTestClassRunner::ApplyRunFiltersIfAny(const std::vector<std::string>& runFilters)
    {
       if (!runFilters.empty())
       {
-         _extraArgForEacher->ForEach(
-            &_allTestClassRunners,
-            MoveTestClassRunnerIfTestClassNameMatchesRunFilter,
-            &_runFilteredTestClassRunners);
       }
    }
 
-   void MultiTestClassRunner::MoveTestClassRunnerIfTestClassNameMatchesRunFilter(
-      const std::unique_ptr<TestClassRunner>& testClassRunner,
-      std::vector<std::unique_ptr<TestClassRunner>>* outRunFilteredTestClassRunners)
+   bool MultiTestClassRunner::VectorCaseInsensitiveContains(
+      const std::vector<std::string>& strings, const char* searchString)
    {
-      std::string();
+      return true;
    }
 
    size_t MultiTestClassRunner::NumberOfTestClassesToBeRun() const
    {
-      const size_t numberOfTestClassesToBeRun = _allTestClassRunners.size();
+      const size_t numberOfTestClassesToBeRun = _testClassRunners.size();
       return numberOfTestClassesToBeRun;
    }
 
    size_t MultiTestClassRunner::NumberOfTestCases() const
    {
-      const size_t numberOfTestCases = std::accumulate(_allTestClassRunners.cbegin(), _allTestClassRunners.cend(),
+      const size_t numberOfTestCases = std::accumulate(_testClassRunners.cbegin(), _testClassRunners.cend(),
          size_t(0), [](size_t cumulativeNumberOfTestCases, const std::unique_ptr<TestClassRunner>& testClassRunner)
       {
          return cumulativeNumberOfTestCases + testClassRunner->NumberOfTestCases();
@@ -60,19 +54,7 @@ namespace ZenUnit
 
    std::vector<TestClassResult> MultiTestClassRunner::RunTestClasses(ZenUnitArgs& zenUnitArgs)
    {
-      if (zenUnitArgs.runFilters.empty())
-      {
-         return RunAllTestClasses(zenUnitArgs);
-      }
-      else
-      {
-         return RunSpecifiedTestClassOrTest(zenUnitArgs);
-      }
-   }
-
-   std::vector<TestClassResult> MultiTestClassRunner::RunAllTestClasses(ZenUnitArgs& zenUnitArgs)
-   {
-      _testClassResults.resize(_allTestClassRunners.size());
+      _testClassResults.resize(_testClassRunners.size());
       if (zenUnitArgs.random)
       {
          if (!zenUnitArgs.randomseedsetbyuser)
@@ -80,31 +62,15 @@ namespace ZenUnit
             zenUnitArgs.randomseed = _watch->SecondsSince1970CastToUnsignedShort();
          }
          _transformer->RandomTransform(
-            &_allTestClassRunners, &_testClassResults, &MultiTestClassRunner::RunTestClassRunner, zenUnitArgs.randomseed);
+            &_testClassRunners, &_testClassResults, &MultiTestClassRunner::RunTestClassRunner, zenUnitArgs.randomseed);
       }
       else
       {
-         _sorter->Sort(&_allTestClassRunners); // Sorts test class runners by test class name
+         _sorter->Sort(&_testClassRunners); // Sorts test class runners by test class name
          _transformer->Transform(
-            &_allTestClassRunners, &_testClassResults, &MultiTestClassRunner::RunTestClassRunner);
+            &_testClassRunners, &_testClassResults, &MultiTestClassRunner::RunTestClassRunner);
       }
       return std::move(_testClassResults);
-   }
-
-   std::vector<TestClassResult> MultiTestClassRunner::RunSpecifiedTestClassOrTest(ZenUnitArgs& zenUnitArgs)
-   {
-      size_t numberOfTestsMatchingRunFilter = 0;
-      //_testClassResults.resize(numberOfTestsMatchingRunFilter)
-      if (numberOfTestsMatchingRunFilter == 0)
-      {
-      }
-      //else if (numberOfTestsMatchingRunFilter == 1)
-      //{
-      //}
-      //else
-      //{
-      //}
-      return {};
    }
 
    TestClassResult MultiTestClassRunner::RunTestClassRunner(

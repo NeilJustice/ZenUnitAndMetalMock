@@ -8,7 +8,7 @@ namespace ZenUnit
    public:
       TwoExtraArgsForEacher() {}
 
-      virtual void ForEach(
+      virtual void TwoExtraArgsForEach(
          const IterableType* iterable,
          FunctionType func,
          const ExtraArgType1& extraArg1,

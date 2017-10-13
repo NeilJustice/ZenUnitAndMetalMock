@@ -12,12 +12,10 @@ namespace ZenUnit
    AFACT(Constructor_NewsComponents)
    AFACT(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
    AFACT(AddTestClassRunner_EmplacesBackTestClassRunner_MakesNumberOfTestClassesToBeRunReturnAnIncreasingNumber)
-   AFACT(ApplyRunFiltersIfAny_RunFiltersEmpty_DoesNotCallExtraArgForEacher)
-   AFACT(ApplyRunFiltersIfAny_RunFiltersNonEmpty_CallsExtraArgForEacherToPopulateRunFilteredTestClassRunners)
-   AFACT(RunTestClasses_EmptyRunFilter_CallsRunAllTestClasses)
-   AFACT(RunTestClasses_NonEmptyRunFilter_CallsRunSpecifiedTestClassOrTest)
-   AFACT(RunAllTestClasses_NonRandomMode_SortsTestClassRunnersByName_RunsTestClassesSequentially_MoveReturnsTestClassResultsVector)
-   FACTS(RunAllTestClasses_RandomMode_SetsRandomSeedIfNotSetByUser_RunsTestClassesRandomly_MoveReturnsTestClassResultsVector)
+   AFACT(ApplyRunFiltersIfAny_RunFiltersEmpty_)
+   AFACT(ApplyRunFiltersIfAny_RunFiltersNonEmpty_)
+   AFACT(RunTestClasses_NonRandomMode_SortsTestClassRunnersByName_RunsTestClassesSequentially_MoveReturnsTestClassResultsVector)
+   FACTS(RunTestClasses_RandomMode_SetsRandomSeedIfNotSetByUser_RunsTestClassesRandomly_MoveReturnsTestClassResultsVector)
    AFACT(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)
    EVIDENCE
 
@@ -26,17 +24,6 @@ namespace ZenUnit
    using TransformerMockType = TransformerMock<unique_ptr<TestClassRunner>, TestClassResult>;
    TransformerMockType* _transformerMock;
    WatchMock* _watchMock;
-   using ExtraArgForEacherMockType = ExtraArgForEacherMock<
-      vector<unique_ptr<TestClassRunner>>,
-      void(*)(const unique_ptr<TestClassRunner>&, vector<unique_ptr<TestClassRunner>>*),
-      vector<unique_ptr<TestClassRunner>>*>;
-   ExtraArgForEacherMockType* _extraArgForEacherMock;
-
-   struct MultiTestClassRunnerSelfMocked : public Zen::Mock<MultiTestClassRunner>
-   {
-      ZENMOCK_NONVOID1(std::vector<TestClassResult>, RunAllTestClasses, ZenUnitArgs&)
-      ZENMOCK_NONVOID1(std::vector<TestClassResult>, RunSpecifiedTestClassOrTest, ZenUnitArgs&)
-   } _multiTestClassRunnerSelfMocked;
 
    STARTUP
    {
@@ -44,7 +31,6 @@ namespace ZenUnit
          = new SorterMock<vector<unique_ptr<TestClassRunner>>>);
       _multiTestClassRunner._transformer.reset(_transformerMock = new TransformerMockType);
       _multiTestClassRunner._watch.reset(_watchMock = new WatchMock);
-      _multiTestClassRunner._extraArgForEacher.reset(_extraArgForEacherMock = new ExtraArgForEacherMockType);
    }
 
    TEST(Constructor_NewsComponents)
@@ -52,9 +38,7 @@ namespace ZenUnit
       POINTER_WAS_NEWED(_multiTestClassRunner._sorter);
       POINTER_WAS_NEWED(_multiTestClassRunner._transformer);
       POINTER_WAS_NEWED(_multiTestClassRunner._watch);
-      POINTER_WAS_NEWED(_multiTestClassRunner._extraArgForEacher);
-      IS_EMPTY(_multiTestClassRunner._allTestClassRunners);
-      IS_EMPTY(_multiTestClassRunner._runFilteredTestClassRunners);
+      IS_EMPTY(_multiTestClassRunner._testClassRunners);
       IS_EMPTY(_multiTestClassRunner._testClassResults);
    }
 
@@ -65,36 +49,31 @@ namespace ZenUnit
       //
       _multiTestClassRunner.AddTestClassRunner(testClassRunnerA);
       //
-      ARE_EQUAL(1, _multiTestClassRunner._allTestClassRunners.size());
-      ARE_EQUAL(testClassRunnerA, _multiTestClassRunner._allTestClassRunners[0].get());
+      ARE_EQUAL(1, _multiTestClassRunner._testClassRunners.size());
+      ARE_EQUAL(testClassRunnerA, _multiTestClassRunner._testClassRunners[0].get());
       ARE_EQUAL(1, _multiTestClassRunner.NumberOfTestClassesToBeRun());
 
       TestClassRunnerMock* testClassRunnerB = new TestClassRunnerMock;
       //
       _multiTestClassRunner.AddTestClassRunner(testClassRunnerB);
       //
-      ARE_EQUAL(2, _multiTestClassRunner._allTestClassRunners.size());
-      ARE_EQUAL(testClassRunnerA, _multiTestClassRunner._allTestClassRunners[0].get());
-      ARE_EQUAL(testClassRunnerB, _multiTestClassRunner._allTestClassRunners[1].get());
+      ARE_EQUAL(2, _multiTestClassRunner._testClassRunners.size());
+      ARE_EQUAL(testClassRunnerA, _multiTestClassRunner._testClassRunners[0].get());
+      ARE_EQUAL(testClassRunnerB, _multiTestClassRunner._testClassRunners[1].get());
       ARE_EQUAL(2, _multiTestClassRunner.NumberOfTestClassesToBeRun());
    }
 
-   TEST(ApplyRunFiltersIfAny_RunFiltersEmpty_DoesNotCallExtraArgForEacher)
+   TEST(ApplyRunFiltersIfAny_RunFiltersEmpty_)
    {
       _multiTestClassRunner.ApplyRunFiltersIfAny({});
    }
 
-   TEST(ApplyRunFiltersIfAny_RunFiltersNonEmpty_CallsExtraArgForEacherToPopulateRunFilteredTestClassRunners)
+   TEST(ApplyRunFiltersIfAny_RunFiltersNonEmpty_)
    {
       vector<string> runFilters = { ZenUnit::Random<string>() };
-      _extraArgForEacherMock->ForEachMock.Expect();
       //
       _multiTestClassRunner.ApplyRunFiltersIfAny(runFilters);
       //
-      ZEN(_extraArgForEacherMock->ForEachMock.AssertCalledOnceWith(
-         &_multiTestClassRunner._allTestClassRunners,
-         MultiTestClassRunner::MoveTestClassRunnerIfTestClassNameMatchesRunFilter,
-         &_multiTestClassRunner._runFilteredTestClassRunners));
    }
 
    TEST(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
@@ -117,33 +96,11 @@ namespace ZenUnit
       ARE_EQUAL(30, totalNumberOfTestCases);
    }
 
-   TEST(RunTestClasses_EmptyRunFilter_CallsRunAllTestClasses)
-   {
-      _multiTestClassRunnerSelfMocked.RunAllTestClassesMock.Expect();
-      ZenUnitArgs zenUnitArgs;
-      IS_EMPTY(zenUnitArgs.runFilters);
-      //
-      _multiTestClassRunnerSelfMocked.RunTestClasses(zenUnitArgs);
-      //
-      ZEN(_multiTestClassRunnerSelfMocked.RunAllTestClassesMock.AssertCalledOnceWith(zenUnitArgs));
-   }
-
-   TEST(RunTestClasses_NonEmptyRunFilter_CallsRunSpecifiedTestClassOrTest)
-   {
-      _multiTestClassRunnerSelfMocked.RunSpecifiedTestClassOrTestMock.Expect();
-      ZenUnitArgs zenUnitArgs;
-      zenUnitArgs.runFilters.resize(ZenUnit::Random<size_t>(1, 3));
-      //
-      _multiTestClassRunnerSelfMocked.RunTestClasses(zenUnitArgs);
-      //
-      ZEN(_multiTestClassRunnerSelfMocked.RunSpecifiedTestClassOrTestMock.AssertCalledOnceWith(zenUnitArgs));
-   }
-
-   TEST(RunAllTestClasses_NonRandomMode_SortsTestClassRunnersByName_RunsTestClassesSequentially_MoveReturnsTestClassResultsVector)
+   TEST(RunTestClasses_NonRandomMode_SortsTestClassRunnersByName_RunsTestClassesSequentially_MoveReturnsTestClassResultsVector)
    {
       ARE_EQUAL(0, _multiTestClassRunner._testClassResults.size());
       const size_t testClassRunnersSize = ZenUnit::Random<size_t>(1, 3);
-      _multiTestClassRunner._allTestClassRunners.resize(testClassRunnersSize);
+      _multiTestClassRunner._testClassRunners.resize(testClassRunnersSize);
 
       ZenUnitArgs zenUnitArgs;
       IS_FALSE(zenUnitArgs.random);
@@ -151,11 +108,11 @@ namespace ZenUnit
       _sorterMock->SortMock.Expect();
       _transformerMock->TransformMock.Expect();
       //
-      const vector<TestClassResult> testClassResults = _multiTestClassRunner.RunAllTestClasses(zenUnitArgs);
+      const vector<TestClassResult> testClassResults = _multiTestClassRunner.RunTestClasses(zenUnitArgs);
       //
-      ZEN(_sorterMock->SortMock.AssertCalledOnceWith(&_multiTestClassRunner._allTestClassRunners));
+      ZEN(_sorterMock->SortMock.AssertCalledOnceWith(&_multiTestClassRunner._testClassRunners));
       ZEN(_transformerMock->TransformMock.AssertCalledOnceWith(
-         &_multiTestClassRunner._allTestClassRunners,
+         &_multiTestClassRunner._testClassRunners,
          &_multiTestClassRunner._testClassResults,
          &MultiTestClassRunner::RunTestClassRunner));
       const vector<TestClassResult> expectedTestClassResults(testClassRunnersSize);
@@ -166,14 +123,14 @@ namespace ZenUnit
       ARE_EQUAL(expectedResultingZenUnitArgs, zenUnitArgs);
    }
 
-   TEST2X2(RunAllTestClasses_RandomMode_SetsRandomSeedIfNotSetByUser_RunsTestClassesRandomly_MoveReturnsTestClassResultsVector,
+   TEST2X2(RunTestClasses_RandomMode_SetsRandomSeedIfNotSetByUser_RunsTestClassesRandomly_MoveReturnsTestClassResultsVector,
       bool randomseedsetbyuser, bool expectRandomSeedSet,
       false, false,
       true, true)
    {
       ARE_EQUAL(0, _multiTestClassRunner._testClassResults.size());
       const size_t testClassRunnersSize = ZenUnit::Random<size_t>(1, 3);
-      _multiTestClassRunner._allTestClassRunners.resize(testClassRunnersSize);
+      _multiTestClassRunner._testClassRunners.resize(testClassRunnersSize);
 
       _transformerMock->RandomTransformMock.Expect();
 
@@ -192,7 +149,7 @@ namespace ZenUnit
          _watchMock->SecondsSince1970CastToUnsignedShortMock.ExpectAndReturn(randomseedsetbycode);
       }
       //
-      const vector<TestClassResult> testClassResults = _multiTestClassRunner.RunAllTestClasses(zenUnitArgs);
+      const vector<TestClassResult> testClassResults = _multiTestClassRunner.RunTestClasses(zenUnitArgs);
       //
       if (!randomseedsetbyuser)
       {
@@ -200,7 +157,7 @@ namespace ZenUnit
       }
 
       ZEN(_transformerMock->RandomTransformMock.AssertCalledOnceWith(
-         &_multiTestClassRunner._allTestClassRunners,
+         &_multiTestClassRunner._testClassRunners,
          &_multiTestClassRunner._testClassResults,
          &MultiTestClassRunner::RunTestClassRunner,
          zenUnitArgs.randomseed));

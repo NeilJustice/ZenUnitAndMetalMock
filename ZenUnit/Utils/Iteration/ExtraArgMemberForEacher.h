@@ -7,7 +7,7 @@ namespace ZenUnit
    class ExtraArgMemberForEacher
    {
    public:
-      virtual void ForEach(
+      virtual void ExtraArgMemberForEach(
          const std::vector<T>* vec,
          const ClassType* classPointer,
          FunctionType twoArgFunction,
@@ -21,7 +21,7 @@ namespace ZenUnit
          }
       }
 
-      virtual void RandomForEach(
+      virtual void RandomExtraArgMemberForEach(
          std::vector<T>* vec,
          const ClassType* classPointer,
          FunctionType twoArgFunction,

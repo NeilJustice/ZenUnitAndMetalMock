@@ -43,7 +43,7 @@ namespace ZenUnit
          _tests = TestClassType::GetTests(testClassNamePossiblyTemplatized);
       }
 
-      const char* TestClassNameForSorting() const override
+      const char* TestClassName() const override
       {
          return _testClassName;
       }
@@ -77,12 +77,12 @@ namespace ZenUnit
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          if (zenUnitArgs.random)
          {
-            _testsForEacher->RandomForEach(
+            _testsForEacher->RandomExtraArgMemberForEach(
                &_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult, zenUnitArgs.randomseed);
          }
          else
          {
-            _testsForEacher->ForEach(
+            _testsForEacher->ExtraArgMemberForEach(
                &_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult);
          }
       }

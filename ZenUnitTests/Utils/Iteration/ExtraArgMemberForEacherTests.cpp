@@ -3,13 +3,13 @@
 namespace ZenUnit
 {
    template<typename ElementType, typename ExtraArgType>
-   TEMPLATETESTS(MemberForEacherExtraArgTests, ElementType, ExtraArgType)
-   AFACT(ForEach_EmptyIterable_DoesNotCallFunc)
-   AFACT(ForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
-   AFACT(ForEach_TwoItemIterable_CallsThisPointerBoundFuncTwice)
-   AFACT(RandomForEach_EmptyIterable_DoesNotCallFunc)
-   AFACT(RandomForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
-   AFACT(RandomForEach_TwoItemIterable_CallsThisPointerBoundFuncTwiceInRandomOrder)
+   TEMPLATETESTS(ExtraArgMemberForEacherTests, ElementType, ExtraArgType)
+   AFACT(ExtraArgMemberForEach_EmptyIterable_DoesNotCallFunc)
+   AFACT(ExtraArgMemberForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
+   AFACT(ExtraArgMemberForEach_TwoItemIterable_CallsThisPointerBoundFuncTwice)
+   AFACT(RandomExtraArgMemberForEach_EmptyIterable_DoesNotCallFunc)
+   AFACT(RandomExtraArgMemberForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
+   AFACT(RandomExtraArgMemberForEach_TwoItemIterable_CallsThisPointerBoundFuncTwiceInRandomOrder)
    AFACT(CodeCoverage_ClassTypeTwoArgFunction)
    EVIDENCE
 
@@ -32,32 +32,32 @@ namespace ZenUnit
 
    MemberForEacherExtraArgType _memberForEacherExtraArg;
 
-   TEST(ForEach_EmptyIterable_DoesNotCallFunc)
+   TEST(ExtraArgMemberForEach_EmptyIterable_DoesNotCallFunc)
    {
       const ClassTypeMock classInstance{};
-      _memberForEacherExtraArg.ForEach(
+      _memberForEacherExtraArg.ExtraArgMemberForEach(
          &classInstance.vec, &classInstance, &ClassType::TwoArgFunction, 0);
    }
 
-   TEST(ForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
+   TEST(ExtraArgMemberForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
    {
       ClassTypeMock classInstance;
       classInstance.vec = { 1 };
       classInstance.TwoArgFunctionMock.Expect();
       //
-      _memberForEacherExtraArg.ForEach(
+      _memberForEacherExtraArg.ExtraArgMemberForEach(
          &classInstance.vec, &classInstance, &ClassType::TwoArgFunction, 10);
       //
       classInstance.TwoArgFunctionMock.AssertCalledOnceWith(1, 10);
    }
 
-   TEST(ForEach_TwoItemIterable_CallsThisPointerBoundFuncTwice)
+   TEST(ExtraArgMemberForEach_TwoItemIterable_CallsThisPointerBoundFuncTwice)
    {
       ClassTypeMock classInstance;
       classInstance.vec = { 1, 2 };
       classInstance.TwoArgFunctionMock.Expect();
       //
-      _memberForEacherExtraArg.ForEach(
+      _memberForEacherExtraArg.ExtraArgMemberForEach(
          &classInstance.vec, &classInstance, &ClassType::TwoArgFunction, 20);
       //
       classInstance.TwoArgFunctionMock.AssertCalls(
@@ -67,32 +67,32 @@ namespace ZenUnit
       });
    }
 
-   TEST(RandomForEach_EmptyIterable_DoesNotCallFunc)
+   TEST(RandomExtraArgMemberForEach_EmptyIterable_DoesNotCallFunc)
    {
       ClassTypeMock classInstance{};
-      _memberForEacherExtraArg.RandomForEach(
+      _memberForEacherExtraArg.RandomExtraArgMemberForEach(
          &classInstance.vec, &classInstance, &ClassType::TwoArgFunction, 0, 0);
    }
 
-   TEST(RandomForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
+   TEST(RandomExtraArgMemberForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
    {
       ClassTypeMock classInstance;
       classInstance.vec = { 1 };
       classInstance.TwoArgFunctionMock.Expect();
       //
-      _memberForEacherExtraArg.RandomForEach(
+      _memberForEacherExtraArg.RandomExtraArgMemberForEach(
          &classInstance.vec, &classInstance, &ClassType::TwoArgFunction, 10, 0);
       //
       classInstance.TwoArgFunctionMock.AssertCalledOnceWith(1, 10);
    }
 
-   TEST(RandomForEach_TwoItemIterable_CallsThisPointerBoundFuncTwiceInRandomOrder)
+   TEST(RandomExtraArgMemberForEach_TwoItemIterable_CallsThisPointerBoundFuncTwiceInRandomOrder)
    {
       ClassTypeMock classInstance;
       classInstance.vec = { 1, 2 };
       classInstance.TwoArgFunctionMock.Expect();
       //
-      _memberForEacherExtraArg.RandomForEach(
+      _memberForEacherExtraArg.RandomExtraArgMemberForEach(
          &classInstance.vec, &classInstance, &ClassType::TwoArgFunction, 20,
          static_cast<unsigned>(chrono::system_clock::now().time_since_epoch().count()));
       //
@@ -121,6 +121,6 @@ namespace ZenUnit
    };
 
    };
-   RUNTEMPLATETESTS(MemberForEacherExtraArgTests, int, int)
-   RUNTEMPLATETESTS(MemberForEacherExtraArgTests, double, char)
+   RUNTEMPLATETESTS(ExtraArgMemberForEacherTests, int, int)
+   RUNTEMPLATETESTS(ExtraArgMemberForEacherTests, double, char)
 }

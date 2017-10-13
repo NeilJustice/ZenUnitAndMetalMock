@@ -8,9 +8,9 @@ namespace ZenUnit
       class IterableType,
       typename ElementType>
    TEMPLATETESTS(MemberForEacherTests, IterableType, ElementType)
-   AFACT(ForEach_EmptyIterable_DoesNotCallFunc)
-   AFACT(ForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
-   AFACT(ForEach_TwoItemIterable_CallsThisPointerBoundFuncTwice)
+   AFACT(MemberForEach_EmptyIterable_DoesNotCallFunc)
+   AFACT(MemberForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
+   AFACT(MemberForEach_TwoItemIterable_CallsThisPointerBoundFuncTwice)
    AFACT(CodeCoverage_ClassTypeFunc)
    EVIDENCE
 
@@ -32,30 +32,32 @@ namespace ZenUnit
       IterableType<ElementType>, ClassType, void (ClassType::*)(ElementType) const>;
    MemberForEacherType _memberForEacher;
 
-   TEST(ForEach_EmptyIterable_DoesNotCallFunc)
+   TEST(MemberForEach_EmptyIterable_DoesNotCallFunc)
    {
       const ClassTypeMock classInstance{};
-      _memberForEacher.ForEach(&classInstance.iterable, &classInstance, &ClassType::Func);
+      _memberForEacher.MemberForEach(&classInstance.iterable, &classInstance, &ClassType::Func);
    }
 
-   TEST(ForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
+   TEST(MemberForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
    {
       ClassTypeMock classInstance;
       classInstance.iterable = { 1 };
       classInstance.FuncMock.Expect();
       //
-      _memberForEacher.ForEach(&classInstance.iterable, &classInstance, &ClassType::Func);
+      _memberForEacher.MemberForEach(
+         &classInstance.iterable, &classInstance, &ClassType::Func);
       //
       classInstance.FuncMock.AssertCalledOnceWith(1);
    }
 
-   TEST(ForEach_TwoItemIterable_CallsThisPointerBoundFuncTwice)
+   TEST(MemberForEach_TwoItemIterable_CallsThisPointerBoundFuncTwice)
    {
       ClassTypeMock classInstance;
       classInstance.iterable = { 1, 2 };
       classInstance.FuncMock.Expect();
       //
-      _memberForEacher.ForEach(&classInstance.iterable, &classInstance, &ClassType::Func);
+      _memberForEacher.MemberForEach(
+         &classInstance.iterable, &classInstance, &ClassType::Func);
       //
       classInstance.FuncMock.AssertCalls(
       {

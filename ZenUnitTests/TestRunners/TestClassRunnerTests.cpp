@@ -21,15 +21,15 @@ namespace ZenUnit
    {
       TestClassRunnerMock* leftTestClassRunnerMock = new TestClassRunnerMock;
       TestClassRunnerMock* rightTestClassRunnerMock = new TestClassRunnerMock;
-      leftTestClassRunnerMock->TestClassNameForSortingMock.ExpectAndReturn(leftTestClassName);
-      rightTestClassRunnerMock->TestClassNameForSortingMock.ExpectAndReturn(rightTestClassName);
+      leftTestClassRunnerMock->TestClassNameMock.ExpectAndReturn(leftTestClassName);
+      rightTestClassRunnerMock->TestClassNameMock.ExpectAndReturn(rightTestClassName);
       const unique_ptr<TestClassRunner> leftTestClassRunner(leftTestClassRunnerMock);
       const unique_ptr<TestClassRunner> rightTestClassRunner(rightTestClassRunnerMock);
       //
       const bool isLessThan = leftTestClassRunner < rightTestClassRunner;
       //
-      ZEN(leftTestClassRunnerMock->TestClassNameForSortingMock.AssertCalledOnce());
-      ZEN(rightTestClassRunnerMock->TestClassNameForSortingMock.AssertCalledOnce());
+      ZEN(leftTestClassRunnerMock->TestClassNameMock.AssertCalledOnce());
+      ZEN(rightTestClassRunnerMock->TestClassNameMock.AssertCalledOnce());
       ARE_EQUAL(expectedIsLessThan, isLessThan);
    }
 

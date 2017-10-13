@@ -38,6 +38,30 @@ EVIDENCE
 SKIPTEMPLATETESTS(Reason, SkippedTemplateTestClassB, map)
 SKIPTEMPLATETESTS(Reason, SkippedTemplateTestClassB, unordered_map)
 
+
+TESTS(widgetaTests)
+AFACT(FunctionUnderTest_ArgumentsUnderTest_ExpectedBehavior)
+EVIDENCE
+
+TEST(FunctionUnderTest_ArgumentsUnderTest_ExpectedBehavior)
+{
+   cout << "widgetaTests.FunctionUnderTest_ArgumentsUnderTest_ExpectedBehavior" << '\n';
+}
+
+}; RUNTESTS(widgetaTests)
+
+
+TESTS(widgetbTests)
+AFACT(FunctionUnderTest_ArgumentsUnderTest_ExpectedBehavior)
+EVIDENCE
+
+TEST(FunctionUnderTest_ArgumentsUnderTest_ExpectedBehavior)
+{
+   cout << "widgetbTests.FunctionUnderTest_ArgumentsUnderTest_ExpectedBehavior" << '\n';
+}
+
+}; RUNTESTS(widgetbTests)
+
 int main(int argc, char* argv[])
 {
    FileLiner::zenUnitTestingMode = true;

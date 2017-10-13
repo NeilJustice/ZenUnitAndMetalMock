@@ -83,7 +83,7 @@ namespace ZenUnit
       const Console* console,
       TestFailureNumberer* testFailureNumberer) const
    {
-      forEacherTwoExtraArgs->ForEach(
+      forEacherTwoExtraArgs->TwoExtraArgsForEach(
          &_testResults, PrintTestResultIfFailure, console, testFailureNumberer);
    }
 

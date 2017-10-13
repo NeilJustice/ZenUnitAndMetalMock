@@ -6,7 +6,7 @@ namespace ZenUnit
    class MemberForEacher
    {
    public:
-      virtual void ForEach(
+      virtual void MemberForEach(
          const IterableType* iterable,
          const ClassType* thisPointer,
          FunctionType func) const

@@ -4,9 +4,9 @@
 namespace ZenUnit
 {
    TESTS(ForEacherExtraArgTests)
-   AFACT(ForEach_EmptyIterable_DoesNothing)
-   AFACT(ForEach_OneItemIterable_CallsFuncOnItemOnce)
-   AFACT(ForEach_TwoItemIterable_CallsFuncOnItemTwice)
+   AFACT(ExtraArgForEach_EmptyIterable_DoesNothing)
+   AFACT(ExtraArgForEach_OneItemIterable_CallsFuncOnItemOnce)
+   AFACT(ExtraArgForEach_TwoItemIterable_CallsFuncOnItemTwice)
    EVIDENCE
 
    ExtraArgForEacher<vector<int>, function<void(int, int)>, int> _forEacherExtraArg;
@@ -22,20 +22,20 @@ namespace ZenUnit
       return bind(&ForEacherExtraArgTests::Func, this, placeholders::_1, placeholders::_2);
    }
 
-   TEST(ForEach_EmptyIterable_DoesNothing)
+   TEST(ExtraArgForEach_EmptyIterable_DoesNothing)
    {
       const vector<int> emptyVector;
       //
-      _forEacherExtraArg.ForEach(&emptyVector, Bind(), 0);
+      _forEacherExtraArg.ExtraArgForEach(&emptyVector, Bind(), 0);
       //
       ARE_EQUAL(0, calls.size());
    }
 
-   TEST(ForEach_OneItemIterable_CallsFuncOnItemOnce)
+   TEST(ExtraArgForEach_OneItemIterable_CallsFuncOnItemOnce)
    {
       const vector<int> oneItemVector { 1 };
       //
-      _forEacherExtraArg.ForEach(&oneItemVector, Bind(), 0);
+      _forEacherExtraArg.ExtraArgForEach(&oneItemVector, Bind(), 0);
       //
       const vector<pair<int, int>> expectedCalls
       {
@@ -44,11 +44,11 @@ namespace ZenUnit
       VECTORS_EQUAL(expectedCalls, calls);
    }
 
-   TEST(ForEach_TwoItemIterable_CallsFuncOnItemTwice)
+   TEST(ExtraArgForEach_TwoItemIterable_CallsFuncOnItemTwice)
    {
       const vector<int> oneItemVector { 1, 2 };
       //
-      _forEacherExtraArg.ForEach(&oneItemVector, Bind(), 0);
+      _forEacherExtraArg.ExtraArgForEach(&oneItemVector, Bind(), 0);
       //
       const vector<pair<int, int>> expectedCalls
       {

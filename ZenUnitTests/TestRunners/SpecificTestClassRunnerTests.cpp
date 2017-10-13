@@ -8,7 +8,7 @@ namespace ZenUnit
 {
    TESTS(SpecificTestClassRunnerTests)
    AFACT(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
-   AFACT(TestClassNameForSorting_ReturnsTestClassName)
+   AFACT(TestClassName_ReturnsTestClassName)
    AFACT(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
    FACTS(RunTests_PrintsTestClassNameAndNumberOfNamedTests_CallsDoRunTests_PrintsTestClassResultLine_MoveReturnsTestClassResult)
    FACTS(DoRunTests_RandomlyRunsTestsIfRandomOtherwiseSequentiallyRunsTests)
@@ -63,6 +63,8 @@ namespace ZenUnit
 
    STARTUP
    {
+      std::move(_specificTestClassRunner);
+
       _specificTestClassRunner = make_unique<SpecificTestClassRunner<TestingTestClass>>(TestClassName);
       _specificTestClassRunner->_console.reset(_consoleMock = new ConsoleMock);
       _specificTestClassRunner->call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
@@ -84,9 +86,9 @@ namespace ZenUnit
       VECTORS_EQUAL(expectedTests, specificTestClassRunner._tests);
    }
 
-   TEST(TestClassNameForSorting_ReturnsTestClassName)
+   TEST(TestClassName_ReturnsTestClassName)
    {
-      const char* testClassName = _specificTestClassRunner->TestClassNameForSorting();
+      const char* testClassName = _specificTestClassRunner->TestClassName();
       ARE_EQUAL(TestClassName, testClassName);
    }
 
@@ -164,11 +166,11 @@ namespace ZenUnit
       GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
       if (expectRandomForEach)
       {
-         _testsForEacherMock->RandomForEachMock.Expect();
+         _testsForEacherMock->RandomExtraArgMemberForEachMock.Expect();
       }
       else
       {
-         _testsForEacherMock->ForEachMock.Expect();
+         _testsForEacherMock->ExtraArgMemberForEachMock.Expect();
       }
       //
       _specificTestClassRunner->DoRunTests();
@@ -176,7 +178,7 @@ namespace ZenUnit
       ZEN(GetArgs_ZenMock.AssertCalledOnce());
       if (expectRandomForEach)
       {
-         ZEN(_testsForEacherMock->RandomForEachMock.AssertCalledOnceWith(
+         ZEN(_testsForEacherMock->RandomExtraArgMemberForEachMock.AssertCalledOnceWith(
              &_specificTestClassRunner->_tests, _specificTestClassRunner.get(),
              &SpecificTestClassRunner<TestingTestClass>::RunTest,
              &_specificTestClassRunner->_testClassResult,
@@ -184,7 +186,7 @@ namespace ZenUnit
       }
       else
       {
-         ZEN(_testsForEacherMock->ForEachMock.AssertCalledOnceWith(
+         ZEN(_testsForEacherMock->ExtraArgMemberForEachMock.AssertCalledOnceWith(
              &_specificTestClassRunner->_tests, _specificTestClassRunner.get(),
              &SpecificTestClassRunner<TestingTestClass>::RunTest,
              &_specificTestClassRunner->_testClassResult));

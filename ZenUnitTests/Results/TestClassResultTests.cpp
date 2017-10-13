@@ -129,13 +129,13 @@ namespace ZenUnit
          void (*)(const TestResult&, const Console*, TestFailureNumberer*),
          const Console*, TestFailureNumberer*>;
       const TypedefTwoExtraArgsForEacherMock forEacherTwoExtraArgsMock;
-      forEacherTwoExtraArgsMock.ForEachMock.Expect();
+      forEacherTwoExtraArgsMock.TwoExtraArgsForEachMock.Expect();
       const Console console;
       TestFailureNumberer testFailureNumberer;
       //
       _testClassResult.PrintTestFailures(&forEacherTwoExtraArgsMock, &console, &testFailureNumberer);
       //
-      ZEN(forEacherTwoExtraArgsMock.ForEachMock.AssertCalledOnceWith(
+      ZEN(forEacherTwoExtraArgsMock.TwoExtraArgsForEachMock.AssertCalledOnceWith(
          &_testClassResult._testResults, TestClassResult::PrintTestResultIfFailure, &console, &testFailureNumberer));
    }
 

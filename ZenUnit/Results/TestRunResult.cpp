@@ -61,12 +61,12 @@ namespace ZenUnit
          const std::string numberOfTestFailuresLine = String::Concat(
             _numberOfFailedTestCases, " test failure", _numberOfFailedTestCases > 1 ? "s" : "", ":\n");
          _console->WriteLineColor(numberOfTestFailuresLine, Color::Red);
-         _memberForEacherTestClassResults->ForEach(
+         _memberForEacherTestClassResults->MemberForEach(
             &_testClassResults, this, &TestRunResult::PrintTestClassResultFailures);
       }
-      _memberForEacherSkippedTests->ForEach(
+      _memberForEacherSkippedTests->MemberForEach(
          &_skippedTestClassNamesAndReasons, this, &TestRunResult::PrintSkippedTestClassReminder);
-      _memberForEacherSkippedTests->ForEach(
+      _memberForEacherSkippedTests->MemberForEach(
          &_skippedFullTestNamesAndReasons, this, &TestRunResult::PrintSkippedTestReminder);
    }
 

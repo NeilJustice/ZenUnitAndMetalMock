@@ -14,16 +14,10 @@ namespace ZenUnit
    {
       friend class MultiTestClassRunnerTests;
    private:
-      using ExtraArgForEacherType = ExtraArgForEacher<
-         std::vector<std::unique_ptr<TestClassRunner>>,
-         void(*)(const std::unique_ptr<TestClassRunner>&, std::vector<std::unique_ptr<TestClassRunner>>*),
-         std::vector<std::unique_ptr<TestClassRunner>>*>;
-      std::unique_ptr<const ExtraArgForEacherType> _extraArgForEacher;
       std::unique_ptr<const Sorter<std::vector<std::unique_ptr<TestClassRunner>>>> _sorter;
       std::unique_ptr<const Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>> _transformer;
       std::unique_ptr<const Watch> _watch;
-      std::vector<std::unique_ptr<TestClassRunner>> _allTestClassRunners;
-      std::vector<std::unique_ptr<TestClassRunner>> _runFilteredTestClassRunners;
+      std::vector<std::unique_ptr<TestClassRunner>> _testClassRunners;
       std::vector<TestClassResult> _testClassResults;
    public:
       MultiTestClassRunner();
@@ -34,10 +28,8 @@ namespace ZenUnit
       virtual size_t NumberOfTestCases() const;
       virtual std::vector<TestClassResult> RunTestClasses(ZenUnitArgs& zenUnitArgs);
    private:
-      static void MoveTestClassRunnerIfTestClassNameMatchesRunFilter(
-         const std::unique_ptr<TestClassRunner>& testClassRunner, std::vector<std::unique_ptr<TestClassRunner>>* outRunFilteredTestClassRunners);
-      virtual std::vector<TestClassResult> RunAllTestClasses(ZenUnitArgs& zenUnitArgs);
-      virtual std::vector<TestClassResult> RunSpecifiedTestClassOrTest(ZenUnitArgs& zenUnitArgs);
       static TestClassResult RunTestClassRunner(const std::unique_ptr<TestClassRunner>& testClassRunner);
+      static bool VectorCaseInsensitiveContains(
+         const std::vector<std::string>& strings, const char* searchString);
    };
 }

@@ -189,20 +189,20 @@ namespace ZenUnit
       if (expectTestsFailedLineAndPrintFailuresCall)
       {
          _consoleMock->WriteLineColorMock.Expect();
-         _memberForEacherTestClassResultsMock->ForEachMock.Expect();
+         _memberForEacherTestClassResultsMock->MemberForEachMock.Expect();
       }
-      _memberForEacherSkippedTestsMock->ForEachMock.Expect();
+      _memberForEacherSkippedTestsMock->MemberForEachMock.Expect();
       //
       _testRunResult.PrintTestFailuresAndSkips();
       //
       if (expectTestsFailedLineAndPrintFailuresCall)
       {
          ZEN(_consoleMock->WriteLineColorMock.AssertCalledOnceWith(expectedTestsFailedLine, Color::Red));
-         ZEN(_memberForEacherTestClassResultsMock->ForEachMock.
+         ZEN(_memberForEacherTestClassResultsMock->MemberForEachMock.
             AssertCalledOnceWith(&_testRunResult._testClassResults, &_testRunResult,
                &TestRunResult::PrintTestClassResultFailures));
       }
-      ZEN(_memberForEacherSkippedTestsMock->ForEachMock.AssertCalls(
+      ZEN(_memberForEacherSkippedTestsMock->MemberForEachMock.AssertCalls(
       {
          { &_testRunResult._skippedTestClassNamesAndReasons,
             &_testRunResult, &TestRunResult::PrintSkippedTestClassReminder },
