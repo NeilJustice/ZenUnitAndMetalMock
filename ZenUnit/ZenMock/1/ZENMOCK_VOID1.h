@@ -3,25 +3,29 @@
 #include "ZenUnit/ZenMock/Mock.h"
 #include "ZenUnit/ZenMock/Signature.h"
 
+// Defines a <functionName>Mock object for mocking a base class function with signature "virtual void functionName(arg1Type)".
 #define ZENMOCK_VOID1(functionName, arg1Type, ...) \
         ZENMOCK_VOID1_DEFINED(functionName, arg1Type, virtual,      ,        , final, __VA_ARGS__)
 
+// Defines a <functionName>Mock object for mocking a base class function with signature "virtual void functionName(arg1Type) const".
 #define ZENMOCK_VOID1_CONST(functionName, arg1Type, ...) \
         ZENMOCK_VOID1_DEFINED(functionName, arg1Type, virtual, const, mutable, final, __VA_ARGS__)
 
+// Defines a <functionName>Mock object for mocking a base class function with signature "void functionName(arg1Type)".
 #define ZENMOCK_VOID1_NONVIRTUAL(functionName, arg1Type, ...) \
         ZENMOCK_VOID1_DEFINED(functionName, arg1Type,        ,      ,        ,         , __VA_ARGS__)
 
+// Defines a <functionName>Mock object for mocking a base class function with signature "void functionName(arg1Type) const".
 #define ZENMOCK_VOID1_CONST_NONVIRTUAL(functionName, arg1Type, ...) \
         ZENMOCK_VOID1_DEFINED(functionName, arg1Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a freeFunctionName_ZenMock object for mocking a free function with signature "void freeFunctionName(arg1Type)".
-#define ZENMOCK_VOID1_FREE(freeFunctionName, arg1Type, ...) \
-   ZenMock::VoidOneArgFunctionPointerMocker<arg1Type> freeFunctionName##_ZenMock##__VA_ARGS__ = \
+// Defines a <functionName>_ZenMock object for mocking a free function with signature "void functionName(arg1Type)".
+#define ZENMOCK_VOID1_FREE(functionName, arg1Type, ...) \
+   ZenMock::VoidOneArgFunctionPointerMocker<arg1Type> functionName##_ZenMock##__VA_ARGS__ = \
       ZenMock::VoidOneArgFunctionPointerMocker<arg1Type>( \
-         ZenMock::Signature::FunctionPointer("void", "::"#freeFunctionName"("#arg1Type")"));
+         ZenMock::Signature::FunctionPointer("void", "::"#functionName"("#arg1Type")"));
 
-// Defines a functionName_ZenMock object for mocking a static or namespaced function with signature "void qualifiedClassNameOrNamespace::functionName(arg1Type)".
+// Defines a <functionName>_ZenMock object for mocking a static or namespaced function with signature "void qualifiedClassNameOrNamespace::functionName(arg1Type)".
 #define ZENMOCK_VOID1_STATIC(qualifiedClassNameOrNamespace, functionName, arg1Type, ...) \
    ZenMock::VoidOneArgFunctionPointerMocker<arg1Type> functionName##_ZenMock##__VA_ARGS__ = \
       ZenMock::VoidOneArgFunctionPointerMocker<arg1Type>( \

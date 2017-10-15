@@ -3,26 +3,30 @@
 #include "ZenUnit/ZenMock/Mock.h"
 #include "ZenUnit/ZenMock/ValueReturner.h"
 
+// Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName()".
 #define ZENMOCK_NONVOID0(returnType, functionName) \
         ZENMOCK_NONVOID0_DEFINED(returnType, functionName, virtual,      ,        , final)
 
+// Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName() const".
 #define ZENMOCK_NONVOID0_CONST(returnType, functionName) \
         ZENMOCK_NONVOID0_DEFINED(returnType, functionName, virtual, const, mutable, final)
 
+// Defines a <functionName>Mock object for mocking a base class function with signature "returnType functionName()".
 #define ZENMOCK_NONVOID0_NONVIRTUAL(returnType, functionName) \
         ZENMOCK_NONVOID0_DEFINED(returnType, functionName,        ,      ,        ,         )
 
+// Defines a <functionName>Mock object for mocking a base class function with signature "returnType functionName() const".
 #define ZENMOCK_NONVOID0_CONST_NONVIRTUAL(returnType, functionName) \
         ZENMOCK_NONVOID0_DEFINED(returnType, functionName,        , const, mutable,         )
 
-// Defines a freeFunctionName_ZenMock object for mocking a free function with signature "returnType freeFunctionName()".
-#define ZENMOCK_NONVOID0_FREE(returnType, freeFunctionName) \
-   static_assert(::freeFunctionName != nullptr); \
-   ZenMock::NonVoidZeroArgFunctionPointerMocker<returnType> freeFunctionName##_ZenMock = \
+// Defines a <functionName>_ZenMock object for mocking a free function with signature "returnType functionName()".
+#define ZENMOCK_NONVOID0_FREE(returnType, functionName) \
+   static_assert(::functionName != nullptr); \
+   ZenMock::NonVoidZeroArgFunctionPointerMocker<returnType> functionName##_ZenMock = \
       ZenMock::NonVoidZeroArgFunctionPointerMocker<returnType>( \
-         ZenMock::Signature::FunctionPointer(#returnType, "::"#freeFunctionName"()"));
+         ZenMock::Signature::FunctionPointer(#returnType, "::"#functionName"()"));
 
-// Defines a functionName_ZenMock object for mocking a static or namespaced function with signature "returnType qualifiedClassNameOrNamespace::functionName()".
+// Defines a <functionName>_ZenMock object for mocking a static or namespaced function with signature "returnType qualifiedClassNameOrNamespace::functionName()".
 #define ZENMOCK_NONVOID0_STATIC(returnType, qualifiedClassNameOrNamespace, functionName, ...) \
    static_assert(qualifiedClassNameOrNamespace::functionName != nullptr); \
    ZenMock::NonVoidZeroArgFunctionPointerMocker<returnType> functionName##_ZenMock##__VA_ARGS__ = \

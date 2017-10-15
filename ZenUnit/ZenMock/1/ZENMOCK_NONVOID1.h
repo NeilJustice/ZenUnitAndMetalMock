@@ -3,24 +3,30 @@
 #include "ZenUnit/ZenMock/Mock.h"
 #include "ZenUnit/ZenMock/ValueReturner.h"
 
+// Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName(arg1Type)".
 #define ZENMOCK_NONVOID1(returnType, functionName, arg1Type, ...) \
         ZENMOCK_NONVOID1_DEFINED(returnType, functionName, arg1Type, virtual,      ,        , final, __VA_ARGS__)
 
+// Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName(arg1Type) const".
 #define ZENMOCK_NONVOID1_CONST(returnType, functionName, arg1Type, ...) \
         ZENMOCK_NONVOID1_DEFINED(returnType, functionName, arg1Type, virtual, const, mutable, final, __VA_ARGS__)
 
+// Defines a <functionName>Mock object for mocking a base class function with signature "returnType functionName(arg1Type)".
 #define ZENMOCK_NONVOID1_NONVIRTUAL(returnType, functionName, arg1Type, ...) \
         ZENMOCK_NONVOID1_DEFINED(returnType, functionName, arg1Type,        ,      ,        ,         , __VA_ARGS__)
 
+// Defines a <functionName>Mock object for mocking a base class function with signature "returnType functionName(arg1Type) const".
 #define ZENMOCK_NONVOID1_CONST_NONVIRTUAL(returnType, functionName, arg1Type, ...) \
         ZENMOCK_NONVOID1_DEFINED(returnType, functionName, arg1Type,        , const, mutable,         , __VA_ARGS__)
 
+// Defines a <functionName>_ZenMock object for mocking a free function with signature "returnType functionName(arg1Type)".
 #define ZENMOCK_NONVOID1_FREE(returnType, functionName, arg1Type, ...) \
    static_assert(::functionName != nullptr); \
    ZenMock::NonVoidOneArgFunctionPointerMocker<returnType, arg1Type> \
       functionName##_ZenMock##__VA_ARGS__ = ZenMock::NonVoidOneArgFunctionPointerMocker<returnType, arg1Type>( \
          ZenMock::Signature::FunctionPointer(#returnType, "::"#functionName"("#arg1Type")"));
 
+// Defines a functionName_ZenMock object for mocking a static or namespaced function with signature "returnType qualifiedClassNameOrNamespace::functionName(arg1Type)".
 #define ZENMOCK_NONVOID1_STATIC(returnType, qualifiedClassNameOrNamespace, functionName, arg1Type, ...) \
    static_assert(qualifiedClassNameOrNamespace::functionName != nullptr); \
    ZenMock::NonVoidOneArgFunctionPointerMocker<returnType, arg1Type> \

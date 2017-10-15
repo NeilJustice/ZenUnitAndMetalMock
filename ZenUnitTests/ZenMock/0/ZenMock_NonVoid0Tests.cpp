@@ -6,6 +6,7 @@ int NonVoid0() { return 0; }
 namespace ZenMock
 {
    int NonVoid0() { return 0; }
+
    struct FunctionPointerTesting
    {
       static int NonVoid0() { return 0; }

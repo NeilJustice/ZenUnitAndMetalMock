@@ -21,6 +21,6 @@ namespace Zen
       }
 
       static_assert(std::has_virtual_destructor<ZenMockedClass>::value,
-         "ZenMocked classes must define a virtual destructor so as to not introduce a memory leak as detected by Clang AddressSanitizer");
+         "ZenMocked classes must define a virtual destructor so as to not introduce a memory leak as detected by Clang AddressSanitizer.");
    };
 }

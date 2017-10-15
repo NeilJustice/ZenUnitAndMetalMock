@@ -31,9 +31,9 @@ public:
 struct ComponentBMock : public Zen::Mock<ComponentB>
 {
    ZENMOCK_VOID0_NONVIRTUAL(VoidFunction)
-   ZENMOCK_VOID0_CONST_NONVIRTUAL(ConstVoidFunction)
+   ZENMOCK_VOID0_CONST_NONVIRTUAL(VoidFunctionConst)
    ZENMOCK_NONVOID0_NONVIRTUAL(int, NonVoidFunction)
-   ZENMOCK_NONVOID0_CONST_NONVIRTUAL(int, ConstNonVoidFunction)
+   ZENMOCK_NONVOID0_CONST_NONVIRTUAL(int, NonVoidFunctionConst)
 };
 
 class ClassUnderTest
