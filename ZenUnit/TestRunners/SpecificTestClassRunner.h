@@ -23,10 +23,12 @@ namespace ZenUnit
       friend class SpecificTestClassRunnerTests;
    private:
       std::unique_ptr<const Console> _console;
-      using TestsForEacherType = ExtraArgMemberForEacher<
-         std::unique_ptr<Test>, SpecificTestClassRunner,
-         void (SpecificTestClassRunner::*)(const std::unique_ptr<Test>& test, TestClassResult*) const, TestClassResult*>;
-      std::unique_ptr<const TestsForEacherType> _testsForEacher;
+      using ExtraArgMemberForEacherType = ExtraArgMemberForEacher<
+         std::unique_ptr<Test>,
+         SpecificTestClassRunner,
+         void (SpecificTestClassRunner::*)(const std::unique_ptr<Test>& test, TestClassResult*) const,
+         TestClassResult*>;
+      std::unique_ptr<const ExtraArgMemberForEacherType> _extraArgMemberForEacher;
       std::function<const ZenUnitArgs&()> call_TestRunner_GetArgs;
       const char* _testClassName;
       NewDeleteTest<TestClassType> _newDeleteTest;
@@ -35,7 +37,7 @@ namespace ZenUnit
    public:
       explicit SpecificTestClassRunner(const char* testClassNamePossiblyTemplatized)
          : _console(new Console)
-         , _testsForEacher(new TestsForEacherType)
+         , _extraArgMemberForEacher(new ExtraArgMemberForEacherType)
          , call_TestRunner_GetArgs(TestRunner::GetArgs)
          , _testClassName(testClassNamePossiblyTemplatized)
          , _newDeleteTest(testClassNamePossiblyTemplatized)
@@ -77,12 +79,12 @@ namespace ZenUnit
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          if (zenUnitArgs.random)
          {
-            _testsForEacher->RandomExtraArgMemberForEach(
+            _extraArgMemberForEacher->RandomExtraArgMemberForEach(
                &_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult, zenUnitArgs.randomseed);
          }
          else
          {
-            _testsForEacher->ExtraArgMemberForEach(
+            _extraArgMemberForEacher->ExtraArgMemberForEach(
                &_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult);
          }
       }

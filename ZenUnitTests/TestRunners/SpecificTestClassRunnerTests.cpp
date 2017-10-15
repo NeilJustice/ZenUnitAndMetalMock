@@ -35,11 +35,11 @@ namespace ZenUnit
    ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
    const char* const TestClassName = "TestClassName";
 
-   using TestsForEacherMockType = ExtraArgMemberForEacherMock<
+   using ExtraArgMemberForEacherMockType = ExtraArgMemberForEacherMock<
       unique_ptr<Test>, SpecificTestClassRunner<TestingTestClass>,
       void (SpecificTestClassRunner<TestingTestClass>::*)(
          const unique_ptr<Test>& test, TestClassResult*) const, TestClassResult*>;
-   const TestsForEacherMockType* _testsForEacherMock;
+   const ExtraArgMemberForEacherMockType* _extraArgMemberForEacherMock;
 
    class SpecificTestClassRunnerSelfMocked : public Zen::Mock<ZenUnit::SpecificTestClassRunner<TestingTestClass>>
    {
@@ -68,7 +68,7 @@ namespace ZenUnit
       _specificTestClassRunner = make_unique<SpecificTestClassRunner<TestingTestClass>>(TestClassName);
       _specificTestClassRunner->_console.reset(_consoleMock = new ConsoleMock);
       _specificTestClassRunner->call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
-      _specificTestClassRunner->_testsForEacher.reset(_testsForEacherMock = new TestsForEacherMockType);
+      _specificTestClassRunner->_extraArgMemberForEacher.reset(_extraArgMemberForEacherMock = new ExtraArgMemberForEacherMockType);
       _specificTestClassRunnerSelfMocked = make_unique<SpecificTestClassRunnerSelfMocked>();
    }
 
@@ -77,7 +77,7 @@ namespace ZenUnit
       SpecificTestClassRunner<TestingTestClass> specificTestClassRunner(TestClassName);
       //
       POINTER_WAS_NEWED(specificTestClassRunner._console);
-      POINTER_WAS_NEWED(specificTestClassRunner._testsForEacher);
+      POINTER_WAS_NEWED(specificTestClassRunner._extraArgMemberForEacher);
       ARE_EQUAL(TestClassName, specificTestClassRunner._testClassName);
       STD_FUNCTION_TARGETS(TestRunner::GetArgs, specificTestClassRunner.call_TestRunner_GetArgs);
 
@@ -166,11 +166,11 @@ namespace ZenUnit
       GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
       if (expectRandomForEach)
       {
-         _testsForEacherMock->RandomExtraArgMemberForEachMock.Expect();
+         _extraArgMemberForEacherMock->RandomExtraArgMemberForEachMock.Expect();
       }
       else
       {
-         _testsForEacherMock->ExtraArgMemberForEachMock.Expect();
+         _extraArgMemberForEacherMock->ExtraArgMemberForEachMock.Expect();
       }
       //
       _specificTestClassRunner->DoRunTests();
@@ -178,7 +178,7 @@ namespace ZenUnit
       ZEN(GetArgs_ZenMock.AssertCalledOnce());
       if (expectRandomForEach)
       {
-         ZEN(_testsForEacherMock->RandomExtraArgMemberForEachMock.AssertCalledOnceWith(
+         ZEN(_extraArgMemberForEacherMock->RandomExtraArgMemberForEachMock.AssertCalledOnceWith(
              &_specificTestClassRunner->_tests, _specificTestClassRunner.get(),
              &SpecificTestClassRunner<TestingTestClass>::RunTest,
              &_specificTestClassRunner->_testClassResult,
@@ -186,7 +186,7 @@ namespace ZenUnit
       }
       else
       {
-         ZEN(_testsForEacherMock->ExtraArgMemberForEachMock.AssertCalledOnceWith(
+         ZEN(_extraArgMemberForEacherMock->ExtraArgMemberForEachMock.AssertCalledOnceWith(
              &_specificTestClassRunner->_tests, _specificTestClassRunner.get(),
              &SpecificTestClassRunner<TestingTestClass>::RunTest,
              &_specificTestClassRunner->_testClassResult));

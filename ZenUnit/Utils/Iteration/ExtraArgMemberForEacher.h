@@ -8,34 +8,50 @@ namespace ZenUnit
    {
    public:
       virtual void ExtraArgMemberForEach(
-         const std::vector<T>* vec,
-         const ClassType* classPointer,
-         FunctionType twoArgFunction,
+         std::vector<T>* elements,
+         ClassType* classPointer,
+         FunctionType func,
          ExtraArgType extraArg) const
       {
-         const typename std::vector<T>::const_iterator vecEnd = vec->cend();
-         for (typename std::vector<T>::const_iterator iter = vec->cbegin(); iter != vecEnd; ++iter)
+         const typename std::vector<T>::iterator elementsEnd = elements->end();
+         for (typename std::vector<T>::iterator iter = elements->begin(); iter != elementsEnd; ++iter)
          {
-            const T& element = *iter;
-            (classPointer->*twoArgFunction)(element, extraArg);
+            T& element = *iter;
+            (classPointer->*func)(element, extraArg);
          }
       }
 
       virtual void RandomExtraArgMemberForEach(
-         std::vector<T>* vec,
-         const ClassType* classPointer,
-         FunctionType twoArgFunction,
+         std::vector<T>* elements,
+         ClassType* classPointer,
+         FunctionType func,
          ExtraArgType extraArg,
          unsigned seed) const
       {
-         std::shuffle(vec->begin(), vec->end(), std::default_random_engine(seed));
-         const typename std::vector<T>::const_iterator vecEnd = vec->cend();
-         for (typename std::vector<T>::const_iterator iter = vec->begin(); iter != vecEnd; ++iter)
+         std::shuffle(elements->begin(), elements->end(), std::default_random_engine(seed));
+         const typename std::vector<T>::iterator elementsEnd = elements->end();
+         for (typename std::vector<T>::iterator iter = elements->begin(); iter != elementsEnd; ++iter)
          {
-            const T& element = *iter;
-            (classPointer->*twoArgFunction)(element, extraArg);
+            T& element = *iter;
+            (classPointer->*func)(element, extraArg);
          }
       }
+
+      //virtual void RandomExtraArgMemberForEach(
+      //   const std::vector<T>* elements,
+      //   const ClassType* classPointer,
+      //   FunctionType func,
+      //   ExtraArgType extraArg,
+      //   unsigned seed) const
+      //{
+      //   std::shuffle(elements->begin(), elements->end(), std::default_random_engine(seed));
+      //   const typename std::vector<T>::const_iterator elementsConstEnd = elements->cend();
+      //   for (typename std::vector<T>::const_iterator iter = elements->begin(); iter != elementsConstEnd; ++iter)
+      //   {
+      //      const T& element = *iter;
+      //      (classPointer->*func)(element, extraArg);
+      //   }
+      //}
 
       virtual ~ExtraArgMemberForEacher() = default;
    };

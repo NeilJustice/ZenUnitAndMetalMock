@@ -121,6 +121,6 @@ namespace ZenUnit
    };
 
    };
-   RUNTEMPLATETESTS(ExtraArgMemberForEacherTests, int, int)
-   RUNTEMPLATETESTS(ExtraArgMemberForEacherTests, double, char)
+   //RUNTEMPLATETESTS(ExtraArgMemberForEacherTests, int, int)
+   //RUNTEMPLATETESTS(ExtraArgMemberForEacherTests, double, char)
 }

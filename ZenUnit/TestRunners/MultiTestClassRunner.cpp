@@ -3,7 +3,8 @@
 #include "ZenUnit/TestRunners/MultiTestClassRunner.h"
 #include "ZenUnit/TestRunners/NoOpTestClassRunner.h"
 #include "ZenUnit/TestRunners/TestClassRunner.h"
-#include "ZenUnit/Utils/Iteration/ExtraArgForEacher.h"
+#include "ZenUnit/Utils/Iteration/ExtraArgAnyer.h"
+#include "ZenUnit/Utils/Iteration/ExtraArgMemberForEacher.h"
 #include "ZenUnit/Utils/Iteration/Transformer.h"
 #include "ZenUnit/Utils/Sorter.h"
 #include "ZenUnit/Utils/Time/Watch.h"
@@ -11,7 +12,8 @@
 namespace ZenUnit
 {
    MultiTestClassRunner::MultiTestClassRunner()
-      : _extraArgForEacher(new ExtraArgForEacherType)
+      : _extraArgMemberForEacher(new ExtraArgMemberForEacherType)
+      , _extraArgAnyer(new ExtraArgAnyerType)
       , _sorter(new Sorter<std::vector<std::unique_ptr<TestClassRunner>>>)
       , _transformer(new Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>)
       , _watch(new Watch)
@@ -29,36 +31,35 @@ namespace ZenUnit
    {
       if (!runFilters.empty())
       {
-         _extraArgForEacher->NonConstExtraArgForEach(
-            &_testClassRunners, ResetWithNoOpIfNameDoesNotMatchRunFilter, runFilters);
+         _extraArgMemberForEacher->ExtraArgMemberForEach(&_testClassRunners, this,
+            &MultiTestClassRunner::ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter, runFilters);
       }
    }
 
-   bool MultiTestClassRunner::ResetWithNoOpIfNameDoesNotMatchRunFilter(
-      std::unique_ptr<TestClassRunner>& testClassRunner,
-      const std::vector<std::string>& runFilters)
+   void MultiTestClassRunner::ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter(
+      std::unique_ptr<TestClassRunner>& testClassRunner, const std::vector<std::string>& runFilters)
    {
-      //const char* const testClassRunnerName = testClassRunner->TestClassName();
-      //bool anyRunFilterMatchesTestClassName = _extraArgAny->ExtraArgAny(
-      //   runFilters, TestClassRunnerNameMatchesRunFilter, testClassRunnerName);
-      // if (!anyRunFilterMatchesTestClassName)
-      // {
-      //    testClassRunner.reset(new NoOpTestClassRunner);
-      // }
-      return false;
+      bool anyRunFilterMatchesTestClassName = _extraArgAnyer->ExtraArgAny(
+         runFilters, TestClassMatchesRunFilter, &testClassRunner);
+      if (!anyRunFilterMatchesTestClassName)
+      {
+         testClassRunner.reset(new NoOpTestClassRunner);
+      }
    }
 
-   bool MultiTestClassRunner::TestClassNameMatchesAnyRunFilter(
-      const std::unique_ptr<TestClassRunner>& testClassRunner, const std::vector<std::string>& runFilters)
+   bool MultiTestClassRunner::TestClassMatchesRunFilter(
+      const std::string& runFilter, const std::unique_ptr<TestClassRunner>* testClassRunner)
    {
-      // for (const std::string& runFilter : runFilters)
-      // {
-      //    if (_strcmpi(runFilter.c_str(), testClassRunnerName) == 0)
-      //    {
-      //       return true;
-      //    }
-      // }
-      return false;
+      // WidgetATests
+      // WidgetATests.TestA
+      // WidgetATests.TestB
+
+      //const char* const testClassName = testClassRunner->TestClassName();
+      //if (_strcmpi(runFilter.c_str(), testClassName) == 0)
+      //{
+      //   return true;
+      //}
+      return true;
    }
 
    size_t MultiTestClassRunner::NumberOfTestClassesToBeRun() const
