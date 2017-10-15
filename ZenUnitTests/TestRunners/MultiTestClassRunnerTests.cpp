@@ -18,6 +18,7 @@ namespace ZenUnit
    AFACT(ApplyRunFiltersIfSpecified_RunFiltersNotEmpty_ResetsWithNoOpTestClassesThoseTestClassesThatMatchRunFilters)
    AFACT(ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter_TestClassNameMatchesAtLeastOneRunFilter_DoesNotResetTestClassRunnerWithNoOp)
    AFACT(ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter_TestClassNameDoesNotMatchAnyRunFilter_ResetsTestClassRunnerWithNoOp)
+   FACTS(TestClassMatchesRunFilter_ReturnsTrueIfTestClassNameCaseInsensitiveEqualsRunFilter)
    AFACT(RunTestClasses_NonRandomMode_SortsTestClassRunnersByName_RunsTestClassesSequentially_MoveReturnsTestClassResultsVector)
    FACTS(RunTestClasses_RandomMode_SetsRandomSeedIfNotSetByUser_RunsTestClassesRandomly_MoveReturnsTestClassResultsVector)
    AFACT(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)
@@ -147,6 +148,27 @@ namespace ZenUnit
       ZEN(testClassRunnerBMock->NumberOfTestCasesMock.AssertCalledOnce());
       ZEN(testClassRunnerCMock->NumberOfTestCasesMock.AssertCalledOnce());
       ARE_EQUAL(30, totalNumberOfTestCases);
+   }
+
+   TEST3X3(TestClassMatchesRunFilter_ReturnsTrueIfTestClassNameCaseInsensitiveEqualsRunFilter,
+      bool expectedReturnValue, string runFilter, const char* testClassName,
+      true, "", "",
+      false, "", "WidgetTests",
+      true, "WidgetTests", "WidgetTests",
+      true, "widgettests", "WidgetTests",
+      true, "WidgetTests", "widgettests",
+      false, "Widget", "WidgetTests",
+      false, "WidgetTests", "WidgetTestsABC",
+      false, "WidgetTests", "ABCWidgetTests")
+   {
+      TestClassRunnerMock* testClassRunnerMock = new TestClassRunnerMock;
+      testClassRunnerMock->TestClassNameMock.ExpectAndReturn(testClassName);
+      const std::unique_ptr<TestClassRunner> testClassRunner(testClassRunnerMock);
+      //
+      bool testClassMatchesRunFilter = MultiTestClassRunner::TestClassMatchesRunFilter(runFilter, &testClassRunner);
+      //
+      ZEN(testClassRunnerMock->TestClassNameMock.AssertCalledOnce());
+      ARE_EQUAL(expectedReturnValue, testClassMatchesRunFilter);
    }
 
    TEST(RunTestClasses_NonRandomMode_SortsTestClassRunnersByName_RunsTestClassesSequentially_MoveReturnsTestClassResultsVector)

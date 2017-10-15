@@ -50,16 +50,9 @@ namespace ZenUnit
    bool MultiTestClassRunner::TestClassMatchesRunFilter(
       const std::string& runFilter, const std::unique_ptr<TestClassRunner>* testClassRunner)
    {
-      // WidgetATests
-      // WidgetATests.TestA
-      // WidgetATests.TestB
-
-      //const char* const testClassName = testClassRunner->TestClassName();
-      //if (_strcmpi(runFilter.c_str(), testClassName) == 0)
-      //{
-      //   return true;
-      //}
-      return true;
+      const char* const testClassName = (*testClassRunner)->TestClassName();
+      bool testClassMatchesRunFilter = _strcmpi(runFilter.c_str(), testClassName) == 0;
+      return testClassMatchesRunFilter;
    }
 
    size_t MultiTestClassRunner::NumberOfTestClassesToBeRun() const

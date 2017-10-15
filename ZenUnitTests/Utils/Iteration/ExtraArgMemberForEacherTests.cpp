@@ -16,7 +16,7 @@ namespace ZenUnit
    class ClassType
    {
    public:
-      virtual void TwoArgFunction(ElementType, ExtraArgType) const {}
+      virtual void TwoArgFunction(ElementType, ExtraArgType) {}
       virtual ~ClassType() = default;
    };
 
@@ -24,17 +24,17 @@ namespace ZenUnit
    {
    public:
       vector<ElementType> vec;
-      ZENMOCK_VOID2_CONST(TwoArgFunction, ElementType, ExtraArgType)
+      ZENMOCK_VOID2(TwoArgFunction, ElementType, ExtraArgType)
    };
 
    using MemberForEacherExtraArgType = ExtraArgMemberForEacher<
-      ElementType, ClassType, void (ClassType::*)(ElementType, ExtraArgType) const, ExtraArgType>;
+      ElementType, ClassType, void (ClassType::*)(ElementType, ExtraArgType), ExtraArgType>;
 
    MemberForEacherExtraArgType _memberForEacherExtraArg;
 
    TEST(ExtraArgMemberForEach_EmptyCollection_DoesNotCallFunc)
    {
-      const ClassTypeMock classInstance{};
+      ClassTypeMock classInstance{};
       _memberForEacherExtraArg.ExtraArgMemberForEach(
          &classInstance.vec, &classInstance, &ClassType::TwoArgFunction, 0);
    }
@@ -121,6 +121,6 @@ namespace ZenUnit
    };
 
    };
-   //RUNTEMPLATETESTS(ExtraArgMemberForEacherTests, int, int)
-   //RUNTEMPLATETESTS(ExtraArgMemberForEacherTests, double, char)
+   RUNTEMPLATETESTS(ExtraArgMemberForEacherTests, int, int)
+   RUNTEMPLATETESTS(ExtraArgMemberForEacherTests, double, char)
 }
