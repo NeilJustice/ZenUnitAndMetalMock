@@ -4,11 +4,6 @@
 
 namespace ZenMock
 {
-   struct Test
-   {
-      static const string Signature;
-   };
-
    class ExceptionThrowerMock : public Zen::Mock<ZenMock::ExceptionThrower>
    {
    private:

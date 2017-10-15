@@ -25,10 +25,12 @@ namespace ZenMock
 
    using MockerType = OneArgumentMocker<int, ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;
+   string _signature;
 
    STARTUP
    {
-      _mocker = make_unique<MockerType>(Test::Signature);
+      _signature = ZenUnit::Random<string>();
+      _mocker = make_unique<MockerType>(_signature);
    }
 
    void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
@@ -38,9 +40,9 @@ namespace ZenMock
 
    TEST(Constructor_SetsFields)
    {
-      const MockerType mocker(Test::Signature);
+      const MockerType mocker(_signature);
       //
-      ARE_EQUAL(Test::Signature, mocker.ZenMockedFunctionSignature);
+      ARE_EQUAL(_signature, mocker.ZenMockedFunctionSignature);
       IS_FALSE(mocker._expected);
       IS_FALSE(mocker._asserted);
       IS_EMPTY(mocker.oneArgumentCalls);
@@ -50,7 +52,7 @@ namespace ZenMock
    {
       _mocker->_expected = true;
       THROWS(_mocker->Expect(), FunctionAlreadyExpectedException,
-         FunctionAlreadyExpectedException::MakeWhat(Test::Signature));
+         FunctionAlreadyExpectedException::MakeWhat(_signature));
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
@@ -68,7 +70,7 @@ namespace ZenMock
    {
       _mocker->_expected = true;
       THROWS(_mocker->ExpectAndThrow<exception>(), FunctionAlreadyExpectedException,
-         FunctionAlreadyExpectedException::MakeWhat(Test::Signature));
+         FunctionAlreadyExpectedException::MakeWhat(_signature));
    }
 
    TEST(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
@@ -88,7 +90,7 @@ namespace ZenMock
    {
       IS_FALSE(_mocker->_expected);
       THROWS(_mocker->ZenMockIt(0), UnexpectedCallException,
-         UnexpectedCallException::MakeWhat(Test::Signature, 0));
+         UnexpectedCallException::MakeWhat(_signature, 0));
    }
 
    TEST(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
@@ -131,7 +133,7 @@ namespace ZenMock
   Failed: ARE_EQUAL(expectedNumberOfCalls, oneArgumentCalls.size(), this->ZenMockedFunctionSignature)
 Expected: 1
   Actual: )" + to_string(numberOfCalls) + R"(
- Message: ")" + Test::Signature + R"("
+ Message: ")" + _signature + R"("
 File.cpp(1))");
       }
       else
@@ -142,7 +144,7 @@ File.cpp(1))");
   Failed: ARE_EQUAL(expectedArgument, oneArgumentCalls[0].argument, this->ZenMockedFunctionSignature)
 Expected: )" + to_string(expectedArgument) + R"(
   Actual: )" + to_string(actualArg) + R"(
- Message: ")" + Test::Signature + R"("
+ Message: ")" + _signature + R"("
 File.cpp(1))");
          }
          else
@@ -157,7 +159,7 @@ File.cpp(1))");
    TEST(AssertCalledNTimesWith_NIsZero_Throws)
    {
       THROWS(_mocker->AssertCalledNTimesWith(0, 0), UnsupportedAssertCalledZeroTimesException,
-         UnsupportedAssertCalledZeroTimesException::MakeWhat(Test::Signature));
+         UnsupportedAssertCalledZeroTimesException::MakeWhat(_signature));
    }
 
    TEST3X3(AssertCalledNTimesWith_SetsAssertedTrue_NDiffersFromActualCallCount_Throws,
@@ -179,7 +181,7 @@ File.cpp(1))");
   Failed: ARE_EQUAL(expectedNumberOfCalls, oneArgumentCalls.size(), this->ZenMockedFunctionSignature)
 Expected: )", expectedNumberOfCalls, R"(
   Actual: )", numberOfCalls, R"(
- Message: ")", Test::Signature, R"("
+ Message: ")", _signature, R"("
 File.cpp(1))");
          THROWS(_mocker->AssertCalledNTimesWith(expectedNumberOfCalls, 0), Anomaly, expectedWhat);
       }
@@ -208,7 +210,7 @@ File.cpp(1))");
       {
          int actualArg = actualArgs[expectedResponsibleCallIndex].argument;
          string expectedSignatureAndCallIndex =
-            Test::Signature + " at i=" + to_string(expectedResponsibleCallIndex);
+            _signature + " at i=" + to_string(expectedResponsibleCallIndex);
          THROWS(_mocker->AssertCalledNTimesWith(expectedNumberOfCalls, expectedArgument), Anomaly, R"(
   Failed: ARE_EQUAL(expectedArgument, oneArgumentCalls[i].argument, zenMockedFunctionSignatureAndCallIndex)
 Expected: )" + to_string(expectedArgument) + R"(
@@ -228,7 +230,7 @@ File.cpp(1))");
    {
       IS_FALSE(_mocker->_asserted);
       THROWS(_mocker->AssertCalls({}), UnsupportedAssertCalledZeroTimesException,
-         UnsupportedAssertCalledZeroTimesException::MakeWhat(Test::Signature));
+         UnsupportedAssertCalledZeroTimesException::MakeWhat(_signature));
       IS_FALSE(_mocker->_asserted);
    }
 
@@ -244,7 +246,7 @@ Expected: vector<T>
  Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
 Expected: 1
   Actual: 0
- Message: ")" + Test::Signature + R"("
+ Message: ")" + _signature + R"("
 File.cpp(1)
 File.cpp(1))");
       //
@@ -268,7 +270,7 @@ Argument: 10
   Actual: ZenMock::OneArgumentCall:
 Argument: 20
  Message: "i=1"
- Message: ")" + Test::Signature + R"("
+ Message: ")" + _signature + R"("
 File.cpp(1)
 File.cpp(1))");
       //
