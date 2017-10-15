@@ -2,33 +2,28 @@
 #include "ZenUnit/ZenMock/3/ThreeArgumentMocker.h"
 #include "ZenUnit/ZenMock/Mock.h"
 
-// Virtual Functions
 #define ZENMOCK_VOID3(functionName, arg1Type, arg2Type, arg3Type, ...) \
         ZENMOCK_VOID3_DEFINED(functionName, arg1Type, arg2Type, arg3Type, virtual,      ,        , final, __VA_ARGS__)
 
 #define ZENMOCK_VOID3_CONST(functionName, arg1Type, arg2Type, arg3Type, ...) \
         ZENMOCK_VOID3_DEFINED(functionName, arg1Type, arg2Type, arg3Type, virtual, const, mutable, final, __VA_ARGS__)
 
-// Non-Virtual Functions
 #define ZENMOCK_VOID3_NONVIRTUAL(functionName, arg1Type, arg2Type, arg3Type, ...) \
         ZENMOCK_VOID3_DEFINED(functionName, arg1Type, arg2Type, arg3Type,        ,      ,        ,         , __VA_ARGS__)
 
 #define ZENMOCK_VOID3_CONST_NONVIRTUAL(functionName, arg1Type, arg2Type, arg3Type, ...) \
         ZENMOCK_VOID3_DEFINED(functionName, arg1Type, arg2Type, arg3Type,        , const, mutable,         , __VA_ARGS__)
 
-// Free Functions
 #define ZENMOCK_VOID3_FREE(freeFunctionName, arg1Type, arg2Type, arg3Type, ...) \
    ZenMock::VoidThreeArgFunctionPointerMocker<arg1Type, arg2Type, arg3Type> freeFunctionName##_ZenMock##__VA_ARGS__ = \
       ZenMock::VoidThreeArgFunctionPointerMocker<arg1Type, arg2Type, arg3Type>( \
          ZenMock::Signature::FunctionPointer("void", "::"#freeFunctionName"("#arg1Type", "#arg2Type", "#arg3Type")"));
 
-// Static and Namespaced Functions
 #define ZENMOCK_VOID3_STATIC(qualifiedClassNameOrNamespace, functionName, arg1Type, arg2Type, arg3Type, ...) \
    ZenMock::VoidThreeArgFunctionPointerMocker<arg1Type, arg2Type, arg3Type> functionName##_ZenMock##__VA_ARGS__ = \
       ZenMock::VoidThreeArgFunctionPointerMocker<arg1Type, arg2Type, arg3Type>( \
          ZenMock::Signature::FunctionPointer("void", #qualifiedClassNameOrNamespace"::"#functionName"("#arg1Type", "#arg2Type", "#arg3Type")"));
 
-// Implementation
 #define ZENMOCK_VOID3_DEFINED(functionName, arg1Type, arg2Type, arg3Type, virtualness, constness, mutableness, finalness, ...) \
 void functionName(arg1Type argument1, arg2Type argument2, arg3Type argument3) constness finalness \
 { \

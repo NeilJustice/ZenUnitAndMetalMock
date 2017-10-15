@@ -2,32 +2,31 @@
 #include "ZenUnit/ZenMock/0/ZeroArgumentMocker.h"
 #include "ZenUnit/ZenMock/Mock.h"
 
-// Virtual Functions
 #define ZENMOCK_VOID0(functionName) \
         ZENMOCK_VOID0_DEFINED(functionName, virtual,      ,        , final)
 
 #define ZENMOCK_VOID0_CONST(functionName) \
         ZENMOCK_VOID0_DEFINED(functionName, virtual, const, mutable, final)
 
-// Non-Virtual Functions
 #define ZENMOCK_VOID0_NONVIRTUAL(functionName) \
         ZENMOCK_VOID0_DEFINED(functionName,        ,        ,      ,         )
 
 #define ZENMOCK_VOID0_CONST_NONVIRTUAL(functionName) \
         ZENMOCK_VOID0_DEFINED(functionName,        , const, mutable,         )
 
-// Free Functions
+// Defines a freeFunctionName_ZenMock object for mocking a free function with signature "void freeFunctionName()".
 #define ZENMOCK_VOID0_FREE(freeFunctionName) \
+   static_assert(::freeFunctionName != nullptr); \
    ZenMock::VoidZeroArgFunctionPointerMocker freeFunctionName##_ZenMock = \
       ZenMock::VoidZeroArgFunctionPointerMocker(ZenMock::Signature::FunctionPointer("void", "::"#freeFunctionName"()"));
 
-// Static and Namespaced Functions
+// Defines a functionName_ZenMock object for mocking a static or namespaced function with signature "void qualifiedClassNameOrNamespace::functionName()".
 #define ZENMOCK_VOID0_STATIC(qualifiedClassNameOrNamespace, functionName, ...) \
+   static_assert(qualifiedClassNameOrNamespace::functionName != nullptr); \
    ZenMock::VoidZeroArgFunctionPointerMocker functionName##_ZenMock##__VA_ARGS__ = \
       ZenMock::VoidZeroArgFunctionPointerMocker( \
          ZenMock::Signature::FunctionPointer("void", #qualifiedClassNameOrNamespace"::"#functionName"()"));
 
-// Implementation
 #define ZENMOCK_VOID0_DEFINED(functionName, virtualness, constness, mutableness, finalness) \
 void functionName() constness finalness \
 { \

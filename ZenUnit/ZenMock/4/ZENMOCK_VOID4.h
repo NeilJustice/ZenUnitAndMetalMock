@@ -2,33 +2,28 @@
 #include "ZenUnit/ZenMock/4/FourArgumentMocker.h"
 #include "ZenUnit/ZenMock/Mock.h"
 
-// Virtual Functions
 #define ZENMOCK_VOID4(functionName, arg1Type, arg2Type, arg3Type, arg4Type, ...) \
         ZENMOCK_VOID4_DEFINED(functionName, arg1Type, arg2Type, arg3Type, arg4Type, virtual,      ,        , final, __VA_ARGS__)
 
 #define ZENMOCK_VOID4_CONST(functionName, arg1Type, arg2Type, arg3Type, arg4Type, ...) \
         ZENMOCK_VOID4_DEFINED(functionName, arg1Type, arg2Type, arg3Type, arg4Type, virtual, const, mutable, final, __VA_ARGS__)
 
-// Non-Virtual Functions
 #define ZENMOCK_VOID4_NONVIRTUAL(functionName, arg1Type, arg2Type, arg3Type, arg4Type, ...) \
         ZENMOCK_VOID4_DEFINED(functionName, arg1Type, arg2Type, arg3Type, arg4Type,        ,      ,        ,         , __VA_ARGS__)
 
 #define ZENMOCK_VOID4_CONST_NONVIRTUAL(functionName, arg1Type, arg2Type, arg3Type, arg4Type, ...) \
         ZENMOCK_VOID4_DEFINED(functionName, arg1Type, arg2Type, arg3Type, arg4Type,        , const, mutable,         , __VA_ARGS__)
 
-// Free Functions
 #define ZENMOCK_VOID4_FREE(freeFunctionName, arg1Type, arg2Type, arg3Type, arg4Type, ...) \
    ZenMock::VoidFourArgFunctionPointerMocker<arg1Type, arg2Type, arg3Type, arg4Type> freeFunctionName##_ZenMock##__VA_ARGS__ = \
       ZenMock::VoidFourArgFunctionPointerMocker<arg1Type, arg2Type, arg3Type, arg4Type>( \
          ZenMock::Signature::FunctionPointer("void", "::"#freeFunctionName"("#arg1Type", "#arg2Type", "#arg3Type", "#arg4Type")"));
 
-// Static and Namespaced Functions
 #define ZENMOCK_VOID4_STATIC(qualifiedClassNameOrNamespace, functionName, arg1Type, arg2Type, arg3Type, arg4Type, ...) \
    ZenMock::VoidFourArgFunctionPointerMocker<arg1Type, arg2Type, arg3Type, arg4Type> functionName##_ZenMock##__VA_ARGS__ = \
       ZenMock::VoidFourArgFunctionPointerMocker<arg1Type, arg2Type, arg3Type, arg4Type>( \
          ZenMock::Signature::FunctionPointer("void", #qualifiedClassNameOrNamespace"::"#functionName"("#arg1Type", "#arg2Type", "#arg3Type", "#arg4Type")"));
 
-// Implementation
 #define ZENMOCK_VOID4_DEFINED(functionName, arg1Type, arg2Type, arg3Type, arg4Type, virtualness, constness, mutableness, finalness, ...) \
 void functionName(arg1Type argument1, arg2Type argument2, arg3Type argument3, arg4Type argument4) constness finalness \
 { \

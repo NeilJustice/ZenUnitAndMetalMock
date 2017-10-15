@@ -6,6 +6,7 @@ void Void0() {}
 namespace ZenMock
 {
    void Void0() {}
+
    struct FunctionPointerTesting
    {
       static void Void0() {}
