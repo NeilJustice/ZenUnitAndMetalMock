@@ -2,11 +2,11 @@
 
 namespace ZenUnit
 {
-   template<typename CollectionType, typename FunctionType, typename ExtraArgType>
+   template<typename CollectionType, typename PredicateType, typename ExtraArgType>
    class ExtraArgAnyer
    {
    public:
-      virtual bool ExtraArgAny(const CollectionType& collection, FunctionType predicate, const ExtraArgType& extraArg) const
+      virtual bool ExtraArgAny(const CollectionType& collection, PredicateType predicate, const ExtraArgType& extraArg) const
       {
          const auto collectionConstEnd = collection.cend();
          for (auto iter = collection.cbegin(); iter != collectionConstEnd; ++iter)
