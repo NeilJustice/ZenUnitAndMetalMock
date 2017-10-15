@@ -24,21 +24,21 @@ namespace ZenUnit
       }
    };
 
-   template<typename DataStructureType>
-   TEMPLATETESTS(SorterTests, DataStructureType)
-   AFACT(Sort_SortsTheDataStructure)
+   template<typename CollectionType>
+   TEMPLATETESTS(SorterTests, CollectionType)
+   AFACT(Sort_SortsTheCollection)
    EVIDENCE
 
-   Sorter<DataStructureType> _sorter;
+   Sorter<CollectionType> _sorter;
 
-   TEST(Sort_SortsTheDataStructure)
+   TEST(Sort_SortsTheCollection)
    {
-      DataStructureType dataStructure { 2, 3, 1 };
+      CollectionType collection { 2, 3, 1 };
       //
-      _sorter.Sort(&dataStructure);
+      _sorter.Sort(&collection);
       //
-      const DataStructureType expectedSortedDataStructure { 1, 2, 3 };
-      VECTORS_EQUAL(expectedSortedDataStructure, dataStructure);
+      const CollectionType expectedSortedCollection { 1, 2, 3 };
+      VECTORS_EQUAL(expectedSortedCollection, collection);
    }
 
    };

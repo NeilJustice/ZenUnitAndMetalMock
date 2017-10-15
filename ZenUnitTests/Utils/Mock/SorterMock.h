@@ -1,8 +1,8 @@
 #pragma once
 #include "ZenUnit/Utils/Sorter.h"
 
-template<typename DataStructureType>
-struct SorterMock : public Zen::Mock<ZenUnit::Sorter<DataStructureType>>
+template<typename CollectionType>
+struct SorterMock : public Zen::Mock<ZenUnit::Sorter<CollectionType>>
 {
-   ZENMOCK_VOID1_CONST(Sort, DataStructureType*)
+   ZENMOCK_VOID1_CONST(Sort, CollectionType*)
 };

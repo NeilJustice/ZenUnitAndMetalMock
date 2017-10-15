@@ -4,12 +4,12 @@ namespace ZenUnit
 {
    template<typename ElementType, typename ExtraArgType>
    TEMPLATETESTS(ExtraArgMemberForEacherTests, ElementType, ExtraArgType)
-   AFACT(ExtraArgMemberForEach_EmptyIterable_DoesNotCallFunc)
-   AFACT(ExtraArgMemberForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
-   AFACT(ExtraArgMemberForEach_TwoItemIterable_CallsThisPointerBoundFuncTwice)
-   AFACT(RandomExtraArgMemberForEach_EmptyIterable_DoesNotCallFunc)
-   AFACT(RandomExtraArgMemberForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
-   AFACT(RandomExtraArgMemberForEach_TwoItemIterable_CallsThisPointerBoundFuncTwiceInRandomOrder)
+   AFACT(ExtraArgMemberForEach_EmptyCollection_DoesNotCallFunc)
+   AFACT(ExtraArgMemberForEach_OneItemCollection_CallsThisPointerBoundFuncOnce)
+   AFACT(ExtraArgMemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwice)
+   AFACT(RandomExtraArgMemberForEach_EmptyCollection_DoesNotCallFunc)
+   AFACT(RandomExtraArgMemberForEach_OneItemCollection_CallsThisPointerBoundFuncOnce)
+   AFACT(RandomExtraArgMemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwiceInRandomOrder)
    AFACT(CodeCoverage_ClassTypeTwoArgFunction)
    EVIDENCE
 
@@ -32,14 +32,14 @@ namespace ZenUnit
 
    MemberForEacherExtraArgType _memberForEacherExtraArg;
 
-   TEST(ExtraArgMemberForEach_EmptyIterable_DoesNotCallFunc)
+   TEST(ExtraArgMemberForEach_EmptyCollection_DoesNotCallFunc)
    {
       const ClassTypeMock classInstance{};
       _memberForEacherExtraArg.ExtraArgMemberForEach(
          &classInstance.vec, &classInstance, &ClassType::TwoArgFunction, 0);
    }
 
-   TEST(ExtraArgMemberForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
+   TEST(ExtraArgMemberForEach_OneItemCollection_CallsThisPointerBoundFuncOnce)
    {
       ClassTypeMock classInstance;
       classInstance.vec = { 1 };
@@ -51,7 +51,7 @@ namespace ZenUnit
       classInstance.TwoArgFunctionMock.AssertCalledOnceWith(1, 10);
    }
 
-   TEST(ExtraArgMemberForEach_TwoItemIterable_CallsThisPointerBoundFuncTwice)
+   TEST(ExtraArgMemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwice)
    {
       ClassTypeMock classInstance;
       classInstance.vec = { 1, 2 };
@@ -67,14 +67,14 @@ namespace ZenUnit
       });
    }
 
-   TEST(RandomExtraArgMemberForEach_EmptyIterable_DoesNotCallFunc)
+   TEST(RandomExtraArgMemberForEach_EmptyCollection_DoesNotCallFunc)
    {
       ClassTypeMock classInstance{};
       _memberForEacherExtraArg.RandomExtraArgMemberForEach(
          &classInstance.vec, &classInstance, &ClassType::TwoArgFunction, 0, 0);
    }
 
-   TEST(RandomExtraArgMemberForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
+   TEST(RandomExtraArgMemberForEach_OneItemCollection_CallsThisPointerBoundFuncOnce)
    {
       ClassTypeMock classInstance;
       classInstance.vec = { 1 };
@@ -86,7 +86,7 @@ namespace ZenUnit
       classInstance.TwoArgFunctionMock.AssertCalledOnceWith(1, 10);
    }
 
-   TEST(RandomExtraArgMemberForEach_TwoItemIterable_CallsThisPointerBoundFuncTwiceInRandomOrder)
+   TEST(RandomExtraArgMemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwiceInRandomOrder)
    {
       ClassTypeMock classInstance;
       classInstance.vec = { 1, 2 };

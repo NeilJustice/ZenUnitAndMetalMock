@@ -34,7 +34,7 @@ Fix: Add before the unexpected call a call to
          {
             whatBuilder << "ExpectAndThrow<T>|ExpectAndReturn|ExpectAndReturnValues";
          }
-         whatBuilder << ">()";
+         whatBuilder << ">();";
          const std::string what = whatBuilder.str();
          return what;
       }

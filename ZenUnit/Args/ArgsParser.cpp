@@ -122,8 +122,8 @@ None
    Run all non-skipped tests while printing detailed information.
 -minimalist
    Print only preamble, any test failure details, and conclusion.
--run=<TestClassName[.TestName]>
-   Run only specified test class or test, case-insensitive.
+-run=<TestClassName[.TestName],TestClassName[.TestName]...>
+   Run only specified case-insensitive test classes and/or tests.
 -pause
    Wait for input before running tests to allow attaching a profiler or debugger.
 -wait

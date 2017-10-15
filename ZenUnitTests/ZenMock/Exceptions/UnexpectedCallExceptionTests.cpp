@@ -21,9 +21,9 @@ namespace ZenMock
       R"(Fix: Add before the unexpected call a call to
 <ZenMockObjectName>.<FunctionName>Mock.<Expect|)";
    const string ExpectedVoidFixSuffix =
-      "ExpectAndThrow<T>>()";
+      "ExpectAndThrow<T>>();";
    const string ExpectedNonVoidFixSuffix =
-      "ExpectAndThrow<T>|ExpectAndReturn|ExpectAndReturnValues>()";
+      "ExpectAndThrow<T>|ExpectAndReturn|ExpectAndReturnValues>();";
 
    TEST1X1(Constructor_Void0Args_SetsWhatToJustExpectAndExpectAndThrow_ClassIsSubclassOfZenMockException,
       const string& zenMockedFunctionSignature,

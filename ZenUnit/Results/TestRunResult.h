@@ -5,9 +5,9 @@
 namespace ZenUnit
 {
    class Console;
-   template<typename DataStructureType, typename ClassType, typename FunctionType>
+   template<typename CollectionType, typename ClassType, typename FunctionType>
    class MemberForEacher;
-   template<typename IterableType, typename FunctionType, typename ExtraArgType1, typename ExtraArgType2>
+   template<typename CollectionType, typename FunctionType, typename ExtraArgType1, typename ExtraArgType2>
    class TwoExtraArgsForEacher;
    class TestFailureNumberer;
    struct ZenUnitArgs;

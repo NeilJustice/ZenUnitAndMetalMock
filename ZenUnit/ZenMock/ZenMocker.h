@@ -107,7 +107,7 @@ Fix: After Expect()ing then calling the above ZenMocked function,
 call ZEN(<ZenMockObjectName>.<FunctionName>Mock.
 <AssertCalledOnce|AssertCalledOnceWith|AssertCalledNTimes|AssertCalledNTimesWith|AssertCalls>());
 
-Fail fasting with exit code )" <<
+Fast failing with exit code )" <<
 (zenUnitArgs.exit0 ? "0 (normally exit code 1 but -exit0 is specified).\n" : "1.\n");
             int exitCode = zenUnitArgs.exit0 ? 0 : 1;
             call_exit(exitCode);

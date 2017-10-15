@@ -122,7 +122,7 @@ namespace ZenUnit
       parsedZenUnitArgs.testruns = testrunsArgs;
       _testRunnerSelfMockedA.argsParserMock->ParseMock.ExpectAndReturn(parsedZenUnitArgs);
 
-      _testRunnerSelfMockedA.multiTestClassRunnerMock->ApplyRunFiltersIfAnyMock.Expect();
+      _testRunnerSelfMockedA.multiTestClassRunnerMock->ApplyRunFiltersIfSpecifiedMock.Expect();
 
       _testRunnerSelfMockedA.RunTestClassesAndPrintResultsMock.
          ExpectAndReturnValues(firstTestRunExitCode, secondTestRunExitCode);
@@ -137,7 +137,7 @@ namespace ZenUnit
       //
       ZEN(_testRunnerSelfMockedA.argsParserMock->ParseMock.AssertCalledOnceWith(commandLineArgs));
       ZEN(_testRunnerSelfMockedA.multiTestClassRunnerMock->
-         ApplyRunFiltersIfAnyMock.AssertCalledOnceWith(parsedZenUnitArgs.runFilters));
+         ApplyRunFiltersIfSpecifiedMock.AssertCalledOnceWith(parsedZenUnitArgs.runFilters));
       ZEN(_testRunnerSelfMockedA.RunTestClassesAndPrintResultsMock.AssertCalledNTimes(testrunsArgs));
       ZEN(_testRunnerSelfMockedA.testRunResultMock->ResetStateExceptForSkipsMock.AssertCalledNTimes(testrunsArgs));
       ZEN(_testRunnerSelfMockedA.consoleMock->

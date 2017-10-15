@@ -38,29 +38,35 @@ EVIDENCE
 SKIPTEMPLATETESTS(Reason, SkippedTemplateTestClassB, map)
 SKIPTEMPLATETESTS(Reason, SkippedTemplateTestClassB, unordered_map)
 
-
-TESTS(widgetaTests)
+TESTS(WidgetATests)
 AFACT(FunctionUnderTest_ArgumentsUnderTest_ExpectedBehavior)
 EVIDENCE
 
 TEST(FunctionUnderTest_ArgumentsUnderTest_ExpectedBehavior)
 {
-   cout << "widgetaTests.FunctionUnderTest_ArgumentsUnderTest_ExpectedBehavior" << '\n';
 }
 
-}; RUNTESTS(widgetaTests)
+}; RUNTESTS(WidgetATests)
 
-
-TESTS(widgetbTests)
+TESTS(WidgetBTests)
 AFACT(FunctionUnderTest_ArgumentsUnderTest_ExpectedBehavior)
 EVIDENCE
 
 TEST(FunctionUnderTest_ArgumentsUnderTest_ExpectedBehavior)
 {
-   cout << "widgetbTests.FunctionUnderTest_ArgumentsUnderTest_ExpectedBehavior" << '\n';
 }
 
-}; RUNTESTS(widgetbTests)
+}; RUNTESTS(WidgetBTests)
+
+TESTS(WidgetCTests)
+AFACT(FunctionUnderTest_ArgumentsUnderTest_ExpectedBehavior)
+EVIDENCE
+
+TEST(FunctionUnderTest_ArgumentsUnderTest_ExpectedBehavior)
+{
+}
+
+}; RUNTESTS(WidgetCTests)
 
 int main(int argc, char* argv[])
 {

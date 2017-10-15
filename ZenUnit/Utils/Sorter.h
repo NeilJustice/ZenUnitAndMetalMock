@@ -2,13 +2,13 @@
 
 namespace ZenUnit
 {
-   template<typename DataStructureType>
+   template<typename CollectionType>
    class Sorter
    {
    public:
-      virtual void Sort(DataStructureType* dataStructure) const
+      virtual void Sort(CollectionType* collection) const
       {
-         std::sort(dataStructure->begin(), dataStructure->end());
+         std::sort(collection->begin(), collection->end());
       }
 
       virtual ~Sorter() = default;

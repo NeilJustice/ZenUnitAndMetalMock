@@ -25,13 +25,10 @@ None
    Wait for input before closing console window.
 -exit0
    Always exit 0 regardless of test run outcome.
-   Useful option for never blocking the launch of the Visual Studio debugger
-   when running ZenUnit tests as a post-build event.
+   Useful option for always allowing the launch of a debugger
+   when running ZenUnit tests as a post-build step.
 -failskips
    Exit 1 regardless of test run outcome if any tests are skipped.
-   Useful option for continuous integration servers to reduce
-   the probability of a quality-compromising culture of complacency
-   developing around skipped tests.
 -random[=Seed]
    Run test classes in a random order and run tests in a random order.
    Useful option for increasing testing rigor.

@@ -4,7 +4,7 @@
 
 namespace ZenUnit
 {
-   template<typename IterableType, typename FunctionType, typename ExtraArgType1, typename ExtraArgType2>
+   template<typename CollectionType, typename FunctionType, typename ExtraArgType1, typename ExtraArgType2>
    class TwoExtraArgsForEacher;
    class Console;
    class TestFailureNumberer;

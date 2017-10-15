@@ -59,7 +59,7 @@ namespace ZenUnit
    int TestRunner::ParseArgsRunTestClassesPrintResults(const std::vector<std::string>& commandLineArgs)
    {
       _zenUnitArgs = _argsParser->Parse(commandLineArgs);
-      _multiTestClassRunner->ApplyRunFiltersIfAny(_zenUnitArgs.runFilters);
+      _multiTestClassRunner->ApplyRunFiltersIfSpecified(_zenUnitArgs.runFilters);
       int overallExitCode = 0;
       for (unsigned testRunIndex = 0; testRunIndex < _zenUnitArgs.testruns; ++testRunIndex)
       {

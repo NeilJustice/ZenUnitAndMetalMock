@@ -5,12 +5,12 @@ namespace ZenUnit
 {
    template<
       template<typename T, typename...>
-      class IterableType,
+      class CollectionType,
       typename ElementType>
-   TEMPLATETESTS(MemberForEacherTests, IterableType, ElementType)
-   AFACT(MemberForEach_EmptyIterable_DoesNotCallFunc)
-   AFACT(MemberForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
-   AFACT(MemberForEach_TwoItemIterable_CallsThisPointerBoundFuncTwice)
+   TEMPLATETESTS(MemberForEacherTests, CollectionType, ElementType)
+   AFACT(MemberForEach_EmptyCollection_DoesNotCallFunc)
+   AFACT(MemberForEach_OneItemCollection_CallsThisPointerBoundFuncOnce)
+   AFACT(MemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwice)
    AFACT(CodeCoverage_ClassTypeFunc)
    EVIDENCE
 
@@ -24,40 +24,40 @@ namespace ZenUnit
    class ClassTypeMock : public Zen::Mock<ClassType>
    {
    public:
-      IterableType<ElementType> iterable;
+      CollectionType<ElementType> collection;
       ZENMOCK_VOID1_CONST(Func, ElementType)
    };
 
    using MemberForEacherType = MemberForEacher<
-      IterableType<ElementType>, ClassType, void (ClassType::*)(ElementType) const>;
+      CollectionType<ElementType>, ClassType, void (ClassType::*)(ElementType) const>;
    MemberForEacherType _memberForEacher;
 
-   TEST(MemberForEach_EmptyIterable_DoesNotCallFunc)
+   TEST(MemberForEach_EmptyCollection_DoesNotCallFunc)
    {
       const ClassTypeMock classInstance{};
-      _memberForEacher.MemberForEach(&classInstance.iterable, &classInstance, &ClassType::Func);
+      _memberForEacher.MemberForEach(&classInstance.collection, &classInstance, &ClassType::Func);
    }
 
-   TEST(MemberForEach_OneItemIterable_CallsThisPointerBoundFuncOnce)
+   TEST(MemberForEach_OneItemCollection_CallsThisPointerBoundFuncOnce)
    {
       ClassTypeMock classInstance;
-      classInstance.iterable = { 1 };
+      classInstance.collection = { 1 };
       classInstance.FuncMock.Expect();
       //
       _memberForEacher.MemberForEach(
-         &classInstance.iterable, &classInstance, &ClassType::Func);
+         &classInstance.collection, &classInstance, &ClassType::Func);
       //
       classInstance.FuncMock.AssertCalledOnceWith(1);
    }
 
-   TEST(MemberForEach_TwoItemIterable_CallsThisPointerBoundFuncTwice)
+   TEST(MemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwice)
    {
       ClassTypeMock classInstance;
-      classInstance.iterable = { 1, 2 };
+      classInstance.collection = { 1, 2 };
       classInstance.FuncMock.Expect();
       //
       _memberForEacher.MemberForEach(
-         &classInstance.iterable, &classInstance, &ClassType::Func);
+         &classInstance.collection, &classInstance, &ClassType::Func);
       //
       classInstance.FuncMock.AssertCalls(
       {

@@ -12,14 +12,21 @@ namespace ZenUnit
    AFACT(Constructor_NewsComponents)
    AFACT(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
    AFACT(AddTestClassRunner_EmplacesBackTestClassRunner_MakesNumberOfTestClassesToBeRunReturnAnIncreasingNumber)
-   AFACT(ApplyRunFiltersIfAny_RunFiltersEmpty_)
-   AFACT(ApplyRunFiltersIfAny_RunFiltersNonEmpty_)
+   AFACT(ApplyRunFiltersIfSpecified_RunFiltersEmpty_DoesNothing)
+   AFACT(ApplyRunFiltersIfSpecified_RunFiltersNotEmpty_ResetsWithNoOpTestClassesThoseTestClassesThatMatchRunFilters)
    AFACT(RunTestClasses_NonRandomMode_SortsTestClassRunnersByName_RunsTestClassesSequentially_MoveReturnsTestClassResultsVector)
    FACTS(RunTestClasses_RandomMode_SetsRandomSeedIfNotSetByUser_RunsTestClassesRandomly_MoveReturnsTestClassResultsVector)
    AFACT(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)
    EVIDENCE
 
    MultiTestClassRunner _multiTestClassRunner;
+
+   using ExtraArgForEacherMockType = ExtraArgForEacherMock<
+      std::vector<std::unique_ptr<TestClassRunner>>,
+      bool(*)(std::unique_ptr<TestClassRunner>&, const std::vector<std::string>&),
+      const std::vector<std::string>&>;
+   ExtraArgForEacherMockType* _extraArgForEacherMock;
+
    SorterMock<vector<unique_ptr<TestClassRunner>>>* _sorterMock;
    using TransformerMockType = TransformerMock<unique_ptr<TestClassRunner>, TestClassResult>;
    TransformerMockType* _transformerMock;
@@ -27,14 +34,15 @@ namespace ZenUnit
 
    STARTUP
    {
-      _multiTestClassRunner._sorter.reset(_sorterMock
-         = new SorterMock<vector<unique_ptr<TestClassRunner>>>);
+      _multiTestClassRunner._extraArgForEacher.reset(_extraArgForEacherMock = new ExtraArgForEacherMockType);
+      _multiTestClassRunner._sorter.reset(_sorterMock = new SorterMock<vector<unique_ptr<TestClassRunner>>>);
       _multiTestClassRunner._transformer.reset(_transformerMock = new TransformerMockType);
       _multiTestClassRunner._watch.reset(_watchMock = new WatchMock);
    }
 
    TEST(Constructor_NewsComponents)
    {
+      POINTER_WAS_NEWED(_multiTestClassRunner._extraArgForEacher);
       POINTER_WAS_NEWED(_multiTestClassRunner._sorter);
       POINTER_WAS_NEWED(_multiTestClassRunner._transformer);
       POINTER_WAS_NEWED(_multiTestClassRunner._watch);
@@ -63,17 +71,21 @@ namespace ZenUnit
       ARE_EQUAL(2, _multiTestClassRunner.NumberOfTestClassesToBeRun());
    }
 
-   TEST(ApplyRunFiltersIfAny_RunFiltersEmpty_)
+   TEST(ApplyRunFiltersIfSpecified_RunFiltersEmpty_DoesNothing)
    {
-      _multiTestClassRunner.ApplyRunFiltersIfAny({});
+      _multiTestClassRunner.ApplyRunFiltersIfSpecified({});
    }
 
-   TEST(ApplyRunFiltersIfAny_RunFiltersNonEmpty_)
+   TEST(ApplyRunFiltersIfSpecified_RunFiltersNotEmpty_ResetsWithNoOpTestClassesThoseTestClassesThatMatchRunFilters)
    {
-      vector<string> runFilters = { ZenUnit::Random<string>() };
+      _extraArgForEacherMock->NonConstExtraArgForEachMock.Expect();
+      const vector<string> runFilters = { ZenUnit::Random<string>() };
       //
-      _multiTestClassRunner.ApplyRunFiltersIfAny(runFilters);
+      _multiTestClassRunner.ApplyRunFiltersIfSpecified(runFilters);
       //
+      ZEN(_extraArgForEacherMock->NonConstExtraArgForEachMock.AssertCalledOnceWith(
+         &_multiTestClassRunner._testClassRunners,
+         MultiTestClassRunner::ResetWithNoOpIfNameDoesNotMatchRunFilter, runFilters));
    }
 
    TEST(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)

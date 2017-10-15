@@ -4,9 +4,9 @@
 namespace ZenUnit
 {
    TESTS(TwoExtraArgsForEacherTests)
-   AFACT(TwoExtraArgsForEach_EmptyIterable_DoesNothing)
-   AFACT(TwoExtraArgsForEach_OneItemIterable_CallsFuncOnItemOnce)
-   AFACT(TwoExtraArgsForEach_TwoItemIterable_CallsFuncOnItemTwice)
+   AFACT(TwoExtraArgsForEach_EmptyCollection_DoesNothing)
+   AFACT(TwoExtraArgsForEach_OneItemCollection_CallsFuncOnItemOnce)
+   AFACT(TwoExtraArgsForEach_TwoItemCollection_CallsFuncOnItemTwice)
    EVIDENCE
 
    using ForEacherType = TwoExtraArgsForEacher<vector<int>,
@@ -25,7 +25,7 @@ namespace ZenUnit
          this, placeholders::_1, placeholders::_2, placeholders::_3);
    }
 
-   TEST(TwoExtraArgsForEach_EmptyIterable_DoesNothing)
+   TEST(TwoExtraArgsForEach_EmptyCollection_DoesNothing)
    {
       const vector<int> emptyVector;
       //
@@ -34,7 +34,7 @@ namespace ZenUnit
       IS_EMPTY(_funcCalls);
    }
 
-   TEST(TwoExtraArgsForEach_OneItemIterable_CallsFuncOnItemOnce)
+   TEST(TwoExtraArgsForEach_OneItemCollection_CallsFuncOnItemOnce)
    {
       const vector<int> oneItemVector { 1 };
       char c = Random<char>();
@@ -49,7 +49,7 @@ namespace ZenUnit
       VECTORS_EQUAL(expectedFuncCalls, _funcCalls);
    }
 
-   TEST(TwoExtraArgsForEach_TwoItemIterable_CallsFuncOnItemTwice)
+   TEST(TwoExtraArgsForEach_TwoItemCollection_CallsFuncOnItemTwice)
    {
       const vector<int> oneItemVector { 1, 2 };
       char c = Random<char>();

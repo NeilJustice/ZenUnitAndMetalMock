@@ -2,17 +2,17 @@
 
 namespace ZenUnit
 {
-   template<typename IterableType, typename ClassType, typename FunctionType>
+   template<typename CollectionType, typename ClassType, typename FunctionType>
    class MemberForEacher
    {
    public:
       virtual void MemberForEach(
-         const IterableType* iterable,
+         const CollectionType* collection,
          const ClassType* thisPointer,
          FunctionType func) const
       {
-         const auto iterableConstEnd = iterable->cend();
-         for (auto iter = iterable->cbegin(); iter != iterableConstEnd; ++iter)
+         const auto collectionConstEnd = collection->cend();
+         for (auto iter = collection->cbegin(); iter != collectionConstEnd; ++iter)
          {
             const auto& element = *iter;
             (thisPointer->*func)(element);
