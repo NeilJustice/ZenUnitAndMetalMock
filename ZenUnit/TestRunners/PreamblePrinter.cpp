@@ -34,10 +34,6 @@ namespace ZenUnit
       const std::string thirdLine = thirdLinePrefix + thirdLineSuffix;
       _console->WriteLine(thirdLine);
       _console->WriteNewLine();
-      //if (numberOfTestClassesToBeRun == 0)
-      //{
-      //   _console->WriteLineAndExit("-run filter matches 0 test classes. Exiting.", 1);
-      //}
    }
 
    std::string PreamblePrinter::MakeThirdLinePrefix(size_t numberOfTestClassesToBeRun) const
