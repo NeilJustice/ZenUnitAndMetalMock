@@ -12,12 +12,10 @@
 
 // Defines a <functionName>Mock object for mocking a non-virtual function with signature "void functionName(arg1Type, arg2Type)".
 #define ZENMOCK_VOID2_NONVIRTUAL(functionName, arg1Type, arg2Type, ...) \
-        static_assert(&functionName != nullptr); \
         ZENMOCK_VOID2_DEFINED(functionName, arg1Type, arg2Type,        ,      ,        ,         , __VA_ARGS__)
 
 // Defines a <functionName>Mock object for mocking a non-virtual function with signature "void functionName(arg1Type, arg2Type) const".
 #define ZENMOCK_VOID2_CONST_NONVIRTUAL(functionName, arg1Type, arg2Type, ...) \
-        static_assert(&functionName != nullptr); \
         ZENMOCK_VOID2_DEFINED(functionName, arg1Type, arg2Type,        , const, mutable,         , __VA_ARGS__)
 
 // Defines a <functionName>_ZenMock object for mocking a free function with signature "void functionName(arg1Type, arg2Type)".
