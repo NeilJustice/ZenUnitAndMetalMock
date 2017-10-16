@@ -20,7 +20,7 @@ namespace ZenUnit
    {
       MachineNameGetter machineNameGetter;
 #ifdef __linux__
-      STD_FUNCTION_TARGETS(::gethostname, machineNameGetter.call_GetComputerName);
+      STD_FUNCTION_TARGETS(::gethostname, machineNameGetter.call_gethostname);
 #elif _WIN32
       STD_FUNCTION_TARGETS(::GetComputerName, machineNameGetter.call_GetComputerName);
 #endif
