@@ -21,16 +21,16 @@ namespace ZenUnit
       unsigned maxtotalseconds = 0;
    };
 
-   static const int VS2017Update3 = 191125506;
+   #define VS2017Update4 191125547+1
    #ifdef __linux__
       #if __clang_major__ == 3 && __clang_minor__ == 9
-         static_assert(sizeof(ZenUnitArgs) == 56);
+         static_assert(sizeof(ZenUnitArgs) == 88);
       #endif
-   #elif _MSC_FULL_VER == VS2017Update3 && defined(_WIN64)
+   #elif _MSC_FULL_VER == VS2017Update4 && defined(_WIN64)
       #ifdef _DEBUG
-         static_assert(sizeof(ZenUnitArgs) == 64);
+         static_assert(sizeof(ZenUnitArgs) == 104);
       #elif NDEBUG
-         static_assert(sizeof(ZenUnitArgs) == 56);
+         static_assert(sizeof(ZenUnitArgs) == 88);
       #endif
    #endif
 }

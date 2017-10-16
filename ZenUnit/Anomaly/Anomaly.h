@@ -141,7 +141,7 @@ namespace ZenUnit
       #if __clang_major__ == 3 && __clang_minor__ == 9
          static_assert(sizeof(Anomaly) == 184);
       #endif
-   #elif _MSC_FULL_VER == VS2017Update3 && defined(_WIN64) // VS2017 15.3
+   #elif _MSC_FULL_VER == VS2017Update4 && defined(_WIN64)
       #ifdef _DEBUG
          static_assert(sizeof(Anomaly) == 240);
       #elif NDEBUG
