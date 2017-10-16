@@ -1,9 +1,13 @@
 #include "pch.h"
 #include "ZenUnit/TestRunners/MachineNameGetter.h"
+#ifdef __linux__
+#include <unistd.h>
+#endif
 
 namespace ZenUnit
 {
    TESTS(MachineNameGetterTests)
+   AFACT(Constructor_SetsGetHostNameOrGetComputerNameFunctions)
    AFACT(GetMachineName_ReturnsEitherCallToGetLinuxOrGetWindowsMachineName)
 #ifdef __linux__
    AFACT(GetLinuxMachineName_ReturnsResultOfgethostname)
@@ -11,6 +15,16 @@ namespace ZenUnit
    AFACT(GetWindowsMachineName_ReturnsResultOfGetComputerName)
 #endif
    EVIDENCE
+
+   TEST(Constructor_SetsGetHostNameOrGetComputerNameFunctions)
+   {
+      MachineNameGetter machineNameGetter;
+#ifdef __linux__
+      STD_FUNCTION_TARGETS(::gethostname, machineNameGetter.call_GetComputerName);
+#elif _WIN32
+      STD_FUNCTION_TARGETS(::GetComputerName, machineNameGetter.call_GetComputerName);
+#endif
+   }
 
    struct MachineNameGetterSelfMocked : public Zen::Mock<MachineNameGetter>
    {
