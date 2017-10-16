@@ -26,9 +26,9 @@ elseif(MSVC)
    set(CMAKE_CXX_FLAGS "/std:c++latest /Wall /WX /EHsc /MP")
    replace(CMAKE_EXE_LINKER_FLAGS_DEBUG "/debug" "/debug:fastlink")
    replace(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "/debug" "/debug:fastlink")
-   if(JenkinsMode)
-      replace(CMAKE_CXX_FLAGS_RELEASE "/O2" "/Od")
-   endif()
+   # Disable release mode optimization, which is highly time expensive,
+   # while ZenUnit is in pre version 1.0.0 development
+   replace(CMAKE_CXX_FLAGS_RELEASE "/O2" "/Od")
    set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 endif()
 
