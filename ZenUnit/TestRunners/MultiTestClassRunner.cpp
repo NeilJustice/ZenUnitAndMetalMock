@@ -39,7 +39,7 @@ namespace ZenUnit
    void MultiTestClassRunner::ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter(
       std::unique_ptr<TestClassRunner>& testClassRunner, const std::vector<std::string>& runFilters)
    {
-      bool anyRunFilterMatchesTestClassName = _extraArgAnyer->ExtraArgAny(
+      const bool anyRunFilterMatchesTestClassName = _extraArgAnyer->ExtraArgAny(
          runFilters, TestClassMatchesRunFilter, &testClassRunner);
       if (!anyRunFilterMatchesTestClassName)
       {
@@ -51,13 +51,21 @@ namespace ZenUnit
       const std::string& runFilter, const std::unique_ptr<TestClassRunner>* testClassRunner)
    {
       const char* const testClassName = (*testClassRunner)->TestClassName();
-      bool testClassMatchesRunFilter = _strcmpi(runFilter.c_str(), testClassName) == 0;
+      const bool testClassMatchesRunFilter = _strcmpi(runFilter.c_str(), testClassName) == 0;
       return testClassMatchesRunFilter;
    }
 
    size_t MultiTestClassRunner::NumberOfTestClassesToBeRun() const
    {
-      const size_t numberOfTestClassesToBeRun = _testClassRunners.size();
+      size_t numberOfTestClassesToBeRun = 0;
+      for (const std::unique_ptr<TestClassRunner>& testClassRunner : _testClassRunners)
+      {
+         const char* const testClassName = testClassRunner->TestClassName();
+         if (strcmp(testClassName, "NoOpTestClassRunner") != 0)
+         {
+            ++numberOfTestClassesToBeRun;
+         }
+      }
       return numberOfTestClassesToBeRun;
    }
 

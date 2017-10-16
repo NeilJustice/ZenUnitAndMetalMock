@@ -73,16 +73,32 @@ namespace ZenUnit
       //
       ARE_EQUAL(1, _multiTestClassRunner._testClassRunners.size());
       ARE_EQUAL(testClassRunnerA, _multiTestClassRunner._testClassRunners[0].get());
+      testClassRunnerA->TestClassNameMock.ExpectAndReturn("WidgetTests");
       ARE_EQUAL(1, _multiTestClassRunner.NumberOfTestClassesToBeRun());
+      ZEN(testClassRunnerA->TestClassNameMock.AssertCalledOnce());
+
+
+      NoOpTestClassRunner* noOpTestClassRunner = new NoOpTestClassRunner;
+      //
+      _multiTestClassRunner.AddTestClassRunner(noOpTestClassRunner);
+      //
+      ARE_EQUAL(2, _multiTestClassRunner._testClassRunners.size());
+      ARE_EQUAL(testClassRunnerA, _multiTestClassRunner._testClassRunners[0].get());
+      ARE_EQUAL(noOpTestClassRunner, _multiTestClassRunner._testClassRunners[1].get());
+      ARE_EQUAL(1, _multiTestClassRunner.NumberOfTestClassesToBeRun());
+
 
       TestClassRunnerMock* testClassRunnerB = new TestClassRunnerMock;
       //
       _multiTestClassRunner.AddTestClassRunner(testClassRunnerB);
       //
-      ARE_EQUAL(2, _multiTestClassRunner._testClassRunners.size());
+      ARE_EQUAL(3, _multiTestClassRunner._testClassRunners.size());
       ARE_EQUAL(testClassRunnerA, _multiTestClassRunner._testClassRunners[0].get());
-      ARE_EQUAL(testClassRunnerB, _multiTestClassRunner._testClassRunners[1].get());
+      ARE_EQUAL(noOpTestClassRunner, _multiTestClassRunner._testClassRunners[1].get());
+      ARE_EQUAL(testClassRunnerB, _multiTestClassRunner._testClassRunners[2].get());
+      testClassRunnerB->TestClassNameMock.ExpectAndReturn("nooptestclassrunner");
       ARE_EQUAL(2, _multiTestClassRunner.NumberOfTestClassesToBeRun());
+      ZEN(testClassRunnerB->TestClassNameMock.AssertCalledOnce());
    }
 
    TEST(ApplyRunFiltersIfSpecified_RunFiltersEmpty_DoesNothing)

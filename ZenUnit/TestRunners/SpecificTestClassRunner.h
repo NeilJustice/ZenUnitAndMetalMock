@@ -55,7 +55,7 @@ namespace ZenUnit
          const size_t totalNumberOfTestCases = std::accumulate(_tests.cbegin(), _tests.cend(), size_t(),
             [](size_t cumulativeNumberOfTestCases, const std::unique_ptr<Test>& test)
             {
-               size_t numberOfTestCases = test->NumberOfTestCases();
+               const size_t numberOfTestCases = test->NumberOfTestCases();
                return cumulativeNumberOfTestCases + numberOfTestCases;
             });
          return totalNumberOfTestCases;
@@ -94,7 +94,7 @@ namespace ZenUnit
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          _console->NonMinimalWriteColor("@", Color::Green, zenUnitArgs.printMode);
          _console->NonMinimalWriteColor(_testClassName, Color::Green, zenUnitArgs.printMode);
-         std::string spacePipeSpaceNumberOfNamedTests = String::Concat(
+         const std::string spacePipeSpaceNumberOfNamedTests = String::Concat(
             " | ", _tests.size(), _tests.size() == 1 ? " named test" : " named tests");
          _console->NonMinimalWriteLine(spacePipeSpaceNumberOfNamedTests, zenUnitArgs.printMode);
       }
