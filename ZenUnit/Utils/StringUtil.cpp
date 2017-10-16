@@ -84,4 +84,14 @@ namespace ZenUnit
       }
       return elements;
    }
+
+   int String::IgnoreCaseStrcmp(const char* string1, const char* string2)
+   {
+#ifdef __linux__
+      const int strcmpResult = strcasecmp(string1, string2);
+#elif _WIN32
+      const int strcmpResult = _strcmpi(string1, string2);
+#endif
+      return strcmpResult;
+   }
 }

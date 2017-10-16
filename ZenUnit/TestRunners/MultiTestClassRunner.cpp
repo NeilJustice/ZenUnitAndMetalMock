@@ -6,6 +6,7 @@
 #include "ZenUnit/Utils/Iteration/ExtraArgAnyer.h"
 #include "ZenUnit/Utils/Iteration/ExtraArgMemberForEacher.h"
 #include "ZenUnit/Utils/Iteration/Transformer.h"
+#include "ZenUnit/Utils/StringUtil.h"
 #include "ZenUnit/Utils/Sorter.h"
 #include "ZenUnit/Utils/Time/Watch.h"
 
@@ -51,7 +52,7 @@ namespace ZenUnit
       const std::string& runFilter, const std::unique_ptr<TestClassRunner>* testClassRunner)
    {
       const char* const testClassName = (*testClassRunner)->TestClassName();
-      const bool testClassMatchesRunFilter = _strcmpi(runFilter.c_str(), testClassName) == 0;
+      const bool testClassMatchesRunFilter = String::IgnoreCaseStrcmp(runFilter.c_str(), testClassName) == 0;
       return testClassMatchesRunFilter;
    }
 

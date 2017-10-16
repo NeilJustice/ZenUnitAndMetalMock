@@ -10,6 +10,7 @@ namespace ZenUnit
    AFACT(ToUnsigned_EmptyString_Throws)
    FACTS(ToUnsigned_StringNotConvertibleToUnsigned_Throws)
    FACTS(ToUnsigned_StringIsValueGreaterThanUnsignedMax_Throws)
+   FACTS(IgnoreCaseStrcmp_ReturnsCrossPlatformCaseInsensitiveStrcmpResult)
    EVIDENCE
 
    TEST3X3(Split_ReturnsExpected,
@@ -106,6 +107,24 @@ namespace ZenUnit
       THROWS(String::ToUnsigned(expectedGreaterThanUnsignedMaxValue), invalid_argument,
          "String::ToUnsigned called with string containing number greater than numeric_limits<unsigned int>::max(): \""
          + expectedGreaterThanUnsignedMaxValue + "\"");
+   }
+
+   TEST3X3(IgnoreCaseStrcmp_ReturnsCrossPlatformCaseInsensitiveStrcmpResult,
+      const char* string1, const char* string2, int expectedReturnValue,
+      "", "", 0,
+      "a", "b", -1,
+      "A", "b", -1,
+      "b", "a", 1,
+      "B", "a", 1,
+      "a", "a", 0,
+      "A", "A", 0,
+      "a", "A", 0,
+      "A", "a", 0,
+      "hello hello", "Hello Hello", 0,
+      "hello hello", "Hello Hello 123", -32)
+   {
+      const int returnValue = String::IgnoreCaseStrcmp(string1, string2);
+      ARE_EQUAL(expectedReturnValue, returnValue);
    }
 
    }; RUNTESTS(StringUtilTests)

@@ -12,6 +12,7 @@ namespace ZenUnit
       static std::vector<std::string> Split(const std::string& str, char separator);
       static unsigned ToUnsigned(const std::string& str);
       static std::vector<std::string> CommaSplitExceptQuotedCommas(const char* text);
+      static int IgnoreCaseStrcmp(const char* string1, const char* string2);
 
       template<typename... Types>
       static std::string Concat(Types&&... values)
