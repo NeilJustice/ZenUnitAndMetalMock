@@ -87,7 +87,9 @@ namespace ZenUnit
       Color::Green, false,
       Color::Green, true,
       Color::Red, false,
-      Color::Red, true)
+      Color::Red, true,
+      Color::Teal, false,
+      Color::Teal, true)
    {
       _consoleColorerMock->SetColorMock.ExpectAndReturn(setColorReturnValue);
       _consoleColorerMock->UnsetColorMock.Expect();
@@ -177,7 +179,9 @@ namespace ZenUnit
       Color::Green, false,
       Color::Green, true,
       Color::Red, false,
-      Color::Red, true)
+      Color::Red, true,
+      Color::Teal, false,
+      Color::Teal, true)
    {
       _consoleColorerMock->SetColorMock.ExpectAndReturn(setColorReturnValue);
       _consoleColorerMock->UnsetColorMock.Expect();

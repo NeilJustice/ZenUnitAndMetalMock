@@ -39,7 +39,7 @@ namespace ZenUnit
          callResult.milliseconds = _stopwatch->Stop();
          callResult.anomalyOrException = std::make_shared<AnomalyOrException>(anomaly);
          callResult.testOutcome = TestOutcome::Anomaly;
-         _console->WriteColor("\nAnomaly Found", Color::Red);
+         _console->WriteColor("\nAnomaly Found", Color::Teal);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          _console->WriteLine(anomaly.why);
@@ -47,7 +47,7 @@ namespace ZenUnit
       catch (const ZenMock::ZenMockException& e)
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
-         _console->WriteColor("\nZenMockException Thrown", Color::Red);
+         _console->WriteColor("\nZenMockException Thrown", Color::Teal);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          const std::string exceptionTypeNameAndWhat = String::Concat(
@@ -57,7 +57,7 @@ namespace ZenUnit
       catch (const std::exception& e)
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
-         _console->WriteColor("\nException Thrown", Color::Red);
+         _console->WriteColor("\nException Thrown", Color::Teal);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          const std::string exceptionTypeNameAndWhat = String::Concat(
@@ -69,7 +69,7 @@ namespace ZenUnit
       {
          const unsigned milliseconds = _stopwatch->Stop();
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
-         _console->WriteLineColor("FATALITY", Color::Red);
+         _console->WriteLineColor("FATALITY", Color::Teal);
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          const std::string exitLine = String::Concat(
             "Fatal ... exception. ", zenUnitArgs.exit0 ?

@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "ZenUnit/Console/ConsoleColorer.h"
+#include "ZenUnit/Console/WindowsColor.h"
 #ifdef __linux__
 #include <unistd.h>
 #elif _WIN32
 #include <io.h>
-#include "ZenUnit/Enums/WindowsColor.h"
 // fileno() and isatty() are Linux and Windows wheras _fileno() and _isatty() are Windows only
 #pragma warning(disable: 4996) // 'fileno': The POSIX name for this item is deprecated
 #endif
@@ -79,7 +79,9 @@ namespace ZenUnit
       Color::Green, false, false,
       Color::Green, true, true,
       Color::Red, false, false,
-      Color::Red, true, true)
+      Color::Red, true, true,
+      Color::Teal, false, false,
+      Color::Teal, true, true)
    {
       _consoleColorer_SetCallsMocked._supportsColor = supportsColor;
       _consoleColorer_SetCallsMocked.SetSupportsColorIfUnsetMock.Expect();
@@ -142,7 +144,8 @@ namespace ZenUnit
       Color color, WindowsColor expectedWindowsColor,
       Color::White, WindowsColor::White,
       Color::Green, WindowsColor::Green,
-      Color::Red, WindowsColor::Red)
+      Color::Red, WindowsColor::Red,
+      Color::Teal, WindowsColor::Teal)
    {
       ZENMOCK_NONVOID1_FREE(HANDLE, GetStdHandle, DWORD);
       ZENMOCK_NONVOID2_FREE(BOOL, SetConsoleTextAttribute, HANDLE, WORD);

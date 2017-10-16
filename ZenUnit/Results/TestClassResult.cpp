@@ -63,7 +63,7 @@ namespace ZenUnit
       }
       else
       {
-         console->NonMinimalWriteColor("[FAILED]", Color::Red, printMode);
+         console->NonMinimalWriteColor("[FAILED]", Color::Teal, printMode);
       }
       console->NonMinimalWriteNewLine(printMode);
    }

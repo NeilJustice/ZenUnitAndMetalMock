@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnit/Enums/LinuxColor.h"
+#include "ZenUnit/Console/LinuxColor.h"
 
 namespace ZenUnit
 {
@@ -10,9 +10,10 @@ namespace ZenUnit
 
    TEST2X2(ColorToLinuxColor_ReturnsExpected,
       const char* expectedColorCode, Color color,
+      "\033[31m", Color::Red,
       "\033[0m", Color::White,
-      "\033[32m", Color::Green,
-      "\033[31m", Color::Red)
+      "\033[34m", Color::Teal,
+      "\033[32m", Color::Green)
    {
       ARE_EQUAL(expectedColorCode, ColorToLinuxColor(color));
    }
@@ -20,7 +21,7 @@ namespace ZenUnit
    TEST(ColorToLinuxColor_NonWhiteGreenRedColor_TriggersAssertion)
    {
       THROWS(ZenUnit::ColorToLinuxColor(Color::Unset),
-         logic_error, R"(assert_true(color == Color::Red) failed in ColorToLinuxColor()
+         logic_error, R"(assert_true(color == Color::Green) failed in ColorToLinuxColor()
 File.cpp(1))");
    }
 

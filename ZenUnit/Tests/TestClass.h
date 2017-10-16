@@ -43,7 +43,7 @@ namespace ZenUnit
          if (findIter == testNXNPmfToTest.end())
          {
             ConsoleColorer consoleColorer;
-            bool didSetColor = consoleColorer.SetColor(Color::Red);
+            bool didSetColor = consoleColorer.SetColor(Color::Teal);
             std::cout << "\nZenUnit test declaration syntax error.\n";
             consoleColorer.UnsetColor(didSetColor);
             std::cout << "A FACTS test was declared therefore a TESTNXN definition is expected, but a TEST definition was found.\n"

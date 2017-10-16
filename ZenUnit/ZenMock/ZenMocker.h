@@ -99,7 +99,7 @@ namespace ZenMock
          {
             const ZenUnit::Console console;
             std::cout << "\n";
-            console.WriteLineColor("Expected-But-Not-Asserted ZenMocked Function:", ZenUnit::Color::Red);
+            console.WriteLineColor("Expected-But-Not-Asserted ZenMocked Function:", ZenUnit::Color::Teal);
             console.WriteLineColor(ZenMockedFunctionSignature, ZenUnit::Color::Green);
             const ZenUnit::ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
             std::cout << R"(

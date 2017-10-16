@@ -5,8 +5,9 @@ namespace ZenUnit
    enum class Color : unsigned char
    {
       Unset,
+      Red,
       White,
-      Green,
-      Red      
+      Teal,
+      Green
    };
 }
