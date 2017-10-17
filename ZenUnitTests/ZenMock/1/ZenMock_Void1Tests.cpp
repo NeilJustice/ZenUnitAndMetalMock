@@ -7,7 +7,7 @@ namespace ZenMock
 {
    void Void1(int) {}
 
-   struct FunctionPointerTesting
+   struct Void1StaticFunctions
    {
       static void Void1(int) {}
       static void Static(int) {}
@@ -36,8 +36,8 @@ namespace ZenMock
    Void1FunctionsMock _mock;
    ZENMOCK_VOID1_FREE(Void1, int)
    ZENMOCK_VOID1_STATIC(ZenMock, Void1, int, _namespace)
-   ZENMOCK_VOID1_STATIC(ZenMock::FunctionPointerTesting, Void1, int, _static)
-   ZENMOCK_VOID1_STATIC(ZenMock::FunctionPointerTesting, Static, int)
+   ZENMOCK_VOID1_STATIC(ZenMock::Void1StaticFunctions, Void1, int, _static)
+   ZENMOCK_VOID1_STATIC(ZenMock::Void1StaticFunctions, Static, int)
    unique_ptr<ZenMock1Tester<
       Void1FunctionsMock,
       decltype(Void1_ZenMock),
@@ -58,9 +58,9 @@ namespace ZenMock
    const string ExpectedNamespaceSignature =
       "void ZenMock::Void1(int)";
    const string ExpectedStaticNameClashSignature =
-      "void ZenMock::FunctionPointerTesting::Void1(int)";
+      "void ZenMock::Void1StaticFunctions::Void1(int)";
    const string ExpectedStaticUniqueSignature =
-      "void ZenMock::FunctionPointerTesting::Static(int)";
+      "void ZenMock::Void1StaticFunctions::Static(int)";
 
    STARTUP
    {

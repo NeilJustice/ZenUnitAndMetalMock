@@ -20,13 +20,11 @@
 
 // Defines a <functionName>_ZenMock object for mocking a free function with signature "void functionName()".
 #define ZENMOCK_VOID0_FREE(functionName) \
-   static_assert(::functionName != nullptr); \
    ZenMock::VoidZeroArgFunctionPointerMocker functionName##_ZenMock = \
       ZenMock::VoidZeroArgFunctionPointerMocker(ZenMock::Signature::FunctionPointer("void", "::"#functionName"()"));
 
 // Defines a <functionName>_ZenMock object for mocking a static or namespaced function with signature "void qualifiedClassNameOrNamespace::functionName()".
 #define ZENMOCK_VOID0_STATIC(qualifiedClassNameOrNamespace, functionName, ...) \
-   static_assert(qualifiedClassNameOrNamespace::functionName != nullptr); \
    ZenMock::VoidZeroArgFunctionPointerMocker functionName##_ZenMock##__VA_ARGS__ = \
       ZenMock::VoidZeroArgFunctionPointerMocker( \
          ZenMock::Signature::FunctionPointer("void", #qualifiedClassNameOrNamespace"::"#functionName"()"));

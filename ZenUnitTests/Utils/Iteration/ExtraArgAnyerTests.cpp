@@ -114,5 +114,5 @@ namespace ZenUnit
 
    };
    RUNTEMPLATETESTS(ExtraArgAnyerTests, vector, int, int)
-   RUNTEMPLATETESTS(ExtraArgAnyerTests, unordered_set, char, unsigned)
+   RUNTEMPLATETESTS(ExtraArgAnyerTests, set, long long, unsigned char)
 }

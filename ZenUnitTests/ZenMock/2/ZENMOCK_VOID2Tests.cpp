@@ -6,7 +6,7 @@ namespace ZenMock
 {
    void Void2(int, int) {}
 
-   struct FunctionPointerTesting
+   struct Void0StaticFunctions
    {
       static void Void2(int, int) {}
       static void Static(int, int) {}
@@ -29,9 +29,12 @@ namespace ZenMock
       ZENMOCK_VOID2_CONST_NONVIRTUAL(NonVirtualConst, int, int)
    };
 
-   Void2FunctionsMock _mock;
-   ZENMOCK_VOID2_FREE(Void2, int, int)
-   ZENMOCK_VOID2_STATIC(ZenMock, Void2, int, int, _namespace)
-   ZENMOCK_VOID2_STATIC(ZenMock::FunctionPointerTesting, Void2, int, int, _static)
-   ZENMOCK_VOID2_STATIC(ZenMock::FunctionPointerTesting, Static, int, int)
+   namespace ZenMockVoid2Testing
+   {
+      Void2FunctionsMock void2FunctionsMock;
+      ZENMOCK_VOID2_FREE(Void2, int, int)
+      ZENMOCK_VOID2_STATIC(ZenMock, Void2, int, int, _namespace)
+      ZENMOCK_VOID2_STATIC(ZenMock::Void0StaticFunctions, Void2, int, int, _static)
+      ZENMOCK_VOID2_STATIC(ZenMock::Void0StaticFunctions, Static, int, int)
+   }
 }

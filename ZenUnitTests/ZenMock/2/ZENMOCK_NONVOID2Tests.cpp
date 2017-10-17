@@ -6,7 +6,7 @@ namespace ZenMock
 {
    int NonVoid2(int, int) { return 0; }
 
-   struct FunctionPointerTesting
+   struct NonVoid2StaticFunctions
    {
       static int NonVoid2(int, int) { return 0; }
       static int Static(int, int) { return 0; }
@@ -29,9 +29,12 @@ namespace ZenMock
       ZENMOCK_NONVOID2_CONST_NONVIRTUAL(int, NonVirtualConst, int, int)
    };
 
-   NonVoid2FunctionsMock _mock;
-   ZENMOCK_NONVOID2_FREE(int, NonVoid2, int, int)
-   ZENMOCK_NONVOID2_STATIC(int, ZenMock, NonVoid2, int, int, _namespace)
-   ZENMOCK_NONVOID2_STATIC(int, ZenMock::FunctionPointerTesting, NonVoid2, int, int, _static)
-   ZENMOCK_NONVOID2_STATIC(int, ZenMock::FunctionPointerTesting, Static, int, int)
+   namespace ZenMockNonVoid2Testing
+   {
+      NonVoid2FunctionsMock nonVoid2FunctionsMock;
+      ZENMOCK_NONVOID2_FREE(int, NonVoid2, int, int)
+      ZENMOCK_NONVOID2_STATIC(int, ZenMock, NonVoid2, int, int, _namespace)
+      ZENMOCK_NONVOID2_STATIC(int, ZenMock::NonVoid2StaticFunctions, NonVoid2, int, int, _static)
+      ZENMOCK_NONVOID2_STATIC(int, ZenMock::NonVoid2StaticFunctions, Static, int, int)
+   }
 }

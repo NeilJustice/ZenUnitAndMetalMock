@@ -12,7 +12,7 @@ namespace ZenUnit
          for (auto iter = collection.cbegin(); iter != collectionConstEnd; ++iter)
          {
             const auto& element = *iter;
-            bool elementMatchesPredicate = predicate(element, extraArg);
+            const bool elementMatchesPredicate = predicate(element, extraArg);
             if (elementMatchesPredicate)
             {
                return true;
