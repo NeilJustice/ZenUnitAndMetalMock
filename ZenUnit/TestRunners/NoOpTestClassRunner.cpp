@@ -5,7 +5,7 @@ namespace ZenUnit
 {
    const char* NoOpTestClassRunner::TestClassName() const
    {
-      return "NoOpTestClassRunner";
+      return nullptr;
    }
 
    size_t NoOpTestClassRunner::NumberOfTestCases() const
@@ -16,5 +16,10 @@ namespace ZenUnit
    TestClassResult NoOpTestClassRunner::RunTests()
    {
       return TestClassResult();
+   }
+
+   bool NoOpTestClassRunner::HasTestNameThatCaseInsensitiveMatchesPattern(const std::string& testNamePattern) const
+   {
+      return false;
    }
 }

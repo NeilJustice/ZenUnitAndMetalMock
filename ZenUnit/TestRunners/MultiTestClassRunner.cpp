@@ -62,7 +62,7 @@ namespace ZenUnit
       for (const std::unique_ptr<TestClassRunner>& testClassRunner : _testClassRunners)
       {
          const char* const testClassName = testClassRunner->TestClassName();
-         if (strcmp(testClassName, "NoOpTestClassRunner") != 0)
+         if (testClassName != nullptr)
          {
             ++numberOfTestClassesToBeRun;
          }

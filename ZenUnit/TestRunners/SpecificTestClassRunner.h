@@ -50,6 +50,19 @@ namespace ZenUnit
          return _testClassName;
       }
 
+      bool HasTestNameThatCaseInsensitiveMatchesPattern(const std::string& testNamePattern) const override
+      {
+         for (const std::unique_ptr<Test>& test : _tests)
+         {
+            const char* const containedTestName = test->Name();
+            if (String::IgnoreCaseStrcmp(containedTestName, testNamePattern.c_str()) == 0)
+            {
+               return true;
+            }
+         }
+         return false;
+      }
+
       size_t NumberOfTestCases() const override
       {
          const size_t totalNumberOfTestCases = std::accumulate(_tests.cbegin(), _tests.cend(), size_t(),

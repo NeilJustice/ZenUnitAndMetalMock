@@ -6,8 +6,9 @@ namespace ZenUnit
    class NoOpTestClassRunner : public TestClassRunner
    {
    public:
-      virtual const char* TestClassName() const;
-      virtual size_t NumberOfTestCases() const;
-      virtual TestClassResult RunTests();
+      const char* TestClassName() const override;
+      size_t NumberOfTestCases() const override;
+      TestClassResult RunTests() override;
+      bool HasTestNameThatCaseInsensitiveMatchesPattern(const std::string& testNamePattern) const override;
    };
 }

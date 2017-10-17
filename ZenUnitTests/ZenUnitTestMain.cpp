@@ -38,6 +38,21 @@ EVIDENCE
 SKIPTEMPLATETESTS(Reason, SkippedTemplateTestClassB, map)
 SKIPTEMPLATETESTS(Reason, SkippedTemplateTestClassB, unordered_map)
 
+TESTS(WidgetATests)
+AFACT(Test1)
+AFACT(Test2)
+EVIDENCE
+
+TEST(Test1)
+{
+}
+
+TEST(Test2)
+{
+}
+
+}; RUNTESTS(WidgetATests)
+
 int main(int argc, char* argv[])
 {
    FileLiner::zenUnitTestingMode = true;

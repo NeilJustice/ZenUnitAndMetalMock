@@ -73,7 +73,7 @@ namespace ZenUnit
       //
       ARE_EQUAL(1, _multiTestClassRunner._testClassRunners.size());
       ARE_EQUAL(testClassRunnerA, _multiTestClassRunner._testClassRunners[0].get());
-      testClassRunnerA->TestClassNameMock.ExpectAndReturn("WidgetTests");
+      testClassRunnerA->TestClassNameMock.ExpectAndReturn("WidgetATests");
       ARE_EQUAL(1, _multiTestClassRunner.NumberOfTestClassesToBeRun());
       ZEN(testClassRunnerA->TestClassNameMock.AssertCalledOnce());
 
@@ -96,7 +96,7 @@ namespace ZenUnit
       ARE_EQUAL(testClassRunnerA, _multiTestClassRunner._testClassRunners[0].get());
       ARE_EQUAL(noOpTestClassRunner, _multiTestClassRunner._testClassRunners[1].get());
       ARE_EQUAL(testClassRunnerB, _multiTestClassRunner._testClassRunners[2].get());
-      testClassRunnerB->TestClassNameMock.ExpectAndReturn("nooptestclassrunner");
+      testClassRunnerB->TestClassNameMock.ExpectAndReturn("WidgetBTests");
       ARE_EQUAL(2, _multiTestClassRunner.NumberOfTestClassesToBeRun());
       ZEN(testClassRunnerB->TestClassNameMock.AssertCalledOnce());
    }

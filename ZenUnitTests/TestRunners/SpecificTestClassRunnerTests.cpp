@@ -9,6 +9,10 @@ namespace ZenUnit
    TESTS(SpecificTestClassRunnerTests)
    AFACT(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
    AFACT(TestClassName_ReturnsTestClassName)
+   AFACT(HasTestNameThatCaseInsensitiveMatchesPattern_ZeroTests_ReturnsFalse)
+   AFACT(HasTestNameThatCaseInsensitiveMatchesPattern_OneNonMatchingTest_ReturnsFalse)
+   FACTS(HasTestNameThatCaseInsensitiveMatchesPattern_OneMatchingTest_ReturnsTrue)
+   AFACT(HasTestNameThatCaseInsensitiveMatchesPattern_FourTestsWhereThirdOneMatches_DoesNotCallFourthTestName_ReturnsTrue)
    AFACT(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
    FACTS(RunTests_PrintsTestClassNameAndNumberOfNamedTests_CallsDoRunTests_PrintsTestClassResultLine_MoveReturnsTestClassResult)
    FACTS(DoRunTests_RandomlyRunsTestsIfRandomOtherwiseSequentiallyRunsTests)
@@ -63,8 +67,6 @@ namespace ZenUnit
 
    STARTUP
    {
-      std::move(_specificTestClassRunner);
-
       _specificTestClassRunner = make_unique<SpecificTestClassRunner<TestingTestClass>>(TestClassName);
       _specificTestClassRunner->_console.reset(_consoleMock = new ConsoleMock);
       _specificTestClassRunner->call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
@@ -88,8 +90,74 @@ namespace ZenUnit
 
    TEST(TestClassName_ReturnsTestClassName)
    {
-      const char* testClassName = _specificTestClassRunner->TestClassName();
+      const char* const testClassName = _specificTestClassRunner->TestClassName();
       ARE_EQUAL(TestClassName, testClassName);
+   }
+
+   TEST(HasTestNameThatCaseInsensitiveMatchesPattern_ZeroTests_ReturnsFalse)
+   {
+      _specificTestClassRunner->_tests.resize(0);
+      //
+      const bool hasMatchingTestName
+         = _specificTestClassRunner->HasTestNameThatCaseInsensitiveMatchesPattern("TestName");
+      //
+      IS_FALSE(hasMatchingTestName);
+   }
+
+   TEST(HasTestNameThatCaseInsensitiveMatchesPattern_OneNonMatchingTest_ReturnsFalse)
+   {
+      TestMock* const testMock = new TestMock;
+      testMock->NameMock.ExpectAndReturn("TestName");
+      _specificTestClassRunner->_tests.resize(0);
+      _specificTestClassRunner->_tests.emplace_back(testMock);
+      //
+      const bool hasMatchingTestName
+         = _specificTestClassRunner->HasTestNameThatCaseInsensitiveMatchesPattern("NotTestName");
+      //
+      ZEN(testMock->NameMock.AssertCalledOnce());
+      IS_FALSE(hasMatchingTestName);
+   }
+
+   TEST1X1(HasTestNameThatCaseInsensitiveMatchesPattern_OneMatchingTest_ReturnsTrue,
+      const char* testNamePattern,
+      "TestName",
+      "testname")
+   {
+      TestMock* const testMock = new TestMock;
+      testMock->NameMock.ExpectAndReturn("TestName");
+      _specificTestClassRunner->_tests.resize(0);
+      _specificTestClassRunner->_tests.emplace_back(testMock);
+      //
+      const bool hasMatchingTestName = _specificTestClassRunner->
+         HasTestNameThatCaseInsensitiveMatchesPattern(testNamePattern);
+      //
+      ZEN(testMock->NameMock.AssertCalledOnce());
+      IS_TRUE(hasMatchingTestName);
+   }
+
+   TEST(HasTestNameThatCaseInsensitiveMatchesPattern_FourTestsWhereThirdOneMatches_DoesNotCallFourthTestName_ReturnsTrue)
+   {
+      TestMock* const testMock1 = new TestMock;
+      TestMock* const testMock2 = new TestMock;
+      TestMock* const testMock3 = new TestMock;
+      TestMock* const testMock4 = new TestMock;
+      testMock1->NameMock.ExpectAndReturn("Prefix_TestName");
+      testMock2->NameMock.ExpectAndReturn("TestName_Suffix");
+      testMock3->NameMock.ExpectAndReturn("TestName");
+      _specificTestClassRunner->_tests.resize(0);
+      _specificTestClassRunner->_tests.emplace_back(testMock1);
+      _specificTestClassRunner->_tests.emplace_back(testMock2);
+      _specificTestClassRunner->_tests.emplace_back(testMock3);
+      _specificTestClassRunner->_tests.emplace_back(testMock4);
+      const string testNamePattern = ZenUnit::Random<string>();
+      //
+      const bool hasMatchingTestName
+         = _specificTestClassRunner->HasTestNameThatCaseInsensitiveMatchesPattern("TestName");
+      //
+      ZEN(testMock1->NameMock.AssertCalledOnce());
+      ZEN(testMock2->NameMock.AssertCalledOnce());
+      ZEN(testMock3->NameMock.AssertCalledOnce());
+      IS_TRUE(hasMatchingTestName);
    }
 
    TEST(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
