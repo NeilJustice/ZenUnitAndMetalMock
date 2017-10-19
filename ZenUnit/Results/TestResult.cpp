@@ -154,7 +154,7 @@ namespace ZenUnit
       case TestOutcome::Anomaly:
       {
          const std::string testFailureNumber = testFailureNumberer->Next();
-         console->WriteLineColor(testFailureNumber, Color::Teal);
+         console->WriteLineColor(testFailureNumber, Color::Red);
          console->Write(fullTestName.Value());
          const CallResult& responsibleCallResult = (this->*responsibleCallResultField);
          const char* const responsibleTestPhaseSuffix =
@@ -168,14 +168,14 @@ namespace ZenUnit
       case TestOutcome::Exception:
       {
          const std::string testFailureNumber = testFailureNumberer->Next();
-         console->WriteLineColor(testFailureNumber, Color::Teal);
+         console->WriteLineColor(testFailureNumber, Color::Red);
          console->Write(fullTestName.Value());
          const CallResult& responsibleCallResult = this->*responsibleCallResultField;
          const char* const responsibleTestPhaseSuffix =
             TestPhaseSuffixer::DoTestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
          console->Write(responsibleTestPhaseSuffix);
          WriteTestCaseNumberIfAny(console, testCaseIndex);
-         console->WriteLineColor("\nException Thrown", Color::Teal);
+         console->WriteLineColor("\nException Thrown", Color::Red);
          const std::string exceptionTypeAndWhatLines = String::Concat(
             "  Type: ", *responsibleCallResult.anomalyOrException->exceptionTypeName, '\n',
             "what(): \"", *responsibleCallResult.anomalyOrException->exceptionWhat, "\"");
@@ -187,7 +187,7 @@ namespace ZenUnit
       {
          assert_true(testOutcome == TestOutcome::SuccessButPastDeadline);
          const std::string testFailureNumber = testFailureNumberer->Next();
-         console->WriteLineColor(testFailureNumber, Color::Teal);
+         console->WriteLineColor(testFailureNumber, Color::Red);
          console->WriteLine(fullTestName.Value());
          WriteTestCaseNumberIfAny(console, testCaseIndex);
          console->WriteLine(String::Concat(

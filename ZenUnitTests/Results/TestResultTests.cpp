@@ -273,7 +273,7 @@ namespace ZenUnit
       }));
       ZEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
          AssertCalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex));
-      ZEN(_consoleMock.WriteLineColorMock.AssertCalledOnceWith(testFailureNumber, Color::Teal));
+      ZEN(_consoleMock.WriteLineColorMock.AssertCalledOnceWith(testFailureNumber, Color::Red));
       ZEN(_consoleMock.WriteLineMock.AssertCalledOnceWith(anomalyWhy));
       ZEN(_consoleMock.WriteNewLineMock.AssertCalledOnce());
    }
@@ -321,8 +321,8 @@ namespace ZenUnit
       }));
       ZEN(_consoleMock.WriteLineColorMock.AssertCalls(
       {
-         { testFailureNumber, Color::Teal },
-         { "\nException Thrown", Color::Teal }
+         { testFailureNumber, Color::Red },
+         { "\nException Thrown", Color::Red }
       }));
       ZEN(_consoleMock.WriteLineMock.AssertCalledOnceWith(
          "  Type: " + exceptionTypeName + "\n"
@@ -353,7 +353,7 @@ namespace ZenUnit
       ZEN(_testFailureNumbererMock.NextMock.AssertCalledOnce());
       ZEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
          AssertCalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex));
-      ZEN(_consoleMock.WriteLineColorMock.AssertCalledOnceWith(testFailureNumber, Color::Teal));
+      ZEN(_consoleMock.WriteLineColorMock.AssertCalledOnceWith(testFailureNumber, Color::Red));
       ZEN(_consoleMock.WriteLineMock.AssertCalls(
       {
          _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value(),

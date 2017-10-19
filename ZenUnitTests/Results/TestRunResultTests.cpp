@@ -197,7 +197,7 @@ namespace ZenUnit
       //
       if (expectTestsFailedLineAndPrintFailuresCall)
       {
-         ZEN(_consoleMock->WriteLineColorMock.AssertCalledOnceWith(expectedTestsFailedLine, Color::Teal));
+         ZEN(_consoleMock->WriteLineColorMock.AssertCalledOnceWith(expectedTestsFailedLine, Color::Red));
          ZEN(_memberForEacherTestClassResultsMock->MemberForEachMock.
             AssertCalledOnceWith(&_testRunResult._testClassResults, &_testRunResult,
                &TestRunResult::PrintTestClassResultFailures));
@@ -237,13 +237,13 @@ namespace ZenUnit
       "[VICTORY]", Color::Green, size_t(0), size_t(2), "2 tests passed", 1, "millisecond", false, false, false,
       "[VICTORY]", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds", true, false, true,
       "[VICTORY]", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds", true, true, false,
-      ">>-FAIL->", Color::Teal, size_t(1), size_t(1), "1/1 test failed", 0, "milliseconds", false, false, false,
-      ">>-FAIL->", Color::Teal, size_t(1), size_t(2), "1/2 tests failed", 1, "millisecond", false, false, false,
-      ">>-FAIL->", Color::Teal, size_t(1), size_t(3), "1/3 tests failed", 2, "milliseconds", false, false, false,
-      ">>-FAIL->", Color::Teal, size_t(2), size_t(2), "2/2 tests failed", 3, "milliseconds", false, false, false,
-      ">>-FAIL->", Color::Teal, size_t(2), size_t(3), "2/3 tests failed", 4, "milliseconds", false, false, false,
-      ">>-FAIL->", Color::Teal, size_t(2), size_t(3), "2/3 tests failed", 4, "milliseconds", true, false, true,
-      ">>-FAIL->", Color::Teal, size_t(2), size_t(4), "2/4 tests failed", 5, "milliseconds", true, true, false)
+      ">>-FAIL->", Color::Red, size_t(1), size_t(1), "1/1 test failed", 0, "milliseconds", false, false, false,
+      ">>-FAIL->", Color::Red, size_t(1), size_t(2), "1/2 tests failed", 1, "millisecond", false, false, false,
+      ">>-FAIL->", Color::Red, size_t(1), size_t(3), "1/3 tests failed", 2, "milliseconds", false, false, false,
+      ">>-FAIL->", Color::Red, size_t(2), size_t(2), "2/2 tests failed", 3, "milliseconds", false, false, false,
+      ">>-FAIL->", Color::Red, size_t(2), size_t(3), "2/3 tests failed", 4, "milliseconds", false, false, false,
+      ">>-FAIL->", Color::Red, size_t(2), size_t(3), "2/3 tests failed", 4, "milliseconds", true, false, true,
+      ">>-FAIL->", Color::Red, size_t(2), size_t(4), "2/4 tests failed", 5, "milliseconds", true, true, false)
    {
       _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
       _consoleMock->WriteColorMock.Expect();

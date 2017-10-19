@@ -60,7 +60,7 @@ namespace ZenUnit
       {
          const std::string numberOfTestFailuresLine = String::Concat(
             _numberOfFailedTestCases, " test failure", _numberOfFailedTestCases > 1 ? "s" : "", ":\n");
-         _console->WriteLineColor(numberOfTestFailuresLine, Color::Teal);
+         _console->WriteLineColor(numberOfTestFailuresLine, Color::Red);
          _memberForEacherTestClassResults->MemberForEach(
             &_testClassResults, this, &TestRunResult::PrintTestClassResultFailures);
       }
@@ -82,7 +82,7 @@ namespace ZenUnit
       const ZenUnitArgs& zenUnitArgs) const
    {
       assert_true(_numberOfFailedTestCases <= totalNumberOfTestCases);
-      const Color prefixColor = _numberOfFailedTestCases == 0 ? Color::Green : Color::Teal;
+      const Color prefixColor = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
       if (totalNumberOfTestCases == 0)
       {
          _console->WriteColor("[ZenUnit] ", Color::Green);

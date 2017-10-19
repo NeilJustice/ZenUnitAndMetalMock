@@ -80,7 +80,7 @@ namespace ZenUnit
       Color::Green, true, true,
       Color::Red, false, false,
       Color::Red, true, true,
-      Color::Teal, false, false,
+      Color::Red, false, false,
       Color::Teal, true, true)
    {
       _consoleColorer_SetCallsMocked._supportsColor = supportsColor;

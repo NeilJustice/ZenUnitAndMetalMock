@@ -108,7 +108,7 @@ namespace ZenUnit
       Anomaly anomaly("NonDefault", "NonDefault", FileLine(), "", "");
       expectedCallResult.anomalyOrException = make_shared<AnomalyOrException>(anomaly);
       expectedCallResult.testOutcome = TestOutcome::Anomaly;
-      ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nAnomaly Found", Color::Teal));
+      ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nAnomaly Found", Color::Red));
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.AssertCalledOnceWith(arbitraryTestPhase));
       ZEN(_consoleMock->WriteMock.AssertCalledOnceWith(TestPhaseSuffix));
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(anomaly.why));
@@ -141,7 +141,7 @@ namespace ZenUnit
       expectedCallResult.testOutcome = TestOutcome::Exception;
       expectedCallResult.anomalyOrException
          = make_shared<AnomalyOrException>(Type::GetName<runtime_error>(), "runtime_error_what");
-      ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nException Thrown", Color::Teal));
+      ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nException Thrown", Color::Red));
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.AssertCalledOnceWith(arbitraryTestPhase));
       ZEN(_consoleMock->WriteMock.AssertCalledOnceWith(TestPhaseSuffix));
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(R"(
@@ -174,7 +174,7 @@ what(): "runtime_error_what")"));
          Type::GetName<ZenMock::FunctionAlreadyExpectedException>(),
          ZenMock::FunctionAlreadyExpectedException::MakeWhat("ZenMockedFunctionSignature").c_str());
       expectedCallResult.milliseconds = Milliseconds;
-      ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nZenMockException Thrown", Color::Teal));
+      ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nZenMockException Thrown", Color::Red));
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.AssertCalledOnceWith(arbitraryTestPhase));
       ZEN(_consoleMock->WriteMock.AssertCalledOnceWith(TestPhaseSuffix));
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(R"(
@@ -209,7 +209,7 @@ Already called [ZenMockedFunctionName]Mock.Expect[AndReturn|AndReturnValues|AndT
       _tryCatchCaller.Call(ThrowInt, _testMock.get(), arbitraryTestPhase);
       //
       AssertStartAndStopCalled();
-      ZEN(_consoleMock->WriteLineColorMock.AssertCalledOnceWith("FATALITY", Color::Teal));
+      ZEN(_consoleMock->WriteLineColorMock.AssertCalledOnceWith("FATALITY", Color::Red));
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.AssertCalledOnceWith(arbitraryTestPhase));
       ZEN(GetArgs_ZenMock.AssertCalledOnce());
       ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(
