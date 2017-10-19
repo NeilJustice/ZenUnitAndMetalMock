@@ -108,7 +108,7 @@ namespace ZenUnit
       Anomaly anomaly("NonDefault", "NonDefault", FileLine(), "", "");
       expectedCallResult.anomalyOrException = make_shared<AnomalyOrException>(anomaly);
       expectedCallResult.testOutcome = TestOutcome::Anomaly;
-      ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nAnomaly Found", Color::Red));
+      ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\n================\nAnomaly Detected\n================", Color::Red));
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.AssertCalledOnceWith(arbitraryTestPhase));
       ZEN(_consoleMock->WriteMock.AssertCalledOnceWith(TestPhaseSuffix));
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(anomaly.why));
