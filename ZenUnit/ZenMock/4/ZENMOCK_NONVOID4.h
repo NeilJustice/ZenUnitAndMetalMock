@@ -32,9 +32,9 @@
          ZenMock::Signature::FunctionPointer(#returnType, #qualifiedClassNameOrNamespace"::"#functionName"("#arg1Type", "#arg2Type", "#arg3Type", "#arg4Type")"));
 
 #define ZENMOCK_NONVOID4_DEFINED(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, virtualness, constness, mutableness, finalness, ...) \
-returnType functionName(arg1Type argument1, arg2Type argument2, arg3Type argument3, arg4Type argument4) constness finalness \
+returnType functionName(arg1Type firstArgument, arg2Type secondArgument, arg3Type thirdArgument, arg4Type fourthArgument) constness finalness \
 { \
-   return functionName##Mock##__VA_ARGS__.ZenMockItAndReturnValue(argument1, argument2, argument3, argument4); \
+   return functionName##Mock##__VA_ARGS__.ZenMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument); \
 } \
 struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidFourArgumentMocker<returnType, arg1Type, arg2Type, arg3Type, arg4Type> \
 { \
@@ -76,9 +76,9 @@ namespace ZenMock
          ValueReturner<ReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
-      ReturnType ZenMockItAndReturnValue(Arg1Type argument1, Arg2Type argument2, Arg3Type argument3, Arg4Type argument4)
+      ReturnType ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument)
       {
-         FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::ZenMockIt(argument1, argument2, argument3, argument4);
+         FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::ZenMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument);
          return ValueReturner<ReturnType>::ZenMockNextReturnValue();
       }
    };
@@ -94,9 +94,9 @@ namespace ZenMock
 
       static ReturnType ZenMockItFunctionPointer(
          NonVoidFourArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>* functionMocker,
-         Arg1Type argument1, Arg2Type argument2, Arg3Type argument3, Arg4Type argument4)
+         Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument)
       {
-         return functionMocker->ZenMockItAndReturnValue(argument1, argument2, argument3, argument4);
+         return functionMocker->ZenMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument);
       }
    };
 }

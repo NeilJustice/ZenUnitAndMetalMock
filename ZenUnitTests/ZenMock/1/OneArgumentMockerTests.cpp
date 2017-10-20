@@ -280,11 +280,11 @@ File.cpp(1))");
    TEST(AssertCalls_SetsAssertedTrue_ExpectedCallsSizeNon0AndEqualToNumberOfCalls_ArgsEqual_DoesNotThrow_DoesNotCopyTheExpectedArg)
    {
       IS_FALSE(_mocker->_asserted);
-      int argument1 = 10;
-      int argument2 = 10;
+      int firstArgument = 10;
+      int secondArgument = 10;
       const vector<OneArgumentCallRef<int>> expectedOneArgumentCalls
       {
-         argument1, argument2
+         firstArgument, secondArgument
       };
       _mocker->oneArgumentCalls = { 10, 10 };
       //

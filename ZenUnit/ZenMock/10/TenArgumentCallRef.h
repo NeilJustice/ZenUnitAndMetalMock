@@ -16,54 +16,54 @@ namespace ZenMock
       typename Arg10Type>
    struct TenArgumentCallRef
    {
-      const Arg1Type& argument1;
-      const Arg2Type& argument2;
-      const Arg3Type& argument3;
-      const Arg4Type& argument4;
-      const Arg5Type& argument5;
-      const Arg6Type& argument6;
-      const Arg7Type& argument7;
-      const Arg8Type& argument8;
-      const Arg9Type& argument9;
-      const Arg10Type& argument10;
+      const Arg1Type& firstArgument;
+      const Arg2Type& secondArgument;
+      const Arg3Type& thirdArgument;
+      const Arg4Type& fourthArgument;
+      const Arg5Type& fifthArgument;
+      const Arg6Type& sixthArgument;
+      const Arg7Type& seventhArgument;
+      const Arg8Type& eigthArgument;
+      const Arg9Type& ninthArgument;
+      const Arg10Type& tenthArgument;
 
       TenArgumentCallRef(
-         const Arg1Type& argument1,
-         const Arg2Type& argument2,
-         const Arg3Type& argument3,
-         const Arg4Type& argument4,
-         const Arg5Type& argument5,
-         const Arg6Type& argument6,
-         const Arg7Type& argument7,
-         const Arg8Type& argument8,
-         const Arg9Type& argument9,
-         const Arg10Type& argument10)
-         : argument1(argument1)
-         , argument2(argument2)
-         , argument3(argument3)
-         , argument4(argument4)
-         , argument5(argument5)
-         , argument6(argument6)
-         , argument7(argument7)
-         , argument8(argument8)
-         , argument9(argument9)
-         , argument10(argument10)
+         const Arg1Type& firstArgument,
+         const Arg2Type& secondArgument,
+         const Arg3Type& thirdArgument,
+         const Arg4Type& fourthArgument,
+         const Arg5Type& fifthArgument,
+         const Arg6Type& sixthArgument,
+         const Arg7Type& seventhArgument,
+         const Arg8Type& eigthArgument,
+         const Arg9Type& ninthArgument,
+         const Arg10Type& tenthArgument)
+         : firstArgument(firstArgument)
+         , secondArgument(secondArgument)
+         , thirdArgument(thirdArgument)
+         , fourthArgument(fourthArgument)
+         , fifthArgument(fifthArgument)
+         , sixthArgument(sixthArgument)
+         , seventhArgument(seventhArgument)
+         , eigthArgument(eigthArgument)
+         , ninthArgument(ninthArgument)
+         , tenthArgument(tenthArgument)
       {
       }
 
       explicit TenArgumentCallRef(const TenArgumentCall<
          Arg1Type, Arg2Type, Arg3Type, Arg4Type,
          Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& tenArgumentCall)
-         : argument1(tenArgumentCall.argument1)
-         , argument2(tenArgumentCall.argument2)
-         , argument3(tenArgumentCall.argument3)
-         , argument4(tenArgumentCall.argument4)
-         , argument5(tenArgumentCall.argument5)
-         , argument6(tenArgumentCall.argument6)
-         , argument7(tenArgumentCall.argument7)
-         , argument8(tenArgumentCall.argument8)
-         , argument9(tenArgumentCall.argument9)
-         , argument10(tenArgumentCall.argument10)
+         : firstArgument(tenArgumentCall.firstArgument)
+         , secondArgument(tenArgumentCall.secondArgument)
+         , thirdArgument(tenArgumentCall.thirdArgument)
+         , fourthArgument(tenArgumentCall.fourthArgument)
+         , fifthArgument(tenArgumentCall.fifthArgument)
+         , sixthArgument(tenArgumentCall.sixthArgument)
+         , seventhArgument(tenArgumentCall.seventhArgument)
+         , eigthArgument(tenArgumentCall.eigthArgument)
+         , ninthArgument(tenArgumentCall.ninthArgument)
+         , tenthArgument(tenArgumentCall.tenthArgument)
       {
       }
    };
@@ -84,16 +84,16 @@ struct ZenUnitEqualizer<ZenMock::TenArgumentCallRef<
          Arg1Type, Arg2Type, Arg3Type, Arg4Type,
          Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& actualTenArgumentCall)
    {
-      ARE_EQUAL(expectedTenArgumentCall.argument1, actualTenArgumentCall.argument1);
-      ARE_EQUAL(expectedTenArgumentCall.argument2, actualTenArgumentCall.argument2);
-      ARE_EQUAL(expectedTenArgumentCall.argument3, actualTenArgumentCall.argument3);
-      ARE_EQUAL(expectedTenArgumentCall.argument4, actualTenArgumentCall.argument4);
-      ARE_EQUAL(expectedTenArgumentCall.argument5, actualTenArgumentCall.argument5);
-      ARE_EQUAL(expectedTenArgumentCall.argument6, actualTenArgumentCall.argument6);
-      ARE_EQUAL(expectedTenArgumentCall.argument7, actualTenArgumentCall.argument7);
-      ARE_EQUAL(expectedTenArgumentCall.argument8, actualTenArgumentCall.argument8);
-      ARE_EQUAL(expectedTenArgumentCall.argument9, actualTenArgumentCall.argument9);
-      ARE_EQUAL(expectedTenArgumentCall.argument10, actualTenArgumentCall.argument10);
+      ARE_EQUAL(expectedTenArgumentCall.firstArgument, actualTenArgumentCall.firstArgument);
+      ARE_EQUAL(expectedTenArgumentCall.secondArgument, actualTenArgumentCall.secondArgument);
+      ARE_EQUAL(expectedTenArgumentCall.thirdArgument, actualTenArgumentCall.thirdArgument);
+      ARE_EQUAL(expectedTenArgumentCall.fourthArgument, actualTenArgumentCall.fourthArgument);
+      ARE_EQUAL(expectedTenArgumentCall.fifthArgument, actualTenArgumentCall.fifthArgument);
+      ARE_EQUAL(expectedTenArgumentCall.sixthArgument, actualTenArgumentCall.sixthArgument);
+      ARE_EQUAL(expectedTenArgumentCall.seventhArgument, actualTenArgumentCall.seventhArgument);
+      ARE_EQUAL(expectedTenArgumentCall.eigthArgument, actualTenArgumentCall.eigthArgument);
+      ARE_EQUAL(expectedTenArgumentCall.ninthArgument, actualTenArgumentCall.ninthArgument);
+      ARE_EQUAL(expectedTenArgumentCall.tenthArgument, actualTenArgumentCall.tenthArgument);
    }
 };
 
@@ -102,16 +102,16 @@ struct ZenUnitPrinter<ZenMock::TenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, 
 {
    static void Print(std::ostream& os, const ZenMock::TenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& tenArgumentCallRef)
    {
-      const std::string toStringedArg1 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.argument1);
-      const std::string toStringedArg2 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.argument2);
-      const std::string toStringedArg3 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.argument3);
-      const std::string toStringedArg4 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.argument4);
-      const std::string toStringedArg5 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.argument5);
-      const std::string toStringedArg6 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.argument6);
-      const std::string toStringedArg7 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.argument7);
-      const std::string toStringedArg8 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.argument8);
-      const std::string toStringedArg9 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.argument9);
-      const std::string toStringedArg10 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.argument10);
+      const std::string toStringedArg1 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.firstArgument);
+      const std::string toStringedArg2 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.secondArgument);
+      const std::string toStringedArg3 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.thirdArgument);
+      const std::string toStringedArg4 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.fourthArgument);
+      const std::string toStringedArg5 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.fifthArgument);
+      const std::string toStringedArg6 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.sixthArgument);
+      const std::string toStringedArg7 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.seventhArgument);
+      const std::string toStringedArg8 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.eigthArgument);
+      const std::string toStringedArg9 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.ninthArgument);
+      const std::string toStringedArg10 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.tenthArgument);
       os << "ZenMock::TenArgumentCall:\n"
             " Arg1: " << toStringedArg1 << '\n' <<
             " Arg2: " << toStringedArg2 << '\n' <<

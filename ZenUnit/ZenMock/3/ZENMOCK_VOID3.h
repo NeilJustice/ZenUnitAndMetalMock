@@ -31,9 +31,9 @@
          ZenMock::Signature::FunctionPointer("void", #qualifiedClassNameOrNamespace"::"#functionName"("#arg1Type", "#arg2Type", "#arg3Type")"));
 
 #define ZENMOCK_VOID3_DEFINED(functionName, arg1Type, arg2Type, arg3Type, virtualness, constness, mutableness, finalness, ...) \
-void functionName(arg1Type argument1, arg2Type argument2, arg3Type argument3) constness finalness \
+void functionName(arg1Type firstArgument, arg2Type secondArgument, arg3Type thirdArgument) constness finalness \
 { \
-   functionName##Mock##__VA_ARGS__.ZenMockIt(argument1, argument2, argument3); \
+   functionName##Mock##__VA_ARGS__.ZenMockIt(firstArgument, secondArgument, thirdArgument); \
 } \
 struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidThreeArgumentMocker<arg1Type, arg2Type, arg3Type> \
 { \
@@ -65,9 +65,9 @@ namespace ZenMock
 
       static void ZenMockItFunctionPointer(
          VoidThreeArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type>* functionMocker,
-         Arg1Type argument1, Arg2Type argument2, Arg3Type argument3)
+         Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument)
       {
-         functionMocker->ZenMock(argument1, argument2, argument3);
+         functionMocker->ZenMock(firstArgument, secondArgument, thirdArgument);
       }
    };
 }

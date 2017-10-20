@@ -76,25 +76,25 @@ namespace ZenMock
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
       const Call2 twoArgumentCall;
-      ARE_EQUAL(DV1, twoArgumentCall.argument1);
-      ARE_EQUAL(DV2, twoArgumentCall.argument2);
+      ARE_EQUAL(DV1, twoArgumentCall.firstArgument);
+      ARE_EQUAL(DV2, twoArgumentCall.secondArgument);
    }
 
    TEST(Constructor_CopiesArgsToDecayedTypeArgFields)
    {
       const TwoArgumentCall<const T<1>&, const T<2>&> call(V1, V2);
       //
-      ARE_COPIES(V1, call.argument1);
-      ARE_COPIES(V2, call.argument2);
-      IS_TRUE((is_same<T<1>, decltype(call.argument1)>::value));
-      IS_TRUE((is_same<T<2>, decltype(call.argument2)>::value));
+      ARE_COPIES(V1, call.firstArgument);
+      ARE_COPIES(V2, call.secondArgument);
+      IS_TRUE((is_same<T<1>, decltype(call.firstArgument)>::value));
+      IS_TRUE((is_same<T<2>, decltype(call.secondArgument)>::value));
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
       EQUALIZER_THROWS_INIT(Call2);
-      EQUALIZER_THROWS(Call2, argument1, V1);
-      EQUALIZER_THROWS(Call2, argument2, V2);
+      EQUALIZER_THROWS(Call2, firstArgument, V1);
+      EQUALIZER_THROWS(Call2, secondArgument, V2);
    }
 
    }; RUNTESTS(TwoArgumentCallTests)
@@ -111,29 +111,29 @@ namespace ZenMock
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
       const Call3 threeArgumentCall;
-      ARE_EQUAL(DV1, threeArgumentCall.argument1);
-      ARE_EQUAL(DV2, threeArgumentCall.argument2);
-      ARE_EQUAL(DV3, threeArgumentCall.argument3);
+      ARE_EQUAL(DV1, threeArgumentCall.firstArgument);
+      ARE_EQUAL(DV2, threeArgumentCall.secondArgument);
+      ARE_EQUAL(DV3, threeArgumentCall.thirdArgument);
    }
 
    TEST(Constructor_CopiesValuesToDecayTypeFields)
    {
       const ThreeArgumentCall<const T<1>&, const T<2>&, const T<3>&> call(V1, V2, V3);
       //
-      ARE_COPIES(V1, call.argument1);
-      ARE_COPIES(V2, call.argument2);
-      ARE_COPIES(V3, call.argument3);
-      IS_TRUE((is_same<T<1>, decltype(call.argument1)>::value));
-      IS_TRUE((is_same<T<2>, decltype(call.argument2)>::value));
-      IS_TRUE((is_same<T<3>, decltype(call.argument3)>::value));
+      ARE_COPIES(V1, call.firstArgument);
+      ARE_COPIES(V2, call.secondArgument);
+      ARE_COPIES(V3, call.thirdArgument);
+      IS_TRUE((is_same<T<1>, decltype(call.firstArgument)>::value));
+      IS_TRUE((is_same<T<2>, decltype(call.secondArgument)>::value));
+      IS_TRUE((is_same<T<3>, decltype(call.thirdArgument)>::value));
    }
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
       EQUALIZER_THROWS_INIT(Call3);
-      EQUALIZER_THROWS(Call3, argument1, V1);
-      EQUALIZER_THROWS(Call3, argument2, V2);
-      EQUALIZER_THROWS(Call3, argument3, V3);
+      EQUALIZER_THROWS(Call3, firstArgument, V1);
+      EQUALIZER_THROWS(Call3, secondArgument, V2);
+      EQUALIZER_THROWS(Call3, thirdArgument, V3);
    }
 
    }; RUNTESTS(ThreeArgumentCallTests)
@@ -150,10 +150,10 @@ namespace ZenMock
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
       const Call4 fourArgumentCall;
-      ARE_EQUAL(DV1, fourArgumentCall.argument1);
-      ARE_EQUAL(DV2, fourArgumentCall.argument2);
-      ARE_EQUAL(DV3, fourArgumentCall.argument3);
-      ARE_EQUAL(DV4, fourArgumentCall.argument4);
+      ARE_EQUAL(DV1, fourArgumentCall.firstArgument);
+      ARE_EQUAL(DV2, fourArgumentCall.secondArgument);
+      ARE_EQUAL(DV3, fourArgumentCall.thirdArgument);
+      ARE_EQUAL(DV4, fourArgumentCall.fourthArgument);
    }
 
    TEST(FourArgConstructor_CopiesValuesToDecayTypeFields)
@@ -161,23 +161,23 @@ namespace ZenMock
       const FourArgumentCall<const T<1>&, const T<2>&, const T<3>&, const T<4>&>
          call(V1, V2, V3, V4);
       //
-      ARE_COPIES(V1, call.argument1);
-      ARE_COPIES(V2, call.argument2);
-      ARE_COPIES(V3, call.argument3);
-      ARE_COPIES(V4, call.argument4);
-      IS_TRUE((is_same<T<1>, decltype(call.argument1)>::value));
-      IS_TRUE((is_same<T<2>, decltype(call.argument2)>::value));
-      IS_TRUE((is_same<T<3>, decltype(call.argument3)>::value));
-      IS_TRUE((is_same<T<4>, decltype(call.argument4)>::value));
+      ARE_COPIES(V1, call.firstArgument);
+      ARE_COPIES(V2, call.secondArgument);
+      ARE_COPIES(V3, call.thirdArgument);
+      ARE_COPIES(V4, call.fourthArgument);
+      IS_TRUE((is_same<T<1>, decltype(call.firstArgument)>::value));
+      IS_TRUE((is_same<T<2>, decltype(call.secondArgument)>::value));
+      IS_TRUE((is_same<T<3>, decltype(call.thirdArgument)>::value));
+      IS_TRUE((is_same<T<4>, decltype(call.fourthArgument)>::value));
    }
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
       EQUALIZER_THROWS_INIT(Call4);
-      EQUALIZER_THROWS(Call4, argument1, V1);
-      EQUALIZER_THROWS(Call4, argument2, V2);
-      EQUALIZER_THROWS(Call4, argument3, V3);
-      EQUALIZER_THROWS(Call4, argument4, V4);
+      EQUALIZER_THROWS(Call4, firstArgument, V1);
+      EQUALIZER_THROWS(Call4, secondArgument, V2);
+      EQUALIZER_THROWS(Call4, thirdArgument, V3);
+      EQUALIZER_THROWS(Call4, fourthArgument, V4);
    }
 
 
@@ -194,11 +194,11 @@ namespace ZenMock
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
       const Call5 fiveArgumentCall;
-      ARE_EQUAL(DV1, fiveArgumentCall.argument1);
-      ARE_EQUAL(DV2, fiveArgumentCall.argument2);
-      ARE_EQUAL(DV3, fiveArgumentCall.argument3);
-      ARE_EQUAL(DV4, fiveArgumentCall.argument4);
-      ARE_EQUAL(DV5, fiveArgumentCall.argument5);
+      ARE_EQUAL(DV1, fiveArgumentCall.firstArgument);
+      ARE_EQUAL(DV2, fiveArgumentCall.secondArgument);
+      ARE_EQUAL(DV3, fiveArgumentCall.thirdArgument);
+      ARE_EQUAL(DV4, fiveArgumentCall.fourthArgument);
+      ARE_EQUAL(DV5, fiveArgumentCall.fifthArgument);
    }
 
    TEST(FiveArgConstructor_CopiesValuesToDecayTypeFields)
@@ -206,26 +206,26 @@ namespace ZenMock
       const FiveArgumentCall<const T<1>&, const T<2>&, const T<3>&, const T<4>&, const T<5>&>
          call(V1, V2, V3, V4, V5);
       //
-      ARE_COPIES(V1, call.argument1);
-      ARE_COPIES(V2, call.argument2);
-      ARE_COPIES(V3, call.argument3);
-      ARE_COPIES(V4, call.argument4);
-      ARE_COPIES(V5, call.argument5);
-      IS_TRUE((is_same<T<1>, decltype(call.argument1)>::value));
-      IS_TRUE((is_same<T<2>, decltype(call.argument2)>::value));
-      IS_TRUE((is_same<T<3>, decltype(call.argument3)>::value));
-      IS_TRUE((is_same<T<4>, decltype(call.argument4)>::value));
-      IS_TRUE((is_same<T<5>, decltype(call.argument5)>::value));
+      ARE_COPIES(V1, call.firstArgument);
+      ARE_COPIES(V2, call.secondArgument);
+      ARE_COPIES(V3, call.thirdArgument);
+      ARE_COPIES(V4, call.fourthArgument);
+      ARE_COPIES(V5, call.fifthArgument);
+      IS_TRUE((is_same<T<1>, decltype(call.firstArgument)>::value));
+      IS_TRUE((is_same<T<2>, decltype(call.secondArgument)>::value));
+      IS_TRUE((is_same<T<3>, decltype(call.thirdArgument)>::value));
+      IS_TRUE((is_same<T<4>, decltype(call.fourthArgument)>::value));
+      IS_TRUE((is_same<T<5>, decltype(call.fifthArgument)>::value));
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
       EQUALIZER_THROWS_INIT(Call5);
-      EQUALIZER_THROWS(Call5, argument1, V1);
-      EQUALIZER_THROWS(Call5, argument2, V2);
-      EQUALIZER_THROWS(Call5, argument3, V3);
-      EQUALIZER_THROWS(Call5, argument4, V4);
-      EQUALIZER_THROWS(Call5, argument5, V5);
+      EQUALIZER_THROWS(Call5, firstArgument, V1);
+      EQUALIZER_THROWS(Call5, secondArgument, V2);
+      EQUALIZER_THROWS(Call5, thirdArgument, V3);
+      EQUALIZER_THROWS(Call5, fourthArgument, V4);
+      EQUALIZER_THROWS(Call5, fifthArgument, V5);
    }
 
    }; RUNTESTS(FiveArgumentCallTests)
@@ -242,12 +242,12 @@ namespace ZenMock
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
       const Call6 sixArgumentCall;
-      ARE_EQUAL(DV1, sixArgumentCall.argument1);
-      ARE_EQUAL(DV2, sixArgumentCall.argument2);
-      ARE_EQUAL(DV3, sixArgumentCall.argument3);
-      ARE_EQUAL(DV4, sixArgumentCall.argument4);
-      ARE_EQUAL(DV5, sixArgumentCall.argument5);
-      ARE_EQUAL(DV6, sixArgumentCall.argument6);
+      ARE_EQUAL(DV1, sixArgumentCall.firstArgument);
+      ARE_EQUAL(DV2, sixArgumentCall.secondArgument);
+      ARE_EQUAL(DV3, sixArgumentCall.thirdArgument);
+      ARE_EQUAL(DV4, sixArgumentCall.fourthArgument);
+      ARE_EQUAL(DV5, sixArgumentCall.fifthArgument);
+      ARE_EQUAL(DV6, sixArgumentCall.sixthArgument);
    }
 
    TEST(Constructor_CopiesValuesToDecayTypeFields)
@@ -255,29 +255,29 @@ namespace ZenMock
       const SixArgumentCall<const T<1>&, const T<2>&, const T<3>&, const T<4>&, const T<5>&, const T<6>&>
          call(V1, V2, V3, V4, V5, V6);
       //
-      ARE_COPIES(V1, call.argument1);
-      ARE_COPIES(V2, call.argument2);
-      ARE_COPIES(V3, call.argument3);
-      ARE_COPIES(V4, call.argument4);
-      ARE_COPIES(V5, call.argument5);
-      ARE_COPIES(V6, call.argument6);
-      IS_TRUE((is_same<T<1>, decltype(call.argument1)>::value));
-      IS_TRUE((is_same<T<2>, decltype(call.argument2)>::value));
-      IS_TRUE((is_same<T<3>, decltype(call.argument3)>::value));
-      IS_TRUE((is_same<T<4>, decltype(call.argument4)>::value));
-      IS_TRUE((is_same<T<5>, decltype(call.argument5)>::value));
-      IS_TRUE((is_same<T<6>, decltype(call.argument6)>::value));
+      ARE_COPIES(V1, call.firstArgument);
+      ARE_COPIES(V2, call.secondArgument);
+      ARE_COPIES(V3, call.thirdArgument);
+      ARE_COPIES(V4, call.fourthArgument);
+      ARE_COPIES(V5, call.fifthArgument);
+      ARE_COPIES(V6, call.sixthArgument);
+      IS_TRUE((is_same<T<1>, decltype(call.firstArgument)>::value));
+      IS_TRUE((is_same<T<2>, decltype(call.secondArgument)>::value));
+      IS_TRUE((is_same<T<3>, decltype(call.thirdArgument)>::value));
+      IS_TRUE((is_same<T<4>, decltype(call.fourthArgument)>::value));
+      IS_TRUE((is_same<T<5>, decltype(call.fifthArgument)>::value));
+      IS_TRUE((is_same<T<6>, decltype(call.sixthArgument)>::value));
    }
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
       EQUALIZER_THROWS_INIT(Call6);
-      EQUALIZER_THROWS(Call6, argument1, V1);
-      EQUALIZER_THROWS(Call6, argument2, V2);
-      EQUALIZER_THROWS(Call6, argument3, V3);
-      EQUALIZER_THROWS(Call6, argument4, V4);
-      EQUALIZER_THROWS(Call6, argument5, V5);
-      EQUALIZER_THROWS(Call6, argument6, V6);
+      EQUALIZER_THROWS(Call6, firstArgument, V1);
+      EQUALIZER_THROWS(Call6, secondArgument, V2);
+      EQUALIZER_THROWS(Call6, thirdArgument, V3);
+      EQUALIZER_THROWS(Call6, fourthArgument, V4);
+      EQUALIZER_THROWS(Call6, fifthArgument, V5);
+      EQUALIZER_THROWS(Call6, sixthArgument, V6);
    }
 
    }; RUNTESTS(SixArgumentCallTests)
@@ -294,13 +294,13 @@ namespace ZenMock
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
       const Call7 sevenArgumentCall;
-      ARE_EQUAL(DV1, sevenArgumentCall.argument1);
-      ARE_EQUAL(DV2, sevenArgumentCall.argument2);
-      ARE_EQUAL(DV3, sevenArgumentCall.argument3);
-      ARE_EQUAL(DV4, sevenArgumentCall.argument4);
-      ARE_EQUAL(DV5, sevenArgumentCall.argument5);
-      ARE_EQUAL(DV6, sevenArgumentCall.argument6);
-      ARE_EQUAL(DV7, sevenArgumentCall.argument7);
+      ARE_EQUAL(DV1, sevenArgumentCall.firstArgument);
+      ARE_EQUAL(DV2, sevenArgumentCall.secondArgument);
+      ARE_EQUAL(DV3, sevenArgumentCall.thirdArgument);
+      ARE_EQUAL(DV4, sevenArgumentCall.fourthArgument);
+      ARE_EQUAL(DV5, sevenArgumentCall.fifthArgument);
+      ARE_EQUAL(DV6, sevenArgumentCall.sixthArgument);
+      ARE_EQUAL(DV7, sevenArgumentCall.seventhArgument);
    }
 
    TEST(Constructor_CopiesValuesToDecayTypeFields)
@@ -308,32 +308,32 @@ namespace ZenMock
       const SevenArgumentCall<const T<1>&, const T<2>&, const T<3>&, const T<4>&, const T<5>&, const T<6>&, const T<7>&>
          call(V1, V2, V3, V4, V5, V6, V7);
       //
-      ARE_COPIES(V1, call.argument1);
-      ARE_COPIES(V2, call.argument2);
-      ARE_COPIES(V3, call.argument3);
-      ARE_COPIES(V4, call.argument4);
-      ARE_COPIES(V5, call.argument5);
-      ARE_COPIES(V6, call.argument6);
-      ARE_COPIES(V7, call.argument7);
-      IS_TRUE((is_same<T<1>, decltype(call.argument1)>::value));
-      IS_TRUE((is_same<T<2>, decltype(call.argument2)>::value));
-      IS_TRUE((is_same<T<3>, decltype(call.argument3)>::value));
-      IS_TRUE((is_same<T<4>, decltype(call.argument4)>::value));
-      IS_TRUE((is_same<T<5>, decltype(call.argument5)>::value));
-      IS_TRUE((is_same<T<6>, decltype(call.argument6)>::value));
-      IS_TRUE((is_same<T<7>, decltype(call.argument7)>::value));
+      ARE_COPIES(V1, call.firstArgument);
+      ARE_COPIES(V2, call.secondArgument);
+      ARE_COPIES(V3, call.thirdArgument);
+      ARE_COPIES(V4, call.fourthArgument);
+      ARE_COPIES(V5, call.fifthArgument);
+      ARE_COPIES(V6, call.sixthArgument);
+      ARE_COPIES(V7, call.seventhArgument);
+      IS_TRUE((is_same<T<1>, decltype(call.firstArgument)>::value));
+      IS_TRUE((is_same<T<2>, decltype(call.secondArgument)>::value));
+      IS_TRUE((is_same<T<3>, decltype(call.thirdArgument)>::value));
+      IS_TRUE((is_same<T<4>, decltype(call.fourthArgument)>::value));
+      IS_TRUE((is_same<T<5>, decltype(call.fifthArgument)>::value));
+      IS_TRUE((is_same<T<6>, decltype(call.sixthArgument)>::value));
+      IS_TRUE((is_same<T<7>, decltype(call.seventhArgument)>::value));
    }
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
       EQUALIZER_THROWS_INIT(Call7);
-      EQUALIZER_THROWS(Call7, argument1, V1);
-      EQUALIZER_THROWS(Call7, argument2, V2);
-      EQUALIZER_THROWS(Call7, argument3, V3);
-      EQUALIZER_THROWS(Call7, argument4, V4);
-      EQUALIZER_THROWS(Call7, argument5, V5);
-      EQUALIZER_THROWS(Call7, argument6, V6);
-      EQUALIZER_THROWS(Call7, argument7, V7);
+      EQUALIZER_THROWS(Call7, firstArgument, V1);
+      EQUALIZER_THROWS(Call7, secondArgument, V2);
+      EQUALIZER_THROWS(Call7, thirdArgument, V3);
+      EQUALIZER_THROWS(Call7, fourthArgument, V4);
+      EQUALIZER_THROWS(Call7, fifthArgument, V5);
+      EQUALIZER_THROWS(Call7, sixthArgument, V6);
+      EQUALIZER_THROWS(Call7, seventhArgument, V7);
    }
 
    }; RUNTESTS(SevenArgumentCallTests)
@@ -350,14 +350,14 @@ namespace ZenMock
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
       const Call8 eightArgumentCall;
-      ARE_EQUAL(DV1, eightArgumentCall.argument1);
-      ARE_EQUAL(DV2, eightArgumentCall.argument2);
-      ARE_EQUAL(DV3, eightArgumentCall.argument3);
-      ARE_EQUAL(DV4, eightArgumentCall.argument4);
-      ARE_EQUAL(DV5, eightArgumentCall.argument5);
-      ARE_EQUAL(DV6, eightArgumentCall.argument6);
-      ARE_EQUAL(DV7, eightArgumentCall.argument7);
-      ARE_EQUAL(DV8, eightArgumentCall.argument8);
+      ARE_EQUAL(DV1, eightArgumentCall.firstArgument);
+      ARE_EQUAL(DV2, eightArgumentCall.secondArgument);
+      ARE_EQUAL(DV3, eightArgumentCall.thirdArgument);
+      ARE_EQUAL(DV4, eightArgumentCall.fourthArgument);
+      ARE_EQUAL(DV5, eightArgumentCall.fifthArgument);
+      ARE_EQUAL(DV6, eightArgumentCall.sixthArgument);
+      ARE_EQUAL(DV7, eightArgumentCall.seventhArgument);
+      ARE_EQUAL(DV8, eightArgumentCall.eigthArgument);
    }
 
    TEST(Constructor_CopiesValuesToDecayTypeFields)
@@ -365,35 +365,35 @@ namespace ZenMock
       const EightArgumentCall<const T<1>&, const T<2>&, const T<3>&, const T<4>&, const T<5>&, const T<6>&, const T<7>&, const T<8>&>
          call(V1, V2, V3, V4, V5, V6, V7, V8);
       //
-      ARE_COPIES(V1, call.argument1);
-      ARE_COPIES(V2, call.argument2);
-      ARE_COPIES(V3, call.argument3);
-      ARE_COPIES(V4, call.argument4);
-      ARE_COPIES(V5, call.argument5);
-      ARE_COPIES(V6, call.argument6);
-      ARE_COPIES(V7, call.argument7);
-      ARE_COPIES(V8, call.argument8);
-      IS_TRUE((is_same<T<1>, decltype(call.argument1)>::value));
-      IS_TRUE((is_same<T<2>, decltype(call.argument2)>::value));
-      IS_TRUE((is_same<T<3>, decltype(call.argument3)>::value));
-      IS_TRUE((is_same<T<4>, decltype(call.argument4)>::value));
-      IS_TRUE((is_same<T<5>, decltype(call.argument5)>::value));
-      IS_TRUE((is_same<T<6>, decltype(call.argument6)>::value));
-      IS_TRUE((is_same<T<7>, decltype(call.argument7)>::value));
-      IS_TRUE((is_same<T<8>, decltype(call.argument8)>::value));
+      ARE_COPIES(V1, call.firstArgument);
+      ARE_COPIES(V2, call.secondArgument);
+      ARE_COPIES(V3, call.thirdArgument);
+      ARE_COPIES(V4, call.fourthArgument);
+      ARE_COPIES(V5, call.fifthArgument);
+      ARE_COPIES(V6, call.sixthArgument);
+      ARE_COPIES(V7, call.seventhArgument);
+      ARE_COPIES(V8, call.eigthArgument);
+      IS_TRUE((is_same<T<1>, decltype(call.firstArgument)>::value));
+      IS_TRUE((is_same<T<2>, decltype(call.secondArgument)>::value));
+      IS_TRUE((is_same<T<3>, decltype(call.thirdArgument)>::value));
+      IS_TRUE((is_same<T<4>, decltype(call.fourthArgument)>::value));
+      IS_TRUE((is_same<T<5>, decltype(call.fifthArgument)>::value));
+      IS_TRUE((is_same<T<6>, decltype(call.sixthArgument)>::value));
+      IS_TRUE((is_same<T<7>, decltype(call.seventhArgument)>::value));
+      IS_TRUE((is_same<T<8>, decltype(call.eigthArgument)>::value));
    }
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
       EQUALIZER_THROWS_INIT(Call8);
-      EQUALIZER_THROWS(Call8, argument1, V1);
-      EQUALIZER_THROWS(Call8, argument2, V2);
-      EQUALIZER_THROWS(Call8, argument3, V3);
-      EQUALIZER_THROWS(Call8, argument4, V4);
-      EQUALIZER_THROWS(Call8, argument5, V5);
-      EQUALIZER_THROWS(Call8, argument6, V6);
-      EQUALIZER_THROWS(Call8, argument7, V7);
-      EQUALIZER_THROWS(Call8, argument8, V8);
+      EQUALIZER_THROWS(Call8, firstArgument, V1);
+      EQUALIZER_THROWS(Call8, secondArgument, V2);
+      EQUALIZER_THROWS(Call8, thirdArgument, V3);
+      EQUALIZER_THROWS(Call8, fourthArgument, V4);
+      EQUALIZER_THROWS(Call8, fifthArgument, V5);
+      EQUALIZER_THROWS(Call8, sixthArgument, V6);
+      EQUALIZER_THROWS(Call8, seventhArgument, V7);
+      EQUALIZER_THROWS(Call8, eigthArgument, V8);
    }
 
    }; RUNTESTS(EightArgumentCallTests)
@@ -410,15 +410,15 @@ namespace ZenMock
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
       const Call9 nineArgumentCall;
-      ARE_EQUAL(DV1, nineArgumentCall.argument1);
-      ARE_EQUAL(DV2, nineArgumentCall.argument2);
-      ARE_EQUAL(DV3, nineArgumentCall.argument3);
-      ARE_EQUAL(DV4, nineArgumentCall.argument4);
-      ARE_EQUAL(DV5, nineArgumentCall.argument5);
-      ARE_EQUAL(DV6, nineArgumentCall.argument6);
-      ARE_EQUAL(DV7, nineArgumentCall.argument7);
-      ARE_EQUAL(DV8, nineArgumentCall.argument8);
-      ARE_EQUAL(DV9, nineArgumentCall.argument9);
+      ARE_EQUAL(DV1, nineArgumentCall.firstArgument);
+      ARE_EQUAL(DV2, nineArgumentCall.secondArgument);
+      ARE_EQUAL(DV3, nineArgumentCall.thirdArgument);
+      ARE_EQUAL(DV4, nineArgumentCall.fourthArgument);
+      ARE_EQUAL(DV5, nineArgumentCall.fifthArgument);
+      ARE_EQUAL(DV6, nineArgumentCall.sixthArgument);
+      ARE_EQUAL(DV7, nineArgumentCall.seventhArgument);
+      ARE_EQUAL(DV8, nineArgumentCall.eigthArgument);
+      ARE_EQUAL(DV9, nineArgumentCall.ninthArgument);
    }
 
    TEST(Constructor_CopiesValuesToDecayTypeFields)
@@ -426,38 +426,38 @@ namespace ZenMock
       const NineArgumentCall<const T<1>&, const T<2>&, const T<3>&, const T<4>&, const T<5>&, const T<6>&, const T<7>&, const T<8>&, const T<9>&>
          call(V1, V2, V3, V4, V5, V6, V7, V8, V9);
       //
-      ARE_COPIES(V1, call.argument1);
-      ARE_COPIES(V2, call.argument2);
-      ARE_COPIES(V3, call.argument3);
-      ARE_COPIES(V4, call.argument4);
-      ARE_COPIES(V5, call.argument5);
-      ARE_COPIES(V6, call.argument6);
-      ARE_COPIES(V7, call.argument7);
-      ARE_COPIES(V8, call.argument8);
-      ARE_COPIES(V9, call.argument9);
-      IS_TRUE((is_same<T<1>, decltype(call.argument1)>::value));
-      IS_TRUE((is_same<T<2>, decltype(call.argument2)>::value));
-      IS_TRUE((is_same<T<3>, decltype(call.argument3)>::value));
-      IS_TRUE((is_same<T<4>, decltype(call.argument4)>::value));
-      IS_TRUE((is_same<T<5>, decltype(call.argument5)>::value));
-      IS_TRUE((is_same<T<6>, decltype(call.argument6)>::value));
-      IS_TRUE((is_same<T<7>, decltype(call.argument7)>::value));
-      IS_TRUE((is_same<T<8>, decltype(call.argument8)>::value));
-      IS_TRUE((is_same<T<9>, decltype(call.argument9)>::value));
+      ARE_COPIES(V1, call.firstArgument);
+      ARE_COPIES(V2, call.secondArgument);
+      ARE_COPIES(V3, call.thirdArgument);
+      ARE_COPIES(V4, call.fourthArgument);
+      ARE_COPIES(V5, call.fifthArgument);
+      ARE_COPIES(V6, call.sixthArgument);
+      ARE_COPIES(V7, call.seventhArgument);
+      ARE_COPIES(V8, call.eigthArgument);
+      ARE_COPIES(V9, call.ninthArgument);
+      IS_TRUE((is_same<T<1>, decltype(call.firstArgument)>::value));
+      IS_TRUE((is_same<T<2>, decltype(call.secondArgument)>::value));
+      IS_TRUE((is_same<T<3>, decltype(call.thirdArgument)>::value));
+      IS_TRUE((is_same<T<4>, decltype(call.fourthArgument)>::value));
+      IS_TRUE((is_same<T<5>, decltype(call.fifthArgument)>::value));
+      IS_TRUE((is_same<T<6>, decltype(call.sixthArgument)>::value));
+      IS_TRUE((is_same<T<7>, decltype(call.seventhArgument)>::value));
+      IS_TRUE((is_same<T<8>, decltype(call.eigthArgument)>::value));
+      IS_TRUE((is_same<T<9>, decltype(call.ninthArgument)>::value));
    }
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
       EQUALIZER_THROWS_INIT(Call9);
-      EQUALIZER_THROWS(Call9, argument1, V1);
-      EQUALIZER_THROWS(Call9, argument2, V2);
-      EQUALIZER_THROWS(Call9, argument3, V3);
-      EQUALIZER_THROWS(Call9, argument4, V4);
-      EQUALIZER_THROWS(Call9, argument5, V5);
-      EQUALIZER_THROWS(Call9, argument6, V6);
-      EQUALIZER_THROWS(Call9, argument7, V7);
-      EQUALIZER_THROWS(Call9, argument8, V8);
-      EQUALIZER_THROWS(Call9, argument9, V9);
+      EQUALIZER_THROWS(Call9, firstArgument, V1);
+      EQUALIZER_THROWS(Call9, secondArgument, V2);
+      EQUALIZER_THROWS(Call9, thirdArgument, V3);
+      EQUALIZER_THROWS(Call9, fourthArgument, V4);
+      EQUALIZER_THROWS(Call9, fifthArgument, V5);
+      EQUALIZER_THROWS(Call9, sixthArgument, V6);
+      EQUALIZER_THROWS(Call9, seventhArgument, V7);
+      EQUALIZER_THROWS(Call9, eigthArgument, V8);
+      EQUALIZER_THROWS(Call9, ninthArgument, V9);
    }
 
    }; RUNTESTS(NineArgumentCallTests)
@@ -473,16 +473,16 @@ namespace ZenMock
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
       const Call10 tenArgumentCall;
-      ARE_EQUAL(DV1, tenArgumentCall.argument1);
-      ARE_EQUAL(DV2, tenArgumentCall.argument2);
-      ARE_EQUAL(DV3, tenArgumentCall.argument3);
-      ARE_EQUAL(DV4, tenArgumentCall.argument4);
-      ARE_EQUAL(DV5, tenArgumentCall.argument5);
-      ARE_EQUAL(DV6, tenArgumentCall.argument6);
-      ARE_EQUAL(DV7, tenArgumentCall.argument7);
-      ARE_EQUAL(DV8, tenArgumentCall.argument8);
-      ARE_EQUAL(DV9, tenArgumentCall.argument9);
-      ARE_EQUAL(DV10, tenArgumentCall.argument10);
+      ARE_EQUAL(DV1, tenArgumentCall.firstArgument);
+      ARE_EQUAL(DV2, tenArgumentCall.secondArgument);
+      ARE_EQUAL(DV3, tenArgumentCall.thirdArgument);
+      ARE_EQUAL(DV4, tenArgumentCall.fourthArgument);
+      ARE_EQUAL(DV5, tenArgumentCall.fifthArgument);
+      ARE_EQUAL(DV6, tenArgumentCall.sixthArgument);
+      ARE_EQUAL(DV7, tenArgumentCall.seventhArgument);
+      ARE_EQUAL(DV8, tenArgumentCall.eigthArgument);
+      ARE_EQUAL(DV9, tenArgumentCall.ninthArgument);
+      ARE_EQUAL(DV10, tenArgumentCall.tenthArgument);
    }
 
    TEST(Constructor_CopiesValuesToDecayTypeFields)
@@ -492,41 +492,41 @@ namespace ZenMock
          const T<6>&, const T<7>&, const T<8>&, const T<9>&, const T<10>&>
          call(V1, V2, V3, V4, V5, V6, V7, V8, V9, V10);
       //
-      ARE_COPIES(V1, call.argument1);
-      ARE_COPIES(V2, call.argument2);
-      ARE_COPIES(V3, call.argument3);
-      ARE_COPIES(V4, call.argument4);
-      ARE_COPIES(V5, call.argument5);
-      ARE_COPIES(V6, call.argument6);
-      ARE_COPIES(V7, call.argument7);
-      ARE_COPIES(V8, call.argument8);
-      ARE_COPIES(V9, call.argument9);
-      ARE_COPIES(V10, call.argument10);
-      IS_TRUE((is_same<T<1>, decltype(call.argument1)>::value));
-      IS_TRUE((is_same<T<2>, decltype(call.argument2)>::value));
-      IS_TRUE((is_same<T<3>, decltype(call.argument3)>::value));
-      IS_TRUE((is_same<T<4>, decltype(call.argument4)>::value));
-      IS_TRUE((is_same<T<5>, decltype(call.argument5)>::value));
-      IS_TRUE((is_same<T<6>, decltype(call.argument6)>::value));
-      IS_TRUE((is_same<T<7>, decltype(call.argument7)>::value));
-      IS_TRUE((is_same<T<8>, decltype(call.argument8)>::value));
-      IS_TRUE((is_same<T<9>, decltype(call.argument9)>::value));
-      IS_TRUE((is_same<T<10>, decltype(call.argument10)>::value));
+      ARE_COPIES(V1, call.firstArgument);
+      ARE_COPIES(V2, call.secondArgument);
+      ARE_COPIES(V3, call.thirdArgument);
+      ARE_COPIES(V4, call.fourthArgument);
+      ARE_COPIES(V5, call.fifthArgument);
+      ARE_COPIES(V6, call.sixthArgument);
+      ARE_COPIES(V7, call.seventhArgument);
+      ARE_COPIES(V8, call.eigthArgument);
+      ARE_COPIES(V9, call.ninthArgument);
+      ARE_COPIES(V10, call.tenthArgument);
+      IS_TRUE((is_same<T<1>, decltype(call.firstArgument)>::value));
+      IS_TRUE((is_same<T<2>, decltype(call.secondArgument)>::value));
+      IS_TRUE((is_same<T<3>, decltype(call.thirdArgument)>::value));
+      IS_TRUE((is_same<T<4>, decltype(call.fourthArgument)>::value));
+      IS_TRUE((is_same<T<5>, decltype(call.fifthArgument)>::value));
+      IS_TRUE((is_same<T<6>, decltype(call.sixthArgument)>::value));
+      IS_TRUE((is_same<T<7>, decltype(call.seventhArgument)>::value));
+      IS_TRUE((is_same<T<8>, decltype(call.eigthArgument)>::value));
+      IS_TRUE((is_same<T<9>, decltype(call.ninthArgument)>::value));
+      IS_TRUE((is_same<T<10>, decltype(call.tenthArgument)>::value));
    }
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
       EQUALIZER_THROWS_INIT(Call10);
-      EQUALIZER_THROWS(Call10, argument1, V1);
-      EQUALIZER_THROWS(Call10, argument2, V2);
-      EQUALIZER_THROWS(Call10, argument3, V3);
-      EQUALIZER_THROWS(Call10, argument4, V4);
-      EQUALIZER_THROWS(Call10, argument5, V5);
-      EQUALIZER_THROWS(Call10, argument6, V6);
-      EQUALIZER_THROWS(Call10, argument7, V7);
-      EQUALIZER_THROWS(Call10, argument8, V8);
-      EQUALIZER_THROWS(Call10, argument9, V9);
-      EQUALIZER_THROWS(Call10, argument10, V10);
+      EQUALIZER_THROWS(Call10, firstArgument, V1);
+      EQUALIZER_THROWS(Call10, secondArgument, V2);
+      EQUALIZER_THROWS(Call10, thirdArgument, V3);
+      EQUALIZER_THROWS(Call10, fourthArgument, V4);
+      EQUALIZER_THROWS(Call10, fifthArgument, V5);
+      EQUALIZER_THROWS(Call10, sixthArgument, V6);
+      EQUALIZER_THROWS(Call10, seventhArgument, V7);
+      EQUALIZER_THROWS(Call10, eigthArgument, V8);
+      EQUALIZER_THROWS(Call10, ninthArgument, V9);
+      EQUALIZER_THROWS(Call10, tenthArgument, V10);
    }
 
    }; RUNTESTS(TenArgumentCallTests)

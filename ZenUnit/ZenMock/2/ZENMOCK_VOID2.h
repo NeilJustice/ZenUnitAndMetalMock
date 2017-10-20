@@ -31,9 +31,9 @@
          ZenMock::Signature::FunctionPointer("void", #qualifiedClassNameOrNamespace"::"#functionName"("#arg1Type", "#arg2Type")"));
 
 #define ZENMOCK_VOID2_DEFINED(functionName, arg1Type, arg2Type, virtualness, constness, mutableness, finalness, ...) \
-void functionName(arg1Type argument1, arg2Type argument2) constness finalness \
+void functionName(arg1Type firstArgument, arg2Type secondArgument) constness finalness \
 { \
-   functionName##Mock##__VA_ARGS__.ZenMockIt(argument1, argument2); \
+   functionName##Mock##__VA_ARGS__.ZenMockIt(firstArgument, secondArgument); \
 } \
 struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidTwoArgumentMocker<arg1Type, arg2Type> \
 { \
@@ -70,9 +70,9 @@ namespace ZenMock
 
       static void ZenMockItFunctionPointer(
          VoidTwoArgFunctionPointerMocker<Arg1Type, Arg2Type>* functionMocker,
-         Arg1Type argument1, Arg2Type argument2)
+         Arg1Type firstArgument, Arg2Type secondArgument)
       {
-         functionMocker->ZenMock(argument1, argument2);
+         functionMocker->ZenMock(firstArgument, secondArgument);
       }
    };
 }

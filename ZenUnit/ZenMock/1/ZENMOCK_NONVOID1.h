@@ -78,9 +78,9 @@ namespace ZenMock
             std::forward<ReturnValueURef>(subsequentReturnValues)...);
       }
 
-      ReturnType ZenMockItAndReturnValue(ArgType argument1)
+      ReturnType ZenMockItAndReturnValue(ArgType argument)
       {
-         OneArgumentMocker<ArgType>::ZenMockIt(argument1);
+         OneArgumentMocker<ArgType>::ZenMockIt(argument);
          return ValueReturner<ReturnType>::ZenMockNextReturnValue();
       }
    };
@@ -95,9 +95,9 @@ namespace ZenMock
       }
 
       static ReturnType ZenMockItFunctionPointer(
-         NonVoidOneArgFunctionPointerMocker* functionMocker, Arg1Type argument1)
+         NonVoidOneArgFunctionPointerMocker* functionMocker, Arg1Type argument)
       {
-         return functionMocker->ZenMockItAndReturnValue(argument1);
+         return functionMocker->ZenMockItAndReturnValue(argument);
       }
    };
 }

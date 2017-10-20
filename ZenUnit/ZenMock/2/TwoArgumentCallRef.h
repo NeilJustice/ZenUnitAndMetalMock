@@ -6,18 +6,18 @@ namespace ZenMock
    template<typename Arg1Type, typename Arg2Type>
    struct TwoArgumentCallRef
    {
-      const Arg1Type& argument1;
-      const Arg2Type& argument2;
+      const Arg1Type& firstArgument;
+      const Arg2Type& secondArgument;
 
-      TwoArgumentCallRef(const Arg1Type& argument1, const Arg2Type& argument2)
-         : argument1(argument1)
-         , argument2(argument2)
+      TwoArgumentCallRef(const Arg1Type& firstArgument, const Arg2Type& secondArgument)
+         : firstArgument(firstArgument)
+         , secondArgument(secondArgument)
       {
       }
 
       explicit TwoArgumentCallRef(const TwoArgumentCall<Arg1Type, Arg2Type>& twoArgumentCall)
-         : argument1(twoArgumentCall.argument1)
-         , argument2(twoArgumentCall.argument2)
+         : firstArgument(twoArgumentCall.firstArgument)
+         , secondArgument(twoArgumentCall.secondArgument)
       {
       }
    };
@@ -30,8 +30,8 @@ struct ZenUnitEqualizer<ZenMock::TwoArgumentCallRef<Arg1Type, Arg2Type>>
       const ZenMock::TwoArgumentCallRef<Arg1Type, Arg2Type>& expectedTwoArgumentCall,
       const ZenMock::TwoArgumentCallRef<Arg1Type, Arg2Type>& actualTwoArgumentCall)
    {
-      ARE_EQUAL(expectedTwoArgumentCall.argument1, actualTwoArgumentCall.argument1);
-      ARE_EQUAL(expectedTwoArgumentCall.argument2, actualTwoArgumentCall.argument2);
+      ARE_EQUAL(expectedTwoArgumentCall.firstArgument, actualTwoArgumentCall.firstArgument);
+      ARE_EQUAL(expectedTwoArgumentCall.secondArgument, actualTwoArgumentCall.secondArgument);
    }
 };
 
@@ -40,8 +40,8 @@ struct ZenUnitPrinter<ZenMock::TwoArgumentCallRef<Arg1Type, Arg2Type>>
 {
    static void Print(std::ostream& os, const ZenMock::TwoArgumentCallRef<Arg1Type, Arg2Type>& twoArgumentCallRef)
    {
-      const std::string toStringedArg1 = ZenUnit::ToStringer::ToString(twoArgumentCallRef.argument1);
-      const std::string toStringedArg2 = ZenUnit::ToStringer::ToString(twoArgumentCallRef.argument2);
+      const std::string toStringedArg1 = ZenUnit::ToStringer::ToString(twoArgumentCallRef.firstArgument);
+      const std::string toStringedArg2 = ZenUnit::ToStringer::ToString(twoArgumentCallRef.secondArgument);
       os << "ZenMock::TwoArgumentCall:\n"
          "Arg1: " << toStringedArg1 << '\n' <<
          "Arg2: " << toStringedArg2;

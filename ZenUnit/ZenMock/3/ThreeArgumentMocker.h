@@ -27,31 +27,31 @@ namespace ZenMock
       {
       }
 
-      void ZenMockIt(const Arg1Type& argument1, const Arg2Type& argument2, const Arg3Type& argument3)
+      void ZenMockIt(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument)
       {
-         this->ZenMockThrowIfNotExpected(argument1, argument2, argument3);
-         threeArgumentCalls.emplace_back(argument1, argument2, argument3);
+         this->ZenMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument);
+         threeArgumentCalls.emplace_back(firstArgument, secondArgument, thirdArgument);
          this->ZenMockThrowIfExceptionSet();
       }
 
       void AssertCalledOnceWith(
-         const Arg1Type& expectedArgument1,
-         const Arg2Type& expectedArgument2,
-         const Arg3Type& expectedArgument3)
+         const Arg1Type& expectedFirstArgument,
+         const Arg2Type& expectedSecondArgument,
+         const Arg3Type& expectedThirdArgument)
       {
          this->ZenMockSetAsserted();
          const size_t expectedNumberOfCalls = 1;
          ARE_EQUAL(expectedNumberOfCalls, threeArgumentCalls.size(), this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArgument1, threeArgumentCalls[0].argument1, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArgument2, threeArgumentCalls[0].argument2, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArgument3, threeArgumentCalls[0].argument3, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedFirstArgument, threeArgumentCalls[0].firstArgument, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedSecondArgument, threeArgumentCalls[0].secondArgument, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedThirdArgument, threeArgumentCalls[0].thirdArgument, this->ZenMockedFunctionSignature);
       }
 
       void AssertCalledNTimesWith(
          size_t expectedNumberOfCalls,
-         const Arg1Type& expectedArgument1,
-         const Arg2Type& expectedArgument2,
-         const Arg3Type& expectedArgument3)
+         const Arg1Type& expectedFirstArgument,
+         const Arg2Type& expectedSecondArgument,
+         const Arg3Type& expectedThirdArgument)
       {
          this->ZenMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
          this->ZenMockSetAsserted();
@@ -60,9 +60,9 @@ namespace ZenMock
          {
             const std::string zenMockedFunctionSignatureAndCallIndex
                = ZenUnit::String::Concat(this->ZenMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedArgument1, threeArgumentCalls[i].argument1, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArgument2, threeArgumentCalls[i].argument2, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArgument3, threeArgumentCalls[i].argument3, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFirstArgument, threeArgumentCalls[i].firstArgument, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSecondArgument, threeArgumentCalls[i].secondArgument, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedThirdArgument, threeArgumentCalls[i].thirdArgument, zenMockedFunctionSignatureAndCallIndex);
          }
       }
 

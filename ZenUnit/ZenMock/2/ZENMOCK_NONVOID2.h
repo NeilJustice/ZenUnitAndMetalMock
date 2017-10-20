@@ -32,9 +32,9 @@
          ZenMock::Signature::FunctionPointer(#returnType, #qualifiedClassNameOrNamespace"::"#functionName"("#arg1Type", "#arg2Type")"));
 
 #define ZENMOCK_NONVOID2_DEFINED(returnType, functionName, arg1Type, arg2Type, virtualness, constness, mutableness, finalness, ...) \
-returnType functionName(arg1Type argument1, arg2Type argument2) constness finalness \
+returnType functionName(arg1Type firstArgument, arg2Type secondArgument) constness finalness \
 { \
-   return functionName##Mock##__VA_ARGS__.ZenMockItAndReturnValue(argument1, argument2); \
+   return functionName##Mock##__VA_ARGS__.ZenMockItAndReturnValue(firstArgument, secondArgument); \
 } \
 struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidTwoArgumentMocker<returnType, arg1Type, arg2Type> \
 { \
@@ -78,9 +78,9 @@ namespace ZenMock
             subsequentReturnValues...);
       }
 
-      ReturnType ZenMockItAndReturnValue(Arg1Type argument1, Arg2Type argument2)
+      ReturnType ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument)
       {
-         TwoArgumentMocker<Arg1Type, Arg2Type>::ZenMockIt(argument1, argument2);
+         TwoArgumentMocker<Arg1Type, Arg2Type>::ZenMockIt(firstArgument, secondArgument);
          return ValueReturner<ReturnType>::ZenMockNextReturnValue();
       }
    };
@@ -96,9 +96,9 @@ namespace ZenMock
 
       static ReturnType ZenMockItFunctionPointer(
          NonVoidTwoArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type>* functionMocker,
-         Arg1Type argument1, Arg2Type argument2)
+         Arg1Type firstArgument, Arg2Type secondArgument)
       {
-         return functionMocker->ZenMockItAndReturnValue(argument1, argument2);
+         return functionMocker->ZenMockItAndReturnValue(firstArgument, secondArgument);
       }
    };
 }

@@ -7,24 +7,24 @@ namespace ZenMock
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
    struct FourArgumentCall
    {
-      typename std::decay<Arg1Type>::type argument1;
-      typename std::decay<Arg2Type>::type argument2;
-      typename std::decay<Arg3Type>::type argument3;
-      typename std::decay<Arg4Type>::type argument4;
+      typename std::decay<Arg1Type>::type firstArgument;
+      typename std::decay<Arg2Type>::type secondArgument;
+      typename std::decay<Arg3Type>::type thirdArgument;
+      typename std::decay<Arg4Type>::type fourthArgument;
 
       FourArgumentCall()
-         : argument1()
-         , argument2()
-         , argument3()
-         , argument4()
+         : firstArgument()
+         , secondArgument()
+         , thirdArgument()
+         , fourthArgument()
       {
       }
 
-      FourArgumentCall(const Arg1Type& argument1, const Arg2Type& argument2, const Arg3Type& argument3, const Arg4Type& argument4)
-         : argument1(argument1)
-         , argument2(argument2)
-         , argument3(argument3)
-         , argument4(argument4)
+      FourArgumentCall(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument, const Arg4Type& fourthArgument)
+         : firstArgument(firstArgument)
+         , secondArgument(secondArgument)
+         , thirdArgument(thirdArgument)
+         , fourthArgument(fourthArgument)
       {
       }
    };
@@ -37,9 +37,9 @@ struct ZenUnitEqualizer<ZenMock::FourArgumentCall<Arg1Type, Arg2Type, Arg3Type, 
       const ZenMock::FourArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& expectedFourArgumentCall,
       const ZenMock::FourArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& actualFourArgumentCall)
     {
-       ARE_EQUAL(expectedFourArgumentCall.argument1, actualFourArgumentCall.argument1);
-       ARE_EQUAL(expectedFourArgumentCall.argument2, actualFourArgumentCall.argument2);
-       ARE_EQUAL(expectedFourArgumentCall.argument3, actualFourArgumentCall.argument3);
-       ARE_EQUAL(expectedFourArgumentCall.argument4, actualFourArgumentCall.argument4);
+       ARE_EQUAL(expectedFourArgumentCall.firstArgument, actualFourArgumentCall.firstArgument);
+       ARE_EQUAL(expectedFourArgumentCall.secondArgument, actualFourArgumentCall.secondArgument);
+       ARE_EQUAL(expectedFourArgumentCall.thirdArgument, actualFourArgumentCall.thirdArgument);
+       ARE_EQUAL(expectedFourArgumentCall.fourthArgument, actualFourArgumentCall.fourthArgument);
     }
 };

@@ -6,24 +6,24 @@ namespace ZenMock
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
    struct FourArgumentCallRef
    {
-      const Arg1Type& argument1;
-      const Arg2Type& argument2;
-      const Arg3Type& argument3;
-      const Arg4Type& argument4;
+      const Arg1Type& firstArgument;
+      const Arg2Type& secondArgument;
+      const Arg3Type& thirdArgument;
+      const Arg4Type& fourthArgument;
 
-      FourArgumentCallRef(const Arg1Type& argument1, const Arg2Type& argument2, const Arg3Type& argument3, const Arg4Type& argument4)
-         : argument1(argument1)
-         , argument2(argument2)
-         , argument3(argument3)
-         , argument4(argument4)
+      FourArgumentCallRef(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument, const Arg4Type& fourthArgument)
+         : firstArgument(firstArgument)
+         , secondArgument(secondArgument)
+         , thirdArgument(thirdArgument)
+         , fourthArgument(fourthArgument)
       {
       }
 
       explicit FourArgumentCallRef(const FourArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& fourArgumentCall)
-         : argument1(fourArgumentCall.argument1)
-         , argument2(fourArgumentCall.argument2)
-         , argument3(fourArgumentCall.argument3)
-         , argument4(fourArgumentCall.argument4)
+         : firstArgument(fourArgumentCall.firstArgument)
+         , secondArgument(fourArgumentCall.secondArgument)
+         , thirdArgument(fourArgumentCall.thirdArgument)
+         , fourthArgument(fourArgumentCall.fourthArgument)
       {
       }
    };
@@ -36,10 +36,10 @@ struct ZenUnitEqualizer<ZenMock::FourArgumentCallRef<Arg1Type, Arg2Type, Arg3Typ
       const ZenMock::FourArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& expectedFourArgumentCall,
       const ZenMock::FourArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& actualFourArgumentCall)
    {
-      ARE_EQUAL(expectedFourArgumentCall.argument1, actualFourArgumentCall.argument1);
-      ARE_EQUAL(expectedFourArgumentCall.argument2, actualFourArgumentCall.argument2);
-      ARE_EQUAL(expectedFourArgumentCall.argument3, actualFourArgumentCall.argument3);
-      ARE_EQUAL(expectedFourArgumentCall.argument4, actualFourArgumentCall.argument4);
+      ARE_EQUAL(expectedFourArgumentCall.firstArgument, actualFourArgumentCall.firstArgument);
+      ARE_EQUAL(expectedFourArgumentCall.secondArgument, actualFourArgumentCall.secondArgument);
+      ARE_EQUAL(expectedFourArgumentCall.thirdArgument, actualFourArgumentCall.thirdArgument);
+      ARE_EQUAL(expectedFourArgumentCall.fourthArgument, actualFourArgumentCall.fourthArgument);
    }
 };
 
@@ -48,10 +48,10 @@ struct ZenUnitPrinter<ZenMock::FourArgumentCallRef<Arg1Type, Arg2Type, Arg3Type,
 {
    static void Print(std::ostream& os, const ZenMock::FourArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& fourArgumentCallRef)
    {
-      const std::string toStringedArg1 = ZenUnit::ToStringer::ToString(fourArgumentCallRef.argument1);
-      const std::string toStringedArg2 = ZenUnit::ToStringer::ToString(fourArgumentCallRef.argument2);
-      const std::string toStringedArg3 = ZenUnit::ToStringer::ToString(fourArgumentCallRef.argument3);
-      const std::string toStringedArg4 = ZenUnit::ToStringer::ToString(fourArgumentCallRef.argument4);
+      const std::string toStringedArg1 = ZenUnit::ToStringer::ToString(fourArgumentCallRef.firstArgument);
+      const std::string toStringedArg2 = ZenUnit::ToStringer::ToString(fourArgumentCallRef.secondArgument);
+      const std::string toStringedArg3 = ZenUnit::ToStringer::ToString(fourArgumentCallRef.thirdArgument);
+      const std::string toStringedArg4 = ZenUnit::ToStringer::ToString(fourArgumentCallRef.fourthArgument);
       os << "ZenMock::FourArgumentCall:\n"
             "Arg1: " << toStringedArg1 << '\n' <<
             "Arg2: " << toStringedArg2 << '\n' <<

@@ -32,9 +32,9 @@
          ZenMock::Signature::FunctionPointer(#returnType, #qualifiedClassNameOrNamespace"::"#functionName"("#arg1Type", "#arg2Type", "#arg3Type")"));
 
 #define ZENMOCK_NONVOID3_DEFINED(returnType, functionName, arg1Type, arg2Type, arg3Type, virtualness, constness, mutableness, finalness, ...) \
-returnType functionName(arg1Type argument1, arg2Type argument2, arg3Type argument3) constness finalness \
+returnType functionName(arg1Type firstArgument, arg2Type secondArgument, arg3Type thirdArgument) constness finalness \
 { \
-   return functionName##Mock##__VA_ARGS__.ZenMockItAndReturnValue(argument1, argument2, argument3); \
+   return functionName##Mock##__VA_ARGS__.ZenMockItAndReturnValue(firstArgument, secondArgument, thirdArgument); \
 } \
 struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidThreeArgumentMocker<returnType, arg1Type, arg2Type, arg3Type> \
 { \
@@ -76,9 +76,9 @@ namespace ZenMock
          ValueReturner<ReturnType>::ZenMockAddReturnValues(firstReturnValue, subsequentReturnValues...);
       }
 
-      ReturnType ZenMockItAndReturnValue(Arg1Type argument1, Arg2Type argument2, Arg3Type argument3)
+      ReturnType ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument)
       {
-         ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::ZenMockIt(argument1, argument2, argument3);
+         ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::ZenMockIt(firstArgument, secondArgument, thirdArgument);
          return ValueReturner<ReturnType>::ZenMockNextReturnValue();
       }
    };
@@ -94,9 +94,9 @@ namespace ZenMock
 
       static ReturnType ZenMockItFunctionPointer(
          NonVoidThreeArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type>* functionMocker,
-         Arg1Type argument1, Arg2Type argument2, Arg3Type argument3)
+         Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument)
       {
-         return functionMocker->ZenMockItAndReturnValue(argument1, argument2, argument3);
+         return functionMocker->ZenMockItAndReturnValue(firstArgument, secondArgument, thirdArgument);
       }
    };
 }

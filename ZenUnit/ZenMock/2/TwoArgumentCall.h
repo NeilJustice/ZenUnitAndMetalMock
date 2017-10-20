@@ -6,18 +6,18 @@ namespace ZenMock
    template<typename Arg1Type, typename Arg2Type>
    struct TwoArgumentCall
    {
-      typename std::decay<Arg1Type>::type argument1;
-      typename std::decay<Arg2Type>::type argument2;
+      typename std::decay<Arg1Type>::type firstArgument;
+      typename std::decay<Arg2Type>::type secondArgument;
 
       TwoArgumentCall()
-         : argument1()
-         , argument2()
+         : firstArgument()
+         , secondArgument()
       {
       }
 
-      TwoArgumentCall(const Arg1Type& argument1, const Arg2Type& argument2)
-         : argument1(argument1)
-         , argument2(argument2)
+      TwoArgumentCall(const Arg1Type& firstArgument, const Arg2Type& secondArgument)
+         : firstArgument(firstArgument)
+         , secondArgument(secondArgument)
       {
       }
    };
@@ -30,7 +30,7 @@ struct ZenUnitEqualizer<ZenMock::TwoArgumentCall<Arg1Type, Arg2Type>>
       const ZenMock::TwoArgumentCall<Arg1Type, Arg2Type>& expectedTwoArgumentCall,
       const ZenMock::TwoArgumentCall<Arg1Type, Arg2Type>& actualTwoArgumentCall)
    {
-      ARE_EQUAL(expectedTwoArgumentCall.argument1, actualTwoArgumentCall.argument1);
-      ARE_EQUAL(expectedTwoArgumentCall.argument2, actualTwoArgumentCall.argument2);
+      ARE_EQUAL(expectedTwoArgumentCall.firstArgument, actualTwoArgumentCall.firstArgument);
+      ARE_EQUAL(expectedTwoArgumentCall.secondArgument, actualTwoArgumentCall.secondArgument);
    }
 };

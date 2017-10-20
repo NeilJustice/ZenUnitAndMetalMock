@@ -29,37 +29,37 @@ namespace ZenMock
       }
 
       void ZenMockIt(
-         const Arg1Type& argument1,
-         const Arg2Type& argument2,
-         const Arg3Type& argument3,
-         const Arg4Type& argument4)
+         const Arg1Type& firstArgument,
+         const Arg2Type& secondArgument,
+         const Arg3Type& thirdArgument,
+         const Arg4Type& fourthArgument)
       {
-         this->ZenMockThrowIfNotExpected(argument1, argument2, argument3, argument4);
-         fourArgumentCalls.emplace_back(argument1, argument2, argument3, argument4);
+         this->ZenMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument, fourthArgument);
+         fourArgumentCalls.emplace_back(firstArgument, secondArgument, thirdArgument, fourthArgument);
          this->ZenMockThrowIfExceptionSet();
       }
 
       void AssertCalledOnceWith(
-         const Arg1Type& expectedArgument1,
-         const Arg2Type& expectedArgument2,
-         const Arg3Type& expectedArgument3,
-         const Arg4Type& expectedArgument4)
+         const Arg1Type& expectedFirstArgument,
+         const Arg2Type& expectedSecondArgument,
+         const Arg3Type& expectedThirdArgument,
+         const Arg4Type& expectedFourthArgument)
       {
          this->ZenMockSetAsserted();
          const size_t expectedNumberOfCalls = 1;
          ARE_EQUAL(expectedNumberOfCalls, fourArgumentCalls.size(), this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArgument1, fourArgumentCalls[0].argument1, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArgument2, fourArgumentCalls[0].argument2, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArgument3, fourArgumentCalls[0].argument3, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArgument4, fourArgumentCalls[0].argument4, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedFirstArgument, fourArgumentCalls[0].firstArgument, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedSecondArgument, fourArgumentCalls[0].secondArgument, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedThirdArgument, fourArgumentCalls[0].thirdArgument, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedFourthArgument, fourArgumentCalls[0].fourthArgument, this->ZenMockedFunctionSignature);
       }
 
       void AssertCalledNTimesWith(
          size_t expectedNumberOfCalls,
-         const Arg1Type& expectedArgument1,
-         const Arg2Type& expectedArgument2,
-         const Arg3Type& expectedArgument3,
-         const Arg4Type& expectedArgument4)
+         const Arg1Type& expectedFirstArgument,
+         const Arg2Type& expectedSecondArgument,
+         const Arg3Type& expectedThirdArgument,
+         const Arg4Type& expectedFourthArgument)
       {
          this->ZenMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
          this->ZenMockSetAsserted();
@@ -68,10 +68,10 @@ namespace ZenMock
          {
             const std::string zenMockedFunctionSignatureAndCallIndex
                = ZenUnit::String::Concat(this->ZenMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedArgument1, fourArgumentCalls[i].argument1, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArgument2, fourArgumentCalls[i].argument2, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArgument3, fourArgumentCalls[i].argument3, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArgument4, fourArgumentCalls[i].argument4, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFirstArgument, fourArgumentCalls[i].firstArgument, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSecondArgument, fourArgumentCalls[i].secondArgument, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedThirdArgument, fourArgumentCalls[i].thirdArgument, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFourthArgument, fourArgumentCalls[i].fourthArgument, zenMockedFunctionSignatureAndCallIndex);
          }
       }
 

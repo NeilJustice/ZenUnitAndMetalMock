@@ -15,44 +15,44 @@ namespace ZenMock
       typename Arg8Type>
    struct EightArgumentCall
    {
-      typename std::decay<Arg1Type>::type argument1;
-      typename std::decay<Arg2Type>::type argument2;
-      typename std::decay<Arg3Type>::type argument3;
-      typename std::decay<Arg4Type>::type argument4;
-      typename std::decay<Arg5Type>::type argument5;
-      typename std::decay<Arg6Type>::type argument6;
-      typename std::decay<Arg7Type>::type argument7;
-      typename std::decay<Arg8Type>::type argument8;
+      typename std::decay<Arg1Type>::type firstArgument;
+      typename std::decay<Arg2Type>::type secondArgument;
+      typename std::decay<Arg3Type>::type thirdArgument;
+      typename std::decay<Arg4Type>::type fourthArgument;
+      typename std::decay<Arg5Type>::type fifthArgument;
+      typename std::decay<Arg6Type>::type sixthArgument;
+      typename std::decay<Arg7Type>::type seventhArgument;
+      typename std::decay<Arg8Type>::type eigthArgument;
 
       EightArgumentCall()
-         : argument1()
-         , argument2()
-         , argument3()
-         , argument4()
-         , argument5()
-         , argument6()
-         , argument7()
-         , argument8()
+         : firstArgument()
+         , secondArgument()
+         , thirdArgument()
+         , fourthArgument()
+         , fifthArgument()
+         , sixthArgument()
+         , seventhArgument()
+         , eigthArgument()
       {
       }
 
       EightArgumentCall(
-         const Arg1Type& argument1,
-         const Arg2Type& argument2,
-         const Arg3Type& argument3,
-         const Arg4Type& argument4,
-         const Arg5Type& argument5,
-         const Arg6Type& argument6,
-         const Arg7Type& argument7,
-         const Arg8Type& argument8)
-         : argument1(argument1)
-         , argument2(argument2)
-         , argument3(argument3)
-         , argument4(argument4)
-         , argument5(argument5)
-         , argument6(argument6)
-         , argument7(argument7)
-         , argument8(argument8)
+         const Arg1Type& firstArgument,
+         const Arg2Type& secondArgument,
+         const Arg3Type& thirdArgument,
+         const Arg4Type& fourthArgument,
+         const Arg5Type& fifthArgument,
+         const Arg6Type& sixthArgument,
+         const Arg7Type& seventhArgument,
+         const Arg8Type& eigthArgument)
+         : firstArgument(firstArgument)
+         , secondArgument(secondArgument)
+         , thirdArgument(thirdArgument)
+         , fourthArgument(fourthArgument)
+         , fifthArgument(fifthArgument)
+         , sixthArgument(sixthArgument)
+         , seventhArgument(seventhArgument)
+         , eigthArgument(eigthArgument)
       {
       }
    };
@@ -65,13 +65,13 @@ struct ZenUnitEqualizer<ZenMock::EightArgumentCall<Arg1Type, Arg2Type, Arg3Type,
       const ZenMock::EightArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& expectedEightArgumentCall,
       const ZenMock::EightArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& actualEightArgumentCall)
    {
-      ARE_EQUAL(expectedEightArgumentCall.argument1, actualEightArgumentCall.argument1);
-      ARE_EQUAL(expectedEightArgumentCall.argument2, actualEightArgumentCall.argument2);
-      ARE_EQUAL(expectedEightArgumentCall.argument3, actualEightArgumentCall.argument3);
-      ARE_EQUAL(expectedEightArgumentCall.argument4, actualEightArgumentCall.argument4);
-      ARE_EQUAL(expectedEightArgumentCall.argument5, actualEightArgumentCall.argument5);
-      ARE_EQUAL(expectedEightArgumentCall.argument6, actualEightArgumentCall.argument6);
-      ARE_EQUAL(expectedEightArgumentCall.argument7, actualEightArgumentCall.argument7);
-      ARE_EQUAL(expectedEightArgumentCall.argument8, actualEightArgumentCall.argument8);
+      ARE_EQUAL(expectedEightArgumentCall.firstArgument, actualEightArgumentCall.firstArgument);
+      ARE_EQUAL(expectedEightArgumentCall.secondArgument, actualEightArgumentCall.secondArgument);
+      ARE_EQUAL(expectedEightArgumentCall.thirdArgument, actualEightArgumentCall.thirdArgument);
+      ARE_EQUAL(expectedEightArgumentCall.fourthArgument, actualEightArgumentCall.fourthArgument);
+      ARE_EQUAL(expectedEightArgumentCall.fifthArgument, actualEightArgumentCall.fifthArgument);
+      ARE_EQUAL(expectedEightArgumentCall.sixthArgument, actualEightArgumentCall.sixthArgument);
+      ARE_EQUAL(expectedEightArgumentCall.seventhArgument, actualEightArgumentCall.seventhArgument);
+      ARE_EQUAL(expectedEightArgumentCall.eigthArgument, actualEightArgumentCall.eigthArgument);
    }
 };

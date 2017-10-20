@@ -112,8 +112,8 @@ Argument: "1")", zenUnitPrintResult);
    {
       const CallRef2 callRef(V1, V2);
       //
-      ARE_SAME(V1, callRef.argument1);
-      ARE_SAME(V2, callRef.argument2);
+      ARE_SAME(V1, callRef.firstArgument);
+      ARE_SAME(V2, callRef.secondArgument);
    }
 
    TEST(CallConstructor_SetsReferencesToTwoArgumentCallArgs)
@@ -122,8 +122,8 @@ Argument: "1")", zenUnitPrintResult);
       //
       const CallRef2 callRef(twoArgumentCall);
       //
-      ARE_SAME(twoArgumentCall.argument1, callRef.argument1);
-      ARE_SAME(twoArgumentCall.argument2, callRef.argument2);
+      ARE_SAME(twoArgumentCall.firstArgument, callRef.firstArgument);
+      ARE_SAME(twoArgumentCall.secondArgument, callRef.secondArgument);
    }
 
    TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)
@@ -144,10 +144,10 @@ Arg2: "2")", zenUnitPrintResult);
       CallRef2 callRef(V1, V2);
 
       CallRef2 callRef_arg1(VF1, V2);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "argument1");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "firstArgument");
 
       CallRef2 callRef_arg2(V1, VF2);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "argument2");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "secondArgument");
    }
 
    }; RUNTESTS(TwoArgumentCallRefTests)
@@ -168,9 +168,9 @@ Arg2: "2")", zenUnitPrintResult);
    {
       const CallRef3 callRef(V1, V2, V3);
       //
-      ARE_SAME(V1, callRef.argument1);
-      ARE_SAME(V2, callRef.argument2);
-      ARE_SAME(V3, callRef.argument3);
+      ARE_SAME(V1, callRef.firstArgument);
+      ARE_SAME(V2, callRef.secondArgument);
+      ARE_SAME(V3, callRef.thirdArgument);
    }
 
    TEST(CallConstructor_SetsReferencesToThreeArgumentCallArgs)
@@ -179,9 +179,9 @@ Arg2: "2")", zenUnitPrintResult);
       //
       const CallRef3 callRef(threeArgumentCall);
       //
-      ARE_SAME(threeArgumentCall.argument1, callRef.argument1);
-      ARE_SAME(threeArgumentCall.argument2, callRef.argument2);
-      ARE_SAME(threeArgumentCall.argument3, callRef.argument3);
+      ARE_SAME(threeArgumentCall.firstArgument, callRef.firstArgument);
+      ARE_SAME(threeArgumentCall.secondArgument, callRef.secondArgument);
+      ARE_SAME(threeArgumentCall.thirdArgument, callRef.thirdArgument);
    }
 
    TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)
@@ -203,13 +203,13 @@ Arg3: "3")", zenUnitPrintResult);
       const CallRef3 callRef(V1, V2, V3);
 
       const CallRef3 callRef_arg1(VF1, V2, V3);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "argument1");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "firstArgument");
 
       const CallRef3 callRef_arg2(V1, VF2, V3);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "argument2");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "secondArgument");
 
       const CallRef3 callRef_arg3(V1, V2, VF3);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "argument3");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "thirdArgument");
    }
 
    }; RUNTESTS(ThreeArgumentCallRefTests)
@@ -230,10 +230,10 @@ Arg3: "3")", zenUnitPrintResult);
    {
       const CallRef4 callRef(V1, V2, V3, V4);
       //
-      ARE_SAME(V1, callRef.argument1);
-      ARE_SAME(V2, callRef.argument2);
-      ARE_SAME(V3, callRef.argument3);
-      ARE_SAME(V4, callRef.argument4);
+      ARE_SAME(V1, callRef.firstArgument);
+      ARE_SAME(V2, callRef.secondArgument);
+      ARE_SAME(V3, callRef.thirdArgument);
+      ARE_SAME(V4, callRef.fourthArgument);
    }
 
    TEST(CallConstructor_SetsReferencesToFourArgumentCallArgs)
@@ -242,10 +242,10 @@ Arg3: "3")", zenUnitPrintResult);
       //
       const CallRef4 callRef(call);
       //
-      ARE_SAME(call.argument1, callRef.argument1);
-      ARE_SAME(call.argument2, callRef.argument2);
-      ARE_SAME(call.argument3, callRef.argument3);
-      ARE_SAME(call.argument4, callRef.argument4);
+      ARE_SAME(call.firstArgument, callRef.firstArgument);
+      ARE_SAME(call.secondArgument, callRef.secondArgument);
+      ARE_SAME(call.thirdArgument, callRef.thirdArgument);
+      ARE_SAME(call.fourthArgument, callRef.fourthArgument);
    }
 
    TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)
@@ -268,16 +268,16 @@ Arg4: "4")", zenUnitPrintResult);
       const CallRef4 callRef(V1, V2, V3, V4);
 
       const CallRef4 callRef_arg1(VF1, V2, V3, V4);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "argument1");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "firstArgument");
 
       const CallRef4 callRef_arg2(V1, VF2, V3, V4);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "argument2");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "secondArgument");
 
       const CallRef4 callRef_arg3(V1, V2, VF3, V4);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "argument3");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "thirdArgument");
 
       const CallRef4 callRef_arg4(V1, V2, V3, VF4);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "argument4");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "fourthArgument");
    }
 
    }; RUNTESTS(FourArgumentCallRefTests)
@@ -298,11 +298,11 @@ Arg4: "4")", zenUnitPrintResult);
    {
       const CallRef5 callRef(V1, V2, V3, V4, V5);
       //
-      ARE_SAME(V1, callRef.argument1);
-      ARE_SAME(V2, callRef.argument2);
-      ARE_SAME(V3, callRef.argument3);
-      ARE_SAME(V4, callRef.argument4);
-      ARE_SAME(V5, callRef.argument5);
+      ARE_SAME(V1, callRef.firstArgument);
+      ARE_SAME(V2, callRef.secondArgument);
+      ARE_SAME(V3, callRef.thirdArgument);
+      ARE_SAME(V4, callRef.fourthArgument);
+      ARE_SAME(V5, callRef.fifthArgument);
    }
 
    TEST(CallConstructor_SetsReferencesToFiveArgumentCallArgs)
@@ -311,11 +311,11 @@ Arg4: "4")", zenUnitPrintResult);
       //
       const CallRef5 callRef(call);
       //
-      ARE_SAME(call.argument1, callRef.argument1);
-      ARE_SAME(call.argument2, callRef.argument2);
-      ARE_SAME(call.argument3, callRef.argument3);
-      ARE_SAME(call.argument4, callRef.argument4);
-      ARE_SAME(call.argument5, callRef.argument5);
+      ARE_SAME(call.firstArgument, callRef.firstArgument);
+      ARE_SAME(call.secondArgument, callRef.secondArgument);
+      ARE_SAME(call.thirdArgument, callRef.thirdArgument);
+      ARE_SAME(call.fourthArgument, callRef.fourthArgument);
+      ARE_SAME(call.fifthArgument, callRef.fifthArgument);
    }
 
    TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)
@@ -339,19 +339,19 @@ Arg5: "5")", zenUnitPrintResult);
       const CallRef5 callRef(V1, V2, V3, V4, V5);
 
       const CallRef5 callRef_arg1(VF1, V2, V3, V4, V5);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "argument1");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "firstArgument");
 
       const CallRef5 callRef_arg2(V1, VF2, V3, V4, V5);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "argument2");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "secondArgument");
 
       const CallRef5 callRef_arg3(V1, V2, VF3, V4, V5);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "argument3");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "thirdArgument");
 
       const CallRef5 callRef_arg4(V1, V2, V3, VF4, V5);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "argument4");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "fourthArgument");
 
       const CallRef5 callRef_arg5(V1, V2, V3, V4, VF5);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "argument5");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "fifthArgument");
    }
 
    }; RUNTESTS(FiveArgumentCallRefTests)
@@ -372,12 +372,12 @@ Arg5: "5")", zenUnitPrintResult);
    {
       const CallRef6 callRef(V1, V2, V3, V4, V5, V6);
       //
-      ARE_SAME(V1, callRef.argument1);
-      ARE_SAME(V2, callRef.argument2);
-      ARE_SAME(V3, callRef.argument3);
-      ARE_SAME(V4, callRef.argument4);
-      ARE_SAME(V5, callRef.argument5);
-      ARE_SAME(V6, callRef.argument6);
+      ARE_SAME(V1, callRef.firstArgument);
+      ARE_SAME(V2, callRef.secondArgument);
+      ARE_SAME(V3, callRef.thirdArgument);
+      ARE_SAME(V4, callRef.fourthArgument);
+      ARE_SAME(V5, callRef.fifthArgument);
+      ARE_SAME(V6, callRef.sixthArgument);
    }
 
    TEST(CallConstructor_SetsReferencesToFiveArgumentCallArgs)
@@ -386,12 +386,12 @@ Arg5: "5")", zenUnitPrintResult);
       //
       const CallRef6 callRef(call);
       //
-      ARE_SAME(call.argument1, callRef.argument1);
-      ARE_SAME(call.argument2, callRef.argument2);
-      ARE_SAME(call.argument3, callRef.argument3);
-      ARE_SAME(call.argument4, callRef.argument4);
-      ARE_SAME(call.argument5, callRef.argument5);
-      ARE_SAME(call.argument6, callRef.argument6);
+      ARE_SAME(call.firstArgument, callRef.firstArgument);
+      ARE_SAME(call.secondArgument, callRef.secondArgument);
+      ARE_SAME(call.thirdArgument, callRef.thirdArgument);
+      ARE_SAME(call.fourthArgument, callRef.fourthArgument);
+      ARE_SAME(call.fifthArgument, callRef.fifthArgument);
+      ARE_SAME(call.sixthArgument, callRef.sixthArgument);
    }
 
    TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)
@@ -416,22 +416,22 @@ Arg6: "6")", zenUnitPrintResult);
       CallRef6 callRef(V1, V2, V3, V4, V5, V6);
 
       CallRef6 callRef_arg1(VF1, V2, V3, V4, V5, V6);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "argument1");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "firstArgument");
 
       CallRef6 callRef_arg2(V1, VF2, V3, V4, V5, V6);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "argument2");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "secondArgument");
 
       CallRef6 callRef_arg3(V1, V2, VF3, V4, V5, V6);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "argument3");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "thirdArgument");
 
       CallRef6 callRef_arg4(V1, V2, V3, VF4, V5, V6);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "argument4");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "fourthArgument");
 
       CallRef6 callRef_arg5(V1, V2, V3, V4, VF5, V6);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "argument5");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "fifthArgument");
 
       CallRef6 callRef_arg6(V1, V2, V3, V4, V5, VF6);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "argument6");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "sixthArgument");
    }
 
    }; RUNTESTS(SixArgumentCallRefTests)
@@ -452,13 +452,13 @@ Arg6: "6")", zenUnitPrintResult);
    {
       const CallRef7 callRef(V1, V2, V3, V4, V5, V6, V7);
       //
-      ARE_SAME(V1, callRef.argument1);
-      ARE_SAME(V2, callRef.argument2);
-      ARE_SAME(V3, callRef.argument3);
-      ARE_SAME(V4, callRef.argument4);
-      ARE_SAME(V5, callRef.argument5);
-      ARE_SAME(V6, callRef.argument6);
-      ARE_SAME(V7, callRef.argument7);
+      ARE_SAME(V1, callRef.firstArgument);
+      ARE_SAME(V2, callRef.secondArgument);
+      ARE_SAME(V3, callRef.thirdArgument);
+      ARE_SAME(V4, callRef.fourthArgument);
+      ARE_SAME(V5, callRef.fifthArgument);
+      ARE_SAME(V6, callRef.sixthArgument);
+      ARE_SAME(V7, callRef.seventhArgument);
    }
 
    TEST(CallConstructor_SetsReferencesToFiveArgumentCallArgs)
@@ -467,13 +467,13 @@ Arg6: "6")", zenUnitPrintResult);
       //
       const CallRef7 callRef(call);
       //
-      ARE_SAME(call.argument1, callRef.argument1);
-      ARE_SAME(call.argument2, callRef.argument2);
-      ARE_SAME(call.argument3, callRef.argument3);
-      ARE_SAME(call.argument4, callRef.argument4);
-      ARE_SAME(call.argument5, callRef.argument5);
-      ARE_SAME(call.argument6, callRef.argument6);
-      ARE_SAME(call.argument7, callRef.argument7);
+      ARE_SAME(call.firstArgument, callRef.firstArgument);
+      ARE_SAME(call.secondArgument, callRef.secondArgument);
+      ARE_SAME(call.thirdArgument, callRef.thirdArgument);
+      ARE_SAME(call.fourthArgument, callRef.fourthArgument);
+      ARE_SAME(call.fifthArgument, callRef.fifthArgument);
+      ARE_SAME(call.sixthArgument, callRef.sixthArgument);
+      ARE_SAME(call.seventhArgument, callRef.seventhArgument);
    }
 
    TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)
@@ -499,25 +499,25 @@ Arg7: "7")", zenUnitPrintResult);
       const CallRef7 callRef(V1, V2, V3, V4, V5, V6, V7);
 
       const CallRef7 callRef_arg1(VF1, V2, V3, V4, V5, V6, V7);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "argument1");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "firstArgument");
 
       CallRef7 callRef_arg2(V1, VF2, V3, V4, V5, V6, V7);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "argument2");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "secondArgument");
 
       CallRef7 callRef_arg3(V1, V2, VF3, V4, V5, V6, V7);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "argument3");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "thirdArgument");
 
       CallRef7 callRef_arg4(V1, V2, V3, VF4, V5, V6, V7);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "argument4");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "fourthArgument");
 
       CallRef7 callRef_arg5(V1, V2, V3, V4, VF5, V6, V7);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "argument5");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "fifthArgument");
 
       CallRef7 callRef_arg6(V1, V2, V3, V4, V5, VF6, V7);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "argument6");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "sixthArgument");
 
       CallRef7 callRef_arg7(V1, V2, V3, V4, V5, V6, VF7);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg7); }, "argument7");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg7); }, "seventhArgument");
    }
 
    }; RUNTESTS(SevenArgumentCallRefTests)
@@ -538,14 +538,14 @@ Arg7: "7")", zenUnitPrintResult);
    {
       const CallRef8 callRef(V1, V2, V3, V4, V5, V6, V7, V8);
       //
-      ARE_SAME(V1, callRef.argument1);
-      ARE_SAME(V2, callRef.argument2);
-      ARE_SAME(V3, callRef.argument3);
-      ARE_SAME(V4, callRef.argument4);
-      ARE_SAME(V5, callRef.argument5);
-      ARE_SAME(V6, callRef.argument6);
-      ARE_SAME(V7, callRef.argument7);
-      ARE_SAME(V8, callRef.argument8);
+      ARE_SAME(V1, callRef.firstArgument);
+      ARE_SAME(V2, callRef.secondArgument);
+      ARE_SAME(V3, callRef.thirdArgument);
+      ARE_SAME(V4, callRef.fourthArgument);
+      ARE_SAME(V5, callRef.fifthArgument);
+      ARE_SAME(V6, callRef.sixthArgument);
+      ARE_SAME(V7, callRef.seventhArgument);
+      ARE_SAME(V8, callRef.eigthArgument);
    }
 
    TEST(CallConstructor_SetsReferencesToCallArgs)
@@ -554,14 +554,14 @@ Arg7: "7")", zenUnitPrintResult);
       //
       const CallRef8 callRef(call);
       //
-      ARE_SAME(call.argument1, callRef.argument1);
-      ARE_SAME(call.argument2, callRef.argument2);
-      ARE_SAME(call.argument3, callRef.argument3);
-      ARE_SAME(call.argument4, callRef.argument4);
-      ARE_SAME(call.argument5, callRef.argument5);
-      ARE_SAME(call.argument6, callRef.argument6);
-      ARE_SAME(call.argument7, callRef.argument7);
-      ARE_SAME(call.argument8, callRef.argument8);
+      ARE_SAME(call.firstArgument, callRef.firstArgument);
+      ARE_SAME(call.secondArgument, callRef.secondArgument);
+      ARE_SAME(call.thirdArgument, callRef.thirdArgument);
+      ARE_SAME(call.fourthArgument, callRef.fourthArgument);
+      ARE_SAME(call.fifthArgument, callRef.fifthArgument);
+      ARE_SAME(call.sixthArgument, callRef.sixthArgument);
+      ARE_SAME(call.seventhArgument, callRef.seventhArgument);
+      ARE_SAME(call.eigthArgument, callRef.eigthArgument);
    }
 
    TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)
@@ -588,28 +588,28 @@ Arg8: "8")", zenUnitPrintResult);
       CallRef8 callRef(V1, V2, V3, V4, V5, V6, V7, V8);
 
       CallRef8 callRef_arg1(VF1, V2, V3, V4, V5, V6, V7, V8);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "argument1");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "firstArgument");
 
       CallRef8 callRef_arg2(V1, VF2, V3, V4, V5, V6, V7, V8);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "argument2");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "secondArgument");
 
       CallRef8 callRef_arg3(V1, V2, VF3, V4, V5, V6, V7, V8);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "argument3");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "thirdArgument");
 
       CallRef8 callRef_arg4(V1, V2, V3, VF4, V5, V6, V7, V8);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "argument4");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "fourthArgument");
 
       CallRef8 callRef_arg5(V1, V2, V3, V4, VF5, V6, V7, V8);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "argument5");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "fifthArgument");
 
       CallRef8 callRef_arg6(V1, V2, V3, V4, V5, VF6, V7, V8);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "argument6");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "sixthArgument");
 
       CallRef8 callRef_arg7(V1, V2, V3, V4, V5, V6, VF7, V8);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg7); }, "argument7");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg7); }, "seventhArgument");
 
       CallRef8 callRef_arg8(V1, V2, V3, V4, V5, V6, V7, VF8);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg8); }, "argument8");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg8); }, "eigthArgument");
    }
 
    }; RUNTESTS(EightArgumentCallRefTests)
@@ -630,15 +630,15 @@ Arg8: "8")", zenUnitPrintResult);
    {
       const CallRef9 callRef(V1, V2, V3, V4, V5, V6, V7, V8, V9);
       //
-      ARE_SAME(V1, callRef.argument1);
-      ARE_SAME(V2, callRef.argument2);
-      ARE_SAME(V3, callRef.argument3);
-      ARE_SAME(V4, callRef.argument4);
-      ARE_SAME(V5, callRef.argument5);
-      ARE_SAME(V6, callRef.argument6);
-      ARE_SAME(V7, callRef.argument7);
-      ARE_SAME(V8, callRef.argument8);
-      ARE_SAME(V9, callRef.argument9);
+      ARE_SAME(V1, callRef.firstArgument);
+      ARE_SAME(V2, callRef.secondArgument);
+      ARE_SAME(V3, callRef.thirdArgument);
+      ARE_SAME(V4, callRef.fourthArgument);
+      ARE_SAME(V5, callRef.fifthArgument);
+      ARE_SAME(V6, callRef.sixthArgument);
+      ARE_SAME(V7, callRef.seventhArgument);
+      ARE_SAME(V8, callRef.eigthArgument);
+      ARE_SAME(V9, callRef.ninthArgument);
    }
 
    TEST(CallConstructor_SetsReferencesToCallArgs)
@@ -647,15 +647,15 @@ Arg8: "8")", zenUnitPrintResult);
       //
       const CallRef9 callRef(call);
       //
-      ARE_SAME(call.argument1, callRef.argument1);
-      ARE_SAME(call.argument2, callRef.argument2);
-      ARE_SAME(call.argument3, callRef.argument3);
-      ARE_SAME(call.argument4, callRef.argument4);
-      ARE_SAME(call.argument5, callRef.argument5);
-      ARE_SAME(call.argument6, callRef.argument6);
-      ARE_SAME(call.argument7, callRef.argument7);
-      ARE_SAME(call.argument8, callRef.argument8);
-      ARE_SAME(call.argument9, callRef.argument9);
+      ARE_SAME(call.firstArgument, callRef.firstArgument);
+      ARE_SAME(call.secondArgument, callRef.secondArgument);
+      ARE_SAME(call.thirdArgument, callRef.thirdArgument);
+      ARE_SAME(call.fourthArgument, callRef.fourthArgument);
+      ARE_SAME(call.fifthArgument, callRef.fifthArgument);
+      ARE_SAME(call.sixthArgument, callRef.sixthArgument);
+      ARE_SAME(call.seventhArgument, callRef.seventhArgument);
+      ARE_SAME(call.eigthArgument, callRef.eigthArgument);
+      ARE_SAME(call.ninthArgument, callRef.ninthArgument);
    }
 
    TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)
@@ -683,31 +683,31 @@ Arg9: "9")", zenUnitPrintResult);
       CallRef9 callRef(V1, V2, V3, V4, V5, V6, V7, V8, V9);
 
       CallRef9 callRef_arg1(VF1, V2, V3, V4, V5, V6, V7, V8, V9);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "argument1");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "firstArgument");
 
       CallRef9 callRef_arg2(V1, VF2, V3, V4, V5, V6, V7, V8, V9);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "argument2");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "secondArgument");
 
       CallRef9 callRef_arg3(V1, V2, VF3, V4, V5, V6, V7, V8, V9);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "argument3");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "thirdArgument");
 
       CallRef9 callRef_arg4(V1, V2, V3, VF4, V5, V6, V7, V8, V9);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "argument4");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "fourthArgument");
 
       CallRef9 callRef_arg5(V1, V2, V3, V4, VF5, V6, V7, V8, V9);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "argument5");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "fifthArgument");
 
       CallRef9 callRef_arg6(V1, V2, V3, V4, V5, VF6, V7, V8, V9);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "argument6");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "sixthArgument");
 
       CallRef9 callRef_arg7(V1, V2, V3, V4, V5, V6, VF7, V8, V9);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg7); }, "argument7");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg7); }, "seventhArgument");
 
       CallRef9 callRef_arg8(V1, V2, V3, V4, V5, V6, V7, VF8, V9);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg8); }, "argument8");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg8); }, "eigthArgument");
 
       CallRef9 callRef_arg9(V1, V2, V3, V4, V5, V6, V7, V8, VF9);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg9); }, "argument9");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg9); }, "ninthArgument");
    }
 
    }; RUNTESTS(NineArgumentCallRefTests)
@@ -728,16 +728,16 @@ Arg9: "9")", zenUnitPrintResult);
    {
       const CallRef10 callRef(V1, V2, V3, V4, V5, V6, V7, V8, V9, V10);
       //
-      ARE_SAME(V1, callRef.argument1);
-      ARE_SAME(V2, callRef.argument2);
-      ARE_SAME(V3, callRef.argument3);
-      ARE_SAME(V4, callRef.argument4);
-      ARE_SAME(V5, callRef.argument5);
-      ARE_SAME(V6, callRef.argument6);
-      ARE_SAME(V7, callRef.argument7);
-      ARE_SAME(V8, callRef.argument8);
-      ARE_SAME(V9, callRef.argument9);
-      ARE_SAME(V10, callRef.argument10);
+      ARE_SAME(V1, callRef.firstArgument);
+      ARE_SAME(V2, callRef.secondArgument);
+      ARE_SAME(V3, callRef.thirdArgument);
+      ARE_SAME(V4, callRef.fourthArgument);
+      ARE_SAME(V5, callRef.fifthArgument);
+      ARE_SAME(V6, callRef.sixthArgument);
+      ARE_SAME(V7, callRef.seventhArgument);
+      ARE_SAME(V8, callRef.eigthArgument);
+      ARE_SAME(V9, callRef.ninthArgument);
+      ARE_SAME(V10, callRef.tenthArgument);
    }
 
    TEST(CallConstructor_SetsReferencesToCallArgs)
@@ -746,16 +746,16 @@ Arg9: "9")", zenUnitPrintResult);
       //
       const CallRef10 callRef(call);
       //
-      ARE_SAME(call.argument1, callRef.argument1);
-      ARE_SAME(call.argument2, callRef.argument2);
-      ARE_SAME(call.argument3, callRef.argument3);
-      ARE_SAME(call.argument4, callRef.argument4);
-      ARE_SAME(call.argument5, callRef.argument5);
-      ARE_SAME(call.argument6, callRef.argument6);
-      ARE_SAME(call.argument7, callRef.argument7);
-      ARE_SAME(call.argument8, callRef.argument8);
-      ARE_SAME(call.argument9, callRef.argument9);
-      ARE_SAME(call.argument10, callRef.argument10);
+      ARE_SAME(call.firstArgument, callRef.firstArgument);
+      ARE_SAME(call.secondArgument, callRef.secondArgument);
+      ARE_SAME(call.thirdArgument, callRef.thirdArgument);
+      ARE_SAME(call.fourthArgument, callRef.fourthArgument);
+      ARE_SAME(call.fifthArgument, callRef.fifthArgument);
+      ARE_SAME(call.sixthArgument, callRef.sixthArgument);
+      ARE_SAME(call.seventhArgument, callRef.seventhArgument);
+      ARE_SAME(call.eigthArgument, callRef.eigthArgument);
+      ARE_SAME(call.ninthArgument, callRef.ninthArgument);
+      ARE_SAME(call.tenthArgument, callRef.tenthArgument);
    }
 
    TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)
@@ -783,34 +783,34 @@ Arg10: "10")", zenUnitPrintResult);
    {
       CallRef10 callRef(V1, V2, V3, V4, V5, V6, V7, V8, V9, V10);
       CallRef10 callRef_arg1(VF1, V2, V3, V4, V5, V6, V7, V8, V9, V10);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "argument1");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "firstArgument");
 
       CallRef10 callRef_arg2(V1, VF2, V3, V4, V5, V6, V7, V8, V9, V10);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "argument2");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "secondArgument");
 
       CallRef10 callRef_arg3(V1, V2, VF3, V4, V5, V6, V7, V8, V9, V10);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "argument3");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "thirdArgument");
 
       CallRef10 callRef_arg4(V1, V2, V3, VF4, V5, V6, V7, V8, V9, V10);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "argument4");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "fourthArgument");
 
       CallRef10 callRef_arg5(V1, V2, V3, V4, VF5, V6, V7, V8, V9, V10);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "argument5");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "fifthArgument");
 
       CallRef10 callRef_arg6(V1, V2, V3, V4, V5, VF6, V7, V8, V9, V10);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "argument6");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "sixthArgument");
 
       CallRef10 callRef_arg7(V1, V2, V3, V4, V5, V6, VF7, V8, V9, V10);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg7); }, "argument7");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg7); }, "seventhArgument");
 
       CallRef10 callRef_arg8(V1, V2, V3, V4, V5, V6, V7, VF8, V9, V10);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg8); }, "argument8");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg8); }, "eigthArgument");
 
       CallRef10 callRef_arg9(V1, V2, V3, V4, V5, V6, V7, V8, VF9, V10);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg9); }, "argument9");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg9); }, "ninthArgument");
 
       CallRef10 callRef_arg10(V1, V2, V3, V4, V5, V6, V7, V8, V9, VF10);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg10); }, "argument10");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg10); }, "tenthArgument");
    }
 
    }; RUNTESTS(TenArgumentCallRefTests)

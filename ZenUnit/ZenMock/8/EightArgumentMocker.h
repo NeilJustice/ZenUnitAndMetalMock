@@ -34,53 +34,53 @@ namespace ZenMock
       }
 
       void ZenMockIt(
-         const Arg1Type& argument1,
-         const Arg2Type& argument2,
-         const Arg3Type& argument3,
-         const Arg4Type& argument4,
-         const Arg5Type& argument5,
-         const Arg6Type& argument6,
-         const Arg7Type& argument7,
-         const Arg8Type& argument8)
+         const Arg1Type& firstArgument,
+         const Arg2Type& secondArgument,
+         const Arg3Type& thirdArgument,
+         const Arg4Type& fourthArgument,
+         const Arg5Type& fifthArgument,
+         const Arg6Type& sixthArgument,
+         const Arg7Type& seventhArgument,
+         const Arg8Type& eigthArgument)
       {
-         this->ZenMockThrowIfNotExpected(argument1, argument2, argument3, argument4, argument5, argument6, argument7, argument8);
-         eightArgumentCalls.emplace_back(argument1, argument2, argument3, argument4, argument5, argument6, argument7, argument8);
+         this->ZenMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument);
+         eightArgumentCalls.emplace_back(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument);
          this->ZenMockThrowIfExceptionSet();
       }
 
       void AssertCalledOnceWith(
-         const Arg1Type& expectedArgument1,
-         const Arg2Type& expectedArgument2,
-         const Arg3Type& expectedArgument3,
-         const Arg4Type& expectedArgument4,
-         const Arg5Type& expectedArgument5,
-         const Arg6Type& expectedArgument6,
-         const Arg7Type& expectedArgument7,
-         const Arg8Type& expectedArgument8)
+         const Arg1Type& expectedFirstArgument,
+         const Arg2Type& expectedSecondArgument,
+         const Arg3Type& expectedThirdArgument,
+         const Arg4Type& expectedFourthArgument,
+         const Arg5Type& expectedFifthArgument,
+         const Arg6Type& expectedSixthArgument,
+         const Arg7Type& expectedSeventhArgument,
+         const Arg8Type& expectedEigthArgument)
       {
          this->ZenMockSetAsserted();
          const size_t expectedNumberOfCalls = 1;
          ARE_EQUAL(expectedNumberOfCalls, eightArgumentCalls.size(), this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArgument1, eightArgumentCalls[0].argument1, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArgument2, eightArgumentCalls[0].argument2, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArgument3, eightArgumentCalls[0].argument3, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArgument4, eightArgumentCalls[0].argument4, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArgument5, eightArgumentCalls[0].argument5, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArgument6, eightArgumentCalls[0].argument6, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArgument7, eightArgumentCalls[0].argument7, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArgument8, eightArgumentCalls[0].argument8, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedFirstArgument, eightArgumentCalls[0].firstArgument, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedSecondArgument, eightArgumentCalls[0].secondArgument, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedThirdArgument, eightArgumentCalls[0].thirdArgument, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedFourthArgument, eightArgumentCalls[0].fourthArgument, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedFifthArgument, eightArgumentCalls[0].fifthArgument, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedSixthArgument, eightArgumentCalls[0].sixthArgument, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedSeventhArgument, eightArgumentCalls[0].seventhArgument, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedEigthArgument, eightArgumentCalls[0].eigthArgument, this->ZenMockedFunctionSignature);
       }
 
       void AssertCalledNTimesWith(
          size_t expectedNumberOfCalls,
-         const Arg1Type& expectedArgument1,
-         const Arg2Type& expectedArgument2,
-         const Arg3Type& expectedArgument3,
-         const Arg4Type& expectedArgument4,
-         const Arg5Type& expectedArgument5,
-         const Arg6Type& expectedArgument6,
-         const Arg7Type& expectedArgument7,
-         const Arg8Type& expectedArgument8)
+         const Arg1Type& expectedFirstArgument,
+         const Arg2Type& expectedSecondArgument,
+         const Arg3Type& expectedThirdArgument,
+         const Arg4Type& expectedFourthArgument,
+         const Arg5Type& expectedFifthArgument,
+         const Arg6Type& expectedSixthArgument,
+         const Arg7Type& expectedSeventhArgument,
+         const Arg8Type& expectedEigthArgument)
       {
          this->ZenMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
          this->ZenMockSetAsserted();
@@ -89,14 +89,14 @@ namespace ZenMock
          {
             const std::string zenMockedFunctionSignatureAndCallIndex
                = ZenUnit::String::Concat(this->ZenMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedArgument1, eightArgumentCalls[i].argument1, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArgument2, eightArgumentCalls[i].argument2, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArgument3, eightArgumentCalls[i].argument3, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArgument4, eightArgumentCalls[i].argument4, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArgument5, eightArgumentCalls[i].argument5, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArgument6, eightArgumentCalls[i].argument6, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArgument7, eightArgumentCalls[i].argument7, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArgument8, eightArgumentCalls[i].argument8, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFirstArgument, eightArgumentCalls[i].firstArgument, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSecondArgument, eightArgumentCalls[i].secondArgument, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedThirdArgument, eightArgumentCalls[i].thirdArgument, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFourthArgument, eightArgumentCalls[i].fourthArgument, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFifthArgument, eightArgumentCalls[i].fifthArgument, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSixthArgument, eightArgumentCalls[i].sixthArgument, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSeventhArgument, eightArgumentCalls[i].seventhArgument, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedEigthArgument, eightArgumentCalls[i].eigthArgument, zenMockedFunctionSignatureAndCallIndex);
          }
       }
 

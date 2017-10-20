@@ -26,28 +26,28 @@ namespace ZenMock
       {
       }
 
-      void ZenMockIt(const Arg1Type& argument1, const Arg2Type& argument2)
+      void ZenMockIt(const Arg1Type& firstArgument, const Arg2Type& secondArgument)
       {
-         this->ZenMockThrowIfNotExpected(argument1, argument2);
-         twoArgumentCalls.emplace_back(argument1, argument2);
+         this->ZenMockThrowIfNotExpected(firstArgument, secondArgument);
+         twoArgumentCalls.emplace_back(firstArgument, secondArgument);
          this->ZenMockThrowIfExceptionSet();
       }
 
       void AssertCalledOnceWith(
-         const Arg1Type& expectedArgument1,
-         const Arg2Type& expectedArgument2)
+         const Arg1Type& expectedFirstArgument,
+         const Arg2Type& expectedSecondArgument)
       {
          this->ZenMockSetAsserted();
          const size_t expectedNumberOfCalls = 1;
          ARE_EQUAL(expectedNumberOfCalls, twoArgumentCalls.size(), this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArgument1, twoArgumentCalls[0].argument1, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArgument2, twoArgumentCalls[0].argument2, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedFirstArgument, twoArgumentCalls[0].firstArgument, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedSecondArgument, twoArgumentCalls[0].secondArgument, this->ZenMockedFunctionSignature);
       }
 
       void AssertCalledNTimesWith(
          size_t expectedNumberOfCalls,
-         const Arg1Type& expectedArgument1,
-         const Arg2Type& expectedArgument2)
+         const Arg1Type& expectedFirstArgument,
+         const Arg2Type& expectedSecondArgument)
       {
          this->ZenMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
          this->ZenMockSetAsserted();
@@ -56,8 +56,8 @@ namespace ZenMock
          {
             const std::string zenMockedFunctionSignatureAndCallIndex
                = ZenUnit::String::Concat(this->ZenMockedFunctionSignature, ", at i=", i);
-            ARE_EQUAL(expectedArgument1, twoArgumentCalls[i].argument1, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedArgument2, twoArgumentCalls[i].argument2, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFirstArgument, twoArgumentCalls[i].firstArgument, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSecondArgument, twoArgumentCalls[i].secondArgument, zenMockedFunctionSignatureAndCallIndex);
          }
       }
 

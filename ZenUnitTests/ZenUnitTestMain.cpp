@@ -53,6 +53,8 @@ TEST(Test2)
 
 }; RUNTESTS(WidgetATests)
 
+#include "ZenUnitTests/Console/Mock/ConsoleMock.h"
+
 int main(int argc, char* argv[])
 {
    FileLiner::zenUnitTestingMode = true;

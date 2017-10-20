@@ -7,32 +7,32 @@ namespace ZenMock
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
    struct FiveArgumentCall
    {
-      typename std::decay<Arg1Type>::type argument1;
-      typename std::decay<Arg2Type>::type argument2;
-      typename std::decay<Arg3Type>::type argument3;
-      typename std::decay<Arg4Type>::type argument4;
-      typename std::decay<Arg5Type>::type argument5;
+      typename std::decay<Arg1Type>::type firstArgument;
+      typename std::decay<Arg2Type>::type secondArgument;
+      typename std::decay<Arg3Type>::type thirdArgument;
+      typename std::decay<Arg4Type>::type fourthArgument;
+      typename std::decay<Arg5Type>::type fifthArgument;
 
       FiveArgumentCall()
-         : argument1()
-         , argument2()
-         , argument3()
-         , argument4()
-         , argument5()
+         : firstArgument()
+         , secondArgument()
+         , thirdArgument()
+         , fourthArgument()
+         , fifthArgument()
       {
       }
 
       FiveArgumentCall(
-         const Arg1Type& argument1,
-         const Arg2Type& argument2,
-         const Arg3Type& argument3,
-         const Arg4Type& argument4,
-         const Arg5Type& argument5)
-         : argument1(argument1)
-         , argument2(argument2)
-         , argument3(argument3)
-         , argument4(argument4)
-         , argument5(argument5)
+         const Arg1Type& firstArgument,
+         const Arg2Type& secondArgument,
+         const Arg3Type& thirdArgument,
+         const Arg4Type& fourthArgument,
+         const Arg5Type& fifthArgument)
+         : firstArgument(firstArgument)
+         , secondArgument(secondArgument)
+         , thirdArgument(thirdArgument)
+         , fourthArgument(fourthArgument)
+         , fifthArgument(fifthArgument)
       {
       }
    };
@@ -45,10 +45,10 @@ struct ZenUnitEqualizer<ZenMock::FiveArgumentCall<Arg1Type, Arg2Type, Arg3Type, 
       const ZenMock::FiveArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& expectedFiveArgumentCall,
       const ZenMock::FiveArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& actualFiveArgumentCall)
    {
-      ARE_EQUAL(expectedFiveArgumentCall.argument1, actualFiveArgumentCall.argument1);
-      ARE_EQUAL(expectedFiveArgumentCall.argument2, actualFiveArgumentCall.argument2);
-      ARE_EQUAL(expectedFiveArgumentCall.argument3, actualFiveArgumentCall.argument3);
-      ARE_EQUAL(expectedFiveArgumentCall.argument4, actualFiveArgumentCall.argument4);
-      ARE_EQUAL(expectedFiveArgumentCall.argument5, actualFiveArgumentCall.argument5);
+      ARE_EQUAL(expectedFiveArgumentCall.firstArgument, actualFiveArgumentCall.firstArgument);
+      ARE_EQUAL(expectedFiveArgumentCall.secondArgument, actualFiveArgumentCall.secondArgument);
+      ARE_EQUAL(expectedFiveArgumentCall.thirdArgument, actualFiveArgumentCall.thirdArgument);
+      ARE_EQUAL(expectedFiveArgumentCall.fourthArgument, actualFiveArgumentCall.fourthArgument);
+      ARE_EQUAL(expectedFiveArgumentCall.fifthArgument, actualFiveArgumentCall.fifthArgument);
    }
 };

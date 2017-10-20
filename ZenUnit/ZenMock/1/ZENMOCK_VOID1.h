@@ -65,9 +65,9 @@ namespace ZenMock
       }
 
       static void ZenMockItFunctionPointer(
-         VoidOneArgFunctionPointerMocker<Arg1Type>* functionMocker, Arg1Type argument1)
+         VoidOneArgFunctionPointerMocker<Arg1Type>* functionMocker, Arg1Type argument)
       {
-         functionMocker->ZenMockIt(argument1);
+         functionMocker->ZenMockIt(argument);
       }
    };
 }
