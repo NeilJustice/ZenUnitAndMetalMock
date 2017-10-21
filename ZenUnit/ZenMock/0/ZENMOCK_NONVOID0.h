@@ -45,57 +45,57 @@ struct ZenMock_##functionName : public ZenMock::NonVoidZeroArgumentMocker<return
 
 namespace ZenMock
 {
-   template<typename ReturnType>
-   class NonVoidZeroArgumentMocker : public ZeroArgumentMocker<ExceptionThrower>, private ValueReturner<ReturnType>
+   template<typename FunctionReturnType>
+   class NonVoidZeroArgumentMocker : public ZeroArgumentMocker<ExceptionThrower>, private ValueReturner<FunctionReturnType>
    {
    public:
       explicit NonVoidZeroArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZeroArgumentMocker(zenMockedFunctionSignature)
-         , ValueReturner<ReturnType>(zenMockedFunctionSignature)
+         , ValueReturner<FunctionReturnType>(zenMockedFunctionSignature)
       {
       }
 
-      template<typename ReturnTypeURef>
-      void ExpectAndReturn(ReturnTypeURef&& returnValue)
+      template<typename ReturnType>
+      void ExpectAndReturn(ReturnType&& returnValue)
       {
          ZeroArgumentMocker::Expect();
-         ValueReturner<ReturnType>::ZenMockAddReturnValue(std::forward<ReturnTypeURef>(returnValue));
+         ValueReturner<FunctionReturnType>::ZenMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename ContainerType>
       void ExpectAndReturnValues(ContainerType&& returnValues)
       {
          ZeroArgumentMocker::Expect();
-         ValueReturner<ReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
+         ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
-      template<typename ReturnTypeURef, typename... ReturnTypeURefs>
-      void ExpectAndReturnValues(ReturnTypeURef&& firstReturnValue, ReturnTypeURefs&&... subsequentReturnValues)
+      template<typename ReturnType, typename... ReturnTypes>
+      void ExpectAndReturnValues(ReturnType&& firstReturnValue, ReturnTypes&&... subsequentReturnValues)
       {
          ZeroArgumentMocker::Expect();
-         ValueReturner<ReturnType>::ZenMockAddReturnValues(
-            std::forward<ReturnTypeURef>(firstReturnValue),
-            std::forward<ReturnTypeURefs>(subsequentReturnValues)...);
+         ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
+            std::forward<ReturnType>(firstReturnValue),
+            std::forward<ReturnTypes>(subsequentReturnValues)...);
       }
 
-      ReturnType ZenMockItAndReturnValue()
+      FunctionReturnType ZenMockItAndReturnValue()
       {
          ZeroArgumentMocker::ZenMockIt();
-         return ValueReturner<ReturnType>::ZenMockNextReturnValue();
+         return ValueReturner<FunctionReturnType>::ZenMockNextReturnValue();
       }
    };
 
-   template<typename ReturnType>
-   class NonVoidZeroArgFunctionPointerMocker : public NonVoidZeroArgumentMocker<ReturnType>
+   template<typename FunctionReturnType>
+   class NonVoidZeroArgFunctionPointerMocker : public NonVoidZeroArgumentMocker<FunctionReturnType>
    {
    public:
       explicit NonVoidZeroArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
-         : NonVoidZeroArgumentMocker<ReturnType>(zenMockedFunctionSignature)
+         : NonVoidZeroArgumentMocker<FunctionReturnType>(zenMockedFunctionSignature)
       {
       }
 
-      static ReturnType ZenMockItFunctionPointer(
-         NonVoidZeroArgFunctionPointerMocker<ReturnType>* functionPointerMocker)
+      static FunctionReturnType ZenMockItFunctionPointer(
+         NonVoidZeroArgFunctionPointerMocker<FunctionReturnType>* functionPointerMocker)
       {
          return functionPointerMocker->ZenMockItAndReturnValue();
       }

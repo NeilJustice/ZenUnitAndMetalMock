@@ -45,55 +45,55 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidFourArgument
 
 namespace ZenMock
 {
-   template<typename ReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
-   class NonVoidFourArgumentMocker : public FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>, private ValueReturner<ReturnType>
+   template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
+   class NonVoidFourArgumentMocker : public FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>, private ValueReturner<FunctionReturnType>
    {
    public:
       explicit NonVoidFourArgumentMocker(const std::string& zenMockedFunctionSignature)
          : FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>(zenMockedFunctionSignature)
-         , ValueReturner<ReturnType>(zenMockedFunctionSignature)
+         , ValueReturner<FunctionReturnType>(zenMockedFunctionSignature)
       {
       }
 
-      template<typename ReturnTypeURef>
-      void ExpectAndReturn(ReturnTypeURef&& returnValue)
+      template<typename ReturnType>
+      void ExpectAndReturn(ReturnType&& returnValue)
       {
          FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::Expect();
-         ValueReturner<ReturnType>::ZenMockAddReturnValue(std::forward<ReturnTypeURef>(returnValue));
+         ValueReturner<FunctionReturnType>::ZenMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ExpectAndReturnValues(const FirstReturnValue& firstReturnValue, const SubsequentReturnValues&... subsequentReturnValues)
       {
          FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::Expect();
-         ValueReturner<ReturnType>::ZenMockAddReturnValues(firstReturnValue, subsequentReturnValues...);
+         ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(firstReturnValue, subsequentReturnValues...);
       }
 
       template<typename ContainerType>
       void ExpectAndReturnValues(ContainerType&& returnValues)
       {
          FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::Expect();
-         ValueReturner<ReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
+         ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
-      ReturnType ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument)
+      FunctionReturnType ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument)
       {
          FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::ZenMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument);
-         return ValueReturner<ReturnType>::ZenMockNextReturnValue();
+         return ValueReturner<FunctionReturnType>::ZenMockNextReturnValue();
       }
    };
 
-   template<typename ReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
-   class NonVoidFourArgFunctionPointerMocker : public NonVoidFourArgumentMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>
+   template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
+   class NonVoidFourArgFunctionPointerMocker : public NonVoidFourArgumentMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>
    {
    public:
       explicit NonVoidFourArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
-         : NonVoidFourArgumentMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>(zenMockedFunctionSignature)
+         : NonVoidFourArgumentMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>(zenMockedFunctionSignature)
       {
       }
 
-      static ReturnType ZenMockItFunctionPointer(
-         NonVoidFourArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>* functionMocker,
+      static FunctionReturnType ZenMockItFunctionPointer(
+         NonVoidFourArgFunctionPointerMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>* functionMocker,
          Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument)
       {
          return functionMocker->ZenMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument);

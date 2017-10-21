@@ -4,13 +4,13 @@
 
 namespace ZenMock
 {
-   template<typename ReturnType>
+   template<typename FunctionReturnType>
    class ValueReturner
    {
       friend class ValueReturnerTests;
    private:
       const std::string ZenMockedFunctionSignature;
-      using DecayedReturnType = typename std::decay<ReturnType>::type;
+      using DecayedReturnType = typename std::decay<FunctionReturnType>::type;
       std::vector<DecayedReturnType> _returnValues;
       size_t _returnValueIndex;
    public:
@@ -20,17 +20,17 @@ namespace ZenMock
       {
       }
 
-      template<typename ReturnTypeURef>
-      void ZenMockAddReturnValue(ReturnTypeURef&& returnValue)
+      template<typename ReturnType>
+      void ZenMockAddReturnValue(ReturnType&& returnValue)
       {
-         _returnValues.emplace_back(std::forward<ReturnTypeURef>(returnValue));
+         _returnValues.emplace_back(std::forward<ReturnType>(returnValue));
       }
 
-      template<typename ReturnTypeURef, typename... ReturnTypeURefs>
+      template<typename ReturnType, typename... ReturnTypeURefs>
       void ZenMockAddReturnValues(
-         ReturnTypeURef&& firstReturnValue, ReturnTypeURefs&&... subsequentReturnValues)
+         ReturnType&& firstReturnValue, ReturnTypeURefs&&... subsequentReturnValues)
       {
-         ZenMockAddReturnValue(std::forward<ReturnTypeURef>(firstReturnValue));
+         ZenMockAddReturnValue(std::forward<ReturnType>(firstReturnValue));
          ZenMockAddReturnValues(std::forward<ReturnTypeURefs>(subsequentReturnValues)...);
       }
       void ZenMockAddReturnValues() {}
@@ -46,7 +46,7 @@ namespace ZenMock
          _returnValues.insert(_returnValues.end(), returnValues.cbegin(), returnValues.cend());
       }
 
-      template<typename FunctionReturnType = ReturnType>
+      template<typename FunctionReturnType = FunctionReturnType>
       typename std::enable_if<std::is_default_constructible<
          FunctionReturnType>::value, FunctionReturnType>::type ZenMockNextReturnValue()
       {
@@ -58,7 +58,7 @@ namespace ZenMock
          return DoZenMockNextReturnValue();
       }
 
-      template<typename FunctionReturnType = ReturnType>
+      template<typename FunctionReturnType = FunctionReturnType>
       typename std::enable_if<!std::is_default_constructible<
          FunctionReturnType>::value, FunctionReturnType>::type ZenMockNextReturnValue()
       {
@@ -69,7 +69,7 @@ namespace ZenMock
          return DoZenMockNextReturnValue();
       }
    protected:
-      ReturnType DoZenMockNextReturnValue()
+      FunctionReturnType DoZenMockNextReturnValue()
       {
          const DecayedReturnType& nextReturnValue =
             _returnValueIndex < _returnValues.size() ? _returnValues[_returnValueIndex++] : _returnValues.back();

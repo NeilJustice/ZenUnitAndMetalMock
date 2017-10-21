@@ -45,55 +45,55 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidThreeArgumen
 
 namespace ZenMock
 {
-   template<typename ReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type>
-   class NonVoidThreeArgumentMocker : public ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>, private ValueReturner<ReturnType>
+   template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type>
+   class NonVoidThreeArgumentMocker : public ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>, private ValueReturner<FunctionReturnType>
    {
    public:
       explicit NonVoidThreeArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>(zenMockedFunctionSignature)
-         , ValueReturner<ReturnType>(zenMockedFunctionSignature)
+         , ValueReturner<FunctionReturnType>(zenMockedFunctionSignature)
       {
       }
 
-      template<typename ReturnTypeURef>
-      void ExpectAndReturn(ReturnTypeURef&& returnValue)
+      template<typename ReturnType>
+      void ExpectAndReturn(ReturnType&& returnValue)
       {
          ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::Expect();
-         ValueReturner<ReturnType>::ZenMockAddReturnValue(std::forward<ReturnTypeURef>(returnValue));
+         ValueReturner<FunctionReturnType>::ZenMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename ContainerType>
       void ExpectAndReturnValues(ContainerType&& returnValues)
       {
          ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::Expect();
-         ValueReturner<ReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
+         ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ExpectAndReturnValues(const FirstReturnValue& firstReturnValue, const SubsequentReturnValues&... subsequentReturnValues)
       {
          ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::Expect();
-         ValueReturner<ReturnType>::ZenMockAddReturnValues(firstReturnValue, subsequentReturnValues...);
+         ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(firstReturnValue, subsequentReturnValues...);
       }
 
-      ReturnType ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument)
+      FunctionReturnType ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument)
       {
          ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::ZenMockIt(firstArgument, secondArgument, thirdArgument);
-         return ValueReturner<ReturnType>::ZenMockNextReturnValue();
+         return ValueReturner<FunctionReturnType>::ZenMockNextReturnValue();
       }
    };
 
-   template<typename ReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type>
-   class NonVoidThreeArgFunctionPointerMocker : public NonVoidThreeArgumentMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type>
+   template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type>
+   class NonVoidThreeArgFunctionPointerMocker : public NonVoidThreeArgumentMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type>
    {
    public:
       explicit NonVoidThreeArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
-         : NonVoidThreeArgumentMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type>(zenMockedFunctionSignature)
+         : NonVoidThreeArgumentMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type>(zenMockedFunctionSignature)
       {
       }
 
-      static ReturnType ZenMockItFunctionPointer(
-         NonVoidThreeArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type>* functionMocker,
+      static FunctionReturnType ZenMockItFunctionPointer(
+         NonVoidThreeArgFunctionPointerMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type>* functionMocker,
          Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument)
       {
          return functionMocker->ZenMockItAndReturnValue(firstArgument, secondArgument, thirdArgument);

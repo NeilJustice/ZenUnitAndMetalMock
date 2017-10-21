@@ -31,7 +31,7 @@ namespace ZenMock
 
    TEST3X3(FunctionPointer_ReturnsExpected,
       string expectedFunctionPointerSignature, const char* returnType, const char* unadornedFunctionSignature,
-      "ReturnType FunctionNameA()", "ReturnType", "FunctionNameA()",
+      "FunctionReturnType FunctionNameA()", "FunctionReturnType", "FunctionNameA()",
       "int FunctionNameB(int)", "int", "FunctionNameB(int)")
    {
       const string functionPointerSignature = Signature::FunctionPointer(returnType, unadornedFunctionSignature);

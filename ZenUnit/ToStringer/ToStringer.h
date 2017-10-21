@@ -64,8 +64,8 @@ namespace ZenUnit
          return PointerToAddressString(sharedPtr.get());
       }
 
-      template<typename ReturnType, typename... ArgumentTypes>
-      static std::string ToString(const std::function<ReturnType(ArgumentTypes...)>& stdFunction)
+      template<typename FunctionReturnType, typename... ArgumentTypes>
+      static std::string ToString(const std::function<FunctionReturnType(ArgumentTypes...)>& stdFunction)
       {
          if (stdFunction)
          {
