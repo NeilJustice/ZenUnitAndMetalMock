@@ -301,6 +301,3 @@ ZenUnit and ZenMock installed on Windows:
 
 Single header
 
-### License
-
-Public Domain
