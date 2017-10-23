@@ -46,21 +46,21 @@ namespace ZenMock
          _returnValues.insert(_returnValues.end(), returnValues.cbegin(), returnValues.cend());
       }
 
-      template<typename FunctionReturnType = FunctionReturnType>
+      template<typename ReturnType = FunctionReturnType>
       typename std::enable_if<std::is_default_constructible<
-         FunctionReturnType>::value, FunctionReturnType>::type ZenMockNextReturnValue()
+         ReturnType>::value, ReturnType>::type ZenMockNextReturnValue()
       {
          if (_returnValues.empty())
          {
-            const FunctionReturnType defaultReturnValue{};
+            const ReturnType defaultReturnValue{};
             return defaultReturnValue;
          }
          return DoZenMockNextReturnValue();
       }
 
-      template<typename FunctionReturnType = FunctionReturnType>
+      template<typename ReturnType = FunctionReturnType>
       typename std::enable_if<!std::is_default_constructible<
-         FunctionReturnType>::value, FunctionReturnType>::type ZenMockNextReturnValue()
+         ReturnType>::value, ReturnType>::type ZenMockNextReturnValue()
       {
          if (_returnValues.empty())
          {
