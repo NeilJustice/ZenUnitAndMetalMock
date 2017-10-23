@@ -300,7 +300,7 @@ File.cpp(1))");
                zenMockObject.ZenMockIt(0);
             }
            const string expectedWhat = String::Concat(R"(
-  Failed: ARE_EQUAL(expectedNumberOfCalls, oneArgumentCalls.size(), this->ZenMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCalls, callHistory.size(), this->ZenMockedFunctionSignature)
 Expected: 1
   Actual: )", numberOfCalls, R"(
  Message: ")", expectedSignature, R"("
@@ -326,7 +326,7 @@ File.cpp(1))");
             zenMockObject.ZenMockIt(10);
             //
             const string expectedWhat = String::Concat(R"(
-  Failed: ARE_EQUAL(expectedArgument, oneArgumentCalls[0].argument, this->ZenMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedArgument, callHistory[0].argument, this->ZenMockedFunctionSignature)
 Expected: 20
   Actual: 10
  Message: ")", expectedSignature, R"("
@@ -390,7 +390,7 @@ File.cpp(1))");
                zenMockObject.ZenMockIt(0);
             }
             string expectedWhat = String::Concat(R"(
-  Failed: ARE_EQUAL(expectedNumberOfCalls, oneArgumentCalls.size(), this->ZenMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCalls, callHistory.size(), this->ZenMockedFunctionSignature)
 Expected: )", n, R"(
   Actual: )", numberOfCalls, R"(
  Message: ")", expectedSignature, R"("
@@ -427,7 +427,7 @@ File.cpp(1))");
             }
             //
             const string expectedWhat = String::Concat(R"(
-  Failed: ARE_EQUAL(expectedArgument, oneArgumentCalls[i].argument, zenMockedFunctionSignatureAndCallIndex)
+  Failed: ARE_EQUAL(expectedArgument, callHistory[i].argument, zenMockedFunctionSignatureAndCallIndex)
 Expected: 10
   Actual: 20
  Message: ")", expectedSignature, " at i=", mismatchingCallIndex, R"("

@@ -20,7 +20,7 @@ namespace ZenMock
    {
       friend class OneArgumentMockerTests;
    private:
-      std::vector<OneArgumentCall<ArgType>> oneArgumentCalls;
+      std::vector<OneArgumentCall<ArgType>> callHistory;
    public:
       explicit OneArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
@@ -30,7 +30,7 @@ namespace ZenMock
       void ZenMockIt(const ArgType& argument)
       {
          this->ZenMockThrowIfNotExpected(argument);
-         oneArgumentCalls.emplace_back(argument);
+         callHistory.emplace_back(argument);
          this->ZenMockThrowIfExceptionSet();
       }
 
@@ -38,20 +38,20 @@ namespace ZenMock
       {
          this->ZenMockSetAsserted();
          const size_t expectedNumberOfCalls = 1;
-         ARE_EQUAL(expectedNumberOfCalls, oneArgumentCalls.size(), this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedArgument, oneArgumentCalls[0].argument, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCalls, callHistory.size(), this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedArgument, callHistory[0].argument, this->ZenMockedFunctionSignature);
       }
 
       void AssertCalledNTimesWith(size_t expectedNumberOfCalls, const ArgType& expectedArgument)
       {
          this->ZenMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
          this->ZenMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCalls, oneArgumentCalls.size(), this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCalls, callHistory.size(), this->ZenMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCalls; ++i)
          {
             const std::string zenMockedFunctionSignatureAndCallIndex
                = ZenUnit::String::Concat(this->ZenMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedArgument, oneArgumentCalls[i].argument, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedArgument, callHistory[i].argument, zenMockedFunctionSignatureAndCallIndex);
          }
       }
 
@@ -60,16 +60,16 @@ namespace ZenMock
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedOneArgumentCalls.size());
          this->ZenMockSetAsserted();
          const std::vector<OneArgumentCallRef<ArgType>>
-            actualOneArgumentCalls = PrivateCallsToCallRefs(oneArgumentCalls);
+            actualOneArgumentCalls = PrivateCallsToCallRefs(callHistory);
          VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature);
       }
    private:
       static std::vector<OneArgumentCallRef<ArgType>>
-         PrivateCallsToCallRefs(const std::vector<OneArgumentCall<ArgType>>& oneArgumentCalls)
+         PrivateCallsToCallRefs(const std::vector<OneArgumentCall<ArgType>>& callHistory)
       {
          std::vector<OneArgumentCallRef<ArgType>> oneArgumentCallRefs;
-         oneArgumentCallRefs.reserve(oneArgumentCalls.size());
-         std::for_each(oneArgumentCalls.cbegin(), oneArgumentCalls.cend(),
+         oneArgumentCallRefs.reserve(callHistory.size());
+         std::for_each(callHistory.cbegin(), callHistory.cend(),
             [&](const OneArgumentCall<ArgType>& oneArgumentCall)
             {
                oneArgumentCallRefs.emplace_back(oneArgumentCall);

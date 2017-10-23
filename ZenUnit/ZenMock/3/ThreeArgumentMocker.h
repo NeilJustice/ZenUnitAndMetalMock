@@ -20,7 +20,7 @@ namespace ZenMock
    {
       friend class ThreeArgumentMockerTests;
    private:
-      std::vector<ThreeArgumentCall<Arg1Type, Arg2Type, Arg3Type>> threeArgumentCalls;
+      std::vector<ThreeArgumentCall<Arg1Type, Arg2Type, Arg3Type>> callHistory;
    public:
       explicit ThreeArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
@@ -30,7 +30,7 @@ namespace ZenMock
       void ZenMockIt(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument)
       {
          this->ZenMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument);
-         threeArgumentCalls.emplace_back(firstArgument, secondArgument, thirdArgument);
+         callHistory.emplace_back(firstArgument, secondArgument, thirdArgument);
          this->ZenMockThrowIfExceptionSet();
       }
 
@@ -41,10 +41,10 @@ namespace ZenMock
       {
          this->ZenMockSetAsserted();
          const size_t expectedNumberOfCalls = 1;
-         ARE_EQUAL(expectedNumberOfCalls, threeArgumentCalls.size(), this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedFirstArgument, threeArgumentCalls[0].firstArgument, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedSecondArgument, threeArgumentCalls[0].secondArgument, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedThirdArgument, threeArgumentCalls[0].thirdArgument, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCalls, callHistory.size(), this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedFirstArgument, callHistory[0].firstArgument, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedSecondArgument, callHistory[0].secondArgument, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedThirdArgument, callHistory[0].thirdArgument, this->ZenMockedFunctionSignature);
       }
 
       void AssertCalledNTimesWith(
@@ -55,14 +55,14 @@ namespace ZenMock
       {
          this->ZenMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
          this->ZenMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCalls, threeArgumentCalls.size(), this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCalls, callHistory.size(), this->ZenMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCalls; ++i)
          {
             const std::string zenMockedFunctionSignatureAndCallIndex
                = ZenUnit::String::Concat(this->ZenMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedFirstArgument, threeArgumentCalls[i].firstArgument, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSecondArgument, threeArgumentCalls[i].secondArgument, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedThirdArgument, threeArgumentCalls[i].thirdArgument, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFirstArgument, callHistory[i].firstArgument, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSecondArgument, callHistory[i].secondArgument, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedThirdArgument, callHistory[i].thirdArgument, zenMockedFunctionSignatureAndCallIndex);
          }
       }
 
@@ -72,17 +72,17 @@ namespace ZenMock
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedThreeArgumentCalls.size());
          this->ZenMockSetAsserted();
          const std::vector<ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>>
-            actualThreeArgumentCalls = PrivateCallsToCallRefs(threeArgumentCalls);
+            actualThreeArgumentCalls = PrivateCallsToCallRefs(callHistory);
          VECTORS_EQUAL(expectedThreeArgumentCalls, actualThreeArgumentCalls, this->ZenMockedFunctionSignature);
       }
 
    private:
       static std::vector<ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>>
-         PrivateCallsToCallRefs(const std::vector<ThreeArgumentCall<Arg1Type, Arg2Type, Arg3Type>>& threeArgumentCalls)
+         PrivateCallsToCallRefs(const std::vector<ThreeArgumentCall<Arg1Type, Arg2Type, Arg3Type>>& callHistory)
       {
          std::vector<ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>> threeArgumentCallRefs;
-         threeArgumentCallRefs.reserve(threeArgumentCalls.size());
-         std::for_each(threeArgumentCalls.cbegin(), threeArgumentCalls.cend(),
+         threeArgumentCallRefs.reserve(callHistory.size());
+         std::for_each(callHistory.cbegin(), callHistory.cend(),
             [&](const ThreeArgumentCall<Arg1Type, Arg2Type, Arg3Type>& threeArgumentCall)
             {
                threeArgumentCallRefs.emplace_back(threeArgumentCall);

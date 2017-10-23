@@ -22,7 +22,7 @@ namespace ZenMock
    {
       friend class FiveArgumentMockerTests;
    private:
-      std::vector<FiveArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>> fiveArgumentCalls;
+      std::vector<FiveArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>> callHistory;
    public:
       explicit FiveArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
@@ -37,7 +37,7 @@ namespace ZenMock
          const Arg5Type& fifthArgument)
       {
          this->ZenMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument);
-         fiveArgumentCalls.emplace_back(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument);
+         callHistory.emplace_back(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument);
          this->ZenMockThrowIfExceptionSet();
       }
 
@@ -50,12 +50,12 @@ namespace ZenMock
       {
          this->ZenMockSetAsserted();
          const size_t expectedNumberOfCalls = 1;
-         ARE_EQUAL(expectedNumberOfCalls, fiveArgumentCalls.size(), this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedFirstArgument, fiveArgumentCalls[0].firstArgument, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedSecondArgument, fiveArgumentCalls[0].secondArgument, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedThirdArgument, fiveArgumentCalls[0].thirdArgument, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedFourthArgument, fiveArgumentCalls[0].fourthArgument, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedFifthArgument, fiveArgumentCalls[0].fifthArgument, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCalls, callHistory.size(), this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedFirstArgument, callHistory[0].firstArgument, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedSecondArgument, callHistory[0].secondArgument, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedThirdArgument, callHistory[0].thirdArgument, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedFourthArgument, callHistory[0].fourthArgument, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedFifthArgument, callHistory[0].fifthArgument, this->ZenMockedFunctionSignature);
       }
 
       void AssertCalledNTimesWith(
@@ -68,16 +68,16 @@ namespace ZenMock
       {
          this->ZenMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
          this->ZenMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCalls, fiveArgumentCalls.size(), this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCalls, callHistory.size(), this->ZenMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCalls; ++i)
          {
             std::string zenMockedFunctionSignatureAndCallIndex
                = ZenUnit::String::Concat(this->ZenMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedFirstArgument, fiveArgumentCalls[i].firstArgument, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSecondArgument, fiveArgumentCalls[i].secondArgument, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedThirdArgument, fiveArgumentCalls[i].thirdArgument, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedFourthArgument, fiveArgumentCalls[i].fourthArgument, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedFifthArgument, fiveArgumentCalls[i].fifthArgument, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFirstArgument, callHistory[i].firstArgument, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSecondArgument, callHistory[i].secondArgument, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedThirdArgument, callHistory[i].thirdArgument, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFourthArgument, callHistory[i].fourthArgument, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFifthArgument, callHistory[i].fifthArgument, zenMockedFunctionSignatureAndCallIndex);
          }
       }
 
@@ -87,17 +87,17 @@ namespace ZenMock
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedFiveArgumentCalls.size());
          this->ZenMockSetAsserted();
          const std::vector<FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
-            actualFiveArgumentCalls = PrivateCallsToCallRefs(fiveArgumentCalls);
+            actualFiveArgumentCalls = PrivateCallsToCallRefs(callHistory);
          VECTORS_EQUAL(expectedFiveArgumentCalls, actualFiveArgumentCalls, this->ZenMockedFunctionSignature);
       }
 
    private:
       static std::vector<FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
-         PrivateCallsToCallRefs(const std::vector<FiveArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>& fiveArgumentCalls)
+         PrivateCallsToCallRefs(const std::vector<FiveArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>& callHistory)
       {
          std::vector<FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>> fiveArgumentCallRefs;
-         fiveArgumentCallRefs.reserve(fiveArgumentCalls.size());
-         std::for_each(fiveArgumentCalls.cbegin(), fiveArgumentCalls.cend(),
+         fiveArgumentCallRefs.reserve(callHistory.size());
+         std::for_each(callHistory.cbegin(), callHistory.cend(),
             [&](const FiveArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& fiveArgumentCall)
             {
                fiveArgumentCallRefs.emplace_back(fiveArgumentCall);

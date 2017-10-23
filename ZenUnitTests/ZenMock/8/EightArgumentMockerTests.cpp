@@ -36,7 +36,7 @@ namespace ZenMock
       ARE_EQUAL(_signature, mocker.ZenMockedFunctionSignature);
       IS_FALSE(mocker._expected);
       IS_FALSE(mocker._asserted);
-      IS_EMPTY(mocker.eightArgumentCalls);
+      IS_EMPTY(mocker.callHistory);
    }
 
    TEST(Expect_AlreadyExpected_Throws)
@@ -88,7 +88,7 @@ namespace ZenMock
    {
       _mocker->_expected = true;
       _mocker->_exceptionThrower.ExpectCallToZenMockThrowIfExceptionSet();
-      IS_EMPTY(_mocker->eightArgumentCalls);
+      IS_EMPTY(_mocker->callHistory);
       //
       _mocker->ZenMockIt(1, 2, 3, 4, 5, 6, 7, 8);
       //
@@ -97,7 +97,7 @@ namespace ZenMock
       {
          CallType(1, 2, 3, 4, 5, 6, 7, 8)
       };
-      VECTORS_EQUAL(expectedCalls, _mocker->eightArgumentCalls);
+      VECTORS_EQUAL(expectedCalls, _mocker->callHistory);
       ZEN(_mocker->_exceptionThrower.AssertZenMockThrowIfExceptionSetCalledOnce());
       NOTHROWS(_mocker->AssertCalledOnceWith(1, 2, 3, 4, 5, 6, 7, 8));
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
