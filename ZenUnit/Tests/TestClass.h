@@ -44,11 +44,10 @@ namespace ZenUnit
          {
             ConsoleColorer consoleColorer;
             bool didSetColor = consoleColorer.SetColor(Color::Red);
-            std::cout << "\nZenUnit test declaration syntax error.\n";
+            std::cout << "\n=========================================\nZenUnit FACTS vs. TEST Syntax Usage Error\n=========================================\n";
             consoleColorer.UnsetColor(didSetColor);
-            std::cout << "A FACTS test was declared therefore a TESTNXN definition is expected, but a TEST definition was found.\n"
-               "If TEST is intended, declare AFACT instead of FACTS.\n"
-               "If TEST is not intended, define a TESTNXN instead of a TEST to match the FACTS declaration.\n";
+            std::cout << "The aforementioned test name was declared with FACTS, therefore a TESTNXN definition is expected, but a TEST was encountered.\n"
+               "If a TEST is intended, declare the test name with AFACT instead of with FACTS.\n";
             exit(1);
          }
          const std::unique_ptr<Test>* const testNXN = &findIter->second;

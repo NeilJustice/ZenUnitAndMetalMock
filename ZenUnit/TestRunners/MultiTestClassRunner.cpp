@@ -41,18 +41,18 @@ namespace ZenUnit
       std::unique_ptr<TestClassRunner>& testClassRunner, const std::vector<std::string>& runFilters)
    {
       const bool anyRunFilterMatchesTestClassName = _extraArgAnyer->ExtraArgAny(
-         runFilters, TestClassMatchesRunFilter, &testClassRunner);
+         runFilters, TestClassNameMatchesRunFilter, &testClassRunner);
       if (!anyRunFilterMatchesTestClassName)
       {
          testClassRunner.reset(new NoOpTestClassRunner);
       }
    }
 
-   bool MultiTestClassRunner::TestClassMatchesRunFilter(
+   bool MultiTestClassRunner::TestClassNameMatchesRunFilter(
       const std::string& runFilter, const std::unique_ptr<TestClassRunner>* testClassRunner)
    {
       const char* const testClassName = (*testClassRunner)->TestClassName();
-      const bool testClassMatchesRunFilter = String::IgnoreCaseStrcmp(runFilter.c_str(), testClassName) == 0;
+      const bool testClassMatchesRunFilter = String::IgnoreCaseStrcmp(testClassName, runFilter.c_str()) == 0;
       return testClassMatchesRunFilter;
    }
 
@@ -62,7 +62,7 @@ namespace ZenUnit
       for (const std::unique_ptr<TestClassRunner>& testClassRunner : _testClassRunners)
       {
          const char* const testClassName = testClassRunner->TestClassName();
-         if (testClassName != nullptr)
+         if (strcmp(testClassName, "FilteredOut") != 0)
          {
             ++numberOfTestClassesToBeRun;
          }

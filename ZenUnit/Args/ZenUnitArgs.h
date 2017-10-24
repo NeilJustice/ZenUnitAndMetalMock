@@ -21,7 +21,7 @@ namespace ZenUnit
       unsigned maxtotalseconds = 0;
    };
 
-   #define VS2017Update4 191125547+1
+   #define VS2017Update4 191125547
    #ifdef __linux__
       #if __clang_major__ == 3 && __clang_minor__ == 9
          static_assert(sizeof(ZenUnitArgs) == 88);

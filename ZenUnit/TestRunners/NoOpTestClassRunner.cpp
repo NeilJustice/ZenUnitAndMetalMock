@@ -5,7 +5,7 @@ namespace ZenUnit
 {
    const char* NoOpTestClassRunner::TestClassName() const
    {
-      return nullptr;
+      return "FilteredOut";
    }
 
    size_t NoOpTestClassRunner::NumberOfTestCases() const

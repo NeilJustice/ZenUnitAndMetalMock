@@ -44,7 +44,7 @@ namespace ZenUnit
    private:
       void ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter(
          std::unique_ptr<TestClassRunner>& testClassRunner, const std::vector<std::string>& runFilters);
-      static bool TestClassMatchesRunFilter(
+      static bool TestClassNameMatchesRunFilter(
          const std::string& runFilter, const std::unique_ptr<TestClassRunner>* testClassRunner);
       static TestClassResult RunTestClassRunner(const std::unique_ptr<TestClassRunner>& testClassRunner);
       static bool VectorCaseInsensitiveContains(

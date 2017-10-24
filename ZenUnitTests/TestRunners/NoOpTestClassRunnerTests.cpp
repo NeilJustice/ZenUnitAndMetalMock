@@ -12,7 +12,7 @@ NoOpTestClassRunner _noOpTestClassRunner;
 
 TEST(TestClassName_ReturnsNoOpTestClassRunner)
 {
-   IS_NULL(_noOpTestClassRunner.TestClassName());
+   ARE_EQUAL("FilteredOut", _noOpTestClassRunner.TestClassName());
 }
 
 TEST(NumberOfTestCases_Returns0)

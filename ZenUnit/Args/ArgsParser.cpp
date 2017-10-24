@@ -78,6 +78,7 @@ namespace ZenUnit
                if (argName == "-run")
                {
                   zenUnitArgs.runFilters = String::Split(argValueString, ',');
+                  //zenUnitArgs.runFilters = _runFilterParser->Parse(argValueString);
                }
                else if (argName == "-testruns")
                {

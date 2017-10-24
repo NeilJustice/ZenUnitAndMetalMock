@@ -129,7 +129,7 @@ namespace ZenUnit
       _multiTestClassRunner.ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter(testClassRunner, runFilters);
       //
       ZEN(_extraArgAnyerMock->ExtraArgAnyMock.AssertCalledOnceWith(
-         runFilters, MultiTestClassRunner::TestClassMatchesRunFilter, &testClassRunner));
+         runFilters, MultiTestClassRunner::TestClassNameMatchesRunFilter, &testClassRunner));
       IS_TRUE(dynamic_cast<NoOpTestClassRunner*>(testClassRunner.get()) == nullptr);
    }
 
@@ -142,7 +142,7 @@ namespace ZenUnit
       _multiTestClassRunner.ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter(testClassRunner, runFilters);
       //
       ZEN(_extraArgAnyerMock->ExtraArgAnyMock.AssertCalledOnceWith(
-         runFilters, MultiTestClassRunner::TestClassMatchesRunFilter, &testClassRunner));
+         runFilters, MultiTestClassRunner::TestClassNameMatchesRunFilter, &testClassRunner));
       IS_TRUE(dynamic_cast<NoOpTestClassRunner*>(testClassRunner.get()) != nullptr);
    }
 
@@ -181,7 +181,7 @@ namespace ZenUnit
       testClassRunnerMock->TestClassNameMock.ExpectAndReturn(testClassName);
       const std::unique_ptr<TestClassRunner> testClassRunner(testClassRunnerMock);
       //
-      bool testClassMatchesRunFilter = MultiTestClassRunner::TestClassMatchesRunFilter(runFilter, &testClassRunner);
+      bool testClassMatchesRunFilter = MultiTestClassRunner::TestClassNameMatchesRunFilter(runFilter, &testClassRunner);
       //
       ZEN(testClassRunnerMock->TestClassNameMock.AssertCalledOnce());
       ARE_EQUAL(expectedReturnValue, testClassMatchesRunFilter);
