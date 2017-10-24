@@ -2,6 +2,7 @@
 #include "ZenUnit/Args/ArgsParser.h"
 #include "ZenUnit/Utils/Vector.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
+#include "ZenUnitTests/Args/Mock/RunFilterParserMock.h"
 
 namespace ZenUnit
 {
@@ -58,7 +59,8 @@ None
    Useful option for increasing testing rigor, especially when used with -random.)";
 
    ArgsParser _argsParser;
-   const ConsoleMock* _consoleMock;
+   ConsoleMock* _consoleMock;
+   RunFilterParserMock* _runFilterParserMock;
    ZENMOCK_NONVOID1_STATIC(unsigned, ZenUnit::String, ToUnsigned, const string&)
 
    STARTUP
@@ -71,6 +73,7 @@ None
    {
       ArgsParser argsParser;
       POINTER_WAS_NEWED(argsParser._console);
+      POINTER_WAS_NEWED(argsParser._runFilterParser);
       STD_FUNCTION_TARGETS(String::ToUnsigned, argsParser.call_String_ToUnsigned);
    }
 

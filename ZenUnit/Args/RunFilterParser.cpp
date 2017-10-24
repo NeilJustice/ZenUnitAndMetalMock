@@ -10,9 +10,11 @@ namespace ZenUnit
    {
    }
 
+   RunFilterParser::~RunFilterParser() = default;
+
    std::vector<RunFilter> RunFilterParser::Parse(const std::string& runArgument) const
    {
-      std::vector<RunFilter> runFilters;//(runArguments.size());
+      std::vector<RunFilter> runFilters;
       std::vector<std::string> runArguments = String::Split(runArgument, ',');
       const RunFilter runFilter = FromString(runArguments[0]);
       runFilters.push_back(runFilter);

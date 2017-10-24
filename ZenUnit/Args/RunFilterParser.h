@@ -13,7 +13,7 @@ namespace ZenUnit
       std::unique_ptr<Transformer<std::string, RunFilter>> _transformer;
    public:
       RunFilterParser();
-      virtual ~RunFilterParser() = default;
+      virtual ~RunFilterParser();
       virtual std::vector<RunFilter> Parse(const std::string& runFilterStrings) const;
    private:
       static RunFilter FromString(const std::string& s);

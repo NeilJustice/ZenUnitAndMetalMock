@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnit/Args/ArgsParser.h"
+#include "ZenUnit/Args/RunFilterParser.h"
 #include "ZenUnit/Console/Console.h"
 #include "ZenUnit/Utils/Set.h"
 #include "ZenUnit/Utils/StringUtil.h"
@@ -10,9 +11,12 @@ namespace ZenUnit
 {
    ArgsParser::ArgsParser()
       : _console(new Console)
+      , _runFilterParser(new RunFilterParser)
       , call_String_ToUnsigned(String::ToUnsigned)
    {
    }
+
+   ArgsParser::~ArgsParser() = default;
 
    ZenUnitArgs ArgsParser::Parse(const std::vector<std::string>& args) const
    {
