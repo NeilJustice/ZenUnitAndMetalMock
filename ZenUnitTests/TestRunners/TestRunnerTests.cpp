@@ -117,12 +117,12 @@ namespace ZenUnit
       1, 2, 1, 1)
    {
       ZenUnitArgs parsedZenUnitArgs;
-      parsedZenUnitArgs.runFilters = { ZenUnit::Random<string>(), ZenUnit::Random<string>() };
+      parsedZenUnitArgs.runFilters = { ZenUnit::Random<RunFilter>(), ZenUnit::Random<RunFilter>() };
       parsedZenUnitArgs.wait = ZenUnit::Random<bool>();
       parsedZenUnitArgs.testruns = testrunsArgs;
       _testRunnerSelfMockedA.argsParserMock->ParseMock.ExpectAndReturn(parsedZenUnitArgs);
 
-      _testRunnerSelfMockedA.multiTestClassRunnerMock->ApplyRunFiltersIfSpecifiedMock.Expect();
+      _testRunnerSelfMockedA.multiTestClassRunnerMock->ApplyRunFiltersIfAnyMock.Expect();
 
       _testRunnerSelfMockedA.RunTestClassesAndPrintResultsMock.
          ExpectAndReturnValues(firstTestRunExitCode, secondTestRunExitCode);
@@ -137,7 +137,7 @@ namespace ZenUnit
       //
       ZEN(_testRunnerSelfMockedA.argsParserMock->ParseMock.AssertCalledOnceWith(commandLineArgs));
       ZEN(_testRunnerSelfMockedA.multiTestClassRunnerMock->
-         ApplyRunFiltersIfSpecifiedMock.AssertCalledOnceWith(parsedZenUnitArgs.runFilters));
+         ApplyRunFiltersIfAnyMock.AssertCalledOnceWith(parsedZenUnitArgs.runFilters));
       ZEN(_testRunnerSelfMockedA.RunTestClassesAndPrintResultsMock.AssertCalledNTimes(testrunsArgs));
       ZEN(_testRunnerSelfMockedA.testRunResultMock->ResetStateExceptForSkipsMock.AssertCalledNTimes(testrunsArgs));
       ZEN(_testRunnerSelfMockedA.consoleMock->

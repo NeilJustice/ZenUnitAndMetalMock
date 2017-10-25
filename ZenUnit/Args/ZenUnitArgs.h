@@ -1,4 +1,5 @@
 #pragma once
+#include "ZenUnit/Args/RunFilter.h"
 #include "ZenUnit/Enums/PrintMode.h"
 #include "ZenUnit/Equalizers/ZenUnitEqualizer.h"
 
@@ -8,7 +9,7 @@ namespace ZenUnit
    {
       std::string commandLine;
       PrintMode printMode = PrintMode::Normal;
-      std::vector<std::string> runFilters;
+      std::vector<RunFilter> runFilters;
       bool pause = false;
       bool wait = false;
       bool exit0 = false;

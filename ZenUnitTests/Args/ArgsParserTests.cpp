@@ -66,6 +66,7 @@ None
    STARTUP
    {
       _argsParser._console.reset(_consoleMock = new ConsoleMock);
+      _argsParser._runFilterParser.reset(_runFilterParserMock = new RunFilterParserMock);
       _argsParser.call_String_ToUnsigned = ZENMOCK_BIND1(ToUnsigned_ZenMock);
    }
 
@@ -188,16 +189,20 @@ None
 
    TEST(Parse_Run_ReturnsExpectedZenUnitArgs)
    {
+      const vector<RunFilter> runFilters = { ZenUnit::Random<RunFilter>() };
+      _runFilterParserMock->ParseMock.ExpectAndReturn(runFilters);
+
       const string runArgument = ZenUnit::Random<string>();
-      const string runFilterA = ZenUnit::Random<string>();
-      const string runFilterB = ZenUnit::Random<string>();
-      const vector<string> args = { "ExePath", "-run=" + runFilterA + "," + runFilterB };
+      const vector<string> args = { "ExePath", "-run=" + runArgument };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
+      const vector<string> splitRunArgument = String::Split(runArgument, ',');
+      ZEN(_runFilterParserMock->ParseMock.AssertCalledOnceWith(splitRunArgument));
+
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
-      expectedZenUnitArgs.runFilters = { runFilterA, runFilterB };
+      expectedZenUnitArgs.runFilters = runFilters;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 

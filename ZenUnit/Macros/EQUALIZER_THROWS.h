@@ -6,23 +6,23 @@
    typeName equalizerTestObjectA, equalizerTestObjectB; \
    ARE_EQUAL(equalizerTestObjectA, equalizerTestObjectB)
 
-#define EQUALIZER_THROWS(typeName, fieldName, nonDefaultFieldValue) \
+#define EQUALIZER_THROWS(typeName, nonQuotedFieldName, arbitraryNonDefaultFieldValue) \
    ZenUnit::EQUALIZER_THROWS_Defined(equalizerTestObjectA, equalizerTestObjectB, \
-      &typeName::fieldName, #typeName, #fieldName, nonDefaultFieldValue, #nonDefaultFieldValue, FILELINE)
+      &typeName::nonQuotedFieldName, #typeName, #nonQuotedFieldName, arbitraryNonDefaultFieldValue, #arbitraryNonDefaultFieldValue, FILELINE)
 
 namespace ZenUnit
 {
-   NOINLINE void EQUALIZER_THROWS_ThrowA(
+   NOINLINE void EQUALIZER_THROWS_ThrowOnAccountOfExceptionUnexpectedlyThrown(
       const char* typeName,
       const char* fieldName,
-      const char* nonDefaultFieldValueText,
+      const char* arbitraryNonDefaultFieldValueText,
       FileLine fileLine,
       const ZenUnit::Anomaly& becauseAnomaly);
 
-   NOINLINE void EQUALIZER_THROWS_ThrowB(
+   NOINLINE void EQUALIZER_THROWS_ThrowOnAccountOfExpectedExceptionNotThrown(
       const char* typeName,
       const char* fieldName,
-      const char* nonDefaultFieldValueText,
+      const char* arbitraryNonDefaultFieldValueText,
       FileLine fileLine);
 
    template<
@@ -37,7 +37,7 @@ namespace ZenUnit
       const char* typeName,
       const char* fieldName,
       const FieldType& nonDefaultFieldValue,
-      const char* nonDefaultFieldValueText,
+      const char* arbitraryNonDefaultFieldValueText,
       FileLine fileLine)
    {
       (equalizerTestObjectA.*fieldMemberPointer) = nonDefaultFieldValue;
@@ -56,12 +56,12 @@ namespace ZenUnit
          }
          catch (const ZenUnit::Anomaly& becauseAnomaly)
          {
-            EQUALIZER_THROWS_ThrowA(
-               typeName, fieldName, nonDefaultFieldValueText, fileLine, becauseAnomaly);
+            EQUALIZER_THROWS_ThrowOnAccountOfExceptionUnexpectedlyThrown(
+               typeName, fieldName, arbitraryNonDefaultFieldValueText, fileLine, becauseAnomaly);
          }
          return;
       }
-      EQUALIZER_THROWS_ThrowB(
-         typeName, fieldName, nonDefaultFieldValueText, fileLine);
+      EQUALIZER_THROWS_ThrowOnAccountOfExpectedExceptionNotThrown(
+         typeName, fieldName, arbitraryNonDefaultFieldValueText, fileLine);
    }
 }

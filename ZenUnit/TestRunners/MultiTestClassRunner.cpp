@@ -28,7 +28,7 @@ namespace ZenUnit
       _testClassRunners.emplace_back(testClassRunner);
    }
 
-   void MultiTestClassRunner::ApplyRunFiltersIfSpecified(const std::vector<std::string>& runFilters)
+   void MultiTestClassRunner::ApplyRunFiltersIfAny(const std::vector<RunFilter>& runFilters)
    {
       if (!runFilters.empty())
       {
@@ -38,7 +38,7 @@ namespace ZenUnit
    }
 
    void MultiTestClassRunner::ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter(
-      std::unique_ptr<TestClassRunner>& testClassRunner, const std::vector<std::string>& runFilters)
+      std::unique_ptr<TestClassRunner>& testClassRunner, const std::vector<RunFilter>& runFilters)
    {
       const bool anyRunFilterMatchesTestClassName = _extraArgAnyer->ExtraArgAny(
          runFilters, TestClassNameMatchesRunFilter, &testClassRunner);
@@ -49,10 +49,10 @@ namespace ZenUnit
    }
 
    bool MultiTestClassRunner::TestClassNameMatchesRunFilter(
-      const std::string& runFilter, const std::unique_ptr<TestClassRunner>* testClassRunner)
+      const RunFilter& runFilter, const std::unique_ptr<TestClassRunner>* testClassRunner)
    {
       const char* const testClassName = (*testClassRunner)->TestClassName();
-      const bool testClassMatchesRunFilter = String::IgnoreCaseStrcmp(testClassName, runFilter.c_str()) == 0;
+      const bool testClassMatchesRunFilter = String::IgnoreCaseStrcmp(testClassName, runFilter.testClassName.c_str()) == 0;
       return testClassMatchesRunFilter;
    }
 

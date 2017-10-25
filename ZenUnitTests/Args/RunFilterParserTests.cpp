@@ -6,9 +6,9 @@ namespace ZenUnit
 {
    TESTS(RunFilterParserTests)
    AFACT(DefaultConstructor_NewsTransformer)
-   FACTS(Parse_TestClassName_ReturnsExpectedRunFilter)
-   FACTS(Parse_TestClassName_TestName_ReturnsExpectedRunFilter)
-   FACTS(Parse_TestClassName_TestName_TestCaseNumber_ReturnsExpectedRunFilter)
+   FACTS(Parse_JustTestClassName_ReturnsExpectedRunFilter)
+   FACTS(Parse_TestClassNameAndTestName_ReturnsExpectedRunFilter)
+   FACTS(Parse_TestClassNameAndTestNameAndTestCaseNumber_ReturnsExpectedRunFilter)
    EVIDENCE
 
    RunFilterParser _runFilterParser;
@@ -25,12 +25,12 @@ namespace ZenUnit
       POINTER_WAS_NEWED(runFilterParser._transformer);
    }
 
-   TEST2X2(Parse_TestClassName_ReturnsExpectedRunFilter,
-      const string& runFilterString, const string& expectedTestClassName,
-      "TestClassA", "TestClassA",
-      "TestClassB", "TestClassB")
+   TEST2X2(Parse_JustTestClassName_ReturnsExpectedRunFilter,
+      const vector<string>& runFilterStrings, const string& expectedTestClassName,
+      vector<string> { "TestClassA" }, "TestClassA",
+      vector<string> { "TestClassB" }, "TestClassB")
    {
-      const vector<RunFilter> runFilters = _runFilterParser.Parse(runFilterString);
+      const vector<RunFilter> runFilters = _runFilterParser.Parse(runFilterStrings);
       //
       ARE_EQUAL(1, runFilters.size());
       ARE_EQUAL(expectedTestClassName, runFilters[0].testClassName);
@@ -38,12 +38,12 @@ namespace ZenUnit
       ARE_EQUAL(0, runFilters[0].testCaseNumber);
    }
 
-   TEST3X3(Parse_TestClassName_TestName_ReturnsExpectedRunFilter,
-      const string& runFilterString, const string& expectedTestClassName, const string& expectedTestName,
-      "TestClassA.TestNameA", "TestClassA", "TestNameA",
-      "TestClassB.TestNameB", "TestClassB", "TestNameB")
+   TEST3X3(Parse_TestClassNameAndTestName_ReturnsExpectedRunFilter,
+      const vector<string>& runFilterStrings, const string& expectedTestClassName, const string& expectedTestName,
+      vector<string>{ "TestClassA.TestNameA" }, "TestClassA", "TestNameA",
+      vector<string>{ "TestClassB.TestNameB" }, "TestClassB", "TestNameB")
    {
-      const vector<RunFilter> runFilters = _runFilterParser.Parse(runFilterString);
+      const vector<RunFilter> runFilters = _runFilterParser.Parse(runFilterStrings);
       //
       ARE_EQUAL(1, runFilters.size());
       ARE_EQUAL(expectedTestClassName, runFilters[0].testClassName);
@@ -51,14 +51,12 @@ namespace ZenUnit
       ARE_EQUAL(0, runFilters[0].testCaseNumber);
    }
 
-   TEST4X4(Parse_TestClassName_TestName_TestCaseNumber_ReturnsExpectedRunFilter,
-      const string& runFilterString, const string& expectedTestClassName, const string& expectedTestName, unsigned expectedTestCaseNumber,
-      //"TestClass", "TestClassA", "", 0,
-      //"TestClass.TestName", "TestClass", "TestName", 0,
-      "TestClassA.TestNameA/1", "TestClassA", "TestNameA", 1,
-      "TestClassB.TestNameB/2", "TestClassB", "TestNameB", 2)
+   TEST4X4(Parse_TestClassNameAndTestNameAndTestCaseNumber_ReturnsExpectedRunFilter,
+      const vector<string>& runFilterStrings, const string& expectedTestClassName, const string& expectedTestName, unsigned expectedTestCaseNumber,
+      vector<string>{ "TestClassA.TestNameA/1" }, "TestClassA", "TestNameA", 1,
+      vector<string>{ "TestClassB.TestNameB/2" }, "TestClassB", "TestNameB", 2)
    {
-      const vector<RunFilter> runFilters = _runFilterParser.Parse(runFilterString);
+      const vector<RunFilter> runFilters = _runFilterParser.Parse(runFilterStrings);
       //
       ARE_EQUAL(1, runFilters.size());
       ARE_EQUAL(expectedTestClassName, runFilters[0].testClassName);

@@ -81,8 +81,8 @@ namespace ZenUnit
                unsigned argValue = 0;
                if (argName == "-run")
                {
-                  zenUnitArgs.runFilters = String::Split(argValueString, ',');
-                  //zenUnitArgs.runFilters = _runFilterParser->Parse(argValueString);
+                  const std::vector<std::string> runFilterStrings = String::Split(argValueString, ',');
+                  zenUnitArgs.runFilters = _runFilterParser->Parse(runFilterStrings);
                }
                else if (argName == "-testruns")
                {

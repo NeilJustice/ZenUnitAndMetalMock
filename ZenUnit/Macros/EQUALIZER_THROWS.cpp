@@ -3,22 +3,22 @@
 
 namespace ZenUnit
 {
-   NOINLINE void EQUALIZER_THROWS_ThrowA(
+   NOINLINE void EQUALIZER_THROWS_ThrowOnAccountOfExceptionUnexpectedlyThrown(
       const char* typeName,
       const char* fieldName,
-      const char* nonDefaultFieldValueText,
+      const char* arbitraryNonDefaultFieldValueText,
       FileLine fileLine,
       const ZenUnit::Anomaly& becauseAnomaly)
    {
       throw Anomaly(
-         "EQUALIZER_THROWS", typeName, fieldName, nonDefaultFieldValueText, "",
+         "EQUALIZER_THROWS", typeName, fieldName, arbitraryNonDefaultFieldValueText, "",
          becauseAnomaly, "N/A", "N/A", ExpectedActualFormat::Fields, fileLine);
    }
 
-   NOINLINE void EQUALIZER_THROWS_ThrowB(
+   NOINLINE void EQUALIZER_THROWS_ThrowOnAccountOfExpectedExceptionNotThrown(
       const char* typeName,
       const char* fieldName,
-      const char* nonDefaultFieldValueText,
+      const char* arbitraryNonDefaultFieldValueText,
       FileLine fileLine)
    {
       const std::string expectedField = String::Concat(
@@ -27,7 +27,7 @@ namespace ZenUnit
           ARE_EQUAL(expected.)", fieldName, ", actual.", fieldName, ") assert statement.");
       const std::string actualField(String::Concat("No ZenUnit::Anomaly thrown despite field '", fieldName, R"('
           differing between objects expected and actual.)"));
-      throw Anomaly("EQUALIZER_THROWS", typeName, fieldName, nonDefaultFieldValueText, "",
+      throw Anomaly("EQUALIZER_THROWS", typeName, fieldName, arbitraryNonDefaultFieldValueText, "",
          Anomaly::Default(),
          expectedField,
          actualField,

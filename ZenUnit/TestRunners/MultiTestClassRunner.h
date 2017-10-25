@@ -18,13 +18,13 @@ namespace ZenUnit
       using ExtraArgMemberForEacherType = ExtraArgMemberForEacher<
          std::unique_ptr<TestClassRunner>,
          MultiTestClassRunner,
-         void(MultiTestClassRunner::*)(std::unique_ptr<TestClassRunner>&, const std::vector<std::string>&),
-         const std::vector<std::string>&>;
+         void(MultiTestClassRunner::*)(std::unique_ptr<TestClassRunner>&, const std::vector<RunFilter>&),
+         const std::vector<RunFilter>&>;
       std::unique_ptr<const ExtraArgMemberForEacherType> _extraArgMemberForEacher;
 
       using ExtraArgAnyerType = ExtraArgAnyer<
-         std::vector<std::string>,
-         bool(*)(const std::string&, const std::unique_ptr<TestClassRunner>*),
+         std::vector<RunFilter>,
+         bool(*)(const RunFilter&, const std::unique_ptr<TestClassRunner>*),
          const std::unique_ptr<TestClassRunner>*>;
       std::unique_ptr<const ExtraArgAnyerType> _extraArgAnyer;
 
@@ -37,15 +37,15 @@ namespace ZenUnit
       MultiTestClassRunner();
       virtual ~MultiTestClassRunner();
       virtual void AddTestClassRunner(TestClassRunner* testClassRunner);
-      virtual void ApplyRunFiltersIfSpecified(const std::vector<std::string>& runFilters);
+      virtual void ApplyRunFiltersIfAny(const std::vector<RunFilter>& runFilters);
       virtual size_t NumberOfTestClassesToBeRun() const;
       virtual size_t NumberOfTestCases() const;
       virtual std::vector<TestClassResult> RunTestClasses(ZenUnitArgs& zenUnitArgs);
    private:
       void ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter(
-         std::unique_ptr<TestClassRunner>& testClassRunner, const std::vector<std::string>& runFilters);
+         std::unique_ptr<TestClassRunner>& testClassRunner, const std::vector<RunFilter>& runFilters);
       static bool TestClassNameMatchesRunFilter(
-         const std::string& runFilter, const std::unique_ptr<TestClassRunner>* testClassRunner);
+         const RunFilter& runFilter, const std::unique_ptr<TestClassRunner>* testClassRunner);
       static TestClassResult RunTestClassRunner(const std::unique_ptr<TestClassRunner>& testClassRunner);
       static bool VectorCaseInsensitiveContains(
          const std::vector<std::string>& strings, const char* searchString);

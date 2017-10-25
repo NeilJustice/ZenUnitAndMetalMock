@@ -14,8 +14,8 @@ namespace ZenUnit
    AFACT(Constructor_NewsComponents)
    AFACT(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
    AFACT(AddTestClassRunner_EmplacesBackTestClassRunner_MakesNumberOfTestClassesToBeRunReturnAnIncreasingNumber)
-   AFACT(ApplyRunFiltersIfSpecified_RunFiltersEmpty_DoesNothing)
-   AFACT(ApplyRunFiltersIfSpecified_RunFiltersNotEmpty_ResetsWithNoOpTestClassesThoseTestClassesThatMatchRunFilters)
+   AFACT(ApplyRunFiltersIfAny_RunFiltersEmpty_DoesNothing)
+   AFACT(ApplyRunFiltersIfAny_RunFiltersNotEmpty_ResetsWithNoOpTestClassesThoseTestClassesThatMatchRunFilters)
    AFACT(ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter_TestClassNameMatchesAtLeastOneRunFilter_DoesNotResetTestClassRunnerWithNoOp)
    AFACT(ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter_TestClassNameDoesNotMatchAnyRunFilter_ResetsTestClassRunnerWithNoOp)
    FACTS(TestClassMatchesRunFilter_ReturnsTrueIfTestClassNameCaseInsensitiveEqualsRunFilter)
@@ -29,13 +29,13 @@ namespace ZenUnit
    using ExtraArgMemberForEacherMockType = ExtraArgMemberForEacherMock<
       std::unique_ptr<TestClassRunner>,
       MultiTestClassRunner,
-      void(MultiTestClassRunner::*)(std::unique_ptr<TestClassRunner>&, const std::vector<std::string>&),
-      const std::vector<std::string>&>;
+      void(MultiTestClassRunner::*)(std::unique_ptr<TestClassRunner>&, const std::vector<RunFilter>&),
+      const std::vector<RunFilter>&>;
    ExtraArgMemberForEacherMockType* _extraArgMemberForEacherMock;
 
    using ExtraArgAnyerMockType = ExtraArgAnyerMock<
-      std::vector<std::string>,
-      bool(*)(const std::string&, const std::unique_ptr<TestClassRunner>*),
+      std::vector<RunFilter>,
+      bool(*)(const RunFilter&, const std::unique_ptr<TestClassRunner>*),
       const std::unique_ptr<TestClassRunner>*>;
    ExtraArgAnyerMockType* _extraArgAnyerMock;
 
@@ -101,17 +101,17 @@ namespace ZenUnit
       ZEN(testClassRunnerB->TestClassNameMock.AssertCalledOnce());
    }
 
-   TEST(ApplyRunFiltersIfSpecified_RunFiltersEmpty_DoesNothing)
+   TEST(ApplyRunFiltersIfAny_RunFiltersEmpty_DoesNothing)
    {
-      _multiTestClassRunner.ApplyRunFiltersIfSpecified({});
+      _multiTestClassRunner.ApplyRunFiltersIfAny({});
    }
 
-   TEST(ApplyRunFiltersIfSpecified_RunFiltersNotEmpty_ResetsWithNoOpTestClassesThoseTestClassesThatMatchRunFilters)
+   TEST(ApplyRunFiltersIfAny_RunFiltersNotEmpty_ResetsWithNoOpTestClassesThoseTestClassesThatMatchRunFilters)
    {
       _extraArgMemberForEacherMock->ExtraArgMemberForEachMock.Expect();
-      const vector<string> runFilters = { ZenUnit::Random<string>() };
+      const vector<RunFilter> runFilters = { ZenUnit::Random<RunFilter>() };
       //
-      _multiTestClassRunner.ApplyRunFiltersIfSpecified(runFilters);
+      _multiTestClassRunner.ApplyRunFiltersIfAny(runFilters);
       //
       ZEN(_extraArgMemberForEacherMock->ExtraArgMemberForEachMock.AssertCalledOnceWith(
          &_multiTestClassRunner._testClassRunners,
@@ -124,7 +124,7 @@ namespace ZenUnit
    {
       _extraArgAnyerMock->ExtraArgAnyMock.ExpectAndReturn(true);
       unique_ptr<TestClassRunner> testClassRunner{};
-      const vector<string> runFilters = { ZenUnit::Random<string>() };
+      const vector<RunFilter> runFilters = { ZenUnit::Random<RunFilter>() };
       //
       _multiTestClassRunner.ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter(testClassRunner, runFilters);
       //
@@ -137,7 +137,7 @@ namespace ZenUnit
    {
       _extraArgAnyerMock->ExtraArgAnyMock.ExpectAndReturn(false);
       unique_ptr<TestClassRunner> testClassRunner{};
-      const vector<string> runFilters = { ZenUnit::Random<string>() };
+      const vector<RunFilter> runFilters = { ZenUnit::Random<RunFilter>() };
       //
       _multiTestClassRunner.ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter(testClassRunner, runFilters);
       //
@@ -167,21 +167,24 @@ namespace ZenUnit
    }
 
    TEST3X3(TestClassMatchesRunFilter_ReturnsTrueIfTestClassNameCaseInsensitiveEqualsRunFilter,
-      bool expectedReturnValue, string runFilter, const char* testClassName,
-      true, "", "",
-      false, "", "WidgetTests",
-      true, "WidgetTests", "WidgetTests",
-      true, "widgettests", "WidgetTests",
-      true, "WidgetTests", "widgettests",
-      false, "Widget", "WidgetTests",
-      false, "WidgetTests", "WidgetTestsABC",
-      false, "WidgetTests", "ABCWidgetTests")
+      const string& testClassNameRunFilter, const char* testClassName, bool expectedReturnValue,
+      "", "", true,
+      "", "WidgetTests", false,
+      "WidgetTests", "WidgetTests", true,
+      "widgettests", "WidgetTests", true,
+      "WidgetTests", "widgettests", true,
+      "Widget", "WidgetTests", false,
+      "WidgetTests", "WidgetTestsABC", false,
+      "WidgetTests", "ABCWidgetTests", false)
    {
-      TestClassRunnerMock* testClassRunnerMock = new TestClassRunnerMock;
+      TestClassRunnerMock* const testClassRunnerMock = new TestClassRunnerMock;
       testClassRunnerMock->TestClassNameMock.ExpectAndReturn(testClassName);
       const std::unique_ptr<TestClassRunner> testClassRunner(testClassRunnerMock);
+
+      RunFilter runFilter;
+      runFilter.testClassName = testClassNameRunFilter;
       //
-      bool testClassMatchesRunFilter = MultiTestClassRunner::TestClassNameMatchesRunFilter(runFilter, &testClassRunner);
+      const bool testClassMatchesRunFilter = MultiTestClassRunner::TestClassNameMatchesRunFilter(runFilter, &testClassRunner);
       //
       ZEN(testClassRunnerMock->TestClassNameMock.AssertCalledOnce());
       ARE_EQUAL(expectedReturnValue, testClassMatchesRunFilter);
@@ -210,7 +213,7 @@ namespace ZenUnit
       VECTORS_EQUAL(expectedTestClassResults, testClassResults);
       ARE_EQUAL(0, _multiTestClassRunner._testClassResults.size());
 
-      ZenUnitArgs expectedResultingZenUnitArgs;
+      const ZenUnitArgs expectedResultingZenUnitArgs;
       ARE_EQUAL(expectedResultingZenUnitArgs, zenUnitArgs);
    }
 
