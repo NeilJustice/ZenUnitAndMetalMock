@@ -16,6 +16,6 @@ namespace ZenUnit
       virtual ~RunFilterParser();
       virtual std::vector<RunFilter> Parse(const std::vector<std::string>& runFilterStrings) const;
    private:
-      static RunFilter FromString(const std::string& s);
+      static RunFilter ParseRunFilterString(const std::string& runFilterString);
    };
 }

@@ -95,8 +95,7 @@ namespace ZenUnit
       else
       {
          _sorter->Sort(&_testClassRunners); // Sort test class runners by test class name
-         _transformer->Transform(&_testClassRunners, &_testClassResults,
-            &MultiTestClassRunner::RunTestClassRunner);
+         _transformer->Transform(&_testClassRunners, &_testClassResults, &MultiTestClassRunner::RunTestClassRunner);
       }
       return std::move(_testClassResults);
    }

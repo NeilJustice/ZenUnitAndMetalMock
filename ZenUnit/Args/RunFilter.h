@@ -8,7 +8,10 @@ namespace ZenUnit
    {
       std::string testClassName;
       std::string testName;
-      unsigned testCaseNumber = 0;
+      unsigned testCaseNumber;
+
+      RunFilter();
+      RunFilter(const std::string& testClassName, const std::string& testName, unsigned testCaseNumber);
    };
 }
 

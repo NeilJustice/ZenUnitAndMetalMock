@@ -2,6 +2,21 @@
 #include "ZenUnit/Args/RunFilter.h"
 #include "ZenUnit/Macros/ARE_EQUAL.h"
 
+namespace ZenUnit
+{
+   RunFilter::RunFilter()
+      : testCaseNumber(0)
+   {
+   }
+
+   RunFilter::RunFilter(const std::string& testClassName, const std::string& testName, unsigned testCaseNumber)
+      : testClassName(testClassName)
+      , testName(testName)
+      , testCaseNumber(testCaseNumber)
+   {
+   }
+}
+
 void ZenUnitEqualizer<ZenUnit::RunFilter>::AssertEqual(
    const ZenUnit::RunFilter& expectedRunFilter,
    const ZenUnit::RunFilter& actualRunFilter)

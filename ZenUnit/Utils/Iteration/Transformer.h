@@ -22,6 +22,14 @@ namespace ZenUnit
          }
       }
 
+      virtual void Transform(
+         const std::vector<T>* source,
+         std::vector<TransformedT>& dest,
+         TransformedT(*transformer)(const T&)) const
+      {
+         Transform(source, &dest, transformer);
+      }
+
       virtual void RandomTransform(
          std::vector<T>* source,
          std::vector<TransformedT>* dest,

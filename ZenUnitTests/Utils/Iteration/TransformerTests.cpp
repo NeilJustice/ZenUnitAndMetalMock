@@ -8,6 +8,9 @@ namespace ZenUnit
    AFACT(Transform_EmptyRange_DoesNothing)
    AFACT(Transform_OneItemRange_CallsTransformerOnce)
    AFACT(Transform_TwoItemRange_CallsTransformerTwice)
+   AFACT(Transform_NonPointerDest_EmptyRange_DoesNothing)
+   AFACT(Transform_NonPointerDest_OneItemRange_CallsTransformerOnce)
+   AFACT(Transform_NonPointerDest_TwoItemRange_CallsTransformerTwice)
    AFACT(RandomTransform_EmptyRange_DoesNothing)
    AFACT(RandomTransform_OneItemRange_CallsTransformerOnce)
    AFACT(RandomTransform_ThreeItemRange_CallsTransformerThreeTimesInRandomOrder)
@@ -47,6 +50,36 @@ namespace ZenUnit
       vector<TransformedT> dest(source.size());
       //
       _transformer.Transform(&source, &dest, PlusOne);
+      //
+      VECTORS_EQUAL((vector<TransformedT>{ 2, 3 }), dest);
+   }
+
+   TEST(Transform_NonPointerDest_EmptyRange_DoesNothing)
+   {
+      vector<T> source;
+      vector<TransformedT> dest;
+      //
+      _transformer.Transform(&source, dest, PlusOne);
+      //
+      IS_EMPTY(dest);
+   }
+
+   TEST(Transform_NonPointerDest_OneItemRange_CallsTransformerOnce)
+   {
+      const vector<T> source{ 1 };
+      vector<TransformedT> dest(source.size());
+      //
+      _transformer.Transform(&source, dest, PlusOne);
+      //
+      VECTORS_EQUAL(vector<TransformedT>{ 2 }, dest);
+   }
+
+   TEST(Transform_NonPointerDest_TwoItemRange_CallsTransformerTwice)
+   {
+      const vector<T> source{ 1, 2 };
+      vector<TransformedT> dest(source.size());
+      //
+      _transformer.Transform(&source, dest, PlusOne);
       //
       VECTORS_EQUAL((vector<TransformedT>{ 2, 3 }), dest);
    }
