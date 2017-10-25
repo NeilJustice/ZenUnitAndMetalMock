@@ -19,8 +19,8 @@ namespace ZenUnit
    AFACT(ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter_TestClassNameMatchesAtLeastOneRunFilter_DoesNotResetTestClassRunnerWithNoOp)
    AFACT(ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter_TestClassNameDoesNotMatchAnyRunFilter_ResetsTestClassRunnerWithNoOp)
    FACTS(TestClassMatchesRunFilter_ReturnsTrueIfTestClassNameCaseInsensitiveEqualsRunFilter)
-   AFACT(RunTestClasses_NonRandomMode_SortsTestClassRunnersByName_RunsTestClassesSequentially_MoveReturnsTestClassResultsVector)
-   FACTS(RunTestClasses_RandomMode_SetsRandomSeedIfNotSetByUser_RunsTestClassesRandomly_MoveReturnsTestClassResultsVector)
+   AFACT(RunTestClasses_NonRandomMode_SortsTestClassRunnersByName_RunsTestClassesSequentially_ReturnsTestClassResults)
+   FACTS(RunTestClasses_RandomMode_SetsRandomSeedIfNotSetByUser_RunsTestClassesRandomly_ReturnsTestClassResults)
    AFACT(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)
    EVIDENCE
 
@@ -61,7 +61,6 @@ namespace ZenUnit
       POINTER_WAS_NEWED(_multiTestClassRunner._transformer);
       POINTER_WAS_NEWED(_multiTestClassRunner._watch);
       IS_EMPTY(_multiTestClassRunner._testClassRunners);
-      IS_EMPTY(_multiTestClassRunner._testClassResults);
    }
 
    TEST(AddTestClassRunner_EmplacesBackTestClassRunner_MakesNumberOfTestClassesToBeRunReturnAnIncreasingNumber)
@@ -190,10 +189,9 @@ namespace ZenUnit
       ARE_EQUAL(expectedReturnValue, testClassMatchesRunFilter);
    }
 
-   TEST(RunTestClasses_NonRandomMode_SortsTestClassRunnersByName_RunsTestClassesSequentially_MoveReturnsTestClassResultsVector)
+   TEST(RunTestClasses_NonRandomMode_SortsTestClassRunnersByName_RunsTestClassesSequentially_ReturnsTestClassResults)
    {
-      ARE_EQUAL(0, _multiTestClassRunner._testClassResults.size());
-      const size_t testClassRunnersSize = ZenUnit::Random<size_t>(1, 3);
+      const size_t testClassRunnersSize = ZenUnit::Random<size_t>(0, 2);
       _multiTestClassRunner._testClassRunners.resize(testClassRunnersSize);
 
       ZenUnitArgs zenUnitArgs;
@@ -205,25 +203,25 @@ namespace ZenUnit
       const vector<TestClassResult> testClassResults = _multiTestClassRunner.RunTestClasses(zenUnitArgs);
       //
       ZEN(_sorterMock->SortMock.AssertCalledOnceWith(&_multiTestClassRunner._testClassRunners));
+
+      std::vector<TestClassResult> expectedTestClassResults(testClassRunnersSize);
       ZEN(_transformerMock->TransformMock.AssertCalledOnceWith(
          &_multiTestClassRunner._testClassRunners,
-         &_multiTestClassRunner._testClassResults,
+         expectedTestClassResults,
          &MultiTestClassRunner::RunTestClassRunner));
-      const vector<TestClassResult> expectedTestClassResults(testClassRunnersSize);
-      VECTORS_EQUAL(expectedTestClassResults, testClassResults);
-      ARE_EQUAL(0, _multiTestClassRunner._testClassResults.size());
 
       const ZenUnitArgs expectedResultingZenUnitArgs;
       ARE_EQUAL(expectedResultingZenUnitArgs, zenUnitArgs);
+
+      VECTORS_EQUAL(expectedTestClassResults, testClassResults);
    }
 
-   TEST2X2(RunTestClasses_RandomMode_SetsRandomSeedIfNotSetByUser_RunsTestClassesRandomly_MoveReturnsTestClassResultsVector,
+   TEST2X2(RunTestClasses_RandomMode_SetsRandomSeedIfNotSetByUser_RunsTestClassesRandomly_ReturnsTestClassResults,
       bool randomseedsetbyuser, bool expectRandomSeedSet,
       false, false,
       true, true)
    {
-      ARE_EQUAL(0, _multiTestClassRunner._testClassResults.size());
-      const size_t testClassRunnersSize = ZenUnit::Random<size_t>(1, 3);
+      const size_t testClassRunnersSize = ZenUnit::Random<size_t>(0, 2);
       _multiTestClassRunner._testClassRunners.resize(testClassRunnersSize);
 
       _transformerMock->RandomTransformMock.Expect();
@@ -250,21 +248,20 @@ namespace ZenUnit
          _watchMock->SecondsSince1970CastToUnsignedShortMock.AssertCalledOnce();
       }
 
+      std::vector<TestClassResult> expectedTestClassResults(testClassRunnersSize);
       ZEN(_transformerMock->RandomTransformMock.AssertCalledOnceWith(
          &_multiTestClassRunner._testClassRunners,
-         &_multiTestClassRunner._testClassResults,
+         expectedTestClassResults,
          &MultiTestClassRunner::RunTestClassRunner,
          zenUnitArgs.randomseed));
-
-      const vector<TestClassResult> expectedTestClassResults(testClassRunnersSize);
-      VECTORS_EQUAL(expectedTestClassResults, testClassResults);
-      ARE_EQUAL(0, _multiTestClassRunner._testClassResults.size());
 
       ZenUnitArgs expectedResultingZenUnitArgs;
       expectedResultingZenUnitArgs.random = true;
       expectedResultingZenUnitArgs.randomseedsetbyuser = randomseedsetbyuser;
       expectedResultingZenUnitArgs.randomseed = randomseedsetbyuser ? therandomseedsetbyuser : randomseedsetbycode;
       ARE_EQUAL(expectedResultingZenUnitArgs, zenUnitArgs);
+
+      VECTORS_EQUAL(expectedTestClassResults, testClassResults);
    }
 
    TEST(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)

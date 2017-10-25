@@ -32,7 +32,6 @@ namespace ZenUnit
       std::unique_ptr<const Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>> _transformer;
       std::unique_ptr<const Watch> _watch;
       std::vector<std::unique_ptr<TestClassRunner>> _testClassRunners;
-      std::vector<TestClassResult> _testClassResults;
    public:
       MultiTestClassRunner();
       virtual ~MultiTestClassRunner();

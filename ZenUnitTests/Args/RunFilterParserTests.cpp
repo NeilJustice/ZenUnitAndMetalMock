@@ -28,13 +28,13 @@ namespace ZenUnit
 
    TEST(Parse_TransformsRunFilterStringsToRunFilters)
    {
-      _transformerMock->TransformMock_nonpointer.Expect();
+      _transformerMock->TransformMock.Expect();
       vector<string> runFilterStrings(ZenUnit::Random<size_t>(0, 2));
       //
       _runFilterParser.Parse(runFilterStrings);
       //
       vector<RunFilter> expectedStartingRunFilters(runFilterStrings.size());
-      ZEN(_transformerMock->TransformMock_nonpointer.AssertCalledOnceWith(
+      ZEN(_transformerMock->TransformMock.AssertCalledOnceWith(
          &runFilterStrings, expectedStartingRunFilters, RunFilterParser::ParseRunFilterString));
    }
 

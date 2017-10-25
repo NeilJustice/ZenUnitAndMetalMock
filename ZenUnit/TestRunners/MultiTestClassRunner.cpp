@@ -82,22 +82,22 @@ namespace ZenUnit
 
    std::vector<TestClassResult> MultiTestClassRunner::RunTestClasses(ZenUnitArgs& zenUnitArgs)
    {
-      _testClassResults.resize(_testClassRunners.size());
+      std::vector<TestClassResult> testClassResults(_testClassRunners.size());
       if (zenUnitArgs.random)
       {
          if (!zenUnitArgs.randomseedsetbyuser)
          {
             zenUnitArgs.randomseed = _watch->SecondsSince1970CastToUnsignedShort();
          }
-         _transformer->RandomTransform(&_testClassRunners, &_testClassResults,
+         _transformer->RandomTransform(&_testClassRunners, testClassResults,
             &MultiTestClassRunner::RunTestClassRunner, zenUnitArgs.randomseed);
       }
       else
       {
          _sorter->Sort(&_testClassRunners); // Sort test class runners by test class name
-         _transformer->Transform(&_testClassRunners, &_testClassResults, &MultiTestClassRunner::RunTestClassRunner);
+         _transformer->Transform(&_testClassRunners, testClassResults, &MultiTestClassRunner::RunTestClassRunner);
       }
-      return std::move(_testClassResults);
+      return testClassResults;
    }
 
    TestClassResult MultiTestClassRunner::RunTestClassRunner(
