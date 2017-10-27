@@ -23,11 +23,21 @@ namespace ZenUnit
    {
       RunFilter runFilter;
       const std::vector<std::string> testClassName_testNameSlashTestCaseNumber = String::Split(runFilterString, '.');
+      if (testClassName_testNameSlashTestCaseNumber.size() > 2)
+      {
+         const std::string errorMessage = "Test run filter string contains more than one period: " + runFilterString;
+         throw std::invalid_argument(errorMessage);
+      }
       runFilter.testClassName = testClassName_testNameSlashTestCaseNumber[0];
       if (testClassName_testNameSlashTestCaseNumber.size() == 2)
       {
          const std::vector<std::string> testName_testCaseNumber
             = String::Split(testClassName_testNameSlashTestCaseNumber[1], '/');
+         if (testName_testCaseNumber.size() > 2)
+         {
+            const std::string errorMessage = "Test run filter string contains more than one slash: " + runFilterString;
+            throw std::invalid_argument(errorMessage);
+         }
          runFilter.testClassName = testClassName_testNameSlashTestCaseNumber[0];
          runFilter.testName = testName_testCaseNumber[0];
          if (testName_testCaseNumber.size() == 2)
