@@ -70,8 +70,6 @@ TEST(Test2)
 
 int main(int argc, char* argv[])
 {
-   cout << "_MSC_FULL_VER: " << _MSC_FULL_VER << '\n';
-
    FileLiner::zenUnitTestingMode = true;
    return ZenUnit::RunTests(argc, argv);
 }
