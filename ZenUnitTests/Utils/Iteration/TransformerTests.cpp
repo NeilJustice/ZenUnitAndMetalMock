@@ -24,9 +24,8 @@ namespace ZenUnit
    TEST(Transform_EmptyRange_DoesNothing)
    {
       vector<T> source;
-      vector<TransformedT> dest;
       //
-      _transformer.Transform(&source, dest, PlusOne);
+      vector<TransformedT> dest = _transformer.Transform(&source, PlusOne);
       //
       IS_EMPTY(dest);
    }
@@ -34,9 +33,8 @@ namespace ZenUnit
    TEST(Transform_OneItemRange_CallsTransformerOnce)
    {
       const vector<T> source { 1 };
-      vector<TransformedT> dest(source.size());
       //
-      _transformer.Transform(&source, dest, PlusOne);
+      vector<TransformedT> dest = _transformer.Transform(&source, PlusOne);
       //
       VECTORS_EQUAL(vector<TransformedT>{ 2 }, dest);
    }
@@ -44,9 +42,8 @@ namespace ZenUnit
    TEST(Transform_TwoItemRange_CallsTransformerTwice)
    {
       const vector<T> source { 1, 2 };
-      vector<TransformedT> dest(source.size());
       //
-      _transformer.Transform(&source, dest, PlusOne);
+      vector<TransformedT> dest = _transformer.Transform(&source, PlusOne);
       //
       VECTORS_EQUAL((vector<TransformedT>{ 2, 3 }), dest);
    }
@@ -54,9 +51,8 @@ namespace ZenUnit
    TEST(RandomTransform_EmptyRange_DoesNothing)
    {
       vector<T> source;
-      vector<TransformedT> dest;
       //
-      _transformer.RandomTransform(&source, dest, PlusOne, 0);
+      vector<TransformedT> dest = _transformer.RandomTransform(&source, PlusOne, 0);
       //
       IS_EMPTY(dest);
    }
@@ -64,9 +60,8 @@ namespace ZenUnit
    TEST(RandomTransform_OneItemRange_CallsTransformerOnce)
    {
       vector<T> source{ 1 };
-      vector<TransformedT> dest(source.size());
       //
-      _transformer.RandomTransform(&source, dest, PlusOne, 0);
+      vector<TransformedT> dest = _transformer.RandomTransform(&source, PlusOne, 0);
       //
       VECTORS_EQUAL(vector<TransformedT>{ 2 }, dest);
    }
@@ -74,9 +69,8 @@ namespace ZenUnit
    TEST(RandomTransform_ThreeItemRange_CallsTransformerThreeTimesInRandomOrder)
    {
       vector<T> source{ 1, 2, 3 };
-      vector<TransformedT> dest(source.size());
       //
-      _transformer.RandomTransform(&source, dest, PlusOne,
+      vector<TransformedT> dest = _transformer.RandomTransform(&source, PlusOne,
          static_cast<unsigned short>(chrono::system_clock::now().time_since_epoch().count()));
       //
       ARE_EQUAL(3, dest.size());

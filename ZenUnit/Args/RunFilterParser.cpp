@@ -14,8 +14,8 @@ namespace ZenUnit
 
    std::vector<RunFilter> RunFilterParser::Parse(const std::vector<std::string>& runFilterStrings) const
    {
-      std::vector<RunFilter> runFilters(runFilterStrings.size());
-      _transformer->Transform(&runFilterStrings, runFilters, RunFilterParser::ParseRunFilterString);
+      std::vector<RunFilter> runFilters = _transformer->Transform(
+         &runFilterStrings, RunFilterParser::ParseRunFilterString);
       return runFilters;
    }
 
@@ -26,7 +26,8 @@ namespace ZenUnit
       runFilter.testClassName = testClassName_testNameSlashTestCaseNumber[0];
       if (testClassName_testNameSlashTestCaseNumber.size() == 2)
       {
-         const std::vector<std::string> testName_testCaseNumber = String::Split(testClassName_testNameSlashTestCaseNumber[1], '/');
+         const std::vector<std::string> testName_testCaseNumber
+            = String::Split(testClassName_testNameSlashTestCaseNumber[1], '/');
          runFilter.testClassName = testClassName_testNameSlashTestCaseNumber[0];
          runFilter.testName = testName_testCaseNumber[0];
          if (testName_testCaseNumber.size() == 2)

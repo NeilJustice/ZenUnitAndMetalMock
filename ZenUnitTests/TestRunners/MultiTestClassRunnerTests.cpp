@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ZenUnit/TestRunners/MultiTestClassRunner.h"
 #include "ZenUnit/TestRunners/NoOpTestClassRunner.h"
+#include "ZenUnitTests/Random/RandomValues.h"
 #include "ZenUnitTests/TestRunners/Mock/TestClassRunnerMock.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/ExtraArgAnyerMock.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/ExtraArgMemberForEacherMock.h"
@@ -198,22 +199,21 @@ namespace ZenUnit
       IS_FALSE(zenUnitArgs.random);
 
       _sorterMock->SortMock.Expect();
-      _transformerMock->TransformMock.Expect();
+
+      const vector<TestClassResult> transformReturnValue = { ZenUnit::Random<TestClassResult>() };
+      _transformerMock->TransformMock.ExpectAndReturn(transformReturnValue);
       //
       const vector<TestClassResult> testClassResults = _multiTestClassRunner.RunTestClasses(zenUnitArgs);
       //
       ZEN(_sorterMock->SortMock.AssertCalledOnceWith(&_multiTestClassRunner._testClassRunners));
 
-      std::vector<TestClassResult> expectedTestClassResults(testClassRunnersSize);
       ZEN(_transformerMock->TransformMock.AssertCalledOnceWith(
-         &_multiTestClassRunner._testClassRunners,
-         expectedTestClassResults,
-         &MultiTestClassRunner::RunTestClassRunner));
+         &_multiTestClassRunner._testClassRunners, &MultiTestClassRunner::RunTestClassRunner));
 
       const ZenUnitArgs expectedResultingZenUnitArgs;
       ARE_EQUAL(expectedResultingZenUnitArgs, zenUnitArgs);
 
-      VECTORS_EQUAL(expectedTestClassResults, testClassResults);
+      VECTORS_EQUAL(transformReturnValue, testClassResults);
    }
 
    TEST2X2(RunTestClasses_RandomMode_SetsRandomSeedIfNotSetByUser_RunsTestClassesRandomly_ReturnsTestClassResults,
@@ -224,7 +224,8 @@ namespace ZenUnit
       const size_t testClassRunnersSize = ZenUnit::Random<size_t>(0, 2);
       _multiTestClassRunner._testClassRunners.resize(testClassRunnersSize);
 
-      _transformerMock->RandomTransformMock.Expect();
+      const vector<TestClassResult> transformReturnValue = { ZenUnit::Random<TestClassResult>() };
+      _transformerMock->RandomTransformMock.ExpectAndReturn(transformReturnValue);
 
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.random = true;
@@ -248,12 +249,8 @@ namespace ZenUnit
          _watchMock->SecondsSince1970CastToUnsignedShortMock.AssertCalledOnce();
       }
 
-      std::vector<TestClassResult> expectedTestClassResults(testClassRunnersSize);
       ZEN(_transformerMock->RandomTransformMock.AssertCalledOnceWith(
-         &_multiTestClassRunner._testClassRunners,
-         expectedTestClassResults,
-         &MultiTestClassRunner::RunTestClassRunner,
-         zenUnitArgs.randomseed));
+         &_multiTestClassRunner._testClassRunners, &MultiTestClassRunner::RunTestClassRunner, zenUnitArgs.randomseed));
 
       ZenUnitArgs expectedResultingZenUnitArgs;
       expectedResultingZenUnitArgs.random = true;
@@ -261,7 +258,7 @@ namespace ZenUnit
       expectedResultingZenUnitArgs.randomseed = randomseedsetbyuser ? therandomseedsetbyuser : randomseedsetbycode;
       ARE_EQUAL(expectedResultingZenUnitArgs, zenUnitArgs);
 
-      VECTORS_EQUAL(expectedTestClassResults, testClassResults);
+      VECTORS_EQUAL(transformReturnValue, testClassResults);
    }
 
    TEST(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)

@@ -8,34 +8,31 @@ namespace ZenUnit
    class Transformer
    {
    public:
-      virtual void Transform(
-         const std::vector<T>* source,
-         std::vector<TransformedT>& dest,
-         TransformedT(*transformer)(const T&)) const
+      virtual std::vector<TransformedT> Transform(
+         const std::vector<T>* source, TransformedT(*transformer)(const T&)) const
       {
-         size_t destSize = dest.size();
-         assert_true(source->size() == destSize);
-         for (size_t i = 0; i < destSize; ++i)
+         const size_t sourceSize = source->size();
+         std::vector<TransformedT> dest(sourceSize);
+         for (size_t i = 0; i < sourceSize; ++i)
          {
             const T& element = (*source)[i];
             dest[i] = transformer(element);
          }
+         return dest;
       }
 
-      virtual void RandomTransform(
-         std::vector<T>* source,
-         std::vector<TransformedT>& dest,
-         TransformedT(*transformer)(const T&),
-         unsigned seed) const
+      virtual std::vector<TransformedT> RandomTransform(
+         std::vector<T>* source, TransformedT(*transformer)(const T&), unsigned seed) const
       {
          std::shuffle(source->begin(), source->end(), std::default_random_engine(seed));
-         size_t destSize = dest.size();
-         assert_true(source->size() == destSize);
-         for (size_t i = 0; i < destSize; ++i)
+         const size_t sourceSize = source->size();
+         std::vector<TransformedT> dest(sourceSize);
+         for (size_t i = 0; i < sourceSize; ++i)
          {
             const T& randomElement = (*source)[i];
             dest[i] = transformer(randomElement);
          }
+         return dest;
       }
 
       virtual ~Transformer() = default;

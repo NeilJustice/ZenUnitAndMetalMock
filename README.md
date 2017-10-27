@@ -52,18 +52,18 @@ TESTS(FizzBuzzTests)
 // between the FACTS section and the EVIDENCE section.
 // What is gained from this cost is that each test name
 // addition, subtraction, or refactoring,
-// of which there may be hundreds over the course of a project,
+// of which there may be dozens over the course of a project,
 // becomes an opportunity to review all test names as a whole
 // for continued test name quality and cohesion - and by extension,
-// an opportunity to review the code under test for continued 
-// function name quality and cohesion.
+// an opportunity to review the code under test for continued
+// quality and cohesion.
 AFACT(FizzBuzz_EndNumber0_Throws)
 FACTS(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)
 EVIDENCE
 
 TEST(FizzBuzz_EndNumber0_Throws)
 {
-   THROWS(FizzBuzz(0), std::invalid_argument, 
+   THROWS(FizzBuzz(0), std::invalid_argument,
       "FizzBuzz(): endNumber must be 1 or greater");
 }
 

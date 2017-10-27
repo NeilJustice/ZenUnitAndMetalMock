@@ -33,13 +33,13 @@ TEST(Random_Double_ReturnsRandomDouble)
 
 TEST(Random_String_ReturnsRandomStringThatBeginsWithRandomString)
 {
-   string randomString = Random<string>();
+   const string randomString = Random<string>();
    IS_TRUE(randomString.find("RandomString") != string::npos);
 }
 
 TEST(Random_2ArgOverload_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
 {
-   int randomInt = Random<int>(1, 3);
+   const int randomInt = Random<int>(1, 3);
    IS_TRUE(randomInt >= 1 && randomInt <= 3, "randomInt = " + to_string(randomInt));
 
    enum Enum
@@ -48,7 +48,7 @@ TEST(Random_2ArgOverload_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiv
       B,
       C
    };
-   Enum randomEnum = Random<Enum>(Enum::A, Enum::C);
+   const Enum randomEnum = Random<Enum>(Enum::A, Enum::C);
    IS_TRUE(randomEnum >= Enum::A && randomEnum <= Enum::C, "randomEnum = " + to_string(randomEnum));
 }
 

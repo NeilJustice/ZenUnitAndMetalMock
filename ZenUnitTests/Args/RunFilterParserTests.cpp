@@ -28,14 +28,15 @@ namespace ZenUnit
 
    TEST(Parse_TransformsRunFilterStringsToRunFilters)
    {
-      _transformerMock->TransformMock.Expect();
+      const vector<RunFilter> runFilters = { ZenUnit::Random<RunFilter>() };
+      _transformerMock->TransformMock.ExpectAndReturn(runFilters);
       vector<string> runFilterStrings(ZenUnit::Random<size_t>(0, 2));
       //
-      _runFilterParser.Parse(runFilterStrings);
+      const vector<RunFilter> expectedRunFilters = _runFilterParser.Parse(runFilterStrings);
       //
-      vector<RunFilter> expectedStartingRunFilters(runFilterStrings.size());
       ZEN(_transformerMock->TransformMock.AssertCalledOnceWith(
-         &runFilterStrings, expectedStartingRunFilters, RunFilterParser::ParseRunFilterString));
+         &runFilterStrings, RunFilterParser::ParseRunFilterString));
+      VECTORS_EQUAL(expectedRunFilters, runFilters);
    }
 
    TEST2X2(ParseRunFilterString_JustTestClassName_ReturnsExpectedRunFilter,
