@@ -65,7 +65,7 @@ namespace ZenUnit
       "TestClassName...TestName")
    {
       THROWS(RunFilterParser::ParseRunFilterString(runFilterString),
-         invalid_argument, "Test run filter string contains more than one period: " + runFilterString);
+         invalid_argument, "Invalid test run filter: " + runFilterString);
    }
 
    TEST2X2(ParseRunFilterString_TestClassNameAndTestNameAndTestCaseNumber_ReturnsExpectedRunFilter,
@@ -83,7 +83,7 @@ namespace ZenUnit
       "TestClassName.TestName///1")
    {
       THROWS(RunFilterParser::ParseRunFilterString(runFilterString),
-         invalid_argument, "Test run filter string contains more than one slash: " + runFilterString);
+         invalid_argument, "Invalid test run filter: " + runFilterString);
    }
 
    }; RUNTESTS(RunFilterParserTests)

@@ -63,7 +63,7 @@ namespace ZenUnit
       int overallExitCode = 0;
       for (unsigned testRunIndex = 0; testRunIndex < _zenUnitArgs.testruns; ++testRunIndex)
       {
-         const int testRunExitCode = RunTestClassesAndPrintResults();
+         const int testRunExitCode = RunTestClassesAndPrintResults(_zenUnitArgs);
          assert_true(testRunExitCode == 0 || testRunExitCode == 1);
          overallExitCode |= testRunExitCode;
          _testRunResult->ResetStateExceptForSkips();
@@ -72,14 +72,14 @@ namespace ZenUnit
       return overallExitCode;
    }
 
-   int TestRunner::RunTestClassesAndPrintResults()
+   int TestRunner::RunTestClassesAndPrintResults(const ZenUnitArgs& zenUnitArgs)
    {
-      _preamblePrinter->PrintOpeningThreeLines(_zenUnitArgs, _multiTestClassRunner.get());
-      _havePaused = WaitForEnterKeyIfPauseModeAndHaveNotPaused(_zenUnitArgs.pause, _havePaused);
+      _preamblePrinter->PrintOpeningThreeLines(zenUnitArgs, _multiTestClassRunner.get());
+      _havePaused = WaitForEnterKeyIfPauseModeAndHaveNotPaused(zenUnitArgs.pause, _havePaused);
       _testRunStopwatch->Start();
-      if (_zenUnitArgs.maxtotalseconds > 0)
+      if (zenUnitArgs.maxtotalseconds > 0)
       {
-         RunTestClassesWithWaitableRunnerThread(_zenUnitArgs.maxtotalseconds);
+         RunTestClassesWithWaitableRunnerThread(zenUnitArgs.maxtotalseconds);
       }
       else
       {
@@ -88,8 +88,8 @@ namespace ZenUnit
       _testRunResult->PrintTestFailuresAndSkips();
       const size_t numberOfTestCases = _multiTestClassRunner->NumberOfTestCases();
       const unsigned testRunMilliseconds = _testRunStopwatch->Stop();
-      _testRunResult->PrintClosingLines(numberOfTestCases, testRunMilliseconds, _zenUnitArgs);
-      const int testRunExitCode = _testRunResult->DetermineExitCode(_zenUnitArgs);
+      _testRunResult->PrintClosingLines(numberOfTestCases, testRunMilliseconds, zenUnitArgs);
+      const int testRunExitCode = _testRunResult->DetermineExitCode(zenUnitArgs);
       return testRunExitCode;
    }
 

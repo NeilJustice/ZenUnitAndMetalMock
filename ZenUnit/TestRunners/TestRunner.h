@@ -38,7 +38,7 @@ namespace ZenUnit
       int ParseArgsRunTestClassesPrintResults(const std::vector<std::string>& commandLineArgs);
    private:
       virtual bool WaitForEnterKeyIfPauseModeAndHaveNotPaused(bool pauseMode, bool havePaused) const;
-      virtual int RunTestClassesAndPrintResults();
+      virtual int RunTestClassesAndPrintResults(const ZenUnitArgs& zenUnitArgs);
       virtual void RunTestClasses();
       virtual void RunTestClassesWithWaitableRunnerThread(unsigned maxtTotalSeconds);
    };

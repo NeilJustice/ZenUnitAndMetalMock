@@ -84,8 +84,7 @@ struct ZenUnitEqualizer<ZenMock::NineArgumentCallRef<Arg1Type, Arg2Type, Arg3Typ
 template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type,typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type>
 struct ZenUnitPrinter<ZenMock::NineArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
 {
-   static void Print(std::ostream& os, const ZenMock::NineArgumentCallRef<
-      Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& nineArgumentCallRef)
+   static void Print(std::ostream& os, const ZenMock::NineArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& nineArgumentCallRef)
    {
       const std::string toStringedArg1 = ZenUnit::ToStringer::ToString(nineArgumentCallRef.firstArgument);
       const std::string toStringedArg2 = ZenUnit::ToStringer::ToString(nineArgumentCallRef.secondArgument);
