@@ -99,16 +99,9 @@ namespace ZenMock
          {
             const ZenUnit::Console console;
             std::cout << "\n";
-            console.WriteLineColor("Expected-But-Not-Asserted ZenMocked Function:", ZenUnit::Color::Red);
-            console.WriteLineColor(ZenMockedFunctionSignature, ZenUnit::Color::Green);
+            console.WriteLineColor("Fatal Expected-But-Not-Asserted ZenMocked Function:", ZenUnit::Color::Red);
+            console.WriteLineColor(ZenMockedFunctionSignature, ZenUnit::Color::White);
             const ZenUnit::ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
-            std::cout << R"(
-Fix: After Expect()ing then calling the above ZenMocked function,
-call ZEN(<ZenMockObjectName>.<FunctionName>Mock.
-<AssertCalledOnce|AssertCalledOnceWith|AssertCalledNTimes|AssertCalledNTimesWith|AssertCalls>());
-
-Fast failing with exit code )" <<
-(zenUnitArgs.exit0 ? "0 (normally exit code 1 but -exit0 is specified).\n" : "1.\n");
             int exitCode = zenUnitArgs.exit0 ? 0 : 1;
             call_exit(exitCode);
          }
