@@ -341,6 +341,107 @@ int main(int argc, char* argv[])
 
 ![ZenMock Imagery](Screenshots/ZenMockExampleTests.png "ZenMock Imagery")
 
+### ZenMock Function Mocking Macros
+
+|Virtual Void Functions|
+|----------------------|
+|`ZENMOCK_VOID0(functionName)`|
+|`ZENMOCK_VOID1(functionName, arg1Type, ...)` // The ... is for mocking overloaded functions. Specify ... as an overload-disambiguating arbitrary suffix such as "_int" and "_string" without the quotes when mocking virtual void Function(int) and virtual void Function(const std::string&) to yield ZenMock mock objects named FunctionMock_int and FunctionMock_string.|
+|`ZENMOCK_VOID10(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
+
+|Virtual Const Void Functions|
+|----------------------------|
+|`ZENMOCK_VOID0_CONST(functionName)`|
+|`ZENMOCK_VOID1_CONST(functionName, arg1Type, ...)`|
+|`ZENMOCK_VOID10_CONST(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
+
+|Virtual Non-Void Functions|
+|--------------------------|
+|`ZENMOCK_NONVOID0(returnType, functionName)`|
+|`ZENMOCK_NONVOID1(returnType, functionName, arg1Type, ...)`|
+|`ZENMOCK_VOID10_NONVIRTUAL(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
+
+|Virtual Const Non-Void Functions|
+|--------------------------------|
+|`ZENMOCK_NONVOID0_CONST(returnType, functionName)`|
+|`ZENMOCK_NONVOID1_CONST(returnType, functionName, arg1Type, ...)`|
+|`ZENMOCK_NONVOID10(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
+
+|Non-Virtual Void Functions|
+|--------------------------|
+|`ZENMOCK_VOID0_NONVIRTUAL(functionName)`|
+|`ZENMOCK_VOID1_NONVIRTUAL(functionName, arg1Type, ...)`|
+|`ZENMOCK_VOID2_NONVIRTUAL(functionName, arg1Type, arg2Type, ...)`|
+|`ZENMOCK_NONVOID10_NONVIRTUAL(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
+
+|Non-Virtual Const Void Functions|
+|--------------------------------|
+|`ZENMOCK_VOID0_CONST_NONVIRTUAL(functionName)`|
+|`ZENMOCK_VOID1_CONST_NONVIRTUAL(functionName, arg1Type, ...)`|
+|`ZENMOCK_VOID10_CONST_NONVIRTUAL(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
+
+|Non-Virtual Non-Void Functions|
+|------------------------------|
+|`ZENMOCK_NONVOID0_NONVIRTUAL(returnType, functionName)`|
+|`ZENMOCK_NONVOID1_NONVIRTUAL(returnType, functionName, arg1Type, ...)`|
+|`ZENMOCK_NONVOID10_NONVIRTUAL(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
+
+|Non-Virtual Const Non-Void Functions|
+|------------------------------------|
+|`ZENMOCK_NONVOID0_CONST_NONVIRTUAL(returnType, functionName)`|
+|`ZENMOCK_NONVOID1_CONST_NONVIRTUAL(returnType, functionName, arg1Type, ...)`|
+|`ZENMOCK_NONVOID10_CONST_NONVIRTUAL(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
+
+|Free Void Functions|
+|---------------------|
+|`ZENMOCK_VOID0_FREE(functionName)`|
+|`ZENMOCK_VOID1_FREE(functionName, arg1Type, ...)`|
+|`ZENMOCK_VOID10_FREE(freeFunctionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
+
+|Free Non-Void Functions|
+|-------------------------|
+|`ZENMOCK_NONVOID0_FREE(returnType, functionName)`|
+|`ZENMOCK_NONVOID1_FREE(returnType, functionName, arg1Type, ...)`|
+|`ZENMOCK_NONVOID10_FREE(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
+
+|Static and Namespaced Void Functions|
+|------------------------------------|
+|`ZENMOCK_VOID0_STATIC(qualifiedClassNameOrNamespace, functionName, ...)`|
+|`ZENMOCK_VOID1_STATIC(qualifiedClassNameOrNamespace, functionName, arg1Type, ...)`|
+|`ZENMOCK_VOID10_STATIC(qualifiedClassNameOrNamespace, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
+
+|Static and Namespaced Non-Void Functions|
+|----------------------------------------|
+|`ZENMOCK_NONVOID0_STATIC(returnType, qualifiedClassNameOrNamespace, functionName, ...)`|
+|`ZENMOCK_NONVOID1_STATIC(returnType, qualifiedClassNameOrNamespace, functionName, arg1Type, ...)`|
+|`ZENMOCK_NONVOID10_STATIC(returnType, qualifiedClassNameOrNamespace, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
+
+|ZENMOCK_BIND For Mocking Free and Static Functions|
+|-----------------------------------------------|
+|`ZENMOCK_BIND0(FunctionName_ZenMock)`|
+|`ZENMOCK_BIND1(FunctionName_ZenMock)`|
+|`ZENMOCK_BIND10(FunctionName_ZenMock)`|
+
+|ZenMock Object Expectation Functions|
+|-----------------------------|
+|`FunctionMock.Expect()`|
+|`FunctionMock.ExpectAndReturn(returnValue)`|
+|`FunctionMock.ExpectAndReturnValues(returnValues...)`|
+|`FunctionMock.ExpectAndReturnValues(const vector<T>& returnValues)`|
+|`FunctionMock.ExpectAndThrow<ExceptionTypes>(ExceptionArgs&&...)`|
+
+|ZenMock Object Assertion Functions|
+|---------------------------|
+|`FunctionMock.AssertCalledOnce()`|
+|`FunctionMock.AssertCalledOnceWith(expectedArguments...)`|
+|`FunctionMock.AssertCalledNTimes(n)`|
+|`FunctionMock.AssertCalledNTimesWith(n, expectedArguments...)`|
+|`FunctionMock.AssertCalls(expectedCallsVectors)`|
+
+|ZEN|
+|-------------|
+|`ZEN(ZenMockAssertion)` // ZEN adorns error messages with \_\_FILE\_\_ and \_\_LINE\_\_ information.|
+
 ### Building ZenUnit and ZenMock On Linux
 
 Build and install command:
@@ -368,8 +469,3 @@ Build and install command example:
 ZenUnit and ZenMock installed on Windows:
 
 ![ZenUnit Installed On Windows](Screenshots/ZenUnitInstalledOnWindows.png "ZenUnit and ZenMock Installed On Windows")
-
-### ZenUnit To-Do List
-
-Single header
-
