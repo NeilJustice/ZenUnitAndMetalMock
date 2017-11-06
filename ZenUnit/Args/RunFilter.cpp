@@ -4,12 +4,12 @@
 
 namespace ZenUnit
 {
-   RunFilter::RunFilter()
+   inline RunFilter::RunFilter()
       : testCaseNumber(0)
    {
    }
 
-   RunFilter::RunFilter(const std::string& testClassName, const std::string& testName, unsigned testCaseNumber)
+   inline RunFilter::RunFilter(const std::string& testClassName, const std::string& testName, unsigned testCaseNumber)
       : testClassName(testClassName)
       , testName(testName)
       , testCaseNumber(testCaseNumber)
@@ -17,7 +17,7 @@ namespace ZenUnit
    }
 }
 
-void ZenUnitEqualizer<ZenUnit::RunFilter>::AssertEqual(
+inline void ZenUnitEqualizer<ZenUnit::RunFilter>::AssertEqual(
    const ZenUnit::RunFilter& expectedRunFilter,
    const ZenUnit::RunFilter& actualRunFilter)
 {
@@ -29,7 +29,7 @@ void ZenUnitEqualizer<ZenUnit::RunFilter>::AssertEqual(
 namespace ZenUnit
 {
    template<>
-   RunFilter Random<RunFilter>()
+   inline RunFilter Random<RunFilter>()
    {
       RunFilter randomRunFilter;
       randomRunFilter.testClassName = ZenUnit::Random<std::string>();

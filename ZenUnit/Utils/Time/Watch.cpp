@@ -6,7 +6,7 @@
 namespace ZenUnit
 {
    // Returns now in format "Monday January 1, 2016 at 00:00:00 <Timezone>"
-   std::string Watch::TimeZoneDateTimeNow() const
+   inline std::string Watch::TimeZoneDateTimeNow() const
    {
       const tm tmNow = TMNow();
       std::ostringstream builder;
@@ -21,7 +21,7 @@ namespace ZenUnit
       return weekdayDateTimeZoneNow;
    }
 
-   tm Watch::TMNow() const
+   inline tm Watch::TMNow() const
    {
       const std::chrono::time_point<std::chrono::system_clock> nowTimePoint = std::chrono::system_clock::now();
 #ifdef __linux__
@@ -38,7 +38,7 @@ namespace ZenUnit
 #endif
    }
 
-   std::string Watch::TimeZone(const tm& tmValue) const
+   inline std::string Watch::TimeZone(const tm& tmValue) const
    {
       char timeZoneChars[128];
       strftime(timeZoneChars, sizeof(timeZoneChars), "%Z", &tmValue);
@@ -46,7 +46,7 @@ namespace ZenUnit
       return timeZone;
    }
 
-   unsigned short Watch::SecondsSince1970CastToUnsignedShort() const
+   inline unsigned short Watch::SecondsSince1970CastToUnsignedShort() const
    {
       const long long secondsSince1970
          = std::chrono::system_clock::now().time_since_epoch().count();
@@ -55,7 +55,7 @@ namespace ZenUnit
       return secondsSince1970CastToUnsignedShort;
    }
 
-   const char* Watch::TMWeekDayToWeekDayString(int tm_wday)
+   inline const char* Watch::TMWeekDayToWeekDayString(int tm_wday)
    {
       switch (tm_wday)
       {
@@ -70,7 +70,7 @@ namespace ZenUnit
       }
    }
 
-   const char* Watch::TMMonthToMonthString(int tm_mon)
+   inline const char* Watch::TMMonthToMonthString(int tm_mon)
    {
       switch (tm_mon)
       {

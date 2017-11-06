@@ -4,17 +4,17 @@
 
 namespace ZenUnit
 {
-   Stopwatch::Stopwatch()
+   inline Stopwatch::Stopwatch()
       : call_highres_now(std::chrono::high_resolution_clock::now)
    {
    }
 
-   void Stopwatch::Start()
+   inline void Stopwatch::Start()
    {
       _startTime = call_highres_now();
    }
 
-   unsigned Stopwatch::Stop()
+   inline unsigned Stopwatch::Stop()
    {
       if (_startTime == std::chrono::time_point<std::chrono::high_resolution_clock>())
       {

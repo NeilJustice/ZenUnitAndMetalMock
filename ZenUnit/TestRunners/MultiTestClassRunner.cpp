@@ -12,7 +12,7 @@
 
 namespace ZenUnit
 {
-   MultiTestClassRunner::MultiTestClassRunner()
+   inline MultiTestClassRunner::MultiTestClassRunner()
       : _extraArgMemberForEacher(new ExtraArgMemberForEacherType)
       , _extraArgAnyer(new ExtraArgAnyerType)
       , _sorter(new Sorter<std::vector<std::unique_ptr<TestClassRunner>>>)
@@ -21,14 +21,14 @@ namespace ZenUnit
    {
    }
 
-   MultiTestClassRunner::~MultiTestClassRunner() = default;
+   inline MultiTestClassRunner::~MultiTestClassRunner() = default;
 
-   void MultiTestClassRunner::AddTestClassRunner(TestClassRunner* testClassRunner)
+   inline void MultiTestClassRunner::AddTestClassRunner(TestClassRunner* testClassRunner)
    {
       _testClassRunners.emplace_back(testClassRunner);
    }
 
-   void MultiTestClassRunner::ApplyRunFiltersIfAny(const std::vector<RunFilter>& runFilters)
+   inline void MultiTestClassRunner::ApplyRunFiltersIfAny(const std::vector<RunFilter>& runFilters)
    {
       if (!runFilters.empty())
       {
@@ -37,7 +37,7 @@ namespace ZenUnit
       }
    }
 
-   void MultiTestClassRunner::ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter(
+   inline void MultiTestClassRunner::ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter(
       std::unique_ptr<TestClassRunner>& testClassRunner, const std::vector<RunFilter>& runFilters)
    {
       const bool anyRunFilterMatchesTestClassName = _extraArgAnyer->ExtraArgAny(
@@ -48,7 +48,7 @@ namespace ZenUnit
       }
    }
 
-   bool MultiTestClassRunner::TestClassNameMatchesRunFilter(
+   inline bool MultiTestClassRunner::TestClassNameMatchesRunFilter(
       const RunFilter& runFilter, const std::unique_ptr<TestClassRunner>* testClassRunner)
    {
       const char* const testClassName = (*testClassRunner)->TestClassName();
@@ -56,7 +56,7 @@ namespace ZenUnit
       return testClassMatchesRunFilter;
    }
 
-   size_t MultiTestClassRunner::NumberOfTestClassesToBeRun() const
+   inline size_t MultiTestClassRunner::NumberOfTestClassesToBeRun() const
    {
       size_t numberOfTestClassesToBeRun = 0;
       for (const std::unique_ptr<TestClassRunner>& testClassRunner : _testClassRunners)
@@ -70,7 +70,7 @@ namespace ZenUnit
       return numberOfTestClassesToBeRun;
    }
 
-   size_t MultiTestClassRunner::NumberOfTestCases() const
+   inline size_t MultiTestClassRunner::NumberOfTestCases() const
    {
       const size_t numberOfTestCases = std::accumulate(_testClassRunners.cbegin(), _testClassRunners.cend(),
          size_t(0), [](size_t cumulativeNumberOfTestCases, const std::unique_ptr<TestClassRunner>& testClassRunner)
@@ -80,7 +80,7 @@ namespace ZenUnit
       return numberOfTestCases;
    }
 
-   std::vector<TestClassResult> MultiTestClassRunner::RunTestClasses(ZenUnitArgs& zenUnitArgs)
+   inline std::vector<TestClassResult> MultiTestClassRunner::RunTestClasses(ZenUnitArgs& zenUnitArgs)
    {
       if (zenUnitArgs.random)
       {
@@ -101,7 +101,7 @@ namespace ZenUnit
       }
    }
 
-   TestClassResult MultiTestClassRunner::RunTestClassRunner(
+   inline TestClassResult MultiTestClassRunner::RunTestClassRunner(
       const std::unique_ptr<TestClassRunner>& testClassRunner)
    {
       const TestClassResult testClassResult = testClassRunner->RunTests();

@@ -4,18 +4,18 @@
 
 namespace ZenUnit
 {
-   bool String::Contains(const std::string& str, const char* substring)
+   inline bool String::Contains(const std::string& str, const char* substring)
    {
       return Contains(str.c_str(), substring);
    }
 
-   bool String::Contains(const char* str, const char* substring)
+   inline bool String::Contains(const char* str, const char* substring)
    {
       const char* const strstrResult = strstr(str, substring);
       return strstrResult != nullptr;
    }
 
-   std::vector<std::string> String::Split(const std::string& str, char separator)
+   inline std::vector<std::string> String::Split(const std::string& str, char separator)
    {
       std::vector<std::string> splitString;
       std::istringstream is(str);
@@ -27,7 +27,7 @@ namespace ZenUnit
       return splitString;
    }
 
-   unsigned String::ToUnsigned(const std::string& str)
+   inline unsigned String::ToUnsigned(const std::string& str)
    {
       if (str.empty())
       {
@@ -54,7 +54,7 @@ namespace ZenUnit
       return unsignedResult;
    }
 
-   std::vector<std::string> String::CommaSplitExceptQuotedCommas(const char* text)
+   inline std::vector<std::string> String::CommaSplitExceptQuotedCommas(const char* text)
    {
       std::vector<std::string> elements;
       std::stringstream stringStream(text);
@@ -85,7 +85,7 @@ namespace ZenUnit
       return elements;
    }
 
-   int String::IgnoreCaseStrcmp(const char* string1, const char* string2)
+   inline int String::IgnoreCaseStrcmp(const char* string1, const char* string2)
    {
 #ifdef __linux__
       const int strcmpResult = strcasecmp(string1, string2);

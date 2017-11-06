@@ -6,7 +6,7 @@
 
 namespace ZenUnit
 {
-   Console::Console()
+   inline Console::Console()
       : _consoleColorer(new ConsoleColorer)
       , call_exit(::exit)
 #ifdef _WIN32
@@ -15,14 +15,14 @@ namespace ZenUnit
    {
    }
 
-   Console::~Console() = default;
+   inline Console::~Console() = default;
 
-   void Console::Write(const std::string& message) const
+   inline void Console::Write(const std::string& message) const
    {
       WriteColor(message, Color::White);
    }
 
-   void Console::NonMinimalWrite(const std::string& message, PrintMode printMode) const
+   inline void Console::NonMinimalWrite(const std::string& message, PrintMode printMode) const
    {
       if (printMode != PrintMode::Minimalist)
       {
@@ -30,7 +30,7 @@ namespace ZenUnit
       }
    }
 
-   void Console::WriteColor(const std::string& message, Color color) const
+   inline void Console::WriteColor(const std::string& message, Color color) const
    {
       const bool didSetColor = _consoleColorer->SetColor(color);
       printf("%s", message.data());
@@ -38,7 +38,7 @@ namespace ZenUnit
       _consoleColorer->UnsetColor(didSetColor);
    }
 
-   void Console::NonMinimalWriteColor(const std::string& message, Color color, PrintMode printMode) const
+   inline void Console::NonMinimalWriteColor(const std::string& message, Color color, PrintMode printMode) const
    {
       if (printMode != PrintMode::Minimalist)
       {
@@ -46,12 +46,12 @@ namespace ZenUnit
       }
    }
 
-   void Console::WriteLine(const std::string& message) const
+   inline void Console::WriteLine(const std::string& message) const
    {
       WriteLineColor(message, Color::White);
    }
 
-   void Console::NonMinimalWriteLine(const std::string& message, PrintMode printMode) const
+   inline void Console::NonMinimalWriteLine(const std::string& message, PrintMode printMode) const
    {
       if (printMode != PrintMode::Minimalist)
       {
@@ -59,7 +59,7 @@ namespace ZenUnit
       }
    }
 
-   void Console::WriteLineColor(const std::string& message, Color color) const
+   inline void Console::WriteLineColor(const std::string& message, Color color) const
    {
       const bool didSetColor = _consoleColorer->SetColor(color);
       // With VS2017 15.2 Debug and Release mode, printf("%s\n") measured as ~15% faster
@@ -70,12 +70,12 @@ namespace ZenUnit
       _consoleColorer->UnsetColor(didSetColor);
    }
 
-   void Console::WriteNewLine() const
+   inline void Console::WriteNewLine() const
    {
       printf("\n");
    }
 
-   void Console::NonMinimalWriteNewLine(PrintMode printMode) const
+   inline void Console::NonMinimalWriteNewLine(PrintMode printMode) const
    {
       if (printMode != PrintMode::Minimalist)
       {
@@ -83,13 +83,13 @@ namespace ZenUnit
       }
    }
 
-   void Console::WriteLineAndExit(const std::string& message, int exitCode) const
+   inline void Console::WriteLineAndExit(const std::string& message, int exitCode) const
    {
       std::cout << message << '\n';
       call_exit(exitCode);
    }
 
-   void Console::NonMinimalWriteStringsCommaSeparated(
+   inline void Console::NonMinimalWriteStringsCommaSeparated(
       const std::vector<std::string>& strings, size_t startIndex, size_t numberOfStringsToWrite, PrintMode printMode) const
    {
       if (printMode != PrintMode::Minimalist)
@@ -98,7 +98,7 @@ namespace ZenUnit
       }
    }
 
-   void Console::DoWriteStringsCommaSeparated(
+   inline void Console::DoWriteStringsCommaSeparated(
       const std::vector<std::string>& strings, size_t startIndex, size_t numberOfStringsToWrite) const
    {
       const size_t endIndex = startIndex + numberOfStringsToWrite - 1;
@@ -113,7 +113,7 @@ namespace ZenUnit
       }
    }
 
-   void Console::WaitForEnterKeyIfDebuggerPresentOrValueTrue(bool doWait) const
+   inline void Console::WaitForEnterKeyIfDebuggerPresentOrValueTrue(bool doWait) const
    {
       if (doWait || DebuggerIsPresent())
       {
@@ -122,13 +122,13 @@ namespace ZenUnit
       }
    }
 
-   void Console::WaitForEnterKey() const
+   inline void Console::WaitForEnterKey() const
    {
       std::string devNull;
       std::getline(std::cin, devNull);
    }
 
-   bool Console::DebuggerIsPresent() const
+   inline bool Console::DebuggerIsPresent() const
    {
 #ifdef __linux__
       return false;

@@ -9,16 +9,16 @@
 
 namespace ZenUnit
 {
-   PreamblePrinter::PreamblePrinter()
+   inline PreamblePrinter::PreamblePrinter()
       : _console(new Console)
       , _watch(new Watch)
       , _machineNameGetter(new MachineNameGetter)
    {
    }
 
-   PreamblePrinter::~PreamblePrinter() = default;
+   inline PreamblePrinter::~PreamblePrinter() = default;
 
-   void PreamblePrinter::PrintOpeningThreeLines(
+   inline void PreamblePrinter::PrintOpeningThreeLines(
       const ZenUnitArgs& zenUnitArgs,
       const MultiTestClassRunner* multiTestClassRunner) const
    {
@@ -36,7 +36,7 @@ namespace ZenUnit
       _console->WriteNewLine();
    }
 
-   std::string PreamblePrinter::MakeThirdLinePrefix(size_t numberOfTestClassesToBeRun) const
+   inline std::string PreamblePrinter::MakeThirdLinePrefix(size_t numberOfTestClassesToBeRun) const
    {
       const bool testClassesPlural = numberOfTestClassesToBeRun > 1 || numberOfTestClassesToBeRun == 0;
       const std::string machineName = _machineNameGetter->GetMachineName();
@@ -46,7 +46,7 @@ namespace ZenUnit
       return thirdLinePrefix;
    }
 
-   std::string PreamblePrinter::MakeThirdLineSuffix(bool random, unsigned short randomseed) const
+   inline std::string PreamblePrinter::MakeThirdLineSuffix(bool random, unsigned short randomseed) const
    {
       const std::string thirdLineSuffix = random ? " with random seed " + std::to_string(randomseed) : "";
       return thirdLineSuffix;

@@ -9,16 +9,16 @@
 
 namespace ZenUnit
 {
-   ArgsParser::ArgsParser()
+   inline ArgsParser::ArgsParser()
       : _console(new Console)
       , _runFilterParser(new RunFilterParser)
       , call_String_ToUnsigned(String::ToUnsigned)
    {
    }
 
-   ArgsParser::~ArgsParser() = default;
+   inline ArgsParser::~ArgsParser() = default;
 
-   ZenUnitArgs ArgsParser::Parse(const std::vector<std::string>& args) const
+   inline ZenUnitArgs ArgsParser::Parse(const std::vector<std::string>& args) const
    {
       if (args.size() > 9)
       {
@@ -110,13 +110,13 @@ namespace ZenUnit
       return zenUnitArgs;
    }
 
-   void ArgsParser::WriteZenUnitArgumentErrorAndUsageThenExit1(const std::string& errorMessage) const
+   inline void ArgsParser::WriteZenUnitArgumentErrorAndUsageThenExit1(const std::string& errorMessage) const
    {
       _console->WriteLine("ZenUnit argument error. " + errorMessage + "\n");
       _console->WriteLineAndExit(Usage(), 1);
    }
 
-   const std::string& ArgsParser::Usage()
+   inline const std::string& ArgsParser::Usage()
    {
       static const std::string usage = R"(ZenUnit v0.1.0
 Usage: <TestsBinaryName> [Options...]

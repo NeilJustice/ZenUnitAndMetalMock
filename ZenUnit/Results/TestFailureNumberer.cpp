@@ -3,13 +3,13 @@
 
 namespace ZenUnit
 {
-   std::string TestFailureNumberer::Next()
+   inline std::string TestFailureNumberer::Next()
    {
       const std::string nextTestFailureNumber = "<" + std::to_string(_testFailureNumber++) + ">";
       return nextTestFailureNumber;
    }
 
-   void TestFailureNumberer::Reset()
+   inline void TestFailureNumberer::Reset()
    {
       _testFailureNumber = 1u;
    }

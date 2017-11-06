@@ -9,12 +9,12 @@
 
 namespace ZenUnit
 {
-   CallResult::CallResult()
+   inline CallResult::CallResult()
       : CallResult(TestPhase::Unset)
    {
    }
 
-   CallResult::CallResult(TestPhase testPhase)
+   inline CallResult::CallResult(TestPhase testPhase)
       : testPhase(testPhase)
       , testOutcome(TestOutcome::Success)
       , milliseconds(0)
@@ -22,7 +22,7 @@ namespace ZenUnit
    }
 }
 
-void ZenUnitEqualizer<ZenUnit::CallResult>::AssertEqual(
+inline void ZenUnitEqualizer<ZenUnit::CallResult>::AssertEqual(
    const ZenUnit::CallResult& expectedCallResult,
    const ZenUnit::CallResult& actualCallResult)
 {

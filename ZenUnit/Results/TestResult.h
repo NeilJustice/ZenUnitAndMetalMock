@@ -53,14 +53,14 @@ namespace ZenUnit
       virtual void NonMinimalWriteLineOKIfSuccess(const Console* console, PrintMode printMode) const;
       virtual void PrintIfFailure(const Console* console, TestFailureNumberer* testFailureNumberer) const;
       virtual void WriteTestCaseNumberIfAny(const Console* console, unsigned short testCaseIndexArgument) const;
-      static const TestResult TestingNonDefault;
+      static const TestResult TestingNonDefault();
    };
 
    #ifdef __linux__
       #if __clang_major__ == 3 && __clang_minor__ == 9
          static_assert(sizeof(TestResult) == 176);
       #endif
-   #elif _MSC_FULL_VER == VS2017Update4 && defined(_WIN64)
+   #elif defined(_WIN64)
       #ifdef _DEBUG
          static_assert(sizeof(TestResult) == 168);
       #elif NDEBUG

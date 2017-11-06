@@ -7,57 +7,57 @@
 
 namespace ZenUnit
 {
-   Test::Test(const char* testClassName, const char* testName, unsigned char arity)
+   inline Test::Test(const char* testClassName, const char* testName, unsigned char arity)
       : _tryCatchCaller(new TryCatchCaller)
       , _testResultFactory(new TestResultFactory)
       , _fullTestName(testClassName, testName, arity)
    {
    }
 
-   Test::~Test() = default;
+   inline Test::~Test() = default;
 
-   const char* Test::Name() const
+   inline const char* Test::Name() const
    {
       return _fullTestName.testName;
    }
 
-   std::string Test::FullTestNameValue() const
+   inline std::string Test::FullTestNameValue() const
    {
       return _fullTestName.Value();
    }
 
-   std::string Test::FileLineString() const
+   inline std::string Test::FileLineString() const
    {
       const std::string fileLineString = _fileLine.ToString();
       return fileLineString;
    }
 
-   void Test::CallNewTestClass(Test* test)
+   inline void Test::CallNewTestClass(Test* test)
    {
       test->NewTestClass();
    }
 
-   void Test::CallStartup(Test* test)
+   inline void Test::CallStartup(Test* test)
    {
       test->Startup();
    }
 
-   void Test::CallTestBody(Test* test)
+   inline void Test::CallTestBody(Test* test)
    {
       test->TestBody();
    }
 
-   void Test::CallCleanup(Test* test)
+   inline void Test::CallCleanup(Test* test)
    {
       test->Cleanup();
    }
 
-   void Test::CallDeleteTestClass(Test* test)
+   inline void Test::CallDeleteTestClass(Test* test)
    {
       test->DeleteTestClass();
    }
 
-   TestResult Test::RunTestCase()
+   inline TestResult Test::RunTestCase()
    {
       const CallResult constructorCallResult =
          _tryCatchCaller->Call(&Test::CallNewTestClass, this, TestPhase::Constructor);

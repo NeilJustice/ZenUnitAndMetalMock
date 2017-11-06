@@ -3,7 +3,7 @@
 
 namespace ZenUnit
 {
-   NOINLINE void EQUALIZER_THROWS_ThrowOnAccountOfExceptionUnexpectedlyThrown(
+   inline void EQUALIZER_THROWS_ThrowOnAccountOfExceptionUnexpectedlyThrown(
       const char* typeName,
       const char* fieldName,
       const char* arbitraryNonDefaultFieldValueText,
@@ -15,7 +15,7 @@ namespace ZenUnit
          becauseAnomaly, "N/A", "N/A", ExpectedActualFormat::Fields, fileLine);
    }
 
-   NOINLINE void EQUALIZER_THROWS_ThrowOnAccountOfExpectedExceptionNotThrown(
+   inline void EQUALIZER_THROWS_ThrowOnAccountOfExpectedExceptionNotThrown(
       const char* typeName,
       const char* fieldName,
       const char* arbitraryNonDefaultFieldValueText,

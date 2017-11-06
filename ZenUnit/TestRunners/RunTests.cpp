@@ -5,7 +5,7 @@
 
 namespace ZenUnit
 {
-   int RunTests(int argc, char* argv[])
+   inline int RunTests(int argc, char* argv[])
    {
       const std::vector<std::string> args = Vector::FromArgcArgv(argc, argv);
       TestRunner& zenUnitTestRunner = TestRunner::Instance();

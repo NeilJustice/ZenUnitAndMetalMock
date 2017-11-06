@@ -5,21 +5,21 @@
 
 namespace ZenUnit
 {
-   RunFilterParser::RunFilterParser()
+   inline RunFilterParser::RunFilterParser()
       : _transformer(new Transformer<std::string, RunFilter>)
    {
    }
 
-   RunFilterParser::~RunFilterParser() = default;
+   inline RunFilterParser::~RunFilterParser() = default;
 
-   std::vector<RunFilter> RunFilterParser::Parse(const std::vector<std::string>& testRunFilters) const
+   inline std::vector<RunFilter> RunFilterParser::Parse(const std::vector<std::string>& testRunFilters) const
    {
       std::vector<RunFilter> runFilters = _transformer->Transform(
          &testRunFilters, RunFilterParser::ParseRunFilterString);
       return runFilters;
    }
 
-   RunFilter RunFilterParser::ParseRunFilterString(const std::string& testRunFilter)
+   inline RunFilter RunFilterParser::ParseRunFilterString(const std::string& testRunFilter)
    {
       RunFilter runFilter;
       const std::vector<std::string> testClassName_testNameSlashTestCaseNumber = String::Split(testRunFilter, '.');

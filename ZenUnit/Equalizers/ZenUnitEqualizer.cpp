@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ZenUnit/Equalizers/ZenUnitEqualizer.h"
 
-void ZenUnitEqualizer<const char*>::
+inline void ZenUnitEqualizer<const char*>::
 AssertEqual(const char* expected, const char* actual)
 {
    if (expected == nullptr && actual == nullptr)
@@ -23,37 +23,37 @@ AssertEqual(const char* expected, const char* actual)
    }
 }
 
-void ZenUnitEqualizer<char*>::
+inline void ZenUnitEqualizer<char*>::
 AssertEqual(char* expected, char* actual)
 {
    ZenUnitEqualizer<const char*>::AssertEqual(expected, actual);
 }
 
-void TwoTypeZenUnitEqualizer<const char*, char*>::
+inline void TwoTypeZenUnitEqualizer<const char*, char*>::
 AssertEqual(const char* expected, char* actual)
 {
    ZenUnitEqualizer<const char*>::AssertEqual(expected, actual);
 }
 
-void TwoTypeZenUnitEqualizer<char*, const char*>::
+inline void TwoTypeZenUnitEqualizer<char*, const char*>::
 AssertEqual(char* expected, const char* actual)
 {
    ZenUnitEqualizer<const char*>::AssertEqual(expected, actual);
 }
 
-void TwoTypeZenUnitEqualizer<const char*, std::string>::
+inline void TwoTypeZenUnitEqualizer<const char*, std::string>::
 AssertEqual(const char* expected, const std::string& actual)
 {
    ZenUnitEqualizer<const char*>::AssertEqual(expected, actual.c_str());
 }
 
-void TwoTypeZenUnitEqualizer<std::string, const char*>::
+inline void TwoTypeZenUnitEqualizer<std::string, const char*>::
 AssertEqual(const std::string& expected, const char* actual)
 {
    ZenUnitEqualizer<const char*>::AssertEqual(expected.c_str(), actual);
 }
 
-void ZenUnitEqualizer<double>::
+inline void ZenUnitEqualizer<double>::
 AssertEqual(double expected, double actual)
 {
    // Tentative exactly-equal implementation
@@ -63,7 +63,7 @@ AssertEqual(double expected, double actual)
    }
 }
 
-void ZenUnitEqualizer<float>::
+inline void ZenUnitEqualizer<float>::
 AssertEqual(float expected, float actual)
 {
    // Tentative exactly-equal implementation
@@ -73,7 +73,7 @@ AssertEqual(float expected, float actual)
    }
 }
 
-void TwoTypeZenUnitEqualizer<int, unsigned>::
+inline void TwoTypeZenUnitEqualizer<int, unsigned>::
 AssertEqual(int expected, unsigned actual)
 {
    if (expected < 0)
@@ -85,7 +85,7 @@ AssertEqual(int expected, unsigned actual)
 
 #if defined(__linux__) || defined(_WIN64)
 
-void TwoTypeZenUnitEqualizer<int, size_t>::
+inline void TwoTypeZenUnitEqualizer<int, size_t>::
 AssertEqual(int expected, size_t actual)
 {
    if (expected < 0)

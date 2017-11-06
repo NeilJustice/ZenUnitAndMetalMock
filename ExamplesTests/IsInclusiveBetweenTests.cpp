@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Examples/IsInclusiveBetween.h"
 
+#include "ZenUnit/SingleHeader.h"
+
 TESTS(IsInclusiveBetweenTests)
 AFACT(LowerBoundGreaterThanUpperBound_Throws)
 FACTS(ReturnsTrueIfNumberIsInclusiveBetween)

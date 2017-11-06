@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include "ZenUnit/SingleHeader.h"
+
 struct Struct
 {
    int firstField = 0;

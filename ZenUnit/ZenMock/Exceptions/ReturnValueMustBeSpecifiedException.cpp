@@ -3,18 +3,18 @@
 
 namespace ZenMock
 {
-   ReturnValueMustBeSpecifiedException::ReturnValueMustBeSpecifiedException(
+   inline ReturnValueMustBeSpecifiedException::ReturnValueMustBeSpecifiedException(
       const std::string& zenMockedFunctionSignature)
       : _what(MakeWhat(zenMockedFunctionSignature))
    {
    }
 
-   const char* ReturnValueMustBeSpecifiedException::what() const noexcept
+   inline const char* ReturnValueMustBeSpecifiedException::what() const noexcept
    {
       return _what.c_str();
    }
 
-   std::string ReturnValueMustBeSpecifiedException::MakeWhat(
+   inline std::string ReturnValueMustBeSpecifiedException::MakeWhat(
       const std::string& zenMockedFunctionSignature)
    {
       const std::string what = "For ZenMocked function \"" + zenMockedFunctionSignature + R"(":

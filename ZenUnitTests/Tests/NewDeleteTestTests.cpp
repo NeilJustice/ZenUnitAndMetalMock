@@ -50,7 +50,7 @@ namespace ZenUnit
       failedConstructorCallResult.testOutcome = nonSuccessOutcome;
       _tryCatchCallerMock->CallMock.ExpectAndReturn(failedConstructorCallResult);
 
-      const TestResult constructorFailTestResult = TestResult::TestingNonDefault;
+      const TestResult constructorFailTestResult = TestResult::TestingNonDefault();
       _testResultFactoryMock->ConstructorFailMock.ExpectAndReturn(constructorFailTestResult);
       //
       const vector<TestResult> testResults = _newDeleteTest->Run();
@@ -71,7 +71,7 @@ namespace ZenUnit
       CallResult destructorCallResult;
       _tryCatchCallerMock->CallMock.ExpectAndReturnValues(successConstructorCallResult, destructorCallResult);
 
-      const TestResult sixArgCtorTestResult = TestResult::TestingNonDefault;
+      const TestResult sixArgCtorTestResult = TestResult::TestingNonDefault();
       _testResultFactoryMock->CtorDtorSuccessMock.ExpectAndReturn(sixArgCtorTestResult);
       //
       const vector<TestResult> testResults = _newDeleteTest->Run();

@@ -81,7 +81,7 @@ namespace ZenUnit
       const CallResult constructorFailCallResult = CallResultWithOutcome(constructorOutcome);
       _tryCatchCallerMock->CallMock.ExpectAndReturn(constructorFailCallResult);
 
-      const TestResult constructorFailTestResult = TestResult::TestingNonDefault;
+      const TestResult constructorFailTestResult = TestResult::TestingNonDefault();
       _testResultFactoryMock->ConstructorFailMock.ExpectAndReturn(constructorFailTestResult);
       //
       const TestResult testResult = _test->RunTestCase();
@@ -103,7 +103,7 @@ namespace ZenUnit
       const CallResult destructorCallResult = CallResultWithOutcome(TestOutcome::Success);
       _tryCatchCallerMock->CallMock.ExpectAndReturnValues(constructorSuccessCallResult, startupFailCallResult, destructorCallResult);
 
-      const TestResult startupFailTestResult = TestResult::TestingNonDefault;
+      const TestResult startupFailTestResult = TestResult::TestingNonDefault();
       _testResultFactoryMock->StartupFailMock.ExpectAndReturn(startupFailTestResult);
       const string testClassName = Random<string>();
       const string testName = Random<string>();
@@ -127,7 +127,7 @@ namespace ZenUnit
       const CallResult successCallResult = CallResultWithOutcome(TestOutcome::Success);
       _tryCatchCallerMock->CallMock.ExpectAndReturn(successCallResult);
 
-      const TestResult sixArgTestResult = TestResult::TestingNonDefault;
+      const TestResult sixArgTestResult = TestResult::TestingNonDefault();
       _testResultFactoryMock->FullCtorMock.ExpectAndReturn(sixArgTestResult);
       const string testClassName = Random<string>();
       const string testName = Random<string>();

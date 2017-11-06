@@ -4,21 +4,21 @@
 
 namespace ZenUnit
 {
-   FullTestName::FullTestName()
+   inline FullTestName::FullTestName()
       : testClassName(nullptr)
       , testName(nullptr)
       , arity(0)
    {
    }
 
-   FullTestName::FullTestName(const char* testClassName, const char* testName, unsigned char arity)
+   inline FullTestName::FullTestName(const char* testClassName, const char* testName, unsigned char arity)
       : testClassName(testClassName)
       , testName(testName)
       , arity(arity)
    {
    }
 
-   std::string FullTestName::Value() const
+   inline std::string FullTestName::Value() const
    {
       const bool testClassIsTemplated = String::Contains(testClassName, "<");
       const char* const testsOrTemplateTests = testClassIsTemplated ? "TEMPLATETESTS(" : "TESTS(";
@@ -33,7 +33,7 @@ namespace ZenUnit
    }
 }
 
-void ZenUnitEqualizer<ZenUnit::FullTestName>::
+inline void ZenUnitEqualizer<ZenUnit::FullTestName>::
 AssertEqual(
    const ZenUnit::FullTestName& expectedFullTestName,
    const ZenUnit::FullTestName& actualFullTestName)

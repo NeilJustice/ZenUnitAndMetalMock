@@ -14,7 +14,7 @@
 
 namespace ZenUnit
 {
-   TryCatchCaller::TryCatchCaller()
+   inline TryCatchCaller::TryCatchCaller()
       : _console(new Console)
       , _testPhaseSuffixer(new TestPhaseSuffixer)
       , _stopwatch(new Stopwatch)
@@ -22,9 +22,9 @@ namespace ZenUnit
    {
    }
 
-   TryCatchCaller::~TryCatchCaller() = default;
+   inline TryCatchCaller::~TryCatchCaller() = default;
 
-   CallResult TryCatchCaller::Call(
+   inline CallResult TryCatchCaller::Call(
       void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const
    {
       CallResult callResult(testPhase);

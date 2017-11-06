@@ -3,7 +3,7 @@
 
 namespace ZenUnit
 {
-   NOINLINE std::string MAPS_EQUAL_MakeWhyBody_SizesNotEqual(
+   inline std::string MAPS_EQUAL_MakeWhyBody_SizesNotEqual(
       size_t expectedMapSize, size_t actualMapSize)
    {
       const std::string whyBody = String::Concat(

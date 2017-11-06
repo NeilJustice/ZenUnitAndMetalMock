@@ -3,7 +3,7 @@
 
 namespace ZenUnit
 {
-   void POINTES_EQUAL_AssertAreEqual(const std::nullptr_t&, const std::nullptr_t&)
+   inline void POINTES_EQUAL_AssertAreEqual(const std::nullptr_t&, const std::nullptr_t&)
    {
       assert_true(false);
    }

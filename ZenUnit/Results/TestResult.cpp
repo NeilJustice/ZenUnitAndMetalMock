@@ -10,7 +10,7 @@
 
 namespace ZenUnit
 {
-   TestResult::TestResult()
+   inline TestResult::TestResult()
       : responsibleCallResultField(nullptr)
       , testOutcome(TestOutcome::Unset)
       , milliseconds(0)
@@ -18,7 +18,7 @@ namespace ZenUnit
    {
    }
 
-   TestResult TestResult::ConstructorFail(
+   inline TestResult TestResult::ConstructorFail(
       const FullTestName& fullTestName,
       const CallResult& constructorCallResult)
    {
@@ -31,7 +31,7 @@ namespace ZenUnit
       return constructorFailTestResult;
    }
 
-   TestResult TestResult::StartupFail(
+   inline TestResult TestResult::StartupFail(
       const FullTestName& fullTestName,
       const CallResult& constructorCallResult,
       const CallResult& startupCallResult,
@@ -51,7 +51,7 @@ namespace ZenUnit
       return startupFail;
    }
 
-   TestResult TestResult::CtorDtorSuccess(
+   inline TestResult TestResult::CtorDtorSuccess(
       const FullTestName& fullTestName,
       const CallResult& constructorCallResult,
       const CallResult& destructorCallResult)
@@ -68,7 +68,7 @@ namespace ZenUnit
       return ctorDtorSuccess;
    }
 
-   TestResult::TestResult(
+   inline TestResult::TestResult(
       const FullTestName& fullTestName,
       const CallResult& constructorCallResult,
       const CallResult& startupCallResult,
@@ -135,7 +135,7 @@ namespace ZenUnit
       }
    }
 
-   void TestResult::NonMinimalWriteLineOKIfSuccess(const Console* console, PrintMode printMode) const
+   inline void TestResult::NonMinimalWriteLineOKIfSuccess(const Console* console, PrintMode printMode) const
    {
       if (printMode != PrintMode::Minimalist && testOutcome == TestOutcome::Success)
       {
@@ -143,7 +143,7 @@ namespace ZenUnit
       }
    }
 
-   void TestResult::PrintIfFailure(const Console* console, TestFailureNumberer* testFailureNumberer) const
+   inline void TestResult::PrintIfFailure(const Console* console, TestFailureNumberer* testFailureNumberer) const
    {
       switch (testOutcome)
       {
@@ -198,7 +198,7 @@ namespace ZenUnit
       }
    }
 
-   void TestResult::WriteTestCaseNumberIfAny(
+   inline void TestResult::WriteTestCaseNumberIfAny(
       const Console* console, unsigned short testCaseIndexArgument) const
    {
       if (testCaseIndexArgument != std::numeric_limits<unsigned short>::max())
@@ -207,11 +207,13 @@ namespace ZenUnit
       }
    }
 
-   const TestResult TestResult::TestingNonDefault =
-      TestResult::ConstructorFail(FullTestName("Non", "Default", 0), CallResult());
+   inline const TestResult TestResult::TestingNonDefault()
+   {
+      return TestResult::ConstructorFail(FullTestName("Non", "Default", 0), CallResult());
+   }
 }
 
-void ZenUnitEqualizer<ZenUnit::TestResult>::
+inline void ZenUnitEqualizer<ZenUnit::TestResult>::
 AssertEqual(const ZenUnit::TestResult& expectedTestResult, const ZenUnit::TestResult& actualTestResult)
 {
    ARE_EQUAL(expectedTestResult.fullTestName, actualTestResult.fullTestName);

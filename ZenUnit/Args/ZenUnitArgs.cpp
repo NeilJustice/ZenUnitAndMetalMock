@@ -2,7 +2,7 @@
 #include "ZenUnit/Args/ZenUnitArgs.h"
 #include "ZenUnit/Macros/ARE_EQUAL.h"
 
-void ZenUnitEqualizer<ZenUnit::ZenUnitArgs>::
+inline void ZenUnitEqualizer<ZenUnit::ZenUnitArgs>::
 AssertEqual(const ZenUnit::ZenUnitArgs& expectedArguments, const ZenUnit::ZenUnitArgs& actualArgs)
 {
    ARE_EQUAL(expectedArguments.commandLine, actualArgs.commandLine);

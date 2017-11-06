@@ -3,7 +3,7 @@
 
 namespace ZenUnit
 {
-   size_t ULongLongToChars(unsigned long long value, char* outChars)
+   inline size_t ULongLongToChars(unsigned long long value, char* outChars)
    {
       char* ptrA = outChars;
       unsigned long long tempValue = 0;
