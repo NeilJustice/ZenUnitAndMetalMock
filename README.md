@@ -97,6 +97,78 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 
 ![ZenUnit](Screenshots/ZenUnitFizzBuzz.png "ZenUnit")
 
+### ZenUnit Macros
+
+|Test Classes|
+|----------------|
+|`TESTCLASS(HighQualityTestClassName)`|
+|`TEMPLATETESTCLASS(HighQualityTestClassName, TemplateParameterNames...)` // Precede with template\<parameter-list\>|
+|`SPEC(HighQualityTestName)` // Standard-issue void test|
+|`SPECX(HighQualityTestName)` // N-by-N value-parameterized test|
+|`SKIPSPEC(HighQualityTestName, Reason)`|
+|`SKIPSPECX(HighQualityTestName, Reason)`|
+|`SPECEND` // Ends the SPEC section and begins the TEST section|
+|`STARTUP` // Function run before each test|
+|`CLEANUP` // Function run after each test|
+|`TEST(HighQualityTestName)` // Standard-issue void test|
+|`TEST1X1(HighQualityTestName, Arg1Type, ...)` // 1-by-1 value-parameterized test|
+|`TEST2X2(HighQualityTestName, Arg1Type, Arg2Type, ...)` // 2-by-2 value-parameterized test|
+|...|
+|`TEST10X10(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
+|`RUNTESTS(HighQualityTestClassName)`|
+|`RUNTEMPLATETESTS(HighQualityTestClassName, TemplateArguments...)`|
+|`SKIPRUNTESTS(HighQualityTestClassName, Reason)`|
+|`SKIPRUNTEMPLATETESTS(HighQualityTestClassName, Reason)`|
+
+|Values|
+|------|
+|`ARE_EQUAL(expectedValue, actualValue, messages...)` // messages... are variables of any type writable with operator<<(ostream&, const T&) or ZenUnitPrinter\<T\>::Print(ostream&, const T&)|
+|`ARE_SAME(expectedObject, actualObject, messages...)`|
+|`ARE_NOT_SAME(notExpectedObject, actualObject, messages...)`|
+|`ARE_COPIES(expectedObject, actualObject, messages...)` // Asserts that objects ARE_NOT_SAME and ARE_EQUAL|
+|`IS_TRUE(value, messages...)`|
+|`IS_FALSE(value, messages...)`|
+|`IS_ZERO(value, messages...)`|
+
+|Data Structures|
+|---------------|
+|`IS_EMPTY(dataStructure, messages...)`|
+|`CONTAINS(expectedElement, dataStructure, messages...)`|
+|`VECTORS_EQUAL(expectedVector, actualVector, messages...)`|
+|`MAPS_EQUAL(expectedMap, actualMap, messages...)`|
+|`PAIRS_EQUAL(expectedPair, actualPair, messages...)`|
+|`SETS_EQUAL(expectedSet, actualSet, messages...)`|
+
+|Exceptions|
+|----------|
+|`THROWS(expression, expectedExactExceptionType, expectedWhat, messages...)`|
+|`NOTHROWS(expression, messages...)`|
+
+|The Test Itself|
+|---------------|
+|`FAIL(testFailureReason, messages...)`|
+
+|Pointers|
+|------- |
+|`IS_NULL(pointer, messages...)`|
+|`IS_NOT_NULL(pointer, messages...)`|
+|`POINTEES_EQUAL(expectedPointer, actualPointer, messages...)` // Asserts that pointers are either both nullptr or their pointees ARE_EQUAL|
+|`POINTER_WAS_NEWED(smartOrRawPointer, messages...)` // Asserts not null then resets or operator deletes the pointer to confirm it was make_uniqued / make_shared / operator newed|
+|`POINTER_WAS_ARRAY_NEWED(smartOrRawArrayPointer, messages...)` // Asserts not null then resets or operator array deletes the pointer to confirm it was array make_uniqued / array operator newed|
+
+|Regular Expressions|
+|-------------------|
+|`REGEX_MATCHES(expectedPattern, str, messages...)`|
+
+|Functions|
+|---------|
+|`STD_FUNCTION_TARGETS(expectedStdFunctionTarget, stdFunction, messages...)`|
+
+|ZenUnitEqualizers // Allow for field-by-field equality assertions on arbitrary types|
+|------------------|
+|`EQUALIZER_THROWS_INIT(typeName)`|
+|`EQUALIZER_THROWS(typeName, fieldName, nonDefaultFieldValue)`|
+
 ### ZenUnit Type-Parameterized Test Class Syntax
 
 ```cpp
