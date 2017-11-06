@@ -23,9 +23,9 @@ namespace ZenUnit
 
    TEST(Transform_EmptyRange_DoesNothing)
    {
-      vector<T> source;
+      const vector<T> source;
       //
-      vector<TransformedT> dest = _transformer.Transform(&source, PlusOne);
+      const vector<TransformedT> dest = _transformer.Transform(&source, PlusOne);
       //
       IS_EMPTY(dest);
    }
@@ -34,7 +34,7 @@ namespace ZenUnit
    {
       const vector<T> source { 1 };
       //
-      vector<TransformedT> dest = _transformer.Transform(&source, PlusOne);
+      const vector<TransformedT> dest = _transformer.Transform(&source, PlusOne);
       //
       VECTORS_EQUAL(vector<TransformedT>{ 2 }, dest);
    }
@@ -43,7 +43,7 @@ namespace ZenUnit
    {
       const vector<T> source { 1, 2 };
       //
-      vector<TransformedT> dest = _transformer.Transform(&source, PlusOne);
+      const vector<TransformedT> dest = _transformer.Transform(&source, PlusOne);
       //
       VECTORS_EQUAL((vector<TransformedT>{ 2, 3 }), dest);
    }
@@ -52,7 +52,7 @@ namespace ZenUnit
    {
       vector<T> source;
       //
-      vector<TransformedT> dest = _transformer.RandomTransform(&source, PlusOne, 0);
+      const vector<TransformedT> dest = _transformer.RandomTransform(&source, PlusOne, 0);
       //
       IS_EMPTY(dest);
    }
@@ -61,7 +61,7 @@ namespace ZenUnit
    {
       vector<T> source{ 1 };
       //
-      vector<TransformedT> dest = _transformer.RandomTransform(&source, PlusOne, 0);
+      const vector<TransformedT> dest = _transformer.RandomTransform(&source, PlusOne, 0);
       //
       VECTORS_EQUAL(vector<TransformedT>{ 2 }, dest);
    }
@@ -70,7 +70,7 @@ namespace ZenUnit
    {
       vector<T> source{ 1, 2, 3 };
       //
-      vector<TransformedT> dest = _transformer.RandomTransform(&source, PlusOne,
+      const vector<TransformedT> dest = _transformer.RandomTransform(&source, PlusOne,
          static_cast<unsigned short>(chrono::system_clock::now().time_since_epoch().count()));
       //
       ARE_EQUAL(3, dest.size());
