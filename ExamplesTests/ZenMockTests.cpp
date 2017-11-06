@@ -1,7 +1,5 @@
 #include "pch.h"
 
-#include "ZenUnit/SingleHeader.h"
-
 class ComponentA
 {
 public:

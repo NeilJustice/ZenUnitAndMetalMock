@@ -9,7 +9,6 @@
 #endif
 
 #include "ZenUnit/Utils/IgnoredMSVCWallWarnings.h"
-//#include "ZenUnit/ZenUnit.h"
-//#include "ZenUnit/ZenMock.h"
+#include "ZenUnit/SingleHeader.h"
 
 #endif

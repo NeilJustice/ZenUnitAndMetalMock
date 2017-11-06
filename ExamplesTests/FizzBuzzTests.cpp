@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "Examples/FizzBuzz.h"
 
-#include "ZenUnit/SingleHeader.h"
-
 TESTS(FizzBuzzTests)
 AFACT(FizzBuzz_EndNumber0_Throws)
 FACTS(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)
