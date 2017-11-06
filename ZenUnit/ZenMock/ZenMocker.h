@@ -100,7 +100,7 @@ namespace ZenMock
             const ZenUnit::Console console;
             std::cout << "\n";
             console.WriteLineColor("Fatal Expected-But-Not-Asserted ZenMocked Function:", ZenUnit::Color::Red);
-            console.WriteLineColor(ZenMockedFunctionSignature, ZenUnit::Color::White);
+            console.WriteLineColor(ZenMockedFunctionSignature, ZenUnit::Color::Green);
             const ZenUnit::ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
             int exitCode = zenUnitArgs.exit0 ? 0 : 1;
             call_exit(exitCode);
