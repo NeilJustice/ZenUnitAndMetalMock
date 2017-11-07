@@ -7,7 +7,7 @@
 
 namespace ZenUnit
 {
-   inline bool operator<(
+   INLINE bool operator<(
       const std::unique_ptr<TestClassRunner>& leftTestClassRunner,
       const std::unique_ptr<TestClassRunner>& rightTestClassRunner)
    {

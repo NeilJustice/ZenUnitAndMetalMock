@@ -9,7 +9,7 @@
 
 namespace ZenUnit
 {
-   inline MachineNameGetter::MachineNameGetter()
+   INLINE MachineNameGetter::MachineNameGetter()
 #ifdef __linux__
       : call_gethostname(::gethostname)
 #elif _WIN32
@@ -18,7 +18,7 @@ namespace ZenUnit
    {
    }
 
-   inline std::string MachineNameGetter::GetMachineName() const
+   INLINE std::string MachineNameGetter::GetMachineName() const
    {
 #ifdef __linux__
       return GetLinuxMachineName();
@@ -38,7 +38,7 @@ namespace ZenUnit
       return linuxMachineName;
    }
 #elif _WIN32
-   inline std::string MachineNameGetter::GetWindowsMachineName() const
+   INLINE std::string MachineNameGetter::GetWindowsMachineName() const
    {
       const size_t Windows10MaxPCNameLength = 40;
       TCHAR computerNameChars[Windows10MaxPCNameLength + 1];

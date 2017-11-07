@@ -8,16 +8,16 @@
 
 namespace ZenUnit
 {
-   inline TestClassResult::TestClassResult()
+   INLINE TestClassResult::TestClassResult()
    {
    }
 
-   inline TestClassResult::TestClassResult(const TestClassResult& testClassResult)
+   INLINE TestClassResult::TestClassResult(const TestClassResult& testClassResult)
    {
       *this = testClassResult;
    }
 
-   inline TestClassResult& TestClassResult::operator=(const TestClassResult& testClassResult)
+   INLINE TestClassResult& TestClassResult::operator=(const TestClassResult& testClassResult)
    {
       if (this != &testClassResult)
       {
@@ -26,25 +26,25 @@ namespace ZenUnit
       return *this;
    }
 
-   inline TestClassResult::TestClassResult(TestClassResult&& testClassResult) noexcept
+   INLINE TestClassResult::TestClassResult(TestClassResult&& testClassResult) noexcept
    {
       *this = std::move(testClassResult);
    }
 
-   inline TestClassResult& TestClassResult::operator=(TestClassResult&& testClassResult) noexcept
+   INLINE TestClassResult& TestClassResult::operator=(TestClassResult&& testClassResult) noexcept
    {
       _testResults = std::exchange(testClassResult._testResults, std::vector<TestResult>());
       return *this;
    }
 
-   inline TestClassResult::~TestClassResult() = default;
+   INLINE TestClassResult::~TestClassResult() = default;
 
-   inline void TestClassResult::AddTestResults(const std::vector<TestResult>& testResults)
+   INLINE void TestClassResult::AddTestResults(const std::vector<TestResult>& testResults)
    {
       _testResults.insert(_testResults.end(), testResults.cbegin(), testResults.cend());
    }
 
-   inline unsigned TestClassResult::Milliseconds() const
+   INLINE unsigned TestClassResult::Milliseconds() const
    {
       const unsigned milliseconds = std::accumulate(_testResults.cbegin(), _testResults.cend(), 0u,
          [](unsigned cumulativeMilliseconds, const TestResult& testResult)
@@ -54,7 +54,7 @@ namespace ZenUnit
       return milliseconds;
    }
 
-   inline void TestClassResult::NonMinimalPrintResultLine(const Console* console, PrintMode printMode) const
+   INLINE void TestClassResult::NonMinimalPrintResultLine(const Console* console, PrintMode printMode) const
    {
       const size_t numberOfFailedTestCases = NumberOfFailedTestCases();
       if (numberOfFailedTestCases == 0)
@@ -68,7 +68,7 @@ namespace ZenUnit
       console->NonMinimalWriteNewLine(printMode);
    }
 
-   inline size_t TestClassResult::NumberOfFailedTestCases() const
+   INLINE size_t TestClassResult::NumberOfFailedTestCases() const
    {
       const ptrdiff_t numberOfFailedTestCases = std::count_if(
          _testResults.cbegin(), _testResults.cend(), [](const TestResult& testResult)
@@ -78,7 +78,7 @@ namespace ZenUnit
       return static_cast<size_t>(numberOfFailedTestCases);
    }
 
-   inline void TestClassResult::PrintTestFailures(
+   INLINE void TestClassResult::PrintTestFailures(
       const TwoExtraArgsForEacherType* forEacherTwoExtraArgs,
       const Console* console,
       TestFailureNumberer* testFailureNumberer) const
@@ -87,20 +87,20 @@ namespace ZenUnit
          &_testResults, PrintTestResultIfFailure, console, testFailureNumberer);
    }
 
-   inline void TestClassResult::PrintTestResultIfFailure(
+   INLINE void TestClassResult::PrintTestResultIfFailure(
       const TestResult& testResult, const Console* console, TestFailureNumberer* testFailureNumberer)
    {
       testResult.PrintIfFailure(console, testFailureNumberer);
    }
 
-   inline void TestClassResult::AssertEqual(
+   INLINE void TestClassResult::AssertEqual(
       const ZenUnit::TestClassResult& expectedTestClassResult,
       const ZenUnit::TestClassResult& actualTestClassResult)
    {
       VECTORS_EQUAL(expectedTestClassResult._testResults, actualTestClassResult._testResults);
    }
 
-   inline TestClassResult TestClassResult::TestingNonDefault()
+   INLINE TestClassResult TestClassResult::TestingNonDefault()
    {
       TestClassResult testClassResult;
       testClassResult._testResults.resize(1);
@@ -108,7 +108,7 @@ namespace ZenUnit
    }
 }
 
-inline void ZenUnitEqualizer<ZenUnit::TestClassResult>::
+INLINE void ZenUnitEqualizer<ZenUnit::TestClassResult>::
 AssertEqual(
    const ZenUnit::TestClassResult& expectedTestClassResult,
    const ZenUnit::TestClassResult& actualTestClassResult)

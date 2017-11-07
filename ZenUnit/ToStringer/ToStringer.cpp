@@ -3,17 +3,17 @@
 
 namespace ZenUnit
 {
-   inline std::string ToStringer::ToString(const std::nullptr_t&)
+   INLINE std::string ToStringer::ToString(const std::nullptr_t&)
    {
       return "nullptr";
    }
 
-   inline std::string ToStringer::ToString(const bool& value)
+   INLINE std::string ToStringer::ToString(const bool& value)
    {
       return value ? "true" : "false";
    }
 
-   inline std::string ToStringer::ToString(const char& value)
+   INLINE std::string ToStringer::ToString(const char& value)
    {
       if (value == 0)
       {
@@ -25,17 +25,17 @@ namespace ZenUnit
       return valueString;
    };
 
-   inline std::string ToStringer::ToString(char* str)
+   INLINE std::string ToStringer::ToString(char* str)
    {
       return CharPointerToString(str);
    }
 
-   inline std::string ToStringer::ToString(const char* str)
+   INLINE std::string ToStringer::ToString(const char* str)
    {
       return CharPointerToString(str);
    }
 
-   inline std::string ToStringer::CharPointerToString(const char* str)
+   INLINE std::string ToStringer::CharPointerToString(const char* str)
    {
       if (str == nullptr)
       {

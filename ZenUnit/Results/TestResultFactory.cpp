@@ -5,14 +5,14 @@
 
 namespace ZenUnit
 {
-   inline TestResult TestResultFactory::ConstructorFail(
+   INLINE TestResult TestResultFactory::ConstructorFail(
       const FullTestName& fullTestName,
       const CallResult& constructorCallResult) const
    {
       return TestResult::ConstructorFail(fullTestName, constructorCallResult);
    }
 
-   inline TestResult TestResultFactory::StartupFail(
+   INLINE TestResult TestResultFactory::StartupFail(
       const FullTestName& fullTestName,
       const CallResult& constructorCallResult,
       const CallResult& startupCallResult,
@@ -22,7 +22,7 @@ namespace ZenUnit
          fullTestName, constructorCallResult, startupCallResult, destructorCallResult);
    }
 
-   inline TestResult TestResultFactory::CtorDtorSuccess(
+   INLINE TestResult TestResultFactory::CtorDtorSuccess(
       const FullTestName& fullTestName,
       const CallResult& constructorCallResult,
       const CallResult& destructorCallResult) const
@@ -31,7 +31,7 @@ namespace ZenUnit
          fullTestName, constructorCallResult, destructorCallResult);
    }
 
-   inline TestResult TestResultFactory::FullCtor(
+   INLINE TestResult TestResultFactory::FullCtor(
       const FullTestName& fullTestName,
       const CallResult& constructorCallResult,
       const CallResult& startupCallResult,

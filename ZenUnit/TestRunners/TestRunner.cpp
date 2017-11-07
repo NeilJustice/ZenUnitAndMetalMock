@@ -12,7 +12,7 @@
 
 namespace ZenUnit
 {
-   inline TestRunner::TestRunner()
+   INLINE TestRunner::TestRunner()
       : _console(new Console)
       , _preamblePrinter(new PreamblePrinter)
       , _argsParser(new ArgsParser)
@@ -24,39 +24,39 @@ namespace ZenUnit
    {
    }
 
-   inline TestRunner::~TestRunner() = default;
+   INLINE TestRunner::~TestRunner() = default;
 
-   inline TestRunner& TestRunner::Instance()
+   INLINE TestRunner& TestRunner::Instance()
    {
       static TestRunner testRunner;
       return testRunner;
    }
 
-   inline const ZenUnitArgs& TestRunner::GetArgs()
+   INLINE const ZenUnitArgs& TestRunner::GetArgs()
    {
       const TestRunner& testRunner = Instance();
       return testRunner._zenUnitArgs;
    }
 
-   inline std::nullptr_t TestRunner::AddTestClassRunner(TestClassRunner* testClassRunner)
+   INLINE std::nullptr_t TestRunner::AddTestClassRunner(TestClassRunner* testClassRunner)
    {
       _multiTestClassRunner->AddTestClassRunner(testClassRunner);
       return nullptr;
    }
 
-   inline std::nullptr_t TestRunner::SkipTest(const char* testClassName, const char* testName, const char* reason)
+   INLINE std::nullptr_t TestRunner::SkipTest(const char* testClassName, const char* testName, const char* reason)
    {
       _testRunResult->AddSkippedTest(testClassName, testName, reason);
       return nullptr;
    }
 
-   inline std::nullptr_t TestRunner::SkipTestClass(const char* skippedTestClassName, const char* reason)
+   INLINE std::nullptr_t TestRunner::SkipTestClass(const char* skippedTestClassName, const char* reason)
    {
       _testRunResult->AddSkippedTestClassNameAndReason(skippedTestClassName, reason);
       return nullptr;
    }
 
-   inline int TestRunner::ParseArgsRunTestClassesPrintResults(const std::vector<std::string>& commandLineArgs)
+   INLINE int TestRunner::ParseArgsRunTestClassesPrintResults(const std::vector<std::string>& commandLineArgs)
    {
       _zenUnitArgs = _argsParser->Parse(commandLineArgs);
       _multiTestClassRunner->ApplyRunFiltersIfAny(_zenUnitArgs.runFilters);
@@ -72,7 +72,7 @@ namespace ZenUnit
       return overallExitCode;
    }
 
-   inline int TestRunner::RunTestClassesAndPrintResults(const ZenUnitArgs& zenUnitArgs)
+   INLINE int TestRunner::RunTestClassesAndPrintResults(const ZenUnitArgs& zenUnitArgs)
    {
       _preamblePrinter->PrintOpeningThreeLines(zenUnitArgs, _multiTestClassRunner.get());
       _havePaused = WaitForEnterKeyIfPauseModeAndHaveNotPaused(zenUnitArgs.pause, _havePaused);
@@ -93,7 +93,7 @@ namespace ZenUnit
       return testRunExitCode;
    }
 
-   inline bool TestRunner::WaitForEnterKeyIfPauseModeAndHaveNotPaused(bool pauseMode, bool havePaused) const
+   INLINE bool TestRunner::WaitForEnterKeyIfPauseModeAndHaveNotPaused(bool pauseMode, bool havePaused) const
    {
       if (!pauseMode)
       {
@@ -108,7 +108,7 @@ namespace ZenUnit
       return true;
    }
 
-   inline void TestRunner::RunTestClassesWithWaitableRunnerThread(unsigned maxtTotalSeconds)
+   INLINE void TestRunner::RunTestClassesWithWaitableRunnerThread(unsigned maxtTotalSeconds)
    {
       const std::shared_ptr<const VoidFuture> testClassRunnerDoneFuture = _futurist->Async(&TestRunner::RunTestClasses, this);
       const std::future_status waitResult = testClassRunnerDoneFuture->WaitAtMostSeconds(maxtTotalSeconds);
@@ -120,7 +120,7 @@ namespace ZenUnit
       }
    }
 
-   inline void TestRunner::RunTestClasses()
+   INLINE void TestRunner::RunTestClasses()
    {
       std::vector<TestClassResult> testClassResults = _multiTestClassRunner->RunTestClasses(_zenUnitArgs);
       _testRunResult->SetTestClassResults(std::move(testClassResults));

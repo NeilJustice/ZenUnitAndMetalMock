@@ -5,7 +5,7 @@
 
 namespace ZenUnit
 {
-   inline const char* ColorToLinuxColor(Color color)
+   INLINE const char* ColorToLinuxColor(Color color)
    {
       switch (color)
       {

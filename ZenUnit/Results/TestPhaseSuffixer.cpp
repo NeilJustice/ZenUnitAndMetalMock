@@ -5,12 +5,12 @@
 
 namespace ZenUnit
 {
-   inline const char* TestPhaseSuffixer::TestPhaseToTestPhaseSuffix(TestPhase testPhase) const
+   INLINE const char* TestPhaseSuffixer::TestPhaseToTestPhaseSuffix(TestPhase testPhase) const
    {
       return DoTestPhaseToTestPhaseSuffix(testPhase);
    }
 
-   inline const char* TestPhaseSuffixer::DoTestPhaseToTestPhaseSuffix(TestPhase testPhase)
+   INLINE const char* TestPhaseSuffixer::DoTestPhaseToTestPhaseSuffix(TestPhase testPhase)
    {
       switch (testPhase)
       {

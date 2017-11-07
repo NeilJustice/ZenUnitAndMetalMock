@@ -3,7 +3,7 @@
 
 namespace ZenUnit
 {
-   inline std::unordered_map<const char*, std::string>& Type::MangledToDemangledTypeNameMap()
+   INLINE std::unordered_map<const char*, std::string>& Type::MangledToDemangledTypeNameMap()
    {
       static std::unordered_map<const char*, std::string> mangledToDemangledTypeName;
       return mangledToDemangledTypeName;

@@ -5,7 +5,7 @@
 
 namespace ZenUnit
 {
-   inline WindowsColor ColorToWindowsColor(Color color)
+   INLINE WindowsColor ColorToWindowsColor(Color color)
    {
       switch (color)
       {

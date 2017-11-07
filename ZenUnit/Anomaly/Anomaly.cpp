@@ -6,9 +6,9 @@
 
 namespace ZenUnit
 {
-   inline Anomaly::Anomaly() = default;
+   INLINE Anomaly::Anomaly() = default;
 
-   inline std::string Anomaly::MakeAssertExpression(
+   INLINE std::string Anomaly::MakeAssertExpression(
       const char* assertionName,
       const char* arg1Text,
       const char* arg2Text,
@@ -34,17 +34,17 @@ namespace ZenUnit
       return assertExpression;
    }
 
-   inline const char* Anomaly::what() const noexcept
+   INLINE const char* Anomaly::what() const noexcept
    {
       return why.c_str();
    }
 
-   inline void Anomaly::WriteLineWhy(const Console* console) const
+   INLINE void Anomaly::WriteLineWhy(const Console* console) const
    {
       console->WriteLine(why);
    }
 
-   inline Anomaly Anomaly::ZENWrapped(
+   INLINE Anomaly Anomaly::ZENWrapped(
       const std::string& zenMockAssertExpression,
       const Anomaly& zenWrappedAnomaly,
       FileLine fileLine)
@@ -68,14 +68,14 @@ namespace ZenUnit
       return anomaly;
    }
 
-   inline const Anomaly& Anomaly::Default()
+   INLINE const Anomaly& Anomaly::Default()
    {
       static Anomaly defaultAnomaly;
       return defaultAnomaly;
    }
 }
 
-inline void ZenUnitEqualizer<ZenUnit::Anomaly>::
+INLINE void ZenUnitEqualizer<ZenUnit::Anomaly>::
 AssertEqual(const ZenUnit::Anomaly& expectedAnomaly, const ZenUnit::Anomaly& actualAnomaly)
 {
    ARE_EQUAL(expectedAnomaly.assertExpression, actualAnomaly.assertExpression);

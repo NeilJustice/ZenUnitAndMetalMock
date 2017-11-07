@@ -3,12 +3,12 @@
 
 namespace ZenUnit
 {
-   inline VoidFuture::VoidFuture(std::future<void>&& voidFuture)
+   INLINE VoidFuture::VoidFuture(std::future<void>&& voidFuture)
       : _voidFuture(std::move(voidFuture))
    {
    }
 
-   inline std::future_status VoidFuture::WaitAtMostSeconds(unsigned seconds) const
+   INLINE std::future_status VoidFuture::WaitAtMostSeconds(unsigned seconds) const
    {
       const std::chrono::duration<unsigned long long> waitTime = seconds > 0 ? std::chrono::seconds(seconds)
          : std::chrono::seconds(std::numeric_limits<unsigned long long>::max());
@@ -16,7 +16,7 @@ namespace ZenUnit
       return waitResult;
    }
 
-   inline void VoidFuture::Get()
+   INLINE void VoidFuture::Get()
    {
       _voidFuture.get();
    }

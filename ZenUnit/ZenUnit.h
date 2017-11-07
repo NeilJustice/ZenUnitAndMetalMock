@@ -1,4 +1,5 @@
 #pragma once
+
 #include "ZenUnit/Equalizers/ZenUnitEqualizer.h"
 #include "ZenUnit/Macros/ARRAY_WAS_NEWED.h"
 #include "ZenUnit/Macros/ARE_COPIES.h"

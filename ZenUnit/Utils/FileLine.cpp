@@ -4,16 +4,16 @@
 
 namespace ZenUnit
 {
-   inline FileLine::FileLine()
+   INLINE FileLine::FileLine()
       : filePath("")
       , lineNumber(0)
    {
    }
 
-   inline FileLine::FileLine(const char* filePath, unsigned lineNumber)
+   INLINE FileLine::FileLine(const char* filePath, unsigned lineNumber)
       : filePath(filePath == nullptr ? "" : filePath), lineNumber(lineNumber) {}
 
-   inline std::string FileLine::ToString() const
+   INLINE std::string FileLine::ToString() const
    {
       std::ostringstream oss;
       oss << *this;
@@ -21,14 +21,14 @@ namespace ZenUnit
       return fileLineAsString;
    }
 
-   inline std::ostream& operator<<(std::ostream& os, const FileLine& fileLine)
+   INLINE std::ostream& operator<<(std::ostream& os, const FileLine& fileLine)
    {
       os << fileLine.filePath << '(' << fileLine.lineNumber << ')';
       return os;
    }
 }
 
-inline void ZenUnitEqualizer<ZenUnit::FileLine>::
+INLINE void ZenUnitEqualizer<ZenUnit::FileLine>::
 AssertEqual(
    const ZenUnit::FileLine& expectedFileLine,
    const ZenUnit::FileLine& actualFileLine)

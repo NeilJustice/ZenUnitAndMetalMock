@@ -4,7 +4,7 @@
 
 namespace ZenMock
 {
-   inline std::string Signature::Function(
+   INLINE std::string Signature::Function(
       const char* virtualOrEmptyString,
       const char* returnType,
       const std::string* zenMockedClassName,
@@ -27,7 +27,7 @@ namespace ZenMock
       return zenMockedFunctionSignature;
    }
 
-   inline std::string Signature::FunctionPointer(
+   INLINE std::string Signature::FunctionPointer(
       const char* returnType,
       const char* unadornedFunctionSignature)
    {

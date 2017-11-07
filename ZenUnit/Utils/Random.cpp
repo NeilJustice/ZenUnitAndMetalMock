@@ -4,7 +4,7 @@
 namespace ZenUnit
 {
    template<>
-   inline float Random<float>()
+   INLINE float Random<float>()
    {
       static std::default_random_engine defaultRandomEngine(static_cast<unsigned>(time(nullptr)));
       std::uniform_real_distribution<float> uniformFloatDistribution(-100.0f, 100.0f);
@@ -13,7 +13,7 @@ namespace ZenUnit
    }
 
    template<>
-   inline double Random<double>()
+   INLINE double Random<double>()
    {
       static std::default_random_engine defaultRandomEngine(static_cast<unsigned>(time(nullptr)));
       std::uniform_real_distribution<double> uniformDoubleDistribution(-100.0, 100.0);
@@ -22,7 +22,7 @@ namespace ZenUnit
    }
 
    template<>
-   inline std::string Random<std::string>()
+   INLINE std::string Random<std::string>()
    {
       const std::string randomString = "RandomString" + std::to_string(Random<unsigned char>());
       return randomString;

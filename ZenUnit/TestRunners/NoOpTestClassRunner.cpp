@@ -3,22 +3,22 @@
 
 namespace ZenUnit
 {
-   inline const char* NoOpTestClassRunner::TestClassName() const
+   INLINE const char* NoOpTestClassRunner::TestClassName() const
    {
       return "FilteredOut";
    }
 
-   inline size_t NoOpTestClassRunner::NumberOfTestCases() const
+   INLINE size_t NoOpTestClassRunner::NumberOfTestCases() const
    {
       return 0;
    }
 
-   inline TestClassResult NoOpTestClassRunner::RunTests()
+   INLINE TestClassResult NoOpTestClassRunner::RunTests()
    {
       return TestClassResult();
    }
 
-   inline bool NoOpTestClassRunner::HasTestNameThatCaseInsensitiveMatchesPattern(const std::string&) const
+   INLINE bool NoOpTestClassRunner::HasTestNameThatCaseInsensitiveMatchesPattern(const std::string&) const
    {
       return false;
    }

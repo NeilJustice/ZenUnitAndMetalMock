@@ -4,13 +4,13 @@
 
 namespace ZenMock
 {
-   inline UnsupportedAssertCalledZeroTimesException::
+   INLINE UnsupportedAssertCalledZeroTimesException::
       UnsupportedAssertCalledZeroTimesException(const std::string& zenMockedFunctionSignature)
       : _what(MakeWhat(zenMockedFunctionSignature))
    {
    }
 
-   inline std::string UnsupportedAssertCalledZeroTimesException::MakeWhat(const std::string& zenMockedFunctionSignature)
+   INLINE std::string UnsupportedAssertCalledZeroTimesException::MakeWhat(const std::string& zenMockedFunctionSignature)
    {
       const std::string what = ZenUnit::String::Concat(
 "For ZenMocked function \"", zenMockedFunctionSignature, R"(":
@@ -21,7 +21,7 @@ namespace ZenMock
       return what;
    }
 
-   inline const char* UnsupportedAssertCalledZeroTimesException::what() const noexcept
+   INLINE const char* UnsupportedAssertCalledZeroTimesException::what() const noexcept
    {
       return _what.c_str();
    }

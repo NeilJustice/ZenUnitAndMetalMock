@@ -5,20 +5,20 @@
 
 namespace ZenUnit
 {
-   inline AnomalyOrException::AnomalyOrException(const Anomaly& anomaly)
+   INLINE AnomalyOrException::AnomalyOrException(const Anomaly& anomaly)
       : anomaly(std::make_shared<Anomaly>(anomaly))
       , exceptionTypeName(nullptr)
    {
    }
 
-   inline AnomalyOrException::AnomalyOrException(const std::string* exceptionTypeName, const char* exceptionWhat)
+   INLINE AnomalyOrException::AnomalyOrException(const std::string* exceptionTypeName, const char* exceptionWhat)
       : exceptionTypeName(exceptionTypeName)
       , exceptionWhat(std::make_shared<std::string>(exceptionWhat))
    {
    }
 }
 
-inline void ZenUnitEqualizer<ZenUnit::AnomalyOrException>::AssertEqual(
+INLINE void ZenUnitEqualizer<ZenUnit::AnomalyOrException>::AssertEqual(
    const ZenUnit::AnomalyOrException& expectedAnomalyOrException,
    const ZenUnit::AnomalyOrException& actualAnomalyOrException)
 {

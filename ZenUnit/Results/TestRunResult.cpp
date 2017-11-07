@@ -9,7 +9,7 @@
 
 namespace ZenUnit
 {
-   inline TestRunResult::TestRunResult()
+   INLINE TestRunResult::TestRunResult()
       : _console(new Console)
       , _memberForEacherTestClassResults(new MemberForEacherTestClassResultsType)
       , _memberForEacherSkippedTests(new MemberForEacherSkippedTestsType)
@@ -19,9 +19,9 @@ namespace ZenUnit
    {
    }
 
-   inline TestRunResult::~TestRunResult() = default;
+   INLINE TestRunResult::~TestRunResult() = default;
 
-   inline void TestRunResult::AddSkippedTest(
+   INLINE void TestRunResult::AddSkippedTest(
       const char* testClassName, const char* testName, const char* reason)
    {
       const std::string fullTestNameAndReason = String::Concat(
@@ -29,7 +29,7 @@ namespace ZenUnit
       _skippedFullTestNamesAndReasons.push_back(fullTestNameAndReason);
    }
 
-   inline void TestRunResult::AddSkippedTestClassNameAndReason(
+   INLINE void TestRunResult::AddSkippedTestClassNameAndReason(
       const char* testClassName, const char* reason)
    {
       const std::string testClassNameAndReason = String::Concat(
@@ -37,13 +37,13 @@ namespace ZenUnit
       _skippedTestClassNamesAndReasons.push_back(testClassNameAndReason);
    }
 
-   inline void TestRunResult::SetTestClassResults(std::vector<TestClassResult>&& testClassResults)
+   INLINE void TestRunResult::SetTestClassResults(std::vector<TestClassResult>&& testClassResults)
    {
       _numberOfFailedTestCases = NumberOfFailedTestCases(testClassResults);
       _testClassResults = std::move(testClassResults);
    }
 
-   inline size_t TestRunResult::NumberOfFailedTestCases(const std::vector<TestClassResult>& testClassResults) const
+   INLINE size_t TestRunResult::NumberOfFailedTestCases(const std::vector<TestClassResult>& testClassResults) const
    {
       const size_t numberOfFailedTestCases = std::accumulate(
          testClassResults.cbegin(), testClassResults.cend(), size_t(),
@@ -54,7 +54,7 @@ namespace ZenUnit
       return numberOfFailedTestCases;
    }
 
-   inline void TestRunResult::PrintTestFailuresAndSkips() const
+   INLINE void TestRunResult::PrintTestFailuresAndSkips() const
    {
       if (_numberOfFailedTestCases > 0)
       {
@@ -70,13 +70,13 @@ namespace ZenUnit
          &_skippedFullTestNamesAndReasons, this, &TestRunResult::PrintSkippedTestReminder);
    }
 
-   inline void TestRunResult::PrintTestClassResultFailures(const TestClassResult& testClassResult) const
+   INLINE void TestRunResult::PrintTestClassResultFailures(const TestClassResult& testClassResult) const
    {
       testClassResult.PrintTestFailures(
          _twoExtraArgsForEacher.get(), _console.get(), _testFailureNumberer.get());
    }
 
-   inline void TestRunResult::PrintClosingLines(
+   INLINE void TestRunResult::PrintClosingLines(
       size_t totalNumberOfTestCases,
       unsigned testRunMilliseconds,
       const ZenUnitArgs& zenUnitArgs) const
@@ -120,7 +120,7 @@ namespace ZenUnit
       }
    }
 
-   inline int TestRunResult::DetermineExitCode(const ZenUnitArgs& args) const
+   INLINE int TestRunResult::DetermineExitCode(const ZenUnitArgs& args) const
    {
       if (args.exit0)
       {
@@ -137,24 +137,24 @@ namespace ZenUnit
       return exitCode;
    }
 
-   inline void TestRunResult::PrintSkippedTestClassReminder(const std::string& skippedTestClassNameAndReason) const
+   INLINE void TestRunResult::PrintSkippedTestClassReminder(const std::string& skippedTestClassNameAndReason) const
    {
       _console->WriteLine("[SKIPPED] Test class " + skippedTestClassNameAndReason);
    }
 
-   inline void TestRunResult::PrintSkippedTestReminder(const std::string& skippedFullTestNameAndReason) const
+   INLINE void TestRunResult::PrintSkippedTestReminder(const std::string& skippedFullTestNameAndReason) const
    {
       _console->WriteLine("[SKIPPED] Test " + skippedFullTestNameAndReason);
    }
 
-   inline void TestRunResult::ResetStateExceptForSkips()
+   INLINE void TestRunResult::ResetStateExceptForSkips()
    {
       _testFailureNumberer->Reset();
       _testClassResults.clear();
       _numberOfFailedTestCases = 0;
    }
 
-   inline void TestRunResult::AssertEqual(
+   INLINE void TestRunResult::AssertEqual(
       const ZenUnit::TestRunResult& expectedTestRunResult,
       const ZenUnit::TestRunResult& actualTestRunResult)
    {
@@ -170,7 +170,7 @@ namespace ZenUnit
    }
 }
 
-inline void ZenUnitEqualizer<ZenUnit::TestRunResult>::
+INLINE void ZenUnitEqualizer<ZenUnit::TestRunResult>::
 AssertEqual(
    const ZenUnit::TestRunResult& expectedTestRunResult,
    const ZenUnit::TestRunResult& actualTestRunResult)

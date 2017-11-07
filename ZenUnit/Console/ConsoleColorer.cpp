@@ -12,7 +12,7 @@
 
 namespace ZenUnit
 {
-   inline ConsoleColorer::ConsoleColorer()
+   INLINE ConsoleColorer::ConsoleColorer()
 #ifdef _WIN32
       : call_fileno(::_fileno)
       , call_isatty(::_isatty)
@@ -29,7 +29,7 @@ namespace ZenUnit
    {
    }
 
-   inline void ConsoleColorer::SetSupportsColorIfUnset()
+   INLINE void ConsoleColorer::SetSupportsColorIfUnset()
    {
       if (!_supportsColorSet)
       {
@@ -38,7 +38,7 @@ namespace ZenUnit
       }
    }
 
-   inline bool ConsoleColorer::SetColor(Color color)
+   INLINE bool ConsoleColorer::SetColor(Color color)
    {
       SetSupportsColorIfUnset();
       const bool doSetTextColor = color != Color::White && _supportsColor;
@@ -50,7 +50,7 @@ namespace ZenUnit
       return false;
    }
 
-   inline void ConsoleColorer::UnsetColor(bool didPreviouslySetTextColor) const
+   INLINE void ConsoleColorer::UnsetColor(bool didPreviouslySetTextColor) const
    {
       if (didPreviouslySetTextColor)
       {
@@ -58,7 +58,7 @@ namespace ZenUnit
       }
    }
 
-   inline bool ConsoleColorer::SupportsColor() const
+   INLINE bool ConsoleColorer::SupportsColor() const
    {
       const int stdoutFileHandle = call_fileno(stdout);
       const int isAtty = call_isatty(stdoutFileHandle);
@@ -66,7 +66,7 @@ namespace ZenUnit
       return supportsColor;
    }
 
-   inline void ConsoleColorer::SetTextColor(Color color) const
+   INLINE void ConsoleColorer::SetTextColor(Color color) const
    {
 #ifdef __linux__
       const char* linuxColor = ColorToLinuxColor(color);

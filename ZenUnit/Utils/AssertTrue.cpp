@@ -6,7 +6,7 @@
 
 namespace ZenUnit
 {
-   inline void ThrowLogicError(
+   INLINE void ThrowLogicError(
       const char* predicateText,
       const FileLine& fileLine,
       const char* functionName)
@@ -17,7 +17,7 @@ namespace ZenUnit
       throw std::logic_error(what);
    }
 
-   inline void AssertTrue(
+   INLINE void AssertTrue(
       bool predicateResult,
       const char* predicateText,
       const FileLine& fileLine,
