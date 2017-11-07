@@ -53,7 +53,7 @@ TEST(Test2)
 
 }; RUNTESTS(WidgetATests)
 
-TESTS(WidgetBTests)
+TESTS(ZZZWidgetBTests)
 AFACT(Test1)
 AFACT(Test2)
 EVIDENCE
@@ -66,7 +66,7 @@ TEST(Test2)
 {
 }
 
-}; RUNTESTS(WidgetBTests)
+}; RUNTESTS(ZZZWidgetBTests)
 
 int main(int argc, char* argv[])
 {

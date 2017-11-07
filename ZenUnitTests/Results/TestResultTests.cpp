@@ -322,7 +322,7 @@ namespace ZenUnit
       ZEN(_consoleMock.WriteLineColorMock.AssertCalls(
       {
          { testFailureNumber, Color::Red },
-         { "\nException Thrown", Color::Red }
+         { "\nUncaught Exception", Color::Red }
       }));
       ZEN(_consoleMock.WriteLineMock.AssertCalledOnceWith(
          "  Type: " + exceptionTypeName + "\n"

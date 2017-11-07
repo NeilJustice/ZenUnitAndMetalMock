@@ -175,7 +175,7 @@ namespace ZenUnit
             TestPhaseSuffixer::DoTestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
          console->Write(responsibleTestPhaseSuffix);
          WriteTestCaseNumberIfAny(console, testCaseIndex);
-         console->WriteLineColor("\nException Thrown", Color::Red);
+         console->WriteLineColor("\nUncaught Exception", Color::Red);
          const std::string exceptionTypeAndWhatLines = String::Concat(
             "  Type: ", *responsibleCallResult.anomalyOrException->exceptionTypeName, '\n',
             "what(): \"", *responsibleCallResult.anomalyOrException->exceptionWhat, "\"");
