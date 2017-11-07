@@ -31,6 +31,8 @@
    #include "Windows.h"
 #endif
 
+#ifndef INLINE
 #define INLINE inline
+#endif
 
 #endif

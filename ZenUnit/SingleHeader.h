@@ -7,6 +7,10 @@
 #include "Windows.h"
 #endif
 
+#ifndef INLINE
+#define INLINE inline
+#endif
+
 #include "Anomaly/Anomaly.h"
 #include "Anomaly/Anomaly.cpp"
 #include "Anomaly/EqualizerException.h"
