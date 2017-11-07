@@ -7,7 +7,6 @@ file(GLOB Sources *.h *.cpp)
 source_group("" FILES ${Sources})
 
 add_executable(ExamplesTests ${Sources})
-#target_link_libraries(ExamplesTests ZenUnit Examples)
 target_link_libraries(ExamplesTests Examples)
 
 EnablePrecompiledHeaders()

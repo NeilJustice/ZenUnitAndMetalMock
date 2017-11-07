@@ -47,7 +47,7 @@ namespace ZenUnit
       catch (const ZenMock::ZenMockException& e)
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
-         _console->WriteColor("\nZenMockException Thrown", Color::Red);
+         _console->WriteColor("\n=======================\nZenMockException Thrown\n=======================", Color::Red);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          const std::string exceptionTypeNameAndWhat = String::Concat(
@@ -57,7 +57,7 @@ namespace ZenUnit
       catch (const std::exception& e)
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
-         _console->WriteColor("\nException Thrown", Color::Red);
+         _console->WriteColor("\n================\nException Thrown\n================", Color::Red);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          const std::string exceptionTypeNameAndWhat = String::Concat(
@@ -73,8 +73,8 @@ namespace ZenUnit
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          const std::string exitLine = String::Concat(
             "Fatal ... exception. ", zenUnitArgs.exit0 ?
-            "Fast failing now with exit code 0 (due to -exit0 being specified)." :
-            "Fast failing now with exit code 1.", testPhaseSuffix, " (", milliseconds, " ms)");
+            "Exiting with code 0 (due to -exit0 being specified)." :
+            "Exiting with code 1.", testPhaseSuffix, " (", milliseconds, " ms)");
          const int exitCode = zenUnitArgs.exit0 ? 0 : 1;
          _console->WriteLineAndExit(exitLine, exitCode);
       }

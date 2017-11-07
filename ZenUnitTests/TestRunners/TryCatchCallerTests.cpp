@@ -141,7 +141,7 @@ namespace ZenUnit
       expectedCallResult.testOutcome = TestOutcome::Exception;
       expectedCallResult.anomalyOrException
          = make_shared<AnomalyOrException>(Type::GetName<runtime_error>(), "runtime_error_what");
-      ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nException Thrown", Color::Red));
+      ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\n================\nException Thrown\n================", Color::Red));
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.AssertCalledOnceWith(arbitraryTestPhase));
       ZEN(_consoleMock->WriteMock.AssertCalledOnceWith(TestPhaseSuffix));
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(R"(
@@ -174,7 +174,7 @@ what(): "runtime_error_what")"));
          Type::GetName<ZenMock::FunctionAlreadyExpectedException>(),
          ZenMock::FunctionAlreadyExpectedException::MakeWhat("ZenMockedFunctionSignature").c_str());
       expectedCallResult.milliseconds = Milliseconds;
-      ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\nZenMockException Thrown", Color::Red));
+      ZEN(_consoleMock->WriteColorMock.AssertCalledOnceWith("\n=======================\nZenMockException Thrown\n=======================", Color::Red));
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.AssertCalledOnceWith(arbitraryTestPhase));
       ZEN(_consoleMock->WriteMock.AssertCalledOnceWith(TestPhaseSuffix));
       ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(R"(
@@ -191,10 +191,10 @@ Already called [ZenMockedFunctionName]Mock.Expect[AndReturn|AndReturnValues|AndT
 
    TEST4X4(Call_FunctionThrowsAnIntToTriggerDotDotDotHandler_PrintsFailureDetails_Exits1,
       TestPhase arbitraryTestPhase, bool exit0, int expectedExitCode, const char* expectedMessageSuffix,
-      TestPhase::Constructor, false, 1, "Fast failing now with exit code 1.",
-      TestPhase::Constructor, true, 0, "Fast failing now with exit code 0 (due to -exit0 being specified).",
-      TestPhase::TestBody, false, 1, "Fast failing now with exit code 1.",
-      TestPhase::TestBody, true, 0, "Fast failing now with exit code 0 (due to -exit0 being specified).")
+      TestPhase::Constructor, false, 1, "Exiting with code 1.",
+      TestPhase::Constructor, true, 0, "Exiting with code 0 (due to -exit0 being specified).",
+      TestPhase::TestBody, false, 1, "Exiting with code 1.",
+      TestPhase::TestBody, true, 0, "Exiting with code 0 (due to -exit0 being specified).")
    {
       ExpectStopwatchStartAndStop();
       _consoleMock->WriteLineColorMock.Expect();

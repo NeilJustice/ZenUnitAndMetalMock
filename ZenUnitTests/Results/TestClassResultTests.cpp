@@ -190,7 +190,7 @@ namespace ZenUnit
       _testClassResultSelfMocked.NonMinimalPrintResultLine(&consoleMock, printMode);
       //
       ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.AssertCalledOnce());
-      ZEN(consoleMock.NonMinimalWriteColorMock.AssertCalledOnceWith("[FAILED]", Color::Red, printMode));
+      ZEN(consoleMock.NonMinimalWriteColorMock.AssertCalledOnceWith("[TestClass Failed]", Color::Red, printMode));
       ZEN(consoleMock.NonMinimalWriteNewLineMock.AssertCalledOnceWith(printMode));
    }
 
