@@ -25,9 +25,10 @@ using namespace std;
    #include "Windows.h"
 #endif
 #define ZEN_UNIT_TESTING
-//#include "ZenUnit/ZenMock.h"
-//#include "ZenUnit/ZenUnit.h"
-#include "ZenUnit/SingleHeader.h"
+//#include "ZenUnit/ZenMockLibrary.h"
+//#include "ZenUnit/ZenUnitLibrary.h"
+#include "ZenUnit/ZenMock.h"
+#include "ZenUnit/ZenUnit.h"
 using namespace ZenUnit;
 #include "ZenUnitTests/Testing/UserType.h"
 #include "ZenUnitTests/Testing/UserTypeNonPrintable.h"
