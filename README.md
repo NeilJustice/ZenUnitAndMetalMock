@@ -442,30 +442,3 @@ int main(int argc, char* argv[])
 |-------------|
 |`ZEN(ZenMockAssertion)` // ZEN adorns error messages with \_\_FILE\_\_ and \_\_LINE\_\_ information.|
 
-### Building ZenUnit and ZenMock On Linux
-
-Build and install command:
-
-`./LinuxCMakeBuildInstall.sh <InstallDirectory>`
-
-Build and install command example:
-
-`./LinuxCMakeBuildInstall.sh /usr/local`
-
-ZenUnit and ZenMock installed on Linux:
-
-![ZenUnit Installed On Linux](Screenshots/ZenUnitInstalledOnLinux.png "ZenUnit and ZenMock Installed On Linux")
-
-### Building ZenUnit and ZenMock On Windows
-
-Build and install command:
-
-`.\WindowsCMakeBuildInstall.ps1 <InstallDirectory>`
-
-Build and install command example:
-
-`.\WindowsCMakeBuildInstall.ps1 C:\install`
-
-ZenUnit and ZenMock installed on Windows:
-
-![ZenUnit Installed On Windows](Screenshots/ZenUnitInstalledOnWindows.png "ZenUnit and ZenMock Installed On Windows")
