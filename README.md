@@ -164,7 +164,7 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 |---------|
 |`STD_FUNCTION_TARGETS(expectedStdFunctionTarget, stdFunction, messages...)`|
 
-|ZenUnitEqualizers // Allow for field-by-field equality assertions on arbitrary types|
+|Macros for confirming the correctness of a custom ZenUnitEqualizer // Custom ZenUnitEqualizers allow for field-by-field equality assertions on arbitrary types|
 |------------------|
 |`EQUALIZER_THROWS_INIT(typeName)`|
 |`EQUALIZER_THROWS(typeName, fieldName, nonDefaultFieldValue)`|
