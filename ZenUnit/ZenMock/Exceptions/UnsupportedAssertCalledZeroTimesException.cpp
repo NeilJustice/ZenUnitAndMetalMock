@@ -1,6 +1,10 @@
+#ifdef __linux__
+#include "ZenUnit/pch.h"
+#elif defined(_WIN64)
 #include "pch.h"
+#endif
 #include "UnsupportedAssertCalledZeroTimesException.h"
-#include "Utils/StringUtil.h"
+#include "ZenUnit/Utils/StringUtil.h"
 
 namespace ZenMock
 {

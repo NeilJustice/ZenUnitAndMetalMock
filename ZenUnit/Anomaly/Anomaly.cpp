@@ -1,4 +1,9 @@
+#ifdef __linux__
+#include "ZenUnit/pch.h"
+#elif defined(_WIN64)
 #include "pch.h"
+#endif
+
 #include "ZenUnit/Anomaly/Anomaly.h"
 #include "ZenUnit/Console/Console.h"
 #include "ZenUnit/Macros/ARE_EQUAL.h"

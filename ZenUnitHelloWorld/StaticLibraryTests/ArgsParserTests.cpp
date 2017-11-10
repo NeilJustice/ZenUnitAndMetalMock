@@ -1,3 +1,5 @@
+#include "ZenUnit/ZenUnit.h"
+
 #include "pch.h"
 
 TESTS(ArgsParserTests)

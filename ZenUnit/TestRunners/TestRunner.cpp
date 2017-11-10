@@ -1,4 +1,8 @@
+#ifdef __linux__
+#include "ZenUnit/pch.h"
+#elif defined(_WIN64)
 #include "pch.h"
+#endif
 #include "ZenUnit/Args/ArgsParser.h"
 #include "ZenUnit/Console/Console.h"
 #include "ZenUnit/Results/TestRunResult.h"
@@ -16,7 +20,7 @@ namespace ZenUnit
       : _console(new Console)
       , _preamblePrinter(new PreamblePrinter)
       , _argsParser(new ArgsParser)
-      , _futurist(new Futurist<TestRunner>)
+      //, _futurist(new Futurist<TestRunner>)
       , _testRunStopwatch(new Stopwatch)
       , _multiTestClassRunner(new MultiTestClassRunner)
       , _testRunResult(new TestRunResult)
@@ -79,7 +83,7 @@ namespace ZenUnit
       _testRunStopwatch->Start();
       if (zenUnitArgs.maxtotalseconds > 0)
       {
-         RunTestClassesWithWaitableRunnerThread(zenUnitArgs.maxtotalseconds);
+         //RunTestClassesWithWaitableRunnerThread(zenUnitArgs.maxtotalseconds);
       }
       else
       {
@@ -108,16 +112,17 @@ namespace ZenUnit
       return true;
    }
 
-   INLINE void TestRunner::RunTestClassesWithWaitableRunnerThread(unsigned maxtTotalSeconds)
+   INLINE void TestRunner::RunTestClassesWithWaitableRunnerThread(unsigned)
+   //INLINE void TestRunner::RunTestClassesWithWaitableRunnerThread(unsigned maxtTotalSeconds)
    {
-      const std::shared_ptr<const VoidFuture> testClassRunnerDoneFuture = _futurist->Async(&TestRunner::RunTestClasses, this);
-      const std::future_status waitResult = testClassRunnerDoneFuture->WaitAtMostSeconds(maxtTotalSeconds);
-      if (waitResult == std::future_status::timeout)
-      {
-         _testRunResult->PrintTestFailuresAndSkips();
-         _console->WriteLineAndExit(String::Concat(
-            "[ZenUnit] Total run time exceeded maximum run time of ", maxtTotalSeconds, " seconds."), 1);
-      }
+      // const std::shared_ptr<const VoidFuture> testClassRunnerDoneFuture = _futurist->Async(&TestRunner::RunTestClasses, this);
+      // const std::future_status waitResult = testClassRunnerDoneFuture->WaitAtMostSeconds(maxtTotalSeconds);
+      // if (waitResult == std::future_status::timeout)
+      // {
+      //    _testRunResult->PrintTestFailuresAndSkips();
+      //    _console->WriteLineAndExit(String::Concat(
+      //       "[ZenUnit] Total run time exceeded maximum run time of ", maxtTotalSeconds, " seconds."), 1);
+      // }
    }
 
    INLINE void TestRunner::RunTestClasses()

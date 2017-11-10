@@ -46,7 +46,8 @@ install(DIRECTORY .
         CONFIGURATIONS Debug
         DESTINATION include/ZenUnit/ZenUnit
         FILES_MATCHING REGEX "\\.h$|\\.cpp$"
-        PATTERN REGEX "pch.h|pch.cpp|CMakeFiles|Release|RelWithDebInfo|MinSizeRel|ZenUnit.dir" EXCLUDE)
+        #PATTERN REGEX "pch.h|pch.cpp|CMakeFiles|Release|RelWithDebInfo|MinSizeRel|ZenUnit.dir" EXCLUDE)
+        PATTERN REGEX "CMakeFiles|Release|RelWithDebInfo|MinSizeRel|ZenUnit.dir" EXCLUDE)
 
 set_target_properties(ZenUnit PROPERTIES DEBUG_OUTPUT_NAME "ZenUnitDebug")
 set_target_properties(ZenUnit PROPERTIES RELEASE_OUTPUT_NAME "ZenUnitRelease")

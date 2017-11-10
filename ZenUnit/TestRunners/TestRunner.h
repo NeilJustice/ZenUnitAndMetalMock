@@ -12,7 +12,7 @@ namespace ZenUnit
    class TestRunResult;
    class Stopwatch;
    template<typename> class TestClass;
-   template<typename> class Futurist;
+   //template<typename> class Futurist;
 
    class TestRunner
    {
@@ -21,7 +21,7 @@ namespace ZenUnit
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const PreamblePrinter> _preamblePrinter;
       std::unique_ptr<const ArgsParser> _argsParser;
-      std::unique_ptr<const Futurist<TestRunner>> _futurist;
+      //std::unique_ptr<const Futurist<TestRunner>> _futurist;
       std::unique_ptr<Stopwatch> _testRunStopwatch;
       std::unique_ptr<MultiTestClassRunner> _multiTestClassRunner;
       std::unique_ptr<TestRunResult> _testRunResult;

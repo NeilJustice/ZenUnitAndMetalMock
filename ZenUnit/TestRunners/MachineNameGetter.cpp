@@ -1,6 +1,10 @@
+#ifdef __linux__
+#include "ZenUnit/pch.h"
+#elif defined(_WIN64)
 #include "pch.h"
+#endif
 #include "MachineNameGetter.h"
-#include "Utils/AssertTrue.h"
+#include "ZenUnit/Utils/AssertTrue.h"
 
 #ifdef __linux__
 #include <climits>
@@ -28,7 +32,7 @@ namespace ZenUnit
    }
 
 #ifdef __linux__
-   std::string MachineNameGetter::GetLinuxMachineName() const
+   INLINE std::string MachineNameGetter::GetLinuxMachineName() const
    {
       char hostname[HOST_NAME_MAX + 1];
       assert_true(sizeof(hostname) == 65);

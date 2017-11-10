@@ -16,5 +16,5 @@ source_group("" FILES ${Sources})
 add_executable(StaticLibraryTests ${Sources})
 target_link_libraries(StaticLibraryTests StaticLibrary)
 
-EnablePrecompiledHeaders()
+#EnablePrecompiledHeaders()
 IfMSVCAddRunTestsPostBuildStep()
