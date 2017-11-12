@@ -2,10 +2,10 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true)](https://ci.appveyor.com/project/NeilJustice/zenunitzenmock)
 
 # ZenUnit
-ZenUnit is a C++ unit testing framework designed for writability of value and type parameterized tests, readability of tests and test results, and for robustness to code mutations inducible by future LLVM-powered mutation testing frameworks.
+ZenUnit is a header-only C++ unit testing framework designed for writability of value and type parameterized tests, readability of tests and test results, and for robustness to code mutations inducible by future LLVM-powered mutation testing frameworks.
 
 # ZenMock
-ZenMock is a C++ mocking framework powered by ZenUnit for confirming the correctness of software component interactions by way of template, virtual, free, and static function mocking using an arrange-act-assert syntax and a strict mocking design for robustness to code mutations inducible by future LLVM-powered mutation testing frameworks.
+ZenMock is a header-only C++ mocking framework powered by ZenUnit for confirming the correctness of software component interactions by way of template, virtual, free, and static function mocking using an arrange-act-assert syntax and a strict mocking design for robustness to code mutations inducible by future LLVM-powered mutation testing frameworks.
 
 ### ZenUnit Command Line Usage
 
