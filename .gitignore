@@ -4,6 +4,14 @@ CMakeFiles/
 CMakeCache.txt
 !CMakeMacros.cmake
 
+# Python
+__pycache__/
+htmlcov/
+*.cover
+*.coverage
+*.pyc
+*.xml
+
 # Linux
 .vs/
 covhtml/
@@ -23,7 +31,6 @@ rules.ninja
 Makefile
 
 # Windows
-.axoCover/
 x64/
 Win32/
 Debug/
@@ -53,12 +60,4 @@ RelWithDebInfo/
 *.vsp
 *.vspx
 install_manifest.txt
-
-# Python
-__pycache__/
-htmlcov/
-*.cover
-*.coverage
-*.pyc
-*.xml
 
