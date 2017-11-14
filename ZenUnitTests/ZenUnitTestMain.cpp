@@ -38,35 +38,39 @@ EVIDENCE
 SKIPTEMPLATETESTS(Reason, SkippedTemplateTestClassB, map)
 SKIPTEMPLATETESTS(Reason, SkippedTemplateTestClassB, unordered_map)
 
-TESTS(WidgetATests)
+TESTS(ZZTests)
 AFACT(Test1)
 AFACT(Test2)
+AFACT(Test3)
 EVIDENCE
 
 TEST(Test1)
 {
+   ARE_EQUAL(1, 0);
 }
 
 TEST(Test2)
 {
+   throw exception();
 }
 
-}; RUNTESTS(WidgetATests)
-
-TESTS(ZZZWidgetBTests)
-AFACT(Test1)
-AFACT(Test2)
-EVIDENCE
-
-TEST(Test1)
+TEST(Test3)
 {
+   struct X
+   {
+      virtual void f() {}
+      virtual ~X() {}
+   };
+   struct XMock : public Zen::Mock<X>
+   {
+      ZENMOCK_VOID0(f)
+   };
+   XMock xMock;
+   xMock.fMock.Expect();
+   xMock.fMock.Expect();
 }
 
-TEST(Test2)
-{
-}
-
-}; RUNTESTS(ZZZWidgetBTests)
+}; SKIPTESTS(Reason, ZZTests)
 
 int main(int argc, char* argv[])
 {

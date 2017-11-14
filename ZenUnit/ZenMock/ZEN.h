@@ -1,12 +1,12 @@
 #pragma once
 
-#define ZEN(ZenMockAssertion) \
+#define ZEN(ZenMockAssertStatement) \
 try \
 { \
-   ZenMockAssertion; \
+   ZenMockAssertStatement; \
 } \
 catch (const ZenUnit::Anomaly& zenWrappedAnomaly) \
 { \
    throw ZenUnit::Anomaly::ZENWrapped( \
-      "ZEN("#ZenMockAssertion")", zenWrappedAnomaly, FILELINE); \
+      "ZEN("#ZenMockAssertStatement")", zenWrappedAnomaly, FILELINE); \
 }

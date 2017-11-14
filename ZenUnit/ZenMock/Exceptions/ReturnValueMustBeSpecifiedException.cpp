@@ -24,7 +24,7 @@ namespace ZenMock
       const std::string what = "For ZenMocked function \"" + zenMockedFunctionSignature + R"(":
  ZenMocked functions with non-default-constructible return types
  must have their return value set explicitly by calling
- [ZenMockedFunctionName]Mock.[ExpectAndReturn|ExpectAndReturnValues]())";
+ [FunctionName]Mock.[ExpectAndReturn|ExpectAndReturnValues]())";
       return what;
    }
 }
