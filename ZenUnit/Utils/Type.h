@@ -40,7 +40,7 @@ namespace ZenUnit
          std::unordered_map<const char*, std::string>&
             mangledToDemangledTypeName = MangledToDemangledTypeNameMap();
          if (const std::unordered_map<const char*, std::string>::const_iterator
-             findIter = mangledToDemangledTypeName.find(mangledTypeName);
+                findIter = mangledToDemangledTypeName.find(mangledTypeName);
              findIter == mangledToDemangledTypeName.end())
          {
             const std::string demangledTypeName = Demangle(mangledTypeName);

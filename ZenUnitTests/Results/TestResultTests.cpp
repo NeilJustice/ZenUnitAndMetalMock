@@ -364,8 +364,10 @@ namespace ZenUnit
 
    TEST(PrintIfFailure_InvalidOutcome_Throws)
    {
+      ConsoleMock consoleMock;
+      TestFailureNumbererMock testFailureNumbererMock;
       _testResult.testOutcome = TestOutcome::Unset;
-      THROWS(_testResult.PrintIfFailure(nullptr, nullptr), logic_error,
+      THROWS(_testResult.PrintIfFailure(&consoleMock, &testFailureNumbererMock), logic_error,
          R"(assert_true(testOutcome == TestOutcome::SuccessButPastDeadline) failed in PrintIfFailure()
 File.cpp(1))");
    }

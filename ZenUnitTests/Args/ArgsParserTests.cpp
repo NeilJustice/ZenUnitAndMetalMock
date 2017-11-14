@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "ZenUnit/Args/ArgsParser.h"
 #include "ZenUnit/Utils/Vector.h"
-#include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Args/Mock/RunFilterParserMock.h"
+#include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 
 namespace ZenUnit
 {
@@ -174,7 +174,7 @@ None
    }
 
    TEST2X2(Parse_MinimalistOrDetailed_ReturnsExpectedZenUnitArgs,
-      vector<string> args, PrintMode expectedPrintMode,
+      const vector<string>& args, PrintMode expectedPrintMode,
       vector<string>{ "ExePath" }, PrintMode::Normal,
       vector<string>{ "ExePath", "-minimalist" }, PrintMode::Minimalist,
       vector<string>{ "ExePath", "-detailed" }, PrintMode::Detailed)

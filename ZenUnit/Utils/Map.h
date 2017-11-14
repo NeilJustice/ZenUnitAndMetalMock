@@ -72,7 +72,7 @@ namespace ZenUnit
       }
 
       template<typename KeyType>
-      static NOINLINE void InsertNoOverwrite_Throw(const KeyType& key)
+      [[noreturn]] static NOINLINE void InsertNoOverwrite_Throw(const KeyType& key)
       {
          const std::string toStringedKey = ToStringer::ToString(key);
          const std::string what = String::Concat(

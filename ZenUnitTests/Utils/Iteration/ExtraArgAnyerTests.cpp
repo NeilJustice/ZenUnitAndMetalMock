@@ -10,7 +10,7 @@ namespace ZenUnit
    TEMPLATETESTS(ExtraArgAnyerTests, CollectionType, T, ExtraArgType)
    AFACT(ExtraArgAny_CollectionEmpty_ReturnsFalse)
    AFACT(ExtraArgAny_1ElementCollection_ElementDoesNotMatchPredicate_ReturnsFalse)
-   AFACT(ExtraArgAny_2ElementCollection_FirstOfTwoElementsMatchesPredicate_CallsPredicateOnlyOnce_ReturnsTrue)
+   AFACT(ExtraArgAny_2ElementCollection_FirstOfTwoElementsMatchesPredicate_CallsPredicateOnce_ReturnsTrue)
    AFACT(ExtraArgAny_2ElementCollection_SecondOfTwoElementsMatchesPredicate_CallsPredicateTwice_ReturnsTrue)
    AFACT(ExtraArgAny_2ElementCollection_NeitherElementMatchesPredicate_CallsPredicateTwice_ReturnsFalse)
    EVIDENCE
@@ -56,7 +56,7 @@ namespace ZenUnit
       IS_FALSE(anyElementMatchesPredicate);
    }
 
-   TEST(ExtraArgAny_2ElementCollection_FirstOfTwoElementsMatchesPredicate_CallsPredicateOnlyOnce_ReturnsTrue)
+   TEST(ExtraArgAny_2ElementCollection_FirstOfTwoElementsMatchesPredicate_CallsPredicateOnce_ReturnsTrue)
    {
       const auto predicate = [&](const T& element, const ExtraArgType& extraArg)
       {

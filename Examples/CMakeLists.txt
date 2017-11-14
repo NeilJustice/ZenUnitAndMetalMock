@@ -9,3 +9,4 @@ add_library(Examples ${Sources})
 if(MSVC)
    replace(CMAKE_CXX_FLAGS "/Wall" "/W4")
 endif()
+

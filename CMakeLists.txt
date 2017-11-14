@@ -37,9 +37,6 @@ add_subdirectory(ZenUnitTests)
 add_subdirectory(Examples)
 add_subdirectory(ExamplesTests)
 
-# Allows LinuxCMakeBuildInstall.sh to just build ZenUnit and not also ZenUnitTests
-set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
-
 if(UNIX)
    include(ProcessorCount)
    ProcessorCount(NumberOfCores)

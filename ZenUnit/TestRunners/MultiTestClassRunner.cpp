@@ -10,8 +10,8 @@
 #include "ZenUnit/Utils/Iteration/ExtraArgAnyer.h"
 #include "ZenUnit/Utils/Iteration/ExtraArgMemberForEacher.h"
 #include "ZenUnit/Utils/Iteration/Transformer.h"
-#include "ZenUnit/Utils/StringUtil.h"
 #include "ZenUnit/Utils/Sorter.h"
+#include "ZenUnit/Utils/StringUtil.h"
 #include "ZenUnit/Utils/Time/Watch.h"
 
 namespace ZenUnit
@@ -48,7 +48,7 @@ namespace ZenUnit
          runFilters, TestClassNameMatchesRunFilter, &testClassRunner);
       if (!anyRunFilterMatchesTestClassName)
       {
-         testClassRunner.reset(new NoOpTestClassRunner);
+         testClassRunner = std::make_unique<NoOpTestClassRunner>();
       }
    }
 
@@ -96,13 +96,10 @@ namespace ZenUnit
             &_testClassRunners, &MultiTestClassRunner::RunTestClassRunner, zenUnitArgs.randomseed);
          return testClassResults;
       }
-      else
-      {
-         _sorter->Sort(&_testClassRunners); // Sort test class runners by test class name
-         const std::vector<TestClassResult> testClassResults = _transformer->Transform(
-            &_testClassRunners, &MultiTestClassRunner::RunTestClassRunner);
-         return testClassResults;
-      }
+      _sorter->Sort(&_testClassRunners); // Sort test class runners by test class name
+      const std::vector<TestClassResult> testClassResults = _transformer->Transform(
+         &_testClassRunners, &MultiTestClassRunner::RunTestClassRunner);
+      return testClassResults;
    }
 
    INLINE TestClassResult MultiTestClassRunner::RunTestClassRunner(
