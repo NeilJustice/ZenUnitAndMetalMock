@@ -64,4 +64,3 @@ if(MSVC)
            CONFIGURATIONS RelWithDebInfo
            DESTINATION "lib/ZenUnit")
 endif()
-

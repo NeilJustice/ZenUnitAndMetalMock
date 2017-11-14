@@ -46,4 +46,3 @@ if(UNIX)
          WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} VERBATIM USES_TERMINAL)
    add_dependencies(clang-tidy ZenUnitPch ZenUnitTestsPch) # ExamplesTestsPch)
 endif()
-
