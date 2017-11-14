@@ -40,7 +40,7 @@ file(GLOB_RECURSE Sources *.h *.cpp)
 
 add_library(ZenUnit ${Sources})
 
-#EnablePrecompiledHeaders()
+EnablePrecompiledHeaders()
 
 install(DIRECTORY .
         CONFIGURATIONS Debug
@@ -64,3 +64,4 @@ if(MSVC)
            CONFIGURATIONS RelWithDebInfo
            DESTINATION "lib/ZenUnit")
 endif()
+
