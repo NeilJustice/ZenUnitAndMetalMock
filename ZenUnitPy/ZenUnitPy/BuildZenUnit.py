@@ -23,7 +23,6 @@ def main(args):
          os.chdir('..')
       else:
          windows_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions, installDirectory)
-         Process.run(rf'ZenUnitTests\{cmakeBuildType}\ZenUnitTests.exe')
          optionally_install(cmakeBuildType, installDirectory)
 
 def linux_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions, installDirectory):

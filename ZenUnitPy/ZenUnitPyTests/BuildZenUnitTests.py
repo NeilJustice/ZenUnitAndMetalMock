@@ -9,7 +9,7 @@ import Random
 
 testNames = [
 'main_ArgsLengthNot5_PrintsUsageAndExits1_test',
-'main_ArgsLength5_CMakes_Builds_InstallsIfInstallDirectoryNotNoInstall_test',
+'main_ArgsLength5_CMakes_Builds_RunsTestsIfLinuxOtherwisePostBuildStepRunsTestsOnWindows_InstallsIfInstallDirectoryNotNoInstall_test',
 'linux_cmake_and_build_CMakes_BuildsWithNinja_test',
 'optionally_install_RunsCMakeInstallTarget_test',
 'windows_cmake_and_build_CMakes_BuildsWithMSBuild_test',
@@ -38,7 +38,7 @@ class BuildZenUnitTests(unittest.TestCase):
       testcase(4)
       testcase(6)
 
-   def main_ArgsLength5_CMakes_Builds_InstallsIfInstallDirectoryNotNoInstall_test(self):
+   def main_ArgsLength5_CMakes_Builds_RunsTestsIfLinuxOtherwisePostBuildStepRunsTestsOnWindows_InstallsIfInstallDirectoryNotNoInstall_test(self):
       @patch('platform.system', spec_set=True)
       @patch('ZenUnitPy.ArgParser.parse_arg', spec_set=True)
       @patch('ZenUnitPy.BuildZenUnit.linux_cmake_and_build', spec_set=True)
@@ -72,8 +72,7 @@ class BuildZenUnitTests(unittest.TestCase):
             else:
                BuildZenUnit.windows_cmake_and_build.assert_called_once_with(
                   self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions, self.installDirectory)
-               Process.run.assert_called_once_with(
-                  rf'ZenUnitTests\{self.cmakeBuildType}\ZenUnitTests.exe')
+               Process.run.assert_not_called()
                BuildZenUnit.optionally_install.assert_called_once_with(
                   self.cmakeBuildType, self.installDirectory)
                os.chdir.assert_not_called()

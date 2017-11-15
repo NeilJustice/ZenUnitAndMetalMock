@@ -11,8 +11,3 @@ target_link_libraries(ExamplesTests Examples)
 
 EnablePrecompiledHeaders()
 IfMSVCAddRunTestsPostBuildStep()
-
-if(MSVC)
-   replace(CMAKE_CXX_FLAGS "/Wall" "/W4")
-endif()
-

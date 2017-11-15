@@ -43,24 +43,6 @@ add_library(ZenUnit ${Sources})
 EnablePrecompiledHeaders()
 
 install(DIRECTORY .
-        CONFIGURATIONS Debug
         DESTINATION include/ZenUnit/ZenUnit
         FILES_MATCHING REGEX "\\.h$|\\.cpp$"
-        #PATTERN REGEX "pch.h|pch.cpp|CMakeFiles|Release|RelWithDebInfo|MinSizeRel|ZenUnit.dir" EXCLUDE)
         PATTERN REGEX "CMakeFiles|Release|RelWithDebInfo|MinSizeRel|ZenUnit.dir" EXCLUDE)
-
-set_target_properties(ZenUnit PROPERTIES DEBUG_OUTPUT_NAME "ZenUnitDebug")
-set_target_properties(ZenUnit PROPERTIES RELEASE_OUTPUT_NAME "ZenUnitRelease")
-set_target_properties(ZenUnit PROPERTIES RELWITHDEBINFO_OUTPUT_NAME "ZenUnitRelWithDebInfo")
-set_target_properties(ZenUnit PROPERTIES MINSIZEREL_OUTPUT_NAME "ZenUnitMinSizeRel")
-install(TARGETS ZenUnit DESTINATION "lib/ZenUnit")
-
-if(MSVC)
-   append(CMAKE_CXX_FLAGS "/FdZenUnit.dir/$(Configuration)/ZenUnit$(Configuration).pdb")
-   install(FILES ZenUnit.dir/Debug/ZenUnitDebug.pdb
-           CONFIGURATIONS Debug
-           DESTINATION "lib/ZenUnit")
-   install(FILES ZenUnit.dir/RelWithDebInfo/ZenUnitRelWithDebInfo.pdb
-           CONFIGURATIONS RelWithDebInfo
-           DESTINATION "lib/ZenUnit")
-endif()
