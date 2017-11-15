@@ -1,8 +1,8 @@
-//#ifdef __linux__
-//#include "ZenUnit/pch.h"
-//#elif defined(_WIN64)
+#ifdef __linux__
+#include "ZenUnit/pch.h"
+#elif defined(_WIN64)
 #include "pch.h"
-//#endif
+#endif
 #include "ZenUnit/Enums/TestOutcome.h"
 #include "ZenUnit/Enums/TestPhase.h"
 #include "ZenUnit/Macros/ARE_EQUAL.h"
