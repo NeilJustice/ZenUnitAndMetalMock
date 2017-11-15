@@ -40,10 +40,10 @@
    tests.emplace_back(new ZenUnit::SpecSectionTestNXN<TestClassType>( \
       testClassNamePossiblyTemplatized, #HighQualityTestName, PMFTOKEN(&TestClassType::HighQualityTestName)));
 
-#define DOSKIP(Reason, HighQualityTestName) \
+#define DOSKIP(HighQualityTestName, Reason) \
    ZenUnit::TestRunner::Instance().SkipTest(testClassNamePossiblyTemplatized, #HighQualityTestName, Reason);
-#define SKIPFACT(Reason, HighQualityTestName) DOSKIP(Reason, HighQualityTestName)
-#define SKIPFACTS(Reason, HighQualityTestName) DOSKIP(Reason, HighQualityTestName)
+#define SKIPFACT(HighQualityTestName, Reason) DOSKIP(HighQualityTestName, Reason)
+#define SKIPFACTS(HighQualityTestName, Reason) DOSKIP(HighQualityTestName, Reason)
 
 #define EVIDENCE return tests; }
 #define STARTUP void Startup() override
@@ -112,7 +112,7 @@
       ZenUnit::TestRunner::Instance().AddTestClassRunner( \
          new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName>(#HighQualityTestClassName));
 
-#define SKIPTESTS(Reason, HighQualityTestClassName) \
+#define SKIPTESTS(HighQualityTestClassName, Reason) \
    const std::nullptr_t ZenUnit_TestClassSkipper_##HighQualityTestClassName = \
       ZenUnit::TestRunner::Instance().SkipTestClass(#HighQualityTestClassName, Reason);
 
@@ -123,7 +123,7 @@
       ZenUnit::TestRunner::Instance().AddTestClassRunner( \
          new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName<__VA_ARGS__>>(#HighQualityTestClassName"<"#__VA_ARGS__">"));
 
-#define SKIPTEMPLATETESTS(Reason, HighQualityTestClassName, ...) \
+#define SKIPTEMPLATETESTS(HighQualityTestClassName, Reason, ...) \
    template<> const char* HighQualityTestClassName<__VA_ARGS__>::s_testClassNamePossiblyTemplatized = nullptr; \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassSkipper_, HighQualityTestClassName), _Line), __LINE__) = \

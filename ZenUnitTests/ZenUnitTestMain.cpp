@@ -5,9 +5,9 @@ const char* const Reason = "Test of skip feature";
 TESTS(SkippedTestsTestClass)
 AFACT(NonSkippedTest)
 FACTS(NonSkipped1X1Test)
-SKIPFACT(Reason, SkippedNormalTest)
-SKIPFACTS(Reason, SkippedTest1X1)
-SKIPFACTS(Reason, SkippedTest2X2)
+SKIPFACT(SkippedNormalTest, Reason)
+SKIPFACTS(SkippedTest1X1, Reason)
+SKIPFACTS(SkippedTest2X2, Reason)
 EVIDENCE
 TEST(NonSkippedTest) {}
 TEST1X1(NonSkipped1X1Test, bool, true, false) {}
@@ -18,25 +18,25 @@ TEST2X2(SkippedTest2X2, int, int, 0, 0) {}
 
 TESTS(SkippedTestClassA)
 EVIDENCE
-}; SKIPTESTS(Reason, SkippedTestClassA)
+}; SKIPTESTS(SkippedTestClassA, Reason)
 
 TESTS(SkippedTestClassB)
 EVIDENCE
-}; SKIPTESTS(Reason, SkippedTestClassB)
+}; SKIPTESTS(SkippedTestClassB, Reason)
 
 template<typename T>
 TEMPLATETESTS(SkippedTemplateTestClassA, T)
 EVIDENCE
 };
-SKIPTEMPLATETESTS(Reason, SkippedTemplateTestClassA, int)
-SKIPTEMPLATETESTS(Reason, SkippedTemplateTestClassA, double)
+SKIPTEMPLATETESTS(SkippedTemplateTestClassA, Reason, int)
+SKIPTEMPLATETESTS(SkippedTemplateTestClassA, Reason, double)
 
 template<template<typename...> class MapType>
 TEMPLATETESTS(SkippedTemplateTestClassB, MapType)
 EVIDENCE
 };
-SKIPTEMPLATETESTS(Reason, SkippedTemplateTestClassB, map)
-SKIPTEMPLATETESTS(Reason, SkippedTemplateTestClassB, unordered_map)
+SKIPTEMPLATETESTS(SkippedTemplateTestClassB, Reason, map)
+SKIPTEMPLATETESTS(SkippedTemplateTestClassB, Reason, unordered_map)
 
 TESTS(ZZTests)
 AFACT(Test1)
@@ -70,7 +70,7 @@ TEST(Test3)
    xMock.fMock.Expect();
 }
 
-}; SKIPTESTS(Reason, ZZTests)
+}; SKIPTESTS(ZZTests, Reason)
 
 int main(int argc, char* argv[])
 {
