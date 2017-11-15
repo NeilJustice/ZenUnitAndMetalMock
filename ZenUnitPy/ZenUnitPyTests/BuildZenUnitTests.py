@@ -27,7 +27,7 @@ class BuildZenUnitTests(unittest.TestCase):
       @patch('ZenUnitPy.Util.print_and_exit', spec_set=True)
       def testcase(argsLength, _1):
          with self.subTest(f'{argsLength}'):
-            invalidArgs = ['arg'] * argsLength
+            invalidArgs = [Random.string()] * argsLength
             #
             BuildZenUnit.main(invalidArgs)
             #
@@ -50,7 +50,7 @@ class BuildZenUnitTests(unittest.TestCase):
          with self.subTest(f'{platformSystem}, {expectLinux}'):
             ArgParser.parse_arg.side_effect = [ self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions, self.installDirectory ]
             platform.system.return_value = platformSystem
-            args = [ '.py', self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions, self.installDirectory ]
+            args = [ Random.string(), self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions, self.installDirectory ]
             #
             BuildZenUnit.main(args)
             #

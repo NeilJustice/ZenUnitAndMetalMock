@@ -7,6 +7,7 @@ import subprocess
 import unittest
 from unittest.mock import patch, call, sentinel
 from ZenUnitPy import Process, UnitTester
+import Random
 
 testNames = [
 'run_RunsProcess_SysExitsIfExitCodeNonZero_test',
@@ -42,10 +43,11 @@ class PoolMock:
 
 
 class RunTests(unittest.TestCase):
-   Configuration = 'Configuration'
-   ProjectName = 'ProjectName'
-   AppendArgsReturnValue = 'AppendArgsReturnValue'
-   Command = 'Command Arg1 Arg2'
+   def setUp(self):
+      self.configuration = Random.string()
+      self.projectName = Random.string()
+      self.appendArgsReturnValue = Random.string()
+      self.command = Random.string()
 
    def run_RunsProcess_SysExitsIfExitCodeNonZero_test(self):
       @patch('ZenUnitPy.Process.run_and_get_exitcode', spec_set=True)
@@ -55,11 +57,11 @@ class RunTests(unittest.TestCase):
          with self.subTest(f'{exitCode}, {expectPrintCommandFailedAndExit}'):
             Process.run_and_get_exitcode.return_value = exitCode
             #
-            Process.run(self.Command)
+            Process.run(self.command)
             #
-            Process.run_and_get_exitcode.assert_called_once_with(self.Command)
+            Process.run_and_get_exitcode.assert_called_once_with(self.command)
             if expectPrintCommandFailedAndExit:
-               expectedSingleQuotedCommand = '\'' + self.Command + '\''
+               expectedSingleQuotedCommand = '\'' + self.command + '\''
                print.assert_called_once_with(
                   'Command', expectedSingleQuotedCommand, 'failed with exit code', exitCode)
                sys.exit.assert_called_once_with(exitCode)
@@ -77,27 +79,27 @@ class RunTests(unittest.TestCase):
       @patch('subprocess.call', spec_set=True)
       def testcase(platformValue, expectShlexSplitCommand, _1, _2, _3, _4, _5):
          with self.subTest(f'{platformValue}, {expectShlexSplitCommand}'):
-            CurrentWorkingDirectory = 'CurrentWorkingDirectory'
-            os.getcwd.return_value = CurrentWorkingDirectory
+            currentWorkingDirectory = Random.string()
+            os.getcwd.return_value = currentWorkingDirectory
             platform.system.return_value = platformValue
-            ShlexedCommand = 'ShlexedCommand'
-            shlex.split.return_value = ShlexedCommand
-            ExitCode = 1
-            subprocess.call.return_value = ExitCode
+            shlexedCommand = Random.string()
+            shlex.split.return_value = shlexedCommand
+            subprocessCallReturnValue = Random.integer()
+            subprocess.call.return_value = subprocessCallReturnValue
             #
-            exitCode = Process.run_and_get_exitcode(self.Command)
+            exitCode = Process.run_and_get_exitcode(self.command)
             #
-            expectedSingleQuotedCommand = '\'' + self.Command + '\''
+            expectedSingleQuotedCommand = '\'' + self.command + '\''
             os.getcwd.assert_called_once_with()
             print.assert_called_once_with(
-               'Running', expectedSingleQuotedCommand, 'from', CurrentWorkingDirectory)
+               'Running', expectedSingleQuotedCommand, 'from', currentWorkingDirectory)
             if expectShlexSplitCommand:
-               shlex.split.assert_called_once_with(self.Command)
-               subprocess.call.assert_called_once_with(ShlexedCommand)
+               shlex.split.assert_called_once_with(self.command)
+               subprocess.call.assert_called_once_with(shlexedCommand)
             else:
                shlex.split.assert_not_called()
-               subprocess.call.assert_called_once_with(self.Command)
-            self.assertEqual(ExitCode, exitCode)
+               subprocess.call.assert_called_once_with(self.command)
+            self.assertEqual(subprocessCallReturnValue, exitCode)
       testcase('Windows', False)
       testcase('windows', True)
       testcase('Linux', True)
@@ -113,9 +115,9 @@ class RunTests(unittest.TestCase):
       ToUtf8ReturnValue = 'ToUtf8ReturnValue'
       Process.to_utf8.return_value = ToUtf8ReturnValue
       #
-      standardOutput = Process.run_and_get_stdout(self.Command)
+      standardOutput = Process.run_and_get_stdout(self.command)
       #
-      shlex.split.assert_called_once_with(self.Command)
+      shlex.split.assert_called_once_with(self.command)
       subprocess.check_output.assert_called_once_with(ShlexReturnValue)
       Process.to_utf8.assert_called_once_with(CheckOutputReturnValue)
       self.assertEqual(ToUtf8ReturnValue, standardOutput)
@@ -131,11 +133,11 @@ class RunTests(unittest.TestCase):
          with self.subTest(f'{stdout}, {substring}, {expectExit}'):
             Process.run_and_get_stdout.return_value = stdout
             #
-            Process.run_and_check_stdout_for_substring(self.Command, substring)
+            Process.run_and_check_stdout_for_substring(self.command, substring)
             #
             self.assertEqual(2, len(print.call_args_list))
             print.assert_has_calls([
-               call('Running \'' + self.Command + '\' and checking for substring \'' + substring + '\''),
+               call('Running \'' + self.command + '\' and checking for substring \'' + substring + '\''),
                call('Substring \'' + substring + '\' ' + ('found.' if not expectExit else 'not found.'))])
             if expectExit:
                sys.exit.assert_called_once_with(1)
@@ -149,35 +151,40 @@ class RunTests(unittest.TestCase):
    @patch('ZenUnitPy.Process.run', spec_set=True)
    @patch('ZenUnitPy.Process.append_args', spec_set=True)
    def run_exe_ArgsNotSpecified_CallsRunWithExpected_test(self, _1, _2):
-      Process.append_args.return_value = self.AppendArgsReturnValue
+      Process.append_args.return_value = self.appendArgsReturnValue
       #
-      Process.run_exe(self.ProjectName, self.Configuration)
+      Process.run_exe(self.projectName, self.configuration)
       #
       self.assert_exe_behavior('')
 
    @patch('ZenUnitPy.Process.run', spec_set=True)
    @patch('ZenUnitPy.Process.append_args', spec_set=True)
    def run_exe_ArgSpecified_CallsRunWithExpected_test(self, _1, _2):
-      Process.append_args.return_value = self.AppendArgsReturnValue
+      Process.append_args.return_value = self.appendArgsReturnValue
+      args = Random.string()
       #
-      Process.run_exe(self.ProjectName, self.Configuration, 'args')
+      Process.run_exe(self.projectName, self.configuration, args)
       #
-      self.assert_exe_behavior('args')
+      self.assert_exe_behavior(args)
 
    def assert_exe_behavior(self, expectedArgs):
-      expectedExePath = '{0}\\{1}\\{0}.exe'.format(self.ProjectName, self.Configuration)
+      expectedExePath = '{0}\\{1}\\{0}.exe'.format(self.projectName, self.configuration)
       Process.append_args.assert_called_once_with(expectedExePath, expectedArgs)
-      Process.run.assert_called_once_with(self.AppendArgsReturnValue)
+      Process.run.assert_called_once_with(self.appendArgsReturnValue)
 
    def append_args_AppendsSpaceThenArgsIfArgsNotEmpty_test(self):
-      def testcase(expectedReturnValue, args):
-         with self.subTest(f'{expectedReturnValue}, {args}'):
-            returnValue = Process.append_args('ExePath', args)
+      def testcase(expectedReturnValueSuffix, args):
+         with self.subTest(f'{expectedReturnValueSuffix}, {args}'):
+            exePath = Random.string()
+            #
+            returnValue = Process.append_args(exePath, args)
+            #
+            expectedReturnValue = exePath + expectedReturnValueSuffix
             self.assertEqual(expectedReturnValue, returnValue)
-      testcase('ExePath', '')
-      testcase('ExePath  ', ' ')
-      testcase('ExePath arg1', 'arg1')
-      testcase('ExePath arg1 arg2', 'arg1 arg2')
+      testcase('', '')
+      testcase('  ', ' ')
+      testcase(' arg1', 'arg1')
+      testcase(' arg1 arg2', 'arg1 arg2')
 
    def map_parallel_CallsMultiprocessingPoolMap_Returns1IfAnyExitCodesNon0_test(self):
       @patch('multiprocessing.Pool', spec_set=True)
@@ -186,18 +193,18 @@ class RunTests(unittest.TestCase):
          with self.subTest(f'{expectedReturnValue}, {exitCodes}'):
             multiprocessing.cpu_count.reset_mock()
             multiprocessing.Pool.reset_mock()
-            CpuCount = 128
-            multiprocessing.cpu_count.return_value = CpuCount
-            Iterable = ['a', 'b', 'c']
+            cpuCount = Random.integer()
+            multiprocessing.cpu_count.return_value = cpuCount
+            iterable = [Random.string(), Random.string(), Random.string()]
             poolMock = PoolMock()
             poolMock.map_return_value = exitCodes
             multiprocessing.Pool.return_value = poolMock
             #
-            allCommandsExited0 = Process.map_parallel(len, Iterable)
+            allCommandsExited0 = Process.map_parallel(len, iterable)
             #
             multiprocessing.cpu_count.assert_called_once_with()
-            multiprocessing.Pool.assert_called_once_with(CpuCount)
-            poolMock.assert_map_called_once_with(len, Iterable)
+            multiprocessing.Pool.assert_called_once_with(cpuCount)
+            poolMock.assert_map_called_once_with(len, iterable)
             poolMock.assert_close_called_once()
             self.assertEqual(expectedReturnValue, allCommandsExited0)
       testcase(False, [-1])
@@ -216,11 +223,11 @@ class RunTests(unittest.TestCase):
          with self.subTest(f'{expectedReturnValue}, {anyReturnValue}'):
             map.return_value = sentinel.ExitCodesMapObject
             any.return_value = anyReturnValue
-            Iterable = ['a', 'b', 'c']
+            iterable = [Random.string(), Random.string(), Random.string()]
             #
-            allCommandsExited0 = Process.map_sequential(len, Iterable)
+            allCommandsExited0 = Process.map_sequential(len, iterable)
             #
-            map.assert_called_once_with(len, Iterable)
+            map.assert_called_once_with(len, iterable)
             any.assert_called_once_with(sentinel.ExitCodesMapObject)
             self.assertEqual(expectedReturnValue, allCommandsExited0)
       testcase(False, True)

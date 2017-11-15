@@ -4,6 +4,7 @@ import unittest
 from unittest.mock import patch
 from unittest.mock import call
 from ZenUnitPy import UnitTester, Util
+import Random
 
 testNames = [
 'home_folder_join_test',
@@ -11,54 +12,53 @@ testNames = [
 'print_and_exit_PrintsMessageThenCallsExitWithExitCode_test'
 ]
 
-Message = 'Message'
-
 class UtilTests(unittest.TestCase):
 
    @patch('os.path.expanduser', spec_set=True)
    @patch('os.path.join', spec_set=True)
    def home_folder_join_test(self, _1, _2):
-      HomeFolderPath = 'ExpandUserValue'
-      os.path.expanduser.return_value = HomeFolderPath
-      JoinedHomeFolderPath = 'JoinedHomeFolderPath'
-      os.path.join.return_value = JoinedHomeFolderPath
-      FolderPath = 'FolderPath'
-      FileName = 'FileName'
+      homeFolderPath = Random.string()
+      os.path.expanduser.return_value = homeFolderPath
+      joinedHomeFolderPath = Random.string()
+      os.path.join.return_value = joinedHomeFolderPath
+      folderPath = Random.string()
+      fileName = Random.string()
       #
-      joinedHomeFolderPath = Util.home_folder_join(FolderPath, FileName)
+      returnedJoinedHomeFolderPath = Util.home_folder_join(folderPath, fileName)
       #
       os.path.expanduser.assert_called_once_with('~')
-      os.path.join.assert_called_once_with(HomeFolderPath, FolderPath, FileName)
-      self.assertEqual(JoinedHomeFolderPath, joinedHomeFolderPath)
+      os.path.join.assert_called_once_with(homeFolderPath, folderPath, fileName)
+      self.assertEqual(joinedHomeFolderPath, returnedJoinedHomeFolderPath)
 
    @patch('os.path.expanduser', spec_set=True)
    @patch('os.path.join', spec_set=True)
    def code_folder_join_ReturnsHomeFolderCodeFolderSpecifiedFolder_test(self, _1, _2):
-      HomeFolderPath = 'ExpandUserValue'
-      os.path.expanduser.return_value = HomeFolderPath
-      CodeFolderPath = 'CodeFolderPath'
-      JoinedCodeFolderPath = 'JoinedCodeFolderPath'
-      os.path.join.side_effect = [CodeFolderPath, JoinedCodeFolderPath]
-      FolderPath = 'FolderPath'
+      homeFolderPath = Random.string()
+      os.path.expanduser.return_value = homeFolderPath
+      codeFolderPath = Random.string()
+      joinedCodeFolderPath = Random.string()
+      os.path.join.side_effect = [codeFolderPath, joinedCodeFolderPath]
+      folderPath = Random.string()
       #
-      joinedCodeFolderPath = Util.code_folder_join(FolderPath)
+      returnedJoinedCodeFolderPath = Util.code_folder_join(folderPath)
       #
       os.path.expanduser.assert_called_once_with('~')
       self.assertEqual(2, len(os.path.join.call_args_list))
       os.path.join.assert_has_calls([
-         call(HomeFolderPath, 'Code'),
-         call(CodeFolderPath, FolderPath)])
-      self.assertEqual(JoinedCodeFolderPath, joinedCodeFolderPath)
+         call(homeFolderPath, 'Code'),
+         call(codeFolderPath, folderPath)])
+      self.assertEqual(joinedCodeFolderPath, returnedJoinedCodeFolderPath)
 
    @patch('builtins.print', spec_set=True)
    @patch('sys.exit', spec_set=True)
    def print_and_exit_PrintsMessageThenCallsExitWithExitCode_test(self, _1, _2):
-      ExitCode = 1
+      message = Random.string()
+      exitCode = Random.integer()
       #
-      Util.print_and_exit(Message, ExitCode)
+      Util.print_and_exit(message, exitCode)
       #
-      print.assert_called_once_with(Message)
-      sys.exit.assert_called_once_with(ExitCode)
+      print.assert_called_once_with(message)
+      sys.exit.assert_called_once_with(exitCode)
 
 if __name__ == '__main__': # pragma nocover
    UnitTester.run_tests(UtilTests, testNames)

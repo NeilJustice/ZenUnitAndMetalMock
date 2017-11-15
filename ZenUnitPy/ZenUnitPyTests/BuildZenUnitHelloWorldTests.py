@@ -20,13 +20,14 @@ class BuildZenUnitHelloWorldTests(unittest.TestCase):
    def main_ArgsLengthNot4_PrintsUsageAndExits1_test(self):
       @patch('ZenUnitPy.Util.print_and_exit', spec_set=True)
       def testcase(argsLength, _1):
-         invalidArgs = ['arg'] * argsLength
-         #
-         BuildZenUnitHelloWorld.main(invalidArgs)
-         #
-         Util.print_and_exit.assert_called_once_with(
-'Invalid args: ' + ' '.join(invalidArgs) + '\n' +
-"""Usage: python3 BuildZenUnitHelloWorld.py --generator=<CMakeGenerator> --buildType=<CMakeBuildType> --definitions=<QuotedSpaceSeparatedCMakeDefinitions>""", 1)
+         with self.subTest(f'{argsLength}'):
+            invalidArgs = [Random.string()] * argsLength
+            #
+            BuildZenUnitHelloWorld.main(invalidArgs)
+            #
+            Util.print_and_exit.assert_called_once_with(
+               'Invalid args: ' + ' '.join(invalidArgs) + '\n' +
+               """Usage: python3 BuildZenUnitHelloWorld.py --generator=<CMakeGenerator> --buildType=<CMakeBuildType> --definitions=<QuotedSpaceSeparatedCMakeDefinitions>""", 1)
       testcase(0)
       testcase(3)
       testcase(5)

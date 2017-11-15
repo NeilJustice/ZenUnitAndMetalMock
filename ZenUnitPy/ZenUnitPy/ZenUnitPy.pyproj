@@ -32,9 +32,9 @@
     <Compile Include="BuildZenUnitHelloWorld.py" />
     <Compile Include="CMake.py" />
     <Compile Include="FileSystem.py" />
-    <Compile Include="RunTestsWithCoverageAndPylintFlake8.py" />
     <Compile Include="Process.py" />
     <Compile Include="Python.py" />
+    <Compile Include="RunTestsWithCoverageAndLinting.py" />
     <Compile Include="UnitTester.py">
       <SubType>Code</SubType>
     </Compile>

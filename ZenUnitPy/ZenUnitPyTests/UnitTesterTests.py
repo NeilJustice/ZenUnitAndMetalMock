@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import Mock, patch, sentinel
 from ZenUnitPy import UnitTester
+import Random
 
 testNames = ['run_tests_RunsTestSuiteWithTextTestRunner_test']
 
@@ -14,13 +15,13 @@ class UnitTesterTests(unittest.TestCase):
       unittest.TextTestRunner.return_value = textTestRunnerMock
       map.return_value = sentinel.testCaseMapObject
       unittest.TestSuite.return_value = sentinel.testSuite
-      TestCaseName = 'WidgetTests'
-      TestNames = ['A_Test', 'B_Test']
+      testCaseName = Random.string()
+      testingTestNames = [Random.string(), Random.string()]
       #
-      UnitTester.run_tests(TestCaseName, TestNames)
+      UnitTester.run_tests(testCaseName, testingTestNames)
       #
       unittest.TextTestRunner.assert_called_once_with(verbosity=3)
-      map.assert_called_once_with(TestCaseName, TestNames)
+      map.assert_called_once_with(testCaseName, testingTestNames)
       unittest.TestSuite.assert_called_once_with(sentinel.testCaseMapObject)
       textTestRunnerMock.run.assert_called_once_with(sentinel.testSuite)
 
