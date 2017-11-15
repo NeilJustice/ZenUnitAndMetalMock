@@ -5,13 +5,13 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>7442c4b6-4d10-4aea-a009-421f7252d55e</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>UnitTester.py</StartupFile>
+    <StartupFile>BuildZenUnit.py</StartupFile>
     <SearchPath>..\</SearchPath>
     <OutputPath>.</OutputPath>
     <Name>ZenUnitPy</Name>
     <RootNamespace>ZenUnitPy</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>--testProjectFolderPath=ZenUnitPy\ZenUnitPyTests --runAllWithCoveragePyFileName=RunAllWithCoverage.py</CommandLineArguments>
+    <CommandLineArguments>--generator="Visual Studio 15 2017 Win64" --buildType=Debug --definitions="" --installDirectory=C:\install</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>
     <WorkingDirectory>.</WorkingDirectory>

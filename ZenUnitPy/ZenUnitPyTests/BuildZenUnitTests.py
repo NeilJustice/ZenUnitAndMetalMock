@@ -4,7 +4,7 @@ import sys
 import unittest
 from unittest.mock import call, patch
 sys.path.append('..') # Jenkins
-from ZenUnitPy import ArgParser, CMake, BuildZenUnit, Process, UnitTester, Util
+from ZenUnitPy import ArgParser, CMake, BuildZenUnit, Process, UnitTester, Util, FileSystem
 import Random
 
 testNames = [
@@ -12,7 +12,7 @@ testNames = [
 'main_ArgsLength5_CMakes_Builds_InstallsIfInstallDirectoryNotNoInstall_test',
 'linux_cmake_and_build_CMakes_BuildsWithNinja_test',
 'optionally_install_RunsCMakeInstallTarget_test',
-'windows_cmake_and_build_CMakes_BuildsWithMSBuild_test'
+'windows_cmake_and_build_CMakes_BuildsWithMSBuild_test',
 ]
 
 class BuildZenUnitTests(unittest.TestCase):
@@ -103,18 +103,28 @@ class BuildZenUnitTests(unittest.TestCase):
 
    def optionally_install_RunsCMakeInstallTarget_test(self):
       @patch('ZenUnitPy.Process.run', spec_true=True)
-      def testcase(installDirectory, expectCallToCMakeInstall, _1):
+      @patch('ZenUnitPy.FileSystem.delete_folder_if_exists', spec_set=True)
+      @patch('os.path.join', spec_set=True)
+      def testcase(installDirectory, expectCallToCMakeInstall, _1, _2, _3):
          with self.subTest(f'{installDirectory}, {expectCallToCMakeInstall}'):
+            osJoinReturnValue = Random.string()
+            os.path.join.return_value = osJoinReturnValue
             #
             BuildZenUnit.optionally_install(self.cmakeBuildType, installDirectory)
             #
             if expectCallToCMakeInstall:
+               os.path.join.assert_called_once_with(installDirectory, 'include', 'ZenUnit')
+               expectedZenUnitInstallDirectory = osJoinReturnValue
+               FileSystem.delete_folder_if_exists.assert_called_once_with(expectedZenUnitInstallDirectory)
                expectedInstallCommand = 'cmake --build . --target install --config {0}'.format(self.cmakeBuildType)
                Process.run.assert_called_once_with(expectedInstallCommand)
             else:
+               os.path.join.assert_not_called()
+               FileSystem.delete_folder_if_exists.assert_not_called()
                Process.run.assert_not_called()
       testcase('/usr/local', True)
       testcase('~/install', True)
+      testcase('C:\\install', True)
       testcase('NoInstall', False)
       testcase('noinstall', False)
 

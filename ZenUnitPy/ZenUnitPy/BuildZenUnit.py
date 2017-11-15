@@ -3,7 +3,7 @@ import platform
 import sys
 sys.path.append('ZenUnitPy') # Jenkins
 sys.path.append('../ZenUnitPy') # Jenkins
-from ZenUnitPy import ArgParser, CMake, Process, Util
+from ZenUnitPy import ArgParser, CMake, Process, Util, FileSystem
 
 def main(args):
    if len(args) != 5:
@@ -36,6 +36,8 @@ def linux_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions, inst
 def optionally_install(cmakeBuildType, installDirectory):
    casefoldedInstallDirectory = installDirectory.casefold()
    if casefoldedInstallDirectory != 'noinstall':
+      zenUnitInstallDirectory = os.path.join(installDirectory, 'include', 'ZenUnit')
+      FileSystem.delete_folder_if_exists(zenUnitInstallDirectory)
       installCommand = f'cmake --build . --target install --config {cmakeBuildType}'
       Process.run(installCommand)
 
