@@ -65,4 +65,3 @@ endif()
 
 EnablePrecompiledHeaders()
 IfMSVCAddRunTestsPostBuildStep()
-

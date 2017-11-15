@@ -1,8 +1,8 @@
-#ifdef __linux__
-#include "ZenUnit/pch.h"
-#elif defined(_WIN64)
+//#ifdef __linux__
+//#include "ZenUnit/pch.h"
+//#elif defined(_WIN64)
 #include "pch.h"
-#endif
+//#endif
 #include "ZenUnit/Results/TestResult.h"
 #include "ZenUnit/Results/TestResultFactory.h"
 #include "ZenUnit/TestRunners/TestRunner.h"
