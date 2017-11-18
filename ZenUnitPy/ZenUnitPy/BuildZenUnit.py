@@ -35,8 +35,8 @@ def linux_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions, inst
 def optionally_install(cmakeBuildType, installDirectory):
    casefoldedInstallDirectory = installDirectory.casefold()
    if casefoldedInstallDirectory != 'noinstall':
-      zenUnitInstallDirectory = os.path.join(installDirectory, 'include', 'ZenUnit')
-      FileSystem.delete_folder_if_exists(zenUnitInstallDirectory)
+      zenUnitIncludeDirectory = os.path.join(installDirectory, 'include', 'ZenUnit')
+      FileSystem.delete_folder_if_exists(zenUnitIncludeDirectory)
       installCommand = f'cmake --build . --target install --config {cmakeBuildType}'
       Process.run(installCommand)
 

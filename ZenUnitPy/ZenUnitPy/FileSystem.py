@@ -4,6 +4,7 @@ import shutil
 def delete_folder_if_exists(folderPath):
    if os.path.exists(folderPath):
       shutil.rmtree(folderPath)
+      print(f'Deleted folder {folderPath}')
 
 def copy_file_to_folder(sourceFilePath, destFolderPath):
    destFilePath = os.path.join(destFolderPath, sourceFilePath)

@@ -113,8 +113,8 @@ class BuildZenUnitTests(unittest.TestCase):
             #
             if expectCallToCMakeInstall:
                os.path.join.assert_called_once_with(installDirectory, 'include', 'ZenUnit')
-               expectedZenUnitInstallDirectory = osJoinReturnValue
-               FileSystem.delete_folder_if_exists.assert_called_once_with(expectedZenUnitInstallDirectory)
+               expectedZenUnitIncludeDirectory = osJoinReturnValue
+               FileSystem.delete_folder_if_exists.assert_called_once_with(expectedZenUnitIncludeDirectory)
                expectedInstallCommand = 'cmake --build . --target install --config {0}'.format(self.cmakeBuildType)
                Process.run.assert_called_once_with(expectedInstallCommand)
             else:
