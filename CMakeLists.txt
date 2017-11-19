@@ -40,6 +40,10 @@ add_subdirectory(Executable)
 add_subdirectory(StaticLibrary)
 add_subdirectory(StaticLibraryTests)
 
+# Allows CMake command "cmake --build . --target install --config Debug/Release"
+# to just install ZenUnit and not also build ZenUnitTests
+set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
+
 if(UNIX)
    include(ProcessorCount)
    ProcessorCount(NumberOfCores)
