@@ -27,7 +27,7 @@
 // Ignore '__testCase': unreferenced formal parameter in TESTNXNs until quelling with [[maybe_unused]]
 #pragma warning(disable: 4100)
 
-#if _MSC_FULL_VER == 191225816 // VS2017 Update 5
+#if _MSC_FULL_VER >= 191225816 // VS2017 Update 5
 #pragma warning(disable: 5039) // pointer or reference to potentially throwing function passed to extern C function under -EHc. Undefined behavimay occur if this function throws an exception.
 #endif
 
