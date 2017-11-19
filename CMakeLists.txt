@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.2)
 project(ZenUnit)
-include(${CMAKE_SOURCE_DIR}/ZenUnitHelloWorld/CMakeMacros.cmake)
+include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 
 if(UNIX)
    set(CMAKE_CXX_FLAGS "-std=c++1z -Wall -Wextra -Werror -pthread -Wno-unused-parameter")
@@ -36,6 +36,9 @@ add_subdirectory(ZenUnit)
 add_subdirectory(ZenUnitTests)
 add_subdirectory(Examples)
 add_subdirectory(ExamplesTests)
+add_subdirectory(Executable)
+add_subdirectory(StaticLibrary)
+add_subdirectory(StaticLibraryTests)
 
 if(UNIX)
    include(ProcessorCount)
@@ -44,5 +47,5 @@ if(UNIX)
       find -name "*.cpp" -print0 | xargs -0 -n 1 -P ${NumberOfCores} -t
       /usr/local/bin/clang-tidy -header-filter=.* -p ${CMAKE_BUILD_TYPE}
          WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} VERBATIM USES_TERMINAL)
-   add_dependencies(clang-tidy ZenUnitPch ZenUnitTestsPch) # ExamplesTestsPch)
+   add_dependencies(clang-tidy ZenUnitPch ZenUnitTestsPch ExamplesTestsPch)
 endif()

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.2)
 project(ZenUnitTests)
-include(${CMAKE_SOURCE_DIR}/ZenUnitHelloWorld/CMakeMacros.cmake)
+include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(${CMAKE_SOURCE_DIR})
