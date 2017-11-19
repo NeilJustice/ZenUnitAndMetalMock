@@ -1,8 +1,4 @@
-#ifdef __linux__
-#include "ZenUnit/pch.h"
-#elif defined(_WIN64)
 #include "pch.h"
-#endif
 #include "ZenUnit/Args/ZenUnitArgs.h"
 #include "ZenUnit/TestRunners/MultiTestClassRunner.h"
 #include "ZenUnit/TestRunners/NoOpTestClassRunner.h"

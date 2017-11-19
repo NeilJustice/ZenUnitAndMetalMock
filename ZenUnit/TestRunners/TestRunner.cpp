@@ -1,8 +1,4 @@
-#ifdef __linux__
-#include "ZenUnit/pch.h"
-#elif defined(_WIN64)
 #include "pch.h"
-#endif
 #include "ZenUnit/Args/ArgsParser.h"
 #include "ZenUnit/Console/Console.h"
 #include "ZenUnit/Results/TestRunResult.h"

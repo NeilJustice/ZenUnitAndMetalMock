@@ -1,8 +1,4 @@
-#ifdef __linux__
-#include "ZenUnit/pch.h"
-#elif defined(_WIN64)
 #include "pch.h"
-#endif
 #include "ZenUnit/Macros/ARE_EQUAL.h"
 #include "ZenUnit/Macros/POINTEES_EQUAL.h"
 #include "ZenUnit/Results/AnomalyOrException.h"

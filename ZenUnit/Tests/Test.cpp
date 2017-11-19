@@ -1,8 +1,4 @@
-#ifdef __linux__
-#include "ZenUnit/pch.h"
-#elif defined(_WIN64)
 #include "pch.h"
-#endif
 #include "ZenUnit/Enums/TestOutcome.h"
 #include "ZenUnit/Enums/TestPhase.h"
 #include "ZenUnit/Results/TestResultFactory.h"

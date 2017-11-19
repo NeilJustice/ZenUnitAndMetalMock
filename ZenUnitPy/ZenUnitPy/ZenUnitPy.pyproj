@@ -29,7 +29,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BuildZenUnit.py" />
-    <Compile Include="BuildZenUnitHelloWorld.py" />
     <Compile Include="CMake.py" />
     <Compile Include="FileSystem.py" />
     <Compile Include="Process.py" />
