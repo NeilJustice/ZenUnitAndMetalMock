@@ -6,5 +6,5 @@ void ZenUnitEqualizer<ProgramArgs>::AssertEqual(
    const ProgramArgs& expectedProgramArgs,
    const ProgramArgs& actualProgramArgs)
 {
-   ARE_EQUAL(expectedProgramArgs.flag, actualProgramArgs.flag);
+   ARE_EQUAL(expectedProgramArgs.argument1, actualProgramArgs.argument1);
 }

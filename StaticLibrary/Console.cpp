@@ -3,12 +3,13 @@
 
 void Console::WriteLine(const std::string& message) const
 {
-   std::cout << message << '\n';
+   printf(message.c_str());
+   printf("\n");
 }
 
 void Console::WriteNewline() const
 {
-   std::cout << '\n';
+   printf("\n");
 }
 
 Console::~Console()

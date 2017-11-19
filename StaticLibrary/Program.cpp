@@ -1,20 +1,19 @@
 #include "pch.h"
 #include "Program.h"
-#include "ArgsParser.h"
+#include "Console.h"
 
 Program::Program()
    : _console(new Console)
-   , _argsParser(new ArgsParser)
 {
 }
 
 int Program::Main(int argc, char* argv[]) const
 {
-   const std::vector<std::string> args = [&]()
+   const vector<string> args = [&]()
    {
-      std::vector<std::string> args;
+      vector<string> args;
       args.reserve(argc);
-      std::for_each(argv, argv + argc, [&](char* arg)
+      for_each(argv, argv + argc, [&](char* arg)
       {
          args.emplace_back(arg);
       });
@@ -24,33 +23,11 @@ int Program::Main(int argc, char* argv[]) const
    return exitCode;
 }
 
-const std::string Program::CommandLineUsage = R"(ProgramName 0.1.0
-Usage: ProgramName <FilePath> [-flag])";
+const string Program::CommandLineUsage = R"(ProgramName v0.1.0)";
 
-int Program::VectorMain(const std::vector<std::string>& args) const
+int Program::VectorMain(const vector<string>& args) const
 {
    assert(args.size() >= 1);
-   if (args.size() == 1)
-   {
-      _console->WriteLine(CommandLineUsage);
-      return 0;
-   }
-   try
-   {
-      _argsParser->ParseArgs(args);
-      return 0;
-   }
-   catch (const std::exception& e)
-   {
-      _console->WriteLine(e.what());
-      _console->WriteNewline();
-      _console->WriteLine(CommandLineUsage);
-      return 1;
-   }
-}
-
-int Program::ArgsMain(const ProgramArgs&) const
-{
    return 0;
 }
 

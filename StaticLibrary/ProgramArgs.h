@@ -2,5 +2,5 @@
 
 struct ProgramArgs
 {
-   bool flag = false;
+   string argument1;
 };

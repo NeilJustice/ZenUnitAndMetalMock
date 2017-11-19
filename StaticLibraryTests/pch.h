@@ -1,5 +1,7 @@
-#ifndef STATICLIBRARYTESTS_PCH
-#define STATICLIBRARYTESTS_PCH
+#pragma once
+#include <string>
+
 #include "ZenUnit/ZenUnit.h"
 #include "ZenUnit/ZenMock.h"
-#endif
+
+using namespace std;
