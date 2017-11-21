@@ -11,7 +11,7 @@ testNames = [
 'main_ArgsLengthNot5_PrintsUsageAndExits1_test',
 'main_ArgsLength5_CMakes_Builds_RunsTestsIfLinuxOtherwisePostBuildStepRunsTestsOnWindows_InstallsIfInstallDirectoryNotNoInstall_test',
 'linux_cmake_and_build_CMakes_BuildsWithNinja_test',
-'optionally_install_RunsCMakeInstallTarget_test',
+'install_if_debug_and_install_dir_specified_RunsCMakeInstallIfDebugAndInstallDirectoryNotNoInstall_test',
 'windows_cmake_and_build_CMakes_BuildsWithMSBuild_test',
 ]
 
@@ -44,7 +44,7 @@ class BuildZenUnitTests(unittest.TestCase):
       @patch('ZenUnitPy.BuildZenUnit.linux_cmake_and_build', spec_set=True)
       @patch('ZenUnitPy.BuildZenUnit.windows_cmake_and_build', spec_set=True)
       @patch('ZenUnitPy.Process.run', spec_set=True)
-      @patch('ZenUnitPy.BuildZenUnit.optionally_install', spec_true=True)
+      @patch('ZenUnitPy.BuildZenUnit.install_if_debug_and_install_dir_specified', spec_true=True)
       @patch('os.chdir', spec_true=True)
       def testcase(platformSystem, expectLinux, _1, _2, _3, _4, _5, _6, _7):
          with self.subTest(f'{platformSystem}, {expectLinux}'):
@@ -66,14 +66,14 @@ class BuildZenUnitTests(unittest.TestCase):
                BuildZenUnit.linux_cmake_and_build.assert_called_once_with(
                   self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions, self.installDirectory)
                Process.run.assert_called_once_with('ZenUnitTests/ZenUnitTests')
-               BuildZenUnit.optionally_install.assert_called_once_with(
+               BuildZenUnit.install_if_debug_and_install_dir_specified.assert_called_once_with(
                   self.cmakeBuildType, self.installDirectory)
                os.chdir.assert_called_once_with('..')
             else:
                BuildZenUnit.windows_cmake_and_build.assert_called_once_with(
                   self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions, self.installDirectory)
                Process.run.assert_not_called()
-               BuildZenUnit.optionally_install.assert_called_once_with(
+               BuildZenUnit.install_if_debug_and_install_dir_specified.assert_called_once_with(
                   self.cmakeBuildType, self.installDirectory)
                os.chdir.assert_not_called()
       testcase('Linux', True)
@@ -100,32 +100,35 @@ class BuildZenUnitTests(unittest.TestCase):
       testcase('-DSanitizerMode=ON', '/home/user/directory', '-DSanitizerMode=ON -DCMAKE_INSTALL_PREFIX=/home/user/directory')
       testcase('', '/usr/local', ' -DCMAKE_INSTALL_PREFIX=/usr/local')
 
-   def optionally_install_RunsCMakeInstallTarget_test(self):
+   def install_if_debug_and_install_dir_specified_RunsCMakeInstallIfDebugAndInstallDirectoryNotNoInstall_test(self):
       @patch('ZenUnitPy.Process.run', spec_true=True)
       @patch('ZenUnitPy.FileSystem.delete_folder_if_exists', spec_set=True)
       @patch('os.path.join', spec_set=True)
-      def testcase(installDirectory, expectCallToCMakeInstall, _1, _2, _3):
+      def testcase(installDirectory, cmakeBuildType, expectCallToCMakeInstall, _1, _2, _3):
          with self.subTest(f'{installDirectory}, {expectCallToCMakeInstall}'):
             osJoinReturnValue = Random.string()
             os.path.join.return_value = osJoinReturnValue
             #
-            BuildZenUnit.optionally_install(self.cmakeBuildType, installDirectory)
+            BuildZenUnit.install_if_debug_and_install_dir_specified(cmakeBuildType, installDirectory)
             #
             if expectCallToCMakeInstall:
                os.path.join.assert_called_once_with(installDirectory, 'include', 'ZenUnit')
                expectedZenUnitIncludeDirectory = osJoinReturnValue
                FileSystem.delete_folder_if_exists.assert_called_once_with(expectedZenUnitIncludeDirectory)
-               expectedInstallCommand = 'cmake --build . --target install --config {0}'.format(self.cmakeBuildType)
+               expectedInstallCommand = f'cmake --build . --target install --config {cmakeBuildType}'
                Process.run.assert_called_once_with(expectedInstallCommand)
             else:
                os.path.join.assert_not_called()
                FileSystem.delete_folder_if_exists.assert_not_called()
                Process.run.assert_not_called()
-      testcase('/usr/local', True)
-      testcase('~/install', True)
-      testcase('C:\\install', True)
-      testcase('NoInstall', False)
-      testcase('noinstall', False)
+      testcase('/usr/local', 'Debug', True)
+      testcase('~/install', 'Debug', True)
+      testcase('C:\\install', 'Debug', True)
+      testcase('noinstall', 'Debug', True)
+      testcase('NoInstall', 'Debug', False)
+      testcase('/usr/local', 'debug', False)
+      testcase('/usr/local', 'Release', False)
+      testcase('NoInstall', 'Release', False)
 
    def windows_cmake_and_build_CMakes_BuildsWithMSBuild_test(self):
       @patch('ZenUnitPy.CMake.generate', spec_set=True)

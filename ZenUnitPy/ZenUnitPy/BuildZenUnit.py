@@ -19,11 +19,11 @@ def main(args):
       if platformSystem == 'linux':
          linux_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions, installDirectory)
          Process.run('ZenUnitTests/ZenUnitTests')
-         optionally_install(cmakeBuildType, installDirectory)
+         install_if_debug_and_install_dir_specified(cmakeBuildType, installDirectory)
          os.chdir('..')
       else:
          windows_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions, installDirectory)
-         optionally_install(cmakeBuildType, installDirectory)
+         install_if_debug_and_install_dir_specified(cmakeBuildType, installDirectory)
 
 def linux_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions, installDirectory):
    casefoldedInstallDirectory = installDirectory.casefold()
@@ -32,9 +32,8 @@ def linux_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions, inst
    CMake.generate(cmakeBuildType, cmakeGenerator, cmakeBuildType, cmakeDefinitions, '..')
    Process.run('ninja -v')
 
-def optionally_install(cmakeBuildType, installDirectory):
-   casefoldedInstallDirectory = installDirectory.casefold()
-   if casefoldedInstallDirectory != 'noinstall':
+def install_if_debug_and_install_dir_specified(cmakeBuildType, installDirectory):
+   if cmakeBuildType == 'Debug' and installDirectory != 'NoInstall':
       zenUnitIncludeDirectory = os.path.join(installDirectory, 'include', 'ZenUnit')
       FileSystem.delete_folder_if_exists(zenUnitIncludeDirectory)
       installCommand = f'cmake --build . --target install --config {cmakeBuildType}'
