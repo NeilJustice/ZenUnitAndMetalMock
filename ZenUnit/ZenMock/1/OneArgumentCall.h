@@ -21,13 +21,16 @@ namespace ZenMock
    };
 }
 
-template<typename ArgType>
-struct ZenUnitEqualizer<ZenMock::OneArgumentCall<ArgType>>
+namespace ZenUnit
 {
-   static void AssertEqual(
-      const ZenMock::OneArgumentCall<ArgType>& expectedOneArgumentCall,
-      const ZenMock::OneArgumentCall<ArgType>& actualOneArgumentCall)
+   template<typename ArgType>
+   struct Equalizer<ZenMock::OneArgumentCall<ArgType>>
    {
-      ARE_EQUAL(expectedOneArgumentCall.argument, actualOneArgumentCall.argument);
-   }
-};
+      static void AssertEqual(
+         const ZenMock::OneArgumentCall<ArgType>& expectedOneArgumentCall,
+         const ZenMock::OneArgumentCall<ArgType>& actualOneArgumentCall)
+      {
+         ARE_EQUAL(expectedOneArgumentCall.argument, actualOneArgumentCall.argument);
+      }
+   };
+}

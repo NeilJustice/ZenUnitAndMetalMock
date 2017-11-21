@@ -13,15 +13,15 @@ namespace ZenUnit
    {
       ostringstream oss;
 
-      ZenUnitPrinter<map<TKey, TValue>>::Print(oss, {});
+      ZenUnit::Printer<map<TKey, TValue>>::Print(oss, {});
       ARE_EQUAL("std::map<TKey, TValue>", oss.str());
       oss = ostringstream();
 
-      ZenUnitPrinter<map<TKey, TValue, CustomLessComparator<TKey>>>::Print(oss, {});
+      ZenUnit::Printer<map<TKey, TValue, CustomLessComparator<TKey>>>::Print(oss, {});
       ARE_EQUAL("std::map<TKey, TValue>", oss.str());
       oss = ostringstream();
 
-      ZenUnitPrinter<map<TKey, TValue, CustomLessComparator<TKey>, CustomAllocator<pair<const TKey, TValue>>>>::Print(oss, {});
+      ZenUnit::Printer<map<TKey, TValue, CustomLessComparator<TKey>, CustomAllocator<pair<const TKey, TValue>>>>::Print(oss, {});
       ARE_EQUAL("std::map<TKey, TValue>", oss.str());
    }
 
@@ -29,19 +29,19 @@ namespace ZenUnit
    {
       ostringstream oss;
 
-      ZenUnitPrinter<unordered_map<TKey, TValue>>::Print(oss, {});
+      ZenUnit::Printer<unordered_map<TKey, TValue>>::Print(oss, {});
       ARE_EQUAL("std::unordered_map<TKey, TValue>", oss.str());
       oss = ostringstream();
 
-      ZenUnitPrinter<unordered_map<TKey, TValue, CustomHasher<TKey>>>::Print(oss, {});
+      ZenUnit::Printer<unordered_map<TKey, TValue, CustomHasher<TKey>>>::Print(oss, {});
       ARE_EQUAL("std::unordered_map<TKey, TValue>", oss.str());
       oss = ostringstream();
 
-      ZenUnitPrinter<unordered_map<TKey, TValue, CustomHasher<TKey>, CustomEqualityComparator<TKey>>>::Print(oss, {});
+      ZenUnit::Printer<unordered_map<TKey, TValue, CustomHasher<TKey>, CustomEqualityComparator<TKey>>>::Print(oss, {});
       ARE_EQUAL("std::unordered_map<TKey, TValue>", oss.str());
       oss = ostringstream();
 
-      ZenUnitPrinter<unordered_map<TKey, TValue, CustomHasher<TKey>, CustomEqualityComparator<TKey>, CustomAllocator<pair<const TKey, TValue>>>>::Print(oss, {});
+      ZenUnit::Printer<unordered_map<TKey, TValue, CustomHasher<TKey>, CustomEqualityComparator<TKey>, CustomAllocator<pair<const TKey, TValue>>>>::Print(oss, {});
       ARE_EQUAL("std::unordered_map<TKey, TValue>", oss.str());
    }
 

@@ -15,14 +15,14 @@ namespace ZenUnit
       std::string ToString() const;
       friend std::ostream& operator<<(std::ostream& os, const FileLine& fileLine);
    };
+
+   template<>
+   struct Equalizer<ZenUnit::FileLine>
+   {
+      static void AssertEqual(
+         const ZenUnit::FileLine& expectedFileLine,
+         const ZenUnit::FileLine& actualFileLine);
+   };
 }
 
 #define FILELINE ZenUnit::FileLine(ZenUnit::FileLiner::File(__FILE__), ZenUnit::FileLiner::Line(__LINE__))
-
-template<>
-struct ZenUnitEqualizer<ZenUnit::FileLine>
-{
-   static void AssertEqual(
-      const ZenUnit::FileLine& expectedFileLine,
-      const ZenUnit::FileLine& actualFileLine);
-};

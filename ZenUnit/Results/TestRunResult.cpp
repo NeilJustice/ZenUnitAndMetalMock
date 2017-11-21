@@ -168,12 +168,12 @@ namespace ZenUnit
          expectedTestRunResult._skippedFullTestNamesAndReasons,
          actualTestRunResult._skippedFullTestNamesAndReasons);
    }
-}
 
-INLINE void ZenUnitEqualizer<ZenUnit::TestRunResult>::
-AssertEqual(
-   const ZenUnit::TestRunResult& expectedTestRunResult,
-   const ZenUnit::TestRunResult& actualTestRunResult)
-{
-   ZenUnit::TestRunResult::AssertEqual(expectedTestRunResult, actualTestRunResult);
+   INLINE void Equalizer<ZenUnit::TestRunResult>::
+   AssertEqual(
+      const ZenUnit::TestRunResult& expectedTestRunResult,
+      const ZenUnit::TestRunResult& actualTestRunResult)
+   {
+      ZenUnit::TestRunResult::AssertEqual(expectedTestRunResult, actualTestRunResult);
+   }
 }

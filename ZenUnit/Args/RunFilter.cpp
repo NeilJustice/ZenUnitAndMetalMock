@@ -15,19 +15,16 @@ namespace ZenUnit
       , testCaseNumber(testCaseNumber)
    {
    }
-}
 
-INLINE void ZenUnitEqualizer<ZenUnit::RunFilter>::AssertEqual(
-   const ZenUnit::RunFilter& expectedRunFilter,
-   const ZenUnit::RunFilter& actualRunFilter)
-{
-   ARE_EQUAL(expectedRunFilter.testClassName, actualRunFilter.testClassName);
-   ARE_EQUAL(expectedRunFilter.testName, actualRunFilter.testName);
-   ARE_EQUAL(expectedRunFilter.testCaseNumber, actualRunFilter.testCaseNumber);
-}
+   INLINE void Equalizer<ZenUnit::RunFilter>::AssertEqual(
+      const ZenUnit::RunFilter& expectedRunFilter,
+      const ZenUnit::RunFilter& actualRunFilter)
+   {
+      ARE_EQUAL(expectedRunFilter.testClassName, actualRunFilter.testClassName);
+      ARE_EQUAL(expectedRunFilter.testName, actualRunFilter.testName);
+      ARE_EQUAL(expectedRunFilter.testCaseNumber, actualRunFilter.testCaseNumber);
+   }
 
-namespace ZenUnit
-{
    template<>
    INLINE RunFilter Random<RunFilter>()
    {

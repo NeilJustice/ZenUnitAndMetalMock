@@ -106,12 +106,12 @@ namespace ZenUnit
       testClassResult._testResults.resize(1);
       return testClassResult;
    }
-}
 
-INLINE void ZenUnitEqualizer<ZenUnit::TestClassResult>::
-AssertEqual(
-   const ZenUnit::TestClassResult& expectedTestClassResult,
-   const ZenUnit::TestClassResult& actualTestClassResult)
-{
-   ZenUnit::TestClassResult::AssertEqual(expectedTestClassResult, actualTestClassResult);
+   INLINE void Equalizer<ZenUnit::TestClassResult>::
+   AssertEqual(
+      const ZenUnit::TestClassResult& expectedTestClassResult,
+      const ZenUnit::TestClassResult& actualTestClassResult)
+   {
+      ZenUnit::TestClassResult::AssertEqual(expectedTestClassResult, actualTestClassResult);
+   }
 }

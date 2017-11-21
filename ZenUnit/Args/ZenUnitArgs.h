@@ -33,12 +33,12 @@ namespace ZenUnit
          static_assert(sizeof(ZenUnitArgs) == 88);
       #endif
    #endif
-}
 
-template<>
-struct ZenUnitEqualizer<ZenUnit::ZenUnitArgs>
-{
-   static void AssertEqual(
-      const ZenUnit::ZenUnitArgs& expectedArguments,
-      const ZenUnit::ZenUnitArgs& actualArgs);
-};
+   template<>
+   struct Equalizer<ZenUnit::ZenUnitArgs>
+   {
+      static void AssertEqual(
+         const ZenUnit::ZenUnitArgs& expectedArguments,
+         const ZenUnit::ZenUnitArgs& actualArgs);
+   };
+}

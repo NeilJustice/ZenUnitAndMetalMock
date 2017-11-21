@@ -25,9 +25,8 @@ int Program::Main(int argc, char* argv[]) const
 
 const string Program::CommandLineUsage = R"(ProgramName v0.1.0)";
 
-int Program::VectorMain(const vector<string>& args) const
+int Program::VectorMain(const vector<string>&) const
 {
-   assert(args.size() >= 1);
    return 0;
 }
 

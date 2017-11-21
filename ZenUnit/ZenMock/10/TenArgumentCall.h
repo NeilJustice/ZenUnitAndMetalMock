@@ -68,22 +68,25 @@ namespace ZenMock
    };
 }
 
-template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type, typename Arg10Type>
-struct ZenUnitEqualizer<ZenMock::TenArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
+namespace ZenUnit
 {
-   static void AssertEqual(
-      const ZenMock::TenArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& expectedTenArgumentCall,
-      const ZenMock::TenArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& actualTenArgumentCall)
+   template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type, typename Arg10Type>
+   struct Equalizer<ZenMock::TenArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
    {
-      ARE_EQUAL(expectedTenArgumentCall.firstArgument, actualTenArgumentCall.firstArgument);
-      ARE_EQUAL(expectedTenArgumentCall.secondArgument, actualTenArgumentCall.secondArgument);
-      ARE_EQUAL(expectedTenArgumentCall.thirdArgument, actualTenArgumentCall.thirdArgument);
-      ARE_EQUAL(expectedTenArgumentCall.fourthArgument, actualTenArgumentCall.fourthArgument);
-      ARE_EQUAL(expectedTenArgumentCall.fifthArgument, actualTenArgumentCall.fifthArgument);
-      ARE_EQUAL(expectedTenArgumentCall.sixthArgument, actualTenArgumentCall.sixthArgument);
-      ARE_EQUAL(expectedTenArgumentCall.seventhArgument, actualTenArgumentCall.seventhArgument);
-      ARE_EQUAL(expectedTenArgumentCall.eigthArgument, actualTenArgumentCall.eigthArgument);
-      ARE_EQUAL(expectedTenArgumentCall.ninthArgument, actualTenArgumentCall.ninthArgument);
-      ARE_EQUAL(expectedTenArgumentCall.tenthArgument, actualTenArgumentCall.tenthArgument);
-   }
-};
+      static void AssertEqual(
+         const ZenMock::TenArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& expectedTenArgumentCall,
+         const ZenMock::TenArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& actualTenArgumentCall)
+      {
+         ARE_EQUAL(expectedTenArgumentCall.firstArgument, actualTenArgumentCall.firstArgument);
+         ARE_EQUAL(expectedTenArgumentCall.secondArgument, actualTenArgumentCall.secondArgument);
+         ARE_EQUAL(expectedTenArgumentCall.thirdArgument, actualTenArgumentCall.thirdArgument);
+         ARE_EQUAL(expectedTenArgumentCall.fourthArgument, actualTenArgumentCall.fourthArgument);
+         ARE_EQUAL(expectedTenArgumentCall.fifthArgument, actualTenArgumentCall.fifthArgument);
+         ARE_EQUAL(expectedTenArgumentCall.sixthArgument, actualTenArgumentCall.sixthArgument);
+         ARE_EQUAL(expectedTenArgumentCall.seventhArgument, actualTenArgumentCall.seventhArgument);
+         ARE_EQUAL(expectedTenArgumentCall.eigthArgument, actualTenArgumentCall.eigthArgument);
+         ARE_EQUAL(expectedTenArgumentCall.ninthArgument, actualTenArgumentCall.ninthArgument);
+         ARE_EQUAL(expectedTenArgumentCall.tenthArgument, actualTenArgumentCall.tenthArgument);
+      }
+   };
+}

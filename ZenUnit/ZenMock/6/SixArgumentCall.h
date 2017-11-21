@@ -42,18 +42,21 @@ namespace ZenMock
    };
 }
 
-template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
-struct ZenUnitEqualizer<ZenMock::SixArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
+namespace ZenUnit
 {
-   static void AssertEqual(
-      const ZenMock::SixArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& expectedSixArgumentCall,
-      const ZenMock::SixArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& actualSixArgumentCall)
+   template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
+   struct Equalizer<ZenMock::SixArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
    {
-      ARE_EQUAL(expectedSixArgumentCall.firstArgument, actualSixArgumentCall.firstArgument);
-      ARE_EQUAL(expectedSixArgumentCall.secondArgument, actualSixArgumentCall.secondArgument);
-      ARE_EQUAL(expectedSixArgumentCall.thirdArgument, actualSixArgumentCall.thirdArgument);
-      ARE_EQUAL(expectedSixArgumentCall.fourthArgument, actualSixArgumentCall.fourthArgument);
-      ARE_EQUAL(expectedSixArgumentCall.fifthArgument, actualSixArgumentCall.fifthArgument);
-      ARE_EQUAL(expectedSixArgumentCall.sixthArgument, actualSixArgumentCall.sixthArgument);
-   }
-};
+      static void AssertEqual(
+         const ZenMock::SixArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& expectedSixArgumentCall,
+         const ZenMock::SixArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& actualSixArgumentCall)
+      {
+         ARE_EQUAL(expectedSixArgumentCall.firstArgument, actualSixArgumentCall.firstArgument);
+         ARE_EQUAL(expectedSixArgumentCall.secondArgument, actualSixArgumentCall.secondArgument);
+         ARE_EQUAL(expectedSixArgumentCall.thirdArgument, actualSixArgumentCall.thirdArgument);
+         ARE_EQUAL(expectedSixArgumentCall.fourthArgument, actualSixArgumentCall.fourthArgument);
+         ARE_EQUAL(expectedSixArgumentCall.fifthArgument, actualSixArgumentCall.fifthArgument);
+         ARE_EQUAL(expectedSixArgumentCall.sixthArgument, actualSixArgumentCall.sixthArgument);
+      }
+   };
+}

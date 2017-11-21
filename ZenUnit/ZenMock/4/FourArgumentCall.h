@@ -30,16 +30,19 @@ namespace ZenMock
    };
 }
 
-template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
-struct ZenUnitEqualizer<ZenMock::FourArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
+namespace ZenUnit
 {
-   static void AssertEqual(
-      const ZenMock::FourArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& expectedFourArgumentCall,
-      const ZenMock::FourArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& actualFourArgumentCall)
-    {
-       ARE_EQUAL(expectedFourArgumentCall.firstArgument, actualFourArgumentCall.firstArgument);
-       ARE_EQUAL(expectedFourArgumentCall.secondArgument, actualFourArgumentCall.secondArgument);
-       ARE_EQUAL(expectedFourArgumentCall.thirdArgument, actualFourArgumentCall.thirdArgument);
-       ARE_EQUAL(expectedFourArgumentCall.fourthArgument, actualFourArgumentCall.fourthArgument);
-    }
-};
+   template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
+   struct Equalizer<ZenMock::FourArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
+   {
+      static void AssertEqual(
+         const ZenMock::FourArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& expectedFourArgumentCall,
+         const ZenMock::FourArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& actualFourArgumentCall)
+       {
+          ARE_EQUAL(expectedFourArgumentCall.firstArgument, actualFourArgumentCall.firstArgument);
+          ARE_EQUAL(expectedFourArgumentCall.secondArgument, actualFourArgumentCall.secondArgument);
+          ARE_EQUAL(expectedFourArgumentCall.thirdArgument, actualFourArgumentCall.thirdArgument);
+          ARE_EQUAL(expectedFourArgumentCall.fourthArgument, actualFourArgumentCall.fourthArgument);
+       }
+   };
+}

@@ -10,11 +10,11 @@ namespace ZenUnit
    TEST(ZenUnitPrinter_Print_PrintsPlaceholderText)
    {
       ostringstream oss;
-      ZenUnitPrinter<vector<int>>::Print(oss, {});
+      ZenUnit::Printer<vector<int>>::Print(oss, {});
       ARE_EQUAL("vector<T>", oss.str());
       oss = ostringstream();
 
-      ZenUnitPrinter<vector<int, CustomAllocator<int>>>::Print(oss, {});
+      ZenUnit::Printer<vector<int, CustomAllocator<int>>>::Print(oss, {});
       ARE_EQUAL("vector<T>", oss.str());
    }
 

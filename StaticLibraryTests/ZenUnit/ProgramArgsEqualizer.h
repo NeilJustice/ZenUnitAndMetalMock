@@ -1,10 +1,13 @@
 #pragma once
 #include "StaticLibrary/ProgramArgs.h"
 
-template<>
-struct ZenUnitEqualizer<ProgramArgs>
+namespace ZenUnit
 {
-   static void AssertEqual(
-      const ProgramArgs& expectedProgramArgs,
-      const ProgramArgs& actualProgramArgs);
-};
+   template<>
+   struct Equalizer<ProgramArgs>
+   {
+      static void AssertEqual(
+         const ProgramArgs& expectedProgramArgs,
+         const ProgramArgs& actualProgramArgs);
+   };
+}

@@ -131,11 +131,11 @@ namespace ZenUnit
       {
          if constexpr (has_ZenUnitPrinter<T>::value && has_ostream_left_shift<T>::value)
          {
-            ::ZenUnitPrinter<T>::Print(os, value);
+            ZenUnit::Printer<T>::Print(os, value);
          }
          if constexpr (has_ZenUnitPrinter<T>::value && !has_ostream_left_shift<T>::value)
          {
-            ::ZenUnitPrinter<T>::Print(os, value);
+            ZenUnit::Printer<T>::Print(os, value);
          }
          else if constexpr (!has_ZenUnitPrinter<T>::value && has_ostream_left_shift<T>::value)
          {

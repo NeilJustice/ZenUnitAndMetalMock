@@ -10,15 +10,18 @@ namespace Namespace
    };
 }
 
-template<>
-struct ZenUnitEqualizer<Namespace::TestStruct>
+namespace ZenUnit
 {
-   static void AssertEqual(const Namespace::TestStruct& expected, const Namespace::TestStruct& actual)
+   template<>
+   struct Equalizer<Namespace::TestStruct>
    {
-      ARE_EQUAL(expected.fieldA, actual.fieldA);
-      // Absence of line ARE_EQUAL(expected.fieldB, actual.fieldB);
-   }
-};
+      static void AssertEqual(const Namespace::TestStruct& expected, const Namespace::TestStruct& actual)
+      {
+         ARE_EQUAL(expected.fieldA, actual.fieldA);
+         // Absence of line ARE_EQUAL(expected.fieldB, actual.fieldB);
+      }
+   };
+}
 
 struct TestStructB
 {
@@ -31,26 +34,26 @@ struct TestStructB
 const int TestStructB::ThrowWithoutFieldNameInWhatText = 1;
 const int TestStructB::ThrowWithFieldNameInWhatText = 2;
 
-template<>
-struct ZenUnitEqualizer<TestStructB>
-{
-   static void AssertEqual(const TestStructB& expected, const TestStructB&)
-   {
-      if (expected.field == TestStructB::ThrowWithoutFieldNameInWhatText)
-      {
-         throw Anomaly();
-      }
-      if (expected.field == TestStructB::ThrowWithFieldNameInWhatText)
-      {
-         Anomaly anomaly;
-         anomaly.expected = "field";
-         throw anomaly;
-      }
-   }
-};
-
 namespace ZenUnit
 {
+   template<>
+   struct Equalizer<TestStructB>
+   {
+      static void AssertEqual(const TestStructB& expected, const TestStructB&)
+      {
+         if (expected.field == TestStructB::ThrowWithoutFieldNameInWhatText)
+         {
+            throw Anomaly();
+         }
+         if (expected.field == TestStructB::ThrowWithFieldNameInWhatText)
+         {
+            Anomaly anomaly;
+            anomaly.expected = "field";
+            throw anomaly;
+         }
+      }
+   };
+
    TESTS(EQUALIZER_THROWSTests)
    AFACT(EqualizerDoesNotAssertSpecifiedFieldEqual_Throws)
    AFACT(EqualizerThrowsAnomalyThatDoesNotContainFieldName_Throws)
@@ -63,7 +66,7 @@ namespace ZenUnit
       EQUALIZER_THROWS_INIT(Namespace::TestStruct);
       THROWS(EQUALIZER_THROWS(Namespace::TestStruct, fieldB, 1), Anomaly, R"(
   Failed: EQUALIZER_THROWS(Namespace::TestStruct, fieldB, 1)
-Expected: Function ZenUnitEqualizer<Namespace::TestStruct>::AssertEqual(expected, actual)
+Expected: Function ZenUnit::Equalizer<Namespace::TestStruct>::AssertEqual(expected, actual)
           to throw a ZenUnit::Anomaly from an
           ARE_EQUAL(expected.fieldB, actual.fieldB) assert statement.
   Actual: No ZenUnit::Anomaly thrown despite field 'fieldB'

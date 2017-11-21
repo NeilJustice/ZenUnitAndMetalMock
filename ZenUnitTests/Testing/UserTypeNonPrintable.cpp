@@ -20,8 +20,11 @@ bool operator==(const UserTypeNonPrintable& left, const UserTypeNonPrintable& ri
    return isEqual;
 }
 
-void ZenUnitEqualizer<UserTypeNonPrintable>::
-AssertEqual(const UserTypeNonPrintable& expected, const UserTypeNonPrintable& actual)
+namespace ZenUnit
 {
-   ARE_EQUAL(expected.x, actual.x);
+   void Equalizer<UserTypeNonPrintable>::
+   AssertEqual(const UserTypeNonPrintable& expected, const UserTypeNonPrintable& actual)
+   {
+      ARE_EQUAL(expected.x, actual.x);
+   }
 }

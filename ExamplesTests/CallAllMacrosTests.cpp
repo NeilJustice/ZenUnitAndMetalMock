@@ -6,15 +6,18 @@ struct Struct
    char secondField = 0;
 };
 
-template<>
-struct ZenUnitEqualizer<Struct>
+namespace ZenUnit
 {
-   static void AssertEqual(const Struct& expectedStruct, const Struct& actualStruct)
+   template<>
+   struct Equalizer<Struct>
    {
-      ARE_EQUAL(expectedStruct.firstField, actualStruct.firstField);
-      ARE_EQUAL(expectedStruct.secondField, actualStruct.secondField);
-   }
-};
+      static void AssertEqual(const Struct& expectedStruct, const Struct& actualStruct)
+      {
+         ARE_EQUAL(expectedStruct.firstField, actualStruct.firstField);
+         ARE_EQUAL(expectedStruct.secondField, actualStruct.secondField);
+      }
+   };
+}
 
 TESTS(CallAllMacrosTests)
 AFACT(CallAllMacros)
@@ -62,7 +65,7 @@ TEST(CallAllMacros)
    // Regular Expressions
    REGEX_MATCHES(R"(\d\d\d)", "123");
 
-   // ZenUnitEqualizer
+   // Equalizers
    EQUALIZER_THROWS_INIT(Struct);
    EQUALIZER_THROWS(Struct, firstField, 1);
    EQUALIZER_THROWS(Struct, secondField, 'A');

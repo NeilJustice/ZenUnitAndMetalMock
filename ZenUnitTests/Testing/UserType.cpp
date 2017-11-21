@@ -29,14 +29,16 @@ UserType::operator bool() const
    return isTrue;
 }
 
-void ZenUnitEqualizer<UserType>::
-AssertEqual(const UserType& expectedUserType, const UserType& actualUserType)
+namespace ZenUnit
 {
-   ARE_EQUAL(expectedUserType.value, actualUserType.value);
-}
+   void Equalizer<UserType>::
+   AssertEqual(const UserType& expectedUserType, const UserType& actualUserType)
+   {
+      ARE_EQUAL(expectedUserType.value, actualUserType.value);
+   }
 
-void ZenUnitPrinter<UserType>::
-Print(ostream& os, const UserType& userType)
-{
-   os << "UserType@" << userType.value;
+   void Printer<UserType>::Print(ostream& os, const UserType& userType)
+   {
+      os << "UserType@" << userType.value;
+   }
 }

@@ -60,12 +60,12 @@ namespace ZenUnit
       void PrintSkippedTestClassReminder(const std::string& skippedTestClassNameAndReason) const;
       void PrintSkippedTestReminder(const std::string& skippedFullTestNameAndReason) const;
    };
-}
 
-template<>
-struct ZenUnitEqualizer<ZenUnit::TestRunResult>
-{
-   static void AssertEqual(
-      const ZenUnit::TestRunResult& expectedTestRunResult,
-      const ZenUnit::TestRunResult& actualTestRunResult);
-};
+   template<>
+   struct Equalizer<ZenUnit::TestRunResult>
+   {
+      static void AssertEqual(
+         const ZenUnit::TestRunResult& expectedTestRunResult,
+         const ZenUnit::TestRunResult& actualTestRunResult);
+   };
+}

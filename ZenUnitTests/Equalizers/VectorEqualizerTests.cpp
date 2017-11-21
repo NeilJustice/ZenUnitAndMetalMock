@@ -12,9 +12,9 @@ namespace ZenUnit
    {
       vector<int> expectedIntVector;
       const vector<int> actualIntVector;
-      ZenUnitEqualizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector);
+      Equalizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector);
       expectedIntVector.push_back(1);
-      THROWS(ZenUnitEqualizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector), Anomaly, R"(
+      THROWS(Equalizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedVector, actualVector)
 Expected: vector<T>
   Actual: vector<T>
@@ -29,9 +29,9 @@ File.cpp(1))");
    {
       vector<string> expectedStringVector;
       const vector<string> actualStringVector;
-      ZenUnitEqualizer<vector<string>>::AssertEqual(expectedStringVector, actualStringVector);
+      Equalizer<vector<string>>::AssertEqual(expectedStringVector, actualStringVector);
       expectedStringVector.emplace_back();
-      THROWS(ZenUnitEqualizer<vector<string>>::AssertEqual(
+      THROWS(Equalizer<vector<string>>::AssertEqual(
          expectedStringVector Comma actualStringVector), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedVector, actualVector)
 Expected: vector<T>
@@ -47,9 +47,9 @@ File.cpp(1))");
    {
       vector<UserType> expectedUserTypeVector;
       const vector<UserType> actualUserTypeVector;
-      ZenUnitEqualizer<vector<UserType>>::AssertEqual(expectedUserTypeVector, actualUserTypeVector);
+      Equalizer<vector<UserType>>::AssertEqual(expectedUserTypeVector, actualUserTypeVector);
       expectedUserTypeVector.emplace_back();
-      THROWS(ZenUnitEqualizer<vector<UserType>>::AssertEqual(
+      THROWS(Equalizer<vector<UserType>>::AssertEqual(
          expectedUserTypeVector Comma actualUserTypeVector), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedVector, actualVector)
 Expected: vector<T>

@@ -13,18 +13,15 @@ namespace ZenUnit
       RunFilter();
       RunFilter(const std::string& testClassName, const std::string& testName, unsigned testCaseNumber);
    };
-}
 
-template<>
-struct ZenUnitEqualizer<ZenUnit::RunFilter>
-{
-   static void AssertEqual(
-      const ZenUnit::RunFilter& expectedRunFilter,
-      const ZenUnit::RunFilter& actualRunFilter);
-};
+   template<>
+   struct Equalizer<ZenUnit::RunFilter>
+   {
+      static void AssertEqual(
+         const ZenUnit::RunFilter& expectedRunFilter,
+         const ZenUnit::RunFilter& actualRunFilter);
+   };
 
-namespace ZenUnit
-{
    template<>
    RunFilter Random<RunFilter>();
 }

@@ -20,14 +20,14 @@ namespace ZenUnit
       , milliseconds(0)
    {
    }
-}
 
-INLINE void ZenUnitEqualizer<ZenUnit::CallResult>::AssertEqual(
-   const ZenUnit::CallResult& expectedCallResult,
-   const ZenUnit::CallResult& actualCallResult)
-{
-   ARE_EQUAL(expectedCallResult.testPhase, actualCallResult.testPhase);
-   ARE_EQUAL(expectedCallResult.testOutcome, actualCallResult.testOutcome);
-   ARE_EQUAL(expectedCallResult.milliseconds, actualCallResult.milliseconds);
-   POINTEES_EQUAL(expectedCallResult.anomalyOrException, actualCallResult.anomalyOrException);
+   INLINE void Equalizer<ZenUnit::CallResult>::AssertEqual(
+      const ZenUnit::CallResult& expectedCallResult,
+      const ZenUnit::CallResult& actualCallResult)
+   {
+      ARE_EQUAL(expectedCallResult.testPhase, actualCallResult.testPhase);
+      ARE_EQUAL(expectedCallResult.testOutcome, actualCallResult.testOutcome);
+      ARE_EQUAL(expectedCallResult.milliseconds, actualCallResult.milliseconds);
+      POINTEES_EQUAL(expectedCallResult.anomalyOrException, actualCallResult.anomalyOrException);
+   }
 }

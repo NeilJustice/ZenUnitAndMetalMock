@@ -2,12 +2,14 @@
 #include <iostream>
 #include <vector>
 
-template<typename T, typename Allocator>
-struct ZenUnitPrinter<std::vector<T, Allocator>>
+namespace ZenUnit
 {
-   static void Print(std::ostream& os, const std::vector<T, Allocator>&)
+   template<typename T, typename Allocator>
+   struct Printer<std::vector<T, Allocator>>
    {
-      // Placeholder
-      os << "vector<T>";
-   }
-};
+      static void Print(std::ostream& os, const std::vector<T, Allocator>&)
+      {
+         os << "vector<T>";
+      }
+   };
+}

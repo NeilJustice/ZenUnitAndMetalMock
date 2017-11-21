@@ -1,10 +1,13 @@
 #include "pch.h"
 #include "StaticLibrary/ProgramArgs.h"
 
-template<>
-void ZenUnitEqualizer<ProgramArgs>::AssertEqual(
-   const ProgramArgs& expectedProgramArgs,
-   const ProgramArgs& actualProgramArgs)
+namespace ZenUnit
 {
-   ARE_EQUAL(expectedProgramArgs.argument1, actualProgramArgs.argument1);
+   template<>
+   void Equalizer<ProgramArgs>::AssertEqual(
+      const ProgramArgs& expectedProgramArgs,
+      const ProgramArgs& actualProgramArgs)
+   {
+      ARE_EQUAL(expectedProgramArgs.argument1, actualProgramArgs.argument1);
+   }
 }

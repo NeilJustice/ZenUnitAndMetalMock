@@ -29,12 +29,12 @@ namespace ZenUnit
          static_assert(sizeof(CallResult) == 24);
       #endif
    #endif
-}
 
-template<>
-struct ZenUnitEqualizer<ZenUnit::CallResult>
-{
-   static void AssertEqual(
-      const ZenUnit::CallResult& expectedCallResult,
-      const ZenUnit::CallResult& actualCallResult);
-};
+   template<>
+   struct Equalizer<ZenUnit::CallResult>
+   {
+      static void AssertEqual(
+         const ZenUnit::CallResult& expectedCallResult,
+         const ZenUnit::CallResult& actualCallResult);
+   };
+}

@@ -26,12 +26,12 @@ namespace ZenUnit
          static_assert(sizeof(FullTestName) == 24);
       #endif
    #endif
-}
 
-template<>
-struct ZenUnitEqualizer<ZenUnit::FullTestName>
-{
-   static void AssertEqual(
-      const ZenUnit::FullTestName& expectedFullTestName,
-      const ZenUnit::FullTestName& actualFullTestName);
-};
+   template<>
+   struct Equalizer<ZenUnit::FullTestName>
+   {
+      static void AssertEqual(
+         const ZenUnit::FullTestName& expectedFullTestName,
+         const ZenUnit::FullTestName& actualFullTestName);
+   };
+}

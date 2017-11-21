@@ -8,16 +8,19 @@ struct NonDefaultConstructible
       : x(x) {}
 };
 
-template<>
-struct ZenUnitEqualizer<NonDefaultConstructible>
+namespace ZenUnit
 {
-   static void AssertEqual(
-      const NonDefaultConstructible& expected,
-      const NonDefaultConstructible& actual)
+   template<>
+   struct Equalizer<NonDefaultConstructible>
    {
-      ARE_EQUAL(expected.x, actual.x);
-   }
-};
+      static void AssertEqual(
+         const NonDefaultConstructible& expected,
+         const NonDefaultConstructible& actual)
+      {
+         ARE_EQUAL(expected.x, actual.x);
+      }
+   };
+}
 
 namespace ZenMock
 {

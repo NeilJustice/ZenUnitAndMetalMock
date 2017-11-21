@@ -1,7 +1,10 @@
 #pragma once
 
-template<typename T>
-struct ZenUnitPrinter;
+namespace ZenUnit
+{
+   template<typename T>
+   struct Printer;
+}
 
 #include "ZenUnit/ToStringer/ZenUnitPrinter/MapZenUnitPrinter.h"
 #include "ZenUnit/ToStringer/ZenUnitPrinter/SetZenUnitPrinter.h"
@@ -14,7 +17,7 @@ namespace ZenUnit
    {
    private:
       template<typename U>
-      static auto SFINAE(std::ostream& os, const U& value) -> decltype(::ZenUnitPrinter<U>::Print(os, value));
+      static auto SFINAE(std::ostream& os, const U& value) -> decltype(ZenUnit::Printer<U>::Print(os, value));
       template<typename U>
       static std::false_type SFINAE(...);
    public:

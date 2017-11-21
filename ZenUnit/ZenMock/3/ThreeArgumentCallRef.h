@@ -26,30 +26,33 @@ namespace ZenMock
    };
 }
 
-template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
-struct ZenUnitEqualizer<ZenMock::ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>>
+namespace ZenUnit
 {
-   static void AssertEqual(
-      const ZenMock::ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>& expectedThreeArgumentCall,
-      const ZenMock::ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>& actualThreeArgumentCall)
+   template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
+   struct Equalizer<ZenMock::ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>>
    {
-      ARE_EQUAL(expectedThreeArgumentCall.firstArgument, actualThreeArgumentCall.firstArgument);
-      ARE_EQUAL(expectedThreeArgumentCall.secondArgument, actualThreeArgumentCall.secondArgument);
-      ARE_EQUAL(expectedThreeArgumentCall.thirdArgument, actualThreeArgumentCall.thirdArgument);
-   }
-};
+      static void AssertEqual(
+         const ZenMock::ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>& expectedThreeArgumentCall,
+         const ZenMock::ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>& actualThreeArgumentCall)
+      {
+         ARE_EQUAL(expectedThreeArgumentCall.firstArgument, actualThreeArgumentCall.firstArgument);
+         ARE_EQUAL(expectedThreeArgumentCall.secondArgument, actualThreeArgumentCall.secondArgument);
+         ARE_EQUAL(expectedThreeArgumentCall.thirdArgument, actualThreeArgumentCall.thirdArgument);
+      }
+   };
 
-template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
-struct ZenUnitPrinter<ZenMock::ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>>
-{
-   static void Print(std::ostream& os, const ZenMock::ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>& threeArgumentCallRef)
+   template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
+   struct Printer<ZenMock::ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>>
    {
-      const std::string toStringedArg1 = ZenUnit::ToStringer::ToString(threeArgumentCallRef.firstArgument);
-      const std::string toStringedArg2 = ZenUnit::ToStringer::ToString(threeArgumentCallRef.secondArgument);
-      const std::string toStringedArg3 = ZenUnit::ToStringer::ToString(threeArgumentCallRef.thirdArgument);
-      os << "ZenMock::ThreeArgumentCall:\n"
-            "Arg1: " << toStringedArg1 << '\n' <<
-            "Arg2: " << toStringedArg2 << '\n' <<
-            "Arg3: " << toStringedArg3;
-   }
-};
+      static void Print(std::ostream& os, const ZenMock::ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>& threeArgumentCallRef)
+      {
+         const std::string toStringedArg1 = ZenUnit::ToStringer::ToString(threeArgumentCallRef.firstArgument);
+         const std::string toStringedArg2 = ZenUnit::ToStringer::ToString(threeArgumentCallRef.secondArgument);
+         const std::string toStringedArg3 = ZenUnit::ToStringer::ToString(threeArgumentCallRef.thirdArgument);
+         os << "ZenMock::ThreeArgumentCall:\n"
+               "Arg1: " << toStringedArg1 << '\n' <<
+               "Arg2: " << toStringedArg2 << '\n' <<
+               "Arg3: " << toStringedArg3;
+      }
+   };
+}

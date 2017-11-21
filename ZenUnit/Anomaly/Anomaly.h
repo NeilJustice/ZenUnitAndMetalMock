@@ -150,8 +150,11 @@ namespace ZenUnit
    #endif
 }
 
-template<>
-struct ZenUnitEqualizer<ZenUnit::Anomaly>
+namespace ZenUnit
 {
-   static void AssertEqual(const ZenUnit::Anomaly& expectedAnomaly, const ZenUnit::Anomaly& actualAnomaly);
-};
+   template<>
+   struct Equalizer<ZenUnit::Anomaly>
+   {
+      static void AssertEqual(const ZenUnit::Anomaly& expectedAnomaly, const ZenUnit::Anomaly& actualAnomaly);
+   };
+}

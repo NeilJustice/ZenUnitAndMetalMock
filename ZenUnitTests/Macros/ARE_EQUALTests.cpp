@@ -4,52 +4,52 @@ struct EqualizerOneTypeTestStruct {};
 struct EqualizerTwoTypeTestStruct {};
 struct EqualizerBothOneAndTwoTypeTestStruct {};
 
-template<>
-struct ZenUnitEqualizer<EqualizerOneTypeTestStruct>
-{
-   static void AssertEqual(
-      const EqualizerOneTypeTestStruct&,
-      const EqualizerOneTypeTestStruct&)
-   {
-      ARE_EQUAL(10, 20);
-   }
-};
-
-template<>
-struct TwoTypeZenUnitEqualizer<EqualizerTwoTypeTestStruct, int>
-{
-   static void AssertEqual(const EqualizerTwoTypeTestStruct&, const int&)
-   {
-      ARE_EQUAL(30, 40);
-   }
-};
-
-template<>
-struct ZenUnitEqualizer<EqualizerBothOneAndTwoTypeTestStruct>
-{
-   static void AssertEqual(
-      const EqualizerBothOneAndTwoTypeTestStruct&,
-      const EqualizerBothOneAndTwoTypeTestStruct&)
-   {
-      ARE_EQUAL(50, 60);
-   }
-};
-
-template<>
-struct TwoTypeZenUnitEqualizer<
-  EqualizerBothOneAndTwoTypeTestStruct,
-  EqualizerBothOneAndTwoTypeTestStruct>
-{
-   static void AssertEqual(
-      const EqualizerBothOneAndTwoTypeTestStruct&,
-      const EqualizerBothOneAndTwoTypeTestStruct&)
-   {
-      ARE_EQUAL(70, 80);
-   }
-};
-
 namespace ZenUnit
 {
+   template<>
+   struct Equalizer<EqualizerOneTypeTestStruct>
+   {
+      static void AssertEqual(
+         const EqualizerOneTypeTestStruct&,
+         const EqualizerOneTypeTestStruct&)
+      {
+         ARE_EQUAL(10, 20);
+      }
+   };
+
+   template<>
+   struct TwoTypeEqualizer<EqualizerTwoTypeTestStruct, int>
+   {
+      static void AssertEqual(const EqualizerTwoTypeTestStruct&, const int&)
+      {
+         ARE_EQUAL(30, 40);
+      }
+   };
+
+   template<>
+   struct Equalizer<EqualizerBothOneAndTwoTypeTestStruct>
+   {
+      static void AssertEqual(
+         const EqualizerBothOneAndTwoTypeTestStruct&,
+         const EqualizerBothOneAndTwoTypeTestStruct&)
+      {
+         ARE_EQUAL(50, 60);
+      }
+   };
+
+   template<>
+   struct TwoTypeEqualizer<
+     EqualizerBothOneAndTwoTypeTestStruct,
+     EqualizerBothOneAndTwoTypeTestStruct>
+   {
+      static void AssertEqual(
+         const EqualizerBothOneAndTwoTypeTestStruct&,
+         const EqualizerBothOneAndTwoTypeTestStruct&)
+      {
+         ARE_EQUAL(70, 80);
+      }
+   };
+
    TESTS(ARE_EQUALTests)
    AFACT(OneTypeEqualizerDefined_CallsIt)
    AFACT(TwoTypeEqualizerDefined_CallsIt)

@@ -211,19 +211,19 @@ namespace ZenUnit
    {
       return TestResult::ConstructorFail(FullTestName("Non", "Default", 0), CallResult());
    }
-}
 
-INLINE void ZenUnitEqualizer<ZenUnit::TestResult>::
-AssertEqual(const ZenUnit::TestResult& expectedTestResult, const ZenUnit::TestResult& actualTestResult)
-{
-   ARE_EQUAL(expectedTestResult.fullTestName, actualTestResult.fullTestName);
-   ARE_EQUAL(expectedTestResult.constructorCallResult, actualTestResult.constructorCallResult);
-   ARE_EQUAL(expectedTestResult.startupCallResult, actualTestResult.startupCallResult);
-   ARE_EQUAL(expectedTestResult.testBodyCallResult, actualTestResult.testBodyCallResult);
-   ARE_EQUAL(expectedTestResult.cleanupCallResult, actualTestResult.cleanupCallResult);
-   ARE_EQUAL(expectedTestResult.destructorCallResult, actualTestResult.destructorCallResult);
-   ARE_EQUAL(expectedTestResult.responsibleCallResultField, actualTestResult.responsibleCallResultField);
-   ARE_EQUAL(expectedTestResult.testOutcome, actualTestResult.testOutcome);
-   ARE_EQUAL(expectedTestResult.testCaseIndex, actualTestResult.testCaseIndex);
-   ARE_EQUAL(expectedTestResult.milliseconds, actualTestResult.milliseconds);
+   INLINE void Equalizer<ZenUnit::TestResult>::
+   AssertEqual(const ZenUnit::TestResult& expectedTestResult, const ZenUnit::TestResult& actualTestResult)
+   {
+      ARE_EQUAL(expectedTestResult.fullTestName, actualTestResult.fullTestName);
+      ARE_EQUAL(expectedTestResult.constructorCallResult, actualTestResult.constructorCallResult);
+      ARE_EQUAL(expectedTestResult.startupCallResult, actualTestResult.startupCallResult);
+      ARE_EQUAL(expectedTestResult.testBodyCallResult, actualTestResult.testBodyCallResult);
+      ARE_EQUAL(expectedTestResult.cleanupCallResult, actualTestResult.cleanupCallResult);
+      ARE_EQUAL(expectedTestResult.destructorCallResult, actualTestResult.destructorCallResult);
+      ARE_EQUAL(expectedTestResult.responsibleCallResultField, actualTestResult.responsibleCallResultField);
+      ARE_EQUAL(expectedTestResult.testOutcome, actualTestResult.testOutcome);
+      ARE_EQUAL(expectedTestResult.testCaseIndex, actualTestResult.testCaseIndex);
+      ARE_EQUAL(expectedTestResult.milliseconds, actualTestResult.milliseconds);
+   }
 }

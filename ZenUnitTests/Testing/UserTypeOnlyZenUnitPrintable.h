@@ -4,8 +4,11 @@ struct UserTypeOnlyZenUnitPrintable
 {
 };
 
-template<>
-struct ZenUnitPrinter<UserTypeOnlyZenUnitPrintable>
+namespace ZenUnit
 {
-   static void Print(ostream& os, const UserTypeOnlyZenUnitPrintable& value);
-};
+   template<>
+   struct Printer<UserTypeOnlyZenUnitPrintable>
+   {
+      static void Print(ostream& os, const UserTypeOnlyZenUnitPrintable& value);
+   };
+}

@@ -23,14 +23,17 @@ namespace ZenMock
    };
 }
 
-template<typename Arg1Type, typename Arg2Type>
-struct ZenUnitEqualizer<ZenMock::TwoArgumentCall<Arg1Type, Arg2Type>>
+namespace ZenUnit
 {
-   static void AssertEqual(
-      const ZenMock::TwoArgumentCall<Arg1Type, Arg2Type>& expectedTwoArgumentCall,
-      const ZenMock::TwoArgumentCall<Arg1Type, Arg2Type>& actualTwoArgumentCall)
+   template<typename Arg1Type, typename Arg2Type>
+   struct Equalizer<ZenMock::TwoArgumentCall<Arg1Type, Arg2Type>>
    {
-      ARE_EQUAL(expectedTwoArgumentCall.firstArgument, actualTwoArgumentCall.firstArgument);
-      ARE_EQUAL(expectedTwoArgumentCall.secondArgument, actualTwoArgumentCall.secondArgument);
-   }
-};
+      static void AssertEqual(
+         const ZenMock::TwoArgumentCall<Arg1Type, Arg2Type>& expectedTwoArgumentCall,
+         const ZenMock::TwoArgumentCall<Arg1Type, Arg2Type>& actualTwoArgumentCall)
+      {
+         ARE_EQUAL(expectedTwoArgumentCall.firstArgument, actualTwoArgumentCall.firstArgument);
+         ARE_EQUAL(expectedTwoArgumentCall.secondArgument, actualTwoArgumentCall.secondArgument);
+      }
+   };
+}

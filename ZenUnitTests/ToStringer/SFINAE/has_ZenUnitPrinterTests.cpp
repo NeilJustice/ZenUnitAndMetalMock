@@ -2,29 +2,33 @@
 #include "Testing/UserTypeInsOpAndZenUnitPrintable.h"
 #include "Testing/UserTypeOnlyZenUnitPrintable.h"
 
-struct NonConstReferenceZenUnitPrint {};
-template<>
-struct ZenUnitPrinter<NonConstReferenceZenUnitPrint>
-{
-   static void Print(ostream&, NonConstReferenceZenUnitPrint&);
-};
-
-struct RValueReferenceZenUnitPrint {};
-template<>
-struct ZenUnitPrinter<RValueReferenceZenUnitPrint>
-{
-   static void Print(ostream&, RValueReferenceZenUnitPrint&&);
-};
-
 namespace Namespace
 {
    struct StructInsideNamespace_ZenUnitPrintOutsideNamespace {};
 }
-template<>
-struct ZenUnitPrinter<Namespace::StructInsideNamespace_ZenUnitPrintOutsideNamespace>
+
+namespace ZenUnit
 {
-   static void Print(ostream&, const Namespace::StructInsideNamespace_ZenUnitPrintOutsideNamespace&);
-};
+   struct NonConstReferenceZenUnitPrint {};
+   template<>
+   struct Printer<NonConstReferenceZenUnitPrint>
+   {
+      static void Print(ostream&, NonConstReferenceZenUnitPrint&);
+   };
+
+   struct RValueReferenceZenUnitPrint {};
+   template<>
+   struct Printer<RValueReferenceZenUnitPrint>
+   {
+      static void Print(ostream&, RValueReferenceZenUnitPrint&&);
+   };
+
+   template<>
+   struct Printer<Namespace::StructInsideNamespace_ZenUnitPrintOutsideNamespace>
+   {
+      static void Print(ostream&, const Namespace::StructInsideNamespace_ZenUnitPrintOutsideNamespace&);
+   };
+}
 
 namespace ZenUnit
 {

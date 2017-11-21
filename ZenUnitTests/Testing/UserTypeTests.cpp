@@ -48,9 +48,9 @@ TEST(ZenUnitPrint_WritesExpected_ReturnOStream)
    const UserType userTypeNegative1(-1);
    ostringstream oss;
    //
-   ZenUnitPrinter<UserType>::Print(oss, userType1);
+   ZenUnit::Printer<UserType>::Print(oss, userType1);
    oss << " ";
-   ZenUnitPrinter<UserType>::Print(oss, userTypeNegative1);
+   ZenUnit::Printer<UserType>::Print(oss, userTypeNegative1);
    //
    ARE_EQUAL("UserType@1 UserType@-1", oss.str());
 }

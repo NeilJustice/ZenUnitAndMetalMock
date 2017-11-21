@@ -26,13 +26,12 @@ namespace ZenUnit
       os << fileLine.filePath << '(' << fileLine.lineNumber << ')';
       return os;
    }
-}
 
-INLINE void ZenUnitEqualizer<ZenUnit::FileLine>::
-AssertEqual(
-   const ZenUnit::FileLine& expectedFileLine,
-   const ZenUnit::FileLine& actualFileLine)
-{
-   ARE_EQUAL(expectedFileLine.filePath, actualFileLine.filePath);
-   ARE_EQUAL(expectedFileLine.lineNumber, actualFileLine.lineNumber);
+   INLINE void Equalizer<ZenUnit::FileLine>::AssertEqual(
+      const ZenUnit::FileLine& expectedFileLine,
+      const ZenUnit::FileLine& actualFileLine)
+   {
+      ARE_EQUAL(expectedFileLine.filePath, actualFileLine.filePath);
+      ARE_EQUAL(expectedFileLine.lineNumber, actualFileLine.lineNumber);
+   }
 }

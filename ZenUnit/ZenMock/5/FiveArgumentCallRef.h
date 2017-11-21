@@ -37,36 +37,39 @@ namespace ZenMock
    };
 }
 
-template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
-struct ZenUnitEqualizer<ZenMock::FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
+namespace ZenUnit
 {
-   static void AssertEqual(
-      const ZenMock::FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& expectedFiveArgumentCall,
-      const ZenMock::FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& actualFiveArgumentCall)
+   template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
+   struct Equalizer<ZenMock::FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
    {
-      ARE_EQUAL(expectedFiveArgumentCall.firstArgument, actualFiveArgumentCall.firstArgument);
-      ARE_EQUAL(expectedFiveArgumentCall.secondArgument, actualFiveArgumentCall.secondArgument);
-      ARE_EQUAL(expectedFiveArgumentCall.thirdArgument, actualFiveArgumentCall.thirdArgument);
-      ARE_EQUAL(expectedFiveArgumentCall.fourthArgument, actualFiveArgumentCall.fourthArgument);
-      ARE_EQUAL(expectedFiveArgumentCall.fifthArgument, actualFiveArgumentCall.fifthArgument);
-   }
-};
+      static void AssertEqual(
+         const ZenMock::FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& expectedFiveArgumentCall,
+         const ZenMock::FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& actualFiveArgumentCall)
+      {
+         ARE_EQUAL(expectedFiveArgumentCall.firstArgument, actualFiveArgumentCall.firstArgument);
+         ARE_EQUAL(expectedFiveArgumentCall.secondArgument, actualFiveArgumentCall.secondArgument);
+         ARE_EQUAL(expectedFiveArgumentCall.thirdArgument, actualFiveArgumentCall.thirdArgument);
+         ARE_EQUAL(expectedFiveArgumentCall.fourthArgument, actualFiveArgumentCall.fourthArgument);
+         ARE_EQUAL(expectedFiveArgumentCall.fifthArgument, actualFiveArgumentCall.fifthArgument);
+      }
+   };
 
-template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
-struct ZenUnitPrinter<ZenMock::FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
-{
-   static void Print(std::ostream& os, const ZenMock::FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& fiveArgumentCallRef)
+   template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
+   struct Printer<ZenMock::FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
    {
-      const std::string toStringedArg1 = ZenUnit::ToStringer::ToString(fiveArgumentCallRef.firstArgument);
-      const std::string toStringedArg2 = ZenUnit::ToStringer::ToString(fiveArgumentCallRef.secondArgument);
-      const std::string toStringedArg3 = ZenUnit::ToStringer::ToString(fiveArgumentCallRef.thirdArgument);
-      const std::string toStringedArg4 = ZenUnit::ToStringer::ToString(fiveArgumentCallRef.fourthArgument);
-      const std::string toStringedArg5 = ZenUnit::ToStringer::ToString(fiveArgumentCallRef.fifthArgument);
-      os << "ZenMock::FiveArgumentCall:\n"
-            "Arg1: " << toStringedArg1 << '\n' <<
-            "Arg2: " << toStringedArg2 << '\n' <<
-            "Arg3: " << toStringedArg3 << '\n' <<
-            "Arg4: " << toStringedArg4 << '\n' <<
-            "Arg5: " << toStringedArg5;
-   }
-};
+      static void Print(std::ostream& os, const ZenMock::FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& fiveArgumentCallRef)
+      {
+         const std::string toStringedArg1 = ZenUnit::ToStringer::ToString(fiveArgumentCallRef.firstArgument);
+         const std::string toStringedArg2 = ZenUnit::ToStringer::ToString(fiveArgumentCallRef.secondArgument);
+         const std::string toStringedArg3 = ZenUnit::ToStringer::ToString(fiveArgumentCallRef.thirdArgument);
+         const std::string toStringedArg4 = ZenUnit::ToStringer::ToString(fiveArgumentCallRef.fourthArgument);
+         const std::string toStringedArg5 = ZenUnit::ToStringer::ToString(fiveArgumentCallRef.fifthArgument);
+         os << "ZenMock::FiveArgumentCall:\n"
+               "Arg1: " << toStringedArg1 << '\n' <<
+               "Arg2: " << toStringedArg2 << '\n' <<
+               "Arg3: " << toStringedArg3 << '\n' <<
+               "Arg4: " << toStringedArg4 << '\n' <<
+               "Arg5: " << toStringedArg5;
+      }
+   };
+}

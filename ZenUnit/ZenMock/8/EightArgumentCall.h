@@ -58,20 +58,23 @@ namespace ZenMock
    };
 }
 
-template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type>
-struct ZenUnitEqualizer<ZenMock::EightArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
+namespace ZenUnit
 {
-   static void AssertEqual(
-      const ZenMock::EightArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& expectedEightArgumentCall,
-      const ZenMock::EightArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& actualEightArgumentCall)
+   template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type>
+   struct Equalizer<ZenMock::EightArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
    {
-      ARE_EQUAL(expectedEightArgumentCall.firstArgument, actualEightArgumentCall.firstArgument);
-      ARE_EQUAL(expectedEightArgumentCall.secondArgument, actualEightArgumentCall.secondArgument);
-      ARE_EQUAL(expectedEightArgumentCall.thirdArgument, actualEightArgumentCall.thirdArgument);
-      ARE_EQUAL(expectedEightArgumentCall.fourthArgument, actualEightArgumentCall.fourthArgument);
-      ARE_EQUAL(expectedEightArgumentCall.fifthArgument, actualEightArgumentCall.fifthArgument);
-      ARE_EQUAL(expectedEightArgumentCall.sixthArgument, actualEightArgumentCall.sixthArgument);
-      ARE_EQUAL(expectedEightArgumentCall.seventhArgument, actualEightArgumentCall.seventhArgument);
-      ARE_EQUAL(expectedEightArgumentCall.eigthArgument, actualEightArgumentCall.eigthArgument);
-   }
-};
+      static void AssertEqual(
+         const ZenMock::EightArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& expectedEightArgumentCall,
+         const ZenMock::EightArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& actualEightArgumentCall)
+      {
+         ARE_EQUAL(expectedEightArgumentCall.firstArgument, actualEightArgumentCall.firstArgument);
+         ARE_EQUAL(expectedEightArgumentCall.secondArgument, actualEightArgumentCall.secondArgument);
+         ARE_EQUAL(expectedEightArgumentCall.thirdArgument, actualEightArgumentCall.thirdArgument);
+         ARE_EQUAL(expectedEightArgumentCall.fourthArgument, actualEightArgumentCall.fourthArgument);
+         ARE_EQUAL(expectedEightArgumentCall.fifthArgument, actualEightArgumentCall.fifthArgument);
+         ARE_EQUAL(expectedEightArgumentCall.sixthArgument, actualEightArgumentCall.sixthArgument);
+         ARE_EQUAL(expectedEightArgumentCall.seventhArgument, actualEightArgumentCall.seventhArgument);
+         ARE_EQUAL(expectedEightArgumentCall.eigthArgument, actualEightArgumentCall.eigthArgument);
+      }
+   };
+}

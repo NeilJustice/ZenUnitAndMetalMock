@@ -38,17 +38,20 @@ namespace ZenMock
    };
 }
 
-template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
-struct ZenUnitEqualizer<ZenMock::FiveArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
+namespace ZenUnit
 {
-   static void AssertEqual(
-      const ZenMock::FiveArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& expectedFiveArgumentCall,
-      const ZenMock::FiveArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& actualFiveArgumentCall)
+   template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
+   struct Equalizer<ZenMock::FiveArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
    {
-      ARE_EQUAL(expectedFiveArgumentCall.firstArgument, actualFiveArgumentCall.firstArgument);
-      ARE_EQUAL(expectedFiveArgumentCall.secondArgument, actualFiveArgumentCall.secondArgument);
-      ARE_EQUAL(expectedFiveArgumentCall.thirdArgument, actualFiveArgumentCall.thirdArgument);
-      ARE_EQUAL(expectedFiveArgumentCall.fourthArgument, actualFiveArgumentCall.fourthArgument);
-      ARE_EQUAL(expectedFiveArgumentCall.fifthArgument, actualFiveArgumentCall.fifthArgument);
-   }
-};
+      static void AssertEqual(
+         const ZenMock::FiveArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& expectedFiveArgumentCall,
+         const ZenMock::FiveArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& actualFiveArgumentCall)
+      {
+         ARE_EQUAL(expectedFiveArgumentCall.firstArgument, actualFiveArgumentCall.firstArgument);
+         ARE_EQUAL(expectedFiveArgumentCall.secondArgument, actualFiveArgumentCall.secondArgument);
+         ARE_EQUAL(expectedFiveArgumentCall.thirdArgument, actualFiveArgumentCall.thirdArgument);
+         ARE_EQUAL(expectedFiveArgumentCall.fourthArgument, actualFiveArgumentCall.fourthArgument);
+         ARE_EQUAL(expectedFiveArgumentCall.fifthArgument, actualFiveArgumentCall.fifthArgument);
+      }
+   };
+}

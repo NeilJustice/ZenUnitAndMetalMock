@@ -319,7 +319,7 @@ namespace ZenUnit
       const string toStringResult = ZenUnit::ToStringer::ToString(zenUnitPrintOnly);
       //
       ostringstream oss;
-      ZenUnitPrinter<UserTypeOnlyZenUnitPrintable>::Print(oss, zenUnitPrintOnly);
+      ZenUnit::Printer<UserTypeOnlyZenUnitPrintable>::Print(oss, zenUnitPrintOnly);
       const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(zenUnitPrintResult, toStringResult);
       ARE_EQUAL("UserTypeOnlyZenUnitPrintable", toStringResult);
@@ -332,7 +332,7 @@ namespace ZenUnit
       const string toStringResult = ZenUnit::ToStringer::ToString(userTypeInsOpAndZenUnitPrintable);
       //
       ostringstream oss;
-      ZenUnitPrinter<UserTypeInsOpAndZenUnitPrintable>::Print(oss, userTypeInsOpAndZenUnitPrintable);
+      ZenUnit::Printer<UserTypeInsOpAndZenUnitPrintable>::Print(oss, userTypeInsOpAndZenUnitPrintable);
       const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(zenUnitPrintResult, toStringResult);
       ARE_EQUAL("UserTypeInsOpAndZenUnitPrintable", toStringResult);

@@ -80,7 +80,7 @@ namespace ZenMock
       CallRefString1 callRef(S1);
       ostringstream oss;
       //
-      ZenUnitPrinter<CallRefString1>::Print(oss, callRef);
+      ZenUnit::Printer<CallRefString1>::Print(oss, callRef);
       //
       const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::OneArgumentCall:
@@ -131,7 +131,7 @@ Argument: "1")", zenUnitPrintResult);
       const CallRefString2 callRef(S1, S2);
       ostringstream oss;
       //
-      ZenUnitPrinter<CallRefString2>::Print(oss, callRef);
+      ZenUnit::Printer<CallRefString2>::Print(oss, callRef);
       //
       const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::TwoArgumentCall:
@@ -189,7 +189,7 @@ Arg2: "2")", zenUnitPrintResult);
       const CallRefString3 callRef(S1, S2, S3);
       ostringstream oss;
       //
-      ZenUnitPrinter<CallRefString3>::Print(oss, callRef);
+      ZenUnit::Printer<CallRefString3>::Print(oss, callRef);
       //
       const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::ThreeArgumentCall:
@@ -253,7 +253,7 @@ Arg3: "3")", zenUnitPrintResult);
       const CallRefString4 callRef(S1, S2, S3, S4);
       ostringstream oss;
       //
-      ZenUnitPrinter<CallRefString4>::Print(oss, callRef);
+      ZenUnit::Printer<CallRefString4>::Print(oss, callRef);
       //
       const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::FourArgumentCall:
@@ -323,7 +323,7 @@ Arg4: "4")", zenUnitPrintResult);
       const CallRefString5 callRef(S1, S2, S3, S4, S5);
       ostringstream oss;
       //
-      ZenUnitPrinter<CallRefString5>::Print(oss, callRef);
+      ZenUnit::Printer<CallRefString5>::Print(oss, callRef);
       //
       const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::FiveArgumentCall:
@@ -399,7 +399,7 @@ Arg5: "5")", zenUnitPrintResult);
       const CallRefString6 callRef(S1, S2, S3, S4, S5, S6);
       ostringstream oss;
       //
-      ZenUnitPrinter<CallRefString6>::Print(oss, callRef);
+      ZenUnit::Printer<CallRefString6>::Print(oss, callRef);
       //
       const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::SixArgumentCall:
@@ -481,7 +481,7 @@ Arg6: "6")", zenUnitPrintResult);
       const CallRefString7 callRef(S1, S2, S3, S4, S5, S6, S7);
       ostringstream oss;
       //
-      ZenUnitPrinter<CallRefString7>::Print(oss, callRef);
+      ZenUnit::Printer<CallRefString7>::Print(oss, callRef);
       //
       const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::SevenArgumentCall:
@@ -569,7 +569,7 @@ Arg7: "7")", zenUnitPrintResult);
       const CallRefString8 callRef(S1, S2, S3, S4, S5, S6, S7, S8);
       ostringstream oss;
       //
-      ZenUnitPrinter<CallRefString8>::Print(oss, callRef);
+      ZenUnit::Printer<CallRefString8>::Print(oss, callRef);
       //
       const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::EightArgumentCall:
@@ -663,7 +663,7 @@ Arg8: "8")", zenUnitPrintResult);
       const CallRefString9 callRef(S1, S2, S3, S4, S5, S6, S7, S8, S9);
       ostringstream oss;
       //
-      ZenUnitPrinter<CallRefString9>::Print(oss, callRef);
+      ZenUnit::Printer<CallRefString9>::Print(oss, callRef);
       //
       const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::NineArgumentCall:
@@ -763,7 +763,7 @@ Arg9: "9")", zenUnitPrintResult);
       const CallRefString10 callRef(S1, S2, S3, S4, S5, S6, S7, S8, S9, S10);
       ostringstream oss;
       //
-      ZenUnitPrinter<CallRefString10>::Print(oss, callRef);
+      ZenUnit::Printer<CallRefString10>::Print(oss, callRef);
       //
       const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::TenArgumentCall:

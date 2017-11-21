@@ -26,12 +26,12 @@ namespace ZenUnit
          static_assert(sizeof(AnomalyOrException) == 40);
       #endif
    #endif
-}
 
-template<>
-struct ZenUnitEqualizer<ZenUnit::AnomalyOrException>
-{
-   static void AssertEqual(
-      const ZenUnit::AnomalyOrException& expectedAnomalyOrException,
-      const ZenUnit::AnomalyOrException& actualAnomalyOrException);
-};
+   template<>
+   struct Equalizer<ZenUnit::AnomalyOrException>
+   {
+      static void AssertEqual(
+         const ZenUnit::AnomalyOrException& expectedAnomalyOrException,
+         const ZenUnit::AnomalyOrException& actualAnomalyOrException);
+   };
+}

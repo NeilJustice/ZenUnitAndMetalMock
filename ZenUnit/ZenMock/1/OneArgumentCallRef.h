@@ -12,24 +12,27 @@ namespace ZenMock
    };
 }
 
-template<typename ArgType>
-struct ZenUnitEqualizer<ZenMock::OneArgumentCallRef<ArgType>>
+namespace ZenUnit
 {
-   static void AssertEqual(
-      const ZenMock::OneArgumentCallRef<ArgType>& expectedOneArgumentCall,
-      const ZenMock::OneArgumentCallRef<ArgType>& actualOneArgumentCall)
+   template<typename ArgType>
+   struct Equalizer<ZenMock::OneArgumentCallRef<ArgType>>
    {
-      ARE_EQUAL(expectedOneArgumentCall.argument, actualOneArgumentCall.argument);
-   }
-};
+      static void AssertEqual(
+         const ZenMock::OneArgumentCallRef<ArgType>& expectedOneArgumentCall,
+         const ZenMock::OneArgumentCallRef<ArgType>& actualOneArgumentCall)
+      {
+         ARE_EQUAL(expectedOneArgumentCall.argument, actualOneArgumentCall.argument);
+      }
+   };
 
-template<typename ArgType>
-struct ZenUnitPrinter<ZenMock::OneArgumentCallRef<ArgType>>
-{
-   static void Print(std::ostream& os, const ZenMock::OneArgumentCallRef<ArgType>& oneArgumentCall)
+   template<typename ArgType>
+   struct Printer<ZenMock::OneArgumentCallRef<ArgType>>
    {
-      const std::string toStringedArg = ZenUnit::ToStringer::ToString(oneArgumentCall.argument);
-      os << "ZenMock::OneArgumentCall:\n"
-         << "Argument: " << toStringedArg;
-   }
-};
+      static void Print(std::ostream& os, const ZenMock::OneArgumentCallRef<ArgType>& oneArgumentCall)
+      {
+         const std::string toStringedArg = ZenUnit::ToStringer::ToString(oneArgumentCall.argument);
+         os << "ZenMock::OneArgumentCall:\n"
+            << "Argument: " << toStringedArg;
+      }
+   };
+}

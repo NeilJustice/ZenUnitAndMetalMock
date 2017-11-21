@@ -36,8 +36,8 @@ namespace ZenUnit
          using DecayedExpectedType = typename std::decay<ExpectedType>::type;
          using DecayedActualType = typename std::decay<ActualType>::type;
          std::conditional<std::is_same<DecayedExpectedType, DecayedActualType>::value,
-            ::ZenUnitEqualizer<DecayedExpectedType>,
-            ::TwoTypeZenUnitEqualizer<DecayedExpectedType, DecayedActualType>>
+            ZenUnit::Equalizer<DecayedExpectedType>,
+            ZenUnit::TwoTypeEqualizer<DecayedExpectedType, DecayedActualType>>
             ::type::AssertEqual(expectedValueVRT.value, actualValueVRT.value);
       }
       catch (const EqualizerException&)

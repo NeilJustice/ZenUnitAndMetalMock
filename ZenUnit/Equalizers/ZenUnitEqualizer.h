@@ -2,99 +2,102 @@
 #include "ZenUnit/Anomaly/EqualizerException.h"
 #include <string>
 
-template<typename ExpectedAndActualType>
-struct ZenUnitEqualizer
+namespace ZenUnit
 {
-   static void AssertEqual(
-      const ExpectedAndActualType& expected, const ExpectedAndActualType& actual)
+   template<typename ExpectedAndActualType>
+   struct Equalizer
    {
-      if (!(expected == actual))
+      static void AssertEqual(
+         const ExpectedAndActualType& expected, const ExpectedAndActualType& actual)
       {
-         throw ZenUnit::EqualizerException();
+         if (!(expected == actual))
+         {
+            throw ZenUnit::EqualizerException();
+         }
       }
-   }
-};
+   };
 
-template<typename ExpectedType, typename ActualType>
-struct TwoTypeZenUnitEqualizer
-{
-   static void AssertEqual(const ExpectedType& expected, const ActualType& actual)
+   template<typename ExpectedType, typename ActualType>
+   struct TwoTypeEqualizer
    {
-      if (!(expected == actual))
+      static void AssertEqual(const ExpectedType& expected, const ActualType& actual)
       {
-         throw ZenUnit::EqualizerException();
+         if (!(expected == actual))
+         {
+            throw ZenUnit::EqualizerException();
+         }
       }
-   }
-};
+   };
 
-template<>
-struct ZenUnitEqualizer<const char*>
-{
-   static void AssertEqual(const char* expected, const char* actual);
-};
-template<>
-struct ZenUnitEqualizer<char*>
-{
-   static void AssertEqual(char* expected, char* actual);
-};
+   template<>
+   struct Equalizer<const char*>
+   {
+      static void AssertEqual(const char* expected, const char* actual);
+   };
+   template<>
+   struct Equalizer<char*>
+   {
+      static void AssertEqual(char* expected, char* actual);
+   };
 
-template<>
-struct TwoTypeZenUnitEqualizer<const char*, char*>
-{
-   static void AssertEqual(const char* expected, char* actual);
-};
-template<>
-struct TwoTypeZenUnitEqualizer<char*, const char*>
-{
-   static void AssertEqual(char* expected, const char* actual);
-};
+   template<>
+   struct TwoTypeEqualizer<const char*, char*>
+   {
+      static void AssertEqual(const char* expected, char* actual);
+   };
+   template<>
+   struct TwoTypeEqualizer<char*, const char*>
+   {
+      static void AssertEqual(char* expected, const char* actual);
+   };
 
-template<>
-struct TwoTypeZenUnitEqualizer<const char*, std::string>
-{
-   static void AssertEqual(const char* expected, const std::string& actual);
-};
-template<>
-struct TwoTypeZenUnitEqualizer<std::string, const char*>
-{
-   static void AssertEqual(const std::string& expected, const char* actual);
-};
+   template<>
+   struct TwoTypeEqualizer<const char*, std::string>
+   {
+      static void AssertEqual(const char* expected, const std::string& actual);
+   };
+   template<>
+   struct TwoTypeEqualizer<std::string, const char*>
+   {
+      static void AssertEqual(const std::string& expected, const char* actual);
+   };
 
-template<>
-struct TwoTypeZenUnitEqualizer<char*, std::string>
-{
-   static void AssertEqual(char* expected, const std::string& actual);
-};
-template<>
-struct TwoTypeZenUnitEqualizer<std::string, char*>
-{
-   static void AssertEqual(const std::string& expected, char* actual);
-};
+   template<>
+   struct TwoTypeEqualizer<char*, std::string>
+   {
+      static void AssertEqual(char* expected, const std::string& actual);
+   };
+   template<>
+   struct TwoTypeEqualizer<std::string, char*>
+   {
+      static void AssertEqual(const std::string& expected, char* actual);
+   };
 
-template<>
-struct ZenUnitEqualizer<double>
-{
-   static void AssertEqual(double expected, double actual);
-};
+   template<>
+   struct Equalizer<double>
+   {
+      static void AssertEqual(double expected, double actual);
+   };
 
-template<>
-struct ZenUnitEqualizer<float>
-{
-   static void AssertEqual(float expected, float actual);
-};
+   template<>
+   struct Equalizer<float>
+   {
+      static void AssertEqual(float expected, float actual);
+   };
 
-template<>
-struct TwoTypeZenUnitEqualizer<int, unsigned>
-{
-   static void AssertEqual(int expected, unsigned actual);
-};
+   template<>
+   struct TwoTypeEqualizer<int, unsigned>
+   {
+      static void AssertEqual(int expected, unsigned actual);
+   };
 
 #if defined(__linux__) || defined(_WIN64)
 
    template<>
-   struct TwoTypeZenUnitEqualizer<int, size_t>
+   struct TwoTypeEqualizer<int, size_t>
    {
       static void AssertEqual(int expected, size_t actual);
    };
+}
 
 #endif

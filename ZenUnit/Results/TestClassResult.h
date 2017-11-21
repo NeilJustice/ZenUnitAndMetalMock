@@ -54,12 +54,12 @@ namespace ZenUnit
          static_assert(sizeof(TestClassResult) == 32);
       #endif
    #endif
-}
 
-template<>
-struct ZenUnitEqualizer<ZenUnit::TestClassResult>
-{
-   static void AssertEqual(
-      const ZenUnit::TestClassResult& expectedTestClassResult,
-      const ZenUnit::TestClassResult& actualTestClassResult);
-};
+   template<>
+   struct Equalizer<ZenUnit::TestClassResult>
+   {
+      static void AssertEqual(
+         const ZenUnit::TestClassResult& expectedTestClassResult,
+         const ZenUnit::TestClassResult& actualTestClassResult);
+   };
+}

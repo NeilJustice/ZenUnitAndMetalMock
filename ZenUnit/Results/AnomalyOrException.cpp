@@ -16,13 +16,13 @@ namespace ZenUnit
       , exceptionWhat(std::make_shared<std::string>(exceptionWhat))
    {
    }
-}
 
-INLINE void ZenUnitEqualizer<ZenUnit::AnomalyOrException>::AssertEqual(
-   const ZenUnit::AnomalyOrException& expectedAnomalyOrException,
-   const ZenUnit::AnomalyOrException& actualAnomalyOrException)
-{
-   POINTEES_EQUAL(expectedAnomalyOrException.anomaly, actualAnomalyOrException.anomaly);
-   ARE_EQUAL(expectedAnomalyOrException.exceptionTypeName, actualAnomalyOrException.exceptionTypeName);
-   POINTEES_EQUAL(expectedAnomalyOrException.exceptionWhat, actualAnomalyOrException.exceptionWhat);
+   INLINE void Equalizer<ZenUnit::AnomalyOrException>::AssertEqual(
+      const ZenUnit::AnomalyOrException& expectedAnomalyOrException,
+      const ZenUnit::AnomalyOrException& actualAnomalyOrException)
+   {
+      POINTEES_EQUAL(expectedAnomalyOrException.anomaly, actualAnomalyOrException.anomaly);
+      ARE_EQUAL(expectedAnomalyOrException.exceptionTypeName, actualAnomalyOrException.exceptionTypeName);
+      POINTEES_EQUAL(expectedAnomalyOrException.exceptionWhat, actualAnomalyOrException.exceptionWhat);
+   }
 }

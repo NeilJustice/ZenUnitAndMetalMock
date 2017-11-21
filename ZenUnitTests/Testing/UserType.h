@@ -23,14 +23,17 @@ namespace std
    };
 }
 
-template<>
-struct ZenUnitEqualizer<UserType>
+namespace ZenUnit
 {
-   static void AssertEqual(const UserType& expectedUserType, const UserType& actualUserType);
-};
+   template<>
+   struct Equalizer<UserType>
+   {
+      static void AssertEqual(const UserType& expectedUserType, const UserType& actualUserType);
+   };
 
-template<>
-struct ZenUnitPrinter<UserType>
-{
-   static void Print(ostream& os, const UserType& userType);
-};
+   template<>
+   struct Printer<UserType>
+   {
+      static void Print(ostream& os, const UserType& userType);
+   };
+}

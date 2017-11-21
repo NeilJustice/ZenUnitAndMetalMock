@@ -41,39 +41,42 @@ namespace ZenMock
    };
 }
 
-template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
-struct ZenUnitEqualizer<ZenMock::SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
+namespace ZenUnit
 {
-   static void AssertEqual(
-      const ZenMock::SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& expectedSixArgumentCall,
-      const ZenMock::SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& actualSixArgumentCall)
+   template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
+   struct Equalizer<ZenMock::SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
    {
-      ARE_EQUAL(expectedSixArgumentCall.firstArgument, actualSixArgumentCall.firstArgument);
-      ARE_EQUAL(expectedSixArgumentCall.secondArgument, actualSixArgumentCall.secondArgument);
-      ARE_EQUAL(expectedSixArgumentCall.thirdArgument, actualSixArgumentCall.thirdArgument);
-      ARE_EQUAL(expectedSixArgumentCall.fourthArgument, actualSixArgumentCall.fourthArgument);
-      ARE_EQUAL(expectedSixArgumentCall.fifthArgument, actualSixArgumentCall.fifthArgument);
-      ARE_EQUAL(expectedSixArgumentCall.sixthArgument, actualSixArgumentCall.sixthArgument);
-   }
-};
+      static void AssertEqual(
+         const ZenMock::SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& expectedSixArgumentCall,
+         const ZenMock::SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& actualSixArgumentCall)
+      {
+         ARE_EQUAL(expectedSixArgumentCall.firstArgument, actualSixArgumentCall.firstArgument);
+         ARE_EQUAL(expectedSixArgumentCall.secondArgument, actualSixArgumentCall.secondArgument);
+         ARE_EQUAL(expectedSixArgumentCall.thirdArgument, actualSixArgumentCall.thirdArgument);
+         ARE_EQUAL(expectedSixArgumentCall.fourthArgument, actualSixArgumentCall.fourthArgument);
+         ARE_EQUAL(expectedSixArgumentCall.fifthArgument, actualSixArgumentCall.fifthArgument);
+         ARE_EQUAL(expectedSixArgumentCall.sixthArgument, actualSixArgumentCall.sixthArgument);
+      }
+   };
 
-template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
-struct ZenUnitPrinter<ZenMock::SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
-{
-   static void Print(std::ostream& os, const ZenMock::SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& sixArgumentCallRef)
+   template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
+   struct Printer<ZenMock::SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
    {
-      const std::string toStringedArg1 = ZenUnit::ToStringer::ToString(sixArgumentCallRef.firstArgument);
-      const std::string toStringedArg2 = ZenUnit::ToStringer::ToString(sixArgumentCallRef.secondArgument);
-      const std::string toStringedArg3 = ZenUnit::ToStringer::ToString(sixArgumentCallRef.thirdArgument);
-      const std::string toStringedArg4 = ZenUnit::ToStringer::ToString(sixArgumentCallRef.fourthArgument);
-      const std::string toStringedArg5 = ZenUnit::ToStringer::ToString(sixArgumentCallRef.fifthArgument);
-      const std::string toStringedArg6 = ZenUnit::ToStringer::ToString(sixArgumentCallRef.sixthArgument);
-      os << "ZenMock::SixArgumentCall:\n"
-            "Arg1: " << toStringedArg1 << '\n' <<
-            "Arg2: " << toStringedArg2 << '\n' <<
-            "Arg3: " << toStringedArg3 << '\n' <<
-            "Arg4: " << toStringedArg4 << '\n' <<
-            "Arg5: " << toStringedArg5 << '\n' <<
-            "Arg6: " << toStringedArg6;
-   }
-};
+      static void Print(std::ostream& os, const ZenMock::SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& sixArgumentCallRef)
+      {
+         const std::string toStringedArg1 = ZenUnit::ToStringer::ToString(sixArgumentCallRef.firstArgument);
+         const std::string toStringedArg2 = ZenUnit::ToStringer::ToString(sixArgumentCallRef.secondArgument);
+         const std::string toStringedArg3 = ZenUnit::ToStringer::ToString(sixArgumentCallRef.thirdArgument);
+         const std::string toStringedArg4 = ZenUnit::ToStringer::ToString(sixArgumentCallRef.fourthArgument);
+         const std::string toStringedArg5 = ZenUnit::ToStringer::ToString(sixArgumentCallRef.fifthArgument);
+         const std::string toStringedArg6 = ZenUnit::ToStringer::ToString(sixArgumentCallRef.sixthArgument);
+         os << "ZenMock::SixArgumentCall:\n"
+               "Arg1: " << toStringedArg1 << '\n' <<
+               "Arg2: " << toStringedArg2 << '\n' <<
+               "Arg3: " << toStringedArg3 << '\n' <<
+               "Arg4: " << toStringedArg4 << '\n' <<
+               "Arg5: " << toStringedArg5 << '\n' <<
+               "Arg6: " << toStringedArg6;
+      }
+   };
+}

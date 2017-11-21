@@ -13,15 +13,15 @@ namespace ZenUnit
    {
       ostringstream oss;
 
-      ZenUnitPrinter<set<T>>::Print(oss, {});
+      ZenUnit::Printer<set<T>>::Print(oss, {});
       ARE_EQUAL("SetType<T>", oss.str());
       oss = ostringstream();
 
-      ZenUnitPrinter<set<T, CustomLessComparator<T>>>::Print(oss, {});
+      ZenUnit::Printer<set<T, CustomLessComparator<T>>>::Print(oss, {});
       ARE_EQUAL("SetType<T>", oss.str());
       oss = ostringstream();
 
-      ZenUnitPrinter<set<T, CustomLessComparator<T>, CustomAllocator<T>>>::Print(oss, {});
+      ZenUnit::Printer<set<T, CustomLessComparator<T>, CustomAllocator<T>>>::Print(oss, {});
       ARE_EQUAL("SetType<T>", oss.str());
    }
 
@@ -29,19 +29,19 @@ namespace ZenUnit
    {
       ostringstream oss;
 
-      ZenUnitPrinter<unordered_set<T>>::Print(oss, {});
+      ZenUnit::Printer<unordered_set<T>>::Print(oss, {});
       ARE_EQUAL("SetType<T>", oss.str());
       oss = ostringstream();
 
-      ZenUnitPrinter<unordered_set<T, CustomHasher<T>>>::Print(oss, {});
+      ZenUnit::Printer<unordered_set<T, CustomHasher<T>>>::Print(oss, {});
       ARE_EQUAL("SetType<T>", oss.str());
       oss = ostringstream();
 
-      ZenUnitPrinter<unordered_set<T, CustomHasher<T>, CustomEqualityComparator<T>>>::Print(oss, {});
+      ZenUnit::Printer<unordered_set<T, CustomHasher<T>, CustomEqualityComparator<T>>>::Print(oss, {});
       ARE_EQUAL("SetType<T>", oss.str());
       oss = ostringstream();
 
-      ZenUnitPrinter<unordered_set<T, CustomHasher<T>, CustomEqualityComparator<T>, CustomAllocator<T>>>::Print(oss, {});
+      ZenUnit::Printer<unordered_set<T, CustomHasher<T>, CustomEqualityComparator<T>, CustomAllocator<T>>>::Print(oss, {});
       ARE_EQUAL("SetType<T>", oss.str());
    }
 

@@ -75,13 +75,16 @@ namespace ZenUnit
    }
 }
 
-INLINE void ZenUnitEqualizer<ZenUnit::Anomaly>::
-AssertEqual(const ZenUnit::Anomaly& expectedAnomaly, const ZenUnit::Anomaly& actualAnomaly)
+namespace ZenUnit
 {
-   ARE_EQUAL(expectedAnomaly.assertExpression, actualAnomaly.assertExpression);
-   ARE_EQUAL(expectedAnomaly.expected, actualAnomaly.expected);
-   ARE_EQUAL(expectedAnomaly.actual, actualAnomaly.actual);
-   ARE_EQUAL(expectedAnomaly.message, actualAnomaly.message);
-   ARE_EQUAL(expectedAnomaly.why, actualAnomaly.why);
-   ARE_EQUAL(expectedAnomaly.fileLine, actualAnomaly.fileLine);
+   INLINE void Equalizer<ZenUnit::Anomaly>::
+   AssertEqual(const ZenUnit::Anomaly& expectedAnomaly, const ZenUnit::Anomaly& actualAnomaly)
+   {
+      ARE_EQUAL(expectedAnomaly.assertExpression, actualAnomaly.assertExpression);
+      ARE_EQUAL(expectedAnomaly.expected, actualAnomaly.expected);
+      ARE_EQUAL(expectedAnomaly.actual, actualAnomaly.actual);
+      ARE_EQUAL(expectedAnomaly.message, actualAnomaly.message);
+      ARE_EQUAL(expectedAnomaly.why, actualAnomaly.why);
+      ARE_EQUAL(expectedAnomaly.fileLine, actualAnomaly.fileLine);
+   }
 }
