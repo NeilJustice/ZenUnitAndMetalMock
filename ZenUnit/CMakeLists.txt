@@ -43,6 +43,7 @@ add_library(ZenUnit ${Sources})
 EnablePrecompiledHeaders()
 
 install(DIRECTORY .
+        CONFIGURATIONS Debug
         DESTINATION include/ZenUnit/ZenUnit
         FILES_MATCHING REGEX "\\.h$|\\.cpp$"
         PATTERN REGEX "CMakeFiles|Release|RelWithDebInfo|MinSizeRel|ZenUnit.dir" EXCLUDE)
