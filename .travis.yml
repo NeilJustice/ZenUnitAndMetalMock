@@ -12,7 +12,6 @@ matrix:
         apt:
           sources: [ 'ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-5.0' ]
           packages: [ 'ninja-build', 'clang-5.0', 'libstdc++-7-dev' ]
-
     - os: linux
       compiler: clang
       env: CMAKE_BUILD_TYPE=Release COMPILER=clang++-5.0
@@ -30,4 +29,5 @@ before_script:
 script:
   - ninja -v
   - ./ZenUnitTests/ZenUnitTests
-
+  - ./ExamplesTests/ExamplesTests
+  - ./StaticLibraryTests/StaticLibraryTests
