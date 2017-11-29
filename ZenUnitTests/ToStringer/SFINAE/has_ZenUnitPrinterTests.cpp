@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Testing/UserTypeInsOpAndZenUnitPrintable.h"
-#include "Testing/UserTypeOnlyZenUnitPrintable.h"
+#include "ZenUnitTests/Testing/UserTypeInsOpAndZenUnitPrintable.h"
+#include "ZenUnitTests/Testing/UserTypeOnlyZenUnitPrintable.h"
 
 namespace Namespace
 {

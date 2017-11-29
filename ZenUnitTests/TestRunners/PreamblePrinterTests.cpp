@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "Console/Mock/ConsoleMock.h"
-#include "TestRunners/Mock/MultiTestClassRunnerMock.h"
-#include "Utils/Mock/MachineNameGetterMock.h"
-#include "Utils/Time/Mock/WatchMock.h"
 #include "ZenUnit/TestRunners/PreamblePrinter.h"
+#include "ZenUnitTests/Console/Mock/ConsoleMock.h"
+#include "ZenUnitTests/TestRunners/Mock/MultiTestClassRunnerMock.h"
+#include "ZenUnitTests/Utils/Mock/MachineNameGetterMock.h"
+#include "ZenUnitTests/Utils/Time/Mock/WatchMock.h"
 
 namespace ZenUnit
 {
