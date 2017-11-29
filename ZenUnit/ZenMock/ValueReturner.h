@@ -8,14 +8,15 @@ namespace ZenMock
    class ValueReturner
    {
       friend class ValueReturnerTests;
+   public:
+      using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    private:
-      const std::string ZenMockedFunctionSignature;
-      using DecayedReturnType = typename std::decay<FunctionReturnType>::type;
-      std::vector<DecayedReturnType> _returnValues;
+      const std::string _zenMockedFunctionSignature;
+      std::vector<DecayedFunctionReturnType> _returnValues;
       size_t _returnValueIndex;
    public:
       explicit ValueReturner(std::string zenMockedFunctionSignature)
-         : ZenMockedFunctionSignature(std::move(zenMockedFunctionSignature))
+         : _zenMockedFunctionSignature(std::move(zenMockedFunctionSignature))
          , _returnValueIndex(0)
       {
       }
@@ -26,14 +27,16 @@ namespace ZenMock
          _returnValues.emplace_back(std::forward<ReturnType>(returnValue));
       }
 
-      template<typename ReturnType, typename... ReturnTypeURefs>
-      void ZenMockAddReturnValues(
-         ReturnType&& firstReturnValue, ReturnTypeURefs&&... subsequentReturnValues)
+      template<typename ReturnType, typename... ReturnTypes>
+      void ZenMockAddReturnValues(ReturnType&& firstReturnValue, ReturnTypes&&... subsequentReturnValues)
       {
          ZenMockAddReturnValue(std::forward<ReturnType>(firstReturnValue));
-         ZenMockAddReturnValues(std::forward<ReturnTypeURefs>(subsequentReturnValues)...);
+         ZenMockAddReturnValues(std::forward<ReturnTypes>(subsequentReturnValues)...);
       }
-      void ZenMockAddReturnValues() {}
+
+      void ZenMockAddReturnValues()
+      {
+      }
 
       template<typename ContainerType>
       void ZenMockAddContainerReturnValues(ContainerType&& returnValues)
@@ -41,37 +44,18 @@ namespace ZenMock
          if (returnValues.empty())
          {
             throw std::invalid_argument(
-               "ZenMock::ValueReturner::ZenMockAddContainerReturnValues(): Return values vector cannot be empty");
+               "ZenMock::ValueReturner::ZenMockAddContainerReturnValues(): Return values container cannot be empty.");
          }
          _returnValues.insert(_returnValues.end(), returnValues.cbegin(), returnValues.cend());
       }
 
-      template<typename ReturnType = FunctionReturnType>
-      typename std::enable_if<std::is_default_constructible<
-         ReturnType>::value, ReturnType>::type ZenMockNextReturnValue()
+      const DecayedFunctionReturnType& ZenMockNextReturnValue()
       {
          if (_returnValues.empty())
          {
-            const ReturnType defaultReturnValue{};
-            return defaultReturnValue;
+            throw ZenMock::ReturnValueMustBeSpecifiedException(_zenMockedFunctionSignature);
          }
-         return DoZenMockNextReturnValue();
-      }
-
-      template<typename ReturnType = FunctionReturnType>
-      typename std::enable_if<!std::is_default_constructible<
-         ReturnType>::value, ReturnType>::type ZenMockNextReturnValue()
-      {
-         if (_returnValues.empty())
-         {
-            throw ZenMock::ReturnValueMustBeSpecifiedException(ZenMockedFunctionSignature);
-         }
-         return DoZenMockNextReturnValue();
-      }
-   protected:
-      FunctionReturnType DoZenMockNextReturnValue()
-      {
-         const DecayedReturnType& nextReturnValue =
+         const DecayedFunctionReturnType& nextReturnValue =
             _returnValueIndex < _returnValues.size() ? _returnValues[_returnValueIndex++] : _returnValues.back();
          return nextReturnValue;
       }

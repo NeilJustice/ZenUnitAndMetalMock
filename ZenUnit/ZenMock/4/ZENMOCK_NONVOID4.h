@@ -46,7 +46,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidFourArgument
 namespace ZenMock
 {
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
-   class NonVoidFourArgumentMocker : public FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>, private ValueReturner<FunctionReturnType>
+   class NonVoidFourArgumentMocker : public FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>, protected ValueReturner<FunctionReturnType>
    {
    public:
       explicit NonVoidFourArgumentMocker(const std::string& zenMockedFunctionSignature)
@@ -76,7 +76,11 @@ namespace ZenMock
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
-      FunctionReturnType ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument)
+      const DecayedFunctionReturnType& ZenMockItAndReturnValue(
+         Arg1Type firstArgument,
+         Arg2Type secondArgument,
+         Arg3Type thirdArgument,
+         Arg4Type fourthArgument)
       {
          FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::ZenMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument);
          return ValueReturner<FunctionReturnType>::ZenMockNextReturnValue();
@@ -92,9 +96,12 @@ namespace ZenMock
       {
       }
 
-      static FunctionReturnType ZenMockItFunctionPointer(
+      static const DecayedFunctionReturnType& ZenMockItFunctionPointer(
          NonVoidFourArgFunctionPointerMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>* functionMocker,
-         Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument)
+         Arg1Type firstArgument,
+         Arg2Type secondArgument,
+         Arg3Type thirdArgument,
+         Arg4Type fourthArgument)
       {
          return functionMocker->ZenMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument);
       }

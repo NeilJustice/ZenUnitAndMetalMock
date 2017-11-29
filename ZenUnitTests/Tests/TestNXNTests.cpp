@@ -33,7 +33,7 @@ namespace ZenUnit
    {
       _testNXN = make_unique<TestNXN<TestingTestClass, N, int>>("", "", "", 0);
       _testNXN->_console.reset(_consoleMock = new ConsoleMock);
-      _testNXN->call_TestRunner_GetArgs= ZENMOCK_BIND0(GetArgs_ZenMock);
+      _testNXN->call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
    }
 
    TEST(Constructor_NewsConsole_SetsFields_GettersReturnExpected_2X2With4Args)
@@ -109,7 +109,7 @@ namespace ZenUnit
          return zenUnitArgs;
       }();
       GetArgs_ZenMock_SelfMocked.ExpectAndReturn(zenUnitArgs);
-      test1X1SelfMocked.call_TestRunner_GetArgs= ZENMOCK_BIND0(GetArgs_ZenMock_SelfMocked);
+      test1X1SelfMocked.call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock_SelfMocked);
 
       ZENMOCK_NONVOID0_STATIC(vector<string>, ZenUnit::String, CommaSplitExceptQuotedCommas, _SelfMocked);
       const vector<string> splitTestCaseArgs = { "1", "2", "3" };
@@ -288,7 +288,6 @@ namespace ZenUnit
    TEST8X8(Test8X8, int, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0, 0) {}
    TEST9X9(Test9X9, int, int, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0, 0, 0) {}
    TEST10X10(Test10X10, int, int, int, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0) {}
-
    };
    RUNTEMPLATETESTS(AllTestNXNsWithinATemplateTestClass, int)
 }

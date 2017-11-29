@@ -37,7 +37,6 @@ namespace ZenMock
    AFACT(FunctionNotCalled_AssertCalledNTimesWithN0_Throws)
    AFACT(FunctionNotCalled_AssertCalledOnceThrows_AssertCalledNTimesThrows)
    AFACT(Function_NotExpected_Throws)
-   AFACT(Function_Expected_DoesNotThrow_AssertCallsOnceDoesNotThrow_AssertCalledNTimes1DoesNotThrow)
    AFACT(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)
    // Value Return Tests
    AFACT(ExpectAndReturn_CalledTwice_Throws)
@@ -129,11 +128,6 @@ namespace ZenMock
    TEST(Function_NotExpected_Throws)
    {
       _zenMock0Tester->Function_NotExpected_Throws();
-   }
-
-   TEST(Function_Expected_DoesNotThrow_AssertCallsOnceDoesNotThrow_AssertCalledNTimes1DoesNotThrow)
-   {
-      _zenMock0Tester->Function_Expected_DoesNotThrow_AssertCallsOnceDoesNotThrow_AssertCalledNTimes1DoesNotThrow();
    }
 
    TEST(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)

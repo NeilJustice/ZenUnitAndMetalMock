@@ -46,7 +46,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidTwoArgumentM
 namespace ZenMock
 {
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type>
-   class NonVoidTwoArgumentMocker : public TwoArgumentMocker<Arg1Type, Arg2Type>, private ValueReturner<FunctionReturnType>
+   class NonVoidTwoArgumentMocker : public TwoArgumentMocker<Arg1Type, Arg2Type>, protected ValueReturner<FunctionReturnType>
    {
    public:
       explicit NonVoidTwoArgumentMocker(const std::string& zenMockedFunctionSignature)
@@ -78,7 +78,8 @@ namespace ZenMock
             subsequentReturnValues...);
       }
 
-      FunctionReturnType ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument)
+      const DecayedFunctionReturnType& ZenMockItAndReturnValue(
+         Arg1Type firstArgument, Arg2Type secondArgument)
       {
          TwoArgumentMocker<Arg1Type, Arg2Type>::ZenMockIt(firstArgument, secondArgument);
          return ValueReturner<FunctionReturnType>::ZenMockNextReturnValue();
@@ -94,7 +95,7 @@ namespace ZenMock
       {
       }
 
-      static FunctionReturnType ZenMockItFunctionPointer(
+      static const DecayedFunctionReturnType& ZenMockItFunctionPointer(
          NonVoidTwoArgFunctionPointerMocker<FunctionReturnType, Arg1Type, Arg2Type>* functionMocker,
          Arg1Type firstArgument, Arg2Type secondArgument)
       {

@@ -60,7 +60,7 @@ namespace ZenUnit
          : Zen::Mock<ZenUnit::SpecificTestClassRunner<TestingTestClass>>("")
       {
          _console.reset(consoleMock = new ConsoleMock);
-         call_TestRunner_GetArgs= ZENMOCK_BIND0(GetArgs_ZenMock);
+         call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
       }
    };
    unique_ptr<SpecificTestClassRunnerSelfMocked> _specificTestClassRunnerSelfMocked;

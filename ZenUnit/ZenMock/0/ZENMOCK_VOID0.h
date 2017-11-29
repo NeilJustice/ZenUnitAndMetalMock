@@ -47,7 +47,7 @@ namespace ZenMock
    {
    public:
       explicit VoidZeroArgumentMocker(const std::string& zenMockedFunctionSignature)
-         : ZeroArgumentMocker(zenMockedFunctionSignature)
+         : ZeroArgumentMocker<ExceptionThrower>(zenMockedFunctionSignature)
       {
       }
    };

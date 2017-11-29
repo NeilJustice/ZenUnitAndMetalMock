@@ -46,7 +46,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidOneArgumentM
 namespace ZenMock
 {
    template<typename FunctionReturnType, typename ArgType>
-   class NonVoidOneArgumentMocker : public OneArgumentMocker<ArgType>, private ValueReturner<FunctionReturnType>
+   class NonVoidOneArgumentMocker : public OneArgumentMocker<ArgType>, protected ValueReturner<FunctionReturnType>
    {
    public:
       explicit NonVoidOneArgumentMocker(const std::string& zenMockedFunctionSignature)
@@ -78,7 +78,7 @@ namespace ZenMock
             std::forward<ReturnValueURef>(subsequentReturnValues)...);
       }
 
-      FunctionReturnType ZenMockItAndReturnValue(ArgType argument)
+      const DecayedFunctionReturnType& ZenMockItAndReturnValue(ArgType argument)
       {
          OneArgumentMocker<ArgType>::ZenMockIt(argument);
          return ValueReturner<FunctionReturnType>::ZenMockNextReturnValue();
@@ -94,7 +94,7 @@ namespace ZenMock
       {
       }
 
-      static FunctionReturnType ZenMockItFunctionPointer(
+      static const DecayedFunctionReturnType& ZenMockItFunctionPointer(
          NonVoidOneArgFunctionPointerMocker* functionMocker, Arg1Type argument)
       {
          return functionMocker->ZenMockItAndReturnValue(argument);

@@ -45,20 +45,22 @@ namespace ZenUnit
    STARTUP
    {
 #ifdef __linux__
-      _machineNameGetter.call_gethostname= ZENMOCK_BIND2(gethostname_ZenMock);
+      _machineNameGetter.call_gethostname = ZENMOCK_BIND2(gethostname_ZenMock);
 #elif _WIN32
-      _machineNameGetter.call_GetComputerName= ZENMOCK_BIND2(GetComputerName_ZenMock);
+      _machineNameGetter.call_GetComputerName = ZENMOCK_BIND2(GetComputerName_ZenMock);
 #endif
    }
 
 #ifdef __linux__
    TEST(GetMachineName_ReturnsEitherCallToGetLinuxOrGetWindowsMachineName)
    {
-      _machineNameGetterSelfMocked.GetLinuxMachineNameMock.Expect();
+      const string machineName = ZenUnit::Random<string>();
+      _machineNameGetterSelfMocked.GetLinuxMachineNameMock.ExpectAndReturn(machineName);
       //
-      _machineNameGetterSelfMocked.GetMachineName();
+      const string returnedMachineName = _machineNameGetterSelfMocked.GetMachineName();
       //
       ZEN(_machineNameGetterSelfMocked.GetLinuxMachineNameMock.AssertCalledOnce());
+      ARE_EQUAL(machineName, returnedMachineName);
    }
 
    TEST(GetLinuxMachineName_ReturnsResultOfgethostname)
@@ -68,11 +70,13 @@ namespace ZenUnit
 #elif _WIN32
    TEST(GetMachineName_ReturnsEitherCallToGetLinuxOrGetWindowsMachineName)
    {
-      _machineNameGetterSelfMocked.GetWindowsMachineNameMock.Expect();
+      const string machineName = ZenUnit::Random<string>();
+      _machineNameGetterSelfMocked.GetWindowsMachineNameMock.ExpectAndReturn(machineName);
       //
-      _machineNameGetterSelfMocked.GetMachineName();
+      const string returnedMachineName = _machineNameGetterSelfMocked.GetMachineName();
       //
       ZEN(_machineNameGetterSelfMocked.GetWindowsMachineNameMock.AssertCalledOnce());
+      ARE_EQUAL(machineName, returnedMachineName);
    }
 
    TEST(GetWindowsMachineName_ReturnsResultOfGetComputerName)

@@ -46,11 +46,11 @@ struct ZenMock_##functionName : public ZenMock::NonVoidZeroArgumentMocker<return
 namespace ZenMock
 {
    template<typename FunctionReturnType>
-   class NonVoidZeroArgumentMocker : public ZeroArgumentMocker<ExceptionThrower>, private ValueReturner<FunctionReturnType>
+   class NonVoidZeroArgumentMocker : public ZeroArgumentMocker<ExceptionThrower>, protected ValueReturner<FunctionReturnType>
    {
    public:
       explicit NonVoidZeroArgumentMocker(const std::string& zenMockedFunctionSignature)
-         : ZeroArgumentMocker(zenMockedFunctionSignature)
+         : ZeroArgumentMocker<ExceptionThrower>(zenMockedFunctionSignature)
          , ValueReturner<FunctionReturnType>(zenMockedFunctionSignature)
       {
       }
@@ -78,7 +78,7 @@ namespace ZenMock
             std::forward<ReturnTypes>(subsequentReturnValues)...);
       }
 
-      FunctionReturnType ZenMockItAndReturnValue()
+      const DecayedFunctionReturnType& ZenMockItAndReturnValue()
       {
          ZeroArgumentMocker::ZenMockIt();
          return ValueReturner<FunctionReturnType>::ZenMockNextReturnValue();
@@ -94,7 +94,7 @@ namespace ZenMock
       {
       }
 
-      static FunctionReturnType ZenMockItFunctionPointer(
+      static const DecayedFunctionReturnType& ZenMockItFunctionPointer(
          NonVoidZeroArgFunctionPointerMocker<FunctionReturnType>* functionPointerMocker)
       {
          return functionPointerMocker->ZenMockItAndReturnValue();
