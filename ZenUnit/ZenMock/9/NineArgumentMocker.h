@@ -4,6 +4,7 @@
 #include "ZenUnit/ZenMock/9/NineArgumentCallRef.h"
 #include "ZenUnit/ZenMock/Exceptions/UnexpectedCallException.h"
 #include "ZenUnit/ZenMock/ZenMocker.h"
+#include "ZenUnit/ZenMock/ZENAssertionToken.h"
 
 #define ZENMOCK_BIND9(FunctionName_ZenMock) \
    std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
@@ -50,7 +51,7 @@ namespace ZenMock
          this->ZenMockThrowIfExceptionSet();
       }
 
-      void AssertCalledOnceWith(
+      ZENAssertionToken AssertCalledOnceWith(
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument,
          const Arg3Type& expectedThirdArgument,
@@ -73,9 +74,10 @@ namespace ZenMock
          ARE_EQUAL(expectedSeventhArgument, callHistory[0].seventhArgument, this->ZenMockedFunctionSignature);
          ARE_EQUAL(expectedEigthArgument, callHistory[0].eigthArgument, this->ZenMockedFunctionSignature);
          ARE_EQUAL(expectedNinthArgument, callHistory[0].ninthArgument, this->ZenMockedFunctionSignature);
+         return ZENAssertionToken::NoDiscard();
       }
 
-      void AssertCalledNTimesWith(
+      ZENAssertionToken AssertCalledNTimesWith(
          size_t expectedNumberOfCalls,
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument,
@@ -104,9 +106,10 @@ namespace ZenMock
             ARE_EQUAL(expectedEigthArgument, callHistory[i].eigthArgument, zenMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedNinthArgument, callHistory[i].ninthArgument, zenMockedFunctionSignatureAndCallIndex);
          }
+         return ZENAssertionToken::NoDiscard();
       }
 
-      void AssertCalls(const std::vector<NineArgumentCallRef<
+      ZENAssertionToken AssertCalls(const std::vector<NineArgumentCallRef<
          Arg1Type, Arg2Type, Arg3Type, Arg4Type,
          Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>& expectedNineArgumentCalls)
       {
@@ -117,6 +120,7 @@ namespace ZenMock
             Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
             actualNineArgumentCalls = PrivateCallsToCallRefs(callHistory);
          VECTORS_EQUAL(expectedNineArgumentCalls, actualNineArgumentCalls, this->ZenMockedFunctionSignature);
+         return ZENAssertionToken::NoDiscard();
       }
 
    private:

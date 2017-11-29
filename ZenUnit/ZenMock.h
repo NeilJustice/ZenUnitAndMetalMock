@@ -81,4 +81,5 @@
 #include "ZenMock/Signature.cpp"
 #include "ZenMock/ValueReturner.h"
 #include "ZenMock/ZEN.h"
+#include "ZenMock/ZENAssertionToken.h"
 #include "ZenMock/ZenMocker.h"

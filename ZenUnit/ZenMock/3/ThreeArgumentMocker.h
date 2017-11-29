@@ -4,6 +4,7 @@
 #include "ZenUnit/ZenMock/3/ThreeArgumentCallRef.h"
 #include "ZenUnit/ZenMock/Exceptions/UnexpectedCallException.h"
 #include "ZenUnit/ZenMock/ZenMocker.h"
+#include "ZenUnit/ZenMock/ZENAssertionToken.h"
 
 #define ZENMOCK_BIND3(FunctionName_ZenMock) \
    std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
@@ -34,7 +35,7 @@ namespace ZenMock
          this->ZenMockThrowIfExceptionSet();
       }
 
-      void AssertCalledOnceWith(
+      ZENAssertionToken AssertCalledOnceWith(
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument,
          const Arg3Type& expectedThirdArgument)
@@ -45,9 +46,10 @@ namespace ZenMock
          ARE_EQUAL(expectedFirstArgument, callHistory[0].firstArgument, this->ZenMockedFunctionSignature);
          ARE_EQUAL(expectedSecondArgument, callHistory[0].secondArgument, this->ZenMockedFunctionSignature);
          ARE_EQUAL(expectedThirdArgument, callHistory[0].thirdArgument, this->ZenMockedFunctionSignature);
+         return ZENAssertionToken::NoDiscard();
       }
 
-      void AssertCalledNTimesWith(
+      ZENAssertionToken AssertCalledNTimesWith(
          size_t expectedNumberOfCalls,
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument,
@@ -64,9 +66,10 @@ namespace ZenMock
             ARE_EQUAL(expectedSecondArgument, callHistory[i].secondArgument, zenMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedThirdArgument, callHistory[i].thirdArgument, zenMockedFunctionSignatureAndCallIndex);
          }
+         return ZENAssertionToken::NoDiscard();
       }
 
-      void AssertCalls(const std::vector<
+      ZENAssertionToken AssertCalls(const std::vector<
          ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>>& expectedThreeArgumentCalls)
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedThreeArgumentCalls.size());
@@ -74,6 +77,7 @@ namespace ZenMock
          const std::vector<ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>>
             actualThreeArgumentCalls = PrivateCallsToCallRefs(callHistory);
          VECTORS_EQUAL(expectedThreeArgumentCalls, actualThreeArgumentCalls, this->ZenMockedFunctionSignature);
+         return ZENAssertionToken::NoDiscard();
       }
 
    private:

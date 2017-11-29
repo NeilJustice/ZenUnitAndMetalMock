@@ -6,6 +6,7 @@
 #include "ZenUnit/ZenMock/Exceptions/UnexpectedCallException.h"
 #include "ZenUnit/ZenMock/Exceptions/UnsupportedAssertCalledZeroTimesException.h"
 #include "ZenUnit/ZenMock/ZenMocker.h"
+#include "ZenUnit/ZenMock/ZENAssertionToken.h"
 
 #define ZENMOCK_BIND1(FunctionName_ZenMock) \
    std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
@@ -34,15 +35,16 @@ namespace ZenMock
          this->ZenMockThrowIfExceptionSet();
       }
 
-      void AssertCalledOnceWith(const ArgType& expectedArgument)
+      ZENAssertionToken AssertCalledOnceWith(const ArgType& expectedArgument)
       {
          this->ZenMockSetAsserted();
          const size_t expectedNumberOfCalls = 1;
          ARE_EQUAL(expectedNumberOfCalls, callHistory.size(), this->ZenMockedFunctionSignature);
          ARE_EQUAL(expectedArgument, callHistory[0].argument, this->ZenMockedFunctionSignature);
+         return ZENAssertionToken::NoDiscard();
       }
 
-      void AssertCalledNTimesWith(size_t expectedNumberOfCalls, const ArgType& expectedArgument)
+      ZENAssertionToken AssertCalledNTimesWith(size_t expectedNumberOfCalls, const ArgType& expectedArgument)
       {
          this->ZenMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
          this->ZenMockSetAsserted();
@@ -53,15 +55,17 @@ namespace ZenMock
                = ZenUnit::String::Concat(this->ZenMockedFunctionSignature, " at i=", i);
             ARE_EQUAL(expectedArgument, callHistory[i].argument, zenMockedFunctionSignatureAndCallIndex);
          }
+         return ZENAssertionToken::NoDiscard();
       }
 
-      void AssertCalls(const std::vector<OneArgumentCallRef<ArgType>>& expectedOneArgumentCalls)
+      ZENAssertionToken AssertCalls(const std::vector<OneArgumentCallRef<ArgType>>& expectedOneArgumentCalls)
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedOneArgumentCalls.size());
          this->ZenMockSetAsserted();
          const std::vector<OneArgumentCallRef<ArgType>>
             actualOneArgumentCalls = PrivateCallsToCallRefs(callHistory);
          VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature);
+         return ZENAssertionToken::NoDiscard();
       }
    private:
       static std::vector<OneArgumentCallRef<ArgType>>

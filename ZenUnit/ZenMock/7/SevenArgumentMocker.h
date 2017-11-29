@@ -46,7 +46,7 @@ namespace ZenMock
          this->ZenMockThrowIfExceptionSet();
       }
 
-      void AssertCalledOnceWith(
+      ZENAssertionToken AssertCalledOnceWith(
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument,
          const Arg3Type& expectedThirdArgument,
@@ -65,9 +65,10 @@ namespace ZenMock
          ARE_EQUAL(expectedFifthArgument, callHistory[0].fifthArgument, this->ZenMockedFunctionSignature);
          ARE_EQUAL(expectedSixthArgument, callHistory[0].sixthArgument, this->ZenMockedFunctionSignature);
          ARE_EQUAL(expectedSeventhArgument, callHistory[0].seventhArgument, this->ZenMockedFunctionSignature);
+         return ZENAssertionToken::NoDiscard();
       }
 
-      void AssertCalledNTimesWith(
+      ZENAssertionToken AssertCalledNTimesWith(
          size_t expectedNumberOfCalls,
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument,
@@ -92,9 +93,10 @@ namespace ZenMock
             ARE_EQUAL(expectedSixthArgument, callHistory[i].sixthArgument, zenMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedSeventhArgument, callHistory[i].seventhArgument, zenMockedFunctionSignatureAndCallIndex);
          }
+         return ZENAssertionToken::NoDiscard();
       }
 
-      void AssertCalls(const std::vector<SevenArgumentCallRef<
+      ZENAssertionToken AssertCalls(const std::vector<SevenArgumentCallRef<
          Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>& expectedSevenArgumentCalls)
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedSevenArgumentCalls.size());
@@ -102,6 +104,7 @@ namespace ZenMock
          const std::vector<SevenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>
             actualSevenArgumentCalls = PrivateCallsToCallRefs(callHistory);
          VECTORS_EQUAL(expectedSevenArgumentCalls, actualSevenArgumentCalls, this->ZenMockedFunctionSignature);
+         return ZENAssertionToken::NoDiscard();
       }
 
    private:

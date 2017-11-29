@@ -4,6 +4,7 @@
 #include "ZenUnit/ZenMock/6/SixArgumentCallRef.h"
 #include "ZenUnit/ZenMock/Exceptions/UnexpectedCallException.h"
 #include "ZenUnit/ZenMock/ZenMocker.h"
+#include "ZenUnit/ZenMock/ZENAssertionToken.h"
 
 #define ZENMOCK_BIND6(FunctionName_ZenMock) \
    std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
@@ -44,7 +45,7 @@ namespace ZenMock
          this->ZenMockThrowIfExceptionSet();
       }
 
-      void AssertCalledOnceWith(
+      ZENAssertionToken AssertCalledOnceWith(
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument,
          const Arg3Type& expectedThirdArgument,
@@ -61,9 +62,10 @@ namespace ZenMock
          ARE_EQUAL(expectedFourthArgument, callHistory[0].fourthArgument, this->ZenMockedFunctionSignature);
          ARE_EQUAL(expectedFifthArgument, callHistory[0].fifthArgument, this->ZenMockedFunctionSignature);
          ARE_EQUAL(expectedSixthArgument, callHistory[0].sixthArgument, this->ZenMockedFunctionSignature);
+         return ZENAssertionToken::NoDiscard();
       }
 
-      void AssertCalledNTimesWith(
+      ZENAssertionToken AssertCalledNTimesWith(
          size_t expectedNumberOfCalls,
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument,
@@ -85,10 +87,11 @@ namespace ZenMock
             ARE_EQUAL(expectedFourthArgument, callHistory[i].fourthArgument, zenMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedFifthArgument, callHistory[i].fifthArgument, zenMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedSixthArgument, callHistory[i].sixthArgument, zenMockedFunctionSignatureAndCallIndex);
+            return ZENAssertionToken::NoDiscard();
          }
       }
 
-      void AssertCalls(const std::vector<
+      ZENAssertionToken AssertCalls(const std::vector<
          SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>& expectedSixArgumentCalls)
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedSixArgumentCalls.size());
@@ -96,6 +99,7 @@ namespace ZenMock
          const std::vector<SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
             actualSixArgumentCalls = PrivateCallsToCallRefs(callHistory);
          VECTORS_EQUAL(expectedSixArgumentCalls, actualSixArgumentCalls, this->ZenMockedFunctionSignature);
+         return ZENAssertionToken::NoDiscard();
       }
 
    private:

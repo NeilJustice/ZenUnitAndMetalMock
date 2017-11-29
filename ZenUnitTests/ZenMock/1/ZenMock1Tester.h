@@ -78,26 +78,44 @@ namespace ZenMock
          test(staticMock, staticSignature);
       }
 
+      void ExpectAndThrow_CalledTwice_Throws()
+      {
+         const auto test = [](auto& zenMockObject, const string& expectedSignature)
+         {
+            zenMockObject.template ExpectAndThrow<exception>();
+            THROWS(zenMockObject.template ExpectAndThrow<exception>(), FunctionAlreadyExpectedException,
+               FunctionAlreadyExpectedException::MakeWhat(expectedSignature));
+         };
+         test(mock.VirtualMock, virtualSignature);
+         test(mock.VirtualConstMock, virtualConstSignature);
+         test(mock.NonVirtualMock, nonVirtualSignature);
+         test(mock.NonVirtualConstMock, nonVirtualConstSignature);
+         test(freeMock, freeSignature);
+         test(namespaceMock, namespaceSignature);
+         test(staticNameClashMock, staticNameClashSignature);
+         test(staticMock, staticSignature);
+      }
+
       void MockedFunction_NotExpected_Throws()
       {
          const auto test = [](auto functionCallLambda, const string& expectedSignature)
          {
             THROWS(functionCallLambda(), UnexpectedCallException,
-            UnexpectedCallException::MakeWhat(expectedSignature, 0));
+               UnexpectedCallException::MakeWhat(expectedSignature, 0));
          };
-         test([&]{ mock.Virtual(0); }, virtualSignature);
-         test([&]{ mock.VirtualConst(0); }, virtualConstSignature);
-         test([&]{ mock.NonVirtual(0); }, nonVirtualSignature);
-         test([&]{ mock.NonVirtualConst(0); }, nonVirtualConstSignature);
+         test([&] { mock.Virtual(0); }, virtualSignature);
+         test([&] { mock.VirtualConst(0); }, virtualConstSignature);
+         test([&] { mock.NonVirtual(0); }, nonVirtualSignature);
+         test([&] { mock.NonVirtualConst(0); }, nonVirtualConstSignature);
 
          function<void(int)> zenBoundFreeMock = ZENMOCK_BIND1(freeMock);
-         test([&]{ zenBoundFreeMock(0); }, freeSignature);
+         test([&] { zenBoundFreeMock(0); }, freeSignature);
          function<void(int)> zenBoundNamespaceMock = ZENMOCK_BIND1(namespaceMock);
-         test([&]{ zenBoundNamespaceMock(0); }, namespaceSignature);
+         test([&] { zenBoundNamespaceMock(0); }, namespaceSignature);
          function<void(int)> zenBoundStaticNameClashMock = ZENMOCK_BIND1(staticNameClashMock);
-         test([&]{ zenBoundStaticNameClashMock(0); }, staticNameClashSignature);
+         test([&] { zenBoundStaticNameClashMock(0); }, staticNameClashSignature);
          function<void(int)> zenBoundStaticMock = ZENMOCK_BIND1(staticMock);
-         test([&]{ zenBoundStaticMock(0); }, staticSignature);
+         test([&] { zenBoundStaticMock(0); }, staticSignature);
       }
 
       void MockedFunction_Expected_DoesNotThrow()
@@ -116,24 +134,6 @@ namespace ZenMock
          test(namespaceMock);
          test(staticNameClashMock);
          test(staticMock);
-      }
-
-      void ExpectAndThrow_CalledTwice_Throws()
-      {
-         const auto test = [](auto& zenMockObject, const string& expectedSignature)
-         {
-            zenMockObject.template ExpectAndThrow<exception>();
-            THROWS(zenMockObject.template ExpectAndThrow<exception>(), FunctionAlreadyExpectedException,
-               FunctionAlreadyExpectedException::MakeWhat(expectedSignature));
-         };
-         test(mock.VirtualMock, virtualSignature);
-         test(mock.VirtualConstMock, virtualConstSignature);
-         test(mock.NonVirtualMock, nonVirtualSignature);
-         test(mock.NonVirtualConstMock, nonVirtualConstSignature);
-         test(freeMock, freeSignature);
-         test(namespaceMock, namespaceSignature);
-         test(staticNameClashMock, staticNameClashSignature);
-         test(staticMock, staticSignature);
       }
 
       const string What = "what";
@@ -299,7 +299,7 @@ File.cpp(1))");
             {
                zenMockObject.ZenMockIt(0);
             }
-           const string expectedWhat = String::Concat(R"(
+            const string expectedWhat = String::Concat(R"(
   Failed: ARE_EQUAL(expectedNumberOfCalls, callHistory.size(), this->ZenMockedFunctionSignature)
 Expected: 1
   Actual: )", numberOfCalls, R"(
@@ -389,7 +389,7 @@ File.cpp(1))");
             {
                zenMockObject.ZenMockIt(0);
             }
-            string expectedWhat = String::Concat(R"(
+            const string expectedWhat = String::Concat(R"(
   Failed: ARE_EQUAL(expectedNumberOfCalls, callHistory.size(), this->ZenMockedFunctionSignature)
 Expected: )", n, R"(
   Actual: )", numberOfCalls, R"(
@@ -491,7 +491,7 @@ File.cpp(1))");
          {
             zenMockObject.Expect();
             //
-            ZenMockTester::call_n_times(numberOfCalls, [&]{ zenMockObject.ZenMockIt(0); });
+            ZenMockTester::call_n_times(numberOfCalls, [&] { zenMockObject.ZenMockIt(0); });
             //
             const string expectedWhat = String::Concat(R"(
   Failed: VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature)
@@ -503,9 +503,9 @@ Expected: )", expectedCallsSize, R"(
  Message: ")", expectedSignature, R"("
 File.cpp(1)
 File.cpp(1))");
-            int lvalue = 0;
+            const int lvalue = 0;
             vector<OneArgumentCallRef<int>> expectedCalls;
-            ZenMockTester::call_n_times(expectedCallsSize, [&]{ expectedCalls.emplace_back(lvalue); });
+            ZenMockTester::call_n_times(expectedCallsSize, [&] { expectedCalls.emplace_back(lvalue); });
             THROWS(zenMockObject.AssertCalls(expectedCalls), Anomaly, expectedWhat);
          };
          test(mock.VirtualMock, virtualSignature);
@@ -550,9 +550,9 @@ Argument: 20
  Message: ")", expectedSignature, R"("
 File.cpp(1)
 File.cpp(1))");
-            int expectedArgument = 10;
+            const int expectedArgument = 10;
             vector<OneArgumentCallRef<int>> expectedCalls;
-            ZenMockTester::call_n_times(expectedCallsSize, [&]{ expectedCalls.emplace_back(expectedArgument); });
+            ZenMockTester::call_n_times(expectedCallsSize, [&] { expectedCalls.emplace_back(expectedArgument); });
             THROWS(zenMockObject.AssertCalls(expectedCalls), Anomaly, expectedWhat);
          };
          test(mock.VirtualMock, virtualSignature);
@@ -572,11 +572,11 @@ File.cpp(1))");
          {
             zenMockObject.Expect();
             //
-            ZenMockTester::call_n_times(expectedCallsSize, [&]{ zenMockObject.ZenMockIt(10); });
+            ZenMockTester::call_n_times(expectedCallsSize, [&] { zenMockObject.ZenMockIt(10); });
             //
-            int expectedArgument = 10;
+            const int expectedArgument = 10;
             vector<OneArgumentCallRef<int>> expectedCalls;
-            ZenMockTester::call_n_times(expectedCallsSize, [&]{ expectedCalls.emplace_back(expectedArgument); });
+            ZenMockTester::call_n_times(expectedCallsSize, [&] { expectedCalls.emplace_back(expectedArgument); });
             zenMockObject.AssertCalls(expectedCalls);
          };
          test(mock.VirtualMock);

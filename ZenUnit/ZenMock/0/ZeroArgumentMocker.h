@@ -4,6 +4,7 @@
 #include "ZenUnit/ZenMock/Exceptions/UnexpectedCallException.h"
 #include "ZenUnit/ZenMock/Exceptions/UnsupportedAssertCalledZeroTimesException.h"
 #include "ZenUnit/ZenMock/ZenMocker.h"
+#include "ZenUnit/ZenMock/ZENAssertionToken.h"
 
 #define ZENMOCK_BIND0(FunctionName_ZenMock) \
    std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock))
@@ -32,18 +33,20 @@ namespace ZenMock
          this->ZenMockThrowIfExceptionSet();
       }
 
-      void AssertCalledOnce()
+      ZENAssertionToken AssertCalledOnce()
       {
          this->ZenMockSetAsserted();
          const size_t expectedNumberOfCalls = 1;
          ARE_EQUAL(expectedNumberOfCalls, actualNumberOfCalls, this->ZenMockedFunctionSignature);
+         return ZENAssertionToken::NoDiscard();
       }
 
-      void AssertCalledNTimes(size_t expectedNumberOfCalls)
+      ZENAssertionToken AssertCalledNTimes(size_t expectedNumberOfCalls)
       {
          this->ZenMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
          this->ZenMockSetAsserted();
          ARE_EQUAL(expectedNumberOfCalls, actualNumberOfCalls, this->ZenMockedFunctionSignature);
+         return ZENAssertionToken::NoDiscard();
       }
    };
 }
