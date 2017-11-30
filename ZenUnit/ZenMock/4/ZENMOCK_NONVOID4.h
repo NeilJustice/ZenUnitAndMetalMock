@@ -58,21 +58,21 @@ namespace ZenMock
       template<typename ReturnType>
       void ExpectAndReturn(ReturnType&& returnValue)
       {
-         FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::Expect();
+         _expected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ExpectAndReturnValues(const FirstReturnValue& firstReturnValue, const SubsequentReturnValues&... subsequentReturnValues)
       {
-         FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::Expect();
+         _expected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(firstReturnValue, subsequentReturnValues...);
       }
 
       template<typename ContainerType>
       void ExpectAndReturnValues(ContainerType&& returnValues)
       {
-         FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::Expect();
+         _expected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 

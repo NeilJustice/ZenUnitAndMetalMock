@@ -1,18 +1,10 @@
 #include "pch.h"
 #include "ZenMock0Tester.h"
 
-void Void0() {}
+void Void0Function() {}
 
 namespace ZenMock
 {
-   void Void0() {}
-
-   struct Void0StaticFunctions
-   {
-      static void Void0() {}
-      static void Static() {}
-   };
-
    struct Void0Functions
    {
       virtual void Virtual() {}
@@ -30,76 +22,77 @@ namespace ZenMock
       ZENMOCK_VOID0_CONST_NONVIRTUAL(NonVirtualConst)
    };
 
+   void Void0Function() {}
+
+   struct StaticVoid0Functions
+   {
+      static void StaticVoid0Function() {}
+      static void Void0Function() {}
+   };
+
    TESTS(ZenMock_Void0Tests)
    // ZeroArgumentMocker Tests
-   AFACT(Expect_CalledTwice_Throws)
    AFACT(ExpectAndThrow_CalledTwice_Throws)
    AFACT(FunctionNotCalled_AssertCalledNTimesWithN0_Throws)
    AFACT(FunctionNotCalled_AssertCalledOnceThrows_AssertCalledNTimesThrows)
    AFACT(Function_NotExpected_Throws)
    AFACT(Function_Expected_DoesNotThrow_AssertCallsOnceDoesNotThrow_AssertCalledNTimes1DoesNotThrow)
    AFACT(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)
+   // Void0 Tests
+   AFACT(Expect_MakesFunctionCallNotThrow_DoesNotThrowIfExpectCalledTwice)
    EVIDENCE
 
+   ZENMOCK_VOID0_FREE(Void0Function)
+   ZENMOCK_VOID0_STATIC(ZenMock, Void0Function, _namespace)
+   ZENMOCK_VOID0_STATIC(ZenMock::StaticVoid0Functions, StaticVoid0Function)
+   ZENMOCK_VOID0_STATIC(ZenMock::StaticVoid0Functions, Void0Function, _static)
+
+   const string ExpectedVirtualFunctionSignature =
+      "virtual void ZenMock::Void0Functions::Virtual()";
+   const string ExpectedVirtualConstFunctionSignature =
+      "virtual void ZenMock::Void0Functions::VirtualConst() const";
+   const string ExpectedNonVirtualFunctionSignature =
+      "void ZenMock::Void0Functions::NonVirtual()";
+   const string ExpectedNonVirtualConstFunctionSignature =
+      "void ZenMock::Void0Functions::NonVirtualConst() const";
+   const string ExpectedFreeFunctionSignature =
+      "void ::Void0Function()";
+   const string ExpectedNamespacedFunctionSignature =
+      "void ZenMock::Void0Function()";
+   const string ExpectedStaticFunctionSignature =
+      "void ZenMock::StaticVoid0Functions::StaticVoid0Function()";
+   const string ExpectedStaticFunctionNameClashSignature =
+      "void ZenMock::StaticVoid0Functions::Void0Function()";
+
    Void0FunctionsMock _mock;
-   ZENMOCK_VOID0_FREE(Void0)
-   ZENMOCK_VOID0_STATIC(ZenMock, Void0, _namespace)
-   ZENMOCK_VOID0_STATIC(ZenMock::Void0StaticFunctions, Void0, _static)
-   ZENMOCK_VOID0_STATIC(ZenMock::Void0StaticFunctions, Static)
+
    unique_ptr<ZenMock0Tester<
       Void0FunctionsMock,
-      decltype(Void0_ZenMock),
-      decltype(Void0_ZenMock_namespace),
-      decltype(Void0_ZenMock_static),
-      decltype(Static_ZenMock)>> _zenMock0Tester;
-
-   const string VirtualSignature =
-      "virtual void ZenMock::Void0Functions::Virtual()";
-   const string VirtualConstSignature =
-      "virtual void ZenMock::Void0Functions::VirtualConst() const";
-   const string NonVirtualSignature =
-      "void ZenMock::Void0Functions::NonVirtual()";
-   const string NonVirtualConstSignature =
-      "void ZenMock::Void0Functions::NonVirtualConst() const";
-   const string FreeSignature =
-      "void ::Void0()";
-   const string NamespaceSignature =
-      "void ZenMock::Void0()";
-   const string StaticNameClashSignature =
-      "void ZenMock::Void0StaticFunctions::Void0()";
-   const string StaticUniqueSignature =
-      "void ZenMock::Void0StaticFunctions::Static()";
+      decltype(Void0Function_ZenMock),
+      decltype(Void0Function_ZenMock_namespace),
+      decltype(StaticVoid0Function_ZenMock),
+      decltype(Void0Function_ZenMock_static)>> _zenMock0Tester;
 
    STARTUP
    {
       _zenMock0Tester = make_unique<ZenMock0Tester<
          Void0FunctionsMock,
-         decltype(Void0_ZenMock),
-         decltype(Void0_ZenMock_namespace),
-         decltype(Void0_ZenMock_static),
-         decltype(Static_ZenMock)>>(
-            _mock,
-            VirtualSignature,
-            VirtualConstSignature,
-            NonVirtualSignature,
-            NonVirtualConstSignature,
-
-            Void0_ZenMock,
-            FreeSignature,
-
-            Void0_ZenMock_namespace,
-            NamespaceSignature,
-
-            Void0_ZenMock_static,
-            StaticNameClashSignature,
-
-            Static_ZenMock,
-            StaticUniqueSignature);
-   }
-
-   TEST(Expect_CalledTwice_Throws)
-   {
-      _zenMock0Tester->Expect_CalledTwice_Throws();
+         decltype(Void0Function_ZenMock),
+         decltype(Void0Function_ZenMock_namespace),
+         decltype(StaticVoid0Function_ZenMock),
+         decltype(Void0Function_ZenMock_static)>>(_mock,
+            ExpectedVirtualFunctionSignature,
+            ExpectedVirtualConstFunctionSignature,
+            ExpectedNonVirtualFunctionSignature,
+            ExpectedNonVirtualConstFunctionSignature,
+            Void0Function_ZenMock,
+            ExpectedFreeFunctionSignature,
+            Void0Function_ZenMock_namespace,
+            ExpectedNamespacedFunctionSignature,
+            StaticVoid0Function_ZenMock,
+            ExpectedStaticFunctionSignature,
+            Void0Function_ZenMock_static,
+            ExpectedStaticFunctionNameClashSignature);
    }
 
    TEST(ExpectAndThrow_CalledTwice_Throws)
@@ -130,6 +123,25 @@ namespace ZenMock
    TEST(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)
    {
       _zenMock0Tester->ExpectAndThrow_ThenMockedFunction_ThrowsTheException();
+   }
+
+   // Void0 Tests
+
+   TEST(Expect_MakesFunctionCallNotThrow_DoesNotThrowIfExpectCalledTwice)
+   {
+      //auto test = [](auto& zenMockObject)
+      //{
+      //   zenMockObject.Expect();
+      //   zenMockObject.Expect();
+      //};
+      //test(_mock.VirtualMock);
+      //test(_mock.VirtualConstMock);
+      //test(_mock.NonVirtualMock);
+      //test(_mock.NonVirtualConstMock);
+      //test(Void0Function_ZenMock);
+      //test(Void0Function_ZenMock_namespace);
+      //test(StaticVoid0Function_ZenMock);
+      //test(Void0Function_ZenMock_static);
    }
 
    }; RUNTESTS(ZenMock_Void0Tests)

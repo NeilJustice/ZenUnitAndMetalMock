@@ -6,8 +6,6 @@ namespace ZenMock
 {
    TESTS(TwoArgumentMockerTests)
    AFACT(Constructor_SetsFields)
-   AFACT(Expect_AlreadyExpected_Throws)
-   AFACT(Expect_NotAlreadyExpected_SetsExpectedTrue)
    AFACT(ExpectAndThrow_ExpectedTrue_Throws)
    AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
    AFACT(ZenMockIt_ExpectedFalse_Throws)
@@ -16,12 +14,12 @@ namespace ZenMock
 
    using MockerType = TwoArgumentMocker<int, int, ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;
-   string _signature;
+   string _functionSignature;
 
    STARTUP
    {
-      _signature = ZenUnit::Random<string>();
-      _mocker = make_unique<MockerType>(_signature);
+      _functionSignature = ZenUnit::Random<string>();
+      _mocker = make_unique<MockerType>(_functionSignature);
    }
 
    void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
@@ -31,37 +29,19 @@ namespace ZenMock
 
    TEST(Constructor_SetsFields)
    {
-      const MockerType mocker(_signature);
+      const MockerType mocker(_functionSignature);
       //
-      ARE_EQUAL(_signature, mocker.ZenMockedFunctionSignature);
+      ARE_EQUAL(_functionSignature, mocker.ZenMockedFunctionSignature);
       IS_FALSE(mocker._expected);
       IS_FALSE(mocker._asserted);
       IS_EMPTY(mocker.callHistory);
-   }
-
-   TEST(Expect_AlreadyExpected_Throws)
-   {
-      _mocker->_expected = true;
-      THROWS(_mocker->Expect(), FunctionAlreadyExpectedException,
-         FunctionAlreadyExpectedException::MakeWhat(_signature));
-      SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
-   }
-
-   TEST(Expect_NotAlreadyExpected_SetsExpectedTrue)
-   {
-      IS_FALSE(_mocker->_expected);
-      //
-      _mocker->Expect();
-      //
-      IS_TRUE(_mocker->_expected);
-      SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
    TEST(ExpectAndThrow_ExpectedTrue_Throws)
    {
       _mocker->_expected = true;
       THROWS(_mocker->ExpectAndThrow<exception>(), FunctionAlreadyExpectedException,
-         FunctionAlreadyExpectedException::MakeWhat(_signature));
+         FunctionAlreadyExpectedException::MakeWhat(_functionSignature));
    }
 
    TEST(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
@@ -81,7 +61,7 @@ namespace ZenMock
    {
       IS_FALSE(_mocker->_expected);
       THROWS(_mocker->ZenMockIt(1, 2), UnexpectedCallException,
-         UnexpectedCallException::MakeWhat(_signature, 1, 2));
+         UnexpectedCallException::MakeWhat(_functionSignature, 1, 2));
    }
 
    TEST(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)

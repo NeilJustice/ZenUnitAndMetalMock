@@ -33,16 +33,14 @@ namespace ZenMock
       {
       }
 
-      void Expect()
-      {
-         ZenMockThrowIfAlreadyExpected();
-         _expected = true;
-      }
-
       template<typename ExceptionType, typename... ExceptionArgTypes>
       void ExpectAndThrow(ExceptionArgTypes&&... exceptionArgs)
       {
-         ZenMockThrowIfAlreadyExpected();
+         if (_expected)
+         {
+            _zenMockExceptionIsInFlight = true;
+            throw FunctionAlreadyExpectedException(ZenMockedFunctionSignature);
+         }
          _exceptionThrower.template ExpectAndThrow<ExceptionType>(
             std::forward<ExceptionArgTypes>(exceptionArgs)...);
          _expected = true;
@@ -91,7 +89,6 @@ namespace ZenMock
             throw UnsupportedAssertCalledZeroTimesException(ZenMockedFunctionSignature);
          }
       }
-
    private:
       void ZenMockExitIfExpectedButNotAsserted() const
       {
@@ -99,20 +96,12 @@ namespace ZenMock
          {
             const ZenUnit::Console console;
             std::cout << "\n";
-            console.WriteLineColor("Fatal Expected-But-Not-Asserted ZenMocked Function:", ZenUnit::Color::Red);
+            console.WriteLineColor("========\nFATALITY\n========", ZenUnit::Color::Red);
+            console.WriteLine("Expected But Not Asserted ZenMocked Function:");
             console.WriteLineColor(ZenMockedFunctionSignature, ZenUnit::Color::Green);
             const ZenUnit::ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
-            int exitCode = zenUnitArgs.exit0 ? 0 : 1;
+            const int exitCode = zenUnitArgs.exit0 ? 0 : 1;
             call_exit(exitCode);
-         }
-      }
-
-      void ZenMockThrowIfAlreadyExpected()
-      {
-         if (_expected)
-         {
-            _zenMockExceptionIsInFlight = true;
-            throw FunctionAlreadyExpectedException(ZenMockedFunctionSignature);
          }
       }
    };

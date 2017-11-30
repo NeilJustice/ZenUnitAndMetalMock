@@ -32,16 +32,12 @@ namespace ZenMock
 
    TESTS(ZenMock_NonVoid0Tests)
    // ZeroArgumentMocker Tests
-   AFACT(Expect_CalledTwice_Throws)
    AFACT(ExpectAndThrow_CalledTwice_Throws)
    AFACT(FunctionNotCalled_AssertCalledNTimesWithN0_Throws)
    AFACT(FunctionNotCalled_AssertCalledOnceThrows_AssertCalledNTimesThrows)
    AFACT(Function_NotExpected_Throws)
    AFACT(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)
    // Value Return Tests
-   AFACT(ExpectAndReturn_CalledTwice_Throws)
-   AFACT(ExpectAndReturnValues_CalledTwice_Throws)
-   AFACT(ExpectAndReturnValuesVector_CalledTwice_Throws)
    AFACT(ExpectAndReturn_CausesFunctionToReturnValue)
    AFACT(ExpectAndReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
    AFACT(ExpectAndReturnValuesVector_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
@@ -82,8 +78,8 @@ namespace ZenMock
          NonVoid0FunctionsMock,
          decltype(NonVoid0_ZenMock),
          decltype(NonVoid0_ZenMock_namespace),
-         decltype(NonVoid0_ZenMock_static),
-         decltype(Static_ZenMock)>>(
+         decltype(Static_ZenMock),
+         decltype(NonVoid0_ZenMock_static)>>(
             _mock,
             VirtualSignature,
             VirtualConstSignature,
@@ -104,11 +100,6 @@ namespace ZenMock
    }
 
    // ZeroArgumentMocker Tests
-
-   TEST(Expect_CalledTwice_Throws)
-   {
-      _zenMock0Tester->Expect_CalledTwice_Throws();
-   }
 
    TEST(ExpectAndThrow_CalledTwice_Throws)
    {
@@ -136,63 +127,6 @@ namespace ZenMock
    }
 
    // Value Return Tests
-
-   TEST(ExpectAndReturn_CalledTwice_Throws)
-   {
-      const auto test = [](auto& zenMockObject, const string& expectedSignature)
-      {
-         zenMockObject.ExpectAndReturn(0);
-         THROWS(zenMockObject.ExpectAndReturn(0), FunctionAlreadyExpectedException,
-            FunctionAlreadyExpectedException::MakeWhat(expectedSignature));
-      };
-      test(_mock.VirtualMock, VirtualSignature);
-      test(_mock.VirtualConstMock, VirtualConstSignature);
-      test(_mock.NonVirtualMock, NonVirtualSignature);
-      test(_mock.NonVirtualConstMock, NonVirtualConstSignature);
-
-      test(NonVoid0_ZenMock, FreeSignature);
-      test(NonVoid0_ZenMock_namespace, NamespaceSignature);
-      test(NonVoid0_ZenMock_static, StaticNameClashSignature);
-      test(Static_ZenMock, StaticUniqueSignature);
-   }
-
-   TEST(ExpectAndReturnValues_CalledTwice_Throws)
-   {
-      const auto test = [](auto& zenMockObject, const string& expectedSignature)
-      {
-         zenMockObject.ExpectAndReturnValues(1, 2, 3);
-         THROWS(zenMockObject.ExpectAndReturnValues(1, 2, 3), FunctionAlreadyExpectedException,
-            FunctionAlreadyExpectedException::MakeWhat(expectedSignature));
-      };
-      test(_mock.VirtualMock, VirtualSignature);
-      test(_mock.VirtualConstMock, VirtualConstSignature);
-      test(_mock.NonVirtualMock, NonVirtualSignature);
-      test(_mock.NonVirtualConstMock, NonVirtualConstSignature);
-
-      test(NonVoid0_ZenMock, FreeSignature);
-      test(NonVoid0_ZenMock_namespace, NamespaceSignature);
-      test(NonVoid0_ZenMock_static, StaticNameClashSignature);
-      test(Static_ZenMock, StaticUniqueSignature);
-   }
-
-   TEST(ExpectAndReturnValuesVector_CalledTwice_Throws)
-   {
-      const auto test = [](auto& zenMockObject, const string& expectedSignature)
-      {
-         zenMockObject.ExpectAndReturnValues(vector<int>{1, 2, 3});
-         THROWS(zenMockObject.ExpectAndReturnValues(array<int, 3>{{4, 5, 6}}), FunctionAlreadyExpectedException,
-            FunctionAlreadyExpectedException::MakeWhat(expectedSignature));
-      };
-      test(_mock.VirtualMock, VirtualSignature);
-      test(_mock.VirtualConstMock, VirtualConstSignature);
-      test(_mock.NonVirtualMock, NonVirtualSignature);
-      test(_mock.NonVirtualConstMock, NonVirtualConstSignature);
-
-      test(NonVoid0_ZenMock, FreeSignature);
-      test(NonVoid0_ZenMock_namespace, NamespaceSignature);
-      test(NonVoid0_ZenMock_static, StaticNameClashSignature);
-      test(Static_ZenMock, StaticUniqueSignature);
-   }
 
    TEST(ExpectAndReturn_CausesFunctionToReturnValue)
    {

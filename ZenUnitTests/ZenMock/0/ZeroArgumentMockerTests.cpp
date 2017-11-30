@@ -5,8 +5,6 @@ namespace ZenMock
 {
    TESTS(ZeroArgumentMockerTests)
    AFACT(Constructor_SetsFields)
-   AFACT(Expect_AlreadyExpected_Throws)
-   AFACT(Expect_NotAlreadyExpected_SetsExpectedTrue)
    AFACT(ExpectAndThrow_ExpectedTrue_Throws)
    AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
    AFACT(ZenMockIt_ExpectedFalse_Throws)
@@ -27,11 +25,6 @@ namespace ZenMock
       _mocker = make_unique<MockerType>(_signature);
    }
 
-   void SetAssertedTrueToNotFailDueToExpectedButNotAsesrted()
-   {
-      _mocker->_asserted = true;
-   }
-
    TEST(Constructor_SetsFields)
    {
       const MockerType mocker(_signature);
@@ -40,23 +33,6 @@ namespace ZenMock
       IS_FALSE(mocker._expected);
       IS_FALSE(mocker._asserted);
       IS_ZERO(mocker.actualNumberOfCalls);
-   }
-
-   TEST(Expect_AlreadyExpected_Throws)
-   {
-      _mocker->_expected = true;
-      THROWS(_mocker->Expect(), FunctionAlreadyExpectedException,
-         FunctionAlreadyExpectedException::MakeWhat(_signature));
-   }
-
-   TEST(Expect_NotAlreadyExpected_SetsExpectedTrue)
-   {
-      IS_FALSE(_mocker->_expected);
-      //
-      _mocker->Expect();
-      //
-      IS_TRUE(_mocker->_expected);
-      SetAssertedTrueToNotFailDueToExpectedButNotAsesrted();
    }
 
    TEST(ExpectAndThrow_ExpectedTrue_Throws)
@@ -76,7 +52,7 @@ namespace ZenMock
       _mocker->_exceptionThrower.AssertExpectAndThrowCalledOnceWith(
          "ZenMock::TestingException", 2, "argument100");
       IS_TRUE(_mocker->_expected);
-      SetAssertedTrueToNotFailDueToExpectedButNotAsesrted();
+      _mocker->_asserted = true;
    }
 
    TEST(ZenMockIt_ExpectedFalse_Throws)

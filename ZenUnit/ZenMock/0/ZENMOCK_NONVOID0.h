@@ -58,24 +58,24 @@ namespace ZenMock
       template<typename ReturnType>
       void ExpectAndReturn(ReturnType&& returnValue)
       {
-         ZeroArgumentMocker::Expect();
+         _expected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValue(std::forward<ReturnType>(returnValue));
-      }
-
-      template<typename ContainerType>
-      void ExpectAndReturnValues(ContainerType&& returnValues)
-      {
-         ZeroArgumentMocker::Expect();
-         ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       template<typename ReturnType, typename... ReturnTypes>
       void ExpectAndReturnValues(ReturnType&& firstReturnValue, ReturnTypes&&... subsequentReturnValues)
       {
-         ZeroArgumentMocker::Expect();
+         _expected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
             std::forward<ReturnType>(firstReturnValue),
             std::forward<ReturnTypes>(subsequentReturnValues)...);
+      }
+
+      template<typename ContainerType>
+      void ExpectAndReturnValues(ContainerType&& returnValues)
+      {
+         _expected = true;
+         ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       const DecayedFunctionReturnType& ZenMockItAndReturnValue()

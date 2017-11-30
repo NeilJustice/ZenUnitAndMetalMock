@@ -20,6 +20,13 @@ namespace ZenMock
    class OneArgumentMocker : public ZenMocker<MockableExceptionThrowerType>
    {
       friend class OneArgumentMockerTests;
+      template<
+         typename ZenMockObjectType,
+         typename FreeMockType,
+         typename NamespaceMockType,
+         typename StaticMockType,
+         typename StaticNameClashMockType>
+      friend class ZenMock1Tester;
    private:
       std::vector<OneArgumentCall<ArgType>> callHistory;
    public:

@@ -24,9 +24,6 @@ using namespace std;
    #define NOMINMAX
    #include "Windows.h"
 #endif
-#define ZEN_UNIT_TESTING
-//#include "ZenUnit/ZenMockLibrary.h"
-//#include "ZenUnit/ZenUnitLibrary.h"
 #include "ZenUnit/ZenMock.h"
 #include "ZenUnit/ZenUnit.h"
 using namespace ZenUnit;

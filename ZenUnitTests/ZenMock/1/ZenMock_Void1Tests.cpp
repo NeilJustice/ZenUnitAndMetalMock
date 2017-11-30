@@ -1,88 +1,115 @@
 #include "pch.h"
 #include "ZenMock1Tester.h"
 
-void Void1(int) {}
+void Void1Function(int) {}
 
 namespace ZenMock
 {
-   void Void1(int) {}
-
-   struct Void1StaticFunctions
-   {
-      static void Void1(int) {}
-      static void Static(int) {}
-   };
-
    struct Void1Functions
    {
-      virtual void Virtual(int) {}
-      virtual void VirtualConst(int) const {}
-      void NonVirtual(int) {}
-      void NonVirtualConst(int) const {}
+      virtual void VirtualFunction(int) {}
+      virtual void VirtualConstFunction(int) const {}
+      void NonVirtualFunction(int) {}
+      void NonVirtualConstFunction(int) const {}
       virtual ~Void1Functions() = default;
    };
 
    struct Void1FunctionsMock : public Zen::Mock<Void1Functions>
    {
-      ZENMOCK_VOID1(Virtual, int)
-      ZENMOCK_VOID1_CONST(VirtualConst, int)
-      ZENMOCK_VOID1_NONVIRTUAL(NonVirtual, int)
-      ZENMOCK_VOID1_CONST_NONVIRTUAL(NonVirtualConst, int)
+      ZENMOCK_VOID1(VirtualFunction, int)
+      ZENMOCK_VOID1_CONST(VirtualConstFunction, int)
+      ZENMOCK_VOID1_NONVIRTUAL(NonVirtualFunction, int)
+      ZENMOCK_VOID1_CONST_NONVIRTUAL(NonVirtualConstFunction, int)
+   };
+
+   void Void1Function(int) {}
+
+   struct Void1StaticFunctions
+   {
+      static void StaticVoid1Function(int) {}
+      static void OverloadedStaticVoid1Function(float) {}
+      static void OverloadedStaticVoid1Function(double) {}
    };
 
    TESTS(ZenMock_Void1Tests)
+   AFACT(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
    EVIDENCE
 
+   const string ExpectedVirtualFunctionSignature =
+      "virtual void ZenMock::Void1Functions::VirtualFunction(int)";
+   const string ExpectedVirtualConstFunctionSignature =
+      "virtual void ZenMock::Void1Functions::VirtualConstFunction(int) const";
+   const string ExpectedNonVirtualFunctionSignature =
+      "void ZenMock::Void1Functions::NonVirtualFunction(int)";
+   const string ExpectedNonVirtualConstFunctionSignature =
+      "void ZenMock::Void1Functions::NonVirtualConstFunction(int) const";
+   const string ExpectedFreeFunctionSignature =
+      "void ::Void1Function(int)";
+   const string ExpectedNamespacedFunctionSignature =
+      "void ZenMock::Void1Function(int)";
+   const string ExpectedStaticFunctionSignature =
+      "void ZenMock::Void1StaticFunctions::StaticFunction(int)";
+   const string ExpectedOverloadedStaticFunctionSignatureA =
+      "void ZenMock::Void1StaticFunctions::OverloadedStaticFunction(float)";
+   const string ExpectedOverloadedStaticFunctionSignatureB =
+      "void ZenMock::Void1StaticFunctions::OverloadedStaticFunction(double)";
+
    Void1FunctionsMock _mock;
-   ZENMOCK_VOID1_FREE(Void1, int)
-   ZENMOCK_VOID1_STATIC(ZenMock, Void1, int, _namespace)
-   ZENMOCK_VOID1_STATIC(ZenMock::Void1StaticFunctions, Void1, int, _static)
-   ZENMOCK_VOID1_STATIC(ZenMock::Void1StaticFunctions, Static, int)
+   ZENMOCK_VOID1_FREE(Void1Function, int)
+   ZENMOCK_VOID1_STATIC(ZenMock, Void1Function, int, _namespace)
+   ZENMOCK_VOID1_STATIC(ZenMock::Void1StaticFunctions, StaticVoid1Function, int)
+   ZENMOCK_VOID1_STATIC(ZenMock::Void1StaticFunctions, OverloadedStaticVoid1Function, float, _float)
+   ZENMOCK_VOID1_STATIC(ZenMock::Void1StaticFunctions, OverloadedStaticVoid1Function, double, _double)
+
    unique_ptr<ZenMock1Tester<
       Void1FunctionsMock,
-      decltype(Void1_ZenMock),
-      decltype(Void1_ZenMock_namespace),
-      decltype(Void1_ZenMock_static),
-      decltype(Static_ZenMock)>> _zenMock1Tester;
-
-   const string ExpectedVirtualSignature =
-      "virtual void ZenMock::Void1Functions::Virtual(int)";
-   const string ExpectedVirtualConstSignature =
-      "virtual void ZenMock::Void1Functions::VirtualConst(int) const";
-   const string ExpectedNonVirtualSignature =
-      "void ZenMock::Void1Functions::NonVirtual(int)";
-   const string ExpectedNonVirtualConstSignature =
-      "void ZenMock::Void1Functions::NonVirtualConst(int) const";
-   const string ExpectedFreeSignature =
-      "void ::Void1(int)";
-   const string ExpectedNamespaceSignature =
-      "void ZenMock::Void1(int)";
-   const string ExpectedStaticNameClashSignature =
-      "void ZenMock::Void1StaticFunctions::Void1(int)";
-   const string ExpectedStaticUniqueSignature =
-      "void ZenMock::Void1StaticFunctions::Static(int)";
+      decltype(Void1Function_ZenMock),
+      decltype(Void1Function_ZenMock_namespace),
+      decltype(StaticVoid1Function_ZenMock),
+      decltype(OverloadedStaticVoid1Function_ZenMock_float)>> _zenMock1Tester;
 
    STARTUP
    {
       _zenMock1Tester = make_unique<ZenMock1Tester<
          Void1FunctionsMock,
-         decltype(Void1_ZenMock),
-         decltype(Void1_ZenMock_namespace),
-         decltype(Void1_ZenMock_static),
-         decltype(Static_ZenMock)>>(
+         decltype(Void1Function_ZenMock),
+         decltype(Void1Function_ZenMock_namespace),
+         decltype(StaticVoid1Function_ZenMock),
+         decltype(OverloadedStaticVoid1Function_ZenMock_float)>>(
             _mock,
-            ExpectedVirtualSignature,
-            ExpectedVirtualConstSignature,
-            ExpectedNonVirtualSignature,
-            ExpectedNonVirtualConstSignature,
-            Void1_ZenMock,
-            ExpectedFreeSignature,
-            Void1_ZenMock_namespace,
-            ExpectedNamespaceSignature,
-            Void1_ZenMock_static,
-            ExpectedStaticNameClashSignature,
-            Static_ZenMock,
-            ExpectedStaticUniqueSignature);
+            ExpectedVirtualFunctionSignature,
+            ExpectedVirtualConstFunctionSignature,
+            ExpectedNonVirtualFunctionSignature,
+            ExpectedNonVirtualConstFunctionSignature,
+
+            Void1Function_ZenMock,
+            ExpectedFreeFunctionSignature,
+
+            Void1Function_ZenMock_namespace,
+            ExpectedNamespacedFunctionSignature,
+
+            StaticVoid1Function_ZenMock,
+            ExpectedStaticFunctionSignature,
+
+            OverloadedStaticVoid1Function_ZenMock_float,
+            ExpectedOverloadedStaticFunctionSignatureA);
+   }
+
+   TEST(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
+   {
+      //const auto test = [](auto& zenMockObject)
+      //{
+      //   zenMockObject.Expect();
+      //   zenMockObject.Expect();
+      //};
+      //test(_mock.VirtualFunctionMock);
+      //test(_mock.VirtualConstFunctionMock);
+      //test(_mock.NonVirtualFunctionMock);
+      //test(_mock.NonVirtualConstFunctionMock);
+      //test(Void1Function_ZenMock);
+      //test(Void1Function_ZenMock_namespace);
+      //test(StaticVoid1Function_ZenMock);
+      //test(OverloadedStaticVoid1Function_ZenMock_float);
    }
 
    }; RUNTESTS(ZenMock_Void1Tests)

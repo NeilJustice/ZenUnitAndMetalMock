@@ -6,8 +6,6 @@ namespace ZenMock
 {
    TESTS(ThreeArgumentMockerTests)
    AFACT(Constructor_SetsFields)
-   AFACT(Expect_AlreadyExpected_Throws)
-   AFACT(Expect_NotAlreadyExpected_SetsExpectedTrue)
    AFACT(ExpectAndThrow_ExpectedTrue_Throws)
    AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
    AFACT(ZenMockIt_ExpectedFalse_Throws)
@@ -37,24 +35,6 @@ namespace ZenMock
       IS_FALSE(mocker._expected);
       IS_FALSE(mocker._asserted);
       IS_EMPTY(mocker.callHistory);
-   }
-
-   TEST(Expect_AlreadyExpected_Throws)
-   {
-      _mocker->_expected = true;
-      THROWS(_mocker->Expect(), FunctionAlreadyExpectedException,
-         FunctionAlreadyExpectedException::MakeWhat(_signature));
-      SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
-   }
-
-   TEST(Expect_NotAlreadyExpected_SetsExpectedTrue)
-   {
-      IS_FALSE(_mocker->_expected);
-      //
-      _mocker->Expect();
-      //
-      IS_TRUE(_mocker->_expected);
-      SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
    TEST(ExpectAndThrow_ExpectedTrue_Throws)

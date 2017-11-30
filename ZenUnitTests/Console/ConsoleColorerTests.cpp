@@ -59,7 +59,6 @@ namespace ZenUnit
       const bool supportsColorReturnValue = ZenUnit::Random<bool>();
       if (expectSupportsColorCall)
       {
-         //_consoleColorer_SupportsColorMocked.SupportsColorMock.Expect();
          _consoleColorer_SupportsColorMocked.SupportsColorMock.ExpectAndReturn(supportsColorReturnValue);
       }
       //

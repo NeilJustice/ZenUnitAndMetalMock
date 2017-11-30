@@ -50,6 +50,11 @@ namespace ZenMock
          : ZeroArgumentMocker<ExceptionThrower>(zenMockedFunctionSignature)
       {
       }
+
+      void Expect()
+      {
+         _expected = true;
+      }
    };
 
    class VoidZeroArgFunctionPointerMocker : public VoidZeroArgumentMocker

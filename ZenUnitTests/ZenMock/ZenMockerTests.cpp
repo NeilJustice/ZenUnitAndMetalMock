@@ -11,7 +11,6 @@ namespace ZenMock
 {
    TESTS(ZenMockerTests)
    AFACT(Constructor_SetsFields)
-   AFACT(Expect_SetsExpectedTrue_ThrowsIfCalledTwice)
    AFACT(ExpectAndThrow_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue_ThrowsIfCalledTwice_runtime_error_testcase)
    AFACT(ExpectAndThrow_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue_ThrowsIfCalledTwice_CustomException_testcase)
    AFACT(ZenMockSetAsserted_SetsAssertedTrue_CallableTwice)
@@ -50,18 +49,6 @@ namespace ZenMock
       IS_FALSE(zenMocker._expected);
       IS_FALSE(zenMocker._asserted);
       IS_FALSE(zenMocker._zenMockExceptionIsInFlight);
-   }
-
-   TEST(Expect_SetsExpectedTrue_ThrowsIfCalledTwice)
-   {
-      IS_FALSE(_zenMocker->_expected);
-      //
-      _zenMocker->Expect();
-      //
-      IS_TRUE(_zenMocker->_expected);
-
-      THROWS(_zenMocker->Expect(), FunctionAlreadyExpectedException,
-         FunctionAlreadyExpectedException::MakeWhat(ZenMockedFunctionSignature));
    }
 
    TEST(ExpectAndThrow_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue_ThrowsIfCalledTwice_runtime_error_testcase)

@@ -53,6 +53,11 @@ namespace ZenMock
          : OneArgumentMocker<ArgType>(zenMockedFunctionSignature)
       {
       }
+
+      void Expect()
+      {
+         _expected = true;
+      }
    };
 
    template<typename Arg1Type>

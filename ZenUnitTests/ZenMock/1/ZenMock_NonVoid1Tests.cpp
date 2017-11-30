@@ -32,17 +32,13 @@ namespace ZenMock
 
    TESTS(ZenMock_NonVoid1Tests)
    // Expect Tests
-   AFACT(Expect_CalledTwice_Throws)
    AFACT(MockedFunction_NotExpected_Throws)
    AFACT(MockedFunction_Expected_DoesNotThrow)
    AFACT(ExpectAndThrow_CalledTwice_Throws)
    AFACT(ExpectAndThrow_ThenFunction_ThrowsTheException)
    // Value Return Tests
-   AFACT(ExpectAndReturn_CalledTwice_Throws)
    AFACT(ExpectAndReturn_CausesFunctionToReturnValueThereafter)
-   AFACT(ExpectAndReturnValues_CalledTwice_Throws)
    AFACT(ExpectAndReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereafter)
-   AFACT(ExpectAndReturnContainerValues_CalledTwice_Throws)
    AFACT(ExpectAndReturnContainerValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereafter)
    // Assertion Tests
    FACTS(AssertCalledOnceWith_ExpectedFunctionCalled0Or2OrMoreTimes_Throws)
@@ -58,18 +54,6 @@ namespace ZenMock
    FACTS(AssertCalls_NonEmptyCalls_FunctionCalledCallsSizeTimesWithMatchingArgs_DoesNotThrow)
    EVIDENCE
 
-   NonVoid1FunctionsMock mock;
-   ZENMOCK_NONVOID1_FREE(int, NonVoid1, int)
-   ZENMOCK_NONVOID1_STATIC(int, ZenMock, NonVoid1, int, _namespace)
-   ZENMOCK_NONVOID1_STATIC(int, ZenMock::NonVoid1StaticFunctions, NonVoid1, int, _static)
-   ZENMOCK_NONVOID1_STATIC(int, ZenMock::NonVoid1StaticFunctions, Static, int)
-   unique_ptr<ZenMock1Tester<
-      NonVoid1FunctionsMock,
-      decltype(NonVoid1_ZenMock),
-      decltype(NonVoid1_ZenMock_namespace),
-      decltype(NonVoid1_ZenMock_static),
-      decltype(Static_ZenMock)>> _zenMock1Tester;
-
    const string VirtualSignature =
       "virtual int ZenMock::NonVoid1Functions::Virtual(int)";
    const string VirtualConstSignature =
@@ -82,10 +66,22 @@ namespace ZenMock
       "int ::NonVoid1(int)";
    const string NamespaceSignature =
       "int ZenMock::NonVoid1(int)";
-   const string StaticNameClashSignature =
-      "int ZenMock::NonVoid1StaticFunctions::NonVoid1(int)";
    const string StaticUniqueSignature =
       "int ZenMock::NonVoid1StaticFunctions::Static(int)";
+   const string StaticNameClashSignature =
+      "int ZenMock::NonVoid1StaticFunctions::NonVoid1(int)";
+
+   NonVoid1FunctionsMock mock;
+   ZENMOCK_NONVOID1_FREE(int, NonVoid1, int)
+   ZENMOCK_NONVOID1_STATIC(int, ZenMock, NonVoid1, int, _namespace)
+   ZENMOCK_NONVOID1_STATIC(int, ZenMock::NonVoid1StaticFunctions, NonVoid1, int, _static)
+   ZENMOCK_NONVOID1_STATIC(int, ZenMock::NonVoid1StaticFunctions, Static, int)
+   unique_ptr<ZenMock1Tester<
+      NonVoid1FunctionsMock,
+      decltype(NonVoid1_ZenMock),
+      decltype(NonVoid1_ZenMock_namespace),
+      decltype(Static_ZenMock),
+      decltype(NonVoid1_ZenMock_static)>> _zenMock1Tester;
 
    STARTUP
    {
@@ -93,8 +89,8 @@ namespace ZenMock
          NonVoid1FunctionsMock,
          decltype(NonVoid1_ZenMock),
          decltype(NonVoid1_ZenMock_namespace),
-         decltype(NonVoid1_ZenMock_static),
-         decltype(Static_ZenMock)>>(
+         decltype(Static_ZenMock),
+         decltype(NonVoid1_ZenMock_static)>>(
             mock,
             VirtualSignature,
             VirtualConstSignature,
@@ -104,18 +100,13 @@ namespace ZenMock
             FreeSignature,
             NonVoid1_ZenMock_namespace,
             NamespaceSignature,
-            NonVoid1_ZenMock_static,
-            StaticNameClashSignature,
             Static_ZenMock,
-            StaticUniqueSignature);
+            StaticUniqueSignature,
+            NonVoid1_ZenMock_static,
+            StaticNameClashSignature);
    }
 
    // Expect Tests
-
-   TEST(Expect_CalledTwice_Throws)
-   {
-      _zenMock1Tester->Expect_CalledTwice_Throws();
-   }
 
    TEST(MockedFunction_NotExpected_Throws)
    {
@@ -139,25 +130,6 @@ namespace ZenMock
 
    // Value Return Tests
 
-   TEST(ExpectAndReturn_CalledTwice_Throws)
-   {
-      const auto test = [](auto& zenMockObject, const string& expectedSignature)
-      {
-         zenMockObject.ExpectAndReturn(0);
-         THROWS(zenMockObject.ExpectAndReturn(0), FunctionAlreadyExpectedException,
-            FunctionAlreadyExpectedException::MakeWhat(expectedSignature));
-      };
-      test(mock.VirtualMock, VirtualSignature);
-      test(mock.VirtualConstMock, VirtualConstSignature);
-      test(mock.NonVirtualMock, NonVirtualSignature);
-      test(mock.NonVirtualConstMock, NonVirtualConstSignature);
-
-      test(NonVoid1_ZenMock, FreeSignature);
-      test(NonVoid1_ZenMock_namespace, NamespaceSignature);
-      test(NonVoid1_ZenMock_static, StaticNameClashSignature);
-      test(Static_ZenMock, StaticUniqueSignature);
-   }
-
    TEST(ExpectAndReturn_CausesFunctionToReturnValueThereafter)
    {
       const auto test = [&](auto& zenMockObject, auto zenMockedFunctionCall)
@@ -176,25 +148,6 @@ namespace ZenMock
       test(NonVoid1_ZenMock_namespace, [&]{ return ZENMOCK_BIND1(NonVoid1_ZenMock_namespace)(0); });
       test(NonVoid1_ZenMock_static, [&]{ return ZENMOCK_BIND1(NonVoid1_ZenMock_static)(0); });
       test(Static_ZenMock, [&]{ return ZENMOCK_BIND1(Static_ZenMock)(0); });
-   }
-
-   TEST(ExpectAndReturnValues_CalledTwice_Throws)
-   {
-      const auto test = [&](auto& zenMockObject, const string& expectedSignature)
-      {
-         zenMockObject.ExpectAndReturnValues(0, 1);
-         THROWS(zenMockObject.ExpectAndReturnValues(2, 3), FunctionAlreadyExpectedException,
-            FunctionAlreadyExpectedException::MakeWhat(expectedSignature));
-      };
-      test(mock.VirtualMock, VirtualSignature);
-      test(mock.VirtualConstMock, VirtualConstSignature);
-      test(mock.NonVirtualMock, NonVirtualSignature);
-      test(mock.NonVirtualConstMock, NonVirtualConstSignature);
-
-      test(NonVoid1_ZenMock, FreeSignature);
-      test(NonVoid1_ZenMock_namespace, NamespaceSignature);
-      test(NonVoid1_ZenMock_static, StaticNameClashSignature);
-      test(Static_ZenMock, StaticUniqueSignature);
    }
 
    TEST(ExpectAndReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereafter)
@@ -216,25 +169,6 @@ namespace ZenMock
       test(NonVoid1_ZenMock_namespace, [&]{ return ZENMOCK_BIND1(NonVoid1_ZenMock_namespace)(0); });
       test(NonVoid1_ZenMock_static, [&]{ return ZENMOCK_BIND1(NonVoid1_ZenMock_static)(0); });
       test(Static_ZenMock, [&]{ return ZENMOCK_BIND1(Static_ZenMock)(0); });
-   }
-
-   TEST(ExpectAndReturnContainerValues_CalledTwice_Throws)
-   {
-      const auto test = [](auto& zenMockObject, const string& expectedSignature)
-      {
-         zenMockObject.ExpectAndReturnValues(vector<int>{0});
-         THROWS(zenMockObject.ExpectAndReturnValues(vector<int>{0}), FunctionAlreadyExpectedException,
-            FunctionAlreadyExpectedException::MakeWhat(expectedSignature));
-      };
-      test(mock.VirtualMock, VirtualSignature);
-      test(mock.VirtualConstMock, VirtualConstSignature);
-      test(mock.NonVirtualMock, NonVirtualSignature);
-      test(mock.NonVirtualConstMock, NonVirtualConstSignature);
-
-      test(NonVoid1_ZenMock, FreeSignature);
-      test(NonVoid1_ZenMock_namespace, NamespaceSignature);
-      test(NonVoid1_ZenMock_static, StaticNameClashSignature);
-      test(Static_ZenMock, StaticUniqueSignature);
    }
 
    TEST(ExpectAndReturnContainerValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereafter)

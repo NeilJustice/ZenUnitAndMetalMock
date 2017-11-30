@@ -58,37 +58,27 @@ namespace ZenMock
       template<typename ReturnType>
       void ExpectAndReturn(ReturnType&& returnValue)
       {
-         NineArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>::Expect();
+         _expected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValue(std::forward<ReturnType>(returnValue));
-      }
-
-      template<typename ContainerType>
-      void ExpectAndReturnValues(ContainerType&& returnValues)
-      {
-         NineArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>::Expect();
-         ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ExpectAndReturnValues(const FirstReturnValue& firstReturnValue, const SubsequentReturnValues&... subsequentReturnValues)
       {
-         NineArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>::Expect();
+         _expected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(firstReturnValue, subsequentReturnValues...);
       }
 
-      const DecayedFunctionReturnType& ZenMockItAndReturnValue(
-         Arg1Type firstArgument,
-         Arg2Type secondArgument,
-         Arg3Type thirdArgument,
-         Arg4Type fourthArgument,
-         Arg5Type fifthArgument,
-         Arg6Type sixthArgument,
-         Arg7Type seventhArgument,
-         Arg8Type eigthArgument,
-         Arg9Type ninthArgument)
+      template<typename ContainerType>
+      void ExpectAndReturnValues(ContainerType&& returnValues)
       {
-         NineArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type,Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>::ZenMockIt(
-            firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument);
+         _expected = true;
+         ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
+      }
+
+      const DecayedFunctionReturnType& ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument, Arg7Type seventhArgument, Arg8Type eigthArgument, Arg9Type ninthArgument)
+      {
+         NineArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type,Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>::ZenMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument);
          return ValueReturner<FunctionReturnType>::ZenMockNextReturnValue();
       }
    };

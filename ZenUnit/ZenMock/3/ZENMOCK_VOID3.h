@@ -52,6 +52,11 @@ namespace ZenMock
          : ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>(zenMockedFunctionSignature)
       {
       }
+
+      void Expect()
+      {
+         _expected = true;
+      }
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type>

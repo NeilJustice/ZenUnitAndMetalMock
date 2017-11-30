@@ -93,12 +93,12 @@ TEST3X3(InteractWithComponentA_CallsEveryFunction_ReturnsSumOfReturnValues,
    -30, -10, -20,
    -1, std::numeric_limits<int>::min(), std::numeric_limits<int>::max())
 {
-   // For reasons of imperviousness to extraneous-call code mutations
-   // capable of being automatically introduced by future LLVM-powered
-   // mutation testing frameworks, ZenMock is a strict mocking framework.
+   // ZenMock is a strict mocking framework for imperviousness to
+   // extraneous-call code mutations capable of being automatically
+   // introduced by future LLVM-powered mutation testing frameworks.
    // Because of this strict mocking design, ZenMock mock objects must be
-   // explicitly expected before being called by calling
-   // Expect(), ExpectAndReturn(), ExpectAndReturnValues(), or ExpectAndThrow<T>().
+   // explicitly expected before being called by calling either
+   // Expect(), ExpectAndReturn(), ExpectAndReturnValues(), or ExpectAndThrow<ExceptionType>().
    _componentAMock->VirtualVoidMock.Expect();
    _componentAMock->VirtualVoidConstTwoArgsMock.Expect();
    _componentAMock->VirtualNonVoidMock.ExpectAndReturn(returnValueA);
