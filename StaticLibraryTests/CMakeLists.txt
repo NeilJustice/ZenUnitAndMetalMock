@@ -4,6 +4,7 @@ include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 
 replace(CMAKE_CXX_FLAGS "/Wall" "/W4")
 
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(
    ${CMAKE_SOURCE_DIR}
    ${ZenUnitIncludeDirectory})

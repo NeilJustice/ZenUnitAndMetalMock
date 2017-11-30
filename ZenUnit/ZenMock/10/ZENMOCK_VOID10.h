@@ -55,7 +55,7 @@ namespace ZenMock
 
       void Expect()
       {
-         _expected = true;
+         TenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>::_expected = true;
       }
    };
 

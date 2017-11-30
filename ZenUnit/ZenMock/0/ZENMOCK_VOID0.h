@@ -53,7 +53,7 @@ namespace ZenMock
 
       void Expect()
       {
-         _expected = true;
+         ZeroArgumentMocker<ExceptionThrower>::_expected = true;
       }
    };
 

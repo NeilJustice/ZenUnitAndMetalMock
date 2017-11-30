@@ -56,7 +56,7 @@ namespace ZenMock
 
       void Expect()
       {
-         _expected = true;
+         OneArgumentMocker<ArgType>::_expected = true;
       }
    };
 

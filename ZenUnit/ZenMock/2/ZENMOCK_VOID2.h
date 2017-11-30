@@ -55,7 +55,7 @@ namespace ZenMock
 
       void Expect()
       {
-         _expected = true;
+         TwoArgumentMocker<Arg1Type, Arg2Type>::_expected = true;
       }
    };
 
