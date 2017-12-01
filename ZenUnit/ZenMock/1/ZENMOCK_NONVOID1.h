@@ -65,7 +65,7 @@ namespace ZenMock
       template<typename ReturnValueURef, typename... ReturnValueURefs>
       void ExpectAndReturnValues(ReturnValueURef&& firstReturnValue, ReturnValueURefs&&... subsequentReturnValues)
       {
-         OneArgumentMocker<ArgType>_expected = true;
+         OneArgumentMocker<ArgType>::_expected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
             std::forward<ReturnValueURef>(firstReturnValue),
             std::forward<ReturnValueURef>(subsequentReturnValues)...);
@@ -74,7 +74,7 @@ namespace ZenMock
       template<typename ContainerType>
       void ExpectAndReturnValues(ContainerType&& returnValues)
       {
-         OneArgumentMocker<ArgType>_expected = true;
+         OneArgumentMocker<ArgType>::_expected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
