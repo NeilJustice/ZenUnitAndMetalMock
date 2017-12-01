@@ -19,7 +19,7 @@ namespace ZenMock
       ZENMOCK_VOID0(Virtual)
       ZENMOCK_VOID0_CONST(VirtualConst)
       ZENMOCK_VOID0_NONVIRTUAL(NonVirtual)
-      ZENMOCK_VOID0_CONST_NONVIRTUAL(NonVirtualConst)
+      ZENMOCK_VOID0_NONVIRTUAL_CONST(NonVirtualConst)
    };
 
    void Void0Function() {}
@@ -129,7 +129,7 @@ namespace ZenMock
 
    TEST(Expect_MakesFunctionCallNotThrow_DoesNotThrowIfExpectCalledTwice)
    {
-      //auto test = [](auto& zenMockObject)
+      //const auto test = [](auto& zenMockObject)
       //{
       //   zenMockObject.Expect();
       //   zenMockObject.Expect();

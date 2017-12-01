@@ -19,7 +19,7 @@ namespace ZenMock
       ZENMOCK_VOID1(VirtualFunction, int)
       ZENMOCK_VOID1_CONST(VirtualConstFunction, int)
       ZENMOCK_VOID1_NONVIRTUAL(NonVirtualFunction, int)
-      ZENMOCK_VOID1_CONST_NONVIRTUAL(NonVirtualConstFunction, int)
+      ZENMOCK_VOID1_NONVIRTUAL_CONST(NonVirtualConstFunction, int)
    };
 
    void Void1Function(int) {}

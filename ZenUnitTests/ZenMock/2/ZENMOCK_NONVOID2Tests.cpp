@@ -26,7 +26,7 @@ namespace ZenMock
       ZENMOCK_NONVOID2(int, Virtual, int, int)
       ZENMOCK_NONVOID2_CONST(int, VirtualConst, int, int)
       ZENMOCK_NONVOID2_NONVIRTUAL(int, NonVirtual, int, int)
-      ZENMOCK_NONVOID2_CONST_NONVIRTUAL(int, NonVirtualConst, int, int)
+      ZENMOCK_NONVOID2_NONVIRTUAL_CONST(int, NonVirtualConst, int, int)
    };
 
    namespace ZenMockNonVoid2Testing

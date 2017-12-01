@@ -16,7 +16,7 @@
         ZENMOCK_VOID1_DEFINED(functionName, arg1Type,        ,      ,        ,         , __VA_ARGS__)
 
 // Defines a <functionName>Mock object for mocking a base class function with signature "void functionName(arg1Type) const".
-#define ZENMOCK_VOID1_CONST_NONVIRTUAL(functionName, arg1Type, ...) \
+#define ZENMOCK_VOID1_NONVIRTUAL_CONST(functionName, arg1Type, ...) \
         ZENMOCK_VOID1_DEFINED(functionName, arg1Type,        , const, mutable,         , __VA_ARGS__)
 
 // Defines a <functionName>_ZenMock object for mocking a free function with signature "void functionName(arg1Type)".

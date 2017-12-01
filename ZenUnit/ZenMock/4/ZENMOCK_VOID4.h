@@ -15,7 +15,7 @@
         ZENMOCK_VOID4_DEFINED(functionName, arg1Type, arg2Type, arg3Type, arg4Type,        ,      ,        ,         , __VA_ARGS__)
 
 // Defines a <functionName>Mock object for mocking a non-virtual function with signature "void functionName(arg1Type, arg2Type, arg3Type, arg4Type) const".
-#define ZENMOCK_VOID4_CONST_NONVIRTUAL(functionName, arg1Type, arg2Type, arg3Type, arg4Type, ...) \
+#define ZENMOCK_VOID4_NONVIRTUAL_CONST(functionName, arg1Type, arg2Type, arg3Type, arg4Type, ...) \
         ZENMOCK_VOID4_DEFINED(functionName, arg1Type, arg2Type, arg3Type, arg4Type,        , const, mutable,         , __VA_ARGS__)
 
 // Defines a <functionName>_ZenMock object for mocking a free function with signature "void functionName(arg1Type, arg2Type, arg3Type, arg4Type)".

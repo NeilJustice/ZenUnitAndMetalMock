@@ -16,7 +16,7 @@
         ZENMOCK_NONVOID1_DEFINED(returnType, functionName, arg1Type,        ,      ,        ,         , __VA_ARGS__)
 
 // Defines a <functionName>Mock object for mocking a base class function with signature "returnType functionName(arg1Type) const".
-#define ZENMOCK_NONVOID1_CONST_NONVIRTUAL(returnType, functionName, arg1Type, ...) \
+#define ZENMOCK_NONVOID1_NONVIRTUAL_CONST(returnType, functionName, arg1Type, ...) \
         ZENMOCK_NONVOID1_DEFINED(returnType, functionName, arg1Type,        , const, mutable,         , __VA_ARGS__)
 
 // Defines a <functionName>_ZenMock object for mocking a free function with signature "returnType functionName(arg1Type)".
