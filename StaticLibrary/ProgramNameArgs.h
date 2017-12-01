@@ -1,6 +1,6 @@
 #pragma once
 
-struct ProgramArgs
+struct ProgramNameArgs
 {
    string argument1;
 };
