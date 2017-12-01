@@ -1,6 +1,6 @@
 #pragma once
 #include "ZenUnit/ZenMock/Exceptions/ReturnValueMustBeSpecifiedException.h"
-#include <vector>
+#include <deque>
 
 namespace ZenMock
 {
@@ -12,7 +12,8 @@ namespace ZenMock
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    private:
       const std::string _zenMockedFunctionSignature;
-      std::vector<DecayedFunctionReturnType> _returnValues;
+      // deque here instead of vector due to implementation of vector<bool>
+      std::deque<DecayedFunctionReturnType> _returnValues;
       size_t _returnValueIndex;
    public:
       explicit ValueReturner(std::string zenMockedFunctionSignature)

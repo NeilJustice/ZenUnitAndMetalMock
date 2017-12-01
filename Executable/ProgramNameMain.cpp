@@ -1,12 +1,10 @@
-#include <iostream>
 #include <memory>
 #include <vector>
-using namespace std;
-#include "StaticLibrary/Program.h"
+#include "StaticLibrary/ProgramNameProgram.h"
 
 int main(int argc, char* argv[])
 {
-   Program program;
+   ProgramNameProgram program;
    const int exitCode = program.Main(argc, argv);
    return exitCode;
 }

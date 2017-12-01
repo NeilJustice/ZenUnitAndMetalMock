@@ -78,8 +78,7 @@ namespace ZenMock
 
       const FunctionReturnType& ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument)
       {
-         FiveArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::ZenMockIt(
-            firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument);
+         FiveArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::ZenMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument);
          return ValueReturner<FunctionReturnType>::ZenMockNextReturnValue();
       }
    };
@@ -97,8 +96,7 @@ namespace ZenMock
          NonVoidFiveArgFunctionPointerMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>* functionMocker,
          Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument)
       {
-         return functionMocker->ZenMockItAndReturnValue(
-            firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument);
+         return functionMocker->ZenMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument);
       }
    };
 }

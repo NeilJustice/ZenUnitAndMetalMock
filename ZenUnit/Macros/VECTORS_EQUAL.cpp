@@ -17,7 +17,7 @@ namespace ZenUnit
          ++numberOfCharsAppended;
       } while (value != 0);
       char valueBeforeOverwrittenWithZero = *ptrA;
-      char* pointerToZero = ptrA;
+      char* const pointerToZero = ptrA;
       *ptrA-- = '\0';
       char* ptrB = outChars;
       while (ptrB < ptrA)

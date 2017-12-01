@@ -1,17 +1,15 @@
 #include "pch.h"
-#include "StaticLibrary/Program.h"
+#include "StaticLibrary/ProgramNameProgram.h"
 #include "StaticLibraryTests/Mock/ConsoleMock.h"
 
-TESTS(ProgramTests)
+TESTS(ProgramNameProgramTests)
 AFACT(Constructor_NewsComponents)
 FACTS(Main_ConvertsArgcArgvToStringVector_CallsVectorMain)
 AFACT(VectorMain_Returns0)
 EVIDENCE
 
-Program _program;
+ProgramNameProgram _program;
 ConsoleMock* _consoleMock;
-
-const string ExpectedCommandLineUsage = R"(ProgramName v0.1.0)";
 
 STARTUP
 {
@@ -20,7 +18,7 @@ STARTUP
 
 TEST(Constructor_NewsComponents)
 {
-   Program program;
+   ProgramNameProgram program;
    POINTER_WAS_NEWED(program._console);
 }
 
@@ -29,7 +27,7 @@ TEST2X2(Main_ConvertsArgcArgvToStringVector_CallsVectorMain,
    0, 0,
    1, 1)
 {
-   struct ProgramSelfMocked : public Zen::Mock<Program>
+   struct ProgramSelfMocked : public Zen::Mock<ProgramNameProgram>
    {
       ZENMOCK_NONVOID1_CONST(int, VectorMain, const vector<string>&)
    } program_VectorMainMocked;
@@ -46,10 +44,12 @@ TEST2X2(Main_ConvertsArgcArgvToStringVector_CallsVectorMain,
 TEST(VectorMain_Returns0)
 {
    const vector<string> args = { "BinaryPath" };
+   _consoleMock->WriteLineMock.Expect();
    //
    const int exitCode = _program.VectorMain(args);
    //
+   ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith("Hello World"));
    ARE_EQUAL(0, exitCode);
 }
 
-}; RUNTESTS(ProgramTests)
+}; RUNTESTS(ProgramNameProgramTests)

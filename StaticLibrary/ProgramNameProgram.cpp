@@ -1,13 +1,13 @@
 #include "pch.h"
-#include "Program.h"
+#include "ProgramNameProgram.h"
 #include "Console.h"
 
-Program::Program()
+ProgramNameProgram::ProgramNameProgram()
    : _console(new Console)
 {
 }
 
-int Program::Main(int argc, char* argv[]) const
+int ProgramNameProgram::Main(int argc, char* argv[]) const
 {
    const vector<string> args = [&]()
    {
@@ -23,13 +23,12 @@ int Program::Main(int argc, char* argv[]) const
    return exitCode;
 }
 
-const string Program::CommandLineUsage = R"(ProgramName v0.1.0)";
-
-int Program::VectorMain(const vector<string>&) const
+int ProgramNameProgram::VectorMain(const vector<string>&) const
 {
+   _console->WriteLine("Hello World");
    return 0;
 }
 
-Program::~Program()
+ProgramNameProgram::~ProgramNameProgram()
 {
 }

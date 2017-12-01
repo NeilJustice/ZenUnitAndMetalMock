@@ -76,8 +76,7 @@ namespace ZenMock
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
-      const FunctionReturnType& ZenMockItAndReturnValue(
-         Arg1Type firstArgument, Arg2Type secondArgument)
+      const FunctionReturnType& ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument)
       {
          TwoArgumentMocker<Arg1Type, Arg2Type>::ZenMockIt(firstArgument, secondArgument);
          return ValueReturner<FunctionReturnType>::ZenMockNextReturnValue();
