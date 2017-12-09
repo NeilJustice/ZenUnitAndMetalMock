@@ -12,6 +12,7 @@
 #include <limits>
 #include <map>
 #include <memory>
+#include <regex>
 #include <set>
 #include <sstream>
 #include <unordered_map>
