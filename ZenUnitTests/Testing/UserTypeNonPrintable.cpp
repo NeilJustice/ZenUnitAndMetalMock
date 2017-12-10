@@ -1,20 +1,20 @@
 #include "pch.h"
 #include "UserTypeNonPrintable.h"
 
-UserTypeNonPrintable::UserTypeNonPrintable() = default;
+UserTypeNonPrintable::UserTypeNonPrintable() noexcept = default;
 
-UserTypeNonPrintable::UserTypeNonPrintable(int x)
+UserTypeNonPrintable::UserTypeNonPrintable(int x) noexcept
    : x(x)
 {
 }
 
-bool operator<(const UserTypeNonPrintable& left, const UserTypeNonPrintable& right)
+bool operator<(const UserTypeNonPrintable& left, const UserTypeNonPrintable& right) noexcept
 {
    const bool isLessThan = left.x < right.x;
    return isLessThan;
 }
 
-bool operator==(const UserTypeNonPrintable& left, const UserTypeNonPrintable& right)
+bool operator==(const UserTypeNonPrintable& left, const UserTypeNonPrintable& right) noexcept
 {
    const bool isEqual = left.x == right.x;
    return isEqual;

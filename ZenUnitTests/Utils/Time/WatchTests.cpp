@@ -61,7 +61,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedReturnValue, timeZoneDateTimeNow);
    }
 
-   static tm Tm(int tmWeekDay, int tmMonth, int tmMonthDay, int tmYear, int tmHour, int tmMin, int tmSec)
+   static tm Tm(int tmWeekDay, int tmMonth, int tmMonthDay, int tmYear, int tmHour, int tmMin, int tmSec) noexcept
    {
       tm tmNow{};
       tmNow.tm_sec = tmSec;

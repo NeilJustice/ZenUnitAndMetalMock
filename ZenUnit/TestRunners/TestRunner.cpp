@@ -4,6 +4,7 @@
 #include "ZenUnit/Results/TestRunResult.h"
 #include "ZenUnit/TestRunners/MultiTestClassRunner.h"
 #include "ZenUnit/TestRunners/PreamblePrinter.h"
+#include "ZenUnit/TestRunners/TestClassRunner.h"
 #include "ZenUnit/TestRunners/TestRunner.h"
 #include "ZenUnit/Utils/AssertTrue.h"
 #include "ZenUnit/Utils/Concurrency/Futurist.h"
@@ -13,13 +14,13 @@
 namespace ZenUnit
 {
    INLINE TestRunner::TestRunner()
-      : _console(new Console)
-      , _preamblePrinter(new PreamblePrinter)
-      , _argsParser(new ArgsParser)
+      : _console(std::make_unique<Console>())
+      , _preamblePrinter(std::make_unique<PreamblePrinter>())
+      , _argsParser(std::make_unique<ArgsParser>())
       //, _futurist(new Futurist<TestRunner>)
-      , _testRunStopwatch(new Stopwatch)
-      , _multiTestClassRunner(new MultiTestClassRunner)
-      , _testRunResult(new TestRunResult)
+      , _testRunStopwatch(std::make_unique<Stopwatch>())
+      , _multiTestClassRunner(std::make_unique<MultiTestClassRunner>())
+      , _testRunResult(std::make_unique<TestRunResult>())
       , _havePaused(false)
    {
    }

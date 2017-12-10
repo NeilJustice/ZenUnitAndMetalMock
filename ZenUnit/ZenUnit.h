@@ -14,6 +14,7 @@
 #include "Anomaly/Anomaly.h"
 #include "Anomaly/Anomaly.cpp"
 #include "Anomaly/EqualizerException.h"
+#include "Anomaly/EqualizerException.cpp"
 
 #include "Args/ArgsParser.h"
 #include "Args/ArgsParser.cpp"

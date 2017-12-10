@@ -16,9 +16,9 @@ namespace ZenUnit
    EVIDENCE
 
    TryCatchCaller _tryCatchCaller;
-   ConsoleMock* _consoleMock;
-   TestPhaseSuffixerMock* _testPhaseSuffixerMock;
-   StopwatchMock* _stopwatchMock;
+   ConsoleMock* _consoleMock = nullptr;
+   TestPhaseSuffixerMock* _testPhaseSuffixerMock = nullptr;
+   StopwatchMock* _stopwatchMock = nullptr;
    unique_ptr<TestMock> _testMock;
    ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
 

@@ -19,7 +19,7 @@ namespace ZenMock
          const Arg3Type& thirdArgument,
          const Arg4Type& fourthArgument,
          const Arg5Type& fifthArgument,
-         const Arg6Type& sixthArgument)
+         const Arg6Type& sixthArgument) noexcept
          : firstArgument(firstArgument)
          , secondArgument(secondArgument)
          , thirdArgument(thirdArgument)
@@ -29,7 +29,7 @@ namespace ZenMock
       {
       }
 
-      explicit SixArgumentCallRef(const SixArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& sixArgumentCall)
+      explicit SixArgumentCallRef(const SixArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& sixArgumentCall) noexcept
          : firstArgument(sixArgumentCall.firstArgument)
          , secondArgument(sixArgumentCall.secondArgument)
          , thirdArgument(sixArgumentCall.thirdArgument)

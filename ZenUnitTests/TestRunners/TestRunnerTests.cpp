@@ -25,16 +25,19 @@ namespace ZenUnit
    EVIDENCE
 
    TestRunner _testRunner;
-   ConsoleMock* _consoleMock;
-   PreamblePrinterMock* _preamblePrinterMock;
+   ConsoleMock* _consoleMock = nullptr;
+   PreamblePrinterMock* _preamblePrinterMock = nullptr;
    //FuturistMock<TestRunner>* _futuristMock;
-   MultiTestClassRunnerMock* _multiTestClassRunnerMock;
-   TestRunResultMock* _testRunResultMock;
+   MultiTestClassRunnerMock* _multiTestClassRunnerMock = nullptr;
+   TestRunResultMock* _testRunResultMock = nullptr;
 
    class TestingTestClass
    {
    public:
-      static vector<unique_ptr<Test>> GetTests(const char*) { return {}; }
+      static vector<unique_ptr<Test>> GetTests(const char*) noexcept
+      {
+         return {};
+      }
    };
 
    class TestRunnerSelfMockedA : public Zen::Mock<TestRunner>
@@ -47,7 +50,7 @@ namespace ZenUnit
       TestRunResultMock* testRunResultMock;
       ConsoleMock* consoleMock;
       StopwatchMock* testRunStopwatchMock;
-      TestRunnerSelfMockedA()
+      TestRunnerSelfMockedA() noexcept
       {
          _argsParser.reset(argsParserMock = new ArgsParserMock);
          _preamblePrinter.reset(preamblePrinterMock = new PreamblePrinterMock);
@@ -68,7 +71,7 @@ namespace ZenUnit
       MultiTestClassRunnerMock* multiTestClassRunnerMock;
       TestRunResultMock* testRunResultMock;
       StopwatchMock* testRunStopwatchMock;
-      TestRunnerSelfMockedB()
+      TestRunnerSelfMockedB() noexcept
       {
          _preamblePrinter.reset(preamblePrinterMock = new PreamblePrinterMock);
          _multiTestClassRunner.reset(multiTestClassRunnerMock = new MultiTestClassRunnerMock);
@@ -102,7 +105,7 @@ namespace ZenUnit
    TEST(AddTestClassRunner_EmplacesBackTestClassRunner)
    {
       _multiTestClassRunnerMock->AddTestClassRunnerMock.Expect();
-      SpecificTestClassRunner<TestingTestClass> testClassRunner("TestClassNamePossiblyTemplatized");
+      SpecificTestClassRunner<TestingTestClass> testClassRunner("TestClassName");
       //
       _testRunner.AddTestClassRunner(&testClassRunner);
       //

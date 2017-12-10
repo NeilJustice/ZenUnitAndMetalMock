@@ -9,12 +9,12 @@ namespace ZenMock
    {
       typename std::decay<Arg1Type>::type argument;
 
-      OneArgumentCall()
+      OneArgumentCall() noexcept
          : argument()
       {
       }
 
-      OneArgumentCall(const Arg1Type& argument)
+      OneArgumentCall(const Arg1Type& argument) noexcept
          : argument(argument)
       {
       }

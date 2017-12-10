@@ -2,8 +2,8 @@
 
 struct StartupAndCleanup
 {
-   void Startup() {}
-   void Cleanup() {}
+   void Startup() noexcept {}
+   void Cleanup() noexcept {}
 };
 
 namespace ZenUnit

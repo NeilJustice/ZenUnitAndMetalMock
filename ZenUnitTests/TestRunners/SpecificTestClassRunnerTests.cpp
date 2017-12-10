@@ -35,7 +35,7 @@ namespace ZenUnit
    };
 
    unique_ptr<SpecificTestClassRunner<TestingTestClass>> _specificTestClassRunner;
-   ConsoleMock* _consoleMock;
+   ConsoleMock* _consoleMock = nullptr;
    ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
    const char* const TestClassName = "TestClassName";
 
@@ -56,7 +56,7 @@ namespace ZenUnit
 
       const ConsoleMock* consoleMock;
 
-      SpecificTestClassRunnerSelfMocked()
+      SpecificTestClassRunnerSelfMocked() noexcept
          : Zen::Mock<ZenUnit::SpecificTestClassRunner<TestingTestClass>>("")
       {
          _console.reset(consoleMock = new ConsoleMock);

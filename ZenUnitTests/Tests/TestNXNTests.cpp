@@ -23,7 +23,7 @@ namespace ZenUnit
    EVIDENCE
 
    unique_ptr<TestNXN<TestingTestClass, N, int>> _testNXN;
-   ConsoleMock* _consoleMock;
+   ConsoleMock* _consoleMock = nullptr;
    const string TestClassName = Random<string>();
    const string TestName = Random<string>();
    const string TestCaseArgsText = Random<string>();
@@ -97,7 +97,7 @@ namespace ZenUnit
          ZENMOCK_NONVOID0(TestResult, MockableCallBaseRunTestCase)
          ZENMOCK_VOID3_CONST(NonMinimalPrintTestCaseNumberArgsThenArrow, unsigned short, const vector<string>&, PrintMode)
          ZENMOCK_VOID2_CONST(NonMinimalWriteLineOKIfSuccess, const TestResult&, PrintMode)
-         Test1X1SelfMocked()
+         Test1X1SelfMocked() noexcept
             : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>("", "", "", 0, 0) {}
       } test1X1SelfMocked;
 
@@ -178,7 +178,7 @@ namespace ZenUnit
       struct TestNXN_RunNXNTestCaseMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int>>
       {
          ZENMOCK_VOID2(RunNXNTestCase, TestingTestClass*, size_t)
-         TestNXN_RunNXNTestCaseMocked()
+         TestNXN_RunNXNTestCaseMocked() noexcept
             : Zen::Mock<TestNXN<TestingTestClass, 1, int>>("", "", "", 0) {}
       } testNXN_RunNXNTestCaseMocked;
 

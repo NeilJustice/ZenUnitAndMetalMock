@@ -10,8 +10,8 @@
 namespace ZenUnit
 {
    INLINE ArgsParser::ArgsParser()
-      : _console(new Console)
-      , _runFilterParser(new RunFilterParser)
+      : _console(std::make_unique<Console>())
+      , _runFilterParser(std::make_unique<RunFilterParser>())
       , call_String_ToUnsigned(String::ToUnsigned)
    {
    }

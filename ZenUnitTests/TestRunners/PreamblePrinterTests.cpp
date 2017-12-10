@@ -18,7 +18,7 @@ namespace ZenUnit
    {
       const ConsoleMock* consoleMock;
       const WatchMock* watchMock;
-      PreamblePrinterSelfMocked()
+      PreamblePrinterSelfMocked() noexcept
       {
          _console.reset(consoleMock = new ConsoleMock);
          _watch.reset(watchMock = new WatchMock);
@@ -28,7 +28,7 @@ namespace ZenUnit
    } _preamblePrinterSelfMocked;
 
    PreamblePrinter _preamblePrinter;
-   const MachineNameGetterMock* _machineNameGetterMock;
+   const MachineNameGetterMock* _machineNameGetterMock = nullptr;
 
    STARTUP
    {

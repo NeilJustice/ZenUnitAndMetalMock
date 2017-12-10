@@ -1,29 +1,29 @@
 #include "pch.h"
 #include "UserType.h"
 
-UserType::UserType()
+UserType::UserType() noexcept
    : value(0)
 {
 }
 
-UserType::UserType(int value)
+UserType::UserType(int value) noexcept
    : value(value)
 {
 }
 
-bool operator<(const UserType& left, const UserType& right)
+bool operator<(const UserType& left, const UserType& right) noexcept
 {
    const bool isLessThan = left.value < right.value;
    return isLessThan;
 }
 
-bool operator==(const UserType& left, const UserType& right)
+bool operator==(const UserType& left, const UserType& right) noexcept
 {
    const bool areEqual = left.value == right.value;
    return areEqual;
 }
 
-UserType::operator bool() const
+UserType::operator bool() const noexcept
 {
    const bool isTrue = value == 1;
    return isTrue;

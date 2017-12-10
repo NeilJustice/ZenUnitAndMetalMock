@@ -6,7 +6,11 @@ namespace Namespace
    {
       int fieldA;
       int fieldB;
-      TestStruct() : fieldA(0), fieldB(0) {}
+      TestStruct() noexcept
+         : fieldA(0)
+         , fieldB(0)
+      {
+      }
    };
 }
 
@@ -26,7 +30,7 @@ namespace ZenUnit
 struct TestStructB
 {
    int field;
-   TestStructB() : field(0) {}
+   TestStructB() noexcept : field(0) {}
    static const int ThrowWithoutFieldNameInWhatText;
    static const int ThrowWithFieldNameInWhatText;
 };

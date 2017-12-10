@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "ZenMock0Tester.h"
 
-int NonVoid0Function() { return 0; }
+int NonVoid0Function() noexcept { return 0; }
 
 namespace ZenMock
 {
-   int NonVoid0Function() { return 0; }
+   int NonVoid0Function() noexcept { return 0; }
 
    struct NonVoid0StaticFunctions
    {

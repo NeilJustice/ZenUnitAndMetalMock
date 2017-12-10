@@ -32,18 +32,18 @@ namespace ZenUnit
       MultiTestClassRunner,
       void(MultiTestClassRunner::*)(std::unique_ptr<TestClassRunner>&, const std::vector<RunFilter>&),
       const std::vector<RunFilter>&>;
-   ExtraArgMemberForEacherMockType* _extraArgMemberForEacherMock;
+   ExtraArgMemberForEacherMockType* _extraArgMemberForEacherMock = nullptr;
 
    using ExtraArgAnyerMockType = ExtraArgAnyerMock<
       std::vector<RunFilter>,
       bool(*)(const RunFilter&, const std::unique_ptr<TestClassRunner>*),
       const std::unique_ptr<TestClassRunner>*>;
-   ExtraArgAnyerMockType* _extraArgAnyerMock;
+   ExtraArgAnyerMockType* _extraArgAnyerMock = nullptr;
 
-   SorterMock<vector<unique_ptr<TestClassRunner>>>* _sorterMock;
+   SorterMock<vector<unique_ptr<TestClassRunner>>>* _sorterMock = nullptr;
    using TransformerMockType = TransformerMock<unique_ptr<TestClassRunner>, TestClassResult>;
-   TransformerMockType* _transformerMock;
-   WatchMock* _watchMock;
+   TransformerMockType* _transformerMock = nullptr;
+   WatchMock* _watchMock = nullptr;
 
    STARTUP
    {

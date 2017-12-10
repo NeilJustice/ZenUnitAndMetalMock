@@ -11,7 +11,7 @@ namespace ZenUnit
       const long long adjustedInclusiveLowerBound = inclusiveLowerBound < 0 ? 0 : inclusiveLowerBound;
       const unsigned long long adjustedInclusiveUpperBound =
          inclusiveLowerBound < 0 ? 2 * inclusiveUpperBound + 1 : inclusiveUpperBound;
-      std::uniform_int_distribution<unsigned long long>
+      const std::uniform_int_distribution<unsigned long long>
          distribution(adjustedInclusiveLowerBound, adjustedInclusiveUpperBound);
       const unsigned long long randomValueUnsignedLongLong = distribution(defaultRandomEngine);
       const T randomValueT = static_cast<T>(randomValueUnsignedLongLong);

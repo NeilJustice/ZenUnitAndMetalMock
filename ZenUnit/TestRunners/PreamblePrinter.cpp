@@ -10,9 +10,9 @@
 namespace ZenUnit
 {
    INLINE PreamblePrinter::PreamblePrinter()
-      : _console(new Console)
-      , _watch(new Watch)
-      , _machineNameGetter(new MachineNameGetter)
+      : _console(std::make_unique<Console>())
+      , _watch(std::make_unique<Watch>())
+      , _machineNameGetter(std::make_unique<MachineNameGetter>())
    {
    }
 

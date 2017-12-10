@@ -6,7 +6,7 @@
 namespace ZenUnit
 {
    INLINE RunFilterParser::RunFilterParser()
-      : _transformer(new Transformer<std::string, RunFilter>)
+      : _transformer(std::make_unique<Transformer<std::string, RunFilter>>())
    {
    }
 

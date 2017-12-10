@@ -60,7 +60,7 @@ None
 
    ArgsParser _argsParser;
    ConsoleMock* _consoleMock;
-   RunFilterParserMock* _runFilterParserMock;
+   RunFilterParserMock* _runFilterParserMock = nullptr;
    ZENMOCK_NONVOID1_STATIC(unsigned, ZenUnit::String, ToUnsigned, const string&)
 
    STARTUP

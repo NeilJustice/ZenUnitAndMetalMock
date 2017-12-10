@@ -6,7 +6,9 @@
 
 namespace ZenUnit
 {
-   INLINE Anomaly::Anomaly() = default;
+   INLINE Anomaly::Anomaly() noexcept
+   {
+   }
 
    INLINE std::string Anomaly::MakeAssertExpression(
       const char* assertionName,
@@ -68,7 +70,7 @@ namespace ZenUnit
       return anomaly;
    }
 
-   INLINE const Anomaly& Anomaly::Default()
+   INLINE const Anomaly& Anomaly::Default() noexcept
    {
       static Anomaly defaultAnomaly;
       return defaultAnomaly;

@@ -5,7 +5,7 @@ namespace ZenMock
    struct ZENAssertionToken
    {
       [[nodiscard]]
-      static ZENAssertionToken NoDiscard()
+      static ZENAssertionToken NoDiscard() noexcept
       {
          return ZENAssertionToken();
       }

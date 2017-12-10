@@ -107,8 +107,8 @@ File.cpp(1))");
 
    TEST(ObjectsHaveDifferentAddresses_ObjectsAreEqual_DoesNotThrow)
    {
-      int x = 1;
-      int y = 1;
+      const int x = 1;
+      const int y = 1;
       ARE_COPIES(x, y);
    }
 

@@ -99,22 +99,6 @@ namespace ZenUnit
          return std::string();
       }
 
-      template<typename T, typename... Types>
-      static void DoToStringConcat(std::ostringstream& oss, const T& value, Types&&... values)
-      {
-         oss << ToString(value);
-         size_t numberOfRemainingValues = sizeof...(values);
-         if (numberOfRemainingValues > 0)
-         {
-            oss << ", ";
-         }
-         DoToStringConcat(oss, std::forward<Types>(values)...);
-      }
-
-      static void DoToStringConcat(std::ostringstream&)
-      {
-      }
-
    private:
       template<typename T>
       static std::string DoToString(const T& value)
@@ -172,6 +156,31 @@ namespace ZenUnit
          oss << pointer;
          const std::string pointerAddressString(oss.str());
          return pointerAddressString;
+      }
+
+      template<typename T, typename... Types>
+      static void DoToStringConcat(std::ostringstream& oss, const T& value, Types&&... values)
+      {
+         oss << ToString(value);
+#ifdef _WIN32
+// C26496: The variable 'numberOfRemainingValues' is assigned only once, mark it as const.
+// When variable 'numberOfRemainingValues' is marked const: C4127	conditional expression is constant
+#pragma warning(push)
+#pragma warning(suppress: 26496)
+#endif
+         size_t numberOfRemainingValues = sizeof...(values);
+#ifdef _WIN32
+#pragma warning(pop)
+#endif
+         if (numberOfRemainingValues > 0)
+         {
+            oss << ", ";
+         }
+         DoToStringConcat(oss, std::forward<Types>(values)...);
+      }
+
+      static void DoToStringConcat(std::ostringstream&)
+      {
       }
    };
 }

@@ -7,8 +7,16 @@ namespace ZenMock
    struct OneArgumentCallRef
    {
       const ArgType& argument;
-      OneArgumentCallRef(const ArgType& argument) : argument(argument) {}
-      explicit OneArgumentCallRef(const OneArgumentCall<ArgType>& oneArgumentCall) : argument(oneArgumentCall.argument) {}
+
+      OneArgumentCallRef(const ArgType& argument) noexcept
+         : argument(argument)
+      {
+      }
+
+      explicit OneArgumentCallRef(const OneArgumentCall<ArgType>& oneArgumentCall) noexcept
+         : argument(oneArgumentCall.argument)
+      {
+      }
    };
 }
 

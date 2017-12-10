@@ -2,7 +2,10 @@
 
 struct TestMock : public Zen::Mock<Test>
 {
-   TestMock() : Zen::Mock<Test>("", "", static_cast<unsigned char>(0)) {}
+   TestMock() noexcept
+      : Zen::Mock<Test>("", "", static_cast<unsigned char>(0))
+   {
+   }
 
    ZENMOCK_NONVOID0_CONST(const char*, Name)
    ZENMOCK_NONVOID0_CONST(string, FullTestNameValue)

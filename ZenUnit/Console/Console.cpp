@@ -7,7 +7,7 @@
 namespace ZenUnit
 {
    INLINE Console::Console()
-      : _consoleColorer(new ConsoleColorer)
+      : _consoleColorer(std::make_unique<ConsoleColorer>())
       , call_exit(::exit)
 #ifdef _WIN32
       , call_IsDebuggerPresent(::IsDebuggerPresent)

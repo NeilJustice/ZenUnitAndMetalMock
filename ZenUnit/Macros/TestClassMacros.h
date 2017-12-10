@@ -8,12 +8,12 @@
 #include "ZenUnit/Utils/NA.h"
 #include "ZenUnit/Utils/PmfToken.h"
 
-// Defines a ZenUnit::TestClass. After TESTS, write a sequence of AFACT and/or FACTS test declarations, then write EVIDENCE to begin the body of the test class.
+// Defines a ZenUnit::TestClass.
 #define TESTS(HighQualityTestClassName) \
    class HighQualityTestClassName : public ZenUnit::TestClass<HighQualityTestClassName> \
    TESTCLASSPREAMBLE(HighQualityTestClassName)
 
-// Defines a templated ZenUnit::TestClass. Precede TEMPLATETESTS with template<typename A, typename B, ...>. Supply __VA_ARGS__ with the names of the template parameters. Example: TEMPLATETESTS(TestClassName, A, B).
+// Defines a templated ZenUnit::TestClass. Precede TEMPLATETESTS with template<typename A, typename B, ...>. Specify __VA_ARGS__ with the names of template parameters. Example: TEMPLATETESTS(TestClassName, A, B).
 #define TEMPLATETESTS(HighQualityTestClassName, ...) \
    class HighQualityTestClassName : public ZenUnit::TestClass<HighQualityTestClassName<__VA_ARGS__>> \
    TESTCLASSPREAMBLE(HighQualityTestClassName)
@@ -22,30 +22,30 @@
    { \
    public: \
       using TestClassType = HighQualityTestClassName; \
-      static const char* s_testClassNamePossiblyTemplatized; \
+      static const char* s_testClassName; \
       static bool s_allNXNTestsRegistered; \
       static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>& TestNXNPmfTokenToTestMap() \
       { \
          static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> testNXNPmfTokenToTest; \
          return testNXNPmfTokenToTest; \
       } \
-      static std::vector<std::unique_ptr<ZenUnit::Test>> GetTests(const char* testClassNamePossiblyTemplatized) \
+      static std::vector<std::unique_ptr<ZenUnit::Test>> GetTests(const char* testClassName) \
       { \
-         s_testClassNamePossiblyTemplatized = testClassNamePossiblyTemplatized; \
+         s_testClassName = testClassName; \
          std::vector<std::unique_ptr<ZenUnit::Test>> tests;
 
-// Specifies a TEST. Define the test using TEST in the test body.
+// Specifies a test. Define the test using TEST in the test body.
 #define AFACT(HighQualityTestName) \
-   tests.emplace_back(new ZenUnit::NormalTest<TestClassType>( \
-      testClassNamePossiblyTemplatized, #HighQualityTestName, &TestClassType::HighQualityTestName));
+   tests.emplace_back(std::make_unique<ZenUnit::NormalTest<TestClassType>>( \
+      testClassName, #HighQualityTestName, &TestClassType::HighQualityTestName));
 
-// Specifies a TESTNXN. Define the test using TEST1X1 through TEST10X10 in the test body.
+// Specifies an N-by-N value parameterized test. Define the test using TEST1X1 through TEST10X10 in the test body.
 #define FACTS(HighQualityTestName) \
-   tests.emplace_back(new ZenUnit::SpecSectionTestNXN<TestClassType>( \
-      testClassNamePossiblyTemplatized, #HighQualityTestName, PMFTOKEN(&TestClassType::HighQualityTestName)));
+   tests.emplace_back(std::make_unique<ZenUnit::SpecSectionTestNXN<TestClassType>>( \
+      testClassName, #HighQualityTestName, PMFTOKEN(&TestClassType::HighQualityTestName)));
 
 #define DOSKIP(HighQualityTestName, Reason) \
-   ZenUnit::TestRunner::Instance().SkipTest(testClassNamePossiblyTemplatized, #HighQualityTestName, Reason);
+   ZenUnit::TestRunner::Instance().SkipTest(testClassName, #HighQualityTestName, Reason);
 
 // Skips a TEST.
 #define SKIPFACT(HighQualityTestName, Reason) DOSKIP(HighQualityTestName, Reason)
@@ -129,30 +129,30 @@
       TestClassType::RegisterTest10X10(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
    void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)
 
-// Instructs ZenUnit to run a test class.
+// Runs a test class.
 #define RUNTESTS(HighQualityTestClassName) \
-   const char* HighQualityTestClassName::s_testClassNamePossiblyTemplatized = nullptr; \
+   const char* HighQualityTestClassName::s_testClassName = nullptr; \
    bool HighQualityTestClassName::s_allNXNTestsRegistered = false; \
    std::nullptr_t ZenUnit_TestClassRegistrar_##HighQualityTestClassName = \
       ZenUnit::TestRunner::Instance().AddTestClassRunner( \
          new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName>(#HighQualityTestClassName));
 
-// Instructs ZenUnit to skip a test class.
+// Skips a test class.
 #define SKIPTESTS(HighQualityTestClassName, Reason) \
    const std::nullptr_t ZenUnit_TestClassSkipper_##HighQualityTestClassName = \
       ZenUnit::TestRunner::Instance().SkipTestClass(#HighQualityTestClassName, Reason);
 
-// Instructs ZenUnit to run a templated test class. Supply __VA_ARGS__ with the typenames to be run. Example: RUNTEMPLATETESTS(TestClassName, int, std::vector<int>).
+// Runs a templated test class. Specify __VA_ARGS__ with type names to be run. Example: RUNTEMPLATETESTS(TestClassName, int, std::vector<int>).
 #define RUNTEMPLATETESTS(HighQualityTestClassName, ...) \
-   template<> const char* HighQualityTestClassName<__VA_ARGS__>::s_testClassNamePossiblyTemplatized = nullptr; \
+   template<> const char* HighQualityTestClassName<__VA_ARGS__>::s_testClassName = nullptr; \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassRegistrar_, HighQualityTestClassName), _Line), __LINE__) = \
       ZenUnit::TestRunner::Instance().AddTestClassRunner( \
          new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName<__VA_ARGS__>>(#HighQualityTestClassName"<"#__VA_ARGS__">"));
 
-// Instructs ZenUnit to skip a templated test class.
+// Skips a templated test class.
 #define SKIPTEMPLATETESTS(HighQualityTestClassName, Reason, ...) \
-   template<> const char* HighQualityTestClassName<__VA_ARGS__>::s_testClassNamePossiblyTemplatized = nullptr; \
+   template<> const char* HighQualityTestClassName<__VA_ARGS__>::s_testClassName = nullptr; \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassSkipper_, HighQualityTestClassName), _Line), __LINE__) = \
       ZenUnit::TestRunner::Instance().SkipTestClass(#HighQualityTestClassName"<"#__VA_ARGS__">", Reason);

@@ -13,7 +13,7 @@ namespace ZenMock
       typename std::decay<Arg4Type>::type fourthArgument;
       typename std::decay<Arg5Type>::type fifthArgument;
 
-      FiveArgumentCall()
+      FiveArgumentCall() noexcept
          : firstArgument()
          , secondArgument()
          , thirdArgument()
@@ -27,7 +27,7 @@ namespace ZenMock
          const Arg2Type& secondArgument,
          const Arg3Type& thirdArgument,
          const Arg4Type& fourthArgument,
-         const Arg5Type& fifthArgument)
+         const Arg5Type& fifthArgument) noexcept
          : firstArgument(firstArgument)
          , secondArgument(secondArgument)
          , thirdArgument(thirdArgument)

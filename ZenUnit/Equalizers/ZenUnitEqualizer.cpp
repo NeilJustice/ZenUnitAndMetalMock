@@ -18,7 +18,7 @@ namespace ZenUnit
       {
          throw EqualizerException();
       }
-      int strcmpResult = strcmp(expected, actual);
+      const int strcmpResult = strcmp(expected, actual);
       if (strcmpResult != 0)
       {
          throw EqualizerException();

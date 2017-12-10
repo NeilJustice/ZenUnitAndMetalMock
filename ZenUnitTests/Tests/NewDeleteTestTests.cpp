@@ -14,8 +14,8 @@ namespace ZenUnit
 
    class TestingTestClass {};
    unique_ptr<NewDeleteTest<TestingTestClass>> _newDeleteTest;
-   TryCatchCallerMock* _tryCatchCallerMock;
-   TestResultFactoryMock* _testResultFactoryMock;
+   TryCatchCallerMock* _tryCatchCallerMock = nullptr;
+   TestResultFactoryMock* _testResultFactoryMock = nullptr;
    const string TestClassName = Random<string>();
 
    STARTUP

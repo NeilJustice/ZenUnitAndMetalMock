@@ -194,8 +194,8 @@ namespace ZenUnit
      THROWS(TwoTypeEqualizer<int Comma size_t>::AssertEqual(
         -1 Comma size_t(0)), EqualizerException, "");
 
-     TwoTypeEqualizer<int, size_t>::AssertEqual(0, size_t(0));
-     TwoTypeEqualizer<int, size_t>::AssertEqual(1, size_t(1));
+     TwoTypeEqualizer<int, size_t>::AssertEqual(0, static_cast<size_t>(0));
+     TwoTypeEqualizer<int, size_t>::AssertEqual(1, static_cast<size_t>(1));
      TwoTypeEqualizer<int, size_t>::AssertEqual(
         numeric_limits<int>::max(), static_cast<size_t>(numeric_limits<int>::max()));
    }

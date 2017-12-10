@@ -28,7 +28,7 @@ namespace ZenMock
    private:
       std::vector<EightArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>> callHistory;
    public:
-      explicit EightArgumentMocker(const std::string& zenMockedFunctionSignature)
+      explicit EightArgumentMocker(const std::string& zenMockedFunctionSignature) noexcept
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
       }

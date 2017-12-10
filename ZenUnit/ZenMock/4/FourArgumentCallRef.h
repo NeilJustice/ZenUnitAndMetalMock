@@ -11,7 +11,7 @@ namespace ZenMock
       const Arg3Type& thirdArgument;
       const Arg4Type& fourthArgument;
 
-      FourArgumentCallRef(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument, const Arg4Type& fourthArgument)
+      FourArgumentCallRef(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument, const Arg4Type& fourthArgument) noexcept
          : firstArgument(firstArgument)
          , secondArgument(secondArgument)
          , thirdArgument(thirdArgument)
@@ -19,7 +19,7 @@ namespace ZenMock
       {
       }
 
-      explicit FourArgumentCallRef(const FourArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& fourArgumentCall)
+      explicit FourArgumentCallRef(const FourArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& fourArgumentCall) noexcept
          : firstArgument(fourArgumentCall.firstArgument)
          , secondArgument(fourArgumentCall.secondArgument)
          , thirdArgument(fourArgumentCall.thirdArgument)

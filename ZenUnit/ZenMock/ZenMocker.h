@@ -67,7 +67,7 @@ namespace ZenMock
          }
       }
 
-      void ZenMockSetAsserted()
+      void ZenMockSetAsserted() noexcept
       {
          _asserted = true;
       }

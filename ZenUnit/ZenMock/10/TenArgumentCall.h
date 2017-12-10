@@ -28,7 +28,7 @@ namespace ZenMock
       typename std::decay<Arg9Type>::type ninthArgument;
       typename std::decay<Arg10Type>::type tenthArgument;
 
-      TenArgumentCall()
+      TenArgumentCall() noexcept
          : firstArgument()
          , secondArgument()
          , thirdArgument()
@@ -52,7 +52,7 @@ namespace ZenMock
          const Arg7Type& seventhArgument,
          const Arg8Type& eigthArgument,
          const Arg9Type& ninthArgument,
-         const Arg10Type& tenthArgument)
+         const Arg10Type& tenthArgument) noexcept
          : firstArgument(firstArgument)
          , secondArgument(secondArgument)
          , thirdArgument(thirdArgument)

@@ -15,9 +15,9 @@
 namespace ZenUnit
 {
    INLINE TryCatchCaller::TryCatchCaller()
-      : _console(new Console)
-      , _testPhaseSuffixer(new TestPhaseSuffixer)
-      , _stopwatch(new Stopwatch)
+      : _console(std::make_unique<Console>())
+      , _testPhaseSuffixer(std::make_unique<TestPhaseSuffixer>())
+      , _stopwatch(std::make_unique<Stopwatch>())
       , call_TestRunner_GetArgs(TestRunner::GetArgs)
    {
    }

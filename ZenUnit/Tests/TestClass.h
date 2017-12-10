@@ -61,7 +61,7 @@ namespace ZenUnit
       {
          return RegisterTestNXN(pmfToken, [&]{ return new ZenUnit::Test1X1<
             DerivedTestClass, Arg1Type, TestCaseArgTypes...>(
-               DerivedTestClass::s_testClassNamePossiblyTemplatized, testName, test1X1Function,
+               DerivedTestClass::s_testClassName, testName, test1X1Function,
                testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...); });
       }
 
@@ -72,7 +72,7 @@ namespace ZenUnit
       {
          return RegisterTestNXN(pmfToken, [&]{ return new ZenUnit::Test2X2<
             DerivedTestClass, Arg1Type, Arg2Type, TestCaseArgTypes...>(
-               DerivedTestClass::s_testClassNamePossiblyTemplatized, testName, nxnTestFunction,
+               DerivedTestClass::s_testClassName, testName, nxnTestFunction,
                testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...); });
       }
 
@@ -83,7 +83,7 @@ namespace ZenUnit
       {
          return RegisterTestNXN(pmfToken, [&]{ return new ZenUnit::Test3X3<
             DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, TestCaseArgTypes...>(
-               DerivedTestClass::s_testClassNamePossiblyTemplatized, testName, nxnTestFunction,
+               DerivedTestClass::s_testClassName, testName, nxnTestFunction,
                testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...); });
       }
 
@@ -94,7 +94,7 @@ namespace ZenUnit
       {
          return RegisterTestNXN(pmfToken, [&]{ return new ZenUnit::Test4X4<
             DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, TestCaseArgTypes...>(
-               DerivedTestClass::s_testClassNamePossiblyTemplatized, testName, nxnTestFunction,
+               DerivedTestClass::s_testClassName, testName, nxnTestFunction,
                testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...); });
       }
 
@@ -105,7 +105,7 @@ namespace ZenUnit
       {
          return RegisterTestNXN(pmfToken, [&]{ return new ZenUnit::Test5X5<
             DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, TestCaseArgTypes...>(
-               DerivedTestClass::s_testClassNamePossiblyTemplatized, testName, nxnTestFunction,
+               DerivedTestClass::s_testClassName, testName, nxnTestFunction,
                testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...); });
       }
 
@@ -116,7 +116,7 @@ namespace ZenUnit
       {
          return RegisterTestNXN(pmfToken, [&]{ return new ZenUnit::Test6X6<
             DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, TestCaseArgTypes...>(
-               DerivedTestClass::s_testClassNamePossiblyTemplatized, testName, nxnTestFunction,
+               DerivedTestClass::s_testClassName, testName, nxnTestFunction,
                testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...); });
       }
 
@@ -127,7 +127,7 @@ namespace ZenUnit
       {
          return RegisterTestNXN(pmfToken, [&]{ return new ZenUnit::Test7X7<
             DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, TestCaseArgTypes...>(
-               DerivedTestClass::s_testClassNamePossiblyTemplatized, testName, nxnTestFunction,
+               DerivedTestClass::s_testClassName, testName, nxnTestFunction,
                testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...); });
       }
 
@@ -138,7 +138,7 @@ namespace ZenUnit
       {
          return RegisterTestNXN(pmfToken, [&]{ return new ZenUnit::Test8X8<
             DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, TestCaseArgTypes...>(
-               DerivedTestClass::s_testClassNamePossiblyTemplatized, testName, nxnTestFunction,
+               DerivedTestClass::s_testClassName, testName, nxnTestFunction,
                testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...); });
       }
 
@@ -149,7 +149,7 @@ namespace ZenUnit
       {
          return RegisterTestNXN(pmfToken, [&]{ return new ZenUnit::Test9X9<
             DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, TestCaseArgTypes...>(
-               DerivedTestClass::s_testClassNamePossiblyTemplatized, testName, nxnTestFunction,
+               DerivedTestClass::s_testClassName, testName, nxnTestFunction,
                testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...); });
       }
 
@@ -160,7 +160,7 @@ namespace ZenUnit
       {
          return RegisterTestNXN(pmfToken, [&]{ return new ZenUnit::Test10X10<
             DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, TestCaseArgTypes...>(
-               DerivedTestClass::s_testClassNamePossiblyTemplatized, testName, nxnTestFunction,
+               DerivedTestClass::s_testClassName, testName, nxnTestFunction,
                testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...); });
       }
    };

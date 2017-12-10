@@ -8,8 +8,8 @@
 namespace ZenUnit
 {
    INLINE Test::Test(const char* testClassName, const char* testName, unsigned char arity)
-      : _tryCatchCaller(new TryCatchCaller)
-      , _testResultFactory(new TestResultFactory)
+      : _tryCatchCaller(std::make_unique<TryCatchCaller>())
+      , _testResultFactory(std::make_unique<TestResultFactory>())
       , _fullTestName(testClassName, testName, arity)
    {
    }

@@ -16,7 +16,7 @@ namespace ZenUnit
       const vector<int> ints { 1, 2 };
       DOES_CONTAIN(1, ints);
       DOES_CONTAIN(2, ints);
-      for (int i : ints)
+      for (const int i : ints)
       {
          DOES_CONTAIN(i, ints);
       }

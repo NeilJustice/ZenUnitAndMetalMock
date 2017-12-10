@@ -13,11 +13,11 @@
 namespace ZenUnit
 {
    INLINE MultiTestClassRunner::MultiTestClassRunner()
-      : _extraArgMemberForEacher(new ExtraArgMemberForEacherType)
-      , _extraArgAnyer(new ExtraArgAnyerType)
-      , _sorter(new Sorter<std::vector<std::unique_ptr<TestClassRunner>>>)
-      , _transformer(new Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>)
-      , _watch(new Watch)
+      : _extraArgMemberForEacher(std::make_unique<ExtraArgMemberForEacherType>())
+      , _extraArgAnyer(std::make_unique<ExtraArgAnyerType>())
+      , _sorter(std::make_unique<Sorter<std::vector<std::unique_ptr<TestClassRunner>>>>())
+      , _transformer(std::make_unique<Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>>())
+      , _watch(std::make_unique<Watch>())
    {
    }
 

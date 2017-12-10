@@ -43,7 +43,7 @@ namespace ZenMock
          AppendToStringedArgs(outWhatBuilder, argIndex, std::forward<SubsequentArgTypes>(args)...);
       }
 
-      static void AppendToStringedArgs(std::ostringstream&, size_t)
+      static void AppendToStringedArgs(std::ostringstream&, size_t) noexcept
       {
       }
    };

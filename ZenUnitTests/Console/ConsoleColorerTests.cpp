@@ -92,7 +92,7 @@ namespace ZenUnit
          _consoleColorer_SetCallsMocked.SetTextColorMock.Expect();
       }
       //
-      bool didSetColor = _consoleColorer_SetCallsMocked.SetColor(color);
+      const bool didSetColor = _consoleColorer_SetCallsMocked.SetColor(color);
       //
       ZEN(_consoleColorer_SetCallsMocked.SetSupportsColorIfUnsetMock.AssertCalledOnce());
       if (expectSetTextColorCallAndExpectedReturnValue)
@@ -154,7 +154,7 @@ namespace ZenUnit
       _consoleColorer.call_GetStdHandle = ZENMOCK_BIND1(GetStdHandle_ZenMock);
       _consoleColorer.call_SetConsoleTextAttribute = ZENMOCK_BIND2(SetConsoleTextAttribute_ZenMock);
 
-      const HANDLE GetStdHandleReturnValue = HANDLE(1);
+      const HANDLE GetStdHandleReturnValue = reinterpret_cast<HANDLE>(1);
       GetStdHandle_ZenMock.ExpectAndReturn(GetStdHandleReturnValue);
 
       SetConsoleTextAttribute_ZenMock.ExpectAndReturn(TRUE);

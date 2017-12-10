@@ -23,7 +23,7 @@ namespace ZenUnit
    EVIDENCE
 
    Console _console;
-   ConsoleColorerMock* _consoleColorerMock;
+   ConsoleColorerMock* _consoleColorerMock = nullptr;
    const string Message = Random<string>();
 
    struct ConsoleSelfMocked : public Zen::Mock<Console>
@@ -218,8 +218,8 @@ namespace ZenUnit
       } consoleSelfMocked;
 
       vector<string> strings = { Random<string>() };
-      size_t startIndex = Random<size_t>();
-      size_t numberOfElements = Random<size_t>();
+      const size_t startIndex = Random<size_t>();
+      const size_t numberOfElements = Random<size_t>();
       if (expectDoWriteCall)
       {
          consoleSelfMocked.DoWriteStringsCommaSeparatedMock.Expect();

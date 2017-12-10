@@ -35,7 +35,7 @@ namespace ZenMock
          ZenMockAddReturnValues(std::forward<ReturnTypes>(subsequentReturnValues)...);
       }
 
-      void ZenMockAddReturnValues()
+      void ZenMockAddReturnValues() noexcept
       {
       }
 

@@ -37,12 +37,12 @@ namespace ZenUnit
       unsigned place = 1;
       for (int i = static_cast<int>(str.size() - 1); i >= 0; --i, place *= 10)
       {
-         char c = str[static_cast<size_t>(i)];
+         const char c = str[static_cast<size_t>(i)];
          if (c < '0' || c > '9')
          {
             throw std::invalid_argument("String::ToUnsigned() called with string not convertible to unsigned integer: \"" + str + "\"");
          }
-         unsigned digit = "0123456789"[c - 48] - 48u;
+         const unsigned digit = "0123456789"[c - 48] - 48u;
          result += digit * place;
       }
       if (result > std::numeric_limits<unsigned int>::max())
@@ -50,7 +50,7 @@ namespace ZenUnit
          throw std::invalid_argument(
             "String::ToUnsigned called with string containing number greater than numeric_limits<unsigned int>::max(): \"" + std::to_string(result) + "\"");
       }
-      unsigned unsignedResult = static_cast<unsigned>(result);
+      const unsigned unsignedResult = static_cast<unsigned>(result);
       return unsignedResult;
    }
 
@@ -62,7 +62,7 @@ namespace ZenUnit
       while (stringStream >> std::ws && !stringStream.eof())
       {
          std::string element;
-         auto peekChar = static_cast<char>(stringStream.peek());
+         const char peekChar = static_cast<char>(stringStream.peek());
          if (peekChar == '"')
          {
             stringStream >> std::quoted(element);

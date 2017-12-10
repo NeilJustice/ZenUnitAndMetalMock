@@ -10,11 +10,11 @@
 namespace ZenUnit
 {
    INLINE TestRunResult::TestRunResult()
-      : _console(new Console)
-      , _memberForEacherTestClassResults(new MemberForEacherTestClassResultsType)
-      , _memberForEacherSkippedTests(new MemberForEacherSkippedTestsType)
-      , _twoExtraArgsForEacher(new TwoExtraArgsForEacherType)
-      , _testFailureNumberer(new TestFailureNumberer)
+      : _console(std::make_unique<Console>())
+      , _memberForEacherTestClassResults(std::make_unique<MemberForEacherTestClassResultsType>())
+      , _memberForEacherSkippedTests(std::make_unique<MemberForEacherSkippedTestsType>())
+      , _twoExtraArgsForEacher(std::make_unique<TwoExtraArgsForEacherType>())
+      , _testFailureNumberer(std::make_unique<TestFailureNumberer>())
       , _numberOfFailedTestCases(0)
    {
    }

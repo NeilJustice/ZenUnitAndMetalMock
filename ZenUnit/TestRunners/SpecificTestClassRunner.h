@@ -35,14 +35,14 @@ namespace ZenUnit
       std::vector<std::unique_ptr<Test>> _tests;
       TestClassResult _testClassResult;
    public:
-      explicit SpecificTestClassRunner(const char* testClassNamePossiblyTemplatized)
+      explicit SpecificTestClassRunner(const char* testClassName)
          : _console(new Console)
          , _extraArgMemberForEacher(new ExtraArgMemberForEacherType)
          , call_TestRunner_GetArgs(TestRunner::GetArgs)
-         , _testClassName(testClassNamePossiblyTemplatized)
-         , _newDeleteTest(testClassNamePossiblyTemplatized)
+         , _testClassName(testClassName)
+         , _newDeleteTest(testClassName)
       {
-         _tests = TestClassType::GetTests(testClassNamePossiblyTemplatized);
+         _tests = TestClassType::GetTests(testClassName);
       }
 
       const char* TestClassName() const override

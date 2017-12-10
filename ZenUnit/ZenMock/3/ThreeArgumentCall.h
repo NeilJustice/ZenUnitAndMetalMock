@@ -11,14 +11,14 @@ namespace ZenMock
       typename std::decay<Arg2Type>::type secondArgument;
       typename std::decay<Arg3Type>::type thirdArgument;
 
-      ThreeArgumentCall()
+      ThreeArgumentCall() noexcept
          : firstArgument()
          , secondArgument()
          , thirdArgument()
       {
       }
 
-      ThreeArgumentCall(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument)
+      ThreeArgumentCall(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument) noexcept
          : firstArgument(firstArgument)
          , secondArgument(secondArgument)
          , thirdArgument(thirdArgument)

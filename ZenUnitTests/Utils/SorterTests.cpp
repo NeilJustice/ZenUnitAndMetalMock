@@ -8,17 +8,17 @@ namespace ZenUnit
    {
       int x;
 
-      SortableStruct(int x)
+      SortableStruct(int x) noexcept
          : x(x)
       {
       }
 
-      friend bool operator<(const SortableStruct& left, const SortableStruct& right)
+      friend bool operator<(const SortableStruct& left, const SortableStruct& right) noexcept
       {
          return left.x < right.x;
       }
 
-      friend bool operator==(const SortableStruct& left, const SortableStruct& right)
+      friend bool operator==(const SortableStruct& left, const SortableStruct& right) noexcept
       {
          return left.x == right.x;
       }

@@ -7,7 +7,7 @@ namespace ZenUnit
    INLINE float Random<float>()
    {
       static std::default_random_engine defaultRandomEngine(static_cast<unsigned>(time(nullptr)));
-      std::uniform_real_distribution<float> uniformFloatDistribution(-100.0f, 100.0f);
+      const std::uniform_real_distribution<float> uniformFloatDistribution(-100.0f, 100.0f);
       const float randomFloat = uniformFloatDistribution(defaultRandomEngine);
       return randomFloat;
    }
@@ -16,7 +16,7 @@ namespace ZenUnit
    INLINE double Random<double>()
    {
       static std::default_random_engine defaultRandomEngine(static_cast<unsigned>(time(nullptr)));
-      std::uniform_real_distribution<double> uniformDoubleDistribution(-100.0, 100.0);
+      const std::uniform_real_distribution<double> uniformDoubleDistribution(-100.0, 100.0);
       const double randomDouble = uniformDoubleDistribution(defaultRandomEngine);
       return randomDouble;
    }

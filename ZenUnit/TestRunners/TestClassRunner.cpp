@@ -13,7 +13,7 @@ namespace ZenUnit
    {
       const char* leftTestClassName = leftTestClassRunner->TestClassName();
       const char* rightTestClassName = rightTestClassRunner->TestClassName();
-      int caseInsensitiveComparisonResult = String::IgnoreCaseStrcmp(leftTestClassName, rightTestClassName);
+      const int caseInsensitiveComparisonResult = String::IgnoreCaseStrcmp(leftTestClassName, rightTestClassName);
       const bool isLessThan = caseInsensitiveComparisonResult < 0;
       return isLessThan;
    }

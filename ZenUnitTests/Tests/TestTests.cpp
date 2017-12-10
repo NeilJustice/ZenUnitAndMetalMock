@@ -22,8 +22,8 @@ namespace ZenUnit
    EVIDENCE
 
    unique_ptr<Test> _test;
-   TryCatchCallerMock* _tryCatchCallerMock;
-   TestResultFactoryMock* _testResultFactoryMock;
+   TryCatchCallerMock* _tryCatchCallerMock = nullptr;
+   TestResultFactoryMock* _testResultFactoryMock = nullptr;
    TestMock _testMock;
 
    STARTUP

@@ -15,7 +15,7 @@ namespace ZenUnit
    EVIDENCE
 
    RunFilterParser _runFilterParser;
-   TransformerMock<string, RunFilter>* _transformerMock;
+   TransformerMock<string, RunFilter>* _transformerMock = nullptr;
 
    STARTUP
    {

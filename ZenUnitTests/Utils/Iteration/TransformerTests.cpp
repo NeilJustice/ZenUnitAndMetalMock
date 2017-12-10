@@ -16,7 +16,7 @@ namespace ZenUnit
    using TransformerType = Transformer<T, TransformedT>;
    TransformerType _transformer;
 
-   static TransformedT PlusOne(const T& element)
+   static TransformedT PlusOne(const T& element) noexcept
    {
       return element + 1;
    }
