@@ -21,5 +21,8 @@ struct ConsoleMock : public Zen::Mock<Console>
 class WriteLineAndExitException : public exception
 {
 public:
-   const char* what() const override { return ""; }
+   const char* what() const noexcept override
+   {
+      return "";
+   }
 };

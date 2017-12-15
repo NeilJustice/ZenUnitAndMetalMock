@@ -24,7 +24,7 @@ namespace ZenMock
          return what;
       }
 
-      const char* what() const override
+      const char* what() const noexcept override
       {
          return _what.c_str();
       }

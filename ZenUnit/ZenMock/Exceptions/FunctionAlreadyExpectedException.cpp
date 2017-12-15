@@ -16,7 +16,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
       return what;
    }
 
-   INLINE const char* FunctionAlreadyExpectedException::what() const
+   INLINE const char* FunctionAlreadyExpectedException::what() const noexcept
    {
       return _what.c_str();
    }

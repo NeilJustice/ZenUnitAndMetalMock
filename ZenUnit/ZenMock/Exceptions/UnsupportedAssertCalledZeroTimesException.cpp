@@ -20,7 +20,7 @@ namespace ZenMock
       return what;
    }
 
-   INLINE const char* UnsupportedAssertCalledZeroTimesException::what() const
+   INLINE const char* UnsupportedAssertCalledZeroTimesException::what() const noexcept
    {
       return _what.c_str();
    }

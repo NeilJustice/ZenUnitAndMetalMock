@@ -9,7 +9,7 @@ namespace ZenMock
    {
    }
 
-   INLINE const char* ReturnValueMustBeSpecifiedException::what() const
+   INLINE const char* ReturnValueMustBeSpecifiedException::what() const noexcept
    {
       return _what.c_str();
    }

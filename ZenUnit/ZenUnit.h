@@ -30,6 +30,13 @@
 #include <unordered_set>
 #include <vector>
 
+#ifdef __linux__
+#include <unistd.h>
+#include <climits>
+//#include <strings.h>
+#include <cxxabi.h>
+#endif
+
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN // ~40% faster Windows.h compile speed
 #define NOGDI // ~10% faster Windows.h compile speed
@@ -37,24 +44,6 @@
 #include "Windows.h"
 #include <io.h>
 #endif
-
-//#ifdef __linux__
-//
-//#include <unistd.h>
-//#include <climits>
-//#include <unistd.h>
-//#include <strings.h>
-//#include <cxxabi.h>
-//
-//#elif _WIN32
-//
-//#include <io.h>
-//#pragma warning(push)
-//#pragma warning(disable: 4365) // signed / unsigned mismatch
-//#include <numeric>
-//#pragma warning(pop)
-//
-//#endif
 
 #define DOTOKENJOIN(a, b) a##b
 #define TOKENJOIN(a, b) DOTOKENJOIN(a, b)
@@ -465,6 +454,19 @@ namespace ZenUnit
 #endif
 #endif
 
+   inline const char* ColorToLinuxColor(Color color)
+   {
+      switch (color)
+      {
+      case Color::Red: return "\033[31m";
+      case Color::White: return "\033[0m";
+      case Color::Teal: return "\033[34m";
+      case Color::Green: return "\033[32m";
+      case Color::Unset:
+      default: return "\033[0m";
+      };
+   }
+
    inline WindowsColor ColorToWindowsColor(Color color)
    {
       switch (color)
@@ -725,6 +727,11 @@ namespace ZenUnit
          decltype(SFINAE(std::declval<T>()))>::value;
    };
 
+#ifdef __linux__
+   template<typename T>
+   const bool has_to_string<T>::value;
+#endif
+
    template<typename T>
    class has_ostream_left_shift
    {
@@ -737,6 +744,11 @@ namespace ZenUnit
          decltype(SFINAE(std::declval<std::ostream&>(), std::declval<T>()))>::value;
    };
 
+#ifdef __linux__
+   template<typename T>
+   const bool has_ostream_left_shift<T>::value;
+#endif
+
    template<typename T>
    struct is_quoted_when_printed : std::integral_constant<bool,
       std::is_same<std::string, typename std::decay<T>::type>::value ||
@@ -744,6 +756,9 @@ namespace ZenUnit
       std::is_same<char*, typename std::decay<T>::type>::value>
    {
    };
+
+   template<typename T>
+   struct Printer;
 
    template<typename T>
    class has_ZenUnitPrinter
@@ -757,6 +772,11 @@ namespace ZenUnit
       static const bool value = std::is_same<void,
          decltype(SFINAE<T>(std::declval<std::ostream&>(), std::declval<T>()))>::value;
    };
+
+#ifdef __linux__
+   template<typename T>
+   const bool has_ZenUnitPrinter<T>::value;
+#endif
 
    class Type
    {
@@ -1144,7 +1164,7 @@ namespace ZenUnit
          this->why = whyBuilder.str();
       }
 
-      const char* what() const
+      const char* what() const noexcept override
       {
          return why.c_str();
       }
@@ -1226,7 +1246,7 @@ namespace ZenUnit
    class ZenMockException
    {
    public:
-      virtual const char* what() const = 0;
+      virtual const char* what() const noexcept = 0;
    };
 
    class EqualizerException : public std::exception
@@ -1236,7 +1256,7 @@ namespace ZenUnit
       {
       }
 
-      const char* what() const override
+      const char* what() const noexcept override
       {
          return "";
       }
@@ -1529,19 +1549,6 @@ None
       }
    };
 
-   inline const char* ColorToLinuxColor(Color color)
-   {
-      switch (color)
-      {
-      case Color::Red: return "\033[31m";
-      case Color::White: return "\033[0m";
-      case Color::Teal: return "\033[34m";
-      case Color::Green: return "\033[32m";
-      case Color::Unset:
-      default: return "\033[0m";
-      };
-   }
-
 #define VRT(value) ZenUnit::VRText<decltype(value)>(value, #value)
 
    // Value Reference Text
@@ -1579,6 +1586,56 @@ None
          toStringedExpectedObject,
          toStringedActualObject,
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+   }
+
+   template<typename ExpectedAndActualType>
+   struct Equalizer
+   {
+      static void AssertEqual(
+         const ExpectedAndActualType& expected, const ExpectedAndActualType& actual)
+      {
+         if (!(expected == actual))
+         {
+            throw ZenUnit::EqualizerException();
+         }
+      }
+   };
+
+   template<typename ExpectedType, typename ActualType>
+   struct TwoTypeEqualizer
+   {
+      static void AssertEqual(const ExpectedType& expected, const ActualType& actual)
+      {
+         if (!(expected == actual))
+         {
+            throw ZenUnit::EqualizerException();
+         }
+      }
+   };
+
+   template<typename ExpectedType, typename ActualType, typename... MessageTypes>
+   void ARE_EQUAL_Defined(VRText<ExpectedType> expectedValueVRT, VRText<ActualType> actualValueVRT,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   {
+      try
+      {
+         using DecayedExpectedType = typename std::decay<ExpectedType>::type;
+         using DecayedActualType = typename std::decay<ActualType>::type;
+         std::conditional<std::is_same<DecayedExpectedType, DecayedActualType>::value,
+            ZenUnit::Equalizer<DecayedExpectedType>,
+            ZenUnit::TwoTypeEqualizer<DecayedExpectedType, DecayedActualType>>
+            ::type::AssertEqual(expectedValueVRT.value, actualValueVRT.value);
+      }
+      catch (const EqualizerException&)
+      {
+         ARE_EQUAL_Throw(expectedValueVRT, actualValueVRT, fileLine,
+            Anomaly::Default(), messagesText, std::forward<MessageTypes>(messages)...);
+      }
+      catch (const Anomaly& becauseAnomaly)
+      {
+         ARE_EQUAL_Throw(expectedValueVRT, actualValueVRT, fileLine,
+            becauseAnomaly, messagesText, std::forward<MessageTypes>(messages)...);
+      }
    }
 
    template<typename ExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
@@ -1622,31 +1679,6 @@ None
          expectedField,
          actualField,
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
-   }
-
-   template<typename ExpectedType, typename ActualType, typename... MessageTypes>
-   void ARE_EQUAL_Defined(VRText<ExpectedType> expectedValueVRT, VRText<ActualType> actualValueVRT,
-      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
-   {
-      try
-      {
-         using DecayedExpectedType = typename std::decay<ExpectedType>::type;
-         using DecayedActualType = typename std::decay<ActualType>::type;
-         std::conditional<std::is_same<DecayedExpectedType, DecayedActualType>::value,
-            ZenUnit::Equalizer<DecayedExpectedType>,
-            ZenUnit::TwoTypeEqualizer<DecayedExpectedType, DecayedActualType>>
-            ::type::AssertEqual(expectedValueVRT.value, actualValueVRT.value);
-      }
-      catch (const EqualizerException&)
-      {
-         ARE_EQUAL_Throw(expectedValueVRT, actualValueVRT, fileLine,
-            Anomaly::Default(), messagesText, std::forward<MessageTypes>(messages)...);
-      }
-      catch (const Anomaly& becauseAnomaly)
-      {
-         ARE_EQUAL_Throw(expectedValueVRT, actualValueVRT, fileLine,
-            becauseAnomaly, messagesText, std::forward<MessageTypes>(messages)...);
-      }
    }
 
    template<typename NotExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
@@ -1816,6 +1848,17 @@ None
          ExpectedActualFormat::Fields, fileLine);
    }
 
+   template<typename ConvertibleToBoolType, typename... MessageTypes>
+   void IS_TRUE_Defined(
+      const ConvertibleToBoolType& value, const char* valueText,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   {
+      if (!value)
+      {
+         IS_TRUE_Throw(valueText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+      }
+   }
+
    template<
       typename ExpectedType,
       typename ActualType,
@@ -1974,17 +2017,6 @@ None
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
-   template<typename ConvertibleToBoolType, typename... MessageTypes>
-   void IS_TRUE_Defined(
-      const ConvertibleToBoolType& value, const char* valueText,
-      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
-   {
-      if (!value)
-      {
-         IS_TRUE_Throw(valueText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
-      }
-   }
-
    template<typename ValueType, typename ZeroValueType, typename... MessageTypes>
    void IS_ZERO_Throw(VRText<ValueType> valueVRT, const ZeroValueType& zeroValue,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
@@ -2009,6 +2041,70 @@ None
          IS_ZERO_Throw(valueVRT, zeroValue, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
+
+   class Map
+   {
+   public:
+      template<typename MapType, typename KeyType, typename ValueType>
+      static const ValueType* InsertNoOverwrite(
+         MapType& m, const KeyType& key, const ValueType& value)
+      {
+         const std::pair<typename MapType::const_iterator, bool> insertIterAndDidInsert
+            = m.insert(std::make_pair(key, value));
+         if (!insertIterAndDidInsert.second)
+         {
+            const std::string toStringedKey = ToStringer::ToString(key);
+            const std::string what = String::Concat(
+               "ZenUnit::Map::InsertNoOverwrite: Key already present in map: ", toStringedKey);
+            throw std::invalid_argument(what);
+         }
+         const ValueType* const constPointerToValueInMap = &(*insertIterAndDidInsert.first).second;
+         return constPointerToValueInMap;
+      }
+
+      // At() exists because map.at() does not include the key not found in the exception what() text
+      template<
+         template<typename...>
+      class MapType, typename KeyType, typename ValueType, typename... SubsequentTypes>
+         static const ValueType& At(
+            const MapType<KeyType, ValueType, SubsequentTypes...>& m, const KeyType& key)
+      {
+         try
+         {
+            const ValueType& constReferenceToValueInMap = m.at(key);
+            return constReferenceToValueInMap;
+         }
+         catch (const std::out_of_range&)
+         {
+            const std::string toStringedKey = ToStringer::ToString(key);
+            const std::string what = String::Concat("ZenUnit::Map::At: Key not found in map: ", toStringedKey);
+            throw std::out_of_range(what);
+         }
+      }
+
+      template<typename MapType, typename KeyType, typename ValueType>
+      static std::pair<bool, bool> ContainsKeyWithValue(
+         const MapType& m, const KeyType& key, const ValueType& value)
+      {
+         if (const typename MapType::const_iterator findIter = m.find(key);
+         findIter == m.end())
+         {
+            return { false, false };
+         }
+         else
+         {
+            try
+            {
+               ARE_EQUAL(value, findIter->second);
+            }
+            catch (const Anomaly&)
+            {
+               return { true, false };
+            }
+            return { true, true };
+         }
+      }
+   };
 
    template<typename... MessageTypes>
    void MAPS_EQUAL_Throw(
@@ -2658,7 +2754,13 @@ None
       const char* messagesText,
       MessageTypes&&... messages)
    {
-      struct NeverThrownType { const char* what() const { return nullptr; } };
+      struct NeverThrownType
+      {
+         const char* what() const noexcept
+         {
+            return nullptr;
+         }
+      };
       try
       {
          expression();
@@ -4925,6 +5027,235 @@ None
       }
    };
 
+   class Tuple
+   {
+   public:
+      template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
+      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
+         Call1ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+      {
+         if (argsIndex == 0ull)
+         {
+            (classPtr->*std::forward<MemberFunction>(memberFunction))(
+               I + 1ull,
+               std::get<I>(args));
+         }
+         Call1ArgMemberFunction<ClassType, MemberFunction, I + 1ull, ArgTypes...>(
+            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 1ull, args);
+      }
+
+      template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
+      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
+         Call2ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+      {
+         if (argsIndex == 0ull)
+         {
+            (classPtr->*std::forward<MemberFunction>(memberFunction))(
+               I / 2ull + 1ull,
+               std::get<I>(args),
+               std::get<I + 1ull>(args));
+         }
+         Call2ArgMemberFunction<ClassType, MemberFunction, I + 2ull, ArgTypes...>(
+            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 2, args);
+      }
+
+      template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
+      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
+         Call3ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+      {
+         if (argsIndex == 0ull)
+         {
+            (classPtr->*std::forward<MemberFunction>(memberFunction))(
+               I / 3ull + 1ull,
+               std::get<I>(args),
+               std::get<I + 1ull>(args),
+               std::get<I + 2ull>(args));
+         }
+         Call3ArgMemberFunction<ClassType, MemberFunction, I + 3ull, ArgTypes...>(
+            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 3ull, args);
+      }
+
+      template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
+      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
+         Call4ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+      {
+         if (argsIndex == 0ull)
+         {
+            (classPtr->*std::forward<MemberFunction>(memberFunction))(
+               I / 4ull + 1ull,
+               std::get<I>(args),
+               std::get<I + 1ull>(args),
+               std::get<I + 2ull>(args),
+               std::get<I + 3ull>(args));
+         }
+         Call4ArgMemberFunction<ClassType, MemberFunction, I + 4ull, ArgTypes...>(
+            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 4ull, args);
+      }
+
+      template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
+      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
+         Call5ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+      {
+         if (argsIndex == 0ull)
+         {
+            (classPtr->*std::forward<MemberFunction>(memberFunction))(
+               I / 5ull + 1ull,
+               std::get<I>(args),
+               std::get<I + 1ull>(args),
+               std::get<I + 2ull>(args),
+               std::get<I + 3ull>(args),
+               std::get<I + 4ull>(args));
+         }
+         Call5ArgMemberFunction<ClassType, MemberFunction, I + 5ull, ArgTypes...>(
+            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 5ull, args);
+      }
+
+      template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
+      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
+         Call6ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+      {
+         if (argsIndex == 0ull)
+         {
+            (classPtr->*std::forward<MemberFunction>(memberFunction))(
+               I / 6ull + 1ull,
+               std::get<I>(args),
+               std::get<I + 1ull>(args),
+               std::get<I + 2ull>(args),
+               std::get<I + 3ull>(args),
+               std::get<I + 4ull>(args),
+               std::get<I + 5ull>(args));
+         }
+         Call6ArgMemberFunction<ClassType, MemberFunction, I + 6ull, ArgTypes...>(
+            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 6ull, args);
+      }
+
+      template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
+      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
+         Call7ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+      {
+         if (argsIndex == 0ull)
+         {
+            (classPtr->*std::forward<MemberFunction>(memberFunction))(
+               I / 7ull + 1ull,
+               std::get<I>(args),
+               std::get<I + 1ull>(args),
+               std::get<I + 2ull>(args),
+               std::get<I + 3ull>(args),
+               std::get<I + 4ull>(args),
+               std::get<I + 5ull>(args),
+               std::get<I + 6ull>(args));
+         }
+         Call7ArgMemberFunction<ClassType, MemberFunction, I + 7ull, ArgTypes...>(
+            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 7ull, args);
+      }
+
+      template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
+      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
+         Call8ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+      {
+         if (argsIndex == 0ull)
+         {
+            (classPtr->*std::forward<MemberFunction>(memberFunction))(
+               I / 8ull + 1ull,
+               std::get<I>(args),
+               std::get<I + 1ull>(args),
+               std::get<I + 2ull>(args),
+               std::get<I + 3ull>(args),
+               std::get<I + 4ull>(args),
+               std::get<I + 5ull>(args),
+               std::get<I + 6ull>(args),
+               std::get<I + 7ull>(args));
+         }
+         Call8ArgMemberFunction<ClassType, MemberFunction, I + 8ull, ArgTypes...>(
+            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 8ull, args);
+      }
+
+      template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
+      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
+         Call9ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+      {
+         if (argsIndex == 0ull)
+         {
+            (classPtr->*std::forward<MemberFunction>(memberFunction))(
+               I / 9ull + 1ull,
+               std::get<I>(args),
+               std::get<I + 1ull>(args),
+               std::get<I + 2ull>(args),
+               std::get<I + 3ull>(args),
+               std::get<I + 4ull>(args),
+               std::get<I + 5ull>(args),
+               std::get<I + 6ull>(args),
+               std::get<I + 7ull>(args),
+               std::get<I + 8ull>(args));
+         }
+         Call9ArgMemberFunction<ClassType, MemberFunction, I + 9ull, ArgTypes...>(
+            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 9ull, args);
+      }
+
+      template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
+      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
+         Call10ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+      {
+         if (argsIndex == 0ull)
+         {
+            (classPtr->*std::forward<MemberFunction>(memberFunction))(
+               I / 10ull + 1ull,
+               std::get<I>(args),
+               std::get<I + 1ull>(args),
+               std::get<I + 2ull>(args),
+               std::get<I + 3ull>(args),
+               std::get<I + 4ull>(args),
+               std::get<I + 5ull>(args),
+               std::get<I + 6ull>(args),
+               std::get<I + 7ull>(args),
+               std::get<I + 8ull>(args),
+               std::get<I + 9ull>(args));
+         }
+         Call10ArgMemberFunction<ClassType, MemberFunction, I + 10ull, ArgTypes...>(
+            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 10ull, args);
+      }
+
+      template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
+      static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
+         Call1ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
+
+      template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
+      static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
+         Call2ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
+
+      template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
+      static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
+         Call3ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
+
+      template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
+      static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
+         Call4ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
+
+      template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
+      static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
+         Call5ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
+
+      template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
+      static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
+         Call6ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
+
+      template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
+      static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
+         Call7ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
+
+      template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
+      static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
+         Call8ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
+
+      template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
+      static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
+         Call9ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
+
+      template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
+      static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
+         Call10ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
+   };
+
    template<typename TestClassType, typename Arg1Type, typename... TestCaseArgTypes>
    class Test1X1 : public TestNXN<TestClassType, 1, TestCaseArgTypes...>
    {
@@ -5282,9 +5613,6 @@ None
       }
    };
 
-   template<typename T>
-   struct Printer;
-
    template<typename T, typename Allocator>
    struct Printer<std::vector<T, Allocator>>
    {
@@ -5330,70 +5658,6 @@ None
       }
    };
 
-   class Map
-   {
-   public:
-      template<typename MapType, typename KeyType, typename ValueType>
-      static const ValueType* InsertNoOverwrite(
-         MapType& m, const KeyType& key, const ValueType& value)
-      {
-         const std::pair<typename MapType::const_iterator, bool> insertIterAndDidInsert
-            = m.insert(std::make_pair(key, value));
-         if (!insertIterAndDidInsert.second)
-         {
-            const std::string toStringedKey = ToStringer::ToString(key);
-            const std::string what = String::Concat(
-               "ZenUnit::Map::InsertNoOverwrite: Key already present in map: ", toStringedKey);
-            throw std::invalid_argument(what);
-         }
-         const ValueType* const constPointerToValueInMap = &(*insertIterAndDidInsert.first).second;
-         return constPointerToValueInMap;
-      }
-
-      // At() exists because map.at() does not include the key not found in the exception what() text
-      template<
-         template<typename...>
-      class MapType, typename KeyType, typename ValueType, typename... SubsequentTypes>
-         static const ValueType& At(
-            const MapType<KeyType, ValueType, SubsequentTypes...>& m, const KeyType& key)
-      {
-         try
-         {
-            const ValueType& constReferenceToValueInMap = m.at(key);
-            return constReferenceToValueInMap;
-         }
-         catch (const std::out_of_range&)
-         {
-            const std::string toStringedKey = ToStringer::ToString(key);
-            const std::string what = String::Concat("ZenUnit::Map::At: Key not found in map: ", toStringedKey);
-            throw std::out_of_range(what);
-         }
-      }
-
-      template<typename MapType, typename KeyType, typename ValueType>
-      static std::pair<bool, bool> ContainsKeyWithValue(
-         const MapType& m, const KeyType& key, const ValueType& value)
-      {
-         if (const typename MapType::const_iterator findIter = m.find(key);
-         findIter == m.end())
-         {
-            return { false, false };
-         }
-         else
-         {
-            try
-            {
-               ARE_EQUAL(value, findIter->second);
-            }
-            catch (const Anomaly&)
-            {
-               return { true, false };
-            }
-            return { true, true };
-         }
-      }
-   };
-
    class Set
    {
    public:
@@ -5402,260 +5666,6 @@ None
       {
          const bool setContainsElement = s.find(element) != s.end();
          return setContainsElement;
-      }
-   };
-
-   class Tuple
-   {
-   public:
-      template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call1ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
-      {
-         if (argsIndex == 0ull)
-         {
-            (classPtr->*std::forward<MemberFunction>(memberFunction))(
-               I + 1ull,
-               std::get<I>(args));
-         }
-         Call1ArgMemberFunction<ClassType, MemberFunction, I + 1ull, ArgTypes...>(
-            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 1ull, args);
-      }
-
-      template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call2ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
-      {
-         if (argsIndex == 0ull)
-         {
-            (classPtr->*std::forward<MemberFunction>(memberFunction))(
-               I / 2ull + 1ull,
-               std::get<I>(args),
-               std::get<I + 1ull>(args));
-         }
-         Call2ArgMemberFunction<ClassType, MemberFunction, I + 2ull, ArgTypes...>(
-            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 2, args);
-      }
-
-      template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call3ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
-      {
-         if (argsIndex == 0ull)
-         {
-            (classPtr->*std::forward<MemberFunction>(memberFunction))(
-               I / 3ull + 1ull,
-               std::get<I>(args),
-               std::get<I + 1ull>(args),
-               std::get<I + 2ull>(args));
-         }
-         Call3ArgMemberFunction<ClassType, MemberFunction, I + 3ull, ArgTypes...>(
-            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 3ull, args);
-      }
-
-      template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call4ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
-      {
-         if (argsIndex == 0ull)
-         {
-            (classPtr->*std::forward<MemberFunction>(memberFunction))(
-               I / 4ull + 1ull,
-               std::get<I>(args),
-               std::get<I + 1ull>(args),
-               std::get<I + 2ull>(args),
-               std::get<I + 3ull>(args));
-         }
-         Call4ArgMemberFunction<ClassType, MemberFunction, I + 4ull, ArgTypes...>(
-            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 4ull, args);
-      }
-
-      template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call5ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
-      {
-         if (argsIndex == 0ull)
-         {
-            (classPtr->*std::forward<MemberFunction>(memberFunction))(
-               I / 5ull + 1ull,
-               std::get<I>(args),
-               std::get<I + 1ull>(args),
-               std::get<I + 2ull>(args),
-               std::get<I + 3ull>(args),
-               std::get<I + 4ull>(args));
-         }
-         Call5ArgMemberFunction<ClassType, MemberFunction, I + 5ull, ArgTypes...>(
-            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 5ull, args);
-      }
-
-      template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call6ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
-      {
-         if (argsIndex == 0ull)
-         {
-            (classPtr->*std::forward<MemberFunction>(memberFunction))(
-               I / 6ull + 1ull,
-               std::get<I>(args),
-               std::get<I + 1ull>(args),
-               std::get<I + 2ull>(args),
-               std::get<I + 3ull>(args),
-               std::get<I + 4ull>(args),
-               std::get<I + 5ull>(args));
-         }
-         Call6ArgMemberFunction<ClassType, MemberFunction, I + 6ull, ArgTypes...>(
-            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 6ull, args);
-      }
-
-      template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call7ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
-      {
-         if (argsIndex == 0ull)
-         {
-            (classPtr->*std::forward<MemberFunction>(memberFunction))(
-               I / 7ull + 1ull,
-               std::get<I>(args),
-               std::get<I + 1ull>(args),
-               std::get<I + 2ull>(args),
-               std::get<I + 3ull>(args),
-               std::get<I + 4ull>(args),
-               std::get<I + 5ull>(args),
-               std::get<I + 6ull>(args));
-         }
-         Call7ArgMemberFunction<ClassType, MemberFunction, I + 7ull, ArgTypes...>(
-            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 7ull, args);
-      }
-
-      template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call8ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
-      {
-         if (argsIndex == 0ull)
-         {
-            (classPtr->*std::forward<MemberFunction>(memberFunction))(
-               I / 8ull + 1ull,
-               std::get<I>(args),
-               std::get<I + 1ull>(args),
-               std::get<I + 2ull>(args),
-               std::get<I + 3ull>(args),
-               std::get<I + 4ull>(args),
-               std::get<I + 5ull>(args),
-               std::get<I + 6ull>(args),
-               std::get<I + 7ull>(args));
-         }
-         Call8ArgMemberFunction<ClassType, MemberFunction, I + 8ull, ArgTypes...>(
-            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 8ull, args);
-      }
-
-      template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call9ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
-      {
-         if (argsIndex == 0ull)
-         {
-            (classPtr->*std::forward<MemberFunction>(memberFunction))(
-               I / 9ull + 1ull,
-               std::get<I>(args),
-               std::get<I + 1ull>(args),
-               std::get<I + 2ull>(args),
-               std::get<I + 3ull>(args),
-               std::get<I + 4ull>(args),
-               std::get<I + 5ull>(args),
-               std::get<I + 6ull>(args),
-               std::get<I + 7ull>(args),
-               std::get<I + 8ull>(args));
-         }
-         Call9ArgMemberFunction<ClassType, MemberFunction, I + 9ull, ArgTypes...>(
-            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 9ull, args);
-      }
-
-      template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call10ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
-      {
-         if (argsIndex == 0ull)
-         {
-            (classPtr->*std::forward<MemberFunction>(memberFunction))(
-               I / 10ull + 1ull,
-               std::get<I>(args),
-               std::get<I + 1ull>(args),
-               std::get<I + 2ull>(args),
-               std::get<I + 3ull>(args),
-               std::get<I + 4ull>(args),
-               std::get<I + 5ull>(args),
-               std::get<I + 6ull>(args),
-               std::get<I + 7ull>(args),
-               std::get<I + 8ull>(args),
-               std::get<I + 9ull>(args));
-         }
-         Call10ArgMemberFunction<ClassType, MemberFunction, I + 10ull, ArgTypes...>(
-            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 10ull, args);
-      }
-
-      template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
-      static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
-         Call1ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
-
-      template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
-      static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
-         Call2ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
-
-      template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
-      static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
-         Call3ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
-
-      template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
-      static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
-         Call4ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
-
-      template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
-      static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
-         Call5ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
-
-      template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
-      static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
-         Call6ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
-
-      template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
-      static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
-         Call7ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
-
-      template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
-      static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
-         Call8ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
-
-      template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
-      static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
-         Call9ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
-
-      template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
-      static typename std::enable_if<I == sizeof...(ArgTypes), void>::type
-         Call10ArgMemberFunction(ClassType*, MemberFunction&&, unsigned long long, const std::tuple<ArgTypes...>&) {}
-   };
-
-   template<typename ExpectedAndActualType>
-   struct Equalizer
-   {
-      static void AssertEqual(
-         const ExpectedAndActualType& expected, const ExpectedAndActualType& actual)
-      {
-         if (!(expected == actual))
-         {
-            throw ZenUnit::EqualizerException();
-         }
-      }
-   };
-
-   template<typename ExpectedType, typename ActualType>
-   struct TwoTypeEqualizer
-   {
-      static void AssertEqual(const ExpectedType& expected, const ActualType& actual)
-      {
-         if (!(expected == actual))
-         {
-            throw ZenUnit::EqualizerException();
-         }
       }
    };
 
@@ -5985,7 +5995,7 @@ None
       const long long adjustedInclusiveLowerBound = inclusiveLowerBound < 0 ? 0 : inclusiveLowerBound;
       const unsigned long long adjustedInclusiveUpperBound =
          inclusiveLowerBound < 0 ? 2 * inclusiveUpperBound + 1 : inclusiveUpperBound;
-      const std::uniform_int_distribution<unsigned long long>
+      std::uniform_int_distribution<unsigned long long>
          distribution(adjustedInclusiveLowerBound, adjustedInclusiveUpperBound);
       const unsigned long long randomValueUnsignedLongLong = distribution(defaultRandomEngine);
       const T randomValueT = static_cast<T>(randomValueUnsignedLongLong);
@@ -6003,7 +6013,7 @@ None
    inline float Random<float>()
    {
       static std::default_random_engine defaultRandomEngine(static_cast<unsigned>(time(nullptr)));
-      const std::uniform_real_distribution<float> uniformFloatDistribution(-100.0f, 100.0f);
+      std::uniform_real_distribution<float> uniformFloatDistribution(-100.0f, 100.0f);
       const float randomFloat = uniformFloatDistribution(defaultRandomEngine);
       return randomFloat;
    }
@@ -6012,7 +6022,7 @@ None
    inline double Random<double>()
    {
       static std::default_random_engine defaultRandomEngine(static_cast<unsigned>(time(nullptr)));
-      const std::uniform_real_distribution<double> uniformDoubleDistribution(-100.0, 100.0);
+      std::uniform_real_distribution<double> uniformDoubleDistribution(-100.0, 100.0);
       const double randomDouble = uniformDoubleDistribution(defaultRandomEngine);
       return randomDouble;
    }
