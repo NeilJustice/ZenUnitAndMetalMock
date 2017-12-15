@@ -1,5 +1,4 @@
 #pragma once
-#include "ZenUnit/Macros/ARE_EQUAL.h"
 #include "ZenUnit/ZenMock/Exceptions/FunctionAlreadyExpectedException.h"
 #include "ZenUnit/ZenMock/Exceptions/UnexpectedCallException.h"
 #include "ZenUnit/ZenMock/Exceptions/UnsupportedAssertCalledZeroTimesException.h"

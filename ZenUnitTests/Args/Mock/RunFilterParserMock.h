@@ -1,5 +1,4 @@
 #pragma once
-#include "ZenUnit/Args/RunFilterParser.h"
 
 struct RunFilterParserMock : public Zen::Mock<RunFilterParser>
 {

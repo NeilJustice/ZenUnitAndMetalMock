@@ -1,5 +1,4 @@
 #pragma once
-#include "ZenUnit/Macros/VECTORS_EQUAL.h"
 #include "ZenUnit/ZenMock/8/EightArgumentCall.h"
 #include "ZenUnit/ZenMock/8/EightArgumentCallRef.h"
 #include "ZenUnit/ZenMock/Exceptions/UnexpectedCallException.h"
@@ -28,7 +27,7 @@ namespace ZenMock
    private:
       std::vector<EightArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>> callHistory;
    public:
-      explicit EightArgumentMocker(const std::string& zenMockedFunctionSignature) noexcept
+      explicit EightArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
       }

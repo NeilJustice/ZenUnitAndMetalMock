@@ -1,5 +1,4 @@
 #pragma once
-#include "ZenUnit/Macros/VECTORS_EQUAL.h"
 #include "ZenUnit/ZenMock/2/TwoArgumentCall.h"
 #include "ZenUnit/ZenMock/2/TwoArgumentCallRef.h"
 #include "ZenUnit/ZenMock/Exceptions/UnexpectedCallException.h"

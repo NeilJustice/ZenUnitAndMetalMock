@@ -367,9 +367,8 @@ namespace ZenUnit
       ConsoleMock consoleMock;
       TestFailureNumbererMock testFailureNumbererMock;
       _testResult.testOutcome = TestOutcome::Unset;
-      THROWS(_testResult.PrintIfFailure(&consoleMock, &testFailureNumbererMock), logic_error,
-         R"(assert_true(testOutcome == TestOutcome::SuccessButPastDeadline) failed in PrintIfFailure()
-File.cpp(1))");
+      THROWS(_testResult.PrintIfFailure(&consoleMock, &testFailureNumbererMock),
+         invalid_argument, "Invalid TestOutcome::Unset");
    }
 
    TEST3X3(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseIndexPlus1IfTestCaseIndexNotMaxValue,

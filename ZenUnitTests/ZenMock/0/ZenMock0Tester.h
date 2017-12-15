@@ -59,7 +59,7 @@ namespace ZenMock
       {
       }
 
-      void ExpectAndThrow_CalledTwice_Throws() noexcept
+      void ExpectAndThrow_CalledTwice_Throws()
       {
          auto test = [](auto& zenMockObject, const string& expectedFunctionSignature)
          {
@@ -78,7 +78,7 @@ namespace ZenMock
          test(staticNameClashMock, staticNameClashFunctionSignature);
       }
 
-      void FunctionNotCalled_AssertCalledNTimesWithN0_Throws() noexcept
+      void FunctionNotCalled_AssertCalledNTimesWithN0_Throws()
       {
          auto test = [](auto& zenMockObject, const string& expectedFunctionSignature)
          {
@@ -96,7 +96,7 @@ namespace ZenMock
          test(staticNameClashMock, staticNameClashFunctionSignature);
       }
 
-      void FunctionNotCalled_AssertCalledOnceThrows_AssertCalledNTimesThrows() noexcept
+      void FunctionNotCalled_AssertCalledOnceThrows_AssertCalledNTimesThrows()
       {
          auto test = [](auto& zenMockObject, const string& expectedFunctionSignature)
          {

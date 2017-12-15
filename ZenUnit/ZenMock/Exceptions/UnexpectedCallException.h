@@ -1,10 +1,8 @@
 #pragma once
-#include "ZenUnit/ToStringer/ToStringer.h"
-#include "ZenUnit/ZenMock/Exceptions/ZenMockException.h"
 
 namespace ZenMock
 {
-   class UnexpectedCallException : public ZenMockException
+   class UnexpectedCallException : public ZenUnit::ZenMockException
    {
    private:
       const std::string _what;
@@ -26,10 +24,12 @@ namespace ZenMock
          return what;
       }
 
-      const char* what() const noexcept override
+      const char* what() const override
       {
          return _what.c_str();
       }
+
+      virtual ~UnexpectedCallException() = default;
    private:
       template<typename ArgType, typename... SubsequentArgTypes>
       static void AppendToStringedArgs(
@@ -43,7 +43,7 @@ namespace ZenMock
          AppendToStringedArgs(outWhatBuilder, argIndex, std::forward<SubsequentArgTypes>(args)...);
       }
 
-      static void AppendToStringedArgs(std::ostringstream&, size_t) noexcept
+      static void AppendToStringedArgs(std::ostringstream&, size_t)
       {
       }
    };

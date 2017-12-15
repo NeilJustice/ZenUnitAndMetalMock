@@ -1,6 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Console/ConsoleColorer.h"
-#include "ZenUnit/Console/WindowsColor.h"
 #ifdef __linux__
 #include <unistd.h>
 #elif _WIN32

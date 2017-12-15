@@ -1,6 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/TestRunners/MultiTestClassRunner.h"
-#include "ZenUnit/TestRunners/NoOpTestClassRunner.h"
 #include "ZenUnitTests/Random/RandomValues.h"
 #include "ZenUnitTests/TestRunners/Mock/TestClassRunnerMock.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/ExtraArgAnyerMock.h"
@@ -8,6 +6,7 @@
 #include "ZenUnitTests/Utils/Iteration/Mock/TransformerMock.h"
 #include "ZenUnitTests/Utils/Mock/SorterMock.h"
 #include "ZenUnitTests/Utils/Time/Mock/WatchMock.h"
+#include "ZenUnitTests/Testing/RandomRunFilter.h"
 
 namespace ZenUnit
 {
@@ -109,7 +108,7 @@ namespace ZenUnit
    TEST(ApplyRunFiltersIfAny_RunFiltersNotEmpty_ResetsWithNoOpTestClassesThoseTestClassesThatMatchRunFilters)
    {
       _extraArgMemberForEacherMock->ExtraArgMemberForEachMock.Expect();
-      const vector<RunFilter> runFilters = { ZenUnit::Random<RunFilter>() };
+      const vector<RunFilter> runFilters = { RandomRunFilter() };
       //
       _multiTestClassRunner.ApplyRunFiltersIfAny(runFilters);
       //
@@ -124,7 +123,7 @@ namespace ZenUnit
    {
       _extraArgAnyerMock->ExtraArgAnyMock.ExpectAndReturn(true);
       unique_ptr<TestClassRunner> testClassRunner{};
-      const vector<RunFilter> runFilters = { ZenUnit::Random<RunFilter>() };
+      const vector<RunFilter> runFilters = { RandomRunFilter() };
       //
       _multiTestClassRunner.ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter(testClassRunner, runFilters);
       //
@@ -137,7 +136,7 @@ namespace ZenUnit
    {
       _extraArgAnyerMock->ExtraArgAnyMock.ExpectAndReturn(false);
       unique_ptr<TestClassRunner> testClassRunner{};
-      const vector<RunFilter> runFilters = { ZenUnit::Random<RunFilter>() };
+      const vector<RunFilter> runFilters = { RandomRunFilter() };
       //
       _multiTestClassRunner.ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter(testClassRunner, runFilters);
       //
@@ -216,10 +215,10 @@ namespace ZenUnit
       VECTORS_EQUAL(transformReturnValue, testClassResults);
    }
 
-   TEST2X2(RunTestClasses_RandomMode_SetsRandomSeedIfNotSetByUser_RunsTestClassesRandomly_ReturnsTestClassResults,
-      bool randomseedsetbyuser, bool expectRandomSeedSet,
-      false, false,
-      true, true)
+   TEST1X1(RunTestClasses_RandomMode_SetsRandomSeedIfNotSetByUser_RunsTestClassesRandomly_ReturnsTestClassResults,
+      bool randomseedsetbyuser,
+      false,
+      true)
    {
       const size_t testClassRunnersSize = ZenUnit::Random<size_t>(0, 2);
       _multiTestClassRunner._testClassRunners.resize(testClassRunnersSize);

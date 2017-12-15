@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/TestRunners/MachineNameGetter.h"
 #ifdef __linux__
 #include <unistd.h>
 #endif

@@ -10,14 +10,14 @@ namespace ZenMock
       const Arg2Type& secondArgument;
       const Arg3Type& thirdArgument;
 
-      ThreeArgumentCallRef(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument) noexcept
+      ThreeArgumentCallRef(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument)
          : firstArgument(firstArgument)
          , secondArgument(secondArgument)
          , thirdArgument(thirdArgument)
       {
       }
 
-      explicit ThreeArgumentCallRef(const ThreeArgumentCall<Arg1Type, Arg2Type, Arg3Type>& threeArgumentCall) noexcept
+      explicit ThreeArgumentCallRef(const ThreeArgumentCall<Arg1Type, Arg2Type, Arg3Type>& threeArgumentCall)
          : firstArgument(threeArgumentCall.firstArgument)
          , secondArgument(threeArgumentCall.secondArgument)
          , thirdArgument(threeArgumentCall.thirdArgument)

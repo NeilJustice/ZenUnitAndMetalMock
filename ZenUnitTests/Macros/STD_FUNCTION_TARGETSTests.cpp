@@ -10,9 +10,9 @@ namespace ZenUnit
    AFACT(FunctionABC_CodeCoverage)
    EVIDENCE
 
-   static void FunctionA() noexcept {}
-   static void FunctionB(int) noexcept {}
-   static void FunctionC() noexcept
+   static void FunctionA() {}
+   static void FunctionB(int) {}
+   static void FunctionC()
    {
       // Side effect to ensure FunctionA and FunctionC have different addresses.
       // Otherwise the Release MSVC linker folds together blank FunctionA and blank FunctionC

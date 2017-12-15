@@ -8,13 +8,13 @@ public:
    static bool didCallTestNXNPmfToTest;
    static unique_ptr<Test> TestNXNPmfToTestReturnValue;
 
-   static const unique_ptr<Test>* TestNXNPmfToTest(const ZenUnit::PmfToken*) noexcept
+   static const unique_ptr<Test>* TestNXNPmfToTest(const ZenUnit::PmfToken*)
    {
       didCallTestNXNPmfToTest = true;
       return &TestNXNPmfToTestReturnValue;
    }
 
-   void TestFunction(int) noexcept {}
+   void TestFunction(int) {}
    virtual ~TestingTestClass_SpecSectionTestNXNTests() = default;
 };
 
@@ -35,7 +35,7 @@ namespace ZenUnit
    class SpecSectionTestNXNSelfMocked : public Zen::Mock<SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests>>
    {
    public:
-      SpecSectionTestNXNSelfMocked() noexcept
+      SpecSectionTestNXNSelfMocked()
          : Zen::Mock<SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests>>("", "", nullptr)
       {
       }

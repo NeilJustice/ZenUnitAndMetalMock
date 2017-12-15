@@ -1,32 +1,35 @@
 #include "pch.h"
 
-TESTS(AnomalyOrExceptionTests)
-AFACT(AnomalyConstructor_SetsAnomaly)
-AFACT(ExceptionTypeNameAndExceptionWhatConstructor_SetsExceptionTypeNameAndExceptionWhat)
-EVIDENCE
-
-TEST(AnomalyConstructor_SetsAnomaly)
+namespace ZenUnit
 {
-   Anomaly anomaly;
-   anomaly.why = "NonDefault";
-   //
-   const AnomalyOrException anomalyOrException(anomaly);
-   //
-   ARE_EQUAL(anomaly, *anomalyOrException.anomaly);
-   IS_NULL(anomalyOrException.exceptionTypeName);
-   IS_NULL(anomalyOrException.exceptionWhat);
-}
+   TESTS(AnomalyOrExceptionTests)
+   AFACT(AnomalyConstructor_SetsAnomaly)
+   AFACT(ExceptionTypeNameAndExceptionWhatConstructor_SetsExceptionTypeNameAndExceptionWhat)
+   EVIDENCE
 
-TEST(ExceptionTypeNameAndExceptionWhatConstructor_SetsExceptionTypeNameAndExceptionWhat)
-{
-   const string ExceptionTypeName;
-   const string ExceptionWhat = Random<string>();
-   //
-   AnomalyOrException anomalyOrException(&ExceptionTypeName, ExceptionWhat.c_str());
-   //
-   IS_NULL(anomalyOrException.anomaly);
-   ARE_SAME(ExceptionTypeName, *anomalyOrException.exceptionTypeName);
-   ARE_EQUAL(ExceptionWhat, *anomalyOrException.exceptionWhat);
-}
+   TEST(AnomalyConstructor_SetsAnomaly)
+   {
+      Anomaly anomaly;
+      anomaly.why = "NonDefault";
+      //
+      const AnomalyOrException anomalyOrException(anomaly);
+      //
+      ARE_EQUAL(anomaly, *anomalyOrException.anomaly);
+      IS_NULL(anomalyOrException.exceptionTypeName);
+      IS_NULL(anomalyOrException.exceptionWhat);
+   }
 
-}; RUNTESTS(AnomalyOrExceptionTests)
+   TEST(ExceptionTypeNameAndExceptionWhatConstructor_SetsExceptionTypeNameAndExceptionWhat)
+   {
+      const string ExceptionTypeName;
+      const string ExceptionWhat = Random<string>();
+      //
+      AnomalyOrException anomalyOrException(&ExceptionTypeName, ExceptionWhat.c_str());
+      //
+      IS_NULL(anomalyOrException.anomaly);
+      ARE_SAME(ExceptionTypeName, *anomalyOrException.exceptionTypeName);
+      ARE_EQUAL(ExceptionWhat, *anomalyOrException.exceptionWhat);
+   }
+
+   }; RUNTESTS(AnomalyOrExceptionTests)
+}

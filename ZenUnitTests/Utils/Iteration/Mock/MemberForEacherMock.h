@@ -1,5 +1,4 @@
 #pragma once
-#include "ZenUnit/Utils/Iteration/MemberForEacher.h"
 
 template<typename CollectionType, typename ClassType, typename FunctionType>
 struct MemberForEacherMock : public Zen::Mock<MemberForEacher<CollectionType, ClassType, FunctionType>>

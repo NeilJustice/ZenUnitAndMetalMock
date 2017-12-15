@@ -8,7 +8,7 @@
 #include "Windows.h"
 #endif
 
-#include "ZenUnit/Utils/IgnoredMSVCWallWarnings.h"
+#include "ZenUnit/IgnoredMSVCWallWarnings.h"
 #include "ZenUnit/ZenUnit.h"
 #include "ZenUnit/ZenMock.h"
 

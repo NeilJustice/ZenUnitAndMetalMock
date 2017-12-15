@@ -3,11 +3,11 @@
 struct UserTypeNonPrintable
 {
    int x = 0;
-   UserTypeNonPrintable() noexcept;
-   explicit UserTypeNonPrintable(int x) noexcept;
+   UserTypeNonPrintable();
+   explicit UserTypeNonPrintable(int x);
 
-   friend bool operator<(const UserTypeNonPrintable& left, const UserTypeNonPrintable& right) noexcept;
-   friend bool operator==(const UserTypeNonPrintable& left, const UserTypeNonPrintable& right) noexcept;
+   friend bool operator<(const UserTypeNonPrintable& left, const UserTypeNonPrintable& right);
+   friend bool operator==(const UserTypeNonPrintable& left, const UserTypeNonPrintable& right);
 };
 
 namespace ZenUnit

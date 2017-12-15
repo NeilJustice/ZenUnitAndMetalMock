@@ -6,7 +6,7 @@ struct ToStringerTestStruct
 {
    int value;
 
-   ToStringerTestStruct(int value) noexcept
+   ToStringerTestStruct(int value)
       : value(value)
       , argValue(0)
       , numberOfCalls(0)
@@ -16,7 +16,7 @@ struct ToStringerTestStruct
    mutable int argValue;
    mutable size_t numberOfCalls;
 
-   friend ostream& operator<<(ostream& os, const ToStringerTestStruct& sts) noexcept
+   friend ostream& operator<<(ostream& os, const ToStringerTestStruct& sts)
    {
       ++sts.numberOfCalls;
       sts.argValue = sts.value;
@@ -174,7 +174,7 @@ namespace ZenUnit
    struct CustomDeleter
    {
       template<typename T>
-      void operator()(T* ptr) noexcept
+      void operator()(T* ptr)
       {
          delete ptr;
       }
@@ -194,7 +194,7 @@ namespace ZenUnit
       REGEX_MATCHES(MemoryAddressPattern(), constNonNullUniquePtrString);
    }
 
-   static const char* MemoryAddressPattern() noexcept
+   static const char* MemoryAddressPattern()
    {
    #ifdef __linux__
       return R"(0x\w+)";

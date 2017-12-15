@@ -18,7 +18,7 @@ namespace ZenUnit
 
       friend bool operator==(
          const IntializerConstructable& lhs,
-         const IntializerConstructable& rhs) noexcept
+         const IntializerConstructable& rhs)
       {
          return lhs.value == rhs.value;
       }

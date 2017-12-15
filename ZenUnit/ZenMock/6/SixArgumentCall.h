@@ -1,6 +1,4 @@
 #pragma once
-#include "ZenUnit/Macros/ARE_EQUAL.h"
-#include "ZenUnit/ToStringer/ToStringer.h"
 
 namespace ZenMock
 {
@@ -14,7 +12,7 @@ namespace ZenMock
       typename std::decay<Arg5Type>::type fifthArgument;
       typename std::decay<Arg6Type>::type sixthArgument;
 
-      SixArgumentCall() noexcept
+      SixArgumentCall()
          : firstArgument()
          , secondArgument()
          , thirdArgument()
@@ -30,7 +28,7 @@ namespace ZenMock
          const Arg3Type& thirdArgument,
          const Arg4Type& fourthArgument,
          const Arg5Type& fifthArgument,
-         const Arg6Type& sixthArgument) noexcept
+         const Arg6Type& sixthArgument)
          : firstArgument(firstArgument)
          , secondArgument(secondArgument)
          , thirdArgument(thirdArgument)

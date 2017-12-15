@@ -1,7 +1,7 @@
 #ifndef ZENUNITTEST_PCH
 #define ZENUNITTEST_PCH
 
-#include "ZenUnit/Utils/IgnoredMSVCWallWarnings.h"
+#include "ZenUnit/IgnoredMSVCWallWarnings.h"
 #include <array>
 #include <atomic>
 #include <chrono>

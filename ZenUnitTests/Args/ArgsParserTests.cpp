@@ -1,8 +1,7 @@
 #include "pch.h"
-#include "ZenUnit/Args/ArgsParser.h"
-#include "ZenUnit/Utils/Vector.h"
 #include "ZenUnitTests/Args/Mock/RunFilterParserMock.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
+#include "ZenUnitTests/Testing/RandomRunFilter.h"
 
 namespace ZenUnit
 {
@@ -189,7 +188,7 @@ None
 
    TEST(Parse_Run_ReturnsExpectedZenUnitArgs)
    {
-      const vector<RunFilter> runFilters = { ZenUnit::Random<RunFilter>() };
+      const vector<RunFilter> runFilters = { RandomRunFilter() };
       _runFilterParserMock->ParseMock.ExpectAndReturn(runFilters);
 
       const string runArgument = ZenUnit::Random<string>();

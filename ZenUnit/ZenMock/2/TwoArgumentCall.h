@@ -1,5 +1,4 @@
 #pragma once
-#include "ZenUnit/Macros/ARE_EQUAL.h"
 
 namespace ZenMock
 {
@@ -9,13 +8,13 @@ namespace ZenMock
       typename std::decay<Arg1Type>::type firstArgument;
       typename std::decay<Arg2Type>::type secondArgument;
 
-      TwoArgumentCall() noexcept
+      TwoArgumentCall()
          : firstArgument()
          , secondArgument()
       {
       }
 
-      TwoArgumentCall(const Arg1Type& firstArgument, const Arg2Type& secondArgument) noexcept
+      TwoArgumentCall(const Arg1Type& firstArgument, const Arg2Type& secondArgument)
          : firstArgument(firstArgument)
          , secondArgument(secondArgument)
       {

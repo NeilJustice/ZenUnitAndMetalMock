@@ -1,5 +1,4 @@
 #pragma once
-#include "ZenUnit/Results/TestClassResult.h"
 
 namespace ZenUnit
 {

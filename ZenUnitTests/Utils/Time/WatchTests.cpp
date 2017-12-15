@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Utils/Time/Watch.h"
 
 namespace ZenUnit
 {
@@ -61,7 +60,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedReturnValue, timeZoneDateTimeNow);
    }
 
-   static tm Tm(int tmWeekDay, int tmMonth, int tmMonthDay, int tmYear, int tmHour, int tmMin, int tmSec) noexcept
+   static tm Tm(int tmWeekDay, int tmMonth, int tmMonthDay, int tmYear, int tmHour, int tmMin, int tmSec)
    {
       tm tmNow{};
       tmNow.tm_sec = tmSec;

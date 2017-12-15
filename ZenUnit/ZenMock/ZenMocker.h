@@ -1,7 +1,4 @@
 #pragma once
-#include "ZenUnit/Args/ZenUnitArgs.h"
-#include "ZenUnit/Console/Console.h"
-#include "ZenUnit/TestRunners/TestRunner.h"
 #include "ZenUnit/ZenMock/Exceptions/ExceptionThrower.h"
 #include "ZenUnit/ZenMock/Exceptions/FunctionAlreadyExpectedException.h"
 #include "ZenUnit/ZenMock/Exceptions/UnexpectedCallException.h"
@@ -67,7 +64,7 @@ namespace ZenMock
          }
       }
 
-      void ZenMockSetAsserted() noexcept
+      void ZenMockSetAsserted()
       {
          _asserted = true;
       }

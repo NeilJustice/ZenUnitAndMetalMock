@@ -1,5 +1,4 @@
 #pragma once
-#include "ZenUnit/Utils/Iteration/ExtraArgAnyer.h"
 
 template<typename CollectionType, typename FunctionType, typename ExtraArgType>
 struct ExtraArgAnyerMock : public Zen::Mock<ExtraArgAnyer<CollectionType, FunctionType, ExtraArgType>>

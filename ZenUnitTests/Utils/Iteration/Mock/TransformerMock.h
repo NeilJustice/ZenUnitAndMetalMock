@@ -1,5 +1,4 @@
 #pragma once
-#include "ZenUnit/Utils/Iteration/Transformer.h"
 
 template<typename T, typename TransformedT>
 struct TransformerMock : public Zen::Mock<Transformer<T, TransformedT>>

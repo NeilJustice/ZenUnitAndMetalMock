@@ -1,6 +1,4 @@
 #pragma once
-#include "ZenUnit/Macros/ARE_EQUAL.h"
-#include "ZenUnit/ToStringer/ToStringer.h"
 
 namespace ZenMock
 {
@@ -9,12 +7,12 @@ namespace ZenMock
    {
       typename std::decay<Arg1Type>::type argument;
 
-      OneArgumentCall() noexcept
+      OneArgumentCall()
          : argument()
       {
       }
 
-      OneArgumentCall(const Arg1Type& argument) noexcept
+      OneArgumentCall(const Arg1Type& argument)
          : argument(argument)
       {
       }

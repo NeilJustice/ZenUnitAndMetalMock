@@ -52,7 +52,7 @@ File.cpp(1))");
       NOTHROWS([]{}());
    }
 
-   void NoThrow() noexcept {}
+   void NoThrow() {}
 
    TEST(FunctionCallDoesNotThrow_DoesNotThrow)
    {

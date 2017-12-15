@@ -1,5 +1,4 @@
 #pragma once
-#include "ZenUnit/Results/TestPhaseSuffixer.h"
 
 class TestPhaseSuffixerMock : public Zen::Mock<TestPhaseSuffixer>
 {

@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "UnsupportedAssertCalledZeroTimesException.h"
-#include "ZenUnit/Utils/StringUtil.h"
 
 namespace ZenMock
 {
@@ -21,7 +20,7 @@ namespace ZenMock
       return what;
    }
 
-   INLINE const char* UnsupportedAssertCalledZeroTimesException::what() const noexcept
+   INLINE const char* UnsupportedAssertCalledZeroTimesException::what() const
    {
       return _what.c_str();
    }

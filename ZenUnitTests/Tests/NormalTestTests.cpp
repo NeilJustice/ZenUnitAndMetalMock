@@ -8,7 +8,7 @@ namespace ZenUnit
    TESTS(NormalTestTests)
    AFACT(NumberOfTestCases_Returns1)
    AFACT(NonMinimalWritePostTestNameMessage_WritesSpaceArrowSpace)
-   FACTS(NonMinimalWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue)
+   AFACT(NonMinimalWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue)
    AFACT(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)
    AFACT(NewTestClass_NewsTestClass)
    AFACT(Startup_CallsStartupOnTestClass)
@@ -43,10 +43,7 @@ namespace ZenUnit
       ZEN(consoleMock.NonMinimalWriteMock.AssertCalledOnceWith(" -> ", printMode));
    }
 
-   TEST1X1(NonMinimalWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue,
-      bool doWriteMessage,
-      false,
-      true)
+   TEST(NonMinimalWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue)
    {
       ConsoleMock consoleMock;
       TestResultMock testResultMock;

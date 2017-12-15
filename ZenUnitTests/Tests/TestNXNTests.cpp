@@ -97,7 +97,7 @@ namespace ZenUnit
          ZENMOCK_NONVOID0(TestResult, MockableCallBaseRunTestCase)
          ZENMOCK_VOID3_CONST(NonMinimalPrintTestCaseNumberArgsThenArrow, unsigned short, const vector<string>&, PrintMode)
          ZENMOCK_VOID2_CONST(NonMinimalWriteLineOKIfSuccess, const TestResult&, PrintMode)
-         Test1X1SelfMocked() noexcept
+         Test1X1SelfMocked()
             : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>("", "", "", 0, 0) {}
       } test1X1SelfMocked;
 
@@ -178,7 +178,7 @@ namespace ZenUnit
       struct TestNXN_RunNXNTestCaseMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int>>
       {
          ZENMOCK_VOID2(RunNXNTestCase, TestingTestClass*, size_t)
-         TestNXN_RunNXNTestCaseMocked() noexcept
+         TestNXN_RunNXNTestCaseMocked()
             : Zen::Mock<TestNXN<TestingTestClass, 1, int>>("", "", "", 0) {}
       } testNXN_RunNXNTestCaseMocked;
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ZenUnit/ZenUnit.h"
+
 #include "ZenMock/0/ZENMOCK_NONVOID0.h"
 #include "ZenMock/0/ZENMOCK_VOID0.h"
 #include "ZenMock/0/ZeroArgumentMocker.h"
@@ -74,11 +76,9 @@
 #include "ZenMock/Exceptions/UnexpectedCallException.h"
 #include "ZenMock/Exceptions/UnsupportedAssertCalledZeroTimesException.h"
 #include "ZenMock/Exceptions/UnsupportedAssertCalledZeroTimesException.cpp"
-#include "ZenMock/Exceptions/ZenMockException.h"
 
 #include "ZenMock/Mock.h"
 #include "ZenMock/Signature.h"
-#include "ZenMock/Signature.cpp"
 #include "ZenMock/ValueReturner.h"
 #include "ZenMock/ZEN.h"
 #include "ZenMock/ZENAssertionToken.h"

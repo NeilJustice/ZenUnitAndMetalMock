@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Utils/Iteration/Transformer.h"
 
 namespace ZenUnit
 {
@@ -16,7 +15,7 @@ namespace ZenUnit
    using TransformerType = Transformer<T, TransformedT>;
    TransformerType _transformer;
 
-   static TransformedT PlusOne(const T& element) noexcept
+   static TransformedT PlusOne(const T& element)
    {
       return element + 1;
    }

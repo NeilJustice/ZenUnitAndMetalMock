@@ -4,23 +4,7 @@ include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(${CMAKE_SOURCE_DIR})
-folder_source_group(Anomaly)
-folder_source_group(Args)
-folder_source_group(Console)
-folder_source_group(Enums)
-folder_source_group(Equalizers)
-folder_source_group(Macros)
-folder_source_group(Registration)
-folder_source_group(Results)
-folder_source_group(TestRunners)
-folder_source_group(Tests)
-folder_source_group(ToStringer)
-folder_source_group_subfolder(ToStringer ZenUnitPrinter)
-folder_source_group_subfolder(ToStringer SFINAE)
-folder_source_group(Utils)
-folder_source_group_subfolder(Utils Concurrency)
-folder_source_group_subfolder(Utils Iteration)
-folder_source_group_subfolder(Utils Time)
+
 folder_source_group(ZenMock)
 folder_source_group_subfolder(ZenMock 0)
 folder_source_group_subfolder(ZenMock 1)
@@ -34,13 +18,12 @@ folder_source_group_subfolder(ZenMock 8)
 folder_source_group_subfolder(ZenMock 9)
 folder_source_group_subfolder(ZenMock 10)
 folder_source_group_subfolder(ZenMock Exceptions)
+
 file(GLOB TopLevelFiles *.h *.cpp)
 source_group("" FILES ${TopLevelFiles})
 file(GLOB_RECURSE Sources *.h *.cpp)
 
 add_library(ZenUnit ${Sources})
-
-EnablePrecompiledHeaders()
 
 install(DIRECTORY .
         CONFIGURATIONS Debug

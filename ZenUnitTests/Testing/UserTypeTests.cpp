@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "UserType.h"
+#include "ZenUnitTests/Testing/UserType.h"
 
 TESTS(UserTypeTests)
 AFACT(DefaultConstructor_SetsValueTo0)

@@ -52,7 +52,7 @@ Expected: nullptr
    struct NullDeleter
    {
       template<typename T>
-      void operator()(T*) noexcept
+      void operator()(T*)
       {
       }
    };

@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ZenUnit/Args/RunFilterParser.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/TransformerMock.h"
+#include "ZenUnitTests/Testing/RandomRunFilter.h"
 
 namespace ZenUnit
 {
@@ -30,7 +30,7 @@ namespace ZenUnit
 
    TEST(Parse_TransformsRunFilterStringsToRunFilters)
    {
-      const vector<RunFilter> runFilters = { ZenUnit::Random<RunFilter>() };
+      const vector<RunFilter> runFilters = { RandomRunFilter() };
       _transformerMock->TransformMock.ExpectAndReturn(runFilters);
       vector<string> runFilterStrings(ZenUnit::Random<size_t>(0, 2));
       //

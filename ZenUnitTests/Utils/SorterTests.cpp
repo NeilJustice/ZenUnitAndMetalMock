@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Utils/Sorter.h"
 #include "ZenUnitTests/Testing/CustomPolicyClasses.h"
 
 namespace ZenUnit
@@ -8,17 +7,17 @@ namespace ZenUnit
    {
       int x;
 
-      SortableStruct(int x) noexcept
+      SortableStruct(int x)
          : x(x)
       {
       }
 
-      friend bool operator<(const SortableStruct& left, const SortableStruct& right) noexcept
+      friend bool operator<(const SortableStruct& left, const SortableStruct& right)
       {
          return left.x < right.x;
       }
 
-      friend bool operator==(const SortableStruct& left, const SortableStruct& right) noexcept
+      friend bool operator==(const SortableStruct& left, const SortableStruct& right)
       {
          return left.x == right.x;
       }

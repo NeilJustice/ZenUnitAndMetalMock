@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "UserTypeNonPrintable.h"
+#include "ZenUnitTests/Testing/UserTypeNonPrintable.h"
 
 namespace ZenUnit
 {

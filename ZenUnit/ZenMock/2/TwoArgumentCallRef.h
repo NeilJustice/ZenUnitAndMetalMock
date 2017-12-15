@@ -9,13 +9,13 @@ namespace ZenMock
       const Arg1Type& firstArgument;
       const Arg2Type& secondArgument;
 
-      TwoArgumentCallRef(const Arg1Type& firstArgument, const Arg2Type& secondArgument) noexcept
+      TwoArgumentCallRef(const Arg1Type& firstArgument, const Arg2Type& secondArgument)
          : firstArgument(firstArgument)
          , secondArgument(secondArgument)
       {
       }
 
-      explicit TwoArgumentCallRef(const TwoArgumentCall<Arg1Type, Arg2Type>& twoArgumentCall) noexcept
+      explicit TwoArgumentCallRef(const TwoArgumentCall<Arg1Type, Arg2Type>& twoArgumentCall)
          : firstArgument(twoArgumentCall.firstArgument)
          , secondArgument(twoArgumentCall.secondArgument)
       {

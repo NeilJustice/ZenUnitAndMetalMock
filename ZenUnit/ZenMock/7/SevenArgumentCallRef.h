@@ -21,7 +21,7 @@ namespace ZenMock
          const Arg4Type& fourthArgument,
          const Arg5Type& fifthArgument,
          const Arg6Type& sixthArgument,
-         const Arg7Type& seventhArgument) noexcept
+         const Arg7Type& seventhArgument)
          : firstArgument(firstArgument)
          , secondArgument(secondArgument)
          , thirdArgument(thirdArgument)
@@ -32,7 +32,7 @@ namespace ZenMock
       {
       }
 
-      explicit SevenArgumentCallRef(const SevenArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& sevenArgumentCall) noexcept
+      explicit SevenArgumentCallRef(const SevenArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& sevenArgumentCall)
          : firstArgument(sevenArgumentCall.firstArgument)
          , secondArgument(sevenArgumentCall.secondArgument)
          , thirdArgument(sevenArgumentCall.thirdArgument)

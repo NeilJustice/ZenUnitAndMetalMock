@@ -1,5 +1,4 @@
 #pragma once
-#include "ZenUnit/TestRunners/MachineNameGetter.h"
 
 struct MachineNameGetterMock : public Zen::Mock<MachineNameGetter>
 {

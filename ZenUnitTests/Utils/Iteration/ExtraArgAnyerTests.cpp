@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Utils/Iteration/ExtraArgAnyer.h"
 
 namespace ZenUnit
 {
@@ -27,7 +26,7 @@ namespace ZenUnit
    TEST(ExtraArgAny_CollectionEmpty_ReturnsFalse)
    {
       const CollectionType<T> emptyCollection;
-      const auto PredicateThatThrowsIfCalled = [&](const T& element, const ExtraArgType& extraArg)
+      const auto PredicateThatThrowsIfCalled = [&](const T&, const ExtraArgType&)
       {
          return false;
       };

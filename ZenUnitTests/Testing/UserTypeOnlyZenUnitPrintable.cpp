@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "UserTypeOnlyZenUnitPrintable.h"
+#include "ZenUnitTests/Testing/UserTypeOnlyZenUnitPrintable.h"
 
 namespace ZenUnit
 {

@@ -7,6 +7,7 @@
 //#include "ZenUnitTests/Utils/Concurrency/Mock/FuturistMock.h"
 #include "ZenUnitTests/Utils/Concurrency/Mock/VoidFutureMock.h"
 #include "ZenUnitTests/Utils/Time/Mock/StopwatchMock.h"
+#include "ZenUnitTests/Testing/RandomRunFilter.h"
 
 namespace ZenUnit
 {
@@ -34,7 +35,7 @@ namespace ZenUnit
    class TestingTestClass
    {
    public:
-      static vector<unique_ptr<Test>> GetTests(const char*) noexcept
+      static vector<unique_ptr<Test>> GetTests(const char*)
       {
          return {};
       }
@@ -50,7 +51,7 @@ namespace ZenUnit
       TestRunResultMock* testRunResultMock;
       ConsoleMock* consoleMock;
       StopwatchMock* testRunStopwatchMock;
-      TestRunnerSelfMockedA() noexcept
+      TestRunnerSelfMockedA()
       {
          _argsParser.reset(argsParserMock = new ArgsParserMock);
          _preamblePrinter.reset(preamblePrinterMock = new PreamblePrinterMock);
@@ -71,7 +72,7 @@ namespace ZenUnit
       MultiTestClassRunnerMock* multiTestClassRunnerMock;
       TestRunResultMock* testRunResultMock;
       StopwatchMock* testRunStopwatchMock;
-      TestRunnerSelfMockedB() noexcept
+      TestRunnerSelfMockedB()
       {
          _preamblePrinter.reset(preamblePrinterMock = new PreamblePrinterMock);
          _multiTestClassRunner.reset(multiTestClassRunnerMock = new MultiTestClassRunnerMock);
@@ -120,7 +121,7 @@ namespace ZenUnit
       1, 2, 1, 1)
    {
       ZenUnitArgs parsedZenUnitArgs;
-      parsedZenUnitArgs.runFilters = { ZenUnit::Random<RunFilter>(), ZenUnit::Random<RunFilter>() };
+      parsedZenUnitArgs.runFilters = { RandomRunFilter(), RandomRunFilter() };
       parsedZenUnitArgs.wait = ZenUnit::Random<bool>();
       parsedZenUnitArgs.testruns = testrunsArgs;
       _testRunnerSelfMockedA.argsParserMock->ParseMock.ExpectAndReturn(parsedZenUnitArgs);

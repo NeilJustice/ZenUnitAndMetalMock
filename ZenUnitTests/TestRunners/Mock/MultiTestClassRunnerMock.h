@@ -1,5 +1,4 @@
 #pragma once
-#include "ZenUnit/TestRunners/MultiTestClassRunner.h"
 
 struct MultiTestClassRunnerMock : public Zen::Mock<MultiTestClassRunner>
 {

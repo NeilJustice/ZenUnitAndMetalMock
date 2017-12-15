@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/TestRunners/PreamblePrinter.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/TestRunners/Mock/MultiTestClassRunnerMock.h"
 #include "ZenUnitTests/Utils/Mock/MachineNameGetterMock.h"
@@ -18,7 +17,7 @@ namespace ZenUnit
    {
       const ConsoleMock* consoleMock;
       const WatchMock* watchMock;
-      PreamblePrinterSelfMocked() noexcept
+      PreamblePrinterSelfMocked()
       {
          _console.reset(consoleMock = new ConsoleMock);
          _watch.reset(watchMock = new WatchMock);

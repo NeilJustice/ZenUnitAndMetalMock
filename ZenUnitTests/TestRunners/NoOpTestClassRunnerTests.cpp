@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/TestRunners/NoOpTestClassRunner.h"
 
 TESTS(NoOpTestClassRunnerTests)
 AFACT(TestClassName_ReturnsNoOpTestClassRunner)

@@ -1,5 +1,4 @@
 #pragma once
-#include "ZenUnit/Console/ConsoleColorer.h"
 
 struct ConsoleColorerMock : public Zen::Mock<ZenUnit::ConsoleColorer>
 {

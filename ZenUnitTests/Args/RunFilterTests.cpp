@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/Args/RunFilter.h"
 
 TESTS(RunFilterTests)
 AFACT(DefaultConstructor_SetsTestCaseTo0)

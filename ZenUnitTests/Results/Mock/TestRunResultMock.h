@@ -1,5 +1,4 @@
 #pragma once
-#include "ZenUnit/Results/TestRunResult.h"
 
 struct TestRunResultMock : public Zen::Mock<TestRunResult>
 {

@@ -56,7 +56,7 @@ namespace ZenUnit
 
       const ConsoleMock* consoleMock;
 
-      SpecificTestClassRunnerSelfMocked() noexcept
+      SpecificTestClassRunnerSelfMocked()
          : Zen::Mock<ZenUnit::SpecificTestClassRunner<TestingTestClass>>("")
       {
          _console.reset(consoleMock = new ConsoleMock);
