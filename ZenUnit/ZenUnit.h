@@ -31,10 +31,9 @@
 #include <vector>
 
 #ifdef __linux__
-#include <unistd.h>
 #include <climits>
-//#include <strings.h>
 #include <cxxabi.h>
+#include <unistd.h>
 #endif
 
 #ifdef _WIN32
@@ -511,9 +510,9 @@ namespace ZenUnit
       }
 
       ConsoleColorer(const ConsoleColorer&) = default;
-      ConsoleColorer(ConsoleColorer&&) = default;
       ConsoleColorer& operator=(const ConsoleColorer&) = default;
-      ConsoleColorer& operator=(ConsoleColorer&&) = default;
+      ConsoleColorer(ConsoleColorer&&) noexcept = default;
+      ConsoleColorer& operator=(ConsoleColorer&&) noexcept = default;
       virtual ~ConsoleColorer() = default;
 
       virtual bool SetColor(Color color)
@@ -585,10 +584,10 @@ namespace ZenUnit
       {
       }
 
-      Console(const Console&) = default;
-      Console(Console&&) = default;
-      Console& operator=(const Console&) = default;
-      Console& operator=(Console&&) = default;
+      Console(const Console&) = delete;
+      Console& operator=(const Console&) = delete;
+      Console(Console&&) noexcept = default;
+      Console& operator=(Console&&) noexcept = default;
       virtual ~Console() = default;
 
       virtual void Write(const std::string& message) const
@@ -1295,9 +1294,9 @@ namespace ZenUnit
 
       Transformer() = default;
       Transformer(const Transformer&) = default;
-      Transformer(Transformer&&) = default;
+      Transformer(Transformer&&) noexcept = default;
       Transformer& operator=(const Transformer&) = default;
-      Transformer& operator=(Transformer&&) = default;
+      Transformer& operator=(Transformer&&) noexcept = default;
       virtual ~Transformer() = default;
    };
 
@@ -1319,10 +1318,10 @@ namespace ZenUnit
          return runFilters;
       }
 
-      RunFilterParser(const RunFilterParser&) = default;
-      RunFilterParser(RunFilterParser&&) = default;
-      RunFilterParser& operator=(const RunFilterParser&) = default;
-      RunFilterParser& operator=(RunFilterParser&&) = default;
+      RunFilterParser(const RunFilterParser&) = delete;
+      RunFilterParser& operator=(const RunFilterParser&) = delete;
+      RunFilterParser(RunFilterParser&&) noexcept = delete;
+      RunFilterParser& operator=(RunFilterParser&&) noexcept = delete;
       virtual ~RunFilterParser() = default;
    private:
       static RunFilter ParseRunFilterString(const std::string& testRunFilter)
@@ -1536,10 +1535,10 @@ None
          return usage;
       }
 
-      ArgsParser(const ArgsParser&) = default;
-      ArgsParser(ArgsParser&&) = default;
-      ArgsParser& operator=(const ArgsParser&) = default;
-      ArgsParser& operator=(ArgsParser&&) = default;
+      ArgsParser(const ArgsParser&) = delete;
+      ArgsParser& operator=(const ArgsParser&) = delete;
+      ArgsParser(ArgsParser&&) noexcept = delete;
+      ArgsParser& operator=(ArgsParser&&) noexcept = delete;
       virtual ~ArgsParser() = default;
    private:
       void WriteZenUnitArgumentErrorAndUsageThenExit1(const std::string& errorMessage) const
@@ -2938,9 +2937,9 @@ None
       }
 
       TwoExtraArgsForEacher(const TwoExtraArgsForEacher&) = default;
-      TwoExtraArgsForEacher(TwoExtraArgsForEacher&&) = default;
+      TwoExtraArgsForEacher(TwoExtraArgsForEacher&&) noexcept = default;
       TwoExtraArgsForEacher& operator=(const TwoExtraArgsForEacher&) = default;
-      TwoExtraArgsForEacher& operator=(TwoExtraArgsForEacher&&) = default;
+      TwoExtraArgsForEacher& operator=(TwoExtraArgsForEacher&&) noexcept = default;
       virtual ~TwoExtraArgsForEacher() = default;
    };
 
@@ -3013,9 +3012,9 @@ None
       }
 
       TestFailureNumberer(const TestFailureNumberer&) = default;
-      TestFailureNumberer(TestFailureNumberer&&) = default;
+      TestFailureNumberer(TestFailureNumberer&&) noexcept = default;
       TestFailureNumberer& operator=(const TestFailureNumberer&) = default;
-      TestFailureNumberer& operator=(TestFailureNumberer&&) = default;
+      TestFailureNumberer& operator=(TestFailureNumberer&&) noexcept = default;
       virtual ~TestFailureNumberer() = default;
    };
 
@@ -3060,9 +3059,9 @@ None
       }
 
       TestPhaseSuffixer(const TestPhaseSuffixer&) = default;
-      TestPhaseSuffixer(TestPhaseSuffixer&&) = default;
+      TestPhaseSuffixer(TestPhaseSuffixer&&) noexcept = default;
       TestPhaseSuffixer& operator=(const TestPhaseSuffixer&) = default;
-      TestPhaseSuffixer& operator=(TestPhaseSuffixer&&) = default;
+      TestPhaseSuffixer& operator=(TestPhaseSuffixer&&) noexcept = default;
       virtual ~TestPhaseSuffixer() = default;
    };
 
@@ -3120,9 +3119,9 @@ None
       }
 
       TestResult(const TestResult&) = default;
-      TestResult(TestResult&&) = default;
+      TestResult(TestResult&&) noexcept = default;
       TestResult& operator=(const TestResult&) = default;
-      TestResult& operator=(TestResult&&) = default;
+      TestResult& operator=(TestResult&&) noexcept = default;
       virtual ~TestResult() = default;
 
       static TestResult ConstructorFail(
@@ -3364,12 +3363,12 @@ None
          return *this;
       }
 
-      TestClassResult(TestClassResult&& testClassResult)
+      TestClassResult(TestClassResult&& testClassResult) noexcept
       {
          *this = std::move(testClassResult);
       }
 
-      TestClassResult& operator=(TestClassResult&& testClassResult)
+      TestClassResult& operator=(TestClassResult&& testClassResult) noexcept
       {
          _testResults = std::exchange(testClassResult._testResults, std::vector<TestResult>());
          return *this;
@@ -3489,9 +3488,9 @@ None
       }
 
       Watch(const Watch&) = default;
-      Watch(Watch&&) = default;
+      Watch(Watch&&) noexcept = default;
       Watch& operator=(const Watch&) = default;
-      Watch& operator=(Watch&&) = default;
+      Watch& operator=(Watch&&) noexcept = default;
       virtual ~Watch() = default;
    private:
       virtual tm TMNow() const
@@ -3584,9 +3583,9 @@ None
       }
 
       MachineNameGetter(const MachineNameGetter&) = default;
-      MachineNameGetter(MachineNameGetter&&) = default;
+      MachineNameGetter(MachineNameGetter&&) noexcept = default;
       MachineNameGetter& operator=(const MachineNameGetter&) = default;
-      MachineNameGetter& operator=(MachineNameGetter&&) = default;
+      MachineNameGetter& operator=(MachineNameGetter&&) noexcept = default;
       virtual ~MachineNameGetter() = default;
    private:
 #ifdef __linux__
@@ -3652,9 +3651,9 @@ None
       }
 
       ExtraArgMemberForEacher(const ExtraArgMemberForEacher&) = default;
-      ExtraArgMemberForEacher(ExtraArgMemberForEacher&&) = default;
+      ExtraArgMemberForEacher(ExtraArgMemberForEacher&&) noexcept = default;
       ExtraArgMemberForEacher& operator=(const ExtraArgMemberForEacher&) = default;
-      ExtraArgMemberForEacher& operator=(ExtraArgMemberForEacher&&) = default;
+      ExtraArgMemberForEacher& operator=(ExtraArgMemberForEacher&&) noexcept = default;
       virtual ~ExtraArgMemberForEacher() = default;
    };
 
@@ -3682,9 +3681,9 @@ None
       }
 
       ExtraArgAnyer(const ExtraArgAnyer&) = default;
-      ExtraArgAnyer(ExtraArgAnyer&&) = default;
+      ExtraArgAnyer(ExtraArgAnyer&&) noexcept = default;
       ExtraArgAnyer& operator=(const ExtraArgAnyer&) = default;
-      ExtraArgAnyer& operator=(ExtraArgAnyer&&) = default;
+      ExtraArgAnyer& operator=(ExtraArgAnyer&&) noexcept = default;
       virtual ~ExtraArgAnyer() = default;
    };
 
@@ -3702,9 +3701,9 @@ None
       }
 
       Sorter(const Sorter&) = default;
-      Sorter(Sorter&&) = default;
+      Sorter(Sorter&&) noexcept = default;
       Sorter& operator=(const Sorter&) = default;
-      Sorter& operator=(Sorter&&) = default;
+      Sorter& operator=(Sorter&&) noexcept = default;
       virtual ~Sorter() = default;
    };
 
@@ -3732,9 +3731,9 @@ None
       }
 
       TestClassRunner(const TestClassRunner&) = default;
-      TestClassRunner(TestClassRunner&&) = default;
+      TestClassRunner(TestClassRunner&&) noexcept = default;
       TestClassRunner& operator=(const TestClassRunner&) = default;
-      TestClassRunner& operator=(TestClassRunner&&) = default;
+      TestClassRunner& operator=(TestClassRunner&&) noexcept = default;
       virtual ~TestClassRunner() = default;
    };
 
@@ -3793,10 +3792,10 @@ None
       {
       }
 
-      MultiTestClassRunner(const MultiTestClassRunner&) = default;
-      MultiTestClassRunner(MultiTestClassRunner&&) = default;
-      MultiTestClassRunner& operator=(const MultiTestClassRunner&) = default;
-      MultiTestClassRunner& operator=(MultiTestClassRunner&&) = default;
+      MultiTestClassRunner(const MultiTestClassRunner&) = delete;
+      MultiTestClassRunner& operator=(const MultiTestClassRunner&) = delete;
+      MultiTestClassRunner(MultiTestClassRunner&&) noexcept = default;
+      MultiTestClassRunner& operator=(MultiTestClassRunner&&) noexcept = default;
       virtual ~MultiTestClassRunner() = default;
 
       virtual void AddTestClassRunner(TestClassRunner* testClassRunner)
@@ -3896,10 +3895,10 @@ None
       {
       }
 
-      PreamblePrinter(const PreamblePrinter&) = default;
-      PreamblePrinter(PreamblePrinter&&) = default;
-      PreamblePrinter& operator=(const PreamblePrinter&) = default;
-      PreamblePrinter& operator=(PreamblePrinter&&) = default;
+      PreamblePrinter(const PreamblePrinter&) = delete;
+      PreamblePrinter& operator=(const PreamblePrinter&) = delete;
+      PreamblePrinter(PreamblePrinter&&) noexcept = default;
+      PreamblePrinter& operator=(PreamblePrinter&&) noexcept = default;
       virtual ~PreamblePrinter() = default;
 
       virtual void PrintOpeningThreeLines(
@@ -3950,9 +3949,9 @@ None
       }
 
       Stopwatch(const Stopwatch&) = default;
-      Stopwatch(Stopwatch&&) = default;
+      Stopwatch(Stopwatch&&) noexcept = default;
       Stopwatch& operator=(const Stopwatch&) = default;
-      Stopwatch& operator=(Stopwatch&&) = default;
+      Stopwatch& operator=(Stopwatch&&) noexcept = default;
       virtual ~Stopwatch() = default;
 
       virtual void Start()
@@ -3998,9 +3997,9 @@ None
       }
 
       MemberForEacher(const MemberForEacher&) = default;
-      MemberForEacher(MemberForEacher&&) = default;
+      MemberForEacher(MemberForEacher&&) noexcept = default;
       MemberForEacher& operator=(const MemberForEacher&) = default;
-      MemberForEacher& operator=(MemberForEacher&&) = default;
+      MemberForEacher& operator=(MemberForEacher&&) noexcept = default;
       virtual ~MemberForEacher() = default;
    };
 
@@ -4032,10 +4031,10 @@ None
       {
       }
 
-      TestRunResult(const TestRunResult&) = default;
-      TestRunResult(TestRunResult&&) = default;
-      TestRunResult& operator=(const TestRunResult&) = default;
-      TestRunResult& operator=(TestRunResult&&) = default;
+      TestRunResult(const TestRunResult&) = delete;
+      TestRunResult& operator=(const TestRunResult&) = delete;
+      TestRunResult(TestRunResult&&) noexcept = default;
+      TestRunResult& operator=(TestRunResult&&) noexcept = default;
       virtual ~TestRunResult() = default;
 
       virtual void AddSkippedTest(
@@ -4212,10 +4211,10 @@ None
       {
       }
 
-      TestRunner(const TestRunner&) = default;
-      TestRunner(TestRunner&&) = default;
-      TestRunner& operator=(const TestRunner&) = default;
-      TestRunner& operator=(TestRunner&&) = default;
+      TestRunner(const TestRunner&) = delete;
+      TestRunner& operator=(const TestRunner&) = delete;
+      TestRunner(TestRunner&&) noexcept = default;
+      TestRunner& operator=(TestRunner&&) noexcept = default;
       virtual ~TestRunner() = default;
 
       static TestRunner& Instance()
@@ -4338,10 +4337,10 @@ None
       {
       }
 
-      TryCatchCaller(const TryCatchCaller&) = default;
-      TryCatchCaller(TryCatchCaller&&) = default;
-      TryCatchCaller& operator=(const TryCatchCaller&) = default;
-      TryCatchCaller& operator=(TryCatchCaller&&) = default;
+      TryCatchCaller(const TryCatchCaller&) = delete;
+      TryCatchCaller& operator=(const TryCatchCaller&) = delete;
+      TryCatchCaller(TryCatchCaller&&) noexcept = default;
+      TryCatchCaller& operator=(TryCatchCaller&&) noexcept = default;
       virtual ~TryCatchCaller() = default;
 
       virtual CallResult Call(void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const;
@@ -4407,9 +4406,9 @@ None
       }
 
       TestResultFactory(const TestResultFactory&) = default;
-      TestResultFactory(TestResultFactory&&) = default;
+      TestResultFactory(TestResultFactory&&) noexcept = default;
       TestResultFactory& operator=(const TestResultFactory&) = default;
-      TestResultFactory& operator=(TestResultFactory&&) = default;
+      TestResultFactory& operator=(TestResultFactory&&) noexcept = default;
       virtual ~TestResultFactory() = default;
    };
 
@@ -4430,10 +4429,10 @@ None
       {
       }
 
-      Test(const Test&) = default;
-      Test(Test&&) = default;
-      Test& operator=(const Test&) = default;
-      Test& operator=(Test&&) = default;
+      Test(const Test&) = delete;
+      Test& operator=(const Test&) = delete;
+      Test(Test&&) noexcept = default;
+      Test& operator=(Test&&) noexcept = default;
       virtual ~Test() = default;
 
       virtual const char* Name() const
