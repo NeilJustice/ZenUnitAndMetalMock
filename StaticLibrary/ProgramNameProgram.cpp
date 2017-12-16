@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ProgramNameProgram.h"
-#include "Console.h"
+#include "StaticLibrary/Console.h"
+#include "StaticLibrary/ProgramNameProgram.h"
 
 ProgramNameProgram::ProgramNameProgram()
    : _console(new Console)

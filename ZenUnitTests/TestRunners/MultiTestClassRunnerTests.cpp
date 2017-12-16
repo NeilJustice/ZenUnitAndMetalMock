@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "ZenUnitTests/Random/RandomValues.h"
 #include "ZenUnitTests/TestRunners/Mock/TestClassRunnerMock.h"
+#include "ZenUnitTests/Testing/RandomRunFilter.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/ExtraArgAnyerMock.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/ExtraArgMemberForEacherMock.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/TransformerMock.h"
 #include "ZenUnitTests/Utils/Mock/SorterMock.h"
 #include "ZenUnitTests/Utils/Time/Mock/WatchMock.h"
-#include "ZenUnitTests/Testing/RandomRunFilter.h"
 
 namespace ZenUnit
 {
