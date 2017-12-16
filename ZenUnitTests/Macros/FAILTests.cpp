@@ -9,8 +9,8 @@ namespace ZenUnit
 
    TEST(StringLiteralBecause_Throws)
    {
-      THROWS(FAIL("Because"), Anomaly, R"(
- Failed: FAIL("Because")
+      THROWS(FAILTEST("Because"), Anomaly, R"(
+ Failed: FAILTEST("Because")
 File.cpp(1))");
    }
 
@@ -18,8 +18,8 @@ File.cpp(1))");
    {
       const string Because = "BecauseValue";
       const string messageA = "A", messageB = "B";
-      THROWS(FAIL(Because, messageA, messageB), Anomaly, R"(
- Failed: FAIL(Because, messageA, messageB)
+      THROWS(FAILTEST(Because, messageA, messageB), Anomaly, R"(
+ Failed: FAILTEST(Because, messageA, messageB)
 Because: "BecauseValue"
 Message: "A", "B"
 File.cpp(1))");

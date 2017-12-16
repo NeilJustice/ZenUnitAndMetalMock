@@ -1,6 +1,7 @@
 #pragma once
 
 #ifdef _WIN32
+#pragma warning(push)
 #pragma warning(disable: 4365) // 'return': conversion from 'int' to 'std::char_traits<wchar_t>::int_type', signed/unsigned mismatch
 #pragma warning(disable: 4371) // layout of class may have changed from a previous version of the compiler due to better packing of member 'MemberName'
 #pragma warning(disable: 4514) // unreferenced function has been removed
@@ -30,10 +31,13 @@
 #include <unordered_set>
 #include <vector>
 
+#ifdef _WIN32
+#pragma warning(pop)
+#endif
+
 #ifdef __linux__
 #include <unistd.h>
 #include <climits>
-//#include <strings.h>
 #include <cxxabi.h>
 #endif
 
@@ -52,20 +56,20 @@
 #define VA_TEXT_ARGS(...) VATEXT(__VA_ARGS__), ##__VA_ARGS__
 #define Comma ,
 
-#define ARE_COPIES(expectedObject, actualObject, ...) \
-   ZenUnit::ARE_COPIES_Defined(VRT(expectedObject), VRT(actualObject), \
-   FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
-
 #define ARE_EQUAL(expectedValue, actualValue, ...) \
    ZenUnit::ARE_EQUAL_Defined(VRT(expectedValue), VRT(actualValue), \
    FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-#define ARE_NOT_SAME(notExpectedObject, actualObject, ...) \
-   ARE_NOT_SAME_Defined(VRT(notExpectedObject), VRT(actualObject), \
+#define ARE_COPIES(expectedObject, actualObject, ...) \
+   ZenUnit::ARE_COPIES_Defined(VRT(expectedObject), VRT(actualObject), \
    FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 #define ARE_SAME(expectedObject, actualObject, ...) \
    ARE_SAME_Defined(VRT(expectedObject), VRT(actualObject), \
+   FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+#define ARE_NOT_SAME(notExpectedObject, actualObject, ...) \
+   ARE_NOT_SAME_Defined(VRT(notExpectedObject), VRT(actualObject), \
    FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 #define ARRAY_WAS_NEWED(smartOrRawArrayPointer, ...) \
@@ -84,8 +88,8 @@
    ZenUnit::EQUALIZER_THROWS_Defined(equalizerTestObjectA, equalizerTestObjectB, \
       &typeName::nonQuotedFieldName, #typeName, #nonQuotedFieldName, arbitraryNonDefaultFieldValue, #arbitraryNonDefaultFieldValue, FILELINE)
 
-#define FAIL(testFailureReason, ...) \
-   ZenUnit::FAIL_Defined(VRT(testFailureReason), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+#define FAILTEST(testFailureReason, ...) \
+   ZenUnit::FAILTEST_Defined(VRT(testFailureReason), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 #define IS_FALSE(value, ...) \
    ZenUnit::IS_FALSE_Defined(value, #value, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
@@ -1900,10 +1904,10 @@ None
    }
 
    template<typename StringType, typename... MessageTypes>
-   void FAIL_Defined(VRText<StringType> testFailureReasonVRT,
+   void FAILTEST_Defined(VRText<StringType> testFailureReasonVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-      const std::string failedLinePrefix = String::Concat(" Failed: FAIL(", testFailureReasonVRT.text);
+      const std::string failedLinePrefix = String::Concat(" Failed: FAILTEST(", testFailureReasonVRT.text);
       std::ostringstream whyBodyBuilder;
       const std::string quotedTestFailureReason = String::Concat('"', testFailureReasonVRT.value, '"');
       if (quotedTestFailureReason != testFailureReasonVRT.text)

@@ -19,7 +19,7 @@ namespace ZenUnit
       try
       {
          THROWS([]{}(), exception, "");
-         FAIL("THROWS() did not throw");
+         FAILTEST("THROWS() did not throw");
       }
       catch (const Anomaly& anomaly)
       {
@@ -37,7 +37,7 @@ File.cpp(1))", anomaly.why);
       try
       {
          THROWS([]{}(), exception, "", MessageA, MessageB);
-         FAIL("THROWS() did not throw");
+         FAILTEST("THROWS() did not throw");
       }
       catch (const Anomaly& anomaly)
       {
@@ -56,7 +56,7 @@ File.cpp(1))", anomaly.why);
       try
       {
          THROWS([]{ throw logic_error(""); }(), exception, "");
-         FAIL("THROWS() did not throw");
+         FAILTEST("THROWS() did not throw");
       }
       catch (const Anomaly& anomaly)
       {
@@ -75,7 +75,7 @@ File.cpp(1))", anomaly.why);
       try
       {
          THROWS([]{ throw runtime_error("what"); }(), logic_error, "");
-         FAIL("THROWS() did not throw");
+         FAILTEST("THROWS() did not throw");
       }
       catch (const Anomaly& anomaly)
       {
@@ -94,7 +94,7 @@ File.cpp(1))", anomaly.why);
       try
       {
          THROWS([]{ throw runtime_error("what"); }(), runtime_error, "");
-         FAIL("THROWS() did not throw");
+         FAILTEST("THROWS() did not throw");
       }
       catch (const Anomaly& anomaly)
       {
@@ -114,7 +114,7 @@ File.cpp(1))", anomaly.why);
       try
       {
          THROWS([]{ throw runtime_error("hello"); }(), runtime_error, "Hello");
-         FAIL("THROWS() did not throw");
+         FAILTEST("THROWS() did not throw");
       }
       catch (const Anomaly& anomaly)
       {

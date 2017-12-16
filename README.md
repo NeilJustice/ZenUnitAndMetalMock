@@ -133,11 +133,11 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 |Data Structures|
 |---------------|
 |`IS_EMPTY(dataStructure, messages...)`|
-|`CONTAINS(expectedElement, dataStructure, messages...)`|
 |`VECTORS_EQUAL(expectedVector, actualVector, messages...)`|
 |`MAPS_EQUAL(expectedMap, actualMap, messages...)`|
 |`PAIRS_EQUAL(expectedPair, actualPair, messages...)`|
 |`SETS_EQUAL(expectedSet, actualSet, messages...)`|
+|`DOES_CONTAIN(expectedElement, dataStructure, messages...)`|
 
 |Exceptions|
 |----------|
@@ -146,7 +146,7 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 
 |The Test Itself|
 |---------------|
-|`FAIL(testFailureReason, messages...)`|
+|`FAILTEST(testFailureReason, messages...)`|
 
 |Pointers|
 |------- |
