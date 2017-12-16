@@ -141,7 +141,7 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 
 |Exceptions|
 |----------|
-|`THROWS(expression, expectedExactExceptionType, expectedWhat, messages...)`|
+|`THROWS(expression, expectedExactExceptionType, expectedWhatMessage, messages...)` // expression() must throw exactly (not a derived class of) expectedExactExceptionType|
 |`NOTHROWS(expression, messages...)`|
 
 |The Test Itself|
@@ -156,10 +156,6 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 |`POINTER_WAS_NEWED(smartOrRawPointer, messages...)` // Asserts not null then resets or operator deletes the pointer to confirm it was make_uniqued / make_shared / operator newed|
 |`POINTER_WAS_ARRAY_NEWED(smartOrRawArrayPointer, messages...)` // Asserts not null then resets or operator array deletes the pointer to confirm it was array make_uniqued / array operator newed|
 
-|Regular Expressions|
-|-------------------|
-|`REGEX_MATCHES(expectedPattern, str, messages...)`|
-
 |Functions|
 |---------|
 |`STD_FUNCTION_TARGETS(expectedStdFunctionTarget, stdFunction, messages...)`|
@@ -169,13 +165,13 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 |`EQUALIZER_THROWS_INIT(typeName)`|
 |`EQUALIZER_THROWS(typeName, fieldName, nonDefaultFieldValue)`|
 
-|Assertions not implemented by design due to their vulnerability to code mutations inducible by future LLVM-powered mutation testing frameworks|
-|----------------------------------------------------------------------------------------------------------------------------------------------|
-|`ARE_NOT_EQUAL`|
-|`THROWS_EXCEPTION`|
-|`THROWS_ANY`|
-|`REGEX_MATCHES`|
-|`STRING_CONTAINS`|
+|Assertions Not Implemented By Design Due To Vulnerability to Code Mutations|Vulnerability Type|
+|---------------------------------------------------------------------------|------------------|
+|`ARE_NOT_EQUAL`|Value Replacement|
+|`STRING_CONTAINS`|Value Replacement|
+|`REGEX_MATCHES(pattern, string)`|Value Replacement|
+|`THROWS_EXCEPTION(expression, expectedExceptionBaseClass)`|Exception Type Replacement and What Message Replacement|
+|`THROWS_ANY(expression)`|Exception Type Replacement|
 
 ### ZenUnit Type-Parameterized Test Class Syntax
 
