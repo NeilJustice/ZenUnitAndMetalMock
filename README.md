@@ -169,6 +169,14 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 |`EQUALIZER_THROWS_INIT(typeName)`|
 |`EQUALIZER_THROWS(typeName, fieldName, nonDefaultFieldValue)`|
 
+|Assertions not implemented by design due to their vulnerability to code mutations inducible by future LLVM-powered mutation testing frameworks|
+|----------------------------------------------------------------------------------------------------------------------------------------------|
+|`ARE_NOT_EQUAL`|
+|`THROWS_EXCEPTION`|
+|`THROWS_ANY`|
+|`REGEX_MATCHES`|
+|`STRING_CONTAINS`|
+
 ### ZenUnit Type-Parameterized Test Class Syntax
 
 ```cpp
@@ -441,4 +449,5 @@ int main(int argc, char* argv[])
 |ZEN|
 |---|
 |`ZEN(ZenMockAssertion)` // ZEN adorns error messages with \_\_FILE\_\_ and \_\_LINE\_\_ information.|
+
 
