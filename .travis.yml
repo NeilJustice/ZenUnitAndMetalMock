@@ -27,7 +27,7 @@ before_script:
   - cmake -Werror=dev -GNinja -DCMAKE_CXX_COMPILER="$COMPILER" -DCMAKE_BUILD_TYPE="$CMAKE_BUILD_TYPE" ..
 
 script:
-  - ninja -v
+  - travis_wait ninja -v
   - ./ZenUnitTests/ZenUnitTests
   - ./ExamplesTests/ExamplesTests
   - ./StaticLibraryTests/StaticLibraryTests

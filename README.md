@@ -160,18 +160,34 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 |---------|
 |`STD_FUNCTION_TARGETS(expectedStdFunctionTarget, stdFunction, messages...)`|
 
-|Macros for confirming the correctness of a custom ZenUnitEqualizer // Custom ZenUnitEqualizers allow for field-by-field equality assertions on arbitrary types|
-|------------------|
+|Assertions For Confirming The Correctness Of Custom ZenUnit Equalizers|
+|----------------------------------------------------------------------|
 |`EQUALIZER_THROWS_INIT(typeName)`|
 |`EQUALIZER_THROWS(typeName, fieldName, nonDefaultFieldValue)`|
 
-|Assertions Not Implemented By Design Due To Vulnerability to Code Mutations|Vulnerability Type|
-|---------------------------------------------------------------------------|------------------|
-|`ARE_NOT_EQUAL`|Value Replacement|
-|`STRING_CONTAINS`|Value Replacement|
+|Assertions Not Implemented By Design Due To Vulnerability to Code Mutations|Mutation Vulnerability|
+|---------------------------------------------------------------------------|----------------------|
+|`ARE_NOT_EQUAL(expected, actual)`|Value Replacement|
+|`STRING_CONTAINS(expectedSubstring, string)`|Value Replacement|
 |`REGEX_MATCHES(pattern, string)`|Value Replacement|
 |`THROWS_EXCEPTION(expression, expectedExceptionBaseClass)`|Exception Type Replacement and What Message Replacement|
 |`THROWS_ANY(expression)`|Exception Type Replacement|
+
+### ZenUnit Equalizers
+
+ZenUnit has the concept of an Equalizer. Assertion macro ARE_EQUAL(expected, actual) is defined as follows:
+
+```cpp
+using DecayedExpectedType = typename std::decay<ExpectedType>::type;
+using DecayedActualType = typename std::decay<ActualType>::type;
+std::conditional<std::is_same<DecayedExpectedType, DecayedActualType>::value,
+   ZenUnit::Equalizer<DecayedExpectedType>,
+   ZenUnit::TwoTypeEqualizer<DecayedExpectedType, DecayedActualType>>
+   ::type::AssertEqual(expected, actual);
+```
+When the type of `expected` is_same as the type of `actual`, as is the case of the time, ARE_EQUAL hands off to function ZenUnitEqualizer\<DecayedExpectedType\>::AssertEqual(expected, actual) to determine whether expected is equal to actual. This function is by default defined as operator==(expected, actual).
+
+Should you be interested in field-by-field equality assertions on the fields of type T instead of operator== behavior, define ZenUnit::Equalizer\<T\>::AssertEqual(const T& expected, const T& actual) to perform ARE_EQUAL assertions on each field of type T.
 
 ### ZenUnit Type-Parameterized Test Class Syntax
 
