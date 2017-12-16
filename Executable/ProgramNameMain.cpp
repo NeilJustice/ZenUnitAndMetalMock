@@ -1,5 +1,3 @@
-#include <memory>
-#include <vector>
 #include "StaticLibrary/ProgramNameProgram.h"
 
 int main(int argc, char* argv[])

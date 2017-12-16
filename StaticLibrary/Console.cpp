@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Console.h"
+#include "StaticLibrary/Console.h"
 
 void Console::WriteLine(const std::string& message) const
 {
