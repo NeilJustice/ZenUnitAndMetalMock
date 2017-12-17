@@ -403,13 +403,13 @@ namespace ZenUnit
       const char* filePath;
       unsigned lineNumber;
 
-      FileLine()
+      FileLine() noexcept
          : filePath("")
          , lineNumber(0)
       {
       }
 
-      FileLine(const char* filePath, unsigned lineNumber)
+      FileLine(const char* filePath, unsigned lineNumber) noexcept
          : filePath(filePath == nullptr ? "" : filePath), lineNumber(lineNumber)
       {
       }
@@ -440,12 +440,12 @@ namespace ZenUnit
 
    struct FileLiner : public ZenUnitTestingMode<bool>
    {
-      static const char* File(const char* fileMacroValue)
+      static const char* File(const char* fileMacroValue) noexcept
       {
          return zenUnitTestingMode ? "File.cpp" : fileMacroValue;
       }
 
-      static unsigned Line(unsigned lineMacroValue)
+      static unsigned Line(unsigned lineMacroValue) noexcept
       {
          return zenUnitTestingMode ? 1u : lineMacroValue;
       }
@@ -454,12 +454,12 @@ namespace ZenUnit
    class String
    {
    public:
-      static bool Contains(const std::string& str, const char* substring)
+      static bool Contains(const std::string& str, const char* substring) noexcept
       {
          return Contains(str.c_str(), substring);
       }
 
-      static bool Contains(const char* str, const char* substring)
+      static bool Contains(const char* str, const char* substring) noexcept
       {
          const char* const strstrResult = strstr(str, substring);
          return strstrResult != nullptr;
@@ -534,7 +534,7 @@ namespace ZenUnit
          return elements;
       }
 
-      static int IgnoreCaseStrcmp(const char* string1, const char* string2)
+      static int IgnoreCaseStrcmp(const char* string1, const char* string2) noexcept
       {
 #ifdef __linux__
          const int strcmpResult = strcasecmp(string1, string2);
@@ -599,7 +599,7 @@ namespace ZenUnit
       std::string testName;
       unsigned testCaseNumber;
 
-      RunFilter()
+      RunFilter() noexcept
          : testCaseNumber(0)
       {
       }
@@ -641,7 +641,7 @@ namespace ZenUnit
 #endif
 #endif
 
-   inline const char* ColorToLinuxColor(Color color)
+   inline const char* ColorToLinuxColor(Color color) noexcept
    {
       switch (color)
       {
@@ -654,7 +654,7 @@ namespace ZenUnit
       };
    }
 
-   inline WindowsColor ColorToWindowsColor(Color color)
+   inline WindowsColor ColorToWindowsColor(Color color) noexcept
    {
       switch (color)
       {
@@ -680,7 +680,7 @@ namespace ZenUnit
       bool _supportsColor;
       bool _supportsColorSet;
    public:
-      ConsoleColorer()
+      ConsoleColorer() noexcept
 #ifdef _WIN32
          : call_fileno(::_fileno)
          , call_isatty(::_isatty)
@@ -763,7 +763,7 @@ namespace ZenUnit
       std::function<void(int)> call_exit;
       std::function<int()> call_IsDebuggerPresent;
    public:
-      Console()
+      Console() noexcept
          : _consoleColorer(std::make_unique<ConsoleColorer>())
          , call_exit(::exit)
 #ifdef _WIN32
@@ -1190,7 +1190,7 @@ namespace ZenUnit
          return toStringedValues;
       }
 
-      static std::string ToStringConcat()
+      static std::string ToStringConcat() noexcept
       {
          return std::string();
       }
@@ -1235,7 +1235,7 @@ namespace ZenUnit
          DoToStringConcat(oss, std::forward<Types>(values)...);
       }
 
-      static void DoToStringConcat(std::ostringstream&)
+      static void DoToStringConcat(std::ostringstream&) noexcept
       {
       }
    };
@@ -1249,7 +1249,7 @@ namespace ZenUnit
       std::string why;
       FileLine fileLine;
 
-      Anomaly()
+      Anomaly() noexcept
       {
       }
 
@@ -1408,7 +1408,7 @@ namespace ZenUnit
          return anomaly;
       }
 
-      static const Anomaly& Default()
+      static const Anomaly& Default() noexcept
       {
          static Anomaly defaultAnomaly;
          return defaultAnomaly;
@@ -1436,7 +1436,7 @@ namespace ZenUnit
    class EqualizerException : public std::exception
    {
    public:
-      EqualizerException()
+      EqualizerException() noexcept
       {
       }
 
@@ -1491,7 +1491,7 @@ namespace ZenUnit
    private:
       std::unique_ptr<Transformer<std::string, RunFilter>> _transformer;
    public:
-      RunFilterParser()
+      RunFilterParser() noexcept
          : _transformer(std::make_unique<Transformer<std::string, RunFilter>>())
       {
       }
@@ -1585,7 +1585,7 @@ namespace ZenUnit
       std::unique_ptr<const RunFilterParser> _runFilterParser;
       std::function<unsigned(const std::string&)> call_String_ToUnsigned;
    public:
-      ArgsParser()
+      ArgsParser() noexcept
          : _console(std::make_unique<Console>())
          , _runFilterParser(std::make_unique<RunFilterParser>())
          , call_String_ToUnsigned(String::ToUnsigned)
@@ -1741,7 +1741,7 @@ None
       const T& value;
       const char* text;
 
-      VRText(const T& value, const char* text)
+      VRText(const T& value, const char* text) noexcept
          : value(value), text(text) {}
    };
 
@@ -2845,7 +2845,7 @@ None
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
-   inline size_t ULongLongToChars(unsigned long long value, char* outChars)
+   inline size_t ULongLongToChars(unsigned long long value, char* outChars) noexcept
    {
       char* ptrA = outChars;
       unsigned long long tempValue = 0;
@@ -2949,7 +2949,7 @@ None
    class TwoExtraArgsForEacher
    {
    public:
-      TwoExtraArgsForEacher()
+      TwoExtraArgsForEacher() noexcept
       {
       }
 
@@ -2980,14 +2980,14 @@ None
       const char* testName;
       unsigned char arity;
 
-      FullTestName()
+      FullTestName() noexcept
          : testClassName(nullptr)
          , testName(nullptr)
          , arity(0)
       {
       }
 
-      FullTestName(const char* testClassName, const char* testName, unsigned char arity)
+      FullTestName(const char* testClassName, const char* testName, unsigned char arity) noexcept
          : testClassName(testClassName)
          , testName(testName)
          , arity(arity)
@@ -3027,7 +3027,7 @@ None
    private:
       unsigned _testFailureNumber = 1u;
    public:
-      TestFailureNumberer()
+      TestFailureNumberer() noexcept
       {
       }
 
@@ -3052,7 +3052,7 @@ None
    class TestPhaseSuffixer
    {
    public:
-      TestPhaseSuffixer()
+      TestPhaseSuffixer() noexcept
       {
       }
 
@@ -3103,12 +3103,12 @@ None
       unsigned milliseconds;
       std::shared_ptr<AnomalyOrException> anomalyOrException;
 
-      CallResult()
+      CallResult() noexcept
          : CallResult(TestPhase::Unset)
       {
       }
 
-      explicit CallResult(TestPhase testPhase)
+      explicit CallResult(TestPhase testPhase) noexcept
          : testPhase(testPhase)
          , testOutcome(TestOutcome::Success)
          , milliseconds(0)
@@ -3141,7 +3141,7 @@ None
       unsigned milliseconds;
       unsigned short testCaseIndex;
 
-      TestResult()
+      TestResult() noexcept
          : responsibleCallResultField(nullptr)
          , testOutcome(TestOutcome::Unset)
          , milliseconds(0)
@@ -3155,9 +3155,7 @@ None
       TestResult& operator=(TestResult&&) noexcept = default;
       virtual ~TestResult() = default;
 
-      static TestResult ConstructorFail(
-         const FullTestName& fullTestName,
-         const CallResult& constructorCallResult)
+      static TestResult ConstructorFail(const FullTestName& fullTestName, const CallResult& constructorCallResult) noexcept
       {
          TestResult constructorFailTestResult;
          constructorFailTestResult.fullTestName = fullTestName;
@@ -3346,7 +3344,7 @@ None
          }
       }
 
-      static const TestResult TestingNonDefault()
+      static const TestResult TestingNonDefault() noexcept
       {
          const FullTestName fullTestName("Non", "Default", 0);
          const TestResult constructorFail = TestResult::ConstructorFail(fullTestName, CallResult());
@@ -3376,7 +3374,7 @@ None
    private:
       std::vector<TestResult> _testResults;
    public:
-      TestClassResult()
+      TestClassResult() noexcept
       {
       }
 
@@ -3489,7 +3487,7 @@ None
    class Watch
    {
    public:
-      Watch()
+      Watch() noexcept
       {
       }
 
@@ -3595,7 +3593,7 @@ None
       std::function<BOOL(LPSTR, LPDWORD)> call_GetComputerName;
 #endif
    public:
-      MachineNameGetter()
+      MachineNameGetter() noexcept
 #ifdef __linux__
          : call_gethostname(::gethostname)
 #elif _WIN32
@@ -3647,7 +3645,7 @@ None
    class ExtraArgMemberForEacher
    {
    public:
-      ExtraArgMemberForEacher()
+      ExtraArgMemberForEacher() noexcept
       {
       }
 
@@ -3692,7 +3690,7 @@ None
    class ExtraArgAnyer
    {
    public:
-      ExtraArgAnyer()
+      ExtraArgAnyer() noexcept
       {
       }
 
@@ -3722,7 +3720,7 @@ None
    class Sorter
    {
    public:
-      Sorter()
+      Sorter() noexcept
       {
       }
 
@@ -3741,7 +3739,7 @@ None
    class TestClassRunner
    {
    public:
-      TestClassRunner()
+      TestClassRunner() noexcept
       {
       }
 
@@ -3814,7 +3812,7 @@ None
       std::unique_ptr<const Watch> _watch;
       std::vector<std::unique_ptr<TestClassRunner>> _testClassRunners;
    public:
-      MultiTestClassRunner()
+      MultiTestClassRunner() noexcept
          : _extraArgMemberForEacher(std::make_unique<ExtraArgMemberForEacherType>())
          , _extraArgAnyer(std::make_unique<ExtraArgAnyerType>())
          , _sorter(std::make_unique<Sorter<std::vector<std::unique_ptr<TestClassRunner>>>>())
@@ -3919,7 +3917,7 @@ None
       std::unique_ptr<const Watch> _watch;
       std::unique_ptr<const MachineNameGetter> _machineNameGetter;
    public:
-      PreamblePrinter()
+      PreamblePrinter() noexcept
          : _console(std::make_unique<Console>())
          , _watch(std::make_unique<Watch>())
          , _machineNameGetter(std::make_unique<MachineNameGetter>())
@@ -3974,7 +3972,7 @@ None
          std::chrono::high_resolution_clock>()> call_highres_now;
       std::chrono::time_point<std::chrono::high_resolution_clock> _startTime;
    public:
-      Stopwatch()
+      Stopwatch() noexcept
          : call_highres_now(std::chrono::high_resolution_clock::now)
       {
       }
@@ -4010,7 +4008,7 @@ None
    class MemberForEacher
    {
    public:
-      MemberForEacher()
+      MemberForEacher() noexcept
       {
       }
 
@@ -4052,7 +4050,7 @@ None
       std::vector<TestClassResult> _testClassResults;
       size_t _numberOfFailedTestCases;
    public:
-      TestRunResult()
+      TestRunResult() noexcept
          : _console(std::make_unique<Console>())
          , _memberForEacherTestClassResults(std::make_unique<MemberForEacherTestClassResultsType>())
          , _memberForEacherSkippedTests(std::make_unique<MemberForEacherSkippedTestsType>())
@@ -4230,7 +4228,7 @@ None
       ZenUnitArgs _zenUnitArgs;
       bool _havePaused;
    public:
-      TestRunner()
+      TestRunner() noexcept
          : _console(std::make_unique<Console>())
          , _preamblePrinter(std::make_unique<PreamblePrinter>())
          , _argsParser(std::make_unique<ArgsParser>())
@@ -4248,7 +4246,7 @@ None
       TestRunner& operator=(TestRunner&&) noexcept = default;
       virtual ~TestRunner() = default;
 
-      static TestRunner& Instance()
+      static TestRunner& Instance() noexcept
       {
          static TestRunner testRunner;
          return testRunner;
@@ -4360,7 +4358,7 @@ None
       std::unique_ptr<Stopwatch> _stopwatch;
       std::function<const ZenUnitArgs&()> call_TestRunner_GetArgs;
    public:
-      TryCatchCaller()
+      TryCatchCaller() noexcept
          : _console(std::make_unique<Console>())
          , _testPhaseSuffixer(std::make_unique<TestPhaseSuffixer>())
          , _stopwatch(std::make_unique<Stopwatch>())
@@ -4390,7 +4388,7 @@ None
    class TestResultFactory
    {
    public:
-      TestResultFactory()
+      TestResultFactory() noexcept
       {
       }
 
@@ -4885,7 +4883,7 @@ None
    // std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>
    struct PmfToken
    {
-      PmfToken()
+      PmfToken() noexcept
       {
       }
 
@@ -6025,6 +6023,9 @@ None
       const long long adjustedInclusiveLowerBound = inclusiveLowerBound < 0 ? 0 : inclusiveLowerBound;
       const unsigned long long adjustedInclusiveUpperBound =
          inclusiveLowerBound < 0 ? 2 * inclusiveUpperBound + 1 : inclusiveUpperBound;
+#if _WIN32
+      const
+#endif
       std::uniform_int_distribution<unsigned long long>
          distribution(adjustedInclusiveLowerBound, adjustedInclusiveUpperBound);
       const unsigned long long randomValueUnsignedLongLong = distribution(defaultRandomEngine);
@@ -6043,6 +6044,9 @@ None
    inline float Random<float>()
    {
       static std::default_random_engine defaultRandomEngine(static_cast<unsigned>(time(nullptr)));
+#if _WIN32
+      const
+#endif
       std::uniform_real_distribution<float> uniformFloatDistribution(-100.0f, 100.0f);
       const float randomFloat = uniformFloatDistribution(defaultRandomEngine);
       return randomFloat;
@@ -6052,6 +6056,9 @@ None
    inline double Random<double>()
    {
       static std::default_random_engine defaultRandomEngine(static_cast<unsigned>(time(nullptr)));
+#if _WIN32
+      const
+#endif
       std::uniform_real_distribution<double> uniformDoubleDistribution(-100.0, 100.0);
       const double randomDouble = uniformDoubleDistribution(defaultRandomEngine);
       return randomDouble;
@@ -6071,4 +6078,4 @@ None
       const int exitCode = zenUnitTestRunner.ParseArgsRunTestClassesPrintResults(args);
       return exitCode;
    }
-   }
+}
