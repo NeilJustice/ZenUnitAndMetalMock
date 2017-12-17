@@ -31,17 +31,12 @@
 #include <unordered_set>
 #include <vector>
 
-#ifdef _WIN32
-#pragma warning(pop)
-#endif
-
 #ifdef __linux__
 #include <climits>
 #include <cxxabi.h>
 #include <unistd.h>
-#endif
-
-#ifdef _WIN32
+#elif _WIN32
+#pragma warning(pop)
 #define WIN32_LEAN_AND_MEAN // ~40% faster Windows.h compile speed
 #define NOGDI // ~10% faster Windows.h compile speed
 #define NOMINMAX
@@ -56,88 +51,280 @@
 #define VA_TEXT_ARGS(...) VATEXT(__VA_ARGS__), ##__VA_ARGS__
 #define Comma ,
 
+//
+// ZenUnit Assertion Macros
+//
+
+// Values:
+
+// Asserts that expectedValue is equal to actualValue.
 #define ARE_EQUAL(expectedValue, actualValue, ...) \
-   ZenUnit::ARE_EQUAL_Defined(VRT(expectedValue), VRT(actualValue), \
-   FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::ARE_EQUAL_Defined(VRT(expectedValue), VRT(actualValue), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
+// Asserts that expectedObject is a copy of actualObject.
 #define ARE_COPIES(expectedObject, actualObject, ...) \
-   ZenUnit::ARE_COPIES_Defined(VRT(expectedObject), VRT(actualObject), \
-   FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::ARE_COPIES_Defined(VRT(expectedObject), VRT(actualObject), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
+// Asserts that the address of expectedObject is equal to the address of actualObject.
 #define ARE_SAME(expectedObject, actualObject, ...) \
-   ARE_SAME_Defined(VRT(expectedObject), VRT(actualObject), \
-   FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ARE_SAME_Defined(VRT(expectedObject), VRT(actualObject), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
+// Asserts that the address of notExpectedObject is not that same as the address of actualObject.
 #define ARE_NOT_SAME(notExpectedObject, actualObject, ...) \
-   ARE_NOT_SAME_Defined(VRT(notExpectedObject), VRT(actualObject), \
-   FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ARE_NOT_SAME_Defined(VRT(notExpectedObject), VRT(actualObject), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-#define ARRAY_WAS_NEWED(smartOrRawArrayPointer, ...) \
-   ZenUnit::ARRAY_WAS_NEWED_Defined(smartOrRawArrayPointer, #smartOrRawArrayPointer, \
-   FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
-
-#define DOES_CONTAIN(expectedElement, collection, ...) \
-   ZenUnit::CONTAINS_Defined(VRT(expectedElement), VRT(collection), \
-   FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
-
-#define EQUALIZER_THROWS_INIT(typeName) \
-   typeName equalizerTestObjectA, equalizerTestObjectB; \
-   ARE_EQUAL(equalizerTestObjectA, equalizerTestObjectB)
-
-#define EQUALIZER_THROWS(typeName, nonQuotedFieldName, arbitraryNonDefaultFieldValue) \
-   ZenUnit::EQUALIZER_THROWS_Defined(equalizerTestObjectA, equalizerTestObjectB, \
-      &typeName::nonQuotedFieldName, #typeName, #nonQuotedFieldName, arbitraryNonDefaultFieldValue, #arbitraryNonDefaultFieldValue, FILELINE)
-
-#define FAILTEST(testFailureReason, ...) \
-   ZenUnit::FAILTEST_Defined(VRT(testFailureReason), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
-
+// Asserts that value is false.
 #define IS_FALSE(value, ...) \
    ZenUnit::IS_FALSE_Defined(value, #value, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-#define IS_EMPTY(collection, ...) \
-   ZenUnit::IS_EMPTY_Defined(VRT(collection), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
-
-#define IS_NOT_NULL(pointer, ...) \
-   ZenUnit::IS_NOT_NULL_Defined(pointer == nullptr, #pointer, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
-
-#define IS_NULL(pointer, ...) \
-   ZenUnit::IS_NULL_Defined(VRT(pointer), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
-
+// Asserts that value is true.
 #define IS_TRUE(value, ...) \
    ZenUnit::IS_TRUE_Defined(value, #value, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
+// Asserts that value is zero.
 #define IS_ZERO(value, ...) \
    ZenUnit::IS_ZERO_Defined(VRT(value), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-#define MAPS_EQUAL(expectedMap, actualMap, ...) \
-   ZenUnit::MAPS_EQUAL_Defined(VRT(expectedMap), VRT(actualMap), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+// Pointers:
 
-#define NOTHROWS(expression, ...) \
-   NOTHROWS_Defined([&]{ expression; }, #expression, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+// Asserts that pointer is nullptr.
+#define IS_NULL(pointer, ...) \
+   ZenUnit::IS_NULL_Defined(VRT(pointer), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-#define PAIRS_EQUAL(expectedPair, actualPair, ...) \
-   ZenUnit::PAIRS_EQUAL_Defined(VRT(expectedPair), VRT(actualPair), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+// Asserts that pointer is not nullptr.
+#define IS_NOT_NULL(pointer, ...) \
+   ZenUnit::IS_NOT_NULL_Defined(pointer == nullptr, #pointer, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
+// Asserts that *expectedPointer is equal to *actualPointer.
 #define POINTEES_EQUAL(expectedPointer, actualPointer, ...) \
    ZenUnit::POINTEES_EQUAL_Defined(VRT(expectedPointer), VRT(actualPointer), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-#define POINTER_WAS_NEWED(smartOrRawPointer, ...) \
-   ZenUnit::WAS_NEWED_Defined(smartOrRawPointer, #smartOrRawPointer, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+// Functions:
 
+// Asserts that stdFunction targets function expectedStdFunctionTarget.
 #define STD_FUNCTION_TARGETS(expectedStdFunctionTarget, stdFunction, ...) \
    ZenUnit::STD_FUNCTION_TARGETS_Defined<decltype(expectedStdFunctionTarget)>(expectedStdFunctionTarget, #expectedStdFunctionTarget, VRT(stdFunction), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-#define REGEX_MATCHES(expectedPattern, str, ...) \
-   ZenUnit::REGEX_MATCHES_Defined(VRT(expectedPattern), VRT(str), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+// Memory:
 
+// Asserts that smartOrRawPointer was scalar operator newed by operator deleting smartOrRawPointer.
+#define POINTER_WAS_NEWED(smartOrRawPointer, ...) \
+   ZenUnit::WAS_NEWED_Defined(smartOrRawPointer, #smartOrRawPointer, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Asserts that smartOrRawArrayPointer was array operator newed by array operator deleting smartOrRawArrayPointer.
+#define ARRAY_WAS_NEWED(smartOrRawArrayPointer, ...) \
+   ZenUnit::ARRAY_WAS_NEWED_Defined(smartOrRawArrayPointer, #smartOrRawArrayPointer, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Data Structures:
+
+// Asserts that collection.size() is zero.
+#define IS_EMPTY(collection, ...) \
+   ZenUnit::IS_EMPTY_Defined(VRT(collection), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Asserts that the elements of expectedVector are equal to the elements of actualVector.
+#define VECTORS_EQUAL(expectedVector, actualVector, ...) \
+   ZenUnit::VECTORS_EQUAL_Defined(expectedVector, #expectedVector, actualVector, #actualVector, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Asserts that the elements of expectedSet are equal to the elements of actualSet.
 #define SETS_EQUAL(expectedSet, actualSet, ...) \
    ZenUnit::SETS_EQUAL_Defined(VRT(expectedSet), VRT(actualSet), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-#define THROWS(expression, expectedExactExceptionType, expectedWhat, ...) \
-   ZenUnit::THROWS_Defined<expectedExactExceptionType>([&]() { expression; }, #expression, #expectedExactExceptionType, expectedWhat, #expectedWhat, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+// Asserts that the elements of expectedMap are equal to the elements of actualMap.
+#define MAPS_EQUAL(expectedMap, actualMap, ...) \
+   ZenUnit::MAPS_EQUAL_Defined(VRT(expectedMap), VRT(actualMap), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-#define VECTORS_EQUAL(expectedVector, actualVector, ...) \
-   ZenUnit::VECTORS_EQUAL_Defined(expectedVector, #expectedVector, actualVector, #actualVector, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+// Asserts that the first and second element of expectedPair is equal to the first and second element of actualPair.
+#define PAIRS_EQUAL(expectedPair, actualPair, ...) \
+   ZenUnit::PAIRS_EQUAL_Defined(VRT(expectedPair), VRT(actualPair), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Asserts that expectedElement is contained in collection.
+#define DOES_CONTAIN(expectedElement, collection, ...) \
+   ZenUnit::CONTAINS_Defined(VRT(expectedElement), VRT(collection), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// ZenUnit::Equalizers:
+
+// Initializes ZenUnit::Equalizer test variables.
+#define EQUALIZER_THROWS_INIT(typeName) \
+   typeName equalizerTestObjectA, equalizerTestObjectB; ARE_EQUAL(equalizerTestObjectA, equalizerTestObjectB)
+
+// Asserts that ZenUnit::Equalizer<T>::AssertEqual() throws when the specified field is not equal.
+#define EQUALIZER_THROWS(typeName, nonQuotedFieldName, arbitraryNonDefaultFieldValue) \
+   ZenUnit::EQUALIZER_THROWS_Defined(equalizerTestObjectA, equalizerTestObjectB, &typeName::nonQuotedFieldName, #typeName, #nonQuotedFieldName, arbitraryNonDefaultFieldValue, #arbitraryNonDefaultFieldValue, FILELINE)
+
+// The Test Itself:
+
+// Fails the current test with a failure reason.
+#define FAILTEST(failureReason, ...) \
+   ZenUnit::FAILTEST_Defined(VRT(failureReason), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Exceptions:
+
+// Asserts that expression() throws exactly expectedExactExceptionType with what() text that exactly equals expectedWhatText.
+#define THROWS(expression, expectedExactExceptionType, expectedWhatText, ...) \
+   ZenUnit::THROWS_Defined<expectedExactExceptionType>([&]() { expression; }, #expression, #expectedExactExceptionType, expectedWhatText, #expectedWhatText, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Does nothing to implicitly assert that expression() does not throw an exception. A useful assertion for emphasis.
+#define NOTHROWS(expression, ...) \
+   NOTHROWS_Defined([&]{ expression; }, #expression, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Regular Expressions:
+
+// Asserts that str regex_matches expectedPattern.
+#define REGEX_MATCHES(expectedPattern, str, ...) \
+   ZenUnit::REGEX_MATCHES_Defined(VRT(expectedPattern), VRT(str), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+//
+// ZenUnit TestClass Macros
+//
+
+// Defines a ZenUnit::TestClass.
+#define TESTS(HighQualityTestClassName) \
+   class HighQualityTestClassName : public ZenUnit::TestClass<HighQualityTestClassName> \
+   TESTCLASSPREAMBLE(HighQualityTestClassName)
+
+// Defines a templated ZenUnit::TestClass. Precede TEMPLATETESTS with template<typename A, typename B, ...>. Specify __VA_ARGS__ with the names of template parameters. Example: TEMPLATETESTS(TestClassName, A, B).
+#define TEMPLATETESTS(HighQualityTestClassName, ...) \
+   class HighQualityTestClassName : public ZenUnit::TestClass<HighQualityTestClassName<__VA_ARGS__>> \
+   TESTCLASSPREAMBLE(HighQualityTestClassName)
+
+#define TESTCLASSPREAMBLE(HighQualityTestClassName) \
+   { \
+   public: \
+      using TestClassType = HighQualityTestClassName; \
+      static const char* s_testClassName; \
+      static bool s_allNXNTestsRegistered; \
+      static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>& TestNXNPmfTokenToTestMap() \
+      { \
+         static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> testNXNPmfTokenToTest; \
+         return testNXNPmfTokenToTest; \
+      } \
+      static std::vector<std::unique_ptr<ZenUnit::Test>> GetTests(const char* testClassName) \
+      { \
+         s_testClassName = testClassName; \
+         std::vector<std::unique_ptr<ZenUnit::Test>> tests;
+
+// Specifies a test. Define the test using TEST in the test body.
+#define AFACT(HighQualityTestName) \
+   tests.emplace_back(std::make_unique<ZenUnit::NormalTest<TestClassType>>( \
+      testClassName, #HighQualityTestName, &TestClassType::HighQualityTestName));
+
+// Specifies an N-by-N value parameterized test. Define the test using TEST1X1 through TEST10X10 in the test body.
+#define FACTS(HighQualityTestName) \
+   tests.emplace_back(std::make_unique<ZenUnit::SpecSectionTestNXN<TestClassType>>( \
+      testClassName, #HighQualityTestName, PMFTOKEN(&TestClassType::HighQualityTestName)));
+
+#define DOSKIP(HighQualityTestName, Reason) \
+   ZenUnit::TestRunner::Instance().SkipTest(testClassName, #HighQualityTestName, Reason);
+
+// Skips a TEST.
+#define SKIPFACT(HighQualityTestName, Reason) DOSKIP(HighQualityTestName, Reason)
+
+// Skips a TESTNXN.
+#define SKIPFACTS(HighQualityTestName, Reason) DOSKIP(HighQualityTestName, Reason)
+
+// Ends the specification section and begins the test body.
+#define EVIDENCE return tests; }
+
+// Defines function Startup() to be called before each test.
+#define STARTUP void Startup() override
+
+// Defines function Cleanup() to be called after each test.
+#define CLEANUP void Cleanup() override
+
+// Defines a test.
+#define TEST(HighQualityTestName) void HighQualityTestName()
+
+#define REGISTER_TESTNXN_ARGS(HighQualityTestName, ...) \
+   PMFTOKEN(&TestClassType::HighQualityTestName), &TestClassType::HighQualityTestName, \
+   #HighQualityTestName, #__VA_ARGS__, __VA_ARGS__
+
+// Defines a 1-by-1 value-parameterized test.
+#define TEST1X1(HighQualityTestName, Arg1Type, ...) \
+   const std::nullptr_t ZenUnit_Test1X1Registrar_##HighQualityTestName = \
+      TestClassType::RegisterTest1X1(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
+   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type)
+
+// Defines a 2-by-2 value-parameterized test.
+#define TEST2X2(HighQualityTestName, Arg1Type, Arg2Type, ...) \
+   const std::nullptr_t ZenUnit_Test2X2Registrar_##HighQualityTestName = \
+      TestClassType::RegisterTest2X2(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
+   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type)
+
+// Defines a 3-by-3 value-parameterized test.
+#define TEST3X3(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, ...) \
+   const std::nullptr_t ZenUnit_Test3X3Registrar_##HighQualityTestName = \
+      TestClassType::RegisterTest3X3(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
+   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type)
+
+// Defines a 4-by-4 value-parameterized test.
+#define TEST4X4(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
+   const std::nullptr_t ZenUnit_Test4X4Registrar_##HighQualityTestName = \
+      TestClassType::RegisterTest4X4(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
+   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type)
+
+// Defines a 5-by-5 value-parameterized test.
+#define TEST5X5(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
+   const std::nullptr_t ZenUnit_Test5X5Registrar_##HighQualityTestName = \
+      TestClassType::RegisterTest5X5(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
+   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)
+
+// Defines a 6-by-6 value-parameterized test.
+#define TEST6X6(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
+   const std::nullptr_t ZenUnit_Test6X6Registrar_##HighQualityTestName = \
+      TestClassType::RegisterTest6X6(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
+   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)
+
+// Defines a 7-by-7 value-parameterized test.
+#define TEST7X7(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
+   const std::nullptr_t ZenUnit_Test7X7Registrar_##HighQualityTestName = \
+      TestClassType::RegisterTest7X7(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
+   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)
+
+// Defines a 8-by-8 value-parameterized test.
+#define TEST8X8(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
+   const std::nullptr_t ZenUnit_Test8X8Registrar_##HighQualityTestName = \
+      TestClassType::RegisterTest8X8(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
+   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)
+
+// Defines a 9-by-9 value-parameterized test.
+#define TEST9X9(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...) \
+   const std::nullptr_t ZenUnit_Test9X9Registrar_##HighQualityTestName = \
+      TestClassType::RegisterTest9X9(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
+   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type)
+
+// Defines a 10-by-10 value-parameterized test.
+#define TEST10X10(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...) \
+   const std::nullptr_t ZenUnit_Test10X10Registrar_##HighQualityTestName = \
+      TestClassType::RegisterTest10X10(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
+   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)
+
+// Runs a test class.
+#define RUNTESTS(HighQualityTestClassName) \
+   const char* HighQualityTestClassName::s_testClassName = nullptr; \
+   bool HighQualityTestClassName::s_allNXNTestsRegistered = false; \
+   std::nullptr_t ZenUnit_TestClassRegistrar_##HighQualityTestClassName = \
+      ZenUnit::TestRunner::Instance().AddTestClassRunner( \
+         new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName>(#HighQualityTestClassName));
+
+// Skips a test class.
+#define SKIPTESTS(HighQualityTestClassName, Reason) \
+   const std::nullptr_t ZenUnit_TestClassSkipper_##HighQualityTestClassName = \
+      ZenUnit::TestRunner::Instance().SkipTestClass(#HighQualityTestClassName, Reason);
+
+// Runs a templated test class. Specify __VA_ARGS__ with type names to be run. Example: RUNTEMPLATETESTS(TestClassName, int, std::vector<int>).
+#define RUNTEMPLATETESTS(HighQualityTestClassName, ...) \
+   template<> const char* HighQualityTestClassName<__VA_ARGS__>::s_testClassName = nullptr; \
+   template<> bool HighQualityTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
+   std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassRegistrar_, HighQualityTestClassName), _Line), __LINE__) = \
+      ZenUnit::TestRunner::Instance().AddTestClassRunner( \
+         new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName<__VA_ARGS__>>(#HighQualityTestClassName"<"#__VA_ARGS__">"));
+
+// Skips a templated test class.
+#define SKIPTEMPLATETESTS(HighQualityTestClassName, Reason, ...) \
+   template<> const char* HighQualityTestClassName<__VA_ARGS__>::s_testClassName = nullptr; \
+   template<> bool HighQualityTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
+   std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassSkipper_, HighQualityTestClassName), _Line), __LINE__) = \
+      ZenUnit::TestRunner::Instance().SkipTestClass(#HighQualityTestClassName"<"#__VA_ARGS__">", Reason);
 
 template<typename T>
 struct NA
@@ -242,7 +429,6 @@ namespace ZenUnit
       }
    };
 
-   // Header-only-friendly static variable
    template<typename T>
    struct ZenUnitTestingMode
    {
@@ -311,8 +497,7 @@ namespace ZenUnit
          }
          if (result > std::numeric_limits<unsigned int>::max())
          {
-            throw std::invalid_argument(
-               "String::ToUnsigned called with string containing number greater than numeric_limits<unsigned int>::max(): \"" + std::to_string(result) + "\"");
+            throw std::invalid_argument("String::ToUnsigned called with string containing number greater than numeric_limits<unsigned int>::max(): \"" + std::to_string(result) + "\"");
          }
          const unsigned unsignedResult = static_cast<unsigned>(result);
          return unsignedResult;
@@ -388,9 +573,7 @@ namespace ZenUnit
       const FileLine& fileLine,
       const char* functionName)
    {
-      const std::string what = String::Concat(
-         "assert_true(", predicateText, ") failed in ",
-         functionName, "()\n", fileLine.filePath, "(", fileLine.lineNumber, ")");
+      const std::string what = String::Concat("assert_true(", predicateText, ") failed in ", functionName, "()\n", fileLine.filePath, "(", fileLine.lineNumber, ")");
       throw std::logic_error(what);
    }
 
@@ -843,8 +1026,7 @@ namespace ZenUnit
       static std::string Demangle(const char* mangledTypeName)
       {
          static const std::regex classStructPattern("(class |struct )");
-         const std::string typeNameMinusClassAndStruct
-            = std::regex_replace(mangledTypeName, classStructPattern, "");
+         const std::string typeNameMinusClassAndStruct = std::regex_replace(mangledTypeName, classStructPattern, "");
          return typeNameMinusClassAndStruct;
       }
 #endif
@@ -956,8 +1138,7 @@ namespace ZenUnit
          !has_to_string<T>::value && std::is_enum<T>::value, std::string>::type
          ToString(const T& value)
       {
-         const std::string valueString = std::to_string(
-            static_cast<typename std::underlying_type<T>::type>(value));
+         const std::string valueString = std::to_string(static_cast<typename std::underlying_type<T>::type>(value));
          return valueString;
       }
 
@@ -1117,8 +1298,7 @@ namespace ZenUnit
          FileLine fileLine,
          MessageTypes&&... messages)
       {
-         this->assertExpression = MakeAssertExpression(
-            assertionName, arg1Text, arg2Text, arg3Text, messagesText);;
+         this->assertExpression = MakeAssertExpression(assertionName, arg1Text, arg2Text, arg3Text, messagesText);;
          this->expected = expected;
          this->actual = actual;
          this->message = ToStringer::ToStringConcat(std::forward<MessageTypes>(messages)...);
@@ -1340,8 +1520,7 @@ namespace ZenUnit
          runFilter.testClassName = testClassName_testNameSlashTestCaseNumber[0];
          if (testClassName_testNameSlashTestCaseNumber.size() == 2)
          {
-            const std::vector<std::string> testName_testCaseNumber
-               = String::Split(testClassName_testNameSlashTestCaseNumber[1], '/');
+            const std::vector<std::string> testName_testCaseNumber = String::Split(testClassName_testNameSlashTestCaseNumber[1], '/');
             if (testName_testCaseNumber.size() > 2)
             {
                throw std::invalid_argument("Invalid test run filter: " + testRunFilter);
@@ -2050,8 +2229,7 @@ None
    {
    public:
       template<typename MapType, typename KeyType, typename ValueType>
-      static const ValueType* InsertNoOverwrite(
-         MapType& m, const KeyType& key, const ValueType& value)
+      static const ValueType* InsertNoOverwrite(MapType& m, const KeyType& key, const ValueType& value)
       {
          const std::pair<typename MapType::const_iterator, bool> insertIterAndDidInsert
             = m.insert(std::make_pair(key, value));
@@ -2066,12 +2244,10 @@ None
          return constPointerToValueInMap;
       }
 
-      // At() exists because map.at() does not include the key not found in the exception what() text
-      template<
-         template<typename...>
+      // Map::At() because map.at() does not include the key not found in the exception what() text
+      template<template<typename...>
       class MapType, typename KeyType, typename ValueType, typename... SubsequentTypes>
-         static const ValueType& At(
-            const MapType<KeyType, ValueType, SubsequentTypes...>& m, const KeyType& key)
+         static const ValueType& At(const MapType<KeyType, ValueType, SubsequentTypes...>& m, const KeyType& key)
       {
          try
          {
@@ -2087,8 +2263,7 @@ None
       }
 
       template<typename MapType, typename KeyType, typename ValueType>
-      static std::pair<bool, bool> ContainsKeyWithValue(
-         const MapType& m, const KeyType& key, const ValueType& value)
+      static std::pair<bool, bool> ContainsKeyWithValue(const MapType& m, const KeyType& key, const ValueType& value)
       {
          if (const typename MapType::const_iterator findIter = m.find(key);
          findIter == m.end())
@@ -2409,155 +2584,6 @@ None
       }
    }
 
-   // Defines a ZenUnit::TestClass.
-#define TESTS(HighQualityTestClassName) \
-   class HighQualityTestClassName : public ZenUnit::TestClass<HighQualityTestClassName> \
-   TESTCLASSPREAMBLE(HighQualityTestClassName)
-
-// Defines a templated ZenUnit::TestClass. Precede TEMPLATETESTS with template<typename A, typename B, ...>. Specify __VA_ARGS__ with the names of template parameters. Example: TEMPLATETESTS(TestClassName, A, B).
-#define TEMPLATETESTS(HighQualityTestClassName, ...) \
-   class HighQualityTestClassName : public ZenUnit::TestClass<HighQualityTestClassName<__VA_ARGS__>> \
-   TESTCLASSPREAMBLE(HighQualityTestClassName)
-
-#define TESTCLASSPREAMBLE(HighQualityTestClassName) \
-   { \
-   public: \
-      using TestClassType = HighQualityTestClassName; \
-      static const char* s_testClassName; \
-      static bool s_allNXNTestsRegistered; \
-      static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>& TestNXNPmfTokenToTestMap() \
-      { \
-         static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> testNXNPmfTokenToTest; \
-         return testNXNPmfTokenToTest; \
-      } \
-      static std::vector<std::unique_ptr<ZenUnit::Test>> GetTests(const char* testClassName) \
-      { \
-         s_testClassName = testClassName; \
-         std::vector<std::unique_ptr<ZenUnit::Test>> tests;
-
-// Specifies a test. Define the test using TEST in the test body.
-#define AFACT(HighQualityTestName) \
-   tests.emplace_back(std::make_unique<ZenUnit::NormalTest<TestClassType>>( \
-      testClassName, #HighQualityTestName, &TestClassType::HighQualityTestName));
-
-// Specifies an N-by-N value parameterized test. Define the test using TEST1X1 through TEST10X10 in the test body.
-#define FACTS(HighQualityTestName) \
-   tests.emplace_back(std::make_unique<ZenUnit::SpecSectionTestNXN<TestClassType>>( \
-      testClassName, #HighQualityTestName, PMFTOKEN(&TestClassType::HighQualityTestName)));
-
-#define DOSKIP(HighQualityTestName, Reason) \
-   ZenUnit::TestRunner::Instance().SkipTest(testClassName, #HighQualityTestName, Reason);
-
-   // Skips a TEST.
-#define SKIPFACT(HighQualityTestName, Reason) DOSKIP(HighQualityTestName, Reason)
-
-// Skips a TESTNXN.
-#define SKIPFACTS(HighQualityTestName, Reason) DOSKIP(HighQualityTestName, Reason)
-
-// Ends the specification section and begins the test body.
-#define EVIDENCE return tests; }
-
-// Defines function Startup() to be called before each test.
-#define STARTUP void Startup() override
-
-// Defines function Cleanup() to be called after each test.
-#define CLEANUP void Cleanup() override
-
-// Defines a test.
-#define TEST(HighQualityTestName) void HighQualityTestName()
-
-#define REGISTER_TESTNXN_ARGS(HighQualityTestName, ...) \
-   PMFTOKEN(&TestClassType::HighQualityTestName), &TestClassType::HighQualityTestName, \
-   #HighQualityTestName, #__VA_ARGS__, __VA_ARGS__
-
-// Defines a 1-by-1 value-parameterized test.
-#define TEST1X1(HighQualityTestName, Arg1Type, ...) \
-   const std::nullptr_t ZenUnit_Test1X1Registrar_##HighQualityTestName = \
-      TestClassType::RegisterTest1X1(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
-   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type)
-
-// Defines a 2-by-2 value-parameterized test.
-#define TEST2X2(HighQualityTestName, Arg1Type, Arg2Type, ...) \
-   const std::nullptr_t ZenUnit_Test2X2Registrar_##HighQualityTestName = \
-      TestClassType::RegisterTest2X2(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
-   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type)
-
-// Defines a 3-by-3 value-parameterized test.
-#define TEST3X3(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, ...) \
-   const std::nullptr_t ZenUnit_Test3X3Registrar_##HighQualityTestName = \
-      TestClassType::RegisterTest3X3(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
-   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type)
-
-// Defines a 4-by-4 value-parameterized test.
-#define TEST4X4(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
-   const std::nullptr_t ZenUnit_Test4X4Registrar_##HighQualityTestName = \
-      TestClassType::RegisterTest4X4(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
-   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type)
-
-// Defines a 5-by-5 value-parameterized test.
-#define TEST5X5(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
-   const std::nullptr_t ZenUnit_Test5X5Registrar_##HighQualityTestName = \
-      TestClassType::RegisterTest5X5(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
-   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)
-
-// Defines a 6-by-6 value-parameterized test.
-#define TEST6X6(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
-   const std::nullptr_t ZenUnit_Test6X6Registrar_##HighQualityTestName = \
-      TestClassType::RegisterTest6X6(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
-   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)
-
-// Defines a 7-by-7 value-parameterized test.
-#define TEST7X7(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
-   const std::nullptr_t ZenUnit_Test7X7Registrar_##HighQualityTestName = \
-      TestClassType::RegisterTest7X7(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
-   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)
-
-// Defines a 8-by-8 value-parameterized test.
-#define TEST8X8(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
-   const std::nullptr_t ZenUnit_Test8X8Registrar_##HighQualityTestName = \
-      TestClassType::RegisterTest8X8(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
-   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)
-
-// Defines a 9-by-9 value-parameterized test.
-#define TEST9X9(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...) \
-   const std::nullptr_t ZenUnit_Test9X9Registrar_##HighQualityTestName = \
-      TestClassType::RegisterTest9X9(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
-   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type)
-
-// Defines a 10-by-10 value-parameterized test.
-#define TEST10X10(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...) \
-   const std::nullptr_t ZenUnit_Test10X10Registrar_##HighQualityTestName = \
-      TestClassType::RegisterTest10X10(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
-   void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)
-
-// Runs a test class.
-#define RUNTESTS(HighQualityTestClassName) \
-   const char* HighQualityTestClassName::s_testClassName = nullptr; \
-   bool HighQualityTestClassName::s_allNXNTestsRegistered = false; \
-   std::nullptr_t ZenUnit_TestClassRegistrar_##HighQualityTestClassName = \
-      ZenUnit::TestRunner::Instance().AddTestClassRunner( \
-         new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName>(#HighQualityTestClassName));
-
-// Skips a test class.
-#define SKIPTESTS(HighQualityTestClassName, Reason) \
-   const std::nullptr_t ZenUnit_TestClassSkipper_##HighQualityTestClassName = \
-      ZenUnit::TestRunner::Instance().SkipTestClass(#HighQualityTestClassName, Reason);
-
-// Runs a templated test class. Specify __VA_ARGS__ with type names to be run. Example: RUNTEMPLATETESTS(TestClassName, int, std::vector<int>).
-#define RUNTEMPLATETESTS(HighQualityTestClassName, ...) \
-   template<> const char* HighQualityTestClassName<__VA_ARGS__>::s_testClassName = nullptr; \
-   template<> bool HighQualityTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
-   std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassRegistrar_, HighQualityTestClassName), _Line), __LINE__) = \
-      ZenUnit::TestRunner::Instance().AddTestClassRunner( \
-         new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName<__VA_ARGS__>>(#HighQualityTestClassName"<"#__VA_ARGS__">"));
-
-// Skips a templated test class.
-#define SKIPTEMPLATETESTS(HighQualityTestClassName, Reason, ...) \
-   template<> const char* HighQualityTestClassName<__VA_ARGS__>::s_testClassName = nullptr; \
-   template<> bool HighQualityTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
-   std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassSkipper_, HighQualityTestClassName), _Line), __LINE__) = \
-      ZenUnit::TestRunner::Instance().SkipTestClass(#HighQualityTestClassName"<"#__VA_ARGS__">", Reason);
-
    template<typename ExpectedType, typename ActualType, typename... MessageTypes>
    void POINTEES_EQUAL_Throw_NullptrExpectedOrActual(
       VRText<ExpectedType> expectedPointerVRT,
@@ -2711,15 +2737,15 @@ None
    template<typename ExpectedExceptionType>
    std::string THROWS_MakeWhyBody_ExpectedWhatNotEqualToActualWhat(
       const ExpectedExceptionType& e,
-      const std::string& expectedWhat,
-      const char* actualExactExceptionWhat)
+      const std::string& expectedWhatText,
+      const char* actualExactExceptionWhatText)
    {
       std::ostringstream whyBodyBuilder;
       const std::string* const actualExceptionTypeName = Type::GetName(e);
       THROWS_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, actualExceptionTypeName);
       whyBodyBuilder << " exactly\n" <<
-         "Expected what(): \"" << expectedWhat << "\"\n" <<
-         "  Actual what(): \"" << actualExactExceptionWhat << "\"";
+         "Expected what(): \"" << expectedWhatText << "\"\n" <<
+         "  Actual what(): \"" << actualExactExceptionWhatText << "\"";
       const std::string whyBody = whyBodyBuilder.str();
       return whyBody;
    }
@@ -2752,8 +2778,8 @@ None
       const std::function<void()>& expression,
       const char* expressionText,
       const char* expectedExactExceptionTypeText,
-      const std::string& expectedWhat,
-      const char* expectedWhatText,
+      const std::string& expectedWhatText,
+      const char* expectedWhatTextText,
       FileLine fileLine,
       const char* messagesText,
       MessageTypes&&... messages)
@@ -2775,16 +2801,16 @@ None
             std::type_index(typeid(e)) == std::type_index(typeid(ExpectedExceptionType));
          if (!exactExpectedExceptionTypeThrown)
          {
-            THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedWhatText,
+            THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedWhatTextText,
                THROWS_MakeWhyBody_DerivedButNotExactExpectedExceptionTypeThrown(e),
                fileLine, messagesText, std::forward<MessageTypes>(messages)...);
          }
          const char* const actualExactExceptionWhat = e.what();
-         const int compareResult = expectedWhat.compare(actualExactExceptionWhat);
+         const int compareResult = expectedWhatText.compare(actualExactExceptionWhat);
          if (compareResult != 0)
          {
-            THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedWhatText,
-               THROWS_MakeWhyBody_ExpectedWhatNotEqualToActualWhat(e, expectedWhat, actualExactExceptionWhat),
+            THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedWhatTextText,
+               THROWS_MakeWhyBody_ExpectedWhatNotEqualToActualWhat(e, expectedWhatText, actualExactExceptionWhat),
                fileLine, messagesText, std::forward<MessageTypes>(messages)...);
          }
          return;
@@ -2793,10 +2819,10 @@ None
          ExpectedExceptionType, std::exception>::value, NeverThrownType, std::exception>::type& e)
       {
          const std::string whyBody = THROWS_MakeWhyBody_ExpectedExceptionTypeNotThrown<ExpectedExceptionType>(e);
-         THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedWhatText,
+         THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedWhatTextText,
             whyBody, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
-      THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedWhatText,
+      THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedWhatTextText,
          THROWS_MakeWhyBody_NoExceptionThrown<ExpectedExceptionType>(),
          fileLine, messagesText, std::forward<MessageTypes>(messages)...);
    }
@@ -6045,4 +6071,4 @@ None
       const int exitCode = zenUnitTestRunner.ParseArgsRunTestClassesPrintResults(args);
       return exitCode;
    }
-}
+   }

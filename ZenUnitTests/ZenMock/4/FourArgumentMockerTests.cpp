@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/ZenMock/4/FourArgumentMocker.h"
 #include "ZenUnitTests/ZenMock/Mock/ExceptionThrowerMock.h"
 
 namespace ZenMock

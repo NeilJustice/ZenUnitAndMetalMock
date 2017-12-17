@@ -1,5 +1,4 @@
 #pragma once
-#include "ZenUnit/ZenMock/Exceptions/ExceptionThrower.h"
 #include "ZenUnitTests/ZenMock/Mock/TestingException.h"
 
 namespace ZenMock

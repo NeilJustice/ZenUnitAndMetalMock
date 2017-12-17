@@ -1,7 +1,7 @@
 #pragma once
-
 #include "IgnoredMSVCWallWarnings.h"
 #include <chrono>
+#include <deque>
 #include <functional>
 #include <iomanip>
 #include <iostream>

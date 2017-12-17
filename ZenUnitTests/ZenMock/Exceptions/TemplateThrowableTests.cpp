@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/ZenMock/Exceptions/TemplateThrowable.h"
 
 namespace ZenMock
 {

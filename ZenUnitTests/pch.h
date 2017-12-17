@@ -1,11 +1,10 @@
-#ifndef ZENUNITTEST_PCH
-#define ZENUNITTEST_PCH
-
+#pragma once
 #include "ZenUnit/IgnoredMSVCWallWarnings.h"
 #include <array>
 #include <atomic>
 #include <chrono>
 #include <cstring>
+#include <deque>
 #include <exception>
 #include <functional>
 #include <iostream>
@@ -31,5 +30,3 @@ using namespace ZenUnit;
 #include "ZenUnitTests/Testing/UserType.h"
 #include "ZenUnitTests/Testing/UserTypeNonPrintable.h"
 #include "ZenUnitTests/Utils/RandomPrintMode.h"
-
-#endif

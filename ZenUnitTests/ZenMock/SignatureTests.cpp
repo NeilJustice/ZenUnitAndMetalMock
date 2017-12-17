@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/ZenMock/Signature.h"
 
 namespace ZenMock
 {

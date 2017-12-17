@@ -1,14 +1,4 @@
 #include "pch.h"
-#include "ZenUnit/ZenMock/1/OneArgumentCall.h"
-#include "ZenUnit/ZenMock/10/TenArgumentCall.h"
-#include "ZenUnit/ZenMock/2/TwoArgumentCall.h"
-#include "ZenUnit/ZenMock/3/ThreeArgumentCall.h"
-#include "ZenUnit/ZenMock/4/FourArgumentCall.h"
-#include "ZenUnit/ZenMock/5/FiveArgumentCall.h"
-#include "ZenUnit/ZenMock/6/SixArgumentCall.h"
-#include "ZenUnit/ZenMock/7/SevenArgumentCall.h"
-#include "ZenUnit/ZenMock/8/EightArgumentCall.h"
-#include "ZenUnit/ZenMock/9/NineArgumentCall.h"
 #include "ZenUnitTests/ZenMock/T.h"
 
 namespace ZenMock
