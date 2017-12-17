@@ -73,9 +73,9 @@ File.cpp(1))");
   Failed: SETS_EQUAL(expectedSet, actualSet, messageA, messageB)
 Expected: SetType<T>
   Actual: SetType<T>
- Because: DOES_CONTAIN(expectedElement, actualSet) failed
-Expected: Contains element 1
-  Actual: Contains no such element
+ Because: CONTAINS_ELEMENT(expectedElement, actualSet) failed
+Expected: Collection contains element '1'
+  Actual: Collection does not contain element '1'
  Message: "A", "B"
 File.cpp(1)
 File.cpp(1))");
@@ -93,9 +93,9 @@ File.cpp(1))");
   Failed: SETS_EQUAL(expectedSet, actualSet)
 Expected: SetType<T>
   Actual: SetType<T>
- Because: DOES_CONTAIN(expectedElement, actualSet) failed
-Expected: Contains element 3
-  Actual: Contains no such element
+ Because: CONTAINS_ELEMENT(expectedElement, actualSet) failed
+Expected: Collection contains element '3'
+  Actual: Collection does not contain element '3'
 File.cpp(1)
 File.cpp(1))");
    }
@@ -110,9 +110,9 @@ File.cpp(1))");
   Failed: SETS_EQUAL(expectedSet, actualSet)
 Expected: SetType<T>
   Actual: SetType<T>
- Because: DOES_CONTAIN(expectedElement, actualSet) failed
-Expected: Contains element UserType@1
-  Actual: Contains no such element
+ Because: CONTAINS_ELEMENT(expectedElement, actualSet) failed
+Expected: Collection contains element 'UserType@1'
+  Actual: Collection does not contain element 'UserType@1'
 File.cpp(1)
 File.cpp(1))");
    }

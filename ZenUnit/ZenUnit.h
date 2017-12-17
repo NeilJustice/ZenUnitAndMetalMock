@@ -138,8 +138,8 @@
    ZenUnit::PAIRS_EQUAL_Defined(VRT(expectedPair), VRT(actualPair), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that expectedElement is contained in collection.
-#define DOES_CONTAIN(expectedElement, collection, ...) \
-   ZenUnit::CONTAINS_Defined(VRT(expectedElement), VRT(collection), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+#define CONTAINS_ELEMENT(expectedElement, collection, ...) \
+   ZenUnit::CONTAINS_ELEMENT_Defined(VRT(expectedElement), VRT(collection), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // ZenUnit::Equalizers:
 
@@ -1967,22 +1967,22 @@ None
    }
 
    template<typename ElementType, typename CollectionType, typename... MessageTypes>
-   void CONTAINS_Throw(
+   void CONTAINS_ELEMENT_Throw(
       VRText<CollectionType> expectedElementVRT,
       VRText<ElementType> collectionVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-      const std::string expectedField =
-         "Contains element " + ToStringer::ToString(expectedElementVRT.value);
-      throw Anomaly("DOES_CONTAIN", expectedElementVRT.text, collectionVRT.text, "", messagesText,
+      const std::string toStringedElement = ToStringer::ToString(expectedElementVRT.value);
+      const std::string singleQuotedToStringedElement = String::Concat("'", toStringedElement, "'");
+      throw Anomaly("CONTAINS_ELEMENT", expectedElementVRT.text, collectionVRT.text, "", messagesText,
          Anomaly::Default(),
-         expectedField,
-         "Contains no such element",
+         "Collection contains element " + singleQuotedToStringedElement,
+         "Collection does not contain element " + singleQuotedToStringedElement,
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ElementType, typename CollectionType, typename... MessageTypes>
-   void CONTAINS_Defined(
+   void CONTAINS_ELEMENT_Defined(
       VRText<CollectionType> expectedElementVRT,
       VRText<ElementType> collectionVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
@@ -1993,7 +1993,7 @@ None
          expectedElementVRT.value);
       if (findIter == collectionVRT.value.end())
       {
-         CONTAINS_Throw(
+         CONTAINS_ELEMENT_Throw(
             expectedElementVRT,
             collectionVRT,
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
@@ -2544,7 +2544,7 @@ None
          ARE_EQUAL(expectedSet.size(), actualSet.size());
          for (const auto& expectedElement : expectedSet)
          {
-            DOES_CONTAIN(expectedElement, actualSet);
+            CONTAINS_ELEMENT(expectedElement, actualSet);
          }
       }
       catch (const Anomaly& becauseAnomaly)
@@ -6026,7 +6026,7 @@ None
 #if _WIN32
       const
 #endif
-      std::uniform_int_distribution<unsigned long long>
+         std::uniform_int_distribution<unsigned long long>
          distribution(adjustedInclusiveLowerBound, adjustedInclusiveUpperBound);
       const unsigned long long randomValueUnsignedLongLong = distribution(defaultRandomEngine);
       const T randomValueT = static_cast<T>(randomValueUnsignedLongLong);
@@ -6047,7 +6047,7 @@ None
 #if _WIN32
       const
 #endif
-      std::uniform_real_distribution<float> uniformFloatDistribution(-100.0f, 100.0f);
+         std::uniform_real_distribution<float> uniformFloatDistribution(-100.0f, 100.0f);
       const float randomFloat = uniformFloatDistribution(defaultRandomEngine);
       return randomFloat;
    }
@@ -6059,7 +6059,7 @@ None
 #if _WIN32
       const
 #endif
-      std::uniform_real_distribution<double> uniformDoubleDistribution(-100.0, 100.0);
+         std::uniform_real_distribution<double> uniformDoubleDistribution(-100.0, 100.0);
       const double randomDouble = uniformDoubleDistribution(defaultRandomEngine);
       return randomDouble;
    }
