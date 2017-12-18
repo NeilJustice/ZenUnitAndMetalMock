@@ -175,7 +175,9 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 
 ### ZenUnit Equalizers
 
-ZenUnit has the concept of an Equalizer. Assertion macro ARE_EQUAL(expected, actual) is defined as follows:
+ZenUnit has the concept of an Equalizer for asserting that two values are equal.
+
+`ARE_EQUAL(expected, actual)` is defined as follows:
 
 ```cpp
 using DecayedExpectedType = typename std::decay<ExpectedType>::type;
@@ -185,11 +187,31 @@ std::conditional<std::is_same<DecayedExpectedType, DecayedActualType>::value,
    ZenUnit::TwoTypeEqualizer<DecayedExpectedType, DecayedActualType>>
    ::type::AssertEqual(expected, actual);
 ```
-When the type of `expected` is_same as the type of `actual`, as is the case of the time, ARE_EQUAL hands off to function ZenUnitEqualizer\<DecayedExpectedType\>::AssertEqual(expected, actual) to determine whether expected is equal to actual. This function is by default defined as operator==(expected, actual).
+When the type of `expected` `is_same` as the type of `actual`, as is the case most of the time, `ARE_EQUAL` calls `ZenUnit::Equalizer<DecayedExpectedType>::AssertEqual(expected, actual)`, which is by default defined as expected == actual.
 
-Should you be interested in field-by-field equality assertions on the fields of type T instead of operator== behavior, define ZenUnit::Equalizer\<T\>::AssertEqual(const T& expected, const T& actual) to perform ARE_EQUAL assertions on each field of type T.
+Should you be interested in `ARE_EQUAL(expectedObject, actualObject)` performing field-by-field equality assertions on the fields of type T instead of calling all-or-nothing `operator==`, define a specialization of `ZenUnit::Equalizer\<T\>` with a static `AssertEqual(const T& expected, const T& actual)` function that performs `ARE_EQUAL` assertions on each field of type T.
 
-### ZenUnit Type-Parameterized Test Class Syntax
+Example:
+
+```cpp
+namespace ZenUnit
+{
+   template<>
+   struct Equalizer<year_month_day>
+   {
+      static void AssertEqual(
+         const year_month_day& expectedYearMonthDay,
+         const year_month_day& actualYearMonthDay)
+      {
+         ARE_EQUAL(expectedYearMonthDay.year(), actualYearMonthDay.year());
+         ARE_EQUAL(expectedYearMonthDay.month(), actualYearMonthDay.month());
+         ARE_EQUAL(expectedYearMonthDay.day(), actualYearMonthDay.day());
+      }
+   };
+}
+```
+
+### ZenUnit Type-Parameterized Test Classes
 
 ```cpp
 #include "ZenUnit/ZenUnit.h"
@@ -462,4 +484,6 @@ int main(int argc, char* argv[])
 |---|
 |`ZEN(ZenMockAssertion)` // ZEN adorns error messages with \_\_FILE\_\_ and \_\_LINE\_\_ information.|
 
+### License
 
+Public domain
