@@ -3,6 +3,16 @@
 #include "ZenUnit/ZenUnit.h"
 #include <deque>
 
+#ifdef _WIN32
+#pragma warning(push)
+#pragma warning(disable: 4514) // 'ZenMock::Signature::Function': unreferenced inline function has been removed
+#pragma warning(disable: 4625) // 'ZenMock::VoidZeroArgumentMocker': copy constructor was implicitly defined as deleted	ZenUnit
+#pragma warning(disable: 4626) // 'ZenMock::VoidZeroArgumentMocker': assignment operator was implicitly defined as deleted
+#pragma warning(disable: 4820) // 'ZenMock::ZenMocker<MockableExceptionThrowerType>': '5' bytes padding added after data member 'ZenMock::ZenMocker<MockableExceptionThrowerType>::_asserted'
+#pragma warning(disable: 5026) // 'ZenMock::VoidZeroArgumentMocker': move constructor was implicitly defined as deleted
+#pragma warning(disable: 5027) // 'ZenMock::VoidZeroArgumentMocker': move assignment operator was implicitly defined as deleted
+#endif
+
 namespace ZenMock
 {
    class Throwable
@@ -61,6 +71,10 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          return _what.c_str();
       }
 
+      FunctionAlreadyExpectedException(const FunctionAlreadyExpectedException&) = delete;
+      FunctionAlreadyExpectedException& operator=(const FunctionAlreadyExpectedException&) = delete;
+      FunctionAlreadyExpectedException(FunctionAlreadyExpectedException&&) = default;
+      FunctionAlreadyExpectedException& operator=(FunctionAlreadyExpectedException&&) = delete;
       virtual ~FunctionAlreadyExpectedException() = default;
    };
 
@@ -90,8 +104,6 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
       {
          return _what.c_str();
       }
-
-      virtual ~UnexpectedCallException() = default;
    private:
       template<typename ArgType, typename... SubsequentArgTypes>
       static void AppendToStringedArgs(
@@ -108,6 +120,12 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
       static void AppendToStringedArgs(std::ostringstream&, size_t)
       {
       }
+   public:
+      UnexpectedCallException(const UnexpectedCallException&) = delete;
+      UnexpectedCallException& operator=(const UnexpectedCallException&) = delete;
+      UnexpectedCallException(UnexpectedCallException&&) = default;
+      UnexpectedCallException& operator=(UnexpectedCallException&&) = delete;
+      virtual ~UnexpectedCallException() = default;
    };
 
    class UnsupportedAssertCalledZeroTimesException : public ZenUnit::ZenMockException
@@ -136,6 +154,10 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          return _what.c_str();
       }
 
+      UnsupportedAssertCalledZeroTimesException(const UnsupportedAssertCalledZeroTimesException&) = delete;
+      UnsupportedAssertCalledZeroTimesException& operator=(const UnsupportedAssertCalledZeroTimesException&) = delete;
+      UnsupportedAssertCalledZeroTimesException(UnsupportedAssertCalledZeroTimesException&&) = default;
+      UnsupportedAssertCalledZeroTimesException& operator=(UnsupportedAssertCalledZeroTimesException&&) = delete;
       virtual ~UnsupportedAssertCalledZeroTimesException() = default;
    };
 
@@ -226,10 +248,10 @@ catch (const ZenUnit::Anomaly& zenWrappedAnomaly) \
       std::function<ZenUnit::ZenUnitArgs()> call_TestRunner_GetArgs;
       bool _zenMockExceptionIsInFlight;
    protected:
-      MockableExceptionThrowerType _exceptionThrower;
       bool _expected;
       bool _asserted;
       const std::string ZenMockedFunctionSignature;
+      MockableExceptionThrowerType _exceptionThrower;
    public:
       explicit ZenMocker(std::string zenMockedFunctionSignature)
          : call_exit(::exit)
@@ -240,6 +262,11 @@ catch (const ZenUnit::Anomaly& zenWrappedAnomaly) \
          , ZenMockedFunctionSignature(std::move(zenMockedFunctionSignature))
       {
       }
+
+      //ZenMocker(const ZenMocker&) = delete;
+      ZenMocker& operator=(const ZenMocker&) = delete;
+      //ZenMocker(ZenMocker&&) = delete;
+      //ZenMocker& operator=(ZenMocker&&) = delete;
 
       template<typename ExceptionType, typename... ExceptionArgTypes>
       void ExpectAndThrow(ExceptionArgTypes&&... exceptionArgs)
@@ -4056,6 +4083,10 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::ZenMockVoidTenArgs<
          return what;
       }
 
+      ReturnValueMustBeSpecifiedException(const ReturnValueMustBeSpecifiedException&) = delete;
+      ReturnValueMustBeSpecifiedException& operator=(const ReturnValueMustBeSpecifiedException&) = delete;
+      ReturnValueMustBeSpecifiedException(ReturnValueMustBeSpecifiedException&&) = default;
+      ReturnValueMustBeSpecifiedException& operator=(ReturnValueMustBeSpecifiedException&&) = delete;
       virtual ~ReturnValueMustBeSpecifiedException() = default;
    };
 
@@ -4408,10 +4439,7 @@ namespace ZenUnit
          ARE_EQUAL(expectedTenArgumentCall.tenthArgument, actualTenArgumentCall.tenthArgument);
       }
    };
-}
 
-namespace ZenUnit
-{
    template<typename ArgType>
    struct Printer<ZenMock::OneArgumentCallRef<ArgType>>
    {
@@ -4635,3 +4663,7 @@ namespace Zen
          "ZenMocked classes must define a virtual destructor so as to not introduce a memory leak as detected by Clang AddressSanitizer.");
    };
 }
+
+#ifdef _WIN32
+#pragma warning(pop)
+#endif

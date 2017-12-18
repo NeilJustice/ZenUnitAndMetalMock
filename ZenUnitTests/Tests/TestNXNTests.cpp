@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestResultMock.h"
+#include "ZenUnitTests/Testing/RandomPrintMode.h"
 #include "ZenUnitTests/Tests/TestingTestClass.h"
 
 namespace ZenUnit

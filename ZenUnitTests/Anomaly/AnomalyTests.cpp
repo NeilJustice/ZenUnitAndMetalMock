@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
+#include "ZenUnitTests/Testing/UserType.h"
 
 namespace ZenUnit
 {

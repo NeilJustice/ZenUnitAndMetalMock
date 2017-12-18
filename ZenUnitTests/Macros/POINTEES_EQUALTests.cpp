@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "ZenUnitTests/Testing/UserType.h"
 
 TESTS(POINTEES_EQUALTests)
 AFACT(ExpectedPointerNullptr_ActualPointerNullptr_DoesNotThrow)

@@ -2,18 +2,17 @@
 
 #ifdef _WIN32
 #pragma warning(push)
-#pragma warning(disable: 4365) // 'return': conversion from 'int' to 'std::char_traits<wchar_t>::int_type', signed/unsigned mismatch
-#pragma warning(disable: 4371) // layout of class may have changed from a previous version of the compiler due to better packing of member 'MemberName'
-#pragma warning(disable: 4514) // unreferenced function has been removed
-#pragma warning(disable: 4571) // catch(...) semantics changed since Visual C++ 7.1; structured exceptions (SEH) are no longer caught
-#pragma warning(disable: 4625) // copy constructor was implicitly defined as deleted
-#pragma warning(disable: 4626) // assignment operator was implicitly defined as deleted
-#pragma warning(disable: 4710) // function not inlined
-#pragma warning(disable: 4774) // 'sprintf_s' : format string expected in argument 3 is not a string literal
-#pragma warning(disable: 4820) // 'N' bytes padding added after data member
-#pragma warning(disable: 5026) // move constructor was implicitly defined as deleted
-#pragma warning(disable: 5027) // move assignment operator was implicitly defined as deleted
-#pragma warning(disable: 5039) // 'TpSetCallbackCleanupGroup': pointer or reference to potentially throwing function passed to extern C function under - EHc.Undefined behavior may occur if this function throws an exception.
+#pragma warning(disable: 4365) // 'argument': conversion from 'std::_Atomic_integral_t' to 'long', signed / unsigned mismatch - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\memory
+#pragma warning(disable: 4514) // 'std::random_device::entropy': unreferenced inline function has been removed	ZenUnit - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\random
+#pragma warning(disable: 4571) // Informational : catch (...) semantics changed since Visual C++ 7.1; structured exceptions(SEH) are no longer caught - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\xlocale
+#pragma warning(disable: 4625) // 'std::_Generic_error_category': copy constructor was implicitly defined as deleted	- C:\VS2017\VC\Tools\MSVC\14.12.25827\include\system_error
+#pragma warning(disable: 4626) // 'std::_Generic_error_category': assignment operator was implicitly defined as deleted	- C:\VS2017\VC\Tools\MSVC\14.12.25827\include\system_error
+#pragma warning(disable: 4710) // 'int sprintf_s(char *const ,const ::size_t,const char *const ,...)': function not inlined - C:\Program Files(x86)\Windows Kits\10\Include\10.0.16299.0\ucrt\stdio.h
+#pragma warning(disable: 4774) // '_scprintf' : format string expected in argument 1 is not a string literal - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\string
+#pragma warning(disable: 4820) // 'std::error_condition': '4' bytes padding added after data member 'std::error_condition::_Myval' - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\system_error
+#pragma warning(disable: 5026) // 'std::_Generic_error_category': move constructor was implicitly defined as deleted	- C:\VS2017\VC\Tools\MSVC\14.12.25827\include\system_error
+#pragma warning(disable: 5027) // 'std::_Generic_error_category': move assignment operator was implicitly defined as deleted - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\system_error
+#pragma warning(disable: 5039) // 'TpSetCallbackCleanupGroup': pointer or reference to potentially throwing function passed to extern C function under - EHc.Undefined behavior may occur if this function throws an exception - C:\Program Files(x86)\Windows Kits\10\Include\10.0.16299.0\um\winbase.h
 #endif
 
 #include <chrono>
@@ -36,7 +35,6 @@
 #include <cxxabi.h>
 #include <unistd.h>
 #elif _WIN32
-#pragma warning(pop)
 #define WIN32_LEAN_AND_MEAN // ~40% faster Windows.h compile speed
 #define NOGDI // ~10% faster Windows.h compile speed
 #define NOMINMAX
@@ -428,6 +426,18 @@ namespace ZenUnit
          return os;
       }
    };
+
+#ifdef __linux__
+#if __clang_major__ == 3 && __clang_minor__ == 9
+   static_assert(sizeof(FileLine) == 16);
+#endif
+#elif defined(_WIN64)
+#ifdef _DEBUG
+   static_assert(sizeof(FileLine) == 16);
+#elif NDEBUG
+   static_assert(sizeof(FileLine) == 16);
+#endif
+#endif
 
    template<typename T>
    struct ZenUnitTestingMode
@@ -1743,6 +1753,11 @@ None
 
       VRText(const T& value, const char* text) noexcept
          : value(value), text(text) {}
+
+      //VRText(const VRText&) = delete;
+      //VRText& operator=(const VRText&) = delete;
+      //VRText(VRText&&) = delete;
+      //VRText& operator=(VRText&&) = delete;
    };
 
    template<size_t N>
@@ -3136,7 +3151,14 @@ None
       CallResult testBodyCallResult;
       CallResult cleanupCallResult;
       CallResult destructorCallResult;
+#ifdef _WIN32
+#pragma warning(push)
+#pragma warning(disable: 4371) // 'ZenUnit::TestResult': layout of class may have changed from a previous version of the compiler due to better packing of member 'ZenUnit::TestResult::responsibleCallResultField'
+#endif
       CallResult TestResult::* responsibleCallResultField;
+#ifdef _WIN32
+#pragma warning(pop)
+#endif
       TestOutcome testOutcome;
       unsigned milliseconds;
       unsigned short testCaseIndex;
@@ -6079,3 +6101,7 @@ None
       return exitCode;
    }
 }
+
+#ifdef _WIN32
+#pragma warning(pop)
+#endif

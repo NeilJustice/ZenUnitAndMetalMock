@@ -12,7 +12,6 @@ file(GLOB_RECURSE Sources *.h *.cpp)
 add_library(ZenUnit ${Sources})
 
 install(DIRECTORY .
-        CONFIGURATIONS Debug
         DESTINATION include/ZenUnit/ZenUnit
-        FILES_MATCHING REGEX "\\.h$|\\.cpp$"
+        FILES_MATCHING REGEX "ZenUnit.h|ZenMock.h"
         PATTERN REGEX "CMakeFiles|Release|RelWithDebInfo|MinSizeRel|ZenUnit.dir" EXCLUDE)

@@ -2,6 +2,7 @@
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestClassResultMock.h"
 #include "ZenUnitTests/Tests/Mock/TestMock.h"
+#include "ZenUnitTests/Testing/RandomPrintMode.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/ExtraArgMemberForEacherMock.h"
 
 namespace ZenUnit
