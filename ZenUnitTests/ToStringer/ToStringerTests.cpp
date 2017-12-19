@@ -123,7 +123,7 @@ namespace ZenUnit
       const int* const constIntPointerNullptrConst = nullptr;
       ARE_EQUAL("nullptr", ToStringer::ToString(constIntPointerNullptrConst));
 
-   #ifdef __linux__
+#if defined __linux__
       int* intPointer1 = reinterpret_cast<int*>(0x1);
       ARE_EQUAL("0x1", ToStringer::ToString(intPointer1));
       int* intPointerFF = reinterpret_cast<int*>(0xFF);
@@ -134,7 +134,7 @@ namespace ZenUnit
       ARE_EQUAL("0xffffffffffffffff", ToStringer::ToString(intPointerMaxAsBinary));
       const int* intPointerMid = reinterpret_cast<const int*>(0x1111111111111111);
       ARE_EQUAL("0x1111111111111111", ToStringer::ToString(intPointerMid));
-   #elif _WIN64
+#elif defined _WIN64
       const int* const intPointer1 = reinterpret_cast<const int*>(0x1);
       ARE_EQUAL("0x0000000000000001", ToStringer::ToString(intPointer1));
       const int* const intPointerFF = reinterpret_cast<const int*>(0xFF);
@@ -145,7 +145,7 @@ namespace ZenUnit
       ARE_EQUAL("0xFFFFFFFFFFFFFFFF", ToStringer::ToString(intPointerMaxAsBinary));
       const int* intPointerMid = reinterpret_cast<const int*>(0x1111111111111111);
       ARE_EQUAL("0x1111111111111111", ToStringer::ToString(intPointerMid));
-   #elif _WIN32
+#elif defined _WIN32
       const int* const intPointer1 = reinterpret_cast<const int*>(0x1);
       ARE_EQUAL("0x00000001", ToStringer::ToString(intPointer1));
       const int* const intPointerFF = reinterpret_cast<const int*>(0xFF);
@@ -156,7 +156,7 @@ namespace ZenUnit
       ARE_EQUAL("0xFFFFFFFF", ToStringer::ToString(intPointerMaxAsBinary));
       const int* intPointerMid = reinterpret_cast<const int*>(0x1111111111111111);
       ARE_EQUAL("0x11111111", ToStringer::ToString(intPointerMid));
-   #endif
+#endif
    }
 
    TEST(ToString_UniquePtr_ReturnsPointeeAddress)
@@ -198,13 +198,13 @@ namespace ZenUnit
 
    static const char* MemoryAddressPattern()
    {
-   #ifdef __linux__
+#if defined __linux__
       return R"(0x\w+)";
-   #elif _WIN64
+#elif defined _WIN64
       return R"(0x\w\w\w\w\w\w\w\w\w\w\w\w\w\w\w\w)";
-   #elif _WIN32
+#elif defined _WIN32
       return R"(0x\w\w\w\w\w\w\w\w)";
-   #endif
+#endif
    }
 
    TEST(ToString_SharedPtr_ReturnsPointeeAddress)
@@ -287,13 +287,13 @@ namespace ZenUnit
       ARE_EQUAL("(nullptr, nullptr)", ToStringer::ToString(pair<int*, int*>()));
       ARE_EQUAL("(nullptr, nullptr)", ToStringer::ToString(pair<const int*, const int*>()));
       ARE_EQUAL("(\"hello1\", \"hello2\")", ToStringer::ToString(pair<string, string>("hello1", "hello2")));
-   #ifdef __linux__
+#if defined __linux__
       ARE_EQUAL("(0x1, 5)", ToStringer::ToString(pair<int*, int>(reinterpret_cast<int*>(0x1), 5)));
-   #elif _WIN64
+#elif defined _WIN64
       ARE_EQUAL("(0x0000000000000001, 5)", ToStringer::ToString(pair<int*, int>(reinterpret_cast<int*>(0x1), 5)));
-   #elif _WIN32
+#elif defined _WIN32
       ARE_EQUAL("(0x00000001, 5)", ToStringer::ToString(pair<int*, int>(reinterpret_cast<int*>(0x1), 5)));
-   #endif
+#endif
    }
 
    TEST(ToString_TypeHasNeitherOStreamInsertionOperatorOrZenUnitPrint_ReturnsRTTINameInBrackets)

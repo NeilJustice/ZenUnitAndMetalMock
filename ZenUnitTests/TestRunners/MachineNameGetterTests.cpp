@@ -1,5 +1,5 @@
 #include "pch.h"
-#ifdef __linux__
+#if defined __linux__
 #include <unistd.h>
 #endif
 
@@ -8,7 +8,7 @@ namespace ZenUnit
    TESTS(MachineNameGetterTests)
    AFACT(Constructor_SetsGetHostNameOrGetComputerNameFunctions)
    AFACT(GetMachineName_ReturnsEitherCallToGetLinuxOrGetWindowsMachineName)
-#ifdef __linux__
+#if defined __linux__
    AFACT(GetLinuxMachineName_ReturnsResultOfgethostname)
 #elif _WIN32
    AFACT(GetWindowsMachineName_ReturnsResultOfGetComputerName)
@@ -18,7 +18,7 @@ namespace ZenUnit
    TEST(Constructor_SetsGetHostNameOrGetComputerNameFunctions)
    {
       MachineNameGetter machineNameGetter;
-#ifdef __linux__
+#if defined __linux__
       STD_FUNCTION_TARGETS(::gethostname, machineNameGetter.call_gethostname);
 #elif _WIN32
       STD_FUNCTION_TARGETS(::GetComputerName, machineNameGetter.call_GetComputerName);
@@ -27,7 +27,7 @@ namespace ZenUnit
 
    struct MachineNameGetterSelfMocked : public Zen::Mock<MachineNameGetter>
    {
-#ifdef __linux__
+#if defined __linux__
       ZENMOCK_NONVOID0_CONST(string, GetLinuxMachineName)
 #elif _WIN32
       ZENMOCK_NONVOID0_CONST(string, GetWindowsMachineName)
@@ -35,7 +35,7 @@ namespace ZenUnit
    } _machineNameGetterSelfMocked;
 
    MachineNameGetter _machineNameGetter;
-#ifdef __linux__
+#if defined __linux__
    ZENMOCK_NONVOID2_FREE(int, gethostname, char*, size_t)
 #elif _WIN32
    ZENMOCK_NONVOID2_FREE(BOOL, GetComputerName, LPSTR, LPDWORD)
@@ -43,14 +43,14 @@ namespace ZenUnit
 
    STARTUP
    {
-#ifdef __linux__
+#if defined __linux__
       _machineNameGetter.call_gethostname = ZENMOCK_BIND2(gethostname_ZenMock);
 #elif _WIN32
       _machineNameGetter.call_GetComputerName = ZENMOCK_BIND2(GetComputerName_ZenMock);
 #endif
    }
 
-#ifdef __linux__
+#if defined __linux__
    TEST(GetMachineName_ReturnsEitherCallToGetLinuxOrGetWindowsMachineName)
    {
       const string machineName = ZenUnit::Random<string>();

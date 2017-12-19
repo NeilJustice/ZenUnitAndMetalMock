@@ -25,22 +25,23 @@ namespace ZenUnit
    TEST(GetName_NonClassNonStructType_ReturnsTypeName)
    {
       ARE_EQUAL("int", *Type::GetName(1));
-#ifdef __linux__
+#if defined __linux__
       ARE_EQUAL("decltype(nullptr)", *Type::GetName(nullptr));
       ARE_EQUAL("char [1]", *Type::GetName(""));
       ARE_EQUAL("char [2]", *Type::GetName("a"));
       const char* const ccp = "hello";
       ARE_EQUAL("char const*", *Type::GetName(ccp));
-#elif _WIN32
+#elif defined _WIN32
       ARE_EQUAL("std::nullptr_t", *Type::GetName(nullptr));
       ARE_EQUAL("char const [1]", *Type::GetName(""));
       ARE_EQUAL("char const [2]", *Type::GetName("a"));
       const char* const ccp = "hello";
-   #if _WIN64
+#endif
+
+#if defined _WIN64
       ARE_EQUAL("char const * __ptr64", *Type::GetName(ccp));
-   #elif _WIN32
+#elif defined _WIN32
       ARE_EQUAL("char const *", *Type::GetName(ccp));
-   #endif
 #endif
    }
 
@@ -80,20 +81,21 @@ namespace ZenUnit
    TEST(GetNameT_NonClassNonStructType_ReturnsTypeName)
    {
       ARE_EQUAL("int", *Type::GetName<int>());
-#ifdef __linux__
+#if defined __linux__
       ARE_EQUAL("decltype(nullptr)", *Type::GetName<nullptr_t>());
       ARE_EQUAL("char [1]", *Type::GetName<decltype("")>());
       ARE_EQUAL("char [2]", *Type::GetName<decltype("a")>());
       ARE_EQUAL("char const*", *Type::GetName<const char*>());
-#elif _WIN32
+#elif defined _WIN32
       ARE_EQUAL("std::nullptr_t", *Type::GetName<nullptr_t>());
       ARE_EQUAL("char const [1]", *Type::GetName<decltype("")>());
       ARE_EQUAL("char const [2]", *Type::GetName<decltype("a")>());
-   #if _WIN64
+#endif
+
+#if defined _WIN64
       ARE_EQUAL("char const * __ptr64", *Type::GetName<const char*>());
-   #elif _WIN32
+#elif defined _WIN32
       ARE_EQUAL("char const *", *Type::GetName<const char*>());
-   #endif
 #endif
    }
 
@@ -120,13 +122,13 @@ namespace ZenUnit
       {
          throw logic_error("message");
       }
-   #ifdef _WIN32
+   #if defined _WIN32
    #pragma warning(push)
    // Disable unreference local variable because MSVC does not count decltype(localVariable) as referencing localVariable
    #pragma warning(disable: 4101)
    #endif
       catch (const exception& e)
-   #ifdef _WIN32
+   #if defined _WIN32
    #pragma warning(pop)
    #endif
       {

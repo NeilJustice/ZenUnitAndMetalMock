@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef _WIN32
+#if defined _WIN32
 #pragma warning(push)
 #pragma warning(disable: 4365) // 'argument': conversion from 'std::_Atomic_integral_t' to 'long', signed / unsigned mismatch - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\memory
 #pragma warning(disable: 4514) // 'std::random_device::entropy': unreferenced inline function has been removed	ZenUnit - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\random
@@ -30,7 +30,7 @@
 #include <unordered_set>
 #include <vector>
 
-#ifdef __linux__
+#if defined __linux__
 #include <climits>
 #include <cxxabi.h>
 #include <unistd.h>
@@ -433,12 +433,12 @@ namespace ZenUnit
       }
    };
 
-#ifdef __linux__
+#if defined __linux__
 #if __clang_major__ == 3 && __clang_minor__ == 9
    static_assert(sizeof(FileLine) == 16);
 #endif
 #elif defined(_WIN64)
-#ifdef _DEBUG
+#if defined _DEBUG
    static_assert(sizeof(FileLine) == 16);
 #elif NDEBUG
    static_assert(sizeof(FileLine) == 16);
@@ -552,7 +552,7 @@ namespace ZenUnit
 
       static int IgnoreCaseStrcmp(const char* string1, const char* string2) noexcept
       {
-#ifdef __linux__
+#if defined __linux__
          const int strcmpResult = strcasecmp(string1, string2);
 #elif _WIN32
          const int strcmpResult = _strcmpi(string1, string2);
@@ -645,12 +645,12 @@ namespace ZenUnit
       unsigned maxtotalseconds = 0;
    };
 
-#ifdef __linux__
+#if defined __linux__
 #if __clang_major__ == 3 && __clang_minor__ == 9
    static_assert(sizeof(ZenUnitArgs) == 88);
 #endif
 #elif defined(_WIN64)
-#ifdef _DEBUG
+#if defined _DEBUG
    static_assert(sizeof(ZenUnitArgs) == 104);
 #elif NDEBUG
    static_assert(sizeof(ZenUnitArgs) == 88);
@@ -689,7 +689,7 @@ namespace ZenUnit
    private:
       std::function<int(FILE*)> call_fileno;
       std::function<int(int)> call_isatty;
-#ifdef _WIN32
+#if defined _WIN32
       std::function<HANDLE(DWORD)> call_GetStdHandle;
       std::function<BOOL(HANDLE, WORD)> call_SetConsoleTextAttribute;
 #endif
@@ -697,14 +697,14 @@ namespace ZenUnit
       bool _supportsColorSet;
    public:
       ConsoleColorer() noexcept
-#ifdef _WIN32
+#if defined _WIN32
          : call_fileno(::_fileno)
          , call_isatty(::_isatty)
 #else
          : call_fileno(::fileno)
          , call_isatty(::isatty)
 #endif
-#ifdef _WIN32
+#if defined _WIN32
          , call_GetStdHandle(::GetStdHandle)
          , call_SetConsoleTextAttribute(::SetConsoleTextAttribute)
 #endif
@@ -755,7 +755,7 @@ namespace ZenUnit
 
       virtual void SetTextColor(Color color) const
       {
-#ifdef __linux__
+#if defined __linux__
          const char* linuxColor = ColorToLinuxColor(color);
          std::cout << linuxColor;
 #elif _WIN32
@@ -779,7 +779,7 @@ namespace ZenUnit
       Console() noexcept
          : _consoleColorer(std::make_unique<ConsoleColorer>())
          , call_exit(::exit)
-#ifdef _WIN32
+#if defined _WIN32
          , call_IsDebuggerPresent(::IsDebuggerPresent)
 #endif
       {
@@ -886,7 +886,7 @@ namespace ZenUnit
 
       virtual bool DebuggerIsPresent() const
       {
-#ifdef __linux__
+#if defined __linux__
          return false;
 #elif _WIN32
          const int isDebuggerPresentReturnValue = call_IsDebuggerPresent();
@@ -924,7 +924,7 @@ namespace ZenUnit
          decltype(SFINAE(std::declval<T>()))>::value;
    };
 
-#ifdef __linux__
+#if defined __linux__
    template<typename T>
    const bool has_to_string<T>::value;
 #endif
@@ -941,7 +941,7 @@ namespace ZenUnit
          decltype(SFINAE(std::declval<std::ostream&>(), std::declval<T>()))>::value;
    };
 
-#ifdef __linux__
+#if defined __linux__
    template<typename T>
    const bool has_ostream_left_shift<T>::value;
 #endif
@@ -970,7 +970,7 @@ namespace ZenUnit
          decltype(SFINAE<T>(std::declval<std::ostream&>(), std::declval<T>()))>::value;
    };
 
-#ifdef __linux__
+#if defined __linux__
    template<typename T>
    const bool has_ZenUnitPrinter<T>::value;
 #endif
@@ -1021,7 +1021,7 @@ namespace ZenUnit
          }
       }
 
-#ifdef __linux__
+#if defined __linux__
       static std::string Demangle(const char* mangledTypeName)
       {
          int demangleStatus = -1;
@@ -1216,7 +1216,7 @@ namespace ZenUnit
          std::ostringstream oss;
          // Clang and GCC ostringstream operator<< on a pointer: "0x<PointerAddress>"
          //          MSVC ostringstream operator<< on a pointer: "<PointerAddress>"
-#ifdef _WIN32
+#if defined _WIN32
          oss << "0x";
 #endif
          oss << pointer;
@@ -1228,14 +1228,14 @@ namespace ZenUnit
       static void DoToStringConcat(std::ostringstream& oss, const T& value, Types&&... values)
       {
          oss << ToString(value);
-#ifdef _WIN32
+#if defined _WIN32
          // C26496: The variable 'numberOfRemainingValues' is assigned only once, mark it as const.
          // When variable 'numberOfRemainingValues' is marked const: C4127	conditional expression is constant
 #pragma warning(push)
 #pragma warning(suppress: 26496)
 #endif
          size_t numberOfRemainingValues = sizeof...(values);
-#ifdef _WIN32
+#if defined _WIN32
 #pragma warning(pop)
 #endif
          if (numberOfRemainingValues > 0)
@@ -1425,12 +1425,12 @@ namespace ZenUnit
       }
    };
 
-#ifdef __linux__
+#if defined __linux__
 #if __clang_major__ == 3 && __clang_minor__ == 9
    static_assert(sizeof(Anomaly) == 184);
 #endif
 #elif defined(_WIN64)
-#ifdef _DEBUG
+#if defined _DEBUG
    static_assert(sizeof(Anomaly) == 240);
 #elif NDEBUG
    static_assert(sizeof(Anomaly) == 200);
@@ -2939,12 +2939,12 @@ None
       }
    };
 
-#ifdef __linux__
+#if defined __linux__
 #if __clang_major__ == 3 && __clang_minor__ == 9
    static_assert(sizeof(AnomalyOrException) == 40);
 #endif
 #elif defined(_WIN64)
-#ifdef _DEBUG
+#if defined _DEBUG
    static_assert(sizeof(AnomalyOrException) == 40);
 #elif NDEBUG
    static_assert(sizeof(AnomalyOrException) == 40);
@@ -3012,12 +3012,12 @@ None
       }
    };
 
-#ifdef __linux__
+#if defined __linux__
 #if __clang_major__ == 3 && __clang_minor__ == 9
    static_assert(sizeof(FullTestName) == 24);
 #endif
 #elif defined(_WIN64)
-#ifdef _DEBUG
+#if defined _DEBUG
    static_assert(sizeof(FullTestName) == 24);
 #elif NDEBUG
    static_assert(sizeof(FullTestName) == 24);
@@ -3113,12 +3113,12 @@ None
       }
    };
 
-#ifdef __linux__
+#if defined __linux__
 #if __clang_major__ == 3 && __clang_minor__ == 9
    static_assert(sizeof(CallResult) == 24);
 #endif
 #elif defined(_WIN64)
-#ifdef _DEBUG
+#if defined _DEBUG
    static_assert(sizeof(CallResult) == 24);
 #elif NDEBUG
    static_assert(sizeof(CallResult) == 24);
@@ -3133,12 +3133,12 @@ None
       CallResult testBodyCallResult;
       CallResult cleanupCallResult;
       CallResult destructorCallResult;
-#ifdef _WIN32
+#if defined _WIN32
 #pragma warning(push)
 #pragma warning(disable: 4371) // 'ZenUnit::TestResult': layout of class may have changed from a previous version of the compiler due to better packing of member 'ZenUnit::TestResult::responsibleCallResultField'
 #endif
       CallResult TestResult::* responsibleCallResultField;
-#ifdef _WIN32
+#if defined _WIN32
 #pragma warning(pop)
 #endif
       TestOutcome testOutcome;
@@ -3353,12 +3353,12 @@ None
       }
    };
 
-#ifdef __linux__
+#if defined __linux__
 #if __clang_major__ == 3 && __clang_minor__ == 9
    static_assert(sizeof(TestResult) == 176);
 #endif
 #elif defined(_WIN64)
-#ifdef _DEBUG
+#if defined _DEBUG
    static_assert(sizeof(TestResult) == 168);
 #elif NDEBUG
    static_assert(sizeof(TestResult) == 168);
@@ -3473,12 +3473,12 @@ None
       }
    };
 
-#ifdef __linux__
+#if defined __linux__
 #if __clang_major__ == 3 && __clang_minor__ == 9
    static_assert(sizeof(TestClassResult) == 32);
 #endif
 #elif defined(_WIN64)
-#ifdef _DEBUG
+#if defined _DEBUG
    static_assert(sizeof(TestClassResult) == 40);
 #elif NDEBUG
    static_assert(sizeof(TestClassResult) == 32);
@@ -3523,7 +3523,7 @@ None
       virtual tm TMNow() const
       {
          const std::chrono::time_point<std::chrono::system_clock> nowTimePoint = std::chrono::system_clock::now();
-#ifdef __linux__
+#if defined __linux__
          tm* tmNow = nullptr;
          long nowTimeT = std::chrono::system_clock::to_time_t(nowTimePoint);
          tmNow = localtime(&nowTimeT);
@@ -3585,14 +3585,14 @@ None
    {
       friend class MachineNameGetterTests;
    private:
-#ifdef __linux__
+#if defined __linux__
       std::function<int(char*, size_t)> call_gethostname;
 #elif _WIN32
       std::function<BOOL(LPSTR, LPDWORD)> call_GetComputerName;
 #endif
    public:
       MachineNameGetter() noexcept
-#ifdef __linux__
+#if defined __linux__
          : call_gethostname(::gethostname)
 #elif _WIN32
          : call_GetComputerName(::GetComputerName)
@@ -3605,14 +3605,14 @@ None
 
       virtual std::string GetMachineName() const
       {
-#ifdef __linux__
+#if defined __linux__
          return GetLinuxMachineName();
 #elif _WIN32
          return GetWindowsMachineName();
 #endif
       }
    private:
-#ifdef __linux__
+#if defined __linux__
       virtual std::string GetLinuxMachineName() const
       {
          char hostname[HOST_NAME_MAX + 1];
@@ -4527,12 +4527,12 @@ None
       }
    };
 
-#ifdef __linux__
+#if defined __linux__
 #if __clang_major__ == 3 && __clang_minor__ == 9
    static_assert(sizeof(Test) == 64);
 #endif
 #elif defined(_WIN64)
-#ifdef _DEBUG
+#if defined _DEBUG
    static_assert(sizeof(Test) == 64);
 #elif NDEBUG
    static_assert(sizeof(Test) == 64);
@@ -6036,6 +6036,6 @@ None
    }
 }
 
-#ifdef _WIN32
+#if defined _WIN32
 #pragma warning(pop)
 #endif

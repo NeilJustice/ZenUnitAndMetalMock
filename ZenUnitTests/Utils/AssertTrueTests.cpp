@@ -32,7 +32,7 @@ namespace ZenUnit
    TEST(assert_true_IsFalse_FromOperatorParentheses_ThrowsLogicError)
    {
       string expectedOperatorParenthesesName;
-   #ifdef __linux__
+   #if defined __linux__
       expectedOperatorParenthesesName = R"(operator\(\)\(\))";
    #elif _WIN32
       expectedOperatorParenthesesName = R"(operator \(\)\(\))";

@@ -3,7 +3,7 @@
 #include "ZenUnit/ZenUnit.h"
 #include <deque>
 
-#ifdef _WIN32
+#if defined _WIN32
 #pragma warning(push)
 #pragma warning(disable: 4514) // 'ZenMock::Signature::Function': unreferenced inline function has been removed
 #pragma warning(disable: 4625) // 'ZenMock::VoidZeroArgumentMocker': copy constructor was implicitly defined as deleted	ZenUnit
@@ -4652,6 +4652,6 @@ namespace Zen
    };
 }
 
-#ifdef _WIN32
+#if defined _WIN32
 #pragma warning(pop)
 #endif

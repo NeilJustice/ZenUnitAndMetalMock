@@ -48,7 +48,7 @@ File.cpp(1))";
       expectedWhatPatternBuilder <<
          " Because: ARE_NOT_SAME(expectedObject, actualObject) failed\n" <<
 "Expected: Not ";
-#ifdef __linux__
+#if defined __linux__
      expectedWhatPatternBuilder << notExpectedAddress << R"(
   Actual:     )" << actualAddress;
 #elif _WIN32

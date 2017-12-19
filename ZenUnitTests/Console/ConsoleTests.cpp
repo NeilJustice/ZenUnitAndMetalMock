@@ -17,7 +17,7 @@ namespace ZenUnit
    FACTS(NonMinimalWriteStringsCommaSeparated_PrintModeNotMinimal_CallsDoWriteStringsCommaSeparated)
    FACTS(DoWriteStringsCommaSeparated_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset)
    FACTS(WaitForEnterKeyIfDebuggerPresentOrValueTrue_WritesPressEnterKeyAndGetsCharIfDebuggerPresentOrValueTrue)
-#ifdef _WIN32
+#if defined _WIN32
    FACTS(DebuggerIsPresent_ReturnsTrueIfIsDebuggerPresentFunctionReturns1)
 #endif
    EVIDENCE
@@ -45,7 +45,7 @@ namespace ZenUnit
       Console console;
       POINTER_WAS_NEWED(console._consoleColorer);
       STD_FUNCTION_TARGETS(::exit, console.call_exit);
-   #ifdef _WIN32
+   #if defined _WIN32
       STD_FUNCTION_TARGETS(::IsDebuggerPresent, console.call_IsDebuggerPresent);
    #endif
    }
@@ -286,7 +286,7 @@ namespace ZenUnit
       }
    }
 
-#ifdef _WIN32
+#if defined _WIN32
    TEST2X2(DebuggerIsPresent_ReturnsTrueIfIsDebuggerPresentFunctionReturns1,
       int isDebuggerPresentReturnValue, bool expectedReturnValue,
       0, false,

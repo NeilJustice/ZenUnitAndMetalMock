@@ -1,7 +1,7 @@
 #ifndef ZENUNITTESTS_PCH
 #define ZENUNITTESTS_PCH
 
-#ifdef _WIN32
+#if defined _WIN32
 #pragma warning(disable: 4365) // 'argument': conversion from 'std::_Atomic_integral_t' to 'long', signed / unsigned mismatch - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\memory
 #pragma warning(disable: 4514) // 'std::random_device::entropy': unreferenced inline function has been removed	ZenUnit - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\random
 #pragma warning(disable: 4571) // Informational : catch (...) semantics changed since Visual C++ 7.1; structured exceptions(SEH) are no longer caught - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\xlocale
@@ -34,7 +34,7 @@
 #include <vector>
 using namespace std;
 
-#ifdef _WIN32
+#if defined _WIN32
 #define WIN32_LEAN_AND_MEAN
 #define NOGDI
 #define NOMINMAX

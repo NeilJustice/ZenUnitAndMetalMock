@@ -1,5 +1,5 @@
 #include "pch.h"
-#ifdef __linux__
+#if defined __linux__
 #include <unistd.h>
 #elif _WIN32
 #include <io.h>
@@ -15,7 +15,7 @@ namespace ZenUnit
    FACTS(SetColor_CallsSupportsColorAndSetTextColorIfColorNotWhite)
    FACTS(UnsetColor_CallsSetTextColorWhiteIfDidSetTextColorTrue)
    FACTS(SupportsColor_ReturnsTrueIfStdoutIsATTY)
-#ifdef _WIN32
+#if defined _WIN32
    FACTS(SetTextColor_WIN32_CallsWin32ApiToSetColorTextColor)
 #endif
    EVIDENCE
@@ -40,7 +40,7 @@ namespace ZenUnit
       const ConsoleColorer consoleColorer;
       STD_FUNCTION_TARGETS(::fileno, consoleColorer.call_fileno);
       STD_FUNCTION_TARGETS(::isatty, consoleColorer.call_isatty);
-#ifdef _WIN32
+#if defined _WIN32
       STD_FUNCTION_TARGETS(::GetStdHandle, consoleColorer.call_GetStdHandle);
       STD_FUNCTION_TARGETS(::SetConsoleTextAttribute, consoleColorer.call_SetConsoleTextAttribute);
 #endif
@@ -139,7 +139,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedReturnValue, consoleSupportsColor);
    }
 
-#ifdef _WIN32
+#if defined _WIN32
    TEST2X2(SetTextColor_WIN32_CallsWin32ApiToSetColorTextColor,
       Color color, WindowsColor expectedWindowsColor,
       Color::White, WindowsColor::White,
