@@ -22,6 +22,32 @@ namespace ZenMock
       virtual ~Throwable() = default;
    };
 
+   template<typename ExpectedExceptionType>
+   class TemplateThrowable : public Throwable
+   {
+      template<typename T>
+      friend class TemplateThrowableTests;
+   private:
+      std::unique_ptr<const ExpectedExceptionType> _exception;
+   public:
+      template<typename... ExceptionArgTypes>
+      static const Throwable* New(ExceptionArgTypes&&... exceptionArgs)
+      {
+         auto* templateThrowable = new TemplateThrowable<ExpectedExceptionType>;
+         templateThrowable->_exception = std::make_unique<ExpectedExceptionType>(
+            std::forward<ExceptionArgTypes>(exceptionArgs)...);
+         return templateThrowable;
+      }
+
+      void Throw() const override
+      {
+         if (_exception != nullptr)
+         {
+            throw *_exception;
+         }
+      }
+   };
+
    class ExceptionThrower
    {
    private:
@@ -71,10 +97,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          return _what.c_str();
       }
 
-      FunctionAlreadyExpectedException(const FunctionAlreadyExpectedException&) = delete;
-      FunctionAlreadyExpectedException& operator=(const FunctionAlreadyExpectedException&) = delete;
-      FunctionAlreadyExpectedException(FunctionAlreadyExpectedException&&) = default;
-      FunctionAlreadyExpectedException& operator=(FunctionAlreadyExpectedException&&) = delete;
+      COPY_COPY_MOVE_MOVE(FunctionAlreadyExpectedException, delete, delete, default, delete)
       virtual ~FunctionAlreadyExpectedException() = default;
    };
 
@@ -121,10 +144,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
       {
       }
    public:
-      UnexpectedCallException(const UnexpectedCallException&) = delete;
-      UnexpectedCallException& operator=(const UnexpectedCallException&) = delete;
-      UnexpectedCallException(UnexpectedCallException&&) = default;
-      UnexpectedCallException& operator=(UnexpectedCallException&&) = delete;
+      COPY_COPY_MOVE_MOVE(UnexpectedCallException, delete, delete, default, delete)
       virtual ~UnexpectedCallException() = default;
    };
 
@@ -154,10 +174,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          return _what.c_str();
       }
 
-      UnsupportedAssertCalledZeroTimesException(const UnsupportedAssertCalledZeroTimesException&) = delete;
-      UnsupportedAssertCalledZeroTimesException& operator=(const UnsupportedAssertCalledZeroTimesException&) = delete;
-      UnsupportedAssertCalledZeroTimesException(UnsupportedAssertCalledZeroTimesException&&) = default;
-      UnsupportedAssertCalledZeroTimesException& operator=(UnsupportedAssertCalledZeroTimesException&&) = delete;
+      COPY_COPY_MOVE_MOVE(UnsupportedAssertCalledZeroTimesException, delete, delete, default, delete)
       virtual ~UnsupportedAssertCalledZeroTimesException() = default;
    };
 
@@ -171,6 +188,34 @@ catch (const ZenUnit::Anomaly& zenWrappedAnomaly) \
    throw ZenUnit::Anomaly::ZENWrapped( \
       "ZEN("#ZenMockAssertStatement")", zenWrappedAnomaly, FILELINE); \
 }
+
+   class ReturnValueMustBeSpecifiedException : public ZenUnit::ZenMockException
+   {
+   private:
+      const std::string _what;
+   public:
+      explicit ReturnValueMustBeSpecifiedException(const std::string& zenMockedFunctionSignature)
+         : _what(MakeWhat(zenMockedFunctionSignature))
+      {
+      }
+
+      const char* what() const noexcept override
+      {
+         return _what.c_str();
+      }
+
+      static std::string MakeWhat(const std::string& zenMockedFunctionSignature)
+      {
+         const std::string what = "For ZenMocked function \"" + zenMockedFunctionSignature + R"(":
+  ZenMocked functions with non-void return types
+  must have their return value or values set explicitly by calling
+  [FunctionName]Mock.[ExpectAndReturn|ExpectAndReturnValues]())";
+         return what;
+      }
+
+      COPY_COPY_MOVE_MOVE(ReturnValueMustBeSpecifiedException, delete, delete, default, default);
+      virtual ~ReturnValueMustBeSpecifiedException() = default;
+   };
 
    template<typename FunctionReturnType>
    class ValueReturner
@@ -4031,63 +4076,6 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::ZenMockVoidTenArgs<
       {
          functionMocker->ZenMock(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument, tenthArgument);
       }
-   };
-
-   template<typename ExpectedExceptionType>
-   class TemplateThrowable : public Throwable
-   {
-      template<typename T>
-      friend class TemplateThrowableTests;
-   private:
-      std::unique_ptr<const ExpectedExceptionType> _exception;
-   public:
-      template<typename... ExceptionArgTypes>
-      static const Throwable* New(ExceptionArgTypes&&... exceptionArgs)
-      {
-         auto* templateThrowable = new TemplateThrowable<ExpectedExceptionType>;
-         templateThrowable->_exception = std::make_unique<ExpectedExceptionType>(
-            std::forward<ExceptionArgTypes>(exceptionArgs)...);
-         return templateThrowable;
-      }
-
-      void Throw() const override
-      {
-         if (_exception != nullptr)
-         {
-            throw *_exception;
-         }
-      }
-   };
-
-   class ReturnValueMustBeSpecifiedException : public ZenUnit::ZenMockException
-   {
-   private:
-      const std::string _what;
-   public:
-      explicit ReturnValueMustBeSpecifiedException(const std::string& zenMockedFunctionSignature)
-         : _what(MakeWhat(zenMockedFunctionSignature))
-      {
-      }
-
-      const char* what() const noexcept override
-      {
-         return _what.c_str();
-      }
-
-      static std::string MakeWhat(const std::string& zenMockedFunctionSignature)
-      {
-         const std::string what = "For ZenMocked function \"" + zenMockedFunctionSignature + R"(":
-  ZenMocked functions with non-void return types
-  must have their return value or values set explicitly by calling
-  [FunctionName]Mock.[ExpectAndReturn|ExpectAndReturnValues]())";
-         return what;
-      }
-
-      ReturnValueMustBeSpecifiedException(const ReturnValueMustBeSpecifiedException&) = delete;
-      ReturnValueMustBeSpecifiedException& operator=(const ReturnValueMustBeSpecifiedException&) = delete;
-      ReturnValueMustBeSpecifiedException(ReturnValueMustBeSpecifiedException&&) = default;
-      ReturnValueMustBeSpecifiedException& operator=(ReturnValueMustBeSpecifiedException&&) = delete;
-      virtual ~ReturnValueMustBeSpecifiedException() = default;
    };
 
    class Signature

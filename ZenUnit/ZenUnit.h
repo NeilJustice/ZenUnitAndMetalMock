@@ -324,6 +324,12 @@
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassSkipper_, HighQualityTestClassName), _Line), __LINE__) = \
       ZenUnit::TestRunner::Instance().SkipTestClass(#HighQualityTestClassName"<"#__VA_ARGS__">", Reason);
 
+#define COPY_COPY_MOVE_MOVE(className, deleteOrDefaultCopyConstructor, deleteOrDefaultAssignmentOperator, deleteOrDefaultMoveConstructor, deleteOrDefaultMoveAssignmentOperator) \
+   className(const className&) = deleteOrDefaultCopyConstructor; \
+   className& operator=(const className&) = deleteOrDefaultAssignmentOperator; \
+   className(className&&) = deleteOrDefaultMoveConstructor; \
+   className& operator=(className&&) = deleteOrDefaultMoveAssignmentOperator;
+
 template<typename T>
 struct NA
 {
@@ -707,10 +713,7 @@ namespace ZenUnit
       {
       }
 
-      ConsoleColorer(const ConsoleColorer&) = default;
-      ConsoleColorer& operator=(const ConsoleColorer&) = default;
-      ConsoleColorer(ConsoleColorer&&) noexcept = default;
-      ConsoleColorer& operator=(ConsoleColorer&&) noexcept = default;
+      COPY_COPY_MOVE_MOVE(ConsoleColorer, default, default, default, default)
       virtual ~ConsoleColorer() = default;
 
       virtual bool SetColor(Color color)
@@ -782,10 +785,7 @@ namespace ZenUnit
       {
       }
 
-      Console(const Console&) = delete;
-      Console& operator=(const Console&) = delete;
-      Console(Console&&) noexcept = default;
-      Console& operator=(Console&&) noexcept = default;
+      COPY_COPY_MOVE_MOVE(Console, delete, delete, default, default)
       virtual ~Console() = default;
 
       virtual void Write(const std::string& message) const
@@ -1460,6 +1460,10 @@ namespace ZenUnit
    class Transformer
    {
    public:
+      Transformer() = default;
+      COPY_COPY_MOVE_MOVE(Transformer, default, default, default, default);
+      virtual ~Transformer() = default;
+
       virtual std::vector<TransformedT> Transform(
          const std::vector<T>* source, TransformedT(*transformer)(const T&)) const
       {
@@ -1486,13 +1490,6 @@ namespace ZenUnit
          }
          return dest;
       }
-
-      Transformer() = default;
-      Transformer(const Transformer&) = default;
-      Transformer(Transformer&&) noexcept = default;
-      Transformer& operator=(const Transformer&) = default;
-      Transformer& operator=(Transformer&&) noexcept = default;
-      virtual ~Transformer() = default;
    };
 
    class RunFilterParser
@@ -1506,18 +1503,15 @@ namespace ZenUnit
       {
       }
 
+      COPY_COPY_MOVE_MOVE(RunFilterParser, delete, delete, delete, delete);
+      virtual ~RunFilterParser() = default;
+
       virtual std::vector<RunFilter> Parse(const std::vector<std::string>& testRunFilters) const
       {
          std::vector<RunFilter> runFilters = _transformer->Transform(
             &testRunFilters, RunFilterParser::ParseRunFilterString);
          return runFilters;
       }
-
-      RunFilterParser(const RunFilterParser&) = delete;
-      RunFilterParser& operator=(const RunFilterParser&) = delete;
-      RunFilterParser(RunFilterParser&&) noexcept = delete;
-      RunFilterParser& operator=(RunFilterParser&&) noexcept = delete;
-      virtual ~RunFilterParser() = default;
    private:
       static RunFilter ParseRunFilterString(const std::string& testRunFilter)
       {
@@ -1601,6 +1595,9 @@ namespace ZenUnit
          , call_String_ToUnsigned(String::ToUnsigned)
       {
       }
+
+      COPY_COPY_MOVE_MOVE(ArgsParser, delete, delete, delete, delete);
+      virtual ~ArgsParser() = default;
 
       virtual ZenUnitArgs Parse(const std::vector<std::string>& args) const
       {
@@ -1728,12 +1725,6 @@ None
    Useful option for increasing testing rigor, especially when used with -random.)";
          return usage;
       }
-
-      ArgsParser(const ArgsParser&) = delete;
-      ArgsParser& operator=(const ArgsParser&) = delete;
-      ArgsParser(ArgsParser&&) noexcept = delete;
-      ArgsParser& operator=(ArgsParser&&) noexcept = delete;
-      virtual ~ArgsParser() = default;
    private:
       void WriteZenUnitArgumentErrorAndUsageThenExit1(const std::string& errorMessage) const
       {
@@ -2968,6 +2959,9 @@ None
       {
       }
 
+      COPY_COPY_MOVE_MOVE(TwoExtraArgsForEacher, default, default, default, default);
+      virtual ~TwoExtraArgsForEacher() = default;
+
       virtual void TwoExtraArgsForEach(
          const CollectionType* collection,
          FunctionType func,
@@ -2981,12 +2975,6 @@ None
             func(element, extraArg1, extraArg2);
          }
       }
-
-      TwoExtraArgsForEacher(const TwoExtraArgsForEacher&) = default;
-      TwoExtraArgsForEacher(TwoExtraArgsForEacher&&) noexcept = default;
-      TwoExtraArgsForEacher& operator=(const TwoExtraArgsForEacher&) = default;
-      TwoExtraArgsForEacher& operator=(TwoExtraArgsForEacher&&) noexcept = default;
-      virtual ~TwoExtraArgsForEacher() = default;
    };
 
    struct FullTestName
@@ -3046,6 +3034,9 @@ None
       {
       }
 
+      COPY_COPY_MOVE_MOVE(TestFailureNumberer, default, default, default, default);
+      virtual ~TestFailureNumberer() = default;
+
       virtual std::string Next()
       {
          const std::string nextTestFailureNumber = "<" + std::to_string(_testFailureNumber++) + ">";
@@ -3056,12 +3047,6 @@ None
       {
          _testFailureNumber = 1u;
       }
-
-      TestFailureNumberer(const TestFailureNumberer&) = default;
-      TestFailureNumberer(TestFailureNumberer&&) noexcept = default;
-      TestFailureNumberer& operator=(const TestFailureNumberer&) = default;
-      TestFailureNumberer& operator=(TestFailureNumberer&&) noexcept = default;
-      virtual ~TestFailureNumberer() = default;
    };
 
    class TestPhaseSuffixer
@@ -3070,6 +3055,9 @@ None
       TestPhaseSuffixer() noexcept
       {
       }
+
+      COPY_COPY_MOVE_MOVE(TestPhaseSuffixer, default, default, default, default);
+      virtual ~TestPhaseSuffixer() = default;
 
       virtual const char* TestPhaseToTestPhaseSuffix(TestPhase testPhase) const
       {
@@ -3103,12 +3091,6 @@ None
             throw std::invalid_argument("Invalid testPhase");
          }
       }
-
-      TestPhaseSuffixer(const TestPhaseSuffixer&) = default;
-      TestPhaseSuffixer(TestPhaseSuffixer&&) noexcept = default;
-      TestPhaseSuffixer& operator=(const TestPhaseSuffixer&) = default;
-      TestPhaseSuffixer& operator=(TestPhaseSuffixer&&) noexcept = default;
-      virtual ~TestPhaseSuffixer() = default;
    };
 
    struct CallResult
@@ -3171,10 +3153,7 @@ None
       {
       }
 
-      TestResult(const TestResult&) = default;
-      TestResult(TestResult&&) noexcept = default;
-      TestResult& operator=(const TestResult&) = default;
-      TestResult& operator=(TestResult&&) noexcept = default;
+      COPY_COPY_MOVE_MOVE(TestResult, default, default, default, default);
       virtual ~TestResult() = default;
 
       static TestResult ConstructorFail(const FullTestName& fullTestName, const CallResult& constructorCallResult) noexcept
@@ -3513,6 +3492,9 @@ None
       {
       }
 
+      COPY_COPY_MOVE_MOVE(Watch, default, default, default, default);
+      virtual ~Watch() = default;
+
       // Returns now in format "Monday January 1, 2016 at 00:00:00 <Timezone>"
       virtual std::string TimeZoneDateTimeNow() const
       {
@@ -3537,12 +3519,6 @@ None
             = static_cast<unsigned short>(secondsSince1970);
          return secondsSince1970CastToUnsignedShort;
       }
-
-      Watch(const Watch&) = default;
-      Watch(Watch&&) noexcept = default;
-      Watch& operator=(const Watch&) = default;
-      Watch& operator=(Watch&&) noexcept = default;
-      virtual ~Watch() = default;
    private:
       virtual tm TMNow() const
       {
@@ -3624,6 +3600,9 @@ None
       {
       }
 
+      COPY_COPY_MOVE_MOVE(MachineNameGetter, default, default, default, default);
+      virtual ~MachineNameGetter() = default;
+
       virtual std::string GetMachineName() const
       {
 #ifdef __linux__
@@ -3632,12 +3611,6 @@ None
          return GetWindowsMachineName();
 #endif
       }
-
-      MachineNameGetter(const MachineNameGetter&) = default;
-      MachineNameGetter(MachineNameGetter&&) noexcept = default;
-      MachineNameGetter& operator=(const MachineNameGetter&) = default;
-      MachineNameGetter& operator=(MachineNameGetter&&) noexcept = default;
-      virtual ~MachineNameGetter() = default;
    private:
 #ifdef __linux__
       virtual std::string GetLinuxMachineName() const
@@ -3671,6 +3644,9 @@ None
       {
       }
 
+      COPY_COPY_MOVE_MOVE(ExtraArgMemberForEacher, default, default, default, default);
+      virtual ~ExtraArgMemberForEacher() = default;
+
       virtual void ExtraArgMemberForEach(
          std::vector<T>* elements,
          ClassType* classPointer,
@@ -3700,12 +3676,6 @@ None
             (classPointer->*func)(element, extraArg);
          }
       }
-
-      ExtraArgMemberForEacher(const ExtraArgMemberForEacher&) = default;
-      ExtraArgMemberForEacher(ExtraArgMemberForEacher&&) noexcept = default;
-      ExtraArgMemberForEacher& operator=(const ExtraArgMemberForEacher&) = default;
-      ExtraArgMemberForEacher& operator=(ExtraArgMemberForEacher&&) noexcept = default;
-      virtual ~ExtraArgMemberForEacher() = default;
    };
 
    template<typename CollectionType, typename PredicateType, typename ExtraArgType>
@@ -3715,6 +3685,9 @@ None
       ExtraArgAnyer() noexcept
       {
       }
+
+      COPY_COPY_MOVE_MOVE(ExtraArgAnyer, default, default, default, default);
+      virtual ~ExtraArgAnyer() = default;
 
       virtual bool ExtraArgAny(const CollectionType& collection, PredicateType predicate, const ExtraArgType& extraArg) const
       {
@@ -3730,12 +3703,6 @@ None
          }
          return false;
       }
-
-      ExtraArgAnyer(const ExtraArgAnyer&) = default;
-      ExtraArgAnyer(ExtraArgAnyer&&) noexcept = default;
-      ExtraArgAnyer& operator=(const ExtraArgAnyer&) = default;
-      ExtraArgAnyer& operator=(ExtraArgAnyer&&) noexcept = default;
-      virtual ~ExtraArgAnyer() = default;
    };
 
    template<typename CollectionType>
@@ -3746,16 +3713,13 @@ None
       {
       }
 
+      COPY_COPY_MOVE_MOVE(Sorter, default, default, default, default);
+      virtual ~Sorter() = default;
+
       virtual void Sort(CollectionType* collection) const
       {
          std::sort(collection->begin(), collection->end());
       }
-
-      Sorter(const Sorter&) = default;
-      Sorter(Sorter&&) noexcept = default;
-      Sorter& operator=(const Sorter&) = default;
-      Sorter& operator=(Sorter&&) noexcept = default;
-      virtual ~Sorter() = default;
    };
 
    class TestClassRunner
@@ -3764,6 +3728,9 @@ None
       TestClassRunner() noexcept
       {
       }
+
+      COPY_COPY_MOVE_MOVE(TestClassRunner, default, default, default, default);
+      virtual ~TestClassRunner() = default;
 
       virtual const char* TestClassName() const = 0;
       virtual size_t NumberOfTestCases() const = 0;
@@ -3780,12 +3747,6 @@ None
          const bool isLessThan = caseInsensitiveComparisonResult < 0;
          return isLessThan;
       }
-
-      TestClassRunner(const TestClassRunner&) = default;
-      TestClassRunner(TestClassRunner&&) noexcept = default;
-      TestClassRunner& operator=(const TestClassRunner&) = default;
-      TestClassRunner& operator=(TestClassRunner&&) noexcept = default;
-      virtual ~TestClassRunner() = default;
    };
 
    class NoOpTestClassRunner : public TestClassRunner
@@ -3843,10 +3804,7 @@ None
       {
       }
 
-      MultiTestClassRunner(const MultiTestClassRunner&) = delete;
-      MultiTestClassRunner& operator=(const MultiTestClassRunner&) = delete;
-      MultiTestClassRunner(MultiTestClassRunner&&) noexcept = default;
-      MultiTestClassRunner& operator=(MultiTestClassRunner&&) noexcept = default;
+      COPY_COPY_MOVE_MOVE(MultiTestClassRunner, delete, delete, default, default);
       virtual ~MultiTestClassRunner() = default;
 
       virtual void AddTestClassRunner(TestClassRunner* testClassRunner)
@@ -3946,10 +3904,7 @@ None
       {
       }
 
-      PreamblePrinter(const PreamblePrinter&) = delete;
-      PreamblePrinter& operator=(const PreamblePrinter&) = delete;
-      PreamblePrinter(PreamblePrinter&&) noexcept = default;
-      PreamblePrinter& operator=(PreamblePrinter&&) noexcept = default;
+      COPY_COPY_MOVE_MOVE(PreamblePrinter, delete, delete, default, default);
       virtual ~PreamblePrinter() = default;
 
       virtual void PrintOpeningThreeLines(
@@ -3999,10 +3954,7 @@ None
       {
       }
 
-      Stopwatch(const Stopwatch&) = default;
-      Stopwatch(Stopwatch&&) noexcept = default;
-      Stopwatch& operator=(const Stopwatch&) = default;
-      Stopwatch& operator=(Stopwatch&&) noexcept = default;
+      COPY_COPY_MOVE_MOVE(Stopwatch, default, default, default, default);
       virtual ~Stopwatch() = default;
 
       virtual void Start()
@@ -4034,6 +3986,9 @@ None
       {
       }
 
+      COPY_COPY_MOVE_MOVE(MemberForEacher, default, default, default, default);
+      virtual ~MemberForEacher() = default;
+
       virtual void MemberForEach(
          const CollectionType* collection,
          const ClassType* thisPointer,
@@ -4046,12 +4001,6 @@ None
             (thisPointer->*func)(element);
          }
       }
-
-      MemberForEacher(const MemberForEacher&) = default;
-      MemberForEacher(MemberForEacher&&) noexcept = default;
-      MemberForEacher& operator=(const MemberForEacher&) = default;
-      MemberForEacher& operator=(MemberForEacher&&) noexcept = default;
-      virtual ~MemberForEacher() = default;
    };
 
    class TestRunResult
@@ -4082,10 +4031,7 @@ None
       {
       }
 
-      TestRunResult(const TestRunResult&) = delete;
-      TestRunResult& operator=(const TestRunResult&) = delete;
-      TestRunResult(TestRunResult&&) noexcept = default;
-      TestRunResult& operator=(TestRunResult&&) noexcept = default;
+      COPY_COPY_MOVE_MOVE(TestRunResult, delete, delete, default, default);
       virtual ~TestRunResult() = default;
 
       virtual void AddSkippedTest(
@@ -4262,10 +4208,7 @@ None
       {
       }
 
-      TestRunner(const TestRunner&) = delete;
-      TestRunner& operator=(const TestRunner&) = delete;
-      TestRunner(TestRunner&&) noexcept = default;
-      TestRunner& operator=(TestRunner&&) noexcept = default;
+      COPY_COPY_MOVE_MOVE(TestRunner, delete, delete, default, default);
       virtual ~TestRunner() = default;
 
       static TestRunner& Instance() noexcept
@@ -4388,10 +4331,7 @@ None
       {
       }
 
-      TryCatchCaller(const TryCatchCaller&) = delete;
-      TryCatchCaller& operator=(const TryCatchCaller&) = delete;
-      TryCatchCaller(TryCatchCaller&&) noexcept = default;
-      TryCatchCaller& operator=(TryCatchCaller&&) noexcept = default;
+      COPY_COPY_MOVE_MOVE(TryCatchCaller, delete, delete, default, default);
       virtual ~TryCatchCaller() = default;
 
       virtual CallResult Call(void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const;
@@ -4413,6 +4353,9 @@ None
       TestResultFactory() noexcept
       {
       }
+
+      COPY_COPY_MOVE_MOVE(TestResultFactory, default, default, default, default);
+      virtual ~TestResultFactory() = default;
 
       virtual TestResult ConstructorFail(const FullTestName& fullTestName, const CallResult& constructorCallResult) const
       {
@@ -4455,12 +4398,6 @@ None
             destructorCallResult,
             TestRunner::GetArgs);
       }
-
-      TestResultFactory(const TestResultFactory&) = default;
-      TestResultFactory(TestResultFactory&&) noexcept = default;
-      TestResultFactory& operator=(const TestResultFactory&) = default;
-      TestResultFactory& operator=(TestResultFactory&&) noexcept = default;
-      virtual ~TestResultFactory() = default;
    };
 
    class Test
@@ -4480,10 +4417,7 @@ None
       {
       }
 
-      Test(const Test&) = delete;
-      Test& operator=(const Test&) = delete;
-      Test(Test&&) noexcept = default;
-      Test& operator=(Test&&) noexcept = default;
+      COPY_COPY_MOVE_MOVE(Test, delete, delete, default, default);
       virtual ~Test() = default;
 
       virtual const char* Name() const
