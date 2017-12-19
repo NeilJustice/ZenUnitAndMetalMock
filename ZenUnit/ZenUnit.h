@@ -324,11 +324,11 @@
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassSkipper_, HighQualityTestClassName), _Line), __LINE__) = \
       ZenUnit::TestRunner::Instance().SkipTestClass(#HighQualityTestClassName"<"#__VA_ARGS__">", Reason);
 
-#define COPY_COPY_MOVE_MOVE(className, deleteOrDefaultCopyConstructor, deleteOrDefaultAssignmentOperator, deleteOrDefaultMoveConstructor, deleteOrDefaultMoveAssignmentOperator) \
-   className(const className&) = deleteOrDefaultCopyConstructor; \
-   className& operator=(const className&) = deleteOrDefaultAssignmentOperator; \
-   className(className&&) noexcept = deleteOrDefaultMoveConstructor; \
-   className& operator=(className&&) noexcept = deleteOrDefaultMoveAssignmentOperator;
+#define DEFINE_COPY_COPY_MOVE_MOVE(className, defaultOrDeleteCopyConstructor, defaultOrDeleteAssignmentOperator, defaultOrDeleteMoveConstructor, defaultOrDeleteMoveAssignmentOperator) \
+   className(const className&) = defaultOrDeleteCopyConstructor; \
+   className& operator=(const className&) = defaultOrDeleteAssignmentOperator; \
+   className(className&&) noexcept = defaultOrDeleteMoveConstructor; \
+   className& operator=(className&&) noexcept = defaultOrDeleteMoveAssignmentOperator
 
 template<typename T>
 struct NA
@@ -713,7 +713,7 @@ namespace ZenUnit
       {
       }
 
-      COPY_COPY_MOVE_MOVE(ConsoleColorer, default, default, default, default)
+      DEFINE_COPY_COPY_MOVE_MOVE(ConsoleColorer, default, default, default, default);
       virtual ~ConsoleColorer() = default;
 
       virtual bool SetColor(Color color)
@@ -785,7 +785,7 @@ namespace ZenUnit
       {
       }
 
-      COPY_COPY_MOVE_MOVE(Console, delete, delete, default, default)
+      DEFINE_COPY_COPY_MOVE_MOVE(Console, delete, delete, default, default);
       virtual ~Console() = default;
 
       virtual void Write(const std::string& message) const
@@ -1461,7 +1461,7 @@ namespace ZenUnit
    {
    public:
       Transformer() = default;
-      COPY_COPY_MOVE_MOVE(Transformer, default, default, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(Transformer, default, default, default, default);
       virtual ~Transformer() = default;
 
       virtual std::vector<TransformedT> Transform(
@@ -1503,7 +1503,7 @@ namespace ZenUnit
       {
       }
 
-      COPY_COPY_MOVE_MOVE(RunFilterParser, delete, delete, delete, delete);
+      DEFINE_COPY_COPY_MOVE_MOVE(RunFilterParser, delete, delete, delete, delete);
       virtual ~RunFilterParser() = default;
 
       virtual std::vector<RunFilter> Parse(const std::vector<std::string>& testRunFilters) const
@@ -1596,7 +1596,7 @@ namespace ZenUnit
       {
       }
 
-      COPY_COPY_MOVE_MOVE(ArgsParser, delete, delete, delete, delete);
+      DEFINE_COPY_COPY_MOVE_MOVE(ArgsParser, delete, delete, delete, delete);
       virtual ~ArgsParser() = default;
 
       virtual ZenUnitArgs Parse(const std::vector<std::string>& args) const
@@ -2959,7 +2959,7 @@ None
       {
       }
 
-      COPY_COPY_MOVE_MOVE(TwoExtraArgsForEacher, default, default, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(TwoExtraArgsForEacher, default, default, default, default);
       virtual ~TwoExtraArgsForEacher() = default;
 
       virtual void TwoExtraArgsForEach(
@@ -3034,7 +3034,7 @@ None
       {
       }
 
-      COPY_COPY_MOVE_MOVE(TestFailureNumberer, default, default, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(TestFailureNumberer, default, default, default, default);
       virtual ~TestFailureNumberer() = default;
 
       virtual std::string Next()
@@ -3056,7 +3056,7 @@ None
       {
       }
 
-      COPY_COPY_MOVE_MOVE(TestPhaseSuffixer, default, default, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(TestPhaseSuffixer, default, default, default, default);
       virtual ~TestPhaseSuffixer() = default;
 
       virtual const char* TestPhaseToTestPhaseSuffix(TestPhase testPhase) const
@@ -3153,7 +3153,7 @@ None
       {
       }
 
-      COPY_COPY_MOVE_MOVE(TestResult, default, default, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(TestResult, default, default, default, default);
       virtual ~TestResult() = default;
 
       static TestResult ConstructorFail(const FullTestName& fullTestName, const CallResult& constructorCallResult) noexcept
@@ -3492,7 +3492,7 @@ None
       {
       }
 
-      COPY_COPY_MOVE_MOVE(Watch, default, default, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(Watch, default, default, default, default);
       virtual ~Watch() = default;
 
       // Returns now in format "Monday January 1, 2016 at 00:00:00 <Timezone>"
@@ -3600,7 +3600,7 @@ None
       {
       }
 
-      COPY_COPY_MOVE_MOVE(MachineNameGetter, default, default, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(MachineNameGetter, default, default, default, default);
       virtual ~MachineNameGetter() = default;
 
       virtual std::string GetMachineName() const
@@ -3644,7 +3644,7 @@ None
       {
       }
 
-      COPY_COPY_MOVE_MOVE(ExtraArgMemberForEacher, default, default, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(ExtraArgMemberForEacher, default, default, default, default);
       virtual ~ExtraArgMemberForEacher() = default;
 
       virtual void ExtraArgMemberForEach(
@@ -3686,7 +3686,7 @@ None
       {
       }
 
-      COPY_COPY_MOVE_MOVE(ExtraArgAnyer, default, default, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(ExtraArgAnyer, default, default, default, default);
       virtual ~ExtraArgAnyer() = default;
 
       virtual bool ExtraArgAny(const CollectionType& collection, PredicateType predicate, const ExtraArgType& extraArg) const
@@ -3713,7 +3713,7 @@ None
       {
       }
 
-      COPY_COPY_MOVE_MOVE(Sorter, default, default, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(Sorter, default, default, default, default);
       virtual ~Sorter() = default;
 
       virtual void Sort(CollectionType* collection) const
@@ -3729,7 +3729,7 @@ None
       {
       }
 
-      COPY_COPY_MOVE_MOVE(TestClassRunner, default, default, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(TestClassRunner, default, default, default, default);
       virtual ~TestClassRunner() = default;
 
       virtual const char* TestClassName() const = 0;
@@ -3804,7 +3804,7 @@ None
       {
       }
 
-      COPY_COPY_MOVE_MOVE(MultiTestClassRunner, delete, delete, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(MultiTestClassRunner, delete, delete, default, default);
       virtual ~MultiTestClassRunner() = default;
 
       virtual void AddTestClassRunner(TestClassRunner* testClassRunner)
@@ -3904,7 +3904,7 @@ None
       {
       }
 
-      COPY_COPY_MOVE_MOVE(PreamblePrinter, delete, delete, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(PreamblePrinter, delete, delete, default, default);
       virtual ~PreamblePrinter() = default;
 
       virtual void PrintOpeningThreeLines(
@@ -3954,7 +3954,7 @@ None
       {
       }
 
-      COPY_COPY_MOVE_MOVE(Stopwatch, default, default, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(Stopwatch, default, default, default, default);
       virtual ~Stopwatch() = default;
 
       virtual void Start()
@@ -3986,7 +3986,7 @@ None
       {
       }
 
-      COPY_COPY_MOVE_MOVE(MemberForEacher, default, default, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(MemberForEacher, default, default, default, default);
       virtual ~MemberForEacher() = default;
 
       virtual void MemberForEach(
@@ -4031,7 +4031,7 @@ None
       {
       }
 
-      COPY_COPY_MOVE_MOVE(TestRunResult, delete, delete, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(TestRunResult, delete, delete, default, default);
       virtual ~TestRunResult() = default;
 
       virtual void AddSkippedTest(
@@ -4208,7 +4208,7 @@ None
       {
       }
 
-      COPY_COPY_MOVE_MOVE(TestRunner, delete, delete, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(TestRunner, delete, delete, default, default);
       virtual ~TestRunner() = default;
 
       static TestRunner& Instance() noexcept
@@ -4331,7 +4331,7 @@ None
       {
       }
 
-      COPY_COPY_MOVE_MOVE(TryCatchCaller, delete, delete, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(TryCatchCaller, delete, delete, default, default);
       virtual ~TryCatchCaller() = default;
 
       virtual CallResult Call(void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const;
@@ -4354,7 +4354,7 @@ None
       {
       }
 
-      COPY_COPY_MOVE_MOVE(TestResultFactory, default, default, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(TestResultFactory, default, default, default, default);
       virtual ~TestResultFactory() = default;
 
       virtual TestResult ConstructorFail(const FullTestName& fullTestName, const CallResult& constructorCallResult) const
@@ -4417,7 +4417,7 @@ None
       {
       }
 
-      COPY_COPY_MOVE_MOVE(Test, delete, delete, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(Test, delete, delete, default, default);
       virtual ~Test() = default;
 
       virtual const char* Name() const

@@ -85,6 +85,9 @@ namespace ZenMock
       {
       }
 
+      DEFINE_COPY_COPY_MOVE_MOVE(FunctionAlreadyExpectedException, default, default, default, default);
+      virtual ~FunctionAlreadyExpectedException() = default;
+
       static std::string MakeWhat(const std::string& zenMockedFunctionSignature)
       {
          const std::string what = "For ZenMocked function \"" + zenMockedFunctionSignature + R"(":
@@ -96,9 +99,6 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
       {
          return _what.c_str();
       }
-
-      COPY_COPY_MOVE_MOVE(FunctionAlreadyExpectedException, delete, delete, default, delete)
-      virtual ~FunctionAlreadyExpectedException() = default;
    };
 
    class UnexpectedCallException : public ZenUnit::ZenMockException
@@ -112,6 +112,9 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          : _what(MakeWhat(zenMockedFunctionSignature, std::forward<ArgTypes>(args)...))
       {
       }
+
+      DEFINE_COPY_COPY_MOVE_MOVE(UnexpectedCallException, default, default, default, default);
+      virtual ~UnexpectedCallException() = default;
 
       template<typename... ArgTypes>
       static std::string MakeWhat(const std::string& zenMockedFunctionSignature, ArgTypes&&... args)
@@ -143,9 +146,6 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
       static void AppendToStringedArgs(std::ostringstream&, size_t)
       {
       }
-   public:
-      COPY_COPY_MOVE_MOVE(UnexpectedCallException, delete, delete, default, delete)
-      virtual ~UnexpectedCallException() = default;
    };
 
    class UnsupportedAssertCalledZeroTimesException : public ZenUnit::ZenMockException
@@ -157,6 +157,9 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          : _what(MakeWhat(zenMockedFunctionSignature))
       {
       }
+
+      DEFINE_COPY_COPY_MOVE_MOVE(UnsupportedAssertCalledZeroTimesException, default, default, default, default);
+      virtual ~UnsupportedAssertCalledZeroTimesException() = default;
 
       static std::string MakeWhat(const std::string& zenMockedFunctionSignature)
       {
@@ -173,9 +176,6 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
       {
          return _what.c_str();
       }
-
-      COPY_COPY_MOVE_MOVE(UnsupportedAssertCalledZeroTimesException, delete, delete, default, delete)
-      virtual ~UnsupportedAssertCalledZeroTimesException() = default;
    };
 
 #define ZEN(ZenMockAssertStatement) \
@@ -199,6 +199,9 @@ catch (const ZenUnit::Anomaly& zenWrappedAnomaly) \
       {
       }
 
+      DEFINE_COPY_COPY_MOVE_MOVE(ReturnValueMustBeSpecifiedException, default, default, default, default);
+      virtual ~ReturnValueMustBeSpecifiedException() = default;
+
       const char* what() const noexcept override
       {
          return _what.c_str();
@@ -212,9 +215,6 @@ catch (const ZenUnit::Anomaly& zenWrappedAnomaly) \
   [FunctionName]Mock.[ExpectAndReturn|ExpectAndReturnValues]())";
          return what;
       }
-
-      COPY_COPY_MOVE_MOVE(ReturnValueMustBeSpecifiedException, delete, delete, default, default);
-      virtual ~ReturnValueMustBeSpecifiedException() = default;
    };
 
    template<typename FunctionReturnType>
