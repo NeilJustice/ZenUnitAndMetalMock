@@ -327,8 +327,8 @@
 #define COPY_COPY_MOVE_MOVE(className, deleteOrDefaultCopyConstructor, deleteOrDefaultAssignmentOperator, deleteOrDefaultMoveConstructor, deleteOrDefaultMoveAssignmentOperator) \
    className(const className&) = deleteOrDefaultCopyConstructor; \
    className& operator=(const className&) = deleteOrDefaultAssignmentOperator; \
-   className(className&&) = deleteOrDefaultMoveConstructor; \
-   className& operator=(className&&) = deleteOrDefaultMoveAssignmentOperator;
+   className(className&&) noexcept = deleteOrDefaultMoveConstructor; \
+   className& operator=(className&&) noexcept = deleteOrDefaultMoveAssignmentOperator;
 
 template<typename T>
 struct NA

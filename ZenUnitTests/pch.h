@@ -29,9 +29,9 @@
 #include <regex>
 #include <set>
 #include <sstream>
+#include <thread>
 #include <unordered_map>
 #include <vector>
-#include <thread>
 using namespace std;
 
 #ifdef _WIN32
@@ -41,8 +41,8 @@ using namespace std;
 #include "Windows.h"
 #endif
 
-#include "ZenUnit/ZenUnit.h"
 #include "ZenUnit/ZenMock.h"
+#include "ZenUnit/ZenUnit.h"
 using namespace ZenUnit;
 
 #endif
