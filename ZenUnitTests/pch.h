@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ZENUNITTESTS_PCH
+#define ZENUNITTESTS_PCH
 
 #ifdef _WIN32
 #pragma warning(disable: 4365) // 'argument': conversion from 'std::_Atomic_integral_t' to 'long', signed / unsigned mismatch - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\memory
@@ -43,3 +44,5 @@ using namespace std;
 #include "ZenUnit/ZenUnit.h"
 #include "ZenUnit/ZenMock.h"
 using namespace ZenUnit;
+
+#endif
