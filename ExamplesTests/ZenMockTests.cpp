@@ -79,8 +79,6 @@ TEST(Constructor_NewsComponentA)
    POINTER_WAS_NEWED(classUnderTest._componentA);
 }
 
-// A 3-by-3 value-parameterized test processes its variadic test case arguments
-// 3-by-3, forming 9 independent test cases
 TEST3X3(InteractWithComponentA_CallsEveryFunction_ReturnsSumOfReturnValues,
    int expectedReturnValue, int returnValueA, int returnValueB,
    0, 0, 0,

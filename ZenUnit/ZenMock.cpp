@@ -1,2 +1,2 @@
 #include "ZenMock.h"
-namespace { char symbol; }
+namespace { char ZenMockSymbolism; }

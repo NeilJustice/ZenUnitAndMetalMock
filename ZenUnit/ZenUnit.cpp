@@ -1,2 +1,2 @@
 #include "ZenUnit.h"
-namespace { char symbol; }
+namespace { char ZenUnitSymbolism; }
