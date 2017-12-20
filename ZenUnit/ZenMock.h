@@ -113,7 +113,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
       {
       }
 
-      DEFINE_COPY_COPY_MOVE_MOVE(UnexpectedCallException, default, default, delete, delete);
+      DEFINE_COPY_COPY_MOVE_MOVE(UnexpectedCallException, default, default, default, default);
       virtual ~UnexpectedCallException() = default;
 
       template<typename... ArgTypes>
@@ -199,7 +199,7 @@ catch (const ZenUnit::Anomaly& zenWrappedAnomaly) \
       {
       }
 
-      DEFINE_COPY_COPY_MOVE_MOVE(ReturnValueMustBeSpecifiedException, default, default, delete, delete);
+      DEFINE_COPY_COPY_MOVE_MOVE(ReturnValueMustBeSpecifiedException, default, default, default, default);
       virtual ~ReturnValueMustBeSpecifiedException() = default;
 
       const char* what() const noexcept override
