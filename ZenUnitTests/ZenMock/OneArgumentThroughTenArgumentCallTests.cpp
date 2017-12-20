@@ -48,8 +48,8 @@ namespace ZenMock
 
    TEST(ZenUnitEqualizer_ThrowsIfArg1NotEqual)
    {
-      EQUALIZER_THROWS_INIT(Call1);
-      EQUALIZER_THROWS(Call1, argument, V1);
+      SETUP_EQUALIZER_THROWS_TEST(Call1);
+      EQUALIZER_THROWS_FOR_FIELD(Call1, argument, V1);
    }
 
    }; RUNTESTS(OneArgumentCallTests)
@@ -82,9 +82,9 @@ namespace ZenMock
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      EQUALIZER_THROWS_INIT(Call2);
-      EQUALIZER_THROWS(Call2, firstArgument, V1);
-      EQUALIZER_THROWS(Call2, secondArgument, V2);
+      SETUP_EQUALIZER_THROWS_TEST(Call2);
+      EQUALIZER_THROWS_FOR_FIELD(Call2, firstArgument, V1);
+      EQUALIZER_THROWS_FOR_FIELD(Call2, secondArgument, V2);
    }
 
    }; RUNTESTS(TwoArgumentCallTests)
@@ -120,10 +120,10 @@ namespace ZenMock
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
-      EQUALIZER_THROWS_INIT(Call3);
-      EQUALIZER_THROWS(Call3, firstArgument, V1);
-      EQUALIZER_THROWS(Call3, secondArgument, V2);
-      EQUALIZER_THROWS(Call3, thirdArgument, V3);
+      SETUP_EQUALIZER_THROWS_TEST(Call3);
+      EQUALIZER_THROWS_FOR_FIELD(Call3, firstArgument, V1);
+      EQUALIZER_THROWS_FOR_FIELD(Call3, secondArgument, V2);
+      EQUALIZER_THROWS_FOR_FIELD(Call3, thirdArgument, V3);
    }
 
    }; RUNTESTS(ThreeArgumentCallTests)
@@ -163,11 +163,11 @@ namespace ZenMock
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
-      EQUALIZER_THROWS_INIT(Call4);
-      EQUALIZER_THROWS(Call4, firstArgument, V1);
-      EQUALIZER_THROWS(Call4, secondArgument, V2);
-      EQUALIZER_THROWS(Call4, thirdArgument, V3);
-      EQUALIZER_THROWS(Call4, fourthArgument, V4);
+      SETUP_EQUALIZER_THROWS_TEST(Call4);
+      EQUALIZER_THROWS_FOR_FIELD(Call4, firstArgument, V1);
+      EQUALIZER_THROWS_FOR_FIELD(Call4, secondArgument, V2);
+      EQUALIZER_THROWS_FOR_FIELD(Call4, thirdArgument, V3);
+      EQUALIZER_THROWS_FOR_FIELD(Call4, fourthArgument, V4);
    }
 
 
@@ -210,12 +210,12 @@ namespace ZenMock
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      EQUALIZER_THROWS_INIT(Call5);
-      EQUALIZER_THROWS(Call5, firstArgument, V1);
-      EQUALIZER_THROWS(Call5, secondArgument, V2);
-      EQUALIZER_THROWS(Call5, thirdArgument, V3);
-      EQUALIZER_THROWS(Call5, fourthArgument, V4);
-      EQUALIZER_THROWS(Call5, fifthArgument, V5);
+      SETUP_EQUALIZER_THROWS_TEST(Call5);
+      EQUALIZER_THROWS_FOR_FIELD(Call5, firstArgument, V1);
+      EQUALIZER_THROWS_FOR_FIELD(Call5, secondArgument, V2);
+      EQUALIZER_THROWS_FOR_FIELD(Call5, thirdArgument, V3);
+      EQUALIZER_THROWS_FOR_FIELD(Call5, fourthArgument, V4);
+      EQUALIZER_THROWS_FOR_FIELD(Call5, fifthArgument, V5);
    }
 
    }; RUNTESTS(FiveArgumentCallTests)
@@ -261,13 +261,13 @@ namespace ZenMock
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
-      EQUALIZER_THROWS_INIT(Call6);
-      EQUALIZER_THROWS(Call6, firstArgument, V1);
-      EQUALIZER_THROWS(Call6, secondArgument, V2);
-      EQUALIZER_THROWS(Call6, thirdArgument, V3);
-      EQUALIZER_THROWS(Call6, fourthArgument, V4);
-      EQUALIZER_THROWS(Call6, fifthArgument, V5);
-      EQUALIZER_THROWS(Call6, sixthArgument, V6);
+      SETUP_EQUALIZER_THROWS_TEST(Call6);
+      EQUALIZER_THROWS_FOR_FIELD(Call6, firstArgument, V1);
+      EQUALIZER_THROWS_FOR_FIELD(Call6, secondArgument, V2);
+      EQUALIZER_THROWS_FOR_FIELD(Call6, thirdArgument, V3);
+      EQUALIZER_THROWS_FOR_FIELD(Call6, fourthArgument, V4);
+      EQUALIZER_THROWS_FOR_FIELD(Call6, fifthArgument, V5);
+      EQUALIZER_THROWS_FOR_FIELD(Call6, sixthArgument, V6);
    }
 
    }; RUNTESTS(SixArgumentCallTests)
@@ -316,14 +316,14 @@ namespace ZenMock
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
-      EQUALIZER_THROWS_INIT(Call7);
-      EQUALIZER_THROWS(Call7, firstArgument, V1);
-      EQUALIZER_THROWS(Call7, secondArgument, V2);
-      EQUALIZER_THROWS(Call7, thirdArgument, V3);
-      EQUALIZER_THROWS(Call7, fourthArgument, V4);
-      EQUALIZER_THROWS(Call7, fifthArgument, V5);
-      EQUALIZER_THROWS(Call7, sixthArgument, V6);
-      EQUALIZER_THROWS(Call7, seventhArgument, V7);
+      SETUP_EQUALIZER_THROWS_TEST(Call7);
+      EQUALIZER_THROWS_FOR_FIELD(Call7, firstArgument, V1);
+      EQUALIZER_THROWS_FOR_FIELD(Call7, secondArgument, V2);
+      EQUALIZER_THROWS_FOR_FIELD(Call7, thirdArgument, V3);
+      EQUALIZER_THROWS_FOR_FIELD(Call7, fourthArgument, V4);
+      EQUALIZER_THROWS_FOR_FIELD(Call7, fifthArgument, V5);
+      EQUALIZER_THROWS_FOR_FIELD(Call7, sixthArgument, V6);
+      EQUALIZER_THROWS_FOR_FIELD(Call7, seventhArgument, V7);
    }
 
    }; RUNTESTS(SevenArgumentCallTests)
@@ -375,15 +375,15 @@ namespace ZenMock
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
-      EQUALIZER_THROWS_INIT(Call8);
-      EQUALIZER_THROWS(Call8, firstArgument, V1);
-      EQUALIZER_THROWS(Call8, secondArgument, V2);
-      EQUALIZER_THROWS(Call8, thirdArgument, V3);
-      EQUALIZER_THROWS(Call8, fourthArgument, V4);
-      EQUALIZER_THROWS(Call8, fifthArgument, V5);
-      EQUALIZER_THROWS(Call8, sixthArgument, V6);
-      EQUALIZER_THROWS(Call8, seventhArgument, V7);
-      EQUALIZER_THROWS(Call8, eigthArgument, V8);
+      SETUP_EQUALIZER_THROWS_TEST(Call8);
+      EQUALIZER_THROWS_FOR_FIELD(Call8, firstArgument, V1);
+      EQUALIZER_THROWS_FOR_FIELD(Call8, secondArgument, V2);
+      EQUALIZER_THROWS_FOR_FIELD(Call8, thirdArgument, V3);
+      EQUALIZER_THROWS_FOR_FIELD(Call8, fourthArgument, V4);
+      EQUALIZER_THROWS_FOR_FIELD(Call8, fifthArgument, V5);
+      EQUALIZER_THROWS_FOR_FIELD(Call8, sixthArgument, V6);
+      EQUALIZER_THROWS_FOR_FIELD(Call8, seventhArgument, V7);
+      EQUALIZER_THROWS_FOR_FIELD(Call8, eigthArgument, V8);
    }
 
    }; RUNTESTS(EightArgumentCallTests)
@@ -438,16 +438,16 @@ namespace ZenMock
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
-      EQUALIZER_THROWS_INIT(Call9);
-      EQUALIZER_THROWS(Call9, firstArgument, V1);
-      EQUALIZER_THROWS(Call9, secondArgument, V2);
-      EQUALIZER_THROWS(Call9, thirdArgument, V3);
-      EQUALIZER_THROWS(Call9, fourthArgument, V4);
-      EQUALIZER_THROWS(Call9, fifthArgument, V5);
-      EQUALIZER_THROWS(Call9, sixthArgument, V6);
-      EQUALIZER_THROWS(Call9, seventhArgument, V7);
-      EQUALIZER_THROWS(Call9, eigthArgument, V8);
-      EQUALIZER_THROWS(Call9, ninthArgument, V9);
+      SETUP_EQUALIZER_THROWS_TEST(Call9);
+      EQUALIZER_THROWS_FOR_FIELD(Call9, firstArgument, V1);
+      EQUALIZER_THROWS_FOR_FIELD(Call9, secondArgument, V2);
+      EQUALIZER_THROWS_FOR_FIELD(Call9, thirdArgument, V3);
+      EQUALIZER_THROWS_FOR_FIELD(Call9, fourthArgument, V4);
+      EQUALIZER_THROWS_FOR_FIELD(Call9, fifthArgument, V5);
+      EQUALIZER_THROWS_FOR_FIELD(Call9, sixthArgument, V6);
+      EQUALIZER_THROWS_FOR_FIELD(Call9, seventhArgument, V7);
+      EQUALIZER_THROWS_FOR_FIELD(Call9, eigthArgument, V8);
+      EQUALIZER_THROWS_FOR_FIELD(Call9, ninthArgument, V9);
    }
 
    }; RUNTESTS(NineArgumentCallTests)
@@ -506,17 +506,17 @@ namespace ZenMock
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
-      EQUALIZER_THROWS_INIT(Call10);
-      EQUALIZER_THROWS(Call10, firstArgument, V1);
-      EQUALIZER_THROWS(Call10, secondArgument, V2);
-      EQUALIZER_THROWS(Call10, thirdArgument, V3);
-      EQUALIZER_THROWS(Call10, fourthArgument, V4);
-      EQUALIZER_THROWS(Call10, fifthArgument, V5);
-      EQUALIZER_THROWS(Call10, sixthArgument, V6);
-      EQUALIZER_THROWS(Call10, seventhArgument, V7);
-      EQUALIZER_THROWS(Call10, eigthArgument, V8);
-      EQUALIZER_THROWS(Call10, ninthArgument, V9);
-      EQUALIZER_THROWS(Call10, tenthArgument, V10);
+      SETUP_EQUALIZER_THROWS_TEST(Call10);
+      EQUALIZER_THROWS_FOR_FIELD(Call10, firstArgument, V1);
+      EQUALIZER_THROWS_FOR_FIELD(Call10, secondArgument, V2);
+      EQUALIZER_THROWS_FOR_FIELD(Call10, thirdArgument, V3);
+      EQUALIZER_THROWS_FOR_FIELD(Call10, fourthArgument, V4);
+      EQUALIZER_THROWS_FOR_FIELD(Call10, fifthArgument, V5);
+      EQUALIZER_THROWS_FOR_FIELD(Call10, sixthArgument, V6);
+      EQUALIZER_THROWS_FOR_FIELD(Call10, seventhArgument, V7);
+      EQUALIZER_THROWS_FOR_FIELD(Call10, eigthArgument, V8);
+      EQUALIZER_THROWS_FOR_FIELD(Call10, ninthArgument, V9);
+      EQUALIZER_THROWS_FOR_FIELD(Call10, tenthArgument, V10);
    }
 
    }; RUNTESTS(TenArgumentCallTests)

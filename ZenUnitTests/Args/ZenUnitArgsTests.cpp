@@ -26,20 +26,20 @@ namespace ZenUnit
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      EQUALIZER_THROWS_INIT(ZenUnitArgs);
-      EQUALIZER_THROWS(ZenUnitArgs, commandLine, "ZenUnitTests.exe");
-      EQUALIZER_THROWS(ZenUnitArgs, printMode, PrintMode::Minimalist);
-      EQUALIZER_THROWS(ZenUnitArgs, runFilters, vector<RunFilter> { RunFilter() });
-      EQUALIZER_THROWS(ZenUnitArgs, pause, true);
-      EQUALIZER_THROWS(ZenUnitArgs, wait, true);
-      EQUALIZER_THROWS(ZenUnitArgs, exit0, true);
-      EQUALIZER_THROWS(ZenUnitArgs, failskips, true);
-      EQUALIZER_THROWS(ZenUnitArgs, testruns, 2u);
-      EQUALIZER_THROWS(ZenUnitArgs, random, true);
-      EQUALIZER_THROWS(ZenUnitArgs, randomseed, static_cast<unsigned short>(3));
-      EQUALIZER_THROWS(ZenUnitArgs, randomseedsetbyuser, true);
-      EQUALIZER_THROWS(ZenUnitArgs, maxtestmilliseconds, 4u);
-      EQUALIZER_THROWS(ZenUnitArgs, maxtotalseconds, 5u);
+      SETUP_EQUALIZER_THROWS_TEST(ZenUnitArgs);
+      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, commandLine, "ZenUnitTests.exe");
+      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, printMode, PrintMode::Minimalist);
+      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, runFilters, vector<RunFilter> { RunFilter() });
+      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, pause, true);
+      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, wait, true);
+      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, exit0, true);
+      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, failskips, true);
+      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, testruns, 2u);
+      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, random, true);
+      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, randomseed, static_cast<unsigned short>(3));
+      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, randomseedsetbyuser, true);
+      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, maxtestmilliseconds, 4u);
+      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, maxtotalseconds, 5u);
    }
 
    }; RUNTESTS(ZenUnitArgsTests)

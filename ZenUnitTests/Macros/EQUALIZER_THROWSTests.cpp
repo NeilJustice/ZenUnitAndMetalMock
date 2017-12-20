@@ -67,9 +67,9 @@ namespace ZenUnit
 
    TEST(EqualizerDoesNotAssertSpecifiedFieldEqual_Throws)
    {
-      EQUALIZER_THROWS_INIT(Namespace::TestStruct);
-      THROWS(EQUALIZER_THROWS(Namespace::TestStruct, fieldB, 1), Anomaly, R"(
-  Failed: EQUALIZER_THROWS(Namespace::TestStruct, fieldB, 1)
+      SETUP_EQUALIZER_THROWS_TEST(Namespace::TestStruct);
+      THROWS(EQUALIZER_THROWS_FOR_FIELD(Namespace::TestStruct, fieldB, 1), Anomaly, R"(
+  Failed: EQUALIZER_THROWS_FOR_FIELD(Namespace::TestStruct, fieldB, 1)
 Expected: Function ZenUnit::Equalizer<Namespace::TestStruct>::AssertEqual(expected, actual)
           to throw a ZenUnit::Anomaly from an
           ARE_EQUAL(expected.fieldB, actual.fieldB) assert statement.
@@ -80,9 +80,9 @@ File.cpp(1))");
 
    TEST(EqualizerThrowsAnomalyThatDoesNotContainFieldName_Throws)
    {
-      EQUALIZER_THROWS_INIT(TestStructB);
-      THROWS(EQUALIZER_THROWS(TestStructB, field, TestStructB::ThrowWithoutFieldNameInWhatText), Anomaly, R"(
-  Failed: EQUALIZER_THROWS(TestStructB, field, TestStructB::ThrowWithoutFieldNameInWhatText)
+      SETUP_EQUALIZER_THROWS_TEST(TestStructB);
+      THROWS(EQUALIZER_THROWS_FOR_FIELD(TestStructB, field, TestStructB::ThrowWithoutFieldNameInWhatText), Anomaly, R"(
+  Failed: EQUALIZER_THROWS_FOR_FIELD(TestStructB, field, TestStructB::ThrowWithoutFieldNameInWhatText)
 Expected: N/A
   Actual: N/A
  Because: IS_TRUE(String::Contains(anomalyWhat, fieldName)) failed
@@ -94,9 +94,9 @@ File.cpp(1))");
 
    TEST(EqualizerThrowsAnomalyThatContainsFieldName_ButStillThrowsThatAnomalyWhenAllFieldsEqual_Throws)
    {
-      EQUALIZER_THROWS_INIT(TestStructB);
-      THROWS(EQUALIZER_THROWS(TestStructB, field, TestStructB::ThrowWithFieldNameInWhatText), Anomaly, R"(
-  Failed: EQUALIZER_THROWS(TestStructB, field, TestStructB::ThrowWithFieldNameInWhatText)
+      SETUP_EQUALIZER_THROWS_TEST(TestStructB);
+      THROWS(EQUALIZER_THROWS_FOR_FIELD(TestStructB, field, TestStructB::ThrowWithFieldNameInWhatText), Anomaly, R"(
+  Failed: EQUALIZER_THROWS_FOR_FIELD(TestStructB, field, TestStructB::ThrowWithFieldNameInWhatText)
 Expected: N/A
   Actual: N/A
  Because: ARE_EQUAL(equalizerTestObjectA, equalizerTestObjectB) failed
@@ -108,8 +108,8 @@ File.cpp(1))");
 
    TEST(EqualizerAssertsSpecifiedFieldEqual_DoesNotThrow)
    {
-      EQUALIZER_THROWS_INIT(Namespace::TestStruct);
-      EQUALIZER_THROWS(Namespace::TestStruct, fieldA, 1);
+      SETUP_EQUALIZER_THROWS_TEST(Namespace::TestStruct);
+      EQUALIZER_THROWS_FOR_FIELD(Namespace::TestStruct, fieldA, 1);
    }
 
    }; RUNTESTS(EQUALIZER_THROWSTests)

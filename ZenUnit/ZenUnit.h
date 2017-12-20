@@ -71,13 +71,13 @@
 #define ARE_NOT_SAME(notExpectedObject, actualObject, ...) \
    ARE_NOT_SAME_Defined(VRT(notExpectedObject), VRT(actualObject), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that value is false.
-#define IS_FALSE(value, ...) \
-   ZenUnit::IS_FALSE_Defined(value, #value, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
-
 // Asserts that value is true.
 #define IS_TRUE(value, ...) \
    ZenUnit::IS_TRUE_Defined(value, #value, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Asserts that value is false.
+#define IS_FALSE(value, ...) \
+   ZenUnit::IS_FALSE_Defined(value, #value, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that value is zero.
 #define IS_ZERO(value, ...) \
@@ -99,17 +99,17 @@
 
 // Functions:
 
-// Asserts that stdFunction targets function expectedStdFunctionTarget.
+// Asserts that a std::function targets expectedStdFunctionTarget.
 #define STD_FUNCTION_TARGETS(expectedStdFunctionTarget, stdFunction, ...) \
    ZenUnit::STD_FUNCTION_TARGETS_Defined<decltype(expectedStdFunctionTarget)>(expectedStdFunctionTarget, #expectedStdFunctionTarget, VRT(stdFunction), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Memory:
 
-// Asserts that smartOrRawPointer was scalar operator newed by operator deleting smartOrRawPointer.
+// Effectively asserts that smartOrRawPointer was scalar operator newed by operator deleting smartOrRawPointer.
 #define POINTER_WAS_NEWED(smartOrRawPointer, ...) \
    ZenUnit::WAS_NEWED_Defined(smartOrRawPointer, #smartOrRawPointer, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that smartOrRawArrayPointer was array operator newed by array operator deleting smartOrRawArrayPointer.
+// Effectively asserts that smartOrRawArrayPointer was array operator newed by array operator deleting smartOrRawArrayPointer.
 #define ARRAY_WAS_NEWED(smartOrRawArrayPointer, ...) \
    ZenUnit::ARRAY_WAS_NEWED_Defined(smartOrRawArrayPointer, #smartOrRawArrayPointer, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
@@ -142,12 +142,13 @@
 // ZenUnit::Equalizers:
 
 // Initializes ZenUnit::Equalizer test variables.
-#define EQUALIZER_THROWS_INIT(typeName) \
-   typeName equalizerTestObjectA, equalizerTestObjectB; ARE_EQUAL(equalizerTestObjectA, equalizerTestObjectB)
+#define SETUP_EQUALIZER_THROWS_TEST(typeName) \
+   typeName equalizerTestObjectA, equalizerTestObjectB; \
+   ARE_EQUAL(equalizerTestObjectA, equalizerTestObjectB)
 
 // Asserts that ZenUnit::Equalizer<T>::AssertEqual() throws when the specified field is not equal.
-#define EQUALIZER_THROWS(typeName, nonQuotedFieldName, arbitraryNonDefaultFieldValue) \
-   ZenUnit::EQUALIZER_THROWS_Defined(equalizerTestObjectA, equalizerTestObjectB, &typeName::nonQuotedFieldName, #typeName, #nonQuotedFieldName, arbitraryNonDefaultFieldValue, #arbitraryNonDefaultFieldValue, FILELINE)
+#define EQUALIZER_THROWS_FOR_FIELD(typeName, nonQuotedFieldName, arbitraryNonDefaultFieldValue) \
+   ZenUnit::EQUALIZER_THROWS_FOR_FIELD_Defined(equalizerTestObjectA, equalizerTestObjectB, &typeName::nonQuotedFieldName, #typeName, #nonQuotedFieldName, arbitraryNonDefaultFieldValue, #arbitraryNonDefaultFieldValue, FILELINE)
 
 // The Test Itself:
 
@@ -2014,7 +2015,7 @@ None
       const ZenUnit::Anomaly& becauseAnomaly)
    {
       throw Anomaly(
-         "EQUALIZER_THROWS", typeName, fieldName, arbitraryNonDefaultFieldValueText, "",
+         "EQUALIZER_THROWS_FOR_FIELD", typeName, fieldName, arbitraryNonDefaultFieldValueText, "",
          becauseAnomaly, "N/A", "N/A", ExpectedActualFormat::Fields, fileLine);
    }
 
@@ -2030,7 +2031,7 @@ None
           ARE_EQUAL(expected.)", fieldName, ", actual.", fieldName, ") assert statement.");
       const std::string actualField(String::Concat("No ZenUnit::Anomaly thrown despite field '", fieldName, R"('
           differing between objects expected and actual.)"));
-      throw Anomaly("EQUALIZER_THROWS", typeName, fieldName, arbitraryNonDefaultFieldValueText, "",
+      throw Anomaly("EQUALIZER_THROWS_FOR_FIELD", typeName, fieldName, arbitraryNonDefaultFieldValueText, "",
          Anomaly::Default(),
          expectedField,
          actualField,
@@ -2053,7 +2054,7 @@ None
       typename ActualType,
       typename FieldMemberPointerType,
       typename FieldType>
-      void EQUALIZER_THROWS_Defined(
+      void EQUALIZER_THROWS_FOR_FIELD_Defined(
          ExpectedType& equalizerTestObjectA,
          ActualType& equalizerTestObjectB,
          FieldMemberPointerType fieldMemberPointer,

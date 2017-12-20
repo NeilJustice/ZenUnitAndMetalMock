@@ -66,9 +66,9 @@ TEST(CallAllMacros)
    REGEX_MATCHES(R"(\d\d\d)", "123");
 
    // Equalizers
-   EQUALIZER_THROWS_INIT(Struct);
-   EQUALIZER_THROWS(Struct, firstField, 1);
-   EQUALIZER_THROWS(Struct, secondField, 'A');
+   SETUP_EQUALIZER_THROWS_TEST(Struct);
+   EQUALIZER_THROWS_FOR_FIELD(Struct, firstField, 1);
+   EQUALIZER_THROWS_FOR_FIELD(Struct, secondField, 'A');
 }
 
 }; RUNTESTS(CallAllMacrosTests)

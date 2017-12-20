@@ -162,8 +162,8 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 
 |Assertions For Confirming The Correctness Of Custom ZenUnit Equalizers|
 |----------------------------------------------------------------------|
-|`EQUALIZER_THROWS_INIT(typeName)`|
-|`EQUALIZER_THROWS(typeName, fieldName, nonDefaultFieldValue)`|
+|`SETUP_EQUALIZER_THROWS_TEST(typeName)`|
+|`EQUALIZER_THROWS_FOR_FIELD(typeName, fieldName, arbitraryNonDefaultFieldValue)`|
 
 |Assertions Not Implemented By Design Due To Vulnerability to Code Mutations|Mutation Vulnerability|
 |---------------------------------------------------------------------------|----------------------|
@@ -175,7 +175,7 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 
 ### ZenUnit Equalizers
 
-ZenUnit has the concept of an Equalizer for asserting that two values are equal.
+ZenUnit has the concept of an Equalizer for asserting that two values or class instances are equal.
 
 `ARE_EQUAL(expected, actual)` is defined as follows:
 
@@ -187,7 +187,7 @@ std::conditional<std::is_same<DecayedExpectedType, DecayedActualType>::value,
    ZenUnit::TwoTypeEqualizer<DecayedExpectedType, DecayedActualType>>
    ::type::AssertEqual(expected, actual);
 ```
-When the type of `expected` `is_same` as the type of `actual`, as is the case most of the time, `ARE_EQUAL` calls `ZenUnit::Equalizer<DecayedExpectedType>::AssertEqual(expected, actual)`, which is by default defined as expected == actual.
+When the types of `expected` and `actual` are equal, as is the case most of the time, `ARE_EQUAL` calls `ZenUnit::Equalizer<DecayedExpectedType>::AssertEqual(expected, actual)`, which by default is defined as expected == actual.
 
 Should you be interested in `ARE_EQUAL(expectedObject, actualObject)` performing field-by-field equality assertions on the fields of type T instead of calling all-or-nothing `operator==`, define a specialization of `ZenUnit::Equalizer\<T\>` with a static `AssertEqual(const T& expected, const T& actual)` function that performs `ARE_EQUAL` assertions on each field of type T.
 

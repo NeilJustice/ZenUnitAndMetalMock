@@ -208,8 +208,8 @@ namespace ZenUnit
 
    TEST(ZenUnitEqualizer_ThrowsIfTestResultsNotEqual)
    {
-      EQUALIZER_THROWS_INIT(TestClassResult);
-      EQUALIZER_THROWS(TestClassResult, _testResults, vector<TestResult> { TestResult() });
+      SETUP_EQUALIZER_THROWS_TEST(TestClassResult);
+      EQUALIZER_THROWS_FOR_FIELD(TestClassResult, _testResults, vector<TestResult> { TestResult() });
    }
 
    }; RUNTESTS(TestClassResultTests)

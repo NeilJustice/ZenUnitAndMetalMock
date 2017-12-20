@@ -29,10 +29,10 @@ TEST(ThreeArgumentConstructor_SetsFields)
 
 TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
 {
-   EQUALIZER_THROWS_INIT(RunFilter);
-   EQUALIZER_THROWS(RunFilter, testClassName, "testClassName");
-   EQUALIZER_THROWS(RunFilter, testName, "testName");
-   EQUALIZER_THROWS(RunFilter, testCaseNumber, 1);
+   SETUP_EQUALIZER_THROWS_TEST(RunFilter);
+   EQUALIZER_THROWS_FOR_FIELD(RunFilter, testClassName, "testClassName");
+   EQUALIZER_THROWS_FOR_FIELD(RunFilter, testName, "testName");
+   EQUALIZER_THROWS_FOR_FIELD(RunFilter, testCaseNumber, 1);
 }
 
 }; RUNTESTS(RunFilterTests)

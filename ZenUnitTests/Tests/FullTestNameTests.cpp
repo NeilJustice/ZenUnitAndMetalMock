@@ -49,10 +49,10 @@ namespace ZenUnit
 
    TEST(ZenUnitEqualizer_ThrowsIfClassNameOrTestNameNotEqual)
    {
-      EQUALIZER_THROWS_INIT(FullTestName);
-      EQUALIZER_THROWS(FullTestName, testClassName, "TestClassName");
-      EQUALIZER_THROWS(FullTestName, testName, "TestName");
-      EQUALIZER_THROWS(FullTestName, arity, static_cast<unsigned char>(1));
+      SETUP_EQUALIZER_THROWS_TEST(FullTestName);
+      EQUALIZER_THROWS_FOR_FIELD(FullTestName, testClassName, "TestClassName");
+      EQUALIZER_THROWS_FOR_FIELD(FullTestName, testName, "TestName");
+      EQUALIZER_THROWS_FOR_FIELD(FullTestName, arity, static_cast<unsigned char>(1));
    }
 
    }; RUNTESTS(FullTestNameTests)
