@@ -85,7 +85,7 @@ namespace ZenMock
       {
       }
 
-      DEFINE_COPY_COPY_MOVE_MOVE(FunctionAlreadyExpectedException, delete, delete, delete, delete);
+      DEFINE_COPY_COPY_MOVE_MOVE(FunctionAlreadyExpectedException, default, default, default, default);
       virtual ~FunctionAlreadyExpectedException() = default;
 
       static std::string MakeWhat(const std::string& zenMockedFunctionSignature)
@@ -158,7 +158,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
       {
       }
 
-      DEFINE_COPY_COPY_MOVE_MOVE(UnsupportedAssertCalledZeroTimesException, default, default, delete, delete);
+      DEFINE_COPY_COPY_MOVE_MOVE(UnsupportedAssertCalledZeroTimesException, default, default, default, default);
       virtual ~UnsupportedAssertCalledZeroTimesException() = default;
 
       static std::string MakeWhat(const std::string& zenMockedFunctionSignature)
