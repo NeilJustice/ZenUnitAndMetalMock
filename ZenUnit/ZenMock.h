@@ -85,7 +85,7 @@ namespace ZenMock
       {
       }
 
-      DEFINE_COPY_COPY_MOVE_MOVE(FunctionAlreadyExpectedException, default, default, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(FunctionAlreadyExpectedException, delete, delete, delete, delete);
       virtual ~FunctionAlreadyExpectedException() = default;
 
       static std::string MakeWhat(const std::string& zenMockedFunctionSignature)
@@ -113,7 +113,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
       {
       }
 
-      DEFINE_COPY_COPY_MOVE_MOVE(UnexpectedCallException, default, default, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(UnexpectedCallException, default, default, delete, delete);
       virtual ~UnexpectedCallException() = default;
 
       template<typename... ArgTypes>
@@ -158,7 +158,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
       {
       }
 
-      DEFINE_COPY_COPY_MOVE_MOVE(UnsupportedAssertCalledZeroTimesException, default, default, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(UnsupportedAssertCalledZeroTimesException, default, default, delete, delete);
       virtual ~UnsupportedAssertCalledZeroTimesException() = default;
 
       static std::string MakeWhat(const std::string& zenMockedFunctionSignature)
@@ -199,7 +199,7 @@ catch (const ZenUnit::Anomaly& zenWrappedAnomaly) \
       {
       }
 
-      DEFINE_COPY_COPY_MOVE_MOVE(ReturnValueMustBeSpecifiedException, default, default, default, default);
+      DEFINE_COPY_COPY_MOVE_MOVE(ReturnValueMustBeSpecifiedException, default, default, delete, delete);
       virtual ~ReturnValueMustBeSpecifiedException() = default;
 
       const char* what() const noexcept override
