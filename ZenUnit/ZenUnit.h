@@ -202,12 +202,12 @@
          s_testClassName = testClassName; \
          std::vector<std::unique_ptr<ZenUnit::Test>> tests;
 
-// Specifies a test. Define the test using TEST in the test body.
+// Specifies a test.
 #define AFACT(HighQualityTestName) \
    tests.emplace_back(std::make_unique<ZenUnit::NormalTest<TestClassType>>( \
       testClassName, #HighQualityTestName, &TestClassType::HighQualityTestName));
 
-// Specifies an N-by-N value parameterized test. Define the test using TEST1X1 through TEST10X10 in the test body.
+// Specifies an N-by-N value parameterized test.
 #define FACTS(HighQualityTestName) \
    tests.emplace_back(std::make_unique<ZenUnit::SpecSectionTestNXN<TestClassType>>( \
       testClassName, #HighQualityTestName, PMFTOKEN(&TestClassType::HighQualityTestName)));
@@ -221,7 +221,7 @@
 // Skips a TESTNXN.
 #define SKIPFACTS(HighQualityTestName, Reason) DOSKIP(HighQualityTestName, Reason)
 
-// Ends the specification section and begins the test body.
+// Ends the test specification section and begins the test body.
 #define EVIDENCE return tests; }
 
 // Defines function Startup() to be called before each test.
@@ -3040,7 +3040,7 @@ None
 
       virtual std::string Next()
       {
-         const std::string nextTestFailureNumber = "<" + std::to_string(_testFailureNumber++) + ">";
+         const std::string nextTestFailureNumber = "Test Failure " + std::to_string(_testFailureNumber++);
          return nextTestFailureNumber;
       }
 
@@ -4061,8 +4061,8 @@ None
          if (_numberOfFailedTestCases > 0)
          {
             const std::string numberOfTestFailuresLine = String::Concat(
-               _numberOfFailedTestCases, " test failure", _numberOfFailedTestCases > 1 ? "s" : "", ":\n");
-            _console->WriteLineColor(numberOfTestFailuresLine, Color::Red);
+               _numberOfFailedTestCases, " Test Failure", _numberOfFailedTestCases > 1 ? "s" : "", ":\n");
+            _console->WriteLine(numberOfTestFailuresLine);
             _memberForEacherTestClassResults->MemberForEach(
                &_testClassResults, this, &TestRunResult::PrintTestClassResultFailures);
          }
