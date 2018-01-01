@@ -3040,7 +3040,7 @@ None
 
       virtual std::string Next()
       {
-         const std::string nextTestFailureNumber = "Test Failure " + std::to_string(_testFailureNumber++);
+         const std::string nextTestFailureNumber = "Test Failure " + std::to_string(_testFailureNumber++) + ":";
          return nextTestFailureNumber;
       }
 
@@ -4091,25 +4091,25 @@ None
             const std::string testOrTests = totalNumberOfTestCases == 1 ? "test" : "tests";
             const std::string millisecondOrMilliseconds = testRunMilliseconds == 1 ? "millisecond" : "milliseconds";
             const std::string inMillisecondsPart = String::Concat("in ", testRunMilliseconds, ' ', millisecondOrMilliseconds);
-            std::string middleLinePrefix;
+            std::string middleLineVictoryOrFail;
             std::string middleLineBody;
             std::string firstAndThirdLineAsciiArt;
             if (_numberOfFailedTestCases == 0)
             {
                firstAndThirdLineAsciiArt = "+===+===+ ";
-               middleLinePrefix = "[VICTORY] ";
+               middleLineVictoryOrFail = "[VICTORY] ";
                middleLineBody = String::Concat(
                   totalNumberOfTestCases, ' ', testOrTests, " passed ", inMillisecondsPart);
             }
             else
             {
                firstAndThirdLineAsciiArt = ">>------> ";
-               middleLinePrefix = ">>-FAIL-> ";
+               middleLineVictoryOrFail = ">>-FAIL-> ";
                middleLineBody = String::Concat(
                   _numberOfFailedTestCases, '/', totalNumberOfTestCases, ' ', testOrTests, " failed ", inMillisecondsPart);
             }
             _console->WriteLineColor(firstAndThirdLineAsciiArt, color);
-            _console->WriteColor(middleLinePrefix, color);
+            _console->WriteColor(middleLineVictoryOrFail, color);
             _console->WriteLine(middleLineBody);
             _console->WriteColor(firstAndThirdLineAsciiArt, color);
             _console->Write(zenUnitArgs.commandLine);

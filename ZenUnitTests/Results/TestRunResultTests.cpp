@@ -222,7 +222,7 @@ namespace ZenUnit
    }
 
    TEST10X10(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds,
-      const string& expectedMiddleLinePrefix,
+      const string& expectedMiddleLineVictoryOrFail,
       ZenUnit::Color expectedColor,
       size_t numberOfFailedTestCases,
       size_t numberOfTotalTests,
@@ -258,12 +258,12 @@ namespace ZenUnit
       _testRunResult.PrintClosingLines(numberOfTotalTests, testRunMilliseconds, zenUnitArgs);
       //
       const string expectedFirstAndThirdLineAsciiArt =
-         expectedMiddleLinePrefix == "[VICTORY]" ? "+===+===+" : ">>------>";
+         expectedMiddleLineVictoryOrFail == "[VICTORY]" ? "+===+===+" : ">>------>";
       ZEN(_consoleMock->WriteLineColorMock.AssertCalledOnceWith(
          expectedFirstAndThirdLineAsciiArt + " ", expectedColor));
       ZEN(_consoleMock->WriteColorMock.AssertCalls(
       {
-         { expectedMiddleLinePrefix + " ", expectedColor },
+         { expectedMiddleLineVictoryOrFail + " ", expectedColor },
          { expectedFirstAndThirdLineAsciiArt + " ", expectedColor }
       }));
       const string expectedClosingLineBody = expectedClosingLineTestsCountText +
