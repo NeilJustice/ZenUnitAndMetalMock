@@ -2707,8 +2707,8 @@ None
    {
       const std::string* const expectedExceptionTypeName = Type::GetName<ExpectedExceptionType>();
       outWhyBodyBuilder <<
-         "Expected: " << *expectedExceptionTypeName << " exactly\n" <<
-         "  Actual: " << *actualExceptionTypeName;
+         "Expected thrown: " << *expectedExceptionTypeName << " exactly\n" <<
+         "  Actual thrown: " << *actualExceptionTypeName;
    }
 
    template<typename... MessageTypes>
