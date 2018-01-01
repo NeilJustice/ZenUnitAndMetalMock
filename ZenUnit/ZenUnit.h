@@ -4080,7 +4080,7 @@ None
          const ZenUnitArgs& zenUnitArgs) const
       {
          assert_true(_numberOfFailedTestCases <= totalNumberOfTestCases);
-         const Color prefixColor = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
+         const Color color = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
          if (totalNumberOfTestCases == 0)
          {
             _console->WriteColor("[ZenUnit] ", Color::Green);
@@ -4091,25 +4091,27 @@ None
             const std::string testOrTests = totalNumberOfTestCases == 1 ? "test" : "tests";
             const std::string millisecondOrMilliseconds = testRunMilliseconds == 1 ? "millisecond" : "milliseconds";
             const std::string inMillisecondsPart = String::Concat("in ", testRunMilliseconds, ' ', millisecondOrMilliseconds);
-            std::string closingLineBody;
-            std::string prefixAsciiArt;
+            std::string middleLinePrefix;
+            std::string middleLineBody;
+            std::string firstAndThirdLineAsciiArt;
             if (_numberOfFailedTestCases == 0)
             {
-               _console->WriteColor("[VICTORY] ", prefixColor);
-               closingLineBody = String::Concat(totalNumberOfTestCases,
-                  ' ', testOrTests, " passed ", inMillisecondsPart);
-               prefixAsciiArt = "+===+===+ ";
+               firstAndThirdLineAsciiArt = "+===+===+ ";
+               middleLinePrefix = "[VICTORY] ";
+               middleLineBody = String::Concat(
+                  totalNumberOfTestCases, ' ', testOrTests, " passed ", inMillisecondsPart);
             }
             else
             {
-               _console->WriteColor(">>-FAIL-> ", prefixColor);
-               closingLineBody = String::Concat(
-                  _numberOfFailedTestCases, '/', totalNumberOfTestCases,
-                  ' ', testOrTests, " failed ", inMillisecondsPart);
-               prefixAsciiArt = ">>------> ";
+               firstAndThirdLineAsciiArt = ">>------> ";
+               middleLinePrefix = ">>-FAIL-> ";
+               middleLineBody = String::Concat(
+                  _numberOfFailedTestCases, '/', totalNumberOfTestCases, ' ', testOrTests, " failed ", inMillisecondsPart);
             }
-            _console->WriteLine(closingLineBody);
-            _console->WriteColor(prefixAsciiArt, prefixColor);
+            _console->WriteLineColor(firstAndThirdLineAsciiArt, color);
+            _console->WriteColor(middleLinePrefix, color);
+            _console->WriteLine(middleLineBody);
+            _console->WriteColor(firstAndThirdLineAsciiArt, color);
             _console->Write(zenUnitArgs.commandLine);
             const std::string randomSeedWriteLine =
                (zenUnitArgs.random && !zenUnitArgs.randomseedsetbyuser) ?
