@@ -165,6 +165,7 @@ namespace ZenUnit
    {
       _testClassResultSelfMocked.NumberOfFailedTestCasesMock.ExpectAndReturn(0);
       ConsoleMock consoleMock;
+      consoleMock.WriteMock.Expect();
       consoleMock.NonMinimalWriteColorMock.Expect();
       consoleMock.NonMinimalWriteNewLineMock.Expect();
       const PrintMode printMode = RandomPrintMode();
@@ -172,7 +173,12 @@ namespace ZenUnit
       _testClassResultSelfMocked.NonMinimalPrintResultLine(&consoleMock, printMode);
       //
       ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.AssertCalledOnce());
-      ZEN(consoleMock.NonMinimalWriteColorMock.AssertCalledOnceWith("[  OK  ]", Color::Green, printMode));
+      ZEN(consoleMock.WriteMock.AssertCalls(
+      {
+         { "[  " },
+         { "  ]" }
+      }));
+      ZEN(consoleMock.NonMinimalWriteColorMock.AssertCalledOnceWith("OK", Color::Green, printMode));
       ZEN(consoleMock.NonMinimalWriteNewLineMock.AssertCalledOnceWith(printMode));
    }
 

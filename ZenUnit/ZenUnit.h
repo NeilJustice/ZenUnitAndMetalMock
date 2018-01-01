@@ -3427,7 +3427,9 @@ None
          const size_t numberOfFailedTestCases = NumberOfFailedTestCases();
          if (numberOfFailedTestCases == 0)
          {
-            console->NonMinimalWriteColor("[  OK  ]", Color::Green, printMode);
+            console->Write("[  ");
+            console->NonMinimalWriteColor("OK", Color::Green, printMode);
+            console->Write("  ]");
          }
          else
          {
