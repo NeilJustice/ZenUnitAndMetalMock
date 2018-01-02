@@ -180,14 +180,14 @@ namespace ZenUnit
       bool expectTestsFailedLineAndPrintFailuresCall,
       const string& expectedTestsFailedLine,
       size_t(0), false, "",
-      size_t(1), true, "1 test failure:\n",
-      size_t(2), true, "2 test failures:\n",
-      size_t(3), true, "3 test failures:\n")
+      size_t(1), true, "1 Test Failure:\n",
+      size_t(2), true, "2 Test Failures:\n",
+      size_t(3), true, "3 Test Failures:\n")
    {
       _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
       if (expectTestsFailedLineAndPrintFailuresCall)
       {
-         _consoleMock->WriteLineColorMock.Expect();
+         _consoleMock->WriteLineMock.Expect();
          _memberForEacherTestClassResultsMock->MemberForEachMock.Expect();
       }
       _memberForEacherSkippedTestsMock->MemberForEachMock.Expect();
@@ -196,7 +196,7 @@ namespace ZenUnit
       //
       if (expectTestsFailedLineAndPrintFailuresCall)
       {
-         ZEN(_consoleMock->WriteLineColorMock.AssertCalledOnceWith(expectedTestsFailedLine, Color::Red));
+         ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(expectedTestsFailedLine));
          ZEN(_memberForEacherTestClassResultsMock->MemberForEachMock.
             AssertCalledOnceWith(&_testRunResult._testClassResults, &_testRunResult,
                &TestRunResult::PrintTestClassResultFailures));
@@ -222,7 +222,7 @@ namespace ZenUnit
    }
 
    TEST10X10(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds,
-      const string& expectedClosingLinePrefix,
+      const string& expectedMiddleLineVictoryOrFail,
       ZenUnit::Color expectedColor,
       size_t numberOfFailedTestCases,
       size_t numberOfTotalTests,
@@ -245,6 +245,7 @@ namespace ZenUnit
       ">>-FAIL->", Color::Red, size_t(2), size_t(4), "2/4 tests failed", 5, "milliseconds", true, true, false)
    {
       _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
+      _consoleMock->WriteLineColorMock.Expect();
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteMock.Expect();
       _consoleMock->WriteLineMock.Expect();
@@ -256,12 +257,14 @@ namespace ZenUnit
       //
       _testRunResult.PrintClosingLines(numberOfTotalTests, testRunMilliseconds, zenUnitArgs);
       //
-      const string expectedBottomLineAsciiArt =
-         expectedClosingLinePrefix == "[VICTORY]" ? "+===+===+" : ">>------>";
+      const string expectedFirstAndThirdLineAsciiArt =
+         expectedMiddleLineVictoryOrFail == "[VICTORY]" ? "+===+===+" : ">>------>";
+      ZEN(_consoleMock->WriteLineColorMock.AssertCalledOnceWith(
+         expectedFirstAndThirdLineAsciiArt + " ", expectedColor));
       ZEN(_consoleMock->WriteColorMock.AssertCalls(
       {
-         { expectedClosingLinePrefix + " ", expectedColor },
-         { expectedBottomLineAsciiArt + " ", expectedColor }
+         { expectedMiddleLineVictoryOrFail + " ", expectedColor },
+         { expectedFirstAndThirdLineAsciiArt + " ", expectedColor }
       }));
       const string expectedClosingLineBody = expectedClosingLineTestsCountText +
          " in " + to_string(testRunMilliseconds) + " " + expectedMillisecondOrMilliseconds;

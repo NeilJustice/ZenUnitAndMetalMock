@@ -9,13 +9,13 @@ namespace ZenUnit
    TEST(TestFailureNumberer_NextReturnsIncrementingAngleBracketedSequence)
    {
       TestFailureNumberer testFailureNumberer;
-      ARE_EQUAL("<1>", testFailureNumberer.Next());
-      ARE_EQUAL("<2>", testFailureNumberer.Next());
-      ARE_EQUAL("<3>", testFailureNumberer.Next());
+      ARE_EQUAL("Test Failure 1:", testFailureNumberer.Next());
+      ARE_EQUAL("Test Failure 2:", testFailureNumberer.Next());
+      ARE_EQUAL("Test Failure 3:", testFailureNumberer.Next());
       testFailureNumberer.Reset();
-      ARE_EQUAL("<1>", testFailureNumberer.Next());
-      ARE_EQUAL("<2>", testFailureNumberer.Next());
-      ARE_EQUAL("<3>", testFailureNumberer.Next());
+      ARE_EQUAL("Test Failure 1:", testFailureNumberer.Next());
+      ARE_EQUAL("Test Failure 2:", testFailureNumberer.Next());
+      ARE_EQUAL("Test Failure 3:", testFailureNumberer.Next());
    }
 
    }; RUNTESTS(TestFailureNumbererTests)

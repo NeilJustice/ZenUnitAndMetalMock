@@ -202,12 +202,12 @@
          s_testClassName = testClassName; \
          std::vector<std::unique_ptr<ZenUnit::Test>> tests;
 
-// Specifies a test. Define the test using TEST in the test body.
+// Specifies a test.
 #define AFACT(HighQualityTestName) \
    tests.emplace_back(std::make_unique<ZenUnit::NormalTest<TestClassType>>( \
       testClassName, #HighQualityTestName, &TestClassType::HighQualityTestName));
 
-// Specifies an N-by-N value parameterized test. Define the test using TEST1X1 through TEST10X10 in the test body.
+// Specifies an N-by-N value parameterized test.
 #define FACTS(HighQualityTestName) \
    tests.emplace_back(std::make_unique<ZenUnit::SpecSectionTestNXN<TestClassType>>( \
       testClassName, #HighQualityTestName, PMFTOKEN(&TestClassType::HighQualityTestName)));
@@ -221,7 +221,7 @@
 // Skips a TESTNXN.
 #define SKIPFACTS(HighQualityTestName, Reason) DOSKIP(HighQualityTestName, Reason)
 
-// Ends the specification section and begins the test body.
+// Ends the test specification section and begins the test body.
 #define EVIDENCE return tests; }
 
 // Defines function Startup() to be called before each test.
@@ -3040,7 +3040,7 @@ None
 
       virtual std::string Next()
       {
-         const std::string nextTestFailureNumber = "<" + std::to_string(_testFailureNumber++) + ">";
+         const std::string nextTestFailureNumber = "Test Failure " + std::to_string(_testFailureNumber++) + ":";
          return nextTestFailureNumber;
       }
 
@@ -3427,7 +3427,9 @@ None
          const size_t numberOfFailedTestCases = NumberOfFailedTestCases();
          if (numberOfFailedTestCases == 0)
          {
-            console->NonMinimalWriteColor("[  OK  ]", Color::Green, printMode);
+            console->Write("[  ");
+            console->NonMinimalWriteColor("OK", Color::Green, printMode);
+            console->Write("  ]");
          }
          else
          {
@@ -4061,8 +4063,8 @@ None
          if (_numberOfFailedTestCases > 0)
          {
             const std::string numberOfTestFailuresLine = String::Concat(
-               _numberOfFailedTestCases, " test failure", _numberOfFailedTestCases > 1 ? "s" : "", ":\n");
-            _console->WriteLineColor(numberOfTestFailuresLine, Color::Red);
+               _numberOfFailedTestCases, " Test Failure", _numberOfFailedTestCases > 1 ? "s" : "", ":\n");
+            _console->WriteLine(numberOfTestFailuresLine);
             _memberForEacherTestClassResults->MemberForEach(
                &_testClassResults, this, &TestRunResult::PrintTestClassResultFailures);
          }
@@ -4078,7 +4080,7 @@ None
          const ZenUnitArgs& zenUnitArgs) const
       {
          assert_true(_numberOfFailedTestCases <= totalNumberOfTestCases);
-         const Color prefixColor = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
+         const Color color = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
          if (totalNumberOfTestCases == 0)
          {
             _console->WriteColor("[ZenUnit] ", Color::Green);
@@ -4089,25 +4091,27 @@ None
             const std::string testOrTests = totalNumberOfTestCases == 1 ? "test" : "tests";
             const std::string millisecondOrMilliseconds = testRunMilliseconds == 1 ? "millisecond" : "milliseconds";
             const std::string inMillisecondsPart = String::Concat("in ", testRunMilliseconds, ' ', millisecondOrMilliseconds);
-            std::string closingLineBody;
-            std::string prefixAsciiArt;
+            std::string middleLineVictoryOrFail;
+            std::string middleLineBody;
+            std::string firstAndThirdLineAsciiArt;
             if (_numberOfFailedTestCases == 0)
             {
-               _console->WriteColor("[VICTORY] ", prefixColor);
-               closingLineBody = String::Concat(totalNumberOfTestCases,
-                  ' ', testOrTests, " passed ", inMillisecondsPart);
-               prefixAsciiArt = "+===+===+ ";
+               firstAndThirdLineAsciiArt = "+===+===+ ";
+               middleLineVictoryOrFail = "[VICTORY] ";
+               middleLineBody = String::Concat(
+                  totalNumberOfTestCases, ' ', testOrTests, " passed ", inMillisecondsPart);
             }
             else
             {
-               _console->WriteColor(">>-FAIL-> ", prefixColor);
-               closingLineBody = String::Concat(
-                  _numberOfFailedTestCases, '/', totalNumberOfTestCases,
-                  ' ', testOrTests, " failed ", inMillisecondsPart);
-               prefixAsciiArt = ">>------> ";
+               firstAndThirdLineAsciiArt = ">>------> ";
+               middleLineVictoryOrFail = ">>-FAIL-> ";
+               middleLineBody = String::Concat(
+                  _numberOfFailedTestCases, '/', totalNumberOfTestCases, ' ', testOrTests, " failed ", inMillisecondsPart);
             }
-            _console->WriteLine(closingLineBody);
-            _console->WriteColor(prefixAsciiArt, prefixColor);
+            _console->WriteLineColor(firstAndThirdLineAsciiArt, color);
+            _console->WriteColor(middleLineVictoryOrFail, color);
+            _console->WriteLine(middleLineBody);
+            _console->WriteColor(firstAndThirdLineAsciiArt, color);
             _console->Write(zenUnitArgs.commandLine);
             const std::string randomSeedWriteLine =
                (zenUnitArgs.random && !zenUnitArgs.randomseedsetbyuser) ?
