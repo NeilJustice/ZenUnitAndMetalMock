@@ -78,12 +78,12 @@ namespace ZenMock
          test(staticNameClashMock, staticNameClashFunctionSignature);
       }
 
-      void FunctionNotCalled_AssertCalledNTimesWithN0_Throws()
+      void FunctionNotCalled_CalledMultipleTimesWithN0_Throws()
       {
          auto test = [](auto& zenMockObject, const string& expectedFunctionSignature)
          {
-            THROWS(zenMockObject.AssertCalledNTimes(0), ZenMock::UnsupportedAssertCalledZeroTimesException,
-               ZenMock::UnsupportedAssertCalledZeroTimesException::MakeWhat(expectedFunctionSignature));
+            THROWS(zenMockObject.CalledNTimes(0), ZenMock::UnsupportedCalledZeroTimesException,
+               ZenMock::UnsupportedCalledZeroTimesException::MakeWhat(expectedFunctionSignature));
          };
          test(mock.VirtualMock, virtualFunctionSignature);
          test(mock.VirtualConstMock, virtualConstFunctionSignature);
@@ -96,25 +96,25 @@ namespace ZenMock
          test(staticNameClashMock, staticNameClashFunctionSignature);
       }
 
-      void FunctionNotCalled_AssertCalledOnceThrows_AssertCalledNTimesThrows()
+      void FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows()
       {
          auto test = [](auto& zenMockObject, const string& expectedFunctionSignature)
          {
-            THROWS(zenMockObject.AssertCalledOnce(), Anomaly, R"(
+            THROWS(zenMockObject.CalledOnce(), Anomaly, R"(
   Failed: ARE_EQUAL(expectedNumberOfCalls, actualNumberOfCalls, this->ZenMockedFunctionSignature)
 Expected: 1
   Actual: 0
  Message: ")" + expectedFunctionSignature + R"("
 File.cpp(1))");
 
-            THROWS(zenMockObject.AssertCalledNTimes(1), Anomaly, R"(
+            THROWS(zenMockObject.CalledNTimes(1), Anomaly, R"(
   Failed: ARE_EQUAL(expectedNumberOfCalls, actualNumberOfCalls, this->ZenMockedFunctionSignature)
 Expected: 1
   Actual: 0
  Message: ")" + expectedFunctionSignature + R"("
 File.cpp(1))");
 
-            THROWS(zenMockObject.AssertCalledNTimes(2), Anomaly, R"(
+            THROWS(zenMockObject.CalledNTimes(2), Anomaly, R"(
   Failed: ARE_EQUAL(expectedNumberOfCalls, actualNumberOfCalls, this->ZenMockedFunctionSignature)
 Expected: 2
   Actual: 0
@@ -135,21 +135,21 @@ File.cpp(1))");
       template<typename InnerZenMockObjectType>
       void AssertAfterFirstCall(InnerZenMockObjectType& zenMockObject, const string& expectedFunctionSignature)
       {
-         zenMockObject.AssertCalledOnce();
-         zenMockObject.AssertCalledNTimes(1);
-         THROWS(zenMockObject.AssertCalledNTimes(2), Anomaly,
+         zenMockObject.CalledOnce();
+         zenMockObject.CalledNTimes(1);
+         THROWS(zenMockObject.CalledNTimes(2), Anomaly,
             ZenMockTestUtil::ExpectedCallCountMismatchWhat(expectedFunctionSignature, 2, 1));
       }
       template<typename InnerZenMockObjectType>
       void AssertAfterSecondCall(InnerZenMockObjectType& zenMockObject, const string& expectedFunctionSignature)
       {
-         THROWS(zenMockObject.AssertCalledOnce(), Anomaly,
+         THROWS(zenMockObject.CalledOnce(), Anomaly,
             ZenMockTestUtil::ExpectedCallCountMismatchWhat(expectedFunctionSignature, 1, 2));
-         zenMockObject.AssertCalledNTimes(2);
-         THROWS(zenMockObject.AssertCalledNTimes(3), Anomaly,
+         zenMockObject.CalledNTimes(2);
+         THROWS(zenMockObject.CalledNTimes(3), Anomaly,
             ZenMockTestUtil::ExpectedCallCountMismatchWhat(expectedFunctionSignature, 3, 2));
       }
-      void Function_Expected_DoesNotThrow_AssertCallsOnceDoesNotThrow_AssertCalledNTimes1DoesNotThrow()
+      void Function_Expected_DoesNotThrow_CalledMultipleTimesOnceDoesNotThrow_CalledNTimes1DoesNotThrow()
       {
          mock.VirtualMock.Expect();
          mock.Virtual();
@@ -239,8 +239,8 @@ File.cpp(1))");
       {
          auto assertCalledOnceAndNTimesOnce = [](auto& zenMockObject)
          {
-            zenMockObject.AssertCalledOnce();
-            zenMockObject.AssertCalledNTimes(1);
+            zenMockObject.CalledOnce();
+            zenMockObject.CalledNTimes(1);
          };
 
          const string What = "what";

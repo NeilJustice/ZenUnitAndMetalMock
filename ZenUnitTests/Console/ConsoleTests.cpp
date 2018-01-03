@@ -56,7 +56,7 @@ namespace ZenUnit
       //
       _consoleSelfMocked.Write(Message);
       //
-      ZEN(_consoleSelfMocked.WriteColorMock.AssertCalledOnceWith(Message, Color::White));
+      ZEN(_consoleSelfMocked.WriteColorMock.CalledOnceWith(Message, Color::White));
    }
 
    TEST2X2(NonMinimalWrite_CallsWriteColorIfPrintModeNotMinimal,
@@ -78,7 +78,7 @@ namespace ZenUnit
       //
       if (expectWriteCall)
       {
-         ZEN(consoleSelfMock_Write.WriteMock.AssertCalledOnceWith(Message));
+         ZEN(consoleSelfMock_Write.WriteMock.CalledOnceWith(Message));
       }
    }
 
@@ -96,8 +96,8 @@ namespace ZenUnit
       //
       _console.WriteColor(Message, color);
       //
-      ZEN(_consoleColorerMock->SetColorMock.AssertCalledOnceWith(color));
-      ZEN(_consoleColorerMock->UnsetColorMock.AssertCalledOnceWith(setColorReturnValue));
+      ZEN(_consoleColorerMock->SetColorMock.CalledOnceWith(color));
+      ZEN(_consoleColorerMock->UnsetColorMock.CalledOnceWith(setColorReturnValue));
    }
 
    TEST2X2(NonMinimalWriteColor_CallsWriteColorIfPrintModeNotMinimal,
@@ -119,7 +119,7 @@ namespace ZenUnit
       //
       if (expectWriteColorCall)
       {
-         ZEN(consoleSelfMock_WriteColor.WriteColorMock.AssertCalledOnceWith(Message, Color::Green));
+         ZEN(consoleSelfMock_WriteColor.WriteColorMock.CalledOnceWith(Message, Color::Green));
       }
    }
 
@@ -129,7 +129,7 @@ namespace ZenUnit
       //
       _consoleSelfMocked.WriteLine(Message);
       //
-      ZEN(_consoleSelfMocked.WriteLineColorMock.AssertCalledOnceWith(Message, Color::White));
+      ZEN(_consoleSelfMocked.WriteLineColorMock.CalledOnceWith(Message, Color::White));
    }
 
    TEST2X2(NonMinimalWriteNewLine_CallsWriteLineWithWhite,
@@ -147,7 +147,7 @@ namespace ZenUnit
       //
       if (expectWriteNewLineCall)
       {
-         ZEN(_consoleSelfMocked.WriteNewLineMock.AssertCalledOnce());
+         ZEN(_consoleSelfMocked.WriteNewLineMock.CalledOnce());
       }
    }
 
@@ -170,7 +170,7 @@ namespace ZenUnit
       //
       if (expectWriteLineCall)
       {
-         ZEN(consoleSelfMock_WriteLine.WriteLineMock.AssertCalledOnceWith(Message));
+         ZEN(consoleSelfMock_WriteLine.WriteLineMock.CalledOnceWith(Message));
       }
    }
 
@@ -188,8 +188,8 @@ namespace ZenUnit
       //
       _console.WriteLineColor(Message, color);
       //
-      ZEN(_consoleColorerMock->SetColorMock.AssertCalledOnceWith(color));
-      ZEN(_consoleColorerMock->UnsetColorMock.AssertCalledOnceWith(setColorReturnValue));
+      ZEN(_consoleColorerMock->SetColorMock.CalledOnceWith(color));
+      ZEN(_consoleColorerMock->UnsetColorMock.CalledOnceWith(setColorReturnValue));
    }
 
    TEST1X1(WriteLineAndExit_CallsWriteLineAndExit,
@@ -203,7 +203,7 @@ namespace ZenUnit
       //
       _console.WriteLineAndExit(Message, exitCode);
       //
-      ZEN(exit_ZenMock.AssertCalledOnceWith(exitCode));
+      ZEN(exit_ZenMock.CalledOnceWith(exitCode));
    }
 
    TEST2X2(NonMinimalWriteStringsCommaSeparated_PrintModeNotMinimal_CallsDoWriteStringsCommaSeparated,
@@ -229,7 +229,7 @@ namespace ZenUnit
       //
       if (expectDoWriteCall)
       {
-         consoleSelfMocked.DoWriteStringsCommaSeparatedMock.AssertCalledOnceWith(strings, startIndex, numberOfElements);
+         consoleSelfMocked.DoWriteStringsCommaSeparatedMock.CalledOnceWith(strings, startIndex, numberOfElements);
       }
    }
 
@@ -253,7 +253,7 @@ namespace ZenUnit
       {
          expectedConsoleWriteCalls.emplace_back(expectedConsoleWrite);
       }
-      ZEN(consoleSelfMocked.WriteMock.AssertCalls(expectedConsoleWriteCalls));
+      ZEN(consoleSelfMocked.WriteMock.CalledMultipleTimes(expectedConsoleWriteCalls));
    }
 
    TEST3X3(WaitForEnterKeyIfDebuggerPresentOrValueTrue_WritesPressEnterKeyAndGetsCharIfDebuggerPresentOrValueTrue,
@@ -277,12 +277,12 @@ namespace ZenUnit
       //
       if (!doWait)
       {
-         ZEN(_consoleSelfMocked.DebuggerIsPresentMock.AssertCalledOnce());
+         ZEN(_consoleSelfMocked.DebuggerIsPresentMock.CalledOnce());
       }
       if (expectPressEnterKeyAndGetChar)
       {
-         ZEN(_consoleSelfMocked.WriteLineColorMock.AssertCalledOnceWith("Press Enter to continue . . .", Color::White));
-         ZEN(_consoleSelfMocked.WaitForEnterKeyMock.AssertCalledOnce());
+         ZEN(_consoleSelfMocked.WriteLineColorMock.CalledOnceWith("Press Enter to continue . . .", Color::White));
+         ZEN(_consoleSelfMocked.WaitForEnterKeyMock.CalledOnce());
       }
    }
 
@@ -299,7 +299,7 @@ namespace ZenUnit
       //
       const bool debuggerIsPresent = _console.DebuggerIsPresent();
       //
-      ZEN(IsDebuggerPresent_ZenMock.AssertCalledOnce());
+      ZEN(IsDebuggerPresent_ZenMock.CalledOnce());
       ARE_EQUAL(expectedReturnValue, debuggerIsPresent);
    }
 #endif

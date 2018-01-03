@@ -13,7 +13,7 @@ namespace ZenMock
       ConsoleMock consoleMock;
       consoleMock.WriteLineMock.Expect();
       consoleMock.WriteLine("message");
-      ZEN(consoleMock.WriteLineMock.AssertCalledOnceWith("message"));
+      ZEN(consoleMock.WriteLineMock.CalledOnceWith("message"));
    }
 
    TEST(ZENWrappedAssertionThrows_RethrowsZENWrappedAnomaly)
@@ -22,8 +22,8 @@ namespace ZenMock
       consoleMock.WriteLineMock.Expect();
       consoleMock.WriteLine("message");
       const string expectedMessage = "Message";
-      THROWS(ZEN(consoleMock.WriteLineMock.AssertCalledOnceWith(expectedMessage)), Anomaly, R"(
-  Failed: ZEN(consoleMock.WriteLineMock.AssertCalledOnceWith(expectedMessage))
+      THROWS(ZEN(consoleMock.WriteLineMock.CalledOnceWith(expectedMessage)), Anomaly, R"(
+  Failed: ZEN(consoleMock.WriteLineMock.CalledOnceWith(expectedMessage))
  Because: ARE_EQUAL(expectedArgument, callHistory[0].argument, this->ZenMockedFunctionSignature) failed
 Expected: "Message"
   Actual: "message"

@@ -37,7 +37,7 @@ TEST2X2(Main_ConvertsArgcArgvToStringVector_CallsVectorMain,
    //
    const int exitCode = program_VectorMainMocked.Main(1, const_cast<char**>(argv));
    //
-   ZEN(program_VectorMainMocked.VectorMainMock.AssertCalledOnceWith({ "BinaryPath" }));
+   ZEN(program_VectorMainMocked.VectorMainMock.CalledOnceWith({ "BinaryPath" }));
    ARE_EQUAL(expectedExitCode, exitCode);
 }
 
@@ -48,7 +48,7 @@ TEST(VectorMain_Returns0)
    //
    const int exitCode = _program.VectorMain(args);
    //
-   ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith("Hello World"));
+   ZEN(_consoleMock->WriteLineMock.CalledOnceWith("Hello World"));
    ARE_EQUAL(0, exitCode);
 }
 

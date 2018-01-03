@@ -109,10 +109,10 @@ TEST3X3(InteractWithComponentA_CallsEveryFunction_ReturnsSumOfReturnValues,
    // The ZEN macro wrapper provides __FILE__ and __LINE__ information
    // for the case when a ZenMocked function is called differently from how it is asserted
    // to have been called - such as by too many calls or a mismatching function argument.
-   ZEN(_componentAMock->VirtualVoidMock.AssertCalledOnce());
-   ZEN(_componentAMock->VirtualVoidConstTwoArgsMock.AssertCalledOnceWith(333, 107));
-   ZEN(_componentAMock->VirtualNonVoidMock.AssertCalledOnce());
-   ZEN(_componentAMock->VirtualNonVoidConstMock.AssertCalledOnce());
+   ZEN(_componentAMock->VirtualVoidMock.CalledOnce());
+   ZEN(_componentAMock->VirtualVoidConstTwoArgsMock.CalledOnceWith(333, 107));
+   ZEN(_componentAMock->VirtualNonVoidMock.CalledOnce());
+   ZEN(_componentAMock->VirtualNonVoidConstMock.CalledOnce());
    ARE_EQUAL(expectedReturnValue, returnValue);
 }
 

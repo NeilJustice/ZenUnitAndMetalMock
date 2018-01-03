@@ -33,8 +33,8 @@ namespace ZenMock
    TESTS(ZenMock_NonVoid0Tests)
    // ZeroArgumentMocker Tests
    AFACT(ExpectAndThrow_CalledTwice_Throws)
-   AFACT(FunctionNotCalled_AssertCalledNTimesWithN0_Throws)
-   AFACT(FunctionNotCalled_AssertCalledOnceThrows_AssertCalledNTimesThrows)
+   AFACT(FunctionNotCalled_CalledMultipleTimesWithN0_Throws)
+   AFACT(FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows)
    AFACT(Function_NotExpected_Throws)
    AFACT(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)
    // Value Return Tests
@@ -106,14 +106,14 @@ namespace ZenMock
       _zenMock0Tester->ExpectAndThrow_CalledTwice_Throws();
    }
 
-   TEST(FunctionNotCalled_AssertCalledNTimesWithN0_Throws)
+   TEST(FunctionNotCalled_CalledMultipleTimesWithN0_Throws)
    {
-      _zenMock0Tester->FunctionNotCalled_AssertCalledNTimesWithN0_Throws();
+      _zenMock0Tester->FunctionNotCalled_CalledMultipleTimesWithN0_Throws();
    }
 
-   TEST(FunctionNotCalled_AssertCalledOnceThrows_AssertCalledNTimesThrows)
+   TEST(FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows)
    {
-      _zenMock0Tester->FunctionNotCalled_AssertCalledOnceThrows_AssertCalledNTimesThrows();
+      _zenMock0Tester->FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows();
    }
 
    TEST(Function_NotExpected_Throws)
@@ -135,7 +135,7 @@ namespace ZenMock
          zenMockObject.ExpectAndReturn(1);
          ARE_EQUAL(1, zenMockedFunctionCall());
          ARE_EQUAL(1, zenMockedFunctionCall());
-         zenMockObject.AssertCalledNTimes(2);
+         zenMockObject.CalledNTimes(2);
       };
       test(_mock.VirtualMock, [&] { return _mock.Virtual(); });
       test(_mock.VirtualConstMock, [&] { return _mock.VirtualConst(); });
@@ -156,7 +156,7 @@ namespace ZenMock
          ARE_EQUAL(1, zenMockedFunctionCall());
          ARE_EQUAL(2, zenMockedFunctionCall());
          ARE_EQUAL(2, zenMockedFunctionCall());
-         zenMockObject.AssertCalledNTimes(3);
+         zenMockObject.CalledNTimes(3);
       };
       test(_mock.VirtualMock, [&]{ return _mock.Virtual(); });
       test(_mock.VirtualConstMock, [&]{ return _mock.VirtualConst(); });
@@ -178,7 +178,7 @@ namespace ZenMock
          ARE_EQUAL(1, zenMockedFunctionCall());
          ARE_EQUAL(2, zenMockedFunctionCall());
          ARE_EQUAL(2, zenMockedFunctionCall());
-         zenMockObject.AssertCalledNTimes(3);
+         zenMockObject.CalledNTimes(3);
       };
       test(_mock.VirtualMock, [&]{ return _mock.Virtual(); });
       test(_mock.VirtualConstMock, [&]{ return _mock.VirtualConst(); });

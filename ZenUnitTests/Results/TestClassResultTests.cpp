@@ -135,7 +135,7 @@ namespace ZenUnit
       //
       _testClassResult.PrintTestFailures(&forEacherTwoExtraArgsMock, &console, &testFailureNumberer);
       //
-      ZEN(forEacherTwoExtraArgsMock.TwoExtraArgsForEachMock.AssertCalledOnceWith(
+      ZEN(forEacherTwoExtraArgsMock.TwoExtraArgsForEachMock.CalledOnceWith(
          &_testClassResult._testResults, TestClassResult::PrintTestResultIfFailure, &console, &testFailureNumberer));
    }
 
@@ -172,14 +172,14 @@ namespace ZenUnit
       //
       _testClassResultSelfMocked.NonMinimalPrintResultLine(&consoleMock, printMode);
       //
-      ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.AssertCalledOnce());
-      ZEN(consoleMock.WriteMock.AssertCalls(
+      ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnce());
+      ZEN(consoleMock.WriteMock.CalledMultipleTimes(
       {
          { "[  " },
          { "  ]" }
       }));
-      ZEN(consoleMock.NonMinimalWriteColorMock.AssertCalledOnceWith("OK", Color::Green, printMode));
-      ZEN(consoleMock.NonMinimalWriteNewLineMock.AssertCalledOnceWith(printMode));
+      ZEN(consoleMock.NonMinimalWriteColorMock.CalledOnceWith("OK", Color::Green, printMode));
+      ZEN(consoleMock.NonMinimalWriteNewLineMock.CalledOnceWith(printMode));
    }
 
    TEST1X1(NonMinimalPrintResultLine_1OrMoreFailedTests_WritesFailedInRed,
@@ -195,9 +195,9 @@ namespace ZenUnit
       const PrintMode printMode = RandomPrintMode();
       _testClassResultSelfMocked.NonMinimalPrintResultLine(&consoleMock, printMode);
       //
-      ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.AssertCalledOnce());
-      ZEN(consoleMock.NonMinimalWriteColorMock.AssertCalledOnceWith("[TestClass Failed]", Color::Red, printMode));
-      ZEN(consoleMock.NonMinimalWriteNewLineMock.AssertCalledOnceWith(printMode));
+      ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnce());
+      ZEN(consoleMock.NonMinimalWriteColorMock.CalledOnceWith("[TestClass Failed]", Color::Red, printMode));
+      ZEN(consoleMock.NonMinimalWriteNewLineMock.CalledOnceWith(printMode));
    }
 
    TEST(PrintTestResultIfFailure_CallsTestResultPrintIfFailure)
@@ -209,7 +209,7 @@ namespace ZenUnit
       //
       _testClassResult.PrintTestResultIfFailure(testResultMock, &console, &testFailureNumberer);
       //
-      ZEN(testResultMock.PrintIfFailureMock.AssertCalledOnceWith(&console, &testFailureNumberer));
+      ZEN(testResultMock.PrintIfFailureMock.CalledOnceWith(&console, &testFailureNumberer));
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfTestResultsNotEqual)

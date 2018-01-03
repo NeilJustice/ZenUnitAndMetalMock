@@ -36,7 +36,7 @@ namespace ZenUnit
       //
       const vector<RunFilter> expectedRunFilters = _runFilterParser.Parse(runFilterStrings);
       //
-      ZEN(_transformerMock->TransformMock.AssertCalledOnceWith(
+      ZEN(_transformerMock->TransformMock.CalledOnceWith(
          &runFilterStrings, RunFilterParser::ParseRunFilterString));
       VECTORS_EQUAL(expectedRunFilters, runFilters);
    }

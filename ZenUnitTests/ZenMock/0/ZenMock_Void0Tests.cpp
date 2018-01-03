@@ -33,10 +33,10 @@ namespace ZenMock
    TESTS(ZenMock_Void0Tests)
    // ZeroArgumentMocker Tests
    AFACT(ExpectAndThrow_CalledTwice_Throws)
-   AFACT(FunctionNotCalled_AssertCalledNTimesWithN0_Throws)
-   AFACT(FunctionNotCalled_AssertCalledOnceThrows_AssertCalledNTimesThrows)
+   AFACT(FunctionNotCalled_CalledMultipleTimesWithN0_Throws)
+   AFACT(FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows)
    AFACT(Function_NotExpected_Throws)
-   AFACT(Function_Expected_DoesNotThrow_AssertCallsOnceDoesNotThrow_AssertCalledNTimes1DoesNotThrow)
+   AFACT(Function_Expected_DoesNotThrow_CalledMultipleTimesOnceDoesNotThrow_CalledNTimes1DoesNotThrow)
    AFACT(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)
    // Void0 Tests
    AFACT(Expect_MakesFunctionCallNotThrow_DoesNotThrowIfExpectCalledTwice)
@@ -100,14 +100,14 @@ namespace ZenMock
       _zenMock0Tester->ExpectAndThrow_CalledTwice_Throws();
    }
 
-   TEST(FunctionNotCalled_AssertCalledNTimesWithN0_Throws)
+   TEST(FunctionNotCalled_CalledMultipleTimesWithN0_Throws)
    {
-      _zenMock0Tester->FunctionNotCalled_AssertCalledNTimesWithN0_Throws();
+      _zenMock0Tester->FunctionNotCalled_CalledMultipleTimesWithN0_Throws();
    }
 
-   TEST(FunctionNotCalled_AssertCalledOnceThrows_AssertCalledNTimesThrows)
+   TEST(FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows)
    {
-      _zenMock0Tester->FunctionNotCalled_AssertCalledOnceThrows_AssertCalledNTimesThrows();
+      _zenMock0Tester->FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows();
    }
 
    TEST(Function_NotExpected_Throws)
@@ -115,9 +115,9 @@ namespace ZenMock
       _zenMock0Tester->Function_NotExpected_Throws();
    }
 
-   TEST(Function_Expected_DoesNotThrow_AssertCallsOnceDoesNotThrow_AssertCalledNTimes1DoesNotThrow)
+   TEST(Function_Expected_DoesNotThrow_CalledMultipleTimesOnceDoesNotThrow_CalledNTimes1DoesNotThrow)
    {
-      _zenMock0Tester->Function_Expected_DoesNotThrow_AssertCallsOnceDoesNotThrow_AssertCalledNTimes1DoesNotThrow();
+      _zenMock0Tester->Function_Expected_DoesNotThrow_CalledMultipleTimesOnceDoesNotThrow_CalledNTimes1DoesNotThrow();
    }
 
    TEST(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)

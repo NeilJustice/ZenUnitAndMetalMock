@@ -112,8 +112,8 @@ namespace ZenMock
 
    TEST(ZenMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCalls0_Throws)
    {
-      THROWS(_zenMocker->ZenMockThrowIfExpectedNumberOfCalls0(0), UnsupportedAssertCalledZeroTimesException,
-         UnsupportedAssertCalledZeroTimesException::MakeWhat(ZenMockedFunctionSignature));
+      THROWS(_zenMocker->ZenMockThrowIfExpectedNumberOfCalls0(0), UnsupportedCalledZeroTimesException,
+         UnsupportedCalledZeroTimesException::MakeWhat(ZenMockedFunctionSignature));
    }
 
    TEST1X1(ZenMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCallsGreaterThan0_DoesNotThrow,
@@ -126,8 +126,8 @@ namespace ZenMock
 
    TEST(ZenMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSize0_Throws)
    {
-      THROWS(_zenMocker->ZenMockThrowIfExpectedCallsSizeIsZero(0), UnsupportedAssertCalledZeroTimesException,
-         UnsupportedAssertCalledZeroTimesException::MakeWhat(ZenMockedFunctionSignature));
+      THROWS(_zenMocker->ZenMockThrowIfExpectedCallsSizeIsZero(0), UnsupportedCalledZeroTimesException,
+         UnsupportedCalledZeroTimesException::MakeWhat(ZenMockedFunctionSignature));
    }
 
    TEST1X1(ZenMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSizeGreaterThan0_DoesNotThrow,
@@ -192,8 +192,8 @@ namespace ZenMock
       _zenMocker->ZenMockExitIfExpectedButNotAsserted();
       //
       cout << "</ZenMock Error Message Testing>\n";
-      ZEN(GetArgs_ZenMock.AssertCalledOnce());
-      ZEN(exit_ZenMock.AssertCalledOnceWith(expectedExitCode));
+      ZEN(GetArgs_ZenMock.CalledOnce());
+      ZEN(exit_ZenMock.CalledOnceWith(expectedExitCode));
       _zenMocker->_asserted = true;
    }
 

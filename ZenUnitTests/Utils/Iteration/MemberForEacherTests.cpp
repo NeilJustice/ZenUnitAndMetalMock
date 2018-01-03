@@ -46,7 +46,7 @@ namespace ZenUnit
       _memberForEacher.MemberForEach(
          &classInstance.collection, &classInstance, &ClassType::Func);
       //
-      classInstance.FuncMock.AssertCalledOnceWith(1);
+      classInstance.FuncMock.CalledOnceWith(1);
    }
 
    TEST(MemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwice)
@@ -58,7 +58,7 @@ namespace ZenUnit
       _memberForEacher.MemberForEach(
          &classInstance.collection, &classInstance, &ClassType::Func);
       //
-      classInstance.FuncMock.AssertCalls(
+      classInstance.FuncMock.CalledMultipleTimes(
       {
          1, 2
       });

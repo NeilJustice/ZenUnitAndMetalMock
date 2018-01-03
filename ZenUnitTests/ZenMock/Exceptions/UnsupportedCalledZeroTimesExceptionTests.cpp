@@ -2,7 +2,7 @@
 
 namespace ZenMock
 {
-   TESTS(UnsupportedAssertCalledZeroTimesExceptionTests)
+   TESTS(UnsupportedCalledZeroTimesExceptionTests)
    AFACT(Constructor_SetsWhat_ClassIsSubclassOfZenMockException)
    EVIDENCE
 
@@ -10,7 +10,7 @@ namespace ZenMock
    {
       const string ZenMockedFunctionSignature = "virtual void ClassName::FunctionName(int, int) const";
       //
-      const UnsupportedAssertCalledZeroTimesException e(ZenMockedFunctionSignature);
+      const UnsupportedCalledZeroTimesException e(ZenMockedFunctionSignature);
       //
       const string ExpectedWhat = ZenUnit::String::Concat(
 "For ZenMocked function \"", ZenMockedFunctionSignature, R"(":
@@ -20,8 +20,8 @@ namespace ZenMock
  simply do not call any of the Expect() functions on a ZenMock object.)");
       const string actualWhat = e.what();
       ARE_EQUAL(ExpectedWhat, actualWhat);
-      IS_TRUE((is_base_of<ZenMockException, UnsupportedAssertCalledZeroTimesException>::value));
+      IS_TRUE((is_base_of<ZenMockException, UnsupportedCalledZeroTimesException>::value));
    }
 
-   }; RUNTESTS(UnsupportedAssertCalledZeroTimesExceptionTests)
+   }; RUNTESTS(UnsupportedCalledZeroTimesExceptionTests)
 }

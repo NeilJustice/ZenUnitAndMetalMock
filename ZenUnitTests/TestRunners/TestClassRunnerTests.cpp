@@ -28,8 +28,8 @@ namespace ZenUnit
       //
       const bool isLessThan = leftTestClassRunner < rightTestClassRunner;
       //
-      ZEN(leftTestClassRunnerMock->TestClassNameMock.AssertCalledOnce());
-      ZEN(rightTestClassRunnerMock->TestClassNameMock.AssertCalledOnce());
+      ZEN(leftTestClassRunnerMock->TestClassNameMock.CalledOnce());
+      ZEN(rightTestClassRunnerMock->TestClassNameMock.CalledOnce());
       ARE_EQUAL(expectedIsLessThan, isLessThan);
    }
 

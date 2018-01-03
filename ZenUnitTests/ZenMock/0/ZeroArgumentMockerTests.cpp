@@ -10,9 +10,9 @@ namespace ZenMock
    AFACT(ZenMockIt_ExpectedFalse_Throws)
    AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
 
-   FACTS(AssertCalledOnce_SetsAssertedTrue_FunctionWasCalledOnce_DoesNotThrow)
-   AFACT(AssertCalledNTimes_NIsZero_Throws)
-   FACTS(AssertCalledNTimes_SetsAssertedTrue_FunctionWasCalledNTimes_DoesNotThrow)
+   FACTS(CalledOnce_SetsAssertedTrue_FunctionWasCalledOnce_DoesNotThrow)
+   AFACT(CalledNTimes_NIsZero_Throws)
+   FACTS(CalledNTimes_SetsAssertedTrue_FunctionWasCalledNTimes_DoesNotThrow)
    EVIDENCE
 
    using MockerType = ZeroArgumentMocker<ExceptionThrowerMock>;
@@ -72,10 +72,10 @@ namespace ZenMock
       //
       ARE_EQUAL(1, _mocker->actualNumberOfCalls);
       ZEN(_mocker->_exceptionThrower.AssertZenMockThrowIfExceptionSetCalledOnce());
-      NOTHROWS(_mocker->AssertCalledOnce());
+      NOTHROWS(_mocker->CalledOnce());
    }
 
-   TEST2X2(AssertCalledOnce_SetsAssertedTrue_FunctionWasCalledOnce_DoesNotThrow,
+   TEST2X2(CalledOnce_SetsAssertedTrue_FunctionWasCalledOnce_DoesNotThrow,
       size_t numberOfCalls, bool expectThrow,
       size_t(0), true,
       size_t(1), false,
@@ -86,7 +86,7 @@ namespace ZenMock
       _mocker->actualNumberOfCalls = numberOfCalls;
       if (expectThrow)
       {
-         THROWS(_mocker->AssertCalledOnce(), Anomaly, R"(
+         THROWS(_mocker->CalledOnce(), Anomaly, R"(
   Failed: ARE_EQUAL(expectedNumberOfCalls, actualNumberOfCalls, this->ZenMockedFunctionSignature)
 Expected: 1
   Actual: )" + to_string(numberOfCalls) + R"(
@@ -95,19 +95,19 @@ File.cpp(1))");
       }
       else
       {
-         _mocker->AssertCalledOnce();
+         _mocker->CalledOnce();
       }
       //
       IS_TRUE(_mocker->_asserted);
    }
 
-   TEST(AssertCalledNTimes_NIsZero_Throws)
+   TEST(CalledNTimes_NIsZero_Throws)
    {
-      THROWS(_mocker->AssertCalledNTimes(0), UnsupportedAssertCalledZeroTimesException,
-         UnsupportedAssertCalledZeroTimesException::MakeWhat(_signature));
+      THROWS(_mocker->CalledNTimes(0), UnsupportedCalledZeroTimesException,
+         UnsupportedCalledZeroTimesException::MakeWhat(_signature));
    }
 
-   TEST3X3(AssertCalledNTimes_SetsAssertedTrue_FunctionWasCalledNTimes_DoesNotThrow,
+   TEST3X3(CalledNTimes_SetsAssertedTrue_FunctionWasCalledNTimes_DoesNotThrow,
       size_t expectedNumberOfCalls, size_t numberOfCalls, bool expectThrow,
       size_t(1), size_t(0), true,
 
@@ -123,7 +123,7 @@ File.cpp(1))");
       _mocker->actualNumberOfCalls = numberOfCalls;
       if (expectThrow)
       {
-         THROWS(_mocker->AssertCalledNTimes(expectedNumberOfCalls), Anomaly, R"(
+         THROWS(_mocker->CalledNTimes(expectedNumberOfCalls), Anomaly, R"(
   Failed: ARE_EQUAL(expectedNumberOfCalls, actualNumberOfCalls, this->ZenMockedFunctionSignature)
 Expected: )" + to_string(expectedNumberOfCalls) + R"(
   Actual: )" + to_string(numberOfCalls) + R"(
@@ -132,7 +132,7 @@ File.cpp(1))");
       }
       else
       {
-         _mocker->AssertCalledNTimes(expectedNumberOfCalls);
+         _mocker->CalledNTimes(expectedNumberOfCalls);
       }
       //
       IS_TRUE(_mocker->_asserted);

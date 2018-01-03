@@ -78,7 +78,7 @@ namespace ZenMock
       };
       VECTORS_EQUAL(expectedCalls, _mocker->callHistory);
       ZEN(_mocker->_exceptionThrower.AssertZenMockThrowIfExceptionSetCalledOnce());
-      NOTHROWS(_mocker->AssertCalledOnceWith(1, 2, 3));
+      NOTHROWS(_mocker->CalledOnceWith(1, 2, 3));
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 

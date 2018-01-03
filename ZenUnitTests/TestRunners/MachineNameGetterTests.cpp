@@ -58,7 +58,7 @@ namespace ZenUnit
       //
       const string returnedMachineName = _machineNameGetterSelfMocked.GetMachineName();
       //
-      ZEN(_machineNameGetterSelfMocked.GetLinuxMachineNameMock.AssertCalledOnce());
+      ZEN(_machineNameGetterSelfMocked.GetLinuxMachineNameMock.CalledOnce());
       ARE_EQUAL(machineName, returnedMachineName);
    }
 
@@ -74,7 +74,7 @@ namespace ZenUnit
       //
       const string returnedMachineName = _machineNameGetterSelfMocked.GetMachineName();
       //
-      ZEN(_machineNameGetterSelfMocked.GetWindowsMachineNameMock.AssertCalledOnce());
+      ZEN(_machineNameGetterSelfMocked.GetWindowsMachineNameMock.CalledOnce());
       ARE_EQUAL(machineName, returnedMachineName);
    }
 

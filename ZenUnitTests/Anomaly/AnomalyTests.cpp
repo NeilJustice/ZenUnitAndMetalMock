@@ -301,12 +301,12 @@ FilePath(1))")
       //
       anomaly.WriteLineWhy(&consoleMock);
       //
-      ZEN(consoleMock.WriteLineMock.AssertCalledOnceWith(anomaly.why));
+      ZEN(consoleMock.WriteLineMock.CalledOnceWith(anomaly.why));
    }
 
    TEST(ZENWrapped_ReturnsExpectedAnomaly)
    {
-      const string ZenMockAssertExpression = "ZEN(zenMockObject.FunctionMock.AssertCalledOnce())";
+      const string ZenMockAssertExpression = "ZEN(zenMockObject.FunctionMock.CalledOnce())";
       Anomaly zenWrappedAnomaly;
       zenWrappedAnomaly.assertExpression = "ARE_EQUAL(expectedArgument, callHistory[0].firstArgument, this->ZenMockedFunctionSignature)";
       zenWrappedAnomaly.expected = "\"expected\"";
@@ -322,7 +322,7 @@ FilePath(1))")
       expectedAnomaly.actual = zenWrappedAnomaly.actual;
       expectedAnomaly.message = zenWrappedAnomaly.message;
       expectedAnomaly.why = R"(
-  Failed: ZEN(zenMockObject.FunctionMock.AssertCalledOnce())
+  Failed: ZEN(zenMockObject.FunctionMock.CalledOnce())
  Because: ARE_EQUAL(expectedArgument, callHistory[0].firstArgument, this->ZenMockedFunctionSignature) failed
 Expected: "expected"
   Actual: "actual"

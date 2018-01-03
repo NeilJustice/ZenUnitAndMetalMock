@@ -34,7 +34,7 @@ namespace ZenUnit
       //
       _stopwatch.Start();
       //
-      now_ZenMock.AssertCalledOnce();
+      now_ZenMock.CalledOnce();
       ARE_EQUAL(nonDefaultTimePoint, _stopwatch._startTime);
    }
 
@@ -55,7 +55,7 @@ namespace ZenUnit
       //
       const unsigned elapsedMilliseconds = _stopwatch.Stop();
       //
-      ZEN(now_ZenMock.AssertCalledOnce());
+      ZEN(now_ZenMock.CalledOnce());
       ARE_EQUAL(number, elapsedMilliseconds);
    }
 

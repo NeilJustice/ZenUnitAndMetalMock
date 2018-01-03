@@ -41,7 +41,7 @@ namespace ZenUnit
       //
       _normalTest->NonMinimalWritePostTestNameMessage(&consoleMock, printMode);
       //
-      ZEN(consoleMock.NonMinimalWriteMock.AssertCalledOnceWith(" -> ", printMode));
+      ZEN(consoleMock.NonMinimalWriteMock.CalledOnceWith(" -> ", printMode));
    }
 
    TEST(NonMinimalWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue)
@@ -53,7 +53,7 @@ namespace ZenUnit
       //
       _normalTest->NonMinimalWritePostTestCompletionMessage(&consoleMock, testResultMock, printMode);
       //
-      ZEN(testResultMock.NonMinimalWriteLineOKIfSuccessMock.AssertCalledOnceWith(&consoleMock, printMode));
+      ZEN(testResultMock.NonMinimalWriteLineOKIfSuccessMock.CalledOnceWith(&consoleMock, printMode));
    }
 
    TEST(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)
@@ -83,7 +83,7 @@ namespace ZenUnit
       //
       _normalTest->Startup();
       //
-      ZEN(_normalTest->_testClass->StartupMock.AssertCalledOnce());
+      ZEN(_normalTest->_testClass->StartupMock.CalledOnce());
    }
 
    TEST(TestBody_CallsMemberTestFunctionBoundToTestClassPointer)
@@ -94,7 +94,7 @@ namespace ZenUnit
       //
       _normalTest->TestBody();
       //
-      ZEN(_normalTest->_testClass->TestMock.AssertCalledOnce());
+      ZEN(_normalTest->_testClass->TestMock.CalledOnce());
    }
 
    TEST(Cleanup_CallsCleanupOnTestClass)
@@ -104,7 +104,7 @@ namespace ZenUnit
       //
       _normalTest->Cleanup();
       //
-      ZEN(_normalTest->_testClass->CleanupMock.AssertCalledOnce());
+      ZEN(_normalTest->_testClass->CleanupMock.CalledOnce());
    }
 
    TEST(DeleteTestClass_DeletesTestClass)

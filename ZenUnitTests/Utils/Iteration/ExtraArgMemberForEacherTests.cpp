@@ -48,7 +48,7 @@ namespace ZenUnit
       _memberForEacherExtraArg.ExtraArgMemberForEach(
          &classInstance.vec, &classInstance, &ClassType::TwoArgFunction, 10);
       //
-      classInstance.TwoArgFunctionMock.AssertCalledOnceWith(1, 10);
+      classInstance.TwoArgFunctionMock.CalledOnceWith(1, 10);
    }
 
    TEST(ExtraArgMemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwice)
@@ -60,7 +60,7 @@ namespace ZenUnit
       _memberForEacherExtraArg.ExtraArgMemberForEach(
          &classInstance.vec, &classInstance, &ClassType::TwoArgFunction, 20);
       //
-      classInstance.TwoArgFunctionMock.AssertCalls(
+      classInstance.TwoArgFunctionMock.CalledMultipleTimes(
       {
          { 1, 20 },
          { 2, 20 }
@@ -83,7 +83,7 @@ namespace ZenUnit
       _memberForEacherExtraArg.RandomExtraArgMemberForEach(
          &classInstance.vec, &classInstance, &ClassType::TwoArgFunction, 10, 0);
       //
-      classInstance.TwoArgFunctionMock.AssertCalledOnceWith(1, 10);
+      classInstance.TwoArgFunctionMock.CalledOnceWith(1, 10);
    }
 
    TEST(RandomExtraArgMemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwiceInRandomOrder)
@@ -98,7 +98,7 @@ namespace ZenUnit
       //
       try
       {
-         classInstance.TwoArgFunctionMock.AssertCalls(
+         classInstance.TwoArgFunctionMock.CalledMultipleTimes(
          {
             { 1, 20 },
             { 2, 20 }
@@ -106,7 +106,7 @@ namespace ZenUnit
       }
       catch (const exception&)
       {
-         classInstance.TwoArgFunctionMock.AssertCalls(
+         classInstance.TwoArgFunctionMock.CalledMultipleTimes(
          {
             { 2, 20 },
             { 1, 20 }

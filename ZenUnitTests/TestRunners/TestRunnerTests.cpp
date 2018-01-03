@@ -110,7 +110,7 @@ namespace ZenUnit
       //
       _testRunner.AddTestClassRunner(&testClassRunner);
       //
-      ZEN(_multiTestClassRunnerMock->AddTestClassRunnerMock.AssertCalledOnceWith(&testClassRunner));
+      ZEN(_multiTestClassRunnerMock->AddTestClassRunnerMock.CalledOnceWith(&testClassRunner));
    }
 
    TEST4X4(ParseArgsRunTestClassesPrintResults_ParsesArgs_RunsTestClassesTimesNumberOfTimes_Returns0IfAllTestRunsPassOtherwiseReturns1,
@@ -139,13 +139,13 @@ namespace ZenUnit
       //
       const int overallExitCode = _testRunnerSelfMockedA.ParseArgsRunTestClassesPrintResults(commandLineArgs);
       //
-      ZEN(_testRunnerSelfMockedA.argsParserMock->ParseMock.AssertCalledOnceWith(commandLineArgs));
+      ZEN(_testRunnerSelfMockedA.argsParserMock->ParseMock.CalledOnceWith(commandLineArgs));
       ZEN(_testRunnerSelfMockedA.multiTestClassRunnerMock->
-         ApplyRunFiltersIfAnyMock.AssertCalledOnceWith(parsedZenUnitArgs.runFilters));
-      ZEN(_testRunnerSelfMockedA.RunTestClassesAndPrintResultsMock.AssertCalledNTimesWith(testrunsArgs, parsedZenUnitArgs));
-      ZEN(_testRunnerSelfMockedA.testRunResultMock->ResetStateExceptForSkipsMock.AssertCalledNTimes(testrunsArgs));
+         ApplyRunFiltersIfAnyMock.CalledOnceWith(parsedZenUnitArgs.runFilters));
+      ZEN(_testRunnerSelfMockedA.RunTestClassesAndPrintResultsMock.CalledMultipleTimesWith(testrunsArgs, parsedZenUnitArgs));
+      ZEN(_testRunnerSelfMockedA.testRunResultMock->ResetStateExceptForSkipsMock.CalledNTimes(testrunsArgs));
       ZEN(_testRunnerSelfMockedA.consoleMock->
-         WaitForEnterKeyIfDebuggerPresentOrValueTrueMock.AssertCalledOnceWith(parsedZenUnitArgs.wait));
+         WaitForEnterKeyIfDebuggerPresentOrValueTrueMock.CalledOnceWith(parsedZenUnitArgs.wait));
       ARE_EQUAL(expectedOverallExitCode, overallExitCode);
    }
 
@@ -194,26 +194,26 @@ namespace ZenUnit
    //    const int exitCode = _testRunnerSelfMockedB.RunTestClassesAndPrintResults(zenUnitArgs);
    //    //
    //    ZEN(_testRunnerSelfMockedB.WaitForEnterKeyIfPauseModeAndHaveNotPausedMock.
-   //       AssertCalledOnceWith(zenUnitArgs.pause, havePausedInitialValue));
+   //       CalledOnceWith(zenUnitArgs.pause, havePausedInitialValue));
    //    ARE_EQUAL(waitForEnterKeyIfPauseModeReturnValue, _testRunnerSelfMockedB._havePaused);
-   //    ZEN(_testRunnerSelfMockedB.testRunStopwatchMock->StartMock.AssertCalledOnce());
-   //    ZEN(_testRunnerSelfMockedB.preamblePrinterMock->PrintOpeningThreeLinesMock.AssertCalledOnceWith(
+   //    ZEN(_testRunnerSelfMockedB.testRunStopwatchMock->StartMock.CalledOnce());
+   //    ZEN(_testRunnerSelfMockedB.preamblePrinterMock->PrintOpeningThreeLinesMock.CalledOnceWith(
    //       zenUnitArgs, _testRunnerSelfMockedB._multiTestClassRunner.get()));
    //    if (expectRunTestClassesWithWaitableRunnerThread)
    //    {
    //       ZEN(_testRunnerSelfMockedB.RunTestClassesWithWaitableRunnerThreadMock.
-   //          AssertCalledOnceWith(zenUnitArgs.maxtotalseconds));
+   //          CalledOnceWith(zenUnitArgs.maxtotalseconds));
    //    }
    //    else
    //    {
-   //       ZEN(_testRunnerSelfMockedB.RunTestClassesMock.AssertCalledOnce());
+   //       ZEN(_testRunnerSelfMockedB.RunTestClassesMock.CalledOnce());
    //    }
-   //    ZEN(_testRunnerSelfMockedB.testRunResultMock->PrintTestFailuresAndSkipsMock.AssertCalledOnce());
-   //    ZEN(_testRunnerSelfMockedB.multiTestClassRunnerMock->NumberOfTestCasesMock.AssertCalledOnce());
-   //    ZEN(_testRunnerSelfMockedB.testRunStopwatchMock->StopMock.AssertCalledOnce());
-   //    ZEN(_testRunnerSelfMockedB.testRunResultMock->PrintClosingLinesMock.AssertCalledOnceWith(
+   //    ZEN(_testRunnerSelfMockedB.testRunResultMock->PrintTestFailuresAndSkipsMock.CalledOnce());
+   //    ZEN(_testRunnerSelfMockedB.multiTestClassRunnerMock->NumberOfTestCasesMock.CalledOnce());
+   //    ZEN(_testRunnerSelfMockedB.testRunStopwatchMock->StopMock.CalledOnce());
+   //    ZEN(_testRunnerSelfMockedB.testRunResultMock->PrintClosingLinesMock.CalledOnceWith(
    //       TotalNumberOfTestCases, TestRunMilliseconds, zenUnitArgs));
-   //    ZEN(_testRunnerSelfMockedB.testRunResultMock->DetermineExitCodeMock.AssertCalledOnceWith(zenUnitArgs));
+   //    ZEN(_testRunnerSelfMockedB.testRunResultMock->DetermineExitCodeMock.CalledOnceWith(zenUnitArgs));
    //    ARE_EQUAL(determineExitCodeReturnValueAndExpectedExitCode, exitCode);
    // }
 
@@ -239,9 +239,9 @@ namespace ZenUnit
       bool newValueForHavePaused = _testRunner.
          WaitForEnterKeyIfPauseModeAndHaveNotPaused(true, false);
       //
-      ZEN(_consoleMock->WriteLineMock.AssertCalledOnceWith(
+      ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit test runner paused. Press Enter to run tests."));
-      ZEN(_consoleMock->WaitForEnterKeyMock.AssertCalledOnce());
+      ZEN(_consoleMock->WaitForEnterKeyMock.CalledOnce());
       IS_TRUE(newValueForHavePaused);
    }
 
@@ -255,7 +255,7 @@ namespace ZenUnit
       _testRunner.SkipTest(TestClassName.c_str(), TestName.c_str(), Reason.c_str());
       //
       ZEN(_testRunResultMock->AddSkippedTestMock.
-         AssertCalledOnceWith(TestClassName.c_str(), TestName.c_str(), Reason.c_str()));
+         CalledOnceWith(TestClassName.c_str(), TestName.c_str(), Reason.c_str()));
    }
 
    TEST(SkipTestClass_CallsTestRunResultAddSkippedTestClassNameAndReason)
@@ -267,7 +267,7 @@ namespace ZenUnit
       _testRunner.SkipTestClass(SkippedTestClassName.c_str(), Reason.c_str());
       //
       ZEN(_testRunResultMock->AddSkippedTestClassNameAndReasonMock.
-         AssertCalledOnceWith(SkippedTestClassName.c_str(), Reason.c_str()));
+         CalledOnceWith(SkippedTestClassName.c_str(), Reason.c_str()));
    }
 
    TEST(RunTestClasses_RunsTestClasses)
@@ -282,8 +282,8 @@ namespace ZenUnit
       //
       _testRunner.RunTestClasses();
       //
-      ZEN(_multiTestClassRunnerMock->RunTestClassesMock.AssertCalledOnceWith(_testRunner._zenUnitArgs));
-      ZEN(_testRunResultMock->SetTestClassResultsMock.AssertCalledOnceWith(testClassResults));
+      ZEN(_multiTestClassRunnerMock->RunTestClassesMock.CalledOnceWith(_testRunner._zenUnitArgs));
+      ZEN(_testRunResultMock->SetTestClassResultsMock.CalledOnceWith(testClassResults));
    }
 
    // TEST2X2(RunTestClassesWithWaitableRunnerThread_SpawnsThreadToCallRunTestClasses_PrintsResultsAndExits1IfThreadTimesOut,
@@ -303,12 +303,12 @@ namespace ZenUnit
    //    //
    //    _testRunner.RunTestClassesWithWaitableRunnerThread(MaxTotalSeconds);
    //    //
-   //    ZEN(_futuristMock->AsyncMock.AssertCalledOnceWith(&TestRunner::RunTestClasses, &_testRunner));
-   //    ZEN(testClassRunnerDoneFutureMock->WaitAtMostSecondsMock.AssertCalledOnceWith(MaxTotalSeconds));
+   //    ZEN(_futuristMock->AsyncMock.CalledOnceWith(&TestRunner::RunTestClasses, &_testRunner));
+   //    ZEN(testClassRunnerDoneFutureMock->WaitAtMostSecondsMock.CalledOnceWith(MaxTotalSeconds));
    //    if (expectTimeoutHandling)
    //    {
-   //       ZEN(_testRunResultMock->PrintTestFailuresAndSkipsMock.AssertCalledOnce());
-   //       ZEN(_consoleMock->WriteLineAndExitMock.AssertCalledOnceWith(
+   //       ZEN(_testRunResultMock->PrintTestFailuresAndSkipsMock.CalledOnce());
+   //       ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(
    //          "[ZenUnit] Total run time exceeded maximum run time of " + to_string(MaxTotalSeconds) + " seconds.", 1));
    //    }
    // }

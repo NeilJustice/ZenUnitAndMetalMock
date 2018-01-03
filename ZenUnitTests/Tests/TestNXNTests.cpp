@@ -128,8 +128,8 @@ namespace ZenUnit
       //
       const vector<TestResult> testResults = test1X1SelfMocked.Run();
       //
-      ZEN(CommaSplitExceptQuotedCommas_ZenMock_SelfMocked.AssertCalledOnce());
-      ZEN(test1X1SelfMocked.NonMinimalPrintTestCaseNumberArgsThenArrowMock.AssertCalls(
+      ZEN(CommaSplitExceptQuotedCommas_ZenMock_SelfMocked.CalledOnce());
+      ZEN(test1X1SelfMocked.NonMinimalPrintTestCaseNumberArgsThenArrowMock.CalledMultipleTimes(
       {
          { 0, splitTestCaseArgs, zenUnitArgs.printMode },
          { 1, splitTestCaseArgs, zenUnitArgs.printMode }
@@ -138,9 +138,9 @@ namespace ZenUnit
       expectedFirstTestResult.testCaseIndex = 0;
       TestResult expectedSecondTestResult = secondTestResult;
       expectedSecondTestResult.testCaseIndex = 1;
-      ZEN(GetArgs_ZenMock_SelfMocked.AssertCalledOnce());
-      ZEN(test1X1SelfMocked.MockableCallBaseRunTestCaseMock.AssertCalledNTimes(2));
-      ZEN(test1X1SelfMocked.NonMinimalWriteLineOKIfSuccessMock.AssertCalls(
+      ZEN(GetArgs_ZenMock_SelfMocked.CalledOnce());
+      ZEN(test1X1SelfMocked.MockableCallBaseRunTestCaseMock.CalledNTimes(2));
+      ZEN(test1X1SelfMocked.NonMinimalWriteLineOKIfSuccessMock.CalledMultipleTimes(
       {
          { expectedFirstTestResult, zenUnitArgs.printMode },
          { expectedSecondTestResult, zenUnitArgs.printMode }
@@ -171,7 +171,7 @@ namespace ZenUnit
       //
       _testNXN->Startup();
       //
-      ZEN(_testNXN->_testClass->StartupMock.AssertCalledOnce());
+      ZEN(_testNXN->_testClass->StartupMock.CalledOnce());
    }
 
    TEST(TestBody_CallsRunNXNTestCase)
@@ -189,7 +189,7 @@ namespace ZenUnit
       //
       testNXN_RunNXNTestCaseMocked.TestBody();
       //
-      ZEN(testNXN_RunNXNTestCaseMocked.RunNXNTestCaseMock.AssertCalledOnceWith(
+      ZEN(testNXN_RunNXNTestCaseMocked.RunNXNTestCaseMock.CalledOnceWith(
          testNXN_RunNXNTestCaseMocked._testClass.get(), testNXN_RunNXNTestCaseMocked._testCaseArgsIndex));
    }
 
@@ -205,7 +205,7 @@ namespace ZenUnit
       //
       _testNXN->Cleanup();
       //
-      ZEN(_testNXN->_testClass->CleanupMock.AssertCalledOnce());
+      ZEN(_testNXN->_testClass->CleanupMock.CalledOnce());
    }
 
    TEST(DeleteTestClass_DeletesTestClass)
@@ -232,14 +232,14 @@ namespace ZenUnit
       //
       _testNXN->NonMinimalPrintTestCaseNumberArgsThenArrow(testCaseIndex, splitTestCaseArgs, printMode);
       //
-      ZEN(_consoleMock->NonMinimalWriteColorMock.AssertCalls(
+      ZEN(_consoleMock->NonMinimalWriteColorMock.CalledMultipleTimes(
       {
          { " [", Color::Green, printMode },
          { "]", Color::Green, printMode }
       }));
-      ZEN(_consoleMock->NonMinimalWriteStringsCommaSeparatedMock.AssertCalledOnceWith(
+      ZEN(_consoleMock->NonMinimalWriteStringsCommaSeparatedMock.CalledOnceWith(
          splitTestCaseArgs, expectedTestCaseArgsPrintingStartIndex, N, printMode));
-      ZEN(_consoleMock->NonMinimalWriteMock.AssertCalls(
+      ZEN(_consoleMock->NonMinimalWriteMock.CalledMultipleTimes(
       {
          { to_string(expectedTestCaseNumber), printMode },
          { " ("s, printMode },
@@ -258,7 +258,7 @@ namespace ZenUnit
       _testNXN->NonMinimalWriteLineOKIfSuccess(testResultMock, printMode);
       //
       ZEN(testResultMock.NonMinimalWriteLineOKIfSuccessMock.
-         AssertCalledOnceWith(_testNXN->_console.get(), printMode));
+         CalledOnceWith(_testNXN->_console.get(), printMode));
    }
 
    }; RUNTESTS(TestNXNTests)

@@ -82,8 +82,8 @@ namespace ZenUnit
       //
       const size_t numberOfTestCases = _specSectionTestNXNSelfMocked->NumberOfTestCases();
       //
-      ZEN(_specSectionTestNXNSelfMocked->PmfTokenToTestMock.AssertCalledOnce());
-      ZEN(testMock->NumberOfTestCasesMock.AssertCalledOnce());
+      ZEN(_specSectionTestNXNSelfMocked->PmfTokenToTestMock.CalledOnce());
+      ZEN(testMock->NumberOfTestCasesMock.CalledOnce());
       ARE_EQUAL(testNumberOfTestCases, numberOfTestCases);
    }
 
@@ -103,7 +103,7 @@ namespace ZenUnit
       //
       if (expectWriteLineCall)
       {
-         ZEN(consoleMock.WriteLineMock.AssertCalledOnceWith("..."));
+         ZEN(consoleMock.WriteLineMock.CalledOnceWith("..."));
       }
    }
 
@@ -117,8 +117,8 @@ namespace ZenUnit
       //
       const vector<TestResult> testResults = _specSectionTestNXNSelfMocked->Run();
       //
-      ZEN(_specSectionTestNXNSelfMocked->PmfTokenToTestMock.AssertCalledOnce());
-      ZEN(testMock->RunMock.AssertCalledOnce());
+      ZEN(_specSectionTestNXNSelfMocked->PmfTokenToTestMock.CalledOnce());
+      ZEN(testMock->RunMock.CalledOnce());
       VECTORS_EQUAL(testTestResults, testResults);
    }
 

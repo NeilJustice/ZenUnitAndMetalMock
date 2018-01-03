@@ -64,7 +64,7 @@ namespace ZenUnit
       //
       if (expectSupportsColorCall)
       {
-         ZEN(_consoleColorer_SupportsColorMocked.SupportsColorMock.AssertCalledOnce());
+         ZEN(_consoleColorer_SupportsColorMocked.SupportsColorMock.CalledOnce());
          ARE_EQUAL(_consoleColorer_SupportsColorMocked._supportsColor, supportsColorReturnValue);
       }
       IS_TRUE(_consoleColorer_SupportsColorMocked._supportsColorSet);
@@ -92,10 +92,10 @@ namespace ZenUnit
       //
       const bool didSetColor = _consoleColorer_SetCallsMocked.SetColor(color);
       //
-      ZEN(_consoleColorer_SetCallsMocked.SetSupportsColorIfUnsetMock.AssertCalledOnce());
+      ZEN(_consoleColorer_SetCallsMocked.SetSupportsColorIfUnsetMock.CalledOnce());
       if (expectSetTextColorCallAndExpectedReturnValue)
       {
-         ZEN(_consoleColorer_SetCallsMocked.SetTextColorMock.AssertCalledOnceWith(color));
+         ZEN(_consoleColorer_SetCallsMocked.SetTextColorMock.CalledOnceWith(color));
       }
       ARE_EQUAL(expectSetTextColorCallAndExpectedReturnValue, didSetColor);
    }
@@ -114,7 +114,7 @@ namespace ZenUnit
       //
       if (expectSetTextColorWhite)
       {
-         _consoleColorer_SetCallsMocked.SetTextColorMock.AssertCalledOnceWith(Color::White);
+         _consoleColorer_SetCallsMocked.SetTextColorMock.CalledOnceWith(Color::White);
       }
    }
 
@@ -134,8 +134,8 @@ namespace ZenUnit
       //
       const bool consoleSupportsColor = _consoleColorer.SupportsColor();
       //
-      ZEN(fileno_ZenMock.AssertCalledOnceWith(stdout));
-      ZEN(isatty_ZenMock.AssertCalledOnceWith(StdoutFileHandle));
+      ZEN(fileno_ZenMock.CalledOnceWith(stdout));
+      ZEN(isatty_ZenMock.CalledOnceWith(StdoutFileHandle));
       ARE_EQUAL(expectedReturnValue, consoleSupportsColor);
    }
 
@@ -159,8 +159,8 @@ namespace ZenUnit
       //
       _consoleColorer.SetTextColor(color);
       //
-      GetStdHandle_ZenMock.AssertCalledOnceWith(STD_OUTPUT_HANDLE);
-      SetConsoleTextAttribute_ZenMock.AssertCalledOnceWith(
+      GetStdHandle_ZenMock.CalledOnceWith(STD_OUTPUT_HANDLE);
+      SetConsoleTextAttribute_ZenMock.CalledOnceWith(
          GetStdHandleReturnValue, static_cast<WORD>(expectedWindowsColor));
    }
 #endif

@@ -66,21 +66,20 @@ namespace ZenUnit
       //
       _preamblePrinterSelfMocked.PrintOpeningThreeLines(zenUnitArgs, &multiTestClassRunnerMock);
       //
-      ZEN(_preamblePrinterSelfMocked.watchMock->TimeZoneDateTimeNowMock.AssertCalledOnce());
-      ZEN(multiTestClassRunnerMock.NumberOfTestClassesToBeRunMock.AssertCalledOnce());
-      ZEN(_preamblePrinterSelfMocked.consoleMock->WriteColorMock.
-          AssertCalledNTimesWith(3, "[ZenUnit]", Color::Green));
-      ZEN(_preamblePrinterSelfMocked.MakeThirdLinePrefixMock.AssertCalledOnceWith(numberOfTestClassesToBeRun));
+      ZEN(_preamblePrinterSelfMocked.watchMock->TimeZoneDateTimeNowMock.CalledOnce());
+      ZEN(multiTestClassRunnerMock.NumberOfTestClassesToBeRunMock.CalledOnce());
+      ZEN(_preamblePrinterSelfMocked.consoleMock->WriteColorMock.CalledMultipleTimesWith(3, "[ZenUnit]", Color::Green));
+      ZEN(_preamblePrinterSelfMocked.MakeThirdLinePrefixMock.CalledOnceWith(numberOfTestClassesToBeRun));
       ZEN(_preamblePrinterSelfMocked.MakeThirdLineSuffixMock.
-         AssertCalledOnceWith(zenUnitArgs.random, zenUnitArgs.randomseed));
+         CalledOnceWith(zenUnitArgs.random, zenUnitArgs.randomseed));
       const string expectedThirdLine = thirdLinePrefix + thirdLineSuffix;
-      ZEN(_preamblePrinterSelfMocked.consoleMock->WriteLineMock.AssertCalls(
+      ZEN(_preamblePrinterSelfMocked.consoleMock->WriteLineMock.CalledMultipleTimes(
       {
          " Running " + zenUnitArgs.commandLine,
          " Running at " + timeZoneDateTimeNow,
          expectedThirdLine
       }));
-      ZEN(_preamblePrinterSelfMocked.consoleMock->WriteNewLineMock.AssertCalledOnce());
+      ZEN(_preamblePrinterSelfMocked.consoleMock->WriteNewLineMock.CalledOnce());
    }
 
    TEST2X2(MakeThirdLinePrefix_ReturnsNumberOfTestClassesBeingRunAndMachineName,
@@ -94,7 +93,7 @@ namespace ZenUnit
       //
       const string thirdLinePrefix = _preamblePrinter.MakeThirdLinePrefix(numberOfTestClasses);
       //
-      ZEN(_machineNameGetterMock->GetMachineNameMock.AssertCalledOnce());
+      ZEN(_machineNameGetterMock->GetMachineNameMock.CalledOnce());
       const string expectedReturnValue = expectedReturnValuePrefix + MachineName;
       ARE_EQUAL(expectedReturnValue, thirdLinePrefix);
    }
