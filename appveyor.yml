@@ -3,5 +3,5 @@ shallow_clone: true
 
 build_script:
   - cmake -G"Visual Studio 15 2017 Win64"
-  - msbuild ZenUnit.sln /p:Configuration=Debug /m
-  - msbuild ZenUnit.sln /p:Configuration=Release /m
+  - msbuild ZenUnit.sln /p:Configuration=Debug /p:Platform=x64 /m
+  - msbuild ZenUnit.sln /p:Configuration=Release /p:Platform=x64 /m
