@@ -44,14 +44,14 @@ namespace ZenMock
    FACTS(CalledOnceWith_ExpectedFunctionCalled0Or2OrMoreTimes_Throws)
    AFACT(CalledOnceWith_ExpectedFunctionCalledOnceWithMistmatchingArg_Throws)
    AFACT(CalledOnceWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrow)
-   AFACT(CalledMultipleTimesWith_N0_Throws)
-   FACTS(CalledMultipleTimesWith_N1OrGreater_FunctionCalledNotNTimes_Throws)
-   FACTS(CalledMultipleTimesWith_N1OrGreater_FunctionCalledMultipleTimesWithOneOfTheCallsMismatching_Throws)
-   FACTS(CalledMultipleTimesWith_N1OrGreater_FunctionCalledMultipleTimesWithMatchingArg_DoesNotThrow)
-   AFACT(CalledMultipleTimes_EmptyCalls_Throws)
-   FACTS(CalledMultipleTimes_NonEmptyCalls_FunctionCalledNotCallsSizeTimes_Throws)
-   SKIPFACTS(CalledMultipleTimes_NonEmptyCalls_FunctionCalledCallsSizeTimesWithOneOfTheCallsMismatching_Throws, "Currently fails with g++")
-   FACTS(CalledMultipleTimes_NonEmptyCalls_FunctionCalledCallsSizeTimesWithMatchingArgs_DoesNotThrow)
+   AFACT(CalledAsFollowsWith_N0_Throws)
+   FACTS(CalledAsFollowsWith_N1OrGreater_FunctionCalledNotNTimes_Throws)
+   FACTS(CalledAsFollowsWith_N1OrGreater_FunctionCalledAsFollowsWithOneOfTheCallsMismatching_Throws)
+   FACTS(CalledAsFollowsWith_N1OrGreater_FunctionCalledAsFollowsWithMatchingArg_DoesNotThrow)
+   AFACT(CalledAsFollows_EmptyCalls_Throws)
+   FACTS(CalledAsFollows_NonEmptyCalls_FunctionCalledNotCallsSizeTimes_Throws)
+   SKIPFACTS(CalledAsFollows_NonEmptyCalls_FunctionCalledCallsSizeTimesWithOneOfTheCallsMismatching_Throws, "Currently fails with g++")
+   FACTS(CalledAsFollows_NonEmptyCalls_FunctionCalledCallsSizeTimesWithMatchingArgs_DoesNotThrow)
    EVIDENCE
 
    const string VirtualSignature =
@@ -137,7 +137,7 @@ namespace ZenMock
          zenMockObject.ExpectAndReturn(1);
          ARE_EQUAL(1, zenMockedFunctionCall());
          ARE_EQUAL(1, zenMockedFunctionCall());
-         zenMockObject.CalledMultipleTimesWith(2, 0);
+         zenMockObject.CalledNTimesWith(2, 0);
       };
       test(mock.VirtualMock, [&]{ return mock.Virtual(0); });
       test(mock.VirtualConstMock, [&]{ return mock.VirtualConst(0); });
@@ -158,7 +158,7 @@ namespace ZenMock
          ARE_EQUAL(1, zenMockedFunctionCall());
          ARE_EQUAL(2, zenMockedFunctionCall());
          ARE_EQUAL(2, zenMockedFunctionCall());
-         zenMockObject.CalledMultipleTimesWith(3, 0);
+         zenMockObject.CalledNTimesWith(3, 0);
       };
       test(mock.VirtualMock, [&]{ return mock.Virtual(0); });
       test(mock.VirtualConstMock, [&]{ return mock.VirtualConst(0); });
@@ -180,7 +180,7 @@ namespace ZenMock
          ARE_EQUAL(1, zenMockedFunctionCall());
          ARE_EQUAL(2, zenMockedFunctionCall());
          ARE_EQUAL(2, zenMockedFunctionCall());
-         zenMockObject.CalledMultipleTimesWith(3, 0);
+         zenMockObject.CalledNTimesWith(3, 0);
       };
       test(mock.VirtualMock, [&]{ return mock.Virtual(0); });
       test(mock.VirtualConstMock, [&]{ return mock.VirtualConst(0); });
@@ -214,12 +214,12 @@ namespace ZenMock
       _zenMock1Tester->CalledOnceWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrow();
    }
 
-   TEST(CalledMultipleTimesWith_N0_Throws)
+   TEST(CalledAsFollowsWith_N0_Throws)
    {
-      _zenMock1Tester->CalledMultipleTimesWith_N0_Throws();
+      _zenMock1Tester->CalledAsFollowsWith_N0_Throws();
    }
 
-   TEST2X2(CalledMultipleTimesWith_N1OrGreater_FunctionCalledNotNTimes_Throws,
+   TEST2X2(CalledAsFollowsWith_N1OrGreater_FunctionCalledNotNTimes_Throws,
       size_t n, size_t numberOfCalls,
       size_t(1), size_t(0),
       size_t(1), size_t(2),
@@ -227,33 +227,33 @@ namespace ZenMock
       size_t(2), size_t(1),
       size_t(2), size_t(3))
    {
-      _zenMock1Tester->CalledMultipleTimesWith_N1OrGreater_FunctionCalledNotNTimes_Throws(n, numberOfCalls);
+      _zenMock1Tester->CalledAsFollowsWith_N1OrGreater_FunctionCalledNotNTimes_Throws(n, numberOfCalls);
    }
 
-   TEST2X2(CalledMultipleTimesWith_N1OrGreater_FunctionCalledMultipleTimesWithOneOfTheCallsMismatching_Throws,
+   TEST2X2(CalledAsFollowsWith_N1OrGreater_FunctionCalledAsFollowsWithOneOfTheCallsMismatching_Throws,
       size_t expectedCallsSize, size_t mismatchingCallIndex,
       size_t(1), size_t(0),
       size_t(2), size_t(0),
       size_t(2), size_t(1))
    {
-      _zenMock1Tester->CalledMultipleTimesWith_N1OrGreater_FunctionCalledMultipleTimesWithOneOfTheCallsMismatching_Throws(
+      _zenMock1Tester->CalledAsFollowsWith_N1OrGreater_FunctionCalledAsFollowsWithOneOfTheCallsMismatching_Throws(
          expectedCallsSize, mismatchingCallIndex);
    }
 
-   TEST1X1(CalledMultipleTimesWith_N1OrGreater_FunctionCalledMultipleTimesWithMatchingArg_DoesNotThrow,
+   TEST1X1(CalledAsFollowsWith_N1OrGreater_FunctionCalledAsFollowsWithMatchingArg_DoesNotThrow,
       size_t n,
       size_t(1),
       size_t(2))
    {
-      _zenMock1Tester->CalledMultipleTimesWith_N1OrGreater_FunctionCalledMultipleTimesWithMatchingArg_DoesNotThrow(n);
+      _zenMock1Tester->CalledAsFollowsWith_N1OrGreater_FunctionCalledAsFollowsWithMatchingArg_DoesNotThrow(n);
    }
 
-   TEST(CalledMultipleTimes_EmptyCalls_Throws)
+   TEST(CalledAsFollows_EmptyCalls_Throws)
    {
-      _zenMock1Tester->CalledMultipleTimes_EmptyCalls_Throws();
+      _zenMock1Tester->CalledAsFollows_EmptyCalls_Throws();
    }
 
-   TEST2X2(CalledMultipleTimes_NonEmptyCalls_FunctionCalledNotCallsSizeTimes_Throws,
+   TEST2X2(CalledAsFollows_NonEmptyCalls_FunctionCalledNotCallsSizeTimes_Throws,
       size_t expectedCallsSize, size_t numberOfCalls,
       size_t(1), size_t(0),
       size_t(1), size_t(2),
@@ -261,26 +261,26 @@ namespace ZenMock
       size_t(2), size_t(1),
       size_t(2), size_t(3))
    {
-      _zenMock1Tester->CalledMultipleTimes_NonEmptyCalls_FunctionCalledNotCallsSizeTimes_Throws(
+      _zenMock1Tester->CalledAsFollows_NonEmptyCalls_FunctionCalledNotCallsSizeTimes_Throws(
          expectedCallsSize, numberOfCalls);
    }
 
-   TEST2X2(CalledMultipleTimes_NonEmptyCalls_FunctionCalledCallsSizeTimesWithOneOfTheCallsMismatching_Throws,
+   TEST2X2(CalledAsFollows_NonEmptyCalls_FunctionCalledCallsSizeTimesWithOneOfTheCallsMismatching_Throws,
       size_t expectedCallsSize, size_t mismatchingCallIndex,
       size_t(1), size_t(0),
       size_t(2), size_t(0),
       size_t(2), size_t(1))
    {
-      _zenMock1Tester->CalledMultipleTimes_NonEmptyCalls_FunctionCalledCallsSizeTimesWithOneOfTheCallsMismatching_Throws(
+      _zenMock1Tester->CalledAsFollows_NonEmptyCalls_FunctionCalledCallsSizeTimesWithOneOfTheCallsMismatching_Throws(
          expectedCallsSize, mismatchingCallIndex);
    }
 
-   TEST1X1(CalledMultipleTimes_NonEmptyCalls_FunctionCalledCallsSizeTimesWithMatchingArgs_DoesNotThrow,
+   TEST1X1(CalledAsFollows_NonEmptyCalls_FunctionCalledCallsSizeTimesWithMatchingArgs_DoesNotThrow,
       size_t expectedCallsSize,
       size_t(1),
       size_t(2))
    {
-      _zenMock1Tester->CalledMultipleTimes_NonEmptyCalls_FunctionCalledCallsSizeTimesMatchingArgs_DoesNotThrow(expectedCallsSize);
+      _zenMock1Tester->CalledAsFollows_NonEmptyCalls_FunctionCalledCallsSizeTimesMatchingArgs_DoesNotThrow(expectedCallsSize);
    }
 
    }; RUNTESTS(ZenMock_NonVoid1Tests)

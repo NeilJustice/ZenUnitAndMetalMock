@@ -253,7 +253,7 @@ namespace ZenUnit
       {
          expectedConsoleWriteCalls.emplace_back(expectedConsoleWrite);
       }
-      ZEN(consoleSelfMocked.WriteMock.CalledMultipleTimes(expectedConsoleWriteCalls));
+      ZEN(consoleSelfMocked.WriteMock.CalledAsFollows(expectedConsoleWriteCalls));
    }
 
    TEST3X3(WaitForEnterKeyIfDebuggerPresentOrValueTrue_WritesPressEnterKeyAndGetsCharIfDebuggerPresentOrValueTrue,

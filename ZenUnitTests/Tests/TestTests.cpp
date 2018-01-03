@@ -111,7 +111,7 @@ namespace ZenUnit
       //
       const TestResult testResult = _test->RunTestCase();
       //
-      ZEN(_tryCatchCallerMock->CallMock.CalledMultipleTimes(
+      ZEN(_tryCatchCallerMock->CallMock.CalledAsFollows(
       {
          { &Test::CallNewTestClass, _test.get(), TestPhase::Constructor },
          { &Test::CallStartup, _test.get(), TestPhase::Startup },
@@ -135,7 +135,7 @@ namespace ZenUnit
       //
       const TestResult testResult = _test->RunTestCase();
       //
-      ZEN(_tryCatchCallerMock->CallMock.CalledMultipleTimes(
+      ZEN(_tryCatchCallerMock->CallMock.CalledAsFollows(
       {
          { &Test::CallNewTestClass, _test.get(), TestPhase::Constructor },
          { &Test::CallStartup, _test.get(), TestPhase::Startup },

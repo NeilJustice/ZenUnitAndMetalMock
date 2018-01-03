@@ -78,7 +78,7 @@ namespace ZenMock
          test(staticNameClashMock, staticNameClashFunctionSignature);
       }
 
-      void FunctionNotCalled_CalledMultipleTimesWithN0_Throws()
+      void FunctionNotCalled_CalledAsFollowsWithN0_Throws()
       {
          auto test = [](auto& zenMockObject, const string& expectedFunctionSignature)
          {
@@ -149,7 +149,7 @@ File.cpp(1))");
          THROWS(zenMockObject.CalledNTimes(3), Anomaly,
             ZenMockTestUtil::ExpectedCallCountMismatchWhat(expectedFunctionSignature, 3, 2));
       }
-      void Function_Expected_DoesNotThrow_CalledMultipleTimesOnceDoesNotThrow_CalledNTimes1DoesNotThrow()
+      void Function_Expected_DoesNotThrow_CalledAsFollowsOnceDoesNotThrow_CalledNTimes1DoesNotThrow()
       {
          mock.VirtualMock.Expect();
          mock.Virtual();

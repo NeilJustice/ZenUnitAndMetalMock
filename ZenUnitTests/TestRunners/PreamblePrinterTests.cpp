@@ -68,12 +68,12 @@ namespace ZenUnit
       //
       ZEN(_preamblePrinterSelfMocked.watchMock->TimeZoneDateTimeNowMock.CalledOnce());
       ZEN(multiTestClassRunnerMock.NumberOfTestClassesToBeRunMock.CalledOnce());
-      ZEN(_preamblePrinterSelfMocked.consoleMock->WriteColorMock.CalledMultipleTimesWith(3, "[ZenUnit]", Color::Green));
+      ZEN(_preamblePrinterSelfMocked.consoleMock->WriteColorMock.CalledNTimesWith(3, "[ZenUnit]", Color::Green));
       ZEN(_preamblePrinterSelfMocked.MakeThirdLinePrefixMock.CalledOnceWith(numberOfTestClassesToBeRun));
       ZEN(_preamblePrinterSelfMocked.MakeThirdLineSuffixMock.
          CalledOnceWith(zenUnitArgs.random, zenUnitArgs.randomseed));
       const string expectedThirdLine = thirdLinePrefix + thirdLineSuffix;
-      ZEN(_preamblePrinterSelfMocked.consoleMock->WriteLineMock.CalledMultipleTimes(
+      ZEN(_preamblePrinterSelfMocked.consoleMock->WriteLineMock.CalledAsFollows(
       {
          " Running " + zenUnitArgs.commandLine,
          " Running at " + timeZoneDateTimeNow,

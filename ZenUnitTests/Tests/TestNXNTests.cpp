@@ -129,7 +129,7 @@ namespace ZenUnit
       const vector<TestResult> testResults = test1X1SelfMocked.Run();
       //
       ZEN(CommaSplitExceptQuotedCommas_ZenMock_SelfMocked.CalledOnce());
-      ZEN(test1X1SelfMocked.NonMinimalPrintTestCaseNumberArgsThenArrowMock.CalledMultipleTimes(
+      ZEN(test1X1SelfMocked.NonMinimalPrintTestCaseNumberArgsThenArrowMock.CalledAsFollows(
       {
          { 0, splitTestCaseArgs, zenUnitArgs.printMode },
          { 1, splitTestCaseArgs, zenUnitArgs.printMode }
@@ -140,7 +140,7 @@ namespace ZenUnit
       expectedSecondTestResult.testCaseIndex = 1;
       ZEN(GetArgs_ZenMock_SelfMocked.CalledOnce());
       ZEN(test1X1SelfMocked.MockableCallBaseRunTestCaseMock.CalledNTimes(2));
-      ZEN(test1X1SelfMocked.NonMinimalWriteLineOKIfSuccessMock.CalledMultipleTimes(
+      ZEN(test1X1SelfMocked.NonMinimalWriteLineOKIfSuccessMock.CalledAsFollows(
       {
          { expectedFirstTestResult, zenUnitArgs.printMode },
          { expectedSecondTestResult, zenUnitArgs.printMode }
@@ -232,14 +232,14 @@ namespace ZenUnit
       //
       _testNXN->NonMinimalPrintTestCaseNumberArgsThenArrow(testCaseIndex, splitTestCaseArgs, printMode);
       //
-      ZEN(_consoleMock->NonMinimalWriteColorMock.CalledMultipleTimes(
+      ZEN(_consoleMock->NonMinimalWriteColorMock.CalledAsFollows(
       {
          { " [", Color::Green, printMode },
          { "]", Color::Green, printMode }
       }));
       ZEN(_consoleMock->NonMinimalWriteStringsCommaSeparatedMock.CalledOnceWith(
          splitTestCaseArgs, expectedTestCaseArgsPrintingStartIndex, N, printMode));
-      ZEN(_consoleMock->NonMinimalWriteMock.CalledMultipleTimes(
+      ZEN(_consoleMock->NonMinimalWriteMock.CalledAsFollows(
       {
          { to_string(expectedTestCaseNumber), printMode },
          { " ("s, printMode },

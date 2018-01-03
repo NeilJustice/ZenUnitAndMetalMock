@@ -173,7 +173,7 @@ namespace ZenUnit
       _testClassResultSelfMocked.NonMinimalPrintResultLine(&consoleMock, printMode);
       //
       ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnce());
-      ZEN(consoleMock.WriteMock.CalledMultipleTimes(
+      ZEN(consoleMock.WriteMock.CalledAsFollows(
       {
          { "[  " },
          { "  ]" }

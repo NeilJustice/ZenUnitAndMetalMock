@@ -124,7 +124,7 @@ namespace ZenMock
          const auto assertCalledOnce = [](auto& zenMockObject)
          {
             zenMockObject.CalledOnceWith(0);
-            zenMockObject.CalledMultipleTimesWith(1, 0);
+            zenMockObject.CalledNTimesWith(1, 0);
          };
 
          mock.VirtualMock.template ExpectAndThrow<runtime_error>(What);
@@ -164,7 +164,7 @@ namespace ZenMock
          assertCalledOnce(staticNameClashMock);
       }
 
-      void FunctionNotCalled_CalledOnceWithThrows_CalledMultipleTimesWithThrows()
+      void FunctionNotCalled_CalledOnceWithThrows_CalledAsFollowsWithThrows()
       {
          const auto test = [](auto& zenMockObject, const string& expectedSignature)
          {
@@ -175,14 +175,14 @@ Expected: 1
  Message: ")" + expectedSignature + R"("
 File.cpp(1))");
 
-            THROWS(zenMockObject.CalledMultipleTimesWith(1, 0), Anomaly, R"(
+            THROWS(zenMockObject.CalledNTimesWith(1, 0), Anomaly, R"(
   Failed: ARE_EQUAL(expectedNumberOfCalls, actualNumberOfCalls, this->ZenMockedFunctionSignature)
 Expected: 1
   Actual: 0
  Message: ")" + expectedSignature + R"("
 File.cpp(1))");
 
-            THROWS(zenMockObject.CalledMultipleTimesWith(2, 0), Anomaly, R"(
+            THROWS(zenMockObject.CalledNTimesWith(2, 0), Anomaly, R"(
   Failed: ARE_EQUAL(expectedNumberOfCalls, actualNumberOfCalls, this->ZenMockedFunctionSignature)
 Expected: 2
   Actual: 0
@@ -199,21 +199,21 @@ File.cpp(1))");
          test(staticNameClashMock, staticNameClashSignature);
       }
 
-      void Function_ExpectedFunctionCalledOnceThenTwice_CalledMultipleTimesOnceWithDoesNotThrow_CalledMultipleTimesWithDoesNotThrow()
+      void Function_ExpectedFunctionCalledOnceThenTwice_CalledAsFollowsOnceWithDoesNotThrow_CalledAsFollowsWithDoesNotThrow()
       {
          const auto assertAfterFirstCall = [](auto& zenMockObject, const string& expectedSignature)
          {
             zenMockObject.CalledOnceWith(0);
-            zenMockObject.CalledMultipleTimesWith(1, 0);
-            THROWS(zenMockObject.CalledMultipleTimesWith(2, 0), Anomaly,
+            zenMockObject.CalledNTimesWith(1, 0);
+            THROWS(zenMockObject.CalledNTimesWith(2, 0), Anomaly,
                ZenMockTestUtil::ExpectedCallCountMismatchWhat(expectedSignature, 2, 1));
          };
          const auto assertAfterSecondCall = [](auto& zenMockObject, const string& expectedSignature)
          {
             THROWS(zenMockObject.CalledOnceWith(0), Anomaly,
                ZenMockTestUtil::ExpectedCallCountMismatchWhat(expectedSignature, 1, 2));
-            zenMockObject.CalledMultipleTimesWith(2, 0);
-            THROWS(zenMockObject.CalledMultipleTimesWith(3, 0), Anomaly,
+            zenMockObject.CalledNTimesWith(2, 0);
+            THROWS(zenMockObject.CalledNTimesWith(3, 0), Anomaly,
                ZenMockTestUtil::ExpectedCallCountMismatchWhat(expectedSignature, 3, 2));
          };
 
@@ -345,11 +345,11 @@ File.cpp(1))");
          test(staticNameClashMock);
       }
 
-      void CalledMultipleTimesWith_N0_Throws()
+      void CalledAsFollowsWith_N0_Throws()
       {
          const auto test = [](auto& zenMockObject, const string& expectedSignature)
          {
-            THROWS(zenMockObject.CalledMultipleTimesWith(0, 0), UnsupportedCalledZeroTimesException,
+            THROWS(zenMockObject.CalledNTimesWith(0, 0), UnsupportedCalledZeroTimesException,
                UnsupportedCalledZeroTimesException::MakeWhat(expectedSignature));
          };
          test(mock.VirtualMock, virtualSignature);
@@ -362,7 +362,7 @@ File.cpp(1))");
          test(staticNameClashMock, staticNameClashSignature);
       }
 
-      void CalledMultipleTimesWith_N1OrGreater_FunctionCalledNotNTimes_Throws(size_t n, size_t numberOfCalls)
+      void CalledAsFollowsWith_N1OrGreater_FunctionCalledNotNTimes_Throws(size_t n, size_t numberOfCalls)
       {
          const auto test = [&](auto& zenMockObject, const string& expectedSignature)
          {
@@ -377,7 +377,7 @@ Expected: )", n, R"(
   Actual: )", numberOfCalls, R"(
  Message: ")", expectedSignature, R"("
 File.cpp(1))");
-            THROWS(zenMockObject.CalledMultipleTimesWith(n, 123), Anomaly, expectedWhat);
+            THROWS(zenMockObject.CalledNTimesWith(n, 123), Anomaly, expectedWhat);
          };
          test(mock.VirtualMock, virtualSignature);
          test(mock.VirtualConstMock, virtualConstSignature);
@@ -389,7 +389,7 @@ File.cpp(1))");
          test(staticNameClashMock, staticNameClashSignature);
       }
 
-      void CalledMultipleTimesWith_N1OrGreater_FunctionCalledMultipleTimesWithOneOfTheCallsMismatching_Throws(
+      void CalledAsFollowsWith_N1OrGreater_FunctionCalledAsFollowsWithOneOfTheCallsMismatching_Throws(
          size_t n, size_t mismatchingCallIndex)
       {
          const auto test = [&](auto& zenMockObject, const string& expectedSignature)
@@ -414,7 +414,7 @@ Expected: 10
   Actual: 20
  Message: ")", expectedSignature, " at i=", mismatchingCallIndex, R"("
 File.cpp(1))");
-            THROWS(zenMockObject.CalledMultipleTimesWith(n, 10), Anomaly, expectedWhat);
+            THROWS(zenMockObject.CalledNTimesWith(n, 10), Anomaly, expectedWhat);
          };
          test(mock.VirtualMock, virtualSignature);
          test(mock.VirtualConstMock, virtualConstSignature);
@@ -426,7 +426,7 @@ File.cpp(1))");
          test(staticNameClashMock, staticNameClashSignature);
       }
 
-      void CalledMultipleTimesWith_N1OrGreater_FunctionCalledMultipleTimesWithMatchingArg_DoesNotThrow(size_t n)
+      void CalledAsFollowsWith_N1OrGreater_FunctionCalledAsFollowsWithMatchingArg_DoesNotThrow(size_t n)
       {
          const auto test = [&](auto& zenMockObject)
          {
@@ -437,7 +437,7 @@ File.cpp(1))");
                zenMockObject.ZenMockIt(10);
             }
             //
-            zenMockObject.CalledMultipleTimesWith(n, 10);
+            zenMockObject.CalledNTimesWith(n, 10);
          };
          test(mock.VirtualMock);
          test(mock.VirtualConstMock);
@@ -449,11 +449,11 @@ File.cpp(1))");
          test(staticNameClashMock);
       }
 
-      void CalledMultipleTimes_EmptyCalls_Throws()
+      void CalledAsFollows_EmptyCalls_Throws()
       {
          const auto test = [](auto& zenMockObject, const string& expectedSignature)
          {
-            THROWS(zenMockObject.CalledMultipleTimes({}), UnsupportedCalledZeroTimesException,
+            THROWS(zenMockObject.CalledAsFollows({}), UnsupportedCalledZeroTimesException,
                UnsupportedCalledZeroTimesException::MakeWhat(expectedSignature));
          };
          test(mock.VirtualMock, virtualSignature);
@@ -466,7 +466,7 @@ File.cpp(1))");
          test(staticNameClashMock, staticNameClashSignature);
       }
 
-      void CalledMultipleTimes_NonEmptyCalls_FunctionCalledNotCallsSizeTimes_Throws(
+      void CalledAsFollows_NonEmptyCalls_FunctionCalledNotCallsSizeTimes_Throws(
          size_t expectedCallsSize, size_t numberOfCalls)
       {
          const auto test = [&](auto& zenMockObject, const string& expectedSignature)
@@ -488,7 +488,7 @@ File.cpp(1))");
             const int lvalue = 0;
             vector<OneArgumentCallRef<int>> expectedCalls;
             ZenMockTestUtil::CallNTimes(expectedCallsSize, [&] { expectedCalls.emplace_back(lvalue); });
-            THROWS(zenMockObject.CalledMultipleTimes(expectedCalls), Anomaly, expectedWhat);
+            THROWS(zenMockObject.CalledAsFollows(expectedCalls), Anomaly, expectedWhat);
          };
          test(mock.VirtualMock, virtualSignature);
          test(mock.VirtualConstMock, virtualConstSignature);
@@ -500,7 +500,7 @@ File.cpp(1))");
          test(staticNameClashMock, staticNameClashSignature);
       }
 
-      void CalledMultipleTimes_NonEmptyCalls_FunctionCalledCallsSizeTimesWithOneOfTheCallsMismatching_Throws(
+      void CalledAsFollows_NonEmptyCalls_FunctionCalledCallsSizeTimesWithOneOfTheCallsMismatching_Throws(
          size_t expectedCallsSize, size_t mismatchingCallIndex)
       {
          const auto test = [&](auto& zenMockObject, const string& expectedSignature)
@@ -535,7 +535,7 @@ File.cpp(1))");
             const int expectedArgument = 10;
             vector<OneArgumentCallRef<int>> expectedCalls;
             ZenMockTestUtil::CallNTimes(expectedCallsSize, [&] { expectedCalls.emplace_back(expectedArgument); });
-            THROWS(zenMockObject.CalledMultipleTimes(expectedCalls), Anomaly, expectedWhat);
+            THROWS(zenMockObject.CalledAsFollows(expectedCalls), Anomaly, expectedWhat);
          };
          test(mock.VirtualMock, virtualSignature);
          test(mock.VirtualConstMock, virtualConstSignature);
@@ -547,7 +547,7 @@ File.cpp(1))");
          test(staticNameClashMock, staticNameClashSignature);
       }
 
-      void CalledMultipleTimes_NonEmptyCalls_FunctionCalledCallsSizeTimesMatchingArgs_DoesNotThrow(
+      void CalledAsFollows_NonEmptyCalls_FunctionCalledCallsSizeTimesMatchingArgs_DoesNotThrow(
          size_t expectedCallsSize)
       {
          const auto test = [&](auto& zenMockObject)
@@ -559,7 +559,7 @@ File.cpp(1))");
             //
             vector<OneArgumentCallRef<int>> expectedCalls;
             ZenMockTestUtil::CallNTimes(expectedCallsSize, [&] { expectedCalls.emplace_back(argument); });
-            zenMockObject.CalledMultipleTimes(expectedCalls);
+            zenMockObject.CalledAsFollows(expectedCalls);
          };
          test(mock.VirtualMock);
          test(mock.VirtualConstMock);

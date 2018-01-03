@@ -76,7 +76,7 @@ namespace ZenUnit
       //
       const vector<TestResult> testResults = _newDeleteTest->Run();
       //
-      ZEN(_tryCatchCallerMock->CallMock.CalledMultipleTimes(
+      ZEN(_tryCatchCallerMock->CallMock.CalledAsFollows(
       {
          { &Test::CallNewTestClass, _newDeleteTest.get(), TestPhase::Constructor },
          { &Test::CallDeleteTestClass, _newDeleteTest.get(), TestPhase::Destructor }

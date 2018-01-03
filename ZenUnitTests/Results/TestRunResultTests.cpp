@@ -201,7 +201,7 @@ namespace ZenUnit
             CalledOnceWith(&_testRunResult._testClassResults, &_testRunResult,
                &TestRunResult::PrintTestClassResultFailures));
       }
-      ZEN(_memberForEacherSkippedTestsMock->MemberForEachMock.CalledMultipleTimes(
+      ZEN(_memberForEacherSkippedTestsMock->MemberForEachMock.CalledAsFollows(
       {
          { &_testRunResult._skippedTestClassNamesAndReasons,
             &_testRunResult, &TestRunResult::PrintSkippedTestClassReminder },
@@ -261,7 +261,7 @@ namespace ZenUnit
          expectedMiddleLineVictoryOrFail == "[VICTORY]" ? "+===+===+" : ">>------>";
       ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith(
          expectedFirstAndThirdLineAsciiArt + " ", expectedColor));
-      ZEN(_consoleMock->WriteColorMock.CalledMultipleTimes(
+      ZEN(_consoleMock->WriteColorMock.CalledAsFollows(
       {
          { expectedMiddleLineVictoryOrFail + " ", expectedColor },
          { expectedFirstAndThirdLineAsciiArt + " ", expectedColor }
@@ -270,7 +270,7 @@ namespace ZenUnit
          " in " + to_string(testRunMilliseconds) + " " + expectedMillisecondOrMilliseconds;
       const string expectedRandomSeedWriteLine = expectRandomSeedSuffixWrite ?
          " (seed " + to_string(zenUnitArgs.randomseed) + ")" : "";
-      ZEN(_consoleMock->WriteLineMock.CalledMultipleTimes(
+      ZEN(_consoleMock->WriteLineMock.CalledAsFollows(
       {
          expectedClosingLineBody,
          expectedRandomSeedWriteLine

@@ -142,7 +142,7 @@ namespace ZenUnit
       ZEN(_testRunnerSelfMockedA.argsParserMock->ParseMock.CalledOnceWith(commandLineArgs));
       ZEN(_testRunnerSelfMockedA.multiTestClassRunnerMock->
          ApplyRunFiltersIfAnyMock.CalledOnceWith(parsedZenUnitArgs.runFilters));
-      ZEN(_testRunnerSelfMockedA.RunTestClassesAndPrintResultsMock.CalledMultipleTimesWith(testrunsArgs, parsedZenUnitArgs));
+      ZEN(_testRunnerSelfMockedA.RunTestClassesAndPrintResultsMock.CalledNTimesWith(testrunsArgs, parsedZenUnitArgs));
       ZEN(_testRunnerSelfMockedA.testRunResultMock->ResetStateExceptForSkipsMock.CalledNTimes(testrunsArgs));
       ZEN(_testRunnerSelfMockedA.consoleMock->
          WaitForEnterKeyIfDebuggerPresentOrValueTrueMock.CalledOnceWith(parsedZenUnitArgs.wait));

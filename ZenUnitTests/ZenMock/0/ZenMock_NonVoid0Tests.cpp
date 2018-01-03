@@ -33,7 +33,7 @@ namespace ZenMock
    TESTS(ZenMock_NonVoid0Tests)
    // ZeroArgumentMocker Tests
    AFACT(ExpectAndThrow_CalledTwice_Throws)
-   AFACT(FunctionNotCalled_CalledMultipleTimesWithN0_Throws)
+   AFACT(FunctionNotCalled_CalledAsFollowsWithN0_Throws)
    AFACT(FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows)
    AFACT(Function_NotExpected_Throws)
    AFACT(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)
@@ -106,9 +106,9 @@ namespace ZenMock
       _zenMock0Tester->ExpectAndThrow_CalledTwice_Throws();
    }
 
-   TEST(FunctionNotCalled_CalledMultipleTimesWithN0_Throws)
+   TEST(FunctionNotCalled_CalledAsFollowsWithN0_Throws)
    {
-      _zenMock0Tester->FunctionNotCalled_CalledMultipleTimesWithN0_Throws();
+      _zenMock0Tester->FunctionNotCalled_CalledAsFollowsWithN0_Throws();
    }
 
    TEST(FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows)

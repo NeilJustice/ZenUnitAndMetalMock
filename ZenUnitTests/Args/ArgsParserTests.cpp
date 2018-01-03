@@ -152,7 +152,7 @@ None
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
       //
-      ZEN(ToUnsigned_ZenMock.CalledMultipleTimes(
+      ZEN(ToUnsigned_ZenMock.CalledAsFollows(
       {
          to_string(testruns),
          to_string(randomseed)

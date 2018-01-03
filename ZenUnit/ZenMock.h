@@ -1523,7 +1523,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          return ZENAssertionToken::NoDiscard();
       }
 
-      ZENAssertionToken CalledMultipleTimesWith(size_t expectedNumberOfCalls, const ArgType& expectedArgument)
+      ZENAssertionToken CalledNTimesWith(size_t expectedNumberOfCalls, const ArgType& expectedArgument)
       {
          this->ZenMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
          this->ZenMockSetAsserted();
@@ -1537,7 +1537,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          return ZENAssertionToken::NoDiscard();
       }
 
-      ZENAssertionToken CalledMultipleTimes(const std::vector<OneArgumentCallRef<ArgType>>& expectedOneArgumentCalls)
+      ZENAssertionToken CalledAsFollows(const std::vector<OneArgumentCallRef<ArgType>>& expectedOneArgumentCalls)
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedOneArgumentCalls.size());
          this->ZenMockSetAsserted();
@@ -1720,7 +1720,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          return ZENAssertionToken::NoDiscard();
       }
 
-      ZENAssertionToken CalledMultipleTimesWith(
+      ZENAssertionToken CalledNTimesWith(
          size_t expectedNumberOfCalls,
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument)
@@ -1738,7 +1738,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          return ZENAssertionToken::NoDiscard();
       }
 
-      ZENAssertionToken CalledMultipleTimes(const std::vector<TwoArgumentCallRef<Arg1Type, Arg2Type>>& expectedTwoArgumentCalls)
+      ZENAssertionToken CalledAsFollows(const std::vector<TwoArgumentCallRef<Arg1Type, Arg2Type>>& expectedTwoArgumentCalls)
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedTwoArgumentCalls.size());
          this->ZenMockSetAsserted();
@@ -1930,7 +1930,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          return ZENAssertionToken::NoDiscard();
       }
 
-      ZENAssertionToken CalledMultipleTimesWith(
+      ZENAssertionToken CalledNTimesWith(
          size_t expectedNumberOfCalls,
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument,
@@ -1950,7 +1950,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          return ZENAssertionToken::NoDiscard();
       }
 
-      ZENAssertionToken CalledMultipleTimes(const std::vector<
+      ZENAssertionToken CalledAsFollows(const std::vector<
          ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>>&expectedThreeArgumentCalls)
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedThreeArgumentCalls.size());
@@ -2157,7 +2157,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          return ZENAssertionToken::NoDiscard();
       }
 
-      ZENAssertionToken CalledMultipleTimesWith(
+      ZENAssertionToken CalledNTimesWith(
          size_t expectedNumberOfCalls,
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument,
@@ -2179,7 +2179,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          return ZENAssertionToken::NoDiscard();
       }
 
-      ZENAssertionToken CalledMultipleTimes(const std::vector<
+      ZENAssertionToken CalledAsFollows(const std::vector<
          FourArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>&expectedFourArgumentCalls)
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedFourArgumentCalls.size());
@@ -2406,7 +2406,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          return ZENAssertionToken::NoDiscard();
       }
 
-      ZENAssertionToken CalledMultipleTimesWith(
+      ZENAssertionToken CalledNTimesWith(
          size_t expectedNumberOfCalls,
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument,
@@ -2430,7 +2430,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          }
       }
 
-      ZENAssertionToken CalledMultipleTimes(const std::vector<
+      ZENAssertionToken CalledAsFollows(const std::vector<
          FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>&expectedFiveArgumentCalls)
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedFiveArgumentCalls.size());
@@ -2669,7 +2669,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          return ZENAssertionToken::NoDiscard();
       }
 
-      ZENAssertionToken CalledMultipleTimesWith(
+      ZENAssertionToken CalledNTimesWith(
          size_t expectedNumberOfCalls,
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument,
@@ -2695,7 +2695,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          }
       }
 
-      ZENAssertionToken CalledMultipleTimes(const std::vector<
+      ZENAssertionToken CalledAsFollows(const std::vector<
          SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>&expectedSixArgumentCalls)
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedSixArgumentCalls.size());
@@ -2946,7 +2946,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          return ZENAssertionToken::NoDiscard();
       }
 
-      ZENAssertionToken CalledMultipleTimesWith(
+      ZENAssertionToken CalledNTimesWith(
          size_t expectedNumberOfCalls,
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument,
@@ -2974,7 +2974,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          return ZENAssertionToken::NoDiscard();
       }
 
-      ZENAssertionToken CalledMultipleTimes(const std::vector<SevenArgumentCallRef<
+      ZENAssertionToken CalledAsFollows(const std::vector<SevenArgumentCallRef<
          Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>&expectedSevenArgumentCalls)
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedSevenArgumentCalls.size());
@@ -3254,7 +3254,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          return ZENAssertionToken::NoDiscard();
       }
 
-      ZENAssertionToken CalledMultipleTimesWith(
+      ZENAssertionToken CalledNTimesWith(
          size_t expectedNumberOfCalls,
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument,
@@ -3284,7 +3284,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          return ZENAssertionToken::NoDiscard();
       }
 
-      ZENAssertionToken CalledMultipleTimes(const std::vector<EightArgumentCallRef<
+      ZENAssertionToken CalledAsFollows(const std::vector<EightArgumentCallRef<
          Arg1Type, Arg2Type, Arg3Type, Arg4Type,
          Arg5Type, Arg6Type, Arg7Type, Arg8Type>>&expectedEightArgumentCalls)
       {
@@ -3586,7 +3586,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          return ZENAssertionToken::NoDiscard();
       }
 
-      ZENAssertionToken CalledMultipleTimesWith(
+      ZENAssertionToken CalledNTimesWith(
          size_t expectedNumberOfCalls,
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument,
@@ -3618,7 +3618,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          return ZENAssertionToken::NoDiscard();
       }
 
-      ZENAssertionToken CalledMultipleTimes(const std::vector<NineArgumentCallRef<
+      ZENAssertionToken CalledAsFollows(const std::vector<NineArgumentCallRef<
          Arg1Type, Arg2Type, Arg3Type, Arg4Type,
          Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>&expectedNineArgumentCalls)
       {
@@ -3938,7 +3938,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          return ZENAssertionToken::NoDiscard();
       }
 
-      ZENAssertionToken CalledMultipleTimesWith(
+      ZENAssertionToken CalledNTimesWith(
          size_t expectedNumberOfCalls,
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument,
@@ -3972,7 +3972,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
          return ZENAssertionToken::NoDiscard();
       }
 
-      ZENAssertionToken CalledMultipleTimes(const std::vector<TenArgumentCallRef<
+      ZENAssertionToken CalledAsFollows(const std::vector<TenArgumentCallRef<
          Arg1Type, Arg2Type, Arg3Type, Arg4Type,
          Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>&expectedTenArgumentCalls)
       {

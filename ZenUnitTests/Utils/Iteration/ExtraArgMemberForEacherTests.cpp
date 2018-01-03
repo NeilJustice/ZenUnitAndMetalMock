@@ -60,7 +60,7 @@ namespace ZenUnit
       _memberForEacherExtraArg.ExtraArgMemberForEach(
          &classInstance.vec, &classInstance, &ClassType::TwoArgFunction, 20);
       //
-      classInstance.TwoArgFunctionMock.CalledMultipleTimes(
+      classInstance.TwoArgFunctionMock.CalledAsFollows(
       {
          { 1, 20 },
          { 2, 20 }
@@ -98,7 +98,7 @@ namespace ZenUnit
       //
       try
       {
-         classInstance.TwoArgFunctionMock.CalledMultipleTimes(
+         classInstance.TwoArgFunctionMock.CalledAsFollows(
          {
             { 1, 20 },
             { 2, 20 }
@@ -106,7 +106,7 @@ namespace ZenUnit
       }
       catch (const exception&)
       {
-         classInstance.TwoArgFunctionMock.CalledMultipleTimes(
+         classInstance.TwoArgFunctionMock.CalledAsFollows(
          {
             { 2, 20 },
             { 1, 20 }

@@ -58,7 +58,7 @@ namespace ZenUnit
       _memberForEacher.MemberForEach(
          &classInstance.collection, &classInstance, &ClassType::Func);
       //
-      classInstance.FuncMock.CalledMultipleTimes(
+      classInstance.FuncMock.CalledAsFollows(
       {
          1, 2
       });

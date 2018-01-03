@@ -284,7 +284,7 @@ namespace ZenUnit
       _specificTestClassRunner->NonMinimalPrintTestClassNameAndNumberOfNamedTests();
       //
       ZEN(GetArgs_ZenMock.CalledOnce());
-      ZEN(_consoleMock->NonMinimalWriteColorMock.CalledMultipleTimes(
+      ZEN(_consoleMock->NonMinimalWriteColorMock.CalledAsFollows(
       {
          { "@", Color::Green, zenUnitArgs.printMode },
          { TestClassName, Color::Green, zenUnitArgs.printMode }
