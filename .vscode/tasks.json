@@ -1,0 +1,108 @@
+{
+   "version": "0.1.0",
+   "command": "bash",
+   "args": [ "-c" ],
+   "options":
+   {
+      "cwd": "${fileDirname}"
+   },
+   "echoCommand": true,
+   "suppressTaskName": true,
+   "tasks":
+   [
+      {
+         "taskName": "Build Debug",
+         "args": [ "cd ${workspaceRoot}/Debug && time ninja -v" ],
+         "isBuildCommand": true,
+         "problemMatcher":
+         {
+            "owner": "cpp",
+            "fileLocation": [ "relative", "${workspaceRoot}/DebugOrRelease" ],
+            "pattern":
+            {
+               "regexp": "^(.*):(\\d+):(\\d+):\\s+(error|fatal error|warning):\\s+(.*)$",
+               "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
+            }
+         }
+      },
+      {
+         "taskName": "Build Release",
+         "args": [ "cd ${workspaceRoot}/Release && time ninja -v" ],
+         "isBuildCommand": false,
+         "problemMatcher":
+         {
+            "owner": "cpp",
+            "fileLocation": [ "relative", "${workspaceRoot}/DebugOrRelease" ],
+            "pattern":
+            {
+               "regexp": "^(.*):(\\d+):(\\d+):\\s+(error|fatal error|warning):\\s+(.*)$",
+               "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
+            }
+         }
+      },
+      {
+         "taskName": "Run Debug",
+         "isTestCommand": true,
+         "args": [ "${workspaceRoot}/Debug/ZenUnitTests/ZenUnitTests" ]
+      },
+      {
+         "taskName": "Run Release",
+         "isTestCommand": false,
+         "args": [ "${workspaceRoot}/Release/ZenUnitTests/ZenUnitTests" ]
+      },
+      {
+         "taskName": "Run Python",
+         "isTestCommand": false,
+         "args": [ "export PYTHONPATH=.. && python3 ${file}" ]
+      },
+      {
+         "taskName": "pylint File",
+         "isBuildCommand": false,
+         "args": [ "pylint --rcfile=${workspaceRoot}/ZenUnitPy/.pylintrc --init-hook=\"sys.path.append('..')\" ${file}" ]
+      },
+      {
+         "taskName": "pylint All",
+         "args": [ "cd ${workspaceRoot}/ZenUnitPy && time ag -g py$ -0 | xargs -0 -n 1 -P 32 --verbose pylint --rcfile=.pylintrc --score=n" ]
+      },
+      {
+         "taskName": "flake8 All",
+         "args": [ "time flake8 --config=${workspaceRoot}/ZenUnitPy/.flake8 --show-source ${workspaceRoot}" ]
+      },
+      {
+         "taskName": "Clean Debug",
+         "args": [ "cd ${workspaceRoot}/Debug && time ninja clean" ]
+      },
+      {
+         "taskName": "Clean Release",
+         "args": [ "cd ${workspaceRoot}/Release && time ninja clean" ]
+      },
+      {
+         "taskName": "Clean Debug & Pch",
+         "args": [ "rm -f ${workspaceRoot}/ZenUnit/pch.h.gch && rm -f ${workspaceRoot}/ZenUnitTests/pch.h.gch && cd ${workspaceRoot}/Debug && time ninja clean" ]
+      },
+      {
+         "taskName": "Clean Release & Pch",
+         "args": [ "rm -f ${workspaceRoot}/ZenUnit/pch.h.gch && rm -f ${workspaceRoot}/ZenUnitTests/pch.h.gch && cd ${workspaceRoot}/Release && time ninja clean" ]
+      },
+      {
+         "taskName": "clang++ Check Syntax",
+         "args": [ "clang++ -fsyntax-only -x c++-header -std=c++1z -Wno-pragma-once-outside-header -I${workspaceRoot} -I${workspaceRoot}/ZenUnit ${file}" ]
+      },
+      {
+         "taskName": "clang++ Compile File",
+         "args": [ "clang++ -c -std=c++1z -Wno-pragma-once-outside-header -I${workspaceRoot} -I${workspaceRoot}/ZenUnit -I${workspaceRoot}/ZenUnitTests ${file}" ]
+      },
+      {
+         "taskName": "g++ Check Syntax",
+         "args": [ "g++ -fsyntax-only -std=c++1z -I${workspaceRoot} -I${workspaceRoot}/ZenUnit -I${workspaceRoot}/ZenUnitTests ${file}" ]
+      },
+      {
+         "taskName": "g++ Compile File",
+         "args": [ "g++ -c -std=c++1z -I${workspaceRoot} -I${workspaceRoot}/ZenUnit -I${workspaceRoot}/ZenUnitTests ${file}" ]
+      },
+      {
+         "taskName": "clang++ Dump Record Layouts",
+         "args": [ "/usr/local/bin/clang++ -cc1 -fdump-record-layouts -fcxx-exceptions -std=c++1z -I${workspaceRoot} -I${workspaceRoot}/ZenUnit -I/usr/include -I/usr/include/c++/6.3.1 -I/usr/include/c++/6.3.1/x86_64-redhat-linux -I/usr/local/lib/clang/5.0.0/include -I/usr/local/include/Utils -I/usr/local/include/boost164 -x c++-header ${file}" ]
+      }
+   ]
+}
