@@ -1,3 +1,3 @@
 #pragma once
 
-PrintMode RandomPrintMode();
+//PrintMode RandomPrintMode();
