@@ -32,6 +32,8 @@
 #if defined __linux__
 #include <climits>
 #include <cxxabi.h>
+#include <memory>
+#include <string.h>
 #include <unistd.h>
 #elif _WIN32
 #define WIN32_LEAN_AND_MEAN // ~40% faster Windows.h compile speed
