@@ -22,7 +22,6 @@
 #include <map>
 #include <numeric>
 #include <random>
-#include <regex>
 #include <set>
 #include <sstream>
 #include <typeindex>
@@ -165,12 +164,6 @@
 // Does nothing to implicitly assert that expression() does not throw an exception. A useful assertion for emphasis.
 #define NOTHROWS(expression, ...) \
    NOTHROWS_Defined([&]{ expression; }, #expression, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
-
-// Regular Expressions:
-
-// Asserts that str regex_matches expectedPattern.
-#define REGEX_MATCHES(expectedPattern, str, ...) \
-   ZenUnit::REGEX_MATCHES_Defined(VRT(expectedPattern), VRT(str), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
 // ZenUnit TestClass Macros
@@ -1034,11 +1027,25 @@ namespace ZenUnit
          return demangledTypeName;
       }
 #elif _WIN32
+      static void InplaceEraseAll(std::string& str, const std::string& substring)
+      {
+         while (true)
+         {
+            std::size_t findPosition = str.find(substring);
+            if (findPosition == std::string::npos)
+            {
+               break;
+            }
+            str = str.erase(findPosition, substring.size());
+         }
+      }
+
       static std::string Demangle(const char* mangledTypeName)
       {
-         static const std::regex classStructPattern("(class |struct )");
-         const std::string typeNameMinusClassAndStruct = std::regex_replace(mangledTypeName, classStructPattern, "");
-         return typeNameMinusClassAndStruct;
+         std::string typeNameMinusClassSpaceAndStructSpace(mangledTypeName);
+         InplaceEraseAll(typeNameMinusClassSpaceAndStructSpace, "class ");
+         InplaceEraseAll(typeNameMinusClassSpaceAndStructSpace, "struct ");
+         return typeNameMinusClassSpaceAndStructSpace;
       }
 #endif
    };
@@ -2491,38 +2498,6 @@ None
       }
       ScalarDeleter<typename std::remove_reference<
          decltype(smartOrRawPointer)>::type>::Delete(smartOrRawPointer);
-   }
-
-   template<typename PatternStringType, typename StrStringType, typename... MessageTypes>
-   void REGEX_MATCHES_Throw(
-      VRText<PatternStringType> expectedPatternVRT, VRText<StrStringType> strVRT,
-      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
-   {
-      const std::string expectedLine = String::Concat(
-         "Expected string to match: \"", expectedPatternVRT.value, "\"");
-      const std::string actualLine = String::Concat(
-         "     Non-matching string: \"", strVRT.value, "\"");
-      throw Anomaly(
-         "REGEX_MATCHES", expectedPatternVRT.text, strVRT.text, "", messagesText,
-         Anomaly::Default(),
-         expectedLine,
-         actualLine,
-         ExpectedActualFormat::WholeLines, fileLine, std::forward<MessageTypes>(messages)...);
-   }
-
-   template<typename PatternStringType, typename StrStringType, typename... MessageTypes>
-   void REGEX_MATCHES_Defined(
-      VRText<PatternStringType> expectedPatternVRT,
-      VRText<StrStringType> strVRT,
-      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
-   {
-      const std::regex regexPattern(expectedPatternVRT.value);
-      if (!std::regex_match(strVRT.value, regexPattern))
-      {
-         REGEX_MATCHES_Throw(
-            expectedPatternVRT, strVRT,
-            fileLine, messagesText, std::forward<MessageTypes>(messages)...);
-      }
    }
 
    template<typename SetType, typename... MessageTypes>
