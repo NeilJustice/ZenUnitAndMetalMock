@@ -2,10 +2,10 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true)](https://ci.appveyor.com/project/NeilJustice/zenunitzenmock)
 
 # ZenUnit
-ZenUnit is a single-header C++ unit testing framework with its signature feature being its syntax for specifying value-parameterized and type-parameterized unit tests.
+ZenUnit is a single-header C++ unit testing framework with its signature feature being its intuitive syntax for specifying value-parameterized and type-parameterized tests.
 
 # ZenMock
-ZenMock is a single-header C++ mocking framework powered by ZenUnit with its signature features being its ability to mock static, free, virtual, and non-virtual functions using a high-readability arrange-act-assert syntax.
+ZenMock is a single-header C++ mocking framework powered by ZenUnit with its signature feature being its intuitive arrange-act-assert syntax for mocking virtual, template, free, and static functions.
 
 ### ZenUnit Command Line Usage
 
