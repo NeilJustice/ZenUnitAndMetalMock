@@ -15,7 +15,6 @@ namespace ZenUnit
       const MapType<int, int> actualMap;
       ARE_EQUAL(expectedMap, actualMap);
    }
-
 };
 RUNTEMPLATETESTS(MapEqualizerTests, map)
 RUNTEMPLATETESTS(MapEqualizerTests, unordered_map)
@@ -27,12 +26,12 @@ RUNTEMPLATETESTS(MapEqualizerTests, unordered_map)
 namespace ZenUnit
 {
    TESTS(VectorEqualizerTests)
-      AFACT(AssertEqual_IntVectors_CallsVECTORS_EQUAL)
-      AFACT(AssertEqual_StringVectors_CallsVECTORS_EQUAL)
-      AFACT(AssertEqual_UserTypeVectors_CallsVECTORS_EQUAL)
-      EVIDENCE
+   AFACT(AssertEqual_IntVectors_CallsVECTORS_EQUAL)
+   AFACT(AssertEqual_StringVectors_CallsVECTORS_EQUAL)
+   AFACT(AssertEqual_UserTypeVectors_CallsVECTORS_EQUAL)
+   EVIDENCE
 
-      TEST(AssertEqual_IntVectors_CallsVECTORS_EQUAL)
+   TEST(AssertEqual_IntVectors_CallsVECTORS_EQUAL)
    {
       vector<int> expectedIntVector;
       const vector<int> actualIntVector;
@@ -40,8 +39,8 @@ namespace ZenUnit
       expectedIntVector.push_back(1);
       THROWS(Equalizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedVector, actualVector)
-Expected: vector<T>
-  Actual: vector<T>
+Expected: vector<int>: {1}
+  Actual: vector<int>: {}
  Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
 Expected: 1
   Actual: 0
@@ -58,8 +57,8 @@ File.cpp(1))");
       THROWS(Equalizer<vector<string>>::AssertEqual(
          expectedStringVector Comma actualStringVector), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedVector, actualVector)
-Expected: vector<T>
-  Actual: vector<T>
+Expected: vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >>: {""}
+  Actual: vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >>: {}
  Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
 Expected: 1
   Actual: 0
@@ -76,8 +75,8 @@ File.cpp(1))");
       THROWS(Equalizer<vector<UserType>>::AssertEqual(
          expectedUserTypeVector Comma actualUserTypeVector), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedVector, actualVector)
-Expected: vector<T>
-  Actual: vector<T>
+Expected: vector<UserType>: {UserType@0}
+  Actual: vector<UserType>: {}
  Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
 Expected: 1
   Actual: 0
@@ -95,31 +94,31 @@ File.cpp(1))");
 namespace ZenUnit
 {
    TESTS(ZenUnitEqualizerTests)
-      AFACT(TemplateZenUnitEqualizer_ValuesAreEqualityOperatorEqual_DoesNotThrow)
-      AFACT(TemplateZenUnitEqualizer_ValuesNotEqualityOperatorEqual_Throws)
-      AFACT(TemplateTwoTypeZenUnitEqualizer_ValuesAreEqualityOperatorEqual_DoesNotThrow)
-      AFACT(TemplateTwoTypeZenUnitEqualizer_ValuesNotEqualityOperatorEqual_Throws)
-      AFACT(ConstCharPointer_ConstCharPointer_Equal_DoesNotThrow)
-      AFACT(ConstCharPointer_ConstCharPointer_NotEqual_Throws)
-      AFACT(CharPointer_CharPointer_Equal_DoesNotThrow)
-      AFACT(CharPointer_CharPointer_NotEqual_Throws)
-      AFACT(ConstCharPointer_CharPointer_Equal_DoesNotThrow)
-      AFACT(ConstCharPointer_CharPointer_NotEqual_Throws)
-      AFACT(CharPointer_ConstCharPointer_Equal_DoesNotThrow)
-      AFACT(CharPointer_ConstCharPointer_NotEqual_Throws)
-      AFACT(ConstCharPointer_StdString_Equal_DoesNotThrow)
-      AFACT(ConstCharPointer_StdString_NotEqual_Throws)
-      AFACT(StdString_ConstCharPointer_Equal_DoesNotThrow)
-      AFACT(StdString_ConstCharPointer_NotEqual_Throws)
-      AFACT(Double_Double_ExactlyEqual_DoesNotThrow)
-      AFACT(Double_Double_NotExactlyEqual_Throws)
-      AFACT(Double_Float_ExactlyEqual_DoesNotThrow)
-      AFACT(Double_Float_NotExactlyEqual_Throws)
-      AFACT(Int_SizeT_ThrowsIfIntNegative_OtherwiseCallsAssertEqualSizeTSizeT)
-      AFACT(Int_Unsigned_ThrowsIfIntNegative_OtherwiseCallsAssertEqualUnsignedUnsigned)
-      EVIDENCE
+   AFACT(TemplateZenUnitEqualizer_ValuesAreEqualityOperatorEqual_DoesNotThrow)
+   AFACT(TemplateZenUnitEqualizer_ValuesNotEqualityOperatorEqual_Throws)
+   AFACT(TemplateTwoTypeZenUnitEqualizer_ValuesAreEqualityOperatorEqual_DoesNotThrow)
+   AFACT(TemplateTwoTypeZenUnitEqualizer_ValuesNotEqualityOperatorEqual_Throws)
+   AFACT(ConstCharPointer_ConstCharPointer_Equal_DoesNotThrow)
+   AFACT(ConstCharPointer_ConstCharPointer_NotEqual_Throws)
+   AFACT(CharPointer_CharPointer_Equal_DoesNotThrow)
+   AFACT(CharPointer_CharPointer_NotEqual_Throws)
+   AFACT(ConstCharPointer_CharPointer_Equal_DoesNotThrow)
+   AFACT(ConstCharPointer_CharPointer_NotEqual_Throws)
+   AFACT(CharPointer_ConstCharPointer_Equal_DoesNotThrow)
+   AFACT(CharPointer_ConstCharPointer_NotEqual_Throws)
+   AFACT(ConstCharPointer_StdString_Equal_DoesNotThrow)
+   AFACT(ConstCharPointer_StdString_NotEqual_Throws)
+   AFACT(StdString_ConstCharPointer_Equal_DoesNotThrow)
+   AFACT(StdString_ConstCharPointer_NotEqual_Throws)
+   AFACT(Double_Double_ExactlyEqual_DoesNotThrow)
+   AFACT(Double_Double_NotExactlyEqual_Throws)
+   AFACT(Double_Float_ExactlyEqual_DoesNotThrow)
+   AFACT(Double_Float_NotExactlyEqual_Throws)
+   AFACT(Int_SizeT_ThrowsIfIntNegative_OtherwiseCallsAssertEqualSizeTSizeT)
+   AFACT(Int_Unsigned_ThrowsIfIntNegative_OtherwiseCallsAssertEqualUnsignedUnsigned)
+   EVIDENCE
 
-      TEST(TemplateZenUnitEqualizer_ValuesAreEqualityOperatorEqual_DoesNotThrow)
+   TEST(TemplateZenUnitEqualizer_ValuesAreEqualityOperatorEqual_DoesNotThrow)
    {
       Equalizer<int>::AssertEqual(0, 0);
       Equalizer<string>::AssertEqual(string("abc"), string("abc"));
@@ -293,4 +292,5 @@ namespace ZenUnit
    }
 
 }; RUNTESTS(ZenUnitEqualizerTests)
+
 }

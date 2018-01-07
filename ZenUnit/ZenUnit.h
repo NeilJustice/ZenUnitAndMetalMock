@@ -1054,7 +1054,7 @@ namespace ZenUnit
 
    class ToStringer
    {
-   private:
+   public:
       template<typename T>
       static void ZenUnitPrinterOrOStreamInsertionOperatorOrPrintTypeName(
          std::ostream& os, [[maybe_unused]]const T& value)
@@ -1094,7 +1094,7 @@ namespace ZenUnit
          const std::string valueString(oss.str());
          return valueString;
       }
-   public:
+
       static std::string ToString(const std::nullptr_t&)
       {
          return "nullptr";
@@ -5580,11 +5580,37 @@ None
    };
 
    template<typename T, typename Allocator>
+   struct Printer<const std::vector<T, Allocator>>
+   {
+      static void Print(std::ostream& os, const std::vector<T, Allocator>& vec)
+      {
+         const std::string* typeName = Type::GetName<T>();
+         os << "vector<" << *typeName << ">: {";
+         const std::size_t vectorSize = vec.size();
+         for (std::size_t i = 0; i < vectorSize; ++i)
+         {
+            if (i == 7)
+            {
+               os << "...";
+               break;
+            }
+            const T& element = vec[i];
+            ToStringer::ZenUnitPrinterOrOStreamInsertionOperatorOrPrintTypeName(os, element);
+            if (i < vectorSize - 1)
+            {
+               os << ", ";
+            }
+         }
+         os << '}';
+      }
+   };
+
+   template<typename T, typename Allocator>
    struct Printer<std::vector<T, Allocator>>
    {
-      static void Print(std::ostream& os, const std::vector<T, Allocator>&)
+      static void Print(std::ostream& os, const std::vector<T, Allocator>& vec)
       {
-         os << "vector<T>";
+         Printer<const std::vector<T, Allocator>>::Print(os, vec);
       }
    };
 
