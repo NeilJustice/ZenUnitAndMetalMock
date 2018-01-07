@@ -5458,11 +5458,14 @@ None
          {
             ConsoleColorer consoleColorer;
             bool didSetColor = consoleColorer.SetColor(Color::Red);
-            std::cout << "\n=========================================\nZenUnit FACTS vs. TEST Syntax Usage Error\n=========================================\n";
+            std::cout << "==========================\nZenUnit Syntax Usage Error\n==========================\n";
             consoleColorer.UnsetColor(didSetColor);
-            std::cout << "The aforementioned test name was declared with FACTS, therefore a TESTNXN definition is expected, but a TEST was encountered.\n"
-               "If a TEST is intended, declare the test name with AFACT instead of with FACTS.\n";
-            exit(1);
+            std::cout << R"(The above test name was specified using FACTS.
+Therefore, a TESTNXN definition is expected.
+Unexpectedly, a TEST definition was encountered.
+)";
+            const ZenUnitArgs& zenUnitArgs = TestRunner::GetArgs();
+            exit(zenUnitArgs.exit0 ? 0 : 1);
          }
          const std::unique_ptr<Test>* const testNXN = &findIter->second;
          return testNXN;
