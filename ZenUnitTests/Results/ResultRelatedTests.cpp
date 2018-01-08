@@ -1,13 +1,20 @@
 #include "pch.h"
+#include "ZenUnitTests/Console/Mock/ConsoleMock.h"
+#include "ZenUnitTests/Results/Mock/TestResultMock.h"
+#include "ZenUnitTests/Results/Mock/TestFailureNumbererMock.h"
+#include "ZenUnitTests/Results/Mock/TestClassResultMock.h"
+#include "ZenUnitTests/Testing/RandomPrintMode.h"
+#include "ZenUnitTests/Utils/Iteration/Mock/MemberForEacherMock.h"
+#include "ZenUnitTests/Utils/Iteration/Mock/TwoExtraArgsForEacherMock.h"
 
 namespace ZenUnit
 {
    TESTS(AnomalyOrExceptionTests)
-      AFACT(AnomalyConstructor_SetsAnomaly)
-      AFACT(ExceptionTypeNameAndExceptionWhatConstructor_SetsExceptionTypeNameAndExceptionWhat)
-      EVIDENCE
+   AFACT(AnomalyConstructor_SetsAnomaly)
+   AFACT(ExceptionTypeNameAndExceptionWhatConstructor_SetsExceptionTypeNameAndExceptionWhat)
+   EVIDENCE
 
-      TEST(AnomalyConstructor_SetsAnomaly)
+   TEST(AnomalyConstructor_SetsAnomaly)
    {
       Anomaly anomaly;
       anomaly.why = "NonDefault";
@@ -31,20 +38,15 @@ namespace ZenUnit
       ARE_EQUAL(ExceptionWhat, *anomalyOrException.exceptionWhat);
    }
 
-}; RUNTESTS(AnomalyOrExceptionTests)
-}
+   }; RUNTESTS(AnomalyOrExceptionTests)
 
-#include "pch.h"
-
-namespace ZenUnit
-{
    TESTS(CallResultTests)
-      AFACT(DefaultConstructor_SetsFieldsTo0)
-      AFACT(TestPhaseConstructor_SetsTestPhase_SetsOtherFieldsTo0)
-      AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-      EVIDENCE
+   AFACT(DefaultConstructor_SetsFieldsTo0)
+   AFACT(TestPhaseConstructor_SetsTestPhase_SetsOtherFieldsTo0)
+   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   EVIDENCE
 
-      TEST(DefaultConstructor_SetsFieldsTo0)
+   TEST(DefaultConstructor_SetsFieldsTo0)
    {
       const CallResult defaultCallResult;
       CallResult expectedDefaultCallResult;
@@ -78,36 +80,27 @@ namespace ZenUnit
       EQUALIZER_THROWS_FOR_FIELD(CallResult, anomalyOrException, nonDefaultAnomalyOrException);
    }
 
-}; RUNTESTS(CallResultTests)
-}
+   }; RUNTESTS(CallResultTests)
 
 
-#include "pch.h"
-#include "ZenUnitTests/Console/Mock/ConsoleMock.h"
-#include "ZenUnitTests/Results/Mock/TestResultMock.h"
-#include "ZenUnitTests/Testing/RandomPrintMode.h"
-#include "ZenUnitTests/Utils/Iteration/Mock/TwoExtraArgsForEacherMock.h"
-
-namespace ZenUnit
-{
    TESTS(TestClassResultTests)
-      AFACT(CopyConstructor_CopiesForEacherAndTestResults)
-      AFACT(AssignmentOperator_CopiesForEacherAndTestResults)
-      AFACT(AssignmentOperator_SelfAssignment_NothingHappens)
-      AFACT(MoveConstructor_MovesForEacherAndTestResults)
-      AFACT(MoveAssignmentOperator_MovesForEacherAndTestResults)
-      AFACT(AddTestResults_AppendTestResultsToEndOfTestResultsVector)
-      AFACT(NumberOfFailedTestCases_ReturnsNumberOfNonSuccessTestsInTestResultsVector)
-      AFACT(Milliseconds_EmptyTestResultsVector_Returns0)
-      AFACT(Milliseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMilliseconds)
-      AFACT(PrintTestFailures_PrintsJustTestFailedToConsole)
-      AFACT(NonMinimalPrintResultLine_0FailedTest_WritesOKInGreen)
-      FACTS(NonMinimalPrintResultLine_1OrMoreFailedTests_WritesFailedInRed)
-      AFACT(PrintTestResultIfFailure_CallsTestResultPrintIfFailure)
-      AFACT(ZenUnitEqualizer_ThrowsIfTestResultsNotEqual)
-      EVIDENCE
+   AFACT(CopyConstructor_CopiesForEacherAndTestResults)
+   AFACT(AssignmentOperator_CopiesForEacherAndTestResults)
+   AFACT(AssignmentOperator_SelfAssignment_NothingHappens)
+   AFACT(MoveConstructor_MovesForEacherAndTestResults)
+   AFACT(MoveAssignmentOperator_MovesForEacherAndTestResults)
+   AFACT(AddTestResults_AppendTestResultsToEndOfTestResultsVector)
+   AFACT(NumberOfFailedTestCases_ReturnsNumberOfNonSuccessTestsInTestResultsVector)
+   AFACT(Milliseconds_EmptyTestResultsVector_Returns0)
+   AFACT(Milliseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMilliseconds)
+   AFACT(PrintTestFailures_PrintsJustTestFailedToConsole)
+   AFACT(NonMinimalPrintResultLine_0FailedTest_WritesOKInGreen)
+   FACTS(NonMinimalPrintResultLine_1OrMoreFailedTests_WritesFailedInRed)
+   AFACT(PrintTestResultIfFailure_CallsTestResultPrintIfFailure)
+   AFACT(ZenUnitEqualizer_ThrowsIfTestResultsNotEqual)
+   EVIDENCE
 
-      TestClassResult _testClassResult;
+   TestClassResult _testClassResult;
 
    struct TestClassResultSelfMocked : public Zen::Mock<TestClassResult>
    {
@@ -303,18 +296,12 @@ namespace ZenUnit
    }
 
 }; RUNTESTS(TestClassResultTests)
-}
 
-
-#include "pch.h"
-
-namespace ZenUnit
-{
    TESTS(TestFailureNumbererTests)
-      AFACT(TestFailureNumberer_NextReturnsIncrementingAngleBracketedSequence)
-      EVIDENCE
+   AFACT(TestFailureNumberer_NextReturnsIncrementingAngleBracketedSequence)
+   EVIDENCE
 
-      TEST(TestFailureNumberer_NextReturnsIncrementingAngleBracketedSequence)
+   TEST(TestFailureNumberer_NextReturnsIncrementingAngleBracketedSequence)
    {
       TestFailureNumberer testFailureNumberer;
       ARE_EQUAL("Test Failure 1:", testFailureNumberer.Next());
@@ -327,19 +314,14 @@ namespace ZenUnit
    }
 
 }; RUNTESTS(TestFailureNumbererTests)
-}
 
 
-#include "pch.h"
-
-namespace ZenUnit
-{
    TESTS(TestPhaseSuffixerTests)
-      FACTS(TestPhaseToTestPhaseSuffix_ReturnsTestPhaseSuffix)
-      FACTS(TestPhaseToTestPhaseSuffix_UnsetOrDestructorTestPhase_Throws)
-      EVIDENCE
+   FACTS(TestPhaseToTestPhaseSuffix_ReturnsTestPhaseSuffix)
+   FACTS(TestPhaseToTestPhaseSuffix_UnsetOrDestructorTestPhase_Throws)
+   EVIDENCE
 
-      TestPhaseSuffixer _testPhaseSuffixer;
+   TestPhaseSuffixer _testPhaseSuffixer;
 
    TEST2X2(TestPhaseToTestPhaseSuffix_ReturnsTestPhaseSuffix,
       TestPhase testPhase, const char* expectedTestPhaseSuffix,
@@ -360,22 +342,17 @@ namespace ZenUnit
          invalid_argument, "Invalid testPhase");
    }
 
-}; RUNTESTS(TestPhaseSuffixerTests)
-}
+   }; RUNTESTS(TestPhaseSuffixerTests)
 
 
-#include "pch.h"
-
-namespace ZenUnit
-{
    TESTS(TestResultFactoryTests)
-      AFACT(ConstructorFail_ReturnsTestResultConstructorFail)
-      AFACT(StartupFail_ReturnsTestResultStartupFail)
-      AFACT(CtorDtorSuccess_ReturnsTestResultCtorDtorSuccess)
-      AFACT(FullConstructor_ReturnsTestResultSixArgCtor)
-      EVIDENCE
+   AFACT(ConstructorFail_ReturnsTestResultConstructorFail)
+   AFACT(StartupFail_ReturnsTestResultStartupFail)
+   AFACT(CtorDtorSuccess_ReturnsTestResultCtorDtorSuccess)
+   AFACT(FullConstructor_ReturnsTestResultSixArgCtor)
+   EVIDENCE
 
-      TestResultFactory _testResultFactory;
+   TestResultFactory _testResultFactory;
    const FullTestName FullTestNameValue = FullTestName("TestClass", "Test", 0);
    CallResult ConstructorCallResult;
    CallResult StartupCallResult;
@@ -385,13 +362,13 @@ namespace ZenUnit
    STARTUP
    {
       ConstructorCallResult.testPhase = TestPhase::Constructor;
-   StartupCallResult.testPhase = TestPhase::Startup;
-   TestBodyCallResult.testPhase = TestPhase::TestBody;
-   CleanupCallResult.testPhase = TestPhase::Cleanup;
-   DestructorCallResult.testPhase = TestPhase::Destructor;
+      StartupCallResult.testPhase = TestPhase::Startup;
+      TestBodyCallResult.testPhase = TestPhase::TestBody;
+      CleanupCallResult.testPhase = TestPhase::Cleanup;
+      DestructorCallResult.testPhase = TestPhase::Destructor;
    }
 
-      TEST(ConstructorFail_ReturnsTestResultConstructorFail)
+   TEST(ConstructorFail_ReturnsTestResultConstructorFail)
    {
       const TestResult constructorFailTestResult =
          _testResultFactory.ConstructorFail(FullTestNameValue, ConstructorCallResult);
@@ -432,33 +409,26 @@ namespace ZenUnit
       ARE_EQUAL(expectedTestResult, testResult);
    }
 
-}; RUNTESTS(TestResultFactoryTests)
-}
+   }; RUNTESTS(TestResultFactoryTests)
 
 
-#include "pch.h"
-#include "ZenUnitTests/Console/Mock/ConsoleMock.h"
-#include "ZenUnitTests/Results/Mock/TestFailureNumbererMock.h"
-
-namespace ZenUnit
-{
    TESTS(TestResultTests)
-      AFACT(DefaultConstructor_SetsFieldsTo0)
-      FACTS(ConstructorFail_ReturnsExpectedTestResult)
-      FACTS(StartupFail_ReturnsExpectedTestResult)
-      AFACT(CtorDtorSuccess_ReturnsExpectedTestResult);
+   AFACT(DefaultConstructor_SetsFieldsTo0)
+   FACTS(ConstructorFail_ReturnsExpectedTestResult)
+   FACTS(StartupFail_ReturnsExpectedTestResult)
+   AFACT(CtorDtorSuccess_ReturnsExpectedTestResult);
    FACTS(SixArgConstructor_SetsFields)
-      FACTS(NonMinimalWriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess)
-      AFACT(PrintIfFailure_Success_PrintsNothing)
-      FACTS(PrintIfFailure_Anomaly_PrintsExpected)
-      FACTS(PrintIfFailure_Exception_PrintsExpected)
-      AFACT(PrintIfFailure_SuccessButPastDeadline_PrintsExpected)
-      AFACT(PrintIfFailure_InvalidOutcome_Throws)
-      FACTS(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseIndexPlus1IfTestCaseIndexNotMaxValue)
-      AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-      EVIDENCE
+   FACTS(NonMinimalWriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess)
+   AFACT(PrintIfFailure_Success_PrintsNothing)
+   FACTS(PrintIfFailure_Anomaly_PrintsExpected)
+   FACTS(PrintIfFailure_Exception_PrintsExpected)
+   AFACT(PrintIfFailure_SuccessButPastDeadline_PrintsExpected)
+   AFACT(PrintIfFailure_InvalidOutcome_Throws)
+   FACTS(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseIndexPlus1IfTestCaseIndexNotMaxValue)
+   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   EVIDENCE
 
-      TestResult _testResult;
+   TestResult _testResult;
    CallResult ConstructorCallResult;
    CallResult StartupCallResult;
    CallResult DestructorCallResult;
@@ -476,15 +446,15 @@ namespace ZenUnit
    STARTUP
    {
       ConstructorCallResult = CallResult(TestPhase::Constructor);
-   ConstructorCallResult.milliseconds = 1;
-   StartupCallResult = CallResult(TestPhase::Startup);
-   StartupCallResult.milliseconds = 2;
-   DestructorCallResult = CallResult(TestPhase::Destructor);
-   DestructorCallResult.milliseconds = 3;
-   _testResult.fullTestName = FullTestNameValue;
+      ConstructorCallResult.milliseconds = 1;
+      StartupCallResult = CallResult(TestPhase::Startup);
+      StartupCallResult.milliseconds = 2;
+      DestructorCallResult = CallResult(TestPhase::Destructor);
+      DestructorCallResult.milliseconds = 3;
+      _testResult.fullTestName = FullTestNameValue;
    }
 
-      TEST(DefaultConstructor_SetsFieldsTo0)
+   TEST(DefaultConstructor_SetsFieldsTo0)
    {
       const TestResult defaultTestResult;
       TestResult expectedDefaultTestResult;
@@ -753,15 +723,15 @@ namespace ZenUnit
       //
       ZEN(_testFailureNumbererMock.NextMock.CalledOnce());
       ZEN(_consoleMock.WriteMock.CalledAsFollows(
-         {
-            _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value(),
-            expectedTestPhaseSuffix
-         }));
+      {
+         _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value(),
+         expectedTestPhaseSuffix
+      }));
       ZEN(_consoleMock.WriteLineColorMock.CalledAsFollows(
-         {
-            { testFailureNumber, Color::Red },
-         { "\nUncaught Exception", Color::Red }
-         }));
+      {
+         { testFailureNumber, Color::Red },
+      { "\nUncaught Exception", Color::Red }
+      }));
       ZEN(_consoleMock.WriteLineMock.CalledOnceWith(
          "  Type: " + exceptionTypeName + "\n"
          "what(): \""s + exceptionWhat + "\""));
@@ -793,10 +763,10 @@ namespace ZenUnit
          CalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex));
       ZEN(_consoleMock.WriteLineColorMock.CalledOnceWith(testFailureNumber, Color::Red));
       ZEN(_consoleMock.WriteLineMock.CalledAsFollows(
-         {
-            _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value(),
-            "\nFailed because test took longer than -maxtestms= (10 ms)"s
-         }));
+      {
+         _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value(),
+         "\nFailed because test took longer than -maxtestms= (10 ms)"s
+      }));
       ZEN(_consoleMock.WriteNewLineMock.CalledOnce());
    }
 
@@ -861,40 +831,31 @@ namespace ZenUnit
       EQUALIZER_THROWS_FOR_FIELD(TestResult, milliseconds, 20u);
    }
 
-}; RUNTESTS(TestResultTests)
-}
+   }; RUNTESTS(TestResultTests)
 
 
-#include "pch.h"
-#include "ZenUnitTests/Console/Mock/ConsoleMock.h"
-#include "ZenUnitTests/Results/Mock/TestClassResultMock.h"
-#include "ZenUnitTests/Results/Mock/TestFailureNumbererMock.h"
-#include "ZenUnitTests/Utils/Iteration/Mock/MemberForEacherMock.h"
-
-namespace ZenUnit
-{
    TESTS(TestRunResultTests)
-      AFACT(Constructor_NewsComponents)
-      AFACT(AddSkippedTest_AddsTestClassNameDotTestNameToSkippedFullTestNamesVector)
-      AFACT(AddSkippedTestClassNameAndReason_AddsTestClassNameAndReasonToSkippedTestClassNamesAndReasonsVector)
-      FACTS(SetTestClassResults_SetsNumberofFailedTestCases_MovesTestClassResultsIntoField)
-      AFACT(NumberOfFailedTestCases_ZeroTestClassResults_Returns0)
-      AFACT(NumberOfFailedTestCases_ThreeTestClassResults_ReturnsSumOfNumberOfFailedTestCases)
-      FACTS(PrintTestFailuresAndSkips_PrintsTestFailures_PrintsSkippedTestClassNames_PrintsSkippedFullTestNames);
+   AFACT(Constructor_NewsComponents)
+   AFACT(AddSkippedTest_AddsTestClassNameDotTestNameToSkippedFullTestNamesVector)
+   AFACT(AddSkippedTestClassNameAndReason_AddsTestClassNameAndReasonToSkippedTestClassNamesAndReasonsVector)
+   FACTS(SetTestClassResults_SetsNumberofFailedTestCases_MovesTestClassResultsIntoField)
+   AFACT(NumberOfFailedTestCases_ZeroTestClassResults_Returns0)
+   AFACT(NumberOfFailedTestCases_ThreeTestClassResults_ReturnsSumOfNumberOfFailedTestCases)
+   FACTS(PrintTestFailuresAndSkips_PrintsTestFailures_PrintsSkippedTestClassNames_PrintsSkippedFullTestNames);
    AFACT(PrintClosingLines_0TotalNumberOfTests_PrintsZeroTestClassesRegisteredToRun)
-      FACTS(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds)
-      AFACT(PrintTestClassResultFailures_CallsTestClassResultPrintTestFailures)
-      FACTS(DetermineExitCode_DefaultArgs_Returns1IfAnyTestFailures_OtherwiseReturns0)
-      FACTS(DetermineExitCode_Exit0True_AlwaysReturns0)
-      FACTS(DetermineExitCode_Exit0True_FailSkipsTrue_AlwaysReturns0)
-      FACTS(DetermineExitCode_FailSkipsTrue_Returns1IfAnyTestsOrTestClassesSkipped)
-      AFACT(PrintSkippedTestClassReminder_PrintsExpectedToConsole)
-      AFACT(PrintSkippedTestReminder_PrintsExpectedToConsole)
-      AFACT(ResetStateExceptForSkips_ResetsTestFailureNumberer_ClearsTestClassResults_SetsNumberOfFailedTestCasesTo0)
-      AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-      EVIDENCE
+   FACTS(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds)
+   AFACT(PrintTestClassResultFailures_CallsTestClassResultPrintTestFailures)
+   FACTS(DetermineExitCode_DefaultArgs_Returns1IfAnyTestFailures_OtherwiseReturns0)
+   FACTS(DetermineExitCode_Exit0True_AlwaysReturns0)
+   FACTS(DetermineExitCode_Exit0True_FailSkipsTrue_AlwaysReturns0)
+   FACTS(DetermineExitCode_FailSkipsTrue_Returns1IfAnyTestsOrTestClassesSkipped)
+   AFACT(PrintSkippedTestClassReminder_PrintsExpectedToConsole)
+   AFACT(PrintSkippedTestReminder_PrintsExpectedToConsole)
+   AFACT(ResetStateExceptForSkips_ResetsTestFailureNumberer_ClearsTestClassResults_SetsNumberOfFailedTestCasesTo0)
+   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   EVIDENCE
 
-      TestRunResult _testRunResult;
+   TestRunResult _testRunResult;
    const ConsoleMock* _consoleMock;
    TestFailureNumbererMock* _testFailureNumbererMock;
 
@@ -909,11 +870,11 @@ namespace ZenUnit
    STARTUP
    {
       _testRunResult._console.reset(_consoleMock = new ConsoleMock);
-   _testRunResult._testFailureNumberer.reset(_testFailureNumbererMock = new TestFailureNumbererMock);
-   _testRunResult._memberForEacherTestClassResults.reset(
-      _memberForEacherTestClassResultsMock = new TypedefMemberForEacherTestClassResultsMock);
-   _testRunResult._memberForEacherSkippedTests.reset(
-      _memberForEacherSkippedTestsMock = new TypedefMemberForEacherSkippedTestsMock);
+      _testRunResult._testFailureNumberer.reset(_testFailureNumbererMock = new TestFailureNumbererMock);
+      _testRunResult._memberForEacherTestClassResults.reset(
+         _memberForEacherTestClassResultsMock = new TypedefMemberForEacherTestClassResultsMock);
+      _testRunResult._memberForEacherSkippedTests.reset(
+         _memberForEacherSkippedTestsMock = new TypedefMemberForEacherSkippedTestsMock);
    }
 
       TEST(Constructor_NewsComponents)
@@ -1291,4 +1252,5 @@ namespace ZenUnit
    }
 
 }; RUNTESTS(TestRunResultTests)
+
 }
