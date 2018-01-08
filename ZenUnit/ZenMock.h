@@ -1256,7 +1256,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidTwoArgumentMock
       }
 
       ZENAssertionToken CalledAsFollows(const std::vector<
-         ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>>&expectedThreeArgumentCalls)
+         ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>>& expectedThreeArgumentCalls)
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedThreeArgumentCalls.size());
          this->ZenMockSetAsserted();
@@ -1569,7 +1569,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidThreeArgumentMo
       }
 
       ZENAssertionToken CalledAsFollows(const std::vector<
-         FourArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>&expectedFourArgumentCalls)
+         FourArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>& expectedFourArgumentCalls)
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedFourArgumentCalls.size());
          this->ZenMockSetAsserted();
@@ -1904,7 +1904,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidFourArgumentMoc
       }
 
       ZENAssertionToken CalledAsFollows(const std::vector<
-         FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>&expectedFiveArgumentCalls)
+         FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>& expectedFiveArgumentCalls)
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedFiveArgumentCalls.size());
          this->ZenMockSetAsserted();
@@ -2254,7 +2254,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidFiveArgumentMoc
       }
 
       ZENAssertionToken CalledAsFollows(const std::vector<
-         SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>&expectedSixArgumentCalls)
+         SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>& expectedSixArgumentCalls)
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedSixArgumentCalls.size());
          this->ZenMockSetAsserted();
@@ -2618,7 +2618,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::ZenMockVoidSixArgs<
       }
 
       ZENAssertionToken CalledAsFollows(const std::vector<SevenArgumentCallRef<
-         Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>&expectedSevenArgumentCalls)
+         Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>& expectedSevenArgumentCalls)
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedSevenArgumentCalls.size());
          this->ZenMockSetAsserted();
@@ -3014,7 +3014,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::ZenMockVoidSevenArg
 
       ZENAssertionToken CalledAsFollows(const std::vector<EightArgumentCallRef<
          Arg1Type, Arg2Type, Arg3Type, Arg4Type,
-         Arg5Type, Arg6Type, Arg7Type, Arg8Type>>&expectedEightArgumentCalls)
+         Arg5Type, Arg6Type, Arg7Type, Arg8Type>>& expectedEightArgumentCalls)
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedEightArgumentCalls.size());
          this->ZenMockSetAsserted();
@@ -3032,7 +3032,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::ZenMockVoidSevenArg
          Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
          PrivateCallsToCallRefs(const std::vector<EightArgumentCall<
             Arg1Type, Arg2Type, Arg3Type, Arg4Type,
-            Arg5Type, Arg6Type, Arg7Type, Arg8Type>>&callHistory)
+            Arg5Type, Arg6Type, Arg7Type, Arg8Type>>& callHistory)
       {
          std::vector<EightArgumentCallRef<
             Arg1Type, Arg2Type, Arg3Type, Arg4Type,
@@ -3433,7 +3433,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::ZenMockVoidEightArg
 
       ZENAssertionToken CalledAsFollows(const std::vector<NineArgumentCallRef<
          Arg1Type, Arg2Type, Arg3Type, Arg4Type,
-         Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>&expectedNineArgumentCalls)
+         Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>& expectedNineArgumentCalls)
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedNineArgumentCalls.size());
          this->ZenMockSetAsserted();
@@ -3451,7 +3451,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::ZenMockVoidEightArg
          Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
          PrivateCallsToCallRefs(const std::vector<NineArgumentCall<
             Arg1Type, Arg2Type, Arg3Type, Arg4Type,
-            Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>&callHistory)
+            Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>& callHistory)
       {
          std::vector<NineArgumentCallRef<
             Arg1Type, Arg2Type, Arg3Type, Arg4Type,
@@ -3872,7 +3872,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::ZenMockVoidNineArgs
 
       ZENAssertionToken CalledAsFollows(const std::vector<TenArgumentCallRef<
          Arg1Type, Arg2Type, Arg3Type, Arg4Type,
-         Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>&expectedTenArgumentCalls)
+         Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>& expectedTenArgumentCalls)
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedTenArgumentCalls.size());
          this->ZenMockSetAsserted();
@@ -3890,7 +3890,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::ZenMockVoidNineArgs
          Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
          PrivateCallsToCallRefs(const std::vector<TenArgumentCall<
             Arg1Type, Arg2Type, Arg3Type, Arg4Type,
-            Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>&callHistory)
+            Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>& callHistory)
       {
          std::vector<TenArgumentCallRef<
             Arg1Type, Arg2Type, Arg3Type, Arg4Type,

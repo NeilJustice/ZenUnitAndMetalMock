@@ -5,11 +5,11 @@ namespace ZenUnit
    template<
       template<typename...>
    class MapType>
-      TEMPLATETESTS(MapEqualizerTests, MapType)
-      AFACT(ARE_EQUAL_EqualStdMaps_CompilesAndDoesNotThrow)
-      EVIDENCE
+   TEMPLATETESTS(MapEqualizerTests, MapType)
+   AFACT(ARE_EQUAL_EqualStdMaps_CompilesAndDoesNotThrow)
+   EVIDENCE
 
-      TEST(ARE_EQUAL_EqualStdMaps_CompilesAndDoesNotThrow)
+   TEST(ARE_EQUAL_EqualStdMaps_CompilesAndDoesNotThrow)
    {
       const MapType<int, int> expectedMap;
       const MapType<int, int> actualMap;
