@@ -372,9 +372,14 @@ catch (const ZenUnit::Anomaly& zenWrappedAnomaly) \
          {
             const ZenUnit::Console console;
             std::cout << "\n";
-            console.WriteLineColor("========\nFATALITY\n========", ZenUnit::Color::Red);
-            console.WriteLine("Expected But Not Asserted ZenMocked Function:");
-            console.WriteLineColor(ZenMockedFunctionSignature, ZenUnit::Color::Green);
+            console.WriteLineColor("=========================================================", ZenUnit::Color::Red);
+            console.WriteLineColor("Fatal Error: Expected-But-Not-Asserted ZenMocked Function", ZenUnit::Color::Red);
+            console.WriteLineColor("=========================================================", ZenUnit::Color::Red);
+            console.WriteLine(ZenMockedFunctionSignature);
+            console.WriteLine(R"(
+Fix for this: Add one of the following ZenMock assert statements for above expected ZenMocked function:
+CalledOnce(), CalledOnceWith(), CalledNTimes(), CalledNTimesWith(), or CalledAsFollows().
+)");
             const ZenUnit::ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
             const int exitCode = zenUnitArgs.exit0 ? 0 : 1;
             call_exit(exitCode);
