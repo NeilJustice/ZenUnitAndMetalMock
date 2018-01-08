@@ -4,28 +4,28 @@
 namespace ZenMock
 {
    TESTS(ZeroArgumentMockerTests)
-      AFACT(Constructor_SetsFields)
-      AFACT(ExpectAndThrow_ExpectedTrue_Throws)
-      AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
-      AFACT(ZenMockIt_ExpectedFalse_Throws)
-      AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
+   AFACT(Constructor_SetsFields)
+   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
+   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(ZenMockIt_ExpectedFalse_Throws)
+   AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
 
-      FACTS(CalledOnce_SetsAssertedTrue_FunctionWasCalledOnce_DoesNotThrow)
-      AFACT(CalledNTimes_NIsZero_Throws)
-      FACTS(CalledNTimes_SetsAssertedTrue_FunctionWasCalledNTimes_DoesNotThrow)
-      EVIDENCE
+   FACTS(CalledOnce_SetsAssertedTrue_FunctionWasCalledOnce_DoesNotThrow)
+   AFACT(CalledNTimes_NIsZero_Throws)
+   FACTS(CalledNTimes_SetsAssertedTrue_FunctionWasCalledNTimes_DoesNotThrow)
+   EVIDENCE
 
-      using MockerType = ZeroArgumentMocker<ExceptionThrowerMock>;
+   using MockerType = ZeroArgumentMocker<ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;
    string _signature;
 
    STARTUP
    {
       _signature = ZenUnit::Random<string>();
-   _mocker = make_unique<MockerType>(_signature);
+      _mocker = make_unique<MockerType>(_signature);
    }
 
-      TEST(Constructor_SetsFields)
+   TEST(Constructor_SetsFields)
    {
       const MockerType mocker(_signature);
       //
@@ -138,15 +138,9 @@ File.cpp(1))");
       IS_TRUE(_mocker->_asserted);
    }
 
-}; RUNTESTS(ZeroArgumentMockerTests)
-}
+   }; RUNTESTS(ZeroArgumentMockerTests)
 
 
-#include "pch.h"
-#include "ZenUnitTests/ZenMock/Mock/ExceptionThrowerMock.h"
-
-namespace ZenMock
-{
    TESTS(OneArgumentMockerTests)
    AFACT(Constructor_SetsFields)
    AFACT(ExpectAndThrow_ExpectedTrue_Throws)
@@ -171,10 +165,10 @@ namespace ZenMock
    STARTUP
    {
       _functionSignature = ZenUnit::Random<string>();
-   _mocker = make_unique<MockerType>(_functionSignature);
+      _mocker = make_unique<MockerType>(_functionSignature);
    }
 
-      void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
+   void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
    {
       _mocker->_asserted = true;
    }
@@ -421,34 +415,28 @@ File.cpp(1))");
       IS_TRUE(_mocker->_asserted);
    }
 
-}; RUNTESTS(OneArgumentMockerTests)
-}
+   }; RUNTESTS(OneArgumentMockerTests)
 
 
-#include "pch.h"
-#include "ZenUnitTests/ZenMock/Mock/ExceptionThrowerMock.h"
-
-namespace ZenMock
-{
    TESTS(TwoArgumentMockerTests)
-      AFACT(Constructor_SetsFields)
-      AFACT(ExpectAndThrow_ExpectedTrue_Throws)
-      AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
-      AFACT(ZenMockIt_ExpectedFalse_Throws)
-      AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
-      EVIDENCE
+   AFACT(Constructor_SetsFields)
+   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
+   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(ZenMockIt_ExpectedFalse_Throws)
+   AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
+   EVIDENCE
 
-      using MockerType = TwoArgumentMocker<int, int, ExceptionThrowerMock>;
+   using MockerType = TwoArgumentMocker<int, int, ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;
    string _functionSignature;
 
    STARTUP
    {
       _functionSignature = ZenUnit::Random<string>();
-   _mocker = make_unique<MockerType>(_functionSignature);
+      _mocker = make_unique<MockerType>(_functionSignature);
    }
 
-      void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
+   void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
    {
       _mocker->_asserted = true;
    }
@@ -509,34 +497,28 @@ namespace ZenMock
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-}; RUNTESTS(TwoArgumentMockerTests)
-}
+   }; RUNTESTS(TwoArgumentMockerTests)
 
 
-#include "pch.h"
-#include "ZenUnitTests/ZenMock/Mock/ExceptionThrowerMock.h"
-
-namespace ZenMock
-{
    TESTS(ThreeArgumentMockerTests)
-      AFACT(Constructor_SetsFields)
-      AFACT(ExpectAndThrow_ExpectedTrue_Throws)
-      AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
-      AFACT(ZenMockIt_ExpectedFalse_Throws)
-      AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
-      EVIDENCE
+   AFACT(Constructor_SetsFields)
+   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
+   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(ZenMockIt_ExpectedFalse_Throws)
+   AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
+   EVIDENCE
 
-      using MockerType = ThreeArgumentMocker<int, int, int, ExceptionThrowerMock>;
+   using MockerType = ThreeArgumentMocker<int, int, int, ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;
    string _signature;
 
    STARTUP
    {
       _signature = ZenUnit::Random<string>();
-   _mocker = make_unique<MockerType>(_signature);
+      _mocker = make_unique<MockerType>(_signature);
    }
 
-      void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
+   void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
    {
       _mocker->_asserted = true;
    }
@@ -597,34 +579,28 @@ namespace ZenMock
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-}; RUNTESTS(ThreeArgumentMockerTests)
-}
+   }; RUNTESTS(ThreeArgumentMockerTests)
 
 
-#include "pch.h"
-#include "ZenUnitTests/ZenMock/Mock/ExceptionThrowerMock.h"
-
-namespace ZenMock
-{
    TESTS(FourArgumentMockerTests)
-      AFACT(Constructor_SetsFields)
-      AFACT(ExpectAndThrow_ExpectedTrue_Throws)
-      AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
-      AFACT(ZenMockIt_ExpectedFalse_Throws)
-      AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
-      EVIDENCE
+   AFACT(Constructor_SetsFields)
+   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
+   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(ZenMockIt_ExpectedFalse_Throws)
+   AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
+   EVIDENCE
 
-      using MockerType = FourArgumentMocker<int, int, int, int, ExceptionThrowerMock>;
+   using MockerType = FourArgumentMocker<int, int, int, int, ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;
    string _signature;
 
    STARTUP
    {
       _signature = ZenUnit::Random<string>();
-   _mocker = make_unique<MockerType>(_signature);
+      _mocker = make_unique<MockerType>(_signature);
    }
 
-      void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
+   void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
    {
       _mocker->_asserted = true;
    }
@@ -685,34 +661,28 @@ namespace ZenMock
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-}; RUNTESTS(FourArgumentMockerTests)
-}
+   }; RUNTESTS(FourArgumentMockerTests)
 
 
-#include "pch.h"
-#include "ZenUnitTests/ZenMock/Mock/ExceptionThrowerMock.h"
-
-namespace ZenMock
-{
    TESTS(FiveArgumentMockerTests)
-      AFACT(Constructor_SetsFields)
-      AFACT(ExpectAndThrow_ExpectedTrue_Throws)
-      AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
-      AFACT(ZenMockIt_ExpectedFalse_Throws)
-      AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
-      EVIDENCE
+   AFACT(Constructor_SetsFields)
+   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
+   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(ZenMockIt_ExpectedFalse_Throws)
+   AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
+   EVIDENCE
 
-      using MockerType = FiveArgumentMocker<int, int, int, int, int, ExceptionThrowerMock>;
+   using MockerType = FiveArgumentMocker<int, int, int, int, int, ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;
    string _signature;
 
    STARTUP
    {
       _signature = ZenUnit::Random<string>();
-   _mocker = make_unique<MockerType>(_signature);
+      _mocker = make_unique<MockerType>(_signature);
    }
 
-      void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
+   void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
    {
       _mocker->_asserted = true;
    }
@@ -773,34 +743,28 @@ namespace ZenMock
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-}; RUNTESTS(FiveArgumentMockerTests)
-}
+   }; RUNTESTS(FiveArgumentMockerTests)
 
 
-#include "pch.h"
-#include "ZenUnitTests/ZenMock/Mock/ExceptionThrowerMock.h"
-
-namespace ZenMock
-{
    TESTS(SixArgumentMockerTests)
-      AFACT(Constructor_SetsFields)
-      AFACT(ExpectAndThrow_ExpectedTrue_Throws)
-      AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
-      AFACT(ZenMockIt_ExpectedFalse_Throws)
-      AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
-      EVIDENCE
+   AFACT(Constructor_SetsFields)
+   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
+   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(ZenMockIt_ExpectedFalse_Throws)
+   AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
+   EVIDENCE
 
-      using MockerType = SixArgumentMocker<int, int, int, int, int, int, ExceptionThrowerMock>;
+   using MockerType = SixArgumentMocker<int, int, int, int, int, int, ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;
    string _signature;
 
    STARTUP
    {
       _signature = ZenUnit::Random<string>();
-   _mocker = make_unique<MockerType>(_signature);
+      _mocker = make_unique<MockerType>(_signature);
    }
 
-      void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
+   void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
    {
       _mocker->_asserted = true;
    }
@@ -861,34 +825,28 @@ namespace ZenMock
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-}; RUNTESTS(SixArgumentMockerTests)
-}
+   }; RUNTESTS(SixArgumentMockerTests)
 
 
-#include "pch.h"
-#include "ZenUnitTests/ZenMock/Mock/ExceptionThrowerMock.h"
-
-namespace ZenMock
-{
    TESTS(SevenArgumentMockerTests)
-      AFACT(Constructor_SetsFields)
-      AFACT(ExpectAndThrow_ExpectedTrue_Throws)
-      AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
-      AFACT(ZenMockIt_ExpectedFalse_Throws)
-      AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
-      EVIDENCE
+   AFACT(Constructor_SetsFields)
+   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
+   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(ZenMockIt_ExpectedFalse_Throws)
+   AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
+   EVIDENCE
 
-      using MockerType = SevenArgumentMocker<int, int, int, int, int, int, int, ExceptionThrowerMock>;
+   using MockerType = SevenArgumentMocker<int, int, int, int, int, int, int, ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;
    string _signature;
 
    STARTUP
    {
       _signature = ZenUnit::Random<string>();
-   _mocker = make_unique<MockerType>(_signature);
+      _mocker = make_unique<MockerType>(_signature);
    }
 
-      void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
+   void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
    {
       _mocker->_asserted = true;
    }
@@ -949,34 +907,28 @@ namespace ZenMock
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-}; RUNTESTS(SevenArgumentMockerTests)
-}
+   }; RUNTESTS(SevenArgumentMockerTests)
 
 
-#include "pch.h"
-#include "ZenUnitTests/ZenMock/Mock/ExceptionThrowerMock.h"
-
-namespace ZenMock
-{
    TESTS(EightArgumentMockerTests)
-      AFACT(Constructor_SetsFields)
-      AFACT(ExpectAndThrow_ExpectedTrue_Throws)
-      AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
-      AFACT(ZenMockIt_ExpectedFalse_Throws)
-      AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
-      EVIDENCE
+   AFACT(Constructor_SetsFields)
+   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
+   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(ZenMockIt_ExpectedFalse_Throws)
+   AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
+   EVIDENCE
 
-      using MockerType = EightArgumentMocker<int, int, int, int, int, int, int, int, ExceptionThrowerMock>;
+   using MockerType = EightArgumentMocker<int, int, int, int, int, int, int, int, ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;
    string _signature;
 
    STARTUP
    {
       _signature = ZenUnit::Random<string>();
-   _mocker = make_unique<MockerType>(_signature);
+      _mocker = make_unique<MockerType>(_signature);
    }
 
-      void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
+   void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
    {
       _mocker->_asserted = true;
    }
@@ -1037,34 +989,28 @@ namespace ZenMock
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-}; RUNTESTS(EightArgumentMockerTests)
-}
+   }; RUNTESTS(EightArgumentMockerTests)
 
 
-#include "pch.h"
-#include "ZenUnitTests/ZenMock/Mock/ExceptionThrowerMock.h"
-
-namespace ZenMock
-{
    TESTS(NineArgumentMockerTests)
-      AFACT(Constructor_SetsFields)
-      AFACT(ExpectAndThrow_ExpectedTrue_Throws)
-      AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
-      AFACT(ZenMockIt_ExpectedFalse_Throws)
-      AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
-      EVIDENCE
+   AFACT(Constructor_SetsFields)
+   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
+   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(ZenMockIt_ExpectedFalse_Throws)
+   AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
+   EVIDENCE
 
-      using MockerType = NineArgumentMocker<int, int, int, int, int, int, int, int, int, ExceptionThrowerMock>;
+   using MockerType = NineArgumentMocker<int, int, int, int, int, int, int, int, int, ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;
    string _signature;
 
    STARTUP
    {
       _signature = ZenUnit::Random<string>();
-   _mocker = make_unique<MockerType>(_signature);
+      _mocker = make_unique<MockerType>(_signature);
    }
 
-      void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
+   void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
    {
       _mocker->_asserted = true;
    }
@@ -1125,34 +1071,28 @@ namespace ZenMock
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-}; RUNTESTS(NineArgumentMockerTests)
-}
+   }; RUNTESTS(NineArgumentMockerTests)
 
 
-#include "pch.h"
-#include "ZenUnitTests/ZenMock/Mock/ExceptionThrowerMock.h"
-
-namespace ZenMock
-{
    TESTS(TenArgumentMockerTests)
-      AFACT(Constructor_SetsFields)
-      AFACT(ExpectAndThrow_ExpectedTrue_Throws)
-      AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
-      AFACT(ZenMockIt_ExpectedFalse_Throws)
-      AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
-      EVIDENCE
+   AFACT(Constructor_SetsFields)
+   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
+   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(ZenMockIt_ExpectedFalse_Throws)
+   AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
+   EVIDENCE
 
-      using MockerType = TenArgumentMocker<int, int, int, int, int, int, int, int, int, int, ExceptionThrowerMock>;
+   using MockerType = TenArgumentMocker<int, int, int, int, int, int, int, int, int, int, ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;
    string _functionSignature;
 
    STARTUP
    {
       _functionSignature = ZenUnit::Random<string>();
-   _mocker = make_unique<MockerType>(_functionSignature);
+      _mocker = make_unique<MockerType>(_functionSignature);
    }
 
-      void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
+   void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
    {
       _mocker->_asserted = true;
    }
@@ -1213,5 +1153,5 @@ namespace ZenMock
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-}; RUNTESTS(TenArgumentMockerTests)
+   }; RUNTESTS(TenArgumentMockerTests)
 }

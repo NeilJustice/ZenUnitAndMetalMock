@@ -32,24 +32,24 @@ struct CustomException
 namespace ZenMock
 {
    TESTS(ZenMockerTests)
-      AFACT(Constructor_SetsFields)
-      AFACT(ExpectAndThrow_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue_ThrowsIfCalledTwice_runtime_error_testcase)
-      AFACT(ExpectAndThrow_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue_ThrowsIfCalledTwice_CustomException_testcase)
-      AFACT(ZenMockSetAsserted_SetsAssertedTrue_CallableTwice)
-      AFACT(ZenMockThrowIfNotExpected_ExpectedTrue_DoesNotThrow)
-      AFACT(ZenMockThrowIfNotExpected_ExpectedFalse_Throws)
-      AFACT(ZenMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCalls0_Throws)
-      FACTS(ZenMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCallsGreaterThan0_DoesNotThrow)
-      AFACT(ZenMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSize0_Throws)
-      FACTS(ZenMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSizeGreaterThan0_DoesNotThrow)
-      AFACT(ZenMockThrowIfExceptionSet_CallsExceptionThrowerZenMockThrowIfExceptionSet)
-      FACTS(ZenMockExitIfExpectedButNotAsserted_ExpectedFalse_DoesNothing)
-      FACTS(ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedTrue_DoesNothing)
-      FACTS(ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedFalse_ZenMockExceptionIsInFlightFalse_WritesError_Exits1)
-      AFACT(ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedFalse_ZenMockExceptionIsInFlightTrue_DoesNothing)
-      EVIDENCE
+   AFACT(Constructor_SetsFields)
+   AFACT(ExpectAndThrow_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue_ThrowsIfCalledTwice_runtime_error_testcase)
+   AFACT(ExpectAndThrow_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue_ThrowsIfCalledTwice_CustomException_testcase)
+   AFACT(ZenMockSetAsserted_SetsAssertedTrue_CallableTwice)
+   AFACT(ZenMockThrowIfNotExpected_ExpectedTrue_DoesNotThrow)
+   AFACT(ZenMockThrowIfNotExpected_ExpectedFalse_Throws)
+   AFACT(ZenMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCalls0_Throws)
+   FACTS(ZenMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCallsGreaterThan0_DoesNotThrow)
+   AFACT(ZenMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSize0_Throws)
+   FACTS(ZenMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSizeGreaterThan0_DoesNotThrow)
+   AFACT(ZenMockThrowIfExceptionSet_CallsExceptionThrowerZenMockThrowIfExceptionSet)
+   FACTS(ZenMockExitIfExpectedButNotAsserted_ExpectedFalse_DoesNothing)
+   FACTS(ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedTrue_DoesNothing)
+   FACTS(ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedFalse_ZenMockExceptionIsInFlightFalse_WritesError_Exits1)
+   AFACT(ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedFalse_ZenMockExceptionIsInFlightTrue_DoesNothing)
+   EVIDENCE
 
-      unique_ptr<ZenMocker<ExceptionThrowerMock>> _zenMocker;
+   unique_ptr<ZenMocker<ExceptionThrowerMock>> _zenMocker;
    ZENMOCK_VOID1_FREE(exit, int)
       ZENMOCK_NONVOID0_STATIC(const ZenUnit::ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
       const string ZenMockedFunctionSignature = "virtual void ClassName::FunctionName() const";
@@ -57,11 +57,11 @@ namespace ZenMock
    STARTUP
    {
       _zenMocker = make_unique<ZenMocker<ExceptionThrowerMock>>(ZenMockedFunctionSignature);
-   _zenMocker->call_exit = ZENMOCK_BIND1(exit_ZenMock);
-   _zenMocker->call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
+      _zenMocker->call_exit = ZENMOCK_BIND1(exit_ZenMock);
+      _zenMocker->call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
    }
 
-      TEST(Constructor_SetsFields)
+   TEST(Constructor_SetsFields)
    {
       const ZenMocker<ExceptionThrower> zenMocker(ZenMockedFunctionSignature);
       //
