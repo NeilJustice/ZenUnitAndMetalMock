@@ -6,26 +6,26 @@
 namespace ZenUnit
 {
    TESTS(ArgsParserTests)
-      AFACT(DefaultConstructor_NewsCompnents_SetsStringToUnsignedFunction)
-      AFACT(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
-      FACTS(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1)
-      FACTS(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1)
-      FACTS(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0)
-      AFACT(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
-      FACTS(Parse_MinimalistOrDetailed_ReturnsExpectedZenUnitArgs)
-      AFACT(Parse_Run_ReturnsExpectedZenUnitArgs)
-      AFACT(Parse_Random_SetsRandomToTrue)
-      AFACT(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
-      AFACT(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
-      FACTS(Parse_EqualsSignContainingArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1)
-      AFACT(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
-      AFACT(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
-      AFACT(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
-      FACTS(Parse_RandomEqualsArg_ValidUnsignedValue_DowncastsValueToUnsignedShort_ReturnsExpectedZenUnitArgs)
-      AFACT(Parse_UnrecognizedEqualsSignArgName_PrintsUsageAndExits1)
-      EVIDENCE
+   AFACT(DefaultConstructor_NewsCompnents_SetsStringToUnsignedFunction)
+   AFACT(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
+   FACTS(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1)
+   FACTS(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1)
+   FACTS(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0)
+   AFACT(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
+   FACTS(Parse_MinimalistOrDetailed_ReturnsExpectedZenUnitArgs)
+   AFACT(Parse_Run_ReturnsExpectedZenUnitArgs)
+   AFACT(Parse_Random_SetsRandomToTrue)
+   AFACT(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
+   AFACT(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
+   FACTS(Parse_EqualsSignContainingArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1)
+   AFACT(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
+   AFACT(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
+   AFACT(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
+   FACTS(Parse_RandomEqualsArg_ValidUnsignedValue_DowncastsValueToUnsignedShort_ReturnsExpectedZenUnitArgs)
+   AFACT(Parse_UnrecognizedEqualsSignArgName_PrintsUsageAndExits1)
+   EVIDENCE
 
-      const string TestProgramPath = Random<string>();
+   const string TestProgramPath = Random<string>();
    const string ExpectedUsage = R"(ZenUnit v0.1.0
 Usage: <TestsBinaryName> [Options...]
 
@@ -359,16 +359,16 @@ None
 namespace ZenUnit
 {
    TESTS(RunFilterParserTests)
-      AFACT(DefaultConstructor_NewsTransformer)
-      AFACT(Parse_TransformsRunFilterStringsToRunFilters)
-      FACTS(ParseRunFilterString_JustTestClassName_ReturnsExpectedRunFilter)
-      FACTS(ParseRunFilterString_TestClassNameDotTestName_ReturnsExpectedRunFilter)
-      FACTS(ParseRunFilterString_RunFilterStringContainsMoreThanOnePeriod_Throws)
-      FACTS(ParseRunFilterString_TestClassNameAndTestNameAndTestCaseNumber_ReturnsExpectedRunFilter)
-      FACTS(ParseRunFilterString_RunFilterStringContainsMoreThanOneSlash_Throws)
-      EVIDENCE
+   AFACT(DefaultConstructor_NewsTransformer)
+   AFACT(Parse_TransformsRunFilterStringsToRunFilters)
+   FACTS(ParseRunFilterString_JustTestClassName_ReturnsExpectedRunFilter)
+   FACTS(ParseRunFilterString_TestClassNameDotTestName_ReturnsExpectedRunFilter)
+   FACTS(ParseRunFilterString_RunFilterStringContainsMoreThanOnePeriod_Throws)
+   FACTS(ParseRunFilterString_TestClassNameAndTestNameAndTestCaseNumber_ReturnsExpectedRunFilter)
+   FACTS(ParseRunFilterString_RunFilterStringContainsMoreThanOneSlash_Throws)
+   EVIDENCE
 
-      RunFilterParser _runFilterParser;
+   RunFilterParser _runFilterParser;
    TransformerMock<string, RunFilter>* _transformerMock = nullptr;
 
    STARTUP
@@ -489,11 +489,11 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
 namespace ZenUnit
 {
    TESTS(ZenUnitArgsTests)
-      AFACT(DefaultConstructor_SetsFieldsToDefaults)
-      AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-      EVIDENCE
+   AFACT(DefaultConstructor_SetsFieldsToDefaults)
+   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+   EVIDENCE
 
-      TEST(DefaultConstructor_SetsFieldsToDefaults)
+   TEST(DefaultConstructor_SetsFieldsToDefaults)
    {
       ZenUnitArgs zenUnitArgs;
       ARE_EQUAL("", zenUnitArgs.commandLine);

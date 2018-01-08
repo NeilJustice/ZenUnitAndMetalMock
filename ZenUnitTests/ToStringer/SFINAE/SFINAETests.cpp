@@ -7,11 +7,11 @@
 namespace ZenUnit
 {
    TESTS(has_ostream_left_shiftTests)
-      AFACT(value_IsFalseIfFreeFunctionOStreamInsertionOperatorNotDefinedForType)
-      AFACT(value_IsTrueIfFreeFunctionOStreamInsertionOperatorIsDefinedForType)
-      EVIDENCE
+   AFACT(value_IsFalseIfFreeFunctionOStreamInsertionOperatorNotDefinedForType)
+   AFACT(value_IsTrueIfFreeFunctionOStreamInsertionOperatorIsDefinedForType)
+   EVIDENCE
 
-      TEST(value_IsFalseIfFreeFunctionOStreamInsertionOperatorNotDefinedForType)
+   TEST(value_IsFalseIfFreeFunctionOStreamInsertionOperatorNotDefinedForType)
    {
       IS_FALSE(has_ostream_left_shift<vector<int>>::value);
       IS_FALSE(has_ostream_left_shift<UserTypeNonPrintable>::value);
@@ -53,11 +53,11 @@ namespace ZenUnit
 namespace ZenUnit
 {
    TESTS(has_to_stringTests)
-      AFACT(HasStdToString_ValueIsTrue)
-      AFACT(DoesNotHaveStdToSTring_ValueIsFalse)
-      EVIDENCE
+   AFACT(HasStdToString_ValueIsTrue)
+   AFACT(DoesNotHaveStdToSTring_ValueIsFalse)
+   EVIDENCE
 
-      TEST(HasStdToString_ValueIsTrue)
+   TEST(HasStdToString_ValueIsTrue)
    {
       IS_TRUE(has_to_string<char>::value);
       IS_TRUE(has_to_string<int>::value);
@@ -114,11 +114,11 @@ namespace ZenUnit
 namespace ZenUnit
 {
    TESTS(has_ZenUnitPrinterTests)
-      AFACT(value_FalseIfZenUnitPrinterNotDefinedForType)
-      AFACT(value_TrueIfZenUnitPrinterIsDefinedForType)
-      EVIDENCE
+   AFACT(value_FalseIfZenUnitPrinterNotDefinedForType)
+   AFACT(value_TrueIfZenUnitPrinterIsDefinedForType)
+   EVIDENCE
 
-      TEST(value_FalseIfZenUnitPrinterNotDefinedForType)
+   TEST(value_FalseIfZenUnitPrinterNotDefinedForType)
    {
       IS_FALSE(has_ZenUnitPrinter<int>::value);
       IS_FALSE(has_ZenUnitPrinter<string>::value);

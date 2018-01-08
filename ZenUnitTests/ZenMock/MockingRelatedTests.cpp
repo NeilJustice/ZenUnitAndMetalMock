@@ -279,11 +279,11 @@ namespace ZenMock
 namespace ZenMock
 {
    TESTS(ZENTests)
-      AFACT(ZENWrappedAssertionDoesNotThrow_NothingHappens)
-      AFACT(ZENWrappedAssertionThrows_RethrowsZENWrappedAnomaly)
-      EVIDENCE
+   AFACT(ZENWrappedAssertionDoesNotThrow_NothingHappens)
+   AFACT(ZENWrappedAssertionThrows_RethrowsZENWrappedAnomaly)
+   EVIDENCE
 
-      TEST(ZENWrappedAssertionDoesNotThrow_NothingHappens)
+   TEST(ZENWrappedAssertionDoesNotThrow_NothingHappens)
    {
       ConsoleMock consoleMock;
       consoleMock.WriteLineMock.Expect();

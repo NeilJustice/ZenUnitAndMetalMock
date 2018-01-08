@@ -6,16 +6,16 @@
 namespace ZenUnit
 {
    TESTS(MachineNameGetterTests)
-      AFACT(Constructor_SetsGetHostNameOrGetComputerNameFunctions)
-      AFACT(GetMachineName_ReturnsEitherCallToGetLinuxOrGetWindowsMachineName)
+   AFACT(Constructor_SetsGetHostNameOrGetComputerNameFunctions)
+   AFACT(GetMachineName_ReturnsEitherCallToGetLinuxOrGetWindowsMachineName)
 #if defined __linux__
-      AFACT(GetLinuxMachineName_ReturnsResultOfgethostname)
+   AFACT(GetLinuxMachineName_ReturnsResultOfgethostname)
 #elif _WIN32
-      AFACT(GetWindowsMachineName_ReturnsResultOfGetComputerName)
+   AFACT(GetWindowsMachineName_ReturnsResultOfGetComputerName)
 #endif
-      EVIDENCE
+   EVIDENCE
 
-      TEST(Constructor_SetsGetHostNameOrGetComputerNameFunctions)
+   TEST(Constructor_SetsGetHostNameOrGetComputerNameFunctions)
    {
       MachineNameGetter machineNameGetter;
 #if defined __linux__
@@ -100,20 +100,20 @@ namespace ZenUnit
 namespace ZenUnit
 {
    TESTS(MultiTestClassRunnerTests)
-      AFACT(Constructor_NewsComponents)
-      AFACT(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
-      AFACT(AddTestClassRunner_EmplacesBackTestClassRunner_MakesNumberOfTestClassesToBeRunReturnAnIncreasingNumber)
-      AFACT(ApplyRunFiltersIfAny_RunFiltersEmpty_DoesNothing)
-      AFACT(ApplyRunFiltersIfAny_RunFiltersNotEmpty_ResetsWithNoOpTestClassesThoseTestClassesThatMatchRunFilters)
-      AFACT(ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter_TestClassNameMatchesAtLeastOneRunFilter_DoesNotResetTestClassRunnerWithNoOp)
-      AFACT(ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter_TestClassNameDoesNotMatchAnyRunFilter_ResetsTestClassRunnerWithNoOp)
-      FACTS(TestClassMatchesRunFilter_ReturnsTrueIfTestClassNameCaseInsensitiveEqualsRunFilter)
-      AFACT(RunTestClasses_NonRandomMode_SortsTestClassRunnersByName_RunsTestClassesSequentially_ReturnsTestClassResults)
-      FACTS(RunTestClasses_RandomMode_SetsRandomSeedIfNotSetByUser_RunsTestClassesRandomly_ReturnsTestClassResults)
-      AFACT(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)
-      EVIDENCE
+   AFACT(Constructor_NewsComponents)
+   AFACT(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
+   AFACT(AddTestClassRunner_EmplacesBackTestClassRunner_MakesNumberOfTestClassesToBeRunReturnAnIncreasingNumber)
+   AFACT(ApplyRunFiltersIfAny_RunFiltersEmpty_DoesNothing)
+   AFACT(ApplyRunFiltersIfAny_RunFiltersNotEmpty_ResetsWithNoOpTestClassesThoseTestClassesThatMatchRunFilters)
+   AFACT(ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter_TestClassNameMatchesAtLeastOneRunFilter_DoesNotResetTestClassRunnerWithNoOp)
+   AFACT(ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter_TestClassNameDoesNotMatchAnyRunFilter_ResetsTestClassRunnerWithNoOp)
+   FACTS(TestClassMatchesRunFilter_ReturnsTrueIfTestClassNameCaseInsensitiveEqualsRunFilter)
+   AFACT(RunTestClasses_NonRandomMode_SortsTestClassRunnersByName_RunsTestClassesSequentially_ReturnsTestClassResults)
+   FACTS(RunTestClasses_RandomMode_SetsRandomSeedIfNotSetByUser_RunsTestClassesRandomly_ReturnsTestClassResults)
+   AFACT(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)
+   EVIDENCE
 
-      MultiTestClassRunner _multiTestClassRunner;
+   MultiTestClassRunner _multiTestClassRunner;
 
    using ExtraArgMemberForEacherMockType = ExtraArgMemberForEacherMock<
       std::unique_ptr<TestClassRunner>,
@@ -407,13 +407,13 @@ TEST(HasTestNameThatCaseInsensitiveMatchesPattern_ReturnsFalse)
 namespace ZenUnit
 {
    TESTS(PreamblePrinterTests)
-      AFACT(Constructor_NewsConsoleAndWatch)
-      AFACT(PrintOpeningThreeLines_PrintsCommandLineAndTimeZoneAndTestAndTestClassCounts)
-      FACTS(MakeThirdLinePrefix_ReturnsNumberOfTestClassesBeingRunAndMachineName)
-      FACTS(MakeThirdLineSuffix_ReturnsRandomSeedIfRandomModeOtherwiseEmptyString)
-      EVIDENCE
+   AFACT(Constructor_NewsConsoleAndWatch)
+   AFACT(PrintOpeningThreeLines_PrintsCommandLineAndTimeZoneAndTestAndTestClassCounts)
+   FACTS(MakeThirdLinePrefix_ReturnsNumberOfTestClassesBeingRunAndMachineName)
+   FACTS(MakeThirdLineSuffix_ReturnsRandomSeedIfRandomModeOtherwiseEmptyString)
+   EVIDENCE
 
-      struct PreamblePrinterSelfMocked : public Zen::Mock<PreamblePrinter>
+   struct PreamblePrinterSelfMocked : public Zen::Mock<PreamblePrinter>
    {
       const ConsoleMock* consoleMock;
       const WatchMock* watchMock;
@@ -522,22 +522,22 @@ namespace ZenUnit
 namespace ZenUnit
 {
    TESTS(SpecificTestClassRunnerTests)
-      AFACT(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
-      AFACT(TestClassName_ReturnsTestClassName)
-      AFACT(HasTestNameThatCaseInsensitiveMatchesPattern_ZeroTests_ReturnsFalse)
-      AFACT(HasTestNameThatCaseInsensitiveMatchesPattern_OneNonMatchingTest_ReturnsFalse)
-      FACTS(HasTestNameThatCaseInsensitiveMatchesPattern_OneMatchingTest_ReturnsTrue)
-      AFACT(HasTestNameThatCaseInsensitiveMatchesPattern_FourTestsWhereThirdOneMatches_DoesNotCallFourthTestName_ReturnsTrue)
-      AFACT(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
-      FACTS(RunTests_PrintsTestClassNameAndNumberOfNamedTests_CallsDoRunTests_PrintsTestClassResultLine_MoveReturnsTestClassResult)
-      FACTS(DoRunTests_RandomlyRunsTestsIfRandomOtherwiseSequentiallyRunsTests)
-      FACTS(NonMinimalPrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVerticalBarNumberOfTests)
-      FACTS(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewDeleteTest_AddsResultToResults_ReturnsTrueIfNewableAndDeletable)
-      AFACT(RunTest_NonMinimalWritesVerticalBarTestName_RunsTest_AddsTestResultsToTestClassResult_NonMinimalWriteTestOutcome)
-      AFACT(NonMinimalPrintResultLine_CallsTestClassResultPrintResultLine)
-      EVIDENCE
+   AFACT(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
+   AFACT(TestClassName_ReturnsTestClassName)
+   AFACT(HasTestNameThatCaseInsensitiveMatchesPattern_ZeroTests_ReturnsFalse)
+   AFACT(HasTestNameThatCaseInsensitiveMatchesPattern_OneNonMatchingTest_ReturnsFalse)
+   FACTS(HasTestNameThatCaseInsensitiveMatchesPattern_OneMatchingTest_ReturnsTrue)
+   AFACT(HasTestNameThatCaseInsensitiveMatchesPattern_FourTestsWhereThirdOneMatches_DoesNotCallFourthTestName_ReturnsTrue)
+   AFACT(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
+   FACTS(RunTests_PrintsTestClassNameAndNumberOfNamedTests_CallsDoRunTests_PrintsTestClassResultLine_MoveReturnsTestClassResult)
+   FACTS(DoRunTests_RandomlyRunsTestsIfRandomOtherwiseSequentiallyRunsTests)
+   FACTS(NonMinimalPrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVerticalBarNumberOfTests)
+   FACTS(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewDeleteTest_AddsResultToResults_ReturnsTrueIfNewableAndDeletable)
+   AFACT(RunTest_NonMinimalWritesVerticalBarTestName_RunsTest_AddsTestResultsToTestClassResult_NonMinimalWriteTestOutcome)
+   AFACT(NonMinimalPrintResultLine_CallsTestClassResultPrintResultLine)
+   EVIDENCE
 
-      class TestingTestClass
+   class TestingTestClass
    {
    public:
       static vector<unique_ptr<Test>> GetTests(const char*)
@@ -973,20 +973,20 @@ namespace ZenUnit
 namespace ZenUnit
 {
    TESTS(TestRunnerTests)
-      AFACT(Constructor_NewsComponents)
-      AFACT(AddTestClassRunner_EmplacesBackTestClassRunner)
-      AFACT(SkipTest_CallsTestRunResultAddSkippedFullTestName)
-      AFACT(SkipTestClass_CallsTestRunResultAddSkippedTestClassNameAndReason)
-      FACTS(ParseArgsRunTestClassesPrintResults_ParsesArgs_RunsTestClassesTimesNumberOfTimes_Returns0IfAllTestRunsPassOtherwiseReturns1)
-      AFACT(WaitForEnterKeyIfPauseMode_PauseModeFalse_DoesNothing_ReturnsFalse)
-      AFACT(WaitForEnterKeyIfPauseMode_PauseModeTrue_HavePausedTrue_DoesNothing_ReturnsTrue)
-      AFACT(WaitForEnterKeyIfPauseMode_PauseModeTrueHavePausedFalse_WritesMessageAndWaitsForEnterKey_ReturnsTrue)
-      //FACTS(RunTestClassesAndPrintResults_RunsTestsAndPrintsResults_Returns0IfAllTestsPassedOtherwiseReturns1)
-      AFACT(RunTestClasses_RunsTestClasses)
-      //FACTS(RunTestClassesWithWaitableRunnerThread_SpawnsThreadToCallRunTestClasses_PrintsResultsAndExits1IfThreadTimesOut)
-      EVIDENCE
+   AFACT(Constructor_NewsComponents)
+   AFACT(AddTestClassRunner_EmplacesBackTestClassRunner)
+   AFACT(SkipTest_CallsTestRunResultAddSkippedFullTestName)
+   AFACT(SkipTestClass_CallsTestRunResultAddSkippedTestClassNameAndReason)
+   FACTS(ParseArgsRunTestClassesPrintResults_ParsesArgs_RunsTestClassesTimesNumberOfTimes_Returns0IfAllTestRunsPassOtherwiseReturns1)
+   AFACT(WaitForEnterKeyIfPauseMode_PauseModeFalse_DoesNothing_ReturnsFalse)
+   AFACT(WaitForEnterKeyIfPauseMode_PauseModeTrue_HavePausedTrue_DoesNothing_ReturnsTrue)
+   AFACT(WaitForEnterKeyIfPauseMode_PauseModeTrueHavePausedFalse_WritesMessageAndWaitsForEnterKey_ReturnsTrue)
+   //FACTS(RunTestClassesAndPrintResults_RunsTestsAndPrintsResults_Returns0IfAllTestsPassedOtherwiseReturns1)
+   AFACT(RunTestClasses_RunsTestClasses)
+   //FACTS(RunTestClassesWithWaitableRunnerThread_SpawnsThreadToCallRunTestClasses_PrintsResultsAndExits1IfThreadTimesOut)
+   EVIDENCE
 
-      TestRunner _testRunner;
+   TestRunner _testRunner;
    ConsoleMock* _consoleMock = nullptr;
    PreamblePrinterMock* _preamblePrinterMock = nullptr;
    //FuturistMock<TestRunner>* _futuristMock;

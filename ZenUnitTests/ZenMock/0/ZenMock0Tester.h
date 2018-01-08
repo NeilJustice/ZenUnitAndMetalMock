@@ -318,29 +318,29 @@ namespace ZenMock
    };
 
    TESTS(ZenMock_NonVoid0Tests)
-      // ZeroArgumentMocker Tests
-      AFACT(ExpectAndThrow_CalledTwice_Throws)
-      AFACT(FunctionNotCalled_CalledAsFollowsWithN0_Throws)
-      AFACT(FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows)
-      AFACT(Function_NotExpected_Throws)
-      AFACT(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)
-      // Value Return Tests
-      AFACT(ExpectAndReturn_CausesFunctionToReturnValue)
-      AFACT(ExpectAndReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
-      AFACT(ExpectAndReturnValuesVector_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
-      EVIDENCE
+   // ZeroArgumentMocker Tests
+   AFACT(ExpectAndThrow_CalledTwice_Throws)
+   AFACT(FunctionNotCalled_CalledAsFollowsWithN0_Throws)
+   AFACT(FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows)
+   AFACT(Function_NotExpected_Throws)
+   AFACT(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)
+   // Value Return Tests
+   AFACT(ExpectAndReturn_CausesFunctionToReturnValue)
+   AFACT(ExpectAndReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
+   AFACT(ExpectAndReturnValuesVector_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
+   EVIDENCE
 
-      NonVoid0FunctionsMock _mock;
+   NonVoid0FunctionsMock _mock;
    ZENMOCK_NONVOID0_FREE(int, NonVoid0Function)
-      ZENMOCK_NONVOID0_STATIC(int, ZenMock, NonVoid0Function, _namespace)
-      ZENMOCK_NONVOID0_STATIC(int, ZenMock::NonVoid0StaticFunctions, NonVoid0Function, _static)
-      ZENMOCK_NONVOID0_STATIC(int, ZenMock::NonVoid0StaticFunctions, StaticFunction)
-      unique_ptr<ZenMock0Tester<
-      NonVoid0FunctionsMock,
-      decltype(NonVoid0Function_ZenMock),
-      decltype(NonVoid0Function_ZenMock_namespace),
-      decltype(NonVoid0Function_ZenMock_static),
-      decltype(StaticFunction_ZenMock)>> _zenMock0Tester;
+   ZENMOCK_NONVOID0_STATIC(int, ZenMock, NonVoid0Function, _namespace)
+   ZENMOCK_NONVOID0_STATIC(int, ZenMock::NonVoid0StaticFunctions, NonVoid0Function, _static)
+   ZENMOCK_NONVOID0_STATIC(int, ZenMock::NonVoid0StaticFunctions, StaticFunction)
+   unique_ptr<ZenMock0Tester<
+   NonVoid0FunctionsMock,
+   decltype(NonVoid0Function_ZenMock),
+   decltype(NonVoid0Function_ZenMock_namespace),
+   decltype(NonVoid0Function_ZenMock_static),
+   decltype(StaticFunction_ZenMock)>> _zenMock0Tester;
 
    const string VirtualSignature =
       "virtual int ZenMock::NonVoid0Functions::Virtual()";

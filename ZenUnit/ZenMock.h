@@ -118,7 +118,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
       static std::string MakeWhat(const std::string& zenMockedFunctionSignature, ArgTypes&&... args)
       {
          std::ostringstream whatBuilder;
-         whatBuilder << "Unexpected call to ZenMocked function\n\"" << zenMockedFunctionSignature << "\"";
+         whatBuilder << "Unexpected call to ZenMocked function:\n" << zenMockedFunctionSignature;
          AppendToStringedArgs(whatBuilder, 0, std::forward<ArgTypes>(args)...);
          const std::string what = whatBuilder.str();
          return what;

@@ -65,14 +65,14 @@ namespace ZenUnit
 namespace ZenUnit
 {
    TESTS(NewDeleteTestTests)
-      AFACT(Constructor_NewsComponents)
-      AFACT(NumberOfTestCases_Returns1)
-      FACTS(Run_CallsNewTestClassWhichFails_DoesNotCallDeleteTestClass_ReturnsConstructorFailTestResult)
-      AFACT(Run_CallsNewTestClassWhichSucceeds_CallsDeleteTestClass_ReturnsCtorDtorSuccessTestResult)
-      AFACT(NewAndDeleteTestClass_NewsAndDeleteFirstInstanceOfTestClass)
-      EVIDENCE
+   AFACT(Constructor_NewsComponents)
+   AFACT(NumberOfTestCases_Returns1)
+   FACTS(Run_CallsNewTestClassWhichFails_DoesNotCallDeleteTestClass_ReturnsConstructorFailTestResult)
+   AFACT(Run_CallsNewTestClassWhichSucceeds_CallsDeleteTestClass_ReturnsCtorDtorSuccessTestResult)
+   AFACT(NewAndDeleteTestClass_NewsAndDeleteFirstInstanceOfTestClass)
+   EVIDENCE
 
-      class TestingTestClass {};
+   class TestingTestClass {};
    unique_ptr<NewDeleteTest<TestingTestClass>> _newDeleteTest;
    TryCatchCallerMock* _tryCatchCallerMock = nullptr;
    TestResultFactoryMock* _testResultFactoryMock = nullptr;
@@ -172,18 +172,18 @@ namespace ZenUnit
 namespace ZenUnit
 {
    TESTS(NormalTestTests)
-      AFACT(NumberOfTestCases_Returns1)
-      AFACT(NonMinimalWritePostTestNameMessage_WritesSpaceArrowSpace)
-      AFACT(NonMinimalWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue)
-      AFACT(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)
-      AFACT(NewTestClass_NewsTestClass)
-      AFACT(Startup_CallsStartupOnTestClass)
-      AFACT(TestBody_CallsMemberTestFunctionBoundToTestClassPointer)
-      AFACT(Cleanup_CallsCleanupOnTestClass)
-      AFACT(DeleteTestClass_DeletesTestClass)
-      EVIDENCE
+   AFACT(NumberOfTestCases_Returns1)
+   AFACT(NonMinimalWritePostTestNameMessage_WritesSpaceArrowSpace)
+   AFACT(NonMinimalWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue)
+   AFACT(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)
+   AFACT(NewTestClass_NewsTestClass)
+   AFACT(Startup_CallsStartupOnTestClass)
+   AFACT(TestBody_CallsMemberTestFunctionBoundToTestClassPointer)
+   AFACT(Cleanup_CallsCleanupOnTestClass)
+   AFACT(DeleteTestClass_DeletesTestClass)
+   EVIDENCE
 
-      unique_ptr<NormalTest<TestingTestClass>> _normalTest;
+   unique_ptr<NormalTest<TestingTestClass>> _normalTest;
    const string TestClassName = Random<string>();
    const string TestName = Random<string>();
 
@@ -312,15 +312,15 @@ unique_ptr<Test> TestingTestClass_SpecSectionTestNXNTests::TestNXNPmfToTestRetur
 namespace ZenUnit
 {
    TESTS(SpecSectionTestNXNTests)
-      AFACT(ThreeArgConstructor_SetsTestName_SetsTestNXNPmf)
-      FACTS(NumberOfTestCases_GetsTestFromAddress_ReturnsTestNumberOfTestCases)
-      FACTS(NonMinimalWritePostTestNameMessage_WritesEllipsisIfPrintModeNotMinimal)
-      AFACT(Run_GetsTestFromAddress_RunsTest_ReturnsTestResults)
-      AFACT(PmfTokenToTest_ReturnsTestClassTypeTestNXNPmfToTestReturnValue);
+   AFACT(ThreeArgConstructor_SetsTestName_SetsTestNXNPmf)
+   FACTS(NumberOfTestCases_GetsTestFromAddress_ReturnsTestNumberOfTestCases)
+   FACTS(NonMinimalWritePostTestNameMessage_WritesEllipsisIfPrintModeNotMinimal)
+   AFACT(Run_GetsTestFromAddress_RunsTest_ReturnsTestResults)
+   AFACT(PmfTokenToTest_ReturnsTestClassTypeTestNXNPmfToTestReturnValue);
    AFACT(TestFunction_CodeCoverage)
-      EVIDENCE
+   EVIDENCE
 
-      class SpecSectionTestNXNSelfMocked : public Zen::Mock<SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests>>
+   class SpecSectionTestNXNSelfMocked : public Zen::Mock<SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests>>
    {
    public:
       SpecSectionTestNXNSelfMocked()
@@ -442,13 +442,13 @@ bool TestingDerivedTestClassType::s_allNXNTestsRegistered = false;
 namespace ZenUnit
 {
    TESTS(TestClassTests)
-      AFACT(DefaultConstructor_DoesNotThrow)
-      AFACT(Startup_DoesNotThrow)
-      AFACT(Cleanup_DoesNotThrow)
-      AFACT(Destructor_SetsDerviedTestClassTypeAllTestCasesRegisteredToTrue)
-      EVIDENCE
+   AFACT(DefaultConstructor_DoesNotThrow)
+   AFACT(Startup_DoesNotThrow)
+   AFACT(Cleanup_DoesNotThrow)
+   AFACT(Destructor_SetsDerviedTestClassTypeAllTestCasesRegisteredToTrue)
+   EVIDENCE
 
-      TestClass _testClass;
+   TestClass _testClass;
 
    CLEANUP
    {
@@ -788,21 +788,21 @@ TEST10X10(Test10X10, int, int, int, int, int, int, int, int, int, int, 0, 0, 0, 
 namespace ZenUnit
 {
    TESTS(TestTests)
-      AFACT(TwoArgConstructor_NewsComponents_SetsFullName_NameFunctionReturnsTestName)
-      FACTS(RunTestCase_ConstructorFails_DoesNotCallSubsequentTestPhases_ReturnsTestResultConstructorFail)
-      FACTS(RunTestCase_ConstructorSucceeds_StartupFails_DoesNotCallTest_DoesNotCallCleanup_CallsDestructor_ReturnsTestResultStartupFail)
-      AFACT(RunTestCase_AllTestPhasesSucceed_ReturnsExpectedTestResult)
-      AFACT(NonMinimalWritePostTestNameMessage_DoesNothing)
-      AFACT(PrintPostTestCompletionMessage_DoesNothing)
-      AFACT(StaticCallNewTestClass_CallsNewTestClass)
-      AFACT(StaticCallStartup_CallsStartup)
-      AFACT(StaticTestBody_CallsTestBody)
-      AFACT(StaticCallCleanup_CallsCleanup)
-      AFACT(StaticCallDeleteTestClass_CallsDeleteTestClass)
-      AFACT(PseudoAbstractFunctions_DoNothingOrReturn0)
-      EVIDENCE
+   AFACT(TwoArgConstructor_NewsComponents_SetsFullName_NameFunctionReturnsTestName)
+   FACTS(RunTestCase_ConstructorFails_DoesNotCallSubsequentTestPhases_ReturnsTestResultConstructorFail)
+   FACTS(RunTestCase_ConstructorSucceeds_StartupFails_DoesNotCallTest_DoesNotCallCleanup_CallsDestructor_ReturnsTestResultStartupFail)
+   AFACT(RunTestCase_AllTestPhasesSucceed_ReturnsExpectedTestResult)
+   AFACT(NonMinimalWritePostTestNameMessage_DoesNothing)
+   AFACT(PrintPostTestCompletionMessage_DoesNothing)
+   AFACT(StaticCallNewTestClass_CallsNewTestClass)
+   AFACT(StaticCallStartup_CallsStartup)
+   AFACT(StaticTestBody_CallsTestBody)
+   AFACT(StaticCallCleanup_CallsCleanup)
+   AFACT(StaticCallDeleteTestClass_CallsDeleteTestClass)
+   AFACT(PseudoAbstractFunctions_DoNothingOrReturn0)
+   EVIDENCE
 
-      unique_ptr<Test> _test;
+   unique_ptr<Test> _test;
    TryCatchCallerMock* _tryCatchCallerMock = nullptr;
    TestResultFactoryMock* _testResultFactoryMock = nullptr;
    TestMock _testMock;

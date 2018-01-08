@@ -241,14 +241,13 @@ namespace ZenUnit
 
    template<
       template<typename T, typename...>
-   class CollectionType,
-      typename ElementType>
-      TEMPLATETESTS(MemberForEacherTests, CollectionType, ElementType)
-      AFACT(MemberForEach_EmptyCollection_DoesNotCallFunc)
-      AFACT(MemberForEach_OneItemCollection_CallsThisPointerBoundFuncOnce)
-      AFACT(MemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwice)
-      AFACT(CodeCoverage_ClassTypeFunc)
-      EVIDENCE
+   class CollectionType, typename ElementType>
+   TEMPLATETESTS(MemberForEacherTests, CollectionType, ElementType)
+   AFACT(MemberForEach_EmptyCollection_DoesNotCallFunc)
+   AFACT(MemberForEach_OneItemCollection_CallsThisPointerBoundFuncOnce)
+   AFACT(MemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwice)
+   AFACT(CodeCoverage_ClassTypeFunc)
+   EVIDENCE
 
    class ClassType
    {

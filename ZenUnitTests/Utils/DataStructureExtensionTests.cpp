@@ -3,13 +3,13 @@
 namespace ZenUnit
 {
    TESTS(VectorTests)
-      AFACT(ToArgcArgv_ReturnsArgsVector)
-      AFACT(Join_EmptyIntVector_ReturnsEmptyStringRegardlessOfSeparator)
-      AFACT(Join_1ElementIntVector_ReturnsFirstElementRegardlessOfSeparator)
-      FACTS(Join_2ElementIntVector_ReturnsElementsJoinedBySeparator)
-      EVIDENCE
+   AFACT(ToArgcArgv_ReturnsArgsVector)
+   AFACT(Join_EmptyIntVector_ReturnsEmptyStringRegardlessOfSeparator)
+   AFACT(Join_1ElementIntVector_ReturnsFirstElementRegardlessOfSeparator)
+   FACTS(Join_2ElementIntVector_ReturnsElementsJoinedBySeparator)
+   EVIDENCE
 
-      TEST(ToArgcArgv_ReturnsArgsVector)
+   TEST(ToArgcArgv_ReturnsArgsVector)
    {
       const char* argvA[1] =
       {
@@ -74,11 +74,11 @@ namespace ZenUnit
    template<
       template<typename...>
    class SetType, typename T>
-      TEMPLATETESTS(SetTests, SetType, T)
-      AFACT(Contains_ReturnsTrueIfSetContainsElement)
-      EVIDENCE
+   TEMPLATETESTS(SetTests, SetType, T)
+   AFACT(Contains_ReturnsTrueIfSetContainsElement)
+   EVIDENCE
 
-      TEST(Contains_ReturnsTrueIfSetContainsElement)
+   TEST(Contains_ReturnsTrueIfSetContainsElement)
    {
       SetType<T> s;
       const T element10 = 10;
@@ -112,17 +112,17 @@ namespace ZenUnit
    template<
       template<typename...>
    class MapType, typename KeyType, typename ValueType>
-      TEMPLATETESTS(MapTests, MapType, KeyType, ValueType)
-      AFACT(InsertNoOverwrite_KeyAlreadyInMap_Throws)
-      AFACT(InsertNoOverwrite_KeyNotAlreadyInMap_InsertsKeyAndValue_ReturnsCostPointerToInsertedValue);
+   TEMPLATETESTS(MapTests, MapType, KeyType, ValueType)
+   AFACT(InsertNoOverwrite_KeyAlreadyInMap_Throws)
+   AFACT(InsertNoOverwrite_KeyNotAlreadyInMap_InsertsKeyAndValue_ReturnsCostPointerToInsertedValue);
    AFACT(At_KeyNotPresentInMap_Throws)
-      AFACT(At_KeyPresentInMap_ReturnsConstReferenceToValue)
-      AFACT(ContainsKeyWithValue_MapDoesNotContainKey_ReturnsFalseAndFalse)
-      AFACT(ContainsKeyWithValue_MapContainsKeyWithMismatchingValue_ReturnsTrueAndFalse)
-      AFACT(ContainsKeyWithValue_MapContainsKeyWithMatchingValue_ReturnsTrueAndTrue)
-      EVIDENCE
+   AFACT(At_KeyPresentInMap_ReturnsConstReferenceToValue)
+   AFACT(ContainsKeyWithValue_MapDoesNotContainKey_ReturnsFalseAndFalse)
+   AFACT(ContainsKeyWithValue_MapContainsKeyWithMismatchingValue_ReturnsTrueAndFalse)
+   AFACT(ContainsKeyWithValue_MapContainsKeyWithMatchingValue_ReturnsTrueAndTrue)
+   EVIDENCE
 
-      MapType<KeyType, ValueType> _map;
+   MapType<KeyType, ValueType> _map;
 
    TEST(InsertNoOverwrite_KeyAlreadyInMap_Throws)
    {

@@ -42,10 +42,10 @@ namespace ZenMock
 namespace ZenMock
 {
    TESTS(FunctionAlreadyExpectedExceptionTests)
-      AFACT(Constructor_SetsWhatText_ClassIsSubclassOfZenMockException)
-      EVIDENCE
+   AFACT(Constructor_SetsWhatText_ClassIsSubclassOfZenMockException)
+   EVIDENCE
 
-      TEST(Constructor_SetsWhatText_ClassIsSubclassOfZenMockException)
+   TEST(Constructor_SetsWhatText_ClassIsSubclassOfZenMockException)
    {
       const string ZenMockedFunctionSignature = "void ClassName::FunctionName(int) const";
       //
@@ -89,12 +89,12 @@ namespace ZenMock
 {
    template<typename ExceptionType>
    TEMPLATETESTS(TemplateThrowableTests, ExceptionType)
-      AFACT(New_ReturnsNewInstanceOfSelfAsThrowablePointerWithExceptionCreatedFromExceptionArgs)
-      AFACT(Throw_ExceptionIsNullptr_DoesNothing)
-      AFACT(Throw_ExceptionIsNotNullptr_ThrowsTheException)
-      EVIDENCE
+   AFACT(New_ReturnsNewInstanceOfSelfAsThrowablePointerWithExceptionCreatedFromExceptionArgs)
+   AFACT(Throw_ExceptionIsNullptr_DoesNothing)
+   AFACT(Throw_ExceptionIsNotNullptr_ThrowsTheException)
+   EVIDENCE
 
-      TemplateThrowable<ExceptionType> _templateThrowable;
+   TemplateThrowable<ExceptionType> _templateThrowable;
    const string ExceptionWhat = "ExceptionWhat";
 
    TEST(New_ReturnsNewInstanceOfSelfAsThrowablePointerWithExceptionCreatedFromExceptionArgs)
@@ -124,12 +124,12 @@ RUNTEMPLATETESTS(TemplateThrowableTests, logic_error)
 namespace ZenMock
 {
    TESTS(UnexpectedCallExceptionTests)
-      FACTS(Constructor_SetsWhatToExpected_ClassIsSubclassOfZenMockException)
-      AFACT(Constructor_Void1Arg_SetsWhat_IncludesToStringedArg1)
-      AFACT(Constructor_Void2Args_SetsWhat_IncludesToStringedArg1AndArg2)
-      EVIDENCE
+   FACTS(Constructor_SetsWhatToExpected_ClassIsSubclassOfZenMockException)
+   AFACT(Constructor_Void1Arg_SetsWhat_IncludesToStringedArg1)
+   AFACT(Constructor_Void2Args_SetsWhat_IncludesToStringedArg1AndArg2)
+   EVIDENCE
 
-      const string ExpectedUnexpectedCallPrefix = "Unexpected call to ZenMocked function\n\"";
+   const string ExpectedUnexpectedCallPrefix = "Unexpected call to ZenMocked function:\n";
    const string VoidSignature0 = "void ClassName::FunctionName()";
    const string VirtualVoidSignature0 = "virtual void ClassName::FunctionName()";
    const string NonVoidASignature0 = "virtual int ClassName::FunctionName()";
@@ -146,7 +146,7 @@ namespace ZenMock
    {
       const UnexpectedCallException e(zenMockedFunctionSignature);
       //
-      const string expectedWhat = ExpectedUnexpectedCallPrefix + zenMockedFunctionSignature + "\"";
+      const string expectedWhat = ExpectedUnexpectedCallPrefix + zenMockedFunctionSignature;
       const char* const what = e.what();
       ARE_EQUAL(expectedWhat, what);
       IS_TRUE((is_base_of<ZenMockException, UnexpectedCallException>::value));
@@ -158,7 +158,7 @@ namespace ZenMock
       //
       const UnexpectedCallException e(VoidSignature0, Arg1);
       //
-      const string ExpectedWhat = ExpectedUnexpectedCallPrefix + VoidSignature0 + R"("
+      const string ExpectedWhat = ExpectedUnexpectedCallPrefix + VoidSignature0 + R"(
 Arg1: UserType@1)";
       const char* const what = e.what();
       ARE_EQUAL(ExpectedWhat, what);
@@ -171,7 +171,7 @@ Arg1: UserType@1)";
       //
       const UnexpectedCallException e(VoidSignature0, Arg1, Arg2);
       //
-      const string ExpectedWhat = ExpectedUnexpectedCallPrefix + VoidSignature0 + R"("
+      const string ExpectedWhat = ExpectedUnexpectedCallPrefix + VoidSignature0 + R"(
 Arg1: UserType@1
 Arg2: UserType@2)";
       const char* const what = e.what();
@@ -185,10 +185,10 @@ Arg2: UserType@2)";
 namespace ZenMock
 {
    TESTS(UnsupportedCalledZeroTimesExceptionTests)
-      AFACT(Constructor_SetsWhat_ClassIsSubclassOfZenMockException)
-      EVIDENCE
+   AFACT(Constructor_SetsWhat_ClassIsSubclassOfZenMockException)
+   EVIDENCE
 
-      TEST(Constructor_SetsWhat_ClassIsSubclassOfZenMockException)
+   TEST(Constructor_SetsWhat_ClassIsSubclassOfZenMockException)
    {
       const string ZenMockedFunctionSignature = "virtual void ClassName::FunctionName(int, int) const";
       //

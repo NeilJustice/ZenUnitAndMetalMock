@@ -53,10 +53,10 @@ namespace ZenUnit
    vector<tuple<size_t, int>> TestingTestClass1X1::s_calls;
 
    TESTS(Test1X1TestTests)
-      AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest1By1)
-      EVIDENCE
+   AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest1By1)
+   EVIDENCE
 
-      CLEANUP
+   CLEANUP
    {
       TestingTestClass1X1::s_calls.clear();
    }
@@ -96,10 +96,10 @@ vector<tuple<size_t, int, string>> TestingTestClass2X2::s_calls;
 namespace ZenUnit
 {
    TESTS(Test2X2TestTests)
-      AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest2X2)
-      EVIDENCE
+   AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest2X2)
+   EVIDENCE
 
-      CLEANUP
+   CLEANUP
    {
       TestingTestClass2X2::s_calls.clear();
    }
@@ -147,10 +147,10 @@ vector<tuple<size_t, int, int, string>> TestingTestClass3X3::s_calls;
 namespace ZenUnit
 {
    TESTS(Test3X3TestTests)
-      AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest3X3)
-      EVIDENCE
+   AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest3X3)
+   EVIDENCE
 
-      CLEANUP
+   CLEANUP
    {
       TestingTestClass3X3::s_calls.clear();
    }
@@ -198,10 +198,10 @@ vector<tuple<size_t, int, int, int, string>> TestingTestClass4X4::s_calls;
 namespace ZenUnit
 {
    TESTS(Test4X4TestTests)
-      AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest4X4)
-      EVIDENCE
+   AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest4X4)
+   EVIDENCE
 
-      CLEANUP
+   CLEANUP
    {
       TestingTestClass4X4::s_calls.clear();
    }
@@ -249,10 +249,10 @@ vector<tuple<size_t, int, int, int, int, string>> TestingTestClass5X5::s_calls;
 namespace ZenUnit
 {
    TESTS(Test5X5TestTests)
-      AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest5X5)
-      EVIDENCE
+   AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest5X5)
+   EVIDENCE
 
-      CLEANUP
+   CLEANUP
    {
       TestingTestClass5X5::s_calls.clear();
    }
@@ -300,10 +300,10 @@ vector<tuple<size_t, int, int, int, int, int, string>> TestingTestClass6X6::s_ca
 namespace ZenUnit
 {
    TESTS(Test6X6TestTests)
-      AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest6X6)
-      EVIDENCE
+   AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest6X6)
+   EVIDENCE
 
-      CLEANUP
+   CLEANUP
    {
       TestingTestClass6X6::s_calls.clear();
    }
@@ -351,10 +351,10 @@ vector<tuple<size_t, int, int, int, int, int, int, string>> TestingTestClass7X7:
 namespace ZenUnit
 {
    TESTS(Test7X7TestTests)
-      AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest7X7)
-      EVIDENCE
+   AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest7X7)
+   EVIDENCE
 
-      CLEANUP
+   CLEANUP
    {
       TestingTestClass7X7::s_calls.clear();
    }
@@ -402,10 +402,10 @@ vector<tuple<size_t, int, int, int, int, int, int, int, string>> TestingTestClas
 namespace ZenUnit
 {
    TESTS(Test8X8TestTests)
-      AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest8X8)
-      EVIDENCE
+   AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest8X8)
+   EVIDENCE
 
-      CLEANUP
+   CLEANUP
    {
       TestingTestClass8X8::s_calls.clear();
    }
@@ -453,10 +453,10 @@ vector<tuple<size_t, int, int, int, int, int, int, int, int, string>> TestingTes
 namespace ZenUnit
 {
    TESTS(Test9X9TestTests)
-      AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest9X9)
-      EVIDENCE
+   AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest9X9)
+   EVIDENCE
 
-      CLEANUP
+   CLEANUP
    {
       TestingTestClass9X9::s_calls.clear();
    }
@@ -504,10 +504,10 @@ vector<tuple<size_t, int, int, int, int, int, int, int, int, int, string>> Testi
 namespace ZenUnit
 {
    TESTS(Test10X10TestTests)
-      AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest10X10)
-      EVIDENCE
+   AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest10X10)
+   EVIDENCE
 
-      CLEANUP
+   CLEANUP
    {
       TestingTestClass10X10::s_calls.clear();
    }
