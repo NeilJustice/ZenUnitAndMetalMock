@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
+#include "ZenUnitTests/ZenMock/Mock/ExceptionThrowerMock.h"
 
 namespace Zen
 {
@@ -19,10 +20,6 @@ namespace Zen
 
    }; RUNTESTS(MockTests)
 }
-
-
-#include "pch.h"
-#include "ZenUnitTests/ZenMock/Mock/ExceptionThrowerMock.h"
 
 struct CustomException
 {
@@ -51,8 +48,8 @@ namespace ZenMock
 
    unique_ptr<ZenMocker<ExceptionThrowerMock>> _zenMocker;
    ZENMOCK_VOID1_FREE(exit, int)
-      ZENMOCK_NONVOID0_STATIC(const ZenUnit::ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
-      const string ZenMockedFunctionSignature = "virtual void ClassName::FunctionName() const";
+   ZENMOCK_NONVOID0_STATIC(const ZenUnit::ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
+   const string ZenMockedFunctionSignature = "virtual void ClassName::FunctionName() const";
 
    STARTUP
    {
@@ -229,34 +226,29 @@ namespace ZenMock
       _zenMocker->ZenMockExitIfExpectedButNotAsserted();
    }
 
-}; RUNTESTS(ZenMockerTests)
-}
+   }; RUNTESTS(ZenMockerTests)
 
 
-#include "pch.h"
-
-namespace ZenMock
-{
    TESTS(SignatureTests)
-      FACTS(Function_ReturnsFunctionSignature)
-      FACTS(FunctionPointer_ReturnsExpected)
-      EVIDENCE
+   FACTS(Function_ReturnsFunctionSignature)
+   FACTS(FunctionPointer_ReturnsExpected)
+   EVIDENCE
 
-      TEST6X6(Function_ReturnsFunctionSignature,
-         string expectedFunctionSignature,
-         const char* virtualOrEmptyString,
-         const char* returnType,
-         string zenMockedClassName,
-         const char* unadornedFunctionSignature,
-         const char* constOrEmptyString,
-         "int ZenMockedClassNameA::Function(int)",
-         "", "int", "ZenMockedClassNameA", "Function(int)", "",
-         "virtual char ZenMockedClassNameB::Function(int, int)",
-         "virtual", "char", "ZenMockedClassNameB", "Function(int, int)", "",
-         "double ZenMockedClassNameC::Function() const",
-         "", "double", "ZenMockedClassNameC", "Function()", "const",
-         "virtual pair<int, int> ZenMockedClassNameD::Function(const pair<int, int>&) const",
-         "virtual", "pair<int, int>", "ZenMockedClassNameD", "Function(const pair<int, int>&)", "const")
+   TEST6X6(Function_ReturnsFunctionSignature,
+      string expectedFunctionSignature,
+      const char* virtualOrEmptyString,
+      const char* returnType,
+      string zenMockedClassName,
+      const char* unadornedFunctionSignature,
+      const char* constOrEmptyString,
+      "int ZenMockedClassNameA::Function(int)",
+      "", "int", "ZenMockedClassNameA", "Function(int)", "",
+      "virtual char ZenMockedClassNameB::Function(int, int)",
+      "virtual", "char", "ZenMockedClassNameB", "Function(int, int)", "",
+      "double ZenMockedClassNameC::Function() const",
+      "", "double", "ZenMockedClassNameC", "Function()", "const",
+      "virtual pair<int, int> ZenMockedClassNameD::Function(const pair<int, int>&) const",
+      "virtual", "pair<int, int>", "ZenMockedClassNameD", "Function(const pair<int, int>&)", "const")
    {
       const string funtionSignature = Signature::Function(
          virtualOrEmptyString, returnType, &zenMockedClassName, unadornedFunctionSignature, constOrEmptyString);
@@ -272,12 +264,9 @@ namespace ZenMock
       ARE_EQUAL(expectedFunctionPointerSignature, functionPointerSignature);
    }
 
-}; RUNTESTS(SignatureTests)
-}
+   }; RUNTESTS(SignatureTests)
 
 
-namespace ZenMock
-{
    TESTS(ZENTests)
    AFACT(ZENWrappedAssertionDoesNotThrow_NothingHappens)
    AFACT(ZENWrappedAssertionThrows_RethrowsZENWrappedAnomaly)
@@ -306,5 +295,5 @@ Expected: "Message"
 File.cpp(1))");
    }
 
-}; RUNTESTS(ZENTests)
+   }; RUNTESTS(ZENTests)
 }

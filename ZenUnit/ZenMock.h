@@ -371,13 +371,13 @@ catch (const ZenUnit::Anomaly& zenWrappedAnomaly) \
          if (_expected && !_asserted && !_zenMockExceptionIsInFlight)
          {
             const ZenUnit::Console console;
-            std::cout << "\n";
-            console.WriteLineColor("=========================================================", ZenUnit::Color::Red);
-            console.WriteLineColor("Fatal Error: Expected-But-Not-Asserted ZenMocked Function", ZenUnit::Color::Red);
-            console.WriteLineColor("=========================================================", ZenUnit::Color::Red);
+            console.WriteLineColor(R"(
+===========================================================
+Fatal Anomaly: Expected-But-Not-Asserted ZenMocked Function
+===========================================================)", ZenUnit::Color::Red);
             console.WriteLine(ZenMockedFunctionSignature);
             console.WriteLine(R"(
-Fix for this: Add one of the following ZenMock assert statements for above expected ZenMocked function:
+Fix for this: Add a call to one of the following ZenMock assert statements:
 CalledOnce(), CalledOnceWith(), CalledNTimes(), CalledNTimesWith(), or CalledAsFollows().
 )");
             const ZenUnit::ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
@@ -389,6 +389,54 @@ CalledOnce(), CalledOnceWith(), CalledNTimes(), CalledNTimesWith(), or CalledAsF
 
 #define ZENMOCK_BIND0(FunctionName_ZenMock) \
    std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock))
+
+#define ZENMOCK_BIND1(FunctionName_ZenMock) \
+   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
+   std::placeholders::_1)
+
+#define ZENMOCK_BIND2(FunctionName_ZenMock) \
+   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
+   std::placeholders::_1, std::placeholders::_2)
+
+#define ZENMOCK_BIND3(FunctionName_ZenMock) \
+   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
+   std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
+
+#define ZENMOCK_BIND4(FunctionName_ZenMock) \
+   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
+   std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)
+
+#define ZENMOCK_BIND5(FunctionName_ZenMock) \
+   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
+   std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, \
+   std::placeholders::_5)
+
+#define ZENMOCK_BIND6(FunctionName_ZenMock) \
+   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
+   std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, \
+   std::placeholders::_5, std::placeholders::_6)
+
+#define ZENMOCK_BIND7(FunctionName_ZenMock) \
+   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
+   std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, \
+   std::placeholders::_5, std::placeholders::_6, std::placeholders::_7)
+
+#define ZENMOCK_BIND8(FunctionName_ZenMock) \
+   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
+   std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, \
+   std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8)
+
+#define ZENMOCK_BIND9(FunctionName_ZenMock) \
+   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
+   std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, \
+   std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8, \
+   std::placeholders::_9)
+
+#define ZENMOCK_BIND10(FunctionName_ZenMock) \
+   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
+   std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, \
+   std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8, \
+   std::placeholders::_9, std::placeholders::_10)
 
    class ZeroArgumentMockerTests;
 
@@ -429,7 +477,7 @@ CalledOnce(), CalledOnceWith(), CalledNTimes(), CalledNTimesWith(), or CalledAsF
       }
    };
 
-   // Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName()".
+// Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName()".
 #define ZENMOCK_NONVOID0(returnType, functionName) \
         ZENMOCK_NONVOID0_DEFINED(returnType, functionName, virtual,      ,        , final)
 
@@ -525,7 +573,7 @@ struct ZenMock_##functionName : public ZenMock::NonVoidZeroArgumentMocker<return
       }
    };
 
-   // Defines a <functionName>Mock object for mocking a base class function with signature "virtual void functionName()".
+// Defines a <functionName>Mock object for mocking a base class function with signature "virtual void functionName()".
 #define ZENMOCK_VOID0(functionName) \
         ZENMOCK_VOID0_DEFINED(functionName, virtual,      ,        , final)
 
@@ -624,10 +672,6 @@ struct ZenMock_##functionName : public ZenMock::VoidZeroArgumentMocker \
       }
    };
 
-#define ZENMOCK_BIND1(FunctionName_ZenMock) \
-   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
-   std::placeholders::_1)
-
    template<
       typename ArgType,
       typename MockableExceptionThrowerType = ExceptionThrower>
@@ -703,7 +747,7 @@ struct ZenMock_##functionName : public ZenMock::VoidZeroArgumentMocker \
       }
    };
 
-   // Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName(arg1Type)".
+// Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName(arg1Type)".
 #define ZENMOCK_NONVOID1(returnType, functionName, arg1Type, ...) \
         ZENMOCK_NONVOID1_DEFINED(returnType, functionName, arg1Type, virtual,      ,        , final, __VA_ARGS__)
 
@@ -799,7 +843,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidOneArgumentM
       }
    };
 
-   // Defines a <functionName>Mock object for mocking a base class function with signature "virtual void functionName(arg1Type)".
+// Defines a <functionName>Mock object for mocking a base class function with signature "virtual void functionName(arg1Type)".
 #define ZENMOCK_VOID1(functionName, arg1Type, ...) \
         ZENMOCK_VOID1_DEFINED(functionName, arg1Type, virtual,      ,        , final, __VA_ARGS__)
 
@@ -908,10 +952,6 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidOneArgumentMock
       }
    };
 
-#define ZENMOCK_BIND2(FunctionName_ZenMock) \
-   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
-   std::placeholders::_1, std::placeholders::_2)
-
    template<
       typename Arg1Type,
       typename Arg2Type,
@@ -988,7 +1028,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidOneArgumentMock
       }
    };
 
-   // Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName(arg1Type, arg2Type)".
+// Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName(arg1Type, arg2Type)".
 #define ZENMOCK_NONVOID2(returnType, functionName, arg1Type, arg2Type, ...) \
         ZENMOCK_NONVOID2_DEFINED(returnType, functionName, arg1Type, arg2Type, virtual,      ,        , final, __VA_ARGS__)
 
@@ -1083,7 +1123,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidTwoArgumentM
       }
    };
 
-   // Defines a <functionName>Mock object for mocking a virtual function with signature "void functionName(arg1Type, arg2Type)".
+// Defines a <functionName>Mock object for mocking a virtual function with signature "void functionName(arg1Type, arg2Type)".
 #define ZENMOCK_VOID2(functionName, arg1Type, arg2Type, ...) \
         ZENMOCK_VOID2_DEFINED(functionName, arg1Type, arg2Type, virtual,      ,        , final, __VA_ARGS__)
 
@@ -1199,10 +1239,6 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidTwoArgumentMock
       }
    };
 
-#define ZENMOCK_BIND3(FunctionName_ZenMock) \
-   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
-   std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
-
    template<
       typename Arg1Type,
       typename Arg2Type,
@@ -1286,7 +1322,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidTwoArgumentMock
       }
    };
 
-   // Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName(arg1Type, arg2Type, arg3Type)".
+// Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName(arg1Type, arg2Type, arg3Type)".
 #define ZENMOCK_NONVOID3(returnType, functionName, arg1Type, arg2Type, arg3Type, ...) \
         ZENMOCK_NONVOID3_DEFINED(returnType, functionName, arg1Type, arg2Type, arg3Type, virtual,      ,        , final, __VA_ARGS__)
 
@@ -1381,7 +1417,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidThreeArgumen
       }
    };
 
-   // Defines a <functionName>Mock object for mocking a virtual function with signature "void functionName(arg1Type, arg2Type, arg3Type)".
+// Defines a <functionName>Mock object for mocking a virtual function with signature "void functionName(arg1Type, arg2Type, arg3Type)".
 #define ZENMOCK_VOID3(functionName, arg1Type, arg2Type, arg3Type, ...) \
         ZENMOCK_VOID3_DEFINED(functionName, arg1Type, arg2Type, arg3Type, virtual,      ,        , final, __VA_ARGS__)
 
@@ -1503,10 +1539,6 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidThreeArgumentMo
       }
    };
 
-#define ZENMOCK_BIND4(FunctionName_ZenMock) \
-   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
-   std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)
-
    template<
       typename Arg1Type,
       typename Arg2Type,
@@ -1599,7 +1631,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidThreeArgumentMo
       }
    };
 
-   // Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName(arg1Type, arg2Type, arg3Type, arg4Type)".
+// Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName(arg1Type, arg2Type, arg3Type, arg4Type)".
 #define ZENMOCK_NONVOID4(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, ...) \
         ZENMOCK_NONVOID4_DEFINED(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, virtual,      ,        , final, __VA_ARGS__)
 
@@ -1694,7 +1726,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidFourArgument
       }
    };
 
-   // Defines a <functionName>Mock object for mocking a virtual function with signature "void functionName(arg1Type, arg2Type, arg3Type, arg4Type)".
+// Defines a <functionName>Mock object for mocking a virtual function with signature "void functionName(arg1Type, arg2Type, arg3Type, arg4Type)".
 #define ZENMOCK_VOID4(functionName, arg1Type, arg2Type, arg3Type, arg4Type, ...) \
         ZENMOCK_VOID4_DEFINED(functionName, arg1Type, arg2Type, arg3Type, arg4Type, virtual,      ,        , final, __VA_ARGS__)
 
@@ -1832,10 +1864,6 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidFourArgumentMoc
       }
    };
 
-#define ZENMOCK_BIND5(FunctionName_ZenMock) \
-   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
-   std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5)
-
    template<
       typename Arg1Type,
       typename Arg2Type,
@@ -1934,7 +1962,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidFourArgumentMoc
       }
    };
 
-   // Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type)".
+// Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type)".
 #define ZENMOCK_NONVOID5(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, ...) \
         ZENMOCK_NONVOID5_DEFINED(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, virtual,      ,        , final, __VA_ARGS__)
 
@@ -2029,7 +2057,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidFiveArgument
       }
    };
 
-   // Defines a <functionName>Mock object for mocking a virtual function with signature "void functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type)".
+// Defines a <functionName>Mock object for mocking a virtual function with signature "void functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type)".
 #define ZENMOCK_VOID5(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, ...) \
         ZENMOCK_VOID5_DEFINED(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, virtual,      ,        , final, __VA_ARGS__)
 
@@ -2175,11 +2203,6 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidFiveArgumentMoc
       }
    };
 
-#define ZENMOCK_BIND6(FunctionName_ZenMock) \
-   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
-   std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, \
-   std::placeholders::_5, std::placeholders::_6)
-
    template<
       typename Arg1Type,
       typename Arg2Type,
@@ -2284,7 +2307,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::VoidFiveArgumentMoc
       }
    };
 
-   // Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type)".
+// Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type)".
 #define ZENMOCK_NONVOID6(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, ...) \
         ZENMOCK_NONVOID6_DEFINED(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, virtual,      ,        , final, __VA_ARGS__)
 
@@ -2379,7 +2402,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidSixArgumentM
       }
    };
 
-   // Defines a <functionName>Mock object for mocking a virtual function with signature "void functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type)".
+// Defines a <functionName>Mock object for mocking a virtual function with signature "void functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type)".
 #define ZENMOCK_VOID6(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, ...) \
         ZENMOCK_VOID6_DEFINED(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, virtual,      ,        , final, __VA_ARGS__)
 
@@ -2533,11 +2556,6 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::ZenMockVoidSixArgs<
       }
    };
 
-#define ZENMOCK_BIND7(FunctionName_ZenMock) \
-   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
-   std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, \
-   std::placeholders::_5, std::placeholders::_6, std::placeholders::_7)
-
    template<
       typename Arg1Type,
       typename Arg2Type,
@@ -2648,7 +2666,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::ZenMockVoidSixArgs<
       }
    };
 
-   // Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type)".
+// Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type)".
 #define ZENMOCK_NONVOID7(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, ...) \
         ZENMOCK_NONVOID7_DEFINED(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, virtual,      ,        , final, __VA_ARGS__)
 
@@ -2743,7 +2761,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidSevenArgumen
       }
    };
 
-   // Defines a <functionName>Mock object for mocking a virtual function with signature "void functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type)".
+// Defines a <functionName>Mock object for mocking a virtual function with signature "void functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type)".
 #define ZENMOCK_VOID7(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, ...) \
         ZENMOCK_VOID7_DEFINED(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, virtual,      ,        , final, __VA_ARGS__)
 
@@ -2922,11 +2940,6 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::ZenMockVoidSevenArg
       }
    };
 
-#define ZENMOCK_BIND8(FunctionName_ZenMock) \
-   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
-   std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, \
-   std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8)
-
    template<
       typename Arg1Type,
       typename Arg2Type,
@@ -3052,7 +3065,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::ZenMockVoidSevenArg
       }
    };
 
-   // Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type)".
+// Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type)".
 #define ZENMOCK_NONVOID8(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, ...) \
         ZENMOCK_NONVOID8_DEFINED(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, virtual,      ,        , final, __VA_ARGS__)
 
@@ -3147,7 +3160,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidEightArgumen
       }
    };
 
-   // Defines a <functionName>Mock object for mocking a virtual function with signature "void functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type)".
+// Defines a <functionName>Mock object for mocking a virtual function with signature "void functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type)".
 #define ZENMOCK_VOID8(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, ...) \
         ZENMOCK_VOID8_DEFINED(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, virtual,      ,        , final, __VA_ARGS__)
 
@@ -3335,11 +3348,6 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::ZenMockVoidEightArg
       }
    };
 
-#define ZENMOCK_BIND9(FunctionName_ZenMock) \
-   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
-   std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, \
-   std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8, std::placeholders::_9)
-
    template<
       typename Arg1Type,
       typename Arg2Type,
@@ -3473,7 +3481,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::ZenMockVoidEightArg
       }
    };
 
-   // Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type)".
+// Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type)".
 #define ZENMOCK_NONVOID9(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, ...) \
         ZENMOCK_NONVOID9_DEFINED(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, virtual,      ,        , final, __VA_ARGS__)
 
@@ -3568,7 +3576,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidNineArgument
       }
    };
 
-   // Defines a <functionName>Mock object for mocking a virtual function with signature "void functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type)".
+// Defines a <functionName>Mock object for mocking a virtual function with signature "void functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type)".
 #define ZENMOCK_VOID9(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, ...) \
         ZENMOCK_VOID9_DEFINED(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, virtual,      ,        , final, __VA_ARGS__)
 
@@ -3768,11 +3776,6 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::ZenMockVoidNineArgs
       }
    };
 
-#define ZENMOCK_BIND10(FunctionName_ZenMock) \
-   std::bind(&decltype(FunctionName_ZenMock)::ZenMockItFunctionPointer, &(FunctionName_ZenMock), \
-   std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, \
-   std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8, std::placeholders::_9, std::placeholders::_10)
-
    template<
       typename Arg1Type,
       typename Arg2Type,
@@ -3912,7 +3915,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::ZenMockVoidNineArgs
       }
    };
 
-   // Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type)".
+// Defines a <functionName>Mock object for mocking a base class function with signature "virtual returnType functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type)".
 #define ZENMOCK_NONVOID10(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...) \
         ZENMOCK_NONVOID10_DEFINED(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, virtual,      ,        , final, __VA_ARGS__)
 
@@ -4007,7 +4010,7 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidTenArgumentM
       }
    };
 
-   // Defines a <functionName>Mock object for mocking a virtual function with signature "void functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type)".
+// Defines a <functionName>Mock object for mocking a virtual function with signature "void functionName(arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type)".
 #define ZENMOCK_VOID10(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...) \
         ZENMOCK_VOID10_DEFINED(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, virtual,      ,        , final, __VA_ARGS__)
 
