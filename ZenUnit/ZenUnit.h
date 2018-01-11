@@ -340,7 +340,8 @@ namespace ZenUnit
       Red,
       White,
       Teal,
-      Green
+      Green,
+      Yellow
    };
 
    enum class ExpectedActualFormat : unsigned char
@@ -661,6 +662,7 @@ namespace ZenUnit
       case Color::White: return "\033[0m";
       case Color::Teal: return "\033[34m";
       case Color::Green: return "\033[32m";
+      case Color::Yellow: return "\033[33m";
       case Color::Unset:
       default: return "\033[0m";
       };
@@ -674,6 +676,7 @@ namespace ZenUnit
       case Color::White: return WindowsColor::White;
       case Color::Teal: return WindowsColor::Teal;
       case Color::Green: return WindowsColor::Green;
+      case Color::Yellow: return WindowsColor::Yellow;
       case Color::Unset:
       default: return WindowsColor::White;
       };
@@ -4155,12 +4158,12 @@ None
 
       void PrintSkippedTestClassReminder(const std::string& skippedTestClassNameAndReason) const
       {
-         _console->WriteLine("[SKIPPED] Test class " + skippedTestClassNameAndReason);
+         _console->WriteLineColor("[SKIPPED] Test class " + skippedTestClassNameAndReason, Color::Yellow);
       }
 
       void PrintSkippedTestReminder(const std::string& skippedFullTestNameAndReason) const
       {
-         _console->WriteLine("[SKIPPED] Test " + skippedFullTestNameAndReason);
+         _console->WriteLineColor("[SKIPPED] Test " + skippedFullTestNameAndReason, Color::Yellow);
       }
    };
 

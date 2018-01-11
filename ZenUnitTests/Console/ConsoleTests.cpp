@@ -312,7 +312,7 @@ namespace ZenUnit
    }
 #endif
 
-}; RUNTESTS(ConsoleTests)
+   }; RUNTESTS(ConsoleTests)
 
    TESTS(ConsoleColorerTests)
    AFACT(Constructor_SetsFunctionPointers_SetsSupportsColorAndSupportsColorSetToFalse)
@@ -470,22 +470,23 @@ namespace ZenUnit
    }
    #endif
 
-}; RUNTESTS(ConsoleColorerTests)
+   }; RUNTESTS(ConsoleColorerTests)
 
    TESTS(LinuxColorTests)
    FACTS(ColorToLinuxColor_ReturnsExpected)
    EVIDENCE
 
    TEST2X2(ColorToLinuxColor_ReturnsExpected,
-      const char* expectedColorCode, Color color,
-      "\033[31m", Color::Red,
-      "\033[0m", Color::White,
-      "\033[34m", Color::Teal,
-      "\033[32m", Color::Green,
-      "\033[0m", Color::Unset,
-      "\033[0m", static_cast<Color>(-1))
+      Color color, const char* expectedLinuxColor,
+      Color::Red, "\033[31m",
+      Color::White, "\033[0m",
+      Color::Teal, "\033[34m",
+      Color::Green, "\033[32m",
+      Color::Yellow, "\033[33m",
+      Color::Unset, "\033[0m",
+      static_cast<Color>(-1), "\033[0m")
    {
-      ARE_EQUAL(expectedColorCode, ColorToLinuxColor(color));
+      ARE_EQUAL(expectedLinuxColor, ColorToLinuxColor(color));
    }
 
    }; RUNTESTS(LinuxColorTests)
@@ -500,6 +501,7 @@ namespace ZenUnit
       Color::White, WindowsColor::White,
       Color::Teal, WindowsColor::Teal,
       Color::Green, WindowsColor::Green,
+      Color::Yellow, WindowsColor::Yellow,
       Color::Unset, WindowsColor::White,
       static_cast<Color>(-1), WindowsColor::White)
    {

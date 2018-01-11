@@ -1212,22 +1212,22 @@ namespace ZenUnit
 
    TEST(PrintSkippedTestClassReminder_PrintsExpectedToConsole)
    {
-      _consoleMock->WriteLineMock.Expect();
+      _consoleMock->WriteLineColorMock.Expect();
       const string SkippedTestClassNameAndReason = Random<string>();
       //
       _testRunResult.PrintSkippedTestClassReminder(SkippedTestClassNameAndReason);
       //
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith("[SKIPPED] Test class " + SkippedTestClassNameAndReason));
+      ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith("[SKIPPED] Test class " + SkippedTestClassNameAndReason, Color::Yellow));
    }
 
    TEST(PrintSkippedTestReminder_PrintsExpectedToConsole)
    {
-      _consoleMock->WriteLineMock.Expect();
+      _consoleMock->WriteLineColorMock.Expect();
       const string SkippedTestName = Random<string>();
       //
       _testRunResult.PrintSkippedTestReminder(SkippedTestName);
       //
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith("[SKIPPED] Test " + SkippedTestName));
+      ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith("[SKIPPED] Test " + SkippedTestName, Color::Yellow));
    }
 
    TEST(ResetStateExceptForSkips_ResetsTestFailureNumberer_ClearsTestClassResults_SetsNumberOfFailedTestCasesTo0)
