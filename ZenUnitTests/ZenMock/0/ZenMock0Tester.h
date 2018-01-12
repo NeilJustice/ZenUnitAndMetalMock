@@ -386,9 +386,9 @@ namespace ZenMock
          StaticNameClashSignature);
    }
 
-      // ZeroArgumentMocker Tests
+   // ZeroArgumentMocker Tests
 
-      TEST(ExpectAndThrow_CalledTwice_Throws)
+   TEST(ExpectAndThrow_CalledTwice_Throws)
    {
       _zenMock0Tester->ExpectAndThrow_CalledTwice_Throws();
    }

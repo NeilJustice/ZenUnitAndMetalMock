@@ -67,7 +67,7 @@ namespace ZenMock
       AFACT(DefaultConstructor_SetsWhatText_ClassIsSubclassOfZenMockException)
       EVIDENCE
 
-      TEST(DefaultConstructor_SetsWhatText_ClassIsSubclassOfZenMockException)
+   TEST(DefaultConstructor_SetsWhatText_ClassIsSubclassOfZenMockException)
    {
       const string ZenMockedFunctionSignature = "ZenMockedFunctionSignature";
       //

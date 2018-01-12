@@ -877,7 +877,7 @@ namespace ZenUnit
          _memberForEacherSkippedTestsMock = new TypedefMemberForEacherSkippedTestsMock);
    }
 
-      TEST(Constructor_NewsComponents)
+   TEST(Constructor_NewsComponents)
    {
       TestRunResult testRunResult;
       POINTER_WAS_NEWED(testRunResult._console);

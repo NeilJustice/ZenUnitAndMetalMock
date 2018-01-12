@@ -81,11 +81,11 @@ namespace ZenUnit
    STARTUP
    {
       _newDeleteTest = make_unique<NewDeleteTest<TestingTestClass>>(TestClassName.c_str());
-   _newDeleteTest->_tryCatchCaller.reset(_tryCatchCallerMock = new TryCatchCallerMock);
-   _newDeleteTest->_testResultFactory.reset(_testResultFactoryMock = new TestResultFactoryMock);
+      _newDeleteTest->_tryCatchCaller.reset(_tryCatchCallerMock = new TryCatchCallerMock);
+      _newDeleteTest->_testResultFactory.reset(_testResultFactoryMock = new TestResultFactoryMock);
    }
 
-      TEST(Constructor_NewsComponents)
+   TEST(Constructor_NewsComponents)
    {
       NewDeleteTest<TestingTestClass> newDeleteTest(TestClassName.c_str());
       ARE_EQUAL("TestClassIsNewableAndDeletable", newDeleteTest.Name());
@@ -193,7 +193,7 @@ namespace ZenUnit
          TestClassName.c_str(), TestName.c_str(), &TestingTestClass::Test);
    }
 
-      TEST(NumberOfTestCases_Returns1)
+   TEST(NumberOfTestCases_Returns1)
    {
       ARE_EQUAL(1, _normalTest->NumberOfTestCases());
    }
@@ -339,7 +339,7 @@ namespace ZenUnit
    _specSectionTestNXNSelfMocked = make_unique<SpecSectionTestNXNSelfMocked>();
    }
 
-      TEST(ThreeArgConstructor_SetsTestName_SetsTestNXNPmf)
+   TEST(ThreeArgConstructor_SetsTestName_SetsTestNXNPmf)
    {
       const string TestClassName = Random<string>();
       const string TestName = Random<string>();
@@ -455,7 +455,7 @@ namespace ZenUnit
       TestingDerivedTestClassType::s_allNXNTestsRegistered = false;
    }
 
-      TEST(DefaultConstructor_DoesNotThrow)
+   TEST(DefaultConstructor_DoesNotThrow)
    {
       const TestClass testClass{};
    }

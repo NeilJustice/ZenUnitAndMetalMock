@@ -24,37 +24,43 @@ namespace ZenUnit
    FACTS(WriteLineAndExit_CallsWriteLineAndExit)
    FACTS(NonMinimalWriteStringsCommaSeparated_PrintModeNotMinimal_CallsDoWriteStringsCommaSeparated)
    FACTS(DoWriteStringsCommaSeparated_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset)
-   FACTS(WaitForEnterKeyIfDebuggerPresentOrValueTrue_WritesPressEnterKeyAndGetsCharIfDebuggerPresentOrValueTrue)
+   FACTS(WaitForAnyKeyIfDebuggerPresentOrValueTrue_WritesPressAnyKeyAndGetsCharIfDebuggerPresentOrValueTrue)
 #if defined _WIN32
    FACTS(DebuggerIsPresent_ReturnsTrueIfIsDebuggerPresentFunctionReturns1)
+   AFACT(WaitForAnyKey_CallsGetCh)
 #endif
    EVIDENCE
 
    Console _console;
    ConsoleColorerMock* _consoleColorerMock = nullptr;
    const string Message = Random<string>();
+#if _WIN32
+   ZENMOCK_NONVOID0_FREE(int, _getch);
+#endif
 
    struct ConsoleSelfMocked : public Zen::Mock<Console>
    {
       ZENMOCK_VOID2_CONST(WriteColor, const string&, Color)
-         ZENMOCK_VOID2_CONST(WriteLineColor, const string&, Color)
-         ZENMOCK_NONVOID0_CONST(bool, DebuggerIsPresent)
-         ZENMOCK_VOID0_CONST(WaitForEnterKey)
-         ZENMOCK_VOID0_CONST(WriteNewLine)
+      ZENMOCK_VOID2_CONST(WriteLineColor, const string&, Color)
+      ZENMOCK_NONVOID0_CONST(bool, DebuggerIsPresent)
+      ZENMOCK_VOID0_CONST(WaitForAnyKey)
+      ZENMOCK_VOID0_CONST(WriteNewLine)
    } _consoleSelfMocked;
 
    STARTUP
    {
       _console._consoleColorer.reset(_consoleColorerMock = new ConsoleColorerMock);
+      _console.call_getch = ZENMOCK_BIND0(_getch_ZenMock);
    }
 
-      TEST(Constructor_NewsConsoleColorer_SetsFunctionPointers)
+   TEST(Constructor_NewsConsoleColorer_SetsFunctionPointers)
    {
       Console console;
       POINTER_WAS_NEWED(console._consoleColorer);
       STD_FUNCTION_TARGETS(::exit, console.call_exit);
 #if defined _WIN32
       STD_FUNCTION_TARGETS(::IsDebuggerPresent, console.call_IsDebuggerPresent);
+      STD_FUNCTION_TARGETS(_getch, console.call_getch);
 #endif
    }
 
@@ -264,8 +270,8 @@ namespace ZenUnit
       ZEN(consoleSelfMocked.WriteMock.CalledAsFollows(expectedConsoleWriteCalls));
    }
 
-   TEST3X3(WaitForEnterKeyIfDebuggerPresentOrValueTrue_WritesPressEnterKeyAndGetsCharIfDebuggerPresentOrValueTrue,
-      bool doWait, bool debuggerIsPresent, bool expectPressEnterKeyAndGetChar,
+   TEST3X3(WaitForAnyKeyIfDebuggerPresentOrValueTrue_WritesPressAnyKeyAndGetsCharIfDebuggerPresentOrValueTrue,
+      bool doWait, bool debuggerIsPresent, bool expectPressAnyKeyAndGetChar,
       false, false, false,
       false, true, true,
       true, false, true,
@@ -275,22 +281,22 @@ namespace ZenUnit
       {
          _consoleSelfMocked.DebuggerIsPresentMock.ExpectAndReturn(debuggerIsPresent);
       }
-      if (expectPressEnterKeyAndGetChar)
+      if (expectPressAnyKeyAndGetChar)
       {
          _consoleSelfMocked.WriteLineColorMock.Expect();
-         _consoleSelfMocked.WaitForEnterKeyMock.Expect();
+         _consoleSelfMocked.WaitForAnyKeyMock.Expect();
       }
       //
-      _consoleSelfMocked.WaitForEnterKeyIfDebuggerPresentOrValueTrue(doWait);
+      _consoleSelfMocked.WaitForAnyKeyIfDebuggerPresentOrValueTrue(doWait);
       //
       if (!doWait)
       {
          ZEN(_consoleSelfMocked.DebuggerIsPresentMock.CalledOnce());
       }
-      if (expectPressEnterKeyAndGetChar)
+      if (expectPressAnyKeyAndGetChar)
       {
-         ZEN(_consoleSelfMocked.WriteLineColorMock.CalledOnceWith("Press Enter to continue . . .", Color::White));
-         ZEN(_consoleSelfMocked.WaitForEnterKeyMock.CalledOnce());
+         ZEN(_consoleSelfMocked.WriteLineColorMock.CalledOnceWith("Press any key to continue . . .", Color::White));
+         ZEN(_consoleSelfMocked.WaitForAnyKeyMock.CalledOnce());
       }
    }
 
@@ -309,6 +315,15 @@ namespace ZenUnit
       //
       ZEN(IsDebuggerPresent_ZenMock.CalledOnce());
       ARE_EQUAL(expectedReturnValue, debuggerIsPresent);
+   }
+
+   TEST(WaitForAnyKey_CallsGetCh)
+   {
+      _getch_ZenMock.ExpectAndReturn(0);
+      //
+      _console.WaitForAnyKey();
+      //
+      ZEN(_getch_ZenMock.CalledOnce());
    }
 #endif
 

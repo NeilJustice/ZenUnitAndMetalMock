@@ -39,8 +39,9 @@
 #define WIN32_LEAN_AND_MEAN // ~40% faster Windows.h compile speed
 #define NOGDI // ~10% faster Windows.h compile speed
 #define NOMINMAX
-#include "Windows.h"
-#include <io.h>
+#include "Windows.h" // SetConsoleTextAttribute()
+#include <conio.h> // _getch()
+#include <io.h> // _isatty()
 #endif
 
 #define DOTOKENJOIN(a, b) a##b
@@ -774,12 +775,14 @@ namespace ZenUnit
       std::unique_ptr<ConsoleColorer> _consoleColorer;
       std::function<void(int)> call_exit;
       std::function<int()> call_IsDebuggerPresent;
+      std::function<int()> call_getch;
    public:
       Console() noexcept
          : _consoleColorer(std::make_unique<ConsoleColorer>())
          , call_exit(::exit)
 #if defined _WIN32
          , call_IsDebuggerPresent(::IsDebuggerPresent)
+         , call_getch(_getch)
 #endif
       {
       }
@@ -868,19 +871,21 @@ namespace ZenUnit
          }
       }
 
-      virtual void WaitForEnterKeyIfDebuggerPresentOrValueTrue(bool doWait) const
+      virtual void WaitForAnyKeyIfDebuggerPresentOrValueTrue(bool doWait) const
       {
          if (doWait || DebuggerIsPresent())
          {
-            WriteLine("Press Enter to continue . . .");
-            WaitForEnterKey();
+            WriteLine("Press any key to continue . . .");
+            WaitForAnyKey();
          }
       }
 
-      virtual void WaitForEnterKey() const
+      virtual void WaitForAnyKey() const
       {
-         std::string devNull;
-         std::getline(std::cin, devNull);
+#ifdef __linux__
+#elif _WIN32
+         call_getch();
+#endif
       }
 
       virtual bool DebuggerIsPresent() const
@@ -4238,11 +4243,11 @@ None
             overallExitCode |= testRunExitCode;
             _testRunResult->ResetStateExceptForSkips();
          }
-         _console->WaitForEnterKeyIfDebuggerPresentOrValueTrue(_zenUnitArgs.wait);
+         _console->WaitForAnyKeyIfDebuggerPresentOrValueTrue(_zenUnitArgs.wait);
          return overallExitCode;
       }
    private:
-      virtual bool WaitForEnterKeyIfPauseModeAndHaveNotPaused(bool pauseMode, bool havePaused) const
+      virtual bool WaitForAnyKeyIfPauseModeAndHaveNotPaused(bool pauseMode, bool havePaused) const
       {
          if (!pauseMode)
          {
@@ -4252,15 +4257,15 @@ None
          {
             return true;
          }
-         _console->WriteLine("ZenUnit test runner paused. Press Enter to run tests.");
-         _console->WaitForEnterKey();
+         _console->WriteLine("ZenUnit test runner paused. Press any key to run tests.");
+         _console->WaitForAnyKey();
          return true;
       }
 
       virtual int RunTestClassesAndPrintResults(const ZenUnitArgs& zenUnitArgs)
       {
          _preamblePrinter->PrintOpeningThreeLines(zenUnitArgs, _multiTestClassRunner.get());
-         _havePaused = WaitForEnterKeyIfPauseModeAndHaveNotPaused(zenUnitArgs.pause, _havePaused);
+         _havePaused = WaitForAnyKeyIfPauseModeAndHaveNotPaused(zenUnitArgs.pause, _havePaused);
          _testRunStopwatch->Start();
          if (zenUnitArgs.maxtotalseconds > 0)
          {

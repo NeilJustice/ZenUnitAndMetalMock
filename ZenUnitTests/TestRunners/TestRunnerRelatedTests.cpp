@@ -142,7 +142,7 @@ namespace ZenUnit
    _multiTestClassRunner._watch.reset(_watchMock = new WatchMock);
    }
 
-      TEST(Constructor_NewsComponents)
+   TEST(Constructor_NewsComponents)
    {
       POINTER_WAS_NEWED(_multiTestClassRunner._extraArgMemberForEacher);
       POINTER_WAS_NEWED(_multiTestClassRunner._extraArgAnyer);
@@ -434,7 +434,7 @@ namespace ZenUnit
       _preamblePrinter._machineNameGetter.reset(_machineNameGetterMock = new MachineNameGetterMock);
    }
 
-      TEST(Constructor_NewsConsoleAndWatch)
+   TEST(Constructor_NewsConsoleAndWatch)
    {
       PreamblePrinter preamblePrinter;
       POINTER_WAS_NEWED(preamblePrinter._console);
@@ -589,7 +589,7 @@ namespace ZenUnit
    _specificTestClassRunnerSelfMocked = make_unique<SpecificTestClassRunnerSelfMocked>();
    }
 
-      TEST(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
+   TEST(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
    {
       SpecificTestClassRunner<TestingTestClass> specificTestClassRunner(TestClassName);
       //
@@ -929,17 +929,17 @@ namespace ZenUnit
       FACTS(OperatorLessThan_ReturnsTrueIfTestClassNameStrcmpResultIsLessThanZero)
       EVIDENCE
 
-      TEST3X3(OperatorLessThan_ReturnsTrueIfTestClassNameStrcmpResultIsLessThanZero,
-         bool expectedIsLessThan, const char* leftTestClassName, const char* rightTestClassName,
-         false, "", "",
-         false, "b", "a",
-         true, "a", "b",
-         true, "WidgetATests", "WidgetBTests",
-         false, "WidgetATests", "WidgetATests",
-         false, "WidgetBTests", "WidgetATests",
-         true, "widgetATests", "WidgetBTests",
-         true, "assert_trueTests", "VectorTests",
-         false, "is_quoted_when_printedTests", "ConsoleColorerTests")
+   TEST3X3(OperatorLessThan_ReturnsTrueIfTestClassNameStrcmpResultIsLessThanZero,
+      bool expectedIsLessThan, const char* leftTestClassName, const char* rightTestClassName,
+      false, "", "",
+      false, "b", "a",
+      true, "a", "b",
+      true, "WidgetATests", "WidgetBTests",
+      false, "WidgetATests", "WidgetATests",
+      false, "WidgetBTests", "WidgetATests",
+      true, "widgetATests", "WidgetBTests",
+      true, "assert_trueTests", "VectorTests",
+      false, "is_quoted_when_printedTests", "ConsoleColorerTests")
    {
       TestClassRunnerMock* leftTestClassRunnerMock = new TestClassRunnerMock;
       TestClassRunnerMock* rightTestClassRunnerMock = new TestClassRunnerMock;
@@ -978,9 +978,9 @@ namespace ZenUnit
    AFACT(SkipTest_CallsTestRunResultAddSkippedFullTestName)
    AFACT(SkipTestClass_CallsTestRunResultAddSkippedTestClassNameAndReason)
    FACTS(ParseArgsRunTestClassesPrintResults_ParsesArgs_RunsTestClassesTimesNumberOfTimes_Returns0IfAllTestRunsPassOtherwiseReturns1)
-   AFACT(WaitForEnterKeyIfPauseMode_PauseModeFalse_DoesNothing_ReturnsFalse)
-   AFACT(WaitForEnterKeyIfPauseMode_PauseModeTrue_HavePausedTrue_DoesNothing_ReturnsTrue)
-   AFACT(WaitForEnterKeyIfPauseMode_PauseModeTrueHavePausedFalse_WritesMessageAndWaitsForEnterKey_ReturnsTrue)
+   AFACT(WaitForAnyKeyIfPauseMode_PauseModeFalse_DoesNothing_ReturnsFalse)
+   AFACT(WaitForAnyKeyIfPauseMode_PauseModeTrue_HavePausedTrue_DoesNothing_ReturnsTrue)
+   AFACT(WaitForAnyKeyIfPauseMode_PauseModeTrueHavePausedFalse_WritesMessageAndWaitsForAnyKey_ReturnsTrue)
    //FACTS(RunTestClassesAndPrintResults_RunsTestsAndPrintsResults_Returns0IfAllTestsPassedOtherwiseReturns1)
    AFACT(RunTestClasses_RunsTestClasses)
    //FACTS(RunTestClassesWithWaitableRunnerThread_SpawnsThreadToCallRunTestClasses_PrintsResultsAndExits1IfThreadTimesOut)
@@ -1026,7 +1026,7 @@ namespace ZenUnit
    class TestRunnerSelfMockedB : public Zen::Mock<TestRunner>
    {
    public:
-      ZENMOCK_NONVOID2_CONST(bool, WaitForEnterKeyIfPauseModeAndHaveNotPaused, bool, bool)
+      ZENMOCK_NONVOID2_CONST(bool, WaitForAnyKeyIfPauseModeAndHaveNotPaused, bool, bool)
          ZENMOCK_VOID0(RunTestClasses)
          ZENMOCK_VOID1(RunTestClassesWithWaitableRunnerThread, unsigned)
          PreamblePrinterMock* preamblePrinterMock;
@@ -1045,12 +1045,12 @@ namespace ZenUnit
    STARTUP
    {
       _testRunner._console.reset(_consoleMock = new ConsoleMock);
-   _testRunner._testRunResult.reset(_testRunResultMock = new TestRunResultMock);
-   //_testRunner._futurist.reset(_futuristMock = new FuturistMock<TestRunner>);
-   _testRunner._multiTestClassRunner.reset(_multiTestClassRunnerMock = new MultiTestClassRunnerMock);
+      _testRunner._testRunResult.reset(_testRunResultMock = new TestRunResultMock);
+      //_testRunner._futurist.reset(_futuristMock = new FuturistMock<TestRunner>);
+      _testRunner._multiTestClassRunner.reset(_multiTestClassRunnerMock = new MultiTestClassRunnerMock);
    }
 
-      TEST(Constructor_NewsComponents)
+   TEST(Constructor_NewsComponents)
    {
       TestRunner testRunner;
       POINTER_WAS_NEWED(testRunner._console);
@@ -1094,7 +1094,7 @@ namespace ZenUnit
 
       _testRunnerSelfMockedA.testRunResultMock->ResetStateExceptForSkipsMock.Expect();
 
-      _testRunnerSelfMockedA.consoleMock->WaitForEnterKeyIfDebuggerPresentOrValueTrueMock.Expect();
+      _testRunnerSelfMockedA.consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.Expect();
 
       const vector<string> commandLineArgs{ Random<string>() };
       //
@@ -1106,7 +1106,7 @@ namespace ZenUnit
       ZEN(_testRunnerSelfMockedA.RunTestClassesAndPrintResultsMock.CalledNTimesWith(testrunsArgs, parsedZenUnitArgs));
       ZEN(_testRunnerSelfMockedA.testRunResultMock->ResetStateExceptForSkipsMock.CalledNTimes(testrunsArgs));
       ZEN(_testRunnerSelfMockedA.consoleMock->
-         WaitForEnterKeyIfDebuggerPresentOrValueTrueMock.CalledOnceWith(parsedZenUnitArgs.wait));
+         WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.CalledOnceWith(parsedZenUnitArgs.wait));
       ARE_EQUAL(expectedOverallExitCode, overallExitCode);
    }
 
@@ -1121,8 +1121,8 @@ namespace ZenUnit
    //    2u, true, 0,
    //    2u, true, 1)
    // {
-   //    bool waitForEnterKeyIfPauseModeReturnValue = ZenUnit::Random<bool>();
-   //    _testRunnerSelfMockedB.WaitForEnterKeyIfPauseModeAndHaveNotPausedMock.ExpectAndReturn(waitForEnterKeyIfPauseModeReturnValue);
+   //    bool waitForAnyKeyIfPauseModeReturnValue = ZenUnit::Random<bool>();
+   //    _testRunnerSelfMockedB.WaitForAnyKeyIfPauseModeAndHaveNotPausedMock.ExpectAndReturn(waitForAnyKeyIfPauseModeReturnValue);
    //    bool havePausedInitialValue = ZenUnit::Random<bool>();
    //    _testRunnerSelfMockedB._havePaused = havePausedInitialValue;
 
@@ -1154,9 +1154,9 @@ namespace ZenUnit
    //    //
    //    const int exitCode = _testRunnerSelfMockedB.RunTestClassesAndPrintResults(zenUnitArgs);
    //    //
-   //    ZEN(_testRunnerSelfMockedB.WaitForEnterKeyIfPauseModeAndHaveNotPausedMock.
+   //    ZEN(_testRunnerSelfMockedB.WaitForAnyKeyIfPauseModeAndHaveNotPausedMock.
    //       CalledOnceWith(zenUnitArgs.pause, havePausedInitialValue));
-   //    ARE_EQUAL(waitForEnterKeyIfPauseModeReturnValue, _testRunnerSelfMockedB._havePaused);
+   //    ARE_EQUAL(waitForAnyKeyIfPauseModeReturnValue, _testRunnerSelfMockedB._havePaused);
    //    ZEN(_testRunnerSelfMockedB.testRunStopwatchMock->StartMock.CalledOnce());
    //    ZEN(_testRunnerSelfMockedB.preamblePrinterMock->PrintOpeningThreeLinesMock.CalledOnceWith(
    //       zenUnitArgs, _testRunnerSelfMockedB._multiTestClassRunner.get()));
@@ -1178,31 +1178,31 @@ namespace ZenUnit
    //    ARE_EQUAL(determineExitCodeReturnValueAndExpectedExitCode, exitCode);
    // }
 
-   TEST(WaitForEnterKeyIfPauseMode_PauseModeFalse_DoesNothing_ReturnsFalse)
+   TEST(WaitForAnyKeyIfPauseMode_PauseModeFalse_DoesNothing_ReturnsFalse)
    {
       bool newValueForHavePaused = _testRunner.
-         WaitForEnterKeyIfPauseModeAndHaveNotPaused(false, ZenUnit::Random<bool>());
+         WaitForAnyKeyIfPauseModeAndHaveNotPaused(false, ZenUnit::Random<bool>());
       IS_FALSE(newValueForHavePaused);
    }
 
-   TEST(WaitForEnterKeyIfPauseMode_PauseModeTrue_HavePausedTrue_DoesNothing_ReturnsTrue)
+   TEST(WaitForAnyKeyIfPauseMode_PauseModeTrue_HavePausedTrue_DoesNothing_ReturnsTrue)
    {
       bool newValueForHavePaused = _testRunner.
-         WaitForEnterKeyIfPauseModeAndHaveNotPaused(true, true);
+         WaitForAnyKeyIfPauseModeAndHaveNotPaused(true, true);
       IS_TRUE(newValueForHavePaused);
    }
 
-   TEST(WaitForEnterKeyIfPauseMode_PauseModeTrueHavePausedFalse_WritesMessageAndWaitsForEnterKey_ReturnsTrue)
+   TEST(WaitForAnyKeyIfPauseMode_PauseModeTrueHavePausedFalse_WritesMessageAndWaitsForAnyKey_ReturnsTrue)
    {
       _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WaitForEnterKeyMock.Expect();
+      _consoleMock->WaitForAnyKeyMock.Expect();
       //
       bool newValueForHavePaused = _testRunner.
-         WaitForEnterKeyIfPauseModeAndHaveNotPaused(true, false);
+         WaitForAnyKeyIfPauseModeAndHaveNotPaused(true, false);
       //
       ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
-         "ZenUnit test runner paused. Press Enter to run tests."));
-      ZEN(_consoleMock->WaitForEnterKeyMock.CalledOnce());
+         "ZenUnit test runner paused. Press any key to run tests."));
+      ZEN(_consoleMock->WaitForAnyKeyMock.CalledOnce());
       IS_TRUE(newValueForHavePaused);
    }
 

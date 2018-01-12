@@ -376,7 +376,7 @@ namespace ZenUnit
       _runFilterParser._transformer.reset(_transformerMock = new TransformerMock<string, RunFilter>);
    }
 
-      TEST(DefaultConstructor_NewsTransformer)
+   TEST(DefaultConstructor_NewsTransformer)
    {
       RunFilterParser runFilterParser;
       POINTER_WAS_NEWED(runFilterParser._transformer);

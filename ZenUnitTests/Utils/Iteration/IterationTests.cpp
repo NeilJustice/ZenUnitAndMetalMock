@@ -23,7 +23,7 @@ namespace ZenUnit
       _extraArg = ZenUnit::Random<ExtraArgType>();
    }
 
-      TEST(ExtraArgAny_CollectionEmpty_ReturnsFalse)
+   TEST(ExtraArgAny_CollectionEmpty_ReturnsFalse)
    {
       const CollectionType<T> emptyCollection;
       const auto PredicateThatThrowsIfCalled = [&](const T&, const ExtraArgType&)
