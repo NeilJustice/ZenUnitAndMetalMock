@@ -1551,7 +1551,8 @@ namespace ZenUnit
             runFilter.testName = testName_testCaseNumber[0];
             if (testName_testCaseNumber.size() == 2)
             {
-               runFilter.testCaseNumber = String::ToUnsigned(testName_testCaseNumber[1]);
+               const std::string& testCaseNumberString = testName_testCaseNumber[1];
+               runFilter.testCaseNumber = String::ToUnsigned(testCaseNumberString);
             }
          }
          return runFilter;
@@ -3742,7 +3743,7 @@ None
    public:
       const char* TestClassName() const override
       {
-         return "FilteredOut";
+         return "NoOpTestClassRunner";
       }
 
       size_t NumberOfTestCases() const override
@@ -3815,7 +3816,7 @@ None
          for (const std::unique_ptr<TestClassRunner>& testClassRunner : _testClassRunners)
          {
             const char* const testClassName = testClassRunner->TestClassName();
-            if (strcmp(testClassName, "FilteredOut") != 0)
+            if (strcmp(testClassName, "NoOpTestClassRunner") != 0)
             {
                ++numberOfTestClassesToBeRun;
             }
@@ -3907,9 +3908,8 @@ None
          const size_t numberOfTestClassesToBeRun = multiTestClassRunner->NumberOfTestClassesToBeRun();
          const std::string thirdLinePrefix = MakeThirdLinePrefix(numberOfTestClassesToBeRun);
          const std::string thirdLineSuffix = MakeThirdLineSuffix(zenUnitArgs.random, zenUnitArgs.randomseed);
-         const std::string thirdLine = thirdLinePrefix + thirdLineSuffix;
-         _console->WriteLine(thirdLine);
-         _console->WriteNewLine();
+         const std::string thirdLineAndLineBreak = thirdLinePrefix + thirdLineSuffix + "\n";
+         _console->WriteLine(thirdLineAndLineBreak);
       }
    private:
       virtual std::string MakeThirdLinePrefix(size_t numberOfTestClassesToBeRun) const
@@ -4746,8 +4746,8 @@ None
       void RunTest(const std::unique_ptr<Test>& test, TestClassResult* outTestClassResult) const
       {
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
-         _console->NonMinimalWriteColor("|", Color::Green, zenUnitArgs.printMode);
          const char* const testName = test->Name();
+         _console->NonMinimalWriteColor("|", Color::Green, zenUnitArgs.printMode);
          _console->NonMinimalWrite(testName, zenUnitArgs.printMode);
          test->NonMinimalWritePostTestNameMessage(_console.get(), zenUnitArgs.printMode);
          const std::vector<TestResult> testResults = test->Run();
