@@ -312,9 +312,9 @@ namespace ZenMock
    struct NonVoid0FunctionsMock : public Zen::Mock<NonVoid0Functions>
    {
       ZENMOCK_NONVOID0(int, Virtual)
-         ZENMOCK_NONVOID0_CONST(int, VirtualConst)
-         ZENMOCK_NONVOID0_NONVIRTUAL(int, NonVirtual)
-         ZENMOCK_NONVOID0_NONVIRTUAL_CONST(int, NonVirtualConst)
+      ZENMOCK_NONVOID0_CONST(int, VirtualConst)
+      ZENMOCK_NONVOID0_NONVIRTUAL(int, NonVirtual)
+      ZENMOCK_NONVOID0_NONVIRTUAL_CONST(int, NonVirtualConst)
    };
 
    TESTS(ZenMock_NonVoid0Tests)
@@ -325,9 +325,9 @@ namespace ZenMock
    AFACT(Function_NotExpected_Throws)
    AFACT(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)
    // Value Return Tests
-   AFACT(ExpectAndReturn_CausesFunctionToReturnValue)
-   AFACT(ExpectAndReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
-   AFACT(ExpectAndReturnValuesVector_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
+   AFACT(Return_CausesFunctionToReturnValue)
+   AFACT(ReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
+   AFACT(ReturnValuesVector_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
    EVIDENCE
 
    NonVoid0FunctionsMock _mock;
@@ -415,11 +415,11 @@ namespace ZenMock
 
    // Value Return Tests
 
-   TEST(ExpectAndReturn_CausesFunctionToReturnValue)
+   TEST(Return_CausesFunctionToReturnValue)
    {
       const auto test = [](auto& zenMockObject, auto zenMockedFunctionCall)
       {
-         zenMockObject.ExpectAndReturn(1);
+         zenMockObject.Return(1);
          ARE_EQUAL(1, zenMockedFunctionCall());
          ARE_EQUAL(1, zenMockedFunctionCall());
          zenMockObject.CalledNTimes(2);
@@ -435,11 +435,11 @@ namespace ZenMock
       test(StaticFunction_ZenMock, [&] { return ZENMOCK_BIND0(StaticFunction_ZenMock)(); });
    }
 
-   TEST(ExpectAndReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
+   TEST(ReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
    {
       const auto test = [](auto& zenMockObject, auto zenMockedFunctionCall)
       {
-         zenMockObject.ExpectAndReturnValues(1, 2);
+         zenMockObject.ReturnValues(1, 2);
          ARE_EQUAL(1, zenMockedFunctionCall());
          ARE_EQUAL(2, zenMockedFunctionCall());
          ARE_EQUAL(2, zenMockedFunctionCall());
@@ -456,12 +456,12 @@ namespace ZenMock
       test(StaticFunction_ZenMock, [&] { return ZENMOCK_BIND0(StaticFunction_ZenMock)(); });
    }
 
-   TEST(ExpectAndReturnValuesVector_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
+   TEST(ReturnValuesVector_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
    {
       const auto test = [](auto& zenMockObject, auto zenMockedFunctionCall)
       {
          array<int, 2> values{ { 1, 2 } };
-         zenMockObject.ExpectAndReturnValues(values);
+         zenMockObject.ReturnValues(values);
          ARE_EQUAL(1, zenMockedFunctionCall());
          ARE_EQUAL(2, zenMockedFunctionCall());
          ARE_EQUAL(2, zenMockedFunctionCall());

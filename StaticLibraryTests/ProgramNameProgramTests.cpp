@@ -31,7 +31,7 @@ TEST2X2(Main_ConvertsArgcArgvToStringVector_CallsVectorMain,
    {
       ZENMOCK_NONVOID1_CONST(int, VectorMain, const vector<string>&)
    } program_VectorMainMocked;
-   program_VectorMainMocked.VectorMainMock.ExpectAndReturn(vectorMainReturnValue);
+   program_VectorMainMocked.VectorMainMock.Return(vectorMainReturnValue);
 
    const char* argv[] = { "BinaryPath" };
    //

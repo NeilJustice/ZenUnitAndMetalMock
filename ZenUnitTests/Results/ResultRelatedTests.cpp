@@ -240,7 +240,7 @@ namespace ZenUnit
 
    TEST(NonMinimalPrintResultLine_0FailedTest_WritesOKInGreen)
    {
-      _testClassResultSelfMocked.NumberOfFailedTestCasesMock.ExpectAndReturn(0);
+      _testClassResultSelfMocked.NumberOfFailedTestCasesMock.Return(0);
       ConsoleMock consoleMock;
       consoleMock.WriteMock.Expect();
       consoleMock.NonMinimalWriteColorMock.Expect();
@@ -265,7 +265,7 @@ namespace ZenUnit
       size_t(2),
       size_t(3))
    {
-      _testClassResultSelfMocked.NumberOfFailedTestCasesMock.ExpectAndReturn(numberOfFailedTestCases);
+      _testClassResultSelfMocked.NumberOfFailedTestCasesMock.Return(numberOfFailedTestCases);
       ConsoleMock consoleMock;
       consoleMock.NonMinimalWriteColorMock.Expect();
       consoleMock.NonMinimalWriteNewLineMock.Expect();
@@ -566,7 +566,7 @@ namespace ZenUnit
       if (expectedOverallOutcome == TestOutcome::Success ||
          expectedOverallOutcome == TestOutcome::SuccessButPastDeadline)
       {
-         GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
+         GetArgs_ZenMock.Return(zenUnitArgs);
       }
       const function<const ZenUnitArgs&()> boundMockGetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
       //
@@ -661,7 +661,7 @@ namespace ZenUnit
       _testResult_WriteTestCaseNumberIfAnyMocked.responsibleCallResultField = expectedResponsibleCallResultField;
 
       const string testFailureNumber = Random<string>();
-      _testFailureNumbererMock.NextMock.ExpectAndReturn(testFailureNumber);
+      _testFailureNumbererMock.NextMock.Return(testFailureNumber);
 
       _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex = 1;
       _testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.Expect();
@@ -709,7 +709,7 @@ namespace ZenUnit
          responsibleCallResultField = expectedResponsibleCallResultField;
 
       const string testFailureNumber = Random<string>();
-      _testFailureNumbererMock.NextMock.ExpectAndReturn(testFailureNumber);
+      _testFailureNumbererMock.NextMock.Return(testFailureNumber);
 
       _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex = 1;
       _testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.Expect();
@@ -747,7 +747,7 @@ namespace ZenUnit
       _testResult_WriteTestCaseNumberIfAnyMocked.milliseconds = 10;
 
       const string testFailureNumber = Random<string>();
-      _testFailureNumbererMock.NextMock.ExpectAndReturn(testFailureNumber);
+      _testFailureNumbererMock.NextMock.Return(testFailureNumber);
 
       _consoleMock.WriteLineColorMock.Expect();
       _consoleMock.WriteLineMock.Expect();
@@ -952,7 +952,7 @@ namespace ZenUnit
       {
          ZENMOCK_NONVOID1_CONST(size_t, NumberOfFailedTestCases, const vector<TestClassResult>&)
       } testRunResultSelfMocked;
-      testRunResultSelfMocked.NumberOfFailedTestCasesMock.ExpectAndReturn(numberOfFailedTestCases);
+      testRunResultSelfMocked.NumberOfFailedTestCasesMock.Return(numberOfFailedTestCases);
 
       vector<TestClassResult> testClassResults{ TestClassResult() };
       const vector<TestClassResult> NonMovedFromTestClassResults = testClassResults;

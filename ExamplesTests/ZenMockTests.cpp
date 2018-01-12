@@ -96,11 +96,11 @@ TEST3X3(InteractWithComponentA_CallsEveryFunction_ReturnsSumOfReturnValues,
    // introduced by future LLVM-powered mutation testing frameworks.
    // Because of this strict mocking design, ZenMock mock objects must be
    // explicitly expected before being called by calling either
-   // Expect(), ExpectAndReturn(), ExpectAndReturnValues(), or ExpectAndThrow<ExceptionType>().
+   // Expect(), Return(), ReturnValues(), or Throw<ExceptionType>().
    _componentAMock->VirtualVoidMock.Expect();
    _componentAMock->VirtualVoidConstTwoArgsMock.Expect();
-   _componentAMock->VirtualNonVoidMock.ExpectAndReturn(returnValueA);
-   _componentAMock->VirtualNonVoidConstMock.ExpectAndReturn(returnValueB);
+   _componentAMock->VirtualNonVoidMock.Return(returnValueA);
+   _componentAMock->VirtualNonVoidConstMock.Return(returnValueB);
    //
    int returnValue = _classUnderTest.InteractWithComponentA();
    //

@@ -105,7 +105,7 @@ namespace ZenUnit
       Color::Teal, false,
       Color::Teal, true)
    {
-      _consoleColorerMock->SetColorMock.ExpectAndReturn(setColorReturnValue);
+      _consoleColorerMock->SetColorMock.Return(setColorReturnValue);
       _consoleColorerMock->UnsetColorMock.Expect();
       //
       _console.WriteColor(Message, color);
@@ -197,7 +197,7 @@ namespace ZenUnit
       Color::Teal, false,
       Color::Teal, true)
    {
-      _consoleColorerMock->SetColorMock.ExpectAndReturn(setColorReturnValue);
+      _consoleColorerMock->SetColorMock.Return(setColorReturnValue);
       _consoleColorerMock->UnsetColorMock.Expect();
       //
       _console.WriteLineColor(Message, color);
@@ -279,7 +279,7 @@ namespace ZenUnit
    {
       if (!doWait)
       {
-         _consoleSelfMocked.DebuggerIsPresentMock.ExpectAndReturn(debuggerIsPresent);
+         _consoleSelfMocked.DebuggerIsPresentMock.Return(debuggerIsPresent);
       }
       if (expectPressAnyKeyAndGetChar)
       {
@@ -308,7 +308,7 @@ namespace ZenUnit
       2, false)
    {
       ZENMOCK_NONVOID0_FREE(int, IsDebuggerPresent);
-      IsDebuggerPresent_ZenMock.ExpectAndReturn(isDebuggerPresentReturnValue);
+      IsDebuggerPresent_ZenMock.Return(isDebuggerPresentReturnValue);
       _console.call_IsDebuggerPresent = ZENMOCK_BIND0(IsDebuggerPresent_ZenMock);
       //
       const bool debuggerIsPresent = _console.DebuggerIsPresent();
@@ -319,7 +319,7 @@ namespace ZenUnit
 
    TEST(WaitForAnyKey_CallsGetCh)
    {
-      _getch_ZenMock.ExpectAndReturn(0);
+      _getch_ZenMock.Return(0);
       //
       _console.WaitForAnyKey();
       //
@@ -348,7 +348,7 @@ namespace ZenUnit
    struct ConsoleColorer_SetCallsMocked : public Zen::Mock<ConsoleColorer>
    {
       ZENMOCK_VOID0(SetSupportsColorIfUnset)
-         ZENMOCK_VOID1_CONST(SetTextColor, Color)
+      ZENMOCK_VOID1_CONST(SetTextColor, Color)
    };
 
    ConsoleColorer _consoleColorer;
@@ -377,7 +377,7 @@ namespace ZenUnit
       const bool supportsColorReturnValue = ZenUnit::Random<bool>();
       if (expectSupportsColorCall)
       {
-         _consoleColorer_SupportsColorMocked.SupportsColorMock.ExpectAndReturn(supportsColorReturnValue);
+         _consoleColorer_SupportsColorMocked.SupportsColorMock.Return(supportsColorReturnValue);
       }
       //
       _consoleColorer_SupportsColorMocked.SetSupportsColorIfUnset();
@@ -447,8 +447,8 @@ namespace ZenUnit
       ZENMOCK_NONVOID1_FREE(int, fileno, FILE*);
       ZENMOCK_NONVOID1_FREE(int, isatty, int);
       const int StdoutFileHandle = 1;
-      fileno_ZenMock.ExpectAndReturn(StdoutFileHandle);
-      isatty_ZenMock.ExpectAndReturn(isattyReturnValue);
+      fileno_ZenMock.Return(StdoutFileHandle);
+      isatty_ZenMock.Return(isattyReturnValue);
       _consoleColorer.call_fileno = ZENMOCK_BIND1(fileno_ZenMock);
       _consoleColorer.call_isatty = ZENMOCK_BIND1(isatty_ZenMock);
       //
@@ -473,9 +473,9 @@ namespace ZenUnit
       _consoleColorer.call_SetConsoleTextAttribute = ZENMOCK_BIND2(SetConsoleTextAttribute_ZenMock);
 
       const HANDLE GetStdHandleReturnValue = reinterpret_cast<HANDLE>(1);
-      GetStdHandle_ZenMock.ExpectAndReturn(GetStdHandleReturnValue);
+      GetStdHandle_ZenMock.Return(GetStdHandleReturnValue);
 
-      SetConsoleTextAttribute_ZenMock.ExpectAndReturn(TRUE);
+      SetConsoleTextAttribute_ZenMock.Return(TRUE);
       //
       _consoleColorer.SetTextColor(color);
       //

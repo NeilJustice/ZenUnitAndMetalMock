@@ -50,8 +50,8 @@ namespace ZenUnit
       Tm(3, 10, 1, 117, 11, 30, 45), "11:30:45 TimeZone on Wednesday November 1, 2017",
       Tm(4, 11, 31, 118, 23, 59, 59), "23:59:59 TimeZone on Thursday December 31, 2018")
    {
-      _watchSelfMocked->TMNowMock.ExpectAndReturn(tmNow);
-      _watchSelfMocked->TimeZoneMock.ExpectAndReturn("TimeZone");
+      _watchSelfMocked->TMNowMock.Return(tmNow);
+      _watchSelfMocked->TimeZoneMock.Return("TimeZone");
       //
       const string timeZoneDateTimeNow = _watchSelfMocked->TimeZoneDateTimeNow();
       //
@@ -105,7 +105,7 @@ namespace ZenUnit
    {
       const chrono::time_point<chrono::high_resolution_clock>
          nonDefaultTimePoint = chrono::high_resolution_clock::now();
-      now_ZenMock.ExpectAndReturn(nonDefaultTimePoint);
+      now_ZenMock.Return(nonDefaultTimePoint);
       //
       _stopwatch.Start();
       //
@@ -125,7 +125,7 @@ namespace ZenUnit
       startTime += chrono::milliseconds(Random<unsigned>());
       unsigned number = Random<unsigned>();
       const chrono::time_point<chrono::high_resolution_clock> stopTime = startTime + chrono::milliseconds(number);
-      now_ZenMock.ExpectAndReturn(stopTime);
+      now_ZenMock.Return(stopTime);
       _stopwatch._startTime = startTime;
       //
       const unsigned elapsedMilliseconds = _stopwatch.Stop();

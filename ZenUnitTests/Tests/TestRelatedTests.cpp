@@ -108,10 +108,10 @@ namespace ZenUnit
    {
       CallResult failedConstructorCallResult;
       failedConstructorCallResult.testOutcome = nonSuccessOutcome;
-      _tryCatchCallerMock->CallMock.ExpectAndReturn(failedConstructorCallResult);
+      _tryCatchCallerMock->CallMock.Return(failedConstructorCallResult);
 
       const TestResult constructorFailTestResult = TestResult::TestingNonDefault();
-      _testResultFactoryMock->ConstructorFailMock.ExpectAndReturn(constructorFailTestResult);
+      _testResultFactoryMock->ConstructorFailMock.Return(constructorFailTestResult);
       //
       const vector<TestResult> testResults = _newDeleteTest->Run();
       //
@@ -129,10 +129,10 @@ namespace ZenUnit
       successConstructorCallResult.testOutcome = TestOutcome::Success;
 
       CallResult destructorCallResult;
-      _tryCatchCallerMock->CallMock.ExpectAndReturnValues(successConstructorCallResult, destructorCallResult);
+      _tryCatchCallerMock->CallMock.ReturnValues(successConstructorCallResult, destructorCallResult);
 
       const TestResult sixArgCtorTestResult = TestResult::TestingNonDefault();
-      _testResultFactoryMock->CtorDtorSuccessMock.ExpectAndReturn(sixArgCtorTestResult);
+      _testResultFactoryMock->CtorDtorSuccessMock.Return(sixArgCtorTestResult);
       //
       const vector<TestResult> testResults = _newDeleteTest->Run();
       //
@@ -364,9 +364,9 @@ namespace ZenUnit
       size_t(2))
    {
       TestMock* testMock = new TestMock;
-      testMock->NumberOfTestCasesMock.ExpectAndReturn(testNumberOfTestCases);
+      testMock->NumberOfTestCasesMock.Return(testNumberOfTestCases);
       const unique_ptr<Test> testMockUniquePtr(testMock);
-      _specSectionTestNXNSelfMocked->PmfTokenToTestMock.ExpectAndReturn(&testMockUniquePtr);
+      _specSectionTestNXNSelfMocked->PmfTokenToTestMock.Return(&testMockUniquePtr);
       //
       const size_t numberOfTestCases = _specSectionTestNXNSelfMocked->NumberOfTestCases();
       //
@@ -399,9 +399,9 @@ namespace ZenUnit
    {
       TestMock* const testMock = new TestMock;
       const vector<TestResult> testTestResults{ TestResult::TestingNonDefault() };
-      testMock->RunMock.ExpectAndReturn(testTestResults);
+      testMock->RunMock.Return(testTestResults);
       const unique_ptr<Test> testMockUniquePtr(testMock);
-      _specSectionTestNXNSelfMocked->PmfTokenToTestMock.ExpectAndReturn(&testMockUniquePtr);
+      _specSectionTestNXNSelfMocked->PmfTokenToTestMock.Return(&testMockUniquePtr);
       //
       const vector<TestResult> testResults = _specSectionTestNXNSelfMocked->Run();
       //
@@ -581,10 +581,10 @@ namespace ZenUnit
       struct Test1X1SelfMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
       {
          ZENMOCK_NONVOID0(TestResult, MockableCallBaseRunTestCase)
-            ZENMOCK_VOID3_CONST(NonMinimalPrintTestCaseNumberArgsThenArrow, unsigned short, const vector<string>&, PrintMode)
-            ZENMOCK_VOID2_CONST(NonMinimalWriteLineOKIfSuccess, const TestResult&, PrintMode)
-            Test1X1SelfMocked()
-            : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>("", "", "", 0, 0) {}
+         ZENMOCK_VOID3_CONST(NonMinimalPrintTestCaseNumberArgsThenArrow, unsigned short, const vector<string>&, PrintMode)
+         ZENMOCK_VOID2_CONST(NonMinimalWriteLineOKIfSuccess, const TestResult&, PrintMode)
+         Test1X1SelfMocked()
+         : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>("", "", "", 0, 0) {}
       } test1X1SelfMocked;
 
       ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs, _SelfMocked);
@@ -594,12 +594,12 @@ namespace ZenUnit
          zenUnitArgs.printMode = RandomPrintMode();
          return zenUnitArgs;
       }();
-      GetArgs_ZenMock_SelfMocked.ExpectAndReturn(zenUnitArgs);
+      GetArgs_ZenMock_SelfMocked.Return(zenUnitArgs);
       test1X1SelfMocked.call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock_SelfMocked);
 
       ZENMOCK_NONVOID0_STATIC(vector<string>, ZenUnit::String, CommaSplitExceptQuotedCommas, _SelfMocked);
       const vector<string> splitTestCaseArgs = { "1", "2", "3" };
-      CommaSplitExceptQuotedCommas_ZenMock_SelfMocked.ExpectAndReturn(splitTestCaseArgs);
+      CommaSplitExceptQuotedCommas_ZenMock_SelfMocked.Return(splitTestCaseArgs);
       test1X1SelfMocked.call_String_CommaSplitExceptQuotedCommas
          = ZENMOCK_BIND0(CommaSplitExceptQuotedCommas_ZenMock_SelfMocked);
 
@@ -608,7 +608,7 @@ namespace ZenUnit
       firstTestResult.fullTestName.testName = "FirstTest";
       TestResult secondTestResult;
       secondTestResult.fullTestName.testName = "SecondTest";
-      test1X1SelfMocked.MockableCallBaseRunTestCaseMock.ExpectAndReturnValues(firstTestResult, secondTestResult);
+      test1X1SelfMocked.MockableCallBaseRunTestCaseMock.ReturnValues(firstTestResult, secondTestResult);
       test1X1SelfMocked.NonMinimalWriteLineOKIfSuccessMock.Expect();
       //
       const vector<TestResult> testResults = test1X1SelfMocked.Run();
@@ -664,7 +664,7 @@ namespace ZenUnit
       struct TestNXN_RunNXNTestCaseMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int>>
       {
          ZENMOCK_VOID2(RunNXNTestCase, TestingTestClass*, size_t)
-            TestNXN_RunNXNTestCaseMocked()
+         TestNXN_RunNXNTestCaseMocked()
             : Zen::Mock<TestNXN<TestingTestClass, 1, int>>("", "", "", 0) {}
       } testNXN_RunNXNTestCaseMocked;
 
@@ -860,10 +860,10 @@ namespace ZenUnit
       TestOutcome constructorOutcome, TestOutcome::Anomaly, TestOutcome::Exception)
    {
       const CallResult constructorFailCallResult = CallResultWithOutcome(constructorOutcome);
-      _tryCatchCallerMock->CallMock.ExpectAndReturn(constructorFailCallResult);
+      _tryCatchCallerMock->CallMock.Return(constructorFailCallResult);
 
       const TestResult constructorFailTestResult = TestResult::TestingNonDefault();
-      _testResultFactoryMock->ConstructorFailMock.ExpectAndReturn(constructorFailTestResult);
+      _testResultFactoryMock->ConstructorFailMock.Return(constructorFailTestResult);
       //
       const TestResult testResult = _test->RunTestCase();
       //
@@ -882,10 +882,10 @@ namespace ZenUnit
       const CallResult constructorSuccessCallResult = CallResultWithOutcome(TestOutcome::Success);
       const CallResult startupFailCallResult = CallResultWithOutcome(startupOutcome);
       const CallResult destructorCallResult = CallResultWithOutcome(TestOutcome::Success);
-      _tryCatchCallerMock->CallMock.ExpectAndReturnValues(constructorSuccessCallResult, startupFailCallResult, destructorCallResult);
+      _tryCatchCallerMock->CallMock.ReturnValues(constructorSuccessCallResult, startupFailCallResult, destructorCallResult);
 
       const TestResult startupFailTestResult = TestResult::TestingNonDefault();
-      _testResultFactoryMock->StartupFailMock.ExpectAndReturn(startupFailTestResult);
+      _testResultFactoryMock->StartupFailMock.Return(startupFailTestResult);
       const string testClassName = Random<string>();
       const string testName = Random<string>();
       _test->_fullTestName = FullTestName(testClassName.c_str(), testName.c_str(), 0);
@@ -906,10 +906,10 @@ namespace ZenUnit
    TEST(RunTestCase_AllTestPhasesSucceed_ReturnsExpectedTestResult)
    {
       const CallResult successCallResult = CallResultWithOutcome(TestOutcome::Success);
-      _tryCatchCallerMock->CallMock.ExpectAndReturn(successCallResult);
+      _tryCatchCallerMock->CallMock.Return(successCallResult);
 
       const TestResult sixArgTestResult = TestResult::TestingNonDefault();
-      _testResultFactoryMock->FullCtorMock.ExpectAndReturn(sixArgTestResult);
+      _testResultFactoryMock->FullCtorMock.Return(sixArgTestResult);
       const string testClassName = Random<string>();
       const string testName = Random<string>();
       _test->_fullTestName = FullTestName(testClassName.c_str(), testName.c_str(), 0);

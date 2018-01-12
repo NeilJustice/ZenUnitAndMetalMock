@@ -136,7 +136,7 @@ None
    {
       const unsigned testruns = ZenUnit::Random<unsigned>();
       const unsigned randomseed = ZenUnit::Random<unsigned>();
-      ToUnsigned_ZenMock.ExpectAndReturnValues(testruns, randomseed);
+      ToUnsigned_ZenMock.ReturnValues(testruns, randomseed);
       const vector<string> Args
       {
          TestProgramPath,
@@ -189,7 +189,7 @@ None
    TEST(Parse_Run_ReturnsExpectedZenUnitArgs)
    {
       const vector<RunFilter> runFilters = { RandomRunFilter() };
-      _runFilterParserMock->ParseMock.ExpectAndReturn(runFilters);
+      _runFilterParserMock->ParseMock.Return(runFilters);
 
       const string runArgument = ZenUnit::Random<string>();
       const vector<string> args = { "ExePath", "-run=" + runArgument };
@@ -285,7 +285,7 @@ None
    TEST(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
    {
       const unsigned timesArgValue = Random<unsigned>();
-      ToUnsigned_ZenMock.ExpectAndReturn(timesArgValue);
+      ToUnsigned_ZenMock.Return(timesArgValue);
       const vector<string> Args{ TestProgramPath, "-testruns=" + to_string(timesArgValue) };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
@@ -300,7 +300,7 @@ None
    TEST(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
    {
       const unsigned randomSeedArgValue = Random<unsigned>();
-      ToUnsigned_ZenMock.ExpectAndReturn(randomSeedArgValue);
+      ToUnsigned_ZenMock.Return(randomSeedArgValue);
       const vector<string> Args{ TestProgramPath, "-random=" + to_string(randomSeedArgValue) };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
@@ -320,7 +320,7 @@ None
       numeric_limits<unsigned short>::max() + 1, static_cast<unsigned short>(0),
       numeric_limits<unsigned short>::max() + 2, static_cast<unsigned short>(1))
    {
-      ToUnsigned_ZenMock.ExpectAndReturn(randomSeedArgValue);
+      ToUnsigned_ZenMock.Return(randomSeedArgValue);
       const vector<string> Args{ TestProgramPath, "-random=" + to_string(randomSeedArgValue) };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
@@ -385,7 +385,7 @@ namespace ZenUnit
    TEST(Parse_TransformsRunFilterStringsToRunFilters)
    {
       const vector<RunFilter> runFilters = { RandomRunFilter() };
-      _transformerMock->TransformMock.ExpectAndReturn(runFilters);
+      _transformerMock->TransformMock.Return(runFilters);
       vector<string> runFilterStrings(ZenUnit::Random<size_t>(0, 2));
       //
       const vector<RunFilter> expectedRunFilters = _runFilterParser.Parse(runFilterStrings);

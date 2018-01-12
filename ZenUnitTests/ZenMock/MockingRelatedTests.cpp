@@ -204,7 +204,7 @@ namespace ZenMock
 
       ZenUnit::ZenUnitArgs zenUnitArgs;
       zenUnitArgs.exit0 = exit0;
-      GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
+      GetArgs_ZenMock.Return(zenUnitArgs);
       exit_ZenMock.Expect();
 
       cout << "\n<ZenMock Error Message Testing>";

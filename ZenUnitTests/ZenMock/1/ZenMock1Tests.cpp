@@ -157,9 +157,9 @@ namespace ZenMock
    AFACT(ExpectAndThrow_CalledTwice_Throws)
    AFACT(ExpectAndThrow_ThenFunction_ThrowsTheException)
    // Value Return Tests
-   AFACT(ExpectAndReturn_CausesFunctionToReturnValueThereafter)
-   AFACT(ExpectAndReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereafter)
-   AFACT(ExpectAndReturnContainerValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereafter)
+   AFACT(Return_CausesFunctionToReturnValueThereafter)
+   AFACT(ReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereafter)
+   AFACT(ReturnContainerValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereafter)
    // Assertion Tests
    FACTS(CalledOnceWith_ExpectedFunctionCalled0Or2OrMoreTimes_Throws)
    AFACT(CalledOnceWith_ExpectedFunctionCalledOnceWithMistmatchingArg_Throws)
@@ -250,11 +250,11 @@ namespace ZenMock
 
    // Value Return Tests
 
-   TEST(ExpectAndReturn_CausesFunctionToReturnValueThereafter)
+   TEST(Return_CausesFunctionToReturnValueThereafter)
    {
       const auto test = [&](auto& zenMockObject, auto zenMockedFunctionCall)
       {
-         zenMockObject.ExpectAndReturn(1);
+         zenMockObject.Return(1);
          ARE_EQUAL(1, zenMockedFunctionCall());
          ARE_EQUAL(1, zenMockedFunctionCall());
          zenMockObject.CalledNTimesWith(2, 0);
@@ -270,11 +270,11 @@ namespace ZenMock
       test(Static_ZenMock, [&] { return ZENMOCK_BIND1(Static_ZenMock)(0); });
    }
 
-   TEST(ExpectAndReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereafter)
+   TEST(ReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereafter)
    {
       const auto test = [&](auto& zenMockObject, auto zenMockedFunctionCall)
       {
-         zenMockObject.ExpectAndReturnValues(1, 2);
+         zenMockObject.ReturnValues(1, 2);
          ARE_EQUAL(1, zenMockedFunctionCall());
          ARE_EQUAL(2, zenMockedFunctionCall());
          ARE_EQUAL(2, zenMockedFunctionCall());
@@ -291,12 +291,12 @@ namespace ZenMock
       test(Static_ZenMock, [&] { return ZENMOCK_BIND1(Static_ZenMock)(0); });
    }
 
-   TEST(ExpectAndReturnContainerValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereafter)
+   TEST(ReturnContainerValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereafter)
    {
       const auto test = [&](auto& zenMockObject, auto zenMockedFunctionCall)
       {
          const vector<int> values{ 1, 2 };
-         zenMockObject.ExpectAndReturnValues(values);
+         zenMockObject.ReturnValues(values);
          ARE_EQUAL(1, zenMockedFunctionCall());
          ARE_EQUAL(2, zenMockedFunctionCall());
          ARE_EQUAL(2, zenMockedFunctionCall());

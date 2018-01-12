@@ -54,7 +54,7 @@ namespace ZenUnit
    TEST(GetMachineName_ReturnsEitherCallToGetLinuxOrGetWindowsMachineName)
    {
       const string machineName = ZenUnit::Random<string>();
-      _machineNameGetterSelfMocked.GetLinuxMachineNameMock.ExpectAndReturn(machineName);
+      _machineNameGetterSelfMocked.GetLinuxMachineNameMock.Return(machineName);
       //
       const string returnedMachineName = _machineNameGetterSelfMocked.GetMachineName();
       //
@@ -70,7 +70,7 @@ namespace ZenUnit
    TEST(GetMachineName_ReturnsEitherCallToGetLinuxOrGetWindowsMachineName)
    {
       const string machineName = ZenUnit::Random<string>();
-      _machineNameGetterSelfMocked.GetWindowsMachineNameMock.ExpectAndReturn(machineName);
+      _machineNameGetterSelfMocked.GetWindowsMachineNameMock.Return(machineName);
       //
       const string returnedMachineName = _machineNameGetterSelfMocked.GetMachineName();
       //
@@ -161,7 +161,7 @@ namespace ZenUnit
       //
       ARE_EQUAL(1, _multiTestClassRunner._testClassRunners.size());
       ARE_EQUAL(testClassRunnerA, _multiTestClassRunner._testClassRunners[0].get());
-      testClassRunnerA->TestClassNameMock.ExpectAndReturn("WidgetATests");
+      testClassRunnerA->TestClassNameMock.Return("WidgetATests");
       ARE_EQUAL(1, _multiTestClassRunner.NumberOfTestClassesToBeRun());
       ZEN(testClassRunnerA->TestClassNameMock.CalledOnce());
 
@@ -184,7 +184,7 @@ namespace ZenUnit
       ARE_EQUAL(testClassRunnerA, _multiTestClassRunner._testClassRunners[0].get());
       ARE_EQUAL(noOpTestClassRunner, _multiTestClassRunner._testClassRunners[1].get());
       ARE_EQUAL(testClassRunnerB, _multiTestClassRunner._testClassRunners[2].get());
-      testClassRunnerB->TestClassNameMock.ExpectAndReturn("WidgetBTests");
+      testClassRunnerB->TestClassNameMock.Return("WidgetBTests");
       ARE_EQUAL(2, _multiTestClassRunner.NumberOfTestClassesToBeRun());
       ZEN(testClassRunnerB->TestClassNameMock.CalledOnce());
    }
@@ -210,7 +210,7 @@ namespace ZenUnit
 
    TEST(ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter_TestClassNameMatchesAtLeastOneRunFilter_DoesNotResetTestClassRunnerWithNoOp)
    {
-      _extraArgAnyerMock->ExtraArgAnyMock.ExpectAndReturn(true);
+      _extraArgAnyerMock->ExtraArgAnyMock.Return(true);
       unique_ptr<TestClassRunner> testClassRunner{};
       const vector<RunFilter> runFilters = { RandomRunFilter() };
       //
@@ -223,7 +223,7 @@ namespace ZenUnit
 
    TEST(ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter_TestClassNameDoesNotMatchAnyRunFilter_ResetsTestClassRunnerWithNoOp)
    {
-      _extraArgAnyerMock->ExtraArgAnyMock.ExpectAndReturn(false);
+      _extraArgAnyerMock->ExtraArgAnyMock.Return(false);
       unique_ptr<TestClassRunner> testClassRunner{};
       const vector<RunFilter> runFilters = { RandomRunFilter() };
       //
@@ -239,9 +239,9 @@ namespace ZenUnit
       TestClassRunnerMock* testClassRunnerAMock = new TestClassRunnerMock;
       TestClassRunnerMock* testClassRunnerBMock = new TestClassRunnerMock;
       TestClassRunnerMock* testClassRunnerCMock = new TestClassRunnerMock;
-      testClassRunnerAMock->NumberOfTestCasesMock.ExpectAndReturn(10);
-      testClassRunnerBMock->NumberOfTestCasesMock.ExpectAndReturn(0);
-      testClassRunnerCMock->NumberOfTestCasesMock.ExpectAndReturn(20);
+      testClassRunnerAMock->NumberOfTestCasesMock.Return(10);
+      testClassRunnerBMock->NumberOfTestCasesMock.Return(0);
+      testClassRunnerCMock->NumberOfTestCasesMock.Return(20);
       _multiTestClassRunner.AddTestClassRunner(testClassRunnerAMock);
       _multiTestClassRunner.AddTestClassRunner(testClassRunnerBMock);
       _multiTestClassRunner.AddTestClassRunner(testClassRunnerCMock);
@@ -266,7 +266,7 @@ namespace ZenUnit
       "WidgetTests", "ABCWidgetTests", false)
    {
       TestClassRunnerMock* const testClassRunnerMock = new TestClassRunnerMock;
-      testClassRunnerMock->TestClassNameMock.ExpectAndReturn(testClassName);
+      testClassRunnerMock->TestClassNameMock.Return(testClassName);
       const std::unique_ptr<TestClassRunner> testClassRunner(testClassRunnerMock);
 
       RunFilter runFilter;
@@ -289,7 +289,7 @@ namespace ZenUnit
       _sorterMock->SortMock.Expect();
 
       const vector<TestClassResult> transformReturnValue = { ZenUnit::Random<TestClassResult>() };
-      _transformerMock->TransformMock.ExpectAndReturn(transformReturnValue);
+      _transformerMock->TransformMock.Return(transformReturnValue);
       //
       const vector<TestClassResult> testClassResults = _multiTestClassRunner.RunTestClasses(zenUnitArgs);
       //
@@ -313,7 +313,7 @@ namespace ZenUnit
       _multiTestClassRunner._testClassRunners.resize(testClassRunnersSize);
 
       const vector<TestClassResult> transformReturnValue = { ZenUnit::Random<TestClassResult>() };
-      _transformerMock->RandomTransformMock.ExpectAndReturn(transformReturnValue);
+      _transformerMock->RandomTransformMock.Return(transformReturnValue);
 
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.random = true;
@@ -327,7 +327,7 @@ namespace ZenUnit
       else
       {
          randomseedsetbycode = ZenUnit::Random<unsigned short>();
-         _watchMock->SecondsSince1970CastToUnsignedShortMock.ExpectAndReturn(randomseedsetbycode);
+         _watchMock->SecondsSince1970CastToUnsignedShortMock.Return(randomseedsetbycode);
       }
       //
       const vector<TestClassResult> testClassResults = _multiTestClassRunner.RunTestClasses(zenUnitArgs);
@@ -352,7 +352,7 @@ namespace ZenUnit
    TEST(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)
    {
       TestClassRunnerMock* testClassRunnerMock = new TestClassRunnerMock;
-      testClassRunnerMock->RunTestsMock.ExpectAndReturn(TestClassResult::TestingNonDefault());
+      testClassRunnerMock->RunTestsMock.Return(TestClassResult::TestingNonDefault());
       const unique_ptr<TestClassRunner> testClassRunnerReallyAMock(testClassRunnerMock);
       //
       const TestClassResult testClassResult = MultiTestClassRunner::RunTestClassRunner(testClassRunnerReallyAMock);
@@ -423,7 +423,7 @@ namespace ZenUnit
          _watch.reset(watchMock = new WatchMock);
       }
       ZENMOCK_NONVOID1_CONST(string, MakeThirdLinePrefix, size_t)
-         ZENMOCK_NONVOID2_CONST(string, MakeThirdLineSuffix, bool, unsigned short)
+      ZENMOCK_NONVOID2_CONST(string, MakeThirdLineSuffix, bool, unsigned short)
    } _preamblePrinterSelfMocked;
 
    PreamblePrinter _preamblePrinter;
@@ -449,15 +449,15 @@ namespace ZenUnit
       _preamblePrinterSelfMocked.consoleMock->WriteNewLineMock.Expect();
       MultiTestClassRunnerMock multiTestClassRunnerMock;
       const size_t numberOfTestClassesToBeRun = Random<size_t>();
-      multiTestClassRunnerMock.NumberOfTestClassesToBeRunMock.ExpectAndReturn(numberOfTestClassesToBeRun);
+      multiTestClassRunnerMock.NumberOfTestClassesToBeRunMock.Return(numberOfTestClassesToBeRun);
 
       const string timeZoneDateTimeNow = Random<string>();
-      _preamblePrinterSelfMocked.watchMock->TimeZoneDateTimeNowMock.ExpectAndReturn(timeZoneDateTimeNow);
+      _preamblePrinterSelfMocked.watchMock->TimeZoneDateTimeNowMock.Return(timeZoneDateTimeNow);
 
       const string thirdLinePrefix = Random<string>();
-      _preamblePrinterSelfMocked.MakeThirdLinePrefixMock.ExpectAndReturn(thirdLinePrefix);
+      _preamblePrinterSelfMocked.MakeThirdLinePrefixMock.Return(thirdLinePrefix);
       const string thirdLineSuffix = Random<string>();
-      _preamblePrinterSelfMocked.MakeThirdLineSuffixMock.ExpectAndReturn(thirdLineSuffix);
+      _preamblePrinterSelfMocked.MakeThirdLineSuffixMock.Return(thirdLineSuffix);
 
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.commandLine = Random<string>();
@@ -489,7 +489,7 @@ namespace ZenUnit
       " Running 2 test classes on machine ", size_t(2))
    {
       const string MachineName = Random<string>();
-      _machineNameGetterMock->GetMachineNameMock.ExpectAndReturn(MachineName);
+      _machineNameGetterMock->GetMachineNameMock.Return(MachineName);
       //
       const string thirdLinePrefix = _preamblePrinter.MakeThirdLinePrefix(numberOfTestClasses);
       //
@@ -564,12 +564,12 @@ namespace ZenUnit
    {
    public:
       ZENMOCK_VOID0_CONST(NonMinimalPrintTestClassNameAndNumberOfNamedTests)
-         ZENMOCK_NONVOID2_CONST(bool, ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests, Test*, TestClassResult*)
-         ZENMOCK_VOID2_CONST(NonMinimalPrintResultLine, const TestClassResult*, PrintMode)
-         ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
-         ZENMOCK_VOID0(DoRunTests)
+      ZENMOCK_NONVOID2_CONST(bool, ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests, Test*, TestClassResult*)
+      ZENMOCK_VOID2_CONST(NonMinimalPrintResultLine, const TestClassResult*, PrintMode)
+      ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
+      ZENMOCK_VOID0(DoRunTests)
 
-         const ConsoleMock* consoleMock;
+      const ConsoleMock* consoleMock;
 
       SpecificTestClassRunnerSelfMocked()
          : Zen::Mock<ZenUnit::SpecificTestClassRunner<TestingTestClass>>("")
@@ -622,7 +622,7 @@ namespace ZenUnit
    TEST(HasTestNameThatCaseInsensitiveMatchesPattern_OneNonMatchingTest_ReturnsFalse)
    {
       TestMock* const testMock = new TestMock;
-      testMock->NameMock.ExpectAndReturn("TestName");
+      testMock->NameMock.Return("TestName");
       _specificTestClassRunner->_tests.resize(0);
       _specificTestClassRunner->_tests.emplace_back(testMock);
       //
@@ -639,7 +639,7 @@ namespace ZenUnit
       "testname")
    {
       TestMock* const testMock = new TestMock;
-      testMock->NameMock.ExpectAndReturn("TestName");
+      testMock->NameMock.Return("TestName");
       _specificTestClassRunner->_tests.resize(0);
       _specificTestClassRunner->_tests.emplace_back(testMock);
       //
@@ -656,9 +656,9 @@ namespace ZenUnit
       TestMock* const testMock2 = new TestMock;
       TestMock* const testMock3 = new TestMock;
       TestMock* const testMock4 = new TestMock;
-      testMock1->NameMock.ExpectAndReturn("Prefix_TestName");
-      testMock2->NameMock.ExpectAndReturn("TestName_Suffix");
-      testMock3->NameMock.ExpectAndReturn("TestName");
+      testMock1->NameMock.Return("Prefix_TestName");
+      testMock2->NameMock.Return("TestName_Suffix");
+      testMock3->NameMock.Return("TestName");
       _specificTestClassRunner->_tests.resize(0);
       _specificTestClassRunner->_tests.emplace_back(testMock1);
       _specificTestClassRunner->_tests.emplace_back(testMock2);
@@ -679,11 +679,11 @@ namespace ZenUnit
    {
       _specificTestClassRunner->_tests.resize(3);
       TestMock* const testMockA = new TestMock;
-      testMockA->NumberOfTestCasesMock.ExpectAndReturn(10);
+      testMockA->NumberOfTestCasesMock.Return(10);
       TestMock* const testMockB = new TestMock;
-      testMockB->NumberOfTestCasesMock.ExpectAndReturn(0);
+      testMockB->NumberOfTestCasesMock.Return(0);
       TestMock* const testMockC = new TestMock;
-      testMockC->NumberOfTestCasesMock.ExpectAndReturn(20);
+      testMockC->NumberOfTestCasesMock.Return(20);
       _specificTestClassRunner->_tests[0].reset(testMockA);
       _specificTestClassRunner->_tests[1].reset(testMockB);
       _specificTestClassRunner->_tests[2].reset(testMockC);
@@ -703,7 +703,7 @@ namespace ZenUnit
    {
       _specificTestClassRunnerSelfMocked->NonMinimalPrintTestClassNameAndNumberOfNamedTestsMock.Expect();
       _specificTestClassRunnerSelfMocked->ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock
-         .ExpectAndReturn(testClassTypeNewableAndDeletable);
+         .Return(testClassTypeNewableAndDeletable);
       if (expectDoRunTestsCall)
       {
          _specificTestClassRunnerSelfMocked->DoRunTestsMock.Expect();
@@ -718,7 +718,7 @@ namespace ZenUnit
          zenUnitArgs.printMode = RandomPrintMode();
          return zenUnitArgs;
       }();
-      _specificTestClassRunnerSelfMocked->GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
+      _specificTestClassRunnerSelfMocked->GetArgs_ZenMock.Return(zenUnitArgs);
       //
       const TestClassResult testClassResult = _specificTestClassRunnerSelfMocked->RunTests();
       //
@@ -746,7 +746,7 @@ namespace ZenUnit
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.random = random;
       zenUnitArgs.randomseed = Random<unsigned short>();
-      GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
+      GetArgs_ZenMock.Return(zenUnitArgs);
       if (expectRandomForEach)
       {
          _extraArgMemberForEacherMock->RandomExtraArgMemberForEachMock.Expect();
@@ -793,7 +793,7 @@ namespace ZenUnit
          zenUnitArgs.printMode = RandomPrintMode();
          return zenUnitArgs;
       }();
-      GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
+      GetArgs_ZenMock.Return(zenUnitArgs);
       //
       _specificTestClassRunner->NonMinimalPrintTestClassNameAndNumberOfNamedTests();
       //
@@ -829,7 +829,7 @@ namespace ZenUnit
             static_cast<underlying_type_t<PrintMode>>(PrintMode::MaxValue)));
          return zenUnitArgs;
       }();
-      GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
+      GetArgs_ZenMock.Return(zenUnitArgs);
 
       _consoleMock->NonMinimalWriteColorMock.Expect();
       _consoleMock->NonMinimalWriteMock.Expect();
@@ -842,7 +842,7 @@ namespace ZenUnit
       TestResult testResult;
       testResult.testOutcome = newDeleteTestOutcome;
       const vector<TestResult> testResults{ testResult };
-      testMock.RunMock.ExpectAndReturn(testResults);
+      testMock.RunMock.Return(testResults);
 
       TestClassResultMock testClassResultMock;
       testClassResultMock.AddTestResultsMock.Expect();
@@ -870,19 +870,19 @@ namespace ZenUnit
          zenUnitArgs.printMode = RandomPrintMode();
          return zenUnitArgs;
       }();
-      _specificTestClassRunnerSelfMocked->GetArgs_ZenMock.ExpectAndReturn(zenUnitArgs);
+      _specificTestClassRunnerSelfMocked->GetArgs_ZenMock.Return(zenUnitArgs);
 
       _specificTestClassRunnerSelfMocked->consoleMock->NonMinimalWriteColorMock.Expect();
       _specificTestClassRunnerSelfMocked->consoleMock->NonMinimalWriteMock.Expect();
 
       TestMock* const testMock = new TestMock;
       const string TestName = Random<string>();
-      testMock->NameMock.ExpectAndReturn(TestName.c_str());
+      testMock->NameMock.Return(TestName.c_str());
       testMock->NonMinimalWritePostTestNameMessageMock.Expect();
       TestResult test0;
       test0.fullTestName = FullTestName("", "Test0", 0);
       const vector<TestResult> TestResults{ test0, TestResult() };
-      testMock->RunMock.ExpectAndReturn(TestResults);
+      testMock->RunMock.Return(TestResults);
       testMock->NonMinimalWritePostTestCompletionMessageMock.Expect();
       const unique_ptr<Test> test(testMock);
 
@@ -943,8 +943,8 @@ namespace ZenUnit
    {
       TestClassRunnerMock* leftTestClassRunnerMock = new TestClassRunnerMock;
       TestClassRunnerMock* rightTestClassRunnerMock = new TestClassRunnerMock;
-      leftTestClassRunnerMock->TestClassNameMock.ExpectAndReturn(leftTestClassName);
-      rightTestClassRunnerMock->TestClassNameMock.ExpectAndReturn(rightTestClassName);
+      leftTestClassRunnerMock->TestClassNameMock.Return(leftTestClassName);
+      rightTestClassRunnerMock->TestClassNameMock.Return(rightTestClassName);
       const unique_ptr<TestClassRunner> leftTestClassRunner(leftTestClassRunnerMock);
       const unique_ptr<TestClassRunner> rightTestClassRunner(rightTestClassRunnerMock);
       //
@@ -1027,9 +1027,9 @@ namespace ZenUnit
    {
    public:
       ZENMOCK_NONVOID2_CONST(bool, WaitForAnyKeyIfPauseModeAndHaveNotPaused, bool, bool)
-         ZENMOCK_VOID0(RunTestClasses)
-         ZENMOCK_VOID1(RunTestClassesWithWaitableRunnerThread, unsigned)
-         PreamblePrinterMock* preamblePrinterMock;
+      ZENMOCK_VOID0(RunTestClasses)
+      ZENMOCK_VOID1(RunTestClassesWithWaitableRunnerThread, unsigned)
+      PreamblePrinterMock* preamblePrinterMock;
       MultiTestClassRunnerMock* multiTestClassRunnerMock;
       TestRunResultMock* testRunResultMock;
       StopwatchMock* testRunStopwatchMock;
@@ -1085,12 +1085,12 @@ namespace ZenUnit
       parsedZenUnitArgs.runFilters = { RandomRunFilter(), RandomRunFilter() };
       parsedZenUnitArgs.wait = ZenUnit::Random<bool>();
       parsedZenUnitArgs.testruns = testrunsArgs;
-      _testRunnerSelfMockedA.argsParserMock->ParseMock.ExpectAndReturn(parsedZenUnitArgs);
+      _testRunnerSelfMockedA.argsParserMock->ParseMock.Return(parsedZenUnitArgs);
 
       _testRunnerSelfMockedA.multiTestClassRunnerMock->ApplyRunFiltersIfAnyMock.Expect();
 
       _testRunnerSelfMockedA.RunTestClassesAndPrintResultsMock.
-         ExpectAndReturnValues(firstTestRunExitCode, secondTestRunExitCode);
+         ReturnValues(firstTestRunExitCode, secondTestRunExitCode);
 
       _testRunnerSelfMockedA.testRunResultMock->ResetStateExceptForSkipsMock.Expect();
 
@@ -1110,73 +1110,73 @@ namespace ZenUnit
       ARE_EQUAL(expectedOverallExitCode, overallExitCode);
    }
 
-   // TEST3X3(RunTestClassesAndPrintResults_RunsTestsAndPrintsResults_Returns0IfAllTestsPassedOtherwiseReturns1,
-   //    unsigned maxtotalseconds,
-   //    bool expectRunTestClassesWithWaitableRunnerThread,
-   //    int determineExitCodeReturnValueAndExpectedExitCode,
-   //    0u, false, 0,
-   //    0u, false, 1,
-   //    1u, true, 0,
-   //    1u, true, 1,
-   //    2u, true, 0,
-   //    2u, true, 1)
-   // {
-   //    bool waitForAnyKeyIfPauseModeReturnValue = ZenUnit::Random<bool>();
-   //    _testRunnerSelfMockedB.WaitForAnyKeyIfPauseModeAndHaveNotPausedMock.ExpectAndReturn(waitForAnyKeyIfPauseModeReturnValue);
-   //    bool havePausedInitialValue = ZenUnit::Random<bool>();
-   //    _testRunnerSelfMockedB._havePaused = havePausedInitialValue;
+   TEST3X3(RunTestClassesAndPrintResults_RunsTestsAndPrintsResults_Returns0IfAllTestsPassedOtherwiseReturns1,
+      unsigned maxtotalseconds,
+      bool expectRunTestClassesWithWaitableRunnerThread,
+      int determineExitCodeReturnValueAndExpectedExitCode,
+      0u, false, 0,
+      0u, false, 1,
+      1u, true, 0,
+      1u, true, 1,
+      2u, true, 0,
+      2u, true, 1)
+   {
+      bool waitForAnyKeyIfPauseModeReturnValue = ZenUnit::Random<bool>();
+      _testRunnerSelfMockedB.WaitForAnyKeyIfPauseModeAndHaveNotPausedMock.Return(waitForAnyKeyIfPauseModeReturnValue);
+      bool havePausedInitialValue = ZenUnit::Random<bool>();
+      _testRunnerSelfMockedB._havePaused = havePausedInitialValue;
 
-   //    _testRunnerSelfMockedB.testRunStopwatchMock->StartMock.Expect();
+      _testRunnerSelfMockedB.testRunStopwatchMock->StartMock.Expect();
 
-   //    ZenUnitArgs zenUnitArgs;
-   //    zenUnitArgs.commandLine = Random<string>();
-   //    zenUnitArgs.maxtotalseconds = maxtotalseconds;
-   //    _testRunnerSelfMockedB.preamblePrinterMock->PrintOpeningThreeLinesMock.Expect();
-   //    if (expectRunTestClassesWithWaitableRunnerThread)
-   //    {
-   //       _testRunnerSelfMockedB.RunTestClassesWithWaitableRunnerThreadMock.Expect();
-   //    }
-   //    else
-   //    {
-   //       _testRunnerSelfMockedB.RunTestClassesMock.Expect();
-   //    }
-   //    _testRunnerSelfMockedB.testRunResultMock->PrintTestFailuresAndSkipsMock.Expect();
-   //    _testRunnerSelfMockedB.testRunResultMock->PrintClosingLinesMock.Expect();
+      ZenUnitArgs zenUnitArgs;
+      zenUnitArgs.commandLine = Random<string>();
+      zenUnitArgs.maxtotalseconds = maxtotalseconds;
+      _testRunnerSelfMockedB.preamblePrinterMock->PrintOpeningThreeLinesMock.Expect();
+      if (expectRunTestClassesWithWaitableRunnerThread)
+      {
+         _testRunnerSelfMockedB.RunTestClassesWithWaitableRunnerThreadMock.Expect();
+      }
+      else
+      {
+         _testRunnerSelfMockedB.RunTestClassesMock.Expect();
+      }
+      _testRunnerSelfMockedB.testRunResultMock->PrintTestFailuresAndSkipsMock.Expect();
+      _testRunnerSelfMockedB.testRunResultMock->PrintClosingLinesMock.Expect();
 
-   //    const size_t TotalNumberOfTestCases = Random<size_t>();
-   //    _testRunnerSelfMockedB.multiTestClassRunnerMock->NumberOfTestCasesMock.ExpectAndReturn(TotalNumberOfTestCases);
+      const size_t TotalNumberOfTestCases = Random<size_t>();
+      _testRunnerSelfMockedB.multiTestClassRunnerMock->NumberOfTestCasesMock.Return(TotalNumberOfTestCases);
 
-   //    const unsigned TestRunMilliseconds = Random<unsigned>();
-   //    _testRunnerSelfMockedB.testRunStopwatchMock->StopMock.ExpectAndReturn(TestRunMilliseconds);
+      const unsigned TestRunMilliseconds = Random<unsigned>();
+      _testRunnerSelfMockedB.testRunStopwatchMock->StopMock.Return(TestRunMilliseconds);
 
-   //    _testRunnerSelfMockedB.testRunResultMock->
-   //       DetermineExitCodeMock.ExpectAndReturn(determineExitCodeReturnValueAndExpectedExitCode);
-   //    //
-   //    const int exitCode = _testRunnerSelfMockedB.RunTestClassesAndPrintResults(zenUnitArgs);
-   //    //
-   //    ZEN(_testRunnerSelfMockedB.WaitForAnyKeyIfPauseModeAndHaveNotPausedMock.
-   //       CalledOnceWith(zenUnitArgs.pause, havePausedInitialValue));
-   //    ARE_EQUAL(waitForAnyKeyIfPauseModeReturnValue, _testRunnerSelfMockedB._havePaused);
-   //    ZEN(_testRunnerSelfMockedB.testRunStopwatchMock->StartMock.CalledOnce());
-   //    ZEN(_testRunnerSelfMockedB.preamblePrinterMock->PrintOpeningThreeLinesMock.CalledOnceWith(
-   //       zenUnitArgs, _testRunnerSelfMockedB._multiTestClassRunner.get()));
-   //    if (expectRunTestClassesWithWaitableRunnerThread)
-   //    {
-   //       ZEN(_testRunnerSelfMockedB.RunTestClassesWithWaitableRunnerThreadMock.
-   //          CalledOnceWith(zenUnitArgs.maxtotalseconds));
-   //    }
-   //    else
-   //    {
-   //       ZEN(_testRunnerSelfMockedB.RunTestClassesMock.CalledOnce());
-   //    }
-   //    ZEN(_testRunnerSelfMockedB.testRunResultMock->PrintTestFailuresAndSkipsMock.CalledOnce());
-   //    ZEN(_testRunnerSelfMockedB.multiTestClassRunnerMock->NumberOfTestCasesMock.CalledOnce());
-   //    ZEN(_testRunnerSelfMockedB.testRunStopwatchMock->StopMock.CalledOnce());
-   //    ZEN(_testRunnerSelfMockedB.testRunResultMock->PrintClosingLinesMock.CalledOnceWith(
-   //       TotalNumberOfTestCases, TestRunMilliseconds, zenUnitArgs));
-   //    ZEN(_testRunnerSelfMockedB.testRunResultMock->DetermineExitCodeMock.CalledOnceWith(zenUnitArgs));
-   //    ARE_EQUAL(determineExitCodeReturnValueAndExpectedExitCode, exitCode);
-   // }
+      _testRunnerSelfMockedB.testRunResultMock->
+         DetermineExitCodeMock.Return(determineExitCodeReturnValueAndExpectedExitCode);
+      //
+      const int exitCode = _testRunnerSelfMockedB.RunTestClassesAndPrintResults(zenUnitArgs);
+      //
+      ZEN(_testRunnerSelfMockedB.WaitForAnyKeyIfPauseModeAndHaveNotPausedMock.
+         CalledOnceWith(zenUnitArgs.pause, havePausedInitialValue));
+      ARE_EQUAL(waitForAnyKeyIfPauseModeReturnValue, _testRunnerSelfMockedB._havePaused);
+      ZEN(_testRunnerSelfMockedB.testRunStopwatchMock->StartMock.CalledOnce());
+      ZEN(_testRunnerSelfMockedB.preamblePrinterMock->PrintOpeningThreeLinesMock.CalledOnceWith(
+         zenUnitArgs, _testRunnerSelfMockedB._multiTestClassRunner.get()));
+      if (expectRunTestClassesWithWaitableRunnerThread)
+      {
+         ZEN(_testRunnerSelfMockedB.RunTestClassesWithWaitableRunnerThreadMock.
+            CalledOnceWith(zenUnitArgs.maxtotalseconds));
+      }
+      else
+      {
+         ZEN(_testRunnerSelfMockedB.RunTestClassesMock.CalledOnce());
+      }
+      ZEN(_testRunnerSelfMockedB.testRunResultMock->PrintTestFailuresAndSkipsMock.CalledOnce());
+      ZEN(_testRunnerSelfMockedB.multiTestClassRunnerMock->NumberOfTestCasesMock.CalledOnce());
+      ZEN(_testRunnerSelfMockedB.testRunStopwatchMock->StopMock.CalledOnce());
+      ZEN(_testRunnerSelfMockedB.testRunResultMock->PrintClosingLinesMock.CalledOnceWith(
+         TotalNumberOfTestCases, TestRunMilliseconds, zenUnitArgs));
+      ZEN(_testRunnerSelfMockedB.testRunResultMock->DetermineExitCodeMock.CalledOnceWith(zenUnitArgs));
+      ARE_EQUAL(determineExitCodeReturnValueAndExpectedExitCode, exitCode);
+   }
 
    TEST(WaitForAnyKeyIfPauseMode_PauseModeFalse_DoesNothing_ReturnsFalse)
    {
@@ -1238,7 +1238,7 @@ namespace ZenUnit
       _testRunner._zenUnitArgs = zenUnitArgs;
 
       vector<TestClassResult> testClassResults(1);
-      _multiTestClassRunnerMock->RunTestClassesMock.ExpectAndReturn(testClassResults);
+      _multiTestClassRunnerMock->RunTestClassesMock.Return(testClassResults);
       _testRunResultMock->SetTestClassResultsMock.Expect();
       //
       _testRunner.RunTestClasses();
@@ -1247,32 +1247,33 @@ namespace ZenUnit
       ZEN(_testRunResultMock->SetTestClassResultsMock.CalledOnceWith(testClassResults));
    }
 
-   // TEST2X2(RunTestClassesWithWaitableRunnerThread_SpawnsThreadToCallRunTestClasses_PrintsResultsAndExits1IfThreadTimesOut,
-   //    future_status runnerThreadWaitResult, bool expectTimeoutHandling,
-   //    future_status::ready, false,
-   //    future_status::timeout, true)
-   // {
-   //    const shared_ptr<VoidFutureMock> testClassRunnerDoneFutureMock(new VoidFutureMock);
-   //    testClassRunnerDoneFutureMock->WaitAtMostSecondsMock.ExpectAndReturn(runnerThreadWaitResult);
-   //    _futuristMock->AsyncMock.ExpectAndReturn(testClassRunnerDoneFutureMock);
-   //    if (expectTimeoutHandling)
-   //    {
-   //       _testRunResultMock->PrintTestFailuresAndSkipsMock.Expect();
-   //       _consoleMock->WriteLineAndExitMock.Expect();
-   //    }
-   //    const unsigned MaxTotalSeconds = Random<unsigned>();
-   //    //
-   //    _testRunner.RunTestClassesWithWaitableRunnerThread(MaxTotalSeconds);
-   //    //
-   //    ZEN(_futuristMock->AsyncMock.CalledOnceWith(&TestRunner::RunTestClasses, &_testRunner));
-   //    ZEN(testClassRunnerDoneFutureMock->WaitAtMostSecondsMock.CalledOnceWith(MaxTotalSeconds));
-   //    if (expectTimeoutHandling)
-   //    {
-   //       ZEN(_testRunResultMock->PrintTestFailuresAndSkipsMock.CalledOnce());
-   //       ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(
-   //          "[ZenUnit] Total run time exceeded maximum run time of " + to_string(MaxTotalSeconds) + " seconds.", 1));
-   //    }
-   // }
+    //TEST2X2(RunTestClassesWithWaitableRunnerThread_SpawnsThreadToCallRunTestClasses_PrintsResultsAndExits1IfThreadTimesOut,
+    //   future_status runnerThreadWaitResult, bool expectTimeoutHandling,
+    //   future_status::ready, false,
+    //   future_status::timeout, true)
+    //{
+    //   const shared_ptr<VoidFutureMock> testClassRunnerDoneFutureMock(new VoidFutureMock);
+    //   testClassRunnerDoneFutureMock->WaitAtMostSecondsMock.Return(runnerThreadWaitResult);
+    //   _futuristMock->AsyncMock.Return(testClassRunnerDoneFutureMock);
+    //   if (expectTimeoutHandling)
+    //   {
+    //      _testRunResultMock->PrintTestFailuresAndSkipsMock.Expect();
+    //      _consoleMock->WriteLineAndExitMock.Expect();
+    //   }
+    //   const unsigned MaxTotalSeconds = Random<unsigned>();
+    //   //
+    //   _testRunner.RunTestClassesWithWaitableRunnerThread(MaxTotalSeconds);
+    //   //
+    //   ZEN(_futuristMock->AsyncMock.CalledOnceWith(&TestRunner::RunTestClasses, &_testRunner));
+    //   ZEN(testClassRunnerDoneFutureMock->WaitAtMostSecondsMock.CalledOnceWith(MaxTotalSeconds));
+    //   if (expectTimeoutHandling)
+    //   {
+    //      ZEN(_testRunResultMock->PrintTestFailuresAndSkipsMock.CalledOnce());
+    //      ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(
+    //         "[ZenUnit] Total run time exceeded maximum run time of " + to_string(MaxTotalSeconds) + " seconds.", 1));
+    //   }
+    //}
 
 }; RUNTESTS(TestRunnerTests)
+
 }
