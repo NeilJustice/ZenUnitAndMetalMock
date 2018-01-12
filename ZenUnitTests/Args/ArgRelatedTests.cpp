@@ -12,7 +12,7 @@ namespace ZenUnit
    FACTS(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1)
    FACTS(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0)
    AFACT(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
-   FACTS(Parse_MinimalistOrDetailed_ReturnsExpectedZenUnitArgs)
+   FACTS(Parse_MinimalOrDetailed_ReturnsExpectedZenUnitArgs)
    AFACT(Parse_Run_ReturnsExpectedZenUnitArgs)
    AFACT(Parse_Random_SetsRandomToTrue)
    AFACT(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
@@ -33,7 +33,7 @@ Options:
 
 None
    Run all non-skipped tests while printing detailed information.
--minimalist
+-minimal
    Print only preamble, any test failure details, and conclusion.
 -run=<TestClassName[.TestName],TestClassName[.TestName]...>
    Run only specified case-insensitive test classes and/or tests.
@@ -140,7 +140,7 @@ None
       const vector<string> Args
       {
          TestProgramPath,
-         "-minimalist",
+         "-minimal",
          "-detailed",
          "-pause",
          "-wait",
@@ -172,10 +172,10 @@ None
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST2X2(Parse_MinimalistOrDetailed_ReturnsExpectedZenUnitArgs,
+   TEST2X2(Parse_MinimalOrDetailed_ReturnsExpectedZenUnitArgs,
       const vector<string>& args, PrintMode expectedPrintMode,
       vector<string>{ "ExePath" }, PrintMode::Normal,
-      vector<string>{ "ExePath", "-minimalist" }, PrintMode::Minimalist,
+      vector<string>{ "ExePath", "-minimal" }, PrintMode::Minimal,
       vector<string>{ "ExePath", "-detailed" }, PrintMode::Detailed)
    {
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
@@ -514,7 +514,7 @@ namespace ZenUnit
    {
       SETUP_EQUALIZER_THROWS_TEST(ZenUnitArgs);
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, commandLine, "ZenUnitTests.exe");
-      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, printMode, PrintMode::Minimalist);
+      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, printMode, PrintMode::Minimal);
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, runFilters, vector<RunFilter> { RunFilter() });
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, pause, true);
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, wait, true);

@@ -377,7 +377,7 @@ namespace ZenUnit
 
    TEST2X2(NonMinimalWritePostTestNameMessage_WritesEllipsisIfPrintModeNotMinimal,
       PrintMode printMode, bool expectWriteLineCall,
-      PrintMode::Minimalist, false,
+      PrintMode::Minimal, false,
       PrintMode::Normal, true,
       PrintMode::Detailed, true)
    {
@@ -836,7 +836,7 @@ namespace ZenUnit
 
    TEST(NonMinimalWritePostTestNameMessage_DoesNothing)
    {
-      _test->NonMinimalWritePostTestNameMessage(nullptr, PrintMode::Minimalist);
+      _test->NonMinimalWritePostTestNameMessage(nullptr, PrintMode::Minimal);
       _test->NonMinimalWritePostTestNameMessage(nullptr, PrintMode::Normal);
       _test->NonMinimalWritePostTestNameMessage(nullptr, PrintMode::Detailed);
    }
@@ -844,7 +844,7 @@ namespace ZenUnit
    TEST(PrintPostTestCompletionMessage_DoesNothing)
    {
       TestResultMock testResultMock;
-      _test->NonMinimalWritePostTestCompletionMessage(nullptr, testResultMock, PrintMode::Minimalist);
+      _test->NonMinimalWritePostTestCompletionMessage(nullptr, testResultMock, PrintMode::Minimal);
       _test->NonMinimalWritePostTestCompletionMessage(nullptr, testResultMock, PrintMode::Normal);
       _test->NonMinimalWritePostTestCompletionMessage(nullptr, testResultMock, PrintMode::Detailed);
    }

@@ -355,7 +355,7 @@ namespace ZenUnit
    enum class PrintMode : unsigned char
    {
       Unset,
-      Minimalist,
+      Minimal,
       Normal,
       Detailed,
       MaxValue
@@ -797,7 +797,7 @@ namespace ZenUnit
 
       virtual void NonMinimalWrite(const std::string& message, PrintMode printMode) const
       {
-         if (printMode != PrintMode::Minimalist)
+         if (printMode != PrintMode::Minimal)
          {
             Write(message);
          }
@@ -813,7 +813,7 @@ namespace ZenUnit
 
       virtual void NonMinimalWriteColor(const std::string& message, Color color, PrintMode printMode) const
       {
-         if (printMode != PrintMode::Minimalist)
+         if (printMode != PrintMode::Minimal)
          {
             WriteColor(message, color);
          }
@@ -826,7 +826,7 @@ namespace ZenUnit
 
       virtual void NonMinimalWriteLine(const std::string& message, PrintMode printMode) const
       {
-         if (printMode != PrintMode::Minimalist)
+         if (printMode != PrintMode::Minimal)
          {
             WriteLine(message);
          }
@@ -850,7 +850,7 @@ namespace ZenUnit
 
       virtual void NonMinimalWriteNewLine(PrintMode printMode) const
       {
-         if (printMode != PrintMode::Minimalist)
+         if (printMode != PrintMode::Minimal)
          {
             WriteNewLine();
          }
@@ -865,7 +865,7 @@ namespace ZenUnit
       virtual void NonMinimalWriteStringsCommaSeparated(
          const std::vector<std::string>& strings, size_t startIndex, size_t numberOfStringsToWrite, PrintMode printMode) const
       {
-         if (printMode != PrintMode::Minimalist)
+         if (printMode != PrintMode::Minimal)
          {
             DoWriteStringsCommaSeparated(strings, startIndex, numberOfStringsToWrite);
          }
@@ -1630,9 +1630,9 @@ namespace ZenUnit
          for (size_t argIndex = 1; argIndex < numberOfArgs; ++argIndex)
          {
             const std::string& arg = args[argIndex];
-            if (arg == "-minimalist")
+            if (arg == "-minimal")
             {
-               zenUnitArgs.printMode = PrintMode::Minimalist;
+               zenUnitArgs.printMode = PrintMode::Minimal;
             }
             else if (arg == "-detailed")
             {
@@ -1718,7 +1718,7 @@ Options:
 
 None
    Run all non-skipped tests while printing detailed information.
--minimalist
+-minimal
    Print only preamble, any test failure details, and conclusion.
 -run=<TestClassName[.TestName],TestClassName[.TestName]...>
    Run only specified case-insensitive test classes and/or tests.
@@ -3259,7 +3259,7 @@ None
 
       virtual void NonMinimalWriteLineOKIfSuccess(const Console* console, PrintMode printMode) const
       {
-         if (printMode != PrintMode::Minimalist && testOutcome == TestOutcome::Success)
+         if (printMode != PrintMode::Minimal && testOutcome == TestOutcome::Success)
          {
             console->WriteLineColor("OK", Color::White);
          }
@@ -4866,7 +4866,7 @@ None
       void NonMinimalWritePostTestNameMessage(
          const Console* console, PrintMode printMode) const override
       {
-         if (printMode != PrintMode::Minimalist)
+         if (printMode != PrintMode::Minimal)
          {
             console->WriteLine("...");
          }
