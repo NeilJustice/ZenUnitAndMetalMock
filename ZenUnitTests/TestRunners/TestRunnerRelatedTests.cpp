@@ -35,6 +35,12 @@
 #include "ZenUnitTests/Utils/Concurrency/Mock/VoidFutureMock.h"
 #include "ZenUnitTests/Utils/Time/Mock/StopwatchMock.h"
 
+#include "ZenUnitTests/Utils/Function/Mock/VoidZeroArgMemberFunctionCallerMock.h"
+#include "ZenUnitTests/Utils/Function/Mock/VoidOneArgMemberFunctionCallerMock.h"
+#include "ZenUnitTests/Utils/Function/Mock/NonVoidOneArgMemberFunctionCallerMock.h"
+#include "ZenUnitTests/Utils/Function/Mock/NonVoidTwoArgMemberFunctionCallerMock.h"
+#include "ZenUnitTests/Utils/Function/Mock/VoidTwoArgMemberFunctionCallerMock.h"
+
 namespace ZenUnit
 {
 
@@ -550,51 +556,44 @@ public:
 
 unique_ptr<SpecificTestClassRunner<TestingTestClass>> _specificTestClassRunner;
 ConsoleMock* _consoleMock = nullptr;
-ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
-   const char* const TestClassName = "TestClassName";
+const string _testClassName = ZenUnit::Random<string>();
 
 using ExtraArgMemberForEacherMockType = ExtraArgMemberForEacherMock<
    unique_ptr<Test>, SpecificTestClassRunner<TestingTestClass>,
    void (SpecificTestClassRunner<TestingTestClass>::*)(
       const unique_ptr<Test>& test, TestClassResult*) const, TestClassResult*>;
-const ExtraArgMemberForEacherMockType* _extraArgMemberForEacherMock;
+ExtraArgMemberForEacherMockType* _extraArgMemberForEacherMock;
+VoidZeroArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>>* _voidZeroArgFunctionCallerMock;
+NonVoidTwoArgMemberFunctionCallerMock<bool, SpecificTestClassRunner<TestingTestClass>, Test*, TestClassResult*>* _nonVoidTwoArgFunctionCallerMock;
+VoidTwoArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, const TestClassResult*, PrintMode>* _voidTwoArgFunctionCallerMock;
 
-class SpecificTestClassRunnerSelfMocked : public Zen::Mock<ZenUnit::SpecificTestClassRunner<TestingTestClass>>
-{
-public:
-   ZENMOCK_VOID0_CONST(NonMinimalPrintTestClassNameAndNumberOfNamedTests)
-   ZENMOCK_NONVOID2_CONST(bool, ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests, Test*, TestClassResult*)
-   ZENMOCK_VOID2_CONST(NonMinimalPrintResultLine, const TestClassResult*, PrintMode)
-   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
-   ZENMOCK_VOID0(DoRunTests)
-
-   const ConsoleMock* consoleMock;
-
-   SpecificTestClassRunnerSelfMocked()
-      : Zen::Mock<ZenUnit::SpecificTestClassRunner<TestingTestClass>>("")
-   {
-      _console.reset(consoleMock = new ConsoleMock);
-      call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
-   }
-};
-unique_ptr<SpecificTestClassRunnerSelfMocked> _specificTestClassRunnerSelfMocked;
+ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
 
 STARTUP
 {
-   _specificTestClassRunner = make_unique<SpecificTestClassRunner<TestingTestClass>>(TestClassName);
+   _specificTestClassRunner = make_unique<SpecificTestClassRunner<TestingTestClass>>(_testClassName.c_str());
    _specificTestClassRunner->_console.reset(_consoleMock = new ConsoleMock);
    _specificTestClassRunner->call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
    _specificTestClassRunner->_extraArgMemberForEacher.reset(_extraArgMemberForEacherMock = new ExtraArgMemberForEacherMockType);
-   _specificTestClassRunnerSelfMocked = make_unique<SpecificTestClassRunnerSelfMocked>();
+   _specificTestClassRunner->_voidZeroArgFunctionCaller.reset(
+      _voidZeroArgFunctionCallerMock = new VoidZeroArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>>);
+   _specificTestClassRunner->_nonVoidTwoArgFunctionCaller.reset(
+      _nonVoidTwoArgFunctionCallerMock = new NonVoidTwoArgMemberFunctionCallerMock<bool, SpecificTestClassRunner<TestingTestClass>, Test*, TestClassResult*>);
+   _specificTestClassRunner->_voidTwoArgFunctionCaller.reset(
+      _voidTwoArgFunctionCallerMock = new VoidTwoArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, const TestClassResult*, PrintMode>);
+   _specificTestClassRunner->call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
 }
 
 TEST(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
 {
-   SpecificTestClassRunner<TestingTestClass> specificTestClassRunner(TestClassName);
+   SpecificTestClassRunner<TestingTestClass> specificTestClassRunner(_testClassName.c_str());
    //
    POINTER_WAS_NEWED(specificTestClassRunner._console);
    POINTER_WAS_NEWED(specificTestClassRunner._extraArgMemberForEacher);
-   ARE_EQUAL(TestClassName, specificTestClassRunner._testClassName);
+   POINTER_WAS_NEWED(specificTestClassRunner._voidZeroArgFunctionCaller);
+   POINTER_WAS_NEWED(specificTestClassRunner._nonVoidTwoArgFunctionCaller);
+   POINTER_WAS_NEWED(specificTestClassRunner._voidTwoArgFunctionCaller);
+   ARE_EQUAL(_testClassName.c_str(), specificTestClassRunner._testClassName);
    STD_FUNCTION_TARGETS(TestRunner::GetArgs, specificTestClassRunner.call_TestRunner_GetArgs);
 
    vector<unique_ptr<Test>> expectedTests;
@@ -605,7 +604,7 @@ TEST(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestC
 TEST(TestClassName_ReturnsTestClassName)
 {
    const char* const testClassName = _specificTestClassRunner->TestClassName();
-   ARE_EQUAL(TestClassName, testClassName);
+   ARE_EQUAL(_testClassName.c_str(), testClassName);
 }
 
 TEST(HasTestNameThatCaseInsensitiveMatchesPattern_ZeroTests_ReturnsFalse)
@@ -700,16 +699,17 @@ TEST2X2(RunTests_PrintsTestClassNameAndNumberOfNamedTests_CallsDoRunTests_Prints
    false, false,
    true, true)
 {
-   _specificTestClassRunnerSelfMocked->NonMinimalPrintTestClassNameAndNumberOfNamedTestsMock.Expect();
-   _specificTestClassRunnerSelfMocked->ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock
-      .Return(testClassTypeNewableAndDeletable);
+   _voidZeroArgFunctionCallerMock->ConstCallMock.Expect();
+
+   _nonVoidTwoArgFunctionCallerMock->ConstCallMock.Return(testClassTypeNewableAndDeletable);
+
    if (expectDoRunTestsCall)
    {
-      _specificTestClassRunnerSelfMocked->DoRunTestsMock.Expect();
+      _voidZeroArgFunctionCallerMock->NonConstCallMock.Expect();
    }
-   _specificTestClassRunnerSelfMocked->NonMinimalPrintResultLineMock.Expect();
-   _specificTestClassRunnerSelfMocked->consoleMock->NonMinimalWriteNewLineMock.Expect();
-   _specificTestClassRunnerSelfMocked->_testClassResult = TestClassResult::TestingNonDefault();
+   _voidTwoArgFunctionCallerMock->ConstCallMock.Expect();
+   _consoleMock->NonMinimalWriteNewLineMock.Expect();
+   _specificTestClassRunner->_testClassResult = TestClassResult::TestingNonDefault();
 
    const ZenUnitArgs zenUnitArgs = []
    {
@@ -717,24 +717,27 @@ TEST2X2(RunTests_PrintsTestClassNameAndNumberOfNamedTests_CallsDoRunTests_Prints
       zenUnitArgs.printMode = RandomPrintMode();
       return zenUnitArgs;
    }();
-   _specificTestClassRunnerSelfMocked->GetArgs_ZenMock.Return(zenUnitArgs);
+   GetArgs_ZenMock.Return(zenUnitArgs);
    //
-   const TestClassResult testClassResult = _specificTestClassRunnerSelfMocked->RunTests();
+   const TestClassResult testClassResult = _specificTestClassRunner->RunTests();
    //
-   ZEN(_specificTestClassRunnerSelfMocked->NonMinimalPrintTestClassNameAndNumberOfNamedTestsMock.CalledOnce());
-   ZEN(_specificTestClassRunnerSelfMocked->ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock.CalledOnceWith(
-      &_specificTestClassRunnerSelfMocked->_newDeleteTest, &_specificTestClassRunnerSelfMocked->_testClassResult));
+   ZEN(_voidZeroArgFunctionCallerMock->ConstCallMock.CalledOnceWith(
+       _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::NonMinimalPrintTestClassNameAndNumberOfNamedTests));
+   ZEN(_nonVoidTwoArgFunctionCallerMock->ConstCallMock.CalledOnceWith(
+      _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests,
+      &_specificTestClassRunner->_newDeleteTest, &_specificTestClassRunner->_testClassResult));
    if (expectDoRunTestsCall)
    {
-      ZEN(_specificTestClassRunnerSelfMocked->DoRunTestsMock.CalledOnce());
+      ZEN(_voidZeroArgFunctionCallerMock->NonConstCallMock.CalledOnceWith(
+          _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::DoRunTests));
    }
-   ZEN(_specificTestClassRunnerSelfMocked->GetArgs_ZenMock.CalledOnce());
-   ZEN(_specificTestClassRunnerSelfMocked->NonMinimalPrintResultLineMock.
-      CalledOnceWith(&_specificTestClassRunnerSelfMocked->_testClassResult, zenUnitArgs.printMode));
-   ZEN(_specificTestClassRunnerSelfMocked->consoleMock->
-      NonMinimalWriteNewLineMock.CalledOnceWith(zenUnitArgs.printMode));
+   ZEN(GetArgs_ZenMock.CalledOnce());
+   ZEN(_voidTwoArgFunctionCallerMock->ConstCallMock.CalledOnceWith(
+      _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::NonMinimalPrintResultLine,
+      &_specificTestClassRunner->_testClassResult, zenUnitArgs.printMode));
+   ZEN(_consoleMock->NonMinimalWriteNewLineMock.CalledOnceWith(zenUnitArgs.printMode));
    ARE_EQUAL(TestClassResult::TestingNonDefault(), testClassResult);
-   ARE_EQUAL(TestClassResult(), _specificTestClassRunnerSelfMocked->_testClassResult);
+   ARE_EQUAL(TestClassResult(), _specificTestClassRunner->_testClassResult);
 }
 
 TEST2X2(DoRunTests_RandomlyRunsTestsIfRandomOtherwiseSequentiallyRunsTests,
@@ -784,7 +787,7 @@ TEST2X2(NonMinimalPrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVer
 {
    _consoleMock->NonMinimalWriteColorMock.Expect();
    _consoleMock->NonMinimalWriteLineMock.Expect();
-   _specificTestClassRunner->_testClassName = TestClassName;
+   _specificTestClassRunner->_testClassName = _testClassName.c_str();
    _specificTestClassRunner->_tests.resize(numberOfTests);
    const ZenUnitArgs zenUnitArgs = []
    {
@@ -800,7 +803,7 @@ TEST2X2(NonMinimalPrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVer
    ZEN(_consoleMock->NonMinimalWriteColorMock.CalledAsFollows(
       {
          { "@", Color::Green, zenUnitArgs.printMode },
-      { TestClassName, Color::Green, zenUnitArgs.printMode }
+      { _testClassName.c_str(), Color::Green, zenUnitArgs.printMode }
       }));
    if (expectTestsPlural)
    {
@@ -869,10 +872,10 @@ TEST(RunTest_NonMinimalWritesVerticalBarTestName_RunsTest_AddsTestResultsToTestC
       zenUnitArgs.printMode = RandomPrintMode();
       return zenUnitArgs;
    }();
-   _specificTestClassRunnerSelfMocked->GetArgs_ZenMock.Return(zenUnitArgs);
+   GetArgs_ZenMock.Return(zenUnitArgs);
 
-   _specificTestClassRunnerSelfMocked->consoleMock->NonMinimalWriteColorMock.Expect();
-   _specificTestClassRunnerSelfMocked->consoleMock->NonMinimalWriteMock.Expect();
+   _consoleMock->NonMinimalWriteColorMock.Expect();
+   _consoleMock->NonMinimalWriteMock.Expect();
 
    TestMock* const testMock = new TestMock;
    const string TestName = Random<string>();
@@ -888,20 +891,18 @@ TEST(RunTest_NonMinimalWritesVerticalBarTestName_RunsTest_AddsTestResultsToTestC
    TestClassResultMock testClassResultMock;
    testClassResultMock.AddTestResultsMock.Expect();
    //
-   _specificTestClassRunnerSelfMocked->RunTest(test, &testClassResultMock);
+   _specificTestClassRunner->RunTest(test, &testClassResultMock);
    //
-   ZEN(_specificTestClassRunnerSelfMocked->GetArgs_ZenMock.CalledOnce());
-   ZEN(_specificTestClassRunnerSelfMocked->consoleMock->
-      NonMinimalWriteColorMock.CalledOnceWith("|", Color::Green, zenUnitArgs.printMode));
-   ZEN(_specificTestClassRunnerSelfMocked->consoleMock->
-      NonMinimalWriteMock.CalledOnceWith(TestName, zenUnitArgs.printMode));
+   ZEN(GetArgs_ZenMock.CalledOnce());
+   ZEN(_consoleMock->NonMinimalWriteColorMock.CalledOnceWith("|", Color::Green, zenUnitArgs.printMode));
+   ZEN(_consoleMock->NonMinimalWriteMock.CalledOnceWith(TestName, zenUnitArgs.printMode));
    ZEN(testMock->NameMock.CalledOnce());
    ZEN(testMock->NonMinimalWritePostTestNameMessageMock.CalledOnceWith(
-      _specificTestClassRunnerSelfMocked->_console.get(), zenUnitArgs.printMode));
+      _specificTestClassRunner->_console.get(), zenUnitArgs.printMode));
    ZEN(testMock->RunMock.CalledOnce());
    ZEN(testClassResultMock.AddTestResultsMock.CalledOnceWith(TestResults));
    ZEN(testMock->NonMinimalWritePostTestCompletionMessageMock.CalledOnceWith(
-      _specificTestClassRunnerSelfMocked->_console.get(), test0, zenUnitArgs.printMode));
+      _specificTestClassRunner->_console.get(), test0, zenUnitArgs.printMode));
 }
 
 TEST(NonMinimalPrintResultLine_CallsTestClassResultPrintResultLine)
@@ -960,7 +961,7 @@ FACTS(ParseArgsRunTestClassesPrintResults_ParsesArgs_RunsTestClassesTimesNumberO
 AFACT(WaitForAnyKeyIfPauseMode_PauseModeFalse_DoesNothing_ReturnsFalse)
 AFACT(WaitForAnyKeyIfPauseMode_PauseModeTrue_HavePausedTrue_DoesNothing_ReturnsTrue)
 AFACT(WaitForAnyKeyIfPauseMode_PauseModeTrueHavePausedFalse_WritesMessageAndWaitsForAnyKey_ReturnsTrue)
-//FACTS(RunTestClassesAndPrintResults_RunsTestsAndPrintsResults_Returns0IfAllTestsPassedOtherwiseReturns1)
+FACTS(RunTestClassesAndPrintResults_RunsTestsAndPrintsResults_UsingBackgroundThreadIfMaxTotalSecondsGT0_Returns0IfAllTestsPassedOtherwiseReturns1)
 AFACT(RunTestClasses_RunsTestClasses)
 //FACTS(RunTestClassesWithWaitableRunnerThread_SpawnsThreadToCallRunTestClasses_PrintsResultsAndExits1IfThreadTimesOut)
 EVIDENCE
@@ -968,9 +969,23 @@ EVIDENCE
 TestRunner _testRunner;
 ConsoleMock* _consoleMock = nullptr;
 PreamblePrinterMock* _preamblePrinterMock = nullptr;
+ArgsParserMock* _argsParserMock = nullptr;
+
+using NonVoidOneArgMemberFunctionCallerMockType = NonVoidOneArgMemberFunctionCallerMock<int, TestRunner, const ZenUnitArgs&>;
+NonVoidOneArgMemberFunctionCallerMockType* _nonVoidOneArgMemberFunctionCallerMock;
+
+using VoidOneArgMemberFunctionCallerMockType = VoidOneArgMemberFunctionCallerMock<TestRunner, unsigned>;
+VoidOneArgMemberFunctionCallerMockType* _voidOneArgMemberFunctionCallerMock;
+
+using NonVoidTwoArgMemberFunctionCallerMockType = NonVoidTwoArgMemberFunctionCallerMock<bool, TestRunner, bool, bool >;
+NonVoidTwoArgMemberFunctionCallerMockType* _nonVoidTwoArgMemberFunctionCallerMock = nullptr;
+
+VoidZeroArgMemberFunctionCallerMock<TestRunner>* _voidZeroArgMemberFunctionCallerMock = nullptr;
+
 //FuturistMock<TestRunner>* _futuristMock;
 MultiTestClassRunnerMock* _multiTestClassRunnerMock = nullptr;
 TestRunResultMock* _testRunResultMock = nullptr;
+StopwatchMock* _testRunStopwatchMock = nullptr;
 
 class TestingTestClass
 {
@@ -981,52 +996,19 @@ public:
    }
 };
 
-class TestRunnerSelfMockedA : public Zen::Mock<TestRunner>
-{
-public:
-   ZENMOCK_NONVOID1(int, RunTestClassesAndPrintResults, const ZenUnitArgs&)
-      ArgsParserMock* argsParserMock;
-   PreamblePrinterMock* preamblePrinterMock;
-   MultiTestClassRunnerMock* multiTestClassRunnerMock;
-   TestRunResultMock* testRunResultMock;
-   ConsoleMock* consoleMock;
-   StopwatchMock* testRunStopwatchMock;
-   TestRunnerSelfMockedA()
-   {
-      _argsParser.reset(argsParserMock = new ArgsParserMock);
-      _preamblePrinter.reset(preamblePrinterMock = new PreamblePrinterMock);
-      _multiTestClassRunner.reset(multiTestClassRunnerMock = new MultiTestClassRunnerMock);
-      _testRunResult.reset(testRunResultMock = new TestRunResultMock);
-      _console.reset(consoleMock = new ConsoleMock);
-      _testRunStopwatch.reset(testRunStopwatchMock = new StopwatchMock);
-   }
-} _testRunnerSelfMockedA;
-
-class TestRunnerSelfMockedB : public Zen::Mock<TestRunner>
-{
-public:
-   ZENMOCK_NONVOID2_CONST(bool, WaitForAnyKeyIfPauseModeAndHaveNotPaused, bool, bool)
-   ZENMOCK_VOID0(RunTestClasses)
-   ZENMOCK_VOID1(RunTestClassesWithWaitableRunnerThread, unsigned)
-   PreamblePrinterMock* preamblePrinterMock;
-   MultiTestClassRunnerMock* multiTestClassRunnerMock;
-   TestRunResultMock* testRunResultMock;
-   StopwatchMock* testRunStopwatchMock;
-   TestRunnerSelfMockedB()
-   {
-      _preamblePrinter.reset(preamblePrinterMock = new PreamblePrinterMock);
-      _multiTestClassRunner.reset(multiTestClassRunnerMock = new MultiTestClassRunnerMock);
-      _testRunResult.reset(testRunResultMock = new TestRunResultMock);
-      _testRunStopwatch.reset(testRunStopwatchMock = new StopwatchMock);
-   }
-} _testRunnerSelfMockedB;
-
 STARTUP
 {
    _testRunner._console.reset(_consoleMock = new ConsoleMock);
+   _testRunner._preamblePrinter.reset(_preamblePrinterMock = new PreamblePrinterMock);
+   _testRunner._argsParser.reset(_argsParserMock = new ArgsParserMock);
    _testRunner._testRunResult.reset(_testRunResultMock = new TestRunResultMock);
+   _testRunner._nonVoidOneArgMemberFunctionCaller.reset(_nonVoidOneArgMemberFunctionCallerMock = new NonVoidOneArgMemberFunctionCallerMockType);
+   _testRunner._voidOneArgMemberFunctionCaller.reset(_voidOneArgMemberFunctionCallerMock = new VoidOneArgMemberFunctionCallerMockType);
+   _testRunner._nonVoidTwoArgMemberFunctionCaller.reset(_nonVoidTwoArgMemberFunctionCallerMock = new NonVoidTwoArgMemberFunctionCallerMockType);
+   _testRunner._voidZeroArgMemberFunctionCaller.reset(_voidZeroArgMemberFunctionCallerMock = new VoidZeroArgMemberFunctionCallerMock<TestRunner>);
    //_testRunner._futurist.reset(_futuristMock = new FuturistMock<TestRunner>);
    _testRunner._multiTestClassRunner.reset(_multiTestClassRunnerMock = new MultiTestClassRunnerMock);
+   _testRunner._testRunStopwatch.reset(_testRunStopwatchMock = new StopwatchMock);
 }
 
 TEST(Constructor_NewsComponents)
@@ -1035,6 +1017,10 @@ TEST(Constructor_NewsComponents)
    POINTER_WAS_NEWED(testRunner._console);
    POINTER_WAS_NEWED(testRunner._preamblePrinter);
    POINTER_WAS_NEWED(testRunner._argsParser);
+   POINTER_WAS_NEWED(testRunner._nonVoidOneArgMemberFunctionCaller);
+   POINTER_WAS_NEWED(testRunner._voidOneArgMemberFunctionCaller);
+   POINTER_WAS_NEWED(testRunner._nonVoidTwoArgMemberFunctionCaller);
+   POINTER_WAS_NEWED(testRunner._voidZeroArgMemberFunctionCaller);
    //POINTER_WAS_NEWED(testRunner._futurist);
    POINTER_WAS_NEWED(testRunner._multiTestClassRunner);
    POINTER_WAS_NEWED(testRunner._testRunResult);
@@ -1064,32 +1050,30 @@ TEST4X4(ParseArgsRunTestClassesPrintResults_ParsesArgs_RunsTestClassesTimesNumbe
    parsedZenUnitArgs.runFilters = { RandomRunFilter(), RandomRunFilter() };
    parsedZenUnitArgs.wait = ZenUnit::Random<bool>();
    parsedZenUnitArgs.testruns = testrunsArgs;
-   _testRunnerSelfMockedA.argsParserMock->ParseMock.Return(parsedZenUnitArgs);
+   _argsParserMock->ParseMock.Return(parsedZenUnitArgs);
 
-   _testRunnerSelfMockedA.multiTestClassRunnerMock->ApplyRunFiltersIfAnyMock.Expect();
+   _multiTestClassRunnerMock->ApplyRunFiltersIfAnyMock.Expect();
 
-   _testRunnerSelfMockedA.RunTestClassesAndPrintResultsMock.
-      ReturnValues(firstTestRunExitCode, secondTestRunExitCode);
+   _nonVoidOneArgMemberFunctionCallerMock->NonConstCallMock.ReturnValues(firstTestRunExitCode, secondTestRunExitCode);
 
-   _testRunnerSelfMockedA.testRunResultMock->ResetStateExceptForSkipsMock.Expect();
+   _testRunResultMock->ResetStateExceptForSkipsMock.Expect();
 
-   _testRunnerSelfMockedA.consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.Expect();
+   _consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.Expect();
 
    const vector<string> commandLineArgs{ Random<string>() };
    //
-   const int overallExitCode = _testRunnerSelfMockedA.ParseArgsRunTestClassesPrintResults(commandLineArgs);
+   const int overallExitCode = _testRunner.ParseArgsRunTestClassesPrintResults(commandLineArgs);
    //
-   ZEN(_testRunnerSelfMockedA.argsParserMock->ParseMock.CalledOnceWith(commandLineArgs));
-   ZEN(_testRunnerSelfMockedA.multiTestClassRunnerMock->
-      ApplyRunFiltersIfAnyMock.CalledOnceWith(parsedZenUnitArgs.runFilters));
-   ZEN(_testRunnerSelfMockedA.RunTestClassesAndPrintResultsMock.CalledNTimesWith(testrunsArgs, parsedZenUnitArgs));
-   ZEN(_testRunnerSelfMockedA.testRunResultMock->ResetStateExceptForSkipsMock.CalledNTimes(testrunsArgs));
-   ZEN(_testRunnerSelfMockedA.consoleMock->
-      WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.CalledOnceWith(parsedZenUnitArgs.wait));
+   ZEN(_argsParserMock->ParseMock.CalledOnceWith(commandLineArgs));
+   ZEN(_multiTestClassRunnerMock->ApplyRunFiltersIfAnyMock.CalledOnceWith(parsedZenUnitArgs.runFilters));
+   ZEN(_nonVoidOneArgMemberFunctionCallerMock->NonConstCallMock.CalledNTimesWith(
+      testrunsArgs, &_testRunner, &TestRunner::RunTestClassesAndPrintResults, parsedZenUnitArgs));
+   ZEN(_testRunResultMock->ResetStateExceptForSkipsMock.CalledNTimes(testrunsArgs));
+   ZEN(_consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.CalledOnceWith(parsedZenUnitArgs.wait));
    ARE_EQUAL(expectedOverallExitCode, overallExitCode);
 }
 
-TEST3X3(RunTestClassesAndPrintResults_RunsTestsAndPrintsResults_Returns0IfAllTestsPassedOtherwiseReturns1,
+TEST3X3(RunTestClassesAndPrintResults_RunsTestsAndPrintsResults_UsingBackgroundThreadIfMaxTotalSecondsGT0_Returns0IfAllTestsPassedOtherwiseReturns1,
    unsigned maxtotalseconds,
    bool expectRunTestClassesWithWaitableRunnerThread,
    int determineExitCodeReturnValueAndExpectedExitCode,
@@ -1101,59 +1085,59 @@ TEST3X3(RunTestClassesAndPrintResults_RunsTestsAndPrintsResults_Returns0IfAllTes
    2u, true, 1)
 {
    bool waitForAnyKeyIfPauseModeReturnValue = ZenUnit::Random<bool>();
-   _testRunnerSelfMockedB.WaitForAnyKeyIfPauseModeAndHaveNotPausedMock.Return(waitForAnyKeyIfPauseModeReturnValue);
+   _nonVoidTwoArgMemberFunctionCallerMock->ConstCallMock.Return(waitForAnyKeyIfPauseModeReturnValue);
    bool havePausedInitialValue = ZenUnit::Random<bool>();
-   _testRunnerSelfMockedB._havePaused = havePausedInitialValue;
+   _testRunner._havePaused = havePausedInitialValue;
 
-   _testRunnerSelfMockedB.testRunStopwatchMock->StartMock.Expect();
+   _testRunStopwatchMock->StartMock.Expect();
 
    ZenUnitArgs zenUnitArgs;
    zenUnitArgs.commandLine = Random<string>();
    zenUnitArgs.maxtotalseconds = maxtotalseconds;
-   _testRunnerSelfMockedB.preamblePrinterMock->PrintOpeningThreeLinesMock.Expect();
+   _preamblePrinterMock->PrintOpeningThreeLinesMock.Expect();
    if (expectRunTestClassesWithWaitableRunnerThread)
    {
-      _testRunnerSelfMockedB.RunTestClassesWithWaitableRunnerThreadMock.Expect();
+      _voidOneArgMemberFunctionCallerMock->NonConstCallMock.Expect();
    }
    else
    {
-      _testRunnerSelfMockedB.RunTestClassesMock.Expect();
+      _voidZeroArgMemberFunctionCallerMock->NonConstCallMock.Expect();
    }
-   _testRunnerSelfMockedB.testRunResultMock->PrintTestFailuresAndSkipsMock.Expect();
-   _testRunnerSelfMockedB.testRunResultMock->PrintClosingLinesMock.Expect();
+   _testRunResultMock->PrintTestFailuresAndSkipsMock.Expect();
+   _testRunResultMock->PrintClosingLinesMock.Expect();
 
    const size_t TotalNumberOfTestCases = Random<size_t>();
-   _testRunnerSelfMockedB.multiTestClassRunnerMock->NumberOfTestCasesMock.Return(TotalNumberOfTestCases);
+   _multiTestClassRunnerMock->NumberOfTestCasesMock.Return(TotalNumberOfTestCases);
 
    const unsigned TestRunMilliseconds = Random<unsigned>();
-   _testRunnerSelfMockedB.testRunStopwatchMock->StopMock.Return(TestRunMilliseconds);
+   _testRunStopwatchMock->StopMock.Return(TestRunMilliseconds);
 
-   _testRunnerSelfMockedB.testRunResultMock->
-      DetermineExitCodeMock.Return(determineExitCodeReturnValueAndExpectedExitCode);
+   _testRunResultMock->DetermineExitCodeMock.Return(determineExitCodeReturnValueAndExpectedExitCode);
    //
-   const int exitCode = _testRunnerSelfMockedB.RunTestClassesAndPrintResults(zenUnitArgs);
+   const int exitCode = _testRunner.RunTestClassesAndPrintResults(zenUnitArgs);
    //
-   ZEN(_testRunnerSelfMockedB.WaitForAnyKeyIfPauseModeAndHaveNotPausedMock.
-      CalledOnceWith(zenUnitArgs.pause, havePausedInitialValue));
-   ARE_EQUAL(waitForAnyKeyIfPauseModeReturnValue, _testRunnerSelfMockedB._havePaused);
-   ZEN(_testRunnerSelfMockedB.testRunStopwatchMock->StartMock.CalledOnce());
-   ZEN(_testRunnerSelfMockedB.preamblePrinterMock->PrintOpeningThreeLinesMock.CalledOnceWith(
-      zenUnitArgs, _testRunnerSelfMockedB._multiTestClassRunner.get()));
+   ZEN(_nonVoidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
+       &_testRunner, &TestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPaused, zenUnitArgs.pause, havePausedInitialValue));
+   ARE_EQUAL(waitForAnyKeyIfPauseModeReturnValue, _testRunner._havePaused);
+   ZEN(_testRunStopwatchMock->StartMock.CalledOnce());
+   ZEN(_preamblePrinterMock->PrintOpeningThreeLinesMock.CalledOnceWith(
+       zenUnitArgs, _testRunner._multiTestClassRunner.get()));
    if (expectRunTestClassesWithWaitableRunnerThread)
    {
-      ZEN(_testRunnerSelfMockedB.RunTestClassesWithWaitableRunnerThreadMock.
-         CalledOnceWith(zenUnitArgs.maxtotalseconds));
+      ZEN(_voidOneArgMemberFunctionCallerMock->NonConstCallMock.CalledOnceWith(
+         &_testRunner, &TestRunner::RunTestClassesWithWaitableRunnerThread, zenUnitArgs.maxtotalseconds));
    }
    else
    {
-      ZEN(_testRunnerSelfMockedB.RunTestClassesMock.CalledOnce());
+      ZEN(_voidZeroArgMemberFunctionCallerMock->NonConstCallMock.CalledOnceWith(
+          &_testRunner, &TestRunner::RunTestClasses));
    }
-   ZEN(_testRunnerSelfMockedB.testRunResultMock->PrintTestFailuresAndSkipsMock.CalledOnce());
-   ZEN(_testRunnerSelfMockedB.multiTestClassRunnerMock->NumberOfTestCasesMock.CalledOnce());
-   ZEN(_testRunnerSelfMockedB.testRunStopwatchMock->StopMock.CalledOnce());
-   ZEN(_testRunnerSelfMockedB.testRunResultMock->PrintClosingLinesMock.CalledOnceWith(
-      TotalNumberOfTestCases, TestRunMilliseconds, zenUnitArgs));
-   ZEN(_testRunnerSelfMockedB.testRunResultMock->DetermineExitCodeMock.CalledOnceWith(zenUnitArgs));
+   ZEN(_testRunResultMock->PrintTestFailuresAndSkipsMock.CalledOnce());
+   ZEN(_multiTestClassRunnerMock->NumberOfTestCasesMock.CalledOnce());
+   ZEN(_testRunStopwatchMock->StopMock.CalledOnce());
+   ZEN(_testRunResultMock->PrintClosingLinesMock.CalledOnceWith(
+       TotalNumberOfTestCases, TestRunMilliseconds, zenUnitArgs));
+   ZEN(_testRunResultMock->DetermineExitCodeMock.CalledOnceWith(zenUnitArgs));
    ARE_EQUAL(determineExitCodeReturnValueAndExpectedExitCode, exitCode);
 }
 

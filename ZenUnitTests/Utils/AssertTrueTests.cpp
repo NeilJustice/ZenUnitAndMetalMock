@@ -3,7 +3,7 @@
 
 namespace ZenUnit
 {
-   TESTS(assert_trueTests)
+   TESTS(AssertTrueTests)
    AFACT(assert_true_IsTrue_DoesNothing)
    AFACT(assert_true_IsFalse_FromOperatorParentheses_ThrowsLogicError)
    AFACT(assert_true_IsFalse_FromFunction_ThrowsLogicError)
@@ -66,5 +66,5 @@ namespace ZenUnit
       f();
    }
 
-   }; RUNTESTS(assert_trueTests)
+   }; RUNTESTS(AssertTrueTests)
 }

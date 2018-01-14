@@ -4172,6 +4172,51 @@ None
       }
    };
 
+   template<typename ReturnType, typename ClassType>
+   class ZeroArgMemberFunctionCaller
+   {
+   public:
+      virtual ReturnType ConstCall(
+         const ClassType* classPointer, ReturnType (ClassType::*constMemberFunction)() const) const
+      {
+         return (classPointer->*constMemberFunction)();
+      }
+
+      virtual ReturnType NonConstCall(
+         ClassType* classPointer, ReturnType (ClassType::*nonConstMemberFunction)()) const
+      {
+         return (classPointer->*nonConstMemberFunction)();
+      }
+
+      virtual ~ZeroArgMemberFunctionCaller() = default;
+   };
+
+   template<typename ReturnType, typename ClassType, typename Arg1Type>
+   class OneArgMemberFunctionCaller
+   {
+   public:
+      virtual ReturnType NonConstCall(
+         ClassType* classPointer, ReturnType (ClassType::*nonConstMemberFunction)(Arg1Type), Arg1Type arg1) const
+      {
+         return (classPointer->*nonConstMemberFunction)(arg1);
+      }
+
+      virtual ~OneArgMemberFunctionCaller() = default;
+   };
+
+   template<typename ReturnType, typename ClassType, typename Arg1Type, typename Arg2Type>
+   class TwoArgMemberFunctionCaller
+   {
+   public:
+      virtual ReturnType ConstCall(
+         const ClassType* classPointer, ReturnType(ClassType::*constMemberFunction)(Arg1Type, Arg2Type) const, Arg1Type arg1, Arg2Type arg2) const
+      {
+         return (classPointer->*constMemberFunction)(arg1, arg2);
+      }
+
+      virtual ~TwoArgMemberFunctionCaller() = default;
+   };
+
    class TestRunner
    {
       friend class TestRunnerTests;
@@ -4179,6 +4224,10 @@ None
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const PreamblePrinter> _preamblePrinter;
       std::unique_ptr<const ArgsParser> _argsParser;
+      std::unique_ptr<const OneArgMemberFunctionCaller<int, TestRunner, const ZenUnitArgs&>> _nonVoidOneArgMemberFunctionCaller;
+      std::unique_ptr<const OneArgMemberFunctionCaller<void, TestRunner, unsigned>> _voidOneArgMemberFunctionCaller;
+      std::unique_ptr<const TwoArgMemberFunctionCaller<bool, TestRunner, bool, bool>> _nonVoidTwoArgMemberFunctionCaller;
+      std::unique_ptr<const ZeroArgMemberFunctionCaller<void, TestRunner>> _voidZeroArgMemberFunctionCaller;
       //std::unique_ptr<const Futurist<TestRunner>> _futurist;
       std::unique_ptr<Stopwatch> _testRunStopwatch;
       std::unique_ptr<MultiTestClassRunner> _multiTestClassRunner;
@@ -4190,6 +4239,10 @@ None
          : _console(std::make_unique<Console>())
          , _preamblePrinter(std::make_unique<PreamblePrinter>())
          , _argsParser(std::make_unique<ArgsParser>())
+         , _nonVoidOneArgMemberFunctionCaller(std::make_unique<OneArgMemberFunctionCaller<int, TestRunner, const ZenUnitArgs&>>())
+         , _voidOneArgMemberFunctionCaller(std::make_unique<OneArgMemberFunctionCaller<void, TestRunner, unsigned>>())
+         , _nonVoidTwoArgMemberFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<bool, TestRunner, bool, bool>>())
+         , _voidZeroArgMemberFunctionCaller(std::make_unique<ZeroArgMemberFunctionCaller<void, TestRunner>>())
          //, _futurist(new Futurist<TestRunner>)
          , _testRunStopwatch(std::make_unique<Stopwatch>())
          , _multiTestClassRunner(std::make_unique<MultiTestClassRunner>())
@@ -4238,7 +4291,8 @@ None
          int overallExitCode = 0;
          for (unsigned testRunIndex = 0; testRunIndex < _zenUnitArgs.testruns; ++testRunIndex)
          {
-            const int testRunExitCode = RunTestClassesAndPrintResults(_zenUnitArgs);
+            const int testRunExitCode = _nonVoidOneArgMemberFunctionCaller->NonConstCall(
+               this, &TestRunner::RunTestClassesAndPrintResults, _zenUnitArgs);
             assert_true(testRunExitCode == 0 || testRunExitCode == 1);
             overallExitCode |= testRunExitCode;
             _testRunResult->ResetStateExceptForSkips();
@@ -4247,7 +4301,7 @@ None
          return overallExitCode;
       }
    private:
-      virtual bool WaitForAnyKeyIfPauseModeAndHaveNotPaused(bool pauseMode, bool havePaused) const
+      bool WaitForAnyKeyIfPauseModeAndHaveNotPaused(bool pauseMode, bool havePaused) const
       {
          if (!pauseMode)
          {
@@ -4262,18 +4316,20 @@ None
          return true;
       }
 
-      virtual int RunTestClassesAndPrintResults(const ZenUnitArgs& zenUnitArgs)
+      int RunTestClassesAndPrintResults(const ZenUnitArgs& zenUnitArgs)
       {
          _preamblePrinter->PrintOpeningThreeLines(zenUnitArgs, _multiTestClassRunner.get());
-         _havePaused = WaitForAnyKeyIfPauseModeAndHaveNotPaused(zenUnitArgs.pause, _havePaused);
+         _havePaused = _nonVoidTwoArgMemberFunctionCaller->ConstCall(
+            this, &TestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPaused, zenUnitArgs.pause, _havePaused);
          _testRunStopwatch->Start();
          if (zenUnitArgs.maxtotalseconds > 0)
          {
-            //RunTestClassesWithWaitableRunnerThread(zenUnitArgs.maxtotalseconds);
+            _voidOneArgMemberFunctionCaller->NonConstCall(
+               this, &TestRunner::RunTestClassesWithWaitableRunnerThread, zenUnitArgs.maxtotalseconds);
          }
          else
          {
-            RunTestClasses();
+            _voidZeroArgMemberFunctionCaller->NonConstCall(this, &TestRunner::RunTestClasses);
          }
          _testRunResult->PrintTestFailuresAndSkips();
          const size_t numberOfTestCases = _multiTestClassRunner->NumberOfTestCases();
@@ -4283,13 +4339,13 @@ None
          return testRunExitCode;
       }
 
-      virtual void RunTestClasses()
+      void RunTestClasses()
       {
          std::vector<TestClassResult> testClassResults = _multiTestClassRunner->RunTestClasses(_zenUnitArgs);
          _testRunResult->SetTestClassResults(std::move(testClassResults));
       }
 
-      virtual void RunTestClassesWithWaitableRunnerThread(unsigned /*maxtTotalSeconds*/)
+      void RunTestClassesWithWaitableRunnerThread(unsigned /*maxtTotalSeconds*/)
       {
          // const std::shared_ptr<const VoidFuture> testClassRunnerDoneFuture = _futurist->Async(&TestRunner::RunTestClasses, this);
          // const std::future_status waitResult = testClassRunnerDoneFuture->WaitAtMostSeconds(maxtTotalSeconds);
@@ -4642,6 +4698,11 @@ None
          void (SpecificTestClassRunner::*)(const std::unique_ptr<Test>& test, TestClassResult*) const,
          TestClassResult*>;
       std::unique_ptr<const ExtraArgMemberForEacherType> _extraArgMemberForEacher;
+      std::unique_ptr<const ZeroArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>>> _voidZeroArgFunctionCaller;
+      std::unique_ptr<const TwoArgMemberFunctionCaller<
+         bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>> _nonVoidTwoArgFunctionCaller;
+      std::unique_ptr<const TwoArgMemberFunctionCaller<
+         void, SpecificTestClassRunner<TestClassType>, const TestClassResult*, PrintMode>> _voidTwoArgFunctionCaller;
       std::function<const ZenUnitArgs&()> call_TestRunner_GetArgs;
       const char* _testClassName;
       NewDeleteTest<TestClassType> _newDeleteTest;
@@ -4651,6 +4712,9 @@ None
       explicit SpecificTestClassRunner(const char* testClassName)
          : _console(new Console)
          , _extraArgMemberForEacher(new ExtraArgMemberForEacherType)
+         , _voidZeroArgFunctionCaller(new ZeroArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>>)
+         , _nonVoidTwoArgFunctionCaller(new TwoArgMemberFunctionCaller<bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>)
+         , _voidTwoArgFunctionCaller(new const TwoArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>, const TestClassResult*, PrintMode>)
          , call_TestRunner_GetArgs(TestRunner::GetArgs)
          , _testClassName(testClassName)
          , _newDeleteTest(testClassName)
@@ -4689,18 +4753,22 @@ None
 
       TestClassResult RunTests() override
       {
-         NonMinimalPrintTestClassNameAndNumberOfNamedTests();
-         if (ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(&_newDeleteTest, &_testClassResult))
+         _voidZeroArgFunctionCaller->ConstCall(
+            this, &SpecificTestClassRunner::NonMinimalPrintTestClassNameAndNumberOfNamedTests);
+         const bool testClassIsNewableAndDeletable = _nonVoidTwoArgFunctionCaller->ConstCall(
+            this, &SpecificTestClassRunner::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests, &_newDeleteTest, &_testClassResult);
+         if (testClassIsNewableAndDeletable)
          {
-            DoRunTests();
+            _voidZeroArgFunctionCaller->NonConstCall(this, &SpecificTestClassRunner::DoRunTests);
          }
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
-         NonMinimalPrintResultLine(&_testClassResult, zenUnitArgs.printMode);
+         _voidTwoArgFunctionCaller->ConstCall(
+            this, &SpecificTestClassRunner::NonMinimalPrintResultLine, &_testClassResult, zenUnitArgs.printMode);
          _console->NonMinimalWriteNewLine(zenUnitArgs.printMode);
          return std::move(_testClassResult);
       }
    private:
-      virtual void DoRunTests()
+      void DoRunTests()
       {
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          if (zenUnitArgs.random)
@@ -4715,7 +4783,7 @@ None
          }
       }
 
-      virtual void NonMinimalPrintTestClassNameAndNumberOfNamedTests() const
+      void NonMinimalPrintTestClassNameAndNumberOfNamedTests() const
       {
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          _console->NonMinimalWriteColor("@", Color::Green, zenUnitArgs.printMode);
@@ -4725,8 +4793,7 @@ None
          _console->NonMinimalWriteLine(spacePipeSpaceNumberOfNamedTests, zenUnitArgs.printMode);
       }
 
-      virtual bool ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(
-         Test* newDeleteTest, TestClassResult* outTestClassResult) const
+      bool ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(Test* newDeleteTest, TestClassResult* outTestClassResult) const
       {
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          _console->NonMinimalWriteColor("|", Color::Green, zenUnitArgs.printMode);
@@ -4755,7 +4822,7 @@ None
          outTestClassResult->AddTestResults(testResults);
       }
 
-      virtual void NonMinimalPrintResultLine(const TestClassResult* testClassResult, PrintMode printMode) const
+      void NonMinimalPrintResultLine(const TestClassResult* testClassResult, PrintMode printMode) const
       {
          testClassResult->NonMinimalPrintResultLine(_console.get(), printMode);
       }
