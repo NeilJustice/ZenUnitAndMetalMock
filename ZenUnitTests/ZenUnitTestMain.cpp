@@ -18,25 +18,25 @@ TEST2X2(SkippedTest2X2, int, int, 0, 0) {}
 
 TESTS(SkippedTestClassA)
 EVIDENCE
-}; SKIPTESTS(SkippedTestClassA, Reason)
+}; SKIP_TESTS(SkippedTestClassA, Reason)
 
 TESTS(SkippedTestClassB)
 EVIDENCE
-}; SKIPTESTS(SkippedTestClassB, Reason)
+}; SKIP_TESTS(SkippedTestClassB, Reason)
 
 template<typename T>
 TEMPLATE_TESTS(SkippedTemplateTestClassA, T)
 EVIDENCE
 };
-SKIPTEMPLATETESTS(SkippedTemplateTestClassA, Reason, int)
-SKIPTEMPLATETESTS(SkippedTemplateTestClassA, Reason, double)
+SKIP_TEMPLATE_TESTS(SkippedTemplateTestClassA, Reason, int)
+SKIP_TEMPLATE_TESTS(SkippedTemplateTestClassA, Reason, double)
 
 template<template<typename...> class MapType>
 TEMPLATE_TESTS(SkippedTemplateTestClassB, MapType)
 EVIDENCE
 };
-SKIPTEMPLATETESTS(SkippedTemplateTestClassB, Reason, map)
-SKIPTEMPLATETESTS(SkippedTemplateTestClassB, Reason, unordered_map)
+SKIP_TEMPLATE_TESTS(SkippedTemplateTestClassB, Reason, map)
+SKIP_TEMPLATE_TESTS(SkippedTemplateTestClassB, Reason, unordered_map)
 
 TESTS(ZZTests)
 AFACT(Test1)
@@ -70,7 +70,7 @@ TEST(Test3)
    xMock.fMock.Expect();
 }
 
-}; SKIPTESTS(ZZTests, Reason)
+}; SKIP_TESTS(ZZTests, Reason)
 
 int main(int argc, char* argv[])
 {

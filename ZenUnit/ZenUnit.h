@@ -302,7 +302,7 @@
          new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName>(#HighQualityTestClassName));
 
 // Skips a test class.
-#define SKIPTESTS(HighQualityTestClassName, Reason) \
+#define SKIP_TESTS(HighQualityTestClassName, Reason) \
    const std::nullptr_t ZenUnit_TestClassSkipper_##HighQualityTestClassName = \
       ZenUnit::TestRunner::Instance().SkipTestClass(#HighQualityTestClassName, Reason);
 
@@ -315,7 +315,7 @@
          new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName<__VA_ARGS__>>(#HighQualityTestClassName"<"#__VA_ARGS__">"));
 
 // Skips a templated test class.
-#define SKIPTEMPLATETESTS(HighQualityTestClassName, Reason, ...) \
+#define SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, ...) \
    template<> const char* HighQualityTestClassName<__VA_ARGS__>::s_testClassName = nullptr; \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassSkipper_, HighQualityTestClassName), _Line), __LINE__) = \

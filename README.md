@@ -90,7 +90,7 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    ARE_EQUAL(expectedFizzBuzzSequence, FizzBuzz(endNumber));
 }
 
-}; RUNTESTS(FizzBuzzTests)
+}; RUN_TESTS(FizzBuzzTests)
 ```
 
 ### ZenUnit Imagery
@@ -101,8 +101,8 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 
 |Test Classes|
 |------------|
-|`TESTCLASS(HighQualityTestClassName)`|
-|`TEMPLATETESTCLASS(HighQualityTestClassName, TemplateParameterNames...)` // Precede with template\<parameter-list\>|
+|`TESTS(HighQualityTestClassName)`|
+|`TEMPLATE_TESTS(HighQualityTestClassName, TemplateParameterNames...)` // Precede with template\<parameter-list\>|
 |`SPEC(HighQualityTestName)` // Standard-issue void test|
 |`SPECX(HighQualityTestName)` // N-by-N value-parameterized test|
 |`SKIPSPEC(HighQualityTestName, Reason)`|
@@ -115,10 +115,10 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 |`TEST2X2(HighQualityTestName, Arg1Type, Arg2Type, ...)` // 2-by-2 value-parameterized test|
 |...|
 |`TEST10X10(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
-|`RUNTESTS(HighQualityTestClassName)`|
-|`RUNTEMPLATETESTS(HighQualityTestClassName, TemplateArguments...)`|
-|`SKIPRUNTESTS(HighQualityTestClassName, Reason)`|
-|`SKIPRUNTEMPLATETESTS(HighQualityTestClassName, Reason)`|
+|`RUN_TESTS(HighQualityTestClassName)`|
+|`RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)`|
+|`SKIP_TESTS(HighQualityTestClassName, Reason)`|
+|`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)`|
 
 |Values|
 |------|
@@ -230,7 +230,7 @@ public:
 template<
    template<typename...>
    class SetType, typename T>
-TEMPLATETESTS(SetTests, SetType, T)
+TEMPLATE_TESTS(SetTests, SetType, T)
 AFACT(Contains_ReturnsTrueIfSetContainsElement)
 EVIDENCE
 
@@ -253,10 +253,10 @@ TEST(Contains_ReturnsTrueIfSetContainsElement)
 }
 
 };
-RUNTEMPLATETESTS(SetTests, std::set, int)
-RUNTEMPLATETESTS(SetTests, std::set, unsigned long long)
-RUNTEMPLATETESTS(SetTests, std::unordered_set, int)
-RUNTEMPLATETESTS(SetTests, std::unordered_set, unsigned long long)
+RUN_TEMPLATE_TESTS(SetTests, std::set, int)
+RUN_TEMPLATE_TESTS(SetTests, std::set, unsigned long long)
+RUN_TEMPLATE_TESTS(SetTests, std::unordered_set, int)
+RUN_TEMPLATE_TESTS(SetTests, std::unordered_set, unsigned long long)
 
 int main(int argc, char* argv[])
 {
@@ -371,7 +371,7 @@ TEST3X3(InteractWithComponentA_CallsEveryFunction_ReturnsSumOfReturnValues,
    ARE_EQUAL(expectedReturnValue, returnValue);
 }
 
-}; RUNTESTS(ClassUnderTestTests)
+}; RUN_TESTS(ClassUnderTestTests)
 
 int main(int argc, char* argv[])
 {
