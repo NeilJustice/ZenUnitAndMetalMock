@@ -637,8 +637,8 @@ TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)
    //
    const string zenUnitPrintResult = oss.str();
    ARE_EQUAL(R"(ZenMock::TwoArgumentCall:
-Arg1: "1"
-Arg2: "2")", zenUnitPrintResult);
+Argument1: "1"
+Argument2: "2")", zenUnitPrintResult);
 }
 
 TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
@@ -695,9 +695,9 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
       //
       const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::ThreeArgumentCall:
-Arg1: "1"
-Arg2: "2"
-Arg3: "3")", zenUnitPrintResult);
+Argument1: "1"
+Argument2: "2"
+Argument3: "3")", zenUnitPrintResult);
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
@@ -759,10 +759,10 @@ Arg3: "3")", zenUnitPrintResult);
       //
       const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::FourArgumentCall:
-Arg1: "1"
-Arg2: "2"
-Arg3: "3"
-Arg4: "4")", zenUnitPrintResult);
+Argument1: "1"
+Argument2: "2"
+Argument3: "3"
+Argument4: "4")", zenUnitPrintResult);
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
@@ -829,11 +829,11 @@ Arg4: "4")", zenUnitPrintResult);
       //
       const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::FiveArgumentCall:
-Arg1: "1"
-Arg2: "2"
-Arg3: "3"
-Arg4: "4"
-Arg5: "5")", zenUnitPrintResult);
+Argument1: "1"
+Argument2: "2"
+Argument3: "3"
+Argument4: "4"
+Argument5: "5")", zenUnitPrintResult);
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
@@ -905,12 +905,12 @@ Arg5: "5")", zenUnitPrintResult);
       //
       const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::SixArgumentCall:
-Arg1: "1"
-Arg2: "2"
-Arg3: "3"
-Arg4: "4"
-Arg5: "5"
-Arg6: "6")", zenUnitPrintResult);
+Argument1: "1"
+Argument2: "2"
+Argument3: "3"
+Argument4: "4"
+Argument5: "5"
+Argument6: "6")", zenUnitPrintResult);
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
@@ -987,13 +987,13 @@ Arg6: "6")", zenUnitPrintResult);
       //
       const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::SevenArgumentCall:
-Arg1: "1"
-Arg2: "2"
-Arg3: "3"
-Arg4: "4"
-Arg5: "5"
-Arg6: "6"
-Arg7: "7")", zenUnitPrintResult);
+Argument1: "1"
+Argument2: "2"
+Argument3: "3"
+Argument4: "4"
+Argument5: "5"
+Argument6: "6"
+Argument7: "7")", zenUnitPrintResult);
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
@@ -1075,14 +1075,14 @@ Arg7: "7")", zenUnitPrintResult);
       //
       const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::EightArgumentCall:
-Arg1: "1"
-Arg2: "2"
-Arg3: "3"
-Arg4: "4"
-Arg5: "5"
-Arg6: "6"
-Arg7: "7"
-Arg8: "8")", zenUnitPrintResult);
+Argument1: "1"
+Argument2: "2"
+Argument3: "3"
+Argument4: "4"
+Argument5: "5"
+Argument6: "6"
+Argument7: "7"
+Argument8: "8")", zenUnitPrintResult);
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
@@ -1169,15 +1169,15 @@ Arg8: "8")", zenUnitPrintResult);
       //
       const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::NineArgumentCall:
-Arg1: "1"
-Arg2: "2"
-Arg3: "3"
-Arg4: "4"
-Arg5: "5"
-Arg6: "6"
-Arg7: "7"
-Arg8: "8"
-Arg9: "9")", zenUnitPrintResult);
+Argument1: "1"
+Argument2: "2"
+Argument3: "3"
+Argument4: "4"
+Argument5: "5"
+Argument6: "6"
+Argument7: "7"
+Argument8: "8"
+Argument9: "9")", zenUnitPrintResult);
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
@@ -1269,16 +1269,16 @@ Arg9: "9")", zenUnitPrintResult);
       //
       const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(R"(ZenMock::TenArgumentCall:
- Arg1: "1"
- Arg2: "2"
- Arg3: "3"
- Arg4: "4"
- Arg5: "5"
- Arg6: "6"
- Arg7: "7"
- Arg8: "8"
- Arg9: "9"
-Arg10: "10")", zenUnitPrintResult);
+ Argument1: "1"
+ Argument2: "2"
+ Argument3: "3"
+ Argument4: "4"
+ Argument5: "5"
+ Argument6: "6"
+ Argument7: "7"
+ Argument8: "8"
+ Argument9: "9"
+Argument10: "10")", zenUnitPrintResult);
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)

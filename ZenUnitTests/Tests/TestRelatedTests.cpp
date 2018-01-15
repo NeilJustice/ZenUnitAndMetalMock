@@ -713,7 +713,7 @@ namespace ZenUnit
       _consoleMock->NonMinimalWriteMock.Expect();
       _consoleMock->NonMinimalWriteStringsCommaSeparatedMock.Expect();
       const PrintMode printMode = RandomPrintMode();
-      vector<string> splitTestCaseArgs = { "Arg0", "Arg1" };
+      vector<string> splitTestCaseArgs = { "Arg0", "Argument1" };
       //
       _testNXN->NonMinimalPrintTestCaseNumberArgsThenArrow(testCaseIndex, splitTestCaseArgs, printMode);
       //

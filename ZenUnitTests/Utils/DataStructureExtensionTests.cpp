@@ -20,17 +20,17 @@ namespace ZenUnit
       const char* argvB[2] =
       {
          "ExePath",
-         "Arg1"
+         "Argument1"
       };
-      ToArgcArgvTestCase(2, argvB, vector<string>{ "ExePath", "Arg1" });
+      ToArgcArgvTestCase(2, argvB, vector<string>{ "ExePath", "Argument1" });
 
       const char* argvC[3] =
       {
          "ExePath",
-         "Arg1",
-         "Arg2"
+         "Argument1",
+         "Argument2"
       };
-      ToArgcArgvTestCase(3, argvC, vector<string>{ "ExePath", "Arg1", "Arg2" });
+      ToArgcArgvTestCase(3, argvC, vector<string>{ "ExePath", "Argument1", "Argument2" });
    }
    static void ToArgcArgvTestCase(
       int argc, const char* argv[], const vector<string>& expectedStringVector)

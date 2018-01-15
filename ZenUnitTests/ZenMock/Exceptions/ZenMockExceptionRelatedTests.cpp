@@ -154,26 +154,26 @@ namespace ZenMock
 
    TEST(Constructor_Void1Arg_SetsWhat_IncludesToStringedArg1)
    {
-      const UserType Arg1(1);
+      const UserType Argument1(1);
       //
-      const UnexpectedCallException e(VoidSignature0, Arg1);
+      const UnexpectedCallException e(VoidSignature0, Argument1);
       //
       const string ExpectedWhat = ExpectedUnexpectedCallPrefix + VoidSignature0 + R"(
-Arg1: UserType@1)";
+Argument1: UserType@1)";
       const char* const what = e.what();
       ARE_EQUAL(ExpectedWhat, what);
    }
 
    TEST(Constructor_Void2Args_SetsWhat_IncludesToStringedArg1AndArg2)
    {
-      const UserType Arg1(1);
-      const UserType Arg2(2);
+      const UserType Argument1(1);
+      const UserType Argument2(2);
       //
-      const UnexpectedCallException e(VoidSignature0, Arg1, Arg2);
+      const UnexpectedCallException e(VoidSignature0, Argument1, Argument2);
       //
       const string ExpectedWhat = ExpectedUnexpectedCallPrefix + VoidSignature0 + R"(
-Arg1: UserType@1
-Arg2: UserType@2)";
+Argument1: UserType@1
+Argument2: UserType@2)";
       const char* const what = e.what();
       ARE_EQUAL(ExpectedWhat, what);
    }
