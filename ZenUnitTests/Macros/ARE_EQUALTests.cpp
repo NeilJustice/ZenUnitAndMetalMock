@@ -146,5 +146,5 @@ Expected: "expected"
 File.cpp(1))");
    }
 
-   }; RUNTESTS(ARE_EQUALTests)
+   }; RUN_TESTS(ARE_EQUALTests)
 }

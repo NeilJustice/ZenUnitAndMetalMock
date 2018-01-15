@@ -112,5 +112,5 @@ File.cpp(1))");
       EQUALIZER_THROWS_FOR_FIELD(Namespace::TestStruct, fieldA, 1);
    }
 
-   }; RUNTESTS(EQUALIZER_THROWSTests)
+   }; RUN_TESTS(EQUALIZER_THROWSTests)
 }

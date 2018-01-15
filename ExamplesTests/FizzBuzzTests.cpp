@@ -32,4 +32,4 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    ARE_EQUAL(expectedFizzBuzzSequence, FizzBuzz(endNumber));
 }
 
-}; RUNTESTS(FizzBuzzTests)
+}; RUN_TESTS(FizzBuzzTests)

@@ -4,7 +4,7 @@
 namespace ZenUnit
 {
    template<typename T>
-   TEMPLATETESTS(SetZenUnitPrinterTests, T)
+   TEMPLATE_TESTS(SetZenUnitPrinterTests, T)
    AFACT(Print_Set_PrintsPlaceholder)
    AFACT(Print_UnorderedSet_PrintsPlaceholder)
    EVIDENCE
@@ -46,6 +46,6 @@ namespace ZenUnit
    }
 
    };
-   RUNTEMPLATETESTS(SetZenUnitPrinterTests, int)
-   RUNTEMPLATETESTS(SetZenUnitPrinterTests, string)
+   RUN_TEMPLATE_TESTS(SetZenUnitPrinterTests, int)
+   RUN_TEMPLATE_TESTS(SetZenUnitPrinterTests, string)
 }

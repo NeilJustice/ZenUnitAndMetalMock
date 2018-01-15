@@ -4,7 +4,7 @@
 namespace ZenUnit
 {
    template<typename T>
-   TEMPLATETESTS(IntegralVectorZenUnitPrinterTests, T)
+   TEMPLATE_TESTS(IntegralVectorZenUnitPrinterTests, T)
    AFACT(ZenUnitPrinter_Print_Empty_PrintsEmptyBrackets)
    AFACT(ZenUnitPrinter_Print_EmptyAndNonConst_PrintsElements)
    AFACT(ZenUnitPrinter_Print_OneElement_PrintsElement)
@@ -70,6 +70,6 @@ namespace ZenUnit
    }
 
    };
-   RUNTEMPLATETESTS(IntegralVectorZenUnitPrinterTests, int)
-   RUNTEMPLATETESTS(IntegralVectorZenUnitPrinterTests, unsigned)
+   RUN_TEMPLATE_TESTS(IntegralVectorZenUnitPrinterTests, int)
+   RUN_TEMPLATE_TESTS(IntegralVectorZenUnitPrinterTests, unsigned)
 }

@@ -144,5 +144,5 @@ namespace ZenMock
       //test(Void0Function_ZenMock_static);
    }
 
-   }; RUNTESTS(ZenMock_Void0Tests)
+   }; RUN_TESTS(ZenMock_Void0Tests)
 }

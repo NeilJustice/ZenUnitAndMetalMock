@@ -6,7 +6,7 @@ namespace ZenUnit
       template<typename...>
    typename CollectionType,
    typename T, typename ExtraArgType>
-   TEMPLATETESTS(ExtraArgAnyerTests, CollectionType, T, ExtraArgType)
+   TEMPLATE_TESTS(ExtraArgAnyerTests, CollectionType, T, ExtraArgType)
    AFACT(ExtraArgAny_CollectionEmpty_ReturnsFalse)
    AFACT(ExtraArgAny_1ElementCollection_ElementDoesNotMatchPredicate_ReturnsFalse)
    AFACT(ExtraArgAny_2ElementCollection_FirstOfTwoElementsMatchesPredicate_CallsPredicateOnce_ReturnsTrue)
@@ -112,12 +112,12 @@ namespace ZenUnit
    }
 
    };
-   RUNTEMPLATETESTS(ExtraArgAnyerTests, vector, int, int)
-   RUNTEMPLATETESTS(ExtraArgAnyerTests, set, long long, unsigned char)
+   RUN_TEMPLATE_TESTS(ExtraArgAnyerTests, vector, int, int)
+   RUN_TEMPLATE_TESTS(ExtraArgAnyerTests, set, long long, unsigned char)
 
 
    template<typename ElementType, typename ExtraArgType>
-   TEMPLATETESTS(ExtraArgMemberForEacherTests, ElementType, ExtraArgType)
+   TEMPLATE_TESTS(ExtraArgMemberForEacherTests, ElementType, ExtraArgType)
    AFACT(ExtraArgMemberForEach_EmptyCollection_DoesNotCallFunc)
    AFACT(ExtraArgMemberForEach_OneItemCollection_CallsThisPointerBoundFuncOnce)
    AFACT(ExtraArgMemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwice)
@@ -235,14 +235,14 @@ namespace ZenUnit
    };
 
    };
-   RUNTEMPLATETESTS(ExtraArgMemberForEacherTests, int, int)
-   RUNTEMPLATETESTS(ExtraArgMemberForEacherTests, double, char)
+   RUN_TEMPLATE_TESTS(ExtraArgMemberForEacherTests, int, int)
+   RUN_TEMPLATE_TESTS(ExtraArgMemberForEacherTests, double, char)
 
 
    template<
       template<typename T, typename...>
    class CollectionType, typename ElementType>
-   TEMPLATETESTS(MemberForEacherTests, CollectionType, ElementType)
+   TEMPLATE_TESTS(MemberForEacherTests, CollectionType, ElementType)
    AFACT(MemberForEach_EmptyCollection_DoesNotCallFunc)
    AFACT(MemberForEach_OneItemCollection_CallsThisPointerBoundFuncOnce)
    AFACT(MemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwice)
@@ -307,14 +307,14 @@ namespace ZenUnit
    }
 
    };
-   RUNTEMPLATETESTS(MemberForEacherTests, vector, int)
-   RUNTEMPLATETESTS(MemberForEacherTests, vector, double)
-   RUNTEMPLATETESTS(MemberForEacherTests, set, int)
-   RUNTEMPLATETESTS(MemberForEacherTests, set, double)
+   RUN_TEMPLATE_TESTS(MemberForEacherTests, vector, int)
+   RUN_TEMPLATE_TESTS(MemberForEacherTests, vector, double)
+   RUN_TEMPLATE_TESTS(MemberForEacherTests, set, int)
+   RUN_TEMPLATE_TESTS(MemberForEacherTests, set, double)
 
 
    template<typename T, typename TransformedT>
-   TEMPLATETESTS(TransformerTests, T, TransformedT)
+   TEMPLATE_TESTS(TransformerTests, T, TransformedT)
    AFACT(Transform_EmptyRange_DoesNothing)
    AFACT(Transform_OneItemRange_CallsTransformerOnce)
    AFACT(Transform_TwoItemRange_CallsTransformerTwice)
@@ -394,6 +394,6 @@ namespace ZenUnit
    }
 
    };
-   RUNTEMPLATETESTS(TransformerTests, int, long long)
-   RUNTEMPLATETESTS(TransformerTests, unsigned long long, unsigned long long)
+   RUN_TEMPLATE_TESTS(TransformerTests, int, long long)
+   RUN_TEMPLATE_TESTS(TransformerTests, unsigned long long, unsigned long long)
 }

@@ -6,7 +6,7 @@ namespace ZenUnit
    template<
       template<typename...>
       class SetType>
-   TEMPLATETESTS(SETS_EQUALTests, SetType)
+   TEMPLATE_TESTS(SETS_EQUALTests, SetType)
    AFACT(EmptySets_DoesNotThrow)
    AFACT(OneEqualElement_DoesNotThrow)
    AFACT(TwoEqualElements_DoesNotThrow)
@@ -119,6 +119,6 @@ File.cpp(1))");
    }
 
    };
-   RUNTEMPLATETESTS(SETS_EQUALTests, set)
-   RUNTEMPLATETESTS(SETS_EQUALTests, unordered_set)
+   RUN_TEMPLATE_TESTS(SETS_EQUALTests, set)
+   RUN_TEMPLATE_TESTS(SETS_EQUALTests, unordered_set)
 }

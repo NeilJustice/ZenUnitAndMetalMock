@@ -63,7 +63,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedJoinedVector, joinedVector);
    }
 
-}; RUNTESTS(VectorTests)
+}; RUN_TESTS(VectorTests)
 }
 
 
@@ -74,7 +74,7 @@ namespace ZenUnit
    template<
       template<typename...>
    class SetType, typename T>
-   TEMPLATETESTS(SetTests, SetType, T)
+   TEMPLATE_TESTS(SetTests, SetType, T)
    AFACT(Contains_ReturnsTrueIfSetContainsElement)
    EVIDENCE
 
@@ -97,10 +97,10 @@ namespace ZenUnit
    }
 
 };
-RUNTEMPLATETESTS(SetTests, set, int)
-RUNTEMPLATETESTS(SetTests, set, unsigned long long)
-RUNTEMPLATETESTS(SetTests, unordered_set, int)
-RUNTEMPLATETESTS(SetTests, unordered_set, unsigned long long)
+RUN_TEMPLATE_TESTS(SetTests, set, int)
+RUN_TEMPLATE_TESTS(SetTests, set, unsigned long long)
+RUN_TEMPLATE_TESTS(SetTests, unordered_set, int)
+RUN_TEMPLATE_TESTS(SetTests, unordered_set, unsigned long long)
 }
 
 
@@ -112,7 +112,7 @@ namespace ZenUnit
    template<
       template<typename...>
    class MapType, typename KeyType, typename ValueType>
-   TEMPLATETESTS(MapTests, MapType, KeyType, ValueType)
+   TEMPLATE_TESTS(MapTests, MapType, KeyType, ValueType)
    AFACT(InsertNoOverwrite_KeyAlreadyInMap_Throws)
    AFACT(InsertNoOverwrite_KeyNotAlreadyInMap_InsertsKeyAndValue_ReturnsCostPointerToInsertedValue);
    AFACT(At_KeyNotPresentInMap_Throws)
@@ -186,12 +186,12 @@ namespace ZenUnit
    }
 
 };
-RUNTEMPLATETESTS(MapTests, map, int, int)
-RUNTEMPLATETESTS(MapTests, map, UserType, int)
-RUNTEMPLATETESTS(MapTests, map, int, UserType)
-RUNTEMPLATETESTS(MapTests, map, UserType, UserType)
-RUNTEMPLATETESTS(MapTests, unordered_map, int, int)
-RUNTEMPLATETESTS(MapTests, unordered_map, UserType, int)
-RUNTEMPLATETESTS(MapTests, unordered_map, int, UserType)
-RUNTEMPLATETESTS(MapTests, unordered_map, UserType, UserType)
+RUN_TEMPLATE_TESTS(MapTests, map, int, int)
+RUN_TEMPLATE_TESTS(MapTests, map, UserType, int)
+RUN_TEMPLATE_TESTS(MapTests, map, int, UserType)
+RUN_TEMPLATE_TESTS(MapTests, map, UserType, UserType)
+RUN_TEMPLATE_TESTS(MapTests, unordered_map, int, int)
+RUN_TEMPLATE_TESTS(MapTests, unordered_map, UserType, int)
+RUN_TEMPLATE_TESTS(MapTests, unordered_map, int, UserType)
+RUN_TEMPLATE_TESTS(MapTests, unordered_map, UserType, UserType)
 }

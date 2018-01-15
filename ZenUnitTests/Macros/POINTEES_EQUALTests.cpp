@@ -111,5 +111,5 @@ File.cpp(1))");
       POINTEES_EQUAL(expectedPointer, actualPointer);
    }
 
-   }; RUNTESTS(POINTEES_EQUALTests)
+   }; RUN_TESTS(POINTEES_EQUALTests)
 }

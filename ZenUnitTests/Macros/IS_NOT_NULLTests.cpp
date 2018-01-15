@@ -44,5 +44,5 @@ File.cpp(1))");
       IS_NOT_NULL(nonNullUniquePtr);
    }
 
-   }; RUNTESTS(IS_NOT_NULLTests)
+   }; RUN_TESTS(IS_NOT_NULLTests)
 }

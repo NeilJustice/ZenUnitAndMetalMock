@@ -5,7 +5,7 @@ namespace ZenUnit
    template<
       template<typename...>
    class MapType>
-   TEMPLATETESTS(MapEqualizerTests, MapType)
+   TEMPLATE_TESTS(MapEqualizerTests, MapType)
    AFACT(ARE_EQUAL_EqualStdMaps_CompilesAndDoesNotThrow)
    EVIDENCE
 
@@ -16,8 +16,8 @@ namespace ZenUnit
       ARE_EQUAL(expectedMap, actualMap);
    }
 };
-RUNTEMPLATETESTS(MapEqualizerTests, map)
-RUNTEMPLATETESTS(MapEqualizerTests, unordered_map)
+RUN_TEMPLATE_TESTS(MapEqualizerTests, map)
+RUN_TEMPLATE_TESTS(MapEqualizerTests, unordered_map)
 }
 
 #include "pch.h"
@@ -84,7 +84,7 @@ File.cpp(1)
 File.cpp(1))");
    }
 
-}; RUNTESTS(VectorEqualizerTests)
+}; RUN_TESTS(VectorEqualizerTests)
 }
 
 
@@ -291,6 +291,6 @@ namespace ZenUnit
          numeric_limits<int>::max(), static_cast<size_t>(numeric_limits<int>::max()));
    }
 
-}; RUNTESTS(ZenUnitEqualizerTests)
+}; RUN_TESTS(ZenUnitEqualizerTests)
 
 }

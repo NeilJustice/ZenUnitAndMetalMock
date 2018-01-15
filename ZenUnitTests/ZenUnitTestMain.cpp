@@ -14,7 +14,7 @@ TEST1X1(NonSkipped1X1Test, bool, true, false) {}
 TEST(SkippedNormalTest) {}
 TEST1X1(SkippedTest1X1, int, 0) {}
 TEST2X2(SkippedTest2X2, int, int, 0, 0) {}
-}; RUNTESTS(SkippedTestsTestClass)
+}; RUN_TESTS(SkippedTestsTestClass)
 
 TESTS(SkippedTestClassA)
 EVIDENCE
@@ -25,14 +25,14 @@ EVIDENCE
 }; SKIPTESTS(SkippedTestClassB, Reason)
 
 template<typename T>
-TEMPLATETESTS(SkippedTemplateTestClassA, T)
+TEMPLATE_TESTS(SkippedTemplateTestClassA, T)
 EVIDENCE
 };
 SKIPTEMPLATETESTS(SkippedTemplateTestClassA, Reason, int)
 SKIPTEMPLATETESTS(SkippedTemplateTestClassA, Reason, double)
 
 template<template<typename...> class MapType>
-TEMPLATETESTS(SkippedTemplateTestClassB, MapType)
+TEMPLATE_TESTS(SkippedTemplateTestClassB, MapType)
 EVIDENCE
 };
 SKIPTEMPLATETESTS(SkippedTemplateTestClassB, Reason, map)

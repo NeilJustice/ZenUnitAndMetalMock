@@ -49,11 +49,11 @@ TEST(NonConstCall_CallsNonConstMemberFunctionOnce)
    ARE_EQUAL(2, c.numberOfCalls);
 }
 
-}; RUNTESTS(VoidZeroArgMemberFunctionCallerTests)
+}; RUN_TESTS(VoidZeroArgMemberFunctionCallerTests)
 
 
 template<typename ReturnType>
-TEMPLATETESTS(NonVoidZeroArgMemberFunctionCallerTests, ReturnType)
+TEMPLATE_TESTS(NonVoidZeroArgMemberFunctionCallerTests, ReturnType)
 AFACT(ConstCall_CallsConstMemberFunctionOnce)
 AFACT(NonConstCall_CallsNonConstMemberFunctionOnce)
 EVIDENCE
@@ -110,5 +110,5 @@ TEST(NonConstCall_CallsNonConstMemberFunctionOnce)
 }
 
 };
-RUNTEMPLATETESTS(NonVoidZeroArgMemberFunctionCallerTests, int)
-RUNTEMPLATETESTS(NonVoidZeroArgMemberFunctionCallerTests, char)
+RUN_TEMPLATE_TESTS(NonVoidZeroArgMemberFunctionCallerTests, int)
+RUN_TEMPLATE_TESTS(NonVoidZeroArgMemberFunctionCallerTests, char)

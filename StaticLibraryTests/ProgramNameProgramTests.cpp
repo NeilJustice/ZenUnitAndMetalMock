@@ -52,4 +52,4 @@ TEST(VectorMain_Returns0)
    ARE_EQUAL(0, exitCode);
 }
 
-}; RUNTESTS(ProgramNameProgramTests)
+}; RUN_TESTS(ProgramNameProgramTests)

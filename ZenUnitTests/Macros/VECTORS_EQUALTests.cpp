@@ -4,7 +4,7 @@
 namespace ZenUnit
 {
    template<typename T>
-   TEMPLATETESTS(VECTORS_EQUALTests, T)
+   TEMPLATE_TESTS(VECTORS_EQUALTests, T)
    AFACT(VectorSizesNotEqual_Throws)
    AFACT(VectorSizesNotEqual_Throws_MessagesTestCase)
    AFACT(VectorSizesEqual_ElementsNotEqualAtIndex0_Throws_MessagesTestCase)
@@ -103,6 +103,6 @@ File.cpp(1))");
    }
 
    };
-   RUNTEMPLATETESTS(VECTORS_EQUALTests, int)
-   RUNTEMPLATETESTS(VECTORS_EQUALTests, unsigned)
+   RUN_TEMPLATE_TESTS(VECTORS_EQUALTests, int)
+   RUN_TEMPLATE_TESTS(VECTORS_EQUALTests, unsigned)
 }

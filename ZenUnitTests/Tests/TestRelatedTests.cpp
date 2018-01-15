@@ -36,9 +36,9 @@ namespace ZenUnit
       "TESTS(Tests)\nTEST(Test)", "Tests", static_cast<unsigned char>(0),
       "TESTS(Tests)\nTEST1X1(Test)", "Tests", static_cast<unsigned char>(1),
       "TESTS(Tests)\nTEST2X2(Test)", "Tests", static_cast<unsigned char>(2),
-      "TEMPLATETESTS(Tests<int>)\nTEST(Test)", "Tests<int>", static_cast<unsigned char>(0),
-      "TEMPLATETESTS(Tests<int, int>)\nTEST1X1(Test)", "Tests<int, int>", static_cast<unsigned char>(1),
-      "TEMPLATETESTS(Tests<vector<int>>)\nTEST2X2(Test)", "Tests<vector<int>>", static_cast<unsigned char>(2))
+      "TEMPLATE_TESTS(Tests<int>)\nTEST(Test)", "Tests<int>", static_cast<unsigned char>(0),
+      "TEMPLATE_TESTS(Tests<int, int>)\nTEST1X1(Test)", "Tests<int, int>", static_cast<unsigned char>(1),
+      "TEMPLATE_TESTS(Tests<vector<int>>)\nTEST2X2(Test)", "Tests<vector<int>>", static_cast<unsigned char>(2))
    {
       const FullTestName testName(testClassMacroArgument, "Test", arity);
       //
@@ -55,7 +55,7 @@ namespace ZenUnit
       EQUALIZER_THROWS_FOR_FIELD(FullTestName, arity, static_cast<unsigned char>(1));
    }
 
-}; RUNTESTS(FullTestNameTests)
+}; RUN_TESTS(FullTestNameTests)
 }
 
 #include "pch.h"
@@ -160,7 +160,7 @@ namespace ZenUnit
       IS_NULL(_newDeleteTest->_firstInstanceOfTestClass);
    }
 
-}; RUNTESTS(NewDeleteTestTests)
+}; RUN_TESTS(NewDeleteTestTests)
 }
 
 #include "pch.h"
@@ -282,7 +282,7 @@ namespace ZenUnit
       IS_TRUE(TestingTestClass::s_destructorCalled);
    }
 
-}; RUNTESTS(NormalTestTests)
+}; RUN_TESTS(NormalTestTests)
 }
 
 
@@ -426,7 +426,7 @@ namespace ZenUnit
       t.TestFunction(0);
    }
 
-}; RUNTESTS(SpecSectionTestNXNTests)
+}; RUN_TESTS(SpecSectionTestNXNTests)
 }
 
 
@@ -479,7 +479,7 @@ namespace ZenUnit
       IS_TRUE(TestingDerivedTestClassType::s_allNXNTestsRegistered);
    }
 
-}; RUNTESTS(TestClassTests)
+}; RUN_TESTS(TestClassTests)
 }
 
 
@@ -746,10 +746,10 @@ namespace ZenUnit
          CalledOnceWith(_testNXN->_console.get(), printMode));
    }
 
-}; RUNTESTS(TestNXNTests)
+}; RUN_TESTS(TestNXNTests)
 
 template<typename T>
-TEMPLATETESTS(AllTestNXNsWithinATemplateTestClass, T)
+TEMPLATE_TESTS(AllTestNXNsWithinATemplateTestClass, T)
 AFACT(Test)
 FACTS(Test1X1)
 FACTS(Test2X2)
@@ -775,7 +775,7 @@ TEST8X8(Test8X8, int, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0, 0)
 TEST9X9(Test9X9, int, int, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0, 0, 0) {}
 TEST10X10(Test10X10, int, int, int, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0) {}
    };
-   RUNTEMPLATETESTS(AllTestNXNsWithinATemplateTestClass, int)
+   RUN_TEMPLATE_TESTS(AllTestNXNsWithinATemplateTestClass, int)
 }
 
 
@@ -991,5 +991,5 @@ namespace ZenUnit
       test.DeleteTestClass();
    }
 
-}; RUNTESTS(TestTests)
+}; RUN_TESTS(TestTests)
 }

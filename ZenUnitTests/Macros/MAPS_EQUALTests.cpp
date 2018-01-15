@@ -6,7 +6,7 @@ namespace ZenUnit
    template<
       template<typename...>
       class MapType>
-   TEMPLATETESTS(MAPS_EQUALTests, MapType)
+   TEMPLATE_TESTS(MAPS_EQUALTests, MapType)
    AFACT(BothEmpty_DoesNotThrow)
    AFACT(SizesDifferent_Throws)
    AFACT(SizesDifferent_Throws_MessagesTestCase)
@@ -150,6 +150,6 @@ File.cpp(1))");
    }
 
    };
-   RUNTEMPLATETESTS(MAPS_EQUALTests, map)
-   RUNTEMPLATETESTS(MAPS_EQUALTests, unordered_map)
+   RUN_TEMPLATE_TESTS(MAPS_EQUALTests, map)
+   RUN_TEMPLATE_TESTS(MAPS_EQUALTests, unordered_map)
 }

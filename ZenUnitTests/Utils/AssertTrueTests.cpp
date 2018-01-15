@@ -66,5 +66,5 @@ namespace ZenUnit
       f();
    }
 
-   }; RUNTESTS(AssertTrueTests)
+   }; RUN_TESTS(AssertTrueTests)
 }

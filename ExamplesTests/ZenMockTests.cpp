@@ -116,4 +116,4 @@ TEST3X3(InteractWithComponentA_CallsEveryFunction_ReturnsSumOfReturnValues,
    ARE_EQUAL(expectedReturnValue, returnValue);
 }
 
-}; RUNTESTS(ClassUnderTestTests)
+}; RUN_TESTS(ClassUnderTestTests)

@@ -24,7 +24,7 @@ namespace ZenUnit
    };
 
    template<typename CollectionType>
-   TEMPLATETESTS(SorterTests, CollectionType)
+   TEMPLATE_TESTS(SorterTests, CollectionType)
    AFACT(Sort_SortsTheCollection)
    EVIDENCE
 
@@ -41,7 +41,7 @@ namespace ZenUnit
    }
 
    };
-   RUNTEMPLATETESTS(SorterTests, vector<int>)
-   RUNTEMPLATETESTS(SorterTests, vector<int, CustomAllocator<int>>)
-   RUNTEMPLATETESTS(SorterTests, vector<SortableStruct>)
+   RUN_TEMPLATE_TESTS(SorterTests, vector<int>)
+   RUN_TEMPLATE_TESTS(SorterTests, vector<int, CustomAllocator<int>>)
+   RUN_TEMPLATE_TESTS(SorterTests, vector<SortableStruct>)
 }

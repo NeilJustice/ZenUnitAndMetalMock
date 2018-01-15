@@ -78,5 +78,5 @@ Expected: true
 File.cpp(1))");
    }
 
-   }; RUNTESTS(IS_TRUETests)
+   }; RUN_TESTS(IS_TRUETests)
 }

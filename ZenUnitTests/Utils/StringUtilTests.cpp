@@ -127,10 +127,10 @@ namespace ZenUnit
       ARE_EQUAL(expectedReturnValue, returnValue);
    }
 
-   }; RUNTESTS(StringUtilTests)
+   }; RUN_TESTS(StringUtilTests)
 
    template<typename StringType>
-   TEMPLATETESTS(StringUtilContainsTests, StringType)
+   TEMPLATE_TESTS(StringUtilContainsTests, StringType)
    FACTS(Contains_ReturnsTrueIfStrContainsSubstring)
    EVIDENCE
 
@@ -149,6 +149,6 @@ namespace ZenUnit
    }
 
    };
-   RUNTEMPLATETESTS(StringUtilContainsTests, const string&)
-   RUNTEMPLATETESTS(StringUtilContainsTests, const char*)
+   RUN_TEMPLATE_TESTS(StringUtilContainsTests, const string&)
+   RUN_TEMPLATE_TESTS(StringUtilContainsTests, const char*)
 }

@@ -43,7 +43,7 @@ namespace ZenUnit
       IS_TRUE(has_ostream_left_shift<UserTypeInsOpAndZenUnitPrintable&&>::value);
    }
 
-}; RUNTESTS(has_ostream_left_shiftTests)
+}; RUN_TESTS(has_ostream_left_shiftTests)
 }
 
 
@@ -73,7 +73,7 @@ namespace ZenUnit
       IS_FALSE(has_to_string<UserType>::value);
    }
 
-}; RUNTESTS(has_to_stringTests)
+}; RUN_TESTS(has_to_stringTests)
 }
 
 
@@ -148,7 +148,7 @@ namespace ZenUnit
       IS_TRUE(has_ZenUnitPrinter<Namespace::StructInsideNamespace_ZenUnitPrintOutsideNamespace>::value);
    }
 
-}; RUNTESTS(has_ZenUnitPrinterTests)
+}; RUN_TESTS(has_ZenUnitPrinterTests)
 }
 
 

@@ -52,4 +52,4 @@ TEST(Random_2ArgOverload_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiv
    IS_TRUE(randomEnum >= Enum::A && randomEnum <= Enum::C, "randomEnum = " + to_string(randomEnum));
 }
 
-}; RUNTESTS(RandomTests)
+}; RUN_TESTS(RandomTests)

@@ -123,7 +123,7 @@ TEST(GetWindowsMachineName_ReturnsResultOfGetComputerName)
 }
 #endif
 
-}; RUNTESTS(MachineNameGetterTests)
+}; RUN_TESTS(MachineNameGetterTests)
 
 
 TESTS(MultiTestClassRunnerTests)
@@ -388,7 +388,7 @@ TEST(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)
    ARE_EQUAL(TestClassResult::TestingNonDefault(), testClassResult);
 }
 
-}; RUNTESTS(MultiTestClassRunnerTests)
+}; RUN_TESTS(MultiTestClassRunnerTests)
 
 
 TESTS(NoOpTestClassRunnerTests)
@@ -420,7 +420,7 @@ TEST(HasTestNameThatCaseInsensitiveMatchesPattern_ReturnsFalse)
    IS_FALSE(_noOpTestClassRunner.HasTestNameThatCaseInsensitiveMatchesPattern(ZenUnit::Random<string>()));
 }
 
-}; RUNTESTS(NoOpTestClassRunnerTests)
+}; RUN_TESTS(NoOpTestClassRunnerTests)
 
 
 TESTS(PreamblePrinterTests)
@@ -523,7 +523,7 @@ TEST3X3(MakeThirdLineSuffix_ReturnsRandomSeedIfRandomModeOtherwiseEmptyString,
    ARE_EQUAL(expectedReturnValue, thirdLineSuffix);
 }
 
-}; RUNTESTS(PreamblePrinterTests)
+}; RUN_TESTS(PreamblePrinterTests)
 
 
 TESTS(SpecificTestClassRunnerTests)
@@ -916,7 +916,7 @@ TEST(NonMinimalPrintResultLine_CallsTestClassResultPrintResultLine)
    ZEN(testClassResultMock.NonMinimalPrintResultLineMock.CalledOnceWith(_consoleMock, printMode));
 }
 
-}; RUNTESTS(SpecificTestClassRunnerTests)
+}; RUN_TESTS(SpecificTestClassRunnerTests)
 
 
 TESTS(TestClassRunnerTests)
@@ -949,7 +949,7 @@ TEST3X3(OperatorLessThan_ReturnsTrueIfTestClassNameStrcmpResultIsLessThanZero,
    ARE_EQUAL(expectedIsLessThan, isLessThan);
 }
 
-}; RUNTESTS(TestClassRunnerTests)
+}; RUN_TESTS(TestClassRunnerTests)
 
 
 TESTS(TestRunnerTests)
@@ -1237,6 +1237,6 @@ TEST(RunTestClasses_RunsTestClasses)
 //   }
 //}
 
-}; RUNTESTS(TestRunnerTests)
+}; RUN_TESTS(TestRunnerTests)
 
 }

@@ -36,7 +36,7 @@ namespace ZenMock
       THROWS(_exceptionThrower.ZenMockThrowIfExceptionSet(), logic_error, "logic_error_what");
    }
 
-   }; RUNTESTS(ExceptionThrowerTests)
+   }; RUN_TESTS(ExceptionThrowerTests)
 }
 
 namespace ZenMock
@@ -57,7 +57,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
       IS_TRUE((is_base_of<ZenMockException, FunctionAlreadyExpectedException>::value));
    }
 
-}; RUNTESTS(FunctionAlreadyExpectedExceptionTests)
+}; RUN_TESTS(FunctionAlreadyExpectedExceptionTests)
 }
 
 
@@ -81,14 +81,14 @@ namespace ZenMock
       IS_TRUE((is_base_of<ZenMockException, ReturnValueMustBeSpecifiedException>::value));
    }
 
-}; RUNTESTS(ReturnValueMustBeSpecifiedExceptionTests)
+}; RUN_TESTS(ReturnValueMustBeSpecifiedExceptionTests)
 }
 
 
 namespace ZenMock
 {
    template<typename ExceptionType>
-   TEMPLATETESTS(TemplateThrowableTests, ExceptionType)
+   TEMPLATE_TESTS(TemplateThrowableTests, ExceptionType)
    AFACT(New_ReturnsNewInstanceOfSelfAsThrowablePointerWithExceptionCreatedFromExceptionArgs)
    AFACT(Throw_ExceptionIsNullptr_DoesNothing)
    AFACT(Throw_ExceptionIsNotNullptr_ThrowsTheException)
@@ -116,8 +116,8 @@ namespace ZenMock
    }
 
 };
-RUNTEMPLATETESTS(TemplateThrowableTests, runtime_error)
-RUNTEMPLATETESTS(TemplateThrowableTests, logic_error)
+RUN_TEMPLATE_TESTS(TemplateThrowableTests, runtime_error)
+RUN_TEMPLATE_TESTS(TemplateThrowableTests, logic_error)
 }
 
 
@@ -178,7 +178,7 @@ Arg2: UserType@2)";
       ARE_EQUAL(ExpectedWhat, what);
    }
 
-}; RUNTESTS(UnexpectedCallExceptionTests)
+}; RUN_TESTS(UnexpectedCallExceptionTests)
 }
 
 
@@ -205,5 +205,5 @@ namespace ZenMock
       IS_TRUE((is_base_of<ZenMockException, UnsupportedCalledZeroTimesException>::value));
    }
 
-}; RUNTESTS(UnsupportedCalledZeroTimesExceptionTests)
+}; RUN_TESTS(UnsupportedCalledZeroTimesExceptionTests)
 }

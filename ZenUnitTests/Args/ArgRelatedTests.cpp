@@ -348,7 +348,7 @@ None
       ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
    }
 
-}; RUNTESTS(ArgsParserTests)
+}; RUN_TESTS(ArgsParserTests)
 }
 
 
@@ -440,7 +440,7 @@ namespace ZenUnit
          invalid_argument, "Invalid test run filter: " + runFilterString);
    }
 
-}; RUNTESTS(RunFilterParserTests)
+}; RUN_TESTS(RunFilterParserTests)
 }
 
 
@@ -481,7 +481,7 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EQUALIZER_THROWS_FOR_FIELD(RunFilter, testCaseNumber, 1);
 }
 
-}; RUNTESTS(RunFilterTests)
+}; RUN_TESTS(RunFilterTests)
 
 
 #include "pch.h"
@@ -528,5 +528,5 @@ namespace ZenUnit
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, maxtotalseconds, 5u);
    }
 
-}; RUNTESTS(ZenUnitArgsTests)
+}; RUN_TESTS(ZenUnitArgsTests)
 }

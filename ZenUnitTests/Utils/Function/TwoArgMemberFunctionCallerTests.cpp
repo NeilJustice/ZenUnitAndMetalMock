@@ -1,7 +1,7 @@
 #include "pch.h"
 
 template<typename ReturnType, typename Arg1Type, typename Arg2Type>
-TEMPLATETESTS(TwoArgMemberFunctionCallerTests, ReturnType, Arg1Type, Arg2Type)
+TEMPLATE_TESTS(TwoArgMemberFunctionCallerTests, ReturnType, Arg1Type, Arg2Type)
 AFACT(ConstCall_CallsConstNonVoidMemberFunctionOnce_ReturnsReturnValue)
 EVIDENCE
 
@@ -52,5 +52,5 @@ TEST(ConstCall_CallsConstNonVoidMemberFunctionOnce_ReturnsReturnValue)
 }
 
 };
-RUNTEMPLATETESTS(TwoArgMemberFunctionCallerTests, char, int, int)
-RUNTEMPLATETESTS(TwoArgMemberFunctionCallerTests, int, double, unsigned)
+RUN_TEMPLATE_TESTS(TwoArgMemberFunctionCallerTests, char, int, int)
+RUN_TEMPLATE_TESTS(TwoArgMemberFunctionCallerTests, int, double, unsigned)

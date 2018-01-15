@@ -59,5 +59,5 @@ File.cpp(1))");
       NOTHROWS(NoThrow());
    }
 
-   }; RUNTESTS(NOTHROWSTests)
+   }; RUN_TESTS(NOTHROWSTests)
 }

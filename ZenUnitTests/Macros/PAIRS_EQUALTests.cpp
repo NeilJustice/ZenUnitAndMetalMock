@@ -120,5 +120,5 @@ File.cpp(1))");
       PAIRS_EQUAL(expectedPair, actualPair);
    }
 
-   }; RUNTESTS(PAIRS_EQUALTests)
+   }; RUN_TESTS(PAIRS_EQUALTests)
 }
