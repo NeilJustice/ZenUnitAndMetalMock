@@ -29,4 +29,4 @@ TEST4X4(ReturnsTrueIfNumberIsInclusiveBetween,
    ARE_EQUAL(expectedReturnValue, IsInclusiveBetween(lowerBound, number, upperBound));
 }
 
-}; RUN_TESTS(IsInclusiveBetweenTests)
+}; //RUN_TESTS(IsInclusiveBetweenTests)

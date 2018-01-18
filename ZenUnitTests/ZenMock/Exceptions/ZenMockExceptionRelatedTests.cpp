@@ -36,7 +36,7 @@ namespace ZenMock
       THROWS(_exceptionThrower.ZenMockThrowIfExceptionSet(), logic_error, "logic_error_what");
    }
 
-   }; RUN_TESTS(ExceptionThrowerTests)
+   }; //RUN_TESTS(ExceptionThrowerTests)
 }
 
 namespace ZenMock
@@ -57,7 +57,7 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
       IS_TRUE((is_base_of<ZenMockException, FunctionAlreadyExpectedException>::value));
    }
 
-}; RUN_TESTS(FunctionAlreadyExpectedExceptionTests)
+}; //RUN_TESTS(FunctionAlreadyExpectedExceptionTests)
 }
 
 
@@ -81,7 +81,7 @@ namespace ZenMock
       IS_TRUE((is_base_of<ZenMockException, ReturnValueMustBeSpecifiedException>::value));
    }
 
-}; RUN_TESTS(ReturnValueMustBeSpecifiedExceptionTests)
+}; //RUN_TESTS(ReturnValueMustBeSpecifiedExceptionTests)
 }
 
 
@@ -178,7 +178,7 @@ Argument2: UserType@2)";
       ARE_EQUAL(ExpectedWhat, what);
    }
 
-}; RUN_TESTS(UnexpectedCallExceptionTests)
+}; //RUN_TESTS(UnexpectedCallExceptionTests)
 }
 
 
@@ -205,5 +205,5 @@ namespace ZenMock
       IS_TRUE((is_base_of<ZenMockException, UnsupportedCalledZeroTimesException>::value));
    }
 
-}; RUN_TESTS(UnsupportedCalledZeroTimesExceptionTests)
+}; //RUN_TESTS(UnsupportedCalledZeroTimesExceptionTests)
 }

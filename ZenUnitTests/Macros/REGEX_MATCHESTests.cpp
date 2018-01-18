@@ -66,5 +66,5 @@ Expected string to match: "a"
 File.cpp(1))");
    }
 
-   }; RUN_TESTS(REGEX_MATCHESTests)
+   }; //RUN_TESTS(REGEX_MATCHESTests)
 }

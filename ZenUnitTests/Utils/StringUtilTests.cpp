@@ -127,7 +127,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedReturnValue, returnValue);
    }
 
-   }; RUN_TESTS(StringUtilTests)
+   }; //RUN_TESTS(StringUtilTests)
 
    template<typename StringType>
    TEMPLATE_TESTS(StringUtilContainsTests, StringType)

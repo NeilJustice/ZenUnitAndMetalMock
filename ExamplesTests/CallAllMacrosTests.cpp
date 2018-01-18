@@ -72,4 +72,4 @@
 //   EQUALIZER_THROWS_FOR_FIELD(Struct, secondField, 'A');
 //}
 //
-//}; RUN_TESTS(CallAllMacrosTests)
+//}; //RUN_TESTS(CallAllMacrosTests)

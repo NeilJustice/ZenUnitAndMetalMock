@@ -136,5 +136,5 @@ namespace ZenUnit
       }
    }
 
-   }; RUN_TESTS(TypeTests)
+   }; //RUN_TESTS(TypeTests)
 }

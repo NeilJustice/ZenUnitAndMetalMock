@@ -87,7 +87,7 @@ File.cpp(1)
 File.cpp(1))");
    }
 
-}; RUN_TESTS(VectorEqualizerTests)
+}; //RUN_TESTS(VectorEqualizerTests)
 }
 
 
@@ -294,7 +294,7 @@ namespace ZenUnit
          numeric_limits<int>::max(), static_cast<size_t>(numeric_limits<int>::max()));
    }
 
-}; RUN_TESTS(ZenUnitEqualizerTests)
+}; //RUN_TESTS(ZenUnitEqualizerTests)
 
 }
 
