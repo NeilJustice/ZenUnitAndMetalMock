@@ -1,4 +1,6 @@
 #include "pch.h"
+// Windows-only tests until Travis CI no longer runs out of memory
+#if _WIN32
 #include "ZenUnitTests/Testing/CustomPolicyClasses.h"
 
 namespace ZenUnit
@@ -45,3 +47,5 @@ namespace ZenUnit
    RUN_TEMPLATE_TESTS(SorterTests, vector<int, CustomAllocator<int>>)
    RUN_TEMPLATE_TESTS(SorterTests, vector<SortableStruct>)
 }
+
+#endif

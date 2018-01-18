@@ -1,4 +1,5 @@
 #include "pch.h"
+#if _WIN32
 #include "ZenUnitTests/Testing/CustomPolicyClasses.h"
 
 namespace ZenUnit
@@ -73,3 +74,5 @@ namespace ZenUnit
    RUN_TEMPLATE_TESTS(IntegralVectorZenUnitPrinterTests, int)
    RUN_TEMPLATE_TESTS(IntegralVectorZenUnitPrinterTests, unsigned)
 }
+
+#endif

@@ -1,5 +1,8 @@
 #include "pch.h"
 
+// Windows-only tests until Travis CI no longer runs out of memory
+#if _WIN32
+
 TESTS(VoidZeroArgMemberFunctionCallerTests)
 AFACT(ConstCall_CallsConstMemberFunctionOnce)
 AFACT(NonConstCall_CallsNonConstMemberFunctionOnce)
@@ -112,3 +115,5 @@ TEST(NonConstCall_CallsNonConstMemberFunctionOnce)
 };
 RUN_TEMPLATE_TESTS(NonVoidZeroArgMemberFunctionCallerTests, int)
 RUN_TEMPLATE_TESTS(NonVoidZeroArgMemberFunctionCallerTests, char)
+
+#endif

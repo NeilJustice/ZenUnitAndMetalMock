@@ -1,4 +1,6 @@
 #include "pch.h"
+// Windows-only tests until Travis CI no longer runs out of memory
+#if _WIN32
 
 TESTS(POINTER_WAS_NEWEDTests_RawPointers)
 AFACT(NullRawPointer_Throws)
@@ -134,3 +136,5 @@ File.cpp(1))");
 }
 
 }; RUN_TESTS(POINTER_WAS_NEWEDTests_RawPointers)
+
+#endif
