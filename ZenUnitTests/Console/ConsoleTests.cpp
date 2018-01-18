@@ -50,7 +50,9 @@ namespace ZenUnit
    STARTUP
    {
       _console._consoleColorer.reset(_consoleColorerMock = new ConsoleColorerMock);
+#if defined _WIN32
       _console.call_getch = ZENMOCK_BIND0(_getch_ZenMock);
+#endif
    }
 
    TEST(Constructor_NewsConsoleColorer_SetsFunctionPointers)

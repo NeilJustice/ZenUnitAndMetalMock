@@ -774,8 +774,10 @@ namespace ZenUnit
    private:
       std::unique_ptr<ConsoleColorer> _consoleColorer;
       std::function<void(int)> call_exit;
+#if defined _WIN32
       std::function<int()> call_IsDebuggerPresent;
       std::function<int()> call_getch;
+#endif
    public:
       Console() noexcept
          : _consoleColorer(std::make_unique<ConsoleColorer>())
