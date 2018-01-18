@@ -1,5 +1,8 @@
 #include "pch.h"
 
+// Windows-only tests until Travis CI no longer runs out of memory
+#if _WIN32
+
 namespace ZenUnit
 {
    TESTS(VectorTests)
@@ -195,3 +198,5 @@ RUN_TEMPLATE_TESTS(MapTests, unordered_map, UserType, int)
 RUN_TEMPLATE_TESTS(MapTests, unordered_map, int, UserType)
 RUN_TEMPLATE_TESTS(MapTests, unordered_map, UserType, UserType)
 }
+
+#endif

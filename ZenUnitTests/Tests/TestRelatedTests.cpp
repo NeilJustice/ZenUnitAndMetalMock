@@ -1,5 +1,8 @@
 #include "pch.h"
 
+// Windows-only tests until Travis CI no longer runs out of memory
+#if _WIN32
+
 namespace ZenUnit
 {
    TESTS(FullTestNameTests)
@@ -992,4 +995,7 @@ namespace ZenUnit
    }
 
 }; RUN_TESTS(TestTests)
+
 }
+
+#endif
