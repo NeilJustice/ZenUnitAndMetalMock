@@ -2,6 +2,7 @@
 #include "ZenUnitTests/Args/Mock/RunFilterParserMock.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Testing/RandomRunFilter.h"
+#include "ZenUnitTests/Utils/Iteration/Mock/TransformerMock.h"
 
 namespace ZenUnit
 {
@@ -348,13 +349,9 @@ None
       ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
    }
 
-}; //RUN_TESTS(ArgsParserTests)
+}; RUN_TESTS(ArgsParserTests)
+
 }
-
-
-#include "pch.h"
-#include "ZenUnitTests/Testing/RandomRunFilter.h"
-#include "ZenUnitTests/Utils/Iteration/Mock/TransformerMock.h"
 
 namespace ZenUnit
 {
@@ -440,11 +437,10 @@ namespace ZenUnit
          invalid_argument, "Invalid test run filter: " + runFilterString);
    }
 
-}; //RUN_TESTS(RunFilterParserTests)
+}; RUN_TESTS(RunFilterParserTests)
+
 }
 
-
-#include "pch.h"
 
 TESTS(RunFilterTests)
 AFACT(DefaultConstructor_SetsTestCaseTo0)
@@ -481,10 +477,8 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EQUALIZER_THROWS_FOR_FIELD(RunFilter, testCaseNumber, 1);
 }
 
-}; //RUN_TESTS(RunFilterTests)
+}; RUN_TESTS(RunFilterTests)
 
-
-#include "pch.h"
 
 namespace ZenUnit
 {
@@ -528,5 +522,6 @@ namespace ZenUnit
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, maxtotalseconds, 5u);
    }
 
-}; //RUN_TESTS(ZenUnitArgsTests)
+}; RUN_TESTS(ZenUnitArgsTests)
+
 }

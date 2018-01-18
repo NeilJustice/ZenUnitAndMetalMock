@@ -329,7 +329,7 @@ namespace ZenUnit
    }
 #endif
 
-   }; //RUN_TESTS(ConsoleTests)
+   }; RUN_TESTS(ConsoleTests)
 
    TESTS(ConsoleColorerTests)
    AFACT(Constructor_SetsFunctionPointers_SetsSupportsColorAndSupportsColorSetToFalse)
@@ -487,7 +487,7 @@ namespace ZenUnit
    }
    #endif
 
-   }; //RUN_TESTS(ConsoleColorerTests)
+   }; RUN_TESTS(ConsoleColorerTests)
 
    TESTS(LinuxColorTests)
    FACTS(ColorToLinuxColor_ReturnsExpected)
@@ -506,7 +506,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedLinuxColor, ColorToLinuxColor(color));
    }
 
-   }; //RUN_TESTS(LinuxColorTests)
+   }; RUN_TESTS(LinuxColorTests)
 
    TESTS(WindowsColorTests)
    FACTS(ColorToWindowsColor_ReturnsExpectedWindowsColor)
@@ -526,5 +526,5 @@ namespace ZenUnit
       ARE_EQUAL(expectedWindowsColor, windowsColor);
    }
 
-   }; //RUN_TESTS(WindowsColorTests)
+   }; RUN_TESTS(WindowsColorTests)
 }

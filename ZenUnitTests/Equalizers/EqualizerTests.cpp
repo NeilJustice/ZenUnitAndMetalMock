@@ -3,6 +3,8 @@
 // Windows-only tests until Travis CI no longer runs out of memory
 #if _WIN32
 
+#include "ZenUnitTests/Testing/UserType.h"
+
 namespace ZenUnit
 {
    template<
@@ -22,9 +24,6 @@ namespace ZenUnit
 RUN_TEMPLATE_TESTS(MapEqualizerTests, map)
 RUN_TEMPLATE_TESTS(MapEqualizerTests, unordered_map)
 }
-
-#include "pch.h"
-#include "ZenUnitTests/Testing/UserType.h"
 
 namespace ZenUnit
 {
@@ -87,12 +86,9 @@ File.cpp(1)
 File.cpp(1))");
    }
 
-}; //RUN_TESTS(VectorEqualizerTests)
+}; RUN_TESTS(VectorEqualizerTests)
+
 }
-
-
-#include "pch.h"
-#include "ZenUnitTests/Testing/UserType.h"
 
 namespace ZenUnit
 {
@@ -294,7 +290,7 @@ namespace ZenUnit
          numeric_limits<int>::max(), static_cast<size_t>(numeric_limits<int>::max()));
    }
 
-}; //RUN_TESTS(ZenUnitEqualizerTests)
+}; RUN_TESTS(ZenUnitEqualizerTests)
 
 }
 
