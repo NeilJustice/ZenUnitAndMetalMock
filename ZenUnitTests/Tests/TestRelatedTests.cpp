@@ -209,7 +209,7 @@ namespace ZenUnit
       //
       _normalTest->NonMinimalWritePostTestNameMessage(&consoleMock, printMode);
       //
-      ZEN(consoleMock.NonMinimalWriteMock.CalledOnceWith(" -> ", printMode));
+      ZEN(consoleMock.NonMinimalWriteMock.CalledOnceWith(" => ", printMode));
    }
 
    TEST(NonMinimalWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue)
@@ -731,7 +731,7 @@ namespace ZenUnit
          {
             { to_string(expectedTestCaseNumber), printMode },
          { " ("s, printMode },
-         { ") -> "s, printMode }
+         { ") => "s, printMode }
          }));
    }
 
