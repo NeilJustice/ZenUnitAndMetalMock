@@ -1060,10 +1060,10 @@ namespace ZenUnit
       bool random,
       bool randomseedsetbyuser,
       bool expectRandomSeedSuffixWrite,
-      "[VICTORY]", Color::Green, size_t(0), size_t(1), "1 test passed", 0, "milliseconds", false, false, false,
-      "[VICTORY]", Color::Green, size_t(0), size_t(2), "2 tests passed", 1, "millisecond", false, false, false,
-      "[VICTORY]", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds", true, false, true,
-      "[VICTORY]", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds", true, true, false,
+      "<VICTORY>", Color::Green, size_t(0), size_t(1), "1 test passed", 0, "milliseconds", false, false, false,
+      "<VICTORY>", Color::Green, size_t(0), size_t(2), "2 tests passed", 1, "millisecond", false, false, false,
+      "<VICTORY>", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds", true, false, true,
+      "<VICTORY>", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds", true, true, false,
       ">>-FAIL->", Color::Red, size_t(1), size_t(1), "1/1 test failed", 0, "milliseconds", false, false, false,
       ">>-FAIL->", Color::Red, size_t(1), size_t(2), "1/2 tests failed", 1, "millisecond", false, false, false,
       ">>-FAIL->", Color::Red, size_t(1), size_t(3), "1/3 tests failed", 2, "milliseconds", false, false, false,
@@ -1086,7 +1086,7 @@ namespace ZenUnit
       _testRunResult.PrintClosingLines(numberOfTotalTests, testRunMilliseconds, zenUnitArgs);
       //
       const string expectedFirstAndThirdLineAsciiArt =
-         expectedMiddleLineVictoryOrFail == "[VICTORY]" ? "+===+===+" : ">>------>";
+         expectedMiddleLineVictoryOrFail == "<VICTORY>" ? "+===+===+" : ">>------>";
       ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith(
          expectedFirstAndThirdLineAsciiArt + " ", expectedColor));
       ZEN(_consoleMock->WriteColorMock.CalledAsFollows(

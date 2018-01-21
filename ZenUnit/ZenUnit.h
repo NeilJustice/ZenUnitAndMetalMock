@@ -4084,7 +4084,7 @@ None
             if (_numberOfFailedTestCases == 0)
             {
                firstAndThirdLineAsciiArt = "+===+===+ ";
-               middleLineVictoryOrFail = "[VICTORY] ";
+               middleLineVictoryOrFail = "<VICTORY> ";
                middleLineBody = String::Concat(
                   totalNumberOfTestCases, ' ', testOrTests, " passed ", inMillisecondsPart);
             }
