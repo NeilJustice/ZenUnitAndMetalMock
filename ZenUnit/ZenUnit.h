@@ -4081,7 +4081,7 @@ None
             if (_numberOfFailedTestCases == 0)
             {
                firstAndThirdLineAsciiArt = "+===+===+ ";
-               middleLineVictoryOrFail = "[VICTORY] ";
+               middleLineVictoryOrFail = "<VICTORY> ";
                middleLineBody = String::Concat(
                   totalNumberOfTestCases, ' ', testOrTests, " passed ", inMillisecondsPart);
             }
@@ -4797,7 +4797,7 @@ None
       {
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          _console->NonMinimalWriteColor("|", Color::Green, zenUnitArgs.printMode);
-         static const std::string TestClassIsNewableAndDeletableString = "TestClassIsNewableAndDeletable -> ";
+         static const std::string TestClassIsNewableAndDeletableString = "TestClassIsNewableAndDeletable => ";
          _console->NonMinimalWrite(TestClassIsNewableAndDeletableString, zenUnitArgs.printMode);
          const std::vector<TestResult> newableDeletableTestResults = newableDeletableTest->Run();
          assert_true(newableDeletableTestResults.size() == 1);
@@ -4850,7 +4850,7 @@ None
       void NonMinimalWritePostTestNameMessage(
          const Console* console, PrintMode printMode) const override
       {
-         console->NonMinimalWrite(" -> ", printMode);
+         console->NonMinimalWrite(" => ", printMode);
       }
 
       void NonMinimalWritePostTestCompletionMessage(
@@ -5059,7 +5059,7 @@ None
          const size_t testCaseArgsPrintingStartIndex = static_cast<size_t>(testCaseIndex) * N;
          _console->NonMinimalWriteStringsCommaSeparated(
             splitTestCaseArgs, testCaseArgsPrintingStartIndex, N, printMode);
-         _console->NonMinimalWrite(") -> ", printMode);
+         _console->NonMinimalWrite(") => ", printMode);
       }
 
       virtual void NonMinimalWriteLineOKIfSuccess(const TestResult& testResult, PrintMode printMode) const

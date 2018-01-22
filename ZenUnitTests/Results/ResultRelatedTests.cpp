@@ -1021,6 +1021,7 @@ TEST3X3(PrintTestFailuresAndSkips_PrintsTestFailures_PrintsSkippedTestClassNames
       _consoleMock->WriteLineMock.Expect();
       _memberForEacherTestClassResultsMock->MemberForEachMock.Expect();
    }
+<<<<<<< HEAD
    _memberForEacherSkippedTestsMock->MemberForEachMock.Expect();
    //
    _testRunResult.PrintTestFailuresAndSkips();
@@ -1031,6 +1032,64 @@ TEST3X3(PrintTestFailuresAndSkips_PrintsTestFailures_PrintsSkippedTestClassNames
       ZEN(_memberForEacherTestClassResultsMock->MemberForEachMock.
          CalledOnceWith(&_testRunResult._testClassResults, &_testRunResult,
             &TestRunResult::PrintTestClassResultFailures));
+=======
+
+   TEST10X10(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds,
+      const string& expectedMiddleLineVictoryOrFail,
+      ZenUnit::Color expectedColor,
+      size_t numberOfFailedTestCases,
+      size_t numberOfTotalTests,
+      const string& expectedClosingLineTestsCountText,
+      unsigned testRunMilliseconds,
+      const string& expectedMillisecondOrMilliseconds,
+      bool random,
+      bool randomseedsetbyuser,
+      bool expectRandomSeedSuffixWrite,
+      "<VICTORY>", Color::Green, size_t(0), size_t(1), "1 test passed", 0, "milliseconds", false, false, false,
+      "<VICTORY>", Color::Green, size_t(0), size_t(2), "2 tests passed", 1, "millisecond", false, false, false,
+      "<VICTORY>", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds", true, false, true,
+      "<VICTORY>", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds", true, true, false,
+      ">>-FAIL->", Color::Red, size_t(1), size_t(1), "1/1 test failed", 0, "milliseconds", false, false, false,
+      ">>-FAIL->", Color::Red, size_t(1), size_t(2), "1/2 tests failed", 1, "millisecond", false, false, false,
+      ">>-FAIL->", Color::Red, size_t(1), size_t(3), "1/3 tests failed", 2, "milliseconds", false, false, false,
+      ">>-FAIL->", Color::Red, size_t(2), size_t(2), "2/2 tests failed", 3, "milliseconds", false, false, false,
+      ">>-FAIL->", Color::Red, size_t(2), size_t(3), "2/3 tests failed", 4, "milliseconds", false, false, false,
+      ">>-FAIL->", Color::Red, size_t(2), size_t(3), "2/3 tests failed", 4, "milliseconds", true, false, true,
+      ">>-FAIL->", Color::Red, size_t(2), size_t(4), "2/4 tests failed", 5, "milliseconds", true, true, false)
+   {
+      _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
+      _consoleMock->WriteLineColorMock.Expect();
+      _consoleMock->WriteColorMock.Expect();
+      _consoleMock->WriteMock.Expect();
+      _consoleMock->WriteLineMock.Expect();
+      ZenUnitArgs zenUnitArgs;
+      zenUnitArgs.commandLine = Random<string>();
+      zenUnitArgs.random = random;
+      zenUnitArgs.randomseed = Random<unsigned short>();
+      zenUnitArgs.randomseedsetbyuser = randomseedsetbyuser;
+      //
+      _testRunResult.PrintClosingLines(numberOfTotalTests, testRunMilliseconds, zenUnitArgs);
+      //
+      const string expectedFirstAndThirdLineAsciiArt =
+         expectedMiddleLineVictoryOrFail == "<VICTORY>" ? "+===+===+" : ">>------>";
+      ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith(
+         expectedFirstAndThirdLineAsciiArt + " ", expectedColor));
+      ZEN(_consoleMock->WriteColorMock.CalledAsFollows(
+         {
+            { expectedMiddleLineVictoryOrFail + " ", expectedColor },
+         { expectedFirstAndThirdLineAsciiArt + " ", expectedColor }
+         }));
+      const string expectedClosingLineBody = expectedClosingLineTestsCountText +
+         " in " + to_string(testRunMilliseconds) + " " + expectedMillisecondOrMilliseconds;
+      const string expectedRandomSeedWriteLine = expectRandomSeedSuffixWrite ?
+         " (seed " + to_string(zenUnitArgs.randomseed) + ")" : "";
+      ZEN(_consoleMock->WriteLineMock.CalledAsFollows(
+         {
+            expectedClosingLineBody,
+            expectedRandomSeedWriteLine
+         }));
+      ZEN(_consoleMock->WriteMock.CalledOnceWith(zenUnitArgs.commandLine));
+>>>>>>> 420a54e43d89fb7be915a140a7dabc587abbae61
    }
    ZEN(_memberForEacherSkippedTestsMock->MemberForEachMock.CalledAsFollows(
       {

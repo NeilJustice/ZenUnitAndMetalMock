@@ -32,6 +32,7 @@ rules.ninja
 Makefile
 
 # Windows
+*.dir/
 x64/
 Win32/
 Debug/
@@ -39,8 +40,8 @@ Release/
 MinSizeRel/
 RelWithDebInfo/
 !ZenUnitPy/ZenUnitPy.sln
-*.dir/
 *.cache
+*.dat
 *.db
 *.depend
 *.filters

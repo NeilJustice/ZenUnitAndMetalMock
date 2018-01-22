@@ -850,7 +850,7 @@ TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewableDele
    //
    ZEN(GetArgs_ZenMock.CalledOnce());
    ZEN(_consoleMock->NonMinimalWriteColorMock.CalledOnceWith("|", Color::Green, zenUnitArgs.printMode));
-   ZEN(_consoleMock->NonMinimalWriteMock.CalledOnceWith("TestClassIsNewableAndDeletable -> ", zenUnitArgs.printMode));
+   ZEN(_consoleMock->NonMinimalWriteMock.CalledOnceWith("TestClassIsNewableAndDeletable => ", zenUnitArgs.printMode));
    if (expectWriteLineOK)
    {
       ZEN(_consoleMock->NonMinimalWriteLineMock.CalledOnceWith("OK", zenUnitArgs.printMode));
