@@ -3,6 +3,11 @@
 // Windows-only tests until Travis CI no longer runs out of memory
 #if _WIN32
 
+#include "ZenUnitTests/Console/Mock/ConsoleMock.h"
+#include "ZenUnitTests/Results/Mock/TestResultMock.h"
+#include "ZenUnitTests/Testing/RandomPrintMode.h"
+#include "ZenUnitTests/Tests/TestingTestClass.h"
+
 namespace ZenUnit
 {
    TESTS(FullTestNameTests)
@@ -67,7 +72,7 @@ namespace ZenUnit
 
 namespace ZenUnit
 {
-   TESTS(NewDeleteTestTests)
+   TESTS(NewableDeletableTestTests)
    AFACT(Constructor_NewsComponents)
    AFACT(NumberOfTestCases_Returns1)
    FACTS(Run_CallsNewTestClassWhichFails_DoesNotCallDeleteTestClass_ReturnsConstructorFailTestResult)
@@ -76,32 +81,32 @@ namespace ZenUnit
    EVIDENCE
 
    class TestingTestClass {};
-   unique_ptr<NewDeleteTest<TestingTestClass>> _newDeleteTest;
+   unique_ptr<NewableDeletableTest<TestingTestClass>> _newableDeletableTest;
    TryCatchCallerMock* _tryCatchCallerMock = nullptr;
    TestResultFactoryMock* _testResultFactoryMock = nullptr;
    const string TestClassName = Random<string>();
 
    STARTUP
    {
-      _newDeleteTest = make_unique<NewDeleteTest<TestingTestClass>>(TestClassName.c_str());
-      _newDeleteTest->_tryCatchCaller.reset(_tryCatchCallerMock = new TryCatchCallerMock);
-      _newDeleteTest->_testResultFactory.reset(_testResultFactoryMock = new TestResultFactoryMock);
+      _newableDeletableTest = make_unique<NewableDeletableTest<TestingTestClass>>(TestClassName.c_str());
+      _newableDeletableTest->_tryCatchCaller.reset(_tryCatchCallerMock = new TryCatchCallerMock);
+      _newableDeletableTest->_testResultFactory.reset(_testResultFactoryMock = new TestResultFactoryMock);
    }
 
    TEST(Constructor_NewsComponents)
    {
-      NewDeleteTest<TestingTestClass> newDeleteTest(TestClassName.c_str());
-      ARE_EQUAL("TestClassIsNewableAndDeletable", newDeleteTest.Name());
-      ARE_EQUAL("TESTS(" + TestClassName + ")\nTEST(TestClassIsNewableAndDeletable)", newDeleteTest.FullTestNameValue());
-      ARE_EQUAL("(0)", newDeleteTest.FileLineString());
-      POINTER_WAS_NEWED(newDeleteTest._testResultFactory);
-      POINTER_WAS_NEWED(newDeleteTest._tryCatchCaller);
-      IS_NULL(newDeleteTest._firstInstanceOfTestClass);
+      NewableDeletableTest<TestingTestClass> newableDeletableTest(TestClassName.c_str());
+      ARE_EQUAL("TestClassIsNewableAndDeletable", newableDeletableTest.Name());
+      ARE_EQUAL("TESTS(" + TestClassName + ")\nTEST(TestClassIsNewableAndDeletable)", newableDeletableTest.FullTestNameValue());
+      ARE_EQUAL("(0)", newableDeletableTest.FileLineString());
+      POINTER_WAS_NEWED(newableDeletableTest._testResultFactory);
+      POINTER_WAS_NEWED(newableDeletableTest._tryCatchCaller);
+      IS_NULL(newableDeletableTest._firstInstanceOfTestClass);
    }
 
    TEST(NumberOfTestCases_Returns1)
    {
-      ARE_EQUAL(1, _newDeleteTest->NumberOfTestCases());
+      ARE_EQUAL(1, _newableDeletableTest->NumberOfTestCases());
    }
 
    TEST1X1(Run_CallsNewTestClassWhichFails_DoesNotCallDeleteTestClass_ReturnsConstructorFailTestResult,
@@ -116,12 +121,12 @@ namespace ZenUnit
       const TestResult constructorFailTestResult = TestResult::TestingNonDefault();
       _testResultFactoryMock->ConstructorFailMock.Return(constructorFailTestResult);
       //
-      const vector<TestResult> testResults = _newDeleteTest->Run();
+      const vector<TestResult> testResults = _newableDeletableTest->Run();
       //
       ZEN(_tryCatchCallerMock->CallMock.CalledOnceWith(
-         &Test::CallNewTestClass, _newDeleteTest.get(), TestPhase::Constructor));
+         &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor));
       ZEN(_testResultFactoryMock->ConstructorFailMock.CalledOnceWith(
-         _newDeleteTest->_fullTestName, failedConstructorCallResult));
+         _newableDeletableTest->_fullTestName, failedConstructorCallResult));
       const vector<TestResult> expectedTestResults{ constructorFailTestResult };
       VECTORS_EQUAL(expectedTestResults, testResults);
    }
@@ -137,40 +142,35 @@ namespace ZenUnit
       const TestResult sixArgCtorTestResult = TestResult::TestingNonDefault();
       _testResultFactoryMock->CtorDtorSuccessMock.Return(sixArgCtorTestResult);
       //
-      const vector<TestResult> testResults = _newDeleteTest->Run();
+      const vector<TestResult> testResults = _newableDeletableTest->Run();
       //
       ZEN(_tryCatchCallerMock->CallMock.CalledAsFollows(
          {
-            { &Test::CallNewTestClass, _newDeleteTest.get(), TestPhase::Constructor },
-         { &Test::CallDeleteTestClass, _newDeleteTest.get(), TestPhase::Destructor }
+            { &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor },
+         { &Test::CallDeleteTestClass, _newableDeletableTest.get(), TestPhase::Destructor }
          }));
       ZEN(_testResultFactoryMock->CtorDtorSuccessMock.CalledOnceWith(
-         _newDeleteTest->_fullTestName, successConstructorCallResult, destructorCallResult));
+         _newableDeletableTest->_fullTestName, successConstructorCallResult, destructorCallResult));
       const vector<TestResult> expectedTestResults{ sixArgCtorTestResult };
       VECTORS_EQUAL(expectedTestResults, testResults);
    }
 
    TEST(NewAndDeleteTestClass_NewsAndDeleteFirstInstanceOfTestClass)
    {
-      IS_NULL(_newDeleteTest->_firstInstanceOfTestClass);
+      IS_NULL(_newableDeletableTest->_firstInstanceOfTestClass);
       //
-      _newDeleteTest->NewTestClass();
+      _newableDeletableTest->NewTestClass();
       //
-      IS_NOT_NULL(_newDeleteTest->_firstInstanceOfTestClass);
+      IS_NOT_NULL(_newableDeletableTest->_firstInstanceOfTestClass);
       //
-      _newDeleteTest->DeleteTestClass();
+      _newableDeletableTest->DeleteTestClass();
       //
-      IS_NULL(_newDeleteTest->_firstInstanceOfTestClass);
+      IS_NULL(_newableDeletableTest->_firstInstanceOfTestClass);
    }
 
-}; RUN_TESTS(NewDeleteTestTests)
-}
+}; RUN_TESTS(NewableDeletableTestTests)
 
-#include "pch.h"
-#include "ZenUnitTests/Console/Mock/ConsoleMock.h"
-#include "ZenUnitTests/Results/Mock/TestResultMock.h"
-#include "ZenUnitTests/Testing/RandomPrintMode.h"
-#include "ZenUnitTests/Tests/TestingTestClass.h"
+}
 
 namespace ZenUnit
 {

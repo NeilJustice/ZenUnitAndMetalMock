@@ -12,7 +12,6 @@
 #include "ZenUnitTests/Utils/Mock/SorterMock.h"
 #include "ZenUnitTests/Utils/Time/Mock/WatchMock.h"
 
-#include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/TestRunners/Mock/MultiTestClassRunnerMock.h"
 #include "ZenUnitTests/Utils/Mock/MachineNameGetterMock.h"
 #include "ZenUnitTests/Utils/Time/Mock/WatchMock.h"
@@ -534,10 +533,10 @@ AFACT(HasTestNameThatCaseInsensitiveMatchesPattern_OneNonMatchingTest_ReturnsFal
 FACTS(HasTestNameThatCaseInsensitiveMatchesPattern_OneMatchingTest_ReturnsTrue)
 AFACT(HasTestNameThatCaseInsensitiveMatchesPattern_FourTestsWhereThirdOneMatches_DoesNotCallFourthTestName_ReturnsTrue)
 AFACT(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
-FACTS(RunTests_PrintsTestClassNameAndNumberOfNamedTests_CallsDoRunTests_PrintsTestClassResultLine_MoveReturnsTestClassResult)
+FACTS(RunTests_PrintsTestClassNameAndNumberOfNamedTests_ConfirmsTestClassNewableAndDeletable_RunsTests_PrintsAndReturnsTestClassResult)
 FACTS(DoRunTests_RandomlyRunsTestsIfRandomOtherwiseSequentiallyRunsTests)
 FACTS(NonMinimalPrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVerticalBarNumberOfTests)
-FACTS(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewDeleteTest_AddsResultToResults_ReturnsTrueIfNewableAndDeletable)
+FACTS(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewableDeletableTest_AddsResultToResults_ReturnsTrueIfNewableAndDeletable)
 AFACT(RunTest_NonMinimalWritesVerticalBarTestName_RunsTest_AddsTestResultsToTestClassResult_NonMinimalWriteTestOutcome)
 AFACT(NonMinimalPrintResultLine_CallsTestClassResultPrintResultLine)
 EVIDENCE
@@ -694,15 +693,13 @@ TEST(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
    ARE_EQUAL(30, numberOfTestCases);
 }
 
-TEST2X2(RunTests_PrintsTestClassNameAndNumberOfNamedTests_CallsDoRunTests_PrintsTestClassResultLine_MoveReturnsTestClassResult,
+TEST2X2(RunTests_PrintsTestClassNameAndNumberOfNamedTests_ConfirmsTestClassNewableAndDeletable_RunsTests_PrintsAndReturnsTestClassResult,
    bool testClassTypeNewableAndDeletable, bool expectDoRunTestsCall,
    false, false,
    true, true)
 {
    _voidZeroArgFunctionCallerMock->ConstCallMock.Expect();
-
    _nonVoidTwoArgFunctionCallerMock->ConstCallMock.Return(testClassTypeNewableAndDeletable);
-
    if (expectDoRunTestsCall)
    {
       _voidZeroArgFunctionCallerMock->NonConstCallMock.Expect();
@@ -710,7 +707,6 @@ TEST2X2(RunTests_PrintsTestClassNameAndNumberOfNamedTests_CallsDoRunTests_Prints
    _voidTwoArgFunctionCallerMock->ConstCallMock.Expect();
    _consoleMock->NonMinimalWriteNewLineMock.Expect();
    _specificTestClassRunner->_testClassResult = TestClassResult::TestingNonDefault();
-
    const ZenUnitArgs zenUnitArgs = []
    {
       ZenUnitArgs zenUnitArgs;
@@ -725,7 +721,7 @@ TEST2X2(RunTests_PrintsTestClassNameAndNumberOfNamedTests_CallsDoRunTests_Prints
        _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::NonMinimalPrintTestClassNameAndNumberOfNamedTests));
    ZEN(_nonVoidTwoArgFunctionCallerMock->ConstCallMock.CalledOnceWith(
       _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests,
-      &_specificTestClassRunner->_newDeleteTest, &_specificTestClassRunner->_testClassResult));
+      &_specificTestClassRunner->_newableDeletableTest, &_specificTestClassRunner->_testClassResult));
    if (expectDoRunTestsCall)
    {
       ZEN(_voidZeroArgFunctionCallerMock->NonConstCallMock.CalledOnceWith(
@@ -817,8 +813,8 @@ TEST2X2(NonMinimalPrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVer
    }
 }
 
-TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewDeleteTest_AddsResultToResults_ReturnsTrueIfNewableAndDeletable,
-   bool expectedReturnValue, TestOutcome newDeleteTestOutcome, bool expectWriteLineOK,
+TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewableDeletableTest_AddsResultToResults_ReturnsTrueIfNewableAndDeletable,
+   bool expectedReturnValue, TestOutcome newableDeletableTestOutcome, bool expectWriteLineOK,
    false, TestOutcome::Anomaly, false,
    false, TestOutcome::Exception, false,
    true, TestOutcome::Success, true)
@@ -842,7 +838,7 @@ TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewDeleteTe
    TestMock testMock;
 
    TestResult testResult;
-   testResult.testOutcome = newDeleteTestOutcome;
+   testResult.testOutcome = newableDeletableTestOutcome;
    const vector<TestResult> testResults{ testResult };
    testMock.RunMock.Return(testResults);
 

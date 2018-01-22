@@ -90,7 +90,7 @@ namespace ZenMock
       static std::string MakeWhat(const std::string& zenMockedFunctionSignature)
       {
          const std::string what = "For ZenMocked function \"" + zenMockedFunctionSignature + R"(":
-Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)";
+Already called [FunctionName]Mock.[Expect|Return|ReturnValues|Throw]().)";
          return what;
       }
 
@@ -162,10 +162,10 @@ Already called [FunctionName]Mock.Expect[AndReturn|AndReturnValues|AndThrow]().)
       {
          const std::string what = ZenUnit::String::Concat(
             "For ZenMocked function \"", zenMockedFunctionSignature, R"(":
- ZenMock objects by design do not support the operation of asserting that
- their corresponding ZenMocked function was called zero times.
- To confirm that a ZenMocked function was called zero times,
- simply do not call any of the Expect() functions on a ZenMock object.)");
+ZenMock objects by design do not support asserting that
+their corresponding ZenMocked functions were called zero times.
+To assert that a ZenMocked function was called zero times,
+simply do not call Expect(), Return(), or Throw() on a ZenMock object.)");
          return what;
       }
 
@@ -206,9 +206,9 @@ catch (const ZenUnit::Anomaly& zenWrappedAnomaly) \
       static std::string MakeWhat(const std::string& zenMockedFunctionSignature)
       {
          const std::string what = "For ZenMocked function \"" + zenMockedFunctionSignature + R"(":
-  ZenMocked functions with non-void return types
-  must have their return value or values set explicitly by calling
-  [FunctionName]Mock.[Return|ReturnValues]())";
+ZenMocked functions with non-void return types
+must have their return value or values set explicitly by calling
+[FunctionName]Mock.[Return|ReturnValues]())";
          return what;
       }
    };

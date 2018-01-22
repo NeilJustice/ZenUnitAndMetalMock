@@ -4632,7 +4632,7 @@ None
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          const std::string exitLine = String::Concat(
             "Fatal ... exception. ", zenUnitArgs.exit0 ?
-            "Exiting with code 0 (due to -exit0 being specified)." :
+            "Exiting with code 0 due to -exit0 being specified." :
             "Exiting with code 1.", testPhaseSuffix, " (", milliseconds, " ms)");
          const int exitCode = zenUnitArgs.exit0 ? 0 : 1;
          _console->WriteLineAndExit(exitLine, exitCode);
@@ -4641,15 +4641,15 @@ None
    }
 
    template<typename TestClassType>
-   class NewDeleteTest : public Test
+   class NewableDeletableTest : public Test
    {
-      friend class NewDeleteTestTests;
+      friend class NewableDeletableTestTests;
    private:
       std::unique_ptr<const TryCatchCaller> _tryCatchCaller;
       std::unique_ptr<const TestResultFactory> _testResultFactory;
       std::unique_ptr<TestClassType> _firstInstanceOfTestClass;
    public:
-      explicit NewDeleteTest(const char* testClassName)
+      explicit NewableDeletableTest(const char* testClassName)
          : Test(testClassName, "TestClassIsNewableAndDeletable", 0)
          , _tryCatchCaller(new TryCatchCaller)
          , _testResultFactory(new TestResultFactory)
@@ -4704,7 +4704,7 @@ None
          void, SpecificTestClassRunner<TestClassType>, const TestClassResult*, PrintMode>> _voidTwoArgFunctionCaller;
       std::function<const ZenUnitArgs&()> call_TestRunner_GetArgs;
       const char* _testClassName;
-      NewDeleteTest<TestClassType> _newDeleteTest;
+      NewableDeletableTest<TestClassType> _newableDeletableTest;
       std::vector<std::unique_ptr<Test>> _tests;
       TestClassResult _testClassResult;
    public:
@@ -4716,7 +4716,7 @@ None
          , _voidTwoArgFunctionCaller(new const TwoArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>, const TestClassResult*, PrintMode>)
          , call_TestRunner_GetArgs(TestRunner::GetArgs)
          , _testClassName(testClassName)
-         , _newDeleteTest(testClassName)
+         , _newableDeletableTest(testClassName)
       {
          _tests = TestClassType::GetTests(testClassName);
       }
@@ -4755,12 +4755,12 @@ None
          _voidZeroArgFunctionCaller->ConstCall(
             this, &SpecificTestClassRunner::NonMinimalPrintTestClassNameAndNumberOfNamedTests);
          const bool testClassIsNewableAndDeletable = _nonVoidTwoArgFunctionCaller->ConstCall(
-            this, &SpecificTestClassRunner::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests, &_newDeleteTest, &_testClassResult);
+            this, &SpecificTestClassRunner::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests, &_newableDeletableTest, &_testClassResult);
+         const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          if (testClassIsNewableAndDeletable)
          {
             _voidZeroArgFunctionCaller->NonConstCall(this, &SpecificTestClassRunner::DoRunTests);
          }
-         const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          _voidTwoArgFunctionCaller->ConstCall(
             this, &SpecificTestClassRunner::NonMinimalPrintResultLine, &_testClassResult, zenUnitArgs.printMode);
          _console->NonMinimalWriteNewLine(zenUnitArgs.printMode);
@@ -4792,16 +4792,17 @@ None
          _console->NonMinimalWriteLine(spacePipeSpaceNumberOfNamedTests, zenUnitArgs.printMode);
       }
 
-      bool ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(Test* newDeleteTest, TestClassResult* outTestClassResult) const
+      bool ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(
+         Test* newableDeletableTest, TestClassResult* outTestClassResult) const
       {
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          _console->NonMinimalWriteColor("|", Color::Green, zenUnitArgs.printMode);
          static const std::string TestClassIsNewableAndDeletableString = "TestClassIsNewableAndDeletable -> ";
          _console->NonMinimalWrite(TestClassIsNewableAndDeletableString, zenUnitArgs.printMode);
-         const std::vector<TestResult> newDeleteTestResult = newDeleteTest->Run();
-         assert_true(newDeleteTestResult.size() == 1);
-         outTestClassResult->AddTestResults(newDeleteTestResult);
-         const bool testClassIsNewableAndDeletable = newDeleteTestResult[0].testOutcome == TestOutcome::Success;
+         const std::vector<TestResult> newableDeletableTestResults = newableDeletableTest->Run();
+         assert_true(newableDeletableTestResults.size() == 1);
+         outTestClassResult->AddTestResults(newableDeletableTestResults);
+         const bool testClassIsNewableAndDeletable = newableDeletableTestResults[0].testOutcome == TestOutcome::Success;
          if (testClassIsNewableAndDeletable)
          {
             _console->NonMinimalWriteLine("OK", zenUnitArgs.printMode);

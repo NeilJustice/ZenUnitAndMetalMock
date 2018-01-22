@@ -38,11 +38,21 @@ EVIDENCE
 SKIP_TEMPLATE_TESTS(SkippedTemplateTestClassB, Reason, map)
 SKIP_TEMPLATE_TESTS(SkippedTemplateTestClassB, Reason, unordered_map)
 
-TESTS(ZZTests)
+struct ExceptionThrower
+{
+   ExceptionThrower()
+   {
+      throw exception();
+   }
+};
+
+TESTS(AAATests)
 AFACT(Test1)
 AFACT(Test2)
 AFACT(Test3)
 EVIDENCE
+
+ExceptionThrower et;
 
 TEST(Test1)
 {
@@ -70,7 +80,7 @@ TEST(Test3)
    xMock.fMock.Expect();
 }
 
-}; SKIP_TESTS(ZZTests, Reason)
+}; SKIP_TESTS(AAATests, Reason)
 
 int main(int argc, char* argv[])
 {
