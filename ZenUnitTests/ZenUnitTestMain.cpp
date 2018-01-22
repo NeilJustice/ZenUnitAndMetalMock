@@ -14,7 +14,7 @@ TEST1X1(NonSkipped1X1Test, bool, true, false) {}
 TEST(SkippedNormalTest) {}
 TEST1X1(SkippedTest1X1, int, 0) {}
 TEST2X2(SkippedTest2X2, int, int, 0, 0) {}
-}; //RUN_TESTS(SkippedTestsTestClass)
+}; RUN_TESTS(SkippedTestsTestClass)
 
 TESTS(SkippedTestClassA)
 EVIDENCE

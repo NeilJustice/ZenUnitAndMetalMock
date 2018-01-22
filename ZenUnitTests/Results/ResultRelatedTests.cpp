@@ -38,7 +38,7 @@ namespace ZenUnit
       ARE_EQUAL(ExceptionWhat, *anomalyOrException.exceptionWhat);
    }
 
-   }; //RUN_TESTS(AnomalyOrExceptionTests)
+   }; RUN_TESTS(AnomalyOrExceptionTests)
 
    TESTS(CallResultTests)
    AFACT(DefaultConstructor_SetsFieldsTo0)
@@ -80,7 +80,7 @@ namespace ZenUnit
       EQUALIZER_THROWS_FOR_FIELD(CallResult, anomalyOrException, nonDefaultAnomalyOrException);
    }
 
-   }; //RUN_TESTS(CallResultTests)
+   }; RUN_TESTS(CallResultTests)
 
 
    TESTS(TestClassResultTests)
@@ -295,7 +295,7 @@ namespace ZenUnit
       EQUALIZER_THROWS_FOR_FIELD(TestClassResult, _testResults, vector<TestResult> { TestResult() });
    }
 
-}; //RUN_TESTS(TestClassResultTests)
+}; RUN_TESTS(TestClassResultTests)
 
    TESTS(TestFailureNumbererTests)
    AFACT(TestFailureNumberer_NextReturnsIncrementingAngleBracketedSequence)
@@ -313,7 +313,7 @@ namespace ZenUnit
       ARE_EQUAL("Test Failure 3:", testFailureNumberer.Next());
    }
 
-}; //RUN_TESTS(TestFailureNumbererTests)
+}; RUN_TESTS(TestFailureNumbererTests)
 
 
    TESTS(TestPhaseSuffixerTests)
@@ -342,7 +342,7 @@ namespace ZenUnit
          invalid_argument, "Invalid testPhase");
    }
 
-   }; //RUN_TESTS(TestPhaseSuffixerTests)
+   }; RUN_TESTS(TestPhaseSuffixerTests)
 
 
    TESTS(TestResultFactoryTests)
@@ -409,7 +409,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedTestResult, testResult);
    }
 
-   }; //RUN_TESTS(TestResultFactoryTests)
+   }; RUN_TESTS(TestResultFactoryTests)
 
 
    TESTS(TestResultTests)
@@ -831,7 +831,7 @@ namespace ZenUnit
       EQUALIZER_THROWS_FOR_FIELD(TestResult, milliseconds, 20u);
    }
 
-   }; //RUN_TESTS(TestResultTests)
+   }; RUN_TESTS(TestResultTests)
 
 
    TESTS(TestRunResultTests)
@@ -1251,6 +1251,6 @@ namespace ZenUnit
       EQUALIZER_THROWS_FOR_FIELD(TestRunResult, _skippedFullTestNamesAndReasons, vector<string> { "" });
    }
 
-}; //RUN_TESTS(TestRunResultTests)
+}; RUN_TESTS(TestRunResultTests)
 
 }

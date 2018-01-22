@@ -75,7 +75,7 @@ namespace ZenUnit
       return tmNow;
    }
 
-   }; //RUN_TESTS(WatchTests)
+   }; RUN_TESTS(WatchTests)
 
    TESTS(StopwatchTests)
    AFACT(Constructor_SetsNowFunction)
@@ -134,6 +134,6 @@ namespace ZenUnit
       ARE_EQUAL(number, elapsedMilliseconds);
    }
 
-}; //RUN_TESTS(StopwatchTests)
+}; RUN_TESTS(StopwatchTests)
 
 }

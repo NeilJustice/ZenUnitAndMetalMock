@@ -52,7 +52,7 @@ TEST(NonConstCall_CallsNonConstMemberFunctionOnce)
    ARE_EQUAL(2, c.numberOfCalls);
 }
 
-}; //RUN_TESTS(VoidZeroArgMemberFunctionCallerTests)
+}; RUN_TESTS(VoidZeroArgMemberFunctionCallerTests)
 
 
 template<typename ReturnType>

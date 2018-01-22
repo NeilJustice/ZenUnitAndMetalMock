@@ -114,7 +114,7 @@ namespace ZenMock
       test(OverloadedStaticVoid1Function_ZenMock_float);
    }
 
-   }; //RUN_TESTS(ZenMock_Void1Tests)
+   }; RUN_TESTS(ZenMock_Void1Tests)
 }
 
 
@@ -484,6 +484,6 @@ Argument: 20
       _zenMock1Tester->CalledAsFollows_NonEmptyCalls_FunctionCalledCallsSizeTimesMatchingArgs_DoesNotThrow(expectedCallsSize);
    }
 
-}; //RUN_TESTS(ZenMock_NonVoid1Tests)
+}; RUN_TESTS(ZenMock_NonVoid1Tests)
 
 }

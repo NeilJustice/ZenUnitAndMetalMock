@@ -79,5 +79,5 @@ Expected: Collection contains element '0'
 File.cpp(1))");
    }
 
-   }; //RUN_TESTS(CONTAINS_ELEMENTTests)
+   }; RUN_TESTS(CONTAINS_ELEMENTTests)
 }

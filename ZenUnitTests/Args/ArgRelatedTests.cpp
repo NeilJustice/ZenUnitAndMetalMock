@@ -91,8 +91,8 @@ None
 
    TEST1X1(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1,
       size_t numberOfArgs,
-      10,
-      11)
+      11,
+      12)
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
@@ -100,7 +100,7 @@ None
       //
       THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
       //
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith("ZenUnit argument error. Too many arguments.\n"));
+      ZEN(_consoleMock->WriteLineMock.CalledOnceWith("ZenUnit command line usage error: Too many arguments.\n"));
       ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
    }
 
@@ -146,6 +146,7 @@ None
          "-pause",
          "-wait",
          "-exit0",
+         "-failfast",
          "-failskips",
          "-testruns=" + to_string(testruns),
          "-random=" + to_string(randomseed)
@@ -164,6 +165,7 @@ None
       expectedZenUnitArgs.pause = true;
       expectedZenUnitArgs.wait = true;
       expectedZenUnitArgs.exit0 = true;
+      expectedZenUnitArgs.failfast = true;
       expectedZenUnitArgs.failskips = true;
       expectedZenUnitArgs.testruns = 1;
       expectedZenUnitArgs.random = true;
@@ -223,6 +225,7 @@ None
       AssertArgSetsBoolField("-pause", &ZenUnitArgs::pause);
       AssertArgSetsBoolField("-wait", &ZenUnitArgs::wait);
       AssertArgSetsBoolField("-exit0", &ZenUnitArgs::exit0);
+      AssertArgSetsBoolField("-failfast", &ZenUnitArgs::failfast);
       AssertArgSetsBoolField("-failskips", &ZenUnitArgs::failskips);
    }
    void AssertArgSetsBoolField(const string& arg, bool ZenUnitArgs::* expectedFieldToBeSet)
@@ -495,6 +498,7 @@ namespace ZenUnit
       IS_EMPTY(zenUnitArgs.runFilters);
       IS_FALSE(zenUnitArgs.wait);
       IS_FALSE(zenUnitArgs.exit0);
+      IS_FALSE(zenUnitArgs.failfast);
       IS_FALSE(zenUnitArgs.failskips);
       ARE_EQUAL(1, zenUnitArgs.testruns);
       IS_FALSE(zenUnitArgs.random);
@@ -513,6 +517,7 @@ namespace ZenUnit
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, pause, true);
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, wait, true);
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, exit0, true);
+      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, failfast, true);
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, failskips, true);
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, testruns, 2u);
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, random, true);

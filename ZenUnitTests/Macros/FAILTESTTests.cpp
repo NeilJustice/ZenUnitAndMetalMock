@@ -2,7 +2,7 @@
 
 namespace ZenUnit
 {
-   TESTS(FAILTests)
+   TESTS(FAILTESTTests)
    AFACT(StringLiteralBecause_Throws)
    AFACT(StringVariableBecause_MessagesTestCase_Throws)
    EVIDENCE
@@ -25,5 +25,5 @@ Message: "A", "B"
 File.cpp(1))");
    }
 
-   }; //RUN_TESTS(FAILTests)
+   }; RUN_TESTS(FAILTESTTests)
 }

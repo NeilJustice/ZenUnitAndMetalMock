@@ -634,6 +634,7 @@ namespace ZenUnit
       bool pause = false;
       bool wait = false;
       bool exit0 = false;
+      bool failfast = false;
       bool failskips = false;
       unsigned testruns = 1;
       bool random = false;
@@ -649,9 +650,9 @@ namespace ZenUnit
 #endif
 #elif defined(_WIN64)
 #if defined _DEBUG
-   static_assert(sizeof(ZenUnitArgs) == 104);
+   static_assert(sizeof(ZenUnitArgs) == 112);
 #elif NDEBUG
-   static_assert(sizeof(ZenUnitArgs) == 88);
+   static_assert(sizeof(ZenUnitArgs) == 96);
 #endif
 #endif
 
@@ -1622,9 +1623,9 @@ namespace ZenUnit
 
       virtual ZenUnitArgs Parse(const std::vector<std::string>& args) const
       {
-         if (args.size() > 9)
+         if (args.size() > 10)
          {
-            _console->WriteLine("ZenUnit argument error. Too many arguments.\n");
+            _console->WriteLine("ZenUnit command line usage error: Too many arguments.\n");
             _console->WriteLineAndExit(Usage(), 1);
          }
          ZenUnitArgs zenUnitArgs;
@@ -1652,6 +1653,10 @@ namespace ZenUnit
             else if (arg == "-exit0")
             {
                zenUnitArgs.exit0 = true;
+            }
+            else if (arg == "-failfast")
+            {
+               zenUnitArgs.failfast = true;
             }
             else if (arg == "-failskips")
             {
@@ -1765,11 +1770,6 @@ None
 
       VRText(const T& value, const char* text) noexcept
          : value(value), text(text) {}
-
-      //VRText(const VRText&) = delete;
-      //VRText& operator=(const VRText&) = delete;
-      //VRText(VRText&&) = delete;
-      //VRText& operator=(VRText&&) = delete;
    };
 
    template<size_t N>
@@ -5914,6 +5914,7 @@ Unexpectedly, a TEST definition was encountered.
          ARE_EQUAL(expectedArguments.pause, actualArgs.pause);
          ARE_EQUAL(expectedArguments.wait, actualArgs.wait);
          ARE_EQUAL(expectedArguments.exit0, actualArgs.exit0);
+         ARE_EQUAL(expectedArguments.failfast, actualArgs.failfast);
          ARE_EQUAL(expectedArguments.failskips, actualArgs.failskips);
          ARE_EQUAL(expectedArguments.testruns, actualArgs.testruns);
          ARE_EQUAL(expectedArguments.random, actualArgs.random);

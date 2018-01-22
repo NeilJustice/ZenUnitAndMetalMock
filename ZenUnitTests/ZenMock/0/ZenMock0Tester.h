@@ -478,6 +478,6 @@ namespace ZenMock
       test(StaticFunction_ZenMock, [&] { return ZENMOCK_BIND0(StaticFunction_ZenMock)(); });
    }
 
-}; //RUN_TESTS(ZenMock_NonVoid0Tests)
+}; RUN_TESTS(ZenMock_NonVoid0Tests)
 
 }

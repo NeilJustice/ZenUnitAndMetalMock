@@ -58,7 +58,7 @@ namespace ZenUnit
       EQUALIZER_THROWS_FOR_FIELD(FullTestName, arity, static_cast<unsigned char>(1));
    }
 
-}; //RUN_TESTS(FullTestNameTests)
+}; RUN_TESTS(FullTestNameTests)
 }
 
 #include "pch.h"
@@ -163,7 +163,7 @@ namespace ZenUnit
       IS_NULL(_newDeleteTest->_firstInstanceOfTestClass);
    }
 
-}; //RUN_TESTS(NewDeleteTestTests)
+}; RUN_TESTS(NewDeleteTestTests)
 }
 
 #include "pch.h"
@@ -285,7 +285,7 @@ namespace ZenUnit
       IS_TRUE(TestingTestClass::s_destructorCalled);
    }
 
-}; //RUN_TESTS(NormalTestTests)
+}; RUN_TESTS(NormalTestTests)
 }
 
 
@@ -429,7 +429,7 @@ namespace ZenUnit
       t.TestFunction(0);
    }
 
-}; //RUN_TESTS(SpecSectionTestNXNTests)
+}; RUN_TESTS(SpecSectionTestNXNTests)
 }
 
 
@@ -482,7 +482,7 @@ namespace ZenUnit
       IS_TRUE(TestingDerivedTestClassType::s_allNXNTestsRegistered);
    }
 
-}; //RUN_TESTS(TestClassTests)
+}; RUN_TESTS(TestClassTests)
 }
 
 
@@ -749,7 +749,7 @@ namespace ZenUnit
          CalledOnceWith(_testNXN->_console.get(), printMode));
    }
 
-}; //RUN_TESTS(TestNXNTests)
+}; RUN_TESTS(TestNXNTests)
 
 template<typename T>
 TEMPLATE_TESTS(AllTestNXNsWithinATemplateTestClass, T)
@@ -994,7 +994,7 @@ namespace ZenUnit
       test.DeleteTestClass();
    }
 
-}; //RUN_TESTS(TestTests)
+}; RUN_TESTS(TestTests)
 
 }
 

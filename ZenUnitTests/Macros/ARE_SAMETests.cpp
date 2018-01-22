@@ -64,5 +64,5 @@ Expected: )";
       return expectedWhatPattern;
    }
 
-   }; //RUN_TESTS(ARE_SAMETests)
+   }; RUN_TESTS(ARE_SAMETests)
 }

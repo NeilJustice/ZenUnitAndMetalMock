@@ -111,5 +111,5 @@ namespace ZenMock
       THROWS(valueReturner.ZenMockAddContainerReturnValues(vector<int>{}), invalid_argument, ExpectedWhat);
    }
 
-   }; //RUN_TESTS(ValueReturnerTests)
+   }; RUN_TESTS(ValueReturnerTests)
 }
