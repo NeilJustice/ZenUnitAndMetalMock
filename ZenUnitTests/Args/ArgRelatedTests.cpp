@@ -28,7 +28,6 @@ namespace ZenUnit
 
    const string TestProgramPath = Random<string>();
    const string ExpectedUsage = R"(ZenUnit v0.1.0
-Usage: <TestsBinaryName> [Options...]
 
 Options:
 
@@ -36,27 +35,25 @@ None
    Run all non-skipped tests while printing detailed information.
 -minimal
    Print only preamble, any test failure details, and conclusion.
--run=<TestClassName[.TestName],TestClassName[.TestName]...>
+-run=<TestClassName>[.TestName][,TestClassName.TestName...]
    Run only specified case-insensitive test classes and/or tests.
 -pause
-   Wait for input before running tests to allow attaching a profiler or debugger.
+   Wait for any key before running tests to allow attaching a profiler or debugger.
 -wait
-   Wait for input before closing console window.
--exit0
-   Always exit 0 regardless of test run outcome.
-   Useful option for never blocking the launch of the Visual Studio debugger
-   when running ZenUnit tests as a post-build event.
+   Wait for any key at the end of the test run.
+-failfast
+   Exit 1 upon first test failure instead of continuing.
 -failskips
    Exit 1 regardless of test run outcome if any tests are skipped.
-   Useful option for continuous integration servers to reduce
-   the probability of a quality-compromising culture of complacency
-   developing around skipped tests.
+-exit0
+   Always exit 0 regardless of test run outcome.
+   Useful option for never blocking the launch of a debugger
+   when running ZenUnit tests in a post-build step.
 -random[=Seed]
    Run test classes in a random order and run tests in a random order.
-   Useful option for increasing testing rigor.
--testruns=<N>
+-testruns=<NumberOfTestRuns>
    Repeat the running of all non-skipped tests N times.
-   Useful option for increasing testing rigor, especially when used with -random.)";
+   Specify -testruns=2 -random for two random test run orderings for increased testing rigor.)";
 
    ArgsParser _argsParser;
    ConsoleMock* _consoleMock;
@@ -117,7 +114,7 @@ None
       THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
       //
       ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
-         "ZenUnit argument error. Invalid argument \"" + invalidArg + "\"\n"));
+         "ZenUnit command line usage error: Invalid argument \"" + invalidArg + "\"\n"));
       ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
    }
 
@@ -266,7 +263,7 @@ None
       THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
       //
       ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
-         "ZenUnit argument error. Invalid -name=value argument value: " + arg + "\n"));
+         "ZenUnit command line usage error: Invalid -name=value argument value: " + arg + "\n"));
       ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
    }
 
@@ -282,7 +279,7 @@ None
       //
       ZEN(ToUnsigned_ZenMock.CalledOnceWith("-1_for_example"));
       ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
-         "ZenUnit argument error. Invalid -name=value argument value: " + InvalidTimesArg + "\n"));
+         "ZenUnit command line usage error: Invalid -name=value argument value: " + InvalidTimesArg + "\n"));
       ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
    }
 
@@ -348,7 +345,7 @@ None
       _argsParser.Parse(Args);
       //
       ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
-         "ZenUnit argument error. Unrecognized -name=value argument: " + UnrecognizedNameArg + "\n"));
+         "ZenUnit command line usage error: Unrecognized -name=value argument: " + UnrecognizedNameArg + "\n"));
       ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
    }
 
