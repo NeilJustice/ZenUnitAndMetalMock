@@ -129,19 +129,23 @@ namespace ZenMock
 
    TEST(Expect_MakesFunctionCallNotThrow_DoesNotThrowIfExpectCalledTwice)
    {
-      //const auto test = [](auto& zenMockObject)
-      //{
-      //   zenMockObject.Expect();
-      //   zenMockObject.Expect();
-      //};
-      //test(_mock.VirtualMock);
-      //test(_mock.VirtualConstMock);
-      //test(_mock.NonVirtualMock);
-      //test(_mock.NonVirtualConstMock);
-      //test(Void0Function_ZenMock);
-      //test(Void0Function_ZenMock_namespace);
-      //test(StaticVoid0Function_ZenMock);
-      //test(Void0Function_ZenMock_static);
+      const auto test = [](auto& zenMockObject)
+      {
+         zenMockObject.Expect();
+         zenMockObject.Expect();
+         //
+         zenMockObject.ZenMockIt();
+         //
+         zenMockObject.CalledOnce();
+      };
+      test(_mock.VirtualMock);
+      test(_mock.VirtualConstMock);
+      test(_mock.NonVirtualMock);
+      test(_mock.NonVirtualConstMock);
+      test(Void0Function_ZenMock);
+      test(Void0Function_ZenMock_namespace);
+      test(StaticVoid0Function_ZenMock);
+      test(Void0Function_ZenMock_static);
    }
 
    }; RUN_TESTS(ZenMock_Void0Tests)

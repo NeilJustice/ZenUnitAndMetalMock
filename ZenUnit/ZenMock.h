@@ -372,9 +372,9 @@ must have their return value or values set explicitly by calling
          {
             const ZenUnit::Console console;
             console.WriteLineColor(R"(
-===========================================================
-Fatal Anomaly: Expected-But-Not-Asserted ZenMocked Function
-===========================================================)", ZenUnit::Color::Red);
+============================================
+Expected-But-Not-Asserted ZenMocked Function
+============================================)", ZenUnit::Color::Red);
             console.WriteLine(ZenMockedFunctionSignature);
             console.WriteLine(R"(
 Fix for this: Add a call to one of the following ZenMock assert statements:
