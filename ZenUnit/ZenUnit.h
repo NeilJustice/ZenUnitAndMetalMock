@@ -1720,29 +1720,43 @@ namespace ZenUnit
       static const std::string& Usage()
       {
          static const std::string usage = R"(ZenUnit v0.1.0
+Usage: <TestsBinaryName> [Options...]
 
 Options:
 
 None
    Run all non-skipped tests while printing detailed information.
+
+Output Options:
+
 -minimal
    Print only preamble, any test failure details, and conclusion.
--run=<TestClassName>[.TestName][,TestClassName.TestName...]
-   Run only specified case-insensitive test classes and/or tests.
+
+Utility Options:
+
 -pause
    Wait for any key before running tests to allow attaching a profiler or debugger.
--wait
-   Wait for any key at the end of the test run.
--failfast
-   Exit 1 upon first test failure instead of continuing.
--failskips
-   Exit 1 regardless of test run outcome if any tests are skipped.
 -exit0
    Always exit 0 regardless of test run outcome.
    Useful option for never blocking the launch of a debugger
-   when running ZenUnit tests in a post-build step.
+   when running tests in a post-build step.
+-wait
+   Wait for any key at the end of the test run.
+
+Test Filtration Options:
+
+-run=<TestClassNameA>[.TestNameA][,TestClassNameB.TestNameB,...]
+   Run only specified case-insensitive test classes and/or tests.
+-failfast
+   Immediately exit with exit code 1 if a test fails.
+
+Testing Rigor Options:
+
+-failskips
+   Exit 1 regardless of test run outcome if any tests are skipped
+   for increased testing rigor on continuous integration servers.
 -random[=Seed]
-   Run test classes in a random order and run tests in a random order.
+   Run test classes and tests in a random order.
 -testruns=<NumberOfTestRuns>
    Repeat the running of all non-skipped tests N times.
    Specify -testruns=2 -random for two random test run orderings for increased testing rigor.)";
@@ -3297,7 +3311,7 @@ None
                TestPhaseSuffixer::DoTestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
             console->Write(responsibleTestPhaseSuffix);
             WriteTestCaseNumberIfAny(console, testCaseIndex);
-            console->WriteLineColor("\nUncaught Exception", Color::Red);
+            console->WriteLineColor("\nException", Color::Red);
             const std::string exceptionTypeAndWhatLines = String::Concat(
                "  Type: ", *responsibleCallResult.anomalyOrException->exceptionTypeName, '\n',
                "what(): \"", *responsibleCallResult.anomalyOrException->exceptionWhat, "\"");
@@ -4366,12 +4380,14 @@ None
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const TestPhaseSuffixer> _testPhaseSuffixer;
       std::unique_ptr<Stopwatch> _stopwatch;
+      std::unique_ptr<const TwoArgMemberFunctionCaller<void, TryCatchCaller, TestOutcome, bool>> _voidTwoArgMemberFunctionCaller;
       std::function<const ZenUnitArgs&()> call_TestRunner_GetArgs;
    public:
       TryCatchCaller() noexcept
          : _console(std::make_unique<Console>())
          , _testPhaseSuffixer(std::make_unique<TestPhaseSuffixer>())
          , _stopwatch(std::make_unique<Stopwatch>())
+         , _voidTwoArgMemberFunctionCaller(new TwoArgMemberFunctionCaller<void, TryCatchCaller, TestOutcome, bool>)
          , call_TestRunner_GetArgs(TestRunner::GetArgs)
       {
       }
@@ -4380,6 +4396,14 @@ None
       virtual ~TryCatchCaller() = default;
 
       virtual CallResult Call(void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const;
+
+      void FailFastIfTestFailedAndFailFastModeTrue(TestOutcome testOutcome, bool failfast) const
+      {
+         if (testOutcome != TestOutcome::Success && failfast)
+         {
+            _console->WriteLineAndExit("\nZenUnit> -failfast exiting with code 1.", 1);
+         }
+      }
    private:
       template<typename ExceptionType>
       void PopulateCallResultWithExceptionInformation(const ExceptionType& e, CallResult* outCallResult) const
@@ -4588,6 +4612,7 @@ None
    {
       CallResult callResult(testPhase);
       _stopwatch->Start();
+      const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
       try
       {
          testPhaseFunction(test);
@@ -4606,7 +4631,7 @@ None
       catch (const ZenMockException& e)
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
-         _console->WriteColor("\n=========================\nUncaught ZenMockException\n=========================", Color::Red);
+         _console->WriteColor("\n================\nZenMockException\n================", Color::Red);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          const std::string exceptionTypeNameAndWhat = String::Concat(
@@ -4616,7 +4641,7 @@ None
       catch (const std::exception& e)
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
-         _console->WriteColor("\n==================\nUncaught Exception\n==================", Color::Red);
+         _console->WriteColor("\n=========\nException\n=========", Color::Red);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          const std::string exceptionTypeNameAndWhat = String::Concat(
@@ -4629,14 +4654,16 @@ None
          const unsigned milliseconds = _stopwatch->Stop();
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->WriteLineColor("FATALITY", Color::Red);
-         const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          const std::string exitLine = String::Concat(
             "Fatal ... exception. ", zenUnitArgs.exit0 ?
             "Exiting with code 0 due to -exit0 being specified." :
             "Exiting with code 1.", testPhaseSuffix, " (", milliseconds, " ms)");
          const int exitCode = zenUnitArgs.exit0 ? 0 : 1;
          _console->WriteLineAndExit(exitLine, exitCode);
+         return CallResult();
       }
+      _voidTwoArgMemberFunctionCaller->ConstCall(
+         this, &TryCatchCaller::FailFastIfTestFailedAndFailFastModeTrue, callResult.testOutcome, zenUnitArgs.failfast);
       return callResult;
    }
 

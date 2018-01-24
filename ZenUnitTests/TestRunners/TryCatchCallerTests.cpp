@@ -2,6 +2,7 @@
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestPhaseSuffixerMock.h"
 #include "ZenUnitTests/Tests/Mock/TestMock.h"
+#include "ZenUnitTests/Utils/Function/Mock/VoidTwoArgMemberFunctionCallerMock.h"
 #include "ZenUnitTests/Utils/Time/Mock/StopwatchMock.h"
 
 namespace ZenUnit
@@ -13,12 +14,14 @@ namespace ZenUnit
    FACTS(Call_FunctionThrowsZenMockException_ReturnsExceptionResult)
    FACTS(Call_FunctionThrowsStdException_ReturnsExceptionResult)
    FACTS(Call_FunctionThrowsAnIntToTriggerDotDotDotHandler_PrintsFailureDetails_Exits1)
+   FACTS(Call_CallResultIsNotSuccessAndFailFastIsTrue_WritesFailFastMessageAndExits1);
    EVIDENCE
 
    TryCatchCaller _tryCatchCaller;
    ConsoleMock* _consoleMock;
    TestPhaseSuffixerMock* _testPhaseSuffixerMock;
    StopwatchMock* _stopwatchMock;
+   VoidTwoArgMemberFunctionCallerMock<TryCatchCaller, TestOutcome, bool>* _voidTwoArgMemberFunctionCallerMock;
    unique_ptr<TestMock> _testMock;
    ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
 
@@ -30,6 +33,8 @@ namespace ZenUnit
       _tryCatchCaller._console.reset(_consoleMock = new ConsoleMock);
       _tryCatchCaller._testPhaseSuffixer.reset(_testPhaseSuffixerMock = new TestPhaseSuffixerMock);
       _tryCatchCaller._stopwatch.reset(_stopwatchMock = new StopwatchMock);
+      _tryCatchCaller._voidTwoArgMemberFunctionCaller.reset(
+         _voidTwoArgMemberFunctionCallerMock = new VoidTwoArgMemberFunctionCallerMock<TryCatchCaller, TestOutcome, bool>);
       _tryCatchCaller.call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
       _testMock = make_unique<TestMock>();
    }
@@ -45,16 +50,17 @@ namespace ZenUnit
       POINTER_WAS_NEWED(tryCatchCaller._console);
       POINTER_WAS_NEWED(tryCatchCaller._testPhaseSuffixer);
       POINTER_WAS_NEWED(tryCatchCaller._stopwatch);
+      POINTER_WAS_NEWED(tryCatchCaller._voidTwoArgMemberFunctionCaller);
       STD_FUNCTION_TARGETS(TestRunner::GetArgs, tryCatchCaller.call_TestRunner_GetArgs);
    }
 
-   void ExpectStopwatchStartAndStop()
+   void ExpectStopwatchStartAndStopCalls()
    {
       _stopwatchMock->StartMock.Expect();
       _stopwatchMock->StopMock.Return(_milliseconds);
    }
 
-   void AssertStartAndStopCalled()
+   void AssertStopwatchStartAndStopCalled()
    {
       ZEN(_stopwatchMock->StartMock.CalledOnce());
       ZEN(_stopwatchMock->StopMock.CalledOnce());
@@ -69,12 +75,23 @@ namespace ZenUnit
 
    TEST(Call_FunctionDoesNotThrow_ReturnsNoExceptionThrownCallResult)
    {
-      ExpectStopwatchStartAndStop();
+      ZenUnitArgs zenUnitArgs;
+      zenUnitArgs.failfast = ZenUnit::Random<bool>();
+      GetArgs_ZenMock.Return(zenUnitArgs);
+
+      ExpectStopwatchStartAndStopCalls();
+
+      _voidTwoArgMemberFunctionCallerMock->ConstCallMock.Expect();
       //
       const CallResult callResult = _tryCatchCaller.Call(NoThrow, _testMock.get(), TestPhase::Startup);
       //
+      ZEN(GetArgs_ZenMock.CalledOnce());
       ARE_EQUAL(1, TryCatchCallerTests::s_numberOfNoThrowCalls);
-      AssertStartAndStopCalled();
+      AssertStopwatchStartAndStopCalled();
+
+      ZEN(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
+         &_tryCatchCaller, &TryCatchCaller::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Success, zenUnitArgs.failfast));
+
       CallResult expectedCallResult;
       expectedCallResult.testPhase = TestPhase::Startup;
       expectedCallResult.testOutcome = TestOutcome::Success;
@@ -93,7 +110,13 @@ namespace ZenUnit
       TestPhase::Startup,
       TestPhase::TestBody)
    {
-      ExpectStopwatchStartAndStop();
+      ZenUnitArgs zenUnitArgs;
+      zenUnitArgs.failfast = ZenUnit::Random<bool>();
+      GetArgs_ZenMock.Return(zenUnitArgs);
+
+      _voidTwoArgMemberFunctionCallerMock->ConstCallMock.Expect();
+
+      ExpectStopwatchStartAndStopCalls();
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteMock.Expect();
       _consoleMock->WriteLineMock.Expect();
@@ -101,7 +124,11 @@ namespace ZenUnit
       //
       const CallResult callResult = _tryCatchCaller.Call(ThrowAnomaly, _testMock.get(), arbitraryTestPhase);
       //
-      AssertStartAndStopCalled();
+      ZEN(GetArgs_ZenMock.CalledOnce());
+      AssertStopwatchStartAndStopCalled();
+
+      ZEN(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
+         &_tryCatchCaller, &TryCatchCaller::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Anomaly, zenUnitArgs.failfast));
 
       CallResult expectedCallResult;
       expectedCallResult.testPhase = arbitraryTestPhase;
@@ -128,7 +155,12 @@ namespace ZenUnit
       TestPhase::Startup,
       TestPhase::TestBody)
    {
-      ExpectStopwatchStartAndStop();
+      ZenUnitArgs zenUnitArgs;
+      GetArgs_ZenMock.Return(zenUnitArgs);
+
+      _voidTwoArgMemberFunctionCallerMock->ConstCallMock.Expect();
+
+      ExpectStopwatchStartAndStopCalls();
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteMock.Expect();
       _consoleMock->WriteLineMock.Expect();
@@ -139,7 +171,11 @@ namespace ZenUnit
          throw ZenMock::FunctionAlreadyExpectedException("ZenMockedFunctionSignature");
       }, _testMock.get(), arbitraryTestPhase);
       //
-      AssertStartAndStopCalled();
+      ZEN(GetArgs_ZenMock.CalledOnce());
+      AssertStopwatchStartAndStopCalled();
+
+      ZEN(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
+         &_tryCatchCaller, &TryCatchCaller::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Exception, zenUnitArgs.failfast));
 
       CallResult expectedCallResult;
       expectedCallResult.testPhase = arbitraryTestPhase;
@@ -150,7 +186,7 @@ namespace ZenUnit
       expectedCallResult.milliseconds = _milliseconds;
 
       ZEN(_consoleMock->WriteColorMock.CalledOnceWith(
-         "\n=========================\nUncaught ZenMockException\n=========================", Color::Red));
+         "\n================\nZenMockException\n================", Color::Red));
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(arbitraryTestPhase));
       ZEN(_consoleMock->WriteMock.CalledOnceWith(_testPhaseSuffix));
       ZEN(_consoleMock->WriteLineMock.CalledOnceWith(R"(
@@ -165,7 +201,12 @@ Already called [FunctionName]Mock.[Expect|Return|ReturnValues|Throw]().")"));
       TestPhase::Startup,
       TestPhase::TestBody)
    {
-      ExpectStopwatchStartAndStop();
+      ZenUnitArgs zenUnitArgs;
+      GetArgs_ZenMock.Return(zenUnitArgs);
+
+      _voidTwoArgMemberFunctionCallerMock->ConstCallMock.Expect();
+
+      ExpectStopwatchStartAndStopCalls();
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteMock.Expect();
       _consoleMock->WriteLineMock.Expect();
@@ -173,7 +214,11 @@ Already called [FunctionName]Mock.[Expect|Return|ReturnValues|Throw]().")"));
       //
       const CallResult callResult = _tryCatchCaller.Call(ThrowStdException, _testMock.get(), arbitraryTestPhase);
       //
-      AssertStartAndStopCalled();
+      ZEN(GetArgs_ZenMock.CalledOnce());
+      AssertStopwatchStartAndStopCalled();
+
+      ZEN(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
+         &_tryCatchCaller, &TryCatchCaller::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Exception, zenUnitArgs.failfast));
 
       CallResult expectedCallResult;
       expectedCallResult.testPhase = arbitraryTestPhase;
@@ -183,7 +228,7 @@ Already called [FunctionName]Mock.[Expect|Return|ReturnValues|Throw]().")"));
          = make_shared<AnomalyOrException>(Type::GetName<runtime_error>(), "runtime_error_what");
 
       ZEN(_consoleMock->WriteColorMock.CalledOnceWith(
-         "\n==================\nUncaught Exception\n==================", Color::Red));
+         "\n=========\nException\n=========", Color::Red));
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(arbitraryTestPhase));
       ZEN(_consoleMock->WriteMock.CalledOnceWith(_testPhaseSuffix));
       ZEN(_consoleMock->WriteLineMock.CalledOnceWith(R"(
@@ -204,23 +249,53 @@ what(): "runtime_error_what")"));
       TestPhase::TestBody, false, 1, "Exiting with code 1.",
       TestPhase::TestBody, true, 0, "Exiting with code 0 due to -exit0 being specified.")
    {
-      ExpectStopwatchStartAndStop();
+      ExpectStopwatchStartAndStopCalls();
       _consoleMock->WriteLineColorMock.Expect();
       _consoleMock->WriteLineAndExitMock.Expect();
       _testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.Return(_testPhaseSuffix.c_str());
+
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.exit0 = exit0;
       GetArgs_ZenMock.Return(zenUnitArgs);
       //
-      _tryCatchCaller.Call(ThrowInt, _testMock.get(), arbitraryTestPhase);
+      const CallResult callResult = _tryCatchCaller.Call(ThrowInt, _testMock.get(), arbitraryTestPhase);
       //
-      AssertStartAndStopCalled();
+      AssertStopwatchStartAndStopCalled();
+
       ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith("FATALITY", Color::Red));
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(arbitraryTestPhase));
       ZEN(GetArgs_ZenMock.CalledOnce());
       ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(
          String::Concat("Fatal ... exception. ", expectedExitMessage,
             _testPhaseSuffix.c_str(), " (", _milliseconds, " ms)"), expectedExitCode));
+      ARE_EQUAL(CallResult(), callResult);
+   }
+
+   TEST3X3(Call_CallResultIsNotSuccessAndFailFastIsTrue_WritesFailFastMessageAndExits1,
+      TestOutcome testOutcome, bool failfast, bool expectFailFast,
+      TestOutcome::Unset, false, false,
+      TestOutcome::Success, false, false,
+      TestOutcome::Anomaly, false, false,
+      TestOutcome::SuccessButPastDeadline, false, false,
+      TestOutcome::Exception, false, false,
+      TestOutcome::Unset, true, true,
+      TestOutcome::Success, true, false,
+      TestOutcome::Anomaly, true, true,
+      TestOutcome::SuccessButPastDeadline, true, true,
+      TestOutcome::Exception, true, true)
+   {
+      if (expectFailFast)
+      {
+         _consoleMock->WriteLineAndExitMock.Expect();
+      }
+      //
+      _tryCatchCaller.FailFastIfTestFailedAndFailFastModeTrue(testOutcome, failfast);
+      //
+      if (expectFailFast)
+      {
+         ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(
+            "\nZenUnit> -failfast exiting with code 1.", 1));
+      }
    }
 
    }; RUN_TESTS(TryCatchCallerTests)

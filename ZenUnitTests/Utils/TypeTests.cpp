@@ -1,5 +1,8 @@
 #include "pch.h"
 
+// Windows-only tests until Travis CI no longer runs out of memory
+#ifdef _WIN32
+
 class TypeTestsBase {};
 class TypeTestsDerived : public TypeTestsBase {};
 
@@ -138,3 +141,5 @@ namespace ZenUnit
 
    }; RUN_TESTS(TypeTests)
 }
+
+#endif

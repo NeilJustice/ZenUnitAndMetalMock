@@ -733,7 +733,7 @@ TEST3X3(PrintIfFailure_Exception_PrintsExpected,
    ZEN(_consoleMock.WriteLineColorMock.CalledAsFollows(
    {
       { testFailureNumber, Color::Red },
-   { "\nUncaught Exception", Color::Red }
+   { "\nException", Color::Red }
    }));
    ZEN(_consoleMock.WriteLineMock.CalledOnceWith(
       "  Type: " + exceptionTypeName + "\n"

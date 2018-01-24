@@ -5,7 +5,7 @@
 ZenUnit is a single-header C++ unit testing framework with its signature feature being its syntax for specifying value-parameterized and type-parameterized tests.
 
 # ZenMock
-ZenMock is a single-header C++ mocking framework powered by ZenUnit with its signature feature being its high-readability arrange-act-assert syntax for confirming the correctness of interactions with virtual, template, static, and free functions.
+ZenMock is a single-header C++ mocking framework powered by ZenUnit with its signature feature being its intuitive arrange-act-assert syntax for confirming the correctness of interactions with virtual, template, static, and free functions.
 
 ### ZenUnit Command Line Usage
 
@@ -16,47 +16,48 @@ Usage: <TestsBinaryName> [Options...]
 Options:
 
 None
-   Run all tests while printing detailed information.
+   Run all non-skipped tests while printing detailed information.
+
+Output Options:
+
 -minimal
    Print only preamble, any test failure details, and conclusion.
+
+Utility Options:
+
 -pause
-   Wait for input before running tests to allow attaching a profiler or debugger.
--wait
-   Wait for input before closing console window.
+   Wait for any key before running tests to allow attaching a profiler or debugger.
 -exit0
    Always exit 0 regardless of test run outcome.
-   Useful option for always allowing the launch of a debugger
-   when running ZenUnit tests as a post-build step.
+   Useful option for never blocking the launch of a debugger
+   when running tests in a post-build step.
+-wait
+   Wait for any key at the end of the test run.
+
+Test Filtration Options:
+
+-failfast
+   Immediately exit with exit code 1 if a test fails.
+
+Testing Rigor Options:
+
 -failskips
-   Exit 1 regardless of test run outcome if any tests are skipped.
+   Exit 1 regardless of test run outcome if any tests are skipped
+   for increased testing rigor on continuous integration servers.
 -random[=Seed]
-   Run test classes in a random order and run tests in a random order.
-   Useful option for increasing testing rigor.
--testruns=<N>
-   Repeat the running of all tests N times.
-   Useful option for increasing testing rigor, especially when used with -random.
+   Run test classes and tests in a random order.
+-testruns=<NumberOfTestRuns>
+   Repeat the running of all non-skipped tests N times.
+   Specify -testruns=2 -random for two random test run orderings for increased testing rigor.
 ```
 
 ### ZenUnit Syntax
 
 ```cpp
-#include "ZenUnit/ZenUnit.h"
+#include "ZenUnit/ZenUnit.h" // Single ZenUnit header
 #include "Examples/FizzBuzz.h"
 
 TESTS(FizzBuzzTests)
-// ZenUnit test classes begin with a FACTS section
-// that specifies all test names in one place to maximize long term
-// code reviewability and to serve as an informal
-// specification document for the code under test.
-// This design features a by-design cost of test name duplication
-// between the FACTS section and the EVIDENCE section.
-// What is gained from this cost is that each test name
-// addition, subtraction, or refactoring,
-// of which there may be dozens over the course of a project,
-// becomes an opportunity to review all test names as a whole
-// for continued test name quality and cohesion - and by extension,
-// an opportunity to review the code under test for continued
-// quality and cohesion.
 AFACT(FizzBuzz_EndNumber0_Throws)
 FACTS(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)
 EVIDENCE
@@ -271,7 +272,7 @@ int main(int argc, char* argv[])
 ### ZenMock Syntax
 
 ```Cpp
-#include "ZenUnit/ZenMock.h"
+#include "ZenUnit/ZenMock.h" // Single ZenMock header
 
 class ComponentA
 {
