@@ -4,14 +4,14 @@
 class Console;
 struct ProgramArgs;
 
-class ProgramNameProgram
+class Program
 {
-   friend class ProgramNameProgramTests;
+   friend class ProgramTests;
 private:
    std::unique_ptr<const Console> _console;
 public:
-   ProgramNameProgram();
-   virtual ~ProgramNameProgram();
+   Program();
+   virtual ~Program();
    int Main(int argc, char* argv[]) const;
    virtual int VectorMain(const std::vector<std::string>& args) const;
 };

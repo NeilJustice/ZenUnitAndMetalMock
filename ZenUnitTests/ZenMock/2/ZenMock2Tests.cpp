@@ -6,7 +6,7 @@ namespace ZenMock
 {
    void Void2(int, int) {}
 
-   struct Void0StaticFunctions
+   struct Void2StaticFunctions
    {
       static void Void2(int, int) {}
       static void Static(int, int) {}
@@ -38,9 +38,6 @@ namespace ZenMock
       ZENMOCK_VOID2_STATIC(ZenMock::Void0StaticFunctions, Static, int, int)
    }
 }
-
-
-#include "pch.h"
 
 int NonVoid2(int, int) { return 0; }
 

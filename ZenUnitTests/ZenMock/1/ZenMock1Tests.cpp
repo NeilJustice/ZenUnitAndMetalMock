@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "ZenMock1Tester.h"
 
+// Windows-only tests until Travis CI no longer runs out of memory
+#ifdef _WIN32
+
 void Void1Function(int) {}
 
 namespace ZenMock
@@ -487,3 +490,5 @@ Argument: 20
 }; RUN_TESTS(ZenMock_NonVoid1Tests)
 
 }
+
+#endif

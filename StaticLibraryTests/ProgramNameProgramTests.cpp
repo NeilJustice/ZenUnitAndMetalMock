@@ -1,14 +1,14 @@
 #include "pch.h"
-#include "StaticLibrary/ProgramNameProgram.h"
+#include "StaticLibrary/Program.h"
 #include "StaticLibraryTests/Mock/ConsoleMock.h"
 
-TESTS(ProgramNameProgramTests)
+TESTS(ProgramTests)
 AFACT(Constructor_NewsComponents)
 FACTS(Main_ConvertsArgcArgvToStringVector_CallsVectorMain)
 AFACT(VectorMain_Returns0)
 EVIDENCE
 
-ProgramNameProgram _program;
+Program _program;
 ConsoleMock* _consoleMock;
 
 STARTUP
@@ -18,7 +18,7 @@ STARTUP
 
 TEST(Constructor_NewsComponents)
 {
-   ProgramNameProgram program;
+   Program program;
    POINTER_WAS_NEWED(program._console);
 }
 
@@ -27,7 +27,7 @@ TEST2X2(Main_ConvertsArgcArgvToStringVector_CallsVectorMain,
    0, 0,
    1, 1)
 {
-   struct ProgramSelfMocked : public Zen::Mock<ProgramNameProgram>
+   struct ProgramSelfMocked : public Zen::Mock<Program>
    {
       ZENMOCK_NONVOID1_CONST(int, VectorMain, const vector<string>&)
    } program_VectorMainMocked;
@@ -52,4 +52,4 @@ TEST(VectorMain_Returns0)
    ARE_EQUAL(0, exitCode);
 }
 
-}; RUN_TESTS(ProgramNameProgramTests)
+}; RUN_TESTS(ProgramTests)
