@@ -2951,28 +2951,26 @@ Testing Rigor Options:
 #endif
 #endif
 
-   template<typename CollectionType, typename FunctionType, typename ExtraArgType1, typename ExtraArgType2>
-   class TwoExtraArgsForEacher
+   template<typename CollectionType, typename FunctionType, typename Arg2Type, typename Arg3Type>
+   class ThreeArgForEacher
    {
    public:
-      TwoExtraArgsForEacher() noexcept
+      ThreeArgForEacher() noexcept
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(TwoExtraArgsForEacher, default, default, default, default);
-      virtual ~TwoExtraArgsForEacher() = default;
+      //DEFINE_COPY_COPY_MOVE_MOVE(ThreeArgForEacher, default, default, default, default);
+      virtual ~ThreeArgForEacher() = default;
 
-      virtual void TwoExtraArgsForEach(
+      virtual void ThreeArgForEach(
          const CollectionType* collection,
-         FunctionType func,
-         const ExtraArgType1& extraArg1,
-         const ExtraArgType2& extraArg2) const
+         FunctionType func, const Arg2Type& arg2, const Arg3Type& arg3) const
       {
          const auto collectionConstEnd = collection->cend();
          for (auto iter = collection->cbegin(); iter != collectionConstEnd; ++iter)
          {
             const auto& element = *iter;
-            func(element, extraArg1, extraArg2);
+            func(element, arg2, arg3);
          }
       }
    };
@@ -3365,7 +3363,7 @@ Testing Rigor Options:
 #endif
 #endif
 
-   using TwoExtraArgsForEacherType = const TwoExtraArgsForEacher<
+   using ThreeArgForEacherType = const ThreeArgForEacher<
       std::vector<TestResult>, void(*)(const TestResult&, const Console*, TestFailureNumberer*),
       const Console*, TestFailureNumberer*>;
 
@@ -3448,11 +3446,11 @@ Testing Rigor Options:
       }
 
       virtual void PrintTestFailures(
-         const TwoExtraArgsForEacherType* forEacherTwoExtraArgs,
+         const ThreeArgForEacherType* threeArgForEacher,
          const Console* console,
          TestFailureNumberer* testFailureNumberer) const
       {
-         forEacherTwoExtraArgs->TwoExtraArgsForEach(
+         threeArgForEacher->ThreeArgForEach(
             &_testResults, PrintTestResultIfFailure, console, testFailureNumberer);
       }
 
@@ -3638,66 +3636,59 @@ Testing Rigor Options:
 #endif
    };
 
-   template<typename T, typename ClassType, typename FunctionType, typename ExtraArgType>
-   class ExtraArgMemberForEacher
+   template<typename T, typename ClassType, typename FunctionType, typename Arg2Type>
+   class TwoArgMemberForEacher
    {
    public:
-      ExtraArgMemberForEacher() noexcept
+      TwoArgMemberForEacher() noexcept
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(ExtraArgMemberForEacher, default, default, default, default);
-      virtual ~ExtraArgMemberForEacher() = default;
+      //DEFINE_COPY_COPY_MOVE_MOVE(TwoArgMemberForEacher, default, default, default, default);
+      virtual ~TwoArgMemberForEacher() = default;
 
-      virtual void ExtraArgMemberForEach(
-         std::vector<T>* elements,
-         ClassType* classPointer,
-         FunctionType func,
-         ExtraArgType extraArg) const
+      virtual void TwoArgMemberForEach(
+         std::vector<T>* elements, ClassType* classPointer, FunctionType func, Arg2Type arg2) const
       {
          const typename std::vector<T>::iterator elementsEnd = elements->end();
          for (typename std::vector<T>::iterator iter = elements->begin(); iter != elementsEnd; ++iter)
          {
             T& element = *iter;
-            (classPointer->*func)(element, extraArg);
+            (classPointer->*func)(element, arg2);
          }
       }
 
-      virtual void RandomExtraArgMemberForEach(
-         std::vector<T>* elements,
-         ClassType* classPointer,
-         FunctionType func,
-         ExtraArgType extraArg,
-         unsigned seed) const
+      virtual void RandomTwoArgMemberForEach(
+         std::vector<T>* elements, ClassType* classPointer, FunctionType func, Arg2Type arg2, unsigned seed) const
       {
          std::shuffle(elements->begin(), elements->end(), std::default_random_engine(seed));
          const typename std::vector<T>::iterator elementsEnd = elements->end();
          for (typename std::vector<T>::iterator iter = elements->begin(); iter != elementsEnd; ++iter)
          {
             T& element = *iter;
-            (classPointer->*func)(element, extraArg);
+            (classPointer->*func)(element, arg2);
          }
       }
    };
 
-   template<typename CollectionType, typename PredicateType, typename ExtraArgType>
-   class ExtraArgAnyer
+   template<typename CollectionType, typename PredicateType, typename Arg2Type>
+   class TwoArgAnyer
    {
    public:
-      ExtraArgAnyer() noexcept
+      TwoArgAnyer() noexcept
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(ExtraArgAnyer, default, default, default, default);
-      virtual ~ExtraArgAnyer() = default;
+      //DEFINE_COPY_COPY_MOVE_MOVE(TwoArgAnyer, default, default, default, default);
+      virtual ~TwoArgAnyer() = default;
 
-      virtual bool ExtraArgAny(const CollectionType& collection, PredicateType predicate, const ExtraArgType& extraArg) const
+      virtual bool TwoArgAny(const CollectionType& collection, PredicateType predicate, const Arg2Type& arg2) const
       {
          const auto collectionConstEnd = collection.cend();
          for (auto iter = collection.cbegin(); iter != collectionConstEnd; ++iter)
          {
             const auto& element = *iter;
-            const bool elementMatchesPredicate = predicate(element, extraArg);
+            const bool elementMatchesPredicate = predicate(element, arg2);
             if (elementMatchesPredicate)
             {
                return true;
@@ -3779,18 +3770,18 @@ Testing Rigor Options:
    {
       friend class MultiTestClassRunnerTests;
    private:
-      using ExtraArgMemberForEacherType = ExtraArgMemberForEacher<
+      using TwoArgMemberForEacherType = TwoArgMemberForEacher<
          std::unique_ptr<TestClassRunner>,
          MultiTestClassRunner,
          void(MultiTestClassRunner::*)(std::unique_ptr<TestClassRunner>&, const std::vector<RunFilter>&),
          const std::vector<RunFilter>&>;
-      std::unique_ptr<const ExtraArgMemberForEacherType> _extraArgMemberForEacher;
+      std::unique_ptr<const TwoArgMemberForEacherType> _twoArgMemberForEacher;
 
-      using ExtraArgAnyerType = ExtraArgAnyer<
+      using TwoArgAnyerType = TwoArgAnyer<
          std::vector<RunFilter>,
          bool(*)(const RunFilter&, const std::unique_ptr<TestClassRunner>*),
          const std::unique_ptr<TestClassRunner>*>;
-      std::unique_ptr<const ExtraArgAnyerType> _extraArgAnyer;
+      std::unique_ptr<const TwoArgAnyerType> _twoArgAnyer;
 
       std::unique_ptr<const Sorter<std::vector<std::unique_ptr<TestClassRunner>>>> _sorter;
       std::unique_ptr<const Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>> _transformer;
@@ -3798,8 +3789,8 @@ Testing Rigor Options:
       std::vector<std::unique_ptr<TestClassRunner>> _testClassRunners;
    public:
       MultiTestClassRunner() noexcept
-         : _extraArgMemberForEacher(std::make_unique<ExtraArgMemberForEacherType>())
-         , _extraArgAnyer(std::make_unique<ExtraArgAnyerType>())
+         : _twoArgMemberForEacher(std::make_unique<TwoArgMemberForEacherType>())
+         , _twoArgAnyer(std::make_unique<TwoArgAnyerType>())
          , _sorter(std::make_unique<Sorter<std::vector<std::unique_ptr<TestClassRunner>>>>())
          , _transformer(std::make_unique<Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>>())
          , _watch(std::make_unique<Watch>())
@@ -3818,7 +3809,7 @@ Testing Rigor Options:
       {
          if (!runFilters.empty())
          {
-            _extraArgMemberForEacher->ExtraArgMemberForEach(&_testClassRunners, this,
+            _twoArgMemberForEacher->TwoArgMemberForEach(&_testClassRunners, this,
                &MultiTestClassRunner::ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter, runFilters);
          }
       }
@@ -3868,7 +3859,7 @@ Testing Rigor Options:
       void ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter(
          std::unique_ptr<TestClassRunner>& testClassRunner, const std::vector<RunFilter>& runFilters)
       {
-         const bool anyRunFilterMatchesTestClassName = _extraArgAnyer->ExtraArgAny(
+         const bool anyRunFilterMatchesTestClassName = _twoArgAnyer->TwoArgAny(
             runFilters, TestClassNameMatchesRunFilter, &testClassRunner);
          if (!anyRunFilterMatchesTestClassName)
          {
@@ -4015,7 +4006,7 @@ Testing Rigor Options:
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const MemberForEacherTestClassResultsType> _memberForEacherTestClassResults;
       std::unique_ptr<const MemberForEacherSkippedTestsType> _memberForEacherSkippedTests;
-      std::unique_ptr<const TwoExtraArgsForEacherType> _twoExtraArgsForEacher;
+      std::unique_ptr<const ThreeArgForEacherType> _threeArgForEacher;
       std::unique_ptr<TestFailureNumberer> _testFailureNumberer;
       std::vector<std::string> _skippedTestClassNamesAndReasons;
       std::vector<std::string> _skippedFullTestNamesAndReasons;
@@ -4026,7 +4017,7 @@ Testing Rigor Options:
          : _console(std::make_unique<Console>())
          , _memberForEacherTestClassResults(std::make_unique<MemberForEacherTestClassResultsType>())
          , _memberForEacherSkippedTests(std::make_unique<MemberForEacherSkippedTestsType>())
-         , _twoExtraArgsForEacher(std::make_unique<TwoExtraArgsForEacherType>())
+         , _threeArgForEacher(std::make_unique<ThreeArgForEacherType>())
          , _testFailureNumberer(std::make_unique<TestFailureNumberer>())
          , _numberOfFailedTestCases(0)
       {
@@ -4171,7 +4162,7 @@ Testing Rigor Options:
       void PrintTestClassResultFailures(const TestClassResult& testClassResult) const
       {
          testClassResult.PrintTestFailures(
-            _twoExtraArgsForEacher.get(), _console.get(), _testFailureNumberer.get());
+            _threeArgForEacher.get(), _console.get(), _testFailureNumberer.get());
       }
 
       void PrintSkippedTestClassReminder(const std::string& skippedTestClassNameAndReason) const
@@ -4718,12 +4709,12 @@ Testing Rigor Options:
       friend class SpecificTestClassRunnerTests;
    private:
       std::unique_ptr<const Console> _console;
-      using ExtraArgMemberForEacherType = ExtraArgMemberForEacher<
+      using TwoArgMemberForEacherType = TwoArgMemberForEacher<
          std::unique_ptr<Test>,
          SpecificTestClassRunner,
          void (SpecificTestClassRunner::*)(const std::unique_ptr<Test>& test, TestClassResult*) const,
          TestClassResult*>;
-      std::unique_ptr<const ExtraArgMemberForEacherType> _extraArgMemberForEacher;
+      std::unique_ptr<const TwoArgMemberForEacherType> _twoArgMemberForEacher;
       std::unique_ptr<const ZeroArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>>> _voidZeroArgFunctionCaller;
       std::unique_ptr<const TwoArgMemberFunctionCaller<
          bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>> _nonVoidTwoArgFunctionCaller;
@@ -4737,7 +4728,7 @@ Testing Rigor Options:
    public:
       explicit SpecificTestClassRunner(const char* testClassName)
          : _console(new Console)
-         , _extraArgMemberForEacher(new ExtraArgMemberForEacherType)
+         , _twoArgMemberForEacher(new TwoArgMemberForEacherType)
          , _voidZeroArgFunctionCaller(new ZeroArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>>)
          , _nonVoidTwoArgFunctionCaller(new TwoArgMemberFunctionCaller<bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>)
          , _voidTwoArgFunctionCaller(new const TwoArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>, const TestClassResult*, PrintMode>)
@@ -4799,12 +4790,12 @@ Testing Rigor Options:
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          if (zenUnitArgs.random)
          {
-            _extraArgMemberForEacher->RandomExtraArgMemberForEach(
+            _twoArgMemberForEacher->RandomTwoArgMemberForEach(
                &_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult, zenUnitArgs.randomseed);
          }
          else
          {
-            _extraArgMemberForEacher->ExtraArgMemberForEach(
+            _twoArgMemberForEacher->TwoArgMemberForEach(
                &_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult);
          }
       }

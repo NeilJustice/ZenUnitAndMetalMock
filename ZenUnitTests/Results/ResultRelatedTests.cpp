@@ -5,7 +5,7 @@
 #include "ZenUnitTests/Results/Mock/TestClassResultMock.h"
 #include "ZenUnitTests/Testing/RandomPrintMode.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/MemberForEacherMock.h"
-#include "ZenUnitTests/Utils/Iteration/Mock/TwoExtraArgsForEacherMock.h"
+#include "ZenUnitTests/Utils/Iteration/Mock/ThreeArgForEacherMock.h"
 
 namespace ZenUnit
 {
@@ -204,17 +204,17 @@ TEST(NumberOfFailedTestCases_ReturnsNumberOfNonSuccessTestsInTestResultsVector)
 
 TEST(PrintTestFailures_PrintsJustTestFailedToConsole)
 {
-   using TypedefTwoExtraArgsForEacherMock = TwoExtraArgsForEacherMock<vector<TestResult>,
+   using TypedefThreeArgForEacherMock = ThreeArgForEacherMock<vector<TestResult>,
       void(*)(const TestResult&, const Console*, TestFailureNumberer*),
       const Console*, TestFailureNumberer*>;
-   const TypedefTwoExtraArgsForEacherMock forEacherTwoExtraArgsMock;
-   forEacherTwoExtraArgsMock.TwoExtraArgsForEachMock.Expect();
+   const TypedefThreeArgForEacherMock forEacherThreeArgsMock;
+   forEacherThreeArgsMock.ThreeArgForEachMock.Expect();
    const Console console;
    TestFailureNumberer testFailureNumberer;
    //
-   _testClassResult.PrintTestFailures(&forEacherTwoExtraArgsMock, &console, &testFailureNumberer);
+   _testClassResult.PrintTestFailures(&forEacherThreeArgsMock, &console, &testFailureNumberer);
    //
-   ZEN(forEacherTwoExtraArgsMock.TwoExtraArgsForEachMock.CalledOnceWith(
+   ZEN(forEacherThreeArgsMock.ThreeArgForEachMock.CalledOnceWith(
       &_testClassResult._testResults, TestClassResult::PrintTestResultIfFailure, &console, &testFailureNumberer));
 }
 
@@ -886,7 +886,7 @@ TEST(Constructor_NewsComponents)
    POINTER_WAS_NEWED(testRunResult._console);
    POINTER_WAS_NEWED(testRunResult._memberForEacherTestClassResults);
    POINTER_WAS_NEWED(testRunResult._memberForEacherSkippedTests);
-   POINTER_WAS_NEWED(testRunResult._twoExtraArgsForEacher);
+   POINTER_WAS_NEWED(testRunResult._threeArgForEacher);
    POINTER_WAS_NEWED(testRunResult._testFailureNumberer);
    IS_EMPTY(testRunResult._testClassResults);
    IS_EMPTY(testRunResult._skippedTestClassNamesAndReasons);
@@ -1117,7 +1117,7 @@ TEST(PrintTestClassResultFailures_CallsTestClassResultPrintTestFailures)
    _testRunResult.PrintTestClassResultFailures(testClassResultMock);
    //
    ZEN(testClassResultMock.PrintTestFailuresMock.CalledOnceWith(
-      _testRunResult._twoExtraArgsForEacher.get(),
+      _testRunResult._threeArgForEacher.get(),
       _testRunResult._console.get(),
       _testRunResult._testFailureNumberer.get()));
 }

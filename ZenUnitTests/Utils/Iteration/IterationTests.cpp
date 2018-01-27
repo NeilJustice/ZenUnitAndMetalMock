@@ -7,132 +7,132 @@ namespace ZenUnit
    template<
       template<typename...>
    typename CollectionType,
-   typename T, typename ExtraArgType>
-   TEMPLATE_TESTS(ExtraArgAnyerTests, CollectionType, T, ExtraArgType)
-   AFACT(ExtraArgAny_CollectionEmpty_ReturnsFalse)
-   AFACT(ExtraArgAny_1ElementCollection_ElementDoesNotMatchPredicate_ReturnsFalse)
-   AFACT(ExtraArgAny_2ElementCollection_FirstOfTwoElementsMatchesPredicate_CallsPredicateOnce_ReturnsTrue)
-   AFACT(ExtraArgAny_2ElementCollection_SecondOfTwoElementsMatchesPredicate_CallsPredicateTwice_ReturnsTrue)
-   AFACT(ExtraArgAny_2ElementCollection_NeitherElementMatchesPredicate_CallsPredicateTwice_ReturnsFalse)
+   typename T, typename Arg2Type>
+   TEMPLATE_TESTS(TwoArgAnyerTests, CollectionType, T, Arg2Type)
+   AFACT(TwoArgAny_CollectionEmpty_ReturnsFalse)
+   AFACT(TwoArgAny_1ElementCollection_ElementDoesNotMatchPredicate_ReturnsFalse)
+   AFACT(TwoArgAny_2ElementCollection_FirstOfTwoElementsMatchesPredicate_CallsPredicateOnce_ReturnsTrue)
+   AFACT(TwoArgAny_2ElementCollection_SecondOfTwoElementsMatchesPredicate_CallsPredicateTwice_ReturnsTrue)
+   AFACT(TwoArgAny_2ElementCollection_NeitherElementMatchesPredicate_CallsPredicateTwice_ReturnsFalse)
    EVIDENCE
 
-   vector<pair<T, ExtraArgType>> _predicateArgs;
+   vector<pair<T, Arg2Type>> _predicateArgs;
    CollectionType<T> _twoCollection = { 1, 2 };
-   ExtraArgType _extraArg;
+   Arg2Type _arg2;
 
    STARTUP
    {
-      _extraArg = ZenUnit::Random<ExtraArgType>();
+      _arg2 = ZenUnit::Random<Arg2Type>();
    }
 
-   TEST(ExtraArgAny_CollectionEmpty_ReturnsFalse)
+   TEST(TwoArgAny_CollectionEmpty_ReturnsFalse)
    {
       const CollectionType<T> emptyCollection;
-      const auto PredicateThatThrowsIfCalled = [&](const T&, const ExtraArgType&)
+      const auto PredicateThatThrowsIfCalled = [&](const T&, const Arg2Type&)
       {
          return false;
       };
-      const ExtraArgAnyer<CollectionType<T>, decltype(PredicateThatThrowsIfCalled), const ExtraArgType&> extraArgAnyer;
+      const TwoArgAnyer<CollectionType<T>, decltype(PredicateThatThrowsIfCalled), const Arg2Type&> twoArgAnyer;
       //
-      const bool anyElementMatchesPredicate = extraArgAnyer.ExtraArgAny(emptyCollection, PredicateThatThrowsIfCalled, ExtraArgType{});
+      const bool anyElementMatchesPredicate = twoArgAnyer.TwoArgAny(emptyCollection, PredicateThatThrowsIfCalled, Arg2Type{});
       //
       IS_EMPTY(_predicateArgs);
       IS_FALSE(anyElementMatchesPredicate);
    }
 
-   TEST(ExtraArgAny_1ElementCollection_ElementDoesNotMatchPredicate_ReturnsFalse)
+   TEST(TwoArgAny_1ElementCollection_ElementDoesNotMatchPredicate_ReturnsFalse)
    {
       const CollectionType<T> collection = { 1 };
-      const auto alwaysFalsePredicate = [&](const T& element, const ExtraArgType& extraArg)
+      const auto alwaysFalsePredicate = [&](const T& element, const Arg2Type& arg2)
       {
-         _predicateArgs.emplace_back(element, extraArg);
+         _predicateArgs.emplace_back(element, arg2);
          return false;
       };
-      const ExtraArgAnyer<CollectionType<T>, decltype(alwaysFalsePredicate), const ExtraArgType&> extraArgAnyer;
+      const TwoArgAnyer<CollectionType<T>, decltype(alwaysFalsePredicate), const Arg2Type&> twoArgAnyer;
       //
-      const bool anyElementMatchesPredicate = extraArgAnyer.ExtraArgAny(collection, alwaysFalsePredicate, _extraArg);
+      const bool anyElementMatchesPredicate = twoArgAnyer.TwoArgAny(collection, alwaysFalsePredicate, _arg2);
       //
-      const vector<pair<T, ExtraArgType>> expectedPredicateArgs = { { T(1), _extraArg } };
+      const vector<pair<T, Arg2Type>> expectedPredicateArgs = { { T(1), _arg2 } };
       VECTORS_EQUAL(expectedPredicateArgs, _predicateArgs);
       IS_FALSE(anyElementMatchesPredicate);
    }
 
-   TEST(ExtraArgAny_2ElementCollection_FirstOfTwoElementsMatchesPredicate_CallsPredicateOnce_ReturnsTrue)
+   TEST(TwoArgAny_2ElementCollection_FirstOfTwoElementsMatchesPredicate_CallsPredicateOnce_ReturnsTrue)
    {
-      const auto predicate = [&](const T& element, const ExtraArgType& extraArg)
+      const auto predicate = [&](const T& element, const Arg2Type& arg2)
       {
-         _predicateArgs.emplace_back(element, extraArg);
+         _predicateArgs.emplace_back(element, arg2);
          if (element == 1)
          {
             return true;
          }
          return false;
       };
-      const ExtraArgAnyer<CollectionType<T>, decltype(predicate), const ExtraArgType&> extraArgAnyer;
+      const TwoArgAnyer<CollectionType<T>, decltype(predicate), const Arg2Type&> twoArgAnyer;
       //
-      const bool anyElementMatchesPredicate = extraArgAnyer.ExtraArgAny(_twoCollection, predicate, _extraArg);
+      const bool anyElementMatchesPredicate = twoArgAnyer.TwoArgAny(_twoCollection, predicate, _arg2);
       //
-      const vector<pair<T, ExtraArgType>> expectedPredicateArgs = { { T(1), _extraArg } };
+      const vector<pair<T, Arg2Type>> expectedPredicateArgs = { { T(1), _arg2 } };
       VECTORS_EQUAL(expectedPredicateArgs, _predicateArgs);
       IS_TRUE(anyElementMatchesPredicate);
    }
 
-   TEST(ExtraArgAny_2ElementCollection_SecondOfTwoElementsMatchesPredicate_CallsPredicateTwice_ReturnsTrue)
+   TEST(TwoArgAny_2ElementCollection_SecondOfTwoElementsMatchesPredicate_CallsPredicateTwice_ReturnsTrue)
    {
-      const auto predicate = [&](const T& element, const ExtraArgType& extraArg)
+      const auto predicate = [&](const T& element, const Arg2Type& arg2)
       {
-         _predicateArgs.emplace_back(element, extraArg);
+         _predicateArgs.emplace_back(element, arg2);
          if (element == 2)
          {
             return true;
          }
          return false;
       };
-      const ExtraArgAnyer<CollectionType<T>, decltype(predicate), const ExtraArgType&> extraArgAnyer;
+      const TwoArgAnyer<CollectionType<T>, decltype(predicate), const Arg2Type&> twoArgAnyer;
       //
-      const bool anyElementMatchesPredicate = extraArgAnyer.ExtraArgAny(_twoCollection, predicate, _extraArg);
+      const bool anyElementMatchesPredicate = twoArgAnyer.TwoArgAny(_twoCollection, predicate, _arg2);
       //
-      const vector<pair<T, ExtraArgType>> expectedPredicateArgs = { { T(1), _extraArg },{ T(2), _extraArg } };
+      const vector<pair<T, Arg2Type>> expectedPredicateArgs = { { T(1), _arg2 },{ T(2), _arg2 } };
       VECTORS_EQUAL(expectedPredicateArgs, _predicateArgs);
       IS_TRUE(anyElementMatchesPredicate);
    }
 
-   TEST(ExtraArgAny_2ElementCollection_NeitherElementMatchesPredicate_CallsPredicateTwice_ReturnsFalse)
+   TEST(TwoArgAny_2ElementCollection_NeitherElementMatchesPredicate_CallsPredicateTwice_ReturnsFalse)
    {
-      const auto predicate = [&](const T& element, const ExtraArgType& extraArg)
+      const auto predicate = [&](const T& element, const Arg2Type& arg2)
       {
-         _predicateArgs.emplace_back(element, extraArg);
+         _predicateArgs.emplace_back(element, arg2);
          return false;
       };
-      const ExtraArgAnyer<CollectionType<T>, decltype(predicate), const ExtraArgType&> extraArgAnyer;
+      const TwoArgAnyer<CollectionType<T>, decltype(predicate), const Arg2Type&> twoArgAnyer;
       //
-      const bool anyElementMatchesPredicate = extraArgAnyer.ExtraArgAny(_twoCollection, predicate, _extraArg);
+      const bool anyElementMatchesPredicate = twoArgAnyer.TwoArgAny(_twoCollection, predicate, _arg2);
       //
-      const vector<pair<T, ExtraArgType>> expectedPredicateArgs = { { T(1), _extraArg },{ T(2), _extraArg } };
+      const vector<pair<T, Arg2Type>> expectedPredicateArgs = { { T(1), _arg2 },{ T(2), _arg2 } };
       VECTORS_EQUAL(expectedPredicateArgs, _predicateArgs);
       IS_FALSE(anyElementMatchesPredicate);
    }
 
    };
-   RUN_TEMPLATE_TESTS(ExtraArgAnyerTests, vector, int, int)
-   RUN_TEMPLATE_TESTS(ExtraArgAnyerTests, set, long long, unsigned char)
+   RUN_TEMPLATE_TESTS(TwoArgAnyerTests, vector, int, int)
+   RUN_TEMPLATE_TESTS(TwoArgAnyerTests, set, long long, unsigned char)
 
 
-   template<typename ElementType, typename ExtraArgType>
-   TEMPLATE_TESTS(ExtraArgMemberForEacherTests, ElementType, ExtraArgType)
-   AFACT(ExtraArgMemberForEach_EmptyCollection_DoesNotCallFunc)
-   AFACT(ExtraArgMemberForEach_OneItemCollection_CallsThisPointerBoundFuncOnce)
-   AFACT(ExtraArgMemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwice)
-   AFACT(RandomExtraArgMemberForEach_EmptyCollection_DoesNotCallFunc)
-   AFACT(RandomExtraArgMemberForEach_OneItemCollection_CallsThisPointerBoundFuncOnce)
-   AFACT(RandomExtraArgMemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwiceInRandomOrder)
+   template<typename ElementType, typename Arg2Type>
+   TEMPLATE_TESTS(TwoArgMemberForEacherTests, ElementType, Arg2Type)
+   AFACT(TwoArgMemberForEach_EmptyCollection_DoesNotCallFunc)
+   AFACT(TwoArgMemberForEach_OneItemCollection_CallsThisPointerBoundFuncOnce)
+   AFACT(TwoArgMemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwice)
+   AFACT(RandomTwoArgMemberForEach_EmptyCollection_DoesNotCallFunc)
+   AFACT(RandomTwoArgMemberForEach_OneItemCollection_CallsThisPointerBoundFuncOnce)
+   AFACT(RandomTwoArgMemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwiceInRandomOrder)
    AFACT(CodeCoverage_ClassTypeTwoArgFunction)
    EVIDENCE
 
    class ClassType
    {
    public:
-      virtual void TwoArgFunction(ElementType, ExtraArgType) {}
+      virtual void TwoArgFunction(ElementType, Arg2Type) {}
       virtual ~ClassType() = default;
    };
 
@@ -140,40 +140,40 @@ namespace ZenUnit
    {
    public:
       vector<ElementType> vec;
-      ZENMOCK_VOID2(TwoArgFunction, ElementType, ExtraArgType)
+      ZENMOCK_VOID2(TwoArgFunction, ElementType, Arg2Type)
    };
 
-   using MemberForEacherExtraArgType = ExtraArgMemberForEacher<
-      ElementType, ClassType, void (ClassType::*)(ElementType, ExtraArgType), ExtraArgType>;
+   using TwoArgMemberForEacherType = TwoArgMemberForEacher<
+      ElementType, ClassType, void (ClassType::*)(ElementType, Arg2Type), Arg2Type>;
 
-   MemberForEacherExtraArgType _memberForEacherExtraArg;
+   TwoArgMemberForEacherType _twoArgMemberForEacher;
 
-   TEST(ExtraArgMemberForEach_EmptyCollection_DoesNotCallFunc)
+   TEST(TwoArgMemberForEach_EmptyCollection_DoesNotCallFunc)
    {
       ClassTypeMock classInstance{};
-      _memberForEacherExtraArg.ExtraArgMemberForEach(
+      _twoArgMemberForEacher.TwoArgMemberForEach(
          &classInstance.vec, &classInstance, &ClassType::TwoArgFunction, 0);
    }
 
-   TEST(ExtraArgMemberForEach_OneItemCollection_CallsThisPointerBoundFuncOnce)
+   TEST(TwoArgMemberForEach_OneItemCollection_CallsThisPointerBoundFuncOnce)
    {
       ClassTypeMock classInstance;
       classInstance.vec = { 1 };
       classInstance.TwoArgFunctionMock.Expect();
       //
-      _memberForEacherExtraArg.ExtraArgMemberForEach(
+      _twoArgMemberForEacher.TwoArgMemberForEach(
          &classInstance.vec, &classInstance, &ClassType::TwoArgFunction, 10);
       //
       classInstance.TwoArgFunctionMock.CalledOnceWith(1, 10);
    }
 
-   TEST(ExtraArgMemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwice)
+   TEST(TwoArgMemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwice)
    {
       ClassTypeMock classInstance;
       classInstance.vec = { 1, 2 };
       classInstance.TwoArgFunctionMock.Expect();
       //
-      _memberForEacherExtraArg.ExtraArgMemberForEach(
+      _twoArgMemberForEacher.TwoArgMemberForEach(
          &classInstance.vec, &classInstance, &ClassType::TwoArgFunction, 20);
       //
       classInstance.TwoArgFunctionMock.CalledAsFollows(
@@ -183,32 +183,32 @@ namespace ZenUnit
          });
    }
 
-   TEST(RandomExtraArgMemberForEach_EmptyCollection_DoesNotCallFunc)
+   TEST(RandomTwoArgMemberForEach_EmptyCollection_DoesNotCallFunc)
    {
       ClassTypeMock classInstance{};
-      _memberForEacherExtraArg.RandomExtraArgMemberForEach(
+      _twoArgMemberForEacher.RandomTwoArgMemberForEach(
          &classInstance.vec, &classInstance, &ClassType::TwoArgFunction, 0, 0);
    }
 
-   TEST(RandomExtraArgMemberForEach_OneItemCollection_CallsThisPointerBoundFuncOnce)
+   TEST(RandomTwoArgMemberForEach_OneItemCollection_CallsThisPointerBoundFuncOnce)
    {
       ClassTypeMock classInstance;
       classInstance.vec = { 1 };
       classInstance.TwoArgFunctionMock.Expect();
       //
-      _memberForEacherExtraArg.RandomExtraArgMemberForEach(
+      _twoArgMemberForEacher.RandomTwoArgMemberForEach(
          &classInstance.vec, &classInstance, &ClassType::TwoArgFunction, 10, 0);
       //
       classInstance.TwoArgFunctionMock.CalledOnceWith(1, 10);
    }
 
-   TEST(RandomExtraArgMemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwiceInRandomOrder)
+   TEST(RandomTwoArgMemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwiceInRandomOrder)
    {
       ClassTypeMock classInstance;
       classInstance.vec = { 1, 2 };
       classInstance.TwoArgFunctionMock.Expect();
       //
-      _memberForEacherExtraArg.RandomExtraArgMemberForEach(
+      _twoArgMemberForEacher.RandomTwoArgMemberForEach(
          &classInstance.vec, &classInstance, &ClassType::TwoArgFunction, 20,
          static_cast<unsigned>(chrono::system_clock::now().time_since_epoch().count()));
       //
@@ -233,12 +233,12 @@ namespace ZenUnit
    TEST(CodeCoverage_ClassTypeTwoArgFunction)
    {
       ClassType classType;
-      classType.TwoArgFunction(ElementType{}, ExtraArgType{});
+      classType.TwoArgFunction(ElementType{}, Arg2Type{});
    };
 
    };
-   RUN_TEMPLATE_TESTS(ExtraArgMemberForEacherTests, int, int)
-   RUN_TEMPLATE_TESTS(ExtraArgMemberForEacherTests, double, char)
+   RUN_TEMPLATE_TESTS(TwoArgMemberForEacherTests, int, int)
+   RUN_TEMPLATE_TESTS(TwoArgMemberForEacherTests, double, char)
 
 
    template<

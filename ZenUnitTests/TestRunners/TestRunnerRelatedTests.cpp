@@ -6,8 +6,8 @@
 #include "ZenUnitTests/Random/RandomValues.h"
 #include "ZenUnitTests/TestRunners/Mock/TestClassRunnerMock.h"
 #include "ZenUnitTests/Testing/RandomRunFilter.h"
-#include "ZenUnitTests/Utils/Iteration/Mock/ExtraArgAnyerMock.h"
-#include "ZenUnitTests/Utils/Iteration/Mock/ExtraArgMemberForEacherMock.h"
+#include "ZenUnitTests/Utils/Iteration/Mock/TwoArgAnyerMock.h"
+#include "ZenUnitTests/Utils/Iteration/Mock/TwoArgMemberForEacherMock.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/TransformerMock.h"
 #include "ZenUnitTests/Utils/Mock/SorterMock.h"
 #include "ZenUnitTests/Utils/Time/Mock/WatchMock.h"
@@ -20,7 +20,7 @@
 #include "ZenUnitTests/Results/Mock/TestClassResultMock.h"
 #include "ZenUnitTests/Testing/RandomPrintMode.h"
 #include "ZenUnitTests/Tests/Mock/TestMock.h"
-#include "ZenUnitTests/Utils/Iteration/Mock/ExtraArgMemberForEacherMock.h"
+#include "ZenUnitTests/Utils/Iteration/Mock/TwoArgMemberForEacherMock.h"
 
 #include "ZenUnitTests/TestRunners/Mock/TestClassRunnerMock.h"
 
@@ -141,18 +141,18 @@ EVIDENCE
 
 MultiTestClassRunner _multiTestClassRunner;
 
-using ExtraArgMemberForEacherMockType = ExtraArgMemberForEacherMock<
+using TwoArgMemberForEacherMockType = TwoArgMemberForEacherMock<
    std::unique_ptr<TestClassRunner>,
    MultiTestClassRunner,
    void(MultiTestClassRunner::*)(std::unique_ptr<TestClassRunner>&, const std::vector<RunFilter>&),
    const std::vector<RunFilter>&>;
-ExtraArgMemberForEacherMockType* _extraArgMemberForEacherMock = nullptr;
+TwoArgMemberForEacherMockType* _twoArgMemberForEacherMock = nullptr;
 
-using ExtraArgAnyerMockType = ExtraArgAnyerMock<
+using TwoArgAnyerMockType = TwoArgAnyerMock<
    std::vector<RunFilter>,
    bool(*)(const RunFilter&, const std::unique_ptr<TestClassRunner>*),
    const std::unique_ptr<TestClassRunner>*>;
-ExtraArgAnyerMockType* _extraArgAnyerMock = nullptr;
+TwoArgAnyerMockType* _twoArgAnyerMock = nullptr;
 
 SorterMock<vector<unique_ptr<TestClassRunner>>>* _sorterMock = nullptr;
 using TransformerMockType = TransformerMock<unique_ptr<TestClassRunner>, TestClassResult>;
@@ -161,8 +161,8 @@ WatchMock* _watchMock = nullptr;
 
 STARTUP
 {
-   _multiTestClassRunner._extraArgMemberForEacher.reset(_extraArgMemberForEacherMock = new ExtraArgMemberForEacherMockType);
-   _multiTestClassRunner._extraArgAnyer.reset(_extraArgAnyerMock = new ExtraArgAnyerMockType);
+   _multiTestClassRunner._twoArgMemberForEacher.reset(_twoArgMemberForEacherMock = new TwoArgMemberForEacherMockType);
+   _multiTestClassRunner._twoArgAnyer.reset(_twoArgAnyerMock = new TwoArgAnyerMockType);
    _multiTestClassRunner._sorter.reset(_sorterMock = new SorterMock<vector<unique_ptr<TestClassRunner>>>);
    _multiTestClassRunner._transformer.reset(_transformerMock = new TransformerMockType);
    _multiTestClassRunner._watch.reset(_watchMock = new WatchMock);
@@ -170,8 +170,8 @@ STARTUP
 
 TEST(Constructor_NewsComponents)
 {
-   POINTER_WAS_NEWED(_multiTestClassRunner._extraArgMemberForEacher);
-   POINTER_WAS_NEWED(_multiTestClassRunner._extraArgAnyer);
+   POINTER_WAS_NEWED(_multiTestClassRunner._twoArgMemberForEacher);
+   POINTER_WAS_NEWED(_multiTestClassRunner._twoArgAnyer);
    POINTER_WAS_NEWED(_multiTestClassRunner._sorter);
    POINTER_WAS_NEWED(_multiTestClassRunner._transformer);
    POINTER_WAS_NEWED(_multiTestClassRunner._watch);
@@ -222,12 +222,12 @@ TEST(ApplyRunFiltersIfAny_RunFiltersEmpty_DoesNothing)
 
 TEST(ApplyRunFiltersIfAny_RunFiltersNotEmpty_ResetsWithNoOpTestClassesThoseTestClassesThatMatchRunFilters)
 {
-   _extraArgMemberForEacherMock->ExtraArgMemberForEachMock.Expect();
+   _twoArgMemberForEacherMock->TwoArgMemberForEachMock.Expect();
    const vector<RunFilter> runFilters = { RandomRunFilter() };
    //
    _multiTestClassRunner.ApplyRunFiltersIfAny(runFilters);
    //
-   ZEN(_extraArgMemberForEacherMock->ExtraArgMemberForEachMock.CalledOnceWith(
+   ZEN(_twoArgMemberForEacherMock->TwoArgMemberForEachMock.CalledOnceWith(
       &_multiTestClassRunner._testClassRunners,
       &_multiTestClassRunner,
       &MultiTestClassRunner::ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter,
@@ -236,26 +236,26 @@ TEST(ApplyRunFiltersIfAny_RunFiltersNotEmpty_ResetsWithNoOpTestClassesThoseTestC
 
 TEST(ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter_TestClassNameMatchesAtLeastOneRunFilter_DoesNotResetTestClassRunnerWithNoOp)
 {
-   _extraArgAnyerMock->ExtraArgAnyMock.Return(true);
+   _twoArgAnyerMock->TwoArgAnyMock.Return(true);
    unique_ptr<TestClassRunner> testClassRunner{};
    const vector<RunFilter> runFilters = { RandomRunFilter() };
    //
    _multiTestClassRunner.ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter(testClassRunner, runFilters);
    //
-   ZEN(_extraArgAnyerMock->ExtraArgAnyMock.CalledOnceWith(
+   ZEN(_twoArgAnyerMock->TwoArgAnyMock.CalledOnceWith(
       runFilters, MultiTestClassRunner::TestClassNameMatchesRunFilter, &testClassRunner));
    IS_TRUE(dynamic_cast<NoOpTestClassRunner*>(testClassRunner.get()) == nullptr);
 }
 
 TEST(ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter_TestClassNameDoesNotMatchAnyRunFilter_ResetsTestClassRunnerWithNoOp)
 {
-   _extraArgAnyerMock->ExtraArgAnyMock.Return(false);
+   _twoArgAnyerMock->TwoArgAnyMock.Return(false);
    unique_ptr<TestClassRunner> testClassRunner{};
    const vector<RunFilter> runFilters = { RandomRunFilter() };
    //
    _multiTestClassRunner.ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter(testClassRunner, runFilters);
    //
-   ZEN(_extraArgAnyerMock->ExtraArgAnyMock.CalledOnceWith(
+   ZEN(_twoArgAnyerMock->TwoArgAnyMock.CalledOnceWith(
       runFilters, MultiTestClassRunner::TestClassNameMatchesRunFilter, &testClassRunner));
    IS_TRUE(dynamic_cast<NoOpTestClassRunner*>(testClassRunner.get()) != nullptr);
 }
@@ -557,11 +557,11 @@ unique_ptr<SpecificTestClassRunner<TestingTestClass>> _specificTestClassRunner;
 ConsoleMock* _consoleMock = nullptr;
 const string _testClassName = ZenUnit::Random<string>();
 
-using ExtraArgMemberForEacherMockType = ExtraArgMemberForEacherMock<
+using TwoArgMemberForEacherMockType = TwoArgMemberForEacherMock<
    unique_ptr<Test>, SpecificTestClassRunner<TestingTestClass>,
    void (SpecificTestClassRunner<TestingTestClass>::*)(
       const unique_ptr<Test>& test, TestClassResult*) const, TestClassResult*>;
-ExtraArgMemberForEacherMockType* _extraArgMemberForEacherMock;
+TwoArgMemberForEacherMockType* _twoArgMemberForEacherMock;
 VoidZeroArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>>* _voidZeroArgFunctionCallerMock;
 NonVoidTwoArgMemberFunctionCallerMock<bool, SpecificTestClassRunner<TestingTestClass>, Test*, TestClassResult*>* _nonVoidTwoArgFunctionCallerMock;
 VoidTwoArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, const TestClassResult*, PrintMode>* _voidTwoArgFunctionCallerMock;
@@ -573,7 +573,7 @@ STARTUP
    _specificTestClassRunner = make_unique<SpecificTestClassRunner<TestingTestClass>>(_testClassName.c_str());
    _specificTestClassRunner->_console.reset(_consoleMock = new ConsoleMock);
    _specificTestClassRunner->call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
-   _specificTestClassRunner->_extraArgMemberForEacher.reset(_extraArgMemberForEacherMock = new ExtraArgMemberForEacherMockType);
+   _specificTestClassRunner->_twoArgMemberForEacher.reset(_twoArgMemberForEacherMock = new TwoArgMemberForEacherMockType);
    _specificTestClassRunner->_voidZeroArgFunctionCaller.reset(
       _voidZeroArgFunctionCallerMock = new VoidZeroArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>>);
    _specificTestClassRunner->_nonVoidTwoArgFunctionCaller.reset(
@@ -588,7 +588,7 @@ TEST(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestC
    SpecificTestClassRunner<TestingTestClass> specificTestClassRunner(_testClassName.c_str());
    //
    POINTER_WAS_NEWED(specificTestClassRunner._console);
-   POINTER_WAS_NEWED(specificTestClassRunner._extraArgMemberForEacher);
+   POINTER_WAS_NEWED(specificTestClassRunner._twoArgMemberForEacher);
    POINTER_WAS_NEWED(specificTestClassRunner._voidZeroArgFunctionCaller);
    POINTER_WAS_NEWED(specificTestClassRunner._nonVoidTwoArgFunctionCaller);
    POINTER_WAS_NEWED(specificTestClassRunner._voidTwoArgFunctionCaller);
@@ -747,11 +747,11 @@ TEST2X2(DoRunTests_RandomlyRunsTestsIfRandomOtherwiseSequentiallyRunsTests,
    GetArgs_ZenMock.Return(zenUnitArgs);
    if (expectRandomForEach)
    {
-      _extraArgMemberForEacherMock->RandomExtraArgMemberForEachMock.Expect();
+      _twoArgMemberForEacherMock->RandomTwoArgMemberForEachMock.Expect();
    }
    else
    {
-      _extraArgMemberForEacherMock->ExtraArgMemberForEachMock.Expect();
+      _twoArgMemberForEacherMock->TwoArgMemberForEachMock.Expect();
    }
    //
    _specificTestClassRunner->DoRunTests();
@@ -759,7 +759,7 @@ TEST2X2(DoRunTests_RandomlyRunsTestsIfRandomOtherwiseSequentiallyRunsTests,
    ZEN(GetArgs_ZenMock.CalledOnce());
    if (expectRandomForEach)
    {
-      ZEN(_extraArgMemberForEacherMock->RandomExtraArgMemberForEachMock.CalledOnceWith(
+      ZEN(_twoArgMemberForEacherMock->RandomTwoArgMemberForEachMock.CalledOnceWith(
          &_specificTestClassRunner->_tests, _specificTestClassRunner.get(),
          &SpecificTestClassRunner<TestingTestClass>::RunTest,
          &_specificTestClassRunner->_testClassResult,
@@ -767,7 +767,7 @@ TEST2X2(DoRunTests_RandomlyRunsTestsIfRandomOtherwiseSequentiallyRunsTests,
    }
    else
    {
-      ZEN(_extraArgMemberForEacherMock->ExtraArgMemberForEachMock.CalledOnceWith(
+      ZEN(_twoArgMemberForEacherMock->TwoArgMemberForEachMock.CalledOnceWith(
          &_specificTestClassRunner->_tests, _specificTestClassRunner.get(),
          &SpecificTestClassRunner<TestingTestClass>::RunTest,
          &_specificTestClassRunner->_testClassResult));
