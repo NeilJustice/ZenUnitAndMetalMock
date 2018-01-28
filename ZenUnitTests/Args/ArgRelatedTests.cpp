@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "ZenUnitTests/Args/Mock/RunFilterParserMock.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
-#include "ZenUnitTests/Testing/RandomRunFilter.h"
-#include "ZenUnitTests/Utils/Iteration/Mock/TransformerMock.h"
+#include "ZenUnitTests/Random/RandomRunFilter.h"
+#include "ZenUnitTests/Utils/Iteration/Mock/MemberFunctionTransformerMock.h"
 
 namespace ZenUnit
 {
@@ -27,18 +27,14 @@ namespace ZenUnit
    EVIDENCE
 
    const string TestProgramPath = Random<string>();
-   const string ExpectedUsage = R"(ZenUnit v0.1.0
+   const string ExpectedUsage = R"(ZenUnit v0.2.0
 Usage: <TestsBinaryName> [Options...]
-
-Options:
-
-None
-   Run all non-skipped tests while printing detailed information.
 
 Output Options:
 
 -minimal
    Print only preamble, any test failure details, and conclusion.
+   Default: Run all non-skipped tests while printing detailed information.
 
 Utility Options:
 
@@ -202,7 +198,7 @@ Testing Rigor Options:
 
    TEST(Parse_Run_ReturnsExpectedZenUnitArgs)
    {
-      const vector<RunFilter> runFilters = { RandomRunFilter() };
+      const vector<RunFilter> runFilters = { Random<RunFilter>() };
       _runFilterParserMock->ParseMock.Return(runFilters);
 
       const string runArgument = ZenUnit::Random<string>();
@@ -365,95 +361,104 @@ Testing Rigor Options:
 
 }; RUN_TESTS(ArgsParserTests)
 
+
+TESTS(RunFilterParserTests)
+AFACT(DefaultConstructor_NewsTransformer)
+AFACT(Parse_TransformsRunFilterStringsToRunFilters)
+FACTS(ParseRunFilterString_JustTestClassName_ReturnsExpectedRunFilter)
+FACTS(ParseRunFilterString_TestClassNameDotTestName_ReturnsExpectedRunFilter)
+FACTS(ParseRunFilterString_RunFilterStringContainsMoreThanOnePeriod_Throws)
+FACTS(ParseRunFilterString_TestClassNameAndTestNameAndTestCaseNumber_ReturnsExpectedRunFilter)
+FACTS(ParseRunFilterString_RunFilterStringContainsMoreThanOneSlash_Throws)
+EVIDENCE
+
+RunFilterParser _runFilterParser;
+MemberFunctionTransformerMock<RunFilterParser, string, RunFilter>* _memberFunctionTransformerMock = nullptr;
+ZENMOCK_NONVOID1_STATIC(unsigned, String, ToUnsigned, const string&)
+
+STARTUP
+{
+   _runFilterParser._memberFunctionTransformer.reset(
+      _memberFunctionTransformerMock = new MemberFunctionTransformerMock<RunFilterParser, string, RunFilter>);
+   _runFilterParser.call_String_ToUnsigned = ZENMOCK_BIND1(ToUnsigned_ZenMock);
 }
 
-namespace ZenUnit
+TEST(DefaultConstructor_NewsTransformer)
 {
-   TESTS(RunFilterParserTests)
-   AFACT(DefaultConstructor_NewsTransformer)
-   AFACT(Parse_TransformsRunFilterStringsToRunFilters)
-   FACTS(ParseRunFilterString_JustTestClassName_ReturnsExpectedRunFilter)
-   FACTS(ParseRunFilterString_TestClassNameDotTestName_ReturnsExpectedRunFilter)
-   FACTS(ParseRunFilterString_RunFilterStringContainsMoreThanOnePeriod_Throws)
-   FACTS(ParseRunFilterString_TestClassNameAndTestNameAndTestCaseNumber_ReturnsExpectedRunFilter)
-   FACTS(ParseRunFilterString_RunFilterStringContainsMoreThanOneSlash_Throws)
-   EVIDENCE
+   RunFilterParser runFilterParser;
+   POINTER_WAS_NEWED(runFilterParser._memberFunctionTransformer);
+   STD_FUNCTION_TARGETS(String::ToUnsigned, runFilterParser.call_String_ToUnsigned);
+}
 
-   RunFilterParser _runFilterParser;
-   TransformerMock<string, RunFilter>* _transformerMock = nullptr;
+TEST(Parse_TransformsRunFilterStringsToRunFilters)
+{
+   const vector<RunFilter> runFilters = { Random<RunFilter>() };
+   _memberFunctionTransformerMock->TransformMock.Return(runFilters);
+   vector<string> runFilterStrings(ZenUnit::Random<size_t>(0, 2));
+   //
+   const vector<RunFilter> expectedRunFilters = _runFilterParser.Parse(runFilterStrings);
+   //
+   ZEN(_memberFunctionTransformerMock->TransformMock.CalledOnceWith(
+      runFilterStrings, &_runFilterParser, &RunFilterParser::ParseRunFilterString));
+   VECTORS_EQUAL(expectedRunFilters, runFilters);
+}
 
-   STARTUP
-   {
-      _runFilterParser._transformer.reset(_transformerMock = new TransformerMock<string, RunFilter>);
-   }
+TEST2X2(ParseRunFilterString_JustTestClassName_ReturnsExpectedRunFilter,
+   const string& runFilterString, const RunFilter& expectedRunFilter,
+   "TestClassA", RunFilter("TestClassA", "", 0),
+   "TestClassB", RunFilter("TestClassB", "", 0))
+{
+   const RunFilter runFilter = _runFilterParser.ParseRunFilterString(runFilterString);
+   ARE_EQUAL(expectedRunFilter, runFilter);
+}
 
-   TEST(DefaultConstructor_NewsTransformer)
-   {
-      RunFilterParser runFilterParser;
-      POINTER_WAS_NEWED(runFilterParser._transformer);
-   }
+TEST2X2(ParseRunFilterString_TestClassNameDotTestName_ReturnsExpectedRunFilter,
+   const string& runFilterString, const RunFilter& expectedRunFilter,
+   "TestClassA.TestNameA", RunFilter("TestClassA", "TestNameA", 0),
+   "TestClassB.TestNameB", RunFilter("TestClassB", "TestNameB", 0))
+{
+   const RunFilter runFilter = _runFilterParser.ParseRunFilterString(runFilterString);
+   ARE_EQUAL(expectedRunFilter, runFilter);
+}
 
-   TEST(Parse_TransformsRunFilterStringsToRunFilters)
-   {
-      const vector<RunFilter> runFilters = { RandomRunFilter() };
-      _transformerMock->TransformMock.Return(runFilters);
-      vector<string> runFilterStrings(ZenUnit::Random<size_t>(0, 2));
-      //
-      const vector<RunFilter> expectedRunFilters = _runFilterParser.Parse(runFilterStrings);
-      //
-      ZEN(_transformerMock->TransformMock.CalledOnceWith(
-         &runFilterStrings, RunFilterParser::ParseRunFilterString));
-      VECTORS_EQUAL(expectedRunFilters, runFilters);
-   }
+TEST1X1(ParseRunFilterString_RunFilterStringContainsMoreThanOnePeriod_Throws,
+   const string& invalidRunFilterString,
+   "TestClassName..TestName",
+   "TestClassName...TestName")
+{
+   THROWS(_runFilterParser.ParseRunFilterString(invalidRunFilterString),
+      invalid_argument, ExpectedInvalidArgumentWhat(invalidRunFilterString));
+}
 
-   TEST2X2(ParseRunFilterString_JustTestClassName_ReturnsExpectedRunFilter,
-      const string& runFilterString, const RunFilter& expectedRunFilter,
-      "TestClassA", RunFilter("TestClassA", "", 0),
-      "TestClassB", RunFilter("TestClassB", "", 0))
-   {
-      const RunFilter runFilter = RunFilterParser::ParseRunFilterString(runFilterString);
-      ARE_EQUAL(expectedRunFilter, runFilter);
-   }
+TEST3X3(ParseRunFilterString_TestClassNameAndTestNameAndTestCaseNumber_ReturnsExpectedRunFilter,
+   const string& runFilterString, const string& expectedTestCaseNumberString, const RunFilter& expectedRunFilter,
+   "TestClassA.TestNameA/1", "1", RunFilter("TestClassA", "TestNameA", 1),
+   "TestClassB.TestNameB/2", "2", RunFilter("TestClassB", "TestNameB", 2))
+{
+   const unsigned testCaseNumber = ZenUnit::Random<unsigned>();
+   ToUnsigned_ZenMock.Return(expectedRunFilter.testCaseNumber);
+   //
+   const RunFilter runFilter = _runFilterParser.ParseRunFilterString(runFilterString);
+   //
+   ZEN(ToUnsigned_ZenMock.CalledOnceWith(expectedTestCaseNumberString));
+   ARE_EQUAL(expectedRunFilter, runFilter);
+}
 
-   TEST2X2(ParseRunFilterString_TestClassNameDotTestName_ReturnsExpectedRunFilter,
-      const string& runFilterString, const RunFilter& expectedRunFilter,
-      "TestClassA.TestNameA", RunFilter("TestClassA", "TestNameA", 0),
-      "TestClassB.TestNameB", RunFilter("TestClassB", "TestNameB", 0))
-   {
-      const RunFilter runFilter = RunFilterParser::ParseRunFilterString(runFilterString);
-      ARE_EQUAL(expectedRunFilter, runFilter);
-   }
+TEST1X1(ParseRunFilterString_RunFilterStringContainsMoreThanOneSlash_Throws,
+   const string& invalidRunFilterString,
+   "TestClassName.TestName//1",
+   "TestClassName.TestName///1")
+{
+   THROWS(_runFilterParser.ParseRunFilterString(invalidRunFilterString),
+      invalid_argument, ExpectedInvalidArgumentWhat(invalidRunFilterString));
+}
 
-   TEST1X1(ParseRunFilterString_RunFilterStringContainsMoreThanOnePeriod_Throws,
-      const string& runFilterString,
-      "TestClassName..TestName",
-      "TestClassName...TestName")
-   {
-      THROWS(RunFilterParser::ParseRunFilterString(runFilterString),
-         invalid_argument, "Invalid test run filter: " + runFilterString);
-   }
-
-   TEST2X2(ParseRunFilterString_TestClassNameAndTestNameAndTestCaseNumber_ReturnsExpectedRunFilter,
-      const string& runFilterString, const RunFilter& expectedRunFilter,
-      "TestClassA.TestNameA/1", RunFilter("TestClassA", "TestNameA", 1),
-      "TestClassB.TestNameB/2", RunFilter("TestClassB", "TestNameB", 2))
-   {
-      const RunFilter runFilter = RunFilterParser::ParseRunFilterString(runFilterString);
-      ARE_EQUAL(expectedRunFilter, runFilter);
-   }
-
-   TEST1X1(ParseRunFilterString_RunFilterStringContainsMoreThanOneSlash_Throws,
-      const string& runFilterString,
-      "TestClassName.TestName//1",
-      "TestClassName.TestName///1")
-   {
-      THROWS(RunFilterParser::ParseRunFilterString(runFilterString),
-         invalid_argument, "Invalid test run filter: " + runFilterString);
-   }
+static string ExpectedInvalidArgumentWhat(const string& invalidRunFilterString)
+{
+   return "Invalid test run filter string: " + invalidRunFilterString + ". Test run filter string format: TestClassName[.TestName[/TestCaseNumber]]";
+}
 
 }; RUN_TESTS(RunFilterParserTests)
-
-}
 
 
 TESTS(RunFilterTests)
@@ -464,79 +469,77 @@ EVIDENCE
 
 TEST(DefaultConstructor_SetsTestCaseTo0)
 {
-   RunFilter runFilter;
-   ARE_EQUAL("", runFilter.testClassName);
-   ARE_EQUAL("", runFilter.testName);
-   ARE_EQUAL(0, runFilter.testCaseNumber);
+RunFilter runFilter;
+ARE_EQUAL("", runFilter.testClassName);
+ARE_EQUAL("", runFilter.testName);
+ARE_EQUAL(0, runFilter.testCaseNumber);
 }
 
 TEST(ThreeArgumentConstructor_SetsFields)
 {
-   const string testClassName = ZenUnit::Random<string>();
-   const string testName = ZenUnit::Random<string>();
-   const unsigned testCaseNumber = ZenUnit::Random<unsigned>();
-   //
-   RunFilter runFilter(testClassName, testName, testCaseNumber);
-   //
-   ARE_EQUAL(testClassName, runFilter.testClassName);
-   ARE_EQUAL(testName, runFilter.testName);
-   ARE_EQUAL(testCaseNumber, runFilter.testCaseNumber);
+const string testClassName = ZenUnit::Random<string>();
+const string testName = ZenUnit::Random<string>();
+const unsigned testCaseNumber = ZenUnit::Random<unsigned>();
+//
+RunFilter runFilter(testClassName, testName, testCaseNumber);
+//
+ARE_EQUAL(testClassName, runFilter.testClassName);
+ARE_EQUAL(testName, runFilter.testName);
+ARE_EQUAL(testCaseNumber, runFilter.testCaseNumber);
 }
 
 TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
 {
-   SETUP_EQUALIZER_THROWS_TEST(RunFilter);
-   EQUALIZER_THROWS_FOR_FIELD(RunFilter, testClassName, "testClassName");
-   EQUALIZER_THROWS_FOR_FIELD(RunFilter, testName, "testName");
-   EQUALIZER_THROWS_FOR_FIELD(RunFilter, testCaseNumber, 1);
+SETUP_EQUALIZER_THROWS_TEST(RunFilter);
+EQUALIZER_THROWS_FOR_FIELD(RunFilter, testClassName, "testClassName");
+EQUALIZER_THROWS_FOR_FIELD(RunFilter, testName, "testName");
+EQUALIZER_THROWS_FOR_FIELD(RunFilter, testCaseNumber, 1);
 }
 
 }; RUN_TESTS(RunFilterTests)
 
 
-namespace ZenUnit
+TESTS(ZenUnitArgsTests)
+AFACT(DefaultConstructor_SetsFieldsToDefaults)
+AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+EVIDENCE
+
+TEST(DefaultConstructor_SetsFieldsToDefaults)
 {
-   TESTS(ZenUnitArgsTests)
-   AFACT(DefaultConstructor_SetsFieldsToDefaults)
-   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   EVIDENCE
+   ZenUnitArgs zenUnitArgs;
+   ARE_EQUAL("", zenUnitArgs.commandLine);
+   ARE_EQUAL(PrintMode::Normal, zenUnitArgs.printMode);
+   IS_EMPTY(zenUnitArgs.runFilters);
+   IS_FALSE(zenUnitArgs.wait);
+   IS_FALSE(zenUnitArgs.exit0);
+   IS_FALSE(zenUnitArgs.failfast);
+   IS_FALSE(zenUnitArgs.failskips);
+   ARE_EQUAL(1, zenUnitArgs.testruns);
+   IS_FALSE(zenUnitArgs.random);
+   ARE_EQUAL(0, zenUnitArgs.randomseed);
+   IS_FALSE(zenUnitArgs.randomseedsetbyuser);
+   IS_ZERO(zenUnitArgs.maxtestmilliseconds);
+   IS_ZERO(zenUnitArgs.maxtotalseconds);
+}
 
-   TEST(DefaultConstructor_SetsFieldsToDefaults)
-   {
-      ZenUnitArgs zenUnitArgs;
-      ARE_EQUAL("", zenUnitArgs.commandLine);
-      ARE_EQUAL(PrintMode::Normal, zenUnitArgs.printMode);
-      IS_EMPTY(zenUnitArgs.runFilters);
-      IS_FALSE(zenUnitArgs.wait);
-      IS_FALSE(zenUnitArgs.exit0);
-      IS_FALSE(zenUnitArgs.failfast);
-      IS_FALSE(zenUnitArgs.failskips);
-      ARE_EQUAL(1, zenUnitArgs.testruns);
-      IS_FALSE(zenUnitArgs.random);
-      ARE_EQUAL(0, zenUnitArgs.randomseed);
-      IS_FALSE(zenUnitArgs.randomseedsetbyuser);
-      IS_ZERO(zenUnitArgs.maxtestmilliseconds);
-      IS_ZERO(zenUnitArgs.maxtotalseconds);
-   }
-
-   TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   {
-      SETUP_EQUALIZER_THROWS_TEST(ZenUnitArgs);
-      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, commandLine, "ZenUnitTests.exe");
-      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, printMode, PrintMode::Minimal);
-      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, runFilters, vector<RunFilter> { RunFilter() });
-      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, pause, true);
-      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, wait, true);
-      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, exit0, true);
-      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, failfast, true);
-      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, failskips, true);
-      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, testruns, 2u);
-      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, random, true);
-      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, randomseed, static_cast<unsigned short>(3));
-      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, randomseedsetbyuser, true);
-      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, maxtestmilliseconds, 4u);
-      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, maxtotalseconds, 5u);
-   }
+TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
+{
+   SETUP_EQUALIZER_THROWS_TEST(ZenUnitArgs);
+   EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, commandLine, "ZenUnitTests.exe");
+   EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, printMode, PrintMode::Minimal);
+   EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, runFilters, vector<RunFilter> { RunFilter() });
+   EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, pause, true);
+   EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, wait, true);
+   EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, exit0, true);
+   EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, failfast, true);
+   EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, failskips, true);
+   EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, testruns, 2u);
+   EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, random, true);
+   EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, randomseed, static_cast<unsigned short>(3));
+   EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, randomseedsetbyuser, true);
+   EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, maxtestmilliseconds, 4u);
+   EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, maxtotalseconds, 5u);
+}
 
 }; RUN_TESTS(ZenUnitArgsTests)
 

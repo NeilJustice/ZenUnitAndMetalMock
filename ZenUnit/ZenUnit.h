@@ -357,8 +357,7 @@ namespace ZenUnit
       Unset,
       Minimal,
       Normal,
-      Detailed,
-      MaxValue
+      Detailed
    };
 
    enum class TestOutcome : unsigned char
@@ -1513,14 +1512,39 @@ namespace ZenUnit
       }
    };
 
+   template<typename ClassType, typename ElementType, typename TransformedElementType>
+   class MemberFunctionTransformer
+   {
+   public:
+      MemberFunctionTransformer() = default;
+      virtual ~MemberFunctionTransformer() = default;
+
+      virtual std::vector<TransformedElementType> Transform(
+         const std::vector<ElementType>& elements,
+         const ClassType* classInstance,
+         TransformedElementType(ClassType::*transformer)(const ElementType&) const) const
+      {
+         std::vector<TransformedElementType> transformedElements;
+         transformedElements.reserve(elements.size());
+         for (const ElementType& element : elements)
+         {
+            const TransformedElementType transformedElement = (classInstance->*transformer)(element);
+            transformedElements.push_back(transformedElement);
+         }
+         return transformedElements;
+      }
+   };
+
    class RunFilterParser
    {
       friend class RunFilterParserTests;
    private:
-      std::unique_ptr<Transformer<std::string, RunFilter>> _transformer;
+      std::unique_ptr<MemberFunctionTransformer<RunFilterParser, std::string, RunFilter>> _memberFunctionTransformer;
+      std::function<unsigned(const std::string&)> call_String_ToUnsigned;
    public:
       RunFilterParser() noexcept
-         : _transformer(std::make_unique<Transformer<std::string, RunFilter>>())
+         : _memberFunctionTransformer(std::make_unique<MemberFunctionTransformer<RunFilterParser, std::string, RunFilter>>())
+         , call_String_ToUnsigned(String::ToUnsigned)
       {
       }
 
@@ -1529,36 +1553,42 @@ namespace ZenUnit
 
       virtual std::vector<RunFilter> Parse(const std::vector<std::string>& testRunFilters) const
       {
-         std::vector<RunFilter> runFilters = _transformer->Transform(
-            &testRunFilters, RunFilterParser::ParseRunFilterString);
+         std::vector<RunFilter> runFilters = _memberFunctionTransformer->Transform(
+            testRunFilters, this, &RunFilterParser::ParseRunFilterString);
          return runFilters;
       }
    private:
-      static RunFilter ParseRunFilterString(const std::string& testRunFilter)
+      RunFilter ParseRunFilterString(const std::string& testRunFilter) const
       {
          RunFilter runFilter;
-         const std::vector<std::string> testClassName_testNameSlashTestCaseNumber = String::Split(testRunFilter, '.');
-         if (testClassName_testNameSlashTestCaseNumber.size() > 2)
+         const std::vector<std::string> testClassNameAndTestNameSlashTestCaseNumber = String::Split(testRunFilter, '.');
+         if (testClassNameAndTestNameSlashTestCaseNumber.size() > 2)
          {
-            throw std::invalid_argument("Invalid test run filter: " + testRunFilter);
+            ThrowInvalidArgumentOnAccountOfInvalidTestRunFilterString(testRunFilter);
          }
-         runFilter.testClassName = testClassName_testNameSlashTestCaseNumber[0];
-         if (testClassName_testNameSlashTestCaseNumber.size() == 2)
+         runFilter.testClassName = testClassNameAndTestNameSlashTestCaseNumber[0];
+         if (testClassNameAndTestNameSlashTestCaseNumber.size() == 2)
          {
-            const std::vector<std::string> testName_testCaseNumber = String::Split(testClassName_testNameSlashTestCaseNumber[1], '/');
-            if (testName_testCaseNumber.size() > 2)
+            const std::vector<std::string> testNameAndTestCaseNumber =
+               String::Split(testClassNameAndTestNameSlashTestCaseNumber[1], '/');
+            if (testNameAndTestCaseNumber.size() > 2)
             {
-               throw std::invalid_argument("Invalid test run filter: " + testRunFilter);
+               ThrowInvalidArgumentOnAccountOfInvalidTestRunFilterString(testRunFilter);
             }
-            runFilter.testClassName = testClassName_testNameSlashTestCaseNumber[0];
-            runFilter.testName = testName_testCaseNumber[0];
-            if (testName_testCaseNumber.size() == 2)
+            runFilter.testName = testNameAndTestCaseNumber[0];
+            if (testNameAndTestCaseNumber.size() == 2)
             {
-               const std::string& testCaseNumberString = testName_testCaseNumber[1];
-               runFilter.testCaseNumber = String::ToUnsigned(testCaseNumberString);
+               const std::string& testCaseNumberString = testNameAndTestCaseNumber[1];
+               runFilter.testCaseNumber = call_String_ToUnsigned(testCaseNumberString);
             }
          }
          return runFilter;
+      }
+
+      static void ThrowInvalidArgumentOnAccountOfInvalidTestRunFilterString(const std::string& invalidTestRunFilterString)
+      {
+         throw std::invalid_argument("Invalid test run filter string: " +
+            invalidTestRunFilterString + ". Test run filter string format: TestClassName[.TestName[/TestCaseNumber]]");
       }
    };
 
@@ -1719,18 +1749,14 @@ namespace ZenUnit
 
       static const std::string& Usage()
       {
-         static const std::string usage = R"(ZenUnit v0.1.0
+         static const std::string usage = R"(ZenUnit v0.2.0
 Usage: <TestsBinaryName> [Options...]
-
-Options:
-
-None
-   Run all non-skipped tests while printing detailed information.
 
 Output Options:
 
 -minimal
    Print only preamble, any test failure details, and conclusion.
+   Default: Run all non-skipped tests while printing detailed information.
 
 Utility Options:
 
@@ -3671,7 +3697,7 @@ Testing Rigor Options:
       }
    };
 
-   template<typename CollectionType, typename PredicateType, typename Arg2Type>
+   template<typename CollectionType, typename PredicateFunctionType, typename Arg2Type>
    class TwoArgAnyer
    {
    public:
@@ -3682,7 +3708,7 @@ Testing Rigor Options:
       //DEFINE_COPY_COPY_MOVE_MOVE(TwoArgAnyer, default, default, default, default);
       virtual ~TwoArgAnyer() = default;
 
-      virtual bool TwoArgAny(const CollectionType& collection, PredicateType predicate, const Arg2Type& arg2) const
+      virtual bool TwoArgAny(const CollectionType& collection, PredicateFunctionType predicate, const Arg2Type& arg2) const
       {
          const auto collectionConstEnd = collection.cend();
          for (auto iter = collection.cbegin(); iter != collectionConstEnd; ++iter)
@@ -3717,8 +3743,12 @@ Testing Rigor Options:
 
    class TestClassRunner
    {
+      friend class TestClassRunnerTests;
+   protected:
+      std::unique_ptr<const TwoArgAnyer<std::vector<RunFilter>, bool(*)(const RunFilter&, const char*), const char*>> pro_twoArgAnyer;
    public:
       TestClassRunner() noexcept
+         : pro_twoArgAnyer(new TwoArgAnyer<std::vector<RunFilter>, bool(*)(const RunFilter&, const char*), const char*>)
       {
       }
 
@@ -3728,7 +3758,20 @@ Testing Rigor Options:
       virtual const char* TestClassName() const = 0;
       virtual size_t NumberOfTestCases() const = 0;
       virtual TestClassResult RunTests() = 0;
-      virtual bool HasTestNameThatCaseInsensitiveMatchesPattern(const std::string& testNamePattern) const = 0;
+
+      static bool TestNameCaseInsensitiveEqualsRunFilterTestName(
+         const RunFilter& runFilter, const char* testName) noexcept
+      {
+         if (runFilter.testName.empty())
+         {
+            return true;
+         }
+         if (String::IgnoreCaseStrcmp(testName, runFilter.testName.c_str()) == 0)
+         {
+            return true;
+         }
+         return false;
+      }
 
       friend bool operator<(
          const std::unique_ptr<TestClassRunner>& leftTestClassRunner,
@@ -3759,21 +3802,16 @@ Testing Rigor Options:
       {
          return TestClassResult();
       }
-
-      bool HasTestNameThatCaseInsensitiveMatchesPattern(const std::string&) const override
-      {
-         return false;
-      }
    };
 
-   class MultiTestClassRunner
+   class TestClassRunnerRunner
    {
-      friend class MultiTestClassRunnerTests;
+      friend class TestClassRunnerRunnerTests;
    private:
       using TwoArgMemberForEacherType = TwoArgMemberForEacher<
          std::unique_ptr<TestClassRunner>,
-         MultiTestClassRunner,
-         void(MultiTestClassRunner::*)(std::unique_ptr<TestClassRunner>&, const std::vector<RunFilter>&),
+         TestClassRunnerRunner,
+         void(TestClassRunnerRunner::*)(std::unique_ptr<TestClassRunner>&, const std::vector<RunFilter>&),
          const std::vector<RunFilter>&>;
       std::unique_ptr<const TwoArgMemberForEacherType> _twoArgMemberForEacher;
 
@@ -3788,7 +3826,7 @@ Testing Rigor Options:
       std::unique_ptr<const Watch> _watch;
       std::vector<std::unique_ptr<TestClassRunner>> _testClassRunners;
    public:
-      MultiTestClassRunner() noexcept
+      TestClassRunnerRunner() noexcept
          : _twoArgMemberForEacher(std::make_unique<TwoArgMemberForEacherType>())
          , _twoArgAnyer(std::make_unique<TwoArgAnyerType>())
          , _sorter(std::make_unique<Sorter<std::vector<std::unique_ptr<TestClassRunner>>>>())
@@ -3797,8 +3835,8 @@ Testing Rigor Options:
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(MultiTestClassRunner, delete, delete, default, default);
-      virtual ~MultiTestClassRunner() = default;
+      //DEFINE_COPY_COPY_MOVE_MOVE(TestClassRunnerRunner, delete, delete, default, default);
+      virtual ~TestClassRunnerRunner() = default;
 
       virtual void AddTestClassRunner(TestClassRunner* testClassRunner)
       {
@@ -3810,7 +3848,7 @@ Testing Rigor Options:
          if (!runFilters.empty())
          {
             _twoArgMemberForEacher->TwoArgMemberForEach(&_testClassRunners, this,
-               &MultiTestClassRunner::ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter, runFilters);
+               &TestClassRunnerRunner::ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter, runFilters);
          }
       }
 
@@ -3847,12 +3885,12 @@ Testing Rigor Options:
                zenUnitArgs.randomseed = _watch->SecondsSince1970CastToUnsignedShort();
             }
             const std::vector<TestClassResult> testClassResults = _transformer->RandomTransform(
-               &_testClassRunners, &MultiTestClassRunner::RunTestClassRunner, zenUnitArgs.randomseed);
+               &_testClassRunners, &TestClassRunnerRunner::RunTestClassRunner, zenUnitArgs.randomseed);
             return testClassResults;
          }
          _sorter->Sort(&_testClassRunners); // Sort test class runners by test class name
          const std::vector<TestClassResult> testClassResults = _transformer->Transform(
-            &_testClassRunners, &MultiTestClassRunner::RunTestClassRunner);
+            &_testClassRunners, &TestClassRunnerRunner::RunTestClassRunner);
          return testClassResults;
       }
    private:
@@ -3901,7 +3939,7 @@ Testing Rigor Options:
       virtual ~PreamblePrinter() = default;
 
       virtual void PrintOpeningThreeLines(
-         const ZenUnitArgs& zenUnitArgs, const MultiTestClassRunner* multiTestClassRunner) const
+         const ZenUnitArgs& zenUnitArgs, const TestClassRunnerRunner* testClassRunnerRunner) const
       {
          _console->WriteColor("[ZenUnit]", Color::Green);
          _console->WriteLine(" Running " + zenUnitArgs.commandLine);
@@ -3909,7 +3947,7 @@ Testing Rigor Options:
          const std::string timeZoneDateTimeNow = _watch->TimeZoneDateTimeNow();
          _console->WriteLine(" Running at " + timeZoneDateTimeNow);
          _console->WriteColor("[ZenUnit]", Color::Green);
-         const size_t numberOfTestClassesToBeRun = multiTestClassRunner->NumberOfTestClassesToBeRun();
+         const size_t numberOfTestClassesToBeRun = testClassRunnerRunner->NumberOfTestClassesToBeRun();
          const std::string thirdLinePrefix = MakeThirdLinePrefix(numberOfTestClassesToBeRun);
          const std::string thirdLineSuffix = MakeThirdLineSuffix(zenUnitArgs.random, zenUnitArgs.randomseed);
          const std::string thirdLineAndLineBreak = thirdLinePrefix + thirdLineSuffix + "\n";
@@ -4234,7 +4272,7 @@ Testing Rigor Options:
       std::unique_ptr<const ZeroArgMemberFunctionCaller<void, TestRunner>> _voidZeroArgMemberFunctionCaller;
       //std::unique_ptr<const Futurist<TestRunner>> _futurist;
       std::unique_ptr<Stopwatch> _testRunStopwatch;
-      std::unique_ptr<MultiTestClassRunner> _multiTestClassRunner;
+      std::unique_ptr<TestClassRunnerRunner> _testClassRunnerRunner;
       std::unique_ptr<TestRunResult> _testRunResult;
       ZenUnitArgs _zenUnitArgs;
       bool _havePaused;
@@ -4249,7 +4287,7 @@ Testing Rigor Options:
          , _voidZeroArgMemberFunctionCaller(std::make_unique<ZeroArgMemberFunctionCaller<void, TestRunner>>())
          //, _futurist(new Futurist<TestRunner>)
          , _testRunStopwatch(std::make_unique<Stopwatch>())
-         , _multiTestClassRunner(std::make_unique<MultiTestClassRunner>())
+         , _testClassRunnerRunner(std::make_unique<TestClassRunnerRunner>())
          , _testRunResult(std::make_unique<TestRunResult>())
          , _havePaused(false)
       {
@@ -4272,7 +4310,7 @@ Testing Rigor Options:
 
       std::nullptr_t AddTestClassRunner(TestClassRunner* testClassRunner)
       {
-         _multiTestClassRunner->AddTestClassRunner(testClassRunner);
+         _testClassRunnerRunner->AddTestClassRunner(testClassRunner);
          return nullptr;
       }
 
@@ -4291,7 +4329,7 @@ Testing Rigor Options:
       int ParseArgsRunTestClassesPrintResults(const std::vector<std::string>& commandLineArgs)
       {
          _zenUnitArgs = _argsParser->Parse(commandLineArgs);
-         _multiTestClassRunner->ApplyRunFiltersIfAny(_zenUnitArgs.runFilters);
+         _testClassRunnerRunner->ApplyRunFiltersIfAny(_zenUnitArgs.runFilters);
          int overallExitCode = 0;
          for (unsigned testRunIndex = 0; testRunIndex < _zenUnitArgs.testruns; ++testRunIndex)
          {
@@ -4322,7 +4360,7 @@ Testing Rigor Options:
 
       int RunTestClassesAndPrintResults(const ZenUnitArgs& zenUnitArgs)
       {
-         _preamblePrinter->PrintOpeningThreeLines(zenUnitArgs, _multiTestClassRunner.get());
+         _preamblePrinter->PrintOpeningThreeLines(zenUnitArgs, _testClassRunnerRunner.get());
          _havePaused = _nonVoidTwoArgMemberFunctionCaller->ConstCall(
             this, &TestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPaused, zenUnitArgs.pause, _havePaused);
          _testRunStopwatch->Start();
@@ -4336,7 +4374,7 @@ Testing Rigor Options:
             _voidZeroArgMemberFunctionCaller->NonConstCall(this, &TestRunner::RunTestClasses);
          }
          _testRunResult->PrintTestFailuresAndSkips();
-         const size_t numberOfTestCases = _multiTestClassRunner->NumberOfTestCases();
+         const size_t numberOfTestCases = _testClassRunnerRunner->NumberOfTestCases();
          const unsigned testRunMilliseconds = _testRunStopwatch->Stop();
          _testRunResult->PrintClosingLines(numberOfTestCases, testRunMilliseconds, zenUnitArgs);
          const int testRunExitCode = _testRunResult->DetermineExitCode(zenUnitArgs);
@@ -4345,7 +4383,7 @@ Testing Rigor Options:
 
       void RunTestClasses()
       {
-         std::vector<TestClassResult> testClassResults = _multiTestClassRunner->RunTestClasses(_zenUnitArgs);
+         std::vector<TestClassResult> testClassResults = _testClassRunnerRunner->RunTestClasses(_zenUnitArgs);
          _testRunResult->SetTestClassResults(std::move(testClassResults));
       }
 
@@ -4744,19 +4782,6 @@ Testing Rigor Options:
          return _testClassName;
       }
 
-      bool HasTestNameThatCaseInsensitiveMatchesPattern(const std::string& testNamePattern) const override
-      {
-         for (const std::unique_ptr<Test>& test : _tests)
-         {
-            const char* const containedTestName = test->Name();
-            if (String::IgnoreCaseStrcmp(containedTestName, testNamePattern.c_str()) == 0)
-            {
-               return true;
-            }
-         }
-         return false;
-      }
-
       size_t NumberOfTestCases() const override
       {
          const size_t totalNumberOfTestCases = std::accumulate(_tests.cbegin(), _tests.cend(), size_t(),
@@ -4832,12 +4857,17 @@ Testing Rigor Options:
       {
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          const char* const testName = test->Name();
-         _console->NonMinimalWriteColor("|", Color::Green, zenUnitArgs.printMode);
-         _console->NonMinimalWrite(testName, zenUnitArgs.printMode);
-         test->NonMinimalWritePostTestNameMessage(_console.get(), zenUnitArgs.printMode);
-         const std::vector<TestResult> testResults = test->Run();
-         test->NonMinimalWritePostTestCompletionMessage(_console.get(), testResults[0], zenUnitArgs.printMode);
-         outTestClassResult->AddTestResults(testResults);
+         const bool doRunTest = zenUnitArgs.runFilters.empty() || pro_twoArgAnyer->TwoArgAny(
+            zenUnitArgs.runFilters, &TestClassRunner::TestNameCaseInsensitiveEqualsRunFilterTestName, testName);
+         if (doRunTest)
+         {
+            _console->NonMinimalWriteColor("|", Color::Green, zenUnitArgs.printMode);
+            _console->NonMinimalWrite(testName, zenUnitArgs.printMode);
+            test->NonMinimalWritePostTestNameMessage(_console.get(), zenUnitArgs.printMode);
+            const std::vector<TestResult> testResults = test->Run();
+            test->NonMinimalWritePostTestCompletionMessage(_console.get(), testResults[0], zenUnitArgs.printMode);
+            outTestClassResult->AddTestResults(testResults);
+         }
       }
 
       void NonMinimalPrintResultLine(const TestClassResult* testClassResult, PrintMode printMode) const

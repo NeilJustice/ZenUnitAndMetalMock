@@ -3,7 +3,7 @@
 #include "ZenUnitTests/Results/Mock/TestResultMock.h"
 #include "ZenUnitTests/Results/Mock/TestFailureNumbererMock.h"
 #include "ZenUnitTests/Results/Mock/TestClassResultMock.h"
-#include "ZenUnitTests/Testing/RandomPrintMode.h"
+#include "ZenUnitTests/Random/RandomPrintMode.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/MemberForEacherMock.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/ThreeArgForEacherMock.h"
 
@@ -247,7 +247,7 @@ TEST(NonMinimalPrintResultLine_0FailedTest_WritesOKInGreen)
    consoleMock.WriteMock.Expect();
    consoleMock.NonMinimalWriteColorMock.Expect();
    consoleMock.NonMinimalWriteNewLineMock.Expect();
-   const PrintMode printMode = RandomPrintMode();
+   const PrintMode printMode = Random<PrintMode>();
    //
    _testClassResultSelfMocked.NonMinimalPrintResultLine(&consoleMock, printMode);
    //
@@ -271,7 +271,7 @@ TEST1X1(NonMinimalPrintResultLine_1OrMoreFailedTests_WritesFailedInRed,
    ConsoleMock consoleMock;
    consoleMock.NonMinimalWriteColorMock.Expect();
    consoleMock.NonMinimalWriteNewLineMock.Expect();
-   const PrintMode printMode = RandomPrintMode();
+   const PrintMode printMode = Random<PrintMode>();
    _testClassResultSelfMocked.NonMinimalPrintResultLine(&consoleMock, printMode);
    //
    ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnce());

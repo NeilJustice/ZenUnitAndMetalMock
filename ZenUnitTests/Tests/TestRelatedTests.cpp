@@ -5,7 +5,7 @@
 
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestResultMock.h"
-#include "ZenUnitTests/Testing/RandomPrintMode.h"
+#include "ZenUnitTests/Random/RandomPrintMode.h"
 #include "ZenUnitTests/Tests/TestingTestClass.h"
 
 namespace ZenUnit
@@ -205,7 +205,7 @@ namespace ZenUnit
    {
       ConsoleMock consoleMock;
       consoleMock.NonMinimalWriteMock.Expect();
-      const PrintMode printMode = RandomPrintMode();
+      const PrintMode printMode = Random<PrintMode>();
       //
       _normalTest->NonMinimalWritePostTestNameMessage(&consoleMock, printMode);
       //
@@ -217,7 +217,7 @@ namespace ZenUnit
       ConsoleMock consoleMock;
       TestResultMock testResultMock;
       testResultMock.NonMinimalWriteLineOKIfSuccessMock.Expect();
-      const PrintMode printMode = RandomPrintMode();
+      const PrintMode printMode = Random<PrintMode>();
       //
       _normalTest->NonMinimalWritePostTestCompletionMessage(&consoleMock, testResultMock, printMode);
       //
@@ -489,7 +489,7 @@ namespace ZenUnit
 #include "pch.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestResultMock.h"
-#include "ZenUnitTests/Testing/RandomPrintMode.h"
+#include "ZenUnitTests/Random/RandomPrintMode.h"
 #include "ZenUnitTests/Tests/TestingTestClass.h"
 
 namespace ZenUnit
@@ -594,7 +594,7 @@ namespace ZenUnit
       const ZenUnitArgs zenUnitArgs = []
       {
          ZenUnitArgs zenUnitArgs;
-         zenUnitArgs.printMode = RandomPrintMode();
+         zenUnitArgs.printMode = Random<PrintMode>();
          return zenUnitArgs;
       }();
       GetArgs_ZenMock_SelfMocked.Return(zenUnitArgs);
@@ -715,7 +715,7 @@ namespace ZenUnit
       _consoleMock->NonMinimalWriteColorMock.Expect();
       _consoleMock->NonMinimalWriteMock.Expect();
       _consoleMock->NonMinimalWriteStringsCommaSeparatedMock.Expect();
-      const PrintMode printMode = RandomPrintMode();
+      const PrintMode printMode = Random<PrintMode>();
       vector<string> splitTestCaseArgs = { "Arg0", "Argument1" };
       //
       _testNXN->NonMinimalPrintTestCaseNumberArgsThenArrow(testCaseIndex, splitTestCaseArgs, printMode);
@@ -739,9 +739,7 @@ namespace ZenUnit
    {
       TestResultMock testResultMock;
       testResultMock.NonMinimalWriteLineOKIfSuccessMock.Expect();
-      const PrintMode printMode = static_cast<PrintMode>(Random<underlying_type_t<PrintMode>>(
-         static_cast<underlying_type_t<PrintMode>>(PrintMode::Unset),
-         static_cast<underlying_type_t<PrintMode>>(PrintMode::MaxValue)));
+      const PrintMode printMode = Random<PrintMode>();
       //
       _testNXN->NonMinimalWriteLineOKIfSuccess(testResultMock, printMode);
       //

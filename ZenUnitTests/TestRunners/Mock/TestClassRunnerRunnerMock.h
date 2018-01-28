@@ -1,6 +1,6 @@
 #pragma once
 
-struct MultiTestClassRunnerMock : public Zen::Mock<MultiTestClassRunner>
+struct TestClassRunnerRunnerMock : public Zen::Mock<TestClassRunnerRunner>
 {
    ZENMOCK_VOID1(AddTestClassRunner, TestClassRunner*)
    ZENMOCK_VOID1(ApplyRunFiltersIfAny, const vector<RunFilter>&)

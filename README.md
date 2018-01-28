@@ -2,26 +2,22 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true)](https://ci.appveyor.com/project/NeilJustice/zenunitzenmock)
 
 # ZenUnit
-ZenUnit is a single-header C++ unit testing framework with its signature feature being its syntax for specifying value-parameterized and type-parameterized tests.
+ZenUnit is a single-header C++ unit testing framework featuring assertions designed for robustness against code mutations and an intuitive syntax for specifying value-parameterized and type-parameterized tests.
 
 # ZenMock
-ZenMock is a single-header C++ mocking framework powered by ZenUnit with its signature feature being its intuitive arrange-act-assert syntax for confirming the correctness of interactions with virtual, template, static, and free functions.
+ZenMock is a single-header C++ mocking framework powered by ZenUnit featuring strict mocking for maximal testing rigor and an intuitive arrange-act-assert syntax for confirming the correctness of interactions with static, free, virtual, and template functions.
 
 ### ZenUnit Command Line Usage
 
 ```
-ZenUnit v0.1.0
+ZenUnit v0.2.0
 Usage: <TestsBinaryName> [Options...]
 
-Options:
-
-None
-   Run all non-skipped tests while printing detailed information.
-
-Output Options:
+Output Formatting Options:
 
 -minimal
    Print only preamble, any test failure details, and conclusion.
+   Default: Run all non-skipped tests while printing detailed information.
 
 Utility Options:
 
@@ -36,6 +32,8 @@ Utility Options:
 
 Test Filtration Options:
 
+-run=<TestClassNameA>[.TestNameA][,TestClassNameB[.TestNameB],...]
+   Run only specified case-insensitive test classes and/or tests.
 -failfast
    Immediately exit with exit code 1 if a test fails.
 

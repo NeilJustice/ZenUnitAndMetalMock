@@ -5,7 +5,7 @@
 
 namespace ZenUnit
 {
-   TESTS(StringUtilTests)
+   TESTS(StringTests)
    FACTS(Split_ReturnsExpected)
    AFACT(Concat_ConcatsValuesIntoString)
    FACTS(CommaSplitExceptQuotedCommas_ReturnsStringSplitOnCommasWithQuotedCommasIgnored)
@@ -130,7 +130,8 @@ namespace ZenUnit
       ARE_EQUAL(expectedReturnValue, returnValue);
    }
 
-   }; RUN_TESTS(StringUtilTests)
+   }; RUN_TESTS(StringTests)
+
 
    template<typename StringType>
    TEMPLATE_TESTS(StringUtilContainsTests, StringType)
