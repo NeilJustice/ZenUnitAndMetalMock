@@ -104,11 +104,11 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 |------------|
 |`TESTS(HighQualityTestClassName)`|
 |`TEMPLATE_TESTS(HighQualityTestClassName, TemplateParameterNames...)` // Precede with template\<parameter-list\>|
-|`SPEC(HighQualityTestName)` // Standard-issue void test|
-|`SPECX(HighQualityTestName)` // N-by-N value-parameterized test|
-|`SKIPSPEC(HighQualityTestName, Reason)`|
-|`SKIPSPECX(HighQualityTestName, Reason)`|
-|`SPECEND` // Ends the SPEC section and begins the TEST section|
+|`AFACT(HighQualityTestName)` // Specifies a standard-issue void test|
+|`FACTS(HighQualityTestName)` // Specifies an N-by-N value-parameterized test|
+|`SKIPAFACT(HighQualityTestName, Reason)`|
+|`SKIPFACTS(HighQualityTestName, Reason)`|
+|`EVIDENCE` // Ends the specification section and begins the evidence section|
 |`STARTUP` // Function run before each test|
 |`CLEANUP` // Function run after each test|
 |`TEST(HighQualityTestName)` // Standard-issue void test|
@@ -133,12 +133,12 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 
 |Data Structures|
 |---------------|
-|`IS_EMPTY(dataStructure, messages...)`|
 |`VECTORS_EQUAL(expectedVector, actualVector, messages...)`|
 |`MAPS_EQUAL(expectedMap, actualMap, messages...)`|
 |`PAIRS_EQUAL(expectedPair, actualPair, messages...)`|
 |`SETS_EQUAL(expectedSet, actualSet, messages...)`|
 |`DOES_CONTAIN(expectedElement, dataStructure, messages...)`|
+|`IS_EMPTY(dataStructure, messages...)`|
 
 |Exceptions|
 |----------|
@@ -166,12 +166,12 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 |`SETUP_EQUALIZER_THROWS_TEST(typeName)`|
 |`EQUALIZER_THROWS_FOR_FIELD(typeName, fieldName, arbitraryNonDefaultFieldValue)`|
 
-|Assertions Not Implemented By Design Due To Vulnerability to Code Mutations|Mutation Vulnerability|
-|---------------------------------------------------------------------------|----------------------|
+|Assertions Not Available In ZenUnit By Design Due To Vulnerability To Code Mutations|Mutation Vulnerability|
+|------------------------------------------------------------------------------------|----------------------|
 |`ARE_NOT_EQUAL(expected, actual)`|Value Replacement|
 |`STRING_CONTAINS(expectedSubstring, string)`|Value Replacement|
 |`REGEX_MATCHES(pattern, string)`|Value Replacement|
-|`THROWS_EXCEPTION(expression, expectedExceptionBaseClass)`|Exception Type Replacement and What Message Replacement|
+|`THROWS_EXCEPTION(expression, expectedExceptionBaseClass)`|Exception Type Replacement and what() Message Replacement|
 |`THROWS_ANY(expression)`|Exception Type Replacement|
 
 ### ZenUnit Equalizers
@@ -484,3 +484,11 @@ int main(int argc, char* argv[])
 |ZEN|
 |---|
 |`ZEN(ZenMockAssertion)` // ZEN adorns error messages with \_\_FILE\_\_ and \_\_LINE\_\_ information.|
+
+|The Road To ZenUnit 1.0.0|
+|-------------------------|
+|Test and test class timings|
+|TUPLES_EQUAL|
+|Floating point assertions|
+|-breakfast|
+|xUnit XML test results file writing for usability with Jenkins et al|
