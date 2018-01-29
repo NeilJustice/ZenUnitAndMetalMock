@@ -13,7 +13,7 @@ namespace ZenUnit
    AFACT(ToUnsigned_EmptyString_Throws)
    FACTS(ToUnsigned_StringNotConvertibleToUnsigned_Throws)
    FACTS(ToUnsigned_StringIsValueGreaterThanUnsignedMax_Throws)
-   FACTS(IgnoreCaseStrcmp_ReturnsCrossPlatformCaseInsensitiveStrcmpResult)
+   FACTS(CaseInsensitiveStrcmp_ReturnsCrossPlatformCaseInsensitiveStrcmpResult)
    EVIDENCE
 
    TEST3X3(Split_ReturnsExpected,
@@ -112,7 +112,7 @@ namespace ZenUnit
          + expectedGreaterThanUnsignedMaxValue + "\"");
    }
 
-   TEST3X3(IgnoreCaseStrcmp_ReturnsCrossPlatformCaseInsensitiveStrcmpResult,
+   TEST3X3(CaseInsensitiveStrcmp_ReturnsCrossPlatformCaseInsensitiveStrcmpResult,
       const char* string1, const char* string2, int expectedReturnValue,
       "", "", 0,
       "a", "b", -1,
@@ -126,7 +126,7 @@ namespace ZenUnit
       "hello hello", "Hello Hello", 0,
       "hello hello", "Hello Hello 123", -32)
    {
-      const int returnValue = String::IgnoreCaseStrcmp(string1, string2);
+      const int returnValue = String::CaseInsensitiveStrcmp(string1, string2);
       ARE_EQUAL(expectedReturnValue, returnValue);
    }
 

@@ -547,7 +547,31 @@ namespace ZenUnit
          return elements;
       }
 
-      static int IgnoreCaseStrcmp(const char* string1, const char* string2) noexcept
+      static bool CaseInsensitiveStartsWith(const char* str, const std::string& substring) noexcept
+      {
+         const size_t substringLength = substring.length();
+         if (substringLength > strlen(str))
+         {
+            return false;
+         }
+         for (size_t i = 0; i < substringLength; ++i)
+         {
+            const char strCharacter = str[i];
+            const char substringCharacter = substring[i];
+            if (strCharacter != substringCharacter)
+            {
+               const char lowercaseStrCharacter = _tolower(strCharacter);
+               const char lowerCaseSubstringCharacter = _tolower(substringCharacter);
+               if (lowercaseStrCharacter != lowerCaseSubstringCharacter)
+               {
+                  return false;
+               }
+            }
+         }
+         return true;
+      }
+
+      static int CaseInsensitiveStrcmp(const char* string1, const char* string2) noexcept
       {
 #if defined __linux__
          const int strcmpResult = strcasecmp(string1, string2);
@@ -1772,7 +1796,9 @@ Utility Options:
 Test Filtration Options:
 
 -run=<TestClassNameA>[.TestNameA][,TestClassNameB.TestNameB,...]
-   Run only specified case-insensitive test classes and/or tests.
+   Run only specified case-insensitive test class names and test names.
+   Add a '*' character at the end of the test class name filter
+   or test name filter to specify name-ends-with filtration.
 -failfast
    Immediately exit with exit code 1 if a test fails.
 
@@ -3759,16 +3785,28 @@ Testing Rigor Options:
       virtual size_t NumberOfTestCases() const = 0;
       virtual TestClassResult RunTests() = 0;
 
-      static bool TestNameCaseInsensitiveEqualsRunFilterTestName(
+      static bool TestNameCaseInsensitiveMatchesRunFilterTestName(
          const RunFilter& runFilter, const char* testName) noexcept
       {
          if (runFilter.testName.empty())
          {
             return true;
          }
-         if (String::IgnoreCaseStrcmp(testName, runFilter.testName.c_str()) == 0)
+         if (runFilter.testName.back() == '*')
          {
-            return true;
+            const std::string runFilterTestNameWithoutStarAtTheEnd(
+               runFilter.testName.c_str(), runFilter.testName.length() - 1);
+            if (String::CaseInsensitiveStartsWith(testName, runFilterTestNameWithoutStarAtTheEnd))
+            {
+               return true;
+            }
+         }
+         else
+         {
+            if (String::CaseInsensitiveStrcmp(testName, runFilter.testName.c_str()) == 0)
+            {
+               return true;
+            }
          }
          return false;
       }
@@ -3779,7 +3817,7 @@ Testing Rigor Options:
       {
          const char* leftTestClassName = leftTestClassRunner->TestClassName();
          const char* rightTestClassName = rightTestClassRunner->TestClassName();
-         const int caseInsensitiveComparisonResult = String::IgnoreCaseStrcmp(leftTestClassName, rightTestClassName);
+         const int caseInsensitiveComparisonResult = String::CaseInsensitiveStrcmp(leftTestClassName, rightTestClassName);
          const bool isLessThan = caseInsensitiveComparisonResult < 0;
          return isLessThan;
       }
@@ -3898,19 +3936,38 @@ Testing Rigor Options:
          std::unique_ptr<TestClassRunner>& testClassRunner, const std::vector<RunFilter>& runFilters)
       {
          const bool anyRunFilterMatchesTestClassName = _twoArgAnyer->TwoArgAny(
-            runFilters, TestClassNameMatchesRunFilter, &testClassRunner);
+            runFilters, TestClassNameCaseInsensitiveMatchesRunFilter, &testClassRunner);
          if (!anyRunFilterMatchesTestClassName)
          {
             testClassRunner = std::make_unique<NoOpTestClassRunner>();
          }
       }
 
-      static bool TestClassNameMatchesRunFilter(
+      static bool TestClassNameCaseInsensitiveMatchesRunFilter(
          const RunFilter& runFilter, const std::unique_ptr<TestClassRunner>* testClassRunner)
       {
          const char* const testClassName = (*testClassRunner)->TestClassName();
-         const bool testClassMatchesRunFilter = String::IgnoreCaseStrcmp(testClassName, runFilter.testClassName.c_str()) == 0;
-         return testClassMatchesRunFilter;
+         if (runFilter.testClassName.empty())
+         {
+            return true;
+         }
+         if (runFilter.testClassName.back() == '*')
+         {
+            const std::string runFilterTestNameWithoutStarAtTheEnd(
+               runFilter.testClassName.c_str(), runFilter.testClassName.length() - 1);
+            if (String::CaseInsensitiveStartsWith(testClassName, runFilterTestNameWithoutStarAtTheEnd))
+            {
+               return true;
+            }
+         }
+         else
+         {
+            if (String::CaseInsensitiveStrcmp(testClassName, runFilter.testClassName.c_str()) == 0)
+            {
+               return true;
+            }
+         }
+         return false;
       }
 
       static TestClassResult RunTestClassRunner(const std::unique_ptr<TestClassRunner>& testClassRunner)
@@ -4858,7 +4915,7 @@ Testing Rigor Options:
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          const char* const testName = test->Name();
          const bool doRunTest = zenUnitArgs.runFilters.empty() || pro_twoArgAnyer->TwoArgAny(
-            zenUnitArgs.runFilters, &TestClassRunner::TestNameCaseInsensitiveEqualsRunFilterTestName, testName);
+            zenUnitArgs.runFilters, &TestClassRunner::TestNameCaseInsensitiveMatchesRunFilterTestName, testName);
          if (doRunTest)
          {
             _console->NonMinimalWriteColor("|", Color::Green, zenUnitArgs.printMode);

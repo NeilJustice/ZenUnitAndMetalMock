@@ -50,7 +50,9 @@ Utility Options:
 Test Filtration Options:
 
 -run=<TestClassNameA>[.TestNameA][,TestClassNameB.TestNameB,...]
-   Run only specified case-insensitive test classes and/or tests.
+   Run only specified case-insensitive test class names and test names.
+   Add a '*' character at the end of the test class name filter
+   or test name filter to specify name-ends-with filtration.
 -failfast
    Immediately exit with exit code 1 if a test fails.
 

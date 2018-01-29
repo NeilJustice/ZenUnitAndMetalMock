@@ -52,7 +52,7 @@ AFACT(Test2)
 AFACT(Test3)
 EVIDENCE
 
-//ExceptionThrower et;
+ExceptionThrower et;
 
 TEST(Test1)
 {
@@ -61,23 +61,23 @@ TEST(Test1)
 
 TEST(Test2)
 {
-   //throw exception();
+   throw exception();
 }
 
 TEST(Test3)
 {
-   //struct X
-   //{
-   //   virtual void f() {}
-   //   virtual ~X() {}
-   //};
-   //struct XMock : public Zen::Mock<X>
-   //{
-   //   ZENMOCK_VOID0(f)
-   //};
-   //XMock xMock;
-   //xMock.fMock.Expect();
-   //xMock.fMock.Expect();
+   struct X
+   {
+      virtual void f() {}
+      virtual ~X() {}
+   };
+   struct XMock : public Zen::Mock<X>
+   {
+      ZENMOCK_VOID0(f)
+   };
+   XMock xMock;
+   xMock.fMock.Expect();
+   xMock.fMock.Expect();
 }
 
 }; SKIP_TESTS(AAATests, Reason)
