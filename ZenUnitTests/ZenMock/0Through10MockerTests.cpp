@@ -354,7 +354,8 @@ File.cpp(1))");
    TEST(CalledAsFollows_SetsAssertedTrue_ExpectedCallsSizeNon0AndNotEqualToActualCallsSize_Throws_DoesNotCopyTheExpectedArg)
    {
       IS_FALSE(_mocker->_asserted);
-      const vector<OneArgumentCallRef<int>> expectedOneArgumentCalls{ 0 };
+      const int zero = 0;
+      const vector<OneArgumentCallRef<int>> expectedOneArgumentCalls{ zero };
       //
       THROWS(_mocker->CalledAsFollows(expectedOneArgumentCalls), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature)
