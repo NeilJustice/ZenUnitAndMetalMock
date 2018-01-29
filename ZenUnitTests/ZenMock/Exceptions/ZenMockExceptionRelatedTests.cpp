@@ -15,9 +15,9 @@ ExceptionThrower _exceptionThrower;
 
 TEST(ExpectAndThrowCalledTwice_Throws)
 {
-   _exceptionThrower.ExpectAndThrow<runtime_error>("runtime_error_what");
-   THROWS(_exceptionThrower.ExpectAndThrow<runtime_error>("runtime_error_what"), logic_error,
-      "ExceptionThrower::ExpectAndThrow<T>() called twice");
+   _exceptionThrower.Throw<runtime_error>("runtime_error_what");
+   THROWS(_exceptionThrower.Throw<runtime_error>("runtime_error_what"), logic_error,
+      "ExceptionThrower::Throw<T>() called twice");
 }
 
 TEST(ZenMockThrowIfExceptionSet_ExpectAndThrowNotPreviouslyCalled_DoesNothing)
@@ -27,13 +27,13 @@ TEST(ZenMockThrowIfExceptionSet_ExpectAndThrowNotPreviouslyCalled_DoesNothing)
 
 TEST(ZenMockThrowIfExceptionSet_ExpectAndThrowPreviousCalled_ThrowsTheException_TestCaseRuntimeError)
 {
-   _exceptionThrower.ExpectAndThrow<runtime_error>("runtime_error_what");
+   _exceptionThrower.Throw<runtime_error>("runtime_error_what");
    THROWS(_exceptionThrower.ZenMockThrowIfExceptionSet(), runtime_error, "runtime_error_what");
 }
 
 TEST(ZenMockThrowIfExceptionSet_ExpectAndThrowPreviousCalled_ThrowsTheException_TestCaseLogicError)
 {
-   _exceptionThrower.ExpectAndThrow<logic_error>("logic_error_what");
+   _exceptionThrower.Throw<logic_error>("logic_error_what");
    THROWS(_exceptionThrower.ZenMockThrowIfExceptionSet(), logic_error, "logic_error_what");
 }
 

@@ -30,8 +30,8 @@ namespace ZenMock
 {
    TESTS(ZenMockerTests)
    AFACT(Constructor_SetsFields)
-   AFACT(ExpectAndThrow_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue_ThrowsIfCalledTwice_runtime_error_testcase)
-   AFACT(ExpectAndThrow_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue_ThrowsIfCalledTwice_CustomException_testcase)
+   AFACT(Throw_CallsExceptionThrowerThrow_SetsExpectedTrue_ThrowsIfCalledTwice_runtime_error_testcase)
+   AFACT(Throw_CallsExceptionThrowerThrow_SetsExpectedTrue_ThrowsIfCalledTwice_CustomException_testcase)
    AFACT(ZenMockSetAsserted_SetsAssertedTrue_CallableTwice)
    AFACT(ZenMockThrowIfNotExpected_ExpectedTrue_DoesNotThrow)
    AFACT(ZenMockThrowIfNotExpected_ExpectedFalse_Throws)
@@ -70,32 +70,32 @@ namespace ZenMock
       IS_FALSE(zenMocker._zenMockExceptionIsInFlight);
    }
 
-   TEST(ExpectAndThrow_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue_ThrowsIfCalledTwice_runtime_error_testcase)
+   TEST(Throw_CallsExceptionThrowerThrow_SetsExpectedTrue_ThrowsIfCalledTwice_runtime_error_testcase)
    {
       _zenMocker->_exceptionThrower.ExpectCallToExpectAndThrow();
       IS_FALSE(_zenMocker->_expected);
       const string what = Random<string>();
       //
-      _zenMocker->ExpectAndThrow<runtime_error>(what);
+      _zenMocker->Throw<runtime_error>(what);
       //
       _zenMocker->_exceptionThrower.AssertExpectAndThrowCalledOnceWith("std::runtime_error", 1, what);
       IS_TRUE(_zenMocker->_expected);
 
-      THROWS(_zenMocker->ExpectAndThrow<invalid_argument>(what), FunctionAlreadyExpectedException,
+      THROWS(_zenMocker->Throw<invalid_argument>(what), FunctionAlreadyExpectedException,
          FunctionAlreadyExpectedException::MakeWhat(ZenMockedFunctionSignature));
    }
 
-   TEST(ExpectAndThrow_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue_ThrowsIfCalledTwice_CustomException_testcase)
+   TEST(Throw_CallsExceptionThrowerThrow_SetsExpectedTrue_ThrowsIfCalledTwice_CustomException_testcase)
    {
       _zenMocker->_exceptionThrower.ExpectCallToExpectAndThrow();
       IS_FALSE(_zenMocker->_expected);
       //
-      _zenMocker->ExpectAndThrow<CustomException>(1, '2', 3.3);
+      _zenMocker->Throw<CustomException>(1, '2', 3.3);
       //
       _zenMocker->_exceptionThrower.AssertExpectAndThrowCalledOnceWith("CustomException", 3, "123.3");
       IS_TRUE(_zenMocker->_expected);
 
-      THROWS(_zenMocker->ExpectAndThrow<invalid_argument>("what"), FunctionAlreadyExpectedException,
+      THROWS(_zenMocker->Throw<invalid_argument>("what"), FunctionAlreadyExpectedException,
          FunctionAlreadyExpectedException::MakeWhat(ZenMockedFunctionSignature));
 
       CustomException customException(1, '2', 3.3); // 100% code coverage

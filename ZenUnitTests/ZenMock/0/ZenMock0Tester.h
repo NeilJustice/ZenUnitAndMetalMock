@@ -59,12 +59,12 @@ namespace ZenMock
       {
       }
 
-      void ExpectAndThrow_CalledTwice_Throws()
+      void Throw_CalledTwice_Throws()
       {
          auto test = [](auto& zenMockObject, const string& expectedFunctionSignature)
          {
-            zenMockObject.template ExpectAndThrow<exception>();
-            THROWS(zenMockObject.template ExpectAndThrow<exception>(), FunctionAlreadyExpectedException,
+            zenMockObject.template Throw<exception>();
+            THROWS(zenMockObject.template Throw<exception>(), FunctionAlreadyExpectedException,
                FunctionAlreadyExpectedException::MakeWhat(expectedFunctionSignature));
          };
          test(mock.VirtualMock, virtualFunctionSignature);
@@ -235,7 +235,7 @@ File.cpp(1))");
             UnexpectedCallException::MakeWhat(staticFunctionSignature));
       }
 
-      void ExpectAndThrow_ThenMockedFunction_ThrowsTheException()
+      void Throw_ThenMockedFunction_ThrowsTheException()
       {
          auto assertCalledOnceAndNTimesOnce = [](auto& zenMockObject)
          {
@@ -245,39 +245,39 @@ File.cpp(1))");
 
          const string What = "what";
 
-         mock.VirtualMock.template ExpectAndThrow<runtime_error>(What);
+         mock.VirtualMock.template Throw<runtime_error>(What);
          THROWS(mock.Virtual(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(mock.VirtualMock);
 
-         mock.VirtualConstMock.template ExpectAndThrow<runtime_error>(What);
+         mock.VirtualConstMock.template Throw<runtime_error>(What);
          THROWS(mock.VirtualConst(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(mock.VirtualConstMock);
 
-         mock.NonVirtualMock.template ExpectAndThrow<runtime_error>(What);
+         mock.NonVirtualMock.template Throw<runtime_error>(What);
          THROWS(mock.NonVirtual(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(mock.NonVirtualMock);
 
-         mock.NonVirtualConstMock.template ExpectAndThrow<runtime_error>(What);
+         mock.NonVirtualConstMock.template Throw<runtime_error>(What);
          THROWS(mock.NonVirtualConst(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(mock.NonVirtualConstMock);
 
          const function<void()> zenBoundFreeVoid0 = ZENMOCK_BIND0(freeMock);
-         freeMock.template ExpectAndThrow<runtime_error>(What);
+         freeMock.template Throw<runtime_error>(What);
          THROWS(zenBoundFreeVoid0(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(freeMock);
 
          const function<void()> zenBoundNamespaceVoid0 = ZENMOCK_BIND0(namespaceMock);
-         namespaceMock.template ExpectAndThrow<runtime_error>(What);
+         namespaceMock.template Throw<runtime_error>(What);
          THROWS(zenBoundNamespaceVoid0(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(namespaceMock);
 
          const function<void()> zenBoundStaticVoid0 = ZENMOCK_BIND0(staticNameClashMock);
-         staticNameClashMock.template ExpectAndThrow<runtime_error>(What);
+         staticNameClashMock.template Throw<runtime_error>(What);
          THROWS(zenBoundStaticVoid0(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(staticNameClashMock);
 
          const function<void()> zenBoundStatic = ZENMOCK_BIND0(staticMock);
-         staticMock.template ExpectAndThrow<runtime_error>(What);
+         staticMock.template Throw<runtime_error>(What);
          THROWS(zenBoundStatic(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(staticMock);
       }
@@ -319,11 +319,11 @@ namespace ZenMock
 
    TESTS(ZenMock_NonVoid0Tests)
    // ZeroArgumentMocker Tests
-   AFACT(ExpectAndThrow_CalledTwice_Throws)
+   AFACT(Throw_CalledTwice_Throws)
    AFACT(FunctionNotCalled_CalledAsFollowsWithN0_Throws)
    AFACT(FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows)
    AFACT(Function_NotExpected_Throws)
-   AFACT(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)
+   AFACT(Throw_ThenMockedFunction_ThrowsTheException)
    // Value Return Tests
    AFACT(Return_CausesFunctionToReturnValue)
    AFACT(ReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
@@ -388,9 +388,9 @@ namespace ZenMock
 
    // ZeroArgumentMocker Tests
 
-   TEST(ExpectAndThrow_CalledTwice_Throws)
+   TEST(Throw_CalledTwice_Throws)
    {
-      _zenMock0Tester->ExpectAndThrow_CalledTwice_Throws();
+      _zenMock0Tester->Throw_CalledTwice_Throws();
    }
 
    TEST(FunctionNotCalled_CalledAsFollowsWithN0_Throws)
@@ -408,9 +408,9 @@ namespace ZenMock
       _zenMock0Tester->Function_NotExpected_Throws();
    }
 
-   TEST(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)
+   TEST(Throw_ThenMockedFunction_ThrowsTheException)
    {
-      _zenMock0Tester->ExpectAndThrow_ThenMockedFunction_ThrowsTheException();
+      _zenMock0Tester->Throw_ThenMockedFunction_ThrowsTheException();
    }
 
    // Value Return Tests

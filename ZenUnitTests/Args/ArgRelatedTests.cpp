@@ -102,7 +102,7 @@ Testing Rigor Options:
       12)
    {
       _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
+      _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
       const vector<string> Args(numberOfArgs);
       //
       THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
@@ -118,7 +118,7 @@ Testing Rigor Options:
       "-testruns")
    {
       _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
+      _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
       const vector<string> Args{ TestProgramPath, invalidArg };
       //
       THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
@@ -133,7 +133,7 @@ Testing Rigor Options:
       "-help",
       "--help")
    {
-      _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
+      _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
       //
       THROWS(_argsParser.Parse({ TestProgramPath, helpArg }), WriteLineAndExitException, "");
       //
@@ -267,7 +267,7 @@ Testing Rigor Options:
       "-random===")
    {
       _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
+      _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
       const vector<string> Args{ TestProgramPath, arg };
       //
       THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
@@ -280,8 +280,8 @@ Testing Rigor Options:
    TEST(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
    {
       _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WriteLineAndExitMock.ExpectAndThrow<WriteLineAndExitException>();
-      ToUnsigned_ZenMock.ExpectAndThrow<invalid_argument>("");
+      _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
+      ToUnsigned_ZenMock.Throw<invalid_argument>("");
       const string InvalidTimesArg = "-testruns=-1_for_example";
       const vector<string> Args{ TestProgramPath, InvalidTimesArg };
       //

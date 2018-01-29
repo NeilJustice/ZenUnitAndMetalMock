@@ -32,11 +32,11 @@ namespace ZenMock
       }
 
       template<typename ExceptionType, typename... ExceptionArgTypes>
-      void ExpectAndThrow(ExceptionArgTypes&&... exceptionArgs)
+      void Throw(ExceptionArgTypes&&... exceptionArgs)
       {
          if (!expectCallToExpectAndThrow)
          {
-            throw runtime_error("Unexpected call to ExceptionThrowerMock::ExpectAndThrow()");
+            throw runtime_error("Unexpected call to ExceptionThrowerMock::Throw()");
          }
          assert_true(exceptionTypeName.empty());
          exceptionTypeName = *Type::GetName<ExceptionType>();

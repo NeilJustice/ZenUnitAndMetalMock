@@ -54,11 +54,11 @@ namespace ZenMock
       std::shared_ptr<const Throwable> _throwable;
    public:
       template<typename ExceptionType, typename... ExceptionArgTypes>
-      void ExpectAndThrow(ExceptionArgTypes&&... exceptionArgs)
+      void Throw(ExceptionArgTypes&&... exceptionArgs)
       {
          if (_throwable != nullptr)
          {
-            throw std::logic_error("ExceptionThrower::ExpectAndThrow<T>() called twice");
+            throw std::logic_error("ExceptionThrower::Throw<T>() called twice");
          }
          _throwable.reset(TemplateThrowable<ExceptionType>::New(
             std::forward<ExceptionArgTypes>(exceptionArgs)...));
@@ -310,14 +310,14 @@ must have their return value or values set explicitly by calling
       //ZenMocker& operator=(ZenMocker&&) = delete;
 
       template<typename ExceptionType, typename... ExceptionArgTypes>
-      void ExpectAndThrow(ExceptionArgTypes&&... exceptionArgs)
+      void Throw(ExceptionArgTypes&&... exceptionArgs)
       {
          if (_expected)
          {
             _zenMockExceptionIsInFlight = true;
             throw FunctionAlreadyExpectedException(ZenMockedFunctionSignature);
          }
-         _exceptionThrower.template ExpectAndThrow<ExceptionType>(
+         _exceptionThrower.template Throw<ExceptionType>(
             std::forward<ExceptionArgTypes>(exceptionArgs)...);
          _expected = true;
       }

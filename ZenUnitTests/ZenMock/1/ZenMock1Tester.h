@@ -61,12 +61,12 @@ namespace ZenMock
       {
       }
 
-      void ExpectAndThrow_CalledTwice_Throws()
+      void Throw_CalledTwice_Throws()
       {
          const auto test = [](auto& zenMockObject, const string& expectedSignature)
          {
-            zenMockObject.template ExpectAndThrow<exception>();
-            THROWS(zenMockObject.template ExpectAndThrow<exception>(), FunctionAlreadyExpectedException,
+            zenMockObject.template Throw<exception>();
+            THROWS(zenMockObject.template Throw<exception>(), FunctionAlreadyExpectedException,
                FunctionAlreadyExpectedException::MakeWhat(expectedSignature));
          };
          test(mock.VirtualMock, virtualSignature);
@@ -119,7 +119,7 @@ namespace ZenMock
       }
 
       const string What = "what";
-      void ExpectAndThrow_ThenFunction_ThrowsTheException()
+      void Throw_ThenFunction_ThrowsTheException()
       {
          const auto assertCalledOnce = [](auto& zenMockObject)
          {
@@ -127,39 +127,39 @@ namespace ZenMock
             zenMockObject.CalledNTimesWith(1, 0);
          };
 
-         mock.VirtualMock.template ExpectAndThrow<runtime_error>(What);
+         mock.VirtualMock.template Throw<runtime_error>(What);
          THROWS(mock.Virtual(0), runtime_error, What);
          assertCalledOnce(mock.VirtualMock);
 
-         mock.VirtualConstMock.template ExpectAndThrow<runtime_error>(What);
+         mock.VirtualConstMock.template Throw<runtime_error>(What);
          THROWS(mock.VirtualConst(0), runtime_error, What);
          assertCalledOnce(mock.VirtualConstMock);
 
-         mock.NonVirtualMock.template ExpectAndThrow<runtime_error>(What);
+         mock.NonVirtualMock.template Throw<runtime_error>(What);
          THROWS(mock.NonVirtual(0), runtime_error, What);
          assertCalledOnce(mock.NonVirtualMock);
 
-         mock.NonVirtualConstMock.template ExpectAndThrow<runtime_error>(What);
+         mock.NonVirtualConstMock.template Throw<runtime_error>(What);
          THROWS(mock.NonVirtualConst(0), runtime_error, What);
          assertCalledOnce(mock.NonVirtualConstMock);
 
          function<void(int)> zenBoundFreeVoid0 = ZENMOCK_BIND1(freeMock);
-         freeMock.template ExpectAndThrow<runtime_error>(What);
+         freeMock.template Throw<runtime_error>(What);
          THROWS(zenBoundFreeVoid0(0), runtime_error, What);
          assertCalledOnce(freeMock);
 
          function<void(int)> zenBoundNamespaceVoid0 = ZENMOCK_BIND1(namespaceMock);
-         namespaceMock.template ExpectAndThrow<runtime_error>(What);
+         namespaceMock.template Throw<runtime_error>(What);
          THROWS(zenBoundNamespaceVoid0(0), runtime_error, What);
          assertCalledOnce(namespaceMock);
 
          function<void(int)> zenBoundStatic = ZENMOCK_BIND1(staticMock);
-         staticMock.template ExpectAndThrow<runtime_error>(What);
+         staticMock.template Throw<runtime_error>(What);
          THROWS(zenBoundStatic(0), runtime_error, What);
          assertCalledOnce(staticMock);
 
          function<void(int)> zenBoundStaticVoid0 = ZENMOCK_BIND1(staticNameClashMock);
-         staticNameClashMock.template ExpectAndThrow<runtime_error>(What);
+         staticNameClashMock.template Throw<runtime_error>(What);
          THROWS(zenBoundStaticVoid0(0), runtime_error, What);
          assertCalledOnce(staticNameClashMock);
       }

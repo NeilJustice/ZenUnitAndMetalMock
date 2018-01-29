@@ -157,8 +157,8 @@ namespace ZenMock
    // Expect Tests
    AFACT(MockedFunction_NotExpected_Throws)
    AFACT(MockedFunction_Expected_DoesNotThrow)
-   AFACT(ExpectAndThrow_CalledTwice_Throws)
-   AFACT(ExpectAndThrow_ThenFunction_ThrowsTheException)
+   AFACT(Throw_CalledTwice_Throws)
+   AFACT(Throw_ThenFunction_ThrowsTheException)
    // Value Return Tests
    AFACT(Return_CausesFunctionToReturnValueThereafter)
    AFACT(ReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereafter)
@@ -241,14 +241,14 @@ namespace ZenMock
       _zenMock1Tester->MockedFunction_Expected_DoesNotThrow();
    }
 
-   TEST(ExpectAndThrow_CalledTwice_Throws)
+   TEST(Throw_CalledTwice_Throws)
    {
-      _zenMock1Tester->ExpectAndThrow_CalledTwice_Throws();
+      _zenMock1Tester->Throw_CalledTwice_Throws();
    }
 
-   TEST(ExpectAndThrow_ThenFunction_ThrowsTheException)
+   TEST(Throw_ThenFunction_ThrowsTheException)
    {
-      _zenMock1Tester->ExpectAndThrow_ThenFunction_ThrowsTheException();
+      _zenMock1Tester->Throw_ThenFunction_ThrowsTheException();
    }
 
    // Value Return Tests

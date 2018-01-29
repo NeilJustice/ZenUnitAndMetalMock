@@ -35,12 +35,12 @@ namespace ZenMock
 
    TESTS(ZenMock_Void0Tests)
    // ZeroArgumentMocker Tests
-   AFACT(ExpectAndThrow_CalledTwice_Throws)
+   AFACT(Throw_CalledTwice_Throws)
    AFACT(FunctionNotCalled_CalledAsFollowsWithN0_Throws)
    AFACT(FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows)
    AFACT(Function_NotExpected_Throws)
    AFACT(Function_Expected_DoesNotThrow_CalledAsFollowsOnceDoesNotThrow_CalledNTimes1DoesNotThrow)
-   AFACT(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)
+   AFACT(Throw_ThenMockedFunction_ThrowsTheException)
    // Void0 Tests
    AFACT(Expect_MakesFunctionCallNotThrow_DoesNotThrowIfExpectCalledTwice)
    EVIDENCE
@@ -98,9 +98,9 @@ namespace ZenMock
             ExpectedStaticFunctionNameClashSignature);
    }
 
-   TEST(ExpectAndThrow_CalledTwice_Throws)
+   TEST(Throw_CalledTwice_Throws)
    {
-      _zenMock0Tester->ExpectAndThrow_CalledTwice_Throws();
+      _zenMock0Tester->Throw_CalledTwice_Throws();
    }
 
    TEST(FunctionNotCalled_CalledAsFollowsWithN0_Throws)
@@ -123,9 +123,9 @@ namespace ZenMock
       _zenMock0Tester->Function_Expected_DoesNotThrow_CalledAsFollowsOnceDoesNotThrow_CalledNTimes1DoesNotThrow();
    }
 
-   TEST(ExpectAndThrow_ThenMockedFunction_ThrowsTheException)
+   TEST(Throw_ThenMockedFunction_ThrowsTheException)
    {
-      _zenMock0Tester->ExpectAndThrow_ThenMockedFunction_ThrowsTheException();
+      _zenMock0Tester->Throw_ThenMockedFunction_ThrowsTheException();
    }
 
    // Void0 Tests

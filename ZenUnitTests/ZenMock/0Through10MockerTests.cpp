@@ -5,8 +5,8 @@ namespace ZenMock
 {
    TESTS(ZeroArgumentMockerTests)
    AFACT(Constructor_SetsFields)
-   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
-   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(Throw_ExpectedTrue_Throws)
+   AFACT(Throw_ExpectedFalse_CallsExceptionThrowerThrow_SetsExpectedTrue)
    AFACT(ZenMockIt_ExpectedFalse_Throws)
    AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
 
@@ -35,19 +35,19 @@ namespace ZenMock
       IS_ZERO(mocker.actualNumberOfCalls);
    }
 
-   TEST(ExpectAndThrow_ExpectedTrue_Throws)
+   TEST(Throw_ExpectedTrue_Throws)
    {
       _mocker->_expected = true;
-      THROWS(_mocker->ExpectAndThrow<exception>(), FunctionAlreadyExpectedException,
+      THROWS(_mocker->Throw<exception>(), FunctionAlreadyExpectedException,
          FunctionAlreadyExpectedException::MakeWhat(_signature));
    }
 
-   TEST(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   TEST(Throw_ExpectedFalse_CallsExceptionThrowerThrow_SetsExpectedTrue)
    {
       IS_FALSE(_mocker->_expected);
       _mocker->_exceptionThrower.ExpectCallToExpectAndThrow();
       //
-      _mocker->ExpectAndThrow<TestingException>("argument", 100);
+      _mocker->Throw<TestingException>("argument", 100);
       //
       _mocker->_exceptionThrower.AssertExpectAndThrowCalledOnceWith(
          "ZenMock::TestingException", 2, "argument100");
@@ -143,8 +143,8 @@ File.cpp(1))");
 
    TESTS(OneArgumentMockerTests)
    AFACT(Constructor_SetsFields)
-   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
-   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(Throw_ExpectedTrue_Throws)
+   AFACT(Throw_ExpectedFalse_CallsExceptionThrowerThrow_SetsExpectedTrue)
    AFACT(ZenMockIt_ExpectedFalse_Throws)
    AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
 
@@ -183,19 +183,19 @@ File.cpp(1))");
       IS_EMPTY(mocker.callHistory);
    }
 
-   TEST(ExpectAndThrow_ExpectedTrue_Throws)
+   TEST(Throw_ExpectedTrue_Throws)
    {
       _mocker->_expected = true;
-      THROWS(_mocker->ExpectAndThrow<exception>(), FunctionAlreadyExpectedException,
+      THROWS(_mocker->Throw<exception>(), FunctionAlreadyExpectedException,
          FunctionAlreadyExpectedException::MakeWhat(_functionSignature));
    }
 
-   TEST(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   TEST(Throw_ExpectedFalse_CallsExceptionThrowerThrow_SetsExpectedTrue)
    {
       IS_FALSE(_mocker->_expected);
       _mocker->_exceptionThrower.ExpectCallToExpectAndThrow();
       //
-      _mocker->ExpectAndThrow<TestingException>("argument", 100);
+      _mocker->Throw<TestingException>("argument", 100);
       //
       _mocker->_exceptionThrower.
          AssertExpectAndThrowCalledOnceWith("ZenMock::TestingException", 2, "argument100");
@@ -420,8 +420,8 @@ File.cpp(1))");
 
    TESTS(TwoArgumentMockerTests)
    AFACT(Constructor_SetsFields)
-   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
-   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(Throw_ExpectedTrue_Throws)
+   AFACT(Throw_ExpectedFalse_CallsExceptionThrowerThrow_SetsExpectedTrue)
    AFACT(ZenMockIt_ExpectedFalse_Throws)
    AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
    EVIDENCE
@@ -451,19 +451,19 @@ File.cpp(1))");
       IS_EMPTY(mocker.callHistory);
    }
 
-   TEST(ExpectAndThrow_ExpectedTrue_Throws)
+   TEST(Throw_ExpectedTrue_Throws)
    {
       _mocker->_expected = true;
-      THROWS(_mocker->ExpectAndThrow<exception>(), FunctionAlreadyExpectedException,
+      THROWS(_mocker->Throw<exception>(), FunctionAlreadyExpectedException,
          FunctionAlreadyExpectedException::MakeWhat(_functionSignature));
    }
 
-   TEST(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   TEST(Throw_ExpectedFalse_CallsExceptionThrowerThrow_SetsExpectedTrue)
    {
       IS_FALSE(_mocker->_expected);
       _mocker->_exceptionThrower.ExpectCallToExpectAndThrow();
       //
-      _mocker->ExpectAndThrow<TestingException>("argument", 100);
+      _mocker->Throw<TestingException>("argument", 100);
       //
       _mocker->_exceptionThrower.
          AssertExpectAndThrowCalledOnceWith("ZenMock::TestingException", 2, "argument100");
@@ -502,8 +502,8 @@ File.cpp(1))");
 
    TESTS(ThreeArgumentMockerTests)
    AFACT(Constructor_SetsFields)
-   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
-   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(Throw_ExpectedTrue_Throws)
+   AFACT(Throw_ExpectedFalse_CallsExceptionThrowerThrow_SetsExpectedTrue)
    AFACT(ZenMockIt_ExpectedFalse_Throws)
    AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
    EVIDENCE
@@ -533,19 +533,19 @@ File.cpp(1))");
       IS_EMPTY(mocker.callHistory);
    }
 
-   TEST(ExpectAndThrow_ExpectedTrue_Throws)
+   TEST(Throw_ExpectedTrue_Throws)
    {
       _mocker->_expected = true;
-      THROWS(_mocker->ExpectAndThrow<exception>(), FunctionAlreadyExpectedException,
+      THROWS(_mocker->Throw<exception>(), FunctionAlreadyExpectedException,
          FunctionAlreadyExpectedException::MakeWhat(_signature));
    }
 
-   TEST(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   TEST(Throw_ExpectedFalse_CallsExceptionThrowerThrow_SetsExpectedTrue)
    {
       IS_FALSE(_mocker->_expected);
       _mocker->_exceptionThrower.ExpectCallToExpectAndThrow();
       //
-      _mocker->ExpectAndThrow<TestingException>("argument", 100);
+      _mocker->Throw<TestingException>("argument", 100);
       //
       _mocker->_exceptionThrower.
          AssertExpectAndThrowCalledOnceWith("ZenMock::TestingException", 2, "argument100");
@@ -584,8 +584,8 @@ File.cpp(1))");
 
    TESTS(FourArgumentMockerTests)
    AFACT(Constructor_SetsFields)
-   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
-   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(Throw_ExpectedTrue_Throws)
+   AFACT(Throw_ExpectedFalse_CallsExceptionThrowerThrow_SetsExpectedTrue)
    AFACT(ZenMockIt_ExpectedFalse_Throws)
    AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
    EVIDENCE
@@ -615,19 +615,19 @@ File.cpp(1))");
       IS_EMPTY(mocker.callHistory);
    }
 
-   TEST(ExpectAndThrow_ExpectedTrue_Throws)
+   TEST(Throw_ExpectedTrue_Throws)
    {
       _mocker->_expected = true;
-      THROWS(_mocker->ExpectAndThrow<exception>(), FunctionAlreadyExpectedException,
+      THROWS(_mocker->Throw<exception>(), FunctionAlreadyExpectedException,
          FunctionAlreadyExpectedException::MakeWhat(_signature));
    }
 
-   TEST(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   TEST(Throw_ExpectedFalse_CallsExceptionThrowerThrow_SetsExpectedTrue)
    {
       IS_FALSE(_mocker->_expected);
       _mocker->_exceptionThrower.ExpectCallToExpectAndThrow();
       //
-      _mocker->ExpectAndThrow<TestingException>("argument", 100);
+      _mocker->Throw<TestingException>("argument", 100);
       //
       _mocker->_exceptionThrower.
          AssertExpectAndThrowCalledOnceWith("ZenMock::TestingException", 2, "argument100");
@@ -666,8 +666,8 @@ File.cpp(1))");
 
    TESTS(FiveArgumentMockerTests)
    AFACT(Constructor_SetsFields)
-   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
-   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(Throw_ExpectedTrue_Throws)
+   AFACT(Throw_ExpectedFalse_CallsExceptionThrowerThrow_SetsExpectedTrue)
    AFACT(ZenMockIt_ExpectedFalse_Throws)
    AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
    EVIDENCE
@@ -697,19 +697,19 @@ File.cpp(1))");
       IS_EMPTY(mocker.callHistory);
    }
 
-   TEST(ExpectAndThrow_ExpectedTrue_Throws)
+   TEST(Throw_ExpectedTrue_Throws)
    {
       _mocker->_expected = true;
-      THROWS(_mocker->ExpectAndThrow<exception>(), FunctionAlreadyExpectedException,
+      THROWS(_mocker->Throw<exception>(), FunctionAlreadyExpectedException,
          FunctionAlreadyExpectedException::MakeWhat(_signature));
    }
 
-   TEST(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   TEST(Throw_ExpectedFalse_CallsExceptionThrowerThrow_SetsExpectedTrue)
    {
       IS_FALSE(_mocker->_expected);
       _mocker->_exceptionThrower.ExpectCallToExpectAndThrow();
       //
-      _mocker->ExpectAndThrow<TestingException>("argument", 100);
+      _mocker->Throw<TestingException>("argument", 100);
       //
       _mocker->_exceptionThrower.
          AssertExpectAndThrowCalledOnceWith("ZenMock::TestingException", 2, "argument100");
@@ -748,8 +748,8 @@ File.cpp(1))");
 
    TESTS(SixArgumentMockerTests)
    AFACT(Constructor_SetsFields)
-   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
-   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(Throw_ExpectedTrue_Throws)
+   AFACT(Throw_ExpectedFalse_CallsExceptionThrowerThrow_SetsExpectedTrue)
    AFACT(ZenMockIt_ExpectedFalse_Throws)
    AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
    EVIDENCE
@@ -779,19 +779,19 @@ File.cpp(1))");
       IS_EMPTY(mocker.callHistory);
    }
 
-   TEST(ExpectAndThrow_ExpectedTrue_Throws)
+   TEST(Throw_ExpectedTrue_Throws)
    {
       _mocker->_expected = true;
-      THROWS(_mocker->ExpectAndThrow<exception>(), FunctionAlreadyExpectedException,
+      THROWS(_mocker->Throw<exception>(), FunctionAlreadyExpectedException,
          FunctionAlreadyExpectedException::MakeWhat(_signature));
    }
 
-   TEST(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   TEST(Throw_ExpectedFalse_CallsExceptionThrowerThrow_SetsExpectedTrue)
    {
       IS_FALSE(_mocker->_expected);
       _mocker->_exceptionThrower.ExpectCallToExpectAndThrow();
       //
-      _mocker->ExpectAndThrow<TestingException>("argument", 100);
+      _mocker->Throw<TestingException>("argument", 100);
       //
       _mocker->_exceptionThrower.
          AssertExpectAndThrowCalledOnceWith("ZenMock::TestingException", 2, "argument100");
@@ -830,8 +830,8 @@ File.cpp(1))");
 
    TESTS(SevenArgumentMockerTests)
    AFACT(Constructor_SetsFields)
-   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
-   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(Throw_ExpectedTrue_Throws)
+   AFACT(Throw_ExpectedFalse_CallsExceptionThrowerThrow_SetsExpectedTrue)
    AFACT(ZenMockIt_ExpectedFalse_Throws)
    AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
    EVIDENCE
@@ -861,19 +861,19 @@ File.cpp(1))");
       IS_EMPTY(mocker.callHistory);
    }
 
-   TEST(ExpectAndThrow_ExpectedTrue_Throws)
+   TEST(Throw_ExpectedTrue_Throws)
    {
       _mocker->_expected = true;
-      THROWS(_mocker->ExpectAndThrow<exception>(), FunctionAlreadyExpectedException,
+      THROWS(_mocker->Throw<exception>(), FunctionAlreadyExpectedException,
          FunctionAlreadyExpectedException::MakeWhat(_signature));
    }
 
-   TEST(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   TEST(Throw_ExpectedFalse_CallsExceptionThrowerThrow_SetsExpectedTrue)
    {
       IS_FALSE(_mocker->_expected);
       _mocker->_exceptionThrower.ExpectCallToExpectAndThrow();
       //
-      _mocker->ExpectAndThrow<TestingException>("argument", 100);
+      _mocker->Throw<TestingException>("argument", 100);
       //
       _mocker->_exceptionThrower.
          AssertExpectAndThrowCalledOnceWith("ZenMock::TestingException", 2, "argument100");
@@ -912,8 +912,8 @@ File.cpp(1))");
 
    TESTS(EightArgumentMockerTests)
    AFACT(Constructor_SetsFields)
-   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
-   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(Throw_ExpectedTrue_Throws)
+   AFACT(Throw_ExpectedFalse_CallsExceptionThrowerThrow_SetsExpectedTrue)
    AFACT(ZenMockIt_ExpectedFalse_Throws)
    AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
    EVIDENCE
@@ -943,19 +943,19 @@ File.cpp(1))");
       IS_EMPTY(mocker.callHistory);
    }
 
-   TEST(ExpectAndThrow_ExpectedTrue_Throws)
+   TEST(Throw_ExpectedTrue_Throws)
    {
       _mocker->_expected = true;
-      THROWS(_mocker->ExpectAndThrow<exception>(), FunctionAlreadyExpectedException,
+      THROWS(_mocker->Throw<exception>(), FunctionAlreadyExpectedException,
          FunctionAlreadyExpectedException::MakeWhat(_signature));
    }
 
-   TEST(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   TEST(Throw_ExpectedFalse_CallsExceptionThrowerThrow_SetsExpectedTrue)
    {
       IS_FALSE(_mocker->_expected);
       _mocker->_exceptionThrower.ExpectCallToExpectAndThrow();
       //
-      _mocker->ExpectAndThrow<TestingException>("argument", 100);
+      _mocker->Throw<TestingException>("argument", 100);
       //
       _mocker->_exceptionThrower.
          AssertExpectAndThrowCalledOnceWith("ZenMock::TestingException", 2, "argument100");
@@ -994,8 +994,8 @@ File.cpp(1))");
 
    TESTS(NineArgumentMockerTests)
    AFACT(Constructor_SetsFields)
-   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
-   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(Throw_ExpectedTrue_Throws)
+   AFACT(Throw_ExpectedFalse_CallsExceptionThrowerThrow_SetsExpectedTrue)
    AFACT(ZenMockIt_ExpectedFalse_Throws)
    AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
    EVIDENCE
@@ -1025,19 +1025,19 @@ File.cpp(1))");
       IS_EMPTY(mocker.callHistory);
    }
 
-   TEST(ExpectAndThrow_ExpectedTrue_Throws)
+   TEST(Throw_ExpectedTrue_Throws)
    {
       _mocker->_expected = true;
-      THROWS(_mocker->ExpectAndThrow<exception>(), FunctionAlreadyExpectedException,
+      THROWS(_mocker->Throw<exception>(), FunctionAlreadyExpectedException,
          FunctionAlreadyExpectedException::MakeWhat(_signature));
    }
 
-   TEST(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   TEST(Throw_ExpectedFalse_CallsExceptionThrowerThrow_SetsExpectedTrue)
    {
       IS_FALSE(_mocker->_expected);
       _mocker->_exceptionThrower.ExpectCallToExpectAndThrow();
       //
-      _mocker->ExpectAndThrow<TestingException>("argument", 100);
+      _mocker->Throw<TestingException>("argument", 100);
       //
       _mocker->_exceptionThrower.
          AssertExpectAndThrowCalledOnceWith("ZenMock::TestingException", 2, "argument100");
@@ -1076,8 +1076,8 @@ File.cpp(1))");
 
    TESTS(TenArgumentMockerTests)
    AFACT(Constructor_SetsFields)
-   AFACT(ExpectAndThrow_ExpectedTrue_Throws)
-   AFACT(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   AFACT(Throw_ExpectedTrue_Throws)
+   AFACT(Throw_ExpectedFalse_CallsExceptionThrowerThrow_SetsExpectedTrue)
    AFACT(ZenMockIt_ExpectedFalse_Throws)
    AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
    EVIDENCE
@@ -1107,19 +1107,19 @@ File.cpp(1))");
       IS_EMPTY(mocker.callHistory);
    }
 
-   TEST(ExpectAndThrow_ExpectedTrue_Throws)
+   TEST(Throw_ExpectedTrue_Throws)
    {
       _mocker->_expected = true;
-      THROWS(_mocker->ExpectAndThrow<exception>(), FunctionAlreadyExpectedException,
+      THROWS(_mocker->Throw<exception>(), FunctionAlreadyExpectedException,
          FunctionAlreadyExpectedException::MakeWhat(_functionSignature));
    }
 
-   TEST(ExpectAndThrow_ExpectedFalse_CallsExceptionThrowerExpectAndThrow_SetsExpectedTrue)
+   TEST(Throw_ExpectedFalse_CallsExceptionThrowerThrow_SetsExpectedTrue)
    {
       IS_FALSE(_mocker->_expected);
       _mocker->_exceptionThrower.ExpectCallToExpectAndThrow();
       //
-      _mocker->ExpectAndThrow<TestingException>("argument", 100);
+      _mocker->Throw<TestingException>("argument", 100);
       //
       _mocker->_exceptionThrower.
          AssertExpectAndThrowCalledOnceWith("ZenMock::TestingException", 2, "argument100");
