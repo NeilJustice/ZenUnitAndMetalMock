@@ -60,7 +60,7 @@ before_script:
   - cmake -GNinja .. -Werror=dev -DCMAKE_CXX_COMPILER="$COMPILER" -DCMAKE_BUILD_TYPE="$CMAKE_BUILD_TYPE"
 
 script:
-  - ninja -v -j 1
+  - ninja -v
   - ./ZenUnitTests/ZenUnitTests
   - ./ExamplesTests/ExamplesTests
   - ./StaticLibraryTests/StaticLibraryTests
