@@ -468,36 +468,57 @@ static string ExpectedInvalidArgumentWhat(const string& invalidRunFilterString)
 TESTS(RunFilterTests)
 AFACT(DefaultConstructor_SetsTestCaseTo0)
 AFACT(ThreeArgumentConstructor_SetsFields)
+FACTS(StringMatchesFilter_ReturnsTrueIfStringCaseInsensitiveEqualsFilterString_OrIfFilterStringEndsInStar_ReturnsTrueIfStringCaseInsensitiveStartsWithFilterString)
 AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
 EVIDENCE
 
 TEST(DefaultConstructor_SetsTestCaseTo0)
 {
-RunFilter runFilter;
-ARE_EQUAL("", runFilter.testClassName);
-ARE_EQUAL("", runFilter.testName);
-ARE_EQUAL(0, runFilter.testCaseNumber);
+   RunFilter runFilter;
+   ARE_EQUAL("", runFilter.testClassName);
+   ARE_EQUAL("", runFilter.testName);
+   ARE_EQUAL(0, runFilter.testCaseNumber);
 }
 
 TEST(ThreeArgumentConstructor_SetsFields)
 {
-const string testClassName = ZenUnit::Random<string>();
-const string testName = ZenUnit::Random<string>();
-const unsigned testCaseNumber = ZenUnit::Random<unsigned>();
-//
-RunFilter runFilter(testClassName, testName, testCaseNumber);
-//
-ARE_EQUAL(testClassName, runFilter.testClassName);
-ARE_EQUAL(testName, runFilter.testName);
-ARE_EQUAL(testCaseNumber, runFilter.testCaseNumber);
+   const string testClassName = ZenUnit::Random<string>();
+   const string testName = ZenUnit::Random<string>();
+   const unsigned testCaseNumber = ZenUnit::Random<unsigned>();
+   //
+   RunFilter runFilter(testClassName, testName, testCaseNumber);
+   //
+   ARE_EQUAL(testClassName, runFilter.testClassName);
+   ARE_EQUAL(testName, runFilter.testName);
+   ARE_EQUAL(testCaseNumber, runFilter.testCaseNumber);
+}
+
+TEST3X3(StringMatchesFilter_ReturnsTrueIfStringCaseInsensitiveEqualsFilterString_OrIfFilterStringEndsInStar_ReturnsTrueIfStringCaseInsensitiveStartsWithFilterString,
+   const char* str, const string& filterString, bool expectedReturnValue,
+   "", "", true,
+   "Test", "", true,
+   "TestName", "TestName", true,
+   "TestName", "testname", true,
+   "Function_Scenario_ExpectedBehavior", "Function_", false,
+   "TestName", "Test", false,
+   "TestName", "test", false,
+   "", "*", true,
+   "Function_Scenario_ExpectedBehavior", "Function_*", true,
+   "Function_Scenario_ExpectedBehavior", "function_*", true,
+   "Function_Scenario_ExpectedBehavior", "function_*Scenario_ExpectedBehavior", false,
+   "Function_Scenario_ExpectedBehavior", "*_Scenario_ExpectedBehavior", false,
+   "Function_Scenario_ExpectedBehavior", "*", true)
+{
+   const bool stringMatchesFilter = RunFilter::StringMatchesFilter(str, filterString);
+   ARE_EQUAL(expectedReturnValue, stringMatchesFilter);
 }
 
 TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
 {
-SETUP_EQUALIZER_THROWS_TEST(RunFilter);
-EQUALIZER_THROWS_FOR_FIELD(RunFilter, testClassName, "testClassName");
-EQUALIZER_THROWS_FOR_FIELD(RunFilter, testName, "testName");
-EQUALIZER_THROWS_FOR_FIELD(RunFilter, testCaseNumber, 1);
+   SETUP_EQUALIZER_THROWS_TEST(RunFilter);
+   EQUALIZER_THROWS_FOR_FIELD(RunFilter, testClassName, "testClassName");
+   EQUALIZER_THROWS_FOR_FIELD(RunFilter, testName, "testName");
+   EQUALIZER_THROWS_FOR_FIELD(RunFilter, testCaseNumber, 1);
 }
 
 }; RUN_TESTS(RunFilterTests)

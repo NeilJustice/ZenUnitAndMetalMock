@@ -14,6 +14,7 @@ namespace ZenUnit
    FACTS(ToUnsigned_StringNotConvertibleToUnsigned_Throws)
    FACTS(ToUnsigned_StringIsValueGreaterThanUnsignedMax_Throws)
    FACTS(CaseInsensitiveStrcmp_ReturnsCrossPlatformCaseInsensitiveStrcmpResult)
+   FACTS(CaseInsensitiveStartsWith_ReturnsExpected)
    EVIDENCE
 
    TEST3X3(Split_ReturnsExpected,
@@ -128,6 +129,28 @@ namespace ZenUnit
    {
       const int returnValue = String::CaseInsensitiveStrcmp(string1, string2);
       ARE_EQUAL(expectedReturnValue, returnValue);
+   }
+
+   TEST3X3(CaseInsensitiveStartsWith_ReturnsExpected,
+      const char* str, const string& substring, bool expectedReturnValue,
+      "", "", true,
+      "a", "", true,
+      "a", "a", true,
+      "a", "A", true,
+      "A", "a", true,
+      "abc", "ab", true,
+      "abc", "AB", true,
+      "abc ", "abc", true,
+      "quick brown fox jumped", "QuiCk BroWN FOX", true,
+      "", "\t", false,
+      " ", "\t", false,
+      "", "a", false,
+      "a", "ab", false,
+      " abc", "abc", false,
+      "quick brown fox", "Quick Fox Brown", false)
+   {
+      const bool strDoesCaseInsensitiveStartWithSubstring = String::CaseInsensitiveStartsWith(str, substring);
+      ARE_EQUAL(expectedReturnValue, strDoesCaseInsensitiveStartWithSubstring);
    }
 
    }; RUN_TESTS(StringTests)

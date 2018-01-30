@@ -558,14 +558,15 @@ namespace ZenUnit
          {
             const char strCharacter = str[i];
             const char substringCharacter = substring[i];
-            if (strCharacter != substringCharacter)
+            if (strCharacter == substringCharacter)
             {
-               const char lowercaseStrCharacter = _tolower(strCharacter);
-               const char lowerCaseSubstringCharacter = _tolower(substringCharacter);
-               if (lowercaseStrCharacter != lowerCaseSubstringCharacter)
-               {
-                  return false;
-               }
+               continue;
+            }
+            const int lowercaseStrCharacter = tolower(strCharacter);
+            const int lowercaseSubstringCharacter = tolower(substringCharacter);
+            if (lowercaseStrCharacter != lowercaseSubstringCharacter)
+            {
+               return false;
             }
          }
          return true;
@@ -646,6 +647,31 @@ namespace ZenUnit
          , testName(testName)
          , testCaseNumber(testCaseNumber)
       {
+      }
+
+      static bool StringMatchesFilter(const char* str, const std::string& filterString)
+      {
+         if (filterString.empty())
+         {
+            return true;
+         }
+         if (filterString.back() == '*')
+         {
+            const std::string filterStringWithoutStarAtTheEnd(
+               filterString.c_str(), filterString.length() - 1);
+            if (String::CaseInsensitiveStartsWith(str, filterStringWithoutStarAtTheEnd))
+            {
+               return true;
+            }
+         }
+         else
+         {
+            if (String::CaseInsensitiveStrcmp(str, filterString.c_str()) == 0)
+            {
+               return true;
+            }
+         }
+         return false;
       }
    };
 
@@ -3688,7 +3714,7 @@ Testing Rigor Options:
 #endif
    };
 
-   template<typename T, typename ClassType, typename FunctionType, typename Arg2Type>
+   template<typename T, typename ClassType, typename MemberFunctionType, typename Arg2Type>
    class TwoArgMemberForEacher
    {
    public:
@@ -3700,47 +3726,51 @@ Testing Rigor Options:
       virtual ~TwoArgMemberForEacher() = default;
 
       virtual void TwoArgMemberForEach(
-         std::vector<T>* elements, ClassType* classPointer, FunctionType func, Arg2Type arg2) const
+         std::vector<T>* elements, ClassType* classPointer, MemberFunctionType memberFunction, Arg2Type arg2) const
       {
          const typename std::vector<T>::iterator elementsEnd = elements->end();
          for (typename std::vector<T>::iterator iter = elements->begin(); iter != elementsEnd; ++iter)
          {
             T& element = *iter;
-            (classPointer->*func)(element, arg2);
+            (classPointer->*memberFunction)(element, arg2);
          }
       }
 
       virtual void RandomTwoArgMemberForEach(
-         std::vector<T>* elements, ClassType* classPointer, FunctionType func, Arg2Type arg2, unsigned seed) const
+         std::vector<T>* elements, ClassType* classPointer, MemberFunctionType memberFunction, Arg2Type arg2, unsigned seed) const
       {
          std::shuffle(elements->begin(), elements->end(), std::default_random_engine(seed));
          const typename std::vector<T>::iterator elementsEnd = elements->end();
          for (typename std::vector<T>::iterator iter = elements->begin(); iter != elementsEnd; ++iter)
          {
             T& element = *iter;
-            (classPointer->*func)(element, arg2);
+            (classPointer->*memberFunction)(element, arg2);
          }
       }
    };
 
-   template<typename CollectionType, typename PredicateFunctionType, typename Arg2Type>
-   class TwoArgAnyer
+   template<typename CollectionType, typename ClassType, typename MemberPredicateType, typename Arg2Type>
+   class TwoArgMemberAnyer
    {
    public:
-      TwoArgAnyer() noexcept
+      TwoArgMemberAnyer() noexcept
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(TwoArgAnyer, default, default, default, default);
-      virtual ~TwoArgAnyer() = default;
+      //DEFINE_COPY_COPY_MOVE_MOVE(TwoArgMemberAnyer, default, default, default, default);
+      virtual ~TwoArgMemberAnyer() = default;
 
-      virtual bool TwoArgAny(const CollectionType& collection, PredicateFunctionType predicate, const Arg2Type& arg2) const
+      virtual bool TwoArgAny(
+         const CollectionType& collection,
+         const ClassType* classInstance,
+         MemberPredicateType memberPredicate,
+         const Arg2Type& arg2) const
       {
          const auto collectionConstEnd = collection.cend();
          for (auto iter = collection.cbegin(); iter != collectionConstEnd; ++iter)
          {
             const auto& element = *iter;
-            const bool elementMatchesPredicate = predicate(element, arg2);
+            const bool elementMatchesPredicate = (classInstance->*memberPredicate)(element, arg2);
             if (elementMatchesPredicate)
             {
                return true;
@@ -3771,10 +3801,14 @@ Testing Rigor Options:
    {
       friend class TestClassRunnerTests;
    protected:
-      std::unique_ptr<const TwoArgAnyer<std::vector<RunFilter>, bool(*)(const RunFilter&, const char*), const char*>> pro_twoArgAnyer;
+      using TwoArgMemberAnyerType = TwoArgMemberAnyer<
+         std::vector<RunFilter>, TestClassRunner, bool(TestClassRunner::*)(const RunFilter&, const char*) const, const char*>;
+      std::unique_ptr<const TwoArgMemberAnyerType> pro_twoArgMemberAnyer;
+      std::function<bool(const char*, const std::string&)> call_RunFilter_StringMatchesFilter;
    public:
       TestClassRunner() noexcept
-         : pro_twoArgAnyer(new TwoArgAnyer<std::vector<RunFilter>, bool(*)(const RunFilter&, const char*), const char*>)
+         : pro_twoArgMemberAnyer(new TwoArgMemberAnyerType)
+         , call_RunFilter_StringMatchesFilter(RunFilter::StringMatchesFilter)
       {
       }
 
@@ -3785,30 +3819,11 @@ Testing Rigor Options:
       virtual size_t NumberOfTestCases() const = 0;
       virtual TestClassResult RunTests() = 0;
 
-      static bool TestNameCaseInsensitiveMatchesRunFilterTestName(
-         const RunFilter& runFilter, const char* testName) noexcept
+      bool TestNameCaseInsensitiveMatchesRunFilterTestName(
+         const RunFilter& runFilter, const char* testName) const
       {
-         if (runFilter.testName.empty())
-         {
-            return true;
-         }
-         if (runFilter.testName.back() == '*')
-         {
-            const std::string runFilterTestNameWithoutStarAtTheEnd(
-               runFilter.testName.c_str(), runFilter.testName.length() - 1);
-            if (String::CaseInsensitiveStartsWith(testName, runFilterTestNameWithoutStarAtTheEnd))
-            {
-               return true;
-            }
-         }
-         else
-         {
-            if (String::CaseInsensitiveStrcmp(testName, runFilter.testName.c_str()) == 0)
-            {
-               return true;
-            }
-         }
-         return false;
+         bool testNameMatchesRunFilter = call_RunFilter_StringMatchesFilter(testName, runFilter.testName);
+         return testNameMatchesRunFilter;
       }
 
       friend bool operator<(
@@ -3853,23 +3868,26 @@ Testing Rigor Options:
          const std::vector<RunFilter>&>;
       std::unique_ptr<const TwoArgMemberForEacherType> _twoArgMemberForEacher;
 
-      using TwoArgAnyerType = TwoArgAnyer<
+      using TwoArgMemberAnyerType = TwoArgMemberAnyer<
          std::vector<RunFilter>,
-         bool(*)(const RunFilter&, const std::unique_ptr<TestClassRunner>*),
-         const std::unique_ptr<TestClassRunner>*>;
-      std::unique_ptr<const TwoArgAnyerType> _twoArgAnyer;
+         TestClassRunnerRunner,
+         bool(TestClassRunnerRunner::*)(const RunFilter&, const TestClassRunner*) const,
+         const TestClassRunner*>;
+      std::unique_ptr<const TwoArgMemberAnyerType> _twoArgMemberAnyer;
 
       std::unique_ptr<const Sorter<std::vector<std::unique_ptr<TestClassRunner>>>> _sorter;
       std::unique_ptr<const Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>> _transformer;
       std::unique_ptr<const Watch> _watch;
       std::vector<std::unique_ptr<TestClassRunner>> _testClassRunners;
+      std::function<bool(const char*, const std::string&)> call_RunFilter_StringMatchesFilter;
    public:
       TestClassRunnerRunner() noexcept
          : _twoArgMemberForEacher(std::make_unique<TwoArgMemberForEacherType>())
-         , _twoArgAnyer(std::make_unique<TwoArgAnyerType>())
+         , _twoArgMemberAnyer(std::make_unique<TwoArgMemberAnyerType>())
          , _sorter(std::make_unique<Sorter<std::vector<std::unique_ptr<TestClassRunner>>>>())
          , _transformer(std::make_unique<Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>>())
          , _watch(std::make_unique<Watch>())
+         , call_RunFilter_StringMatchesFilter(RunFilter::StringMatchesFilter)
       {
       }
 
@@ -3935,39 +3953,20 @@ Testing Rigor Options:
       void ResetTestClassRunnerWithNoOpIfNameDoesNotMatchRunFilter(
          std::unique_ptr<TestClassRunner>& testClassRunner, const std::vector<RunFilter>& runFilters)
       {
-         const bool anyRunFilterMatchesTestClassName = _twoArgAnyer->TwoArgAny(
-            runFilters, TestClassNameCaseInsensitiveMatchesRunFilter, &testClassRunner);
+         const bool anyRunFilterMatchesTestClassName = _twoArgMemberAnyer->TwoArgAny(
+            runFilters, this, &TestClassRunnerRunner::TestClassNameCaseInsensitiveMatchesRunFilter, testClassRunner.get());
          if (!anyRunFilterMatchesTestClassName)
          {
             testClassRunner = std::make_unique<NoOpTestClassRunner>();
          }
       }
 
-      static bool TestClassNameCaseInsensitiveMatchesRunFilter(
-         const RunFilter& runFilter, const std::unique_ptr<TestClassRunner>* testClassRunner)
+      bool TestClassNameCaseInsensitiveMatchesRunFilter(
+         const RunFilter& runFilter, const TestClassRunner* testClassRunner) const
       {
-         const char* const testClassName = (*testClassRunner)->TestClassName();
-         if (runFilter.testClassName.empty())
-         {
-            return true;
-         }
-         if (runFilter.testClassName.back() == '*')
-         {
-            const std::string runFilterTestNameWithoutStarAtTheEnd(
-               runFilter.testClassName.c_str(), runFilter.testClassName.length() - 1);
-            if (String::CaseInsensitiveStartsWith(testClassName, runFilterTestNameWithoutStarAtTheEnd))
-            {
-               return true;
-            }
-         }
-         else
-         {
-            if (String::CaseInsensitiveStrcmp(testClassName, runFilter.testClassName.c_str()) == 0)
-            {
-               return true;
-            }
-         }
-         return false;
+         const char* const testClassName = testClassRunner->TestClassName();
+         bool doesMatch = call_RunFilter_StringMatchesFilter(testClassName, runFilter.testClassName);
+         return doesMatch;
       }
 
       static TestClassResult RunTestClassRunner(const std::unique_ptr<TestClassRunner>& testClassRunner)
@@ -4914,8 +4913,8 @@ Testing Rigor Options:
       {
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          const char* const testName = test->Name();
-         const bool doRunTest = zenUnitArgs.runFilters.empty() || pro_twoArgAnyer->TwoArgAny(
-            zenUnitArgs.runFilters, &TestClassRunner::TestNameCaseInsensitiveMatchesRunFilterTestName, testName);
+         const bool doRunTest = zenUnitArgs.runFilters.empty() || pro_twoArgMemberAnyer->TwoArgAny(
+            zenUnitArgs.runFilters, this, &TestClassRunner::TestNameCaseInsensitiveMatchesRunFilterTestName, testName);
          if (doRunTest)
          {
             _console->NonMinimalWriteColor("|", Color::Green, zenUnitArgs.printMode);
