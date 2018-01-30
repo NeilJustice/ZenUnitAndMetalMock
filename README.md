@@ -5,7 +5,7 @@
 ZenUnit is a single-header C++ unit testing framework featuring assertions designed for robustness against code mutations and an intuitive syntax for specifying value-parameterized and type-parameterized tests.
 
 # ZenMock
-ZenMock is a single-header C++ mocking framework powered by ZenUnit featuring strict mocking for maximal testing rigor and an intuitive arrange-act-assert syntax for confirming the correctness of interactions with static, free, virtual, and template functions.
+ZenMock is a single-header C++ mocking framework powered by ZenUnit featuring strict mocking for maximal testing rigor and an intuitive arrange-act-assert syntax for confirming the correctness of calls to virtual, template, static, and free functions.
 
 ### ZenUnit Command Line Usage
 
@@ -33,9 +33,7 @@ Utility Options:
 Test Filtration Options:
 
 -run=<TestClassNameA>[.TestNameA][,TestClassNameB[.TestNameB],...]
-   Run only specified case-insensitive test class names and test names.
-   Add a '*' character at the end of the test class name filter
-   or test name filter to specify name-ends-with filtration.
+   Run only specified case-insensitive test classes and/or tests.
 -failfast
    Immediately exit with exit code 1 if a test fails.
 
@@ -98,17 +96,17 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 
 ![ZenUnit](Screenshots/ZenUnitFizzBuzz.png "ZenUnit")
 
-### ZenUnit Macros
+### ZenUnit Test Declaration Macros
 
 |Test Classes|
 |------------|
 |`TESTS(HighQualityTestClassName)`|
 |`TEMPLATE_TESTS(HighQualityTestClassName, TemplateParameterNames...)` // Precede with template\<parameter-list\>|
-|`AFACT(HighQualityTestName)` // Specifies a standard-issue void test|
-|`FACTS(HighQualityTestName)` // Specifies an N-by-N value-parameterized test|
-|`SKIPAFACT(HighQualityTestName, Reason)`|
-|`SKIPFACTS(HighQualityTestName, Reason)`|
-|`EVIDENCE` // Ends the specification section and begins the evidence section|
+|`SPEC(HighQualityTestName)` // Standard-issue void test|
+|`SPECX(HighQualityTestName)` // N-by-N value-parameterized test|
+|`SKIPSPEC(HighQualityTestName, Reason)`|
+|`SKIPSPECX(HighQualityTestName, Reason)`|
+|`SPECEND` // Ends the SPEC section and begins the TEST section|
 |`STARTUP` // Function run before each test|
 |`CLEANUP` // Function run after each test|
 |`TEST(HighQualityTestName)` // Standard-issue void test|
@@ -120,6 +118,8 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 |`RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)`|
 |`SKIP_TESTS(HighQualityTestClassName, Reason)`|
 |`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)`|
+
+### ZenUnit Value Assertion Macros
 
 |Values|
 |------|
@@ -133,12 +133,12 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 
 |Data Structures|
 |---------------|
+|`IS_EMPTY(dataStructure, messages...)`|
 |`VECTORS_EQUAL(expectedVector, actualVector, messages...)`|
 |`MAPS_EQUAL(expectedMap, actualMap, messages...)`|
 |`PAIRS_EQUAL(expectedPair, actualPair, messages...)`|
 |`SETS_EQUAL(expectedSet, actualSet, messages...)`|
 |`DOES_CONTAIN(expectedElement, dataStructure, messages...)`|
-|`IS_EMPTY(dataStructure, messages...)`|
 
 |Exceptions|
 |----------|
@@ -166,19 +166,19 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 |`SETUP_EQUALIZER_THROWS_TEST(typeName)`|
 |`EQUALIZER_THROWS_FOR_FIELD(typeName, fieldName, arbitraryNonDefaultFieldValue)`|
 
-|Assertions Not Available In ZenUnit By Design Due To Vulnerability To Code Mutations|Mutation Vulnerability|
-|------------------------------------------------------------------------------------|----------------------|
+|Assertions Not Implemented By Design Due To Vulnerability to Code Mutations|Mutation Vulnerability|
+|---------------------------------------------------------------------------|----------------------|
 |`ARE_NOT_EQUAL(expected, actual)`|Value Replacement|
 |`STRING_CONTAINS(expectedSubstring, string)`|Value Replacement|
 |`REGEX_MATCHES(pattern, string)`|Value Replacement|
-|`THROWS_EXCEPTION(expression, expectedExceptionBaseClass)`|Exception Type Replacement and what() Message Replacement|
+|`THROWS_EXCEPTION(expression, expectedExceptionBaseClass)`|Exception Type Replacement and What Message Replacement|
 |`THROWS_ANY(expression)`|Exception Type Replacement|
 
 ### ZenUnit Equalizers
 
 ZenUnit has the concept of an Equalizer for asserting that two values or class instances are equal.
 
-`ARE_EQUAL(expected, actual)` is defined as follows:
+`ARE_EQUAL(expected, actual)` is defined in terms of a call to a ZenUnit Equalizer:
 
 ```cpp
 using DecayedExpectedType = typename std::decay<ExpectedType>::type;
@@ -190,9 +190,9 @@ std::conditional<std::is_same<DecayedExpectedType, DecayedActualType>::value,
 ```
 When the types of `expected` and `actual` are equal, as is the case most of the time, `ARE_EQUAL` calls `ZenUnit::Equalizer<DecayedExpectedType>::AssertEqual(expected, actual)`, which by default is defined as expected == actual.
 
-Should you be interested in `ARE_EQUAL(expectedObject, actualObject)` performing field-by-field equality assertions on the fields of type T instead of calling all-or-nothing `operator==`, define a specialization of `ZenUnit::Equalizer\<T\>` with a static `AssertEqual(const T& expected, const T& actual)` function that performs `ARE_EQUAL` assertions on each field of type T.
+Should you be interested in statement `ARE_EQUAL(expectedObject, actualObject)` performing field-by-field equality assertions instead of calling `operator==`, a `struct ZenUnit::Equalizer\<T\>` specialization can be defined in namespace ZenUnit with a static `void AssertEqual(const T& expected, const T& actual)` function that performs `ARE_EQUAL` assertions on each field of type T.
 
-Example:
+Example of a custom ZenUnit Equalizer:
 
 ```cpp
 namespace ZenUnit
@@ -212,7 +212,7 @@ namespace ZenUnit
 }
 ```
 
-### ZenUnit Type-Parameterized Test Classes
+### ZenUnit Type-Parameterized Test Class Syntax
 
 ```cpp
 #include "ZenUnit/ZenUnit.h"
@@ -269,7 +269,7 @@ int main(int argc, char* argv[])
 
 ![ZenUnit](Screenshots/ZenUnitTypeParameterizedTestClass.png "ZenUnit Type-Parameterized Test Class Imagery")
 
-### ZenMock Syntax
+### ZenMock Virtual Function Mocking Syntax
 
 ```Cpp
 #include "ZenUnit/ZenMock.h" // Single ZenMock header
@@ -347,16 +347,17 @@ TEST3X3(InteractWithComponentA_CallsEveryFunction_ReturnsSumOfReturnValues,
    0, -10, 10,
    -1, std::numeric_limits<int>::min(), std::numeric_limits<int>::max())
 {
-   // For imperviousness to extraneous-call code mutations
+   // For general programming rigorousness and especially for
+   // imperviousness to extraneous-call code mutations
    // capable of being automatically introduced by future LLVM-powered
-   // mutation testing frameworks, ZenMock is a strict mocking framework.
-   // Because of this strict mocking design, ZenMock mock objects must be
-   // explicitly expected before being called by calling
-   // Expect(), ExpectAndReturn(), ExpectAndReturnValues(), or ExpectAndThrow<T>().
+   // mutation testing frameworks, ZenMock employs strict mocking.
+   // Strict mocking requires that mocked-out functions be explicitly
+   // expected before they are called, which in ZenMock is
+   // accomplished by calling Expect(), Return(), ReturnValues(), or Throw<T>().
    _componentAMock->VirtualVoidMock.Expect();
    _componentAMock->VirtualVoidConstTwoArgsMock.Expect();
-   _componentAMock->VirtualNonVoidMock.ExpectAndReturn(returnValueA);
-   _componentAMock->VirtualNonVoidConstMock.ExpectAndReturn(returnValueB);
+   _componentAMock->VirtualNonVoidMock.Return(returnValueA);
+   _componentAMock->VirtualNonVoidConstMock.Return(returnValueB);
    //
    int returnValue = _classUnderTest.InteractWithComponentA();
    //
@@ -365,10 +366,10 @@ TEST3X3(InteractWithComponentA_CallsEveryFunction_ReturnsSumOfReturnValues,
    // The ZEN macro provides __FILE__ and __LINE__ information in
    // error messages for the case when a ZenMocked function is called differently
    // from how it is asserted to have been called.
-   ZEN(_componentAMock->VirtualVoidMock.AssertCalledOnce());
-   ZEN(_componentAMock->VirtualVoidConstTwoArgsMock.AssertCalledOnceWith(333, 107));
-   ZEN(_componentAMock->VirtualNonVoidMock.AssertCalledOnce());
-   ZEN(_componentAMock->VirtualNonVoidConstMock.AssertCalledOnce());
+   ZEN(_componentAMock->VirtualVoidMock.CalledOnce());
+   ZEN(_componentAMock->VirtualVoidConstTwoArgsMock.CalledOnceWith(333, 107));
+   ZEN(_componentAMock->VirtualNonVoidMock.CalledOnce());
+   ZEN(_componentAMock->VirtualNonVoidConstMock.CalledOnce());
    ARE_EQUAL(expectedReturnValue, returnValue);
 }
 
@@ -380,115 +381,127 @@ int main(int argc, char* argv[])
 }
 ```
 
-### ZenMock Imagery
+### ZenUnit Imagery When Running The Above ZenMock-Using Unit Test
 
 ![ZenMock Imagery](Screenshots/ZenMockExampleTests.png "ZenMock Imagery")
 
-### ZenMock Function Mocking Macros
+### ZenMock Virtual Function Mocking Macros
 
 |Virtual Void Functions|
 |----------------------|
 |`ZENMOCK_VOID0(functionName)`|
 |`ZENMOCK_VOID1(functionName, arg1Type, ...)` // The ... is for mocking overloaded functions. Specify ... as an overload-disambiguating arbitrary suffix such as "_int" and "_string" without the quotes when mocking virtual void Function(int) and virtual void Function(const std::string&) to yield ZenMock mock objects named FunctionMock_int and FunctionMock_string.|
+|...|
 |`ZENMOCK_VOID10(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
 
 |Virtual Const Void Functions|
 |----------------------------|
 |`ZENMOCK_VOID0_CONST(functionName)`|
 |`ZENMOCK_VOID1_CONST(functionName, arg1Type, ...)`|
+|...|
 |`ZENMOCK_VOID10_CONST(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
 
 |Virtual Non-Void Functions|
 |--------------------------|
 |`ZENMOCK_NONVOID0(returnType, functionName)`|
 |`ZENMOCK_NONVOID1(returnType, functionName, arg1Type, ...)`|
+|...|
 |`ZENMOCK_VOID10_NONVIRTUAL(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
 
 |Virtual Const Non-Void Functions|
 |--------------------------------|
 |`ZENMOCK_NONVOID0_CONST(returnType, functionName)`|
 |`ZENMOCK_NONVOID1_CONST(returnType, functionName, arg1Type, ...)`|
+|...|
 |`ZENMOCK_NONVOID10(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
+
+### ZenMock Template Function Mocking Macros
 
 |Non-Virtual Void Functions|
 |--------------------------|
 |`ZENMOCK_VOID0_NONVIRTUAL(functionName)`|
 |`ZENMOCK_VOID1_NONVIRTUAL(functionName, arg1Type, ...)`|
-|`ZENMOCK_VOID2_NONVIRTUAL(functionName, arg1Type, arg2Type, ...)`|
+|...|
 |`ZENMOCK_NONVOID10_NONVIRTUAL(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
 
 |Non-Virtual Const Void Functions|
 |--------------------------------|
 |`ZENMOCK_VOID0_CONST_NONVIRTUAL(functionName)`|
 |`ZENMOCK_VOID1_CONST_NONVIRTUAL(functionName, arg1Type, ...)`|
+|...|
 |`ZENMOCK_VOID10_CONST_NONVIRTUAL(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
 
 |Non-Virtual Non-Void Functions|
 |------------------------------|
 |`ZENMOCK_NONVOID0_NONVIRTUAL(returnType, functionName)`|
 |`ZENMOCK_NONVOID1_NONVIRTUAL(returnType, functionName, arg1Type, ...)`|
+|...|
 |`ZENMOCK_NONVOID10_NONVIRTUAL(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
 
 |Non-Virtual Const Non-Void Functions|
 |------------------------------------|
 |`ZENMOCK_NONVOID0_CONST_NONVIRTUAL(returnType, functionName)`|
 |`ZENMOCK_NONVOID1_CONST_NONVIRTUAL(returnType, functionName, arg1Type, ...)`|
+|...|
 |`ZENMOCK_NONVOID10_CONST_NONVIRTUAL(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
 
-|Free Void Functions|
-|-------------------|
-|`ZENMOCK_VOID0_FREE(functionName)`|
-|`ZENMOCK_VOID1_FREE(functionName, arg1Type, ...)`|
-|`ZENMOCK_VOID10_FREE(freeFunctionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
-
-|Free Non-Void Functions|
-|-----------------------|
-|`ZENMOCK_NONVOID0_FREE(returnType, functionName)`|
-|`ZENMOCK_NONVOID1_FREE(returnType, functionName, arg1Type, ...)`|
-|`ZENMOCK_NONVOID10_FREE(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
+### ZenMock Static Function Mocking Macros
 
 |Static and Namespaced Void Functions|
 |------------------------------------|
 |`ZENMOCK_VOID0_STATIC(qualifiedClassNameOrNamespace, functionName, ...)`|
 |`ZENMOCK_VOID1_STATIC(qualifiedClassNameOrNamespace, functionName, arg1Type, ...)`|
+|...|
 |`ZENMOCK_VOID10_STATIC(qualifiedClassNameOrNamespace, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
 
 |Static and Namespaced Non-Void Functions|
 |----------------------------------------|
 |`ZENMOCK_NONVOID0_STATIC(returnType, qualifiedClassNameOrNamespace, functionName, ...)`|
 |`ZENMOCK_NONVOID1_STATIC(returnType, qualifiedClassNameOrNamespace, functionName, arg1Type, ...)`|
+|...|
 |`ZENMOCK_NONVOID10_STATIC(returnType, qualifiedClassNameOrNamespace, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
+
+### ZenMock Free Function Mocking Macros
+
+|Free Void Functions|
+|-------------------|
+|`ZENMOCK_VOID0_FREE(functionName)`|
+|`ZENMOCK_VOID1_FREE(functionName, arg1Type, ...)`|
+|...|
+|`ZENMOCK_VOID10_FREE(freeFunctionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
+
+|Free Non-Void Functions|
+|-----------------------|
+|`ZENMOCK_NONVOID0_FREE(returnType, functionName)`|
+|`ZENMOCK_NONVOID1_FREE(returnType, functionName, arg1Type, ...)`|
+|...|
+|`ZENMOCK_NONVOID10_FREE(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
+
+### ZENMOCK_BIND Macros For Binding std::functions To ZenMock Objects
 
 |ZENMOCK_BIND For Mocking Free and Static Functions|
 |--------------------------------------------------|
 |`ZENMOCK_BIND0(FunctionName_ZenMock)`|
 |`ZENMOCK_BIND1(FunctionName_ZenMock)`|
+|...|
 |`ZENMOCK_BIND10(FunctionName_ZenMock)`|
 
-|ZenMock Object Expectation Functions|
-|------------------------------------|
-|`FunctionMock.Expect()`|
-|`FunctionMock.ExpectAndReturn(returnValue)`|
-|`FunctionMock.ExpectAndReturnValues(returnValues...)`|
-|`FunctionMock.ExpectAndReturnValues(const vector<T>& returnValues)`|
-|`FunctionMock.ExpectAndThrow<ExceptionTypes>(ExceptionArgs&&...)`|
+|ZenMock Function Call Expectation Functions|
+|-------------------------------------------|
+|`zenMockObject.Expect()`|
+|`zenMockObject.Return(returnValue)`|
+|`zenMockObject.ReturnValues(returnValues...)`|
+|`zenMockObject.ReturnValues(const vector<T>& returnValues)`|
+|`zenMockObject.Throw<ExceptionTypes>(ExceptionArgs&&...)`|
 
-|ZenMock Object Assertion Functions|
-|----------------------------------|
-|`FunctionMock.AssertCalledOnce()`|
-|`FunctionMock.AssertCalledOnceWith(expectedArguments...)`|
-|`FunctionMock.AssertCalledNTimes(n)`|
-|`FunctionMock.AssertCalledNTimesWith(n, expectedArguments...)`|
-|`FunctionMock.AssertCalls(expectedCallsVectors)`|
+|ZenMock Function Call Assertion Functions|
+|-----------------------------------------|
+|`zenMockObject.CalledOnce()`|
+|`zenMockObject.CalledOnceWith(expectedArguments...)`|
+|`zenMockObject.CalledNTimes(n)`|
+|`zenMockObject.CalledNTimesWith(n, expectedArguments...)`|
+|`zenMockObject.CalledAsFollows(expectedCalls)`|
 
 |ZEN|
 |---|
-|`ZEN(ZenMockAssertion)` // ZEN adorns error messages with \_\_FILE\_\_ and \_\_LINE\_\_ information.|
-
-|The Road To ZenUnit 1.0.0|
-|-------------------------|
-|Test and test class timings|
-|TUPLES_EQUAL|
-|Floating point assertions|
-|-breakfast|
-|xUnit XML test results file writing for usability with Jenkins et al|
+|`ZEN(ZenMockAssertStatement)` // ZEN adorns error messages with \_\_FILE\_\_ and \_\_LINE\_\_ information.|
