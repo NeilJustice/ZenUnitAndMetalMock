@@ -224,6 +224,8 @@ must have their return value or values set explicitly by calling
       // deque here instead of vector due to implementation of vector<bool>
       std::deque<DecayedFunctionReturnType> _returnValues;
       size_t _returnValueIndex;
+   protected:
+      using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    public:
       explicit ValueReturner(std::string zenMockedFunctionSignature)
          : _zenMockedFunctionSignature(std::move(zenMockedFunctionSignature))
@@ -257,6 +259,13 @@ must have their return value or values set explicitly by calling
                "ZenMock::ValueReturner::ZenMockAddContainerReturnValues(): Return values container cannot be empty.");
          }
          _returnValues.insert(_returnValues.end(), returnValues.cbegin(), returnValues.cend());
+      }
+
+      DecayedFunctionReturnType ZenMockAddRandomReturnValue()
+      {
+         const DecayedFunctionReturnType randomReturnValue = ZenUnit::Random<DecayedFunctionReturnType>();
+         _returnValues.emplace_back(randomReturnValue);
+         return randomReturnValue;
       }
 
       const DecayedFunctionReturnType& ZenMockNextReturnValue()
@@ -375,7 +384,7 @@ must have their return value or values set explicitly by calling
 ============================================
 Expected-But-Not-Asserted ZenMocked Function
 ============================================)", ZenUnit::Color::Red);
-            console.WriteLine(ZenMockedFunctionSignature);
+            console.WriteLineColor(ZenMockedFunctionSignature, ZenUnit::Color::Teal);
             console.WriteLine(R"(
 Fix for this: Add a call to one of the following ZenMock assert statements:
 CalledOnce(), CalledOnceWith(), CalledNTimes(), CalledNTimesWith(), or CalledAsFollows().
@@ -548,6 +557,13 @@ struct ZenMock_##functionName : public ZenMock::NonVoidZeroArgumentMocker<return
       {
          ZeroArgumentMocker<ExceptionThrower>::_expected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
+      }
+
+      DecayedFunctionReturnType ReturnRandom()
+      {
+         ZeroArgumentMocker<ExceptionThrower>::_expected = true;
+         const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::ZenMockAddRandomReturnValue();
+         return randomReturnValue;
       }
 
       const FunctionReturnType& ZenMockItAndReturnValue()
@@ -818,6 +834,13 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidOneArgumentM
       {
          OneArgumentMocker<ArgType>::_expected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
+      }
+
+      DecayedFunctionReturnType ReturnRandom()
+      {
+         OneArgumentMocker<ArgType>::_expected = true;
+         const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::ZenMockAddRandomReturnValue();
+         return randomReturnValue;
       }
 
       const FunctionReturnType& ZenMockItAndReturnValue(ArgType argument)
@@ -1097,6 +1120,13 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidTwoArgumentM
       {
          TwoArgumentMocker<Arg1Type, Arg2Type>::_expected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
+      }
+
+      DecayedFunctionReturnType ReturnRandom()
+      {
+         TwoArgumentMocker<Arg1Type, Arg2Type>::_expected = true;
+         const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::ZenMockAddRandomReturnValue();
+         return randomReturnValue;
       }
 
       const FunctionReturnType& ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument)
@@ -1391,6 +1421,13 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidThreeArgumen
       {
          ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::_expected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
+      }
+
+      DecayedFunctionReturnType ReturnRandom()
+      {
+         ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::_expected = true;
+         const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::ZenMockAddRandomReturnValue();
+         return randomReturnValue;
       }
 
       const FunctionReturnType& ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument)
@@ -1700,6 +1737,13 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidFourArgument
       {
          FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::_expected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
+      }
+
+      DecayedFunctionReturnType ReturnRandom()
+      {
+         FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::_expected = true;
+         const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::ZenMockAddRandomReturnValue();
+         return randomReturnValue;
       }
 
       const FunctionReturnType& ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument)
@@ -2031,6 +2075,13 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidFiveArgument
       {
          FiveArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::_expected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
+      }
+
+      DecayedFunctionReturnType ReturnRandom()
+      {
+         FiveArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::_expected = true;
+         const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::ZenMockAddRandomReturnValue();
+         return randomReturnValue;
       }
 
       const FunctionReturnType& ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument)
@@ -2376,6 +2427,13 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidSixArgumentM
       {
          SixArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::_expected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
+      }
+
+      DecayedFunctionReturnType ReturnRandom()
+      {
+         SixArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::_expected = true;
+         const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::ZenMockAddRandomReturnValue();
+         return randomReturnValue;
       }
 
       const FunctionReturnType& ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument)
@@ -2735,6 +2793,13 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidSevenArgumen
       {
          SevenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>::_expected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
+      }
+
+      DecayedFunctionReturnType ReturnRandom()
+      {
+         SevenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>::_expected = true;
+         const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::ZenMockAddRandomReturnValue();
+         return randomReturnValue;
       }
 
       const FunctionReturnType& ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument, Arg7Type seventhArgument)
@@ -3134,6 +3199,13 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidEightArgumen
       {
          EightArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>::_expected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
+      }
+
+      DecayedFunctionReturnType ReturnRandom()
+      {
+         EightArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>::_expected = true;
+         const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::ZenMockAddRandomReturnValue();
+         return randomReturnValue;
       }
 
       const FunctionReturnType& ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument, Arg7Type seventhArgument, Arg8Type eigthArgument)
@@ -3550,6 +3622,13 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidNineArgument
       {
          NineArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ExceptionThrower>::_expected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
+      }
+
+      DecayedFunctionReturnType ReturnRandom()
+      {
+         NineArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ExceptionThrower>::_expected = true;
+         const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::ZenMockAddRandomReturnValue();
+         return randomReturnValue;
       }
 
       const FunctionReturnType& ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument, Arg7Type seventhArgument, Arg8Type eigthArgument, Arg9Type ninthArgument)
@@ -3984,6 +4063,13 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidTenArgumentM
       {
          TenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>::_expected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
+      }
+
+      DecayedFunctionReturnType ReturnRandom()
+      {
+         TenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>::_expected = true;
+         const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::ZenMockAddRandomReturnValue();
+         return randomReturnValue;
       }
 
       const FunctionReturnType& ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument, Arg7Type seventhArgument, Arg8Type eigthArgument, Arg9Type ninthArgument, Arg10Type tenthArgument)

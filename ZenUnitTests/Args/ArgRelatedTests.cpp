@@ -4,9 +4,6 @@
 #include "ZenUnitTests/Random/RandomRunFilter.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/MemberFunctionTransformerMock.h"
 
-// Windows-only tests until Travis CI no longer runs out of memory
-#if _WIN32
-
 namespace ZenUnit
 {
    TESTS(ArgsParserTests)
@@ -300,8 +297,7 @@ Testing Rigor Options:
 
    TEST(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
    {
-      const unsigned timesArgValue = Random<unsigned>();
-      ToUnsigned_ZenMock.Return(timesArgValue);
+      const unsigned timesArgValue = ToUnsigned_ZenMock.ReturnRandom();
       const vector<string> Args{ TestProgramPath, "-testruns=" + to_string(timesArgValue) };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
@@ -315,8 +311,7 @@ Testing Rigor Options:
 
    TEST(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
    {
-      const unsigned randomSeedArgValue = Random<unsigned>();
-      ToUnsigned_ZenMock.Return(randomSeedArgValue);
+      const unsigned randomSeedArgValue = ToUnsigned_ZenMock.ReturnRandom();
       const vector<string> Args{ TestProgramPath, "-random=" + to_string(randomSeedArgValue) };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
@@ -569,5 +564,3 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
 }; RUN_TESTS(ZenUnitArgsTests)
 
 }
-
-#endif

@@ -29,14 +29,14 @@ TEST(AnomalyConstructor_SetsAnomaly)
 
 TEST(ExceptionTypeNameAndExceptionWhatConstructor_SetsExceptionTypeNameAndExceptionWhat)
 {
-   const string ExceptionTypeName;
-   const string ExceptionWhat = Random<string>();
+   const string exceptionTypeName;
+   const string exceptionWhat = Random<string>();
    //
-   AnomalyOrException anomalyOrException(&ExceptionTypeName, ExceptionWhat.c_str());
+   AnomalyOrException anomalyOrException(&exceptionTypeName, exceptionWhat.c_str());
    //
    IS_NULL(anomalyOrException.anomaly);
-   ARE_SAME(ExceptionTypeName, *anomalyOrException.exceptionTypeName);
-   ARE_EQUAL(ExceptionWhat, *anomalyOrException.exceptionWhat);
+   ARE_SAME(exceptionTypeName, *anomalyOrException.exceptionTypeName);
+   ARE_EQUAL(exceptionWhat, *anomalyOrException.exceptionWhat);
 }
 
 }; RUN_TESTS(AnomalyOrExceptionTests)
@@ -663,8 +663,7 @@ TEST3X3(PrintIfFailure_Anomaly_PrintsExpected,
 
    _testResult_WriteTestCaseNumberIfAnyMocked.responsibleCallResultField = expectedResponsibleCallResultField;
 
-   const string testFailureNumber = Random<string>();
-   _testFailureNumbererMock.NextMock.Return(testFailureNumber);
+   const string testFailureNumber = _testFailureNumbererMock.NextMock.ReturnRandom();
 
    _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex = 1;
    _testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.Expect();
@@ -711,8 +710,7 @@ TEST3X3(PrintIfFailure_Exception_PrintsExpected,
    _testResult_WriteTestCaseNumberIfAnyMocked.
       responsibleCallResultField = expectedResponsibleCallResultField;
 
-   const string testFailureNumber = Random<string>();
-   _testFailureNumbererMock.NextMock.Return(testFailureNumber);
+   const string testFailureNumber = _testFailureNumbererMock.NextMock.ReturnRandom();
 
    _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex = 1;
    _testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.Expect();
@@ -749,8 +747,7 @@ TEST(PrintIfFailure_SuccessButPastDeadline_PrintsExpected)
    _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::SuccessButPastDeadline;
    _testResult_WriteTestCaseNumberIfAnyMocked.milliseconds = 10;
 
-   const string testFailureNumber = Random<string>();
-   _testFailureNumbererMock.NextMock.Return(testFailureNumber);
+   const string testFailureNumber = _testFailureNumbererMock.NextMock.ReturnRandom();
 
    _consoleMock.WriteLineColorMock.Expect();
    _consoleMock.WriteLineMock.Expect();
@@ -896,24 +893,27 @@ TEST(Constructor_NewsComponents)
 
 TEST(AddSkippedTest_AddsTestClassNameDotTestNameToSkippedFullTestNamesVector)
 {
-   const string TestClassName = Random<string>();
+   const string testClassName = Random<string>();
    const char* const TestNameA = "TestA";
    const char* const ReasonA = "ReasonA";
    //
-   _testRunResult.AddSkippedTest(TestClassName.c_str(), TestNameA, ReasonA);
+   _testRunResult.AddSkippedTest(testClassName.c_str(), TestNameA, ReasonA);
    //
    TestRunResult expectedTestRunResultA;
-   expectedTestRunResultA._skippedFullTestNamesAndReasons = { TestClassName + ".TestA because: ReasonA" };
+   expectedTestRunResultA._skippedFullTestNamesAndReasons = { testClassName + ".TestA because: ReasonA" };
    ARE_EQUAL(expectedTestRunResultA, _testRunResult);
 
    const char* const TestNameB = "TestB";
    const char* const ReasonB = "ReasonB";
    //
-   _testRunResult.AddSkippedTest(TestClassName.c_str(), TestNameB, ReasonB);
+   _testRunResult.AddSkippedTest(testClassName.c_str(), TestNameB, ReasonB);
    //
    TestRunResult expectedTestRunResultB;
    expectedTestRunResultB._skippedFullTestNamesAndReasons =
-   { TestClassName + ".TestA because: ReasonA", TestClassName + ".TestB because: ReasonB" };
+   {
+      testClassName + ".TestA because: ReasonA",
+      testClassName + ".TestB because: ReasonB"
+   };
    ARE_EQUAL(expectedTestRunResultB, _testRunResult);
 }
 
@@ -1216,21 +1216,21 @@ void SetState(
 TEST(PrintSkippedTestClassReminder_PrintsExpectedToConsole)
 {
    _consoleMock->WriteLineColorMock.Expect();
-   const string SkippedTestClassNameAndReason = Random<string>();
+   const string skippedTestClassNameAndReason = Random<string>();
    //
-   _testRunResult.PrintSkippedTestClassReminder(SkippedTestClassNameAndReason);
+   _testRunResult.PrintSkippedTestClassReminder(skippedTestClassNameAndReason);
    //
-   ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith("[SKIPPED] Test class " + SkippedTestClassNameAndReason, Color::Yellow));
+   ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith("[SKIPPED] Test class " + skippedTestClassNameAndReason, Color::Yellow));
 }
 
 TEST(PrintSkippedTestReminder_PrintsExpectedToConsole)
 {
    _consoleMock->WriteLineColorMock.Expect();
-   const string SkippedTestName = Random<string>();
+   const string skippedTestName = Random<string>();
    //
-   _testRunResult.PrintSkippedTestReminder(SkippedTestName);
+   _testRunResult.PrintSkippedTestReminder(skippedTestName);
    //
-   ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith("[SKIPPED] Test " + SkippedTestName, Color::Yellow));
+   ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith("[SKIPPED] Test " + skippedTestName, Color::Yellow));
 }
 
 TEST(ResetStateExceptForSkips_ResetsTestFailureNumberer_ClearsTestClassResults_SetsNumberOfFailedTestCasesTo0)

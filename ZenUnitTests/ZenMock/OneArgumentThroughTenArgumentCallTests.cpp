@@ -170,8 +170,8 @@ namespace ZenMock
       EQUALIZER_THROWS_FOR_FIELD(Call4, fourthArgument, V4);
    }
 
-
    }; RUN_TESTS(FourArgumentCallTests)
+
 
    TESTS(FiveArgumentCallTests)
    AFACT(DefaultConstructor_DefaultInitializesFields)

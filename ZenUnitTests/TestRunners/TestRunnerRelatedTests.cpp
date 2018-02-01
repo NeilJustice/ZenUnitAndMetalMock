@@ -15,7 +15,6 @@
 #include "ZenUnitTests/TestRunners/Mock/PreamblePrinterMock.h"
 #include "ZenUnitTests/TestRunners/Mock/TestClassRunnerMock.h"
 #include "ZenUnitTests/TestRunners/Mock/TestClassRunnerRunnerMock.h"
-#include "ZenUnitTests/TestRunners/Mock/TestClassRunnerMock.h"
 #include "ZenUnitTests/Random/RandomPrintMode.h"
 #include "ZenUnitTests/Random/RandomRunFilter.h"
 #include "ZenUnitTests/Random/RandomTestClassResult.h"
@@ -23,99 +22,15 @@
 #include "ZenUnitTests/Random/RandomZenUnitArgs.h"
 #include "ZenUnitTests/Results/Mock/TestClassResultMock.h"
 #include "ZenUnitTests/Results/Mock/TestRunResultMock.h"
-#include "ZenUnitTests/Utils/Concurrency/Mock/VoidFutureMock.h"
 #include "ZenUnitTests/Utils/Time/Mock/StopwatchMock.h"
 #include "ZenUnitTests/Utils/Function/Mock/VoidZeroArgMemberFunctionCallerMock.h"
 #include "ZenUnitTests/Utils/Function/Mock/VoidOneArgMemberFunctionCallerMock.h"
 #include "ZenUnitTests/Utils/Function/Mock/NonVoidOneArgMemberFunctionCallerMock.h"
 #include "ZenUnitTests/Utils/Function/Mock/NonVoidTwoArgMemberFunctionCallerMock.h"
 #include "ZenUnitTests/Utils/Function/Mock/VoidTwoArgMemberFunctionCallerMock.h"
-#include "ZenUnitTests/Utils/Iteration/Mock/TwoArgMemberForEacherMock.h"
 
 namespace ZenUnit
 {
-
-TESTS(MachineNameGetterTests)
-AFACT(Constructor_SetsGetHostNameOrGetComputerNameFunctions)
-AFACT(GetMachineName_ReturnsEitherCallToGetLinuxOrGetWindowsMachineName)
-#if defined __linux__
-AFACT(GetLinuxMachineName_ReturnsResultOfgethostname)
-#elif _WIN32
-AFACT(GetWindowsMachineName_ReturnsResultOfGetComputerName)
-#endif
-EVIDENCE
-
-TEST(Constructor_SetsGetHostNameOrGetComputerNameFunctions)
-{
-   MachineNameGetter machineNameGetter;
-#if defined __linux__
-   STD_FUNCTION_TARGETS(::gethostname, machineNameGetter.call_gethostname);
-#elif _WIN32
-   STD_FUNCTION_TARGETS(::GetComputerName, machineNameGetter.call_GetComputerName);
-#endif
-}
-
-struct MachineNameGetterSelfMocked : public Zen::Mock<MachineNameGetter>
-{
-#if defined __linux__
-   ZENMOCK_NONVOID0_CONST(string, GetLinuxMachineName)
-#elif _WIN32
-   ZENMOCK_NONVOID0_CONST(string, GetWindowsMachineName)
-#endif
-} _machineNameGetterSelfMocked;
-
-MachineNameGetter _machineNameGetter;
-#if defined __linux__
-ZENMOCK_NONVOID2_FREE(int, gethostname, char*, size_t)
-#elif _WIN32
-ZENMOCK_NONVOID2_FREE(BOOL, GetComputerName, LPSTR, LPDWORD)
-#endif
-
-   STARTUP
-{
-#if defined __linux__
-   _machineNameGetter.call_gethostname = ZENMOCK_BIND2(gethostname_ZenMock);
-#elif _WIN32
-   _machineNameGetter.call_GetComputerName = ZENMOCK_BIND2(GetComputerName_ZenMock);
-#endif
-}
-
-#if defined __linux__
-TEST(GetMachineName_ReturnsEitherCallToGetLinuxOrGetWindowsMachineName)
-{
-   const string machineName = ZenUnit::Random<string>();
-   _machineNameGetterSelfMocked.GetLinuxMachineNameMock.Return(machineName);
-   //
-   const string returnedMachineName = _machineNameGetterSelfMocked.GetMachineName();
-   //
-   ZEN(_machineNameGetterSelfMocked.GetLinuxMachineNameMock.CalledOnce());
-   ARE_EQUAL(machineName, returnedMachineName);
-}
-
-TEST(GetLinuxMachineName_ReturnsResultOfgethostname)
-{
-   // Implement after ZenMock gains the ability to set out-parameter return values
-}
-#elif _WIN32
-TEST(GetMachineName_ReturnsEitherCallToGetLinuxOrGetWindowsMachineName)
-{
-   const string machineName = ZenUnit::Random<string>();
-   _machineNameGetterSelfMocked.GetWindowsMachineNameMock.Return(machineName);
-   //
-   const string returnedMachineName = _machineNameGetterSelfMocked.GetMachineName();
-   //
-   ZEN(_machineNameGetterSelfMocked.GetWindowsMachineNameMock.CalledOnce());
-   ARE_EQUAL(machineName, returnedMachineName);
-}
-
-TEST(GetWindowsMachineName_ReturnsResultOfGetComputerName)
-{
-   // Implement after ZenMock gains the ability to set out-parameter return values
-}
-#endif
-
-}; RUN_TESTS(MachineNameGetterTests)
-
 
 TESTS(TestClassRunnerRunnerTests)
 AFACT(Constructor_NewsComponents)
@@ -282,8 +197,7 @@ TEST(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
 
 TEST(TestClassNameCaseInsensitiveMatchesRunFilter_ReturnsResultOfCallingStringMatchesFilter)
 {
-   const bool stringMatchesFilterReturnValue = ZenUnit::Random<bool>();
-   StringMatchesFilter_ZenMock.Return(stringMatchesFilterReturnValue);
+   const bool stringMatchesFilterReturnValue = StringMatchesFilter_ZenMock.ReturnRandom();
 
    TestClassRunnerMock* const testClassRunnerMock = new TestClassRunnerMock;
    const string testClassName = ZenUnit::Random<string>();
@@ -349,8 +263,7 @@ TEST1X1(RunTestClasses_RandomMode_SetsRandomSeedIfNotSetByUser_RunsTestClassesRa
    }
    else
    {
-      randomseedsetbycode = ZenUnit::Random<unsigned short>();
-      _watchMock->SecondsSince1970CastToUnsignedShortMock.Return(randomseedsetbycode);
+      randomseedsetbycode = _watchMock->SecondsSince1970CastToUnsignedShortMock.ReturnRandom();
    }
    //
    const vector<TestClassResult> testClassResults = _testClassRunnerRunner.RunTestClasses(zenUnitArgs);
@@ -454,16 +367,10 @@ TEST(PrintOpeningThreeLines_PrintsCommandLineAndTimeZoneAndTestAndTestClassCount
    _preamblePrinterSelfMocked.consoleMock->WriteColorMock.Expect();
    _preamblePrinterSelfMocked.consoleMock->WriteLineMock.Expect();
    TestClassRunnerRunnerMock testClassRunnerRunnerMock;
-   const size_t numberOfTestClassesToBeRun = Random<size_t>();
-   testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.Return(numberOfTestClassesToBeRun);
-
-   const string timeZoneDateTimeNow = Random<string>();
-   _preamblePrinterSelfMocked.watchMock->TimeZoneDateTimeNowMock.Return(timeZoneDateTimeNow);
-
-   const string thirdLinePrefix = Random<string>();
-   _preamblePrinterSelfMocked.MakeThirdLinePrefixMock.Return(thirdLinePrefix);
-   const string thirdLineSuffix = Random<string>();
-   _preamblePrinterSelfMocked.MakeThirdLineSuffixMock.Return(thirdLineSuffix);
+   const size_t numberOfTestClassesToBeRun = testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.ReturnRandom();
+   const string timeZoneDateTimeNow = _preamblePrinterSelfMocked.watchMock->TimeZoneDateTimeNowMock.ReturnRandom();
+   const string thirdLinePrefix = _preamblePrinterSelfMocked.MakeThirdLinePrefixMock.ReturnRandom();
+   const string thirdLineSuffix = _preamblePrinterSelfMocked.MakeThirdLineSuffixMock.ReturnRandom();
 
    ZenUnitArgs zenUnitArgs;
    zenUnitArgs.commandLine = Random<string>();
@@ -493,13 +400,12 @@ TEST2X2(MakeThirdLinePrefix_ReturnsNumberOfTestClassesBeingRunAndMachineName,
    " Running 1 test class on machine ", size_t(1),
    " Running 2 test classes on machine ", size_t(2))
 {
-   const string MachineName = Random<string>();
-   _machineNameGetterMock->GetMachineNameMock.Return(MachineName);
+   const string machineName = _machineNameGetterMock->GetMachineNameMock.ReturnRandom();
    //
    const string thirdLinePrefix = _preamblePrinter.MakeThirdLinePrefix(numberOfTestClasses);
    //
    ZEN(_machineNameGetterMock->GetMachineNameMock.CalledOnce());
-   const string expectedReturnValue = expectedReturnValuePrefix + MachineName;
+   const string expectedReturnValue = expectedReturnValuePrefix + machineName;
    ARE_EQUAL(expectedReturnValue, thirdLinePrefix);
 }
 
@@ -767,6 +673,7 @@ TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewableDele
 
    TestResult testResult;
    testResult.testOutcome = newableDeletableTestOutcome;
+   testResult.milliseconds = ZenUnit::Random<unsigned>();
    const vector<TestResult> testResults{ testResult };
    testMock.RunMock.Return(testResults);
 
@@ -781,7 +688,8 @@ TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewableDele
    ZEN(_consoleMock->NonMinimalWriteMock.CalledOnceWith("TestClassIsNewableAndDeletable => ", zenUnitArgs.printMode));
    if (expectWriteLineOK)
    {
-      ZEN(_consoleMock->NonMinimalWriteLineMock.CalledOnceWith("OK", zenUnitArgs.printMode));
+      ZEN(_consoleMock->NonMinimalWriteLineMock.CalledOnceWith(
+         "OK (" + to_string(testResult.milliseconds) + " ms)", zenUnitArgs.printMode));
    }
    ZEN(testMock.RunMock.CalledOnce());
    ZEN(testClassResultMock.AddTestResultsMock.CalledOnceWith(testResults));

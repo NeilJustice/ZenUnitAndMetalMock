@@ -57,7 +57,7 @@
 
 // Values:
 
-// Asserts that expectedValue is equal to actualValue.
+// Asserts that expectedValue == actualValue or calls ZenUnit::Equalizer<T>::AssertEqual(expectedValue, actualValue) if defined.
 #define ARE_EQUAL(expectedValue, actualValue, ...) \
    ZenUnit::ARE_EQUAL_Defined(VRT(expectedValue), VRT(actualValue), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
@@ -3807,7 +3807,7 @@ Testing Rigor Options:
       std::function<bool(const char*, const std::string&)> call_RunFilter_StringMatchesFilter;
    public:
       TestClassRunner() noexcept
-         : pro_twoArgMemberAnyer(new TwoArgMemberAnyerType)
+         : pro_twoArgMemberAnyer(std::make_unique<TwoArgMemberAnyerType>())
          , call_RunFilter_StringMatchesFilter(RunFilter::StringMatchesFilter)
       {
       }
@@ -4472,7 +4472,7 @@ Testing Rigor Options:
          : _console(std::make_unique<Console>())
          , _testPhaseSuffixer(std::make_unique<TestPhaseSuffixer>())
          , _stopwatch(std::make_unique<Stopwatch>())
-         , _voidTwoArgMemberFunctionCaller(new TwoArgMemberFunctionCaller<void, TryCatchCaller, TestOutcome, bool>)
+         , _voidTwoArgMemberFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<void, TryCatchCaller, TestOutcome, bool>>())
          , call_TestRunner_GetArgs(TestRunner::GetArgs)
       {
       }
@@ -4759,12 +4759,14 @@ Testing Rigor Options:
    private:
       std::unique_ptr<const TryCatchCaller> _tryCatchCaller;
       std::unique_ptr<const TestResultFactory> _testResultFactory;
+      std::unique_ptr<Stopwatch> _stopwatch;
       std::unique_ptr<TestClassType> _firstInstanceOfTestClass;
    public:
       explicit NewableDeletableTest(const char* testClassName)
          : Test(testClassName, "TestClassIsNewableAndDeletable", 0)
-         , _tryCatchCaller(new TryCatchCaller)
-         , _testResultFactory(new TestResultFactory)
+         , _tryCatchCaller(std::make_unique<TryCatchCaller>())
+         , _testResultFactory(std::make_unique<TestResultFactory>())
+         , _stopwatch(std::make_unique<Stopwatch>())
       {
       }
 
@@ -4775,14 +4777,17 @@ Testing Rigor Options:
 
       std::vector<TestResult> Run() override
       {
+         _stopwatch->Start();
          const CallResult constructorCallResult = _tryCatchCaller->Call(&Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorCallResult.testOutcome != TestOutcome::Success)
          {
-            const TestResult constructorFail = _testResultFactory->ConstructorFail(_fullTestName, constructorCallResult);
+            TestResult constructorFail = _testResultFactory->ConstructorFail(_fullTestName, constructorCallResult);
+            constructorFail.milliseconds = _stopwatch->Stop();
             return { constructorFail };
          }
          const CallResult destructorCallResult = _tryCatchCaller->Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-         const TestResult testResult = _testResultFactory->CtorDtorSuccess(_fullTestName, constructorCallResult, destructorCallResult);
+         TestResult testResult = _testResultFactory->CtorDtorSuccess(_fullTestName, constructorCallResult, destructorCallResult);
+         testResult.milliseconds = _stopwatch->Stop();
          return { testResult };
       }
 
@@ -4821,11 +4826,11 @@ Testing Rigor Options:
       TestClassResult _testClassResult;
    public:
       explicit SpecificTestClassRunner(const char* testClassName)
-         : _console(new Console)
-         , _twoArgMemberForEacher(new TwoArgMemberForEacherType)
-         , _voidZeroArgFunctionCaller(new ZeroArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>>)
-         , _nonVoidTwoArgFunctionCaller(new TwoArgMemberFunctionCaller<bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>)
-         , _voidTwoArgFunctionCaller(new const TwoArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>, const TestClassResult*, PrintMode>)
+         : _console(std::make_unique<Console>())
+         , _twoArgMemberForEacher(std::make_unique<TwoArgMemberForEacherType>())
+         , _voidZeroArgFunctionCaller(std::make_unique<ZeroArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>>>())
+         , _nonVoidTwoArgFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>>())
+         , _voidTwoArgFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>, const TestClassResult*, PrintMode>>())
          , call_TestRunner_GetArgs(TestRunner::GetArgs)
          , _testClassName(testClassName)
          , _newableDeletableTest(testClassName)
@@ -4901,10 +4906,11 @@ Testing Rigor Options:
          const std::vector<TestResult> newableDeletableTestResults = newableDeletableTest->Run();
          assert_true(newableDeletableTestResults.size() == 1);
          outTestClassResult->AddTestResults(newableDeletableTestResults);
-         const bool testClassIsNewableAndDeletable = newableDeletableTestResults[0].testOutcome == TestOutcome::Success;
+         const TestResult newableDeletableTestResult = newableDeletableTestResults[0];
+         const bool testClassIsNewableAndDeletable = newableDeletableTestResult.testOutcome == TestOutcome::Success;
          if (testClassIsNewableAndDeletable)
          {
-            _console->NonMinimalWriteLine("OK", zenUnitArgs.printMode);
+            _console->NonMinimalWriteLine("OK (" + std::to_string(newableDeletableTestResult.milliseconds) + " ms)", zenUnitArgs.printMode);
          }
          return testClassIsNewableAndDeletable;
       }
@@ -5078,7 +5084,7 @@ Testing Rigor Options:
          const char* testCaseArgsText,
          TestCaseArgTypes&&... testCaseArgs)
          : Test(testClassName, testName, N)
-         , _console(new Console)
+         , _console(std::make_unique<Console>())
          , call_TestRunner_GetArgs(TestRunner::GetArgs)
          , _testCaseArgsText(testCaseArgsText)
          , call_String_CommaSplitExceptQuotedCommas(String::CommaSplitExceptQuotedCommas)
