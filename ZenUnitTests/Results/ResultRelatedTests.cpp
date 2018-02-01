@@ -626,12 +626,14 @@ TEST3X3(NonMinimalWriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess,
    {
       _consoleMock.WriteLineColorMock.Expect();
    }
+   const unsigned milliseconds = ZenUnit::Random<unsigned>();
+   _testResult.milliseconds = milliseconds;
    //
    _testResult.NonMinimalWriteLineOKIfSuccess(&_consoleMock, printMode);
    //
    if (expectWriteLineOK)
    {
-      ZEN(_consoleMock.WriteLineColorMock.CalledOnceWith("OK", Color::White));
+      ZEN(_consoleMock.WriteLineColorMock.CalledOnceWith("OK (" + to_string(milliseconds) + " ms)", Color::White));
    }
 }
 

@@ -3351,7 +3351,8 @@ Testing Rigor Options:
       {
          if (printMode != PrintMode::Minimal && testOutcome == TestOutcome::Success)
          {
-            console->WriteLineColor("OK", Color::White);
+            const std::string okAndMillisecondsMessage = String::Concat("OK (", milliseconds, " ms)");
+            console->WriteLineColor(okAndMillisecondsMessage, Color::White);
          }
       }
 
@@ -4464,16 +4465,16 @@ Testing Rigor Options:
    private:
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const TestPhaseSuffixer> _testPhaseSuffixer;
-      std::unique_ptr<Stopwatch> _stopwatch;
       std::unique_ptr<const TwoArgMemberFunctionCaller<void, TryCatchCaller, TestOutcome, bool>> _voidTwoArgMemberFunctionCaller;
       std::function<const ZenUnitArgs&()> call_TestRunner_GetArgs;
+      std::unique_ptr<Stopwatch> _stopwatch;
    public:
       TryCatchCaller() noexcept
          : _console(std::make_unique<Console>())
          , _testPhaseSuffixer(std::make_unique<TestPhaseSuffixer>())
-         , _stopwatch(std::make_unique<Stopwatch>())
          , _voidTwoArgMemberFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<void, TryCatchCaller, TestOutcome, bool>>())
          , call_TestRunner_GetArgs(TestRunner::GetArgs)
+         , _stopwatch(std::make_unique<Stopwatch>())
       {
       }
 
@@ -4910,7 +4911,9 @@ Testing Rigor Options:
          const bool testClassIsNewableAndDeletable = newableDeletableTestResult.testOutcome == TestOutcome::Success;
          if (testClassIsNewableAndDeletable)
          {
-            _console->NonMinimalWriteLine("OK (" + std::to_string(newableDeletableTestResult.milliseconds) + " ms)", zenUnitArgs.printMode);
+            const std::string okAndMillisecondsMessage = String::Concat(
+               "OK (", newableDeletableTestResult.milliseconds, " ms)");
+            _console->NonMinimalWriteLine(okAndMillisecondsMessage, zenUnitArgs.printMode);
          }
          return testClassIsNewableAndDeletable;
       }
