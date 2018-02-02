@@ -23,7 +23,9 @@ RUN_TEMPLATE_TESTS(MapEqualizerTests, unordered_map)
 
 TESTS(VectorEqualizerTests)
 AFACT(AssertEqual_IntVectors_CallsVECTORS_EQUAL)
+#if _WIN32
 AFACT(AssertEqual_StringVectors_CallsVECTORS_EQUAL)
+#endif
 AFACT(AssertEqual_UserTypeVectors_CallsVECTORS_EQUAL)
 EVIDENCE
 
@@ -44,24 +46,13 @@ File.cpp(1)
 File.cpp(1))");
 }
 
+#if _WIN32
 TEST(AssertEqual_StringVectors_CallsVECTORS_EQUAL)
 {
    vector<string> expectedStringVector;
    const vector<string> actualStringVector;
    Equalizer<vector<string>>::AssertEqual(expectedStringVector, actualStringVector);
    expectedStringVector.emplace_back();
-#ifdef __linux__
-   THROWS(Equalizer<vector<string>>::AssertEqual(
-      expectedStringVector Comma actualStringVector), Anomaly, R"(
-  Failed: VECTORS_EQUAL(expectedVector, actualVector)
-Expected: vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >>: {""}
-  Actual: vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >>: {}
- Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
-Expected: 1
-  Actual: 0
-File.cpp(1)
-File.cpp(1))");
-#elif _WIN32
    THROWS(Equalizer<vector<string>>::AssertEqual(
       expectedStringVector Comma actualStringVector), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedVector, actualVector)
@@ -72,8 +63,8 @@ Expected: 1
   Actual: 0
 File.cpp(1)
 File.cpp(1))");
-#endif
 }
+#endif
 
 TEST(AssertEqual_UserTypeVectors_CallsVECTORS_EQUAL)
 {

@@ -1,21 +1,24 @@
 #include "pch.h"
 
-template<>
-struct Equalizer<tm>
+namespace ZenUnit
 {
-   static void AssertEqual(const tm& expectedTm, const tm& actualTm)
+   template<>
+   struct Equalizer<tm>
    {
-      ARE_EQUAL(expectedTm.tm_sec, actualTm.tm_sec);
-      ARE_EQUAL(expectedTm.tm_min, actualTm.tm_min);
-      ARE_EQUAL(expectedTm.tm_hour, actualTm.tm_hour);
-      ARE_EQUAL(expectedTm.tm_mday, actualTm.tm_mday);
-      ARE_EQUAL(expectedTm.tm_mon, actualTm.tm_mon);
-      ARE_EQUAL(expectedTm.tm_year, actualTm.tm_year);
-      ARE_EQUAL(expectedTm.tm_wday, actualTm.tm_wday);
-      ARE_EQUAL(expectedTm.tm_yday, actualTm.tm_yday);
-      ARE_EQUAL(expectedTm.tm_isdst, actualTm.tm_isdst);
-   }
-};
+      static void AssertEqual(const tm& expectedTm, const tm& actualTm)
+      {
+         ARE_EQUAL(expectedTm.tm_sec, actualTm.tm_sec);
+         ARE_EQUAL(expectedTm.tm_min, actualTm.tm_min);
+         ARE_EQUAL(expectedTm.tm_hour, actualTm.tm_hour);
+         ARE_EQUAL(expectedTm.tm_mday, actualTm.tm_mday);
+         ARE_EQUAL(expectedTm.tm_mon, actualTm.tm_mon);
+         ARE_EQUAL(expectedTm.tm_year, actualTm.tm_year);
+         ARE_EQUAL(expectedTm.tm_wday, actualTm.tm_wday);
+         ARE_EQUAL(expectedTm.tm_yday, actualTm.tm_yday);
+         ARE_EQUAL(expectedTm.tm_isdst, actualTm.tm_isdst);
+      }
+   };
+}
 
 TESTS(WatchTests)
 FACTS(TimeZoneDateTimeNow_ReturnsLocalTimeNowWithTimeZoneAndTodaysDate)
