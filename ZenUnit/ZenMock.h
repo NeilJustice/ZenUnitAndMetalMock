@@ -224,8 +224,6 @@ must have their return value or values set explicitly by calling
       // deque here instead of vector due to implementation of vector<bool>
       std::deque<DecayedFunctionReturnType> _returnValues;
       size_t _returnValueIndex;
-   protected:
-      using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    public:
       explicit ValueReturner(std::string zenMockedFunctionSignature)
          : _zenMockedFunctionSignature(std::move(zenMockedFunctionSignature))
@@ -529,6 +527,8 @@ struct ZenMock_##functionName : public ZenMock::NonVoidZeroArgumentMocker<return
    template<typename FunctionReturnType>
    class NonVoidZeroArgumentMocker : public ZeroArgumentMocker<ExceptionThrower>, protected ValueReturner<FunctionReturnType>
    {
+   private:
+      using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    public:
       explicit NonVoidZeroArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZeroArgumentMocker<ExceptionThrower>(zenMockedFunctionSignature)
@@ -806,6 +806,8 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidOneArgumentM
    template<typename FunctionReturnType, typename ArgType>
    class NonVoidOneArgumentMocker : public OneArgumentMocker<ArgType>, protected ValueReturner<FunctionReturnType>
    {
+   private:
+      using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    public:
       explicit NonVoidOneArgumentMocker(const std::string& zenMockedFunctionSignature)
          : OneArgumentMocker<ArgType>(zenMockedFunctionSignature)
@@ -1094,6 +1096,8 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidTwoArgumentM
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type>
    class NonVoidTwoArgumentMocker : public TwoArgumentMocker<Arg1Type, Arg2Type>, protected ValueReturner<FunctionReturnType>
    {
+   private:
+      using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    public:
       explicit NonVoidTwoArgumentMocker(const std::string& zenMockedFunctionSignature)
          : TwoArgumentMocker<Arg1Type, Arg2Type>(zenMockedFunctionSignature)
@@ -1395,6 +1399,8 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidThreeArgumen
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type>
    class NonVoidThreeArgumentMocker : public ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>, protected ValueReturner<FunctionReturnType>
    {
+   private:
+      using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    public:
       explicit NonVoidThreeArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>(zenMockedFunctionSignature)
@@ -1711,6 +1717,8 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidFourArgument
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
    class NonVoidFourArgumentMocker : public FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>, protected ValueReturner<FunctionReturnType>
    {
+   private:
+      using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    public:
       explicit NonVoidFourArgumentMocker(const std::string& zenMockedFunctionSignature)
          : FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>(zenMockedFunctionSignature)
@@ -2049,6 +2057,8 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidFiveArgument
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
    class NonVoidFiveArgumentMocker : public FiveArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>, protected ValueReturner<FunctionReturnType>
    {
+   private:
+      using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    public:
       explicit NonVoidFiveArgumentMocker(const std::string& zenMockedFunctionSignature)
          : FiveArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>(zenMockedFunctionSignature)
@@ -2401,6 +2411,8 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidSixArgumentM
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
    class NonVoidSixArgumentMocker : public SixArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>, protected ValueReturner<FunctionReturnType>
    {
+   private:
+      using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    public:
       explicit NonVoidSixArgumentMocker(const std::string& zenMockedFunctionSignature)
          : SixArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>(zenMockedFunctionSignature)
@@ -2767,6 +2779,8 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidSevenArgumen
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type>
    class NonVoidSevenArgumentMocker : public SevenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>, protected ValueReturner<FunctionReturnType>
    {
+   private:
+      using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    public:
       explicit NonVoidSevenArgumentMocker(const std::string& zenMockedFunctionSignature)
          : SevenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>(zenMockedFunctionSignature)
@@ -3173,6 +3187,8 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidEightArgumen
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type>
    class NonVoidEightArgumentMocker : public EightArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>, protected ValueReturner<FunctionReturnType>
    {
+   private:
+      using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    public:
       explicit NonVoidEightArgumentMocker(const std::string& zenMockedFunctionSignature)
          : EightArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>(zenMockedFunctionSignature)
@@ -3596,6 +3612,8 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidNineArgument
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type>
    class NonVoidNineArgumentMocker : public NineArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ExceptionThrower>, protected ValueReturner<FunctionReturnType>
    {
+   private:
+      using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    public:
       explicit NonVoidNineArgumentMocker(const std::string& zenMockedFunctionSignature)
          : NineArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>(zenMockedFunctionSignature)
@@ -4037,6 +4055,8 @@ struct ZenMock_##functionName##__VA_ARGS__ : public ZenMock::NonVoidTenArgumentM
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type, typename Arg10Type>
    class NonVoidTenArgumentMocker : public TenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>, protected ValueReturner<FunctionReturnType>
    {
+   private:
+      using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    public:
       explicit NonVoidTenArgumentMocker(const std::string& zenMockedFunctionSignature)
          : TenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>(zenMockedFunctionSignature)

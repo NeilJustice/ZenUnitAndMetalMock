@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#ifdef _WIN32
+
 namespace ZenUnit
 {
    TESTS(ThreeArgForEacherTests)
@@ -20,8 +22,7 @@ namespace ZenUnit
 
    auto Bind()
    {
-      return bind(&ThreeArgForEacherTests::Func,
-         this, placeholders::_1, placeholders::_2, placeholders::_3);
+      return std::bind(&ThreeArgForEacherTests::Func, this, placeholders::_1, placeholders::_2, placeholders::_3);
    }
 
    TEST(ThreeArgForEach_EmptyCollection_DoesNothing)
@@ -66,3 +67,5 @@ namespace ZenUnit
 
    }; RUN_TESTS(ThreeArgForEacherTests)
 }
+
+#endif
