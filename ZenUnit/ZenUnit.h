@@ -1802,11 +1802,14 @@ namespace ZenUnit
          static const std::string usage = R"(ZenUnit v0.2.0
 Usage: <TestsBinaryName> [Options...]
 
-Output Options:
+Test Filtration Options:
 
--minimal
-   Print only preamble, any test failure details, and conclusion.
-   Default: Run all non-skipped tests while printing detailed information.
+-run=<TestClassNameA>[.TestNameA][,TestClassNameB.TestNameB,...]
+   Run only specified case-insensitive test class names and/or test names.
+   Add a '*' character to the end of a test class or test name
+   filter string to specify name-ends-with filtration.
+-failfast
+   Immediately exit with exit code 1 if a test fails.
 
 Utility Options:
 
@@ -1818,15 +1821,6 @@ Utility Options:
    when running tests in a post-build step.
 -wait
    Wait for any key at the end of the test run.
-
-Test Filtration Options:
-
--run=<TestClassNameA>[.TestNameA][,TestClassNameB.TestNameB,...]
-   Run only specified case-insensitive test class names and test names.
-   Add a '*' character at the end of the test class name filter
-   or test name filter to specify name-ends-with filtration.
--failfast
-   Immediately exit with exit code 1 if a test fails.
 
 Testing Rigor Options:
 
@@ -3351,8 +3345,9 @@ Testing Rigor Options:
       {
          if (printMode != PrintMode::Minimal && testOutcome == TestOutcome::Success)
          {
-            const std::string okAndMillisecondsMessage = String::Concat("OK (", milliseconds, " ms)");
-            console->WriteLineColor(okAndMillisecondsMessage, Color::White);
+            console->WriteColor("OK ", Color::Green);
+            const std::string millisecondsString = String::Concat("(", milliseconds, "ms)");
+            console->WriteLine(millisecondsString);
          }
       }
 
@@ -3403,7 +3398,7 @@ Testing Rigor Options:
             console->WriteLine(fullTestName.Value());
             WriteTestCaseNumberIfAny(console, testCaseIndex);
             console->WriteLine(String::Concat(
-               "\nFailed because test took longer than -maxtestms= (", milliseconds, " ms)"));
+               "\nFailed because test took longer than -maxtestms=", milliseconds, " milliseconds"));
             console->WriteNewLine();
             break;
          }
@@ -4743,7 +4738,7 @@ Testing Rigor Options:
          const std::string exitLine = String::Concat(
             "Fatal ... exception. ", zenUnitArgs.exit0 ?
             "Exiting with code 0 due to -exit0 being specified." :
-            "Exiting with code 1.", testPhaseSuffix, " (", milliseconds, " ms)");
+            "Exiting with code 1.", testPhaseSuffix, " ", milliseconds, "ms");
          const int exitCode = zenUnitArgs.exit0 ? 0 : 1;
          _console->WriteLineAndExit(exitLine, exitCode);
          return CallResult();
@@ -4902,7 +4897,7 @@ Testing Rigor Options:
       {
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          _console->NonMinimalWriteColor("|", Color::Green, zenUnitArgs.printMode);
-         static const std::string TestClassIsNewableAndDeletableString = "TestClassIsNewableAndDeletable => ";
+         static const std::string TestClassIsNewableAndDeletableString = "TestClassIsNewableAndDeletable -> ";
          _console->NonMinimalWrite(TestClassIsNewableAndDeletableString, zenUnitArgs.printMode);
          const std::vector<TestResult> newableDeletableTestResults = newableDeletableTest->Run();
          assert_true(newableDeletableTestResults.size() == 1);
@@ -4911,9 +4906,8 @@ Testing Rigor Options:
          const bool testClassIsNewableAndDeletable = newableDeletableTestResult.testOutcome == TestOutcome::Success;
          if (testClassIsNewableAndDeletable)
          {
-            const std::string okAndMillisecondsMessage = String::Concat(
-               "OK (", newableDeletableTestResult.milliseconds, " ms)");
-            _console->NonMinimalWriteLine(okAndMillisecondsMessage, zenUnitArgs.printMode);
+            _console->WriteColor("OK ", Color::Green);
+            _console->WriteLine(String::Concat("(", newableDeletableTestResult.milliseconds, "ms)"));
          }
          return testClassIsNewableAndDeletable;
       }
@@ -4963,7 +4957,7 @@ Testing Rigor Options:
       void NonMinimalWritePostTestNameMessage(
          const Console* console, PrintMode printMode) const override
       {
-         console->NonMinimalWrite(" => ", printMode);
+         console->NonMinimalWrite(" -> ", printMode);
       }
 
       void NonMinimalWritePostTestCompletionMessage(
@@ -5048,7 +5042,7 @@ Testing Rigor Options:
       {
          if (printMode != PrintMode::Minimal)
          {
-            console->WriteLine("...");
+            console->WriteLine(" -> ");
          }
       }
 
@@ -5172,7 +5166,7 @@ Testing Rigor Options:
          const size_t testCaseArgsPrintingStartIndex = static_cast<size_t>(testCaseIndex) * N;
          _console->NonMinimalWriteStringsCommaSeparated(
             splitTestCaseArgs, testCaseArgsPrintingStartIndex, N, printMode);
-         _console->NonMinimalWrite(") => ", printMode);
+         _console->NonMinimalWrite(") -> ", printMode);
       }
 
       virtual void NonMinimalWriteLineOKIfSuccess(const TestResult& testResult, PrintMode printMode) const

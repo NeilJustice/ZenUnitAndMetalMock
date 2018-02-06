@@ -311,10 +311,7 @@ must have their return value or values set explicitly by calling
       {
       }
 
-      //ZenMocker(const ZenMocker&) = delete;
       ZenMocker& operator=(const ZenMocker&) = delete;
-      //ZenMocker(ZenMocker&&) = delete;
-      //ZenMocker& operator=(ZenMocker&&) = delete;
 
       template<typename ExceptionType, typename... ExceptionArgTypes>
       void Throw(ExceptionArgTypes&&... exceptionArgs)

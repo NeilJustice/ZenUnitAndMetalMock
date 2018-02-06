@@ -253,10 +253,10 @@ TEST(NonMinimalPrintResultLine_0FailedTest_WritesOKInGreen)
    //
    ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnce());
    ZEN(consoleMock.WriteMock.CalledAsFollows(
-      {
-         { "[  " },
+   {
+      { "[  " },
       { "  ]" }
-      }));
+   }));
    ZEN(consoleMock.NonMinimalWriteColorMock.CalledOnceWith("OK", Color::Green, printMode));
    ZEN(consoleMock.NonMinimalWriteNewLineMock.CalledOnceWith(printMode));
 }
@@ -624,7 +624,8 @@ TEST3X3(NonMinimalWriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess,
    _testResult.testOutcome = testOutcome;
    if (expectWriteLineOK)
    {
-      _consoleMock.WriteLineColorMock.Expect();
+      _consoleMock.WriteColorMock.Expect();
+      _consoleMock.WriteLineMock.Expect();
    }
    const unsigned milliseconds = ZenUnit::Random<unsigned>();
    _testResult.milliseconds = milliseconds;
@@ -633,7 +634,8 @@ TEST3X3(NonMinimalWriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess,
    //
    if (expectWriteLineOK)
    {
-      ZEN(_consoleMock.WriteLineColorMock.CalledOnceWith("OK (" + to_string(milliseconds) + " ms)", Color::White));
+      ZEN(_consoleMock.WriteColorMock.CalledOnceWith("OK ", Color::Green));
+      ZEN(_consoleMock.WriteLineMock.CalledOnceWith("(" + to_string(milliseconds) + "ms)"));
    }
 }
 
@@ -767,7 +769,7 @@ TEST(PrintIfFailure_SuccessButPastDeadline_PrintsExpected)
    ZEN(_consoleMock.WriteLineMock.CalledAsFollows(
    {
       _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value(),
-      "\nFailed because test took longer than -maxtestms= (10 ms)"s
+      "\nFailed because test took longer than -maxtestms=10 milliseconds"s
    }));
    ZEN(_consoleMock.WriteNewLineMock.CalledOnce());
 }

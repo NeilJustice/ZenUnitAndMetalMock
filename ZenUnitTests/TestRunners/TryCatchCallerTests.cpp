@@ -267,7 +267,7 @@ what(): "runtime_error_what")"));
       ZEN(GetArgs_ZenMock.CalledOnce());
       ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(
          String::Concat("Fatal ... exception. ", expectedExitMessage,
-            _testPhaseSuffix.c_str(), " (", _milliseconds, " ms)"), expectedExitCode));
+            _testPhaseSuffix.c_str(), " ", _milliseconds, "ms"), expectedExitCode));
       ARE_EQUAL(CallResult(), callResult);
    }
 

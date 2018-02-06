@@ -30,11 +30,14 @@ namespace ZenUnit
    const string ExpectedUsage = R"(ZenUnit v0.2.0
 Usage: <TestsBinaryName> [Options...]
 
-Output Options:
+Test Filtration Options:
 
--minimal
-   Print only preamble, any test failure details, and conclusion.
-   Default: Run all non-skipped tests while printing detailed information.
+-run=<TestClassNameA>[.TestNameA][,TestClassNameB.TestNameB,...]
+   Run only specified case-insensitive test class names and/or test names.
+   Add a '*' character to the end of a test class or test name
+   filter string to specify name-ends-with filtration.
+-failfast
+   Immediately exit with exit code 1 if a test fails.
 
 Utility Options:
 
@@ -46,15 +49,6 @@ Utility Options:
    when running tests in a post-build step.
 -wait
    Wait for any key at the end of the test run.
-
-Test Filtration Options:
-
--run=<TestClassNameA>[.TestNameA][,TestClassNameB.TestNameB,...]
-   Run only specified case-insensitive test class names and test names.
-   Add a '*' character at the end of the test class name filter
-   or test name filter to specify name-ends-with filtration.
--failfast
-   Immediately exit with exit code 1 if a test fails.
 
 Testing Rigor Options:
 
@@ -72,7 +66,7 @@ Testing Rigor Options:
    RunFilterParserMock* _runFilterParserMock = nullptr;
    ZENMOCK_NONVOID1_STATIC(unsigned, ZenUnit::String, ToUnsigned, const string&)
 
-      STARTUP
+   STARTUP
    {
       _argsParser._console.reset(_consoleMock = new ConsoleMock);
       _argsParser._runFilterParser.reset(_runFilterParserMock = new RunFilterParserMock);
@@ -164,10 +158,10 @@ Testing Rigor Options:
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
       //
       ZEN(ToUnsigned_ZenMock.CalledAsFollows(
-         {
-            to_string(testruns),
-            to_string(randomseed)
-         }));
+      {
+         to_string(testruns),
+         to_string(randomseed)
+      }));
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
       expectedZenUnitArgs.printMode = PrintMode::Detailed;

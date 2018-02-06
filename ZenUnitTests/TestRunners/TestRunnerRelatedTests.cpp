@@ -667,7 +667,8 @@ TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewableDele
    _consoleMock->NonMinimalWriteMock.Expect();
    if (expectWriteLineOK)
    {
-      _consoleMock->NonMinimalWriteLineMock.Expect();
+      _consoleMock->WriteColorMock.Expect();
+      _consoleMock->WriteLineMock.Expect();
    }
    TestMock testMock;
 
@@ -685,11 +686,11 @@ TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewableDele
    //
    ZEN(GetArgs_ZenMock.CalledOnce());
    ZEN(_consoleMock->NonMinimalWriteColorMock.CalledOnceWith("|", Color::Green, zenUnitArgs.printMode));
-   ZEN(_consoleMock->NonMinimalWriteMock.CalledOnceWith("TestClassIsNewableAndDeletable => ", zenUnitArgs.printMode));
+   ZEN(_consoleMock->NonMinimalWriteMock.CalledOnceWith("TestClassIsNewableAndDeletable -> ", zenUnitArgs.printMode));
    if (expectWriteLineOK)
    {
-      ZEN(_consoleMock->NonMinimalWriteLineMock.CalledOnceWith(
-         "OK (" + to_string(testResult.milliseconds) + " ms)", zenUnitArgs.printMode));
+      ZEN(_consoleMock->WriteColorMock.CalledOnceWith("OK ", Color::Green));
+      ZEN(_consoleMock->WriteLineMock.CalledOnceWith(String::Concat("(", testResult.milliseconds, "ms)")));
    }
    ZEN(testMock.RunMock.CalledOnce());
    ZEN(testClassResultMock.AddTestResultsMock.CalledOnceWith(testResults));

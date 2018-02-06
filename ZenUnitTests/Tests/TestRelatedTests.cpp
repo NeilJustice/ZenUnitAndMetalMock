@@ -227,7 +227,7 @@ TEST(NonMinimalWritePostTestNameMessage_WritesSpaceArrowSpace)
    //
    _normalTest->NonMinimalWritePostTestNameMessage(&consoleMock, printMode);
    //
-   ZEN(consoleMock.NonMinimalWriteMock.CalledOnceWith(" => ", printMode));
+   ZEN(consoleMock.NonMinimalWriteMock.CalledOnceWith(" -> ", printMode));
 }
 
 TEST(NonMinimalWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue)
@@ -351,7 +351,7 @@ unique_ptr<SpecSectionTestNXNSelfMocked> _specSectionTestNXNSelfMocked;
 STARTUP
 {
    _specSectionTestNXN = make_unique<SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests>>("", "", nullptr);
-_specSectionTestNXNSelfMocked = make_unique<SpecSectionTestNXNSelfMocked>();
+   _specSectionTestNXNSelfMocked = make_unique<SpecSectionTestNXNSelfMocked>();
 }
 
 TEST(ThreeArgConstructor_SetsTestName_SetsTestNXNPmf)
@@ -406,7 +406,7 @@ TEST2X2(NonMinimalWritePostTestNameMessage_WritesEllipsisIfPrintModeNotMinimal,
    //
    if (expectWriteLineCall)
    {
-      ZEN(consoleMock.WriteLineMock.CalledOnceWith("..."));
+      ZEN(consoleMock.WriteLineMock.CalledOnceWith(" -> "));
    }
 }
 
@@ -627,10 +627,10 @@ TEST(Run_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
    ZEN(GetArgs_ZenMock_SelfMocked.CalledOnce());
    ZEN(test1X1SelfMocked.MockableCallBaseRunTestCaseMock.CalledNTimes(2));
    ZEN(test1X1SelfMocked.NonMinimalWriteLineOKIfSuccessMock.CalledAsFollows(
-      {
-         { expectedFirstTestResult, zenUnitArgs.printMode },
+   {
+      { expectedFirstTestResult, zenUnitArgs.printMode },
       { expectedSecondTestResult, zenUnitArgs.printMode }
-      }));
+   }));
    const vector<TestResult> expectedTestResults =
    {
       expectedFirstTestResult,
@@ -719,18 +719,18 @@ TEST3X3(NonMinimalPrintTestCaseNumberArgsThenArrow_WritesTestCaseNumberArrow,
    _testNXN->NonMinimalPrintTestCaseNumberArgsThenArrow(testCaseIndex, splitTestCaseArgs, printMode);
    //
    ZEN(_consoleMock->NonMinimalWriteColorMock.CalledAsFollows(
-      {
-         { " [", Color::Green, printMode },
+   {
+      { " [", Color::Green, printMode },
       { "]", Color::Green, printMode }
-      }));
+   }));
    ZEN(_consoleMock->NonMinimalWriteStringsCommaSeparatedMock.CalledOnceWith(
       splitTestCaseArgs, expectedTestCaseArgsPrintingStartIndex, N, printMode));
    ZEN(_consoleMock->NonMinimalWriteMock.CalledAsFollows(
-      {
-         { to_string(expectedTestCaseNumber), printMode },
+   {
+      { to_string(expectedTestCaseNumber), printMode },
       { " ("s, printMode },
-      { ") => "s, printMode }
-      }));
+      { ") -> "s, printMode }
+   }));
 }
 
 TEST(NonMinimalWriteLineOKIfSuccess_CallsTestResultNonMinimalWriteLineOKIfSuccess)
@@ -884,11 +884,11 @@ TEST1X1(RunTestCase_ConstructorSucceeds_StartupFails_DoesNotCallTest_DoesNotCall
    const TestResult testResult = _test->RunTestCase();
    //
    ZEN(_tryCatchCallerMock->CallMock.CalledAsFollows(
-      {
-         { &Test::CallNewTestClass, _test.get(), TestPhase::Constructor },
+   {
+      { &Test::CallNewTestClass, _test.get(), TestPhase::Constructor },
       { &Test::CallStartup, _test.get(), TestPhase::Startup },
       { &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor }
-      }));
+   }));
    ZEN(_testResultFactoryMock->StartupFailMock.CalledOnceWith(
       _test->_fullTestName, constructorSuccessCallResult, startupFailCallResult, destructorCallResult));
    ARE_EQUAL(startupFailTestResult, testResult);
@@ -908,13 +908,13 @@ TEST(RunTestCase_AllTestPhasesSucceed_ReturnsExpectedTestResult)
    const TestResult testResult = _test->RunTestCase();
    //
    ZEN(_tryCatchCallerMock->CallMock.CalledAsFollows(
-      {
-         { &Test::CallNewTestClass, _test.get(), TestPhase::Constructor },
+   {
+      { &Test::CallNewTestClass, _test.get(), TestPhase::Constructor },
       { &Test::CallStartup, _test.get(), TestPhase::Startup },
       { &Test::CallTestBody, _test.get(), TestPhase::TestBody },
       { &Test::CallCleanup, _test.get(), TestPhase::Cleanup },
       { &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor }
-      }));
+   }));
    ZEN(_testResultFactoryMock->FullCtorMock.CalledOnceWith(
       _test->_fullTestName,
       CallResultWithOutcome(TestOutcome::Success),
