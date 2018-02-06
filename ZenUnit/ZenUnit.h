@@ -3493,20 +3493,22 @@ Testing Rigor Options:
          return milliseconds;
       }
 
-      virtual void NonMinimalPrintResultLine(const Console* console, PrintMode printMode) const
+      virtual void PrintTestClassResultLine(const Console* console) const
       {
          const size_t numberOfFailedTestCases = NumberOfFailedTestCases();
+         const unsigned milliseconds = Milliseconds();
+         const std::string millisecondsMessage = String::Concat("(", milliseconds, "ms)");
          if (numberOfFailedTestCases == 0)
          {
             console->Write("[  ");
-            console->NonMinimalWriteColor("OK", Color::Green, printMode);
-            console->Write("  ]");
+            console->WriteColor("OK", Color::Green);
+            console->Write("  ] " + millisecondsMessage);
          }
          else
          {
-            console->NonMinimalWriteColor("[TestClass Failed]", Color::Red, printMode);
+            console->WriteLineColor("[TestClass Failed] " + millisecondsMessage, Color::Red);
          }
-         console->NonMinimalWriteNewLine(printMode);
+         console->WriteNewLine();
       }
 
       virtual size_t NumberOfFailedTestCases() const
@@ -4289,6 +4291,12 @@ Testing Rigor Options:
    class OneArgMemberFunctionCaller
    {
    public:
+      virtual ReturnType ConstCall(
+         ClassType* classPointer, ReturnType(ClassType::*constMemberFunction)(Arg1Type) const, Arg1Type arg1) const
+      {
+         return (classPointer->*constMemberFunction)(arg1);
+      }
+
       virtual ReturnType NonConstCall(
          ClassType* classPointer, ReturnType (ClassType::*nonConstMemberFunction)(Arg1Type), Arg1Type arg1) const
       {
@@ -4813,8 +4821,8 @@ Testing Rigor Options:
       std::unique_ptr<const ZeroArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>>> _voidZeroArgFunctionCaller;
       std::unique_ptr<const TwoArgMemberFunctionCaller<
          bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>> _nonVoidTwoArgFunctionCaller;
-      std::unique_ptr<const TwoArgMemberFunctionCaller<
-         void, SpecificTestClassRunner<TestClassType>, const TestClassResult*, PrintMode>> _voidTwoArgFunctionCaller;
+      std::unique_ptr<const OneArgMemberFunctionCaller<
+         void, SpecificTestClassRunner<TestClassType>, const TestClassResult*>> _voidOneArgFunctionCaller;
       std::function<const ZenUnitArgs&()> call_TestRunner_GetArgs;
       const char* _testClassName;
       NewableDeletableTest<TestClassType> _newableDeletableTest;
@@ -4826,7 +4834,7 @@ Testing Rigor Options:
          , _twoArgMemberForEacher(std::make_unique<TwoArgMemberForEacherType>())
          , _voidZeroArgFunctionCaller(std::make_unique<ZeroArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>>>())
          , _nonVoidTwoArgFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>>())
-         , _voidTwoArgFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>, const TestClassResult*, PrintMode>>())
+         , _voidOneArgFunctionCaller(std::make_unique<OneArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>, const TestClassResult*>>())
          , call_TestRunner_GetArgs(TestRunner::GetArgs)
          , _testClassName(testClassName)
          , _newableDeletableTest(testClassName)
@@ -4861,8 +4869,8 @@ Testing Rigor Options:
          {
             _voidZeroArgFunctionCaller->NonConstCall(this, &SpecificTestClassRunner::DoRunTests);
          }
-         _voidTwoArgFunctionCaller->ConstCall(
-            this, &SpecificTestClassRunner::NonMinimalPrintResultLine, &_testClassResult, zenUnitArgs.printMode);
+         _voidOneArgFunctionCaller->ConstCall(
+            this, &SpecificTestClassRunner::PrintTestClassResultLine, &_testClassResult);
          _console->NonMinimalWriteNewLine(zenUnitArgs.printMode);
          return std::move(_testClassResult);
       }
@@ -4929,9 +4937,9 @@ Testing Rigor Options:
          }
       }
 
-      void NonMinimalPrintResultLine(const TestClassResult* testClassResult, PrintMode printMode) const
+      void PrintTestClassResultLine(const TestClassResult* testClassResult) const
       {
-         testClassResult->NonMinimalPrintResultLine(_console.get(), printMode);
+         testClassResult->PrintTestClassResultLine(_console.get());
       }
    };
 

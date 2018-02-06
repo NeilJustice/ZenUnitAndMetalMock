@@ -3,6 +3,9 @@
 template<typename ClassType, typename Arg1Type>
 struct VoidOneArgMemberFunctionCallerMock : public Zen::Mock<OneArgMemberFunctionCaller<void, ClassType, Arg1Type>>
 {
-   using VoidOneArgMemberFunctionType = void(ClassType::*)(Arg1Type);
-   ZENMOCK_VOID3_CONST(NonConstCall, ClassType*, VoidOneArgMemberFunctionType, Arg1Type)
+   using ConstMemberFunctionType = void(ClassType::*)(Arg1Type) const;
+   ZENMOCK_VOID3_CONST(ConstCall, ClassType*, ConstMemberFunctionType, Arg1Type)
+
+   using NonConstMemberFunctionType = void(ClassType::*)(Arg1Type);
+   ZENMOCK_VOID3_CONST(NonConstCall, ClassType*, NonConstMemberFunctionType, Arg1Type)
 };

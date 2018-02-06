@@ -96,8 +96,8 @@ AFACT(NumberOfFailedTestCases_ReturnsNumberOfNonSuccessTestsInTestResultsVector)
 AFACT(Milliseconds_EmptyTestResultsVector_Returns0)
 AFACT(Milliseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMilliseconds)
 AFACT(PrintTestFailures_PrintsJustTestFailedToConsole)
-AFACT(NonMinimalPrintResultLine_0FailedTest_WritesOKInGreen)
-FACTS(NonMinimalPrintResultLine_1OrMoreFailedTests_WritesFailedInRed)
+AFACT(PrintTestClassResultLine_0FailedTestCases_WritesOKInGreen)
+FACTS(PrintTestClassResultLine_1OrMoreFailedTests_WritesFailedInRed)
 AFACT(PrintTestResultIfFailure_CallsTestResultPrintIfFailure)
 AFACT(ZenUnitEqualizer_ThrowsIfTestResultsNotEqual)
 EVIDENCE
@@ -107,6 +107,7 @@ TestClassResult _testClassResult;
 struct TestClassResultSelfMocked : public Zen::Mock<TestClassResult>
 {
    ZENMOCK_NONVOID0_CONST(size_t, NumberOfFailedTestCases)
+   ZENMOCK_NONVOID0_CONST(unsigned, Milliseconds)
 } _testClassResultSelfMocked;
 
 TEST(CopyConstructor_CopiesForEacherAndTestResults)
@@ -230,53 +231,58 @@ TEST(Milliseconds_EmptyTestResultsVector_Returns0)
 TEST(Milliseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMilliseconds)
 {
    TestResult testResultA;
-   testResultA.milliseconds = 1;
+   testResultA.milliseconds = ZenUnit::Random<unsigned int>();
    TestResult testResultB;
-   testResultB.milliseconds = 2;
+   testResultB.milliseconds = ZenUnit::Random<unsigned int>();
    _testClassResult._testResults = { testResultA, testResultB };
    //
    const unsigned milliseconds = _testClassResult.Milliseconds();
    //
-   ARE_EQUAL(3, milliseconds);
+   ARE_EQUAL(testResultA.milliseconds + testResultB.milliseconds, milliseconds);
 }
 
-TEST(NonMinimalPrintResultLine_0FailedTest_WritesOKInGreen)
+TEST(PrintTestClassResultLine_0FailedTestCases_WritesOKInGreen)
 {
    _testClassResultSelfMocked.NumberOfFailedTestCasesMock.Return(0);
+   const unsigned milliseconds = ZenUnit::Random<unsigned>();
+   _testClassResultSelfMocked.MillisecondsMock.Return(milliseconds);
    ConsoleMock consoleMock;
    consoleMock.WriteMock.Expect();
-   consoleMock.NonMinimalWriteColorMock.Expect();
-   consoleMock.NonMinimalWriteNewLineMock.Expect();
-   const PrintMode printMode = Random<PrintMode>();
+   consoleMock.WriteColorMock.Expect();
+   consoleMock.WriteNewLineMock.Expect();
    //
-   _testClassResultSelfMocked.NonMinimalPrintResultLine(&consoleMock, printMode);
+   _testClassResultSelfMocked.PrintTestClassResultLine(&consoleMock);
    //
    ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnce());
+   ZEN(_testClassResultSelfMocked.MillisecondsMock.CalledOnce());
    ZEN(consoleMock.WriteMock.CalledAsFollows(
    {
       { "[  " },
-      { "  ]" }
+      { "  ] (" + to_string(milliseconds) + "ms)" }
    }));
-   ZEN(consoleMock.NonMinimalWriteColorMock.CalledOnceWith("OK", Color::Green, printMode));
-   ZEN(consoleMock.NonMinimalWriteNewLineMock.CalledOnceWith(printMode));
+   ZEN(consoleMock.WriteColorMock.CalledOnceWith("OK", Color::Green));
+   ZEN(consoleMock.WriteNewLineMock.CalledOnce());
 }
 
-TEST1X1(NonMinimalPrintResultLine_1OrMoreFailedTests_WritesFailedInRed,
+TEST1X1(PrintTestClassResultLine_1OrMoreFailedTests_WritesFailedInRed,
    size_t numberOfFailedTestCases,
    size_t(1),
    size_t(2),
    size_t(3))
 {
    _testClassResultSelfMocked.NumberOfFailedTestCasesMock.Return(numberOfFailedTestCases);
+   const unsigned milliseconds = ZenUnit::Random<unsigned>();
+   _testClassResultSelfMocked.MillisecondsMock.Return(milliseconds);
    ConsoleMock consoleMock;
-   consoleMock.NonMinimalWriteColorMock.Expect();
-   consoleMock.NonMinimalWriteNewLineMock.Expect();
-   const PrintMode printMode = Random<PrintMode>();
-   _testClassResultSelfMocked.NonMinimalPrintResultLine(&consoleMock, printMode);
+   consoleMock.WriteLineColorMock.Expect();
+   consoleMock.WriteNewLineMock.Expect();
+   //
+   _testClassResultSelfMocked.PrintTestClassResultLine(&consoleMock);
    //
    ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnce());
-   ZEN(consoleMock.NonMinimalWriteColorMock.CalledOnceWith("[TestClass Failed]", Color::Red, printMode));
-   ZEN(consoleMock.NonMinimalWriteNewLineMock.CalledOnceWith(printMode));
+   ZEN(_testClassResultSelfMocked.MillisecondsMock.CalledOnce());
+   ZEN(consoleMock.WriteLineColorMock.CalledOnceWith("[TestClass Failed] (" + to_string(milliseconds) + "ms)", Color::Red));
+   ZEN(consoleMock.WriteNewLineMock.CalledOnce());
 }
 
 TEST(PrintTestResultIfFailure_CallsTestResultPrintIfFailure)
