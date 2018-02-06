@@ -503,7 +503,6 @@ TEST(PrintTestClassResultLine_CallsTestClassResultPrintResultLine)
 {
    TestClassResultMock testClassResultMock;
    testClassResultMock.PrintTestClassResultLineMock.Expect();
-   const PrintMode printMode = ZenUnit::Random<PrintMode>();
    //
    _specificTestClassRunner->PrintTestClassResultLine(&testClassResultMock);
    //
