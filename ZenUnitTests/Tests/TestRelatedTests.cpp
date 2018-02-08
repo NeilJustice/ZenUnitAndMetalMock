@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestResultMock.h"
-#include "ZenUnitTests/Random/RandomPrintMode.h"
 #include "ZenUnitTests/Tests/TestingTestClass.h"
 #include "ZenUnitTests/Results/Mock/TestResultFactoryMock.h"
 #include "ZenUnitTests/TestRunners/Mock/TryCatchCallerMock.h"
@@ -10,7 +9,6 @@
 #include "ZenUnitTests/Tests/Mock/TestMock.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestResultMock.h"
-#include "ZenUnitTests/Random/RandomPrintMode.h"
 #include "ZenUnitTests/Tests/TestingTestClass.h"
 #include "ZenUnitTests/Results/Mock/TestResultFactoryMock.h"
 #include "ZenUnitTests/Results/Mock/TestResultMock.h"
@@ -194,8 +192,8 @@ TEST(NewAndDeleteTestClass_NewsAndDeleteFirstInstanceOfTestClass)
 
 TESTS(NormalTestTests)
 AFACT(NumberOfTestCases_Returns1)
-AFACT(NonMinimalWritePostTestNameMessage_WritesSpaceArrowSpace)
-AFACT(NonMinimalWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue)
+AFACT(WritePostTestNameMessage_WritesSpaceArrowSpace)
+AFACT(WritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue)
 AFACT(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)
 AFACT(NewTestClass_NewsTestClass)
 AFACT(Startup_CallsStartupOnTestClass)
@@ -219,27 +217,25 @@ TEST(NumberOfTestCases_Returns1)
    ARE_EQUAL(1, _normalTest->NumberOfTestCases());
 }
 
-TEST(NonMinimalWritePostTestNameMessage_WritesSpaceArrowSpace)
+TEST(WritePostTestNameMessage_WritesSpaceArrowSpace)
 {
    ConsoleMock consoleMock;
-   consoleMock.NonMinimalWriteMock.Expect();
-   const PrintMode printMode = Random<PrintMode>();
+   consoleMock.WriteMock.Expect();
    //
-   _normalTest->NonMinimalWritePostTestNameMessage(&consoleMock, printMode);
+   _normalTest->WritePostTestNameMessage(&consoleMock);
    //
-   ZEN(consoleMock.NonMinimalWriteMock.CalledOnceWith(" -> ", printMode));
+   ZEN(consoleMock.WriteMock.CalledOnceWith(" -> "));
 }
 
-TEST(NonMinimalWritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue)
+TEST(WritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue)
 {
    ConsoleMock consoleMock;
    TestResultMock testResultMock;
-   testResultMock.NonMinimalWriteLineOKIfSuccessMock.Expect();
-   const PrintMode printMode = Random<PrintMode>();
+   testResultMock.WriteLineOKIfSuccessMock.Expect();
    //
-   _normalTest->NonMinimalWritePostTestCompletionMessage(&consoleMock, testResultMock, printMode);
+   _normalTest->WritePostTestCompletionMessage(&consoleMock, testResultMock);
    //
-   ZEN(testResultMock.NonMinimalWriteLineOKIfSuccessMock.CalledOnceWith(&consoleMock, printMode));
+   ZEN(testResultMock.WriteLineOKIfSuccessMock.CalledOnceWith(&consoleMock));
 }
 
 TEST(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)
@@ -329,7 +325,7 @@ unique_ptr<Test> TestingTestClass_SpecSectionTestNXNTests::TestNXNPmfToTestRetur
 TESTS(SpecSectionTestNXNTests)
 AFACT(ThreeArgConstructor_SetsTestName_SetsTestNXNPmf)
 FACTS(NumberOfTestCases_GetsTestFromAddress_ReturnsTestNumberOfTestCases)
-FACTS(NonMinimalWritePostTestNameMessage_WritesEllipsisIfPrintModeNotMinimal)
+AFACT(WritePostTestNameMessage_WritesEllipsis)
 AFACT(Run_GetsTestFromAddress_RunsTest_ReturnsTestResults)
 AFACT(PmfTokenToTest_ReturnsTestClassTypeTestNXNPmfToTestReturnValue);
 AFACT(TestFunction_CodeCoverage)
@@ -390,24 +386,14 @@ TEST1X1(NumberOfTestCases_GetsTestFromAddress_ReturnsTestNumberOfTestCases,
    ARE_EQUAL(testNumberOfTestCases, numberOfTestCases);
 }
 
-TEST2X2(NonMinimalWritePostTestNameMessage_WritesEllipsisIfPrintModeNotMinimal,
-   PrintMode printMode, bool expectWriteLineCall,
-   PrintMode::Minimal, false,
-   PrintMode::Normal, true,
-   PrintMode::Detailed, true)
+TEST(WritePostTestNameMessage_WritesEllipsis)
 {
    ConsoleMock consoleMock;
-   if (expectWriteLineCall)
-   {
-      consoleMock.WriteLineMock.Expect();
-   }
+   consoleMock.WriteLineMock.Expect();
    //
-   _specSectionTestNXN->NonMinimalWritePostTestNameMessage(&consoleMock, printMode);
+   _specSectionTestNXN->WritePostTestNameMessage(&consoleMock);
    //
-   if (expectWriteLineCall)
-   {
-      ZEN(consoleMock.WriteLineMock.CalledOnceWith(" -> "));
-   }
+   ZEN(consoleMock.WriteLineMock.CalledOnceWith("..."));
 }
 
 TEST(Run_GetsTestFromAddress_RunsTest_ReturnsTestResults)
@@ -505,8 +491,8 @@ AFACT(TestBody_CallsRunNXNTestCase)
 AFACT(RunNXNTestCase_DoesNothing)
 AFACT(Cleanup_CallsCleanup)
 AFACT(DeleteTestClass_DeletesTestClass)
-FACTS(NonMinimalPrintTestCaseNumberArgsThenArrow_WritesTestCaseNumberArrow)
-AFACT(NonMinimalWriteLineOKIfSuccess_CallsTestResultNonMinimalWriteLineOKIfSuccess)
+FACTS(PrintTestCaseNumberArgsThenArrow_WritesTestCaseNumberArrow)
+AFACT(WriteLineOKIfSuccess_CallsTestResultWriteLineOKIfSuccess)
 EVIDENCE
 
 unique_ptr<TestNXN<TestingTestClass, N, int>> _testNXN;
@@ -582,21 +568,13 @@ TEST(Run_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
    struct Test1X1SelfMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
    {
       ZENMOCK_NONVOID0(TestResult, MockableCallBaseRunTestCase)
-      ZENMOCK_VOID3_CONST(NonMinimalPrintTestCaseNumberArgsThenArrow, unsigned short, const vector<string>&, PrintMode)
-      ZENMOCK_VOID2_CONST(NonMinimalWriteLineOKIfSuccess, const TestResult&, PrintMode)
+      ZENMOCK_VOID2_CONST(PrintTestCaseNumberArgsThenArrow, unsigned short, const vector<string>&)
+      ZENMOCK_VOID1_CONST(WriteLineOKIfSuccess, const TestResult&)
       Test1X1SelfMocked()
-      : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>("", "", "", 0, 0) {}
+         : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>("", "", "", 0, 0) {}
    } test1X1SelfMocked;
 
    ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs, _SelfMocked);
-   const ZenUnitArgs zenUnitArgs = []
-   {
-      ZenUnitArgs zenUnitArgs;
-      zenUnitArgs.printMode = Random<PrintMode>();
-      return zenUnitArgs;
-   }();
-   GetArgs_ZenMock_SelfMocked.Return(zenUnitArgs);
-   test1X1SelfMocked.call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock_SelfMocked);
 
    ZENMOCK_NONVOID0_STATIC(vector<string>, ZenUnit::String, CommaSplitExceptQuotedCommas, _SelfMocked);
    const vector<string> splitTestCaseArgs = { "1", "2", "3" };
@@ -604,32 +582,31 @@ TEST(Run_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
    test1X1SelfMocked.call_String_CommaSplitExceptQuotedCommas
       = ZENMOCK_BIND0(CommaSplitExceptQuotedCommas_ZenMock_SelfMocked);
 
-   test1X1SelfMocked.NonMinimalPrintTestCaseNumberArgsThenArrowMock.Expect();
+   test1X1SelfMocked.PrintTestCaseNumberArgsThenArrowMock.Expect();
    TestResult firstTestResult;
    firstTestResult.fullTestName.testName = "FirstTest";
    TestResult secondTestResult;
    secondTestResult.fullTestName.testName = "SecondTest";
    test1X1SelfMocked.MockableCallBaseRunTestCaseMock.ReturnValues(firstTestResult, secondTestResult);
-   test1X1SelfMocked.NonMinimalWriteLineOKIfSuccessMock.Expect();
+   test1X1SelfMocked.WriteLineOKIfSuccessMock.Expect();
    //
    const vector<TestResult> testResults = test1X1SelfMocked.Run();
    //
    ZEN(CommaSplitExceptQuotedCommas_ZenMock_SelfMocked.CalledOnce());
-   ZEN(test1X1SelfMocked.NonMinimalPrintTestCaseNumberArgsThenArrowMock.CalledAsFollows(
-      {
-         { 0, splitTestCaseArgs, zenUnitArgs.printMode },
-      { 1, splitTestCaseArgs, zenUnitArgs.printMode }
-      }));
+   ZEN(test1X1SelfMocked.PrintTestCaseNumberArgsThenArrowMock.CalledAsFollows(
+   {
+      { 0, splitTestCaseArgs },
+      { 1, splitTestCaseArgs }
+   }));
    TestResult expectedFirstTestResult = firstTestResult;
    expectedFirstTestResult.testCaseIndex = 0;
    TestResult expectedSecondTestResult = secondTestResult;
    expectedSecondTestResult.testCaseIndex = 1;
-   ZEN(GetArgs_ZenMock_SelfMocked.CalledOnce());
    ZEN(test1X1SelfMocked.MockableCallBaseRunTestCaseMock.CalledNTimes(2));
-   ZEN(test1X1SelfMocked.NonMinimalWriteLineOKIfSuccessMock.CalledAsFollows(
+   ZEN(test1X1SelfMocked.WriteLineOKIfSuccessMock.CalledAsFollows(
    {
-      { expectedFirstTestResult, zenUnitArgs.printMode },
-      { expectedSecondTestResult, zenUnitArgs.printMode }
+      { expectedFirstTestResult },
+      { expectedSecondTestResult }
    }));
    const vector<TestResult> expectedTestResults =
    {
@@ -704,45 +681,42 @@ TEST(DeleteTestClass_DeletesTestClass)
    IS_TRUE(TestingTestClass::s_destructorCalled);
 }
 
-TEST3X3(NonMinimalPrintTestCaseNumberArgsThenArrow_WritesTestCaseNumberArrow,
+TEST3X3(PrintTestCaseNumberArgsThenArrow_WritesTestCaseNumberArrow,
    unsigned short testCaseIndex, int expectedTestCaseNumber, size_t expectedTestCaseArgsPrintingStartIndex,
    static_cast<unsigned short>(0), 1, size_t(0),
    static_cast<unsigned short>(1), 2, size_t(1),
    static_cast<unsigned short>(2), 3, size_t(2))
 {
-   _consoleMock->NonMinimalWriteColorMock.Expect();
-   _consoleMock->NonMinimalWriteMock.Expect();
-   _consoleMock->NonMinimalWriteStringsCommaSeparatedMock.Expect();
-   const PrintMode printMode = Random<PrintMode>();
-   vector<string> splitTestCaseArgs = { "Arg0", "Argument1" };
+   _consoleMock->WriteColorMock.Expect();
+   _consoleMock->WriteMock.Expect();
+   _consoleMock->WriteStringsCommaSeparatedMock.Expect();
+   const vector<string> splitTestCaseArgs = { "Arg0", "Argument1" };
    //
-   _testNXN->NonMinimalPrintTestCaseNumberArgsThenArrow(testCaseIndex, splitTestCaseArgs, printMode);
+   _testNXN->PrintTestCaseNumberArgsThenArrow(testCaseIndex, splitTestCaseArgs);
    //
-   ZEN(_consoleMock->NonMinimalWriteColorMock.CalledAsFollows(
+   ZEN(_consoleMock->WriteColorMock.CalledAsFollows(
    {
-      { " [", Color::Green, printMode },
-      { "]", Color::Green, printMode }
+      { " [", Color::Green },
+      { "]", Color::Green }
    }));
-   ZEN(_consoleMock->NonMinimalWriteStringsCommaSeparatedMock.CalledOnceWith(
-      splitTestCaseArgs, expectedTestCaseArgsPrintingStartIndex, N, printMode));
-   ZEN(_consoleMock->NonMinimalWriteMock.CalledAsFollows(
+   ZEN(_consoleMock->WriteStringsCommaSeparatedMock.CalledOnceWith(
+      splitTestCaseArgs, expectedTestCaseArgsPrintingStartIndex, N));
+   ZEN(_consoleMock->WriteMock.CalledAsFollows(
    {
-      { to_string(expectedTestCaseNumber), printMode },
-      { " ("s, printMode },
-      { ") -> "s, printMode }
+      { to_string(expectedTestCaseNumber) },
+      { " ("s },
+      { ") -> "s }
    }));
 }
 
-TEST(NonMinimalWriteLineOKIfSuccess_CallsTestResultNonMinimalWriteLineOKIfSuccess)
+TEST(WriteLineOKIfSuccess_CallsTestResultWriteLineOKIfSuccess)
 {
    TestResultMock testResultMock;
-   testResultMock.NonMinimalWriteLineOKIfSuccessMock.Expect();
-   const PrintMode printMode = Random<PrintMode>();
+   testResultMock.WriteLineOKIfSuccessMock.Expect();
    //
-   _testNXN->NonMinimalWriteLineOKIfSuccess(testResultMock, printMode);
+   _testNXN->WriteLineOKIfSuccess(testResultMock);
    //
-   ZEN(testResultMock.NonMinimalWriteLineOKIfSuccessMock.
-      CalledOnceWith(_testNXN->_console.get(), printMode));
+   ZEN(testResultMock.WriteLineOKIfSuccessMock.CalledOnceWith(_testNXN->_console.get()));
 }
 
 }; RUN_TESTS(TestNXNTests)
@@ -783,7 +757,7 @@ AFACT(TwoArgConstructor_NewsComponents_SetsFullName_NameFunctionReturnsTestName)
 FACTS(RunTestCase_ConstructorFails_DoesNotCallSubsequentTestPhases_ReturnsTestResultConstructorFail)
 FACTS(RunTestCase_ConstructorSucceeds_StartupFails_DoesNotCallTest_DoesNotCallCleanup_CallsDestructor_ReturnsTestResultStartupFail)
 AFACT(RunTestCase_AllTestPhasesSucceed_ReturnsExpectedTestResult)
-AFACT(NonMinimalWritePostTestNameMessage_DoesNothing)
+AFACT(WritePostTestNameMessage_DoesNothing)
 AFACT(PrintPostTestCompletionMessage_DoesNothing)
 AFACT(StaticCallNewTestClass_CallsNewTestClass)
 AFACT(StaticCallStartup_CallsStartup)
@@ -825,19 +799,17 @@ TEST(TwoArgConstructor_NewsComponents_SetsFullName_NameFunctionReturnsTestName)
    ARE_EQUAL(test._fileLine.ToString(), test.FileLineString());
 }
 
-TEST(NonMinimalWritePostTestNameMessage_DoesNothing)
+TEST(WritePostTestNameMessage_DoesNothing)
 {
-   _test->NonMinimalWritePostTestNameMessage(nullptr, PrintMode::Minimal);
-   _test->NonMinimalWritePostTestNameMessage(nullptr, PrintMode::Normal);
-   _test->NonMinimalWritePostTestNameMessage(nullptr, PrintMode::Detailed);
+   _test->WritePostTestNameMessage(nullptr);
+   _test->WritePostTestNameMessage(nullptr);
 }
 
 TEST(PrintPostTestCompletionMessage_DoesNothing)
 {
    TestResultMock testResultMock;
-   _test->NonMinimalWritePostTestCompletionMessage(nullptr, testResultMock, PrintMode::Minimal);
-   _test->NonMinimalWritePostTestCompletionMessage(nullptr, testResultMock, PrintMode::Normal);
-   _test->NonMinimalWritePostTestCompletionMessage(nullptr, testResultMock, PrintMode::Detailed);
+   _test->WritePostTestCompletionMessage(nullptr, testResultMock);
+   _test->WritePostTestCompletionMessage(nullptr, testResultMock);
 }
 
 static CallResult CallResultWithOutcome(TestOutcome testOutcome)

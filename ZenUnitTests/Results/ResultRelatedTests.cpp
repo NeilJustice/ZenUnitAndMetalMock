@@ -3,7 +3,6 @@
 #include "ZenUnitTests/Results/Mock/TestResultMock.h"
 #include "ZenUnitTests/Results/Mock/TestFailureNumbererMock.h"
 #include "ZenUnitTests/Results/Mock/TestClassResultMock.h"
-#include "ZenUnitTests/Random/RandomPrintMode.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/MemberForEacherMock.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/ThreeArgForEacherMock.h"
 
@@ -427,7 +426,7 @@ FACTS(ConstructorFail_ReturnsExpectedTestResult)
 FACTS(StartupFail_ReturnsExpectedTestResult)
 AFACT(CtorDtorSuccess_ReturnsExpectedTestResult);
 FACTS(SixArgConstructor_SetsFields)
-FACTS(NonMinimalWriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess)
+FACTS(WriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess)
 AFACT(PrintIfFailure_Success_PrintsNothing)
 FACTS(PrintIfFailure_Anomaly_PrintsExpected)
 FACTS(PrintIfFailure_Exception_PrintsExpected)
@@ -607,25 +606,13 @@ TEST6X6(SixArgConstructor_SetsFields,
    ARE_EQUAL(expectedTestResult, testResult);
 }
 
-TEST3X3(NonMinimalWriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess,
-   PrintMode printMode, TestOutcome testOutcome, bool expectWriteLineOK,
-   PrintMode::Minimal, TestOutcome::Success, false,
-   PrintMode::Minimal, TestOutcome::Anomaly, false,
-   PrintMode::Minimal, TestOutcome::Exception, false,
-   PrintMode::Minimal, TestOutcome::SuccessButPastDeadline, false,
-   PrintMode::Minimal, TestOutcome::Unset, false,
-
-   PrintMode::Normal, TestOutcome::Success, true,
-   PrintMode::Normal, TestOutcome::Anomaly, false,
-   PrintMode::Normal, TestOutcome::Exception, false,
-   PrintMode::Normal, TestOutcome::SuccessButPastDeadline, false,
-   PrintMode::Normal, TestOutcome::Unset, false,
-
-   PrintMode::Detailed, TestOutcome::Success, true,
-   PrintMode::Detailed, TestOutcome::Anomaly, false,
-   PrintMode::Detailed, TestOutcome::Exception, false,
-   PrintMode::Detailed, TestOutcome::SuccessButPastDeadline, false,
-   PrintMode::Detailed, TestOutcome::Unset, false)
+TEST2X2(WriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess,
+   TestOutcome testOutcome, bool expectWriteLineOK,
+   TestOutcome::Success, true,
+   TestOutcome::Anomaly, false,
+   TestOutcome::Exception, false,
+   TestOutcome::SuccessButPastDeadline, false,
+   TestOutcome::Unset, false)
 {
    _testResult.testOutcome = testOutcome;
    if (expectWriteLineOK)
@@ -636,7 +623,7 @@ TEST3X3(NonMinimalWriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess,
    const unsigned milliseconds = ZenUnit::Random<unsigned>();
    _testResult.milliseconds = milliseconds;
    //
-   _testResult.NonMinimalWriteLineOKIfSuccess(&_consoleMock, printMode);
+   _testResult.WriteLineOKIfSuccess(&_consoleMock);
    //
    if (expectWriteLineOK)
    {

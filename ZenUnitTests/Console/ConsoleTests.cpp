@@ -14,15 +14,11 @@ namespace ZenUnit
    TESTS(ConsoleTests)
    AFACT(Constructor_NewsConsoleColorer_SetsFunctionPointers)
    AFACT(Write_CallsWriteColorWithWhite)
-   FACTS(NonMinimalWrite_CallsWriteColorIfPrintModeNotMinimal)
    FACTS(WriteColor_WritesMessageInSpecifiedColor)
-   FACTS(NonMinimalWriteColor_CallsWriteColorIfPrintModeNotMinimal)
    AFACT(WriteLine_CallsWriteLineWithWhite)
-   FACTS(NonMinimalWriteNewLine_CallsWriteLineWithWhite)
-   FACTS(NonMinimalWriteLine_CallsWriteLineIfPrintModeNotMinimal)
    FACTS(WriteLineColor_WritesMessageInSpecifiedColorThenNewLine)
    FACTS(WriteLineAndExit_CallsWriteLineAndExit)
-   FACTS(NonMinimalWriteStringsCommaSeparated_PrintModeNotMinimal_CallsDoWriteStringsCommaSeparated)
+   AFACT(WriteStringsCommaSeparated_CallsDoWriteStringsCommaSeparated)
    FACTS(DoWriteStringsCommaSeparated_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset)
    FACTS(WaitForAnyKeyIfDebuggerPresentOrValueTrue_WritesPressAnyKeyAndGetsCharIfDebuggerPresentOrValueTrue)
 #if defined _WIN32
@@ -75,29 +71,6 @@ namespace ZenUnit
       ZEN(_consoleSelfMocked.WriteColorMock.CalledOnceWith(Message, Color::White));
    }
 
-   TEST2X2(NonMinimalWrite_CallsWriteColorIfPrintModeNotMinimal,
-      PrintMode printMode, bool expectWriteCall,
-      PrintMode::Minimal, false,
-      PrintMode::Normal, true,
-      PrintMode::Detailed, true)
-   {
-      struct ConsoleSelfMock_Write : public Zen::Mock<Console>
-      {
-         ZENMOCK_VOID1_CONST(Write, const string&)
-      } consoleSelfMock_Write;
-      if (expectWriteCall)
-      {
-         consoleSelfMock_Write.WriteMock.Expect();
-      }
-      //
-      consoleSelfMock_Write.NonMinimalWrite(Message, printMode);
-      //
-      if (expectWriteCall)
-      {
-         ZEN(consoleSelfMock_Write.WriteMock.CalledOnceWith(Message));
-      }
-   }
-
    TEST2X2(WriteColor_WritesMessageInSpecifiedColor,
       Color color, bool setColorReturnValue,
       Color::Green, false,
@@ -116,29 +89,6 @@ namespace ZenUnit
       ZEN(_consoleColorerMock->UnsetColorMock.CalledOnceWith(setColorReturnValue));
    }
 
-   TEST2X2(NonMinimalWriteColor_CallsWriteColorIfPrintModeNotMinimal,
-      PrintMode printMode, bool expectWriteColorCall,
-      PrintMode::Minimal, false,
-      PrintMode::Normal, true,
-      PrintMode::Detailed, true)
-   {
-      struct ConsoleSelfMock_WriteColor : public Zen::Mock<Console>
-      {
-         ZENMOCK_VOID2_CONST(WriteColor, const string&, Color)
-      } consoleSelfMock_WriteColor;
-      if (expectWriteColorCall)
-      {
-         consoleSelfMock_WriteColor.WriteColorMock.Expect();
-      }
-      //
-      consoleSelfMock_WriteColor.NonMinimalWriteColor(Message, Color::Green, printMode);
-      //
-      if (expectWriteColorCall)
-      {
-         ZEN(consoleSelfMock_WriteColor.WriteColorMock.CalledOnceWith(Message, Color::Green));
-      }
-   }
-
    TEST(WriteLine_CallsWriteLineWithWhite)
    {
       _consoleSelfMocked.WriteLineColorMock.Expect();
@@ -146,48 +96,6 @@ namespace ZenUnit
       _consoleSelfMocked.WriteLine(Message);
       //
       ZEN(_consoleSelfMocked.WriteLineColorMock.CalledOnceWith(Message, Color::White));
-   }
-
-   TEST2X2(NonMinimalWriteNewLine_CallsWriteLineWithWhite,
-      PrintMode printMode, bool expectWriteNewLineCall,
-      PrintMode::Minimal, false,
-      PrintMode::Normal, true,
-      PrintMode::Detailed, true)
-   {
-      if (expectWriteNewLineCall)
-      {
-         _consoleSelfMocked.WriteNewLineMock.Expect();
-      }
-      //
-      _consoleSelfMocked.NonMinimalWriteNewLine(printMode);
-      //
-      if (expectWriteNewLineCall)
-      {
-         ZEN(_consoleSelfMocked.WriteNewLineMock.CalledOnce());
-      }
-   }
-
-   TEST2X2(NonMinimalWriteLine_CallsWriteLineIfPrintModeNotMinimal,
-      PrintMode printMode, bool expectWriteLineCall,
-      PrintMode::Minimal, false,
-      PrintMode::Normal, true,
-      PrintMode::Detailed, true)
-   {
-      struct ConsoleSelfMock_WriteColor : public Zen::Mock<Console>
-      {
-         ZENMOCK_VOID1_CONST(WriteLine, const string&)
-      } consoleSelfMock_WriteLine;
-      if (expectWriteLineCall)
-      {
-         consoleSelfMock_WriteLine.WriteLineMock.Expect();
-      }
-      //
-      consoleSelfMock_WriteLine.NonMinimalWriteLine(Message, printMode);
-      //
-      if (expectWriteLineCall)
-      {
-         ZEN(consoleSelfMock_WriteLine.WriteLineMock.CalledOnceWith(Message));
-      }
    }
 
    TEST2X2(WriteLineColor_WritesMessageInSpecifiedColorThenNewLine,
@@ -222,31 +130,20 @@ namespace ZenUnit
       ZEN(exit_ZenMock.CalledOnceWith(exitCode));
    }
 
-   TEST2X2(NonMinimalWriteStringsCommaSeparated_PrintModeNotMinimal_CallsDoWriteStringsCommaSeparated,
-      PrintMode printMode, bool expectDoWriteCall,
-      PrintMode::Minimal, false,
-      PrintMode::Normal, true,
-      PrintMode::Detailed, true)
+   TEST(WriteStringsCommaSeparated_CallsDoWriteStringsCommaSeparated)
    {
       struct ConsoleSelfMocked : public Zen::Mock<Console>
       {
          ZENMOCK_VOID3_CONST(DoWriteStringsCommaSeparated, const vector<string>&, size_t, size_t)
       } consoleSelfMocked;
-
       vector<string> strings = { Random<string>() };
       const size_t startIndex = Random<size_t>();
       const size_t numberOfElements = Random<size_t>();
-      if (expectDoWriteCall)
-      {
-         consoleSelfMocked.DoWriteStringsCommaSeparatedMock.Expect();
-      }
+      consoleSelfMocked.DoWriteStringsCommaSeparatedMock.Expect();
       //
-      consoleSelfMocked.NonMinimalWriteStringsCommaSeparated(strings, startIndex, numberOfElements, printMode);
+      consoleSelfMocked.WriteStringsCommaSeparated(strings, startIndex, numberOfElements);
       //
-      if (expectDoWriteCall)
-      {
-         consoleSelfMocked.DoWriteStringsCommaSeparatedMock.CalledOnceWith(strings, startIndex, numberOfElements);
-      }
+      consoleSelfMocked.DoWriteStringsCommaSeparatedMock.CalledOnceWith(strings, startIndex, numberOfElements);
    }
 
    TEST4X4(DoWriteStringsCommaSeparated_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset,

@@ -13,7 +13,6 @@ namespace ZenUnit
    FACTS(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1)
    FACTS(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0)
    AFACT(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
-   FACTS(Parse_MinimalOrDetailed_ReturnsExpectedZenUnitArgs)
    AFACT(Parse_Run_ReturnsExpectedZenUnitArgs)
    AFACT(Parse_Random_SetsRandomToTrue)
    AFACT(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
@@ -27,7 +26,7 @@ namespace ZenUnit
    EVIDENCE
 
    const string TestProgramPath = Random<string>();
-   const string ExpectedUsage = R"(ZenUnit v0.2.0
+   const string ExpectedUsage = R"(ZenUnit and ZenMock v0.2.0
 Usage: <TestsBinaryName> [Options...]
 
 Test Filtration Options:
@@ -144,8 +143,6 @@ Testing Rigor Options:
       const vector<string> Args
       {
          TestProgramPath,
-         "-minimal",
-         "-detailed",
          "-pause",
          "-wait",
          "-exit0",
@@ -164,7 +161,6 @@ Testing Rigor Options:
       }));
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
-      expectedZenUnitArgs.printMode = PrintMode::Detailed;
       expectedZenUnitArgs.pause = true;
       expectedZenUnitArgs.wait = true;
       expectedZenUnitArgs.exit0 = true;
@@ -175,20 +171,6 @@ Testing Rigor Options:
       expectedZenUnitArgs.testruns = testruns;
       expectedZenUnitArgs.randomseed = static_cast<unsigned short>(randomseed);
       expectedZenUnitArgs.randomseedsetbyuser = true;
-      ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
-   }
-
-   TEST2X2(Parse_MinimalOrDetailed_ReturnsExpectedZenUnitArgs,
-      const vector<string>& args, PrintMode expectedPrintMode,
-      vector<string>{ "ExePath" }, PrintMode::Normal,
-      vector<string>{ "ExePath", "-minimal" }, PrintMode::Minimal,
-      vector<string>{ "ExePath", "-detailed" }, PrintMode::Detailed)
-   {
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
-      //
-      ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
-      expectedZenUnitArgs.printMode = expectedPrintMode;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
@@ -522,7 +504,6 @@ TEST(DefaultConstructor_SetsFieldsToDefaults)
 {
    ZenUnitArgs zenUnitArgs;
    ARE_EQUAL("", zenUnitArgs.commandLine);
-   ARE_EQUAL(PrintMode::Normal, zenUnitArgs.printMode);
    IS_EMPTY(zenUnitArgs.runFilters);
    IS_FALSE(zenUnitArgs.wait);
    IS_FALSE(zenUnitArgs.exit0);
@@ -540,7 +521,6 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
 {
    SETUP_EQUALIZER_THROWS_TEST(ZenUnitArgs);
    EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, commandLine, "ZenUnitTests.exe");
-   EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, printMode, PrintMode::Minimal);
    EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, runFilters, vector<RunFilter> { RunFilter() });
    EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, pause, true);
    EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, wait, true);

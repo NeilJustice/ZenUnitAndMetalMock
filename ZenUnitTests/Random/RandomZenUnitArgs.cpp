@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "ZenUnitTests/Random/RandomRunFilter.h"
-#include "ZenUnitTests/Random/RandomPrintMode.h"
 #include "ZenUnitTests/Random/RandomZenUnitArgs.h"
 
 namespace ZenUnit
@@ -10,7 +9,6 @@ namespace ZenUnit
    {
       ZenUnitArgs randomZenUnitArgs;
       randomZenUnitArgs.commandLine = ZenUnit::Random<string>();
-      randomZenUnitArgs.printMode = ZenUnit::Random<PrintMode>();
       randomZenUnitArgs.runFilters.resize(ZenUnit::Random<size_t>(0, 2));
       for (RunFilter& runFilter : randomZenUnitArgs.runFilters)
       {

@@ -2,6 +2,6 @@
 
 struct TestResultMock : public Zen::Mock<TestResult>
 {
-   ZENMOCK_VOID2_CONST(NonMinimalWriteLineOKIfSuccess, const Console*, PrintMode)
+   ZENMOCK_VOID1_CONST(WriteLineOKIfSuccess, const Console*)
    ZENMOCK_VOID2_CONST(PrintIfFailure, const Console*, TestFailureNumberer*)
 };

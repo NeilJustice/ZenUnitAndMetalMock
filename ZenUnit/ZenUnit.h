@@ -352,14 +352,6 @@ namespace ZenUnit
       WholeLines
    };
 
-   enum class PrintMode : unsigned char
-   {
-      Unset,
-      Minimal,
-      Normal,
-      Detailed
-   };
-
    enum class TestOutcome : unsigned char
    {
       Unset,
@@ -678,7 +670,6 @@ namespace ZenUnit
    struct ZenUnitArgs
    {
       std::string commandLine;
-      PrintMode printMode = PrintMode::Normal;
       std::vector<RunFilter> runFilters;
       bool pause = false;
       bool wait = false;
@@ -699,9 +690,9 @@ namespace ZenUnit
 #endif
 #elif defined(_WIN64)
 #if defined _DEBUG
-   static_assert(sizeof(ZenUnitArgs) == 112);
+   static_assert(sizeof(ZenUnitArgs) == 104);
 #elif NDEBUG
-   static_assert(sizeof(ZenUnitArgs) == 96);
+   static_assert(sizeof(ZenUnitArgs) == 88);
 #endif
 #endif
 
@@ -847,14 +838,6 @@ namespace ZenUnit
          WriteColor(message, Color::White);
       }
 
-      virtual void NonMinimalWrite(const std::string& message, PrintMode printMode) const
-      {
-         if (printMode != PrintMode::Minimal)
-         {
-            Write(message);
-         }
-      }
-
       virtual void WriteColor(const std::string& message, Color color) const
       {
          const bool didSetColor = _consoleColorer->SetColor(color);
@@ -863,25 +846,9 @@ namespace ZenUnit
          _consoleColorer->UnsetColor(didSetColor);
       }
 
-      virtual void NonMinimalWriteColor(const std::string& message, Color color, PrintMode printMode) const
-      {
-         if (printMode != PrintMode::Minimal)
-         {
-            WriteColor(message, color);
-         }
-      }
-
       virtual void WriteLine(const std::string& message) const
       {
          WriteLineColor(message, Color::White);
-      }
-
-      virtual void NonMinimalWriteLine(const std::string& message, PrintMode printMode) const
-      {
-         if (printMode != PrintMode::Minimal)
-         {
-            WriteLine(message);
-         }
       }
 
       virtual void WriteLineColor(const std::string& message, Color color) const
@@ -900,27 +867,16 @@ namespace ZenUnit
          printf("\n");
       }
 
-      virtual void NonMinimalWriteNewLine(PrintMode printMode) const
-      {
-         if (printMode != PrintMode::Minimal)
-         {
-            WriteNewLine();
-         }
-      }
-
       virtual void WriteLineAndExit(const std::string& message, int exitCode) const
       {
          std::cout << message << '\n';
          call_exit(exitCode);
       }
 
-      virtual void NonMinimalWriteStringsCommaSeparated(
-         const std::vector<std::string>& strings, size_t startIndex, size_t numberOfStringsToWrite, PrintMode printMode) const
+      virtual void WriteStringsCommaSeparated(
+         const std::vector<std::string>& strings, size_t startIndex, size_t numberOfStringsToWrite) const
       {
-         if (printMode != PrintMode::Minimal)
-         {
-            DoWriteStringsCommaSeparated(strings, startIndex, numberOfStringsToWrite);
-         }
+         DoWriteStringsCommaSeparated(strings, startIndex, numberOfStringsToWrite);
       }
 
       virtual void WaitForAnyKeyIfDebuggerPresentOrValueTrue(bool doWait) const
@@ -1714,15 +1670,7 @@ namespace ZenUnit
          for (size_t argIndex = 1; argIndex < numberOfArgs; ++argIndex)
          {
             const std::string& arg = args[argIndex];
-            if (arg == "-minimal")
-            {
-               zenUnitArgs.printMode = PrintMode::Minimal;
-            }
-            else if (arg == "-detailed")
-            {
-               zenUnitArgs.printMode = PrintMode::Detailed;
-            }
-            else if (arg == "-pause")
+            if (arg == "-pause")
             {
                zenUnitArgs.pause = true;
             }
@@ -1799,7 +1747,7 @@ namespace ZenUnit
 
       static const std::string& Usage()
       {
-         static const std::string usage = R"(ZenUnit v0.2.0
+         static const std::string usage = R"(ZenUnit and ZenMock v0.2.0
 Usage: <TestsBinaryName> [Options...]
 
 Test Filtration Options:
@@ -3341,9 +3289,9 @@ Testing Rigor Options:
          }
       }
 
-      virtual void NonMinimalWriteLineOKIfSuccess(const Console* console, PrintMode printMode) const
+      virtual void WriteLineOKIfSuccess(const Console* console) const
       {
-         if (printMode != PrintMode::Minimal && testOutcome == TestOutcome::Success)
+         if (testOutcome == TestOutcome::Success)
          {
             console->WriteColor("OK ", Color::Green);
             const std::string millisecondsString = String::Concat("(", milliseconds, "ms)");
@@ -4594,11 +4542,11 @@ Testing Rigor Options:
          return fileLineString;
       }
 
-      virtual void NonMinimalWritePostTestNameMessage(const Console*, PrintMode) const
+      virtual void WritePostTestNameMessage(const Console*) const
       {
       }
 
-      virtual void NonMinimalWritePostTestCompletionMessage(const Console*, const TestResult&, PrintMode) const
+      virtual void WritePostTestCompletionMessage(const Console*, const TestResult&) const
       {
       }
 
@@ -4861,17 +4809,16 @@ Testing Rigor Options:
       TestClassResult RunTests() override
       {
          _voidZeroArgFunctionCaller->ConstCall(
-            this, &SpecificTestClassRunner::NonMinimalPrintTestClassNameAndNumberOfNamedTests);
+            this, &SpecificTestClassRunner::PrintTestClassNameAndNumberOfNamedTests);
          const bool testClassIsNewableAndDeletable = _nonVoidTwoArgFunctionCaller->ConstCall(
             this, &SpecificTestClassRunner::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests, &_newableDeletableTest, &_testClassResult);
-         const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          if (testClassIsNewableAndDeletable)
          {
             _voidZeroArgFunctionCaller->NonConstCall(this, &SpecificTestClassRunner::DoRunTests);
          }
          _voidOneArgFunctionCaller->ConstCall(
             this, &SpecificTestClassRunner::PrintTestClassResultLine, &_testClassResult);
-         _console->NonMinimalWriteNewLine(zenUnitArgs.printMode);
+         _console->WriteNewLine();
          return std::move(_testClassResult);
       }
    private:
@@ -4890,23 +4837,21 @@ Testing Rigor Options:
          }
       }
 
-      void NonMinimalPrintTestClassNameAndNumberOfNamedTests() const
+      void PrintTestClassNameAndNumberOfNamedTests() const
       {
-         const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
-         _console->NonMinimalWriteColor("@", Color::Green, zenUnitArgs.printMode);
-         _console->NonMinimalWriteColor(_testClassName, Color::Green, zenUnitArgs.printMode);
+         _console->WriteColor("@", Color::Green);
+         _console->WriteColor(_testClassName, Color::Green);
          const std::string spacePipeSpaceNumberOfNamedTests = String::Concat(
             " | ", _tests.size(), _tests.size() == 1 ? " named test" : " named tests");
-         _console->NonMinimalWriteLine(spacePipeSpaceNumberOfNamedTests, zenUnitArgs.printMode);
+         _console->WriteLine(spacePipeSpaceNumberOfNamedTests);
       }
 
       bool ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(
          Test* newableDeletableTest, TestClassResult* outTestClassResult) const
       {
-         const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
-         _console->NonMinimalWriteColor("|", Color::Green, zenUnitArgs.printMode);
+         _console->WriteColor("|", Color::Green);
          static const std::string TestClassIsNewableAndDeletableString = "TestClassIsNewableAndDeletable -> ";
-         _console->NonMinimalWrite(TestClassIsNewableAndDeletableString, zenUnitArgs.printMode);
+         _console->Write(TestClassIsNewableAndDeletableString);
          const std::vector<TestResult> newableDeletableTestResults = newableDeletableTest->Run();
          assert_true(newableDeletableTestResults.size() == 1);
          outTestClassResult->AddTestResults(newableDeletableTestResults);
@@ -4928,11 +4873,11 @@ Testing Rigor Options:
             zenUnitArgs.runFilters, this, &TestClassRunner::TestNameCaseInsensitiveMatchesRunFilterTestName, testName);
          if (doRunTest)
          {
-            _console->NonMinimalWriteColor("|", Color::Green, zenUnitArgs.printMode);
-            _console->NonMinimalWrite(testName, zenUnitArgs.printMode);
-            test->NonMinimalWritePostTestNameMessage(_console.get(), zenUnitArgs.printMode);
+            _console->WriteColor("|", Color::Green);
+            _console->Write(testName);
+            test->WritePostTestNameMessage(_console.get());
             const std::vector<TestResult> testResults = test->Run();
-            test->NonMinimalWritePostTestCompletionMessage(_console.get(), testResults[0], zenUnitArgs.printMode);
+            test->WritePostTestCompletionMessage(_console.get(), testResults[0]);
             outTestClassResult->AddTestResults(testResults);
          }
       }
@@ -4962,16 +4907,14 @@ Testing Rigor Options:
          return 1;
       }
 
-      void NonMinimalWritePostTestNameMessage(
-         const Console* console, PrintMode printMode) const override
+      void WritePostTestNameMessage(const Console* console) const override
       {
-         console->NonMinimalWrite(" -> ", printMode);
+         console->Write(" -> ");
       }
 
-      void NonMinimalWritePostTestCompletionMessage(
-         const Console* console, const TestResult& testResult, PrintMode printMode) const override
+      void WritePostTestCompletionMessage(const Console* console, const TestResult& testResult) const override
       {
-         testResult.NonMinimalWriteLineOKIfSuccess(console, printMode);
+         testResult.WriteLineOKIfSuccess(console);
       }
 
       std::vector<TestResult> Run() override
@@ -5045,13 +4988,9 @@ Testing Rigor Options:
          return numberOfTestCases;
       }
 
-      void NonMinimalWritePostTestNameMessage(
-         const Console* console, PrintMode printMode) const override
+      void WritePostTestNameMessage(const Console* console) const override
       {
-         if (printMode != PrintMode::Minimal)
-         {
-            console->WriteLine(" -> ");
-         }
+         console->WriteLine("...");
       }
 
       std::vector<TestResult> Run() override
@@ -5130,17 +5069,16 @@ Testing Rigor Options:
          testResults.reserve(numberOfTestCases);
          assert_true(_testCaseArgsIndex == 0);
          std::vector<std::string> splitTestCaseArgs = call_String_CommaSplitExceptQuotedCommas(_testCaseArgsText);
-         const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          constexpr size_t NumberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
          for (unsigned short testCaseIndex = 0;
             _testCaseArgsIndex < NumberOfTestCaseArgs;
             _testCaseArgsIndex += N, ++testCaseIndex)
          {
-            NonMinimalPrintTestCaseNumberArgsThenArrow(testCaseIndex, splitTestCaseArgs, zenUnitArgs.printMode);
+            PrintTestCaseNumberArgsThenArrow(testCaseIndex, splitTestCaseArgs);
             TestResult testResult = MockableCallBaseRunTestCase();
             testResult.testCaseIndex = testCaseIndex;
             testResults.push_back(testResult);
-            NonMinimalWriteLineOKIfSuccess(testResult, zenUnitArgs.printMode);
+            WriteLineOKIfSuccess(testResult);
          }
          _testCaseArgsIndex = 0;
          return testResults;
@@ -5162,24 +5100,23 @@ Testing Rigor Options:
          return testResult;
       }
 
-      virtual void NonMinimalPrintTestCaseNumberArgsThenArrow(
-         unsigned short testCaseIndex, const std::vector<std::string>& splitTestCaseArgs, PrintMode printMode) const
+      virtual void PrintTestCaseNumberArgsThenArrow(
+         unsigned short testCaseIndex, const std::vector<std::string>& splitTestCaseArgs) const
       {
          assert_true(testCaseIndex >= 0);
-         _console->NonMinimalWriteColor(" [", Color::Green, printMode);
+         _console->WriteColor(" [", Color::Green);
          const std::string testCaseNumber = std::to_string(testCaseIndex + 1);
-         _console->NonMinimalWrite(testCaseNumber, printMode);
-         _console->NonMinimalWriteColor("]", Color::Green, printMode);
-         _console->NonMinimalWrite(" (", printMode);
+         _console->Write(testCaseNumber);
+         _console->WriteColor("]", Color::Green);
+         _console->Write(" (");
          const size_t testCaseArgsPrintingStartIndex = static_cast<size_t>(testCaseIndex) * N;
-         _console->NonMinimalWriteStringsCommaSeparated(
-            splitTestCaseArgs, testCaseArgsPrintingStartIndex, N, printMode);
-         _console->NonMinimalWrite(") -> ", printMode);
+         _console->WriteStringsCommaSeparated(splitTestCaseArgs, testCaseArgsPrintingStartIndex, N);
+         _console->Write(") -> ");
       }
 
-      virtual void NonMinimalWriteLineOKIfSuccess(const TestResult& testResult, PrintMode printMode) const
+      virtual void WriteLineOKIfSuccess(const TestResult& testResult) const
       {
-         testResult.NonMinimalWriteLineOKIfSuccess(_console.get(), printMode);
+         testResult.WriteLineOKIfSuccess(_console.get());
       }
    };
 
@@ -5650,9 +5587,9 @@ Testing Rigor Options:
             bool didSetColor = consoleColorer.SetColor(Color::Red);
             std::cout << "==========================\nZenUnit Syntax Usage Error\n==========================\n";
             consoleColorer.UnsetColor(didSetColor);
-            std::cout << R"(The above test name was specified using FACTS.
-Therefore, a TESTNXN definition is expected.
-Unexpectedly, a TEST definition was encountered.
+            std::cout << R"(The above test name was specified with FACTS(TestName).
+Therefore a TESTNXN(TestName, ...) test definition is expected.
+Unexpectedly, a TEST(TestName) definition was encountered.
 )";
             const ZenUnitArgs& zenUnitArgs = TestRunner::GetArgs();
             exit(zenUnitArgs.exit0 ? 0 : 1);
@@ -6022,7 +5959,6 @@ Unexpectedly, a TEST definition was encountered.
          const ZenUnit::ZenUnitArgs& expectedArguments, const ZenUnit::ZenUnitArgs& actualArgs)
       {
          ARE_EQUAL(expectedArguments.commandLine, actualArgs.commandLine);
-         ARE_EQUAL(expectedArguments.printMode, actualArgs.printMode);
          VECTORS_EQUAL(expectedArguments.runFilters, actualArgs.runFilters);
          ARE_EQUAL(expectedArguments.pause, actualArgs.pause);
          ARE_EQUAL(expectedArguments.wait, actualArgs.wait);
