@@ -381,7 +381,7 @@ Expected-But-Not-Asserted ZenMocked Function
 ============================================)", ZenUnit::Color::Red);
             console.WriteLineColor(ZenMockedFunctionSignature, ZenUnit::Color::Teal);
             console.WriteLine(R"(
-Fix for this error: Add a call to one of the following ZenMock assert statements:
+How to fix this: Add a call to one of the following ZenMock assert statements:
 CalledOnce(), CalledOnceWith(), CalledNTimes(), CalledNTimesWith(), or CalledAsFollows().
 )");
             const ZenUnit::ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
