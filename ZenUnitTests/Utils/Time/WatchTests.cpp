@@ -85,7 +85,7 @@ namespace ZenUnit
    AFACT(Constructor_SetsNowFunction)
    AFACT(Start_SetsStartTimeToNow)
    AFACT(Stop_StartNotPreviouslyCalled_Returns0)
-   AFACT(Stop_StartPreviouslyCalled_ReturnsElapsedMilliseconds)
+   AFACT(Stop_StartPreviouslyCalled_ReturnsElapsedMicroseconds)
    EVIDENCE
 
    Stopwatch _stopwatch;
@@ -123,19 +123,19 @@ namespace ZenUnit
       ARE_EQUAL(0, _stopwatch.Stop());
    }
 
-   TEST(Stop_StartPreviouslyCalled_ReturnsElapsedMilliseconds)
+   TEST(Stop_StartPreviouslyCalled_ReturnsElapsedMicroseconds)
    {
       chrono::time_point<chrono::high_resolution_clock> startTime;
       startTime += chrono::milliseconds(Random<unsigned>());
-      unsigned number = Random<unsigned>();
-      const chrono::time_point<chrono::high_resolution_clock> stopTime = startTime + chrono::milliseconds(number);
+      const unsigned short randomMicrosecondDuration = Random<unsigned short>();
+      const chrono::time_point<chrono::high_resolution_clock> stopTime = startTime + chrono::microseconds(randomMicrosecondDuration);
       now_ZenMock.Return(stopTime);
       _stopwatch._startTime = startTime;
       //
-      const unsigned elapsedMilliseconds = _stopwatch.Stop();
+      const unsigned elapsedMicroseconds = _stopwatch.Stop();
       //
       ZEN(now_ZenMock.CalledOnce());
-      ARE_EQUAL(number, elapsedMilliseconds);
+      ARE_EQUAL(randomMicrosecondDuration, elapsedMicroseconds);
    }
 
    }; RUN_TESTS(StopwatchTests)

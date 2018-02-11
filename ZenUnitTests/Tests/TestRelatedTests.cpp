@@ -125,10 +125,10 @@ TEST1X1(Run_StartsStopWatch_CallsNewTestClassWhichFails_DoesNotCallDeleteTestCla
    failedConstructorCallResult.testOutcome = nonSuccessOutcome;
    _tryCatchCallerMock->CallMock.Return(failedConstructorCallResult);
 
-   const unsigned milliseconds = _stopwatchMock->StopMock.ReturnRandom();
+   const unsigned microseconds = _stopwatchMock->StopMock.ReturnRandom();
 
    TestResult constructorFailTestResult = TestResult::TestingNonDefault();
-   constructorFailTestResult.milliseconds = milliseconds;
+   constructorFailTestResult.microseconds = microseconds;
    _testResultFactoryMock->ConstructorFailMock.Return(constructorFailTestResult);
    //
    const vector<TestResult> testResults = _newableDeletableTest->Run();
@@ -153,10 +153,10 @@ TEST(Run_StartsStopwatch_CallsNewTestClassWhichSucceeds_CallsDeleteTestClass_Sto
    CallResult destructorCallResult;
    _tryCatchCallerMock->CallMock.ReturnValues(successConstructorCallResult, destructorCallResult);
 
-   const unsigned milliseconds = _stopwatchMock->StopMock.ReturnRandom();
+   const unsigned microseconds = _stopwatchMock->StopMock.ReturnRandom();
 
    TestResult sixArgCtorTestResult = TestResult::TestingNonDefault();
-   sixArgCtorTestResult.milliseconds = milliseconds;
+   sixArgCtorTestResult.microseconds = microseconds;
    _testResultFactoryMock->CtorDtorSuccessMock.Return(sixArgCtorTestResult);
    //
    const vector<TestResult> testResults = _newableDeletableTest->Run();

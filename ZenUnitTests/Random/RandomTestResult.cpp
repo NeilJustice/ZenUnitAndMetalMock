@@ -7,7 +7,7 @@ namespace ZenUnit
    TestResult Random<TestResult>()
    {
       TestResult randomTestResult;
-      randomTestResult.milliseconds = ZenUnit::Random<unsigned>();
+      randomTestResult.microseconds = ZenUnit::Random<unsigned>();
       return randomTestResult;
    }
 }

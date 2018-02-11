@@ -25,7 +25,7 @@ namespace ZenUnit
    unique_ptr<TestMock> _testMock;
    ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
 
-   const unsigned _milliseconds = Random<unsigned>();
+   const unsigned _microseconds = Random<unsigned>();
    const string _testPhaseSuffix = Random<string>();
 
    STARTUP
@@ -57,7 +57,7 @@ namespace ZenUnit
    void ExpectStopwatchStartAndStopCalls()
    {
       _stopwatchMock->StartMock.Expect();
-      _stopwatchMock->StopMock.Return(_milliseconds);
+      _stopwatchMock->StopMock.Return(_microseconds);
    }
 
    void AssertStopwatchStartAndStopCalled()
@@ -95,7 +95,7 @@ namespace ZenUnit
       CallResult expectedCallResult;
       expectedCallResult.testPhase = TestPhase::Startup;
       expectedCallResult.testOutcome = TestOutcome::Success;
-      expectedCallResult.milliseconds = _milliseconds;
+      expectedCallResult.microseconds = _microseconds;
       ARE_EQUAL(expectedCallResult, callResult);
    }
 
@@ -132,7 +132,7 @@ namespace ZenUnit
 
       CallResult expectedCallResult;
       expectedCallResult.testPhase = arbitraryTestPhase;
-      expectedCallResult.milliseconds = _milliseconds;
+      expectedCallResult.microseconds = _microseconds;
       Anomaly anomaly("NonDefault", "NonDefault", FileLine(), "", "");
       expectedCallResult.anomalyOrException = make_shared<AnomalyOrException>(anomaly);
       expectedCallResult.testOutcome = TestOutcome::Anomaly;
@@ -183,7 +183,7 @@ namespace ZenUnit
       expectedCallResult.anomalyOrException = make_shared<AnomalyOrException>(
          Type::GetName<ZenMock::FunctionAlreadyExpectedException>(),
          ZenMock::FunctionAlreadyExpectedException::MakeWhat("ZenMockedFunctionSignature").c_str());
-      expectedCallResult.milliseconds = _milliseconds;
+      expectedCallResult.microseconds = _microseconds;
 
       ZEN(_consoleMock->WriteColorMock.CalledOnceWith(
          "\n================\nZenMockException\n================", Color::Red));
@@ -222,7 +222,7 @@ Already called [FunctionName]Mock.[Expect|Return|ReturnValues|Throw]().")"));
 
       CallResult expectedCallResult;
       expectedCallResult.testPhase = arbitraryTestPhase;
-      expectedCallResult.milliseconds = _milliseconds;
+      expectedCallResult.microseconds = _microseconds;
       expectedCallResult.testOutcome = TestOutcome::Exception;
       expectedCallResult.anomalyOrException
          = make_shared<AnomalyOrException>(Type::GetName<runtime_error>(), "runtime_error_what");
@@ -267,7 +267,7 @@ what(): "runtime_error_what")"));
       ZEN(GetArgs_ZenMock.CalledOnce());
       ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(
          String::Concat("Fatal ... exception. ", expectedExitMessage,
-            _testPhaseSuffix.c_str(), " ", _milliseconds, "ms"), expectedExitCode));
+            _testPhaseSuffix.c_str(), " ", _microseconds, "us"), expectedExitCode));
       ARE_EQUAL(CallResult(), callResult);
    }
 

@@ -3115,7 +3115,7 @@ Testing Rigor Options:
    {
       TestPhase testPhase;
       TestOutcome testOutcome;
-      unsigned milliseconds;
+      unsigned microseconds;
       std::shared_ptr<AnomalyOrException> anomalyOrException;
 
       CallResult() noexcept
@@ -3126,7 +3126,7 @@ Testing Rigor Options:
       explicit CallResult(TestPhase testPhase) noexcept
          : testPhase(testPhase)
          , testOutcome(TestOutcome::Success)
-         , milliseconds(0)
+         , microseconds(0)
       {
       }
    };
@@ -3160,13 +3160,13 @@ Testing Rigor Options:
 #pragma warning(pop)
 #endif
       TestOutcome testOutcome;
-      unsigned milliseconds;
+      unsigned microseconds;
       unsigned short testCaseIndex;
 
       TestResult() noexcept
          : responsibleCallResultField(nullptr)
          , testOutcome(TestOutcome::Unset)
-         , milliseconds(0)
+         , microseconds(0)
          , testCaseIndex(std::numeric_limits<unsigned short>::max())
       {
       }
@@ -3180,7 +3180,7 @@ Testing Rigor Options:
          constructorFailTestResult.fullTestName = fullTestName;
          constructorFailTestResult.constructorCallResult = constructorCallResult;
          constructorFailTestResult.testOutcome = constructorCallResult.testOutcome;
-         constructorFailTestResult.milliseconds = constructorCallResult.milliseconds;
+         constructorFailTestResult.microseconds = constructorCallResult.microseconds;
          constructorFailTestResult.responsibleCallResultField = &TestResult::constructorCallResult;
          return constructorFailTestResult;
       }
@@ -3199,8 +3199,8 @@ Testing Rigor Options:
          startupFail.constructorCallResult = constructorCallResult;
          startupFail.startupCallResult = startupCallResult;
          startupFail.destructorCallResult = destructorCallResult;
-         startupFail.milliseconds =
-            constructorCallResult.milliseconds + startupCallResult.milliseconds + destructorCallResult.milliseconds;
+         startupFail.microseconds =
+            constructorCallResult.microseconds + startupCallResult.microseconds + destructorCallResult.microseconds;
          startupFail.responsibleCallResultField = &TestResult::startupCallResult;
          return startupFail;
       }
@@ -3217,7 +3217,7 @@ Testing Rigor Options:
          ctorDtorSuccess.testOutcome = TestOutcome::Success;
          ctorDtorSuccess.constructorCallResult = constructorCallResult;
          ctorDtorSuccess.destructorCallResult = destructorCallResult;
-         ctorDtorSuccess.milliseconds = constructorCallResult.milliseconds + destructorCallResult.milliseconds;
+         ctorDtorSuccess.microseconds = constructorCallResult.microseconds + destructorCallResult.microseconds;
          ctorDtorSuccess.responsibleCallResultField = nullptr;
          return ctorDtorSuccess;
       }
@@ -3238,18 +3238,18 @@ Testing Rigor Options:
          , destructorCallResult(destructorCallResult)
          , responsibleCallResultField(nullptr)
          , testOutcome(TestOutcome::Unset)
-         , milliseconds(0)
+         , microseconds(0)
          , testCaseIndex(std::numeric_limits<unsigned short>::max())
       {
          assert_true(constructorCallResult.testOutcome == TestOutcome::Success);
          assert_true(startupCallResult.testOutcome == TestOutcome::Success);
          assert_true(destructorCallResult.testOutcome == TestOutcome::Success);
-         milliseconds =
-            constructorCallResult.milliseconds +
-            startupCallResult.milliseconds +
-            testBodyCallResult.milliseconds +
-            cleanupCallResult.milliseconds +
-            destructorCallResult.milliseconds;
+         microseconds =
+            constructorCallResult.microseconds +
+            startupCallResult.microseconds +
+            testBodyCallResult.microseconds +
+            cleanupCallResult.microseconds +
+            destructorCallResult.microseconds;
          if (testBodyCallResult.testOutcome == TestOutcome::Exception)
          {
             testOutcome = TestOutcome::Exception;
@@ -3278,7 +3278,8 @@ Testing Rigor Options:
             assert_true(cleanupCallResult.testOutcome == TestOutcome::Success);
             assert_true(destructorCallResult.testOutcome == TestOutcome::Success);
             const ZenUnitArgs& args = getArgs();
-            if (args.maxtestmilliseconds == 0 || milliseconds <= args.maxtestmilliseconds)
+            const unsigned maxtestmicroseconds = args.maxtestmilliseconds * 1000;
+            if (args.maxtestmilliseconds == 0 || microseconds <= maxtestmicroseconds)
             {
                testOutcome = TestOutcome::Success;
             }
@@ -3294,8 +3295,8 @@ Testing Rigor Options:
          if (testOutcome == TestOutcome::Success)
          {
             console->WriteColor("OK ", Color::Green);
-            const std::string millisecondsString = String::Concat("(", milliseconds, "ms)");
-            console->WriteLine(millisecondsString);
+            const std::string microsecondsString = String::Concat("(", microseconds, "us)");
+            console->WriteLine(microsecondsString);
          }
       }
 
@@ -3345,6 +3346,7 @@ Testing Rigor Options:
             console->WriteLineColor(testFailureNumber, Color::Red);
             console->WriteLine(fullTestName.Value());
             WriteTestCaseNumberIfAny(console, testCaseIndex);
+            const unsigned milliseconds = microseconds / 1000;
             console->WriteLine(String::Concat(
                "\nFailed because test took longer than -maxtestms=", milliseconds, " milliseconds"));
             console->WriteNewLine();
@@ -3431,30 +3433,48 @@ Testing Rigor Options:
          _testResults.insert(_testResults.end(), testResults.cbegin(), testResults.cend());
       }
 
-      virtual unsigned Milliseconds() const
+      virtual unsigned Microseconds() const
       {
-         const unsigned milliseconds = std::accumulate(_testResults.cbegin(), _testResults.cend(), 0u,
-            [](unsigned cumulativeMilliseconds, const TestResult& testResult)
+         const unsigned microseconds = std::accumulate(_testResults.cbegin(), _testResults.cend(), 0u,
+            [](unsigned cumulativeMicroseconds, const TestResult& testResult)
          {
-            return cumulativeMilliseconds + testResult.milliseconds;
+            return cumulativeMicroseconds + testResult.microseconds;
          });
-         return milliseconds;
+         return microseconds;
+      }
+
+      virtual std::string ThreeDecimalPlaceMilliseconds(unsigned microseconds) const
+      {
+         const double milliseconds = microseconds / 1000.0;
+         const double millisecondsRoundedToThreeDecimalPlaces = std::floor(milliseconds * 1000 + 0.5) / 1000;
+
+         const std::string millisecondsRoundedToThreeDecimalPlaces_sixDecimalPlaceString
+            = std::to_string(millisecondsRoundedToThreeDecimalPlaces);
+
+         const std::string millisecondsRoundedToThreeDecimalPlaces_threeDecimalPlaceString
+            = millisecondsRoundedToThreeDecimalPlaces_sixDecimalPlaceString.substr(
+               0, millisecondsRoundedToThreeDecimalPlaces_sixDecimalPlaceString.find_first_of('.') + 4);
+
+         const std::string millisecondsRoundedToThreeDecimalPlaces_threeDecimalPlaceStringWithParens
+            = String::Concat("(", millisecondsRoundedToThreeDecimalPlaces_threeDecimalPlaceString, "ms)");
+
+         return millisecondsRoundedToThreeDecimalPlaces_threeDecimalPlaceStringWithParens;
       }
 
       virtual void PrintTestClassResultLine(const Console* console) const
       {
          const size_t numberOfFailedTestCases = NumberOfFailedTestCases();
-         const unsigned milliseconds = Milliseconds();
-         const std::string millisecondsMessage = String::Concat("(", milliseconds, "ms)");
+         const unsigned microseconds = Microseconds();
+         const std::string threeDecimalPlaceMilliseconds = ThreeDecimalPlaceMilliseconds(microseconds);
          if (numberOfFailedTestCases == 0)
          {
             console->Write("[  ");
             console->WriteColor("OK", Color::Green);
-            console->Write("  ] " + millisecondsMessage);
+            console->Write("  ] " + threeDecimalPlaceMilliseconds);
          }
          else
          {
-            console->WriteLineColor("[TestClass Failed] " + millisecondsMessage, Color::Red);
+            console->WriteLineColor("[TestClass Failed] " + threeDecimalPlaceMilliseconds, Color::Red);
          }
          console->WriteNewLine();
       }
@@ -4002,11 +4022,11 @@ Testing Rigor Options:
          }
          const std::chrono::time_point<std::chrono::high_resolution_clock> stopTime = call_highres_now();
          const std::chrono::duration<long long, std::nano> elapsedTime = stopTime - _startTime;
-         const long long elapsedMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(elapsedTime).count();
+         const long long elapsedMicroseconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsedTime).count();
          _startTime = std::chrono::time_point<std::chrono::high_resolution_clock>();
-         assert_true(elapsedMilliseconds <= std::numeric_limits<unsigned>::max());
-         const unsigned elapsedMillisecondsUnsigned = static_cast<unsigned>(elapsedMilliseconds);
-         return elapsedMillisecondsUnsigned;
+         assert_true(elapsedMicroseconds <= std::numeric_limits<unsigned>::max());
+         const unsigned elapsedMicrosecondsUnsigned = static_cast<unsigned>(elapsedMicroseconds);
+         return elapsedMicrosecondsUnsigned;
       }
    };
 
@@ -4383,7 +4403,8 @@ Testing Rigor Options:
          }
          _testRunResult->PrintTestFailuresAndSkips();
          const size_t numberOfTestCases = _testClassRunnerRunner->NumberOfTestCases();
-         const unsigned testRunMilliseconds = _testRunStopwatch->Stop();
+         const unsigned testRunMicroseconds = _testRunStopwatch->Stop();
+         const unsigned testRunMilliseconds = testRunMicroseconds / 1000;
          _testRunResult->PrintClosingLines(numberOfTestCases, testRunMilliseconds, zenUnitArgs);
          const int testRunExitCode = _testRunResult->DetermineExitCode(zenUnitArgs);
          return testRunExitCode;
@@ -4445,7 +4466,7 @@ Testing Rigor Options:
       template<typename ExceptionType>
       void PopulateCallResultWithExceptionInformation(const ExceptionType& e, CallResult* outCallResult) const
       {
-         outCallResult->milliseconds = _stopwatch->Stop();
+         outCallResult->microseconds = _stopwatch->Stop();
          const std::string* const exceptionTypeName = Type::GetName(e);
          const char* const what = e.what();
          outCallResult->anomalyOrException = std::make_shared<AnomalyOrException>(exceptionTypeName, what);
@@ -4653,11 +4674,11 @@ Testing Rigor Options:
       try
       {
          testPhaseFunction(test);
-         callResult.milliseconds = _stopwatch->Stop();
+         callResult.microseconds = _stopwatch->Stop();
       }
       catch (const Anomaly& anomaly)
       {
-         callResult.milliseconds = _stopwatch->Stop();
+         callResult.microseconds = _stopwatch->Stop();
          callResult.anomalyOrException = std::make_shared<AnomalyOrException>(anomaly);
          callResult.testOutcome = TestOutcome::Anomaly;
          _console->WriteColor("\n=======\nAnomaly\n=======", Color::Red);
@@ -4688,13 +4709,13 @@ Testing Rigor Options:
       }
       catch (...)
       {
-         const unsigned milliseconds = _stopwatch->Stop();
+         const unsigned microseconds = _stopwatch->Stop();
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->WriteLineColor("FATALITY", Color::Red);
          const std::string exitLine = String::Concat(
             "Fatal ... exception. ", zenUnitArgs.exit0 ?
             "Exiting with code 0 due to -exit0 being specified." :
-            "Exiting with code 1.", testPhaseSuffix, " ", milliseconds, "ms");
+            "Exiting with code 1.", testPhaseSuffix, " ", microseconds, "us");
          const int exitCode = zenUnitArgs.exit0 ? 0 : 1;
          _console->WriteLineAndExit(exitLine, exitCode);
          return CallResult();
@@ -4734,12 +4755,12 @@ Testing Rigor Options:
          if (constructorCallResult.testOutcome != TestOutcome::Success)
          {
             TestResult constructorFail = _testResultFactory->ConstructorFail(_fullTestName, constructorCallResult);
-            constructorFail.milliseconds = _stopwatch->Stop();
+            constructorFail.microseconds = _stopwatch->Stop();
             return { constructorFail };
          }
          const CallResult destructorCallResult = _tryCatchCaller->Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
          TestResult testResult = _testResultFactory->CtorDtorSuccess(_fullTestName, constructorCallResult, destructorCallResult);
-         testResult.milliseconds = _stopwatch->Stop();
+         testResult.microseconds = _stopwatch->Stop();
          return { testResult };
       }
 
@@ -4860,7 +4881,7 @@ Testing Rigor Options:
          if (testClassIsNewableAndDeletable)
          {
             _console->WriteColor("OK ", Color::Green);
-            _console->WriteLine(String::Concat("(", newableDeletableTestResult.milliseconds, "ms)"));
+            _console->WriteLine(String::Concat("(", newableDeletableTestResult.microseconds, "us)"));
          }
          return testClassIsNewableAndDeletable;
       }
@@ -6052,7 +6073,7 @@ Unexpectedly, a TEST(TestName) definition was encountered.
       {
          ARE_EQUAL(expectedCallResult.testPhase, actualCallResult.testPhase);
          ARE_EQUAL(expectedCallResult.testOutcome, actualCallResult.testOutcome);
-         ARE_EQUAL(expectedCallResult.milliseconds, actualCallResult.milliseconds);
+         ARE_EQUAL(expectedCallResult.microseconds, actualCallResult.microseconds);
          POINTEES_EQUAL(expectedCallResult.anomalyOrException, actualCallResult.anomalyOrException);
       }
    };
@@ -6084,7 +6105,7 @@ Unexpectedly, a TEST(TestName) definition was encountered.
          ARE_EQUAL(expectedTestResult.responsibleCallResultField, actualTestResult.responsibleCallResultField);
          ARE_EQUAL(expectedTestResult.testOutcome, actualTestResult.testOutcome);
          ARE_EQUAL(expectedTestResult.testCaseIndex, actualTestResult.testCaseIndex);
-         ARE_EQUAL(expectedTestResult.milliseconds, actualTestResult.milliseconds);
+         ARE_EQUAL(expectedTestResult.microseconds, actualTestResult.microseconds);
       }
    };
 

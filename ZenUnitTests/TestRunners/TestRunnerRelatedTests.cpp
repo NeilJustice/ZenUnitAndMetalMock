@@ -377,7 +377,7 @@ TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewableDele
 
    TestResult testResult;
    testResult.testOutcome = newableDeletableTestOutcome;
-   testResult.milliseconds = ZenUnit::Random<unsigned>();
+   testResult.microseconds = ZenUnit::Random<unsigned>();
    const vector<TestResult> testResults{ testResult };
    testMock.RunMock.Return(testResults);
 
@@ -394,7 +394,7 @@ TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewableDele
           { "|", Color::Green },
           { "OK ", Color::Green }
        }));
-       ZEN(_consoleMock->WriteLineMock.CalledOnceWith(String::Concat("(", testResult.milliseconds, "ms)")));
+       ZEN(_consoleMock->WriteLineMock.CalledOnceWith(String::Concat("(", testResult.microseconds, "us)")));
    }
    else
    {
@@ -720,8 +720,7 @@ TEST3X3(RunTestClassesAndPrintResults_RunsTestsAndPrintsResults_UsingBackgroundT
    const size_t TotalNumberOfTestCases = Random<size_t>();
    _testClassRunnerRunnerMock->NumberOfTestCasesMock.Return(TotalNumberOfTestCases);
 
-   const unsigned TestRunMilliseconds = Random<unsigned>();
-   _testRunStopwatchMock->StopMock.Return(TestRunMilliseconds);
+   const unsigned testRunMicroseconds = _testRunStopwatchMock->StopMock.ReturnRandom();
 
    _testRunResultMock->DetermineExitCodeMock.Return(determineExitCodeReturnValueAndExpectedExitCode);
    //
@@ -743,11 +742,12 @@ TEST3X3(RunTestClassesAndPrintResults_RunsTestsAndPrintsResults_UsingBackgroundT
       ZEN(_voidZeroArgMemberFunctionCallerMock->NonConstCallMock.CalledOnceWith(
           &_testRunner, &TestRunner::RunTestClasses));
    }
+   const unsigned expectedTestRunMilliseconds = testRunMicroseconds / 1000;
    ZEN(_testRunResultMock->PrintTestFailuresAndSkipsMock.CalledOnce());
    ZEN(_testClassRunnerRunnerMock->NumberOfTestCasesMock.CalledOnce());
    ZEN(_testRunStopwatchMock->StopMock.CalledOnce());
    ZEN(_testRunResultMock->PrintClosingLinesMock.CalledOnceWith(
-       TotalNumberOfTestCases, TestRunMilliseconds, zenUnitArgs));
+       TotalNumberOfTestCases, expectedTestRunMilliseconds, zenUnitArgs));
    ZEN(_testRunResultMock->DetermineExitCodeMock.CalledOnceWith(zenUnitArgs));
    ARE_EQUAL(determineExitCodeReturnValueAndExpectedExitCode, exitCode);
 }

@@ -53,7 +53,7 @@ TEST(DefaultConstructor_SetsFieldsTo0)
    CallResult expectedDefaultCallResult;
    expectedDefaultCallResult.testPhase = TestPhase::Unset;
    expectedDefaultCallResult.testOutcome = TestOutcome::Success;
-   expectedDefaultCallResult.milliseconds = 0;
+   expectedDefaultCallResult.microseconds = 0;
    expectedDefaultCallResult.anomalyOrException = nullptr;
    ARE_EQUAL(expectedDefaultCallResult, defaultCallResult);
 }
@@ -64,7 +64,7 @@ TEST(TestPhaseConstructor_SetsTestPhase_SetsOtherFieldsTo0)
    CallResult expectedCallResult;
    expectedCallResult.testPhase = TestPhase::Constructor;
    expectedCallResult.testOutcome = TestOutcome::Success;
-   expectedCallResult.milliseconds = 0;
+   expectedCallResult.microseconds = 0;
    expectedCallResult.anomalyOrException = nullptr;
    ARE_EQUAL(expectedCallResult, callResult);
 }
@@ -74,7 +74,7 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    SETUP_EQUALIZER_THROWS_TEST(CallResult);
    EQUALIZER_THROWS_FOR_FIELD(CallResult, testPhase, TestPhase::Constructor);
    EQUALIZER_THROWS_FOR_FIELD(CallResult, testOutcome, TestOutcome::Exception);
-   EQUALIZER_THROWS_FOR_FIELD(CallResult, milliseconds, 1u);
+   EQUALIZER_THROWS_FOR_FIELD(CallResult, microseconds, 1u);
 
    shared_ptr<AnomalyOrException> nonDefaultAnomalyOrException = make_shared<AnomalyOrException>(Anomaly());
    nonDefaultAnomalyOrException->anomaly->why = "why";
@@ -92,8 +92,9 @@ AFACT(MoveConstructor_MovesForEacherAndTestResults)
 AFACT(MoveAssignmentOperator_MovesForEacherAndTestResults)
 AFACT(AddTestResults_AppendTestResultsToEndOfTestResultsVector)
 AFACT(NumberOfFailedTestCases_ReturnsNumberOfNonSuccessTestsInTestResultsVector)
-AFACT(Milliseconds_EmptyTestResultsVector_Returns0)
-AFACT(Milliseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMilliseconds)
+AFACT(Microseconds_EmptyTestResultsVector_Returns0)
+AFACT(Microseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMicroseconds)
+FACTS(ThreeDecimalPlaceMilliseconds_ReturnsMicrosecondsAsMillisecondsRoundedToThreePlaces)
 AFACT(PrintTestFailures_PrintsJustTestFailedToConsole)
 AFACT(PrintTestClassResultLine_0FailedTestCases_WritesOKInGreen)
 FACTS(PrintTestClassResultLine_1OrMoreFailedTests_WritesFailedInRed)
@@ -106,7 +107,8 @@ TestClassResult _testClassResult;
 struct TestClassResultSelfMocked : public Zen::Mock<TestClassResult>
 {
    ZENMOCK_NONVOID0_CONST(size_t, NumberOfFailedTestCases)
-   ZENMOCK_NONVOID0_CONST(unsigned, Milliseconds)
+   ZENMOCK_NONVOID0_CONST(unsigned, Microseconds)
+   ZENMOCK_NONVOID1_CONST(string, ThreeDecimalPlaceMilliseconds, unsigned)
 } _testClassResultSelfMocked;
 
 TEST(CopyConstructor_CopiesForEacherAndTestResults)
@@ -218,33 +220,57 @@ TEST(PrintTestFailures_PrintsJustTestFailedToConsole)
       &_testClassResult._testResults, TestClassResult::PrintTestResultIfFailure, &console, &testFailureNumberer));
 }
 
-TEST(Milliseconds_EmptyTestResultsVector_Returns0)
+TEST(Microseconds_EmptyTestResultsVector_Returns0)
 {
    ARE_EQUAL(0, _testClassResult._testResults.size());
    //
-   const unsigned milliseconds = _testClassResult.Milliseconds();
+   const unsigned microseconds = _testClassResult.Microseconds();
    //
-   ARE_EQUAL(0, milliseconds);
+   ARE_EQUAL(0, microseconds);
 }
 
-TEST(Milliseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMilliseconds)
+TEST(Microseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMicroseconds)
 {
    TestResult testResultA;
-   testResultA.milliseconds = ZenUnit::Random<unsigned int>();
+   testResultA.microseconds = ZenUnit::Random<unsigned>();
    TestResult testResultB;
-   testResultB.milliseconds = ZenUnit::Random<unsigned int>();
+   testResultB.microseconds = ZenUnit::Random<unsigned>();
    _testClassResult._testResults = { testResultA, testResultB };
    //
-   const unsigned milliseconds = _testClassResult.Milliseconds();
+   const unsigned microseconds = _testClassResult.Microseconds();
    //
-   ARE_EQUAL(testResultA.milliseconds + testResultB.milliseconds, milliseconds);
+   ARE_EQUAL(testResultA.microseconds + testResultB.microseconds, microseconds);
+}
+
+TEST2X2(ThreeDecimalPlaceMilliseconds_ReturnsMicrosecondsAsMillisecondsRoundedToThreePlaces,
+   unsigned microseconds, const string& expectedReturnValue,
+   0, "(0.000ms)",
+   1, "(0.001ms)",
+   2, "(0.002ms)",
+   10, "(0.010ms)",
+   12, "(0.012ms)",
+   100, "(0.100ms)",
+   120, "(0.120ms)",
+   123, "(0.123ms)",
+   1000, "(1.000ms)",
+   1234, "(1.234ms)",
+   12345, "(12.345ms)",
+   123456, "(123.456ms)",
+   1234567, "(1234.567ms)",
+   12345678, "(12345.678ms)",
+   123456789, "(123456.789ms)",
+   1234567890, "(1234567.890ms)")
+{
+   const string threeDecimalPlaceMilliseconds = _testClassResult.ThreeDecimalPlaceMilliseconds(microseconds);
+   ARE_EQUAL(expectedReturnValue, threeDecimalPlaceMilliseconds);
 }
 
 TEST(PrintTestClassResultLine_0FailedTestCases_WritesOKInGreen)
 {
    _testClassResultSelfMocked.NumberOfFailedTestCasesMock.Return(0);
-   const unsigned milliseconds = ZenUnit::Random<unsigned>();
-   _testClassResultSelfMocked.MillisecondsMock.Return(milliseconds);
+   const unsigned microseconds = _testClassResultSelfMocked.MicrosecondsMock.ReturnRandom();
+   const string oneDecimalPlaceMilliseconds = ZenUnit::Random<string>();
+   _testClassResultSelfMocked.ThreeDecimalPlaceMillisecondsMock.Return(oneDecimalPlaceMilliseconds);
    ConsoleMock consoleMock;
    consoleMock.WriteMock.Expect();
    consoleMock.WriteColorMock.Expect();
@@ -253,11 +279,12 @@ TEST(PrintTestClassResultLine_0FailedTestCases_WritesOKInGreen)
    _testClassResultSelfMocked.PrintTestClassResultLine(&consoleMock);
    //
    ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnce());
-   ZEN(_testClassResultSelfMocked.MillisecondsMock.CalledOnce());
+   ZEN(_testClassResultSelfMocked.MicrosecondsMock.CalledOnce());
+   ZEN(_testClassResultSelfMocked.ThreeDecimalPlaceMillisecondsMock.CalledOnceWith(microseconds));
    ZEN(consoleMock.WriteMock.CalledAsFollows(
    {
       { "[  " },
-      { "  ] (" + to_string(milliseconds) + "ms)" }
+      { "  ] " + oneDecimalPlaceMilliseconds }
    }));
    ZEN(consoleMock.WriteColorMock.CalledOnceWith("OK", Color::Green));
    ZEN(consoleMock.WriteNewLineMock.CalledOnce());
@@ -270,8 +297,8 @@ TEST1X1(PrintTestClassResultLine_1OrMoreFailedTests_WritesFailedInRed,
    size_t(3))
 {
    _testClassResultSelfMocked.NumberOfFailedTestCasesMock.Return(numberOfFailedTestCases);
-   const unsigned milliseconds = ZenUnit::Random<unsigned>();
-   _testClassResultSelfMocked.MillisecondsMock.Return(milliseconds);
+   const unsigned microseconds = _testClassResultSelfMocked.MicrosecondsMock.ReturnRandom();
+   const string oneDecimalPlaceMilliseconds = _testClassResultSelfMocked.ThreeDecimalPlaceMillisecondsMock.ReturnRandom();
    ConsoleMock consoleMock;
    consoleMock.WriteLineColorMock.Expect();
    consoleMock.WriteNewLineMock.Expect();
@@ -279,8 +306,9 @@ TEST1X1(PrintTestClassResultLine_1OrMoreFailedTests_WritesFailedInRed,
    _testClassResultSelfMocked.PrintTestClassResultLine(&consoleMock);
    //
    ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnce());
-   ZEN(_testClassResultSelfMocked.MillisecondsMock.CalledOnce());
-   ZEN(consoleMock.WriteLineColorMock.CalledOnceWith("[TestClass Failed] (" + to_string(milliseconds) + "ms)", Color::Red));
+   ZEN(_testClassResultSelfMocked.MicrosecondsMock.CalledOnce());
+   ZEN(_testClassResultSelfMocked.ThreeDecimalPlaceMillisecondsMock.CalledOnceWith(microseconds));
+   ZEN(consoleMock.WriteLineColorMock.CalledOnceWith("[TestClass Failed] " + oneDecimalPlaceMilliseconds, Color::Red));
    ZEN(consoleMock.WriteNewLineMock.CalledOnce());
 }
 
@@ -443,7 +471,6 @@ CallResult DestructorCallResult;
 ConsoleMock _consoleMock;
 TestFailureNumbererMock _testFailureNumbererMock;
 const FullTestName FullTestNameValue = FullTestName("ClassName", "TestClassName", 0);
-const unsigned ExpectedMilliseconds = 1 + 2 + 3 + 4 + 5;
 ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
 
    struct TestResult_WriteTestCaseNumberIfAnyMocked : public Zen::Mock<TestResult>
@@ -454,11 +481,11 @@ ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
 STARTUP
 {
    ConstructorCallResult = CallResult(TestPhase::Constructor);
-   ConstructorCallResult.milliseconds = 1;
+   ConstructorCallResult.microseconds = 1000;
    StartupCallResult = CallResult(TestPhase::Startup);
-   StartupCallResult.milliseconds = 2;
+   StartupCallResult.microseconds = 2000;
    DestructorCallResult = CallResult(TestPhase::Destructor);
-   DestructorCallResult.milliseconds = 3;
+   DestructorCallResult.microseconds = 3000;
    _testResult.fullTestName = FullTestNameValue;
 }
 
@@ -475,7 +502,7 @@ TEST(DefaultConstructor_SetsFieldsTo0)
    expectedDefaultTestResult.responsibleCallResultField = nullptr;
    expectedDefaultTestResult.testOutcome = TestOutcome::Unset;
    expectedDefaultTestResult.testCaseIndex = numeric_limits<unsigned short>::max();
-   expectedDefaultTestResult.milliseconds = 0;
+   expectedDefaultTestResult.microseconds = 0;
    ARE_EQUAL(expectedDefaultTestResult, defaultTestResult);
 }
 
@@ -494,7 +521,7 @@ TEST2X2(ConstructorFail_ReturnsExpectedTestResult,
    expectedTestResult.constructorCallResult = ConstructorCallResult;
    expectedTestResult.responsibleCallResultField = &TestResult::constructorCallResult;
    expectedTestResult.testOutcome = expectedTestResultOutcome;
-   expectedTestResult.milliseconds = ConstructorCallResult.milliseconds;
+   expectedTestResult.microseconds = ConstructorCallResult.microseconds;
    ARE_EQUAL(expectedTestResult, constructorFailTestResult);
 }
 
@@ -515,17 +542,17 @@ TEST2X2(StartupFail_ReturnsExpectedTestResult,
    expectedTestResult.destructorCallResult = DestructorCallResult;
    expectedTestResult.responsibleCallResultField = &TestResult::startupCallResult;
    expectedTestResult.testOutcome = expectedTestResultOutcome;
-   expectedTestResult.milliseconds =
-      ConstructorCallResult.milliseconds + StartupCallResult.milliseconds + DestructorCallResult.milliseconds;
+   expectedTestResult.microseconds =
+      ConstructorCallResult.microseconds + StartupCallResult.microseconds + DestructorCallResult.microseconds;
    ARE_EQUAL(expectedTestResult, startupFailTestResult);
 }
 
 TEST(CtorDtorSuccess_ReturnsExpectedTestResult)
 {
    CallResult constructorCallResult(TestPhase::Constructor);
-   constructorCallResult.milliseconds = 10;
+   constructorCallResult.microseconds = 10;
    CallResult destructorCallResult(TestPhase::Destructor);
-   destructorCallResult.milliseconds = 20;
+   destructorCallResult.microseconds = 20;
    //
    const TestResult testResult = TestResult::CtorDtorSuccess(
       FullTestNameValue, constructorCallResult, destructorCallResult);
@@ -535,39 +562,45 @@ TEST(CtorDtorSuccess_ReturnsExpectedTestResult)
    expectedTestResult.testOutcome = TestOutcome::Success;
    expectedTestResult.constructorCallResult = constructorCallResult;
    expectedTestResult.destructorCallResult = destructorCallResult;
-   expectedTestResult.milliseconds = constructorCallResult.milliseconds + destructorCallResult.milliseconds;
+   expectedTestResult.microseconds = constructorCallResult.microseconds + destructorCallResult.microseconds;
    expectedTestResult.responsibleCallResultField = nullptr;
    ARE_EQUAL(expectedTestResult, testResult);
 }
+
+const unsigned MaxTestMilliseconds = 1 + 2 + 3 + 4 + 5;
 
 TEST6X6(SixArgConstructor_SetsFields,
    TestOutcome testBodyOutcome,
    TestOutcome cleanupOutcome,
    unsigned maxtestmilliseconds,
-   int relativeMilliseconds,
+   int relativeMicroseconds,
    TestOutcome expectedOverallOutcome,
    CallResult TestResult::* expectedResponsibleCallResultField,
-   TestOutcome::Success, TestOutcome::Success, 0, 0, TestOutcome::Success, nullptr,
-   TestOutcome::Success, TestOutcome::Success, 0, 1, TestOutcome::Success, nullptr,
-   TestOutcome::Success, TestOutcome::Success, ExpectedMilliseconds, -1, TestOutcome::Success, nullptr,
-   TestOutcome::Success, TestOutcome::Success, ExpectedMilliseconds, 0, TestOutcome::Success, nullptr,
-   TestOutcome::Success, TestOutcome::Success, ExpectedMilliseconds, 1, TestOutcome::SuccessButPastDeadline, nullptr,
-   TestOutcome::Success, TestOutcome::Success, ExpectedMilliseconds, 2, TestOutcome::SuccessButPastDeadline, nullptr,
-   TestOutcome::Exception, TestOutcome::Success, ExpectedMilliseconds, 1, TestOutcome::Exception, &TestResult::testBodyCallResult,
-   TestOutcome::Exception, TestOutcome::Exception, ExpectedMilliseconds, 1, TestOutcome::Exception, &TestResult::testBodyCallResult,
-   TestOutcome::Exception, TestOutcome::Anomaly, ExpectedMilliseconds, 1, TestOutcome::Exception, &TestResult::testBodyCallResult,
-   TestOutcome::Success, TestOutcome::Exception, ExpectedMilliseconds, 1, TestOutcome::Exception, &TestResult::cleanupCallResult,
-   TestOutcome::Anomaly, TestOutcome::Exception, ExpectedMilliseconds, 1, TestOutcome::Exception, &TestResult::cleanupCallResult,
-   TestOutcome::Anomaly, TestOutcome::Success, ExpectedMilliseconds, 1, TestOutcome::Anomaly, &TestResult::testBodyCallResult,
-   TestOutcome::Success, TestOutcome::Anomaly, ExpectedMilliseconds, 1, TestOutcome::Anomaly, &TestResult::cleanupCallResult,
-   TestOutcome::Anomaly, TestOutcome::Anomaly, ExpectedMilliseconds, 1, TestOutcome::Anomaly, &TestResult::testBodyCallResult)
+   //TestOutcome::Success, TestOutcome::Success, 0, 0, TestOutcome::Success, nullptr,
+   //TestOutcome::Success, TestOutcome::Success, 0, 1, TestOutcome::Success, nullptr,
+   //TestOutcome::Success, TestOutcome::Success, MaxTestMilliseconds, -1, TestOutcome::Success, nullptr,
+   //TestOutcome::Success, TestOutcome::Success, MaxTestMilliseconds, 0, TestOutcome::Success, nullptr,
+
+   TestOutcome::Success, TestOutcome::Success, MaxTestMilliseconds, 1, TestOutcome::SuccessButPastDeadline, nullptr,
+   TestOutcome::Success, TestOutcome::Success, MaxTestMilliseconds, 2, TestOutcome::SuccessButPastDeadline, nullptr,
+
+   TestOutcome::Exception, TestOutcome::Success, MaxTestMilliseconds, 1, TestOutcome::Exception, &TestResult::testBodyCallResult,
+   TestOutcome::Exception, TestOutcome::Exception, MaxTestMilliseconds, 1, TestOutcome::Exception, &TestResult::testBodyCallResult,
+   TestOutcome::Exception, TestOutcome::Anomaly, MaxTestMilliseconds, 1, TestOutcome::Exception, &TestResult::testBodyCallResult,
+
+   TestOutcome::Success, TestOutcome::Exception, MaxTestMilliseconds, 1, TestOutcome::Exception, &TestResult::cleanupCallResult,
+   TestOutcome::Anomaly, TestOutcome::Exception, MaxTestMilliseconds, 1, TestOutcome::Exception, &TestResult::cleanupCallResult,
+
+   TestOutcome::Anomaly, TestOutcome::Success, MaxTestMilliseconds, 1, TestOutcome::Anomaly, &TestResult::testBodyCallResult,
+   TestOutcome::Success, TestOutcome::Anomaly, MaxTestMilliseconds, 1, TestOutcome::Anomaly, &TestResult::cleanupCallResult,
+   TestOutcome::Anomaly, TestOutcome::Anomaly, MaxTestMilliseconds, 1, TestOutcome::Anomaly, &TestResult::testBodyCallResult)
 {
    CallResult testBodyCallResult(TestPhase::TestBody);
    testBodyCallResult.testOutcome = testBodyOutcome;
-   testBodyCallResult.milliseconds = 4ll;
+   testBodyCallResult.microseconds = 4000;
    CallResult cleanupCallResult(TestPhase::Cleanup);
    cleanupCallResult.testOutcome = cleanupOutcome;
-   cleanupCallResult.milliseconds = 5 + relativeMilliseconds;
+   cleanupCallResult.microseconds = 5000 + relativeMicroseconds;
 
    ZenUnitArgs zenUnitArgs;
    zenUnitArgs.maxtestmilliseconds = maxtestmilliseconds;
@@ -602,7 +635,7 @@ TEST6X6(SixArgConstructor_SetsFields,
    expectedTestResult.responsibleCallResultField = expectedResponsibleCallResultField;
    expectedTestResult.testOutcome = expectedOverallOutcome;
    expectedTestResult.testCaseIndex = numeric_limits<unsigned short>::max();
-   expectedTestResult.milliseconds = ExpectedMilliseconds + relativeMilliseconds;
+   expectedTestResult.microseconds = MaxTestMilliseconds * 1000 + relativeMicroseconds;
    ARE_EQUAL(expectedTestResult, testResult);
 }
 
@@ -620,15 +653,15 @@ TEST2X2(WriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess,
       _consoleMock.WriteColorMock.Expect();
       _consoleMock.WriteLineMock.Expect();
    }
-   const unsigned milliseconds = ZenUnit::Random<unsigned>();
-   _testResult.milliseconds = milliseconds;
+   const unsigned microseconds = ZenUnit::Random<unsigned>();
+   _testResult.microseconds = microseconds;
    //
    _testResult.WriteLineOKIfSuccess(&_consoleMock);
    //
    if (expectWriteLineOK)
    {
       ZEN(_consoleMock.WriteColorMock.CalledOnceWith("OK ", Color::Green));
-      ZEN(_consoleMock.WriteLineMock.CalledOnceWith("(" + to_string(milliseconds) + "ms)"));
+      ZEN(_consoleMock.WriteLineMock.CalledOnceWith("(" + to_string(microseconds) + "us)"));
    }
 }
 
@@ -742,7 +775,7 @@ TEST(PrintIfFailure_SuccessButPastDeadline_PrintsExpected)
 {
    _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName = FullTestName("TestClass", "Test", 0);
    _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::SuccessButPastDeadline;
-   _testResult_WriteTestCaseNumberIfAnyMocked.milliseconds = 10;
+   _testResult_WriteTestCaseNumberIfAnyMocked.microseconds = 10000;
 
    const string testFailureNumber = _testFailureNumbererMock.NextMock.ReturnRandom();
 
@@ -825,7 +858,7 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EQUALIZER_THROWS_FOR_FIELD(TestResult, responsibleCallResultField, &TestResult::constructorCallResult);
    EQUALIZER_THROWS_FOR_FIELD(TestResult, testOutcome, TestOutcome::Anomaly);
    EQUALIZER_THROWS_FOR_FIELD(TestResult, testCaseIndex, short(10));
-   EQUALIZER_THROWS_FOR_FIELD(TestResult, milliseconds, 20u);
+   EQUALIZER_THROWS_FOR_FIELD(TestResult, microseconds, 20u);
 }
 
 }; RUN_TESTS(TestResultTests)
