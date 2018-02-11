@@ -25,5 +25,5 @@ Message: "A", "B"
 File.cpp(1))");
    }
 
-   }; RUN_TESTS(FAILTESTTests)
+   RUN_TESTS(FAILTESTTests)
 }

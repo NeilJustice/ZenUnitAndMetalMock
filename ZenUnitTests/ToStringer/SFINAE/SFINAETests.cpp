@@ -51,7 +51,7 @@ TEST(value_IsTrueIfFreeFunctionOStreamInsertionOperatorIsDefinedForType)
    IS_TRUE(has_ostream_left_shift<UserTypeInsOpAndZenUnitPrintable&&>::value);
 }
 
-}; RUN_TESTS(has_ostream_left_shiftTests)
+RUN_TESTS(has_ostream_left_shiftTests)
 
 
 TESTS(has_to_stringTests)
@@ -75,7 +75,7 @@ TEST(DoesNotHaveStdToSTring_ValueIsFalse)
    IS_FALSE(has_to_string<UserType>::value);
 }
 
-}; RUN_TESTS(has_to_stringTests)
+RUN_TESTS(has_to_stringTests)
 
 
 namespace Namespace
@@ -138,7 +138,7 @@ TEST(value_TrueIfZenUnitPrinterIsDefinedForType)
    IS_TRUE(has_ZenUnitPrinter<Namespace::StructInsideNamespace_ZenUnitPrintOutsideNamespace>::value);
 }
 
-}; RUN_TESTS(has_ZenUnitPrinterTests)
+RUN_TESTS(has_ZenUnitPrinterTests)
 
 static_assert(is_quoted_when_printed<char*>::value);
 static_assert(is_quoted_when_printed<char* const>::value);

@@ -276,6 +276,6 @@ TEST(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)
    ARE_EQUAL(TestClassResult::TestingNonDefault(), testClassResult);
 }
 
-}; RUN_TESTS(TestClassRunnerRunnerTests)
+RUN_TESTS(TestClassRunnerRunnerTests)
 
 }

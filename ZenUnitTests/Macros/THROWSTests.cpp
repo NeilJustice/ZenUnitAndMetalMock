@@ -135,5 +135,5 @@ File.cpp(1))", anomaly.why);
       THROWS([]{ throw logic_error("what"); }(), logic_error, "what");
    }
 
-   }; RUN_TESTS(THROWSTests)
+   RUN_TESTS(THROWSTests)
 }

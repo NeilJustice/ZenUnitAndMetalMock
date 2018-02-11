@@ -117,11 +117,10 @@ namespace ZenMock
       test(OverloadedStaticVoid1Function_ZenMock_float);
    }
 
-   }; RUN_TESTS(ZenMock_Void1Tests)
+   RUN_TESTS(ZenMock_Void1Tests)
 }
 
 
-#include "pch.h"
 #include "ZenMock1Tester.h"
 
 int NonVoid1(int) { return 0; }
@@ -487,7 +486,7 @@ Argument: 20
       _zenMock1Tester->CalledAsFollows_NonEmptyCalls_FunctionCalledCallsSizeTimesMatchingArgs_DoesNotThrow(expectedCallsSize);
    }
 
-}; RUN_TESTS(ZenMock_NonVoid1Tests)
+   RUN_TESTS(ZenMock_NonVoid1Tests)
 
 }
 

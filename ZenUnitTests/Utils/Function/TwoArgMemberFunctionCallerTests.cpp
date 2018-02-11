@@ -51,6 +51,5 @@ TEST(ConstCall_CallsConstNonVoidMemberFunctionOnce_ReturnsReturnValue)
    ARE_EQUAL(classInstance.returnValue, returnValueB);
 }
 
-};
 RUN_TEMPLATE_TESTS(TwoArgMemberFunctionCallerTests, char, int, int)
-RUN_TEMPLATE_TESTS(TwoArgMemberFunctionCallerTests, int, double, unsigned)
+THEN_RUN_TEMPLATE_TESTS(TwoArgMemberFunctionCallerTests, int, double, unsigned)

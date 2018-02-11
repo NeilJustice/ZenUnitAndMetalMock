@@ -71,7 +71,7 @@ TEST(ZenUnitEqualizer_ThrowsIfClassNameOrTestNameNotEqual)
    EQUALIZER_THROWS_FOR_FIELD(FullTestName, arity, static_cast<unsigned char>(1));
 }
 
-}; RUN_TESTS(FullTestNameTests)
+RUN_TESTS(FullTestNameTests)
 
 
 TESTS(NewableDeletableTestTests)
@@ -187,7 +187,7 @@ TEST(NewAndDeleteTestClass_NewsAndDeleteFirstInstanceOfTestClass)
    IS_NULL(_newableDeletableTest->_firstInstanceOfTestClass);
 }
 
-}; RUN_TESTS(NewableDeletableTestTests)
+RUN_TESTS(NewableDeletableTestTests)
 
 
 TESTS(NormalTestTests)
@@ -299,7 +299,7 @@ TEST(DeleteTestClass_DeletesTestClass)
    IS_TRUE(TestingTestClass::s_destructorCalled);
 }
 
-}; RUN_TESTS(NormalTestTests)
+RUN_TESTS(NormalTestTests)
 
 
 class TestingTestClass_SpecSectionTestNXNTests
@@ -427,7 +427,7 @@ TEST(TestFunction_CodeCoverage)
    t.TestFunction(0);
 }
 
-}; RUN_TESTS(SpecSectionTestNXNTests)
+RUN_TESTS(SpecSectionTestNXNTests)
 
 
 struct TestingDerivedTestClassType : public TestClass<TestingDerivedTestClassType>
@@ -475,7 +475,7 @@ TEST(Destructor_SetsDerviedTestClassTypeAllTestCasesRegisteredToTrue)
    IS_TRUE(TestingDerivedTestClassType::s_allNXNTestsRegistered);
 }
 
-}; RUN_TESTS(TestClassTests)
+RUN_TESTS(TestClassTests)
 
 
 static const size_t N = 1;
@@ -719,7 +719,7 @@ TEST(WriteLineOKIfSuccess_CallsTestResultWriteLineOKIfSuccess)
    ZEN(testResultMock.WriteLineOKIfSuccessMock.CalledOnceWith(_testNXN->_console.get()));
 }
 
-}; RUN_TESTS(TestNXNTests)
+RUN_TESTS(TestNXNTests)
 
 
 template<typename T>
@@ -748,7 +748,7 @@ TEST7X7(Test7X7, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0) {}
 TEST8X8(Test8X8, int, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0, 0) {}
 TEST9X9(Test9X9, int, int, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0, 0, 0) {}
 TEST10X10(Test10X10, int, int, int, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0) {}
-};
+
 RUN_TEMPLATE_TESTS(AllTestNXNsWithinATemplateTestClass, int)
 
 
@@ -954,6 +954,6 @@ TEST(PseudoAbstractFunctions_DoNothingOrReturn0)
    test.DeleteTestClass();
 }
 
-}; RUN_TESTS(TestTests)
+RUN_TESTS(TestTests)
 
 }

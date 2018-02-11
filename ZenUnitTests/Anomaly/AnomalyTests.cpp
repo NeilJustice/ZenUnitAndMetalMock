@@ -338,10 +338,8 @@ FilePath(1))";
       EQUALIZER_THROWS_FOR_FIELD(Anomaly, why, "whyValue");
    }
 
-   }; RUN_TESTS(AnomalyTests)
+   RUN_TESTS(AnomalyTests)
 }
-
-#include "pch.h"
 
 namespace ZenUnit
 {
@@ -355,6 +353,5 @@ namespace ZenUnit
       ARE_EQUAL("", equalizerException.what());
    }
 
-}; RUN_TESTS(EqualizerExceptionTests)
-
+   RUN_TESTS(EqualizerExceptionTests)
 }

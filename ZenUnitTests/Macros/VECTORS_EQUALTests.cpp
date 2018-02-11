@@ -102,7 +102,6 @@ File.cpp(1))");
       VECTORS_EQUAL(expectedVector, actualVector);
    }
 
-   };
    RUN_TEMPLATE_TESTS(VECTORS_EQUALTests, int)
-   RUN_TEMPLATE_TESTS(VECTORS_EQUALTests, unsigned)
+   THEN_RUN_TEMPLATE_TESTS(VECTORS_EQUALTests, unsigned)
 }

@@ -37,7 +37,7 @@ TEST(ZenMockThrowIfExceptionSet_ExpectAndThrowPreviousCalled_ThrowsTheException_
    THROWS(_exceptionThrower.ZenMockThrowIfExceptionSet(), logic_error, "logic_error_what");
 }
 
-}; RUN_TESTS(ExceptionThrowerTests)
+RUN_TESTS(ExceptionThrowerTests)
 
 
 TESTS(FunctionAlreadyExpectedExceptionTests)
@@ -56,7 +56,7 @@ Already called [FunctionName]Mock.[Expect|Return|ReturnValues|Throw]().)";
    IS_TRUE((is_base_of<ZenMockException, FunctionAlreadyExpectedException>::value));
 }
 
-}; RUN_TESTS(FunctionAlreadyExpectedExceptionTests)
+RUN_TESTS(FunctionAlreadyExpectedExceptionTests)
 
 
 TESTS(ReturnValueMustBeSpecifiedExceptionTests)
@@ -77,7 +77,7 @@ must have their return value or values set explicitly by calling
    IS_TRUE((is_base_of<ZenMockException, ReturnValueMustBeSpecifiedException>::value));
 }
 
-}; RUN_TESTS(ReturnValueMustBeSpecifiedExceptionTests)
+RUN_TESTS(ReturnValueMustBeSpecifiedExceptionTests)
 
 
 template<typename ExceptionType>
@@ -108,9 +108,8 @@ TEST(Throw_ExceptionIsNotNullptr_ThrowsTheException)
    THROWS(_templateThrowable.Throw(), ExceptionType, _exceptionWhat);
 }
 
-};
 RUN_TEMPLATE_TESTS(TemplateThrowableTests, runtime_error)
-RUN_TEMPLATE_TESTS(TemplateThrowableTests, logic_error)
+THEN_RUN_TEMPLATE_TESTS(TemplateThrowableTests, logic_error)
 
 
 TESTS(UnexpectedCallExceptionTests)
@@ -168,7 +167,7 @@ Argument2: UserType@2)";
    ARE_EQUAL(ExpectedWhat, what);
 }
 
-}; RUN_TESTS(UnexpectedCallExceptionTests)
+RUN_TESTS(UnexpectedCallExceptionTests)
 
 
 TESTS(UnsupportedCalledZeroTimesExceptionTests)
@@ -193,6 +192,6 @@ simply do not call Expect(), Return(), or Throw() on a ZenMock object.)");
    IS_TRUE((is_base_of<ZenMockException, UnsupportedCalledZeroTimesException>::value));
 }
 
-}; RUN_TESTS(UnsupportedCalledZeroTimesExceptionTests)
+RUN_TESTS(UnsupportedCalledZeroTimesExceptionTests)
 
 }

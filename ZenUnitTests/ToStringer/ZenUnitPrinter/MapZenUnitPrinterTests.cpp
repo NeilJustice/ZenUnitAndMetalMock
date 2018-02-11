@@ -43,6 +43,5 @@ TEST(Print_UnorderedMap_PrintsPlaceholder)
    ARE_EQUAL("std::unordered_map<TKey, TValue>", oss.str());
 }
 
-};
 RUN_TEMPLATE_TESTS(MapZenUnitPrinterTests, int, int)
-RUN_TEMPLATE_TESTS(MapZenUnitPrinterTests, char, unsigned)
+THEN_RUN_TEMPLATE_TESTS(MapZenUnitPrinterTests, char, unsigned)

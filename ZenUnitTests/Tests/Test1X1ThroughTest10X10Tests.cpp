@@ -80,7 +80,7 @@ namespace ZenUnit
       AssertExpectedCalls<TestingTestClass1X1>(expectedFirstCall, expectedSecondCall);
    }
 
-}; RUN_TESTS(Test1X1TestTests)
+   RUN_TESTS(Test1X1TestTests)
 }
 
 struct TestingTestClass2X2 : public StartupAndCleanup
@@ -131,7 +131,7 @@ namespace ZenUnit
       AssertExpectedCalls<TestingTestClass2X2>(expectedFirstCall, expectedSecondCall);
    }
 
-}; RUN_TESTS(Test2X2TestTests)
+   RUN_TESTS(Test2X2TestTests)
 }
 
 struct TestingTestClass3X3 : public StartupAndCleanup
@@ -182,7 +182,7 @@ namespace ZenUnit
       AssertExpectedCalls<TestingTestClass3X3>(expectedFirstCall, expectedSecondCall);
    }
 
-}; RUN_TESTS(Test3X3TestTests)
+   RUN_TESTS(Test3X3TestTests)
 }
 
 struct TestingTestClass4X4 : public StartupAndCleanup
@@ -233,7 +233,7 @@ namespace ZenUnit
       AssertExpectedCalls<TestingTestClass4X4>(expectedFirstCall, expectedSecondCall);
    }
 
-}; RUN_TESTS(Test4X4TestTests)
+   RUN_TESTS(Test4X4TestTests)
 }
 
 struct TestingTestClass5X5 : public StartupAndCleanup
@@ -284,7 +284,7 @@ namespace ZenUnit
       AssertExpectedCalls<TestingTestClass5X5>(expectedFirstCall, expectedSecondCall);
    }
 
-}; RUN_TESTS(Test5X5TestTests)
+   RUN_TESTS(Test5X5TestTests)
 }
 
 struct TestingTestClass6X6 : public StartupAndCleanup
@@ -335,7 +335,7 @@ namespace ZenUnit
       AssertExpectedCalls<TestingTestClass6X6>(expectedFirstCall, expectedSecondCall);
    }
 
-}; RUN_TESTS(Test6X6TestTests)
+   RUN_TESTS(Test6X6TestTests)
 }
 
 struct TestingTestClass7X7 : public StartupAndCleanup
@@ -386,7 +386,7 @@ namespace ZenUnit
       AssertExpectedCalls<TestingTestClass7X7>(expectedFirstCall, expectedSecondCall);
    }
 
-}; RUN_TESTS(Test7X7TestTests)
+   RUN_TESTS(Test7X7TestTests)
 }
 
 struct TestingTestClass8X8 : public StartupAndCleanup
@@ -437,7 +437,7 @@ namespace ZenUnit
       AssertExpectedCalls<TestingTestClass8X8>(expectedFirstCall, expectedSecondCall);
    }
 
-}; RUN_TESTS(Test8X8TestTests)
+   RUN_TESTS(Test8X8TestTests)
 }
 
 struct TestingTestClass9X9 : public StartupAndCleanup
@@ -488,7 +488,7 @@ namespace ZenUnit
       AssertExpectedCalls<TestingTestClass9X9>(expectedFirstCall, expectedSecondCall);
    }
 
-}; RUN_TESTS(Test9X9TestTests)
+   RUN_TESTS(Test9X9TestTests)
 }
 
 struct TestingTestClass10X10 : public StartupAndCleanup
@@ -539,5 +539,5 @@ namespace ZenUnit
       AssertExpectedCalls<TestingTestClass10X10>(expectedFirstCall, expectedSecondCall);
    }
 
-}; RUN_TESTS(Test10X10TestTests)
+   RUN_TESTS(Test10X10TestTests)
 }

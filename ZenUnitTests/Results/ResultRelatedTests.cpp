@@ -38,7 +38,7 @@ TEST(ExceptionTypeNameAndExceptionWhatConstructor_SetsExceptionTypeNameAndExcept
    ARE_EQUAL(exceptionWhat, *anomalyOrException.exceptionWhat);
 }
 
-}; RUN_TESTS(AnomalyOrExceptionTests)
+RUN_TESTS(AnomalyOrExceptionTests)
 
 
 TESTS(CallResultTests)
@@ -81,7 +81,7 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EQUALIZER_THROWS_FOR_FIELD(CallResult, anomalyOrException, nonDefaultAnomalyOrException);
 }
 
-}; RUN_TESTS(CallResultTests)
+RUN_TESTS(CallResultTests)
 
 
 TESTS(TestClassResultTests)
@@ -330,7 +330,7 @@ TEST(ZenUnitEqualizer_ThrowsIfTestResultsNotEqual)
    EQUALIZER_THROWS_FOR_FIELD(TestClassResult, _testResults, vector<TestResult> { TestResult() });
 }
 
-}; RUN_TESTS(TestClassResultTests)
+RUN_TESTS(TestClassResultTests)
 
 
 TESTS(TestFailureNumbererTests)
@@ -349,7 +349,7 @@ TEST(TestFailureNumberer_NextReturnsIncrementingAngleBracketedSequence)
    ARE_EQUAL("Test Failure 3:", testFailureNumberer.Next());
 }
 
-}; RUN_TESTS(TestFailureNumbererTests)
+RUN_TESTS(TestFailureNumbererTests)
 
 
 TESTS(TestPhaseSuffixerTests)
@@ -378,7 +378,7 @@ TEST1X1(TestPhaseToTestPhaseSuffix_UnsetOrDestructorTestPhase_Throws,
       invalid_argument, "Invalid testPhase");
 }
 
-}; RUN_TESTS(TestPhaseSuffixerTests)
+RUN_TESTS(TestPhaseSuffixerTests)
 
 
 TESTS(TestResultFactoryTests)
@@ -445,7 +445,7 @@ TEST(FullConstructor_ReturnsTestResultSixArgCtor)
    ARE_EQUAL(expectedTestResult, testResult);
 }
 
-}; RUN_TESTS(TestResultFactoryTests)
+RUN_TESTS(TestResultFactoryTests)
 
 
 TESTS(TestResultTests)
@@ -861,7 +861,7 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EQUALIZER_THROWS_FOR_FIELD(TestResult, microseconds, 20u);
 }
 
-}; RUN_TESTS(TestResultTests)
+RUN_TESTS(TestResultTests)
 
 
 TESTS(TestRunResultTests)
@@ -1284,6 +1284,6 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EQUALIZER_THROWS_FOR_FIELD(TestRunResult, _skippedFullTestNamesAndReasons, vector<string> { "" });
 }
 
-}; RUN_TESTS(TestRunResultTests)
+RUN_TESTS(TestRunResultTests)
 
 }

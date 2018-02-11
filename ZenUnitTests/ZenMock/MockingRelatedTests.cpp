@@ -18,7 +18,7 @@ namespace Zen
       ARE_EQUAL("Zen::X", *Mock<Zen::X>::ZenMockedClassName());
    }
 
-   }; RUN_TESTS(MockTests)
+   RUN_TESTS(MockTests)
 }
 
 struct CustomException
@@ -226,7 +226,7 @@ namespace ZenMock
       _zenMocker->ZenMockExitIfExpectedButNotAsserted();
    }
 
-   }; RUN_TESTS(ZenMockerTests)
+   RUN_TESTS(ZenMockerTests)
 
 
    TESTS(SignatureTests)
@@ -264,7 +264,7 @@ namespace ZenMock
       ARE_EQUAL(expectedFunctionPointerSignature, functionPointerSignature);
    }
 
-   }; RUN_TESTS(SignatureTests)
+   RUN_TESTS(SignatureTests)
 
 
    TESTS(ZENTests)
@@ -295,5 +295,5 @@ Expected: "Message"
 File.cpp(1))");
    }
 
-   }; RUN_TESTS(ZENTests)
+   RUN_TESTS(ZENTests)
 }

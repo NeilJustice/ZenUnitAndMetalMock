@@ -138,7 +138,7 @@ File.cpp(1))");
       IS_TRUE(_mocker->_asserted);
    }
 
-   }; RUN_TESTS(ZeroArgumentMockerTests)
+   RUN_TESTS(ZeroArgumentMockerTests)
 
 
    TESTS(OneArgumentMockerTests)
@@ -416,7 +416,7 @@ File.cpp(1))");
       IS_TRUE(_mocker->_asserted);
    }
 
-   }; RUN_TESTS(OneArgumentMockerTests)
+   RUN_TESTS(OneArgumentMockerTests)
 
 
    TESTS(TwoArgumentMockerTests)
@@ -498,7 +498,7 @@ File.cpp(1))");
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-   }; RUN_TESTS(TwoArgumentMockerTests)
+   RUN_TESTS(TwoArgumentMockerTests)
 
 
    TESTS(ThreeArgumentMockerTests)
@@ -580,7 +580,7 @@ File.cpp(1))");
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-   }; RUN_TESTS(ThreeArgumentMockerTests)
+   RUN_TESTS(ThreeArgumentMockerTests)
 
 
    TESTS(FourArgumentMockerTests)
@@ -662,7 +662,7 @@ File.cpp(1))");
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-   }; RUN_TESTS(FourArgumentMockerTests)
+   RUN_TESTS(FourArgumentMockerTests)
 
 
    TESTS(FiveArgumentMockerTests)
@@ -744,7 +744,7 @@ File.cpp(1))");
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-   }; RUN_TESTS(FiveArgumentMockerTests)
+   RUN_TESTS(FiveArgumentMockerTests)
 
 
    TESTS(SixArgumentMockerTests)
@@ -826,7 +826,7 @@ File.cpp(1))");
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-   }; RUN_TESTS(SixArgumentMockerTests)
+   RUN_TESTS(SixArgumentMockerTests)
 
 
    TESTS(SevenArgumentMockerTests)
@@ -908,7 +908,7 @@ File.cpp(1))");
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-   }; RUN_TESTS(SevenArgumentMockerTests)
+   RUN_TESTS(SevenArgumentMockerTests)
 
 
    TESTS(EightArgumentMockerTests)
@@ -990,7 +990,7 @@ File.cpp(1))");
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-   }; RUN_TESTS(EightArgumentMockerTests)
+   RUN_TESTS(EightArgumentMockerTests)
 
 
    TESTS(NineArgumentMockerTests)
@@ -1072,7 +1072,7 @@ File.cpp(1))");
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-   }; RUN_TESTS(NineArgumentMockerTests)
+   RUN_TESTS(NineArgumentMockerTests)
 
 
    TESTS(TenArgumentMockerTests)
@@ -1154,5 +1154,5 @@ File.cpp(1))");
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-   }; RUN_TESTS(TenArgumentMockerTests)
+   RUN_TESTS(TenArgumentMockerTests)
 }

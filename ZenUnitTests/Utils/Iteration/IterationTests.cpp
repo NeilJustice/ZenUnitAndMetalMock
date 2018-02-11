@@ -129,9 +129,8 @@ namespace ZenUnit
       IS_FALSE(anyElementMatchesPredicate);
    }
 
-   };
    RUN_TEMPLATE_TESTS(TwoArgMemberAnyerTests, vector, int, int)
-   RUN_TEMPLATE_TESTS(TwoArgMemberAnyerTests, set, long long, unsigned char)
+   THEN_RUN_TEMPLATE_TESTS(TwoArgMemberAnyerTests, set, long long, unsigned char)
 
 
    template<typename ElementType, typename Arg2Type>
@@ -252,9 +251,8 @@ namespace ZenUnit
       classType.TwoArgFunction(ElementType{}, Arg2Type{});
    };
 
-   };
    RUN_TEMPLATE_TESTS(TwoArgMemberForEacherTests, int, int)
-   RUN_TEMPLATE_TESTS(TwoArgMemberForEacherTests, double, char)
+   THEN_RUN_TEMPLATE_TESTS(TwoArgMemberForEacherTests, double, char)
 
 
    template<
@@ -324,11 +322,10 @@ namespace ZenUnit
       classType.Func(ElementType{});
    }
 
-   };
    RUN_TEMPLATE_TESTS(MemberForEacherTests, vector, int)
-   RUN_TEMPLATE_TESTS(MemberForEacherTests, vector, double)
-   RUN_TEMPLATE_TESTS(MemberForEacherTests, set, int)
-   RUN_TEMPLATE_TESTS(MemberForEacherTests, set, double)
+   THEN_RUN_TEMPLATE_TESTS(MemberForEacherTests, vector, double)
+   THEN_RUN_TEMPLATE_TESTS(MemberForEacherTests, set, int)
+   THEN_RUN_TEMPLATE_TESTS(MemberForEacherTests, set, double)
 
 
    template<typename T, typename TransformedT>
@@ -411,9 +408,8 @@ namespace ZenUnit
          (dest == vector<TransformedT>{4, 3, 2}));
    }
 
-   };
    RUN_TEMPLATE_TESTS(TransformerTests, int, long long)
-   RUN_TEMPLATE_TESTS(TransformerTests, unsigned long long, unsigned long long)
+   THEN_RUN_TEMPLATE_TESTS(TransformerTests, unsigned long long, unsigned long long)
 
 
    template<typename ElementType, typename TransformedElementType>
@@ -478,9 +474,8 @@ namespace ZenUnit
       VECTORS_EQUAL(expectedTransformedElements, transformedElements);
    }
 
-   };
    RUN_TEMPLATE_TESTS(MemberFunctionTransformerTests, int, int)
-   RUN_TEMPLATE_TESTS(MemberFunctionTransformerTests, unsigned, double)
+   THEN_RUN_TEMPLATE_TESTS(MemberFunctionTransformerTests, unsigned, double)
 }
 
 #endif

@@ -298,7 +298,7 @@ what(): "runtime_error_what")"));
       }
    }
 
-   }; RUN_TESTS(TryCatchCallerTests)
+   RUN_TESTS(TryCatchCallerTests)
 
    int TryCatchCallerTests::s_numberOfNoThrowCalls;
 }

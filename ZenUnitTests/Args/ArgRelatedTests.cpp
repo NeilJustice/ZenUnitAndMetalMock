@@ -6,24 +6,25 @@
 
 namespace ZenUnit
 {
-   TESTS(ArgsParserTests)
-   AFACT(DefaultConstructor_NewsCompnents_SetsStringToUnsignedFunction)
-   AFACT(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
-   FACTS(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1)
-   FACTS(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1)
-   FACTS(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0)
-   AFACT(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
-   AFACT(Parse_Run_ReturnsExpectedZenUnitArgs)
-   AFACT(Parse_Random_SetsRandomToTrue)
-   AFACT(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
-   AFACT(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
-   FACTS(Parse_EqualsSignContainingArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1)
-   AFACT(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
-   AFACT(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
-   AFACT(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
-   FACTS(Parse_RandomEqualsArg_ValidUnsignedValue_DowncastsValueToUnsignedShort_ReturnsExpectedZenUnitArgs)
-   AFACT(Parse_UnrecognizedEqualsSignArgName_PrintsUsageAndExits1)
-   EVIDENCE
+
+TESTS(ArgsParserTests)
+AFACT(DefaultConstructor_NewsCompnents_SetsStringToUnsignedFunction)
+AFACT(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
+FACTS(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1)
+FACTS(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1)
+FACTS(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0)
+AFACT(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
+AFACT(Parse_Run_ReturnsExpectedZenUnitArgs)
+AFACT(Parse_Random_SetsRandomToTrue)
+AFACT(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
+AFACT(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
+FACTS(Parse_EqualsSignContainingArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1)
+AFACT(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
+AFACT(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
+AFACT(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
+FACTS(Parse_RandomEqualsArg_ValidUnsignedValue_DowncastsValueToUnsignedShort_ReturnsExpectedZenUnitArgs)
+AFACT(Parse_UnrecognizedEqualsSignArgName_PrintsUsageAndExits1)
+EVIDENCE
 
    const string TestProgramPath = Random<string>();
    const string ExpectedUsage = R"(ZenUnit and ZenMock v0.2.0
@@ -60,282 +61,282 @@ Testing Rigor Options:
    Repeat the running of all non-skipped tests N times.
    Specify -testruns=2 -random for two random test run orderings for increased testing rigor.)";
 
-   ArgsParser _argsParser;
-   ConsoleMock* _consoleMock;
-   RunFilterParserMock* _runFilterParserMock = nullptr;
-   ZENMOCK_NONVOID1_STATIC(unsigned, ZenUnit::String, ToUnsigned, const string&)
+ArgsParser _argsParser;
+ConsoleMock* _consoleMock;
+RunFilterParserMock* _runFilterParserMock = nullptr;
+ZENMOCK_NONVOID1_STATIC(unsigned, ZenUnit::String, ToUnsigned, const string&)
 
-   STARTUP
+STARTUP
+{
+   _argsParser._console.reset(_consoleMock = new ConsoleMock);
+   _argsParser._runFilterParser.reset(_runFilterParserMock = new RunFilterParserMock);
+   _argsParser.call_String_ToUnsigned = ZENMOCK_BIND1(ToUnsigned_ZenMock);
+}
+
+TEST(DefaultConstructor_NewsCompnents_SetsStringToUnsignedFunction)
+{
+   ArgsParser argsParser;
+   POINTER_WAS_NEWED(argsParser._console);
+   POINTER_WAS_NEWED(argsParser._runFilterParser);
+   STD_FUNCTION_TARGETS(String::ToUnsigned, argsParser.call_String_ToUnsigned);
+}
+
+TEST(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
+{
+   vector<string> args{ TestProgramPath };
+   //
+   const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
+   //
+   ZenUnitArgs expectedZenUnitArgs;
+   expectedZenUnitArgs.commandLine = TestProgramPath;
+   ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
+}
+
+TEST1X1(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1,
+   size_t numberOfArgs,
+   11,
+   12)
+{
+   _consoleMock->WriteLineMock.Expect();
+   _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
+   const vector<string> Args(numberOfArgs);
+   //
+   THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
+   //
+   ZEN(_consoleMock->WriteLineMock.CalledOnceWith("ZenUnit command line usage error: Too many arguments.\n"));
+   ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
+}
+
+TEST1X1(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1,
+   const string& invalidArg,
+   "--exit0",
+   "-Exit0",
+   "-testruns")
+{
+   _consoleMock->WriteLineMock.Expect();
+   _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
+   const vector<string> Args{ TestProgramPath, invalidArg };
+   //
+   THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
+   //
+   ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
+      "ZenUnit command line usage error: Invalid argument \"" + invalidArg + "\"\n"));
+   ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
+}
+
+TEST1X1(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0,
+   const string& helpArg,
+   "-help",
+   "--help")
+{
+   _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
+   //
+   THROWS(_argsParser.Parse({ TestProgramPath, helpArg }), WriteLineAndExitException, "");
+   //
+   ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 0));
+}
+
+TEST(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
+{
+   const unsigned testruns = ZenUnit::Random<unsigned>();
+   const unsigned randomseed = ZenUnit::Random<unsigned>();
+   ToUnsigned_ZenMock.ReturnValues(testruns, randomseed);
+   const vector<string> Args
    {
-      _argsParser._console.reset(_consoleMock = new ConsoleMock);
-      _argsParser._runFilterParser.reset(_runFilterParserMock = new RunFilterParserMock);
-      _argsParser.call_String_ToUnsigned = ZENMOCK_BIND1(ToUnsigned_ZenMock);
-   }
-
-   TEST(DefaultConstructor_NewsCompnents_SetsStringToUnsignedFunction)
+      TestProgramPath,
+      "-pause",
+      "-wait",
+      "-exit0",
+      "-failfast",
+      "-failskips",
+      "-testruns=" + to_string(testruns),
+      "-random=" + to_string(randomseed)
+   };
+   //
+   const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
+   //
+   ZEN(ToUnsigned_ZenMock.CalledAsFollows(
    {
-      ArgsParser argsParser;
-      POINTER_WAS_NEWED(argsParser._console);
-      POINTER_WAS_NEWED(argsParser._runFilterParser);
-      STD_FUNCTION_TARGETS(String::ToUnsigned, argsParser.call_String_ToUnsigned);
-   }
+      to_string(testruns),
+      to_string(randomseed)
+   }));
+   ZenUnitArgs expectedZenUnitArgs;
+   expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
+   expectedZenUnitArgs.pause = true;
+   expectedZenUnitArgs.wait = true;
+   expectedZenUnitArgs.exit0 = true;
+   expectedZenUnitArgs.failfast = true;
+   expectedZenUnitArgs.failskips = true;
+   expectedZenUnitArgs.testruns = 1;
+   expectedZenUnitArgs.random = true;
+   expectedZenUnitArgs.testruns = testruns;
+   expectedZenUnitArgs.randomseed = static_cast<unsigned short>(randomseed);
+   expectedZenUnitArgs.randomseedsetbyuser = true;
+   ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
+}
 
-   TEST(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
-   {
-      vector<string> args{ TestProgramPath };
-      //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
-      //
-      ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = TestProgramPath;
-      ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
-   }
+TEST(Parse_Run_ReturnsExpectedZenUnitArgs)
+{
+   const vector<RunFilter> runFilters = { Random<RunFilter>() };
+   _runFilterParserMock->ParseMock.Return(runFilters);
 
-   TEST1X1(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1,
-      size_t numberOfArgs,
-      11,
-      12)
-   {
-      _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
-      const vector<string> Args(numberOfArgs);
-      //
-      THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
-      //
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith("ZenUnit command line usage error: Too many arguments.\n"));
-      ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
-   }
+   const string runArgument = ZenUnit::Random<string>();
+   const vector<string> args = { "ExePath", "-run=" + runArgument };
+   //
+   const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
+   //
+   const vector<string> splitRunArgument = String::Split(runArgument, ',');
+   ZEN(_runFilterParserMock->ParseMock.CalledOnceWith(splitRunArgument));
 
-   TEST1X1(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1,
-      const string& invalidArg,
-      "--exit0",
-      "-Exit0",
-      "-testruns")
-   {
-      _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
-      const vector<string> Args{ TestProgramPath, invalidArg };
-      //
-      THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
-      //
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
-         "ZenUnit command line usage error: Invalid argument \"" + invalidArg + "\"\n"));
-      ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
-   }
+   ZenUnitArgs expectedZenUnitArgs;
+   expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
+   expectedZenUnitArgs.runFilters = runFilters;
+   ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
+}
 
-   TEST1X1(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0,
-      const string& helpArg,
-      "-help",
-      "--help")
-   {
-      _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
-      //
-      THROWS(_argsParser.Parse({ TestProgramPath, helpArg }), WriteLineAndExitException, "");
-      //
-      ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 0));
-   }
+TEST(Parse_Random_SetsRandomToTrue)
+{
+   const vector<string> args = { "ExePath", "-random" };
+   //
+   const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
+   //
+   ZenUnitArgs expectedZenUnitArgs;
+   expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
+   expectedZenUnitArgs.random = true;
+   ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
+}
 
-   TEST(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
-   {
-      const unsigned testruns = ZenUnit::Random<unsigned>();
-      const unsigned randomseed = ZenUnit::Random<unsigned>();
-      ToUnsigned_ZenMock.ReturnValues(testruns, randomseed);
-      const vector<string> Args
-      {
-         TestProgramPath,
-         "-pause",
-         "-wait",
-         "-exit0",
-         "-failfast",
-         "-failskips",
-         "-testruns=" + to_string(testruns),
-         "-random=" + to_string(randomseed)
-      };
-      //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
-      //
-      ZEN(ToUnsigned_ZenMock.CalledAsFollows(
-      {
-         to_string(testruns),
-         to_string(randomseed)
-      }));
-      ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
-      expectedZenUnitArgs.pause = true;
-      expectedZenUnitArgs.wait = true;
-      expectedZenUnitArgs.exit0 = true;
-      expectedZenUnitArgs.failfast = true;
-      expectedZenUnitArgs.failskips = true;
-      expectedZenUnitArgs.testruns = 1;
-      expectedZenUnitArgs.random = true;
-      expectedZenUnitArgs.testruns = testruns;
-      expectedZenUnitArgs.randomseed = static_cast<unsigned short>(randomseed);
-      expectedZenUnitArgs.randomseedsetbyuser = true;
-      ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
-   }
+TEST(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
+{
+   AssertArgSetsBoolField("-pause", &ZenUnitArgs::pause);
+   AssertArgSetsBoolField("-wait", &ZenUnitArgs::wait);
+   AssertArgSetsBoolField("-exit0", &ZenUnitArgs::exit0);
+   AssertArgSetsBoolField("-failfast", &ZenUnitArgs::failfast);
+   AssertArgSetsBoolField("-failskips", &ZenUnitArgs::failskips);
+}
+void AssertArgSetsBoolField(const string& arg, bool ZenUnitArgs::* expectedFieldToBeSet)
+{
+   const vector<string> Args{ TestProgramPath, arg };
+   //
+   const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
+   //
+   ZenUnitArgs expectedZenUnitArgs;
+   expectedZenUnitArgs.commandLine = TestProgramPath + " " + arg;
+   (expectedZenUnitArgs.*expectedFieldToBeSet) = true;
+   ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
+}
 
-   TEST(Parse_Run_ReturnsExpectedZenUnitArgs)
-   {
-      const vector<RunFilter> runFilters = { Random<RunFilter>() };
-      _runFilterParserMock->ParseMock.Return(runFilters);
+TEST(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
+{
+   const vector<string> Args{ TestProgramPath, "-exit0", "-exit0" };
+   //
+   const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
+   //
+   ZenUnitArgs expectedZenUnitArgs;
+   expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
+   expectedZenUnitArgs.exit0 = true;
+   ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
+}
 
-      const string runArgument = ZenUnit::Random<string>();
-      const vector<string> args = { "ExePath", "-run=" + runArgument };
-      //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
-      //
-      const vector<string> splitRunArgument = String::Split(runArgument, ',');
-      ZEN(_runFilterParserMock->ParseMock.CalledOnceWith(splitRunArgument));
+TEST1X1(Parse_EqualsSignContainingArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1,
+   const string& arg,
+   "-testruns=",
+   "-testruns===",
+   "-random=",
+   "-random===")
+{
+   _consoleMock->WriteLineMock.Expect();
+   _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
+   const vector<string> Args{ TestProgramPath, arg };
+   //
+   THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
+   //
+   ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
+      "ZenUnit command line usage error: Invalid -name=value argument value: " + arg + "\n"));
+   ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
+}
 
-      ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
-      expectedZenUnitArgs.runFilters = runFilters;
-      ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
-   }
+TEST(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
+{
+   _consoleMock->WriteLineMock.Expect();
+   _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
+   ToUnsigned_ZenMock.Throw<invalid_argument>("");
+   const string InvalidTimesArg = "-testruns=-1_for_example";
+   const vector<string> Args{ TestProgramPath, InvalidTimesArg };
+   //
+   THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
+   //
+   ZEN(ToUnsigned_ZenMock.CalledOnceWith("-1_for_example"));
+   ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
+      "ZenUnit command line usage error: Invalid -name=value argument value: " + InvalidTimesArg + "\n"));
+   ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
+}
 
-   TEST(Parse_Random_SetsRandomToTrue)
-   {
-      const vector<string> args = { "ExePath", "-random" };
-      //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
-      //
-      ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
-      expectedZenUnitArgs.random = true;
-      ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
-   }
+TEST(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
+{
+   const unsigned timesArgValue = ToUnsigned_ZenMock.ReturnRandom();
+   const vector<string> Args{ TestProgramPath, "-testruns=" + to_string(timesArgValue) };
+   //
+   const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
+   //
+   ZEN(ToUnsigned_ZenMock.CalledOnceWith(to_string(timesArgValue)));
+   ZenUnitArgs expectedZenUnitArgs;
+   expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
+   expectedZenUnitArgs.testruns = timesArgValue;
+   ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
+}
 
-   TEST(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
-   {
-      AssertArgSetsBoolField("-pause", &ZenUnitArgs::pause);
-      AssertArgSetsBoolField("-wait", &ZenUnitArgs::wait);
-      AssertArgSetsBoolField("-exit0", &ZenUnitArgs::exit0);
-      AssertArgSetsBoolField("-failfast", &ZenUnitArgs::failfast);
-      AssertArgSetsBoolField("-failskips", &ZenUnitArgs::failskips);
-   }
-   void AssertArgSetsBoolField(const string& arg, bool ZenUnitArgs::* expectedFieldToBeSet)
-   {
-      const vector<string> Args{ TestProgramPath, arg };
-      //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
-      //
-      ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = TestProgramPath + " " + arg;
-      (expectedZenUnitArgs.*expectedFieldToBeSet) = true;
-      ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
-   }
+TEST(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
+{
+   const unsigned randomSeedArgValue = ToUnsigned_ZenMock.ReturnRandom();
+   const vector<string> Args{ TestProgramPath, "-random=" + to_string(randomSeedArgValue) };
+   //
+   const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
+   //
+   ZEN(ToUnsigned_ZenMock.CalledOnceWith(to_string(randomSeedArgValue)));
+   ZenUnitArgs expectedZenUnitArgs;
+   expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
+   expectedZenUnitArgs.random = true;
+   expectedZenUnitArgs.randomseed = static_cast<unsigned short>(randomSeedArgValue);
+   expectedZenUnitArgs.randomseedsetbyuser = true;
+   ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
+}
 
-   TEST(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
-   {
-      const vector<string> Args{ TestProgramPath, "-exit0", "-exit0" };
-      //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
-      //
-      ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
-      expectedZenUnitArgs.exit0 = true;
-      ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
-   }
+TEST2X2(Parse_RandomEqualsArg_ValidUnsignedValue_DowncastsValueToUnsignedShort_ReturnsExpectedZenUnitArgs,
+   unsigned randomSeedArgValue, unsigned short expectedZenUnitArgsRandomseedValue,
+   numeric_limits<unsigned short>::max(), numeric_limits<unsigned short>::max(),
+   numeric_limits<unsigned short>::max() + 1, static_cast<unsigned short>(0),
+   numeric_limits<unsigned short>::max() + 2, static_cast<unsigned short>(1))
+{
+   ToUnsigned_ZenMock.Return(randomSeedArgValue);
+   const vector<string> Args{ TestProgramPath, "-random=" + to_string(randomSeedArgValue) };
+   //
+   const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
+   //
+   ZEN(ToUnsigned_ZenMock.CalledOnceWith(to_string(randomSeedArgValue)));
+   ZenUnitArgs expectedZenUnitArgs;
+   expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
+   expectedZenUnitArgs.random = true;
+   expectedZenUnitArgs.randomseed = expectedZenUnitArgsRandomseedValue;
+   expectedZenUnitArgs.randomseedsetbyuser = true;
+   ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
+}
 
-   TEST1X1(Parse_EqualsSignContainingArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1,
-      const string& arg,
-      "-testruns=",
-      "-testruns===",
-      "-random=",
-      "-random===")
-   {
-      _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
-      const vector<string> Args{ TestProgramPath, arg };
-      //
-      THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
-      //
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
-         "ZenUnit command line usage error: Invalid -name=value argument value: " + arg + "\n"));
-      ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
-   }
+TEST(Parse_UnrecognizedEqualsSignArgName_PrintsUsageAndExits1)
+{
+   _consoleMock->WriteLineMock.Expect();
+   _consoleMock->WriteLineAndExitMock.Expect();
+   const string UnrecognizedNameArg = "-invalid_name=123";
+   const vector<string> Args{ TestProgramPath, UnrecognizedNameArg };
+   //
+   _argsParser.Parse(Args);
+   //
+   ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
+      "ZenUnit command line usage error: Unrecognized -name=value argument: " + UnrecognizedNameArg + "\n"));
+   ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
+}
 
-   TEST(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
-   {
-      _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
-      ToUnsigned_ZenMock.Throw<invalid_argument>("");
-      const string InvalidTimesArg = "-testruns=-1_for_example";
-      const vector<string> Args{ TestProgramPath, InvalidTimesArg };
-      //
-      THROWS(_argsParser.Parse(Args), WriteLineAndExitException, "");
-      //
-      ZEN(ToUnsigned_ZenMock.CalledOnceWith("-1_for_example"));
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
-         "ZenUnit command line usage error: Invalid -name=value argument value: " + InvalidTimesArg + "\n"));
-      ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
-   }
-
-   TEST(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
-   {
-      const unsigned timesArgValue = ToUnsigned_ZenMock.ReturnRandom();
-      const vector<string> Args{ TestProgramPath, "-testruns=" + to_string(timesArgValue) };
-      //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
-      //
-      ZEN(ToUnsigned_ZenMock.CalledOnceWith(to_string(timesArgValue)));
-      ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
-      expectedZenUnitArgs.testruns = timesArgValue;
-      ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
-   }
-
-   TEST(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
-   {
-      const unsigned randomSeedArgValue = ToUnsigned_ZenMock.ReturnRandom();
-      const vector<string> Args{ TestProgramPath, "-random=" + to_string(randomSeedArgValue) };
-      //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
-      //
-      ZEN(ToUnsigned_ZenMock.CalledOnceWith(to_string(randomSeedArgValue)));
-      ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
-      expectedZenUnitArgs.random = true;
-      expectedZenUnitArgs.randomseed = static_cast<unsigned short>(randomSeedArgValue);
-      expectedZenUnitArgs.randomseedsetbyuser = true;
-      ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
-   }
-
-   TEST2X2(Parse_RandomEqualsArg_ValidUnsignedValue_DowncastsValueToUnsignedShort_ReturnsExpectedZenUnitArgs,
-      unsigned randomSeedArgValue, unsigned short expectedZenUnitArgsRandomseedValue,
-      numeric_limits<unsigned short>::max(), numeric_limits<unsigned short>::max(),
-      numeric_limits<unsigned short>::max() + 1, static_cast<unsigned short>(0),
-      numeric_limits<unsigned short>::max() + 2, static_cast<unsigned short>(1))
-   {
-      ToUnsigned_ZenMock.Return(randomSeedArgValue);
-      const vector<string> Args{ TestProgramPath, "-random=" + to_string(randomSeedArgValue) };
-      //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
-      //
-      ZEN(ToUnsigned_ZenMock.CalledOnceWith(to_string(randomSeedArgValue)));
-      ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
-      expectedZenUnitArgs.random = true;
-      expectedZenUnitArgs.randomseed = expectedZenUnitArgsRandomseedValue;
-      expectedZenUnitArgs.randomseedsetbyuser = true;
-      ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
-   }
-
-   TEST(Parse_UnrecognizedEqualsSignArgName_PrintsUsageAndExits1)
-   {
-      _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WriteLineAndExitMock.Expect();
-      const string UnrecognizedNameArg = "-invalid_name=123";
-      const vector<string> Args{ TestProgramPath, UnrecognizedNameArg };
-      //
-      _argsParser.Parse(Args);
-      //
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
-         "ZenUnit command line usage error: Unrecognized -name=value argument: " + UnrecognizedNameArg + "\n"));
-      ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
-   }
-
-}; RUN_TESTS(ArgsParserTests)
+RUN_TESTS(ArgsParserTests)
 
 
 TESTS(RunFilterParserTests)
@@ -433,7 +434,7 @@ static string ExpectedInvalidArgumentWhat(const string& invalidRunFilterString)
    return "Invalid test run filter string: " + invalidRunFilterString + ". Test run filter string format: TestClassName[.TestName[/TestCaseNumber]]";
 }
 
-}; RUN_TESTS(RunFilterParserTests)
+RUN_TESTS(RunFilterParserTests)
 
 
 TESTS(RunFilterTests)
@@ -492,7 +493,7 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EQUALIZER_THROWS_FOR_FIELD(RunFilter, testCaseNumber, 1);
 }
 
-}; RUN_TESTS(RunFilterTests)
+RUN_TESTS(RunFilterTests)
 
 
 TESTS(ZenUnitArgsTests)
@@ -535,6 +536,6 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, maxtotalseconds, 5u);
 }
 
-}; RUN_TESTS(ZenUnitArgsTests)
+RUN_TESTS(ZenUnitArgsTests)
 
 }

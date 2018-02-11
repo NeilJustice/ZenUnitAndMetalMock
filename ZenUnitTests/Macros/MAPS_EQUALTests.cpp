@@ -151,9 +151,8 @@ Expected value: UserType@10
 File.cpp(1))");
    }
 
-   };
    RUN_TEMPLATE_TESTS(MAPS_EQUALTests, map)
-   RUN_TEMPLATE_TESTS(MAPS_EQUALTests, unordered_map)
+   THEN_RUN_TEMPLATE_TESTS(MAPS_EQUALTests, unordered_map)
 }
 
 #endif

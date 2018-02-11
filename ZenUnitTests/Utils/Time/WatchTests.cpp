@@ -76,7 +76,7 @@ static tm Tm(int tmWeekDay, int tmMonth, int tmMonthDay, int tmYear, int tmHour,
    return tmNow;
 }
 
-}; RUN_TESTS(WatchTests)
+RUN_TESTS(WatchTests)
 
 
 namespace ZenUnit
@@ -138,5 +138,5 @@ namespace ZenUnit
       ARE_EQUAL(randomMicrosecondDuration, elapsedMicroseconds);
    }
 
-   }; RUN_TESTS(StopwatchTests)
+   RUN_TESTS(StopwatchTests)
 }

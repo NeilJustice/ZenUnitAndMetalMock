@@ -43,6 +43,5 @@ TEST(Print_UnorderedSet_PrintsPlaceholder)
    ARE_EQUAL("SetType<T>", oss.str());
 }
 
-};
 RUN_TEMPLATE_TESTS(SetZenUnitPrinterTests, int)
-RUN_TEMPLATE_TESTS(SetZenUnitPrinterTests, string)
+THEN_RUN_TEMPLATE_TESTS(SetZenUnitPrinterTests, string)

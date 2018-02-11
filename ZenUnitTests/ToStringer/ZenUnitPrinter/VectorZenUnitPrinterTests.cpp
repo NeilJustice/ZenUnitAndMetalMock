@@ -67,6 +67,5 @@ TEST(ZenUnitPrinter_Print_EightElements_PrintsFirstSevenElements)
    ARE_EQUAL(_expectedVectorTypePrefix + "{1, 2, 3, 4, 5, 6, 7, ...}", str);
 }
 
-};
 RUN_TEMPLATE_TESTS(IntegralVectorZenUnitPrinterTests, int)
-RUN_TEMPLATE_TESTS(IntegralVectorZenUnitPrinterTests, unsigned)
+THEN_RUN_TEMPLATE_TESTS(IntegralVectorZenUnitPrinterTests, unsigned)

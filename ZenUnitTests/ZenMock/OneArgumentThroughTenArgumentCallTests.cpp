@@ -52,7 +52,7 @@ namespace ZenMock
       EQUALIZER_THROWS_FOR_FIELD(Call1, argument, V1);
    }
 
-   }; RUN_TESTS(OneArgumentCallTests)
+   RUN_TESTS(OneArgumentCallTests)
 
 
    TESTS(TwoArgumentCallTests)
@@ -87,7 +87,7 @@ namespace ZenMock
       EQUALIZER_THROWS_FOR_FIELD(Call2, secondArgument, V2);
    }
 
-   }; RUN_TESTS(TwoArgumentCallTests)
+   RUN_TESTS(TwoArgumentCallTests)
 
 
    TESTS(ThreeArgumentCallTests)
@@ -126,7 +126,7 @@ namespace ZenMock
       EQUALIZER_THROWS_FOR_FIELD(Call3, thirdArgument, V3);
    }
 
-   }; RUN_TESTS(ThreeArgumentCallTests)
+   RUN_TESTS(ThreeArgumentCallTests)
 
 
    TESTS(FourArgumentCallTests)
@@ -170,7 +170,7 @@ namespace ZenMock
       EQUALIZER_THROWS_FOR_FIELD(Call4, fourthArgument, V4);
    }
 
-   }; RUN_TESTS(FourArgumentCallTests)
+   RUN_TESTS(FourArgumentCallTests)
 
 
    TESTS(FiveArgumentCallTests)
@@ -218,7 +218,7 @@ namespace ZenMock
       EQUALIZER_THROWS_FOR_FIELD(Call5, fifthArgument, V5);
    }
 
-   }; RUN_TESTS(FiveArgumentCallTests)
+   RUN_TESTS(FiveArgumentCallTests)
 
 
    TESTS(SixArgumentCallTests)
@@ -270,7 +270,7 @@ namespace ZenMock
       EQUALIZER_THROWS_FOR_FIELD(Call6, sixthArgument, V6);
    }
 
-   }; RUN_TESTS(SixArgumentCallTests)
+   RUN_TESTS(SixArgumentCallTests)
 
 
    TESTS(SevenArgumentCallTests)
@@ -326,7 +326,7 @@ namespace ZenMock
       EQUALIZER_THROWS_FOR_FIELD(Call7, seventhArgument, V7);
    }
 
-   }; RUN_TESTS(SevenArgumentCallTests)
+   RUN_TESTS(SevenArgumentCallTests)
 
 
    TESTS(EightArgumentCallTests)
@@ -386,7 +386,7 @@ namespace ZenMock
       EQUALIZER_THROWS_FOR_FIELD(Call8, eigthArgument, V8);
    }
 
-   }; RUN_TESTS(EightArgumentCallTests)
+   RUN_TESTS(EightArgumentCallTests)
 
 
    TESTS(NineArgumentCallTests)
@@ -450,7 +450,8 @@ namespace ZenMock
       EQUALIZER_THROWS_FOR_FIELD(Call9, ninthArgument, V9);
    }
 
-   }; RUN_TESTS(NineArgumentCallTests)
+   RUN_TESTS(NineArgumentCallTests)
+
 
    TESTS(TenArgumentCallTests)
    AFACT(DefaultConstructor_DefaultInitializesFields)
@@ -519,8 +520,7 @@ namespace ZenMock
       EQUALIZER_THROWS_FOR_FIELD(Call10, tenthArgument, V10);
    }
 
-   }; RUN_TESTS(TenArgumentCallTests)
-
+   RUN_TESTS(TenArgumentCallTests)
 }
 
 namespace ZenMock
@@ -597,7 +597,7 @@ TEST(ZenUnitEqualizer_ThrowsIfArgFieldNotEqual)
    AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "argument");
 }
 
-}; RUN_TESTS(OneArgumentCallRefTests)
+RUN_TESTS(OneArgumentCallRefTests)
 
 
 TESTS(TwoArgumentCallRefTests)
@@ -653,7 +653,7 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "secondArgument");
 }
 
-}; RUN_TESTS(TwoArgumentCallRefTests)
+RUN_TESTS(TwoArgumentCallRefTests)
 
 
 TESTS(ThreeArgumentCallRefTests)
@@ -715,7 +715,7 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "thirdArgument");
 }
 
-}; RUN_TESTS(ThreeArgumentCallRefTests)
+RUN_TESTS(ThreeArgumentCallRefTests)
 
 
 TESTS(FourArgumentCallRefTests)
@@ -783,7 +783,7 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "fourthArgument");
 }
 
-}; RUN_TESTS(FourArgumentCallRefTests)
+RUN_TESTS(FourArgumentCallRefTests)
 
 
 TESTS(FiveArgumentCallRefTests)
@@ -857,7 +857,7 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "fifthArgument");
 }
 
-}; RUN_TESTS(FiveArgumentCallRefTests)
+RUN_TESTS(FiveArgumentCallRefTests)
 
 
 TESTS(SixArgumentCallRefTests)
@@ -937,7 +937,7 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "sixthArgument");
 }
 
-}; RUN_TESTS(SixArgumentCallRefTests)
+RUN_TESTS(SixArgumentCallRefTests)
 
 
 TESTS(SevenArgumentCallRefTests)
@@ -1023,7 +1023,7 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg7); }, "seventhArgument");
 }
 
-}; RUN_TESTS(SevenArgumentCallRefTests)
+RUN_TESTS(SevenArgumentCallRefTests)
 
 
 TESTS(EightArgumentCallRefTests)
@@ -1115,7 +1115,7 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg8); }, "eigthArgument");
 }
 
-}; RUN_TESTS(EightArgumentCallRefTests)
+RUN_TESTS(EightArgumentCallRefTests)
 
 
 TESTS(NineArgumentCallRefTests)
@@ -1213,7 +1213,7 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg9); }, "ninthArgument");
 }
 
-}; RUN_TESTS(NineArgumentCallRefTests)
+RUN_TESTS(NineArgumentCallRefTests)
 
 
 TESTS(TenArgumentCallRefTests)
@@ -1316,6 +1316,6 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg10); }, "tenthArgument");
 }
 
-}; RUN_TESTS(TenArgumentCallRefTests)
+RUN_TESTS(TenArgumentCallRefTests)
 
 }

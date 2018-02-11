@@ -294,7 +294,7 @@
    void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)
 
 // Runs a test class.
-#define RUN_TESTS(HighQualityTestClassName) \
+#define RUN_TESTS(HighQualityTestClassName) }; \
    const char* HighQualityTestClassName::s_testClassName = nullptr; \
    bool HighQualityTestClassName::s_allNXNTestsRegistered = false; \
    std::nullptr_t ZenUnit_TestClassRegistrar_##HighQualityTestClassName = \
@@ -306,13 +306,20 @@
    const std::nullptr_t ZenUnit_TestClassSkipper_##HighQualityTestClassName = \
       ZenUnit::TestRunner::Instance().SkipTestClass(#HighQualityTestClassName, Reason);
 
-// Runs a templated test class. Specify __VA_ARGS__ with type names to be run. Example: RUN_TEMPLATE_TESTS(TestClassName, int, std::vector<int>).
-#define RUN_TEMPLATE_TESTS(HighQualityTestClassName, ...) \
+#define DO_RUN_TEMPLATE_TESTS(HighQualityTestClassName, ...) \
    template<> const char* HighQualityTestClassName<__VA_ARGS__>::s_testClassName = nullptr; \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassRegistrar_, HighQualityTestClassName), _Line), __LINE__) = \
       ZenUnit::TestRunner::Instance().AddTestClassRunner( \
          new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName<__VA_ARGS__>>(#HighQualityTestClassName"<"#__VA_ARGS__">"));
+
+// Runs a templated test class. Specify __VA_ARGS__ with type names to be run. Example: RUN_TEMPLATE_TESTS(TestClassName, int, std::vector<int>).
+#define RUN_TEMPLATE_TESTS(HighQualityTestClassName, ...) \
+   }; DO_RUN_TEMPLATE_TESTS(HighQualityTestClassName, __VA_ARGS__)
+
+// Runs a templated test class. Specify __VA_ARGS__ with type names to be run. Example: RUN_TEMPLATE_TESTS(TestClassName, int, std::vector<int>).
+#define THEN_RUN_TEMPLATE_TESTS(HighQualityTestClassName, ...) \
+   DO_RUN_TEMPLATE_TESTS(HighQualityTestClassName, __VA_ARGS__)
 
 // Skips a templated test class.
 #define SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, ...) \

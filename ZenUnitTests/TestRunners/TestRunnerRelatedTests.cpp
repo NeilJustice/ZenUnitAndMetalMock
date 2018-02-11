@@ -51,7 +51,7 @@ TEST(RunTests_ReturnsDefaultTestClassResult)
    ARE_EQUAL(TestClassResult(), _noOpTestClassRunner.RunTests());
 }
 
-}; RUN_TESTS(NoOpTestClassRunnerTests)
+RUN_TESTS(NoOpTestClassRunnerTests)
 
 
 TESTS(PreamblePrinterTests)
@@ -147,7 +147,7 @@ TEST3X3(MakeThirdLineSuffix_ReturnsRandomSeedIfRandomModeOtherwiseEmptyString,
    ARE_EQUAL(expectedReturnValue, thirdLineSuffix);
 }
 
-}; RUN_TESTS(PreamblePrinterTests)
+RUN_TESTS(PreamblePrinterTests)
 
 
 TESTS(SpecificTestClassRunnerTests)
@@ -489,7 +489,7 @@ TEST(PrintTestClassResultLine_CallsTestClassResultPrintResultLine)
    ZEN(testClassResultMock.PrintTestClassResultLineMock.CalledOnceWith(_consoleMock));
 }
 
-}; RUN_TESTS(SpecificTestClassRunnerTests)
+RUN_TESTS(SpecificTestClassRunnerTests)
 
 
 class TestingTestClassRunner : public TestClassRunner
@@ -560,7 +560,7 @@ TEST3X3(OperatorLessThan_ReturnsTrueIfTestClassNameStrcmpResultIsLessThanZero,
    ARE_EQUAL(expectedIsLessThan, isLessThan);
 }
 
-}; RUN_TESTS(TestClassRunnerTests)
+RUN_TESTS(TestClassRunnerTests)
 
 
 TESTS(TestRunnerTests)
@@ -848,6 +848,6 @@ TEST(RunTestClasses_RunsTestClasses)
 //   }
 //}
 
-}; RUN_TESTS(TestRunnerTests)
+RUN_TESTS(TestRunnerTests)
 
 }

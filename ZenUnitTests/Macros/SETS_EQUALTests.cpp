@@ -118,7 +118,6 @@ File.cpp(1)
 File.cpp(1))");
    }
 
-   };
    RUN_TEMPLATE_TESTS(SETS_EQUALTests, set)
-   RUN_TEMPLATE_TESTS(SETS_EQUALTests, unordered_set)
+   THEN_RUN_TEMPLATE_TESTS(SETS_EQUALTests, unordered_set)
 }

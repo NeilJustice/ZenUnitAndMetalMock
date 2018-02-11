@@ -1,24 +1,22 @@
 #include "pch.h"
 #include "ZenUnitTests/Testing/UserType.h"
 
-namespace ZenUnit
-{
-   template<
-      template<typename...>
-   class MapType>
-   TEMPLATE_TESTS(MapEqualizerTests, MapType)
-   AFACT(ARE_EQUAL_EqualStdMaps_CompilesAndDoesNotThrow)
-   EVIDENCE
+template<
+   template<typename...>
+class MapType>
+TEMPLATE_TESTS(MapEqualizerTests, MapType)
+AFACT(ARE_EQUAL_EqualStdMaps_CompilesAndDoesNotThrow)
+EVIDENCE
 
-   TEST(ARE_EQUAL_EqualStdMaps_CompilesAndDoesNotThrow)
-   {
-      const MapType<int, int> expectedMap;
-      const MapType<int, int> actualMap;
-      ARE_EQUAL(expectedMap, actualMap);
-   }
-};
+TEST(ARE_EQUAL_EqualStdMaps_CompilesAndDoesNotThrow)
+{
+   const MapType<int, int> expectedMap;
+   const MapType<int, int> actualMap;
+   ARE_EQUAL(expectedMap, actualMap);
+}
+
 RUN_TEMPLATE_TESTS(MapEqualizerTests, map)
-RUN_TEMPLATE_TESTS(MapEqualizerTests, unordered_map)
+THEN_RUN_TEMPLATE_TESTS(MapEqualizerTests, unordered_map)
 
 
 TESTS(VectorEqualizerTests)
@@ -84,7 +82,7 @@ File.cpp(1)
 File.cpp(1))");
 }
 
-}; RUN_TESTS(VectorEqualizerTests)
+RUN_TESTS(VectorEqualizerTests)
 
 
 TESTS(ZenUnitEqualizerTests)
@@ -285,6 +283,4 @@ TEST(Int_SizeT_ThrowsIfIntNegative_OtherwiseCallsAssertEqualSizeTSizeT)
       numeric_limits<int>::max(), static_cast<size_t>(numeric_limits<int>::max()));
 }
 
-}; RUN_TESTS(ZenUnitEqualizerTests)
-
-}
+RUN_TESTS(ZenUnitEqualizerTests)

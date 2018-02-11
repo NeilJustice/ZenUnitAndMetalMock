@@ -86,6 +86,5 @@ TEST(NonConstCall_CallsNonConstMemberFunctionOnce_ReturnsReturnValue)
    ARE_EQUAL(_classInstance.returnValue, returnValueB);
 }
 
-};
 RUN_TEMPLATE_TESTS(NonVoidOneArgMemberFunctionCallerTests, char, int)
-RUN_TEMPLATE_TESTS(NonVoidOneArgMemberFunctionCallerTests, int, double)
+THEN_RUN_TEMPLATE_TESTS(NonVoidOneArgMemberFunctionCallerTests, int, double)

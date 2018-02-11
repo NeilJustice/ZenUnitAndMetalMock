@@ -83,7 +83,7 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    ARE_EQUAL(expectedFizzBuzzSequence, FizzBuzz(endNumber));
 }
 
-}; RUN_TESTS(FizzBuzzTests)
+RUN_TESTS(FizzBuzzTests)
 ```
 
 ### ZenUnit Imagery
@@ -110,6 +110,7 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 |`TEST10X10(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
 |`RUN_TESTS(HighQualityTestClassName)`|
 |`RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)`|
+|`THEN_RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)`|
 |`SKIP_TESTS(HighQualityTestClassName, Reason)`|
 |`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)`|
 
@@ -247,11 +248,10 @@ TEST(Contains_ReturnsTrueIfSetContainsElement)
    IS_TRUE(Set::Contains(s, element20));
 }
 
-};
 RUN_TEMPLATE_TESTS(SetTests, std::set, int)
-RUN_TEMPLATE_TESTS(SetTests, std::set, unsigned long long)
-RUN_TEMPLATE_TESTS(SetTests, std::unordered_set, int)
-RUN_TEMPLATE_TESTS(SetTests, std::unordered_set, unsigned long long)
+THEN_RUN_TEMPLATE_TESTS(SetTests, std::set, unsigned long long)
+THEN_RUN_TEMPLATE_TESTS(SetTests, std::unordered_set, int)
+THEN_RUN_TEMPLATE_TESTS(SetTests, std::unordered_set, unsigned long long)
 
 int main(int argc, char* argv[])
 {
@@ -367,7 +367,7 @@ TEST3X3(InteractWithComponentA_CallsEveryFunction_ReturnsSumOfReturnValues,
    ARE_EQUAL(expectedReturnValue, returnValue);
 }
 
-}; RUN_TESTS(ClassUnderTestTests)
+RUN_TESTS(ClassUnderTestTests)
 
 int main(int argc, char* argv[])
 {
