@@ -302,7 +302,7 @@
          new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName>(#HighQualityTestClassName));
 
 // Skips a test class.
-#define SKIP_TESTS(HighQualityTestClassName, Reason) \
+#define SKIP_TESTS(HighQualityTestClassName, Reason) }; \
    const std::nullptr_t ZenUnit_TestClassSkipper_##HighQualityTestClassName = \
       ZenUnit::TestRunner::Instance().SkipTestClass(#HighQualityTestClassName, Reason);
 
@@ -313,20 +313,26 @@
       ZenUnit::TestRunner::Instance().AddTestClassRunner( \
          new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName<__VA_ARGS__>>(#HighQualityTestClassName"<"#__VA_ARGS__">"));
 
-// Runs a templated test class. Specify __VA_ARGS__ with type names to be run. Example: RUN_TEMPLATE_TESTS(TestClassName, int, std::vector<int>).
+// Runs a templated test class. Specify __VA_ARGS__ with type names to be run. Example: RUN_TEMPLATE_TESTS(TestClassName, int, std::vector<int>). For subsequent type name arguments, use THEN_RUN_TEMPLATE_TESTS.
 #define RUN_TEMPLATE_TESTS(HighQualityTestClassName, ...) \
    }; DO_RUN_TEMPLATE_TESTS(HighQualityTestClassName, __VA_ARGS__)
 
-// Runs a templated test class. Specify __VA_ARGS__ with type names to be run. Example: RUN_TEMPLATE_TESTS(TestClassName, int, std::vector<int>).
+// Runs a templated test class. Specify THEN_RUN_TEMPLATE_TESTS after RUN_TEMPLATE_TESTS.
 #define THEN_RUN_TEMPLATE_TESTS(HighQualityTestClassName, ...) \
    DO_RUN_TEMPLATE_TESTS(HighQualityTestClassName, __VA_ARGS__)
 
-// Skips a templated test class.
-#define SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, ...) \
+#define DO_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, ...) \
    template<> const char* HighQualityTestClassName<__VA_ARGS__>::s_testClassName = nullptr; \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassSkipper_, HighQualityTestClassName), _Line), __LINE__) = \
-      ZenUnit::TestRunner::Instance().SkipTestClass(#HighQualityTestClassName"<"#__VA_ARGS__">", Reason);
+   ZenUnit::TestRunner::Instance().SkipTestClass(#HighQualityTestClassName"<"#__VA_ARGS__">", Reason);
+
+// Skips a templated test class.
+#define SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, ...) }; \
+   DO_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, __VA_ARGS__)
+
+#define THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, ...) \
+   DO_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, __VA_ARGS__)
 
 #define DEFINE_COPY_COPY_MOVE_MOVE(className, defaultOrDeleteCopyConstructor, defaultOrDeleteAssignmentOperator, defaultOrDeleteMoveConstructor, defaultOrDeleteMoveAssignmentOperator) \
    className(const className&) = defaultOrDeleteCopyConstructor; \

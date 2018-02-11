@@ -18,25 +18,23 @@ RUN_TESTS(SkippedTestsTestClass)
 
 TESTS(SkippedTestClassA)
 EVIDENCE
-}; SKIP_TESTS(SkippedTestClassA, Reason)
+SKIP_TESTS(SkippedTestClassA, Reason)
 
 TESTS(SkippedTestClassB)
 EVIDENCE
-}; SKIP_TESTS(SkippedTestClassB, Reason)
+SKIP_TESTS(SkippedTestClassB, Reason)
 
 template<typename T>
 TEMPLATE_TESTS(SkippedTemplateTestClassA, T)
 EVIDENCE
-};
 SKIP_TEMPLATE_TESTS(SkippedTemplateTestClassA, Reason, int)
-SKIP_TEMPLATE_TESTS(SkippedTemplateTestClassA, Reason, double)
+THEN_SKIP_TEMPLATE_TESTS(SkippedTemplateTestClassA, Reason, double)
 
 template<template<typename...> class MapType>
 TEMPLATE_TESTS(SkippedTemplateTestClassB, MapType)
 EVIDENCE
-};
-SKIP_TEMPLATE_TESTS(SkippedTemplateTestClassB, Reason, map)
-SKIP_TEMPLATE_TESTS(SkippedTemplateTestClassB, Reason, unordered_map)
+RUN_TEMPLATE_TESTS(SkippedTemplateTestClassB, map)
+THEN_SKIP_TEMPLATE_TESTS(SkippedTemplateTestClassB, Reason, unordered_map)
 
 struct ExceptionThrower
 {
@@ -80,7 +78,7 @@ TEST(Test3)
    xMock.fMock.Expect();
 }
 
-}; SKIP_TESTS(AAATests, Reason)
+SKIP_TESTS(AAATests, Reason)
 
 int main(int argc, char* argv[])
 {
