@@ -5,6 +5,7 @@
 #include "ZenUnitTests/Results/Mock/TestClassResultMock.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/MemberForEacherMock.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/ThreeArgForEacherMock.h"
+#include "ZenUnitTests/Utils/Time/Mock/WatchMock.h"
 
 namespace ZenUnit
 {
@@ -887,6 +888,7 @@ EVIDENCE
 
 TestRunResult _testRunResult;
 const ConsoleMock* _consoleMock;
+const WatchMock* _watchMock;
 TestFailureNumbererMock* _testFailureNumbererMock;
 
 using TypedefMemberForEacherTestClassResultsMock = MemberForEacherMock<vector<TestClassResult>,
@@ -900,6 +902,7 @@ TypedefMemberForEacherSkippedTestsMock* _memberForEacherSkippedTestsMock;
 STARTUP
 {
    _testRunResult._console.reset(_consoleMock = new ConsoleMock);
+   _testRunResult._watch.reset(_watchMock = new WatchMock);
    _testRunResult._testFailureNumberer.reset(_testFailureNumbererMock = new TestFailureNumbererMock);
    _testRunResult._memberForEacherTestClassResults.reset(
       _memberForEacherTestClassResultsMock = new TypedefMemberForEacherTestClassResultsMock);
@@ -911,6 +914,7 @@ TEST(Constructor_NewsComponents)
 {
    TestRunResult testRunResult;
    POINTER_WAS_NEWED(testRunResult._console);
+   POINTER_WAS_NEWED(testRunResult._watch);
    POINTER_WAS_NEWED(testRunResult._memberForEacherTestClassResults);
    POINTER_WAS_NEWED(testRunResult._memberForEacherSkippedTests);
    POINTER_WAS_NEWED(testRunResult._threeArgForEacher);
@@ -1106,10 +1110,10 @@ TEST10X10(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndE
    ">>-FAIL->", Color::Red, size_t(2), size_t(4), "2/4 tests failed", 5, "milliseconds", true, true, false)
 {
    _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
-   _consoleMock->WriteLineColorMock.Expect();
    _consoleMock->WriteColorMock.Expect();
    _consoleMock->WriteMock.Expect();
    _consoleMock->WriteLineMock.Expect();
+   const string timeZoneDateTimeNow = _watchMock->TimeZoneDateTimeNowMock.ReturnRandom();
    ZenUnitArgs zenUnitArgs;
    zenUnitArgs.commandLine = Random<string>();
    zenUnitArgs.random = random;
@@ -1119,24 +1123,27 @@ TEST10X10(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndE
    _testRunResult.PrintClosingLines(numberOfTotalTests, testRunMilliseconds, zenUnitArgs);
    //
    const string expectedFirstAndThirdLineAsciiArt =
-      expectedMiddleLineVictoryOrFail == "<VICTORY>" ? "+===+===+" : ">>------>";
-   ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith(
-      expectedFirstAndThirdLineAsciiArt + " ", expectedColor));
+      expectedMiddleLineVictoryOrFail == "<VICTORY>" ? "+===+===+ " : ">>------> ";
    ZEN(_consoleMock->WriteColorMock.CalledAsFollows(
-      {
-         { expectedMiddleLineVictoryOrFail + " ", expectedColor },
-      { expectedFirstAndThirdLineAsciiArt + " ", expectedColor }
-      }));
-   const string expectedClosingLineBody = expectedClosingLineTestsCountText +
-      " in " + to_string(testRunMilliseconds) + " " + expectedMillisecondOrMilliseconds;
-   const string expectedRandomSeedWriteLine = expectRandomSeedSuffixWrite ?
+   {
+      { expectedFirstAndThirdLineAsciiArt, expectedColor },
+      { expectedMiddleLineVictoryOrFail + " ", expectedColor },
+      { expectedFirstAndThirdLineAsciiArt, expectedColor }
+   }));
+   const string expectedCompletedMessage = "Completed: " + zenUnitArgs.commandLine;
+   ZEN(_consoleMock->WriteMock.CalledOnceWith(expectedCompletedMessage));
+   const string expectedRandomSeedMessage = expectRandomSeedSuffixWrite ?
       " (seed " + to_string(zenUnitArgs.randomseed) + ")" : "";
+   const string expectedNumberOfTestsAndMillisecondsMessage = String::Concat("   Result: ",
+      expectedClosingLineTestsCountText, " in ", testRunMilliseconds, " ", expectedMillisecondOrMilliseconds);
+   ZEN(_watchMock->TimeZoneDateTimeNowMock.CalledOnce());
+   const string expectedEndTimeMessage = "  EndTime: " + timeZoneDateTimeNow;
    ZEN(_consoleMock->WriteLineMock.CalledAsFollows(
-      {
-         expectedClosingLineBody,
-         expectedRandomSeedWriteLine
-      }));
-   ZEN(_consoleMock->WriteMock.CalledOnceWith(zenUnitArgs.commandLine));
+   {
+      expectedRandomSeedMessage,
+      expectedNumberOfTestsAndMillisecondsMessage,
+      expectedEndTimeMessage
+   }));
 }
 
 TEST(PrintTestClassResultFailures_CallsTestClassResultPrintTestFailures)

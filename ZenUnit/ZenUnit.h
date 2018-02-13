@@ -1476,6 +1476,7 @@ namespace ZenUnit
 #endif
 #endif
 
+   // ZenMockException's key feature is that it is not a std::exception
    class ZenMockException
    {
    public:
@@ -4077,6 +4078,7 @@ Testing Rigor Options:
          TestRunResult, void(TestRunResult::*)(const std::string&) const>;
    private:
       std::unique_ptr<const Console> _console;
+      std::unique_ptr<const Watch> _watch;
       std::unique_ptr<const MemberForEacherTestClassResultsType> _memberForEacherTestClassResults;
       std::unique_ptr<const MemberForEacherSkippedTestsType> _memberForEacherSkippedTests;
       std::unique_ptr<const ThreeArgForEacherType> _threeArgForEacher;
@@ -4088,6 +4090,7 @@ Testing Rigor Options:
    public:
       TestRunResult() noexcept
          : _console(std::make_unique<Console>())
+         , _watch(std::make_unique<Watch>())
          , _memberForEacherTestClassResults(std::make_unique<MemberForEacherTestClassResultsType>())
          , _memberForEacherSkippedTests(std::make_unique<MemberForEacherSkippedTestsType>())
          , _threeArgForEacher(std::make_unique<ThreeArgForEacherType>())
@@ -4154,31 +4157,36 @@ Testing Rigor Options:
             const std::string millisecondOrMilliseconds = testRunMilliseconds == 1 ? "millisecond" : "milliseconds";
             const std::string inMillisecondsPart = String::Concat("in ", testRunMilliseconds, ' ', millisecondOrMilliseconds);
             std::string middleLineVictoryOrFail;
-            std::string middleLineBody;
+            std::string numberOfTestsAndMillisecondsMessage;
             std::string firstAndThirdLineAsciiArt;
             if (_numberOfFailedTestCases == 0)
             {
                firstAndThirdLineAsciiArt = "+===+===+ ";
                middleLineVictoryOrFail = "<VICTORY> ";
-               middleLineBody = String::Concat(
+               numberOfTestsAndMillisecondsMessage = String::Concat("   Result: ",
                   totalNumberOfTestCases, ' ', testOrTests, " passed ", inMillisecondsPart);
             }
             else
             {
                firstAndThirdLineAsciiArt = ">>------> ";
                middleLineVictoryOrFail = ">>-FAIL-> ";
-               middleLineBody = String::Concat(
+               numberOfTestsAndMillisecondsMessage = String::Concat("   Result: ",
                   _numberOfFailedTestCases, '/', totalNumberOfTestCases, ' ', testOrTests, " failed ", inMillisecondsPart);
             }
-            _console->WriteLineColor(firstAndThirdLineAsciiArt, color);
-            _console->WriteColor(middleLineVictoryOrFail, color);
-            _console->WriteLine(middleLineBody);
             _console->WriteColor(firstAndThirdLineAsciiArt, color);
-            _console->Write(zenUnitArgs.commandLine);
-            const std::string randomSeedWriteLine =
+            const std::string completedCommandLineMessage = "Completed: " + zenUnitArgs.commandLine;
+            _console->Write(completedCommandLineMessage);
+            const std::string randomSeedMessage =
                (zenUnitArgs.random && !zenUnitArgs.randomseedsetbyuser) ?
                " (seed " + std::to_string(zenUnitArgs.randomseed) + ")" : "";
-            _console->WriteLine(randomSeedWriteLine);
+            _console->WriteLine(randomSeedMessage);
+
+            _console->WriteColor(middleLineVictoryOrFail, color);
+            _console->WriteLine(numberOfTestsAndMillisecondsMessage);
+
+            _console->WriteColor(firstAndThirdLineAsciiArt, color);
+            const std::string endTimeMessage = "  EndTime: " + _watch->TimeZoneDateTimeNow();
+            _console->WriteLine(endTimeMessage);
          }
       }
 
@@ -4694,7 +4702,7 @@ Testing Rigor Options:
          callResult.microseconds = _stopwatch->Stop();
          callResult.anomalyOrException = std::make_shared<AnomalyOrException>(anomaly);
          callResult.testOutcome = TestOutcome::Anomaly;
-         _console->WriteColor("\n=======\nAnomaly\n=======", Color::Red);
+         _console->WriteColor("\n-------\nAnomaly\n-------", Color::Red);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          _console->WriteLine(anomaly.why);
@@ -4702,7 +4710,7 @@ Testing Rigor Options:
       catch (const ZenMockException& e)
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
-         _console->WriteColor("\n================\nZenMockException\n================", Color::Red);
+         _console->WriteColor("\n----------------\nZenMockException\n----------------", Color::Red);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          const std::string exceptionTypeNameAndWhat = String::Concat(
@@ -4712,7 +4720,7 @@ Testing Rigor Options:
       catch (const std::exception& e)
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
-         _console->WriteColor("\n=========\nException\n=========", Color::Red);
+         _console->WriteColor("\n---------\nException\n---------", Color::Red);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          const std::string exceptionTypeNameAndWhat = String::Concat(
@@ -5619,7 +5627,7 @@ Testing Rigor Options:
          {
             ConsoleColorer consoleColorer;
             bool didSetColor = consoleColorer.SetColor(Color::Red);
-            std::cout << "==========================\nZenUnit Syntax Usage Error\n==========================\n";
+            std::cout << "--------------------------\nZenUnit Syntax Usage Error\n--------------------------\n";
             consoleColorer.UnsetColor(didSetColor);
             std::cout << R"(The above test name was specified with FACTS(TestName).
 Therefore a TESTNXN(TestName, ...) test definition is expected.

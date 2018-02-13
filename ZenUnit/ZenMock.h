@@ -376,14 +376,20 @@ must have their return value or values set explicitly by calling
          {
             const ZenUnit::Console console;
             console.WriteLineColor(R"(
-============================================
-Expected-But-Not-Asserted ZenMocked Function
-============================================)", ZenUnit::Color::Red);
-            console.WriteLineColor(ZenMockedFunctionSignature, ZenUnit::Color::Teal);
+--------------------------------------------------
+Fatal Expected But Not Asserted ZenMocked Function
+--------------------------------------------------
+ZenMocked function: )", ZenUnit::Color::Red);
+            console.WriteLineColor(ZenMockedFunctionSignature, ZenUnit::Color::Green);
             console.WriteLine(R"(
-How to fix this: Add a call to one of the following ZenMock assert statements:
-CalledOnce(), CalledOnceWith(), CalledNTimes(), CalledNTimesWith(), or CalledAsFollows().
-)");
+Fix by adding a call to one of the following ZenMock assert statements:
+<ZenMockedFunctionName>Mock.CalledOnce()
+<ZenMockedFunctionName>Mock.CalledOnceWith()
+<ZenMockedFunctionName>Mock.CalledNTimes()
+<ZenMockedFunctionName>Mock.CalledNTimesWith()
+<ZenMockedFunctionName>Mock.CalledAsFollows()
+
+Fail-fasting now with exit code 1.)");
             const ZenUnit::ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
             const int exitCode = zenUnitArgs.exit0 ? 0 : 1;
             call_exit(exitCode);
