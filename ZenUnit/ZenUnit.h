@@ -3553,6 +3553,23 @@ Testing Rigor Options:
       //DEFINE_COPY_COPY_MOVE_MOVE(Watch, default, default, default, default);
       virtual ~Watch() = default;
 
+      // Returns now in format "YYYY-MM-DD 00:00:00 Timezone"
+      virtual std::string DateTimeNowWithTimeZone() const
+      {
+         const tm tmNow = TMNow();
+         std::ostringstream builder;
+         const std::string timeZone = TimeZone(tmNow);
+         builder
+            << std::setw(2) << std::setfill('0') << (tmNow.tm_year + 1900) << '-'
+            << std::setw(2) << std::setfill('0') << (tmNow.tm_mon + 1) << '-'
+            << std::setw(2) << std::setfill('0') << tmNow.tm_mday << ' '
+            << std::setw(2) << std::setfill('0') << tmNow.tm_hour << ':'
+            << std::setw(2) << std::setfill('0') << tmNow.tm_min << ':'
+            << std::setw(2) << std::setfill('0') << tmNow.tm_sec << ' ' << timeZone;
+         const std::string weekdayDateTimeZoneNow = builder.str();
+         return weekdayDateTimeZoneNow;
+      }
+
       // Returns now in format "Monday January 1, 2016 at 00:00:00 <Timezone>"
       virtual std::string TimeZoneDateTimeNow() const
       {
