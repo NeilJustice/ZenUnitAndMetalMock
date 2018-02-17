@@ -5647,10 +5647,10 @@ Testing Rigor Options:
             std::cout << "--------------------\nZenUnit Syntax Error\n--------------------\n";
             consoleColorer.UnsetColor(didSetColor);
             std::cout << R"(The above test name was specified with FACTS(TestName).
-Therefore a TESTNXN(TestName, ...) test definition is expected.
+Therefore, a TESTNXN(TestName, ...) test definition is expected.
 Unexpectedly, a TEST(TestName) definition was encountered.
-Fix by changing FACTS(TestName) to AFACT(TestName) or
-TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
+Fix this by changing FACTS(TestName) to AFACT(TestName) or
+by changing TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
 )";
             const ZenUnitArgs& zenUnitArgs = TestRunner::GetArgs();
             exit(zenUnitArgs.exit0 ? 0 : 1);
