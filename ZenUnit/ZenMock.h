@@ -162,10 +162,12 @@ Already called [FunctionName]Mock.[Expect|Return|ReturnValues|Throw]().)";
       {
          const std::string what = ZenUnit::String::Concat(
             "For ZenMocked function \"", zenMockedFunctionSignature, R"(":
+Due to ZenMock being a strict mocking framework,
 ZenMock objects by design do not support asserting that
 their corresponding ZenMocked functions were called zero times.
-To assert that a ZenMocked function was called zero times,
-simply do not call Expect(), Return(), or Throw() on a ZenMock object.)");
+To implicitly assert that a ZenMocked function was called zero times,
+simply do not call Expect(), Return(), ReturnValues(),
+ReturnRandom(), or Throw() on a ZenMock object.)");
          return what;
       }
 
