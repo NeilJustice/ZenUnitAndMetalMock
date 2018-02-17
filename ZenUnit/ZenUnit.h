@@ -5776,8 +5776,16 @@ by changing TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
       static void Print(std::ostream& os, const std::vector<T, Allocator>& vec)
       {
          const std::string* typeName = Type::GetName<T>();
-         os << "vector<" << *typeName << ">: {";
+         os << "vector<" << *typeName << ">:";
          const std::size_t vectorSize = vec.size();
+         if (vectorSize == 0)
+         {
+            os << " {}";
+            return;
+         }
+         os << R"(
+{
+   )";
          for (std::size_t i = 0; i < vectorSize; ++i)
          {
             if (i == 7)
@@ -5789,10 +5797,10 @@ by changing TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
             ToStringer::ZenUnitPrinterOrOStreamInsertionOperatorOrPrintTypeName(os, element);
             if (i < vectorSize - 1)
             {
-               os << ", ";
+               os << ",\n   ";
             }
          }
-         os << '}';
+         os << "\n}";
       }
    };
 

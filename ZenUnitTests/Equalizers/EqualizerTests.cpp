@@ -35,7 +35,10 @@ TEST(AssertEqual_IntVectors_CallsVECTORS_EQUAL)
    expectedIntVector.push_back(1);
    THROWS(Equalizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedVector, actualVector)
-Expected: vector<int>: {1}
+Expected: vector<int>:
+{
+   1
+}
   Actual: vector<int>: {}
  Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
 Expected: 1
@@ -54,7 +57,10 @@ TEST(AssertEqual_StringVectors_CallsVECTORS_EQUAL)
    THROWS(Equalizer<vector<string>>::AssertEqual(
       expectedStringVector Comma actualStringVector), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedVector, actualVector)
-Expected: vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >>: {""}
+Expected: vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >>:
+{
+   ""
+}
   Actual: vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >>: {}
  Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
 Expected: 1
@@ -73,7 +79,10 @@ TEST(AssertEqual_UserTypeVectors_CallsVECTORS_EQUAL)
    THROWS(Equalizer<vector<UserType>>::AssertEqual(
       expectedUserTypeVector Comma actualUserTypeVector), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedVector, actualVector)
-Expected: vector<UserType>: {UserType@0}
+Expected: vector<UserType>:
+{
+   UserType@0
+}
   Actual: vector<UserType>: {}
  Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
 Expected: 1

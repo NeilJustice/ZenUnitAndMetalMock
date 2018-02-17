@@ -359,8 +359,11 @@ File.cpp(1))");
       //
       THROWS(_mocker->CalledAsFollows(expectedOneArgumentCalls), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature)
-Expected: vector<ZenMock::OneArgumentCallRef<int>>: {ZenMock::OneArgumentCall:
-Argument: 0}
+Expected: vector<ZenMock::OneArgumentCallRef<int>>:
+{
+   ZenMock::OneArgumentCall:
+Argument: 0
+}
   Actual: vector<ZenMock::OneArgumentCallRef<int>>: {}
  Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
 Expected: 1
@@ -381,12 +384,20 @@ File.cpp(1))");
       //
       THROWS(_mocker->CalledAsFollows(expectedOneArgumentCalls), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature)
-Expected: vector<ZenMock::OneArgumentCallRef<int>>: {ZenMock::OneArgumentCall:
-Argument: 10, ZenMock::OneArgumentCall:
-Argument: 10}
-  Actual: vector<ZenMock::OneArgumentCallRef<int>>: {ZenMock::OneArgumentCall:
-Argument: 10, ZenMock::OneArgumentCall:
-Argument: 20}
+Expected: vector<ZenMock::OneArgumentCallRef<int>>:
+{
+   ZenMock::OneArgumentCall:
+Argument: 10,
+   ZenMock::OneArgumentCall:
+Argument: 10
+}
+  Actual: vector<ZenMock::OneArgumentCallRef<int>>:
+{
+   ZenMock::OneArgumentCall:
+Argument: 10,
+   ZenMock::OneArgumentCall:
+Argument: 20
+}
  Because: ARE_EQUAL(ithExpectedElement, ithActualElement, iEqualsIndexMessage) failed
 Expected: ZenMock::OneArgumentCall:
 Argument: 10
