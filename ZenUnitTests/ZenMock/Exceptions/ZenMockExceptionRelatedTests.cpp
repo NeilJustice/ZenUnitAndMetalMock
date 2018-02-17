@@ -183,6 +183,7 @@ TEST(Constructor_SetsWhat_ClassIsSubclassOfZenMockException)
    //
    const std::string expectedWhat = ZenUnit::String::Concat(
       "For ZenMocked function \"", zenMockedFunctionSignature, R"(":
+
 Due to ZenMock being a strict mocking framework,
 ZenMock objects by design do not support asserting that
 their corresponding ZenMocked functions were called zero times.
