@@ -25,7 +25,9 @@ Expected: vector<)" + TypeName + R"(>:
 {
    1
 }
-  Actual: vector<)" + TypeName + R"(>: {}
+  Actual: vector<)" + TypeName + R"(>:
+{
+}
  Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
 Expected: 1
   Actual: 0
@@ -43,7 +45,9 @@ Expected: vector<)" + TypeName + R"(>:
 {
    1
 }
-  Actual: vector<)" + TypeName + R"(>: {}
+  Actual: vector<)" + TypeName + R"(>:
+{
+}
  Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
 Expected: 1
   Actual: 0

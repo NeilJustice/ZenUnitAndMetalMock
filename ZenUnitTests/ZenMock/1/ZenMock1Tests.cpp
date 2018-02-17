@@ -384,7 +384,9 @@ Expected: vector<ZenMock::OneArgumentCallRef<int>>:
    ZenMock::OneArgumentCall:
 Argument: 0
 }
-  Actual: vector<ZenMock::OneArgumentCallRef<int>>: {}
+  Actual: vector<ZenMock::OneArgumentCallRef<int>>:
+{
+}
  Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
 Expected: 1
   Actual: 0)",
@@ -414,7 +416,9 @@ Argument: 0,
    ZenMock::OneArgumentCall:
 Argument: 0
 }
-  Actual: vector<ZenMock::OneArgumentCallRef<int>>: {}
+  Actual: vector<ZenMock::OneArgumentCallRef<int>>:
+{
+}
  Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
 Expected: 2
   Actual: 0)",

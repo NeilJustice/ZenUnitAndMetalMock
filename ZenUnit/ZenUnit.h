@@ -5780,7 +5780,9 @@ by changing TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
          const std::size_t vectorSize = vec.size();
          if (vectorSize == 0)
          {
-            os << " {}";
+            os << R"(
+{
+})";
             return;
          }
          os << R"(

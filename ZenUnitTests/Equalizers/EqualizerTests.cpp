@@ -39,7 +39,9 @@ Expected: vector<int>:
 {
    1
 }
-  Actual: vector<int>: {}
+  Actual: vector<int>:
+{
+}
  Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
 Expected: 1
   Actual: 0
@@ -61,7 +63,9 @@ Expected: vector<std::basic_string<char,std::char_traits<char>,std::allocator<ch
 {
    ""
 }
-  Actual: vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >>: {}
+  Actual: vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >>:
+{
+}
  Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
 Expected: 1
   Actual: 0
@@ -83,7 +87,9 @@ Expected: vector<UserType>:
 {
    UserType@0
 }
-  Actual: vector<UserType>: {}
+  Actual: vector<UserType>:
+{
+}
  Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
 Expected: 1
   Actual: 0

@@ -21,7 +21,9 @@ TEST(ZenUnitPrinter_Print_Empty_PrintsEmptyBrackets)
    ZenUnit::Printer<decltype(v)>::Print(_oss, v);
    //
    const string printString = _oss.str();
-   ARE_EQUAL(_expectedVectorTypePrefix + " {}", printString);
+   ARE_EQUAL(_expectedVectorTypePrefix + R"(
+{
+})", printString);
 }
 
 TEST(ZenUnitPrinter_Print_EmptyAndNonConst_PrintsElements)
@@ -31,7 +33,9 @@ TEST(ZenUnitPrinter_Print_EmptyAndNonConst_PrintsElements)
    ZenUnit::Printer<decltype(v)>::Print(_oss, v);
    //
    const string printString = _oss.str();
-   ARE_EQUAL(_expectedVectorTypePrefix + " {}", printString);
+   ARE_EQUAL(_expectedVectorTypePrefix + R"(
+{
+})", printString);
 }
 
 TEST(ZenUnitPrinter_Print_OneElement_PrintsElement)
