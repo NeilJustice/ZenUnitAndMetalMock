@@ -392,7 +392,7 @@ to one of the following ZenMock assert statements:
 <ZenMockedFunctionName>Mock.CalledNTimesWith()
 <ZenMockedFunctionName>Mock.CalledAsFollows()
 
-Fail-fasting with exit code 1.)");
+Fail-fasting with exit code 1 unless -exit0 is specified.)");
             const ZenUnit::ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
             const int exitCode = zenUnitArgs.exit0 ? 0 : 1;
             call_exit(exitCode);
