@@ -1134,15 +1134,15 @@ TEST10X10(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndE
    ZEN(_consoleMock->WriteMock.CalledOnceWith(expectedCompletedMessage));
    const string expectedRandomSeedMessage = expectRandomSeedSuffixWrite ?
       " (seed " + to_string(zenUnitArgs.randomseed) + ")" : "";
+   const string expectedEndTimeMessage = "  EndTime: " + timeZoneDateTimeNow;
    const string expectedNumberOfTestsAndMillisecondsMessage = String::Concat("   Result: ",
       expectedClosingLineTestsCountText, " in ", testRunMilliseconds, " ", expectedMillisecondOrMilliseconds);
    ZEN(_watchMock->TimeZoneDateTimeNowMock.CalledOnce());
-   const string expectedEndTimeMessage = "  EndTime: " + timeZoneDateTimeNow;
    ZEN(_consoleMock->WriteLineMock.CalledAsFollows(
    {
       expectedRandomSeedMessage,
-      expectedNumberOfTestsAndMillisecondsMessage,
-      expectedEndTimeMessage
+      expectedEndTimeMessage,
+      expectedNumberOfTestsAndMillisecondsMessage
    }));
 }
 

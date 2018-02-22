@@ -4157,9 +4157,7 @@ Testing Rigor Options:
       }
 
       virtual void PrintClosingLines(
-         size_t totalNumberOfTestCases,
-         unsigned testRunMilliseconds,
-         const ZenUnitArgs& zenUnitArgs) const
+         size_t totalNumberOfTestCases, unsigned testRunMilliseconds, const ZenUnitArgs& zenUnitArgs) const
       {
          assert_true(_numberOfFailedTestCases <= totalNumberOfTestCases);
          const Color color = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
@@ -4199,11 +4197,11 @@ Testing Rigor Options:
             _console->WriteLine(randomSeedMessage);
 
             _console->WriteColor(middleLineVictoryOrFail, color);
-            _console->WriteLine(numberOfTestsAndMillisecondsMessage);
-
-            _console->WriteColor(firstAndThirdLineAsciiArt, color);
             const std::string endTimeMessage = "  EndTime: " + _watch->TimeZoneDateTimeNow();
             _console->WriteLine(endTimeMessage);
+
+            _console->WriteColor(firstAndThirdLineAsciiArt, color);
+            _console->WriteLine(numberOfTestsAndMillisecondsMessage);
          }
       }
 
