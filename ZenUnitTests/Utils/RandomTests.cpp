@@ -53,3 +53,18 @@ TEST(Random_2ArgOverload_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiv
 }
 
 RUN_TESTS(RandomTests)
+
+
+template<typename T>
+TEMPLATE_TESTS(RandomVectorTests, T)
+AFACT(RandomVector_ReturnsAVectorWithSizeBetween0And2WithRandomElements)
+EVIDENCE
+
+TEST(RandomVector_ReturnsAVectorWithSizeBetween0And2WithRandomElements)
+{
+   const vector<T> randomVector = ZenUnit::RandomVector<T>();
+   IS_TRUE(randomVector.size() >= 0 && randomVector.size() <= 2);
+}
+
+RUN_TEMPLATE_TESTS(RandomVectorTests, int)
+THEN_RUN_TEMPLATE_TESTS(RandomVectorTests, string)

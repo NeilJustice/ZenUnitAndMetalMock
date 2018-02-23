@@ -6234,6 +6234,18 @@ by changing TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
       return randomString;
    }
 
+   template<typename T>
+   inline std::vector<T> RandomVector()
+   {
+      const std::size_t randomSize = Random<size_t>(0, 2);
+      std::vector<T> randomVector(randomSize);
+      for (size_t i = 0; i < randomSize; ++i)
+      {
+         randomVector[i] = ZenUnit::Random<T>();
+      }
+      return randomVector;
+   }
+
    inline int RunTests(int argc, char* argv[])
    {
       const std::vector<std::string> args = Vector::FromArgcArgv(argc, argv);
