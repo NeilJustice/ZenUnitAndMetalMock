@@ -19,7 +19,7 @@ Test Filtration Options:
    Run only specified case-insensitive test classes and/or tests.
 -failfast
    Immediately exit with exit code 1 if a test fails.
-   
+
 Utility Options:
 
 -pause
@@ -50,6 +50,10 @@ Testing Rigor Options:
 #include "Examples/FizzBuzz.h"
 
 TESTS(FizzBuzzTests)
+// By design, ZenUnit test classes duplicate test names between the FACTS section and the EVIDENCE section.
+// Because code is read much more often than it is written, as a project's tests grow in number and complexity
+// over the life of a project, always having test names at the top of test files for easy code review
+// is where dividends are experienced relative to the initial writing investment of duplicating the test names.
 AFACT(FizzBuzz_EndNumber0_Throws)
 FACTS(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)
 EVIDENCE
@@ -137,7 +141,7 @@ RUN_TESTS(FizzBuzzTests)
 
 |Exceptions|
 |----------|
-|`THROWS(expression, expectedExactExceptionType, expectedWhatMessage, messages...)` // expression() must throw exactly (not a derived class of) expectedExactExceptionType|
+|`THROWS(expression, expectedExactExceptionType, expectedWhatMessage, messages...)` // Asserts that expression() throws *exactly* expectedExactExceptionType with *exactly* a what() message equal to expectedWhatMessage|
 |`NOTHROWS(expression, messages...)`|
 
 |The Test Itself|
@@ -166,10 +170,10 @@ RUN_TESTS(FizzBuzzTests)
 |`ARE_NOT_EQUAL(expected, actual)`|Value Replacement|
 |`STRING_CONTAINS(expectedSubstring, string)`|Value Replacement|
 |`REGEX_MATCHES(pattern, string)`|Value Replacement|
-|`THROWS_EXCEPTION(expression, expectedExceptionBaseClass)`|Exception Type Replacement and What Message Replacement|
-|`THROWS_ANY(expression)`|Exception Type Replacement|
+|`THROWS_EXCEPTION(expression, expectedExceptionBaseClass)`|Exception Type Replacement and what() Message Replacement|
+|`THROWS_ANY(expression)`|Exception Type Replacement and what() Message Replacement|
 
-### ZenUnit Equalizers
+### ZenUnit::Equalizers
 
 ZenUnit has the concept of an Equalizer for asserting that two values or class instances are equal.
 
