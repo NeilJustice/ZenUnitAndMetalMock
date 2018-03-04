@@ -9,11 +9,7 @@ namespace ZenUnit
    {
       ZenUnitArgs randomZenUnitArgs;
       randomZenUnitArgs.commandLine = ZenUnit::Random<string>();
-      randomZenUnitArgs.runFilters.resize(ZenUnit::Random<size_t>(0, 2));
-      for (RunFilter& runFilter : randomZenUnitArgs.runFilters)
-      {
-         runFilter = ZenUnit::Random<RunFilter>();
-      }
+      randomZenUnitArgs.runFilters = ZenUnit::RandomVector<RunFilter>();
       randomZenUnitArgs.pause = ZenUnit::Random<bool>();
       randomZenUnitArgs.wait = ZenUnit::Random<bool>();
       randomZenUnitArgs.exit0 = ZenUnit::Random<bool>();

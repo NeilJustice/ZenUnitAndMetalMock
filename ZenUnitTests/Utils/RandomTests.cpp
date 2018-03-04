@@ -5,7 +5,7 @@ AFACT(Random_AllIntegerTypes_ReturnsRandomValueBetweenMinAndMaxForThatType)
 AFACT(Random_Float_ReturnsRandomFloat)
 AFACT(Random_Double_ReturnsRandomDouble)
 AFACT(Random_String_ReturnsRandomStringThatBeginsWithRandomString)
-AFACT(Random_2ArgOverload_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
+AFACT(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
 EVIDENCE
 
 TEST(Random_AllIntegerTypes_ReturnsRandomValueBetweenMinAndMaxForThatType)
@@ -37,9 +37,9 @@ TEST(Random_String_ReturnsRandomStringThatBeginsWithRandomString)
    IS_TRUE(randomString.find("RandomString") != string::npos);
 }
 
-TEST(Random_2ArgOverload_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
+TEST(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
 {
-   const int randomInt = Random<int>(1, 3);
+   const int randomInt = RandomBetween<int>(1, 3);
    IS_TRUE(randomInt >= 1 && randomInt <= 3, "randomInt = " + to_string(randomInt));
 
    enum Enum
@@ -48,7 +48,7 @@ TEST(Random_2ArgOverload_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiv
       B,
       C
    };
-   const Enum randomEnum = Random<Enum>(Enum::A, Enum::C);
+   const Enum randomEnum = RandomBetween<Enum>(Enum::A, Enum::C);
    IS_TRUE(randomEnum >= Enum::A && randomEnum <= Enum::C, "randomEnum = " + to_string(randomEnum));
 }
 

@@ -371,7 +371,7 @@ TEST(Parse_TransformsRunFilterStringsToRunFilters)
 {
    const vector<RunFilter> runFilters = { Random<RunFilter>() };
    _memberFunctionTransformerMock->TransformMock.Return(runFilters);
-   vector<string> runFilterStrings(ZenUnit::Random<size_t>(0, 2));
+   const vector<string> runFilterStrings = ZenUnit::RandomVector<string>();
    //
    const vector<RunFilter> expectedRunFilters = _runFilterParser.Parse(runFilterStrings);
    //

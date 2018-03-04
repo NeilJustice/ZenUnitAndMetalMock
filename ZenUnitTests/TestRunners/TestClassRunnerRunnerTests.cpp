@@ -196,8 +196,7 @@ TEST(TestClassNameCaseInsensitiveMatchesRunFilter_ReturnsResultOfCallingStringMa
 
 TEST(RunTestClasses_NonRandomMode_SortsTestClassRunnersByName_RunsTestClassesSequentially_ReturnsTestClassResults)
 {
-   const size_t testClassRunnersSize = ZenUnit::Random<size_t>(0, 2);
-   _testClassRunnerRunner._testClassRunners.resize(testClassRunnersSize);
+   _testClassRunnerRunner._testClassRunners.resize(ZenUnit::RandomBetween<size_t>(0, 2));
 
    ZenUnitArgs zenUnitArgs;
    IS_FALSE(zenUnitArgs.random);
@@ -225,8 +224,7 @@ TEST1X1(RunTestClasses_RandomMode_SetsRandomSeedIfNotSetByUser_RunsTestClassesRa
    false,
    true)
 {
-   const size_t testClassRunnersSize = ZenUnit::Random<size_t>(0, 2);
-   _testClassRunnerRunner._testClassRunners.resize(testClassRunnersSize);
+   _testClassRunnerRunner._testClassRunners.resize(ZenUnit::RandomBetween<size_t>(0, 2));
 
    const vector<TestClassResult> transformReturnValue = { ZenUnit::Random<TestClassResult>() };
    _transformerMock->RandomTransformMock.Return(transformReturnValue);

@@ -6180,7 +6180,7 @@ by changing TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
    };
 
    template<typename T>
-   T Random(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound)
+   T RandomBetween(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound)
    {
       static std::default_random_engine defaultRandomEngine(static_cast<unsigned>(time(nullptr)));
       const long long adjustedInclusiveLowerBound = inclusiveLowerBound < 0 ? 0 : inclusiveLowerBound;
@@ -6199,7 +6199,7 @@ by changing TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
    template<typename T>
    T Random()
    {
-      const T randomT = Random<T>(std::numeric_limits<T>::min(), std::numeric_limits<T>::max());
+      const T randomT = RandomBetween<T>(std::numeric_limits<T>::min(), std::numeric_limits<T>::max());
       return randomT;
    }
 
@@ -6237,13 +6237,24 @@ by changing TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
    template<typename T>
    inline std::vector<T> RandomVector()
    {
-      const std::size_t randomSize = Random<size_t>(0, 2);
-      std::vector<T> randomVector(randomSize);
-      for (size_t i = 0; i < randomSize; ++i)
+      const std::size_t randomVectorSize = RandomBetween<size_t>(0, 2);
+      std::vector<T> randomVector(randomVectorSize);
+      for (size_t i = 0; i < randomVectorSize; ++i)
       {
          randomVector[i] = ZenUnit::Random<T>();
       }
       return randomVector;
+   }
+
+   template<typename EnumType>
+   inline EnumType RandomEnum(
+      typename std::underlying_type<EnumType>::type inclusiveEnumMinValue,
+      typename std::underlying_type<EnumType>::type exclusiveEnumMaxValue)
+   {
+      const typename std::underlying_type<EnumType>::type randomEnum
+         = static_cast<EnumType>(ZenUnit::Random<typename std::underlying_type<EnumType>::type>(
+            inclusiveEnumMinValue, exclusiveEnumMaxValue - 1));
+      return randomEnum;
    }
 
    inline int RunTests(int argc, char* argv[])
