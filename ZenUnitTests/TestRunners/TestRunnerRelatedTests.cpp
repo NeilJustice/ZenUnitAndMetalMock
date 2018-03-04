@@ -409,6 +409,7 @@ TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewableDele
 TEST(RunTest_RunFiltersNonEmpty_NoneOfTheRunFiltersMatchTheTestName_DoesNotRunTest)
 {
    ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
+   zenUnitArgs.runFilters.resize(ZenUnit::RandomBetween<size_t>(1, 2));
    GetArgs_ZenMock.Return(zenUnitArgs);
 
    TestMock* const testMock = new TestMock;
