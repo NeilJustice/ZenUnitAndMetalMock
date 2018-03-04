@@ -27,6 +27,7 @@ Expected: vector<)" + TypeName + R"(>:
 }
   Actual: vector<)" + TypeName + R"(>:
 {
+   (empty vector)
 }
  Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
 Expected: 1
@@ -47,6 +48,7 @@ Expected: vector<)" + TypeName + R"(>:
 }
   Actual: vector<)" + TypeName + R"(>:
 {
+   (empty vector)
 }
  Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
 Expected: 1

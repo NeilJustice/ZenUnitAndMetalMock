@@ -5780,6 +5780,7 @@ by changing TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
          {
             os << R"(
 {
+   (empty vector)
 })";
             return;
          }

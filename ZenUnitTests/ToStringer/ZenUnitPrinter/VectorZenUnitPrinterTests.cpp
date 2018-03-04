@@ -23,6 +23,7 @@ TEST(ZenUnitPrinter_Print_Empty_PrintsEmptyBrackets)
    const string printString = _oss.str();
    ARE_EQUAL(_expectedVectorTypePrefix + R"(
 {
+   (empty vector)
 })", printString);
 }
 
@@ -35,6 +36,7 @@ TEST(ZenUnitPrinter_Print_EmptyAndNonConst_PrintsElements)
    const string printString = _oss.str();
    ARE_EQUAL(_expectedVectorTypePrefix + R"(
 {
+   (empty vector)
 })", printString);
 }
 

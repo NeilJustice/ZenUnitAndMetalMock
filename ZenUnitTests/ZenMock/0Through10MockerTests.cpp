@@ -366,6 +366,7 @@ Argument: 0
 }
   Actual: vector<ZenMock::OneArgumentCallRef<int>>:
 {
+   (empty vector)
 }
  Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
 Expected: 1
