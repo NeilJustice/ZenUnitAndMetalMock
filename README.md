@@ -175,33 +175,21 @@ RUN_TESTS(FizzBuzzTests)
 
 ### ZenUnit::Equalizers
 
-ZenUnit has the concept of an Equalizer for asserting that two values or class instances are equal.
+The default behavior of ARE_EQUAL(expectedValue, actualValue) is to throw a ZenUnitException if operator==(expectedValue, actualValue) returns false.
 
-`ARE_EQUAL(expected, actual)` is defined in terms of a call to a ZenUnit Equalizer:
+If field-by-field equality assertion behavior is deemed more preferable than operator==-based equality assertion behavior, ZenUnit has the concept of custom ZenUnit::Equalizers.
 
-```cpp
-using DecayedExpectedType = typename std::decay<ExpectedType>::type;
-using DecayedActualType = typename std::decay<ActualType>::type;
-std::conditional<std::is_same<DecayedExpectedType, DecayedActualType>::value,
-   ZenUnit::Equalizer<DecayedExpectedType>,
-   ZenUnit::TwoTypeEqualizer<DecayedExpectedType, DecayedActualType>>
-   ::type::AssertEqual(expected, actual);
-```
-When the types of `expected` and `actual` are equal, as is the case most of the time, `ARE_EQUAL` calls `ZenUnit::Equalizer<DecayedExpectedType>::AssertEqual(expected, actual)`, which by default is defined as expected == actual.
-
-Should you be interested in statement `ARE_EQUAL(expectedObject, actualObject)` performing field-by-field equality assertions instead of calling `operator==`, a `struct ZenUnit::Equalizer\<T\>` specialization can be defined in namespace ZenUnit with a static `void AssertEqual(const T& expected, const T& actual)` function that performs `ARE_EQUAL` assertions on each field of type T.
-
-Example of a custom ZenUnit Equalizer:
+If function ZenUnit::Equalizer<T>::AssertEqual(expectedValue, actualValue) is defined, ARE_EQUAL(expectedValue, actualValue) will call that Equalizer function instead of calling operator==.
 
 ```cpp
 namespace ZenUnit
 {
    template<>
-   struct Equalizer<year_month_day>
+   struct Equalizer<date::year_month_day>
    {
       static void AssertEqual(
-         const year_month_day& expectedYearMonthDay,
-         const year_month_day& actualYearMonthDay)
+         const date::year_month_day& expectedYearMonthDay,
+         const date::year_month_day& actualYearMonthDay)
       {
          ARE_EQUAL(expectedYearMonthDay.year(), actualYearMonthDay.year());
          ARE_EQUAL(expectedYearMonthDay.month(), actualYearMonthDay.month());
