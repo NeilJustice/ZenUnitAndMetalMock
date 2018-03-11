@@ -68,3 +68,31 @@ TEST(RandomVector_ReturnsAVectorWithSizeBetween0And2WithRandomElements)
 
 RUN_TEMPLATE_TESTS(RandomVectorTests, int)
 THEN_RUN_TEMPLATE_TESTS(RandomVectorTests, string)
+
+
+template<typename KeyType, typename ValueType>
+TEMPLATE_TESTS(RandomMapTests, KeyType, ValueType)
+AFACT(RandomMap_ReturnsAMapWithSizeBetween0And2WithRandomElements)
+EVIDENCE
+
+TEST(RandomMap_ReturnsAMapWithSizeBetween0And2WithRandomElements)
+{
+   const map<KeyType, ValueType> randomOrderedMap = ZenUnit::RandomMap<KeyType, ValueType>();
+   IS_TRUE(randomOrderedMap.size() >= 0 && randomOrderedMap.size() <= 2);
+}
+RUN_TEMPLATE_TESTS(RandomMapTests, int, int)
+THEN_RUN_TEMPLATE_TESTS(RandomMapTests, string, double)
+
+
+template<typename KeyType, typename ValueType>
+TEMPLATE_TESTS(RandomUnorderedMapTests, KeyType, ValueType)
+AFACT(RandomUnorderedMap_ReturnsAMapWithSizeBetween0And2WithRandomElements)
+EVIDENCE
+
+TEST(RandomUnorderedMap_ReturnsAMapWithSizeBetween0And2WithRandomElements)
+{
+   const unordered_map<KeyType, ValueType> randomUnorderedMap = ZenUnit::RandomUnorderedMap<KeyType, ValueType>();
+   IS_TRUE(randomUnorderedMap.size() >= 0 && randomUnorderedMap.size() <= 2);
+}
+RUN_TEMPLATE_TESTS(RandomUnorderedMapTests, int, int)
+THEN_RUN_TEMPLATE_TESTS(RandomUnorderedMapTests, string, double)

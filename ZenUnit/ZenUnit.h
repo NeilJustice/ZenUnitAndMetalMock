@@ -6235,6 +6235,17 @@ by changing TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
       return randomString;
    }
 
+   template<typename EnumType>
+   inline EnumType RandomEnum(EnumType exclusiveEnumMaxValue)
+   {
+      using UnderlyingType = typename std::underlying_type<EnumType>::type;
+      const EnumType randomEnum = static_cast<EnumType>(
+         ZenUnit::RandomBetween<UnderlyingType>(
+            static_cast<UnderlyingType>(0),
+            static_cast<UnderlyingType>(exclusiveEnumMaxValue) - static_cast<UnderlyingType>(1)));
+      return randomEnum;
+   }
+
    template<typename T>
    inline std::vector<T> RandomVector()
    {
@@ -6247,15 +6258,47 @@ by changing TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
       return randomVector;
    }
 
-   template<typename EnumType>
-   inline EnumType RandomEnum(EnumType exclusiveEnumMaxValue)
+   template<typename KeyType, typename ValueType>
+   inline std::map<KeyType, ValueType> RandomMap()
    {
-      using UnderlyingType = typename std::underlying_type<EnumType>::type;
-      const EnumType randomEnum = static_cast<EnumType>(
-         ZenUnit::RandomBetween<UnderlyingType>(
-            static_cast<UnderlyingType>(0),
-            static_cast<UnderlyingType>(exclusiveEnumMaxValue) - static_cast<UnderlyingType>(1)));
-      return randomEnum;
+      const std::size_t randomMapSize = RandomBetween<size_t>(0, 2);
+      std::map<KeyType, ValueType> randomMap;
+      for (size_t i = 0; i < randomMapSize; ++i)
+      {
+         const KeyType randomKey = Random<KeyType>();
+         const ValueType randomValue = Random<ValueType>();
+         randomMap[randomKey] = randomValue;
+      }
+      return randomMap;
+   }
+
+   template<typename KeyType, typename ValueType>
+   inline std::unordered_map<KeyType, ValueType> RandomUnorderedMap()
+   {
+      const std::size_t randomUnorderedMapSize = RandomBetween<size_t>(0, 2);
+      std::unordered_map<KeyType, ValueType> randomUnorderedMap;
+      for (size_t i = 0; i < randomUnorderedMapSize; ++i)
+      {
+         const KeyType randomKey = Random<KeyType>();
+         const ValueType randomValue = Random<ValueType>();
+         randomUnorderedMap[randomKey] = randomValue;
+      }
+      return randomUnorderedMap;
+   }
+
+   template<
+      template<typename _ElementType>
+   typename SetType, typename ElementType>
+      inline SetType<ElementType> RandomSet()
+   {
+      const std::size_t randomSetSize = RandomBetween<size_t>(0, 2);
+      SetType<ElementType> randomSet;
+      for (size_t i = 0; i < randomSetSize; ++i)
+      {
+         const ElementType randomElement = Random<ElementType>();
+         randomSet.insert(randomElement);
+      }
+      return randomSet;
    }
 
    inline int RunTests(int argc, char* argv[])
