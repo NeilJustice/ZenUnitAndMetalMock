@@ -436,15 +436,13 @@ namespace ZenUnit
    };
 
 #if defined __linux__
-#if __clang_major__ == 3 && __clang_minor__ == 9
    static_assert(sizeof(FileLine) == 16);
-#endif
 #elif defined(_WIN64)
-#if defined _DEBUG
-   static_assert(sizeof(FileLine) == 16);
-#elif NDEBUG
-   static_assert(sizeof(FileLine) == 16);
-#endif
+   #if defined _DEBUG
+      static_assert(sizeof(FileLine) == 16);
+   #elif NDEBUG
+      static_assert(sizeof(FileLine) == 16);
+   #endif
 #endif
 
    template<typename T>
@@ -698,15 +696,13 @@ namespace ZenUnit
    };
 
 #if defined __linux__
-#if __clang_major__ == 3 && __clang_minor__ == 9
    static_assert(sizeof(ZenUnitArgs) == 88);
-#endif
 #elif defined(_WIN64)
-#if defined _DEBUG
-   static_assert(sizeof(ZenUnitArgs) == 104);
-#elif NDEBUG
-   static_assert(sizeof(ZenUnitArgs) == 88);
-#endif
+   #if defined _DEBUG
+      static_assert(sizeof(ZenUnitArgs) == 104);
+   #elif NDEBUG
+      static_assert(sizeof(ZenUnitArgs) == 88);
+   #endif
 #endif
 
    inline const char* ColorToLinuxColor(Color color) noexcept
@@ -1465,15 +1461,13 @@ namespace ZenUnit
    };
 
 #if defined __linux__
-#if __clang_major__ == 3 && __clang_minor__ == 9
    static_assert(sizeof(Anomaly) == 184);
-#endif
 #elif defined(_WIN64)
-#if defined _DEBUG
-   static_assert(sizeof(Anomaly) == 240);
-#elif NDEBUG
-   static_assert(sizeof(Anomaly) == 200);
-#endif
+   #if defined _DEBUG
+      static_assert(sizeof(Anomaly) == 240);
+   #elif NDEBUG
+      static_assert(sizeof(Anomaly) == 200);
+   #endif
 #endif
 
    // ZenMockException's key feature is that it is not a std::exception
@@ -2974,15 +2968,13 @@ Testing Rigor Options:
    };
 
 #if defined __linux__
-#if __clang_major__ == 3 && __clang_minor__ == 9
    static_assert(sizeof(AnomalyOrException) == 40);
-#endif
 #elif defined(_WIN64)
-#if defined _DEBUG
-   static_assert(sizeof(AnomalyOrException) == 40);
-#elif NDEBUG
-   static_assert(sizeof(AnomalyOrException) == 40);
-#endif
+   #if defined _DEBUG
+      static_assert(sizeof(AnomalyOrException) == 40);
+   #elif NDEBUG
+      static_assert(sizeof(AnomalyOrException) == 40);
+   #endif
 #endif
 
    template<typename CollectionType, typename FunctionType, typename Arg2Type, typename Arg3Type>
@@ -3045,15 +3037,13 @@ Testing Rigor Options:
    };
 
 #if defined __linux__
-#if __clang_major__ == 3 && __clang_minor__ == 9
    static_assert(sizeof(FullTestName) == 24);
-#endif
 #elif defined(_WIN64)
-#if defined _DEBUG
-   static_assert(sizeof(FullTestName) == 24);
-#elif NDEBUG
-   static_assert(sizeof(FullTestName) == 24);
-#endif
+   #if defined _DEBUG
+      static_assert(sizeof(FullTestName) == 24);
+   #elif NDEBUG
+      static_assert(sizeof(FullTestName) == 24);
+   #endif
 #endif
 
    class TestFailureNumberer
@@ -3146,15 +3136,13 @@ Testing Rigor Options:
    };
 
 #if defined __linux__
-#if __clang_major__ == 3 && __clang_minor__ == 9
    static_assert(sizeof(CallResult) == 24);
-#endif
 #elif defined(_WIN64)
-#if defined _DEBUG
-   static_assert(sizeof(CallResult) == 24);
-#elif NDEBUG
-   static_assert(sizeof(CallResult) == 24);
-#endif
+   #if defined _DEBUG
+      static_assert(sizeof(CallResult) == 24);
+   #elif NDEBUG
+      static_assert(sizeof(CallResult) == 24);
+   #endif
 #endif
 
    struct TestResult
@@ -3390,15 +3378,13 @@ Testing Rigor Options:
    };
 
 #if defined __linux__
-#if __clang_major__ == 3 && __clang_minor__ == 9
    static_assert(sizeof(TestResult) == 176);
-#endif
 #elif defined(_WIN64)
-#if defined _DEBUG
-   static_assert(sizeof(TestResult) == 168);
-#elif NDEBUG
-   static_assert(sizeof(TestResult) == 168);
-#endif
+   #if defined _DEBUG
+      static_assert(sizeof(TestResult) == 168);
+   #elif NDEBUG
+      static_assert(sizeof(TestResult) == 168);
+   #endif
 #endif
 
    using ThreeArgForEacherType = const ThreeArgForEacher<
@@ -3532,15 +3518,13 @@ Testing Rigor Options:
    };
 
 #if defined __linux__
-#if __clang_major__ == 3 && __clang_minor__ == 9
    static_assert(sizeof(TestClassResult) == 32);
-#endif
 #elif defined(_WIN64)
-#if defined _DEBUG
-   static_assert(sizeof(TestClassResult) == 40);
-#elif NDEBUG
-   static_assert(sizeof(TestClassResult) == 32);
-#endif
+   #if defined _DEBUG
+      static_assert(sizeof(TestClassResult) == 40);
+   #elif NDEBUG
+      static_assert(sizeof(TestClassResult) == 32);
+   #endif
 #endif
 
    class Watch
@@ -3798,13 +3782,15 @@ Testing Rigor Options:
    {
       friend class TestClassRunnerTests;
    protected:
+      std::unique_ptr<const Console> p_console;
       using TwoArgMemberAnyerType = TwoArgMemberAnyer<
          std::vector<RunFilter>, TestClassRunner, bool(TestClassRunner::*)(const RunFilter&, const char*) const, const char*>;
-      std::unique_ptr<const TwoArgMemberAnyerType> pro_twoArgMemberAnyer;
+      std::unique_ptr<const TwoArgMemberAnyerType> p_twoArgMemberAnyer;
       std::function<bool(const char*, const std::string&)> call_RunFilter_StringMatchesFilter;
    public:
       TestClassRunner() noexcept
-         : pro_twoArgMemberAnyer(std::make_unique<TwoArgMemberAnyerType>())
+         : p_console(std::make_unique<Console>())
+         , p_twoArgMemberAnyer(std::make_unique<TwoArgMemberAnyerType>())
          , call_RunFilter_StringMatchesFilter(RunFilter::StringMatchesFilter)
       {
       }
@@ -4691,15 +4677,13 @@ Testing Rigor Options:
    };
 
 #if defined __linux__
-#if __clang_major__ == 3 && __clang_minor__ == 9
    static_assert(sizeof(Test) == 64);
-#endif
 #elif defined(_WIN64)
-#if defined _DEBUG
-   static_assert(sizeof(Test) == 64);
-#elif NDEBUG
-   static_assert(sizeof(Test) == 64);
-#endif
+   #if defined _DEBUG
+      static_assert(sizeof(Test) == 64);
+   #elif NDEBUG
+      static_assert(sizeof(Test) == 64);
+   #endif
 #endif
 
    inline CallResult TryCatchCaller::Call(void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const
@@ -4816,7 +4800,6 @@ Testing Rigor Options:
    {
       friend class SpecificTestClassRunnerTests;
    private:
-      std::unique_ptr<const Console> _console;
       using TwoArgMemberForEacherType = TwoArgMemberForEacher<
          std::unique_ptr<Test>,
          SpecificTestClassRunner,
@@ -4835,8 +4818,7 @@ Testing Rigor Options:
       TestClassResult _testClassResult;
    public:
       explicit SpecificTestClassRunner(const char* testClassName)
-         : _console(std::make_unique<Console>())
-         , _twoArgMemberForEacher(std::make_unique<TwoArgMemberForEacherType>())
+         : _twoArgMemberForEacher(std::make_unique<TwoArgMemberForEacherType>())
          , _voidZeroArgFunctionCaller(std::make_unique<ZeroArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>>>())
          , _nonVoidTwoArgFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>>())
          , _voidOneArgFunctionCaller(std::make_unique<OneArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>, const TestClassResult*>>())
@@ -4875,7 +4857,7 @@ Testing Rigor Options:
          }
          _voidOneArgFunctionCaller->ConstCall(
             this, &SpecificTestClassRunner::PrintTestClassResultLine, &_testClassResult);
-         _console->WriteNewLine();
+         p_console->WriteNewLine();
          return std::move(_testClassResult);
       }
    private:
@@ -4896,19 +4878,19 @@ Testing Rigor Options:
 
       void PrintTestClassNameAndNumberOfNamedTests() const
       {
-         _console->WriteColor("@", Color::Green);
-         _console->WriteColor(_testClassName, Color::Green);
+         p_console->WriteColor("@", Color::Green);
+         p_console->WriteColor(_testClassName, Color::Green);
          const std::string spacePipeSpaceNumberOfNamedTests = String::Concat(
             " | ", _tests.size(), _tests.size() == 1 ? " named test" : " named tests");
-         _console->WriteLine(spacePipeSpaceNumberOfNamedTests);
+         p_console->WriteLine(spacePipeSpaceNumberOfNamedTests);
       }
 
       bool ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(
          Test* newableDeletableTest, TestClassResult* outTestClassResult) const
       {
-         _console->WriteColor("|", Color::Green);
+         p_console->WriteColor("|", Color::Green);
          static const std::string TestClassIsNewableAndDeletableString = "TestClassIsNewableAndDeletable -> ";
-         _console->Write(TestClassIsNewableAndDeletableString);
+         p_console->Write(TestClassIsNewableAndDeletableString);
          const std::vector<TestResult> newableDeletableTestResults = newableDeletableTest->Run();
          assert_true(newableDeletableTestResults.size() == 1);
          outTestClassResult->AddTestResults(newableDeletableTestResults);
@@ -4916,8 +4898,8 @@ Testing Rigor Options:
          const bool testClassIsNewableAndDeletable = newableDeletableTestResult.testOutcome == TestOutcome::Success;
          if (testClassIsNewableAndDeletable)
          {
-            _console->WriteColor("OK ", Color::Green);
-            _console->WriteLine(String::Concat("(", newableDeletableTestResult.microseconds, "us)"));
+            p_console->WriteColor("OK ", Color::Green);
+            p_console->WriteLine(String::Concat("(", newableDeletableTestResult.microseconds, "us)"));
          }
          return testClassIsNewableAndDeletable;
       }
@@ -4926,22 +4908,22 @@ Testing Rigor Options:
       {
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          const char* const testName = test->Name();
-         const bool doRunTest = zenUnitArgs.runFilters.empty() || pro_twoArgMemberAnyer->TwoArgAny(
+         const bool doRunTest = zenUnitArgs.runFilters.empty() || p_twoArgMemberAnyer->TwoArgAny(
             zenUnitArgs.runFilters, this, &TestClassRunner::TestNameCaseInsensitiveMatchesRunFilterTestName, testName);
          if (doRunTest)
          {
-            _console->WriteColor("|", Color::Green);
-            _console->Write(testName);
-            test->WritePostTestNameMessage(_console.get());
+            p_console->WriteColor("|", Color::Green);
+            p_console->Write(testName);
+            test->WritePostTestNameMessage(p_console.get());
             const std::vector<TestResult> testResults = test->Run();
-            test->WritePostTestCompletionMessage(_console.get(), testResults[0]);
+            test->WritePostTestCompletionMessage(p_console.get(), testResults[0]);
             outTestClassResult->AddTestResults(testResults);
          }
       }
 
       void PrintTestClassResultLine(const TestClassResult* testClassResult) const
       {
-         testClassResult->PrintTestClassResultLine(_console.get());
+         testClassResult->PrintTestClassResultLine(p_console.get());
       }
    };
 

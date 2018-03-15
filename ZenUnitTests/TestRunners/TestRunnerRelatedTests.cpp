@@ -176,7 +176,7 @@ public:
 };
 
 unique_ptr<SpecificTestClassRunner<TestingTestClass>> _specificTestClassRunner;
-ConsoleMock* _consoleMock = nullptr;
+ConsoleMock* p_consoleMock = nullptr;
 const string _testClassName = ZenUnit::Random<string>();
 
 using TwoArgMemberForEacherMockType = TwoArgMemberForEacherMock<
@@ -190,14 +190,14 @@ VoidOneArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, co
 using TwoArgMemberAnyerMockType = TwoArgMemberAnyerMock<
    std::vector<RunFilter>, TestClassRunner,
    bool(TestClassRunner::*)(const RunFilter&, const char*) const, const char*>;
-TwoArgMemberAnyerMockType* pro_twoArgMemberAnyerMock;
+TwoArgMemberAnyerMockType* p_twoArgMemberAnyerMock;
 
 ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
 
 STARTUP
 {
    _specificTestClassRunner = make_unique<SpecificTestClassRunner<TestingTestClass>>(_testClassName.c_str());
-   _specificTestClassRunner->_console.reset(_consoleMock = new ConsoleMock);
+   _specificTestClassRunner->p_console.reset(p_consoleMock = new ConsoleMock);
    _specificTestClassRunner->call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
    _specificTestClassRunner->_twoArgMemberForEacher.reset(_twoArgMemberForEacherMock = new TwoArgMemberForEacherMockType);
    _specificTestClassRunner->_voidZeroArgFunctionCaller.reset(
@@ -209,14 +209,14 @@ STARTUP
    _specificTestClassRunner->_voidOneArgFunctionCaller.reset(_voidOneArgFunctionCallerMock =
       new VoidOneArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, const TestClassResult*>);
    _specificTestClassRunner->call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
-   _specificTestClassRunner->pro_twoArgMemberAnyer.reset(pro_twoArgMemberAnyerMock = new TwoArgMemberAnyerMockType);
+   _specificTestClassRunner->p_twoArgMemberAnyer.reset(p_twoArgMemberAnyerMock = new TwoArgMemberAnyerMockType);
 }
 
 TEST(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
 {
    SpecificTestClassRunner<TestingTestClass> specificTestClassRunner(_testClassName.c_str());
    //
-   POINTER_WAS_NEWED(specificTestClassRunner._console);
+   POINTER_WAS_NEWED(specificTestClassRunner.p_console);
    POINTER_WAS_NEWED(specificTestClassRunner._twoArgMemberForEacher);
    POINTER_WAS_NEWED(specificTestClassRunner._voidZeroArgFunctionCaller);
    POINTER_WAS_NEWED(specificTestClassRunner._nonVoidTwoArgFunctionCaller);
@@ -268,7 +268,7 @@ TEST2X2(RunTests_PrintsTestClassNameAndNumberOfNamedTests_ConfirmsTestClassNewab
       _voidZeroArgFunctionCallerMock->NonConstCallMock.Expect();
    }
    _voidOneArgFunctionCallerMock->ConstCallMock.Expect();
-   _consoleMock->WriteNewLineMock.Expect();
+   p_consoleMock->WriteNewLineMock.Expect();
    _specificTestClassRunner->_testClassResult = TestClassResult::TestingNonDefault();
    //
    const TestClassResult testClassResult = _specificTestClassRunner->RunTests();
@@ -286,7 +286,7 @@ TEST2X2(RunTests_PrintsTestClassNameAndNumberOfNamedTests_ConfirmsTestClassNewab
    ZEN(_voidOneArgFunctionCallerMock->ConstCallMock.CalledOnceWith(
       _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::PrintTestClassResultLine,
       &_specificTestClassRunner->_testClassResult));
-   ZEN(_consoleMock->WriteNewLineMock.CalledOnce());
+   ZEN(p_consoleMock->WriteNewLineMock.CalledOnce());
    ARE_EQUAL(TestClassResult::TestingNonDefault(), testClassResult);
    ARE_EQUAL(TestClassResult(), _specificTestClassRunner->_testClassResult);
 }
@@ -336,26 +336,26 @@ TEST2X2(PrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVerticalBarNu
    size_t(2), true,
    size_t(3), true)
 {
-   _consoleMock->WriteColorMock.Expect();
-   _consoleMock->WriteLineMock.Expect();
+   p_consoleMock->WriteColorMock.Expect();
+   p_consoleMock->WriteLineMock.Expect();
    _specificTestClassRunner->_testClassName = _testClassName.c_str();
    _specificTestClassRunner->_tests.resize(numberOfTests);
    //
    _specificTestClassRunner->PrintTestClassNameAndNumberOfNamedTests();
    //
-   ZEN(_consoleMock->WriteColorMock.CalledAsFollows(
+   ZEN(p_consoleMock->WriteColorMock.CalledAsFollows(
    {
       { "@", Color::Green },
       { _testClassName.c_str(), Color::Green }
    }));
    if (expectTestsPlural)
    {
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
+      ZEN(p_consoleMock->WriteLineMock.CalledOnceWith(
          String::Concat(" | ", numberOfTests, " named tests")));
    }
    else
    {
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
+      ZEN(p_consoleMock->WriteLineMock.CalledOnceWith(
          String::Concat(" | ", numberOfTests, " named test")));
    }
 }
@@ -366,12 +366,12 @@ TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewableDele
    false, TestOutcome::Exception, false,
    true, TestOutcome::Success, true)
 {
-   _consoleMock->WriteColorMock.Expect();
-   _consoleMock->WriteMock.Expect();
+   p_consoleMock->WriteColorMock.Expect();
+   p_consoleMock->WriteMock.Expect();
    if (expectWriteLineOK)
    {
-      _consoleMock->WriteColorMock.Expect();
-      _consoleMock->WriteLineMock.Expect();
+      p_consoleMock->WriteColorMock.Expect();
+      p_consoleMock->WriteLineMock.Expect();
    }
    TestMock testMock;
 
@@ -389,18 +389,18 @@ TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewableDele
    //
    if (expectWriteLineOK)
    {
-       ZEN(_consoleMock->WriteColorMock.CalledAsFollows(
+       ZEN(p_consoleMock->WriteColorMock.CalledAsFollows(
        {
           { "|", Color::Green },
           { "OK ", Color::Green }
        }));
-       ZEN(_consoleMock->WriteLineMock.CalledOnceWith(String::Concat("(", testResult.microseconds, "us)")));
+       ZEN(p_consoleMock->WriteLineMock.CalledOnceWith(String::Concat("(", testResult.microseconds, "us)")));
    }
    else
    {
-      ZEN(_consoleMock->WriteColorMock.CalledOnceWith("|", Color::Green));
+      ZEN(p_consoleMock->WriteColorMock.CalledOnceWith("|", Color::Green));
    }
-   ZEN(_consoleMock->WriteMock.CalledOnceWith("TestClassIsNewableAndDeletable -> "));
+   ZEN(p_consoleMock->WriteMock.CalledOnceWith("TestClassIsNewableAndDeletable -> "));
    ZEN(testMock.RunMock.CalledOnce());
    ZEN(testClassResultMock.AddTestResultsMock.CalledOnceWith(testResults));
    ARE_EQUAL(expectedReturnValue, testClassTypeIsNewableAndDeletable);
@@ -417,7 +417,7 @@ TEST(RunTest_RunFiltersNonEmpty_NoneOfTheRunFiltersMatchTheTestName_DoesNotRunTe
    testMock->NameMock.Return(testName.c_str());
    const unique_ptr<Test> test(testMock);
 
-   pro_twoArgMemberAnyerMock->TwoArgAnyMock.Return(false);
+   p_twoArgMemberAnyerMock->TwoArgAnyMock.Return(false);
 
    TestClassResultMock testClassResultMock;
    //
@@ -425,7 +425,7 @@ TEST(RunTest_RunFiltersNonEmpty_NoneOfTheRunFiltersMatchTheTestName_DoesNotRunTe
    //
    ZEN(GetArgs_ZenMock.CalledOnce());
    ZEN(testMock->NameMock.CalledOnce());
-   ZEN(pro_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
+   ZEN(p_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
       zenUnitArgs.runFilters, _specificTestClassRunner.get(),
       &TestClassRunner::TestNameCaseInsensitiveMatchesRunFilterTestName, testName.c_str()));
 }
@@ -440,8 +440,8 @@ TEST2X2(RunTest_RunFiltersEmptyOrIfNotEmptyARunFilterMatchesTheTestName_RunsTest
    zenUnitArgs.runFilters.resize(runFiltersSize);
    GetArgs_ZenMock.Return(zenUnitArgs);
 
-   _consoleMock->WriteColorMock.Expect();
-   _consoleMock->WriteMock.Expect();
+   p_consoleMock->WriteColorMock.Expect();
+   p_consoleMock->WriteMock.Expect();
 
    TestMock* const testMock = new TestMock;
    const string testName = Random<string>();
@@ -455,7 +455,7 @@ TEST2X2(RunTest_RunFiltersEmptyOrIfNotEmptyARunFilterMatchesTheTestName_RunsTest
    const unique_ptr<Test> test(testMock);
    if (expectAnyerCall)
    {
-      pro_twoArgMemberAnyerMock->TwoArgAnyMock.Return(true);
+      p_twoArgMemberAnyerMock->TwoArgAnyMock.Return(true);
    }
    TestClassResultMock testClassResultMock;
    testClassResultMock.AddTestResultsMock.Expect();
@@ -466,17 +466,17 @@ TEST2X2(RunTest_RunFiltersEmptyOrIfNotEmptyARunFilterMatchesTheTestName_RunsTest
    ZEN(testMock->NameMock.CalledOnce());
    if (expectAnyerCall)
    {
-      ZEN(pro_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
+      ZEN(p_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
          zenUnitArgs.runFilters, _specificTestClassRunner.get(),
          &TestClassRunner::TestNameCaseInsensitiveMatchesRunFilterTestName, testName.c_str()));
    }
-   ZEN(_consoleMock->WriteColorMock.CalledOnceWith("|", Color::Green));
-   ZEN(_consoleMock->WriteMock.CalledOnceWith(testName));
-   ZEN(testMock->WritePostTestNameMessageMock.CalledOnceWith(_specificTestClassRunner->_console.get()));
+   ZEN(p_consoleMock->WriteColorMock.CalledOnceWith("|", Color::Green));
+   ZEN(p_consoleMock->WriteMock.CalledOnceWith(testName));
+   ZEN(testMock->WritePostTestNameMessageMock.CalledOnceWith(_specificTestClassRunner->p_console.get()));
    ZEN(testMock->RunMock.CalledOnce());
    ZEN(testClassResultMock.AddTestResultsMock.CalledOnceWith(TestResults));
    ZEN(testMock->WritePostTestCompletionMessageMock.CalledOnceWith(
-      _specificTestClassRunner->_console.get(), test0));
+      _specificTestClassRunner->p_console.get(), test0));
 }
 
 TEST(PrintTestClassResultLine_CallsTestClassResultPrintResultLine)
@@ -486,7 +486,7 @@ TEST(PrintTestClassResultLine_CallsTestClassResultPrintResultLine)
    //
    _specificTestClassRunner->PrintTestClassResultLine(&testClassResultMock);
    //
-   ZEN(testClassResultMock.PrintTestClassResultLineMock.CalledOnceWith(_consoleMock));
+   ZEN(testClassResultMock.PrintTestClassResultLineMock.CalledOnceWith(p_consoleMock));
 }
 
 RUN_TESTS(SpecificTestClassRunnerTests)
@@ -516,7 +516,8 @@ STARTUP
 TEST(DefaultConstructor_NewsComponents)
 {
    TestingTestClassRunner testingTestClassRunner;
-   POINTER_WAS_NEWED(testingTestClassRunner.pro_twoArgMemberAnyer);
+   POINTER_WAS_NEWED(testingTestClassRunner.p_console);
+   POINTER_WAS_NEWED(testingTestClassRunner.p_twoArgMemberAnyer);
    STD_FUNCTION_TARGETS(RunFilter::StringMatchesFilter, testingTestClassRunner.call_RunFilter_StringMatchesFilter);
 }
 
