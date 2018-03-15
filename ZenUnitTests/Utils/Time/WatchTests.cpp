@@ -21,7 +21,7 @@ namespace ZenUnit
 }
 
 TESTS(WatchTests)
-FACTS(TimeZoneDateTimeNow_ReturnsLocalTimeNowWithTimeZoneAndTodaysDate)
+FACTS(DateTimeNowWithTimeZone_ReturnsLocalTimeNowWithTimeZoneAndTodaysDate)
 EVIDENCE
 
 struct WatchSelfMocked : public Zen::Mock<ZenUnit::Watch>
@@ -36,32 +36,26 @@ STARTUP
    _watchSelfMocked = make_unique<WatchSelfMocked>();
 }
 
-TEST2X2(TimeZoneDateTimeNow_ReturnsLocalTimeNowWithTimeZoneAndTodaysDate,
-   tm tmNow, const char* expectedReturnValue,
-   Tm(0, 0, 1, 0, 00, 00, 00), "00:00:00 TimeZone on Sunday January 1, 1900",
-   Tm(1, 1, 2, 1, 01, 01, 01), "01:01:01 TimeZone on Monday February 2, 1901",
-   Tm(2, 2, 3, 2, 11, 11, 11), "11:11:11 TimeZone on Tuesday March 3, 1902",
-   Tm(3, 3, 30, 99, 12, 00, 00), "12:00:00 TimeZone on Wednesday April 30, 1999",
-   Tm(4, 4, 1, 100, 12, 45, 01), "12:45:01 TimeZone on Thursday May 1, 2000",
-   Tm(5, 5, 1, 101, 13, 01, 01), "13:01:01 TimeZone on Friday June 1, 2001",
-   Tm(6, 6, 1, 109, 00, 00, 00), "00:00:00 TimeZone on Saturday July 1, 2009",
-   Tm(0, 7, 1, 110, 00, 00, 00), "00:00:00 TimeZone on Sunday August 1, 2010",
-   Tm(1, 8, 1, 111, 00, 00, 00), "00:00:00 TimeZone on Monday September 1, 2011",
-   Tm(2, 9, 1, 116, 00, 00, 00), "00:00:00 TimeZone on Tuesday October 1, 2016",
-   Tm(3, 10, 1, 117, 11, 30, 45), "11:30:45 TimeZone on Wednesday November 1, 2017",
-   Tm(4, 11, 31, 118, 23, 59, 59), "23:59:59 TimeZone on Thursday December 31, 2018")
+TEST2X2(DateTimeNowWithTimeZone_ReturnsLocalTimeNowWithTimeZoneAndTodaysDate,
+   tm tmNow, const char* expectedDateTimeNowWithTimeZone,
+   Tm(0, 1, 0, 0, 0, 0), "1900-01-01 00:00:00 TimeZone",
+   Tm(1, 2, 1, 1, 1, 1), "1901-02-02 01:01:01 TimeZone",
+   Tm(2, 3, 2, 11, 11, 11), "1902-03-03 11:11:11 TimeZone",
+   Tm(11, 31, 99, 23, 59, 59), "1999-12-31 23:59:59 TimeZone",
+   Tm(0, 1, 100, 0, 0, 0), "2000-01-01 00:00:00 TimeZone",
+   Tm(1, 3, 101, 4, 5, 6), "2001-02-03 04:05:06 TimeZone")
 {
    _watchSelfMocked->TMNowMock.Return(tmNow);
    _watchSelfMocked->TimeZoneMock.Return("TimeZone");
    //
-   const string timeZoneDateTimeNow = _watchSelfMocked->TimeZoneDateTimeNow();
+   const string dateTimeNowWithTimeZone = _watchSelfMocked->DateTimeNowWithTimeZone();
    //
    ZEN(_watchSelfMocked->TMNowMock.CalledOnce());
    ZEN(_watchSelfMocked->TimeZoneMock.CalledOnceWith(tmNow));
-   ARE_EQUAL(expectedReturnValue, timeZoneDateTimeNow);
+   ARE_EQUAL(expectedDateTimeNowWithTimeZone, dateTimeNowWithTimeZone);
 }
 
-static tm Tm(int tmWeekDay, int tmMonth, int tmMonthDay, int tmYear, int tmHour, int tmMin, int tmSec)
+static tm Tm(int tmMonth, int tmMonthDay, int tmYear, int tmHour, int tmMin, int tmSec)
 {
    tm tmNow{};
    tmNow.tm_sec = tmSec;
@@ -70,7 +64,7 @@ static tm Tm(int tmWeekDay, int tmMonth, int tmMonthDay, int tmYear, int tmHour,
    tmNow.tm_mday = tmMonthDay;
    tmNow.tm_mon = tmMonth;
    tmNow.tm_year = tmYear;
-   tmNow.tm_wday = tmWeekDay;
+   tmNow.tm_wday = 0;
    tmNow.tm_yday = 0;
    tmNow.tm_isdst = 0;
    return tmNow;

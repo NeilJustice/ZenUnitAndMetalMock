@@ -1113,7 +1113,7 @@ TEST10X10(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndE
    _consoleMock->WriteColorMock.Expect();
    _consoleMock->WriteMock.Expect();
    _consoleMock->WriteLineMock.Expect();
-   const string timeZoneDateTimeNow = _watchMock->TimeZoneDateTimeNowMock.ReturnRandom();
+   const string timeZoneDateTimeNow = _watchMock->DateTimeNowWithTimeZoneMock.ReturnRandom();
    ZenUnitArgs zenUnitArgs;
    zenUnitArgs.commandLine = Random<string>();
    zenUnitArgs.random = random;
@@ -1137,7 +1137,7 @@ TEST10X10(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndE
    const string expectedEndTimeMessage = "  EndTime: " + timeZoneDateTimeNow;
    const string expectedNumberOfTestsAndMillisecondsMessage = String::Concat("   Result: ",
       expectedClosingLineTestsCountText, " in ", testRunMilliseconds, " ", expectedMillisecondOrMilliseconds);
-   ZEN(_watchMock->TimeZoneDateTimeNowMock.CalledOnce());
+   ZEN(_watchMock->DateTimeNowWithTimeZoneMock.CalledOnce());
    ZEN(_consoleMock->WriteLineMock.CalledAsFollows(
    {
       expectedRandomSeedMessage,

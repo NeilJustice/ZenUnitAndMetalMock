@@ -96,7 +96,7 @@ TEST(PrintOpeningThreeLines_PrintsCommandLineAndTimeZoneAndTestAndTestClassCount
    _preamblePrinterSelfMocked.consoleMock->WriteLineMock.Expect();
    TestClassRunnerRunnerMock testClassRunnerRunnerMock;
    const size_t numberOfTestClassesToBeRun = testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.ReturnRandom();
-   const string timeZoneDateTimeNow = _preamblePrinterSelfMocked.watchMock->TimeZoneDateTimeNowMock.ReturnRandom();
+   const string dateTimeNowWithTimeZone = _preamblePrinterSelfMocked.watchMock->DateTimeNowWithTimeZoneMock.ReturnRandom();
    const string thirdLinePrefix = _preamblePrinterSelfMocked.MakeThirdLinePrefixMock.ReturnRandom();
    const string thirdLineSuffix = _preamblePrinterSelfMocked.MakeThirdLineSuffixMock.ReturnRandom();
 
@@ -107,7 +107,7 @@ TEST(PrintOpeningThreeLines_PrintsCommandLineAndTimeZoneAndTestAndTestClassCount
    //
    _preamblePrinterSelfMocked.PrintOpeningThreeLines(zenUnitArgs, &testClassRunnerRunnerMock);
    //
-   ZEN(_preamblePrinterSelfMocked.watchMock->TimeZoneDateTimeNowMock.CalledOnce());
+   ZEN(_preamblePrinterSelfMocked.watchMock->DateTimeNowWithTimeZoneMock.CalledOnce());
    ZEN(testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.CalledOnce());
    ZEN(_preamblePrinterSelfMocked.consoleMock->WriteColorMock.CalledNTimesWith(3, "[ZenUnit]", Color::Green));
    ZEN(_preamblePrinterSelfMocked.MakeThirdLinePrefixMock.CalledOnceWith(numberOfTestClassesToBeRun));
@@ -117,7 +117,7 @@ TEST(PrintOpeningThreeLines_PrintsCommandLineAndTimeZoneAndTestAndTestClassCount
    ZEN(_preamblePrinterSelfMocked.consoleMock->WriteLineMock.CalledAsFollows(
    {
       " Running " + zenUnitArgs.commandLine,
-      " Running at " + timeZoneDateTimeNow,
+      " Running at " + dateTimeNowWithTimeZone,
       expectedThirdLineAndLineBreak
    }));
 }

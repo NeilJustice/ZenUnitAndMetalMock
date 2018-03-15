@@ -678,6 +678,16 @@ namespace ZenUnit
       }
    };
 
+#if defined __linux__
+   static_assert(sizeof(RunFilter) == 72);
+#elif defined(_WIN64)
+#if defined _DEBUG
+   static_assert(sizeof(RunFilter) == 88);
+#elif NDEBUG
+   static_assert(sizeof(RunFilter) == 72);
+#endif
+#endif
+
    struct ZenUnitArgs
    {
       std::string commandLine;
@@ -3554,21 +3564,20 @@ Testing Rigor Options:
          return weekdayDateTimeZoneNow;
       }
 
-      // Returns now in format "Monday January 1, 2016 at 00:00:00 <Timezone>"
-      virtual std::string TimeZoneDateTimeNow() const
-      {
-         const tm tmNow = TMNow();
-         std::ostringstream builder;
-         const char* const weekDayString = TMWeekDayToWeekDayString(tmNow.tm_wday);
-         const char* const monthString = TMMonthToMonthString(tmNow.tm_mon);
-         const std::string timeZone = TimeZone(tmNow);
-         builder << std::setw(2) << std::setfill('0') << tmNow.tm_hour << ':'
-            << std::setw(2) << std::setfill('0') << tmNow.tm_min << ':'
-            << std::setw(2) << std::setfill('0') << tmNow.tm_sec << ' '
-            << timeZone << " on " << weekDayString << ' ' << monthString << ' ' << tmNow.tm_mday << ", " << (tmNow.tm_year + 1900);
-         const std::string weekdayDateTimeZoneNow = builder.str();
-         return weekdayDateTimeZoneNow;
-      }
+      //// Returns now in format "Monday January 1, 2016 at 00:00:00 <Timezone>"
+      //virtual std::string TimeZoneDateTimeNow() const
+      //{
+      //   const tm tmNow = TMNow();
+      //   std::ostringstream builder;
+      //   const char* const monthString = TMMonthToMonthString(tmNow.tm_mon);
+      //   const std::string timeZone = TimeZone(tmNow);
+      //   builder << std::setw(2) << std::setfill('0') << tmNow.tm_hour << ':'
+      //      << std::setw(2) << std::setfill('0') << tmNow.tm_min << ':'
+      //      << std::setw(2) << std::setfill('0') << tmNow.tm_sec << ' '
+      //      << timeZone << " on " << weekDayString << ' ' << monthString << ' ' << tmNow.tm_mday << ", " << (tmNow.tm_year + 1900);
+      //   const std::string weekdayDateTimeZoneNow = builder.str();
+      //   return weekdayDateTimeZoneNow;
+      //}
 
       virtual unsigned short SecondsSince1970CastToUnsignedShort() const
       {
@@ -3602,21 +3611,6 @@ Testing Rigor Options:
          strftime(timeZoneChars, sizeof(timeZoneChars), "%Z", &tmValue);
          const std::string timeZone(timeZoneChars);
          return timeZone;
-      }
-
-      static const char* TMWeekDayToWeekDayString(int tm_wday)
-      {
-         switch (tm_wday)
-         {
-         case 0: return "Sunday";
-         case 1: return "Monday";
-         case 2: return "Tuesday";
-         case 3: return "Wednesday";
-         case 4: return "Thursday";
-         case 5: return "Friday";
-         case 6: return "Saturday";
-         default: throw std::out_of_range("Invalid tm_wday: " + std::to_string(tm_wday));
-         }
       }
 
       static const char* TMMonthToMonthString(int tm_mon)
@@ -3983,7 +3977,7 @@ Testing Rigor Options:
          _console->WriteColor("[ZenUnit]", Color::Green);
          _console->WriteLine(" Running " + zenUnitArgs.commandLine);
          _console->WriteColor("[ZenUnit]", Color::Green);
-         const std::string timeZoneDateTimeNow = _watch->TimeZoneDateTimeNow();
+         const std::string timeZoneDateTimeNow = _watch->DateTimeNowWithTimeZone();
          _console->WriteLine(" Running at " + timeZoneDateTimeNow);
          _console->WriteColor("[ZenUnit]", Color::Green);
          const size_t numberOfTestClassesToBeRun = testClassRunnerRunner->NumberOfTestClassesToBeRun();
@@ -4183,7 +4177,7 @@ Testing Rigor Options:
             _console->WriteLine(randomSeedMessage);
 
             _console->WriteColor(middleLineVictoryOrFail, color);
-            const std::string endTimeMessage = "  EndTime: " + _watch->TimeZoneDateTimeNow();
+            const std::string endTimeMessage = "  EndTime: " + _watch->DateTimeNowWithTimeZone();
             _console->WriteLine(endTimeMessage);
 
             _console->WriteColor(firstAndThirdLineAsciiArt, color);
