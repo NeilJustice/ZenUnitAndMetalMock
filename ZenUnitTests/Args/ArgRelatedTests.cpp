@@ -30,36 +30,40 @@ EVIDENCE
    const string ExpectedUsage = R"(ZenUnit and ZenMock v0.2.0
 Usage: <TestsBinaryName> [Options...]
 
-Test Filtration Options:
+Rigor:
 
--run=<TestClassNameA>[.TestNameA][,TestClassNameB.TestNameB,...]
-   Run only specified case-insensitive test class names and/or test names.
+-random[=Seed]
+   Run test classes and tests in a random order.
+-testruns=<NumberOfTestRuns>
+   Repeat the running of all non-skipped tests N times.
+   Specify -testruns=2 -random for two random test run orderings.
+-failskips
+   Exit 1 regardless of test run outcome if any tests are skipped.
+
+Filtration:
+
+-run=<TestClassName>[.TestName][/TestCaseNumber][,...]
+   Run only specified case-insensitive test classes, tests, or test cases.
    Add a '*' character to the end of a test class or test name
-   filter string to specify name-ends-with filtration.
+   filter string to specify name-starts-with filtration.
+ Example A: -run=Network*
+   runs all test classes that start with 'Network'.
+ Example B: -run=WidgetTests.Serialize*
+   runs all tests in WidgetTests that start with 'Serialize'.
+ Example C: -run=MathTests.ComplexCalculation_ValidInputs_ReturnsExpected/3
+   runs the third test case of value-parameterized test
+   ComplexCalculation_ValidInputs_ReturnsExpected in test class MathTests.
 -failfast
    Immediately exit with exit code 1 if a test fails.
 
-Utility Options:
+Utility:
 
 -pause
    Wait for any key before running tests to allow attaching a profiler or debugger.
 -exit0
    Always exit 0 regardless of test run outcome.
-   Useful option for never blocking the launch of a debugger
-   when running tests in a post-build step.
 -wait
-   Wait for any key at the end of the test run.
-
-Testing Rigor Options:
-
--failskips
-   Exit 1 regardless of test run outcome if any tests are skipped
-   for increased testing rigor on continuous integration servers.
--random[=Seed]
-   Run test classes and tests in a random order.
--testruns=<NumberOfTestRuns>
-   Repeat the running of all non-skipped tests N times.
-   Specify -testruns=2 -random for two random test run orderings for increased testing rigor.)";
+   Wait for any key at the end of the test run.)";
 
 ArgsParser _argsParser;
 ConsoleMock* _consoleMock;

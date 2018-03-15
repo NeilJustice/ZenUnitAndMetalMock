@@ -36,9 +36,6 @@ add_subdirectory(ZenUnit)
 add_subdirectory(ZenUnitTests)
 add_subdirectory(Examples)
 add_subdirectory(ExamplesTests)
-add_subdirectory(Executable)
-add_subdirectory(StaticLibrary)
-add_subdirectory(StaticLibraryTests)
 
 # Allows CMake command "cmake --build . --target install --config Debug/Release"
 # to just install ZenUnit and not also build ZenUnitTests
