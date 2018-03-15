@@ -3071,7 +3071,7 @@ Testing Rigor Options:
 
       virtual std::string Next()
       {
-         const std::string nextTestFailureNumber = "Test Failure " + std::to_string(_testFailureNumber++) + ":";
+         const std::string nextTestFailureNumber = ">>-Test Failure " + std::to_string(_testFailureNumber++) + "->";
          return nextTestFailureNumber;
       }
 

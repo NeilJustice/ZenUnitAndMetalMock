@@ -341,13 +341,13 @@ EVIDENCE
 TEST(TestFailureNumberer_NextReturnsIncrementingAngleBracketedSequence)
 {
    TestFailureNumberer testFailureNumberer;
-   ARE_EQUAL("Test Failure 1:", testFailureNumberer.Next());
-   ARE_EQUAL("Test Failure 2:", testFailureNumberer.Next());
-   ARE_EQUAL("Test Failure 3:", testFailureNumberer.Next());
+   ARE_EQUAL(">>-Test Failure 1->", testFailureNumberer.Next());
+   ARE_EQUAL(">>-Test Failure 2->", testFailureNumberer.Next());
+   ARE_EQUAL(">>-Test Failure 3->", testFailureNumberer.Next());
    testFailureNumberer.Reset();
-   ARE_EQUAL("Test Failure 1:", testFailureNumberer.Next());
-   ARE_EQUAL("Test Failure 2:", testFailureNumberer.Next());
-   ARE_EQUAL("Test Failure 3:", testFailureNumberer.Next());
+   ARE_EQUAL(">>-Test Failure 1->", testFailureNumberer.Next());
+   ARE_EQUAL(">>-Test Failure 2->", testFailureNumberer.Next());
+   ARE_EQUAL(">>-Test Failure 3->", testFailureNumberer.Next());
 }
 
 RUN_TESTS(TestFailureNumbererTests)
