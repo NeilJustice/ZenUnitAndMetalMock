@@ -435,16 +435,6 @@ namespace ZenUnit
       }
    };
 
-#if defined __linux__
-   static_assert(sizeof(FileLine) == 16);
-#elif defined(_WIN64)
-   #if defined _DEBUG
-      static_assert(sizeof(FileLine) == 16);
-   #elif NDEBUG
-      static_assert(sizeof(FileLine) == 16);
-   #endif
-#endif
-
    template<typename T>
    struct ZenUnitTestingMode
    {
@@ -678,16 +668,6 @@ namespace ZenUnit
       }
    };
 
-#if defined __linux__
-   static_assert(sizeof(RunFilter) == 72);
-#elif defined(_WIN64)
-#if defined _DEBUG
-   static_assert(sizeof(RunFilter) == 88);
-#elif NDEBUG
-   static_assert(sizeof(RunFilter) == 72);
-#endif
-#endif
-
    struct ZenUnitArgs
    {
       std::string commandLine;
@@ -704,16 +684,6 @@ namespace ZenUnit
       unsigned maxtestmilliseconds = 0;
       unsigned maxtotalseconds = 0;
    };
-
-#if defined __linux__
-   static_assert(sizeof(ZenUnitArgs) == 88);
-#elif defined(_WIN64)
-   #if defined _DEBUG
-      static_assert(sizeof(ZenUnitArgs) == 104);
-   #elif NDEBUG
-      static_assert(sizeof(ZenUnitArgs) == 88);
-   #endif
-#endif
 
    inline const char* ColorToLinuxColor(Color color) noexcept
    {
@@ -1469,16 +1439,6 @@ namespace ZenUnit
          return defaultAnomaly;
       }
    };
-
-#if defined __linux__
-   static_assert(sizeof(Anomaly) == 184);
-#elif defined(_WIN64)
-   #if defined _DEBUG
-      static_assert(sizeof(Anomaly) == 240);
-   #elif NDEBUG
-      static_assert(sizeof(Anomaly) == 200);
-   #endif
-#endif
 
    // ZenMockException's key feature is that it is not a std::exception
    class ZenMockException
@@ -2981,16 +2941,6 @@ Utility:
       }
    };
 
-#if defined __linux__
-   static_assert(sizeof(AnomalyOrException) == 40);
-#elif defined(_WIN64)
-   #if defined _DEBUG
-      static_assert(sizeof(AnomalyOrException) == 40);
-   #elif NDEBUG
-      static_assert(sizeof(AnomalyOrException) == 40);
-   #endif
-#endif
-
    template<typename CollectionType, typename FunctionType, typename Arg2Type, typename Arg3Type>
    class ThreeArgForEacher
    {
@@ -3049,16 +2999,6 @@ Utility:
          return fullTestName;
       }
    };
-
-#if defined __linux__
-   static_assert(sizeof(FullTestName) == 24);
-#elif defined(_WIN64)
-   #if defined _DEBUG
-      static_assert(sizeof(FullTestName) == 24);
-   #elif NDEBUG
-      static_assert(sizeof(FullTestName) == 24);
-   #endif
-#endif
 
    class TestFailureNumberer
    {
@@ -3148,16 +3088,6 @@ Utility:
       {
       }
    };
-
-#if defined __linux__
-   static_assert(sizeof(CallResult) == 24);
-#elif defined(_WIN64)
-   #if defined _DEBUG
-      static_assert(sizeof(CallResult) == 24);
-   #elif NDEBUG
-      static_assert(sizeof(CallResult) == 24);
-   #endif
-#endif
 
    struct TestResult
    {
@@ -3391,16 +3321,6 @@ Utility:
       }
    };
 
-#if defined __linux__
-   static_assert(sizeof(TestResult) == 176);
-#elif defined(_WIN64)
-   #if defined _DEBUG
-      static_assert(sizeof(TestResult) == 168);
-   #elif NDEBUG
-      static_assert(sizeof(TestResult) == 168);
-   #endif
-#endif
-
    using ThreeArgForEacherType = const ThreeArgForEacher<
       std::vector<TestResult>, void(*)(const TestResult&, const Console*, TestFailureNumberer*),
       const Console*, TestFailureNumberer*>;
@@ -3530,16 +3450,6 @@ Utility:
          testResult.PrintIfFailure(console, testFailureNumberer);
       }
    };
-
-#if defined __linux__
-   static_assert(sizeof(TestClassResult) == 32);
-#elif defined(_WIN64)
-   #if defined _DEBUG
-      static_assert(sizeof(TestClassResult) == 40);
-   #elif NDEBUG
-      static_assert(sizeof(TestClassResult) == 32);
-   #endif
-#endif
 
    class Watch
    {
@@ -4673,16 +4583,6 @@ Utility:
          return testResult;
       }
    };
-
-#if defined __linux__
-   static_assert(sizeof(Test) == 64);
-#elif defined(_WIN64)
-   #if defined _DEBUG
-      static_assert(sizeof(Test) == 64);
-   #elif NDEBUG
-      static_assert(sizeof(Test) == 64);
-   #endif
-#endif
 
    inline CallResult TryCatchCaller::Call(void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const
    {
