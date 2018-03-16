@@ -31,27 +31,27 @@ matrix:
            - clang-5.0
            - libstdc++-7-dev
 
-             #    - os: linux
-             #      compiler: gcc
-             #      env: CMAKE_BUILD_TYPE=Debug COMPILER=g++-7
-             #      addons:
-             #        apt:
-             #          sources:
-             #            - ubuntu-toolchain-r-test
-             #          packages:
-             #            - ninja-build
-             #            - g++-7
+#    - os: linux
+#      compiler: gcc
+#      env: CMAKE_BUILD_TYPE=Debug COMPILER=g++-7
+#      addons:
+#        apt:
+#          sources:
+#            - ubuntu-toolchain-r-test
+#          packages:
+#            - ninja-build
+#            - g++-7
 
-             #    - os: linux
-             #      compiler: gcc
-             #      env: CMAKE_BUILD_TYPE=Release COMPILER=g++-7
-             #      addons:
-             #        apt:
-             #          sources:
-             #            - ubuntu-toolchain-r-test
-             #          packages:
-             #            - ninja-build
-             #            - g++-7
+#    - os: linux
+#      compiler: gcc
+#      env: CMAKE_BUILD_TYPE=Release COMPILER=g++-7
+#      addons:
+#        apt:
+#          sources:
+#            - ubuntu-toolchain-r-test
+#          packages:
+#            - ninja-build
+#            - g++-7
 
 before_script:
   - mkdir build
@@ -63,5 +63,3 @@ script:
   - ninja -v -j 1
   - ./ZenUnitTests/ZenUnitTests
   - ./ExamplesTests/ExamplesTests
-  - ./StaticLibraryTests/StaticLibraryTests
-
