@@ -571,23 +571,34 @@ TEST(Run_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
       ZENMOCK_VOID2_CONST(PrintTestCaseNumberArgsThenArrow, unsigned short, const vector<string>&)
       ZENMOCK_VOID1_CONST(WriteLineOKIfSuccess, const TestResult&)
       Test1X1SelfMocked()
-         : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>("", "", "", 0, 0) {}
+         : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>(
+            "", // testClassName
+            "", // testName
+            "", // testCaseArgsText
+            0, // test case arg 0
+            0 // test case arg 1
+            ) {}
    } test1X1SelfMocked;
 
    ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs, _SelfMocked);
 
    ZENMOCK_NONVOID0_STATIC(vector<string>, ZenUnit::String, CommaSplitExceptQuotedCommas, _SelfMocked);
-   const vector<string> splitTestCaseArgs = { "1", "2", "3" };
+   const vector<string> splitTestCaseArgs = { ZenUnit::Random<string>(), ZenUnit::Random<string>(), ZenUnit::Random<string>() };
    CommaSplitExceptQuotedCommas_ZenMock_SelfMocked.Return(splitTestCaseArgs);
    test1X1SelfMocked.call_String_CommaSplitExceptQuotedCommas
       = ZENMOCK_BIND0(CommaSplitExceptQuotedCommas_ZenMock_SelfMocked);
 
    test1X1SelfMocked.PrintTestCaseNumberArgsThenArrowMock.Expect();
+
    TestResult firstTestResult;
-   firstTestResult.fullTestName.testName = "FirstTest";
+   const string firstTestName = ZenUnit::Random<string>();
+   firstTestResult.fullTestName.testName = firstTestName.c_str();
+
    TestResult secondTestResult;
-   secondTestResult.fullTestName.testName = "SecondTest";
+   const string secondTestName = ZenUnit::Random<string>();
+   secondTestResult.fullTestName.testName = secondTestName.c_str();
    test1X1SelfMocked.MockableCallBaseRunTestCaseMock.ReturnValues(firstTestResult, secondTestResult);
+
    test1X1SelfMocked.WriteLineOKIfSuccessMock.Expect();
    //
    const vector<TestResult> testResults = test1X1SelfMocked.Run();
@@ -595,13 +606,13 @@ TEST(Run_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
    ZEN(CommaSplitExceptQuotedCommas_ZenMock_SelfMocked.CalledOnce());
    ZEN(test1X1SelfMocked.PrintTestCaseNumberArgsThenArrowMock.CalledAsFollows(
    {
-      { 0, splitTestCaseArgs },
-      { 1, splitTestCaseArgs }
+      { 1, splitTestCaseArgs },
+      { 2, splitTestCaseArgs }
    }));
    TestResult expectedFirstTestResult = firstTestResult;
-   expectedFirstTestResult.testCaseIndex = 0;
+   expectedFirstTestResult.testCaseNumber = 1;
    TestResult expectedSecondTestResult = secondTestResult;
-   expectedSecondTestResult.testCaseIndex = 1;
+   expectedSecondTestResult.testCaseNumber = 2;
    ZEN(test1X1SelfMocked.MockableCallBaseRunTestCaseMock.CalledNTimes(2));
    ZEN(test1X1SelfMocked.WriteLineOKIfSuccessMock.CalledAsFollows(
    {
@@ -682,17 +693,17 @@ TEST(DeleteTestClass_DeletesTestClass)
 }
 
 TEST3X3(PrintTestCaseNumberArgsThenArrow_WritesTestCaseNumberArrow,
-   unsigned short testCaseIndex, int expectedTestCaseNumber, size_t expectedTestCaseArgsPrintingStartIndex,
-   static_cast<unsigned short>(0), 1, size_t(0),
-   static_cast<unsigned short>(1), 2, size_t(1),
-   static_cast<unsigned short>(2), 3, size_t(2))
+   unsigned short testCaseNumber, int expectedTestCaseNumber, size_t expectedTestCaseArgsPrintingStartIndex,
+   static_cast<unsigned short>(1), 1, size_t(0),
+   static_cast<unsigned short>(2), 2, size_t(1),
+   static_cast<unsigned short>(3), 3, size_t(2))
 {
    _consoleMock->WriteColorMock.Expect();
    _consoleMock->WriteMock.Expect();
    _consoleMock->WriteStringsCommaSeparatedMock.Expect();
    const vector<string> splitTestCaseArgs = { "Arg0", "Argument1" };
    //
-   _testNXN->PrintTestCaseNumberArgsThenArrow(testCaseIndex, splitTestCaseArgs);
+   _testNXN->PrintTestCaseNumberArgsThenArrow(testCaseNumber, splitTestCaseArgs);
    //
    ZEN(_consoleMock->WriteColorMock.CalledAsFollows(
    {

@@ -3107,13 +3107,13 @@ Utility:
 #endif
       TestOutcome testOutcome;
       unsigned microseconds;
-      unsigned short testCaseIndex;
+      unsigned short testCaseNumber;
 
       TestResult() noexcept
          : responsibleCallResultField(nullptr)
          , testOutcome(TestOutcome::Unset)
          , microseconds(0)
-         , testCaseIndex(std::numeric_limits<unsigned short>::max())
+         , testCaseNumber(std::numeric_limits<unsigned short>::max())
       {
       }
 
@@ -3185,7 +3185,7 @@ Utility:
          , responsibleCallResultField(nullptr)
          , testOutcome(TestOutcome::Unset)
          , microseconds(0)
-         , testCaseIndex(std::numeric_limits<unsigned short>::max())
+         , testCaseNumber(std::numeric_limits<unsigned short>::max())
       {
          assert_true(constructorCallResult.testOutcome == TestOutcome::Success);
          assert_true(startupCallResult.testOutcome == TestOutcome::Success);
@@ -3263,7 +3263,7 @@ Utility:
             const char* const responsibleTestPhaseSuffix =
                TestPhaseSuffixer::DoTestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
             console->Write(responsibleTestPhaseSuffix);
-            WriteTestCaseNumberIfAny(console, testCaseIndex);
+            WriteTestCaseNumberIfAny(console, testCaseNumber);
             responsibleCallResult.anomalyOrException->anomaly->WriteLineWhy(console);
             console->WriteNewLine();
             break;
@@ -3277,7 +3277,7 @@ Utility:
             const char* const responsibleTestPhaseSuffix =
                TestPhaseSuffixer::DoTestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
             console->Write(responsibleTestPhaseSuffix);
-            WriteTestCaseNumberIfAny(console, testCaseIndex);
+            WriteTestCaseNumberIfAny(console, testCaseNumber);
             console->WriteLineColor("\nException", Color::Red);
             const std::string exceptionTypeAndWhatLines = String::Concat(
                "  Type: ", *responsibleCallResult.anomalyOrException->exceptionTypeName, '\n',
@@ -3291,7 +3291,7 @@ Utility:
             const std::string testFailureNumber = testFailureNumberer->Next();
             console->WriteLineColor(testFailureNumber, Color::Red);
             console->WriteLine(fullTestName.Value());
-            WriteTestCaseNumberIfAny(console, testCaseIndex);
+            WriteTestCaseNumberIfAny(console, testCaseNumber);
             const unsigned milliseconds = microseconds / 1000;
             console->WriteLine(String::Concat(
                "\nFailed because test took longer than -maxtestms=", milliseconds, " milliseconds"));
@@ -3305,11 +3305,11 @@ Utility:
          }
       }
 
-      virtual void WriteTestCaseNumberIfAny(const Console* console, unsigned short testCaseIndexArgument) const
+      virtual void WriteTestCaseNumberIfAny(const Console* console, unsigned short testCaseNumberArgument) const
       {
-         if (testCaseIndexArgument != std::numeric_limits<unsigned short>::max())
+         if (testCaseNumberArgument != std::numeric_limits<unsigned short>::max())
          {
-            console->Write(" test case " + std::to_string(testCaseIndexArgument + 1));
+            console->Write(" test case " + std::to_string(testCaseNumberArgument));
          }
       }
 
@@ -5005,15 +5005,15 @@ Utility:
          const size_t numberOfTestCases = NumberOfTestCases();
          testResults.reserve(numberOfTestCases);
          assert_true(_testCaseArgsIndex == 0);
-         std::vector<std::string> splitTestCaseArgs = call_String_CommaSplitExceptQuotedCommas(_testCaseArgsText);
+         const std::vector<std::string> splitTestCaseArgs = call_String_CommaSplitExceptQuotedCommas(_testCaseArgsText);
          constexpr size_t NumberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
-         for (unsigned short testCaseIndex = 0;
+         for (unsigned short testCaseNumber = 1;
             _testCaseArgsIndex < NumberOfTestCaseArgs;
-            _testCaseArgsIndex += N, ++testCaseIndex)
+            _testCaseArgsIndex += N, ++testCaseNumber)
          {
-            PrintTestCaseNumberArgsThenArrow(testCaseIndex, splitTestCaseArgs);
+            PrintTestCaseNumberArgsThenArrow(testCaseNumber, splitTestCaseArgs);
             TestResult testResult = MockableCallBaseRunTestCase();
-            testResult.testCaseIndex = testCaseIndex;
+            testResult.testCaseNumber = testCaseNumber;
             testResults.push_back(testResult);
             WriteLineOKIfSuccess(testResult);
          }
@@ -5038,14 +5038,14 @@ Utility:
       }
 
       virtual void PrintTestCaseNumberArgsThenArrow(
-         unsigned short testCaseIndex, const std::vector<std::string>& splitTestCaseArgs) const
+         unsigned short testCaseNumber, const std::vector<std::string>& splitTestCaseArgs) const
       {
-         assert_true(testCaseIndex >= 0);
          _console->WriteColor(" [", Color::Green);
-         const std::string testCaseNumber = std::to_string(testCaseIndex + 1);
-         _console->Write(testCaseNumber);
+         const std::string testCaseNumberString = std::to_string(testCaseNumber);
+         _console->Write(testCaseNumberString);
          _console->WriteColor("]", Color::Green);
          _console->Write(" (");
+         const size_t testCaseIndex = testCaseNumber - 1;
          const size_t testCaseArgsPrintingStartIndex = static_cast<size_t>(testCaseIndex) * N;
          _console->WriteStringsCommaSeparated(splitTestCaseArgs, testCaseArgsPrintingStartIndex, N);
          _console->Write(") -> ");
@@ -6033,7 +6033,7 @@ by changing TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
          ARE_EQUAL(expectedTestResult.destructorCallResult, actualTestResult.destructorCallResult);
          ARE_EQUAL(expectedTestResult.responsibleCallResultField, actualTestResult.responsibleCallResultField);
          ARE_EQUAL(expectedTestResult.testOutcome, actualTestResult.testOutcome);
-         ARE_EQUAL(expectedTestResult.testCaseIndex, actualTestResult.testCaseIndex);
+         ARE_EQUAL(expectedTestResult.testCaseNumber, actualTestResult.testCaseNumber);
          ARE_EQUAL(expectedTestResult.microseconds, actualTestResult.microseconds);
       }
    };

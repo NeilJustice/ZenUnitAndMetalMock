@@ -461,7 +461,7 @@ FACTS(PrintIfFailure_Anomaly_PrintsExpected)
 FACTS(PrintIfFailure_Exception_PrintsExpected)
 AFACT(PrintIfFailure_SuccessButPastDeadline_PrintsExpected)
 AFACT(PrintIfFailure_InvalidOutcome_Throws)
-FACTS(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseIndexPlus1IfTestCaseIndexNotMaxValue)
+FACTS(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseNumberIfTestCaseNumberNotMaxValue)
 AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
 EVIDENCE
 
@@ -502,7 +502,7 @@ TEST(DefaultConstructor_SetsFieldsTo0)
    expectedDefaultTestResult.destructorCallResult = CallResult();
    expectedDefaultTestResult.responsibleCallResultField = nullptr;
    expectedDefaultTestResult.testOutcome = TestOutcome::Unset;
-   expectedDefaultTestResult.testCaseIndex = numeric_limits<unsigned short>::max();
+   expectedDefaultTestResult.testCaseNumber = numeric_limits<unsigned short>::max();
    expectedDefaultTestResult.microseconds = 0;
    ARE_EQUAL(expectedDefaultTestResult, defaultTestResult);
 }
@@ -635,7 +635,7 @@ TEST6X6(SixArgConstructor_SetsFields,
    expectedTestResult.destructorCallResult = DestructorCallResult;
    expectedTestResult.responsibleCallResultField = expectedResponsibleCallResultField;
    expectedTestResult.testOutcome = expectedOverallOutcome;
-   expectedTestResult.testCaseIndex = numeric_limits<unsigned short>::max();
+   expectedTestResult.testCaseNumber = numeric_limits<unsigned short>::max();
    expectedTestResult.microseconds = MaxTestMilliseconds * 1000 + relativeMicroseconds;
    ARE_EQUAL(expectedTestResult, testResult);
 }
@@ -696,7 +696,7 @@ TEST3X3(PrintIfFailure_Anomaly_PrintsExpected,
 
    const string testFailureNumber = _testFailureNumbererMock.NextMock.ReturnRandom();
 
-   _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex = 1;
+   _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber = Random<unsigned short>();
    _testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.Expect();
 
    _consoleMock.WriteMock.Expect();
@@ -713,7 +713,7 @@ TEST3X3(PrintIfFailure_Anomaly_PrintsExpected,
          expectedTestPhaseSuffix
       }));
    ZEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
-      CalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex));
+      CalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber));
    ZEN(_consoleMock.WriteLineColorMock.CalledOnceWith(testFailureNumber, Color::Red));
    ZEN(_consoleMock.WriteLineMock.CalledOnceWith(anomalyWhy));
    ZEN(_consoleMock.WriteNewLineMock.CalledOnce());
@@ -743,7 +743,7 @@ TEST3X3(PrintIfFailure_Exception_PrintsExpected,
 
    const string testFailureNumber = _testFailureNumbererMock.NextMock.ReturnRandom();
 
-   _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex = 1;
+   _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber = Random<unsigned short>();
    _testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.Expect();
 
    _consoleMock.WriteMock.Expect();
@@ -768,7 +768,7 @@ TEST3X3(PrintIfFailure_Exception_PrintsExpected,
       "  Type: " + exceptionTypeName + "\n"
       "what(): \""s + exceptionWhat + "\""));
    ZEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
-      CalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex));
+      CalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber));
    ZEN(_consoleMock.WriteNewLineMock.CalledOnce());
 }
 
@@ -784,14 +784,14 @@ TEST(PrintIfFailure_SuccessButPastDeadline_PrintsExpected)
    _consoleMock.WriteLineMock.Expect();
    _consoleMock.WriteNewLineMock.Expect();
 
-   _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex = 1;
+   _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber = Random<unsigned short>();
    _testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.Expect();
    //
    _testResult_WriteTestCaseNumberIfAnyMocked.PrintIfFailure(&_consoleMock, &_testFailureNumbererMock);
    //
    ZEN(_testFailureNumbererMock.NextMock.CalledOnce());
    ZEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
-      CalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseIndex));
+      CalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber));
    ZEN(_consoleMock.WriteLineColorMock.CalledOnceWith(testFailureNumber, Color::Red));
    ZEN(_consoleMock.WriteLineMock.CalledAsFollows(
    {
@@ -810,24 +810,23 @@ TEST(PrintIfFailure_InvalidOutcome_Throws)
       invalid_argument, "Invalid TestOutcome::Unset");
 }
 
-TEST3X3(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseIndexPlus1IfTestCaseIndexNotMaxValue,
-   unsigned short testCaseIndex, bool expectConsoleWriteLine, unsigned short expectedTestCaseNumberWritten,
-   static_cast<unsigned short>(numeric_limits<unsigned short>::max()), false, NA<unsigned short>(),
-   static_cast<unsigned short>(0), true, static_cast<unsigned short>(1),
-   static_cast<unsigned short>(1), true, static_cast<unsigned short>(2),
-   static_cast<unsigned short>(2), true, static_cast<unsigned short>(3))
+TEST2X2(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseNumberIfTestCaseNumberNotMaxValue,
+   unsigned short testCaseNumber, bool expectConsoleWriteLine,
+   static_cast<unsigned short>(numeric_limits<unsigned short>::max()), false,
+   static_cast<unsigned short>(1), true,
+   static_cast<unsigned short>(2), true,
+   static_cast<unsigned short>(3), true)
 {
    if (expectConsoleWriteLine)
    {
       _consoleMock.WriteMock.Expect();
    }
    //
-   _testResult.WriteTestCaseNumberIfAny(&_consoleMock, testCaseIndex);
+   _testResult.WriteTestCaseNumberIfAny(&_consoleMock, testCaseNumber);
    //
    if (expectConsoleWriteLine)
    {
-      ZEN(_consoleMock.WriteMock.CalledOnceWith(
-         " test case " + to_string(expectedTestCaseNumberWritten)));
+      ZEN(_consoleMock.WriteMock.CalledOnceWith(" test case " + to_string(testCaseNumber)));
    }
 }
 
@@ -858,7 +857,7 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
 
    EQUALIZER_THROWS_FOR_FIELD(TestResult, responsibleCallResultField, &TestResult::constructorCallResult);
    EQUALIZER_THROWS_FOR_FIELD(TestResult, testOutcome, TestOutcome::Anomaly);
-   EQUALIZER_THROWS_FOR_FIELD(TestResult, testCaseIndex, short(10));
+   EQUALIZER_THROWS_FOR_FIELD(TestResult, testCaseNumber, short(10));
    EQUALIZER_THROWS_FOR_FIELD(TestResult, microseconds, 20u);
 }
 
