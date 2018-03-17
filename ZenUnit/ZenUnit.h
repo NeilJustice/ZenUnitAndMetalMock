@@ -4464,13 +4464,13 @@ Utility:
       std::unique_ptr<const TryCatchCaller> _tryCatchCaller;
       std::unique_ptr<const TestResultFactory> _testResultFactory;
    protected:
-      FullTestName _fullTestName;
-      FileLine _fileLine;
+      FullTestName p_fullTestName;
+      FileLine p_fileLine;
    public:
       Test(const char* testClassName, const char* testName, unsigned char arity)
          : _tryCatchCaller(std::make_unique<TryCatchCaller>())
          , _testResultFactory(std::make_unique<TestResultFactory>())
-         , _fullTestName(testClassName, testName, arity)
+         , p_fullTestName(testClassName, testName, arity)
       {
       }
 
@@ -4479,17 +4479,17 @@ Utility:
 
       virtual const char* Name() const
       {
-         return _fullTestName.testName;
+         return p_fullTestName.testName;
       }
 
       virtual std::string FullTestNameValue() const
       {
-         return _fullTestName.Value();
+         return p_fullTestName.Value();
       }
 
       virtual std::string FileLineString() const
       {
-         const std::string fileLineString = _fileLine.ToString();
+         const std::string fileLineString = p_fileLine.ToString();
          return fileLineString;
       }
 
@@ -4558,7 +4558,7 @@ Utility:
          if (constructorCallResult.testOutcome != TestOutcome::Success)
          {
             const TestResult constructorFailTestResult =
-               _testResultFactory->ConstructorFail(_fullTestName, constructorCallResult);
+               _testResultFactory->ConstructorFail(p_fullTestName, constructorCallResult);
             return constructorFailTestResult;
          }
          const CallResult startupCallResult =
@@ -4568,7 +4568,7 @@ Utility:
             const CallResult destructorCallResult =
                _tryCatchCaller->Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
             const TestResult startupFailTestResult =
-               _testResultFactory->StartupFail(_fullTestName, constructorCallResult, startupCallResult, destructorCallResult);
+               _testResultFactory->StartupFail(p_fullTestName, constructorCallResult, startupCallResult, destructorCallResult);
             return startupFailTestResult;
          }
          const CallResult testBodyCallResult =
@@ -4578,7 +4578,7 @@ Utility:
          const CallResult destructorCallResult =
             _tryCatchCaller->Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
          const TestResult testResult = _testResultFactory->FullCtor(
-            _fullTestName, constructorCallResult, startupCallResult,
+            p_fullTestName, constructorCallResult, startupCallResult,
             testBodyCallResult, cleanupCallResult, destructorCallResult);
          return testResult;
       }
@@ -4672,12 +4672,12 @@ Utility:
          const CallResult constructorCallResult = _tryCatchCaller->Call(&Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorCallResult.testOutcome != TestOutcome::Success)
          {
-            TestResult constructorFail = _testResultFactory->ConstructorFail(_fullTestName, constructorCallResult);
+            TestResult constructorFail = _testResultFactory->ConstructorFail(p_fullTestName, constructorCallResult);
             constructorFail.microseconds = _stopwatch->Stop();
             return { constructorFail };
          }
          const CallResult destructorCallResult = _tryCatchCaller->Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-         TestResult testResult = _testResultFactory->CtorDtorSuccess(_fullTestName, constructorCallResult, destructorCallResult);
+         TestResult testResult = _testResultFactory->CtorDtorSuccess(p_fullTestName, constructorCallResult, destructorCallResult);
          testResult.microseconds = _stopwatch->Stop();
          return { testResult };
       }

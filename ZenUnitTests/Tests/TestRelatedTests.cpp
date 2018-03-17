@@ -137,7 +137,7 @@ TEST1X1(Run_StartsStopWatch_CallsNewTestClassWhichFails_DoesNotCallDeleteTestCla
    ZEN(_tryCatchCallerMock->CallMock.CalledOnceWith(
       &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor));
    ZEN(_testResultFactoryMock->ConstructorFailMock.CalledOnceWith(
-      _newableDeletableTest->_fullTestName, failedConstructorCallResult));
+      _newableDeletableTest->p_fullTestName, failedConstructorCallResult));
    const vector<TestResult> expectedTestResults{ constructorFailTestResult };
    ZEN(_stopwatchMock->StopMock.CalledOnce());
    VECTORS_EQUAL(expectedTestResults, testResults);
@@ -168,7 +168,7 @@ TEST(Run_StartsStopwatch_CallsNewTestClassWhichSucceeds_CallsDeleteTestClass_Sto
       { &Test::CallDeleteTestClass, _newableDeletableTest.get(), TestPhase::Destructor }
    }));
    ZEN(_testResultFactoryMock->CtorDtorSuccessMock.CalledOnceWith(
-      _newableDeletableTest->_fullTestName, successConstructorCallResult, destructorCallResult));
+      _newableDeletableTest->p_fullTestName, successConstructorCallResult, destructorCallResult));
    ZEN(_stopwatchMock->StopMock.CalledOnce());
    const vector<TestResult> expectedTestResults{ sixArgCtorTestResult };
    VECTORS_EQUAL(expectedTestResults, testResults);
@@ -798,16 +798,16 @@ TEST(TwoArgConstructor_NewsComponents_SetsFullName_NameFunctionReturnsTestName)
    Test test(testClassName.c_str(), testName.c_str(), 0);
    POINTER_WAS_NEWED(test._tryCatchCaller);
    POINTER_WAS_NEWED(test._testResultFactory);
-   ARE_EQUAL(FileLine(), test._fileLine);
+   ARE_EQUAL(FileLine(), test.p_fileLine);
 
    const char* const testNameValue = test.Name();
    ARE_EQUAL(testName.c_str(), testNameValue);
 
    const string fullTestName = test.FullTestNameValue();
-   ARE_EQUAL(fullTestName, test._fullTestName.Value());
+   ARE_EQUAL(fullTestName, test.p_fullTestName.Value());
 
-   test._fileLine = FileLine("FilePath", 1);
-   ARE_EQUAL(test._fileLine.ToString(), test.FileLineString());
+   test.p_fileLine = FileLine("FilePath", 1);
+   ARE_EQUAL(test.p_fileLine.ToString(), test.FileLineString());
 }
 
 TEST(WritePostTestNameMessage_DoesNothing)
@@ -844,7 +844,7 @@ TEST1X1(RunTestCase_ConstructorFails_DoesNotCallSubsequentTestPhases_ReturnsTest
    ZEN(_tryCatchCallerMock->CallMock.CalledOnceWith(
       &Test::CallNewTestClass, _test.get(), TestPhase::Constructor));
    ZEN(_testResultFactoryMock->ConstructorFailMock.CalledOnceWith(
-      _test->_fullTestName, constructorFailCallResult));
+      _test->p_fullTestName, constructorFailCallResult));
    ARE_EQUAL(constructorFailTestResult, testResult);
 }
 
@@ -862,7 +862,7 @@ TEST1X1(RunTestCase_ConstructorSucceeds_StartupFails_DoesNotCallTest_DoesNotCall
    _testResultFactoryMock->StartupFailMock.Return(startupFailTestResult);
    const string testClassName = Random<string>();
    const string testName = Random<string>();
-   _test->_fullTestName = FullTestName(testClassName.c_str(), testName.c_str(), 0);
+   _test->p_fullTestName = FullTestName(testClassName.c_str(), testName.c_str(), 0);
    //
    const TestResult testResult = _test->RunTestCase();
    //
@@ -873,7 +873,7 @@ TEST1X1(RunTestCase_ConstructorSucceeds_StartupFails_DoesNotCallTest_DoesNotCall
       { &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor }
    }));
    ZEN(_testResultFactoryMock->StartupFailMock.CalledOnceWith(
-      _test->_fullTestName, constructorSuccessCallResult, startupFailCallResult, destructorCallResult));
+      _test->p_fullTestName, constructorSuccessCallResult, startupFailCallResult, destructorCallResult));
    ARE_EQUAL(startupFailTestResult, testResult);
 }
 
@@ -886,7 +886,7 @@ TEST(RunTestCase_AllTestPhasesSucceed_ReturnsExpectedTestResult)
    _testResultFactoryMock->FullCtorMock.Return(sixArgTestResult);
    const string testClassName = Random<string>();
    const string testName = Random<string>();
-   _test->_fullTestName = FullTestName(testClassName.c_str(), testName.c_str(), 0);
+   _test->p_fullTestName = FullTestName(testClassName.c_str(), testName.c_str(), 0);
    //
    const TestResult testResult = _test->RunTestCase();
    //
@@ -899,7 +899,7 @@ TEST(RunTestCase_AllTestPhasesSucceed_ReturnsExpectedTestResult)
       { &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor }
    }));
    ZEN(_testResultFactoryMock->FullCtorMock.CalledOnceWith(
-      _test->_fullTestName,
+      _test->p_fullTestName,
       CallResultWithOutcome(TestOutcome::Success),
       CallResultWithOutcome(TestOutcome::Success),
       CallResultWithOutcome(TestOutcome::Success),
