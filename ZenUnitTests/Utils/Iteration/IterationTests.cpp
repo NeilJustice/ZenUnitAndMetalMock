@@ -6,8 +6,7 @@ namespace ZenUnit
 {
    template<
       template<typename...>
-   typename CollectionType,
-   typename T, typename Arg2Type>
+      typename CollectionType, typename T, typename Arg2Type>
    TEMPLATE_TESTS(TwoArgMemberAnyerTests, CollectionType, T, Arg2Type)
    AFACT(TwoArgAny_CollectionEmpty_ReturnsFalse)
    AFACT(TwoArgAny_1ElementCollection_ElementDoesNotMatchPredicate_ReturnsFalse)

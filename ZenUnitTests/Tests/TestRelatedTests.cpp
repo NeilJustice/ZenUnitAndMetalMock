@@ -10,10 +10,12 @@
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestResultMock.h"
 #include "ZenUnitTests/Tests/TestingTestClass.h"
+#include "ZenUnitTests/Random/RandomZenUnitArgs.h"
 #include "ZenUnitTests/Results/Mock/TestResultFactoryMock.h"
 #include "ZenUnitTests/Results/Mock/TestResultMock.h"
 #include "ZenUnitTests/TestRunners/Mock/TryCatchCallerMock.h"
 #include "ZenUnitTests/Tests/Mock/TestMock.h"
+#include "ZenUnitTests/Utils/Iteration/Mock/ThreeArgAnyerMock.h"
 
 namespace ZenUnit
 {
@@ -481,10 +483,18 @@ RUN_TESTS(TestClassTests)
 static const size_t N = 1;
 
 TESTS(TestNXNTests)
-AFACT(Constructor_NewsConsole_SetsFields_GettersReturnExpected_2X2With4Args)
+AFACT(Constructor_NewsComponents_SetsFields_MakesGettersReturnExpected)
 AFACT(Constructor_StoresDecayedTypeCopiesOfTestCaseArguments)
 AFACT(NumberOfTestCases_ReturnsNumberOfTestCaseArgsDividedByN)
 AFACT(Run_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
+AFACT(RunTestCaseNumberIfNotFilteredOut_ShouldNotRunTestCase_DoesNotCallRunTestCaseNumber)
+AFACT(RunTestCaseNumberIfNotFilteredOut_ShouldRunTestCase_CallsRunTestCaseNumber)
+AFACT(Exit1IfNonExistentTestCaseNumberSpecified_NonEmptyTestResults_DoesNothing)
+AFACT(Exit1IfNonExistentTestCaseNumberSpecified_EmptyTestResults_WritesErrorMessage_Exits1)
+AFACT(ShouldRunTestCaseNumber_EmptyRunFilters_ReturnsTrue)
+FACTS(ShouldRunTestCaseNumber_NonEmptyRunFilters_ReturnsTrueIfAnyRunFilterMatchesTestClassNameTestNameTestCaseNumber)
+FACTS(RunFilterMatchesTest_ReturnsTrueIfRunFilterMatchesTestCaseNumberAndTestClassNameAndTestName)
+AFACT(RunTestCaseNumber_DoesSo)
 AFACT(NewTestClass_NewsTestClass)
 AFACT(Startup_CallsTestClassStartup)
 AFACT(TestBody_CallsRunNXNTestCase)
@@ -497,47 +507,62 @@ EVIDENCE
 
 unique_ptr<TestNXN<TestingTestClass, N, int>> _testNXN;
 ConsoleMock* _consoleMock = nullptr;
+using ThreeArgAnyerMockType = ThreeArgAnyerMock<
+   std::vector<RunFilter>, bool(*)(const RunFilter&, unsigned short, const FullTestName&), unsigned short, const FullTestName&>;
+ThreeArgAnyerMockType* _threeArgAnyerMock = nullptr;
 const string TestClassName = Random<string>();
 const string TestName = Random<string>();
 const string TestCaseArgsText = Random<string>();
 ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
+ZENMOCK_VOID1_FREE(exit, int);
 
-   STARTUP
+STARTUP
 {
    _testNXN = make_unique<TestNXN<TestingTestClass, N, int>>("", "", "", 0);
    _testNXN->_console.reset(_consoleMock = new ConsoleMock);
+   _testNXN->_threeArgAnyer.reset(_threeArgAnyerMock = new ThreeArgAnyerMockType);
    _testNXN->call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
+   _testNXN->call_exit = ZENMOCK_BIND1(exit_ZenMock);
 }
 
-TEST(Constructor_NewsConsole_SetsFields_GettersReturnExpected_2X2With4Args)
+TEST(Constructor_NewsComponents_SetsFields_MakesGettersReturnExpected)
 {
-   TestNXN<TestingTestClass, 2, int, int, int, int> testNXN(
+   TestNXN<TestingTestClass, 2, int, int, int, int> test2X2(
       TestClassName.c_str(), TestName.c_str(), TestCaseArgsText.c_str(), 0, 0, 0, 0);
    //
-   POINTER_WAS_NEWED(testNXN._console);
-   STD_FUNCTION_TARGETS(TestRunner::GetArgs, testNXN.call_TestRunner_GetArgs);
-   IS_NULL(testNXN._testClass);
-   ARE_EQUAL(0, testNXN._testCaseArgsIndex);
-   ARE_EQUAL(TestCaseArgsText, testNXN._testCaseArgsText);
-   STD_FUNCTION_TARGETS(String::CommaSplitExceptQuotedCommas, testNXN.call_String_CommaSplitExceptQuotedCommas);
-   ARE_EQUAL(TestName, testNXN.Name());
-   ARE_EQUAL("TESTS(" + TestClassName + ")\nTEST2X2(" + TestName + ")", testNXN.FullTestNameValue());
-   ARE_EQUAL("(0)", testNXN.FileLineString());
+
+   // Fields
+   POINTER_WAS_NEWED(test2X2._console);
+   POINTER_WAS_NEWED(test2X2._threeArgAnyer);
+   STD_FUNCTION_TARGETS(TestRunner::GetArgs, test2X2.call_TestRunner_GetArgs);
+   STD_FUNCTION_TARGETS(::exit, test2X2.call_exit);
+   STD_FUNCTION_TARGETS(String::CommaSplitExceptQuotedCommas, test2X2.call_String_CommaSplitExceptQuotedCommas);
+   IS_NULL(test2X2._testClass);
+   ARE_EQUAL(0, test2X2._testCaseArgsIndex);
+   ARE_EQUAL(TestCaseArgsText, test2X2._testCaseArgsText);
+   const size_t expectedNumberOfTestCases = 2;
+   IS_EMPTY(test2X2._testResults);
+   ARE_EQUAL(expectedNumberOfTestCases, test2X2._testResults.capacity());
+
+   // Getters
+   ARE_EQUAL(TestName, test2X2.Name());
+   ARE_EQUAL("TESTS(" + TestClassName + ")\nTEST2X2(" + TestName + ")", test2X2.FullTestNameValue());
+   ARE_EQUAL("(0)", test2X2.FileLineString());
 }
 
 TEST(Constructor_StoresDecayedTypeCopiesOfTestCaseArguments)
 {
    const TestNXN<TestingTestClass, 1, int> testNXN_1X1_1Arg(TestClassName.c_str(), TestName.c_str(), TestCaseArgsText.c_str(), 0);
-   ARE_EQUAL(tuple<int>(0), testNXN_1X1_1Arg._testCaseArgs);
+   ARE_EQUAL(tuple<int>(0), testNXN_1X1_1Arg.p_testCaseArgs);
 
    const TestNXN<TestingTestClass, 1, int, int> testNXN_1X1_2Args(TestClassName.c_str(), TestName.c_str(), TestCaseArgsText.c_str(), 0, 0);
    const tuple<int, int> expectedTestCaseArgs1(0, 0);
-   ARE_EQUAL(expectedTestCaseArgs1, testNXN_1X1_2Args._testCaseArgs);
+   ARE_EQUAL(expectedTestCaseArgs1, testNXN_1X1_2Args.p_testCaseArgs);
 
    const TestNXN<TestingTestClass, 2, const string&, volatile int> testNXN_2X2_4Args(
       TestClassName.c_str(), TestName.c_str(), TestCaseArgsText.c_str(), string(), 100);
    const tuple<string, int> expectedTestCaseArgs2(string(), 100);
-   ARE_EQUAL(expectedTestCaseArgs2, testNXN_2X2_4Args._testCaseArgs);
+   ARE_EQUAL(expectedTestCaseArgs2, testNXN_2X2_4Args.p_testCaseArgs);
 }
 
 TEST(NumberOfTestCases_ReturnsNumberOfTestCaseArgsDividedByN)
@@ -567,9 +592,9 @@ TEST(Run_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
 {
    struct Test1X1SelfMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
    {
-      ZENMOCK_NONVOID0(TestResult, MockableCallBaseRunTestCase)
-      ZENMOCK_VOID2_CONST(PrintTestCaseNumberArgsThenArrow, unsigned short, const vector<string>&)
-      ZENMOCK_VOID1_CONST(WriteLineOKIfSuccess, const TestResult&)
+      ZENMOCK_VOID3(RunTestCaseNumberIfNotFilteredOut, unsigned short, const ZenUnitArgs&, const std::vector<std::string>&)
+      ZENMOCK_VOID0_CONST(Exit1IfNonExistentTestCaseNumberSpecified)
+
       Test1X1SelfMocked()
          : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>(
             "", // testClassName
@@ -577,18 +602,22 @@ TEST(Run_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
             "", // testCaseArgsText
             0, // test case arg 0
             0 // test case arg 1
-            ) {}
+            )
+      {
+      }
    } test1X1SelfMocked;
 
    ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs, _SelfMocked);
 
+   const ZenUnitArgs args = GetArgs_ZenMock_SelfMocked.ReturnRandom();
+   test1X1SelfMocked.call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock_SelfMocked);
+
    ZENMOCK_NONVOID0_STATIC(vector<string>, ZenUnit::String, CommaSplitExceptQuotedCommas, _SelfMocked);
    const vector<string> splitTestCaseArgs = { ZenUnit::Random<string>(), ZenUnit::Random<string>(), ZenUnit::Random<string>() };
    CommaSplitExceptQuotedCommas_ZenMock_SelfMocked.Return(splitTestCaseArgs);
-   test1X1SelfMocked.call_String_CommaSplitExceptQuotedCommas
-      = ZENMOCK_BIND0(CommaSplitExceptQuotedCommas_ZenMock_SelfMocked);
+   test1X1SelfMocked.call_String_CommaSplitExceptQuotedCommas = ZENMOCK_BIND0(CommaSplitExceptQuotedCommas_ZenMock_SelfMocked);
 
-   test1X1SelfMocked.PrintTestCaseNumberArgsThenArrowMock.Expect();
+   test1X1SelfMocked.Exit1IfNonExistentTestCaseNumberSpecifiedMock.Expect();
 
    TestResult firstTestResult;
    const string firstTestName = ZenUnit::Random<string>();
@@ -597,35 +626,206 @@ TEST(Run_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
    TestResult secondTestResult;
    const string secondTestName = ZenUnit::Random<string>();
    secondTestResult.fullTestName.testName = secondTestName.c_str();
-   test1X1SelfMocked.MockableCallBaseRunTestCaseMock.ReturnValues(firstTestResult, secondTestResult);
 
-   test1X1SelfMocked.WriteLineOKIfSuccessMock.Expect();
+   test1X1SelfMocked.RunTestCaseNumberIfNotFilteredOutMock.Expect();
    //
    const vector<TestResult> testResults = test1X1SelfMocked.Run();
    //
+   ZEN(GetArgs_ZenMock_SelfMocked.CalledOnce());
    ZEN(CommaSplitExceptQuotedCommas_ZenMock_SelfMocked.CalledOnce());
-   ZEN(test1X1SelfMocked.PrintTestCaseNumberArgsThenArrowMock.CalledAsFollows(
+   ZEN(test1X1SelfMocked.RunTestCaseNumberIfNotFilteredOutMock.CalledAsFollows(
    {
-      { 1, splitTestCaseArgs },
-      { 2, splitTestCaseArgs }
+      { 1, args, splitTestCaseArgs },
+      { 2, args, splitTestCaseArgs }
    }));
-   TestResult expectedFirstTestResult = firstTestResult;
-   expectedFirstTestResult.testCaseNumber = 1;
-   TestResult expectedSecondTestResult = secondTestResult;
-   expectedSecondTestResult.testCaseNumber = 2;
-   ZEN(test1X1SelfMocked.MockableCallBaseRunTestCaseMock.CalledNTimes(2));
-   ZEN(test1X1SelfMocked.WriteLineOKIfSuccessMock.CalledAsFollows(
-   {
-      { expectedFirstTestResult },
-      { expectedSecondTestResult }
-   }));
-   const vector<TestResult> expectedTestResults =
-   {
-      expectedFirstTestResult,
-      expectedSecondTestResult,
-   };
+   ZEN(test1X1SelfMocked.Exit1IfNonExistentTestCaseNumberSpecifiedMock.CalledOnce());
    ARE_EQUAL(0, test1X1SelfMocked._testCaseArgsIndex);
-   VECTORS_EQUAL(expectedTestResults, testResults);
+   VECTORS_EQUAL(vector<TestResult>(), testResults);
+}
+
+struct Test1X1SelfMocked_RunTestCaseNumberIfNotFilteredOutTests : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
+{
+   ZENMOCK_NONVOID3_CONST(bool, ShouldRunTestCaseNumber, const ZenUnitArgs&, const FullTestName&, unsigned short)
+   ZENMOCK_VOID2(RunTestCaseNumber, unsigned short, const std::vector<std::string>&)
+
+   Test1X1SelfMocked_RunTestCaseNumberIfNotFilteredOutTests()
+   : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>(
+      "", // testClassName
+      "", // testName
+      "", // testCaseArgsText
+      0, // test case arg 0
+      0 // test case arg 1
+      )
+   {
+      p_fullTestName.testClassName = nonDefaultTestClassName.c_str();
+   }
+private:
+   const string nonDefaultTestClassName = ZenUnit::Random<string>();
+} test1X1SelfMocked_RunTestCaseNumberIfNotFilteredOutTests;
+
+TEST(RunTestCaseNumberIfNotFilteredOut_ShouldNotRunTestCase_DoesNotCallRunTestCaseNumber)
+{
+   test1X1SelfMocked_RunTestCaseNumberIfNotFilteredOutTests.ShouldRunTestCaseNumberMock.Return(false);
+
+   const unsigned short testCaseNumber = ZenUnit::Random<unsigned short>();
+   const ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
+   const vector<string> splitTestCaseArgs = ZenUnit::RandomVector<string>();
+   //
+   test1X1SelfMocked_RunTestCaseNumberIfNotFilteredOutTests.
+      RunTestCaseNumberIfNotFilteredOut(testCaseNumber, args, splitTestCaseArgs);
+   //
+   ZEN(test1X1SelfMocked_RunTestCaseNumberIfNotFilteredOutTests.ShouldRunTestCaseNumberMock.CalledOnceWith(
+      args, test1X1SelfMocked_RunTestCaseNumberIfNotFilteredOutTests.p_fullTestName, testCaseNumber));
+}
+
+TEST(RunTestCaseNumberIfNotFilteredOut_ShouldRunTestCase_CallsRunTestCaseNumber)
+{
+   test1X1SelfMocked_RunTestCaseNumberIfNotFilteredOutTests.ShouldRunTestCaseNumberMock.Return(true);
+   test1X1SelfMocked_RunTestCaseNumberIfNotFilteredOutTests.RunTestCaseNumberMock.Expect();
+
+   const unsigned short testCaseNumber = ZenUnit::Random<unsigned short>();
+   const ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
+   const vector<string> splitTestCaseArgs = ZenUnit::RandomVector<string>();
+   //
+   test1X1SelfMocked_RunTestCaseNumberIfNotFilteredOutTests.
+      RunTestCaseNumberIfNotFilteredOut(testCaseNumber, args, splitTestCaseArgs);
+   //
+   ZEN(test1X1SelfMocked_RunTestCaseNumberIfNotFilteredOutTests.ShouldRunTestCaseNumberMock.CalledOnceWith(
+      args, test1X1SelfMocked_RunTestCaseNumberIfNotFilteredOutTests.p_fullTestName, testCaseNumber));
+   ZEN(test1X1SelfMocked_RunTestCaseNumberIfNotFilteredOutTests.RunTestCaseNumberMock.
+      CalledOnceWith(testCaseNumber, splitTestCaseArgs));
+}
+
+TEST(Exit1IfNonExistentTestCaseNumberSpecified_NonEmptyTestResults_DoesNothing)
+{
+   _testNXN->_testResults.resize(1);
+   _testNXN->Exit1IfNonExistentTestCaseNumberSpecified();
+}
+
+TEST(Exit1IfNonExistentTestCaseNumberSpecified_EmptyTestResults_WritesErrorMessage_Exits1)
+{
+   _consoleMock->WriteLineMock.Expect();
+   exit_ZenMock.Expect();
+   IS_EMPTY(_testNXN->_testResults);
+   //
+   _testNXN->Exit1IfNonExistentTestCaseNumberSpecified();
+   //
+   const std::string expectedErrorMessage = "\nError: Non-existent test case number specified in -run filter. Exiting with code 1.";
+   ZEN(_consoleMock->WriteLineMock.CalledOnceWith(expectedErrorMessage));
+   ZEN(exit_ZenMock.CalledOnceWith(1));
+}
+
+TEST(ShouldRunTestCaseNumber_EmptyRunFilters_ReturnsTrue)
+{
+   const ZenUnitArgs args;
+   FullTestName fullTestName;
+   unsigned short testCaseNumber = ZenUnit::Random<unsigned short>();
+   //
+   const bool shouldRunTestCaseNumber = _testNXN->ShouldRunTestCaseNumber(args, fullTestName, testCaseNumber);
+   //
+   IS_TRUE(shouldRunTestCaseNumber);
+}
+
+TEST2X2(ShouldRunTestCaseNumber_NonEmptyRunFilters_ReturnsTrueIfAnyRunFilterMatchesTestClassNameTestNameTestCaseNumber,
+   bool anyRunFilterMatchesThisTest, bool expectedReturnValue,
+   false, false,
+   true, true)
+{
+   _threeArgAnyerMock->ThreeArgAnyMock.Return(anyRunFilterMatchesThisTest);
+   ZenUnitArgs args;
+   args.runFilters.resize(ZenUnit::RandomBetween<size_t>(1, 2));
+   FullTestName fullTestName;
+   const string nonDefaultTestClassName = ZenUnit::Random<string>();
+   fullTestName.testClassName = nonDefaultTestClassName.c_str();
+   unsigned short testCaseNumber = ZenUnit::Random<unsigned short>();
+   //
+   const bool shouldRunTestCaseNumber = _testNXN->ShouldRunTestCaseNumber(args, fullTestName, testCaseNumber);
+   //
+   ZEN(_threeArgAnyerMock->ThreeArgAnyMock.CalledOnceWith(
+      args.runFilters, TestNXN<TestingTestClass, N, int>::RunFilterMatchesTest, testCaseNumber, fullTestName));
+   ARE_EQUAL(expectedReturnValue, shouldRunTestCaseNumber);
+}
+
+TEST7X7(RunFilterMatchesTest_ReturnsTrueIfRunFilterMatchesTestCaseNumberAndTestClassNameAndTestName,
+   unsigned short runFilterTestCaseNumber, const char* runFilterTestClassName, const char* runFilterTestName,
+   unsigned short testCaseNumber, const char* testClassName, const char* testName, bool expectedReturnValue,
+
+   static_cast<unsigned short>(0), "", "",
+   static_cast<unsigned short>(0), "", "", true,
+
+   static_cast<unsigned short>(0), "", "",
+   static_cast<unsigned short>(1), "", "", false,
+
+   static_cast<unsigned short>(0), "TestClassName", "",
+   static_cast<unsigned short>(0), "testclassname", "", false,
+
+   static_cast<unsigned short>(0), "TestClassName", "",
+   static_cast<unsigned short>(0), "testclassname", "", false,
+
+   static_cast<unsigned short>(0), "TestClassName", "",
+   static_cast<unsigned short>(0), "prefix_TestClassName_suffix", "", false,
+
+   static_cast<unsigned short>(0), "TestClassName", "TestName",
+   static_cast<unsigned short>(0), "TestClassName", "testname", false,
+
+   static_cast<unsigned short>(0), "TestClassName", "TestName",
+   static_cast<unsigned short>(0), "TestClassName", "prefix_TestName_suffix", false,
+
+   static_cast<unsigned short>(1), "TestClassName", "TestName",
+   static_cast<unsigned short>(1), "TestClassName", "TestName", true,
+
+   static_cast<unsigned short>(2), "WidgetTests", "Function_Scenario_ExpectedBehavior",
+   static_cast<unsigned short>(2), "WidgetTests", "Function_Scenario_ExpectedBehavior", true)
+{
+   const RunFilter runFilter(runFilterTestClassName, runFilterTestName, runFilterTestCaseNumber);
+   const FullTestName fullTestName(testClassName, testName, ZenUnit::Random<char>());
+   //
+   const bool runFilterMatchesTest = TestNXN<TestingTestClass, 1, int>::RunFilterMatchesTest(runFilter, testCaseNumber, fullTestName);
+   //
+   ARE_EQUAL(expectedReturnValue, runFilterMatchesTest);
+}
+
+TEST(RunTestCaseNumber_DoesSo)
+{
+   struct Test1X1SelfMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
+   {
+      ZENMOCK_VOID2_CONST(PrintTestCaseNumberArgsThenArrow, unsigned short, const vector<string>&)
+      ZENMOCK_NONVOID0(TestResult, MockableCallBaseRunTestCase)
+      ZENMOCK_VOID1_CONST(WriteLineOKIfSuccess, const TestResult&)
+      Test1X1SelfMocked()
+      : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>(
+         "", // testClassName
+         "", // testName
+         "", // testCaseArgsText
+         0, // test case arg 0
+         0 // test case arg 1
+         )
+      {
+      }
+   } test1X1SelfMocked;
+
+   test1X1SelfMocked.PrintTestCaseNumberArgsThenArrowMock.Expect();
+
+   TestResult testResult;
+   const string testName = ZenUnit::Random<string>();
+   testResult.fullTestName.testName = testName.c_str();
+   test1X1SelfMocked.MockableCallBaseRunTestCaseMock.Return(testResult);
+
+   test1X1SelfMocked.WriteLineOKIfSuccessMock.Expect();
+
+   unsigned short testCaseNumber = ZenUnit::Random<unsigned short>();
+   const vector<string> splitTestCaseArgs = ZenUnit::RandomVector<string>();
+   //
+   test1X1SelfMocked.RunTestCaseNumber(testCaseNumber, splitTestCaseArgs);
+   //
+   ZEN(test1X1SelfMocked.PrintTestCaseNumberArgsThenArrowMock.CalledOnceWith(testCaseNumber, splitTestCaseArgs));
+   ZEN(test1X1SelfMocked.MockableCallBaseRunTestCaseMock.CalledOnce());
+   TestResult expectedTestResult;
+   expectedTestResult.testCaseNumber = testCaseNumber;
+   expectedTestResult.fullTestName.testName = testName.c_str();
+   ZEN(test1X1SelfMocked.WriteLineOKIfSuccessMock.CalledOnceWith(expectedTestResult));
+   vector<TestResult> expectedResulingTestResults = { expectedTestResult };
+   VECTORS_EQUAL(expectedResulingTestResults, test1X1SelfMocked._testResults);
 }
 
 TEST(NewTestClass_NewsTestClass)

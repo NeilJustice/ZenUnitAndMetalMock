@@ -3653,13 +3653,44 @@ Utility:
          const CollectionType& collection,
          const ClassType* classInstance,
          MemberPredicateType memberPredicate,
-         const Arg2Type& arg2) const
+         Arg2Type arg2) const
       {
          const auto collectionConstEnd = collection.cend();
          for (auto iter = collection.cbegin(); iter != collectionConstEnd; ++iter)
          {
             const auto& element = *iter;
             const bool elementMatchesPredicate = (classInstance->*memberPredicate)(element, arg2);
+            if (elementMatchesPredicate)
+            {
+               return true;
+            }
+         }
+         return false;
+      }
+   };
+
+   template<typename CollectionType, typename PredicateType, typename Arg2Type, typename Arg3Type>
+   class ThreeArgAnyer
+   {
+   public:
+      ThreeArgAnyer() noexcept
+      {
+      }
+
+      //DEFINE_COPY_COPY_MOVE_MOVE(ThreeArgAnyer, default, default, default, default);
+      virtual ~ThreeArgAnyer() = default;
+
+      virtual bool ThreeArgAny(
+         const CollectionType& collection,
+         PredicateType predicate,
+         Arg2Type arg2,
+         Arg3Type arg3) const
+      {
+         const auto collectionConstEnd = collection.cend();
+         for (auto iter = collection.cbegin(); iter != collectionConstEnd; ++iter)
+         {
+            const auto& element = *iter;
+            const bool elementMatchesPredicate = predicate(element, arg2, arg3);
             if (elementMatchesPredicate)
             {
                return true;
@@ -4951,13 +4982,19 @@ Utility:
       friend class TestNXNTests;
    private:
       std::unique_ptr<const Console> _console;
+      using ThreeArgAnyerType = ThreeArgAnyer<
+         std::vector<RunFilter>, bool(*)(const RunFilter&, unsigned short, const FullTestName&), unsigned short, const FullTestName&>;
+      std::unique_ptr<ThreeArgAnyerType> _threeArgAnyer;
       std::function<const ZenUnitArgs&()> call_TestRunner_GetArgs;
-      std::unique_ptr<TestClassType> _testClass;
-      const char* const _testCaseArgsText;
       std::function<std::vector<std::string>(const char*)> call_String_CommaSplitExceptQuotedCommas;
+      std::function<void(int)> call_exit;
+      const char* const _testCaseArgsText;
+
+      std::unique_ptr<TestClassType> _testClass;
       size_t _testCaseArgsIndex;
+      std::vector<TestResult> _testResults;
    protected:
-      const std::tuple<typename std::decay<TestCaseArgTypes>::type...> _testCaseArgs;
+      const std::tuple<typename std::decay<TestCaseArgTypes>::type...> p_testCaseArgs;
    public:
       TestNXN(
          const char* testClassName,
@@ -4966,12 +5003,16 @@ Utility:
          TestCaseArgTypes&&... testCaseArgs)
          : Test(testClassName, testName, N)
          , _console(std::make_unique<Console>())
+         , _threeArgAnyer(std::make_unique<ThreeArgAnyerType>())
          , call_TestRunner_GetArgs(TestRunner::GetArgs)
-         , _testCaseArgsText(testCaseArgsText)
          , call_String_CommaSplitExceptQuotedCommas(String::CommaSplitExceptQuotedCommas)
+         , call_exit(::exit)
+         , _testCaseArgsText(testCaseArgsText)
          , _testCaseArgsIndex(0)
-         , _testCaseArgs(std::forward<TestCaseArgTypes>(testCaseArgs)...)
+         , p_testCaseArgs(std::forward<TestCaseArgTypes>(testCaseArgs)...)
       {
+         const size_t numberOfTestCases = NumberOfTestCases();
+         _testResults.reserve(numberOfTestCases);
       }
 
       size_t NumberOfTestCases() const override
@@ -5001,24 +5042,19 @@ Utility:
 
       std::vector<TestResult> Run() override
       {
-         std::vector<TestResult> testResults;
-         const size_t numberOfTestCases = NumberOfTestCases();
-         testResults.reserve(numberOfTestCases);
          assert_true(_testCaseArgsIndex == 0);
+         const ZenUnitArgs& args = call_TestRunner_GetArgs();
          const std::vector<std::string> splitTestCaseArgs = call_String_CommaSplitExceptQuotedCommas(_testCaseArgsText);
          constexpr size_t NumberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
          for (unsigned short testCaseNumber = 1;
-            _testCaseArgsIndex < NumberOfTestCaseArgs;
-            _testCaseArgsIndex += N, ++testCaseNumber)
+              _testCaseArgsIndex < NumberOfTestCaseArgs;
+              _testCaseArgsIndex += N, ++testCaseNumber)
          {
-            PrintTestCaseNumberArgsThenArrow(testCaseNumber, splitTestCaseArgs);
-            TestResult testResult = MockableCallBaseRunTestCase();
-            testResult.testCaseNumber = testCaseNumber;
-            testResults.push_back(testResult);
-            WriteLineOKIfSuccess(testResult);
+            RunTestCaseNumberIfNotFilteredOut(testCaseNumber, args, splitTestCaseArgs);
          }
-         _testCaseArgsIndex = 0;
-         return testResults;
+         Exit1IfNonExistentTestCaseNumberSpecified();
+         _testCaseArgsIndex = 0; // Reset to 0 to ready this TestNXN for another run in case -testruns=N specified
+         return _testResults;
       }
 
       void Cleanup() override
@@ -5031,6 +5067,55 @@ Utility:
          _testClass.reset();
       }
    private:
+      virtual void RunTestCaseNumberIfNotFilteredOut(
+         unsigned short testCaseNumber, const ZenUnitArgs& args, const std::vector<std::string>& splitTestCaseArgs)
+      {
+         const bool shouldRunTestCaseNumber = ShouldRunTestCaseNumber(args, p_fullTestName, testCaseNumber);
+         if (shouldRunTestCaseNumber)
+         {
+            RunTestCaseNumber(testCaseNumber, splitTestCaseArgs);
+         }
+      }
+
+      virtual void Exit1IfNonExistentTestCaseNumberSpecified() const
+      {
+         if (_testResults.empty())
+         {
+            const std::string errorMessage = "\nError: Non-existent test case number specified in -run filter. Exiting with code 1.";
+            _console->WriteLine(errorMessage);
+            call_exit(1);
+         }
+      }
+
+      virtual bool ShouldRunTestCaseNumber(const ZenUnitArgs& args, const FullTestName& fullTestName, unsigned short testCaseNumber) const
+      {
+         if (args.runFilters.empty())
+         {
+            return true;
+         }
+         const bool anyRunFilterMatchesThisTest = _threeArgAnyer->ThreeArgAny(
+            args.runFilters, RunFilterMatchesTest, testCaseNumber, fullTestName);
+         return anyRunFilterMatchesThisTest;
+      }
+
+      static bool RunFilterMatchesTest(const RunFilter& runFilter, unsigned short testCaseNumber, const FullTestName& fullTestName)
+      {
+         const bool doRunTestCase =
+            runFilter.testCaseNumber == testCaseNumber &&
+            runFilter.testClassName == fullTestName.testClassName &&
+            runFilter.testName == fullTestName.testName;
+         return doRunTestCase;
+      }
+
+      virtual void RunTestCaseNumber(unsigned short testCaseNumber, const std::vector<std::string>& splitTestCaseArgs)
+      {
+         PrintTestCaseNumberArgsThenArrow(testCaseNumber, splitTestCaseArgs);
+         TestResult testResult = MockableCallBaseRunTestCase();
+         testResult.testCaseNumber = testCaseNumber;
+         _testResults.push_back(testResult);
+         WriteLineOKIfSuccess(testResult);
+      }
+
       virtual TestResult MockableCallBaseRunTestCase()
       {
          const TestResult testResult = RunTestCase();
@@ -5302,7 +5387,7 @@ Utility:
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call1ArgMemberFunction(testClass, _test1X1MemberFunction, testCaseArgsIndex, this->_testCaseArgs);
+         Tuple::Call1ArgMemberFunction(testClass, _test1X1MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
       }
    };
 
@@ -5322,7 +5407,7 @@ Utility:
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call2ArgMemberFunction(testClass, _test2X2MemberFunction, testCaseArgsIndex, this->_testCaseArgs);
+         Tuple::Call2ArgMemberFunction(testClass, _test2X2MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
       }
    };
 
@@ -5342,7 +5427,7 @@ Utility:
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call3ArgMemberFunction(testClass, _test3X3MemberFunction, testCaseArgsIndex, this->_testCaseArgs);
+         Tuple::Call3ArgMemberFunction(testClass, _test3X3MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
       }
    };
 
@@ -5362,7 +5447,7 @@ Utility:
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call4ArgMemberFunction(testClass, _test4X4MemberFunction, testCaseArgsIndex, this->_testCaseArgs);
+         Tuple::Call4ArgMemberFunction(testClass, _test4X4MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
       }
    };
 
@@ -5382,7 +5467,7 @@ Utility:
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call5ArgMemberFunction(testClass, _test5X5MemberFunction, testCaseArgsIndex, this->_testCaseArgs);
+         Tuple::Call5ArgMemberFunction(testClass, _test5X5MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
       }
    };
 
@@ -5402,7 +5487,7 @@ Utility:
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call6ArgMemberFunction(testClass, _test6X6MemberFunction, testCaseArgsIndex, this->_testCaseArgs);
+         Tuple::Call6ArgMemberFunction(testClass, _test6X6MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
       }
    };
 
@@ -5421,7 +5506,7 @@ Utility:
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call7ArgMemberFunction(testClass, _test7X7MemberFunction, testCaseArgsIndex, this->_testCaseArgs);
+         Tuple::Call7ArgMemberFunction(testClass, _test7X7MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
       }
    };
 
@@ -5441,7 +5526,7 @@ Utility:
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call8ArgMemberFunction(testClass, _test8X8MemberFunction, testCaseArgsIndex, this->_testCaseArgs);
+         Tuple::Call8ArgMemberFunction(testClass, _test8X8MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
       }
    };
 
@@ -5461,7 +5546,7 @@ Utility:
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call9ArgMemberFunction(testClass, _test9X9MemberFunction, testCaseArgsIndex, this->_testCaseArgs);
+         Tuple::Call9ArgMemberFunction(testClass, _test9X9MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
       }
    };
 
@@ -5481,7 +5566,7 @@ Utility:
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call10ArgMemberFunction(testClass, _test10X10MemberFunction, testCaseArgsIndex, this->_testCaseArgs);
+         Tuple::Call10ArgMemberFunction(testClass, _test10X10MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
       }
    };
 
