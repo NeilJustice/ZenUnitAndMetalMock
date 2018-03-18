@@ -220,8 +220,8 @@ Testing with random values instead of fixed values is an important part of maxim
 |ZenUnit::RandomBetween\<T\>(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound) // Returns a value between inclusiveLowerBound and inclusiveUpperBound.|
 |ZenUnit::Random\<std\:\:string\>() // Returns "RandomString" + std\:\:to_string(ZenUnit::Random\<unsigned char\>()).|
 |ZenUnit::RandomEnum\<EnumType\>(EnumType exclusiveEnumMaxValue) // Returns a random EnumType between 0 and exclusiveEnumMaxValue.|
-|ZenUnit::Random\<float\>() // Returns a random float from a std\:\:uniform_real_distribution\<float\> using a time-seeded std\:\:default_random_engine.|
-|ZenUnit::Random\<double\>() // Returns a random double from a std\:\:uniform_real_distribution\<double\> using a time-seeded std\:\:default_random_engine.|
+|ZenUnit::Random\<float\>() // Returns a random float between -1000.0f and 1000.0f from a std\:\:uniform_real_distribution\<float\>.|
+|ZenUnit::Random\<double\>() // Returns a random double between -1000.0 and 1000.0 from a std\:\:uniform_real_distribution\<double\>.|
 |ZenUnit::RandomVector\<T\>() // Returns a std\:\:vector\<T\> with size between 0 and 2 with each element being a ZenUnit\:\:Random\<T\>() value.|
 |ZenUnit::RandomMap\<KeyType, ValueType\>() // Returns a std\:\:map\<KeyType, ValueType\> with size between 0 and 2 with each key a ZenUnit\:\:Random\<KeyType\>() value and each value a ZenUnit\:\:Random\<ValueType\>() value.|
 |ZenUnit::RandomUnorderedMap\<T\>() // Returns a std\:\:unordered_map\<KeyType, ValueType\> with size between 0 and 2 with each key a ZenUnit\:\:Random\<KeyType\>() value and each value a ZenUnit\:\:Random\<ValueType\>() value.|
@@ -232,7 +232,7 @@ Testing with random values instead of fixed values is an important part of maxim
 
 ZenUnit provides a type-parameterized test class syntax that allows one to confirm that the correctness of ClassUnderTest\<T\> is maintained across various types of T.
 
-Give this templatized Set\:\:Contains function, how would you confirm its correctness?
+Given this templatized Set\:\:Contains function, how would you confirm its correctness?
 
 ```cpp
 class Set
@@ -531,8 +531,8 @@ int main(int argc, char* argv[])
 
 |The Road To ZenUnit 1.0|
 |-----------------------|
-|Travis CI clang-tidy checks|
-|Appveyor /analyze checks|
+|Travis CI clang-tidy|
+|Appveyor /analyze|
 |100% code coverage badge|
 |Seedability of ZenUnit::Random\<T\> similar to -random[=Seed]
 |Jenkins JUnit plugin compatible XML file output|
