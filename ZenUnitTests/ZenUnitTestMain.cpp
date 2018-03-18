@@ -5,7 +5,7 @@ const char* const Reason = "Test of skip feature";
 TESTS(SkippedTestsTestClass)
 AFACT(NonSkippedTest)
 FACTS(NonSkipped1X1Test)
-SKIPFACT(SkippedNormalTest, Reason)
+SKIPAFACT(SkippedNormalTest, Reason)
 SKIPFACTS(SkippedTest1X1, Reason)
 SKIPFACTS(SkippedTest2X2, Reason)
 EVIDENCE

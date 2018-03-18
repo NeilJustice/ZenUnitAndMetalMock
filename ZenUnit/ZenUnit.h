@@ -212,7 +212,7 @@
    ZenUnit::TestRunner::Instance().SkipTest(testClassName, #HighQualityTestName, Reason);
 
 // Skips a TEST.
-#define SKIPFACT(HighQualityTestName, Reason) DOSKIP(HighQualityTestName, Reason)
+#define SKIPAFACT(HighQualityTestName, Reason) DOSKIP(HighQualityTestName, Reason)
 
 // Skips a TESTNXN.
 #define SKIPFACTS(HighQualityTestName, Reason) DOSKIP(HighQualityTestName, Reason)
@@ -6155,7 +6155,7 @@ by changing TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
 #if _WIN32
       const
 #endif
-         std::uniform_int_distribution<unsigned long long>
+      std::uniform_int_distribution<unsigned long long>
          distribution(adjustedInclusiveLowerBound, adjustedInclusiveUpperBound);
       const unsigned long long randomValueUnsignedLongLong = distribution(defaultRandomEngine);
       const T randomValueT = static_cast<T>(randomValueUnsignedLongLong);
@@ -6176,7 +6176,7 @@ by changing TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
 #if _WIN32
       const
 #endif
-         std::uniform_real_distribution<float> uniformFloatDistribution(-100.0f, 100.0f);
+      std::uniform_real_distribution<float> uniformFloatDistribution(-1000.0f, 1000.0f);
       const float randomFloat = uniformFloatDistribution(defaultRandomEngine);
       return randomFloat;
    }
@@ -6188,7 +6188,7 @@ by changing TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
 #if _WIN32
       const
 #endif
-         std::uniform_real_distribution<double> uniformDoubleDistribution(-100.0, 100.0);
+      std::uniform_real_distribution<double> uniformDoubleDistribution(-1000.0, 1000.0);
       const double randomDouble = uniformDoubleDistribution(defaultRandomEngine);
       return randomDouble;
    }
@@ -6196,7 +6196,7 @@ by changing TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
    template<>
    inline std::string Random<std::string>()
    {
-      const std::string randomString = "RandomString" + std::to_string(Random<unsigned char>());
+      const std::string randomString = "RandomString" + std::to_string(RandomBetween<int>(0, 1000));
       return randomString;
    }
 
