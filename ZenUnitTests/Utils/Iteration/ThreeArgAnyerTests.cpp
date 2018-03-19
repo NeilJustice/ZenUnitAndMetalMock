@@ -9,8 +9,8 @@ namespace ZenUnit
    AFACT(ThreeArgAny_CollectionEmpty_ReturnsFalse)
    AFACT(ThreeArgAny_1ElementCollection_ElementDoesNotMatchPredicate_ReturnsFalse)
    AFACT(ThreeArgAny_2ElementCollection_FirstOfTwoElementsMatchesPredicate_CallsPredicateOnce_ReturnsTrue)
-   //AFACT(ThreeArgAny_2ElementCollection_SecondOfTwoElementsMatchesPredicate_CallsPredicateTwice_ReturnsTrue)
-   //AFACT(ThreeArgAny_2ElementCollection_NeitherElementMatchesPredicate_CallsPredicateTwice_ReturnsFalse)
+   AFACT(ThreeArgAny_2ElementCollection_SecondOfTwoElementsMatchesPredicate_CallsPredicateTwice_ReturnsTrue)
+   AFACT(ThreeArgAny_2ElementCollection_NeitherElementMatchesPredicate_CallsPredicateTwice_ReturnsFalse)
    EVIDENCE
 
    static vector<tuple<T, Arg2Type, Arg3Type>> s_predicateArgs;
@@ -95,9 +95,9 @@ namespace ZenUnit
 
    TEST(ThreeArgAny_2ElementCollection_SecondOfTwoElementsMatchesPredicate_CallsPredicateTwice_ReturnsTrue)
    {
-      const bool anyElementMatchesPredicate = threeArgAnyer.ThreeArgAny(
+      const bool anyElementMatchesPredicate = _threeArgAnyer.ThreeArgAny(
          _twoElementCollection, ElementValueTwoReturnsTruePredicate, _arg2, _arg3);
-      ////
+      //
       const vector<tuple<T, Arg2Type, Arg3Type>> expectedPredicateArgs = { { T{1}, _arg2, _arg3 },{ T{2}, _arg2, _arg3 } };
       VECTORS_EQUAL(expectedPredicateArgs, s_predicateArgs);
       IS_TRUE(anyElementMatchesPredicate);
@@ -105,14 +105,11 @@ namespace ZenUnit
 
    TEST(ThreeArgAny_2ElementCollection_NeitherElementMatchesPredicate_CallsPredicateTwice_ReturnsFalse)
    {
-      const ThreeArgAnyer<CollectionType<T>, Class,
-         decltype(&Class::AlwaysFalsePredicate), const Arg2Type&> threeArgAnyer;
+      const bool anyElementMatchesPredicate = _threeArgAnyer.ThreeArgAny(
+         _twoElementCollection, AlwaysFalsePredicate, _arg2, _arg3);
       //
-      const bool anyElementMatchesPredicate = threeArgAnyer.ThreeArgAny(
-         _twoElementCollection, &Class::AlwaysFalsePredicate, _arg2);
-      //
-      const vector<tuple<T, Arg2Type>> expectedPredicateArgs = { { T(1), _arg2 },{ T(2), _arg2 } };
-      VECTORS_EQUAL(expectedPredicateArgs, _classInstance.predicateArgs);
+      const vector<tuple<T, Arg2Type, Arg3Type>> expectedPredicateArgs = { { T(1), _arg2, _arg3 },{ T(2), _arg2, _arg3 } };
+      VECTORS_EQUAL(expectedPredicateArgs, s_predicateArgs);
       IS_FALSE(anyElementMatchesPredicate);
    }
 

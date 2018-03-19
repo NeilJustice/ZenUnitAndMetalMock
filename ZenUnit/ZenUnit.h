@@ -6213,10 +6213,10 @@ by changing TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
       return randomUnorderedMap;
    }
 
-   template<typename SetType>
+   template<typename SetType, typename ElementType>
    void PopulateSetWithRandomElements(size_t numberOfElements, SetType* outRandomSet)
    {
-      for (size_t i = 0; i < randomSetSize; ++i)
+      for (size_t i = 0; i < numberOfElements; ++i)
       {
          const ElementType randomElement = Random<ElementType>();
          outRandomSet->insert(randomElement);

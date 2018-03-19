@@ -514,7 +514,7 @@ const string TestClassName = Random<string>();
 const string TestName = Random<string>();
 const string TestCaseArgsText = Random<string>();
 ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
-ZENMOCK_VOID1_FREE(exit, int);
+ZENMOCK_VOID1_FREE(exit, int)
 
 STARTUP
 {
