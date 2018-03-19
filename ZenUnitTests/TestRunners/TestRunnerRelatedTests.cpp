@@ -21,6 +21,7 @@
 #include "ZenUnitTests/Utils/Function/Mock/NonVoidTwoArgMemberFunctionCallerMock.h"
 #include "ZenUnitTests/Utils/Function/Mock/VoidTwoArgMemberFunctionCallerMock.h"
 #include "ZenUnitTests/Utils/Time/Mock/WatchMock.h"
+#include "ZenUnitTests/Utils/Iteration/Mock/TwoArgAnyerMock.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/TwoArgMemberAnyerMock.h"
 #include "ZenUnitTests/TestRunners/Mock/TestClassRunnerMock.h"
 #include "ZenUnitTests/Random/RandomRunFilter.h"
@@ -159,6 +160,9 @@ RUN_TESTS(PreamblePrinterTests)
 TESTS(SpecificTestClassRunnerTests)
 AFACT(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
 AFACT(TestClassName_ReturnsTestClassName)
+AFACT(HasTestNameThatCaseInsensitiveEqualsRunFilterTestName_RunFilterTestNameIsEmpty_ReturnsTrue)
+AFACT(HasTestNameThatCaseInsensitiveEqualsRunFilterTestName_RunFilterTestNameIsNotEmpty_ReturnsTrueIfAnyTestNameCaseInsensitiveEqualsRunFilterTestName)
+FACTS(TestNameCaseInsensitiveEqualsRunFilterTestName_ReturnsTrueIfTestNameCaseInsensitiveEqualsRunFilterTestName)
 AFACT(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
 FACTS(RunTests_PrintsTestClassNameAndNumberOfNamedTests_ConfirmsTestClassNewableAndDeletable_RunsTests_PrintsAndReturnsTestClassResult)
 FACTS(DoRunTests_RandomlyRunsTestsIfRandomOtherwiseSequentiallyRunsTests)
@@ -193,6 +197,13 @@ TwoArgMemberForEacherMockType* _twoArgMemberForEacherMock;
 VoidZeroArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>>* _voidZeroArgFunctionCallerMock;
 NonVoidTwoArgMemberFunctionCallerMock<bool, SpecificTestClassRunner<TestingTestClass>, Test*, TestClassResult*>* _nonVoidTwoArgFunctionCallerMock;
 VoidOneArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, const TestClassResult*>* _voidOneArgFunctionCallerMock;
+
+using TwoArgTestAnyerMockType = TwoArgAnyerMock<
+   const std::vector<std::unique_ptr<Test>>,
+   bool(*)(const std::unique_ptr<Test>&, const std::string&),
+   const std::string&>;
+TwoArgTestAnyerMockType* _twoArgTestAnyerMock;
+
 using TwoArgMemberAnyerMockType = TwoArgMemberAnyerMock<
    std::vector<RunFilter>, TestClassRunner,
    bool(TestClassRunner::*)(const RunFilter&, const char*) const, const char*>;
@@ -214,6 +225,7 @@ STARTUP
       new NonVoidTwoArgMemberFunctionCallerMock<bool, SpecificTestClassRunner<TestingTestClass>, Test*, TestClassResult*>);
    _specificTestClassRunner->_voidOneArgFunctionCaller.reset(_voidOneArgFunctionCallerMock =
       new VoidOneArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, const TestClassResult*>);
+   _specificTestClassRunner->_twoArgTestAnyer.reset(_twoArgTestAnyerMock = new TwoArgTestAnyerMockType);
    _specificTestClassRunner->call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
    _specificTestClassRunner->p_twoArgMemberAnyer.reset(p_twoArgMemberAnyerMock = new TwoArgMemberAnyerMockType);
 }
@@ -225,6 +237,7 @@ TEST(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestC
    POINTER_WAS_NEWED(specificTestClassRunner.p_console);
    POINTER_WAS_NEWED(specificTestClassRunner._twoArgMemberForEacher);
    POINTER_WAS_NEWED(specificTestClassRunner._voidZeroArgFunctionCaller);
+   POINTER_WAS_NEWED(specificTestClassRunner._twoArgTestAnyer);
    POINTER_WAS_NEWED(specificTestClassRunner._nonVoidTwoArgFunctionCaller);
    POINTER_WAS_NEWED(specificTestClassRunner._voidOneArgFunctionCaller);
    ARE_EQUAL(_testClassName.c_str(), specificTestClassRunner._testClassName);
@@ -239,6 +252,52 @@ TEST(TestClassName_ReturnsTestClassName)
 {
    const char* const testClassName = _specificTestClassRunner->TestClassName();
    ARE_EQUAL(_testClassName.c_str(), testClassName);
+}
+
+TEST(HasTestNameThatCaseInsensitiveEqualsRunFilterTestName_RunFilterTestNameIsEmpty_ReturnsTrue)
+{
+   const string emptyRunFilterTestName;
+   //
+   const bool hasTestNameThatCaseInsensitiveEqualsRunFilterTestName
+      = _specificTestClassRunner->HasTestNameThatCaseInsensitiveEqualsRunFilterTestName(emptyRunFilterTestName);
+   //
+   IS_TRUE(hasTestNameThatCaseInsensitiveEqualsRunFilterTestName);
+}
+
+TEST(HasTestNameThatCaseInsensitiveEqualsRunFilterTestName_RunFilterTestNameIsNotEmpty_ReturnsTrueIfAnyTestNameCaseInsensitiveEqualsRunFilterTestName)
+{
+   const bool twoArgAnyerReturnValue = _twoArgTestAnyerMock->TwoArgAnyMock.ReturnRandom();
+   const string runFilterTestName = ZenUnit::Random<string>();
+   //
+   const bool hasTestNameThatCaseInsensitiveEqualsRunFilterTestName
+      = _specificTestClassRunner->HasTestNameThatCaseInsensitiveEqualsRunFilterTestName(runFilterTestName);
+   //
+   ZEN(_twoArgTestAnyerMock->TwoArgAnyMock.CalledOnceWith(
+      &_specificTestClassRunner->_tests,
+      SpecificTestClassRunner<TestingTestClass>::TestNameCaseInsensitiveEqualsRunFilterTestName,
+      runFilterTestName));
+   ARE_EQUAL(twoArgAnyerReturnValue, hasTestNameThatCaseInsensitiveEqualsRunFilterTestName);
+}
+
+TEST3X3(TestNameCaseInsensitiveEqualsRunFilterTestName_ReturnsTrueIfTestNameCaseInsensitiveEqualsRunFilterTestName,
+   const string& testName, const string& runFilterTestName, bool expectedReturnValue,
+   "Test", "Test", true,
+   "Test", "test", true,
+   "Test", "Test_Suffix", false,
+   "Test", "Prefix_Test", false,
+   "Test", "Prefix_Test_Suffix", false,
+   "Prefix_Test_Suffix", "Test", false,
+   "Function_Scenario_ExpectedBehavior", "function_scenario_expectedBehavior", true)
+{
+   TestMock* testMock = new TestMock;
+   testMock->NameMock.Return(testName.c_str());
+   unique_ptr<Test> test(testMock);
+   //
+   const bool testNameCaseInsensitiveEqualsRunFilterTestName =
+      _specificTestClassRunner->TestNameCaseInsensitiveEqualsRunFilterTestName(test, runFilterTestName);
+   //
+   ZEN(testMock->NameMock.CalledOnce());
+   ARE_EQUAL(expectedReturnValue, testNameCaseInsensitiveEqualsRunFilterTestName);
 }
 
 TEST(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)

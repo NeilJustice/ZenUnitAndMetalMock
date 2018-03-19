@@ -36,65 +36,20 @@ EVIDENCE
 RUN_TEMPLATE_TESTS(SkippedTemplateTestClassB, map)
 THEN_SKIP_TEMPLATE_TESTS(SkippedTemplateTestClassB, Reason, unordered_map)
 
-struct ExceptionThrower
-{
-   ExceptionThrower()
-   {
-      throw exception();
-   }
-};
-
-TESTS(AAATests)
-AFACT(Test1)
-AFACT(Test2)
-AFACT(Test3)
-EVIDENCE
-
-ExceptionThrower et;
-
-TEST(Test1)
-{
-   ARE_EQUAL(1, 0);
-}
-
-TEST(Test2)
-{
-   throw exception();
-}
-
-TEST(Test3)
-{
-   struct X
-   {
-      virtual void f() {}
-      virtual ~X() {}
-   };
-   struct XMock : public Zen::Mock<X>
-   {
-      ZENMOCK_VOID0(f)
-   };
-   XMock xMock;
-   xMock.fMock.Expect();
-   xMock.fMock.Expect();
-}
-
-SKIP_TESTS(AAATests, Reason)
-
 TESTS(Tests)
 AFACT(VoidTest)
-FACTS(Test)
+FACTS(NXNTest)
 EVIDENCE
 
 TEST(VoidTest)
 {
 }
 
-TEST1X1(Test,
+TEST1X1(NXNTest,
    int,
    0,
    1)
 {
-
 }
 
 RUN_TESTS(Tests)

@@ -64,7 +64,7 @@ namespace ZenUnit
       const CollectionType<T> emptyCollection;
       //
       const bool anyElementMatchesPredicate = _TwoArgAnyer.TwoArgAny(
-         emptyCollection, PredicateThatThrowsIfCalled, Arg2Type{});
+         &emptyCollection, PredicateThatThrowsIfCalled, Arg2Type{});
       //
       IS_EMPTY(s_predicateArgs);
       IS_FALSE(anyElementMatchesPredicate);
@@ -72,9 +72,10 @@ namespace ZenUnit
 
    TEST(TwoArgAny_1ElementCollection_ElementDoesNotMatchPredicate_ReturnsFalse)
    {
-      const CollectionType<T> collection = { 1 };
+      const CollectionType<T> oneElementCollection = { 1 };
       //
-      const bool anyElementMatchesPredicate = _TwoArgAnyer.TwoArgAny(collection, AlwaysFalsePredicate, _arg2);
+      const bool anyElementMatchesPredicate = _TwoArgAnyer.TwoArgAny(
+         &oneElementCollection, AlwaysFalsePredicate, _arg2);
       //
       const vector<pair<T, Arg2Type>> expectedPredicateArgs = { { T{1}, _arg2 } };
       VECTORS_EQUAL(expectedPredicateArgs, s_predicateArgs);
@@ -84,7 +85,7 @@ namespace ZenUnit
    TEST(TwoArgAny_2ElementCollection_FirstOfTwoElementsMatchesPredicate_CallsPredicateOnce_ReturnsTrue)
    {
       const bool anyElementMatchesPredicate = _TwoArgAnyer.TwoArgAny(
-         _twoElementCollection, ElementValueOneReturnsTruePredicate, _arg2);
+         &_twoElementCollection, ElementValueOneReturnsTruePredicate, _arg2);
       //
       const vector<pair<T, Arg2Type>> expectedPredicateArgs = { { T{1}, _arg2 } };
       VECTORS_EQUAL(expectedPredicateArgs, s_predicateArgs);
@@ -94,7 +95,7 @@ namespace ZenUnit
    TEST(TwoArgAny_2ElementCollection_SecondOfTwoElementsMatchesPredicate_CallsPredicateTwice_ReturnsTrue)
    {
       const bool anyElementMatchesPredicate = _TwoArgAnyer.TwoArgAny(
-         _twoElementCollection, ElementValueTwoReturnsTruePredicate, _arg2);
+         &_twoElementCollection, ElementValueTwoReturnsTruePredicate, _arg2);
       //
       const vector<pair<T, Arg2Type>> expectedPredicateArgs = { { T{1}, _arg2 },{ T{2}, _arg2 } };
       VECTORS_EQUAL(expectedPredicateArgs, s_predicateArgs);
@@ -104,7 +105,7 @@ namespace ZenUnit
    TEST(TwoArgAny_2ElementCollection_NeitherElementMatchesPredicate_CallsPredicateTwice_ReturnsFalse)
    {
       const bool anyElementMatchesPredicate = _TwoArgAnyer.TwoArgAny(
-         _twoElementCollection, AlwaysFalsePredicate, _arg2);
+         &_twoElementCollection, AlwaysFalsePredicate, _arg2);
       //
       const vector<pair<T, Arg2Type>> expectedPredicateArgs = { { T(1), _arg2 },{ T(2), _arg2 } };
       VECTORS_EQUAL(expectedPredicateArgs, s_predicateArgs);

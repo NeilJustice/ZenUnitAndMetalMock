@@ -3634,10 +3634,10 @@ Utility:
       //DEFINE_COPY_COPY_MOVE_MOVE(TwoArgAnyer, default, default, default, default);
       virtual ~TwoArgAnyer() = default;
 
-      virtual bool TwoArgAny(const CollectionType& collection, PredicateType predicate, Arg2Type arg2) const
+      virtual bool TwoArgAny(const CollectionType* collection, PredicateType predicate, Arg2Type arg2) const
       {
-         const auto collectionConstEnd = collection.cend();
-         for (auto iter = collection.cbegin(); iter != collectionConstEnd; ++iter)
+         const auto collectionConstEnd = collection->cend();
+         for (auto iter = collection->cbegin(); iter != collectionConstEnd; ++iter)
          {
             const auto& element = *iter;
             const bool elementMatchesPredicate = predicate(element, arg2);
@@ -4726,7 +4726,7 @@ Utility:
       std::unique_ptr<const OneArgMemberFunctionCaller<
          void, SpecificTestClassRunner<TestClassType>, const TestClassResult*>> _voidOneArgFunctionCaller;
       using TwoArgTestAnyerType = TwoArgAnyer<
-         std::vector<std::unique_ptr<Test>>,
+         const std::vector<std::unique_ptr<Test>>,
          bool(*)(const std::unique_ptr<Test>&, const std::string&),
          const std::string&>;
       std::unique_ptr<const TwoArgTestAnyerType> _twoArgTestAnyer;
@@ -4762,7 +4762,7 @@ Utility:
             return true;
          }
          const bool hasTestNameThatCaseInsensitiveEqualsRunFilterTestName = _twoArgTestAnyer->TwoArgAny(
-            _tests, TestNameCaseInsensitiveEqualsRunFilterTestName, runFilterTestName);
+            &_tests, TestNameCaseInsensitiveEqualsRunFilterTestName, runFilterTestName);
          return hasTestNameThatCaseInsensitiveEqualsRunFilterTestName;
       }
 
@@ -4770,8 +4770,8 @@ Utility:
          const std::unique_ptr<Test>& test, const std::string& runFilterTestName)
       {
          const char* const testName = test->Name();
-         const bool testNameCaseInsensitiveEqualsRunFilterTestName
-            = String::CaseInsensitiveStrcmp(testName, runFilterTestName.c_str()) == 0;
+         const bool testNameCaseInsensitiveEqualsRunFilterTestName =
+            String::CaseInsensitiveStrcmp(testName, runFilterTestName.c_str()) == 0;
          return testNameCaseInsensitiveEqualsRunFilterTestName;
       }
 
