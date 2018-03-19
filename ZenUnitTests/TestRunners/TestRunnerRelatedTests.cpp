@@ -32,6 +32,7 @@ TESTS(NoOpTestClassRunnerTests)
 AFACT(TestClassName_ReturnsNoOpTestClassRunner)
 AFACT(NumberOfTestCases_Returns0)
 AFACT(RunTests_ReturnsDefaultTestClassResult)
+AFACT(HasTestNameThatCaseInsensitiveEqualsRunFilterTestName_ReturnsFalse)
 EVIDENCE
 
 NoOpTestClassRunner _noOpTestClassRunner;
@@ -49,6 +50,11 @@ TEST(NumberOfTestCases_Returns0)
 TEST(RunTests_ReturnsDefaultTestClassResult)
 {
    ARE_EQUAL(TestClassResult(), _noOpTestClassRunner.RunTests());
+}
+
+TEST(HasTestNameThatCaseInsensitiveEqualsRunFilterTestName_ReturnsFalse)
+{
+   IS_FALSE(_noOpTestClassRunner.HasTestNameThatCaseInsensitiveEqualsRunFilterTestName(ZenUnit::Random<string>()));
 }
 
 RUN_TESTS(NoOpTestClassRunnerTests)
@@ -502,6 +508,7 @@ class TestingTestClassRunner : public TestClassRunner
    virtual const char* TestClassName() const { return nullptr; }
    virtual size_t NumberOfTestCases() const { return 0; }
    virtual TestClassResult RunTests() { return TestClassResult(); }
+   virtual bool HasTestNameThatCaseInsensitiveEqualsRunFilterTestName(const std::string&) const { return false; }
 };
 
 TESTS(TestClassRunnerTests)
@@ -511,11 +518,11 @@ FACTS(OperatorLessThan_ReturnsTrueIfTestClassNameStrcmpResultIsLessThanZero)
 EVIDENCE
 
 TestingTestClassRunner _testingTestClassRunner;
-ZENMOCK_NONVOID2_STATIC(bool, RunFilter, StringMatchesFilter, const char*, const string&)
+ZENMOCK_NONVOID2_STATIC(bool, RunFilter, StringMatchesFilterString, const char*, const string&)
 
 STARTUP
 {
-   _testingTestClassRunner.call_RunFilter_StringMatchesFilter = ZENMOCK_BIND2(StringMatchesFilter_ZenMock);
+   _testingTestClassRunner.call_RunFilter_StringMatchesFilterString = ZENMOCK_BIND2(StringMatchesFilterString_ZenMock);
 }
 
 TEST(DefaultConstructor_NewsComponents)
@@ -523,21 +530,21 @@ TEST(DefaultConstructor_NewsComponents)
    TestingTestClassRunner testingTestClassRunner;
    POINTER_WAS_NEWED(testingTestClassRunner.p_console);
    POINTER_WAS_NEWED(testingTestClassRunner.p_twoArgMemberAnyer);
-   STD_FUNCTION_TARGETS(RunFilter::StringMatchesFilter, testingTestClassRunner.call_RunFilter_StringMatchesFilter);
+   STD_FUNCTION_TARGETS(RunFilter::StringMatchesFilterString, testingTestClassRunner.call_RunFilter_StringMatchesFilterString);
 }
 
 TEST(TestNameCaseInsensitiveMatchesRunFilterTestName_ReturnsResultFromCallingRunFilterMatchesFilter)
 {
-   const bool stringMatchesFilterReturnValue = ZenUnit::Random<bool>();
-   StringMatchesFilter_ZenMock.Return(stringMatchesFilterReturnValue);
+   const bool stringMatchesFilterStringReturnValue = ZenUnit::Random<bool>();
+   StringMatchesFilterString_ZenMock.Return(stringMatchesFilterStringReturnValue);
    const RunFilter runFilter(ZenUnit::Random<string>(), ZenUnit::Random<string>(), ZenUnit::Random<unsigned>());
    const string testName = ZenUnit::Random<string>();
    //
    bool testNameCaseInsensitiveMatchesRunFilterTestName =
       _testingTestClassRunner.TestNameCaseInsensitiveMatchesRunFilterTestName(runFilter, testName.c_str());
    //
-   ZEN(StringMatchesFilter_ZenMock.CalledOnceWith(testName.c_str(), runFilter.testName));
-   ARE_EQUAL(stringMatchesFilterReturnValue, testNameCaseInsensitiveMatchesRunFilterTestName);
+   ZEN(StringMatchesFilterString_ZenMock.CalledOnceWith(testName.c_str(), runFilter.testName));
+   ARE_EQUAL(stringMatchesFilterStringReturnValue, testNameCaseInsensitiveMatchesRunFilterTestName);
 }
 
 TEST3X3(OperatorLessThan_ReturnsTrueIfTestClassNameStrcmpResultIsLessThanZero,

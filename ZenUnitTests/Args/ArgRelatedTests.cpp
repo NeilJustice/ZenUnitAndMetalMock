@@ -444,7 +444,7 @@ RUN_TESTS(RunFilterParserTests)
 TESTS(RunFilterTests)
 AFACT(DefaultConstructor_SetsTestCaseTo0)
 AFACT(ThreeArgumentConstructor_SetsFields)
-FACTS(StringMatchesFilter_ReturnsTrueIfStringCaseInsensitiveEqualsFilterString_OrIfFilterStringEndsInStar_ReturnsTrueIfStringCaseInsensitiveStartsWithFilterString)
+FACTS(StringMatchesFilterString_ReturnsTrueIfStringCaseInsensitiveEqualsFilterString_OrIfFilterStringEndsInStar_ReturnsTrueIfStringCaseInsensitiveStartsWithFilterString)
 AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
 EVIDENCE
 
@@ -469,7 +469,7 @@ TEST(ThreeArgumentConstructor_SetsFields)
    ARE_EQUAL(testCaseNumber, runFilter.testCaseNumber);
 }
 
-TEST3X3(StringMatchesFilter_ReturnsTrueIfStringCaseInsensitiveEqualsFilterString_OrIfFilterStringEndsInStar_ReturnsTrueIfStringCaseInsensitiveStartsWithFilterString,
+TEST3X3(StringMatchesFilterString_ReturnsTrueIfStringCaseInsensitiveEqualsFilterString_OrIfFilterStringEndsInStar_ReturnsTrueIfStringCaseInsensitiveStartsWithFilterString,
    const char* str, const string& filterString, bool expectedReturnValue,
    "", "", true,
    "Test", "", true,
@@ -485,8 +485,8 @@ TEST3X3(StringMatchesFilter_ReturnsTrueIfStringCaseInsensitiveEqualsFilterString
    "Function_Scenario_ExpectedBehavior", "*_Scenario_ExpectedBehavior", false,
    "Function_Scenario_ExpectedBehavior", "*", true)
 {
-   const bool stringMatchesFilter = RunFilter::StringMatchesFilter(str, filterString);
-   ARE_EQUAL(expectedReturnValue, stringMatchesFilter);
+   const bool stringMatchesFilterString = RunFilter::StringMatchesFilterString(str, filterString);
+   ARE_EQUAL(expectedReturnValue, stringMatchesFilterString);
 }
 
 TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
