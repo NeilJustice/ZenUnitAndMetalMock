@@ -80,20 +80,6 @@ TEST(Test3)
 
 SKIP_TESTS(AAATests, Reason)
 
-
-TESTS(Tests)
-FACTS(Test)
-EVIDENCE
-
-TEST1X1(Test, int,
-   100,
-   200)
-{
-   ARE_EQUAL(1, 1);
-}
-
-RUN_TESTS(Tests)
-
 int main(int argc, char* argv[])
 {
    FileLiner::zenUnitTestingMode = true;

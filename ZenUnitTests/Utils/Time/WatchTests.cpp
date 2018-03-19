@@ -22,6 +22,7 @@ namespace ZenUnit
 
 TESTS(WatchTests)
 FACTS(DateTimeNowWithTimeZone_ReturnsLocalTimeNowWithTimeZoneAndTodaysDate)
+FACTS(MicrosecondsToThreeDecimalPlaceMillisecondsString_ReturnsMicrosecondsAsMillisecondsRoundedToThreePlaces)
 EVIDENCE
 
 struct WatchSelfMocked : public Zen::Mock<ZenUnit::Watch>
@@ -68,6 +69,30 @@ static tm Tm(int tmMonth, int tmMonthDay, int tmYear, int tmHour, int tmMin, int
    tmNow.tm_yday = 0;
    tmNow.tm_isdst = 0;
    return tmNow;
+}
+
+TEST2X2(MicrosecondsToThreeDecimalPlaceMillisecondsString_ReturnsMicrosecondsAsMillisecondsRoundedToThreePlaces,
+   unsigned microseconds, const string& expectedReturnValue,
+   0, "(0.000ms)",
+   1, "(0.001ms)",
+   2, "(0.002ms)",
+   10, "(0.010ms)",
+   12, "(0.012ms)",
+   100, "(0.100ms)",
+   120, "(0.120ms)",
+   123, "(0.123ms)",
+   1000, "(1.000ms)",
+   1234, "(1.234ms)",
+   12345, "(12.345ms)",
+   123456, "(123.456ms)",
+   1234567, "(1234.567ms)",
+   12345678, "(12345.678ms)",
+   123456789, "(123456.789ms)",
+   1234567890, "(1234567.890ms)")
+{
+   const string threeDecimalPlaceMilliseconds =
+      Watch::MicrosecondsToThreeDecimalPlaceMillisecondsString(microseconds);
+   ARE_EQUAL(expectedReturnValue, threeDecimalPlaceMilliseconds);
 }
 
 RUN_TESTS(WatchTests)

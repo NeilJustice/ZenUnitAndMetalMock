@@ -1,20 +1,4 @@
 #pragma once
-
-#if defined _WIN32
-#pragma warning(push)
-#pragma warning(disable: 4365) // 'argument': conversion from 'std::_Atomic_integral_t' to 'long', signed / unsigned mismatch - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\memory
-#pragma warning(disable: 4514) // 'std::random_device::entropy': unreferenced inline function has been removed	ZenUnit - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\random
-#pragma warning(disable: 4571) // Informational : catch (...) semantics changed since Visual C++ 7.1; structured exceptions(SEH) are no longer caught - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\xlocale
-#pragma warning(disable: 4625) // 'std::_Generic_error_category': copy constructor was implicitly defined as deleted	- C:\VS2017\VC\Tools\MSVC\14.12.25827\include\system_error
-#pragma warning(disable: 4626) // 'std::_Generic_error_category': assignment operator was implicitly defined as deleted	- C:\VS2017\VC\Tools\MSVC\14.12.25827\include\system_error
-#pragma warning(disable: 4710) // 'int sprintf_s(char *const ,const ::size_t,const char *const ,...)': function not inlined - C:\Program Files(x86)\Windows Kits\10\Include\10.0.16299.0\ucrt\stdio.h
-#pragma warning(disable: 4774) // '_scprintf' : format string expected in argument 1 is not a string literal - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\string
-#pragma warning(disable: 4820) // 'std::error_condition': '4' bytes padding added after data member 'std::error_condition::_Myval' - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\system_error
-#pragma warning(disable: 5026) // 'std::_Generic_error_category': move constructor was implicitly defined as deleted	- C:\VS2017\VC\Tools\MSVC\14.12.25827\include\system_error
-#pragma warning(disable: 5027) // 'std::_Generic_error_category': move assignment operator was implicitly defined as deleted - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\system_error
-#pragma warning(disable: 5039) // 'TpSetCallbackCleanupGroup': pointer or reference to potentially throwing function passed to extern C function under - EHc.Undefined behavior may occur if this function throws an exception - C:\Program Files(x86)\Windows Kits\10\Include\10.0.16299.0\um\winbase.h
-#endif
-
 #include <chrono>
 #include <functional>
 #include <iomanip>
@@ -411,14 +395,9 @@ namespace ZenUnit
 
       FileLine() noexcept
          : filePath("")
-         , lineNumber(0)
-      {
-      }
+         , lineNumber(0) {}
 
-      FileLine(const char* filePath, unsigned lineNumber) noexcept
-         : filePath(filePath == nullptr ? "" : filePath), lineNumber(lineNumber)
-      {
-      }
+      FileLine(const char* filePath, unsigned lineNumber) noexcept : filePath(filePath == nullptr ? "" : filePath), lineNumber(lineNumber) {}
 
       std::string ToString() const
       {
@@ -446,15 +425,8 @@ namespace ZenUnit
 
    struct FileLiner : public ZenUnitTestingMode<bool>
    {
-      static const char* File(const char* fileMacroValue) noexcept
-      {
-         return zenUnitTestingMode ? "File.cpp" : fileMacroValue;
-      }
-
-      static unsigned Line(unsigned lineMacroValue) noexcept
-      {
-         return zenUnitTestingMode ? 1u : lineMacroValue;
-      }
+      static const char* File(const char* fileMacroValue) noexcept { return zenUnitTestingMode ? "File.cpp" : fileMacroValue; }
+      static unsigned Line(unsigned lineMacroValue) noexcept { return zenUnitTestingMode ? 1u : lineMacroValue; }
    };
 
    class String
@@ -3089,6 +3061,91 @@ Utility:
       }
    };
 
+   class Watch
+   {
+   public:
+      Watch() noexcept
+      {
+      }
+
+      //DEFINE_COPY_COPY_MOVE_MOVE(Watch, default, default, default, default);
+      virtual ~Watch() = default;
+
+      // Returns now in format "YYYY-MM-DD 00:00:00 Timezone"
+      virtual std::string DateTimeNowWithTimeZone() const
+      {
+         const tm tmNow = TMNow();
+         std::ostringstream builder;
+         const std::string timeZone = TimeZone(tmNow);
+         builder
+            << std::setw(2) << std::setfill('0') << (tmNow.tm_year + 1900) << '-'
+            << std::setw(2) << std::setfill('0') << (tmNow.tm_mon + 1) << '-'
+            << std::setw(2) << std::setfill('0') << tmNow.tm_mday << ' '
+            << std::setw(2) << std::setfill('0') << tmNow.tm_hour << ':'
+            << std::setw(2) << std::setfill('0') << tmNow.tm_min << ':'
+            << std::setw(2) << std::setfill('0') << tmNow.tm_sec << ' ' << timeZone;
+         const std::string weekdayDateTimeZoneNow = builder.str();
+         return weekdayDateTimeZoneNow;
+      }
+
+      virtual unsigned short SecondsSince1970CastToUnsignedShort() const
+      {
+         const long long secondsSince1970
+            = std::chrono::system_clock::now().time_since_epoch().count();
+         const unsigned short secondsSince1970CastToUnsignedShort
+            = static_cast<unsigned short>(secondsSince1970);
+         return secondsSince1970CastToUnsignedShort;
+      }
+
+      static std::string MicrosecondsToThreeDecimalPlaceMillisecondsString(unsigned microseconds)
+      {
+         const double milliseconds = microseconds / 1000.0;
+
+         // Example: 0.1230000000001
+         const double threeDecimalPlaceMilliseconds = std::floor(milliseconds * 1000 + 0.5) / 1000;
+
+         // Example: "0.123000"
+         const std::string threeDecimalPlaceMilliseconds_sixDecimalPlaceString
+            = std::to_string(threeDecimalPlaceMilliseconds);
+
+         // Example: "0.123"
+         const std::string millisecondsRoundedToThreeDecimalPlaces_threeDecimalPlaceString
+            = threeDecimalPlaceMilliseconds_sixDecimalPlaceString.substr(
+               0, threeDecimalPlaceMilliseconds_sixDecimalPlaceString.find_first_of('.') + 4);
+
+         // Example: "(0.123ms)"
+         const std::string threeDecimalPlaceMillisecondsString
+            = String::Concat("(", millisecondsRoundedToThreeDecimalPlaces_threeDecimalPlaceString, "ms)");
+
+         return threeDecimalPlaceMillisecondsString;
+      }
+   private:
+      virtual tm TMNow() const
+      {
+         const std::chrono::time_point<std::chrono::system_clock> nowTimePoint = std::chrono::system_clock::now();
+#if defined __linux__
+         tm* tmNow = nullptr;
+         long nowTimeT = std::chrono::system_clock::to_time_t(nowTimePoint);
+         tmNow = localtime(&nowTimeT);
+         return *tmNow;
+#elif _WIN32
+         const __time64_t nowTimeT = std::chrono::system_clock::to_time_t(nowTimePoint);
+         tm tmNow;
+         const errno_t localtimeResult = localtime_s(&tmNow, &nowTimeT);
+         assert_true(localtimeResult == 0);
+         return tmNow;
+#endif
+      }
+
+      virtual std::string TimeZone(const tm& tmValue) const
+      {
+         char timeZoneChars[128];
+         strftime(timeZoneChars, sizeof(timeZoneChars), "%Z", &tmValue);
+         const std::string timeZone(timeZoneChars);
+         return timeZone;
+      }
+   };
+
    struct TestResult
    {
       FullTestName fullTestName;
@@ -3108,13 +3165,86 @@ Utility:
       TestOutcome testOutcome;
       unsigned microseconds;
       unsigned short testCaseNumber;
+      std::function<std::string(unsigned)> call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString;
 
       TestResult() noexcept
          : responsibleCallResultField(nullptr)
          , testOutcome(TestOutcome::Unset)
          , microseconds(0)
          , testCaseNumber(std::numeric_limits<unsigned short>::max())
+         , call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString(
+            Watch::MicrosecondsToThreeDecimalPlaceMillisecondsString)
       {
+      }
+
+      TestResult(
+         const FullTestName& fullTestName,
+         const CallResult& constructorCallResult,
+         const CallResult& startupCallResult,
+         const CallResult& testBodyCallResult,
+         const CallResult& cleanupCallResult,
+         const CallResult& destructorCallResult,
+         const std::function<const ZenUnitArgs&()>& getArgs)
+         : fullTestName(fullTestName)
+         , constructorCallResult(constructorCallResult)
+         , startupCallResult(startupCallResult)
+         , testBodyCallResult(testBodyCallResult)
+         , cleanupCallResult(cleanupCallResult)
+         , destructorCallResult(destructorCallResult)
+         , responsibleCallResultField(nullptr)
+         , testOutcome(TestOutcome::Unset)
+         , microseconds(0)
+         , testCaseNumber(std::numeric_limits<unsigned short>::max())
+         , call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString(
+            Watch::MicrosecondsToThreeDecimalPlaceMillisecondsString)
+      {
+         assert_true(constructorCallResult.testOutcome == TestOutcome::Success);
+         assert_true(startupCallResult.testOutcome == TestOutcome::Success);
+         assert_true(destructorCallResult.testOutcome == TestOutcome::Success);
+         microseconds =
+            constructorCallResult.microseconds +
+            startupCallResult.microseconds +
+            testBodyCallResult.microseconds +
+            cleanupCallResult.microseconds +
+            destructorCallResult.microseconds;
+         if (testBodyCallResult.testOutcome == TestOutcome::Exception)
+         {
+            testOutcome = TestOutcome::Exception;
+            responsibleCallResultField = &TestResult::testBodyCallResult;
+         }
+         else if (cleanupCallResult.testOutcome == TestOutcome::Exception)
+         {
+            testOutcome = TestOutcome::Exception;
+            responsibleCallResultField = &TestResult::cleanupCallResult;
+         }
+         else if (testBodyCallResult.testOutcome == TestOutcome::Anomaly)
+         {
+            testOutcome = TestOutcome::Anomaly;
+            responsibleCallResultField = &TestResult::testBodyCallResult;
+         }
+         else if (cleanupCallResult.testOutcome == TestOutcome::Anomaly)
+         {
+            testOutcome = TestOutcome::Anomaly;
+            responsibleCallResultField = &TestResult::cleanupCallResult;
+         }
+         else
+         {
+            assert_true(constructorCallResult.testOutcome == TestOutcome::Success);
+            assert_true(startupCallResult.testOutcome == TestOutcome::Success);
+            assert_true(testBodyCallResult.testOutcome == TestOutcome::Success);
+            assert_true(cleanupCallResult.testOutcome == TestOutcome::Success);
+            assert_true(destructorCallResult.testOutcome == TestOutcome::Success);
+            const ZenUnitArgs& args = getArgs();
+            const unsigned maxtestmicroseconds = args.maxtestmilliseconds * 1000;
+            if (args.maxtestmilliseconds == 0 || microseconds <= maxtestmicroseconds)
+            {
+               testOutcome = TestOutcome::Success;
+            }
+            else
+            {
+               testOutcome = TestOutcome::SuccessButPastDeadline;
+            }
+         }
       }
 
       //DEFINE_COPY_COPY_MOVE_MOVE(TestResult, default, default, default, default);
@@ -3168,81 +3298,14 @@ Utility:
          return ctorDtorSuccess;
       }
 
-      TestResult(
-         const FullTestName& fullTestName,
-         const CallResult& constructorCallResult,
-         const CallResult& startupCallResult,
-         const CallResult& testBodyCallResult,
-         const CallResult& cleanupCallResult,
-         const CallResult& destructorCallResult,
-         const std::function<const ZenUnitArgs&()>& getArgs)
-         : fullTestName(fullTestName)
-         , constructorCallResult(constructorCallResult)
-         , startupCallResult(startupCallResult)
-         , testBodyCallResult(testBodyCallResult)
-         , cleanupCallResult(cleanupCallResult)
-         , destructorCallResult(destructorCallResult)
-         , responsibleCallResultField(nullptr)
-         , testOutcome(TestOutcome::Unset)
-         , microseconds(0)
-         , testCaseNumber(std::numeric_limits<unsigned short>::max())
-      {
-         assert_true(constructorCallResult.testOutcome == TestOutcome::Success);
-         assert_true(startupCallResult.testOutcome == TestOutcome::Success);
-         assert_true(destructorCallResult.testOutcome == TestOutcome::Success);
-         microseconds =
-            constructorCallResult.microseconds +
-            startupCallResult.microseconds +
-            testBodyCallResult.microseconds +
-            cleanupCallResult.microseconds +
-            destructorCallResult.microseconds;
-         if (testBodyCallResult.testOutcome == TestOutcome::Exception)
-         {
-            testOutcome = TestOutcome::Exception;
-            responsibleCallResultField = &TestResult::testBodyCallResult;
-         }
-         else if (cleanupCallResult.testOutcome == TestOutcome::Exception)
-         {
-            testOutcome = TestOutcome::Exception;
-            responsibleCallResultField = &TestResult::cleanupCallResult;
-         }
-         else if (testBodyCallResult.testOutcome == TestOutcome::Anomaly)
-         {
-            testOutcome = TestOutcome::Anomaly;
-            responsibleCallResultField = &TestResult::testBodyCallResult;
-         }
-         else if (cleanupCallResult.testOutcome == TestOutcome::Anomaly)
-         {
-            testOutcome = TestOutcome::Anomaly;
-            responsibleCallResultField = &TestResult::cleanupCallResult;
-         }
-         else
-         {
-            assert_true(constructorCallResult.testOutcome == TestOutcome::Success);
-            assert_true(startupCallResult.testOutcome == TestOutcome::Success);
-            assert_true(testBodyCallResult.testOutcome == TestOutcome::Success);
-            assert_true(cleanupCallResult.testOutcome == TestOutcome::Success);
-            assert_true(destructorCallResult.testOutcome == TestOutcome::Success);
-            const ZenUnitArgs& args = getArgs();
-            const unsigned maxtestmicroseconds = args.maxtestmilliseconds * 1000;
-            if (args.maxtestmilliseconds == 0 || microseconds <= maxtestmicroseconds)
-            {
-               testOutcome = TestOutcome::Success;
-            }
-            else
-            {
-               testOutcome = TestOutcome::SuccessButPastDeadline;
-            }
-         }
-      }
-
       virtual void WriteLineOKIfSuccess(const Console* console) const
       {
          if (testOutcome == TestOutcome::Success)
          {
             console->WriteColor("OK ", Color::Green);
-            const std::string microsecondsString = String::Concat("(", microseconds, "us)");
-            console->WriteLine(microsecondsString);
+            const std::string threeDecimalPlaceMillisecondsString =
+               call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString(microseconds);
+            console->WriteLine(threeDecimalPlaceMillisecondsString);
          }
       }
 
@@ -3330,8 +3393,11 @@ Utility:
       friend class TestClassResultTests;
    private:
       std::vector<TestResult> _testResults;
+      std::function<std::string(unsigned)> call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString;
    public:
       TestClassResult() noexcept
+         : call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString(
+            Watch::MicrosecondsToThreeDecimalPlaceMillisecondsString)
       {
       }
 
@@ -3367,48 +3433,39 @@ Utility:
          _testResults.insert(_testResults.end(), testResults.cbegin(), testResults.cend());
       }
 
-      virtual unsigned Microseconds() const
+      virtual unsigned SumOfTestResultMicroseconds() const
       {
-         const unsigned microseconds = std::accumulate(_testResults.cbegin(), _testResults.cend(), 0u,
+         const unsigned sumOfTestResultMicroseconds = std::accumulate(
+            _testResults.cbegin(), _testResults.cend(), 0u,
             [](unsigned cumulativeMicroseconds, const TestResult& testResult)
          {
             return cumulativeMicroseconds + testResult.microseconds;
          });
-         return microseconds;
+         return sumOfTestResultMicroseconds;
       }
 
-      virtual std::string ThreeDecimalPlaceMilliseconds(unsigned microseconds) const
+      virtual std::string MicrosecondsToThreeDecimalPlaceMillisecondsString(unsigned microseconds) const
       {
-         const double milliseconds = microseconds / 1000.0;
-         const double millisecondsRoundedToThreeDecimalPlaces = std::floor(milliseconds * 1000 + 0.5) / 1000;
-
-         const std::string millisecondsRoundedToThreeDecimalPlaces_sixDecimalPlaceString
-            = std::to_string(millisecondsRoundedToThreeDecimalPlaces);
-
-         const std::string millisecondsRoundedToThreeDecimalPlaces_threeDecimalPlaceString
-            = millisecondsRoundedToThreeDecimalPlaces_sixDecimalPlaceString.substr(
-               0, millisecondsRoundedToThreeDecimalPlaces_sixDecimalPlaceString.find_first_of('.') + 4);
-
-         const std::string millisecondsRoundedToThreeDecimalPlaces_threeDecimalPlaceStringWithParens
-            = String::Concat("(", millisecondsRoundedToThreeDecimalPlaces_threeDecimalPlaceString, "ms)");
-
-         return millisecondsRoundedToThreeDecimalPlaces_threeDecimalPlaceStringWithParens;
+         const std::string threeDecimalPlaceMillisecondsString =
+            call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString(microseconds);
+         return threeDecimalPlaceMillisecondsString;
       }
 
       virtual void PrintTestClassResultLine(const Console* console) const
       {
          const size_t numberOfFailedTestCases = NumberOfFailedTestCases();
-         const unsigned microseconds = Microseconds();
-         const std::string threeDecimalPlaceMilliseconds = ThreeDecimalPlaceMilliseconds(microseconds);
+         const unsigned sumOfTestResultMicroseconds = SumOfTestResultMicroseconds();
+         const std::string threeDecimalPlaceMillisecondsString
+            = MicrosecondsToThreeDecimalPlaceMillisecondsString(sumOfTestResultMicroseconds);
          if (numberOfFailedTestCases == 0)
          {
             console->Write("[  ");
             console->WriteColor("OK", Color::Green);
-            console->Write("  ] " + threeDecimalPlaceMilliseconds);
+            console->Write("  ] " + threeDecimalPlaceMillisecondsString);
          }
          else
          {
-            console->WriteLineColor("[TestClass Failed] " + threeDecimalPlaceMilliseconds, Color::Red);
+            console->WriteLineColor("[TestClass Failed] " + threeDecimalPlaceMillisecondsString, Color::Red);
          }
          console->WriteNewLine();
       }
@@ -3448,103 +3505,6 @@ Utility:
          const TestResult& testResult, const Console* console, TestFailureNumberer* testFailureNumberer)
       {
          testResult.PrintIfFailure(console, testFailureNumberer);
-      }
-   };
-
-   class Watch
-   {
-   public:
-      Watch() noexcept
-      {
-      }
-
-      //DEFINE_COPY_COPY_MOVE_MOVE(Watch, default, default, default, default);
-      virtual ~Watch() = default;
-
-      // Returns now in format "YYYY-MM-DD 00:00:00 Timezone"
-      virtual std::string DateTimeNowWithTimeZone() const
-      {
-         const tm tmNow = TMNow();
-         std::ostringstream builder;
-         const std::string timeZone = TimeZone(tmNow);
-         builder
-            << std::setw(2) << std::setfill('0') << (tmNow.tm_year + 1900) << '-'
-            << std::setw(2) << std::setfill('0') << (tmNow.tm_mon + 1) << '-'
-            << std::setw(2) << std::setfill('0') << tmNow.tm_mday << ' '
-            << std::setw(2) << std::setfill('0') << tmNow.tm_hour << ':'
-            << std::setw(2) << std::setfill('0') << tmNow.tm_min << ':'
-            << std::setw(2) << std::setfill('0') << tmNow.tm_sec << ' ' << timeZone;
-         const std::string weekdayDateTimeZoneNow = builder.str();
-         return weekdayDateTimeZoneNow;
-      }
-
-      //// Returns now in format "Monday January 1, 2016 at 00:00:00 <Timezone>"
-      //virtual std::string TimeZoneDateTimeNow() const
-      //{
-      //   const tm tmNow = TMNow();
-      //   std::ostringstream builder;
-      //   const char* const monthString = TMMonthToMonthString(tmNow.tm_mon);
-      //   const std::string timeZone = TimeZone(tmNow);
-      //   builder << std::setw(2) << std::setfill('0') << tmNow.tm_hour << ':'
-      //      << std::setw(2) << std::setfill('0') << tmNow.tm_min << ':'
-      //      << std::setw(2) << std::setfill('0') << tmNow.tm_sec << ' '
-      //      << timeZone << " on " << weekDayString << ' ' << monthString << ' ' << tmNow.tm_mday << ", " << (tmNow.tm_year + 1900);
-      //   const std::string weekdayDateTimeZoneNow = builder.str();
-      //   return weekdayDateTimeZoneNow;
-      //}
-
-      virtual unsigned short SecondsSince1970CastToUnsignedShort() const
-      {
-         const long long secondsSince1970
-            = std::chrono::system_clock::now().time_since_epoch().count();
-         const unsigned short secondsSince1970CastToUnsignedShort
-            = static_cast<unsigned short>(secondsSince1970);
-         return secondsSince1970CastToUnsignedShort;
-      }
-   private:
-      virtual tm TMNow() const
-      {
-         const std::chrono::time_point<std::chrono::system_clock> nowTimePoint = std::chrono::system_clock::now();
-#if defined __linux__
-         tm* tmNow = nullptr;
-         long nowTimeT = std::chrono::system_clock::to_time_t(nowTimePoint);
-         tmNow = localtime(&nowTimeT);
-         return *tmNow;
-#elif _WIN32
-         const __time64_t nowTimeT = std::chrono::system_clock::to_time_t(nowTimePoint);
-         tm tmNow;
-         const errno_t localtimeResult = localtime_s(&tmNow, &nowTimeT);
-         assert_true(localtimeResult == 0);
-         return tmNow;
-#endif
-      }
-
-      virtual std::string TimeZone(const tm& tmValue) const
-      {
-         char timeZoneChars[128];
-         strftime(timeZoneChars, sizeof(timeZoneChars), "%Z", &tmValue);
-         const std::string timeZone(timeZoneChars);
-         return timeZone;
-      }
-
-      static const char* TMMonthToMonthString(int tm_mon)
-      {
-         switch (tm_mon)
-         {
-         case 0: return "January";
-         case 1: return "February";
-         case 2: return "March";
-         case 3: return "April";
-         case 4: return "May";
-         case 5: return "June";
-         case 6: return "July";
-         case 7: return "August";
-         case 8: return "September";
-         case 9: return "October";
-         case 10: return "November";
-         case 11: return "December";
-         default: throw std::out_of_range("Invalid tm_mon: " + std::to_string(tm_mon));
-         }
       }
    };
 
@@ -4828,7 +4788,9 @@ Utility:
          if (testClassIsNewableAndDeletable)
          {
             p_console->WriteColor("OK ", Color::Green);
-            p_console->WriteLine(String::Concat("(", newableDeletableTestResult.microseconds, "us)"));
+            const std::string threeDecimalPlaceMillisecondsString = outTestClassResult->
+               MicrosecondsToThreeDecimalPlaceMillisecondsString(newableDeletableTestResult.microseconds);
+            p_console->WriteLine(threeDecimalPlaceMillisecondsString);
          }
          return testClassIsNewableAndDeletable;
       }
@@ -6287,7 +6249,3 @@ by changing TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
       return exitCode;
    }
 }
-
-#if defined _WIN32
-#pragma warning(pop)
-#endif

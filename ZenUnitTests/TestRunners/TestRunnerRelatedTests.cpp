@@ -368,10 +368,16 @@ TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewableDele
 {
    p_consoleMock->WriteColorMock.Expect();
    p_consoleMock->WriteMock.Expect();
+
+   TestClassResultMock testClassResultMock;
+   testClassResultMock.AddTestResultsMock.Expect();
+   string testResultThreeDecimalMillisecondsString;
    if (expectWriteLineOK)
    {
       p_consoleMock->WriteColorMock.Expect();
       p_consoleMock->WriteLineMock.Expect();
+      testResultThreeDecimalMillisecondsString = testClassResultMock.
+         MicrosecondsToThreeDecimalPlaceMillisecondsStringMock.ReturnRandom();
    }
    TestMock testMock;
 
@@ -380,9 +386,6 @@ TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewableDele
    testResult.microseconds = ZenUnit::Random<unsigned>();
    const vector<TestResult> testResults{ testResult };
    testMock.RunMock.Return(testResults);
-
-   TestClassResultMock testClassResultMock;
-   testClassResultMock.AddTestResultsMock.Expect();
    //
    const bool testClassTypeIsNewableAndDeletable = _specificTestClassRunner->
       ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(&testMock, &testClassResultMock);
@@ -394,7 +397,9 @@ TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewableDele
           { "|", Color::Green },
           { "OK ", Color::Green }
        }));
-       ZEN(p_consoleMock->WriteLineMock.CalledOnceWith(String::Concat("(", testResult.microseconds, "us)")));
+       ZEN(testClassResultMock.MicrosecondsToThreeDecimalPlaceMillisecondsStringMock.
+          CalledOnceWith(testResult.microseconds));
+       ZEN(p_consoleMock->WriteLineMock.CalledOnceWith(testResultThreeDecimalMillisecondsString));
    }
    else
    {

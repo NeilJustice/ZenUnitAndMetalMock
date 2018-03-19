@@ -74,19 +74,19 @@ static_assert(sizeof(CallResult) == 24);
 //static_assert(sizeof(TestResult) == 176);
 #elif defined(_WIN64)
 #if defined _DEBUG
-static_assert(sizeof(TestResult) == 168);
+static_assert(sizeof(TestResult) == 232);
 #elif NDEBUG
-static_assert(sizeof(TestResult) == 168);
+static_assert(sizeof(TestResult) == 232);
 #endif
 #endif
 
 #if defined __linux__
-//static_assert(sizeof(TestClassResult) == 32);
+//static_assert(sizeof(TestClassResult) == 96);
 #elif defined(_WIN64)
 #if defined _DEBUG
-static_assert(sizeof(TestClassResult) == 40);
+static_assert(sizeof(TestClassResult) == 104);
 #elif NDEBUG
-static_assert(sizeof(TestClassResult) == 32);
+static_assert(sizeof(TestClassResult) == 96);
 #endif
 #endif
 

@@ -3,16 +3,6 @@
 #include "ZenUnit/ZenUnit.h"
 #include <deque>
 
-#if defined _WIN32
-#pragma warning(push)
-#pragma warning(disable: 4514) // 'ZenMock::Signature::Function': unreferenced inline function has been removed
-#pragma warning(disable: 4625) // 'ZenMock::VoidZeroArgumentMocker': copy constructor was implicitly defined as deleted	ZenUnit
-#pragma warning(disable: 4626) // 'ZenMock::VoidZeroArgumentMocker': assignment operator was implicitly defined as deleted
-#pragma warning(disable: 4820) // 'ZenMock::ZenMocker<MockableExceptionThrowerType>': '5' bytes padding added after data member 'ZenMock::ZenMocker<MockableExceptionThrowerType>::_asserted'
-#pragma warning(disable: 5026) // 'ZenMock::VoidZeroArgumentMocker': move constructor was implicitly defined as deleted
-#pragma warning(disable: 5027) // 'ZenMock::VoidZeroArgumentMocker': move assignment operator was implicitly defined as deleted
-#endif
-
 namespace ZenMock
 {
    class Throwable
@@ -224,7 +214,7 @@ must have their return value or values set explicitly by calling
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    private:
       const std::string _zenMockedFunctionSignature;
-      // deque here instead of vector due to implementation of vector<bool>
+      // std::deque here instead of std::vector due to the implementation of std::vector<bool>
       std::deque<DecayedFunctionReturnType> _returnValues;
       size_t _returnValueIndex;
    public:
@@ -4767,7 +4757,3 @@ namespace Zen
          "ZenMocked classes must define a virtual destructor so as to not introduce a memory leak as detected by Clang AddressSanitizer.");
    };
 }
-
-#if defined _WIN32
-#pragma warning(pop)
-#endif
