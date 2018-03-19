@@ -603,7 +603,7 @@ namespace ZenUnit
       unsigned testCaseNumber;
 
       RunFilter() noexcept
-         : testCaseNumber(0)
+         : testCaseNumber(std::numeric_limits<unsigned>::max())
       {
       }
 
@@ -3164,14 +3164,14 @@ Utility:
 #endif
       TestOutcome testOutcome;
       unsigned microseconds;
-      unsigned short testCaseNumber;
+      unsigned testCaseNumber;
       std::function<std::string(unsigned)> call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString;
 
       TestResult() noexcept
          : responsibleCallResultField(nullptr)
          , testOutcome(TestOutcome::Unset)
          , microseconds(0)
-         , testCaseNumber(std::numeric_limits<unsigned short>::max())
+         , testCaseNumber(std::numeric_limits<unsigned>::max())
          , call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString(
             Watch::MicrosecondsToThreeDecimalPlaceMillisecondsString)
       {
@@ -3194,7 +3194,7 @@ Utility:
          , responsibleCallResultField(nullptr)
          , testOutcome(TestOutcome::Unset)
          , microseconds(0)
-         , testCaseNumber(std::numeric_limits<unsigned short>::max())
+         , testCaseNumber(std::numeric_limits<unsigned>::max())
          , call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString(
             Watch::MicrosecondsToThreeDecimalPlaceMillisecondsString)
       {
@@ -3368,9 +3368,9 @@ Utility:
          }
       }
 
-      virtual void WriteTestCaseNumberIfAny(const Console* console, unsigned short testCaseNumberArgument) const
+      virtual void WriteTestCaseNumberIfAny(const Console* console, unsigned testCaseNumberArgument) const
       {
-         if (testCaseNumberArgument != std::numeric_limits<unsigned short>::max())
+         if (testCaseNumberArgument != std::numeric_limits<unsigned>::max())
          {
             console->Write(" test case " + std::to_string(testCaseNumberArgument));
          }
@@ -4997,7 +4997,7 @@ Utility:
    private:
       std::unique_ptr<const Console> _console;
       using ThreeArgAnyerType = ThreeArgAnyer<
-         std::vector<RunFilter>, bool(*)(const RunFilter&, unsigned short, const FullTestName&), unsigned short, const FullTestName&>;
+         std::vector<RunFilter>, bool(*)(const RunFilter&, unsigned, const FullTestName&), unsigned, const FullTestName&>;
       std::unique_ptr<ThreeArgAnyerType> _threeArgAnyer;
       std::function<const ZenUnitArgs&()> call_TestRunner_GetArgs;
       std::function<std::vector<std::string>(const char*)> call_String_CommaSplitExceptQuotedCommas;
@@ -5060,7 +5060,7 @@ Utility:
          const ZenUnitArgs& args = call_TestRunner_GetArgs();
          const std::vector<std::string> splitTestCaseArgs = call_String_CommaSplitExceptQuotedCommas(_testCaseArgsText);
          constexpr size_t NumberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
-         for (unsigned short testCaseNumber = 1;
+         for (unsigned testCaseNumber = 1;
               _testCaseArgsIndex < NumberOfTestCaseArgs;
               _testCaseArgsIndex += N, ++testCaseNumber)
          {
@@ -5082,7 +5082,7 @@ Utility:
       }
    private:
       virtual void RunTestCaseNumberIfNotFilteredOut(
-         unsigned short testCaseNumber, const ZenUnitArgs& args, const std::vector<std::string>& splitTestCaseArgs)
+         unsigned testCaseNumber, const ZenUnitArgs& args, const std::vector<std::string>& splitTestCaseArgs)
       {
          const bool shouldRunTestCaseNumber = ShouldRunTestCaseNumber(args, p_fullTestName, testCaseNumber);
          if (shouldRunTestCaseNumber)
@@ -5101,27 +5101,33 @@ Utility:
          }
       }
 
-      virtual bool ShouldRunTestCaseNumber(const ZenUnitArgs& args, const FullTestName& fullTestName, unsigned short testCaseNumber) const
+      virtual bool ShouldRunTestCaseNumber(
+         const ZenUnitArgs& args, const FullTestName& fullTestName, unsigned testCaseNumber) const
       {
          if (args.runFilters.empty())
          {
             return true;
          }
-         const bool anyRunFilterMatchesThisTest = _threeArgAnyer->ThreeArgAny(
-            args.runFilters, RunFilterMatchesTest, testCaseNumber, fullTestName);
-         return anyRunFilterMatchesThisTest;
+         const bool anyRunFilterMatchesThisTestCaseNumber = _threeArgAnyer->ThreeArgAny(
+            args.runFilters, RunFilterMatchesTestCaseNumberAndFullTestName, testCaseNumber, fullTestName);
+         return anyRunFilterMatchesThisTestCaseNumber;
       }
 
-      static bool RunFilterMatchesTest(const RunFilter& runFilter, unsigned short testCaseNumber, const FullTestName& fullTestName)
+      static bool RunFilterMatchesTestCaseNumberAndFullTestName(
+         const RunFilter& runFilter, unsigned testCaseNumber, const FullTestName& fullTestName)
       {
-         const bool doRunTestCase =
-            runFilter.testCaseNumber == testCaseNumber &&
+         assert_true(testCaseNumber >= 1 && testCaseNumber != std::numeric_limits<unsigned>::max());
+         const bool testCaseNumberUnsetOrMatches =
+            runFilter.testCaseNumber == std::numeric_limits<unsigned>::max() ||
+            runFilter.testCaseNumber == testCaseNumber;
+         const bool runFilterMatchesTestCaseNumberAndFullTestName =
+            testCaseNumberUnsetOrMatches &&
             runFilter.testClassName == fullTestName.testClassName &&
             runFilter.testName == fullTestName.testName;
-         return doRunTestCase;
+         return runFilterMatchesTestCaseNumberAndFullTestName;
       }
 
-      virtual void RunTestCaseNumber(unsigned short testCaseNumber, const std::vector<std::string>& splitTestCaseArgs)
+      virtual void RunTestCaseNumber(unsigned testCaseNumber, const std::vector<std::string>& splitTestCaseArgs)
       {
          PrintTestCaseNumberArgsThenArrow(testCaseNumber, splitTestCaseArgs);
          TestResult testResult = MockableCallBaseRunTestCase();
@@ -5137,7 +5143,7 @@ Utility:
       }
 
       virtual void PrintTestCaseNumberArgsThenArrow(
-         unsigned short testCaseNumber, const std::vector<std::string>& splitTestCaseArgs) const
+         unsigned testCaseNumber, const std::vector<std::string>& splitTestCaseArgs) const
       {
          _console->WriteColor(" [", Color::Green);
          const std::string testCaseNumberString = std::to_string(testCaseNumber);

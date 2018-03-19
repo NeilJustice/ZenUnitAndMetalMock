@@ -470,7 +470,7 @@ const unsigned MaxTestMilliseconds = 1 + 2 + 3 + 4 + 5;
 
 struct TestResult_WriteTestCaseNumberIfAnyMocked : public Zen::Mock<TestResult>
 {
-   ZENMOCK_VOID2_CONST(WriteTestCaseNumberIfAny, const Console*, unsigned short)
+   ZENMOCK_VOID2_CONST(WriteTestCaseNumberIfAny, const Console*, unsigned)
 } _testResult_WriteTestCaseNumberIfAnyMocked;
 
 STARTUP
@@ -500,7 +500,7 @@ TEST(DefaultConstructor_SetsFieldsTo0_SetsWatchFunction)
    expectedDefaultTestResult.destructorCallResult = CallResult();
    expectedDefaultTestResult.responsibleCallResultField = nullptr;
    expectedDefaultTestResult.testOutcome = TestOutcome::Unset;
-   expectedDefaultTestResult.testCaseNumber = numeric_limits<unsigned short>::max();
+   expectedDefaultTestResult.testCaseNumber = numeric_limits<unsigned>::max();
    expectedDefaultTestResult.microseconds = 0;
    ARE_EQUAL(expectedDefaultTestResult, defaultTestResult);
 }
@@ -574,7 +574,7 @@ TEST6X6(SixArgConstructor_SetsFields_SetsWatchFunction,
    expectedTestResult.destructorCallResult = DestructorCallResult;
    expectedTestResult.responsibleCallResultField = expectedResponsibleCallResultField;
    expectedTestResult.testOutcome = expectedOverallOutcome;
-   expectedTestResult.testCaseNumber = numeric_limits<unsigned short>::max();
+   expectedTestResult.testCaseNumber = numeric_limits<unsigned>::max();
    expectedTestResult.microseconds = MaxTestMilliseconds * 1000 + relativeMicroseconds;
    ARE_EQUAL(expectedTestResult, testResult);
 }
@@ -699,7 +699,7 @@ TEST3X3(PrintIfFailure_Anomaly_PrintsExpected,
 
    const string testFailureNumber = _testFailureNumbererMock.NextMock.ReturnRandom();
 
-   _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber = Random<unsigned short>();
+   _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber = Random<unsigned>();
    _testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.Expect();
 
    _consoleMock.WriteMock.Expect();
@@ -746,7 +746,7 @@ TEST3X3(PrintIfFailure_Exception_PrintsExpected,
 
    const string testFailureNumber = _testFailureNumbererMock.NextMock.ReturnRandom();
 
-   _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber = Random<unsigned short>();
+   _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber = Random<unsigned>();
    _testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.Expect();
 
    _consoleMock.WriteMock.Expect();
@@ -787,7 +787,7 @@ TEST(PrintIfFailure_SuccessButPastDeadline_PrintsExpected)
    _consoleMock.WriteLineMock.Expect();
    _consoleMock.WriteNewLineMock.Expect();
 
-   _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber = Random<unsigned short>();
+   _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber = Random<unsigned>();
    _testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.Expect();
    //
    _testResult_WriteTestCaseNumberIfAnyMocked.PrintIfFailure(&_consoleMock, &_testFailureNumbererMock);
@@ -814,11 +814,11 @@ TEST(PrintIfFailure_InvalidOutcome_Throws)
 }
 
 TEST2X2(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseNumberIfTestCaseNumberNotMaxValue,
-   unsigned short testCaseNumber, bool expectConsoleWriteLine,
-   static_cast<unsigned short>(numeric_limits<unsigned short>::max()), false,
-   static_cast<unsigned short>(1), true,
-   static_cast<unsigned short>(2), true,
-   static_cast<unsigned short>(3), true)
+   unsigned testCaseNumber, bool expectConsoleWriteLine,
+   static_cast<unsigned>(numeric_limits<unsigned>::max()), false,
+   static_cast<unsigned>(1), true,
+   static_cast<unsigned>(2), true,
+   static_cast<unsigned>(3), true)
 {
    if (expectConsoleWriteLine)
    {

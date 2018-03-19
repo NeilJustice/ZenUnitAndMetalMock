@@ -38,14 +38,22 @@ THEN_SKIP_TEMPLATE_TESTS(SkippedTemplateTestClassB, Reason, unordered_map)
 
 TESTS(Tests)
 AFACT(VoidTest)
-FACTS(NXNTest)
+FACTS(NXNTestA)
+FACTS(NXNTestB)
 EVIDENCE
 
 TEST(VoidTest)
 {
 }
 
-TEST1X1(NXNTest,
+TEST1X1(NXNTestA,
+   int,
+   0,
+   1)
+{
+}
+
+TEST1X1(NXNTestB,
    int,
    0,
    1)

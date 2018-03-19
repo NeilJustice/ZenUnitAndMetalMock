@@ -493,7 +493,7 @@ AFACT(Exit1IfNonExistentTestCaseNumberSpecified_NonEmptyTestResults_DoesNothing)
 AFACT(Exit1IfNonExistentTestCaseNumberSpecified_EmptyTestResults_WritesErrorMessage_Exits1)
 AFACT(ShouldRunTestCaseNumber_EmptyRunFilters_ReturnsTrue)
 FACTS(ShouldRunTestCaseNumber_NonEmptyRunFilters_ReturnsTrueIfAnyRunFilterMatchesTestClassNameTestNameTestCaseNumber)
-FACTS(RunFilterMatchesTest_ReturnsTrueIfRunFilterMatchesTestCaseNumberAndTestClassNameAndTestName)
+FACTS(RunFilterMatchesTestCaseNumberAndFullTestName_ReturnsTrueIfRunFilterMatchesTestCaseNumberAndTestClassNameAndTestName)
 AFACT(RunTestCaseNumber_DoesSo)
 AFACT(NewTestClass_NewsTestClass)
 AFACT(Startup_CallsTestClassStartup)
@@ -508,7 +508,7 @@ EVIDENCE
 unique_ptr<TestNXN<TestingTestClass, N, int>> _testNXN;
 ConsoleMock* _consoleMock = nullptr;
 using ThreeArgAnyerMockType = ThreeArgAnyerMock<
-   std::vector<RunFilter>, bool(*)(const RunFilter&, unsigned short, const FullTestName&), unsigned short, const FullTestName&>;
+   std::vector<RunFilter>, bool(*)(const RunFilter&, unsigned, const FullTestName&), unsigned, const FullTestName&>;
 ThreeArgAnyerMockType* _threeArgAnyerMock = nullptr;
 const string TestClassName = Random<string>();
 const string TestName = Random<string>();
@@ -592,7 +592,7 @@ TEST(Run_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
 {
    struct Test1X1SelfMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
    {
-      ZENMOCK_VOID3(RunTestCaseNumberIfNotFilteredOut, unsigned short, const ZenUnitArgs&, const std::vector<std::string>&)
+      ZENMOCK_VOID3(RunTestCaseNumberIfNotFilteredOut, unsigned, const ZenUnitArgs&, const std::vector<std::string>&)
       ZENMOCK_VOID0_CONST(Exit1IfNonExistentTestCaseNumberSpecified)
 
       Test1X1SelfMocked()
@@ -645,8 +645,8 @@ TEST(Run_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
 
 struct Test1X1SelfMocked_RunTestCaseNumberIfNotFilteredOutTests : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
 {
-   ZENMOCK_NONVOID3_CONST(bool, ShouldRunTestCaseNumber, const ZenUnitArgs&, const FullTestName&, unsigned short)
-   ZENMOCK_VOID2(RunTestCaseNumber, unsigned short, const std::vector<std::string>&)
+   ZENMOCK_NONVOID3_CONST(bool, ShouldRunTestCaseNumber, const ZenUnitArgs&, const FullTestName&, unsigned)
+   ZENMOCK_VOID2(RunTestCaseNumber, unsigned, const std::vector<std::string>&)
 
    Test1X1SelfMocked_RunTestCaseNumberIfNotFilteredOutTests()
    : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>(
@@ -667,7 +667,7 @@ TEST(RunTestCaseNumberIfNotFilteredOut_ShouldNotRunTestCase_DoesNotCallRunTestCa
 {
    test1X1SelfMocked_RunTestCaseNumberIfNotFilteredOutTests.ShouldRunTestCaseNumberMock.Return(false);
 
-   const unsigned short testCaseNumber = ZenUnit::Random<unsigned short>();
+   const unsigned testCaseNumber = ZenUnit::Random<unsigned>();
    const ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
    const vector<string> splitTestCaseArgs = ZenUnit::RandomVector<string>();
    //
@@ -683,7 +683,7 @@ TEST(RunTestCaseNumberIfNotFilteredOut_ShouldRunTestCase_CallsRunTestCaseNumber)
    test1X1SelfMocked_RunTestCaseNumberIfNotFilteredOutTests.ShouldRunTestCaseNumberMock.Return(true);
    test1X1SelfMocked_RunTestCaseNumberIfNotFilteredOutTests.RunTestCaseNumberMock.Expect();
 
-   const unsigned short testCaseNumber = ZenUnit::Random<unsigned short>();
+   const unsigned testCaseNumber = ZenUnit::Random<unsigned>();
    const ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
    const vector<string> splitTestCaseArgs = ZenUnit::RandomVector<string>();
    //
@@ -719,7 +719,7 @@ TEST(ShouldRunTestCaseNumber_EmptyRunFilters_ReturnsTrue)
 {
    const ZenUnitArgs args;
    FullTestName fullTestName;
-   unsigned short testCaseNumber = ZenUnit::Random<unsigned short>();
+   unsigned testCaseNumber = ZenUnit::Random<unsigned>();
    //
    const bool shouldRunTestCaseNumber = _testNXN->ShouldRunTestCaseNumber(args, fullTestName, testCaseNumber);
    //
@@ -737,59 +737,66 @@ TEST2X2(ShouldRunTestCaseNumber_NonEmptyRunFilters_ReturnsTrueIfAnyRunFilterMatc
    FullTestName fullTestName;
    const string nonDefaultTestClassName = ZenUnit::Random<string>();
    fullTestName.testClassName = nonDefaultTestClassName.c_str();
-   unsigned short testCaseNumber = ZenUnit::Random<unsigned short>();
+   unsigned testCaseNumber = ZenUnit::Random<unsigned>();
    //
    const bool shouldRunTestCaseNumber = _testNXN->ShouldRunTestCaseNumber(args, fullTestName, testCaseNumber);
    //
    ZEN(_threeArgAnyerMock->ThreeArgAnyMock.CalledOnceWith(
-      args.runFilters, TestNXN<TestingTestClass, N, int>::RunFilterMatchesTest, testCaseNumber, fullTestName));
+      args.runFilters, TestNXN<TestingTestClass, N, int>::RunFilterMatchesTestCaseNumberAndFullTestName, testCaseNumber, fullTestName));
    ARE_EQUAL(expectedReturnValue, shouldRunTestCaseNumber);
 }
 
-TEST7X7(RunFilterMatchesTest_ReturnsTrueIfRunFilterMatchesTestCaseNumberAndTestClassNameAndTestName,
-   unsigned short runFilterTestCaseNumber, const char* runFilterTestClassName, const char* runFilterTestName,
-   unsigned short testCaseNumber, const char* testClassName, const char* testName, bool expectedReturnValue,
+TEST7X7(RunFilterMatchesTestCaseNumberAndFullTestName_ReturnsTrueIfRunFilterMatchesTestCaseNumberAndTestClassNameAndTestName,
+   unsigned runFilterTestCaseNumber, const char* runFilterTestClassName, const char* runFilterTestName,
+   unsigned testCaseNumber, const char* testClassName, const char* testName, bool expectedReturnValue,
 
-   static_cast<unsigned short>(0), "", "",
-   static_cast<unsigned short>(0), "", "", true,
+   std::numeric_limits<unsigned>::max(), "", "",
+   1, "", "", true,
 
-   static_cast<unsigned short>(0), "", "",
-   static_cast<unsigned short>(1), "", "", false,
+   0, "", "",
+   1, "", "", false,
 
-   static_cast<unsigned short>(0), "TestClassName", "",
-   static_cast<unsigned short>(0), "testclassname", "", false,
+   1, "", "",
+   1, "", "", true,
 
-   static_cast<unsigned short>(0), "TestClassName", "",
-   static_cast<unsigned short>(0), "testclassname", "", false,
+   1, "TestClassName", "",
+   1, "testclassname", "", false,
 
-   static_cast<unsigned short>(0), "TestClassName", "",
-   static_cast<unsigned short>(0), "prefix_TestClassName_suffix", "", false,
+   1, "TestClassName", "",
+   1, "testclassname", "", false,
 
-   static_cast<unsigned short>(0), "TestClassName", "TestName",
-   static_cast<unsigned short>(0), "TestClassName", "testname", false,
+   1, "TestClassName", "",
+   1, "prefix_TestClassName_suffix", "", false,
 
-   static_cast<unsigned short>(0), "TestClassName", "TestName",
-   static_cast<unsigned short>(0), "TestClassName", "prefix_TestName_suffix", false,
+   1, "TestClassName", "TestName",
+   1, "TestClassName", "testname", false,
 
-   static_cast<unsigned short>(1), "TestClassName", "TestName",
-   static_cast<unsigned short>(1), "TestClassName", "TestName", true,
+   1, "TestClassName", "TestName",
+   1, "TestClassName", "prefix_TestName_suffix", false,
 
-   static_cast<unsigned short>(2), "WidgetTests", "Function_Scenario_ExpectedBehavior",
-   static_cast<unsigned short>(2), "WidgetTests", "Function_Scenario_ExpectedBehavior", true)
+   1, "TestClassName", "TestName",
+   1, "TestClassName", "TestName", true,
+
+   2, "WidgetTests", "Function_Scenario_ExpectedBehavior",
+   2, "WidgetTests", "Function_Scenario_ExpectedBehavior", true,
+
+   std::numeric_limits<unsigned>::max(), "WidgetTests", "Function_Scenario_ExpectedBehavior",
+   2, "WidgetTests", "Function_Scenario_ExpectedBehavior", true)
 {
    const RunFilter runFilter(runFilterTestClassName, runFilterTestName, runFilterTestCaseNumber);
    const FullTestName fullTestName(testClassName, testName, ZenUnit::Random<char>());
    //
-   const bool runFilterMatchesTest = TestNXN<TestingTestClass, 1, int>::RunFilterMatchesTest(runFilter, testCaseNumber, fullTestName);
+   const bool runFilterMatchesTestCaseNumberAndFullTestName = TestNXN<TestingTestClass, 1, int>::
+      RunFilterMatchesTestCaseNumberAndFullTestName(runFilter, testCaseNumber, fullTestName);
    //
-   ARE_EQUAL(expectedReturnValue, runFilterMatchesTest);
+   ARE_EQUAL(expectedReturnValue, runFilterMatchesTestCaseNumberAndFullTestName);
 }
 
 TEST(RunTestCaseNumber_DoesSo)
 {
    struct Test1X1SelfMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
    {
-      ZENMOCK_VOID2_CONST(PrintTestCaseNumberArgsThenArrow, unsigned short, const vector<string>&)
+      ZENMOCK_VOID2_CONST(PrintTestCaseNumberArgsThenArrow, unsigned, const vector<string>&)
       ZENMOCK_NONVOID0(TestResult, MockableCallBaseRunTestCase)
       ZENMOCK_VOID1_CONST(WriteLineOKIfSuccess, const TestResult&)
       Test1X1SelfMocked()
@@ -813,7 +820,7 @@ TEST(RunTestCaseNumber_DoesSo)
 
    test1X1SelfMocked.WriteLineOKIfSuccessMock.Expect();
 
-   unsigned short testCaseNumber = ZenUnit::Random<unsigned short>();
+   unsigned testCaseNumber = ZenUnit::Random<unsigned>();
    const vector<string> splitTestCaseArgs = ZenUnit::RandomVector<string>();
    //
    test1X1SelfMocked.RunTestCaseNumber(testCaseNumber, splitTestCaseArgs);
@@ -893,10 +900,10 @@ TEST(DeleteTestClass_DeletesTestClass)
 }
 
 TEST3X3(PrintTestCaseNumberArgsThenArrow_WritesTestCaseNumberArrow,
-   unsigned short testCaseNumber, int expectedTestCaseNumber, size_t expectedTestCaseArgsPrintingStartIndex,
-   static_cast<unsigned short>(1), 1, size_t(0),
-   static_cast<unsigned short>(2), 2, size_t(1),
-   static_cast<unsigned short>(3), 3, size_t(2))
+   unsigned testCaseNumber, int expectedTestCaseNumber, size_t expectedTestCaseArgsPrintingStartIndex,
+   static_cast<unsigned>(1), 1, size_t(0),
+   static_cast<unsigned>(2), 2, size_t(1),
+   static_cast<unsigned>(3), 3, size_t(2))
 {
    _consoleMock->WriteColorMock.Expect();
    _consoleMock->WriteMock.Expect();

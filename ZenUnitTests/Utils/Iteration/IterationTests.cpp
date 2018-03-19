@@ -395,7 +395,7 @@ namespace ZenUnit
       vector<T> source{ 1, 2, 3 };
       //
       const vector<TransformedT> dest = _transformer.RandomTransform(&source, PlusOne,
-         static_cast<unsigned short>(chrono::system_clock::now().time_since_epoch().count()));
+         static_cast<unsigned>(chrono::system_clock::now().time_since_epoch().count()));
       //
       ARE_EQUAL(3, dest.size());
       IS_TRUE(

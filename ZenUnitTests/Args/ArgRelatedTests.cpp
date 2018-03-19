@@ -386,8 +386,8 @@ TEST(Parse_TransformsRunFilterStringsToRunFilters)
 
 TEST2X2(ParseRunFilterString_JustTestClassName_ReturnsExpectedRunFilter,
    const string& runFilterString, const RunFilter& expectedRunFilter,
-   "TestClassA", RunFilter("TestClassA", "", 0),
-   "TestClassB", RunFilter("TestClassB", "", 0))
+   "TestClassA", RunFilter("TestClassA", "", std::numeric_limits<unsigned>::max()),
+   "TestClassB", RunFilter("TestClassB", "", std::numeric_limits<unsigned>::max()))
 {
    const RunFilter runFilter = _runFilterParser.ParseRunFilterString(runFilterString);
    ARE_EQUAL(expectedRunFilter, runFilter);
@@ -395,8 +395,8 @@ TEST2X2(ParseRunFilterString_JustTestClassName_ReturnsExpectedRunFilter,
 
 TEST2X2(ParseRunFilterString_TestClassNameDotTestName_ReturnsExpectedRunFilter,
    const string& runFilterString, const RunFilter& expectedRunFilter,
-   "TestClassA.TestNameA", RunFilter("TestClassA", "TestNameA", 0),
-   "TestClassB.TestNameB", RunFilter("TestClassB", "TestNameB", 0))
+   "TestClassA.TestNameA", RunFilter("TestClassA", "TestNameA", std::numeric_limits<unsigned>::max()),
+   "TestClassB.TestNameB", RunFilter("TestClassB", "TestNameB", std::numeric_limits<unsigned>::max()))
 {
    const RunFilter runFilter = _runFilterParser.ParseRunFilterString(runFilterString);
    ARE_EQUAL(expectedRunFilter, runFilter);
@@ -442,18 +442,18 @@ RUN_TESTS(RunFilterParserTests)
 
 
 TESTS(RunFilterTests)
-AFACT(DefaultConstructor_SetsTestCaseTo0)
+AFACT(DefaultConstructor_SetsTestCaseNumberToUnsignedMaxValue)
 AFACT(ThreeArgumentConstructor_SetsFields)
 FACTS(StringMatchesFilterString_ReturnsTrueIfStringCaseInsensitiveEqualsFilterString_OrIfFilterStringEndsInStar_ReturnsTrueIfStringCaseInsensitiveStartsWithFilterString)
 AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
 EVIDENCE
 
-TEST(DefaultConstructor_SetsTestCaseTo0)
+TEST(DefaultConstructor_SetsTestCaseNumberToUnsignedMaxValue)
 {
    RunFilter runFilter;
    ARE_EQUAL("", runFilter.testClassName);
    ARE_EQUAL("", runFilter.testName);
-   ARE_EQUAL(0, runFilter.testCaseNumber);
+   ARE_EQUAL(std::numeric_limits<unsigned>::max(), runFilter.testCaseNumber);
 }
 
 TEST(ThreeArgumentConstructor_SetsFields)
