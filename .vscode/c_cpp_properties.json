@@ -5,15 +5,16 @@
             "name": "Linux",
             "includePath":
             [
-                "/usr/include",
-                "/usr/local/include/windows_potemkin_village"
+                "/usr/include/c++/7",
+                "/usr/include/c++/7/x86_64-redhat-linux",
+                "/usr/include/linux"
             ],
             "browse":
             {
                 "path":
                 [
                     "/usr/include",
-                    "/usr/local/include/windows_potemkin_village",
+                    "/usr/local/include",
                     "${workspaceRoot}"
                 ]
             },
