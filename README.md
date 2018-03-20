@@ -10,10 +10,10 @@ ZenMock is a single-header C++ mocking framework powered by ZenUnit featuring st
 ### ZenUnit Command Line Usage
 
 ```
-ZenUnit and ZenMock v0.2.0
+ZenUnit and ZenMock v0.2.1
 Usage: <TestsBinaryName> [Options...]
 
-Rigor:
+Testing Rigor:
 
 -random[=Seed]
    Run test classes and tests in a random order.
@@ -23,7 +23,7 @@ Rigor:
 -failskips
    Exit 1 regardless of test run outcome if any tests are skipped.
 
-Filtration:
+Testing Filtration:
 
 -run=<TestClassName>[.TestName][/TestCaseNumber][,...]
    Run only specified case-insensitive test classes, tests, or test cases.
@@ -39,7 +39,7 @@ Filtration:
 -failfast
    Immediately exit with exit code 1 if a test fails.
 
-Utility:
+Testing Utility:
 
 -pause
    Wait for any key before running tests to allow attaching a profiler or debugger.

@@ -11,12 +11,12 @@ static_assert(sizeof(FileLine) == 16);
 #endif
 
 #if defined __linux__
-//static_assert(sizeof(RunFilter) == 72);
+//static_assert(sizeof(RunFilter) == 80);
 #elif defined(_WIN64)
 #if defined _DEBUG
-static_assert(sizeof(RunFilter) == 88);
+static_assert(sizeof(RunFilter) == 96);
 #elif NDEBUG
-static_assert(sizeof(RunFilter) == 72);
+static_assert(sizeof(RunFilter) == 80);
 #endif
 #endif
 

@@ -7,8 +7,8 @@ namespace ZenUnit
    RunFilter Random<RunFilter>()
    {
       RunFilter randomRunFilter;
-      randomRunFilter.testClassName = ZenUnit::Random<std::string>();
-      randomRunFilter.testName = ZenUnit::Random<std::string>();
+      randomRunFilter.testClassNamePattern = ZenUnit::Random<std::string>();
+      randomRunFilter.testNamePattern = ZenUnit::Random<std::string>();
       randomRunFilter.testCaseNumber = ZenUnit::Random<unsigned>();
       return randomRunFilter;
    }

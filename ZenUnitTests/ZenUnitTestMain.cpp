@@ -65,5 +65,6 @@ RUN_TESTS(Tests)
 int main(int argc, char* argv[])
 {
    FileLiner::zenUnitTestingMode = true;
-   return ZenUnit::RunTests(argc, argv);
+   const int exitCode = ZenUnit::RunTests(argc, argv);
+   return exitCode;
 }

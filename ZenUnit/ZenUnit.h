@@ -596,10 +596,45 @@ namespace ZenUnit
 #define assert_true(predicate) ZenUnit::AssertTrue(predicate, #predicate, FILELINE, static_cast<const char*>(__func__))
 #endif
 
+   struct FullTestName
+   {
+      const char* testClassName;
+      const char* testName;
+      unsigned char arity;
+
+      FullTestName() noexcept
+         : testClassName(nullptr)
+         , testName(nullptr)
+         , arity(0)
+      {
+      }
+
+      FullTestName(const char* testClassName, const char* testName, unsigned char arity) noexcept
+         : testClassName(testClassName)
+         , testName(testName)
+         , arity(arity)
+      {
+      }
+
+      std::string Value() const
+      {
+         const bool testClassIsTemplated = String::Contains(testClassName, "<");
+         const char* const testsOrTemplateTests = testClassIsTemplated ? "TEMPLATE_TESTS(" : "TESTS(";
+         if (arity == 0)
+         {
+            const std::string fullTestName = String::Concat(testsOrTemplateTests, testClassName, ")\nTEST(", testName, ')');
+            return fullTestName;
+         }
+         const std::string fullTestName = String::Concat(
+            testsOrTemplateTests, testClassName, ")\nTEST", static_cast<int>(arity), 'X', static_cast<int>(arity), '(', testName, ')');
+         return fullTestName;
+      }
+   };
+
    struct RunFilter
    {
-      std::string testClassName;
-      std::string testName;
+      std::string testClassNamePattern;
+      std::string testNamePattern;
       unsigned testCaseNumber;
 
       RunFilter() noexcept
@@ -607,36 +642,66 @@ namespace ZenUnit
       {
       }
 
-      RunFilter(const std::string& testClassName, const std::string& testName, unsigned testCaseNumber)
-         : testClassName(testClassName)
-         , testName(testName)
+      RunFilter(const std::string& testClassNamePattern, const std::string& testNamePattern, unsigned testCaseNumber)
+         : testClassNamePattern(testClassNamePattern)
+         , testNamePattern(testNamePattern)
          , testCaseNumber(testCaseNumber)
       {
       }
 
-      static bool StringMatchesFilterString(const char* str, const std::string& filterString)
+      virtual ~RunFilter() = default;
+
+      virtual bool MatchesTestClassName(const char* testClassName) const
       {
-         if (filterString.empty())
+         return FilterPatternMatchesString(testClassNamePattern, testClassName);
+      }
+
+      virtual bool MatchesTestName(const char* testName) const
+      {
+         return FilterPatternMatchesString(testNamePattern, testName);
+      }
+
+      virtual bool FilterPatternMatchesString(const std::string& filterPattern, const char* str) const
+      {
+         if (filterPattern.empty())
          {
             return true;
          }
-         if (filterString.back() == '*')
+         if (filterPattern.back() == '*')
          {
-            const std::string filterStringWithoutStarAtTheEnd(
-               filterString.c_str(), filterString.length() - 1);
-            if (String::CaseInsensitiveStartsWith(str, filterStringWithoutStarAtTheEnd))
+            const std::string filterPatternWithoutStarAtTheEnd(
+               filterPattern.c_str(), filterPattern.length() - 1);
+            if (String::CaseInsensitiveStartsWith(str, filterPatternWithoutStarAtTheEnd))
             {
                return true;
             }
          }
          else
          {
-            if (String::CaseInsensitiveStrcmp(str, filterString.c_str()) == 0)
+            if (String::CaseInsensitiveStrcmp(str, filterPattern.c_str()) == 0)
             {
                return true;
             }
          }
          return false;
+      }
+
+      virtual bool MatchesTestCase(const char* testClassName, const char* testName, unsigned textNXNTestCaseNumber) const
+      {
+         const bool matchesTestClassName = MatchesTestClassName(testClassName);
+         if (!matchesTestClassName)
+         {
+            return false;
+         }
+         const bool matchesTestName = MatchesTestName(testName);
+         if (!matchesTestName)
+         {
+            return false;
+         }
+         const bool testCaseNumberUnsetOrMatches =
+            testCaseNumber == std::numeric_limits<unsigned>::max() ||
+            testCaseNumber == textNXNTestCaseNumber;
+         return testCaseNumberUnsetOrMatches;
       }
    };
 
@@ -1522,7 +1587,7 @@ namespace ZenUnit
          {
             ThrowInvalidArgumentOnAccountOfInvalidTestRunFilterString(testRunFilter);
          }
-         runFilter.testClassName = testClassNameAndTestNameSlashTestCaseNumber[0];
+         runFilter.testClassNamePattern = testClassNameAndTestNameSlashTestCaseNumber[0];
          if (testClassNameAndTestNameSlashTestCaseNumber.size() == 2)
          {
             const std::vector<std::string> testNameAndTestCaseNumber =
@@ -1531,7 +1596,7 @@ namespace ZenUnit
             {
                ThrowInvalidArgumentOnAccountOfInvalidTestRunFilterString(testRunFilter);
             }
-            runFilter.testName = testNameAndTestCaseNumber[0];
+            runFilter.testNamePattern = testNameAndTestCaseNumber[0];
             if (testNameAndTestCaseNumber.size() == 2)
             {
                const std::string& testCaseNumberString = testNameAndTestCaseNumber[1];
@@ -1697,10 +1762,10 @@ namespace ZenUnit
 
       static const std::string& Usage()
       {
-         static const std::string usage = R"(ZenUnit and ZenMock v0.2.0
+         static const std::string usage = R"(ZenUnit and ZenMock v0.2.1
 Usage: <TestsBinaryName> [Options...]
 
-Rigor:
+Testing Rigor:
 
 -random[=Seed]
    Run test classes and tests in a random order.
@@ -1710,7 +1775,7 @@ Rigor:
 -failskips
    Exit 1 regardless of test run outcome if any tests are skipped.
 
-Filtration:
+Testing Filtration:
 
 -run=<TestClassName>[.TestName][/TestCaseNumber][,...]
    Run only specified case-insensitive test classes, tests, or test cases.
@@ -1726,7 +1791,7 @@ Filtration:
 -failfast
    Immediately exit with exit code 1 if a test fails.
 
-Utility:
+Testing Utility:
 
 -pause
    Wait for any key before running tests to allow attaching a profiler or debugger.
@@ -2937,41 +3002,6 @@ Utility:
       }
    };
 
-   struct FullTestName
-   {
-      const char* testClassName;
-      const char* testName;
-      unsigned char arity;
-
-      FullTestName() noexcept
-         : testClassName(nullptr)
-         , testName(nullptr)
-         , arity(0)
-      {
-      }
-
-      FullTestName(const char* testClassName, const char* testName, unsigned char arity) noexcept
-         : testClassName(testClassName)
-         , testName(testName)
-         , arity(arity)
-      {
-      }
-
-      std::string Value() const
-      {
-         const bool testClassIsTemplated = String::Contains(testClassName, "<");
-         const char* const testsOrTemplateTests = testClassIsTemplated ? "TEMPLATE_TESTS(" : "TESTS(";
-         if (arity == 0)
-         {
-            const std::string fullTestName = String::Concat(testsOrTemplateTests, testClassName, ")\nTEST(", testName, ')');
-            return fullTestName;
-         }
-         const std::string fullTestName = String::Concat(
-            testsOrTemplateTests, testClassName, ")\nTEST", static_cast<int>(arity), 'X', static_cast<int>(arity), '(', testName, ')');
-         return fullTestName;
-      }
-   };
-
    class TestFailureNumberer
    {
       friend class TestFailureNumbererTests;
@@ -3698,12 +3728,10 @@ Utility:
       using TwoArgMemberAnyerType = TwoArgMemberAnyer<
          std::vector<RunFilter>, TestClassRunner, bool(TestClassRunner::*)(const RunFilter&, const char*) const, const char*>;
       std::unique_ptr<const TwoArgMemberAnyerType> p_twoArgMemberAnyer;
-      std::function<bool(const char*, const std::string&)> call_RunFilter_StringMatchesFilterString;
    public:
       TestClassRunner() noexcept
          : p_console(std::make_unique<Console>())
          , p_twoArgMemberAnyer(std::make_unique<TwoArgMemberAnyerType>())
-         , call_RunFilter_StringMatchesFilterString(RunFilter::StringMatchesFilterString)
       {
       }
 
@@ -3712,14 +3740,13 @@ Utility:
 
       virtual const char* TestClassName() const = 0;
       virtual size_t NumberOfTestCases() const = 0;
-      virtual bool HasTestNameThatCaseInsensitiveEqualsRunFilterTestName(const std::string& runFilterTestName) const = 0;
+      virtual bool HasTestThatMatchesRunFilter(const RunFilter& runFilter) const = 0;
       virtual TestClassResult RunTests() = 0;
 
-      bool TestNameCaseInsensitiveMatchesRunFilterTestName(
-         const RunFilter& runFilter, const char* testName) const
+      bool RunFilterMatchesTestName(const RunFilter& runFilter, const char* testName) const
       {
-         bool testNameMatchesRunFilter = call_RunFilter_StringMatchesFilterString(testName, runFilter.testName);
-         return testNameMatchesRunFilter;
+         bool runFilterMatchesTestName = runFilter.MatchesTestName(testName);
+         return runFilterMatchesTestName;
       }
 
       friend bool operator<(
@@ -3752,7 +3779,7 @@ Utility:
          return TestClassResult();
       }
 
-      bool HasTestNameThatCaseInsensitiveEqualsRunFilterTestName(const std::string&) const override
+      bool HasTestThatMatchesRunFilter(const RunFilter&) const override
       {
          return false;
       }
@@ -3780,7 +3807,6 @@ Utility:
       std::unique_ptr<const Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>> _transformer;
       std::unique_ptr<const Watch> _watch;
       std::vector<std::unique_ptr<TestClassRunner>> _testClassRunners;
-      std::function<bool(const char*, const std::string&)> call_RunFilter_StringMatchesFilterString;
    public:
       TestClassRunnerRunner() noexcept
          : _twoArgMemberForEacher(std::make_unique<TwoArgMemberForEacherType>())
@@ -3788,7 +3814,6 @@ Utility:
          , _sorter(std::make_unique<Sorter<std::vector<std::unique_ptr<TestClassRunner>>>>())
          , _transformer(std::make_unique<Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>>())
          , _watch(std::make_unique<Watch>())
-         , call_RunFilter_StringMatchesFilterString(RunFilter::StringMatchesFilterString)
       {
       }
 
@@ -3865,15 +3890,13 @@ Utility:
       bool RunFilterMatchesTestClass(const RunFilter& runFilter, const TestClassRunner* testClassRunner) const
       {
          const char* const testClassName = testClassRunner->TestClassName();
-         bool testClassNameMatchesRunFilterTestClassName =
-            call_RunFilter_StringMatchesFilterString(testClassName, runFilter.testClassName);
-         if (!testClassNameMatchesRunFilterTestClassName)
+         const bool runFilterMatchesTestClassName = runFilter.MatchesTestClassName(testClassName);
+         if (!runFilterMatchesTestClassName)
          {
             return false;
          }
-         bool runFilterTestNameIsBlankOrTestClassHasTestNameThatCaseInsensitiveEqualsRunFilterTestName =
-            testClassRunner->HasTestNameThatCaseInsensitiveEqualsRunFilterTestName(runFilter.testName);
-         return runFilterTestNameIsBlankOrTestClassHasTestNameThatCaseInsensitiveEqualsRunFilterTestName;
+         const bool hasTestThatMatchesRunFilter = testClassRunner->HasTestThatMatchesRunFilter(runFilter);
+         return hasTestThatMatchesRunFilter;
       }
 
       static TestClassResult RunTestClassRunner(const std::unique_ptr<TestClassRunner>& testClassRunner)
@@ -4308,7 +4331,7 @@ Utility:
          for (unsigned testRunIndex = 0; testRunIndex < _zenUnitArgs.testruns; ++testRunIndex)
          {
             const int testRunExitCode = _nonVoidOneArgMemberFunctionCaller->NonConstCall(
-               this, &TestRunner::RunTestClassesAndPrintResults, _zenUnitArgs);
+               this, &TestRunner::PrintPreambleRunTestClassesPrintConclusion, _zenUnitArgs);
             assert_true(testRunExitCode == 0 || testRunExitCode == 1);
             overallExitCode |= testRunExitCode;
             _testRunResult->ResetStateExceptForSkips();
@@ -4332,7 +4355,7 @@ Utility:
          return true;
       }
 
-      int RunTestClassesAndPrintResults(const ZenUnitArgs& zenUnitArgs)
+      int PrintPreambleRunTestClassesPrintConclusion(const ZenUnitArgs& zenUnitArgs)
       {
          _preamblePrinter->PrintOpeningThreeLines(zenUnitArgs, _testClassRunnerRunner.get());
          _havePaused = _nonVoidTwoArgMemberFunctionCaller->ConstCall(
@@ -4522,7 +4545,7 @@ Utility:
          return 0;
       }
 
-      virtual std::vector<TestResult> Run()
+      virtual std::vector<TestResult> RunTest()
       {
          return {};
       }
@@ -4567,7 +4590,7 @@ Utility:
       {
       }
    protected:
-      TestResult RunTestCase()
+      TestResult BaseRunTest()
       {
          const CallResult constructorCallResult =
             _tryCatchCaller->Call(&Test::CallNewTestClass, this, TestPhase::Constructor);
@@ -4682,7 +4705,7 @@ Utility:
          return 1;
       }
 
-      std::vector<TestResult> Run() override
+      std::vector<TestResult> RunTest() override
       {
          _stopwatch->Start();
          const CallResult constructorCallResult = _tryCatchCaller->Call(&Test::CallNewTestClass, this, TestPhase::Constructor);
@@ -4727,8 +4750,8 @@ Utility:
          void, SpecificTestClassRunner<TestClassType>, const TestClassResult*>> _voidOneArgFunctionCaller;
       using TwoArgTestAnyerType = TwoArgAnyer<
          const std::vector<std::unique_ptr<Test>>,
-         bool(*)(const std::unique_ptr<Test>&, const std::string&),
-         const std::string&>;
+         bool(*)(const std::unique_ptr<Test>&,
+         const RunFilter&), const RunFilter&>;
       std::unique_ptr<const TwoArgTestAnyerType> _twoArgTestAnyer;
       std::function<const ZenUnitArgs&()> call_TestRunner_GetArgs;
       const char* _testClassName;
@@ -4755,24 +4778,22 @@ Utility:
          return _testClassName;
       }
 
-      bool HasTestNameThatCaseInsensitiveEqualsRunFilterTestName(const std::string& runFilterTestName) const override
+      bool HasTestThatMatchesRunFilter(const RunFilter& runFilter) const override
       {
-         if (runFilterTestName.empty())
+         if (runFilter.testNamePattern.empty())
          {
             return true;
          }
-         const bool hasTestNameThatCaseInsensitiveEqualsRunFilterTestName = _twoArgTestAnyer->TwoArgAny(
-            &_tests, TestNameCaseInsensitiveEqualsRunFilterTestName, runFilterTestName);
-         return hasTestNameThatCaseInsensitiveEqualsRunFilterTestName;
+         const bool thisTestClassHasATestThatMatchesARunFilter =
+            _twoArgTestAnyer->TwoArgAny(&_tests, RunFilterMatchesTestName, runFilter);
+         return thisTestClassHasATestThatMatchesARunFilter;
       }
 
-      static bool TestNameCaseInsensitiveEqualsRunFilterTestName(
-         const std::unique_ptr<Test>& test, const std::string& runFilterTestName)
+      static bool RunFilterMatchesTestName(const std::unique_ptr<Test>& test, const RunFilter& runFilter)
       {
          const char* const testName = test->Name();
-         const bool testNameCaseInsensitiveEqualsRunFilterTestName =
-            String::CaseInsensitiveStrcmp(testName, runFilterTestName.c_str()) == 0;
-         return testNameCaseInsensitiveEqualsRunFilterTestName;
+         const bool runFilterMatchesTestName = runFilter.MatchesTestName(testName);
+         return runFilterMatchesTestName;
       }
 
       size_t NumberOfTestCases() const override
@@ -4832,7 +4853,7 @@ Utility:
          p_console->WriteColor("|", Color::Green);
          static const std::string TestClassIsNewableAndDeletableString = "TestClassIsNewableAndDeletable -> ";
          p_console->Write(TestClassIsNewableAndDeletableString);
-         const std::vector<TestResult> newableDeletableTestResults = newableDeletableTest->Run();
+         const std::vector<TestResult> newableDeletableTestResults = newableDeletableTest->RunTest();
          assert_true(newableDeletableTestResults.size() == 1);
          outTestClassResult->AddTestResults(newableDeletableTestResults);
          const TestResult newableDeletableTestResult = newableDeletableTestResults[0];
@@ -4851,14 +4872,14 @@ Utility:
       {
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
          const char* const testName = test->Name();
-         const bool doRunTest = zenUnitArgs.runFilters.empty() || p_twoArgMemberAnyer->TwoArgAny(
-            zenUnitArgs.runFilters, this, &TestClassRunner::TestNameCaseInsensitiveMatchesRunFilterTestName, testName);
-         if (doRunTest)
+         const bool runFilterMatchesTestName = zenUnitArgs.runFilters.empty() || p_twoArgMemberAnyer->TwoArgAny(
+            zenUnitArgs.runFilters, this, &TestClassRunner::RunFilterMatchesTestName, testName);
+         if (runFilterMatchesTestName)
          {
             p_console->WriteColor("|", Color::Green);
             p_console->Write(testName);
             test->WritePostTestNameMessage(p_console.get());
-            const std::vector<TestResult> testResults = test->Run();
+            const std::vector<TestResult> testResults = test->RunTest();
             test->WritePostTestCompletionMessage(p_console.get(), testResults[0]);
             outTestClassResult->AddTestResults(testResults);
          }
@@ -4899,9 +4920,9 @@ Utility:
          testResult.WriteLineOKIfSuccess(console);
       }
 
-      std::vector<TestResult> Run() override
+      std::vector<TestResult> RunTest() override
       {
-         const TestResult testResult = RunTestCase();
+         const TestResult testResult = BaseRunTest();
          return { testResult };
       }
 
@@ -4975,10 +4996,10 @@ Utility:
          console->WriteLine("...");
       }
 
-      std::vector<TestResult> Run() override
+      std::vector<TestResult> RunTest() override
       {
          const std::unique_ptr<Test>* const test = PmfTokenToTest();
-         const std::vector<TestResult> testResults = (*test)->Run();
+         const std::vector<TestResult> testResults = (*test)->RunTest();
          return testResults;
       }
    private:
@@ -4997,7 +5018,7 @@ Utility:
    private:
       std::unique_ptr<const Console> _console;
       using ThreeArgAnyerType = ThreeArgAnyer<
-         std::vector<RunFilter>, bool(*)(const RunFilter&, unsigned, const FullTestName&), unsigned, const FullTestName&>;
+         std::vector<RunFilter>, bool(*)(const RunFilter&, const FullTestName&, unsigned), const FullTestName&, unsigned>;
       std::unique_ptr<ThreeArgAnyerType> _threeArgAnyer;
       std::function<const ZenUnitArgs&()> call_TestRunner_GetArgs;
       std::function<std::vector<std::string>(const char*)> call_String_CommaSplitExceptQuotedCommas;
@@ -5054,7 +5075,7 @@ Utility:
       {
       }
 
-      std::vector<TestResult> Run() override
+      std::vector<TestResult> RunTest() override
       {
          assert_true(_testCaseArgsIndex == 0);
          const ZenUnitArgs& args = call_TestRunner_GetArgs();
@@ -5064,7 +5085,7 @@ Utility:
               _testCaseArgsIndex < NumberOfTestCaseArgs;
               _testCaseArgsIndex += N, ++testCaseNumber)
          {
-            RunTestCaseNumberIfNotFilteredOut(testCaseNumber, args, splitTestCaseArgs);
+            RunTestCaseIfNotFilteredOut(testCaseNumber, args, splitTestCaseArgs);
          }
          Exit1IfNonExistentTestCaseNumberSpecified();
          _testCaseArgsIndex = 0; // Reset to 0 to ready this TestNXN for another run in case -testruns=N specified
@@ -5081,14 +5102,29 @@ Utility:
          _testClass.reset();
       }
    private:
-      virtual void RunTestCaseNumberIfNotFilteredOut(
+      virtual void RunTestCaseIfNotFilteredOut(
          unsigned testCaseNumber, const ZenUnitArgs& args, const std::vector<std::string>& splitTestCaseArgs)
       {
-         const bool shouldRunTestCaseNumber = ShouldRunTestCaseNumber(args, p_fullTestName, testCaseNumber);
-         if (shouldRunTestCaseNumber)
+         const bool shouldRunTestCase = ShouldRunTestCase(args, p_fullTestName, testCaseNumber);
+         if (shouldRunTestCase)
          {
-            RunTestCaseNumber(testCaseNumber, splitTestCaseArgs);
+            RunTestCase(testCaseNumber, splitTestCaseArgs);
          }
+      }
+
+      virtual void RunTestCase(unsigned testCaseNumber, const std::vector<std::string>& splitTestCaseArgs)
+      {
+         PrintTestCaseNumberArgsThenArrow(testCaseNumber, splitTestCaseArgs);
+         TestResult testResult = MockableCallBaseRunTest();
+         testResult.testCaseNumber = testCaseNumber;
+         _testResults.push_back(testResult);
+         WriteLineOKIfSuccess(testResult);
+      }
+
+      virtual TestResult MockableCallBaseRunTest()
+      {
+         const TestResult testResult = BaseRunTest();
+         return testResult;
       }
 
       virtual void Exit1IfNonExistentTestCaseNumberSpecified() const
@@ -5101,49 +5137,26 @@ Utility:
          }
       }
 
-      virtual bool ShouldRunTestCaseNumber(
-         const ZenUnitArgs& args, const FullTestName& fullTestName, unsigned testCaseNumber) const
+      virtual bool ShouldRunTestCase(const ZenUnitArgs& args, const FullTestName& fullTestName, unsigned testCaseNumber) const
       {
          if (args.runFilters.empty())
          {
             return true;
          }
-         const bool anyRunFilterMatchesThisTestCaseNumber = _threeArgAnyer->ThreeArgAny(
-            args.runFilters, RunFilterMatchesTestCaseNumberAndFullTestName, testCaseNumber, fullTestName);
-         return anyRunFilterMatchesThisTestCaseNumber;
+         const bool anyRunFilterMatchesThisTestCase = _threeArgAnyer->ThreeArgAny(
+            args.runFilters, RunFilterMatchesTestCase, fullTestName, testCaseNumber);
+         return anyRunFilterMatchesThisTestCase;
       }
 
-      static bool RunFilterMatchesTestCaseNumberAndFullTestName(
-         const RunFilter& runFilter, unsigned testCaseNumber, const FullTestName& fullTestName)
+      static bool RunFilterMatchesTestCase(const RunFilter& runFilter, const FullTestName& fullTestName, unsigned testCaseNumber)
       {
          assert_true(testCaseNumber >= 1 && testCaseNumber != std::numeric_limits<unsigned>::max());
-         const bool testCaseNumberUnsetOrMatches =
-            runFilter.testCaseNumber == std::numeric_limits<unsigned>::max() ||
-            runFilter.testCaseNumber == testCaseNumber;
-         const bool runFilterMatchesTestCaseNumberAndFullTestName =
-            testCaseNumberUnsetOrMatches &&
-            runFilter.testClassName == fullTestName.testClassName &&
-            runFilter.testName == fullTestName.testName;
-         return runFilterMatchesTestCaseNumberAndFullTestName;
+         const bool runFilterMatchesTestCase = runFilter.MatchesTestCase(
+            fullTestName.testClassName, fullTestName.testName, testCaseNumber);
+         return runFilterMatchesTestCase;
       }
 
-      virtual void RunTestCaseNumber(unsigned testCaseNumber, const std::vector<std::string>& splitTestCaseArgs)
-      {
-         PrintTestCaseNumberArgsThenArrow(testCaseNumber, splitTestCaseArgs);
-         TestResult testResult = MockableCallBaseRunTestCase();
-         testResult.testCaseNumber = testCaseNumber;
-         _testResults.push_back(testResult);
-         WriteLineOKIfSuccess(testResult);
-      }
-
-      virtual TestResult MockableCallBaseRunTestCase()
-      {
-         const TestResult testResult = RunTestCase();
-         return testResult;
-      }
-
-      virtual void PrintTestCaseNumberArgsThenArrow(
-         unsigned testCaseNumber, const std::vector<std::string>& splitTestCaseArgs) const
+      virtual void PrintTestCaseNumberArgsThenArrow(unsigned testCaseNumber, const std::vector<std::string>& splitTestCaseArgs) const
       {
          _console->WriteColor(" [", Color::Green);
          const std::string testCaseNumberString = std::to_string(testCaseNumber);
@@ -6001,8 +6014,8 @@ by changing TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
          const ZenUnit::RunFilter& expectedRunFilter,
          const ZenUnit::RunFilter& actualRunFilter)
       {
-         ARE_EQUAL(expectedRunFilter.testClassName, actualRunFilter.testClassName);
-         ARE_EQUAL(expectedRunFilter.testName, actualRunFilter.testName);
+         ARE_EQUAL(expectedRunFilter.testClassNamePattern, actualRunFilter.testClassNamePattern);
+         ARE_EQUAL(expectedRunFilter.testNamePattern, actualRunFilter.testNamePattern);
          ARE_EQUAL(expectedRunFilter.testCaseNumber, actualRunFilter.testCaseNumber);
       }
    };

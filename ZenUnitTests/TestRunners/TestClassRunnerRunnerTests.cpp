@@ -7,6 +7,7 @@
 #include "ZenUnitTests/TestRunners/Mock/TestClassRunnerMock.h"
 #include "ZenUnitTests/Random/RandomRunFilter.h"
 #include "ZenUnitTests/Random/RandomTestClassResult.h"
+#include "ZenUnitTests/Args/Mock/RunFilterMock.h"
 
 namespace ZenUnit
 {
@@ -19,8 +20,8 @@ AFACT(ApplyRunFiltersIfAny_RunFiltersEmpty_DoesNothing)
 AFACT(ApplyRunFiltersIfAny_RunFiltersNotEmpty_ResetsWithNoOpTestClassesThoseTestClassesThatMatchRunFilters)
 AFACT(ResetTestClassRunnerWithNoOpIfTestClassNameDoesNotMatchAnyRunFilter_TestClassNameMatchesAtLeastOneRunFilter_DoesNotResetTestClassRunnerWithNoOp)
 AFACT(ResetTestClassRunnerWithNoOpIfTestClassNameDoesNotMatchAnyRunFilter_TestClassNameDoesNotMatchAnyRunFilter_ResetsTestClassRunnerWithNoOp)
-AFACT(RunFilterMatchesTestClass_TestClassNameDoesNotMatch_ReturnsFalse_DoesNotCallTestClassRunnerHasTestName)
-FACTS(RunFilterMatchesTestClass_TestClassNameMatches_ReturnsTrueIfTestClassRunnerHasTestNameReturnsTrue)
+AFACT(RunFilterMatchesTestClass_RunFilterDoesNotMatchTestClassName_ReturnsFalse)
+AFACT(RunFilterMatchesTestClass_RunFilterMatchesTestClassName_ReturnsTrueIfTestClassHasTestThatMatchesRunFilter)
 AFACT(RunTestClasses_NonRandomMode_SortsTestClassRunnersByName_RunsTestClassesSequentially_ReturnsTestClassResults)
 FACTS(RunTestClasses_RandomMode_SetsRandomSeedIfNotSetByUser_RunsTestClassesRandomly_ReturnsTestClassResults)
 AFACT(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)
@@ -47,8 +48,6 @@ using TransformerMockType = TransformerMock<unique_ptr<TestClassRunner>, TestCla
 TransformerMockType* _transformerMock = nullptr;
 WatchMock* _watchMock = nullptr;
 
-ZENMOCK_NONVOID2_STATIC(bool, RunFilter, StringMatchesFilterString, const char*, const string&)
-
 STARTUP
 {
    _testClassRunnerRunner._twoArgMemberForEacher.reset(_twoArgMemberForEacherMock = new TwoArgMemberForEacherMockType);
@@ -56,7 +55,6 @@ STARTUP
    _testClassRunnerRunner._sorter.reset(_sorterMock = new SorterMock<vector<unique_ptr<TestClassRunner>>>);
    _testClassRunnerRunner._transformer.reset(_transformerMock = new TransformerMockType);
    _testClassRunnerRunner._watch.reset(_watchMock = new WatchMock);
-   _testClassRunnerRunner.call_RunFilter_StringMatchesFilterString = ZENMOCK_BIND2(StringMatchesFilterString_ZenMock);
 }
 
 TEST(Constructor_NewsComponents)
@@ -68,7 +66,6 @@ TEST(Constructor_NewsComponents)
    POINTER_WAS_NEWED(testClassRunnerRunner._transformer);
    POINTER_WAS_NEWED(testClassRunnerRunner._watch);
    IS_EMPTY(testClassRunnerRunner._testClassRunners);
-   STD_FUNCTION_TARGETS(RunFilter::StringMatchesFilterString, testClassRunnerRunner.call_RunFilter_StringMatchesFilterString);
 }
 
 TEST(AddTestClassRunner_EmplacesBackTestClassRunner_MakesNumberOfTestClassesToBeRunReturnAnIncreasingNumber)
@@ -175,45 +172,42 @@ TEST(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
    ARE_EQUAL(30, totalNumberOfTestCases);
 }
 
-TEST(RunFilterMatchesTestClass_TestClassNameDoesNotMatch_ReturnsFalse_DoesNotCallTestClassRunnerHasTestName)
+TEST(RunFilterMatchesTestClass_RunFilterDoesNotMatchTestClassName_ReturnsFalse)
 {
-   StringMatchesFilterString_ZenMock.Return(false);
+   RunFilterMock runFilterMock;
+   runFilterMock.MatchesTestClassNameMock.Return(false);
 
    TestClassRunnerMock* const testClassRunnerMock = new TestClassRunnerMock;
    const string testClassName = ZenUnit::Random<string>();
    testClassRunnerMock->TestClassNameMock.Return(testClassName.c_str());
    const std::unique_ptr<TestClassRunner> testClassRunner(testClassRunnerMock);
-
-   const RunFilter runFilter = ZenUnit::Random<RunFilter>();
    //
-   const bool runFilterMatchesTestClass = _testClassRunnerRunner.RunFilterMatchesTestClass(runFilter, testClassRunner.get());
+   const bool runFilterMatchesTestClass = _testClassRunnerRunner.
+      RunFilterMatchesTestClass(runFilterMock, testClassRunner.get());
    //
    ZEN(testClassRunnerMock->TestClassNameMock.CalledOnce());
-   ZEN(StringMatchesFilterString_ZenMock.CalledOnceWith(testClassName.c_str(), runFilter.testClassName));
+   ZEN(runFilterMock.MatchesTestClassNameMock.CalledOnceWith(testClassName.c_str()));
    IS_FALSE(runFilterMatchesTestClass);
 }
 
-TEST2X2(RunFilterMatchesTestClass_TestClassNameMatches_ReturnsTrueIfTestClassRunnerHasTestNameReturnsTrue,
-   bool testClassRunnerHasTestNameReturnValue, bool expectedReturnValue,
-   false, false,
-   true, true)
+TEST(RunFilterMatchesTestClass_RunFilterMatchesTestClassName_ReturnsTrueIfTestClassHasTestThatMatchesRunFilter)
 {
-   StringMatchesFilterString_ZenMock.Return(true);
+   RunFilterMock runFilterMock;
+   runFilterMock.testCaseNumber = ZenUnit::Random<unsigned>(); // To make runFilterMock different from RunFilterMock()
+   runFilterMock.MatchesTestClassNameMock.Return(true);
 
    TestClassRunnerMock* const testClassRunnerMock = new TestClassRunnerMock;
    const string testClassName = ZenUnit::Random<string>();
    testClassRunnerMock->TestClassNameMock.Return(testClassName.c_str());
-   testClassRunnerMock->HasTestNameThatCaseInsensitiveEqualsRunFilterTestNameMock.Return(testClassRunnerHasTestNameReturnValue);
+   const bool hasTestThatMatchesRunFilter = testClassRunnerMock->HasTestThatMatchesRunFilterMock.ReturnRandom();
    const std::unique_ptr<TestClassRunner> testClassRunner(testClassRunnerMock);
-
-   const RunFilter runFilter = ZenUnit::Random<RunFilter>();
    //
-   const bool runFilterMatchesTestClass = _testClassRunnerRunner.RunFilterMatchesTestClass(runFilter, testClassRunner.get());
+   const bool runFilterMatchesTestClass = _testClassRunnerRunner.RunFilterMatchesTestClass(runFilterMock, testClassRunner.get());
    //
    ZEN(testClassRunnerMock->TestClassNameMock.CalledOnce());
-   ZEN(StringMatchesFilterString_ZenMock.CalledOnceWith(testClassName.c_str(), runFilter.testClassName));
-   ZEN(testClassRunnerMock->HasTestNameThatCaseInsensitiveEqualsRunFilterTestNameMock.CalledOnceWith(runFilter.testName));
-   ARE_EQUAL(expectedReturnValue, runFilterMatchesTestClass);
+   ZEN(testClassRunnerMock->HasTestThatMatchesRunFilterMock.CalledOnceWith(runFilterMock));
+   ZEN(runFilterMock.MatchesTestClassNameMock.CalledOnceWith(testClassName.c_str()));
+   ARE_EQUAL(hasTestThatMatchesRunFilter, runFilterMatchesTestClass);
 }
 
 TEST(RunTestClasses_NonRandomMode_SortsTestClassRunnersByName_RunsTestClassesSequentially_ReturnsTestClassResults)

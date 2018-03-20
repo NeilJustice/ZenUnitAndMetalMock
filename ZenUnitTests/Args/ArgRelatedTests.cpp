@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "ZenUnitTests/Args/Mock/RunFilterParserMock.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
-#include "ZenUnitTests/Random/RandomRunFilter.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/MemberFunctionTransformerMock.h"
+#include "ZenUnitTests/Random/RandomRunFilter.h"
 
 namespace ZenUnit
 {
@@ -27,10 +27,10 @@ AFACT(Parse_UnrecognizedEqualsSignArgName_PrintsUsageAndExits1)
 EVIDENCE
 
    const string TestProgramPath = Random<string>();
-   const string ExpectedUsage = R"(ZenUnit and ZenMock v0.2.0
+   const string ExpectedUsage = R"(ZenUnit and ZenMock v0.2.1
 Usage: <TestsBinaryName> [Options...]
 
-Rigor:
+Testing Rigor:
 
 -random[=Seed]
    Run test classes and tests in a random order.
@@ -40,7 +40,7 @@ Rigor:
 -failskips
    Exit 1 regardless of test run outcome if any tests are skipped.
 
-Filtration:
+Testing Filtration:
 
 -run=<TestClassName>[.TestName][/TestCaseNumber][,...]
    Run only specified case-insensitive test classes, tests, or test cases.
@@ -56,7 +56,7 @@ Filtration:
 -failfast
    Immediately exit with exit code 1 if a test fails.
 
-Utility:
+Testing Utility:
 
 -pause
    Wait for any key before running tests to allow attaching a profiler or debugger.
@@ -439,65 +439,6 @@ static string ExpectedInvalidArgumentWhat(const string& invalidRunFilterString)
 }
 
 RUN_TESTS(RunFilterParserTests)
-
-
-TESTS(RunFilterTests)
-AFACT(DefaultConstructor_SetsTestCaseNumberToUnsignedMaxValue)
-AFACT(ThreeArgumentConstructor_SetsFields)
-FACTS(StringMatchesFilterString_ReturnsTrueIfStringCaseInsensitiveEqualsFilterString_OrIfFilterStringEndsInStar_ReturnsTrueIfStringCaseInsensitiveStartsWithFilterString)
-AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-EVIDENCE
-
-TEST(DefaultConstructor_SetsTestCaseNumberToUnsignedMaxValue)
-{
-   RunFilter runFilter;
-   ARE_EQUAL("", runFilter.testClassName);
-   ARE_EQUAL("", runFilter.testName);
-   ARE_EQUAL(std::numeric_limits<unsigned>::max(), runFilter.testCaseNumber);
-}
-
-TEST(ThreeArgumentConstructor_SetsFields)
-{
-   const string testClassName = ZenUnit::Random<string>();
-   const string testName = ZenUnit::Random<string>();
-   const unsigned testCaseNumber = ZenUnit::Random<unsigned>();
-   //
-   RunFilter runFilter(testClassName, testName, testCaseNumber);
-   //
-   ARE_EQUAL(testClassName, runFilter.testClassName);
-   ARE_EQUAL(testName, runFilter.testName);
-   ARE_EQUAL(testCaseNumber, runFilter.testCaseNumber);
-}
-
-TEST3X3(StringMatchesFilterString_ReturnsTrueIfStringCaseInsensitiveEqualsFilterString_OrIfFilterStringEndsInStar_ReturnsTrueIfStringCaseInsensitiveStartsWithFilterString,
-   const char* str, const string& filterString, bool expectedReturnValue,
-   "", "", true,
-   "Test", "", true,
-   "TestName", "TestName", true,
-   "TestName", "testname", true,
-   "Function_Scenario_ExpectedBehavior", "Function_", false,
-   "TestName", "Test", false,
-   "TestName", "test", false,
-   "", "*", true,
-   "Function_Scenario_ExpectedBehavior", "Function_*", true,
-   "Function_Scenario_ExpectedBehavior", "function_*", true,
-   "Function_Scenario_ExpectedBehavior", "function_*Scenario_ExpectedBehavior", false,
-   "Function_Scenario_ExpectedBehavior", "*_Scenario_ExpectedBehavior", false,
-   "Function_Scenario_ExpectedBehavior", "*", true)
-{
-   const bool stringMatchesFilterString = RunFilter::StringMatchesFilterString(str, filterString);
-   ARE_EQUAL(expectedReturnValue, stringMatchesFilterString);
-}
-
-TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-{
-   SETUP_EQUALIZER_THROWS_TEST(RunFilter);
-   EQUALIZER_THROWS_FOR_FIELD(RunFilter, testClassName, "testClassName");
-   EQUALIZER_THROWS_FOR_FIELD(RunFilter, testName, "testName");
-   EQUALIZER_THROWS_FOR_FIELD(RunFilter, testCaseNumber, 1);
-}
-
-RUN_TESTS(RunFilterTests)
 
 
 TESTS(ZenUnitArgsTests)

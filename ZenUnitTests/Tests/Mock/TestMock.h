@@ -12,7 +12,7 @@ struct TestMock : public Zen::Mock<Test>
    ZENMOCK_NONVOID0_CONST(string, FileLineString)
    ZENMOCK_NONVOID0_CONST(size_t, NumberOfTestCases)
    ZENMOCK_VOID1_CONST(WritePostTestNameMessage, const Console*)
-   ZENMOCK_NONVOID0(vector<TestResult>, Run)
+   ZENMOCK_NONVOID0(vector<TestResult>, RunTest)
    ZENMOCK_VOID0(NewTestClass)
    ZENMOCK_VOID0(Startup)
    ZENMOCK_VOID0(TestBody)

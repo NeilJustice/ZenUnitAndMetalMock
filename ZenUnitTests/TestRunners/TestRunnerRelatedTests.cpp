@@ -4,6 +4,7 @@
 #endif
 
 #include "ZenUnitTests/Args/Mock/ArgsParserMock.h"
+#include "ZenUnitTests/Args/Mock/RunFilterMock.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/TwoArgMemberForEacherMock.h"
 #include "ZenUnitTests/Utils/Mock/MachineNameGetterMock.h"
@@ -33,7 +34,7 @@ TESTS(NoOpTestClassRunnerTests)
 AFACT(TestClassName_ReturnsNoOpTestClassRunner)
 AFACT(NumberOfTestCases_Returns0)
 AFACT(RunTests_ReturnsDefaultTestClassResult)
-AFACT(HasTestNameThatCaseInsensitiveEqualsRunFilterTestName_ReturnsFalse)
+AFACT(HasTestThatMatchesRunFilter_ReturnsFalse)
 EVIDENCE
 
 NoOpTestClassRunner _noOpTestClassRunner;
@@ -53,9 +54,9 @@ TEST(RunTests_ReturnsDefaultTestClassResult)
    ARE_EQUAL(TestClassResult(), _noOpTestClassRunner.RunTests());
 }
 
-TEST(HasTestNameThatCaseInsensitiveEqualsRunFilterTestName_ReturnsFalse)
+TEST(HasTestThatMatchesRunFilter_ReturnsFalse)
 {
-   IS_FALSE(_noOpTestClassRunner.HasTestNameThatCaseInsensitiveEqualsRunFilterTestName(ZenUnit::Random<string>()));
+   IS_FALSE(_noOpTestClassRunner.HasTestThatMatchesRunFilter(ZenUnit::Random<RunFilter>()));
 }
 
 RUN_TESTS(NoOpTestClassRunnerTests)
@@ -160,9 +161,9 @@ RUN_TESTS(PreamblePrinterTests)
 TESTS(SpecificTestClassRunnerTests)
 AFACT(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
 AFACT(TestClassName_ReturnsTestClassName)
-AFACT(HasTestNameThatCaseInsensitiveEqualsRunFilterTestName_RunFilterTestNameIsEmpty_ReturnsTrue)
-AFACT(HasTestNameThatCaseInsensitiveEqualsRunFilterTestName_RunFilterTestNameIsNotEmpty_ReturnsTrueIfAnyTestNameCaseInsensitiveEqualsRunFilterTestName)
-FACTS(TestNameCaseInsensitiveEqualsRunFilterTestName_ReturnsTrueIfTestNameCaseInsensitiveEqualsRunFilterTestName)
+AFACT(HasTestThatMatchesRunFilter_RunFilterTestNamePatternIsEmpty_ReturnsTrue)
+AFACT(HasTestThatMatchesRunFilter_RunFilterTestNamePatternIsNotEmpty_ReturnsTrueIfRunFilterMatchesTestNameReturnsTrue)
+AFACT(RunFilterMatchesTestName_ReturnsTrueIfRunFilterMatchesTestNameReturnsTrue)
 AFACT(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
 FACTS(RunTests_PrintsTestClassNameAndNumberOfNamedTests_ConfirmsTestClassNewableAndDeletable_RunsTests_PrintsAndReturnsTestClassResult)
 FACTS(DoRunTests_RandomlyRunsTestsIfRandomOtherwiseSequentiallyRunsTests)
@@ -200,8 +201,8 @@ VoidOneArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, co
 
 using TwoArgTestAnyerMockType = TwoArgAnyerMock<
    const std::vector<std::unique_ptr<Test>>,
-   bool(*)(const std::unique_ptr<Test>&, const std::string&),
-   const std::string&>;
+   bool(*)(const std::unique_ptr<Test>&, const RunFilter&),
+   const RunFilter&>;
 TwoArgTestAnyerMockType* _twoArgTestAnyerMock;
 
 using TwoArgMemberAnyerMockType = TwoArgMemberAnyerMock<
@@ -254,50 +255,44 @@ TEST(TestClassName_ReturnsTestClassName)
    ARE_EQUAL(_testClassName.c_str(), testClassName);
 }
 
-TEST(HasTestNameThatCaseInsensitiveEqualsRunFilterTestName_RunFilterTestNameIsEmpty_ReturnsTrue)
+TEST(HasTestThatMatchesRunFilter_RunFilterTestNamePatternIsEmpty_ReturnsTrue)
 {
-   const string emptyRunFilterTestName;
+   const RunFilter runFilterWithEmptyTestName;
+   IS_EMPTY(runFilterWithEmptyTestName.testNamePattern);
    //
-   const bool hasTestNameThatCaseInsensitiveEqualsRunFilterTestName
-      = _specificTestClassRunner->HasTestNameThatCaseInsensitiveEqualsRunFilterTestName(emptyRunFilterTestName);
+   const bool hasTestThatMatchesRunFilter = _specificTestClassRunner->HasTestThatMatchesRunFilter(runFilterWithEmptyTestName);
    //
-   IS_TRUE(hasTestNameThatCaseInsensitiveEqualsRunFilterTestName);
+   IS_TRUE(hasTestThatMatchesRunFilter);
 }
 
-TEST(HasTestNameThatCaseInsensitiveEqualsRunFilterTestName_RunFilterTestNameIsNotEmpty_ReturnsTrueIfAnyTestNameCaseInsensitiveEqualsRunFilterTestName)
+TEST(HasTestThatMatchesRunFilter_RunFilterTestNamePatternIsNotEmpty_ReturnsTrueIfRunFilterMatchesTestNameReturnsTrue)
 {
    const bool twoArgAnyerReturnValue = _twoArgTestAnyerMock->TwoArgAnyMock.ReturnRandom();
-   const string runFilterTestName = ZenUnit::Random<string>();
+   const RunFilter runFilter = ZenUnit::Random<RunFilter>();
    //
-   const bool hasTestNameThatCaseInsensitiveEqualsRunFilterTestName
-      = _specificTestClassRunner->HasTestNameThatCaseInsensitiveEqualsRunFilterTestName(runFilterTestName);
+   const bool hasTestThatMatchesRunFilter = _specificTestClassRunner->HasTestThatMatchesRunFilter(runFilter);
    //
    ZEN(_twoArgTestAnyerMock->TwoArgAnyMock.CalledOnceWith(
-      &_specificTestClassRunner->_tests,
-      SpecificTestClassRunner<TestingTestClass>::TestNameCaseInsensitiveEqualsRunFilterTestName,
-      runFilterTestName));
-   ARE_EQUAL(twoArgAnyerReturnValue, hasTestNameThatCaseInsensitiveEqualsRunFilterTestName);
+      &_specificTestClassRunner->_tests, SpecificTestClassRunner<TestingTestClass>::RunFilterMatchesTestName, runFilter));
+   ARE_EQUAL(twoArgAnyerReturnValue, hasTestThatMatchesRunFilter);
 }
 
-TEST3X3(TestNameCaseInsensitiveEqualsRunFilterTestName_ReturnsTrueIfTestNameCaseInsensitiveEqualsRunFilterTestName,
-   const string& testName, const string& runFilterTestName, bool expectedReturnValue,
-   "Test", "Test", true,
-   "Test", "test", true,
-   "Test", "Test_Suffix", false,
-   "Test", "Prefix_Test", false,
-   "Test", "Prefix_Test_Suffix", false,
-   "Prefix_Test_Suffix", "Test", false,
-   "Function_Scenario_ExpectedBehavior", "function_scenario_expectedBehavior", true)
+TEST(RunFilterMatchesTestName_ReturnsTrueIfRunFilterMatchesTestNameReturnsTrue)
 {
    TestMock* testMock = new TestMock;
+   const string testName = ZenUnit::Random<string>();
    testMock->NameMock.Return(testName.c_str());
    unique_ptr<Test> test(testMock);
+
+   RunFilterMock runFilterMock;
+   const bool runFilterMatchesTestName = ZenUnit::Random<bool>();
+   runFilterMock.MatchesTestNameMock.Return(runFilterMatchesTestName);
    //
-   const bool testNameCaseInsensitiveEqualsRunFilterTestName =
-      _specificTestClassRunner->TestNameCaseInsensitiveEqualsRunFilterTestName(test, runFilterTestName);
+   const bool returnedRunFilterMatchesTestName = _specificTestClassRunner->RunFilterMatchesTestName(test, runFilterMock);
    //
    ZEN(testMock->NameMock.CalledOnce());
-   ARE_EQUAL(expectedReturnValue, testNameCaseInsensitiveEqualsRunFilterTestName);
+   ZEN(runFilterMock.MatchesTestNameMock.CalledOnceWith(testName.c_str()));
+   ARE_EQUAL(runFilterMatchesTestName, returnedRunFilterMatchesTestName);
 }
 
 TEST(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
@@ -450,7 +445,7 @@ TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewableDele
    testResult.testOutcome = newableDeletableTestOutcome;
    testResult.microseconds = ZenUnit::Random<unsigned>();
    const vector<TestResult> testResults{ testResult };
-   testMock.RunMock.Return(testResults);
+   testMock.RunTestMock.Return(testResults);
    //
    const bool testClassTypeIsNewableAndDeletable = _specificTestClassRunner->
       ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(&testMock, &testClassResultMock);
@@ -471,7 +466,7 @@ TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewableDele
       ZEN(p_consoleMock->WriteColorMock.CalledOnceWith("|", Color::Green));
    }
    ZEN(p_consoleMock->WriteMock.CalledOnceWith("TestClassIsNewableAndDeletable -> "));
-   ZEN(testMock.RunMock.CalledOnce());
+   ZEN(testMock.RunTestMock.CalledOnce());
    ZEN(testClassResultMock.AddTestResultsMock.CalledOnceWith(testResults));
    ARE_EQUAL(expectedReturnValue, testClassTypeIsNewableAndDeletable);
 }
@@ -496,8 +491,7 @@ TEST(RunTest_RunFiltersNonEmpty_NoneOfTheRunFiltersMatchTheTestName_DoesNotRunTe
    ZEN(GetArgs_ZenMock.CalledOnce());
    ZEN(testMock->NameMock.CalledOnce());
    ZEN(p_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
-      zenUnitArgs.runFilters, _specificTestClassRunner.get(),
-      &TestClassRunner::TestNameCaseInsensitiveMatchesRunFilterTestName, testName.c_str()));
+      zenUnitArgs.runFilters, _specificTestClassRunner.get(), &TestClassRunner::RunFilterMatchesTestName, testName.c_str()));
 }
 
 TEST2X2(RunTest_RunFiltersEmptyOrIfNotEmptyARunFilterMatchesTheTestName_RunsTest,
@@ -520,7 +514,7 @@ TEST2X2(RunTest_RunFiltersEmptyOrIfNotEmptyARunFilterMatchesTheTestName_RunsTest
    TestResult test0;
    test0.fullTestName = FullTestName("", "Test0", 0);
    const vector<TestResult> TestResults{ test0, TestResult() };
-   testMock->RunMock.Return(TestResults);
+   testMock->RunTestMock.Return(TestResults);
    testMock->WritePostTestCompletionMessageMock.Expect();
    const unique_ptr<Test> test(testMock);
    if (expectAnyerCall)
@@ -537,13 +531,12 @@ TEST2X2(RunTest_RunFiltersEmptyOrIfNotEmptyARunFilterMatchesTheTestName_RunsTest
    if (expectAnyerCall)
    {
       ZEN(p_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
-         zenUnitArgs.runFilters, _specificTestClassRunner.get(),
-         &TestClassRunner::TestNameCaseInsensitiveMatchesRunFilterTestName, testName.c_str()));
+         zenUnitArgs.runFilters, _specificTestClassRunner.get(), &TestClassRunner::RunFilterMatchesTestName, testName.c_str()));
    }
    ZEN(p_consoleMock->WriteColorMock.CalledOnceWith("|", Color::Green));
    ZEN(p_consoleMock->WriteMock.CalledOnceWith(testName));
    ZEN(testMock->WritePostTestNameMessageMock.CalledOnceWith(_specificTestClassRunner->p_console.get()));
-   ZEN(testMock->RunMock.CalledOnce());
+   ZEN(testMock->RunTestMock.CalledOnce());
    ZEN(testClassResultMock.AddTestResultsMock.CalledOnceWith(TestResults));
    ZEN(testMock->WritePostTestCompletionMessageMock.CalledOnceWith(
       _specificTestClassRunner->p_console.get(), test0));
@@ -567,43 +560,34 @@ class TestingTestClassRunner : public TestClassRunner
    virtual const char* TestClassName() const { return nullptr; }
    virtual size_t NumberOfTestCases() const { return 0; }
    virtual TestClassResult RunTests() { return TestClassResult(); }
-   virtual bool HasTestNameThatCaseInsensitiveEqualsRunFilterTestName(const std::string&) const { return false; }
+   virtual bool HasTestThatMatchesRunFilter(const RunFilter&) const { return false; }
 };
 
 TESTS(TestClassRunnerTests)
 AFACT(DefaultConstructor_NewsComponents)
-AFACT(TestNameCaseInsensitiveMatchesRunFilterTestName_ReturnsResultFromCallingRunFilterMatchesFilter)
+AFACT(RunFilterMatchesTestName_ReturnsTrueIfRunFilterMatchesTestName)
 FACTS(OperatorLessThan_ReturnsTrueIfTestClassNameStrcmpResultIsLessThanZero)
 EVIDENCE
 
 TestingTestClassRunner _testingTestClassRunner;
-ZENMOCK_NONVOID2_STATIC(bool, RunFilter, StringMatchesFilterString, const char*, const string&)
-
-STARTUP
-{
-   _testingTestClassRunner.call_RunFilter_StringMatchesFilterString = ZENMOCK_BIND2(StringMatchesFilterString_ZenMock);
-}
 
 TEST(DefaultConstructor_NewsComponents)
 {
    TestingTestClassRunner testingTestClassRunner;
    POINTER_WAS_NEWED(testingTestClassRunner.p_console);
    POINTER_WAS_NEWED(testingTestClassRunner.p_twoArgMemberAnyer);
-   STD_FUNCTION_TARGETS(RunFilter::StringMatchesFilterString, testingTestClassRunner.call_RunFilter_StringMatchesFilterString);
 }
 
-TEST(TestNameCaseInsensitiveMatchesRunFilterTestName_ReturnsResultFromCallingRunFilterMatchesFilter)
+TEST(RunFilterMatchesTestName_ReturnsTrueIfRunFilterMatchesTestName)
 {
-   const bool stringMatchesFilterStringReturnValue = ZenUnit::Random<bool>();
-   StringMatchesFilterString_ZenMock.Return(stringMatchesFilterStringReturnValue);
-   const RunFilter runFilter(ZenUnit::Random<string>(), ZenUnit::Random<string>(), ZenUnit::Random<unsigned>());
+   RunFilterMock runFilterMock;
+   const bool runFilterMatchesTestName = runFilterMock.MatchesTestNameMock.ReturnRandom();
    const string testName = ZenUnit::Random<string>();
    //
-   bool testNameCaseInsensitiveMatchesRunFilterTestName =
-      _testingTestClassRunner.TestNameCaseInsensitiveMatchesRunFilterTestName(runFilter, testName.c_str());
+   bool returnedRunFilterMatchesTestName = _testingTestClassRunner.RunFilterMatchesTestName(runFilterMock, testName.c_str());
    //
-   ZEN(StringMatchesFilterString_ZenMock.CalledOnceWith(testName.c_str(), runFilter.testName));
-   ARE_EQUAL(stringMatchesFilterStringReturnValue, testNameCaseInsensitiveMatchesRunFilterTestName);
+   ZEN(runFilterMock.MatchesTestNameMock.CalledOnceWith(testName.c_str()));
+   ARE_EQUAL(runFilterMatchesTestName, returnedRunFilterMatchesTestName);
 }
 
 TEST3X3(OperatorLessThan_ReturnsTrueIfTestClassNameStrcmpResultIsLessThanZero,
@@ -644,7 +628,7 @@ FACTS(ParseArgsRunTestClassesPrintResults_ParsesArgs_RunsTestClassesTimesNumberO
 AFACT(WaitForAnyKeyIfPauseMode_PauseModeFalse_DoesNothing_ReturnsFalse)
 AFACT(WaitForAnyKeyIfPauseMode_PauseModeTrue_HavePausedTrue_DoesNothing_ReturnsTrue)
 AFACT(WaitForAnyKeyIfPauseMode_PauseModeTrueHavePausedFalse_WritesMessageAndWaitsForAnyKey_ReturnsTrue)
-FACTS(RunTestClassesAndPrintResults_RunsTestsAndPrintsResults_UsingBackgroundThreadIfMaxTotalSecondsGT0_Returns0IfAllTestsPassedOtherwiseReturns1)
+FACTS(PrintPreambleRunTestClassesPrintConclusion_RunsTestsAndPrintsResults_UsingBackgroundThreadIfMaxTotalSecondsGT0_Returns0IfAllTestsPassedOtherwiseReturns1)
 AFACT(RunTestClasses_RunsTestClasses)
 //FACTS(RunTestClassesWithWaitableRunnerThread_SpawnsThreadToCallRunTestClasses_PrintsResultsAndExits1IfThreadTimesOut)
 EVIDENCE
@@ -750,13 +734,13 @@ TEST4X4(ParseArgsRunTestClassesPrintResults_ParsesArgs_RunsTestClassesTimesNumbe
    ZEN(_argsParserMock->ParseMock.CalledOnceWith(commandLineArgs));
    ZEN(_testClassRunnerRunnerMock->ApplyRunFiltersIfAnyMock.CalledOnceWith(parsedZenUnitArgs.runFilters));
    ZEN(_nonVoidOneArgMemberFunctionCallerMock->NonConstCallMock.CalledNTimesWith(
-      testrunsArgs, &_testRunner, &TestRunner::RunTestClassesAndPrintResults, parsedZenUnitArgs));
+      testrunsArgs, &_testRunner, &TestRunner::PrintPreambleRunTestClassesPrintConclusion, parsedZenUnitArgs));
    ZEN(_testRunResultMock->ResetStateExceptForSkipsMock.CalledNTimes(testrunsArgs));
    ZEN(_consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.CalledOnceWith(parsedZenUnitArgs.wait));
    ARE_EQUAL(expectedOverallExitCode, overallExitCode);
 }
 
-TEST3X3(RunTestClassesAndPrintResults_RunsTestsAndPrintsResults_UsingBackgroundThreadIfMaxTotalSecondsGT0_Returns0IfAllTestsPassedOtherwiseReturns1,
+TEST3X3(PrintPreambleRunTestClassesPrintConclusion_RunsTestsAndPrintsResults_UsingBackgroundThreadIfMaxTotalSecondsGT0_Returns0IfAllTestsPassedOtherwiseReturns1,
    unsigned maxtotalseconds,
    bool expectRunTestClassesWithWaitableRunnerThread,
    int determineExitCodeReturnValueAndExpectedExitCode,
@@ -796,7 +780,7 @@ TEST3X3(RunTestClassesAndPrintResults_RunsTestsAndPrintsResults_UsingBackgroundT
 
    _testRunResultMock->DetermineExitCodeMock.Return(determineExitCodeReturnValueAndExpectedExitCode);
    //
-   const int exitCode = _testRunner.RunTestClassesAndPrintResults(zenUnitArgs);
+   const int exitCode = _testRunner.PrintPreambleRunTestClassesPrintConclusion(zenUnitArgs);
    //
    ZEN(_nonVoidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
        &_testRunner, &TestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPaused, zenUnitArgs.pause, havePausedInitialValue));
