@@ -631,8 +631,9 @@ namespace ZenUnit
       }
    };
 
-   struct RunFilter
+   class RunFilter
    {
+   public:
       std::string testClassNamePattern;
       std::string testNamePattern;
       unsigned testCaseNumber;
@@ -653,12 +654,14 @@ namespace ZenUnit
 
       virtual bool MatchesTestClassName(const char* testClassName) const
       {
-         return FilterPatternMatchesString(testClassNamePattern, testClassName);
+         const bool runFilterMatchesTestClassName = FilterPatternMatchesString(testClassNamePattern, testClassName);
+         return runFilterMatchesTestClassName;
       }
 
       virtual bool MatchesTestName(const char* testName) const
       {
-         return FilterPatternMatchesString(testNamePattern, testName);
+         const bool runFilterMatchesTestName = FilterPatternMatchesString(testNamePattern, testName);
+         return runFilterMatchesTestName;
       }
 
       virtual bool FilterPatternMatchesString(const std::string& filterPattern, const char* str) const
@@ -5645,8 +5648,8 @@ Testing Utility:
             std::cout << R"(The above test name was specified with FACTS(TestName).
 Therefore, a TESTNXN(TestName, ...) test definition is expected.
 Unexpectedly, a TEST(TestName) definition was encountered.
-Fix this by changing FACTS(TestName) to AFACT(TestName) or
-by changing TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
+The fix for this is to change FACTS(TestName) to AFACT(TestName)
+or change TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
 )";
             const ZenUnitArgs& zenUnitArgs = TestRunner::GetArgs();
             exit(zenUnitArgs.exit0 ? 0 : 1);
