@@ -69,7 +69,7 @@ EVIDENCE
 
 TEST(FizzBuzz_EndNumber0_Throws)
 {
-   // Macro THROWS asserts that an expression throws *exactly* an expected exception type 
+   // Macro THROWS asserts that an expression throws *exactly* an expected exception type
    // with *exactly* as expected exception what() text.
    THROWS(FizzBuzz(0), std::invalid_argument,
       "FizzBuzz(): endNumber must be 1 or greater");
@@ -291,122 +291,6 @@ int main(int argc, char* argv[])
 ### ZenUnit Console Output For The Above Type-Parameterized Test Class
 
 ![ZenUnit](Screenshots/ZenUnitTypeParameterizedTestClass.png "ZenUnit Type-Parameterized Test Class Imagery")
-
-### ZenMock Virtual Function Mocking Syntax
-
-```Cpp
-#include "ZenUnit/ZenMock.h" // Single ZenMock header
-
-class ComponentA
-{
-public:
-   virtual void VirtualVoid() {}
-   virtual void VirtualVoidConstTwoArgs(int, int) const {}
-   virtual int VirtualNonVoid() { return 0; }
-   virtual int VirtualNonVoidConst() const { return 0; }
-};
-
-struct ComponentAMock : public Zen::Mock<ComponentA>
-{
-   ZENMOCK_VOID0(VirtualVoid)
-   ZENMOCK_VOID2_CONST(VirtualVoidConstTwoArgs, int, int)
-   ZENMOCK_NONVOID0(int, VirtualNonVoid)
-   ZENMOCK_NONVOID0_CONST(int, VirtualNonVoidConst)
-};
-
-class ClassUnderTest
-{
-   friend class ClassUnderTestTests;
-private:
-   std::unique_ptr<ComponentA> _componentA;
-public:
-   ClassUnderTest()
-      : _componentA(new ComponentA)
-   {
-   }
-
-   int InteractWithComponentA()
-   {
-      _componentA->VirtualVoid();
-      _componentA->VirtualVoidConstTwoArgs(333, 107);
-      int returnValueA = _componentA->VirtualNonVoid();
-      int returnValueB = _componentA->VirtualNonVoidConst();
-      int sum = returnValueA + returnValueB;
-      return sum;
-   }
-};
-
-#include "ZenUnit/ZenUnit.h"
-
-TESTS(ClassUnderTestTests)
-AFACT(Constructor_NewsComponentA)
-FACTS(InteractWithComponentA_CallsEveryFunction_ReturnsSumOfReturnValues)
-EVIDENCE
-
-ClassUnderTest _classUnderTest;
-ComponentAMock* _componentAMock;
-
-STARTUP
-{
-   // Post-construction dependency injection of ZenMock object _componentAMock.
-   _classUnderTest._componentA.reset(_componentAMock = new ComponentAMock);
-}
-
-TEST(Constructor_NewsComponentA)
-{
-   ClassUnderTest classUnderTest;
-   POINTER_WAS_NEWED(classUnderTest._componentA);
-}
-
-TEST3X3(InteractWithComponentA_CallsEveryFunction_ReturnsSumOfReturnValues,
-   int expectedReturnValue, int returnValueA, int returnValueB,
-   0, 0, 0,
-   10, 10, 0,
-   10, 0, 10,
-   20, 10, 10,
-   30, 20, 10,
-   30, 10, 20,
-   -30, -10, -20,
-   0, -10, 10,
-   -1, std::numeric_limits<int>::min(), std::numeric_limits<int>::max())
-{
-   // For general programming rigorousness and especially for
-   // imperviousness to extraneous-call code mutations
-   // capable of being automatically introduced by future LLVM-powered
-   // mutation testing frameworks, ZenMock uses strict mocking.
-   // Strict mocking requires that mocked-out functions be explicitly
-   // expected before they are called, which with ZenMock syntax is
-   // accomplished by calling Expect(), Return(), ReturnValues(), or Throw<T>() on ZenMock objects.
-   _componentAMock->VirtualVoidMock.Expect();
-   _componentAMock->VirtualVoidConstTwoArgsMock.Expect();
-   _componentAMock->VirtualNonVoidMock.Return(returnValueA);
-   _componentAMock->VirtualNonVoidConstMock.Return(returnValueB);
-   //
-   int returnValue = _classUnderTest.InteractWithComponentA();
-   //
-   // In the Assert section of this Arrange-Act-Assert style of unit test,
-   // ZenMock function call assertions are made and are wrapped with the ZEN macro.
-   // The ZEN macro provides __FILE__ and __LINE__ information in
-   // error messages for the case when a ZenMocked function is called differently
-   // from how it is asserted to have been called.
-   ZEN(_componentAMock->VirtualVoidMock.CalledOnce());
-   ZEN(_componentAMock->VirtualVoidConstTwoArgsMock.CalledOnceWith(333, 107));
-   ZEN(_componentAMock->VirtualNonVoidMock.CalledOnce());
-   ZEN(_componentAMock->VirtualNonVoidConstMock.CalledOnce());
-   ARE_EQUAL(expectedReturnValue, returnValue);
-}
-
-RUN_TESTS(ClassUnderTestTests)
-
-int main(int argc, char* argv[])
-{
-   return ZenUnit::RunTests(argc, argv);
-}
-```
-
-### ZenUnit Console Output For The Above ZenMock-Using Unit Test
-
-![ZenMock Imagery](Screenshots/ZenMockExampleTests.png "ZenMock Imagery")
 
 ### ZenMock Virtual Function Mocking Macros
 
