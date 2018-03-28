@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
-#include "ZenUnitTests/Results/Mock/TestResultMock.h"
-#include "ZenUnitTests/Results/Mock/TestFailureNumbererMock.h"
 #include "ZenUnitTests/Results/Mock/TestClassResultMock.h"
+#include "ZenUnitTests/Results/Mock/TestFailureNumbererMock.h"
+#include "ZenUnitTests/Results/Mock/TestResultMock.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/MemberForEacherMock.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/ThreeArgForEacherMock.h"
 #include "ZenUnitTests/Utils/Time/Mock/WatchMock.h"
@@ -158,7 +158,7 @@ TEST(MoveConstructor_MovesForEacherAndTestResults)
 {
    TestClassResult testClassResult = TestClassResult::TestingNonDefault();
    //
-   TestClassResult moved(move(testClassResult));
+   const TestClassResult moved(std::move(testClassResult));
    //
    ARE_EQUAL(TestClassResult(), testClassResult);
    ARE_EQUAL(TestClassResult::TestingNonDefault(), moved);
@@ -169,7 +169,7 @@ TEST(MoveAssignmentOperator_MovesForEacherAndTestResults)
    TestClassResult testClassResult = TestClassResult::TestingNonDefault();
    TestClassResult moved;
    //
-   moved = move(testClassResult);
+   moved = std::move(testClassResult);
    //
    ARE_EQUAL(TestClassResult(), testClassResult);
    ARE_EQUAL(TestClassResult::TestingNonDefault(), moved);
@@ -312,7 +312,7 @@ TEST(PrintTestResultIfFailure_CallsTestResultPrintIfFailure)
    const Console console;
    TestFailureNumberer testFailureNumberer;
    //
-   _testClassResult.PrintTestResultIfFailure(testResultMock, &console, &testFailureNumberer);
+   TestClassResult::PrintTestResultIfFailure(testResultMock, &console, &testFailureNumberer);
    //
    ZEN(testResultMock.PrintIfFailureMock.CalledOnceWith(&console, &testFailureNumberer));
 }
@@ -996,9 +996,8 @@ TEST1X1(SetTestClassResults_SetsNumberofFailedTestCases_MovesTestClassResultsInt
    vector<TestClassResult> testClassResults{ TestClassResult() };
    const vector<TestClassResult> NonMovedFromTestClassResults = testClassResults;
    //
-   testRunResultSelfMocked.SetTestClassResults(move(testClassResults));
+   testRunResultSelfMocked.SetTestClassResults(std::move(testClassResults));
    //
-   IS_EMPTY(testClassResults);
    ZEN(testRunResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnceWith(NonMovedFromTestClassResults));
    VECTORS_EQUAL(NonMovedFromTestClassResults, testRunResultSelfMocked._testClassResults);
    ARE_EQUAL(numberOfFailedTestCases, testRunResultSelfMocked._numberOfFailedTestCases);

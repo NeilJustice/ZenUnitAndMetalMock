@@ -1,22 +1,14 @@
 #include "pch.h"
+#include "ZenUnitTests/Args/Mock/RunFilterMock.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
-#include "ZenUnitTests/Results/Mock/TestResultMock.h"
-#include "ZenUnitTests/Tests/TestingTestClass.h"
-#include "ZenUnitTests/Results/Mock/TestResultFactoryMock.h"
-#include "ZenUnitTests/TestRunners/Mock/TryCatchCallerMock.h"
-#include "ZenUnitTests/Utils/Time/Mock/StopwatchMock.h"
-#include "ZenUnitTests/Console/Mock/ConsoleMock.h"
-#include "ZenUnitTests/Tests/Mock/TestMock.h"
-#include "ZenUnitTests/Console/Mock/ConsoleMock.h"
-#include "ZenUnitTests/Results/Mock/TestResultMock.h"
-#include "ZenUnitTests/Tests/TestingTestClass.h"
 #include "ZenUnitTests/Random/RandomZenUnitArgs.h"
 #include "ZenUnitTests/Results/Mock/TestResultFactoryMock.h"
 #include "ZenUnitTests/Results/Mock/TestResultMock.h"
 #include "ZenUnitTests/TestRunners/Mock/TryCatchCallerMock.h"
 #include "ZenUnitTests/Tests/Mock/TestMock.h"
+#include "ZenUnitTests/Tests/TestingTestClass.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/ThreeArgAnyerMock.h"
-#include "ZenUnitTests/Args/Mock/RunFilterMock.h"
+#include "ZenUnitTests/Utils/Time/Mock/StopwatchMock.h"
 
 namespace ZenUnit
 {
@@ -762,7 +754,7 @@ TEST(Exit1IfNonExistentTestCaseNumberSpecified_EmptyTestResults_WritesErrorMessa
 TEST(ShouldRunTestCase_EmptyRunFilters_ReturnsTrue)
 {
    const ZenUnitArgs args;
-   FullTestName fullTestName;
+   const FullTestName fullTestName;
    unsigned testCaseNumber = ZenUnit::Random<unsigned>();
    //
    const bool shouldRunTestCase = _testNXN->ShouldRunTestCase(args, fullTestName, testCaseNumber);

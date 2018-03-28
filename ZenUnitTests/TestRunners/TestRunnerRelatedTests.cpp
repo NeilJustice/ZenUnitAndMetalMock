@@ -6,26 +6,26 @@
 #include "ZenUnitTests/Args/Mock/ArgsParserMock.h"
 #include "ZenUnitTests/Args/Mock/RunFilterMock.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
-#include "ZenUnitTests/Utils/Iteration/Mock/TwoArgMemberForEacherMock.h"
-#include "ZenUnitTests/Utils/Mock/MachineNameGetterMock.h"
-#include "ZenUnitTests/Tests/Mock/TestMock.h"
-#include "ZenUnitTests/TestRunners/Mock/PreamblePrinterMock.h"
-#include "ZenUnitTests/TestRunners/Mock/TestClassRunnerRunnerMock.h"
+#include "ZenUnitTests/Random/RandomRunFilter.h"
 #include "ZenUnitTests/Random/RandomTestResult.h"
 #include "ZenUnitTests/Random/RandomZenUnitArgs.h"
 #include "ZenUnitTests/Results/Mock/TestClassResultMock.h"
 #include "ZenUnitTests/Results/Mock/TestRunResultMock.h"
-#include "ZenUnitTests/Utils/Time/Mock/StopwatchMock.h"
-#include "ZenUnitTests/Utils/Function/Mock/VoidZeroArgMemberFunctionCallerMock.h"
-#include "ZenUnitTests/Utils/Function/Mock/VoidOneArgMemberFunctionCallerMock.h"
+#include "ZenUnitTests/TestRunners/Mock/PreamblePrinterMock.h"
+#include "ZenUnitTests/TestRunners/Mock/TestClassRunnerMock.h"
+#include "ZenUnitTests/TestRunners/Mock/TestClassRunnerRunnerMock.h"
+#include "ZenUnitTests/Tests/Mock/TestMock.h"
 #include "ZenUnitTests/Utils/Function/Mock/NonVoidOneArgMemberFunctionCallerMock.h"
 #include "ZenUnitTests/Utils/Function/Mock/NonVoidTwoArgMemberFunctionCallerMock.h"
+#include "ZenUnitTests/Utils/Function/Mock/VoidOneArgMemberFunctionCallerMock.h"
 #include "ZenUnitTests/Utils/Function/Mock/VoidTwoArgMemberFunctionCallerMock.h"
-#include "ZenUnitTests/Utils/Time/Mock/WatchMock.h"
+#include "ZenUnitTests/Utils/Function/Mock/VoidZeroArgMemberFunctionCallerMock.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/TwoArgAnyerMock.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/TwoArgMemberAnyerMock.h"
-#include "ZenUnitTests/TestRunners/Mock/TestClassRunnerMock.h"
-#include "ZenUnitTests/Random/RandomRunFilter.h"
+#include "ZenUnitTests/Utils/Iteration/Mock/TwoArgMemberForEacherMock.h"
+#include "ZenUnitTests/Utils/Mock/MachineNameGetterMock.h"
+#include "ZenUnitTests/Utils/Time/Mock/StopwatchMock.h"
+#include "ZenUnitTests/Utils/Time/Mock/WatchMock.h"
 
 namespace ZenUnit
 {
@@ -557,10 +557,10 @@ RUN_TESTS(SpecificTestClassRunnerTests)
 
 class TestingTestClassRunner : public TestClassRunner
 {
-   virtual const char* TestClassName() const { return nullptr; }
-   virtual size_t NumberOfTestCases() const { return 0; }
-   virtual TestClassResult RunTests() { return TestClassResult(); }
-   virtual bool HasTestThatMatchesRunFilter(const RunFilter&) const { return false; }
+   const char* TestClassName() const override { return nullptr; }
+   size_t NumberOfTestCases() const override { return 0; }
+   TestClassResult RunTests() override { return TestClassResult(); }
+   bool HasTestThatMatchesRunFilter(const RunFilter&) const override { return false; }
 };
 
 TESTS(TestClassRunnerTests)

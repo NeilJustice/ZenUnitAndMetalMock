@@ -10,7 +10,8 @@
          "program": "${workspaceRoot}/Debug/ZenUnitTests/ZenUnitTests",
          "args": [ ""],
          "cwd": "${fileDirname}",
-         "linux": { "MIMode": "gdb" }
+         "linux": { "MIMode": "gdb" },
+         "miDebuggerPath": "/usr/bin/gdb"
       }
       // {
       //    "name": "Python",

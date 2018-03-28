@@ -1,4 +1,5 @@
 #pragma once
+#include "ZenMock0Tester.h"
 #include "ZenUnitTests/ZenMock/ZenMockTestUtil.h"
 
 namespace ZenMock
@@ -284,9 +285,6 @@ File.cpp(1))");
    };
 }
 
-
-#include "pch.h"
-#include "ZenMock0Tester.h"
 
 int NonVoid0Function() { return 0; }
 

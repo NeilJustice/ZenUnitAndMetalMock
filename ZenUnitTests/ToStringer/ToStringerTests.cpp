@@ -1,9 +1,9 @@
 #include "pch.h"
+#include "ZenUnitTests/Macros/REGEX_MATCHES.h"
 #include "ZenUnitTests/Testing/UserType.h"
 #include "ZenUnitTests/Testing/UserTypeInsOpAndZenUnitPrintable.h"
 #include "ZenUnitTests/Testing/UserTypeNonPrintable.h"
 #include "ZenUnitTests/Testing/UserTypeOnlyZenUnitPrintable.h"
-#include "ZenUnitTests/Macros/REGEX_MATCHES.h"
 
 struct ToStringerTestStruct
 {
