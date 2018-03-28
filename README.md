@@ -56,14 +56,16 @@ Testing Utility:
 #include "Examples/FizzBuzz.h"
 
 TESTS(FizzBuzzTests)
-// By design, in ZenUnit test names are duplicated between the FACTS section and the EVIDENCE section.
-// Because code is read much more often than it is written, always having test names at the top of test files
-// instead of scattered throughout test files is where long term code reviewability dividends are experienced
-// relative to the inital writing investment of duplicating test names between the FACTS section and the EVIDENCE section.
+// By design, in ZenUnit test names are duplicated between
+// the FACTS section and the EVIDENCE section.
+// Because code is read much more often than it is written,
+// always having test names ready to review for quality and cohesion
+// at the top of test files instead of scattered throughout test files
+// is where this design yields long term code maintainability dividends.
 
-// Macro AFACT specifies a garden variety void test
+// AFACT specifies a garden-variety void test.
 AFACT(FizzBuzz_EndNumber0_Throws)
-// Macro FACTS specifies an N-by-N value-parameterized test
+// FACTS specifies an N-by-N value-parameterized test.
 FACTS(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)
 EVIDENCE
 
