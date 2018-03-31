@@ -1858,8 +1858,7 @@ Testing Utility:
    template<typename ExpectedAndActualType>
    struct Equalizer
    {
-      static void AssertEqual(
-         const ExpectedAndActualType& expected, const ExpectedAndActualType& actual)
+      static void AssertEqual(const ExpectedAndActualType& expected, const ExpectedAndActualType& actual)
       {
          if (!(expected == actual))
          {
@@ -1877,6 +1876,148 @@ Testing Utility:
          {
             throw ZenUnit::EqualizerException();
          }
+      }
+   };
+
+   template<>
+   struct Equalizer<const char*>
+   {
+      static void AssertEqual(const char* expected, const char* actual)
+      {
+         if (expected == nullptr && actual == nullptr)
+         {
+            return;
+         }
+         if (expected == nullptr && actual != nullptr)
+         {
+            throw EqualizerException();
+         }
+         if (expected != nullptr && actual == nullptr)
+         {
+            throw EqualizerException();
+         }
+         const int strcmpResult = strcmp(expected, actual);
+         if (strcmpResult != 0)
+         {
+            throw EqualizerException();
+         }
+      }
+   };
+
+   template<>
+   struct Equalizer<char*>
+   {
+      static void AssertEqual(char* expected, char* actual)
+      {
+         Equalizer<const char*>::AssertEqual(expected, actual);
+      }
+   };
+
+   template<>
+   struct Equalizer<double>
+   {
+      static void AssertEqual(double expected, double actual)
+      {
+         // Tentative exactly-equal implementation
+         if (!(expected == actual))
+         {
+            throw EqualizerException();
+         }
+      }
+   };
+
+   template<>
+   struct Equalizer<float>
+   {
+      static void AssertEqual(float expected, float actual)
+      {
+         // Tentative exactly-equal implementation
+         if (!(expected == actual))
+         {
+            throw EqualizerException();
+         }
+      }
+   };
+
+   template<>
+   struct TwoTypeEqualizer<int, unsigned>
+   {
+      static void AssertEqual(int expected, unsigned actual)
+      {
+         if (expected < 0)
+         {
+            throw EqualizerException();
+         }
+         Equalizer<unsigned>::AssertEqual(static_cast<unsigned>(expected), actual);
+      }
+   };
+
+#if defined(__linux__) || defined(_WIN64)
+   template<>
+   struct TwoTypeEqualizer<int, size_t>
+   {
+      static void AssertEqual(int expected, size_t actual)
+      {
+         if (expected < 0)
+         {
+            throw EqualizerException();
+         }
+         Equalizer<size_t>::AssertEqual(static_cast<size_t>(expected), actual);
+      }
+   };
+#endif
+
+   template<>
+   struct TwoTypeEqualizer<const char*, char*>
+   {
+      static void AssertEqual(const char* expected, char* actual)
+      {
+         Equalizer<const char*>::AssertEqual(expected, actual);
+      }
+   };
+
+   template<>
+   struct TwoTypeEqualizer<char*, const char*>
+   {
+      static void AssertEqual(char* expected, const char* actual)
+      {
+         Equalizer<const char*>::AssertEqual(expected, actual);
+      }
+   };
+
+   template<>
+   struct TwoTypeEqualizer<const char*, std::string>
+   {
+      static void AssertEqual(const char* expected, const std::string& actual)
+      {
+         Equalizer<const char*>::AssertEqual(expected, actual.c_str());
+      }
+   };
+
+   template<>
+   struct TwoTypeEqualizer<std::string, const char*>
+   {
+      static void AssertEqual(const std::string& expected, const char* actual)
+      {
+         Equalizer<const char*>::AssertEqual(expected.c_str(), actual);
+      }
+   };
+
+   template<>
+   struct TwoTypeEqualizer<char*, std::string>
+   {
+      static void AssertEqual(char* expected, const std::string& actual)
+      {
+         Equalizer<const char*>::AssertEqual(expected, actual.c_str());
+      }
+   };
+
+   template<>
+   struct TwoTypeEqualizer<std::string, char*>
+   {
+      static void AssertEqual(const std::string& expected, char* actual)
+      {
+         Equalizer<const char*>::AssertEqual(expected.c_str(), actual);
       }
    };
 
@@ -5919,94 +6060,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
          ARE_EQUAL(expectedFileLine.lineNumber, actualFileLine.lineNumber);
       }
    };
-
-   template<>
-   struct Equalizer<const char*>
-   {
-      static void AssertEqual(const char* expected, const char* actual)
-      {
-         if (expected == nullptr && actual == nullptr)
-         {
-            return;
-         }
-         if (expected == nullptr && actual != nullptr)
-         {
-            throw EqualizerException();
-         }
-         if (expected != nullptr && actual == nullptr)
-         {
-            throw EqualizerException();
-         }
-         const int strcmpResult = strcmp(expected, actual);
-         if (strcmpResult != 0)
-         {
-            throw EqualizerException();
-         }
-      }
-   };
-
-   template<>
-   struct Equalizer<char*>
-   {
-      static void AssertEqual(char* expected, char* actual)
-      {
-         Equalizer<const char*>::AssertEqual(expected, actual);
-      }
-   };
-
-   template<>
-   struct Equalizer<double>
-   {
-      static void AssertEqual(double expected, double actual)
-      {
-         // Tentative exactly-equal implementation
-         if (!(expected == actual))
-         {
-            throw EqualizerException();
-         }
-      }
-   };
-
-   template<>
-   struct Equalizer<float>
-   {
-      static void AssertEqual(float expected, float actual)
-      {
-         // Tentative exactly-equal implementation
-         if (!(expected == actual))
-         {
-            throw EqualizerException();
-         }
-      }
-   };
-
-   template<>
-   struct TwoTypeEqualizer<int, unsigned>
-   {
-      static void AssertEqual(int expected, unsigned actual)
-      {
-         if (expected < 0)
-         {
-            throw EqualizerException();
-         }
-         Equalizer<unsigned>::AssertEqual(static_cast<unsigned>(expected), actual);
-      }
-   };
-
-#if defined(__linux__) || defined(_WIN64)
-   template<>
-   struct TwoTypeEqualizer<int, size_t>
-   {
-      static void AssertEqual(int expected, size_t actual)
-      {
-         if (expected < 0)
-         {
-            throw EqualizerException();
-         }
-         Equalizer<size_t>::AssertEqual(static_cast<size_t>(expected), actual);
-      }
-   };
-#endif
 
    template<>
    struct Equalizer<ZenUnit::RunFilter>
