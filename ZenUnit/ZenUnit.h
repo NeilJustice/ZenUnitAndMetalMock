@@ -1816,7 +1816,7 @@ Testing Utility:
       }
    };
 
-#define VRT(value) ZenUnit::VRText<decltype(value)>(value, #value)
+#define VRT(value) ZenUnit::VRText<typename std::remove_const_t<typename std::remove_reference_t<decltype(value)>>>(value, #value)
 
    // Value Reference Text
    template<typename T>
@@ -5952,54 +5952,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
       {
          Equalizer<const char*>::AssertEqual(expected, actual);
       }
-   };
-
-   template<>
-   struct TwoTypeEqualizer<const char*, char*>
-   {
-      static void AssertEqual(const char* expected, char* actual)
-      {
-         Equalizer<const char*>::AssertEqual(expected, actual);
-      }
-   };
-
-   template<>
-   struct TwoTypeEqualizer<char*, const char*>
-   {
-      static void AssertEqual(char* expected, const char* actual)
-      {
-         Equalizer<const char*>::AssertEqual(expected, actual);
-      }
-   };
-
-   template<>
-   struct TwoTypeEqualizer<const char*, std::string>
-   {
-      static void AssertEqual(const char* expected, const std::string& actual)
-      {
-         Equalizer<const char*>::AssertEqual(expected, actual.c_str());
-      }
-   };
-
-   template<>
-   struct TwoTypeEqualizer<std::string, const char*>
-   {
-      static void AssertEqual(const std::string& expected, const char* actual)
-      {
-         Equalizer<const char*>::AssertEqual(expected.c_str(), actual);
-      }
-   };
-
-   template<>
-   struct TwoTypeEqualizer<char*, std::string>
-   {
-      static void AssertEqual(char* expected, const std::string& actual);
-   };
-
-   template<>
-   struct TwoTypeEqualizer<std::string, char*>
-   {
-      static void AssertEqual(const std::string& expected, char* actual);
    };
 
    template<>

@@ -30,20 +30,20 @@ TEST(ElementsAreDefaults_DoesNotThrow)
    STD_ARRAYS_EQUAL(expectedArray, actualArray);
 }
 
-const string TypeName = *Type::GetName<T>();
-const T _randomElement = ZenUnit::Random<T>();
-array<T, 1> _expectedArray = { _randomElement };
-array<T, 1> _actualArray = { _randomElement + T{ 1 } };
-
 TEST(ElementAreNonDefaultAndNotEqual_Throws)
 {
-   THROWS(STD_ARRAYS_EQUAL(_expectedArray, _actualArray), Anomaly, R"(
-  Failed: STD_ARRAYS_EQUAL(_expectedArray, _actualArray)
+   const string TypeName = *Type::GetName<T>();
+   const T randomElement = ZenUnit::Random<T>();
+   array<T, 1> expectedArray = { randomElement };
+   const array<T, 1> actualArray = { randomElement + T{ 1 } };
+   //
+   THROWS(STD_ARRAYS_EQUAL(expectedArray, actualArray), Anomaly, R"(
+  Failed: STD_ARRAYS_EQUAL(expectedArray, actualArray)
 Expected: <std::array<)" + TypeName + R"(,1>>
   Actual: <std::array<)" + TypeName + R"(,1>>
  Because: ARE_EQUAL(ithExpectedElement, ithActualElement, iEqualsIndexMessage) failed
-Expected: )" + ToStringer::ToString(_expectedArray[0]) + R"(
-  Actual: )" + ToStringer::ToString(_actualArray[0]) + R"(
+Expected: )" + ToStringer::ToString(expectedArray[0]) + R"(
+  Actual: )" + ToStringer::ToString(actualArray[0]) + R"(
  Message: "i=0"
 File.cpp(1)
 File.cpp(1))");
@@ -69,6 +69,10 @@ AFACT(ElementsAreNonDefaultAndNotEqualAtIndex1_Throws)
 AFACT(ElementsAreNonDefaultAndBothEqual_DoesNotThrow)
 EVIDENCE
 
+const string TypeName = *Type::GetName<T>();
+const T _randomElementA = ZenUnit::Random<T>();
+const T _randomElementB = ZenUnit::Random<T>();
+
 TEST(ElementsAreDefaults_DoesNotThrow)
 {
    array<T, 2> expectedArray;
@@ -76,38 +80,35 @@ TEST(ElementsAreDefaults_DoesNotThrow)
    STD_ARRAYS_EQUAL(expectedArray, actualArray);
 }
 
-const string TypeName = *Type::GetName<T>();
-const T _randomElementA = ZenUnit::Random<T>();
-const T _randomElementB = ZenUnit::Random<T>();
-array<T, 2> _expectedArray_index0 = { _randomElementA, _randomElementB };
-array<T, 2> _actualArray_index0 = { _randomElementA + T{ 1 }, _randomElementB };
-
 TEST(ElementsAreNonDefaultAndNotEqualAtIndex0_Throws)
 {
-   THROWS(STD_ARRAYS_EQUAL(_expectedArray_index0, _actualArray_index0), Anomaly, R"(
-  Failed: STD_ARRAYS_EQUAL(_expectedArray_index0, _actualArray_index0)
+   array<T, 2> expectedArray_index0 = { _randomElementA, _randomElementB };
+   array<T, 2> actualArray_index0 = { _randomElementA + T{ 1 }, _randomElementB };
+   //
+   THROWS(STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0), Anomaly, R"(
+  Failed: STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0)
 Expected: <std::array<)" + TypeName + R"(,2>>
   Actual: <std::array<)" + TypeName + R"(,2>>
  Because: ARE_EQUAL(ithExpectedElement, ithActualElement, iEqualsIndexMessage) failed
-Expected: )" + ToStringer::ToString(_expectedArray_index0[0]) + R"(
-  Actual: )" + ToStringer::ToString(_actualArray_index0[0]) + R"(
+Expected: )" + ToStringer::ToString(expectedArray_index0[0]) + R"(
+  Actual: )" + ToStringer::ToString(actualArray_index0[0]) + R"(
  Message: "i=0"
 File.cpp(1)
 File.cpp(1))");
 }
 
-array<T, 2> _expectedArray_index1 = { _randomElementA, _randomElementB };
-array<T, 2> _actualArray_index1 = { _randomElementA, _randomElementB + T{ 1 } };
-
 TEST(ElementsAreNonDefaultAndNotEqualAtIndex1_Throws)
 {
-   THROWS(STD_ARRAYS_EQUAL(_expectedArray_index1, _actualArray_index1), Anomaly, R"(
-  Failed: STD_ARRAYS_EQUAL(_expectedArray_index1, _actualArray_index1)
+   array<T, 2> expectedArray_index1 = { _randomElementA, _randomElementB };
+   array<T, 2> actualArray_index1 = { _randomElementA, _randomElementB + T{ 1 } };
+   //
+   THROWS(STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1), Anomaly, R"(
+  Failed: STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1)
 Expected: <std::array<)" + TypeName + R"(,2>>
   Actual: <std::array<)" + TypeName + R"(,2>>
  Because: ARE_EQUAL(ithExpectedElement, ithActualElement, iEqualsIndexMessage) failed
-Expected: )" + ToStringer::ToString(_expectedArray_index1[1]) + R"(
-  Actual: )" + ToStringer::ToString(_actualArray_index1[1]) + R"(
+Expected: )" + ToStringer::ToString(expectedArray_index1[1]) + R"(
+  Actual: )" + ToStringer::ToString(actualArray_index1[1]) + R"(
  Message: "i=1"
 File.cpp(1)
 File.cpp(1))");
