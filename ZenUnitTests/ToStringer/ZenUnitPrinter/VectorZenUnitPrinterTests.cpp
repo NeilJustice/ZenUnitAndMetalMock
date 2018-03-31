@@ -11,7 +11,7 @@ AFACT(ZenUnitPrinter_Print_SevenElements_PrintsAllSevenElements)
 AFACT(ZenUnitPrinter_Print_EightElements_PrintsFirstSevenElements)
 EVIDENCE
 
-const string _expectedVectorTypePrefix = "vector<" + *Type::GetName<T>() + ">:";
+const string _expectedVectorTypePrefix = "std::vector<" + *Type::GetName<T>() + ">:";
 ostringstream _oss;
 
 TEST(ZenUnitPrinter_Print_Empty_PrintsEmptyBrackets)

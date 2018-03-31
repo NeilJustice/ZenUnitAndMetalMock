@@ -35,11 +35,11 @@ TEST(AssertEqual_IntVectors_CallsVECTORS_EQUAL)
    expectedIntVector.push_back(1);
    THROWS(Equalizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedVector, actualVector)
-Expected: vector<int>:
+Expected: std::vector<int>:
 {
    1
 }
-  Actual: vector<int>:
+  Actual: std::vector<int>:
 {
    (empty vector)
 }
@@ -60,11 +60,11 @@ TEST(AssertEqual_StringVectors_CallsVECTORS_EQUAL)
    THROWS(Equalizer<vector<string>>::AssertEqual(
       expectedStringVector Comma actualStringVector), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedVector, actualVector)
-Expected: vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >>:
+Expected: std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >>:
 {
    ""
 }
-  Actual: vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >>:
+  Actual: std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >>:
 {
    (empty vector)
 }
@@ -85,11 +85,11 @@ TEST(AssertEqual_UserTypeVectors_CallsVECTORS_EQUAL)
    THROWS(Equalizer<vector<UserType>>::AssertEqual(
       expectedUserTypeVector Comma actualUserTypeVector), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedVector, actualVector)
-Expected: vector<UserType>:
+Expected: std::vector<UserType>:
 {
    UserType@0
 }
-  Actual: vector<UserType>:
+  Actual: std::vector<UserType>:
 {
    (empty vector)
 }

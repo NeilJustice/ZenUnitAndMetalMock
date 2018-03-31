@@ -379,12 +379,12 @@ namespace ZenMock
       size_t expectedCallsSize, size_t numberOfCalls, const string& expectedExceptionWhatPrefix,
       size_t(1), size_t(0), R"(
   Failed: VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature)
-Expected: vector<ZenMock::OneArgumentCallRef<int>>:
+Expected: std::vector<ZenMock::OneArgumentCallRef<int>>:
 {
    ZenMock::OneArgumentCall:
 Argument: 0
 }
-  Actual: vector<ZenMock::OneArgumentCallRef<int>>:
+  Actual: std::vector<ZenMock::OneArgumentCallRef<int>>:
 {
    (empty vector)
 }
@@ -393,12 +393,12 @@ Expected: 1
   Actual: 0)",
       size_t(1), size_t(2), R"(
   Failed: VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature)
-Expected: vector<ZenMock::OneArgumentCallRef<int>>:
+Expected: std::vector<ZenMock::OneArgumentCallRef<int>>:
 {
    ZenMock::OneArgumentCall:
 Argument: 0
 }
-  Actual: vector<ZenMock::OneArgumentCallRef<int>>:
+  Actual: std::vector<ZenMock::OneArgumentCallRef<int>>:
 {
    ZenMock::OneArgumentCall:
 Argument: 0,
@@ -410,14 +410,14 @@ Expected: 1
   Actual: 2)",
       size_t(2), size_t(0), R"(
   Failed: VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature)
-Expected: vector<ZenMock::OneArgumentCallRef<int>>:
+Expected: std::vector<ZenMock::OneArgumentCallRef<int>>:
 {
    ZenMock::OneArgumentCall:
 Argument: 0,
    ZenMock::OneArgumentCall:
 Argument: 0
 }
-  Actual: vector<ZenMock::OneArgumentCallRef<int>>:
+  Actual: std::vector<ZenMock::OneArgumentCallRef<int>>:
 {
    (empty vector)
 }
@@ -426,14 +426,14 @@ Expected: 2
   Actual: 0)",
       size_t(2), size_t(1), R"(
   Failed: VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature)
-Expected: vector<ZenMock::OneArgumentCallRef<int>>:
+Expected: std::vector<ZenMock::OneArgumentCallRef<int>>:
 {
    ZenMock::OneArgumentCall:
 Argument: 0,
    ZenMock::OneArgumentCall:
 Argument: 0
 }
-  Actual: vector<ZenMock::OneArgumentCallRef<int>>:
+  Actual: std::vector<ZenMock::OneArgumentCallRef<int>>:
 {
    ZenMock::OneArgumentCall:
 Argument: 0
@@ -443,14 +443,14 @@ Expected: 2
   Actual: 1)",
       size_t(2), size_t(3), R"(
   Failed: VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature)
-Expected: vector<ZenMock::OneArgumentCallRef<int>>:
+Expected: std::vector<ZenMock::OneArgumentCallRef<int>>:
 {
    ZenMock::OneArgumentCall:
 Argument: 0,
    ZenMock::OneArgumentCall:
 Argument: 0
 }
-  Actual: vector<ZenMock::OneArgumentCallRef<int>>:
+  Actual: std::vector<ZenMock::OneArgumentCallRef<int>>:
 {
    ZenMock::OneArgumentCall:
 Argument: 0,
@@ -471,12 +471,12 @@ Expected: 2
       size_t expectedCallsSize, size_t mismatchingCallIndex, const string& expectedExceptionWhatPrefix,
       size_t(1), size_t(0),
       R"(
-Expected: vector<ZenMock::OneArgumentCallRef<int>>:
+Expected: std::vector<ZenMock::OneArgumentCallRef<int>>:
 {
    ZenMock::OneArgumentCall:
 Argument: 10
 }
-  Actual: vector<ZenMock::OneArgumentCallRef<int>>:
+  Actual: std::vector<ZenMock::OneArgumentCallRef<int>>:
 {
    ZenMock::OneArgumentCall:
 Argument: 20
@@ -489,14 +489,14 @@ Argument: 20
  Message: "i=0")",
       size_t(2), size_t(0),
       R"(
-Expected: vector<ZenMock::OneArgumentCallRef<int>>:
+Expected: std::vector<ZenMock::OneArgumentCallRef<int>>:
 {
    ZenMock::OneArgumentCall:
 Argument: 10,
    ZenMock::OneArgumentCall:
 Argument: 10
 }
-  Actual: vector<ZenMock::OneArgumentCallRef<int>>:
+  Actual: std::vector<ZenMock::OneArgumentCallRef<int>>:
 {
    ZenMock::OneArgumentCall:
 Argument: 20,
@@ -511,14 +511,14 @@ Argument: 20
  Message: "i=0")",
       size_t(2), size_t(1),
       R"(
-Expected: vector<ZenMock::OneArgumentCallRef<int>>:
+Expected: std::vector<ZenMock::OneArgumentCallRef<int>>:
 {
    ZenMock::OneArgumentCall:
 Argument: 10,
    ZenMock::OneArgumentCall:
 Argument: 10
 }
-  Actual: vector<ZenMock::OneArgumentCallRef<int>>:
+  Actual: std::vector<ZenMock::OneArgumentCallRef<int>>:
 {
    ZenMock::OneArgumentCall:
 Argument: 10,

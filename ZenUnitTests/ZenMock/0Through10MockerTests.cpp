@@ -359,12 +359,12 @@ File.cpp(1))");
       //
       THROWS(_mocker->CalledAsFollows(expectedOneArgumentCalls), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature)
-Expected: vector<ZenMock::OneArgumentCallRef<int>>:
+Expected: std::vector<ZenMock::OneArgumentCallRef<int>>:
 {
    ZenMock::OneArgumentCall:
 Argument: 0
 }
-  Actual: vector<ZenMock::OneArgumentCallRef<int>>:
+  Actual: std::vector<ZenMock::OneArgumentCallRef<int>>:
 {
    (empty vector)
 }
@@ -387,14 +387,14 @@ File.cpp(1))");
       //
       THROWS(_mocker->CalledAsFollows(expectedOneArgumentCalls), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature)
-Expected: vector<ZenMock::OneArgumentCallRef<int>>:
+Expected: std::vector<ZenMock::OneArgumentCallRef<int>>:
 {
    ZenMock::OneArgumentCall:
 Argument: 10,
    ZenMock::OneArgumentCall:
 Argument: 10
 }
-  Actual: vector<ZenMock::OneArgumentCallRef<int>>:
+  Actual: std::vector<ZenMock::OneArgumentCallRef<int>>:
 {
    ZenMock::OneArgumentCall:
 Argument: 10,

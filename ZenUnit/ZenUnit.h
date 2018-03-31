@@ -121,6 +121,10 @@
 #define PAIRS_EQUAL(expectedPair, actualPair, ...) \
    ZenUnit::PAIRS_EQUAL_Defined(VRT(expectedPair), VRT(actualPair), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
+// Asserts that each element of std::array<T, Size> expectedStdArray is equal to each element of std::array<T, Size> actualStdArray.
+#define STD_ARRAYS_EQUAL(expectedStdArray, actualStdArray, ...) \
+   ZenUnit::STD_ARRAYS_EQUAL_Defined(VRT(expectedStdArray), VRT(actualStdArray), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
 // Asserts that expectedElement is contained in collection.
 #define CONTAINS_ELEMENT(expectedElement, collection, ...) \
    ZenUnit::CONTAINS_ELEMENT_Defined(VRT(expectedElement), VRT(collection), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
@@ -2526,6 +2530,48 @@ Testing Utility:
       }
    }
 
+   template<typename T, std::size_t Size, typename... MessageTypes>
+   void STD_ARRAYS_EQUAL_ToStringAndRethrow(
+      const Anomaly& becauseAnomaly,
+      VRText<std::array<T, Size>> expectedStdArrayVRT, VRText<std::array<T, Size>> actualStdArrayVRT,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   {
+      const std::string expectedToString = ToStringer::ToString(expectedStdArrayVRT.value);
+      const std::string actualToString = ToStringer::ToString(actualStdArrayVRT.value);
+      throw Anomaly("STD_ARRAYS_EQUAL", expectedStdArrayVRT.text, actualStdArrayVRT.text, "", messagesText,
+         becauseAnomaly, expectedToString, actualToString, ExpectedActualFormat::Fields,
+         fileLine, std::forward<MessageTypes>(messages)...);
+   }
+
+   template<typename T, std::size_t Size, typename... MessageTypes>
+   void STD_ARRAYS_EQUAL_Defined(
+      VRText<std::array<T, Size>> expectedStdArrayVRT, VRText<std::array<T, Size>> actualStdArrayVRT,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   {
+      const std::array<T, Size>& expectedStdArray = expectedStdArrayVRT.value;
+      const std::array<T, Size>& actualStdArray = actualStdArrayVRT.value;
+      const std::size_t expectedStdArraySize = expectedStdArray.size();
+      static const size_t IEqualsSignLength = 2;
+      static const size_t SizeTMaxValueLength = 21; // strlen("18446744073709551615")
+      char iEqualsIndexMessage[IEqualsSignLength + SizeTMaxValueLength]{ "i=" };
+      try
+      {
+         for (size_t i = 0; i < expectedStdArraySize; ++i)
+         {
+            const T& ithExpectedElement = expectedStdArray[i];
+            const T& ithActualElement = actualStdArray[i];
+            ULongLongToChars(i, iEqualsIndexMessage + IEqualsSignLength);
+            ARE_EQUAL(ithExpectedElement, ithActualElement, iEqualsIndexMessage);
+         }
+      }
+      catch (const Anomaly& anomaly)
+      {
+         STD_ARRAYS_EQUAL_ToStringAndRethrow(anomaly,
+            expectedStdArrayVRT, actualStdArrayVRT,
+            fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+      }
+   }
+
    template<typename T>
    struct ScalarDeleter
    {
@@ -2940,8 +2986,8 @@ Testing Utility:
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
       const size_t expectedVectorSize = expectedVector.size();
-      const size_t IEqualsSignLength = 2;
-      const size_t SizeTMaxValueLength = 21; // strlen("18446744073709551615")
+      static const size_t IEqualsSignLength = 2;
+      static const size_t SizeTMaxValueLength = 21; // strlen("18446744073709551615")
       char iEqualsIndexMessage[IEqualsSignLength + SizeTMaxValueLength]{ "i=" };
       for (size_t i = 0; i < expectedVectorSize; ++i)
       {
@@ -5775,7 +5821,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
       static void Print(std::ostream& os, const std::vector<T, Allocator>& vec)
       {
          const std::string* typeName = Type::GetName<T>();
-         os << "vector<" << *typeName << ">:";
+         os << "std::vector<" << *typeName << ">:";
          const std::size_t vectorSize = vec.size();
          if (vectorSize == 0)
          {

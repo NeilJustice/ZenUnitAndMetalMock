@@ -417,20 +417,18 @@ int main(int argc, char* argv[])
 
 |The Road To ZenUnit 1.0|
 |-----------------------|
-|Travis CI clang-tidy|
-|Appveyor /analyze|
 |100% code coverage badge|
-|Seedability of ZenUnit::Random\<T\> similar to -random[=Seed]
-|Jenkins JUnit plugin compatible XML file output|
-|Floating point assertions|
+|Travis CI clang-tidy|
+|AppVeyor /analyze|
+|Seedability of ZenUnit::Random\<T\>
+|STD_ARRAYS_EQUAL|
+|TUPLES_EQUAL|
+|ARE_WITHIN|
+|ARE_CLOSE|
 |-failfast|
 |-breakfast|
-|CHARS_EQUAL|
-|ARRAYS_EQUAL|
-|TUPLES_EQUAL|
-|-maxtestms=\<Milliseconds\>|
-|-maxtotalseconds=\<Seconds\>|
 
 |The Road To ZenMock 1.0|
 |-----------------------|
+|Every feature documented|
 |Ordered function call assertions|
