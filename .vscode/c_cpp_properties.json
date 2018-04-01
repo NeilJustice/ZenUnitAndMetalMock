@@ -1,24 +1,23 @@
 {
-    "configurations":
-    [
+    "configurations": [
         {
             "name": "Linux",
-            "includePath":
-            [
+            "includePath": [
                 "/usr/include/c++/7",
                 "/usr/include/c++/7/x86_64-redhat-linux",
                 "/usr/include/linux"
             ],
-            "browse":
-            {
-                "path":
-                [
+            "browse": {
+                "path": [
                     "/usr/include",
                     "/usr/local/include",
                     "${workspaceRoot}"
                 ]
             },
-            "intelliSenseMode": "clang-x64"
+            "intelliSenseMode": "clang-x64",
+            "compilerPath": "/usr/local/bin/clang",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
         }
     ],
     "version": 3

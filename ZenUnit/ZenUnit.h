@@ -2671,6 +2671,33 @@ Testing Utility:
       }
    }
 
+   inline size_t ULongLongToChars(unsigned long long value, char* outChars) noexcept
+   {
+      char* ptrA = outChars;
+      unsigned long long tempValue = 0;
+      size_t numberOfCharsAppended = 0;
+      do
+      {
+         tempValue = value;
+         value /= 10;
+         unsigned long long index = 35 + (tempValue - value * 10);
+         *ptrA++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"[index];
+         ++numberOfCharsAppended;
+      } while (value != 0);
+      char valueBeforeOverwrittenWithZero = *ptrA;
+      char* const pointerToZero = ptrA;
+      *ptrA-- = '\0';
+      char* ptrB = outChars;
+      while (ptrB < ptrA)
+      {
+         char tempChar = *ptrA;
+         *ptrA-- = *ptrB;
+         *ptrB++ = tempChar;
+      }
+      *pointerToZero = valueBeforeOverwrittenWithZero;
+      return numberOfCharsAppended;
+   }
+
    template<typename T, std::size_t Size, typename... MessageTypes>
    void STD_ARRAYS_EQUAL_ToStringAndRethrow(
       const Anomaly& becauseAnomaly,
@@ -3078,33 +3105,6 @@ Testing Utility:
          toStringedExpectedVector,
          toStringedActualVector,
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
-   }
-
-   inline size_t ULongLongToChars(unsigned long long value, char* outChars) noexcept
-   {
-      char* ptrA = outChars;
-      unsigned long long tempValue = 0;
-      size_t numberOfCharsAppended = 0;
-      do
-      {
-         tempValue = value;
-         value /= 10;
-         unsigned long long index = 35 + (tempValue - value * 10);
-         *ptrA++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"[index];
-         ++numberOfCharsAppended;
-      } while (value != 0);
-      char valueBeforeOverwrittenWithZero = *ptrA;
-      char* const pointerToZero = ptrA;
-      *ptrA-- = '\0';
-      char* ptrB = outChars;
-      while (ptrB < ptrA)
-      {
-         char tempChar = *ptrA;
-         *ptrA-- = *ptrB;
-         *ptrB++ = tempChar;
-      }
-      *pointerToZero = valueBeforeOverwrittenWithZero;
-      return numberOfCharsAppended;
    }
 
    template<
