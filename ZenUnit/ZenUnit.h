@@ -123,7 +123,7 @@
 
 // Asserts that each element of std::array<T, Size> expectedStdArray is equal to each element of std::array<T, Size> actualStdArray.
 #define STD_ARRAYS_EQUAL(expectedStdArray, actualStdArray, ...) \
-   ZenUnit::STD_ARRAYS_EQUAL_Defined(VRT(expectedStdArray), VRT(actualStdArray), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::STD_ARRAYS_EQUAL_Defined(NAKED_VRT(expectedStdArray), NAKED_VRT(actualStdArray), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that expectedElement is contained in collection.
 #define CONTAINS_ELEMENT(expectedElement, collection, ...) \
@@ -1816,7 +1816,8 @@ Testing Utility:
       }
    };
 
-#define VRT(value) ZenUnit::VRText<typename std::remove_const_t<typename std::remove_reference_t<decltype(value)>>>(value, #value)
+#define VRT(value) ZenUnit::VRText<decltype(value)>(value, #value)
+#define NAKED_VRT(value) ZenUnit::VRText<typename std::remove_const_t<typename std::remove_reference_t<decltype(value)>>>(value, #value)
 
    // Value Reference Text
    template<typename T>

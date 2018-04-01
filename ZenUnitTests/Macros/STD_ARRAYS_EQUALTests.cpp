@@ -7,13 +7,13 @@ EVIDENCE
 
 TEST(TwoSize0Arrays_DoesNotThrow)
 {
-   array<T, 0> expectedArray;
-   array<T, 0> actualArray;
+   const array<T, 0> expectedArray{};
+   const array<T, 0> actualArray{};
    STD_ARRAYS_EQUAL(expectedArray, actualArray);
 }
 
-RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size0Arrays, char)
-THEN_RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size0Arrays, int)
+RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size0Arrays, int)
+THEN_RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size0Arrays, unsigned long long)
 
 
 template<typename T>
@@ -25,8 +25,8 @@ EVIDENCE
 
 TEST(ElementsAreDefaults_DoesNotThrow)
 {
-   array<T, 1> expectedArray;
-   array<T, 1> actualArray;
+   const array<T, 1> expectedArray{};
+   const array<T, 1> actualArray{};
    STD_ARRAYS_EQUAL(expectedArray, actualArray);
 }
 
@@ -34,13 +34,13 @@ TEST(ElementAreNonDefaultAndNotEqual_Throws)
 {
    const string TypeName = *Type::GetName<T>();
    const T randomElement = ZenUnit::Random<T>();
-   array<T, 1> expectedArray = { randomElement };
+   const array<T, 1> expectedArray = { randomElement };
    const array<T, 1> actualArray = { randomElement + T{ 1 } };
    //
    THROWS(STD_ARRAYS_EQUAL(expectedArray, actualArray), Anomaly, R"(
   Failed: STD_ARRAYS_EQUAL(expectedArray, actualArray)
-Expected: <std::array<)" + TypeName + R"(,1>>
-  Actual: <std::array<)" + TypeName + R"(,1>>
+Expected: <std::array<)" + TypeName + R"(, 1ul>>
+  Actual: <std::array<)" + TypeName + R"(, 1ul>>
  Because: ARE_EQUAL(ithExpectedElement, ithActualElement, iEqualsIndexMessage) failed
 Expected: )" + ToStringer::ToString(expectedArray[0]) + R"(
   Actual: )" + ToStringer::ToString(actualArray[0]) + R"(
@@ -52,13 +52,13 @@ File.cpp(1))");
 TEST(ElementAreNonDefaultAndEqual_DoesNotThrow)
 {
    const T randomElement = ZenUnit::Random<T>();
-   array<T, 1> expectedArray = { randomElement };
-   array<T, 1> actualArray = { randomElement };
+   const array<T, 1> expectedArray = { randomElement };
+   const array<T, 1> actualArray = { randomElement };
    STD_ARRAYS_EQUAL(expectedArray, actualArray);
 }
 
-RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size1Arrays, char)
-THEN_RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size1Arrays, int)
+RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size1Arrays, int)
+THEN_RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size1Arrays, unsigned long long)
 
 
 template<typename T>
@@ -75,20 +75,20 @@ const T _randomElementB = ZenUnit::Random<T>();
 
 TEST(ElementsAreDefaults_DoesNotThrow)
 {
-   array<T, 2> expectedArray;
-   array<T, 2> actualArray;
+   const array<T, 2> expectedArray{};
+   const array<T, 2> actualArray{};
    STD_ARRAYS_EQUAL(expectedArray, actualArray);
 }
 
 TEST(ElementsAreNonDefaultAndNotEqualAtIndex0_Throws)
 {
-   array<T, 2> expectedArray_index0 = { _randomElementA, _randomElementB };
-   array<T, 2> actualArray_index0 = { _randomElementA + T{ 1 }, _randomElementB };
+   const array<T, 2> expectedArray_index0 = { _randomElementA, _randomElementB };
+   const array<T, 2> actualArray_index0 = { _randomElementA + T{ 1 }, _randomElementB };
    //
    THROWS(STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0), Anomaly, R"(
   Failed: STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0)
-Expected: <std::array<)" + TypeName + R"(,2>>
-  Actual: <std::array<)" + TypeName + R"(,2>>
+Expected: <std::array<)" + TypeName + R"(, 2ul>>
+  Actual: <std::array<)" + TypeName + R"(, 2ul>>
  Because: ARE_EQUAL(ithExpectedElement, ithActualElement, iEqualsIndexMessage) failed
 Expected: )" + ToStringer::ToString(expectedArray_index0[0]) + R"(
   Actual: )" + ToStringer::ToString(actualArray_index0[0]) + R"(
@@ -99,13 +99,13 @@ File.cpp(1))");
 
 TEST(ElementsAreNonDefaultAndNotEqualAtIndex1_Throws)
 {
-   array<T, 2> expectedArray_index1 = { _randomElementA, _randomElementB };
-   array<T, 2> actualArray_index1 = { _randomElementA, _randomElementB + T{ 1 } };
+   const array<T, 2> expectedArray_index1 = { _randomElementA, _randomElementB };
+   const array<T, 2> actualArray_index1 = { _randomElementA, _randomElementB + T{ 1 } };
    //
    THROWS(STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1), Anomaly, R"(
   Failed: STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1)
-Expected: <std::array<)" + TypeName + R"(,2>>
-  Actual: <std::array<)" + TypeName + R"(,2>>
+Expected: <std::array<)" + TypeName + R"(, 2ul>>
+  Actual: <std::array<)" + TypeName + R"(, 2ul>>
  Because: ARE_EQUAL(ithExpectedElement, ithActualElement, iEqualsIndexMessage) failed
 Expected: )" + ToStringer::ToString(expectedArray_index1[1]) + R"(
   Actual: )" + ToStringer::ToString(actualArray_index1[1]) + R"(
@@ -118,10 +118,10 @@ TEST(ElementsAreNonDefaultAndBothEqual_DoesNotThrow)
 {
    const T randomElementA = ZenUnit::Random<T>();
    const T randomElementB = ZenUnit::Random<T>();
-   array<T, 2> expectedArray = { randomElementA, randomElementB };
-   array<T, 2> actualArray = { randomElementA, randomElementB };
+   const array<T, 2> expectedArray = { randomElementA, randomElementB };
+   const array<T, 2> actualArray = { randomElementA, randomElementB };
    STD_ARRAYS_EQUAL(expectedArray, actualArray);
 }
 
-RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size2Arrays, char)
-THEN_RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size2Arrays, int)
+RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size2Arrays, int)
+THEN_RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size2Arrays, unsigned long long)
