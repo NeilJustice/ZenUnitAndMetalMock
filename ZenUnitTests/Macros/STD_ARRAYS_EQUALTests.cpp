@@ -34,8 +34,8 @@ TEST(ElementAreNonDefaultAndNotEqual_Throws)
 {
    const string TypeName = *Type::GetName<T>();
    const T randomElement = ZenUnit::Random<T>();
-   const array<T, 1> expectedArray = { randomElement };
-   const array<T, 1> actualArray = { randomElement + T{ 1 } };
+   const array<T, 1> expectedArray = { { randomElement } };
+   const array<T, 1> actualArray = { { randomElement + T{ 1 } } };
    //
 #ifdef __linux__
    THROWS(STD_ARRAYS_EQUAL(expectedArray, actualArray), Anomaly, R"(
@@ -65,8 +65,8 @@ File.cpp(1))");
 TEST(ElementAreNonDefaultAndEqual_DoesNotThrow)
 {
    const T randomElement = ZenUnit::Random<T>();
-   const array<T, 1> expectedArray = { randomElement };
-   const array<T, 1> actualArray = { randomElement };
+   const array<T, 1> expectedArray = { { randomElement } };
+   const array<T, 1> actualArray = { { randomElement } };
    STD_ARRAYS_EQUAL(expectedArray, actualArray);
 }
 
@@ -95,8 +95,8 @@ TEST(ElementsAreDefaults_DoesNotThrow)
 
 TEST(ElementsAreNonDefaultAndNotEqualAtIndex0_Throws)
 {
-   const array<T, 2> expectedArray_index0 = { _randomElementA, _randomElementB };
-   const array<T, 2> actualArray_index0 = { _randomElementA + T{ 1 }, _randomElementB };
+   const array<T, 2> expectedArray_index0 = { { _randomElementA, _randomElementB } };
+   const array<T, 2> actualArray_index0 = { { _randomElementA + T{ 1 }, _randomElementB } };
    //
 #ifdef __linux__
    THROWS(STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0), Anomaly, R"(
@@ -125,8 +125,8 @@ File.cpp(1))");
 
 TEST(ElementsAreNonDefaultAndNotEqualAtIndex1_Throws)
 {
-   const array<T, 2> expectedArray_index1 = { _randomElementA, _randomElementB };
-   const array<T, 2> actualArray_index1 = { _randomElementA, _randomElementB + T{ 1 } };
+   const array<T, 2> expectedArray_index1 = { { _randomElementA, _randomElementB } };
+   const array<T, 2> actualArray_index1 = { { _randomElementA, _randomElementB + T{ 1 } } };
    //
 #ifdef __linux__
    THROWS(STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1), Anomaly, R"(
@@ -157,8 +157,8 @@ TEST(ElementsAreNonDefaultAndBothEqual_DoesNotThrow)
 {
    const T randomElementA = ZenUnit::Random<T>();
    const T randomElementB = ZenUnit::Random<T>();
-   const array<T, 2> expectedArray = { randomElementA, randomElementB };
-   const array<T, 2> actualArray = { randomElementA, randomElementB };
+   const array<T, 2> expectedArray = { { randomElementA, randomElementB } };
+   const array<T, 2> actualArray = { { randomElementA, randomElementB } };
    STD_ARRAYS_EQUAL(expectedArray, actualArray);
 }
 
