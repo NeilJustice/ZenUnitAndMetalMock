@@ -42,7 +42,7 @@ Testing Rigor:
 
 Testing Filtration:
 
--run=<TestClassName>[.TestName][/TestCaseNumber][,...]
+-run=<TestClassName>[::TestName][/TestCaseNumber][,...]
    Run only specified case-insensitive test classes, tests, or test cases.
    Add a '*' character to the end of a test class or test name
    filter string to specify name-starts-with filtration.
@@ -347,8 +347,7 @@ TESTS(RunFilterParserTests)
 AFACT(DefaultConstructor_NewsTransformer)
 AFACT(Parse_TransformsRunFilterStringsToRunFilters)
 FACTS(ParseRunFilterString_JustTestClassName_ReturnsExpectedRunFilter)
-FACTS(ParseRunFilterString_TestClassNameDotTestName_ReturnsExpectedRunFilter)
-FACTS(ParseRunFilterString_RunFilterStringContainsMoreThanOnePeriod_Throws)
+FACTS(ParseRunFilterString_TestClassNameColonColonTestName_ReturnsExpectedRunFilter)
 FACTS(ParseRunFilterString_TestClassNameAndTestNameAndTestCaseNumber_ReturnsExpectedRunFilter)
 FACTS(ParseRunFilterString_RunFilterStringContainsMoreThanOneSlash_Throws)
 EVIDENCE
@@ -393,28 +392,21 @@ TEST2X2(ParseRunFilterString_JustTestClassName_ReturnsExpectedRunFilter,
    ARE_EQUAL(expectedRunFilter, runFilter);
 }
 
-TEST2X2(ParseRunFilterString_TestClassNameDotTestName_ReturnsExpectedRunFilter,
+TEST2X2(ParseRunFilterString_TestClassNameColonColonTestName_ReturnsExpectedRunFilter,
    const string& runFilterString, const RunFilter& expectedRunFilter,
-   "TestClassA.TestNameA", RunFilter("TestClassA", "TestNameA", std::numeric_limits<unsigned>::max()),
-   "TestClassB.TestNameB", RunFilter("TestClassB", "TestNameB", std::numeric_limits<unsigned>::max()))
+   "TestClassA::TestNameA", RunFilter("TestClassA", "TestNameA", std::numeric_limits<unsigned>::max()),
+   "TestClassB::TestNameB", RunFilter("TestClassB", "TestNameB", std::numeric_limits<unsigned>::max()),
+   "Namespace::TestClassC::TestNameC", RunFilter("Namespace", "TestClassC::TestNameC", std::numeric_limits<unsigned>::max()),
+   "TestClass:::TestName", RunFilter("TestClass", ":TestName", std::numeric_limits<unsigned>::max()))
 {
    const RunFilter runFilter = _runFilterParser.ParseRunFilterString(runFilterString);
    ARE_EQUAL(expectedRunFilter, runFilter);
 }
 
-TEST1X1(ParseRunFilterString_RunFilterStringContainsMoreThanOnePeriod_Throws,
-   const string& invalidRunFilterString,
-   "TestClassName..TestName",
-   "TestClassName...TestName")
-{
-   THROWS(_runFilterParser.ParseRunFilterString(invalidRunFilterString),
-      invalid_argument, ExpectedInvalidArgumentWhat(invalidRunFilterString));
-}
-
 TEST3X3(ParseRunFilterString_TestClassNameAndTestNameAndTestCaseNumber_ReturnsExpectedRunFilter,
    const string& runFilterString, const string& expectedTestCaseNumberString, const RunFilter& expectedRunFilter,
-   "TestClassA.TestNameA/1", "1", RunFilter("TestClassA", "TestNameA", 1),
-   "TestClassB.TestNameB/2", "2", RunFilter("TestClassB", "TestNameB", 2))
+   "TestClassA::TestNameA/1", "1", RunFilter("TestClassA", "TestNameA", 1),
+   "TestClassB::TestNameB/2", "2", RunFilter("TestClassB", "TestNameB", 2))
 {
    ToUnsigned_ZenMock.Return(expectedRunFilter.testCaseNumber);
    //
@@ -426,8 +418,8 @@ TEST3X3(ParseRunFilterString_TestClassNameAndTestNameAndTestCaseNumber_ReturnsEx
 
 TEST1X1(ParseRunFilterString_RunFilterStringContainsMoreThanOneSlash_Throws,
    const string& invalidRunFilterString,
-   "TestClassName.TestName//1",
-   "TestClassName.TestName///1")
+   "TestClassName::TestName//1",
+   "TestClassName::TestName///1")
 {
    THROWS(_runFilterParser.ParseRunFilterString(invalidRunFilterString),
       invalid_argument, ExpectedInvalidArgumentWhat(invalidRunFilterString));
@@ -435,7 +427,8 @@ TEST1X1(ParseRunFilterString_RunFilterStringContainsMoreThanOneSlash_Throws,
 
 static string ExpectedInvalidArgumentWhat(const string& invalidRunFilterString)
 {
-   return "Invalid test run filter string: " + invalidRunFilterString + ". Test run filter string format: TestClassName[.TestName[/TestCaseNumber]]";
+   return "Invalid test run filter string: " + invalidRunFilterString
+      + ". Test run filter string format: TestClassName[::TestName[/TestCaseNumber]]";
 }
 
 RUN_TESTS(RunFilterParserTests)

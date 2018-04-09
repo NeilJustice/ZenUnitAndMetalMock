@@ -25,7 +25,7 @@ Testing Rigor:
 
 Testing Filtration:
 
--run=<TestClassName>[.TestName][/TestCaseNumber][,...]
+-run=<TestClassName>[::TestName][/TestCaseNumber][,...]
    Run only specified case-insensitive test classes, tests, or test cases.
    Add a '*' character to the end of a test class or test name
    filter string to specify name-starts-with filtration.

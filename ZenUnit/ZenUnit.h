@@ -447,15 +447,30 @@ namespace ZenUnit
          return strstrResult != nullptr;
       }
 
-      static std::vector<std::string> Split(const std::string& str, char separator)
+      static std::vector<std::string> Split(const std::string& str, char delimiter)
       {
          std::vector<std::string> splitString;
          std::istringstream is(str);
          std::string token;
-         while (std::getline(is, token, separator))
+         while (std::getline(is, token, delimiter))
          {
             splitString.push_back(token);
          }
+         return splitString;
+      }
+
+      static std::vector<std::string> SplitOnFirstStringDelimiter(const std::string& str, const std::string& delimiter)
+      {
+         const size_t delimiterFindPosition = str.find(delimiter);
+         if (delimiterFindPosition == std::string::npos)
+         {
+            return { str };
+         }
+         const std::vector<std::string> splitString =
+         {
+            str.substr(0, delimiterFindPosition),
+            str.substr(delimiterFindPosition + delimiter.size())
+         };
          return splitString;
       }
 
@@ -1589,11 +1604,8 @@ namespace ZenUnit
       RunFilter ParseRunFilterString(const std::string& testRunFilter) const
       {
          RunFilter runFilter;
-         const std::vector<std::string> testClassNameAndTestNameSlashTestCaseNumber = String::Split(testRunFilter, '.');
-         if (testClassNameAndTestNameSlashTestCaseNumber.size() > 2)
-         {
-            ThrowInvalidArgumentOnAccountOfInvalidTestRunFilterString(testRunFilter);
-         }
+         const std::vector<std::string> testClassNameAndTestNameSlashTestCaseNumber
+            = String::SplitOnFirstStringDelimiter(testRunFilter, "::");
          runFilter.testClassNamePattern = testClassNameAndTestNameSlashTestCaseNumber[0];
          if (testClassNameAndTestNameSlashTestCaseNumber.size() == 2)
          {
@@ -1616,7 +1628,7 @@ namespace ZenUnit
       static void ThrowInvalidArgumentOnAccountOfInvalidTestRunFilterString(const std::string& invalidTestRunFilterString)
       {
          throw std::invalid_argument("Invalid test run filter string: " +
-            invalidTestRunFilterString + ". Test run filter string format: TestClassName[.TestName[/TestCaseNumber]]");
+            invalidTestRunFilterString + ". Test run filter string format: TestClassName[::TestName[/TestCaseNumber]]");
       }
    };
 
@@ -1784,7 +1796,7 @@ Testing Rigor:
 
 Testing Filtration:
 
--run=<TestClassName>[.TestName][/TestCaseNumber][,...]
+-run=<TestClassName>[::TestName][/TestCaseNumber][,...]
    Run only specified case-insensitive test classes, tests, or test cases.
    Add a '*' character to the end of a test class or test name
    filter string to specify name-starts-with filtration.
