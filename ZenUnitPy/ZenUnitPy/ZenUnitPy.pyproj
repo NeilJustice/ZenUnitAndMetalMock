@@ -5,13 +5,13 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>7442c4b6-4d10-4aea-a009-421f7252d55e</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>BuildZenUnit.py</StartupFile>
+    <StartupFile>BuildZenUnitOrZenMock.py</StartupFile>
     <SearchPath>..\</SearchPath>
     <OutputPath>.</OutputPath>
     <Name>ZenUnitPy</Name>
     <RootNamespace>ZenUnitPy</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>--generator="Visual Studio 15 2017 Win64" --buildType=Debug --definitions="" --installDirectory=C:\install</CommandLineArguments>
+    <CommandLineArguments>--generator="Visual Studio 15 2017 Win64" --buildType=Debug --definitions="" --installDirectory=noinstall</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>
     <WorkingDirectory>.</WorkingDirectory>
@@ -28,12 +28,12 @@
     <Compile Include="ArgParser.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BuildZenUnit.py" />
+    <Compile Include="BuildZenUnitOrZenMock.py" />
     <Compile Include="CMake.py" />
     <Compile Include="FileSystem.py" />
     <Compile Include="Process.py" />
     <Compile Include="Python.py" />
-    <Compile Include="RunTestsWithCoverageAndLinting.py" />
+    <Compile Include="RunZenUnitPyTestsWithCoverageAndLinting.py" />
     <Compile Include="UnitTester.py">
       <SubType>Code</SubType>
     </Compile>

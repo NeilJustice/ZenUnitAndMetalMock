@@ -42,7 +42,7 @@ using namespace std;
 #include "Windows.h"
 #endif
 
-#include "ZenUnit/ZenMock.h"
+#include "ZenMock.h"
 #include "ZenUnit/ZenUnit.h"
 using namespace ZenUnit;
 

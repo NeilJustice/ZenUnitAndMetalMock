@@ -2,14 +2,14 @@ import os
 import unittest
 from unittest.mock import patch
 from unittest.mock import call
-from ZenUnitPy import RunTestsWithCoverageAndLinting, Process, Python, UnitTester
+from ZenUnitPy import RunZenUnitPyTestsWithCoverageAndLinting, Process, Python, UnitTester
 import Random
 
 testNames = ['main_ParsesArgs_RunAllTestsWithCoverage_PylintsAll_Flake8sAll_test']
 
-class RunTestsWithCoverageAndLintingTests(unittest.TestCase):
+class RunZenUnitPyTestsWithCoverageAndLintingTests(unittest.TestCase):
 
-   ExpectedUsage = 'Usage: python3 RunTestsWithCoverageAndLinting.py --testProjectFolderPath=<FolderName> --runAllWithCoveragePyFileName=<FileName>'
+   ExpectedUsage = 'Usage: python3 RunZenUnitPyTestsWithCoverageAndLinting.py --testProjectFolderPath=<FolderName> --runAllWithCoveragePyFileName=<FileName>'
 
    @patch('os.chdir', spec_set=True)
    @patch('ZenUnitPy.Process.run', spec_set=True)
@@ -18,7 +18,7 @@ class RunTestsWithCoverageAndLintingTests(unittest.TestCase):
    def main_ParsesArgs_RunAllTestsWithCoverage_PylintsAll_Flake8sAll_test(self, _1, _2, _3, _4):
       args = [Random.string(), Random.string(), Random.string()]
       #
-      RunTestsWithCoverageAndLinting.main(args)
+      RunZenUnitPyTestsWithCoverageAndLinting.main(args)
       #
       self.assertEqual(2, len(os.chdir.call_args_list))
       os.chdir.assert_has_calls([
@@ -29,4 +29,4 @@ class RunTestsWithCoverageAndLintingTests(unittest.TestCase):
       Python.flake8_all.assert_called_once_with()
 
 if __name__ == '__main__': # pragma nocover
-   UnitTester.run_tests(RunTestsWithCoverageAndLintingTests, testNames)
+   UnitTester.run_tests(RunZenUnitPyTestsWithCoverageAndLintingTests, testNames)

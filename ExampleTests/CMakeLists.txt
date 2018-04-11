@@ -1,13 +1,14 @@
 cmake_minimum_required(VERSION 3.2)
-project(ExamplesTests)
+project(ExampleTests)
 include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 
 include_directories(${CMAKE_SOURCE_DIR})
+include_directories(${ZenMockIncludeDirectory})
+
 file(GLOB Sources *.h *.cpp)
 source_group("" FILES ${Sources})
 
-add_executable(ExamplesTests ${Sources})
-target_link_libraries(ExamplesTests Examples)
+add_executable(ExampleTests ${Sources})
 
 EnablePrecompiledHeaders()
 IfMSVCAddRunTestsPostBuildStep()

@@ -3,7 +3,7 @@ import sys
 sys.path.append('ZenUnitPy') # Jenkins
 from ZenUnitPy import Process, Python
 
-Usage = 'Usage: python3 RunTestsWithCoverageAndLinting.py'
+Usage = 'Usage: python3 RunZenUnitPyTestsWithCoverageAndLinting.py'
 
 def main(args):
    os.chdir('ZenUnitPy/ZenUnitPyTests')
