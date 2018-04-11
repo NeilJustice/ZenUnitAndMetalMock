@@ -9,6 +9,6 @@ add_library(ZenUnit ${Sources})
 set_target_properties(ZenUnit PROPERTIES LINKER_LANGUAGE CXX)
 
 install(DIRECTORY .
-        DESTINATION include/ZenUnit/ZenUnit
+        DESTINATION include/ZenUnit
         FILES_MATCHING REGEX "ZenUnit.h"
         PATTERN REGEX "CMakeFiles|Release|RelWithDebInfo|MinSizeRel|ZenUnit.dir" EXCLUDE)
