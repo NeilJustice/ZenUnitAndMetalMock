@@ -3,7 +3,7 @@ import platform
 import sys
 sys.path.append('ZenUnitPy') # Jenkins
 sys.path.append('../ZenUnitPy') # Jenkins
-sys.path.append('../ZenUnitZenMock/ZenUnitPy') # ZenMock
+sys.path.append('../ZenUnit/ZenUnitPy') # ZenMock
 from ZenUnitPy import ArgParser, CMake, Process, Util, FileSystem
 
 def main(args):
