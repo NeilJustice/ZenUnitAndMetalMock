@@ -7,7 +7,7 @@ ZenUnit is a single-header C++ unit testing framework featuring an intuitive syn
 ### Syntax
 
 ```cpp
-#include "ZenUnit/ZenUnit.h" // Single ZenUnit header
+#include "ZenUnit.h"
 #include "Examples/FizzBuzz.h"
 
 TESTS(FizzBuzzTests)
@@ -18,7 +18,7 @@ TESTS(FizzBuzzTests)
 // at the top of test files instead of scattered throughout test files
 // is where this design yields long term code maintainability dividends.
 
-// AFACT specifies a garden-variety void test.
+// AFACT specifies a non-value-parameterized test.
 AFACT(FizzBuzz_EndNumber0_Throws)
 // FACTS specifies an N-by-N value-parameterized test.
 FACTS(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)
@@ -26,13 +26,14 @@ EVIDENCE
 
 TEST(FizzBuzz_EndNumber0_Throws)
 {
-   // Macro THROWS asserts that an expression throws *exactly* an expected exception type
-   // with *exactly* as expected exception what() text.
+   // THROWS asserts that an expression throws *exactly* (not a derived class of)
+   // an expected exception type with *exactly* as expected exception what() text.
    THROWS(FizzBuzz(0), std::invalid_argument,
       "FizzBuzz(): endNumber must be 1 or greater");
 }
 
-// TEST2X2 defines a 2-by-2 value-parameterized test that processes its typesafe variadic arguments list 2-by-2.
+// TEST2X2 defines a 2-by-2 value-parameterized test
+// that processes its typesafe variadic arguments list 2-by-2.
 TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    unsigned endNumber, const std::string& expectedFizzBuzzSequence,
    1, "1",
