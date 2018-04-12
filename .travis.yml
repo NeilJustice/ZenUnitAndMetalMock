@@ -62,5 +62,5 @@ before_script:
 script:
   - ninja -v -j 1
   - ./ZenUnitTests/ZenUnitTests
-  - ./ExamplesTests/ExamplesTests
+  - ./ExampleTests/ExamplesTests
 

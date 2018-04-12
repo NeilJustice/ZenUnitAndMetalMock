@@ -4,52 +4,7 @@
 # ZenUnit
 ZenUnit is a single-header C++ unit testing framework featuring an intuitive syntax for specifying value-parameterized and type-parameterized tests.
 
-# ZenMock
-ZenMock is a single-header C++ mocking framework powered by ZenUnit featuring strict mocking for maximal testing rigor and an intuitive arrange-act-assert syntax for confirming the correctness of calls to template, virtual, static, and free functions.
-
-### ZenUnit Command Line Usage
-
-```
-ZenUnit and ZenMock v0.2.1
-Usage: <TestsBinaryName> [Options...]
-
-Testing Rigor:
-
--random[=Seed]
-   Run test classes and tests in a random order.
--testruns=<NumberOfTestRuns>
-   Repeat the running of all non-skipped tests N times.
-   Specify -testruns=2 -random for two random test run orderings.
--failskips
-   Exit 1 regardless of test run outcome if any tests are skipped.
-
-Testing Filtration:
-
--run=<TestClassName>[::TestName][/TestCaseNumber][,...]
-   Run only specified case-insensitive test classes, tests, or test cases.
-   Add a '*' character to the end of a test class or test name
-   filter string to specify name-starts-with filtration.
- Example A: -run=Network*
-   runs all test classes that start with 'Network'.
- Example B: -run=WidgetTests.Serialize*
-   runs all tests in WidgetTests that start with 'Serialize'.
- Example C: -run=MathTests.ComplexCalculation_ValidInputs_ReturnsExpected/3
-   runs the third test case of value-parameterized test
-   ComplexCalculation_ValidInputs_ReturnsExpected in test class MathTests.
--failfast
-   Immediately exit with exit code 1 if a test fails.
-
-Testing Utility:
-
--pause
-   Wait for any key before running tests to allow attaching a profiler or debugger.
--exit0
-   Always exit 0 regardless of test run outcome.
--wait
-   Wait for any key at the end of the test run.
-```
-
-### ZenUnit Syntax
+### Syntax
 
 ```cpp
 #include "ZenUnit/ZenUnit.h" // Single ZenUnit header
@@ -102,36 +57,53 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 RUN_TESTS(FizzBuzzTests)
 ```
 
-### ZenUnit Console Output
+### Console Output
 
 ![ZenUnit](Screenshots/ZenUnitFizzBuzz.png "ZenUnit")
 
-### ZenUnit Test Declaration Macros
+### Command Line Usage
 
-|Test Classes|
-|------------|
-|`TESTS(HighQualityTestClassName)` // Defines a non-templatized test class|
-|`TEMPLATE_TESTS(HighQualityTestClassName, TemplateParameterNames...)` // Defines a templatized test class. Precede with template\<parameter-list\>.|
-|`AFACT(HighQualityTestName)` // Specifies a void test|
-|`FACTS(HighQualityTestName)` // Specifies an N-by-N value-parameterized test|
-|`SKIPAFACT(HighQualityTestName, Reason)` // Skips a void test|
-|`SKIPFACTS(HighQualityTestName, Reason)` // Skips an N-by-N value-parameterized test|
-|`EVIDENCE` // Ends the FACTS section and begins the EVIDENCE section|
-|`STARTUP` // Function run before each test|
-|`CLEANUP` // Function run after each test|
-|`TEST(HighQualityTestName)` // Defines a standard void test|
-|`TEST1X1(HighQualityTestName, Arg1Type, ...)` // Defines a 1-by-1 value-parameterized test|
-|`TEST2X2(HighQualityTestName, Arg1Type, Arg2Type, ...)` // Defines a 2-by-2 value-parameterized test|
-|...|
-|`TEST10X10(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...) // Defines a 10-by-10 value-parameterized test`|
-|`RUN_TESTS(HighQualityTestClassName)` // Runs a test class|
-|`RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)` // Runs a templatized test class|
-|`THEN_RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)` // Runs a subsequent templatized test class|
-|`SKIP_TESTS(HighQualityTestClassName, Reason)` // Skips a test class|
-|`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)` // Skips a templatized test class|
-|`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)` // Skips a subsequent templatized test class|
+```
+ZenUnit v0.2.1
+Usage: <TestsBinaryName> [Options...]
 
-### ZenUnit Assertions
+Testing Rigor:
+
+-random[=Seed]
+   Run test classes and tests in a random order.
+-testruns=<NumberOfTestRuns>
+   Repeat the running of all non-skipped tests N times.
+   Specify -testruns=2 -random for two random test run orderings.
+-failskips
+   Exit 1 regardless of test run outcome if any tests are skipped.
+
+Testing Filtration:
+
+-run=<TestClassName>[::TestName][/TestCaseNumber][,...]
+   Run only specified case-insensitive test classes, tests, or test cases.
+   Add a '*' character to the end of a test class or test name
+   filter string to specify name-starts-with filtration.
+ Example A: -run=Network*
+   runs all test classes that start with 'Network'.
+ Example B: -run=WidgetTests.Serialize*
+   runs all tests in WidgetTests that start with 'Serialize'.
+ Example C: -run=MathTests.ComplexCalculation_ValidInputs_ReturnsExpected/3
+   runs the third test case of value-parameterized test
+   ComplexCalculation_ValidInputs_ReturnsExpected in test class MathTests.
+-failfast
+   Immediately exit with exit code 1 if a test fails.
+
+Testing Utility:
+
+-pause
+   Wait for any key before running tests to allow attaching a profiler or debugger.
+-exit0
+   Always exit 0 regardless of test run outcome.
+-wait
+   Wait for any key at the end of the test run.
+```
+
+### Assertions
 
 |Values|
 |------|
@@ -179,12 +151,37 @@ RUN_TESTS(FizzBuzzTests)
 |`EQUALIZER_THROWS_FOR_FIELD(typeName, fieldName, arbitraryNonDefaultFieldValue)`|
 
 |Assertions Not Implemented By Design in ZenUnit Due To Vulnerability to Code Mutations|Code Mutation Vulnerability|
-|---------------------------------------------------------------------------|----------------------|
+|--------------------------------------------------------------------------------------|---------------------------|
 |`ARE_NOT_EQUAL(expected, actual)`|mutate-value|
 |`STRING_CONTAINS(expectedSubstring, string)`|mutate-value|
 |`REGEX_MATCHES(pattern, string)`|mutate-value|
 |`THROWS_EXCEPTION(expression, expectedExceptionBaseClass)`|mutate-excetion-type and mutate-exception-message|
 |`THROWS_ANY(expression)`|mutate-exception-type and mutate-exception-message|
+
+### Test Declaration Macros
+
+|Test Classes|
+|------------|
+|`TESTS(HighQualityTestClassName)` // Defines a non-templatized test class|
+|`TEMPLATE_TESTS(HighQualityTestClassName, TemplateParameterNames...)` // Defines a templatized test class. Precede with template\<parameter-list\>.|
+|`AFACT(HighQualityTestName)` // Specifies a void test|
+|`FACTS(HighQualityTestName)` // Specifies an N-by-N value-parameterized test|
+|`SKIPAFACT(HighQualityTestName, Reason)` // Skips a void test|
+|`SKIPFACTS(HighQualityTestName, Reason)` // Skips an N-by-N value-parameterized test|
+|`EVIDENCE` // Ends the FACTS section and begins the EVIDENCE section|
+|`STARTUP` // Function run before each test|
+|`CLEANUP` // Function run after each test|
+|`TEST(HighQualityTestName)` // Defines a standard void test|
+|`TEST1X1(HighQualityTestName, Arg1Type, ...)` // Defines a 1-by-1 value-parameterized test|
+|`TEST2X2(HighQualityTestName, Arg1Type, Arg2Type, ...)` // Defines a 2-by-2 value-parameterized test|
+|...|
+|`TEST10X10(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...) // Defines a 10-by-10 value-parameterized test`|
+|`RUN_TESTS(HighQualityTestClassName)` // Runs a test class|
+|`RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)` // Runs a templatized test class|
+|`THEN_RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)` // Runs a subsequent templatized test class|
+|`SKIP_TESTS(HighQualityTestClassName, Reason)` // Skips a test class|
+|`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)` // Skips a templatized test class|
+|`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)` // Skips a subsequent templatized test class|
 
 ### ZenUnit::Equalizer\<T\>:
 
@@ -217,7 +214,7 @@ namespace ZenUnit
 Testing with random values instead of fixed values is an important part of maximizing robustness to code mutations induced manually by colleagues during code review or induced automatically by LLVM-powered mutation testing frameworks.
 
 |ZenUnit Random Value Functions|
-|----------------|
+|------------------------------|
 |ZenUnit::Random\<T\>() // Returns a value between std\:\:numeric_limits\<T\>::min() and std\:\:numeric_limits\<T\>::max().|
 |ZenUnit::RandomBetween\<T\>(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound) // Returns a value between inclusiveLowerBound and inclusiveUpperBound.|
 |ZenUnit::Random\<std\:\:string\>() // Returns "RandomString" + std\:\:to_string(ZenUnit::Random\<unsigned char\>()).|
@@ -290,130 +287,9 @@ int main(int argc, char* argv[])
 }
 ```
 
-### ZenUnit Console Output For The Above Type-Parameterized Test Class
+### Console Output For The Above Type-Parameterized Test Class
 
 ![ZenUnit](Screenshots/ZenUnitTypeParameterizedTestClass.png "ZenUnit Type-Parameterized Test Class Imagery")
-
-### ZenMock Virtual Function Mocking Macros
-
-|Virtual Void Functions|
-|----------------------|
-|`ZENMOCK_VOID0(functionName)`|
-|`ZENMOCK_VOID1(functionName, arg1Type, ...)` // The ... is for mocking overloaded functions. Specify ... as an overload-disambiguating arbitrary suffix such as "_int" and "_string" without the quotes when mocking virtual void Function(int) and virtual void Function(const std::string&) to yield ZenMock mock objects named FunctionMock_int and FunctionMock_string.|
-|...|
-|`ZENMOCK_VOID10(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
-
-|Virtual Const Void Functions|
-|----------------------------|
-|`ZENMOCK_VOID0_CONST(functionName)`|
-|`ZENMOCK_VOID1_CONST(functionName, arg1Type, ...)`|
-|...|
-|`ZENMOCK_VOID10_CONST(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
-
-|Virtual Non-Void Functions|
-|--------------------------|
-|`ZENMOCK_NONVOID0(returnType, functionName)`|
-|`ZENMOCK_NONVOID1(returnType, functionName, arg1Type, ...)`|
-|...|
-|`ZENMOCK_VOID10_NONVIRTUAL(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
-
-|Virtual Const Non-Void Functions|
-|--------------------------------|
-|`ZENMOCK_NONVOID0_CONST(returnType, functionName)`|
-|`ZENMOCK_NONVOID1_CONST(returnType, functionName, arg1Type, ...)`|
-|...|
-|`ZENMOCK_NONVOID10(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
-
-### ZenMock Template Function Mocking Macros
-
-|Non-Virtual Void Functions|
-|--------------------------|
-|`ZENMOCK_VOID0_NONVIRTUAL(functionName)`|
-|`ZENMOCK_VOID1_NONVIRTUAL(functionName, arg1Type, ...)`|
-|...|
-|`ZENMOCK_NONVOID10_NONVIRTUAL(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
-
-|Non-Virtual Const Void Functions|
-|--------------------------------|
-|`ZENMOCK_VOID0_CONST_NONVIRTUAL(functionName)`|
-|`ZENMOCK_VOID1_CONST_NONVIRTUAL(functionName, arg1Type, ...)`|
-|...|
-|`ZENMOCK_VOID10_CONST_NONVIRTUAL(functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
-
-|Non-Virtual Non-Void Functions|
-|------------------------------|
-|`ZENMOCK_NONVOID0_NONVIRTUAL(returnType, functionName)`|
-|`ZENMOCK_NONVOID1_NONVIRTUAL(returnType, functionName, arg1Type, ...)`|
-|...|
-|`ZENMOCK_NONVOID10_NONVIRTUAL(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
-
-|Non-Virtual Const Non-Void Functions|
-|------------------------------------|
-|`ZENMOCK_NONVOID0_CONST_NONVIRTUAL(returnType, functionName)`|
-|`ZENMOCK_NONVOID1_CONST_NONVIRTUAL(returnType, functionName, arg1Type, ...)`|
-|...|
-|`ZENMOCK_NONVOID10_CONST_NONVIRTUAL(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
-
-### ZenMock Static Function Mocking Macros
-
-|Static and Namespaced Void Functions|
-|------------------------------------|
-|`ZENMOCK_VOID0_STATIC(qualifiedClassNameOrNamespace, functionName, ...)`|
-|`ZENMOCK_VOID1_STATIC(qualifiedClassNameOrNamespace, functionName, arg1Type, ...)`|
-|...|
-|`ZENMOCK_VOID10_STATIC(qualifiedClassNameOrNamespace, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
-
-|Static and Namespaced Non-Void Functions|
-|----------------------------------------|
-|`ZENMOCK_NONVOID0_STATIC(returnType, qualifiedClassNameOrNamespace, functionName, ...)`|
-|`ZENMOCK_NONVOID1_STATIC(returnType, qualifiedClassNameOrNamespace, functionName, arg1Type, ...)`|
-|...|
-|`ZENMOCK_NONVOID10_STATIC(returnType, qualifiedClassNameOrNamespace, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
-
-### ZenMock Free Function Mocking Macros
-
-|Free Void Functions|
-|-------------------|
-|`ZENMOCK_VOID0_FREE(functionName)`|
-|`ZENMOCK_VOID1_FREE(functionName, arg1Type, ...)`|
-|...|
-|`ZENMOCK_VOID10_FREE(freeFunctionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
-
-|Free Non-Void Functions|
-|-----------------------|
-|`ZENMOCK_NONVOID0_FREE(returnType, functionName)`|
-|`ZENMOCK_NONVOID1_FREE(returnType, functionName, arg1Type, ...)`|
-|...|
-|`ZENMOCK_NONVOID10_FREE(returnType, functionName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...)`|
-
-### ZENMOCK_BIND Macros For Binding std::functions To ZenMock Objects
-
-|ZENMOCK_BIND For Mocking Free and Static Functions|
-|--------------------------------------------------|
-|`ZENMOCK_BIND0(FunctionName_ZenMock)`|
-|`ZENMOCK_BIND1(FunctionName_ZenMock)`|
-|...|
-|`ZENMOCK_BIND10(FunctionName_ZenMock)`|
-
-|ZenMock Function Call Expectation Functions|
-|-------------------------------------------|
-|`zenMockObject.Expect()`|
-|`zenMockObject.Return(returnValue)`|
-|`zenMockObject.ReturnValues(returnValues...)`|
-|`zenMockObject.ReturnValues(const vector<T>& returnValues)`|
-|`zenMockObject.Throw<ExceptionTypes>(ExceptionArgs&&...)`|
-
-|ZenMock Function Call Assertion Functions|
-|-----------------------------------------|
-|`zenMockObject.CalledOnce()`|
-|`zenMockObject.CalledOnceWith(expectedArguments...)`|
-|`zenMockObject.CalledNTimes(n)`|
-|`zenMockObject.CalledNTimesWith(n, expectedArguments...)`|
-|`zenMockObject.CalledAsFollows(expectedCalls)`|
-
-|ZEN|
-|---|
-|`ZEN(ZenMockAssertStatement)` // ZEN adorns error messages with \_\_FILE\_\_ and \_\_LINE\_\_ information.|
 
 |The Road To ZenUnit 1.0|
 |-----------------------|
@@ -421,14 +297,8 @@ int main(int argc, char* argv[])
 |Travis CI clang-tidy|
 |AppVeyor /analyze|
 |Seedability of ZenUnit::Random\<T\>
-|STD_ARRAYS_EQUAL|
 |TUPLES_EQUAL|
 |ARE_WITHIN|
 |ARE_CLOSE|
 |-failfast|
 |-breakfast|
-
-|The Road To ZenMock 1.0|
-|-----------------------|
-|Every feature documented|
-|Ordered function call assertions|
