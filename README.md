@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/NeilJustice/ZenUnitZenMock.svg?branch=master)](https://travis-ci.org/NeilJustice/ZenUnitZenMock)
-[![Build status](https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true)](https://ci.appveyor.com/project/NeilJustice/zenunitzenmock)
+[![Build Status](https://travis-ci.org/NeilJustice/ZenUnit.svg?branch=master)](https://travis-ci.org/NeilJustice/ZenUnit)
+[![Build status](https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true)](https://ci.appveyor.com/project/NeilJustice/ZenUnit)
 
 # ZenUnit
 ZenUnit is a single-header C++ unit testing framework featuring an intuitive syntax for specifying value-parameterized and type-parameterized tests.
