@@ -4,6 +4,7 @@ include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(${CMAKE_SOURCE_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/ZenUnit)
 include_directories(${ZenMockIncludeDirectory})
 if(EXISTS ${GoogleBenchmarkIncludeDirectory})
    include_directories(${GoogleBenchmarkIncludeDirectory})
