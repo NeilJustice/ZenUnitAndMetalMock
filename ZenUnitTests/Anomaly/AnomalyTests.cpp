@@ -341,17 +341,3 @@ FilePath(1))";
    RUN_TESTS(AnomalyTests)
 }
 
-namespace ZenUnit
-{
-   TESTS(EqualizerExceptionTests)
-   AFACT(EqualizerException_what_ReturnsEmptyString)
-   EVIDENCE
-
-   TEST(EqualizerException_what_ReturnsEmptyString)
-   {
-      const EqualizerException equalizerException;
-      ARE_EQUAL("", equalizerException.what());
-   }
-
-   RUN_TESTS(EqualizerExceptionTests)
-}
