@@ -60,7 +60,7 @@ before_script:
   - cmake -GNinja .. -Werror=dev -DCMAKE_CXX_COMPILER="$COMPILER" -DCMAKE_BUILD_TYPE="$CMAKE_BUILD_TYPE"
 
 script:
+  - curl https://raw.githubusercontent.com/NeilJustice/ZenMock/master/ZenMock/ZenMock.h > ZenMock.h
   - ninja -v -j 1
   - ./ZenUnitTests/ZenUnitTests
-  - ./ExampleTests/ExamplesTests
-
+  - ./ExampleTests/ExampleTests

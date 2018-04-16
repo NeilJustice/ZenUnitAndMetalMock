@@ -43,7 +43,7 @@ using namespace std;
 #endif
 
 #include "ZenMock.h"
-#include "ZenUnit/ZenUnit.h"
+#include "ZenUnit.h"
 using namespace ZenUnit;
 
 #endif
