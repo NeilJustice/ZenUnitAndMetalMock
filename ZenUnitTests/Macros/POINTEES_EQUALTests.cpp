@@ -1,6 +1,4 @@
 #include "pch.h"
-// Windows-only tests until Travis CI no longer runs out of memory
-#if _WIN32
 #include "ZenUnitTests/Testing/UserType.h"
 
 namespace ZenUnit
@@ -115,5 +113,3 @@ File.cpp(1))");
 
    RUN_TESTS(POINTEES_EQUALTests)
 }
-
-#endif
