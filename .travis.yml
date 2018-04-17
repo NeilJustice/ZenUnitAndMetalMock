@@ -54,7 +54,7 @@ matrix:
              #            - g++-7
 
 before_script:
-  - curl https://raw.githubusercontent.com/NeilJustice/ZenMock/master/ZenMock/ZenMock.h > ZenMock.h
+  - curl https://raw.githubusercontent.com/NeilJustice/ZenMock/master/ZenMock/ZenMock.h -o ZenMock.h
   - mkdir build
   - cd build
   - echo $CMAKE_BUILD_TYPE

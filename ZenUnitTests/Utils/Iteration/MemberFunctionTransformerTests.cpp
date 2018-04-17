@@ -6,6 +6,10 @@ AFACT(Transform_ElementsEmpty_DoesNotCallTransformFunction_ReturnsEmptyVector)
 AFACT(Transform_TwoElements_CallsTransformFunctionOnEachElement_ReturnsTransformedElements)
 EVIDENCE
 
+MemberFunctionTransformerTests()
+{
+}
+
 class Class
 {
 public:
