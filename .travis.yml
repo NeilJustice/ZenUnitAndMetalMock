@@ -61,6 +61,8 @@ before_script:
 
 script:
   - curl https://raw.githubusercontent.com/NeilJustice/ZenMock/master/ZenMock/ZenMock.h > ZenMock.h
+  - pwd
+  - ls -al
   - ninja -v -j 1
   - ./ZenUnitTests/ZenUnitTests
   - ./ExampleTests/ExampleTests
