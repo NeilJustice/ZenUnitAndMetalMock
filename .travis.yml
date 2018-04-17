@@ -54,5 +54,5 @@ matrix:
              #            - g++-7
 
 script:
-  - ./CloudJobs/TravisCI.sh
+  - ./CloudJobs/TravisCIZenUnit.sh
 
