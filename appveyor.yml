@@ -2,5 +2,4 @@ image: Visual Studio 2017 Preview
 shallow_clone: true
 
 build_script:
-  - .\CloudJobs\AppVeyor.ps1
-
+  - ps: .\CloudJobs\AppVeyor.ps1
