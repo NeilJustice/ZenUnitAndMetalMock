@@ -1,7 +1,8 @@
 <h1 align="center">ZenUnit</h1>
 
 <h4 align="center">Single-header C++ unit testing framework with a compelling syntax for specifying value-parameterized and type-parameterized tests.</h4>
-<table align="center">
+<center>
+<table>
   <tr>
     <td>Linux/macOS (Clang 6.0)</td>
     <td>Windows (VS2017 Preview)</td>
@@ -15,6 +16,7 @@
     </td>
   </tr>
 </table>
+</center>
 
 ### ZenUnit Value-Parameterized Test Syntax and ZenUnit Design Commentary
 
