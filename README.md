@@ -1,21 +1,34 @@
 # <p align="center">ZenUnit</p>
 
-#### <p align="center">Single-header C++ unit testing framework with a compelling syntax for specifying value-parameterized and type-parameterized unit tests.</p>
-<p align="center">[![Build Status](https://travis-ci.org/NeilJustice/ZenUnit.svg?branch=master)](https://travis-ci.org/NeilJustice/ZenUnit) [![Build status](https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true)](https://ci.appveyor.com/project/NeilJustice/ZenUnitZenMock)</p>
+#### <p align="center">Single-header C++ unit testing framework with a compelling syntax for specifying value-parameterized and type-parameterized tests.</p>
+<table align="center">
+  <tr>
+    <td>Linux/macOS (Clang 6.0)</td>
+    <td>Windows (VS2017 Preview)</td>
+  <tr>
+  <tr>
+    <td>
+      <a href="https://travis-ci.org/NeilJustice/ZenUnit"><img src="https://travis-ci.org/NeilJustice/ZenUnit.svg?branch=master"/></a>
+    </td>
+    <td>
+      <a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitZenMock"><img src="https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true"/></a>
+    </td>
+  </tr>
+</table>
 
-### ZenUnit Syntax
+### ZenUnit Value-Parameterized Test Syntax and ZenUnit Design Commentary
 
 ```cpp
-#include "ZenUnit.h"
+#include "ZenUnit.h" // Single header
 #include "Examples/FizzBuzz.h"
 
 TESTS(FizzBuzzTests)
-// By design, in ZenUnit test names are duplicated between
-// the FACTS section and the EVIDENCE section.
+// By design, in ZenUnit test names are purposefully
+// duplicated between the FACTS section and the EVIDENCE section.
 // Because code is read much more often than it is written,
-// always having test names ready to review for quality and cohesion
+// always having test names ready to review for continued quality and cohesion
 // at the top of test files instead of scattered throughout test files
-// is where this design yields long term code maintainability dividends.
+// is where this design yields long term code quality dividends.
 
 // AFACT specifies a non-value-parameterized test.
 AFACT(FizzBuzz_EndNumber0_Throws)
@@ -23,6 +36,7 @@ AFACT(FizzBuzz_EndNumber0_Throws)
 FACTS(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)
 EVIDENCE
 
+// TEST defines a non-value-parameterized test.
 TEST(FizzBuzz_EndNumber0_Throws)
 {
    // THROWS asserts that an expression throws *exactly* (not a derived class of)
@@ -32,7 +46,8 @@ TEST(FizzBuzz_EndNumber0_Throws)
 }
 
 // TEST2X2 defines a 2-by-2 value-parameterized test
-// that processes its typesafe variadic arguments list 2-by-2.
+// that processes its typesafe variadic arguments list 2-by-2,
+// forming 15 independent unit tests for function FizzBuzz().
 TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    unsigned endNumber, const std::string& expectedFizzBuzzSequence,
    1, "1",
@@ -54,14 +69,21 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    ARE_EQUAL(expectedFizzBuzzSequence, FizzBuzz(endNumber));
 }
 
+// RUN_TESTS registers a test class to run when ZenUnit::RunTests(argc, argv) is called.
 RUN_TESTS(FizzBuzzTests)
+
+int main(int argc, char* argv[])
+{
+   const int exitCode = ZenUnit::RunTests(argc, argv);
+   return exitCode;
+}
 ```
 
-### Console Output
+### ZenUnit Console Output
 
 ![ZenUnit](Screenshots/ZenUnitFizzBuzz.png "ZenUnit")
 
-### Command Line Usage
+### ZenUnit Command Line Usage
 
 ```
 ZenUnit v0.2.1
@@ -103,131 +125,7 @@ Testing Utility:
    Wait for any key at the end of the test run.
 ```
 
-### Assertions
-
-|Values|
-|------|
-|`ARE_EQUAL(expectedValue, actualValue, messages...)` // messages... are variables of any type writable with operator<<(ostream&, const T&) or ZenUnit::Printer\<T\>::Print(ostream&, const T&).|
-|`ARE_SAME(expectedObject, actualObject, messages...)`|
-|`ARE_NOT_SAME(notExpectedObject, actualObject, messages...)`|
-|`ARE_COPIES(expectedObject, actualObject, messages...)` // Asserts that objects ARE_NOT_SAME and ARE_EQUAL|
-|`IS_TRUE(value, messages...)`|
-|`IS_FALSE(value, messages...)`|
-|`IS_ZERO(value, messages...)`|
-
-|Data Structures|
-|---------------|
-|`IS_EMPTY(dataStructure, messages...)`|
-|`VECTORS_EQUAL(expectedVector, actualVector, messages...)`|
-|`MAPS_EQUAL(expectedMap, actualMap, messages...)`|
-|`PAIRS_EQUAL(expectedPair, actualPair, messages...)`|
-|`SETS_EQUAL(expectedSet, actualSet, messages...)`|
-|`DOES_CONTAIN(expectedElement, dataStructure, messages...)`|
-
-|Exceptions|
-|----------|
-|`THROWS(expression, expectedExactExceptionType, expectedWhatMessage, messages...)` // Asserts that an expression throws *exactly* expectedExactExceptionType with *exactly* a what() message equal to expectedWhatMessage|
-|`NOTHROWS(expression, messages...)`|
-
-|The Test Itself|
-|---------------|
-|`FAILTEST(testFailureReason, messages...)`|
-
-|Pointers|
-|------- |
-|`IS_NULL(pointer, messages...)`|
-|`IS_NOT_NULL(pointer, messages...)`|
-|`POINTEES_EQUAL(expectedPointer, actualPointer, messages...)` // Asserts that pointers are either both nullptr or their pointees ARE_EQUAL|
-|`POINTER_WAS_NEWED(smartOrRawPointer, messages...)` // Asserts not null then resets or operator deletes the pointer to confirm it was make_uniqued / make_shared / operator newed|
-|`POINTER_WAS_ARRAY_NEWED(smartOrRawArrayPointer, messages...)` // Asserts not null then resets or operator array deletes the pointer to confirm it was array make_uniqued / array operator newed|
-
-|Functions|
-|---------|
-|`STD_FUNCTION_TARGETS(expectedStdFunctionTarget, stdFunction, messages...)`|
-
-|Assertions For Confirming The Correctness Of Custom ZenUnit Equalizers|
-|----------------------------------------------------------------------|
-|`SETUP_EQUALIZER_THROWS_TEST(typeName)`|
-|`EQUALIZER_THROWS_FOR_FIELD(typeName, fieldName, arbitraryNonDefaultFieldValue)`|
-
-|Assertions Not Implemented By Design in ZenUnit Due To Vulnerability to Code Mutations|Code Mutation Vulnerability|
-|--------------------------------------------------------------------------------------|---------------------------|
-|`ARE_NOT_EQUAL(expected, actual)`|mutate-value|
-|`STRING_CONTAINS(expectedSubstring, string)`|mutate-value|
-|`REGEX_MATCHES(pattern, string)`|mutate-value|
-|`THROWS_EXCEPTION(expression, expectedExceptionBaseClass)`|mutate-excetion-type and mutate-exception-message|
-|`THROWS_ANY(expression)`|mutate-exception-type and mutate-exception-message|
-
-### Test Declaration Macros
-
-|Test Classes|
-|------------|
-|`TESTS(HighQualityTestClassName)` // Defines a non-templatized test class|
-|`TEMPLATE_TESTS(HighQualityTestClassName, TemplateParameterNames...)` // Defines a templatized test class. Precede with template\<parameter-list\>.|
-|`AFACT(HighQualityTestName)` // Specifies a void test|
-|`FACTS(HighQualityTestName)` // Specifies an N-by-N value-parameterized test|
-|`SKIPAFACT(HighQualityTestName, Reason)` // Skips a void test|
-|`SKIPFACTS(HighQualityTestName, Reason)` // Skips an N-by-N value-parameterized test|
-|`EVIDENCE` // Ends the FACTS section and begins the EVIDENCE section|
-|`STARTUP` // Function run before each test|
-|`CLEANUP` // Function run after each test|
-|`TEST(HighQualityTestName)` // Defines a standard void test|
-|`TEST1X1(HighQualityTestName, Arg1Type, ...)` // Defines a 1-by-1 value-parameterized test|
-|`TEST2X2(HighQualityTestName, Arg1Type, Arg2Type, ...)` // Defines a 2-by-2 value-parameterized test|
-|...|
-|`TEST10X10(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...) // Defines a 10-by-10 value-parameterized test`|
-|`RUN_TESTS(HighQualityTestClassName)` // Runs a test class|
-|`RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)` // Runs a templatized test class|
-|`THEN_RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)` // Runs a subsequent templatized test class|
-|`SKIP_TESTS(HighQualityTestClassName, Reason)` // Skips a test class|
-|`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)` // Skips a templatized test class|
-|`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)` // Skips a subsequent templatized test class|
-
-### ZenUnit::Equalizer\<T\>:
-
-The default behavior of ARE_EQUAL(expectedValue, actualValue) is to throw a ZenUnit::Anomaly if expectedValue == actualValue returns false.
-
-For custom ARE_EQUAL behavior such as field-by-field assertions, define a ZenUnit::Equalizer\<T\> struct specialization with a static void AssertEqual(const T& expected, const T& actual) function.
-
-Example custom ZenUnit::Equalizer\<T\>:
-
-```cpp
-namespace ZenUnit
-{
-   template<>
-   struct Equalizer<date::year_month_day>
-   {
-      static void AssertEqual(
-         const date::year_month_day& expectedYearMonthDay,
-         const date::year_month_day& actualYearMonthDay)
-      {
-         ARE_EQUAL(expectedYearMonthDay.year(), actualYearMonthDay.year());
-         ARE_EQUAL(expectedYearMonthDay.month(), actualYearMonthDay.month());
-         ARE_EQUAL(expectedYearMonthDay.day(), actualYearMonthDay.day());
-      }
-   };
-}
-```
-
-### ZenUnit::Random\<T\>
-
-Testing with random values instead of fixed values is an important part of maximizing robustness to code mutations induced manually by colleagues during code review or induced automatically by LLVM-powered mutation testing frameworks.
-
-|ZenUnit Random Value Functions|
-|------------------------------|
-|ZenUnit::Random\<T\>() // Returns a value between std\:\:numeric_limits\<T\>::min() and std\:\:numeric_limits\<T\>::max().|
-|ZenUnit::RandomBetween\<T\>(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound) // Returns a value between inclusiveLowerBound and inclusiveUpperBound.|
-|ZenUnit::Random\<std\:\:string\>() // Returns "RandomString" + std\:\:to_string(ZenUnit::Random\<unsigned char\>()).|
-|ZenUnit::RandomEnum\<EnumType\>(EnumType exclusiveEnumMaxValue) // Returns a random EnumType between 0 and exclusiveEnumMaxValue.|
-|ZenUnit::Random\<float\>() // Returns a random float between -1000.0f and 1000.0f from a std\:\:uniform_real_distribution\<float\>.|
-|ZenUnit::Random\<double\>() // Returns a random double between -1000.0 and 1000.0 from a std\:\:uniform_real_distribution\<double\>.|
-|ZenUnit::RandomVector\<T\>() // Returns a std\:\:vector\<T\> with size between 0 and 2 with each element being a ZenUnit\:\:Random\<T\>() value.|
-|ZenUnit::RandomMap\<KeyType, ValueType\>() // Returns a std\:\:map\<KeyType, ValueType\> with size between 0 and 2 with each key a ZenUnit\:\:Random\<KeyType\>() value and each value a ZenUnit\:\:Random\<ValueType\>() value.|
-|ZenUnit::RandomUnorderedMap\<T\>() // Returns a std\:\:unordered_map\<KeyType, ValueType\> with size between 0 and 2 with each key a ZenUnit\:\:Random\<KeyType\>() value and each value a ZenUnit\:\:Random\<ValueType\>() value.|
-|ZenUnit::RandomSet\<T\>() // Returns a std\:\:set\<ElementType\> with size between 0 and 2 with each element a ZenUnit\:\:Random\<ElementType\>() value.|
-|ZenUnit::RandomUnorderedSet\<T\>() // Returns a std\:\:unordered_set\<ElementType\> with size between 0 and 2 with each element a ZenUnit\:\:Random\<ElementType\>() value.|
-
-### ZenUnit Type-Parameterized Test Classes
+### ZenUnit Type-Parameterized Test Class Syntax
 
 ZenUnit provides a type-parameterized test class syntax that allows one to confirm that the correctness of ClassUnderTest\<T\> is maintained across various types of T.
 
@@ -290,6 +188,130 @@ int main(int argc, char* argv[])
 ### Console Output For The Above Type-Parameterized Test Class
 
 ![ZenUnit](Screenshots/ZenUnitTypeParameterizedTestClass.png "ZenUnit Type-Parameterized Test Class Imagery")
+
+### ZenUnit Assertion Macros
+
+|Values|
+|------|
+|`ARE_EQUAL(expectedValue, actualValue, messages...)` // messages... are variables of any type writable with operator<<(ostream&, const T&) or ZenUnit::Printer\<T\>::Print(ostream&, const T&).|
+|`ARE_SAME(expectedObject, actualObject, messages...)`|
+|`ARE_NOT_SAME(notExpectedObject, actualObject, messages...)`|
+|`ARE_COPIES(expectedObject, actualObject, messages...)` // Asserts that objects ARE_NOT_SAME and ARE_EQUAL|
+|`IS_TRUE(value, messages...)`|
+|`IS_FALSE(value, messages...)`|
+|`IS_ZERO(value, messages...)`|
+
+|Data Structures|
+|---------------|
+|`IS_EMPTY(dataStructure, messages...)`|
+|`VECTORS_EQUAL(expectedVector, actualVector, messages...)`|
+|`MAPS_EQUAL(expectedMap, actualMap, messages...)`|
+|`PAIRS_EQUAL(expectedPair, actualPair, messages...)`|
+|`SETS_EQUAL(expectedSet, actualSet, messages...)`|
+|`DOES_CONTAIN(expectedElement, dataStructure, messages...)`|
+
+|Exceptions|
+|----------|
+|`THROWS(expression, expectedExactExceptionType, expectedWhatMessage, messages...)` // Asserts that an expression throws *exactly* expectedExactExceptionType with *exactly* a what() message equal to expectedWhatMessage|
+|`NOTHROWS(expression, messages...)`|
+
+|The Test Itself|
+|---------------|
+|`FAILTEST(testFailureReason, messages...)`|
+
+|Pointers|
+|------- |
+|`IS_NULL(pointer, messages...)`|
+|`IS_NOT_NULL(pointer, messages...)`|
+|`POINTEES_EQUAL(expectedPointer, actualPointer, messages...)` // Asserts that pointers are either both nullptr or their pointees ARE_EQUAL|
+|`POINTER_WAS_NEWED(smartOrRawPointer, messages...)` // Asserts not null then resets or operator deletes the pointer to confirm it was make_uniqued / make_shared / operator newed|
+|`POINTER_WAS_ARRAY_NEWED(smartOrRawArrayPointer, messages...)` // Asserts not null then resets or operator array deletes the pointer to confirm it was array make_uniqued / array operator newed|
+
+|Functions|
+|---------|
+|`STD_FUNCTION_TARGETS(expectedStdFunctionTarget, stdFunction, messages...)`|
+
+|Assertions For Confirming The Correctness Of Custom ZenUnit Equalizers|
+|----------------------------------------------------------------------|
+|`SETUP_EQUALIZER_THROWS_TEST(typeName)`|
+|`EQUALIZER_THROWS_FOR_FIELD(typeName, fieldName, arbitraryNonDefaultFieldValue)`|
+
+|Assertions Not Implemented By Design in ZenUnit Due To Vulnerability to Code Mutations|Code Mutation Vulnerability|
+|--------------------------------------------------------------------------------------|---------------------------|
+|`ARE_NOT_EQUAL(expected, actual)`|mutate-value|
+|`STRING_CONTAINS(expectedSubstring, string)`|mutate-value|
+|`REGEX_MATCHES(pattern, string)`|mutate-value|
+|`THROWS_EXCEPTION(expression, expectedExceptionBaseClass)`|mutate-excetion-type and mutate-exception-message|
+|`THROWS_ANY(expression)`|mutate-exception-type and mutate-exception-message|
+
+### ZenUnit Test-Defining Macros
+
+|Test Classes|
+|------------|
+|`TESTS(HighQualityTestClassName)` // Defines a non-templatized test class|
+|`TEMPLATE_TESTS(HighQualityTestClassName, TemplateParameterNames...)` // Defines a templatized test class. Precede with template\<parameter-list\>.|
+|`AFACT(HighQualityTestName)` // Specifies a void test|
+|`FACTS(HighQualityTestName)` // Specifies an N-by-N value-parameterized test|
+|`SKIPAFACT(HighQualityTestName, Reason)` // Skips a void test|
+|`SKIPFACTS(HighQualityTestName, Reason)` // Skips an N-by-N value-parameterized test|
+|`EVIDENCE` // Ends the FACTS section and begins the EVIDENCE section|
+|`STARTUP` // Function run before each test|
+|`CLEANUP` // Function run after each test|
+|`TEST(HighQualityTestName)` // Defines a standard void test|
+|`TEST1X1(HighQualityTestName, Arg1Type, ...)` // Defines a 1-by-1 value-parameterized test|
+|`TEST2X2(HighQualityTestName, Arg1Type, Arg2Type, ...)` // Defines a 2-by-2 value-parameterized test|
+|...|
+|`TEST10X10(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...) // Defines a 10-by-10 value-parameterized test`|
+|`RUN_TESTS(HighQualityTestClassName)` // Runs a test class|
+|`RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)` // Runs a templatized test class|
+|`THEN_RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)` // Runs a subsequent templatized test class|
+|`SKIP_TESTS(HighQualityTestClassName, Reason)` // Skips a test class|
+|`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)` // Skips a templatized test class|
+|`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)` // Skips a subsequent templatized test class|
+
+### ZenUnit Random Values
+
+Testing with random values instead of fixed values is an important part of maximizing robustness to code mutations induced manually by colleagues during code review or induced automatically by LLVM-powered mutation testing frameworks.
+
+|ZenUnit Random Value Functions|
+|------------------------------|
+|ZenUnit::Random\<T\>() // Returns a value between std\:\:numeric_limits\<T\>::min() and std\:\:numeric_limits\<T\>::max().|
+|ZenUnit::RandomBetween\<T\>(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound) // Returns a value between inclusiveLowerBound and inclusiveUpperBound.|
+|ZenUnit::Random\<std\:\:string\>() // Returns "RandomString" + std\:\:to_string(ZenUnit::Random\<unsigned char\>()).|
+|ZenUnit::RandomEnum\<EnumType\>(EnumType exclusiveEnumMaxValue) // Returns a random EnumType between 0 and exclusiveEnumMaxValue.|
+|ZenUnit::Random\<float\>() // Returns a random float between -1000.0f and 1000.0f from a std\:\:uniform_real_distribution\<float\>.|
+|ZenUnit::Random\<double\>() // Returns a random double between -1000.0 and 1000.0 from a std\:\:uniform_real_distribution\<double\>.|
+|ZenUnit::RandomVector\<T\>() // Returns a std\:\:vector\<T\> with size between 0 and 2 with each element being a ZenUnit\:\:Random\<T\>() value.|
+|ZenUnit::RandomMap\<KeyType, ValueType\>() // Returns a std\:\:map\<KeyType, ValueType\> with size between 0 and 2 with each key a ZenUnit\:\:Random\<KeyType\>() value and each value a ZenUnit\:\:Random\<ValueType\>() value.|
+|ZenUnit::RandomUnorderedMap\<T\>() // Returns a std\:\:unordered_map\<KeyType, ValueType\> with size between 0 and 2 with each key a ZenUnit\:\:Random\<KeyType\>() value and each value a ZenUnit\:\:Random\<ValueType\>() value.|
+|ZenUnit::RandomSet\<T\>() // Returns a std\:\:set\<ElementType\> with size between 0 and 2 with each element a ZenUnit\:\:Random\<ElementType\>() value.|
+|ZenUnit::RandomUnorderedSet\<T\>() // Returns a std\:\:unordered_set\<ElementType\> with size between 0 and 2 with each element a ZenUnit\:\:Random\<ElementType\>() value.|
+
+### ZenUnit Equalizers:
+
+The default behavior of ARE_EQUAL(expectedValue, actualValue) is to throw a ZenUnit::Anomaly if expectedValue == actualValue returns false.
+
+For custom ARE_EQUAL behavior such as field-by-field assertions, define a ZenUnit::Equalizer\<T\> struct specialization with a static void AssertEqual(const T& expected, const T& actual) function.
+
+Example custom ZenUnit::Equalizer\<T\>:
+
+```cpp
+namespace ZenUnit
+{
+   template<>
+   struct Equalizer<date::year_month_day>
+   {
+      static void AssertEqual(
+         const date::year_month_day& expectedYearMonthDay,
+         const date::year_month_day& actualYearMonthDay)
+      {
+         ARE_EQUAL(expectedYearMonthDay.year(), actualYearMonthDay.year());
+         ARE_EQUAL(expectedYearMonthDay.month(), actualYearMonthDay.month());
+         ARE_EQUAL(expectedYearMonthDay.day(), actualYearMonthDay.day());
+      }
+   };
+}
+```
 
 |The Road To ZenUnit 1.0|
 |-----------------------|
