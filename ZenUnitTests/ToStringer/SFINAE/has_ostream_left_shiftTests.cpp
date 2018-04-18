@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ZenUnitTests/Testing/UserType.h"
-#include "ZenUnitTests/Testing/UserTypeNonPrintable.h"
 #include "ZenUnitTests/Testing/UserTypeInsOpAndZenUnitPrintable.h"
+#include "ZenUnitTests/Testing/UserTypeNonPrintable.h"
 #include "ZenUnitTests/Testing/UserTypeOnlyZenUnitPrintable.h"
 
 TESTS(has_ostream_left_shiftTests)
