@@ -622,8 +622,8 @@ namespace ZenUnit
       unsigned char arity;
 
       FullTestName() noexcept
-         : testClassName(nullptr)
-         , testName(nullptr)
+         : testClassName("")
+         , testName("")
          , arity(0)
       {
       }

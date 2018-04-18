@@ -24,8 +24,8 @@ TEST(DefaultConstructor_SetsClassNameAndTestNameToNullptr)
 {
    const FullTestName defaultTestName;
    FullTestName expectedDefaultTestName;
-   expectedDefaultTestName.testClassName = nullptr;
-   expectedDefaultTestName.testName = nullptr;
+   expectedDefaultTestName.testClassName = "";
+   expectedDefaultTestName.testName = "";
    expectedDefaultTestName.arity = 0;
    ARE_EQUAL(expectedDefaultTestName, defaultTestName);
 }
