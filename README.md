@@ -121,9 +121,7 @@ Testing Utility:
 
 ### ZenUnit Type-Parameterized Test Class Syntax
 
-ZenUnit provides a type-parameterized test class syntax that allows one to confirm that the correctness of ClassUnderTest\<T\> is maintained across various types of T.
-
-Given this templatized Set\:\:Contains function, how would you confirm its correctness?
+How would you confirm the correctness of this templatized Set\:\:Contains function across various types of sets and elements?
 
 ```cpp
 class Set
@@ -138,7 +136,7 @@ public:
 };
 ```
 
-Using ZenUnit, this is how the function's correctness can be confirmed across various SetType types and various T types:
+This is how the function's correctness can be confirmed using ZenUnit's type-parameterized test class syntax:
 
 ```cpp
 #include "ZenUnit/ZenUnit.h"
@@ -179,9 +177,9 @@ int main(int argc, char* argv[])
 }
 ```
 
-### Console Output For The Above Type-Parameterized Test Class
+### Test Results
 
-![ZenUnit](Screenshots/ZenUnitTypeParameterizedTestClass.png "ZenUnit Type-Parameterized Test Class Imagery")
+![ZenUnit](Screenshots/ZenUnitTypeParameterizedTestClass.png "ZenUnit Type-Parameterized Test Results")
 
 ### ZenUnit Assertion Macros
 
@@ -263,11 +261,17 @@ int main(int argc, char* argv[])
 |`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)` // Skips a templatized test class|
 |`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)` // Skips a subsequent templatized test class|
 
-### ZenUnit Random Values
+### ZenUnit Random Value Functions
 
-Testing with random inputs instead of constant inputs is a key technique for maximizing robustness to code mutations inducible manually by colleagues today during code review and inducible automatically by LLVM-powered mutation testing frameworks in the years ahead.
+Testing using random inputs instead of constant inputs is a central technique for maximizing code's robustness to code mutations.
 
-ZenUnit provides the following random value generating functions for maximizing robustness to code mutations.
+Today, code mutations can be induced manually by colleagues during code review to confirm the degree of rigorousness with which unit tests have been written.
+
+In the 2020s, a combinatorial number code mutations will be able to be induced automatically by LLVM-powered mutation testing frameworks.
+
+In preparation for this future, ZenUnit is designed to make it easy to write unit tests that are robust to code mutations.
+
+For robustness to two of the most common code mutations, mutate-value (true to false, 0 to 1, comma to dash, etc) and mutate-operator (+ to -, * to /, logical ! to nothing, etc), ZenUnit provides the following random value generating functions.
 
 |Random Value Generating Function|Description|
 |--------------------------------|-----------|
