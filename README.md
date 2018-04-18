@@ -139,7 +139,7 @@ public:
 This is how the function's correctness can be confirmed using ZenUnit's type-parameterized test class syntax:
 
 ```cpp
-#include "ZenUnit/ZenUnit.h"
+#include "ZenUnit.h"
 
 template<
    template<typename...>
