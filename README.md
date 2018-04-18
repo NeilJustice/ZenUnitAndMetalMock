@@ -177,7 +177,7 @@ int main(int argc, char* argv[])
 }
 ```
 
-### Test Results
+### Type-Parameterized Test Results
 
 ![ZenUnit](Screenshots/ZenUnitTypeParameterizedTestClass.png "ZenUnit Type-Parameterized Test Results")
 
