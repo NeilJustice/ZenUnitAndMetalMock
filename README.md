@@ -1,6 +1,6 @@
 # <p align="center">ZenUnit</p>
 
-#### <p align="center">Single-header C++ unit testing framework with an intuitive syntax for specifying value-parameterized and type-parameterized unit tests.</p>
+#### <p align="center">Single-header C++ unit testing framework with a compelling syntax for specifying value-parameterized and type-parameterized unit tests.</p>
 
 |Clang 6.0 - TravisCI|Visual Studio 2017 Preview - AppVeyor|
 |---------------------|--------------------------------------|
