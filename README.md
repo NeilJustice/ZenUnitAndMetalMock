@@ -1,6 +1,6 @@
-# <p align="center">ZenUnit</p>
+<h1 align="center">ZenUnit</h1>
 
-#### <p align="center">Single-header C++ unit testing framework with a compelling syntax for specifying value-parameterized and type-parameterized tests.</p>
+<h4 align="center">Single-header C++ unit testing framework with a compelling syntax for specifying value-parameterized and type-parameterized tests.</h4>
 <table align="center">
   <tr>
     <td>Linux/macOS (Clang 6.0)</td>
