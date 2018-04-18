@@ -1,10 +1,7 @@
 # <p align="center">ZenUnit</p>
 
 #### <p align="center">Single-header C++ unit testing framework with a compelling syntax for specifying value-parameterized and type-parameterized unit tests.</p>
-
-|Clang 6.0 - TravisCI|Visual Studio 2017 Preview - AppVeyor|
-|---------------------|--------------------------------------|
-|[![Build Status](https://travis-ci.org/NeilJustice/ZenUnit.svg?branch=master)](https://travis-ci.org/NeilJustice/ZenUnit)|[![Build status](https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true)](https://ci.appveyor.com/project/NeilJustice/ZenUnitZenMock)|
+<p align="center">[![Build Status](https://travis-ci.org/NeilJustice/ZenUnit.svg?branch=master)](https://travis-ci.org/NeilJustice/ZenUnit) [![Build status](https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true)](https://ci.appveyor.com/project/NeilJustice/ZenUnitZenMock)</p>
 
 ### ZenUnit Syntax
 
