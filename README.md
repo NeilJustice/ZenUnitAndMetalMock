@@ -4,7 +4,7 @@
 
 <center>
 
-|Linux/macOS (Clang 6.0)|Windows (VS2017 Preview)|
+|Linux (Clang 6.0)|Windows (VS2017 Preview)|
 |-----------------------|------------------------|
 |<a href="https://travis-ci.org/NeilJustice/ZenUnit"><img src="https://travis-ci.org/NeilJustice/ZenUnit.svg?branch=master"/></a>|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitZenMock"><img src="https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true"/></a>|
 
@@ -41,7 +41,7 @@ TEST(FizzBuzz_EndNumber0_Throws)
 
 // TEST2X2 defines a 2-by-2 value-parameterized test
 // that processes its typesafe variadic arguments list 2-by-2,
-// forming 15 independent unit tests for function FizzBuzz().
+// in this case forming 15 independent unit tests for function FizzBuzz().
 TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    unsigned endNumber, const std::string& expectedFizzBuzzSequence,
    1, "1",
@@ -265,21 +265,23 @@ int main(int argc, char* argv[])
 
 ### ZenUnit Random Values
 
-Testing with random values instead of fixed values is an important part of maximizing robustness to code mutations induced manually by colleagues during code review or induced automatically by LLVM-powered mutation testing frameworks.
+Testing with random inputs instead of constant inputs is a key technique for maximizing robustness to code mutations inducible manually by colleagues today during code review and inducible automatically by LLVM-powered mutation testing frameworks in the years ahead.
 
-|ZenUnit Random Value Functions|
-|------------------------------|
-|ZenUnit::Random\<T\>() // Returns a value between std\:\:numeric_limits\<T\>::min() and std\:\:numeric_limits\<T\>::max().|
-|ZenUnit::RandomBetween\<T\>(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound) // Returns a value between inclusiveLowerBound and inclusiveUpperBound.|
-|ZenUnit::Random\<std\:\:string\>() // Returns "RandomString" + std\:\:to_string(ZenUnit::Random\<unsigned char\>()).|
-|ZenUnit::RandomEnum\<EnumType\>(EnumType exclusiveEnumMaxValue) // Returns a random EnumType between 0 and exclusiveEnumMaxValue.|
-|ZenUnit::Random\<float\>() // Returns a random float between -1000.0f and 1000.0f from a std\:\:uniform_real_distribution\<float\>.|
-|ZenUnit::Random\<double\>() // Returns a random double between -1000.0 and 1000.0 from a std\:\:uniform_real_distribution\<double\>.|
-|ZenUnit::RandomVector\<T\>() // Returns a std\:\:vector\<T\> with size between 0 and 2 with each element being a ZenUnit\:\:Random\<T\>() value.|
-|ZenUnit::RandomMap\<KeyType, ValueType\>() // Returns a std\:\:map\<KeyType, ValueType\> with size between 0 and 2 with each key a ZenUnit\:\:Random\<KeyType\>() value and each value a ZenUnit\:\:Random\<ValueType\>() value.|
-|ZenUnit::RandomUnorderedMap\<T\>() // Returns a std\:\:unordered_map\<KeyType, ValueType\> with size between 0 and 2 with each key a ZenUnit\:\:Random\<KeyType\>() value and each value a ZenUnit\:\:Random\<ValueType\>() value.|
-|ZenUnit::RandomSet\<T\>() // Returns a std\:\:set\<ElementType\> with size between 0 and 2 with each element a ZenUnit\:\:Random\<ElementType\>() value.|
-|ZenUnit::RandomUnorderedSet\<T\>() // Returns a std\:\:unordered_set\<ElementType\> with size between 0 and 2 with each element a ZenUnit\:\:Random\<ElementType\>() value.|
+ZenUnit provides the following random value generating functions for maximizing robustness to code mutations.
+
+|Random Value Generating Function|Description|
+|--------------------------------|-----------|
+|ZenUnit::Random\<T\>()|Returns a value between std\:\:numeric_limits\<T\>::min() and std\:\:numeric_limits\<T\>::max().|
+|ZenUnit::RandomBetween\<T\>(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound)|Returns a value between inclusiveLowerBound and inclusiveUpperBound.|
+|ZenUnit::Random\<std\:\:string\>()|Returns "RandomString" + std\:\:to_string(ZenUnit::Random\<unsigned char\>()).|
+|ZenUnit::RandomEnum\<EnumType\>(EnumType exclusiveEnumMaxValue)|Returns a random EnumType between 0 and exclusiveEnumMaxValue.|
+|ZenUnit::Random\<float\>()|Returns a random float between -1000.0f and 1000.0f from a std\:\:uniform_real_distribution\<float\>.|
+|ZenUnit::Random\<double\>()|Returns a random double between -1000.0 and 1000.0 from a std\:\:uniform_real_distribution\<double\>.|
+|ZenUnit::RandomVector\<T\>()|Returns a std\:\:vector\<T\> with size between 0 and 2 with each element being a ZenUnit\:\:Random\<T\>() value.|
+|ZenUnit::RandomMap\<KeyType, ValueType\>()|Returns a std\:\:map\<KeyType, ValueType\> with size between 0 and 2 with each key a ZenUnit\:\:Random\<KeyType\>() value and each value a ZenUnit\:\:Random\<ValueType\>() value.|
+|ZenUnit::RandomUnorderedMap\<T\>()|Returns a std\:\:unordered_map\<KeyType, ValueType\> with size between 0 and 2 with each key a ZenUnit\:\:Random\<KeyType\>() value and each value a ZenUnit\:\:Random\<ValueType\>() value.|
+|ZenUnit::RandomSet\<T\>()|Returns a std\:\:set\<ElementType\> with size between 0 and 2 with each element a ZenUnit\:\:Random\<ElementType\>() value.|
+|ZenUnit::RandomUnorderedSet\<T\>()|Returns a std\:\:unordered_set\<ElementType\> with size between 0 and 2 with each element a ZenUnit\:\:Random\<ElementType\>() value.|
 
 ### ZenUnit Equalizers:
 
