@@ -10,7 +10,7 @@
 
 </center>
 
-### ZenUnit Value-Parameterized Test Syntax and ZenUnit Design Commentary
+### ZenUnit Design Commentary and Value-Parameterized Test Syntax
 
 ```cpp
 #include "ZenUnit.h" // Single header
