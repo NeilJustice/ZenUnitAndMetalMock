@@ -287,7 +287,7 @@ For robustness to two of the most common code mutations, mutate-value (true to f
 |ZenUnit::RandomSet\<T\>()|Returns a std\:\:set\<ElementType\> with size between 0 and 2 with each element a ZenUnit\:\:Random\<ElementType\>() value.|
 |ZenUnit::RandomUnorderedSet\<T\>()|Returns a std\:\:unordered_set\<ElementType\> with size between 0 and 2 with each element a ZenUnit\:\:Random\<ElementType\>() value.|
 
-### ZenUnit Equalizers:
+### ZenUnit Equalizers
 
 The default behavior of ARE_EQUAL(expectedValue, actualValue) is to throw a ZenUnit::Anomaly if expectedValue == actualValue returns false.
 
@@ -324,3 +324,4 @@ namespace ZenUnit
 |ARE_CLOSE|
 |-failfast|
 |-breakfast|
+
