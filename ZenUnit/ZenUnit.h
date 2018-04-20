@@ -746,30 +746,34 @@ namespace ZenUnit
 
    inline const char* ColorToLinuxColor(Color color) noexcept
    {
+      const char* linuxColor = nullptr;
       switch (color)
       {
-      case Color::Red: return "\033[31m";
-      case Color::White: return "\033[0m";
-      case Color::Teal: return "\033[34m";
-      case Color::Green: return "\033[32m";
-      case Color::Yellow: return "\033[33m";
+      case Color::Red: linuxColor = "\033[31m"; break;
+      case Color::White: linuxColor = "\033[0m"; break;
+      case Color::Teal: linuxColor = "\033[34m"; break;
+      case Color::Green: linuxColor = "\033[32m"; break;
+      case Color::Yellow: linuxColor = "\033[33m"; break;
       case Color::Unset:
-      default: return "\033[0m";
+      default: linuxColor = "\033[0m"; break;
       };
+      return linuxColor;
    }
 
    inline WindowsColor ColorToWindowsColor(Color color) noexcept
    {
+      WindowsColor windowsColor = WindowsColor::Black;
       switch (color)
       {
-      case Color::Red: return WindowsColor::Red;
-      case Color::White: return WindowsColor::White;
-      case Color::Teal: return WindowsColor::Teal;
-      case Color::Green: return WindowsColor::Green;
-      case Color::Yellow: return WindowsColor::Yellow;
+      case Color::Red: windowsColor = WindowsColor::Red; break;
+      case Color::White: windowsColor = WindowsColor::White; break;
+      case Color::Teal: windowsColor = WindowsColor::Teal; break;
+      case Color::Green: windowsColor = WindowsColor::Green; break;
+      case Color::Yellow: windowsColor = WindowsColor::Yellow; break;
       case Color::Unset:
-      default: return WindowsColor::White;
+      default: windowsColor = WindowsColor::White; break;
       };
+      return windowsColor;
    }
 
    class ConsoleColorer
@@ -865,8 +869,8 @@ namespace ZenUnit
       std::function<void(int)> call_exit;
 #if defined _WIN32
       std::function<int()> call_IsDebuggerPresent;
-      std::function<int()> call_getch;
 #endif
+      std::function<int()> call_getch;
    public:
       Console() noexcept
          : _consoleColorer(std::make_unique<ConsoleColorer>())
@@ -2700,13 +2704,6 @@ Testing Utility:
       char valueBeforeOverwrittenWithZero = *ptrA;
       char* const pointerToZero = ptrA;
       *ptrA-- = '\0';
-      char* ptrB = outChars;
-      while (ptrB < ptrA)
-      {
-         char tempChar = *ptrA;
-         *ptrA-- = *ptrB;
-         *ptrB++ = tempChar;
-      }
       *pointerToZero = valueBeforeOverwrittenWithZero;
       return numberOfCharsAppended;
    }
@@ -3048,6 +3045,14 @@ Testing Utility:
       return whyBody;
    }
 
+   struct NeverThrownType
+   {
+      const char* what() const noexcept
+      {
+         return nullptr;
+      }
+   };
+
    template<typename ExpectedExceptionType, typename... MessageTypes>
    void THROWS_Defined(
       const std::function<void()>& expression,
@@ -3059,13 +3064,6 @@ Testing Utility:
       const char* messagesText,
       MessageTypes&&... messages)
    {
-      struct NeverThrownType
-      {
-         const char* what() const noexcept
-         {
-            return nullptr;
-         }
-      };
       try
       {
          expression();
@@ -3247,30 +3245,36 @@ Testing Utility:
 
       static const char* DoTestPhaseToTestPhaseSuffix(TestPhase testPhase)
       {
+         const char* testPhaseSuffix = nullptr;
          switch (testPhase)
          {
          case TestPhase::Constructor:
          {
-            return " in test class constructor";
+            testPhaseSuffix = " in test class constructor";
+            break;
          }
          case TestPhase::Startup:
          {
-            return " in STARTUP";
+            testPhaseSuffix = " in STARTUP";
+            break;
          }
          case TestPhase::TestBody:
          {
-            return "";
+            testPhaseSuffix = "";
+            break;
          }
          case TestPhase::Cleanup:
          {
             assert_true(testPhase == TestPhase::Cleanup);
-            return " in CLEANUP";
+            testPhaseSuffix = " in CLEANUP";
+            break;
          }
          case TestPhase::Unset:
          case TestPhase::Destructor:
          default:
             throw std::invalid_argument("Invalid testPhase");
          }
+         return testPhaseSuffix;
       }
    };
 
@@ -3323,10 +3327,8 @@ Testing Utility:
 
       virtual unsigned short SecondsSince1970CastToUnsignedShort() const
       {
-         const long long secondsSince1970
-            = std::chrono::system_clock::now().time_since_epoch().count();
-         const unsigned short secondsSince1970CastToUnsignedShort
-            = static_cast<unsigned short>(secondsSince1970);
+         const long long secondsSince1970 = std::chrono::system_clock::now().time_since_epoch().count();
+         const unsigned short secondsSince1970CastToUnsignedShort = static_cast<unsigned short>(secondsSince1970);
          return secondsSince1970CastToUnsignedShort;
       }
 

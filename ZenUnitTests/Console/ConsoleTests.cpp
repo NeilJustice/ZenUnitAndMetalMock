@@ -15,8 +15,8 @@ namespace ZenUnit
    FACTS(WaitForAnyKeyIfDebuggerPresentOrValueTrue_WritesPressAnyKeyAndGetsCharIfDebuggerPresentOrValueTrue)
 #if defined _WIN32
    FACTS(DebuggerIsPresent_ReturnsTrueIfIsDebuggerPresentFunctionReturns1)
-   AFACT(WaitForAnyKey_CallsGetCh)
 #endif
+   AFACT(WaitForAnyKey_CallsGetChOnWindows)
    EVIDENCE
 
    Console _console;
@@ -38,7 +38,7 @@ namespace ZenUnit
    STARTUP
    {
       _console._consoleColorer.reset(_consoleColorerMock = new ConsoleColorerMock);
-#if defined _WIN32
+#if _WIN32
       _console.call_getch = ZENMOCK_BIND0(_getch_ZenMock);
 #endif
    }
@@ -208,16 +208,20 @@ namespace ZenUnit
       ZEN(IsDebuggerPresent_ZenMock.CalledOnce());
       ARE_EQUAL(expectedReturnValue, debuggerIsPresent);
    }
+#endif
 
-   TEST(WaitForAnyKey_CallsGetCh)
+   TEST(WaitForAnyKey_CallsGetChOnWindows)
    {
+#ifdef _WIN32
       _getch_ZenMock.Return(0);
+#endif
       //
       _console.WaitForAnyKey();
       //
+#ifdef _WIN32
       ZEN(_getch_ZenMock.CalledOnce());
-   }
 #endif
+   }
 
    RUN_TESTS(ConsoleTests)
 }

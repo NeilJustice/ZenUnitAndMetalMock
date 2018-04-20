@@ -29,24 +29,18 @@ namespace ZenUnit
    template<>
    struct Equalizer<EqualizerBothOneAndTwoTypeTestStruct>
    {
-      static void AssertEqual(
-         const EqualizerBothOneAndTwoTypeTestStruct&,
-         const EqualizerBothOneAndTwoTypeTestStruct&)
+      static void AssertEqual(const EqualizerBothOneAndTwoTypeTestStruct&, const EqualizerBothOneAndTwoTypeTestStruct&)
       {
          ARE_EQUAL(50, 60);
       }
    };
 
    template<>
-   struct TwoTypeEqualizer<
-     EqualizerBothOneAndTwoTypeTestStruct,
-     EqualizerBothOneAndTwoTypeTestStruct>
+   struct TwoTypeEqualizer<EqualizerBothOneAndTwoTypeTestStruct, EqualizerBothOneAndTwoTypeTestStruct>
    {
-      static void AssertEqual(
-         const EqualizerBothOneAndTwoTypeTestStruct&,
-         const EqualizerBothOneAndTwoTypeTestStruct&)
+      static void AssertEqual(const EqualizerBothOneAndTwoTypeTestStruct&, const EqualizerBothOneAndTwoTypeTestStruct&)
       {
-         ARE_EQUAL(70, 80);
+         throw invalid_argument("unexpected call");
       }
    };
 
@@ -58,6 +52,7 @@ namespace ZenUnit
    AFACT(IntLiteralsNotEqual_Throws)
    AFACT(IntVariablesNotEqual_Throws_MessagesTestCase)
    AFACT(StringsNotEqual_ThrowsWithStringsInQuotesToConfirmedToStringed)
+   AFACT(EqualizerBothOneAndTwoTypeTestStruct_CodeCoverage)
    EVIDENCE
 
    TEST(OneTypeEqualizerDefined_CallsIt)
@@ -144,6 +139,14 @@ File.cpp(1))");
 Expected: "expected"
   Actual: "actual"
 File.cpp(1))");
+   }
+
+   TEST(EqualizerBothOneAndTwoTypeTestStruct_CodeCoverage)
+   {
+      THROWS(
+         TwoTypeEqualizer<EqualizerBothOneAndTwoTypeTestStruct Comma EqualizerBothOneAndTwoTypeTestStruct>::AssertEqual(
+            EqualizerBothOneAndTwoTypeTestStruct{}, EqualizerBothOneAndTwoTypeTestStruct{}),
+         invalid_argument, "unexpected call");
    }
 
    RUN_TESTS(ARE_EQUALTests)

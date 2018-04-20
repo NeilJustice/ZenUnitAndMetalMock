@@ -64,6 +64,8 @@ RUN_TESTS(Tests)
 
 int main(int argc, char* argv[])
 {
+   FileLiner::File(nullptr); // 100% code coverage
+   FileLiner::Line(0); // 100% code coverage
    FileLiner::zenUnitTestingMode = true;
    const int exitCode = ZenUnit::RunTests(argc, argv);
    return exitCode;

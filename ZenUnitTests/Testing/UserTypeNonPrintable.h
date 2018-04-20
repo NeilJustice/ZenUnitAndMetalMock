@@ -9,12 +9,3 @@ struct UserTypeNonPrintable
    friend bool operator<(const UserTypeNonPrintable& left, const UserTypeNonPrintable& right);
    friend bool operator==(const UserTypeNonPrintable& left, const UserTypeNonPrintable& right);
 };
-
-namespace ZenUnit
-{
-   template<>
-   struct Equalizer<UserTypeNonPrintable>
-   {
-      static void AssertEqual(const UserTypeNonPrintable& expected, const UserTypeNonPrintable& actual);
-   };
-}

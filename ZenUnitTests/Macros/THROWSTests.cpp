@@ -10,6 +10,7 @@ namespace ZenUnit
    AFACT(CallThrowsExactExpectedException_WhatDoesNotMatch_Throws)
    AFACT(CallThrowsExactExpectedException_WhatTextMatchesExceptForCase_Throws)
    AFACT(CallThrowsExactExpectedException_WhatTextMatchesExactly_DoesNotThrow)
+   AFACT(NeverThrownType_whatReturnsNullptr)
    EVIDENCE
 
    const string MessageA = "A", MessageB = "B";
@@ -133,6 +134,12 @@ File.cpp(1))", anomaly.why);
    {
       THROWS([]{ throw runtime_error("what"); }(), runtime_error, "what");
       THROWS([]{ throw logic_error("what"); }(), logic_error, "what");
+   }
+
+   TEST(NeverThrownType_whatReturnsNullptr)
+   {
+      const NeverThrownType neverThrownType;
+      IS_NULL(neverThrownType.what());
    }
 
    RUN_TESTS(THROWSTests)

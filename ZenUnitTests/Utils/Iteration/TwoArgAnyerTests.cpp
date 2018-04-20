@@ -11,6 +11,7 @@ namespace ZenUnit
    AFACT(TwoArgAny_2ElementCollection_FirstOfTwoElementsMatchesPredicate_CallsPredicateOnce_ReturnsTrue)
    AFACT(TwoArgAny_2ElementCollection_SecondOfTwoElementsMatchesPredicate_CallsPredicateTwice_ReturnsTrue)
    AFACT(TwoArgAny_2ElementCollection_NeitherElementMatchesPredicate_CallsPredicateTwice_ReturnsFalse)
+   AFACT(PredicateThatThrowsIfCalledCodeCoverage)
    EVIDENCE
 
    static vector<pair<T, Arg2Type>> s_predicateArgs;
@@ -90,6 +91,8 @@ namespace ZenUnit
       const vector<pair<T, Arg2Type>> expectedPredicateArgs = { { T{1}, _arg2 } };
       VECTORS_EQUAL(expectedPredicateArgs, s_predicateArgs);
       IS_TRUE(anyElementMatchesPredicate);
+
+      IS_FALSE(ElementValueOneReturnsTruePredicate(T(2), Arg2Type{}));
    }
 
    TEST(TwoArgAny_2ElementCollection_SecondOfTwoElementsMatchesPredicate_CallsPredicateTwice_ReturnsTrue)
@@ -110,6 +113,11 @@ namespace ZenUnit
       const vector<pair<T, Arg2Type>> expectedPredicateArgs = { { T(1), _arg2 },{ T(2), _arg2 } };
       VECTORS_EQUAL(expectedPredicateArgs, s_predicateArgs);
       IS_FALSE(anyElementMatchesPredicate);
+   }
+
+   TEST(PredicateThatThrowsIfCalledCodeCoverage)
+   {
+      THROWS(PredicateThatThrowsIfCalled(T{}, Arg2Type{}), invalid_argument, "unexpected call");
    }
 
    RUN_TEMPLATE_TESTS(TwoArgAnyerTests, vector, int, int)

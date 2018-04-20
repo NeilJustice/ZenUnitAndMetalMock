@@ -11,6 +11,7 @@ namespace ZenUnit
    AFACT(ThreeArgAny_2ElementCollection_FirstOfTwoElementsMatchesPredicate_CallsPredicateOnce_ReturnsTrue)
    AFACT(ThreeArgAny_2ElementCollection_SecondOfTwoElementsMatchesPredicate_CallsPredicateTwice_ReturnsTrue)
    AFACT(ThreeArgAny_2ElementCollection_NeitherElementMatchesPredicate_CallsPredicateTwice_ReturnsFalse)
+   AFACT(PredicateThatThrowsIfCalled_CodeCoverage)
    EVIDENCE
 
    static vector<tuple<T, Arg2Type, Arg3Type>> s_predicateArgs;
@@ -91,6 +92,8 @@ namespace ZenUnit
       const vector<tuple<T, Arg2Type, Arg3Type>> expectedPredicateArgs = { { T{1}, _arg2, _arg3 } };
       VECTORS_EQUAL(expectedPredicateArgs, s_predicateArgs);
       IS_TRUE(anyElementMatchesPredicate);
+
+      IS_FALSE(ElementValueOneReturnsTruePredicate(T(), Arg2Type(), Arg3Type()));
    }
 
    TEST(ThreeArgAny_2ElementCollection_SecondOfTwoElementsMatchesPredicate_CallsPredicateTwice_ReturnsTrue)
@@ -111,6 +114,11 @@ namespace ZenUnit
       const vector<tuple<T, Arg2Type, Arg3Type>> expectedPredicateArgs = { { T(1), _arg2, _arg3 },{ T(2), _arg2, _arg3 } };
       VECTORS_EQUAL(expectedPredicateArgs, s_predicateArgs);
       IS_FALSE(anyElementMatchesPredicate);
+   }
+
+   TEST(PredicateThatThrowsIfCalled_CodeCoverage)
+   {
+      THROWS(PredicateThatThrowsIfCalled(T(), Arg2Type(), Arg3Type()), invalid_argument, "unexpected call");
    }
 
    RUN_TEMPLATE_TESTS(ThreeArgAnyerTests, vector, int, int, int)

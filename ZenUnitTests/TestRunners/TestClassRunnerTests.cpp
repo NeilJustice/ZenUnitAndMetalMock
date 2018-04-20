@@ -6,6 +6,7 @@ namespace ZenUnit
 {
    class TestingTestClassRunner : public TestClassRunner
    {
+   public:
       const char* TestClassName() const override { return nullptr; }
       size_t NumberOfTestCases() const override { return 0; }
       TestClassResult RunTests() override { return TestClassResult(); }
@@ -16,6 +17,7 @@ namespace ZenUnit
    AFACT(DefaultConstructor_NewsComponents)
    AFACT(RunFilterMatchesTestName_ReturnsTrueIfRunFilterMatchesTestName)
    FACTS(OperatorLessThan_ReturnsTrueIfTestClassNameStrcmpResultIsLessThanZero)
+   AFACT(TestingTestClassRunnerCodeCoverage)
    EVIDENCE
 
    TestingTestClassRunner _testingTestClassRunner;
@@ -63,6 +65,15 @@ namespace ZenUnit
       ZEN(leftTestClassRunnerMock->TestClassNameMock.CalledOnce());
       ZEN(rightTestClassRunnerMock->TestClassNameMock.CalledOnce());
       ARE_EQUAL(expectedIsLessThan, isLessThan);
+   }
+
+   TEST(TestingTestClassRunnerCodeCoverage)
+   {
+      TestingTestClassRunner testingTestClassRunner;
+      testingTestClassRunner.TestClassName();
+      testingTestClassRunner.NumberOfTestCases();
+      testingTestClassRunner.RunTests();
+      testingTestClassRunner.HasTestThatMatchesRunFilter(RunFilter());
    }
 
    RUN_TESTS(TestClassRunnerTests)

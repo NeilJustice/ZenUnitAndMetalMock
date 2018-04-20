@@ -4,7 +4,8 @@ namespace ZenUnit
 {
    TESTS(VectorTests)
    AFACT(ToArgcArgv_ReturnsArgsVector)
-   AFACT(Join_EmptyIntVector_ReturnsEmptyStringRegardlessOfSeparator)
+   AFACT(Join_EmptyStringVector_ReturnsEmptyString)
+   AFACT(Join_EmptyIntVector_ReturnsEmptyString)
    AFACT(Join_1ElementIntVector_ReturnsFirstElementRegardlessOfSeparator)
    FACTS(Join_2ElementIntVector_ReturnsElementsJoinedBySeparator)
    EVIDENCE
@@ -38,11 +39,16 @@ namespace ZenUnit
       VECTORS_EQUAL(expectedStringVector, Vector::FromArgcArgv(argc, const_cast<char**>(argv)));
    }
 
-   TEST(Join_EmptyIntVector_ReturnsEmptyStringRegardlessOfSeparator)
+   TEST(Join_EmptyStringVector_ReturnsEmptyString)
+   {
+      const vector<string> emptyStringVector;
+      ARE_EQUAL("", Vector::Join(emptyStringVector, ZenUnit::Random<char>()));
+   }
+
+   TEST(Join_EmptyIntVector_ReturnsEmptyString)
    {
       const vector<int> emptyIntVector;
-      ARE_EQUAL("", Vector::Join(emptyIntVector, ' '));
-      ARE_EQUAL("", Vector::Join(emptyIntVector, ','));
+      ARE_EQUAL("", Vector::Join(emptyIntVector, ZenUnit::Random<char>()));
    }
 
    TEST(Join_1ElementIntVector_ReturnsFirstElementRegardlessOfSeparator)
