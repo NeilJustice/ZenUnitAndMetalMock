@@ -42,7 +42,7 @@ TEST(ElementAreNonDefaultAndNotEqual_Throws)
   Failed: STD_ARRAYS_EQUAL(expectedArray, actualArray)
 Expected: <std::array<)" + TypeName + R"(, 1ul>>
   Actual: <std::array<)" + TypeName + R"(, 1ul>>
- Because: ARE_EQUAL(ithExpectedElement, ithActualElement, iEqualsIndexMessage) failed
+ Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed
 Expected: )" + ToStringer::ToString(expectedArray[0]) + R"(
   Actual: )" + ToStringer::ToString(actualArray[0]) + R"(
  Message: "i=0"
@@ -53,7 +53,7 @@ File.cpp(1))");
   Failed: STD_ARRAYS_EQUAL(expectedArray, actualArray)
 Expected: <std::array<)" + TypeName + R"(,1>>
   Actual: <std::array<)" + TypeName + R"(,1>>
- Because: ARE_EQUAL(ithExpectedElement, ithActualElement, iEqualsIndexMessage) failed
+ Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed
 Expected: )" + ToStringer::ToString(expectedArray[0]) + R"(
   Actual: )" + ToStringer::ToString(actualArray[0]) + R"(
  Message: "i=0"
@@ -103,7 +103,7 @@ TEST(ElementsAreNonDefaultAndNotEqualAtIndex0_Throws)
   Failed: STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0)
 Expected: <std::array<)" + TypeName + R"(, 2ul>>
   Actual: <std::array<)" + TypeName + R"(, 2ul>>
- Because: ARE_EQUAL(ithExpectedElement, ithActualElement, iEqualsIndexMessage) failed
+ Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed
 Expected: )" + ToStringer::ToString(expectedArray_index0[0]) + R"(
   Actual: )" + ToStringer::ToString(actualArray_index0[0]) + R"(
  Message: "i=0"
@@ -114,7 +114,7 @@ File.cpp(1))");
   Failed: STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0)
 Expected: <std::array<)" + TypeName + R"(,2>>
   Actual: <std::array<)" + TypeName + R"(,2>>
- Because: ARE_EQUAL(ithExpectedElement, ithActualElement, iEqualsIndexMessage) failed
+ Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed
 Expected: )" + ToStringer::ToString(expectedArray_index0[0]) + R"(
   Actual: )" + ToStringer::ToString(actualArray_index0[0]) + R"(
  Message: "i=0"
@@ -133,7 +133,7 @@ TEST(ElementsAreNonDefaultAndNotEqualAtIndex1_Throws)
   Failed: STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1)
 Expected: <std::array<)" + TypeName + R"(, 2ul>>
   Actual: <std::array<)" + TypeName + R"(, 2ul>>
- Because: ARE_EQUAL(ithExpectedElement, ithActualElement, iEqualsIndexMessage) failed
+ Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed
 Expected: )" + ToStringer::ToString(expectedArray_index1[1]) + R"(
   Actual: )" + ToStringer::ToString(actualArray_index1[1]) + R"(
  Message: "i=1"
@@ -144,7 +144,7 @@ File.cpp(1))");
   Failed: STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1)
 Expected: <std::array<)" + TypeName + R"(,2>>
   Actual: <std::array<)" + TypeName + R"(,2>>
- Because: ARE_EQUAL(ithExpectedElement, ithActualElement, iEqualsIndexMessage) failed
+ Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed
 Expected: )" + ToStringer::ToString(expectedArray_index1[1]) + R"(
   Actual: )" + ToStringer::ToString(actualArray_index1[1]) + R"(
  Message: "i=1"

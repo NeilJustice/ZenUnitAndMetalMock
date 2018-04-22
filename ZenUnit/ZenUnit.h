@@ -2731,15 +2731,15 @@ Testing Utility:
       const std::size_t expectedStdArraySize = expectedStdArray.size();
       static const size_t IEqualsSignLength = 2;
       static const size_t SizeTMaxValueLength = 21; // strlen("18446744073709551615")
-      char iEqualsIndexMessage[IEqualsSignLength + SizeTMaxValueLength]{ "i=" };
+      char indexMessage[IEqualsSignLength + SizeTMaxValueLength]{ "i=" };
       try
       {
          for (size_t i = 0; i < expectedStdArraySize; ++i)
          {
             const T& ithExpectedElement = expectedStdArray[i];
             const T& ithActualElement = actualStdArray[i];
-            ULongLongToChars(i, iEqualsIndexMessage + IEqualsSignLength);
-            ARE_EQUAL(ithExpectedElement, ithActualElement, iEqualsIndexMessage);
+            ULongLongToChars(i, indexMessage + IEqualsSignLength);
+            ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage);
          }
       }
       catch (const Anomaly& anomaly)
@@ -3140,15 +3140,15 @@ Testing Utility:
       const size_t expectedVectorSize = expectedVector.size();
       static const size_t IEqualsSignLength = 2;
       static const size_t SizeTMaxValueLength = 21; // strlen("18446744073709551615")
-      char iEqualsIndexMessage[IEqualsSignLength + SizeTMaxValueLength]{ "i=" };
+      char indexMessage[IEqualsSignLength + SizeTMaxValueLength]{ "i=" };
       for (size_t i = 0; i < expectedVectorSize; ++i)
       {
          const T& ithExpectedElement = expectedVector[i];
          const T& ithActualElement = actualVector[i];
-         ULongLongToChars(i, iEqualsIndexMessage + IEqualsSignLength);
+         ULongLongToChars(i, indexMessage + IEqualsSignLength);
          try
          {
-            ARE_EQUAL(ithExpectedElement, ithActualElement, iEqualsIndexMessage);
+            ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage);
          }
          catch (const Anomaly& becauseAnomaly)
          {

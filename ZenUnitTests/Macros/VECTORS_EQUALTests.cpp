@@ -72,7 +72,7 @@ Expected: std::vector<)" + TypeName + R"(>:
 {
    2
 }
- Because: ARE_EQUAL(ithExpectedElement, ithActualElement, iEqualsIndexMessage) failed
+ Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed
 Expected: )" + ToStringer::ToString(v1[0]) + R"(
   Actual: )" + ToStringer::ToString(v2[0]) + R"(
  Message: "i=0"
@@ -97,7 +97,7 @@ Expected: std::vector<)" + TypeName + R"(>:
    0,
    2
 }
- Because: ARE_EQUAL(ithExpectedElement, ithActualElement, iEqualsIndexMessage) failed
+ Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed
 Expected: )" + ToStringer::ToString(v1[1]) + R"(
   Actual: )" + ToStringer::ToString(v2[1]) + R"(
  Message: "i=1"
