@@ -10,7 +10,7 @@
 
 </center>
 
-### ZenUnit Design Commentary and Value-Parameterized Test Syntax
+### Design Commentary and Value-Parameterized Test Syntax
 
 ```cpp
 #include "ZenUnit.h" // Single header
@@ -73,11 +73,11 @@ int main(int argc, char* argv[])
 }
 ```
 
-### ZenUnit Console Output
+### Console Output
 
 ![ZenUnit](Screenshots/ZenUnitFizzBuzz.png "ZenUnit")
 
-### ZenUnit Command Line Usage
+### Command Line Usage
 
 ```
 ZenUnit v0.2.1
@@ -119,7 +119,7 @@ Testing Utility:
    Wait for any key at the end of the test run.
 ```
 
-### ZenUnit Type-Parameterized Test Class Syntax
+### Type-Parameterized Test Class Syntax
 
 How would you confirm the correctness of this templatized Set\:\:Contains function across various types of sets and elements?
 
@@ -181,7 +181,7 @@ int main(int argc, char* argv[])
 
 ![ZenUnit](Screenshots/ZenUnitTypeParameterizedTestClass.png "ZenUnit Type-Parameterized Test Results")
 
-### ZenUnit Assertion Macros
+### Assertion Macros
 
 |Values|
 |------|
@@ -236,7 +236,7 @@ int main(int argc, char* argv[])
 |`THROWS_EXCEPTION(expression, expectedExceptionBaseClass)`|mutate-excetion-type and mutate-exception-message|
 |`THROWS_ANY(expression)`|mutate-exception-type and mutate-exception-message|
 
-### ZenUnit Test-Defining Macros
+### Test-Defining Macros
 
 |Test Classes|
 |------------|
@@ -261,7 +261,7 @@ int main(int argc, char* argv[])
 |`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)` // Skips a templatized test class|
 |`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)` // Skips a subsequent templatized test class|
 
-### ZenUnit Random Value Functions
+### Random Value Functions
 
 Testing using random inputs instead of constant inputs is a central technique for maximizing code's robustness to code mutations.
 
@@ -315,13 +315,13 @@ namespace ZenUnit
 
 |The Road To ZenUnit 1.0|
 |-----------------------|
+|Every aspect of ZenUnit documented|
 |100% code coverage badge|
 |Travis CI clang-tidy|
 |AppVeyor /analyze|
-|Seedability of ZenUnit::Random\<T\>
+|Seedability of ZenUnit::Random\<T\>|
 |TUPLES_EQUAL|
 |ARE_WITHIN|
 |ARE_CLOSE|
 |-failfast|
 |-breakfast|
-
