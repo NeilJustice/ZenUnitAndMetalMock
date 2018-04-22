@@ -293,7 +293,7 @@ The default behavior of ARE_EQUAL(expectedValue, actualValue) is to throw a ZenU
 
 For custom ARE_EQUAL behavior such as field-by-field assertions, define a ZenUnit::Equalizer\<T\> struct specialization with a static void AssertEqual(const T& expected, const T& actual) function.
 
-Example custom ZenUnit::Equalizer\<T\>:
+Example of a custom ZenUnit::Equalizer\<T\> for date::year_month_day values:
 
 ```cpp
 namespace ZenUnit
