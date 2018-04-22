@@ -4843,7 +4843,7 @@ Testing Utility:
          callResult.microseconds = _stopwatch->Stop();
          callResult.anomalyOrException = std::make_shared<AnomalyOrException>(anomaly);
          callResult.testOutcome = TestOutcome::Anomaly;
-         _console->WriteColor("\n-------\nAnomaly\n-------", Color::Red);
+         _console->WriteColor("\n=======\nAnomaly\n=======", Color::Red);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          _console->WriteLine(anomaly.why);
@@ -4851,7 +4851,7 @@ Testing Utility:
       catch (const ZenMockException& e)
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
-         _console->WriteColor("\n----------------\nZenMockException\n----------------", Color::Red);
+         _console->WriteColor("\n================\nZenMockException\n================", Color::Red);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          const std::string exceptionTypeNameAndWhat = String::Concat(
@@ -4861,7 +4861,7 @@ Testing Utility:
       catch (const std::exception& e)
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
-         _console->WriteColor("\n---------\nException\n---------", Color::Red);
+         _console->WriteColor("\n=========\nException\n=========", Color::Red);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          const std::string exceptionTypeNameAndWhat = String::Concat(

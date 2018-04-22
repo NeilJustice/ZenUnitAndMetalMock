@@ -137,7 +137,7 @@ namespace ZenUnit
       expectedCallResult.anomalyOrException = make_shared<AnomalyOrException>(anomaly);
       expectedCallResult.testOutcome = TestOutcome::Anomaly;
 
-      ZEN(_consoleMock->WriteColorMock.CalledOnceWith("\n-------\nAnomaly\n-------", Color::Red));
+      ZEN(_consoleMock->WriteColorMock.CalledOnceWith("\n=======\nAnomaly\n=======", Color::Red));
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(arbitraryTestPhase));
       ZEN(_consoleMock->WriteMock.CalledOnceWith(_testPhaseSuffix));
       ZEN(_consoleMock->WriteLineMock.CalledOnceWith(anomaly.why));
@@ -186,7 +186,7 @@ namespace ZenUnit
       expectedCallResult.microseconds = _microseconds;
 
       ZEN(_consoleMock->WriteColorMock.CalledOnceWith(
-         "\n----------------\nZenMockException\n----------------", Color::Red));
+         "\n================\nZenMockException\n================", Color::Red));
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(arbitraryTestPhase));
       ZEN(_consoleMock->WriteMock.CalledOnceWith(_testPhaseSuffix));
       ZEN(_consoleMock->WriteLineMock.CalledOnceWith(R"(
@@ -228,7 +228,7 @@ Already called [FunctionName]Mock.[Expect|Return|ReturnValues|Throw]().")"));
          = make_shared<AnomalyOrException>(Type::GetName<runtime_error>(), "runtime_error_what");
 
       ZEN(_consoleMock->WriteColorMock.CalledOnceWith(
-         "\n---------\nException\n---------", Color::Red));
+         "\n=========\nException\n=========", Color::Red));
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(arbitraryTestPhase));
       ZEN(_consoleMock->WriteMock.CalledOnceWith(_testPhaseSuffix));
       ZEN(_consoleMock->WriteLineMock.CalledOnceWith(R"(
