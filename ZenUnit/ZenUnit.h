@@ -5848,10 +5848,10 @@ Testing Utility:
             std::cout << "====================\nZenUnit Syntax Error\n====================\n";
             consoleColorer.UnsetColor(didSetColor);
             std::cout << R"(The above test name was specified using FACTS(TestName).
-Therefore a TESTNXN(TestName, ...) test definition is expected in the EVIDENCE section.
-Unexpectedly a TEST(TestName) definition was encountered in the EVIDENCE section.
+Therefore a TESTNXN(TestName, ...) definition is expected in the EVIDENCE section.
+Unexpectedly a TEST(TestName) definition exists in the EVIDENCE section.
 The fix for this error is to change FACTS(TestName) to AFACT(TestName)
-or change TEST(TestName) to TESTNXN(TestName, ...), where N is 1 through 10.
+or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
 )";
             const ZenUnitArgs& zenUnitArgs = TestRunner::GetArgs();
             exit(zenUnitArgs.exit0 ? 0 : 1);
