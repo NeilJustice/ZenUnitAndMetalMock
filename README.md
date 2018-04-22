@@ -267,7 +267,7 @@ Testing using random inputs instead of constant inputs is a central technique fo
 
 Today, code mutations can be induced manually by colleagues during code review to confirm the degree of rigorousness with which unit tests have been written.
 
-In the 2020s, a combinatorial number code mutations will be able to be induced automatically by LLVM-powered mutation testing frameworks.
+In the 2020s, a combinatorial number of code mutations will be able to be induced automatically by LLVM-powered mutation testing frameworks.
 
 In preparation for this future, ZenUnit is designed to make it easy to write unit tests that are robust to code mutations.
 
