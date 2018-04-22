@@ -233,7 +233,7 @@ int main(int argc, char* argv[])
 |`ARE_NOT_EQUAL(expected, actual)`|mutate-value|
 |`STRING_CONTAINS(expectedSubstring, string)`|mutate-value|
 |`REGEX_MATCHES(pattern, string)`|mutate-value|
-|`THROWS_EXCEPTION(expression, expectedExceptionBaseClass)`|mutate-excetion-type and mutate-exception-message|
+|`THROWS_EXCEPTION(expression, expectedExceptionBaseClass)`|mutate-exception-type and mutate-exception-message|
 |`THROWS_ANY(expression)`|mutate-exception-type and mutate-exception-message|
 
 ### Test-Defining Macros
