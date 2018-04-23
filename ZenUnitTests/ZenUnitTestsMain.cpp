@@ -58,15 +58,19 @@ TEST1X1(NXNTestB,
    0,
    1)
 {
+   //if (ZenUnit::Random<int>() % 2 == 0)
+   //{
+   //   FAILTEST("Even");
+   //}
 }
 
 RUN_TESTS(Tests)
 
 int main(int argc, char* argv[])
 {
+   FileLiner::zenUnitTestingMode = true; // Makes __FILE__ and __LINE__ constants for ease of error message testing
+   const int exitCode = ZenUnit::RunTests(argc, argv);
    FileLiner::File(nullptr); // 100% code coverage
    FileLiner::Line(0); // 100% code coverage
-   FileLiner::zenUnitTestingMode = true;
-   const int exitCode = ZenUnit::RunTests(argc, argv);
    return exitCode;
 }

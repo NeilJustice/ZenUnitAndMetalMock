@@ -34,7 +34,7 @@ EVIDENCE
 TEST(FizzBuzz_EndNumber0_Throws)
 {
    // THROWS asserts that an expression throws *exactly* (not a derived class of)
-   // an expected exception type with *exactly* as expected exception what() text.
+   // an expected exception type with *exactly* an expected exception what() text.
    THROWS(FizzBuzz(0), std::invalid_argument,
       "FizzBuzz(): endNumber must be 1 or greater");
 }
@@ -277,10 +277,10 @@ For robustness to two of the most common code mutations, mutate-value (true to f
 |--------------------------------|-----------|
 |ZenUnit::Random\<T\>()|Returns a value between std\:\:numeric_limits\<T\>::min() and std\:\:numeric_limits\<T\>::max().|
 |ZenUnit::RandomBetween\<T\>(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound)|Returns a value between inclusiveLowerBound and inclusiveUpperBound.|
-|ZenUnit::Random\<std\:\:string\>()|Returns "RandomString" + std\:\:to_string(ZenUnit::Random\<unsigned char\>()).|
+|ZenUnit::Random\<std\:\:string\>()|Returns "RandomString" + std::to_string(ZenUnit::RandomBetween<int>(0, 10000)).|
 |ZenUnit::RandomEnum\<EnumType\>(EnumType exclusiveEnumMaxValue)|Returns a random EnumType between 0 and exclusiveEnumMaxValue.|
-|ZenUnit::Random\<float\>()|Returns a random float between -1000.0f and 1000.0f from a std\:\:uniform_real_distribution\<float\>.|
-|ZenUnit::Random\<double\>()|Returns a random double between -1000.0 and 1000.0 from a std\:\:uniform_real_distribution\<double\>.|
+|ZenUnit::Random\<float\>()|Returns a random float between -10000.0f and 10000.0f from a std\:\:uniform_real_distribution\<float\>.|
+|ZenUnit::Random\<double\>()|Returns a random double between -10000.0 and 10000.0 from a std\:\:uniform_real_distribution\<double\>.|
 |ZenUnit::RandomVector\<T\>()|Returns a std\:\:vector\<T\> with size between 0 and 2 with each element being a ZenUnit\:\:Random\<T\>() value.|
 |ZenUnit::RandomMap\<KeyType, ValueType\>()|Returns a std\:\:map\<KeyType, ValueType\> with size between 0 and 2 with each key a ZenUnit\:\:Random\<KeyType\>() value and each value a ZenUnit\:\:Random\<ValueType\>() value.|
 |ZenUnit::RandomUnorderedMap\<T\>()|Returns a std\:\:unordered_map\<KeyType, ValueType\> with size between 0 and 2 with each key a ZenUnit\:\:Random\<KeyType\>() value and each value a ZenUnit\:\:Random\<ValueType\>() value.|

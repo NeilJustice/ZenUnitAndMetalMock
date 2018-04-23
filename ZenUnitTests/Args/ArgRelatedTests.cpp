@@ -22,12 +22,11 @@ FACTS(Parse_EqualsSignContainingArg_EmptyValue_PrintsErrorMessageAndUsageAndExit
 AFACT(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
 AFACT(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
 AFACT(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
-FACTS(Parse_RandomEqualsArg_ValidUnsignedValue_DowncastsValueToUnsignedShort_ReturnsExpectedZenUnitArgs)
 AFACT(Parse_UnrecognizedEqualsSignArgName_PrintsUsageAndExits1)
 EVIDENCE
 
    const string TestProgramPath = Random<string>();
-   const string ExpectedUsage = R"(ZenUnit and ZenMock v0.2.1
+   const string ExpectedUsage = R"(ZenUnit v0.2.1
 Usage: <TestsBinaryName> [Options...]
 
 Testing Rigor:
@@ -35,8 +34,8 @@ Testing Rigor:
 -random[=Seed]
    Run test classes and tests in a random order.
 -testruns=<NumberOfTestRuns>
-   Repeat the running of all non-skipped tests N times.
-   Specify -testruns=2 -random for two random test run orderings.
+   Repeat the running of all non-skipped tests NumberOfTestRuns times.
+   Specify -random -testruns=2 for two random test run orderings.
 -failskips
    Exit 1 regardless of test run outcome if any tests are skipped.
 
@@ -174,7 +173,7 @@ TEST(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
    expectedZenUnitArgs.testruns = 1;
    expectedZenUnitArgs.random = true;
    expectedZenUnitArgs.testruns = testruns;
-   expectedZenUnitArgs.randomseed = static_cast<unsigned short>(randomseed);
+   expectedZenUnitArgs.randomseed = randomseed;
    expectedZenUnitArgs.randomseedsetbyuser = true;
    ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
 }
@@ -301,27 +300,7 @@ TEST(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
    ZenUnitArgs expectedZenUnitArgs;
    expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
    expectedZenUnitArgs.random = true;
-   expectedZenUnitArgs.randomseed = static_cast<unsigned short>(randomSeedArgValue);
-   expectedZenUnitArgs.randomseedsetbyuser = true;
-   ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
-}
-
-TEST2X2(Parse_RandomEqualsArg_ValidUnsignedValue_DowncastsValueToUnsignedShort_ReturnsExpectedZenUnitArgs,
-   unsigned randomSeedArgValue, unsigned short expectedZenUnitArgsRandomseedValue,
-   numeric_limits<unsigned short>::max(), numeric_limits<unsigned short>::max(),
-   numeric_limits<unsigned short>::max() + 1, static_cast<unsigned short>(0),
-   numeric_limits<unsigned short>::max() + 2, static_cast<unsigned short>(1))
-{
-   ToUnsigned_ZenMock.Return(randomSeedArgValue);
-   const vector<string> Args{ TestProgramPath, "-random=" + to_string(randomSeedArgValue) };
-   //
-   const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
-   //
-   ZEN(ToUnsigned_ZenMock.CalledOnceWith(to_string(randomSeedArgValue)));
-   ZenUnitArgs expectedZenUnitArgs;
-   expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
-   expectedZenUnitArgs.random = true;
-   expectedZenUnitArgs.randomseed = expectedZenUnitArgsRandomseedValue;
+   expectedZenUnitArgs.randomseed = randomSeedArgValue;
    expectedZenUnitArgs.randomseedsetbyuser = true;
    ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
 }
@@ -468,7 +447,7 @@ TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, failskips, true);
    EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, testruns, 2u);
    EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, random, true);
-   EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, randomseed, static_cast<unsigned short>(3));
+   EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, randomseed, 3u);
    EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, randomseedsetbyuser, true);
    EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, maxtestmilliseconds, 4u);
    EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, maxtotalseconds, 5u);

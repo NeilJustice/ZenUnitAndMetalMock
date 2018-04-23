@@ -248,22 +248,22 @@ TEST1X1(RunTestClasses_RandomMode_SetsRandomSeedIfNotSetByUser_RunsTestClassesRa
    ZenUnitArgs zenUnitArgs;
    zenUnitArgs.random = true;
    zenUnitArgs.randomseedsetbyuser = randomseedsetbyuser;
-   unsigned short therandomseedsetbyuser = 0;
-   unsigned short randomseedsetbycode = 0;
+   unsigned therandomseedsetbyuser = 0;
+   unsigned randomseedsetbycode = 0;
    if (randomseedsetbyuser)
    {
-      zenUnitArgs.randomseed = therandomseedsetbyuser = ZenUnit::Random<unsigned short>();
+      zenUnitArgs.randomseed = therandomseedsetbyuser = ZenUnit::Random<unsigned>();
    }
    else
    {
-      randomseedsetbycode = _watchMock->SecondsSince1970CastToUnsignedShortMock.ReturnRandom();
+      randomseedsetbycode = _watchMock->SecondsSince1970Mock.ReturnRandom();
    }
    //
    const vector<TestClassResult> testClassResults = _testClassRunnerRunner.RunTestClasses(zenUnitArgs);
    //
    if (!randomseedsetbyuser)
    {
-      _watchMock->SecondsSince1970CastToUnsignedShortMock.CalledOnce();
+      _watchMock->SecondsSince1970Mock.CalledOnce();
    }
 
    ZEN(_transformerMock->RandomTransformMock.CalledOnceWith(

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
+#include "ZenUnitTests/Random/RandomZenUnitArgs.h"
 #include "ZenUnitTests/Results/Mock/TestClassResultMock.h"
 #include "ZenUnitTests/Results/Mock/TestFailureNumbererMock.h"
 #include "ZenUnitTests/Results/Mock/TestResultMock.h"
@@ -229,7 +230,7 @@ TEST(PrintClosingLines_0TotalNumberOfTests_PrintsZeroTestClassesRegisteredToRun)
    ZEN(_consoleMock->WriteLineMock.CalledOnceWith("Zero test classes run."));
 }
 
-TEST10X10(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds,
+TEST7X7(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds,
    const string& expectedMiddleLineVictoryOrFail,
    ZenUnit::Color expectedColor,
    size_t numberOfFailedTestCases,
@@ -237,31 +238,23 @@ TEST10X10(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndE
    const string& expectedClosingLineTestsCountText,
    unsigned testRunMilliseconds,
    const string& expectedMillisecondOrMilliseconds,
-   bool random,
-   bool randomseedsetbyuser,
-   bool expectRandomSeedSuffixWrite,
-   "<VICTORY>", Color::Green, size_t(0), size_t(1), "1 test passed", 0, "milliseconds", false, false, false,
-   "<VICTORY>", Color::Green, size_t(0), size_t(2), "2 tests passed", 1, "millisecond", false, false, false,
-   "<VICTORY>", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds", true, false, true,
-   "<VICTORY>", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds", true, true, false,
-   ">>-FAIL->", Color::Red, size_t(1), size_t(1), "1/1 test failed", 0, "milliseconds", false, false, false,
-   ">>-FAIL->", Color::Red, size_t(1), size_t(2), "1/2 tests failed", 1, "millisecond", false, false, false,
-   ">>-FAIL->", Color::Red, size_t(1), size_t(3), "1/3 tests failed", 2, "milliseconds", false, false, false,
-   ">>-FAIL->", Color::Red, size_t(2), size_t(2), "2/2 tests failed", 3, "milliseconds", false, false, false,
-   ">>-FAIL->", Color::Red, size_t(2), size_t(3), "2/3 tests failed", 4, "milliseconds", false, false, false,
-   ">>-FAIL->", Color::Red, size_t(2), size_t(3), "2/3 tests failed", 4, "milliseconds", true, false, true,
-   ">>-FAIL->", Color::Red, size_t(2), size_t(4), "2/4 tests failed", 5, "milliseconds", true, true, false)
+   "<VICTORY>", Color::Green, size_t(0), size_t(1), "1 test passed", 0, "milliseconds",
+   "<VICTORY>", Color::Green, size_t(0), size_t(2), "2 tests passed", 1, "millisecond",
+   "<VICTORY>", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds",
+   "<VICTORY>", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds",
+   ">>-FAIL->", Color::Red, size_t(1), size_t(1), "1/1 test failed", 0, "milliseconds",
+   ">>-FAIL->", Color::Red, size_t(1), size_t(2), "1/2 tests failed", 1, "millisecond",
+   ">>-FAIL->", Color::Red, size_t(1), size_t(3), "1/3 tests failed", 2, "milliseconds",
+   ">>-FAIL->", Color::Red, size_t(2), size_t(2), "2/2 tests failed", 3, "milliseconds",
+   ">>-FAIL->", Color::Red, size_t(2), size_t(3), "2/3 tests failed", 4, "milliseconds",
+   ">>-FAIL->", Color::Red, size_t(2), size_t(3), "2/3 tests failed", 4, "milliseconds",
+   ">>-FAIL->", Color::Red, size_t(2), size_t(4), "2/4 tests failed", 5, "milliseconds")
 {
    _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
    _consoleMock->WriteColorMock.Expect();
-   _consoleMock->WriteMock.Expect();
    _consoleMock->WriteLineMock.Expect();
    const string timeZoneDateTimeNow = _watchMock->DateTimeNowWithTimeZoneMock.ReturnRandom();
-   ZenUnitArgs zenUnitArgs;
-   zenUnitArgs.commandLine = Random<string>();
-   zenUnitArgs.random = random;
-   zenUnitArgs.randomseed = Random<unsigned short>();
-   zenUnitArgs.randomseedsetbyuser = randomseedsetbyuser;
+   const ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
    //
    _testRunResult.PrintClosingLines(numberOfTotalTests, testRunMilliseconds, zenUnitArgs);
    //
@@ -273,19 +266,17 @@ TEST10X10(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndE
       { expectedMiddleLineVictoryOrFail + " ", expectedColor },
       { expectedFirstAndThirdLineAsciiArt, expectedColor }
    }));
-   const string expectedCompletedMessage = "Completed: " + zenUnitArgs.commandLine;
-   ZEN(_consoleMock->WriteMock.CalledOnceWith(expectedCompletedMessage));
-   const string expectedRandomSeedMessage = expectRandomSeedSuffixWrite ?
-      " (seed " + to_string(zenUnitArgs.randomseed) + ")" : "";
-   const string expectedEndTimeMessage = "  EndTime: " + timeZoneDateTimeNow;
-   const string expectedNumberOfTestsAndMillisecondsMessage = String::Concat("   Result: ",
-      expectedClosingLineTestsCountText, " in ", testRunMilliseconds, " ", expectedMillisecondOrMilliseconds);
+   const string expectedCompletedLine = "Completed: " + zenUnitArgs.commandLine;
+   const string expectedEndTimeLine = "  EndTime: " + timeZoneDateTimeNow;
+   const string expectedNumberOfTestsAndMillisecondsLine = String::Concat("   Result: ",
+      expectedClosingLineTestsCountText, " in ", testRunMilliseconds, " ", expectedMillisecondOrMilliseconds,
+      " (random seed ", RandomSeedHolder<unsigned>::randomSeed, ")");
    ZEN(_watchMock->DateTimeNowWithTimeZoneMock.CalledOnce());
    ZEN(_consoleMock->WriteLineMock.CalledAsFollows(
    {
-      expectedRandomSeedMessage,
-      expectedEndTimeMessage,
-      expectedNumberOfTestsAndMillisecondsMessage
+      expectedCompletedLine,
+      expectedEndTimeLine,
+      expectedNumberOfTestsAndMillisecondsLine
    }));
 }
 

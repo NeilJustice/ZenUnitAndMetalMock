@@ -48,7 +48,7 @@ namespace ZenUnit
    {
       chrono::time_point<chrono::high_resolution_clock> startTime;
       startTime += chrono::milliseconds(Random<unsigned>());
-      const unsigned short randomMicrosecondDuration = Random<unsigned short>();
+      const unsigned randomMicrosecondDuration = Random<unsigned>();
       const chrono::time_point<chrono::high_resolution_clock> stopTime = startTime + chrono::microseconds(randomMicrosecondDuration);
       now_ZenMock.Return(stopTime);
       _stopwatch._startTime = startTime;
