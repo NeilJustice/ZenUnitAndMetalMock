@@ -185,7 +185,7 @@ int main(int argc, char* argv[])
 
 |Values|Description|
 |------|-----------|
-|`ARE_EQUAL(expectedValue, actualValue, messages...)`|By default asserts that `expectedValue == actualValue` returns true, otherwise throws a ZenUnit\:\:Anomaly. `messages...` are variables of any type writable with `operator<<(ostream&, const T&)` or `ZenUnit::Printer<T>::Print(ostream&, const T&)`. Custom `ARE_EQUAL` behavior can be defined for type T by way of a custom `ZenUnit::Equalizer<T>`, detailed below.|
+|`ARE_EQUAL(expectedValue, actualValue, messages...)`|By default, asserts that `expectedValue == actualValue` returns true, otherwise throws a ZenUnit\:\:Anomaly which is caught by ZenUnit to fail the current test. `messages...` are variables of any type writable with `operator<<(std::ostream&, const T&)` or `ZenUnit::Printer<T>::Print(std::ostream&, const T&)`. Custom `ARE_EQUAL` behavior can be defined for type T by way of defining a `ZenUnit::Equalizer<T>` struct specialization, detailed below.|
 |`ARE_COPIES(expectedObject, actualObject, messages...)`|Asserts that `&expectedObject != &actualObject` then asserts `ARE_EQUAL(expectedObject, actualObject)`.|
 |`IS_TRUE(value, messages...)`|Asserts that `value` is true.|
 |`IS_FALSE(value, messages...)`|Asserts that `value` is false.|
