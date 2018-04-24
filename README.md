@@ -204,7 +204,7 @@ int main(int argc, char* argv[])
 
 |Exceptions|
 |----------|
-|`THROWS(expression, expectedExactExceptionType, expectedWhatMessage, messages...)` // Asserts that an expression throws *exactly* expectedExactExceptionType with *exactly* a what() message equal to expectedWhatMessage|
+|`THROWS(expression, expectedExactExceptionType, expectedWhatMessage, messages...)` // Asserts that an expression throws \*exactly\* (not a derived class of) expectedExactExceptionType with \*exactly\* a what() message equal to expectedWhatMessage|
 |`NOTHROWS(expression, messages...)`|
 
 |The Test Itself|
