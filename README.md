@@ -270,8 +270,8 @@ For robustness to two of the most common code mutations, mutate-value (true to f
 
 |Random Value Generating Function|Description|
 |--------------------------------|-----------|
-|ZenUnit::Random\<T\>()|Returns a value between std\:\:numeric_limits\<T\>::min() and std\:\:numeric_limits\<T\>::max().|
-|ZenUnit::RandomBetween\<T\>(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound)|Returns a value between inclusiveLowerBound and inclusiveUpperBound.|
+|ZenUnit::Random\<T\>()|Returns a random T value between std\:\:numeric_limits\<T\>::min() and std\:\:numeric_limits\<T\>::max().|
+|ZenUnit::RandomBetween\<T\>(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound)|Returns a random T value between inclusiveLowerBound and inclusiveUpperBound.|
 |ZenUnit::Random\<std\:\:string\>()|Returns "RandomString" + std::to_string(ZenUnit::RandomBetween<int>(0, 10000)).|
 |ZenUnit::RandomEnum\<EnumType\>(EnumType exclusiveEnumMaxValue)|Returns a random EnumType between 0 and exclusiveEnumMaxValue.|
 |ZenUnit::Random\<float\>()|Returns a random float between -10000.0f and 10000.0f from a std\:\:uniform_real_distribution\<float\>.|
