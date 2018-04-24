@@ -207,7 +207,7 @@ int main(int argc, char* argv[])
 
 |The Test Itself|Description|
 |---------------|-----------|
-|`FAILTEST(testFailureReason, messages...)`|Throws a ZenUnit\:\:Anomaly which is caught by ZenUnit to then end the current test and begin the next test.|
+|`FAILTEST(testFailureReason, messages...)`|Throws a ZenUnit\:\:Anomaly which is caught by ZenUnit to end the current test and begin the next test.|
 
 |Pointers|Description|
 |------- |-----------|
