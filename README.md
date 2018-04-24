@@ -253,8 +253,8 @@ int main(int argc, char* argv[])
 |`RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)`|Registers a `TEMPLATE_TEST_CLASS` templatized with `TemplateArguments...` to be run when `ZenUnit::RunTests(argc, argv)` is called.|
 |`THEN_RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)`|Registers a `TEMPLATE_TEST_CLASS` templatized with `TemplateArguments...` to be run when `ZenUnit::RunTests(argc, argv)` is called. For use after `RUN_TEMPLATE_TESTS`.|
 |`SKIP_TESTS(HighQualityTestClassName, Reason)`|Unregisters a `TEST_CLASS` from running with `ZenUnit::RunTests(argc, argv)` is called.|
-|`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)`|Unregisters a `TEMPLATE_TEST_CLASS` from running with `ZenUnit::RunTests(argc, argv)` is called.|
-|`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)`|Unregisters a `TEMPLATE_TEST_CLASS` from running with `ZenUnit::RunTests(argc, argv)` is called. For use after `SKIP_TEMPLATE_TESTS`.|
+|`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Unregisters a `TEMPLATE_TEST_CLASS` from running with `ZenUnit::RunTests(argc, argv)` is called.|
+|`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Unregisters a `TEMPLATE_TEST_CLASS` from running with `ZenUnit::RunTests(argc, argv)` is called. For use after `SKIP_TEMPLATE_TESTS`.|
 
 ### Random Value Functions
 
