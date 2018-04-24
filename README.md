@@ -284,11 +284,11 @@ For robustness to two of the most common code mutations, mutate-value (true to f
 
 ### ZenUnit Equalizers
 
-The default behavior of ARE_EQUAL(expectedValue, actualValue) is to throw a ZenUnit::Anomaly if expectedValue == actualValue returns false.
+The default behavior of `ARE_EQUAL(expectedValue, actualValue)` is to throw a `ZenUnit::Anomaly` if `expectedValue == actualValue` returns false.
 
-For custom ARE_EQUAL behavior such as field-by-field assertions, define a ZenUnit::Equalizer\<T\> struct specialization with a static void AssertEqual(const T& expected, const T& actual) function.
+For custom `ARE_EQUAL` behavior such as field-by-field assertions, define a `ZenUnit::Equalizer\<T\>` struct specialization with a `static void AssertEqual(const T& expected, const T& actual)` function.
 
-Example of a custom ZenUnit::Equalizer\<T\> for date::year_month_day values:
+Example of a custom `ZenUnit::Equalizer\<T\>` for `date::year_month_day` values:
 
 ```cpp
 namespace ZenUnit
