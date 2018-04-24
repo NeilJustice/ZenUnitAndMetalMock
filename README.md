@@ -221,7 +221,7 @@ int main(int argc, char* argv[])
 
 |Functions|Description|
 |---------|-----------|
-|`STD_FUNCTION_TARGETS(expectedStdFunctionTarget, stdFunction, messages...)`|Asserts `IS_TRUE(stdFunction)`, which asserts that stdFunction points to a function, then asserts `ARE_EQUAL(expectedStdFunctionTarget, *stdFunction.target<ExpectedStdFunctionTargetType*>())`. This is a key assertion to call prior to mocking out a `std::function` with a [ZenMock](https://github.com/NeilJustice/ZenMock) mock object.|
+|`STD_FUNCTION_TARGETS(expectedStdFunctionTarget, stdFunction, messages...)`|Asserts `IS_TRUE(stdFunction)`, which asserts that stdFunction points to a function, then asserts `ARE_EQUAL(expectedStdFunctionTarget, *stdFunction.target<ExpectedStdFunctionTargetType*>())`. This is a key assertion to call prior to mocking out a `std::function` with a [ZenMock](https://github.com/NeilJustice/ZenMock) mock object to confirm that the `std::function` points to an expected static or free function.|
 
 |Assertions Not Implemented By Design in ZenUnit Due To Vulnerability to Code Mutations|Code Mutation Vulnerability|
 |--------------------------------------------------------------------------------------|---------------------------|
