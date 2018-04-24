@@ -203,7 +203,7 @@ int main(int argc, char* argv[])
 |Exceptions|Description|
 |----------|-----------|
 |`THROWS(expression, expectedExactExceptionType, expectedWhatMessage, messages...)`|Asserts that `expression` throws \*exactly\* (not a derived class of) `expectedExactExceptionType` with \*exactly\* a what() message equal to `expectedWhatMessage`.|
-|`NOTHROWS(expression, messages...)`|Throws a ZenUnit\:\:Anomaly if expression throws, otherwise does nothing. Useful for emphasis in unit tests.|
+|`NOTHROWS(expression, messages...)`|If `expression` throws, throws a ZenUnit\:\:Anomaly, otherwise does nothing. Useful for expressing intent in unit tests.|
 
 |The Test Itself|Description|
 |---------------|-----------|
