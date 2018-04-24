@@ -235,26 +235,26 @@ int main(int argc, char* argv[])
 
 |Test Classes|Description|
 |------------|-----------|
-|`TESTS(HighQualityTestClassName)`|Defines a non-templatized test class|
+|`TESTS(HighQualityTestClassName)`|Defines a non-templatized test class.|
 |`TEMPLATE_TESTS(HighQualityTestClassName, TemplateParameterNames...)`|Defines a templatized test class. Precede with template\<parameter-list\>.|
-|`AFACT(HighQualityTestName)`|Specifies a non-value-parameterized test|
-|`FACTS(HighQualityTestName)`|Specifies an N-by-N value-parameterized test|
-|`SKIPAFACT(HighQualityTestName, Reason)`|Skips a non-value-parameterized test|
-|`SKIPFACTS(HighQualityTestName, Reason)`|Skips an N-by-N value-parameterized test|
-|`EVIDENCE`|Ends the FACTS section and begins the EVIDENCE section|
-|`STARTUP`|Function run before each test|
-|`CLEANUP`|Function run after each test|
-|`TEST(HighQualityTestName)`|Defines a non-value-parameterized test|
-|`TEST1X1(HighQualityTestName, Arg1Type, ...)`|Defines a 1-by-1 value-parameterized test|
-|`TEST2X2(HighQualityTestName, Arg1Type, Arg2Type, ...)`|Defines a 2-by-2 value-parameterized test|
+|`AFACT(HighQualityTestName)`|Specifies a non-value-parameterized test.|
+|`FACTS(HighQualityTestName)`|Specifies an N-by-N value-parameterized test.|
+|`SKIPAFACT(HighQualityTestName, Reason)`|Skips a non-value-parameterized test.|
+|`SKIPFACTS(HighQualityTestName, Reason)`|Skips an N-by-N value-parameterized test.|
+|`EVIDENCE`|Ends the FACTS section and begins the EVIDENCE section.|
+|`STARTUP`|Function run before each test.|
+|`CLEANUP`|Function run after each test.|
+|`TEST(HighQualityTestName)`|Defines a non-value-parameterized test.|
+|`TEST1X1(HighQualityTestName, Arg1Type, ...)`|Defines a 1-by-1 value-parameterized test.|
+|`TEST2X2(HighQualityTestName, Arg1Type, Arg2Type, ...)`|Defines a 2-by-2 value-parameterized test.|
 |...|...|
-|`TEST10X10(HighQualityTestName, Arg1Type, Arg2Type, ..., Arg10Type, ...)`|Defines a 10-by-10 value-parameterized test|
-|`RUN_TESTS(HighQualityTestClassName)`|Runs a test class|
-|`RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)`|Runs a templatized test class|
-|`THEN_RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)`|Runs a subsequent templatized test class|
-|`SKIP_TESTS(HighQualityTestClassName, Reason)`|Skips a test class|
-|`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)`|Skips a templatized test class|
-|`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)`|Skips a subsequent templatized test class|
+|`TEST10X10(HighQualityTestName, Arg1Type, Arg2Type, ..., Arg10Type, ...)`|Defines a 10-by-10 value-parameterized test.|
+|`RUN_TESTS(HighQualityTestClassName)`|Runs a test class.|
+|`RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)`|Runs a templatized test class.|
+|`THEN_RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)`|Runs a subsequent templatized test class.|
+|`SKIP_TESTS(HighQualityTestClassName, Reason)`|Skips a test class.|
+|`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)`|Skips a templatized test class.|
+|`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)`|Skips a subsequent templatized test class.|
 
 ### Random Value Functions
 
