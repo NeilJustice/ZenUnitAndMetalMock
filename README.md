@@ -183,50 +183,45 @@ int main(int argc, char* argv[])
 
 ### Assertion Macros
 
-|Values|
-|------|
-|`ARE_EQUAL(expectedValue, actualValue, messages...)` // messages... are variables of any type writable with operator<<(ostream&, const T&) or ZenUnit::Printer\<T\>::Print(ostream&, const T&).|
-|`ARE_SAME(expectedObject, actualObject, messages...)`|
-|`ARE_NOT_SAME(notExpectedObject, actualObject, messages...)`|
-|`ARE_COPIES(expectedObject, actualObject, messages...)` // Asserts that objects ARE_NOT_SAME and ARE_EQUAL|
-|`IS_TRUE(value, messages...)`|
-|`IS_FALSE(value, messages...)`|
-|`IS_ZERO(value, messages...)`|
+|Values|Description|
+|------|-----------|
+|`ARE_EQUAL(expectedValue, actualValue, messages...)`|By default asserts that `expectedValue == actualValue` returns true, otherwise throws a ZenUnit\:\:Anomaly. `messages...` are variables of any type writable with `operator<<(ostream&, const T&)` or `ZenUnit::Printer<T>::Print(ostream&, const T&)`. Custom `ARE_EQUAL` behavior can be defined for type T by way of a custom `ZenUnit::Equalizer<T>`, detailed below.|
+|`ARE_COPIES(expectedObject, actualObject, messages...)`|Asserts that `&expectedObject != &actualObject` then asserts `ARE_EQUAL(expectedObject, actualObject)`.|
+|`IS_TRUE(value, messages...)`|Asserts that `value` is true.|
+|`IS_FALSE(value, messages...)`|Asserts that `value` is false.|
+|`IS_ZERO(value, messages...)`|Asserts that `value == ValueType{}` returns true.|
 
-|Data Structures|
-|---------------|
-|`IS_EMPTY(dataStructure, messages...)`|
-|`VECTORS_EQUAL(expectedVector, actualVector, messages...)`|
-|`MAPS_EQUAL(expectedMap, actualMap, messages...)`|
-|`PAIRS_EQUAL(expectedPair, actualPair, messages...)`|
-|`SETS_EQUAL(expectedSet, actualSet, messages...)`|
-|`DOES_CONTAIN(expectedElement, dataStructure, messages...)`|
+|Data Structures|Description|
+|---------------|-----------|
+|`VECTORS_EQUAL(expectedVector, actualVector, messages...)`|Asserts that `expectedVector.size() == actualVector.size()` then calls `ARE_EQUAL(ithExpectedElement, ithActualElement)` on each pair of expected and actual elements.|
+|`SETS_EQUAL(expectedSet, actualSet, messages...)`|Asserts that `expectedSet.size() == actualSet.size()` then calls `ARE_EQUAL(expectedElement, actualElement)` on each pair of expected and actual elements.|
+|`MAPS_EQUAL(expectedMap, actualMap, messages...)`|Asserts that `expectedMap.size() == actualMap.size()` then calls `ARE_EQUAL(expectedKeyValuePair, actualKeyValuePair)` on each pair of expected and actual key-value pairs.
+|`PAIRS_EQUAL(expectedPair, actualPair, messages...)`|Asserts `ARE_EQUAL(expectedPair.first, actualPair.first)` then asserts `ARE_EQUAL(expectedPair.second, actualPair.second)`.|
+|`DOES_CONTAIN(expectedElement, dataStructure, messages...)`|Asserts that `dataStructure.find(expectedElement) != dataStructure.end()`.|
+|`IS_EMPTY(dataStructure, messages...)`|Asserts that `dataStructure.empty()` returns true.|
 
-|Exceptions|
-|----------|
-|`THROWS(expression, expectedExactExceptionType, expectedWhatMessage, messages...)` // Asserts that an expression throws \*exactly\* (not a derived class of) expectedExactExceptionType with \*exactly\* a what() message equal to expectedWhatMessage|
-|`NOTHROWS(expression, messages...)`|
+|Exceptions|Description|
+|----------|-----------|
+|`THROWS(expression, expectedExactExceptionType, expectedWhatMessage, messages...)`|Asserts that `expression` throws \*exactly\* (not a derived class of) `expectedExactExceptionType` with \*exactly\* a what() message equal to `expectedWhatMessage`.|
+|`NOTHROWS(expression, messages...)`|Throws a ZenUnit\:\:Anomaly if expression throws, otherwise does nothing. Useful for emphasis in unit tests.|
 
-|The Test Itself|
-|---------------|
-|`FAILTEST(testFailureReason, messages...)`|
+|The Test Itself|Description|
+|---------------|-----------|
+|`FAILTEST(testFailureReason, messages...)`|Throws a ZenUnit\:\:Anomaly which is caught by ZenUnit to then end the current test and begin the next test.|
 
-|Pointers|
-|------- |
-|`IS_NULL(pointer, messages...)`|
-|`IS_NOT_NULL(pointer, messages...)`|
-|`POINTEES_EQUAL(expectedPointer, actualPointer, messages...)` // Asserts that pointers are either both nullptr or their pointees ARE_EQUAL|
-|`POINTER_WAS_NEWED(smartOrRawPointer, messages...)` // Asserts not null then resets or operator deletes the pointer to confirm it was make_uniqued / make_shared / operator newed|
-|`POINTER_WAS_ARRAY_NEWED(smartOrRawArrayPointer, messages...)` // Asserts not null then resets or operator array deletes the pointer to confirm it was array make_uniqued / array operator newed|
+|Pointers|Description|
+|------- |-----------|
+|`IS_NULL(pointer, messages...)`|Asserts that `pointer == nullptr`.|
+|`IS_NOT_NULL(pointer, messages...)`|Asserts that `pointer != nullptr`.|
+|`ARE_SAME(expectedObject, actualObject, messages...)`|Asserts that `&expectedObject == &actualObject`.|
+|`ARE_NOT_SAME(notExpectedObject, actualObject, messages...)`|Asserts that `&expectedObject != &actualObject`.
+|`POINTEES_EQUAL(expectedPointer, actualPointer, messages...)`|Asserts that `expectedPointer != nullptr` and `actualPointer != nullptr` then asserts `ARE_EQUAL(*expectedPointer, *actualPointer)`.|
+|`POINTER_WAS_NEWED(smartOrRawPointer, messages...)`|Asserts `smartOrRawPointer != nullptr` then calls `reset()` or `operator delete` on `smartOrRawPointer` to confirm the pointer was allocated using `make_unique`, `make_shared`, or `operator new`.|
+|`POINTER_WAS_ARRAY_NEWED(smartOrRawArrayPointer, messages...)`|Asserts `smartOrRawArrayPointer != nullptr` then calls `reset()` or `operator delete[]` to confirm the pointer was allocated using `make_unique` or `operator new[]`.|
 
-|Functions|
-|---------|
-|`STD_FUNCTION_TARGETS(expectedStdFunctionTarget, stdFunction, messages...)`|
-
-|Assertions For Confirming The Correctness Of Custom ZenUnit Equalizers|
-|----------------------------------------------------------------------|
-|`SETUP_EQUALIZER_THROWS_TEST(typeName)`|
-|`EQUALIZER_THROWS_FOR_FIELD(typeName, fieldName, arbitraryNonDefaultFieldValue)`|
+|Functions|Description|
+|---------|-----------|
+|`STD_FUNCTION_TARGETS(expectedStdFunctionTarget, stdFunction, messages...)`|Asserts `IS_TRUE(stdFunction)`, which asserts that stdFunction points to a function, then asserts `ARE_EQUAL(expectedStdFunctionTarget, *stdFunction.target<ExpectedStdFunctionTargetType*>())`. This is a key assertion to call prior to mocking out a `std::function` with a [ZenMock](https://github.com/NeilJustice/ZenMock) mock object.|
 
 |Assertions Not Implemented By Design in ZenUnit Due To Vulnerability to Code Mutations|Code Mutation Vulnerability|
 |--------------------------------------------------------------------------------------|---------------------------|
@@ -238,28 +233,28 @@ int main(int argc, char* argv[])
 
 ### Test-Defining Macros
 
-|Test Classes|
-|------------|
-|`TESTS(HighQualityTestClassName)` // Defines a non-templatized test class|
-|`TEMPLATE_TESTS(HighQualityTestClassName, TemplateParameterNames...)` // Defines a templatized test class. Precede with template\<parameter-list\>.|
-|`AFACT(HighQualityTestName)` // Specifies a void test|
-|`FACTS(HighQualityTestName)` // Specifies an N-by-N value-parameterized test|
-|`SKIPAFACT(HighQualityTestName, Reason)` // Skips a void test|
-|`SKIPFACTS(HighQualityTestName, Reason)` // Skips an N-by-N value-parameterized test|
-|`EVIDENCE` // Ends the FACTS section and begins the EVIDENCE section|
-|`STARTUP` // Function run before each test|
-|`CLEANUP` // Function run after each test|
-|`TEST(HighQualityTestName)` // Defines a standard void test|
-|`TEST1X1(HighQualityTestName, Arg1Type, ...)` // Defines a 1-by-1 value-parameterized test|
-|`TEST2X2(HighQualityTestName, Arg1Type, Arg2Type, ...)` // Defines a 2-by-2 value-parameterized test|
-|...|
-|`TEST10X10(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...) // Defines a 10-by-10 value-parameterized test`|
-|`RUN_TESTS(HighQualityTestClassName)` // Runs a test class|
-|`RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)` // Runs a templatized test class|
-|`THEN_RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)` // Runs a subsequent templatized test class|
-|`SKIP_TESTS(HighQualityTestClassName, Reason)` // Skips a test class|
-|`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)` // Skips a templatized test class|
-|`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)` // Skips a subsequent templatized test class|
+|Test Classes|Description|
+|------------|-----------|
+|`TESTS(HighQualityTestClassName)`|Defines a non-templatized test class|
+|`TEMPLATE_TESTS(HighQualityTestClassName, TemplateParameterNames...)`|Defines a templatized test class. Precede with template\<parameter-list\>.|
+|`AFACT(HighQualityTestName)`|Specifies a non-value-parameterized test|
+|`FACTS(HighQualityTestName)`|Specifies an N-by-N value-parameterized test|
+|`SKIPAFACT(HighQualityTestName, Reason)`|Skips a non-value-parameterized test|
+|`SKIPFACTS(HighQualityTestName, Reason)`|Skips an N-by-N value-parameterized test|
+|`EVIDENCE`|Ends the FACTS section and begins the EVIDENCE section|
+|`STARTUP`|Function run before each test|
+|`CLEANUP`|Function run after each test|
+|`TEST(HighQualityTestName)`|Defines a non-value-parameterized test|
+|`TEST1X1(HighQualityTestName, Arg1Type, ...)`|Defines a 1-by-1 value-parameterized test|
+|`TEST2X2(HighQualityTestName, Arg1Type, Arg2Type, ...)`|Defines a 2-by-2 value-parameterized test|
+|...|...|
+|`TEST10X10(HighQualityTestName, Arg1Type, Arg2Type, ..., Arg10Type, ...)`|Defines a 10-by-10 value-parameterized test|
+|`RUN_TESTS(HighQualityTestClassName)`|Runs a test class|
+|`RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)`|Runs a templatized test class|
+|`THEN_RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)`|Runs a subsequent templatized test class|
+|`SKIP_TESTS(HighQualityTestClassName, Reason)`|Skips a test class|
+|`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)`|Skips a templatized test class|
+|`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason)`|Skips a subsequent templatized test class|
 
 ### Random Value Functions
 
@@ -313,6 +308,11 @@ namespace ZenUnit
 }
 ```
 
+|Assertions For Confirming The Correctness Of Custom ZenUnit Equalizers|
+|----------------------------------------------------------------------|
+|`SETUP_EQUALIZER_THROWS_TEST(typeName)`|
+|`EQUALIZER_THROWS_FOR_FIELD(typeName, fieldName, arbitraryNonDefaultFieldValue)`|
+
 |The Road To ZenUnit 1.0|
 |-----------------------|
 |Every aspect of ZenUnit documented|
@@ -323,5 +323,4 @@ namespace ZenUnit
 |TUPLES_EQUAL|
 |ARE_WITHIN|
 |ARE_CLOSE|
-|-failfast|
 |-breakfast|

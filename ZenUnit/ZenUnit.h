@@ -77,7 +77,7 @@
 
 // Asserts that pointer is not nullptr.
 #define IS_NOT_NULL(pointer, ...) \
-   ZenUnit::IS_NOT_NULL_Defined(pointer == nullptr, #pointer, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::IS_NOT_NULL_Defined(pointer != nullptr, #pointer, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that *expectedPointer is equal to *actualPointer.
 #define POINTEES_EQUAL(expectedPointer, actualPointer, ...) \
@@ -2400,8 +2400,7 @@ Testing Utility:
 
    template<typename... MessageTypes>
    void IS_NOT_NULL_Throw(
-      const char* pointerText,
-      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+      const char* pointerText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       throw Anomaly("IS_NOT_NULL", pointerText, "", "", messagesText,
          Anomaly::Default(),
@@ -2411,10 +2410,10 @@ Testing Utility:
    }
 
    template<typename... MessageTypes>
-   void IS_NOT_NULL_Defined(bool pointerIsNullptr, const char* pointerText,
+   void IS_NOT_NULL_Defined(bool pointerIsNotNullptr, const char* pointerText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-      if (pointerIsNullptr)
+      if (!pointerIsNotNullptr)
       {
          IS_NOT_NULL_Throw(pointerText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
