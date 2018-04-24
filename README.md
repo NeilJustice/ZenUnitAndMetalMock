@@ -241,7 +241,7 @@ int main(int argc, char* argv[])
 |`FACTS(HighQualityTestName)`|Specifies an N-by-N value-parameterized test.|
 |`SKIPAFACT(HighQualityTestName, Reason)`|Skips a non-value-parameterized test.|
 |`SKIPFACTS(HighQualityTestName, Reason)`|Skips an N-by-N value-parameterized test.|
-|`EVIDENCE`|Ends the FACTS section and begins the EVIDENCE section.|
+|`EVIDENCE`|Ends the `FACTS` section and begins the `EVIDENCE` section.|
 |`STARTUP`|Function run before each test.|
 |`CLEANUP`|Function run after each test.|
 |`TEST(HighQualityTestName)`|Defines a non-value-parameterized test.|
