@@ -4346,11 +4346,11 @@ Testing Utility:
             _console->WriteLine(completedCommandLineMessage);
 
             _console->WriteColor(middleLineVictoryOrFail, color);
-            const std::string endTimeMessage = "  EndTime: " + _watch->DateTimeNowWithTimeZone();
-            _console->WriteLine(endTimeMessage);
+            _console->WriteLine(numberOfTestsAndMillisecondsAndRandomSeedMessage);
 
             _console->WriteColor(firstAndThirdLineAsciiArt, color);
-            _console->WriteLine(numberOfTestsAndMillisecondsAndRandomSeedMessage);
+            const std::string endTimeMessage = "  EndTime: " + _watch->DateTimeNowWithTimeZone();
+            _console->WriteLine(endTimeMessage);
          }
       }
 

@@ -56,8 +56,6 @@ EVIDENCE
 
 TEST(VoidTest)
 {
-   AMock aMock;
-   aMock.f();
 }
 
 TEST1X1(NXNTestA,

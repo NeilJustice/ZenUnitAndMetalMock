@@ -267,16 +267,16 @@ TEST7X7(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndEla
       { expectedFirstAndThirdLineAsciiArt, expectedColor }
    }));
    const string expectedCompletedLine = "Completed: " + zenUnitArgs.commandLine;
-   const string expectedEndTimeLine = "  EndTime: " + timeZoneDateTimeNow;
    const string expectedNumberOfTestsAndMillisecondsLine = String::Concat("   Result: ",
       expectedClosingLineTestsCountText, " in ", testRunMilliseconds, " ", expectedMillisecondOrMilliseconds,
       " (random seed ", RandomSeedHolder<unsigned>::randomSeed, ")");
+   const string expectedEndTimeLine = "  EndTime: " + timeZoneDateTimeNow;
    ZEN(_watchMock->DateTimeNowWithTimeZoneMock.CalledOnce());
    ZEN(_consoleMock->WriteLineMock.CalledAsFollows(
    {
       expectedCompletedLine,
-      expectedEndTimeLine,
-      expectedNumberOfTestsAndMillisecondsLine
+      expectedNumberOfTestsAndMillisecondsLine,
+      expectedEndTimeLine
    }));
 }
 
