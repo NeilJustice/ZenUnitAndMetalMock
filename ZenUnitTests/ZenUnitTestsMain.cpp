@@ -36,7 +36,19 @@ EVIDENCE
 RUN_TEMPLATE_TESTS(SkippedTemplateTestClassB, map)
 THEN_SKIP_TEMPLATE_TESTS(SkippedTemplateTestClassB, Reason, unordered_map)
 
-TESTS(Tests)
+class A
+{
+public:
+   virtual ~A() {}
+   virtual int f() { return 0; }
+};
+
+struct AMock : public Zen::Mock<A>
+{
+   ZENMOCK_NONVOID0(int, f)
+};
+
+TESTS(ZZTests)
 AFACT(VoidTest)
 FACTS(NXNTestA)
 FACTS(NXNTestB)
@@ -44,6 +56,8 @@ EVIDENCE
 
 TEST(VoidTest)
 {
+   AMock aMock;
+   aMock.f();
 }
 
 TEST1X1(NXNTestA,
@@ -58,13 +72,9 @@ TEST1X1(NXNTestB,
    0,
    1)
 {
-   //if (ZenUnit::Random<int>() % 2 == 0)
-   //{
-   //   FAILTEST("Even");
-   //}
 }
 
-RUN_TESTS(Tests)
+RUN_TESTS(ZZTests)
 
 int main(int argc, char* argv[])
 {

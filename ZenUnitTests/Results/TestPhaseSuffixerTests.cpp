@@ -20,10 +20,11 @@ TEST2X2(TestPhaseToTestPhaseSuffix_ReturnsTestPhaseSuffix,
 TEST1X1(TestPhaseToTestPhaseSuffix_UnsetOrDestructorTestPhase_Throws,
    TestPhase testPhase,
    TestPhase::Unset,
-   TestPhase::Destructor)
+   TestPhase::Destructor,
+   TestPhase::MaxValue)
 {
    THROWS(_testPhaseSuffixer.TestPhaseToTestPhaseSuffix(testPhase),
-      invalid_argument, "Invalid testPhase");
+      invalid_argument, "Invalid testPhase:" + to_string(static_cast<int>(testPhase)));
 }
 
 RUN_TESTS(TestPhaseSuffixerTests)

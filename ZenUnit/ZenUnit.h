@@ -369,7 +369,8 @@ namespace ZenUnit
       Startup,
       TestBody,
       Cleanup,
-      Destructor
+      Destructor,
+      MaxValue
    };
 
    enum class WindowsColor : unsigned char
@@ -3282,8 +3283,9 @@ Testing Utility:
          }
          case TestPhase::Unset:
          case TestPhase::Destructor:
+         case TestPhase::MaxValue:
          default:
-            throw std::invalid_argument("Invalid testPhase");
+            throw std::invalid_argument("Invalid testPhase:" + std::to_string(static_cast<int>(testPhase)));
          }
          return testPhaseSuffix;
       }
@@ -3587,7 +3589,7 @@ Testing Utility:
                TestPhaseSuffixer::DoTestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
             console->Write(responsibleTestPhaseSuffix);
             WriteTestCaseNumberIfAny(console, testCaseNumber);
-            console->WriteLineColor("\nException", Color::Red);
+            console->WriteLineColor("\nUncaught Exception", Color::Red);
             const std::string exceptionTypeAndWhatLines = String::Concat(
                "  Type: ", *responsibleCallResult.anomalyOrException->exceptionTypeName, '\n',
                "what(): \"", *responsibleCallResult.anomalyOrException->exceptionWhat, "\"");
@@ -4860,13 +4862,19 @@ Testing Utility:
       }
       catch (const ZenMockException& e)
       {
-         PopulateCallResultWithExceptionInformation(e, &callResult);
-         _console->WriteColor("\n================\nZenMockException\n================", Color::Red);
+         const std::string exceptionTypeName = *Type::GetName(e);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
-         _console->Write(testPhaseSuffix);
-         const std::string exceptionTypeNameAndWhat = String::Concat(
-            "\n  Type: ", *Type::GetName(e), "\nwhat(): \"", e.what(), "\"");
-         _console->WriteLine(exceptionTypeNameAndWhat);
+         const size_t equalsSignsLength = exceptionTypeName.size() + strlen(testPhaseSuffix);
+         const std::string equalsSigns(equalsSignsLength, '=');
+         const std::string exceptionTypeNameFourLines = String::Concat('\n',
+            equalsSigns, '\n',
+            exceptionTypeName, testPhaseSuffix, '\n',
+            equalsSigns);
+         _console->WriteLineColor(exceptionTypeNameFourLines, Color::Red);
+         PopulateCallResultWithExceptionInformation(e, &callResult);
+         const std::string testPhaseSuffixAndExceptionWhatLine =
+            String::Concat("what(): \"", e.what(), "\"");
+         _console->WriteLine(testPhaseSuffixAndExceptionWhatLine);
       }
       catch (const std::exception& e)
       {
@@ -4874,8 +4882,8 @@ Testing Utility:
          _console->WriteColor("\n=========\nException\n=========", Color::Red);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
-         const std::string exceptionTypeNameAndWhat = String::Concat(
-            "\n  Type: ", *Type::GetName(e), '\n',
+         const std::string exceptionTypeNameAndWhat = String::Concat('\n',
+            "  Type: ", *Type::GetName(e), '\n',
             "what(): \"", e.what(), "\"");
          _console->WriteLine(exceptionTypeNameAndWhat);
       }

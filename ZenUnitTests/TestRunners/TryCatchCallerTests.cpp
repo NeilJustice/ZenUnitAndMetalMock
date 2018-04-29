@@ -11,7 +11,7 @@ namespace ZenUnit
    AFACT(Constructor_NewsComponents_SetsGetArgsFunction)
    AFACT(Call_FunctionDoesNotThrow_ReturnsNoExceptionThrownCallResult)
    FACTS(Call_FunctionThrowsAnomaly_ReturnsAnomalyResult)
-   FACTS(Call_FunctionThrowsZenMockException_ReturnsExceptionResult)
+   AFACT(Call_FunctionThrowsZenMockException_ReturnsExceptionResult)
    FACTS(Call_FunctionThrowsStdException_ReturnsExceptionResult)
    FACTS(Call_FunctionThrowsAnIntToTriggerDotDotDotHandler_PrintsFailureDetails_Exits1)
    FACTS(Call_CallResultIsNotSuccessAndFailFastIsTrue_WritesFailFastMessageAndExits1);
@@ -150,10 +150,7 @@ namespace ZenUnit
       throw runtime_error("runtime_error_what");
    }
 
-   TEST1X1(Call_FunctionThrowsZenMockException_ReturnsExceptionResult,
-      TestPhase arbitraryTestPhase,
-      TestPhase::Startup,
-      TestPhase::TestBody)
+   TEST(Call_FunctionThrowsZenMockException_ReturnsExceptionResult)
    {
       ZenUnitArgs zenUnitArgs;
       GetArgs_ZenMock.Return(zenUnitArgs);
@@ -161,38 +158,47 @@ namespace ZenUnit
       _voidTwoArgMemberFunctionCallerMock->ConstCallMock.Expect();
 
       ExpectStopwatchStartAndStopCalls();
-      _consoleMock->WriteColorMock.Expect();
-      _consoleMock->WriteMock.Expect();
+      _consoleMock->WriteLineColorMock.Expect();
       _consoleMock->WriteLineMock.Expect();
       _testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.Return(_testPhaseSuffix.c_str());
+
+      const TestPhase testPhase = ZenUnit::RandomEnum<TestPhase>(TestPhase::MaxValue);
       //
       const CallResult callResult = _tryCatchCaller.Call([](Test*)
       {
-         throw ZenMock::FunctionAlreadyExpectedException("ZenMockedFunctionSignature");
-      }, _testMock.get(), arbitraryTestPhase);
+         throw ZenMock::UnexpectedCallException("ZenMockedFunctionSignature");
+      }, _testMock.get(), testPhase);
       //
       ZEN(GetArgs_ZenMock.CalledOnce());
       AssertStopwatchStartAndStopCalled();
 
       ZEN(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
-         &_tryCatchCaller, &TryCatchCaller::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Exception, zenUnitArgs.failfast));
+         &_tryCatchCaller, &TryCatchCaller::FailFastIfTestFailedAndFailFastModeTrue,
+         TestOutcome::Exception, zenUnitArgs.failfast));
 
       CallResult expectedCallResult;
-      expectedCallResult.testPhase = arbitraryTestPhase;
+      expectedCallResult.testPhase = testPhase;
       expectedCallResult.testOutcome = TestOutcome::Exception;
       expectedCallResult.anomalyOrException = make_shared<AnomalyOrException>(
-         Type::GetName<ZenMock::FunctionAlreadyExpectedException>(),
-         ZenMock::FunctionAlreadyExpectedException::MakeWhat("ZenMockedFunctionSignature").c_str());
+         Type::GetName<ZenMock::UnexpectedCallException>(),
+         ZenMock::UnexpectedCallException::MakeWhat("ZenMockedFunctionSignature").c_str());
       expectedCallResult.microseconds = _microseconds;
 
-      ZEN(_consoleMock->WriteColorMock.CalledOnceWith(
-         "\n================\nZenMockException\n================", Color::Red));
-      ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(arbitraryTestPhase));
-      ZEN(_consoleMock->WriteMock.CalledOnceWith(_testPhaseSuffix));
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith(R"(
-  Type: ZenMock::FunctionAlreadyExpectedException
-what(): "For ZenMocked function "ZenMockedFunctionSignature":
-Already called [FunctionName]Mock.[Expect|Return|ReturnValues|Throw]().")"));
+      const string exceptionTypeName = "ZenMock::UnexpectedCallException";
+      const size_t expectedEqualsSignsLength =
+         exceptionTypeName.size() + strlen(_testPhaseSuffix.c_str());
+      const std::string expectedEqualsSigns(expectedEqualsSignsLength, '=');
+      const string expectedExceptionNameAndTestPhaseSuffixLines = String::Concat('\n',
+         expectedEqualsSigns, '\n',
+         exceptionTypeName, _testPhaseSuffix, '\n',
+         expectedEqualsSigns);
+      ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith(
+         expectedExceptionNameAndTestPhaseSuffixLines, Color::Red));
+      ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(testPhase));
+      const string expectedWhat = ZenMock::UnexpectedCallException::MakeWhat("ZenMockedFunctionSignature");
+      const string expectedTestPhaseSuffixAndWhatLines = String::Concat(
+         "what(): \"", expectedWhat, "\"");
+      ZEN(_consoleMock->WriteLineMock.CalledOnceWith(expectedTestPhaseSuffixAndWhatLines));
       ARE_EQUAL(expectedCallResult, callResult);
    }
 
