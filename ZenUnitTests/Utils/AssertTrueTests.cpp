@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnitTests/Macros/REGEX_MATCHES.h"
+#include "ZenUnitTests/Assertions/REGEX_MATCHES.h"
 
 namespace ZenUnit
 {
