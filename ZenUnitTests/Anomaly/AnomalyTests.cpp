@@ -308,7 +308,7 @@ FilePath(1))")
    {
       const string ZenMockAssertExpression = "ZEN(zenMockObject.FunctionMock.CalledOnce())";
       Anomaly zenWrappedAnomaly;
-      zenWrappedAnomaly.assertExpression = "ARE_EQUAL(expectedArgument, callHistory[0].firstArgument, this->ZenMockedFunctionSignature)";
+      zenWrappedAnomaly.assertExpression = "ARE_EQUAL(expectedArgument, zenMockObjectCallHistory.firstArgument, this->ZenMockedFunctionSignature)";
       zenWrappedAnomaly.expected = "\"expected\"";
       zenWrappedAnomaly.actual = "\"actual\"";
       zenWrappedAnomaly.message = "\"virtual void ZenUnit::Console::WriteLine(const string&) const\"";
@@ -323,7 +323,7 @@ FilePath(1))")
       expectedAnomaly.message = zenWrappedAnomaly.message;
       expectedAnomaly.why = R"(
   Failed: ZEN(zenMockObject.FunctionMock.CalledOnce())
- Because: ARE_EQUAL(expectedArgument, callHistory[0].firstArgument, this->ZenMockedFunctionSignature) failed
+ Because: ARE_EQUAL(expectedArgument, zenMockObjectCallHistory.firstArgument, this->ZenMockedFunctionSignature) failed
 Expected: "expected"
   Actual: "actual"
  Message: "virtual void ZenUnit::Console::WriteLine(const string&) const"
