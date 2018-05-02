@@ -40,12 +40,12 @@ class A
 {
 public:
    virtual ~A() {}
-   virtual int f() { return 0; }
+   virtual int f(int) { return 0; }
 };
 
 struct AMock : public Zen::Mock<A>
 {
-   ZENMOCK_NONVOID0(int, f)
+   ZENMOCK_NONVOID1(int, f, int)
 };
 
 TESTS(ZZTests)
@@ -76,7 +76,9 @@ RUN_TESTS(ZZTests)
 
 int main(int argc, char* argv[])
 {
-   FileLiner::zenUnitTestingMode = true; // Makes __FILE__ and __LINE__ constants for ease of error message testing
+   // zenUnitTestingMode = true makes __FILE__ and __LINE__ into constants
+   // for ease of ZenUnit error message testing
+   FileLiner::zenUnitTestingMode = true;
    const int exitCode = ZenUnit::RunTests(argc, argv);
    FileLiner::File(nullptr); // 100% code coverage
    FileLiner::Line(0); // 100% code coverage

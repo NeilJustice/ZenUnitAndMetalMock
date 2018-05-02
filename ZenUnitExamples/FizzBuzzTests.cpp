@@ -10,7 +10,7 @@ EVIDENCE
 TEST(FizzBuzz_EndNumber0_Throws)
 {
    THROWS(FizzBuzz(0), std::invalid_argument,
-      "FizzBuzz(): endNumber must be 1 or greater");
+      "FizzBuzz() error: endNumber must be 1 or greater");
 }
 
 TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
@@ -41,7 +41,7 @@ std::string FizzBuzz(unsigned endNumber)
 {
    if (endNumber == 0)
    {
-      throw std::invalid_argument("FizzBuzz(): endNumber must be 1 or greater");
+      throw std::invalid_argument("FizzBuzz() error: endNumber must be 1 or greater");
    }
    std::ostringstream oss;
    for (unsigned i = 1; i <= endNumber; ++i)

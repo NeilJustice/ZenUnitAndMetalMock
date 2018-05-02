@@ -34,7 +34,7 @@ endif()
 
 add_subdirectory(ZenUnit)
 add_subdirectory(ZenUnitTests)
-add_subdirectory(ExampleTests)
+add_subdirectory(ZenUnitExamples)
 
 # Allows CMake command "cmake --build . --target install --config Debug/Release"
 # to just install ZenUnit and not also build ZenUnitTests

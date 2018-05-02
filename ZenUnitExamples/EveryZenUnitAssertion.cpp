@@ -20,17 +20,17 @@ namespace ZenUnit
    };
 }
 
-TESTS(CallAllMacrosTests)
+TESTS(EveryZenUnitAssertion)
 AFACT(CallAllMacros)
 EVIDENCE
 
 TEST(CallAllMacros)
 {
    // Values
+   ARE_EQUAL(0, 0);
    std::string s1 = "Hello";
    std::string s2 = s1;
    ARE_COPIES(s1, s2);
-   ARE_EQUAL(0, 0);
    int x = 0, y = 0;
    ARE_SAME(x, x);
    ARE_NOT_SAME(x, y);
@@ -44,20 +44,20 @@ TEST(CallAllMacros)
    // Pointers
    IS_NULL(nullptr);
    IS_NOT_NULL(std::make_unique<int>());
-   const int* dynamicallyAllocatedInt = new int;
-   POINTER_WAS_NEWED(dynamicallyAllocatedInt);
-   const int* dynamicallyAllocatedArray = new int[3];
-   ARRAY_WAS_NEWED(dynamicallyAllocatedArray);
+   const int* operatorNewedInt = new int;
+   POINTER_WAS_NEWED(operatorNewedInt);
+   const int* operatorNewedIntArray = new int[3];
+   ARRAY_WAS_NEWED(operatorNewedIntArray);
    POINTEES_EQUAL(&x, &x);
 
    // Data Structures
-   IS_EMPTY(std::vector<int>());
-   CONTAINS_ELEMENT(0, std::vector<int>{0});
    VECTORS_EQUAL(std::vector<int>{0}, std::vector<int>{0});
    MAPS_EQUAL((std::map<int, int>{}), (std::map<int, int>{}));
    MAPS_EQUAL((std::unordered_map<int, int>{}), (std::unordered_map<int, int>{}));
    SETS_EQUAL(std::set<int>{}, std::set<int>{});
    SETS_EQUAL(std::unordered_set<int>{}, std::unordered_set<int>{});
+   CONTAINS_ELEMENT(0, std::vector<int>{0});
+   IS_EMPTY(std::vector<int>());
 
    // Exceptions
    THROWS([]{ throw std::runtime_error("what"); }(), std::runtime_error, "what");
@@ -72,4 +72,4 @@ TEST(CallAllMacros)
    EQUALIZER_THROWS_FOR_FIELD(Struct, secondField, 'A');
 }
 
-RUN_TESTS(CallAllMacrosTests)
+RUN_TESTS(EveryZenUnitAssertion)
