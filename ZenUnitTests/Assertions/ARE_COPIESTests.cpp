@@ -46,15 +46,15 @@ File.cpp(1))";
    {
       ostringstream expectedWhatPatternBuilder;
       expectedWhatPatternBuilder <<
-         " Because: ARE_NOT_SAME(expectedObject, actualObject) failed\n" <<
+" Because: ARE_NOT_SAME(expectedObject, actualObject) failed\n" <<
 "Expected: Not ";
-#if defined __linux__
-     expectedWhatPatternBuilder << notExpectedAddress << R"(
+   #if defined __linux__
+      expectedWhatPatternBuilder << notExpectedAddress << R"(
   Actual:     )" << actualAddress;
-#elif _WIN32
+   #elif _WIN32
       expectedWhatPatternBuilder << "0x" << notExpectedAddress << R"(
   Actual:     0x)" << actualAddress;
-#endif
+   #endif
       const string expectedWhatPattern = expectedWhatPatternBuilder.str();
       return expectedWhatPattern;
    }

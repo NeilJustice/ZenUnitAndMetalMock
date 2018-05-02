@@ -35,7 +35,7 @@ namespace ZenUnit
       const bool runFilterMatchesTestName = runFilterMock.MatchesTestNameMock.ReturnRandom();
       const string testName = ZenUnit::Random<string>();
       //
-      bool returnedRunFilterMatchesTestName = _testingTestClassRunner.RunFilterMatchesTestName(runFilterMock, testName.c_str());
+      const bool returnedRunFilterMatchesTestName = _testingTestClassRunner.RunFilterMatchesTestName(runFilterMock, testName.c_str());
       //
       ZEN(runFilterMock.MatchesTestNameMock.CalledOnceWith(testName.c_str()));
       ARE_EQUAL(runFilterMatchesTestName, returnedRunFilterMatchesTestName);

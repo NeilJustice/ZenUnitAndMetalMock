@@ -1,30 +1,33 @@
 #include "pch.h"
 
-TESTS(TestPhaseSuffixerTests)
-FACTS(TestPhaseToTestPhaseSuffix_ReturnsTestPhaseSuffix)
-FACTS(TestPhaseToTestPhaseSuffix_UnsetOrDestructorTestPhase_Throws)
-EVIDENCE
-
-TestPhaseSuffixer _testPhaseSuffixer;
-
-TEST2X2(TestPhaseToTestPhaseSuffix_ReturnsTestPhaseSuffix,
-   TestPhase testPhase, const char* expectedTestPhaseSuffix,
-   TestPhase::Constructor, " in test class constructor",
-   TestPhase::Startup, " in STARTUP",
-   TestPhase::TestBody, "",
-   TestPhase::Cleanup, " in CLEANUP")
+namespace ZenUnit
 {
-   ARE_EQUAL(expectedTestPhaseSuffix, _testPhaseSuffixer.TestPhaseToTestPhaseSuffix(testPhase));
-}
+   TESTS(TestPhaseSuffixerTests)
+   FACTS(TestPhaseToTestPhaseSuffix_ReturnsTestPhaseSuffix)
+   FACTS(TestPhaseToTestPhaseSuffix_UnsetOrDestructorTestPhase_Throws)
+   EVIDENCE
 
-TEST1X1(TestPhaseToTestPhaseSuffix_UnsetOrDestructorTestPhase_Throws,
-   TestPhase testPhase,
-   TestPhase::Unset,
-   TestPhase::Destructor,
-   TestPhase::MaxValue)
-{
-   THROWS(_testPhaseSuffixer.TestPhaseToTestPhaseSuffix(testPhase),
-      invalid_argument, "Invalid testPhase:" + to_string(static_cast<int>(testPhase)));
-}
+   TestPhaseSuffixer _testPhaseSuffixer;
 
-RUN_TESTS(TestPhaseSuffixerTests)
+   TEST2X2(TestPhaseToTestPhaseSuffix_ReturnsTestPhaseSuffix,
+      TestPhase testPhase, const char* expectedTestPhaseSuffix,
+      TestPhase::Constructor, " in test class constructor",
+      TestPhase::Startup, " in STARTUP",
+      TestPhase::TestBody, "",
+      TestPhase::Cleanup, " in CLEANUP")
+   {
+      ARE_EQUAL(expectedTestPhaseSuffix, _testPhaseSuffixer.TestPhaseToTestPhaseSuffix(testPhase));
+   }
+
+   TEST1X1(TestPhaseToTestPhaseSuffix_UnsetOrDestructorTestPhase_Throws,
+      TestPhase testPhase,
+      TestPhase::Unset,
+      TestPhase::Destructor,
+      TestPhase::MaxValue)
+   {
+      THROWS(_testPhaseSuffixer.TestPhaseToTestPhaseSuffix(testPhase),
+         invalid_argument, "Invalid testPhase:" + to_string(static_cast<int>(testPhase)));
+   }
+
+   RUN_TESTS(TestPhaseSuffixerTests)
+}

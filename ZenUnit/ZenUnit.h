@@ -761,7 +761,7 @@ namespace ZenUnit
       return linuxColor;
    }
 
-   inline WindowsColor ColorToWindowsColor(Color color) noexcept
+   inline constexpr WindowsColor ColorToWindowsColor(Color color) noexcept
    {
       WindowsColor windowsColor = WindowsColor::Black;
       switch (color)
@@ -1102,7 +1102,7 @@ namespace ZenUnit
       {
          while (true)
          {
-            std::size_t findPosition = str.find(substring);
+            const std::size_t findPosition = str.find(substring);
             if (findPosition == std::string::npos)
             {
                break;
@@ -1353,7 +1353,7 @@ namespace ZenUnit
       {
          std::ostringstream whyBuilder;
          whyBuilder << '\n' << failedLinePrefix;
-         bool messagesNonEmpty = strlen(messagesText) > 0;
+         const bool messagesNonEmpty = strlen(messagesText) > 0;
          if (messagesNonEmpty)
          {
             whyBuilder << ", " << messagesText;
@@ -1818,11 +1818,11 @@ Testing Filtration:
    Add a '*' character to the end of a test class or test name
    filter string to specify name-starts-with filtration.
  Example A: -run=Network*
-   runs all test classes that start with 'Network'.
+   Runs all test classes that start with 'Network'.
  Example B: -run=WidgetTests.Serialize*
-   runs all tests in WidgetTests that start with 'Serialize'.
+   Runs all tests in WidgetTests that start with 'Serialize'.
  Example C: -run=MathTests.ComplexCalculation_ValidInputs_ReturnsExpected/3
-   runs the third test case of value-parameterized test
+   Runs the third test case of value-parameterized test
    ComplexCalculation_ValidInputs_ReturnsExpected in test class MathTests.
 -failfast
    Immediately exit with exit code 1 if a test fails.
@@ -3963,7 +3963,7 @@ Testing Utility:
 
       bool RunFilterMatchesTestName(const RunFilter& runFilter, const char* testName) const
       {
-         bool runFilterMatchesTestName = runFilter.MatchesTestName(testName);
+         const bool runFilterMatchesTestName = runFilter.MatchesTestName(testName);
          return runFilterMatchesTestName;
       }
 
@@ -5862,7 +5862,7 @@ Testing Utility:
          if (findIter == testNXNPmfToTest.end())
          {
             ConsoleColorer consoleColorer;
-            bool didSetColor = consoleColorer.SetColor(Color::Red);
+            const bool didSetColor = consoleColorer.SetColor(Color::Red);
             std::cout << "====================\nZenUnit Syntax Error\n====================\n";
             consoleColorer.UnsetColor(didSetColor);
             std::cout << R"(The above test name was specified using FACTS(TestName).

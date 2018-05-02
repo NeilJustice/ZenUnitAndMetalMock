@@ -49,7 +49,7 @@ namespace ZenUnit
       Anomaly expectedAnomaly;
       expectedAnomaly.why = String::Concat('\n', "StartOfFailedLine)\n",
 "WhyBody\n",
-FileLineValue);
+   FileLineValue);
       expectedAnomaly.fileLine = FileLineValue;
       ARE_EQUAL(expectedAnomaly, anomaly);
    }
@@ -60,7 +60,7 @@ FileLineValue);
       //
       Anomaly expectedAnomaly;
       expectedAnomaly.why = String::Concat('\n', "StartOfFailedLine)\n",
-FileLineValue);
+   FileLineValue);
       expectedAnomaly.fileLine = FileLineValue;
       ARE_EQUAL(expectedAnomaly, anomaly);
    }
@@ -76,7 +76,7 @@ FileLineValue);
       expectedAnomaly.why = String::Concat('\n', "StartOfFailedLine, MessageA)\n",
 "WhyBody\n",
 "Message: " + expectedAnomaly.message + "\n",
-FileLineValue);
+   FileLineValue);
       expectedAnomaly.fileLine = FileLineValue;
       ARE_EQUAL(expectedAnomaly, anomaly);
    }
@@ -97,8 +97,8 @@ FileLineValue);
       expectedAnomaly.message = R"("A", "B")";
       expectedAnomaly.why = String::Concat('\n', "StartOfFailedLine, MessageA, MessageB)\n",
 "WhyBody\n",
-string(messagePrefixSpaces) + "Message: " + expectedAnomaly.message + "\n",
-FileLineValue);
+   string(messagePrefixSpaces) + "Message: " + expectedAnomaly.message + "\n",
+   FileLineValue);
       expectedAnomaly.fileLine = FileLineValue;
       ARE_EQUAL(expectedAnomaly, anomaly);
    }
@@ -114,11 +114,11 @@ FilePath(1))",
 Expected: Expected
   Actual: Actual
 FilePath(1))",
-   true, true, false, "ASSERTION_NAME(Arg1Text, Arg2Text, Arg3Text)", R"(
+      true, true, false, "ASSERTION_NAME(Arg1Text, Arg2Text, Arg3Text)", R"(
 Expected: Expected
   Actual: Actual
 FilePath(1))",
-   true, true, true, "ASSERTION_NAME(Arg1Text, Arg2Text, Arg3Text, userType0, userType1)", R"(
+      true, true, true, "ASSERTION_NAME(Arg1Text, Arg2Text, Arg3Text, userType0, userType1)", R"(
 Expected: Expected
   Actual: Actual
  Message: UserType@0, UserType@1
@@ -180,7 +180,7 @@ FilePath(1))")
 Expected: Expected
   Actual: Actual
 FilePath(1))",
-   ExpectedActualFormat::WholeLines, R"(
+      ExpectedActualFormat::WholeLines, R"(
   Failed: ASSERTION_NAME(Arg1Text)
 Expected
 Actual
@@ -340,4 +340,3 @@ FilePath(1))";
 
    RUN_TESTS(AnomalyTests)
 }
-

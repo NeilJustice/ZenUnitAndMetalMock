@@ -15,28 +15,28 @@ namespace ZenUnit
    TEST(Constructor_SetsGetHostNameOrGetComputerNameFunctions)
    {
       MachineNameGetter machineNameGetter;
-   #if defined __linux__
+#if defined __linux__
       STD_FUNCTION_TARGETS(::gethostname, machineNameGetter.call_gethostname);
-   #elif _WIN32
+#elif _WIN32
       STD_FUNCTION_TARGETS(::GetComputerName, machineNameGetter.call_GetComputerName);
-   #endif
+#endif
    }
 
    struct MachineNameGetterSelfMocked : public Zen::Mock<MachineNameGetter>
    {
-   #if defined __linux__
+#if defined __linux__
       ZENMOCK_NONVOID0_CONST(string, GetLinuxMachineName)
-   #elif _WIN32
+#elif _WIN32
       ZENMOCK_NONVOID0_CONST(string, GetWindowsMachineName)
-   #endif
+#endif
    } _machineNameGetterSelfMocked;
 
    MachineNameGetter _machineNameGetter;
-   #if defined __linux__
+#if defined __linux__
       ZENMOCK_NONVOID2_FREE(int, gethostname, char*, size_t)
-   #elif _WIN32
+#elif _WIN32
       ZENMOCK_NONVOID2_FREE(BOOL, GetComputerName, LPSTR, LPDWORD)
-   #endif
+#endif
 
    STARTUP
    {

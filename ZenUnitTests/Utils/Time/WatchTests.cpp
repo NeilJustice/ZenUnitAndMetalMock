@@ -56,7 +56,7 @@ TEST2X2(DateTimeNowWithTimeZone_ReturnsLocalTimeNowWithTimeZoneAndTodaysDate,
    ARE_EQUAL(expectedDateTimeNowWithTimeZone, dateTimeNowWithTimeZone);
 }
 
-static tm Tm(int tmMonth, int tmMonthDay, int tmYear, int tmHour, int tmMin, int tmSec)
+static constexpr tm Tm(int tmMonth, int tmMonthDay, int tmYear, int tmHour, int tmMin, int tmSec)
 {
    tm tmNow{};
    tmNow.tm_sec = tmSec;

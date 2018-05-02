@@ -49,7 +49,7 @@ namespace ZenUnit
       expectedWhatPatternBuilder << R"()
 Expected: )";
    #if defined __linux__
-     expectedWhatPatternBuilder << expectedAddress << R"(
+      expectedWhatPatternBuilder << expectedAddress << R"(
   Actual: )" << actualAddress;
    #elif _WIN32
       expectedWhatPatternBuilder << "0x" << expectedAddress << R"(

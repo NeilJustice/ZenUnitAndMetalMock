@@ -33,7 +33,7 @@ File.cpp(1))");
 
    TEST(NonNullRawPointer_DoesNotThrow)
    {
-      int x = 10;
+      const int x = 10;
       const int* const nonNullRawPointer = &x;
       IS_NOT_NULL(nonNullRawPointer);
    }

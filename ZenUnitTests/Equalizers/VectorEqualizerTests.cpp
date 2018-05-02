@@ -1,21 +1,23 @@
 #include "pch.h"
 #include "ZenUnitTests/Testing/UserType.h"
 
-TESTS(VectorEqualizerTests)
-AFACT(AssertEqual_IntVectors_CallsVECTORS_EQUAL)
-#if _WIN32
-AFACT(AssertEqual_StringVectors_CallsVECTORS_EQUAL)
-#endif
-AFACT(AssertEqual_UserTypeVectors_CallsVECTORS_EQUAL)
-EVIDENCE
-
-TEST(AssertEqual_IntVectors_CallsVECTORS_EQUAL)
+namespace ZenUnit
 {
-   vector<int> expectedIntVector;
-   const vector<int> actualIntVector;
-   Equalizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector);
-   expectedIntVector.push_back(1);
-   THROWS(Equalizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector), Anomaly, R"(
+   TESTS(VectorEqualizerTests)
+   AFACT(AssertEqual_IntVectors_CallsVECTORS_EQUAL)
+   #if _WIN32
+   AFACT(AssertEqual_StringVectors_CallsVECTORS_EQUAL)
+   #endif
+   AFACT(AssertEqual_UserTypeVectors_CallsVECTORS_EQUAL)
+   EVIDENCE
+
+   TEST(AssertEqual_IntVectors_CallsVECTORS_EQUAL)
+   {
+      vector<int> expectedIntVector;
+      const vector<int> actualIntVector;
+      Equalizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector);
+      expectedIntVector.push_back(1);
+      THROWS(Equalizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedVector, actualVector)
 Expected: std::vector<int>:
 {
@@ -30,17 +32,17 @@ Expected: 1
   Actual: 0
 File.cpp(1)
 File.cpp(1))");
-}
+   }
 
 #if _WIN32
-TEST(AssertEqual_StringVectors_CallsVECTORS_EQUAL)
-{
-   vector<string> expectedStringVector;
-   const vector<string> actualStringVector;
-   Equalizer<vector<string>>::AssertEqual(expectedStringVector, actualStringVector);
-   expectedStringVector.emplace_back();
-   THROWS(Equalizer<vector<string>>::AssertEqual(
-      expectedStringVector Comma actualStringVector), Anomaly, R"(
+   TEST(AssertEqual_StringVectors_CallsVECTORS_EQUAL)
+   {
+      vector<string> expectedStringVector;
+      const vector<string> actualStringVector;
+      Equalizer<vector<string>>::AssertEqual(expectedStringVector, actualStringVector);
+      expectedStringVector.emplace_back();
+      THROWS(Equalizer<vector<string>>::AssertEqual(
+         expectedStringVector Comma actualStringVector), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedVector, actualVector)
 Expected: std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >>:
 {
@@ -55,17 +57,17 @@ Expected: 1
   Actual: 0
 File.cpp(1)
 File.cpp(1))");
-}
+   }
 #endif
 
-TEST(AssertEqual_UserTypeVectors_CallsVECTORS_EQUAL)
-{
-   vector<UserType> expectedUserTypeVector;
-   const vector<UserType> actualUserTypeVector;
-   Equalizer<vector<UserType>>::AssertEqual(expectedUserTypeVector, actualUserTypeVector);
-   expectedUserTypeVector.emplace_back();
-   THROWS(Equalizer<vector<UserType>>::AssertEqual(
-      expectedUserTypeVector Comma actualUserTypeVector), Anomaly, R"(
+   TEST(AssertEqual_UserTypeVectors_CallsVECTORS_EQUAL)
+   {
+      vector<UserType> expectedUserTypeVector;
+      const vector<UserType> actualUserTypeVector;
+      Equalizer<vector<UserType>>::AssertEqual(expectedUserTypeVector, actualUserTypeVector);
+      expectedUserTypeVector.emplace_back();
+      THROWS(Equalizer<vector<UserType>>::AssertEqual(
+         expectedUserTypeVector Comma actualUserTypeVector), Anomaly, R"(
   Failed: VECTORS_EQUAL(expectedVector, actualVector)
 Expected: std::vector<UserType>:
 {
@@ -80,6 +82,7 @@ Expected: 1
   Actual: 0
 File.cpp(1)
 File.cpp(1))");
-}
+   }
 
-RUN_TESTS(VectorEqualizerTests)
+   RUN_TESTS(VectorEqualizerTests)
+}

@@ -101,4 +101,3 @@ namespace ZenUnit
 
    RUN_TESTS(PreamblePrinterTests)
 }
-

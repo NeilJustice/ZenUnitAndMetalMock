@@ -50,7 +50,98 @@ namespace ZenUnit
          s_calls.emplace_back(__testCase, arg);
       }
    };
+
+   struct TestingTestClass2X2 : public StartupAndCleanup
+   {
+      static vector<tuple<size_t, int, string>> s_calls;
+      void Test(size_t __testCase, int firstArgument, string secondArgument)
+      {
+         s_calls.emplace_back(__testCase, firstArgument, secondArgument);
+      }
+   };
+
+   struct TestingTestClass3X3 : public StartupAndCleanup
+   {
+      static vector<tuple<size_t, int, int, string>> s_calls;
+      void Test(size_t __testCase, int firstArgument, int secondArgument, string thirdArgument)
+      {
+         s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument);
+      }
+   };
+
+   struct TestingTestClass4X4 : public StartupAndCleanup
+   {
+      static vector<tuple<size_t, int, int, int, string>> s_calls;
+      void Test(size_t __testCase, int firstArgument, int secondArgument, int thirdArgument, string fourthArgument)
+      {
+         s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument, fourthArgument);
+      }
+   };
+
+   struct TestingTestClass5X5 : public StartupAndCleanup
+   {
+      static vector<tuple<size_t, int, int, int, int, string>> s_calls;
+      void Test(size_t __testCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, string fifthArgument)
+      {
+         s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument);
+      }
+   };
+
+   struct TestingTestClass6X6 : public StartupAndCleanup
+   {
+      static vector<tuple<size_t, int, int, int, int, int, string>> s_calls;
+      void Test(size_t __testCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, int fifthArgument, string sixthArgument)
+      {
+         s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument);
+      }
+   };
+
+   struct TestingTestClass8X8 : public StartupAndCleanup
+   {
+      static vector<tuple<size_t, int, int, int, int, int, int, int, string>> s_calls;
+      void Test(size_t __testCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, int fifthArgument, int sixthArgument, int seventhArgument, string eigthArgument)
+      {
+         s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument);
+      }
+   };
+
+   struct TestingTestClass7X7 : public StartupAndCleanup
+   {
+      static vector<tuple<size_t, int, int, int, int, int, int, string>> s_calls;
+      void Test(size_t __testCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, int fifthArgument, int sixthArgument, string seventhArgument)
+      {
+         s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument);
+      }
+   };
+
+   struct TestingTestClass9X9 : public StartupAndCleanup
+   {
+      static vector<tuple<size_t, int, int, int, int, int, int, int, int, string>> s_calls;
+      void Test(size_t __testCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, int fifthArgument, int sixthArgument, int seventhArgument, int eigthArgument, string ninthArgument)
+      {
+         s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument);
+      }
+   };
+
+   struct TestingTestClass10X10 : public StartupAndCleanup
+   {
+      static vector<tuple<size_t, int, int, int, int, int, int, int, int, int, string>> s_calls;
+      void Test(size_t __testCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, int fifthArgument, int sixthArgument, int seventhArgument, int eigthArgument, int ninthArgument, string tenthArgument)
+      {
+         s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument, tenthArgument);
+      }
+   };
+
    vector<tuple<size_t, int>> TestingTestClass1X1::s_calls;
+   vector<tuple<size_t, int, string>> TestingTestClass2X2::s_calls;
+   vector<tuple<size_t, int, int, string>> TestingTestClass3X3::s_calls;
+   vector<tuple<size_t, int, int, int, string>> TestingTestClass4X4::s_calls;
+   vector<tuple<size_t, int, int, int, int, string>> TestingTestClass5X5::s_calls;
+   vector<tuple<size_t, int, int, int, int, int, string>> TestingTestClass6X6::s_calls;
+   vector<tuple<size_t, int, int, int, int, int, int, int, string>> TestingTestClass8X8::s_calls;
+   vector<tuple<size_t, int, int, int, int, int, int, string>> TestingTestClass7X7::s_calls;
+   vector<tuple<size_t, int, int, int, int, int, int, int, int, string>> TestingTestClass9X9::s_calls;
+   vector<tuple<size_t, int, int, int, int, int, int, int, int, int, string>> TestingTestClass10X10::s_calls;
 
    TESTS(Test1X1TestTests)
    AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest1By1)
@@ -81,20 +172,8 @@ namespace ZenUnit
    }
 
    RUN_TESTS(Test1X1TestTests)
-}
 
-struct TestingTestClass2X2 : public StartupAndCleanup
-{
-   static vector<tuple<size_t, int, string>> s_calls;
-   void Test(size_t __testCase, int firstArgument, string secondArgument)
-   {
-      s_calls.emplace_back(__testCase, firstArgument, secondArgument);
-   }
-};
-vector<tuple<size_t, int, string>> TestingTestClass2X2::s_calls;
 
-namespace ZenUnit
-{
    TESTS(Test2X2TestTests)
    AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest2X2)
    EVIDENCE
@@ -132,20 +211,8 @@ namespace ZenUnit
    }
 
    RUN_TESTS(Test2X2TestTests)
-}
 
-struct TestingTestClass3X3 : public StartupAndCleanup
-{
-   static vector<tuple<size_t, int, int, string>> s_calls;
-   void Test(size_t __testCase, int firstArgument, int secondArgument, string thirdArgument)
-   {
-      s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument);
-   }
-};
-vector<tuple<size_t, int, int, string>> TestingTestClass3X3::s_calls;
 
-namespace ZenUnit
-{
    TESTS(Test3X3TestTests)
    AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest3X3)
    EVIDENCE
@@ -183,20 +250,8 @@ namespace ZenUnit
    }
 
    RUN_TESTS(Test3X3TestTests)
-}
 
-struct TestingTestClass4X4 : public StartupAndCleanup
-{
-   static vector<tuple<size_t, int, int, int, string>> s_calls;
-   void Test(size_t __testCase, int firstArgument, int secondArgument, int thirdArgument, string fourthArgument)
-   {
-      s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument, fourthArgument);
-   }
-};
-vector<tuple<size_t, int, int, int, string>> TestingTestClass4X4::s_calls;
 
-namespace ZenUnit
-{
    TESTS(Test4X4TestTests)
    AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest4X4)
    EVIDENCE
@@ -234,20 +289,8 @@ namespace ZenUnit
    }
 
    RUN_TESTS(Test4X4TestTests)
-}
 
-struct TestingTestClass5X5 : public StartupAndCleanup
-{
-   static vector<tuple<size_t, int, int, int, int, string>> s_calls;
-   void Test(size_t __testCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, string fifthArgument)
-   {
-      s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument);
-   }
-};
-vector<tuple<size_t, int, int, int, int, string>> TestingTestClass5X5::s_calls;
 
-namespace ZenUnit
-{
    TESTS(Test5X5TestTests)
    AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest5X5)
    EVIDENCE
@@ -285,20 +328,8 @@ namespace ZenUnit
    }
 
    RUN_TESTS(Test5X5TestTests)
-}
 
-struct TestingTestClass6X6 : public StartupAndCleanup
-{
-   static vector<tuple<size_t, int, int, int, int, int, string>> s_calls;
-   void Test(size_t __testCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, int fifthArgument, string sixthArgument)
-   {
-      s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument);
-   }
-};
-vector<tuple<size_t, int, int, int, int, int, string>> TestingTestClass6X6::s_calls;
 
-namespace ZenUnit
-{
    TESTS(Test6X6TestTests)
    AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest6X6)
    EVIDENCE
@@ -336,20 +367,8 @@ namespace ZenUnit
    }
 
    RUN_TESTS(Test6X6TestTests)
-}
 
-struct TestingTestClass7X7 : public StartupAndCleanup
-{
-   static vector<tuple<size_t, int, int, int, int, int, int, string>> s_calls;
-   void Test(size_t __testCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, int fifthArgument, int sixthArgument, string seventhArgument)
-   {
-      s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument);
-   }
-};
-vector<tuple<size_t, int, int, int, int, int, int, string>> TestingTestClass7X7::s_calls;
 
-namespace ZenUnit
-{
    TESTS(Test7X7TestTests)
    AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest7X7)
    EVIDENCE
@@ -387,20 +406,8 @@ namespace ZenUnit
    }
 
    RUN_TESTS(Test7X7TestTests)
-}
 
-struct TestingTestClass8X8 : public StartupAndCleanup
-{
-   static vector<tuple<size_t, int, int, int, int, int, int, int, string>> s_calls;
-   void Test(size_t __testCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, int fifthArgument, int sixthArgument, int seventhArgument, string eigthArgument)
-   {
-      s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument);
-   }
-};
-vector<tuple<size_t, int, int, int, int, int, int, int, string>> TestingTestClass8X8::s_calls;
 
-namespace ZenUnit
-{
    TESTS(Test8X8TestTests)
    AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest8X8)
    EVIDENCE
@@ -438,20 +445,8 @@ namespace ZenUnit
    }
 
    RUN_TESTS(Test8X8TestTests)
-}
 
-struct TestingTestClass9X9 : public StartupAndCleanup
-{
-   static vector<tuple<size_t, int, int, int, int, int, int, int, int, string>> s_calls;
-   void Test(size_t __testCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, int fifthArgument, int sixthArgument, int seventhArgument, int eigthArgument, string ninthArgument)
-   {
-      s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument);
-   }
-};
-vector<tuple<size_t, int, int, int, int, int, int, int, int, string>> TestingTestClass9X9::s_calls;
 
-namespace ZenUnit
-{
    TESTS(Test9X9TestTests)
    AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest9X9)
    EVIDENCE
@@ -489,20 +484,7 @@ namespace ZenUnit
    }
 
    RUN_TESTS(Test9X9TestTests)
-}
 
-struct TestingTestClass10X10 : public StartupAndCleanup
-{
-   static vector<tuple<size_t, int, int, int, int, int, int, int, int, int, string>> s_calls;
-   void Test(size_t __testCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, int fifthArgument, int sixthArgument, int seventhArgument, int eigthArgument, int ninthArgument, string tenthArgument)
-   {
-      s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument, tenthArgument);
-   }
-};
-vector<tuple<size_t, int, int, int, int, int, int, int, int, int, string>> TestingTestClass10X10::s_calls;
-
-namespace ZenUnit
-{
    TESTS(Test10X10TestTests)
    AFACT(Constructor_SetsFields_GettersReturnExpected_RunCallsTest10X10)
    EVIDENCE
