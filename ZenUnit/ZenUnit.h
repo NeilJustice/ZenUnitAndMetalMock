@@ -1801,7 +1801,34 @@ namespace ZenUnit
          static const std::string usage = R"(ZenUnit v0.2.1
 Usage: <TestsBinaryName> [Options...]
 
-Testing Rigor:
+Testing Utility Options:
+
+-pause
+   Wait for any key before running tests to allow attaching a profiler or debugger.
+-wait
+   Wait for any key at the end of the test run.
+-exit0
+   Always exit 0 regardless of test run outcome.
+   Useful option for not blocking the launch of a ZenUnit tests
+   console window when previously running ZenUnit tests in a post-build step.
+
+Testing Filtration Options:
+
+-run=<TestClassName>[::TestName][/TestCaseNumber][,...]
+   Run only specified case-insensitive test classes, tests, or test cases.
+   Add a '*' character to the end of a test class or test name
+   filter string to specify name-starts-with filtration.
+ Example 1: -run=Widget*
+   Runs all test classes that start with 'Widget'.
+ Example 2: -run=WidgetTests.FunctionUnderTest*
+   Runs all tests in WidgetTests that start with 'FunctionUnderTest'.
+ Example 3: -run=WidgetTests.FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior/3
+   Runs the third test case of value-parameterized test
+   WidgetTests.FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior.
+-failfast
+   Immediately exit with exit code 1 if a test fails.
+
+Testing Rigor Options:
 
 -random[=Seed]
    Run test classes and tests in a random order.
@@ -1810,31 +1837,8 @@ Testing Rigor:
    Specify -random -testruns=2 for two random test run orderings.
 -failskips
    Exit 1 regardless of test run outcome if any tests are skipped.
-
-Testing Filtration:
-
--run=<TestClassName>[::TestName][/TestCaseNumber][,...]
-   Run only specified case-insensitive test classes, tests, or test cases.
-   Add a '*' character to the end of a test class or test name
-   filter string to specify name-starts-with filtration.
- Example A: -run=Network*
-   Runs all test classes that start with 'Network'.
- Example B: -run=WidgetTests.Serialize*
-   Runs all tests in WidgetTests that start with 'Serialize'.
- Example C: -run=MathTests.ComplexCalculation_ValidInputs_ReturnsExpected/3
-   Runs the third test case of value-parameterized test
-   ComplexCalculation_ValidInputs_ReturnsExpected in test class MathTests.
--failfast
-   Immediately exit with exit code 1 if a test fails.
-
-Testing Utility:
-
--pause
-   Wait for any key before running tests to allow attaching a profiler or debugger.
--exit0
-   Always exit 0 regardless of test run outcome.
--wait
-   Wait for any key at the end of the test run.)";
+   Useful option for continuous integration servers to partially ensure
+   that a culture of complacency does not develop around skipped tests being OK.)";
          return usage;
       }
    private:
