@@ -92,8 +92,8 @@ namespace ZenUnit
    TEST3X3(MakeThirdLineSuffix_ReturnsRandomSeedIfRandomModeOtherwiseEmptyString,
       const string& expectedReturnValue, bool random, unsigned short randomseed,
       "", false, NA<unsigned short>(),
-      " (random seed 0)", true, static_cast<unsigned short>(0),
-      " (random seed 1)", true, static_cast<unsigned short>(1))
+      " (time-based random seed 0)", true, static_cast<unsigned short>(0),
+      " (time-based random seed 1)", true, static_cast<unsigned short>(1))
    {
       const string thirdLineSuffix = _preamblePrinter.MakeThirdLineSuffix(random, randomseed);
       ARE_EQUAL(expectedReturnValue, thirdLineSuffix);

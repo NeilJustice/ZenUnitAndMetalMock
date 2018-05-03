@@ -4168,7 +4168,7 @@ Testing Rigor Options:
 
       virtual std::string MakeThirdLineSuffix(bool random, unsigned short randomseed) const
       {
-         const std::string thirdLineSuffix = random ? " (random seed " + std::to_string(randomseed) + ")" : "";
+         const std::string thirdLineSuffix = random ? " (time-based random seed " + std::to_string(randomseed) + ")" : "";
          return thirdLineSuffix;
       }
    };
@@ -4329,7 +4329,7 @@ Testing Rigor Options:
                middleLineVictoryOrFail = "<VICTORY> ";
                numberOfTestsAndMillisecondsAndRandomSeedMessage = String::Concat("   Result: ",
                   totalNumberOfTestCases, ' ', testOrTests, " passed ", inMillisecondsPart,
-                  " (random seed ", ZenUnitRandomSeed::value, ")");
+                  " (time-based random seed ", ZenUnitRandomSeed::value, ")");
             }
             else
             {
@@ -4337,7 +4337,7 @@ Testing Rigor Options:
                middleLineVictoryOrFail = ">>-FAIL-> ";
                numberOfTestsAndMillisecondsAndRandomSeedMessage = String::Concat("   Result: ",
                   _numberOfFailedTestCases, '/', totalNumberOfTestCases, ' ', testOrTests, " failed ", inMillisecondsPart,
-                  " (random seed ", ZenUnitRandomSeed::value, ")");
+                  " (time-based random seed ", ZenUnitRandomSeed::value, ")");
             }
             _console->WriteColor(firstAndThirdLineAsciiArt, color);
             const std::string completedCommandLineMessage = "Completed: " + zenUnitArgs.commandLine;
@@ -4539,7 +4539,7 @@ Testing Rigor Options:
 
       int ParseArgsRunTestClassesPrintResults(const std::vector<std::string>& commandLineArgs)
       {
-         ZenUnit::SetRandomSeed(static_cast<unsigned short>(time(nullptr))); // Time-based default random seed
+         ZenUnit::SetRandomSeed(static_cast<unsigned short>(time(nullptr)));
          _zenUnitArgs = _argsParser->Parse(commandLineArgs);
          _testClassRunnerRunner->ApplyRunFiltersIfAny(_zenUnitArgs.runFilters);
          int overallExitCode = 0;
