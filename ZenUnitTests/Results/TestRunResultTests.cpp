@@ -274,8 +274,8 @@ namespace ZenUnit
       ZEN(_consoleMock->WriteLineMock.CalledAsFollows(
       {
          expectedCompletedLine,
-         expectedNumberOfTestsAndMillisecondsLine,
-         expectedEndTimeLine
+         expectedEndTimeLine,
+         expectedNumberOfTestsAndMillisecondsLine
       }));
    }
 

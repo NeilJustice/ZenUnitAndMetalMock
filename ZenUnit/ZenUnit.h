@@ -4350,11 +4350,11 @@ Testing Rigor Options:
             _console->WriteLine(completedCommandLineMessage);
 
             _console->WriteColor(middleLineVictoryOrFail, color);
-            _console->WriteLine(numberOfTestsAndMillisecondsAndRandomSeedMessage);
-
-            _console->WriteColor(firstAndThirdLineAsciiArt, color);
             const std::string endTimeMessage = "  EndTime: " + _watch->DateTimeNowWithTimeZone();
             _console->WriteLine(endTimeMessage);
+
+            _console->WriteColor(firstAndThirdLineAsciiArt, color);
+            _console->WriteLine(numberOfTestsAndMillisecondsAndRandomSeedMessage);
          }
       }
 
