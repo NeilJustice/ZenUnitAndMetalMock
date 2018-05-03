@@ -420,15 +420,24 @@ namespace ZenUnit
    };
 
    template<typename T>
-   struct ZenUnitTestingMode
+   struct SingleHeaderZenUnitTestingMode
    {
       static T zenUnitTestingMode;
    };
 
    template<typename T>
-   T ZenUnitTestingMode<T>::zenUnitTestingMode;
+   T SingleHeaderZenUnitTestingMode<T>::zenUnitTestingMode;
 
-   struct FileLiner : public ZenUnitTestingMode<bool>
+   template<typename T>
+   struct SingleHeaderRandomSeed
+   {
+      static T randomSeed;
+   };
+
+   template<typename T>
+   T SingleHeaderRandomSeed<T>::randomSeed;
+
+   struct FileLiner : public SingleHeaderZenUnitTestingMode<bool>
    {
       static const char* File(const char* fileMacroValue) noexcept { return zenUnitTestingMode ? "File.cpp" : fileMacroValue; }
       static unsigned Line(unsigned lineMacroValue) noexcept { return zenUnitTestingMode ? 1u : lineMacroValue; }
@@ -1678,18 +1687,9 @@ namespace ZenUnit
       }
    };
 
-   template<typename T>
-   struct RandomSeedHolder
-   {
-      static T randomSeed;
-   };
-
-   template<typename T>
-   T RandomSeedHolder<T>::randomSeed;
-
    inline void SetRandomSeed(unsigned randomSeed)
    {
-      RandomSeedHolder<unsigned>::randomSeed = randomSeed;
+      SingleHeaderRandomSeed<unsigned>::randomSeed = randomSeed;
    }
 
    class ArgsParser
@@ -4335,7 +4335,7 @@ Testing Rigor Options:
                middleLineVictoryOrFail = "<VICTORY> ";
                numberOfTestsAndMillisecondsAndRandomSeedMessage = String::Concat("   Result: ",
                   totalNumberOfTestCases, ' ', testOrTests, " passed ", inMillisecondsPart,
-                  " (random seed ", RandomSeedHolder<unsigned>::randomSeed, ")");
+                  " (random seed ", SingleHeaderRandomSeed<unsigned>::randomSeed, ")");
             }
             else
             {
@@ -4343,7 +4343,7 @@ Testing Rigor Options:
                middleLineVictoryOrFail = ">>-FAIL-> ";
                numberOfTestsAndMillisecondsAndRandomSeedMessage = String::Concat("   Result: ",
                   _numberOfFailedTestCases, '/', totalNumberOfTestCases, ' ', testOrTests, " failed ", inMillisecondsPart,
-                  " (random seed ", RandomSeedHolder<unsigned>::randomSeed, ")");
+                  " (random seed ", SingleHeaderRandomSeed<unsigned>::randomSeed, ")");
             }
             _console->WriteColor(firstAndThirdLineAsciiArt, color);
             const std::string completedCommandLineMessage = "Completed: " + zenUnitArgs.commandLine;
@@ -6272,7 +6272,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    template<typename T>
    T RandomBetween(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound)
    {
-      static std::default_random_engine defaultRandomEngine(RandomSeedHolder<unsigned>::randomSeed);
+      static std::default_random_engine defaultRandomEngine(SingleHeaderRandomSeed<unsigned>::randomSeed);
       const long long adjustedInclusiveLowerBound = inclusiveLowerBound < 0 ? 0 : inclusiveLowerBound;
       const unsigned long long adjustedInclusiveUpperBound =
          inclusiveLowerBound < 0 ? 2 * inclusiveUpperBound + 1 : inclusiveUpperBound;
@@ -6296,7 +6296,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    template<>
    inline float Random<float>()
    {
-      static std::default_random_engine defaultRandomEngine(RandomSeedHolder<unsigned>::randomSeed);
+      static std::default_random_engine defaultRandomEngine(SingleHeaderRandomSeed<unsigned>::randomSeed);
 #if _WIN32
       const
 #endif
@@ -6308,7 +6308,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    template<>
    inline double Random<double>()
    {
-      static std::default_random_engine defaultRandomEngine(RandomSeedHolder<unsigned>::randomSeed);
+      static std::default_random_engine defaultRandomEngine(SingleHeaderRandomSeed<unsigned>::randomSeed);
 #if _WIN32
       const
 #endif
