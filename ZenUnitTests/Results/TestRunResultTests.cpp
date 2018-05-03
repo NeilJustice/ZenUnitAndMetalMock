@@ -268,7 +268,7 @@ namespace ZenUnit
       const string expectedCompletedLine = "Completed: " + zenUnitArgs.commandLine;
       const string expectedNumberOfTestsAndMillisecondsLine = String::Concat("   Result: ",
          expectedClosingLineTestsCountText, " in ", testRunMilliseconds, " ", expectedMillisecondOrMilliseconds,
-         " (random seed ", SingleHeaderRandomSeed<unsigned>::randomSeed, ")");
+         " (random seed ", ZenUnitRandomSeed::value, ")");
       const string expectedEndTimeLine = "  EndTime: " + timeZoneDateTimeNow;
       ZEN(_watchMock->DateTimeNowWithTimeZoneMock.CalledOnce());
       ZEN(_consoleMock->WriteLineMock.CalledAsFollows(

@@ -420,27 +420,21 @@ namespace ZenUnit
    };
 
    template<typename T>
-   struct SingleHeaderZenUnitTestingMode
+   struct SingleHeaderVariable
    {
-      static T zenUnitTestingMode;
+      static T value;
    };
 
    template<typename T>
-   T SingleHeaderZenUnitTestingMode<T>::zenUnitTestingMode;
+   T SingleHeaderVariable<T>::value;
 
-   template<typename T>
-   struct SingleHeaderRandomSeed
+   using ZenUnitTestMode = SingleHeaderVariable<bool>;
+   using ZenUnitRandomSeed = SingleHeaderVariable<unsigned short>;
+
+   struct FileLiner
    {
-      static T randomSeed;
-   };
-
-   template<typename T>
-   T SingleHeaderRandomSeed<T>::randomSeed;
-
-   struct FileLiner : public SingleHeaderZenUnitTestingMode<bool>
-   {
-      static const char* File(const char* fileMacroValue) noexcept { return zenUnitTestingMode ? "File.cpp" : fileMacroValue; }
-      static unsigned Line(unsigned lineMacroValue) noexcept { return zenUnitTestingMode ? 1u : lineMacroValue; }
+      static const char* File(const char* fileMacroValue) noexcept { return ZenUnitTestMode::value ? "File.cpp" : fileMacroValue; }
+      static unsigned Line(unsigned lineMacroValue) noexcept { return ZenUnitTestMode::value ? 1u : lineMacroValue; }
    };
 
    class String
@@ -748,7 +742,7 @@ namespace ZenUnit
       bool failskips = false;
       unsigned testruns = 1;
       bool random = false;
-      unsigned randomseed = 0;
+      unsigned short randomseed = 0;
       bool randomseedsetbyuser = false;
       unsigned maxtestmilliseconds = 0;
       unsigned maxtotalseconds = 0;
@@ -1687,9 +1681,9 @@ namespace ZenUnit
       }
    };
 
-   inline void SetRandomSeed(unsigned randomSeed)
+   inline void SetRandomSeed(unsigned short randomSeed)
    {
-      SingleHeaderRandomSeed<unsigned>::randomSeed = randomSeed;
+      ZenUnitRandomSeed::value = randomSeed;
    }
 
    class ArgsParser
@@ -1778,7 +1772,7 @@ namespace ZenUnit
                   else if (argName == "-random")
                   {
                      zenUnitArgs.random = true;
-                     zenUnitArgs.randomseed = call_String_ToUnsigned(argValueString);
+                     zenUnitArgs.randomseed = static_cast<unsigned short>(call_String_ToUnsigned(argValueString));
                      ZenUnit::SetRandomSeed(zenUnitArgs.randomseed);
                      zenUnitArgs.randomseedsetbyuser = true;
                   }
@@ -2707,13 +2701,13 @@ Testing Rigor Options:
    inline size_t ULongLongToChars(unsigned long long value, char* outChars) noexcept
    {
       char* ptrA = outChars;
-      unsigned long long tempValue = 0;
+      unsigned long long helperValue = 0;
       size_t numberOfCharsAppended = 0;
       do
       {
-         tempValue = value;
+         helperValue = value;
          value /= 10;
-         unsigned long long index = 35 + (tempValue - value * 10);
+         unsigned long long index = 35 + (helperValue - value * 10);
          *ptrA++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"[index];
          ++numberOfCharsAppended;
       } while (value != 0);
@@ -3342,10 +3336,10 @@ Testing Rigor Options:
          return weekdayDateTimeZoneNow;
       }
 
-      virtual unsigned SecondsSince1970() const
+      virtual unsigned short SecondsSince1970CastToUnsignedShort() const
       {
          const long long secondsSince1970 = std::chrono::system_clock::now().time_since_epoch().count();
-         const unsigned secondsSince1970CastToUnsignedShort = static_cast<unsigned>(secondsSince1970);
+         const unsigned short secondsSince1970CastToUnsignedShort = static_cast<unsigned short>(secondsSince1970);
          return secondsSince1970CastToUnsignedShort;
       }
 
@@ -4086,7 +4080,7 @@ Testing Rigor Options:
          {
             if (!zenUnitArgs.randomseedsetbyuser)
             {
-               zenUnitArgs.randomseed = _watch->SecondsSince1970();
+               zenUnitArgs.randomseed = _watch->SecondsSince1970CastToUnsignedShort();
             }
             const std::vector<TestClassResult> testClassResults = _transformer->RandomTransform(
                &_testClassRunners, &TestClassRunnerRunner::RunTestClassRunner, zenUnitArgs.randomseed);
@@ -4172,7 +4166,7 @@ Testing Rigor Options:
          return thirdLinePrefix;
       }
 
-      virtual std::string MakeThirdLineSuffix(bool random, unsigned randomseed) const
+      virtual std::string MakeThirdLineSuffix(bool random, unsigned short randomseed) const
       {
          const std::string thirdLineSuffix = random ? " (random seed " + std::to_string(randomseed) + ")" : "";
          return thirdLineSuffix;
@@ -4335,7 +4329,7 @@ Testing Rigor Options:
                middleLineVictoryOrFail = "<VICTORY> ";
                numberOfTestsAndMillisecondsAndRandomSeedMessage = String::Concat("   Result: ",
                   totalNumberOfTestCases, ' ', testOrTests, " passed ", inMillisecondsPart,
-                  " (random seed ", SingleHeaderRandomSeed<unsigned>::randomSeed, ")");
+                  " (random seed ", ZenUnitRandomSeed::value, ")");
             }
             else
             {
@@ -4343,7 +4337,7 @@ Testing Rigor Options:
                middleLineVictoryOrFail = ">>-FAIL-> ";
                numberOfTestsAndMillisecondsAndRandomSeedMessage = String::Concat("   Result: ",
                   _numberOfFailedTestCases, '/', totalNumberOfTestCases, ' ', testOrTests, " failed ", inMillisecondsPart,
-                  " (random seed ", SingleHeaderRandomSeed<unsigned>::randomSeed, ")");
+                  " (random seed ", ZenUnitRandomSeed::value, ")");
             }
             _console->WriteColor(firstAndThirdLineAsciiArt, color);
             const std::string completedCommandLineMessage = "Completed: " + zenUnitArgs.commandLine;
@@ -4545,7 +4539,7 @@ Testing Rigor Options:
 
       int ParseArgsRunTestClassesPrintResults(const std::vector<std::string>& commandLineArgs)
       {
-         ZenUnit::SetRandomSeed(static_cast<unsigned>(time(nullptr))); // Time-based default random seed
+         ZenUnit::SetRandomSeed(static_cast<unsigned short>(time(nullptr))); // Time-based default random seed
          _zenUnitArgs = _argsParser->Parse(commandLineArgs);
          _testClassRunnerRunner->ApplyRunFiltersIfAny(_zenUnitArgs.runFilters);
          int overallExitCode = 0;
@@ -6272,7 +6266,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    template<typename T>
    T RandomBetween(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound)
    {
-      static std::default_random_engine defaultRandomEngine(SingleHeaderRandomSeed<unsigned>::randomSeed);
+      static std::default_random_engine defaultRandomEngine(ZenUnitRandomSeed::value);
       const long long adjustedInclusiveLowerBound = inclusiveLowerBound < 0 ? 0 : inclusiveLowerBound;
       const unsigned long long adjustedInclusiveUpperBound =
          inclusiveLowerBound < 0 ? 2 * inclusiveUpperBound + 1 : inclusiveUpperBound;
@@ -6296,7 +6290,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    template<>
    inline float Random<float>()
    {
-      static std::default_random_engine defaultRandomEngine(SingleHeaderRandomSeed<unsigned>::randomSeed);
+      static std::default_random_engine defaultRandomEngine(ZenUnitRandomSeed::value);
 #if _WIN32
       const
 #endif
@@ -6308,7 +6302,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    template<>
    inline double Random<double>()
    {
-      static std::default_random_engine defaultRandomEngine(SingleHeaderRandomSeed<unsigned>::randomSeed);
+      static std::default_random_engine defaultRandomEngine(ZenUnitRandomSeed::value);
 #if _WIN32
       const
 #endif

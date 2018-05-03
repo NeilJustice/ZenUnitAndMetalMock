@@ -161,10 +161,10 @@ Testing Rigor Options:
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
       //
       ZEN(ToUnsigned_ZenMock.CalledAsFollows(
-         {
-            to_string(testruns),
-            to_string(randomseed)
-         }));
+      {
+         to_string(testruns),
+         to_string(randomseed)
+      }));
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
       expectedZenUnitArgs.pause = true;
@@ -175,7 +175,7 @@ Testing Rigor Options:
       expectedZenUnitArgs.testruns = 1;
       expectedZenUnitArgs.random = true;
       expectedZenUnitArgs.testruns = testruns;
-      expectedZenUnitArgs.randomseed = randomseed;
+      expectedZenUnitArgs.randomseed = static_cast<unsigned short>(randomseed);
       expectedZenUnitArgs.randomseedsetbyuser = true;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
@@ -302,7 +302,7 @@ Testing Rigor Options:
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
       expectedZenUnitArgs.random = true;
-      expectedZenUnitArgs.randomseed = randomSeedArgValue;
+      expectedZenUnitArgs.randomseed = static_cast<unsigned short>(randomSeedArgValue);
       expectedZenUnitArgs.randomseedsetbyuser = true;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }

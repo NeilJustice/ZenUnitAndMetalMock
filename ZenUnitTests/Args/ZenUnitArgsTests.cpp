@@ -36,7 +36,7 @@ namespace ZenUnit
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, failskips, true);
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, testruns, 2u);
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, random, true);
-      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, randomseed, 3u);
+      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, randomseed, static_cast<unsigned short>(3));
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, randomseedsetbyuser, true);
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, maxtestmilliseconds, 4u);
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, maxtotalseconds, 5u);

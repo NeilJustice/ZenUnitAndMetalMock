@@ -76,9 +76,9 @@ RUN_TESTS(ZZTests)
 
 int main(int argc, char* argv[])
 {
-   // zenUnitTestingMode = true makes __FILE__ and __LINE__ into constants
-   // for ease of ZenUnit error message testing
-   FileLiner::zenUnitTestingMode = true;
+   // ZenUnitTestMode makes FileLiner::File(__FILE__) return File.cpp
+   // and FileLiner::Line(__LINE__) return 1.
+   ZenUnitTestMode::value = true;
    const int exitCode = ZenUnit::RunTests(argc, argv);
    FileLiner::File(nullptr); // 100% code coverage
    FileLiner::Line(0); // 100% code coverage

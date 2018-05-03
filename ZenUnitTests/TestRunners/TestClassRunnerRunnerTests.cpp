@@ -247,22 +247,22 @@ namespace ZenUnit
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.random = true;
       zenUnitArgs.randomseedsetbyuser = randomseedsetbyuser;
-      unsigned therandomseedsetbyuser = 0;
-      unsigned randomseedsetbycode = 0;
+      unsigned short therandomseedsetbyuser = 0;
+      unsigned short randomseedsetbycode = 0;
       if (randomseedsetbyuser)
       {
-         zenUnitArgs.randomseed = therandomseedsetbyuser = ZenUnit::Random<unsigned>();
+         zenUnitArgs.randomseed = therandomseedsetbyuser = ZenUnit::Random<unsigned short>();
       }
       else
       {
-         randomseedsetbycode = _watchMock->SecondsSince1970Mock.ReturnRandom();
+         randomseedsetbycode = _watchMock->SecondsSince1970CastToUnsignedShortMock.ReturnRandom();
       }
       //
       const vector<TestClassResult> testClassResults = _testClassRunnerRunner.RunTestClasses(zenUnitArgs);
       //
       if (!randomseedsetbyuser)
       {
-         _watchMock->SecondsSince1970Mock.CalledOnce();
+         _watchMock->SecondsSince1970CastToUnsignedShortMock.CalledOnce();
       }
 
       ZEN(_transformerMock->RandomTransformMock.CalledOnceWith(
