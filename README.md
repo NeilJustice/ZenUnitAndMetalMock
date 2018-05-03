@@ -14,8 +14,11 @@
 
 ```cpp
 #include "ZenUnit.h" // Single header
-#include "Examples/FizzBuzz.h"
 
+// Function under test
+std::string FizzBuzz(unsigned endNumber);
+
+// TESTS defines a ZenUnit test class and begins the FACTS section.
 TESTS(FizzBuzzTests)
 // By design, in ZenUnit test names are purposefully
 // duplicated between the FACTS section and the EVIDENCE section.
@@ -28,6 +31,7 @@ TESTS(FizzBuzzTests)
 AFACT(FizzBuzz_EndNumber0_Throws)
 // FACTS specifies an N-by-N value-parameterized test.
 FACTS(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)
+// EVIDENCE concludes the FACTS section and begins the EVIDENCE section.
 EVIDENCE
 
 // TEST defines a non-value-parameterized test.
@@ -36,16 +40,17 @@ TEST(FizzBuzz_EndNumber0_Throws)
    // THROWS asserts that an expression throws *exactly* (not a derived class of)
    // an expected exception type with *exactly* an expected exception what() text.
    THROWS(FizzBuzz(0), std::invalid_argument,
-      "FizzBuzz(): endNumber must be 1 or greater");
+      "FizzBuzz() error: endNumber must be 1 or greater");
 }
 
 // TEST2X2 defines a 2-by-2 value-parameterized test
-// that processes its typesafe variadic arguments list 2-by-2,
-// in this case forming 15 independent unit tests for function FizzBuzz().
+// that processes its typesafe variadic arguments list 2-by-2.
+// In this case, 16 independent unit tests are defined for function FizzBuzz().
+// Each pair of arguments is run using a separate instance of FizzBuzzTests.
 TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    unsigned endNumber, const std::string& expectedFizzBuzzSequence,
    1, "1",
-   2, "1 2" ,
+   2, "1 2",
    3, "1 2 Fizz",
    4, "1 2 Fizz 4",
    5, "1 2 Fizz 4 Buzz",
@@ -58,13 +63,47 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    12, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz",
    13, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13",
    14, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14",
-   15, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz")
+   15, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz",
+   16, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz 16")
 {
    ARE_EQUAL(expectedFizzBuzzSequence, FizzBuzz(endNumber));
 }
 
 // RUN_TESTS registers a test class to run when ZenUnit::RunTests(argc, argv) is called.
 RUN_TESTS(FizzBuzzTests)
+
+// Function under test
+std::string FizzBuzz(unsigned endNumber)
+{
+   if (endNumber == 0)
+   {
+      throw std::invalid_argument("FizzBuzz() error: endNumber must be 1 or greater");
+   }
+   std::ostringstream oss;
+   for (unsigned i = 1; i <= endNumber; ++i)
+   {
+      const bool divisibleBy3 = i % 3 == 0;
+      const bool divisibleBy5 = i % 5 == 0;
+      if (divisibleBy3)
+      {
+         oss << "Fizz";
+      }
+      if (divisibleBy5)
+      {
+         oss << "Buzz";
+      }
+      if (!divisibleBy3 && !divisibleBy5)
+      {
+         oss << i;
+      }
+      if (i < endNumber)
+      {
+         oss << ' ';
+      }
+   }
+   const std::string fizzBuzzSequence(oss.str());
+   return fizzBuzzSequence;
+}
 
 int main(int argc, char* argv[])
 {
@@ -83,40 +122,44 @@ int main(int argc, char* argv[])
 ZenUnit v0.2.1
 Usage: <TestsBinaryName> [Options...]
 
-Testing Rigor:
+Testing Utility Options:
 
--random[=Seed]
-   Run test classes and tests in a random order.
--testruns=<NumberOfTestRuns>
-   Repeat the running of all non-skipped tests N times.
-   Specify -testruns=2 -random for two random test run orderings.
--failskips
-   Exit 1 regardless of test run outcome if any tests are skipped.
+-pause
+   Wait for any key before running tests to allow attaching a profiler or debugger.
+-wait
+   Wait for any key at the end of the test run.
+-exit0
+   Always exit 0 regardless of test run outcome.
+   Useful option for not blocking the launch of a ZenUnit tests
+   console window when previously running ZenUnit tests in a post-build step.
 
-Testing Filtration:
+Testing Filtration Options:
 
 -run=<TestClassName>[::TestName][/TestCaseNumber][,...]
    Run only specified case-insensitive test classes, tests, or test cases.
    Add a '*' character to the end of a test class or test name
    filter string to specify name-starts-with filtration.
- Example A: -run=Network*
-   runs all test classes that start with 'Network'.
- Example B: -run=WidgetTests.Serialize*
-   runs all tests in WidgetTests that start with 'Serialize'.
- Example C: -run=MathTests.ComplexCalculation_ValidInputs_ReturnsExpected/3
-   runs the third test case of value-parameterized test
-   ComplexCalculation_ValidInputs_ReturnsExpected in test class MathTests.
+ Example 1: -run=Widget*
+   Runs all test classes that start with 'Widget'.
+ Example 2: -run=WidgetTests.FunctionUnderTest*
+   Runs all tests in WidgetTests that start with 'FunctionUnderTest'.
+ Example 3: -run=WidgetTests.FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior/3
+   Runs the third test case of value-parameterized test
+   WidgetTests.FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior.
 -failfast
    Immediately exit with exit code 1 if a test fails.
 
-Testing Utility:
+Testing Rigor Options:
 
--pause
-   Wait for any key before running tests to allow attaching a profiler or debugger.
--exit0
-   Always exit 0 regardless of test run outcome.
--wait
-   Wait for any key at the end of the test run.
+-random[=Seed]
+   Run test classes and tests in a random order.
+-testruns=<NumberOfTestRuns>
+   Repeat the running of all non-skipped tests NumberOfTestRuns times.
+   Specify -random -testruns=2 for two random test run orderings.
+-failskips
+   Exit 1 regardless of test run outcome if any tests are skipped.
+   Useful option for continuous integration servers to partially ensure
+   that a culture of complacency does not develop around skipped tests being OK.
 ```
 
 ### Type-Parameterized Test Class Syntax

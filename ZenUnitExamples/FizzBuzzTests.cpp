@@ -3,16 +3,31 @@
 std::string FizzBuzz(unsigned endNumber);
 
 TESTS(FizzBuzzTests)
+// By design, in ZenUnit test names are purposefully
+// duplicated between the FACTS section and the EVIDENCE section.
+// Because code is read much more often than it is written,
+// always having test names ready to review for continued quality and cohesion
+// at the top of test files instead of scattered throughout test files
+// is where this design yields long term code quality dividends.
+
+// AFACT specifies a non-value-parameterized test.
 AFACT(FizzBuzz_EndNumber0_Throws)
+// FACTS specifies an N-by-N value-parameterized test.
 FACTS(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)
 EVIDENCE
 
+// TEST defines a non-value-parameterized test.
 TEST(FizzBuzz_EndNumber0_Throws)
 {
+   // THROWS asserts that an expression throws *exactly* (not a derived class of)
+   // an expected exception type with *exactly* an expected exception what() text.
    THROWS(FizzBuzz(0), std::invalid_argument,
       "FizzBuzz() error: endNumber must be 1 or greater");
 }
 
+// TEST2X2 defines a 2-by-2 value-parameterized test
+// that processes its typesafe variadic arguments list 2-by-2,
+// in this case forming 15 independent unit tests for function FizzBuzz().
 TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    unsigned endNumber, const std::string& expectedFizzBuzzSequence,
    1, "1",
@@ -35,6 +50,7 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    ARE_EQUAL(expectedFizzBuzzSequence, FizzBuzz(endNumber));
 }
 
+// RUN_TESTS registers a test class to run when ZenUnit::RunTests(argc, argv) is called.
 RUN_TESTS(FizzBuzzTests)
 
 std::string FizzBuzz(unsigned endNumber)
