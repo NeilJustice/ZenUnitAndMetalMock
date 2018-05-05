@@ -4560,7 +4560,7 @@ Testing Rigor Options:
          return overallExitCode;
       }
    private:
-      bool WaitForAnyKeyIfPauseModeAndHaveNotPaused(bool pauseMode, bool havePaused) const
+      bool WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(bool pauseMode, bool havePaused) const
       {
          if (!pauseMode)
          {
@@ -4579,7 +4579,7 @@ Testing Rigor Options:
       {
          _preamblePrinter->PrintOpeningThreeLines(zenUnitArgs, _testClassRunnerRunner.get());
          _havePaused = _nonVoidTwoArgMemberFunctionCaller->ConstCall(
-            this, &TestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPaused, zenUnitArgs.pause, _havePaused);
+            this, &TestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused, zenUnitArgs.pause, _havePaused);
          _testRunStopwatch->Start();
          if (zenUnitArgs.maxtotalseconds > 0)
          {

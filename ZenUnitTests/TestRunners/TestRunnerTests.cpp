@@ -23,9 +23,9 @@ namespace ZenUnit
    AFACT(SkipTest_CallsTestRunResultAddSkippedFullTestName)
    AFACT(SkipTestClass_CallsTestRunResultAddSkippedTestClassNameAndReason)
    FACTS(ParseArgsRunTestClassesPrintResults_ParsesArgs_RunsTestClassesTimesNumberOfTimes_Returns0IfAllTestRunsPassOtherwiseReturns1)
-   AFACT(WaitForAnyKeyIfPauseMode_PauseModeFalse_DoesNothing_ReturnsFalse)
-   AFACT(WaitForAnyKeyIfPauseMode_PauseModeTrue_HavePausedTrue_DoesNothing_ReturnsTrue)
-   AFACT(WaitForAnyKeyIfPauseMode_PauseModeTrueHavePausedFalse_WritesMessageAndWaitsForAnyKey_ReturnsTrue)
+   AFACT(WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeFalse_DoesNothing_ReturnsFalse)
+   AFACT(WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrue_HavePausedTrue_DoesNothing_ReturnsTrue)
+   AFACT(WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrueHavePausedFalse_WritesMessageAndWaitsForAnyKey_ReturnsTrue)
    FACTS(PrintPreambleRunTestClassesPrintConclusion_RunsTestsAndPrintsResults_UsingBackgroundThreadIfMaxTotalSecondsGT0_Returns0IfAllTestsPassedOtherwiseReturns1)
    AFACT(RunTestClasses_RunsTestClasses)
    //FACTS(RunTestClassesWithWaitableRunnerThread_SpawnsThreadToCallRunTestClasses_PrintsResultsAndExits1IfThreadTimesOut)
@@ -181,7 +181,8 @@ namespace ZenUnit
       const int exitCode = _testRunner.PrintPreambleRunTestClassesPrintConclusion(zenUnitArgs);
       //
       ZEN(_nonVoidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
-          &_testRunner, &TestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPaused, zenUnitArgs.pause, havePausedInitialValue));
+          &_testRunner, &TestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused,
+         zenUnitArgs.pause, havePausedInitialValue));
       ARE_EQUAL(waitForAnyKeyIfPauseModeReturnValue, _testRunner._havePaused);
       ZEN(_testRunStopwatchMock->StartMock.CalledOnce());
       ZEN(_preamblePrinterMock->PrintOpeningThreeLinesMock.CalledOnceWith(
@@ -206,24 +207,27 @@ namespace ZenUnit
       ARE_EQUAL(determineExitCodeReturnValueAndExpectedExitCode, exitCode);
    }
 
-   TEST(WaitForAnyKeyIfPauseMode_PauseModeFalse_DoesNothing_ReturnsFalse)
+   TEST(WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeFalse_DoesNothing_ReturnsFalse)
    {
-      const bool newValueForHavePaused = _testRunner.WaitForAnyKeyIfPauseModeAndHaveNotPaused(false, ZenUnit::Random<bool>());
+      const bool newValueForHavePaused = _testRunner.
+         WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(false, ZenUnit::Random<bool>());
       IS_FALSE(newValueForHavePaused);
    }
 
-   TEST(WaitForAnyKeyIfPauseMode_PauseModeTrue_HavePausedTrue_DoesNothing_ReturnsTrue)
+   TEST(WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrue_HavePausedTrue_DoesNothing_ReturnsTrue)
    {
-      const bool newValueForHavePaused = _testRunner.WaitForAnyKeyIfPauseModeAndHaveNotPaused(true, true);
+      const bool newValueForHavePaused = _testRunner.
+         WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(true, true);
       IS_TRUE(newValueForHavePaused);
    }
 
-   TEST(WaitForAnyKeyIfPauseMode_PauseModeTrueHavePausedFalse_WritesMessageAndWaitsForAnyKey_ReturnsTrue)
+   TEST(WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrueHavePausedFalse_WritesMessageAndWaitsForAnyKey_ReturnsTrue)
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WaitForAnyKeyMock.Expect();
       //
-      const bool newValueForHavePaused = _testRunner.WaitForAnyKeyIfPauseModeAndHaveNotPaused(true, false);
+      const bool newValueForHavePaused = _testRunner.
+         WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(true, false);
       //
       ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit test runner paused. Press any key to run tests."));
