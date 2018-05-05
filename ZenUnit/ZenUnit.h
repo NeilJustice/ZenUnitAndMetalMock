@@ -4173,7 +4173,7 @@ Testing Rigor Options:
 
       virtual std::string MakeThirdLineSuffix(bool random, unsigned short randomseed) const
       {
-         const std::string thirdLineSuffix = random ? " (ZenUnit::Random<T> seed " + std::to_string(randomseed) + ")" : "";
+         const std::string thirdLineSuffix = random ? " (random seed " + std::to_string(randomseed) + ")" : "";
          return thirdLineSuffix;
       }
    };
@@ -4334,7 +4334,7 @@ Testing Rigor Options:
                middleLineVictoryOrFail = "<VICTORY> ";
                numberOfTestsAndMillisecondsAndRandomSeedMessage = String::Concat("   Result: ",
                   totalNumberOfTestCases, ' ', testOrTests, " passed ", inMillisecondsPart,
-                  " (ZenUnit::Random<T> seed ", ZenUnitRandomSeed::value, ")");
+                  " (random seed ", ZenUnitRandomSeed::value, ")");
             }
             else
             {
@@ -4342,7 +4342,7 @@ Testing Rigor Options:
                middleLineVictoryOrFail = ">>-FAIL-> ";
                numberOfTestsAndMillisecondsAndRandomSeedMessage = String::Concat("   Result: ",
                   _numberOfFailedTestCases, '/', totalNumberOfTestCases, ' ', testOrTests, " failed ", inMillisecondsPart,
-                  " (ZenUnit::Random<T> seed ", ZenUnitRandomSeed::value, ")");
+                  " (random seed ", ZenUnitRandomSeed::value, ")");
             }
             _console->WriteColor(firstAndThirdLineAsciiArt, color);
             const std::string completedCommandLineMessage = "Completed: " + zenUnitArgs.commandLine;
