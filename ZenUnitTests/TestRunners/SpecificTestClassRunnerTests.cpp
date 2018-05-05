@@ -208,12 +208,12 @@ namespace ZenUnit
    }
 
    TEST2X2(DoRunTests_RandomlyRunsTestsIfRandomOtherwiseSequentiallyRunsTests,
-      bool random, bool expectRandomForEach,
+      bool randomorder, bool expectRandomForEach,
       false, false,
       true, true)
    {
       ZenUnitArgs zenUnitArgs;
-      zenUnitArgs.random = random;
+      zenUnitArgs.randomorder = randomorder;
       zenUnitArgs.randomseed = Random<unsigned short>();
       GetArgs_ZenMock.Return(zenUnitArgs);
       if (expectRandomForEach)

@@ -22,8 +22,8 @@ namespace ZenUnit
    AFACT(PrintTestClassResultFailures_CallsTestClassResultPrintTestFailures)
    FACTS(DetermineExitCode_DefaultArgs_Returns1IfAnyTestFailures_OtherwiseReturns0)
    FACTS(DetermineExitCode_Exit0True_AlwaysReturns0)
-   FACTS(DetermineExitCode_Exit0True_FailSkipsTrue_AlwaysReturns0)
-   FACTS(DetermineExitCode_FailSkipsTrue_Returns1IfAnyTestsOrTestClassesSkipped)
+   FACTS(DetermineExitCode_Exit0True_noskipsTrue_AlwaysReturns0)
+   FACTS(DetermineExitCode_noskipsTrue_Returns1IfAnyTestsOrTestClassesSkipped)
    AFACT(PrintSkippedTestClassReminder_PrintsExpectedToConsole)
    AFACT(PrintSkippedTestReminder_PrintsExpectedToConsole)
    AFACT(ResetStateExceptForSkips_ResetsTestFailureNumberer_ClearsTestClassResults_SetsNumberOfFailedTestCasesTo0)
@@ -268,7 +268,7 @@ namespace ZenUnit
       const string expectedCompletedLine = "Completed: " + zenUnitArgs.commandLine;
       const string expectedNumberOfTestsAndMillisecondsLine = String::Concat("   Result: ",
          expectedClosingLineTestsCountText, " in ", testRunMilliseconds, " ", expectedMillisecondOrMilliseconds,
-         " (time-based random seed ", ZenUnitRandomSeed::value, ")");
+         " (ZenUnit::Random<T> seed ", ZenUnitRandomSeed::value, ")");
       const string expectedEndTimeLine = "  EndTime: " + timeZoneDateTimeNow;
       ZEN(_watchMock->DateTimeNowWithTimeZoneMock.CalledOnce());
       ZEN(_consoleMock->WriteLineMock.CalledAsFollows(
@@ -329,7 +329,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedExitCode, exitCode);
    }
 
-   TEST4X4(DetermineExitCode_Exit0True_FailSkipsTrue_AlwaysReturns0,
+   TEST4X4(DetermineExitCode_Exit0True_noskipsTrue_AlwaysReturns0,
       size_t numberOfFailedTestCases,
       size_t numberOfSkippedTests,
       size_t numberOfSkippedTestClasses,
@@ -342,14 +342,14 @@ namespace ZenUnit
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
       ZenUnitArgs args;
       args.exit0 = true;
-      args.failskips = true;
+      args.noskips = true;
       //
       const int exitCode = _testRunResult.DetermineExitCode(args);
       //
       ARE_EQUAL(expectedExitCode, exitCode);
    }
 
-   TEST4X4(DetermineExitCode_FailSkipsTrue_Returns1IfAnyTestsOrTestClassesSkipped,
+   TEST4X4(DetermineExitCode_noskipsTrue_Returns1IfAnyTestsOrTestClassesSkipped,
       size_t numberOfFailedTestCases,
       size_t numberOfSkippedTests,
       size_t numberOfSkippedTestClasses,
@@ -366,7 +366,7 @@ namespace ZenUnit
    {
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
       ZenUnitArgs args;
-      args.failskips = true;
+      args.noskips = true;
       //
       const int exitCode = _testRunResult.DetermineExitCode(args);
       //

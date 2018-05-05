@@ -13,7 +13,7 @@ namespace ZenUnit
    FACTS(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0)
    AFACT(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
    AFACT(Parse_Run_ReturnsExpectedZenUnitArgs)
-   AFACT(Parse_Random_SetsRandomToTrue)
+   AFACT(Parse_randomorder_SetsrandomorderToTrue)
    AFACT(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    AFACT(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
    FACTS(Parse_EqualsSignContainingArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1)
@@ -24,7 +24,7 @@ namespace ZenUnit
    EVIDENCE
 
    const string TestProgramPath = Random<string>();
-   const string ExpectedUsage = R"(ZenUnit v0.2.1
+   const string ExpectedUsage = R"(ZenUnit v0.2.2
 Usage: <TestsBinaryName> [Options...]
 
 Testing Utility Options:
@@ -35,8 +35,8 @@ Testing Utility Options:
    Wait for any key at the end of the test run.
 -exit0
    Always exit 0 regardless of test run outcome.
-   Useful option for not blocking the launch of a ZenUnit tests
-   console window when previously running ZenUnit tests in a post-build step.
+   Useful option for never blocking the launch of a ZenUnit tests
+   console window when previously running those tests in a post-build step.
 
 Testing Filtration Options:
 
@@ -56,15 +56,21 @@ Testing Filtration Options:
 
 Testing Rigor Options:
 
--random[=Seed]
+-randomorder
    Run test classes and tests in a random order.
+-randomseed=<Value>
+   Set the random seed used by -randomorder
+   and by the ZenUnit::Random<T> family of functions.
+   The default random seed is the number of seconds since 1970.
 -testruns=<NumberOfTestRuns>
-   Repeat the running of all non-skipped tests NumberOfTestRuns times.
-   Specify -random -testruns=2 for two random test run orderings.
--failskips
+   Repeat the running of all tests NumberOfTestRuns times.
+   Specify -testruns=3 -randomorder for three random test run orderings.
+   Useful option for continuous integration servers to partially ensure
+   that checked-in unit tests are robust with respect to ordering.
+-noskips
    Exit 1 regardless of test run outcome if any tests are skipped.
    Useful option for continuous integration servers to partially ensure
-   that a culture of complacency does not develop around skipped tests being OK.)";
+   that a culture of "skip it and ship it!" does not take root.)";
 
    ArgsParser _argsParser;
    ConsoleMock* _consoleMock;
@@ -153,9 +159,10 @@ Testing Rigor Options:
          "-wait",
          "-exit0",
          "-failfast",
-         "-failskips",
+         "-noskips",
          "-testruns=" + to_string(testruns),
-         "-random=" + to_string(randomseed)
+         "-randomorder",
+         "-randomseed=" + to_string(randomseed)
       };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
@@ -171,10 +178,11 @@ Testing Rigor Options:
       expectedZenUnitArgs.wait = true;
       expectedZenUnitArgs.exit0 = true;
       expectedZenUnitArgs.failfast = true;
-      expectedZenUnitArgs.failskips = true;
+      expectedZenUnitArgs.noskips = true;
       expectedZenUnitArgs.testruns = 1;
-      expectedZenUnitArgs.random = true;
+      expectedZenUnitArgs.randomorder = true;
       expectedZenUnitArgs.testruns = testruns;
+      expectedZenUnitArgs.randomorder = true;
       expectedZenUnitArgs.randomseed = static_cast<unsigned short>(randomseed);
       expectedZenUnitArgs.randomseedsetbyuser = true;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
@@ -199,15 +207,15 @@ Testing Rigor Options:
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST(Parse_Random_SetsRandomToTrue)
+   TEST(Parse_randomorder_SetsrandomorderToTrue)
    {
-      const vector<string> args = { "ExePath", "-random" };
+      const vector<string> args = { "ExePath", "-randomorder" };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
-      expectedZenUnitArgs.random = true;
+      expectedZenUnitArgs.randomorder = true;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
@@ -217,7 +225,7 @@ Testing Rigor Options:
       AssertArgSetsBoolField("-wait", &ZenUnitArgs::wait);
       AssertArgSetsBoolField("-exit0", &ZenUnitArgs::exit0);
       AssertArgSetsBoolField("-failfast", &ZenUnitArgs::failfast);
-      AssertArgSetsBoolField("-failskips", &ZenUnitArgs::failskips);
+      AssertArgSetsBoolField("-noskips", &ZenUnitArgs::noskips);
    }
    void AssertArgSetsBoolField(const string& arg, bool ZenUnitArgs::* expectedFieldToBeSet)
    {
@@ -247,8 +255,8 @@ Testing Rigor Options:
       const string& arg,
       "-testruns=",
       "-testruns===",
-      "-random=",
-      "-random===")
+      "-randomseed=",
+      "-randomseed===")
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
@@ -294,14 +302,14 @@ Testing Rigor Options:
    TEST(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
    {
       const unsigned randomSeedArgValue = ToUnsigned_ZenMock.ReturnRandom();
-      const vector<string> Args{ TestProgramPath, "-random=" + to_string(randomSeedArgValue) };
+      const vector<string> Args{ TestProgramPath, "-randomseed=" + to_string(randomSeedArgValue) };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
       //
       ZEN(ToUnsigned_ZenMock.CalledOnceWith(to_string(randomSeedArgValue)));
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
-      expectedZenUnitArgs.random = true;
+      expectedZenUnitArgs.randomorder = false;
       expectedZenUnitArgs.randomseed = static_cast<unsigned short>(randomSeedArgValue);
       expectedZenUnitArgs.randomseedsetbyuser = true;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);

@@ -739,9 +739,9 @@ namespace ZenUnit
       bool wait = false;
       bool exit0 = false;
       bool failfast = false;
-      bool failskips = false;
+      bool noskips = false;
       unsigned testruns = 1;
-      bool random = false;
+      bool randomorder = false;
       unsigned short randomseed = 0;
       bool randomseedsetbyuser = false;
       unsigned maxtestmilliseconds = 0;
@@ -1733,13 +1733,13 @@ namespace ZenUnit
             {
                zenUnitArgs.failfast = true;
             }
-            else if (arg == "-failskips")
+            else if (arg == "-noskips")
             {
-               zenUnitArgs.failskips = true;
+               zenUnitArgs.noskips = true;
             }
-            else if (arg == "-random")
+            else if (arg == "-randomorder")
             {
-               zenUnitArgs.random = true;
+               zenUnitArgs.randomorder = true;
             }
             else if (arg == "-help" || arg == "--help")
             {
@@ -1769,9 +1769,8 @@ namespace ZenUnit
                   {
                      zenUnitArgs.testruns = call_String_ToUnsigned(argValueString);
                   }
-                  else if (argName == "-random")
+                  else if (argName == "-randomseed")
                   {
-                     zenUnitArgs.random = true;
                      zenUnitArgs.randomseed = static_cast<unsigned short>(call_String_ToUnsigned(argValueString));
                      ZenUnit::SetRandomSeed(zenUnitArgs.randomseed);
                      zenUnitArgs.randomseedsetbyuser = true;
@@ -1792,7 +1791,7 @@ namespace ZenUnit
 
       static const std::string& Usage()
       {
-         static const std::string usage = R"(ZenUnit v0.2.1
+         static const std::string usage = R"(ZenUnit v0.2.2
 Usage: <TestsBinaryName> [Options...]
 
 Testing Utility Options:
@@ -1803,8 +1802,8 @@ Testing Utility Options:
    Wait for any key at the end of the test run.
 -exit0
    Always exit 0 regardless of test run outcome.
-   Useful option for not blocking the launch of a ZenUnit tests
-   console window when previously running ZenUnit tests in a post-build step.
+   Useful option for never blocking the launch of a ZenUnit tests
+   console window when previously running those tests in a post-build step.
 
 Testing Filtration Options:
 
@@ -1824,15 +1823,21 @@ Testing Filtration Options:
 
 Testing Rigor Options:
 
--random[=Seed]
+-randomorder
    Run test classes and tests in a random order.
+-randomseed=<Value>
+   Set the random seed used by -randomorder
+   and by the ZenUnit::Random<T> family of functions.
+   The default random seed is the number of seconds since 1970.
 -testruns=<NumberOfTestRuns>
-   Repeat the running of all non-skipped tests NumberOfTestRuns times.
-   Specify -random -testruns=2 for two random test run orderings.
--failskips
+   Repeat the running of all tests NumberOfTestRuns times.
+   Specify -testruns=3 -randomorder for three random test run orderings.
+   Useful option for continuous integration servers to partially ensure
+   that checked-in unit tests are robust with respect to ordering.
+-noskips
    Exit 1 regardless of test run outcome if any tests are skipped.
    Useful option for continuous integration servers to partially ensure
-   that a culture of complacency does not develop around skipped tests being OK.)";
+   that a culture of "skip it and ship it!" does not take root.)";
          return usage;
       }
    private:
@@ -4076,7 +4081,7 @@ Testing Rigor Options:
 
       virtual std::vector<TestClassResult> RunTestClasses(ZenUnitArgs& zenUnitArgs)
       {
-         if (zenUnitArgs.random)
+         if (zenUnitArgs.randomorder)
          {
             if (!zenUnitArgs.randomseedsetbyuser)
             {
@@ -4151,7 +4156,7 @@ Testing Rigor Options:
          _console->WriteColor("[ZenUnit]", Color::Green);
          const size_t numberOfTestClassesToBeRun = testClassRunnerRunner->NumberOfTestClassesToBeRun();
          const std::string thirdLinePrefix = MakeThirdLinePrefix(numberOfTestClassesToBeRun);
-         const std::string thirdLineSuffix = MakeThirdLineSuffix(zenUnitArgs.random, zenUnitArgs.randomseed);
+         const std::string thirdLineSuffix = MakeThirdLineSuffix(zenUnitArgs.randomorder, zenUnitArgs.randomseed);
          const std::string thirdLineAndLineBreak = thirdLinePrefix + thirdLineSuffix + "\n";
          _console->WriteLine(thirdLineAndLineBreak);
       }
@@ -4168,7 +4173,7 @@ Testing Rigor Options:
 
       virtual std::string MakeThirdLineSuffix(bool random, unsigned short randomseed) const
       {
-         const std::string thirdLineSuffix = random ? " (time-based random seed " + std::to_string(randomseed) + ")" : "";
+         const std::string thirdLineSuffix = random ? " (ZenUnit::Random<T> seed " + std::to_string(randomseed) + ")" : "";
          return thirdLineSuffix;
       }
    };
@@ -4329,7 +4334,7 @@ Testing Rigor Options:
                middleLineVictoryOrFail = "<VICTORY> ";
                numberOfTestsAndMillisecondsAndRandomSeedMessage = String::Concat("   Result: ",
                   totalNumberOfTestCases, ' ', testOrTests, " passed ", inMillisecondsPart,
-                  " (time-based random seed ", ZenUnitRandomSeed::value, ")");
+                  " (ZenUnit::Random<T> seed ", ZenUnitRandomSeed::value, ")");
             }
             else
             {
@@ -4337,7 +4342,7 @@ Testing Rigor Options:
                middleLineVictoryOrFail = ">>-FAIL-> ";
                numberOfTestsAndMillisecondsAndRandomSeedMessage = String::Concat("   Result: ",
                   _numberOfFailedTestCases, '/', totalNumberOfTestCases, ' ', testOrTests, " failed ", inMillisecondsPart,
-                  " (time-based random seed ", ZenUnitRandomSeed::value, ")");
+                  " (ZenUnit::Random<T> seed ", ZenUnitRandomSeed::value, ")");
             }
             _console->WriteColor(firstAndThirdLineAsciiArt, color);
             const std::string completedCommandLineMessage = "Completed: " + zenUnitArgs.commandLine;
@@ -4361,7 +4366,7 @@ Testing Rigor Options:
          const bool haveSkippedTestsOrTestClasses =
             !_skippedFullTestNamesAndReasons.empty() ||
             !_skippedTestClassNamesAndReasons.empty();
-         if (args.failskips && haveSkippedTestsOrTestClasses)
+         if (args.noskips && haveSkippedTestsOrTestClasses)
          {
             return 1;
          }
@@ -5047,7 +5052,7 @@ Testing Rigor Options:
       void DoRunTests()
       {
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
-         if (zenUnitArgs.random)
+         if (zenUnitArgs.randomorder)
          {
             _twoArgMemberForEacher->RandomTwoArgMemberForEach(
                &_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult, zenUnitArgs.randomseed);
@@ -6117,9 +6122,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
          ARE_EQUAL(expectedArguments.wait, actualArgs.wait);
          ARE_EQUAL(expectedArguments.exit0, actualArgs.exit0);
          ARE_EQUAL(expectedArguments.failfast, actualArgs.failfast);
-         ARE_EQUAL(expectedArguments.failskips, actualArgs.failskips);
+         ARE_EQUAL(expectedArguments.noskips, actualArgs.noskips);
          ARE_EQUAL(expectedArguments.testruns, actualArgs.testruns);
-         ARE_EQUAL(expectedArguments.random, actualArgs.random);
+         ARE_EQUAL(expectedArguments.randomorder, actualArgs.randomorder);
          ARE_EQUAL(expectedArguments.randomseed, actualArgs.randomseed);
          ARE_EQUAL(expectedArguments.randomseedsetbyuser, actualArgs.randomseedsetbyuser);
          ARE_EQUAL(expectedArguments.maxtestmilliseconds, actualArgs.maxtestmilliseconds);
@@ -6294,7 +6299,8 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
 #if _WIN32
       const
 #endif
-      std::uniform_real_distribution<float> uniformFloatDistribution(-10000.0f, 10000.0f);
+      std::uniform_real_distribution<float> uniformFloatDistribution(
+         std::numeric_limits<float>::min(), std::numeric_limits<float>::max());
       const float randomFloat = uniformFloatDistribution(defaultRandomEngine);
       return randomFloat;
    }
@@ -6306,7 +6312,8 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
 #if _WIN32
       const
 #endif
-      std::uniform_real_distribution<double> uniformDoubleDistribution(-10000.0, 10000.0);
+      std::uniform_real_distribution<double> uniformDoubleDistribution(
+         std::numeric_limits<double>::min(), std::numeric_limits<double>::max());
       const double randomDouble = uniformDoubleDistribution(defaultRandomEngine);
       return randomDouble;
    }

@@ -112,14 +112,14 @@ int main(int argc, char* argv[])
 }
 ```
 
-### Console Output
+### ZenUnit Console Output
 
 ![ZenUnit](Screenshots/ZenUnitFizzBuzz.png "ZenUnit")
 
-### Command Line Usage
+### ZenUnit Command Line Usage
 
 ```
-ZenUnit v0.2.1
+ZenUnit v0.2.2
 Usage: <TestsBinaryName> [Options...]
 
 Testing Utility Options:
@@ -130,8 +130,8 @@ Testing Utility Options:
    Wait for any key at the end of the test run.
 -exit0
    Always exit 0 regardless of test run outcome.
-   Useful option for not blocking the launch of a ZenUnit tests
-   console window when previously running ZenUnit tests in a post-build step.
+   Useful option for never blocking the launch of a ZenUnit tests
+   console window when previously running those tests in a post-build step.
 
 Testing Filtration Options:
 
@@ -151,18 +151,24 @@ Testing Filtration Options:
 
 Testing Rigor Options:
 
--random[=Seed]
+-randomorder
    Run test classes and tests in a random order.
+-randomseed=<Value>
+   Set the random seed used by -randomorder
+   and by the ZenUnit::Random<T> family of functions.
+   The default random seed is the number of seconds since 1970.
 -testruns=<NumberOfTestRuns>
-   Repeat the running of all non-skipped tests NumberOfTestRuns times.
-   Specify -random -testruns=2 for two random test run orderings.
--failskips
+   Repeat the running of all tests NumberOfTestRuns times.
+   Specify -testruns=3 -randomorder for three random test run orderings.
+   Useful option for continuous integration servers to partially ensure
+   that checked-in unit tests are robust with respect to ordering.
+-noskips
    Exit 1 regardless of test run outcome if any tests are skipped.
    Useful option for continuous integration servers to partially ensure
-   that a culture of complacency does not develop around skipped tests being OK.
+   that a culture of "skip it and ship it!" does not take root.
 ```
 
-### Type-Parameterized Test Class Syntax
+### ZenUnit Type-Parameterized Test Class Syntax
 
 How would you confirm the correctness of this templatized Set\:\:Contains function across various types of sets and elements?
 
@@ -220,11 +226,11 @@ int main(int argc, char* argv[])
 }
 ```
 
-### Type-Parameterized Test Results
+### ZenUnit Type-Parameterized Test Class Syntax Console Output
 
 ![ZenUnit](Screenshots/ZenUnitTypeParameterizedTestClass.png "ZenUnit Type-Parameterized Test Results")
 
-### Assertion Macros
+### ZenUnit Assertions
 
 |Values|Description|
 |------|-----------|
@@ -274,7 +280,7 @@ int main(int argc, char* argv[])
 |`THROWS_EXCEPTION(expression, expectedExceptionBaseClass)`|mutate-exception-type and mutate-exception-message|
 |`THROWS_ANY(expression)`|mutate-exception-type and mutate-exception-message|
 
-### Test-Defining Macros
+### ZenUnit Test-Defining Macros
 
 |Test Classes|Description|
 |------------|-----------|
@@ -295,9 +301,9 @@ int main(int argc, char* argv[])
 |`RUN_TESTS(HighQualityTestClassName)`|Registers a `TEST_CLASS` to be run when `ZenUnit::RunTests(argc, argv)` is called.|
 |`RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)`|Registers a `TEMPLATE_TEST_CLASS` templatized with `TemplateArguments...` to be run when `ZenUnit::RunTests(argc, argv)` is called.|
 |`THEN_RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)`|Registers a `TEMPLATE_TEST_CLASS` templatized with `TemplateArguments...` to be run when `ZenUnit::RunTests(argc, argv)` is called. For use after `RUN_TEMPLATE_TESTS`.|
-|`SKIP_TESTS(HighQualityTestClassName, Reason)`|Unregisters a `TEST_CLASS` from running with `ZenUnit::RunTests(argc, argv)` is called.|
-|`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Unregisters a `TEMPLATE_TEST_CLASS` from running with `ZenUnit::RunTests(argc, argv)` is called.|
-|`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Unregisters a `TEMPLATE_TEST_CLASS` from running with `ZenUnit::RunTests(argc, argv)` is called. For use after `SKIP_TEMPLATE_TESTS`.|
+|`SKIP_TESTS(HighQualityTestClassName, Reason)`|Skips a `TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called.|
+|`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Skips a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called.|
+|`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Skips a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called. For use after `SKIP_TEMPLATE_TESTS`.|
 
 ### Random Value Functions
 
@@ -305,20 +311,26 @@ Testing using random inputs instead of constant inputs is a central technique fo
 
 Today, code mutations can be induced manually by colleagues during code review to confirm the degree of rigorousness with which unit tests have been written.
 
-In the 2020s, a combinatorial number of code mutations will be able to be induced automatically by LLVM-powered mutation testing frameworks.
+In the 2020s, it is appearing likely that a combinatorial number of code mutations will be able to be induced automatically by LLVM-powered mutation testing frameworks.
 
-In preparation for this future, ZenUnit is designed to make it easy to write unit tests that are robust to code mutations.
+A developer will then be able to call upon an affordable desktop supercomputer or affordable cloud supercomputing to "attempt to slay" each and every LLVM-induced code mutation, resulting in a code quality metric ten times as potent as code coverage: mutation coverage.
 
-For robustness to two of the most common code mutations, mutate-value (true to false, 0 to 1, comma to dash, etc) and mutate-operator (+ to -, * to /, logical ! to nothing, etc), ZenUnit provides the following random value generating functions.
+Mutation coverage is the percentage of code mutants "slain" by a collection of unit tests.
+
+If a passing unit test fails as expected when the code it tests is mutated to call operator+ instead of operator-, then that unit test is said to have "slain" that mutate-operator code mutation.
+
+Slay every non-equivalent code mutation and the result is the 2020's must-have definition of done: 100% mutation coverage with by-definition 100% code coverage.
+
+For today and the 2020s, ZenUnit is designed to make it easy to generate random inputs for use in rigorously-written unit tests that are robust to code mutations.
 
 |Random Value Generating Function|Description|
 |--------------------------------|-----------|
-|ZenUnit::Random\<T\>()|Returns a random T value between std\:\:numeric_limits\<T\>::min() and std\:\:numeric_limits\<T\>::max().|
-|ZenUnit::RandomBetween\<T\>(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound)|Returns a random T value between inclusiveLowerBound and inclusiveUpperBound.|
+|ZenUnit::Random\<T\>()|Returns a random integer T value between std\:\:numeric_limits\<T\>::min() and std\:\:numeric_limits\<T\>::max().|
+|ZenUnit::RandomBetween\<T\>(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound)|Returns a random integer T value between inclusiveLowerBound and inclusiveUpperBound.|
+|ZenUnit::RandomEnum\<EnumType\>(EnumType exclusiveEnumMaxValue)|Returns a random EnumType between 0 and exclusiveEnumMaxValue - 1.|
+|ZenUnit::Random\<float\>()|Returns a random float between std::numeric_limits\<float\>::min() and std::numeric_limits\<float\>::max() from a std\:\:uniform_real_distribution\<float\>.|
+|ZenUnit::Random\<double\>()|Returns a random double between std::numeric_limits\<double\>::min() and std::numeric_limits\<double\>::max() from a std\:\:uniform_real_distribution\<double\>.|
 |ZenUnit::Random\<std\:\:string\>()|Returns "RandomString" + std::to_string(ZenUnit::RandomBetween<int>(0, 10000)).|
-|ZenUnit::RandomEnum\<EnumType\>(EnumType exclusiveEnumMaxValue)|Returns a random EnumType between 0 and exclusiveEnumMaxValue.|
-|ZenUnit::Random\<float\>()|Returns a random float between -10000.0f and 10000.0f from a std\:\:uniform_real_distribution\<float\>.|
-|ZenUnit::Random\<double\>()|Returns a random double between -10000.0 and 10000.0 from a std\:\:uniform_real_distribution\<double\>.|
 |ZenUnit::RandomVector\<T\>()|Returns a std\:\:vector\<T\> with size between 0 and 2 with each element being a ZenUnit\:\:Random\<T\>() value.|
 |ZenUnit::RandomMap\<KeyType, ValueType\>()|Returns a std\:\:map\<KeyType, ValueType\> with size between 0 and 2 with each key a ZenUnit\:\:Random\<KeyType\>() value and each value a ZenUnit\:\:Random\<ValueType\>() value.|
 |ZenUnit::RandomUnorderedMap\<T\>()|Returns a std\:\:unordered_map\<KeyType, ValueType\> with size between 0 and 2 with each key a ZenUnit\:\:Random\<KeyType\>() value and each value a ZenUnit\:\:Random\<ValueType\>() value.|
