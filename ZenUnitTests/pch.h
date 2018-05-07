@@ -14,6 +14,7 @@
 #pragma warning(disable: 5026) // 'std::_Generic_error_category': move constructor was implicitly defined as deleted	- C:\VS2017\VC\Tools\MSVC\14.12.25827\include\system_error
 #pragma warning(disable: 5027) // 'std::_Generic_error_category': move assignment operator was implicitly defined as deleted - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\system_error
 #pragma warning(disable: 5039) // 'TpSetCallbackCleanupGroup': pointer or reference to potentially throwing function passed to extern C function under - EHc.Undefined behavior may occur if this function throws an exception - C:\Program Files(x86)\Windows Kits\10\Include\10.0.16299.0\um\winbase.h
+#pragma warning(disable: 5045) // Compiler will insert Spectre mitigation for memory load if / Qspectre switch specified
 #endif
 
 #include <array>
