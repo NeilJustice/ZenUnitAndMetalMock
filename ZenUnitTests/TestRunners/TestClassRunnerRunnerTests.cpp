@@ -22,7 +22,7 @@ namespace ZenUnit
    AFACT(RunFilterMatchesTestClass_RunFilterDoesNotMatchTestClassName_ReturnsFalse)
    AFACT(RunFilterMatchesTestClass_RunFilterMatchesTestClassName_ReturnsTrueIfTestClassHasTestThatMatchesRunFilter)
    AFACT(RunTestClasses_NonRandomMode_SortsTestClassRunnersByName_RunsTestClassesSequentially_ReturnsTestClassResults)
-   FACTS(RunTestClasses_RandomMode_SetsRandomSeedIfNotSetByUser_RunsTestClassesRandomly_ReturnsTestClassResults)
+   AFACT(RunTestClasses_RandomMode_RunsTestClassesRandomly_ReturnsTestClassResults)
    AFACT(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)
    EVIDENCE
 
@@ -218,7 +218,7 @@ namespace ZenUnit
 
       _sorterMock->SortMock.Expect();
 
-      const vector<TestClassResult> transformReturnValue = { ZenUnit::Random<TestClassResult>() };
+      const vector<TestClassResult> transformReturnValue = ZenUnit::RandomVector<TestClassResult>();
       _transformerMock->TransformMock.Return(transformReturnValue);
       //
       const vector<TestClassResult> testClassResults = _testClassRunnerRunner.RunTestClasses(zenUnitArgs);
@@ -234,46 +234,22 @@ namespace ZenUnit
       VECTORS_EQUAL(transformReturnValue, testClassResults);
    }
 
-   TEST1X1(RunTestClasses_RandomMode_SetsRandomSeedIfNotSetByUser_RunsTestClassesRandomly_ReturnsTestClassResults,
-      bool randomseedsetbyuser,
-      false,
-      true)
+   TEST(RunTestClasses_RandomMode_RunsTestClassesRandomly_ReturnsTestClassResults)
    {
       _testClassRunnerRunner._testClassRunners.resize(ZenUnit::RandomBetween<size_t>(0, 2));
 
-      const vector<TestClassResult> transformReturnValue = { ZenUnit::Random<TestClassResult>() };
+      const vector<TestClassResult> transformReturnValue = ZenUnit::RandomVector<TestClassResult>();
       _transformerMock->RandomTransformMock.Return(transformReturnValue);
 
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.randomorder = true;
-      zenUnitArgs.randomseedsetbyuser = randomseedsetbyuser;
-      unsigned short therandomseedsetbyuser = 0;
-      unsigned short randomseedsetbycode = 0;
-      if (randomseedsetbyuser)
-      {
-         zenUnitArgs.randomseed = therandomseedsetbyuser = ZenUnit::Random<unsigned short>();
-      }
-      else
-      {
-         randomseedsetbycode = _watchMock->SecondsSince1970CastToUnsignedShortMock.ReturnRandom();
-      }
+      zenUnitArgs.randomseedsetbyuser = ZenUnit::Random<bool>();
+      zenUnitArgs.randomseed = ZenUnit::Random<unsigned short>();
       //
       const vector<TestClassResult> testClassResults = _testClassRunnerRunner.RunTestClasses(zenUnitArgs);
       //
-      if (!randomseedsetbyuser)
-      {
-         _watchMock->SecondsSince1970CastToUnsignedShortMock.CalledOnce();
-      }
-
       ZEN(_transformerMock->RandomTransformMock.CalledOnceWith(
          &_testClassRunnerRunner._testClassRunners, &TestClassRunnerRunner::RunTestClassRunner, zenUnitArgs.randomseed));
-
-      ZenUnitArgs expectedResultingZenUnitArgs;
-      expectedResultingZenUnitArgs.randomorder = true;
-      expectedResultingZenUnitArgs.randomseedsetbyuser = randomseedsetbyuser;
-      expectedResultingZenUnitArgs.randomseed = randomseedsetbyuser ? therandomseedsetbyuser : randomseedsetbycode;
-      ARE_EQUAL(expectedResultingZenUnitArgs, zenUnitArgs);
-
       VECTORS_EQUAL(transformReturnValue, testClassResults);
    }
 

@@ -3,7 +3,7 @@
 namespace ZenUnit
 {
    template<typename ReturnType, typename Arg1Type, typename Arg2Type>
-   TEMPLATE_TESTS(TwoArgMemberFunctionCallerTests, ReturnType, Arg1Type, Arg2Type)
+   TEMPLATE_TESTS(NonVoidTwoArgMemberFunctionCallerTests, ReturnType, Arg1Type, Arg2Type)
    AFACT(ConstCall_CallsConstNonVoidMemberFunctionOnce_ReturnsReturnValue)
    EVIDENCE
 
@@ -53,6 +53,6 @@ namespace ZenUnit
       ARE_EQUAL(classInstance.returnValue, returnValueB);
    }
 
-   RUN_TEMPLATE_TESTS(TwoArgMemberFunctionCallerTests, char, int, int)
-   THEN_RUN_TEMPLATE_TESTS(TwoArgMemberFunctionCallerTests, int, double, unsigned)
+   RUN_TEMPLATE_TESTS(NonVoidTwoArgMemberFunctionCallerTests, char, int, int)
+   THEN_RUN_TEMPLATE_TESTS(NonVoidTwoArgMemberFunctionCallerTests, int, double, unsigned)
 }

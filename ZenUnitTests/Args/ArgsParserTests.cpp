@@ -2,16 +2,19 @@
 #include "ZenUnitTests/Args/Mock/RunFilterParserMock.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Random/RandomRunFilter.h"
+#include "ZenUnitTests/Random/RandomZenUnitArgs.h"
+#include "ZenUnitTests/Utils/Function/Mock/VoidOneArgMemberFunctionCallerMock.h"
+#include "ZenUnitTests/Utils/Time/Mock/WatchMock.h"
 
 namespace ZenUnit
 {
    TESTS(ArgsParserTests)
-   AFACT(DefaultConstructor_NewsCompnents_SetsStringToUnsignedFunction)
+   AFACT(DefaultConstructor_NewsComponents_SetsStringToUnsignedFunction)
    AFACT(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
    FACTS(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1)
    FACTS(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1)
    FACTS(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0)
-   AFACT(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
+   AFACT(Parse_AllArgsSpecifiedExpectForRunFilter_ReturnsZenUnitArgsWithAllFieldsSets)
    AFACT(Parse_Run_ReturnsExpectedZenUnitArgs)
    AFACT(Parse_randomorder_SetsrandomorderToTrue)
    AFACT(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
@@ -21,6 +24,8 @@ namespace ZenUnit
    AFACT(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
    AFACT(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
    AFACT(Parse_UnrecognizedEqualsSignArgName_PrintsUsageAndExits1)
+   AFACT(SetRandomSeedIfNotSetByUser_RandomSeedSetByUser_DoesNothing)
+   AFACT(SetRandomSeedIfNotSetByUser_RandomSeedNotSetByUser_SetsRandomSeedToSecondsSince1970)
    EVIDENCE
 
    const string TestProgramPath = Random<string>();
@@ -75,31 +80,51 @@ Testing Rigor Options:
    ArgsParser _argsParser;
    ConsoleMock* _consoleMock;
    RunFilterParserMock* _runFilterParserMock = nullptr;
+   VoidOneArgMemberFunctionCallerMock<ArgsParser, ZenUnitArgs&>* _voidOneArgMemberFunctionCallerMock = nullptr;
    ZENMOCK_NONVOID1_STATIC(unsigned, ZenUnit::String, ToUnsigned, const string&)
+   WatchMock* _watchMock;
 
    STARTUP
    {
       _argsParser._console.reset(_consoleMock = new ConsoleMock);
       _argsParser._runFilterParser.reset(_runFilterParserMock = new RunFilterParserMock);
+      _argsParser._voidOneArgMemberFunctionCaller.reset(
+         _voidOneArgMemberFunctionCallerMock = new VoidOneArgMemberFunctionCallerMock<ArgsParser, ZenUnitArgs&>);
       _argsParser.call_String_ToUnsigned = ZENMOCK_BIND1(ToUnsigned_ZenMock);
+      _argsParser._watch.reset(_watchMock = new WatchMock);
    }
 
-   TEST(DefaultConstructor_NewsCompnents_SetsStringToUnsignedFunction)
+   TEST(DefaultConstructor_NewsComponents_SetsStringToUnsignedFunction)
    {
       ArgsParser argsParser;
       POINTER_WAS_NEWED(argsParser._console);
       POINTER_WAS_NEWED(argsParser._runFilterParser);
+      POINTER_WAS_NEWED(argsParser._voidOneArgMemberFunctionCaller);
+      POINTER_WAS_NEWED(argsParser._watch);
       STD_FUNCTION_TARGETS(String::ToUnsigned, argsParser.call_String_ToUnsigned);
+   }
+
+   void ExpectCallToSetRandomSeedIfNotSetByUser()
+   {
+      _voidOneArgMemberFunctionCallerMock->ConstCallMock.Expect();
+   }
+
+   void AssertCallToSetRandomSeedIfNotSetByUser(ZenUnitArgs& expectedZenUnitArgsArg)
+   {
+      _voidOneArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
+         &_argsParser, &ArgsParser::SetRandomSeedIfNotSetByUser, expectedZenUnitArgsArg);
    }
 
    TEST(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
    {
+      ExpectCallToSetRandomSeedIfNotSetByUser();
       vector<string> args{ TestProgramPath };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = TestProgramPath;
+      AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
@@ -147,8 +172,9 @@ Testing Rigor Options:
       ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 0));
    }
 
-   TEST(Parse_AllArgsSpecified_ReturnsZenUnitArgsWithAllFieldsSets)
+   TEST(Parse_AllArgsSpecifiedExpectForRunFilter_ReturnsZenUnitArgsWithAllFieldsSets)
    {
+      ExpectCallToSetRandomSeedIfNotSetByUser();
       const unsigned testruns = ZenUnit::Random<unsigned>();
       const unsigned randomseed = ZenUnit::Random<unsigned>();
       ToUnsigned_ZenMock.ReturnValues(testruns, randomseed);
@@ -160,8 +186,8 @@ Testing Rigor Options:
          "-exit0",
          "-failfast",
          "-noskips",
-         "-testruns=" + to_string(testruns),
          "-randomorder",
+         "-testruns=" + to_string(testruns),
          "-randomseed=" + to_string(randomseed)
       };
       //
@@ -179,20 +205,19 @@ Testing Rigor Options:
       expectedZenUnitArgs.exit0 = true;
       expectedZenUnitArgs.failfast = true;
       expectedZenUnitArgs.noskips = true;
-      expectedZenUnitArgs.testruns = 1;
       expectedZenUnitArgs.randomorder = true;
       expectedZenUnitArgs.testruns = testruns;
-      expectedZenUnitArgs.randomorder = true;
       expectedZenUnitArgs.randomseed = static_cast<unsigned short>(randomseed);
       expectedZenUnitArgs.randomseedsetbyuser = true;
+      AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
    TEST(Parse_Run_ReturnsExpectedZenUnitArgs)
    {
+      ExpectCallToSetRandomSeedIfNotSetByUser();
       const vector<RunFilter> runFilters = { Random<RunFilter>() };
       _runFilterParserMock->ParseMock.Return(runFilters);
-
       const string runArgument = ZenUnit::Random<string>();
       const vector<string> args = { "ExePath", "-run=" + runArgument };
       //
@@ -204,11 +229,13 @@ Testing Rigor Options:
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
       expectedZenUnitArgs.runFilters = runFilters;
+      AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
    TEST(Parse_randomorder_SetsrandomorderToTrue)
    {
+      ExpectCallToSetRandomSeedIfNotSetByUser();
       const vector<string> args = { "ExePath", "-randomorder" };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
@@ -216,19 +243,25 @@ Testing Rigor Options:
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
       expectedZenUnitArgs.randomorder = true;
+      AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
    TEST(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    {
       AssertArgSetsBoolField("-pause", &ZenUnitArgs::pause);
+      Startup();
       AssertArgSetsBoolField("-wait", &ZenUnitArgs::wait);
+      Startup();
       AssertArgSetsBoolField("-exit0", &ZenUnitArgs::exit0);
+      Startup();
       AssertArgSetsBoolField("-failfast", &ZenUnitArgs::failfast);
+      Startup();
       AssertArgSetsBoolField("-noskips", &ZenUnitArgs::noskips);
    }
    void AssertArgSetsBoolField(const string& arg, bool ZenUnitArgs::* expectedFieldToBeSet)
    {
+      ExpectCallToSetRandomSeedIfNotSetByUser();
       const vector<string> Args{ TestProgramPath, arg };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
@@ -236,11 +269,13 @@ Testing Rigor Options:
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = TestProgramPath + " " + arg;
       (expectedZenUnitArgs.*expectedFieldToBeSet) = true;
+      AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
    TEST(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
    {
+      ExpectCallToSetRandomSeedIfNotSetByUser();
       const vector<string> Args{ TestProgramPath, "-exit0", "-exit0" };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(Args);
@@ -248,6 +283,7 @@ Testing Rigor Options:
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
       expectedZenUnitArgs.exit0 = true;
+      AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
@@ -287,6 +323,7 @@ Testing Rigor Options:
 
    TEST(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
    {
+      ExpectCallToSetRandomSeedIfNotSetByUser();
       const unsigned timesArgValue = ToUnsigned_ZenMock.ReturnRandom();
       const vector<string> Args{ TestProgramPath, "-testruns=" + to_string(timesArgValue) };
       //
@@ -296,11 +333,13 @@ Testing Rigor Options:
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(Args, ' ');
       expectedZenUnitArgs.testruns = timesArgValue;
+      AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
    TEST(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
    {
+      ExpectCallToSetRandomSeedIfNotSetByUser();
       const unsigned randomSeedArgValue = ToUnsigned_ZenMock.ReturnRandom();
       const vector<string> Args{ TestProgramPath, "-randomseed=" + to_string(randomSeedArgValue) };
       //
@@ -312,21 +351,48 @@ Testing Rigor Options:
       expectedZenUnitArgs.randomorder = false;
       expectedZenUnitArgs.randomseed = static_cast<unsigned short>(randomSeedArgValue);
       expectedZenUnitArgs.randomseedsetbyuser = true;
+      AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
    TEST(Parse_UnrecognizedEqualsSignArgName_PrintsUsageAndExits1)
    {
       _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WriteLineAndExitMock.Expect();
-      const string UnrecognizedNameArg = "-invalid_name=123";
-      const vector<string> Args{ TestProgramPath, UnrecognizedNameArg };
+      _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
+      const string unrecognizedNameArg = "-" + ZenUnit::Random<string>() + "=" + ZenUnit::Random<string>();
+      const vector<string> args{ TestProgramPath, unrecognizedNameArg };
       //
-      _argsParser.Parse(Args);
+      THROWS(_argsParser.Parse(args), WriteLineAndExitException, "");
       //
       ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
-         "ZenUnit command line usage error: Unrecognized -name=value argument: " + UnrecognizedNameArg + "\n"));
+         "ZenUnit command line usage error: Unrecognized -name=value argument: " + unrecognizedNameArg + "\n"));
       ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
+   }
+
+   TEST(SetRandomSeedIfNotSetByUser_RandomSeedSetByUser_DoesNothing)
+   {
+      ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
+      zenUnitArgs.randomseedsetbyuser = true;
+      ZenUnitArgs expectedResultingZenUnitArgs = zenUnitArgs;
+      //
+      _argsParser.SetRandomSeedIfNotSetByUser(zenUnitArgs);
+      //
+      ARE_EQUAL(expectedResultingZenUnitArgs, zenUnitArgs);
+   }
+
+   TEST(SetRandomSeedIfNotSetByUser_RandomSeedNotSetByUser_SetsRandomSeedToSecondsSince1970)
+   {
+      ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
+      zenUnitArgs.randomseedsetbyuser = false;
+      ZenUnitArgs expectedResultingZenUnitArgs = zenUnitArgs;
+      const unsigned short secondsSince1970CastToUnsignedShort =
+         _watchMock->SecondsSince1970CastToUnsignedShortMock.ReturnRandom();
+      expectedResultingZenUnitArgs.randomseed = secondsSince1970CastToUnsignedShort;
+      //
+      _argsParser.SetRandomSeedIfNotSetByUser(zenUnitArgs);
+      //
+      ZEN(_watchMock->SecondsSince1970CastToUnsignedShortMock.CalledOnce());
+      ARE_EQUAL(expectedResultingZenUnitArgs, zenUnitArgs);
    }
 
    RUN_TESTS(ArgsParserTests)

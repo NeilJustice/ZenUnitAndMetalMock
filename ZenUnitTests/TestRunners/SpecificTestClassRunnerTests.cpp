@@ -51,9 +51,9 @@ namespace ZenUnit
       void (SpecificTestClassRunner<TestingTestClass>::*)(
          const unique_ptr<Test>& test, TestClassResult*) const, TestClassResult*>;
    TwoArgMemberForEacherMockType* _twoArgMemberForEacherMock;
-   VoidZeroArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>>* _voidZeroArgFunctionCallerMock;
+   VoidZeroArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>>* _voidZeroArgMemberFunctionCallerMock;
    NonVoidTwoArgMemberFunctionCallerMock<bool, SpecificTestClassRunner<TestingTestClass>, Test*, TestClassResult*>* _nonVoidTwoArgFunctionCallerMock;
-   VoidOneArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, const TestClassResult*>* _voidOneArgFunctionCallerMock;
+   VoidOneArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, const TestClassResult*>* _voidOneArgMemberFunctionCallerMock;
 
    using TwoArgTestAnyerMockType = TwoArgAnyerMock<
       const std::vector<std::unique_ptr<Test>>,
@@ -74,13 +74,13 @@ namespace ZenUnit
       _specificTestClassRunner->p_console.reset(p_consoleMock = new ConsoleMock);
       _specificTestClassRunner->call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
       _specificTestClassRunner->_twoArgMemberForEacher.reset(_twoArgMemberForEacherMock = new TwoArgMemberForEacherMockType);
-      _specificTestClassRunner->_voidZeroArgFunctionCaller.reset(
-         _voidZeroArgFunctionCallerMock =
+      _specificTestClassRunner->_voidZeroArgMemberFunctionCaller.reset(
+         _voidZeroArgMemberFunctionCallerMock =
          new VoidZeroArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>>);
       _specificTestClassRunner->_nonVoidTwoArgFunctionCaller.reset(
          _nonVoidTwoArgFunctionCallerMock =
          new NonVoidTwoArgMemberFunctionCallerMock<bool, SpecificTestClassRunner<TestingTestClass>, Test*, TestClassResult*>);
-      _specificTestClassRunner->_voidOneArgFunctionCaller.reset(_voidOneArgFunctionCallerMock =
+      _specificTestClassRunner->_voidOneArgFunctionCaller.reset(_voidOneArgMemberFunctionCallerMock =
          new VoidOneArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, const TestClassResult*>);
       _specificTestClassRunner->_twoArgTestAnyer.reset(_twoArgTestAnyerMock = new TwoArgTestAnyerMockType);
       _specificTestClassRunner->call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
@@ -93,7 +93,7 @@ namespace ZenUnit
       //
       POINTER_WAS_NEWED(specificTestClassRunner.p_console);
       POINTER_WAS_NEWED(specificTestClassRunner._twoArgMemberForEacher);
-      POINTER_WAS_NEWED(specificTestClassRunner._voidZeroArgFunctionCaller);
+      POINTER_WAS_NEWED(specificTestClassRunner._voidZeroArgMemberFunctionCaller);
       POINTER_WAS_NEWED(specificTestClassRunner._twoArgTestAnyer);
       POINTER_WAS_NEWED(specificTestClassRunner._nonVoidTwoArgFunctionCaller);
       POINTER_WAS_NEWED(specificTestClassRunner._voidOneArgFunctionCaller);
@@ -177,29 +177,29 @@ namespace ZenUnit
       false, false,
       true, true)
    {
-      _voidZeroArgFunctionCallerMock->ConstCallMock.Expect();
+      _voidZeroArgMemberFunctionCallerMock->ConstCallMock.Expect();
       _nonVoidTwoArgFunctionCallerMock->ConstCallMock.Return(testClassTypeNewableAndDeletable);
       if (expectDoRunTestsCall)
       {
-         _voidZeroArgFunctionCallerMock->NonConstCallMock.Expect();
+         _voidZeroArgMemberFunctionCallerMock->NonConstCallMock.Expect();
       }
-      _voidOneArgFunctionCallerMock->ConstCallMock.Expect();
+      _voidOneArgMemberFunctionCallerMock->ConstCallMock.Expect();
       p_consoleMock->WriteNewLineMock.Expect();
       _specificTestClassRunner->_testClassResult = TestClassResult::TestingNonDefault();
       //
       const TestClassResult testClassResult = _specificTestClassRunner->RunTests();
       //
-      ZEN(_voidZeroArgFunctionCallerMock->ConstCallMock.CalledOnceWith(
+      ZEN(_voidZeroArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
          _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::PrintTestClassNameAndNumberOfNamedTests));
       ZEN(_nonVoidTwoArgFunctionCallerMock->ConstCallMock.CalledOnceWith(
          _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests,
          &_specificTestClassRunner->_newableDeletableTest, &_specificTestClassRunner->_testClassResult));
       if (expectDoRunTestsCall)
       {
-         ZEN(_voidZeroArgFunctionCallerMock->NonConstCallMock.CalledOnceWith(
+         ZEN(_voidZeroArgMemberFunctionCallerMock->NonConstCallMock.CalledOnceWith(
             _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::DoRunTests));
       }
-      ZEN(_voidOneArgFunctionCallerMock->ConstCallMock.CalledOnceWith(
+      ZEN(_voidOneArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
          _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::PrintTestClassResultLine,
          &_specificTestClassRunner->_testClassResult));
       ZEN(p_consoleMock->WriteNewLineMock.CalledOnce());

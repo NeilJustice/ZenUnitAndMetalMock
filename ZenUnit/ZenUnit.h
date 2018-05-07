@@ -810,7 +810,6 @@ namespace ZenUnit
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(ConsoleColorer, default, default, default, default);
       virtual ~ConsoleColorer() = default;
 
       virtual bool SetColor(Color color)
@@ -886,7 +885,6 @@ namespace ZenUnit
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(Console, delete, delete, default, default);
       virtual ~Console() = default;
 
       virtual void Write(const std::string& message) const
@@ -1532,34 +1530,33 @@ namespace ZenUnit
    {
    public:
       Transformer() = default;
-      //DEFINE_COPY_COPY_MOVE_MOVE(Transformer, default, default, default, default);
       virtual ~Transformer() = default;
 
       virtual std::vector<TransformedT> Transform(
-         const std::vector<T>* source, TransformedT(*transformer)(const T&)) const
+         const std::vector<T>* source, TransformedT(*transformFunction)(const T&)) const
       {
          const size_t sourceSize = source->size();
-         std::vector<TransformedT> dest(sourceSize);
+         std::vector<TransformedT> transformedElements(sourceSize);
          for (size_t i = 0; i < sourceSize; ++i)
          {
             const T& element = (*source)[i];
-            dest[i] = transformer(element);
+            transformedElements[i] = transformFunction(element);
          }
-         return dest;
+         return transformedElements;
       }
 
       virtual std::vector<TransformedT> RandomTransform(
-         std::vector<T>* source, TransformedT(*transformer)(const T&), unsigned seed) const
+         std::vector<T>* source, TransformedT(*transformFunction)(const T&), unsigned seed) const
       {
          std::shuffle(source->begin(), source->end(), std::default_random_engine(seed));
          const size_t sourceSize = source->size();
-         std::vector<TransformedT> dest(sourceSize);
+         std::vector<TransformedT> transformedElements(sourceSize);
          for (size_t i = 0; i < sourceSize; ++i)
          {
             const T& randomElement = (*source)[i];
-            dest[i] = transformer(randomElement);
+            transformedElements[i] = transformFunction(randomElement);
          }
-         return dest;
+         return transformedElements;
       }
    };
 
@@ -1599,7 +1596,6 @@ namespace ZenUnit
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(RunFilterParser, delete, delete, delete, delete);
       virtual ~RunFilterParser() = default;
 
       virtual std::vector<RunFilter> Parse(const std::vector<std::string>& testRunFilters) const
@@ -1681,10 +1677,106 @@ namespace ZenUnit
       }
    };
 
-   inline void SetRandomSeed(unsigned short randomSeed)
+   template<typename ReturnType, typename ClassType, typename Arg1Type>
+   class OneArgMemberFunctionCaller
    {
-      ZenUnitRandomSeed::value = randomSeed;
-   }
+   public:
+      virtual ReturnType ConstCall(
+         const ClassType* classPointer, ReturnType(ClassType::*constMemberFunction)(Arg1Type) const, Arg1Type arg1) const
+      {
+         return (classPointer->*constMemberFunction)(arg1);
+      }
+
+      virtual ReturnType NonConstCall(
+         ClassType* classPointer, ReturnType(ClassType::*nonConstMemberFunction)(Arg1Type), Arg1Type arg1) const
+      {
+         return (classPointer->*nonConstMemberFunction)(arg1);
+      }
+
+      virtual ~OneArgMemberFunctionCaller() = default;
+   };
+
+   class Watch
+   {
+   public:
+      Watch() noexcept
+      {
+      }
+
+      virtual ~Watch() = default;
+
+      // Returns now in format "YYYY-MM-DD 00:00:00 Timezone"
+      virtual std::string DateTimeNowWithTimeZone() const
+      {
+         const tm tmNow = TMNow();
+         std::ostringstream builder;
+         const std::string timeZone = TimeZone(tmNow);
+         builder
+            << std::setw(2) << std::setfill('0') << (tmNow.tm_year + 1900) << '-'
+            << std::setw(2) << std::setfill('0') << (tmNow.tm_mon + 1) << '-'
+            << std::setw(2) << std::setfill('0') << tmNow.tm_mday << ' '
+            << std::setw(2) << std::setfill('0') << tmNow.tm_hour << ':'
+            << std::setw(2) << std::setfill('0') << tmNow.tm_min << ':'
+            << std::setw(2) << std::setfill('0') << tmNow.tm_sec << ' ' << timeZone;
+         const std::string weekdayDateTimeZoneNow = builder.str();
+         return weekdayDateTimeZoneNow;
+      }
+
+      virtual unsigned short SecondsSince1970CastToUnsignedShort() const
+      {
+         const long long secondsSince1970 = std::chrono::system_clock::now().time_since_epoch().count();
+         const unsigned short secondsSince1970CastToUnsignedShort = static_cast<unsigned short>(secondsSince1970);
+         return secondsSince1970CastToUnsignedShort;
+      }
+
+      static std::string MicrosecondsToThreeDecimalPlaceMillisecondsString(unsigned microseconds)
+      {
+         const double milliseconds = microseconds / 1000.0;
+
+         // Example: 0.1230000000001
+         const double threeDecimalPlaceMilliseconds = std::floor(milliseconds * 1000 + 0.5) / 1000;
+
+         // Example: "0.123000"
+         const std::string threeDecimalPlaceMilliseconds_sixDecimalPlaceString
+            = std::to_string(threeDecimalPlaceMilliseconds);
+
+         // Example: "0.123"
+         const std::string millisecondsRoundedToThreeDecimalPlaces_threeDecimalPlaceString
+            = threeDecimalPlaceMilliseconds_sixDecimalPlaceString.substr(
+               0, threeDecimalPlaceMilliseconds_sixDecimalPlaceString.find_first_of('.') + 4);
+
+         // Example: "(0.123ms)"
+         const std::string threeDecimalPlaceMillisecondsString
+            = String::Concat("(", millisecondsRoundedToThreeDecimalPlaces_threeDecimalPlaceString, "ms)");
+
+         return threeDecimalPlaceMillisecondsString;
+      }
+   private:
+      virtual tm TMNow() const
+      {
+         const std::chrono::time_point<std::chrono::system_clock> nowTimePoint = std::chrono::system_clock::now();
+#if defined __linux__
+         tm* tmNow = nullptr;
+         long nowTimeT = std::chrono::system_clock::to_time_t(nowTimePoint);
+         tmNow = localtime(&nowTimeT);
+         return *tmNow;
+#elif _WIN32
+         const __time64_t nowTimeT = std::chrono::system_clock::to_time_t(nowTimePoint);
+         tm tmNow;
+         const errno_t localtimeResult = localtime_s(&tmNow, &nowTimeT);
+         assert_true(localtimeResult == 0);
+         return tmNow;
+#endif
+      }
+
+      virtual std::string TimeZone(const tm& tmValue) const
+      {
+         char timeZoneChars[128];
+         strftime(timeZoneChars, sizeof(timeZoneChars), "%Z", &tmValue);
+         const std::string timeZone(timeZoneChars);
+         return timeZone;
+      }
+   };
 
    class ArgsParser
    {
@@ -1692,17 +1784,72 @@ namespace ZenUnit
    private:
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const RunFilterParser> _runFilterParser;
+      std::unique_ptr<const OneArgMemberFunctionCaller<void, ArgsParser, ZenUnitArgs&>> _voidOneArgMemberFunctionCaller;
+      std::unique_ptr<const Watch> _watch;
       std::function<unsigned(const std::string&)> call_String_ToUnsigned;
    public:
       ArgsParser() noexcept
          : _console(std::make_unique<Console>())
          , _runFilterParser(std::make_unique<RunFilterParser>())
+         , _voidOneArgMemberFunctionCaller(new OneArgMemberFunctionCaller<void, ArgsParser, ZenUnitArgs&>)
+         , _watch(new Watch)
          , call_String_ToUnsigned(String::ToUnsigned)
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(ArgsParser, delete, delete, delete, delete);
       virtual ~ArgsParser() = default;
+
+      static const std::string& Usage()
+      {
+         static const std::string usage = R"(ZenUnit v0.2.2
+Usage: <TestsBinaryName> [Options...]
+
+Testing Utility Options:
+
+-pause
+   Wait for any key before running tests to allow attaching a profiler or debugger.
+-wait
+   Wait for any key at the end of the test run.
+-exit0
+   Always exit 0 regardless of test run outcome.
+   Useful option for never blocking the launch of a ZenUnit tests
+   console window when previously running those tests in a post-build step.
+
+Testing Filtration Options:
+
+-run=<TestClassName>[::TestName][/TestCaseNumber][,...]
+   Run only specified case-insensitive test classes, tests, or test cases.
+   Add a '*' character to the end of a test class or test name
+   filter string to specify name-starts-with filtration.
+ Example 1: -run=Widget*
+   Runs all test classes that start with 'Widget'.
+ Example 2: -run=WidgetTests.FunctionUnderTest*
+   Runs all tests in WidgetTests that start with 'FunctionUnderTest'.
+ Example 3: -run=WidgetTests.FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior/3
+   Runs the third test case of value-parameterized test
+   WidgetTests.FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior.
+-failfast
+   Immediately exit with exit code 1 if a test fails.
+
+Testing Rigor Options:
+
+-randomorder
+   Run test classes and tests in a random order.
+-randomseed=<Value>
+   Set the random seed used by -randomorder
+   and by the ZenUnit::Random<T> family of functions.
+   The default random seed is the number of seconds since 1970.
+-testruns=<NumberOfTestRuns>
+   Repeat the running of all tests NumberOfTestRuns times.
+   Specify -testruns=3 -randomorder for three random test run orderings.
+   Useful option for continuous integration servers to partially ensure
+   that checked-in unit tests are robust with respect to ordering.
+-noskips
+   Exit 1 regardless of test run outcome if any tests are skipped.
+   Useful option for continuous integration servers to partially ensure
+   that a culture of "skip it and ship it!" does not take root.)";
+         return usage;
+      }
 
       virtual ZenUnitArgs Parse(const std::vector<std::string>& args) const
       {
@@ -1772,7 +1919,7 @@ namespace ZenUnit
                   else if (argName == "-randomseed")
                   {
                      zenUnitArgs.randomseed = static_cast<unsigned short>(call_String_ToUnsigned(argValueString));
-                     ZenUnit::SetRandomSeed(zenUnitArgs.randomseed);
+                     ZenUnitRandomSeed::value = zenUnitArgs.randomseed;
                      zenUnitArgs.randomseedsetbyuser = true;
                   }
                   else
@@ -1786,61 +1933,18 @@ namespace ZenUnit
                }
             }
          }
+         _voidOneArgMemberFunctionCaller->ConstCall(this, &ArgsParser::SetRandomSeedIfNotSetByUser, zenUnitArgs);
          return zenUnitArgs;
       }
-
-      static const std::string& Usage()
-      {
-         static const std::string usage = R"(ZenUnit v0.2.2
-Usage: <TestsBinaryName> [Options...]
-
-Testing Utility Options:
-
--pause
-   Wait for any key before running tests to allow attaching a profiler or debugger.
--wait
-   Wait for any key at the end of the test run.
--exit0
-   Always exit 0 regardless of test run outcome.
-   Useful option for never blocking the launch of a ZenUnit tests
-   console window when previously running those tests in a post-build step.
-
-Testing Filtration Options:
-
--run=<TestClassName>[::TestName][/TestCaseNumber][,...]
-   Run only specified case-insensitive test classes, tests, or test cases.
-   Add a '*' character to the end of a test class or test name
-   filter string to specify name-starts-with filtration.
- Example 1: -run=Widget*
-   Runs all test classes that start with 'Widget'.
- Example 2: -run=WidgetTests.FunctionUnderTest*
-   Runs all tests in WidgetTests that start with 'FunctionUnderTest'.
- Example 3: -run=WidgetTests.FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior/3
-   Runs the third test case of value-parameterized test
-   WidgetTests.FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior.
--failfast
-   Immediately exit with exit code 1 if a test fails.
-
-Testing Rigor Options:
-
--randomorder
-   Run test classes and tests in a random order.
--randomseed=<Value>
-   Set the random seed used by -randomorder
-   and by the ZenUnit::Random<T> family of functions.
-   The default random seed is the number of seconds since 1970.
--testruns=<NumberOfTestRuns>
-   Repeat the running of all tests NumberOfTestRuns times.
-   Specify -testruns=3 -randomorder for three random test run orderings.
-   Useful option for continuous integration servers to partially ensure
-   that checked-in unit tests are robust with respect to ordering.
--noskips
-   Exit 1 regardless of test run outcome if any tests are skipped.
-   Useful option for continuous integration servers to partially ensure
-   that a culture of "skip it and ship it!" does not take root.)";
-         return usage;
-      }
    private:
+      void SetRandomSeedIfNotSetByUser(ZenUnitArgs& outZenUnitArgs) const
+      {
+         if (!outZenUnitArgs.randomseedsetbyuser)
+         {
+            outZenUnitArgs.randomseed = _watch->SecondsSince1970CastToUnsignedShort();
+         }
+      }
+
       void WriteZenUnitArgumentErrorAndUsageThenExit1(const std::string& errorMessage) const
       {
          _console->WriteLine("ZenUnit command line usage error: " + errorMessage + "\n");
@@ -3202,7 +3306,6 @@ Testing Rigor Options:
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(ThreeArgForEacher, default, default, default, default);
       virtual ~ThreeArgForEacher() = default;
 
       virtual void ThreeArgForEach(
@@ -3228,7 +3331,6 @@ Testing Rigor Options:
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(TestFailureNumberer, default, default, default, default);
       virtual ~TestFailureNumberer() = default;
 
       virtual std::string Next()
@@ -3250,7 +3352,6 @@ Testing Rigor Options:
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(TestPhaseSuffixer, default, default, default, default);
       virtual ~TestPhaseSuffixer() = default;
 
       virtual const char* TestPhaseToTestPhaseSuffix(TestPhase testPhase) const
@@ -3311,89 +3412,6 @@ Testing Rigor Options:
          , testOutcome(TestOutcome::Success)
          , microseconds(0)
       {
-      }
-   };
-
-   class Watch
-   {
-   public:
-      Watch() noexcept
-      {
-      }
-
-      //DEFINE_COPY_COPY_MOVE_MOVE(Watch, default, default, default, default);
-      virtual ~Watch() = default;
-
-      // Returns now in format "YYYY-MM-DD 00:00:00 Timezone"
-      virtual std::string DateTimeNowWithTimeZone() const
-      {
-         const tm tmNow = TMNow();
-         std::ostringstream builder;
-         const std::string timeZone = TimeZone(tmNow);
-         builder
-            << std::setw(2) << std::setfill('0') << (tmNow.tm_year + 1900) << '-'
-            << std::setw(2) << std::setfill('0') << (tmNow.tm_mon + 1) << '-'
-            << std::setw(2) << std::setfill('0') << tmNow.tm_mday << ' '
-            << std::setw(2) << std::setfill('0') << tmNow.tm_hour << ':'
-            << std::setw(2) << std::setfill('0') << tmNow.tm_min << ':'
-            << std::setw(2) << std::setfill('0') << tmNow.tm_sec << ' ' << timeZone;
-         const std::string weekdayDateTimeZoneNow = builder.str();
-         return weekdayDateTimeZoneNow;
-      }
-
-      virtual unsigned short SecondsSince1970CastToUnsignedShort() const
-      {
-         const long long secondsSince1970 = std::chrono::system_clock::now().time_since_epoch().count();
-         const unsigned short secondsSince1970CastToUnsignedShort = static_cast<unsigned short>(secondsSince1970);
-         return secondsSince1970CastToUnsignedShort;
-      }
-
-      static std::string MicrosecondsToThreeDecimalPlaceMillisecondsString(unsigned microseconds)
-      {
-         const double milliseconds = microseconds / 1000.0;
-
-         // Example: 0.1230000000001
-         const double threeDecimalPlaceMilliseconds = std::floor(milliseconds * 1000 + 0.5) / 1000;
-
-         // Example: "0.123000"
-         const std::string threeDecimalPlaceMilliseconds_sixDecimalPlaceString
-            = std::to_string(threeDecimalPlaceMilliseconds);
-
-         // Example: "0.123"
-         const std::string millisecondsRoundedToThreeDecimalPlaces_threeDecimalPlaceString
-            = threeDecimalPlaceMilliseconds_sixDecimalPlaceString.substr(
-               0, threeDecimalPlaceMilliseconds_sixDecimalPlaceString.find_first_of('.') + 4);
-
-         // Example: "(0.123ms)"
-         const std::string threeDecimalPlaceMillisecondsString
-            = String::Concat("(", millisecondsRoundedToThreeDecimalPlaces_threeDecimalPlaceString, "ms)");
-
-         return threeDecimalPlaceMillisecondsString;
-      }
-   private:
-      virtual tm TMNow() const
-      {
-         const std::chrono::time_point<std::chrono::system_clock> nowTimePoint = std::chrono::system_clock::now();
-#if defined __linux__
-         tm* tmNow = nullptr;
-         long nowTimeT = std::chrono::system_clock::to_time_t(nowTimePoint);
-         tmNow = localtime(&nowTimeT);
-         return *tmNow;
-#elif _WIN32
-         const __time64_t nowTimeT = std::chrono::system_clock::to_time_t(nowTimePoint);
-         tm tmNow;
-         const errno_t localtimeResult = localtime_s(&tmNow, &nowTimeT);
-         assert_true(localtimeResult == 0);
-         return tmNow;
-#endif
-      }
-
-      virtual std::string TimeZone(const tm& tmValue) const
-      {
-         char timeZoneChars[128];
-         strftime(timeZoneChars, sizeof(timeZoneChars), "%Z", &tmValue);
-         const std::string timeZone(timeZoneChars);
-         return timeZone;
       }
    };
 
@@ -3498,7 +3516,6 @@ Testing Rigor Options:
          }
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(TestResult, default, default, default, default);
       virtual ~TestResult() = default;
 
       static TestResult ConstructorFail(const FullTestName& fullTestName, const CallResult& constructorCallResult) noexcept
@@ -3778,7 +3795,6 @@ Testing Rigor Options:
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(MachineNameGetter, default, default, default, default);
       virtual ~MachineNameGetter() = default;
 
       virtual std::string GetMachineName() const
@@ -3820,7 +3836,6 @@ Testing Rigor Options:
    public:
       TwoArgMemberForEacher() noexcept {}
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(TwoArgMemberForEacher, default, default, default, default);
       virtual ~TwoArgMemberForEacher() = default;
 
       virtual void TwoArgMemberForEach(
@@ -3853,7 +3868,6 @@ Testing Rigor Options:
    public:
       TwoArgMemberAnyer() noexcept {}
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(TwoArgMemberAnyer, default, default, default, default);
       virtual ~TwoArgMemberAnyer() = default;
 
       virtual bool TwoArgAny(
@@ -3882,7 +3896,6 @@ Testing Rigor Options:
    public:
       TwoArgAnyer() noexcept {}
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(TwoArgAnyer, default, default, default, default);
       virtual ~TwoArgAnyer() = default;
 
       virtual bool TwoArgAny(const CollectionType* collection, PredicateType predicate, Arg2Type arg2) const
@@ -3907,7 +3920,6 @@ Testing Rigor Options:
    public:
       ThreeArgAnyer() noexcept {}
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(ThreeArgAnyer, default, default, default, default);
       virtual ~ThreeArgAnyer() = default;
 
       virtual bool ThreeArgAny(const CollectionType& collection, PredicateType predicate, Arg2Type arg2, Arg3Type arg3) const
@@ -3932,7 +3944,6 @@ Testing Rigor Options:
    public:
       Sorter() noexcept {}
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(Sorter, default, default, default, default);
       virtual ~Sorter() = default;
 
       virtual void Sort(CollectionType* collection) const
@@ -3956,7 +3967,6 @@ Testing Rigor Options:
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(TestClassRunner, default, default, default, default);
       virtual ~TestClassRunner() = default;
 
       virtual const char* TestClassName() const = 0;
@@ -4038,7 +4048,6 @@ Testing Rigor Options:
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(TestClassRunnerRunner, delete, delete, default, default);
       virtual ~TestClassRunnerRunner() = default;
 
       virtual void AddTestClassRunner(TestClassRunner* testClassRunner)
@@ -4081,19 +4090,18 @@ Testing Rigor Options:
 
       virtual std::vector<TestClassResult> RunTestClasses(ZenUnitArgs& zenUnitArgs)
       {
+         std::vector<TestClassResult> testClassResults;
          if (zenUnitArgs.randomorder)
          {
-            if (!zenUnitArgs.randomseedsetbyuser)
-            {
-               zenUnitArgs.randomseed = _watch->SecondsSince1970CastToUnsignedShort();
-            }
-            const std::vector<TestClassResult> testClassResults = _transformer->RandomTransform(
+            testClassResults = _transformer->RandomTransform(
                &_testClassRunners, &TestClassRunnerRunner::RunTestClassRunner, zenUnitArgs.randomseed);
-            return testClassResults;
          }
-         _sorter->Sort(&_testClassRunners); // Sort test class runners by test class name
-         const std::vector<TestClassResult> testClassResults = _transformer->Transform(
-            &_testClassRunners, &TestClassRunnerRunner::RunTestClassRunner);
+         else
+         {
+            _sorter->Sort(&_testClassRunners); // Sort test class runners by test class name
+            testClassResults = _transformer->Transform(
+               &_testClassRunners, &TestClassRunnerRunner::RunTestClassRunner);
+         }
          return testClassResults;
       }
    private:
@@ -4142,7 +4150,6 @@ Testing Rigor Options:
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(PreamblePrinter, delete, delete, default, default);
       virtual ~PreamblePrinter() = default;
 
       virtual void PrintOpeningThreeLines(
@@ -4191,7 +4198,6 @@ Testing Rigor Options:
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(Stopwatch, default, default, default, default);
       virtual ~Stopwatch() = default;
 
       virtual void Start()
@@ -4223,7 +4229,6 @@ Testing Rigor Options:
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(MemberForEacher, default, default, default, default);
       virtual ~MemberForEacher() = default;
 
       virtual void MemberForEach(
@@ -4270,7 +4275,6 @@ Testing Rigor Options:
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(TestRunResult, delete, delete, default, default);
       virtual ~TestRunResult() = default;
 
       virtual void AddSkippedTest(
@@ -4443,25 +4447,6 @@ Testing Rigor Options:
       virtual ~ZeroArgMemberFunctionCaller() = default;
    };
 
-   template<typename ReturnType, typename ClassType, typename Arg1Type>
-   class OneArgMemberFunctionCaller
-   {
-   public:
-      virtual ReturnType ConstCall(
-         ClassType* classPointer, ReturnType(ClassType::*constMemberFunction)(Arg1Type) const, Arg1Type arg1) const
-      {
-         return (classPointer->*constMemberFunction)(arg1);
-      }
-
-      virtual ReturnType NonConstCall(
-         ClassType* classPointer, ReturnType (ClassType::*nonConstMemberFunction)(Arg1Type), Arg1Type arg1) const
-      {
-         return (classPointer->*nonConstMemberFunction)(arg1);
-      }
-
-      virtual ~OneArgMemberFunctionCaller() = default;
-   };
-
    template<typename ReturnType, typename ClassType, typename Arg1Type, typename Arg2Type>
    class TwoArgMemberFunctionCaller
    {
@@ -4509,7 +4494,6 @@ Testing Rigor Options:
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(TestRunner, delete, delete, default, default);
       virtual ~TestRunner() = default;
 
       static TestRunner& Instance() noexcept
@@ -4544,7 +4528,7 @@ Testing Rigor Options:
 
       int ParseArgsRunTestClassesPrintResults(const std::vector<std::string>& commandLineArgs)
       {
-         ZenUnit::SetRandomSeed(static_cast<unsigned short>(time(nullptr)));
+         ZenUnitRandomSeed::value = static_cast<unsigned short>(time(nullptr));
          _zenUnitArgs = _argsParser->Parse(commandLineArgs);
          _testClassRunnerRunner->ApplyRunFiltersIfAny(_zenUnitArgs.runFilters);
          int overallExitCode = 0;
@@ -4639,7 +4623,6 @@ Testing Rigor Options:
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(TryCatchCaller, delete, delete, default, default);
       virtual ~TryCatchCaller() = default;
 
       virtual CallResult Call(void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const;
@@ -4670,7 +4653,6 @@ Testing Rigor Options:
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(TestResultFactory, default, default, default, default);
       virtual ~TestResultFactory() = default;
 
       virtual TestResult ConstructorFail(const FullTestName& fullTestName, const CallResult& constructorCallResult) const
@@ -4733,7 +4715,6 @@ Testing Rigor Options:
       {
       }
 
-      //DEFINE_COPY_COPY_MOVE_MOVE(Test, delete, delete, default, default);
       virtual ~Test() = default;
 
       virtual const char* Name() const
@@ -4969,7 +4950,7 @@ Testing Rigor Options:
          void (SpecificTestClassRunner::*)(const std::unique_ptr<Test>& test, TestClassResult*) const,
          TestClassResult*>;
       std::unique_ptr<const TwoArgMemberForEacherType> _twoArgMemberForEacher;
-      std::unique_ptr<const ZeroArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>>> _voidZeroArgFunctionCaller;
+      std::unique_ptr<const ZeroArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>>> _voidZeroArgMemberFunctionCaller;
       std::unique_ptr<const TwoArgMemberFunctionCaller<
          bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>> _nonVoidTwoArgFunctionCaller;
       std::unique_ptr<const OneArgMemberFunctionCaller<
@@ -4988,7 +4969,7 @@ Testing Rigor Options:
    public:
       explicit SpecificTestClassRunner(const char* testClassName)
          : _twoArgMemberForEacher(std::make_unique<TwoArgMemberForEacherType>())
-         , _voidZeroArgFunctionCaller(std::make_unique<ZeroArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>>>())
+         , _voidZeroArgMemberFunctionCaller(std::make_unique<ZeroArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>>>())
          , _nonVoidTwoArgFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>>())
          , _voidOneArgFunctionCaller(std::make_unique<OneArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>, const TestClassResult*>>())
          , _twoArgTestAnyer(std::make_unique<TwoArgTestAnyerType>())
@@ -5035,16 +5016,15 @@ Testing Rigor Options:
 
       TestClassResult RunTests() override
       {
-         _voidZeroArgFunctionCaller->ConstCall(
+         _voidZeroArgMemberFunctionCaller->ConstCall(
             this, &SpecificTestClassRunner::PrintTestClassNameAndNumberOfNamedTests);
          const bool testClassIsNewableAndDeletable = _nonVoidTwoArgFunctionCaller->ConstCall(
             this, &SpecificTestClassRunner::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests, &_newableDeletableTest, &_testClassResult);
          if (testClassIsNewableAndDeletable)
          {
-            _voidZeroArgFunctionCaller->NonConstCall(this, &SpecificTestClassRunner::DoRunTests);
+            _voidZeroArgMemberFunctionCaller->NonConstCall(this, &SpecificTestClassRunner::DoRunTests);
          }
-         _voidOneArgFunctionCaller->ConstCall(
-            this, &SpecificTestClassRunner::PrintTestClassResultLine, &_testClassResult);
+         _voidOneArgFunctionCaller->ConstCall(this, &SpecificTestClassRunner::PrintTestClassResultLine, &_testClassResult);
          p_console->WriteNewLine();
          return std::move(_testClassResult);
       }
