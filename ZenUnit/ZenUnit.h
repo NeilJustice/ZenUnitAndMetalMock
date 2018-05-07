@@ -537,8 +537,9 @@ namespace ZenUnit
 
       static bool CaseInsensitiveStartsWith(const char* str, const std::string& substring) noexcept
       {
+         const size_t strLength = strlen(str);
          const size_t substringLength = substring.length();
-         if (substringLength > strlen(str))
+         if (substringLength > strLength)
          {
             return false;
          }
