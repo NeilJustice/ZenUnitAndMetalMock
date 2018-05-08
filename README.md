@@ -130,42 +130,42 @@ Testing Utility Options:
    Wait for any key at the end of the test run.
 -exit0
    Always exit 0 regardless of test run outcome.
-   Useful option for never blocking the launch of a ZenUnit tests
+   This is a useful option for never blocking the launch of a ZenUnit tests
    console window when previously running those tests in a post-build step.
 
 Testing Filtration Options:
 
 -run=<TestClassName>[::TestName][/TestCaseNumber][,...]
-   Run only specified case-insensitive test classes, tests, or test cases.
+   Run only specified case-insensitive test classes, tests, and/or test cases.
    Add a '*' character to the end of a test class or test name
    filter string to specify name-starts-with filtration.
- Example 1: -run=Widget*
-   Runs all test classes that start with 'Widget'.
- Example 2: -run=WidgetTests.FunctionUnderTest*
+ Example 1: -run=WidgetTests
+   Runs only test class WidgetTests.
+ Example 2: -run=WidgetTests::FunctionUnderTest*
    Runs all tests in WidgetTests that start with 'FunctionUnderTest'.
- Example 3: -run=WidgetTests.FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior/3
+ Example 3: -run=WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior/3
    Runs the third test case of value-parameterized test
-   WidgetTests.FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior.
+   WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior.
 -failfast
    Immediately exit with exit code 1 if a test fails.
 
 Testing Rigor Options:
 
 -randomorder
-   Run test classes and tests in a random order.
+   Run test classes and tests in a pseudorandom order.
 -randomseed=<Value>
    Set the random seed used by -randomorder
    and by the ZenUnit::Random<T> family of functions.
    The default random seed is the number of seconds since 1970.
 -testruns=<NumberOfTestRuns>
    Repeat the running of all tests NumberOfTestRuns times.
-   Specify -testruns=3 -randomorder for three random test run orderings.
-   Useful option for continuous integration servers to partially ensure
+   Specify -testruns=3 -randomorder for three pseudorandom test run orderings.
+   This is a useful option for continuous integration servers to partially ensure
    that checked-in unit tests are robust with respect to ordering.
 -noskips
    Exit 1 regardless of test run outcome if any tests are skipped.
-   Useful option for continuous integration servers to partially ensure
-   that a culture of "skip it and ship it!" does not take root.
+   This is a useful option for continuous integration servers to partially ensure
+   that an organizational culture of "skip it and ship it!" does not take root.
 ```
 
 ### ZenUnit Type-Parameterized Test Class Syntax
