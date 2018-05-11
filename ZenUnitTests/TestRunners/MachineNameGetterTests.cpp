@@ -41,9 +41,9 @@ namespace ZenUnit
    STARTUP
    {
 #if defined __linux__
-      _machineNameGetter.call_gethostname = ZENMOCK_BIND2(gethostname_ZenMock);
+      _machineNameGetter.call_gethostname = BIND_2ARG_ZENMOCK_OBJECT(gethostname_ZenMock);
 #elif _WIN32
-      _machineNameGetter.call_GetComputerName = ZENMOCK_BIND2(GetComputerName_ZenMock);
+      _machineNameGetter.call_GetComputerName = BIND_2ARG_ZENMOCK_OBJECT(GetComputerName_ZenMock);
 #endif
    }
 

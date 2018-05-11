@@ -39,7 +39,7 @@ namespace ZenUnit
    {
       _console._consoleColorer.reset(_consoleColorerMock = new ConsoleColorerMock);
 #if _WIN32
-      _console.call_getch = ZENMOCK_BIND0(_getch_ZenMock);
+      _console.call_getch = BIND_0ARG_ZENMOCK_OBJECT(_getch_ZenMock);
 #endif
    }
 
@@ -115,7 +115,7 @@ namespace ZenUnit
    {
       ZENMOCK_VOID1_FREE(exit, int);
       exit_ZenMock.Expect();
-      _console.call_exit = ZENMOCK_BIND1(exit_ZenMock);
+      _console.call_exit = BIND_1ARG_ZENMOCK_OBJECT(exit_ZenMock);
       //
       _console.WriteLineAndExit(Message, exitCode);
       //
@@ -201,7 +201,7 @@ namespace ZenUnit
    {
       ZENMOCK_NONVOID0_FREE(int, IsDebuggerPresent);
       IsDebuggerPresent_ZenMock.Return(isDebuggerPresentReturnValue);
-      _console.call_IsDebuggerPresent = ZENMOCK_BIND0(IsDebuggerPresent_ZenMock);
+      _console.call_IsDebuggerPresent = BIND_0ARG_ZENMOCK_OBJECT(IsDebuggerPresent_ZenMock);
       //
       const bool debuggerIsPresent = _console.DebuggerIsPresent();
       //

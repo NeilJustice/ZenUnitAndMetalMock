@@ -46,7 +46,7 @@ namespace ZenUnit
       DestructorCallResult.microseconds = 3000;
       _testResult.fullTestName = FullTestNameValue;
       _testResult.call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString =
-         ZENMOCK_BIND1(MicrosecondsToThreeDecimalPlaceMillisecondsString_ZenMock);
+         BIND_1ARG_ZENMOCK_OBJECT(MicrosecondsToThreeDecimalPlaceMillisecondsString_ZenMock);
    }
 
    TEST(DefaultConstructor_SetsFieldsTo0_SetsWatchFunction)
@@ -110,7 +110,7 @@ namespace ZenUnit
       {
          GetArgs_ZenMock.Return(zenUnitArgs);
       }
-      const function<const ZenUnitArgs&()> getArgsMockFunction = ZENMOCK_BIND0(GetArgs_ZenMock);
+      const function<const ZenUnitArgs&()> getArgsMockFunction = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMock);
       //
       const TestResult testResult(
          FullTestNameValue,

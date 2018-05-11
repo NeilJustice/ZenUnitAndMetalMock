@@ -16,7 +16,7 @@ namespace ZenUnit
 
    STARTUP
    {
-      _stopwatch.call_highres_now = ZENMOCK_BIND0(now_ZenMock);
+      _stopwatch.call_highres_now = BIND_0ARG_ZENMOCK_OBJECT(now_ZenMock);
    }
 
    TEST(Constructor_SetsNowFunction)

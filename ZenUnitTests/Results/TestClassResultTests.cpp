@@ -36,7 +36,7 @@ namespace ZenUnit
    STARTUP
    {
       _testClassResultSelfMocked.call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString
-         = ZENMOCK_BIND1(MicrosecondsToThreeDecimalPlaceMillisecondsString_ZenMock);
+         = BIND_1ARG_ZENMOCK_OBJECT(MicrosecondsToThreeDecimalPlaceMillisecondsString_ZenMock);
    }
 
    TEST(DefaultConstructor_SetsWatchFunction)

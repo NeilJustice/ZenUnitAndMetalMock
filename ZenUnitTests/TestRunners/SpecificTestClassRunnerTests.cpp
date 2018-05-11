@@ -72,7 +72,7 @@ namespace ZenUnit
    {
       _specificTestClassRunner = make_unique<SpecificTestClassRunner<TestingTestClass>>(_testClassName.c_str());
       _specificTestClassRunner->p_console.reset(p_consoleMock = new ConsoleMock);
-      _specificTestClassRunner->call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
+      _specificTestClassRunner->call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMock);
       _specificTestClassRunner->_twoArgMemberForEacher.reset(_twoArgMemberForEacherMock = new TwoArgMemberForEacherMockType);
       _specificTestClassRunner->_voidZeroArgMemberFunctionCaller.reset(
          _voidZeroArgMemberFunctionCallerMock =
@@ -83,7 +83,7 @@ namespace ZenUnit
       _specificTestClassRunner->_voidOneArgFunctionCaller.reset(_voidOneArgMemberFunctionCallerMock =
          new VoidOneArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, const TestClassResult*>);
       _specificTestClassRunner->_twoArgTestAnyer.reset(_twoArgTestAnyerMock = new TwoArgTestAnyerMockType);
-      _specificTestClassRunner->call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
+      _specificTestClassRunner->call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMock);
       _specificTestClassRunner->p_twoArgMemberAnyer.reset(p_twoArgMemberAnyerMock = new TwoArgMemberAnyerMockType);
    }
 

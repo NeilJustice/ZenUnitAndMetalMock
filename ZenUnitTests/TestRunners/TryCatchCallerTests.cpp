@@ -35,7 +35,7 @@ namespace ZenUnit
       _tryCatchCaller._stopwatch.reset(_stopwatchMock = new StopwatchMock);
       _tryCatchCaller._voidTwoArgMemberFunctionCaller.reset(
          _voidTwoArgMemberFunctionCallerMock = new VoidTwoArgMemberFunctionCallerMock<TryCatchCaller, TestOutcome, bool>);
-      _tryCatchCaller.call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
+      _tryCatchCaller.call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMock);
       _testMock = make_unique<TestMock>();
    }
 

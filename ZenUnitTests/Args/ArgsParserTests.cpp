@@ -90,7 +90,7 @@ Testing Rigor Options:
       _argsParser._runFilterParser.reset(_runFilterParserMock = new RunFilterParserMock);
       _argsParser._voidOneArgMemberFunctionCaller.reset(
          _voidOneArgMemberFunctionCallerMock = new VoidOneArgMemberFunctionCallerMock<ArgsParser, ZenUnitArgs&>);
-      _argsParser.call_String_ToUnsigned = ZENMOCK_BIND1(ToUnsigned_ZenMock);
+      _argsParser.call_String_ToUnsigned = BIND_1ARG_ZENMOCK_OBJECT(ToUnsigned_ZenMock);
       _argsParser._watch.reset(_watchMock = new WatchMock);
    }
 

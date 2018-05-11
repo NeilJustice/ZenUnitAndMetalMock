@@ -100,8 +100,8 @@ namespace ZenUnit
       _testNXN = make_unique<TestNXN<TestingTestClass, N, int>>("", "", "", 0);
       _testNXN->_console.reset(_consoleMock = new ConsoleMock);
       _testNXN->_threeArgAnyer.reset(_threeArgAnyerMock = new ThreeArgAnyerMockType);
-      _testNXN->call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock);
-      _testNXN->call_exit = ZENMOCK_BIND1(exit_ZenMock);
+      _testNXN->call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMock);
+      _testNXN->call_exit = BIND_1ARG_ZENMOCK_OBJECT(exit_ZenMock);
    }
 
    TEST(Constructor_NewsComponents_SetsFields_MakesGettersReturnExpected)
@@ -189,12 +189,13 @@ namespace ZenUnit
       ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs, _SelfMocked);
 
       const ZenUnitArgs args = GetArgs_ZenMock_SelfMocked.ReturnRandom();
-      test1X1SelfMocked.call_TestRunner_GetArgs = ZENMOCK_BIND0(GetArgs_ZenMock_SelfMocked);
+      test1X1SelfMocked.call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMock_SelfMocked);
 
       ZENMOCK_NONVOID0_STATIC(vector<string>, ZenUnit::String, CommaSplitExceptQuotedCommas, _SelfMocked);
       const vector<string> splitTestCaseArgs = { ZenUnit::Random<string>(), ZenUnit::Random<string>(), ZenUnit::Random<string>() };
       CommaSplitExceptQuotedCommas_ZenMock_SelfMocked.Return(splitTestCaseArgs);
-      test1X1SelfMocked.call_String_CommaSplitExceptQuotedCommas = ZENMOCK_BIND0(CommaSplitExceptQuotedCommas_ZenMock_SelfMocked);
+      test1X1SelfMocked.call_String_CommaSplitExceptQuotedCommas =
+         BIND_0ARG_ZENMOCK_OBJECT(CommaSplitExceptQuotedCommas_ZenMock_SelfMocked);
 
       test1X1SelfMocked.Exit1IfNonExistentTestCaseNumberSpecifiedMock.Expect();
 

@@ -21,7 +21,7 @@ namespace ZenUnit
    {
       _runFilterParser._memberFunctionTransformer.reset(
          _memberFunctionTransformerMock = new MemberFunctionTransformerMock<RunFilterParser, string, RunFilter>);
-      _runFilterParser.call_String_ToUnsigned = ZENMOCK_BIND1(ToUnsigned_ZenMock);
+      _runFilterParser.call_String_ToUnsigned = BIND_1ARG_ZENMOCK_OBJECT(ToUnsigned_ZenMock);
    }
 
    TEST(DefaultConstructor_NewsTransformer)
