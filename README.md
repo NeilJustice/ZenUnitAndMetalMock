@@ -311,21 +311,19 @@ Testing using random inputs instead of constant inputs is a central technique fo
 
 Today, code mutations can be induced manually by colleagues during code review to confirm the degree of rigorousness with which unit tests have been written.
 
-In the 2020s, it is appearing likely that a combinatorial number of code mutations will be able to be induced automatically by LLVM-powered mutation testing frameworks.
+In the 2020s, a combinatorial number of code mutations will be able to be induced automatically by LLVM-powered mutation testing frameworks.
 
 A developer will then be able to call upon an affordable desktop supercomputer or affordable cloud supercomputing to "attempt to slay" each and every LLVM-induced code mutation, resulting in a code quality metric ten times as potent as code coverage: mutation coverage.
 
 Mutation coverage is the percentage of code mutants "slain" by a collection of unit tests.
 
-If a passing unit test fails as expected when the code it tests is mutated to call operator+ instead of operator-, then that unit test is said to have "slain" that mutate-operator code mutation.
+If a passing collection of unit tests fails as expected when the code under test is mutated to break its correctness, then that collection of unit tests is said to have "slain" that code mutation.
 
-Slay every non-equivalent code mutation and the result is the 2020's must-have definition of done: 100% mutation coverage with by-definition 100% code coverage.
-
-For today and the 2020s, ZenUnit is designed to make it easy to generate random inputs for use in rigorously-written unit tests that are robust to code mutations.
+ZenUnit is designed to make it easy to generate random inputs for use in unit tests that are robust to code mutations.
 
 |Random Value Generating Function|Description|
 |--------------------------------|-----------|
-|ZenUnit::Random\<T\>()|Returns a random integer T value between std\:\:numeric_limits\<T\>::min() and std\:\:numeric_limits\<T\>::max().|
+|ZenUnit::Random\<T\>()|Returns a random integer T value between std\:\:numeric_limits\<T\>::min() and std\:\:numeric_limits\<T\>::max(), or calls ZenUnit::Random\<UserType\>() if defined.|
 |ZenUnit::RandomBetween\<T\>(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound)|Returns a random integer T value between inclusiveLowerBound and inclusiveUpperBound.|
 |ZenUnit::RandomEnum\<EnumType\>(EnumType exclusiveEnumMaxValue)|Returns a random EnumType between 0 and exclusiveEnumMaxValue - 1.|
 |ZenUnit::Random\<float\>()|Returns a random float between std::numeric_limits\<float\>::min() and std::numeric_limits\<float\>::max() from a std\:\:uniform_real_distribution\<float\>.|
@@ -374,8 +372,12 @@ namespace ZenUnit
 |100% code coverage badge|
 |Travis CI clang-tidy|
 |AppVeyor /analyze|
-|Seedability of ZenUnit::Random\<T\>|
 |TUPLES_EQUAL|
 |ARE_WITHIN|
 |ARE_CLOSE|
 |-breakfast|
+
+|The Road To ZenUnit 1.1|
+|-----------------------|
+|-junitxml=<FilePath>|
+|-parallel|
