@@ -35,7 +35,7 @@ namespace ZenUnit
       _tryCatchCaller._stopwatch.reset(_stopwatchMock = new StopwatchMock);
       _tryCatchCaller._voidTwoArgMemberFunctionCaller.reset(
          _voidTwoArgMemberFunctionCallerMock = new VoidTwoArgMemberFunctionCallerMock<TryCatchCaller, TestOutcome, bool>);
-      _tryCatchCaller.call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMock);
+      _tryCatchCaller.call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject);
       _testMock = make_unique<TestMock>();
    }
 
@@ -77,7 +77,7 @@ namespace ZenUnit
    {
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.failfast = ZenUnit::Random<bool>();
-      GetArgs_ZenMock.Return(zenUnitArgs);
+      GetArgs_ZenMockObject.Return(zenUnitArgs);
 
       ExpectStopwatchStartAndStopCalls();
 
@@ -85,7 +85,7 @@ namespace ZenUnit
       //
       const CallResult callResult = _tryCatchCaller.Call(NoThrow, _testMock.get(), TestPhase::Startup);
       //
-      ZEN(GetArgs_ZenMock.CalledOnce());
+      ZEN(GetArgs_ZenMockObject.CalledOnce());
       ARE_EQUAL(1, TryCatchCallerTests::s_numberOfNoThrowCalls);
       AssertStopwatchStartAndStopCalled();
 
@@ -112,7 +112,7 @@ namespace ZenUnit
    {
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.failfast = ZenUnit::Random<bool>();
-      GetArgs_ZenMock.Return(zenUnitArgs);
+      GetArgs_ZenMockObject.Return(zenUnitArgs);
 
       _voidTwoArgMemberFunctionCallerMock->ConstCallMock.Expect();
 
@@ -124,7 +124,7 @@ namespace ZenUnit
       //
       const CallResult callResult = _tryCatchCaller.Call(ThrowAnomaly, _testMock.get(), arbitraryTestPhase);
       //
-      ZEN(GetArgs_ZenMock.CalledOnce());
+      ZEN(GetArgs_ZenMockObject.CalledOnce());
       AssertStopwatchStartAndStopCalled();
 
       ZEN(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
@@ -153,7 +153,7 @@ namespace ZenUnit
    TEST(Call_FunctionThrowsZenMockException_ReturnsExceptionResult)
    {
       ZenUnitArgs zenUnitArgs;
-      GetArgs_ZenMock.Return(zenUnitArgs);
+      GetArgs_ZenMockObject.Return(zenUnitArgs);
 
       _voidTwoArgMemberFunctionCallerMock->ConstCallMock.Expect();
 
@@ -169,7 +169,7 @@ namespace ZenUnit
          throw ZenMock::UnexpectedCallException("ZenMockedFunctionSignature");
       }, _testMock.get(), testPhase);
       //
-      ZEN(GetArgs_ZenMock.CalledOnce());
+      ZEN(GetArgs_ZenMockObject.CalledOnce());
       AssertStopwatchStartAndStopCalled();
 
       ZEN(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
@@ -208,7 +208,7 @@ namespace ZenUnit
       TestPhase::TestBody)
    {
       ZenUnitArgs zenUnitArgs;
-      GetArgs_ZenMock.Return(zenUnitArgs);
+      GetArgs_ZenMockObject.Return(zenUnitArgs);
 
       _voidTwoArgMemberFunctionCallerMock->ConstCallMock.Expect();
 
@@ -220,7 +220,7 @@ namespace ZenUnit
       //
       const CallResult callResult = _tryCatchCaller.Call(ThrowStdException, _testMock.get(), arbitraryTestPhase);
       //
-      ZEN(GetArgs_ZenMock.CalledOnce());
+      ZEN(GetArgs_ZenMockObject.CalledOnce());
       AssertStopwatchStartAndStopCalled();
 
       ZEN(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
@@ -262,7 +262,7 @@ what(): "runtime_error_what")"));
 
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.exit0 = exit0;
-      GetArgs_ZenMock.Return(zenUnitArgs);
+      GetArgs_ZenMockObject.Return(zenUnitArgs);
       //
       const CallResult callResult = _tryCatchCaller.Call(ThrowInt, _testMock.get(), arbitraryTestPhase);
       //
@@ -270,7 +270,7 @@ what(): "runtime_error_what")"));
 
       ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith("FATALITY", Color::Red));
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(arbitraryTestPhase));
-      ZEN(GetArgs_ZenMock.CalledOnce());
+      ZEN(GetArgs_ZenMockObject.CalledOnce());
       ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(
          String::Concat("Fatal ... exception. ", expectedExitMessage,
             _testPhaseSuffix.c_str(), " ", _microseconds, "us"), expectedExitCode));

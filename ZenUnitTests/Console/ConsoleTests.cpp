@@ -39,7 +39,7 @@ namespace ZenUnit
    {
       _console._consoleColorer.reset(_consoleColorerMock = new ConsoleColorerMock);
 #if _WIN32
-      _console.call_getch = BIND_0ARG_ZENMOCK_OBJECT(_getch_ZenMock);
+      _console.call_getch = BIND_0ARG_ZENMOCK_OBJECT(_getch_ZenMockObject);
 #endif
    }
 
@@ -114,12 +114,12 @@ namespace ZenUnit
       1)
    {
       ZENMOCK_VOID1_FREE(exit, int);
-      exit_ZenMock.Expect();
-      _console.call_exit = BIND_1ARG_ZENMOCK_OBJECT(exit_ZenMock);
+      exit_ZenMockObject.Expect();
+      _console.call_exit = BIND_1ARG_ZENMOCK_OBJECT(exit_ZenMockObject);
       //
       _console.WriteLineAndExit(Message, exitCode);
       //
-      ZEN(exit_ZenMock.CalledOnceWith(exitCode));
+      ZEN(exit_ZenMockObject.CalledOnceWith(exitCode));
    }
 
    TEST(WriteStringsCommaSeparated_CallsDoWriteStringsCommaSeparated)
@@ -200,12 +200,12 @@ namespace ZenUnit
       2, false)
    {
       ZENMOCK_NONVOID0_FREE(int, IsDebuggerPresent);
-      IsDebuggerPresent_ZenMock.Return(isDebuggerPresentReturnValue);
-      _console.call_IsDebuggerPresent = BIND_0ARG_ZENMOCK_OBJECT(IsDebuggerPresent_ZenMock);
+      IsDebuggerPresent_ZenMockObject.Return(isDebuggerPresentReturnValue);
+      _console.call_IsDebuggerPresent = BIND_0ARG_ZENMOCK_OBJECT(IsDebuggerPresent_ZenMockObject);
       //
       const bool debuggerIsPresent = _console.DebuggerIsPresent();
       //
-      ZEN(IsDebuggerPresent_ZenMock.CalledOnce());
+      ZEN(IsDebuggerPresent_ZenMockObject.CalledOnce());
       ARE_EQUAL(expectedReturnValue, debuggerIsPresent);
    }
 #endif
@@ -213,13 +213,13 @@ namespace ZenUnit
    TEST(WaitForAnyKey_CallsGetChOnWindows)
    {
 #ifdef _WIN32
-      _getch_ZenMock.Return(0);
+      _getch_ZenMockObject.Return(0);
 #endif
       //
       _console.WaitForAnyKey();
       //
 #ifdef _WIN32
-      ZEN(_getch_ZenMock.CalledOnce());
+      ZEN(_getch_ZenMockObject.CalledOnce());
 #endif
    }
 

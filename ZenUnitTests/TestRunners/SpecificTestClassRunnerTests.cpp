@@ -72,7 +72,7 @@ namespace ZenUnit
    {
       _specificTestClassRunner = make_unique<SpecificTestClassRunner<TestingTestClass>>(_testClassName.c_str());
       _specificTestClassRunner->p_console.reset(p_consoleMock = new ConsoleMock);
-      _specificTestClassRunner->call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMock);
+      _specificTestClassRunner->call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject);
       _specificTestClassRunner->_twoArgMemberForEacher.reset(_twoArgMemberForEacherMock = new TwoArgMemberForEacherMockType);
       _specificTestClassRunner->_voidZeroArgMemberFunctionCaller.reset(
          _voidZeroArgMemberFunctionCallerMock =
@@ -83,7 +83,7 @@ namespace ZenUnit
       _specificTestClassRunner->_voidOneArgFunctionCaller.reset(_voidOneArgMemberFunctionCallerMock =
          new VoidOneArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, const TestClassResult*>);
       _specificTestClassRunner->_twoArgTestAnyer.reset(_twoArgTestAnyerMock = new TwoArgTestAnyerMockType);
-      _specificTestClassRunner->call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMock);
+      _specificTestClassRunner->call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject);
       _specificTestClassRunner->p_twoArgMemberAnyer.reset(p_twoArgMemberAnyerMock = new TwoArgMemberAnyerMockType);
    }
 
@@ -215,7 +215,7 @@ namespace ZenUnit
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.randomorder = randomorder;
       zenUnitArgs.randomseed = Random<unsigned short>();
-      GetArgs_ZenMock.Return(zenUnitArgs);
+      GetArgs_ZenMockObject.Return(zenUnitArgs);
       if (expectRandomForEach)
       {
          _twoArgMemberForEacherMock->RandomTwoArgMemberForEachMock.Expect();
@@ -227,7 +227,7 @@ namespace ZenUnit
       //
       _specificTestClassRunner->DoRunTests();
       //
-      ZEN(GetArgs_ZenMock.CalledOnce());
+      ZEN(GetArgs_ZenMockObject.CalledOnce());
       if (expectRandomForEach)
       {
          ZEN(_twoArgMemberForEacherMock->RandomTwoArgMemberForEachMock.CalledOnceWith(
@@ -331,7 +331,7 @@ namespace ZenUnit
    {
       ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
       zenUnitArgs.runFilters.resize(ZenUnit::RandomBetween<size_t>(1, 2));
-      GetArgs_ZenMock.Return(zenUnitArgs);
+      GetArgs_ZenMockObject.Return(zenUnitArgs);
 
       TestMock* const testMock = new TestMock;
       const string testName = Random<string>();
@@ -344,7 +344,7 @@ namespace ZenUnit
       //
       _specificTestClassRunner->RunTest(test, &testClassResultMock);
       //
-      ZEN(GetArgs_ZenMock.CalledOnce());
+      ZEN(GetArgs_ZenMockObject.CalledOnce());
       ZEN(testMock->NameMock.CalledOnce());
       ZEN(p_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
          zenUnitArgs.runFilters, _specificTestClassRunner.get(), &TestClassRunner::RunFilterMatchesTestName, testName.c_str()));
@@ -358,7 +358,7 @@ namespace ZenUnit
    {
       ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
       zenUnitArgs.runFilters.resize(runFiltersSize);
-      GetArgs_ZenMock.Return(zenUnitArgs);
+      GetArgs_ZenMockObject.Return(zenUnitArgs);
 
       p_consoleMock->WriteColorMock.Expect();
       p_consoleMock->WriteMock.Expect();
@@ -382,7 +382,7 @@ namespace ZenUnit
       //
       _specificTestClassRunner->RunTest(test, &testClassResultMock);
       //
-      ZEN(GetArgs_ZenMock.CalledOnce());
+      ZEN(GetArgs_ZenMockObject.CalledOnce());
       ZEN(testMock->NameMock.CalledOnce());
       if (expectAnyerCall)
       {

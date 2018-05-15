@@ -46,7 +46,7 @@ namespace ZenUnit
       DestructorCallResult.microseconds = 3000;
       _testResult.fullTestName = FullTestNameValue;
       _testResult.call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString =
-         BIND_1ARG_ZENMOCK_OBJECT(MicrosecondsToThreeDecimalPlaceMillisecondsString_ZenMock);
+         BIND_1ARG_ZENMOCK_OBJECT(MicrosecondsToThreeDecimalPlaceMillisecondsString_ZenMockObject);
    }
 
    TEST(DefaultConstructor_SetsFieldsTo0_SetsWatchFunction)
@@ -108,9 +108,9 @@ namespace ZenUnit
       if (expectedOverallOutcome == TestOutcome::Success ||
          expectedOverallOutcome == TestOutcome::SuccessButPastDeadline)
       {
-         GetArgs_ZenMock.Return(zenUnitArgs);
+         GetArgs_ZenMockObject.Return(zenUnitArgs);
       }
-      const function<const ZenUnitArgs&()> getArgsMockFunction = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMock);
+      const function<const ZenUnitArgs&()> getArgsMockFunction = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject);
       //
       const TestResult testResult(
          FullTestNameValue,
@@ -124,7 +124,7 @@ namespace ZenUnit
       if (expectedOverallOutcome == TestOutcome::Success ||
          expectedOverallOutcome == TestOutcome::SuccessButPastDeadline)
       {
-         GetArgs_ZenMock.CalledOnce();
+         GetArgs_ZenMockObject.CalledOnce();
       }
       STD_FUNCTION_TARGETS(Watch::MicrosecondsToThreeDecimalPlaceMillisecondsString,
          testResult.call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString);
@@ -217,7 +217,7 @@ namespace ZenUnit
       {
          _consoleMock.WriteColorMock.Expect();
          _consoleMock.WriteLineMock.Expect();
-         threeDecimalPlaceMillisecondsString = MicrosecondsToThreeDecimalPlaceMillisecondsString_ZenMock.ReturnRandom();
+         threeDecimalPlaceMillisecondsString = MicrosecondsToThreeDecimalPlaceMillisecondsString_ZenMockObject.ReturnRandom();
       }
       const unsigned microseconds = ZenUnit::Random<unsigned>();
       _testResult.microseconds = microseconds;
@@ -227,7 +227,7 @@ namespace ZenUnit
       if (expectWriteLineOK)
       {
          ZEN(_consoleMock.WriteColorMock.CalledOnceWith("OK ", Color::Green));
-         ZEN(MicrosecondsToThreeDecimalPlaceMillisecondsString_ZenMock.CalledOnceWith(microseconds));
+         ZEN(MicrosecondsToThreeDecimalPlaceMillisecondsString_ZenMockObject.CalledOnceWith(microseconds));
          ZEN(_consoleMock.WriteLineMock.CalledOnceWith(threeDecimalPlaceMillisecondsString));
       }
    }

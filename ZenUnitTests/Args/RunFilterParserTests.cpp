@@ -21,7 +21,7 @@ namespace ZenUnit
    {
       _runFilterParser._memberFunctionTransformer.reset(
          _memberFunctionTransformerMock = new MemberFunctionTransformerMock<RunFilterParser, string, RunFilter>);
-      _runFilterParser.call_String_ToUnsigned = BIND_1ARG_ZENMOCK_OBJECT(ToUnsigned_ZenMock);
+      _runFilterParser.call_String_ToUnsigned = BIND_1ARG_ZENMOCK_OBJECT(ToUnsigned_ZenMockObject);
    }
 
    TEST(DefaultConstructor_NewsTransformer)
@@ -69,11 +69,11 @@ namespace ZenUnit
       "TestClassA::TestNameA/1", "1", RunFilter("TestClassA", "TestNameA", 1),
       "TestClassB::TestNameB/2", "2", RunFilter("TestClassB", "TestNameB", 2))
    {
-      ToUnsigned_ZenMock.Return(expectedRunFilter.testCaseNumber);
+      ToUnsigned_ZenMockObject.Return(expectedRunFilter.testCaseNumber);
       //
       const RunFilter runFilter = _runFilterParser.ParseRunFilterString(runFilterString);
       //
-      ZEN(ToUnsigned_ZenMock.CalledOnceWith(expectedTestCaseNumberString));
+      ZEN(ToUnsigned_ZenMockObject.CalledOnceWith(expectedTestCaseNumberString));
       ARE_EQUAL(expectedRunFilter, runFilter);
    }
 

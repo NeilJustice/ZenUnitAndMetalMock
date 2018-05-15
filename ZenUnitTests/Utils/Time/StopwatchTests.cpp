@@ -16,7 +16,7 @@ namespace ZenUnit
 
    STARTUP
    {
-      _stopwatch.call_highres_now = BIND_0ARG_ZENMOCK_OBJECT(now_ZenMock);
+      _stopwatch.call_highres_now = BIND_0ARG_ZENMOCK_OBJECT(now_ZenMockObject);
    }
 
    TEST(Constructor_SetsNowFunction)
@@ -30,11 +30,11 @@ namespace ZenUnit
    {
       const chrono::time_point<chrono::high_resolution_clock>
          nonDefaultTimePoint = chrono::high_resolution_clock::now();
-      now_ZenMock.Return(nonDefaultTimePoint);
+      now_ZenMockObject.Return(nonDefaultTimePoint);
       //
       _stopwatch.Start();
       //
-      now_ZenMock.CalledOnce();
+      now_ZenMockObject.CalledOnce();
       ARE_EQUAL(nonDefaultTimePoint, _stopwatch._startTime);
    }
 
@@ -50,12 +50,12 @@ namespace ZenUnit
       startTime += chrono::milliseconds(Random<unsigned>());
       const unsigned randomMicrosecondDuration = Random<unsigned>();
       const chrono::time_point<chrono::high_resolution_clock> stopTime = startTime + chrono::microseconds(randomMicrosecondDuration);
-      now_ZenMock.Return(stopTime);
+      now_ZenMockObject.Return(stopTime);
       _stopwatch._startTime = startTime;
       //
       const unsigned elapsedMicroseconds = _stopwatch.Stop();
       //
-      ZEN(now_ZenMock.CalledOnce());
+      ZEN(now_ZenMockObject.CalledOnce());
       ARE_EQUAL(randomMicrosecondDuration, elapsedMicroseconds);
    }
 
