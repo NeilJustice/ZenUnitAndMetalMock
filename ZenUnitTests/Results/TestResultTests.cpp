@@ -27,7 +27,7 @@ namespace ZenUnit
    ConsoleMock _consoleMock;
    TestFailureNumbererMock _testFailureNumbererMock;
    const FullTestName FullTestNameValue = FullTestName("ClassName", "TestClassName", ZenUnit::Random<unsigned char>());
-   ZENMOCK_NONVOID1_STATIC(string, ZenUnit::Watch, MicrosecondsToThreeDecimalPlaceMillisecondsString, unsigned)
+   ZENMOCK_NONVOID1_FREE_OR_STATIC(string, ZenUnit::Watch, MicrosecondsToThreeDecimalPlaceMillisecondsString, unsigned)
 
    const unsigned MaxTestMilliseconds = 1 + 2 + 3 + 4 + 5;
 
@@ -101,7 +101,7 @@ namespace ZenUnit
       cleanupCallResult.testOutcome = cleanupOutcome;
       cleanupCallResult.microseconds = 5000 + relativeMicroseconds;
 
-      ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitArgs, GetArgs);
+      ZENMOCK_NONVOID0_FREE_OR_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitArgs, GetArgs);
 
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.maxtestmilliseconds = maxtestmilliseconds;

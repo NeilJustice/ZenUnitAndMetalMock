@@ -92,8 +92,8 @@ namespace ZenUnit
    const string TestClassName = Random<string>();
    const string TestName = Random<string>();
    const string TestCaseArgsText = Random<string>();
-   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
-   ZENMOCK_VOID1_FREE(exit, int)
+   ZENMOCK_NONVOID0_FREE_OR_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
+   ZENMOCK_VOID1_GLOBAL(exit, int)
 
    STARTUP
    {
@@ -186,12 +186,12 @@ namespace ZenUnit
          }
       } test1X1SelfMocked;
 
-      ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs, _SelfMocked);
+      ZENMOCK_NONVOID0_FREE_OR_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs, _SelfMocked);
 
       const ZenUnitArgs args = GetArgs_ZenMockObject_SelfMocked.ReturnRandom();
       test1X1SelfMocked.call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject_SelfMocked);
 
-      ZENMOCK_NONVOID0_STATIC(vector<string>, ZenUnit::String, CommaSplitExceptQuotedCommas, _SelfMocked);
+      ZENMOCK_NONVOID0_FREE_OR_STATIC(vector<string>, ZenUnit::String, CommaSplitExceptQuotedCommas, _SelfMocked);
       const vector<string> splitTestCaseArgs = { ZenUnit::Random<string>(), ZenUnit::Random<string>(), ZenUnit::Random<string>() };
       CommaSplitExceptQuotedCommas_ZenMockObject_SelfMocked.Return(splitTestCaseArgs);
       test1X1SelfMocked.call_String_CommaSplitExceptQuotedCommas =

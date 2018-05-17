@@ -23,7 +23,7 @@ namespace ZenUnit
    StopwatchMock* _stopwatchMock;
    VoidTwoArgMemberFunctionCallerMock<TryCatchCaller, TestOutcome, bool>* _voidTwoArgMemberFunctionCallerMock;
    unique_ptr<TestMock> _testMock;
-   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
+   ZENMOCK_NONVOID0_FREE_OR_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
 
    const unsigned _microseconds = Random<unsigned>();
    const string _testPhaseSuffix = Random<string>();

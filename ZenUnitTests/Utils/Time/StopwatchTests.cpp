@@ -10,7 +10,7 @@ namespace ZenUnit
    EVIDENCE
 
    Stopwatch _stopwatch;
-   ZENMOCK_NONVOID0_STATIC(
+   ZENMOCK_NONVOID0_FREE_OR_STATIC(
       chrono::time_point<chrono::high_resolution_clock>,
       chrono::high_resolution_clock, now)
 

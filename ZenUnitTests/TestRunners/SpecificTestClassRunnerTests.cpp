@@ -66,7 +66,7 @@ namespace ZenUnit
       bool(TestClassRunner::*)(const RunFilter&, const char*) const, const char*>;
    TwoArgMemberAnyerMockType* p_twoArgMemberAnyerMock;
 
-   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
+   ZENMOCK_NONVOID0_FREE_OR_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
 
       STARTUP
    {
