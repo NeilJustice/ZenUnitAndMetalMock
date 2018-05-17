@@ -81,7 +81,7 @@ Testing Rigor Options:
    ConsoleMock* _consoleMock;
    RunFilterParserMock* _runFilterParserMock = nullptr;
    VoidOneArgMemberFunctionCallerMock<ArgsParser, ZenUnitArgs&>* _voidOneArgMemberFunctionCallerMock = nullptr;
-   ZENMOCK_NONVOID1_FREE_OR_STATIC(unsigned, ZenUnit::String, ToUnsigned, const string&)
+   ZENMOCK_NONVOID1_STATIC(unsigned, ZenUnit::String, ToUnsigned, const string&)
    WatchMock* _watchMock;
 
    STARTUP
