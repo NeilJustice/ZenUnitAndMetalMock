@@ -35,13 +35,13 @@ Usage: <TestsBinaryName> [Options...]
 Testing Utility Options:
 
 -pause
-   Wait for any key before running tests to allow attaching a profiler or debugger.
--wait
-   Wait for any key at the end of the test run.
+   Wait for any key before running tests to allow attaching a debugger or profiler.
 -exit0
    Always exit 0 regardless of test run outcome.
-   This is a useful option for never blocking the launch of a ZenUnit tests
+   Useful option for never blocking the launch of a ZenUnit tests
    console window when previously running those tests in a post-build step.
+-wait
+   Wait for any key at the end of the test run.
 
 Testing Filtration Options:
 
@@ -70,11 +70,11 @@ Testing Rigor Options:
 -testruns=<NumberOfTestRuns>
    Repeat the running of all tests NumberOfTestRuns times.
    Specify -testruns=3 -randomorder for three pseudorandom test run orderings.
-   This is a useful option for continuous integration servers to partially ensure
+   Useful option for continuous integration servers to partially ensure
    that checked-in unit tests are robust with respect to ordering.
 -noskips
    Exit 1 regardless of test run outcome if any tests are skipped.
-   This is a useful option for continuous integration servers to partially ensure
+   Useful option for continuous integration servers to partially ensure
    that an organizational culture of "skip it and ship it!" does not take root.)";
 
    ArgsParser _argsParser;

@@ -1843,11 +1843,11 @@ Testing Rigor Options:
 -testruns=<NumberOfTestRuns>
    Repeat the running of all tests NumberOfTestRuns times.
    Specify -testruns=3 -randomorder for three pseudorandom test run orderings.
-   This is a useful option for continuous integration servers to partially ensure
+   Useful option for continuous integration servers to partially ensure
    that checked-in unit tests are robust with respect to ordering.
 -noskips
    Exit 1 regardless of test run outcome if any tests are skipped.
-   This is a useful option for continuous integration servers to partially ensure
+   Useful option for continuous integration servers to partially ensure
    that an organizational culture of "skip it and ship it!" does not take root.)";
          return usage;
       }
