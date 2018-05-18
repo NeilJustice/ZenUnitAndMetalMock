@@ -6302,7 +6302,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    template<>
    inline std::string Random<std::string>()
    {
-      const std::string randomString = "RandomString" + std::to_string(RandomBetween<int>(0, 10000));
+      const std::string randomString = "RS" + std::to_string(RandomBetween<int>(0, 10000));
       return randomString;
    }
 

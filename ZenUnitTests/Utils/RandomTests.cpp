@@ -36,7 +36,7 @@ namespace ZenUnit
    TEST(Random_String_ReturnsRandomStringThatBeginsWithRandomString)
    {
       const string randomString = Random<string>();
-      IS_TRUE(randomString.find("RandomString") != string::npos);
+      IS_TRUE(randomString.find("RS") != string::npos);
    }
 
    TEST(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
