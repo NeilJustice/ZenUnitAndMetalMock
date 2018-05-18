@@ -2,15 +2,15 @@
 
 namespace ZenUnit
 {
-   TESTS(FAILTESTTests)
+   TESTS(FAIL_TESTTests)
    AFACT(StringLiteralBecause_Throws)
    AFACT(StringVariableBecause_MessagesTestCase_Throws)
    EVIDENCE
 
    TEST(StringLiteralBecause_Throws)
    {
-      THROWS(FAILTEST("Because"), Anomaly, R"(
- Failed: FAILTEST("Because")
+      THROWS(FAIL_TEST("Because"), Anomaly, R"(
+ Failed: FAIL_TEST("Because")
 File.cpp(1))");
    }
 
@@ -18,12 +18,12 @@ File.cpp(1))");
    {
       const string Because = "BecauseValue";
       const string messageA = "A", messageB = "B";
-      THROWS(FAILTEST(Because, messageA, messageB), Anomaly, R"(
- Failed: FAILTEST(Because, messageA, messageB)
+      THROWS(FAIL_TEST(Because, messageA, messageB), Anomaly, R"(
+ Failed: FAIL_TEST(Because, messageA, messageB)
 Because: "BecauseValue"
 Message: "A", "B"
 File.cpp(1))");
    }
 
-   RUN_TESTS(FAILTESTTests)
+   RUN_TESTS(FAIL_TESTTests)
 }

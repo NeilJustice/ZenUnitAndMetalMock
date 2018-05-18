@@ -28,7 +28,7 @@ namespace ZenUnit
       try
       {
          STD_FUNCTION_TARGETS(FunctionA, emptyStdFunction, messageA, messageB);
-         FAILTEST("STD_FUNCTION_TARGETS() did not throw Anomaly");
+         FAIL_TEST("STD_FUNCTION_TARGETS() did not throw Anomaly");
       }
       catch (const Anomaly& anomaly)
       {
@@ -59,7 +59,7 @@ File.cpp\(1\))", anomaly.why);
       try
       {
          STD_FUNCTION_TARGETS(FunctionB, stdFunctionA);
-         FAILTEST("STD_FUNCTION_TARGETS() did not throw Anomaly");
+         FAIL_TEST("STD_FUNCTION_TARGETS() did not throw Anomaly");
       }
       catch (const Anomaly& anomaly)
       {
@@ -100,7 +100,7 @@ File.cpp(1))");
       try
       {
          STD_FUNCTION_TARGETS(FunctionC, stdFunctionA);
-         FAILTEST("STD_FUNCTION_TARGETS() did not throw Anomaly");
+         FAIL_TEST("STD_FUNCTION_TARGETS() did not throw Anomaly");
       }
       catch (const Anomaly& anomaly)
       {

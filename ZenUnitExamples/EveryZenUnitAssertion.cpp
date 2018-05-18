@@ -61,7 +61,7 @@ TEST(CallAllMacros)
 
    // Exceptions
    THROWS([]{ throw std::runtime_error("what"); }(), std::runtime_error, "what");
-   NOTHROWS([]{}());
+   DOES_NOT_THROW([]{}());
 
    // Regular Expressions
    REGEX_MATCHES(R"(\d\d\d)", "123");

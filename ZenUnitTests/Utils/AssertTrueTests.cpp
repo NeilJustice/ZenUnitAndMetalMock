@@ -49,7 +49,7 @@ namespace ZenUnit
          };
          X x;
          x();
-         FAILTEST("assert_true did not throw");
+         FAIL_TEST("assert_true did not throw");
       }
       catch (const logic_error& e)
       {

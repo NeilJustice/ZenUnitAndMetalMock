@@ -180,6 +180,8 @@ public:
       const bool setContainsElement = s.find(element) != s.end();
       return setContainsElement;
    }
+   
+   Set() = delete;
 };
 ```
 
@@ -224,7 +226,7 @@ int main(int argc, char* argv[])
 }
 ```
 
-### ZenUnit Type-Parameterized Test Class Syntax Console Output
+### Console Output For The Above ZenUnit Type-Parameterized Test Class
 
 ![ZenUnit](Screenshots/ZenUnitTypeParameterizedTestClass.png "ZenUnit Type-Parameterized Test Results")
 
@@ -232,7 +234,7 @@ int main(int argc, char* argv[])
 
 |Value Assertions|Description|
 |----------------|-----------|
-|`ARE_EQUAL(expectedValue, actualValue, messages...)`|By default, asserts that `expectedValue == actualValue` returns true, otherwise throws a ZenUnit\:\:Anomaly, which is caught by ZenUnit to fail the current test. `messages...` are variables of any type writable with `operator<<(std::ostream&, const T&)` or `ZenUnit::Printer<T>::Print(std::ostream&, const T&)`. Custom `ARE_EQUAL` behavior can be defined for type T by way of defining a `ZenUnit::Equalizer<T>` struct specialization, detailed below.|
+|`ARE_EQUAL(expectedValue, actualValue, messages...)`|By default, asserts that `expectedValue == actualValue` returns true, otherwise throws a `ZenUnit::Anomaly`, which is caught by ZenUnit to fail the current test. `messages...` are variables of any type writable with `operator<<(std::ostream&, const T&)` or `ZenUnit::Printer<T>::Print(std::ostream&, const T&)`. Custom `ARE_EQUAL` behavior can be defined for type T by way of defining a `ZenUnit::Equalizer<T>` struct specialization, detailed below.|
 |`ARE_COPIES(expectedObject, actualObject, messages...)`|Asserts that `&expectedObject != &actualObject` then asserts `ARE_EQUAL(expectedObject, actualObject)`.|
 |`IS_TRUE(value, messages...)`|Asserts that `value` is true.|
 |`IS_FALSE(value, messages...)`|Asserts that `value` is false.|
@@ -250,7 +252,7 @@ int main(int argc, char* argv[])
 |Exception Assertions|Description|
 |--------------------|-----------|
 |`THROWS(expression, expectedExactExceptionType, expectedWhatMessage, messages...)`|Asserts that `expression` throws \*exactly\* (not a derived class of) `expectedExactExceptionType` with \*exactly\* a what() message equal to `expectedWhatMessage`.|
-|`NOTHROWS(expression, messages...)`|If `expression` throws, throws a ZenUnit\:\:Anomaly, otherwise does nothing. Useful for expressing intent in unit tests.|
+|`DOES_NOT_THROW(expression, messages...)`|If `expression` throws, throws a `ZenUnit::Anomaly`, otherwise does nothing. Useful assertion for emphasis to the reader of a unit test.|
 
 |Pointer Assertions|Description|
 |------------------|-----------|
@@ -264,7 +266,7 @@ int main(int argc, char* argv[])
 
 |The Test Itself|Description|
 |---------------|-----------|
-|`FAILTEST(testFailureReason, messages...)`|Throws a ZenUnit\:\:Anomaly which is caught by ZenUnit to end the current test and begin the next test.|
+|`FAIL_TEST(testFailureReason, messages...)`|Throws a `ZenUnit::Anomaly` which is caught by ZenUnit to end the current test and begin the next test.|
 
 |Function Assertion|Description|
 |------------------|-----------|
@@ -273,7 +275,7 @@ int main(int argc, char* argv[])
 |Inexact Assertions Not Implemented By Design In ZenUnit Due To Vulnerability to Code Mutations|Code Mutation Vulnerability|
 |--------------------------------------------------------------------------------------|---------------------------|
 |`ARE_NOT_EQUAL(expectedValue, actualValue)`|mutate-value|
-|`IS_GT, IS_GTE, IS_LT, IS_LTE`|mutate-value|
+|`IS_GTE, IS_GT, IS_LT, IS_LTE`|mutate-value|
 |`STRING_CONTAINS(expectedSubstring, actualString)`|mutate-value|
 |`REGEX_MATCHES(expectedPattern, actualString)`|mutate-value|
 |`THROWS_EXCEPTION(expression, expectedExceptionBaseClass)`|mutate-exception-type and mutate-exception-message|
@@ -323,8 +325,8 @@ ZenUnit provides the following random-value-generating functions for writing uni
 |`ZenUnit::Random<T>()`|Returns a `ZenUnit::Random<UserType>()` value if defined or returns a random integer T value between `std::numeric_limits<T>::min()` and `std::numeric_limits<T>::max()` selected from a uniform distribution.|
 |`ZenUnit::RandomBetween<T>`(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound)|Returns a random integer T value between inclusiveLowerBound and inclusiveUpperBound selected from a uniform distribution.|
 |`ZenUnit::RandomEnum<EnumType>(EnumType exclusiveEnumMaxValue)`|Returns a random EnumType value between 0 and exclusiveEnumMaxValue - 1, selected from a uniform distribution.|
-|`ZenUnit::Random<float>()`|Returns a random float between -1234567 and +1234567 selected from a std\:\:uniform_real_distribution\<float\>.|
-|`ZenUnit::Random<double>()`|Returns a random double between std::numeric_limits\<double\>::min() and std::numeric_limits\<double\>::max() from a std\:\:uniform_real_distribution\<double\>.|
+|`ZenUnit::Random<float>()`|Returns a random float between -1234567 and +1234567 selected from a `std::uniform_real_distribution<float>`.|
+|`ZenUnit::Random<double>()`|Returns a random double between `std::numeric_limits<double>::min()` and `std::numeric_limits<double>::max()` from a `std::uniform_real_distribution<double>`.|
 |`ZenUnit::Random<std::string>()`|Returns `"RS" + std::to_string(ZenUnit::RandomBetween<int>(0, 10000))`.|
 |`ZenUnit::RandomVector<T>()`|Returns a `std::vector<T>` with size between 0 and 2 with each element a `ZenUnit::Random<T>()` value.|
 |`ZenUnit::RandomMap<KeyType, ValueType>()`|Returns a `std::map<KeyType, ValueType>` with size between 0 and 2 with each key a `ZenUnit::Random<KeyType>()` value and each value a `ZenUnit::Random<ValueType>()` value.|

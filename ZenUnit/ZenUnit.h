@@ -143,8 +143,8 @@
 // The Test Itself:
 
 // Fails the current test with a failure reason.
-#define FAILTEST(failureReason, ...) \
-   ZenUnit::FAILTEST_Defined(VRT(failureReason), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+#define FAIL_TEST(failureReason, ...) \
+   ZenUnit::FAIL_TEST_Defined(VRT(failureReason), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Exceptions:
 
@@ -152,9 +152,9 @@
 #define THROWS(expression, expectedExactExceptionType, expectedWhatText, ...) \
    ZenUnit::THROWS_Defined<expectedExactExceptionType>([&]() { expression; }, #expression, #expectedExactExceptionType, expectedWhatText, #expectedWhatText, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Does nothing to implicitly assert that expression() does not throw an exception. A useful assertion for emphasis.
-#define NOTHROWS(expression, ...) \
-   NOTHROWS_Defined([&]{ expression; }, #expression, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+// Does nothing to implicitly assert that expression() does not throw an exception. A useful assertion for emphasis in a unit test.
+#define DOES_NOT_THROW(expression, ...) \
+   DOES_NOT_THROW_Defined([&]{ expression; }, #expression, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
 // ZenUnit TestClass Macros
@@ -2446,10 +2446,10 @@ Testing Rigor Options:
    }
 
    template<typename StringType, typename... MessageTypes>
-   void FAILTEST_Defined(VRText<StringType> testFailureReasonVRT,
+   void FAIL_TEST_Defined(VRText<StringType> testFailureReasonVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-      const std::string failedLinePrefix = String::Concat(" Failed: FAILTEST(", testFailureReasonVRT.text);
+      const std::string failedLinePrefix = String::Concat(" Failed: FAIL_TEST(", testFailureReasonVRT.text);
       std::ostringstream whyBodyBuilder;
       const std::string quotedTestFailureReason = String::Concat('"', testFailureReasonVRT.value, '"');
       if (quotedTestFailureReason != testFailureReasonVRT.text)
@@ -2747,12 +2747,12 @@ Testing Rigor Options:
    }
 
    template<typename... MessageTypes>
-   void NOTHROWS_Throw(
+   void DOES_NOT_THROW_Throw(
       const std::exception& e,
       const char* expressionText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-      const std::string failedLinePrefix = String::Concat("  Failed: NOTHROWS(", expressionText);
+      const std::string failedLinePrefix = String::Concat("  Failed: DOES_NOT_THROW(", expressionText);
       const std::string* const actualExceptionTypeName = Type::GetName(e);
       const std::string whyBody = String::Concat("Expected: No exception thrown\n",
          "  Actual: ", *actualExceptionTypeName, " thrown\n",
@@ -2761,7 +2761,7 @@ Testing Rigor Options:
    }
 
    template<typename... MessageTypes>
-   void NOTHROWS_Defined(
+   void DOES_NOT_THROW_Defined(
       const std::function<void()>& expression,
       const char* expressionText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
@@ -2772,7 +2772,7 @@ Testing Rigor Options:
       }
       catch (const std::exception& e)
       {
-         NOTHROWS_Throw(e, expressionText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         DOES_NOT_THROW_Throw(e, expressionText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
