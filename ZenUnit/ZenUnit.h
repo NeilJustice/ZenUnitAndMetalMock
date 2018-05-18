@@ -1808,13 +1808,13 @@ Usage: <TestsBinaryName> [Options...]
 Testing Utility Options:
 
 -pause
-   Wait for any key before running tests to allow attaching a profiler or debugger.
--wait
-   Wait for any key at the end of the test run.
+   Wait for any key before running tests to allow attaching a debugger or profiler.
 -exit0
    Always exit 0 regardless of test run outcome.
-   This is a useful option for never blocking the launch of a ZenUnit tests
+   Useful option for never blocking the launch of a ZenUnit tests
    console window when previously running those tests in a post-build step.
+-wait
+   Wait for any key at the end of the test run.
 
 Testing Filtration Options:
 
