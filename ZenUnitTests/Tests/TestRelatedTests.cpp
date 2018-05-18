@@ -93,7 +93,7 @@ namespace ZenUnit
    const string TestName = Random<string>();
    const string TestCaseArgsText = Random<string>();
    ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
-   ZENMOCK_VOID1_GLOBAL_FREE(exit, int)
+   ZENMOCK_VOID1_GLOBAL(exit, int)
 
    STARTUP
    {
