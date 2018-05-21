@@ -5218,6 +5218,42 @@ Testing Rigor Options:
       }
    };
 
+   class TestCaseIndexGenerator
+   {
+      friend class TestCaseIndexGeneratorTests;
+   private:
+      size_t _N = 0;
+      size_t _numberOfTestCaseArgs = 0;
+      size_t _testCaseArgsIndex = 0;
+      bool _isRandomOrderMode = false;
+   public:
+      virtual void Initialize(size_t N, size_t numberOfTestCaseArgs, const ZenUnitArgs& args)
+      {
+         assert_true(N >= 1);
+         assert_true(numberOfTestCaseArgs >= 1);
+         _N = N;
+         _numberOfTestCaseArgs = numberOfTestCaseArgs;
+         _isRandomOrderMode = args.randomorder;
+      }
+
+      virtual size_t NextTestCaseIndex()
+      {
+         if (_testCaseArgsIndex == _numberOfTestCaseArgs)
+         {
+            return std::numeric_limits<size_t>::max();
+         }
+         assert_true(_testCaseArgsIndex < _numberOfTestCaseArgs);
+         size_t nextTestCaseArgsIndex = _testCaseArgsIndex;
+         _testCaseArgsIndex += _N;
+         return nextTestCaseArgsIndex;
+      }
+
+      virtual void ResetTestCaseArgsIndex()
+      {
+         _testCaseArgsIndex = 0;
+      }
+   };
+
    template<typename TestClassType, size_t N, typename... TestCaseArgTypes>
    class TestNXN : public Test
    {
@@ -5233,6 +5269,7 @@ Testing Rigor Options:
       const char* const _testCaseArgsText;
 
       std::unique_ptr<TestClassType> _testClass;
+      std::unique_ptr<TestCaseIndexGenerator> _testCaseIndexGenerator;
       size_t _testCaseArgsIndex;
       std::vector<TestResult> _testResults;
    protected:
@@ -5250,6 +5287,7 @@ Testing Rigor Options:
          , call_String_CommaSplitExceptQuotedCommas(String::CommaSplitExceptQuotedCommas)
          , call_exit(::exit)
          , _testCaseArgsText(testCaseArgsText)
+         , _testCaseIndexGenerator(new TestCaseIndexGenerator)
          , _testCaseArgsIndex(0)
          , p_testCaseArgs(std::forward<TestCaseArgTypes>(testCaseArgs)...)
       {
@@ -5286,15 +5324,17 @@ Testing Rigor Options:
       {
          assert_true(_testCaseArgsIndex == 0);
          const ZenUnitArgs& args = call_TestRunner_GetArgs();
+         const size_t numberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
+         _testCaseIndexGenerator->Initialize(N, numberOfTestCaseArgs, args);
          const std::vector<std::string> splitTestCaseArgs = call_String_CommaSplitExceptQuotedCommas(_testCaseArgsText);
-         constexpr size_t NumberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
-         for (unsigned testCaseNumber = 1;
-              _testCaseArgsIndex < NumberOfTestCaseArgs;
-              _testCaseArgsIndex += N, ++testCaseNumber)
+         unsigned testCaseNumber = 1;
+         while ((_testCaseArgsIndex = _testCaseIndexGenerator->NextTestCaseIndex()) != std::numeric_limits<size_t>::max())
          {
             RunTestCaseIfNotFilteredOut(testCaseNumber, args, splitTestCaseArgs);
+            ++testCaseNumber;
          }
          Exit1IfNonExistentTestCaseNumberSpecified();
+         _testCaseIndexGenerator->ResetTestCaseArgsIndex();
          _testCaseArgsIndex = 0; // Reset to 0 to ready this TestNXN for another run in case -testruns=N specified
          return _testResults;
       }

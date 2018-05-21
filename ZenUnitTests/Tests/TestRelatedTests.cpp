@@ -113,6 +113,7 @@ namespace ZenUnit
       // Fields
       POINTER_WAS_NEWED(test2X2._console);
       POINTER_WAS_NEWED(test2X2._threeArgAnyer);
+      POINTER_WAS_NEWED(test2X2._testCaseIndexGenerator);
       STD_FUNCTION_TARGETS(TestRunner::GetArgs, test2X2.call_TestRunner_GetArgs);
       STD_FUNCTION_TARGETS(::exit, test2X2.call_exit);
       STD_FUNCTION_TARGETS(String::CommaSplitExceptQuotedCommas, test2X2.call_String_CommaSplitExceptQuotedCommas);
