@@ -5252,6 +5252,8 @@ Testing Rigor Options:
       {
          _testCaseArgsIndex = 0;
       }
+
+      virtual ~TestCaseIndexGenerator() = default;
    };
 
    template<typename TestClassType, size_t N, typename... TestCaseArgTypes>
