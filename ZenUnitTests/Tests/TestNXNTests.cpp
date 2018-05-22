@@ -2,63 +2,12 @@
 #include "ZenUnitTests/Args/Mock/RunFilterMock.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Random/RandomZenUnitArgs.h"
-#include "ZenUnitTests/Results/Mock/TestResultFactoryMock.h"
 #include "ZenUnitTests/Results/Mock/TestResultMock.h"
-#include "ZenUnitTests/TestRunners/Mock/TryCatchCallerMock.h"
-#include "ZenUnitTests/Tests/Mock/TestMock.h"
 #include "ZenUnitTests/Tests/TestingTestClass.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/ThreeArgAnyerMock.h"
 
 namespace ZenUnit
 {
-   struct TestingDerivedTestClassType : public TestClass<TestingDerivedTestClassType>
-   {
-      static bool s_allNXNTestsRegistered;
-   };
-
-   bool TestingDerivedTestClassType::s_allNXNTestsRegistered = false;
-
-   TESTS(TestClassTests)
-   AFACT(DefaultConstructor_DoesNotThrow)
-   AFACT(Startup_DoesNotThrow)
-   AFACT(Cleanup_DoesNotThrow)
-   AFACT(Destructor_SetsDerviedTestClassTypeAllTestCasesRegisteredToTrue)
-   EVIDENCE
-
-   TestClass _testClass;
-
-   CLEANUP
-   {
-      TestingDerivedTestClassType::s_allNXNTestsRegistered = false;
-   }
-
-   TEST(DefaultConstructor_DoesNotThrow)
-   {
-      const TestClass testClass{};
-   }
-
-   TEST(Startup_DoesNotThrow)
-   {
-      _testClass.Startup();
-   }
-
-   TEST(Cleanup_DoesNotThrow)
-   {
-      _testClass.Cleanup();
-   }
-
-   TEST(Destructor_SetsDerviedTestClassTypeAllTestCasesRegisteredToTrue)
-   {
-      IS_FALSE(TestingDerivedTestClassType::s_allNXNTestsRegistered);
-      {
-         const TestClass<TestingDerivedTestClassType> testClass{};
-      }
-      IS_TRUE(TestingDerivedTestClassType::s_allNXNTestsRegistered);
-   }
-
-   RUN_TESTS(TestClassTests)
-
-
    static const size_t N = 1;
 
    TESTS(TestNXNTests)
@@ -93,7 +42,7 @@ namespace ZenUnit
    const string TestName = Random<string>();
    const string TestCaseArgsText = Random<string>();
    ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
-   ZENMOCK_VOID1_GLOBAL(exit, int)
+      ZENMOCK_VOID1_GLOBAL(exit, int)
 
    STARTUP
    {
@@ -173,9 +122,9 @@ namespace ZenUnit
       struct Test1X1SelfMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
       {
          ZENMOCK_VOID3(RunTestCaseIfNotFilteredOut, unsigned, const ZenUnitArgs&, const std::vector<std::string>&)
-         ZENMOCK_VOID0_CONST(Exit1IfNonExistentTestCaseNumberSpecified)
+            ZENMOCK_VOID0_CONST(Exit1IfNonExistentTestCaseNumberSpecified)
 
-         Test1X1SelfMocked()
+            Test1X1SelfMocked()
             : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>(
                "", // testClassName
                "", // testName
@@ -215,10 +164,10 @@ namespace ZenUnit
       ZEN(GetArgs_ZenMockObject_SelfMocked.CalledOnce());
       ZEN(CommaSplitExceptQuotedCommas_ZenMockObject_SelfMocked.CalledOnce());
       ZEN(test1X1SelfMocked.RunTestCaseIfNotFilteredOutMock.CalledAsFollows(
-      {
-         { 1, args, splitTestCaseArgs },
+         {
+            { 1, args, splitTestCaseArgs },
          { 2, args, splitTestCaseArgs }
-      }));
+         }));
       ZEN(test1X1SelfMocked.Exit1IfNonExistentTestCaseNumberSpecifiedMock.CalledOnce());
       ARE_EQUAL(0, test1X1SelfMocked._testCaseArgsIndex);
       VECTORS_EQUAL(vector<TestResult>(), testResults);
@@ -227,16 +176,16 @@ namespace ZenUnit
    struct Test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
    {
       ZENMOCK_NONVOID3_CONST(bool, ShouldRunTestCase, const ZenUnitArgs&, const FullTestName&, unsigned)
-      ZENMOCK_VOID2(RunTestCase, unsigned, const std::vector<std::string>&)
+         ZENMOCK_VOID2(RunTestCase, unsigned, const std::vector<std::string>&)
 
-      Test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests()
-      : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>(
-         "", // testClassName
-         "", // testName
-         "", // testCaseArgsText
-         0, // test case arg 0
-         0 // test case arg 1
-         )
+         Test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests()
+         : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>(
+            "", // testClassName
+            "", // testName
+            "", // testCaseArgsText
+            0, // test case arg 0
+            0 // test case arg 1
+            )
       {
          p_fullTestName.testClassName = nonDefaultTestClassName.c_str();
       }
@@ -414,7 +363,7 @@ namespace ZenUnit
       struct TestNXN_RunNXNTestCaseMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int>>
       {
          ZENMOCK_VOID2(RunNXNTestCase, TestingTestClass*, size_t)
-         TestNXN_RunNXNTestCaseMocked()
+            TestNXN_RunNXNTestCaseMocked()
             : Zen::Mock<TestNXN<TestingTestClass, 1, int>>("", "", "", 0) {}
       } testNXN_RunNXNTestCaseMocked;
 
@@ -522,209 +471,4 @@ namespace ZenUnit
    TEST10X10(Test10X10, int, int, int, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0) {}
 
    RUN_TEMPLATE_TESTS(AllTestNXNsWithinATemplateTestClass, int)
-
-
-   TESTS(TestTests)
-   AFACT(TwoArgConstructor_NewsComponents_SetsFullName_NameFunctionReturnsTestName)
-   FACTS(BaseRunTest_ConstructorFails_DoesNotCallSubsequentTestPhases_ReturnsTestResultConstructorFail)
-   FACTS(BaseRunTest_ConstructorSucceeds_StartupFails_DoesNotCallTest_DoesNotCallCleanup_CallsDestructor_ReturnsTestResultStartupFail)
-   AFACT(BaseRunTest_AllTestPhasesSucceed_ReturnsExpectedTestResult)
-   AFACT(WritePostTestNameMessage_DoesNothing)
-   AFACT(PrintPostTestCompletionMessage_DoesNothing)
-   AFACT(StaticCallNewTestClass_CallsNewTestClass)
-   AFACT(StaticCallStartup_CallsStartup)
-   AFACT(StaticTestBody_CallsTestBody)
-   AFACT(StaticCallCleanup_CallsCleanup)
-   AFACT(StaticCallDeleteTestClass_CallsDeleteTestClass)
-   AFACT(PseudoAbstractFunctions_DoNothingOrReturn0)
-   EVIDENCE
-
-   unique_ptr<Test> _test;
-   TryCatchCallerMock* _tryCatchCallerMock = nullptr;
-   TestResultFactoryMock* _testResultFactoryMock = nullptr;
-   TestMock _testMock;
-
-   STARTUP
-   {
-      _test = make_unique<Test>("", "", static_cast<unsigned char>(0));
-      _test->_tryCatchCaller.reset(_tryCatchCallerMock = new TryCatchCallerMock);
-      _test->_testResultFactory.reset(_testResultFactoryMock = new TestResultFactoryMock);
-   }
-
-   TEST(TwoArgConstructor_NewsComponents_SetsFullName_NameFunctionReturnsTestName)
-   {
-      const string testClassName = Random<string>();
-      const string testName = Random<string>();
-      //
-      Test test(testClassName.c_str(), testName.c_str(), 0);
-      POINTER_WAS_NEWED(test._tryCatchCaller);
-      POINTER_WAS_NEWED(test._testResultFactory);
-      ARE_EQUAL(FileLine(), test.p_fileLine);
-
-      const char* const testNameValue = test.Name();
-      ARE_EQUAL(testName.c_str(), testNameValue);
-
-      const string fullTestName = test.FullTestNameValue();
-      ARE_EQUAL(fullTestName, test.p_fullTestName.Value());
-
-      test.p_fileLine = FileLine("FilePath", 1);
-      ARE_EQUAL(test.p_fileLine.ToString(), test.FileLineString());
-   }
-
-   TEST(WritePostTestNameMessage_DoesNothing)
-   {
-      _test->WritePostTestNameMessage(nullptr);
-      _test->WritePostTestNameMessage(nullptr);
-   }
-
-   TEST(PrintPostTestCompletionMessage_DoesNothing)
-   {
-      TestResultMock testResultMock;
-      _test->WritePostTestCompletionMessage(nullptr, testResultMock);
-      _test->WritePostTestCompletionMessage(nullptr, testResultMock);
-   }
-
-   static CallResult CallResultWithOutcome(TestOutcome testOutcome)
-   {
-      CallResult callResult;
-      callResult.testOutcome = testOutcome;
-      return callResult;
-   }
-
-   TEST1X1(BaseRunTest_ConstructorFails_DoesNotCallSubsequentTestPhases_ReturnsTestResultConstructorFail,
-      TestOutcome constructorOutcome, TestOutcome::Anomaly, TestOutcome::Exception)
-   {
-      const CallResult constructorFailCallResult = CallResultWithOutcome(constructorOutcome);
-      _tryCatchCallerMock->CallMock.Return(constructorFailCallResult);
-
-      const TestResult constructorFailTestResult = TestResult::TestingNonDefault();
-      _testResultFactoryMock->ConstructorFailMock.Return(constructorFailTestResult);
-      //
-      const TestResult testResult = _test->BaseRunTest();
-      //
-      ZEN(_tryCatchCallerMock->CallMock.CalledOnceWith(
-         &Test::CallNewTestClass, _test.get(), TestPhase::Constructor));
-      ZEN(_testResultFactoryMock->ConstructorFailMock.CalledOnceWith(
-         _test->p_fullTestName, constructorFailCallResult));
-      ARE_EQUAL(constructorFailTestResult, testResult);
-   }
-
-   TEST1X1(BaseRunTest_ConstructorSucceeds_StartupFails_DoesNotCallTest_DoesNotCallCleanup_CallsDestructor_ReturnsTestResultStartupFail,
-      TestOutcome startupOutcome,
-      TestOutcome::Anomaly,
-      TestOutcome::Exception)
-   {
-      const CallResult constructorSuccessCallResult = CallResultWithOutcome(TestOutcome::Success);
-      const CallResult startupFailCallResult = CallResultWithOutcome(startupOutcome);
-      const CallResult destructorCallResult = CallResultWithOutcome(TestOutcome::Success);
-      _tryCatchCallerMock->CallMock.ReturnValues(constructorSuccessCallResult, startupFailCallResult, destructorCallResult);
-
-      const TestResult startupFailTestResult = TestResult::TestingNonDefault();
-      _testResultFactoryMock->StartupFailMock.Return(startupFailTestResult);
-      const string testClassName = Random<string>();
-      const string testName = Random<string>();
-      _test->p_fullTestName = FullTestName(testClassName.c_str(), testName.c_str(), 0);
-      //
-      const TestResult testResult = _test->BaseRunTest();
-      //
-      ZEN(_tryCatchCallerMock->CallMock.CalledAsFollows(
-      {
-         { &Test::CallNewTestClass, _test.get(), TestPhase::Constructor },
-         { &Test::CallStartup, _test.get(), TestPhase::Startup },
-         { &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor }
-      }));
-      ZEN(_testResultFactoryMock->StartupFailMock.CalledOnceWith(
-         _test->p_fullTestName, constructorSuccessCallResult, startupFailCallResult, destructorCallResult));
-      ARE_EQUAL(startupFailTestResult, testResult);
-   }
-
-   TEST(BaseRunTest_AllTestPhasesSucceed_ReturnsExpectedTestResult)
-   {
-      const CallResult successCallResult = CallResultWithOutcome(TestOutcome::Success);
-      _tryCatchCallerMock->CallMock.Return(successCallResult);
-
-      const TestResult sixArgTestResult = TestResult::TestingNonDefault();
-      _testResultFactoryMock->FullCtorMock.Return(sixArgTestResult);
-      const string testClassName = Random<string>();
-      const string testName = Random<string>();
-      _test->p_fullTestName = FullTestName(testClassName.c_str(), testName.c_str(), 0);
-      //
-      const TestResult testResult = _test->BaseRunTest();
-      //
-      ZEN(_tryCatchCallerMock->CallMock.CalledAsFollows(
-      {
-         { &Test::CallNewTestClass, _test.get(), TestPhase::Constructor },
-         { &Test::CallStartup, _test.get(), TestPhase::Startup },
-         { &Test::CallTestBody, _test.get(), TestPhase::TestBody },
-         { &Test::CallCleanup, _test.get(), TestPhase::Cleanup },
-         { &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor }
-      }));
-      ZEN(_testResultFactoryMock->FullCtorMock.CalledOnceWith(
-         _test->p_fullTestName,
-         CallResultWithOutcome(TestOutcome::Success),
-         CallResultWithOutcome(TestOutcome::Success),
-         CallResultWithOutcome(TestOutcome::Success),
-         CallResultWithOutcome(TestOutcome::Success),
-         CallResultWithOutcome(TestOutcome::Success)));
-      ARE_EQUAL(testResult, sixArgTestResult);
-   }
-
-   TEST(StaticCallNewTestClass_CallsNewTestClass)
-   {
-      _testMock.NewTestClassMock.Expect();
-      //
-      Test::CallNewTestClass(&_testMock);
-      //
-      ZEN(_testMock.NewTestClassMock.CalledOnce());
-   }
-
-   TEST(StaticCallStartup_CallsStartup)
-   {
-      _testMock.StartupMock.Expect();
-      //
-      Test::CallStartup(&_testMock);
-      //
-      ZEN(_testMock.StartupMock.CalledOnce());
-   }
-
-   TEST(StaticTestBody_CallsTestBody)
-   {
-      _testMock.TestBodyMock.Expect();
-      //
-      Test::CallTestBody(&_testMock);
-      //
-      ZEN(_testMock.TestBodyMock.CalledOnce());
-   }
-
-   TEST(StaticCallCleanup_CallsCleanup)
-   {
-      _testMock.CleanupMock.Expect();
-      //
-      Test::CallCleanup(&_testMock);
-      //
-      ZEN(_testMock.CleanupMock.CalledOnce());
-   }
-
-   TEST(StaticCallDeleteTestClass_CallsDeleteTestClass)
-   {
-      _testMock.DeleteTestClassMock.Expect();
-      //
-      Test::CallDeleteTestClass(&_testMock);
-      //
-      ZEN(_testMock.DeleteTestClassMock.CalledOnce());
-   }
-
-   TEST(PseudoAbstractFunctions_DoNothingOrReturn0)
-   {
-      Test test("", "", 0);
-      ARE_EQUAL(0, test.NumberOfTestCases());
-      IS_EMPTY(test.RunTest());
-      test.NewTestClass();
-      test.Startup();
-      test.TestBody();
-      test.Cleanup();
-      test.DeleteTestClass();
-   }
-
-   RUN_TESTS(TestTests)
 }
