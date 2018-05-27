@@ -33,7 +33,7 @@ namespace ZenUnit
 
    struct TestResult_WriteTestCaseNumberIfAnyMocked : public Zen::Mock<TestResult>
    {
-      ZENMOCK_VOID2_CONST(WriteTestCaseNumberIfAny, const Console*, unsigned)
+      ZENMOCK_VOID2_CONST(WriteTestCaseNumberIfAny, const Console*, size_t)
    } _testResult_WriteTestCaseNumberIfAnyMocked;
 
    STARTUP
@@ -63,7 +63,7 @@ namespace ZenUnit
       expectedDefaultTestResult.destructorCallResult = CallResult();
       expectedDefaultTestResult.responsibleCallResultField = nullptr;
       expectedDefaultTestResult.testOutcome = TestOutcome::Unset;
-      expectedDefaultTestResult.testCaseNumber = numeric_limits<unsigned>::max();
+      expectedDefaultTestResult.testCaseNumber = numeric_limits<size_t>::max();
       expectedDefaultTestResult.microseconds = 0;
       ARE_EQUAL(expectedDefaultTestResult, defaultTestResult);
    }
@@ -137,7 +137,7 @@ namespace ZenUnit
       expectedTestResult.destructorCallResult = DestructorCallResult;
       expectedTestResult.responsibleCallResultField = expectedResponsibleCallResultField;
       expectedTestResult.testOutcome = expectedOverallOutcome;
-      expectedTestResult.testCaseNumber = numeric_limits<unsigned>::max();
+      expectedTestResult.testCaseNumber = numeric_limits<size_t>::max();
       expectedTestResult.microseconds = MaxTestMilliseconds * 1000 + relativeMicroseconds;
       ARE_EQUAL(expectedTestResult, testResult);
    }
@@ -262,7 +262,7 @@ namespace ZenUnit
 
       const string testFailureNumber = _testFailureNumbererMock.NextMock.ReturnRandom();
 
-      _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber = Random<unsigned>();
+      _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber = ZenUnit::Random<size_t>();
       _testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.Expect();
 
       _consoleMock.WriteMock.Expect();
@@ -309,7 +309,7 @@ namespace ZenUnit
 
       const string testFailureNumber = _testFailureNumbererMock.NextMock.ReturnRandom();
 
-      _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber = Random<unsigned>();
+      _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber = ZenUnit::Random<size_t>();
       _testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.Expect();
 
       _consoleMock.WriteMock.Expect();
@@ -350,7 +350,7 @@ namespace ZenUnit
       _consoleMock.WriteLineMock.Expect();
       _consoleMock.WriteNewLineMock.Expect();
 
-      _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber = Random<unsigned>();
+      _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber = ZenUnit::Random<size_t>();
       _testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.Expect();
       //
       _testResult_WriteTestCaseNumberIfAnyMocked.PrintIfFailure(&_consoleMock, &_testFailureNumbererMock);
@@ -377,11 +377,11 @@ namespace ZenUnit
    }
 
    TEST2X2(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseNumberIfTestCaseNumberNotMaxValue,
-      unsigned testCaseNumber, bool expectConsoleWriteLine,
-      static_cast<unsigned>(numeric_limits<unsigned>::max()), false,
-      static_cast<unsigned>(1), true,
-      static_cast<unsigned>(2), true,
-      static_cast<unsigned>(3), true)
+      size_t testCaseNumber, bool expectConsoleWriteLine,
+      numeric_limits<size_t>::max(), false,
+      1, true,
+      2, true,
+      3, true)
    {
       if (expectConsoleWriteLine)
       {

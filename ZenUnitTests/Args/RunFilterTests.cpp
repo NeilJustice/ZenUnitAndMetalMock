@@ -24,14 +24,14 @@ namespace ZenUnit
       const RunFilter runFilter;
       ARE_EQUAL("", runFilter.testClassNamePattern);
       ARE_EQUAL("", runFilter.testNamePattern);
-      ARE_EQUAL(std::numeric_limits<unsigned>::max(), runFilter.testCaseNumber);
+      ARE_EQUAL(std::numeric_limits<size_t>::max(), runFilter.testCaseNumber);
    }
 
    TEST(ThreeArgumentConstructor_SetsFields)
    {
       const string testClassNamePattern = ZenUnit::Random<string>();
       const string testNamePattern = ZenUnit::Random<string>();
-      const unsigned testCaseNumber = ZenUnit::Random<unsigned>();
+      const size_t testCaseNumber = ZenUnit::Random<size_t>();
       //
       RunFilter runFilter(testClassNamePattern, testNamePattern, testCaseNumber);
       //
@@ -95,9 +95,10 @@ namespace ZenUnit
       _runFilterSelfMocked.testClassNamePattern = ZenUnit::Random<string>();
       const string testClassName = ZenUnit::Random<string>();
       const string testName = ZenUnit::Random<string>();
-      const unsigned testNXNTestCaseNumber = ZenUnit::Random<unsigned>();
+      const size_t testNXNTestCaseNumber = ZenUnit::Random<size_t>();
       //
-      const bool matchesTestCase = _runFilterSelfMocked.MatchesTestCase(testClassName.c_str(), testName.c_str(), testNXNTestCaseNumber);
+      const bool matchesTestCase = _runFilterSelfMocked.MatchesTestCase(
+         testClassName.c_str(), testName.c_str(), testNXNTestCaseNumber);
       //
       ZEN(_runFilterSelfMocked.FilterPatternMatchesStringMock.CalledOnceWith(
          _runFilterSelfMocked.testClassNamePattern, testClassName.c_str()));
@@ -105,9 +106,9 @@ namespace ZenUnit
    }
 
    TEST4X4(MatchesTestCase_TestClassNameMatches_ReturnsTrueIfMatchesTestClassNameAndTestNameAndEitherTestCaseNumberIsUnsetOrItMatches,
-      bool testNameMatches, unsigned runFilterTestCaseNumber, unsigned testNXNTestCaseNumber, bool expectedReturnValue,
-      false, NA<unsigned>(), NA<unsigned>(), false,
-      true, std::numeric_limits<unsigned>::max(), NA<unsigned>(), true,
+      bool testNameMatches, size_t runFilterTestCaseNumber, size_t testNXNTestCaseNumber, bool expectedReturnValue,
+      false, NA<size_t>(), NA<size_t>(), false,
+      true, std::numeric_limits<size_t>::max(), NA<size_t>(), true,
       true, 1, 1, true,
       true, 2, 2, true,
       true, 1, 2, false,

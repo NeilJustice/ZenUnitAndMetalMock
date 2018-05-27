@@ -6,7 +6,7 @@
 |-----------------|----------------------------|
 |<a href="https://travis-ci.org/NeilJustice/ZenUnit"><img src="https://travis-ci.org/NeilJustice/ZenUnit.svg?branch=master"/></a>|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitZenMock"><img src="https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true"/></a>|
 
-### ZenUnit Design Commentary and Value-Parameterized Test Syntax
+### ZenUnit Design Commentary and N-by-N Value-Parameterized Test Syntax
 
 ```cpp
 #include "ZenUnit.h" // Single header
@@ -16,8 +16,8 @@ std::string FizzBuzz(unsigned endNumber);
 
 // TESTS defines a ZenUnit test class and begins the FACTS section.
 TESTS(FizzBuzzTests)
-// By design, in ZenUnit test names are purposefully
-// duplicated between the FACTS section and the EVIDENCE section.
+// By design, in ZenUnit test names are duplicated between
+// the FACTS section and the EVIDENCE section.
 // Because code is read much more often than it is written,
 // always having test names ready to review for continued quality and cohesion
 // at the top of test files instead of scattered throughout test files
@@ -27,7 +27,8 @@ TESTS(FizzBuzzTests)
 AFACT(FizzBuzz_EndNumber0_Throws)
 // FACTS specifies an N-by-N value-parameterized test.
 FACTS(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)
-// EVIDENCE concludes the FACTS section and begins the EVIDENCE section.
+// EVIDENCE concludes the FACTS section and begins the EVIDENCE section,
+// also known as the test class body.
 EVIDENCE
 
 // TEST defines a non-value-parameterized test.
@@ -35,15 +36,15 @@ TEST(FizzBuzz_EndNumber0_Throws)
 {
    // The ZenUnit THROWS assertion asserts that an expression throws *exactly* (not a derived class of)
    // an expected exception type with *exactly* an expected exception what() text.
-   // THROWS is immune to code mutations mutate-exception-type and mutate-exception-message.
-   THROWS(FizzBuzz(0), std::invalid_argument,
-      "FizzBuzz() error: endNumber must be 1 or greater");
+   // This double exactness design of THROWS renders it immune to these two code mutations:
+   // mutate-exception-type and mutate-exception-message.
+   THROWS(FizzBuzz(0), std::invalid_argument, "FizzBuzz() error: endNumber must be 1 or greater");
 }
 
 // TEST2X2 defines a 2-by-2 value-parameterized test
 // that processes its typesafe variadic arguments list 2-by-2.
-// In this case, 16 independent unit tests are defined for function FizzBuzz().
-// Each of the 16 pairs of arguments is run within a separate instance of FizzBuzzTests.
+// This TEST2X2 defines 16 independent unit tests for FizzBuzz(),
+// each of which will run independently within separate instances of FizzBuzzTests.
 TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    unsigned endNumber, const std::string& expectedFizzBuzzSequence,
    1, "1",
@@ -63,10 +64,14 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    15, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz",
    16, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz 16")
 {
-   ARE_EQUAL(expectedFizzBuzzSequence, FizzBuzz(endNumber));
+   const string fizzBuzzSequence = FizzBuzz(endNumber);
+   // ZenUnit's assertion names are declarative in style (ARE_EQUAL, THROWS, IS_TRUE, etc)
+   // instead of procedural in style (ASSERT_EQUAL, ASSERT_THROWS, ASSERT_TRUE, etc)
+   // to give ZenUnit a test reading experience similar to reading an executable specification document.
+   ARE_EQUAL(expectedFizzBuzzSequence, fizzBuzzSequence);
 }
 
-// RUN_TESTS registers a test class to run when ZenUnit::RunTests(argc, argv) is called.
+// RUN_TESTS registers a test class to be run when ZenUnit::RunTests(argc, argv) is called.
 RUN_TESTS(FizzBuzzTests)
 
 // Function under test
@@ -74,7 +79,8 @@ std::string FizzBuzz(unsigned endNumber)
 {
    if (endNumber == 0)
    {
-      // An exception here instead of returning empty string to demonstrate ZenUnit's THROWS assertion.
+      // An exception is thrown here instead of returning empty string
+      // so as to demonstrate ZenUnit's THROWS assertion.
       throw std::invalid_argument("FizzBuzz() error: endNumber must be 1 or greater");
    }
    std::ostringstream oss;
@@ -105,8 +111,7 @@ std::string FizzBuzz(unsigned endNumber)
 
 int main(int argc, char* argv[])
 {
-   const int exitCode = ZenUnit::RunTests(argc, argv);
-   return exitCode;
+   return ZenUnit::RunTests(argc, argv);
 }
 ```
 
@@ -150,14 +155,14 @@ Testing Filtration Options:
 Testing Rigor Options:
 
 -randomorder
-   Run test classes and tests in a pseudorandom order.
--randomseed=<Value>
-   Set the random seed used by -randomorder
-   and by the ZenUnit::Random<T> family of functions.
-   The default random seed is the number of seconds since 1970.
--testruns=<NumberOfTestRuns>
-   Repeat the running of all tests NumberOfTestRuns times.
-   Specify -testruns=3 -randomorder for three pseudorandom test run orderings.
+   Run test classes, tests, and value-parameterized test cases in a random order.
+-randomseed=<M>
+   Set to M the random seed used by -randomorder
+   and by the ZenUnit::Random<T> family of random-value-generating functions.
+   The default random seed is the number of seconds since 1970 UTC.
+-testruns=<N>
+   Repeat the running of all tests N times.
+   Specify -testruns=3 -randomorder for three random test run orderings.
    Useful option for continuous integration servers to partially ensure
    that checked-in unit tests are robust with respect to ordering.
 -noskips

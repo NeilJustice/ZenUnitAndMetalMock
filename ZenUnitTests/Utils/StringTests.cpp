@@ -80,7 +80,7 @@ namespace ZenUnit
 
    TEST(ToUnsigned_EmptyString_Throws)
    {
-      THROWS(String::ToUnsigned(""), invalid_argument, "String::ToUnsigned() called with empty string");
+      THROWS(String::ToUnsigned(""), invalid_argument, "ZenUnit::String::ToUnsigned() called with empty string");
    }
 
    TEST1X1(ToUnsigned_StringNotConvertibleToUnsigned_Throws,
@@ -97,7 +97,7 @@ namespace ZenUnit
       "0  ")
    {
       THROWS(String::ToUnsigned(str), invalid_argument,
-         "String::ToUnsigned() called with string not convertible to unsigned integer: \"" + str + "\"");
+         "ZenUnit::String::ToUnsigned() called with string not convertible to unsigned integer: \"" + str + "\"");
    }
 
    TEST1X1(ToUnsigned_StringIsValueGreaterThanUnsignedMax_Throws,
@@ -106,7 +106,7 @@ namespace ZenUnit
       to_string(static_cast<unsigned long long>(numeric_limits<unsigned int>::max()) + 2ull))
    {
       THROWS(String::ToUnsigned(expectedGreaterThanUnsignedMaxValue), invalid_argument,
-         "String::ToUnsigned called with string containing number greater than numeric_limits<unsigned int>::max(): \""
+         "ZenUnit::String::ToUnsigned called with string containing number greater than std::numeric_limits<unsigned int>::max(): \""
          + expectedGreaterThanUnsignedMaxValue + "\"");
    }
 

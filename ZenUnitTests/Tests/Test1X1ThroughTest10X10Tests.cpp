@@ -35,11 +35,10 @@ namespace ZenUnit
    template<typename TestingTestClassType, typename TupleCallType>
    void AssertExpectedCalls(const TupleCallType& expectedFirstCall, const TupleCallType& expectedSecondCall)
    {
-      ARE_EQUAL(2, TestingTestClassType::s_calls.size());
-      const auto& actualFirstCall = TestingTestClassType::s_calls[0];
-      const auto& actualSecondCall = TestingTestClassType::s_calls[1];
-      ARE_EQUAL(expectedFirstCall, actualFirstCall);
-      ARE_EQUAL(expectedSecondCall, actualSecondCall);
+      const auto& calls = TestingTestClassType::s_calls;
+      ARE_EQUAL(2, calls.size());
+      CONTAINS_ELEMENT(expectedFirstCall, calls);
+      CONTAINS_ELEMENT(expectedSecondCall, calls);
    }
 
    struct TestingTestClass1X1 : public StartupAndCleanup

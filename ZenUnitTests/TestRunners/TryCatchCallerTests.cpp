@@ -25,8 +25,8 @@ namespace ZenUnit
    unique_ptr<TestMock> _testMock;
    ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
 
-   const unsigned _microseconds = Random<unsigned>();
-   const string _testPhaseSuffix = Random<string>();
+   const unsigned _microseconds = ZenUnit::Random<unsigned>();
+   const string _testPhaseSuffix = ZenUnit::Random<string>();
 
    STARTUP
    {

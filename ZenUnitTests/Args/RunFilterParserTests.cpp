@@ -46,8 +46,8 @@ namespace ZenUnit
 
    TEST2X2(ParseRunFilterString_JustTestClassName_ReturnsExpectedRunFilter,
       const string& runFilterString, const RunFilter& expectedRunFilter,
-      "TestClassA", RunFilter("TestClassA", "", std::numeric_limits<unsigned>::max()),
-      "TestClassB", RunFilter("TestClassB", "", std::numeric_limits<unsigned>::max()))
+      "TestClassA", RunFilter("TestClassA", "", std::numeric_limits<size_t>::max()),
+      "TestClassB", RunFilter("TestClassB", "", std::numeric_limits<size_t>::max()))
    {
       const RunFilter runFilter = _runFilterParser.ParseRunFilterString(runFilterString);
       ARE_EQUAL(expectedRunFilter, runFilter);
@@ -55,10 +55,10 @@ namespace ZenUnit
 
    TEST2X2(ParseRunFilterString_TestClassNameColonColonTestName_ReturnsExpectedRunFilter,
       const string& runFilterString, const RunFilter& expectedRunFilter,
-      "TestClassA::TestNameA", RunFilter("TestClassA", "TestNameA", std::numeric_limits<unsigned>::max()),
-      "TestClassB::TestNameB", RunFilter("TestClassB", "TestNameB", std::numeric_limits<unsigned>::max()),
-      "Namespace::TestClassC::TestNameC", RunFilter("Namespace", "TestClassC::TestNameC", std::numeric_limits<unsigned>::max()),
-      "TestClass:::TestName", RunFilter("TestClass", ":TestName", std::numeric_limits<unsigned>::max()))
+      "TestClassA::TestNameA", RunFilter("TestClassA", "TestNameA", std::numeric_limits<size_t>::max()),
+      "TestClassB::TestNameB", RunFilter("TestClassB", "TestNameB", std::numeric_limits<size_t>::max()),
+      "Namespace::TestClassC::TestNameC", RunFilter("Namespace", "TestClassC::TestNameC", std::numeric_limits<size_t>::max()),
+      "TestClass:::TestName", RunFilter("TestClass", ":TestName", std::numeric_limits<size_t>::max()))
    {
       const RunFilter runFilter = _runFilterParser.ParseRunFilterString(runFilterString);
       ARE_EQUAL(expectedRunFilter, runFilter);
@@ -69,7 +69,7 @@ namespace ZenUnit
       "TestClassA::TestNameA/1", "1", RunFilter("TestClassA", "TestNameA", 1),
       "TestClassB::TestNameB/2", "2", RunFilter("TestClassB", "TestNameB", 2))
    {
-      ToUnsigned_ZenMockObject.Return(expectedRunFilter.testCaseNumber);
+      ToUnsigned_ZenMockObject.Return(static_cast<unsigned>(expectedRunFilter.testCaseNumber));
       //
       const RunFilter runFilter = _runFilterParser.ParseRunFilterString(runFilterString);
       //

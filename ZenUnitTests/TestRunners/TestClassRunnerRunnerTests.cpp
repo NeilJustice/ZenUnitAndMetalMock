@@ -192,7 +192,7 @@ namespace ZenUnit
    TEST(RunFilterMatchesTestClass_RunFilterMatchesTestClassName_ReturnsTrueIfTestClassHasTestThatMatchesRunFilter)
    {
       RunFilterMock runFilterMock;
-      runFilterMock.testCaseNumber = ZenUnit::Random<unsigned>(); // To make runFilterMock different from RunFilterMock()
+      runFilterMock.testCaseNumber = ZenUnit::Random<size_t>(); // To make runFilterMock different from RunFilterMock()
       runFilterMock.MatchesTestClassNameMock.Return(true);
 
       TestClassRunnerMock* const testClassRunnerMock = new TestClassRunnerMock;

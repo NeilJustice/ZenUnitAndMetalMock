@@ -71,12 +71,12 @@ static_assert(sizeof(CallResult) == 24);
 #endif
 
 #if defined __linux__
-//static_assert(sizeof(TestResult) == 176);
+//static_assert(sizeof(TestResult) == 240);
 #elif defined(_WIN64)
 #if defined _DEBUG
-static_assert(sizeof(TestResult) == 232);
+static_assert(sizeof(TestResult) == 240);
 #elif NDEBUG
-static_assert(sizeof(TestResult) == 232);
+static_assert(sizeof(TestResult) == 240);
 #endif
 #endif
 

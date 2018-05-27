@@ -482,23 +482,23 @@ namespace ZenUnit
       {
          if (str.empty())
          {
-            throw std::invalid_argument("String::ToUnsigned() called with empty string");
+            throw std::invalid_argument("ZenUnit::String::ToUnsigned() called with empty string");
          }
          unsigned long long result = 0;
-         unsigned place = 1;
+         unsigned long long place = 1;
          for (int i = static_cast<int>(str.size() - 1); i >= 0; --i, place *= 10)
          {
             const char c = str[static_cast<size_t>(i)];
             if (c < '0' || c > '9')
             {
-               throw std::invalid_argument("String::ToUnsigned() called with string not convertible to unsigned integer: \"" + str + "\"");
+               throw std::invalid_argument("ZenUnit::String::ToUnsigned() called with string not convertible to unsigned integer: \"" + str + "\"");
             }
-            const unsigned digit = "0123456789"[c - 48] - 48u;
+            const unsigned long long digit = "0123456789"[c - 48] - 48ull;
             result += digit * place;
          }
          if (result > std::numeric_limits<unsigned int>::max())
          {
-            throw std::invalid_argument("String::ToUnsigned called with string containing number greater than numeric_limits<unsigned int>::max(): \"" + std::to_string(result) + "\"");
+            throw std::invalid_argument("ZenUnit::String::ToUnsigned called with string containing number greater than std::numeric_limits<unsigned int>::max(): \"" + std::to_string(result) + "\"");
          }
          const unsigned unsignedResult = static_cast<unsigned>(result);
          return unsignedResult;
@@ -660,14 +660,14 @@ namespace ZenUnit
    public:
       std::string testClassNamePattern;
       std::string testNamePattern;
-      unsigned testCaseNumber;
+      size_t testCaseNumber;
 
       RunFilter() noexcept
-         : testCaseNumber(std::numeric_limits<unsigned>::max())
+         : testCaseNumber(std::numeric_limits<size_t>::max())
       {
       }
 
-      RunFilter(const std::string& testClassNamePattern, const std::string& testNamePattern, unsigned testCaseNumber)
+      RunFilter(const std::string& testClassNamePattern, const std::string& testNamePattern, size_t testCaseNumber)
          : testClassNamePattern(testClassNamePattern)
          , testNamePattern(testNamePattern)
          , testCaseNumber(testCaseNumber)
@@ -713,7 +713,7 @@ namespace ZenUnit
          return false;
       }
 
-      virtual bool MatchesTestCase(const char* testClassName, const char* testName, unsigned textNXNTestCaseNumber) const
+      virtual bool MatchesTestCase(const char* testClassName, const char* testName, size_t testNXNTestCaseNumber) const
       {
          const bool matchesTestClassName = MatchesTestClassName(testClassName);
          if (!matchesTestClassName)
@@ -726,8 +726,8 @@ namespace ZenUnit
             return false;
          }
          const bool testCaseNumberUnsetOrMatches =
-            testCaseNumber == std::numeric_limits<unsigned>::max() ||
-            testCaseNumber == textNXNTestCaseNumber;
+            testCaseNumber == std::numeric_limits<size_t>::max() ||
+            testCaseNumber == testNXNTestCaseNumber;
          return testCaseNumberUnsetOrMatches;
       }
    };
@@ -1624,7 +1624,7 @@ namespace ZenUnit
             if (testNameAndTestCaseNumber.size() == 2)
             {
                const std::string& testCaseNumberString = testNameAndTestCaseNumber[1];
-               runFilter.testCaseNumber = call_String_ToUnsigned(testCaseNumberString);
+               runFilter.testCaseNumber = static_cast<size_t>(call_String_ToUnsigned(testCaseNumberString));
             }
          }
          return runFilter;
@@ -1835,11 +1835,11 @@ Testing Filtration Options:
 Testing Rigor Options:
 
 -randomorder
-   Run test classes and tests in a pseudorandom order.
--randomseed=<Value>
-   Set the random seed used by -randomorder
-   and by the ZenUnit::Random<T> family of functions.
-   The default random seed is the number of seconds since 1970.
+   Run test classes, tests, and value-parameterized test cases in a random order.
+-randomseed=<M>
+   Set to M the random seed used by -randomorder
+   and by the ZenUnit::Random<T> family of random-value-generating functions.
+   The default random seed is the number of seconds since 1970 UTC.
 -testruns=<NumberOfTestRuns>
    Repeat the running of all tests NumberOfTestRuns times.
    Specify -testruns=3 -randomorder for three pseudorandom test run orderings.
@@ -2350,7 +2350,7 @@ Testing Rigor Options:
       VRText<ElementType> collectionVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-      const auto findIter = std::find(
+     const auto findIter = std::find(
          collectionVRT.value.cbegin(),
          collectionVRT.value.cend(),
          expectedElementVRT.value);
@@ -3434,14 +3434,14 @@ Testing Rigor Options:
 #endif
       TestOutcome testOutcome;
       unsigned microseconds;
-      unsigned testCaseNumber;
+      size_t testCaseNumber;
       std::function<std::string(unsigned)> call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString;
 
       TestResult() noexcept
          : responsibleCallResultField(nullptr)
          , testOutcome(TestOutcome::Unset)
          , microseconds(0)
-         , testCaseNumber(std::numeric_limits<unsigned>::max())
+         , testCaseNumber(std::numeric_limits<size_t>::max())
          , call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString(
             Watch::MicrosecondsToThreeDecimalPlaceMillisecondsString)
       {
@@ -3464,7 +3464,7 @@ Testing Rigor Options:
          , responsibleCallResultField(nullptr)
          , testOutcome(TestOutcome::Unset)
          , microseconds(0)
-         , testCaseNumber(std::numeric_limits<unsigned>::max())
+         , testCaseNumber(std::numeric_limits<size_t>::max())
          , call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString(
             Watch::MicrosecondsToThreeDecimalPlaceMillisecondsString)
       {
@@ -3637,9 +3637,9 @@ Testing Rigor Options:
          }
       }
 
-      virtual void WriteTestCaseNumberIfAny(const Console* console, unsigned testCaseNumberArgument) const
+      virtual void WriteTestCaseNumberIfAny(const Console* console, size_t testCaseNumberArgument) const
       {
-         if (testCaseNumberArgument != std::numeric_limits<unsigned>::max())
+         if (testCaseNumberArgument != std::numeric_limits<size_t>::max())
          {
             console->Write(" test case " + std::to_string(testCaseNumberArgument));
          }
@@ -5218,41 +5218,95 @@ Testing Rigor Options:
       }
    };
 
-   class TestCaseIndexGenerator
+   class ITestCaseNumberGenerator
    {
-      friend class TestCaseIndexGeneratorTests;
-   private:
-      size_t _N = 0;
-      size_t _numberOfTestCaseArgs = 0;
-      size_t _testCaseArgsIndex = 0;
-      bool _isRandomOrderMode = false;
    public:
-      virtual void Initialize(size_t N, size_t numberOfTestCaseArgs, const ZenUnitArgs& args)
+      virtual void Initialize(size_t numberOfTestCaseArgs, size_t N, const ZenUnitArgs& args) = 0;
+      virtual size_t NextTestCaseNumber() = 0;
+      virtual void ResetTestCaseNumber() = 0;
+      virtual ~ITestCaseNumberGenerator() = default;
+
+      static ITestCaseNumberGenerator* FactoryNew(bool randomOrderMode);
+   };
+
+   class SequentialTestCaseNumberGenerator : public ITestCaseNumberGenerator
+   {
+      friend class SequentialTestCaseNumberGeneratorTests;
+   private:
+      size_t _maxTestCaseNumber = 0;
+      size_t _currentTestCaseNumber = 1;
+   public:
+      void Initialize(size_t numberOfTestCaseArgs, size_t N, const ZenUnitArgs&) override
       {
          assert_true(N >= 1);
          assert_true(numberOfTestCaseArgs >= 1);
-         _N = N;
-         _numberOfTestCaseArgs = numberOfTestCaseArgs;
-         _isRandomOrderMode = args.randomorder;
+         assert_true(N <= numberOfTestCaseArgs);
+         _maxTestCaseNumber = numberOfTestCaseArgs / N;
       }
 
-      virtual size_t NextTestCaseIndex()
+      size_t NextTestCaseNumber() override
       {
-         if (_testCaseArgsIndex == _numberOfTestCaseArgs)
+         if (_currentTestCaseNumber > _maxTestCaseNumber)
          {
             return std::numeric_limits<size_t>::max();
          }
-         assert_true(_testCaseArgsIndex < _numberOfTestCaseArgs);
-         size_t nextTestCaseArgsIndex = _testCaseArgsIndex;
-         _testCaseArgsIndex += _N;
-         return nextTestCaseArgsIndex;
+         assert_true(_currentTestCaseNumber <= _maxTestCaseNumber);
+         const size_t nextTestCaseNumber = _currentTestCaseNumber++;
+         return nextTestCaseNumber;
       }
 
-      virtual void ResetTestCaseArgsIndex()
+      void ResetTestCaseNumber() override
       {
-         _testCaseArgsIndex = 0;
+         _currentTestCaseNumber = 1;
       }
    };
+
+   class RandomTestCaseNumberGenerator : public ITestCaseNumberGenerator
+   {
+      friend class RandomTestCaseNumberGeneratorTests;
+   private:
+      std::vector<size_t> _randomTestCaseNumbers;
+      size_t _testCaseNumberIndex = 0;
+   public:
+      void Initialize(size_t numberOfTestCaseArgs, size_t N, const ZenUnitArgs& args) override
+      {
+         assert_true(N >= 1);
+         assert_true(numberOfTestCaseArgs >= 1 && numberOfTestCaseArgs >= N);
+         const size_t numberOfTestCases = numberOfTestCaseArgs / N;
+         _randomTestCaseNumbers.reserve(numberOfTestCases);
+         for (size_t testCaseNumber = 1; testCaseNumber <= numberOfTestCases; ++testCaseNumber)
+         {
+            _randomTestCaseNumbers.push_back(testCaseNumber);
+         }
+         std::shuffle(_randomTestCaseNumbers.begin(), _randomTestCaseNumbers.end(),
+            std::default_random_engine(args.randomseed));
+      }
+
+      size_t NextTestCaseNumber() override
+      {
+         if (_testCaseNumberIndex == _randomTestCaseNumbers.size())
+         {
+            return std::numeric_limits<size_t>::max();
+         }
+         assert_true(_testCaseNumberIndex < _randomTestCaseNumbers.size());
+         const size_t nextTestCaseNumber = _randomTestCaseNumbers[_testCaseNumberIndex];
+         ++_testCaseNumberIndex;
+         return nextTestCaseNumber;
+      }
+
+      void ResetTestCaseNumber() override
+      {
+         _testCaseNumberIndex = 0;
+      }
+
+      virtual ~RandomTestCaseNumberGenerator() = default;
+   };
+
+   inline ITestCaseNumberGenerator* ITestCaseNumberGenerator::FactoryNew(bool randomOrderMode)
+   {
+      if (randomOrderMode) return new RandomTestCaseNumberGenerator;
+      else return new SequentialTestCaseNumberGenerator;
+   }
 
    template<typename TestClassType, size_t N, typename... TestCaseArgTypes>
    class TestNXN : public Test
@@ -5260,17 +5314,17 @@ Testing Rigor Options:
       friend class TestNXNTests;
    private:
       std::unique_ptr<const Console> _console;
-      using ThreeArgAnyerType = ThreeArgAnyer<
-         std::vector<RunFilter>, bool(*)(const RunFilter&, const FullTestName&, unsigned), const FullTestName&, unsigned>;
-      std::unique_ptr<ThreeArgAnyerType> _threeArgAnyer;
+      using CallerOfRunFilterMatchesTestCaseType = ThreeArgAnyer<
+         std::vector<RunFilter>, bool(*)(const RunFilter&, const FullTestName&, size_t), const FullTestName&, size_t>;
+      std::unique_ptr<CallerOfRunFilterMatchesTestCaseType> _callerOfRunFilterMatchesTestCase;
       std::function<const ZenUnitArgs&()> call_TestRunner_GetArgs;
       std::function<std::vector<std::string>(const char*)> call_String_CommaSplitExceptQuotedCommas;
       std::function<void(int)> call_exit;
+      std::function<ITestCaseNumberGenerator*(bool)> call_ITestCaseNumberGeneratorFactoryNew;
       const char* const _testCaseArgsText;
 
       std::unique_ptr<TestClassType> _testClass;
-      std::unique_ptr<TestCaseIndexGenerator> _testCaseIndexGenerator;
-      size_t _testCaseArgsIndex;
+      size_t _currentTestCaseNumber;
       std::vector<TestResult> _testResults;
    protected:
       const std::tuple<typename std::decay<TestCaseArgTypes>::type...> p_testCaseArgs;
@@ -5282,13 +5336,13 @@ Testing Rigor Options:
          TestCaseArgTypes&&... testCaseArgs)
          : Test(testClassName, testName, N)
          , _console(std::make_unique<Console>())
-         , _threeArgAnyer(std::make_unique<ThreeArgAnyerType>())
+         , _callerOfRunFilterMatchesTestCase(std::make_unique<CallerOfRunFilterMatchesTestCaseType>())
          , call_TestRunner_GetArgs(TestRunner::GetArgs)
          , call_String_CommaSplitExceptQuotedCommas(String::CommaSplitExceptQuotedCommas)
          , call_exit(::exit)
+         , call_ITestCaseNumberGeneratorFactoryNew(ITestCaseNumberGenerator::FactoryNew)
          , _testCaseArgsText(testCaseArgsText)
-         , _testCaseIndexGenerator(new TestCaseIndexGenerator)
-         , _testCaseArgsIndex(0)
+         , _currentTestCaseNumber(1)
          , p_testCaseArgs(std::forward<TestCaseArgTypes>(testCaseArgs)...)
       {
          const size_t numberOfTestCases = NumberOfTestCases();
@@ -5313,7 +5367,8 @@ Testing Rigor Options:
 
       void TestBody() override
       {
-         RunNXNTestCase(_testClass.get(), _testCaseArgsIndex);
+         const size_t testCaseArgsIndex = (_currentTestCaseNumber - 1) * N;
+         RunNXNTestCase(_testClass.get(), testCaseArgsIndex);
       }
 
       virtual void RunNXNTestCase(TestClassType*, size_t)
@@ -5322,20 +5377,20 @@ Testing Rigor Options:
 
       std::vector<TestResult> RunTest() override
       {
-         assert_true(_testCaseArgsIndex == 0);
+         assert_true(_currentTestCaseNumber == 1);
          const ZenUnitArgs& args = call_TestRunner_GetArgs();
          const size_t numberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
-         _testCaseIndexGenerator->Initialize(N, numberOfTestCaseArgs, args);
+         ITestCaseNumberGenerator* testCaseNumberGenerator =
+            call_ITestCaseNumberGeneratorFactoryNew(args.randomorder);
+         testCaseNumberGenerator->Initialize(numberOfTestCaseArgs, N, args);
          const std::vector<std::string> splitTestCaseArgs = call_String_CommaSplitExceptQuotedCommas(_testCaseArgsText);
-         unsigned testCaseNumber = 1;
-         while ((_testCaseArgsIndex = _testCaseIndexGenerator->NextTestCaseIndex()) != std::numeric_limits<size_t>::max())
+         while ((_currentTestCaseNumber = testCaseNumberGenerator->NextTestCaseNumber()) != std::numeric_limits<size_t>::max())
          {
-            RunTestCaseIfNotFilteredOut(testCaseNumber, args, splitTestCaseArgs);
-            ++testCaseNumber;
+            RunTestCaseIfNotFilteredOut(_currentTestCaseNumber, args, splitTestCaseArgs);
          }
          Exit1IfNonExistentTestCaseNumberSpecified();
-         _testCaseIndexGenerator->ResetTestCaseArgsIndex();
-         _testCaseArgsIndex = 0; // Reset to 0 to ready this TestNXN for another run in case -testruns=N specified
+         // Reset _currentTestCaseNumber to 1 to ready this TestNXN for another test run in case -testruns=N is specified
+         _currentTestCaseNumber = 1;
          return _testResults;
       }
 
@@ -5350,20 +5405,20 @@ Testing Rigor Options:
       }
    private:
       virtual void RunTestCaseIfNotFilteredOut(
-         unsigned testCaseNumber, const ZenUnitArgs& args, const std::vector<std::string>& splitTestCaseArgs)
+         size_t possiblyRandomizedTestCaseNumber, const ZenUnitArgs& args, const std::vector<std::string>& splitTestCaseArgs)
       {
-         const bool shouldRunTestCase = ShouldRunTestCase(args, p_fullTestName, testCaseNumber);
+         const bool shouldRunTestCase = ShouldRunTestCase(args, p_fullTestName, possiblyRandomizedTestCaseNumber);
          if (shouldRunTestCase)
          {
-            RunTestCase(testCaseNumber, splitTestCaseArgs);
+            RunTestCase(possiblyRandomizedTestCaseNumber, splitTestCaseArgs);
          }
       }
 
-      virtual void RunTestCase(unsigned testCaseNumber, const std::vector<std::string>& splitTestCaseArgs)
+      virtual void RunTestCase(size_t possiblyRandomizedTestCaseNumber, const std::vector<std::string>& splitTestCaseArgs)
       {
-         PrintTestCaseNumberArgsThenArrow(testCaseNumber, splitTestCaseArgs);
+         PrintTestCaseNumberThenArgsThenArrow(possiblyRandomizedTestCaseNumber, splitTestCaseArgs);
          TestResult testResult = MockableCallBaseRunTest();
-         testResult.testCaseNumber = testCaseNumber;
+         testResult.testCaseNumber = possiblyRandomizedTestCaseNumber;
          _testResults.push_back(testResult);
          WriteLineOKIfSuccess(testResult);
       }
@@ -5384,34 +5439,37 @@ Testing Rigor Options:
          }
       }
 
-      virtual bool ShouldRunTestCase(const ZenUnitArgs& args, const FullTestName& fullTestName, unsigned testCaseNumber) const
+      virtual bool ShouldRunTestCase(
+         const ZenUnitArgs& args, const FullTestName& fullTestName, size_t possiblyRandomizedTestCaseNumber) const
       {
          if (args.runFilters.empty())
          {
             return true;
          }
-         const bool anyRunFilterMatchesThisTestCase = _threeArgAnyer->ThreeArgAny(
-            args.runFilters, RunFilterMatchesTestCase, fullTestName, testCaseNumber);
+         const bool anyRunFilterMatchesThisTestCase = _callerOfRunFilterMatchesTestCase->ThreeArgAny(
+            args.runFilters, RunFilterMatchesTestCase, fullTestName, possiblyRandomizedTestCaseNumber);
          return anyRunFilterMatchesThisTestCase;
       }
 
-      static bool RunFilterMatchesTestCase(const RunFilter& runFilter, const FullTestName& fullTestName, unsigned testCaseNumber)
+      static bool RunFilterMatchesTestCase(
+         const RunFilter& runFilter, const FullTestName& fullTestName, size_t possiblyRandomizedTestCaseNumber)
       {
-         assert_true(testCaseNumber >= 1 && testCaseNumber != std::numeric_limits<unsigned>::max());
+         assert_true(possiblyRandomizedTestCaseNumber >= 1);
+         assert_true(possiblyRandomizedTestCaseNumber != std::numeric_limits<size_t>::max());
          const bool runFilterMatchesTestCase = runFilter.MatchesTestCase(
-            fullTestName.testClassName, fullTestName.testName, testCaseNumber);
+            fullTestName.testClassName, fullTestName.testName, possiblyRandomizedTestCaseNumber);
          return runFilterMatchesTestCase;
       }
 
-      virtual void PrintTestCaseNumberArgsThenArrow(unsigned testCaseNumber, const std::vector<std::string>& splitTestCaseArgs) const
+      virtual void PrintTestCaseNumberThenArgsThenArrow(
+         size_t possiblyRandomizedTestCaseNumber, const std::vector<std::string>& splitTestCaseArgs) const
       {
          _console->WriteColor(" [", Color::Green);
-         const std::string testCaseNumberString = std::to_string(testCaseNumber);
+         const std::string testCaseNumberString = std::to_string(possiblyRandomizedTestCaseNumber);
          _console->Write(testCaseNumberString);
          _console->WriteColor("]", Color::Green);
          _console->Write(" (");
-         const size_t testCaseIndex = testCaseNumber - 1;
-         const size_t testCaseArgsPrintingStartIndex = static_cast<size_t>(testCaseIndex) * N;
+         const size_t testCaseArgsPrintingStartIndex = (possiblyRandomizedTestCaseNumber - 1) * N;
          _console->WriteStringsCommaSeparated(splitTestCaseArgs, testCaseArgsPrintingStartIndex, N);
          _console->Write(") -> ");
       }

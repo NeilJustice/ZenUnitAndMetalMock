@@ -66,10 +66,18 @@ TEST1X1(NXNTestA,
 }
 
 TEST1X1(NXNTestB,
-   int,
+   int x,
    0,
    1)
 {
+   if (x == 0)
+   {
+      cout << "x == 0" << '\n';
+   }
+   else
+   {
+      cout << "x == 1" << '\n';
+   }
 }
 
 RUN_TESTS(ZZTests)

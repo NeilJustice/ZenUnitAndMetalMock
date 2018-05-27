@@ -2,7 +2,6 @@
 #include "ZenUnitTests/Args/Mock/RunFilterParserMock.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Random/RandomRunFilter.h"
-#include "ZenUnitTests/Random/RandomZenUnitArgs.h"
 #include "ZenUnitTests/Utils/Function/Mock/VoidOneArgMemberFunctionCallerMock.h"
 #include "ZenUnitTests/Utils/Time/Mock/WatchMock.h"
 
@@ -62,11 +61,11 @@ Testing Filtration Options:
 Testing Rigor Options:
 
 -randomorder
-   Run test classes and tests in a pseudorandom order.
--randomseed=<Value>
-   Set the random seed used by -randomorder
-   and by the ZenUnit::Random<T> family of functions.
-   The default random seed is the number of seconds since 1970.
+   Run test classes, tests, and value-parameterized test cases in a random order.
+-randomseed=<M>
+   Set to M the random seed used by -randomorder
+   and by the ZenUnit::Random<T> family of random-value-generating functions.
+   The default random seed is the number of seconds since 1970 UTC.
 -testruns=<NumberOfTestRuns>
    Repeat the running of all tests NumberOfTestRuns times.
    Specify -testruns=3 -randomorder for three pseudorandom test run orderings.
