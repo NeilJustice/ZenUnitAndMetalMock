@@ -23,11 +23,9 @@ if(UNIX)
       message("ClangCoverageMode enabled: -fcoverage-mapping -fprofile-instr-generate=coverage.profraw appended to CMAKE_CXX_FLAGS")
    endif()
 elseif(MSVC)
-   set(CMAKE_CXX_FLAGS "/std:c++latest /Wall /WX /EHsc /MP")
+   set(CMAKE_CXX_FLAGS "/std:c++17 /Wall /WX /EHsc /MP")
    replace(CMAKE_EXE_LINKER_FLAGS_DEBUG "/debug" "/debug:fastlink")
    replace(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "/debug" "/debug:fastlink")
-   # Disable time-expensive release mode optimization
-   # while ZenUnit is in pre-1.0 development
    replace(CMAKE_CXX_FLAGS_RELEASE "/O2" "/Od")
    set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 endif()
