@@ -372,8 +372,10 @@ namespace ZenUnit
 
 |The Road To ZenUnit 1.0|
 |-----------------------|
-|Every aspect of ZenUnit documented|
 |Travis CI GCC|
+|ZenUnit::Random\<T\> documentation|
+|ZenUnit::Equalizer\<T\> documentation|
+|ZenUnit::Printer\<T\> documentation|
 |100% code coverage badge|
 |Travis CI clang-tidy|
 |AppVeyor /analyze|
@@ -384,5 +386,5 @@ namespace ZenUnit
 
 |The Road To ZenUnit 1.1|
 |-----------------------|
-|-junitxml=<FilePath>|
+|-junitxml=\<FilePath\>|
 |-parallel|
