@@ -125,7 +125,7 @@ namespace ZenUnit
 
       _consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.Expect();
 
-      const vector<string> commandLineArgs{ Random<string>() };
+      const vector<string> commandLineArgs = ZenUnit::RandomVector<string>();
       //
       const int overallExitCode = _testRunner.ParseArgsRunTestClassesPrintResults(commandLineArgs);
       //

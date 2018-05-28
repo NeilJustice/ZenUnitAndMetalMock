@@ -1785,14 +1785,14 @@ namespace ZenUnit
    private:
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const RunFilterParser> _runFilterParser;
-      std::unique_ptr<const OneArgMemberFunctionCaller<void, ArgsParser, ZenUnitArgs&>> _voidOneArgMemberFunctionCaller;
+      std::unique_ptr<const OneArgMemberFunctionCaller<void, ArgsParser, ZenUnitArgs&>> _callerOfSetRandomSeedIfNotSetByUser;
       std::unique_ptr<const Watch> _watch;
       std::function<unsigned(const std::string&)> call_String_ToUnsigned;
    public:
       ArgsParser() noexcept
          : _console(std::make_unique<Console>())
          , _runFilterParser(std::make_unique<RunFilterParser>())
-         , _voidOneArgMemberFunctionCaller(new OneArgMemberFunctionCaller<void, ArgsParser, ZenUnitArgs&>)
+         , _callerOfSetRandomSeedIfNotSetByUser(new OneArgMemberFunctionCaller<void, ArgsParser, ZenUnitArgs&>)
          , _watch(new Watch)
          , call_String_ToUnsigned(String::ToUnsigned)
       {
@@ -1836,13 +1836,13 @@ Testing Rigor Options:
 
 -randomorder
    Run test classes, tests, and value-parameterized test cases in a random order.
--randomseed=<M>
-   Set to M the random seed used by -randomorder
-   and by the ZenUnit::Random<T> family of random-value-generating functions.
-   The default random seed is the number of seconds since 1970 UTC.
--testruns=<NumberOfTestRuns>
-   Repeat the running of all tests NumberOfTestRuns times.
-   Specify -testruns=3 -randomorder for three pseudorandom test run orderings.
+-randomseed=<S>
+   Set to S the random seed used by -randomorder
+   and the ZenUnit::Random<T> family of random-value-generating functions.
+   The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
+-testruns=<N>
+   Repeat the running of all tests N times.
+   Specify -testruns=3 -randomorder for three random test run orderings.
    Useful option for continuous integration servers to partially ensure
    that checked-in unit tests are robust with respect to ordering.
 -noskips
@@ -1920,7 +1920,6 @@ Testing Rigor Options:
                   else if (argName == "-randomseed")
                   {
                      zenUnitArgs.randomseed = static_cast<unsigned short>(call_String_ToUnsigned(argValueString));
-                     ZenUnitRandomSeed::value = zenUnitArgs.randomseed;
                      zenUnitArgs.randomseedsetbyuser = true;
                   }
                   else
@@ -1934,7 +1933,8 @@ Testing Rigor Options:
                }
             }
          }
-         _voidOneArgMemberFunctionCaller->ConstCall(this, &ArgsParser::SetRandomSeedIfNotSetByUser, zenUnitArgs);
+         _callerOfSetRandomSeedIfNotSetByUser->ConstCall(this, &ArgsParser::SetRandomSeedIfNotSetByUser, zenUnitArgs);
+         ZenUnitRandomSeed::value = zenUnitArgs.randomseed;
          return zenUnitArgs;
       }
    private:
@@ -4529,7 +4529,6 @@ Testing Rigor Options:
 
       int ParseArgsRunTestClassesPrintResults(const std::vector<std::string>& commandLineArgs)
       {
-         ZenUnitRandomSeed::value = static_cast<unsigned short>(time(nullptr));
          _zenUnitArgs = _argsParser->Parse(commandLineArgs);
          _testClassRunnerRunner->ApplyRunFiltersIfAny(_zenUnitArgs.runFilters);
          int overallExitCode = 0;
