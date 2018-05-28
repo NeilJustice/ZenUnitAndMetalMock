@@ -1,5 +1,23 @@
-image: Visual Studio 2017
 shallow_clone: true
 
+image:
+   - Visual Studio 2017
+
+platform:
+   - x64
+   - Win32    
+
+configuration:
+   - Debug
+   - Release
+
+environment:
+   matrix:
+      - generator: "Visual Studio 15 2017"
+
+before_build:
+   - curl https://raw.githubusercontent.com/NeilJustice/ZenMock/master/ZenMock/ZenMock.h -o ZenMock.h
+   - cmake -A %platform% -G "%generator%" ..
+
 build_script:
-  - ps: .\CloudJobs\AppVeyorZenUnit.ps1
+   - cmake --build . --config %configuration%
