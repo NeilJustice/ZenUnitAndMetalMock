@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ZenUnitTests/TestRunners/Mock/TryCatchCallerMock.h"
 #include "ZenUnitTests/Results/Mock/TestResultFactoryMock.h"
+#include "ZenUnitTests/TestRunners/Mock/TryCatchCallerMock.h"
 #include "ZenUnitTests/Utils/Time/Mock/StopwatchMock.h"
 
 namespace ZenUnit

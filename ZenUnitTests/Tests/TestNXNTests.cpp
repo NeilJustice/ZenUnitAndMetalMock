@@ -2,9 +2,9 @@
 #include "ZenUnitTests/Args/Mock/RunFilterMock.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/Results/Mock/TestResultMock.h"
+#include "ZenUnitTests/Tests/Mock/ITestCaseNumberGeneratorMock.h"
 #include "ZenUnitTests/Tests/TestingTestClass.h"
 #include "ZenUnitTests/Utils/Iteration/Mock/ThreeArgAnyerMock.h"
-#include "ZenUnitTests/Tests/Mock/ITestCaseNumberGeneratorMock.h"
 
 namespace ZenUnit
 {

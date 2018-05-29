@@ -32,9 +32,8 @@ namespace ZenUnit
       _randomTestCaseNumberGenerator.Initialize(numberOfTestCaseArgs, N, args);
       //
       ARE_EQUAL(expectedRandomTestCaseNumbers.size(), _randomTestCaseNumberGenerator._randomTestCaseNumbers.size());
-      for (size_t i = 0; i < expectedRandomTestCaseNumbers.size(); ++i)
+      for (size_t expectedTestCaseNumber : expectedRandomTestCaseNumbers)
       {
-         const size_t expectedTestCaseNumber = expectedRandomTestCaseNumbers[i];
          CONTAINS_ELEMENT(expectedTestCaseNumber, _randomTestCaseNumberGenerator._randomTestCaseNumbers);
       }
       ARE_EQUAL(0, _randomTestCaseNumberGenerator._testCaseNumberIndex);

@@ -5224,7 +5224,6 @@ Testing Rigor Options:
       virtual size_t NextTestCaseNumber() = 0;
       virtual void ResetTestCaseNumber() = 0;
       virtual ~ITestCaseNumberGenerator() = default;
-
       static ITestCaseNumberGenerator* FactoryNew(bool randomOrderMode);
    };
 
@@ -5297,8 +5296,6 @@ Testing Rigor Options:
       {
          _testCaseNumberIndex = 0;
       }
-
-      virtual ~RandomTestCaseNumberGenerator() = default;
    };
 
    inline ITestCaseNumberGenerator* ITestCaseNumberGenerator::FactoryNew(bool randomOrderMode)

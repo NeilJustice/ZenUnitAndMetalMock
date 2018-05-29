@@ -20,6 +20,7 @@ covhtml/
 *.gch
 *.gch*
 *.i
+*.json
 *.o
 *.plist
 *.profdata

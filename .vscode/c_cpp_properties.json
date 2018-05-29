@@ -5,7 +5,12 @@
             "includePath": [
                 "/usr/include/c++/7",
                 "/usr/include/c++/7/x86_64-redhat-linux",
-                "/usr/include/linux"
+                "/usr/include/linux",
+                "${workspaceFolder}",
+                "${workspaceFolder}/ZenUnit",
+                "${workspaceFolder}/ZenUnitExamples",
+                "${workspaceFolder}/ZenUnitTests",
+                "/usr/local/include/ZenMock"
             ],
             "browse": {
                 "path": [
