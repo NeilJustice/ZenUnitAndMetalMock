@@ -20,4 +20,4 @@ before_build:
    - cmake -A %platform% -G "%generator%"
 
 build_script:
-   - cmake --build . --config %configuration%
+   - cmake --build . --config %configuration% -- /m
