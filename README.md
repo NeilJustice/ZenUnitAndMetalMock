@@ -319,11 +319,7 @@ Today, code mutations can be induced manually by one's self or colleagues during
 
 In the 2020s, a combinatorial number of code mutations will be able to be induced programatically by LLVM-powered mutation testing frameworks.
 
-In this near future, a programmer will be able to call upon an affordable desktop supercomputer or affordable cloud supercomputing to "attempt to slay" a compelling subset of every LLVM-inducible code mutation, resulting in a code quality metric one hundred times as potent as code coverage: mutation coverage.
-
-Mutation coverage is the percentage of correctness-compromised program mutants "slain" / detected by a collection of tests. If a passing collection of tests fails as expected when the code that it tests is mutated to break the code's correctness, then that collection of tests can be said to have successfully "slain" that code mutation, thereby increasing mutation coverage. 100% mutation coverage is by definition 100% code coverage. "100% code coverage? Great to hear that, but how's your mutation coverage?"
-
-ZenUnit provides the following random-value-generating functions for writing unit tests that are robust to swap-variable-with-constant code mutations.
+ZenUnit provides the following random value generating functions for writing unit tests that are robust to swap-variable-with-constant code mutations.
 
 |Random Value Generating Function|Description|
 |--------------------------------|-----------|
