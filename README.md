@@ -44,7 +44,7 @@ TEST(FizzBuzz_EndNumber0_Throws)
 // TEST2X2 defines a 2-by-2 value-parameterized test
 // that processes its typesafe variadic arguments list 2-by-2.
 // This TEST2X2 defines 16 test cases for FizzBuzz(),
-// each of which will run independently within separate instances of FizzBuzzTests.
+// each of which will run independently within a separate instance of FizzBuzzTests.
 TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    unsigned endNumber, const std::string& expectedFizzBuzzSequence,
    1, "1",
