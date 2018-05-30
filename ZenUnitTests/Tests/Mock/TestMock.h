@@ -2,7 +2,7 @@
 
 struct TestMock : public Zen::Mock<Test>
 {
-   TestMock()
+   TestMock() noexcept
       : Zen::Mock<Test>("", "", static_cast<unsigned char>(0))
    {
    }

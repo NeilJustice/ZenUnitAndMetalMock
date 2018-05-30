@@ -49,25 +49,25 @@ namespace ZenUnit
       unique_ptr<Test>, SpecificTestClassRunner<TestingTestClass>,
       void (SpecificTestClassRunner<TestingTestClass>::*)(
          const unique_ptr<Test>& test, TestClassResult*) const, TestClassResult*>;
-   TwoArgMemberForEacherMockType* _twoArgMemberForEacherMock;
-   VoidZeroArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>>* _voidZeroArgMemberFunctionCallerMock;
-   NonVoidTwoArgMemberFunctionCallerMock<bool, SpecificTestClassRunner<TestingTestClass>, Test*, TestClassResult*>* _nonVoidTwoArgFunctionCallerMock;
-   VoidOneArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, const TestClassResult*>* _voidOneArgMemberFunctionCallerMock;
+   TwoArgMemberForEacherMockType* _twoArgMemberForEacherMock = nullptr;
+   VoidZeroArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>>* _voidZeroArgMemberFunctionCallerMock = nullptr;
+   NonVoidTwoArgMemberFunctionCallerMock<bool, SpecificTestClassRunner<TestingTestClass>, Test*, TestClassResult*>* _nonVoidTwoArgFunctionCallerMock = nullptr;
+   VoidOneArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, const TestClassResult*>* _voidOneArgMemberFunctionCallerMock = nullptr;
 
    using TwoArgTestAnyerMockType = TwoArgAnyerMock<
       const std::vector<std::unique_ptr<Test>>,
       bool(*)(const std::unique_ptr<Test>&, const RunFilter&),
       const RunFilter&>;
-   TwoArgTestAnyerMockType* _twoArgTestAnyerMock;
+   TwoArgTestAnyerMockType* _twoArgTestAnyerMock = nullptr;
 
    using TwoArgMemberAnyerMockType = TwoArgMemberAnyerMock<
       std::vector<RunFilter>, TestClassRunner,
       bool(TestClassRunner::*)(const RunFilter&, const char*) const, const char*>;
-   TwoArgMemberAnyerMockType* p_twoArgMemberAnyerMock;
+   TwoArgMemberAnyerMockType* p_twoArgMemberAnyerMock = nullptr;
 
    ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
 
-      STARTUP
+   STARTUP
    {
       _specificTestClassRunner = make_unique<SpecificTestClassRunner<TestingTestClass>>(_testClassName.c_str());
       _specificTestClassRunner->p_console.reset(p_consoleMock = new ConsoleMock);

@@ -30,9 +30,9 @@ namespace ZenUnit
    EVIDENCE
 
    TestRunResult _testRunResult;
-   const ConsoleMock* _consoleMock;
-   const WatchMock* _watchMock;
-   TestFailureNumbererMock* _testFailureNumbererMock;
+   const ConsoleMock* _consoleMock = nullptr;
+   const WatchMock* _watchMock = nullptr;
+   TestFailureNumbererMock* _testFailureNumbererMock = nullptr;
 
    using TypedefMemberForEacherTestClassResultsMock = MemberForEacherMock<vector<TestClassResult>,
       TestRunResult, void(TestRunResult::*)(const TestClassResult&) const>;

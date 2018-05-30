@@ -8,7 +8,7 @@ namespace ZenUnit
    AFACT(Transform_TwoElements_CallsTransformFunctionOnEachElement_ReturnsTransformedElements)
    EVIDENCE
 
-   MemberFunctionTransformerTests()
+   MemberFunctionTransformerTests() noexcept
    {
    }
 
@@ -25,7 +25,7 @@ namespace ZenUnit
       TransformedElementType ConstMemberFunction(const ElementType& element) const
       {
          calls.emplace_back(element);
-         const TransformedElementType transformedElement = static_cast<TransformedElementType>(element + ElementType{ 1 });
+         const TransformedElementType transformedElement = static_cast<TransformedElementType>(element) + ElementType{ 1 };
          return transformedElement;
       }
    };
@@ -62,8 +62,8 @@ namespace ZenUnit
 
       vector<TransformedElementType> expectedTransformedElements =
       {
-         static_cast<TransformedElementType>(elements[0] + 1),
-         static_cast<TransformedElementType>(elements[1] + 1)
+         static_cast<TransformedElementType>(elements[0]) + 1,
+         static_cast<TransformedElementType>(elements[1]) + 1
       };
       VECTORS_EQUAL(expectedTransformedElements, transformedElements);
    }

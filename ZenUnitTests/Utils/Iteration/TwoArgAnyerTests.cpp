@@ -52,7 +52,7 @@ namespace ZenUnit
       bool(*)(const T&, const Arg2Type&),
       const Arg2Type&> _TwoArgAnyer;
    const CollectionType<T> _twoElementCollection = { 1, 2 };
-   Arg2Type _arg2;
+   Arg2Type _arg2 = Arg2Type{};
 
    STARTUP
    {

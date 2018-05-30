@@ -3,7 +3,7 @@
 struct UserTypeNonPrintable
 {
    int x = 0;
-   UserTypeNonPrintable();
+   UserTypeNonPrintable() noexcept = default;
    explicit UserTypeNonPrintable(int x);
 
    friend bool operator<(const UserTypeNonPrintable& left, const UserTypeNonPrintable& right);

@@ -12,7 +12,7 @@ namespace ZenUnit
    {
    public:
       mutable vector<Arg1Type> calls;
-      mutable ReturnType returnValue;
+      mutable ReturnType returnValue = ReturnType{};
 
       ReturnType NonVoidOneArgConstFunction(Arg1Type arg1) const
       {

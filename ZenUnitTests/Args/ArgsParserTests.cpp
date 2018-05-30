@@ -77,7 +77,7 @@ Testing Rigor Options:
    that an organizational culture of "skip it and ship it!" does not take root.)";
 
    ArgsParser _argsParser;
-   ConsoleMock* _consoleMock;
+   ConsoleMock* _consoleMock = nullptr;
    RunFilterParserMock* _runFilterParserMock = nullptr;
    VoidOneArgMemberFunctionCallerMock<ArgsParser, ZenUnitArgs&>* _callerOfSetRandomSeedIfNotSetByUserMock = nullptr;
    WatchMock* _watchMock;

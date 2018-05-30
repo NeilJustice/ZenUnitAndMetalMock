@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "ZenUnitTests/Testing/UserTypeNonPrintable.h"
 
-UserTypeNonPrintable::UserTypeNonPrintable() = default;
-
 UserTypeNonPrintable::UserTypeNonPrintable(int x)
    : x(x)
 {

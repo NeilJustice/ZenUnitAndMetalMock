@@ -17,7 +17,7 @@ namespace ZenUnit
    {
       const ConsoleMock* consoleMock;
       const WatchMock* watchMock;
-      PreamblePrinterSelfMocked()
+      PreamblePrinterSelfMocked() noexcept
       {
          _console.reset(consoleMock = new ConsoleMock);
          _watch.reset(watchMock = new WatchMock);

@@ -3,7 +3,7 @@
 struct UserType
 {
    int value;
-   UserType();
+   UserType() noexcept;
    UserType(int value);
 
    friend bool operator<(const UserType& left, const UserType& right);

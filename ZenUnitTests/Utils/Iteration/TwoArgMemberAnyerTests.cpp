@@ -54,7 +54,7 @@ namespace ZenUnit
 
    Class _classInstance;
    CollectionType<T> _twoCollection = { 1, 2 };
-   Arg2Type _arg2;
+   Arg2Type _arg2 = Arg2Type{};
 
    STARTUP
    {

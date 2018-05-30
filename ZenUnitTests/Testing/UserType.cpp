@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "UserType.h"
 
-UserType::UserType()
+UserType::UserType() noexcept
    : value(0)
 {
 }

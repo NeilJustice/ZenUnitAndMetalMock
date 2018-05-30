@@ -6,7 +6,7 @@ public:
    static bool s_destructorCalled;
    static bool s_allNXNTestsRegistered;
 
-   TestingTestClass()
+   TestingTestClass() noexcept
    {
       s_destructorCalled = false;
    }

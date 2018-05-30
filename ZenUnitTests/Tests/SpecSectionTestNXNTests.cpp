@@ -35,10 +35,8 @@ namespace ZenUnit
    class SpecSectionTestNXNSelfMocked : public Zen::Mock<SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests>>
    {
    public:
-      SpecSectionTestNXNSelfMocked()
-         : Zen::Mock<SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests>>("", "", nullptr)
-      {
-      }
+      SpecSectionTestNXNSelfMocked() noexcept
+         : Zen::Mock<SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests>>("", "", nullptr) {}
       ZENMOCK_NONVOID0_CONST(const unique_ptr<Test>*, PmfTokenToTest)
    };
 
