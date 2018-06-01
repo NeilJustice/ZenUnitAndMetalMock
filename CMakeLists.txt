@@ -45,5 +45,6 @@ if(UNIX)
       find -name "*.cpp" -print0 | xargs -0 -n 1 -P ${NumberOfCores} -t
       /usr/local/bin/clang-tidy -header-filter=.* -p ${CMAKE_BUILD_TYPE}
          WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} VERBATIM USES_TERMINAL)
-   add_dependencies(clang-tidy ZenUnitTestsPch ZenUnitExamples)
+   add_dependencies(clang-tidy ZenUnitTestsPch ZenUnitExamplesPch)
 endif()
+
