@@ -4,7 +4,7 @@ import sys
 sys.path.append('ZenUnitPy') # Jenkins
 sys.path.append('../ZenUnitPy') # Jenkins
 sys.path.append('../ZenUnit/ZenUnitPy') # ZenMock
-from ZenUnitPy import ArgParser, CMake, Process, Util, FileSystem
+from ZenUnitPy import ArgParser, CMake, Process, Util
 
 def main(args):
    if len(args) != 5:
