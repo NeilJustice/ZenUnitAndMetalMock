@@ -6,7 +6,6 @@
 |----------|------------|
 |Linux (Clang 6.0)|<a href="https://travis-ci.org/NeilJustice/ZenUnit"><img src="https://travis-ci.org/NeilJustice/ZenUnit.svg?branch=master"/></a>|
 |Windows (Visual Studio 2017 x64 and Win32)|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitZenMock"><img src="https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true"/></a>|
-|ZenUnitPy Code Coverage|[![Coverage Status](https://coveralls.io/repos/github/NeilJustice/ZenUnit/badge.svg?branch=master)](https://coveralls.io/github/NeilJustice/ZenUnit?branch=master)|
 
 ### ZenUnit design commentary and the N-by-N value-parameterized test syntax
 
