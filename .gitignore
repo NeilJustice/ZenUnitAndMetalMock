@@ -1,8 +1,8 @@
 # CMake
 CMakeFiles/
 *.cmake
-CMakeCache.txt
 !CMakeMacros.cmake
+CMakeCache.txt
 
 # Python
 __pycache__/
@@ -40,7 +40,6 @@ Debug/
 Release/
 MinSizeRel/
 RelWithDebInfo/
-!ZenUnitPy/ZenUnitPy.sln
 *.cache
 *.dat
 *.db
@@ -56,6 +55,7 @@ RelWithDebInfo/
 *.pch
 *.psess
 *.sln
+!ZenUnitPy/ZenUnitPy.sln
 *.stamp
 *.tlog
 *.user
