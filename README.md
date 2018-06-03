@@ -1,17 +1,19 @@
 <h1 align="center">ZenUnit</h1>
 
-<h4 align="center">ZenUnit is a single-header C++17 unit testing framework featuring assertions designed for robustness against code mutations and an intuitive syntax for specifying value-parameterized and type-parameterized unit tests.</h4>
+<h4 align="center">ZenUnit is a single-header C++17 unit testing framework designed for maximal robustness against code mutations and features an intuitive syntax for specifying value-parameterized and type-parameterized unit tests.</h4>
 
-|Linux (Clang 6.0)|Windows (Visual Studio 2017 x64 and Win32)|
-|-----------------|------------------------------------------|
-|<a href="https://travis-ci.org/NeilJustice/ZenUnit"><img src="https://travis-ci.org/NeilJustice/ZenUnit.svg?branch=master"/></a>|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitZenMock"><img src="https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true"/></a>|
+|Build Type|Build Status|
+|----------|------------|
+|Linux (Clang 6.0)|<a href="https://travis-ci.org/NeilJustice/ZenUnit"><img src="https://travis-ci.org/NeilJustice/ZenUnit.svg?branch=master"/></a>|
+|Windows (Visual Studio 2017 x64 and Win32)|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitZenMock"><img src="https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true"/></a>|
+|ZenUnitPy Code Coverage|[![Coverage Status](https://coveralls.io/repos/github/NeilJustice/ZenUnit/badge.svg?branch=master)](https://coveralls.io/github/NeilJustice/ZenUnit?branch=master)|
 
-### ZenUnit Design Commentary and N-by-N Value-Parameterized Test Syntax
+### ZenUnit design commentary and the N-by-N value-parameterized test syntax
 
 ```cpp
 #include "ZenUnit.h" // Single header
 
-// Function under test
+// Function to be unit tested with ZenUnit
 std::string FizzBuzz(unsigned endNumber);
 
 // TESTS defines a ZenUnit test class and begins the FACTS section.
@@ -27,7 +29,8 @@ TESTS(FizzBuzzTests)
 AFACT(FizzBuzz_EndNumber0_Throws)
 // FACTS specifies an N-by-N value-parameterized test.
 FACTS(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)
-// EVIDENCE concludes the FACTS section and begins the EVIDENCE section,
+// EVIDENCE concludes the declaration of FACTS section
+// and begins the presentation of EVIDENCE section,
 // also known as the test class body.
 EVIDENCE
 
@@ -80,7 +83,7 @@ std::string FizzBuzz(unsigned endNumber)
    if (endNumber == 0)
    {
       // An exception is thrown here instead of returning empty string
-      // so as to demonstrate ZenUnit's THROWS assertion.
+      // to demonstrate ZenUnit's THROWS assertion.
       throw std::invalid_argument("FizzBuzz() error: endNumber must be 1 or greater");
    }
    std::ostringstream oss;
