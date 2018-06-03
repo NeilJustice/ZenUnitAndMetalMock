@@ -4,7 +4,7 @@
 
 |Build Type|Build Status|
 |----------|------------|
-|Linux (Clang 6.0)|<a href="https://travis-ci.org/NeilJustice/ZenUnit"><img src="https://travis-ci.org/NeilJustice/ZenUnit.svg?branch=master"/></a>|
+|Linux (Clang 5 and 6)|<a href="https://travis-ci.org/NeilJustice/ZenUnit"><img src="https://travis-ci.org/NeilJustice/ZenUnit.svg?branch=master"/></a>|
 |Windows (Visual Studio 2017 x64 and Win32)|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitZenMock"><img src="https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true"/></a>|
 
 ### ZenUnit design commentary and the N-by-N value-parameterized test syntax
