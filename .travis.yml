@@ -80,4 +80,4 @@ matrix:
              #            - g++-7
 
 script:
-  - ./CloudJobs/TravisCIZenUnit.sh
+  - ./TravisCIZenUnit.sh
