@@ -5,7 +5,7 @@ from ZenUnitPy import Process, Python
 
 Usage = 'Usage: python3 RunZenUnitPyTestsWithCoverageAndLinting.py'
 
-def main(args):
+def main():
    os.chdir('ZenUnitPy/ZenUnitPyTests')
    Process.run('python3 RunAllWithCoverage.py')
    os.chdir('..')
@@ -13,4 +13,4 @@ def main(args):
    Python.flake8_all()
 
 if __name__ == '__main__': # pragma nocover
-   main(sys.argv)
+   main()

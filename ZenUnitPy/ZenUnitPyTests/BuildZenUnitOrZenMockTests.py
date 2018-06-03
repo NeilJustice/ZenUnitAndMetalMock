@@ -8,7 +8,7 @@ from ZenUnitPy import ArgParser, CMake, BuildZenUnitOrZenMock, Process, UnitTest
 import Random
 
 testNames = [
-'main_ArgsLengthNot5_PrintsUsageAndExits1_test',
+'main_ArgsLengthNot4_PrintsUsageAndExits1_test',
 'main_ArgsLength5_CMakes_Builds_RunsTestsIfLinuxOtherwisePostBuildStepRunsTestsOnWindows_test',
 'linux_cmake_and_build_CMakes_BuildsWithNinja_test',
 'windows_cmake_and_build_CMakes_BuildsWithMSBuild_test',
@@ -49,9 +49,9 @@ class BuildZenUnitTests(unittest.TestCase):
       @patch('os.chdir', spec_true=True)
       def testcase(platformSystem, expectLinux, _1, _2, _3, _4, _5, _6):
          with self.subTest(f'{platformSystem}, {expectLinux}'):
-            ArgParser.parse_arg.side_effect = [ self.ZenUnitOrZenMock, self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions ]
+            ArgParser.parse_arg.side_effect = [self.ZenUnitOrZenMock, self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions]
             platform.system.return_value = platformSystem
-            args = [ Random.string(), self.ZenUnitOrZenMock, self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions ]
+            args = [Random.string(), self.ZenUnitOrZenMock, self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions]
             #
             BuildZenUnitOrZenMock.main(args)
             #

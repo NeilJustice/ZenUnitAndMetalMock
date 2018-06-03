@@ -11,8 +11,7 @@ class ArgParserTests(unittest.TestCase):
    def parse_arg_argValueDoesNotStartWithArgNameEqualsSign_raises_test(self):
       def testcase(argName, argValue):
          with self.subTest(f'{argName}, {argValue}'):
-            self.assertRaisesRegex(ValueError, f"Argument '{argValue}' does not start with '{argName}='",
-               ArgParser.parse_arg, argName, argValue)
+            self.assertRaisesRegex(ValueError, f"Argument '{argValue}' does not start with '{argName}='", ArgParser.parse_arg, argName, argValue)
       testcase('', '')
       testcase('-argName', 'abc')
       testcase('--argName', '')

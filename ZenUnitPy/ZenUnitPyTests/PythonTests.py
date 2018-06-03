@@ -22,8 +22,7 @@ class PythonTests(unittest.TestCase):
       #
       pylintExitCode = Python.pylint_file(pythonFilePath)
       #
-      expectedPylintCommand =\
-         "pylint --rcfile=.pylintrc --score=n --init-hook=\"sys.path.append('.')\" {0}".format(pythonFilePath)
+      expectedPylintCommand = "pylint --rcfile=.pylintrc --score=n --init-hook=\"sys.path.append('.')\" {0}".format(pythonFilePath)
       Process.run_and_get_exitcode.assert_called_once_with(expectedPylintCommand)
       self.assertEqual(pylintExitCode, pylintExitCode)
 
