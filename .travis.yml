@@ -16,7 +16,7 @@ matrix:
           packages:
             - ninja-build
             - clang-5.0
-            - libstdc++-6-dev
+            - libstdc++-7-dev
 
     - os: linux
       compiler: clang
@@ -29,7 +29,7 @@ matrix:
          packages:
            - ninja-build
            - clang-5.0
-           - libstdc++-6-dev
+           - libstdc++-7-dev
   
     - os: linux
       compiler: clang
