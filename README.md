@@ -298,7 +298,7 @@ int main(int argc, char* argv[])
 |`FACTS(HighQualityTestName)`|Specifies an N-by-N value-parameterized test.|
 |`SKIPAFACT(HighQualityTestName, Reason)`|Skips a non-value-parameterized test.|
 |`SKIPFACTS(HighQualityTestName, Reason)`|Skips an N-by-N value-parameterized test.|
-|`EVIDENCE`|Ends the `FACTS` section and begins the `EVIDENCE` section (also known as the test class body).|
+|`EVIDENCE`|Concludes the declaration of FACTS section and begins the presentation of EVIDENCE section, also known as the test class body.|
 |`STARTUP`|Defines a function to be run before each test.|
 |`CLEANUP`|Defines a function to be run after each test.|
 |`TEST(HighQualityTestName)`|Defines a non-value-parameterized test.|
