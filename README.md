@@ -24,9 +24,9 @@ TESTS(FizzBuzzTests)
 // at the top of test files instead of scattered throughout test files
 // is where this design yields long term code quality dividends.
 
-// AFACT specifies a non-value-parameterized test.
+// AFACT declares a non-value-parameterized test.
 AFACT(FizzBuzz_EndNumber0_Throws)
-// FACTS specifies an N-by-N value-parameterized test.
+// FACTS declares an N-by-N value-parameterized test.
 FACTS(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)
 // EVIDENCE concludes the declaration of FACTS section
 // and begins the presentation of EVIDENCE section,
