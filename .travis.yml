@@ -1,7 +1,7 @@
+language: cpp
 dist: trusty
 sudo: false
-language: cpp
-cache: ccache
+#cache: ccache
 
 matrix:
   include:
@@ -10,74 +10,54 @@ matrix:
       env: CMAKE_BUILD_TYPE=Debug COMPILER=clang++-5.0
       addons:
         apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-5.0
-          packages:
-            - ninja-build
-            - clang-5.0
-            - libstdc++-7-dev
+          sources: [ 'ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-5.0' ]
+          packages: [ 'ninja-build', 'clang-5.0', 'libstdc++-7-dev' ]
 
-    - os: linux
-      compiler: clang
-      env: CMAKE_BUILD_TYPE=Release COMPILER=clang++-5.0
-      addons:
-       apt:
-         sources:
-           - ubuntu-toolchain-r-test
-           - llvm-toolchain-trusty-5.0
-         packages:
-           - ninja-build
-           - clang-5.0
-           - libstdc++-7-dev
-  
     - os: linux
       compiler: clang
       env: CMAKE_BUILD_TYPE=Debug COMPILER=clang++-6.0
       addons:
         apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-6.0
-          packages:
-            - ninja-build
-            - clang-6.0
-            - libstdc++-7-dev
+          sources: [ 'ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0' ]
+          packages: [ 'ninja-build', 'clang-6.0', 'libstdc++-7-dev' ]
 
     - os: linux
-      compiler: clang
-      env: CMAKE_BUILD_TYPE=Release COMPILER=clang++-6.0
+      compiler: gcc
+      env: CMAKE_BUILD_TYPE=Debug COMPILER=g++-7
       addons:
-       apt:
-         sources:
-           - ubuntu-toolchain-r-test
-           - llvm-toolchain-trusty-6.0
-         packages:
-           - ninja-build
-           - clang-6.0
-           - libstdc++-7-dev
+        apt:
+          sources: [ 'ubuntu-toolchain-r-test' ]
+          packages: [ 'ninja-build', 'g++-7' ]
 
-             #    - os: linux
-             #      compiler: gcc
-             #      env: CMAKE_BUILD_TYPE=Debug COMPILER=g++-7
-             #      addons:
-             #        apt:
-             #          sources:
-             #            - ubuntu-toolchain-r-test
-             #          packages:
-             #            - ninja-build
-             #            - g++-7
+    - os: linux
+      compiler: gcc
+      env: CMAKE_BUILD_TYPE=Release COMPILER=g++-7
+      addons:
+        apt:
+          sources: [ 'ubuntu-toolchain-r-test' ]
+          packages: [ 'ninja-build', 'g++-7' ]
 
-             #    - os: linux
-             #      compiler: gcc
-             #      env: CMAKE_BUILD_TYPE=Release COMPILER=g++-7
-             #      addons:
-             #        apt:
-             #          sources:
-             #            - ubuntu-toolchain-r-test
-             #          packages:
-             #            - ninja-build
-             #            - g++-7
+    - os: osx
+      osx_image: xcode9.3
+      compiler: clang
+      env: CMAKE_BUILD_TYPE=Debug COMPILER=clang++
+      before_install:
+        - brew install ninja llvm
+        
+    - os: osx
+      osx_image: xcode9.3
+      compiler: clang
+      env: CMAKE_BUILD_TYPE=Release COMPILER=clang++
+      before_install:
+        - brew install ninja llvm
 
 script:
-  - ./TravisCIZenUnit.sh
+  - curl https://raw.githubusercontent.com/NeilJustice/ZenMock/master/ZenMock/ZenMock.h -o ZenMock.h
+  - mkdir build && cd build
+  - cmake -GNinja .. -Werror=dev -DCMAKE_CXX_COMPILER="$COMPILER" -DCMAKE_BUILD_TYPE="$CMAKE_BUILD_TYPE"
+  - ninja -v -j 3
+  - ./ZenUnitTests/ZenUnitTests
+  - ./ZenUnitExamples/ZenUnitExamples
+        
+notifications:
+  email: false

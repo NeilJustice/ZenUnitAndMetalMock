@@ -1,5 +1,5 @@
 #include "pch.h"
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
 #include <unistd.h>
 #endif
 

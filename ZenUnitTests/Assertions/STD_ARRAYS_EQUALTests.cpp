@@ -39,7 +39,7 @@ namespace ZenUnit
       const array<T, 1> expectedArray = { { randomElement } };
       const array<T, 1> actualArray = { { randomElement + T{ 1 } } };
       //
-   #ifdef __linux__
+#if defined __linux__
       THROWS(STD_ARRAYS_EQUAL(expectedArray, actualArray), Anomaly, R"(
   Failed: STD_ARRAYS_EQUAL(expectedArray, actualArray)
 Expected: <std::array<)" + TypeName + R"(, 1ul>>
@@ -50,7 +50,18 @@ Expected: )" + ToStringer::ToString(expectedArray[0]) + R"(
  Message: "i=0"
 File.cpp(1)
 File.cpp(1))");
-   #elif _WIN32
+#elif defined __APPLE__
+      THROWS(STD_ARRAYS_EQUAL(expectedArray, actualArray), Anomaly, R"(
+  Failed: STD_ARRAYS_EQUAL(expectedArray, actualArray)
+Expected: <std::__1::array<)" + TypeName + R"(, 1ul>>
+  Actual: <std::__1::array<)" + TypeName + R"(, 1ul>>
+ Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed
+Expected: )" + ToStringer::ToString(expectedArray[0]) + R"(
+  Actual: )" + ToStringer::ToString(actualArray[0]) + R"(
+ Message: "i=0"
+File.cpp(1)
+File.cpp(1))");
+#elif defined _WIN32
       THROWS(STD_ARRAYS_EQUAL(expectedArray, actualArray), Anomaly, R"(
   Failed: STD_ARRAYS_EQUAL(expectedArray, actualArray)
 Expected: <std::array<)" + TypeName + R"(,1>>
@@ -100,7 +111,7 @@ File.cpp(1))");
       const array<T, 2> expectedArray_index0 = { { _randomElementA, _randomElementB } };
       const array<T, 2> actualArray_index0 = { { _randomElementA + T{ 1 }, _randomElementB } };
       //
-   #ifdef __linux__
+#if defined __linux__
       THROWS(STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0), Anomaly, R"(
   Failed: STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0)
 Expected: <std::array<)" + TypeName + R"(, 2ul>>
@@ -111,7 +122,18 @@ Expected: )" + ToStringer::ToString(expectedArray_index0[0]) + R"(
  Message: "i=0"
 File.cpp(1)
 File.cpp(1))");
-   #elif _WIN32
+#elif defined __APPLE__
+      THROWS(STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0), Anomaly, R"(
+  Failed: STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0)
+Expected: <std::__1::array<)" + TypeName + R"(, 2ul>>
+  Actual: <std::__1::array<)" + TypeName + R"(, 2ul>>
+ Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed
+Expected: )" + ToStringer::ToString(expectedArray_index0[0]) + R"(
+  Actual: )" + ToStringer::ToString(actualArray_index0[0]) + R"(
+ Message: "i=0"
+File.cpp(1)
+File.cpp(1))");
+#elif defined _WIN32
       THROWS(STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0), Anomaly, R"(
   Failed: STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0)
 Expected: <std::array<)" + TypeName + R"(,2>>
@@ -130,7 +152,7 @@ File.cpp(1))");
       const array<T, 2> expectedArray_index1 = { { _randomElementA, _randomElementB } };
       const array<T, 2> actualArray_index1 = { { _randomElementA, _randomElementB + T{ 1 } } };
       //
-   #ifdef __linux__
+#if defined __linux__
       THROWS(STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1), Anomaly, R"(
   Failed: STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1)
 Expected: <std::array<)" + TypeName + R"(, 2ul>>
@@ -141,7 +163,18 @@ Expected: )" + ToStringer::ToString(expectedArray_index1[1]) + R"(
  Message: "i=1"
 File.cpp(1)
 File.cpp(1))");
-   #elif _WIN32
+#elif defined __APPLE__
+      THROWS(STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1), Anomaly, R"(
+  Failed: STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1)
+Expected: <std::__1::array<)" + TypeName + R"(, 2ul>>
+  Actual: <std::__1::array<)" + TypeName + R"(, 2ul>>
+ Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed
+Expected: )" + ToStringer::ToString(expectedArray_index1[1]) + R"(
+  Actual: )" + ToStringer::ToString(actualArray_index1[1]) + R"(
+ Message: "i=1"
+File.cpp(1)
+File.cpp(1))");
+#elif defined _WIN32
       THROWS(STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1), Anomaly, R"(
   Failed: STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1)
 Expected: <std::array<)" + TypeName + R"(,2>>

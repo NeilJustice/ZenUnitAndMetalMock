@@ -33,7 +33,7 @@ namespace ZenUnit
       catch (const Anomaly& anomaly)
       {
          string expectedPattern;
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
          expectedPattern = "1";
 #elif defined _WIN64
          expectedPattern = "0x\\w{16}";
@@ -64,7 +64,7 @@ File.cpp\(1\))", anomaly.why);
       catch (const Anomaly& anomaly)
       {
          string expectedPattern;
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
          expectedPattern = "1";
 #elif defined _WIN64
          expectedPattern = "0x\\w{16}";
@@ -86,7 +86,7 @@ File.cpp\(1\))", anomaly.why);
    TEST(FunctionPointsToFunctionWithSameSignatureButDifferentFunctionThanExpected_Throws)
    {
       const function<void()> stdFunctionA(FunctionA);
-   #if defined __linux__
+#if defined __linux__ || defined __APPLE__
       THROWS(STD_FUNCTION_TARGETS(FunctionC, stdFunctionA), Anomaly, R"(
   Failed: STD_FUNCTION_TARGETS(FunctionC, stdFunctionA)
 Expected: 1
@@ -96,7 +96,7 @@ Expected: 1
   Actual: 1
 File.cpp(1)
 File.cpp(1))");
-   #elif _WIN32
+#elif defined _WIN32
       try
       {
          STD_FUNCTION_TARGETS(FunctionC, stdFunctionA);
@@ -114,7 +114,7 @@ Expected: 0x\w{16}
   Actual: 0x\w{16}
 File.cpp\(1\)
 File.cpp\(1\))", anomaly.why);
-#elif _WIN32
+#elif defined _WIN32
          REGEX_MATCHES(R"(
   Failed: STD_FUNCTION_TARGETS\(FunctionC, stdFunctionA\)
 Expected: 0x\w{8}

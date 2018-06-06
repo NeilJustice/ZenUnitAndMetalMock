@@ -4,10 +4,10 @@
 
 |Build Type|Build Status|
 |----------|------------|
-|Linux (Clang 5 and 6)|<a href="https://travis-ci.org/NeilJustice/ZenUnit"><img src="https://travis-ci.org/NeilJustice/ZenUnit.svg?branch=master"/></a>|
+|Linux (Clang 5.0.2, Clang 6.0.1, GCC 7.3.0) and macOS (AppleClang 9.1.0)|<a href="https://travis-ci.org/NeilJustice/ZenUnit"><img src="https://travis-ci.org/NeilJustice/ZenUnit.svg?branch=master"/></a>|
 |Windows (Visual Studio 2017 x64 and Win32)|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitZenMock"><img src="https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true"/></a>|
 
-### ZenUnit design commentary and the N-by-N value-parameterized test syntax
+### ZenUnit design and the N-by-N value-parameterized test syntax
 
 ```cpp
 #include "ZenUnit.h" // Single header
@@ -313,13 +313,13 @@ int main(int argc, char* argv[])
 |`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Skips a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called.|
 |`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Skips a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called. For use after `SKIP_TEMPLATE_TESTS`.|
 
-### Mutation Coverage Commentary and ZenUnit Random Value Generating Functions
+### Mutation coverage and the ZenUnit random value generating functions
 
 Testing using random inputs instead of constant inputs is a central technique for maximizing code's robustness to code mutations.
 
 Today, code mutations can be induced manually by one's self or colleagues during code review to confirm the degree of rigorousness with which unit tests have been written.
 
-In the 2020s, a combinatorial number of code mutations will be able to be induced programatically by LLVM-powered mutation testing frameworks.
+In the 2020s, it is appearing increasing likely that a combinatorial number of code mutations will be able to be induced programatically by LLVM-powered mutation testing frameworks. If the folks currently writing mutation testing frameworks go the distance, you may one day hear this dialog: "100% line and branch coverage? That's excellent, but how's your mutation coverage?"
 
 ZenUnit provides the following random value generating functions for writing unit tests that are robust to swap-variable-with-constant code mutations.
 

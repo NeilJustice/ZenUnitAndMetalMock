@@ -47,13 +47,13 @@ namespace ZenUnit
       }
       expectedWhatPatternBuilder << R"()
 Expected: Not )";
-   #if defined __linux__
+#if defined __linux__ || defined __APPLE__
       expectedWhatPatternBuilder << notExpectedAddress << R"(
   Actual:     )" << actualAddress;
-   #elif _WIN32
+#elif defined _WIN32
       expectedWhatPatternBuilder << "0x" << notExpectedAddress << R"(
   Actual:     0x)" << actualAddress;
-   #endif
+#endif
       if (doAppendMessage)
       {
          expectedWhatPatternBuilder << "\n Message: \"A\", \"B\"";

@@ -13,13 +13,13 @@
 #include <unordered_set>
 #include <vector>
 
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
 #include <climits>
 #include <cxxabi.h>
 #include <memory>
 #include <string.h>
 #include <unistd.h>
-#elif _WIN32
+#elif defined _WIN32
 #define WIN32_LEAN_AND_MEAN // ~40% faster Windows.h compile speed
 #define NOGDI // ~10% faster Windows.h compile speed
 #define NOMINMAX
@@ -563,9 +563,9 @@ namespace ZenUnit
 
       static int CaseInsensitiveStrcmp(const char* string1, const char* string2) noexcept
       {
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
          const int strcmpResult = strcasecmp(string1, string2);
-#elif _WIN32
+#elif defined _WIN32
          const int strcmpResult = _strcmpi(string1, string2);
 #endif
          return strcmpResult;
@@ -852,10 +852,10 @@ namespace ZenUnit
 
       virtual void SetTextColor(Color color) const
       {
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
          const char* linuxColor = ColorToLinuxColor(color);
          std::cout << linuxColor;
-#elif _WIN32
+#elif defined _WIN32
          const HANDLE stdOutHandle = call_GetStdHandle(STD_OUTPUT_HANDLE);
          const WindowsColor windowsColor = ColorToWindowsColor(color);
          const BOOL didSetConsoleTextAttr = call_SetConsoleTextAttribute(
@@ -945,17 +945,17 @@ namespace ZenUnit
 
       virtual void WaitForAnyKey() const
       {
-#ifdef __linux__
-#elif _WIN32
+#if defined __linux__ || defined __APPLE__
+#elif defined _WIN32
          call_getch();
 #endif
       }
 
       virtual bool DebuggerIsPresent() const
       {
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
          return false;
-#elif _WIN32
+#elif defined _WIN32
          const int isDebuggerPresentReturnValue = call_IsDebuggerPresent();
          const bool isDebuggerPresent = isDebuggerPresentReturnValue == 1;
          return isDebuggerPresent;
@@ -991,7 +991,7 @@ namespace ZenUnit
          decltype(SFINAE(std::declval<T>()))>::value;
    };
 
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
    template<typename T>
    const bool has_to_string<T>::value;
 #endif
@@ -1008,7 +1008,7 @@ namespace ZenUnit
          decltype(SFINAE(std::declval<std::ostream&>(), std::declval<T>()))>::value;
    };
 
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
    template<typename T>
    const bool has_ostream_left_shift<T>::value;
 #endif
@@ -1037,7 +1037,7 @@ namespace ZenUnit
          decltype(SFINAE<T>(std::declval<std::ostream&>(), std::declval<T>()))>::value;
    };
 
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
    template<typename T>
    const bool has_ZenUnitPrinter<T>::value;
 #endif
@@ -1088,7 +1088,7 @@ namespace ZenUnit
          }
       }
 
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
       static std::string Demangle(const char* mangledTypeName)
       {
          int demangleStatus = -1;
@@ -1099,7 +1099,7 @@ namespace ZenUnit
          std::string demangledTypeName(demangledTypeNamePointer.get());
          return demangledTypeName;
       }
-#elif _WIN32
+#elif defined _WIN32
       static void InplaceEraseAll(std::string& str, const std::string& substring)
       {
          while (true)
@@ -1311,7 +1311,7 @@ namespace ZenUnit
          oss << ToString(value);
 #if defined _WIN32
          // C26496: The variable 'numberOfRemainingValues' is assigned only once, mark it as const.
-         // When variable 'numberOfRemainingValues' is marked const: C4127	conditional expression is constant
+         // When variable 'numberOfRemainingValues' is marked const: C4127 conditional expression is constant
 #pragma warning(push)
 #pragma warning(suppress: 26496)
 #endif
@@ -1756,12 +1756,12 @@ namespace ZenUnit
       virtual tm TMNow() const
       {
          const std::chrono::time_point<std::chrono::system_clock> nowTimePoint = std::chrono::system_clock::now();
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
          tm* tmNow = nullptr;
          long nowTimeT = std::chrono::system_clock::to_time_t(nowTimePoint);
          tmNow = localtime(&nowTimeT);
          return *tmNow;
-#elif _WIN32
+#elif defined _WIN32
          const __time64_t nowTimeT = std::chrono::system_clock::to_time_t(nowTimePoint);
          tm tmNow;
          const errno_t localtimeResult = localtime_s(&tmNow, &nowTimeT);
@@ -2090,7 +2090,7 @@ Testing Rigor Options:
       }
    };
 
-#if defined(__linux__) || defined(_WIN64)
+#if defined __linux__ || defined __APPLE__ || defined _WIN64
    template<>
    struct TwoTypeEqualizer<int, size_t>
    {
@@ -3781,16 +3781,16 @@ Testing Rigor Options:
    {
       friend class MachineNameGetterTests;
    private:
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
       std::function<int(char*, size_t)> call_gethostname;
-#elif _WIN32
+#elif defined _WIN32
       std::function<BOOL(LPSTR, LPDWORD)> call_GetComputerName;
 #endif
    public:
       MachineNameGetter() noexcept
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
          : call_gethostname(::gethostname)
-#elif _WIN32
+#elif defined _WIN32
          : call_GetComputerName(::GetComputerName)
 #endif
       {
@@ -3800,16 +3800,21 @@ Testing Rigor Options:
 
       virtual std::string GetMachineName() const
       {
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
          return GetLinuxMachineName();
-#elif _WIN32
+#elif defined _WIN32
          return GetWindowsMachineName();
 #endif
       }
    private:
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
       virtual std::string GetLinuxMachineName() const
       {
+#if __APPLE__
+    #ifndef HOST_NAME_MAX
+        #define HOST_NAME_MAX 64
+    #endif
+#endif
          char hostname[HOST_NAME_MAX + 1];
          assert_true(sizeof(hostname) == 65);
          const int gethostnameResult = call_gethostname(hostname, sizeof(hostname));
@@ -3817,7 +3822,7 @@ Testing Rigor Options:
          const std::string linuxMachineName(hostname);
          return linuxMachineName;
       }
-#elif _WIN32
+#elif defined _WIN32
       virtual std::string GetWindowsMachineName() const
       {
          const size_t Windows10MaxPCNameLength = 40;

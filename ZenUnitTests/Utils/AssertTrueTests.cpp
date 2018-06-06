@@ -33,11 +33,11 @@ namespace ZenUnit
    TEST(assert_true_IsFalse_FromOperatorParentheses_ThrowsLogicError)
    {
       string expectedOperatorParenthesesName;
-   #if defined __linux__
+#if defined __linux__ || defined __APPLE__
       expectedOperatorParenthesesName = R"(operator\(\)\(\))";
-   #elif _WIN32
+#elif defined _WIN32
       expectedOperatorParenthesesName = R"(operator \(\)\(\))";
-   #endif
+#endif
       try
       {
          struct X

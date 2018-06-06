@@ -36,7 +36,7 @@ namespace ZenUnit
   Failed: IS_NULL(nonNullRawPointer, messageA, messageB)
 Expected: nullptr
   Actual: )";
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
       expectedWhat += "0x123\n";
 #elif defined _WIN64
       expectedWhat += "0x0000000000000123\n";
@@ -65,7 +65,7 @@ Expected: nullptr
   Failed: IS_NULL(nonNullUniquePointer)
 Expected: nullptr
   Actual: )";
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
       expectedWhat += "0x1234567890123";
 #elif defined _WIN64
       expectedWhat += "0x0001234567890123";
@@ -84,7 +84,7 @@ Expected: nullptr
   Failed: IS_NULL(nonNullSharedPointer)
 Expected: nullptr
   Actual: )";
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
       expectedWhat += "0x1234567890123";
 #elif defined _WIN64
       expectedWhat += "0x0001234567890123";

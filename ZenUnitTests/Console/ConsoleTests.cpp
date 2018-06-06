@@ -212,13 +212,13 @@ namespace ZenUnit
 
    TEST(WaitForAnyKey_CallsGetChOnWindows)
    {
-#ifdef _WIN32
+#if defined _WIN32
       _getch_ZenMockObject.Return(0);
 #endif
       //
       _console.WaitForAnyKey();
       //
-#ifdef _WIN32
+#if defined _WIN32
       ZEN(_getch_ZenMockObject.CalledOnce());
 #endif
    }

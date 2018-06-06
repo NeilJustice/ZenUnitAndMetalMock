@@ -9,28 +9,28 @@ namespace Namespace
    struct StructInsideNamespace_ZenUnitPrintOutsideNamespace {};
 }
 
-struct NonConstReferenceZenUnitPrint {};
-template<>
-struct Printer<NonConstReferenceZenUnitPrint>
-{
-   static void Print(ostream&, NonConstReferenceZenUnitPrint&);
-};
-
-struct RValueReferenceZenUnitPrint {};
-template<>
-struct Printer<RValueReferenceZenUnitPrint>
-{
-   static void Print(ostream&, RValueReferenceZenUnitPrint&&);
-};
-
-template<>
-struct Printer<Namespace::StructInsideNamespace_ZenUnitPrintOutsideNamespace>
-{
-   static void Print(ostream&, const Namespace::StructInsideNamespace_ZenUnitPrintOutsideNamespace&);
-};
-
 namespace ZenUnit
 {
+   struct NonConstReferenceZenUnitPrint {};
+   template<>
+   struct Printer<NonConstReferenceZenUnitPrint>
+   {
+      static void Print(ostream&, NonConstReferenceZenUnitPrint&);
+   };
+
+   struct RValueReferenceZenUnitPrint {};
+   template<>
+   struct Printer<RValueReferenceZenUnitPrint>
+   {
+      static void Print(ostream&, RValueReferenceZenUnitPrint&&);
+   };
+
+   template<>
+   struct Printer<Namespace::StructInsideNamespace_ZenUnitPrintOutsideNamespace>
+   {
+      static void Print(ostream&, const Namespace::StructInsideNamespace_ZenUnitPrintOutsideNamespace&);
+   };
+
    TESTS(has_ZenUnitPrinterTests)
    AFACT(value_FalseIfZenUnitPrinterNotDefinedForType)
    AFACT(value_TrueIfZenUnitPrinterIsDefinedForType)

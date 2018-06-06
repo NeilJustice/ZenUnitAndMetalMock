@@ -40,15 +40,15 @@ elseif(MSVC)
 endif()
 
 macro(EnablePrecompiledHeaders)
-   if(UNIX)
+   if(UNIX OR APPLE)
       if(SanitizersMode)
          set(SanitizerArgs "-fsanitize=address,undefined")
       endif()
-      if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+      if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
          if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-         add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++17 -Wall -Wextra -Werror -pthread
-            -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments
-            ${SanitizerArgs} -I${CMAKE_SOURCE_DIR} -I${CMAKE_SOURCE_DIR}/ZenUnit -I/usr/local/include/ZenMock -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
+            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++17 -Wall -Wextra -Werror -pthread
+               -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments
+               ${SanitizerArgs} -I${CMAKE_SOURCE_DIR} -I${CMAKE_SOURCE_DIR}/ZenUnit -I/usr/local/include/ZenMock -x c++-header ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h)
          elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
             add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++17 -Wall -Wextra -Werror -pthread -O2
                -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments
@@ -76,4 +76,3 @@ macro(IfMSVCAddRunTestsPostBuildStep)
       add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND $(TargetPath) -randomorder -exit0)
    endif()
 endmacro()
-

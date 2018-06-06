@@ -30,7 +30,10 @@ elseif(MSVC)
    set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 endif()
 
-add_subdirectory(ZenUnit)
+# Travis CI OSX tries to build header-only ZenUnit into a static library .a file
+if(NOT APPLE)
+   add_subdirectory(ZenUnit)
+endif()
 add_subdirectory(ZenUnitTests)
 add_subdirectory(ZenUnitExamples)
 
@@ -47,4 +50,3 @@ if(UNIX)
          WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} VERBATIM USES_TERMINAL)
    add_dependencies(clang-tidy ZenUnitTestsPch ZenUnitExamplesPch)
 endif()
-

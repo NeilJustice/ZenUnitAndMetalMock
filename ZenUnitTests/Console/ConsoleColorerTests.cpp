@@ -1,8 +1,8 @@
 #include "pch.h"
 
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
 #include <unistd.h>
-#elif _WIN32
+#elif defined _WIN32
 #include <io.h>
 // fileno() and isatty() are Linux and Windows wheras _fileno() and _isatty() are Windows only
 #pragma warning(disable: 4996) // 'fileno': The POSIX name for this item is deprecated

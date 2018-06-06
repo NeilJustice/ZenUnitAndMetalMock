@@ -48,13 +48,13 @@ File.cpp(1))";
       expectedWhatPatternBuilder <<
 " Because: ARE_NOT_SAME(expectedObject, actualObject) failed\n" <<
 "Expected: Not ";
-   #if defined __linux__
+#if defined __linux__ || defined __APPLE__
       expectedWhatPatternBuilder << notExpectedAddress << R"(
   Actual:     )" << actualAddress;
-   #elif _WIN32
+#elif defined _WIN32
       expectedWhatPatternBuilder << "0x" << notExpectedAddress << R"(
   Actual:     0x)" << actualAddress;
-   #endif
+#endif
       const string expectedWhatPattern = expectedWhatPatternBuilder.str();
       return expectedWhatPattern;
    }
