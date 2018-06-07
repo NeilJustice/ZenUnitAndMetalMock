@@ -1,9 +1,12 @@
 shallow_clone: true
 
-image:
-   - Visual Studio 2017
-   - Visual Studio 2017 Preview
-
+environment:
+   matrix:
+      - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+        generator: "Visual Studio 15 2017"
+      - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017 Preview
+        generator: "Visual Studio 15 2017 Preview"
+        
 platform:
    - x64
    - Win32    
@@ -11,10 +14,6 @@ platform:
 configuration:
    - Debug
    - Release
-
-environment:
-   matrix:
-      - generator: "Visual Studio 15 2017"
 
 before_build:
    - curl https://raw.githubusercontent.com/NeilJustice/ZenMock/master/ZenMock/ZenMock.h -o ZenMock.h
