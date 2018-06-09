@@ -1,6 +1,6 @@
 <h1 align="center">ZenUnit</h1>
 
-<h4 align="center">ZenUnit is a single-header C++17 unit testing framework designed for maximal robustness against code mutations and features an intuitive syntax for specifying value-parameterized and type-parameterized unit tests.</h4>
+<h4 align="center">ZenUnit is a single-header C++17 unit testing framework with assertions designed for maximal robustness against code mutations and features an intuitive syntax for specifying value-parameterized and type-parameterized unit tests.</h4>
 
 |Build Type|Build Status|
 |----------|------------|
@@ -46,7 +46,7 @@ TEST(FizzBuzz_EndNumber0_Throws)
 // TEST2X2 defines a 2-by-2 value-parameterized test
 // that processes its typesafe variadic arguments list 2-by-2.
 // This TEST2X2 defines 16 test cases for FizzBuzz(),
-// each of which will run independently within a separate instance of FizzBuzzTests.
+// each of which will run independently within separate instances of FizzBuzzTests.
 TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    unsigned endNumber, const std::string& expectedFizzBuzzSequence,
    1, "1",
@@ -142,12 +142,12 @@ Testing Filtration Options:
 
 -run=<TestClassName>[::TestName][/TestCaseNumber][,...]
    Run only specified case-insensitive test classes, tests, and/or test cases.
-   Add a '*' character to the end of a test class or test name
+   Add a '*' character to the end of a test class name or test name
    filter string to specify name-starts-with filtration.
  Example 1: -run=WidgetTests
    Runs only test class WidgetTests.
  Example 2: -run=WidgetTests::FunctionUnderTest*
-   Runs all tests in WidgetTests that start with 'FunctionUnderTest'.
+   Runs all tests in WidgetTests that start with "FunctionUnderTest".
  Example 3: -run=WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior/3
    Runs the third test case of value-parameterized test
    WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior.
@@ -156,15 +156,15 @@ Testing Filtration Options:
 
 Testing Rigor Options:
 
--randomorder
+-random
    Run test classes, tests, and value-parameterized test cases in a random order.
 -randomseed=<S>
-   Set to S the random seed used by -randomorder
-   and the ZenUnit::Random<T> family of random-value-generating functions.
+   Set to S the random seed used by -random
+   and the ZenUnit::Random<T> family of random value generating functions.
    The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
 -testruns=<N>
    Repeat the running of all tests N times.
-   Specify -testruns=3 -randomorder for three random test run orderings.
+   Specify -testruns=3 -random for three random test run orderings.
    Useful option for continuous integration servers to partially ensure
    that checked-in unit tests are robust with respect to ordering.
 -noskips
@@ -370,9 +370,8 @@ namespace ZenUnit
 
 |The Road To ZenUnit 1.0|
 |-----------------------|
-|Travis CI GCC|
-|ZenUnit::Random\<T\> documentation|
-|ZenUnit::Equalizer\<T\> documentation|
+|Upgraded ZenUnit::Random\<T\> documentation|
+|Upgraded ZenUnit::Equalizer\<T\> documentation|
 |ZenUnit::Printer\<T\> documentation|
 |100% code coverage badge|
 |Travis CI clang-tidy|
@@ -380,9 +379,9 @@ namespace ZenUnit
 |TUPLES_EQUAL|
 |ARE_WITHIN|
 |ARE_CLOSE|
-|-breakfast|
+|--breakfast|
 
 |The Road To ZenUnit 1.1|
 |-----------------------|
-|-junitxml=\<FilePath\>|
-|-parallel|
+|--junitxml=\<FilePath\>|
+|--parallel|

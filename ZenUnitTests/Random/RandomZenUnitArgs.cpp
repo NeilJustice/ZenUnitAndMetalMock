@@ -15,7 +15,7 @@ namespace ZenUnit
       randomZenUnitArgs.failfast = ZenUnit::Random<bool>();
       randomZenUnitArgs.noskips = ZenUnit::Random<bool>();
       randomZenUnitArgs.testruns = ZenUnit::Random<unsigned>();
-      randomZenUnitArgs.randomorder = ZenUnit::Random<bool>();
+      randomZenUnitArgs.random = ZenUnit::Random<bool>();
       randomZenUnitArgs.randomseed = ZenUnit::Random<unsigned short>();
       randomZenUnitArgs.randomseedsetbyuser = ZenUnit::Random<bool>();
       randomZenUnitArgs.maxtestmilliseconds = ZenUnit::Random<unsigned>();

@@ -15,7 +15,7 @@ namespace ZenUnit
    FACTS(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0)
    AFACT(Parse_AllArgsSpecifiedExpectForRunFilter_ReturnsZenUnitArgsWithAllFieldsSets)
    AFACT(Parse_RunArgument_ReturnsExpectedZenUnitArgs)
-   AFACT(Parse_randomorder_SetsrandomorderToTrue)
+   AFACT(Parse_random_SetsrandomToTrue)
    AFACT(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    AFACT(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
    FACTS(Parse_EqualsSignContainingArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1)
@@ -38,7 +38,7 @@ Testing Utility Options:
 -exit0
    Always exit 0 regardless of test run outcome.
    Useful option for never blocking the launch of a ZenUnit tests
-   console window when previously running those tests in a post-build step.
+   console window when previously running tests in a post-build step.
 -wait
    Wait for any key at the end of the test run.
 
@@ -46,12 +46,12 @@ Testing Filtration Options:
 
 -run=<TestClassName>[::TestName][/TestCaseNumber][,...]
    Run only specified case-insensitive test classes, tests, and/or test cases.
-   Add a '*' character to the end of a test class or test name
+   Add a '*' character to the end of a test class name or test name
    filter string to specify name-starts-with filtration.
  Example 1: -run=WidgetTests
    Runs only test class WidgetTests.
  Example 2: -run=WidgetTests::FunctionUnderTest*
-   Runs all tests in WidgetTests that start with 'FunctionUnderTest'.
+   Runs all tests in WidgetTests that start with "FunctionUnderTest".
  Example 3: -run=WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior/3
    Runs the third test case of value-parameterized test
    WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior.
@@ -60,15 +60,15 @@ Testing Filtration Options:
 
 Testing Rigor Options:
 
--randomorder
+-random
    Run test classes, tests, and value-parameterized test cases in a random order.
 -randomseed=<S>
-   Set to S the random seed used by -randomorder
-   and the ZenUnit::Random<T> family of random-value-generating functions.
+   Set to S the random seed used by -random
+   and the ZenUnit::Random<T> family of random value generating functions.
    The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
 -testruns=<N>
    Repeat the running of all tests N times.
-   Specify -testruns=3 -randomorder for three random test run orderings.
+   Specify -testruns=3 -random for three random test run orderings.
    Useful option for continuous integration servers to partially ensure
    that checked-in unit tests are robust with respect to ordering.
 -noskips
@@ -187,7 +187,7 @@ Testing Rigor Options:
          "-exit0",
          "-failfast",
          "-noskips",
-         "-randomorder",
+         "-random",
          "-testruns=" + to_string(testruns),
          "-randomseed=" + to_string(randomseed)
       };
@@ -206,7 +206,7 @@ Testing Rigor Options:
       expectedZenUnitArgs.exit0 = true;
       expectedZenUnitArgs.failfast = true;
       expectedZenUnitArgs.noskips = true;
-      expectedZenUnitArgs.randomorder = true;
+      expectedZenUnitArgs.random = true;
       expectedZenUnitArgs.testruns = testruns;
       expectedZenUnitArgs.randomseed = static_cast<unsigned short>(randomseed);
       expectedZenUnitArgs.randomseedsetbyuser = true;
@@ -236,16 +236,16 @@ Testing Rigor Options:
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST(Parse_randomorder_SetsrandomorderToTrue)
+   TEST(Parse_random_SetsrandomToTrue)
    {
       ExpectCallToSetRandomSeedIfNotSetByUser();
-      const vector<string> args { ZenUnit::Random<string>(), "-randomorder" };
+      const vector<string> args { ZenUnit::Random<string>(), "-random" };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
-      expectedZenUnitArgs.randomorder = true;
+      expectedZenUnitArgs.random = true;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
@@ -351,7 +351,7 @@ Testing Rigor Options:
       ZEN(ToUnsigned_ZenMockObject.CalledOnceWith(to_string(randomSeedArgValue)));
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
-      expectedZenUnitArgs.randomorder = false;
+      expectedZenUnitArgs.random = false;
       expectedZenUnitArgs.randomseed = static_cast<unsigned short>(randomSeedArgValue);
       expectedZenUnitArgs.randomseedsetbyuser = true;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);

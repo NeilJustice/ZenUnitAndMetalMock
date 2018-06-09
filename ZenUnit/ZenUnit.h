@@ -742,7 +742,7 @@ namespace ZenUnit
       bool failfast = false;
       bool noskips = false;
       unsigned testruns = 1;
-      bool randomorder = false;
+      bool random = false;
       unsigned short randomseed = 0;
       bool randomseedsetbyuser = false;
       unsigned maxtestmilliseconds = 0;
@@ -1812,7 +1812,7 @@ Testing Utility Options:
 -exit0
    Always exit 0 regardless of test run outcome.
    Useful option for never blocking the launch of a ZenUnit tests
-   console window when previously running those tests in a post-build step.
+   console window when previously running tests in a post-build step.
 -wait
    Wait for any key at the end of the test run.
 
@@ -1820,12 +1820,12 @@ Testing Filtration Options:
 
 -run=<TestClassName>[::TestName][/TestCaseNumber][,...]
    Run only specified case-insensitive test classes, tests, and/or test cases.
-   Add a '*' character to the end of a test class or test name
+   Add a '*' character to the end of a test class name or test name
    filter string to specify name-starts-with filtration.
  Example 1: -run=WidgetTests
    Runs only test class WidgetTests.
  Example 2: -run=WidgetTests::FunctionUnderTest*
-   Runs all tests in WidgetTests that start with 'FunctionUnderTest'.
+   Runs all tests in WidgetTests that start with "FunctionUnderTest".
  Example 3: -run=WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior/3
    Runs the third test case of value-parameterized test
    WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior.
@@ -1834,15 +1834,15 @@ Testing Filtration Options:
 
 Testing Rigor Options:
 
--randomorder
+-random
    Run test classes, tests, and value-parameterized test cases in a random order.
 -randomseed=<S>
-   Set to S the random seed used by -randomorder
-   and the ZenUnit::Random<T> family of random-value-generating functions.
+   Set to S the random seed used by -random
+   and the ZenUnit::Random<T> family of random value generating functions.
    The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
 -testruns=<N>
    Repeat the running of all tests N times.
-   Specify -testruns=3 -randomorder for three random test run orderings.
+   Specify -testruns=3 -random for three random test run orderings.
    Useful option for continuous integration servers to partially ensure
    that checked-in unit tests are robust with respect to ordering.
 -noskips
@@ -1885,9 +1885,9 @@ Testing Rigor Options:
             {
                zenUnitArgs.noskips = true;
             }
-            else if (arg == "-randomorder")
+            else if (arg == "-random")
             {
-               zenUnitArgs.randomorder = true;
+               zenUnitArgs.random = true;
             }
             else if (arg == "-help" || arg == "--help")
             {
@@ -4097,7 +4097,7 @@ Testing Rigor Options:
       virtual std::vector<TestClassResult> RunTestClasses(ZenUnitArgs& zenUnitArgs)
       {
          std::vector<TestClassResult> testClassResults;
-         if (zenUnitArgs.randomorder)
+         if (zenUnitArgs.random)
          {
             testClassResults = _transformer->RandomTransform(
                &_testClassRunners, &TestClassRunnerRunner::RunTestClassRunner, zenUnitArgs.randomseed);
@@ -4169,7 +4169,7 @@ Testing Rigor Options:
          _console->WriteColor("[ZenUnit]", Color::Green);
          const size_t numberOfTestClassesToBeRun = testClassRunnerRunner->NumberOfTestClassesToBeRun();
          const std::string thirdLinePrefix = MakeThirdLinePrefix(numberOfTestClassesToBeRun);
-         const std::string thirdLineSuffix = MakeThirdLineSuffix(zenUnitArgs.randomorder, zenUnitArgs.randomseed);
+         const std::string thirdLineSuffix = MakeThirdLineSuffix(zenUnitArgs.random, zenUnitArgs.randomseed);
          const std::string thirdLineAndLineBreak = thirdLinePrefix + thirdLineSuffix + "\n";
          _console->WriteLine(thirdLineAndLineBreak);
       }
@@ -5037,7 +5037,7 @@ Testing Rigor Options:
       void DoRunTests()
       {
          const ZenUnitArgs& zenUnitArgs = call_TestRunner_GetArgs();
-         if (zenUnitArgs.randomorder)
+         if (zenUnitArgs.random)
          {
             _twoArgMemberForEacher->RandomTwoArgMemberForEach(
                &_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult, zenUnitArgs.randomseed);
@@ -5229,7 +5229,7 @@ Testing Rigor Options:
       virtual size_t NextTestCaseNumber() = 0;
       virtual void ResetTestCaseNumber() = 0;
       virtual ~ITestCaseNumberGenerator() = default;
-      static ITestCaseNumberGenerator* FactoryNew(bool randomOrderMode);
+      static ITestCaseNumberGenerator* FactoryNew(bool randomMode);
    };
 
    class SequentialTestCaseNumberGenerator : public ITestCaseNumberGenerator
@@ -5303,9 +5303,9 @@ Testing Rigor Options:
       }
    };
 
-   inline ITestCaseNumberGenerator* ITestCaseNumberGenerator::FactoryNew(bool randomOrderMode)
+   inline ITestCaseNumberGenerator* ITestCaseNumberGenerator::FactoryNew(bool randomMode)
    {
-      if (randomOrderMode) return new RandomTestCaseNumberGenerator;
+      if (randomMode) return new RandomTestCaseNumberGenerator;
       else return new SequentialTestCaseNumberGenerator;
    }
 
@@ -5381,8 +5381,7 @@ Testing Rigor Options:
          assert_true(_currentTestCaseNumber == 1);
          const ZenUnitArgs& args = call_TestRunner_GetArgs();
          const size_t numberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
-         ITestCaseNumberGenerator* testCaseNumberGenerator =
-            call_ITestCaseNumberGeneratorFactoryNew(args.randomorder);
+         ITestCaseNumberGenerator* testCaseNumberGenerator = call_ITestCaseNumberGeneratorFactoryNew(args.random);
          testCaseNumberGenerator->Initialize(numberOfTestCaseArgs, N, args);
          const std::vector<std::string> splitTestCaseArgs = call_String_CommaSplitExceptQuotedCommas(_testCaseArgsText);
          while ((_currentTestCaseNumber = testCaseNumberGenerator->NextTestCaseNumber()) != std::numeric_limits<size_t>::max())
@@ -6204,7 +6203,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
          ARE_EQUAL(expectedArguments.failfast, actualArgs.failfast);
          ARE_EQUAL(expectedArguments.noskips, actualArgs.noskips);
          ARE_EQUAL(expectedArguments.testruns, actualArgs.testruns);
-         ARE_EQUAL(expectedArguments.randomorder, actualArgs.randomorder);
+         ARE_EQUAL(expectedArguments.random, actualArgs.random);
          ARE_EQUAL(expectedArguments.randomseed, actualArgs.randomseed);
          ARE_EQUAL(expectedArguments.randomseedsetbyuser, actualArgs.randomseedsetbyuser);
          ARE_EQUAL(expectedArguments.maxtestmilliseconds, actualArgs.maxtestmilliseconds);

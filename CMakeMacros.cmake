@@ -73,6 +73,6 @@ endmacro()
 
 macro(IfMSVCAddRunTestsPostBuildStep)
    if(MSVC)
-      add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND $(TargetPath) -randomorder -exit0)
+      add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND $(TargetPath) -random -exit0)
    endif()
 endmacro()

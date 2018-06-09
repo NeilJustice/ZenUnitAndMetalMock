@@ -17,7 +17,7 @@ namespace ZenUnit
       IS_FALSE(zenUnitArgs.failfast);
       IS_FALSE(zenUnitArgs.noskips);
       ARE_EQUAL(1, zenUnitArgs.testruns);
-      IS_FALSE(zenUnitArgs.randomorder);
+      IS_FALSE(zenUnitArgs.random);
       ARE_EQUAL(0, zenUnitArgs.randomseed);
       IS_FALSE(zenUnitArgs.randomseedsetbyuser);
       IS_ZERO(zenUnitArgs.maxtestmilliseconds);
@@ -35,7 +35,7 @@ namespace ZenUnit
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, failfast, true);
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, noskips, true);
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, testruns, 2u);
-      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, randomorder, true);
+      EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, random, true);
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, randomseed, static_cast<unsigned short>(3));
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, randomseedsetbyuser, true);
       EQUALIZER_THROWS_FOR_FIELD(ZenUnitArgs, maxtestmilliseconds, 4u);

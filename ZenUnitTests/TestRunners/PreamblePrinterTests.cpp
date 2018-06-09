@@ -54,7 +54,7 @@ namespace ZenUnit
 
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.commandLine = Random<string>();
-      zenUnitArgs.randomorder = Random<bool>();
+      zenUnitArgs.random = Random<bool>();
       zenUnitArgs.randomseed = Random<unsigned short>();
       //
       _preamblePrinterSelfMocked.PrintOpeningThreeLines(zenUnitArgs, &testClassRunnerRunnerMock);
@@ -63,8 +63,7 @@ namespace ZenUnit
       ZEN(testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.CalledOnce());
       ZEN(_preamblePrinterSelfMocked.consoleMock->WriteColorMock.CalledNTimesWith(3, "[ZenUnit]", Color::Green));
       ZEN(_preamblePrinterSelfMocked.MakeThirdLinePrefixMock.CalledOnceWith(numberOfTestClassesToBeRun));
-      ZEN(_preamblePrinterSelfMocked.MakeThirdLineSuffixMock.
-         CalledOnceWith(zenUnitArgs.randomorder, zenUnitArgs.randomseed));
+      ZEN(_preamblePrinterSelfMocked.MakeThirdLineSuffixMock.CalledOnceWith(zenUnitArgs.random, zenUnitArgs.randomseed));
       const string expectedThirdLineAndLineBreak = thirdLinePrefix + thirdLineSuffix + "\n";
       ZEN(_preamblePrinterSelfMocked.consoleMock->WriteLineMock.CalledAsFollows(
       {

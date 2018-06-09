@@ -214,7 +214,7 @@ namespace ZenUnit
       _testClassRunnerRunner._testClassRunners.resize(ZenUnit::RandomBetween<size_t>(0, 2));
 
       ZenUnitArgs zenUnitArgs;
-      IS_FALSE(zenUnitArgs.randomorder);
+      IS_FALSE(zenUnitArgs.random);
 
       _sorterMock->SortMock.Expect();
 
@@ -242,7 +242,7 @@ namespace ZenUnit
       _transformerMock->RandomTransformMock.Return(transformReturnValue);
 
       ZenUnitArgs zenUnitArgs;
-      zenUnitArgs.randomorder = true;
+      zenUnitArgs.random = true;
       zenUnitArgs.randomseedsetbyuser = ZenUnit::Random<bool>();
       zenUnitArgs.randomseed = ZenUnit::Random<unsigned short>();
       //
