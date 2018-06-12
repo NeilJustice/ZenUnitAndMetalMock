@@ -987,7 +987,7 @@ namespace ZenUnit
       static auto SFINAE(const U& value) -> decltype(std::to_string(value));
       static std::false_type SFINAE(...);
    public:
-      static const bool value = std::is_same<std::string,
+      static constexpr bool value = std::is_same<std::string,
          decltype(SFINAE(std::declval<T>()))>::value;
    };
 
@@ -1004,7 +1004,7 @@ namespace ZenUnit
       static auto SFINAE(std::ostream& os, const U& value) -> decltype(os << value);
       static std::false_type SFINAE(...);
    public:
-      static const bool value = std::is_same<std::ostream&,
+      static constexpr bool value = std::is_same<std::ostream&,
          decltype(SFINAE(std::declval<std::ostream&>(), std::declval<T>()))>::value;
    };
 
@@ -1033,7 +1033,7 @@ namespace ZenUnit
       template<typename U>
       static std::false_type SFINAE(...);
    public:
-      static const bool value = std::is_same<void,
+      static constexpr bool value = std::is_same<void,
          decltype(SFINAE<T>(std::declval<std::ostream&>(), std::declval<T>()))>::value;
    };
 
