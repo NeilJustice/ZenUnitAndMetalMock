@@ -4158,20 +4158,21 @@ Testing Rigor Options:
 
       virtual ~PreamblePrinter() = default;
 
-      virtual void PrintOpeningThreeLines(
+      virtual std::string PrintOpeningThreeLinesAndGetStartTime(
          const ZenUnitArgs& zenUnitArgs, const TestClassRunnerRunner* testClassRunnerRunner) const
       {
          _console->WriteColor("[ZenUnit]", Color::Green);
          _console->WriteLine(" Running " + zenUnitArgs.commandLine);
          _console->WriteColor("[ZenUnit]", Color::Green);
-         const std::string timeZoneDateTimeNow = _watch->DateTimeNowWithTimeZone();
-         _console->WriteLine(" Running at " + timeZoneDateTimeNow);
+         const std::string startTime = _watch->DateTimeNowWithTimeZone();
+         _console->WriteLine(" Running at " + startTime);
          _console->WriteColor("[ZenUnit]", Color::Green);
          const size_t numberOfTestClassesToBeRun = testClassRunnerRunner->NumberOfTestClassesToBeRun();
          const std::string thirdLinePrefix = MakeThirdLinePrefix(numberOfTestClassesToBeRun);
          const std::string thirdLineSuffix = MakeThirdLineSuffix(zenUnitArgs.random, zenUnitArgs.randomseed);
          const std::string thirdLineAndLineBreak = thirdLinePrefix + thirdLineSuffix + "\n";
          _console->WriteLine(thirdLineAndLineBreak);
+         return startTime;
       }
    private:
       virtual std::string MakeThirdLinePrefix(size_t numberOfTestClassesToBeRun) const
@@ -4320,11 +4321,14 @@ Testing Rigor Options:
             &_skippedFullTestNamesAndReasons, this, &TestRunResult::PrintSkippedTestReminder);
       }
 
-      virtual void PrintClosingLines(
-         size_t totalNumberOfTestCases, unsigned testRunMilliseconds, const ZenUnitArgs& zenUnitArgs) const
+      virtual void PrintConclusion(
+         const std::string& startTime,
+         size_t totalNumberOfTestCases,
+         unsigned testRunMilliseconds,
+         const ZenUnitArgs& zenUnitArgs) const
       {
          assert_true(_numberOfFailedTestCases <= totalNumberOfTestCases);
-         const Color color = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
+         const Color greenOrRed = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
          if (totalNumberOfTestCases == 0)
          {
             _console->WriteColor("[ZenUnit] ", Color::Green);
@@ -4335,34 +4339,38 @@ Testing Rigor Options:
             const std::string testOrTests = totalNumberOfTestCases == 1 ? "test" : "tests";
             const std::string millisecondOrMilliseconds = testRunMilliseconds == 1 ? "millisecond" : "milliseconds";
             const std::string inMillisecondsPart = String::Concat("in ", testRunMilliseconds, ' ', millisecondOrMilliseconds);
-            std::string middleLineVictoryOrFail;
+            std::string tripletLinesPrefix;
+            std::string victoryOrFailLinePrefix;
             std::string numberOfTestsAndMillisecondsAndRandomSeedMessage;
-            std::string firstAndThirdLineAsciiArt;
             if (_numberOfFailedTestCases == 0)
             {
-               firstAndThirdLineAsciiArt = "+===+===+ ";
-               middleLineVictoryOrFail = "<VICTORY> ";
+               tripletLinesPrefix = "+=======+ ";
+               victoryOrFailLinePrefix = "<VICTORY> ";
                numberOfTestsAndMillisecondsAndRandomSeedMessage = String::Concat("   Result: ",
                   totalNumberOfTestCases, ' ', testOrTests, " passed ", inMillisecondsPart,
                   " (random seed ", ZenUnitRandomSeed::value, ")");
             }
             else
             {
-               firstAndThirdLineAsciiArt = ">>------> ";
-               middleLineVictoryOrFail = ">>-FAIL-> ";
+               tripletLinesPrefix = ">>------> ";
+               victoryOrFailLinePrefix = ">>-FAIL-> ";
                numberOfTestsAndMillisecondsAndRandomSeedMessage = String::Concat("   Result: ",
                   _numberOfFailedTestCases, '/', totalNumberOfTestCases, ' ', testOrTests, " failed ", inMillisecondsPart,
                   " (random seed ", ZenUnitRandomSeed::value, ")");
             }
-            _console->WriteColor(firstAndThirdLineAsciiArt, color);
+            _console->WriteColor(tripletLinesPrefix, greenOrRed);
             const std::string completedCommandLineMessage = "Completed: " + zenUnitArgs.commandLine;
             _console->WriteLine(completedCommandLineMessage);
 
-            _console->WriteColor(middleLineVictoryOrFail, color);
+            _console->WriteColor(tripletLinesPrefix, greenOrRed);
+            const std::string startTimeMessage = "StartTime: " + startTime;
+            _console->WriteLine(startTimeMessage);
+
+            _console->WriteColor(tripletLinesPrefix, greenOrRed);
             const std::string endTimeMessage = "  EndTime: " + _watch->DateTimeNowWithTimeZone();
             _console->WriteLine(endTimeMessage);
 
-            _console->WriteColor(firstAndThirdLineAsciiArt, color);
+            _console->WriteColor(victoryOrFailLinePrefix, greenOrRed);
             _console->WriteLine(numberOfTestsAndMillisecondsAndRandomSeedMessage);
          }
       }
@@ -4566,7 +4574,8 @@ Testing Rigor Options:
 
       int PrintPreambleRunTestClassesPrintConclusion(const ZenUnitArgs& zenUnitArgs)
       {
-         _preamblePrinter->PrintOpeningThreeLines(zenUnitArgs, _testClassRunnerRunner.get());
+         const std::string startTime = _preamblePrinter->
+            PrintOpeningThreeLinesAndGetStartTime(zenUnitArgs, _testClassRunnerRunner.get());
          _havePaused = _nonVoidTwoArgMemberFunctionCaller->ConstCall(
             this, &TestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused, zenUnitArgs.pause, _havePaused);
          _testRunStopwatch->Start();
@@ -4583,7 +4592,7 @@ Testing Rigor Options:
          const size_t numberOfTestCases = _testClassRunnerRunner->NumberOfTestCases();
          const unsigned testRunMicroseconds = _testRunStopwatch->Stop();
          const unsigned testRunMilliseconds = testRunMicroseconds / 1000;
-         _testRunResult->PrintClosingLines(numberOfTestCases, testRunMilliseconds, zenUnitArgs);
+         _testRunResult->PrintConclusion(startTime, numberOfTestCases, testRunMilliseconds, zenUnitArgs);
          const int testRunExitCode = _testRunResult->DetermineExitCode(zenUnitArgs);
          return testRunExitCode;
       }

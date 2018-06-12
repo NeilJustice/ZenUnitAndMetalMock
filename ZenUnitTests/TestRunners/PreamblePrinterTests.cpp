@@ -8,7 +8,7 @@ namespace ZenUnit
 {
    TESTS(PreamblePrinterTests)
    AFACT(Constructor_NewsConsoleAndWatch)
-   AFACT(PrintOpeningThreeLines_PrintsCommandLineAndTimeZoneAndTestAndTestClassCounts)
+   AFACT(PrintOpeningThreeLinesAndGetStartTime_PrintsCommandLineAndTimeZoneAndTestAndTestClassCounts_ReturnsStartTime)
    FACTS(MakeThirdLinePrefix_ReturnsNumberOfTestClassesBeingRunAndMachineName)
    FACTS(MakeThirdLineSuffix_ReturnsRandomSeedIfRandomModeOtherwiseEmptyString)
    EVIDENCE
@@ -42,13 +42,13 @@ namespace ZenUnit
       POINTER_WAS_NEWED(preamblePrinter._machineNameGetter);
    }
 
-   TEST(PrintOpeningThreeLines_PrintsCommandLineAndTimeZoneAndTestAndTestClassCounts)
+   TEST(PrintOpeningThreeLinesAndGetStartTime_PrintsCommandLineAndTimeZoneAndTestAndTestClassCounts_ReturnsStartTime)
    {
       _preamblePrinterSelfMocked.consoleMock->WriteColorMock.Expect();
       _preamblePrinterSelfMocked.consoleMock->WriteLineMock.Expect();
       TestClassRunnerRunnerMock testClassRunnerRunnerMock;
       const size_t numberOfTestClassesToBeRun = testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.ReturnRandom();
-      const string dateTimeNowWithTimeZone = _preamblePrinterSelfMocked.watchMock->DateTimeNowWithTimeZoneMock.ReturnRandom();
+      const string startTime = _preamblePrinterSelfMocked.watchMock->DateTimeNowWithTimeZoneMock.ReturnRandom();
       const string thirdLinePrefix = _preamblePrinterSelfMocked.MakeThirdLinePrefixMock.ReturnRandom();
       const string thirdLineSuffix = _preamblePrinterSelfMocked.MakeThirdLineSuffixMock.ReturnRandom();
 
@@ -57,7 +57,8 @@ namespace ZenUnit
       zenUnitArgs.random = Random<bool>();
       zenUnitArgs.randomseed = Random<unsigned short>();
       //
-      _preamblePrinterSelfMocked.PrintOpeningThreeLines(zenUnitArgs, &testClassRunnerRunnerMock);
+      const string returnedStartTime = _preamblePrinterSelfMocked.
+         PrintOpeningThreeLinesAndGetStartTime(zenUnitArgs, &testClassRunnerRunnerMock);
       //
       ZEN(_preamblePrinterSelfMocked.watchMock->DateTimeNowWithTimeZoneMock.CalledOnce());
       ZEN(testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.CalledOnce());
@@ -68,9 +69,10 @@ namespace ZenUnit
       ZEN(_preamblePrinterSelfMocked.consoleMock->WriteLineMock.CalledAsFollows(
       {
          " Running " + zenUnitArgs.commandLine,
-         " Running at " + dateTimeNowWithTimeZone,
+         " Running at " + startTime,
          expectedThirdLineAndLineBreak
       }));
+      ARE_EQUAL(startTime, returnedStartTime);
    }
 
    TEST2X2(MakeThirdLinePrefix_ReturnsNumberOfTestClassesBeingRunAndMachineName,

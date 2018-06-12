@@ -2,5 +2,5 @@
 
 struct PreamblePrinterMock : public Zen::Mock<PreamblePrinter>
 {
-   ZENMOCK_VOID2_CONST(PrintOpeningThreeLines, const ZenUnitArgs&, const TestClassRunnerRunner*)
+   ZENMOCK_NONVOID2_CONST(string, PrintOpeningThreeLinesAndGetStartTime, const ZenUnitArgs&, const TestClassRunnerRunner*)
 };

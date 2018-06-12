@@ -16,8 +16,8 @@ namespace ZenUnit
    AFACT(NumberOfFailedTestCases_ZeroTestClassResults_Returns0)
    AFACT(NumberOfFailedTestCases_ThreeTestClassResults_ReturnsSumOfNumberOfFailedTestCases)
    FACTS(PrintTestFailuresAndSkips_PrintsTestFailures_PrintsSkippedTestClassNames_PrintsSkippedFullTestNames);
-   AFACT(PrintClosingLines_0TotalNumberOfTests_PrintsZeroTestClassesRegisteredToRun)
-   FACTS(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds)
+   AFACT(PrintConclusion_0TotalNumberOfTests_PrintsZeroTestClassesRegisteredToRun)
+   FACTS(PrintConclusion_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds)
    AFACT(PrintTestClassResultFailures_CallsTestClassResultPrintTestFailures)
    FACTS(DetermineExitCode_DefaultArgs_Returns1IfAnyTestFailures_OtherwiseReturns0)
    FACTS(DetermineExitCode_Exit0True_AlwaysReturns0)
@@ -217,19 +217,20 @@ namespace ZenUnit
       }));
    }
 
-   TEST(PrintClosingLines_0TotalNumberOfTests_PrintsZeroTestClassesRegisteredToRun)
+   TEST(PrintConclusion_0TotalNumberOfTests_PrintsZeroTestClassesRegisteredToRun)
    {
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteLineMock.Expect();
       //
-      _testRunResult.PrintClosingLines(0, 0, ZenUnitArgs());
+      _testRunResult.PrintConclusion(
+         ZenUnit::Random<string>(), 0, ZenUnit::Random<unsigned>(), ZenUnit::Random<ZenUnitArgs>());
       //
       ZEN(_consoleMock->WriteColorMock.CalledOnceWith("[ZenUnit] ", Color::Green));
       ZEN(_consoleMock->WriteLineMock.CalledOnceWith("Zero test classes run."));
    }
 
-   TEST7X7(PrintClosingLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds,
-      const string& expectedMiddleLineVictoryOrFail,
+   TEST7X7(PrintConclusion_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds,
+      const string& expectedVictoryOrFailLinePrefix,
       ZenUnit::Color expectedColor,
       size_t numberOfFailedTestCases,
       size_t numberOfTotalTests,
@@ -248,31 +249,35 @@ namespace ZenUnit
       ">>-FAIL->", Color::Red, size_t(2), size_t(3), "2/3 tests failed", 4, "milliseconds",
       ">>-FAIL->", Color::Red, size_t(2), size_t(4), "2/4 tests failed", 5, "milliseconds")
    {
-      _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteLineMock.Expect();
+      _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
+      const string startTime = ZenUnit::Random<string>();
       const string timeZoneDateTimeNow = _watchMock->DateTimeNowWithTimeZoneMock.ReturnRandom();
       const ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
       //
-      _testRunResult.PrintClosingLines(numberOfTotalTests, testRunMilliseconds, zenUnitArgs);
+      _testRunResult.PrintConclusion(startTime, numberOfTotalTests, testRunMilliseconds, zenUnitArgs);
       //
-      const string expectedFirstAndThirdLineAsciiArt =
-         expectedMiddleLineVictoryOrFail == "<VICTORY>" ? "+===+===+ " : ">>------> ";
+      const string expectedTripletLinesPrefix =
+         expectedVictoryOrFailLinePrefix == "<VICTORY>" ? "+=======+ " : ">>------> ";
       ZEN(_consoleMock->WriteColorMock.CalledAsFollows(
       {
-         { expectedFirstAndThirdLineAsciiArt, expectedColor },
-         { expectedMiddleLineVictoryOrFail + " ", expectedColor },
-         { expectedFirstAndThirdLineAsciiArt, expectedColor }
+         { expectedTripletLinesPrefix, expectedColor },
+         { expectedTripletLinesPrefix, expectedColor },
+         { expectedTripletLinesPrefix, expectedColor },
+         { expectedVictoryOrFailLinePrefix + " ", expectedColor }
       }));
       const string expectedCompletedLine = "Completed: " + zenUnitArgs.commandLine;
+      const string expectedStartTimeLine = "StartTime: " + startTime;
+      const string expectedEndTimeLine =   "  EndTime: " + timeZoneDateTimeNow;
       const string expectedNumberOfTestsAndMillisecondsLine = String::Concat("   Result: ",
          expectedClosingLineTestsCountText, " in ", testRunMilliseconds, " ", expectedMillisecondOrMilliseconds,
          " (random seed ", ZenUnitRandomSeed::value, ")");
-      const string expectedEndTimeLine = "  EndTime: " + timeZoneDateTimeNow;
       ZEN(_watchMock->DateTimeNowWithTimeZoneMock.CalledOnce());
       ZEN(_consoleMock->WriteLineMock.CalledAsFollows(
       {
          expectedCompletedLine,
+         expectedStartTimeLine,
          expectedEndTimeLine,
          expectedNumberOfTestsAndMillisecondsLine
       }));

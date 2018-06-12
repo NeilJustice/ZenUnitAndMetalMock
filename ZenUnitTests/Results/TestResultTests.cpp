@@ -274,10 +274,10 @@ namespace ZenUnit
       //
       ZEN(_testFailureNumbererMock.NextMock.CalledOnce());
       ZEN(_consoleMock.WriteMock.CalledAsFollows(
-         {
-            _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value(),
-            expectedTestPhaseSuffix
-         }));
+      {
+         _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value(),
+         expectedTestPhaseSuffix
+      }));
       ZEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
          CalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber));
       ZEN(_consoleMock.WriteLineColorMock.CalledOnceWith(testFailureNumber, Color::Red));

@@ -159,7 +159,7 @@ namespace ZenUnit
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.commandLine = Random<string>();
       zenUnitArgs.maxtotalseconds = maxtotalseconds;
-      _preamblePrinterMock->PrintOpeningThreeLinesMock.Expect();
+      const string startTime = _preamblePrinterMock->PrintOpeningThreeLinesAndGetStartTimeMock.ReturnRandom();
       if (expectRunTestClassesWithWaitableRunnerThread)
       {
          _voidOneArgMemberFunctionCallerMock->NonConstCallMock.Expect();
@@ -169,7 +169,7 @@ namespace ZenUnit
          _voidZeroArgMemberFunctionCallerMock->NonConstCallMock.Expect();
       }
       _testRunResultMock->PrintTestFailuresAndSkipsMock.Expect();
-      _testRunResultMock->PrintClosingLinesMock.Expect();
+      _testRunResultMock->PrintConclusionMock.Expect();
 
       const size_t TotalNumberOfTestCases = Random<size_t>();
       _testClassRunnerRunnerMock->NumberOfTestCasesMock.Return(TotalNumberOfTestCases);
@@ -181,11 +181,11 @@ namespace ZenUnit
       const int exitCode = _testRunner.PrintPreambleRunTestClassesPrintConclusion(zenUnitArgs);
       //
       ZEN(_nonVoidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
-          &_testRunner, &TestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused,
+         &_testRunner, &TestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused,
          zenUnitArgs.pause, havePausedInitialValue));
       ARE_EQUAL(waitForAnyKeyIfPauseModeReturnValue, _testRunner._havePaused);
       ZEN(_testRunStopwatchMock->StartMock.CalledOnce());
-      ZEN(_preamblePrinterMock->PrintOpeningThreeLinesMock.CalledOnceWith(
+      ZEN(_preamblePrinterMock->PrintOpeningThreeLinesAndGetStartTimeMock.CalledOnceWith(
           zenUnitArgs, _testRunner._testClassRunnerRunner.get()));
       if (expectRunTestClassesWithWaitableRunnerThread)
       {
@@ -201,8 +201,8 @@ namespace ZenUnit
       ZEN(_testRunResultMock->PrintTestFailuresAndSkipsMock.CalledOnce());
       ZEN(_testClassRunnerRunnerMock->NumberOfTestCasesMock.CalledOnce());
       ZEN(_testRunStopwatchMock->StopMock.CalledOnce());
-      ZEN(_testRunResultMock->PrintClosingLinesMock.CalledOnceWith(
-          TotalNumberOfTestCases, expectedTestRunMilliseconds, zenUnitArgs));
+      ZEN(_testRunResultMock->PrintConclusionMock.CalledOnceWith(
+          startTime, TotalNumberOfTestCases, expectedTestRunMilliseconds, zenUnitArgs));
       ZEN(_testRunResultMock->DetermineExitCodeMock.CalledOnceWith(zenUnitArgs));
       ARE_EQUAL(determineExitCodeReturnValueAndExpectedExitCode, exitCode);
    }
