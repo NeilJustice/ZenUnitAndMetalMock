@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitTests/TestRunners/Mock/TestClassRunnerRunnerMock.h"
+#include "ZenUnitTests/Utils/Mock/DebugOrReleaseModeGetterMock.h"
 #include "ZenUnitTests/Utils/Mock/MachineNameGetterMock.h"
 #include "ZenUnitTests/Utils/Time/Mock/WatchMock.h"
 
@@ -8,18 +9,20 @@ namespace ZenUnit
 {
    TESTS(PreamblePrinterTests)
    AFACT(Constructor_NewsConsoleAndWatch)
-   AFACT(PrintOpeningThreeLinesAndGetStartTime_PrintsCommandLineAndTimeZoneAndTestAndTestClassCounts_ReturnsStartTime)
+   AFACT(PrintPreambleAndGetStartTime_PrintsCommandLineAndTimeZoneAndTestAndTestClassCounts_ReturnsStartTime)
    FACTS(MakeThirdLinePrefix_ReturnsNumberOfTestClassesBeingRunAndMachineName)
    FACTS(MakeThirdLineSuffix_ReturnsRandomSeedIfRandomModeOtherwiseEmptyString)
    EVIDENCE
 
    struct PreamblePrinterSelfMocked : public Zen::Mock<PreamblePrinter>
    {
-      const ConsoleMock* consoleMock;
-      const WatchMock* watchMock;
+      const ConsoleMock* consoleMock = nullptr;
+      const DebugOrReleaseGetterMock* debugOrReleaseGetterMock = nullptr;
+      const WatchMock* watchMock = nullptr;
       PreamblePrinterSelfMocked() noexcept
       {
          _console.reset(consoleMock = new ConsoleMock);
+         _debugOrReleaseGetter.reset(debugOrReleaseGetterMock = new DebugOrReleaseGetterMock);
          _watch.reset(watchMock = new WatchMock);
       }
       ZENMOCK_NONVOID1_CONST(string, MakeThirdLinePrefix, size_t)
@@ -34,17 +37,20 @@ namespace ZenUnit
       _preamblePrinter._machineNameGetter.reset(_machineNameGetterMock = new MachineNameGetterMock);
    }
 
-      TEST(Constructor_NewsConsoleAndWatch)
+   TEST(Constructor_NewsConsoleAndWatch)
    {
       PreamblePrinter preamblePrinter;
       POINTER_WAS_NEWED(preamblePrinter._console);
+      POINTER_WAS_NEWED(preamblePrinter._debugOrReleaseGetter);
       POINTER_WAS_NEWED(preamblePrinter._watch);
       POINTER_WAS_NEWED(preamblePrinter._machineNameGetter);
    }
 
-   TEST(PrintOpeningThreeLinesAndGetStartTime_PrintsCommandLineAndTimeZoneAndTestAndTestClassCounts_ReturnsStartTime)
+   TEST(PrintPreambleAndGetStartTime_PrintsCommandLineAndTimeZoneAndTestAndTestClassCounts_ReturnsStartTime)
    {
       _preamblePrinterSelfMocked.consoleMock->WriteColorMock.Expect();
+      const string debugOrRelease = _preamblePrinterSelfMocked.
+         debugOrReleaseGetterMock->GetDebugOrReleaseMock.ReturnRandom();
       _preamblePrinterSelfMocked.consoleMock->WriteLineMock.Expect();
       TestClassRunnerRunnerMock testClassRunnerRunnerMock;
       const size_t numberOfTestClassesToBeRun = testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.ReturnRandom();
@@ -58,17 +64,18 @@ namespace ZenUnit
       zenUnitArgs.randomseed = Random<unsigned short>();
       //
       const string returnedStartTime = _preamblePrinterSelfMocked.
-         PrintOpeningThreeLinesAndGetStartTime(zenUnitArgs, &testClassRunnerRunnerMock);
+         PrintPreambleAndGetStartTime(zenUnitArgs, &testClassRunnerRunnerMock);
       //
       ZEN(_preamblePrinterSelfMocked.watchMock->DateTimeNowWithTimeZoneMock.CalledOnce());
       ZEN(testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.CalledOnce());
       ZEN(_preamblePrinterSelfMocked.consoleMock->WriteColorMock.CalledNTimesWith(3, "[ZenUnit]", Color::Green));
+      ZEN(_preamblePrinterSelfMocked.debugOrReleaseGetterMock->GetDebugOrReleaseMock.CalledOnce());
       ZEN(_preamblePrinterSelfMocked.MakeThirdLinePrefixMock.CalledOnceWith(numberOfTestClassesToBeRun));
       ZEN(_preamblePrinterSelfMocked.MakeThirdLineSuffixMock.CalledOnceWith(zenUnitArgs.random, zenUnitArgs.randomseed));
       const string expectedThirdLineAndLineBreak = thirdLinePrefix + thirdLineSuffix + "\n";
       ZEN(_preamblePrinterSelfMocked.consoleMock->WriteLineMock.CalledAsFollows(
       {
-         " Running " + zenUnitArgs.commandLine,
+         " Running in " + debugOrRelease + " mode: " + zenUnitArgs.commandLine,
          " Running at " + startTime,
          expectedThirdLineAndLineBreak
       }));

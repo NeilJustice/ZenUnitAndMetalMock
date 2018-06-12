@@ -4141,16 +4141,33 @@ Testing Rigor Options:
       }
    };
 
+   class DebugOrReleaseGetter
+   {
+   public:
+      virtual std::string GetDebugOrRelease() const
+      {
+#ifdef _DEBUG
+         return "Debug";
+#else
+         return "Release";
+#endif
+      }
+
+      virtual ~DebugOrReleaseGetter() = default;
+   };
+
    class PreamblePrinter
    {
       friend class PreamblePrinterTests;
    private:
       std::unique_ptr<const Console> _console;
+      std::unique_ptr<const DebugOrReleaseGetter> _debugOrReleaseGetter;
       std::unique_ptr<const Watch> _watch;
       std::unique_ptr<const MachineNameGetter> _machineNameGetter;
    public:
       PreamblePrinter() noexcept
          : _console(std::make_unique<Console>())
+         , _debugOrReleaseGetter(new DebugOrReleaseGetter)
          , _watch(std::make_unique<Watch>())
          , _machineNameGetter(std::make_unique<MachineNameGetter>())
       {
@@ -4158,11 +4175,12 @@ Testing Rigor Options:
 
       virtual ~PreamblePrinter() = default;
 
-      virtual std::string PrintOpeningThreeLinesAndGetStartTime(
+      virtual std::string PrintPreambleAndGetStartTime(
          const ZenUnitArgs& zenUnitArgs, const TestClassRunnerRunner* testClassRunnerRunner) const
       {
          _console->WriteColor("[ZenUnit]", Color::Green);
-         _console->WriteLine(" Running " + zenUnitArgs.commandLine);
+         const std::string debugOrRelease = _debugOrReleaseGetter->GetDebugOrRelease();
+         _console->WriteLine(" Running in " + debugOrRelease + " mode: " + zenUnitArgs.commandLine);
          _console->WriteColor("[ZenUnit]", Color::Green);
          const std::string startTime = _watch->DateTimeNowWithTimeZone();
          _console->WriteLine(" Running at " + startTime);
@@ -4575,7 +4593,7 @@ Testing Rigor Options:
       int PrintPreambleRunTestClassesPrintConclusion(const ZenUnitArgs& zenUnitArgs)
       {
          const std::string startTime = _preamblePrinter->
-            PrintOpeningThreeLinesAndGetStartTime(zenUnitArgs, _testClassRunnerRunner.get());
+            PrintPreambleAndGetStartTime(zenUnitArgs, _testClassRunnerRunner.get());
          _havePaused = _nonVoidTwoArgMemberFunctionCaller->ConstCall(
             this, &TestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused, zenUnitArgs.pause, _havePaused);
          _testRunStopwatch->Start();

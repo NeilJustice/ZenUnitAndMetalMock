@@ -159,7 +159,7 @@ namespace ZenUnit
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.commandLine = Random<string>();
       zenUnitArgs.maxtotalseconds = maxtotalseconds;
-      const string startTime = _preamblePrinterMock->PrintOpeningThreeLinesAndGetStartTimeMock.ReturnRandom();
+      const string startTime = _preamblePrinterMock->PrintPreambleAndGetStartTimeMock.ReturnRandom();
       if (expectRunTestClassesWithWaitableRunnerThread)
       {
          _voidOneArgMemberFunctionCallerMock->NonConstCallMock.Expect();
@@ -185,7 +185,7 @@ namespace ZenUnit
          zenUnitArgs.pause, havePausedInitialValue));
       ARE_EQUAL(waitForAnyKeyIfPauseModeReturnValue, _testRunner._havePaused);
       ZEN(_testRunStopwatchMock->StartMock.CalledOnce());
-      ZEN(_preamblePrinterMock->PrintOpeningThreeLinesAndGetStartTimeMock.CalledOnceWith(
+      ZEN(_preamblePrinterMock->PrintPreambleAndGetStartTimeMock.CalledOnceWith(
           zenUnitArgs, _testRunner._testClassRunnerRunner.get()));
       if (expectRunTestClassesWithWaitableRunnerThread)
       {
