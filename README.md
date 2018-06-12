@@ -370,18 +370,19 @@ namespace ZenUnit
 
 |The Road To ZenUnit 1.0|
 |-----------------------|
-|Upgraded ZenUnit::Random\<T\> documentation|
-|Upgraded ZenUnit::Equalizer\<T\> documentation|
-|ZenUnit::Printer\<T\> documentation|
 |100% code coverage badge|
 |Travis CI clang-tidy|
 |AppVeyor /analyze|
+|Complete ZenUnit::Random\<T\> documentation|
+|Complete ZenUnit::Equalizer\<T\> documentation|
+|Complete ZenUnit::Printer\<T\> documentation|
+|std::string_view support|
 |TUPLES_EQUAL|
 |ARE_WITHIN|
 |ARE_CLOSE|
-|--breakfast|
+|-breakfast|
 
 |The Road To ZenUnit 1.1|
 |-----------------------|
-|--junitxml=\<FilePath\>|
-|--parallel|
+|-junitxml=\<FilePath\>|
+|-parallel|
