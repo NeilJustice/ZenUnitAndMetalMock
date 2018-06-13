@@ -21,7 +21,7 @@ TESTS(FizzBuzzTests)
 // in ZenUnit test names are duplicated between the FACTS section and the EVIDENCE section.
 // Because code is read much more often than it is written,
 // always having test names up top ready to review for continued quality and cohesion
-// instead of scattered throughout test files
+// instead of scattered throughout potentially lengthy test files
 // is where this design yields long term code quality dividends.
 // Test names always up top makes it downright difficult not to notice during code review
 // that a class under test has, for example,
