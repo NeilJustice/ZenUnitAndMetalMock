@@ -17,12 +17,16 @@ std::string FizzBuzz(unsigned endNumber);
 
 // TESTS defines a ZenUnit test class and begins the FACTS section.
 TESTS(FizzBuzzTests)
-// By design, in ZenUnit test names are duplicated between
-// the FACTS section and the EVIDENCE section.
+// By a carefully considered design decision that won't speak to everyone,
+// in ZenUnit test names are duplicated between the FACTS section and the EVIDENCE section.
 // Because code is read much more often than it is written,
-// always having test names ready to review for continued quality and cohesion
-// at the top of test files instead of scattered throughout test files
+// always having test names up top ready to review for continued quality and cohesion
+// instead of scattered throughout test files
 // is where this design yields long term code quality dividends.
+// Test names always up top makes it downright difficult not to notice during code review
+// that a class under test has, for example,
+// grown to have many more responsibilities than a single responsibility,
+// leading to better program design when that class under test is then refactored.
 
 // AFACT declares a non-value-parameterized test.
 AFACT(FizzBuzz_EndNumber0_Throws)
