@@ -1,6 +1,6 @@
 <h1 align="center">ZenUnit</h1>
 
-<h4 align="center">ZenUnit is a single-header C++17 unit testing framework with assertions designed for maximal robustness against code mutations and features an intuitive syntax for specifying value-parameterized and type-parameterized unit tests.</h4>
+<h4 align="center">ZenUnit is a single-header C++17 unit testing framework with an intuitive syntax for specifying value-parameterized and type-parameterized unit tests and features assertions designed for maximal robustness against code mutations.</h4>
 
 |Build Type|Build Status|
 |----------|------------|
