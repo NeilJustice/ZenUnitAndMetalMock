@@ -25,9 +25,9 @@ namespace ZenUnit
    struct MachineNameGetterSelfMocked : public Zen::Mock<MachineNameGetter>
    {
 #if defined __linux__ || defined __APPLE__
-      ZENMOCK_NONVOID0_CONST(string, GetLinuxMachineName);
+      ZENMOCK_NONVOID0_CONST(string, GetLinuxMachineName)
 #elif defined _WIN32
-      ZENMOCK_NONVOID0_CONST(string, GetWindowsMachineName);
+      ZENMOCK_NONVOID0_CONST(string, GetWindowsMachineName)
 #endif
    } _machineNameGetterSelfMocked;
 
