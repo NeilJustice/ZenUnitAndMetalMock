@@ -21,9 +21,9 @@ namespace ZenUnit
 
    Console _console;
    ConsoleColorerMock* _consoleColorerMock = nullptr;
-   const string Message = Random<string>();
+   const string _message = Random<string>();
 #if _WIN32
-   ZENMOCK_NONVOID0_GLOBAL_FREE(int, _getch);
+   ZENMOCK_NONVOID0_FREE(int, _getch);
 #endif
 
    struct ConsoleSelfMocked : public Zen::Mock<Console>
@@ -58,9 +58,9 @@ namespace ZenUnit
    {
       _consoleSelfMocked.WriteColorMock.Expect();
       //
-      _consoleSelfMocked.Write(Message);
+      _consoleSelfMocked.Write(_message);
       //
-      ZEN(_consoleSelfMocked.WriteColorMock.CalledOnceWith(Message, Color::White));
+      ZEN(_consoleSelfMocked.WriteColorMock.CalledOnceWith(_message, Color::White));
    }
 
    TEST2X2(WriteColor_WritesMessageInSpecifiedColor,
@@ -75,7 +75,7 @@ namespace ZenUnit
       _consoleColorerMock->SetColorMock.Return(setColorReturnValue);
       _consoleColorerMock->UnsetColorMock.Expect();
       //
-      _console.WriteColor(Message, color);
+      _console.WriteColor(_message, color);
       //
       ZEN(_consoleColorerMock->SetColorMock.CalledOnceWith(color));
       ZEN(_consoleColorerMock->UnsetColorMock.CalledOnceWith(setColorReturnValue));
@@ -85,9 +85,9 @@ namespace ZenUnit
    {
       _consoleSelfMocked.WriteLineColorMock.Expect();
       //
-      _consoleSelfMocked.WriteLine(Message);
+      _consoleSelfMocked.WriteLine(_message);
       //
-      ZEN(_consoleSelfMocked.WriteLineColorMock.CalledOnceWith(Message, Color::White));
+      ZEN(_consoleSelfMocked.WriteLineColorMock.CalledOnceWith(_message, Color::White));
    }
 
    TEST2X2(WriteLineColor_WritesMessageInSpecifiedColorThenNewLine,
@@ -102,7 +102,7 @@ namespace ZenUnit
       _consoleColorerMock->SetColorMock.Return(setColorReturnValue);
       _consoleColorerMock->UnsetColorMock.Expect();
       //
-      _console.WriteLineColor(Message, color);
+      _console.WriteLineColor(_message, color);
       //
       ZEN(_consoleColorerMock->SetColorMock.CalledOnceWith(color));
       ZEN(_consoleColorerMock->UnsetColorMock.CalledOnceWith(setColorReturnValue));
@@ -113,11 +113,11 @@ namespace ZenUnit
       0,
       1)
    {
-      ZENMOCK_VOID1_GLOBAL_FREE(exit, int);
+      ZENMOCK_VOID1_FREE(exit, int);
       exit_ZenMockObject.Expect();
       _console.call_exit = BIND_1ARG_ZENMOCK_OBJECT(exit_ZenMockObject);
       //
-      _console.WriteLineAndExit(Message, exitCode);
+      _console.WriteLineAndExit(_message, exitCode);
       //
       ZEN(exit_ZenMockObject.CalledOnceWith(exitCode));
    }
@@ -199,7 +199,7 @@ namespace ZenUnit
       1, true,
       2, false)
    {
-      ZENMOCK_NONVOID0_GLOBAL_FREE(int, IsDebuggerPresent);
+      ZENMOCK_NONVOID0_FREE(int, IsDebuggerPresent);
       IsDebuggerPresent_ZenMockObject.Return(isDebuggerPresentReturnValue);
       _console.call_IsDebuggerPresent = BIND_0ARG_ZENMOCK_OBJECT(IsDebuggerPresent_ZenMockObject);
       //
