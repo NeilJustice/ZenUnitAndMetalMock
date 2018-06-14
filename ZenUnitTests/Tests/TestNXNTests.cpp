@@ -41,8 +41,8 @@ namespace ZenUnit
    const string _testClassName = Random<string>();
    const string _testName = Random<string>();
    const string _testCaseArgsText = Random<string>();
-   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
-   ZENMOCK_VOID1_GLOBAL(exit, int)
+   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs);
+   ZENMOCK_VOID1_GLOBAL_FREE(exit, int);
 
    STARTUP
    {
@@ -122,7 +122,7 @@ namespace ZenUnit
       {
          ZENMOCK_VOID3(RunTestCaseIfNotFilteredOut, size_t, const ZenUnitArgs&, const std::vector<std::string>&)
          ZENMOCK_VOID0_CONST(Exit1IfNonExistentTestCaseNumberSpecified)
-         ZENMOCK_NONVOID1_STATIC(ITestCaseNumberGenerator*, ITestCaseNumberGenerator, FactoryNew, bool)
+         ZENMOCK_NONVOID1_STATIC(ITestCaseNumberGenerator*, ITestCaseNumberGenerator, FactoryNew, bool);
 
          Test1X1SelfMocked() noexcept
             : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>(
