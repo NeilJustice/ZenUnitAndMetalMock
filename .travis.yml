@@ -10,6 +10,7 @@ matrix:
       env: CMAKE_BUILD_TYPE=Debug COMPILER=clang++-5.0
       addons:
         apt:
+          update: true
           sources: [ 'ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-5.0' ]
           packages: [ 'ninja-build', 'clang-5.0', 'libstdc++-7-dev' ]
 
@@ -18,6 +19,7 @@ matrix:
       env: CMAKE_BUILD_TYPE=Debug COMPILER=clang++-6.0
       addons:
         apt:
+          update: true
           sources: [ 'ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0' ]
           packages: [ 'ninja-build', 'clang-6.0', 'libstdc++-7-dev' ]
 
@@ -26,6 +28,7 @@ matrix:
       env: CMAKE_BUILD_TYPE=Debug COMPILER=g++-7
       addons:
         apt:
+          update: true
           sources: [ 'ubuntu-toolchain-r-test' ]
           packages: [ 'ninja-build', 'g++-7' ]
 
@@ -34,6 +37,7 @@ matrix:
       env: CMAKE_BUILD_TYPE=Release COMPILER=g++-7
       addons:
         apt:
+          update: true
           sources: [ 'ubuntu-toolchain-r-test' ]
           packages: [ 'ninja-build', 'g++-7' ]
 
@@ -50,10 +54,6 @@ matrix:
       env: CMAKE_BUILD_TYPE=Release COMPILER=clang++
       before_install:
         - brew install ninja llvm
-
-before_install:
-  # Fixes intermittent Travis CI error "E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?"
-  -sudo apt-get update
 
 script:
   - curl https://raw.githubusercontent.com/NeilJustice/ZenMock/master/ZenMock/ZenMock.h -o ZenMock.h
