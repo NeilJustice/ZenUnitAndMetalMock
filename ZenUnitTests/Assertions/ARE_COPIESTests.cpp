@@ -63,30 +63,30 @@ File.cpp(1))";
    {
       const int x = 1;
       int y = 2;
-      THROWS(ARE_COPIES(x, y), Anomaly, R"(
-  Failed: ARE_COPIES(x, y)
-Expected: 1
-  Actual: 2
- Because: ARE_EQUAL(expectedObject, actualObject) failed
-Expected: 1
-  Actual: 2
-File.cpp(1)
-File.cpp(1))");
+      THROWS(ARE_COPIES(x, y), Anomaly, "\n"
+"  Failed: ARE_COPIES(x, y)\n"
+"Expected: 1\n"
+"  Actual: 2\n"
+" Because: ARE_EQUAL(expectedObject, actualObject) failed\n"
+"Expected: 1\n"
+"  Actual: 2\n"
+"File.cpp(1)\n"
+"File.cpp(1)");
    }
 
    TEST(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws_UserTypeTestCase)
    {
       UserType x(1);
       const UserType y(2);
-      THROWS(ARE_COPIES(x, y), Anomaly, R"(
-  Failed: ARE_COPIES(x, y)
-Expected: UserType@1
-  Actual: UserType@2
- Because: ARE_EQUAL(expectedObject, actualObject) failed
-Expected: UserType@1
-  Actual: UserType@2
-File.cpp(1)
-File.cpp(1))");
+      THROWS(ARE_COPIES(x, y), Anomaly, "\n"
+"  Failed: ARE_COPIES(x, y)\n"
+"Expected: UserType@1\n"
+"  Actual: UserType@2\n"
+" Because: ARE_EQUAL(expectedObject, actualObject) failed\n"
+"Expected: UserType@1\n"
+"  Actual: UserType@2\n"
+"File.cpp(1)\n"
+"File.cpp(1)");
    }
 
    TEST(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws_MessagesTestCase)
@@ -94,16 +94,16 @@ File.cpp(1))");
       UserType x(1);
       UserType y(2);
       const string messageA = "A", messageB = "B";
-      THROWS(ARE_COPIES(x, y, messageA, messageB), Anomaly, R"(
-  Failed: ARE_COPIES(x, y, messageA, messageB)
-Expected: UserType@1
-  Actual: UserType@2
- Because: ARE_EQUAL(expectedObject, actualObject) failed
-Expected: UserType@1
-  Actual: UserType@2
- Message: "A", "B"
-File.cpp(1)
-File.cpp(1))");
+      THROWS(ARE_COPIES(x, y, messageA, messageB), Anomaly, "\n"
+"  Failed: ARE_COPIES(x, y, messageA, messageB)\n"
+"Expected: UserType@1\n"
+"  Actual: UserType@2\n"
+" Because: ARE_EQUAL(expectedObject, actualObject) failed\n"
+"Expected: UserType@1\n"
+"  Actual: UserType@2\n"
+" Message: \"A\", \"B\"\n"
+"File.cpp(1)\n"
+"File.cpp(1)");
    }
 
    TEST(ObjectsHaveDifferentAddresses_ObjectsAreEqual_DoesNotThrow)
