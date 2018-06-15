@@ -51,3 +51,4 @@ using namespace ZenUnit;
 #endif
 
 #include "ZenUnitTests/Random/RandomZenUnitArgs.h"
+#include "ZenUnitTests/Testing/TestUtil.h"
