@@ -2,26 +2,28 @@
 
 namespace TestUtil
 {
-   template<typename... StringTypes>
-   static std::string NewlineConcat(StringTypes... strings)
+   template<typename...>
+   static void OssNewlineConcat(std::ostringstream&)
    {
-      assert_true(sizeof...(StringTypes) > 0);
-      std::ostringstream oss;
-      DoNewlineConcat(oss, strings...);
-      std::string newlineConcatenatedValues = oss.str();
-      newlineConcatenatedValues.erase(newlineConcatenatedValues.end() - 1);
-      return newlineConcatenatedValues;
    }
 
    template<typename FirstStringType, typename... SubsequentStringTypes>
-   static void DoNewlineConcat(std::ostringstream& oss, FirstStringType firstString, SubsequentStringTypes... subsequentStrings)
+   static void OssNewlineConcat(std::ostringstream& oss, FirstStringType&& firstString, SubsequentStringTypes&&... subsequentStrings)
    {
       oss << firstString << '\n';
-      DoNewlineConcat(oss, subsequentStrings...);
+      OssNewlineConcat(oss, std::forward<SubsequentStringTypes>(subsequentStrings)...);
    }
 
-   template<typename...>
-   static void DoNewlineConcat(std::ostringstream&)
+   template<typename... StringTypes>
+   static std::string NewlineConcat(StringTypes&&... strings)
    {
+      std::ostringstream oss;
+      OssNewlineConcat(oss, std::forward<StringTypes>(strings)...);
+      std::string newlineConcatenatedValues = oss.str();
+      if (!newlineConcatenatedValues.empty())
+      {
+         newlineConcatenatedValues.erase(newlineConcatenatedValues.end() - 1);
+      }
+      return newlineConcatenatedValues;
    }
 }
