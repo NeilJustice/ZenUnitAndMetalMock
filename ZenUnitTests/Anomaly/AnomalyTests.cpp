@@ -106,23 +106,23 @@ namespace ZenUnit
    TEST5X5(FullConstructor_FirstSecondThirdTest_MessagesPresentNotPresentTest,
       bool arg2TextPresent, bool arg3TextPresent, bool messagesTextAndMessagesPresent,
       const string& expectedAssertExpression, const string& expectedWhy,
-      false, false, false, "ASSERTION_NAME(Arg1Text)", R"(
-Expected: Expected
-  Actual: Actual
-FilePath(1))",
-      true, false, false, "ASSERTION_NAME(Arg1Text, Arg2Text)", R"(
-Expected: Expected
-  Actual: Actual
-FilePath(1))",
-      true, true, false, "ASSERTION_NAME(Arg1Text, Arg2Text, Arg3Text)", R"(
-Expected: Expected
-  Actual: Actual
-FilePath(1))",
-      true, true, true, "ASSERTION_NAME(Arg1Text, Arg2Text, Arg3Text, userType0, userType1)", R"(
-Expected: Expected
-  Actual: Actual
- Message: UserType@0, UserType@1
-FilePath(1))")
+      false, false, false, "ASSERTION_NAME(Arg1Text)", "\n"
+"Expected: Expected\n"
+"  Actual: Actual\n"
+"FilePath(1)",
+      true, false, false, "ASSERTION_NAME(Arg1Text, Arg2Text)", "\n"
+"Expected: Expected\n"
+"  Actual: Actual\n"
+"FilePath(1)",
+      true, true, false, "ASSERTION_NAME(Arg1Text, Arg2Text, Arg3Text)", "\n"
+"Expected: Expected\n"
+"  Actual: Actual\n"
+"FilePath(1)",
+      true, true, true, "ASSERTION_NAME(Arg1Text, Arg2Text, Arg3Text, userType0, userType1)", "\n"
+"Expected: Expected\n"
+"  Actual: Actual\n"
+" Message: UserType@0, UserType@1\n"
+"FilePath(1)")
    {
       const char* Arg2Text = "Arg2Text";
       const char* Arg3Text = "Arg3Text";
