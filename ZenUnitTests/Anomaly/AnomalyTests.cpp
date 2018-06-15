@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
+#include "ZenUnitTests/Testing/Newline.h"
 #include "ZenUnitTests/Testing/UserType.h"
 
 namespace ZenUnit
@@ -47,9 +48,10 @@ namespace ZenUnit
       const Anomaly anomaly(StartOfFailedLine, WhyBody, FileLineValue, "", "");
       //
       Anomaly expectedAnomaly;
-      expectedAnomaly.why = String::Concat('\n', "StartOfFailedLine)\n",
+      expectedAnomaly.why = String::Concat('\n',
+"StartOfFailedLine)\n",
 "WhyBody\n",
-   FileLineValue);
+FileLineValue);
       expectedAnomaly.fileLine = FileLineValue;
       ARE_EQUAL(expectedAnomaly, anomaly);
    }
@@ -59,8 +61,9 @@ namespace ZenUnit
       const Anomaly anomaly(StartOfFailedLine, "", FileLineValue, "", "");
       //
       Anomaly expectedAnomaly;
-      expectedAnomaly.why = String::Concat('\n', "StartOfFailedLine)\n",
-   FileLineValue);
+      expectedAnomaly.why = String::Concat('\n',
+"StartOfFailedLine)\n",
+FileLineValue);
       expectedAnomaly.fileLine = FileLineValue;
       ARE_EQUAL(expectedAnomaly, anomaly);
    }
@@ -73,10 +76,11 @@ namespace ZenUnit
       //
       Anomaly expectedAnomaly;
       expectedAnomaly.message = R"("A")";
-      expectedAnomaly.why = String::Concat('\n', "StartOfFailedLine, MessageA)\n",
+      expectedAnomaly.why = String::Concat('\n',
+"StartOfFailedLine, MessageA)\n",
 "WhyBody\n",
 "Message: " + expectedAnomaly.message + "\n",
-   FileLineValue);
+FileLineValue);
       expectedAnomaly.fileLine = FileLineValue;
       ARE_EQUAL(expectedAnomaly, anomaly);
    }
@@ -95,10 +99,11 @@ namespace ZenUnit
       //
       Anomaly expectedAnomaly;
       expectedAnomaly.message = R"("A", "B")";
-      expectedAnomaly.why = String::Concat('\n', "StartOfFailedLine, MessageA, MessageB)\n",
+      expectedAnomaly.why = String::Concat('\n',
+"StartOfFailedLine, MessageA, MessageB)\n",
 "WhyBody\n",
-   string(messagePrefixSpaces) + "Message: " + expectedAnomaly.message + "\n",
-   FileLineValue);
+string(messagePrefixSpaces) + "Message: " + expectedAnomaly.message + "\n",
+FileLineValue);
       expectedAnomaly.fileLine = FileLineValue;
       ARE_EQUAL(expectedAnomaly, anomaly);
    }
@@ -175,16 +180,16 @@ namespace ZenUnit
 
    TEST2X2(FullConstructor_BecauseAnomalyNotPresent_SetsFields,
       ExpectedActualFormat expectedActualFormat, const string& expectedWhy,
-      ExpectedActualFormat::Fields, R"(
-  Failed: ASSERTION_NAME(Arg1Text)
-Expected: Expected
-  Actual: Actual
-FilePath(1))",
-      ExpectedActualFormat::WholeLines, R"(
-  Failed: ASSERTION_NAME(Arg1Text)
-Expected
-Actual
-FilePath(1))")
+      ExpectedActualFormat::Fields, "\n"
+"  Failed: ASSERTION_NAME(Arg1Text)\n"
+"Expected: Expected\n"
+"  Actual: Actual\n"
+"FilePath(1)",
+      ExpectedActualFormat::WholeLines, "\n"
+"  Failed: ASSERTION_NAME(Arg1Text)\n"
+"Expected\n"
+"Actual\n"
+"FilePath(1)")
    {
       const Anomaly anomaly(
          AssertionName,
@@ -213,47 +218,47 @@ FilePath(1))")
       ExpectedActualFormat expectedActualFormat,
       const string& expectedWhy,
 
-      "", ExpectedActualFormat::Fields, R"(
-  Failed: ASSERTION_NAME(Arg1Text)
-Expected: Expected
-  Actual: Actual
- Because: BecauseAssertExpression failed
-Expected: BecauseExpected
-  Actual: BecauseActual
-BecauseFilePath(123)
-FilePath(1))",
+      "", ExpectedActualFormat::Fields, Newline::Concat("",
+"  Failed: ASSERTION_NAME(Arg1Text)",
+"Expected: Expected",
+"  Actual: Actual",
+" Because: BecauseAssertExpression failed",
+"Expected: BecauseExpected",
+"  Actual: BecauseActual",
+"BecauseFilePath(123)"
+"FilePath(1)"),
 
-      "", ExpectedActualFormat::WholeLines, R"(
-  Failed: ASSERTION_NAME(Arg1Text)
-Expected: Expected
-  Actual: Actual
- Because: BecauseAssertExpression failed
-Expected: BecauseExpected
-  Actual: BecauseActual
-BecauseFilePath(123)
-FilePath(1))",
+      "", ExpectedActualFormat::WholeLines, Newline::Concat("",
+"  Failed: ASSERTION_NAME(Arg1Text)",
+"Expected: Expected",
+"  Actual: Actual",
+" Because: BecauseAssertExpression failed",
+"Expected: BecauseExpected",
+"  Actual: BecauseActual",
+"BecauseFilePath(123)",
+"FilePath(1)"),
 
-      "BecauseMessage", ExpectedActualFormat::Fields, R"(
-  Failed: ASSERTION_NAME(Arg1Text)
-Expected: Expected
-  Actual: Actual
- Because: BecauseAssertExpression failed
-Expected: BecauseExpected
-  Actual: BecauseActual
- Message: BecauseMessage
-BecauseFilePath(123)
-FilePath(1))",
+      "BecauseMessage", ExpectedActualFormat::Fields, Newline::Concat("",
+"  Failed: ASSERTION_NAME(Arg1Text)",
+"Expected: Expected",
+"  Actual: Actual",
+" Because: BecauseAssertExpression failed",
+"Expected: BecauseExpected",
+"  Actual: BecauseActual",
+" Message: BecauseMessage",
+"BecauseFilePath(123)",
+"FilePath(1)"),
 
-      "BecauseMessage", ExpectedActualFormat::WholeLines, R"(
-  Failed: ASSERTION_NAME(Arg1Text)
-Expected: Expected
-  Actual: Actual
- Because: BecauseAssertExpression failed
-Expected: BecauseExpected
-  Actual: BecauseActual
- Message: BecauseMessage
-BecauseFilePath(123)
-FilePath(1))")
+      "BecauseMessage", ExpectedActualFormat::WholeLines, Newline::Concat("",
+"  Failed: ASSERTION_NAME(Arg1Text)",
+"Expected: Expected",
+"  Actual: Actual",
+" Because: BecauseAssertExpression failed",
+"Expected: BecauseExpected",
+"  Actual: BecauseActual",
+" Message: BecauseMessage",
+"BecauseFilePath(123)",
+"FilePath(1)")
    {
       Anomaly becauseAnomaly;
       becauseAnomaly.assertExpression = "BecauseAssertExpression";
