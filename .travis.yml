@@ -1,7 +1,7 @@
 language: cpp
 dist: trusty
 sudo: false
-#cache: ccache
+cache: ccache
 
 matrix:
   include:
@@ -43,13 +43,17 @@ matrix:
       env: CMAKE_BUILD_TYPE=Debug COMPILER=clang++
       before_install:
         - brew install ninja llvm
-        
+
     - os: osx
       osx_image: xcode9.3
       compiler: clang
       env: CMAKE_BUILD_TYPE=Release COMPILER=clang++
       before_install:
         - brew install ninja llvm
+
+before_install:
+  # Fixes intermittent Travis CI error "E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?"
+  -sudo apt-get update
 
 script:
   - curl https://raw.githubusercontent.com/NeilJustice/ZenMock/master/ZenMock/ZenMock.h -o ZenMock.h
@@ -58,6 +62,6 @@ script:
   - ninja -v -j 3
   - ./ZenUnitTests/ZenUnitTests
   - ./ZenUnitExamples/ZenUnitExamples
-        
+
 notifications:
   email: false
