@@ -58,29 +58,29 @@ namespace ZenUnit
    TEST(OneTypeEqualizerDefined_CallsIt)
    {
       const EqualizerOneTypeTestStruct expected{}, actual{};
-      THROWS(ARE_EQUAL(expected, actual), Anomaly, R"(
-  Failed: ARE_EQUAL(expected, actual)
-Expected: <EqualizerOneTypeTestStruct>
-  Actual: <EqualizerOneTypeTestStruct>
- Because: ARE_EQUAL(10, 20) failed
-Expected: 10
-  Actual: 20
-File.cpp(1)
-File.cpp(1))");
+      THROWS(ARE_EQUAL(expected, actual), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: ARE_EQUAL(expected, actual)",
+"Expected: <EqualizerOneTypeTestStruct>",
+"  Actual: <EqualizerOneTypeTestStruct>",
+" Because: ARE_EQUAL(10, 20) failed",
+"Expected: 10",
+"  Actual: 20",
+"File.cpp(1)",
+"File.cpp(1)"));
    }
 
    TEST(TwoTypeEqualizerDefined_CallsIt)
    {
       const EqualizerTwoTypeTestStruct expected{};
-      THROWS(ARE_EQUAL(expected, 1), Anomaly, R"(
-  Failed: ARE_EQUAL(expected, 1)
-Expected: <EqualizerTwoTypeTestStruct>
-  Actual: 1
- Because: ARE_EQUAL(30, 40) failed
-Expected: 30
-  Actual: 40
-File.cpp(1)
-File.cpp(1))");
+      THROWS(ARE_EQUAL(expected, 1), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: ARE_EQUAL(expected, 1)",
+"Expected: <EqualizerTwoTypeTestStruct>",
+"  Actual: 1",
+" Because: ARE_EQUAL(30, 40) failed",
+"Expected: 30",
+"  Actual: 40",
+"File.cpp(1)",
+"File.cpp(1)"));
    }
 
    TEST(BothOneAndTwoTypeEqualizersDefined_CallsTheOneTypeEqualizer)
