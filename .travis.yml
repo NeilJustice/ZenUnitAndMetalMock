@@ -64,4 +64,4 @@ script:
   - ./ZenUnitExamples/ZenUnitExamples
 
 notifications:
-  email: false
+  email: true
