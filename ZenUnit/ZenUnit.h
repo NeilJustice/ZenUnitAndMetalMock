@@ -991,11 +991,6 @@ namespace ZenUnit
          decltype(SFINAE(std::declval<T>()))>::value;
    };
 
-#if defined __linux__ || defined __APPLE__
-   template<typename T>
-   const bool has_to_string<T>::value;
-#endif
-
    template<typename T>
    class has_ostream_left_shift
    {
@@ -1007,11 +1002,6 @@ namespace ZenUnit
       static constexpr bool value = std::is_same<std::ostream&,
          decltype(SFINAE(std::declval<std::ostream&>(), std::declval<T>()))>::value;
    };
-
-#if defined __linux__ || defined __APPLE__
-   template<typename T>
-   const bool has_ostream_left_shift<T>::value;
-#endif
 
    template<typename T>
    struct is_quoted_when_printed : std::integral_constant<bool,
@@ -1036,11 +1026,6 @@ namespace ZenUnit
       static constexpr bool value = std::is_same<void,
          decltype(SFINAE<T>(std::declval<std::ostream&>(), std::declval<T>()))>::value;
    };
-
-#if defined __linux__ || defined __APPLE__
-   template<typename T>
-   const bool has_ZenUnitPrinter<T>::value;
-#endif
 
    class Type
    {

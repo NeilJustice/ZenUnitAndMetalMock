@@ -21,90 +21,90 @@ namespace ZenUnit
    {
       const vector<T> expectedVector { 1 };
       const vector<T> actualVector;
-      THROWS(VECTORS_EQUAL(expectedVector, actualVector), Anomaly, R"(
-  Failed: VECTORS_EQUAL(expectedVector, actualVector)
-Expected: std::vector<)" + TypeName + R"(>:
-{
-   1
-}
-  Actual: std::vector<)" + TypeName + R"(>:
-{
-   (empty vector)
-}
- Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
-Expected: 1
-  Actual: 0
-File.cpp(1)
-File.cpp(1))");
+      THROWS(VECTORS_EQUAL(expectedVector, actualVector), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: VECTORS_EQUAL(expectedVector, actualVector)",
+"Expected: std::vector<" + TypeName + ">:",
+"{",
+"   1",
+"}",
+"  Actual: std::vector<" + TypeName + ">:",
+"{",
+"   (empty vector)",
+"}",
+" Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed",
+"Expected: 1",
+"  Actual: 0",
+"File.cpp(1)",
+"File.cpp(1)"));
    }
 
    TEST(VectorSizesNotEqual_Throws_MessagesTestCase)
    {
       const vector<T> expectedVector { 1 };
       const vector<T> actualVector;
-      THROWS(VECTORS_EQUAL(expectedVector, actualVector, MessageA, MessageB), Anomaly, R"(
-  Failed: VECTORS_EQUAL(expectedVector, actualVector, MessageA, MessageB)
-Expected: std::vector<)" + TypeName + R"(>:
-{
-   1
-}
-  Actual: std::vector<)" + TypeName + R"(>:
-{
-   (empty vector)
-}
- Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
-Expected: 1
-  Actual: 0
- Message: "A", "B"
-File.cpp(1)
-File.cpp(1))");
+      THROWS(VECTORS_EQUAL(expectedVector, actualVector, MessageA, MessageB), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: VECTORS_EQUAL(expectedVector, actualVector, MessageA, MessageB)",
+"Expected: std::vector<" + TypeName + ">:",
+"{",
+"   1",
+"}",
+"  Actual: std::vector<" + TypeName + ">:",
+"{",
+"   (empty vector)",
+"}",
+" Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed",
+"Expected: 1",
+"  Actual: 0",
+" Message: \"A\", \"B\"",
+"File.cpp(1)",
+"File.cpp(1)"));
    }
 
    TEST(VectorSizesEqual_ElementsNotEqualAtIndex0_Throws_MessagesTestCase)
    {
       const vector<T> v1 { 1 };
       const vector<T> v2 { 2 };
-      THROWS(VECTORS_EQUAL(v1, v2, MessageA, MessageB), Anomaly, R"(
-  Failed: VECTORS_EQUAL(v1, v2, MessageA, MessageB)
-Expected: std::vector<)" + TypeName + R"(>:
-{
-   1
-}
-  Actual: std::vector<)" + TypeName + R"(>:
-{
-   2
-}
- Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed
-Expected: )" + ToStringer::ToString(v1[0]) + R"(
-  Actual: )" + ToStringer::ToString(v2[0]) + R"(
- Message: "i=0"
- Message: "A", "B"
-File.cpp(1)
-File.cpp(1))");
+      THROWS(VECTORS_EQUAL(v1, v2, MessageA, MessageB), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: VECTORS_EQUAL(v1, v2, MessageA, MessageB)",
+"Expected: std::vector<" + TypeName + ">:",
+"{",
+"   1",
+"}",
+"  Actual: std::vector<" + TypeName + ">:",
+"{",
+"   2",
+"}",
+" Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed",
+"Expected: " + ToStringer::ToString(v1[0]),
+"  Actual: " + ToStringer::ToString(v2[0]),
+" Message: \"i=0\"",
+" Message: \"A\", \"B\"",
+"File.cpp(1)",
+"File.cpp(1)"));
    }
 
    TEST(VectorSizesEqual_ElementsNotEqualAtIndex1_Throws)
    {
       const vector<T> v1 { 0, 1 };
       const vector<T> v2 { 0, 2 };
-      THROWS(VECTORS_EQUAL(v1, v2), Anomaly, R"(
-  Failed: VECTORS_EQUAL(v1, v2)
-Expected: std::vector<)" + TypeName + R"(>:
-{
-   0,
-   1
-}
-  Actual: std::vector<)" + TypeName + R"(>:
-{
-   0,
-   2
-}
- Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed
-Expected: )" + ToStringer::ToString(v1[1]) + R"(
-  Actual: )" + ToStringer::ToString(v2[1]) + R"(
- Message: "i=1"
-File.cpp(1)
-File.cpp(1))");
+      THROWS(VECTORS_EQUAL(v1, v2), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: VECTORS_EQUAL(v1, v2)",
+"Expected: std::vector<" + TypeName + ">:",
+"{",
+"   0,",
+"   1",
+"}",
+"  Actual: std::vector<" + TypeName + ">:",
+"{",
+"   0,",
+"   2",
+"}",
+" Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed",
+"Expected: " + ToStringer::ToString(v1[1]),
+"  Actual: " + ToStringer::ToString(v2[1]),
+" Message: \"i=1\"",
+"File.cpp(1)",
+"File.cpp(1)"));
    }
 
    TEST(TwoEmptyVectors_DoesNotThrow)

@@ -58,11 +58,11 @@ namespace ZenUnit
       -1,
       1)
    {
-      THROWS(IS_ZERO(value), Anomaly, R"(
-  Failed: IS_ZERO(value)
-Expected: 0
-  Actual: )" + to_string(value) + R"(
-File.cpp(1))");
+      THROWS(IS_ZERO(value), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: IS_ZERO(value)",
+"Expected: 0",
+"  Actual: " + to_string(value),
+"File.cpp(1)"));
    }
 
    TEST1X1(DoubleNotZero_Throws,
@@ -70,11 +70,11 @@ File.cpp(1))");
       -1.0,
       1.0)
    {
-      THROWS(IS_ZERO(value), Anomaly, R"(
-  Failed: IS_ZERO(value)
-Expected: 0.000000
-  Actual: )" + to_string(value) + R"(
-File.cpp(1))");
+      THROWS(IS_ZERO(value), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: IS_ZERO(value)",
+"Expected: 0.000000",
+"  Actual: " + to_string(value),
+"File.cpp(1)"));
    }
 
    TEST(UserTypeZero_DoesNotThrow)
@@ -87,12 +87,12 @@ File.cpp(1))");
    {
       const UserType userType1(1);
       const string messageA = "A", messageB = "B";
-      THROWS(IS_ZERO(userType1, messageA, messageB), Anomaly, R"(
-  Failed: IS_ZERO(userType1, messageA, messageB)
-Expected: UserType@0
-  Actual: UserType@1
- Message: "A", "B"
-File.cpp(1))");
+      THROWS(IS_ZERO(userType1, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: IS_ZERO(userType1, messageA, messageB)",
+"Expected: UserType@0",
+"  Actual: UserType@1",
+" Message: \"A\", \"B\"",
+"File.cpp(1)"));
    }
 
    TEST(IntializerConstructable_IsZero_DoesNotThrow)
@@ -104,11 +104,11 @@ File.cpp(1))");
    TEST(IntializerConstructable_IsNotZero_Throws)
    {
       const IntializerConstructable i { 1 };
-      THROWS(IS_ZERO(i), Anomaly, R"(
-  Failed: IS_ZERO(i)
-Expected: InitializerConstructable@0
-  Actual: InitializerConstructable@1
-File.cpp(1))");
+      THROWS(IS_ZERO(i), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: IS_ZERO(i)",
+"Expected: InitializerConstructable@0",
+"  Actual: InitializerConstructable@1",
+"File.cpp(1)"));
    }
 
    RUN_TESTS(IS_ZEROTests)

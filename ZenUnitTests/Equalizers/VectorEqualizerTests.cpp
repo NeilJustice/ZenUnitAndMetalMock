@@ -17,21 +17,21 @@ namespace ZenUnit
       const vector<int> actualIntVector;
       Equalizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector);
       expectedIntVector.push_back(1);
-      THROWS(Equalizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector), Anomaly, R"(
-  Failed: VECTORS_EQUAL(expectedVector, actualVector)
-Expected: std::vector<int>:
-{
-   1
-}
-  Actual: std::vector<int>:
-{
-   (empty vector)
-}
- Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
-Expected: 1
-  Actual: 0
-File.cpp(1)
-File.cpp(1))");
+      THROWS(Equalizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: VECTORS_EQUAL(expectedVector, actualVector)",
+"Expected: std::vector<int>:",
+"{",
+"   1",
+"}",
+"  Actual: std::vector<int>:",
+"{",
+"   (empty vector)",
+"}",
+" Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed",
+"Expected: 1",
+"  Actual: 0",
+"File.cpp(1)",
+"File.cpp(1)"));
    }
 
 #if _WIN32
@@ -42,21 +42,21 @@ File.cpp(1))");
       Equalizer<vector<string>>::AssertEqual(expectedStringVector, actualStringVector);
       expectedStringVector.emplace_back();
       THROWS(Equalizer<vector<string>>::AssertEqual(
-         expectedStringVector Comma actualStringVector), Anomaly, R"(
-  Failed: VECTORS_EQUAL(expectedVector, actualVector)
-Expected: std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >>:
-{
-   ""
-}
-  Actual: std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >>:
-{
-   (empty vector)
-}
- Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
-Expected: 1
-  Actual: 0
-File.cpp(1)
-File.cpp(1))");
+         expectedStringVector Comma actualStringVector), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: VECTORS_EQUAL(expectedVector, actualVector)",
+"Expected: std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >>:",
+"{",
+"   \"\"",
+"}",
+"  Actual: std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >>:",
+"{",
+"   (empty vector)",
+"}",
+" Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed",
+"Expected: 1",
+"  Actual: 0",
+"File.cpp(1)",
+"File.cpp(1)"));
    }
 #endif
 
@@ -67,21 +67,21 @@ File.cpp(1))");
       Equalizer<vector<UserType>>::AssertEqual(expectedUserTypeVector, actualUserTypeVector);
       expectedUserTypeVector.emplace_back();
       THROWS(Equalizer<vector<UserType>>::AssertEqual(
-         expectedUserTypeVector Comma actualUserTypeVector), Anomaly, R"(
-  Failed: VECTORS_EQUAL(expectedVector, actualVector)
-Expected: std::vector<UserType>:
-{
-   UserType@0
-}
-  Actual: std::vector<UserType>:
-{
-   (empty vector)
-}
- Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
-Expected: 1
-  Actual: 0
-File.cpp(1)
-File.cpp(1))");
+         expectedUserTypeVector Comma actualUserTypeVector), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: VECTORS_EQUAL(expectedVector, actualVector)",
+"Expected: std::vector<UserType>:",
+"{",
+"   UserType@0",
+"}",
+"  Actual: std::vector<UserType>:",
+"{",
+"   (empty vector)",
+"}",
+" Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed",
+"Expected: 1",
+"  Actual: 0",
+"File.cpp(1)",
+"File.cpp(1)"));
    }
 
    RUN_TESTS(VectorEqualizerTests)

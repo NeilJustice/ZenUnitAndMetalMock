@@ -24,33 +24,33 @@ namespace ZenUnit
    TEST(NullRawPointer_Throws)
    {
       const char* nullRawPointer = nullptr;
-      THROWS(ARRAY_WAS_NEWED(nullRawPointer), Anomaly, R"(
-  Failed: ARRAY_WAS_NEWED(nullRawPointer)
-Expected: not a nullptr
-  Actual: nullptr
-File.cpp(1))");
+      THROWS(ARRAY_WAS_NEWED(nullRawPointer), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: ARRAY_WAS_NEWED(nullRawPointer)",
+"Expected: not a nullptr",
+"  Actual: nullptr",
+"File.cpp(1)"));
    }
 
    TEST(NullRawPointer_Throws_MessagesTestCase)
    {
       const char* nullRawPointer = nullptr;
       const string MessageA = "A", MessageB = "B";
-      THROWS(ARRAY_WAS_NEWED(nullRawPointer, MessageA, MessageB), Anomaly, R"(
-  Failed: ARRAY_WAS_NEWED(nullRawPointer, MessageA, MessageB)
-Expected: not a nullptr
-  Actual: nullptr
- Message: "A", "B"
-File.cpp(1))");
+      THROWS(ARRAY_WAS_NEWED(nullRawPointer, MessageA, MessageB), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: ARRAY_WAS_NEWED(nullRawPointer, MessageA, MessageB)",
+"Expected: not a nullptr",
+"  Actual: nullptr",
+" Message: \"A\", \"B\"",
+"File.cpp(1)"));
    }
 
    TEST(EmptyUniqueArrayPtr_Throws)
    {
       unique_ptr<const int[]> emptyUniqueArrayPtr;
-      THROWS(ARRAY_WAS_NEWED(emptyUniqueArrayPtr), Anomaly, R"(
-  Failed: ARRAY_WAS_NEWED(emptyUniqueArrayPtr)
-Expected: not a nullptr
-  Actual: nullptr
-File.cpp(1))");
+      THROWS(ARRAY_WAS_NEWED(emptyUniqueArrayPtr), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: ARRAY_WAS_NEWED(emptyUniqueArrayPtr)",
+"Expected: not a nullptr",
+"  Actual: nullptr",
+"File.cpp(1)"));
    }
 
    TEST(NonNullRawPointer_DestructsEachElement_NotCallableTwiceWithoutUndefinedBehavior)
@@ -75,19 +75,19 @@ File.cpp(1))");
       //
       ARE_EQUAL(5, Deletable::s_destructorCallCount);
 
-      THROWS(ARRAY_WAS_NEWED(nonNullUniqueArrayPtr), Anomaly, R"(
-  Failed: ARRAY_WAS_NEWED(nonNullUniqueArrayPtr)
-Expected: not a nullptr
-  Actual: nullptr
-File.cpp(1))");
+      THROWS(ARRAY_WAS_NEWED(nonNullUniqueArrayPtr), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: ARRAY_WAS_NEWED(nonNullUniqueArrayPtr)",
+"Expected: not a nullptr",
+"  Actual: nullptr",
+"File.cpp(1)"));
 
       unique_ptr<const int[]> ints(new int[1]);
       ARRAY_WAS_NEWED(ints);
-      THROWS(ARRAY_WAS_NEWED(ints), Anomaly, R"(
-  Failed: ARRAY_WAS_NEWED(ints)
-Expected: not a nullptr
-  Actual: nullptr
-File.cpp(1))");
+      THROWS(ARRAY_WAS_NEWED(ints), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: ARRAY_WAS_NEWED(ints)",
+"Expected: not a nullptr",
+"  Actual: nullptr",
+"File.cpp(1)"));
    }
 
    RUN_TESTS(ARRAY_WAS_NEWEDTests)

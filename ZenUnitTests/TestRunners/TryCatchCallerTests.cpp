@@ -237,9 +237,9 @@ namespace ZenUnit
          "\n=========\nException\n=========", Color::Red));
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(arbitraryTestPhase));
       ZEN(_consoleMock->WriteMock.CalledOnceWith(_testPhaseSuffix));
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith(R"(
-  Type: std::runtime_error
-what(): "runtime_error_what")"));
+      ZEN(_consoleMock->WriteLineMock.CalledOnceWith(TestUtil::NewlineConcat("",
+"  Type: std::runtime_error",
+"what(): \"runtime_error_what\"")));
       ARE_EQUAL(expectedCallResult, callResult);
    }
 

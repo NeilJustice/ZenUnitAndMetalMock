@@ -59,8 +59,8 @@ namespace ZenUnit
       "", vector<string>{},
       ",", vector<string>{ "" },
       "1, 2, 3", vector<string>{"1", "2", "3"},
-      R"(',', ",a,b,",
-   "1,',',3" , 4)", vector<string>{"','", "\",a,b,\"", "\"1,',',3\"", "4"})
+      "',', \",a,b,\",\n"
+"   \"1,',',3\" , 4", vector<string>{"','", "\",a,b,\"", "\"1,',',3\"", "4"})
    {
       VECTORS_EQUAL(expectedReturnValue, String::CommaSplitExceptQuotedCommas(text));
    }

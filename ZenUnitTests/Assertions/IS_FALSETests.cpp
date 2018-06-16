@@ -1,3 +1,4 @@
+
 #include "pch.h"
 #include "ZenUnitTests/Testing/UserType.h"
 
@@ -22,23 +23,23 @@ namespace ZenUnit
 
    TEST(BoolIsTrue_Throws)
    {
-      THROWS(IS_FALSE(true), Anomaly, R"(
-  Failed: IS_FALSE(true)
-Expected: false
-  Actual: true
-File.cpp(1))");
+      THROWS(IS_FALSE(true), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: IS_FALSE(true)",
+"Expected: false",
+"  Actual: true",
+"File.cpp(1)"));
    }
 
    TEST(BoolVariableIsTrue_Throws_MessagesTestCase)
    {
       const bool trueBool = true;
       const string messageA = "A", messageB = "B";
-      THROWS(IS_FALSE(trueBool, messageA, messageB), Anomaly, R"(
-  Failed: IS_FALSE(trueBool, messageA, messageB)
-Expected: false
-  Actual: true
- Message: "A", "B"
-File.cpp(1))");
+      THROWS(IS_FALSE(trueBool, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: IS_FALSE(trueBool, messageA, messageB)",
+"Expected: false",
+"  Actual: true",
+" Message: \"A\", \"B\"",
+"File.cpp(1)"));
    }
 
    TEST(StdFunctionDoesNotPointToAFunction_DoesNotThrow)
@@ -50,11 +51,11 @@ File.cpp(1))");
    TEST(StdFunctionPointsToAFunction_Throws)
    {
       const function<void(int)> nonemptyStdFunction = exit;
-      THROWS(IS_FALSE(nonemptyStdFunction), Anomaly, R"(
-  Failed: IS_FALSE(nonemptyStdFunction)
-Expected: false
-  Actual: true
-File.cpp(1))");
+      THROWS(IS_FALSE(nonemptyStdFunction), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: IS_FALSE(nonemptyStdFunction)",
+"Expected: false",
+"  Actual: true",
+"File.cpp(1)"));
    }
 
    TEST(UserTypeConvertsToFalse_DoesNotThrow)
@@ -66,11 +67,11 @@ File.cpp(1))");
    TEST(UserTypeConvertsToTrue_Throws)
    {
       const UserType trueUserType(1);
-      THROWS(IS_FALSE(trueUserType), Anomaly, R"(
-  Failed: IS_FALSE(trueUserType)
-Expected: false
-  Actual: true
-File.cpp(1))");
+      THROWS(IS_FALSE(trueUserType), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: IS_FALSE(trueUserType)",
+"Expected: false",
+"  Actual: true",
+"File.cpp(1)"));
    }
 
    RUN_TESTS(IS_FALSETests)

@@ -18,15 +18,15 @@ namespace ZenUnit
    {
       const pair<int, int> expectedPair{1, 0};
       const pair<int, int> actualPair{0, 0};
-      THROWS(PAIRS_EQUAL(expectedPair, actualPair), Anomaly, R"(
-  Failed: PAIRS_EQUAL(expectedPair, actualPair)
-Expected: (1, 0)
-  Actual: (0, 0)
- Because: ARE_EQUAL(expectedPair.first, actualPair.first) failed
-Expected: 1
-  Actual: 0
-File.cpp(1)
-File.cpp(1))");
+      THROWS(PAIRS_EQUAL(expectedPair, actualPair), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: PAIRS_EQUAL(expectedPair, actualPair)",
+"Expected: (1, 0)",
+"  Actual: (0, 0)",
+" Because: ARE_EQUAL(expectedPair.first, actualPair.first) failed",
+"Expected: 1",
+"  Actual: 0",
+"File.cpp(1)",
+"File.cpp(1)"));
    }
 
    TEST(FirstNotEqual_SecondEqual_Throws_MessagesTestCase)
@@ -34,46 +34,46 @@ File.cpp(1))");
       const pair<int, int> expectedPair{1, 0};
       const pair<int, int> actualPair{0, 0};
       const string messageA = "A", messageB = "B";
-      THROWS(PAIRS_EQUAL(expectedPair, actualPair, messageA, messageB), Anomaly, R"(
-  Failed: PAIRS_EQUAL(expectedPair, actualPair, messageA, messageB)
-Expected: (1, 0)
-  Actual: (0, 0)
- Because: ARE_EQUAL(expectedPair.first, actualPair.first) failed
-Expected: 1
-  Actual: 0
- Message: "A", "B"
-File.cpp(1)
-File.cpp(1))");
+      THROWS(PAIRS_EQUAL(expectedPair, actualPair, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: PAIRS_EQUAL(expectedPair, actualPair, messageA, messageB)",
+"Expected: (1, 0)",
+"  Actual: (0, 0)",
+" Because: ARE_EQUAL(expectedPair.first, actualPair.first) failed",
+"Expected: 1",
+"  Actual: 0",
+" Message: \"A\", \"B\"",
+"File.cpp(1)",
+"File.cpp(1)"));
    }
 
    TEST(FirstNotEqual_SecondNotEqual_Throws)
    {
       const pair<int, int> expectedPair{1, 1};
       const pair<int, int> actualPair{0, 0};
-      THROWS(PAIRS_EQUAL(expectedPair, actualPair), Anomaly, R"(
-  Failed: PAIRS_EQUAL(expectedPair, actualPair)
-Expected: (1, 1)
-  Actual: (0, 0)
- Because: ARE_EQUAL(expectedPair.first, actualPair.first) failed
-Expected: 1
-  Actual: 0
-File.cpp(1)
-File.cpp(1))");
+      THROWS(PAIRS_EQUAL(expectedPair, actualPair), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: PAIRS_EQUAL(expectedPair, actualPair)",
+"Expected: (1, 1)",
+"  Actual: (0, 0)",
+" Because: ARE_EQUAL(expectedPair.first, actualPair.first) failed",
+"Expected: 1",
+"  Actual: 0",
+"File.cpp(1)",
+"File.cpp(1)"));
    }
 
    TEST(FirstEqual_SecondNotEqual_Throws)
    {
       const pair<int, int> expectedPair{1, 1};
       const pair<int, int> actualPair{1, 0};
-      THROWS(PAIRS_EQUAL(expectedPair, actualPair), Anomaly, R"(
-  Failed: PAIRS_EQUAL(expectedPair, actualPair)
-Expected: (1, 1)
-  Actual: (1, 0)
- Because: ARE_EQUAL(expectedPair.second, actualPair.second) failed
-Expected: 1
-  Actual: 0
-File.cpp(1)
-File.cpp(1))");
+      THROWS(PAIRS_EQUAL(expectedPair, actualPair), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: PAIRS_EQUAL(expectedPair, actualPair)",
+"Expected: (1, 1)",
+"  Actual: (1, 0)",
+" Because: ARE_EQUAL(expectedPair.second, actualPair.second) failed",
+"Expected: 1",
+"  Actual: 0",
+"File.cpp(1)",
+"File.cpp(1)"));
    }
 
    TEST(FirstEqual_SecondEqual_DoesNotThrow)
@@ -87,30 +87,30 @@ File.cpp(1))");
    {
       const pair<UserType, UserType> expectedPair{1,0};
       const pair<UserType, UserType> actualPair{0,0};
-      THROWS(PAIRS_EQUAL(expectedPair, actualPair), Anomaly, R"(
-  Failed: PAIRS_EQUAL(expectedPair, actualPair)
-Expected: (UserType@1, UserType@0)
-  Actual: (UserType@0, UserType@0)
- Because: ARE_EQUAL(expectedPair.first, actualPair.first) failed
-Expected: UserType@1
-  Actual: UserType@0
-File.cpp(1)
-File.cpp(1))");
+      THROWS(PAIRS_EQUAL(expectedPair, actualPair), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: PAIRS_EQUAL(expectedPair, actualPair)",
+"Expected: (UserType@1, UserType@0)",
+"  Actual: (UserType@0, UserType@0)",
+" Because: ARE_EQUAL(expectedPair.first, actualPair.first) failed",
+"Expected: UserType@1",
+"  Actual: UserType@0",
+"File.cpp(1)",
+"File.cpp(1)"));
    }
 
    TEST(FirstEqual_SecondNotEqual_Throws_UserTypeTestCase)
    {
       const pair<UserType, UserType> expectedPair{0,0};
       const pair<UserType, UserType> actualPair{0,1};
-      THROWS(PAIRS_EQUAL(expectedPair, actualPair), Anomaly, R"(
-  Failed: PAIRS_EQUAL(expectedPair, actualPair)
-Expected: (UserType@0, UserType@0)
-  Actual: (UserType@0, UserType@1)
- Because: ARE_EQUAL(expectedPair.second, actualPair.second) failed
-Expected: UserType@0
-  Actual: UserType@1
-File.cpp(1)
-File.cpp(1))");
+      THROWS(PAIRS_EQUAL(expectedPair, actualPair), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: PAIRS_EQUAL(expectedPair, actualPair)",
+"Expected: (UserType@0, UserType@0)",
+"  Actual: (UserType@0, UserType@1)",
+" Because: ARE_EQUAL(expectedPair.second, actualPair.second) failed",
+"Expected: UserType@0",
+"  Actual: UserType@1",
+"File.cpp(1)",
+"File.cpp(1)"));
    }
 
    TEST(FirstEqual_SecondEqual_DoesNotThrow_UserTypeTestCase)

@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "ZenUnitTests/Console/Mock/ConsoleMock.h"
-#include "ZenUnitTests/Testing/Newline.h"
 #include "ZenUnitTests/Testing/UserType.h"
 
 namespace ZenUnit
@@ -48,9 +47,9 @@ namespace ZenUnit
       const Anomaly anomaly(StartOfFailedLine, WhyBody, FileLineValue, "", "");
       //
       Anomaly expectedAnomaly;
-      expectedAnomaly.why = String::Concat('\n',
-"StartOfFailedLine)\n",
-"WhyBody\n",
+      expectedAnomaly.why = TestUtil::NewlineConcat("",
+"StartOfFailedLine)",
+"WhyBody",
 FileLineValue);
       expectedAnomaly.fileLine = FileLineValue;
       ARE_EQUAL(expectedAnomaly, anomaly);
@@ -61,8 +60,8 @@ FileLineValue);
       const Anomaly anomaly(StartOfFailedLine, "", FileLineValue, "", "");
       //
       Anomaly expectedAnomaly;
-      expectedAnomaly.why = String::Concat('\n',
-"StartOfFailedLine)\n",
+      expectedAnomaly.why = TestUtil::NewlineConcat("",
+"StartOfFailedLine)",
 FileLineValue);
       expectedAnomaly.fileLine = FileLineValue;
       ARE_EQUAL(expectedAnomaly, anomaly);
@@ -76,10 +75,10 @@ FileLineValue);
       //
       Anomaly expectedAnomaly;
       expectedAnomaly.message = R"("A")";
-      expectedAnomaly.why = String::Concat('\n',
-"StartOfFailedLine, MessageA)\n",
-"WhyBody\n",
-"Message: " + expectedAnomaly.message + "\n",
+      expectedAnomaly.why = TestUtil::NewlineConcat("",
+"StartOfFailedLine, MessageA)",
+"WhyBody",
+"Message: " + expectedAnomaly.message,
 FileLineValue);
       expectedAnomaly.fileLine = FileLineValue;
       ARE_EQUAL(expectedAnomaly, anomaly);
@@ -218,17 +217,7 @@ FileLineValue);
       ExpectedActualFormat expectedActualFormat,
       const string& expectedWhy,
 
-      "", ExpectedActualFormat::Fields, Newline::Concat("",
-"  Failed: ASSERTION_NAME(Arg1Text)",
-"Expected: Expected",
-"  Actual: Actual",
-" Because: BecauseAssertExpression failed",
-"Expected: BecauseExpected",
-"  Actual: BecauseActual",
-"BecauseFilePath(123)"
-"FilePath(1)"),
-
-      "", ExpectedActualFormat::WholeLines, Newline::Concat("",
+      "", ExpectedActualFormat::Fields, TestUtil::NewlineConcat("",
 "  Failed: ASSERTION_NAME(Arg1Text)",
 "Expected: Expected",
 "  Actual: Actual",
@@ -238,7 +227,17 @@ FileLineValue);
 "BecauseFilePath(123)",
 "FilePath(1)"),
 
-      "BecauseMessage", ExpectedActualFormat::Fields, Newline::Concat("",
+      "", ExpectedActualFormat::WholeLines, TestUtil::NewlineConcat("",
+"  Failed: ASSERTION_NAME(Arg1Text)",
+"Expected: Expected",
+"  Actual: Actual",
+" Because: BecauseAssertExpression failed",
+"Expected: BecauseExpected",
+"  Actual: BecauseActual",
+"BecauseFilePath(123)",
+"FilePath(1)"),
+
+      "BecauseMessage", ExpectedActualFormat::Fields, TestUtil::NewlineConcat("",
 "  Failed: ASSERTION_NAME(Arg1Text)",
 "Expected: Expected",
 "  Actual: Actual",
@@ -249,7 +248,7 @@ FileLineValue);
 "BecauseFilePath(123)",
 "FilePath(1)"),
 
-      "BecauseMessage", ExpectedActualFormat::WholeLines, Newline::Concat("",
+      "BecauseMessage", ExpectedActualFormat::WholeLines, TestUtil::NewlineConcat("",
 "  Failed: ASSERTION_NAME(Arg1Text)",
 "Expected: Expected",
 "  Actual: Actual",
@@ -258,7 +257,7 @@ FileLineValue);
 "  Actual: BecauseActual",
 " Message: BecauseMessage",
 "BecauseFilePath(123)",
-"FilePath(1)")
+"FilePath(1)"))
    {
       Anomaly becauseAnomaly;
       becauseAnomaly.assertExpression = "BecauseAssertExpression";

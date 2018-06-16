@@ -69,42 +69,42 @@ namespace ZenUnit
    TEST(EqualizerDoesNotAssertSpecifiedFieldEqual_Throws)
    {
       SETUP_EQUALIZER_THROWS_TEST(Namespace::TestStruct);
-      THROWS(EQUALIZER_THROWS_FOR_FIELD(Namespace::TestStruct, fieldB, 1), Anomaly, R"(
-  Failed: EQUALIZER_THROWS_FOR_FIELD(Namespace::TestStruct, fieldB, 1)
-Expected: Function ZenUnit::Equalizer<Namespace::TestStruct>::AssertEqual(expected, actual)
-          to throw a ZenUnit::Anomaly from an
-          ARE_EQUAL(expected.fieldB, actual.fieldB) assert statement.
-  Actual: No ZenUnit::Anomaly thrown despite field 'fieldB'
-          differing between objects expected and actual.
-File.cpp(1))");
+      THROWS(EQUALIZER_THROWS_FOR_FIELD(Namespace::TestStruct, fieldB, 1), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: EQUALIZER_THROWS_FOR_FIELD(Namespace::TestStruct, fieldB, 1)",
+"Expected: Function ZenUnit::Equalizer<Namespace::TestStruct>::AssertEqual(expected, actual)",
+"          to throw a ZenUnit::Anomaly from an",
+"          ARE_EQUAL(expected.fieldB, actual.fieldB) assert statement.",
+"  Actual: No ZenUnit::Anomaly thrown despite field 'fieldB'",
+"          differing between objects expected and actual.",
+"File.cpp(1)"));
    }
 
    TEST(EqualizerThrowsAnomalyThatDoesNotContainFieldName_Throws)
    {
       SETUP_EQUALIZER_THROWS_TEST(TestStructB);
-      THROWS(EQUALIZER_THROWS_FOR_FIELD(TestStructB, field, TestStructB::ThrowWithoutFieldNameInWhatText), Anomaly, R"(
-  Failed: EQUALIZER_THROWS_FOR_FIELD(TestStructB, field, TestStructB::ThrowWithoutFieldNameInWhatText)
-Expected: N/A
-  Actual: N/A
- Because: IS_TRUE(String::Contains(anomalyWhat, fieldName)) failed
-Expected: true
-  Actual: false
-File.cpp(1)
-File.cpp(1))");
+      THROWS(EQUALIZER_THROWS_FOR_FIELD(TestStructB, field, TestStructB::ThrowWithoutFieldNameInWhatText), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: EQUALIZER_THROWS_FOR_FIELD(TestStructB, field, TestStructB::ThrowWithoutFieldNameInWhatText)",
+"Expected: N/A",
+"  Actual: N/A",
+" Because: IS_TRUE(String::Contains(anomalyWhat, fieldName)) failed",
+"Expected: true",
+"  Actual: false",
+"File.cpp(1)",
+"File.cpp(1)"));
    }
 
    TEST(EqualizerThrowsAnomalyThatContainsFieldName_ButStillThrowsThatAnomalyWhenAllFieldsEqual_Throws)
    {
       SETUP_EQUALIZER_THROWS_TEST(TestStructB);
-      THROWS(EQUALIZER_THROWS_FOR_FIELD(TestStructB, field, TestStructB::ThrowWithFieldNameInWhatText), Anomaly, R"(
-  Failed: EQUALIZER_THROWS_FOR_FIELD(TestStructB, field, TestStructB::ThrowWithFieldNameInWhatText)
-Expected: N/A
-  Actual: N/A
- Because: ARE_EQUAL(equalizerTestObjectA, equalizerTestObjectB) failed
-Expected: <TestStructB>
-  Actual: <TestStructB>
-File.cpp(1)
-File.cpp(1))");
+      THROWS(EQUALIZER_THROWS_FOR_FIELD(TestStructB, field, TestStructB::ThrowWithFieldNameInWhatText), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: EQUALIZER_THROWS_FOR_FIELD(TestStructB, field, TestStructB::ThrowWithFieldNameInWhatText)",
+"Expected: N/A",
+"  Actual: N/A",
+" Because: ARE_EQUAL(equalizerTestObjectA, equalizerTestObjectB) failed",
+"Expected: <TestStructB>",
+"  Actual: <TestStructB>",
+"File.cpp(1)",
+"File.cpp(1)"));
    }
 
    TEST(EqualizerAssertsSpecifiedFieldEqual_DoesNotThrow)

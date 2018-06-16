@@ -52,15 +52,15 @@ namespace ZenUnit
       SetType<int> expectedSet;
       expectedSet.insert(1);
       SetType<int> actualSet;
-      THROWS(SETS_EQUAL(expectedSet, actualSet), Anomaly, R"(
-  Failed: SETS_EQUAL(expectedSet, actualSet)
-Expected: SetType<T>
-  Actual: SetType<T>
- Because: ARE_EQUAL(expectedSet.size(), actualSet.size()) failed
-Expected: 1
-  Actual: 0
-File.cpp(1)
-File.cpp(1))");
+      THROWS(SETS_EQUAL(expectedSet, actualSet), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: SETS_EQUAL(expectedSet, actualSet)",
+"Expected: SetType<T>",
+"  Actual: SetType<T>",
+" Because: ARE_EQUAL(expectedSet.size(), actualSet.size()) failed",
+"Expected: 1",
+"  Actual: 0",
+"File.cpp(1)",
+"File.cpp(1)"));
    }
 
    TEST(SameSize1_ElementsNotEqual_Throws_MessagesTestCase)
@@ -70,16 +70,16 @@ File.cpp(1))");
       SetType<int> actualSet;
       actualSet.insert(2);
       const string messageA = "A", messageB = "B";
-      THROWS(SETS_EQUAL(expectedSet, actualSet, messageA, messageB), Anomaly, R"(
-  Failed: SETS_EQUAL(expectedSet, actualSet, messageA, messageB)
-Expected: SetType<T>
-  Actual: SetType<T>
- Because: CONTAINS_ELEMENT(expectedElement, actualSet) failed
-Expected: Collection contains element '1'
-  Actual: Collection does not contain element '1'
- Message: "A", "B"
-File.cpp(1)
-File.cpp(1))");
+      THROWS(SETS_EQUAL(expectedSet, actualSet, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: SETS_EQUAL(expectedSet, actualSet, messageA, messageB)",
+"Expected: SetType<T>",
+"  Actual: SetType<T>",
+" Because: CONTAINS_ELEMENT(expectedElement, actualSet) failed",
+"Expected: Collection contains element '1'",
+"  Actual: Collection does not contain element '1'",
+" Message: \"A\", \"B\"",
+"File.cpp(1)",
+"File.cpp(1)"));
    }
 
    TEST(SameSize2_ElementsNotEqual_Throws)
@@ -90,15 +90,15 @@ File.cpp(1))");
       SetType<int> actualSet;
       actualSet.insert(1);
       actualSet.insert(2);
-      THROWS(SETS_EQUAL(expectedSet, actualSet), Anomaly, R"(
-  Failed: SETS_EQUAL(expectedSet, actualSet)
-Expected: SetType<T>
-  Actual: SetType<T>
- Because: CONTAINS_ELEMENT(expectedElement, actualSet) failed
-Expected: Collection contains element '3'
-  Actual: Collection does not contain element '3'
-File.cpp(1)
-File.cpp(1))");
+      THROWS(SETS_EQUAL(expectedSet, actualSet), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: SETS_EQUAL(expectedSet, actualSet)",
+"Expected: SetType<T>",
+"  Actual: SetType<T>",
+" Because: CONTAINS_ELEMENT(expectedElement, actualSet) failed",
+"Expected: Collection contains element '3'",
+"  Actual: Collection does not contain element '3'",
+"File.cpp(1)",
+"File.cpp(1)"));
    }
 
    TEST(UserTypeSets_SameSize1_ElementsNotEqual_Throws)
@@ -107,15 +107,15 @@ File.cpp(1))");
       expectedSet.insert(UserType(1));
       SetType<UserType> actualSet;
       actualSet.insert(UserType(2));
-      THROWS(SETS_EQUAL(expectedSet, actualSet), Anomaly, R"(
-  Failed: SETS_EQUAL(expectedSet, actualSet)
-Expected: SetType<T>
-  Actual: SetType<T>
- Because: CONTAINS_ELEMENT(expectedElement, actualSet) failed
-Expected: Collection contains element 'UserType@1'
-  Actual: Collection does not contain element 'UserType@1'
-File.cpp(1)
-File.cpp(1))");
+      THROWS(SETS_EQUAL(expectedSet, actualSet), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: SETS_EQUAL(expectedSet, actualSet)",
+"Expected: SetType<T>",
+"  Actual: SetType<T>",
+" Because: CONTAINS_ELEMENT(expectedElement, actualSet) failed",
+"Expected: Collection contains element 'UserType@1'",
+"  Actual: Collection does not contain element 'UserType@1'",
+"File.cpp(1)",
+"File.cpp(1)"));
    }
 
    RUN_TEMPLATE_TESTS(SETS_EQUALTests, set)

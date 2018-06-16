@@ -23,10 +23,10 @@ namespace ZenUnit
       ZenUnit::Printer<decltype(v)>::Print(_oss, v);
       //
       const string printString = _oss.str();
-      ARE_EQUAL(_expectedVectorTypePrefix + R"(
-{
-   (empty vector)
-})", printString);
+      ARE_EQUAL(_expectedVectorTypePrefix + TestUtil::NewlineConcat("",
+"{",
+"   (empty vector)",
+"}"), printString);
    }
 
    TEST(ZenUnitPrinter_Print_EmptyAndNonConst_PrintsElements)
@@ -36,10 +36,10 @@ namespace ZenUnit
       ZenUnit::Printer<decltype(v)>::Print(_oss, v);
       //
       const string printString = _oss.str();
-      ARE_EQUAL(_expectedVectorTypePrefix + R"(
-{
-   (empty vector)
-})", printString);
+      ARE_EQUAL(_expectedVectorTypePrefix + TestUtil::NewlineConcat("",
+"{",
+"   (empty vector)",
+"}"), printString);
    }
 
    TEST(ZenUnitPrinter_Print_OneElement_PrintsElement)
@@ -49,10 +49,10 @@ namespace ZenUnit
       ZenUnit::Printer<decltype(v)>::Print(_oss, v);
       //
       const string printString = _oss.str();
-      ARE_EQUAL(_expectedVectorTypePrefix + R"(
-{
-   1
-})", printString);
+      ARE_EQUAL(_expectedVectorTypePrefix + TestUtil::NewlineConcat("",
+"{",
+"   1",
+"}"), printString);
    }
 
    TEST(ZenUnitPrinter_Print_TwoElements_PrintsElements)
@@ -62,11 +62,11 @@ namespace ZenUnit
       ZenUnit::Printer<decltype(v)>::Print(_oss, v);
       //
       const string printString = _oss.str();
-      ARE_EQUAL(_expectedVectorTypePrefix + R"(
-{
-   1,
-   2
-})", printString);
+      ARE_EQUAL(_expectedVectorTypePrefix + TestUtil::NewlineConcat("",
+"{",
+"   1,",
+"   2",
+"}"), printString);
    }
 
    TEST(ZenUnitPrinter_Print_SevenElements_PrintsAllSevenElements)
@@ -76,16 +76,16 @@ namespace ZenUnit
       ZenUnit::Printer<decltype(v)>::Print(_oss, v);
       //
       const string printString = _oss.str();
-      ARE_EQUAL(_expectedVectorTypePrefix + R"(
-{
-   1,
-   2,
-   3,
-   4,
-   5,
-   6,
-   7
-})", printString);
+      ARE_EQUAL(_expectedVectorTypePrefix + TestUtil::NewlineConcat("",
+"{",
+"   1,",
+"   2,",
+"   3,",
+"   4,",
+"   5,",
+"   6,",
+"   7",
+"}"), printString);
    }
 
    TEST(ZenUnitPrinter_Print_EightElements_PrintsFirstSevenElements)
@@ -95,17 +95,17 @@ namespace ZenUnit
       ZenUnit::Printer<decltype(v)>::Print(_oss, v);
       //
       const string printString = _oss.str();
-      ARE_EQUAL(_expectedVectorTypePrefix + R"(
-{
-   1,
-   2,
-   3,
-   4,
-   5,
-   6,
-   7,
-   ...
-})", printString);
+      ARE_EQUAL(_expectedVectorTypePrefix + TestUtil::NewlineConcat("",
+"{",
+"   1,",
+"   2,",
+"   3,",
+"   4,",
+"   5,",
+"   6,",
+"   7,",
+"   ...",
+"}"), printString);
    }
 
    RUN_TEMPLATE_TESTS(IntegralVectorZenUnitPrinterTests, int)

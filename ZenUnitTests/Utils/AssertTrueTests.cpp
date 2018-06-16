@@ -25,8 +25,8 @@ namespace ZenUnit
       }
       catch (const logic_error& e)
       {
-         REGEX_MATCHES(R"(assert_true\(1 == 0\) failed in f\(\)
-.*?File.cpp\(1\))", e.what());
+         REGEX_MATCHES(TestUtil::NewlineConcat("assert_true\\(1 == 0\\) failed in f\\(\\)",
+".*?File.cpp\\(1\\)"), e.what());
       }
    }
 

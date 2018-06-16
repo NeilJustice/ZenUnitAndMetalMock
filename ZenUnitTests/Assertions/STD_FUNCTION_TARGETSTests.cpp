@@ -40,16 +40,16 @@ namespace ZenUnit
 #elif defined _WIN32
          expectedPattern = "0x\\w{8}";
 #endif
-         REGEX_MATCHES(R"(
-  Failed: STD_FUNCTION_TARGETS\(FunctionA, emptyStdFunction, messageA, messageB\)
-Expected: )" + expectedPattern + R"(
-  Actual: <empty std::function>
- Because: IS_TRUE\(stdFunction\) failed
-Expected: true
-  Actual: false
- Message: "A", "B"
-File.cpp\(1\)
-File.cpp\(1\))", anomaly.why);
+         REGEX_MATCHES(TestUtil::NewlineConcat("",
+"  Failed: STD_FUNCTION_TARGETS\\(FunctionA, emptyStdFunction, messageA, messageB\\)",
+"Expected: " + expectedPattern,
+"  Actual: <empty std::function>",
+" Because: IS_TRUE\\(stdFunction\\) failed",
+"Expected: true",
+"  Actual: false",
+" Message: \"A\", \"B\"",
+"File.cpp\\(1\\)",
+"File.cpp\\(1\\)"), anomaly.why);
       }
    }
 
@@ -71,15 +71,15 @@ File.cpp\(1\))", anomaly.why);
 #elif defined _WIN32
          expectedPattern = "0x\\w{8}";
 #endif
-         REGEX_MATCHES(R"(
-  Failed: STD_FUNCTION_TARGETS\(FunctionB, stdFunctionA\)
-Expected: )" + expectedPattern + R"(
-  Actual: <non-empty std::function>
- Because: IS_NOT_NULL\(stdFunction.template target<ExpectedStdFunctionTargetType\*>\(\)\) failed
-Expected: not nullptr
-  Actual: nullptr
-File.cpp\(1\)
-File.cpp\(1\))", anomaly.why);
+         REGEX_MATCHES(TestUtil::NewlineConcat("",
+"  Failed: STD_FUNCTION_TARGETS\\(FunctionB, stdFunctionA\\)",
+"Expected: " + expectedPattern,
+"  Actual: <non-empty std::function>",
+" Because: IS_NOT_NULL\\(stdFunction.template target<ExpectedStdFunctionTargetType\\*>\\(\\)\\) failed",
+"Expected: not nullptr",
+"  Actual: nullptr",
+"File.cpp\\(1\\)",
+"File.cpp\\(1\\)"), anomaly.why);
       }
    }
 
@@ -87,15 +87,15 @@ File.cpp\(1\))", anomaly.why);
    {
       const function<void()> stdFunctionA(FunctionA);
 #if defined __linux__ || defined __APPLE__
-      THROWS(STD_FUNCTION_TARGETS(FunctionC, stdFunctionA), Anomaly, R"(
-  Failed: STD_FUNCTION_TARGETS(FunctionC, stdFunctionA)
-Expected: 1
-  Actual: <non-empty std::function>
- Because: ARE_EQUAL(expectedStdFunctionTarget, *stdFunction.template target<ExpectedStdFunctionTargetType*>()) failed
-Expected: 1
-  Actual: 1
-File.cpp(1)
-File.cpp(1))");
+      THROWS(STD_FUNCTION_TARGETS(FunctionC, stdFunctionA), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: STD_FUNCTION_TARGETS(FunctionC, stdFunctionA)",
+"Expected: 1",
+"  Actual: <non-empty std::function>",
+" Because: ARE_EQUAL(expectedStdFunctionTarget, *stdFunction.template target<ExpectedStdFunctionTargetType*>()) failed",
+"Expected: 1",
+"  Actual: 1",
+"File.cpp(1)",
+"File.cpp(1)"));
 #elif defined _WIN32
       try
       {
@@ -105,25 +105,25 @@ File.cpp(1))");
       catch (const Anomaly& anomaly)
       {
 #if defined _WIN64
-         REGEX_MATCHES(R"(
-  Failed: STD_FUNCTION_TARGETS\(FunctionC, stdFunctionA\)
-Expected: 0x\w{16}
-  Actual: <non-empty std::function>
- Because: ARE_EQUAL\(expectedStdFunctionTarget, \*stdFunction\.template target<ExpectedStdFunctionTargetType\*>\(\)\) failed
-Expected: 0x\w{16}
-  Actual: 0x\w{16}
-File.cpp\(1\)
-File.cpp\(1\))", anomaly.why);
+         REGEX_MATCHES(TestUtil::NewlineConcat("",
+"  Failed: STD_FUNCTION_TARGETS\\(FunctionC, stdFunctionA\\)",
+"Expected: 0x\\w{16}",
+"  Actual: <non-empty std::function>",
+" Because: ARE_EQUAL\\(expectedStdFunctionTarget, \\*stdFunction\\.template target<ExpectedStdFunctionTargetType\\*>\\(\\)\\) failed",
+"Expected: 0x\\w{16}",
+"  Actual: 0x\\w{16}",
+"File.cpp\\(1\\)",
+"File.cpp\\(1\\)"), anomaly.why);
 #elif defined _WIN32
-         REGEX_MATCHES(R"(
-  Failed: STD_FUNCTION_TARGETS\(FunctionC, stdFunctionA\)
-Expected: 0x\w{8}
-  Actual: <non-empty std::function>
- Because: ARE_EQUAL\(expectedStdFunctionTarget, \*stdFunction\.template target<ExpectedStdFunctionTargetType\*>\(\)\) failed
-Expected: 0x\w{8}
-  Actual: 0x\w{8}
-File.cpp\(1\)
-File.cpp\(1\))", anomaly.why);
+         REGEX_MATCHES(TestUtil::NewlineConcat("",
+"  Failed: STD_FUNCTION_TARGETS\\(FunctionC, stdFunctionA\\)",
+"Expected: 0x\\w{8}",
+"  Actual: <non-empty std::function>",
+" Because: ARE_EQUAL\\(expectedStdFunctionTarget, \\*stdFunction\\.template target<ExpectedStdFunctionTargetType\\*>\\(\\)\\) failed",
+"Expected: 0x\\w{8}",
+"  Actual: 0x\\w{8}",
+"File.cpp\\(1\\)",
+"File.cpp\\(1\\)"), anomaly.why);
 #endif
       }
    #endif
