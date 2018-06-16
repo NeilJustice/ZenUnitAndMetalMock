@@ -1,0 +1,67 @@
+language: cpp
+dist: trusty
+sudo: false
+cache: ccache
+
+matrix:
+  include:
+    - os: linux
+      compiler: clang
+      env: CMAKE_BUILD_TYPE=Debug COMPILER=clang++-5.0
+      addons:
+        apt:
+          update: true
+          sources: [ 'ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-5.0' ]
+          packages: [ 'ninja-build', 'clang-5.0', 'libstdc++-7-dev' ]
+
+    - os: linux
+      compiler: clang
+      env: CMAKE_BUILD_TYPE=Debug COMPILER=clang++-6.0
+      addons:
+        apt:
+          update: true
+          sources: [ 'ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0' ]
+          packages: [ 'ninja-build', 'clang-6.0', 'libstdc++-7-dev' ]
+
+    - os: linux
+      compiler: gcc
+      env: CMAKE_BUILD_TYPE=Debug COMPILER=g++-7
+      addons:
+        apt:
+          update: true
+          sources: [ 'ubuntu-toolchain-r-test' ]
+          packages: [ 'ninja-build', 'g++-7' ]
+
+    - os: linux
+      compiler: gcc
+      env: CMAKE_BUILD_TYPE=Release COMPILER=g++-7
+      addons:
+        apt:
+          update: true
+          sources: [ 'ubuntu-toolchain-r-test' ]
+          packages: [ 'ninja-build', 'g++-7' ]
+
+    - os: osx
+      osx_image: xcode9.3
+      compiler: clang
+      env: CMAKE_BUILD_TYPE=Debug COMPILER=clang++
+      before_install:
+        - brew install ninja llvm
+
+    - os: osx
+      osx_image: xcode9.3
+      compiler: clang
+      env: CMAKE_BUILD_TYPE=Release COMPILER=clang++
+      before_install:
+        - brew install ninja llvm
+
+script:
+  - curl https://raw.githubusercontent.com/NeilJustice/ZenMock/master/ZenMock/ZenMock.h -o ZenMock.h
+  - mkdir build && cd build
+  - cmake -GNinja .. -Werror=dev -DCMAKE_CXX_COMPILER="$COMPILER" -DCMAKE_BUILD_TYPE="$CMAKE_BUILD_TYPE"
+  - ninja -v -j 3
+  - ./ZenUnitTests/ZenUnitTests
+  - ./ZenUnitExamples/ZenUnitExamples
+
+notifications:
+  email: false
