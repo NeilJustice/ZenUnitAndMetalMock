@@ -121,11 +121,11 @@ int main(int argc, char* argv[])
 }
 ```
 
-### ZenUnit Console Output
+### Console Output
 
 ![ZenUnit](Screenshots/ZenUnitFizzBuzz.png "ZenUnit")
 
-### ZenUnit Command Line Usage
+### Command Line Usage
 
 ```
 ZenUnit v0.2.2
@@ -177,7 +177,7 @@ Testing Rigor Options:
    that an organizational culture of "skip it and ship it!" does not take root.
 ```
 
-### ZenUnit Type-Parameterized Test Class Syntax
+### The Type-Parameterized Test Class Syntax
 
 How would you confirm the correctness of this templatized Set\:\:Contains function across various types of sets and elements?
 
@@ -237,7 +237,7 @@ int main(int argc, char* argv[])
 }
 ```
 
-### Console Output For The Above ZenUnit Type-Parameterized Test Class
+### Console Output
 
 ![ZenUnit](Screenshots/ZenUnitTypeParameterizedTestClass.png "ZenUnit Type-Parameterized Test Results")
 
@@ -284,8 +284,8 @@ int main(int argc, char* argv[])
 |------------------|-----------|
 |`STD_FUNCTION_TARGETS(expectedStdFunctionTarget, stdFunction, messages...)`|First asserts `IS_TRUE(stdFunction)`, which asserts that stdFunction points to a function, then asserts `ARE_EQUAL(expectedStdFunctionTarget, *stdFunction.target<ExpectedStdFunctionTargetType*>())`. This is a key assertion to call prior to mocking out a `std::function` with a [ZenMock](https://github.com/NeilJustice/ZenMock) mock object to confirm that the `std::function` being mocked-out points to an expected static or free function.|
 
-|Inexact Assertions Not Implemented By Design In ZenUnit Due To Vulnerability to Code Mutations|Code Mutation Vulnerability|
-|--------------------------------------------------------------------------------------|---------------------------|
+|Inexact Assertions Not Implemented In ZenUnit Due To Vulnerability to Code Mutations|Code Mutation Vulnerability|
+|------------------------------------------------------------------------------------|---------------------------|
 |`ARE_NOT_EQUAL(expectedValue, actualValue)`|mutate-value|
 |`IS_GTE, IS_GT, IS_LT, IS_LTE`|mutate-value|
 |`STRING_CONTAINS(expectedSubstring, actualString)`|mutate-value|
@@ -293,7 +293,7 @@ int main(int argc, char* argv[])
 |`THROWS_EXCEPTION(expression, expectedExceptionBaseClass)`|mutate-exception-type and mutate-exception-message|
 |`THROWS_ANY(expression)`|mutate-exception-type and mutate-exception-message|
 
-### ZenUnit Test-Defining Macros
+### Test-Defining Macros
 
 |Test Classes|Description|
 |------------|-----------|
@@ -318,7 +318,7 @@ int main(int argc, char* argv[])
 |`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Skips a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called.|
 |`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Skips a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called. For use after `SKIP_TEMPLATE_TESTS`.|
 
-### Mutation coverage and the ZenUnit random value generating functions
+### Mutation coverage and the ZenUnit::Random\<T\> family of random value generating functions
 
 Testing using random inputs instead of constant inputs is a central technique for maximizing code's robustness to code mutations.
 
@@ -326,12 +326,12 @@ Today, code mutations can be induced manually by one's self or colleagues during
 
 In the 2020s, a combinatorial number of code mutations will be able to be induced programatically by LLVM-powered mutation testing frameworks. If the folks currently writing C++ mutation testing frameworks go the distance, you may one day hear in the hallway, at conferences, and on the forums "100% line and branch coverage? That's excellent, but how's your mutation coverage?"
 
-ZenUnit provides the following random value generating functions for writing unit tests that are robust to the swap-variable-with-constant code mutation - one of the most straightforward code mutations to introduce into a program under test.
+ZenUnit provides the following random value generating functions for writing unit tests that are robust to the swap-variable-with-constant code mutation, which is one of the most straightforward code mutations that can be introduced to a program under test.
 
 |Random Value Generating Function|Description|
 |--------------------------------|-----------|
 |`ZenUnit::Random<T>()`|Returns a random integer T value between `std::numeric_limits<T>::min()` and `std::numeric_limits<T>::max()` selected from a uniform distribution. Or, if `UserType ZenUnit::Random<UserType>()` is defined, returns the result from calling that function.|
-|`ZenUnit::RandomBetween<T>`(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound)|Returns a random integer T value between inclusiveLowerBound and inclusiveUpperBound selected from a uniform distribution.|
+|`ZenUnit::RandomBetween<T>(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound)`|Returns a random integer T value between inclusiveLowerBound and inclusiveUpperBound selected from a uniform distribution.|
 |`ZenUnit::RandomEnum<EnumType>(EnumType exclusiveEnumMaxValue)`|Returns a random EnumType value between 0 and exclusiveEnumMaxValue - 1, selected from a uniform distribution.|
 |`ZenUnit::Random<float>()`|Returns a random float between -1234567 and +1234567 selected from a `std::uniform_real_distribution<float>`.|
 |`ZenUnit::Random<double>()`|Returns a random double between `std::numeric_limits<double>::min()` and `std::numeric_limits<double>::max()` from a `std::uniform_real_distribution<double>`.|
