@@ -4880,7 +4880,7 @@ Testing Rigor Options:
       catch (const std::exception& e)
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
-         _console->WriteColor("\n=========\nException\n=========", Color::Red);
+         _console->WriteColor("\n==================\nUncaught Exception\n==================", Color::Red);
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          const std::string exceptionTypeNameAndWhat = String::Concat('\n',

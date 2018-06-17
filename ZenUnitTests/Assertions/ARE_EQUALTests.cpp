@@ -144,8 +144,8 @@ namespace ZenUnit
    TEST(EqualizerBothOneAndTwoTypeTestStruct_CodeCoverage)
    {
       THROWS(
-         TwoTypeEqualizer<EqualizerBothOneAndTwoTypeTestStruct Comma EqualizerBothOneAndTwoTypeTestStruct>::AssertEqual(
-            EqualizerBothOneAndTwoTypeTestStruct{}, EqualizerBothOneAndTwoTypeTestStruct{}),
+         (TwoTypeEqualizer<EqualizerBothOneAndTwoTypeTestStruct, EqualizerBothOneAndTwoTypeTestStruct>::AssertEqual(
+            EqualizerBothOneAndTwoTypeTestStruct{}, EqualizerBothOneAndTwoTypeTestStruct{})),
          invalid_argument, "unexpected call");
    }
 

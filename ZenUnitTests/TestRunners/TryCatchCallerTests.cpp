@@ -234,7 +234,7 @@ namespace ZenUnit
          = make_shared<AnomalyOrException>(Type::GetName<runtime_error>(), "runtime_error_what");
 
       ZEN(_consoleMock->WriteColorMock.CalledOnceWith(
-         "\n=========\nException\n=========", Color::Red));
+         "\n==================\nUncaught Exception\n==================", Color::Red));
       ZEN(_testPhaseSuffixerMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(arbitraryTestPhase));
       ZEN(_consoleMock->WriteMock.CalledOnceWith(_testPhaseSuffix));
       ZEN(_consoleMock->WriteLineMock.CalledOnceWith(TestUtil::NewlineConcat("",
