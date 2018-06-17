@@ -1,13 +1,13 @@
 <h1 align="center">ZenUnit</h1>
 
-<h4 align="center">ZenUnit is a single-header C++17 unit testing framework with an intuitive syntax for specifying value-parameterized and type-parameterized unit tests and features assertions designed for maximal robustness against code mutations.</h4>
+<h4 align="center">ZenUnit is a single-header C++17 unit testing framework featuring an intuitive syntax for specifying value-parameterized and type-parameterized unit tests and provides assertions designed for maximal robustness against code mutations.</h4>
 
 |Build Type|Build Status|
 |----------|------------|
 |Linux (Clang 5.0.2, Clang 6.0.1, GCC 7.3.0) and macOS (AppleClang 9.1.0)|<a href="https://travis-ci.org/NeilJustice/ZenUnit"><img src="https://travis-ci.org/NeilJustice/ZenUnit.svg?branch=master"/></a>|
 |Windows (Visual Studio 2017 and 2017 Preview x64 and Win32)|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitZenMock"><img src="https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true"/></a>|
 
-### ZenUnit design commentary and the syntax for specifying N-by-N value-parameterized tests
+### ZenUnit philosophy and the N-by-N value-parameterized test syntax
 
 ```cpp
 #include "ZenUnit.h" // Single header
@@ -257,6 +257,7 @@ int main(int argc, char* argv[])
 |`SETS_EQUAL(expectedSet, actualSet, messages...)`|Asserts that `expectedSet.size() == actualSet.size()` then calls `ARE_EQUAL(expectedElement, actualElement)` on each pair of expected and actual elements.|
 |`MAPS_EQUAL(expectedMap, actualMap, messages...)`|Asserts that `expectedMap.size() == actualMap.size()` then calls `ARE_EQUAL(expectedKeyValuePair, actualKeyValuePair)` on each pair of expected and actual key-value pairs.
 |`PAIRS_EQUAL(expectedPair, actualPair, messages...)`|Asserts `ARE_EQUAL(expectedPair.first, actualPair.first)` then asserts `ARE_EQUAL(expectedPair.second, actualPair.second)`.|
+|`STD_ARRAYS_EQUAL(expectedStdArray, actualStdArray, messages...)`|Asserts `ARE_EQUAL` on each std::array expected and actual element.|
 |`DOES_CONTAIN(expectedElement, dataStructure, messages...)`|Asserts that `dataStructure.find(expectedElement) != dataStructure.end()`.|
 |`IS_EMPTY(dataStructure, messages...)`|Asserts that `dataStructure.empty()` returns true.|
 
@@ -323,13 +324,13 @@ Testing using random inputs instead of constant inputs is a central technique fo
 
 Today, code mutations can be induced manually by one's self or colleagues during code review to confirm the degree of rigorousness with which unit tests have been written.
 
-In the 2020s, it is appearing increasingly likely that a combinatorial number of code mutations will be able to be induced programatically by LLVM-powered mutation testing frameworks. If the folks currently writing mutation testing frameworks go the distance, you may one day hear this dialog in the hallway: "100% line and branch coverage? That's excellent, but how's your mutation coverage?"
+In the 2020s, a combinatorial number of code mutations will be able to be induced programatically by LLVM-powered mutation testing frameworks. If the folks currently writing C++ mutation testing frameworks go the distance, you may one day hear in the hallway, at conferences, and on the forums "100% line and branch coverage? That's excellent, but how's your mutation coverage?"
 
-ZenUnit provides the following random value generating functions for writing unit tests that are robust to swap-variable-with-constant code mutations.
+ZenUnit provides the following random value generating functions for writing unit tests that are robust to the swap-variable-with-constant code mutation - one of the most straightforward code mutations to introduce into a program under test.
 
 |Random Value Generating Function|Description|
 |--------------------------------|-----------|
-|`ZenUnit::Random<T>()`|Returns a `ZenUnit::Random<UserType>()` value if defined or returns a random integer T value between `std::numeric_limits<T>::min()` and `std::numeric_limits<T>::max()` selected from a uniform distribution.|
+|`ZenUnit::Random<T>()`|Returns a random integer T value between `std::numeric_limits<T>::min()` and `std::numeric_limits<T>::max()` selected from a uniform distribution. Or, if `UserType ZenUnit::Random<UserType>()` is defined, returns the result from calling that function.|
 |`ZenUnit::RandomBetween<T>`(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound)|Returns a random integer T value between inclusiveLowerBound and inclusiveUpperBound selected from a uniform distribution.|
 |`ZenUnit::RandomEnum<EnumType>(EnumType exclusiveEnumMaxValue)`|Returns a random EnumType value between 0 and exclusiveEnumMaxValue - 1, selected from a uniform distribution.|
 |`ZenUnit::Random<float>()`|Returns a random float between -1234567 and +1234567 selected from a `std::uniform_real_distribution<float>`.|
@@ -375,16 +376,18 @@ namespace ZenUnit
 |The Road To ZenUnit 1.0|
 |-----------------------|
 |100% code coverage badge|
-|Travis CI clang-tidy|
-|AppVeyor /analyze|
+|Travis CI clang-tidy (currently run in a Jenkins job)|
+|Travis CI Clang AddressSanitizer and UndefinedBehaviorSanitizer (currently run in a Jenkins job)|
+|AppVeyor /analyze (currently run manually)|
 |Complete ZenUnit::Random\<T\> documentation|
 |Complete ZenUnit::Equalizer\<T\> documentation|
 |Complete ZenUnit::Printer\<T\> documentation|
-|std::string_view support|
+|Support for comparing std::string_views with std::strings and const char pointers|
 |TUPLES_EQUAL|
 |ARE_WITHIN|
 |ARE_CLOSE|
 |-breakfast|
+|-output=\<FilePath\>|
 
 |The Road To ZenUnit 1.1|
 |-----------------------|
