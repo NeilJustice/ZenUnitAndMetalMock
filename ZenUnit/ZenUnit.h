@@ -148,9 +148,9 @@
 
 // Exceptions:
 
-// Asserts that expression() throws exactly expectedExactExceptionType with what() text that exactly equals expectedWhatText.
-#define THROWS(expression, expectedExactExceptionType, expectedWhatText, ...) \
-   ZenUnit::THROWS_Defined<expectedExactExceptionType>([&]() { expression; }, #expression, #expectedExactExceptionType, expectedWhatText, #expectedWhatText, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+// Asserts that expression() throws exactly expectedExactExceptionType with what() text that exactly equals expectedExactWhatText.
+#define THROWS(expression, expectedExactExceptionType, expectedExactWhatText, ...) \
+   ZenUnit::THROWS_Defined<expectedExactExceptionType>([&]() { expression; }, #expression, #expectedExactExceptionType, expectedExactWhatText, #expectedExactWhatText, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Does nothing to implicitly assert that expression() does not throw an exception. A useful assertion for emphasis in a unit test.
 #define DOES_NOT_THROW(expression, ...) \
@@ -3163,8 +3163,8 @@ Testing Rigor Options:
       const std::function<void()>& expression,
       const char* expressionText,
       const char* expectedExactExceptionTypeText,
-      const std::string& expectedWhatText,
-      const char* expectedWhatTextText,
+      const std::string& expectedExactWhatText,
+      const char* expectedExactWhatTextText,
       FileLine fileLine,
       const char* messagesText,
       MessageTypes&&... messages)
@@ -3179,16 +3179,16 @@ Testing Rigor Options:
             std::type_index(typeid(e)) == std::type_index(typeid(ExpectedExceptionType));
          if (!exactExpectedExceptionTypeThrown)
          {
-            THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedWhatTextText,
+            THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedExactWhatTextText,
                THROWS_MakeWhyBody_DerivedButNotExactExpectedExceptionTypeThrown(e),
                fileLine, messagesText, std::forward<MessageTypes>(messages)...);
          }
          const char* const actualExactExceptionWhat = e.what();
-         const int compareResult = expectedWhatText.compare(actualExactExceptionWhat);
+         const int compareResult = expectedExactWhatText.compare(actualExactExceptionWhat);
          if (compareResult != 0)
          {
-            THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedWhatTextText,
-               THROWS_MakeWhyBody_ExpectedWhatNotEqualToActualWhat(e, expectedWhatText, actualExactExceptionWhat),
+            THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedExactWhatTextText,
+               THROWS_MakeWhyBody_ExpectedWhatNotEqualToActualWhat(e, expectedExactWhatText, actualExactExceptionWhat),
                fileLine, messagesText, std::forward<MessageTypes>(messages)...);
          }
          return;
@@ -3197,10 +3197,10 @@ Testing Rigor Options:
          ExpectedExceptionType, std::exception>::value, NeverThrownType, std::exception>::type& e)
       {
          const std::string whyBody = THROWS_MakeWhyBody_ExpectedExceptionTypeNotThrown<ExpectedExceptionType>(e);
-         THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedWhatTextText,
+         THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedExactWhatTextText,
             whyBody, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
-      THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedWhatTextText,
+      THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedExactWhatTextText,
          THROWS_MakeWhyBody_NoExceptionThrown<ExpectedExceptionType>(),
          fileLine, messagesText, std::forward<MessageTypes>(messages)...);
    }
