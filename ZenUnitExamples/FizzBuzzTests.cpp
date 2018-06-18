@@ -14,7 +14,7 @@ TEST(FizzBuzz_EndNumber0_Throws)
 }
 
 TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
-   unsigned endNumber, const std::string& expectedFizzBuzzSequence,
+   unsigned endNumber, const char* expectedFizzBuzzSequence,
    1, "1",
    2, "1 2",
    3, "1 2 Fizz",

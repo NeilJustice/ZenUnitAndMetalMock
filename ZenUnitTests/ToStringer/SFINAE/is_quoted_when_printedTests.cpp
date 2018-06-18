@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnitTests/Testing/UserType.h"
 #include "ZenUnitTests/Testing/UserTypeNonPrintable.h"
 
 static_assert(is_quoted_when_printed<char*>::value);
