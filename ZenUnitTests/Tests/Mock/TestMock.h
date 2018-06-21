@@ -1,7 +1,8 @@
 #pragma once
 
-struct TestMock : public Zen::Mock<Test>
+class TestMock : public Zen::Mock<Test>
 {
+public:
    TestMock() noexcept
       : Zen::Mock<Test>("", "", static_cast<unsigned char>(0))
    {

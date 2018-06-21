@@ -1,7 +1,8 @@
 #pragma once
 
-struct TestClassResultMock : public Zen::Mock<TestClassResult>
+class TestClassResultMock : public Zen::Mock<TestClassResult>
 {
+public:
    ZENMOCK_VOID1(AddTestResults, const vector<TestResult>&)
    ZENMOCK_NONVOID0_CONST(size_t, NumberOfFailedTestCases)
    ZENMOCK_NONVOID0_CONST(unsigned, SumOfTestResultMicroseconds)

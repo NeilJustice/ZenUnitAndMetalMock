@@ -60,14 +60,14 @@ namespace ZenUnit
 
       TestResult constructorFailTestResult = TestResult::TestingNonDefault();
       constructorFailTestResult.microseconds = microseconds;
-      _testResultFactoryMock->ConstructorFailMock.Return(constructorFailTestResult);
+      _testResultFactoryMock->MakeConstructorFailMock.Return(constructorFailTestResult);
       //
       const vector<TestResult> testResults = _newableDeletableTest->RunTest();
       //
       ZEN(_stopwatchMock->StartMock.CalledOnce());
       ZEN(_tryCatchCallerMock->CallMock.CalledOnceWith(
          &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor));
-      ZEN(_testResultFactoryMock->ConstructorFailMock.CalledOnceWith(
+      ZEN(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(
          _newableDeletableTest->p_fullTestName, failedConstructorCallResult));
       const vector<TestResult> expectedTestResults{ constructorFailTestResult };
       ZEN(_stopwatchMock->StopMock.CalledOnce());
@@ -88,7 +88,7 @@ namespace ZenUnit
 
       TestResult sixArgCtorTestResult = TestResult::TestingNonDefault();
       sixArgCtorTestResult.microseconds = microseconds;
-      _testResultFactoryMock->CtorDtorSuccessMock.Return(sixArgCtorTestResult);
+      _testResultFactoryMock->MakeCtorDtorSuccessMock.Return(sixArgCtorTestResult);
       //
       const vector<TestResult> testResults = _newableDeletableTest->RunTest();
       //
@@ -98,7 +98,7 @@ namespace ZenUnit
          { &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor },
          { &Test::CallDeleteTestClass, _newableDeletableTest.get(), TestPhase::Destructor }
       }));
-      ZEN(_testResultFactoryMock->CtorDtorSuccessMock.CalledOnceWith(
+      ZEN(_testResultFactoryMock->MakeCtorDtorSuccessMock.CalledOnceWith(
          _newableDeletableTest->p_fullTestName, successConstructorCallResult, destructorCallResult));
       ZEN(_stopwatchMock->StopMock.CalledOnce());
       const vector<TestResult> expectedTestResults{ sixArgCtorTestResult };

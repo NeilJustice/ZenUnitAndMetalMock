@@ -1,7 +1,8 @@
 #pragma once
 
-struct ConsoleMock : public Zen::Mock<Console>
+class ConsoleMock : public Zen::Mock<Console>
 {
+public:
    ZENMOCK_VOID1_CONST(Write, const string&)
    ZENMOCK_VOID2_CONST(WriteColor, const string&, Color)
    ZENMOCK_VOID1_CONST(WriteLine, const string&)

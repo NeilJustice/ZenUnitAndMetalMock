@@ -3495,7 +3495,8 @@ Testing Rigor Options:
 
       virtual ~TestResult() = default;
 
-      static TestResult ConstructorFail(const FullTestName& fullTestName, const CallResult& constructorCallResult) noexcept
+      static TestResult ConstructorFail(
+         const FullTestName& fullTestName, const CallResult& constructorCallResult) noexcept
       {
          TestResult constructorFailTestResult;
          constructorFailTestResult.fullTestName = fullTestName;
@@ -3548,9 +3549,9 @@ Testing Rigor Options:
          if (testOutcome == TestOutcome::Success)
          {
             console->WriteColor("OK ", Color::Green);
-            const std::string threeDecimalPlaceMillisecondsString =
+            const std::string twoDecimalPlaceMillisecondsString =
                call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
-            console->WriteLine(threeDecimalPlaceMillisecondsString);
+            console->WriteLine(twoDecimalPlaceMillisecondsString);
          }
       }
 
@@ -3691,26 +3692,26 @@ Testing Rigor Options:
 
       virtual std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(unsigned microseconds) const
       {
-         const std::string threeDecimalPlaceMillisecondsString =
+         const std::string twoDecimalPlaceMillisecondsString =
             call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
-         return threeDecimalPlaceMillisecondsString;
+         return twoDecimalPlaceMillisecondsString;
       }
 
       virtual void PrintTestClassResultLine(const Console* console) const
       {
          const size_t numberOfFailedTestCases = NumberOfFailedTestCases();
          const unsigned sumOfTestResultMicroseconds = SumOfTestResultMicroseconds();
-         const std::string threeDecimalPlaceMillisecondsString
+         const std::string twoDecimalPlaceMillisecondsString
             = MicrosecondsToTwoDecimalPlaceMillisecondsString(sumOfTestResultMicroseconds);
          if (numberOfFailedTestCases == 0)
          {
             console->Write("[  ");
             console->WriteColor("OK", Color::Green);
-            console->Write("  ] " + threeDecimalPlaceMillisecondsString);
+            console->Write("  ] " + twoDecimalPlaceMillisecondsString);
          }
          else
          {
-            console->WriteLineColor("[TestClass Failed] " + threeDecimalPlaceMillisecondsString, Color::Red);
+            console->WriteLineColor("[TestClass Failed] " + twoDecimalPlaceMillisecondsString, Color::Red);
          }
          console->WriteNewLine();
       }
@@ -4663,12 +4664,13 @@ Testing Rigor Options:
 
       virtual ~TestResultFactory() = default;
 
-      virtual TestResult ConstructorFail(const FullTestName& fullTestName, const CallResult& constructorCallResult) const
+      virtual TestResult MakeConstructorFail(
+         const FullTestName& fullTestName, const CallResult& constructorCallResult) const
       {
          return TestResult::ConstructorFail(fullTestName, constructorCallResult);
       }
 
-      virtual TestResult StartupFail(
+      virtual TestResult MakeStartupFail(
          const FullTestName& fullTestName,
          const CallResult& constructorCallResult,
          const CallResult& startupCallResult,
@@ -4678,7 +4680,7 @@ Testing Rigor Options:
             fullTestName, constructorCallResult, startupCallResult, destructorCallResult);
       }
 
-      virtual TestResult CtorDtorSuccess(
+      virtual TestResult MakeCtorDtorSuccess(
          const FullTestName& fullTestName,
          const CallResult& constructorCallResult,
          const CallResult& destructorCallResult) const
@@ -4687,7 +4689,7 @@ Testing Rigor Options:
             fullTestName, constructorCallResult, destructorCallResult);
       }
 
-      virtual TestResult FullCtor(
+      virtual TestResult MakeFullTestResult(
          const FullTestName& fullTestName,
          const CallResult& constructorCallResult,
          const CallResult& startupCallResult,
@@ -4806,7 +4808,7 @@ Testing Rigor Options:
          if (constructorCallResult.testOutcome != TestOutcome::Success)
          {
             const TestResult constructorFailTestResult =
-               _testResultFactory->ConstructorFail(p_fullTestName, constructorCallResult);
+               _testResultFactory->MakeConstructorFail(p_fullTestName, constructorCallResult);
             return constructorFailTestResult;
          }
          const CallResult startupCallResult =
@@ -4816,7 +4818,7 @@ Testing Rigor Options:
             const CallResult destructorCallResult =
                _tryCatchCaller->Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
             const TestResult startupFailTestResult =
-               _testResultFactory->StartupFail(p_fullTestName, constructorCallResult, startupCallResult, destructorCallResult);
+               _testResultFactory->MakeStartupFail(p_fullTestName, constructorCallResult, startupCallResult, destructorCallResult);
             return startupFailTestResult;
          }
          const CallResult testBodyCallResult =
@@ -4825,7 +4827,7 @@ Testing Rigor Options:
             _tryCatchCaller->Call(&Test::CallCleanup, this, TestPhase::Cleanup);
          const CallResult destructorCallResult =
             _tryCatchCaller->Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-         const TestResult testResult = _testResultFactory->FullCtor(
+         const TestResult testResult = _testResultFactory->MakeFullTestResult(
             p_fullTestName, constructorCallResult, startupCallResult,
             testBodyCallResult, cleanupCallResult, destructorCallResult);
          return testResult;
@@ -4926,12 +4928,12 @@ Testing Rigor Options:
          const CallResult constructorCallResult = _tryCatchCaller->Call(&Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorCallResult.testOutcome != TestOutcome::Success)
          {
-            TestResult constructorFail = _testResultFactory->ConstructorFail(p_fullTestName, constructorCallResult);
+            TestResult constructorFail = _testResultFactory->MakeConstructorFail(p_fullTestName, constructorCallResult);
             constructorFail.microseconds = _stopwatch->Stop();
             return { constructorFail };
          }
          const CallResult destructorCallResult = _tryCatchCaller->Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-         TestResult testResult = _testResultFactory->CtorDtorSuccess(p_fullTestName, constructorCallResult, destructorCallResult);
+         TestResult testResult = _testResultFactory->MakeCtorDtorSuccess(p_fullTestName, constructorCallResult, destructorCallResult);
          testResult.microseconds = _stopwatch->Stop();
          return { testResult };
       }
@@ -5075,9 +5077,9 @@ Testing Rigor Options:
          if (testClassIsNewableAndDeletable)
          {
             p_console->WriteColor("OK ", Color::Green);
-            const std::string threeDecimalPlaceMillisecondsString = outTestClassResult->
+            const std::string twoDecimalPlaceMillisecondsString = outTestClassResult->
                MicrosecondsToTwoDecimalPlaceMillisecondsString(newableDeletableTestResult.microseconds);
-            p_console->WriteLine(threeDecimalPlaceMillisecondsString);
+            p_console->WriteLine(twoDecimalPlaceMillisecondsString);
          }
          return testClassIsNewableAndDeletable;
       }

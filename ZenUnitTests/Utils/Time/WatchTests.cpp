@@ -87,9 +87,9 @@ TEST2X2(MicrosecondsToTwoDecimalPlaceMillisecondsString_ReturnsMicrosecondsAsMil
    123456789, "(123456.79ms)",
    1234567890, "(1234567.89ms)")
 {
-   const string threeDecimalPlaceMilliseconds =
+   const string twoDecimalPlaceMilliseconds =
       Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
-   ARE_EQUAL(expectedReturnValue, threeDecimalPlaceMilliseconds);
+   ARE_EQUAL(expectedReturnValue, twoDecimalPlaceMilliseconds);
 }
 
 RUN_TESTS(WatchTests)

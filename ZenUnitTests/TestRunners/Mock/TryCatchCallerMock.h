@@ -1,7 +1,8 @@
 #pragma once
 
-struct TryCatchCallerMock : public Zen::Mock<TryCatchCaller>
+class TryCatchCallerMock : public Zen::Mock<TryCatchCaller>
 {
+public:
    using TypedefTestPhaseFunction = void(*)(Test*);
    ZENMOCK_NONVOID3_CONST(CallResult, Call, TypedefTestPhaseFunction, Test*, TestPhase)
 };

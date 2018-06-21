@@ -36,6 +36,23 @@ EVIDENCE
 RUN_TEMPLATE_TESTS(SkippedTemplateTestClassB, map)
 THEN_SKIP_TEMPLATE_TESTS(SkippedTemplateTestClassB, Reason, unordered_map)
 
+TESTS(Tests)
+AFACT(Test)
+EVIDENCE
+
+Tests()
+{
+   throw exception();
+}
+
+TEST(Test)
+{
+   ARE_EQUAL(1, 0);
+}
+
+RUN_TESTS(Tests)
+
+
 int main(int argc, char* argv[])
 {
    // ZenUnitTestMode makes FileLiner::File(__FILE__) return File.cpp

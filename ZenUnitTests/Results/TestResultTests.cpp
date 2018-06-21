@@ -212,12 +212,12 @@ namespace ZenUnit
       TestOutcome::Unset, false)
    {
       _testResult.testOutcome = testOutcome;
-      std::string threeDecimalPlaceMillisecondsString;
+      std::string twoDecimalPlaceMillisecondsString;
       if (expectWriteLineOK)
       {
          _consoleMock.WriteColorMock.Expect();
          _consoleMock.WriteLineMock.Expect();
-         threeDecimalPlaceMillisecondsString = MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject.ReturnRandom();
+         twoDecimalPlaceMillisecondsString = MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject.ReturnRandom();
       }
       const unsigned microseconds = ZenUnit::Random<unsigned>();
       _testResult.microseconds = microseconds;
@@ -228,7 +228,7 @@ namespace ZenUnit
       {
          ZEN(_consoleMock.WriteColorMock.CalledOnceWith("OK ", Color::Green));
          ZEN(MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject.CalledOnceWith(microseconds));
-         ZEN(_consoleMock.WriteLineMock.CalledOnceWith(threeDecimalPlaceMillisecondsString));
+         ZEN(_consoleMock.WriteLineMock.CalledOnceWith(twoDecimalPlaceMillisecondsString));
       }
    }
 

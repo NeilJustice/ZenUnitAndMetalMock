@@ -3,10 +3,10 @@
 namespace ZenUnit
 {
    TESTS(TestResultFactoryTests)
-   AFACT(ConstructorFail_ReturnsTestResultConstructorFail)
-   AFACT(StartupFail_ReturnsTestResultStartupFail)
-   AFACT(CtorDtorSuccess_ReturnsTestResultCtorDtorSuccess)
-   AFACT(FullConstructor_ReturnsTestResultSixArgCtor)
+   AFACT(MakeConstructorFail_ReturnsTestResultConstructorFail)
+   AFACT(MakeStartupFail_ReturnsTestResultStartupFail)
+   AFACT(MakeCtorDtorSuccess_ReturnsTestResultCtorDtorSuccess)
+   AFACT(MakeFullTestResult_ReturnsTestResultSixArgCtor)
    EVIDENCE
 
    TestResultFactory _testResultFactory;
@@ -25,18 +25,18 @@ namespace ZenUnit
       DestructorCallResult.testPhase = TestPhase::Destructor;
    }
 
-   TEST(ConstructorFail_ReturnsTestResultConstructorFail)
+   TEST(MakeConstructorFail_ReturnsTestResultConstructorFail)
    {
       const TestResult constructorFailTestResult =
-         _testResultFactory.ConstructorFail(FullTestNameValue, ConstructorCallResult);
+         _testResultFactory.MakeConstructorFail(FullTestNameValue, ConstructorCallResult);
       //
       const TestResult expectedTestResult = TestResult::ConstructorFail(FullTestNameValue, ConstructorCallResult);
       ARE_EQUAL(expectedTestResult, constructorFailTestResult);
    }
 
-   TEST(StartupFail_ReturnsTestResultStartupFail)
+   TEST(MakeStartupFail_ReturnsTestResultStartupFail)
    {
-      const TestResult startupFailTestResult = _testResultFactory.StartupFail(
+      const TestResult startupFailTestResult = _testResultFactory.MakeStartupFail(
          FullTestNameValue, ConstructorCallResult, StartupCallResult, DestructorCallResult);
       //
       const TestResult expectedTestResult = TestResult::StartupFail(
@@ -44,9 +44,9 @@ namespace ZenUnit
       ARE_EQUAL(expectedTestResult, startupFailTestResult);
    }
 
-   TEST(CtorDtorSuccess_ReturnsTestResultCtorDtorSuccess)
+   TEST(MakeCtorDtorSuccess_ReturnsTestResultCtorDtorSuccess)
    {
-      const TestResult ctorDtorSuccessResult = _testResultFactory.CtorDtorSuccess(
+      const TestResult ctorDtorSuccessResult = _testResultFactory.MakeCtorDtorSuccess(
          FullTestNameValue, ConstructorCallResult, DestructorCallResult);
       //
       const TestResult expectedTestResult = TestResult::CtorDtorSuccess(
@@ -54,9 +54,9 @@ namespace ZenUnit
       ARE_EQUAL(expectedTestResult, ctorDtorSuccessResult);
    }
 
-   TEST(FullConstructor_ReturnsTestResultSixArgCtor)
+   TEST(MakeFullTestResult_ReturnsTestResultSixArgCtor)
    {
-      const TestResult testResult = _testResultFactory.FullCtor(
+      const TestResult testResult = _testResultFactory.MakeFullTestResult(
          FullTestNameValue, ConstructorCallResult, StartupCallResult,
          TestBodyCallResult, CleanupCallResult, DestructorCallResult);
       //

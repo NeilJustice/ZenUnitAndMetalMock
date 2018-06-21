@@ -80,13 +80,13 @@ namespace ZenUnit
       _tryCatchCallerMock->CallMock.Return(constructorFailCallResult);
 
       const TestResult constructorFailTestResult = TestResult::TestingNonDefault();
-      _testResultFactoryMock->ConstructorFailMock.Return(constructorFailTestResult);
+      _testResultFactoryMock->MakeConstructorFailMock.Return(constructorFailTestResult);
       //
       const TestResult testResult = _test->BaseRunTest();
       //
       ZEN(_tryCatchCallerMock->CallMock.CalledOnceWith(
          &Test::CallNewTestClass, _test.get(), TestPhase::Constructor));
-      ZEN(_testResultFactoryMock->ConstructorFailMock.CalledOnceWith(
+      ZEN(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(
          _test->p_fullTestName, constructorFailCallResult));
       ARE_EQUAL(constructorFailTestResult, testResult);
    }
@@ -102,7 +102,7 @@ namespace ZenUnit
       _tryCatchCallerMock->CallMock.ReturnValues(constructorSuccessCallResult, startupFailCallResult, destructorCallResult);
 
       const TestResult startupFailTestResult = TestResult::TestingNonDefault();
-      _testResultFactoryMock->StartupFailMock.Return(startupFailTestResult);
+      _testResultFactoryMock->MakeStartupFailMock.Return(startupFailTestResult);
       const string testClassName = Random<string>();
       const string testName = Random<string>();
       _test->p_fullTestName = FullTestName(testClassName.c_str(), testName.c_str(), 0);
@@ -110,12 +110,12 @@ namespace ZenUnit
       const TestResult testResult = _test->BaseRunTest();
       //
       ZEN(_tryCatchCallerMock->CallMock.CalledAsFollows(
-         {
-            { &Test::CallNewTestClass, _test.get(), TestPhase::Constructor },
+      {
+         { &Test::CallNewTestClass, _test.get(), TestPhase::Constructor },
          { &Test::CallStartup, _test.get(), TestPhase::Startup },
          { &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor }
-         }));
-      ZEN(_testResultFactoryMock->StartupFailMock.CalledOnceWith(
+      }));
+      ZEN(_testResultFactoryMock->MakeStartupFailMock.CalledOnceWith(
          _test->p_fullTestName, constructorSuccessCallResult, startupFailCallResult, destructorCallResult));
       ARE_EQUAL(startupFailTestResult, testResult);
    }
@@ -126,7 +126,7 @@ namespace ZenUnit
       _tryCatchCallerMock->CallMock.Return(successCallResult);
 
       const TestResult sixArgTestResult = TestResult::TestingNonDefault();
-      _testResultFactoryMock->FullCtorMock.Return(sixArgTestResult);
+      _testResultFactoryMock->MakeFullTestResultMock.Return(sixArgTestResult);
       const string testClassName = Random<string>();
       const string testName = Random<string>();
       _test->p_fullTestName = FullTestName(testClassName.c_str(), testName.c_str(), 0);
@@ -134,14 +134,14 @@ namespace ZenUnit
       const TestResult testResult = _test->BaseRunTest();
       //
       ZEN(_tryCatchCallerMock->CallMock.CalledAsFollows(
-         {
-            { &Test::CallNewTestClass, _test.get(), TestPhase::Constructor },
+      {
+         { &Test::CallNewTestClass, _test.get(), TestPhase::Constructor },
          { &Test::CallStartup, _test.get(), TestPhase::Startup },
          { &Test::CallTestBody, _test.get(), TestPhase::TestBody },
          { &Test::CallCleanup, _test.get(), TestPhase::Cleanup },
          { &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor }
-         }));
-      ZEN(_testResultFactoryMock->FullCtorMock.CalledOnceWith(
+      }));
+      ZEN(_testResultFactoryMock->MakeFullTestResultMock.CalledOnceWith(
          _test->p_fullTestName,
          CallResultWithOutcome(TestOutcome::Success),
          CallResultWithOutcome(TestOutcome::Success),
