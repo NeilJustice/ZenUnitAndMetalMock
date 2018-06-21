@@ -36,52 +36,6 @@ EVIDENCE
 RUN_TEMPLATE_TESTS(SkippedTemplateTestClassB, map)
 THEN_SKIP_TEMPLATE_TESTS(SkippedTemplateTestClassB, Reason, unordered_map)
 
-class A
-{
-public:
-   virtual ~A() {}
-   virtual int f(int) { return 0; }
-};
-
-struct AMock : public Zen::Mock<A>
-{
-   ZENMOCK_NONVOID1(int, f, int)
-};
-
-TESTS(ZZTests)
-AFACT(VoidTest)
-FACTS(NXNTestA)
-FACTS(NXNTestB)
-EVIDENCE
-
-TEST(VoidTest)
-{
-}
-
-TEST1X1(NXNTestA,
-   int,
-   0,
-   1)
-{
-}
-
-TEST1X1(NXNTestB,
-   int x,
-   0,
-   1)
-{
-   if (x == 0)
-   {
-      cout << "x == 0" << '\n';
-   }
-   else
-   {
-      cout << "x == 1" << '\n';
-   }
-}
-
-RUN_TESTS(ZZTests)
-
 int main(int argc, char* argv[])
 {
    // ZenUnitTestMode makes FileLiner::File(__FILE__) return File.cpp

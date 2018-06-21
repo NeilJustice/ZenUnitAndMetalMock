@@ -292,7 +292,7 @@ namespace ZenUnit
          p_consoleMock->WriteColorMock.Expect();
          p_consoleMock->WriteLineMock.Expect();
          testResultThreeDecimalMillisecondsString = testClassResultMock.
-            MicrosecondsToThreeDecimalPlaceMillisecondsStringMock.ReturnRandom();
+            MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
       }
       TestMock testMock;
 
@@ -308,11 +308,11 @@ namespace ZenUnit
       if (expectWriteLineOK)
       {
          ZEN(p_consoleMock->WriteColorMock.CalledAsFollows(
-            {
-               { "|", Color::Green },
-               { "OK ", Color::Green }
-            }));
-         ZEN(testClassResultMock.MicrosecondsToThreeDecimalPlaceMillisecondsStringMock.
+         {
+            { "|", Color::Green },
+            { "OK ", Color::Green }
+         }));
+         ZEN(testClassResultMock.MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.
             CalledOnceWith(testResult.microseconds));
          ZEN(p_consoleMock->WriteLineMock.CalledOnceWith(testResultThreeDecimalMillisecondsString));
       }

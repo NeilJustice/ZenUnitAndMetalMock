@@ -31,19 +31,19 @@ namespace ZenUnit
       ZENMOCK_NONVOID0_CONST(unsigned, SumOfTestResultMicroseconds)
    } _testClassResultSelfMocked;
 
-   ZENMOCK_NONVOID1_STATIC(string, ZenUnit::Watch, MicrosecondsToThreeDecimalPlaceMillisecondsString, unsigned);
+   ZENMOCK_NONVOID1_STATIC(string, ZenUnit::Watch, MicrosecondsToTwoDecimalPlaceMillisecondsString, unsigned);
 
    STARTUP
    {
-      _testClassResultSelfMocked.call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString
-         = BIND_1ARG_ZENMOCK_OBJECT(MicrosecondsToThreeDecimalPlaceMillisecondsString_ZenMockObject);
+      _testClassResultSelfMocked.call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString
+         = BIND_1ARG_ZENMOCK_OBJECT(MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject);
    }
 
    TEST(DefaultConstructor_SetsWatchFunction)
    {
       TestClassResult testClassResult;
-      STD_FUNCTION_TARGETS(Watch::MicrosecondsToThreeDecimalPlaceMillisecondsString,
-         testClassResult.call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString);
+      STD_FUNCTION_TARGETS(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString,
+         testClassResult.call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString);
    }
 
    TEST(CopyConstructor_CopiesForEacherAndTestResults)
@@ -183,7 +183,7 @@ namespace ZenUnit
       const unsigned sumOfTestResultMicroseconds =
          _testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.ReturnRandom();
       const string oneDecimalPlaceMilliseconds = ZenUnit::Random<string>();
-      MicrosecondsToThreeDecimalPlaceMillisecondsString_ZenMockObject.Return(oneDecimalPlaceMilliseconds);
+      MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject.Return(oneDecimalPlaceMilliseconds);
       ConsoleMock consoleMock;
       consoleMock.WriteMock.Expect();
       consoleMock.WriteColorMock.Expect();
@@ -193,12 +193,12 @@ namespace ZenUnit
       //
       ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnce());
       ZEN(_testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.CalledOnce());
-      ZEN(MicrosecondsToThreeDecimalPlaceMillisecondsString_ZenMockObject.CalledOnceWith(sumOfTestResultMicroseconds));
+      ZEN(MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject.CalledOnceWith(sumOfTestResultMicroseconds));
       ZEN(consoleMock.WriteMock.CalledAsFollows(
-         {
-            { "[  " },
-            { "  ] " + oneDecimalPlaceMilliseconds }
-         }));
+      {
+         { "[  " },
+         { "  ] " + oneDecimalPlaceMilliseconds }
+      }));
       ZEN(consoleMock.WriteColorMock.CalledOnceWith("OK", Color::Green));
       ZEN(consoleMock.WriteNewLineMock.CalledOnce());
    }
@@ -211,7 +211,7 @@ namespace ZenUnit
    {
       _testClassResultSelfMocked.NumberOfFailedTestCasesMock.Return(numberOfFailedTestCases);
       const unsigned microseconds = _testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.ReturnRandom();
-      const string oneDecimalPlaceMilliseconds = MicrosecondsToThreeDecimalPlaceMillisecondsString_ZenMockObject.ReturnRandom();
+      const string oneDecimalPlaceMilliseconds = MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject.ReturnRandom();
       ConsoleMock consoleMock;
       consoleMock.WriteLineColorMock.Expect();
       consoleMock.WriteNewLineMock.Expect();
@@ -220,7 +220,7 @@ namespace ZenUnit
       //
       ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnce());
       ZEN(_testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.CalledOnce());
-      ZEN(MicrosecondsToThreeDecimalPlaceMillisecondsString_ZenMockObject.CalledOnceWith(microseconds));
+      ZEN(MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject.CalledOnceWith(microseconds));
       ZEN(consoleMock.WriteLineColorMock.CalledOnceWith("[TestClass Failed] " + oneDecimalPlaceMilliseconds, Color::Red));
       ZEN(consoleMock.WriteNewLineMock.CalledOnce());
    }

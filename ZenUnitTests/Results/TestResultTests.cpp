@@ -27,7 +27,7 @@ namespace ZenUnit
    ConsoleMock _consoleMock;
    TestFailureNumbererMock _testFailureNumbererMock;
    const FullTestName FullTestNameValue = FullTestName("ClassName", "TestClassName", ZenUnit::Random<unsigned char>());
-   ZENMOCK_NONVOID1_STATIC(string, ZenUnit::Watch, MicrosecondsToThreeDecimalPlaceMillisecondsString, unsigned);
+   ZENMOCK_NONVOID1_STATIC(string, ZenUnit::Watch, MicrosecondsToTwoDecimalPlaceMillisecondsString, unsigned);
 
    const unsigned MaxTestMilliseconds = 1 + 2 + 3 + 4 + 5;
 
@@ -45,15 +45,15 @@ namespace ZenUnit
       DestructorCallResult = CallResult(TestPhase::Destructor);
       DestructorCallResult.microseconds = 3000;
       _testResult.fullTestName = FullTestNameValue;
-      _testResult.call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString =
-         BIND_1ARG_ZENMOCK_OBJECT(MicrosecondsToThreeDecimalPlaceMillisecondsString_ZenMockObject);
+      _testResult.call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString =
+         BIND_1ARG_ZENMOCK_OBJECT(MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject);
    }
 
    TEST(DefaultConstructor_SetsFieldsTo0_SetsWatchFunction)
    {
       const TestResult defaultTestResult;
-      STD_FUNCTION_TARGETS(Watch::MicrosecondsToThreeDecimalPlaceMillisecondsString,
-         defaultTestResult.call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString);
+      STD_FUNCTION_TARGETS(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString,
+         defaultTestResult.call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString);
       TestResult expectedDefaultTestResult;
       expectedDefaultTestResult.fullTestName = FullTestName();
       expectedDefaultTestResult.constructorCallResult = CallResult();
@@ -126,8 +126,8 @@ namespace ZenUnit
       {
          GetArgs_ZenMockObject.CalledOnce();
       }
-      STD_FUNCTION_TARGETS(Watch::MicrosecondsToThreeDecimalPlaceMillisecondsString,
-         testResult.call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString);
+      STD_FUNCTION_TARGETS(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString,
+         testResult.call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString);
       TestResult expectedTestResult;
       expectedTestResult.fullTestName = FullTestNameValue;
       expectedTestResult.constructorCallResult = ConstructorCallResult;
@@ -217,7 +217,7 @@ namespace ZenUnit
       {
          _consoleMock.WriteColorMock.Expect();
          _consoleMock.WriteLineMock.Expect();
-         threeDecimalPlaceMillisecondsString = MicrosecondsToThreeDecimalPlaceMillisecondsString_ZenMockObject.ReturnRandom();
+         threeDecimalPlaceMillisecondsString = MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject.ReturnRandom();
       }
       const unsigned microseconds = ZenUnit::Random<unsigned>();
       _testResult.microseconds = microseconds;
@@ -227,7 +227,7 @@ namespace ZenUnit
       if (expectWriteLineOK)
       {
          ZEN(_consoleMock.WriteColorMock.CalledOnceWith("OK ", Color::Green));
-         ZEN(MicrosecondsToThreeDecimalPlaceMillisecondsString_ZenMockObject.CalledOnceWith(microseconds));
+         ZEN(MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject.CalledOnceWith(microseconds));
          ZEN(_consoleMock.WriteLineMock.CalledOnceWith(threeDecimalPlaceMillisecondsString));
       }
    }

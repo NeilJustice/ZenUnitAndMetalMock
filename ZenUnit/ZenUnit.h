@@ -1715,27 +1715,27 @@ namespace ZenUnit
          return secondsSince1970CastToUnsignedShort;
       }
 
-      static std::string MicrosecondsToThreeDecimalPlaceMillisecondsString(unsigned microseconds)
+      static std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(unsigned microseconds)
       {
          const double milliseconds = microseconds / 1000.0;
 
-         // Example: 0.1230000000001
-         const double threeDecimalPlaceMilliseconds = std::floor(milliseconds * 1000 + 0.5) / 1000;
+         // Example: 0.1200000000001
+         const double millisecondsRoundedToTwoDecimalPlaces = std::floor(milliseconds * 100 + 0.5) / 100;
 
-         // Example: "0.123000"
-         const std::string threeDecimalPlaceMilliseconds_sixDecimalPlaceString
-            = std::to_string(threeDecimalPlaceMilliseconds);
+         // Example: "0.120000"
+         const std::string millisecondsRoundedToTwoDecimalPlaces_sixDecimalPlaceString
+            = std::to_string(millisecondsRoundedToTwoDecimalPlaces);
 
-         // Example: "0.123"
-         const std::string millisecondsRoundedToThreeDecimalPlaces_threeDecimalPlaceString
-            = threeDecimalPlaceMilliseconds_sixDecimalPlaceString.substr(
-               0, threeDecimalPlaceMilliseconds_sixDecimalPlaceString.find_first_of('.') + 4);
+         // Example: "0.12"
+         const std::string millisecondsRoundedToTwoDecimalPlaces_twoDecimalPlacesString
+            = millisecondsRoundedToTwoDecimalPlaces_sixDecimalPlaceString.substr(
+               0, millisecondsRoundedToTwoDecimalPlaces_sixDecimalPlaceString.find_first_of('.') + 3);
 
-         // Example: "(0.123ms)"
-         const std::string threeDecimalPlaceMillisecondsString
-            = String::Concat("(", millisecondsRoundedToThreeDecimalPlaces_threeDecimalPlaceString, "ms)");
+         // Example: "(0.12ms)"
+         const std::string twoDecimalPlaceMillisecondsString
+            = String::Concat("(", millisecondsRoundedToTwoDecimalPlaces_twoDecimalPlacesString, "ms)");
 
-         return threeDecimalPlaceMillisecondsString;
+         return twoDecimalPlaceMillisecondsString;
       }
    private:
       virtual tm TMNow() const
@@ -3420,15 +3420,15 @@ Testing Rigor Options:
       TestOutcome testOutcome;
       unsigned microseconds;
       size_t testCaseNumber;
-      std::function<std::string(unsigned)> call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString;
+      std::function<std::string(unsigned)> call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
 
       TestResult() noexcept
          : responsibleCallResultField(nullptr)
          , testOutcome(TestOutcome::Unset)
          , microseconds(0)
          , testCaseNumber(std::numeric_limits<size_t>::max())
-         , call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString(
-            Watch::MicrosecondsToThreeDecimalPlaceMillisecondsString)
+         , call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(
+            Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
       {
       }
 
@@ -3450,8 +3450,8 @@ Testing Rigor Options:
          , testOutcome(TestOutcome::Unset)
          , microseconds(0)
          , testCaseNumber(std::numeric_limits<size_t>::max())
-         , call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString(
-            Watch::MicrosecondsToThreeDecimalPlaceMillisecondsString)
+         , call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(
+            Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
       {
          assert_true(constructorCallResult.testOutcome == TestOutcome::Success);
          assert_true(startupCallResult.testOutcome == TestOutcome::Success);
@@ -3558,7 +3558,7 @@ Testing Rigor Options:
          {
             console->WriteColor("OK ", Color::Green);
             const std::string threeDecimalPlaceMillisecondsString =
-               call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString(microseconds);
+               call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
             console->WriteLine(threeDecimalPlaceMillisecondsString);
          }
       }
@@ -3647,11 +3647,11 @@ Testing Rigor Options:
       friend class TestClassResultTests;
    private:
       std::vector<TestResult> _testResults;
-      std::function<std::string(unsigned)> call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString;
+      std::function<std::string(unsigned)> call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
    public:
       TestClassResult() noexcept
-         : call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString(
-            Watch::MicrosecondsToThreeDecimalPlaceMillisecondsString)
+         : call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(
+            Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
       {
       }
 
@@ -3698,10 +3698,10 @@ Testing Rigor Options:
          return sumOfTestResultMicroseconds;
       }
 
-      virtual std::string MicrosecondsToThreeDecimalPlaceMillisecondsString(unsigned microseconds) const
+      virtual std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(unsigned microseconds) const
       {
          const std::string threeDecimalPlaceMillisecondsString =
-            call_Watch_MicrosecondsToThreeDecimalPlaceMillisecondsString(microseconds);
+            call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
          return threeDecimalPlaceMillisecondsString;
       }
 
@@ -3710,7 +3710,7 @@ Testing Rigor Options:
          const size_t numberOfFailedTestCases = NumberOfFailedTestCases();
          const unsigned sumOfTestResultMicroseconds = SumOfTestResultMicroseconds();
          const std::string threeDecimalPlaceMillisecondsString
-            = MicrosecondsToThreeDecimalPlaceMillisecondsString(sumOfTestResultMicroseconds);
+            = MicrosecondsToTwoDecimalPlaceMillisecondsString(sumOfTestResultMicroseconds);
          if (numberOfFailedTestCases == 0)
          {
             console->Write("[  ");
@@ -5085,7 +5085,7 @@ Testing Rigor Options:
          {
             p_console->WriteColor("OK ", Color::Green);
             const std::string threeDecimalPlaceMillisecondsString = outTestClassResult->
-               MicrosecondsToThreeDecimalPlaceMillisecondsString(newableDeletableTestResult.microseconds);
+               MicrosecondsToTwoDecimalPlaceMillisecondsString(newableDeletableTestResult.microseconds);
             p_console->WriteLine(threeDecimalPlaceMillisecondsString);
          }
          return testClassIsNewableAndDeletable;

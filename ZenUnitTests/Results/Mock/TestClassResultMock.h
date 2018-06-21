@@ -7,5 +7,5 @@ struct TestClassResultMock : public Zen::Mock<TestClassResult>
    ZENMOCK_NONVOID0_CONST(unsigned, SumOfTestResultMicroseconds)
    ZENMOCK_VOID1_CONST(PrintTestClassResultLine, const Console*)
    ZENMOCK_VOID3_CONST(PrintTestFailures, const ThreeArgForEacherType*, const Console*, TestFailureNumberer*)
-   ZENMOCK_NONVOID1_CONST(string, MicrosecondsToThreeDecimalPlaceMillisecondsString, unsigned)
+   ZENMOCK_NONVOID1_CONST(string, MicrosecondsToTwoDecimalPlaceMillisecondsString, unsigned)
 };
