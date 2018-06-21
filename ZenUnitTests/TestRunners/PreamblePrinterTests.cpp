@@ -9,7 +9,7 @@ namespace ZenUnit
 {
    TESTS(PreamblePrinterTests)
    AFACT(Constructor_NewsConsoleAndWatch)
-   AFACT(PrintPreambleAndGetStartTime_PrintsCommandLineAndTimeZoneAndTestAndTestClassCounts_ReturnsStartTime)
+   AFACT(PrintPreambleAndGetStartTime_PrintsCommandLineAndStartTimeAndTestAndTestClassCounts_ReturnsStartTime)
    FACTS(MakeThirdLinePrefix_ReturnsNumberOfTestClassesBeingRunAndMachineName)
    FACTS(MakeThirdLineSuffix_ReturnsRandomSeedIfRandomModeOtherwiseEmptyString)
    EVIDENCE
@@ -46,7 +46,7 @@ namespace ZenUnit
       POINTER_WAS_NEWED(preamblePrinter._machineNameGetter);
    }
 
-   TEST(PrintPreambleAndGetStartTime_PrintsCommandLineAndTimeZoneAndTestAndTestClassCounts_ReturnsStartTime)
+   TEST(PrintPreambleAndGetStartTime_PrintsCommandLineAndStartTimeAndTestAndTestClassCounts_ReturnsStartTime)
    {
       _preamblePrinterSelfMocked.consoleMock->WriteColorMock.Expect();
       const string debugOrRelease = _preamblePrinterSelfMocked.
@@ -54,7 +54,7 @@ namespace ZenUnit
       _preamblePrinterSelfMocked.consoleMock->WriteLineMock.Expect();
       TestClassRunnerRunnerMock testClassRunnerRunnerMock;
       const size_t numberOfTestClassesToBeRun = testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.ReturnRandom();
-      const string startTime = _preamblePrinterSelfMocked.watchMock->DateTimeNowWithTimeZoneMock.ReturnRandom();
+      const string startTime = _preamblePrinterSelfMocked.watchMock->DateTimeNowMock.ReturnRandom();
       const string thirdLinePrefix = _preamblePrinterSelfMocked.MakeThirdLinePrefixMock.ReturnRandom();
       const string thirdLineSuffix = _preamblePrinterSelfMocked.MakeThirdLineSuffixMock.ReturnRandom();
 
@@ -66,7 +66,7 @@ namespace ZenUnit
       const string returnedStartTime = _preamblePrinterSelfMocked.
          PrintPreambleAndGetStartTime(zenUnitArgs, &testClassRunnerRunnerMock);
       //
-      ZEN(_preamblePrinterSelfMocked.watchMock->DateTimeNowWithTimeZoneMock.CalledOnce());
+      ZEN(_preamblePrinterSelfMocked.watchMock->DateTimeNowMock.CalledOnce());
       ZEN(testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.CalledOnce());
       ZEN(_preamblePrinterSelfMocked.consoleMock->WriteColorMock.CalledNTimesWith(3, "[ZenUnit]", Color::Green));
       ZEN(_preamblePrinterSelfMocked.debugOrReleaseGetterMock->GetDebugOrReleaseMock.CalledOnce());

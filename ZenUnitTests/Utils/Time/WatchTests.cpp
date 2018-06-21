@@ -21,14 +21,13 @@ namespace ZenUnit
 }
 
 TESTS(WatchTests)
-FACTS(DateTimeNowWithTimeZone_ReturnsLocalTimeNowWithTimeZoneAndTodaysDate)
+FACTS(DateTimeNow_ReturnsLocalDateTimeNow)
 FACTS(MicrosecondsToTwoDecimalPlaceMillisecondsString_ReturnsMicrosecondsAsMillisecondsRoundedToThreePlaces)
 EVIDENCE
 
 struct WatchSelfMocked : public Zen::Mock<ZenUnit::Watch>
 {
    ZENMOCK_NONVOID0_CONST(tm, TMNow)
-   ZENMOCK_NONVOID1_CONST(string, TimeZone, const tm&)
 };
 unique_ptr<WatchSelfMocked> _watchSelfMocked;
 
@@ -37,23 +36,21 @@ STARTUP
    _watchSelfMocked = make_unique<WatchSelfMocked>();
 }
 
-TEST2X2(DateTimeNowWithTimeZone_ReturnsLocalTimeNowWithTimeZoneAndTodaysDate,
-   tm tmNow, const char* expectedDateTimeNowWithTimeZone,
-   Tm(0, 1, 0, 0, 0, 0), "1900-01-01 00:00:00 TimeZone",
-   Tm(1, 2, 1, 1, 1, 1), "1901-02-02 01:01:01 TimeZone",
-   Tm(2, 3, 2, 11, 11, 11), "1902-03-03 11:11:11 TimeZone",
-   Tm(11, 31, 99, 23, 59, 59), "1999-12-31 23:59:59 TimeZone",
-   Tm(0, 1, 100, 0, 0, 0), "2000-01-01 00:00:00 TimeZone",
-   Tm(1, 3, 101, 4, 5, 6), "2001-02-03 04:05:06 TimeZone")
+TEST2X2(DateTimeNow_ReturnsLocalDateTimeNow,
+   tm tmNow, const char* expectedDateTimeNow,
+   Tm(0, 1, 0, 0, 0, 0), "1900-01-01 00:00:00",
+   Tm(1, 2, 1, 1, 1, 1), "1901-02-02 01:01:01",
+   Tm(2, 3, 2, 11, 11, 11), "1902-03-03 11:11:11",
+   Tm(11, 31, 99, 23, 59, 59), "1999-12-31 23:59:59",
+   Tm(0, 1, 100, 0, 0, 0), "2000-01-01 00:00:00",
+   Tm(1, 3, 101, 4, 5, 6), "2001-02-03 04:05:06")
 {
    _watchSelfMocked->TMNowMock.Return(tmNow);
-   _watchSelfMocked->TimeZoneMock.Return("TimeZone");
    //
-   const string dateTimeNowWithTimeZone = _watchSelfMocked->DateTimeNowWithTimeZone();
+   const string dateTimeNow = _watchSelfMocked->DateTimeNow();
    //
    ZEN(_watchSelfMocked->TMNowMock.CalledOnce());
-   ZEN(_watchSelfMocked->TimeZoneMock.CalledOnceWith(tmNow));
-   ARE_EQUAL(expectedDateTimeNowWithTimeZone, dateTimeNowWithTimeZone);
+   ARE_EQUAL(expectedDateTimeNow, dateTimeNow);
 }
 
 static constexpr tm Tm(int tmMonth, int tmMonthDay, int tmYear, int tmHour, int tmMin, int tmSec)
@@ -72,7 +69,7 @@ static constexpr tm Tm(int tmMonth, int tmMonthDay, int tmYear, int tmHour, int 
 }
 
 TEST2X2(MicrosecondsToTwoDecimalPlaceMillisecondsString_ReturnsMicrosecondsAsMillisecondsRoundedToThreePlaces,
-   unsigned microseconds, const string& expectedReturnValue,
+   unsigned microseconds, const char* expectedReturnValue,
    0, "(0.00ms)",
    1, "(0.00ms)",
    2, "(0.00ms)",

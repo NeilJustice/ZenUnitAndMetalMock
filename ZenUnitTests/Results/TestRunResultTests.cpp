@@ -253,7 +253,7 @@ namespace ZenUnit
       _consoleMock->WriteLineMock.Expect();
       _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
       const string startTime = ZenUnit::Random<string>();
-      const string timeZoneDateTimeNow = _watchMock->DateTimeNowWithTimeZoneMock.ReturnRandom();
+      const string dateTimeNow = _watchMock->DateTimeNowMock.ReturnRandom();
       const ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
       //
       _testRunResult.PrintConclusion(startTime, numberOfTotalTests, testRunMilliseconds, zenUnitArgs);
@@ -269,11 +269,11 @@ namespace ZenUnit
       }));
       const string expectedCompletedLine = "Completed: " + zenUnitArgs.commandLine;
       const string expectedStartTimeLine = "StartTime: " + startTime;
-      const string expectedEndTimeLine =   "  EndTime: " + timeZoneDateTimeNow;
+      const string expectedEndTimeLine =   "  EndTime: " + dateTimeNow;
       const string expectedNumberOfTestsAndMillisecondsLine = String::Concat("   Result: ",
          expectedClosingLineTestsCountText, " in ", testRunMilliseconds, " ", expectedMillisecondOrMilliseconds,
          " (random seed ", ZenUnitRandomSeed::value, ")");
-      ZEN(_watchMock->DateTimeNowWithTimeZoneMock.CalledOnce());
+      ZEN(_watchMock->DateTimeNowMock.CalledOnce());
       ZEN(_consoleMock->WriteLineMock.CalledAsFollows(
       {
          expectedCompletedLine,

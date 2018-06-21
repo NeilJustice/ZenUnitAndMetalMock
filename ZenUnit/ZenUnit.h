@@ -1691,21 +1691,20 @@ namespace ZenUnit
 
       virtual ~Watch() = default;
 
-      // Returns now in format "YYYY-MM-DD 00:00:00 Timezone"
-      virtual std::string DateTimeNowWithTimeZone() const
+      // Returns local time now in format "YYYY-MM-DD 00:00:00"
+      virtual std::string DateTimeNow() const
       {
          const tm tmNow = TMNow();
          std::ostringstream builder;
-         const std::string timeZone = TimeZone(tmNow);
          builder
             << std::setw(2) << std::setfill('0') << (tmNow.tm_year + 1900) << '-'
             << std::setw(2) << std::setfill('0') << (tmNow.tm_mon + 1) << '-'
             << std::setw(2) << std::setfill('0') << tmNow.tm_mday << ' '
             << std::setw(2) << std::setfill('0') << tmNow.tm_hour << ':'
             << std::setw(2) << std::setfill('0') << tmNow.tm_min << ':'
-            << std::setw(2) << std::setfill('0') << tmNow.tm_sec << ' ' << timeZone;
-         const std::string weekdayDateTimeZoneNow = builder.str();
-         return weekdayDateTimeZoneNow;
+            << std::setw(2) << std::setfill('0') << tmNow.tm_sec;
+         const std::string dateTimeNow = builder.str();
+         return dateTimeNow;
       }
 
       virtual unsigned short SecondsSince1970CastToUnsignedShort() const
@@ -1753,14 +1752,6 @@ namespace ZenUnit
          assert_true(localtimeResult == 0);
          return tmNow;
 #endif
-      }
-
-      virtual std::string TimeZone(const tm& tmValue) const
-      {
-         char timeZoneChars[128];
-         strftime(timeZoneChars, sizeof(timeZoneChars), "%Z", &tmValue);
-         const std::string timeZone(timeZoneChars);
-         return timeZone;
       }
    };
 
@@ -4167,7 +4158,7 @@ Testing Rigor Options:
          const std::string debugOrRelease = _debugOrReleaseGetter->GetDebugOrRelease();
          _console->WriteLine(" Running in " + debugOrRelease + " mode: " + zenUnitArgs.commandLine);
          _console->WriteColor("[ZenUnit]", Color::Green);
-         const std::string startTime = _watch->DateTimeNowWithTimeZone();
+         const std::string startTime = _watch->DateTimeNow();
          _console->WriteLine(" Running at " + startTime);
          _console->WriteColor("[ZenUnit]", Color::Green);
          const size_t numberOfTestClassesToBeRun = testClassRunnerRunner->NumberOfTestClassesToBeRun();
@@ -4370,7 +4361,7 @@ Testing Rigor Options:
             _console->WriteLine(startTimeMessage);
 
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
-            const std::string endTimeMessage = "  EndTime: " + _watch->DateTimeNowWithTimeZone();
+            const std::string endTimeMessage = "  EndTime: " + _watch->DateTimeNow();
             _console->WriteLine(endTimeMessage);
 
             _console->WriteColor(victoryOrFailLinePrefix, greenOrRed);
