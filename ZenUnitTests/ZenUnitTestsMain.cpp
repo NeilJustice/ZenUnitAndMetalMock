@@ -36,27 +36,45 @@ EVIDENCE
 RUN_TEMPLATE_TESTS(SkippedTemplateTestClassB, map)
 THEN_SKIP_TEMPLATE_TESTS(SkippedTemplateTestClassB, Reason, unordered_map)
 
-TESTS(Tests)
-AFACT(Test)
+TESTS(ZZZTests)
+AFACT(Test1)
+AFACT(Test2)
+AFACT(Test3)
 EVIDENCE
 
-Tests()
+ZZZTests()
 {
-   throw exception();
 }
 
-TEST(Test)
+STARTUP
 {
-   ARE_EQUAL(1, 0);
 }
 
-RUN_TESTS(Tests)
+CLEANUP
+{
+}
 
+~ZZZTests()
+{
+}
+
+TEST(Test1)
+{
+}
+
+TEST(Test2)
+{
+}
+
+TEST(Test3)
+{
+}
+
+RUN_TESTS(ZZZTests)
 
 int main(int argc, char* argv[])
 {
-   // ZenUnitTestMode makes FileLiner::File(__FILE__) return File.cpp
-   // and FileLiner::Line(__LINE__) return 1.
+   // ZenUnitTestMode makes FileLiner::File(__FILE__) return File.cpp and FileLiner::Line(__LINE__) return 1.
    ZenUnitTestMode::value = true;
    const int exitCode = ZenUnit::RunTests(argc, argv);
    FileLiner::File(nullptr); // 100% code coverage

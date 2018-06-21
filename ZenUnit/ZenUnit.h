@@ -336,32 +336,6 @@ struct NA
 
 namespace ZenUnit
 {
-   enum class Color : unsigned char
-   {
-      Unset,
-      Red,
-      White,
-      Teal,
-      Green,
-      Yellow
-   };
-
-   enum class ExpectedActualFormat : unsigned char
-   {
-      Unset,
-      Fields,
-      WholeLines
-   };
-
-   enum class TestOutcome : unsigned char
-   {
-      Unset,
-      Success,
-      SuccessButPastDeadline,
-      Anomaly,
-      Exception
-   };
-
    enum class TestPhase : unsigned char
    {
       Unset,
@@ -373,6 +347,33 @@ namespace ZenUnit
       MaxValue
    };
 
+   enum class TestOutcome : unsigned char
+   {
+      Unset,
+      Success,
+      SuccessButPastDeadline,
+      Anomaly,
+      Exception
+   };
+
+   enum class ExpectedActualFormat : unsigned char
+   {
+      Unset,
+      Fields,
+      WholeLines
+   };
+
+   enum class Color : unsigned char
+   {
+      Unset,
+      Red,
+      White,
+      Teal,
+      Green,
+      Yellow
+   };
+
+#ifdef _WIN32
    enum class WindowsColor : unsigned char
    {
       Black,
@@ -391,6 +392,25 @@ namespace ZenUnit
       Pink,
       Yellow,
       White
+   };
+#endif
+
+   template<typename T>
+   struct SingleHeaderVariable
+   {
+      static T value;
+   };
+
+   template<typename T>
+   T SingleHeaderVariable<T>::value;
+
+   using ZenUnitTestMode = SingleHeaderVariable<bool>;
+   using ZenUnitRandomSeed = SingleHeaderVariable<unsigned short>;
+
+   struct FileLiner
+   {
+      static unsigned Line(unsigned lineMacroValue) noexcept { return ZenUnitTestMode::value ? 1u : lineMacroValue; }
+      static const char* File(const char* fileMacroValue) noexcept { return ZenUnitTestMode::value ? "File.cpp" : fileMacroValue; }
    };
 
    struct FileLine
@@ -417,24 +437,6 @@ namespace ZenUnit
          os << fileLine.filePath << '(' << fileLine.lineNumber << ')';
          return os;
       }
-   };
-
-   template<typename T>
-   struct SingleHeaderVariable
-   {
-      static T value;
-   };
-
-   template<typename T>
-   T SingleHeaderVariable<T>::value;
-
-   using ZenUnitTestMode = SingleHeaderVariable<bool>;
-   using ZenUnitRandomSeed = SingleHeaderVariable<unsigned short>;
-
-   struct FileLiner
-   {
-      static const char* File(const char* fileMacroValue) noexcept { return ZenUnitTestMode::value ? "File.cpp" : fileMacroValue; }
-      static unsigned Line(unsigned lineMacroValue) noexcept { return ZenUnitTestMode::value ? 1u : lineMacroValue; }
    };
 
    class String
@@ -4853,6 +4855,23 @@ Testing Rigor Options:
          const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          _console->WriteLine(anomaly.why);
+         if (testPhase != TestPhase::TestBody)
+         {
+            const int exitCode = zenUnitArgs.exit0 ? 0 : 1;
+            _console->WriteLineColor("\n========\nFATALITY\n========:", Color::Red);
+            _console->WriteLineAndExit("ZenUnit::Anomaly thrown during test class construction, STARTUP, or CLEANUP.\nFail fasting with exit code " + std::to_string(exitCode) + ".", exitCode);
+         }
+      }
+      catch (const std::exception& e)
+      {
+         PopulateCallResultWithExceptionInformation(e, &callResult);
+         _console->WriteColor("\n==================\nUncaught Exception\n==================", Color::Red);
+         const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
+         _console->Write(testPhaseSuffix);
+         const std::string exceptionTypeNameAndWhat = String::Concat('\n',
+            "  Type: ", *Type::GetName(e), '\n',
+            "what(): \"", e.what(), "\"");
+         _console->WriteLine(exceptionTypeNameAndWhat);
       }
       catch (const ZenMockException& e)
       {
@@ -4869,17 +4888,6 @@ Testing Rigor Options:
          const std::string testPhaseSuffixAndExceptionWhatLine =
             String::Concat("what(): \"", e.what(), "\"");
          _console->WriteLine(testPhaseSuffixAndExceptionWhatLine);
-      }
-      catch (const std::exception& e)
-      {
-         PopulateCallResultWithExceptionInformation(e, &callResult);
-         _console->WriteColor("\n==================\nUncaught Exception\n==================", Color::Red);
-         const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
-         _console->Write(testPhaseSuffix);
-         const std::string exceptionTypeNameAndWhat = String::Concat('\n',
-            "  Type: ", *Type::GetName(e), '\n',
-            "what(): \"", e.what(), "\"");
-         _console->WriteLine(exceptionTypeNameAndWhat);
       }
       catch (...)
       {

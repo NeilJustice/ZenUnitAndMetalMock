@@ -10,7 +10,9 @@ namespace ZenUnit
    EVIDENCE
 
    TestResultFactory _testResultFactory;
-   const FullTestName FullTestNameValue = FullTestName("TestClass", "Test", 0);
+   const string testClassName = ZenUnit::Random<string>();
+   const string testName = ZenUnit::Random<string>();
+   const FullTestName FullTestNameValue = FullTestName(testClassName.c_str(), testName.c_str(), ZenUnit::Random<char>());
    CallResult ConstructorCallResult;
    CallResult StartupCallResult;
    CallResult DestructorCallResult;
