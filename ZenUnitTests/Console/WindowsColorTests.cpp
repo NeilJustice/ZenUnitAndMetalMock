@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#if defined _WIN32
 namespace ZenUnit
 {
    TESTS(WindowsColorTests)
@@ -22,3 +23,4 @@ namespace ZenUnit
 
    RUN_TESTS(WindowsColorTests)
 }
+#endif

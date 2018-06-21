@@ -373,7 +373,7 @@ namespace ZenUnit
       Yellow
    };
 
-#ifdef _WIN32
+#if defined _WIN32
    enum class WindowsColor : unsigned char
    {
       Black,
@@ -767,6 +767,7 @@ namespace ZenUnit
       return linuxColor;
    }
 
+#if defined _WIN32
    inline constexpr WindowsColor ColorToWindowsColor(Color color) noexcept
    {
       WindowsColor windowsColor = WindowsColor::Black;
@@ -782,6 +783,7 @@ namespace ZenUnit
       };
       return windowsColor;
    }
+#endif
 
    class ConsoleColorer
    {
@@ -4905,7 +4907,7 @@ Testing Rigor Options:
       }
       catch (...)
       {
-         const unsigned microseconds = _stopwatch->Stop();
+         _stopwatch->Stop();
          _console->WriteLineColor("\n========\nFATALITY\n========", Color::Red);
          const char* const testPhaseName = _testPhaseTranslator->TestPhaseToTestPhaseName(testPhase);
          const int exitCode = zenUnitArgs.exit0 ? 0 : 1;
