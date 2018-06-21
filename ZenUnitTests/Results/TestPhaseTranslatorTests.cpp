@@ -2,12 +2,12 @@
 
 namespace ZenUnit
 {
-   TESTS(TestPhaseSuffixerTests)
+   TESTS(TestPhaseTranslatorTests)
    FACTS(TestPhaseToTestPhaseSuffix_ReturnsTestPhaseSuffix)
    FACTS(TestPhaseToTestPhaseSuffix_UnsetOrDestructorTestPhase_Throws)
    EVIDENCE
 
-   TestPhaseSuffixer _testPhaseSuffixer;
+   TestPhaseTranslator _testPhaseTranslator;
 
    TEST2X2(TestPhaseToTestPhaseSuffix_ReturnsTestPhaseSuffix,
       TestPhase testPhase, const char* expectedTestPhaseSuffix,
@@ -16,7 +16,7 @@ namespace ZenUnit
       TestPhase::TestBody, "",
       TestPhase::Cleanup, " in CLEANUP")
    {
-      ARE_EQUAL(expectedTestPhaseSuffix, _testPhaseSuffixer.TestPhaseToTestPhaseSuffix(testPhase));
+      ARE_EQUAL(expectedTestPhaseSuffix, _testPhaseTranslator.TestPhaseToTestPhaseSuffix(testPhase));
    }
 
    TEST1X1(TestPhaseToTestPhaseSuffix_UnsetOrDestructorTestPhase_Throws,
@@ -25,9 +25,9 @@ namespace ZenUnit
       TestPhase::Destructor,
       TestPhase::MaxValue)
    {
-      THROWS(_testPhaseSuffixer.TestPhaseToTestPhaseSuffix(testPhase),
+      THROWS(_testPhaseTranslator.TestPhaseToTestPhaseSuffix(testPhase),
          invalid_argument, "Invalid testPhase:" + to_string(static_cast<int>(testPhase)));
    }
 
-   RUN_TESTS(TestPhaseSuffixerTests)
+   RUN_TESTS(TestPhaseTranslatorTests)
 }

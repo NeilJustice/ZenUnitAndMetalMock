@@ -3324,14 +3324,29 @@ Testing Rigor Options:
       }
    };
 
-   class TestPhaseSuffixer
+   class TestPhaseTranslator
    {
    public:
-      TestPhaseSuffixer() noexcept
+      TestPhaseTranslator() noexcept
       {
       }
 
-      virtual ~TestPhaseSuffixer() = default;
+      virtual ~TestPhaseTranslator() = default;
+
+      virtual const char* TestPhaseToTestPhaseName(TestPhase testPhase) const
+      {
+         switch (testPhase)
+         {
+         case TestPhase::Constructor: return "test class constructor";
+         case TestPhase::Startup: return "STARTUP";
+         case TestPhase::TestBody: return "test body";
+         case TestPhase::Cleanup: return "CLEANUP";
+         case TestPhase::Unset:
+         case TestPhase::Destructor:
+         case TestPhase::MaxValue:
+         default: throw std::invalid_argument("Invalid testPhase:" + std::to_string(static_cast<int>(testPhase)));
+         }
+      }
 
       virtual const char* TestPhaseToTestPhaseSuffix(TestPhase testPhase) const
       {
@@ -3367,8 +3382,7 @@ Testing Rigor Options:
          case TestPhase::Unset:
          case TestPhase::Destructor:
          case TestPhase::MaxValue:
-         default:
-            throw std::invalid_argument("Invalid testPhase:" + std::to_string(static_cast<int>(testPhase)));
+         default: throw std::invalid_argument("Invalid testPhase:" + std::to_string(static_cast<int>(testPhase)));
          }
          return testPhaseSuffix;
       }
@@ -3572,7 +3586,7 @@ Testing Rigor Options:
             console->Write(fullTestName.Value());
             const CallResult& responsibleCallResult = (this->*responsibleCallResultField);
             const char* const responsibleTestPhaseSuffix =
-               TestPhaseSuffixer::DoTestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
+               TestPhaseTranslator::DoTestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
             console->Write(responsibleTestPhaseSuffix);
             WriteTestCaseNumberIfAny(console, testCaseNumber);
             responsibleCallResult.anomalyOrException->anomaly->WriteLineWhy(console);
@@ -3586,7 +3600,7 @@ Testing Rigor Options:
             console->Write(fullTestName.Value());
             const CallResult& responsibleCallResult = this->*responsibleCallResultField;
             const char* const responsibleTestPhaseSuffix =
-               TestPhaseSuffixer::DoTestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
+               TestPhaseTranslator::DoTestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
             console->Write(responsibleTestPhaseSuffix);
             WriteTestCaseNumberIfAny(console, testCaseNumber);
             console->WriteLineColor("\nUncaught Exception", Color::Red);
@@ -4620,14 +4634,14 @@ Testing Rigor Options:
       friend class TryCatchCallerTests;
    private:
       std::unique_ptr<const Console> _console;
-      std::unique_ptr<const TestPhaseSuffixer> _testPhaseSuffixer;
+      std::unique_ptr<const TestPhaseTranslator> _testPhaseTranslator;
       std::unique_ptr<const TwoArgMemberFunctionCaller<void, TryCatchCaller, TestOutcome, bool>> _voidTwoArgMemberFunctionCaller;
       std::function<const ZenUnitArgs&()> call_TestRunner_GetArgs;
       std::unique_ptr<Stopwatch> _stopwatch;
    public:
       TryCatchCaller() noexcept
          : _console(std::make_unique<Console>())
-         , _testPhaseSuffixer(std::make_unique<TestPhaseSuffixer>())
+         , _testPhaseTranslator(std::make_unique<TestPhaseTranslator>())
          , _voidTwoArgMemberFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<void, TryCatchCaller, TestOutcome, bool>>())
          , call_TestRunner_GetArgs(TestRunner::GetArgs)
          , _stopwatch(std::make_unique<Stopwatch>())
@@ -4852,13 +4866,13 @@ Testing Rigor Options:
          callResult.anomalyOrException = std::make_shared<AnomalyOrException>(anomaly);
          callResult.testOutcome = TestOutcome::Anomaly;
          _console->WriteColor("\n=======\nAnomaly\n=======", Color::Red);
-         const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
+         const char* const testPhaseSuffix = _testPhaseTranslator->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          _console->WriteLine(anomaly.why);
          if (testPhase != TestPhase::TestBody)
          {
             const int exitCode = zenUnitArgs.exit0 ? 0 : 1;
-            _console->WriteLineColor("\n========\nFATALITY\n========:", Color::Red);
+            _console->WriteLineColor("\n========\nFATALITY\n========", Color::Red);
             _console->WriteLineAndExit("ZenUnit::Anomaly thrown during test class construction, STARTUP, or CLEANUP.\nFail fasting with exit code " + std::to_string(exitCode) + ".", exitCode);
          }
       }
@@ -4866,7 +4880,7 @@ Testing Rigor Options:
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
          _console->WriteColor("\n==================\nUncaught Exception\n==================", Color::Red);
-         const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
+         const char* const testPhaseSuffix = _testPhaseTranslator->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          const std::string exceptionTypeNameAndWhat = String::Concat('\n',
             "  Type: ", *Type::GetName(e), '\n',
@@ -4876,7 +4890,7 @@ Testing Rigor Options:
       catch (const ZenMockException& e)
       {
          const std::string exceptionTypeName = *Type::GetName(e);
-         const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
+         const char* const testPhaseSuffix = _testPhaseTranslator->TestPhaseToTestPhaseSuffix(testPhase);
          const size_t equalsSignsLength = exceptionTypeName.size() + strlen(testPhaseSuffix);
          const std::string equalsSigns(equalsSignsLength, '=');
          const std::string exceptionTypeNameFourLines = String::Concat('\n',
@@ -4892,13 +4906,11 @@ Testing Rigor Options:
       catch (...)
       {
          const unsigned microseconds = _stopwatch->Stop();
-         const char* const testPhaseSuffix = _testPhaseSuffixer->TestPhaseToTestPhaseSuffix(testPhase);
-         _console->WriteLineColor("FATALITY", Color::Red);
-         const std::string exitLine = String::Concat(
-            "Fatal ... exception. ", zenUnitArgs.exit0 ?
-            "Exiting with code 0 due to -exit0 being specified." :
-            "Exiting with code 1.", testPhaseSuffix, " ", microseconds, "us");
+         _console->WriteLineColor("\n========\nFATALITY\n========", Color::Red);
+         const char* const testPhaseName = _testPhaseTranslator->TestPhaseToTestPhaseName(testPhase);
          const int exitCode = zenUnitArgs.exit0 ? 0 : 1;
+         const std::string exitLine = String::Concat(
+            "Fatal ... exception thrown during test phase: ", testPhaseName, ".\nFail fasting with exit code ", exitCode, ".");
          _console->WriteLineAndExit(exitLine, exitCode);
          return CallResult();
       }
