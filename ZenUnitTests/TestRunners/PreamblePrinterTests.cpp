@@ -99,7 +99,7 @@ namespace ZenUnit
 
    TEST3X3(MakeThirdLineSuffix_ReturnsRandomSeedIfRandomModeOtherwiseEmptyString,
       const string& expectedReturnValue, bool random, unsigned short randomseed,
-      "", false, NA<unsigned short>(),
+      "", false, ZenUnit::Random<unsigned short>(),
       " (random seed 0)", true, static_cast<unsigned short>(0),
       " (random seed 1)", true, static_cast<unsigned short>(1))
    {

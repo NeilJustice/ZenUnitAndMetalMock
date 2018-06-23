@@ -107,8 +107,8 @@ namespace ZenUnit
 
    TEST4X4(MatchesTestCase_TestClassNameMatches_ReturnsTrueIfMatchesTestClassNameAndTestNameAndEitherTestCaseNumberIsUnsetOrItMatches,
       bool testNameMatches, size_t runFilterTestCaseNumber, size_t testNXNTestCaseNumber, bool expectedReturnValue,
-      false, NA<size_t>(), NA<size_t>(), false,
-      true, std::numeric_limits<size_t>::max(), NA<size_t>(), true,
+      false, ZenUnit::Random<size_t>(), ZenUnit::Random<size_t>(), false,
+      true, std::numeric_limits<size_t>::max(), ZenUnit::Random<size_t>(), true,
       true, 1, 1, true,
       true, 2, 2, true,
       true, 1, 2, false,

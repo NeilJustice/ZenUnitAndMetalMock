@@ -106,7 +106,7 @@ namespace ZenUnit
 
    TEST4X4(ParseArgsRunTestClassesPrintResults_ParsesArgs_RunsTestClassesTimesNumberOfTimes_Returns0IfAllTestRunsPassOtherwiseReturns1,
       int expectedOverallExitCode, unsigned testrunsArgs, int firstTestRunExitCode, int secondTestRunExitCode,
-      0, 1, 0, NA<int>(),
+      0, 1, 0, ZenUnit::Random<int>(),
       1, 2, 1, 0,
       1, 2, 0, 1,
       1, 2, 1, 1)

@@ -1,4 +1,5 @@
 #pragma once
+#include <array>
 #include <chrono>
 #include <functional>
 #include <iomanip>
@@ -36,12 +37,10 @@
 #define Comma ,
 
 //
-// ZenUnit Assertion Macros
+// Value Assertions
 //
 
-// Values:
-
-// Asserts that expectedValue == actualValue or calls ZenUnit::Equalizer<T>::AssertEqual(expectedValue, actualValue) if defined.
+// Asserts that expectedValue == actualValue or if defined calls ZenUnit::Equalizer<T>::AssertEqual(const T& expectedValue, const T& actualValue).
 #define ARE_EQUAL(expectedValue, actualValue, ...) \
    ZenUnit::ARE_EQUAL_Defined(VRT(expectedValue), VRT(actualValue), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
@@ -69,7 +68,9 @@
 #define IS_ZERO(value, ...) \
    ZenUnit::IS_ZERO_Defined(VRT(value), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Pointers:
+//
+// Pointer Assertions
+//
 
 // Asserts that pointer is nullptr.
 #define IS_NULL(pointer, ...) \
@@ -83,13 +84,17 @@
 #define POINTEES_EQUAL(expectedPointer, actualPointer, ...) \
    ZenUnit::POINTEES_EQUAL_Defined(VRT(expectedPointer), VRT(actualPointer), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Functions:
+//
+// Function Assertion
+//
 
 // Asserts that a std::function targets expectedStdFunctionTarget.
 #define STD_FUNCTION_TARGETS(expectedStdFunctionTarget, stdFunction, ...) \
    ZenUnit::STD_FUNCTION_TARGETS_Defined<decltype(expectedStdFunctionTarget)>(expectedStdFunctionTarget, #expectedStdFunctionTarget, VRT(stdFunction), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Memory:
+//
+// Memory Assertions
+//
 
 // Effectively asserts that smartOrRawPointer was scalar operator newed by operator deleting smartOrRawPointer.
 #define POINTER_WAS_NEWED(smartOrRawPointer, ...) \
@@ -99,7 +104,9 @@
 #define ARRAY_WAS_NEWED(smartOrRawArrayPointer, ...) \
    ZenUnit::ARRAY_WAS_NEWED_Defined(smartOrRawArrayPointer, #smartOrRawArrayPointer, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Data Structures:
+//
+// Data Structure Assertions
+//
 
 // Asserts that collection.size() is zero.
 #define IS_EMPTY(collection, ...) \
@@ -129,7 +136,9 @@
 #define CONTAINS_ELEMENT(expectedElement, collection, ...) \
    ZenUnit::CONTAINS_ELEMENT_Defined(VRT(expectedElement), VRT(collection), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// ZenUnit::Equalizers:
+//
+// ZenUnit::Equalizer<T> Assertions
+//
 
 // Initializes ZenUnit::Equalizer test variables.
 #define SETUP_EQUALIZER_THROWS_TEST(typeName) \
@@ -140,24 +149,28 @@
 #define EQUALIZER_THROWS_FOR_FIELD(typeName, nonQuotedFieldName, arbitraryNonDefaultFieldValue) \
    ZenUnit::EQUALIZER_THROWS_FOR_FIELD_Defined(equalizerTestObjectA, equalizerTestObjectB, &typeName::nonQuotedFieldName, #typeName, #nonQuotedFieldName, arbitraryNonDefaultFieldValue, #arbitraryNonDefaultFieldValue, FILELINE)
 
-// The Test Itself:
+//
+// The Test Itself Assertion
+//
 
-// Fails the current test with a failure reason.
+// Fails the current test with a specified failure reason.
 #define FAIL_TEST(failureReason, ...) \
    ZenUnit::FAIL_TEST_Defined(VRT(failureReason), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Exceptions:
+//
+// Exception Assertions
+//
 
 // Asserts that expression() throws exactly expectedExactExceptionType with what() text that exactly equals expectedExactWhatText.
 #define THROWS(expression, expectedExactExceptionType, expectedExactWhatText, ...) \
    ZenUnit::THROWS_Defined<expectedExactExceptionType>([&]() { expression; }, #expression, #expectedExactExceptionType, expectedExactWhatText, #expectedExactWhatText, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Does nothing to implicitly assert that expression() does not throw an exception. A useful assertion for emphasis in a unit test.
+// Does nothing to implicitly assert that expression() does not throw an exception. Useful for emphasis to the reader of a unit test.
 #define DOES_NOT_THROW(expression, ...) \
    DOES_NOT_THROW_Defined([&]{ expression; }, #expression, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
-// ZenUnit TestClass Macros
+// Test-Defining Macros
 //
 
 // Defines a ZenUnit::TestClass.
@@ -327,12 +340,6 @@
    className& operator=(const className&) = defaultOrDeleteAssignmentOperator; \
    className(className&&) noexcept = defaultOrDeleteMoveConstructor; \
    className& operator=(className&&) noexcept = defaultOrDeleteMoveAssignmentOperator
-
-template<typename T>
-struct NA
-{
-   operator T() const { return T{}; }
-};
 
 namespace ZenUnit
 {
