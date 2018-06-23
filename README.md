@@ -133,45 +133,47 @@ Usage: <TestsBinaryName> [Options...]
 
 Testing Utility Options:
 
--pause
+--pause
    Wait for any key before running tests to allow attaching a debugger or profiler.
--exit0
+--exit0
    Always exit 0 regardless of test run outcome.
    Useful option for never blocking the launch of a ZenUnit tests
    console window when previously running tests in a post-build step.
--wait
+--wait
    Wait for any key at the end of the test run.
+--help or -help
+   Display this message.
 
 Testing Filtration Options:
 
--run=<TestClassName>[::TestName][/TestCaseNumber][,...]
+--run=<TestClassName>[::TestName][/TestCaseNumber][,...]
    Run only specified case-insensitive test classes, tests, and/or test cases.
    Add a '*' character to the end of a test class name or test name
    filter string to specify name-starts-with filtration.
- Example 1: -run=WidgetTests
-   Runs only test class WidgetTests.
- Example 2: -run=WidgetTests::FunctionUnderTest*
-   Runs all tests in WidgetTests that start with "FunctionUnderTest".
- Example 3: -run=WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior/3
-   Runs the third test case of value-parameterized test
+ Example 1: --run=WidgetTests
+   Run only test class WidgetTests.
+ Example 2: --run=WidgetTests::FunctionUnderTest*
+   Run all tests in WidgetTests that start with "FunctionUnderTest".
+ Example 3: --run=WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior/3
+   Run the third test case of value-parameterized test
    WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior.
--failfast
+--failfast
    Immediately exit with exit code 1 if a test fails.
 
 Testing Rigor Options:
 
--random
+--random
    Run test classes, tests, and value-parameterized test cases in a random order.
--randomseed=<S>
-   Set to S the random seed used by -random
+--seed=<SeedValue>
+   Set to SeedValue the random seed used by --random
    and the ZenUnit::Random<T> family of random value generating functions.
    The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
--testruns=<N>
+--testruns=<N>
    Repeat the running of all tests N times.
-   Specify -testruns=3 -random for three random test run orderings.
+   Specify --testruns=5 --random for five random test run orderings.
    Useful option for continuous integration servers to partially ensure
    that checked-in unit tests are robust with respect to ordering.
--noskips
+--noskips
    Exit 1 regardless of test run outcome if any tests are skipped.
    Useful option for continuous integration servers to partially ensure
    that an organizational culture of "skip it and ship it!" does not take root.
