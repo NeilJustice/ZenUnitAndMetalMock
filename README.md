@@ -210,22 +210,33 @@ TEMPLATE_TESTS(SetTests, SetType, T)
 AFACT(Contains_ReturnsTrueIfSetContainsElement)
 EVIDENCE
 
+static_assert(!std::is_default_constructible_v<Set>);
+
 TEST(Contains_ReturnsTrueIfSetContainsElement)
 {
    SetType<T> s;
-   const T element10 = 10;
-   const T element20 = 20;
+   // Random value testing to maximize robustness against code mutations
+   const T elementA = ZenUnit::Random<T>();
+   const T elementB = elementA + 1;
 
-   IS_FALSE(Set::Contains(s, element10));
-   IS_FALSE(Set::Contains(s, element20));
+   IS_FALSE(Set::Contains(s, elementA));
+   IS_FALSE(Set::Contains(s, elementB));
 
-   s.insert(element10);
-   IS_TRUE(Set::Contains(s, element10));
-   IS_FALSE(Set::Contains(s, element20));
+   s.insert(elementA);
+   IS_TRUE(Set::Contains(s, elementA));
+   IS_FALSE(Set::Contains(s, elementB));
 
-   s.insert(element20);
-   IS_TRUE(Set::Contains(s, element10));
-   IS_TRUE(Set::Contains(s, element20));
+   s.insert(elementB);
+   IS_TRUE(Set::Contains(s, elementA));
+   IS_TRUE(Set::Contains(s, elementB));
+
+   s.erase(elementA);
+   IS_FALSE(Set::Contains(s, elementA));
+   IS_TRUE(Set::Contains(s, elementB));
+
+   s.erase(elementB);
+   IS_FALSE(Set::Contains(s, elementA));
+   IS_FALSE(Set::Contains(s, elementB));
 }
 
 RUN_TEMPLATE_TESTS(SetTests, std::set, int)
