@@ -11,4 +11,4 @@ set_target_properties(ZenUnit PROPERTIES LINKER_LANGUAGE CXX)
 install(DIRECTORY .
         DESTINATION include/ZenUnit
         FILES_MATCHING REGEX "ZenUnit.h"
-        PATTERN REGEX "CMakeFiles|Release|RelWithDebInfo|MinSizeRel|ZenUnit.dir" EXCLUDE)
+        PATTERN REGEX "CMakeFiles|Debug|Release|RelWithDebInfo|MinSizeRel|ZenUnit.dir" EXCLUDE)
