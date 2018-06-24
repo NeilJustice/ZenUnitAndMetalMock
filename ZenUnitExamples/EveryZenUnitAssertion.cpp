@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnitTests/Assertions/REGEX_MATCHES.h"
 
 struct Struct
 {
@@ -63,9 +62,6 @@ TEST(CallAllMacros)
    // Exceptions
    THROWS([]{ throw std::runtime_error("what"); }(), std::runtime_error, "what");
    DOES_NOT_THROW([]{}());
-
-   // Regular Expressions
-   REGEX_MATCHES(R"(\d\d\d)", "123");
 
    // Equalizers
    SETUP_EQUALIZER_THROWS_TEST(Struct);

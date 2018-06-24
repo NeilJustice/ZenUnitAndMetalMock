@@ -1,0 +1,28 @@
+cmake_minimum_required(VERSION 3.2)
+project(ZenUnitUtilsAndAssertionTests)
+include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
+
+include_directories(${CMAKE_SOURCE_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/ZenUnit)
+include_directories(${ZenMockIncludeDirectory})
+
+folder_source_group(Assertions)
+folder_source_group(Testing)
+folder_source_group(Utils)
+folder_source_group_subfolder(Utils Function)
+folder_source_group_subsubfolder(Utils Function Mock)
+folder_source_group_subfolder(Utils Mock)
+folder_source_group_subfolder(Utils Concurrency)
+folder_source_group_subsubfolder(Utils Concurrency Mock)
+folder_source_group_subfolder(Utils Iteration)
+folder_source_group_subsubfolder(Utils Iteration Mock)
+folder_source_group_subfolder(Utils Time)
+folder_source_group_subsubfolder(Utils Time Mock)
+source_group("" FILES ZenUnitUtilsAndAssertionTestsMain.cpp pch.h pch.cpp)
+file(GLOB_RECURSE Sources *.h *.cpp)
+
+add_executable(ZenUnitUtilsAndAssertionTests ${Sources})
+target_link_libraries(ZenUnitUtilsAndAssertionTests ZenUnitTestUtils)
+
+EnablePrecompiledHeaders()
+IfMSVCAddRunTestsPostBuildStep()

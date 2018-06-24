@@ -34,8 +34,10 @@ endif()
 if(NOT APPLE)
    add_subdirectory(ZenUnit)
 endif()
-add_subdirectory(ZenUnitTests)
+add_subdirectory(ZenUnitUtilsAndAssertionTests)
 add_subdirectory(ZenUnitExamples)
+add_subdirectory(ZenUnitFrameworkTests)
+add_subdirectory(ZenUnitTestUtils)
 
 # Allows CMake command "cmake --build . --target install --config Debug/Release"
 # to just install ZenUnit and not also build ZenUnitTests
