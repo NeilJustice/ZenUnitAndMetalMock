@@ -15,7 +15,7 @@ namespace ZenUnit
 
    RunFilterParser _runFilterParser;
    MemberFunctionTransformerMock<RunFilterParser, string, RunFilter>* _memberFunctionTransformerMock = nullptr;
-   ZENMOCK_NONVOID1_STATIC(unsigned, String, ToUnsigned, const string&);
+   ZENMOCK_NONVOID1_STATIC(unsigned, String, ToUnsigned, const string&)
 
    STARTUP
    {

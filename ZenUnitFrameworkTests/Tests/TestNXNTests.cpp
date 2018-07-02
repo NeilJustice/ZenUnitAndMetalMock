@@ -41,8 +41,8 @@ namespace ZenUnit
    const string _testClassName = Random<string>();
    const string _testName = Random<string>();
    const string _testCaseArgsText = Random<string>();
-   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs);
-   ZENMOCK_VOID1_FREE(exit, int);
+   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
+   ZENMOCK_VOID1_FREE(exit, int)
 
    STARTUP
    {
@@ -122,7 +122,7 @@ namespace ZenUnit
       {
          ZENMOCK_VOID3(RunTestCaseIfNotFilteredOut, size_t, const ZenUnitArgs&, const std::vector<std::string>&)
          ZENMOCK_VOID0_CONST(Exit1IfNonExistentTestCaseNumberSpecified)
-         ZENMOCK_NONVOID1_STATIC(ITestCaseNumberGenerator*, ITestCaseNumberGenerator, FactoryNew, bool);
+         ZENMOCK_NONVOID1_STATIC(ITestCaseNumberGenerator*, ITestCaseNumberGenerator, FactoryNew, bool)
 
          Test1X1SelfMocked() noexcept
             : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>(
@@ -137,7 +137,7 @@ namespace ZenUnit
             }
       } test1X1SelfMocked;
 
-      ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs, _SelfMocked);
+      ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs, _SelfMocked)
 
       const ZenUnitArgs args = GetArgs_ZenMockObject_SelfMocked.ReturnRandom();
       test1X1SelfMocked.call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject_SelfMocked);
@@ -147,7 +147,7 @@ namespace ZenUnit
       testCaseNumberGeneratorMock->NextTestCaseNumberMock.ReturnValues(1, 2, std::numeric_limits<size_t>::max());
       test1X1SelfMocked.FactoryNew_ZenMockObject.Return(testCaseNumberGeneratorMock);
 
-      ZENMOCK_NONVOID0_STATIC(vector<string>, ZenUnit::String, CommaSplitExceptQuotedCommas, _SelfMocked);
+      ZENMOCK_NONVOID0_STATIC(vector<string>, ZenUnit::String, CommaSplitExceptQuotedCommas, _SelfMocked)
       const vector<string> splitTestCaseArgs =
       {
          ZenUnit::Random<string>(),

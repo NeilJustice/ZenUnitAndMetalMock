@@ -33,9 +33,9 @@ namespace ZenUnit
 
    MachineNameGetter _machineNameGetter;
 #if defined __linux__ || defined __APPLE__
-      ZENMOCK_NONVOID2_FREE(int, gethostname, char*, size_t);
+      ZENMOCK_NONVOID2_FREE(int, gethostname, char*, size_t)
 #elif defined _WIN32
-      ZENMOCK_NONVOID2_FREE(BOOL, GetComputerName, LPSTR, LPDWORD);
+      ZENMOCK_NONVOID2_FREE(BOOL, GetComputerName, LPSTR, LPDWORD)
 #endif
 
    STARTUP

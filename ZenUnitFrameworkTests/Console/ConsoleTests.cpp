@@ -23,7 +23,7 @@ namespace ZenUnit
    ConsoleColorerMock* _consoleColorerMock = nullptr;
    const string _message = Random<string>();
 #if _WIN32
-   ZENMOCK_NONVOID0_FREE(int, _getch);
+   ZENMOCK_NONVOID0_FREE(int, _getch)
 #endif
 
    struct ConsoleSelfMocked : public Zen::Mock<Console>
@@ -113,7 +113,7 @@ namespace ZenUnit
       0,
       1)
    {
-      ZENMOCK_VOID1_FREE(exit, int);
+      ZENMOCK_VOID1_FREE(exit, int)
       exit_ZenMockObject.Expect();
       _console.call_exit = BIND_1ARG_ZENMOCK_OBJECT(exit_ZenMockObject);
       //
@@ -199,7 +199,7 @@ namespace ZenUnit
       1, true,
       2, false)
    {
-      ZENMOCK_NONVOID0_FREE(int, IsDebuggerPresent);
+      ZENMOCK_NONVOID0_FREE(int, IsDebuggerPresent)
       IsDebuggerPresent_ZenMockObject.Return(isDebuggerPresentReturnValue);
       _console.call_IsDebuggerPresent = BIND_0ARG_ZENMOCK_OBJECT(IsDebuggerPresent_ZenMockObject);
       //
