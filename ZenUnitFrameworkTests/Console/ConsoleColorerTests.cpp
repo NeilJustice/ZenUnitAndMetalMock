@@ -29,7 +29,7 @@ namespace ZenUnit
    struct ConsoleColorer_SetCallsMocked : public Zen::Mock<ConsoleColorer>
    {
       ZENMOCK_VOID0(SetSupportsColorIfUnset)
-         ZENMOCK_VOID1_CONST(SetTextColor, Color)
+      ZENMOCK_VOID1_CONST(SetTextColor, Color)
    };
 
    ConsoleColorer _consoleColorer;
@@ -125,8 +125,8 @@ namespace ZenUnit
       0, false,
       1, true)
    {
-      ZENMOCK_NONVOID1_FREE(int, fileno, FILE*);
-      ZENMOCK_NONVOID1_FREE(int, isatty, int);
+      ZENMOCK_NONVOID1_FREE(int, fileno, FILE*)
+      ZENMOCK_NONVOID1_FREE(int, isatty, int)
       const int StdoutFileHandle = 1;
       fileno_ZenMockObject.Return(StdoutFileHandle);
       isatty_ZenMockObject.Return(isattyReturnValue);
@@ -148,8 +148,8 @@ namespace ZenUnit
       Color::Red, WindowsColor::Red,
       Color::Teal, WindowsColor::Teal)
    {
-      ZENMOCK_NONVOID1_FREE(HANDLE, GetStdHandle, DWORD);
-      ZENMOCK_NONVOID2_FREE(BOOL, SetConsoleTextAttribute, HANDLE, WORD);
+      ZENMOCK_NONVOID1_FREE(HANDLE, GetStdHandle, DWORD)
+      ZENMOCK_NONVOID2_FREE(BOOL, SetConsoleTextAttribute, HANDLE, WORD)
       _consoleColorer.call_GetStdHandle = BIND_1ARG_ZENMOCK_OBJECT(GetStdHandle_ZenMockObject);
       _consoleColorer.call_SetConsoleTextAttribute = BIND_2ARG_ZENMOCK_OBJECT(SetConsoleTextAttribute_ZenMockObject);
 

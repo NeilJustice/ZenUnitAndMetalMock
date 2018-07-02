@@ -81,7 +81,7 @@ Testing Rigor Options:
    RunFilterParserMock* _runFilterParserMock = nullptr;
    VoidOneArgMemberFunctionCallerMock<ArgsParser, ZenUnitArgs&>* _callerOfSetRandomSeedIfNotSetByUserMock = nullptr;
    WatchMock* _watchMock;
-   ZENMOCK_NONVOID1_STATIC(unsigned, ZenUnit::String, ToUnsigned, const string&);
+   ZENMOCK_NONVOID1_STATIC(unsigned, ZenUnit::String, ToUnsigned, const string&)
 
    STARTUP
    {
