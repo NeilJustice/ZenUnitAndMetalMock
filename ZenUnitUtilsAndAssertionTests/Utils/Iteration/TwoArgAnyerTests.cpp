@@ -14,6 +14,10 @@ namespace ZenUnit
    AFACT(PredicateThatThrowsIfCalledCodeCoverage)
    EVIDENCE
 
+   TwoArgAnyerTests()
+   {
+   }
+
    static vector<pair<T, Arg2Type>> s_predicateArgs;
 
    [[noreturn]]
