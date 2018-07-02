@@ -676,9 +676,9 @@ namespace ZenUnit
       {
       }
 
-      RunFilter(const std::string& testClassNamePattern, const std::string& testNamePattern, size_t testCaseNumber)
-         : testClassNamePattern(testClassNamePattern)
-         , testNamePattern(testNamePattern)
+      RunFilter(std::string testClassNamePattern, std::string testNamePattern, size_t testCaseNumber)
+         : testClassNamePattern(std::move(testClassNamePattern))
+         , testNamePattern(std::move(testNamePattern))
          , testCaseNumber(testCaseNumber)
       {
       }
@@ -1067,9 +1067,9 @@ namespace ZenUnit
          const char* const mangledTypeName = typeInfo.name();
          std::unordered_map<const char*, std::string>&
             mangledToDemangledTypeName = MangledToDemangledTypeNameMap();
-         if (const std::unordered_map<const char*, std::string>::const_iterator
+         const std::unordered_map<const char*, std::string>::const_iterator
             findIter = mangledToDemangledTypeName.find(mangledTypeName);
-         findIter == mangledToDemangledTypeName.end())
+         if (findIter == mangledToDemangledTypeName.end())
          {
             const std::string demangledTypeName = Demangle(mangledTypeName);
             const std::pair<std::unordered_map<const char*, std::string>::const_iterator, bool>
@@ -1077,11 +1077,8 @@ namespace ZenUnit
             const std::string* const cachedDemangledTypeName = &emplaceResult.first->second;
             return cachedDemangledTypeName;
          }
-         else
-         {
-            const std::string* cachedDemangledTypeName = &findIter->second;
-            return cachedDemangledTypeName;
-         }
+         const std::string* cachedDemangledTypeName = &findIter->second;
+         return cachedDemangledTypeName;
       }
 
 #if defined __linux__ || defined __APPLE__
@@ -1336,9 +1333,7 @@ namespace ZenUnit
       std::string why;
       FileLine fileLine;
 
-      Anomaly() noexcept
-      {
-      }
+      Anomaly() noexcept = default;
 
       template<typename... MessageTypes>
       Anomaly(
@@ -1512,9 +1507,7 @@ namespace ZenUnit
    class EqualizerException : public std::exception
    {
    public:
-      EqualizerException() noexcept
-      {
-      }
+      EqualizerException() noexcept = default;
 
       const char* what() const noexcept override
       {
@@ -1696,10 +1689,7 @@ namespace ZenUnit
    class Watch
    {
    public:
-      Watch() noexcept
-      {
-      }
-
+      Watch() noexcept = default;
       virtual ~Watch() = default;
 
       // Returns local time now in format "YYYY-MM-DD 00:00:00"
@@ -2616,23 +2606,20 @@ Testing Rigor Options:
       template<typename MapType, typename KeyType, typename ValueType>
       static std::pair<bool, bool> ContainsKeyWithValue(const MapType& m, const KeyType& key, const ValueType& value)
       {
-         if (const typename MapType::const_iterator findIter = m.find(key);
-         findIter == m.end())
+         const typename MapType::const_iterator findIter = m.find(key);
+         if (findIter == m.end())
          {
             return { false, false };
          }
-         else
+         try
          {
-            try
-            {
-               ARE_EQUAL(value, findIter->second);
-            }
-            catch (const Anomaly&)
-            {
-               return { true, false };
-            }
-            return { true, true };
+            ARE_EQUAL(value, findIter->second);
          }
+         catch (const Anomaly&)
+         {
+            return { true, false };
+         }
+         return { true, true };
       }
    };
 
@@ -3292,10 +3279,7 @@ Testing Rigor Options:
    class ThreeArgForEacher
    {
    public:
-      ThreeArgForEacher() noexcept
-      {
-      }
-
+      ThreeArgForEacher() noexcept = default;
       virtual ~ThreeArgForEacher() = default;
 
       virtual void ThreeArgForEach(
@@ -3317,10 +3301,7 @@ Testing Rigor Options:
    private:
       unsigned _testFailureNumber = 1u;
    public:
-      TestFailureNumberer() noexcept
-      {
-      }
-
+      TestFailureNumberer() noexcept = default;
       virtual ~TestFailureNumberer() = default;
 
       virtual std::string Next()
@@ -3338,10 +3319,7 @@ Testing Rigor Options:
    class TestPhaseTranslator
    {
    public:
-      TestPhaseTranslator() noexcept
-      {
-      }
-
+      TestPhaseTranslator() noexcept = default;
       virtual ~TestPhaseTranslator() = default;
 
       virtual const char* TestPhaseToTestPhaseName(TestPhase testPhase) const
@@ -3844,8 +3822,7 @@ Testing Rigor Options:
    class TwoArgMemberForEacher
    {
    public:
-      TwoArgMemberForEacher() noexcept {}
-
+      TwoArgMemberForEacher() noexcept = default;
       virtual ~TwoArgMemberForEacher() = default;
 
       virtual void TwoArgMemberForEach(
@@ -3876,8 +3853,7 @@ Testing Rigor Options:
    class TwoArgMemberAnyer
    {
    public:
-      TwoArgMemberAnyer() noexcept {}
-
+      TwoArgMemberAnyer() noexcept = default;
       virtual ~TwoArgMemberAnyer() = default;
 
       virtual bool TwoArgAny(
@@ -3904,8 +3880,7 @@ Testing Rigor Options:
    class TwoArgAnyer
    {
    public:
-      TwoArgAnyer() noexcept {}
-
+      TwoArgAnyer() noexcept = default;
       virtual ~TwoArgAnyer() = default;
 
       virtual bool TwoArgAny(const CollectionType* collection, PredicateType predicate, Arg2Type arg2) const
@@ -3952,8 +3927,7 @@ Testing Rigor Options:
    class Sorter
    {
    public:
-      Sorter() noexcept {}
-
+      Sorter() noexcept = default;
       virtual ~Sorter() = default;
 
       virtual void Sort(CollectionType* collection) const
@@ -4254,10 +4228,7 @@ Testing Rigor Options:
    class MemberForEacher
    {
    public:
-      MemberForEacher() noexcept
-      {
-      }
-
+      MemberForEacher() noexcept = default;
       virtual ~MemberForEacher() = default;
 
       virtual void MemberForEach(
@@ -4685,10 +4656,7 @@ Testing Rigor Options:
    class TestResultFactory
    {
    public:
-      TestResultFactory() noexcept
-      {
-      }
-
+      TestResultFactory() noexcept = default;
       virtual ~TestResultFactory() = default;
 
       virtual TestResult MakeConstructorFail(
@@ -5204,9 +5172,7 @@ Testing Rigor Options:
    // std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>
    struct PmfToken
    {
-      PmfToken() noexcept
-      {
-      }
+      PmfToken() noexcept = default;
 
       template<typename PmfType, PmfType>
       static const PmfToken* Instantiate()
@@ -5341,8 +5307,11 @@ Testing Rigor Options:
 
    inline ITestCaseNumberGenerator* ITestCaseNumberGenerator::FactoryNew(bool randomMode)
    {
-      if (randomMode) return new RandomTestCaseNumberGenerator;
-      else return new SequentialTestCaseNumberGenerator;
+      if (randomMode)
+      {
+         return new RandomTestCaseNumberGenerator;
+      }
+      return new SequentialTestCaseNumberGenerator;
    }
 
    template<typename TestClassType, size_t N, typename... TestCaseArgTypes>
