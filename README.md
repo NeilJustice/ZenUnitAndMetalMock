@@ -395,14 +395,14 @@ namespace ZenUnit
 |Complete ZenUnit::Random\<T\> documentation|
 |Complete ZenUnit::Equalizer\<T\> documentation|
 |Complete ZenUnit::Printer\<T\> documentation|
-|Support for comparing std::string_views with std::strings and const char pointers|
+|Support for comparing std::string_views with std::strings and const char*|
 |TUPLES_EQUAL|
 |ARE_WITHIN|
 |ARE_CLOSE|
-|-breakfast|
-|-output=\<FilePath\>|
+|--breakfast|
+|--output=\<FilePath\>|
 
 |The Road To ZenUnit 1.1|
 |-----------------------|
-|-junitxml=\<FilePath\>|
-|-parallel|
+|--junitxml=\<FilePath\>|
+|--parallel|
