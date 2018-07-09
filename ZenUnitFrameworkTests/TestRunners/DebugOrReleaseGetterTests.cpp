@@ -10,10 +10,10 @@ namespace ZenUnit
    {
       DebugOrReleaseGetter debugOrReleaseGetter;
       const string debugOrRelease = debugOrReleaseGetter.GetDebugOrRelease();
-#ifdef _DEBUG
-      ARE_EQUAL("Debug", debugOrRelease);
-#else
+#ifdef NDEBUG
       ARE_EQUAL("Release", debugOrRelease);
+#else
+      ARE_EQUAL("Debug", debugOrRelease);
 #endif
    }
 
