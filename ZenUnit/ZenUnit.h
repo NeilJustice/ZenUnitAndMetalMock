@@ -4126,10 +4126,10 @@ Testing Rigor Options:
    public:
       virtual std::string GetDebugOrRelease() const
       {
-#ifdef _DEBUG
-         return "Debug";
-#else
+#ifdef NDEBUG
          return "Release";
+#else
+         return "Debug";
 #endif
       }
 
