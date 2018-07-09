@@ -7,7 +7,7 @@
 |Linux (Clang 5.0.2, Clang 6.0.1, GCC 7.3.0) and macOS (AppleClang 9.1.0)|<a href="https://travis-ci.org/NeilJustice/ZenUnit"><img src="https://travis-ci.org/NeilJustice/ZenUnit.svg?branch=master"/></a>|
 |Windows (Visual Studio 2017 and 2017 Preview x64 and Win32)|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitZenMock"><img src="https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true"/></a>|
 
-### ZenUnit design and the N-by-N value-parameterized test syntax
+### ZenUnit design and the convenient N-by-N value-parameterized test syntax
 
 ```cpp
 #include "ZenUnit.h" // Single header
@@ -179,7 +179,7 @@ Testing Rigor Options:
    that an organizational culture of "skip it and ship it!" does not take root.
 ```
 
-### The Type-Parameterized Test Class Syntax
+### Type-Parameterized Test Class Syntax
 
 How would you confirm the correctness of this templatized Set\:\:Contains function across various types of sets and elements?
 
@@ -193,7 +193,7 @@ public:
       const bool setContainsElement = s.find(element) != s.end();
       return setContainsElement;
    }
-   
+
    Set() = delete;
 };
 ```
@@ -335,11 +335,9 @@ int main(int argc, char* argv[])
 
 Testing using random inputs instead of constant inputs is a central technique for maximizing code's robustness to code mutations.
 
-Today, code mutations can be induced manually by one's self or colleagues during code review to confirm the degree of rigorousness with which unit tests have been written.
+If the folks currently writing C++ mutation testing frameworks go the distance, you may one day hear dialog such as "100% line and branch coverage? That's excellent, but how's your mutation coverage?"
 
-In the 2020s, a combinatorial number of code mutations will be able to be induced programatically by LLVM-powered mutation testing frameworks. If the folks currently writing C++ mutation testing frameworks go the distance, you may one day hear in the hallway, at conferences, and on the forums "100% line and branch coverage? That's excellent, but how's your mutation coverage?"
-
-ZenUnit provides the following random value generating functions for writing unit tests that are robust to the swap-variable-with-constant code mutation, which is one of the most straightforward code mutations that can be introduced to a program under test.
+ZenUnit provides the following random value generating functions for writing unit tests that are robust to the swap-variable-with-constant code mutation, which is one of the most straightforward code mutations to induce manually today or with an LLVM-powered mutation testing framework in the 2020s.
 
 |Random Value Generating Function|Description|
 |--------------------------------|-----------|
