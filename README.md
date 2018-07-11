@@ -7,7 +7,7 @@
 |Linux (Clang 5.0.2, Clang 6.0.1, GCC 7.3.0) and macOS (AppleClang 9.1.0)|<a href="https://travis-ci.org/NeilJustice/ZenUnit"><img src="https://travis-ci.org/NeilJustice/ZenUnit.svg?branch=master"/></a>|
 |Windows (Visual Studio 2017 and 2017 Preview x64 and Win32)|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitZenMock"><img src="https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true"/></a>|
 
-### ZenUnit design and the convenient N-by-N value-parameterized test syntax
+### ZenUnit design commentary and the N-by-N value-parameterized test syntax
 
 ```cpp
 #include "ZenUnit.h" // Single header
@@ -17,13 +17,13 @@ std::string FizzBuzz(unsigned endNumber);
 
 // TESTS defines a ZenUnit test class and begins the FACTS section.
 TESTS(FizzBuzzTests)
-// By a carefully considered design decision,
+// By way of a carefully-considered design decision,
 // in ZenUnit test names are duplicated between the FACTS section and the EVIDENCE section.
 // Because code is read much more often than it is written,
 // always having test names up top ready to easily review for continued quality and cohesion
 // instead of test names being scattered throughout test files
 // is where this design yields long term code quality dividends.
-// Test names always up top makes it downright difficult not to notice during code review
+// Test names always up top makes it downright difficult not to notice
 // that a class under test has, for example,
 // grown to have many more responsibilities than a single responsibility,
 // leading to better program design when that class under test is then refactored.
@@ -71,8 +71,8 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    16, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz 16")
 {
    const string fizzBuzzSequence = FizzBuzz(endNumber);
-   // ZenUnit's assertion names are declarative in style (ARE_EQUAL, THROWS, IS_TRUE, etc)
-   // instead of procedural in style (ASSERT_EQUAL, ASSERT_THROWS, ASSERT_TRUE, etc)
+   // ZenUnit's assertion names are declarative in language style (ARE_EQUAL, THROWS, IS_TRUE, etc)
+   // instead of procedural in language style (ASSERT_EQUAL, ASSERT_THROWS, ASSERT_TRUE, etc)
    // to give ZenUnit a test reading experience similar to reading an executable specification document.
    ARE_EQUAL(expectedFizzBuzzSequence, fizzBuzzSequence);
 }
@@ -344,7 +344,7 @@ ZenUnit provides the following random value generating functions for writing uni
 |`ZenUnit::Random<T>()`|Returns a random integer T value between `std::numeric_limits<T>::min()` and `std::numeric_limits<T>::max()` selected from a uniform distribution. Or, if `UserType ZenUnit::Random<UserType>()` is defined, returns the result from calling that function.|
 |`ZenUnit::RandomBetween<T>(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound)`|Returns a random integer T value between inclusiveLowerBound and inclusiveUpperBound selected from a uniform distribution.|
 |`ZenUnit::RandomEnum<EnumType>(EnumType exclusiveEnumMaxValue)`|Returns a random EnumType value between 0 and exclusiveEnumMaxValue - 1, selected from a uniform distribution.|
-|`ZenUnit::Random<float>()`|Returns a random float between -1234567 and +1234567 selected from a `std::uniform_real_distribution<float>`.|
+|`ZenUnit::Random<float>()`|Returns a random float between `std::numeric_limits<float>::min()` and `std::numeric_limits<float>::max()` selected from a `std::uniform_real_distribution<float>`.|
 |`ZenUnit::Random<double>()`|Returns a random double between `std::numeric_limits<double>::min()` and `std::numeric_limits<double>::max()` from a `std::uniform_real_distribution<double>`.|
 |`ZenUnit::Random<std::string>()`|Returns `"RS" + std::to_string(ZenUnit::RandomBetween<int>(0, 10000))`.|
 |`ZenUnit::RandomVector<T>()`|Returns a `std::vector<T>` with size between 0 and 2 with each element a `ZenUnit::Random<T>()` value.|
