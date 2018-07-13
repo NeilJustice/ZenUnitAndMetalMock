@@ -17,6 +17,7 @@
 #include <random>
 #include <set>
 #include <sstream>
+#include <string_view>
 #include <typeindex>
 #include <unordered_map>
 #include <unordered_set>
@@ -1026,7 +1027,8 @@ namespace ZenUnit
    struct is_quoted_when_printed : std::integral_constant<bool,
       std::is_same<std::string, typename std::decay<T>::type>::value ||
       std::is_same<char const*, typename std::decay<T>::type>::value ||
-      std::is_same<char*, typename std::decay<T>::type>::value>
+      std::is_same<char*, typename std::decay<T>::type>::value ||
+      std::is_same<std::string_view, typename std::decay<T>::type>::value>
    {
    };
 

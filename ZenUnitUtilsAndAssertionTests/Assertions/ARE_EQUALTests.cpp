@@ -52,6 +52,7 @@ namespace ZenUnit
    AFACT(IntLiteralsNotEqual_Throws)
    AFACT(IntVariablesNotEqual_Throws_MessagesTestCase)
    AFACT(StringsNotEqual_ThrowsWithStringsInQuotesToConfirmedToStringed)
+   AFACT(StringViewsNotEqual_ThrowsWithStringViewsInQuotesToConfirmedToStringed)
    AFACT(EqualizerBothOneAndTwoTypeTestStruct_CodeCoverage)
    EVIDENCE
 
@@ -134,6 +135,17 @@ namespace ZenUnit
    {
       const string expected = "expected";
       const string actual = "actual";
+      THROWS(ARE_EQUAL(expected, actual), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: ARE_EQUAL(expected, actual)",
+"Expected: \"expected\"",
+"  Actual: \"actual\"",
+"File.cpp(1)"));
+   }
+
+   TEST(StringViewsNotEqual_ThrowsWithStringViewsInQuotesToConfirmedToStringed)
+   {
+      const string_view expected = "expected";
+      const string_view actual = "actual";
       THROWS(ARE_EQUAL(expected, actual), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARE_EQUAL(expected, actual)",
 "Expected: \"expected\"",
