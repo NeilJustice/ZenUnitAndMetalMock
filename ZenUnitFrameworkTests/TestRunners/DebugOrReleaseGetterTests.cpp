@@ -3,17 +3,21 @@
 namespace ZenUnit
 {
    TESTS(DebugOrReleaseGetterTests)
-   AFACT(GetDebugOrRelease_ReturnsDebugInIf_DEBUGDefined_OtherwiseReturnsRelease)
+   AFACT(GetRunningInDebugOrReleaseModeString_ReturnsReleaseIfNDEBUGIsDefined_OtherwiseReturnsDebug)
    EVIDENCE
 
-   TEST(GetDebugOrRelease_ReturnsDebugInIf_DEBUGDefined_OtherwiseReturnsRelease)
+   TEST(GetRunningInDebugOrReleaseModeString_ReturnsReleaseIfNDEBUGIsDefined_OtherwiseReturnsDebug)
    {
       DebugOrReleaseGetter debugOrReleaseGetter;
-      const string debugOrRelease = debugOrReleaseGetter.GetDebugOrRelease();
-#ifdef NDEBUG
-      ARE_EQUAL("Release", debugOrRelease);
+      const string runningInDebugOrReleaseModeString = debugOrReleaseGetter.GetRunningInDebugOrReleaseModeString();
+#ifdef __APPLE__
+      ARE_EQUAL(" Running: ", runningInDebugOrReleaseModeString);
 #else
-      ARE_EQUAL("Debug", debugOrRelease);
+#ifdef NDEBUG
+      ARE_EQUAL(" Running in Release mode: ", runningInDebugOrReleaseModeString);
+#else
+      ARE_EQUAL(" Running in Debug mode: ", runningInDebugOrReleaseModeString);
+#endif
 #endif
    }
 

@@ -1,6 +1,7 @@
 #pragma once
 
-struct MachineNameGetterMock : public Zen::Mock<MachineNameGetter>
+class MachineNameGetterMock : public Zen::Mock<MachineNameGetter>
 {
+public:
    ZENMOCK_NONVOID0_CONST(string, GetMachineName)
 };

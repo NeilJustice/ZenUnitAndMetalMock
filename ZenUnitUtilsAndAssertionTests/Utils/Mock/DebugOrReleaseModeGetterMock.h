@@ -1,6 +1,7 @@
 #pragma once
 
-struct DebugOrReleaseGetterMock : public Zen::Mock<DebugOrReleaseGetter>
+class DebugOrReleaseGetterMock : public Zen::Mock<DebugOrReleaseGetter>
 {
-   ZENMOCK_NONVOID0_CONST(string, GetDebugOrRelease)
+public:
+   ZENMOCK_NONVOID0_CONST(string, GetRunningInDebugOrReleaseModeString)
 };

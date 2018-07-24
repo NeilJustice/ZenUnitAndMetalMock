@@ -4134,12 +4134,16 @@ Testing Rigor Options:
    class DebugOrReleaseGetter
    {
    public:
-      virtual std::string GetDebugOrRelease() const
+      virtual std::string GetRunningInDebugOrReleaseModeString() const
       {
-#ifdef NDEBUG
-         return "Release";
+#ifdef __APPLE__
+         return " Running: ";
 #else
-         return "Debug";
+#ifdef NDEBUG
+         return " Running in Release mode: ";
+#else
+         return " Running in Debug mode: ";
+#endif
 #endif
       }
 
@@ -4169,8 +4173,8 @@ Testing Rigor Options:
          const ZenUnitArgs& zenUnitArgs, const TestClassRunnerRunner* testClassRunnerRunner) const
       {
          _console->WriteColor("[ZenUnit]", Color::Green);
-         const std::string debugOrRelease = _debugOrReleaseGetter->GetDebugOrRelease();
-         _console->WriteLine(" Running in " + debugOrRelease + " mode: " + zenUnitArgs.commandLine);
+         const std::string runningInDebugOrReleaseModeString = _debugOrReleaseGetter->GetRunningInDebugOrReleaseModeString();
+         _console->WriteLine(runningInDebugOrReleaseModeString + zenUnitArgs.commandLine);
          _console->WriteColor("[ZenUnit]", Color::Green);
          const std::string startTime = _watch->DateTimeNow();
          _console->WriteLine(" Running at " + startTime);

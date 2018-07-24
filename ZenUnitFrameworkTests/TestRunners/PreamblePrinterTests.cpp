@@ -49,8 +49,8 @@ namespace ZenUnit
    TEST(PrintPreambleAndGetStartTime_PrintsCommandLineAndStartTimeAndTestAndTestClassCounts_ReturnsStartTime)
    {
       _preamblePrinterSelfMocked.consoleMock->WriteColorMock.Expect();
-      const string debugOrRelease = _preamblePrinterSelfMocked.
-         debugOrReleaseGetterMock->GetDebugOrReleaseMock.ReturnRandom();
+      const string runningInDebugOrReleaseModeString = _preamblePrinterSelfMocked.
+         debugOrReleaseGetterMock->GetRunningInDebugOrReleaseModeStringMock.ReturnRandom();
       _preamblePrinterSelfMocked.consoleMock->WriteLineMock.Expect();
       TestClassRunnerRunnerMock testClassRunnerRunnerMock;
       const size_t numberOfTestClassesToBeRun = testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.ReturnRandom();
@@ -69,13 +69,13 @@ namespace ZenUnit
       ZEN(_preamblePrinterSelfMocked.watchMock->DateTimeNowMock.CalledOnce());
       ZEN(testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.CalledOnce());
       ZEN(_preamblePrinterSelfMocked.consoleMock->WriteColorMock.CalledNTimesWith(3, "[ZenUnit]", Color::Green));
-      ZEN(_preamblePrinterSelfMocked.debugOrReleaseGetterMock->GetDebugOrReleaseMock.CalledOnce());
+      ZEN(_preamblePrinterSelfMocked.debugOrReleaseGetterMock->GetRunningInDebugOrReleaseModeStringMock.CalledOnce());
       ZEN(_preamblePrinterSelfMocked.MakeThirdLinePrefixMock.CalledOnceWith(numberOfTestClassesToBeRun));
       ZEN(_preamblePrinterSelfMocked.MakeThirdLineSuffixMock.CalledOnceWith(zenUnitArgs.random, zenUnitArgs.randomseed));
       const string expectedThirdLineAndLineBreak = thirdLinePrefix + thirdLineSuffix + "\n";
       ZEN(_preamblePrinterSelfMocked.consoleMock->WriteLineMock.CalledAsFollows(
       {
-         " Running in " + debugOrRelease + " mode: " + zenUnitArgs.commandLine,
+         runningInDebugOrReleaseModeString + zenUnitArgs.commandLine,
          " Running at " + startTime,
          expectedThirdLineAndLineBreak
       }));
