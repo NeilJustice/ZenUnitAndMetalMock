@@ -73,9 +73,13 @@
 #define IS_FALSE(value, ...) \
    ZenUnit::IS_FALSE_Defined(value, #value, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that value is zero.
+// Asserts that value is T{}, which is 0 for numeric types.
 #define IS_ZERO(value, ...) \
    ZenUnit::IS_ZERO_Defined(VRT(value), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Asserts that value is not T{}.
+#define IS_NOT_DEFAULT(value, ...) \
+   ZenUnit::IS_NOT_DEFAULT_Defined(VRT(value), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
 // Pointer Assertions
@@ -1193,12 +1197,12 @@ namespace ZenUnit
          return CharPointerToString(str);
       }
 
-      static std::string ToString(const bool& value)
+      static std::string ToString(bool value)
       {
          return value ? "true" : "false";
       }
 
-      static std::string ToString(const char& value)
+      static std::string ToString(char value)
       {
          if (value == 0)
          {
@@ -1210,9 +1214,14 @@ namespace ZenUnit
          return valueString;
       }
 
+      static std::string ToString(float value)
+      {
+         const std::string floatValueString = std::to_string(value) + "f";
+         return floatValueString;
+      }
+
       template<typename T>
-      static typename std::enable_if<
-         has_to_string<T>::value, std::string>::type
+      static typename std::enable_if<has_to_string<T>::value, std::string>::type
          ToString(const T& value)
       {
          const std::string valueString(std::to_string(value));
@@ -1220,16 +1229,14 @@ namespace ZenUnit
       }
 
       template<typename T>
-      static typename std::enable_if<
-         !has_to_string<T>::value && !std::is_enum<T>::value, std::string>::type
+      static typename std::enable_if<!has_to_string<T>::value && !std::is_enum<T>::value, std::string>::type
          ToString(const T& value)
       {
          return DoToString(value);
       }
 
       template<typename T>
-      static typename std::enable_if<
-         !has_to_string<T>::value && std::is_enum<T>::value, std::string>::type
+      static typename std::enable_if<!has_to_string<T>::value && std::is_enum<T>::value, std::string>::type
          ToString(const T& value)
       {
          const std::string valueString = std::to_string(static_cast<typename std::underlying_type<T>::type>(value));
@@ -2553,11 +2560,10 @@ Testing Rigor Options:
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
-   template<typename ValueType, typename ZeroValueType, typename... MessageTypes>
-   void IS_ZERO_Throw(VRText<ValueType> valueVRT, const ZeroValueType& zeroValue,
-      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   template<typename ValueType, typename DefaultValueType, typename... MessageTypes>
+   void IS_ZERO_Throw(VRText<ValueType> valueVRT, const DefaultValueType& defaultValue, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-      const std::string expectedField = ToStringer::ToString(zeroValue);
+      const std::string expectedField = ToStringer::ToString(defaultValue);
       const std::string actualField = ToStringer::ToString(valueVRT.value);
       throw Anomaly("IS_ZERO", valueVRT.text, "", "", messagesText,
          Anomaly::Default(),
@@ -2567,14 +2573,35 @@ Testing Rigor Options:
    }
 
    template<typename ValueType, typename... MessageTypes>
-   void IS_ZERO_Defined(VRText<ValueType> valueVRT,
-      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_ZERO_Defined(VRText<ValueType> valueVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-      const typename std::remove_reference<ValueType>::type zeroValue{};
-      const bool valueIsZero = valueVRT.value == zeroValue;
-      if (!valueIsZero)
+      static const typename std::remove_reference<ValueType>::type defaultValue{};
+      const bool valueIsDefaultValue = valueVRT.value == defaultValue;
+      if (!valueIsDefaultValue)
       {
-         IS_ZERO_Throw(valueVRT, zeroValue, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         IS_ZERO_Throw(valueVRT, defaultValue, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+      }
+   }
+
+   template<typename ValueType, typename... MessageTypes>
+   void IS_NOT_DEFAULT_Throw(VRText<ValueType> valueVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   {
+      const std::string actualField = ToStringer::ToString(valueVRT.value);
+      throw Anomaly("IS_NOT_DEFAULT", valueVRT.text, "", "", messagesText,
+         Anomaly::Default(),
+         "Not T{}",
+         actualField,
+         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+   }
+
+   template<typename ValueType, typename... MessageTypes>
+   void IS_NOT_DEFAULT_Defined(VRText<ValueType> valueVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   {
+      static const typename std::remove_reference<ValueType>::type defaultValue{};
+      const bool valueIsDefaultValue = valueVRT.value == defaultValue;
+      if (valueIsDefaultValue)
+      {
+         IS_NOT_DEFAULT_Throw(valueVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 

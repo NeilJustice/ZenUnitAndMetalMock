@@ -263,6 +263,7 @@ int main(int argc, char* argv[])
 |`IS_TRUE(value, messages...)`|Asserts that `value` is true.|
 |`IS_FALSE(value, messages...)`|Asserts that `value` is false.|
 |`IS_ZERO(value, messages...)`|Asserts that `value == ValueType{}` returns true.|
+|`IS_NOT_DEFAULT(value, messages...)`|Asserts that `value == ValueType{}` returns false. Caution: This assertion is vulnerable to value mutations. I use this assertion only to confirm that custom ZenUnit::Random\<T\>() functions return all non-default field values.|
 
 |Data Structure Assertions|Description|
 |-------------------------|-----------|
