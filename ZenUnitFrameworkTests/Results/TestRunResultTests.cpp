@@ -183,18 +183,16 @@ namespace ZenUnit
    }
 
    TEST3X3(PrintTestFailuresAndSkips_PrintsTestFailures_PrintsSkippedTestClassNames_PrintsSkippedFullTestNames,
-      size_t numberOfFailedTestCases,
-      bool expectTestsFailedLineAndPrintFailuresCall,
-      const string& expectedTestsFailedLine,
+      size_t numberOfFailedTestCases, bool expectTestsFailedLineAndPrintFailuresCall, const string& expectedTestsFailedLine,
       size_t(0), false, "",
-      size_t(1), true, "1 Test Failure:\n",
-      size_t(2), true, "2 Test Failures:\n",
-      size_t(3), true, "3 Test Failures:\n")
+      size_t(1), true, "== 1 Test Failed ==\n===================\n",
+      size_t(2), true, "== 2 Tests Failed ==\n====================\n",
+      size_t(10), true, "== 10 Tests Failed ==\n=====================\n")
    {
       _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
       if (expectTestsFailedLineAndPrintFailuresCall)
       {
-         _consoleMock->WriteLineMock.Expect();
+         _consoleMock->WriteLineColorMock.Expect();
          _memberForEacherTestClassResultsMock->MemberForEachMock.Expect();
       }
       _memberForEacherSkippedTestsMock->MemberForEachMock.Expect();
@@ -203,17 +201,14 @@ namespace ZenUnit
       //
       if (expectTestsFailedLineAndPrintFailuresCall)
       {
-         ZEN(_consoleMock->WriteLineMock.CalledOnceWith(expectedTestsFailedLine));
+         ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith(expectedTestsFailedLine, Color::Red));
          ZEN(_memberForEacherTestClassResultsMock->MemberForEachMock.
-            CalledOnceWith(&_testRunResult._testClassResults, &_testRunResult,
-               &TestRunResult::PrintTestClassResultFailures));
+            CalledOnceWith(&_testRunResult._testClassResults, &_testRunResult, &TestRunResult::PrintTestClassResultFailures));
       }
       ZEN(_memberForEacherSkippedTestsMock->MemberForEachMock.CalledAsFollows(
       {
-         { &_testRunResult._skippedTestClassNamesAndReasons,
-            &_testRunResult, &TestRunResult::PrintSkippedTestClassReminder },
-         { &_testRunResult._skippedFullTestNamesAndReasons,
-            &_testRunResult, &TestRunResult::PrintSkippedTestReminder }
+         { &_testRunResult._skippedTestClassNamesAndReasons, &_testRunResult, &TestRunResult::PrintSkippedTestClassReminder },
+         { &_testRunResult._skippedFullTestNamesAndReasons, &_testRunResult, &TestRunResult::PrintSkippedTestReminder }
       }));
    }
 

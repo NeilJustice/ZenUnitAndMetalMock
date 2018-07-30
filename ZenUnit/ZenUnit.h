@@ -4318,11 +4318,12 @@ Testing Rigor Options:
       {
          if (_numberOfFailedTestCases > 0)
          {
-            const std::string numberOfTestFailuresLine = String::Concat(
-               _numberOfFailedTestCases, " Test Failure", _numberOfFailedTestCases > 1 ? "s" : "", ":\n");
-            _console->WriteLine(numberOfTestFailuresLine);
-            _memberForEacherTestClassResults->MemberForEach(
-               &_testClassResults, this, &TestRunResult::PrintTestClassResultFailures);
+            const std::string testOrTests = _numberOfFailedTestCases > 1 ? "Tests" : "Test";
+            const std::string firstLine = String::Concat("== ", _numberOfFailedTestCases, ' ', testOrTests, " Failed ==");
+            const std::string secondLineEqualsSigns(firstLine.size(), '=');
+            const std::string numberOfTestFailuresLine = String::Concat(firstLine, '\n', secondLineEqualsSigns, '\n');
+            _console->WriteLineColor(numberOfTestFailuresLine, Color::Red);
+            _memberForEacherTestClassResults->MemberForEach(&_testClassResults, this, &TestRunResult::PrintTestClassResultFailures);
          }
          _memberForEacherSkippedTests->MemberForEach(
             &_skippedTestClassNamesAndReasons, this, &TestRunResult::PrintSkippedTestClassReminder);
