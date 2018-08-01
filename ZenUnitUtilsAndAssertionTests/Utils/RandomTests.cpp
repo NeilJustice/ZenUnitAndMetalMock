@@ -79,7 +79,7 @@ namespace ZenUnit
    TEST(RandomVector_ReturnsAVectorWithSizeBetween0And2WithRandomElements)
    {
       const vector<T> randomVector = ZenUnit::RandomVector<T>();
-      IS_TRUE(randomVector.size() >= 0 && randomVector.size() <= 2);
+      IS_TRUE(randomVector.size() >= 1 && randomVector.size() <= 3);
    }
 
    RUN_TEMPLATE_TESTS(RandomVectorTests, int)
@@ -94,7 +94,7 @@ namespace ZenUnit
    TEST(RandomMap_ReturnsAMapWithSizeBetween0And2WithRandomElements)
    {
       const map<KeyType, ValueType> randomOrderedMap = ZenUnit::RandomMap<KeyType, ValueType>();
-      IS_TRUE(randomOrderedMap.size() >= 0 && randomOrderedMap.size() <= 2);
+      IS_TRUE(randomOrderedMap.size() >= 1 && randomOrderedMap.size() <= 3);
    }
    RUN_TEMPLATE_TESTS(RandomMapTests, int, int)
    THEN_RUN_TEMPLATE_TESTS(RandomMapTests, string, double)
@@ -108,7 +108,7 @@ namespace ZenUnit
    TEST(RandomUnorderedMap_ReturnsAMapWithSizeBetween0And2WithRandomElements)
    {
       const unordered_map<KeyType, ValueType> randomUnorderedMap = ZenUnit::RandomUnorderedMap<KeyType, ValueType>();
-      IS_TRUE(randomUnorderedMap.size() >= 0 && randomUnorderedMap.size() <= 2);
+      IS_TRUE(randomUnorderedMap.size() >= 1 && randomUnorderedMap.size() <= 3);
    }
    RUN_TEMPLATE_TESTS(RandomUnorderedMapTests, int, int)
    THEN_RUN_TEMPLATE_TESTS(RandomUnorderedMapTests, string, double)

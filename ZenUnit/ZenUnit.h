@@ -6423,7 +6423,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    template<typename T>
    T RandomNon0()
    {
-      const T randomT = RandomBetween<T>(std::numeric_limits<T>::min(), std::numeric_limits<T>::max());
+      const T randomT = Random<T>();
       if (randomT == 0)
       {
          return 1;
@@ -6478,7 +6478,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    template<typename T>
    std::vector<T> RandomVector()
    {
-      const std::size_t randomVectorSize = RandomBetween<size_t>(0, 2);
+      const std::size_t randomVectorSize = RandomBetween<size_t>(1, 3);
       std::vector<T> randomVector(randomVectorSize);
       for (size_t i = 0; i < randomVectorSize; ++i)
       {
@@ -6490,7 +6490,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    template<typename KeyType, typename ValueType>
    std::map<KeyType, ValueType> RandomMap()
    {
-      const std::size_t randomMapSize = RandomBetween<size_t>(0, 2);
+      const std::size_t randomMapSize = RandomBetween<size_t>(1, 3);
       std::map<KeyType, ValueType> randomMap;
       for (size_t i = 0; i < randomMapSize; ++i)
       {
@@ -6504,7 +6504,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    template<typename KeyType, typename ValueType>
    std::unordered_map<KeyType, ValueType> RandomUnorderedMap()
    {
-      const std::size_t randomUnorderedMapSize = RandomBetween<size_t>(0, 2);
+      const std::size_t randomUnorderedMapSize = RandomBetween<size_t>(1, 3);
       std::unordered_map<KeyType, ValueType> randomUnorderedMap;
       for (size_t i = 0; i < randomUnorderedMapSize; ++i)
       {
@@ -6528,7 +6528,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    template<typename ElementType>
    std::set<ElementType> RandomSet()
    {
-      const std::size_t randomSetSize = RandomBetween<size_t>(0, 2);
+      const std::size_t randomSetSize = RandomBetween<size_t>(1, 3);
       std::set<ElementType> randomSet;
       PopulateSetWithRandomElements(randomSetSize, &randomSet);
       return randomSet;
@@ -6537,7 +6537,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    template<typename ElementType>
    std::unordered_set<ElementType> RandomUnorderedSet()
    {
-      const std::size_t randomUnorderedSetSize = RandomBetween<size_t>(0, 2);
+      const std::size_t randomUnorderedSetSize = RandomBetween<size_t>(1, 3);
       std::unordered_set<ElementType> randomUnorderedSet;
       PopulateSetWithRandomElements(randomUnorderedSetSize, &randomUnorderedSet);
       return randomUnorderedSet;
