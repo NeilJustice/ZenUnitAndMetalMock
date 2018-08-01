@@ -6420,6 +6420,17 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
       return randomT;
    }
 
+   template<typename T>
+   T RandomNon0()
+   {
+      const T randomT = RandomBetween<T>(std::numeric_limits<T>::min(), std::numeric_limits<T>::max());
+      if (randomT == 0)
+      {
+         return 1;
+      }
+      return randomT;
+   }
+
    template<>
    inline float Random<float>()
    {
