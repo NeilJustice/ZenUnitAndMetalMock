@@ -73,11 +73,11 @@
 #define IS_FALSE(value, ...) \
    ZenUnit::IS_FALSE_Defined(value, #value, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that value is T{}, which is 0 for numeric types.
+// Asserts that value == T{} returns true.
 #define IS_ZERO(value, ...) \
    ZenUnit::IS_ZERO_Defined(VRT(value), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that value is not T{}.
+// Asserts that value == T{} returns false.
 #define IS_NOT_DEFAULT(value, ...) \
    ZenUnit::IS_NOT_DEFAULT_Defined(VRT(value), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
@@ -124,6 +124,10 @@
 // Asserts that collection.size() is zero.
 #define IS_EMPTY(collection, ...) \
    ZenUnit::IS_EMPTY_Defined(VRT(collection), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Asserts that collection.size() is not zero.
+#define IS_NOT_EMPTY(collection, ...) \
+   ZenUnit::IS_NOT_EMPTY_Defined(VRT(collection), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that the elements of expectedVector are equal to the elements of actualVector.
 #define VECTORS_EQUAL(expectedVector, actualVector, ...) \
@@ -2459,9 +2463,7 @@ Testing Rigor Options:
    }
 
    template<typename CollectionType, typename... MessageTypes>
-   void IS_EMPTY_Throw(
-      VRText<CollectionType> collectionVRT,
-      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_EMPTY_Throw(VRText<CollectionType> collectionVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const size_t size = collectionVRT.value.size();
       const std::string expectedField = "empty() == true";
@@ -2474,13 +2476,33 @@ Testing Rigor Options:
    }
 
    template<typename CollectionType, typename... MessageTypes>
-   void IS_EMPTY_Defined(
-      VRText<CollectionType> collectionVRT,
-      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_EMPTY_Defined(VRText<CollectionType> collectionVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (!collectionVRT.value.empty())
       {
          IS_EMPTY_Throw(collectionVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+      }
+   }
+
+   template<typename CollectionType, typename... MessageTypes>
+   void IS_NOT_EMPTY_Throw(VRText<CollectionType> collectionVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   {
+      const size_t size = collectionVRT.value.size();
+      const std::string expectedField = "empty() == false";
+      const std::string actualField = "empty() == true";
+      throw Anomaly("IS_NOT_EMPTY", collectionVRT.text, "", "", messagesText,
+         Anomaly::Default(),
+         expectedField,
+         actualField,
+         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+   }
+
+   template<typename CollectionType, typename... MessageTypes>
+   void IS_NOT_EMPTY_Defined(VRText<CollectionType> collectionVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   {
+      if (collectionVRT.value.empty())
+      {
+         IS_NOT_EMPTY_Throw(collectionVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 

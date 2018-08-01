@@ -263,7 +263,7 @@ int main(int argc, char* argv[])
 |`IS_TRUE(value, messages...)`|Asserts that `value` is true.|
 |`IS_FALSE(value, messages...)`|Asserts that `value` is false.|
 |`IS_ZERO(value, messages...)`|Asserts that `value == ValueType{}` returns true.|
-|`IS_NOT_DEFAULT(value, messages...)`|Asserts that `value == ValueType{}` returns false. Caution: This assertion is vulnerable to value mutations. I use this assertion only to confirm that custom ZenUnit::Random\<T\>() functions return all non-default field values.|
+|`IS_NOT_DEFAULT(value, messages...)`|Asserts that `value == ValueType{}` returns false. Note: This assertion is vulnerable to mutate-value mutations. I only use this assertion to confirm that custom ZenUnit::Random\<T\>() functions return all non-default field values.|
 
 |Data Structure Assertions|Description|
 |-------------------------|-----------|
@@ -274,6 +274,7 @@ int main(int argc, char* argv[])
 |`STD_ARRAYS_EQUAL(expectedStdArray, actualStdArray, messages...)`|Asserts `ARE_EQUAL` on each std::array expected and actual element.|
 |`DOES_CONTAIN(expectedElement, dataStructure, messages...)`|Asserts that `dataStructure.find(expectedElement) != dataStructure.end()`.|
 |`IS_EMPTY(dataStructure, messages...)`|Asserts that `dataStructure.empty()` returns true.|
+|`IS_NOT_EMPTY(dataStructure, messages...)`|Asserts that `dataStructure.empty()` returns false. Note: This assertion is vulnerable to mutate-collection mutations. I only use this assertion to confirm that custom ZenUnit::Random\<T\>() functions return all non-default field values.|
 
 |Exception Assertions|Description|
 |--------------------|-----------|
