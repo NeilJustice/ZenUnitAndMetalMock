@@ -2487,7 +2487,6 @@ Testing Rigor Options:
    template<typename CollectionType, typename... MessageTypes>
    void IS_NOT_EMPTY_Throw(VRText<CollectionType> collectionVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-      const size_t size = collectionVRT.value.size();
       const std::string expectedField = "empty() == false";
       const std::string actualField = "empty() == true";
       throw Anomaly("IS_NOT_EMPTY", collectionVRT.text, "", "", messagesText,
