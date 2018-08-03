@@ -1,6 +1,6 @@
 <h1 align="center">ZenUnit</h1>
 
-<h4 align="center">ZenUnit is a single-header C++17 unit testing framework with a convenient syntax for writing value-parameterized and type-parameterized unit tests that call exactness-focused assertions for maximizing mutation coverage.</h4>
+<h4 align="center">ZenUnit is a header-only C++17 unit testing framework with a convenient syntax for writing value-parameterized and type-parameterized unit tests that call exactness-focused assertions for maximizing mutation coverage.</h4>
 
 |Build Type|Build Status|
 |----------|------------|
@@ -10,7 +10,7 @@
 ### ZenUnit design commentary and the N-by-N value-parameterized test syntax
 
 ```cpp
-#include "ZenUnit.h" // Single header
+#include "ZenUnit.h"
 
 // Function to be unit tested with ZenUnit
 std::string FizzBuzz(unsigned endNumber);
@@ -72,7 +72,7 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 {
    const string fizzBuzzSequence = FizzBuzz(endNumber);
    // ZenUnit's assertion names are declarative in language style (ARE_EQUAL, THROWS, IS_TRUE, etc)
-   // instead of procedural in language style (ASSERT_EQUAL, ASSERT_THROWS, ASSERT_TRUE, etc)
+   // instead of imperative in language style (ASSERT_EQUAL, ASSERT_THROWS, ASSERT_TRUE, etc)
    // to give ZenUnit a test reading experience similar to reading an executable specification document.
    ARE_EQUAL(expectedFizzBuzzSequence, fizzBuzzSequence);
 }
@@ -117,7 +117,8 @@ std::string FizzBuzz(unsigned endNumber)
 
 int main(int argc, char* argv[])
 {
-   return ZenUnit::RunTests(argc, argv);
+   const int exitCode = ZenUnit::RunTests(argc, argv);
+   return exitCode;
 }
 ```
 
@@ -181,7 +182,7 @@ Testing Rigor Options:
 
 ### Type-Parameterized Test Class Syntax
 
-How would you confirm the correctness of this templatized Set\:\:Contains function across various types of sets and elements?
+How could the correctness of this templatized Set\:\:Contains function be confirmed across various types of sets and elements?
 
 ```cpp
 class Set
@@ -198,7 +199,7 @@ public:
 };
 ```
 
-This is how the function's correctness can be confirmed using ZenUnit's type-parameterized test class syntax:
+One way to do it would be to use ZenUnit's type-parameterized test class syntax:
 
 ```cpp
 #include "ZenUnit.h"
@@ -215,7 +216,7 @@ static_assert(!std::is_default_constructible_v<Set>);
 TEST(Contains_ReturnsTrueIfSetContainsElement)
 {
    SetType<T> s;
-   // Random value testing to maximize robustness against code mutations
+   // Random value testing for robustness to code mutations
    const T elementA = ZenUnit::Random<T>();
    const T elementB = elementA + 1;
 
@@ -246,7 +247,8 @@ THEN_RUN_TEMPLATE_TESTS(SetTests, std::unordered_set, unsigned long long)
 
 int main(int argc, char* argv[])
 {
-   return ZenUnit::RunTests(argc, argv);
+   const int exitCode = ZenUnit::RunTests(argc, argv);
+   return exitCode;
 }
 ```
 
@@ -339,7 +341,7 @@ Testing using random inputs instead of constant inputs is a central technique fo
 
 If the folks currently writing C++ mutation testing frameworks go the distance, you may one day hear water cooler dialog such as "100% line and branch coverage? That's excellent, but how's your mutation coverage?"
 
-ZenUnit provides the following random value generating functions for writing unit tests that are robust to the swap-variable-with-constant code mutation, which is one of the most straightforward code mutations to induce manually today or with an LLVM-powered mutation testing framework in the 2020s.
+ZenUnit provides the following random value generating functions for writing unit tests that are robust to the swap-variable-with-constant code mutation, which is one of the most straightforward code mutations to induce manually today or automatically in the 2020s with an LLVM-powered mutation testing framework.
 
 |Random Value Generating Function|Description|
 |--------------------------------|-----------|
@@ -361,9 +363,9 @@ The default behavior of `ARE_EQUAL(expectedValue, actualValue)` is to throw a `Z
 
 For custom `ARE_EQUAL` behavior such as field-by-field assertions on the fields of type T, a `ZenUnit::Equalizer<T>` struct specialization can be defined with a `static void AssertEqual(const T& expected, const T& actual)` function.
 
-Here is an example of how to define a custom ZenUnit\:\:Equalizer\<T\> struct + function and custom ZenUnit::Random\<T\> function for T = FileArbArgs. FileArb.exe is a program that creates arbitrary files for testing filesystem and version control performance. This program will eventually be open sourced to be both a useful program and an example of how a program's correctness can be confirmed using ZenUnit and ZenMock.
+Here is an example of how to define and test a custom ZenUnit\:\:Equalizer\<T\> and custom ZenUnit::Random\<T\> for T = FileArbArgs. FileArb.exe is a program that creates arbitrary files for testing the performance of filesystems, networks, and version control. FileArb.exe will eventually be open sourced to be both a useful program and a real-world example of how a program's correctness can be confirmed using ZenUnit and ZenMock.
 
-FileArbArgs.h:
+libFileArb/FileArbArgs.h:
 
 ```cpp
 #pragma once
@@ -380,7 +382,7 @@ struct FileArbArgs
 };
 ```
 
-FileArbArgsEqualizerAndRandom.h:
+libFileArbTests/ZenUnitTesting/FileArbArgsEqualizerAndRandom.h:
 
 ```cpp
 #pragma once
@@ -388,18 +390,20 @@ FileArbArgsEqualizerAndRandom.h:
 
 namespace ZenUnit
 {
+   // Custom ZenUnit::Equalizer<T> declaration
    template<>
    struct Equalizer<FileArbArgs>
    {
       static void AssertEqual(const FileArbArgs& expectedFileArbArgs, const FileArbArgs& actualFileArbArgs);
    };
 
+   // Custom ZenUnit::Random<T> declaration
    template<>
    FileArbArgs Random();
 };
 ```
 
-FileArbArgsEqualizerAndRandom.cpp:
+libFileArbTests/ZenUnitTesting/FileArbArgsEqualizerAndRandom.cpp:
 
 ```cpp
 #include "pch.h"
@@ -407,6 +411,7 @@ FileArbArgsEqualizerAndRandom.cpp:
 
 namespace ZenUnit
 {
+   // Custom ZenUnit::Equalizer<T> definition
    void Equalizer<FileArbArgs>::AssertEqual(const FileArbArgs& expectedFileArbArgs, const FileArbArgs& actualFileArbArgs)
    {
       ARE_EQUAL(expectedFileArbArgs.commandLine, actualFileArbArgs.commandLine);
@@ -417,6 +422,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedFileArbArgs.parallelMode, actualFileArbArgs.parallelMode);
    }
 
+   // Custom ZenUnit::Random<T> definition
    template<>
    FileArbArgs Random()
    {
@@ -426,15 +432,54 @@ namespace ZenUnit
       randomFileArbArgs.numberOfLinesPerFile = ZenUnit::RandomNon0<size_t>();
       randomFileArbArgs.numberOfCharactersPerLine = ZenUnit::RandomNon0<size_t>();
       randomFileArbArgs.destinationFolderPath = ZenUnit::Random<string>();
-      randomFileArbArgs.parallelMode = !randomFileArbArgs.parallelMode;
+      randomFileArbArgs.parallelMode = ZenUnit::Random<bool>();
       return randomFileArbArgs;
    };
 }
 ```
 
-|The Road To ZenUnit 1.0|
+libFileArbTests/ZenUnitTesting/FileArbArgsEqualizerAndRandomTests.cpp:
+
+```cpp
+#include "pch.h"
+#include "libFileArbTests/ZenUnitTesting/FileArbArgsEqualizerAndRandom.h"
+
+TESTS(FileArbArgsEqualizerAndRandomTests)
+AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldsNotEqual)
+AFACT(ZenUnitRandom_FileArbArgs_ReturnsAllNonDefaultFields)
+EVIDENCE
+
+TEST(ZenUnitEqualizer_ThrowsIfAnyFieldsNotEqual)
+{
+   SETUP_EQUALIZER_THROWS_TEST(FileArbArgs);
+   // EQUALIZER_THROWS_FOR_FIELD(typeName, nonQuotedFieldName, arbitraryNonDefaultFieldValue)
+   // asserts that ARE_EQUAL(expectedObject, actualObject)
+   // throws a ZenUnit::Anomaly when expectedObject.field differs from actualObject.field.
+   EQUALIZER_THROWS_FOR_FIELD(FileArbArgs, commandLine, "commandLine");
+   EQUALIZER_THROWS_FOR_FIELD(FileArbArgs, numberOfFilesToWrite, 1);
+   EQUALIZER_THROWS_FOR_FIELD(FileArbArgs, numberOfLinesPerFile, 2);
+   EQUALIZER_THROWS_FOR_FIELD(FileArbArgs, numberOfCharactersPerLine, 3);
+   EQUALIZER_THROWS_FOR_FIELD(FileArbArgs, destinationFolderPath, "destinationFolderPath");
+   EQUALIZER_THROWS_FOR_FIELD(FileArbArgs, parallelMode, true);
+}
+
+TEST(ZenUnitRandom_FileArbArgs_ReturnsAllNonDefaultFields)
+{
+   const FileArbArgs randomFileArbArgs = ZenUnit::Random<FileArbArgs>();
+   IS_NOT_DEFAULT(randomFileArbArgs.commandLine);
+   IS_NOT_DEFAULT(randomFileArbArgs.numberOfFilesToWrite);
+   IS_NOT_DEFAULT(randomFileArbArgs.numberOfLinesPerFile);
+   IS_NOT_DEFAULT(randomFileArbArgs.numberOfCharactersPerLine);
+   IS_NOT_DEFAULT(randomFileArbArgs.destinationFolderPath);
+   IS_NOT_DEFAULT(randomFileArbArgs.parallelMode);
+}
+
+RUN_TESTS(FileArbArgsEqualizerAndRandomTests)
+```
+
+|ZenUnit 1.0 Roadmap|
 |-----------------------|
-|100% code coverage badge (code coverage numbers are currently collected manually with llvm-profdata-cov.py)|
+|100% code coverage badge (code coverage numbers are currently checked manually with llvm-profdata-cov.py)|
 |Travis CI clang-tidy (currently run in a Jenkins job)|
 |Travis CI Clang AddressSanitizer and UndefinedBehaviorSanitizer (currently run in a Jenkins job)|
 |AppVeyor /analyze (currently run manually)|
@@ -447,4 +492,4 @@ namespace ZenUnit
 
 |Complementary Software For Confirming Software Correctness|
 |----------------------------------------------------------|
-|[ZenMock](https://github.com/NeilJustice/ZenMock), a dual-header C++17 mocking framework powered by ZenUnit that features a high-readability arrange-act-assert syntax for confirming the correctness of calls to virtual, non-virtual, static, and free functions.|
+|[ZenMock](https://github.com/NeilJustice/ZenMock), a header-only C++17 mocking framework powered by ZenUnit with a high-readability arrange-act-assert syntax for confirming the correctness of calls to virtual, non-virtual, static, and free functions.|
