@@ -2,4 +2,4 @@
 #include "TestingTestClass.h"
 
 bool TestingTestClass::s_destructorCalled;
-bool TestingTestClass::s_allNXNTestsRegistered;
+bool TestClass<TestingTestClass>::s_allNXNTestsRegistered;

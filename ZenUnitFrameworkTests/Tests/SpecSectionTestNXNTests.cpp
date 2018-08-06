@@ -10,7 +10,7 @@ namespace ZenUnit
       static bool didCallTestNXNPmfToTest;
       static unique_ptr<Test> TestNXNPmfToTestReturnValue;
 
-      static const unique_ptr<Test>* TestNXNPmfToTest(const ZenUnit::PmfToken*)
+      static const unique_ptr<Test>* TestFromTestNXNPmfToken(const ZenUnit::PmfToken*)
       {
          didCallTestNXNPmfToTest = true;
          return &TestNXNPmfToTestReturnValue;
