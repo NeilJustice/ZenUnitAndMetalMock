@@ -206,7 +206,6 @@
       using TestClassType = HighQualityTestClassName; \
       static const char* s_testClassName; \
       static bool s_allNXNTestsRegistered; \
-      static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> s_testNXNPmfTokenToTest; \
       static std::vector<std::unique_ptr<ZenUnit::Test>> GetTests(const char* testClassName) \
       { \
          s_testClassName = testClassName; \
@@ -311,7 +310,6 @@
 #define RUN_TESTS(HighQualityTestClassName) }; \
    const char* HighQualityTestClassName::s_testClassName = nullptr; \
    bool HighQualityTestClassName::s_allNXNTestsRegistered = false; \
-   std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> HighQualityTestClassName::s_testNXNPmfTokenToTest; \
    std::nullptr_t ZenUnit_TestClassRegistrar_##HighQualityTestClassName = \
       ZenUnit::TestRunner::Instance().AddTestClassRunner(new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName>(#HighQualityTestClassName));
 
@@ -323,7 +321,6 @@
 #define DO_RUN_TEMPLATE_TESTS(HighQualityTestClassName, ...) \
    template<> const char* HighQualityTestClassName<__VA_ARGS__>::s_testClassName = nullptr; \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
-   template<> std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> HighQualityTestClassName<__VA_ARGS__>::s_testNXNPmfTokenToTest; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassRegistrar_, HighQualityTestClassName), _Line), __LINE__) = \
       ZenUnit::TestRunner::Instance().AddTestClassRunner( \
          new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName<__VA_ARGS__>>(#HighQualityTestClassName"<"#__VA_ARGS__">"));
@@ -339,7 +336,6 @@
 #define DO_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, ...) \
    template<> const char* HighQualityTestClassName<__VA_ARGS__>::s_testClassName = nullptr; \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
-   template<> std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> HighQualityTestClassName<__VA_ARGS__>::s_testNXNPmfTokenToTest; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassSkipper_, HighQualityTestClassName), _Line), __LINE__) = \
       ZenUnit::TestRunner::Instance().SkipTestClass(#HighQualityTestClassName"<"#__VA_ARGS__">", Reason);
 
@@ -3463,14 +3459,7 @@ Testing Rigor Options:
       CallResult testBodyCallResult;
       CallResult cleanupCallResult;
       CallResult destructorCallResult;
-#if defined _WIN32
-#pragma warning(push)
-#pragma warning(disable: 4371) // 'ZenUnit::TestResult': layout of class may have changed from a previous version of the compiler due to better packing of member 'ZenUnit::TestResult::responsibleCallResultField'
-#endif
       CallResult TestResult::* responsibleCallResultField;
-#if defined _WIN32
-#pragma warning(pop)
-#endif
       TestOutcome testOutcome;
       unsigned microseconds;
       size_t testCaseNumber;
@@ -5988,9 +5977,10 @@ Testing Rigor Options:
          DerivedTestClass::s_allNXNTestsRegistered = true;
       }
 
-      static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>& TestNXNPmfTokenToTestMap()
+      static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>& GetTestNXNPmfTokenToTestMap()
       {
-         return DerivedTestClass::s_testNXNPmfTokenToTest;
+         static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> testNXNPmfTokenToTest;
+         return testNXNPmfTokenToTest;
       }
 
       static std::nullptr_t RegisterTestNXN(const PmfToken* pmfToken, const std::function<Test*()>& operatorNewTestNXN)
@@ -5998,9 +5988,8 @@ Testing Rigor Options:
          if (!DerivedTestClass::s_allNXNTestsRegistered)
          {
             Test* const newTestNXN = operatorNewTestNXN();
-            std::unordered_map<const PmfToken*, std::unique_ptr<Test>>& testNXNPmfToTest
-               = DerivedTestClass::TestNXNPmfTokenToTestMap();
-            const bool didEmplaceTestNXN = testNXNPmfToTest.emplace(pmfToken, newTestNXN).second;
+            std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>& testNXNPmfTokenToTest = GetTestNXNPmfTokenToTestMap();
+            const bool didEmplaceTestNXN = testNXNPmfTokenToTest.emplace(pmfToken, newTestNXN).second;
             assert_true(didEmplaceTestNXN);
          }
          return nullptr;
@@ -6008,11 +5997,9 @@ Testing Rigor Options:
 
       static const std::unique_ptr<ZenUnit::Test>* TestNXNPmfToTest(const PmfToken* pmfToken)
       {
-         const std::unordered_map<const PmfToken*, std::unique_ptr<Test>>& testNXNPmfToTest
-            = DerivedTestClass::TestNXNPmfTokenToTestMap();
-         const std::unordered_map<const PmfToken*, std::unique_ptr<Test>>::const_iterator
-            findIter = testNXNPmfToTest.find(pmfToken);
-         if (findIter == testNXNPmfToTest.end())
+         std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>& testNXNPmfTokenToTest = GetTestNXNPmfTokenToTestMap();
+         const std::unordered_map<const PmfToken*, std::unique_ptr<Test>>::const_iterator findIter = testNXNPmfTokenToTest.find(pmfToken);
+         if (findIter == testNXNPmfTokenToTest.end())
          {
             ConsoleColorer consoleColorer;
             const bool didSetColor = consoleColorer.SetColor(Color::Red);

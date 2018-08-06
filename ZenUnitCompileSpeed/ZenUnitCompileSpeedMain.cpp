@@ -58,6 +58,9 @@ TESTS(Tests50) EVIDENCE RUN_TESTS(Tests50)
 // 38157/5557, 36317/5846, 33077/5846, 33285/5715, 33560/5667 ZenUnitFrameworkTests build time, local function static variable 2
 // 34504/2630, 34391/2744, 34389/2626, 34633/2606, 34460/2620 ZenUnitFrameworkTests build time, hoisted
 
+// 35948/5735, 34840/5654, 35968/5697 ZenUnitFrameworkTests build time, hoisted
+// 34014/5728, 33941/5637, 34471/5645 ZenUnitFrameworkTests build time, local function static variable
+
 //TESTS(Tests51) EVIDENCE RUN_TESTS(Tests51)
 //TESTS(Tests52) EVIDENCE RUN_TESTS(Tests52)
 //TESTS(Tests53) EVIDENCE RUN_TESTS(Tests53)
