@@ -206,11 +206,7 @@
       using TestClassType = HighQualityTestClassName; \
       static const char* s_testClassName; \
       static bool s_allNXNTestsRegistered; \
-      static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>& TestNXNPmfTokenToTestMap() \
-      { \
-         static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> testNXNPmfTokenToTest; \
-         return testNXNPmfTokenToTest; \
-      } \
+      static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> s_testNXNPmfTokenToTest; \
       static std::vector<std::unique_ptr<ZenUnit::Test>> GetTests(const char* testClassName) \
       { \
          s_testClassName = testClassName; \
@@ -315,9 +311,9 @@
 #define RUN_TESTS(HighQualityTestClassName) }; \
    const char* HighQualityTestClassName::s_testClassName = nullptr; \
    bool HighQualityTestClassName::s_allNXNTestsRegistered = false; \
+   std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> HighQualityTestClassName::s_testNXNPmfTokenToTest; \
    std::nullptr_t ZenUnit_TestClassRegistrar_##HighQualityTestClassName = \
-      ZenUnit::TestRunner::Instance().AddTestClassRunner( \
-         new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName>(#HighQualityTestClassName));
+      ZenUnit::TestRunner::Instance().AddTestClassRunner(new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName>(#HighQualityTestClassName));
 
 // Skips a test class.
 #define SKIP_TESTS(HighQualityTestClassName, Reason) }; \
@@ -327,6 +323,7 @@
 #define DO_RUN_TEMPLATE_TESTS(HighQualityTestClassName, ...) \
    template<> const char* HighQualityTestClassName<__VA_ARGS__>::s_testClassName = nullptr; \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
+   template<> std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> HighQualityTestClassName<__VA_ARGS__>::s_testNXNPmfTokenToTest; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassRegistrar_, HighQualityTestClassName), _Line), __LINE__) = \
       ZenUnit::TestRunner::Instance().AddTestClassRunner( \
          new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName<__VA_ARGS__>>(#HighQualityTestClassName"<"#__VA_ARGS__">"));
@@ -342,8 +339,9 @@
 #define DO_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, ...) \
    template<> const char* HighQualityTestClassName<__VA_ARGS__>::s_testClassName = nullptr; \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::s_allNXNTestsRegistered = false; \
+   template<> std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> HighQualityTestClassName<__VA_ARGS__>::s_testNXNPmfTokenToTest; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassSkipper_, HighQualityTestClassName), _Line), __LINE__) = \
-   ZenUnit::TestRunner::Instance().SkipTestClass(#HighQualityTestClassName"<"#__VA_ARGS__">", Reason);
+      ZenUnit::TestRunner::Instance().SkipTestClass(#HighQualityTestClassName"<"#__VA_ARGS__">", Reason);
 
 // Skips a templated test class.
 #define SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, ...) }; \
@@ -4632,8 +4630,7 @@ Testing Rigor Options:
 
       int PrintPreambleRunTestClassesPrintConclusion(const ZenUnitArgs& zenUnitArgs)
       {
-         const std::string startTime = _preamblePrinter->
-            PrintPreambleAndGetStartTime(zenUnitArgs, _testClassRunnerRunner.get());
+         const std::string startTime = _preamblePrinter->PrintPreambleAndGetStartTime(zenUnitArgs, _testClassRunnerRunner.get());
          _havePaused = _nonVoidTwoArgMemberFunctionCaller->ConstCall(
             this, &TestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused, zenUnitArgs.pause, _havePaused);
          _testRunStopwatch->Start();
@@ -5991,8 +5988,12 @@ Testing Rigor Options:
          DerivedTestClass::s_allNXNTestsRegistered = true;
       }
 
-      static std::nullptr_t RegisterTestNXN(
-         const PmfToken* pmfToken, const std::function<Test*()>& operatorNewTestNXN)
+      static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>& TestNXNPmfTokenToTestMap()
+      {
+         return DerivedTestClass::s_testNXNPmfTokenToTest;
+      }
+
+      static std::nullptr_t RegisterTestNXN(const PmfToken* pmfToken, const std::function<Test*()>& operatorNewTestNXN)
       {
          if (!DerivedTestClass::s_allNXNTestsRegistered)
          {

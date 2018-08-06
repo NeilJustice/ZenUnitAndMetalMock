@@ -27,7 +27,7 @@ folder_source_group_subfolder(Tests Mock)
 folder_source_group(ToStringer)
 folder_source_group_subfolder(ToStringer ZenUnitPrinter)
 folder_source_group_subfolder(ToStringer SFINAE)
-source_group("" FILES ZenUnitTestsMain.cpp pch.h pch.cpp)
+source_group("" FILES ZenUnitFrameworkTestsMain.cpp pch.h pch.cpp)
 file(GLOB_RECURSE Sources *.h *.cpp)
 
 add_executable(ZenUnitFrameworkTests ${Sources})

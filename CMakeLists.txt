@@ -38,6 +38,7 @@ add_subdirectory(ZenUnitUtilsAndAssertionTests)
 add_subdirectory(ZenUnitExamples)
 add_subdirectory(ZenUnitFrameworkTests)
 add_subdirectory(ZenUnitTestUtils)
+add_subdirectory(ZenUnitCompileSpeed)
 
 # Allows CMake command "cmake --build . --target install --config Debug/Release"
 # to just install ZenUnit and not also build ZenUnitTests
@@ -52,4 +53,3 @@ if(UNIX)
          WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} VERBATIM USES_TERMINAL)
    add_dependencies(clang-tidy ZenUnitUtilsAndAssertionTestsPch ZenUnitExamplesPch ZenUnitFrameworkTestsPch ZenUnitTestUtilsPch)
 endif()
-
