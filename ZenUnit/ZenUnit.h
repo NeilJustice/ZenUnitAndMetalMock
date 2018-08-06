@@ -308,7 +308,7 @@
 // Runs a test class.
 #define RUN_TESTS(HighQualityTestClassName) }; \
    const char* HighQualityTestClassName::s_testClassName = nullptr; \
-   bool ZenUnit::TestClass<HighQualityTestClassName>::s_allNXNTestsRegistered = false; \
+   template<> bool ZenUnit::TestClass<HighQualityTestClassName>::s_allNXNTestsRegistered = false; \
    std::nullptr_t ZenUnit_TestClassRegistrar_##HighQualityTestClassName = \
       ZenUnit::TestRunner::Instance().AddTestClassRunner(new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName>(#HighQualityTestClassName));
 
