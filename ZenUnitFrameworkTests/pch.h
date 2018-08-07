@@ -3,7 +3,6 @@
 
 #if defined _WIN32
 #pragma warning(disable: 4365) // 'argument': conversion from 'std::_Atomic_integral_t' to 'long', signed / unsigned mismatch - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\memory
-#pragma warning(disable: 4371) // layout of class may have changed from a previous version of the compiler due to better packing of member
 #pragma warning(disable: 4514) // 'std::random_device::entropy': unreferenced inline function has been removed ZenUnit - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\random
 #pragma warning(disable: 4571) // Informational : catch (...) semantics changed since Visual C++ 7.1; structured exceptions(SEH) are no longer caught - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\xlocale
 #pragma warning(disable: 4625) // 'std::_Generic_error_category': copy constructor was implicitly defined as deleted - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\system_error

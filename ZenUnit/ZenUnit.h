@@ -3459,7 +3459,14 @@ Testing Rigor Options:
       CallResult testBodyCallResult;
       CallResult cleanupCallResult;
       CallResult destructorCallResult;
+#if defined _WIN32
+#pragma warning(push)
+#pragma warning(disable: 4371) // layout of class may have changed from a previous version of the compiler due to better packing of member
+#endif
       CallResult TestResult::* responsibleCallResultField;
+#if defined _WIN32
+#pragma warning(pop)
+#endif
       TestOutcome testOutcome;
       unsigned microseconds;
       size_t testCaseNumber;
