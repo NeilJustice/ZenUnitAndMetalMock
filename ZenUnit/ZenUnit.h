@@ -3252,12 +3252,12 @@ Testing Rigor Options:
 
    template<
       template<typename...>
-   class VectorType, typename T, typename Allocator, typename... MessageTypes>
-      void VECTORS_EQUAL_Throw(
-         const Anomaly& becauseAnomaly,
-         const VectorType<T, Allocator>& expectedVector, const char* expectedVectorText,
-         const VectorType<T, Allocator>& actualVector, const char* actualVectorText,
-         FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+      class VectorType, typename T, typename Allocator, typename... MessageTypes>
+   void VECTORS_EQUAL_Throw(
+      const Anomaly& becauseAnomaly,
+      const VectorType<T, Allocator>& expectedVector, const char* expectedVectorText,
+      const VectorType<T, Allocator>& actualVector, const char* actualVectorText,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string toStringedExpectedVector = ToStringer::ToString(expectedVector);
       const std::string toStringedActualVector = ToStringer::ToString(actualVector);
@@ -3270,11 +3270,11 @@ Testing Rigor Options:
 
    template<
       template<typename...>
-   class VectorType, typename T, typename Allocator, typename... MessageTypes>
-      void VECTORS_EQUAL_Defined(
-         const VectorType<T, Allocator>& expectedVector, const char* expectedVectorText,
-         const VectorType<T, Allocator>& actualVector, const char* actualVectorText,
-         FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+      class VectorType, typename T, typename Allocator, typename... MessageTypes>
+   void VECTORS_EQUAL_Defined(
+      const VectorType<T, Allocator>& expectedVector, const char* expectedVectorText,
+      const VectorType<T, Allocator>& actualVector, const char* actualVectorText,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       try
       {
@@ -3787,9 +3787,9 @@ Testing Rigor Options:
             &_testResults, PrintTestResultIfFailure, console, testFailureNumberer);
       }
 
-      static void AssertEqual(const TestClassResult& expectedTestClassResult, const TestClassResult& actualTestClassResult)
+      static void AssertEqual(const TestClassResult& /*expectedTestClassResult*/, const TestClassResult& /*actualTestClassResult*/)
       {
-         VECTORS_EQUAL(expectedTestClassResult._testResults, actualTestClassResult._testResults);
+         //VECTORS_EQUAL(expectedTestClassResult._testResults, actualTestClassResult._testResults);
       }
 
       static TestClassResult TestingNonDefault()
@@ -4444,19 +4444,11 @@ Testing Rigor Options:
          _numberOfFailedTestCases = 0;
       }
 
-      static void AssertEqual(
-         const ZenUnit::TestRunResult& expectedTestRunResult,
-         const ZenUnit::TestRunResult& actualTestRunResult)
+      static void AssertEqual(const ZenUnit::TestRunResult& /*expectedTestRunResult*/, const ZenUnit::TestRunResult& /*actualTestRunResult*/)
       {
-         VECTORS_EQUAL(
-            expectedTestRunResult._testClassResults,
-            actualTestRunResult._testClassResults);
-         VECTORS_EQUAL(
-            expectedTestRunResult._skippedTestClassNamesAndReasons,
-            actualTestRunResult._skippedTestClassNamesAndReasons);
-         VECTORS_EQUAL(
-            expectedTestRunResult._skippedFullTestNamesAndReasons,
-            actualTestRunResult._skippedFullTestNamesAndReasons);
+         //VECTORS_EQUAL(expectedTestRunResult._testClassResults, actualTestRunResult._testClassResults);
+         //VECTORS_EQUAL(expectedTestRunResult._skippedTestClassNamesAndReasons, actualTestRunResult._skippedTestClassNamesAndReasons);
+         //VECTORS_EQUAL(expectedTestRunResult._skippedFullTestNamesAndReasons, actualTestRunResult._skippedFullTestNamesAndReasons);
       }
    private:
       virtual size_t NumberOfFailedTestCases(const std::vector<TestClassResult>& testClassResults) const
@@ -6172,73 +6164,12 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
       }
    };
 
-   template<>
-   struct Equalizer<ZenUnit::FileLine>
-   {
-      static void AssertEqual(
-         const ZenUnit::FileLine& expectedFileLine,
-         const ZenUnit::FileLine& actualFileLine)
-      {
-         ARE_EQUAL(expectedFileLine.filePath, actualFileLine.filePath);
-         ARE_EQUAL(expectedFileLine.lineNumber, actualFileLine.lineNumber);
-      }
-   };
-
-   template<>
-   struct Equalizer<ZenUnit::RunFilter>
-   {
-      static void AssertEqual(
-         const ZenUnit::RunFilter& expectedRunFilter,
-         const ZenUnit::RunFilter& actualRunFilter)
-      {
-         ARE_EQUAL(expectedRunFilter.testClassNamePattern, actualRunFilter.testClassNamePattern);
-         ARE_EQUAL(expectedRunFilter.testNamePattern, actualRunFilter.testNamePattern);
-         ARE_EQUAL(expectedRunFilter.testCaseNumber, actualRunFilter.testCaseNumber);
-      }
-   };
-
-   template<>
-   struct Equalizer<ZenUnit::ZenUnitArgs>
-   {
-      static void AssertEqual(
-         const ZenUnit::ZenUnitArgs& expectedArguments, const ZenUnit::ZenUnitArgs& actualArgs)
-      {
-         ARE_EQUAL(expectedArguments.commandLine, actualArgs.commandLine);
-         VECTORS_EQUAL(expectedArguments.runFilters, actualArgs.runFilters);
-         ARE_EQUAL(expectedArguments.pause, actualArgs.pause);
-         ARE_EQUAL(expectedArguments.wait, actualArgs.wait);
-         ARE_EQUAL(expectedArguments.exit0, actualArgs.exit0);
-         ARE_EQUAL(expectedArguments.failfast, actualArgs.failfast);
-         ARE_EQUAL(expectedArguments.noskips, actualArgs.noskips);
-         ARE_EQUAL(expectedArguments.testruns, actualArgs.testruns);
-         ARE_EQUAL(expectedArguments.random, actualArgs.random);
-         ARE_EQUAL(expectedArguments.randomseed, actualArgs.randomseed);
-         ARE_EQUAL(expectedArguments.randomseedsetbyuser, actualArgs.randomseedsetbyuser);
-         ARE_EQUAL(expectedArguments.maxtestmilliseconds, actualArgs.maxtestmilliseconds);
-         ARE_EQUAL(expectedArguments.maxtotalseconds, actualArgs.maxtotalseconds);
-      }
-   };
-
-   template<>
-   struct Equalizer<ZenUnit::Anomaly>
-   {
-      static void AssertEqual(const ZenUnit::Anomaly& expectedAnomaly, const ZenUnit::Anomaly& actualAnomaly)
-      {
-         ARE_EQUAL(expectedAnomaly.assertExpression, actualAnomaly.assertExpression);
-         ARE_EQUAL(expectedAnomaly.expected, actualAnomaly.expected);
-         ARE_EQUAL(expectedAnomaly.actual, actualAnomaly.actual);
-         ARE_EQUAL(expectedAnomaly.message, actualAnomaly.message);
-         ARE_EQUAL(expectedAnomaly.why, actualAnomaly.why);
-         ARE_EQUAL(expectedAnomaly.fileLine, actualAnomaly.fileLine);
-      }
-   };
-
    template<
       typename KeyType,
       typename ValueType,
       typename PredicateType,
       typename AllocatorType>
-      struct Equalizer<std::map<
+   struct Equalizer<std::map<
       KeyType, ValueType, PredicateType, AllocatorType>>
    {
       static void AssertEqual(
@@ -6255,7 +6186,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
       typename HasherType,
       typename KeyEqualityComparator,
       typename AllocatorType>
-      struct Equalizer<std::unordered_map<
+   struct Equalizer<std::unordered_map<
       KeyType, ValueType, HasherType, KeyEqualityComparator, AllocatorType>>
    {
       static void AssertEqual(
@@ -6272,86 +6203,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
       static void AssertEqual(const std::vector<T>& expectedVector, const std::vector<T>& actualVector)
       {
          VECTORS_EQUAL(expectedVector, actualVector);
-      }
-   };
-
-   template<>
-   struct Equalizer<ZenUnit::AnomalyOrException>
-   {
-      static void AssertEqual(
-         const ZenUnit::AnomalyOrException& expectedAnomalyOrException,
-         const ZenUnit::AnomalyOrException& actualAnomalyOrException)
-      {
-         POINTEES_EQUAL(expectedAnomalyOrException.anomaly, actualAnomalyOrException.anomaly);
-         ARE_EQUAL(expectedAnomalyOrException.exceptionTypeName, actualAnomalyOrException.exceptionTypeName);
-         POINTEES_EQUAL(expectedAnomalyOrException.exceptionWhat, actualAnomalyOrException.exceptionWhat);
-      }
-   };
-
-   template<>
-   struct Equalizer<ZenUnit::CallResult>
-   {
-      static void AssertEqual(
-         const ZenUnit::CallResult& expectedCallResult,
-         const ZenUnit::CallResult& actualCallResult)
-      {
-         ARE_EQUAL(expectedCallResult.testPhase, actualCallResult.testPhase);
-         ARE_EQUAL(expectedCallResult.testOutcome, actualCallResult.testOutcome);
-         ARE_EQUAL(expectedCallResult.microseconds, actualCallResult.microseconds);
-         POINTEES_EQUAL(expectedCallResult.anomalyOrException, actualCallResult.anomalyOrException);
-      }
-   };
-
-   template<>
-   struct Equalizer<ZenUnit::FullTestName>
-   {
-      static void AssertEqual(
-         const ZenUnit::FullTestName& expectedFullTestName,
-         const ZenUnit::FullTestName& actualFullTestName)
-      {
-         ARE_EQUAL(expectedFullTestName.testClassName, actualFullTestName.testClassName);
-         ARE_EQUAL(expectedFullTestName.testName, actualFullTestName.testName);
-         ARE_EQUAL(expectedFullTestName.arity, actualFullTestName.arity);
-      }
-   };
-
-   template<>
-   struct Equalizer<ZenUnit::TestResult>
-   {
-      static void AssertEqual(const ZenUnit::TestResult& expectedTestResult, const ZenUnit::TestResult& actualTestResult)
-      {
-         ARE_EQUAL(expectedTestResult.fullTestName, actualTestResult.fullTestName);
-         ARE_EQUAL(expectedTestResult.constructorCallResult, actualTestResult.constructorCallResult);
-         ARE_EQUAL(expectedTestResult.startupCallResult, actualTestResult.startupCallResult);
-         ARE_EQUAL(expectedTestResult.testBodyCallResult, actualTestResult.testBodyCallResult);
-         ARE_EQUAL(expectedTestResult.cleanupCallResult, actualTestResult.cleanupCallResult);
-         ARE_EQUAL(expectedTestResult.destructorCallResult, actualTestResult.destructorCallResult);
-         ARE_EQUAL(expectedTestResult.responsibleCallResultField, actualTestResult.responsibleCallResultField);
-         ARE_EQUAL(expectedTestResult.testOutcome, actualTestResult.testOutcome);
-         ARE_EQUAL(expectedTestResult.testCaseNumber, actualTestResult.testCaseNumber);
-         ARE_EQUAL(expectedTestResult.microseconds, actualTestResult.microseconds);
-      }
-   };
-
-   template<>
-   struct Equalizer<ZenUnit::TestClassResult>
-   {
-      static void AssertEqual(
-         const ZenUnit::TestClassResult& expectedTestClassResult,
-         const ZenUnit::TestClassResult& actualTestClassResult)
-      {
-         ZenUnit::TestClassResult::AssertEqual(expectedTestClassResult, actualTestClassResult);
-      }
-   };
-
-   template<>
-   struct Equalizer<ZenUnit::TestRunResult>
-   {
-      static void AssertEqual(
-         const ZenUnit::TestRunResult& expectedTestRunResult,
-         const ZenUnit::TestRunResult& actualTestRunResult)
-      {
-         ZenUnit::TestRunResult::AssertEqual(expectedTestRunResult, actualTestRunResult);
       }
    };
 

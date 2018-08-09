@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "ZenUnitTestUtils/Equalizers/CallResultEqualizer.h"
 
 namespace ZenUnit
 {

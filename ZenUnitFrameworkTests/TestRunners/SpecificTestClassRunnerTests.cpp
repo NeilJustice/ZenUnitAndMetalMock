@@ -10,6 +10,9 @@
 #include "ZenUnitUtilsAndAssertionTests/Utils/Iteration/Mock/TwoArgAnyerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Utils/Iteration/Mock/TwoArgMemberAnyerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Utils/Iteration/Mock/TwoArgMemberForEacherMock.h"
+#include "ZenUnitTestUtils/Equalizers/RunFilterEqualizer.h"
+#include "ZenUnitTestUtils/Equalizers/TestClassResultEqualizer.h"
+#include "ZenUnitTestUtils/Equalizers/TestResultEqualizer.h"
 
 namespace ZenUnit
 {

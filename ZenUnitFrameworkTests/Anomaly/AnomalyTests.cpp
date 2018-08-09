@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnitFrameworkTests/Console/Mock/ConsoleMock.h"
+#include "ZenUnitTestUtils/Equalizers/AnomalyEqualizer.h"
 
 namespace ZenUnit
 {

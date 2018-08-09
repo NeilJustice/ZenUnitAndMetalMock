@@ -2,6 +2,9 @@
 #include "ZenUnitFrameworkTests/Results/Mock/TestResultFactoryMock.h"
 #include "ZenUnitFrameworkTests/TestRunners/Mock/TryCatchCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Utils/Time/Mock/StopwatchMock.h"
+#include "ZenUnitTestUtils/Equalizers/CallResultEqualizer.h"
+#include "ZenUnitTestUtils/Equalizers/FullTestNameEqualizer.h"
+#include "ZenUnitTestUtils/Equalizers/TestResultEqualizer.h"
 
 namespace ZenUnit
 {

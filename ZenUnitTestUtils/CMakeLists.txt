@@ -5,6 +5,7 @@ include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/ZenUnit)
 
+folder_source_group(Equalizers)
 file(GLOB_RECURSE Sources *.h *.cpp)
 source_group("" FILES ${Sources})
 

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnitFrameworkTests/Random/RandomRunFilter.h"
+#include "ZenUnitTestUtils/Equalizers/TestClassResultEqualizer.h"
 
 namespace ZenUnit
 {

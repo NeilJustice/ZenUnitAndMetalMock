@@ -14,6 +14,9 @@
 #include "ZenUnitUtilsAndAssertionTests/Utils/Function/Mock/VoidOneArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Utils/Function/Mock/VoidZeroArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Utils/Time/Mock/StopwatchMock.h"
+#include "ZenUnitTestUtils/Equalizers/RunFilterEqualizer.h"
+#include "ZenUnitTestUtils/Equalizers/TestClassResultEqualizer.h"
+#include "ZenUnitTestUtils/Equalizers/ZenUnitArgsEqualizer.h"
 
 namespace ZenUnit
 {

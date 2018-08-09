@@ -2,6 +2,7 @@
 #include "ZenUnitFrameworkTests/Args/Mock/RunFilterParserMock.h"
 #include "ZenUnitFrameworkTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitFrameworkTests/Random/RandomRunFilter.h"
+#include "ZenUnitTestUtils/Equalizers/ZenUnitArgsEqualizer.h"
 
 namespace ZenUnit
 {

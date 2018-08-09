@@ -12,8 +12,6 @@ file(GLOB_RECURSE Sources *.h *.cpp)
 add_executable(ZenUnitCompileSpeed ${Sources})
 target_link_libraries(ZenUnitCompileSpeed)
 
-EnablePrecompiledHeaders()
-
 if(MSVC)
    replace(CMAKE_CXX_FLAGS "/Wall" "/W4")
 endif()

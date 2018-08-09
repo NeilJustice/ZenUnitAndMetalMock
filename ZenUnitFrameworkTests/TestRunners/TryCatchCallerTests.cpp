@@ -4,6 +4,7 @@
 #include "ZenUnitFrameworkTests/Tests/Mock/TestMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Utils/Function/Mock/VoidTwoArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Utils/Time/Mock/StopwatchMock.h"
+#include "ZenUnitTestUtils/Equalizers/CallResultEqualizer.h"
 
 namespace ZenUnit
 {

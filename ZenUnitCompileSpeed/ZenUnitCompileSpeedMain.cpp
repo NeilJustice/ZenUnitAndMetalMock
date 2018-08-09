@@ -1,4 +1,4 @@
-#include "pch.h"
+//#include "ZenUnit.h"
 
 //TESTS(Tests1) EVIDENCE RUN_TESTS(Tests1)
 //TESTS(Tests2) EVIDENCE RUN_TESTS(Tests2)
@@ -51,7 +51,12 @@
 //TESTS(Tests49) EVIDENCE RUN_TESTS(Tests49)
 //TESTS(Tests50) EVIDENCE RUN_TESTS(Tests50)
 
-int main(int argc, char* argv[])
+int main()
 {
-   return ZenUnit::RunTests(argc, argv);
+   return 0;
 }
+
+//int main(int argc, char* argv[])
+//{
+//   return ZenUnit::RunTests(argc, argv);
+//}

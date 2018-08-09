@@ -8,6 +8,9 @@
 #include "ZenUnitUtilsAndAssertionTests/Utils/Iteration/Mock/TwoArgMemberForEacherMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Utils/Mock/SorterMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Utils/Time/Mock/WatchMock.h"
+#include "ZenUnitTestUtils/Equalizers/RunFilterEqualizer.h"
+#include "ZenUnitTestUtils/Equalizers/TestClassResultEqualizer.h"
+#include "ZenUnitTestUtils/Equalizers/ZenUnitArgsEqualizer.h"
 
 namespace ZenUnit
 {

@@ -5,6 +5,10 @@
 #include "ZenUnitFrameworkTests/Tests/Mock/ITestCaseNumberGeneratorMock.h"
 #include "ZenUnitFrameworkTests/Tests/TestingTestClass.h"
 #include "ZenUnitUtilsAndAssertionTests/Utils/Iteration/Mock/ThreeArgAnyerMock.h"
+#include "ZenUnitTestUtils/Equalizers/FullTestNameEqualizer.h"
+#include "ZenUnitTestUtils/Equalizers/RunFilterEqualizer.h"
+#include "ZenUnitTestUtils/Equalizers/TestResultEqualizer.h"
+#include "ZenUnitTestUtils/Equalizers/ZenUnitArgsEqualizer.h"
 
 namespace ZenUnit
 {
