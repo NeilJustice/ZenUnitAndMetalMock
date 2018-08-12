@@ -374,10 +374,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedExitCode, exitCode);
    }
 
-   void SetState(
-      size_t numberOfFailedTestCases,
-      size_t numberOfSkippedTests,
-      size_t numberOfSkippedTestClasses)
+   void SetState(size_t numberOfFailedTestCases, size_t numberOfSkippedTests, size_t numberOfSkippedTestClasses)
    {
       _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
       _testRunResult._skippedFullTestNamesAndReasons.resize(numberOfSkippedTests);

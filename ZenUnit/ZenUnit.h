@@ -3693,9 +3693,10 @@ Testing Rigor Options:
       std::vector<TestResult>, void(*)(const TestResult&, const Console*, TestFailureNumberer*),
       const Console*, TestFailureNumberer*>;
 
-   struct TestClassResult
+   class TestClassResult
    {
       friend class TestClassResultTests;
+      friend struct Equalizer<TestClassResult>;
    private:
       std::vector<TestResult> _testResults;
       std::function<std::string(unsigned)> call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
@@ -3792,11 +3793,6 @@ Testing Rigor Options:
       {
          threeArgForEacher->ThreeArgForEach(
             &_testResults, PrintTestResultIfFailure, console, testFailureNumberer);
-      }
-
-      static void AssertEqual(const TestClassResult& /*expectedTestClassResult*/, const TestClassResult& /*actualTestClassResult*/)
-      {
-         //VECTORS_EQUAL(expectedTestClassResult._testResults, actualTestClassResult._testResults);
       }
 
       static TestClassResult TestingNonDefault()
@@ -4306,6 +4302,7 @@ Testing Rigor Options:
    class TestRunResult
    {
       friend class TestRunResultTests;
+      friend struct Equalizer<TestRunResult>;
       using MemberForEacherTestClassResultsType = MemberForEacher<std::vector<TestClassResult>,
          TestRunResult, void(TestRunResult::*)(const TestClassResult&) const>;
       using MemberForEacherSkippedTestsType = MemberForEacher<std::vector<std::string>,
@@ -4450,13 +4447,6 @@ Testing Rigor Options:
          _testClassResults.clear();
          _numberOfFailedTestCases = 0;
       }
-
-      static void AssertEqual(const ZenUnit::TestRunResult& /*expectedTestRunResult*/, const ZenUnit::TestRunResult& /*actualTestRunResult*/)
-      {
-         //VECTORS_EQUAL(expectedTestRunResult._testClassResults, actualTestRunResult._testClassResults);
-         //VECTORS_EQUAL(expectedTestRunResult._skippedTestClassNamesAndReasons, actualTestRunResult._skippedTestClassNamesAndReasons);
-         //VECTORS_EQUAL(expectedTestRunResult._skippedFullTestNamesAndReasons, actualTestRunResult._skippedFullTestNamesAndReasons);
-      }
    private:
       virtual size_t NumberOfFailedTestCases(const std::vector<TestClassResult>& testClassResults) const
       {
@@ -4471,8 +4461,7 @@ Testing Rigor Options:
 
       void PrintTestClassResultFailures(const TestClassResult& testClassResult) const
       {
-         testClassResult.PrintTestFailures(
-            _threeArgForEacher.get(), _console.get(), _testFailureNumberer.get());
+         testClassResult.PrintTestFailures(_threeArgForEacher.get(), _console.get(), _testFailureNumberer.get());
       }
 
       void PrintSkippedTestClassReminder(const std::string& skippedTestClassNameAndReason) const

@@ -25,8 +25,9 @@ namespace ZenUnit
 
    TestClassResult _testClassResult;
 
-   struct TestClassResultSelfMocked : public Zen::Mock<TestClassResult>
+   class TestClassResultSelfMocked : public Zen::Mock<TestClassResult>
    {
+   public:
       ZENMOCK_NONVOID0_CONST(size_t, NumberOfFailedTestCases)
       ZENMOCK_NONVOID0_CONST(unsigned, SumOfTestResultMicroseconds)
    } _testClassResultSelfMocked;
@@ -239,8 +240,8 @@ namespace ZenUnit
 
    TEST(ZenUnitEqualizer_ThrowsIfTestResultsNotEqual)
    {
-      //SETUP_EQUALIZER_THROWS_TEST(TestClassResult);
-      //EQUALIZER_THROWS_FOR_FIELD(TestClassResult, _testResults, vector<TestResult> { TestResult() });
+      SETUP_EQUALIZER_THROWS_TEST(TestClassResult);
+      EQUALIZER_THROWS_FOR_FIELD(TestClassResult, _testResults, vector<TestResult> { TestResult() });
    }
 
    RUN_TESTS(TestClassResultTests)
