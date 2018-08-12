@@ -416,10 +416,11 @@ namespace ZenUnit
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      //SETUP_EQUALIZER_THROWS_TEST(TestRunResult);
-      //EQUALIZER_THROWS_FOR_FIELD(TestRunResult, _testClassResults, vector<TestClassResult> { TestClassResult() });
-      //EQUALIZER_THROWS_FOR_FIELD(TestRunResult, _skippedTestClassNamesAndReasons, vector<string> { "" });
-      //EQUALIZER_THROWS_FOR_FIELD(TestRunResult, _skippedFullTestNamesAndReasons, vector<string> { "" });
+      SETUP_EQUALIZER_THROWS_TEST(TestRunResult);
+      EQUALIZER_THROWS_FOR_FIELD(TestRunResult, _testClassResults, vector<TestClassResult> { TestClassResult() });
+      EQUALIZER_THROWS_FOR_FIELD(TestRunResult, _skippedTestClassNamesAndReasons, vector<string> { "" });
+      EQUALIZER_THROWS_FOR_FIELD(TestRunResult, _skippedFullTestNamesAndReasons, vector<string> { "" });
+      EQUALIZER_THROWS_FOR_FIELD(TestRunResult, _numberOfFailedTestCases, 1);
    }
 
    RUN_TESTS(TestRunResultTests)
