@@ -1825,7 +1825,7 @@ Testing Filtration Options:
  Example 3: --run=WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior/3
    Run the third test case of value-parameterized test
    WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior.
---failfast
+--fail-fast
    Immediately exit with exit code 1 if a test fails.
 
 Testing Rigor Options:
@@ -1836,15 +1836,11 @@ Testing Rigor Options:
    Set to SeedValue the random seed used by --random
    and the ZenUnit::Random<T> family of random value generating functions.
    The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
---testruns=<N>
+--test-runs=<N>
    Repeat the running of all tests N times.
-   Specify --testruns=5 --random for five random test run orderings.
-   Useful option for continuous integration servers to partially ensure
-   that checked-in unit tests are robust with respect to ordering.
---noskips
-   Exit 1 regardless of test run outcome if any tests are skipped.
-   Useful option for continuous integration servers to partially ensure
-   that an organizational culture of "skip it and ship it!" does not take root.)";
+   Specify --test-runs=5 --random for five random test run orderings.
+--no-skips
+   Exit 1 regardless of test run outcome if any tests are skipped.)";
          return usage;
       }
 
@@ -1873,11 +1869,11 @@ Testing Rigor Options:
             {
                zenUnitArgs.exit0 = true;
             }
-            else if (arg == "--failfast")
+            else if (arg == "--fail-fast")
             {
                zenUnitArgs.failfast = true;
             }
-            else if (arg == "--noskips")
+            else if (arg == "--no-skips")
             {
                zenUnitArgs.noskips = true;
             }
@@ -1909,7 +1905,7 @@ Testing Rigor Options:
                      const std::vector<std::string> runFilterStrings = String::Split(argValueString, ',');
                      zenUnitArgs.runFilters = _runFilterParser->Parse(runFilterStrings);
                   }
-                  else if (argName == "--testruns")
+                  else if (argName == "--test-runs")
                   {
                      zenUnitArgs.testruns = call_String_ToUnsigned(argValueString);
                   }

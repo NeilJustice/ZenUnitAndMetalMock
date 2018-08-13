@@ -56,7 +56,7 @@ Testing Filtration Options:
  Example 3: --run=WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior/3
    Run the third test case of value-parameterized test
    WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior.
---failfast
+--fail-fast
    Immediately exit with exit code 1 if a test fails.
 
 Testing Rigor Options:
@@ -67,15 +67,11 @@ Testing Rigor Options:
    Set to SeedValue the random seed used by --random
    and the ZenUnit::Random<T> family of random value generating functions.
    The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
---testruns=<N>
+--test-runs=<N>
    Repeat the running of all tests N times.
-   Specify --testruns=5 --random for five random test run orderings.
-   Useful option for continuous integration servers to partially ensure
-   that checked-in unit tests are robust with respect to ordering.
---noskips
-   Exit 1 regardless of test run outcome if any tests are skipped.
-   Useful option for continuous integration servers to partially ensure
-   that an organizational culture of "skip it and ship it!" does not take root.)";
+   Specify --test-runs=5 --random for five random test run orderings.
+--no-skips
+   Exit 1 regardless of test run outcome if any tests are skipped.)";
 
    ArgsParser _argsParser;
    ConsoleMock* _consoleMock = nullptr;
@@ -148,7 +144,7 @@ Testing Rigor Options:
       "--abc",
       "-exit0",
       "-Exit0",
-      "--testruns")
+      "--test-runs")
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
@@ -186,10 +182,10 @@ Testing Rigor Options:
          "--pause",
          "--wait",
          "--exit0",
-         "--failfast",
-         "--noskips",
+         "--fail-fast",
+         "--no-skips",
          "--random",
-         "--testruns=" + to_string(testruns),
+         "--test-runs=" + to_string(testruns),
          "--seed=" + to_string(randomseed)
       };
       //
@@ -259,9 +255,9 @@ Testing Rigor Options:
       Startup();
       AssertArgSetsBoolField("--exit0", &ZenUnitArgs::exit0);
       Startup();
-      AssertArgSetsBoolField("--failfast", &ZenUnitArgs::failfast);
+      AssertArgSetsBoolField("--fail-fast", &ZenUnitArgs::failfast);
       Startup();
-      AssertArgSetsBoolField("--noskips", &ZenUnitArgs::noskips);
+      AssertArgSetsBoolField("--no-skips", &ZenUnitArgs::noskips);
    }
    void AssertArgSetsBoolField(const string& arg, bool ZenUnitArgs::* expectedFieldToBeSet)
    {
@@ -293,8 +289,8 @@ Testing Rigor Options:
 
    TEST1X1(Parse_EqualsSignContainingArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1,
       const string& arg,
-      "--testruns=",
-      "--testruns===",
+      "--test-runs=",
+      "--test-runs===",
       "--seed=",
       "--seed===")
    {
@@ -314,7 +310,7 @@ Testing Rigor Options:
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
       ToUnsigned_ZenMockObject.Throw<invalid_argument>("");
-      const string InvalidTimesArg = "--testruns=-1_for_example";
+      const string InvalidTimesArg = "--test-runs=-1_for_example";
       const vector<string> args { _testProgramPath, InvalidTimesArg };
       //
       THROWS(_argsParser.Parse(args), WriteLineAndExitException, "");
@@ -329,7 +325,7 @@ Testing Rigor Options:
    {
       ExpectCallToSetRandomSeedIfNotSetByUser();
       const unsigned timesArgValue = ToUnsigned_ZenMockObject.ReturnRandom();
-      const vector<string> args { _testProgramPath, "--testruns=" + to_string(timesArgValue) };
+      const vector<string> args { _testProgramPath, "--test-runs=" + to_string(timesArgValue) };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
