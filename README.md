@@ -1,4 +1,4 @@
-<h1 align="center">ZenUnit</h1>
+r<h1 align="center">ZenUnit</h1>
 
 <h4 align="center">ZenUnit is a header-only C++17 unit testing framework with a convenient syntax for writing value-parameterized and type-parameterized unit tests that call exactness-focused assertions for maximizing mutation coverage.</h4>
 
@@ -7,7 +7,7 @@
 |Linux (Clang 5.0.2, Clang 6.0.1, GCC 7.3.0) and macOS (AppleClang 9.1.0)|<a href="https://travis-ci.org/NeilJustice/ZenUnit"><img src="https://travis-ci.org/NeilJustice/ZenUnit.svg?branch=master"/></a>|
 |Windows (Visual Studio 2017 and 2017 Preview x64 and Win32)|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitZenMock"><img src="https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true"/></a>|
 
-### ZenUnit design commentary and the N-by-N value-parameterized test syntax
+### ZenUnit design and the N-by-N value-parameterized test syntax
 
 ```cpp
 #include "ZenUnit.h"
@@ -23,10 +23,6 @@ TESTS(FizzBuzzTests)
 // always having test names up top ready to easily review for continued quality and cohesion
 // instead of test names being scattered throughout test files
 // is where this design yields long term code quality dividends.
-// Test names always up top makes it downright difficult not to notice
-// that a class under test has, for example,
-// grown to have many more responsibilities than a single responsibility,
-// leading to better program design when that class under test is then refactored.
 
 // AFACT declares a non-value-parameterized test.
 AFACT(FizzBuzz_EndNumber0_Throws)
@@ -126,7 +122,46 @@ int main(int argc, char* argv[])
 
 ![ZenUnit](Screenshots/ZenUnitFizzBuzz.png "ZenUnit")
 
-### Command Line Usage
+### STARTUP and CLEANUP Example
+
+To define a function to be called before each test, there is STARTUP. To define a function to be called after each test, there is CLEANUP.
+
+```cpp
+TESTS(STARTUPAndCLEANUPTests)
+FACTS(Negate_ReturnsTrueIfFalse_ReturnsFalseIfTrue)
+EVIDENCE
+
+STARTUP
+{
+   std::cout << "STARTUP";
+}
+
+CLEANUP
+{
+   std::cout << " then CLEANUP ";
+}
+
+static bool Negate(bool b)
+{
+   return !b;
+}
+
+TEST2X2(Negate_ReturnsTrueIfFalse_ReturnsFalseIfTrue,
+   bool arg, bool expectedReturnValue,
+   false, true,
+   true, false)
+{
+   ARE_EQUAL(expectedReturnValue, Negate(arg));
+}
+
+RUN_TESTS(STARTUPAndCLEANUPTests)
+```
+
+### Console Output
+
+
+
+### ZenUnit Command Line Usage
 
 ```
 ZenUnit v0.2.2
