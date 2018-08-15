@@ -1,6 +1,6 @@
-r<h1 align="center">ZenUnit</h1>
+<h1 align="center">ZenUnit</h1>
 
-<h4 align="center">ZenUnit is a header-only C++17 unit testing framework with a convenient syntax for writing value-parameterized and type-parameterized unit tests that call exactness-focused assertions for maximizing mutation coverage.</h4>
+<h4 align="center">ZenUnit is a header-only C++17 unit testing framework with an intuitive syntax for writing value-parameterized and type-parameterized unit tests.</h4>
 
 |Build Type|Build Status|
 |----------|------------|
@@ -122,7 +122,7 @@ int main(int argc, char* argv[])
 
 ![ZenUnit](Screenshots/ZenUnitFizzBuzz.png "ZenUnit")
 
-### STARTUP and CLEANUP Example
+### STARTUP and CLEANUP
 
 To define a function to be called before each test, there is STARTUP. To define a function to be called after each test, there is CLEANUP.
 
@@ -159,7 +159,7 @@ RUN_TESTS(STARTUPAndCLEANUPTests)
 
 ### Console Output
 
-
+![ZenUnit](Screenshots/STARTUPAndCLEANUPTests.png "ZenUnit")
 
 ### ZenUnit Command Line Usage
 
