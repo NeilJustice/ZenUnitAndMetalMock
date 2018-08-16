@@ -4377,7 +4377,7 @@ Testing Rigor Options:
          if (totalNumberOfTestCases == 0)
          {
             _console->WriteColor("[ZenUnit] ", Color::Green);
-            _console->WriteLine("Zero test classes run.");
+            _console->WriteLineAndExit("Zero test classes run. Exiting with code 1.", 1);
          }
          else
          {

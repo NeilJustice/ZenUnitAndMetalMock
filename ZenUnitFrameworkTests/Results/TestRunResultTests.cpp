@@ -217,13 +217,13 @@ namespace ZenUnit
    TEST(PrintConclusion_0TotalNumberOfTests_PrintsZeroTestClassesRegisteredToRun)
    {
       _consoleMock->WriteColorMock.Expect();
-      _consoleMock->WriteLineMock.Expect();
+      _consoleMock->WriteLineAndExitMock.Expect();
       //
       _testRunResult.PrintConclusion(
          ZenUnit::Random<string>(), 0, ZenUnit::Random<unsigned>(), ZenUnit::Random<ZenUnitArgs>());
       //
       ZEN(_consoleMock->WriteColorMock.CalledOnceWith("[ZenUnit] ", Color::Green));
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith("Zero test classes run."));
+      ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith("Zero test classes run. Exiting with code 1.", 1));
    }
 
    TEST7X7(PrintConclusion_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds,
