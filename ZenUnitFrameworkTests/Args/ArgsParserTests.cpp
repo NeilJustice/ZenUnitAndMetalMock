@@ -27,7 +27,7 @@ namespace ZenUnit
    EVIDENCE
 
    const string _testProgramPath = Random<string>();
-   const string ExpectedUsage = R"(ZenUnit v0.2.2
+   const string ExpectedUsage = R"(C++ Unit Testing Framework ZenUnit - Version 0.3.0
 Usage: <TestsBinaryName> [Options...]
 
 Testing Utility Options:
@@ -63,13 +63,13 @@ Testing Rigor Options:
 
 --random
    Run test classes, tests, and value-parameterized test cases in a random order.
---seed=<SeedValue>
-   Set to SeedValue the random seed used by --random
-   and the ZenUnit::Random<T> family of random value generating functions.
+--seed=<Value>
+   Set to Value the random seed used by --random and
+   the ZenUnit::Random<T> family of random value generating functions.
    The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
 --test-runs=<N>
-   Repeat the running of all tests N times.
-   Specify --test-runs=5 --random for five random test run orderings.
+   Repeat the running of all tests N times. Use a negative number to repeat forever.
+   For five random test run orderings, specify --random --test-runs=5.
 --no-skips
    Exit 1 regardless of test run outcome if any tests are skipped.)";
 
