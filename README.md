@@ -394,7 +394,7 @@ The default behavior of `ARE_EQUAL(expectedValue, actualValue)` is to throw a `Z
 
 For custom `ARE_EQUAL` behavior such as field-by-field assertions on the fields of type T, a `ZenUnit::Equalizer<T>` struct specialization can be defined with a `static void AssertEqual(const T& expected, const T& actual)` function.
 
-Here is an example of how to define and test a custom ZenUnit\:\:Equalizer\<T\> and custom ZenUnit::Random\<T\> for T = FileArbArgs. FileArb.exe is a program that creates arbitrary files for testing the performance of filesystems, networks, and version control. FileArb.exe will eventually be open sourced to be both a useful program and a real-world example of how a program's correctness can be confirmed using ZenUnit and ZenMock.
+Here is an example of how to define and test a custom ZenUnit\:\:Equalizer\<T\> and custom ZenUnit::Random\<T\> for T = FileArbArgs. FileArb is a program that creates arbitrary files for testing the performance of filesystems, networks, and version control. FileArb.exe will eventually be open sourced to be both a useful program and a real-world example of how a program's correctness can be confirmed using ZenUnit and ZenMock.
 
 libFileArb/FileArbArgs.h:
 
@@ -443,7 +443,8 @@ libFileArbTests/ZenUnitTesting/FileArbArgsEqualizerAndRandom.cpp:
 namespace ZenUnit
 {
    // Custom ZenUnit::Equalizer<T> definition
-   void Equalizer<FileArbArgs>::AssertEqual(const FileArbArgs& expectedFileArbArgs, const FileArbArgs& actualFileArbArgs)
+   void Equalizer<FileArbArgs>::AssertEqual(
+      const FileArbArgs& expectedFileArbArgs, const FileArbArgs& actualFileArbArgs)
    {
       ARE_EQUAL(expectedFileArbArgs.commandLine, actualFileArbArgs.commandLine);
       ARE_EQUAL(expectedFileArbArgs.numberOfFilesToWrite, actualFileArbArgs.numberOfFilesToWrite);
@@ -508,19 +509,6 @@ TEST(ZenUnitRandom_FileArbArgs_ReturnsAllNonDefaultFields)
 RUN_TESTS(FileArbArgsEqualizerAndRandomTests)
 ```
 
-|ZenUnit 1.0 Roadmap|
-|-----------------------|
-|100% code coverage badge (code coverage numbers are currently checked manually with llvm-profdata-cov.py)|
-|Travis CI clang-tidy (currently run in a Jenkins job)|
-|Travis CI Clang AddressSanitizer and UndefinedBehaviorSanitizer (currently run in a Jenkins job)|
-|AppVeyor /analyze (currently run manually)|
-|ZenUnit::Printer\<T\> documentation|
-|TUPLES_EQUAL|
-|ARE_WITHIN|
-|ARE_CLOSE|
-|--output=\<FilePath\>|
-|--breakfast|
-
-|Complementary Software For Confirming Software Correctness|
-|----------------------------------------------------------|
+|Complementary Software For Confirming The Correctness Of Software|
+|-----------------------------------------------------------------|
 |[ZenMock](https://github.com/NeilJustice/ZenMock), a header-only C++17 mocking framework powered by ZenUnit with a high-readability arrange-act-assert syntax for confirming the correctness of calls to virtual, non-virtual, static, and free functions.|
