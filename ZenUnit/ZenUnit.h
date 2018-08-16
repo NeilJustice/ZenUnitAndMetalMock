@@ -799,7 +799,7 @@ namespace ZenUnit
       bool exit0 = false;
       bool failfast = false;
       bool noskips = false;
-      unsigned testruns = 1;
+      int testruns = 1;
       bool random = false;
       unsigned short randomseed = 0;
       bool randomseedsetbyuser = false;
@@ -1817,6 +1817,7 @@ namespace ZenUnit
       std::unique_ptr<const RunFilterParser> _runFilterParser;
       std::unique_ptr<const OneArgMemberFunctionCaller<void, ArgsParser, ZenUnitArgs&>> _callerOfSetRandomSeedIfNotSetByUser;
       std::unique_ptr<const Watch> _watch;
+      std::function<int(const std::string&)> call_String_ToInt;
       std::function<unsigned(const std::string&)> call_String_ToUnsigned;
    public:
       ArgsParser() noexcept
@@ -1824,6 +1825,7 @@ namespace ZenUnit
          , _runFilterParser(std::make_unique<RunFilterParser>())
          , _callerOfSetRandomSeedIfNotSetByUser(new OneArgMemberFunctionCaller<void, ArgsParser, ZenUnitArgs&>)
          , _watch(new Watch)
+         , call_String_ToInt(String::ToInt)
          , call_String_ToUnsigned(String::ToUnsigned)
       {
       }
@@ -1943,7 +1945,7 @@ Testing Rigor Options:
                   }
                   else if (argName == "--test-runs")
                   {
-                     zenUnitArgs.testruns = call_String_ToUnsigned(argValueString);
+                     zenUnitArgs.testruns = call_String_ToInt(argValueString);
                   }
                   else if (argName == "--seed")
                   {
@@ -4610,7 +4612,8 @@ Testing Rigor Options:
          _zenUnitArgs = _argsParser->Parse(commandLineArgs);
          _testClassRunnerRunner->ApplyRunFiltersIfAny(_zenUnitArgs.runFilters);
          int overallExitCode = 0;
-         for (unsigned testRunIndex = 0; testRunIndex < _zenUnitArgs.testruns; ++testRunIndex)
+         const int numberOfTestRuns = _zenUnitArgs.testruns < 0 ? std::numeric_limits<int>::max() : _zenUnitArgs.testruns;
+         for (int testRunIndex = 0; testRunIndex < numberOfTestRuns; ++testRunIndex)
          {
             const int testRunExitCode = _nonVoidOneArgMemberFunctionCaller->NonConstCall(
                this, &TestRunner::PrintPreambleRunTestClassesPrintConclusion, _zenUnitArgs);
@@ -5473,7 +5476,7 @@ Testing Rigor Options:
             RunTestCaseIfNotFilteredOut(_currentTestCaseNumber, args, splitTestCaseArgs);
          }
          Exit1IfNonExistentTestCaseNumberSpecified();
-         // Reset _currentTestCaseNumber to 1 to ready this TestNXN for another test run in case -testruns=N is specified
+         // Reset _currentTestCaseNumber to 1 to ready this TestNXN for another test run in case --test-runs=N is specified
          _currentTestCaseNumber = 1;
          return _testResults;
       }

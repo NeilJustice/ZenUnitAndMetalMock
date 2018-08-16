@@ -108,16 +108,16 @@ namespace ZenUnit
    }
 
    TEST4X4(ParseArgsRunTestClassesPrintResults_ParsesArgs_RunsTestClassesTimesNumberOfTimes_Returns0IfAllTestRunsPassOtherwiseReturns1,
-      int expectedOverallExitCode, unsigned testrunsArgs, int firstTestRunExitCode, int secondTestRunExitCode,
-      0, 1, 0, ZenUnit::Random<int>(),
-      1, 2, 1, 0,
-      1, 2, 0, 1,
-      1, 2, 1, 1)
+      int testrunsArg, int firstTestRunExitCode, int secondTestRunExitCode, int expectedOverallExitCode,
+      1, 0, ZenUnit::Random<int>(), 0,
+      2, 1, 0, 1,
+      2, 0, 1, 1,
+      2, 1, 1, 1)
    {
       ZenUnitArgs parsedZenUnitArgs;
       parsedZenUnitArgs.runFilters = { Random<RunFilter>(), Random<RunFilter>() };
       parsedZenUnitArgs.wait = ZenUnit::Random<bool>();
-      parsedZenUnitArgs.testruns = testrunsArgs;
+      parsedZenUnitArgs.testruns = testrunsArg;
       _argsParserMock->ParseMock.Return(parsedZenUnitArgs);
 
       _testClassRunnerRunnerMock->ApplyRunFiltersIfAnyMock.Expect();
@@ -135,8 +135,8 @@ namespace ZenUnit
       ZEN(_argsParserMock->ParseMock.CalledOnceWith(commandLineArgs));
       ZEN(_testClassRunnerRunnerMock->ApplyRunFiltersIfAnyMock.CalledOnceWith(parsedZenUnitArgs.runFilters));
       ZEN(_nonVoidOneArgMemberFunctionCallerMock->NonConstCallMock.CalledNTimesWith(
-         testrunsArgs, &_testRunner, &TestRunner::PrintPreambleRunTestClassesPrintConclusion, parsedZenUnitArgs));
-      ZEN(_testRunResultMock->ResetStateExceptForSkipsMock.CalledNTimes(testrunsArgs));
+         testrunsArg, &_testRunner, &TestRunner::PrintPreambleRunTestClassesPrintConclusion, parsedZenUnitArgs));
+      ZEN(_testRunResultMock->ResetStateExceptForSkipsMock.CalledNTimes(testrunsArg));
       ZEN(_consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.CalledOnceWith(parsedZenUnitArgs.wait));
       ARE_EQUAL(expectedOverallExitCode, overallExitCode);
    }

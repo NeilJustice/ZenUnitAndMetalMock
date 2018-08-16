@@ -78,6 +78,7 @@ Testing Rigor Options:
    RunFilterParserMock* _runFilterParserMock = nullptr;
    VoidOneArgMemberFunctionCallerMock<ArgsParser, ZenUnitArgs&>* _callerOfSetRandomSeedIfNotSetByUserMock = nullptr;
    WatchMock* _watchMock;
+   ZENMOCK_NONVOID1_STATIC(int, ZenUnit::String, ToInt, const string&)
    ZENMOCK_NONVOID1_STATIC(unsigned, ZenUnit::String, ToUnsigned, const string&)
 
    STARTUP
@@ -87,6 +88,7 @@ Testing Rigor Options:
       _argsParser._callerOfSetRandomSeedIfNotSetByUser.reset(
          _callerOfSetRandomSeedIfNotSetByUserMock = new VoidOneArgMemberFunctionCallerMock<ArgsParser, ZenUnitArgs&>);
       _argsParser._watch.reset(_watchMock = new WatchMock);
+      _argsParser.call_String_ToInt = BIND_1ARG_ZENMOCK_OBJECT(ToInt_ZenMockObject);
       _argsParser.call_String_ToUnsigned = BIND_1ARG_ZENMOCK_OBJECT(ToUnsigned_ZenMockObject);
    }
 
@@ -97,6 +99,7 @@ Testing Rigor Options:
       POINTER_WAS_NEWED(argsParser._runFilterParser);
       POINTER_WAS_NEWED(argsParser._callerOfSetRandomSeedIfNotSetByUser);
       POINTER_WAS_NEWED(argsParser._watch);
+      STD_FUNCTION_TARGETS(String::ToInt, argsParser.call_String_ToInt);
       STD_FUNCTION_TARGETS(String::ToUnsigned, argsParser.call_String_ToUnsigned);
    }
 
@@ -173,9 +176,10 @@ Testing Rigor Options:
    TEST(Parse_AllArgsSpecifiedExpectForRunFilter_ReturnsZenUnitArgsWithAllFieldsSets)
    {
       ExpectCallToSetRandomSeedIfNotSetByUser();
-      const unsigned testruns = ZenUnit::Random<unsigned>();
+      const int testruns = ZenUnit::Random<int>();
+      ToInt_ZenMockObject.Return(testruns);
       const unsigned randomseed = ZenUnit::Random<unsigned>();
-      ToUnsigned_ZenMockObject.ReturnValues(testruns, randomseed);
+      ToUnsigned_ZenMockObject.Return(randomseed);
       const vector<string> args
       {
          _testProgramPath,
@@ -191,11 +195,8 @@ Testing Rigor Options:
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
-      ZEN(ToUnsigned_ZenMockObject.CalledAsFollows(
-      {
-         to_string(testruns),
-         to_string(randomseed)
-      }));
+      ZEN(ToInt_ZenMockObject.CalledOnceWith(to_string(testruns)));
+      ZEN(ToUnsigned_ZenMockObject.CalledOnceWith(to_string(randomseed)));
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
       expectedZenUnitArgs.pause = true;
@@ -309,13 +310,13 @@ Testing Rigor Options:
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
-      ToUnsigned_ZenMockObject.Throw<invalid_argument>("");
+      ToInt_ZenMockObject.Throw<invalid_argument>("");
       const string InvalidTimesArg = "--test-runs=-1_for_example";
       const vector<string> args { _testProgramPath, InvalidTimesArg };
       //
       THROWS(_argsParser.Parse(args), WriteLineAndExitException, "");
       //
-      ZEN(ToUnsigned_ZenMockObject.CalledOnceWith("-1_for_example"));
+      ZEN(ToInt_ZenMockObject.CalledOnceWith("-1_for_example"));
       ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Invalid --name=value argument value: " + InvalidTimesArg + "\n"));
       ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
@@ -324,12 +325,12 @@ Testing Rigor Options:
    TEST(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
    {
       ExpectCallToSetRandomSeedIfNotSetByUser();
-      const unsigned timesArgValue = ToUnsigned_ZenMockObject.ReturnRandom();
+      const unsigned timesArgValue = ToInt_ZenMockObject.ReturnRandom();
       const vector<string> args { _testProgramPath, "--test-runs=" + to_string(timesArgValue) };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
-      ZEN(ToUnsigned_ZenMockObject.CalledOnceWith(to_string(timesArgValue)));
+      ZEN(ToInt_ZenMockObject.CalledOnceWith(to_string(timesArgValue)));
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
       expectedZenUnitArgs.testruns = timesArgValue;
