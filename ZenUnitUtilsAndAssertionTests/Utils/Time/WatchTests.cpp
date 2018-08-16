@@ -24,8 +24,9 @@ namespace ZenUnit
    FACTS(MicrosecondsToTwoDecimalPlaceMillisecondsString_ReturnsMicrosecondsAsMillisecondsRoundedToThreePlaces)
    EVIDENCE
 
-   struct WatchSelfMocked : public Zen::Mock<ZenUnit::Watch>
+   class WatchSelfMocked : public Zen::Mock<ZenUnit::Watch>
    {
+   public:
       ZENMOCK_NONVOID0_CONST(tm, TMNow)
    };
    unique_ptr<WatchSelfMocked> _watchSelfMocked;

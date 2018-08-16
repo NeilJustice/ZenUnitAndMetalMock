@@ -66,7 +66,7 @@ namespace ZenUnit
    }
 
    TEST2X2(ToUnsigned_StrIsUnsignedNumber_ReturnsNumber,
-      unsigned expectedReturnValue, const string& str,
+      unsigned expectedReturnValue, string_view str,
       0u, "0",
       1u, "1",
       12u, "12",
@@ -84,7 +84,7 @@ namespace ZenUnit
    }
 
    TEST1X1(ToUnsigned_StringNotConvertibleToUnsigned_Throws,
-      const string& str,
+      string_view str,
       " ",
       "a",
       "-1",
@@ -97,17 +97,17 @@ namespace ZenUnit
       "0  ")
    {
       THROWS(String::ToUnsigned(str), invalid_argument,
-         "ZenUnit::String::ToUnsigned() called with string not convertible to unsigned integer: \"" + str + "\"");
+         "ZenUnit::String::ToUnsigned() called with string not convertible to unsigned integer: \"" + string(str) + "\"");
    }
 
    TEST1X1(ToUnsigned_StringIsValueGreaterThanUnsignedMax_Throws,
-      const string& expectedGreaterThanUnsignedMaxValue,
+      string_view expectedGreaterThanUnsignedMaxValueString,
       to_string(static_cast<unsigned long long>(numeric_limits<unsigned int>::max()) + 1ull),
       to_string(static_cast<unsigned long long>(numeric_limits<unsigned int>::max()) + 2ull))
    {
-      THROWS(String::ToUnsigned(expectedGreaterThanUnsignedMaxValue), invalid_argument,
+      THROWS(String::ToUnsigned(expectedGreaterThanUnsignedMaxValueString), invalid_argument,
          "ZenUnit::String::ToUnsigned called with string containing number greater than std::numeric_limits<unsigned int>::max(): \""
-         + expectedGreaterThanUnsignedMaxValue + "\"");
+         + string(expectedGreaterThanUnsignedMaxValueString) + "\"");
    }
 
    TEST3X3(CaseInsensitiveStrcmp_ReturnsCrossPlatformCaseInsensitiveStrcmpResult,

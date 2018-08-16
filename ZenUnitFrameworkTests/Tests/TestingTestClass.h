@@ -1,6 +1,12 @@
 #pragma once
 
-class TestingTestClass : public Zen::Mock<TestClass<TestingTestClass>>
+class TestFunctionClass
+{
+public:
+   void TestFunction() {}
+};
+
+class TestingTestClass : public Zen::Mock<TestClass<TestingTestClass>>, public TestFunctionClass
 {
 public:
    static bool s_destructorCalled;
@@ -18,5 +24,5 @@ public:
 
    ZENMOCK_VOID0(Startup)
    ZENMOCK_VOID0(Cleanup)
-   ZENMOCK_VOID0_NONVIRTUAL(Test)
+   ZENMOCK_VOID0_NONVIRTUAL(TestFunction)
 };

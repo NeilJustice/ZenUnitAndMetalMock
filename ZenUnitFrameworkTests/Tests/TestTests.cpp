@@ -88,10 +88,8 @@ namespace ZenUnit
       //
       const TestResult testResult = _test->BaseRunTest();
       //
-      ZEN(_tryCatchCallerMock->CallMock.CalledOnceWith(
-         &Test::CallNewTestClass, _test.get(), TestPhase::Constructor));
-      ZEN(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(
-         _test->p_fullTestName, constructorFailCallResult));
+      ZEN(_tryCatchCallerMock->CallMock.CalledOnceWith(&Test::CallNewTestClass, _test.get(), TestPhase::Constructor));
+      ZEN(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(_test->p_fullTestName, constructorFailCallResult));
       ARE_EQUAL(constructorFailTestResult, testResult);
    }
 

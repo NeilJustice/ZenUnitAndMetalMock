@@ -24,7 +24,7 @@ namespace ZenUnit
    STARTUP
    {
       _normalTest = make_unique<NormalTest<TestingTestClass>>(
-         TestClassName.c_str(), TestName.c_str(), &TestingTestClass::Test);
+         TestClassName.c_str(), TestName.c_str(), &TestingTestClass::TestFunction);
    }
 
    TEST(NumberOfTestCases_Returns1)
@@ -55,11 +55,11 @@ namespace ZenUnit
 
    TEST(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)
    {
-      const NormalTest<TestingTestClass> normalTest(TestClassName.c_str(), TestName.c_str(), &TestingTestClass::Test);
+      const NormalTest<TestingTestClass> normalTest(TestClassName.c_str(), TestName.c_str(), &TestingTestClass::TestFunction);
       ARE_EQUAL(TestName, normalTest.Name());
       ARE_EQUAL("TESTS(" + TestClassName + ")\nTEST(" + TestName + ")", normalTest.FullTestNameValue());
       ARE_EQUAL("(0)", normalTest.FileLineString());
-      ARE_EQUAL(&TestingTestClass::Test, normalTest._testMemberFunction);
+      ARE_EQUAL(&TestingTestClass::TestFunction, normalTest._testMemberFunction);
       IS_NULL(normalTest._testClass);
    }
 
@@ -85,13 +85,13 @@ namespace ZenUnit
 
    TEST(TestBody_CallsMemberTestFunctionBoundToTestClassPointer)
    {
-      _normalTest->_testMemberFunction = &TestingTestClass::Test;
+      _normalTest->_testMemberFunction = &TestingTestClass::TestFunction;
       _normalTest->_testClass = make_unique<TestingTestClass>();
-      _normalTest->_testClass->TestMock.Expect();
+      _normalTest->_testClass->TestFunctionMock.Expect();
       //
       _normalTest->TestBody();
       //
-      ZEN(_normalTest->_testClass->TestMock.CalledOnce());
+      ZEN(_normalTest->_testClass->TestFunctionMock.CalledOnce());
    }
 
    TEST(Cleanup_CallsCleanupOnTestClass)

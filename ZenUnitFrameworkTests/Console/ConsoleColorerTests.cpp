@@ -21,13 +21,15 @@ namespace ZenUnit
 #endif
    EVIDENCE
 
-   struct ConsoleColorer_SupportsColorMocked : public Zen::Mock<ConsoleColorer>
+   class ConsoleColorer_SupportsColorMocked : public Zen::Mock<ConsoleColorer>
    {
+   public:
       ZENMOCK_NONVOID0_CONST(bool, SupportsColor)
    };
 
-   struct ConsoleColorer_SetCallsMocked : public Zen::Mock<ConsoleColorer>
+   class ConsoleColorer_SetCallsMocked : public Zen::Mock<ConsoleColorer>
    {
+   public:
       ZENMOCK_VOID0(SetSupportsColorIfUnset)
       ZENMOCK_VOID1_CONST(SetTextColor, Color)
    };

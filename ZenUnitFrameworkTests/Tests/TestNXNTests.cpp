@@ -122,8 +122,9 @@ namespace ZenUnit
 
    TEST(RunTest_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
    {
-      struct Test1X1SelfMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
+      class Test1X1SelfMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
       {
+      public:
          ZENMOCK_VOID3(RunTestCaseIfNotFilteredOut, size_t, const ZenUnitArgs&, const std::vector<std::string>&)
          ZENMOCK_VOID0_CONST(Exit1IfNonExistentTestCaseNumberSpecified)
          ZENMOCK_NONVOID1_STATIC(ITestCaseNumberGenerator*, ITestCaseNumberGenerator, FactoryNew, bool)
@@ -191,8 +192,9 @@ namespace ZenUnit
       IS_EMPTY(testResults);
    }
 
-   struct Test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
+   class Test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
    {
+   public:
       ZENMOCK_NONVOID3_CONST(bool, ShouldRunTestCase, const ZenUnitArgs&, const FullTestName&, size_t)
       ZENMOCK_VOID2(RunTestCase, size_t, const std::vector<std::string>&)
 
@@ -246,8 +248,9 @@ namespace ZenUnit
 
    TEST(RunTestCase_DoesSo)
    {
-      struct Test1X1SelfMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
+      class Test1X1SelfMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
       {
+      public:
          ZENMOCK_VOID2_CONST(PrintTestCaseNumberThenArgsThenArrow, size_t, const vector<string>&)
          ZENMOCK_NONVOID0(TestResult, MockableCallBaseRunTest)
          ZENMOCK_VOID1_CONST(WriteLineOKIfSuccess, const TestResult&)
@@ -378,8 +381,9 @@ namespace ZenUnit
 
    TEST(TestBody_CallsRunNXNTestCase)
    {
-      struct TestNXN_RunNXNTestCaseMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int>>
+      class TestNXN_RunNXNTestCaseMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int>>
       {
+      public:
          ZENMOCK_VOID2(RunNXNTestCase, TestingTestClass*, size_t)
             TestNXN_RunNXNTestCaseMocked() noexcept
             : Zen::Mock<TestNXN<TestingTestClass, 1, int>>("", "", "", 0) {}

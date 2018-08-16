@@ -15,8 +15,9 @@ namespace ZenUnit
    AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
-   struct RunFilterSelfMocked : Zen::Mock<RunFilter>
+   class RunFilterSelfMocked : public Zen::Mock<RunFilter>
    {
+   public:
       ZENMOCK_NONVOID2_CONST(bool, FilterPatternMatchesString, const string&, const char*)
    } _runFilterSelfMocked;
 

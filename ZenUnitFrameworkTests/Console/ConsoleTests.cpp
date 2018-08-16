@@ -26,8 +26,9 @@ namespace ZenUnit
    ZENMOCK_NONVOID0_FREE(int, _getch)
 #endif
 
-   struct ConsoleSelfMocked : public Zen::Mock<Console>
+   class ConsoleSelfMocked : public Zen::Mock<Console>
    {
+   public:
       ZENMOCK_VOID2_CONST(WriteColor, const string&, Color)
       ZENMOCK_VOID2_CONST(WriteLineColor, const string&, Color)
       ZENMOCK_NONVOID0_CONST(bool, DebuggerIsPresent)
@@ -124,8 +125,9 @@ namespace ZenUnit
 
    TEST(WriteStringsCommaSeparated_CallsDoWriteStringsCommaSeparated)
    {
-      struct ConsoleSelfMocked : public Zen::Mock<Console>
+      class ConsoleSelfMocked : public Zen::Mock<Console>
       {
+      public:
          ZENMOCK_VOID3_CONST(DoWriteStringsCommaSeparated, const vector<string>&, size_t, size_t)
       } consoleSelfMocked;
       vector<string> strings = { Random<string>() };
@@ -145,8 +147,9 @@ namespace ZenUnit
       vector<string>{ "Argument1", "Argument2" }, size_t(1), size_t(1), vector<string>{ "Argument2" },
       vector<string>{ "Argument1", "Argument2", "Argument3", "Argument4" }, size_t(2), size_t(2), vector<string>{ "Argument3", ", ", "Argument4" })
    {
-      struct ConsoleSelfMocked : public Zen::Mock<Console>
+      class ConsoleSelfMocked : public Zen::Mock<Console>
       {
+      public:
          ZENMOCK_VOID1_CONST(Write, const string&)
       } consoleSelfMocked;
       consoleSelfMocked.WriteMock.Expect();

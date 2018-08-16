@@ -498,7 +498,7 @@ namespace ZenUnit
          return splitString;
       }
 
-      static unsigned ToUnsigned(const std::string& str)
+      static unsigned ToUnsigned(std::string_view str)
       {
          if (str.empty())
          {
@@ -511,7 +511,7 @@ namespace ZenUnit
             const char c = str[static_cast<size_t>(i)];
             if (c < '0' || c > '9')
             {
-               throw std::invalid_argument("ZenUnit::String::ToUnsigned() called with string not convertible to unsigned integer: \"" + str + "\"");
+               throw std::invalid_argument("ZenUnit::String::ToUnsigned() called with string not convertible to unsigned integer: \"" + std::string(str) + "\"");
             }
             const unsigned long long digit = "0123456789"[c - 48] - 48ull;
             result += digit * place;
@@ -854,6 +854,20 @@ namespace ZenUnit
             SetTextColor(Color::White);
          }
       }
+
+      virtual void SetTextColor(Color color) const
+      {
+#if defined __linux__ || defined __APPLE__
+         const char* linuxColor = ColorToLinuxColor(color);
+         std::cout << linuxColor;
+#elif defined _WIN32
+         const HANDLE stdOutHandle = call_GetStdHandle(STD_OUTPUT_HANDLE);
+         const WindowsColor windowsColor = ColorToWindowsColor(color);
+         const BOOL didSetConsoleTextAttr = call_SetConsoleTextAttribute(
+            stdOutHandle, static_cast<WORD>(windowsColor));
+         assert_true(didSetConsoleTextAttr == TRUE);
+#endif
+      }
    private:
       virtual void SetSupportsColorIfUnset()
       {
@@ -870,20 +884,6 @@ namespace ZenUnit
          const int isAtty = call_isatty(stdoutFileHandle);
          const bool supportsColor = isAtty != 0;
          return supportsColor;
-      }
-
-      virtual void SetTextColor(Color color) const
-      {
-#if defined __linux__ || defined __APPLE__
-         const char* linuxColor = ColorToLinuxColor(color);
-         std::cout << linuxColor;
-#elif defined _WIN32
-         const HANDLE stdOutHandle = call_GetStdHandle(STD_OUTPUT_HANDLE);
-         const WindowsColor windowsColor = ColorToWindowsColor(color);
-         const BOOL didSetConsoleTextAttr = call_SetConsoleTextAttribute(
-            stdOutHandle, static_cast<WORD>(windowsColor));
-         assert_true(didSetConsoleTextAttr == TRUE);
-#endif
       }
    };
 
@@ -1348,9 +1348,7 @@ namespace ZenUnit
       std::string why;
       FileLine fileLine;
 
-      Anomaly() noexcept
-      {
-      }
+      Anomaly() noexcept = default;
 
       template<typename... MessageTypes>
       Anomaly(
@@ -5147,7 +5145,15 @@ Testing Rigor Options:
       friend class NormalTestTests;
    private:
       std::unique_ptr<TestClassType> _testClass;
+#if defined _WIN32
+#pragma warning(push)
+#pragma warning(disable: 4371) // layout of class may have changed from a previous version of the compiler due to better packing of member
+#endif
       void (TestClassType::*_testMemberFunction)();
+#if defined _WIN32
+#pragma warning(pop)
+#endif
+
    public:
       NormalTest(const char* testClassName, const char* testName, void (TestClassType::*testMemberFunction)())
          : Test(testClassName, testName, 0)

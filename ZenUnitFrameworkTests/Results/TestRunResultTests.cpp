@@ -130,8 +130,9 @@ namespace ZenUnit
       size_t(1),
       size_t(2))
    {
-      struct TestRunResultSelfMocked : public Zen::Mock<TestRunResult>
+      class TestRunResultSelfMocked : public Zen::Mock<TestRunResult>
       {
+      public:
          ZENMOCK_NONVOID1_CONST(size_t, NumberOfFailedTestCases, const vector<TestClassResult>&)
       } testRunResultSelfMocked;
       testRunResultSelfMocked.NumberOfFailedTestCasesMock.Return(numberOfFailedTestCases);

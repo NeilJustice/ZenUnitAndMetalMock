@@ -14,8 +14,9 @@ namespace ZenUnit
    FACTS(MakeThirdLineSuffix_ReturnsRandomSeedIfRandomModeOtherwiseEmptyString)
    EVIDENCE
 
-   struct PreamblePrinterSelfMocked : public Zen::Mock<PreamblePrinter>
+   class PreamblePrinterSelfMocked : public Zen::Mock<PreamblePrinter>
    {
+   public:
       const ConsoleMock* consoleMock = nullptr;
       const DebugOrReleaseGetterMock* debugOrReleaseGetterMock = nullptr;
       const WatchMock* watchMock = nullptr;
