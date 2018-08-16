@@ -498,6 +498,44 @@ namespace ZenUnit
          return splitString;
       }
 
+      static int ToInt(const std::string& str)
+      {
+         if (str.empty())
+         {
+            throw std::invalid_argument("ZenUnit::String::ToInt() called with empty string");
+         }
+         const bool isNegative = str[0] == '-';
+         long long result = 0;
+         int place = 1;
+         const int stoppingIndex = isNegative ? 1 : 0;
+         for (int i = static_cast<int>(str.size() - 1); i >= stoppingIndex; --i, place *= 10)
+         {
+            char c = str[static_cast<size_t>(i)];
+            if (c < '0' || c > '9')
+            {
+               throw std::invalid_argument("ZenUnit::String::ToInt() called with a string not convertible to a 32-bit integer: \"" + str + "\"");
+            }
+            const int digit = "0123456789"[c - 48] - 48u;
+            result += digit * place;
+         }
+         if (isNegative)
+         {
+            result *= -1;
+         }
+         if (result < std::numeric_limits<int>::min())
+         {
+            throw std::invalid_argument(
+               "ZenUnit::String::ToInt() called with a string containing a number less than std::numeric_limits<int>::min(): \"" + std::to_string(result) + "\"");
+         }
+         if (result > std::numeric_limits<int>::max())
+         {
+            throw std::invalid_argument(
+               "ZenUnit::String::ToInt() called with a string containing a number greater than std::numeric_limits<int>::max(): \"" + std::to_string(result) + "\"");
+         }
+         const int integerResult = static_cast<int>(result);
+         return integerResult;
+      }
+
       static unsigned ToUnsigned(std::string_view str)
       {
          if (str.empty())

@@ -6,10 +6,15 @@ namespace ZenUnit
    FACTS(Split_ReturnsExpected)
    AFACT(Concat_ConcatsValuesIntoString)
    FACTS(CommaSplitExceptQuotedCommas_ReturnsStringSplitOnCommasWithQuotedCommasIgnored)
-   FACTS(ToUnsigned_StrIsUnsignedNumber_ReturnsNumber)
+   AFACT(ToInt_EmptyString_Throws)
+   FACTS(ToInt_StringNotConvertibleToInt_Throws)
+   FACTS(ToInt_StringIsValueLessThanThanIntMin_Throws)
+   FACTS(ToInt_StringIsValueGreaterThanIntMax_Throws)
+   FACTS(ToInt_StringIsValidInt_ReturnsInt)
    AFACT(ToUnsigned_EmptyString_Throws)
    FACTS(ToUnsigned_StringNotConvertibleToUnsigned_Throws)
    FACTS(ToUnsigned_StringIsValueGreaterThanUnsignedMax_Throws)
+   FACTS(ToUnsigned_StrIsUnsignedNumber_ReturnsNumber)
    FACTS(CaseInsensitiveStrcmp_ReturnsCrossPlatformCaseInsensitiveStrcmpResult)
    FACTS(CaseInsensitiveStartsWith_ReturnsExpected)
    EVIDENCE
@@ -65,17 +70,79 @@ namespace ZenUnit
       VECTORS_EQUAL(expectedReturnValue, String::CommaSplitExceptQuotedCommas(text));
    }
 
-   TEST2X2(ToUnsigned_StrIsUnsignedNumber_ReturnsNumber,
-      unsigned expectedReturnValue, string_view str,
-      0u, "0",
-      1u, "1",
-      12u, "12",
-      123u, "123",
-      123u, "0123",
-      1230u, "1230",
-      numeric_limits<unsigned int>::max(), to_string(numeric_limits<unsigned int>::max()))
+   TEST(ToInt_EmptyString_Throws)
    {
-      ARE_EQUAL(expectedReturnValue, String::ToUnsigned(str));
+      THROWS(String::ToInt(""), invalid_argument, "ZenUnit::String::ToInt() called with empty string");
+   }
+
+   TEST1X1(ToInt_StringNotConvertibleToInt_Throws,
+      const string& str,
+      " ",
+      "a",
+      "--1",
+      "0.0",
+      "1.1",
+      " 1",
+      "  0",
+      "1 ",
+      "0  ")
+   {
+      THROWS(String::ToInt(str), invalid_argument,
+         "ZenUnit::String::ToInt() called with a string not convertible to a 32-bit integer: \"" + str + "\"");
+   }
+
+   TEST1X1(ToInt_StringIsValueLessThanThanIntMin_Throws,
+      const string& str,
+      to_string(static_cast<long long>(numeric_limits<int>::min()) - 1),
+      to_string(static_cast<long long>(numeric_limits<int>::min()) - 2))
+   {
+      THROWS(String::ToInt(str), invalid_argument,
+         "ZenUnit::String::ToInt() called with a string containing a number less than std::numeric_limits<int>::min(): \"" + str + "\"");
+   }
+
+   TEST1X1(ToInt_StringIsValueGreaterThanIntMax_Throws,
+      const string& str,
+      to_string(static_cast<long long>(numeric_limits<int>::max()) + 1),
+      to_string(static_cast<long long>(numeric_limits<int>::max()) + 2))
+   {
+      THROWS(String::ToInt(str), invalid_argument,
+         "ZenUnit::String::ToInt() called with a string containing a number greater than std::numeric_limits<int>::max(): \"" + str + "\"");
+   }
+
+   TEST2X2(ToInt_StringIsValidInt_ReturnsInt,
+      const string& str, int expectedReturnValue,
+      to_string(numeric_limits<int>::min()), numeric_limits<int>::min(),
+      to_string(numeric_limits<int>::min() + 1), numeric_limits<int>::min() + 1,
+      "-01234567890", -1234567890,
+      "-1234567890", -1234567890,
+      "-123456789", -123456789,
+      "-12345678", -12345678,
+      "-1234567", -1234567,
+      "-123456", -123456,
+      "-12345", -12345,
+      "-1234", -1234,
+      "-123", -123,
+      "-12", -12,
+      "-1", -1,
+      "-00", 0,
+      "-0", 0,
+      "0", 0,
+      "00", 0,
+      "1", 1,
+      "12", 12,
+      "123", 123,
+      "1234", 1234,
+      "12345", 12345,
+      "123456", 123456,
+      "1234567", 1234567,
+      "12345678", 12345678,
+      "123456789", 123456789,
+      "1234567890", 1234567890,
+      "01234567890", 1234567890,
+      to_string(numeric_limits<int>::max() - 1), numeric_limits<int>::max() - 1,
+      to_string(numeric_limits<int>::max()), numeric_limits<int>::max())
+   {
+      ARE_EQUAL(expectedReturnValue, String::ToInt(str));
    }
 
    TEST(ToUnsigned_EmptyString_Throws)
@@ -108,6 +175,19 @@ namespace ZenUnit
       THROWS(String::ToUnsigned(expectedGreaterThanUnsignedMaxValueString), invalid_argument,
          "ZenUnit::String::ToUnsigned called with string containing number greater than std::numeric_limits<unsigned int>::max(): \""
          + string(expectedGreaterThanUnsignedMaxValueString) + "\"");
+   }
+
+   TEST2X2(ToUnsigned_StrIsUnsignedNumber_ReturnsNumber,
+      unsigned expectedReturnValue, string_view str,
+      0u, "0",
+      1u, "1",
+      12u, "12",
+      123u, "123",
+      123u, "0123",
+      1230u, "1230",
+      numeric_limits<unsigned int>::max(), to_string(numeric_limits<unsigned int>::max()))
+   {
+      ARE_EQUAL(expectedReturnValue, String::ToUnsigned(str));
    }
 
    TEST3X3(CaseInsensitiveStrcmp_ReturnsCrossPlatformCaseInsensitiveStrcmpResult,
