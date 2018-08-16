@@ -1386,7 +1386,9 @@ namespace ZenUnit
       std::string why;
       FileLine fileLine;
 
-      Anomaly() noexcept = default;
+      Anomaly() noexcept
+      {
+      }
 
       template<typename... MessageTypes>
       Anomaly(
