@@ -76,9 +76,9 @@ namespace ZenUnit
       const string expectedThirdLineAndLineBreak = thirdLinePrefix + thirdLineSuffix + "\n";
       ZEN(_preamblePrinterSelfMocked.consoleMock->WriteLineMock.CalledAsFollows(
       {
-         runningInDebugOrReleaseModeString + zenUnitArgs.commandLine,
-         " Running at " + startTime,
-         expectedThirdLineAndLineBreak
+         { runningInDebugOrReleaseModeString + zenUnitArgs.commandLine },
+         { " Running at " + startTime },
+         { expectedThirdLineAndLineBreak }
       }));
       ARE_EQUAL(startTime, returnedStartTime);
    }

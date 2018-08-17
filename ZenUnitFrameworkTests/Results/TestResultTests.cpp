@@ -277,8 +277,8 @@ namespace ZenUnit
       ZEN(_testFailureNumbererMock.NextMock.CalledOnce());
       ZEN(_consoleMock.WriteMock.CalledAsFollows(
       {
-         _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value(),
-         expectedTestPhaseSuffix
+         { _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value() },
+         { expectedTestPhaseSuffix }
       }));
       ZEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
          CalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber));
@@ -324,8 +324,8 @@ namespace ZenUnit
       ZEN(_testFailureNumbererMock.NextMock.CalledOnce());
       ZEN(_consoleMock.WriteMock.CalledAsFollows(
       {
-         _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value(),
-         expectedTestPhaseSuffix
+         { _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value() },
+         { expectedTestPhaseSuffix }
       }));
       ZEN(_consoleMock.WriteLineColorMock.CalledAsFollows(
       {
@@ -363,8 +363,8 @@ namespace ZenUnit
       ZEN(_consoleMock.WriteLineColorMock.CalledOnceWith(testFailureNumber, Color::Red));
       ZEN(_consoleMock.WriteLineMock.CalledAsFollows(
       {
-         _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value(),
-         "\nFailed because test took longer than -maxtestms=10 milliseconds"s
+         { _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value() },
+         { "\nFailed because test took longer than -maxtestms=10 milliseconds"s }
       }));
       ZEN(_consoleMock.WriteNewLineMock.CalledOnce());
    }

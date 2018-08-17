@@ -274,10 +274,10 @@ namespace ZenUnit
       ZEN(_watchMock->DateTimeNowMock.CalledOnce());
       ZEN(_consoleMock->WriteLineMock.CalledAsFollows(
       {
-         expectedCompletedLine,
-         expectedStartTimeLine,
-         expectedEndTimeLine,
-         expectedNumberOfTestsAndMillisecondsLine
+         { expectedCompletedLine },
+         { expectedStartTimeLine },
+         { expectedEndTimeLine },
+         { expectedNumberOfTestsAndMillisecondsLine }
       }));
    }
 

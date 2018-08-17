@@ -29,8 +29,8 @@ namespace ZenUnit
    class ConsoleSelfMocked : public Zen::Mock<Console>
    {
    public:
-      ZENMOCK_VOID2_CONST(WriteColor, const string&, Color)
-      ZENMOCK_VOID2_CONST(WriteLineColor, const string&, Color)
+      ZENMOCK_VOID2_CONST(WriteColor, std::string_view, Color)
+      ZENMOCK_VOID2_CONST(WriteLineColor, std::string_view, Color)
       ZENMOCK_NONVOID0_CONST(bool, DebuggerIsPresent)
       ZENMOCK_VOID0_CONST(WaitForAnyKey)
       ZENMOCK_VOID0_CONST(WriteNewLine)
@@ -150,13 +150,13 @@ namespace ZenUnit
       class ConsoleSelfMocked : public Zen::Mock<Console>
       {
       public:
-         ZENMOCK_VOID1_CONST(Write, const string&)
+         ZENMOCK_VOID1_CONST(Write, std::string_view)
       } consoleSelfMocked;
       consoleSelfMocked.WriteMock.Expect();
       //
       consoleSelfMocked.DoWriteStringsCommaSeparated(strings, startIndex, numberOfElements);
       //
-      vector<ZenMock::OneArgumentCallRef<const string&>> expectedConsoleWriteCalls;
+      vector<ZenMock::OneArgumentCallRef<string_view>> expectedConsoleWriteCalls;
       expectedConsoleWriteCalls.reserve(expectedConsoleWrites.size());
       for (const string& expectedConsoleWrite : expectedConsoleWrites)
       {

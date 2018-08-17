@@ -1,4 +1,4 @@
-// C++ unit testing framework ZenUnit version 0.2.2
+// C++ Unit Testing Framework ZenUnit - Version 0.3.0
 //
 // The MIT License
 // Copyright 2018 Neil Justice
@@ -471,10 +471,10 @@ namespace ZenUnit
          return strstrResult != nullptr;
       }
 
-      static std::vector<std::string> Split(const std::string& str, char delimiter)
+      static std::vector<std::string> Split(std::string_view str, char delimiter)
       {
          std::vector<std::string> splitString;
-         std::istringstream is(str);
+         std::istringstream is(str.data());
          std::string token;
          while (std::getline(is, token, delimiter))
          {
@@ -498,7 +498,7 @@ namespace ZenUnit
          return splitString;
       }
 
-      static int ToInt(const std::string& str)
+      static int ToInt(std::string_view str)
       {
          if (str.empty())
          {
@@ -513,7 +513,7 @@ namespace ZenUnit
             char c = str[static_cast<size_t>(i)];
             if (c < '0' || c > '9')
             {
-               throw std::invalid_argument("ZenUnit::String::ToInt() called with a string not convertible to a 32-bit integer: \"" + str + "\"");
+               throw std::invalid_argument("ZenUnit::String::ToInt() called with a string not convertible to a 32-bit integer: \"" + std::string(str) + "\"");
             }
             const int digit = "0123456789"[c - 48] - 48u;
             result += digit * place;
@@ -593,7 +593,7 @@ namespace ZenUnit
          return elements;
       }
 
-      static bool CaseInsensitiveStartsWith(const char* str, const std::string& substring) noexcept
+      static bool CaseInsensitiveStartsWith(const char* str, std::string_view substring) noexcept
       {
          const size_t strLength = strlen(str);
          const size_t substringLength = substring.length();
@@ -948,12 +948,12 @@ namespace ZenUnit
 
       virtual ~Console() = default;
 
-      virtual void Write(const std::string& message) const
+      virtual void Write(std::string_view message) const
       {
          WriteColor(message, Color::White);
       }
 
-      virtual void WriteColor(const std::string& message, Color color) const
+      virtual void WriteColor(std::string_view message, Color color) const
       {
          const bool didSetColor = _consoleColorer->SetColor(color);
          printf("%s", message.data());
@@ -961,12 +961,12 @@ namespace ZenUnit
          _consoleColorer->UnsetColor(didSetColor);
       }
 
-      virtual void WriteLine(const std::string& message) const
+      virtual void WriteLine(std::string_view message) const
       {
          WriteLineColor(message, Color::White);
       }
 
-      virtual void WriteLineColor(const std::string& message, Color color) const
+      virtual void WriteLineColor(std::string_view message, Color color) const
       {
          const bool didSetColor = _consoleColorer->SetColor(color);
          // With VS2017 15.2 Debug and Release mode, printf("%s\n") measured as ~15% faster
@@ -982,7 +982,7 @@ namespace ZenUnit
          printf("\n");
       }
 
-      virtual void WriteLineAndExit(const std::string& message, int exitCode) const
+      virtual void WriteLineAndExit(std::string_view message, int exitCode) const
       {
          std::cout << message << '\n';
          call_exit(exitCode);
@@ -1115,8 +1115,7 @@ namespace ZenUnit
       static const std::string* TypeInfoToTypeName(const std::type_info& typeInfo)
       {
          const char* const mangledTypeName = typeInfo.name();
-         std::unordered_map<const char*, std::string>&
-            mangledToDemangledTypeName = MangledToDemangledTypeNameMap();
+         std::unordered_map<const char*, std::string>& mangledToDemangledTypeName = MangledToDemangledTypeNameMap();
          const std::unordered_map<const char*, std::string>::const_iterator
             findIter = mangledToDemangledTypeName.find(mangledTypeName);
          if (findIter == mangledToDemangledTypeName.end())
@@ -1143,7 +1142,7 @@ namespace ZenUnit
          return demangledTypeName;
       }
 #elif defined _WIN32
-      static void InplaceEraseAll(std::string& str, const std::string& substring)
+      static void InplaceEraseAll(std::string& str, std::string_view substring)
       {
          while (true)
          {
