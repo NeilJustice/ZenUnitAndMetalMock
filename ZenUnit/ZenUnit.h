@@ -1810,6 +1810,15 @@ namespace ZenUnit
       }
    };
 
+   class Version
+   {
+   public:
+      static const char* Number()
+      {
+         return "0.3.0";
+      }
+   };
+
    class ArgsParser
    {
       friend class ArgsParserTests;
@@ -1835,7 +1844,7 @@ namespace ZenUnit
 
       static const std::string& Usage()
       {
-         static const std::string usage = R"(C++ Unit Testing Framework ZenUnit - Version 0.3.0
+         static const std::string usage = "C++ Unit Testing Framework ZenUnit - Version " + std::string(Version::Number()) + R"(
 Usage: <TestsBinaryName> [Options...]
 
 Testing Utility Options:
@@ -4266,7 +4275,7 @@ Testing Rigor Options:
          const std::string machineName = _machineNameGetter->GetMachineName();
          const std::string thirdLinePrefix = String::Concat(
             " Running ", numberOfTestClassesToBeRun, " test ", testClassesPlural ? "classes" : "class",
-            " on machine ", machineName);
+            " on machine ", machineName, " with ZenUnit version ", Version::Number());
          return thirdLinePrefix;
       }
 
