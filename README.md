@@ -7,7 +7,24 @@
 |Linux (Clang 5.0.2, Clang 6.0.1, GCC 7.3.0) and macOS (AppleClang 9.1.0)|<a href="https://travis-ci.org/NeilJustice/ZenUnit"><img src="https://travis-ci.org/NeilJustice/ZenUnit.svg?branch=master"/></a>|
 |Windows (Visual Studio 2017 and 2017 Preview x64 and Win32)|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitZenMock"><img src="https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true"/></a>|
 
-### ZenUnit design and the N-by-N value-parameterized test syntax
+   * [ZenUnit design and the N-by-N value-parameterized test syntax](#zenunit-design-and-the-n-by-n-value-parameterized-test-syntax)
+   * [STARTUP and CLEANUP](#startup-and-cleanup)
+   * [Command Line Usage](#command-line-usage)
+   * [Type-Parameterized Test Class Syntax](#type-parameterized-test-class-syntax)
+   * [ZenUnit Assertions](#zenunit-assertions)
+      * [Value Assertions](#value-assertions)
+      * [Data Structure Assertions](#data-structure-assertions)
+      * [Exception Assertions](#exception-assertions)
+      * [Pointer Assertions](#pointer-assertions)
+      * [Test Assertions](#test-assertions)
+      * [Function Assertions](#function-assertions)
+   * [Test-Defining Macros](#test-defining-macros)
+   * [Maximizing Mutation Coverage With ZenUnit](#maximizing-mutation-coverage-with-zenunit)
+   * [Customizing ZenUnit Equalizers and ZenUnit Random Value Generating Functions](#customizing-zenUnit-equalizer-and-zenunit-random)
+   * [C++ Mocking Framework ZenMock](#c++-mocking-framework-zenmock)
+
+ZenUnit design and the N-by-N value-parameterized test syntax
+=============================================================
 
 ```cpp
 #include "ZenUnit.h"
@@ -118,11 +135,13 @@ int main(int argc, char* argv[])
 }
 ```
 
-### Console Output
+Console Output
+==============
 
 ![ZenUnit](Screenshots/ZenUnitFizzBuzz.png "ZenUnit")
 
-### STARTUP and CLEANUP
+STARTUP and CLEANUP
+===================
 
 To define a function to be called before each test, there is STARTUP. To define a function to be called after each test, there is CLEANUP.
 
@@ -159,11 +178,13 @@ TEST2X2(Negate_ReturnsTrueIfFalse_ReturnsFalseIfTrue,
 RUN_TESTS(STARTUPAndCLEANUPTests)
 ```
 
-### Console Output
+Console Output
+==============
 
 ![ZenUnit](Screenshots/STARTUPAndCLEANUPTests.png "ZenUnit")
 
-### ZenUnit Command Line Usage
+Command Line Usage
+==================
 
 ```
 C++ Unit Testing Framework ZenUnit - Version 0.3.0
@@ -213,7 +234,8 @@ Testing Rigor Options:
    Exit 1 regardless of test run outcome if any tests are skipped.
 ```
 
-### Type-Parameterized Test Class Syntax
+Type-Parameterized Test Class Syntax
+====================================
 
 How could the correctness of this templatized Set\:\:Contains function be confirmed across various types of sets and elements?
 
@@ -285,11 +307,13 @@ int main(int argc, char* argv[])
 }
 ```
 
-### Console Output
+Console Output
+==============
 
 ![ZenUnit](Screenshots/ZenUnitTypeParameterizedTestClass.png "ZenUnit Type-Parameterized Test Results")
 
-### ZenUnit Assertions
+ZenUnit Assertions
+==================
 
 |Value Assertions|Description|
 |----------------|-----------|
@@ -343,7 +367,8 @@ int main(int argc, char* argv[])
 |`THROWS_EXCEPTION(expression, expectedExceptionBaseClass)`|mutate-exception-type and mutate-exception-message|
 |`THROWS_ANY(expression)`|mutate-exception-type and mutate-exception-message|
 
-### Test-Defining Macros
+Test-Defining Macros
+====================
 
 |Test Classes|Description|
 |------------|-----------|
@@ -368,11 +393,10 @@ int main(int argc, char* argv[])
 |`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Skips a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called.|
 |`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Skips a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called. For use after `SKIP_TEMPLATE_TESTS`.|
 
-### Mutation coverage and the ZenUnit::Random\<T\> family of random value generating functions
+Maximizing Mutation Coverage With ZenUnit
+=========================================
 
-Testing using random inputs instead of constant inputs is a central technique for maximizing mutation coverage. Mutation coverage is the percentage of program-correctness-breaking code mutations "slain" by a collection of tests. To "slay" a code mutation, a collection of tests must fail so as to not pass along the correctness-compromised program potentially all the way to production.
-
-If the folks currently writing C++ mutation testing frameworks go the distance, you may one day hear water cooler dialog such as "100% line and branch coverage? That's excellent, but how's your mutation coverage?"
+Testing using random inputs instead of constant inputs is a central technique for maximizing mutation coverage. Mutation coverage is the percentage of program-correctness-breaking code mutations "slain" by a collection of tests. To "slay" a code mutation, a collection of tests must fail so as to not potentially pass along the correctness-compromised to production.
 
 ZenUnit provides the following random value generating functions for writing unit tests that are robust to the swap-variable-with-constant code mutation, which is one of the most straightforward code mutations to induce manually today or automatically in the 2020s with an LLVM-powered mutation testing framework.
 
@@ -390,13 +414,14 @@ ZenUnit provides the following random value generating functions for writing uni
 |`ZenUnit::RandomSet<T>()`|Returns a `std::set<ElementType>` with size between 1 and 3 with each element a `ZenUnit::Random<ElementType>()` value.|
 |`ZenUnit::RandomUnorderedSet<T>()`|Returns a `std::unordered_set<ElementType>` with size between 1 and 3 with each element a `ZenUnit::Random<ElementType>()` value.|
 
-### Custom ZenUnit\:\:Equalizer\<T\> and Custom ZenUnit::Random\<T\>
+Customizing ZenUnit Equalizers and ZenUnit Random Value Generating Functions
+============================================================================
 
 The default behavior of `ARE_EQUAL(expectedValue, actualValue)` is to throw a `ZenUnit::Anomaly` if `expectedValue == actualValue` returns false.
 
 For custom `ARE_EQUAL` behavior such as field-by-field assertions on the fields of type T, a `ZenUnit::Equalizer<T>` struct specialization can be defined with a `static void AssertEqual(const T& expected, const T& actual)` function.
 
-Here is an example of how to define and test a custom ZenUnit\:\:Equalizer\<T\> and custom ZenUnit::Random\<T\> for T = FileArbArgs. FileArb is a program that creates arbitrary files for testing the performance of filesystems, networks, and version control. FileArb.exe will eventually be open sourced to be both a useful program and a real-world example of how a program's correctness can be confirmed using ZenUnit and ZenMock.
+Here is an example of how to define and test a custom ZenUnit\:\:Equalizer\<T\> and custom ZenUnit::Random\<T\> for T = FileArbArgs. FileArb is a program that creates arbitrary files for testing the performance of filesystems, networks, and version control. FileArb will eventually be open sourced to serve as a real-world example of how a program's correctness can be confirmed using ZenUnit and ZenMock.
 
 libFileArb/FileArbArgs.h:
 
@@ -511,6 +536,6 @@ TEST(ZenUnitRandom_FileArbArgs_ReturnsAllNonDefaultFields)
 RUN_TESTS(FileArbArgsEqualizerAndRandomTests)
 ```
 
-|Complementary Software For Confirming The Correctness Of Software|
-|-----------------------------------------------------------------|
-|[ZenMock](https://github.com/NeilJustice/ZenMock), a header-only C++17 mocking framework powered by ZenUnit with a high-readability arrange-act-assert syntax for confirming the correctness of calls to virtual, non-virtual, static, and free functions.|
+C++ Mocking Framework ZenMock
+=============================
+[ZenMock](https://github.com/NeilJustice/ZenMock) is a single-header C++17 mocking framework powered by ZenUnit with a high-readability arrange-act-assert syntax for confirming the correctness of calls to virtual, non-virtual, static, and free functions.
