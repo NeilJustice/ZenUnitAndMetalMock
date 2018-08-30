@@ -550,4 +550,4 @@ RUN_TESTS(FileArbArgsEqualizerAndRandomTests)
 
 Mocking Framework ZenMock
 =========================
-[ZenMock](https://github.com/NeilJustice/ZenMock) is a C++17 single-header mocking framework powered by ZenUnit with a high-readability arrange-act-assert syntax for confirming the correctness of calls and return values to and from virtual, non-virtual, static, and free functions.
+[ZenMock](https://github.com/NeilJustice/ZenMock) is a C++17 single-header mocking framework powered by ZenUnit that features a high-readability arrange-act-assert syntax for confirming the correctness of calls and return values to and from virtual, non-virtual, static, and free functions.
