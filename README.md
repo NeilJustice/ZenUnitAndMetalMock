@@ -18,13 +18,12 @@
       * [Pointer Assertions](#pointer-assertions)
       * [Test Assertions](#test-assertions)
       * [Function Assertions](#function-assertions)
-   * [Test-Defining Macros](#test-defining-macros)
+   * [Test Class And Test Defining Macros](#test-class-and-test-defining-macros)
    * [Maximizing Mutation Coverage With ZenUnit](#maximizing-mutation-coverage-with-zenunit)
    * [Customizing ZenUnit Equalizers and ZenUnit Random Value Generating Functions](#customizing-zenunit-equalizers-and-zenunit-random-value-generating-functions)
    * [Mocking Framework ZenMock](#mocking-framework-zenmock)
 
-ZenUnit design and the N-by-N value-parameterized test syntax
-=============================================================
+### ZenUnit design and the N-by-N value-parameterized test syntax
 
 ```cpp
 #include "ZenUnit.h"
@@ -135,13 +134,11 @@ int main(int argc, char* argv[])
 }
 ```
 
-Console Output
-==============
+### Console Output
 
 ![ZenUnit](Screenshots/ZenUnitFizzBuzz.png "ZenUnit")
 
-STARTUP and CLEANUP
-===================
+### STARTUP and CLEANUP
 
 To define a function to be called before each test, there is STARTUP. To define a function to be called after each test, there is CLEANUP.
 
@@ -178,13 +175,11 @@ TEST2X2(Negate_ReturnsTrueIfFalse_ReturnsFalseIfTrue,
 RUN_TESTS(STARTUPAndCLEANUPTests)
 ```
 
-Console Output
-==============
+### Console Output
 
 ![ZenUnit](Screenshots/STARTUPAndCLEANUPTests.png "ZenUnit")
 
-Command Line Usage
-==================
+### Command Line Usage
 
 ```
 C++ Unit Testing Framework ZenUnit - Version 0.3.0
@@ -234,8 +229,7 @@ Testing Rigor Options:
    Exit 1 regardless of test run outcome if any tests are skipped.
 ```
 
-Type-Parameterized Test Class Syntax
-====================================
+### Type-Parameterized Test Class Syntax
 
 How could the correctness of this templatized Set\:\:Contains function be confirmed across various types of sets and elements?
 
@@ -307,16 +301,13 @@ int main(int argc, char* argv[])
 }
 ```
 
-Console Output
-==============
+### Console Output
 
 ![ZenUnit](Screenshots/ZenUnitTypeParameterizedTestClass.png "ZenUnit Type-Parameterized Test Results")
 
-ZenUnit Assertions
-==================
+## ZenUnit Assertions
 
-Value Assertions
-----------------
+#### Value Assertions
 |||
 |-|-|
 |`ARE_EQUAL(expectedValue, actualValue, messages...)`|By default, asserts that `expectedValue == actualValue` returns true, otherwise throws a `ZenUnit::Anomaly`, which is caught by ZenUnit to fail the current test. `messages...` are variables of any type writable with `operator<<(std::ostream&, const T&)` or `ZenUnit::Printer<T>::Print(std::ostream&, const T&)`. Custom `ARE_EQUAL` behavior can be defined for type T by way of defining a `ZenUnit::Equalizer<T>` struct specialization, detailed below.|
@@ -326,8 +317,7 @@ Value Assertions
 |`IS_ZERO(value, messages...)`|Asserts that `value == ValueType{}` returns true.|
 |`IS_NOT_DEFAULT(value, messages...)`|Asserts that `value == ValueType{}` returns false. Note: This assertion is vulnerable to mutate-value mutations. I only use this assertion to confirm that custom ZenUnit::Random\<T\>() functions return all non-default field values.|
 
-Data Structure Assertions
--------------------------
+#### Data Structure Assertions
 |||
 |-|-|
 |`VECTORS_EQUAL(expectedVector, actualVector, messages...)`|Asserts that `expectedVector.size() == actualVector.size()` then calls `ARE_EQUAL(ithExpectedElement, ithActualElement)` on each pair of expected and actual elements.|
@@ -339,15 +329,13 @@ Data Structure Assertions
 |`IS_EMPTY(dataStructure, messages...)`|Asserts that `dataStructure.empty()` returns true.|
 |`IS_NOT_EMPTY(dataStructure, messages...)`|Asserts that `dataStructure.empty()` returns false. Note: This assertion is vulnerable to mutate-collection mutations. I only use this assertion to confirm that custom ZenUnit::Random\<T\>() functions return all non-default field values.|
 
-Exception Assertions
---------------------
+#### Exception Assertions
 |||
 |-|-|
 |`THROWS(expression, expectedExactExceptionType, expectedExactWhatMessage, messages...)`|Asserts that `expression` throws \*exactly\* (not a derived class of) `expectedExactExceptionType` with \*exactly\* a what() message equal to `expectedWhatMessage`.|
 |`DOES_NOT_THROW(expression, messages...)`|If `expression` throws, throws a `ZenUnit::Anomaly`, otherwise does nothing. Useful assertion for emphasis to the reader of a unit test.|
 
-Pointer Assertions
-------------------
+#### Pointer Assertions
 |||
 |-|-|
 |`IS_NULL(pointer, messages...)`|Asserts that `pointer == nullptr`.|
@@ -358,20 +346,17 @@ Pointer Assertions
 |`POINTER_WAS_NEWED(smartOrRawPointer, messages...)`|Asserts `smartOrRawPointer != nullptr` then calls `reset()` or `operator delete` on `smartOrRawPointer` to confirm the pointer was allocated using `make_unique`, `make_shared`, or `operator new`. This is a key assertion for robustness against swap-make-unique-with-nullptr code mutations.|
 |`POINTER_WAS_ARRAY_NEWED(smartOrRawArrayPointer, messages...)`|Asserts `smartOrRawArrayPointer != nullptr` then calls `reset()` or `operator delete[]` to confirm the pointer was allocated using `make_unique` or `operator new[]`. This is a key assertion for robustness against swap-make-unique-with-nullptr code mutations.|
 
-Test Assertions
----------------
+#### Test Assertions
 |||
 |-|-|
 |`FAIL_TEST(testFailureReason, messages...)`|Throws a `ZenUnit::Anomaly` which is caught by ZenUnit to end the current test and begin the next test.|
 
-Function Assertions
--------------------
+#### Function Assertions
 |||
 |-|-|
 |`STD_FUNCTION_TARGETS(expectedStdFunctionTarget, stdFunction, messages...)`|First asserts `IS_TRUE(stdFunction)`, which asserts that stdFunction points to a function, then asserts `ARE_EQUAL(expectedStdFunctionTarget, *stdFunction.target<ExpectedStdFunctionTargetType*>())`. This is a key assertion to call prior to mocking out a `std::function` with a [ZenMock](https://github.com/NeilJustice/ZenMock) mock object to confirm that the `std::function` being mocked-out points to an expected static or free function.|
 
-Test-Defining Macros
-====================
+### Test Class And Test Defining Macros
 
 |Test Classes|Description|
 |------------|-----------|
@@ -396,8 +381,7 @@ Test-Defining Macros
 |`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Skips a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called.|
 |`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Skips a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called. For use after `SKIP_TEMPLATE_TESTS`.|
 
-Maximizing Mutation Coverage With ZenUnit
-=========================================
+### Maximizing Mutation Coverage With ZenUnit
 
 Testing using random inputs instead of constant inputs is a central technique for maximizing mutation coverage. Mutation coverage is the percentage of program-correctness-breaking code mutations "slain" by a collection of tests. To "slay" a code mutation, a collection of tests must fail so as to not potentially pass along the correctness-compromised to production.
 
@@ -426,8 +410,7 @@ ZenUnit provides the following random value generating functions for writing uni
 |`THROWS_EXCEPTION(expression, expectedExceptionBaseClass)`|mutate-exception-type and mutate-exception-message|
 |`THROWS_ANY(expression)`|mutate-exception-type and mutate-exception-message|
 
-Customizing ZenUnit Equalizers and ZenUnit Random Value Generating Functions
-============================================================================
+### Customizing ZenUnit Equalizers and ZenUnit Random Value Generating Functions
 
 The default behavior of `ARE_EQUAL(expectedValue, actualValue)` is to throw a `ZenUnit::Anomaly` if `expectedValue == actualValue` returns false.
 
@@ -548,6 +531,7 @@ TEST(ZenUnitRandom_FileArbArgs_ReturnsAllNonDefaultFields)
 RUN_TESTS(FileArbArgsEqualizerAndRandomTests)
 ```
 
-Mocking Framework ZenMock
-=========================
+### Mocking Framework ZenMock
+
 [ZenMock](https://github.com/NeilJustice/ZenMock) is a C++17 single-header mocking framework powered by ZenUnit that features a high-readability arrange-act-assert syntax for confirming the correctness of calls and return values to and from virtual, non-virtual, static, and free functions.
+
