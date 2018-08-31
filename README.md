@@ -83,7 +83,7 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    15, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz",
    16, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz 16")
 {
-   const string fizzBuzzSequence = FizzBuzz(endNumber);
+   const std::string fizzBuzzSequence = FizzBuzz(endNumber);
    // ZenUnit's assertion names are declarative in language style (ARE_EQUAL, THROWS, IS_TRUE, etc)
    // instead of imperative in language style (ASSERT_EQUAL, ASSERT_THROWS, ASSERT_TRUE, etc)
    // to give ZenUnit a test reading experience similar to reading an executable specification document.
@@ -399,7 +399,7 @@ Test-Defining Macros
 Maximizing Mutation Coverage With ZenUnit
 =========================================
 
-Testing using random inputs instead of constant inputs is a central technique for maximizing mutation coverage. Mutation coverage is the percentage of program-correctness-breaking code mutations "slain" by a collection of tests. To "slay" a code mutation, a collection of tests must fail so as to not potentially pass along the correctness-compromised to production.
+Testing using random inputs instead of constant inputs is a central technique for maximizing mutation coverage. Mutation coverage is the percentage of program-correctness-breaking code mutations "slain" by a collection of tests. To "slay" a code mutation, a collection of tests must fail so as to not potentially pass along the correctness-compromised program to production.
 
 ZenUnit provides the following random value generating functions for writing unit tests that are robust to the swap-variable-with-constant code mutation, which is one of the most straightforward code mutations to induce manually today or automatically in the 2020s with an LLVM-powered mutation testing framework.
 
