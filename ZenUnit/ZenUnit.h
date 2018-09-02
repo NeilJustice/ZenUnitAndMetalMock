@@ -6285,7 +6285,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
       const T randomT = Random<T>();
       if (randomT == 0)
       {
-         return 1;
+         return static_cast<T>(1);
       }
       return randomT;
    }

@@ -4,7 +4,7 @@ namespace ZenUnit
 {
    TESTS(RandomTests)
    AFACT(Random_AllIntegerTypes_ReturnsRandomValueBetweenMinAndMaxForThatType)
-   AFACT(RandomNon0_AllIntegerTypes_ReturnsRandomValueBetweenMinAndMaxForThatTypeButNeverZero)
+   AFACT(RandomNon0_ReturnsRandomValueBetweenMinAndMaxForThatTypeButNeverZero)
    AFACT(Random_Float_ReturnsRandomFloat)
    AFACT(Random_Double_ReturnsRandomDouble)
    AFACT(Random_String_ReturnsRandomStringThatBeginsWithRandomString)
@@ -24,7 +24,7 @@ namespace ZenUnit
       Random<size_t>();
    }
 
-   TEST(RandomNon0_AllIntegerTypes_ReturnsRandomValueBetweenMinAndMaxForThatTypeButNeverZero)
+   TEST(RandomNon0_ReturnsRandomValueBetweenMinAndMaxForThatTypeButNeverZero)
    {
       RandomNon0<char>();
       RandomNon0<unsigned char>();
@@ -35,6 +35,8 @@ namespace ZenUnit
       RandomNon0<long long>();
       RandomNon0<unsigned long long>();
       RandomNon0<size_t>();
+      enum EnumType {};
+      RandomNon0<EnumType>();
    }
 
    TEST(Random_Float_ReturnsRandomFloat)
