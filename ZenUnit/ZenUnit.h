@@ -93,6 +93,12 @@
 #define IS_NOT_NULL(pointer, ...) \
    ZenUnit::IS_NOT_NULL_Defined(pointer != nullptr, #pointer, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
+// Asserts that typeid(expectedPointeeType) == typeid(*actualPointer). expectedPointeeType must be a polymorphic type.
+#define POINTEE_IS_EXACT_TYPE(expectedPointeeType, actualPointer, ...) \
+   static_assert(std::is_polymorphic_v<expectedPointeeType>, \
+      "ZenUnit assertion POINTEE_IS_EXACT_TYPE(expectedPointeeType, actualPointer, ...) requires that expectedPointeeType be a polymorphic type (a type that has at least one virtual function)."); \
+   ZenUnit::POINTEE_IS_EXACT_TYPE_Defined(typeid(expectedPointeeType), #expectedPointeeType, VRT(actualPointer), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
 // Asserts that *expectedPointer is equal to *actualPointer.
 #define POINTEES_EQUAL(expectedPointer, actualPointer, ...) \
    ZenUnit::POINTEES_EQUAL_Defined(VRT(expectedPointer), VRT(actualPointer), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
@@ -2544,8 +2550,7 @@ Testing Rigor Options:
    }
 
    template<typename... MessageTypes>
-   void IS_FALSE_Throw(
-      const char* valueText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_FALSE_Throw(const char* valueText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       throw Anomaly("IS_FALSE", valueText, "", "", messagesText,
          Anomaly::Default(),
@@ -2555,8 +2560,7 @@ Testing Rigor Options:
    }
 
    template<typename ConvertableToBoolType, typename... MessageTypes>
-   void IS_FALSE_Defined(const ConvertableToBoolType& value, const char* valueText,
-      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_FALSE_Defined(const ConvertableToBoolType& value, const char* valueText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (value)
       {
@@ -2565,8 +2569,7 @@ Testing Rigor Options:
    }
 
    template<typename... MessageTypes>
-   void IS_NOT_NULL_Throw(
-      const char* pointerText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_NOT_NULL_Throw(const char* pointerText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       throw Anomaly("IS_NOT_NULL", pointerText, "", "", messagesText,
          Anomaly::Default(),
@@ -2576,8 +2579,7 @@ Testing Rigor Options:
    }
 
    template<typename... MessageTypes>
-   void IS_NOT_NULL_Defined(bool pointerIsNotNullptr, const char* pointerText,
-      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_NOT_NULL_Defined(bool pointerIsNotNullptr, const char* pointerText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (!pointerIsNotNullptr)
       {
@@ -2585,9 +2587,53 @@ Testing Rigor Options:
       }
    }
 
-   template<typename PointerType, typename... MessageTypes>
-   void IS_NULL_Throw(VRText<PointerType> pointerVRT,
+   template<typename... MessageTypes>
+   void POINTEE_IS_EXACT_TYPE_Throw(
+      const std::type_info& expectedPointeeTypeInfo,
+      const char* expectedPointeeText,
+      const std::string& actualField,
+      const char* actualPointeeText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   {
+      const char* const expectedPointeeTypeName = expectedPointeeTypeInfo.name();
+      const std::string expectedField = "Pointee to be exact type: " + std::string(expectedPointeeTypeName);
+      throw Anomaly("POINTEE_IS_EXACT_TYPE", expectedPointeeText, actualPointeeText, "", messagesText,
+         Anomaly::Default(),
+         expectedField,
+         actualField,
+         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+   }
+
+   template<typename ActualPointerType, typename... MessageTypes>
+   void POINTEE_IS_EXACT_TYPE_Defined(
+      const std::type_info& expectedPointeeTypeInfo, const char* expectedPointeeText, VRText<ActualPointerType> actualPointerVRT,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   {
+      if (actualPointerVRT.value == nullptr)
+      {
+         POINTEE_IS_EXACT_TYPE_Throw(
+            expectedPointeeTypeInfo,
+            expectedPointeeText,
+            "Pointer has no pointee because pointer is nullptr"s,
+            actualPointerVRT.text,
+            fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+      }
+      const std::type_info& actualPointeeTypeInfo = typeid(*actualPointerVRT.value);
+      if (expectedPointeeTypeInfo != actualPointeeTypeInfo)
+      {
+         const char* const actualPointeeTypeName = typeid(*actualPointerVRT.value).name();
+         const std::string actualField = "   Pointee is exact type: " + std::string(actualPointeeTypeName);
+         POINTEE_IS_EXACT_TYPE_Throw(
+            expectedPointeeTypeInfo,
+            expectedPointeeText,
+            actualField,
+            actualPointerVRT.text,
+            fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+      }
+   }
+
+   template<typename PointerType, typename... MessageTypes>
+   void IS_NULL_Throw(VRText<PointerType> pointerVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string actualField = ToStringer::ToString(pointerVRT.value);
       throw Anomaly("IS_NULL", pointerVRT.text, "", "", messagesText,
@@ -2598,8 +2644,7 @@ Testing Rigor Options:
    }
 
    template<typename PointerType, typename... MessageTypes>
-   void IS_NULL_Defined(VRText<PointerType> pointerVRT,
-      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_NULL_Defined(VRText<PointerType> pointerVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const bool pointerIsNull = pointerVRT.value == nullptr;
       if (!pointerIsNull)
@@ -2609,8 +2654,7 @@ Testing Rigor Options:
    }
 
    template<typename... MessageTypes>
-   void IS_TRUE_Throw(
-      const char* valueText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_TRUE_Throw(const char* valueText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       throw Anomaly("IS_TRUE", valueText, "", "", messagesText,
          Anomaly::Default(),
@@ -4177,8 +4221,7 @@ Testing Rigor Options:
          else
          {
             _sorter->Sort(&_testClassRunners); // Sort test class runners by test class name
-            testClassResults = _transformer->Transform(
-               &_testClassRunners, &TestClassRunnerRunner::RunTestClassRunner);
+            testClassResults = _transformer->Transform(&_testClassRunners, &TestClassRunnerRunner::RunTestClassRunner);
          }
          return testClassResults;
       }
@@ -4822,13 +4865,8 @@ Testing Rigor Options:
          return fileLineString;
       }
 
-      virtual void WritePostTestNameMessage(const Console*) const
-      {
-      }
-
-      virtual void WritePostTestCompletionMessage(const Console*, const TestResult&) const
-      {
-      }
+      virtual void WritePostTestNameMessage(const Console*) const {}
+      virtual void WritePostTestCompletionMessage(const Console*, const TestResult&) const {}
 
       virtual size_t NumberOfTestCases() const
       {
@@ -4844,71 +4882,52 @@ Testing Rigor Options:
       {
          test->NewTestClass();
       }
-      virtual void NewTestClass()
-      {
-      }
+      virtual void NewTestClass() {}
 
       static void CallStartup(Test* test)
       {
          test->Startup();
       }
-      virtual void Startup()
-      {
-      }
+      virtual void Startup() {}
 
       static void CallTestBody(Test* test)
       {
          test->TestBody();
       }
-      virtual void TestBody()
-      {
-      }
+      virtual void TestBody() {}
 
       static void CallCleanup(Test* test)
       {
          test->Cleanup();
       }
-      virtual void Cleanup()
-      {
-      }
+      virtual void Cleanup() {}
 
       static void CallDeleteTestClass(Test* test)
       {
          test->DeleteTestClass();
       }
-      virtual void DeleteTestClass()
-      {
-      }
+      virtual void DeleteTestClass() {}
    protected:
       TestResult BaseRunTest()
       {
-         const CallResult constructorCallResult =
-            _tryCatchCaller->Call(&Test::CallNewTestClass, this, TestPhase::Constructor);
+         const CallResult constructorCallResult = _tryCatchCaller->Call(&Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorCallResult.testOutcome != TestOutcome::Success)
          {
-            const TestResult constructorFailTestResult =
-               _testResultFactory->MakeConstructorFail(p_fullTestName, constructorCallResult);
+            const TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(p_fullTestName, constructorCallResult);
             return constructorFailTestResult;
          }
-         const CallResult startupCallResult =
-            _tryCatchCaller->Call(&Test::CallStartup, this, TestPhase::Startup);
+         const CallResult startupCallResult = _tryCatchCaller->Call(&Test::CallStartup, this, TestPhase::Startup);
          if (startupCallResult.testOutcome != TestOutcome::Success)
          {
-            const CallResult destructorCallResult =
-               _tryCatchCaller->Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-            const TestResult startupFailTestResult =
-               _testResultFactory->MakeStartupFail(p_fullTestName, constructorCallResult, startupCallResult, destructorCallResult);
+            const CallResult destructorCallResult = _tryCatchCaller->Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+            const TestResult startupFailTestResult = _testResultFactory->MakeStartupFail(p_fullTestName, constructorCallResult, startupCallResult, destructorCallResult);
             return startupFailTestResult;
          }
-         const CallResult testBodyCallResult =
-            _tryCatchCaller->Call(&Test::CallTestBody, this, TestPhase::TestBody);
-         const CallResult cleanupCallResult =
-            _tryCatchCaller->Call(&Test::CallCleanup, this, TestPhase::Cleanup);
-         const CallResult destructorCallResult =
-            _tryCatchCaller->Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+         const CallResult testBodyCallResult = _tryCatchCaller->Call(&Test::CallTestBody, this, TestPhase::TestBody);
+         const CallResult cleanupCallResult = _tryCatchCaller->Call(&Test::CallCleanup, this, TestPhase::Cleanup);
+         const CallResult destructorCallResult = _tryCatchCaller->Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
          const TestResult testResult = _testResultFactory->MakeFullTestResult(
-            p_fullTestName, constructorCallResult, startupCallResult,
-            testBodyCallResult, cleanupCallResult, destructorCallResult);
+            p_fullTestName, constructorCallResult, startupCallResult, testBodyCallResult, cleanupCallResult, destructorCallResult);
          return testResult;
       }
    };
@@ -4962,8 +4981,7 @@ Testing Rigor Options:
             equalsSigns);
          _console->WriteLineColor(exceptionTypeNameFourLines, Color::Red);
          PopulateCallResultWithExceptionInformation(e, &callResult);
-         const std::string testPhaseSuffixAndExceptionWhatLine =
-            String::Concat("what(): \"", e.what(), "\"");
+         const std::string testPhaseSuffixAndExceptionWhatLine = String::Concat("what(): \"", e.what(), "\"");
          _console->WriteLine(testPhaseSuffixAndExceptionWhatLine);
       }
       catch (...)
