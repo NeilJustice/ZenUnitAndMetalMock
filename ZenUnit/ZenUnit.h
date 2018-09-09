@@ -2611,7 +2611,7 @@ Testing Rigor Options:
          POINTEE_IS_EXACT_TYPE_Throw(
             expectedPolymorphicPointeeTypeInfo,
             expectedPolymorphicPointeeText,
-            "Pointer has no pointee because pointer is nullptr"s,
+            "Pointer has no pointee because pointer is nullptr",
             actualPointerVRT.text,
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
