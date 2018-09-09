@@ -94,7 +94,7 @@ namespace ZenUnit
       const string thirdLinePrefix = _preamblePrinter.MakeThirdLinePrefix(numberOfTestClasses);
       //
       ZEN(_machineNameGetterMock->GetMachineNameMock.CalledOnce());
-      const string expectedReturnValue = expectedReturnValuePrefix + machineName + " with ZenUnit version 0.3.0";
+      const string expectedReturnValue = expectedReturnValuePrefix + machineName + " with ZenUnit version 0.4.0";
       ARE_EQUAL(expectedReturnValue, thirdLinePrefix);
    }
 

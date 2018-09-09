@@ -182,7 +182,7 @@ RUN_TESTS(STARTUPAndCLEANUPTests)
 ### Command Line Usage
 
 ```
-C++ Unit Testing Framework ZenUnit - Version 0.3.0
+C++ Unit Testing Framework ZenUnit - Version 0.4.0
 Usage: <TestsBinaryName> [Options...]
 
 Testing Utility Options:
@@ -345,6 +345,7 @@ int main(int argc, char* argv[])
 |`POINTEES_EQUAL(expectedPointer, actualPointer, messages...)`|Asserts that `expectedPointer != nullptr` and `actualPointer != nullptr` then asserts `ARE_EQUAL(*expectedPointer, *actualPointer)`.|
 |`POINTER_WAS_NEWED(smartOrRawPointer, messages...)`|Asserts `smartOrRawPointer != nullptr` then calls `reset()` or `operator delete` on `smartOrRawPointer` to confirm the pointer was allocated using `make_unique`, `make_shared`, or `operator new`. This is a key assertion for robustness against swap-make-unique-with-nullptr code mutations.|
 |`POINTER_WAS_ARRAY_NEWED(smartOrRawArrayPointer, messages...)`|Asserts `smartOrRawArrayPointer != nullptr` then calls `reset()` or `operator delete[]` to confirm the pointer was allocated using `make_unique` or `operator new[]`. This is a key assertion for robustness against swap-make-unique-with-nullptr code mutations.|
+|`POINTEE_IS_EXACT_TYPE(expectedPolymorphicPointeeType, actualPointer, messages...)`|`static_assert(std::is_polymorphic_v<expectedPolymorphicPointeeType>`, then asserts `actualPointer != nullptr`, then asserts `typeid(expectedPolymorphicPointeeType) == typeid(*actualPointer)`. This is a useful assertion for confirming that a factory function returning base class pointers to polymorphic strategy objects is returning expected exact pointee types.|
 
 #### Test Assertions
 |||

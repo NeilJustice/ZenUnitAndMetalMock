@@ -1,4 +1,4 @@
-// C++ Unit Testing Framework ZenUnit - Version 0.3.0
+// C++ Unit Testing Framework ZenUnit - Version 0.4.0
 //
 // The MIT License
 // Copyright 2018 Neil Justice
@@ -94,10 +94,10 @@
    ZenUnit::IS_NOT_NULL_Defined(pointer != nullptr, #pointer, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that typeid(expectedPointeeType) == typeid(*actualPointer). expectedPointeeType must be a polymorphic type.
-#define POINTEE_IS_EXACT_TYPE(expectedPointeeType, actualPointer, ...) \
-   static_assert(std::is_polymorphic_v<expectedPointeeType>, \
+#define POINTEE_IS_EXACT_TYPE(expectedPolymorphicPointeeType, actualPointer, ...) \
+   static_assert(std::is_polymorphic_v<expectedPolymorphicPointeeType>, \
       "ZenUnit assertion POINTEE_IS_EXACT_TYPE(expectedPointeeType, actualPointer, ...) requires that expectedPointeeType be a polymorphic type (a type that has at least one virtual function)."); \
-   ZenUnit::POINTEE_IS_EXACT_TYPE_Defined(typeid(expectedPointeeType), #expectedPointeeType, VRT(actualPointer), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::POINTEE_IS_EXACT_TYPE_Defined(typeid(expectedPolymorphicPointeeType), #expectedPolymorphicPointeeType, VRT(actualPointer), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that *expectedPointer is equal to *actualPointer.
 #define POINTEES_EQUAL(expectedPointer, actualPointer, ...) \
@@ -1819,10 +1819,7 @@ namespace ZenUnit
    class Version
    {
    public:
-      static const char* Number()
-      {
-         return "0.3.0";
-      }
+      static const char* Number() { return "0.4.0"; }
    };
 
    class ArgsParser
@@ -2589,15 +2586,15 @@ Testing Rigor Options:
 
    template<typename... MessageTypes>
    void POINTEE_IS_EXACT_TYPE_Throw(
-      const std::type_info& expectedPointeeTypeInfo,
-      const char* expectedPointeeText,
+      const std::type_info& expectedPolymorphicPointeeTypeInfo,
+      const char* expectedPolymorphicPointeeText,
       const std::string& actualField,
       const char* actualPointeeText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-      const char* const expectedPointeeTypeName = expectedPointeeTypeInfo.name();
-      const std::string expectedField = "Pointee to be exact type: " + std::string(expectedPointeeTypeName);
-      throw Anomaly("POINTEE_IS_EXACT_TYPE", expectedPointeeText, actualPointeeText, "", messagesText,
+      const char* const expectedPolymorphicPointeeTypeName = expectedPolymorphicPointeeTypeInfo.name();
+      const std::string expectedField = "Pointee to be exact type: " + std::string(expectedPolymorphicPointeeTypeName);
+      throw Anomaly("POINTEE_IS_EXACT_TYPE", expectedPolymorphicPointeeText, actualPointeeText, "", messagesText,
          Anomaly::Default(),
          expectedField,
          actualField,
@@ -2606,26 +2603,26 @@ Testing Rigor Options:
 
    template<typename ActualPointerType, typename... MessageTypes>
    void POINTEE_IS_EXACT_TYPE_Defined(
-      const std::type_info& expectedPointeeTypeInfo, const char* expectedPointeeText, VRText<ActualPointerType> actualPointerVRT,
+      const std::type_info& expectedPolymorphicPointeeTypeInfo, const char* expectedPolymorphicPointeeText, VRText<ActualPointerType> actualPointerVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (actualPointerVRT.value == nullptr)
       {
          POINTEE_IS_EXACT_TYPE_Throw(
-            expectedPointeeTypeInfo,
-            expectedPointeeText,
+            expectedPolymorphicPointeeTypeInfo,
+            expectedPolymorphicPointeeText,
             "Pointer has no pointee because pointer is nullptr"s,
             actualPointerVRT.text,
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
       const std::type_info& actualPointeeTypeInfo = typeid(*actualPointerVRT.value);
-      if (expectedPointeeTypeInfo != actualPointeeTypeInfo)
+      if (expectedPolymorphicPointeeTypeInfo != actualPointeeTypeInfo)
       {
          const char* const actualPointeeTypeName = typeid(*actualPointerVRT.value).name();
          const std::string actualField = "   Pointee is exact type: " + std::string(actualPointeeTypeName);
          POINTEE_IS_EXACT_TYPE_Throw(
-            expectedPointeeTypeInfo,
-            expectedPointeeText,
+            expectedPolymorphicPointeeTypeInfo,
+            expectedPolymorphicPointeeText,
             actualField,
             actualPointerVRT.text,
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
