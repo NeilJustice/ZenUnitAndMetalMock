@@ -56,10 +56,11 @@ namespace ZenUnit
       const int x = ZenUnit::Random<int>();
       const int* const actualPointer = &x;
       const string expectedPolymorphicPointeeTypeName = typeid(BaseClassB).name();
+      const string expectedActualPointeeTypeName = typeid(*actualPointer).name();
       THROWS(POINTEE_IS_EXACT_TYPE(BaseClassB, actualPointer), Anomaly, TestUtil::NewlineConcat("",
          "  Failed: POINTEE_IS_EXACT_TYPE(BaseClassB, actualPointer)",
          "Expected: Pointee to be exact type: typeid(expectedPolymorphicPointeeType).name() = \"" + expectedPolymorphicPointeeTypeName + "\"",
-         "  Actual:    Pointee is exact type:                 typeid(*actualPointer).name() = \"int\"",
+         "  Actual:    Pointee is exact type:                 typeid(*actualPointer).name() = \"" + expectedActualPointeeTypeName + "\"",
          "File.cpp(1)"));
    }
 
@@ -68,10 +69,11 @@ namespace ZenUnit
       const DerivedClassA derivedClassInstance;
       const BaseClassA* const actualPointer = &derivedClassInstance;
       const string expectedPolymorphicPointeeTypeName = typeid(BaseClassA).name();
+      const string expectedActualPointeeTypeName = typeid(*actualPointer).name();
       THROWS(POINTEE_IS_EXACT_TYPE(BaseClassA, actualPointer), Anomaly, TestUtil::NewlineConcat("",
          "  Failed: POINTEE_IS_EXACT_TYPE(BaseClassA, actualPointer)",
          "Expected: Pointee to be exact type: typeid(expectedPolymorphicPointeeType).name() = \"" + expectedPolymorphicPointeeTypeName + "\"",
-         "  Actual:    Pointee is exact type:                 typeid(*actualPointer).name() = \"class DerivedClassA\"",
+         "  Actual:    Pointee is exact type:                 typeid(*actualPointer).name() = \"" + expectedActualPointeeTypeName + "\"",
          "File.cpp(1)"));
    }
 
