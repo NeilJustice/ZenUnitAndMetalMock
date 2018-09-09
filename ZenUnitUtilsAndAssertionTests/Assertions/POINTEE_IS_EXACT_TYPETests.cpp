@@ -1,13 +1,19 @@
 #include "pch.h"
 
-class BaseClass
+class BaseClassA
 {
 public:
-   virtual ~BaseClass() = default;
+   virtual ~BaseClassA() = default;
 };
 
-class DerivedClass : public BaseClass
+class DerivedClassA : public BaseClassA
 {
+};
+
+class BaseClassB
+{
+public:
+   virtual ~BaseClassB() = default;
 };
 
 namespace ZenUnit
@@ -22,22 +28,24 @@ namespace ZenUnit
 
    TEST(ActualPointerIsNull_Throws)
    {
-      const BaseClass* const nullBaseClassPointer = nullptr;
-      THROWS(POINTEE_IS_EXACT_TYPE(BaseClass, nullBaseClassPointer), Anomaly, TestUtil::NewlineConcat("",
-         "  Failed: POINTEE_IS_EXACT_TYPE(BaseClass, nullBaseClassPointer)",
-         "Expected: Pointee to be exact type: class BaseClass",
+      const BaseClassA* const nullBaseClassPointer = nullptr;
+      const string expectedPolymorphicPointeeTypeName = typeid(BaseClassA).name();
+      THROWS(POINTEE_IS_EXACT_TYPE(BaseClassA, nullBaseClassPointer), Anomaly, TestUtil::NewlineConcat("",
+         "  Failed: POINTEE_IS_EXACT_TYPE(BaseClassA, nullBaseClassPointer)",
+         "Expected: Pointee to be exact type: typeid(expectedPolymorphicPointeeType).name() = \"" + expectedPolymorphicPointeeTypeName + "\"",
          "  Actual: Pointer has no pointee because pointer is nullptr",
          "File.cpp(1)"));
    }
 
    TEST(ActualPointerIsNull_Throws__MessagesTestCase)
    {
-      const BaseClass* const nullBaseClassPointer = nullptr;
+      const BaseClassA* const nullBaseClassPointer = nullptr;
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
-      THROWS(POINTEE_IS_EXACT_TYPE(BaseClass, nullBaseClassPointer, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
-         "  Failed: POINTEE_IS_EXACT_TYPE(BaseClass, nullBaseClassPointer, messageA, messageB)",
-         "Expected: Pointee to be exact type: class BaseClass",
+      const string expectedPolymorphicPointeeTypeName = typeid(BaseClassA).name();
+      THROWS(POINTEE_IS_EXACT_TYPE(BaseClassA, nullBaseClassPointer, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+         "  Failed: POINTEE_IS_EXACT_TYPE(BaseClassA, nullBaseClassPointer, messageA, messageB)",
+         "Expected: Pointee to be exact type: typeid(expectedPolymorphicPointeeType).name() = \"" + expectedPolymorphicPointeeTypeName + "\"",
          "  Actual: Pointer has no pointee because pointer is nullptr",
          " Message: \"" + messageA + "\", \"" + messageB + "\"",
          "File.cpp(1)"));
@@ -47,29 +55,31 @@ namespace ZenUnit
    {
       const int x = ZenUnit::Random<int>();
       const int* const actualPointer = &x;
-      THROWS(POINTEE_IS_EXACT_TYPE(BaseClass, actualPointer), Anomaly, TestUtil::NewlineConcat("",
-         "  Failed: POINTEE_IS_EXACT_TYPE(BaseClass, actualPointer)",
-         "Expected: Pointee to be exact type: class BaseClass",
-         "  Actual:    Pointee is exact type: int",
+      const string expectedPolymorphicPointeeTypeName = typeid(BaseClassB).name();
+      THROWS(POINTEE_IS_EXACT_TYPE(BaseClassB, actualPointer), Anomaly, TestUtil::NewlineConcat("",
+         "  Failed: POINTEE_IS_EXACT_TYPE(BaseClassB, actualPointer)",
+         "Expected: Pointee to be exact type: typeid(expectedPolymorphicPointeeType).name() = \"" + expectedPolymorphicPointeeTypeName + "\"",
+         "  Actual:    Pointee is exact type:                 typeid(*actualPointer).name() = \"int\"",
          "File.cpp(1)"));
    }
 
    TEST(ActualPointerIsNotNull_ActualPointeeTypeIsASubclassOfExpectedPointeeType_Throws)
    {
-      const DerivedClass derivedClassInstance;
-      const BaseClass* const actualPointer = &derivedClassInstance;
-      THROWS(POINTEE_IS_EXACT_TYPE(BaseClass, actualPointer), Anomaly, TestUtil::NewlineConcat("",
-         "  Failed: POINTEE_IS_EXACT_TYPE(BaseClass, actualPointer)",
-         "Expected: Pointee to be exact type: class BaseClass",
-         "  Actual:    Pointee is exact type: class DerivedClass",
+      const DerivedClassA derivedClassInstance;
+      const BaseClassA* const actualPointer = &derivedClassInstance;
+      const string expectedPolymorphicPointeeTypeName = typeid(BaseClassA).name();
+      THROWS(POINTEE_IS_EXACT_TYPE(BaseClassA, actualPointer), Anomaly, TestUtil::NewlineConcat("",
+         "  Failed: POINTEE_IS_EXACT_TYPE(BaseClassA, actualPointer)",
+         "Expected: Pointee to be exact type: typeid(expectedPolymorphicPointeeType).name() = \"" + expectedPolymorphicPointeeTypeName + "\"",
+         "  Actual:    Pointee is exact type:                 typeid(*actualPointer).name() = \"class DerivedClassA\"",
          "File.cpp(1)"));
    }
 
    TEST(ActualPointerIsNotNull_ActualPointeeTypeIsExactlyExpectedPointeeType_DoesNotThrow)
    {
-      const DerivedClass derivedClassInstance;
-      const BaseClass* const actualPointer = &derivedClassInstance;
-      DOES_NOT_THROW(POINTEE_IS_EXACT_TYPE(DerivedClass, actualPointer));
+      const DerivedClassA derivedClassInstance;
+      const BaseClassA* const actualPointer = &derivedClassInstance;
+      DOES_NOT_THROW(POINTEE_IS_EXACT_TYPE(DerivedClassA, actualPointer));
    }
 
    RUN_TESTS(POINTEE_IS_EXACT_TYPETests)

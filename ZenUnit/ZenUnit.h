@@ -2593,7 +2593,8 @@ Testing Rigor Options:
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const char* const expectedPolymorphicPointeeTypeName = expectedPolymorphicPointeeTypeInfo.name();
-      const std::string expectedField = "Pointee to be exact type: " + std::string(expectedPolymorphicPointeeTypeName);
+      const std::string expectedField =
+         "Pointee to be exact type: typeid(expectedPolymorphicPointeeType).name() = \"" + std::string(expectedPolymorphicPointeeTypeName) + "\"";
       throw Anomaly("POINTEE_IS_EXACT_TYPE", expectedPolymorphicPointeeText, actualPointeeText, "", messagesText,
          Anomaly::Default(),
          expectedField,
@@ -2619,7 +2620,8 @@ Testing Rigor Options:
       if (expectedPolymorphicPointeeTypeInfo != actualPointeeTypeInfo)
       {
          const char* const actualPointeeTypeName = typeid(*actualPointerVRT.value).name();
-         const std::string actualField = "   Pointee is exact type: " + std::string(actualPointeeTypeName);
+         const std::string actualField =
+            "   Pointee is exact type:                 typeid(*actualPointer).name() = \"" + std::string(actualPointeeTypeName) + "\"";
          POINTEE_IS_EXACT_TYPE_Throw(
             expectedPolymorphicPointeeTypeInfo,
             expectedPolymorphicPointeeText,
