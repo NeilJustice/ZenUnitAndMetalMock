@@ -448,7 +448,8 @@ namespace ZenUnit
    template<>
    struct Equalizer<FileArbArgs>
    {
-      static void AssertEqual(const FileArbArgs& expectedFileArbArgs, const FileArbArgs& actualFileArbArgs);
+      static void AssertEqual(
+         const FileArbArgs& expectedFileArbArgs, const FileArbArgs& actualFileArbArgs);
    };
 
    // Custom ZenUnit::Random<T> declaration
@@ -472,7 +473,9 @@ namespace ZenUnit
       ARE_EQUAL(expectedFileArbArgs.commandLine, actualFileArbArgs.commandLine);
       ARE_EQUAL(expectedFileArbArgs.numberOfFilesToWrite, actualFileArbArgs.numberOfFilesToWrite);
       ARE_EQUAL(expectedFileArbArgs.numberOfLinesPerFile, actualFileArbArgs.numberOfLinesPerFile);
-      ARE_EQUAL(expectedFileArbArgs.numberOfCharactersPerLine, actualFileArbArgs.numberOfCharactersPerLine);
+      ARE_EQUAL(
+         expectedFileArbArgs.numberOfCharactersPerLine,
+         actualFileArbArgs.numberOfCharactersPerLine);
       ARE_EQUAL(expectedFileArbArgs.destinationFolderPath, actualFileArbArgs.destinationFolderPath);
       ARE_EQUAL(expectedFileArbArgs.parallelMode, actualFileArbArgs.parallelMode);
    }
