@@ -402,15 +402,6 @@ ZenUnit provides the following random value generating functions for writing uni
 |`ZenUnit::RandomSet<T>()`|Returns a `std::set<ElementType>` with size between 1 and 3 with each element a `ZenUnit::Random<ElementType>()` value.|
 |`ZenUnit::RandomUnorderedSet<T>()`|Returns a `std::unordered_set<ElementType>` with size between 1 and 3 with each element a `ZenUnit::Random<ElementType>()` value.|
 
-|Inexact Assertions Not Implemented In ZenUnit By Design Due To Vulnerability to Code Mutations|Code Mutation Vulnerability|
-|----------------------------------------------------------------------------------------------|---------------------------|
-|`ARE_NOT_EQUAL(expectedValue, actualValue)`|mutate-value|
-|`IS_GTE, IS_GT, IS_LT, IS_LTE`|mutate-value|
-|`STRING_CONTAINS(expectedSubstring, actualString)`|mutate-value|
-|`REGEX_MATCHES(expectedPattern, actualString)`|mutate-value|
-|`THROWS_EXCEPTION(expression, expectedExceptionBaseClass)`|mutate-exception-type and mutate-exception-message|
-|`THROWS_ANY(expression)`|mutate-exception-type and mutate-exception-message|
-
 ### Customizing ZenUnit Equalizers and ZenUnit Random Value Generating Functions
 
 The default behavior of `ARE_EQUAL(expectedValue, actualValue)` is to throw a `ZenUnit::Anomaly` if `expectedValue == actualValue` returns false.
