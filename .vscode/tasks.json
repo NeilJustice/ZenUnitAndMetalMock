@@ -48,7 +48,7 @@
       {
          "taskName": "Run Release",
          "isTestCommand": false,
-         "args": [ "${workspaceRoot}/Release/ZenUnitFrameworkTests/ZenUnitFrameworkTests" ]
+         "args": [ "${workspaceRoot}/Release/ZenUnitLibraryTests/ZenUnitLibraryTests" ]
       },
       {
          "taskName": "Run Python",

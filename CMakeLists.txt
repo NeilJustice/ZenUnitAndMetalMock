@@ -36,7 +36,7 @@ if(NOT APPLE)
 endif()
 add_subdirectory(ZenUnitUtilsAndAssertionTests)
 add_subdirectory(ZenUnitExamples)
-add_subdirectory(ZenUnitFrameworkTests)
+add_subdirectory(ZenUnitLibraryTests)
 add_subdirectory(ZenUnitTestUtils)
 add_subdirectory(ZenUnitCompileSpeed)
 
@@ -51,5 +51,5 @@ if(UNIX)
       find -name "*.cpp" -print0 | xargs -0 -n 1 -P ${NumberOfCores} -t
       clang-tidy -header-filter=.* -p ${CMAKE_BUILD_TYPE}
          WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} VERBATIM USES_TERMINAL)
-   add_dependencies(clang-tidy ZenUnitUtilsAndAssertionTestsPch ZenUnitExamplesPch ZenUnitFrameworkTestsPch ZenUnitTestUtilsPch)
+   add_dependencies(clang-tidy ZenUnitUtilsAndAssertionTestsPch ZenUnitExamplesPch ZenUnitLibraryTestsPch ZenUnitTestUtilsPch)
 endif()
