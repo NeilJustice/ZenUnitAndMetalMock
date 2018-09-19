@@ -27,7 +27,7 @@ namespace ZenUnit
    EVIDENCE
 
    const string _testProgramPath = Random<string>();
-   const string ExpectedUsage = R"(C++ Unit Testing Framework ZenUnit - Version 0.4.0
+   const string ExpectedUsage = R"(ZenUnit 0.4.0
 Usage: <TestsBinaryName> [Options...]
 
 Testing Utility Options:

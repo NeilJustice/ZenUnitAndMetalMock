@@ -1,4 +1,4 @@
-// C++ Unit Testing Framework ZenUnit - Version 0.4.0
+// C++ Unit Testing Library ZenUnit - Version 0.4.0
 //
 // The MIT License
 // Copyright 2018 Neil Justice
@@ -1847,7 +1847,7 @@ namespace ZenUnit
 
       static const std::string& Usage()
       {
-         static const std::string usage = "C++ Unit Testing Framework ZenUnit - Version " + std::string(Version::Number()) + R"(
+         static const std::string usage = "ZenUnit " + std::string(Version::Number()) + R"(
 Usage: <TestsBinaryName> [Options...]
 
 Testing Utility Options:

@@ -1,6 +1,6 @@
 <h1 align="center">ZenUnit</h1>
 
-<h4 align="center">ZenUnit is a single-header C++17 unit testing framework with an intuitive syntax for writing value-parameterized and type-parameterized unit tests.</h4>
+<h4 align="center">ZenUnit is a single-header C++17 unit testing library with an intuitive syntax for writing value-parameterized and type-parameterized unit tests.</h4>
 
 |Build Type|Build Status|
 |----------|------------|
@@ -21,7 +21,7 @@
    * [Test Class And Test Defining Macros](#test-class-and-test-defining-macros)
    * [Maximizing Mutation Coverage With ZenUnit](#maximizing-mutation-coverage-with-zenunit)
    * [Customizing ZenUnit Equalizers and ZenUnit Random Value Generating Functions](#customizing-zenunit-equalizers-and-zenunit-random-value-generating-functions)
-   * [Mocking Framework ZenMock](#mocking-framework-zenmock)
+   * [ZenMock](#zenmock)
 
 ### ZenUnit design and the N-by-N value-parameterized test syntax
 
@@ -182,7 +182,7 @@ RUN_TESTS(STARTUPAndCLEANUPTests)
 ### Command Line Usage
 
 ```
-C++ Unit Testing Framework ZenUnit - Version 0.4.0
+ZenUnit 0.4.0
 Usage: <TestsBinaryName> [Options...]
 
 Testing Utility Options:
@@ -386,7 +386,7 @@ int main(int argc, char* argv[])
 
 Testing using random inputs instead of constant inputs is a central technique for maximizing mutation coverage. Mutation coverage is the percentage of program-correctness-breaking code mutations "slain" by a collection of tests. To "slay" a code mutation, a collection of tests must fail so as to not potentially pass along the correctness-compromised program to production.
 
-ZenUnit provides the following random value generating functions for writing unit tests that are robust to the swap-variable-with-constant code mutation, which is one of the most straightforward code mutations to induce manually today or automatically in the 2020s with an LLVM-powered mutation testing framework.
+ZenUnit provides the following random value generating functions for writing unit tests that are robust to the swap-variable-with-constant code mutation, which is one of the most straightforward code mutations to induce manually today or automatically in the 2020s with an LLVM-powered mutation testing library.
 
 |Random Value Generating Function|Description|
 |--------------------------------|-----------|
@@ -526,7 +526,7 @@ TEST(ZenUnitRandom_FileArbArgs_ReturnsAllNonDefaultFields)
 RUN_TESTS(FileArbArgsEqualizerAndRandomTests)
 ```
 
-### Mocking Framework ZenMock
+### ZenMock
 
-[ZenMock](https://github.com/NeilJustice/ZenMock) is a C++17 single-header mocking framework powered by ZenUnit that features a high-readability arrange-act-assert syntax for confirming the correctness of calls and return values to and from virtual, non-virtual, static, and free functions.
+[ZenMock](https://github.com/NeilJustice/ZenMock) is a C++17 single-header mocking library powered by ZenUnit that features a high-readability arrange-act-assert syntax for confirming the correctness of calls and return values to and from virtual, non-virtual, static, and free functions.
 
