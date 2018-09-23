@@ -19,8 +19,7 @@
       * [Test Assertions](#test-assertions)
       * [Function Assertions](#function-assertions)
    * [Test Class And Test Defining Macros](#test-class-and-test-defining-macros)
-   * [Maximizing Mutation Coverage With ZenUnit](#maximizing-mutation-coverage-with-zenunit)
-   * [Customizing ZenUnit Equalizers and ZenUnit Random Value Generating Functions](#customizing-zenunit-equalizers-and-zenunit-random-value-generating-functions)
+   * [Maximizing Mutation Coverage With Random Value Testing](#maximizing-mutation-coverage-with-random-value-testing)
    * [ZenMock](#zenmock)
 
 ### ZenUnit design and the N-by-N value-parameterized test syntax
@@ -35,10 +34,15 @@ std::string FizzBuzz(unsigned endNumber);
 TESTS(FizzBuzzTests)
 // By way of a carefully-considered design decision,
 // in ZenUnit test names are duplicated between the FACTS section and the EVIDENCE section.
-// Because code is read much more often than it is written,
-// always having test names up top ready to easily review for continued quality and cohesion
-// instead of test names being scattered throughout test files
-// is where this design yields long term code quality dividends.
+// Having test names always up top instead of scattered throughout test files
+// makes it exceptionally easy to gauge the lay of the land
+// with respect to what a test class tests, and by extension,
+// see clearly what a class under test implements.
+// With code being read much more often than it is written,
+// I've found it time and time again to have to been well worth it
+// to exchange the few seconds it takes to duplicate a test name
+// to gain the long term test class readability that comes
+// with test names always being up top instead of scattered throughout test files.
 
 // AFACT declares a non-value-parameterized test.
 AFACT(FizzBuzz_EndNumber0_Throws)
@@ -382,7 +386,7 @@ int main(int argc, char* argv[])
 |`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Skips a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called.|
 |`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Skips a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called. For use after `SKIP_TEMPLATE_TESTS`.|
 
-### Maximizing Mutation Coverage With ZenUnit
+### Maximizing Mutation Coverage With Random Value Testing
 
 Testing using random inputs instead of constant inputs is a central technique for maximizing mutation coverage. Mutation coverage is the percentage of program-correctness-breaking code mutations "slain" by a collection of tests. To "slay" a code mutation, a collection of tests must fail so as to not potentially pass along the correctness-compromised program to production.
 
@@ -391,7 +395,7 @@ ZenUnit provides the following random value generating functions for writing uni
 |Random Value Generating Function|Description|
 |--------------------------------|-----------|
 |`ZenUnit::Random<T>()`|Returns a random integer T value between `std::numeric_limits<T>::min()` and `std::numeric_limits<T>::max()` selected from a uniform distribution. Or, if `UserType ZenUnit::Random<UserType>()` is defined, returns the result from calling that function.|
-|`ZenUnit::RandomBetween<T>(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound)`|Returns a random integer T value between inclusiveLowerBound and inclusiveUpperBound selected from a uniform distribution.|
+|`ZenUnit::RandomBetween<T>(long long inclusiveLowerBound, unsigned long long in+clusiveUpperBound)`|Returns a random integer T value between inclusiveLowerBound and inclusiveUpperBound selected from a uniform distribution.|
 |`ZenUnit::RandomEnum<EnumType>(EnumType exclusiveEnumMaxValue)`|Returns a random EnumType value between 0 and exclusiveEnumMaxValue - 1, selected from a uniform distribution.|
 |`ZenUnit::Random<float>()`|Returns a random float between `std::numeric_limits<float>::min()` and `std::numeric_limits<float>::max()` selected from a `std::uniform_real_distribution<float>`.|
 |`ZenUnit::Random<double>()`|Returns a random double between `std::numeric_limits<double>::min()` and `std::numeric_limits<double>::max()` from a `std::uniform_real_distribution<double>`.|
@@ -402,131 +406,6 @@ ZenUnit provides the following random value generating functions for writing uni
 |`ZenUnit::RandomSet<T>()`|Returns a `std::set<ElementType>` with size between 1 and 3 with each element a `ZenUnit::Random<ElementType>()` value.|
 |`ZenUnit::RandomUnorderedSet<T>()`|Returns a `std::unordered_set<ElementType>` with size between 1 and 3 with each element a `ZenUnit::Random<ElementType>()` value.|
 
-### Customizing ZenUnit Equalizers and ZenUnit Random Value Generating Functions
-
-The default behavior of `ARE_EQUAL(expectedValue, actualValue)` is to throw a `ZenUnit::Anomaly` if `expectedValue == actualValue` returns false.
-
-For custom `ARE_EQUAL` behavior such as field-by-field assertions on the fields of type T, a `ZenUnit::Equalizer<T>` struct specialization can be defined with a `static void AssertEqual(const T& expected, const T& actual)` function.
-
-Here is an example of how to define and test a custom ZenUnit\:\:Equalizer\<T\> and custom ZenUnit::Random\<T\> for T = FileArbArgs. FileArb is a program that creates arbitrary files for testing the performance of filesystems, networks, and version control. FileArb will eventually be open sourced to serve as a real-world example of how a program's correctness can be confirmed using ZenUnit and ZenMock.
-
-libFileArb/FileArbArgs.h:
-
-```cpp
-#pragma once
-
-struct FileArbArgs
-{
-   static const string Usage;
-   string commandLine;
-   size_t numberOfFilesToWrite = 0;
-   size_t numberOfLinesPerFile = 0;
-   size_t numberOfCharactersPerLine = 0;
-   filesystem::path destinationFolderPath;
-   bool parallelMode = false;
-};
-```
-
-libFileArbTests/ZenUnitTesting/FileArbArgsEqualizerAndRandom.h:
-
-```cpp
-#pragma once
-#include "libFileArb/ValueTypes/FileArbArgs.h"
-
-namespace ZenUnit
-{
-   // Custom ZenUnit::Equalizer<T> declaration
-   template<>
-   struct Equalizer<FileArbArgs>
-   {
-      static void AssertEqual(
-         const FileArbArgs& expectedFileArbArgs, const FileArbArgs& actualFileArbArgs);
-   };
-
-   // Custom ZenUnit::Random<T> declaration
-   template<>
-   FileArbArgs Random();
-};
-```
-
-libFileArbTests/ZenUnitTesting/FileArbArgsEqualizerAndRandom.cpp:
-
-```cpp
-#include "pch.h"
-#include "libFileArbTests/ZenUnit/FileArbArgsEqualizerAndRandom.h"
-
-namespace ZenUnit
-{
-   // Custom ZenUnit::Equalizer<T> definition
-   void Equalizer<FileArbArgs>::AssertEqual(
-      const FileArbArgs& expectedFileArbArgs, const FileArbArgs& actualFileArbArgs)
-   {
-      ARE_EQUAL(expectedFileArbArgs.commandLine, actualFileArbArgs.commandLine);
-      ARE_EQUAL(expectedFileArbArgs.numberOfFilesToWrite, actualFileArbArgs.numberOfFilesToWrite);
-      ARE_EQUAL(expectedFileArbArgs.numberOfLinesPerFile, actualFileArbArgs.numberOfLinesPerFile);
-      ARE_EQUAL(
-         expectedFileArbArgs.numberOfCharactersPerLine,
-         actualFileArbArgs.numberOfCharactersPerLine);
-      ARE_EQUAL(expectedFileArbArgs.destinationFolderPath, actualFileArbArgs.destinationFolderPath);
-      ARE_EQUAL(expectedFileArbArgs.parallelMode, actualFileArbArgs.parallelMode);
-   }
-
-   // Custom ZenUnit::Random<T> definition
-   template<>
-   FileArbArgs Random()
-   {
-      FileArbArgs randomFileArbArgs;
-      randomFileArbArgs.commandLine = ZenUnit::Random<string>();
-      randomFileArbArgs.numberOfFilesToWrite = ZenUnit::RandomNon0<size_t>();
-      randomFileArbArgs.numberOfLinesPerFile = ZenUnit::RandomNon0<size_t>();
-      randomFileArbArgs.numberOfCharactersPerLine = ZenUnit::RandomNon0<size_t>();
-      randomFileArbArgs.destinationFolderPath = ZenUnit::Random<string>();
-      randomFileArbArgs.parallelMode = ZenUnit::Random<bool>();
-      return randomFileArbArgs;
-   };
-}
-```
-
-libFileArbTests/ZenUnitTesting/FileArbArgsEqualizerAndRandomTests.cpp:
-
-```cpp
-#include "pch.h"
-#include "libFileArbTests/ZenUnitTesting/FileArbArgsEqualizerAndRandom.h"
-
-TESTS(FileArbArgsEqualizerAndRandomTests)
-AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldsNotEqual)
-AFACT(ZenUnitRandom_FileArbArgs_ReturnsAllNonDefaultFields)
-EVIDENCE
-
-TEST(ZenUnitEqualizer_ThrowsIfAnyFieldsNotEqual)
-{
-   SETUP_EQUALIZER_THROWS_TEST(FileArbArgs);
-   // EQUALIZER_THROWS_FOR_FIELD(typeName, nonQuotedFieldName, arbitraryNonDefaultFieldValue)
-   // asserts that ARE_EQUAL(expectedObject, actualObject)
-   // throws a ZenUnit::Anomaly when expectedObject.field differs from actualObject.field.
-   EQUALIZER_THROWS_FOR_FIELD(FileArbArgs, commandLine, "commandLine");
-   EQUALIZER_THROWS_FOR_FIELD(FileArbArgs, numberOfFilesToWrite, 1);
-   EQUALIZER_THROWS_FOR_FIELD(FileArbArgs, numberOfLinesPerFile, 2);
-   EQUALIZER_THROWS_FOR_FIELD(FileArbArgs, numberOfCharactersPerLine, 3);
-   EQUALIZER_THROWS_FOR_FIELD(FileArbArgs, destinationFolderPath, "destinationFolderPath");
-   EQUALIZER_THROWS_FOR_FIELD(FileArbArgs, parallelMode, true);
-}
-
-TEST(ZenUnitRandom_FileArbArgs_ReturnsAllNonDefaultFields)
-{
-   const FileArbArgs randomFileArbArgs = ZenUnit::Random<FileArbArgs>();
-   IS_NOT_DEFAULT(randomFileArbArgs.commandLine);
-   IS_NOT_DEFAULT(randomFileArbArgs.numberOfFilesToWrite);
-   IS_NOT_DEFAULT(randomFileArbArgs.numberOfLinesPerFile);
-   IS_NOT_DEFAULT(randomFileArbArgs.numberOfCharactersPerLine);
-   IS_NOT_DEFAULT(randomFileArbArgs.destinationFolderPath);
-   IS_NOT_DEFAULT(randomFileArbArgs.parallelMode);
-}
-
-RUN_TESTS(FileArbArgsEqualizerAndRandomTests)
-```
-
 ### ZenMock
 
 [ZenMock](https://github.com/NeilJustice/ZenMock) is a C++17 single-header mocking library powered by ZenUnit that features a high-readability arrange-act-assert syntax for confirming the correctness of calls and return values to and from virtual, non-virtual, static, and free functions.
-
