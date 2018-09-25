@@ -4255,37 +4255,16 @@ Testing Rigor Options:
       }
    };
 
-   class DebugOrReleaseGetter
-   {
-   public:
-      virtual std::string GetRunningInDebugOrReleaseModeString() const
-      {
-#ifdef __APPLE__
-         return " Running: ";
-#else
-#ifdef NDEBUG
-         return " Running in Release mode: ";
-#else
-         return " Running in Debug mode: ";
-#endif
-#endif
-      }
-
-      virtual ~DebugOrReleaseGetter() = default;
-   };
-
    class PreamblePrinter
    {
       friend class PreamblePrinterTests;
    private:
       std::unique_ptr<const Console> _console;
-      std::unique_ptr<const DebugOrReleaseGetter> _debugOrReleaseGetter;
       std::unique_ptr<const Watch> _watch;
       std::unique_ptr<const MachineNameGetter> _machineNameGetter;
    public:
       PreamblePrinter() noexcept
          : _console(std::make_unique<Console>())
-         , _debugOrReleaseGetter(new DebugOrReleaseGetter)
          , _watch(std::make_unique<Watch>())
          , _machineNameGetter(std::make_unique<MachineNameGetter>())
       {
@@ -4297,8 +4276,7 @@ Testing Rigor Options:
          const ZenUnitArgs& zenUnitArgs, const TestClassRunnerRunner* testClassRunnerRunner) const
       {
          _console->WriteColor("[ZenUnit]", Color::Green);
-         const std::string runningInDebugOrReleaseModeString = _debugOrReleaseGetter->GetRunningInDebugOrReleaseModeString();
-         _console->WriteLine(runningInDebugOrReleaseModeString + zenUnitArgs.commandLine);
+         _console->WriteLine(" Running " + zenUnitArgs.commandLine);
          _console->WriteColor("[ZenUnit]", Color::Green);
          const std::string startTime = _watch->DateTimeNow();
          _console->WriteLine(" Running at " + startTime);

@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/TestRunners/Mock/TestClassRunnerRunnerMock.h"
-#include "ZenUnitUtilsAndAssertionTests/Utils/Mock/DebugOrReleaseModeGetterMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Utils/Mock/MachineNameGetterMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Utils/Time/Mock/WatchMock.h"
 
@@ -18,12 +17,10 @@ namespace ZenUnit
    {
    public:
       const ConsoleMock* consoleMock = nullptr;
-      const DebugOrReleaseGetterMock* debugOrReleaseGetterMock = nullptr;
       const WatchMock* watchMock = nullptr;
       PreamblePrinterSelfMocked() noexcept
       {
          _console.reset(consoleMock = new ConsoleMock);
-         _debugOrReleaseGetter.reset(debugOrReleaseGetterMock = new DebugOrReleaseGetterMock);
          _watch.reset(watchMock = new WatchMock);
       }
       ZENMOCK_NONVOID1_CONST(string, MakeThirdLinePrefix, size_t)
@@ -42,7 +39,6 @@ namespace ZenUnit
    {
       PreamblePrinter preamblePrinter;
       POINTER_WAS_NEWED(preamblePrinter._console);
-      POINTER_WAS_NEWED(preamblePrinter._debugOrReleaseGetter);
       POINTER_WAS_NEWED(preamblePrinter._watch);
       POINTER_WAS_NEWED(preamblePrinter._machineNameGetter);
    }
@@ -50,8 +46,6 @@ namespace ZenUnit
    TEST(PrintPreambleAndGetStartTime_PrintsCommandLineAndStartTimeAndTestAndTestClassCounts_ReturnsStartTime)
    {
       _preamblePrinterSelfMocked.consoleMock->WriteColorMock.Expect();
-      const string runningInDebugOrReleaseModeString = _preamblePrinterSelfMocked.
-         debugOrReleaseGetterMock->GetRunningInDebugOrReleaseModeStringMock.ReturnRandom();
       _preamblePrinterSelfMocked.consoleMock->WriteLineMock.Expect();
       TestClassRunnerRunnerMock testClassRunnerRunnerMock;
       const size_t numberOfTestClassesToBeRun = testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.ReturnRandom();
@@ -70,13 +64,12 @@ namespace ZenUnit
       ZEN(_preamblePrinterSelfMocked.watchMock->DateTimeNowMock.CalledOnce());
       ZEN(testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.CalledOnce());
       ZEN(_preamblePrinterSelfMocked.consoleMock->WriteColorMock.CalledNTimesWith(3, "[ZenUnit]", Color::Green));
-      ZEN(_preamblePrinterSelfMocked.debugOrReleaseGetterMock->GetRunningInDebugOrReleaseModeStringMock.CalledOnce());
       ZEN(_preamblePrinterSelfMocked.MakeThirdLinePrefixMock.CalledOnceWith(numberOfTestClassesToBeRun));
       ZEN(_preamblePrinterSelfMocked.MakeThirdLineSuffixMock.CalledOnceWith(zenUnitArgs.random, zenUnitArgs.randomseed));
       const string expectedThirdLineAndLineBreak = thirdLinePrefix + thirdLineSuffix + "\n";
       ZEN(_preamblePrinterSelfMocked.consoleMock->WriteLineMock.CalledAsFollows(
       {
-         { runningInDebugOrReleaseModeString + zenUnitArgs.commandLine },
+         { " Running " + zenUnitArgs.commandLine },
          { " Running at " + startTime },
          { expectedThirdLineAndLineBreak }
       }));
