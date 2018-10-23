@@ -34,13 +34,13 @@ namespace ZenUnit
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
       SETUP_EQUALIZER_THROWS_TEST(CallResult);
-      EQUALIZER_THROWS_FOR_FIELD(CallResult, testPhase, TestPhase::Constructor);
-      EQUALIZER_THROWS_FOR_FIELD(CallResult, testOutcome, TestOutcome::Exception);
-      EQUALIZER_THROWS_FOR_FIELD(CallResult, microseconds, 1u);
+      EQUALIZER_THROWS(CallResult, testPhase, TestPhase::Constructor);
+      EQUALIZER_THROWS(CallResult, testOutcome, TestOutcome::Exception);
+      EQUALIZER_THROWS(CallResult, microseconds, 1u);
 
       shared_ptr<AnomalyOrException> nonDefaultAnomalyOrException = make_shared<AnomalyOrException>(Anomaly());
       nonDefaultAnomalyOrException->anomaly->why = "why";
-      EQUALIZER_THROWS_FOR_FIELD(CallResult, anomalyOrException, nonDefaultAnomalyOrException);
+      EQUALIZER_THROWS(CallResult, anomalyOrException, nonDefaultAnomalyOrException);
    }
 
    RUN_TESTS(CallResultTests)

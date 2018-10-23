@@ -401,32 +401,32 @@ namespace ZenUnit
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
       SETUP_EQUALIZER_THROWS_TEST(TestResult);
-      EQUALIZER_THROWS_FOR_FIELD(TestResult, fullTestName, FullTestName("ClassName", "TestName", 0));
+      EQUALIZER_THROWS(TestResult, fullTestName, FullTestName("ClassName", "TestName", 0));
 
       CallResult nonDefaultConstructorCallResult;
       nonDefaultConstructorCallResult.testPhase = TestPhase::Constructor;
-      EQUALIZER_THROWS_FOR_FIELD(TestResult, constructorCallResult, nonDefaultConstructorCallResult);
+      EQUALIZER_THROWS(TestResult, constructorCallResult, nonDefaultConstructorCallResult);
 
       CallResult nonDefaultStartupCallResult;
       nonDefaultStartupCallResult.testPhase = TestPhase::Startup;
-      EQUALIZER_THROWS_FOR_FIELD(TestResult, startupCallResult, nonDefaultStartupCallResult);
+      EQUALIZER_THROWS(TestResult, startupCallResult, nonDefaultStartupCallResult);
 
       CallResult nonDefaultTestBodyCallResult;
       nonDefaultTestBodyCallResult.testPhase = TestPhase::TestBody;
-      EQUALIZER_THROWS_FOR_FIELD(TestResult, testBodyCallResult, nonDefaultTestBodyCallResult);
+      EQUALIZER_THROWS(TestResult, testBodyCallResult, nonDefaultTestBodyCallResult);
 
       CallResult nonDefaultCleanupCallResult;
       nonDefaultCleanupCallResult.testPhase = TestPhase::Cleanup;
-      EQUALIZER_THROWS_FOR_FIELD(TestResult, cleanupCallResult, nonDefaultCleanupCallResult);
+      EQUALIZER_THROWS(TestResult, cleanupCallResult, nonDefaultCleanupCallResult);
 
       CallResult nonDefaultDestructorCallResult;
       nonDefaultDestructorCallResult.testPhase = TestPhase::Destructor;
-      EQUALIZER_THROWS_FOR_FIELD(TestResult, destructorCallResult, nonDefaultDestructorCallResult);
+      EQUALIZER_THROWS(TestResult, destructorCallResult, nonDefaultDestructorCallResult);
 
-      EQUALIZER_THROWS_FOR_FIELD(TestResult, responsibleCallResultField, &TestResult::constructorCallResult);
-      EQUALIZER_THROWS_FOR_FIELD(TestResult, testOutcome, TestOutcome::Anomaly);
-      EQUALIZER_THROWS_FOR_FIELD(TestResult, testCaseNumber, short(10));
-      EQUALIZER_THROWS_FOR_FIELD(TestResult, microseconds, 20u);
+      EQUALIZER_THROWS(TestResult, responsibleCallResultField, &TestResult::constructorCallResult);
+      EQUALIZER_THROWS(TestResult, testOutcome, TestOutcome::Anomaly);
+      EQUALIZER_THROWS(TestResult, testCaseNumber, short(10));
+      EQUALIZER_THROWS(TestResult, microseconds, 20u);
    }
 
    RUN_TESTS(TestResultTests)

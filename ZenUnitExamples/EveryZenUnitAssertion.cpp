@@ -65,8 +65,8 @@ TEST(CallAllMacros)
 
    // Equalizers
    SETUP_EQUALIZER_THROWS_TEST(Struct);
-   EQUALIZER_THROWS_FOR_FIELD(Struct, firstField, 1);
-   EQUALIZER_THROWS_FOR_FIELD(Struct, secondField, 'A');
+   EQUALIZER_THROWS(Struct, firstField, 1);
+   EQUALIZER_THROWS(Struct, secondField, 'A');
 }
 
 RUN_TESTS(EveryZenUnitAssertion)

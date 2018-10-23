@@ -137,9 +137,9 @@ namespace ZenUnit
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
       SETUP_EQUALIZER_THROWS_TEST(RunFilter);
-      EQUALIZER_THROWS_FOR_FIELD(RunFilter, testClassNamePattern, "testClassNamePattern");
-      EQUALIZER_THROWS_FOR_FIELD(RunFilter, testNamePattern, "testNamePattern");
-      EQUALIZER_THROWS_FOR_FIELD(RunFilter, testCaseNumber, 1);
+      EQUALIZER_THROWS(RunFilter, testClassNamePattern, "testClassNamePattern");
+      EQUALIZER_THROWS(RunFilter, testNamePattern, "testNamePattern");
+      EQUALIZER_THROWS(RunFilter, testCaseNumber, 1);
    }
 
    RUN_TESTS(RunFilterTests)

@@ -69,8 +69,8 @@ namespace ZenUnit
    TEST(EqualizerDoesNotAssertSpecifiedFieldEqual_Throws)
    {
       SETUP_EQUALIZER_THROWS_TEST(Namespace::TestStruct);
-      THROWS(EQUALIZER_THROWS_FOR_FIELD(Namespace::TestStruct, fieldB, 1), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: EQUALIZER_THROWS_FOR_FIELD(Namespace::TestStruct, fieldB, 1)",
+      THROWS(EQUALIZER_THROWS(Namespace::TestStruct, fieldB, 1), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: EQUALIZER_THROWS(Namespace::TestStruct, fieldB, 1)",
 "Expected: Function ZenUnit::Equalizer<Namespace::TestStruct>::AssertEqual(expected, actual)",
 "          to throw a ZenUnit::Anomaly from an",
 "          ARE_EQUAL(expected.fieldB, actual.fieldB) assert statement.",
@@ -82,8 +82,8 @@ namespace ZenUnit
    TEST(EqualizerThrowsAnomalyThatDoesNotContainFieldName_Throws)
    {
       SETUP_EQUALIZER_THROWS_TEST(TestStructB);
-      THROWS(EQUALIZER_THROWS_FOR_FIELD(TestStructB, field, TestStructB::ThrowWithoutFieldNameInWhatText), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: EQUALIZER_THROWS_FOR_FIELD(TestStructB, field, TestStructB::ThrowWithoutFieldNameInWhatText)",
+      THROWS(EQUALIZER_THROWS(TestStructB, field, TestStructB::ThrowWithoutFieldNameInWhatText), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: EQUALIZER_THROWS(TestStructB, field, TestStructB::ThrowWithoutFieldNameInWhatText)",
 "Expected: N/A",
 "  Actual: N/A",
 " Because: IS_TRUE(String::Contains(anomalyWhat, fieldName)) failed",
@@ -96,8 +96,8 @@ namespace ZenUnit
    TEST(EqualizerThrowsAnomalyThatContainsFieldName_ButStillThrowsThatAnomalyWhenAllFieldsEqual_Throws)
    {
       SETUP_EQUALIZER_THROWS_TEST(TestStructB);
-      THROWS(EQUALIZER_THROWS_FOR_FIELD(TestStructB, field, TestStructB::ThrowWithFieldNameInWhatText), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: EQUALIZER_THROWS_FOR_FIELD(TestStructB, field, TestStructB::ThrowWithFieldNameInWhatText)",
+      THROWS(EQUALIZER_THROWS(TestStructB, field, TestStructB::ThrowWithFieldNameInWhatText), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: EQUALIZER_THROWS(TestStructB, field, TestStructB::ThrowWithFieldNameInWhatText)",
 "Expected: N/A",
 "  Actual: N/A",
 " Because: ARE_EQUAL(equalizerTestObjectA, equalizerTestObjectB) failed",
@@ -110,7 +110,7 @@ namespace ZenUnit
    TEST(EqualizerAssertsSpecifiedFieldEqual_DoesNotThrow)
    {
       SETUP_EQUALIZER_THROWS_TEST(Namespace::TestStruct);
-      EQUALIZER_THROWS_FOR_FIELD(Namespace::TestStruct, fieldA, 1);
+      EQUALIZER_THROWS(Namespace::TestStruct, fieldA, 1);
    }
 
    RUN_TESTS(EQUALIZER_THROWSTests)

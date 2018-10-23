@@ -169,8 +169,8 @@
    ARE_EQUAL(equalizerTestObjectA, equalizerTestObjectB)
 
 // Asserts that ZenUnit::Equalizer<T>::AssertEqual() throws when the specified field is not equal.
-#define EQUALIZER_THROWS_FOR_FIELD(typeName, nonQuotedFieldName, arbitraryNonDefaultFieldValue) \
-   ZenUnit::EQUALIZER_THROWS_FOR_FIELD_Defined(equalizerTestObjectA, equalizerTestObjectB, &typeName::nonQuotedFieldName, #typeName, #nonQuotedFieldName, arbitraryNonDefaultFieldValue, #arbitraryNonDefaultFieldValue, FILELINE)
+#define EQUALIZER_THROWS(typeName, nonQuotedFieldName, arbitraryNonDefaultFieldValue) \
+   ZenUnit::EQUALIZER_THROWS_Defined(equalizerTestObjectA, equalizerTestObjectB, &typeName::nonQuotedFieldName, #typeName, #nonQuotedFieldName, arbitraryNonDefaultFieldValue, #arbitraryNonDefaultFieldValue, FILELINE)
 
 //
 // The Test Itself Assertion
@@ -2414,7 +2414,7 @@ Testing Rigor Options:
       const ZenUnit::Anomaly& becauseAnomaly)
    {
       throw Anomaly(
-         "EQUALIZER_THROWS_FOR_FIELD", typeName, fieldName, arbitraryNonDefaultFieldValueText, "",
+         "EQUALIZER_THROWS", typeName, fieldName, arbitraryNonDefaultFieldValueText, "",
          becauseAnomaly, "N/A", "N/A", ExpectedActualFormat::Fields, fileLine);
    }
 
@@ -2430,7 +2430,7 @@ Testing Rigor Options:
           ARE_EQUAL(expected.)", fieldName, ", actual.", fieldName, ") assert statement.");
       const std::string actualField(String::Concat("No ZenUnit::Anomaly thrown despite field '", fieldName, R"('
           differing between objects expected and actual.)"));
-      throw Anomaly("EQUALIZER_THROWS_FOR_FIELD", typeName, fieldName, arbitraryNonDefaultFieldValueText, "",
+      throw Anomaly("EQUALIZER_THROWS", typeName, fieldName, arbitraryNonDefaultFieldValueText, "",
          Anomaly::Default(),
          expectedField,
          actualField,
@@ -2453,7 +2453,7 @@ Testing Rigor Options:
       typename ActualType,
       typename FieldMemberPointerType,
       typename FieldType>
-      void EQUALIZER_THROWS_FOR_FIELD_Defined(
+      void EQUALIZER_THROWS_Defined(
          ExpectedType& equalizerTestObjectA,
          ActualType& equalizerTestObjectB,
          FieldMemberPointerType fieldMemberPointer,
