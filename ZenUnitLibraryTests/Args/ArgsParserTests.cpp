@@ -36,7 +36,7 @@ Testing Utility Options:
    Wait for any key before running tests to allow attaching a debugger or profiler.
 --exit0
    Always exit 0 regardless of test run outcome.
-   Useful option for never blocking the launch of a ZenUnit tests
+   This is a useful option for never blocking the launch of a ZenUnit tests
    console window when previously running tests in a post-build step.
 --wait
    Wait for any key at the end of the test run.
@@ -57,7 +57,7 @@ Testing Filtration Options:
    Run the third test case of value-parameterized test
    WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior.
 --fail-fast
-   Immediately exit with exit code 1 if a test fails.
+   Immediately call exit(1) if a test fails.
 
 Testing Rigor Options:
 
@@ -71,7 +71,10 @@ Testing Rigor Options:
    Repeat the running of all tests N times. Use a negative number to repeat forever.
    For five random test run orderings, specify --random --test-runs=5.
 --no-skips
-   Exit 1 regardless of test run outcome if any tests are skipped.)";
+   Exit 1 regardless of test run outcome if any tests are skipped.
+   This is a useful option to use on continuous integration servers to
+   partially defend against the understandable urge to "skip it and ship it".
+   Code coverage minimums and mandatory randomized code reviews are two more defenses.)";
 
    ArgsParser _argsParser;
    ConsoleMock* _consoleMock = nullptr;

@@ -1,6 +1,6 @@
 <h1 align="center">ZenUnit</h1>
 
-<h4 align="center">ZenUnit is a single-header C++17 unit testing library with an intuitive syntax for writing value-parameterized and type-parameterized unit tests.</h4>
+<h4 align="center">ZenUnit is a single-header C++17 unit testing library with a convenient syntax for writing value-parameterized and type-parameterized unit tests, and also features random value generation and exactness-focused assertions for maximizing mutation coverage.</h4>
 
 |Build Type|Build Status|
 |----------|------------|
@@ -22,10 +22,10 @@
    * [Maximizing Mutation Coverage With Random Value Testing](#maximizing-mutation-coverage-with-random-value-testing)
    * [ZenMock](#zenmock)
 
-### ZenUnit design and the N-by-N value-parameterized test syntax
+### ZenUnit philosophy and the N-by-N value-parameterized test syntax
 
 ```cpp
-#include "ZenUnit.h"
+#include "ZenUnit.h" // Single header
 
 // Function to be unit tested with ZenUnit
 std::string FizzBuzz(unsigned endNumber);
@@ -34,15 +34,14 @@ std::string FizzBuzz(unsigned endNumber);
 TESTS(FizzBuzzTests)
 // By way of a carefully-considered design decision,
 // in ZenUnit test names are duplicated between the FACTS section and the EVIDENCE section.
-// Having test names always up top instead of scattered throughout test files
-// makes it exceptionally easy to gauge the lay of the land
+// Having test names always up top instead of scattered throughout often large test files
+// makes it exceptionally easy to read the "lay of the land"
 // with respect to what a test class tests, and by extension,
 // see clearly what a class under test implements.
 // With code being read much more often than it is written,
-// I've found it time and time again to have to been well worth it
+// I have found it time and time again to have been well worth it
 // to exchange the few seconds it takes to duplicate a test name
-// to gain the long term test class readability that comes
-// with test names always being up top instead of scattered throughout test files.
+// to gain long term test class readability.
 
 // AFACT declares a non-value-parameterized test.
 AFACT(FizzBuzz_EndNumber0_Throws)
@@ -58,7 +57,8 @@ TEST(FizzBuzz_EndNumber0_Throws)
 {
    // The ZenUnit THROWS assertion asserts that an expression throws *exactly* (not a derived class of)
    // an expected exception type with *exactly* an expected exception what() text.
-   // This double exactness design of THROWS renders it immune to these two code mutations:
+   // This double exactness design of THROWS helps to maximize mutation coverage
+   // by rendering the assertion immune to these two code mutations:
    // mutate-exception-type and mutate-exception-message.
    THROWS(FizzBuzz(0), std::invalid_argument, "FizzBuzz() error: endNumber must be 1 or greater");
 }
@@ -66,7 +66,8 @@ TEST(FizzBuzz_EndNumber0_Throws)
 // TEST2X2 defines a 2-by-2 value-parameterized test
 // that processes its typesafe variadic arguments list 2-by-2.
 // This TEST2X2 defines 16 test cases for FizzBuzz(),
-// each of which will run independently within separate instances of FizzBuzzTests.
+// each of which will run independently and sequentially within separate instances of FizzBuzzTests.
+// ZenUnit command line argument --random can be specified to run test cases in a random order.
 TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    unsigned endNumber, const std::string& expectedFizzBuzzSequence,
    1, "1",
@@ -87,9 +88,9 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    16, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz 16")
 {
    const std::string fizzBuzzSequence = FizzBuzz(endNumber);
-   // ZenUnit's assertion names are declarative in language style (ARE_EQUAL, THROWS, IS_TRUE, etc)
-   // instead of imperative in language style (ASSERT_EQUAL, ASSERT_THROWS, ASSERT_TRUE, etc)
-   // to give ZenUnit a test reading experience similar to reading an executable specification document.
+   // ZenUnit assertion names are declarative in language style (ARE_EQUAL, THROWS, IS_TRUE, etc)
+   // instead of procedural in language style (ASSERT_EQUAL, ASSERT_THROWS, ASSERT_TRUE, etc)
+   // to give ZenUnit a test reading experience akin to reading an executable specification document.
    ARE_EQUAL(expectedFizzBuzzSequence, fizzBuzzSequence);
 }
 
@@ -102,7 +103,7 @@ std::string FizzBuzz(unsigned endNumber)
    if (endNumber == 0)
    {
       // An exception is thrown here instead of returning empty string
-      // to demonstrate ZenUnit's THROWS assertion.
+      // to demonstrate the THROWS assertion.
       throw std::invalid_argument("FizzBuzz() error: endNumber must be 1 or greater");
    }
    std::ostringstream oss;
@@ -144,7 +145,8 @@ int main(int argc, char* argv[])
 
 ### STARTUP and CLEANUP
 
-To define a function to be called before each test, there is STARTUP. To define a function to be called after each test, there is CLEANUP.
+For defining a function to be called before each test and test case, there is STARTUP.
+For defining a function to be called after each test and test case, there is CLEANUP.
 
 ```cpp
 #include "ZenUnit.h"
@@ -195,7 +197,7 @@ Testing Utility Options:
    Wait for any key before running tests to allow attaching a debugger or profiler.
 --exit0
    Always exit 0 regardless of test run outcome.
-   Useful option for never blocking the launch of a ZenUnit tests
+   This is a useful option for never blocking the launch of a ZenUnit tests
    console window when previously running tests in a post-build step.
 --wait
    Wait for any key at the end of the test run.
@@ -216,7 +218,7 @@ Testing Filtration Options:
    Run the third test case of value-parameterized test
    WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior.
 --fail-fast
-   Immediately exit with exit code 1 if a test fails.
+   Immediately call exit(1) if a test fails.
 
 Testing Rigor Options:
 
@@ -231,6 +233,9 @@ Testing Rigor Options:
    For five random test run orderings, specify --random --test-runs=5.
 --no-skips
    Exit 1 regardless of test run outcome if any tests are skipped.
+   This is a useful option to use on continuous integration servers to
+   partially defend against the understandable urge to "skip it and ship it".
+   Code coverage minimums and mandatory randomized code reviews are two more defenses.
 ```
 
 ### Type-Parameterized Test Class Syntax
