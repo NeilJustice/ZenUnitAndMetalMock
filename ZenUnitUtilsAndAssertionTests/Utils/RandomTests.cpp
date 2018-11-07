@@ -77,13 +77,11 @@ namespace ZenUnit
    TEMPLATE_TESTS(RandomVectorTests, T)
    AFACT(RandomVector_ReturnsAVectorWithSizeBetween0And2WithRandomElements)
    EVIDENCE
-
    TEST(RandomVector_ReturnsAVectorWithSizeBetween0And2WithRandomElements)
    {
       const vector<T> randomVector = ZenUnit::RandomVector<T>();
-      IS_TRUE(randomVector.size() >= 1 && randomVector.size() <= 3);
+      IS_TRUE(randomVector.size() >= 0 && randomVector.size() <= 3);
    }
-
    RUN_TEMPLATE_TESTS(RandomVectorTests, int)
    THEN_RUN_TEMPLATE_TESTS(RandomVectorTests, string)
 
@@ -92,11 +90,10 @@ namespace ZenUnit
    TEMPLATE_TESTS(RandomMapTests, KeyType, ValueType)
    AFACT(RandomMap_ReturnsAMapWithSizeBetween0And2WithRandomElements)
    EVIDENCE
-
    TEST(RandomMap_ReturnsAMapWithSizeBetween0And2WithRandomElements)
    {
       const map<KeyType, ValueType> randomOrderedMap = ZenUnit::RandomMap<KeyType, ValueType>();
-      IS_TRUE(randomOrderedMap.size() >= 1 && randomOrderedMap.size() <= 3);
+      IS_TRUE(randomOrderedMap.size() >= 0 && randomOrderedMap.size() <= 3);
    }
    RUN_TEMPLATE_TESTS(RandomMapTests, int, int)
    THEN_RUN_TEMPLATE_TESTS(RandomMapTests, string, double)
@@ -104,14 +101,39 @@ namespace ZenUnit
 
    template<typename KeyType, typename ValueType>
    TEMPLATE_TESTS(RandomUnorderedMapTests, KeyType, ValueType)
-   AFACT(RandomUnorderedMap_ReturnsAMapWithSizeBetween0And2WithRandomElements)
+   AFACT(RandomUnorderedMap_ReturnsAnUnorderedMapWithSizeBetween0And3)
    EVIDENCE
-
-   TEST(RandomUnorderedMap_ReturnsAMapWithSizeBetween0And2WithRandomElements)
+   TEST(RandomUnorderedMap_ReturnsAnUnorderedMapWithSizeBetween0And3)
    {
       const unordered_map<KeyType, ValueType> randomUnorderedMap = ZenUnit::RandomUnorderedMap<KeyType, ValueType>();
-      IS_TRUE(randomUnorderedMap.size() >= 1 && randomUnorderedMap.size() <= 3);
+      IS_TRUE(randomUnorderedMap.size() >= 0 && randomUnorderedMap.size() <= 3);
    }
    RUN_TEMPLATE_TESTS(RandomUnorderedMapTests, int, int)
    THEN_RUN_TEMPLATE_TESTS(RandomUnorderedMapTests, string, double)
+
+
+   template<typename ElementType>
+   TEMPLATE_TESTS(RandomSetTests, ElementType)
+   AFACT(RandomSet_ReturnsAnUnorderedSetWithSizeBetween0And3)
+   EVIDENCE
+   TEST(RandomSet_ReturnsAnUnorderedSetWithSizeBetween0And3)
+   {
+      const set<ElementType> randomSet = ZenUnit::RandomSet<ElementType>();
+      IS_TRUE(randomSet.size() >= 0 && randomSet.size() <= 3);
+   }
+   RUN_TEMPLATE_TESTS(RandomSetTests, int)
+   THEN_RUN_TEMPLATE_TESTS(RandomSetTests, string)
+
+
+   template<typename ElementType>
+   TEMPLATE_TESTS(RandomUnorderedSetTests, ElementType)
+   AFACT(RandomUnorderedSet_ReturnsAnUnorderedSetWithSizeBetween0And3)
+   EVIDENCE
+   TEST(RandomUnorderedSet_ReturnsAnUnorderedSetWithSizeBetween0And3)
+   {
+      const unordered_set<ElementType> randomUnorderedSet = ZenUnit::RandomUnorderedSet<ElementType>();
+      IS_TRUE(randomUnorderedSet.size() >= 0 && randomUnorderedSet.size() <= 3);
+   }
+   RUN_TEMPLATE_TESTS(RandomUnorderedSetTests, int)
+   THEN_RUN_TEMPLATE_TESTS(RandomUnorderedSetTests, string)
 }
