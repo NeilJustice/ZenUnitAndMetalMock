@@ -6347,6 +6347,18 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
       return randomVector;
    }
 
+   template<typename T>
+   std::vector<T> NonEmptyRandomVector()
+   {
+      const std::size_t randomNonEmptyVectorSize = RandomBetween<size_t>(1, 3);
+      std::vector<T> randomNonEmptyVector(randomNonEmptyVectorSize);
+      for (size_t i = 0; i < randomNonEmptyVectorSize; ++i)
+      {
+         randomNonEmptyVector[i] = ZenUnit::Random<T>();
+      }
+      return randomNonEmptyVector;
+   }
+
    template<typename KeyType, typename ValueType>
    std::map<KeyType, ValueType> RandomMap()
    {

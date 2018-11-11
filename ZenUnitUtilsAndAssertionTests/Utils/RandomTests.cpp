@@ -86,6 +86,19 @@ namespace ZenUnit
    THEN_RUN_TEMPLATE_TESTS(RandomVectorTests, string)
 
 
+   template<typename T>
+   TEMPLATE_TESTS(NonEmptyRandomVectorTests, T)
+   AFACT(NonEmptyRandomVector_ReturnsAVectorWithSizeBetween0And2WithRandomElements)
+   EVIDENCE
+   TEST(NonEmptyRandomVector_ReturnsAVectorWithSizeBetween0And2WithRandomElements)
+   {
+      const vector<T> nonEmptyRandomVector = ZenUnit::NonEmptyRandomVector<T>();
+      IS_TRUE(nonEmptyRandomVector.size() >= 1 && nonEmptyRandomVector.size() <= 3);
+   }
+   RUN_TEMPLATE_TESTS(NonEmptyRandomVectorTests, int)
+   THEN_RUN_TEMPLATE_TESTS(NonEmptyRandomVectorTests, string)
+
+
    template<typename KeyType, typename ValueType>
    TEMPLATE_TESTS(RandomMapTests, KeyType, ValueType)
    AFACT(RandomMap_ReturnsAMapWithSizeBetween0And2WithRandomElements)
