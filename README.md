@@ -69,6 +69,8 @@ TEST(FizzBuzz_EndNumber0_Throws)
 // each of which will run independently and sequentially within separate instances of FizzBuzzTests.
 // ZenUnit command line argument --random can be specified to run test cases in a random order.
 TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
+   // const std::string& is used here instead of std::string_view or const char*
+   // because the return value of FizzBuzz() is std::string.
    unsigned endNumber, const std::string& expectedFizzBuzzSequence,
    1, "1",
    2, "1 2",
