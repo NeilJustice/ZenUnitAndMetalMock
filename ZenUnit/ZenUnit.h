@@ -3857,13 +3857,12 @@ Testing Rigor Options:
          {
             console->Write("[  ");
             console->WriteColor("OK", Color::Green);
-            console->Write("  ] " + twoDecimalPlaceMillisecondsString);
+            console->WriteLine("  ] " + twoDecimalPlaceMillisecondsString);
          }
          else
          {
             console->WriteLineColor("[TestClass Failed] " + twoDecimalPlaceMillisecondsString, Color::Red);
          }
-         console->WriteNewLine();
       }
 
       virtual size_t NumberOfFailedTestCases() const

@@ -188,20 +188,16 @@ namespace ZenUnit
       ConsoleMock consoleMock;
       consoleMock.WriteMock.Expect();
       consoleMock.WriteColorMock.Expect();
-      consoleMock.WriteNewLineMock.Expect();
+      consoleMock.WriteLineMock.Expect();
       //
       _testClassResultSelfMocked.PrintTestClassResultLine(&consoleMock);
       //
       ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnce());
       ZEN(_testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.CalledOnce());
       ZEN(MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject.CalledOnceWith(sumOfTestResultMicroseconds));
-      ZEN(consoleMock.WriteMock.CalledAsFollows(
-      {
-         { "[  " },
-         { "  ] " + oneDecimalPlaceMilliseconds }
-      }));
+      ZEN(consoleMock.WriteMock.CalledOnceWith("[  " ));
       ZEN(consoleMock.WriteColorMock.CalledOnceWith("OK", Color::Green));
-      ZEN(consoleMock.WriteNewLineMock.CalledOnce());
+      ZEN(consoleMock.WriteLineMock.CalledOnceWith("  ] " + oneDecimalPlaceMilliseconds));
    }
 
    TEST1X1(PrintTestClassResultLine_1OrMoreFailedTests_WritesFailedInRed,
@@ -215,7 +211,6 @@ namespace ZenUnit
       const string oneDecimalPlaceMilliseconds = MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject.ReturnRandom();
       ConsoleMock consoleMock;
       consoleMock.WriteLineColorMock.Expect();
-      consoleMock.WriteNewLineMock.Expect();
       //
       _testClassResultSelfMocked.PrintTestClassResultLine(&consoleMock);
       //
@@ -223,7 +218,6 @@ namespace ZenUnit
       ZEN(_testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.CalledOnce());
       ZEN(MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject.CalledOnceWith(microseconds));
       ZEN(consoleMock.WriteLineColorMock.CalledOnceWith("[TestClass Failed] " + oneDecimalPlaceMilliseconds, Color::Red));
-      ZEN(consoleMock.WriteNewLineMock.CalledOnce());
    }
 
    TEST(PrintTestResultIfFailure_CallsTestResultPrintIfFailure)
