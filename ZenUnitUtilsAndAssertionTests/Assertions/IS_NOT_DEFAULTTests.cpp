@@ -103,9 +103,8 @@ namespace ZenUnit
       THROWS(IS_NOT_DEFAULT(defaultIntVector), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_NOT_DEFAULT(defaultIntVector)",
 "Expected: Not T{}",
-"  Actual: std::vector<int>:",
+"  Actual: std::vector<int> (size 0):",
 "{",
-"   (empty vector)",
 "}",
 "File.cpp(1)"));
    }

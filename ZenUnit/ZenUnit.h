@@ -4744,7 +4744,7 @@ Testing Rigor Options:
       {
          if (testOutcome != TestOutcome::Success && args.failfast)
          {
-            const std::string failFastMessage = 
+            const std::string failFastMessage =
                "\n[ZenUnit] A test failed in --fail-fast mode. Exiting with code 1.\n[ZenUnit] Command line: " +
                args.commandLine + " (random seed " + std::to_string(ZenUnitRandomSeed::value) + ")";
             _console->WriteLineAndExit(failFastMessage, 1);
@@ -6126,13 +6126,12 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
       static void Print(std::ostream& os, const std::vector<T, Allocator>& vec)
       {
          const std::string* typeName = Type::GetName<T>();
-         os << "std::vector<" << *typeName << ">:";
          const std::size_t vectorSize = vec.size();
+         os << "std::vector<" << *typeName << "> (size " << vectorSize << "):";
          if (vectorSize == 0)
          {
             os << R"(
 {
-   (empty vector)
 })";
             return;
          }
@@ -6143,7 +6142,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
          {
             if (i == 7)
             {
-               os << "...";
+               os << "...elements beyond 7 elided for brevity...";
                break;
             }
             const T& element = vec[i];

@@ -13,7 +13,7 @@ namespace ZenUnit
    AFACT(ZenUnitPrinter_Print_EightElements_PrintsFirstSevenElements)
    EVIDENCE
 
-   const string _expectedVectorTypePrefix = "std::vector<" + *Type::GetName<T>() + ">:";
+   const string _expectedVectorTypePrefix = "std::vector<" + *Type::GetName<T>() + "> (size ";
    ostringstream _oss;
 
    TEST(ZenUnitPrinter_Print_Empty_PrintsEmptyBrackets)
@@ -23,9 +23,8 @@ namespace ZenUnit
       ZenUnit::Printer<decltype(v)>::Print(_oss, v);
       //
       const string printString = _oss.str();
-      ARE_EQUAL(_expectedVectorTypePrefix + TestUtil::NewlineConcat("",
+      ARE_EQUAL(_expectedVectorTypePrefix + "0):" + TestUtil::NewlineConcat("",
 "{",
-"   (empty vector)",
 "}"), printString);
    }
 
@@ -36,9 +35,8 @@ namespace ZenUnit
       ZenUnit::Printer<decltype(v)>::Print(_oss, v);
       //
       const string printString = _oss.str();
-      ARE_EQUAL(_expectedVectorTypePrefix + TestUtil::NewlineConcat("",
+      ARE_EQUAL(_expectedVectorTypePrefix + "0):" + TestUtil::NewlineConcat("",
 "{",
-"   (empty vector)",
 "}"), printString);
    }
 
@@ -49,7 +47,7 @@ namespace ZenUnit
       ZenUnit::Printer<decltype(v)>::Print(_oss, v);
       //
       const string printString = _oss.str();
-      ARE_EQUAL(_expectedVectorTypePrefix + TestUtil::NewlineConcat("",
+      ARE_EQUAL(_expectedVectorTypePrefix + "1):" + TestUtil::NewlineConcat("",
 "{",
 "   1",
 "}"), printString);
@@ -62,7 +60,7 @@ namespace ZenUnit
       ZenUnit::Printer<decltype(v)>::Print(_oss, v);
       //
       const string printString = _oss.str();
-      ARE_EQUAL(_expectedVectorTypePrefix + TestUtil::NewlineConcat("",
+      ARE_EQUAL(_expectedVectorTypePrefix + "2):" + TestUtil::NewlineConcat("",
 "{",
 "   1,",
 "   2",
@@ -76,7 +74,7 @@ namespace ZenUnit
       ZenUnit::Printer<decltype(v)>::Print(_oss, v);
       //
       const string printString = _oss.str();
-      ARE_EQUAL(_expectedVectorTypePrefix + TestUtil::NewlineConcat("",
+      ARE_EQUAL(_expectedVectorTypePrefix + "7):" + TestUtil::NewlineConcat("",
 "{",
 "   1,",
 "   2,",
@@ -95,7 +93,7 @@ namespace ZenUnit
       ZenUnit::Printer<decltype(v)>::Print(_oss, v);
       //
       const string printString = _oss.str();
-      ARE_EQUAL(_expectedVectorTypePrefix + TestUtil::NewlineConcat("",
+      ARE_EQUAL(_expectedVectorTypePrefix + "8):" + TestUtil::NewlineConcat("",
 "{",
 "   1,",
 "   2,",
@@ -104,7 +102,7 @@ namespace ZenUnit
 "   5,",
 "   6,",
 "   7,",
-"   ...",
+"   ...elements beyond 7 elided for brevity...",
 "}"), printString);
    }
 
