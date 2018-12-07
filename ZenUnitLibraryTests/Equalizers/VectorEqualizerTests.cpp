@@ -4,9 +4,9 @@ namespace ZenUnit
 {
    TESTS(VectorEqualizerTests)
    AFACT(AssertEqual_IntVectors_CallsVECTORS_EQUAL)
-   #if _WIN32
+#if _WIN32
    AFACT(AssertEqual_StringVectors_CallsVECTORS_EQUAL)
-   #endif
+#endif
    AFACT(AssertEqual_UserTypeVectors_CallsVECTORS_EQUAL)
    EVIDENCE
 
@@ -18,7 +18,7 @@ namespace ZenUnit
       expectedIntVector.push_back(1);
       THROWS(Equalizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: VECTORS_EQUAL(expectedVector, actualVector)",
-"Expected: std::vector<int>:",
+"Expected: std::vector<int> (size 1):",
 "{",
 "   1",
 "}",
@@ -42,7 +42,7 @@ namespace ZenUnit
       THROWS(Equalizer<vector<string>>::AssertEqual(
          expectedStringVector Comma actualStringVector), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: VECTORS_EQUAL(expectedVector, actualVector)",
-"Expected: std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >>:",
+"Expected: std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >> (size 1):",
 "{",
 "   \"\"",
 "}",
@@ -66,7 +66,7 @@ namespace ZenUnit
       THROWS(Equalizer<vector<UserType>>::AssertEqual(
          expectedUserTypeVector Comma actualUserTypeVector), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: VECTORS_EQUAL(expectedVector, actualVector)",
-"Expected: std::vector<UserType>:",
+"Expected: std::vector<UserType> (size 1):",
 "{",
 "   UserType@0",
 "}",
