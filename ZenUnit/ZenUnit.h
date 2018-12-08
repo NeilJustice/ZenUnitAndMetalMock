@@ -3715,7 +3715,7 @@ Testing Rigor Options:
          case TestOutcome::Anomaly:
          {
             const std::string testFailureNumber = testFailureNumberer->Next();
-            console->WriteLineColor(testFailureNumber, Color::Red);
+            console->WriteLineColor(testFailureNumber, Color::Yellow);
             console->Write(fullTestName.Value());
             const CallResult& responsibleCallResult = (this->*responsibleCallResultField);
             const char* const responsibleTestPhaseSuffix =
@@ -3729,14 +3729,14 @@ Testing Rigor Options:
          case TestOutcome::Exception:
          {
             const std::string testFailureNumber = testFailureNumberer->Next();
-            console->WriteLineColor(testFailureNumber, Color::Red);
+            console->WriteLineColor(testFailureNumber, Color::Yellow);
             console->Write(fullTestName.Value());
             const CallResult& responsibleCallResult = this->*responsibleCallResultField;
             const char* const responsibleTestPhaseSuffix =
                TestPhaseTranslator::DoTestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
             console->Write(responsibleTestPhaseSuffix);
             WriteTestCaseNumberIfAny(console, testCaseNumber);
-            console->WriteLineColor("\nUncaught Exception", Color::Red);
+            console->WriteLineColor("\nUncaught Exception", Color::Yellow);
             const std::string exceptionTypeAndWhatLines = String::Concat(
                "  Type: ", *responsibleCallResult.anomalyOrException->exceptionTypeName, '\n',
                "what(): \"", *responsibleCallResult.anomalyOrException->exceptionWhat, "\"");
@@ -3747,7 +3747,7 @@ Testing Rigor Options:
          case TestOutcome::SuccessButPastDeadline:
          {
             const std::string testFailureNumber = testFailureNumberer->Next();
-            console->WriteLineColor(testFailureNumber, Color::Red);
+            console->WriteLineColor(testFailureNumber, Color::Yellow);
             console->WriteLine(fullTestName.Value());
             WriteTestCaseNumberIfAny(console, testCaseNumber);
             const unsigned milliseconds = microseconds / 1000;
@@ -3861,7 +3861,7 @@ Testing Rigor Options:
          }
          else
          {
-            console->WriteLineColor("[TestClass Failed] " + twoDecimalPlaceMillisecondsString, Color::Red);
+            console->WriteLineColor("[TestClass Failed] " + twoDecimalPlaceMillisecondsString, Color::Yellow);
          }
       }
 
@@ -4427,7 +4427,7 @@ Testing Rigor Options:
             const std::string firstLine = String::Concat("== ", _numberOfFailedTestCases, ' ', testOrTests, " Failed ==");
             const std::string secondLineEqualsSigns(firstLine.size(), '=');
             const std::string numberOfTestFailuresLine = String::Concat(firstLine, '\n', secondLineEqualsSigns, '\n');
-            _console->WriteLineColor(numberOfTestFailuresLine, Color::Red);
+            _console->WriteLineColor(numberOfTestFailuresLine, Color::Yellow);
             _memberForEacherTestClassResults->MemberForEach(&_testClassResults, this, &TestRunResult::PrintTestClassResultFailures);
          }
          _memberForEacherSkippedTests->MemberForEach(
@@ -4443,7 +4443,7 @@ Testing Rigor Options:
          const ZenUnitArgs& args) const
       {
          assert_true(_numberOfFailedTestCases <= totalNumberOfTestCases);
-         const Color greenOrRed = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
+         const Color greenOrRed = _numberOfFailedTestCases == 0 ? Color::Green : Color::Yellow;
          if (totalNumberOfTestCases == 0)
          {
             _console->WriteColor("[ZenUnit] ", Color::Green);
@@ -4929,21 +4929,21 @@ Testing Rigor Options:
          callResult.microseconds = _stopwatch->Stop();
          callResult.anomalyOrException = std::make_shared<AnomalyOrException>(anomaly);
          callResult.testOutcome = TestOutcome::Anomaly;
-         _console->WriteColor("\n=======\nAnomaly\n=======", Color::Red);
+         _console->WriteColor("\n=======\nAnomaly\n=======", Color::Yellow);
          const char* const testPhaseSuffix = _testPhaseTranslator->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          _console->WriteLine(anomaly.why);
          if (testPhase != TestPhase::TestBody)
          {
             const int exitCode = args.exit0 ? 0 : 1;
-            _console->WriteLineColor("\n========\nFATALITY\n========", Color::Red);
+            _console->WriteLineColor("\n========\nFATALITY\n========", Color::Yellow);
             _console->WriteLineAndExit("ZenUnit::Anomaly thrown during test class construction, STARTUP, or CLEANUP.\nFail fasting with exit code " + std::to_string(exitCode) + ".", exitCode);
          }
       }
       catch (const std::exception& e)
       {
          PopulateCallResultWithExceptionInformation(e, &callResult);
-         _console->WriteColor("\n==================\nUncaught Exception\n==================", Color::Red);
+         _console->WriteColor("\n==================\nUncaught Exception\n==================", Color::Yellow);
          const char* const testPhaseSuffix = _testPhaseTranslator->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          const std::string exceptionTypeNameAndWhat = String::Concat('\n',
@@ -4961,7 +4961,7 @@ Testing Rigor Options:
             equalsSigns, '\n',
             exceptionTypeName, testPhaseSuffix, '\n',
             equalsSigns);
-         _console->WriteLineColor(exceptionTypeNameFourLines, Color::Red);
+         _console->WriteLineColor(exceptionTypeNameFourLines, Color::Yellow);
          PopulateCallResultWithExceptionInformation(e, &callResult);
          const std::string testPhaseSuffixAndExceptionWhatLine = String::Concat("what(): \"", e.what(), "\"");
          _console->WriteLine(testPhaseSuffixAndExceptionWhatLine);
@@ -4969,7 +4969,7 @@ Testing Rigor Options:
       catch (...)
       {
          _stopwatch->Stop();
-         _console->WriteLineColor("\n========\nFATALITY\n========", Color::Red);
+         _console->WriteLineColor("\n========\nFATALITY\n========", Color::Yellow);
          const char* const testPhaseName = _testPhaseTranslator->TestPhaseToTestPhaseName(testPhase);
          const int exitCode = args.exit0 ? 0 : 1;
          const std::string exitLine = String::Concat(
@@ -6043,7 +6043,7 @@ Testing Rigor Options:
          if (findIter == testNXNPmfTokenToTest.end())
          {
             ConsoleColorer consoleColorer;
-            const bool didSetColor = consoleColorer.SetColor(Color::Red);
+            const bool didSetColor = consoleColorer.SetColor(Color::Yellow);
             std::cout << "====================\nZenUnit Syntax Error\n====================\n";
             consoleColorer.UnsetColor(didSetColor);
             std::cout << R"(The above test name was specified using FACTS(TestName).
