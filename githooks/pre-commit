@@ -3,9 +3,9 @@ set -u
 
 osname="$(uname --operating-system)"
 if [[ "$osname" == *"Linux" ]]; then
-   JenkinsJobs/LinuxZenUnitDebugClang.sh
+   JenkinsJobs/Linux/ZenUnitDebugClang.sh
 elif [ "$osname" == "Msys" ]; then
-   powershell.exe JenkinsJobs/WindowsZenUnitTestsDebug.ps1
+   powershell.exe JenkinsJobs/Windows/ZenUnitTestsDebug64Bit.ps1
 fi
 jenkinsJobExitCode=$?
 if [ "$jenkinsJobExitCode" -ne 0 ]; then
