@@ -3521,19 +3521,19 @@ Testing Rigor Options:
       }
    };
 
-   struct CallResult
+   struct TestPhaseResult
    {
       TestPhase testPhase;
       TestOutcome testOutcome;
       unsigned microseconds;
       std::shared_ptr<AnomalyOrException> anomalyOrException;
 
-      CallResult() noexcept
-         : CallResult(TestPhase::Unset)
+      TestPhaseResult() noexcept
+         : TestPhaseResult(TestPhase::Unset)
       {
       }
 
-      explicit CallResult(TestPhase testPhase) noexcept
+      explicit TestPhaseResult(TestPhase testPhase) noexcept
          : testPhase(testPhase)
          , testOutcome(TestOutcome::Success)
          , microseconds(0)
@@ -3544,16 +3544,16 @@ Testing Rigor Options:
    struct TestResult
    {
       FullTestName fullTestName;
-      CallResult constructorCallResult;
-      CallResult startupCallResult;
-      CallResult testBodyCallResult;
-      CallResult cleanupCallResult;
-      CallResult destructorCallResult;
+      TestPhaseResult constructorTestPhaseResult;
+      TestPhaseResult startupTestPhaseResult;
+      TestPhaseResult testBodyTestPhaseResult;
+      TestPhaseResult cleanupTestPhaseResult;
+      TestPhaseResult destructorTestPhaseResult;
 #if defined _WIN32
 #pragma warning(push)
 #pragma warning(disable: 4371) // layout of class may have changed from a previous version of the compiler due to better packing of member
 #endif
-      CallResult TestResult::* responsibleCallResultField;
+      TestPhaseResult TestResult::* responsibleTestPhaseResultField;
 #if defined _WIN32
 #pragma warning(pop)
 #endif
@@ -3563,7 +3563,7 @@ Testing Rigor Options:
       std::function<std::string(unsigned)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
 
       TestResult() noexcept
-         : responsibleCallResultField(nullptr)
+         : responsibleTestPhaseResultField(nullptr)
          , testOutcome(TestOutcome::Unset)
          , microseconds(0)
          , testCaseNumber(std::numeric_limits<size_t>::max())
@@ -3574,61 +3574,61 @@ Testing Rigor Options:
 
       TestResult(
          const FullTestName& fullTestName,
-         const CallResult& constructorCallResult,
-         const CallResult& startupCallResult,
-         const CallResult& testBodyCallResult,
-         const CallResult& cleanupCallResult,
-         const CallResult& destructorCallResult,
+         const TestPhaseResult& constructorTestPhaseResult,
+         const TestPhaseResult& startupTestPhaseResult,
+         const TestPhaseResult& testBodyTestPhaseResult,
+         const TestPhaseResult& cleanupTestPhaseResult,
+         const TestPhaseResult& destructorTestPhaseResult,
          const std::function<const ZenUnitArgs&()>& getArgs)
          : fullTestName(fullTestName)
-         , constructorCallResult(constructorCallResult)
-         , startupCallResult(startupCallResult)
-         , testBodyCallResult(testBodyCallResult)
-         , cleanupCallResult(cleanupCallResult)
-         , destructorCallResult(destructorCallResult)
-         , responsibleCallResultField(nullptr)
+         , constructorTestPhaseResult(constructorTestPhaseResult)
+         , startupTestPhaseResult(startupTestPhaseResult)
+         , testBodyTestPhaseResult(testBodyTestPhaseResult)
+         , cleanupTestPhaseResult(cleanupTestPhaseResult)
+         , destructorTestPhaseResult(destructorTestPhaseResult)
+         , responsibleTestPhaseResultField(nullptr)
          , testOutcome(TestOutcome::Unset)
          , microseconds(0)
          , testCaseNumber(std::numeric_limits<size_t>::max())
          , _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(
             Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
       {
-         assert_true(constructorCallResult.testOutcome == TestOutcome::Success);
-         assert_true(startupCallResult.testOutcome == TestOutcome::Success);
-         assert_true(destructorCallResult.testOutcome == TestOutcome::Success);
+         assert_true(constructorTestPhaseResult.testOutcome == TestOutcome::Success);
+         assert_true(startupTestPhaseResult.testOutcome == TestOutcome::Success);
+         assert_true(destructorTestPhaseResult.testOutcome == TestOutcome::Success);
          microseconds =
-            constructorCallResult.microseconds +
-            startupCallResult.microseconds +
-            testBodyCallResult.microseconds +
-            cleanupCallResult.microseconds +
-            destructorCallResult.microseconds;
-         if (testBodyCallResult.testOutcome == TestOutcome::Exception)
+            constructorTestPhaseResult.microseconds +
+            startupTestPhaseResult.microseconds +
+            testBodyTestPhaseResult.microseconds +
+            cleanupTestPhaseResult.microseconds +
+            destructorTestPhaseResult.microseconds;
+         if (testBodyTestPhaseResult.testOutcome == TestOutcome::Exception)
          {
             testOutcome = TestOutcome::Exception;
-            responsibleCallResultField = &TestResult::testBodyCallResult;
+            responsibleTestPhaseResultField = &TestResult::testBodyTestPhaseResult;
          }
-         else if (cleanupCallResult.testOutcome == TestOutcome::Exception)
+         else if (cleanupTestPhaseResult.testOutcome == TestOutcome::Exception)
          {
             testOutcome = TestOutcome::Exception;
-            responsibleCallResultField = &TestResult::cleanupCallResult;
+            responsibleTestPhaseResultField = &TestResult::cleanupTestPhaseResult;
          }
-         else if (testBodyCallResult.testOutcome == TestOutcome::Anomaly)
+         else if (testBodyTestPhaseResult.testOutcome == TestOutcome::Anomaly)
          {
             testOutcome = TestOutcome::Anomaly;
-            responsibleCallResultField = &TestResult::testBodyCallResult;
+            responsibleTestPhaseResultField = &TestResult::testBodyTestPhaseResult;
          }
-         else if (cleanupCallResult.testOutcome == TestOutcome::Anomaly)
+         else if (cleanupTestPhaseResult.testOutcome == TestOutcome::Anomaly)
          {
             testOutcome = TestOutcome::Anomaly;
-            responsibleCallResultField = &TestResult::cleanupCallResult;
+            responsibleTestPhaseResultField = &TestResult::cleanupTestPhaseResult;
          }
          else
          {
-            assert_true(constructorCallResult.testOutcome == TestOutcome::Success);
-            assert_true(startupCallResult.testOutcome == TestOutcome::Success);
-            assert_true(testBodyCallResult.testOutcome == TestOutcome::Success);
-            assert_true(cleanupCallResult.testOutcome == TestOutcome::Success);
-            assert_true(destructorCallResult.testOutcome == TestOutcome::Success);
+            assert_true(constructorTestPhaseResult.testOutcome == TestOutcome::Success);
+            assert_true(startupTestPhaseResult.testOutcome == TestOutcome::Success);
+            assert_true(testBodyTestPhaseResult.testOutcome == TestOutcome::Success);
+            assert_true(cleanupTestPhaseResult.testOutcome == TestOutcome::Success);
+            assert_true(destructorTestPhaseResult.testOutcome == TestOutcome::Success);
             const ZenUnitArgs& args = getArgs();
             const unsigned maxtestmicroseconds = args.maxtestmilliseconds * 1000;
             if (args.maxtestmilliseconds == 0 || microseconds <= maxtestmicroseconds)
@@ -3645,51 +3645,51 @@ Testing Rigor Options:
       virtual ~TestResult() = default;
 
       static TestResult ConstructorFail(
-         const FullTestName& fullTestName, const CallResult& constructorCallResult) noexcept
+         const FullTestName& fullTestName, const TestPhaseResult& constructorTestPhaseResult) noexcept
       {
          TestResult constructorFailTestResult;
          constructorFailTestResult.fullTestName = fullTestName;
-         constructorFailTestResult.constructorCallResult = constructorCallResult;
-         constructorFailTestResult.testOutcome = constructorCallResult.testOutcome;
-         constructorFailTestResult.microseconds = constructorCallResult.microseconds;
-         constructorFailTestResult.responsibleCallResultField = &TestResult::constructorCallResult;
+         constructorFailTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
+         constructorFailTestResult.testOutcome = constructorTestPhaseResult.testOutcome;
+         constructorFailTestResult.microseconds = constructorTestPhaseResult.microseconds;
+         constructorFailTestResult.responsibleTestPhaseResultField = &TestResult::constructorTestPhaseResult;
          return constructorFailTestResult;
       }
 
       static TestResult StartupFail(
          const FullTestName& fullTestName,
-         const CallResult& constructorCallResult,
-         const CallResult& startupCallResult,
-         const CallResult& destructorCallResult)
+         const TestPhaseResult& constructorTestPhaseResult,
+         const TestPhaseResult& startupTestPhaseResult,
+         const TestPhaseResult& destructorTestPhaseResult)
       {
-         assert_true(constructorCallResult.testOutcome == TestOutcome::Success);
-         assert_true(destructorCallResult.testOutcome == TestOutcome::Success);
+         assert_true(constructorTestPhaseResult.testOutcome == TestOutcome::Success);
+         assert_true(destructorTestPhaseResult.testOutcome == TestOutcome::Success);
          TestResult startupFail;
          startupFail.fullTestName = fullTestName;
-         startupFail.testOutcome = startupCallResult.testOutcome;
-         startupFail.constructorCallResult = constructorCallResult;
-         startupFail.startupCallResult = startupCallResult;
-         startupFail.destructorCallResult = destructorCallResult;
+         startupFail.testOutcome = startupTestPhaseResult.testOutcome;
+         startupFail.constructorTestPhaseResult = constructorTestPhaseResult;
+         startupFail.startupTestPhaseResult = startupTestPhaseResult;
+         startupFail.destructorTestPhaseResult = destructorTestPhaseResult;
          startupFail.microseconds =
-            constructorCallResult.microseconds + startupCallResult.microseconds + destructorCallResult.microseconds;
-         startupFail.responsibleCallResultField = &TestResult::startupCallResult;
+            constructorTestPhaseResult.microseconds + startupTestPhaseResult.microseconds + destructorTestPhaseResult.microseconds;
+         startupFail.responsibleTestPhaseResultField = &TestResult::startupTestPhaseResult;
          return startupFail;
       }
 
       static TestResult CtorDtorSuccess(
          const FullTestName& fullTestName,
-         const CallResult& constructorCallResult,
-         const CallResult& destructorCallResult)
+         const TestPhaseResult& constructorTestPhaseResult,
+         const TestPhaseResult& destructorTestPhaseResult)
       {
-         assert_true(constructorCallResult.testOutcome == TestOutcome::Success);
-         assert_true(destructorCallResult.testOutcome == TestOutcome::Success);
+         assert_true(constructorTestPhaseResult.testOutcome == TestOutcome::Success);
+         assert_true(destructorTestPhaseResult.testOutcome == TestOutcome::Success);
          TestResult ctorDtorSuccess;
          ctorDtorSuccess.fullTestName = fullTestName;
          ctorDtorSuccess.testOutcome = TestOutcome::Success;
-         ctorDtorSuccess.constructorCallResult = constructorCallResult;
-         ctorDtorSuccess.destructorCallResult = destructorCallResult;
-         ctorDtorSuccess.microseconds = constructorCallResult.microseconds + destructorCallResult.microseconds;
-         ctorDtorSuccess.responsibleCallResultField = nullptr;
+         ctorDtorSuccess.constructorTestPhaseResult = constructorTestPhaseResult;
+         ctorDtorSuccess.destructorTestPhaseResult = destructorTestPhaseResult;
+         ctorDtorSuccess.microseconds = constructorTestPhaseResult.microseconds + destructorTestPhaseResult.microseconds;
+         ctorDtorSuccess.responsibleTestPhaseResultField = nullptr;
          return ctorDtorSuccess;
       }
 
@@ -3717,12 +3717,12 @@ Testing Rigor Options:
             const std::string testFailureNumber = testFailureNumberer->Next();
             console->WriteLineColor(testFailureNumber, Color::Yellow);
             console->Write(fullTestName.Value());
-            const CallResult& responsibleCallResult = (this->*responsibleCallResultField);
+            const TestPhaseResult& responsibleTestPhaseResult = (this->*responsibleTestPhaseResultField);
             const char* const responsibleTestPhaseSuffix =
-               TestPhaseTranslator::DoTestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
+               TestPhaseTranslator::DoTestPhaseToTestPhaseSuffix(responsibleTestPhaseResult.testPhase);
             console->Write(responsibleTestPhaseSuffix);
             WriteTestCaseNumberIfAny(console, testCaseNumber);
-            responsibleCallResult.anomalyOrException->anomaly->WriteLineWhy(console);
+            responsibleTestPhaseResult.anomalyOrException->anomaly->WriteLineWhy(console);
             console->WriteNewLine();
             break;
          }
@@ -3731,15 +3731,15 @@ Testing Rigor Options:
             const std::string testFailureNumber = testFailureNumberer->Next();
             console->WriteLineColor(testFailureNumber, Color::Yellow);
             console->Write(fullTestName.Value());
-            const CallResult& responsibleCallResult = this->*responsibleCallResultField;
+            const TestPhaseResult& responsibleTestPhaseResult = this->*responsibleTestPhaseResultField;
             const char* const responsibleTestPhaseSuffix =
-               TestPhaseTranslator::DoTestPhaseToTestPhaseSuffix(responsibleCallResult.testPhase);
+               TestPhaseTranslator::DoTestPhaseToTestPhaseSuffix(responsibleTestPhaseResult.testPhase);
             console->Write(responsibleTestPhaseSuffix);
             WriteTestCaseNumberIfAny(console, testCaseNumber);
             console->WriteLineColor("\nUncaught Exception", Color::Yellow);
             const std::string exceptionTypeAndWhatLines = String::Concat(
-               "  Type: ", *responsibleCallResult.anomalyOrException->exceptionTypeName, '\n',
-               "what(): \"", *responsibleCallResult.anomalyOrException->exceptionWhat, "\"");
+               "  Type: ", *responsibleTestPhaseResult.anomalyOrException->exceptionTypeName, '\n',
+               "what(): \"", *responsibleTestPhaseResult.anomalyOrException->exceptionWhat, "\"");
             console->WriteLine(exceptionTypeAndWhatLines);
             console->WriteNewLine();
             break;
@@ -3774,7 +3774,7 @@ Testing Rigor Options:
       static const TestResult TestingNonDefault() noexcept
       {
          const FullTestName fullTestName("Non", "Default", 0);
-         const TestResult constructorFail = TestResult::ConstructorFail(fullTestName, CallResult());
+         const TestResult constructorFail = TestResult::ConstructorFail(fullTestName, TestPhaseResult());
          return constructorFail;
       }
    };
@@ -4717,28 +4717,28 @@ Testing Rigor Options:
 
    class Test;
 
-   class TryCatchCaller
+   class TestPhaseRunner
    {
-      friend class TryCatchCallerTests;
+      friend class TestPhaseRunnerTests;
    private:
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const TestPhaseTranslator> _testPhaseTranslator;
-      std::unique_ptr<const TwoArgMemberFunctionCaller<void, TryCatchCaller, TestOutcome, const ZenUnitArgs&>> _voidTwoArgMemberFunctionCaller;
+      std::unique_ptr<const TwoArgMemberFunctionCaller<void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>> _voidTwoArgMemberFunctionCaller;
       std::function<const ZenUnitArgs&()> _call_TestRunner_GetArgs;
       std::unique_ptr<Stopwatch> _stopwatch;
    public:
-      TryCatchCaller() noexcept
+      TestPhaseRunner() noexcept
          : _console(std::make_unique<Console>())
          , _testPhaseTranslator(std::make_unique<TestPhaseTranslator>())
-         , _voidTwoArgMemberFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<void, TryCatchCaller, TestOutcome, const ZenUnitArgs&>>())
+         , _voidTwoArgMemberFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>>())
          , _call_TestRunner_GetArgs(TestRunner::GetArgs)
          , _stopwatch(std::make_unique<Stopwatch>())
       {
       }
 
-      virtual ~TryCatchCaller() = default;
+      virtual ~TestPhaseRunner() = default;
 
-      virtual CallResult RunTestPhase(void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const;
+      virtual TestPhaseResult RunTestPhase(void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const;
 
       void FailFastIfTestFailedAndFailFastModeTrue(TestOutcome testOutcome, const ZenUnitArgs& args) const
       {
@@ -4752,13 +4752,13 @@ Testing Rigor Options:
       }
    private:
       template<typename ExceptionType>
-      void PopulateCallResultWithExceptionInformation(const ExceptionType& e, CallResult* outCallResult) const
+      void PopulateTestPhaseResultWithExceptionInformation(const ExceptionType& e, TestPhaseResult* outTestPhaseResult) const
       {
-         outCallResult->microseconds = _stopwatch->Stop();
+         outTestPhaseResult->microseconds = _stopwatch->Stop();
          const std::string* const exceptionTypeName = Type::GetName(e);
          const char* const what = e.what();
-         outCallResult->anomalyOrException = std::make_shared<AnomalyOrException>(exceptionTypeName, what);
-         outCallResult->testOutcome = TestOutcome::Exception;
+         outTestPhaseResult->anomalyOrException = std::make_shared<AnomalyOrException>(exceptionTypeName, what);
+         outTestPhaseResult->testOutcome = TestOutcome::Exception;
       }
    };
 
@@ -4769,45 +4769,45 @@ Testing Rigor Options:
       virtual ~TestResultFactory() = default;
 
       virtual TestResult MakeConstructorFail(
-         const FullTestName& fullTestName, const CallResult& constructorCallResult) const
+         const FullTestName& fullTestName, const TestPhaseResult& constructorTestPhaseResult) const
       {
-         return TestResult::ConstructorFail(fullTestName, constructorCallResult);
+         return TestResult::ConstructorFail(fullTestName, constructorTestPhaseResult);
       }
 
       virtual TestResult MakeStartupFail(
          const FullTestName& fullTestName,
-         const CallResult& constructorCallResult,
-         const CallResult& startupCallResult,
-         const CallResult& destructorCallResult) const
+         const TestPhaseResult& constructorTestPhaseResult,
+         const TestPhaseResult& startupTestPhaseResult,
+         const TestPhaseResult& destructorTestPhaseResult) const
       {
          return TestResult::StartupFail(
-            fullTestName, constructorCallResult, startupCallResult, destructorCallResult);
+            fullTestName, constructorTestPhaseResult, startupTestPhaseResult, destructorTestPhaseResult);
       }
 
       virtual TestResult MakeCtorDtorSuccess(
          const FullTestName& fullTestName,
-         const CallResult& constructorCallResult,
-         const CallResult& destructorCallResult) const
+         const TestPhaseResult& constructorTestPhaseResult,
+         const TestPhaseResult& destructorTestPhaseResult) const
       {
          return TestResult::CtorDtorSuccess(
-            fullTestName, constructorCallResult, destructorCallResult);
+            fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
       }
 
       virtual TestResult MakeFullTestResult(
          const FullTestName& fullTestName,
-         const CallResult& constructorCallResult,
-         const CallResult& startupCallResult,
-         const CallResult& testBodyCallResult,
-         const CallResult& cleanupCallResult,
-         const CallResult& destructorCallResult) const
+         const TestPhaseResult& constructorTestPhaseResult,
+         const TestPhaseResult& startupTestPhaseResult,
+         const TestPhaseResult& testBodyTestPhaseResult,
+         const TestPhaseResult& cleanupTestPhaseResult,
+         const TestPhaseResult& destructorTestPhaseResult) const
       {
          return TestResult(
             fullTestName,
-            constructorCallResult,
-            startupCallResult,
-            testBodyCallResult,
-            cleanupCallResult,
-            destructorCallResult,
+            constructorTestPhaseResult,
+            startupTestPhaseResult,
+            testBodyTestPhaseResult,
+            cleanupTestPhaseResult,
+            destructorTestPhaseResult,
             TestRunner::GetArgs);
       }
    };
@@ -4816,14 +4816,14 @@ Testing Rigor Options:
    {
       friend class TestTests;
    private:
-      std::unique_ptr<const TryCatchCaller> _tryCatchCaller;
+      std::unique_ptr<const TestPhaseRunner> _testPhaseRunner;
       std::unique_ptr<const TestResultFactory> _testResultFactory;
    protected:
       FullTestName p_fullTestName;
       FileLine p_fileLine;
    public:
       Test(const char* testClassName, const char* testName, unsigned char arity)
-         : _tryCatchCaller(std::make_unique<TryCatchCaller>())
+         : _testPhaseRunner(std::make_unique<TestPhaseRunner>())
          , _testResultFactory(std::make_unique<TestResultFactory>())
          , p_fullTestName(testClassName, testName, arity)
       {
@@ -4892,43 +4892,43 @@ Testing Rigor Options:
    protected:
       TestResult BaseRunTest()
       {
-         const CallResult constructorCallResult = _tryCatchCaller->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
-         if (constructorCallResult.testOutcome != TestOutcome::Success)
+         const TestPhaseResult constructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
+         if (constructorTestPhaseResult.testOutcome != TestOutcome::Success)
          {
-            const TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(p_fullTestName, constructorCallResult);
+            const TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(p_fullTestName, constructorTestPhaseResult);
             return constructorFailTestResult;
          }
-         const CallResult startupCallResult = _tryCatchCaller->RunTestPhase(&Test::CallStartup, this, TestPhase::Startup);
-         if (startupCallResult.testOutcome != TestOutcome::Success)
+         const TestPhaseResult startupTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallStartup, this, TestPhase::Startup);
+         if (startupTestPhaseResult.testOutcome != TestOutcome::Success)
          {
-            const CallResult destructorCallResult = _tryCatchCaller->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-            const TestResult startupFailTestResult = _testResultFactory->MakeStartupFail(p_fullTestName, constructorCallResult, startupCallResult, destructorCallResult);
+            const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+            const TestResult startupFailTestResult = _testResultFactory->MakeStartupFail(p_fullTestName, constructorTestPhaseResult, startupTestPhaseResult, destructorTestPhaseResult);
             return startupFailTestResult;
          }
-         const CallResult testBodyCallResult = _tryCatchCaller->RunTestPhase(&Test::CallTestBody, this, TestPhase::TestBody);
-         const CallResult cleanupCallResult = _tryCatchCaller->RunTestPhase(&Test::CallCleanup, this, TestPhase::Cleanup);
-         const CallResult destructorCallResult = _tryCatchCaller->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+         const TestPhaseResult testBodyTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallTestBody, this, TestPhase::TestBody);
+         const TestPhaseResult cleanupTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallCleanup, this, TestPhase::Cleanup);
+         const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
          const TestResult testResult = _testResultFactory->MakeFullTestResult(
-            p_fullTestName, constructorCallResult, startupCallResult, testBodyCallResult, cleanupCallResult, destructorCallResult);
+            p_fullTestName, constructorTestPhaseResult, startupTestPhaseResult, testBodyTestPhaseResult, cleanupTestPhaseResult, destructorTestPhaseResult);
          return testResult;
       }
    };
 
-   inline CallResult TryCatchCaller::RunTestPhase(void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const
+   inline TestPhaseResult TestPhaseRunner::RunTestPhase(void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const
    {
-      CallResult callResult(testPhase);
+      TestPhaseResult testPhaseResult(testPhase);
       _stopwatch->Start();
       const ZenUnitArgs& args = _call_TestRunner_GetArgs();
       try
       {
          testPhaseFunction(test);
-         callResult.microseconds = _stopwatch->Stop();
+         testPhaseResult.microseconds = _stopwatch->Stop();
       }
       catch (const Anomaly& anomaly)
       {
-         callResult.microseconds = _stopwatch->Stop();
-         callResult.anomalyOrException = std::make_shared<AnomalyOrException>(anomaly);
-         callResult.testOutcome = TestOutcome::Anomaly;
+         testPhaseResult.microseconds = _stopwatch->Stop();
+         testPhaseResult.anomalyOrException = std::make_shared<AnomalyOrException>(anomaly);
+         testPhaseResult.testOutcome = TestOutcome::Anomaly;
          _console->WriteColor("\n================\nAnomaly Detected\n================", Color::Yellow);
          const char* const testPhaseSuffix = _testPhaseTranslator->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
@@ -4942,7 +4942,7 @@ Testing Rigor Options:
       }
       catch (const std::exception& e)
       {
-         PopulateCallResultWithExceptionInformation(e, &callResult);
+         PopulateTestPhaseResultWithExceptionInformation(e, &testPhaseResult);
          _console->WriteColor("\n==================\nUncaught Exception\n==================", Color::Yellow);
          const char* const testPhaseSuffix = _testPhaseTranslator->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
@@ -4962,7 +4962,7 @@ Testing Rigor Options:
             exceptionTypeName, testPhaseSuffix, '\n',
             equalsSigns);
          _console->WriteLineColor(exceptionTypeNameFourLines, Color::Yellow);
-         PopulateCallResultWithExceptionInformation(e, &callResult);
+         PopulateTestPhaseResultWithExceptionInformation(e, &testPhaseResult);
          const std::string testPhaseSuffixAndExceptionWhatLine = String::Concat("what(): \"", e.what(), "\"");
          _console->WriteLine(testPhaseSuffixAndExceptionWhatLine);
       }
@@ -4975,11 +4975,11 @@ Testing Rigor Options:
          const std::string exitLine = String::Concat(
             "Fatal ... exception thrown during test phase: ", testPhaseName, ".\nFail fasting with exit code ", exitCode, ".");
          _console->WriteLineAndExit(exitLine, exitCode);
-         return CallResult();
+         return TestPhaseResult();
       }
       _voidTwoArgMemberFunctionCaller->ConstCall(
-         this, &TryCatchCaller::FailFastIfTestFailedAndFailFastModeTrue, callResult.testOutcome, args);
-      return callResult;
+         this, &TestPhaseRunner::FailFastIfTestFailedAndFailFastModeTrue, testPhaseResult.testOutcome, args);
+      return testPhaseResult;
    }
 
    template<typename TestClassType>
@@ -4987,14 +4987,14 @@ Testing Rigor Options:
    {
       friend class NewableDeletableTestTests;
    private:
-      std::unique_ptr<const TryCatchCaller> _tryCatchCaller;
+      std::unique_ptr<const TestPhaseRunner> _testPhaseRunner;
       std::unique_ptr<const TestResultFactory> _testResultFactory;
       std::unique_ptr<Stopwatch> _stopwatch;
       std::unique_ptr<TestClassType> _firstInstanceOfTestClass;
    public:
       explicit NewableDeletableTest(const char* testClassName)
          : Test(testClassName, "TestClassIsNewableAndDeletable", 0)
-         , _tryCatchCaller(std::make_unique<TryCatchCaller>())
+         , _testPhaseRunner(std::make_unique<TestPhaseRunner>())
          , _testResultFactory(std::make_unique<TestResultFactory>())
          , _stopwatch(std::make_unique<Stopwatch>())
       {
@@ -5008,15 +5008,15 @@ Testing Rigor Options:
       std::vector<TestResult> RunTest() override
       {
          _stopwatch->Start();
-         const CallResult constructorCallResult = _tryCatchCaller->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
-         if (constructorCallResult.testOutcome != TestOutcome::Success)
+         const TestPhaseResult constructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
+         if (constructorTestPhaseResult.testOutcome != TestOutcome::Success)
          {
-            TestResult constructorFail = _testResultFactory->MakeConstructorFail(p_fullTestName, constructorCallResult);
+            TestResult constructorFail = _testResultFactory->MakeConstructorFail(p_fullTestName, constructorTestPhaseResult);
             constructorFail.microseconds = _stopwatch->Stop();
             return { constructorFail };
          }
-         const CallResult destructorCallResult = _tryCatchCaller->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-         TestResult testResult = _testResultFactory->MakeCtorDtorSuccess(p_fullTestName, constructorCallResult, destructorCallResult);
+         const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+         TestResult testResult = _testResultFactory->MakeCtorDtorSuccess(p_fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
          testResult.microseconds = _stopwatch->Stop();
          return { testResult };
       }

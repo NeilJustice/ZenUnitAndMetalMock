@@ -63,12 +63,12 @@ namespace ZenUnit
    #endif
 
    #if defined __linux__ || defined __APPLE__
-   //static_assert(sizeof(CallResult) == 24);
+   //static_assert(sizeof(TestPhaseResult) == 24);
    #elif defined(_WIN64)
    #if defined _DEBUG
-   static_assert(sizeof(CallResult) == 24);
+   static_assert(sizeof(TestPhaseResult) == 24);
    #elif NDEBUG
-   static_assert(sizeof(CallResult) == 24);
+   static_assert(sizeof(TestPhaseResult) == 24);
    #endif
    #endif
 

@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Results/Mock/TestResultFactoryMock.h"
 #include "ZenUnitLibraryTests/Results/Mock/TestResultMock.h"
-#include "ZenUnitLibraryTests/TestRunners/Mock/TryCatchCallerMock.h"
+#include "ZenUnitLibraryTests/TestRunners/Mock/TestPhaseRunnerMock.h"
 #include "ZenUnitLibraryTests/Tests/Mock/TestMock.h"
-#include "ZenUnitTestUtils/Equalizers/CallResultEqualizer.h"
+#include "ZenUnitTestUtils/Equalizers/TestPhaseResultEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/FileLineEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/FullTestNameEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/TestResultEqualizer.h"
@@ -26,14 +26,14 @@ namespace ZenUnit
    EVIDENCE
 
    unique_ptr<Test> _test;
-   TryCatchCallerMock* _tryCatchCallerMock = nullptr;
+   TestPhaseRunnerMock* _tryCatchCallerMock = nullptr;
    TestResultFactoryMock* _testResultFactoryMock = nullptr;
    TestMock _testMock;
 
    STARTUP
    {
       _test = make_unique<Test>("", "", static_cast<unsigned char>(0));
-      _test->_tryCatchCaller.reset(_tryCatchCallerMock = new TryCatchCallerMock);
+      _test->_testPhaseRunner.reset(_tryCatchCallerMock = new TestPhaseRunnerMock);
       _test->_testResultFactory.reset(_testResultFactoryMock = new TestResultFactoryMock);
    }
 
@@ -43,7 +43,7 @@ namespace ZenUnit
       const string testName = Random<string>();
       //
       Test test(testClassName.c_str(), testName.c_str(), 0);
-      POINTER_WAS_NEWED(test._tryCatchCaller);
+      POINTER_WAS_NEWED(test._testPhaseRunner);
       POINTER_WAS_NEWED(test._testResultFactory);
       ARE_EQUAL(FileLine(), test.p_fileLine);
 
@@ -70,18 +70,18 @@ namespace ZenUnit
       _test->WritePostTestCompletionMessage(nullptr, testResultMock);
    }
 
-   static CallResult CallResultWithOutcome(TestOutcome testOutcome)
+   static TestPhaseResult TestPhaseResultWithOutcome(TestOutcome testOutcome)
    {
-      CallResult callResult;
-      callResult.testOutcome = testOutcome;
-      return callResult;
+      TestPhaseResult testPhaseResult;
+      testPhaseResult.testOutcome = testOutcome;
+      return testPhaseResult;
    }
 
    TEST1X1(BaseRunTest_ConstructorFails_DoesNotCallSubsequentTestPhases_ReturnsTestResultConstructorFail,
       TestOutcome constructorOutcome, TestOutcome::Anomaly, TestOutcome::Exception)
    {
-      const CallResult constructorFailCallResult = CallResultWithOutcome(constructorOutcome);
-      _tryCatchCallerMock->RunTestPhaseMock.Return(constructorFailCallResult);
+      const TestPhaseResult constructorFailTestPhaseResult = TestPhaseResultWithOutcome(constructorOutcome);
+      _tryCatchCallerMock->RunTestPhaseMock.Return(constructorFailTestPhaseResult);
 
       const TestResult constructorFailTestResult = TestResult::TestingNonDefault();
       _testResultFactoryMock->MakeConstructorFailMock.Return(constructorFailTestResult);
@@ -89,7 +89,7 @@ namespace ZenUnit
       const TestResult testResult = _test->BaseRunTest();
       //
       ZEN(_tryCatchCallerMock->RunTestPhaseMock.CalledOnceWith(&Test::CallNewTestClass, _test.get(), TestPhase::Constructor));
-      ZEN(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(_test->p_fullTestName, constructorFailCallResult));
+      ZEN(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(_test->p_fullTestName, constructorFailTestPhaseResult));
       ARE_EQUAL(constructorFailTestResult, testResult);
    }
 
@@ -98,10 +98,10 @@ namespace ZenUnit
       TestOutcome::Anomaly,
       TestOutcome::Exception)
    {
-      const CallResult constructorSuccessCallResult = CallResultWithOutcome(TestOutcome::Success);
-      const CallResult startupFailCallResult = CallResultWithOutcome(startupOutcome);
-      const CallResult destructorCallResult = CallResultWithOutcome(TestOutcome::Success);
-      _tryCatchCallerMock->RunTestPhaseMock.ReturnValues(constructorSuccessCallResult, startupFailCallResult, destructorCallResult);
+      const TestPhaseResult constructorSuccessTestPhaseResult = TestPhaseResultWithOutcome(TestOutcome::Success);
+      const TestPhaseResult startupFailTestPhaseResult = TestPhaseResultWithOutcome(startupOutcome);
+      const TestPhaseResult destructorTestPhaseResult = TestPhaseResultWithOutcome(TestOutcome::Success);
+      _tryCatchCallerMock->RunTestPhaseMock.ReturnValues(constructorSuccessTestPhaseResult, startupFailTestPhaseResult, destructorTestPhaseResult);
 
       const TestResult startupFailTestResult = TestResult::TestingNonDefault();
       _testResultFactoryMock->MakeStartupFailMock.Return(startupFailTestResult);
@@ -118,14 +118,14 @@ namespace ZenUnit
          { &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor }
       }));
       ZEN(_testResultFactoryMock->MakeStartupFailMock.CalledOnceWith(
-         _test->p_fullTestName, constructorSuccessCallResult, startupFailCallResult, destructorCallResult));
+         _test->p_fullTestName, constructorSuccessTestPhaseResult, startupFailTestPhaseResult, destructorTestPhaseResult));
       ARE_EQUAL(startupFailTestResult, testResult);
    }
 
    TEST(BaseRunTest_AllTestPhasesSucceed_ReturnsExpectedTestResult)
    {
-      const CallResult successCallResult = CallResultWithOutcome(TestOutcome::Success);
-      _tryCatchCallerMock->RunTestPhaseMock.Return(successCallResult);
+      const TestPhaseResult successTestPhaseResult = TestPhaseResultWithOutcome(TestOutcome::Success);
+      _tryCatchCallerMock->RunTestPhaseMock.Return(successTestPhaseResult);
 
       const TestResult sixArgTestResult = TestResult::TestingNonDefault();
       _testResultFactoryMock->MakeFullTestResultMock.Return(sixArgTestResult);
@@ -145,11 +145,11 @@ namespace ZenUnit
       }));
       ZEN(_testResultFactoryMock->MakeFullTestResultMock.CalledOnceWith(
          _test->p_fullTestName,
-         CallResultWithOutcome(TestOutcome::Success),
-         CallResultWithOutcome(TestOutcome::Success),
-         CallResultWithOutcome(TestOutcome::Success),
-         CallResultWithOutcome(TestOutcome::Success),
-         CallResultWithOutcome(TestOutcome::Success)));
+         TestPhaseResultWithOutcome(TestOutcome::Success),
+         TestPhaseResultWithOutcome(TestOutcome::Success),
+         TestPhaseResultWithOutcome(TestOutcome::Success),
+         TestPhaseResultWithOutcome(TestOutcome::Success),
+         TestPhaseResultWithOutcome(TestOutcome::Success)));
       ARE_EQUAL(testResult, sixArgTestResult);
    }
 

@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Results/Mock/TestResultFactoryMock.h"
-#include "ZenUnitLibraryTests/TestRunners/Mock/TryCatchCallerMock.h"
+#include "ZenUnitLibraryTests/TestRunners/Mock/TestPhaseRunnerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Utils/Time/Mock/StopwatchMock.h"
-#include "ZenUnitTestUtils/Equalizers/CallResultEqualizer.h"
+#include "ZenUnitTestUtils/Equalizers/TestPhaseResultEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/FullTestNameEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/TestResultEqualizer.h"
 
@@ -18,7 +18,7 @@ namespace ZenUnit
 
    class TestingTestClass {};
    unique_ptr<NewableDeletableTest<TestingTestClass>> _newableDeletableTest;
-   TryCatchCallerMock* _tryCatchCallerMock = nullptr;
+   TestPhaseRunnerMock* _tryCatchCallerMock = nullptr;
    TestResultFactoryMock* _testResultFactoryMock = nullptr;
    StopwatchMock* _stopwatchMock = nullptr;
    const string TestClassName = Random<string>();
@@ -26,7 +26,7 @@ namespace ZenUnit
    STARTUP
    {
       _newableDeletableTest = make_unique<NewableDeletableTest<TestingTestClass>>(TestClassName.c_str());
-      _newableDeletableTest->_tryCatchCaller.reset(_tryCatchCallerMock = new TryCatchCallerMock);
+      _newableDeletableTest->_testPhaseRunner.reset(_tryCatchCallerMock = new TestPhaseRunnerMock);
       _newableDeletableTest->_testResultFactory.reset(_testResultFactoryMock = new TestResultFactoryMock);
       _newableDeletableTest->_stopwatch.reset(_stopwatchMock = new StopwatchMock);
    }
@@ -38,7 +38,7 @@ namespace ZenUnit
       ARE_EQUAL("TESTS(" + TestClassName + ")\nTEST(TestClassIsNewableAndDeletable)", newableDeletableTest.FullTestNameValue());
       ARE_EQUAL("(0)", newableDeletableTest.FileLineString());
       POINTER_WAS_NEWED(newableDeletableTest._testResultFactory);
-      POINTER_WAS_NEWED(newableDeletableTest._tryCatchCaller);
+      POINTER_WAS_NEWED(newableDeletableTest._testPhaseRunner);
       POINTER_WAS_NEWED(newableDeletableTest._stopwatch);
       IS_NULL(newableDeletableTest._firstInstanceOfTestClass);
    }
@@ -55,9 +55,9 @@ namespace ZenUnit
    {
       _stopwatchMock->StartMock.Expect();
 
-      CallResult failedConstructorCallResult;
-      failedConstructorCallResult.testOutcome = nonSuccessOutcome;
-      _tryCatchCallerMock->RunTestPhaseMock.Return(failedConstructorCallResult);
+      TestPhaseResult failedConstructorTestPhaseResult;
+      failedConstructorTestPhaseResult.testOutcome = nonSuccessOutcome;
+      _tryCatchCallerMock->RunTestPhaseMock.Return(failedConstructorTestPhaseResult);
 
       const unsigned microseconds = _stopwatchMock->StopMock.ReturnRandom();
 
@@ -71,7 +71,7 @@ namespace ZenUnit
       ZEN(_tryCatchCallerMock->RunTestPhaseMock.CalledOnceWith(
          &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor));
       ZEN(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(
-         _newableDeletableTest->p_fullTestName, failedConstructorCallResult));
+         _newableDeletableTest->p_fullTestName, failedConstructorTestPhaseResult));
       const vector<TestResult> expectedTestResults{ constructorFailTestResult };
       ZEN(_stopwatchMock->StopMock.CalledOnce());
       VECTORS_EQUAL(expectedTestResults, testResults);
@@ -81,11 +81,11 @@ namespace ZenUnit
    {
       _stopwatchMock->StartMock.Expect();
 
-      CallResult successConstructorCallResult;
-      successConstructorCallResult.testOutcome = TestOutcome::Success;
+      TestPhaseResult successConstructorTestPhaseResult;
+      successConstructorTestPhaseResult.testOutcome = TestOutcome::Success;
 
-      CallResult destructorCallResult;
-      _tryCatchCallerMock->RunTestPhaseMock.ReturnValues(successConstructorCallResult, destructorCallResult);
+      TestPhaseResult destructorTestPhaseResult;
+      _tryCatchCallerMock->RunTestPhaseMock.ReturnValues(successConstructorTestPhaseResult, destructorTestPhaseResult);
 
       const unsigned microseconds = _stopwatchMock->StopMock.ReturnRandom();
 
@@ -102,7 +102,7 @@ namespace ZenUnit
          { &Test::CallDeleteTestClass, _newableDeletableTest.get(), TestPhase::Destructor }
       }));
       ZEN(_testResultFactoryMock->MakeCtorDtorSuccessMock.CalledOnceWith(
-         _newableDeletableTest->p_fullTestName, successConstructorCallResult, destructorCallResult));
+         _newableDeletableTest->p_fullTestName, successConstructorTestPhaseResult, destructorTestPhaseResult));
       ZEN(_stopwatchMock->StopMock.CalledOnce());
       const vector<TestResult> expectedTestResults{ sixArgCtorTestResult };
       VECTORS_EQUAL(expectedTestResults, testResults);

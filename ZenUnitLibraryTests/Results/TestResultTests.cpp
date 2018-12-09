@@ -22,9 +22,9 @@ namespace ZenUnit
    EVIDENCE
 
    TestResult _testResult;
-   CallResult ConstructorCallResult;
-   CallResult StartupCallResult;
-   CallResult DestructorCallResult;
+   TestPhaseResult ConstructorTestPhaseResult;
+   TestPhaseResult StartupTestPhaseResult;
+   TestPhaseResult DestructorTestPhaseResult;
    ConsoleMock _consoleMock;
    TestFailureNumbererMock _testFailureNumbererMock;
    const FullTestName FullTestNameValue = FullTestName("ClassName", "TestClassName", ZenUnit::Random<unsigned char>());
@@ -40,12 +40,12 @@ namespace ZenUnit
 
    STARTUP
    {
-      ConstructorCallResult = CallResult(TestPhase::Constructor);
-      ConstructorCallResult.microseconds = 1000;
-      StartupCallResult = CallResult(TestPhase::Startup);
-      StartupCallResult.microseconds = 2000;
-      DestructorCallResult = CallResult(TestPhase::Destructor);
-      DestructorCallResult.microseconds = 3000;
+      ConstructorTestPhaseResult = TestPhaseResult(TestPhase::Constructor);
+      ConstructorTestPhaseResult.microseconds = 1000;
+      StartupTestPhaseResult = TestPhaseResult(TestPhase::Startup);
+      StartupTestPhaseResult.microseconds = 2000;
+      DestructorTestPhaseResult = TestPhaseResult(TestPhase::Destructor);
+      DestructorTestPhaseResult.microseconds = 3000;
       _testResult.fullTestName = FullTestNameValue;
       _testResult._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString =
          BIND_1ARG_ZENMOCK_OBJECT(MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject);
@@ -58,12 +58,12 @@ namespace ZenUnit
          defaultTestResult._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString);
       TestResult expectedDefaultTestResult;
       expectedDefaultTestResult.fullTestName = FullTestName();
-      expectedDefaultTestResult.constructorCallResult = CallResult();
-      expectedDefaultTestResult.startupCallResult = CallResult();
-      expectedDefaultTestResult.testBodyCallResult = CallResult();
-      expectedDefaultTestResult.cleanupCallResult = CallResult();
-      expectedDefaultTestResult.destructorCallResult = CallResult();
-      expectedDefaultTestResult.responsibleCallResultField = nullptr;
+      expectedDefaultTestResult.constructorTestPhaseResult = TestPhaseResult();
+      expectedDefaultTestResult.startupTestPhaseResult = TestPhaseResult();
+      expectedDefaultTestResult.testBodyTestPhaseResult = TestPhaseResult();
+      expectedDefaultTestResult.cleanupTestPhaseResult = TestPhaseResult();
+      expectedDefaultTestResult.destructorTestPhaseResult = TestPhaseResult();
+      expectedDefaultTestResult.responsibleTestPhaseResultField = nullptr;
       expectedDefaultTestResult.testOutcome = TestOutcome::Unset;
       expectedDefaultTestResult.testCaseNumber = numeric_limits<size_t>::max();
       expectedDefaultTestResult.microseconds = 0;
@@ -76,7 +76,7 @@ namespace ZenUnit
       unsigned maxtestmilliseconds,
       int relativeMicroseconds,
       TestOutcome expectedOverallOutcome,
-      CallResult TestResult::* expectedResponsibleCallResultField,
+      TestPhaseResult TestResult::* expectedResponsibleTestPhaseResultField,
       TestOutcome::Success, TestOutcome::Success, 0, 0, TestOutcome::Success, nullptr,
       TestOutcome::Success, TestOutcome::Success, 0, 1, TestOutcome::Success, nullptr,
       TestOutcome::Success, TestOutcome::Success, MaxTestMilliseconds, -1, TestOutcome::Success, nullptr,
@@ -85,23 +85,23 @@ namespace ZenUnit
       TestOutcome::Success, TestOutcome::Success, MaxTestMilliseconds, 1, TestOutcome::SuccessButPastDeadline, nullptr,
       TestOutcome::Success, TestOutcome::Success, MaxTestMilliseconds, 2, TestOutcome::SuccessButPastDeadline, nullptr,
 
-      TestOutcome::Exception, TestOutcome::Success, MaxTestMilliseconds, 1, TestOutcome::Exception, &TestResult::testBodyCallResult,
-      TestOutcome::Exception, TestOutcome::Exception, MaxTestMilliseconds, 1, TestOutcome::Exception, &TestResult::testBodyCallResult,
-      TestOutcome::Exception, TestOutcome::Anomaly, MaxTestMilliseconds, 1, TestOutcome::Exception, &TestResult::testBodyCallResult,
+      TestOutcome::Exception, TestOutcome::Success, MaxTestMilliseconds, 1, TestOutcome::Exception, &TestResult::testBodyTestPhaseResult,
+      TestOutcome::Exception, TestOutcome::Exception, MaxTestMilliseconds, 1, TestOutcome::Exception, &TestResult::testBodyTestPhaseResult,
+      TestOutcome::Exception, TestOutcome::Anomaly, MaxTestMilliseconds, 1, TestOutcome::Exception, &TestResult::testBodyTestPhaseResult,
 
-      TestOutcome::Success, TestOutcome::Exception, MaxTestMilliseconds, 1, TestOutcome::Exception, &TestResult::cleanupCallResult,
-      TestOutcome::Anomaly, TestOutcome::Exception, MaxTestMilliseconds, 1, TestOutcome::Exception, &TestResult::cleanupCallResult,
+      TestOutcome::Success, TestOutcome::Exception, MaxTestMilliseconds, 1, TestOutcome::Exception, &TestResult::cleanupTestPhaseResult,
+      TestOutcome::Anomaly, TestOutcome::Exception, MaxTestMilliseconds, 1, TestOutcome::Exception, &TestResult::cleanupTestPhaseResult,
 
-      TestOutcome::Anomaly, TestOutcome::Success, MaxTestMilliseconds, 1, TestOutcome::Anomaly, &TestResult::testBodyCallResult,
-      TestOutcome::Success, TestOutcome::Anomaly, MaxTestMilliseconds, 1, TestOutcome::Anomaly, &TestResult::cleanupCallResult,
-      TestOutcome::Anomaly, TestOutcome::Anomaly, MaxTestMilliseconds, 1, TestOutcome::Anomaly, &TestResult::testBodyCallResult)
+      TestOutcome::Anomaly, TestOutcome::Success, MaxTestMilliseconds, 1, TestOutcome::Anomaly, &TestResult::testBodyTestPhaseResult,
+      TestOutcome::Success, TestOutcome::Anomaly, MaxTestMilliseconds, 1, TestOutcome::Anomaly, &TestResult::cleanupTestPhaseResult,
+      TestOutcome::Anomaly, TestOutcome::Anomaly, MaxTestMilliseconds, 1, TestOutcome::Anomaly, &TestResult::testBodyTestPhaseResult)
    {
-      CallResult testBodyCallResult(TestPhase::TestBody);
-      testBodyCallResult.testOutcome = testBodyOutcome;
-      testBodyCallResult.microseconds = 4000;
-      CallResult cleanupCallResult(TestPhase::Cleanup);
-      cleanupCallResult.testOutcome = cleanupOutcome;
-      cleanupCallResult.microseconds = 5000 + relativeMicroseconds;
+      TestPhaseResult testBodyTestPhaseResult(TestPhase::TestBody);
+      testBodyTestPhaseResult.testOutcome = testBodyOutcome;
+      testBodyTestPhaseResult.microseconds = 4000;
+      TestPhaseResult cleanupTestPhaseResult(TestPhase::Cleanup);
+      cleanupTestPhaseResult.testOutcome = cleanupOutcome;
+      cleanupTestPhaseResult.microseconds = 5000 + relativeMicroseconds;
 
       ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitArgs, GetArgs)
 
@@ -116,11 +116,11 @@ namespace ZenUnit
       //
       const TestResult testResult(
          FullTestNameValue,
-         ConstructorCallResult,
-         StartupCallResult,
-         testBodyCallResult,
-         cleanupCallResult,
-         DestructorCallResult,
+         ConstructorTestPhaseResult,
+         StartupTestPhaseResult,
+         testBodyTestPhaseResult,
+         cleanupTestPhaseResult,
+         DestructorTestPhaseResult,
          getArgsMockFunction);
       //
       if (expectedOverallOutcome == TestOutcome::Success ||
@@ -132,12 +132,12 @@ namespace ZenUnit
          testResult._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString);
       TestResult expectedTestResult;
       expectedTestResult.fullTestName = FullTestNameValue;
-      expectedTestResult.constructorCallResult = ConstructorCallResult;
-      expectedTestResult.startupCallResult = StartupCallResult;
-      expectedTestResult.testBodyCallResult = testBodyCallResult;
-      expectedTestResult.cleanupCallResult = cleanupCallResult;
-      expectedTestResult.destructorCallResult = DestructorCallResult;
-      expectedTestResult.responsibleCallResultField = expectedResponsibleCallResultField;
+      expectedTestResult.constructorTestPhaseResult = ConstructorTestPhaseResult;
+      expectedTestResult.startupTestPhaseResult = StartupTestPhaseResult;
+      expectedTestResult.testBodyTestPhaseResult = testBodyTestPhaseResult;
+      expectedTestResult.cleanupTestPhaseResult = cleanupTestPhaseResult;
+      expectedTestResult.destructorTestPhaseResult = DestructorTestPhaseResult;
+      expectedTestResult.responsibleTestPhaseResultField = expectedResponsibleTestPhaseResultField;
       expectedTestResult.testOutcome = expectedOverallOutcome;
       expectedTestResult.testCaseNumber = numeric_limits<size_t>::max();
       expectedTestResult.microseconds = MaxTestMilliseconds * 1000 + relativeMicroseconds;
@@ -149,17 +149,17 @@ namespace ZenUnit
       TestOutcome::Anomaly, TestOutcome::Anomaly,
       TestOutcome::Exception, TestOutcome::Exception)
    {
-      ConstructorCallResult.testOutcome = constructorOutcome;
+      ConstructorTestPhaseResult.testOutcome = constructorOutcome;
       //
       const TestResult constructorFailTestResult =
-         TestResult::ConstructorFail(FullTestNameValue, ConstructorCallResult);
+         TestResult::ConstructorFail(FullTestNameValue, ConstructorTestPhaseResult);
       //
       TestResult expectedTestResult;
       expectedTestResult.fullTestName = FullTestNameValue;
-      expectedTestResult.constructorCallResult = ConstructorCallResult;
-      expectedTestResult.responsibleCallResultField = &TestResult::constructorCallResult;
+      expectedTestResult.constructorTestPhaseResult = ConstructorTestPhaseResult;
+      expectedTestResult.responsibleTestPhaseResultField = &TestResult::constructorTestPhaseResult;
       expectedTestResult.testOutcome = expectedTestResultOutcome;
-      expectedTestResult.microseconds = ConstructorCallResult.microseconds;
+      expectedTestResult.microseconds = ConstructorTestPhaseResult.microseconds;
       ARE_EQUAL(expectedTestResult, constructorFailTestResult);
    }
 
@@ -168,40 +168,40 @@ namespace ZenUnit
       TestOutcome::Anomaly, TestOutcome::Anomaly,
       TestOutcome::Exception, TestOutcome::Exception)
    {
-      StartupCallResult.testOutcome = startupOutcome;
+      StartupTestPhaseResult.testOutcome = startupOutcome;
       //
       const TestResult startupFailTestResult = TestResult::StartupFail(
-         FullTestNameValue, ConstructorCallResult, StartupCallResult, DestructorCallResult);
+         FullTestNameValue, ConstructorTestPhaseResult, StartupTestPhaseResult, DestructorTestPhaseResult);
       //
       TestResult expectedTestResult;
       expectedTestResult.fullTestName = FullTestNameValue;
-      expectedTestResult.constructorCallResult = ConstructorCallResult;
-      expectedTestResult.startupCallResult = StartupCallResult;
-      expectedTestResult.destructorCallResult = DestructorCallResult;
-      expectedTestResult.responsibleCallResultField = &TestResult::startupCallResult;
+      expectedTestResult.constructorTestPhaseResult = ConstructorTestPhaseResult;
+      expectedTestResult.startupTestPhaseResult = StartupTestPhaseResult;
+      expectedTestResult.destructorTestPhaseResult = DestructorTestPhaseResult;
+      expectedTestResult.responsibleTestPhaseResultField = &TestResult::startupTestPhaseResult;
       expectedTestResult.testOutcome = expectedTestResultOutcome;
       expectedTestResult.microseconds =
-         ConstructorCallResult.microseconds + StartupCallResult.microseconds + DestructorCallResult.microseconds;
+         ConstructorTestPhaseResult.microseconds + StartupTestPhaseResult.microseconds + DestructorTestPhaseResult.microseconds;
       ARE_EQUAL(expectedTestResult, startupFailTestResult);
    }
 
    TEST(CtorDtorSuccess_ReturnsExpectedTestResult)
    {
-      CallResult constructorCallResult(TestPhase::Constructor);
-      constructorCallResult.microseconds = 10;
-      CallResult destructorCallResult(TestPhase::Destructor);
-      destructorCallResult.microseconds = 20;
+      TestPhaseResult constructorTestPhaseResult(TestPhase::Constructor);
+      constructorTestPhaseResult.microseconds = 10;
+      TestPhaseResult destructorTestPhaseResult(TestPhase::Destructor);
+      destructorTestPhaseResult.microseconds = 20;
       //
       const TestResult testResult = TestResult::CtorDtorSuccess(
-         FullTestNameValue, constructorCallResult, destructorCallResult);
+         FullTestNameValue, constructorTestPhaseResult, destructorTestPhaseResult);
       //
       TestResult expectedTestResult;
       expectedTestResult.fullTestName = FullTestNameValue;
       expectedTestResult.testOutcome = TestOutcome::Success;
-      expectedTestResult.constructorCallResult = constructorCallResult;
-      expectedTestResult.destructorCallResult = destructorCallResult;
-      expectedTestResult.microseconds = constructorCallResult.microseconds + destructorCallResult.microseconds;
-      expectedTestResult.responsibleCallResultField = nullptr;
+      expectedTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
+      expectedTestResult.destructorTestPhaseResult = destructorTestPhaseResult;
+      expectedTestResult.microseconds = constructorTestPhaseResult.microseconds + destructorTestPhaseResult.microseconds;
+      expectedTestResult.responsibleTestPhaseResultField = nullptr;
       ARE_EQUAL(expectedTestResult, testResult);
    }
 
@@ -241,13 +241,13 @@ namespace ZenUnit
    }
 
    TEST3X3(PrintIfFailure_Anomaly_PrintsExpected,
-      CallResult TestResult::* expectedResponsibleCallResultField,
+      TestPhaseResult TestResult::* expectedResponsibleTestPhaseResultField,
       TestPhase testPhase,
       const string& expectedTestPhaseSuffix,
-      &TestResult::constructorCallResult, TestPhase::Constructor, " in test class constructor",
-      &TestResult::startupCallResult, TestPhase::Startup, " in STARTUP",
-      &TestResult::testBodyCallResult, TestPhase::TestBody, "",
-      &TestResult::cleanupCallResult, TestPhase::Cleanup, " in CLEANUP")
+      &TestResult::constructorTestPhaseResult, TestPhase::Constructor, " in test class constructor",
+      &TestResult::startupTestPhaseResult, TestPhase::Startup, " in STARTUP",
+      &TestResult::testBodyTestPhaseResult, TestPhase::TestBody, "",
+      &TestResult::cleanupTestPhaseResult, TestPhase::Cleanup, " in CLEANUP")
    {
       _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName = FullTestName("TestClass", "Test", 0);
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::Anomaly;
@@ -256,11 +256,11 @@ namespace ZenUnit
       Anomaly anomaly;
       anomaly.why = anomalyWhy;
       (_testResult_WriteTestCaseNumberIfAnyMocked.*
-         expectedResponsibleCallResultField).anomalyOrException = make_shared<AnomalyOrException>(anomaly);
+         expectedResponsibleTestPhaseResultField).anomalyOrException = make_shared<AnomalyOrException>(anomaly);
       (_testResult_WriteTestCaseNumberIfAnyMocked.*
-         expectedResponsibleCallResultField).testPhase = testPhase;
+         expectedResponsibleTestPhaseResultField).testPhase = testPhase;
 
-      _testResult_WriteTestCaseNumberIfAnyMocked.responsibleCallResultField = expectedResponsibleCallResultField;
+      _testResult_WriteTestCaseNumberIfAnyMocked.responsibleTestPhaseResultField = expectedResponsibleTestPhaseResultField;
 
       const string testFailureNumber = _testFailureNumbererMock.NextMock.ReturnRandom();
 
@@ -288,13 +288,13 @@ namespace ZenUnit
    }
 
    TEST3X3(PrintIfFailure_Exception_PrintsExpected,
-      CallResult TestResult::* expectedResponsibleCallResultField,
+      TestPhaseResult TestResult::* expectedResponsibleTestPhaseResultField,
       TestPhase testPhase,
       const string& expectedTestPhaseSuffix,
-      &TestResult::constructorCallResult, TestPhase::Constructor, " in test class constructor",
-      &TestResult::startupCallResult, TestPhase::Startup, " in STARTUP",
-      &TestResult::testBodyCallResult, TestPhase::TestBody, "",
-      &TestResult::cleanupCallResult, TestPhase::Cleanup, " in CLEANUP")
+      &TestResult::constructorTestPhaseResult, TestPhase::Constructor, " in test class constructor",
+      &TestResult::startupTestPhaseResult, TestPhase::Startup, " in STARTUP",
+      &TestResult::testBodyTestPhaseResult, TestPhase::TestBody, "",
+      &TestResult::cleanupTestPhaseResult, TestPhase::Cleanup, " in CLEANUP")
    {
       _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName = FullTestName("TestClass", "Test", 0);
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::Exception;
@@ -303,11 +303,11 @@ namespace ZenUnit
       const string exceptionWhatString = Random<string>();
       const char* const exceptionWhat = exceptionWhatString.c_str();
       (_testResult_WriteTestCaseNumberIfAnyMocked.*
-         expectedResponsibleCallResultField).anomalyOrException = make_shared<AnomalyOrException>(&exceptionTypeName, exceptionWhat);
+         expectedResponsibleTestPhaseResultField).anomalyOrException = make_shared<AnomalyOrException>(&exceptionTypeName, exceptionWhat);
       (_testResult_WriteTestCaseNumberIfAnyMocked.*
-         expectedResponsibleCallResultField).testPhase = testPhase;
+         expectedResponsibleTestPhaseResultField).testPhase = testPhase;
       _testResult_WriteTestCaseNumberIfAnyMocked.
-         responsibleCallResultField = expectedResponsibleCallResultField;
+         responsibleTestPhaseResultField = expectedResponsibleTestPhaseResultField;
 
       const string testFailureNumber = _testFailureNumbererMock.NextMock.ReturnRandom();
 
@@ -403,27 +403,27 @@ namespace ZenUnit
       SETUP_EQUALIZER_THROWS_TEST(TestResult);
       EQUALIZER_THROWS(TestResult, fullTestName, FullTestName("ClassName", "TestName", 0));
 
-      CallResult nonDefaultConstructorCallResult;
-      nonDefaultConstructorCallResult.testPhase = TestPhase::Constructor;
-      EQUALIZER_THROWS(TestResult, constructorCallResult, nonDefaultConstructorCallResult);
+      TestPhaseResult nonDefaultConstructorTestPhaseResult;
+      nonDefaultConstructorTestPhaseResult.testPhase = TestPhase::Constructor;
+      EQUALIZER_THROWS(TestResult, constructorTestPhaseResult, nonDefaultConstructorTestPhaseResult);
 
-      CallResult nonDefaultStartupCallResult;
-      nonDefaultStartupCallResult.testPhase = TestPhase::Startup;
-      EQUALIZER_THROWS(TestResult, startupCallResult, nonDefaultStartupCallResult);
+      TestPhaseResult nonDefaultStartupTestPhaseResult;
+      nonDefaultStartupTestPhaseResult.testPhase = TestPhase::Startup;
+      EQUALIZER_THROWS(TestResult, startupTestPhaseResult, nonDefaultStartupTestPhaseResult);
 
-      CallResult nonDefaultTestBodyCallResult;
-      nonDefaultTestBodyCallResult.testPhase = TestPhase::TestBody;
-      EQUALIZER_THROWS(TestResult, testBodyCallResult, nonDefaultTestBodyCallResult);
+      TestPhaseResult nonDefaultTestBodyTestPhaseResult;
+      nonDefaultTestBodyTestPhaseResult.testPhase = TestPhase::TestBody;
+      EQUALIZER_THROWS(TestResult, testBodyTestPhaseResult, nonDefaultTestBodyTestPhaseResult);
 
-      CallResult nonDefaultCleanupCallResult;
-      nonDefaultCleanupCallResult.testPhase = TestPhase::Cleanup;
-      EQUALIZER_THROWS(TestResult, cleanupCallResult, nonDefaultCleanupCallResult);
+      TestPhaseResult nonDefaultCleanupTestPhaseResult;
+      nonDefaultCleanupTestPhaseResult.testPhase = TestPhase::Cleanup;
+      EQUALIZER_THROWS(TestResult, cleanupTestPhaseResult, nonDefaultCleanupTestPhaseResult);
 
-      CallResult nonDefaultDestructorCallResult;
-      nonDefaultDestructorCallResult.testPhase = TestPhase::Destructor;
-      EQUALIZER_THROWS(TestResult, destructorCallResult, nonDefaultDestructorCallResult);
+      TestPhaseResult nonDefaultDestructorTestPhaseResult;
+      nonDefaultDestructorTestPhaseResult.testPhase = TestPhase::Destructor;
+      EQUALIZER_THROWS(TestResult, destructorTestPhaseResult, nonDefaultDestructorTestPhaseResult);
 
-      EQUALIZER_THROWS(TestResult, responsibleCallResultField, &TestResult::constructorCallResult);
+      EQUALIZER_THROWS(TestResult, responsibleTestPhaseResultField, &TestResult::constructorTestPhaseResult);
       EQUALIZER_THROWS(TestResult, testOutcome, TestOutcome::Anomaly);
       EQUALIZER_THROWS(TestResult, testCaseNumber, short(10));
       EQUALIZER_THROWS(TestResult, microseconds, 20u);

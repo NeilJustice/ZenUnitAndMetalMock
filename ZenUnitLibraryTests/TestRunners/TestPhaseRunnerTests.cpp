@@ -4,27 +4,27 @@
 #include "ZenUnitLibraryTests/Tests/Mock/TestMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Utils/Function/Mock/VoidTwoArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Utils/Time/Mock/StopwatchMock.h"
-#include "ZenUnitTestUtils/Equalizers/CallResultEqualizer.h"
+#include "ZenUnitTestUtils/Equalizers/TestPhaseResultEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/ZenUnitArgsEqualizer.h"
 
 namespace ZenUnit
 {
-   TESTS(TryCatchCallerTests)
+   TESTS(TestPhaseRunnerTests)
    AFACT(Constructor_NewsComponents_SetsGetArgsFunction)
-   AFACT(RunTestPhase_FunctionDoesNotThrow_ReturnsNoExceptionThrownCallResult)
+   AFACT(RunTestPhase_FunctionDoesNotThrow_ReturnsNoExceptionThrownTestPhaseResult)
    AFACT(RunTestPhase_FunctionThrowsAnomaly_TestPhaseIsTestBody_ReturnsAnomalyResult)
    FACTS(RunTestPhase_FunctionThrowsAnomaly_TestPhaseIsNotTestBody_ReturnsAnomalyResult)
    AFACT(RunTestPhase_FunctionThrowsZenMockException_ReturnsExceptionResult)
    FACTS(RunTestPhase_FunctionThrowsStdException_ReturnsExceptionResult)
    FACTS(RunTestPhase_FunctionThrowsAnIntToTriggerDotDotDotHandler_PrintsFailureDetails_Exits1)
-   FACTS(RunTestPhase_CallResultIsNotSuccessAndFailFastIsTrue_WritesFailFastMessageAndExits1);
+   FACTS(RunTestPhase_TestPhaseResultIsNotSuccessAndFailFastIsTrue_WritesFailFastMessageAndExits1);
    EVIDENCE
 
-   TryCatchCaller _tryCatchCaller;
+   TestPhaseRunner _testPhaseRunner;
    ConsoleMock* _consoleMock = nullptr;
    TestPhaseTranslatorMock* _testPhaseTranslatorMock = nullptr;
    StopwatchMock* _stopwatchMock = nullptr;
-   VoidTwoArgMemberFunctionCallerMock<TryCatchCaller, TestOutcome, const ZenUnitArgs&>* _voidTwoArgMemberFunctionCallerMock = nullptr;
+   VoidTwoArgMemberFunctionCallerMock<TestPhaseRunner, TestOutcome, const ZenUnitArgs&>* _voidTwoArgMemberFunctionCallerMock = nullptr;
    unique_ptr<TestMock> _testMock;
    ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
 
@@ -33,28 +33,28 @@ namespace ZenUnit
 
    STARTUP
    {
-      _tryCatchCaller._console.reset(_consoleMock = new ConsoleMock);
-      _tryCatchCaller._testPhaseTranslator.reset(_testPhaseTranslatorMock = new TestPhaseTranslatorMock);
-      _tryCatchCaller._stopwatch.reset(_stopwatchMock = new StopwatchMock);
-      _tryCatchCaller._voidTwoArgMemberFunctionCaller.reset(
-         _voidTwoArgMemberFunctionCallerMock = new VoidTwoArgMemberFunctionCallerMock<TryCatchCaller, TestOutcome, const ZenUnitArgs&>);
-      _tryCatchCaller._call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject);
+      _testPhaseRunner._console.reset(_consoleMock = new ConsoleMock);
+      _testPhaseRunner._testPhaseTranslator.reset(_testPhaseTranslatorMock = new TestPhaseTranslatorMock);
+      _testPhaseRunner._stopwatch.reset(_stopwatchMock = new StopwatchMock);
+      _testPhaseRunner._voidTwoArgMemberFunctionCaller.reset(
+         _voidTwoArgMemberFunctionCallerMock = new VoidTwoArgMemberFunctionCallerMock<TestPhaseRunner, TestOutcome, const ZenUnitArgs&>);
+      _testPhaseRunner._call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject);
       _testMock = make_unique<TestMock>();
    }
 
    CLEANUP
    {
-      TryCatchCallerTests::s_numberOfNoThrowCalls = 0;
+      TestPhaseRunnerTests::s_numberOfNoThrowCalls = 0;
    }
 
    TEST(Constructor_NewsComponents_SetsGetArgsFunction)
    {
-      TryCatchCaller tryCatchCaller;
-      POINTER_WAS_NEWED(tryCatchCaller._console);
-      POINTER_WAS_NEWED(tryCatchCaller._testPhaseTranslator);
-      POINTER_WAS_NEWED(tryCatchCaller._stopwatch);
-      POINTER_WAS_NEWED(tryCatchCaller._voidTwoArgMemberFunctionCaller);
-      STD_FUNCTION_TARGETS(TestRunner::GetArgs, tryCatchCaller._call_TestRunner_GetArgs);
+      TestPhaseRunner testPhaseRunner;
+      POINTER_WAS_NEWED(testPhaseRunner._console);
+      POINTER_WAS_NEWED(testPhaseRunner._testPhaseTranslator);
+      POINTER_WAS_NEWED(testPhaseRunner._stopwatch);
+      POINTER_WAS_NEWED(testPhaseRunner._voidTwoArgMemberFunctionCaller);
+      STD_FUNCTION_TARGETS(TestRunner::GetArgs, testPhaseRunner._call_TestRunner_GetArgs);
    }
 
    void ExpectStopwatchStartAndStopCalls()
@@ -76,7 +76,7 @@ namespace ZenUnit
       ++s_numberOfNoThrowCalls;
    }
 
-   TEST(RunTestPhase_FunctionDoesNotThrow_ReturnsNoExceptionThrownCallResult)
+   TEST(RunTestPhase_FunctionDoesNotThrow_ReturnsNoExceptionThrownTestPhaseResult)
    {
       ZenUnitArgs args;
       args.failfast = ZenUnit::Random<bool>();
@@ -86,20 +86,20 @@ namespace ZenUnit
 
       _voidTwoArgMemberFunctionCallerMock->ConstCallMock.Expect();
       //
-      const CallResult callResult = _tryCatchCaller.RunTestPhase(NoThrow, _testMock.get(), TestPhase::Startup);
+      const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase(NoThrow, _testMock.get(), TestPhase::Startup);
       //
       ZEN(GetArgs_ZenMockObject.CalledOnce());
-      ARE_EQUAL(1, TryCatchCallerTests::s_numberOfNoThrowCalls);
+      ARE_EQUAL(1, TestPhaseRunnerTests::s_numberOfNoThrowCalls);
       AssertStopwatchStartAndStopCalled();
 
       ZEN(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
-         &_tryCatchCaller, &TryCatchCaller::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Success, args));
+         &_testPhaseRunner, &TestPhaseRunner::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Success, args));
 
-      CallResult expectedCallResult;
-      expectedCallResult.testPhase = TestPhase::Startup;
-      expectedCallResult.testOutcome = TestOutcome::Success;
-      expectedCallResult.microseconds = _microseconds;
-      ARE_EQUAL(expectedCallResult, callResult);
+      TestPhaseResult expectedTestPhaseResult;
+      expectedTestPhaseResult.testPhase = TestPhase::Startup;
+      expectedTestPhaseResult.testOutcome = TestOutcome::Success;
+      expectedTestPhaseResult.microseconds = _microseconds;
+      ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
    }
 
    static void ThrowAnomaly(Test* test)
@@ -122,26 +122,26 @@ namespace ZenUnit
       _consoleMock->WriteLineMock.Expect();
       _testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.Return(_testPhaseSuffix.c_str());
       //
-      const CallResult callResult = _tryCatchCaller.RunTestPhase(ThrowAnomaly, _testMock.get(), TestPhase::TestBody);
+      const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase(ThrowAnomaly, _testMock.get(), TestPhase::TestBody);
       //
       ZEN(GetArgs_ZenMockObject.CalledOnce());
       AssertStopwatchStartAndStopCalled();
 
       ZEN(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
-         &_tryCatchCaller, &TryCatchCaller::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Anomaly, args));
+         &_testPhaseRunner, &TestPhaseRunner::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Anomaly, args));
 
-      CallResult expectedCallResult;
-      expectedCallResult.testPhase = TestPhase::TestBody;
-      expectedCallResult.microseconds = _microseconds;
+      TestPhaseResult expectedTestPhaseResult;
+      expectedTestPhaseResult.testPhase = TestPhase::TestBody;
+      expectedTestPhaseResult.microseconds = _microseconds;
       Anomaly anomaly("NonDefault", "NonDefault", FileLine(), "", "");
-      expectedCallResult.anomalyOrException = make_shared<AnomalyOrException>(anomaly);
-      expectedCallResult.testOutcome = TestOutcome::Anomaly;
+      expectedTestPhaseResult.anomalyOrException = make_shared<AnomalyOrException>(anomaly);
+      expectedTestPhaseResult.testOutcome = TestOutcome::Anomaly;
 
       ZEN(_consoleMock->WriteColorMock.CalledOnceWith("\n================\nAnomaly Detected\n================", Color::Yellow));
       ZEN(_testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(TestPhase::TestBody));
       ZEN(_consoleMock->WriteMock.CalledOnceWith(_testPhaseSuffix));
       ZEN(_consoleMock->WriteLineMock.CalledOnceWith(anomaly.why));
-      ARE_EQUAL(expectedCallResult, callResult);
+      ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
    }
 
    TEST1X1(RunTestPhase_FunctionThrowsAnomaly_TestPhaseIsNotTestBody_ReturnsAnomalyResult,
@@ -166,7 +166,7 @@ namespace ZenUnit
       _consoleMock->WriteLineAndExitMock.Expect();
       _testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.Return(_testPhaseSuffix.c_str());
       //
-      const CallResult callResult = _tryCatchCaller.RunTestPhase(ThrowAnomaly, _testMock.get(), testPhase);
+      const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase(ThrowAnomaly, _testMock.get(), testPhase);
       //
       ZEN(GetArgs_ZenMockObject.CalledOnce());
       AssertStopwatchStartAndStopCalled();
@@ -181,7 +181,7 @@ namespace ZenUnit
          "ZenUnit::Anomaly thrown during test class construction, STARTUP, or CLEANUP.\nFail fasting with exit code " +
          std::to_string(expectedExitCode) + ".", expectedExitCode));
       ZEN(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
-         &_tryCatchCaller, &TryCatchCaller::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Anomaly, args));
+         &_testPhaseRunner, &TestPhaseRunner::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Anomaly, args));
    }
 
    static void ThrowStdException(Test* test)
@@ -204,7 +204,7 @@ namespace ZenUnit
 
       const TestPhase testPhase = ZenUnit::RandomEnum<TestPhase>(TestPhase::MaxValue);
       //
-      const CallResult callResult = _tryCatchCaller.RunTestPhase([](Test*)
+      const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase([](Test*)
       {
          throw ZenMock::UnexpectedCallException("ZenMockedFunctionSignature");
       }, _testMock.get(), testPhase);
@@ -213,15 +213,15 @@ namespace ZenUnit
       AssertStopwatchStartAndStopCalled();
 
       ZEN(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
-         &_tryCatchCaller, &TryCatchCaller::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Exception, args));
+         &_testPhaseRunner, &TestPhaseRunner::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Exception, args));
 
-      CallResult expectedCallResult;
-      expectedCallResult.testPhase = testPhase;
-      expectedCallResult.testOutcome = TestOutcome::Exception;
-      expectedCallResult.anomalyOrException = make_shared<AnomalyOrException>(
+      TestPhaseResult expectedTestPhaseResult;
+      expectedTestPhaseResult.testPhase = testPhase;
+      expectedTestPhaseResult.testOutcome = TestOutcome::Exception;
+      expectedTestPhaseResult.anomalyOrException = make_shared<AnomalyOrException>(
          Type::GetName<ZenMock::UnexpectedCallException>(),
          ZenMock::UnexpectedCallException::MakeWhat("ZenMockedFunctionSignature").c_str());
-      expectedCallResult.microseconds = _microseconds;
+      expectedTestPhaseResult.microseconds = _microseconds;
 
       const string exceptionTypeName = "ZenMock::UnexpectedCallException";
       const size_t expectedEqualsSignsLength =
@@ -238,7 +238,7 @@ namespace ZenUnit
       const string expectedTestPhaseSuffixAndWhatLines = String::Concat(
          "what(): \"", expectedWhat, "\"");
       ZEN(_consoleMock->WriteLineMock.CalledOnceWith(expectedTestPhaseSuffixAndWhatLines));
-      ARE_EQUAL(expectedCallResult, callResult);
+      ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
    }
 
    TEST1X1(RunTestPhase_FunctionThrowsStdException_ReturnsExceptionResult,
@@ -257,19 +257,19 @@ namespace ZenUnit
       _consoleMock->WriteLineMock.Expect();
       _testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.Return(_testPhaseSuffix.c_str());
       //
-      const CallResult callResult = _tryCatchCaller.RunTestPhase(ThrowStdException, _testMock.get(), arbitraryTestPhase);
+      const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase(ThrowStdException, _testMock.get(), arbitraryTestPhase);
       //
       ZEN(GetArgs_ZenMockObject.CalledOnce());
       AssertStopwatchStartAndStopCalled();
 
       ZEN(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
-         &_tryCatchCaller, &TryCatchCaller::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Exception, args));
+         &_testPhaseRunner, &TestPhaseRunner::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Exception, args));
 
-      CallResult expectedCallResult;
-      expectedCallResult.testPhase = arbitraryTestPhase;
-      expectedCallResult.microseconds = _microseconds;
-      expectedCallResult.testOutcome = TestOutcome::Exception;
-      expectedCallResult.anomalyOrException
+      TestPhaseResult expectedTestPhaseResult;
+      expectedTestPhaseResult.testPhase = arbitraryTestPhase;
+      expectedTestPhaseResult.microseconds = _microseconds;
+      expectedTestPhaseResult.testOutcome = TestOutcome::Exception;
+      expectedTestPhaseResult.anomalyOrException
          = make_shared<AnomalyOrException>(Type::GetName<runtime_error>(), "runtime_error_what");
 
       ZEN(_consoleMock->WriteColorMock.CalledOnceWith(
@@ -279,7 +279,7 @@ namespace ZenUnit
       ZEN(_consoleMock->WriteLineMock.CalledOnceWith(TestUtil::NewlineConcat("",
 "  Type: std::runtime_error",
 "what(): \"runtime_error_what\"")));
-      ARE_EQUAL(expectedCallResult, callResult);
+      ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
    }
 
    static void ThrowInt(Test*)
@@ -304,7 +304,7 @@ namespace ZenUnit
       _testPhaseTranslatorMock->TestPhaseToTestPhaseNameMock.Return(testPhaseName.c_str());
       const TestPhase testPhase = ZenUnit::RandomEnum<TestPhase>(TestPhase::MaxValue);
       //
-      const CallResult callResult = _tryCatchCaller.RunTestPhase(ThrowInt, _testMock.get(), testPhase);
+      const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase(ThrowInt, _testMock.get(), testPhase);
       //
       ZEN(GetArgs_ZenMockObject.CalledOnce());
       AssertStopwatchStartAndStopCalled();
@@ -313,10 +313,10 @@ namespace ZenUnit
       const string expectedExitMessage = String::Concat(
          "Fatal ... exception thrown during test phase: ", testPhaseName, ".\nFail fasting with exit code ", expectedExitCode, ".");
       ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedExitMessage, expectedExitCode));
-      ARE_EQUAL(CallResult(), callResult);
+      ARE_EQUAL(TestPhaseResult(), testPhaseResult);
    }
 
-   TEST3X3(RunTestPhase_CallResultIsNotSuccessAndFailFastIsTrue_WritesFailFastMessageAndExits1,
+   TEST3X3(RunTestPhase_TestPhaseResultIsNotSuccessAndFailFastIsTrue_WritesFailFastMessageAndExits1,
       TestOutcome testOutcome, bool failfast, bool expectFailFast,
       TestOutcome::Unset, false, false,
       TestOutcome::Success, false, false,
@@ -340,7 +340,7 @@ namespace ZenUnit
          return args;
       }();
       //
-      _tryCatchCaller.FailFastIfTestFailedAndFailFastModeTrue(testOutcome, args);
+      _testPhaseRunner.FailFastIfTestFailedAndFailFastModeTrue(testOutcome, args);
       //
       if (expectFailFast)
       {
@@ -351,7 +351,7 @@ namespace ZenUnit
       }
    }
 
-   RUN_TESTS(TryCatchCallerTests)
+   RUN_TESTS(TestPhaseRunnerTests)
 
-   int TryCatchCallerTests::s_numberOfNoThrowCalls;
+   int TestPhaseRunnerTests::s_numberOfNoThrowCalls;
 }

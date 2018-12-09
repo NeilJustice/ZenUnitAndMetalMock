@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "ZenUnitTestUtils/Equalizers/CallResultEqualizer.h"
+#include "ZenUnitTestUtils/Equalizers/TestPhaseResultEqualizer.h"
 
 namespace ZenUnit
 {
-   TESTS(CallResultTests)
+   TESTS(TestPhaseResultTests)
    AFACT(DefaultConstructor_SetsFieldsTo0)
    AFACT(TestPhaseConstructor_SetsTestPhase_SetsOtherFieldsTo0)
    AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
@@ -11,37 +11,37 @@ namespace ZenUnit
 
    TEST(DefaultConstructor_SetsFieldsTo0)
    {
-      const CallResult defaultCallResult;
-      CallResult expectedDefaultCallResult;
-      expectedDefaultCallResult.testPhase = TestPhase::Unset;
-      expectedDefaultCallResult.testOutcome = TestOutcome::Success;
-      expectedDefaultCallResult.microseconds = 0;
-      expectedDefaultCallResult.anomalyOrException = nullptr;
-      ARE_EQUAL(expectedDefaultCallResult, defaultCallResult);
+      const TestPhaseResult defaultTestPhaseResult;
+      TestPhaseResult expectedDefaultTestPhaseResult;
+      expectedDefaultTestPhaseResult.testPhase = TestPhase::Unset;
+      expectedDefaultTestPhaseResult.testOutcome = TestOutcome::Success;
+      expectedDefaultTestPhaseResult.microseconds = 0;
+      expectedDefaultTestPhaseResult.anomalyOrException = nullptr;
+      ARE_EQUAL(expectedDefaultTestPhaseResult, defaultTestPhaseResult);
    }
 
    TEST(TestPhaseConstructor_SetsTestPhase_SetsOtherFieldsTo0)
    {
-      const CallResult callResult(TestPhase::Constructor);
-      CallResult expectedCallResult;
-      expectedCallResult.testPhase = TestPhase::Constructor;
-      expectedCallResult.testOutcome = TestOutcome::Success;
-      expectedCallResult.microseconds = 0;
-      expectedCallResult.anomalyOrException = nullptr;
-      ARE_EQUAL(expectedCallResult, callResult);
+      const TestPhaseResult testPhaseResult(TestPhase::Constructor);
+      TestPhaseResult expectedTestPhaseResult;
+      expectedTestPhaseResult.testPhase = TestPhase::Constructor;
+      expectedTestPhaseResult.testOutcome = TestOutcome::Success;
+      expectedTestPhaseResult.microseconds = 0;
+      expectedTestPhaseResult.anomalyOrException = nullptr;
+      ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      SETUP_EQUALIZER_THROWS_TEST(CallResult);
-      EQUALIZER_THROWS(CallResult, testPhase, TestPhase::Constructor);
-      EQUALIZER_THROWS(CallResult, testOutcome, TestOutcome::Exception);
-      EQUALIZER_THROWS(CallResult, microseconds, 1u);
+      SETUP_EQUALIZER_THROWS_TEST(TestPhaseResult);
+      EQUALIZER_THROWS(TestPhaseResult, testPhase, TestPhase::Constructor);
+      EQUALIZER_THROWS(TestPhaseResult, testOutcome, TestOutcome::Exception);
+      EQUALIZER_THROWS(TestPhaseResult, microseconds, 1u);
 
       shared_ptr<AnomalyOrException> nonDefaultAnomalyOrException = make_shared<AnomalyOrException>(Anomaly());
       nonDefaultAnomalyOrException->anomaly->why = "why";
-      EQUALIZER_THROWS(CallResult, anomalyOrException, nonDefaultAnomalyOrException);
+      EQUALIZER_THROWS(TestPhaseResult, anomalyOrException, nonDefaultAnomalyOrException);
    }
 
-   RUN_TESTS(CallResultTests)
+   RUN_TESTS(TestPhaseResultTests)
 }
