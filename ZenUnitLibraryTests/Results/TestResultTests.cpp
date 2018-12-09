@@ -47,7 +47,7 @@ namespace ZenUnit
       DestructorCallResult = CallResult(TestPhase::Destructor);
       DestructorCallResult.microseconds = 3000;
       _testResult.fullTestName = FullTestNameValue;
-      _testResult.call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString =
+      _testResult._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString =
          BIND_1ARG_ZENMOCK_OBJECT(MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject);
    }
 
@@ -55,7 +55,7 @@ namespace ZenUnit
    {
       const TestResult defaultTestResult;
       STD_FUNCTION_TARGETS(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString,
-         defaultTestResult.call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString);
+         defaultTestResult._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString);
       TestResult expectedDefaultTestResult;
       expectedDefaultTestResult.fullTestName = FullTestName();
       expectedDefaultTestResult.constructorCallResult = CallResult();
@@ -129,7 +129,7 @@ namespace ZenUnit
          GetArgs_ZenMockObject.CalledOnce();
       }
       STD_FUNCTION_TARGETS(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString,
-         testResult.call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString);
+         testResult._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString);
       TestResult expectedTestResult;
       expectedTestResult.fullTestName = FullTestNameValue;
       expectedTestResult.constructorCallResult = ConstructorCallResult;
@@ -282,7 +282,7 @@ namespace ZenUnit
       }));
       ZEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
          CalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber));
-      ZEN(_consoleMock.WriteLineColorMock.CalledOnceWith(testFailureNumber, Color::Red));
+      ZEN(_consoleMock.WriteLineColorMock.CalledOnceWith(testFailureNumber, Color::Yellow));
       ZEN(_consoleMock.WriteLineMock.CalledOnceWith(anomalyWhy));
       ZEN(_consoleMock.WriteNewLineMock.CalledOnce());
    }
@@ -329,8 +329,8 @@ namespace ZenUnit
       }));
       ZEN(_consoleMock.WriteLineColorMock.CalledAsFollows(
       {
-         { testFailureNumber, Color::Red },
-         { "\nUncaught Exception", Color::Red }
+         { testFailureNumber, Color::Yellow },
+         { "\nUncaught Exception", Color::Yellow }
       }));
       ZEN(_consoleMock.WriteLineMock.CalledOnceWith(
          "  Type: " + exceptionTypeName + "\n"
@@ -360,7 +360,7 @@ namespace ZenUnit
       ZEN(_testFailureNumbererMock.NextMock.CalledOnce());
       ZEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
          CalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber));
-      ZEN(_consoleMock.WriteLineColorMock.CalledOnceWith(testFailureNumber, Color::Red));
+      ZEN(_consoleMock.WriteLineColorMock.CalledOnceWith(testFailureNumber, Color::Yellow));
       ZEN(_consoleMock.WriteLineMock.CalledAsFollows(
       {
          { _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value() },

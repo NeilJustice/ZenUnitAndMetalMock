@@ -36,7 +36,7 @@ namespace ZenUnit
 
    STARTUP
    {
-      _testClassResultSelfMocked.call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString
+      _testClassResultSelfMocked._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString
          = BIND_1ARG_ZENMOCK_OBJECT(MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject);
    }
 
@@ -44,7 +44,7 @@ namespace ZenUnit
    {
       TestClassResult testClassResult;
       STD_FUNCTION_TARGETS(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString,
-         testClassResult.call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString);
+         testClassResult._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString);
    }
 
    TEST(CopyConstructor_CopiesForEacherAndTestResults)
@@ -217,7 +217,7 @@ namespace ZenUnit
       ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnce());
       ZEN(_testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.CalledOnce());
       ZEN(MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject.CalledOnceWith(microseconds));
-      ZEN(consoleMock.WriteLineColorMock.CalledOnceWith("[TestClass Failed] " + oneDecimalPlaceMilliseconds, Color::Red));
+      ZEN(consoleMock.WriteLineColorMock.CalledOnceWith("[TestClass Failed] " + oneDecimalPlaceMilliseconds, Color::Yellow));
    }
 
    TEST(PrintTestResultIfFailure_CallsTestResultPrintIfFailure)

@@ -22,14 +22,14 @@ namespace ZenUnit
    {
       _runFilterParser._memberFunctionTransformer.reset(
          _memberFunctionTransformerMock = new MemberFunctionTransformerMock<RunFilterParser, string, RunFilter>);
-      _runFilterParser.call_String_ToUnsigned = BIND_1ARG_ZENMOCK_OBJECT(ToUnsigned_ZenMockObject);
+      _runFilterParser._call_String_ToUnsigned = BIND_1ARG_ZENMOCK_OBJECT(ToUnsigned_ZenMockObject);
    }
 
    TEST(DefaultConstructor_NewsTransformer)
    {
       RunFilterParser runFilterParser;
       POINTER_WAS_NEWED(runFilterParser._memberFunctionTransformer);
-      STD_FUNCTION_TARGETS(String::ToUnsigned, runFilterParser.call_String_ToUnsigned);
+      STD_FUNCTION_TARGETS(String::ToUnsigned, runFilterParser._call_String_ToUnsigned);
    }
 
    TEST(Parse_TransformsRunFilterStringsToRunFilters)

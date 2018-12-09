@@ -91,8 +91,8 @@ Testing Rigor Options:
       _argsParser._callerOfSetRandomSeedIfNotSetByUser.reset(
          _callerOfSetRandomSeedIfNotSetByUserMock = new VoidOneArgMemberFunctionCallerMock<ArgsParser, ZenUnitArgs&>);
       _argsParser._watch.reset(_watchMock = new WatchMock);
-      _argsParser.call_String_ToInt = BIND_1ARG_ZENMOCK_OBJECT(ToInt_ZenMockObject);
-      _argsParser.call_String_ToUnsigned = BIND_1ARG_ZENMOCK_OBJECT(ToUnsigned_ZenMockObject);
+      _argsParser._call_String_ToInt = BIND_1ARG_ZENMOCK_OBJECT(ToInt_ZenMockObject);
+      _argsParser._call_String_ToUnsigned = BIND_1ARG_ZENMOCK_OBJECT(ToUnsigned_ZenMockObject);
    }
 
    TEST(DefaultConstructor_NewsComponents_SetsStringToUnsignedFunction)
@@ -102,8 +102,8 @@ Testing Rigor Options:
       POINTER_WAS_NEWED(argsParser._runFilterParser);
       POINTER_WAS_NEWED(argsParser._callerOfSetRandomSeedIfNotSetByUser);
       POINTER_WAS_NEWED(argsParser._watch);
-      STD_FUNCTION_TARGETS(String::ToInt, argsParser.call_String_ToInt);
-      STD_FUNCTION_TARGETS(String::ToUnsigned, argsParser.call_String_ToUnsigned);
+      STD_FUNCTION_TARGETS(String::ToInt, argsParser._call_String_ToInt);
+      STD_FUNCTION_TARGETS(String::ToUnsigned, argsParser._call_String_ToUnsigned);
    }
 
    void ExpectCallToSetRandomSeedIfNotSetByUser()

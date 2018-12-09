@@ -16,9 +16,9 @@ namespace ZenUnit
    {
       MachineNameGetter machineNameGetter;
 #if defined __linux__ || defined __APPLE__
-      STD_FUNCTION_TARGETS(::gethostname, machineNameGetter.call_gethostname);
+      STD_FUNCTION_TARGETS(::gethostname, machineNameGetter._call_gethostname);
 #elif defined _WIN32
-      STD_FUNCTION_TARGETS(::GetComputerName, machineNameGetter.call_GetComputerName);
+      STD_FUNCTION_TARGETS(::GetComputerName, machineNameGetter._call_GetComputerName);
 #endif
    }
 
@@ -42,9 +42,9 @@ namespace ZenUnit
    STARTUP
    {
 #if defined __linux__ || defined __APPLE__
-      _machineNameGetter.call_gethostname = BIND_2ARG_ZENMOCK_OBJECT(gethostname_ZenMockObject);
+      _machineNameGetter._call_gethostname = BIND_2ARG_ZENMOCK_OBJECT(gethostname_ZenMockObject);
 #elif defined _WIN32
-      _machineNameGetter.call_GetComputerName = BIND_2ARG_ZENMOCK_OBJECT(GetComputerName_ZenMockObject);
+      _machineNameGetter._call_GetComputerName = BIND_2ARG_ZENMOCK_OBJECT(GetComputerName_ZenMockObject);
 #endif
    }
 

@@ -851,26 +851,26 @@ namespace ZenUnit
    {
       friend class ConsoleColorerTests;
    private:
-      std::function<int(FILE*)> call_fileno;
-      std::function<int(int)> call_isatty;
+      std::function<int(FILE*)> _call_fileno;
+      std::function<int(int)> _call_isatty;
 #if defined _WIN32
-      std::function<HANDLE(DWORD)> call_GetStdHandle;
-      std::function<BOOL(HANDLE, WORD)> call_SetConsoleTextAttribute;
+      std::function<HANDLE(DWORD)> _call_GetStdHandle;
+      std::function<BOOL(HANDLE, WORD)> _call_SetConsoleTextAttribute;
 #endif
       bool _supportsColor;
       bool _supportsColorSet;
    public:
       ConsoleColorer() noexcept
 #if defined _WIN32
-         : call_fileno(::_fileno)
-         , call_isatty(::_isatty)
+         : _call_fileno(::_fileno)
+         , _call_isatty(::_isatty)
 #else
-         : call_fileno(::fileno)
-         , call_isatty(::isatty)
+         : _call_fileno(::fileno)
+         , _call_isatty(::isatty)
 #endif
 #if defined _WIN32
-         , call_GetStdHandle(::GetStdHandle)
-         , call_SetConsoleTextAttribute(::SetConsoleTextAttribute)
+         , _call_GetStdHandle(::GetStdHandle)
+         , _call_SetConsoleTextAttribute(::SetConsoleTextAttribute)
 #endif
          , _supportsColor(false)
          , _supportsColorSet(false)
@@ -905,9 +905,9 @@ namespace ZenUnit
          const char* linuxColor = ColorToLinuxColor(color);
          std::cout << linuxColor;
 #elif defined _WIN32
-         const HANDLE stdOutHandle = call_GetStdHandle(STD_OUTPUT_HANDLE);
+         const HANDLE stdOutHandle = _call_GetStdHandle(STD_OUTPUT_HANDLE);
          const WindowsColor windowsColor = ColorToWindowsColor(color);
-         const BOOL didSetConsoleTextAttr = call_SetConsoleTextAttribute(
+         const BOOL didSetConsoleTextAttr = _call_SetConsoleTextAttribute(
             stdOutHandle, static_cast<WORD>(windowsColor));
          assert_true(didSetConsoleTextAttr == TRUE);
 #endif
@@ -924,8 +924,8 @@ namespace ZenUnit
 
       virtual bool SupportsColor() const
       {
-         const int stdoutFileHandle = call_fileno(stdout);
-         const int isAtty = call_isatty(stdoutFileHandle);
+         const int stdoutFileHandle = _call_fileno(stdout);
+         const int isAtty = _call_isatty(stdoutFileHandle);
          const bool supportsColor = isAtty != 0;
          return supportsColor;
       }
@@ -936,18 +936,18 @@ namespace ZenUnit
       friend class ConsoleTests;
    private:
       std::unique_ptr<ConsoleColorer> _consoleColorer;
-      std::function<void(int)> call_exit;
+      std::function<void(int)> _call_exit;
 #if defined _WIN32
-      std::function<int()> call_IsDebuggerPresent;
+      std::function<int()> _call_IsDebuggerPresent;
 #endif
-      std::function<int()> call_getch;
+      std::function<int()> _call_getch;
    public:
       Console() noexcept
          : _consoleColorer(std::make_unique<ConsoleColorer>())
-         , call_exit(::exit)
+         , _call_exit(::exit)
 #if defined _WIN32
-         , call_IsDebuggerPresent(::IsDebuggerPresent)
-         , call_getch(_getch)
+         , _call_IsDebuggerPresent(::IsDebuggerPresent)
+         , _call_getch(_getch)
 #endif
       {
       }
@@ -991,7 +991,7 @@ namespace ZenUnit
       virtual void WriteLineAndExit(std::string_view message, int exitCode) const
       {
          std::cout << message << '\n';
-         call_exit(exitCode);
+         _call_exit(exitCode);
       }
 
       virtual void WriteStringsCommaSeparated(
@@ -1013,7 +1013,7 @@ namespace ZenUnit
       {
 #if defined __linux__ || defined __APPLE__
 #elif defined _WIN32
-         call_getch();
+         _call_getch();
 #endif
       }
 
@@ -1022,7 +1022,7 @@ namespace ZenUnit
 #if defined __linux__ || defined __APPLE__
          return false;
 #elif defined _WIN32
-         const int isDebuggerPresentReturnValue = call_IsDebuggerPresent();
+         const int isDebuggerPresentReturnValue = _call_IsDebuggerPresent();
          const bool isDebuggerPresent = isDebuggerPresentReturnValue == 1;
          return isDebuggerPresent;
 #endif
@@ -1638,11 +1638,11 @@ namespace ZenUnit
       friend class RunFilterParserTests;
    private:
       std::unique_ptr<MemberFunctionTransformer<RunFilterParser, std::string, RunFilter>> _memberFunctionTransformer;
-      std::function<unsigned(const std::string&)> call_String_ToUnsigned;
+      std::function<unsigned(const std::string&)> _call_String_ToUnsigned;
    public:
       RunFilterParser() noexcept
          : _memberFunctionTransformer(std::make_unique<MemberFunctionTransformer<RunFilterParser, std::string, RunFilter>>())
-         , call_String_ToUnsigned(String::ToUnsigned)
+         , _call_String_ToUnsigned(String::ToUnsigned)
       {
       }
 
@@ -1673,7 +1673,7 @@ namespace ZenUnit
             if (testNameAndTestCaseNumber.size() == 2)
             {
                const std::string& testCaseNumberString = testNameAndTestCaseNumber[1];
-               runFilter.testCaseNumber = static_cast<size_t>(call_String_ToUnsigned(testCaseNumberString));
+               runFilter.testCaseNumber = static_cast<size_t>(_call_String_ToUnsigned(testCaseNumberString));
             }
          }
          return runFilter;
@@ -1830,16 +1830,16 @@ namespace ZenUnit
       std::unique_ptr<const RunFilterParser> _runFilterParser;
       std::unique_ptr<const OneArgMemberFunctionCaller<void, ArgsParser, ZenUnitArgs&>> _callerOfSetRandomSeedIfNotSetByUser;
       std::unique_ptr<const Watch> _watch;
-      std::function<int(const std::string&)> call_String_ToInt;
-      std::function<unsigned(const std::string&)> call_String_ToUnsigned;
+      std::function<int(const std::string&)> _call_String_ToInt;
+      std::function<unsigned(const std::string&)> _call_String_ToUnsigned;
    public:
       ArgsParser() noexcept
          : _console(std::make_unique<Console>())
          , _runFilterParser(std::make_unique<RunFilterParser>())
          , _callerOfSetRandomSeedIfNotSetByUser(new OneArgMemberFunctionCaller<void, ArgsParser, ZenUnitArgs&>)
          , _watch(new Watch)
-         , call_String_ToInt(String::ToInt)
-         , call_String_ToUnsigned(String::ToUnsigned)
+         , _call_String_ToInt(String::ToInt)
+         , _call_String_ToUnsigned(String::ToUnsigned)
       {
       }
 
@@ -1961,11 +1961,11 @@ Testing Rigor Options:
                   }
                   else if (argName == "--test-runs")
                   {
-                     args.testruns = call_String_ToInt(argValueString);
+                     args.testruns = _call_String_ToInt(argValueString);
                   }
                   else if (argName == "--seed")
                   {
-                     args.randomseed = static_cast<unsigned short>(call_String_ToUnsigned(argValueString));
+                     args.randomseed = static_cast<unsigned short>(_call_String_ToUnsigned(argValueString));
                      args.randomseedsetbyuser = true;
                   }
                   else
@@ -3560,14 +3560,14 @@ Testing Rigor Options:
       TestOutcome testOutcome;
       unsigned microseconds;
       size_t testCaseNumber;
-      std::function<std::string(unsigned)> call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
+      std::function<std::string(unsigned)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
 
       TestResult() noexcept
          : responsibleCallResultField(nullptr)
          , testOutcome(TestOutcome::Unset)
          , microseconds(0)
          , testCaseNumber(std::numeric_limits<size_t>::max())
-         , call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(
+         , _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(
             Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
       {
       }
@@ -3590,7 +3590,7 @@ Testing Rigor Options:
          , testOutcome(TestOutcome::Unset)
          , microseconds(0)
          , testCaseNumber(std::numeric_limits<size_t>::max())
-         , call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(
+         , _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(
             Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
       {
          assert_true(constructorCallResult.testOutcome == TestOutcome::Success);
@@ -3699,7 +3699,7 @@ Testing Rigor Options:
          {
             console->WriteColor("OK ", Color::Green);
             const std::string twoDecimalPlaceMillisecondsString =
-               call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
+               _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
             console->WriteLine(twoDecimalPlaceMillisecondsString);
          }
       }
@@ -3789,10 +3789,10 @@ Testing Rigor Options:
       friend struct Equalizer<TestClassResult>;
    private:
       std::vector<TestResult> _testResults;
-      std::function<std::string(unsigned)> call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
+      std::function<std::string(unsigned)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
    public:
       TestClassResult() noexcept
-         : call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(
+         : _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(
             Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
       {
       }
@@ -3843,7 +3843,7 @@ Testing Rigor Options:
       virtual std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(unsigned microseconds) const
       {
          const std::string twoDecimalPlaceMillisecondsString =
-            call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
+            _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
          return twoDecimalPlaceMillisecondsString;
       }
 
@@ -3903,16 +3903,16 @@ Testing Rigor Options:
       friend class MachineNameGetterTests;
    private:
 #if defined __linux__ || defined __APPLE__
-      std::function<int(char*, size_t)> call_gethostname;
+      std::function<int(char*, size_t)> _call_gethostname;
 #elif defined _WIN32
-      std::function<BOOL(LPSTR, LPDWORD)> call_GetComputerName;
+      std::function<BOOL(LPSTR, LPDWORD)> _call_GetComputerName;
 #endif
    public:
       MachineNameGetter() noexcept
 #if defined __linux__ || defined __APPLE__
-         : call_gethostname(::gethostname)
+         : _call_gethostname(::gethostname)
 #elif defined _WIN32
-         : call_GetComputerName(::GetComputerName)
+         : _call_GetComputerName(::GetComputerName)
 #endif
       {
       }
@@ -3938,7 +3938,7 @@ Testing Rigor Options:
 #endif
          char hostname[HOST_NAME_MAX + 1];
          assert_true(sizeof(hostname) == 65);
-         const int gethostnameResult = call_gethostname(hostname, sizeof(hostname));
+         const int gethostnameResult = _call_gethostname(hostname, sizeof(hostname));
          assert_true(gethostnameResult == 0);
          const std::string linuxMachineName(hostname);
          return linuxMachineName;
@@ -3949,7 +3949,7 @@ Testing Rigor Options:
          const size_t Windows10MaxPCNameLength = 40;
          TCHAR computerNameChars[Windows10MaxPCNameLength + 1]{};
          DWORD size = sizeof(computerNameChars);
-         const BOOL didGetComputerName = call_GetComputerName(computerNameChars, &size);
+         const BOOL didGetComputerName = _call_GetComputerName(computerNameChars, &size);
          assert_true(didGetComputerName == TRUE);
          const std::string windowsMachineName(computerNameChars);
          return windowsMachineName;
@@ -4313,11 +4313,11 @@ Testing Rigor Options:
       friend class StopwatchTests;
    private:
       std::function<std::chrono::time_point<
-         std::chrono::high_resolution_clock>()> call_highres_now;
+         std::chrono::high_resolution_clock>()> _call_highres_now;
       std::chrono::time_point<std::chrono::high_resolution_clock> _startTime;
    public:
       Stopwatch() noexcept
-         : call_highres_now(std::chrono::high_resolution_clock::now)
+         : _call_highres_now(std::chrono::high_resolution_clock::now)
       {
       }
 
@@ -4325,7 +4325,7 @@ Testing Rigor Options:
 
       virtual void Start()
       {
-         _startTime = call_highres_now();
+         _startTime = _call_highres_now();
       }
 
       virtual unsigned Stop()
@@ -4334,7 +4334,7 @@ Testing Rigor Options:
          {
             return 0;
          }
-         const std::chrono::time_point<std::chrono::high_resolution_clock> stopTime = call_highres_now();
+         const std::chrono::time_point<std::chrono::high_resolution_clock> stopTime = _call_highres_now();
          const std::chrono::duration<long long, std::nano> elapsedTime = stopTime - _startTime;
          const long long elapsedMicroseconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsedTime).count();
          _startTime = std::chrono::time_point<std::chrono::high_resolution_clock>();
@@ -4724,21 +4724,21 @@ Testing Rigor Options:
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const TestPhaseTranslator> _testPhaseTranslator;
       std::unique_ptr<const TwoArgMemberFunctionCaller<void, TryCatchCaller, TestOutcome, const ZenUnitArgs&>> _voidTwoArgMemberFunctionCaller;
-      std::function<const ZenUnitArgs&()> call_TestRunner_GetArgs;
+      std::function<const ZenUnitArgs&()> _call_TestRunner_GetArgs;
       std::unique_ptr<Stopwatch> _stopwatch;
    public:
       TryCatchCaller() noexcept
          : _console(std::make_unique<Console>())
          , _testPhaseTranslator(std::make_unique<TestPhaseTranslator>())
          , _voidTwoArgMemberFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<void, TryCatchCaller, TestOutcome, const ZenUnitArgs&>>())
-         , call_TestRunner_GetArgs(TestRunner::GetArgs)
+         , _call_TestRunner_GetArgs(TestRunner::GetArgs)
          , _stopwatch(std::make_unique<Stopwatch>())
       {
       }
 
       virtual ~TryCatchCaller() = default;
 
-      virtual CallResult Call(void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const;
+      virtual CallResult RunTestPhase(void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const;
 
       void FailFastIfTestFailedAndFailFastModeTrue(TestOutcome testOutcome, const ZenUnitArgs& args) const
       {
@@ -4892,33 +4892,33 @@ Testing Rigor Options:
    protected:
       TestResult BaseRunTest()
       {
-         const CallResult constructorCallResult = _tryCatchCaller->Call(&Test::CallNewTestClass, this, TestPhase::Constructor);
+         const CallResult constructorCallResult = _tryCatchCaller->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorCallResult.testOutcome != TestOutcome::Success)
          {
             const TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(p_fullTestName, constructorCallResult);
             return constructorFailTestResult;
          }
-         const CallResult startupCallResult = _tryCatchCaller->Call(&Test::CallStartup, this, TestPhase::Startup);
+         const CallResult startupCallResult = _tryCatchCaller->RunTestPhase(&Test::CallStartup, this, TestPhase::Startup);
          if (startupCallResult.testOutcome != TestOutcome::Success)
          {
-            const CallResult destructorCallResult = _tryCatchCaller->Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+            const CallResult destructorCallResult = _tryCatchCaller->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
             const TestResult startupFailTestResult = _testResultFactory->MakeStartupFail(p_fullTestName, constructorCallResult, startupCallResult, destructorCallResult);
             return startupFailTestResult;
          }
-         const CallResult testBodyCallResult = _tryCatchCaller->Call(&Test::CallTestBody, this, TestPhase::TestBody);
-         const CallResult cleanupCallResult = _tryCatchCaller->Call(&Test::CallCleanup, this, TestPhase::Cleanup);
-         const CallResult destructorCallResult = _tryCatchCaller->Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+         const CallResult testBodyCallResult = _tryCatchCaller->RunTestPhase(&Test::CallTestBody, this, TestPhase::TestBody);
+         const CallResult cleanupCallResult = _tryCatchCaller->RunTestPhase(&Test::CallCleanup, this, TestPhase::Cleanup);
+         const CallResult destructorCallResult = _tryCatchCaller->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
          const TestResult testResult = _testResultFactory->MakeFullTestResult(
             p_fullTestName, constructorCallResult, startupCallResult, testBodyCallResult, cleanupCallResult, destructorCallResult);
          return testResult;
       }
    };
 
-   inline CallResult TryCatchCaller::Call(void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const
+   inline CallResult TryCatchCaller::RunTestPhase(void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const
    {
       CallResult callResult(testPhase);
       _stopwatch->Start();
-      const ZenUnitArgs& args = call_TestRunner_GetArgs();
+      const ZenUnitArgs& args = _call_TestRunner_GetArgs();
       try
       {
          testPhaseFunction(test);
@@ -4929,7 +4929,7 @@ Testing Rigor Options:
          callResult.microseconds = _stopwatch->Stop();
          callResult.anomalyOrException = std::make_shared<AnomalyOrException>(anomaly);
          callResult.testOutcome = TestOutcome::Anomaly;
-         _console->WriteColor("\n=======\nAnomaly\n=======", Color::Yellow);
+         _console->WriteColor("\n================\nAnomaly Detected\n================", Color::Yellow);
          const char* const testPhaseSuffix = _testPhaseTranslator->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          _console->WriteLine(anomaly.why);
@@ -5008,14 +5008,14 @@ Testing Rigor Options:
       std::vector<TestResult> RunTest() override
       {
          _stopwatch->Start();
-         const CallResult constructorCallResult = _tryCatchCaller->Call(&Test::CallNewTestClass, this, TestPhase::Constructor);
+         const CallResult constructorCallResult = _tryCatchCaller->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorCallResult.testOutcome != TestOutcome::Success)
          {
             TestResult constructorFail = _testResultFactory->MakeConstructorFail(p_fullTestName, constructorCallResult);
             constructorFail.microseconds = _stopwatch->Stop();
             return { constructorFail };
          }
-         const CallResult destructorCallResult = _tryCatchCaller->Call(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+         const CallResult destructorCallResult = _tryCatchCaller->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
          TestResult testResult = _testResultFactory->MakeCtorDtorSuccess(p_fullTestName, constructorCallResult, destructorCallResult);
          testResult.microseconds = _stopwatch->Stop();
          return { testResult };
@@ -5053,7 +5053,7 @@ Testing Rigor Options:
          bool(*)(const std::unique_ptr<Test>&,
          const RunFilter&), const RunFilter&>;
       std::unique_ptr<const TwoArgTestAnyerType> _twoArgTestAnyer;
-      std::function<const ZenUnitArgs&()> call_TestRunner_GetArgs;
+      std::function<const ZenUnitArgs&()> _call_TestRunner_GetArgs;
       const char* _testClassName;
       NewableDeletableTest<TestClassType> _newableDeletableTest;
       std::vector<std::unique_ptr<Test>> _tests;
@@ -5066,7 +5066,7 @@ Testing Rigor Options:
          , _nonVoidTwoArgFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>>())
          , _voidOneArgFunctionCaller(std::make_unique<OneArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>, const TestClassResult*>>())
          , _twoArgTestAnyer(std::make_unique<TwoArgTestAnyerType>())
-         , call_TestRunner_GetArgs(TestRunner::GetArgs)
+         , _call_TestRunner_GetArgs(TestRunner::GetArgs)
          , _testClassName(testClassName)
          , _newableDeletableTest(testClassName)
          , _tests(TestClassType::GetTests(testClassName))
@@ -5124,7 +5124,7 @@ Testing Rigor Options:
    private:
       void DoRunTests()
       {
-         const ZenUnitArgs& args = call_TestRunner_GetArgs();
+         const ZenUnitArgs& args = _call_TestRunner_GetArgs();
          if (args.random)
          {
             _twoArgMemberForEacher->RandomTwoArgMemberForEach(
@@ -5169,7 +5169,7 @@ Testing Rigor Options:
 
       void RunTest(const std::unique_ptr<Test>& test, TestClassResult* outTestClassResult) const
       {
-         const ZenUnitArgs& args = call_TestRunner_GetArgs();
+         const ZenUnitArgs& args = _call_TestRunner_GetArgs();
          const char* const testName = test->Name();
          const bool runFilterMatchesTestName = args.runFilters.empty() || p_twoArgMemberAnyer->TwoArgAny(
             args.runFilters, this, &TestClassRunner::RunFilterMatchesTestName, testName);
@@ -5415,10 +5415,10 @@ Testing Rigor Options:
       using CallerOfRunFilterMatchesTestCaseType = ThreeArgAnyer<
          std::vector<RunFilter>, bool(*)(const RunFilter&, const FullTestName&, size_t), const FullTestName&, size_t>;
       std::unique_ptr<CallerOfRunFilterMatchesTestCaseType> _callerOfRunFilterMatchesTestCase;
-      std::function<const ZenUnitArgs&()> call_TestRunner_GetArgs;
-      std::function<std::vector<std::string>(const char*)> call_String_CommaSplitExceptQuotedCommas;
-      std::function<void(int)> call_exit;
-      std::function<ITestCaseNumberGenerator*(bool)> call_ITestCaseNumberGeneratorFactoryNew;
+      std::function<const ZenUnitArgs&()> _call_TestRunner_GetArgs;
+      std::function<std::vector<std::string>(const char*)> _call_String_CommaSplitExceptQuotedCommas;
+      std::function<void(int)> _call_exit;
+      std::function<ITestCaseNumberGenerator*(bool)> _call_ITestCaseNumberGeneratorFactoryNew;
       const char* const _testCaseArgsText;
 
       std::unique_ptr<TestClassType> _testClass;
@@ -5435,10 +5435,10 @@ Testing Rigor Options:
          : Test(testClassName, testName, N)
          , _console(std::make_unique<Console>())
          , _callerOfRunFilterMatchesTestCase(std::make_unique<CallerOfRunFilterMatchesTestCaseType>())
-         , call_TestRunner_GetArgs(TestRunner::GetArgs)
-         , call_String_CommaSplitExceptQuotedCommas(String::CommaSplitExceptQuotedCommas)
-         , call_exit(::exit)
-         , call_ITestCaseNumberGeneratorFactoryNew(ITestCaseNumberGenerator::FactoryNew)
+         , _call_TestRunner_GetArgs(TestRunner::GetArgs)
+         , _call_String_CommaSplitExceptQuotedCommas(String::CommaSplitExceptQuotedCommas)
+         , _call_exit(::exit)
+         , _call_ITestCaseNumberGeneratorFactoryNew(ITestCaseNumberGenerator::FactoryNew)
          , _testCaseArgsText(testCaseArgsText)
          , _currentTestCaseNumber(1)
          , p_testCaseArgs(std::forward<TestCaseArgTypes>(testCaseArgs)...)
@@ -5476,11 +5476,11 @@ Testing Rigor Options:
       std::vector<TestResult> RunTest() override
       {
          assert_true(_currentTestCaseNumber == 1);
-         const ZenUnitArgs& args = call_TestRunner_GetArgs();
+         const ZenUnitArgs& args = _call_TestRunner_GetArgs();
          const size_t numberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
-         ITestCaseNumberGenerator* testCaseNumberGenerator = call_ITestCaseNumberGeneratorFactoryNew(args.random);
+         ITestCaseNumberGenerator* testCaseNumberGenerator = _call_ITestCaseNumberGeneratorFactoryNew(args.random);
          testCaseNumberGenerator->Initialize(numberOfTestCaseArgs, N, args);
-         const std::vector<std::string> splitTestCaseArgs = call_String_CommaSplitExceptQuotedCommas(_testCaseArgsText);
+         const std::vector<std::string> splitTestCaseArgs = _call_String_CommaSplitExceptQuotedCommas(_testCaseArgsText);
          while ((_currentTestCaseNumber = testCaseNumberGenerator->NextTestCaseNumber()) != std::numeric_limits<size_t>::max())
          {
             RunTestCaseIfNotFilteredOut(_currentTestCaseNumber, args, splitTestCaseArgs);
@@ -5532,7 +5532,7 @@ Testing Rigor Options:
          {
             const std::string errorMessage = "\nError: Non-existent test case number specified in -run filter. Exiting with code 1.";
             _console->WriteLine(errorMessage);
-            call_exit(1);
+            _call_exit(1);
          }
       }
 

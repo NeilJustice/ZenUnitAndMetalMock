@@ -41,11 +41,11 @@ namespace ZenUnit
    TEST(Constructor_SetsFunctionPointers_SetsSupportsColorAndSupportsColorSetToFalse)
    {
       const ConsoleColorer consoleColorer;
-      STD_FUNCTION_TARGETS(::fileno, consoleColorer.call_fileno);
-      STD_FUNCTION_TARGETS(::isatty, consoleColorer.call_isatty);
+      STD_FUNCTION_TARGETS(::fileno, consoleColorer._call_fileno);
+      STD_FUNCTION_TARGETS(::isatty, consoleColorer._call_isatty);
 #if defined _WIN32
-      STD_FUNCTION_TARGETS(::GetStdHandle, consoleColorer.call_GetStdHandle);
-      STD_FUNCTION_TARGETS(::SetConsoleTextAttribute, consoleColorer.call_SetConsoleTextAttribute);
+      STD_FUNCTION_TARGETS(::GetStdHandle, consoleColorer._call_GetStdHandle);
+      STD_FUNCTION_TARGETS(::SetConsoleTextAttribute, consoleColorer._call_SetConsoleTextAttribute);
 #endif
       IS_FALSE(consoleColorer._supportsColor);
       IS_FALSE(consoleColorer._supportsColorSet);
@@ -132,8 +132,8 @@ namespace ZenUnit
       const int StdoutFileHandle = 1;
       fileno_ZenMockObject.Return(StdoutFileHandle);
       isatty_ZenMockObject.Return(isattyReturnValue);
-      _consoleColorer.call_fileno = BIND_1ARG_ZENMOCK_OBJECT(fileno_ZenMockObject);
-      _consoleColorer.call_isatty = BIND_1ARG_ZENMOCK_OBJECT(isatty_ZenMockObject);
+      _consoleColorer._call_fileno = BIND_1ARG_ZENMOCK_OBJECT(fileno_ZenMockObject);
+      _consoleColorer._call_isatty = BIND_1ARG_ZENMOCK_OBJECT(isatty_ZenMockObject);
       //
       const bool consoleSupportsColor = _consoleColorer.SupportsColor();
       //
@@ -152,8 +152,8 @@ namespace ZenUnit
    {
       ZENMOCK_NONVOID1_FREE(HANDLE, GetStdHandle, DWORD)
       ZENMOCK_NONVOID2_FREE(BOOL, SetConsoleTextAttribute, HANDLE, WORD)
-      _consoleColorer.call_GetStdHandle = BIND_1ARG_ZENMOCK_OBJECT(GetStdHandle_ZenMockObject);
-      _consoleColorer.call_SetConsoleTextAttribute = BIND_2ARG_ZENMOCK_OBJECT(SetConsoleTextAttribute_ZenMockObject);
+      _consoleColorer._call_GetStdHandle = BIND_1ARG_ZENMOCK_OBJECT(GetStdHandle_ZenMockObject);
+      _consoleColorer._call_SetConsoleTextAttribute = BIND_2ARG_ZENMOCK_OBJECT(SetConsoleTextAttribute_ZenMockObject);
 
       const HANDLE GetStdHandleReturnValue = reinterpret_cast<HANDLE>(1);
       GetStdHandle_ZenMockObject.Return(GetStdHandleReturnValue);

@@ -57,7 +57,7 @@ namespace ZenUnit
 
       CallResult failedConstructorCallResult;
       failedConstructorCallResult.testOutcome = nonSuccessOutcome;
-      _tryCatchCallerMock->CallMock.Return(failedConstructorCallResult);
+      _tryCatchCallerMock->RunTestPhaseMock.Return(failedConstructorCallResult);
 
       const unsigned microseconds = _stopwatchMock->StopMock.ReturnRandom();
 
@@ -68,7 +68,7 @@ namespace ZenUnit
       const vector<TestResult> testResults = _newableDeletableTest->RunTest();
       //
       ZEN(_stopwatchMock->StartMock.CalledOnce());
-      ZEN(_tryCatchCallerMock->CallMock.CalledOnceWith(
+      ZEN(_tryCatchCallerMock->RunTestPhaseMock.CalledOnceWith(
          &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor));
       ZEN(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(
          _newableDeletableTest->p_fullTestName, failedConstructorCallResult));
@@ -85,7 +85,7 @@ namespace ZenUnit
       successConstructorCallResult.testOutcome = TestOutcome::Success;
 
       CallResult destructorCallResult;
-      _tryCatchCallerMock->CallMock.ReturnValues(successConstructorCallResult, destructorCallResult);
+      _tryCatchCallerMock->RunTestPhaseMock.ReturnValues(successConstructorCallResult, destructorCallResult);
 
       const unsigned microseconds = _stopwatchMock->StopMock.ReturnRandom();
 
@@ -96,7 +96,7 @@ namespace ZenUnit
       const vector<TestResult> testResults = _newableDeletableTest->RunTest();
       //
       ZEN(_stopwatchMock->StartMock.CalledOnce());
-      ZEN(_tryCatchCallerMock->CallMock.CalledAsFollows(
+      ZEN(_tryCatchCallerMock->RunTestPhaseMock.CalledAsFollows(
       {
          { &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor },
          { &Test::CallDeleteTestClass, _newableDeletableTest.get(), TestPhase::Destructor }

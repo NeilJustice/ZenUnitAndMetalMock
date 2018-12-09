@@ -81,14 +81,14 @@ namespace ZenUnit
       TestOutcome constructorOutcome, TestOutcome::Anomaly, TestOutcome::Exception)
    {
       const CallResult constructorFailCallResult = CallResultWithOutcome(constructorOutcome);
-      _tryCatchCallerMock->CallMock.Return(constructorFailCallResult);
+      _tryCatchCallerMock->RunTestPhaseMock.Return(constructorFailCallResult);
 
       const TestResult constructorFailTestResult = TestResult::TestingNonDefault();
       _testResultFactoryMock->MakeConstructorFailMock.Return(constructorFailTestResult);
       //
       const TestResult testResult = _test->BaseRunTest();
       //
-      ZEN(_tryCatchCallerMock->CallMock.CalledOnceWith(&Test::CallNewTestClass, _test.get(), TestPhase::Constructor));
+      ZEN(_tryCatchCallerMock->RunTestPhaseMock.CalledOnceWith(&Test::CallNewTestClass, _test.get(), TestPhase::Constructor));
       ZEN(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(_test->p_fullTestName, constructorFailCallResult));
       ARE_EQUAL(constructorFailTestResult, testResult);
    }
@@ -101,7 +101,7 @@ namespace ZenUnit
       const CallResult constructorSuccessCallResult = CallResultWithOutcome(TestOutcome::Success);
       const CallResult startupFailCallResult = CallResultWithOutcome(startupOutcome);
       const CallResult destructorCallResult = CallResultWithOutcome(TestOutcome::Success);
-      _tryCatchCallerMock->CallMock.ReturnValues(constructorSuccessCallResult, startupFailCallResult, destructorCallResult);
+      _tryCatchCallerMock->RunTestPhaseMock.ReturnValues(constructorSuccessCallResult, startupFailCallResult, destructorCallResult);
 
       const TestResult startupFailTestResult = TestResult::TestingNonDefault();
       _testResultFactoryMock->MakeStartupFailMock.Return(startupFailTestResult);
@@ -111,7 +111,7 @@ namespace ZenUnit
       //
       const TestResult testResult = _test->BaseRunTest();
       //
-      ZEN(_tryCatchCallerMock->CallMock.CalledAsFollows(
+      ZEN(_tryCatchCallerMock->RunTestPhaseMock.CalledAsFollows(
       {
          { &Test::CallNewTestClass, _test.get(), TestPhase::Constructor },
          { &Test::CallStartup, _test.get(), TestPhase::Startup },
@@ -125,7 +125,7 @@ namespace ZenUnit
    TEST(BaseRunTest_AllTestPhasesSucceed_ReturnsExpectedTestResult)
    {
       const CallResult successCallResult = CallResultWithOutcome(TestOutcome::Success);
-      _tryCatchCallerMock->CallMock.Return(successCallResult);
+      _tryCatchCallerMock->RunTestPhaseMock.Return(successCallResult);
 
       const TestResult sixArgTestResult = TestResult::TestingNonDefault();
       _testResultFactoryMock->MakeFullTestResultMock.Return(sixArgTestResult);
@@ -135,7 +135,7 @@ namespace ZenUnit
       //
       const TestResult testResult = _test->BaseRunTest();
       //
-      ZEN(_tryCatchCallerMock->CallMock.CalledAsFollows(
+      ZEN(_tryCatchCallerMock->RunTestPhaseMock.CalledAsFollows(
       {
          { &Test::CallNewTestClass, _test.get(), TestPhase::Constructor },
          { &Test::CallStartup, _test.get(), TestPhase::Startup },

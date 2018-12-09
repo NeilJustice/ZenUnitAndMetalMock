@@ -14,13 +14,13 @@ namespace ZenUnit
 
    STARTUP
    {
-      _stopwatch.call_highres_now = BIND_0ARG_ZENMOCK_OBJECT(now_ZenMockObject);
+      _stopwatch._call_highres_now = BIND_0ARG_ZENMOCK_OBJECT(now_ZenMockObject);
    }
 
    TEST(Constructor_SetsNowFunction)
    {
       Stopwatch stopwatch;
-      STD_FUNCTION_TARGETS(chrono::high_resolution_clock::now, stopwatch.call_highres_now);
+      STD_FUNCTION_TARGETS(chrono::high_resolution_clock::now, stopwatch._call_highres_now);
       ARE_EQUAL(chrono::time_point<chrono::high_resolution_clock>(), stopwatch._startTime);
    }
 
