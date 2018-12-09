@@ -13,7 +13,7 @@ namespace ZenUnit
    AFACT(Constructor_NewsComponents_SetsGetArgsFunction)
    AFACT(RunTestPhase_FunctionDoesNotThrow_ReturnsNoExceptionThrownTestPhaseResult)
    AFACT(RunTestPhase_FunctionThrowsAnomaly_TestPhaseIsTestBody_ReturnsAnomalyResult)
-   FACTS(RunTestPhase_FunctionThrowsAnomaly_TestPhaseIsNotTestBody_ReturnsAnomalyResult)
+   FACTS(RunTestPhase_FunctionThrowsAnomaly_TestPhaseIsNotTestBody_WritesErrorMessageAndExits0Or1DependingOnArg0Argument)
    AFACT(RunTestPhase_FunctionThrowsZenMockException_ReturnsExceptionResult)
    FACTS(RunTestPhase_FunctionThrowsStdException_ReturnsExceptionResult)
    FACTS(RunTestPhase_FunctionThrowsAnIntToTriggerDotDotDotHandler_PrintsFailureDetails_Exits1)
@@ -144,7 +144,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
    }
 
-   TEST1X1(RunTestPhase_FunctionThrowsAnomaly_TestPhaseIsNotTestBody_ReturnsAnomalyResult,
+   TEST1X1(RunTestPhase_FunctionThrowsAnomaly_TestPhaseIsNotTestBody_WritesErrorMessageAndExits0Or1DependingOnArg0Argument,
       TestPhase testPhase,
       TestPhase::Constructor,
       TestPhase::Startup,
@@ -175,10 +175,10 @@ namespace ZenUnit
       ZEN(_consoleMock->WriteMock.CalledOnceWith(_testPhaseSuffix));
       const Anomaly expectedAnomaly("NonDefault", "NonDefault", FileLine(), "", "");
       ZEN(_consoleMock->WriteLineMock.CalledOnceWith(expectedAnomaly.why));
-      ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith("\n========\nFATALITY\n========", Color::Yellow));
+      ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith("\n===========\nFatal Error\n===========", Color::Yellow));
       const int expectedExitCode = args.exit0 ? 0 : 1;
       ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(
-         "ZenUnit::Anomaly thrown during test class construction, STARTUP, or CLEANUP.\nFail fasting with exit code " +
+         "A ZenUnit::Anomaly was thrown from a test class constructor, STARTUP function, or CLEANUP function.\nFail fasting with exit code " +
          std::to_string(expectedExitCode) + ".", expectedExitCode));
       ZEN(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
          &_testPhaseRunner, &TestPhaseRunner::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Anomaly, args));
@@ -308,7 +308,7 @@ namespace ZenUnit
       //
       ZEN(GetArgs_ZenMockObject.CalledOnce());
       AssertStopwatchStartAndStopCalled();
-      ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith("\n========\nFATALITY\n========", Color::Yellow));
+      ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith("\n===========\nFatal Error\n===========", Color::Yellow));
       ZEN(_testPhaseTranslatorMock->TestPhaseToTestPhaseNameMock.CalledOnceWith(testPhase));
       const string expectedExitMessage = String::Concat(
          "Fatal ... exception thrown during test phase: ", testPhaseName, ".\nFail fasting with exit code ", expectedExitCode, ".");

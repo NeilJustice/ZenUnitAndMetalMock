@@ -4936,8 +4936,9 @@ Testing Rigor Options:
          if (testPhase != TestPhase::TestBody)
          {
             const int exitCode = args.exit0 ? 0 : 1;
-            _console->WriteLineColor("\n========\nFATALITY\n========", Color::Yellow);
-            _console->WriteLineAndExit("ZenUnit::Anomaly thrown during test class construction, STARTUP, or CLEANUP.\nFail fasting with exit code " + std::to_string(exitCode) + ".", exitCode);
+            _console->WriteLineColor("\n===========\nFatal Error\n===========", Color::Yellow);
+            _console->WriteLineAndExit("A ZenUnit::Anomaly was thrown from a test class constructor, STARTUP function, or CLEANUP function.\nFail fasting with exit code "
+               + std::to_string(exitCode) + ".", exitCode);
          }
       }
       catch (const std::exception& e)
@@ -4969,7 +4970,7 @@ Testing Rigor Options:
       catch (...)
       {
          _stopwatch->Stop();
-         _console->WriteLineColor("\n========\nFATALITY\n========", Color::Yellow);
+         _console->WriteLineColor("\n===========\nFatal Error\n===========", Color::Yellow);
          const char* const testPhaseName = _testPhaseTranslator->TestPhaseToTestPhaseName(testPhase);
          const int exitCode = args.exit0 ? 0 : 1;
          const std::string exitLine = String::Concat(
