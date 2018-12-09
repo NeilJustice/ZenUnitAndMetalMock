@@ -13,7 +13,7 @@
       {
          "taskName": "Build Debug",
          "args": [ "cd ${workspaceRoot}/Debug && time ninja -v" ],
-         "isBuildCommand": true,
+         "isBuildCommand": false,
          "problemMatcher":
          {
             "owner": "cpp",
@@ -28,7 +28,7 @@
       {
          "taskName": "Build Release",
          "args": [ "cd ${workspaceRoot}/Release && time ninja -v" ],
-         "isBuildCommand": false,
+         "isBuildCommand": true,
          "problemMatcher":
          {
             "owner": "cpp",
@@ -42,16 +42,17 @@
       },
       {
          "taskName": "Run Debug",
-         "isTestCommand": true,
+         "isTestCommand": false,
          "args": [ "${workspaceRoot}/Debug/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests" ]
       },
       {
          "taskName": "Run Release",
          "isTestCommand": false,
-         "args": [ "${workspaceRoot}/Release/ZenUnitLibraryTests/ZenUnitLibraryTests" ]
+         "args": [ "${workspaceRoot}/Release/ZenUnitLibraryTests/ZenUnitLibraryTests && ${workspaceRoot}/Release/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests" ]
       },
       {
          "taskName": "Run Python",
+         "isTestCommand": true,
          "args": [ "export PYTHONPATH=.. && python3 ${file}" ]
       },
       {
@@ -76,11 +77,11 @@
       },
       {
          "taskName": "Clean Debug & Pch",
-         "args": [ "rm -f ${workspaceRoot}/ZenUnit/pch.h.gch && rm -f ${workspaceRoot}/ZenUnitTests/pch.h.gch && cd ${workspaceRoot}/Debug && time ninja clean" ]
+         "args": [ "rm -f ${workspaceRoot}/ZenUnit/pch.h.gch && rm -f ${workspaceRoot}/ZenUnitLibraryTests/pch.h.gch && rm -f ${workspaceRoot}/ZenUnitUtilsAndAssertionTests/pch.h.gch && cd ${workspaceRoot}/Debug && time ninja clean" ]
       },
       {
          "taskName": "Clean Release & Pch",
-         "args": [ "rm -f ${workspaceRoot}/ZenUnit/pch.h.gch && rm -f ${workspaceRoot}/ZenUnitTests/pch.h.gch && cd ${workspaceRoot}/Release && time ninja clean" ]
+         "args": [ "rm -f ${workspaceRoot}/ZenUnit/pch.h.gch && rm -f ${workspaceRoot}/ZenUnitLibraryTests/pch.h.gch && rm -f ${workspaceRoot}/ZenUnitUtilsAndAssertionTests/pch.h.gch && cd ${workspaceRoot}/Release && time ninja clean" ]
       },
       {
          "taskName": "clang++ Check Syntax",

@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
-CXX=/usr/bin/g++ python3 ZenUnitPy/ZenUnitPy/BuildZenUnit.py --generator=Ninja --buildType=Debug --definitions=""
+CXX=/usr/bin/g++ python3 ZenUnitPy/ZenUnitPy/BuildZenUnitOrZenMock.py --ZenUnitOrZenMock=ZenUnit --generator=Ninja --buildType=Debug --definitions=""
 

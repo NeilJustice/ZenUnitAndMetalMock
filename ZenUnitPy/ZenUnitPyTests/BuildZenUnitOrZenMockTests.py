@@ -9,7 +9,8 @@ import Random
 
 testNames = [
 'main_ArgsLengthNot4_PrintsUsageAndExits1_test',
-'main_ArgsLength5_CMakes_Builds_RunsTestsIfLinuxOtherwisePostBuildStepRunsTestsOnWindows_test',
+'main_ArgsLength5_ZenUnitOrZenMockIsZenUnit_CMakes_Builds_RunsTestsIfLinuxOtherwisePostBuildStepRunsTestsOnWindows_test',
+'main_ArgsLength5_ZenUnitOrZenMockIsZenMock_CMakes_Builds_RunsTestsIfLinuxOtherwisePostBuildStepRunsTestsOnWindows_test',
 'linux_cmake_and_build_CMakes_BuildsWithNinja_test',
 'windows_cmake_and_build_CMakes_BuildsWithMSBuild_test',
 ]
@@ -40,7 +41,7 @@ class BuildZenUnitTests(unittest.TestCase):
       testcase(4)
       testcase(6)
 
-   def main_ArgsLength5_CMakes_Builds_RunsTestsIfLinuxOtherwisePostBuildStepRunsTestsOnWindows_test(self):
+   def main_ArgsLength5_ZenUnitOrZenMockIsZenUnit_CMakes_Builds_RunsTestsIfLinuxOtherwisePostBuildStepRunsTestsOnWindows_test(self):
       @patch('platform.system', spec_set=True)
       @patch('ZenUnitPy.ArgParser.parse_arg', spec_set=True)
       @patch('ZenUnitPy.BuildZenUnitOrZenMock.linux_cmake_and_build', spec_set=True)
@@ -49,9 +50,9 @@ class BuildZenUnitTests(unittest.TestCase):
       @patch('os.chdir', spec_true=True)
       def testcase(platformSystem, expectLinux, _1, _2, _3, _4, _5, _6):
          with self.subTest(f'{platformSystem}, {expectLinux}'):
-            ArgParser.parse_arg.side_effect = [self.ZenUnitOrZenMock, self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions]
+            ArgParser.parse_arg.side_effect = ['ZenUnit', self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions]
             platform.system.return_value = platformSystem
-            args = [Random.string(), self.ZenUnitOrZenMock, self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions]
+            args = [Random.string(), Random.string(), Random.string(), Random.string(), Random.string()]
             #
             BuildZenUnitOrZenMock.main(args)
             #
@@ -65,7 +66,46 @@ class BuildZenUnitTests(unittest.TestCase):
             platform.system.assert_called_once_with()
             if expectLinux:
                BuildZenUnitOrZenMock.linux_cmake_and_build.assert_called_once_with(self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
-               Process.run.assert_called_once_with(f'{self.ZenUnitOrZenMock}Tests/{self.ZenUnitOrZenMock}Tests')
+               self.assertEqual(2, len(Process.run.call_args_list))
+               Process.run.assert_has_calls([
+                  call('ZenUnitLibraryTests/ZenUnitLibraryTests'),
+                  call('ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests')])
+               os.chdir.assert_called_once_with('..')
+            else:
+               BuildZenUnitOrZenMock.windows_cmake_and_build.assert_called_once_with(self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
+               Process.run.assert_not_called()
+               os.chdir.assert_not_called()
+      testcase('Linux', True)
+      testcase('linux', True)
+      testcase('Windows', False)
+      testcase('OSX', False)
+
+   def main_ArgsLength5_ZenUnitOrZenMockIsZenMock_CMakes_Builds_RunsTestsIfLinuxOtherwisePostBuildStepRunsTestsOnWindows_test(self):
+      @patch('platform.system', spec_set=True)
+      @patch('ZenUnitPy.ArgParser.parse_arg', spec_set=True)
+      @patch('ZenUnitPy.BuildZenUnitOrZenMock.linux_cmake_and_build', spec_set=True)
+      @patch('ZenUnitPy.BuildZenUnitOrZenMock.windows_cmake_and_build', spec_set=True)
+      @patch('ZenUnitPy.Process.run', spec_set=True)
+      @patch('os.chdir', spec_true=True)
+      def testcase(platformSystem, expectLinux, _1, _2, _3, _4, _5, _6):
+         with self.subTest(f'{platformSystem}, {expectLinux}'):
+            ArgParser.parse_arg.side_effect = ['ZenMock', self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions]
+            platform.system.return_value = platformSystem
+            args = [Random.string(), Random.string(), Random.string(), Random.string(), Random.string()]
+            #
+            BuildZenUnitOrZenMock.main(args)
+            #
+            self.assertEqual(4, len(ArgParser.parse_arg.call_args_list))
+            ArgParser.parse_arg.assert_has_calls([
+               call('--ZenUnitOrZenMock', args[1]),
+               call('--generator', args[2]),
+               call('--buildType', args[3]),
+               call('--definitions', args[4])
+            ])
+            platform.system.assert_called_once_with()
+            if expectLinux:
+               BuildZenUnitOrZenMock.linux_cmake_and_build.assert_called_once_with(self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
+               Process.run.assert_called_once_with('ZenMockTests/ZenMockTests')
                os.chdir.assert_called_once_with('..')
             else:
                BuildZenUnitOrZenMock.windows_cmake_and_build.assert_called_once_with(self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)

@@ -19,7 +19,11 @@ def main(args):
       platformSystem = platform.system().casefold()
       if platformSystem == 'linux':
          linux_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions)
-         Process.run(f'{zenUnitOrZenMock}Tests/{zenUnitOrZenMock}Tests')
+         if zenUnitOrZenMock == 'ZenMock':
+            Process.run(f'ZenMockTests/ZenMockTests')
+         else:
+            Process.run(f'ZenUnitLibraryTests/ZenUnitLibraryTests')
+            Process.run(f'ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests')
          os.chdir('..')
       else:
          windows_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions)
