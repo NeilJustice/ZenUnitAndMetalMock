@@ -18,7 +18,7 @@
       * [Pointer Assertions](#pointer-assertions)
       * [Test Assertions](#test-assertions)
       * [Function Assertions](#function-assertions)
-   * [Test Class And Test Defining Macros](#test-class-and-test-defining-macros)
+   * [Macros For Defining Test Classes And Tests](#macros-for-defining-test-classes-and-tests)
    * [Maximizing Mutation Coverage With Random Value Testing](#maximizing-mutation-coverage-with-random-value-testing)
    * [ZenMock](#zenmock)
 
@@ -321,7 +321,7 @@ int main(int argc, char* argv[])
 #### Value Assertions
 |||
 |-|-|
-|`ARE_EQUAL(expectedValue, actualValue, messages...)`|By default, asserts that `expectedValue == actualValue` returns true, otherwise throws a `ZenUnit::Anomaly`, which is caught by ZenUnit to fail the current test. `messages...` are variables of any type writable with `operator<<(std::ostream&, const T&)` or `ZenUnit::Printer<T>::Print(std::ostream&, const T&)`. Custom `ARE_EQUAL` behavior can be defined for type T by way of defining a `ZenUnit::Equalizer<T>` struct specialization, detailed below.|
+|`ARE_EQUAL(expectedValue, actualValue, messages...)`|By default, asserts that `expectedValue == actualValue` returns true, otherwise throws a `ZenUnit::Anomaly`, which is caught by ZenUnit to fail the current test. `messages...` are variables of any type writable with `operator<<(std::ostream&, const T&)` or `ZenUnit::Printer<T>::Print(std::ostream&, const T&)`.|
 |`ARE_COPIES(expectedObject, actualObject, messages...)`|Asserts that `&expectedObject != &actualObject` then asserts `ARE_EQUAL(expectedObject, actualObject)`.|
 |`IS_TRUE(value, messages...)`|Asserts that `value` is true.|
 |`IS_FALSE(value, messages...)`|Asserts that `value` is false.|
@@ -368,7 +368,7 @@ int main(int argc, char* argv[])
 |-|-|
 |`STD_FUNCTION_TARGETS(expectedStdFunctionTarget, stdFunction, messages...)`|First asserts `IS_TRUE(stdFunction)`, which asserts that stdFunction points to a function, then asserts `ARE_EQUAL(expectedStdFunctionTarget, *stdFunction.target<ExpectedStdFunctionTargetType*>())`. This is a key assertion to call prior to mocking out a `std::function` with a [ZenMock](https://github.com/NeilJustice/ZenMock) mock object to confirm that the `std::function` being mocked-out points to an expected static or free function.|
 
-### Test Class And Test Defining Macros
+### Macros For Defining Test Classes And Tests
 
 |Test Classes|Description|
 |------------|-----------|
@@ -416,4 +416,4 @@ ZenUnit provides the following random value generating functions for writing uni
 
 ### ZenMock
 
-[ZenMock](https://github.com/NeilJustice/ZenMock) is a C++17 single-header mocking library powered by ZenUnit that features a high-readability arrange-act-assert syntax for confirming the correctness of calls and return values to and from virtual, non-virtual, static, and free functions.
+[ZenMock](https://github.com/NeilJustice/ZenMock) is a C++17 single-header mocking framework powered by ZenUnit that has a high-readability arrange-act-assert syntax for confirming the correctness of calls and return values to and from virtual, non-virtual, static, and free functions.
