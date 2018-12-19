@@ -1,6 +1,6 @@
 <h1 align="center">ZenUnit</h1>
 
-<h4 align="center">ZenUnit is a single-header C++17 unit testing framework with a convenient syntax for writing value-parameterized and type-parameterized unit tests, and provides random value generators and exactness-focused assertions for maximizing mutation coverage.</h4>
+<h4 align="center">ZenUnit is a single-header C++17 unit testing framework with a convenient syntax for writing value-parameterized and type-parameterized unit tests.</h4>
 
 |Build Type|Build Status|
 |----------|------------|
@@ -34,14 +34,10 @@ std::string FizzBuzz(unsigned endNumber);
 TESTS(FizzBuzzTests)
 // By way of a carefully-considered design decision,
 // in ZenUnit test names are duplicated between the FACTS section and the EVIDENCE section.
-// Having test names always up top instead of scattered throughout often large test files
-// makes it exceptionally easy to read the "lay of the land"
+// Having test names always up top instead of scattered throughout test files
+// makes it exceptionally easy to gauge the lay of the land
 // with respect to what a test class tests, and by extension,
-// see clearly what a class under test implements.
-// With code being read much more often than it is written,
-// I have found it time and time again to have been well worth it
-// to exchange the few seconds it takes to duplicate a test name
-// to gain long term test class readability.
+// what a class under test implements.
 
 // AFACT declares a non-value-parameterized test.
 AFACT(FizzBuzz_EndNumber0_Throws)
