@@ -16,6 +16,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedTestResult.responsibleTestPhaseResultField, actualTestResult.responsibleTestPhaseResultField);
       ARE_EQUAL(expectedTestResult.testOutcome, actualTestResult.testOutcome);
       ARE_EQUAL(expectedTestResult.testCaseNumber, actualTestResult.testCaseNumber);
+      ARE_EQUAL(expectedTestResult.totalTestCases, actualTestResult.totalTestCases);
       ARE_EQUAL(expectedTestResult.microseconds, actualTestResult.microseconds);
    }
 }

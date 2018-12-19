@@ -66,6 +66,7 @@ namespace ZenUnit
       expectedDefaultTestResult.responsibleTestPhaseResultField = nullptr;
       expectedDefaultTestResult.testOutcome = TestOutcome::Unset;
       expectedDefaultTestResult.testCaseNumber = numeric_limits<size_t>::max();
+      expectedDefaultTestResult.totalTestCases = 0;
       expectedDefaultTestResult.microseconds = 0;
       ARE_EQUAL(expectedDefaultTestResult, defaultTestResult);
    }
@@ -140,6 +141,7 @@ namespace ZenUnit
       expectedTestResult.responsibleTestPhaseResultField = expectedResponsibleTestPhaseResultField;
       expectedTestResult.testOutcome = expectedOverallOutcome;
       expectedTestResult.testCaseNumber = numeric_limits<size_t>::max();
+      expectedTestResult.totalTestCases = 0;
       expectedTestResult.microseconds = MaxTestMilliseconds * 1000 + relativeMicroseconds;
       ARE_EQUAL(expectedTestResult, testResult);
    }
@@ -151,8 +153,7 @@ namespace ZenUnit
    {
       ConstructorTestPhaseResult.testOutcome = constructorOutcome;
       //
-      const TestResult constructorFailTestResult =
-         TestResult::ConstructorFail(FullTestNameValue, ConstructorTestPhaseResult);
+      const TestResult constructorFailTestResult = TestResult::ConstructorFail(FullTestNameValue, ConstructorTestPhaseResult);
       //
       TestResult expectedTestResult;
       expectedTestResult.fullTestName = FullTestNameValue;
@@ -192,8 +193,7 @@ namespace ZenUnit
       TestPhaseResult destructorTestPhaseResult(TestPhase::Destructor);
       destructorTestPhaseResult.microseconds = 20;
       //
-      const TestResult testResult = TestResult::CtorDtorSuccess(
-         FullTestNameValue, constructorTestPhaseResult, destructorTestPhaseResult);
+      const TestResult testResult = TestResult::CtorDtorSuccess(FullTestNameValue, constructorTestPhaseResult, destructorTestPhaseResult);
       //
       TestResult expectedTestResult;
       expectedTestResult.fullTestName = FullTestNameValue;
@@ -389,12 +389,13 @@ namespace ZenUnit
       {
          _consoleMock.WriteMock.Expect();
       }
+      _testResult.totalTestCases = ZenUnit::Random<size_t>();
       //
       _testResult.WriteTestCaseNumberIfAny(&_consoleMock, testCaseNumber);
       //
       if (expectConsoleWriteLine)
       {
-         ZEN(_consoleMock.WriteMock.CalledOnceWith(" test case " + to_string(testCaseNumber)));
+         ZEN(_consoleMock.WriteMock.CalledOnceWith(" test case " + to_string(testCaseNumber) + "/" + to_string(_testResult.totalTestCases)));
       }
    }
 
@@ -425,8 +426,9 @@ namespace ZenUnit
 
       EQUALIZER_THROWS(TestResult, responsibleTestPhaseResultField, &TestResult::constructorTestPhaseResult);
       EQUALIZER_THROWS(TestResult, testOutcome, TestOutcome::Anomaly);
-      EQUALIZER_THROWS(TestResult, testCaseNumber, short(10));
-      EQUALIZER_THROWS(TestResult, microseconds, 20u);
+      EQUALIZER_THROWS(TestResult, testCaseNumber, size_t(10));
+      EQUALIZER_THROWS(TestResult, totalTestCases, size_t(20));
+      EQUALIZER_THROWS(TestResult, microseconds, 30u);
    }
 
    RUN_TESTS(TestResultTests)

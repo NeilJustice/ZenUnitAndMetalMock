@@ -3560,6 +3560,7 @@ Testing Rigor Options:
       TestOutcome testOutcome;
       unsigned microseconds;
       size_t testCaseNumber;
+      size_t totalTestCases;
       std::function<std::string(unsigned)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
 
       TestResult() noexcept
@@ -3567,6 +3568,7 @@ Testing Rigor Options:
          , testOutcome(TestOutcome::Unset)
          , microseconds(0)
          , testCaseNumber(std::numeric_limits<size_t>::max())
+         , totalTestCases(0)
          , _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(
             Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
       {
@@ -3590,6 +3592,7 @@ Testing Rigor Options:
          , testOutcome(TestOutcome::Unset)
          , microseconds(0)
          , testCaseNumber(std::numeric_limits<size_t>::max())
+         , totalTestCases(0)
          , _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(
             Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
       {
@@ -3767,7 +3770,7 @@ Testing Rigor Options:
       {
          if (testCaseNumberArgument != std::numeric_limits<size_t>::max())
          {
-            console->Write(" test case " + std::to_string(testCaseNumberArgument));
+            console->Write(" test case " + std::to_string(testCaseNumberArgument) + "/" + std::to_string(totalTestCases));
          }
       }
 
@@ -5517,6 +5520,7 @@ Testing Rigor Options:
          PrintTestCaseNumberThenArgsThenArrow(possiblyRandomizedTestCaseNumber, splitTestCaseArgs);
          TestResult testResult = MockableCallBaseRunTest();
          testResult.testCaseNumber = possiblyRandomizedTestCaseNumber;
+         testResult.totalTestCases = NumberOfTestCases();
          _testResults.push_back(testResult);
          WriteLineOKIfSuccess(testResult);
       }

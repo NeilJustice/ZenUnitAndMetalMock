@@ -21,7 +21,8 @@ namespace ZenUnit
    AFACT(RunTest_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
    AFACT(RunTestCaseIfNotFilteredOut_ShouldNotRunTestCase_DoesNotCallRunTestCase)
    AFACT(RunTestCaseIfNotFilteredOut_ShouldRunTestCase_CallsRunTestCase)
-   AFACT(RunTestCase_DoesSo)
+   AFACT(RunTestCase_1X1_DoesSo)
+   AFACT(RunTestCase_2X2_DoesSo)
    AFACT(Exit1IfNonExistentTestCaseNumberSpecified_NonEmptyTestResults_DoesNothing)
    AFACT(Exit1IfNonExistentTestCaseNumberSpecified_EmptyTestResults_WritesErrorMessage_Exits1)
    AFACT(ShouldRunTestCase_EmptyRunFilters_ReturnsTrue)
@@ -246,7 +247,7 @@ namespace ZenUnit
          CalledOnceWith(testCaseNumber, splitTestCaseArgs));
    }
 
-   TEST(RunTestCase_DoesSo)
+   TEST(RunTestCase_1X1_DoesSo)
    {
       class Test1X1SelfMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
       {
@@ -284,10 +285,56 @@ namespace ZenUnit
       ZEN(test1X1SelfMocked.MockableCallBaseRunTestMock.CalledOnce());
       TestResult expectedTestResult;
       expectedTestResult.testCaseNumber = testCaseNumber;
+      expectedTestResult.totalTestCases = 2;
       expectedTestResult.fullTestName.testName = testName.c_str();
       ZEN(test1X1SelfMocked.WriteLineOKIfSuccessMock.CalledOnceWith(expectedTestResult));
       vector<TestResult> expectedResulingTestResults = { expectedTestResult };
       VECTORS_EQUAL(expectedResulingTestResults, test1X1SelfMocked._testResults);
+   }
+
+   TEST(RunTestCase_2X2_DoesSo)
+   {
+      class Test2X2SelfMocked : public Zen::Mock<TestNXN<TestingTestClass, 2, int, int, int, int, int, int>>
+      {
+      public:
+         ZENMOCK_VOID2_CONST(PrintTestCaseNumberThenArgsThenArrow, size_t, const vector<string>&)
+         ZENMOCK_NONVOID0(TestResult, MockableCallBaseRunTest)
+         ZENMOCK_VOID1_CONST(WriteLineOKIfSuccess, const TestResult&)
+         Test2X2SelfMocked() noexcept
+            : Zen::Mock<TestNXN<TestingTestClass, 2, int, int, int, int, int, int>>(
+               "", // testClassName
+               "", // testName
+               "", // testCaseArgsText
+               0, 0,
+               0, 0,
+               0, 0)
+            {
+            }
+      } test2X2SelfMocked;
+
+      test2X2SelfMocked.PrintTestCaseNumberThenArgsThenArrowMock.Expect();
+
+      TestResult testResult;
+      const string testName = ZenUnit::Random<string>();
+      testResult.fullTestName.testName = testName.c_str();
+      test2X2SelfMocked.MockableCallBaseRunTestMock.Return(testResult);
+
+      test2X2SelfMocked.WriteLineOKIfSuccessMock.Expect();
+
+      const size_t testCaseNumber = ZenUnit::Random<size_t>();
+      const vector<string> splitTestCaseArgs = ZenUnit::RandomVector<string>();
+      //
+      test2X2SelfMocked.RunTestCase(testCaseNumber, splitTestCaseArgs);
+      //
+      ZEN(test2X2SelfMocked.PrintTestCaseNumberThenArgsThenArrowMock.CalledOnceWith(testCaseNumber, splitTestCaseArgs));
+      ZEN(test2X2SelfMocked.MockableCallBaseRunTestMock.CalledOnce());
+      TestResult expectedTestResult;
+      expectedTestResult.testCaseNumber = testCaseNumber;
+      expectedTestResult.totalTestCases = 3;
+      expectedTestResult.fullTestName.testName = testName.c_str();
+      ZEN(test2X2SelfMocked.WriteLineOKIfSuccessMock.CalledOnceWith(expectedTestResult));
+      vector<TestResult> expectedResulingTestResults = { expectedTestResult };
+      VECTORS_EQUAL(expectedResulingTestResults, test2X2SelfMocked._testResults);
    }
 
    TEST(Exit1IfNonExistentTestCaseNumberSpecified_NonEmptyTestResults_DoesNothing)
