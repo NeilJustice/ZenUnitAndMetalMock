@@ -22,7 +22,7 @@
    * [Maximizing Mutation Coverage With Random Value Testing](#maximizing-mutation-coverage-with-random-value-testing)
    * [ZenMock](#zenmock)
 
-### ZenUnit philosophy and the N-by-N value-parameterized test syntax
+### ZenUnit design and the N-by-N value-parameterized test syntax
 
 ```cpp
 #include "ZenUnit.h" // Single header
