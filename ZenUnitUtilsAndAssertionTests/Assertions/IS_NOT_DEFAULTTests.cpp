@@ -2,7 +2,7 @@
 
 namespace ZenUnit
 {
-   TESTS(IS_NOT_ZEROTests)
+   TESTS(IS_NOT_DEFAULTTests)
    AFACT(ValueIsNotDefault_DoesNotThrow)
    AFACT(IntIsZero_Throws)
    AFACT(DoubleIsZero_Throws)
@@ -30,41 +30,41 @@ namespace ZenUnit
 
    TEST(ValueIsNotDefault_DoesNotThrow)
    {
-      IS_NOT_ZERO(-1);
-      IS_NOT_ZERO(1);
+      IS_NOT_DEFAULT(-1);
+      IS_NOT_DEFAULT(1);
 
-      IS_NOT_ZERO(-1.1);
-      IS_NOT_ZERO(1.1);
+      IS_NOT_DEFAULT(-1.1);
+      IS_NOT_DEFAULT(1.1);
 
-      IS_NOT_ZERO(-1.1f);
-      IS_NOT_ZERO(1.1f);
+      IS_NOT_DEFAULT(-1.1f);
+      IS_NOT_DEFAULT(1.1f);
 
       int nonConstInt = 1;
-      IS_NOT_ZERO(nonConstInt);
+      IS_NOT_DEFAULT(nonConstInt);
 
       const int constInt = 1;
-      IS_NOT_ZERO(constInt);
+      IS_NOT_DEFAULT(constInt);
 
       const int* nonNullNonConstIntPointer = reinterpret_cast<int*>(1);
-      IS_NOT_ZERO(nonNullNonConstIntPointer);
+      IS_NOT_DEFAULT(nonNullNonConstIntPointer);
 
       const int* const nonNullConstIntPointer = reinterpret_cast<int*>(1);
-      IS_NOT_ZERO(nonNullConstIntPointer);
+      IS_NOT_DEFAULT(nonNullConstIntPointer);
 
       const string nonDefaultString = ZenUnit::Random<string>();
-      IS_NOT_ZERO(nonDefaultString);
+      IS_NOT_DEFAULT(nonDefaultString);
 
       const vector<int> nonDefaultVector = { 1, 2, 3 };
-      IS_NOT_ZERO(nonDefaultVector);
+      IS_NOT_DEFAULT(nonDefaultVector);
 
       const UserType nonDefaultUserType(1);
-      IS_NOT_ZERO(nonDefaultUserType);
+      IS_NOT_DEFAULT(nonDefaultUserType);
    }
 
    TEST(IntIsZero_Throws)
    {
-      THROWS(IS_NOT_ZERO(0), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: IS_NOT_ZERO(0)",
+      THROWS(IS_NOT_DEFAULT(0), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: IS_NOT_DEFAULT(0)",
 "Expected: Not T{}",
 "  Actual: 0",
 "File.cpp(1)"));
@@ -72,8 +72,8 @@ namespace ZenUnit
 
    TEST(DoubleIsZero_Throws)
    {
-      THROWS(IS_NOT_ZERO(0.0), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: IS_NOT_ZERO(0.0)",
+      THROWS(IS_NOT_DEFAULT(0.0), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: IS_NOT_DEFAULT(0.0)",
 "Expected: Not T{}",
 "  Actual: 0.000000",
 "File.cpp(1)"));
@@ -81,8 +81,8 @@ namespace ZenUnit
 
    TEST(FloatIsZero_Throws)
    {
-      THROWS(IS_NOT_ZERO(0.0f), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: IS_NOT_ZERO(0.0f)",
+      THROWS(IS_NOT_DEFAULT(0.0f), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: IS_NOT_DEFAULT(0.0f)",
 "Expected: Not T{}",
 "  Actual: 0.000000f",
 "File.cpp(1)"));
@@ -90,8 +90,8 @@ namespace ZenUnit
 
    TEST(StringIsEmptyString_Throws)
    {
-      THROWS(IS_NOT_ZERO(""s), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: IS_NOT_ZERO(\"\"s)",
+      THROWS(IS_NOT_DEFAULT(""s), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: IS_NOT_DEFAULT(\"\"s)",
 "Expected: Not T{}",
 "  Actual: \"\"",
 "File.cpp(1)"));
@@ -100,8 +100,8 @@ namespace ZenUnit
    TEST(IntVectorIsEmpty_Throws)
    {
       const vector<int> defaultIntVector;
-      THROWS(IS_NOT_ZERO(defaultIntVector), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: IS_NOT_ZERO(defaultIntVector)",
+      THROWS(IS_NOT_DEFAULT(defaultIntVector), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: IS_NOT_DEFAULT(defaultIntVector)",
 "Expected: Not T{}",
 "  Actual: std::vector<int> (size 0):",
 "{",
@@ -112,12 +112,12 @@ namespace ZenUnit
    TEST(UserTypeIsDefault_Throws)
    {
       const UserType defaultUserType;
-      THROWS(IS_NOT_ZERO(defaultUserType), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: IS_NOT_ZERO(defaultUserType)",
+      THROWS(IS_NOT_DEFAULT(defaultUserType), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: IS_NOT_DEFAULT(defaultUserType)",
 "Expected: Not T{}",
 "  Actual: UserType@0",
 "File.cpp(1)"));
    }
 
-   RUN_TESTS(IS_NOT_ZEROTests)
+   RUN_TESTS(IS_NOT_DEFAULTTests)
 }
