@@ -32,7 +32,7 @@ class BuildZenUnitTests(unittest.TestCase):
             BuildZenUnitOrZenMock.main(invalidArgs)
             #
             Util.print_and_exit.assert_called_once_with(
-'Invalid args: ' + ' '.join(invalidArgs) + '\n' +
+'Invalid args: ' + ' '.join(invalidArgs) + '\n'
 """Usage: python3 BuildZenUnitOrZenMock.py --ZenUnitOrZenMock=<ZenUnitOrZenMock> --generator=<CMakeGenerator> --buildType=<CMakeBuildType> --definitions=<QuotedSpaceSeparatedCMakeDefinitions>""", 1)
       testcase(0)
       testcase(1)

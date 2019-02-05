@@ -9,7 +9,7 @@ from ZenUnitPy import ArgParser, CMake, Process, Util
 def main(args):
    if len(args) != 5:
       Util.print_and_exit(
-'Invalid args: ' + ' '.join(args) + '\n' +
+'Invalid args: ' + ' '.join(args) + '\n'
 """Usage: python3 BuildZenUnitOrZenMock.py --ZenUnitOrZenMock=<ZenUnitOrZenMock> --generator=<CMakeGenerator> --buildType=<CMakeBuildType> --definitions=<QuotedSpaceSeparatedCMakeDefinitions>""", 1)
    else:
       zenUnitOrZenMock = ArgParser.parse_arg('--ZenUnitOrZenMock', args[1])
