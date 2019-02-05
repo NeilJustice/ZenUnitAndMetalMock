@@ -74,12 +74,12 @@
    ZenUnit::IS_FALSE_Defined(value, #value, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that value == T{}.
-#define IS_DEFAULT(value, ...) \
-   ZenUnit::IS_DEFAULT_Defined(VRT(value), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+#define IS_ZERO(value, ...) \
+   ZenUnit::IS_ZERO_Defined(VRT(value), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that value != T{}.
-#define IS_NOT_DEFAULT(value, ...) \
-   ZenUnit::IS_NOT_DEFAULT_Defined(VRT(value), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+#define IS_NOT_ZERO(value, ...) \
+   ZenUnit::IS_NOT_ZERO_Defined(VRT(value), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
 // Pointer Assertions
@@ -2666,11 +2666,11 @@ Testing Rigor Options:
    }
 
    template<typename ValueType, typename DefaultValueType, typename... MessageTypes>
-   void IS_DEFAULT_Throw(VRText<ValueType> valueVRT, const DefaultValueType& defaultValue, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_ZERO_Throw(VRText<ValueType> valueVRT, const DefaultValueType& defaultValue, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedField = ToStringer::ToString(defaultValue);
       const std::string actualField = ToStringer::ToString(valueVRT.value);
-      throw Anomaly("IS_DEFAULT", valueVRT.text, "", "", messagesText,
+      throw Anomaly("IS_ZERO", valueVRT.text, "", "", messagesText,
          Anomaly::Default(),
          expectedField,
          actualField,
@@ -2678,21 +2678,21 @@ Testing Rigor Options:
    }
 
    template<typename ValueType, typename... MessageTypes>
-   void IS_DEFAULT_Defined(VRText<ValueType> valueVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_ZERO_Defined(VRText<ValueType> valueVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       static const typename std::remove_reference<ValueType>::type defaultValue{};
       const bool valueIsDefaultValue = valueVRT.value == defaultValue;
       if (!valueIsDefaultValue)
       {
-         IS_DEFAULT_Throw(valueVRT, defaultValue, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         IS_ZERO_Throw(valueVRT, defaultValue, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
    template<typename ValueType, typename... MessageTypes>
-   void IS_NOT_DEFAULT_Throw(VRText<ValueType> valueVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_NOT_ZERO_Throw(VRText<ValueType> valueVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string actualField = ToStringer::ToString(valueVRT.value);
-      throw Anomaly("IS_NOT_DEFAULT", valueVRT.text, "", "", messagesText,
+      throw Anomaly("IS_NOT_ZERO", valueVRT.text, "", "", messagesText,
          Anomaly::Default(),
          "Not T{}",
          actualField,
@@ -2700,13 +2700,13 @@ Testing Rigor Options:
    }
 
    template<typename ValueType, typename... MessageTypes>
-   void IS_NOT_DEFAULT_Defined(VRText<ValueType> valueVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_NOT_ZERO_Defined(VRText<ValueType> valueVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       static const typename std::remove_reference<ValueType>::type defaultValue{};
       const bool valueIsDefaultValue = valueVRT.value == defaultValue;
       if (valueIsDefaultValue)
       {
-         IS_NOT_DEFAULT_Throw(valueVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         IS_NOT_ZERO_Throw(valueVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
