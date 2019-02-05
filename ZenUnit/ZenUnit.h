@@ -1,5 +1,5 @@
-// C++ Unit Testing Library ZenUnit - Version 0.4.0
-// Written by Neil Justice
+// C++ Unit Testing Framework ZenUnit - v0.4.0
+// https://github.com/NeilJustice/ZenUnit
 //
 // The MIT License
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -53,31 +53,31 @@
 #define ARE_EQUAL(expectedValue, actualValue, ...) \
    ZenUnit::ARE_EQUAL_Defined(VRT(expectedValue), VRT(actualValue), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that expectedObject is a copy of actualObject.
+// First asserts ARE_NOT_SAME(expectedObject, actualObject) then asserts ARE_EQUAL(expectedObject, actualObject).
 #define ARE_COPIES(expectedObject, actualObject, ...) \
    ZenUnit::ARE_COPIES_Defined(VRT(expectedObject), VRT(actualObject), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that the address of expectedObject is equal to the address of actualObject.
+// Asserts &expectedObject == &actualObject.
 #define ARE_SAME(expectedObject, actualObject, ...) \
    ARE_SAME_Defined(VRT(expectedObject), VRT(actualObject), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that the address of notExpectedObject is not that same as the address of actualObject.
+// Asserts &notExpectedObject != &actualObject.
 #define ARE_NOT_SAME(notExpectedObject, actualObject, ...) \
    ARE_NOT_SAME_Defined(VRT(notExpectedObject), VRT(actualObject), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that value is true.
+// Asserts that value when converted to a bool is true.
 #define IS_TRUE(value, ...) \
    ZenUnit::IS_TRUE_Defined(value, #value, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that value is false.
+// Asserts that value when converted to a bool is false.
 #define IS_FALSE(value, ...) \
    ZenUnit::IS_FALSE_Defined(value, #value, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that value == T{} returns true.
-#define IS_ZERO(value, ...) \
-   ZenUnit::IS_ZERO_Defined(VRT(value), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+// Asserts that value == T{}.
+#define IS_DEFAULT(value, ...) \
+   ZenUnit::IS_DEFAULT_Defined(VRT(value), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that value == T{} returns false.
+// Asserts that value != T{}.
 #define IS_NOT_DEFAULT(value, ...) \
    ZenUnit::IS_NOT_DEFAULT_Defined(VRT(value), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
@@ -2666,11 +2666,11 @@ Testing Rigor Options:
    }
 
    template<typename ValueType, typename DefaultValueType, typename... MessageTypes>
-   void IS_ZERO_Throw(VRText<ValueType> valueVRT, const DefaultValueType& defaultValue, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_DEFAULT_Throw(VRText<ValueType> valueVRT, const DefaultValueType& defaultValue, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedField = ToStringer::ToString(defaultValue);
       const std::string actualField = ToStringer::ToString(valueVRT.value);
-      throw Anomaly("IS_ZERO", valueVRT.text, "", "", messagesText,
+      throw Anomaly("IS_DEFAULT", valueVRT.text, "", "", messagesText,
          Anomaly::Default(),
          expectedField,
          actualField,
@@ -2678,13 +2678,13 @@ Testing Rigor Options:
    }
 
    template<typename ValueType, typename... MessageTypes>
-   void IS_ZERO_Defined(VRText<ValueType> valueVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_DEFAULT_Defined(VRText<ValueType> valueVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       static const typename std::remove_reference<ValueType>::type defaultValue{};
       const bool valueIsDefaultValue = valueVRT.value == defaultValue;
       if (!valueIsDefaultValue)
       {
-         IS_ZERO_Throw(valueVRT, defaultValue, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         IS_DEFAULT_Throw(valueVRT, defaultValue, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
