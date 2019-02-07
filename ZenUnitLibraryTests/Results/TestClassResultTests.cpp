@@ -217,7 +217,7 @@ namespace ZenUnit
       ZEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnce());
       ZEN(_testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.CalledOnce());
       ZEN(MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject.CalledOnceWith(microseconds));
-      ZEN(consoleMock.WriteLineColorMock.CalledOnceWith("[TestClass Failed] " + oneDecimalPlaceMilliseconds, Color::Yellow));
+      ZEN(consoleMock.WriteLineColorMock.CalledOnceWith("[TestClass Failed] " + oneDecimalPlaceMilliseconds, Color::Red));
    }
 
    TEST(PrintTestResultIfFailure_CallsTestResultPrintIfFailure)

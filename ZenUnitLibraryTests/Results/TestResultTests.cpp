@@ -282,7 +282,7 @@ namespace ZenUnit
       }));
       ZEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
          CalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber));
-      ZEN(_consoleMock.WriteLineColorMock.CalledOnceWith(testFailureNumber, Color::Yellow));
+      ZEN(_consoleMock.WriteLineColorMock.CalledOnceWith(testFailureNumber, Color::Red));
       ZEN(_consoleMock.WriteLineMock.CalledOnceWith(anomalyWhy));
       ZEN(_consoleMock.WriteNewLineMock.CalledOnce());
    }
@@ -329,8 +329,8 @@ namespace ZenUnit
       }));
       ZEN(_consoleMock.WriteLineColorMock.CalledAsFollows(
       {
-         { testFailureNumber, Color::Yellow },
-         { "\nUncaught Exception", Color::Yellow }
+         { testFailureNumber, Color::Red },
+         { "\nUncaught Exception", Color::Red }
       }));
       ZEN(_consoleMock.WriteLineMock.CalledOnceWith(
          "  Type: " + exceptionTypeName + "\n"
@@ -360,11 +360,11 @@ namespace ZenUnit
       ZEN(_testFailureNumbererMock.NextMock.CalledOnce());
       ZEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
          CalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber));
-      ZEN(_consoleMock.WriteLineColorMock.CalledOnceWith(testFailureNumber, Color::Yellow));
+      ZEN(_consoleMock.WriteLineColorMock.CalledOnceWith(testFailureNumber, Color::Red));
       ZEN(_consoleMock.WriteLineMock.CalledAsFollows(
       {
          { _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value() },
-         { "\nFailed because test took longer than -maxtestms=10 milliseconds"s }
+         { "\nFailed because test took longer than --max-test-ms=10 milliseconds"s }
       }));
       ZEN(_consoleMock.WriteNewLineMock.CalledOnce());
    }
