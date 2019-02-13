@@ -67,7 +67,7 @@ namespace ZenUnit
       //
       if (expectSupportsColorCall)
       {
-         ZEN(_consoleColorer_SupportsColorMocked.SupportsColorMock.CalledOnce());
+         ZENMOCK(_consoleColorer_SupportsColorMocked.SupportsColorMock.CalledOnce());
          ARE_EQUAL(_consoleColorer_SupportsColorMocked._supportsColor, supportsColorReturnValue);
       }
       IS_TRUE(_consoleColorer_SupportsColorMocked._supportsColorSet);
@@ -95,10 +95,10 @@ namespace ZenUnit
       //
       const bool didSetColor = _consoleColorer_SetCallsMocked.SetColor(color);
       //
-      ZEN(_consoleColorer_SetCallsMocked.SetSupportsColorIfUnsetMock.CalledOnce());
+      ZENMOCK(_consoleColorer_SetCallsMocked.SetSupportsColorIfUnsetMock.CalledOnce());
       if (expectSetTextColorCallAndExpectedReturnValue)
       {
-         ZEN(_consoleColorer_SetCallsMocked.SetTextColorMock.CalledOnceWith(color));
+         ZENMOCK(_consoleColorer_SetCallsMocked.SetTextColorMock.CalledOnceWith(color));
       }
       ARE_EQUAL(expectSetTextColorCallAndExpectedReturnValue, didSetColor);
    }
@@ -137,8 +137,8 @@ namespace ZenUnit
       //
       const bool consoleSupportsColor = _consoleColorer.SupportsColor();
       //
-      ZEN(fileno_ZenMockObject.CalledOnceWith(stdout));
-      ZEN(isatty_ZenMockObject.CalledOnceWith(StdoutFileHandle));
+      ZENMOCK(fileno_ZenMockObject.CalledOnceWith(stdout));
+      ZENMOCK(isatty_ZenMockObject.CalledOnceWith(StdoutFileHandle));
       ARE_EQUAL(expectedReturnValue, consoleSupportsColor);
    }
 
@@ -162,8 +162,8 @@ namespace ZenUnit
       //
       _consoleColorer.SetTextColor(color);
       //
-      ZEN(GetStdHandle_ZenMockObject.CalledOnceWith(STD_OUTPUT_HANDLE));
-      ZEN(SetConsoleTextAttribute_ZenMockObject.CalledOnceWith(
+      ZENMOCK(GetStdHandle_ZenMockObject.CalledOnceWith(STD_OUTPUT_HANDLE));
+      ZENMOCK(SetConsoleTextAttribute_ZenMockObject.CalledOnceWith(
          GetStdHandleReturnValue, static_cast<WORD>(expectedWindowsColor)));
    }
 #endif

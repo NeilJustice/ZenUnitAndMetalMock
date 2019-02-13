@@ -67,13 +67,13 @@ namespace ZenUnit
       //
       const vector<TestResult> testResults = _newableDeletableTest->RunTest();
       //
-      ZEN(_stopwatchMock->StartMock.CalledOnce());
-      ZEN(_tryCatchCallerMock->RunTestPhaseMock.CalledOnceWith(
+      ZENMOCK(_stopwatchMock->StartMock.CalledOnce());
+      ZENMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledOnceWith(
          &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor));
-      ZEN(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(
+      ZENMOCK(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(
          _newableDeletableTest->p_fullTestName, failedConstructorTestPhaseResult));
       const vector<TestResult> expectedTestResults{ constructorFailTestResult };
-      ZEN(_stopwatchMock->StopMock.CalledOnce());
+      ZENMOCK(_stopwatchMock->StopMock.CalledOnce());
       VECTORS_EQUAL(expectedTestResults, testResults);
    }
 
@@ -95,15 +95,15 @@ namespace ZenUnit
       //
       const vector<TestResult> testResults = _newableDeletableTest->RunTest();
       //
-      ZEN(_stopwatchMock->StartMock.CalledOnce());
-      ZEN(_tryCatchCallerMock->RunTestPhaseMock.CalledAsFollows(
+      ZENMOCK(_stopwatchMock->StartMock.CalledOnce());
+      ZENMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledAsFollows(
       {
          { &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor },
          { &Test::CallDeleteTestClass, _newableDeletableTest.get(), TestPhase::Destructor }
       }));
-      ZEN(_testResultFactoryMock->MakeCtorDtorSuccessMock.CalledOnceWith(
+      ZENMOCK(_testResultFactoryMock->MakeCtorDtorSuccessMock.CalledOnceWith(
          _newableDeletableTest->p_fullTestName, successConstructorTestPhaseResult, destructorTestPhaseResult));
-      ZEN(_stopwatchMock->StopMock.CalledOnce());
+      ZENMOCK(_stopwatchMock->StopMock.CalledOnce());
       const vector<TestResult> expectedTestResults{ sixArgCtorTestResult };
       VECTORS_EQUAL(expectedTestResults, testResults);
    }

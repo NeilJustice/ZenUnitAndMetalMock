@@ -65,8 +65,8 @@ namespace ZenUnit
 
    void AssertStopwatchStartAndStopCalled()
    {
-      ZEN(_stopwatchMock->StartMock.CalledOnce());
-      ZEN(_stopwatchMock->StopMock.CalledOnce());
+      ZENMOCK(_stopwatchMock->StartMock.CalledOnce());
+      ZENMOCK(_stopwatchMock->StopMock.CalledOnce());
    }
 
    static int s_numberOfNoThrowCalls;
@@ -88,11 +88,11 @@ namespace ZenUnit
       //
       const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase(NoThrow, _testMock.get(), TestPhase::Startup);
       //
-      ZEN(GetArgs_ZenMockObject.CalledOnce());
+      ZENMOCK(GetArgs_ZenMockObject.CalledOnce());
       ARE_EQUAL(1, TestPhaseRunnerTests::s_numberOfNoThrowCalls);
       AssertStopwatchStartAndStopCalled();
 
-      ZEN(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
+      ZENMOCK(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
          &_testPhaseRunner, &TestPhaseRunner::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Success, args));
 
       TestPhaseResult expectedTestPhaseResult;
@@ -124,10 +124,10 @@ namespace ZenUnit
       //
       const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase(ThrowAnomaly, _testMock.get(), TestPhase::TestBody);
       //
-      ZEN(GetArgs_ZenMockObject.CalledOnce());
+      ZENMOCK(GetArgs_ZenMockObject.CalledOnce());
       AssertStopwatchStartAndStopCalled();
 
-      ZEN(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
+      ZENMOCK(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
          &_testPhaseRunner, &TestPhaseRunner::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Anomaly, args));
 
       TestPhaseResult expectedTestPhaseResult;
@@ -137,10 +137,10 @@ namespace ZenUnit
       expectedTestPhaseResult.anomalyOrException = make_shared<AnomalyOrException>(anomaly);
       expectedTestPhaseResult.testOutcome = TestOutcome::Anomaly;
 
-      ZEN(_consoleMock->WriteColorMock.CalledOnceWith("\n=======\nAnomaly\n=======", Color::Red));
-      ZEN(_testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(TestPhase::TestBody));
-      ZEN(_consoleMock->WriteMock.CalledOnceWith(_testPhaseSuffix));
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith(anomaly.why));
+      ZENMOCK(_consoleMock->WriteColorMock.CalledOnceWith("\n=======\nAnomaly\n=======", Color::Red));
+      ZENMOCK(_testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(TestPhase::TestBody));
+      ZENMOCK(_consoleMock->WriteMock.CalledOnceWith(_testPhaseSuffix));
+      ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(anomaly.why));
       ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
    }
 
@@ -168,19 +168,19 @@ namespace ZenUnit
       //
       const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase(ThrowAnomaly, _testMock.get(), testPhase);
       //
-      ZEN(GetArgs_ZenMockObject.CalledOnce());
+      ZENMOCK(GetArgs_ZenMockObject.CalledOnce());
       AssertStopwatchStartAndStopCalled();
-      ZEN(_consoleMock->WriteColorMock.CalledOnceWith("\n=======\nAnomaly\n=======", Color::Red));
-      ZEN(_testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(testPhase));
-      ZEN(_consoleMock->WriteMock.CalledOnceWith(_testPhaseSuffix));
+      ZENMOCK(_consoleMock->WriteColorMock.CalledOnceWith("\n=======\nAnomaly\n=======", Color::Red));
+      ZENMOCK(_testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(testPhase));
+      ZENMOCK(_consoleMock->WriteMock.CalledOnceWith(_testPhaseSuffix));
       const Anomaly expectedAnomaly("NonDefault", "NonDefault", FileLine(), "", "");
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith(expectedAnomaly.why));
-      ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith("\n===========\nFatal Error\n===========", Color::Red));
+      ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedAnomaly.why));
+      ZENMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith("\n===========\nFatal Error\n===========", Color::Red));
       const int expectedExitCode = args.exit0 ? 0 : 1;
-      ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(
          "A ZenUnit::Anomaly was thrown from a test class constructor, STARTUP function, or CLEANUP function.\nFail fasting with exit code " +
          std::to_string(expectedExitCode) + ".", expectedExitCode));
-      ZEN(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
+      ZENMOCK(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
          &_testPhaseRunner, &TestPhaseRunner::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Anomaly, args));
    }
 
@@ -209,10 +209,10 @@ namespace ZenUnit
          throw ZenMock::UnexpectedCallException("ZenMockedFunctionSignature");
       }, _testMock.get(), testPhase);
       //
-      ZEN(GetArgs_ZenMockObject.CalledOnce());
+      ZENMOCK(GetArgs_ZenMockObject.CalledOnce());
       AssertStopwatchStartAndStopCalled();
 
-      ZEN(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
+      ZENMOCK(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
          &_testPhaseRunner, &TestPhaseRunner::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Exception, args));
 
       TestPhaseResult expectedTestPhaseResult;
@@ -231,13 +231,13 @@ namespace ZenUnit
          expectedEqualsSigns, '\n',
          exceptionTypeName, _testPhaseSuffix, '\n',
          expectedEqualsSigns);
-      ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith(
+      ZENMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith(
          expectedExceptionNameAndTestPhaseSuffixLines, Color::Red));
-      ZEN(_testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(testPhase));
+      ZENMOCK(_testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(testPhase));
       const string expectedWhat = ZenMock::UnexpectedCallException::MakeWhat("ZenMockedFunctionSignature");
       const string expectedTestPhaseSuffixAndWhatLines = String::Concat(
          "what(): \"", expectedWhat, "\"");
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith(expectedTestPhaseSuffixAndWhatLines));
+      ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedTestPhaseSuffixAndWhatLines));
       ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
    }
 
@@ -259,10 +259,10 @@ namespace ZenUnit
       //
       const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase(ThrowStdException, _testMock.get(), arbitraryTestPhase);
       //
-      ZEN(GetArgs_ZenMockObject.CalledOnce());
+      ZENMOCK(GetArgs_ZenMockObject.CalledOnce());
       AssertStopwatchStartAndStopCalled();
 
-      ZEN(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
+      ZENMOCK(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
          &_testPhaseRunner, &TestPhaseRunner::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Exception, args));
 
       TestPhaseResult expectedTestPhaseResult;
@@ -272,11 +272,11 @@ namespace ZenUnit
       expectedTestPhaseResult.anomalyOrException
          = make_shared<AnomalyOrException>(Type::GetName<runtime_error>(), "runtime_error_what");
 
-      ZEN(_consoleMock->WriteColorMock.CalledOnceWith(
+      ZENMOCK(_consoleMock->WriteColorMock.CalledOnceWith(
          "\n==================\nUncaught Exception\n==================", Color::Red));
-      ZEN(_testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(arbitraryTestPhase));
-      ZEN(_consoleMock->WriteMock.CalledOnceWith(_testPhaseSuffix));
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith(TestUtil::NewlineConcat("",
+      ZENMOCK(_testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(arbitraryTestPhase));
+      ZENMOCK(_consoleMock->WriteMock.CalledOnceWith(_testPhaseSuffix));
+      ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(TestUtil::NewlineConcat("",
 "  Type: std::runtime_error",
 "what(): \"runtime_error_what\"")));
       ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
@@ -306,13 +306,13 @@ namespace ZenUnit
       //
       const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase(ThrowInt, _testMock.get(), testPhase);
       //
-      ZEN(GetArgs_ZenMockObject.CalledOnce());
+      ZENMOCK(GetArgs_ZenMockObject.CalledOnce());
       AssertStopwatchStartAndStopCalled();
-      ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith("\n===========\nFatal Error\n===========", Color::Red));
-      ZEN(_testPhaseTranslatorMock->TestPhaseToTestPhaseNameMock.CalledOnceWith(testPhase));
+      ZENMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith("\n===========\nFatal Error\n===========", Color::Red));
+      ZENMOCK(_testPhaseTranslatorMock->TestPhaseToTestPhaseNameMock.CalledOnceWith(testPhase));
       const string expectedExitMessage = String::Concat(
          "Fatal ... exception thrown during test phase: ", testPhaseName, ".\nFail fasting with exit code ", expectedExitCode, ".");
-      ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedExitMessage, expectedExitCode));
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedExitMessage, expectedExitCode));
       ARE_EQUAL(TestPhaseResult(), testPhaseResult);
    }
 
@@ -347,7 +347,7 @@ namespace ZenUnit
          const string expectedFailFastMessage =
             "\n[ZenUnit] A test failed in --fail-fast mode. Exiting with code 1.\n[ZenUnit] Command line: " +
             args.commandLine + " (random seed " + std::to_string(ZenUnitRandomSeed::value) + ")";
-         ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedFailFastMessage, 1));
+         ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedFailFastMessage, 1));
       }
    }
 

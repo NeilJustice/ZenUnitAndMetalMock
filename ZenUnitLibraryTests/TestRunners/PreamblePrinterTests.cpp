@@ -61,13 +61,13 @@ namespace ZenUnit
       const string returnedStartTime = _preamblePrinterSelfMocked.
          PrintPreambleAndGetStartTime(zenUnitArgs, &testClassRunnerRunnerMock);
       //
-      ZEN(_preamblePrinterSelfMocked.watchMock->DateTimeNowMock.CalledOnce());
-      ZEN(testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.CalledOnce());
-      ZEN(_preamblePrinterSelfMocked.consoleMock->WriteColorMock.CalledNTimesWith(3, "[ZenUnit]", Color::Green));
-      ZEN(_preamblePrinterSelfMocked.MakeThirdLinePrefixMock.CalledOnceWith(numberOfTestClassesToBeRun));
-      ZEN(_preamblePrinterSelfMocked.MakeThirdLineSuffixMock.CalledOnceWith(zenUnitArgs.random, zenUnitArgs.randomseed));
+      ZENMOCK(_preamblePrinterSelfMocked.watchMock->DateTimeNowMock.CalledOnce());
+      ZENMOCK(testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.CalledOnce());
+      ZENMOCK(_preamblePrinterSelfMocked.consoleMock->WriteColorMock.CalledNTimesWith(3, "[ZenUnit]", Color::Green));
+      ZENMOCK(_preamblePrinterSelfMocked.MakeThirdLinePrefixMock.CalledOnceWith(numberOfTestClassesToBeRun));
+      ZENMOCK(_preamblePrinterSelfMocked.MakeThirdLineSuffixMock.CalledOnceWith(zenUnitArgs.random, zenUnitArgs.randomseed));
       const string expectedThirdLineAndLineBreak = thirdLinePrefix + thirdLineSuffix + "\n";
-      ZEN(_preamblePrinterSelfMocked.consoleMock->WriteLineMock.CalledAsFollows(
+      ZENMOCK(_preamblePrinterSelfMocked.consoleMock->WriteLineMock.CalledAsFollows(
       {
          { " Running " + zenUnitArgs.commandLine },
          { " Running at " + startTime },
@@ -86,7 +86,7 @@ namespace ZenUnit
       //
       const string thirdLinePrefix = _preamblePrinter.MakeThirdLinePrefix(numberOfTestClasses);
       //
-      ZEN(_machineNameGetterMock->GetMachineNameMock.CalledOnce());
+      ZENMOCK(_machineNameGetterMock->GetMachineNameMock.CalledOnce());
       const string expectedReturnValue = expectedReturnValuePrefix + machineName + " with ZenUnit version 0.4.0";
       ARE_EQUAL(expectedReturnValue, thirdLinePrefix);
    }

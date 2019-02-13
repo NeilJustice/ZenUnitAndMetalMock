@@ -142,7 +142,7 @@ namespace ZenUnit
       //
       testRunResultSelfMocked.SetTestClassResults(std::move(testClassResults));
       //
-      ZEN(testRunResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnceWith(NonMovedFromTestClassResults));
+      ZENMOCK(testRunResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnceWith(NonMovedFromTestClassResults));
       VECTORS_EQUAL(NonMovedFromTestClassResults, testRunResultSelfMocked._testClassResults);
       ARE_EQUAL(numberOfFailedTestCases, testRunResultSelfMocked._numberOfFailedTestCases);
    }
@@ -204,11 +204,11 @@ namespace ZenUnit
       //
       if (expectTestsFailedLineAndPrintFailuresCall)
       {
-         ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith(expectedTestsFailedLine, Color::Red));
-         ZEN(_memberForEacherTestClassResultsMock->MemberForEachMock.
+         ZENMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith(expectedTestsFailedLine, Color::Red));
+         ZENMOCK(_memberForEacherTestClassResultsMock->MemberForEachMock.
             CalledOnceWith(&_testRunResult._testClassResults, &_testRunResult, &TestRunResult::PrintTestClassResultFailures));
       }
-      ZEN(_memberForEacherSkippedTestsMock->MemberForEachMock.CalledAsFollows(
+      ZENMOCK(_memberForEacherSkippedTestsMock->MemberForEachMock.CalledAsFollows(
       {
          { &_testRunResult._skippedTestClassNamesAndReasons, &_testRunResult, &TestRunResult::PrintSkippedTestClassReminder },
          { &_testRunResult._skippedFullTestNamesAndReasons, &_testRunResult, &TestRunResult::PrintSkippedTestReminder }
@@ -223,8 +223,8 @@ namespace ZenUnit
       _testRunResult.PrintConclusion(
          ZenUnit::Random<string>(), 0, ZenUnit::Random<unsigned>(), ZenUnit::Random<ZenUnitArgs>());
       //
-      ZEN(_consoleMock->WriteColorMock.CalledOnceWith("[ZenUnit] ", Color::Green));
-      ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith("Zero test classes run. Exiting with code 1.", 1));
+      ZENMOCK(_consoleMock->WriteColorMock.CalledOnceWith("[ZenUnit] ", Color::Green));
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("Zero test classes run. Exiting with code 1.", 1));
    }
 
    TEST7X7(PrintConclusion_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds,
@@ -258,7 +258,7 @@ namespace ZenUnit
       //
       const string expectedTripletLinesPrefix =
          expectedVictoryOrFailLinePrefix == "<VICTORY>" ? "+=======+ " : ">>------> ";
-      ZEN(_consoleMock->WriteColorMock.CalledAsFollows(
+      ZENMOCK(_consoleMock->WriteColorMock.CalledAsFollows(
       {
          { expectedTripletLinesPrefix, expectedColor },
          { expectedTripletLinesPrefix, expectedColor },
@@ -271,8 +271,8 @@ namespace ZenUnit
       const string expectedNumberOfTestsAndMillisecondsLine = String::Concat("   Result: ",
          expectedClosingLineTestsCountText, " in ", testRunMilliseconds, " ", expectedMillisecondOrMilliseconds,
          " (random seed ", ZenUnitRandomSeed::value, ")");
-      ZEN(_watchMock->DateTimeNowMock.CalledOnce());
-      ZEN(_consoleMock->WriteLineMock.CalledAsFollows(
+      ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
+      ZENMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
       {
          { expectedCompletedLine },
          { expectedStartTimeLine },
@@ -288,7 +288,7 @@ namespace ZenUnit
       //
       _testRunResult.PrintTestClassResultFailures(testClassResultMock);
       //
-      ZEN(testClassResultMock.PrintTestFailuresMock.CalledOnceWith(
+      ZENMOCK(testClassResultMock.PrintTestFailuresMock.CalledOnceWith(
          _testRunResult._threeArgForEacher.get(),
          _testRunResult._console.get(),
          _testRunResult._testFailureNumberer.get()));
@@ -389,7 +389,7 @@ namespace ZenUnit
       //
       _testRunResult.PrintSkippedTestClassReminder(skippedTestClassNameAndReason);
       //
-      ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith("[SKIPPED] Test class " + skippedTestClassNameAndReason, Color::Yellow));
+      ZENMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith("[SKIPPED] Test class " + skippedTestClassNameAndReason, Color::Yellow));
    }
 
    TEST(PrintSkippedTestReminder_PrintsExpectedToConsole)
@@ -399,7 +399,7 @@ namespace ZenUnit
       //
       _testRunResult.PrintSkippedTestReminder(skippedTestName);
       //
-      ZEN(_consoleMock->WriteLineColorMock.CalledOnceWith("[SKIPPED] Test " + skippedTestName, Color::Yellow));
+      ZENMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith("[SKIPPED] Test " + skippedTestName, Color::Yellow));
    }
 
    TEST(ResetStateExceptForSkips_ResetsTestFailureNumberer_ClearsTestClassResults_SetsNumberOfFailedTestCasesTo0)
@@ -410,7 +410,7 @@ namespace ZenUnit
       //
       _testRunResult.ResetStateExceptForSkips();
       //
-      ZEN(_testFailureNumbererMock->ResetMock.CalledOnce());
+      ZENMOCK(_testFailureNumbererMock->ResetMock.CalledOnce());
       IS_EMPTY(_testRunResult._testClassResults);
       ARE_EQUAL(0, _testRunResult._numberOfFailedTestCases);
    }

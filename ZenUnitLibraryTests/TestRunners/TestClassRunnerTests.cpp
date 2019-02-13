@@ -37,7 +37,7 @@ namespace ZenUnit
       //
       const bool returnedRunFilterMatchesTestName = _testingTestClassRunner.RunFilterMatchesTestName(runFilterMock, testName.c_str());
       //
-      ZEN(runFilterMock.MatchesTestNameMock.CalledOnceWith(testName.c_str()));
+      ZENMOCK(runFilterMock.MatchesTestNameMock.CalledOnceWith(testName.c_str()));
       ARE_EQUAL(runFilterMatchesTestName, returnedRunFilterMatchesTestName);
    }
 
@@ -62,8 +62,8 @@ namespace ZenUnit
       //
       const bool isLessThan = leftTestClassRunner < rightTestClassRunner;
       //
-      ZEN(leftTestClassRunnerMock->TestClassNameMock.CalledOnce());
-      ZEN(rightTestClassRunnerMock->TestClassNameMock.CalledOnce());
+      ZENMOCK(leftTestClassRunnerMock->TestClassNameMock.CalledOnce());
+      ZENMOCK(rightTestClassRunnerMock->TestClassNameMock.CalledOnce());
       ARE_EQUAL(expectedIsLessThan, isLessThan);
    }
 

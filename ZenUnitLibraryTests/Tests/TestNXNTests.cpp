@@ -178,17 +178,17 @@ namespace ZenUnit
       //
       const vector<TestResult> testResults = test1X1SelfMocked.RunTest();
       //
-      ZEN(GetArgs_ZenMockObject_SelfMocked.CalledOnce());
-      ZEN(test1X1SelfMocked.FactoryNew_ZenMockObject.CalledOnceWith(args.random));
-      ZEN(testCaseNumberGeneratorMock->InitializeMock.CalledOnceWith(2, N, args));
-      ZEN(CommaSplitExceptQuotedCommas_ZenMockObject_SelfMocked.CalledOnce());
-      ZEN(testCaseNumberGeneratorMock->NextTestCaseNumberMock.CalledNTimes(3));
-      ZEN(test1X1SelfMocked.RunTestCaseIfNotFilteredOutMock.CalledAsFollows(
+      ZENMOCK(GetArgs_ZenMockObject_SelfMocked.CalledOnce());
+      ZENMOCK(test1X1SelfMocked.FactoryNew_ZenMockObject.CalledOnceWith(args.random));
+      ZENMOCK(testCaseNumberGeneratorMock->InitializeMock.CalledOnceWith(2, N, args));
+      ZENMOCK(CommaSplitExceptQuotedCommas_ZenMockObject_SelfMocked.CalledOnce());
+      ZENMOCK(testCaseNumberGeneratorMock->NextTestCaseNumberMock.CalledNTimes(3));
+      ZENMOCK(test1X1SelfMocked.RunTestCaseIfNotFilteredOutMock.CalledAsFollows(
       {
          { 1, args, splitTestCaseArgs },
          { 2, args, splitTestCaseArgs }
       }));
-      ZEN(test1X1SelfMocked.Exit1IfNonExistentTestCaseNumberSpecifiedMock.CalledOnce());
+      ZENMOCK(test1X1SelfMocked.Exit1IfNonExistentTestCaseNumberSpecifiedMock.CalledOnce());
       ARE_EQUAL(1, test1X1SelfMocked._currentTestCaseNumber);
       IS_EMPTY(testResults);
    }
@@ -225,7 +225,7 @@ namespace ZenUnit
       test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.
          RunTestCaseIfNotFilteredOut(testCaseNumber, args, splitTestCaseArgs);
       //
-      ZEN(test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.ShouldRunTestCaseMock.CalledOnceWith(
+      ZENMOCK(test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.ShouldRunTestCaseMock.CalledOnceWith(
          args, test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.p_fullTestName, testCaseNumber));
    }
 
@@ -241,9 +241,9 @@ namespace ZenUnit
       test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.
          RunTestCaseIfNotFilteredOut(testCaseNumber, args, splitTestCaseArgs);
       //
-      ZEN(test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.ShouldRunTestCaseMock.CalledOnceWith(
+      ZENMOCK(test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.ShouldRunTestCaseMock.CalledOnceWith(
          args, test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.p_fullTestName, testCaseNumber));
-      ZEN(test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.RunTestCaseMock.
+      ZENMOCK(test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.RunTestCaseMock.
          CalledOnceWith(testCaseNumber, splitTestCaseArgs));
    }
 
@@ -281,13 +281,13 @@ namespace ZenUnit
       //
       test1X1SelfMocked.RunTestCase(testCaseNumber, splitTestCaseArgs);
       //
-      ZEN(test1X1SelfMocked.PrintTestCaseNumberThenArgsThenArrowMock.CalledOnceWith(testCaseNumber, splitTestCaseArgs));
-      ZEN(test1X1SelfMocked.MockableCallBaseRunTestMock.CalledOnce());
+      ZENMOCK(test1X1SelfMocked.PrintTestCaseNumberThenArgsThenArrowMock.CalledOnceWith(testCaseNumber, splitTestCaseArgs));
+      ZENMOCK(test1X1SelfMocked.MockableCallBaseRunTestMock.CalledOnce());
       TestResult expectedTestResult;
       expectedTestResult.testCaseNumber = testCaseNumber;
       expectedTestResult.totalTestCases = 2;
       expectedTestResult.fullTestName.testName = testName.c_str();
-      ZEN(test1X1SelfMocked.WriteLineOKIfSuccessMock.CalledOnceWith(expectedTestResult));
+      ZENMOCK(test1X1SelfMocked.WriteLineOKIfSuccessMock.CalledOnceWith(expectedTestResult));
       vector<TestResult> expectedResulingTestResults = { expectedTestResult };
       VECTORS_EQUAL(expectedResulingTestResults, test1X1SelfMocked._testResults);
    }
@@ -326,13 +326,13 @@ namespace ZenUnit
       //
       test2X2SelfMocked.RunTestCase(testCaseNumber, splitTestCaseArgs);
       //
-      ZEN(test2X2SelfMocked.PrintTestCaseNumberThenArgsThenArrowMock.CalledOnceWith(testCaseNumber, splitTestCaseArgs));
-      ZEN(test2X2SelfMocked.MockableCallBaseRunTestMock.CalledOnce());
+      ZENMOCK(test2X2SelfMocked.PrintTestCaseNumberThenArgsThenArrowMock.CalledOnceWith(testCaseNumber, splitTestCaseArgs));
+      ZENMOCK(test2X2SelfMocked.MockableCallBaseRunTestMock.CalledOnce());
       TestResult expectedTestResult;
       expectedTestResult.testCaseNumber = testCaseNumber;
       expectedTestResult.totalTestCases = 3;
       expectedTestResult.fullTestName.testName = testName.c_str();
-      ZEN(test2X2SelfMocked.WriteLineOKIfSuccessMock.CalledOnceWith(expectedTestResult));
+      ZENMOCK(test2X2SelfMocked.WriteLineOKIfSuccessMock.CalledOnceWith(expectedTestResult));
       vector<TestResult> expectedResulingTestResults = { expectedTestResult };
       VECTORS_EQUAL(expectedResulingTestResults, test2X2SelfMocked._testResults);
    }
@@ -352,8 +352,8 @@ namespace ZenUnit
       _testNXN->Exit1IfNonExistentTestCaseNumberSpecified();
       //
       const std::string expectedErrorMessage = "\nError: Non-existent test case number specified in -run filter. Exiting with code 1.";
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith(expectedErrorMessage));
-      ZEN(exit_ZenMockObject.CalledOnceWith(1));
+      ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedErrorMessage));
+      ZENMOCK(exit_ZenMockObject.CalledOnceWith(1));
    }
 
    TEST(ShouldRunTestCase_EmptyRunFilters_ReturnsTrue)
@@ -382,7 +382,7 @@ namespace ZenUnit
       //
       const bool shouldRunTestCase = _testNXN->ShouldRunTestCase(args, fullTestName, testCaseNumber);
       //
-      ZEN(_callerOfRunFilterMatchesTestCaseMock->ThreeArgAnyMock.CalledOnceWith(
+      ZENMOCK(_callerOfRunFilterMatchesTestCaseMock->ThreeArgAnyMock.CalledOnceWith(
          args.runFilters, TestNXN<TestingTestClass, N, int>::RunFilterMatchesTestCase, fullTestName, testCaseNumber));
       ARE_EQUAL(expectedReturnValue, shouldRunTestCase);
    }
@@ -402,7 +402,7 @@ namespace ZenUnit
       const bool returnedRunFilterMatchesTestCase = TestNXN<TestingTestClass, 1, int>::
          RunFilterMatchesTestCase(runFilterMock, fullTestName, testCaseNumber);
       //
-      ZEN(runFilterMock.MatchesTestCaseMock.CalledOnceWith(fullTestName.testClassName, fullTestName.testName, testCaseNumber));
+      ZENMOCK(runFilterMock.MatchesTestCaseMock.CalledOnceWith(fullTestName.testClassName, fullTestName.testName, testCaseNumber));
       ARE_EQUAL(runFilterMatchesTestCase, returnedRunFilterMatchesTestCase);
    }
 
@@ -423,7 +423,7 @@ namespace ZenUnit
       //
       _testNXN->Startup();
       //
-      ZEN(_testNXN->_testClass->StartupMock.CalledOnce());
+      ZENMOCK(_testNXN->_testClass->StartupMock.CalledOnce());
    }
 
    TEST(TestBody_CallsRunNXNTestCase)
@@ -444,7 +444,7 @@ namespace ZenUnit
       testNXN_RunNXNTestCaseMocked.TestBody();
       //
       const size_t expectedTestCaseArgsIndex = (currentTestCaseNumber - 1) * N;
-      ZEN(testNXN_RunNXNTestCaseMocked.RunNXNTestCaseMock.CalledOnceWith(
+      ZENMOCK(testNXN_RunNXNTestCaseMocked.RunNXNTestCaseMock.CalledOnceWith(
          testNXN_RunNXNTestCaseMocked._testClass.get(), expectedTestCaseArgsIndex));
    }
 
@@ -460,7 +460,7 @@ namespace ZenUnit
       //
       _testNXN->Cleanup();
       //
-      ZEN(_testNXN->_testClass->CleanupMock.CalledOnce());
+      ZENMOCK(_testNXN->_testClass->CleanupMock.CalledOnce());
    }
 
    TEST(DeleteTestClass_DeletesTestClass)
@@ -486,14 +486,14 @@ namespace ZenUnit
       //
       _testNXN->PrintTestCaseNumberThenArgsThenArrow(testCaseNumber, splitTestCaseArgs);
       //
-      ZEN(_consoleMock->WriteColorMock.CalledAsFollows(
+      ZENMOCK(_consoleMock->WriteColorMock.CalledAsFollows(
       {
          { " [", Color::Green },
          { "]", Color::Green }
       }));
-      ZEN(_consoleMock->WriteStringsCommaSeparatedMock.CalledOnceWith(
+      ZENMOCK(_consoleMock->WriteStringsCommaSeparatedMock.CalledOnceWith(
          splitTestCaseArgs, expectedTestCaseArgsPrintingStartIndex, N));
-      ZEN(_consoleMock->WriteMock.CalledAsFollows(
+      ZENMOCK(_consoleMock->WriteMock.CalledAsFollows(
       {
          { to_string(expectedTestCaseNumber) },
          { " ("s },
@@ -508,7 +508,7 @@ namespace ZenUnit
       //
       _testNXN->WriteLineOKIfSuccess(testResultMock);
       //
-      ZEN(testResultMock.WriteLineOKIfSuccessMock.CalledOnceWith(_testNXN->_console.get()));
+      ZENMOCK(testResultMock.WriteLineOKIfSuccessMock.CalledOnceWith(_testNXN->_console.get()));
    }
 
    RUN_TESTS(TestNXNTests)

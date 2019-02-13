@@ -130,7 +130,7 @@ namespace ZenUnit
       //
       const bool hasTestThatMatchesRunFilter = _specificTestClassRunner->HasTestThatMatchesRunFilter(runFilter);
       //
-      ZEN(_twoArgTestAnyerMock->TwoArgAnyMock.CalledOnceWith(
+      ZENMOCK(_twoArgTestAnyerMock->TwoArgAnyMock.CalledOnceWith(
          &_specificTestClassRunner->_tests, SpecificTestClassRunner<TestingTestClass>::RunFilterMatchesTestName, runFilter));
       ARE_EQUAL(twoArgAnyerReturnValue, hasTestThatMatchesRunFilter);
    }
@@ -148,8 +148,8 @@ namespace ZenUnit
       //
       const bool returnedRunFilterMatchesTestName = _specificTestClassRunner->RunFilterMatchesTestName(test, runFilterMock);
       //
-      ZEN(testMock->NameMock.CalledOnce());
-      ZEN(runFilterMock.MatchesTestNameMock.CalledOnceWith(testName.c_str()));
+      ZENMOCK(testMock->NameMock.CalledOnce());
+      ZENMOCK(runFilterMock.MatchesTestNameMock.CalledOnceWith(testName.c_str()));
       ARE_EQUAL(runFilterMatchesTestName, returnedRunFilterMatchesTestName);
    }
 
@@ -168,9 +168,9 @@ namespace ZenUnit
       //
       const size_t numberOfTestCases = _specificTestClassRunner->NumberOfTestCases();
       //
-      ZEN(testMockA->NumberOfTestCasesMock.CalledOnce());
-      ZEN(testMockB->NumberOfTestCasesMock.CalledOnce());
-      ZEN(testMockC->NumberOfTestCasesMock.CalledOnce());
+      ZENMOCK(testMockA->NumberOfTestCasesMock.CalledOnce());
+      ZENMOCK(testMockB->NumberOfTestCasesMock.CalledOnce());
+      ZENMOCK(testMockC->NumberOfTestCasesMock.CalledOnce());
       ARE_EQUAL(30, numberOfTestCases);
    }
 
@@ -191,20 +191,20 @@ namespace ZenUnit
       //
       const TestClassResult testClassResult = _specificTestClassRunner->RunTests();
       //
-      ZEN(_voidZeroArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
+      ZENMOCK(_voidZeroArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
          _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::PrintTestClassNameAndNumberOfNamedTests));
-      ZEN(_nonVoidTwoArgFunctionCallerMock->ConstCallMock.CalledOnceWith(
+      ZENMOCK(_nonVoidTwoArgFunctionCallerMock->ConstCallMock.CalledOnceWith(
          _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests,
          &_specificTestClassRunner->_newableDeletableTest, &_specificTestClassRunner->_testClassResult));
       if (expectDoRunTestsCall)
       {
-         ZEN(_voidZeroArgMemberFunctionCallerMock->NonConstCallMock.CalledOnceWith(
+         ZENMOCK(_voidZeroArgMemberFunctionCallerMock->NonConstCallMock.CalledOnceWith(
             _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::DoRunTests));
       }
-      ZEN(_voidOneArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
+      ZENMOCK(_voidOneArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
          _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::PrintTestClassResultLine,
          &_specificTestClassRunner->_testClassResult));
-      ZEN(p_consoleMock->WriteNewLineMock.CalledOnce());
+      ZENMOCK(p_consoleMock->WriteNewLineMock.CalledOnce());
       ARE_EQUAL(TestClassResult::TestingNonDefault(), testClassResult);
       ARE_EQUAL(TestClassResult(), _specificTestClassRunner->_testClassResult);
    }
@@ -229,10 +229,10 @@ namespace ZenUnit
       //
       _specificTestClassRunner->DoRunTests();
       //
-      ZEN(GetArgs_ZenMockObject.CalledOnce());
+      ZENMOCK(GetArgs_ZenMockObject.CalledOnce());
       if (expectRandomForEach)
       {
-         ZEN(_twoArgMemberForEacherMock->RandomTwoArgMemberForEachMock.CalledOnceWith(
+         ZENMOCK(_twoArgMemberForEacherMock->RandomTwoArgMemberForEachMock.CalledOnceWith(
             &_specificTestClassRunner->_tests, _specificTestClassRunner.get(),
             &SpecificTestClassRunner<TestingTestClass>::RunTest,
             &_specificTestClassRunner->_testClassResult,
@@ -240,7 +240,7 @@ namespace ZenUnit
       }
       else
       {
-         ZEN(_twoArgMemberForEacherMock->TwoArgMemberForEachMock.CalledOnceWith(
+         ZENMOCK(_twoArgMemberForEacherMock->TwoArgMemberForEachMock.CalledOnceWith(
             &_specificTestClassRunner->_tests, _specificTestClassRunner.get(),
             &SpecificTestClassRunner<TestingTestClass>::RunTest,
             &_specificTestClassRunner->_testClassResult));
@@ -261,19 +261,19 @@ namespace ZenUnit
       //
       _specificTestClassRunner->PrintTestClassNameAndNumberOfNamedTests();
       //
-      ZEN(p_consoleMock->WriteColorMock.CalledAsFollows(
+      ZENMOCK(p_consoleMock->WriteColorMock.CalledAsFollows(
          {
             { "@", Color::Green },
             { _testClassName.c_str(), Color::Green }
          }));
       if (expectTestsPlural)
       {
-         ZEN(p_consoleMock->WriteLineMock.CalledOnceWith(
+         ZENMOCK(p_consoleMock->WriteLineMock.CalledOnceWith(
             String::Concat(" | ", numberOfTests, " named tests")));
       }
       else
       {
-         ZEN(p_consoleMock->WriteLineMock.CalledOnceWith(
+         ZENMOCK(p_consoleMock->WriteLineMock.CalledOnceWith(
             String::Concat(" | ", numberOfTests, " named test")));
       }
    }
@@ -310,22 +310,22 @@ namespace ZenUnit
       //
       if (expectWriteLineOK)
       {
-         ZEN(p_consoleMock->WriteColorMock.CalledAsFollows(
+         ZENMOCK(p_consoleMock->WriteColorMock.CalledAsFollows(
          {
             { "|", Color::Green },
             { "OK ", Color::Green }
          }));
-         ZEN(testClassResultMock.MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.
+         ZENMOCK(testClassResultMock.MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.
             CalledOnceWith(testResult.microseconds));
-         ZEN(p_consoleMock->WriteLineMock.CalledOnceWith(testResultThreeDecimalMillisecondsString));
+         ZENMOCK(p_consoleMock->WriteLineMock.CalledOnceWith(testResultThreeDecimalMillisecondsString));
       }
       else
       {
-         ZEN(p_consoleMock->WriteColorMock.CalledOnceWith("|", Color::Green));
+         ZENMOCK(p_consoleMock->WriteColorMock.CalledOnceWith("|", Color::Green));
       }
-      ZEN(p_consoleMock->WriteMock.CalledOnceWith("TestClassIsNewableAndDeletable -> "));
-      ZEN(testMock.RunTestMock.CalledOnce());
-      ZEN(testClassResultMock.AddTestResultsMock.CalledOnceWith(testResults));
+      ZENMOCK(p_consoleMock->WriteMock.CalledOnceWith("TestClassIsNewableAndDeletable -> "));
+      ZENMOCK(testMock.RunTestMock.CalledOnce());
+      ZENMOCK(testClassResultMock.AddTestResultsMock.CalledOnceWith(testResults));
       ARE_EQUAL(expectedReturnValue, testClassTypeIsNewableAndDeletable);
    }
 
@@ -346,9 +346,9 @@ namespace ZenUnit
       //
       _specificTestClassRunner->RunTest(test, &testClassResultMock);
       //
-      ZEN(GetArgs_ZenMockObject.CalledOnce());
-      ZEN(testMock->NameMock.CalledOnce());
-      ZEN(p_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
+      ZENMOCK(GetArgs_ZenMockObject.CalledOnce());
+      ZENMOCK(testMock->NameMock.CalledOnce());
+      ZENMOCK(p_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
          zenUnitArgs.runFilters, _specificTestClassRunner.get(), &TestClassRunner::RunFilterMatchesTestName, testName.c_str()));
    }
 
@@ -384,19 +384,19 @@ namespace ZenUnit
       //
       _specificTestClassRunner->RunTest(test, &testClassResultMock);
       //
-      ZEN(GetArgs_ZenMockObject.CalledOnce());
-      ZEN(testMock->NameMock.CalledOnce());
+      ZENMOCK(GetArgs_ZenMockObject.CalledOnce());
+      ZENMOCK(testMock->NameMock.CalledOnce());
       if (expectAnyerCall)
       {
-         ZEN(p_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
+         ZENMOCK(p_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
             zenUnitArgs.runFilters, _specificTestClassRunner.get(), &TestClassRunner::RunFilterMatchesTestName, testName.c_str()));
       }
-      ZEN(p_consoleMock->WriteColorMock.CalledOnceWith("|", Color::Green));
-      ZEN(p_consoleMock->WriteMock.CalledOnceWith(testName));
-      ZEN(testMock->WritePostTestNameMessageMock.CalledOnceWith(_specificTestClassRunner->p_console.get()));
-      ZEN(testMock->RunTestMock.CalledOnce());
-      ZEN(testClassResultMock.AddTestResultsMock.CalledOnceWith(TestResults));
-      ZEN(testMock->WritePostTestCompletionMessageMock.CalledOnceWith(
+      ZENMOCK(p_consoleMock->WriteColorMock.CalledOnceWith("|", Color::Green));
+      ZENMOCK(p_consoleMock->WriteMock.CalledOnceWith(testName));
+      ZENMOCK(testMock->WritePostTestNameMessageMock.CalledOnceWith(_specificTestClassRunner->p_console.get()));
+      ZENMOCK(testMock->RunTestMock.CalledOnce());
+      ZENMOCK(testClassResultMock.AddTestResultsMock.CalledOnceWith(TestResults));
+      ZENMOCK(testMock->WritePostTestCompletionMessageMock.CalledOnceWith(
          _specificTestClassRunner->p_console.get(), test0));
    }
 
@@ -407,7 +407,7 @@ namespace ZenUnit
       //
       _specificTestClassRunner->PrintTestClassResultLine(&testClassResultMock);
       //
-      ZEN(testClassResultMock.PrintTestClassResultLineMock.CalledOnceWith(p_consoleMock));
+      ZENMOCK(testClassResultMock.PrintTestClassResultLineMock.CalledOnceWith(p_consoleMock));
    }
 
    RUN_TESTS(SpecificTestClassRunnerTests)

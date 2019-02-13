@@ -39,7 +39,7 @@ namespace ZenUnit
       //
       _normalTest->WritePostTestNameMessage(&consoleMock);
       //
-      ZEN(consoleMock.WriteMock.CalledOnceWith(" -> "));
+      ZENMOCK(consoleMock.WriteMock.CalledOnceWith(" -> "));
    }
 
    TEST(WritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue)
@@ -50,7 +50,7 @@ namespace ZenUnit
       //
       _normalTest->WritePostTestCompletionMessage(&consoleMock, testResultMock);
       //
-      ZEN(testResultMock.WriteLineOKIfSuccessMock.CalledOnceWith(&consoleMock));
+      ZENMOCK(testResultMock.WriteLineOKIfSuccessMock.CalledOnceWith(&consoleMock));
    }
 
    TEST(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)
@@ -80,7 +80,7 @@ namespace ZenUnit
       //
       _normalTest->Startup();
       //
-      ZEN(_normalTest->_testClass->StartupMock.CalledOnce());
+      ZENMOCK(_normalTest->_testClass->StartupMock.CalledOnce());
    }
 
    TEST(TestBody_CallsMemberTestFunctionBoundToTestClassPointer)
@@ -91,7 +91,7 @@ namespace ZenUnit
       //
       _normalTest->TestBody();
       //
-      ZEN(_normalTest->_testClass->TestFunctionMock.CalledOnce());
+      ZENMOCK(_normalTest->_testClass->TestFunctionMock.CalledOnce());
    }
 
    TEST(Cleanup_CallsCleanupOnTestClass)
@@ -101,7 +101,7 @@ namespace ZenUnit
       //
       _normalTest->Cleanup();
       //
-      ZEN(_normalTest->_testClass->CleanupMock.CalledOnce());
+      ZENMOCK(_normalTest->_testClass->CleanupMock.CalledOnce());
    }
 
    TEST(DeleteTestClass_DeletesTestClass)

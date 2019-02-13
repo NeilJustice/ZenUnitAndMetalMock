@@ -113,7 +113,7 @@ Testing Rigor Options:
 
    void AssertCallToSetRandomSeedIfNotSetByUser(ZenUnitArgs& expectedZenUnitArgsArg)
    {
-      ZEN(_callerOfSetRandomSeedIfNotSetByUserMock->ConstCallMock.CalledOnceWith(
+      ZENMOCK(_callerOfSetRandomSeedIfNotSetByUserMock->ConstCallMock.CalledOnceWith(
          &_argsParser, &ArgsParser::SetRandomSeedIfNotSetByUser, expectedZenUnitArgsArg));
    }
 
@@ -141,8 +141,8 @@ Testing Rigor Options:
       //
       THROWS(_argsParser.Parse(args), WriteLineAndExitException, "");
       //
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith("ZenUnit command line usage error: Too many arguments.\n"));
-      ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
+      ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith("ZenUnit command line usage error: Too many arguments.\n"));
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
    }
 
    TEST1X1(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1,
@@ -158,9 +158,9 @@ Testing Rigor Options:
       //
       THROWS(_argsParser.Parse(args), WriteLineAndExitException, "");
       //
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
+      ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Invalid argument \"" + invalidArg + "\"\n"));
-      ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
    }
 
    TEST1X1(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0,
@@ -173,7 +173,7 @@ Testing Rigor Options:
       //
       THROWS(_argsParser.Parse(args), WriteLineAndExitException, "");
       //
-      ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 0));
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 0));
    }
 
    TEST(Parse_AllArgsSpecifiedExpectForRunFilter_ReturnsZenUnitArgsWithAllFieldsSets)
@@ -198,8 +198,8 @@ Testing Rigor Options:
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
-      ZEN(ToInt_ZenMockObject.CalledOnceWith(to_string(testruns)));
-      ZEN(ToUnsigned_ZenMockObject.CalledOnceWith(to_string(randomseed)));
+      ZENMOCK(ToInt_ZenMockObject.CalledOnceWith(to_string(testruns)));
+      ZENMOCK(ToUnsigned_ZenMockObject.CalledOnceWith(to_string(randomseed)));
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
       expectedZenUnitArgs.pause = true;
@@ -228,7 +228,7 @@ Testing Rigor Options:
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
       const vector<string> splitRunArgument = String::Split(runArgument, ',');
-      ZEN(_runFilterParserMock->ParseMock.CalledOnceWith(splitRunArgument));
+      ZENMOCK(_runFilterParserMock->ParseMock.CalledOnceWith(splitRunArgument));
 
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
@@ -304,9 +304,9 @@ Testing Rigor Options:
       //
       THROWS(_argsParser.Parse(args), WriteLineAndExitException, "");
       //
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
+      ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Invalid --name=value argument value: " + arg + "\n"));
-      ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
    }
 
    TEST(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
@@ -319,10 +319,10 @@ Testing Rigor Options:
       //
       THROWS(_argsParser.Parse(args), WriteLineAndExitException, "");
       //
-      ZEN(ToInt_ZenMockObject.CalledOnceWith("-1_for_example"));
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
+      ZENMOCK(ToInt_ZenMockObject.CalledOnceWith("-1_for_example"));
+      ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Invalid --name=value argument value: " + InvalidTimesArg + "\n"));
-      ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
    }
 
    TEST(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
@@ -333,7 +333,7 @@ Testing Rigor Options:
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
-      ZEN(ToInt_ZenMockObject.CalledOnceWith(to_string(timesArgValue)));
+      ZENMOCK(ToInt_ZenMockObject.CalledOnceWith(to_string(timesArgValue)));
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
       expectedZenUnitArgs.testruns = timesArgValue;
@@ -349,7 +349,7 @@ Testing Rigor Options:
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
-      ZEN(ToUnsigned_ZenMockObject.CalledOnceWith(to_string(randomSeedArgValue)));
+      ZENMOCK(ToUnsigned_ZenMockObject.CalledOnceWith(to_string(randomSeedArgValue)));
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
       expectedZenUnitArgs.random = false;
@@ -368,9 +368,9 @@ Testing Rigor Options:
       //
       THROWS(_argsParser.Parse(args), WriteLineAndExitException, "");
       //
-      ZEN(_consoleMock->WriteLineMock.CalledOnceWith(
+      ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Unrecognized --name=value argument: " + unrecognizedNameArg + "\n"));
-      ZEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
    }
 
    TEST(SetRandomSeedIfNotSetByUser_RandomSeedSetByUser_DoesNothing)
@@ -395,7 +395,7 @@ Testing Rigor Options:
       //
       _argsParser.SetRandomSeedIfNotSetByUser(zenUnitArgs);
       //
-      ZEN(_watchMock->SecondsSince1970CastToUnsignedShortMock.CalledOnce());
+      ZENMOCK(_watchMock->SecondsSince1970CastToUnsignedShortMock.CalledOnce());
       ARE_EQUAL(expectedResultingZenUnitArgs, zenUnitArgs);
    }
 

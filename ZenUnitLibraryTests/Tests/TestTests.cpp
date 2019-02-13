@@ -88,8 +88,8 @@ namespace ZenUnit
       //
       const TestResult testResult = _test->BaseRunTest();
       //
-      ZEN(_tryCatchCallerMock->RunTestPhaseMock.CalledOnceWith(&Test::CallNewTestClass, _test.get(), TestPhase::Constructor));
-      ZEN(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(_test->p_fullTestName, constructorFailTestPhaseResult));
+      ZENMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledOnceWith(&Test::CallNewTestClass, _test.get(), TestPhase::Constructor));
+      ZENMOCK(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(_test->p_fullTestName, constructorFailTestPhaseResult));
       ARE_EQUAL(constructorFailTestResult, testResult);
    }
 
@@ -111,13 +111,13 @@ namespace ZenUnit
       //
       const TestResult testResult = _test->BaseRunTest();
       //
-      ZEN(_tryCatchCallerMock->RunTestPhaseMock.CalledAsFollows(
+      ZENMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledAsFollows(
       {
          { &Test::CallNewTestClass, _test.get(), TestPhase::Constructor },
          { &Test::CallStartup, _test.get(), TestPhase::Startup },
          { &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor }
       }));
-      ZEN(_testResultFactoryMock->MakeStartupFailMock.CalledOnceWith(
+      ZENMOCK(_testResultFactoryMock->MakeStartupFailMock.CalledOnceWith(
          _test->p_fullTestName, constructorSuccessTestPhaseResult, startupFailTestPhaseResult, destructorTestPhaseResult));
       ARE_EQUAL(startupFailTestResult, testResult);
    }
@@ -135,7 +135,7 @@ namespace ZenUnit
       //
       const TestResult testResult = _test->BaseRunTest();
       //
-      ZEN(_tryCatchCallerMock->RunTestPhaseMock.CalledAsFollows(
+      ZENMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledAsFollows(
       {
          { &Test::CallNewTestClass, _test.get(), TestPhase::Constructor },
          { &Test::CallStartup, _test.get(), TestPhase::Startup },
@@ -143,7 +143,7 @@ namespace ZenUnit
          { &Test::CallCleanup, _test.get(), TestPhase::Cleanup },
          { &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor }
       }));
-      ZEN(_testResultFactoryMock->MakeFullTestResultMock.CalledOnceWith(
+      ZENMOCK(_testResultFactoryMock->MakeFullTestResultMock.CalledOnceWith(
          _test->p_fullTestName,
          TestPhaseResultWithOutcome(TestOutcome::Success),
          TestPhaseResultWithOutcome(TestOutcome::Success),
@@ -159,7 +159,7 @@ namespace ZenUnit
       //
       Test::CallNewTestClass(&_testMock);
       //
-      ZEN(_testMock.NewTestClassMock.CalledOnce());
+      ZENMOCK(_testMock.NewTestClassMock.CalledOnce());
    }
 
    TEST(StaticCallStartup_CallsStartup)
@@ -168,7 +168,7 @@ namespace ZenUnit
       //
       Test::CallStartup(&_testMock);
       //
-      ZEN(_testMock.StartupMock.CalledOnce());
+      ZENMOCK(_testMock.StartupMock.CalledOnce());
    }
 
    TEST(StaticTestBody_CallsTestBody)
@@ -177,7 +177,7 @@ namespace ZenUnit
       //
       Test::CallTestBody(&_testMock);
       //
-      ZEN(_testMock.TestBodyMock.CalledOnce());
+      ZENMOCK(_testMock.TestBodyMock.CalledOnce());
    }
 
    TEST(StaticCallCleanup_CallsCleanup)
@@ -186,7 +186,7 @@ namespace ZenUnit
       //
       Test::CallCleanup(&_testMock);
       //
-      ZEN(_testMock.CleanupMock.CalledOnce());
+      ZENMOCK(_testMock.CleanupMock.CalledOnce());
    }
 
    TEST(StaticCallDeleteTestClass_CallsDeleteTestClass)
@@ -195,7 +195,7 @@ namespace ZenUnit
       //
       Test::CallDeleteTestClass(&_testMock);
       //
-      ZEN(_testMock.DeleteTestClassMock.CalledOnce());
+      ZENMOCK(_testMock.DeleteTestClassMock.CalledOnce());
    }
 
    TEST(PseudoAbstractFunctions_DoNothingOrReturn0)

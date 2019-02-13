@@ -50,7 +50,7 @@ namespace ZenUnit
       //
       const bool matchesTestClassName = _runFilterSelfMocked.MatchesTestClassName(testClassName.c_str());
       //
-      ZEN(_runFilterSelfMocked.FilterPatternMatchesStringMock.CalledOnceWith(
+      ZENMOCK(_runFilterSelfMocked.FilterPatternMatchesStringMock.CalledOnceWith(
          _runFilterSelfMocked.testClassNamePattern, testClassName.c_str()));
       ARE_EQUAL(filterPatternMatchesStringReturnValue, matchesTestClassName);
    }
@@ -63,7 +63,7 @@ namespace ZenUnit
       //
       const bool matchesTestName = _runFilterSelfMocked.MatchesTestName(testName.c_str());
       //
-      ZEN(_runFilterSelfMocked.FilterPatternMatchesStringMock.CalledOnceWith(
+      ZENMOCK(_runFilterSelfMocked.FilterPatternMatchesStringMock.CalledOnceWith(
          _runFilterSelfMocked.testNamePattern, testName.c_str()));
       ARE_EQUAL(filterPatternMatchesStringReturnValue, matchesTestName);
    }
@@ -102,7 +102,7 @@ namespace ZenUnit
       const bool matchesTestCase = _runFilterSelfMocked.MatchesTestCase(
          testClassName.c_str(), testName.c_str(), testNXNTestCaseNumber);
       //
-      ZEN(_runFilterSelfMocked.FilterPatternMatchesStringMock.CalledOnceWith(
+      ZENMOCK(_runFilterSelfMocked.FilterPatternMatchesStringMock.CalledOnceWith(
          _runFilterSelfMocked.testClassNamePattern, testClassName.c_str()));
       IS_FALSE(matchesTestCase);
    }
@@ -126,7 +126,7 @@ namespace ZenUnit
       const bool matchesTestCase = _runFilterSelfMocked.MatchesTestCase(
          testClassName.c_str(), testName.c_str(), testNXNTestCaseNumber);
       //
-      ZEN(_runFilterSelfMocked.FilterPatternMatchesStringMock.CalledAsFollows(
+      ZENMOCK(_runFilterSelfMocked.FilterPatternMatchesStringMock.CalledAsFollows(
       {
          { _runFilterSelfMocked.testClassNamePattern, testClassName.c_str() },
          { _runFilterSelfMocked.testNamePattern, testName.c_str() }

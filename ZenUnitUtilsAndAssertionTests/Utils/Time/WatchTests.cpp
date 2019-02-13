@@ -49,7 +49,7 @@ namespace ZenUnit
       //
       const string dateTimeNow = _watchSelfMocked->DateTimeNow();
       //
-      ZEN(_watchSelfMocked->TMNowMock.CalledOnce());
+      ZENMOCK(_watchSelfMocked->TMNowMock.CalledOnce());
       ARE_EQUAL(expectedDateTimeNow, dateTimeNow);
    }
 

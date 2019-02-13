@@ -40,7 +40,7 @@ namespace ZenUnit
       //
       const vector<RunFilter> expectedRunFilters = _runFilterParser.Parse(runFilterStrings);
       //
-      ZEN(_memberFunctionTransformerMock->TransformMock.CalledOnceWith(
+      ZENMOCK(_memberFunctionTransformerMock->TransformMock.CalledOnceWith(
          runFilterStrings, &_runFilterParser, &RunFilterParser::ParseRunFilterString));
       VECTORS_EQUAL(expectedRunFilters, runFilters);
    }
@@ -74,7 +74,7 @@ namespace ZenUnit
       //
       const RunFilter runFilter = _runFilterParser.ParseRunFilterString(runFilterString);
       //
-      ZEN(ToUnsigned_ZenMockObject.CalledOnceWith(expectedTestCaseNumberString));
+      ZENMOCK(ToUnsigned_ZenMockObject.CalledOnceWith(expectedTestCaseNumberString));
       ARE_EQUAL(expectedRunFilter, runFilter);
    }
 
