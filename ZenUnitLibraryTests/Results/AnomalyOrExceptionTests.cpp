@@ -16,8 +16,8 @@ namespace ZenUnit
       const AnomalyOrException anomalyOrException(anomaly);
       //
       ARE_EQUAL(anomaly, *anomalyOrException.anomaly);
-      IS_NULL(anomalyOrException.exceptionTypeName);
-      IS_NULL(anomalyOrException.exceptionWhat);
+      POINTER_IS_NULL(anomalyOrException.exceptionTypeName);
+      POINTER_IS_NULL(anomalyOrException.exceptionWhat);
    }
 
    TEST(ExceptionTypeNameAndExceptionWhatConstructor_SetsExceptionTypeNameAndExceptionWhat)
@@ -27,7 +27,7 @@ namespace ZenUnit
       //
       AnomalyOrException anomalyOrException(&exceptionTypeName, exceptionWhat.c_str());
       //
-      IS_NULL(anomalyOrException.anomaly);
+      POINTER_IS_NULL(anomalyOrException.anomaly);
       ARE_SAME(exceptionTypeName, *anomalyOrException.exceptionTypeName);
       ARE_EQUAL(exceptionWhat, *anomalyOrException.exceptionWhat);
    }

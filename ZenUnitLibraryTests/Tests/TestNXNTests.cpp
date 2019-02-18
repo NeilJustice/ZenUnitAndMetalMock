@@ -70,7 +70,7 @@ namespace ZenUnit
       STD_FUNCTION_TARGETS(::exit, test2X2._call_exit);
       STD_FUNCTION_TARGETS(ITestCaseNumberGenerator::FactoryNew, test2X2._call_ITestCaseNumberGeneratorFactoryNew);
       STD_FUNCTION_TARGETS(String::CommaSplitExceptQuotedCommas, test2X2._call_String_CommaSplitExceptQuotedCommas);
-      IS_NULL(test2X2._testClass);
+      POINTER_IS_NULL(test2X2._testClass);
       ARE_EQUAL(1, test2X2._currentTestCaseNumber);
       ARE_EQUAL(_testCaseArgsText, test2X2._testCaseArgsText);
       const size_t expectedNumberOfTestCases = 2;
@@ -408,7 +408,7 @@ namespace ZenUnit
 
    TEST(NewTestClass_NewsTestClass)
    {
-      IS_NULL(_testNXN->_testClass);
+      POINTER_IS_NULL(_testNXN->_testClass);
       //
       _testNXN->NewTestClass();
       //

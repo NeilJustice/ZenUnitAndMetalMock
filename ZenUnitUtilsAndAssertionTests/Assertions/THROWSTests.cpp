@@ -139,7 +139,7 @@ namespace ZenUnit
    TEST(NeverThrownType_whatReturnsNullptr)
    {
       const NeverThrownType neverThrownType;
-      IS_NULL(neverThrownType.what());
+      POINTER_IS_NULL(neverThrownType.what());
    }
 
    RUN_TESTS(THROWSTests)

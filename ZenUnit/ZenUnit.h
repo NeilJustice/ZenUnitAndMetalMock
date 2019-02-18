@@ -85,13 +85,13 @@
 // Pointer Assertions
 //
 
-// Asserts that pointer is nullptr.
-#define IS_NULL(pointer, ...) \
-   ZenUnit::IS_NULL_Defined(VRT(pointer), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+// Asserts that (pointer == nullptr) is true.
+#define POINTER_IS_NULL(pointer, ...) \
+   ZenUnit::POINTER_IS_NULL_Defined(VRT(pointer), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that pointer is not nullptr.
-#define IS_NOT_NULL(pointer, ...) \
-   ZenUnit::IS_NOT_NULL_Defined(pointer != nullptr, #pointer, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+// Asserts that (pointer != nullptr) is true.
+#define POINTER_IS_NOT_NULL(pointer, ...) \
+   ZenUnit::POINTER_IS_NOT_NULL_Defined(pointer != nullptr, #pointer, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that typeid(expectedPointeeType) == typeid(*actualPointer). expectedPointeeType must be a polymorphic type.
 #define POINTEE_IS_EXACT_TYPE(expectedPolymorphicPointeeType, actualPointer, ...) \
@@ -2569,9 +2569,9 @@ Testing Rigor Options:
    }
 
    template<typename... MessageTypes>
-   void IS_NOT_NULL_Throw(const char* pointerText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void POINTER_IS_NOT_NULL_Throw(const char* pointerText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-      throw Anomaly("IS_NOT_NULL", pointerText, "", "", messagesText,
+      throw Anomaly("POINTER_IS_NOT_NULL", pointerText, "", "", messagesText,
          Anomaly::Default(),
          "not nullptr",
          "nullptr",
@@ -2579,11 +2579,11 @@ Testing Rigor Options:
    }
 
    template<typename... MessageTypes>
-   void IS_NOT_NULL_Defined(bool pointerIsNotNullptr, const char* pointerText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void POINTER_IS_NOT_NULL_Defined(bool pointerIsNotNullptr, const char* pointerText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (!pointerIsNotNullptr)
       {
-         IS_NOT_NULL_Throw(pointerText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         POINTER_IS_NOT_NULL_Throw(pointerText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
@@ -2635,10 +2635,10 @@ Testing Rigor Options:
    }
 
    template<typename PointerType, typename... MessageTypes>
-   void IS_NULL_Throw(VRText<PointerType> pointerVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void POINTER_IS_NULL_Throw(VRText<PointerType> pointerVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string actualField = ToStringer::ToString(pointerVRT.value);
-      throw Anomaly("IS_NULL", pointerVRT.text, "", "", messagesText,
+      throw Anomaly("POINTER_IS_NULL", pointerVRT.text, "", "", messagesText,
          Anomaly::Default(),
          "nullptr",
          actualField,
@@ -2646,12 +2646,12 @@ Testing Rigor Options:
    }
 
    template<typename PointerType, typename... MessageTypes>
-   void IS_NULL_Defined(VRText<PointerType> pointerVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void POINTER_IS_NULL_Defined(VRText<PointerType> pointerVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const bool pointerIsNull = pointerVRT.value == nullptr;
       if (!pointerIsNull)
       {
-         IS_NULL_Throw(pointerVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         POINTER_IS_NULL_Throw(pointerVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
@@ -3079,7 +3079,7 @@ Testing Rigor Options:
       try
       {
          IS_TRUE(stdFunction);
-         IS_NOT_NULL(stdFunction.template target<ExpectedStdFunctionTargetType*>());
+         POINTER_IS_NOT_NULL(stdFunction.template target<ExpectedStdFunctionTargetType*>());
          typename std::add_pointer<ExpectedStdFunctionTargetType>::type
             expectedStdFunctionTarget(expectedStdFunctionTargetValue);
          ARE_EQUAL(expectedStdFunctionTarget, *stdFunction.template target<ExpectedStdFunctionTargetType*>());

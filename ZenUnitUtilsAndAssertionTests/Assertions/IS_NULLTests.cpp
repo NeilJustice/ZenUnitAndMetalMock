@@ -2,7 +2,7 @@
 
 namespace ZenUnit
 {
-   TESTS(IS_NULL_Tests)
+   TESTS(POINTER_IS_NULL_Tests)
    AFACT(NullRawPointer_DoesNotThrow)
    AFACT(NullUniquePointer_DoesNotThrow)
    AFACT(NullSharedPointer_DoesNotThrow)
@@ -14,26 +14,26 @@ namespace ZenUnit
    TEST(NullRawPointer_DoesNotThrow)
    {
       const int* const nullRawPointer = nullptr;
-      IS_NULL(nullRawPointer);
+      POINTER_IS_NULL(nullRawPointer);
    }
 
    TEST(NullUniquePointer_DoesNotThrow)
    {
       const unique_ptr<const int> nullUniquePtr;
-      IS_NULL(nullUniquePtr);
+      POINTER_IS_NULL(nullUniquePtr);
    }
 
    TEST(NullSharedPointer_DoesNotThrow)
    {
       const shared_ptr<const int> nullSharedPtr;
-      IS_NULL(nullSharedPtr);
+      POINTER_IS_NULL(nullSharedPtr);
    }
 
    TEST(NonNullRawPointer_Throws_MessagesTestCase)
    {
       const int* const nonNullRawPointer = reinterpret_cast<const int*>(0x123);
       string expectedWhat = R"(
-  Failed: IS_NULL(nonNullRawPointer, messageA, messageB)
+  Failed: POINTER_IS_NULL(nonNullRawPointer, messageA, messageB)
 Expected: nullptr
   Actual: )";
 #if defined __linux__ || defined __APPLE__
@@ -46,7 +46,7 @@ Expected: nullptr
       expectedWhat += " Message: \"A\", \"B\"\n";
       expectedWhat += "File.cpp(1)";
       const string messageA = "A", messageB = "B";
-      THROWS(IS_NULL(nonNullRawPointer, messageA, messageB), Anomaly, expectedWhat);
+      THROWS(POINTER_IS_NULL(nonNullRawPointer, messageA, messageB), Anomaly, expectedWhat);
    }
 
    struct NullDeleter
@@ -62,7 +62,7 @@ Expected: nullptr
       const int* const intPtr = reinterpret_cast<int*>(0x1234567890123);
       const unique_ptr<const int, NullDeleter> nonNullUniquePointer(intPtr);
       string expectedWhat = R"(
-  Failed: IS_NULL(nonNullUniquePointer)
+  Failed: POINTER_IS_NULL(nonNullUniquePointer)
 Expected: nullptr
   Actual: )";
 #if defined __linux__ || defined __APPLE__
@@ -73,7 +73,7 @@ Expected: nullptr
       expectedWhat += "0x67890123";
 #endif
       expectedWhat += "\nFile.cpp(1)";
-      THROWS(IS_NULL(nonNullUniquePointer), Anomaly, expectedWhat);
+      THROWS(POINTER_IS_NULL(nonNullUniquePointer), Anomaly, expectedWhat);
    }
 
    TEST(NonNullSharedPtr_Throws)
@@ -81,7 +81,7 @@ Expected: nullptr
       const int* const intPtr = reinterpret_cast<int*>(0x1234567890123);
       const shared_ptr<const int> nonNullSharedPointer(intPtr, NullDeleter());
       string expectedWhat = R"(
-  Failed: IS_NULL(nonNullSharedPointer)
+  Failed: POINTER_IS_NULL(nonNullSharedPointer)
 Expected: nullptr
   Actual: )";
 #if defined __linux__ || defined __APPLE__
@@ -92,8 +92,8 @@ Expected: nullptr
       expectedWhat += "0x67890123";
 #endif
       expectedWhat += "\nFile.cpp(1)";
-      THROWS(IS_NULL(nonNullSharedPointer), Anomaly, expectedWhat);
+      THROWS(POINTER_IS_NULL(nonNullSharedPointer), Anomaly, expectedWhat);
    }
 
-   RUN_TESTS(IS_NULL_Tests)
+   RUN_TESTS(POINTER_IS_NULL_Tests)
 }

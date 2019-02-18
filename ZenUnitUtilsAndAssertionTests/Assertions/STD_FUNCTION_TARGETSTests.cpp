@@ -74,7 +74,7 @@ namespace ZenUnit
 "  Failed: STD_FUNCTION_TARGETS\\(FunctionB, stdFunctionA\\)",
 "Expected: " + expectedPattern,
 "  Actual: <non-empty std::function>",
-" Because: IS_NOT_NULL\\(stdFunction.template target<ExpectedStdFunctionTargetType\\*>\\(\\)\\) failed",
+" Because: POINTER_IS_NOT_NULL\\(stdFunction.template target<ExpectedStdFunctionTargetType\\*>\\(\\)\\) failed",
 "Expected: not nullptr",
 "  Actual: nullptr",
 "File.cpp\\(1\\)",

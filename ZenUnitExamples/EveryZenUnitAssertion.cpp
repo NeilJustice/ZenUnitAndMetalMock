@@ -41,8 +41,8 @@ TEST(CallAllMacros)
    STD_FUNCTION_TARGETS(::exit, std::function<void(int)>(::exit));
 
    // Pointers
-   IS_NULL(nullptr);
-   IS_NOT_NULL(std::make_unique<int>());
+   POINTER_IS_NULL(nullptr);
+   POINTER_IS_NOT_NULL(std::make_unique<int>());
    const int* operatorNewedInt = new int;
    POINTER_WAS_NEWED(operatorNewedInt);
    const int* operatorNewedIntArray = new int[3];
