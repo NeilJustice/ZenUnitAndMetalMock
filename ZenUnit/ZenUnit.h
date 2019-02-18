@@ -3915,7 +3915,7 @@ Testing Rigor Options:
 #if defined __linux__ || defined __APPLE__
          : _call_gethostname(::gethostname)
 #elif defined _WIN32
-         : _call_GetComputerName(::GetComputerName)
+         : _call_GetComputerName(::GetComputerNameA)
 #endif
       {
       }
@@ -3950,7 +3950,7 @@ Testing Rigor Options:
       virtual std::string GetWindowsMachineName() const
       {
          const size_t Windows10MaxPCNameLength = 40;
-         TCHAR computerNameChars[Windows10MaxPCNameLength + 1]{};
+         CHAR computerNameChars[Windows10MaxPCNameLength + 1]{};
          DWORD size = sizeof(computerNameChars);
          const BOOL didGetComputerName = _call_GetComputerName(computerNameChars, &size);
          assert_true(didGetComputerName == TRUE);
