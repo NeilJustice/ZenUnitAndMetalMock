@@ -4,7 +4,7 @@
 
 |Build Type|Build Status|
 |----------|------------|
-|Linux (Clang 6.0.1, GCC 7.3.0) and macOS (AppleClang 9.1.0)|<a href="https://travis-ci.org/NeilJustice/ZenUnit"><img src="https://travis-ci.org/NeilJustice/ZenUnit.svg?branch=master"/></a>|
+|Linux (Clang 6.0.1, GCC 7.4.0) and macOS (AppleClang 9.1.0)|<a href="https://travis-ci.org/NeilJustice/ZenUnit"><img src="https://travis-ci.org/NeilJustice/ZenUnit.svg?branch=master"/></a>|
 |Windows (Visual Studio 2017 and 2017 Preview x64 and Win32)|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitZenMock"><img src="https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true"/></a>|
 
    * [ZenUnit design and the N-by-N value-parameterized test syntax](#zenunit-design-and-the-n-by-n-value-parameterized-test-syntax)
@@ -25,7 +25,7 @@
 ### ZenUnit design and the N-by-N value-parameterized test syntax
 
 ```cpp
-#include "ZenUnit.h" // Single header
+#include "ZenUnit.h"
 
 // Function to be unit tested with ZenUnit
 std::string FizzBuzz(unsigned endNumber);
