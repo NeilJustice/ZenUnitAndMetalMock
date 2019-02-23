@@ -324,7 +324,7 @@ namespace ZenUnit
    {
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
       ZenUnitArgs args;
-      args.exit0 = true;
+      args.exitZero = true;
       //
       const int exitCode = _testRunResult.DetermineExitCode(args);
       //
@@ -343,7 +343,7 @@ namespace ZenUnit
    {
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
       ZenUnitArgs args;
-      args.exit0 = true;
+      args.exitZero = true;
       args.noskips = true;
       //
       const int exitCode = _testRunResult.DetermineExitCode(args);

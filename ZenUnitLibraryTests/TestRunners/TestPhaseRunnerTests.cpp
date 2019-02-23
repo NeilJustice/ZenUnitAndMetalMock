@@ -153,7 +153,7 @@ namespace ZenUnit
    {
       ZenUnitArgs args;
       args.failfast = ZenUnit::Random<bool>();
-      args.exit0 = ZenUnit::Random<bool>();
+      args.exitZero = ZenUnit::Random<bool>();
       GetArgs_ZenMockObject.Return(args);
 
       _voidTwoArgMemberFunctionCallerMock->ConstCallMock.Expect();
@@ -176,7 +176,7 @@ namespace ZenUnit
       const Anomaly expectedAnomaly("NonDefault", "NonDefault", FileLine(), "", "");
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedAnomaly.why));
       ZENMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith("\n===========\nFatal Error\n===========", Color::Red));
-      const int expectedExitCode = args.exit0 ? 0 : 1;
+      const int expectedExitCode = args.exitZero ? 0 : 1;
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(
          "A ZenUnit::Anomaly was thrown from a test class constructor, STARTUP function, or CLEANUP function.\nFail fasting with exit code " +
          std::to_string(expectedExitCode) + ".", expectedExitCode));
@@ -288,12 +288,12 @@ namespace ZenUnit
    }
 
    TEST2X2(RunTestPhase_FunctionThrowsAnIntToTriggerDotDotDotHandler_PrintsFailureDetails_Exits1,
-      bool exit0, int expectedExitCode,
+      bool exitZero, int expectedExitCode,
       false, 1,
       true, 0)
    {
       ZenUnitArgs zenUnitArgs;
-      zenUnitArgs.exit0 = exit0;
+      zenUnitArgs.exitZero = exitZero;
       GetArgs_ZenMockObject.Return(zenUnitArgs);
 
       ExpectStopwatchStartAndStopCalls();

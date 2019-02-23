@@ -186,21 +186,22 @@ RUN_TESTS(STARTUPAndCLEANUPTests)
 ### Command Line Usage
 
 ```
-ZenUnit 0.4.0
-Usage: <TestsBinaryName> [Options...]
+C++ Unit Testing Framework ZenUnit - v0.4.0
+Usage: <ZenUnitTestsBinaryName> [Options...]
 
-Testing Utility Options:
+Testing Rigor Options:
 
---pause
-   Wait for any key before running tests to allow attaching a debugger or profiler.
---exit0
-   Always exit 0 regardless of test run outcome.
-   This is a useful option for never blocking the launch of a ZenUnit tests
-   console window when previously running tests in a post-build step.
---wait
-   Wait for any key at the end of the test run.
---help or -help
-   Display this message.
+--random
+   Run test classes, tests, and value-parameterized test cases in a random order.
+--seed=<Value>
+   Set to Value the random seed used by --random and
+   the ZenUnit::Random<T> family of random value generating functions.
+   The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
+--test-runs=<N>
+   Repeat the running of all tests N times. Use a negative number to repeat forever.
+   For five random test run orderings, specify --random --test-runs=5.
+--no-skips
+   Exit with code 1 if any tests are skipped.
 
 Testing Filtration Options:
 
@@ -218,22 +219,16 @@ Testing Filtration Options:
 --fail-fast
    Immediately call exit(1) if a test fails.
 
-Testing Rigor Options:
+Testing Utility Options:
 
---random
-   Run test classes, tests, and value-parameterized test cases in a random order.
---seed=<Value>
-   Set to Value the random seed used by --random and
-   the ZenUnit::Random<T> family of random value generating functions.
-   The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
---test-runs=<N>
-   Repeat the running of all tests N times. Use a negative number to repeat forever.
-   For five random test run orderings, specify --random --test-runs=5.
---no-skips
-   Exit 1 regardless of test run outcome if any tests are skipped.
-   This is a useful option to use on continuous integration servers to
-   partially defend against the understandable urge to "skip it and ship it".
-   Code coverage minimums and mandatory randomized code reviews are two more defenses.
+--pause
+   Wait for any key before running tests to allow attaching a debugger or profiler.
+--exit-zero
+   Always exit with code 0 regardless of any failed tests.
+--wait
+   Wait for any key at the end of the test run.
+--help or -help
+   Print this message.
 ```
 
 ### Type-Parameterized Test Class Syntax

@@ -27,21 +27,22 @@ namespace ZenUnit
    EVIDENCE
 
    const string _testProgramPath = Random<string>();
-   const string ExpectedUsage = R"(ZenUnit 0.4.0
-Usage: <TestsBinaryName> [Options...]
+   const string expectedUsage = "C++ Unit Testing Framework ZenUnit - v " + std::string(Version::Number()) + R"(
+Usage: <ZenUnitTestsBinaryName> [Options...]
 
-Testing Utility Options:
+Testing Rigor Options:
 
---pause
-   Wait for any key before running tests to allow attaching a debugger or profiler.
---exit0
-   Always exit 0 regardless of test run outcome.
-   This is a useful option for never blocking the launch of a ZenUnit tests
-   console window when previously running tests in a post-build step.
---wait
-   Wait for any key at the end of the test run.
---help or -help
-   Display this message.
+--random
+   Run test classes, tests, and value-parameterized test cases in a random order.
+--seed=<Value>
+   Set to Value the random seed used by --random and
+   the ZenUnit::Random<T> family of random value generating functions.
+   The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
+--test-runs=<N>
+   Repeat the running of all tests N times. Use a negative number to repeat forever.
+   For five random test run orderings, specify --random --test-runs=5.
+--no-skips
+   Exit with code 1 if any tests are skipped.
 
 Testing Filtration Options:
 
@@ -59,22 +60,16 @@ Testing Filtration Options:
 --fail-fast
    Immediately call exit(1) if a test fails.
 
-Testing Rigor Options:
+Testing Utility Options:
 
---random
-   Run test classes, tests, and value-parameterized test cases in a random order.
---seed=<Value>
-   Set to Value the random seed used by --random and
-   the ZenUnit::Random<T> family of random value generating functions.
-   The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
---test-runs=<N>
-   Repeat the running of all tests N times. Use a negative number to repeat forever.
-   For five random test run orderings, specify --random --test-runs=5.
---no-skips
-   Exit 1 regardless of test run outcome if any tests are skipped.
-   This is a useful option to use on continuous integration servers to
-   partially defend against the understandable urge to "skip it and ship it".
-   Code coverage minimums and mandatory randomized code reviews are two more defenses.)";
+--pause
+   Wait for any key before running tests to allow attaching a debugger or profiler.
+--exit-zero
+   Always exit with code 0 regardless of any failed tests.
+--wait
+   Wait for any key at the end of the test run.
+--help or -help
+   Print this message.)";
 
    ArgsParser _argsParser;
    ConsoleMock* _consoleMock = nullptr;
@@ -142,14 +137,13 @@ Testing Rigor Options:
       THROWS(_argsParser.Parse(args), WriteLineAndExitException, "");
       //
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith("ZenUnit command line usage error: Too many arguments.\n"));
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedUsage, 1));
    }
 
    TEST1X1(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1,
       const string& invalidArg,
       "--abc",
-      "-exit0",
-      "-Exit0",
+      "--Exit-zero",
       "--test-runs")
    {
       _consoleMock->WriteLineMock.Expect();
@@ -160,7 +154,7 @@ Testing Rigor Options:
       //
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Invalid argument \"" + invalidArg + "\"\n"));
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedUsage, 1));
    }
 
    TEST1X1(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0,
@@ -173,7 +167,7 @@ Testing Rigor Options:
       //
       THROWS(_argsParser.Parse(args), WriteLineAndExitException, "");
       //
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 0));
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedUsage, 0));
    }
 
    TEST(Parse_AllArgsSpecifiedExpectForRunFilter_ReturnsZenUnitArgsWithAllFieldsSets)
@@ -188,7 +182,7 @@ Testing Rigor Options:
          _testProgramPath,
          "--pause",
          "--wait",
-         "--exit0",
+         "--exit-zero",
          "--fail-fast",
          "--no-skips",
          "--random",
@@ -204,7 +198,7 @@ Testing Rigor Options:
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
       expectedZenUnitArgs.pause = true;
       expectedZenUnitArgs.wait = true;
-      expectedZenUnitArgs.exit0 = true;
+      expectedZenUnitArgs.exitZero = true;
       expectedZenUnitArgs.failfast = true;
       expectedZenUnitArgs.noskips = true;
       expectedZenUnitArgs.random = true;
@@ -257,7 +251,7 @@ Testing Rigor Options:
       Startup();
       AssertArgSetsBoolField("--wait", &ZenUnitArgs::wait);
       Startup();
-      AssertArgSetsBoolField("--exit0", &ZenUnitArgs::exit0);
+      AssertArgSetsBoolField("--exit-zero", &ZenUnitArgs::exitZero);
       Startup();
       AssertArgSetsBoolField("--fail-fast", &ZenUnitArgs::failfast);
       Startup();
@@ -280,13 +274,13 @@ Testing Rigor Options:
    TEST(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
    {
       ExpectCallToSetRandomSeedIfNotSetByUser();
-      const vector<string> args { _testProgramPath, "--exit0", "--exit0" };
+      const vector<string> args { _testProgramPath, "--exit-zero", "--exit-zero" };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
-      expectedZenUnitArgs.exit0 = true;
+      expectedZenUnitArgs.exitZero = true;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
@@ -306,7 +300,7 @@ Testing Rigor Options:
       //
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Invalid --name=value argument value: " + arg + "\n"));
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedUsage, 1));
    }
 
    TEST(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
@@ -322,7 +316,7 @@ Testing Rigor Options:
       ZENMOCK(ToInt_ZenMockObject.CalledOnceWith("-1_for_example"));
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Invalid --name=value argument value: " + InvalidTimesArg + "\n"));
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedUsage, 1));
    }
 
    TEST(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
@@ -370,7 +364,7 @@ Testing Rigor Options:
       //
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Unrecognized --name=value argument: " + unrecognizedNameArg + "\n"));
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedUsage, 1));
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedUsage, 1));
    }
 
    TEST(SetRandomSeedIfNotSetByUser_RandomSeedSetByUser_DoesNothing)

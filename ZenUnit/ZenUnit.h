@@ -802,7 +802,7 @@ namespace ZenUnit
       std::vector<RunFilter> runFilters;
       bool pause = false;
       bool wait = false;
-      bool exit0 = false;
+      bool exitZero = false;
       bool failfast = false;
       bool noskips = false;
       int testruns = 1;
@@ -1847,21 +1847,22 @@ namespace ZenUnit
 
       static const std::string& Usage()
       {
-         static const std::string usage = "ZenUnit " + std::string(Version::Number()) + R"(
-Usage: <TestsBinaryName> [Options...]
+         static const std::string usage = "C++ Unit Testing Framework ZenUnit - v " + std::string(Version::Number()) + R"(
+Usage: <ZenUnitTestsBinaryName> [Options...]
 
-Testing Utility Options:
+Testing Rigor Options:
 
---pause
-   Wait for any key before running tests to allow attaching a debugger or profiler.
---exit0
-   Always exit 0 regardless of test run outcome.
-   This is a useful option for never blocking the launch of a ZenUnit tests
-   console window when previously running tests in a post-build step.
---wait
-   Wait for any key at the end of the test run.
---help or -help
-   Display this message.
+--random
+   Run test classes, tests, and value-parameterized test cases in a random order.
+--seed=<Value>
+   Set to Value the random seed used by --random and
+   the ZenUnit::Random<T> family of random value generating functions.
+   The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
+--test-runs=<N>
+   Repeat the running of all tests N times. Use a negative number to repeat forever.
+   For five random test run orderings, specify --random --test-runs=5.
+--no-skips
+   Exit with code 1 if any tests are skipped.
 
 Testing Filtration Options:
 
@@ -1879,22 +1880,16 @@ Testing Filtration Options:
 --fail-fast
    Immediately call exit(1) if a test fails.
 
-Testing Rigor Options:
+Testing Utility Options:
 
---random
-   Run test classes, tests, and value-parameterized test cases in a random order.
---seed=<Value>
-   Set to Value the random seed used by --random and
-   the ZenUnit::Random<T> family of random value generating functions.
-   The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
---test-runs=<N>
-   Repeat the running of all tests N times. Use a negative number to repeat forever.
-   For five random test run orderings, specify --random --test-runs=5.
---no-skips
-   Exit 1 regardless of test run outcome if any tests are skipped.
-   This is a useful option to use on continuous integration servers to
-   partially defend against the understandable urge to "skip it and ship it".
-   Code coverage minimums and mandatory randomized code reviews are two more defenses.)";
+--pause
+   Wait for any key before running tests to allow attaching a debugger or profiler.
+--exit-zero
+   Always exit with code 0 regardless of any failed tests.
+--wait
+   Wait for any key at the end of the test run.
+--help or -help
+   Print this message.)";
          return usage;
       }
 
@@ -1919,9 +1914,9 @@ Testing Rigor Options:
             {
                args.wait = true;
             }
-            else if (arg == "--exit0")
+            else if (arg == "--exit-zero")
             {
-               args.exit0 = true;
+               args.exitZero = true;
             }
             else if (arg == "--fail-fast")
             {
@@ -4495,7 +4490,7 @@ Testing Rigor Options:
 
       virtual int DetermineExitCode(const ZenUnitArgs& args) const
       {
-         if (args.exit0)
+         if (args.exitZero)
          {
             return 0;
          }
@@ -4938,7 +4933,7 @@ Testing Rigor Options:
          _console->WriteLine(anomaly.why);
          if (testPhase != TestPhase::TestBody)
          {
-            const int exitCode = args.exit0 ? 0 : 1;
+            const int exitCode = args.exitZero ? 0 : 1;
             _console->WriteLineColor("\n===========\nFatal Error\n===========", Color::Red);
             _console->WriteLineAndExit("A ZenUnit::Anomaly was thrown from a test class constructor, STARTUP function, or CLEANUP function.\nFail fasting with exit code "
                + std::to_string(exitCode) + ".", exitCode);
@@ -4975,7 +4970,7 @@ Testing Rigor Options:
          _stopwatch->Stop();
          _console->WriteLineColor("\n===========\nFatal Error\n===========", Color::Red);
          const char* const testPhaseName = _testPhaseTranslator->TestPhaseToTestPhaseName(testPhase);
-         const int exitCode = args.exit0 ? 0 : 1;
+         const int exitCode = args.exitZero ? 0 : 1;
          const std::string exitLine = String::Concat(
             "Fatal ... exception thrown during test phase: ", testPhaseName, ".\nFail fasting with exit code ", exitCode, ".");
          _console->WriteLineAndExit(exitLine, exitCode);
@@ -6058,7 +6053,7 @@ The fix for this error is to change FACTS(TestName) to AFACT(TestName)
 or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
 )";
             const ZenUnitArgs& args = TestRunner::GetArgs();
-            exit(args.exit0 ? 0 : 1);
+            exit(args.exitZero ? 0 : 1);
          }
          const std::unique_ptr<Test>* const testNXN = &findIter->second;
          return testNXN;

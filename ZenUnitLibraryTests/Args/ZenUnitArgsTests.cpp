@@ -14,7 +14,7 @@ namespace ZenUnit
       ARE_EQUAL("", zenUnitArgs.commandLine);
       IS_EMPTY(zenUnitArgs.runFilters);
       IS_FALSE(zenUnitArgs.wait);
-      IS_FALSE(zenUnitArgs.exit0);
+      IS_FALSE(zenUnitArgs.exitZero);
       IS_FALSE(zenUnitArgs.failfast);
       IS_FALSE(zenUnitArgs.noskips);
       ARE_EQUAL(1, zenUnitArgs.testruns);
@@ -32,7 +32,7 @@ namespace ZenUnit
       EQUALIZER_THROWS(ZenUnitArgs, runFilters, vector<RunFilter> { RunFilter() });
       EQUALIZER_THROWS(ZenUnitArgs, pause, true);
       EQUALIZER_THROWS(ZenUnitArgs, wait, true);
-      EQUALIZER_THROWS(ZenUnitArgs, exit0, true);
+      EQUALIZER_THROWS(ZenUnitArgs, exitZero, true);
       EQUALIZER_THROWS(ZenUnitArgs, failfast, true);
       EQUALIZER_THROWS(ZenUnitArgs, noskips, true);
       EQUALIZER_THROWS(ZenUnitArgs, testruns, 2u);

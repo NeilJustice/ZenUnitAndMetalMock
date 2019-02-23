@@ -11,7 +11,7 @@ namespace ZenUnit
       randomZenUnitArgs.runFilters = ZenUnit::RandomVector<RunFilter>();
       randomZenUnitArgs.pause = ZenUnit::Random<bool>();
       randomZenUnitArgs.wait = ZenUnit::Random<bool>();
-      randomZenUnitArgs.exit0 = ZenUnit::Random<bool>();
+      randomZenUnitArgs.exitZero = ZenUnit::Random<bool>();
       randomZenUnitArgs.failfast = ZenUnit::Random<bool>();
       randomZenUnitArgs.noskips = ZenUnit::Random<bool>();
       randomZenUnitArgs.testruns = ZenUnit::Random<unsigned>();
