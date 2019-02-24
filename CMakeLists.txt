@@ -26,7 +26,6 @@ elseif(MSVC)
    set(CMAKE_CXX_FLAGS "/std:c++17 /Wall /WX /EHsc /MP")
    replace(CMAKE_EXE_LINKER_FLAGS_DEBUG "/debug" "/debug:fastlink")
    replace(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "/debug" "/debug:fastlink")
-   replace(CMAKE_CXX_FLAGS_RELEASE "/O2" "/Od")
    set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 endif()
 
