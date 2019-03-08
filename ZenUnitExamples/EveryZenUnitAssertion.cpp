@@ -19,6 +19,9 @@ namespace ZenUnit
    };
 }
 
+void OverloadedFunction(int) {}
+void OverloadedFunction(std::string_view) {}
+
 TESTS(EveryZenUnitAssertion)
 AFACT(CallAllMacros)
 EVIDENCE
@@ -39,6 +42,14 @@ TEST(CallAllMacros)
 
    // Functions
    STD_FUNCTION_TARGETS(::exit, std::function<void(int)>(::exit));
+
+	using ExpectedIntOverloadType = void(*)(int);
+	std::function<void(int)> overloadedIntStdFunction = static_cast<ExpectedIntOverloadType>(::OverloadedFunction);
+	STD_FUNCTION_TARGETS_OVERLOAD(ExpectedIntOverloadType, ::OverloadedFunction, overloadedIntStdFunction);
+
+	using ExpectedStringViewOverloadType = void(*)(std::string_view);
+	std::function<void(std::string_view)> overloadedStringViewStdFunction = static_cast<ExpectedStringViewOverloadType>(::OverloadedFunction);
+	STD_FUNCTION_TARGETS_OVERLOAD(ExpectedStringViewOverloadType, ::OverloadedFunction, overloadedStringViewStdFunction);
 
    // Pointers
    POINTER_IS_NULL(nullptr);

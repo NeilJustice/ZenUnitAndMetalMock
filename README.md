@@ -357,7 +357,8 @@ int main(int argc, char* argv[])
 #### Function Assertions
 |||
 |-|-|
-|`STD_FUNCTION_TARGETS(expectedStdFunctionTarget, stdFunction, messages...)`|First asserts `IS_TRUE(stdFunction)`, which asserts that stdFunction points to a function, then asserts `ARE_EQUAL(expectedStdFunctionTarget, *stdFunction.target<ExpectedStdFunctionTargetType*>())`. This is a key assertion to call prior to mocking out a `std::function` with a [ZenMock](https://github.com/NeilJustice/ZenMock) mock object to confirm that the `std::function` being mocked-out points to an expected static or free function.|
+|`STD_FUNCTION_TARGETS(expectedStaticOrFreeFunction, stdFunction, messages...)`|First asserts `IS_TRUE(stdFunction)`, which asserts that stdFunction points to a function, then asserts `ARE_EQUAL(expectedStaticOrFreeFunction, *stdFunction.target<decltype(expectedStaticOrFreeFunction)*>())`. This is a key assertion to call prior to overwriting a `std::function` with a [ZenMock](https://github.com/NeilJustice/ZenMock) mock object.|
+|`STD_FUNCTION_TARGETS_OVERLOAD(expectedOverloadTypeInTheFormOfAUsing, expectedStaticOrFreeFunction, stdFunction, messages...)`|Same as above but with `static_cast<expectedOverloadTypeInTheFormOfAUsing>(expectedStaticOrFreeFunction)`.|
 
 ### Macros For Defining Test Classes And Tests
 
@@ -386,9 +387,7 @@ int main(int argc, char* argv[])
 
 ### Maximizing Mutation Coverage With Random Value Testing
 
-Testing using random inputs instead of constant inputs is a central technique for maximizing mutation coverage. Mutation coverage is the percentage of program-correctness-breaking code mutations "slain" by a collection of tests. To "slay" a code mutation, a collection of tests must fail so as to not potentially pass along the correctness-compromised program to production.
-
-ZenUnit provides the following random value generating functions for writing unit tests that are robust to the swap-variable-with-constant code mutation, which is one of the most straightforward code mutations to induce manually today or automatically in the 2020s with an LLVM-powered mutation testing library.
+ZenUnit provides the following random value generating functions for writing unit tests that are robust to the swap-variable-with-constant code mutation, which is one of the most straightforward code mutations to induce manually today or automatically in the 2020s with an LLVM-powered mutation testing framework.
 
 |Random Value Generating Function|Description|
 |--------------------------------|-----------|
@@ -407,4 +406,4 @@ ZenUnit provides the following random value generating functions for writing uni
 
 ### ZenMock
 
-[ZenMock](https://github.com/NeilJustice/ZenMock) is a C++17 single-header mocking framework powered by ZenUnit that has a high-readability arrange-act-assert syntax for confirming the correctness of calls and return values to and from virtual, non-virtual, static, and free functions.
+[ZenMock](https://github.com/NeilJustice/ZenMock) is a C++ single-header mocking framework powered by ZenUnit with a high-readability arrange-act-assert syntax for confirming the correctness of calls and return values to and from virtual, non-virtual, static, and free functions.

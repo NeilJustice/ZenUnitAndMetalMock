@@ -104,12 +104,16 @@
    ZenUnit::POINTEES_EQUAL_Defined(VRT(expectedPointer), VRT(actualPointer), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
-// Function Assertion
+// Function Assertions
 //
 
 // Asserts that a std::function targets expectedStdFunctionTarget.
-#define STD_FUNCTION_TARGETS(expectedStdFunctionTarget, stdFunction, ...) \
-   ZenUnit::STD_FUNCTION_TARGETS_Defined<decltype(expectedStdFunctionTarget)>(expectedStdFunctionTarget, #expectedStdFunctionTarget, VRT(stdFunction), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+#define STD_FUNCTION_TARGETS(expectedStaticOrFreeFunction, stdFunction, ...) \
+   ZenUnit::STD_FUNCTION_TARGETS_Defined<decltype(expectedStaticOrFreeFunction)>(expectedStaticOrFreeFunction, #expectedStaticOrFreeFunction, VRT(stdFunction), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Asserts that a std::function targets static_cast<expectedOverloadTypeInTheFormOfAUsing>(expectedStaticOrFreeFunction).
+#define STD_FUNCTION_TARGETS_OVERLOAD(expectedOverloadTypeInTheFormOfAUsing, expectedStaticOrFreeFunction, stdFunction, ...) \
+   ZenUnit::STD_FUNCTION_TARGETS_OVERLOAD_Defined(static_cast<expectedOverloadTypeInTheFormOfAUsing>(expectedStaticOrFreeFunction), #expectedStaticOrFreeFunction, VRT(stdFunction), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
 // Memory Assertions
@@ -3075,8 +3079,7 @@ Testing Utility Options:
       {
          IS_TRUE(stdFunction);
          POINTER_IS_NOT_NULL(stdFunction.template target<ExpectedStdFunctionTargetType*>());
-         typename std::add_pointer<ExpectedStdFunctionTargetType>::type
-            expectedStdFunctionTarget(expectedStdFunctionTargetValue);
+         typename std::add_pointer<ExpectedStdFunctionTargetType>::type expectedStdFunctionTarget(expectedStdFunctionTargetValue);
          ARE_EQUAL(expectedStdFunctionTarget, *stdFunction.template target<ExpectedStdFunctionTargetType*>());
       }
       catch (const Anomaly& becauseAnomaly)
@@ -3084,12 +3087,35 @@ Testing Utility Options:
          const std::string expectedField = ToStringer::ToString(expectedStdFunctionTargetValue);
          const std::string actualField = ToStringer::ToString(stdFunctionVRT.value);
          throw Anomaly("STD_FUNCTION_TARGETS", expectedStdFunctionTargetText, stdFunctionVRT.text, "", messagesText,
-            becauseAnomaly,
-            expectedField,
-            actualField,
+            becauseAnomaly, expectedField, actualField,
             ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
       }
    }
+
+	template<typename ExpectedStdFunctionTargetType, typename StdFunctionType, typename... MessageTypes>
+	void STD_FUNCTION_TARGETS_OVERLOAD_Defined(
+		const ExpectedStdFunctionTargetType* expectedStdFunctionTargetValue,
+		const char* expectedStdFunctionTargetText,
+		VRText<StdFunctionType> stdFunctionVRT,
+		FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+	{
+		const StdFunctionType stdFunction = stdFunctionVRT.value;
+		try
+		{
+			IS_TRUE(stdFunction);
+			POINTER_IS_NOT_NULL(stdFunction.template target<ExpectedStdFunctionTargetType*>());
+			typename std::add_pointer<ExpectedStdFunctionTargetType>::type expectedStdFunctionTarget(expectedStdFunctionTargetValue);
+			ARE_EQUAL(expectedStdFunctionTarget, *stdFunction.template target<ExpectedStdFunctionTargetType*>());
+		}
+		catch (const Anomaly& becauseAnomaly)
+		{
+			const std::string expectedField = ToStringer::ToString(expectedStdFunctionTargetValue);
+			const std::string actualField = ToStringer::ToString(stdFunctionVRT.value);
+			throw Anomaly("STD_FUNCTION_TARGETS_OVERLOAD", expectedStdFunctionTargetText, stdFunctionVRT.text, "", messagesText,
+				becauseAnomaly, expectedField, actualField,
+				ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+		}
+	}
 
    template<typename ExpectedType, typename ActualType, typename... MessageTypes>
    void POINTEES_EQUAL_Throw_NullptrExpectedOrActual(
@@ -3101,9 +3127,7 @@ Testing Utility Options:
       const std::string expectedField = expectedOrActual + std::string(" pointer != nullptr");
       const std::string actualField = expectedOrActual + std::string(" pointer == nullptr");
       throw Anomaly("POINTEES_EQUAL", expectedPointerVRT.text, actualPointerVRT.text, "",
-         messagesText, Anomaly::Default(),
-         expectedField,
-         actualField,
+         messagesText, Anomaly::Default(), expectedField, actualField,
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
@@ -3117,10 +3141,8 @@ Testing Utility Options:
       const std::string expectedField = ToStringer::ToString(*expectedPointerVRT.value);
       const std::string actualField = ToStringer::ToString(*actualPointerVRT.value);
       throw Anomaly("POINTEES_EQUAL", expectedPointerVRT.text, actualPointerVRT.text, "",
-         messagesText, becauseAnomaly,
-         expectedField,
-         actualField,
-         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+         messagesText, becauseAnomaly, expectedField, actualField,
+			ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ActualType, typename... MessageTypes>
