@@ -516,7 +516,7 @@ namespace ZenUnit
          return fileLineAsString;
       }
 
-      friend std::ostream& operator<<(std::ostream& os, const FileLine& fileLine)
+      friend std::ostream& operator<<(std::ostream& os, FileLine fileLine)
       {
          os << fileLine.filePath << '(' << fileLine.lineNumber << ')';
          return os;
@@ -711,13 +711,14 @@ namespace ZenUnit
       }
    };
 
-   inline void ThrowLogicError(const char* predicateText, const FileLine& fileLine, const char* functionName)
+   inline void ThrowLogicError(const char* predicateText, FileLine fileLine, const char* functionName)
    {
-      const std::string what = String::Concat("assert_true(", predicateText, ") failed in ", functionName, "()\n", fileLine.filePath, "(", fileLine.lineNumber, ")");
-      throw std::logic_error(what);
+      const std::string assertTrueFailedErrorMessage = String::Concat(
+			"assert_true(", predicateText, ") failed in ", functionName, "()\n", fileLine.filePath, "(", fileLine.lineNumber, ")");
+      throw std::logic_error(assertTrueFailedErrorMessage);
    }
 
-   inline void AssertTrue(bool predicateResult, const char* predicateText, const FileLine& fileLine, const char* functionName)
+   inline void AssertTrue(bool predicateResult, const char* predicateText, FileLine fileLine, const char* functionName)
    {
       if (!predicateResult)
       {
@@ -732,18 +733,10 @@ namespace ZenUnit
       unsigned char arity;
 
       FullTestName() noexcept
-         : testClassName("")
-         , testName("")
-         , arity(0)
-      {
-      }
+			: testClassName(""), testName(""), arity(0) {}
 
-      FullTestName(const char* testClassName, const char* testName, unsigned char arity) noexcept
-         : testClassName(testClassName)
-         , testName(testName)
-         , arity(arity)
-      {
-      }
+		FullTestName(const char* testClassName, const char* testName, unsigned char arity) noexcept
+         : testClassName(testClassName), testName(testName), arity(arity) {}
 
       std::string Value() const
       {
@@ -751,10 +744,12 @@ namespace ZenUnit
          const char* const testsOrTemplateTests = testClassIsTemplated ? "TEMPLATE_TESTS(" : "TESTS(";
          if (arity == 0)
          {
-            const std::string fullTestName = String::Concat(testsOrTemplateTests, testClassName, ")\nTEST(", testName, ')');
+            const std::string fullTestName = String::Concat(testsOrTemplateTests, testClassName, ")\n",
+					"TEST(", testName, ')');
             return fullTestName;
          }
-         const std::string fullTestName = String::Concat(testsOrTemplateTests, testClassName, ")\nTEST", static_cast<unsigned>(arity), 'X', static_cast<unsigned>(arity), '(', testName, ')');
+         const std::string fullTestName = String::Concat(testsOrTemplateTests, testClassName, ")\n",
+				"TEST", static_cast<unsigned>(arity), 'X', static_cast<unsigned>(arity), '(', testName, ')');
          return fullTestName;
       }
    };
@@ -3424,19 +3419,10 @@ namespace ZenUnit
       TestPhase testPhase;
       TestOutcome testOutcome;
       unsigned microseconds;
-      std::shared_ptr<AnomalyOrException> anomalyOrException;
+      std::shared_ptr<const AnomalyOrException> anomalyOrException;
 
-      TestPhaseResult() noexcept
-         : TestPhaseResult(TestPhase::Unset)
-      {
-      }
-
-      explicit TestPhaseResult(TestPhase testPhase) noexcept
-         : testPhase(testPhase)
-         , testOutcome(TestOutcome::Success)
-         , microseconds(0)
-      {
-      }
+      TestPhaseResult() noexcept : testPhase(TestPhase::Unset), testOutcome(TestOutcome::Success), microseconds(0) {}
+      explicit TestPhaseResult(TestPhase testPhase) noexcept : testPhase(testPhase), testOutcome(TestOutcome::Success), microseconds(0) {}
    };
 
    struct TestResult
@@ -3680,7 +3666,7 @@ namespace ZenUnit
       }
    };
 
-   using ThreeArgForEacherType = const ThreeArgForEacher<
+	using ThreeArgForEacherType = const ThreeArgForEacher<
       std::vector<TestResult>, void(*)(const TestResult&, const Console*, TestFailureNumberer*),
       const Console*, TestFailureNumberer*>;
 
@@ -3832,13 +3818,7 @@ namespace ZenUnit
 #if defined __linux__ || defined __APPLE__
       virtual std::string GetLinuxMachineName() const
       {
-#if __APPLE__
-    #ifndef HOST_NAME_MAX
-        #define HOST_NAME_MAX 64
-    #endif
-#endif
-         char hostname[HOST_NAME_MAX + 1];
-         assert_true(sizeof(hostname) == 65);
+			char hostname[65]{};
          const int gethostnameResult = _call_gethostname(hostname, sizeof(hostname));
          assert_true(gethostnameResult == 0);
          const std::string linuxMachineName(hostname);
@@ -3847,8 +3827,7 @@ namespace ZenUnit
 #elif defined _WIN32
       virtual std::string GetWindowsMachineName() const
       {
-         const size_t Windows10MaxPCNameLength = 40;
-         CHAR computerNameChars[Windows10MaxPCNameLength + 1]{};
+         CHAR computerNameChars[41]{};
          DWORD size = sizeof(computerNameChars);
          const BOOL didGetComputerName = _call_GetComputerName(computerNameChars, &size);
          assert_true(didGetComputerName == TRUE);
@@ -4338,10 +4317,7 @@ namespace ZenUnit
       }
 
       virtual void PrintConclusion(
-         const std::string& startTime,
-         size_t totalNumberOfTestCases,
-         unsigned testRunMilliseconds,
-         const ZenUnitArgs& args) const
+			const std::string& startTime, size_t totalNumberOfTestCases, unsigned testRunMilliseconds, const ZenUnitArgs& args) const
       {
          assert_true(_numberOfFailedTestCases <= totalNumberOfTestCases);
          const Color greenOrRed = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
@@ -4356,12 +4332,12 @@ namespace ZenUnit
             const std::string millisecondOrMilliseconds = testRunMilliseconds == 1 ? "millisecond" : "milliseconds";
             const std::string inMillisecondsPart = String::Concat("in ", testRunMilliseconds, ' ', millisecondOrMilliseconds);
             std::string tripletLinesPrefix;
-            std::string victoryOrFailLinePrefix;
+            std::string successOrFailLinePrefix;
             std::string numberOfTestsAndMillisecondsAndRandomSeedMessage;
             if (_numberOfFailedTestCases == 0)
             {
                tripletLinesPrefix = "+=======+ ";
-               victoryOrFailLinePrefix = "<VICTORY> ";
+               successOrFailLinePrefix = "+SUCCESS+ ";
                numberOfTestsAndMillisecondsAndRandomSeedMessage = String::Concat("   Result: ",
                   totalNumberOfTestCases, ' ', testOrTests, " passed ", inMillisecondsPart,
                   " (random seed ", ZenUnitRandomSeed::value, ")");
@@ -4369,7 +4345,7 @@ namespace ZenUnit
             else
             {
                tripletLinesPrefix = ">>------> ";
-               victoryOrFailLinePrefix = ">>-FAIL-> ";
+               successOrFailLinePrefix = ">>-FAIL-> ";
                numberOfTestsAndMillisecondsAndRandomSeedMessage = String::Concat("   Result: ",
                   _numberOfFailedTestCases, '/', totalNumberOfTestCases, ' ', testOrTests, " failed ", inMillisecondsPart,
                   " (random seed ", ZenUnitRandomSeed::value, ")");
@@ -4386,7 +4362,7 @@ namespace ZenUnit
             const std::string endTimeMessage = "  EndTime: " + _watch->DateTimeNow();
             _console->WriteLine(endTimeMessage);
 
-            _console->WriteColor(victoryOrFailLinePrefix, greenOrRed);
+            _console->WriteColor(successOrFailLinePrefix, greenOrRed);
             _console->WriteLine(numberOfTestsAndMillisecondsAndRandomSeedMessage);
          }
       }
@@ -4723,7 +4699,7 @@ namespace ZenUnit
       FullTestName _protected_fullTestName;
       FileLine _protected_fileLine;
    public:
-      Test(std::string_view testClassName, std::string_view testName, unsigned char arity)
+      Test(const char* testClassName, const char* testName, unsigned char arity)
          : _testPhaseRunner(std::make_unique<TestPhaseRunner>())
          , _testResultFactory(std::make_unique<TestResultFactory>())
          , _protected_fullTestName(testClassName, testName, arity)
@@ -4737,9 +4713,10 @@ namespace ZenUnit
          return _protected_fullTestName.testName;
       }
 
-      virtual std::string FullTestNameValue() const
+      virtual std::string FullName() const
       {
-         return _protected_fullTestName.Value();
+         const std::string fullTestName = _protected_fullTestName.Value();
+			return fullTestName;
       }
 
       virtual std::string FileLineString() const
@@ -5108,7 +5085,7 @@ namespace ZenUnit
 #endif
 
    public:
-		NormalTest(std::string_view testClassName, std::string_view testName, void (TestClassType::*testMemberFunction)())
+		NormalTest(const char* testClassName, const char* testName, void (TestClassType::*testMemberFunction)())
          : Test(testClassName, testName, 0)
          , _testMemberFunction(testMemberFunction)
       {
@@ -5162,8 +5139,8 @@ namespace ZenUnit
       }
    };
 
-   // Provides the address of a static variable unique to a pointer to member function for use as a key in
-   // std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>
+   // PmfToken provides the address of a static variable unique to a pointer to member function for use as a key in
+   // ZenUnit::TestClass's std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> map
    struct PmfToken
    {
       PmfToken() noexcept = default;

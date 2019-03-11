@@ -9,7 +9,7 @@ public:
    }
 
    ZENMOCK_NONVOID0_CONST(const char*, Name)
-   ZENMOCK_NONVOID0_CONST(string, FullTestNameValue)
+   ZENMOCK_NONVOID0_CONST(string, FullName)
    ZENMOCK_NONVOID0_CONST(string, FileLineString)
    ZENMOCK_NONVOID0_CONST(size_t, NumberOfTestCases)
    ZENMOCK_VOID1_CONST(WritePostTestNameMessage, const Console*)

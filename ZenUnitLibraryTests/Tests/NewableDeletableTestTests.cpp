@@ -35,7 +35,7 @@ namespace ZenUnit
    {
       NewableDeletableTest<TestingTestClass> newableDeletableTest(TestClassName.c_str());
       ARE_EQUAL("TestClassIsNewableAndDeletable", newableDeletableTest.Name());
-      ARE_EQUAL("TESTS(" + TestClassName + ")\nTEST(TestClassIsNewableAndDeletable)", newableDeletableTest.FullTestNameValue());
+      ARE_EQUAL("TESTS(" + TestClassName + ")\nTEST(TestClassIsNewableAndDeletable)", newableDeletableTest.FullName());
       ARE_EQUAL("(0)", newableDeletableTest.FileLineString());
       POINTER_WAS_NEWED(newableDeletableTest._testResultFactory);
       POINTER_WAS_NEWED(newableDeletableTest._testPhaseRunner);

@@ -57,7 +57,7 @@ namespace ZenUnit
    {
       const NormalTest<TestingTestClass> normalTest(TestClassName.c_str(), TestName.c_str(), &TestingTestClass::TestFunction);
       ARE_EQUAL(TestName, normalTest.Name());
-      ARE_EQUAL("TESTS(" + TestClassName + ")\nTEST(" + TestName + ")", normalTest.FullTestNameValue());
+      ARE_EQUAL("TESTS(" + TestClassName + ")\nTEST(" + TestName + ")", normalTest.FullName());
       ARE_EQUAL("(0)", normalTest.FileLineString());
       ARE_EQUAL(&TestingTestClass::TestFunction, normalTest._testMemberFunction);
       POINTER_IS_NULL(normalTest._testClass);

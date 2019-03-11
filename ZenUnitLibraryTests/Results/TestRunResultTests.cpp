@@ -228,17 +228,17 @@ namespace ZenUnit
    }
 
    TEST7X7(PrintConclusion_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds,
-      const string& expectedVictoryOrFailLinePrefix,
+      const string& expectedSuccessOrFailLinePrefix,
       ZenUnit::Color expectedColor,
       size_t numberOfFailedTestCases,
       size_t numberOfTotalTests,
-      const string& expectedClosingLineTestsCountText,
+      const char* expectedClosingLineTestsCountText,
       unsigned testRunMilliseconds,
-      const string& expectedMillisecondOrMilliseconds,
-      "<VICTORY>", Color::Green, size_t(0), size_t(1), "1 test passed", 0, "milliseconds",
-      "<VICTORY>", Color::Green, size_t(0), size_t(2), "2 tests passed", 1, "millisecond",
-      "<VICTORY>", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds",
-      "<VICTORY>", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds",
+      const char* expectedMillisecondOrMilliseconds,
+      "+SUCCESS+", Color::Green, size_t(0), size_t(1), "1 test passed", 0, "milliseconds",
+      "+SUCCESS+", Color::Green, size_t(0), size_t(2), "2 tests passed", 1, "millisecond",
+      "+SUCCESS+", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds",
+      "+SUCCESS+", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds",
       ">>-FAIL->", Color::Red, size_t(1), size_t(1), "1/1 test failed", 0, "milliseconds",
       ">>-FAIL->", Color::Red, size_t(1), size_t(2), "1/2 tests failed", 1, "millisecond",
       ">>-FAIL->", Color::Red, size_t(1), size_t(3), "1/3 tests failed", 2, "milliseconds",
@@ -257,13 +257,13 @@ namespace ZenUnit
       _testRunResult.PrintConclusion(startTime, numberOfTotalTests, testRunMilliseconds, zenUnitArgs);
       //
       const string expectedTripletLinesPrefix =
-         expectedVictoryOrFailLinePrefix == "<VICTORY>" ? "+=======+ " : ">>------> ";
+         expectedSuccessOrFailLinePrefix == "+SUCCESS+" ? "+=======+ " : ">>------> ";
       ZENMOCK(_consoleMock->WriteColorMock.CalledAsFollows(
       {
          { expectedTripletLinesPrefix, expectedColor },
          { expectedTripletLinesPrefix, expectedColor },
          { expectedTripletLinesPrefix, expectedColor },
-         { expectedVictoryOrFailLinePrefix + " ", expectedColor }
+         { expectedSuccessOrFailLinePrefix + " ", expectedColor }
       }));
       const string expectedCompletedLine = "Completed: " + zenUnitArgs.commandLine;
       const string expectedStartTimeLine = "StartTime: " + startTime;

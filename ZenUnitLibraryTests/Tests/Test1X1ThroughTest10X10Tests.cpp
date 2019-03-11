@@ -19,7 +19,7 @@ namespace ZenUnit
       size_t expectedNumberOfTestCases)
    {
       ARE_EQUAL("Test", testNXN.Name());
-      ARE_EQUAL(expectedFullTestName, testNXN.FullTestNameValue());
+      ARE_EQUAL(expectedFullTestName, testNXN.FullName());
       ARE_EQUAL("(0)", testNXN.FileLineString());
       ARE_EQUAL(expectedNumberOfTestCases, testNXN.NumberOfTestCases());
    }
