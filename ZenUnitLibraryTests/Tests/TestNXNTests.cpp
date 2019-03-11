@@ -69,7 +69,7 @@ namespace ZenUnit
       STD_FUNCTION_TARGETS(TestRunner::GetArgs, test2X2._call_TestRunner_GetArgs);
       STD_FUNCTION_TARGETS(::exit, test2X2._call_exit);
       STD_FUNCTION_TARGETS(ITestCaseNumberGenerator::FactoryNew, test2X2._call_ITestCaseNumberGeneratorFactoryNew);
-      STD_FUNCTION_TARGETS(String::CommaSplitExceptQuotedCommas, test2X2._call_String_CommaSplitExceptQuotedCommas);
+      STD_FUNCTION_TARGETS(String::SplitOnNonQuotedCommas, test2X2._call_String_SplitOnNonQuotedCommas);
       POINTER_IS_NULL(test2X2._testClass);
       ARE_EQUAL(1, test2X2._currentTestCaseNumber);
       ARE_EQUAL(_testCaseArgsText, test2X2._testCaseArgsText);
@@ -86,16 +86,16 @@ namespace ZenUnit
    TEST(Constructor_StoresDecayedTypeCopiesOfTestCaseArguments)
    {
       const TestNXN<TestingTestClass, 1, int> testNXN_1X1_1Arg(_testClassName.c_str(), _testName.c_str(), _testCaseArgsText.c_str(), 0);
-      ARE_EQUAL(tuple<int>(0), testNXN_1X1_1Arg.p_testCaseArgs);
+      ARE_EQUAL(tuple<int>(0), testNXN_1X1_1Arg._protected_testCaseArgs);
 
       const TestNXN<TestingTestClass, 1, int, int> testNXN_1X1_2Args(_testClassName.c_str(), _testName.c_str(), _testCaseArgsText.c_str(), 0, 0);
       const tuple<int, int> expectedTestCaseArgs1(0, 0);
-      ARE_EQUAL(expectedTestCaseArgs1, testNXN_1X1_2Args.p_testCaseArgs);
+      ARE_EQUAL(expectedTestCaseArgs1, testNXN_1X1_2Args._protected_testCaseArgs);
 
       const TestNXN<TestingTestClass, 2, const string&, volatile int> testNXN_2X2_4Args(
          _testClassName.c_str(), _testName.c_str(), _testCaseArgsText.c_str(), string(), 100);
       const tuple<string, int> expectedTestCaseArgs2(string(), 100);
-      ARE_EQUAL(expectedTestCaseArgs2, testNXN_2X2_4Args.p_testCaseArgs);
+      ARE_EQUAL(expectedTestCaseArgs2, testNXN_2X2_4Args._protected_testCaseArgs);
    }
 
    TEST(NumberOfTestCases_ReturnsNumberOfTestCaseArgsDividedByN)
@@ -153,16 +153,16 @@ namespace ZenUnit
       testCaseNumberGeneratorMock->NextTestCaseNumberMock.ReturnValues(1, 2, std::numeric_limits<size_t>::max());
       test1X1SelfMocked.FactoryNew_ZenMockObject.Return(testCaseNumberGeneratorMock);
 
-      ZENMOCK_NONVOID0_STATIC(vector<string>, ZenUnit::String, CommaSplitExceptQuotedCommas, _SelfMocked)
+      ZENMOCK_NONVOID0_STATIC(vector<string>, ZenUnit::String, SplitOnNonQuotedCommas, _SelfMocked)
       const vector<string> splitTestCaseArgs =
       {
          ZenUnit::Random<string>(),
          ZenUnit::Random<string>(),
          ZenUnit::Random<string>()
       };
-      CommaSplitExceptQuotedCommas_ZenMockObject_SelfMocked.Return(splitTestCaseArgs);
-      test1X1SelfMocked._call_String_CommaSplitExceptQuotedCommas =
-         BIND_0ARG_ZENMOCK_OBJECT(CommaSplitExceptQuotedCommas_ZenMockObject_SelfMocked);
+      SplitOnNonQuotedCommas_ZenMockObject_SelfMocked.Return(splitTestCaseArgs);
+      test1X1SelfMocked._call_String_SplitOnNonQuotedCommas =
+         BIND_0ARG_ZENMOCK_OBJECT(SplitOnNonQuotedCommas_ZenMockObject_SelfMocked);
 
       test1X1SelfMocked.Exit1IfNonExistentTestCaseNumberSpecifiedMock.Expect();
 
@@ -181,7 +181,7 @@ namespace ZenUnit
       ZENMOCK(GetArgs_ZenMockObject_SelfMocked.CalledOnce());
       ZENMOCK(test1X1SelfMocked.FactoryNew_ZenMockObject.CalledOnceWith(args.random));
       ZENMOCK(testCaseNumberGeneratorMock->InitializeMock.CalledOnceWith(2, N, args));
-      ZENMOCK(CommaSplitExceptQuotedCommas_ZenMockObject_SelfMocked.CalledOnce());
+      ZENMOCK(SplitOnNonQuotedCommas_ZenMockObject_SelfMocked.CalledOnce());
       ZENMOCK(testCaseNumberGeneratorMock->NextTestCaseNumberMock.CalledNTimes(3));
       ZENMOCK(test1X1SelfMocked.RunTestCaseIfNotFilteredOutMock.CalledAsFollows(
       {
@@ -208,7 +208,7 @@ namespace ZenUnit
             0 // test case arg 1
          )
       {
-         p_fullTestName.testClassName = nonDefaultTestClassName.c_str();
+         _protected_fullTestName.testClassName = nonDefaultTestClassName.c_str();
       }
    private:
       const string nonDefaultTestClassName = ZenUnit::Random<string>();
@@ -226,7 +226,7 @@ namespace ZenUnit
          RunTestCaseIfNotFilteredOut(testCaseNumber, args, splitTestCaseArgs);
       //
       ZENMOCK(test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.ShouldRunTestCaseMock.CalledOnceWith(
-         args, test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.p_fullTestName, testCaseNumber));
+         args, test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests._protected_fullTestName, testCaseNumber));
    }
 
    TEST(RunTestCaseIfNotFilteredOut_ShouldRunTestCase_CallsRunTestCase)
@@ -242,7 +242,7 @@ namespace ZenUnit
          RunTestCaseIfNotFilteredOut(testCaseNumber, args, splitTestCaseArgs);
       //
       ZENMOCK(test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.ShouldRunTestCaseMock.CalledOnceWith(
-         args, test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.p_fullTestName, testCaseNumber));
+         args, test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests._protected_fullTestName, testCaseNumber));
       ZENMOCK(test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.RunTestCaseMock.
          CalledOnceWith(testCaseNumber, splitTestCaseArgs));
    }

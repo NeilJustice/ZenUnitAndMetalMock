@@ -24,7 +24,7 @@ namespace ZenUnit
          _watch.reset(watchMock = new WatchMock);
       }
       ZENMOCK_NONVOID1_CONST(string, MakeThirdLinePrefix, size_t)
-      ZENMOCK_NONVOID2_CONST(string, MakeThirdLineSuffix, bool, unsigned short)
+      ZENMOCK_NONVOID2_CONST(string, MakeThirdLineSuffix, bool, unsigned)
    } _preamblePrinterSelfMocked;
 
    PreamblePrinter _preamblePrinter;
@@ -56,7 +56,7 @@ namespace ZenUnit
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.commandLine = Random<string>();
       zenUnitArgs.random = Random<bool>();
-      zenUnitArgs.randomseed = Random<unsigned short>();
+      zenUnitArgs.randomseed = Random<unsigned>();
       //
       const string returnedStartTime = _preamblePrinterSelfMocked.
          PrintPreambleAndGetStartTime(zenUnitArgs, &testClassRunnerRunnerMock);
@@ -87,15 +87,15 @@ namespace ZenUnit
       const string thirdLinePrefix = _preamblePrinter.MakeThirdLinePrefix(numberOfTestClasses);
       //
       ZENMOCK(_machineNameGetterMock->GetMachineNameMock.CalledOnce());
-      const string expectedReturnValue = expectedReturnValuePrefix + machineName + " with ZenUnit version 0.4.0";
+      const string expectedReturnValue = expectedReturnValuePrefix + machineName + " with ZenUnit 0.4.0";
       ARE_EQUAL(expectedReturnValue, thirdLinePrefix);
    }
 
    TEST3X3(MakeThirdLineSuffix_ReturnsRandomSeedIfRandomModeOtherwiseEmptyString,
-      const string& expectedReturnValue, bool random, unsigned short randomseed,
-      "", false, ZenUnit::Random<unsigned short>(),
-      " (random seed 0)", true, static_cast<unsigned short>(0),
-      " (random seed 1)", true, static_cast<unsigned short>(1))
+      const string& expectedReturnValue, bool random, unsigned randomseed,
+      "", false, ZenUnit::Random<unsigned>(),
+      " (random seed 0)", true, 0u,
+      " (random seed 1)", true, 1u)
    {
       const string thirdLineSuffix = _preamblePrinter.MakeThirdLineSuffix(random, randomseed);
       ARE_EQUAL(expectedReturnValue, thirdLineSuffix);

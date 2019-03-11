@@ -21,10 +21,10 @@ namespace ZenUnit
 #endif
    EVIDENCE
 
-   class ConsoleColorer_SupportsColorMocked : public Zen::Mock<ConsoleColorer>
+   class ConsoleColorer_StandardOutputSupportsColorMocked : public Zen::Mock<ConsoleColorer>
    {
    public:
-      ZENMOCK_NONVOID0_CONST(bool, SupportsColor)
+      ZENMOCK_NONVOID0_CONST(bool, StandardOutputSupportsColor)
    };
 
    class ConsoleColorer_SetCallsMocked : public Zen::Mock<ConsoleColorer>
@@ -35,7 +35,7 @@ namespace ZenUnit
    };
 
    ConsoleColorer _consoleColorer;
-   ConsoleColorer_SupportsColorMocked _consoleColorer_SupportsColorMocked;
+   ConsoleColorer_StandardOutputSupportsColorMocked _consoleColorer_StandardOutputSupportsColorMocked;
    ConsoleColorer_SetCallsMocked _consoleColorer_SetCallsMocked;
 
    TEST(Constructor_SetsFunctionPointers_SetsSupportsColorAndSupportsColorSetToFalse)
@@ -47,8 +47,8 @@ namespace ZenUnit
       STD_FUNCTION_TARGETS(::GetStdHandle, consoleColorer._call_GetStdHandle);
       STD_FUNCTION_TARGETS(::SetConsoleTextAttribute, consoleColorer._call_SetConsoleTextAttribute);
 #endif
-      IS_FALSE(consoleColorer._supportsColor);
-      IS_FALSE(consoleColorer._supportsColorSet);
+      IS_FALSE(consoleColorer._standardOutputSupportsColor);
+      IS_FALSE(consoleColorer._standardOutputSupportsColorSet);
    }
 
    TEST2X2(SetSupportsColorIfUnset_SetsSupportsColorIfUnset,
@@ -56,27 +56,25 @@ namespace ZenUnit
       false, true,
       true, false)
    {
-      _consoleColorer_SupportsColorMocked._supportsColorSet = supportsColorSet;
+      _consoleColorer_StandardOutputSupportsColorMocked._standardOutputSupportsColorSet = supportsColorSet;
       const bool supportsColorReturnValue = ZenUnit::Random<bool>();
       if (expectSupportsColorCall)
       {
-         _consoleColorer_SupportsColorMocked.SupportsColorMock.Return(supportsColorReturnValue);
+         _consoleColorer_StandardOutputSupportsColorMocked.StandardOutputSupportsColorMock.Return(supportsColorReturnValue);
       }
       //
-      _consoleColorer_SupportsColorMocked.SetSupportsColorIfUnset();
+      _consoleColorer_StandardOutputSupportsColorMocked.SetSupportsColorIfUnset();
       //
       if (expectSupportsColorCall)
       {
-         ZENMOCK(_consoleColorer_SupportsColorMocked.SupportsColorMock.CalledOnce());
-         ARE_EQUAL(_consoleColorer_SupportsColorMocked._supportsColor, supportsColorReturnValue);
+         ZENMOCK(_consoleColorer_StandardOutputSupportsColorMocked.StandardOutputSupportsColorMock.CalledOnce());
+         ARE_EQUAL(_consoleColorer_StandardOutputSupportsColorMocked._standardOutputSupportsColor, supportsColorReturnValue);
       }
-      IS_TRUE(_consoleColorer_SupportsColorMocked._supportsColorSet);
+      IS_TRUE(_consoleColorer_StandardOutputSupportsColorMocked._standardOutputSupportsColorSet);
    }
 
    TEST3X3(SetColor_CallsSupportsColorAndSetTextColorIfColorNotWhite,
-      Color color,
-      bool supportsColor,
-      bool expectSetTextColorCallAndExpectedReturnValue,
+      Color color, bool supportsColor, bool expectSetTextColorCallAndExpectedReturnValue,
       Color::White, false, false,
       Color::White, true, false,
       Color::Green, false, false,
@@ -86,7 +84,7 @@ namespace ZenUnit
       Color::Red, false, false,
       Color::Teal, true, true)
    {
-      _consoleColorer_SetCallsMocked._supportsColor = supportsColor;
+      _consoleColorer_SetCallsMocked._standardOutputSupportsColor = supportsColor;
       _consoleColorer_SetCallsMocked.SetSupportsColorIfUnsetMock.Expect();
       if (expectSetTextColorCallAndExpectedReturnValue)
       {
@@ -135,7 +133,7 @@ namespace ZenUnit
       _consoleColorer._call_fileno = BIND_1ARG_ZENMOCK_OBJECT(fileno_ZenMockObject);
       _consoleColorer._call_isatty = BIND_1ARG_ZENMOCK_OBJECT(isatty_ZenMockObject);
       //
-      const bool consoleSupportsColor = _consoleColorer.SupportsColor();
+      const bool consoleSupportsColor = _consoleColorer.StandardOutputSupportsColor();
       //
       ZENMOCK(fileno_ZenMockObject.CalledOnceWith(stdout));
       ZENMOCK(isatty_ZenMockObject.CalledOnceWith(StdoutFileHandle));
@@ -144,7 +142,7 @@ namespace ZenUnit
 
 #if defined _WIN32
    TEST2X2(SetTextColor_WIN32_CallsWin32ApiToSetColorTextColor,
-      Color color, WindowsColor expectedWindowsColor,
+      Color color, WindowsColor expectedWindowsColorSet,
       Color::White, WindowsColor::White,
       Color::Green, WindowsColor::Green,
       Color::Red, WindowsColor::Red,
@@ -155,8 +153,8 @@ namespace ZenUnit
       _consoleColorer._call_GetStdHandle = BIND_1ARG_ZENMOCK_OBJECT(GetStdHandle_ZenMockObject);
       _consoleColorer._call_SetConsoleTextAttribute = BIND_2ARG_ZENMOCK_OBJECT(SetConsoleTextAttribute_ZenMockObject);
 
-      const HANDLE GetStdHandleReturnValue = reinterpret_cast<HANDLE>(1);
-      GetStdHandle_ZenMockObject.Return(GetStdHandleReturnValue);
+      const HANDLE getStdHandleReturnValue = reinterpret_cast<HANDLE>(1);
+      GetStdHandle_ZenMockObject.Return(getStdHandleReturnValue);
 
       SetConsoleTextAttribute_ZenMockObject.Return(TRUE);
       //
@@ -164,7 +162,7 @@ namespace ZenUnit
       //
       ZENMOCK(GetStdHandle_ZenMockObject.CalledOnceWith(STD_OUTPUT_HANDLE));
       ZENMOCK(SetConsoleTextAttribute_ZenMockObject.CalledOnceWith(
-         GetStdHandleReturnValue, static_cast<WORD>(expectedWindowsColor)));
+         getStdHandleReturnValue, static_cast<WORD>(expectedWindowsColorSet)));
    }
 #endif
 

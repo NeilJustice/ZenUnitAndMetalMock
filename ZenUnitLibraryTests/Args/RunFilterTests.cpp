@@ -18,7 +18,7 @@ namespace ZenUnit
    class RunFilterSelfMocked : public Zen::Mock<RunFilter>
    {
    public:
-      ZENMOCK_NONVOID2_CONST(bool, FilterPatternMatchesString, const string&, const char*)
+		ZENMOCK_NONVOID2_CONST(bool, FilterPatternMatchesString, std::string_view, std::string_view)
    } _runFilterSelfMocked;
 
    TEST(DefaultConstructor_SetsTestCaseNumberToUnsignedMaxValue)

@@ -10,7 +10,7 @@ namespace ZenUnit
       VECTORS_EQUAL(expectedArguments.runFilters, actualArgs.runFilters);
       ARE_EQUAL(expectedArguments.pause, actualArgs.pause);
       ARE_EQUAL(expectedArguments.wait, actualArgs.wait);
-      ARE_EQUAL(expectedArguments.exitZero, actualArgs.exitZero);
+      ARE_EQUAL(expectedArguments.exitzero, actualArgs.exitzero);
       ARE_EQUAL(expectedArguments.failfast, actualArgs.failfast);
       ARE_EQUAL(expectedArguments.noskips, actualArgs.noskips);
       ARE_EQUAL(expectedArguments.testruns, actualArgs.testruns);

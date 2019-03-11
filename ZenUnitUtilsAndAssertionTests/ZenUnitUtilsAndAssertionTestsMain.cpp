@@ -38,10 +38,7 @@ THEN_SKIP_TEMPLATE_TESTS(SkippedTemplateTestClassB, Reason, unordered_map)
 
 int main(int argc, char* argv[])
 {
-   // ZenUnitTestMode makes FileLiner::File(__FILE__) return File.cpp and FileLiner::Line(__LINE__) return 1.
-   ZenUnit::ZenUnitTestMode::value = true;
+   ZenUnit::ZenUnitSelfTestMode::value = true;
    const int exitCode = ZenUnit::RunTests(argc, argv);
-   ZenUnit::FileLiner::File(nullptr); // 100% code coverage
-   ZenUnit::FileLiner::Line(0); // 100% code coverage
    return exitCode;
 }

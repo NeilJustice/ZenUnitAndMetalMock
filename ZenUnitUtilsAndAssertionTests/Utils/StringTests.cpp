@@ -67,7 +67,7 @@ namespace ZenUnit
       "',', \",a,b,\",\n"
 "   \"1,',',3\" , 4", vector<string>{"','", "\",a,b,\"", "\"1,',',3\"", "4"})
    {
-      VECTORS_EQUAL(expectedReturnValue, String::CommaSplitExceptQuotedCommas(text));
+      VECTORS_EQUAL(expectedReturnValue, String::SplitOnNonQuotedCommas(text));
    }
 
    TEST(ToInt_EmptyString_Throws)

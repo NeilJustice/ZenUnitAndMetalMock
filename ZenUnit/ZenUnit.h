@@ -1,10 +1,6 @@
-// C++ Unit Testing Framework ZenUnit - v0.4.0
+// C++ Unit Testing Framework ZenUnit 0.4.0
 // https://github.com/NeilJustice/ZenUnit
-//
-// The MIT License
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+// MIT License
 
 #pragma once
 #include <array>
@@ -38,12 +34,81 @@
 #include <io.h> // _isatty()
 #endif
 
+#define Comma ,
+
 #define DOTOKENJOIN(a, b) a##b
 #define TOKENJOIN(a, b) DOTOKENJOIN(a, b)
 #define DOVATEXT(placeholder, ...) #__VA_ARGS__
 #define VATEXT(...) DOVATEXT("", __VA_ARGS__)
 #define VA_TEXT_ARGS(...) VATEXT(__VA_ARGS__), ##__VA_ARGS__
-#define Comma ,
+
+#define FILELINE ZenUnit::FileLine(ZenUnit::FileLiner::File(__FILE__), ZenUnit::FileLiner::Line(__LINE__))
+
+#define VRT(value) ZenUnit::VRText<decltype(value)>(value, #value)
+#define NAKED_VRT(value) ZenUnit::VRText<typename std::remove_const_t<typename std::remove_reference_t<decltype(value)>>>(value, #value)
+
+#define PMFTOKEN(pmf) ZenUnit::PmfToken::Instantiate<decltype(pmf), pmf>()
+
+#ifndef assert_true
+#define assert_true(predicate) ZenUnit::AssertTrue(predicate, #predicate, FILELINE, static_cast<const char*>(__func__))
+#endif
+
+namespace ZenUnit
+{
+   class Version
+   {
+   public:
+      static const char* Number() { return "0.4.0"; }
+
+      static const std::string& CommandLineUsage()
+      {
+         static const std::string zenUnitCommandLineUsage = "C++ Unit Testing Framework ZenUnit " + std::string(Number()) + R"(
+Usage: <ZenUnitTestsBinaryName> [Options...]
+
+Testing Rigor Options:
+
+--random
+   Run test classes, tests, and value-parameterized test cases in a random order.
+--seed=<Value>
+   Set to Value the random seed used by --random and
+   the ZenUnit::Random<T> family of random value generating functions.
+   The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
+--test-runs=<N>
+   Repeat the running of all tests N times. Use a negative number to repeat forever.
+   For five random test run orderings, specify --random --test-runs=5.
+--no-skips
+   Exit with code 1 if any tests are skipped.
+
+Testing Filtration Options:
+
+--run=<TestClassName>[::TestName][/TestCaseNumber][,...]
+   Run only specified case-insensitive test classes, tests, and/or test cases.
+   Add a '*' character to the end of a test class name or test name
+   filter string to specify name-starts-with filtration.
+ Example 1: --run=WidgetTests
+   Run only test class WidgetTests.
+ Example 2: --run=WidgetTests::FunctionUnderTest*
+   Run all tests in WidgetTests that start with "FunctionUnderTest".
+ Example 3: --run=WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior/3
+   Run the third test case of value-parameterized test
+   WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior.
+--fail-fast
+   Immediately call exit(1) if a test fails.
+
+Testing Utility Options:
+
+--pause
+   Wait for any key before running tests to allow attaching a debugger or profiler.
+--exit-zero
+   Always exit with code 0 regardless of any failed tests.
+--wait
+   Wait for any key at the end of the test run.
+--help or -help
+   Print this message.)";
+         return zenUnitCommandLineUsage;
+      }
+   };
+}
 
 //
 // Value Assertions
@@ -177,7 +242,7 @@
    ZenUnit::EQUALIZER_THROWS_Defined(equalizerTestObjectA, equalizerTestObjectB, &typeName::nonQuotedFieldName, #typeName, #nonQuotedFieldName, arbitraryNonDefaultFieldValue, #arbitraryNonDefaultFieldValue, FILELINE)
 
 //
-// The Test Itself Assertion
+// Test Assertions
 //
 
 // Fails the current test with a specified failure reason.
@@ -197,7 +262,7 @@
    DOES_NOT_THROW_Defined([&]{ expression; }, #expression, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
-// Test-Defining Macros
+// Test Class And Tess Defining Macros
 //
 
 // Defines a ZenUnit::TestClass.
@@ -335,7 +400,7 @@
       ZenUnit::TestRunner::Instance().AddTestClassRunner( \
          new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName<__VA_ARGS__>>(#HighQualityTestClassName"<"#__VA_ARGS__">"));
 
-// Runs a templated test class. Specify __VA_ARGS__ with type names to be run. Example: RUN_TEMPLATE_TESTS(TestClassName, int, std::vector<int>). For subsequent type name arguments, use THEN_RUN_TEMPLATE_TESTS.
+// Runs a templated test class. Specify __VA_ARGS__ with type names to be run. Example: RUN_TEMPLATE_TESTS(TestClassName, int, std::vector<int>).
 #define RUN_TEMPLATE_TESTS(HighQualityTestClassName, ...) \
    }; DO_RUN_TEMPLATE_TESTS(HighQualityTestClassName, __VA_ARGS__)
 
@@ -355,12 +420,6 @@
 
 #define THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, ...) \
    DO_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, __VA_ARGS__)
-
-#define DEFINE_COPY_COPY_MOVE_MOVE(className, defaultOrDeleteCopyConstructor, defaultOrDeleteAssignmentOperator, defaultOrDeleteMoveConstructor, defaultOrDeleteMoveAssignmentOperator) \
-   className(const className&) = defaultOrDeleteCopyConstructor; \
-   className& operator=(const className&) = defaultOrDeleteAssignmentOperator; \
-   className(className&&) noexcept = defaultOrDeleteMoveConstructor; \
-   className& operator=(className&&) noexcept = defaultOrDeleteMoveAssignmentOperator
 
 namespace ZenUnit
 {
@@ -432,13 +491,13 @@ namespace ZenUnit
    template<typename T>
    T SingleHeaderVariable<T>::value;
 
-   using ZenUnitTestMode = SingleHeaderVariable<bool>;
-   using ZenUnitRandomSeed = SingleHeaderVariable<unsigned short>;
+   using ZenUnitSelfTestMode = SingleHeaderVariable<bool>;
+   using ZenUnitRandomSeed = SingleHeaderVariable<unsigned>;
 
    struct FileLiner
    {
-      static unsigned Line(unsigned lineMacroValue) noexcept { return ZenUnitTestMode::value ? 1u : lineMacroValue; }
-      static const char* File(const char* fileMacroValue) noexcept { return ZenUnitTestMode::value ? "File.cpp" : fileMacroValue; }
+      static unsigned Line(unsigned lineMacroValue) noexcept { return ZenUnitSelfTestMode::value ? 1u : lineMacroValue; }
+      static const char* File(const char* fileMacroValue) noexcept { return ZenUnitSelfTestMode::value ? "File.cpp" : fileMacroValue; }
    };
 
    struct FileLine
@@ -446,10 +505,7 @@ namespace ZenUnit
       const char* filePath;
       unsigned lineNumber;
 
-      FileLine() noexcept
-         : filePath("")
-         , lineNumber(0) {}
-
+      FileLine() noexcept : filePath(""), lineNumber(0) {}
       FileLine(const char* filePath, unsigned lineNumber) noexcept : filePath(filePath == nullptr ? "" : filePath), lineNumber(lineNumber) {}
 
       std::string ToString() const
@@ -470,15 +526,11 @@ namespace ZenUnit
    class String
    {
    public:
-      static bool Contains(const std::string& str, const char* substring) noexcept
+      static bool Contains(std::string_view str, std::string_view substring) noexcept
       {
-         return Contains(str.c_str(), substring);
-      }
-
-      static bool Contains(const char* str, const char* substring) noexcept
-      {
-         const char* const strstrResult = strstr(str, substring);
-         return strstrResult != nullptr;
+         const char* const strstrResult = strstr(str.data(), substring.data());
+         const bool strContainsSubstring = strstrResult != nullptr;
+         return strContainsSubstring;
       }
 
       static std::vector<std::string> Split(std::string_view str, char delimiter)
@@ -493,17 +545,17 @@ namespace ZenUnit
          return splitString;
       }
 
-      static std::vector<std::string> SplitOnFirstStringDelimiter(const std::string& str, const std::string& delimiter)
+      static std::vector<std::string> SplitOnFirstStringDelimiter(std::string_view str, std::string_view delimiter)
       {
-         const size_t delimiterFindPosition = str.find(delimiter);
+         const size_t delimiterFindPosition = str.find(delimiter.data());
          if (delimiterFindPosition == std::string::npos)
          {
-            return { str };
+            return { std::string(str) };
          }
          const std::vector<std::string> splitString =
          {
-            str.substr(0, delimiterFindPosition),
-            str.substr(delimiterFindPosition + delimiter.size())
+            std::string(str.substr(0, delimiterFindPosition)),
+            std::string(str.substr(delimiterFindPosition + delimiter.length()))
          };
          return splitString;
       }
@@ -514,10 +566,10 @@ namespace ZenUnit
          {
             throw std::invalid_argument("ZenUnit::String::ToInt() called with empty string");
          }
-         const bool isNegative = str[0] == '-';
-         long long result = 0;
+         const bool firstCharacterIsNegativeSign = str[0] == '-';
+         long long valueAsLongLong = 0;
          int place = 1;
-         const int stoppingIndex = isNegative ? 1 : 0;
+         const int stoppingIndex = firstCharacterIsNegativeSign ? 1 : 0;
          for (int i = static_cast<int>(str.size() - 1); i >= stoppingIndex; --i, place *= 10)
          {
             char c = str[static_cast<size_t>(i)];
@@ -526,24 +578,22 @@ namespace ZenUnit
                throw std::invalid_argument("ZenUnit::String::ToInt() called with a string not convertible to a 32-bit integer: \"" + std::string(str) + "\"");
             }
             const int digit = "0123456789"[c - 48] - 48u;
-            result += digit * place;
+            valueAsLongLong += digit * place;
          }
-         if (isNegative)
+         if (firstCharacterIsNegativeSign)
          {
-            result *= -1;
+            valueAsLongLong *= -1;
          }
-         if (result < std::numeric_limits<int>::min())
+         if (valueAsLongLong < std::numeric_limits<int>::min())
          {
-            throw std::invalid_argument(
-               "ZenUnit::String::ToInt() called with a string containing a number less than std::numeric_limits<int>::min(): \"" + std::to_string(result) + "\"");
+            throw std::invalid_argument("ZenUnit::String::ToInt() called with a string containing a number less than std::numeric_limits<int>::min(): \"" + std::to_string(valueAsLongLong) + "\"");
          }
-         if (result > std::numeric_limits<int>::max())
+         if (valueAsLongLong > std::numeric_limits<int>::max())
          {
-            throw std::invalid_argument(
-               "ZenUnit::String::ToInt() called with a string containing a number greater than std::numeric_limits<int>::max(): \"" + std::to_string(result) + "\"");
+            throw std::invalid_argument("ZenUnit::String::ToInt() called with a string containing a number greater than std::numeric_limits<int>::max(): \"" + std::to_string(valueAsLongLong) + "\"");
          }
-         const int integerResult = static_cast<int>(result);
-         return integerResult;
+         const int valueAsInt = static_cast<int>(valueAsLongLong);
+         return valueAsInt;
       }
 
       static unsigned ToUnsigned(std::string_view str)
@@ -552,7 +602,7 @@ namespace ZenUnit
          {
             throw std::invalid_argument("ZenUnit::String::ToUnsigned() called with empty string");
          }
-         unsigned long long result = 0;
+         unsigned long long valueAsUnsignedLongLong = 0;
          unsigned long long place = 1;
          for (int i = static_cast<int>(str.size() - 1); i >= 0; --i, place *= 10)
          {
@@ -562,20 +612,20 @@ namespace ZenUnit
                throw std::invalid_argument("ZenUnit::String::ToUnsigned() called with string not convertible to unsigned integer: \"" + std::string(str) + "\"");
             }
             const unsigned long long digit = "0123456789"[c - 48] - 48ull;
-            result += digit * place;
+            valueAsUnsignedLongLong += digit * place;
          }
-         if (result > std::numeric_limits<unsigned int>::max())
+         if (valueAsUnsignedLongLong > std::numeric_limits<unsigned int>::max())
          {
-            throw std::invalid_argument("ZenUnit::String::ToUnsigned called with string containing number greater than std::numeric_limits<unsigned int>::max(): \"" + std::to_string(result) + "\"");
+            throw std::invalid_argument("ZenUnit::String::ToUnsigned called with string containing number greater than std::numeric_limits<unsigned int>::max(): \"" + std::to_string(valueAsUnsignedLongLong) + "\"");
          }
-         const unsigned unsignedResult = static_cast<unsigned>(result);
-         return unsignedResult;
+         const unsigned valueAsUnsigned = static_cast<unsigned>(valueAsUnsignedLongLong);
+         return valueAsUnsigned;
       }
 
-      static std::vector<std::string> CommaSplitExceptQuotedCommas(const char* text)
+      static std::vector<std::string> SplitOnNonQuotedCommas(std::string_view text)
       {
          std::vector<std::string> elements;
-         std::stringstream stringStream(text);
+         std::stringstream stringStream(text.data());
          std::string devNull;
          while (stringStream >> std::ws && !stringStream.eof())
          {
@@ -603,9 +653,9 @@ namespace ZenUnit
          return elements;
       }
 
-      static bool CaseInsensitiveStartsWith(const char* str, std::string_view substring) noexcept
+      static bool CaseInsensitiveStartsWith(std::string_view str, std::string_view substring) noexcept
       {
-         const size_t strLength = strlen(str);
+         const size_t strLength = str.length();
          const size_t substringLength = substring.length();
          if (substringLength > strLength)
          {
@@ -629,12 +679,12 @@ namespace ZenUnit
          return true;
       }
 
-      static int CaseInsensitiveStrcmp(const char* string1, const char* string2) noexcept
+      static int CaseInsensitiveStrcmp(std::string_view string1, std::string_view string2) noexcept
       {
 #if defined __linux__ || defined __APPLE__
-         const int strcmpResult = strcasecmp(string1, string2);
+         const int strcmpResult = strcasecmp(string1.data(), string2.data());
 #elif defined _WIN32
-         const int strcmpResult = _strcmpi(string1, string2);
+         const int strcmpResult = _strcmpi(string1.data(), string2.data());
 #endif
          return strcmpResult;
       }
@@ -644,8 +694,8 @@ namespace ZenUnit
       {
          std::ostringstream oss;
          OStringStreamConcat(oss, std::forward<Types>(values)...);
-         const std::string concatenatedValues = oss.str();
-         return concatenatedValues;
+         const std::string ostringStreamConcatenatedValues = oss.str();
+         return ostringStreamConcatenatedValues;
       }
 
       template<typename T, typename... Types>
@@ -661,32 +711,19 @@ namespace ZenUnit
       }
    };
 
-#define FILELINE ZenUnit::FileLine(ZenUnit::FileLiner::File(__FILE__), ZenUnit::FileLiner::Line(__LINE__))
-
-   inline void ThrowLogicError(
-      const char* predicateText,
-      const FileLine& fileLine,
-      const char* functionName)
+   inline void ThrowLogicError(const char* predicateText, const FileLine& fileLine, const char* functionName)
    {
       const std::string what = String::Concat("assert_true(", predicateText, ") failed in ", functionName, "()\n", fileLine.filePath, "(", fileLine.lineNumber, ")");
       throw std::logic_error(what);
    }
 
-   inline void AssertTrue(
-      bool predicateResult,
-      const char* predicateText,
-      const FileLine& fileLine,
-      const char* functionName)
+   inline void AssertTrue(bool predicateResult, const char* predicateText, const FileLine& fileLine, const char* functionName)
    {
       if (!predicateResult)
       {
          ThrowLogicError(predicateText, fileLine, functionName);
       }
    }
-
-#ifndef assert_true
-#define assert_true(predicate) ZenUnit::AssertTrue(predicate, #predicate, FILELINE, static_cast<const char*>(__func__))
-#endif
 
    struct FullTestName
    {
@@ -717,8 +754,7 @@ namespace ZenUnit
             const std::string fullTestName = String::Concat(testsOrTemplateTests, testClassName, ")\nTEST(", testName, ')');
             return fullTestName;
          }
-         const std::string fullTestName = String::Concat(
-            testsOrTemplateTests, testClassName, ")\nTEST", static_cast<int>(arity), 'X', static_cast<int>(arity), '(', testName, ')');
+         const std::string fullTestName = String::Concat(testsOrTemplateTests, testClassName, ")\nTEST", static_cast<unsigned>(arity), 'X', static_cast<unsigned>(arity), '(', testName, ')');
          return fullTestName;
       }
    };
@@ -735,28 +771,28 @@ namespace ZenUnit
       {
       }
 
-      RunFilter(std::string testClassNamePattern, std::string testNamePattern, size_t testCaseNumber)
-         : testClassNamePattern(std::move(testClassNamePattern))
-         , testNamePattern(std::move(testNamePattern))
+      RunFilter(std::string_view testClassNamePattern, std::string_view testNamePattern, size_t testCaseNumber)
+         : testClassNamePattern(testClassNamePattern)
+         , testNamePattern(testNamePattern)
          , testCaseNumber(testCaseNumber)
       {
       }
 
       virtual ~RunFilter() = default;
 
-      virtual bool MatchesTestClassName(const char* testClassName) const
+      virtual bool MatchesTestClassName(std::string_view testClassName) const
       {
          const bool runFilterMatchesTestClassName = FilterPatternMatchesString(testClassNamePattern, testClassName);
          return runFilterMatchesTestClassName;
       }
 
-      virtual bool MatchesTestName(const char* testName) const
+      virtual bool MatchesTestName(std::string_view testName) const
       {
          const bool runFilterMatchesTestName = FilterPatternMatchesString(testNamePattern, testName);
          return runFilterMatchesTestName;
       }
 
-      virtual bool FilterPatternMatchesString(const std::string& filterPattern, const char* str) const
+      virtual bool FilterPatternMatchesString(std::string_view filterPattern, std::string_view str) const
       {
          if (filterPattern.empty())
          {
@@ -764,8 +800,7 @@ namespace ZenUnit
          }
          if (filterPattern.back() == '*')
          {
-            const std::string filterPatternWithoutStarAtTheEnd(
-               filterPattern.c_str(), filterPattern.length() - 1);
+            const std::string filterPatternWithoutStarAtTheEnd(filterPattern.data(), filterPattern.length() - 1);
             if (String::CaseInsensitiveStartsWith(str, filterPatternWithoutStarAtTheEnd))
             {
                return true;
@@ -773,7 +808,7 @@ namespace ZenUnit
          }
          else
          {
-            if (String::CaseInsensitiveStrcmp(str, filterPattern.c_str()) == 0)
+            if (String::CaseInsensitiveStrcmp(str, filterPattern) == 0)
             {
                return true;
             }
@@ -781,7 +816,7 @@ namespace ZenUnit
          return false;
       }
 
-      virtual bool MatchesTestCase(const char* testClassName, const char* testName, size_t testNXNTestCaseNumber) const
+      virtual bool MatchesTestCase(std::string_view testClassName, std::string_view testName, size_t testNXNTestCaseNumber) const
       {
          const bool matchesTestClassName = MatchesTestClassName(testClassName);
          if (!matchesTestClassName)
@@ -806,18 +841,18 @@ namespace ZenUnit
       std::vector<RunFilter> runFilters;
       bool pause = false;
       bool wait = false;
-      bool exitZero = false;
+      bool exitzero = false;
       bool failfast = false;
       bool noskips = false;
       int testruns = 1;
       bool random = false;
-      unsigned short randomseed = 0;
+      unsigned randomseed = 0;
       bool randomseedsetbyuser = false;
       unsigned maxtestmilliseconds = 0;
       unsigned maxtotalseconds = 0;
    };
 
-   inline const char* ColorToLinuxColor(Color color) noexcept
+   constexpr const char* ColorToLinuxColor(Color color) noexcept
    {
       const char* linuxColor = nullptr;
       switch (color)
@@ -834,7 +869,7 @@ namespace ZenUnit
    }
 
 #if defined _WIN32
-   inline constexpr WindowsColor ColorToWindowsColor(Color color) noexcept
+   constexpr WindowsColor ColorToWindowsColor(Color color) noexcept
    {
       WindowsColor windowsColor = WindowsColor::Black;
       switch (color)
@@ -861,8 +896,8 @@ namespace ZenUnit
       std::function<HANDLE(DWORD)> _call_GetStdHandle;
       std::function<BOOL(HANDLE, WORD)> _call_SetConsoleTextAttribute;
 #endif
-      bool _supportsColor;
-      bool _supportsColorSet;
+      bool _standardOutputSupportsColor;
+      bool _standardOutputSupportsColorSet;
    public:
       ConsoleColorer() noexcept
 #if defined _WIN32
@@ -876,8 +911,8 @@ namespace ZenUnit
          , _call_GetStdHandle(::GetStdHandle)
          , _call_SetConsoleTextAttribute(::SetConsoleTextAttribute)
 #endif
-         , _supportsColor(false)
-         , _supportsColorSet(false)
+         , _standardOutputSupportsColor(false)
+         , _standardOutputSupportsColorSet(false)
       {
       }
 
@@ -886,7 +921,7 @@ namespace ZenUnit
       virtual bool SetColor(Color color)
       {
          SetSupportsColorIfUnset();
-         const bool doSetTextColor = color != Color::White && _supportsColor;
+         const bool doSetTextColor = color != Color::White && _standardOutputSupportsColor;
          if (doSetTextColor)
          {
             SetTextColor(color);
@@ -906,32 +941,31 @@ namespace ZenUnit
       virtual void SetTextColor(Color color) const
       {
 #if defined __linux__ || defined __APPLE__
-         const char* linuxColor = ColorToLinuxColor(color);
+         const char* const linuxColor = ColorToLinuxColor(color);
          std::cout << linuxColor;
 #elif defined _WIN32
          const HANDLE stdOutHandle = _call_GetStdHandle(STD_OUTPUT_HANDLE);
          const WindowsColor windowsColor = ColorToWindowsColor(color);
-         const BOOL didSetConsoleTextAttr = _call_SetConsoleTextAttribute(
-            stdOutHandle, static_cast<WORD>(windowsColor));
+         const BOOL didSetConsoleTextAttr = _call_SetConsoleTextAttribute(stdOutHandle, static_cast<WORD>(windowsColor));
          assert_true(didSetConsoleTextAttr == TRUE);
 #endif
       }
    private:
       virtual void SetSupportsColorIfUnset()
       {
-         if (!_supportsColorSet)
+         if (!_standardOutputSupportsColorSet)
          {
-            _supportsColor = SupportsColor();
-            _supportsColorSet = true;
+            _standardOutputSupportsColor = StandardOutputSupportsColor();
+            _standardOutputSupportsColorSet = true;
          }
       }
 
-      virtual bool SupportsColor() const
+      virtual bool StandardOutputSupportsColor() const
       {
-         const int stdoutFileHandle = _call_fileno(stdout);
-         const int isAtty = _call_isatty(stdoutFileHandle);
-         const bool supportsColor = isAtty != 0;
-         return supportsColor;
+         const int standardOutputFileHandle = _call_fileno(stdout);
+         const int standardOutputFileHandleIsAtty = _call_isatty(standardOutputFileHandle);
+         const bool standardOutputSupportsColor = standardOutputFileHandleIsAtty != 0;
+         return standardOutputSupportsColor;
       }
    };
 
@@ -966,8 +1000,7 @@ namespace ZenUnit
       virtual void WriteColor(std::string_view message, Color color) const
       {
          const bool didSetColor = _consoleColorer->SetColor(color);
-         printf("%s", message.data());
-         std::cout.flush(); // Explicit flush needed on Linux to show test run progress output immediately
+         std::cout << message;
          _consoleColorer->UnsetColor(didSetColor);
       }
 
@@ -979,17 +1012,13 @@ namespace ZenUnit
       virtual void WriteLineColor(std::string_view message, Color color) const
       {
          const bool didSetColor = _consoleColorer->SetColor(color);
-         // With VS2017 15.2 Debug and Release mode, printf("%s\n") measured as ~15% faster
-         // and with less speed variance relative to "cout << message << '\n'".
-         // On Linux + Clang, no significant difference measured between printf and cout.
-         printf("%s\n", message.data());
-         std::cout.flush(); // Explicit flush needed on Linux to show test run output as it happens in VS Code
+         std::cout << message << '\n';
          _consoleColorer->UnsetColor(didSetColor);
       }
 
       virtual void WriteNewLine() const
       {
-         printf("\n");
+         std::cout << '\n';
       }
 
       virtual void WriteLineAndExit(std::string_view message, int exitCode) const
@@ -1057,8 +1086,7 @@ namespace ZenUnit
       static auto SFINAE(const U& value) -> decltype(std::to_string(value));
       static std::false_type SFINAE(...);
    public:
-      static constexpr bool value = std::is_same<std::string,
-         decltype(SFINAE(std::declval<T>()))>::value;
+      static constexpr bool value = std::is_same<std::string, decltype(SFINAE(std::declval<T>()))>::value;
    };
 
    template<typename T>
@@ -1069,8 +1097,7 @@ namespace ZenUnit
       static auto SFINAE(std::ostream& os, const U& value) -> decltype(os << value);
       static std::false_type SFINAE(...);
    public:
-      static constexpr bool value = std::is_same<std::ostream&,
-         decltype(SFINAE(std::declval<std::ostream&>(), std::declval<T>()))>::value;
+      static constexpr bool value = std::is_same<std::ostream&, decltype(SFINAE(std::declval<std::ostream&>(), std::declval<T>()))>::value;
    };
 
    template<typename T>
@@ -1094,45 +1121,45 @@ namespace ZenUnit
       template<typename U>
       static std::false_type SFINAE(...);
    public:
-      static constexpr bool value = std::is_same<void,
-         decltype(SFINAE<T>(std::declval<std::ostream&>(), std::declval<T>()))>::value;
+      static constexpr bool value = std::is_same<void, decltype(SFINAE<T>(std::declval<std::ostream&>(), std::declval<T>()))>::value;
    };
 
    class Type
    {
       friend class TypeTests;
    private:
-      // Demangling is expensive so this demangled type name cache exists
       static std::unordered_map<const char*, std::string>& MangledToDemangledTypeNameMap()
       {
-         static std::unordered_map<const char*, std::string> mangledToDemangledTypeName;
-         return mangledToDemangledTypeName;
+         static std::unordered_map<const char*, std::string> mangledToDemangledTypeNameMap;
+         return mangledToDemangledTypeNameMap;
       }
 
    public:
       template<typename T>
-      static const std::string* GetName(const T& variable)
+      static const std::string* GetName(T&& variable)
       {
-         return TypeInfoToTypeName(typeid(variable));
+         const std::string* const typeName = TypeInfoToTypeName(typeid(std::forward<T>(variable)));
+         return typeName;
       }
 
       template<typename T>
       static const std::string* GetName()
       {
-         return TypeInfoToTypeName(typeid(T));
+         const std::string* const typeName = TypeInfoToTypeName(typeid(T));
+         return typeName;
       }
    private:
       static const std::string* TypeInfoToTypeName(const std::type_info& typeInfo)
       {
          const char* const mangledTypeName = typeInfo.name();
-         std::unordered_map<const char*, std::string>& mangledToDemangledTypeName = MangledToDemangledTypeNameMap();
-         const std::unordered_map<const char*, std::string>::const_iterator
-            findIter = mangledToDemangledTypeName.find(mangledTypeName);
-         if (findIter == mangledToDemangledTypeName.end())
+         std::unordered_map<const char*, std::string>& mangledToDemangledTypeNameMap = MangledToDemangledTypeNameMap();
+         const std::unordered_map<const char*, std::string>::const_iterator findIter =
+            mangledToDemangledTypeNameMap.find(mangledTypeName);
+         if (findIter == mangledToDemangledTypeNameMap.end())
          {
             const std::string demangledTypeName = Demangle(mangledTypeName);
-            const std::pair<std::unordered_map<const char*, std::string>::const_iterator, bool>
-               emplaceResult = mangledToDemangledTypeName.emplace(mangledTypeName, demangledTypeName);
+            const std::pair<std::unordered_map<const char*, std::string>::const_iterator, bool> emplaceResult =
+               mangledToDemangledTypeNameMap.emplace(mangledTypeName, demangledTypeName);
             const std::string* const cachedDemangledTypeName = &emplaceResult.first->second;
             return cachedDemangledTypeName;
          }
@@ -1152,7 +1179,7 @@ namespace ZenUnit
          return demangledTypeName;
       }
 #elif defined _WIN32
-      static void InplaceEraseAll(std::string& str, std::string_view substring)
+      static void InplaceEraseAllSubstrings(std::string& str, std::string_view substring)
       {
          while (true)
          {
@@ -1167,10 +1194,12 @@ namespace ZenUnit
 
       static std::string Demangle(const char* mangledTypeName)
       {
-         std::string typeNameMinusClassSpaceAndStructSpace(mangledTypeName);
-         InplaceEraseAll(typeNameMinusClassSpaceAndStructSpace, "class ");
-         InplaceEraseAll(typeNameMinusClassSpaceAndStructSpace, "struct ");
-         return typeNameMinusClassSpaceAndStructSpace;
+         std::string demangledTypeName(mangledTypeName);
+         InplaceEraseAllSubstrings(demangledTypeName, "class ");
+         InplaceEraseAllSubstrings(demangledTypeName, "struct ");
+         InplaceEraseAllSubstrings(demangledTypeName, "<char,std::char_traits<char>,std::allocator<char> >");
+         InplaceEraseAllSubstrings(demangledTypeName, " const & __ptr64");
+         return demangledTypeName;
       }
 #endif
    };
@@ -1179,7 +1208,7 @@ namespace ZenUnit
    {
    public:
       template<typename T>
-      static void ZenUnitPrinterOrOStreamInsertionOperatorOrPrintTypeName(
+      static void CallZenUnitPrinterOrOStreamInsertionOperatorOrPrintTypeName(
          std::ostream& os, [[maybe_unused]]const T& value)
       {
          if constexpr (has_ZenUnitPrinter<T>::value && has_ostream_left_shift<T>::value)
@@ -1213,12 +1242,12 @@ namespace ZenUnit
       static std::string DoToString(const T& value)
       {
          std::ostringstream oss;
-         ZenUnitPrinterOrOStreamInsertionOperatorOrPrintTypeName(oss, value);
-         const std::string valueString(oss.str());
-         return valueString;
+         CallZenUnitPrinterOrOStreamInsertionOperatorOrPrintTypeName(oss, value);
+         const std::string valueAsString(oss.str());
+         return valueAsString;
       }
 
-      static std::string ToString(const std::nullptr_t&)
+      static const char* ToString(const std::nullptr_t&)
       {
          return "nullptr";
       }
@@ -1229,93 +1258,96 @@ namespace ZenUnit
          {
             return "nullptr";
          }
-         return DoToString(str);
+         const std::string strAsString = DoToString(str);
+         return strAsString;
       }
 
       static std::string ToString(const char* str)
       {
-         return CharPointerToString(str);
+         const std::string strAsString = CharPointerToString(str);
+         return strAsString;
       }
 
       static std::string ToString(char* str)
       {
-         return CharPointerToString(str);
+         const std::string strAsString = CharPointerToString(str);
+         return strAsString;
       }
 
-      static std::string ToString(bool value)
+      static const char* ToString(bool boolValue)
       {
-         return value ? "true" : "false";
+         const char* const boolValueAsConstCharPointer = boolValue ? "true" : "false";
+         return boolValueAsConstCharPointer;
       }
 
-      static std::string ToString(char value)
+      static std::string ToString(char charValue)
       {
-         if (value == 0)
+         if (charValue == 0)
          {
             return "'\\0' (0)";
          }
          std::ostringstream oss;
-         oss << '\'' << value << "\' (" << static_cast<int>(value) << ")";
-         const std::string valueString(oss.str());
-         return valueString;
+         oss << '\'' << charValue << "\' (" << static_cast<int>(charValue) << ")";
+         const std::string charValueAsString(oss.str());
+         return charValueAsString;
       }
 
-      static std::string ToString(float value)
+      static std::string ToString(float floatValue)
       {
-         const std::string floatValueString = std::to_string(value) + "f";
-         return floatValueString;
-      }
-
-      template<typename T>
-      static typename std::enable_if<has_to_string<T>::value, std::string>::type
-         ToString(const T& value)
-      {
-         const std::string valueString(std::to_string(value));
-         return valueString;
+         const std::string floatValueAsString = std::to_string(floatValue) + "f";
+         return floatValueAsString;
       }
 
       template<typename T>
-      static typename std::enable_if<!has_to_string<T>::value && !std::is_enum<T>::value, std::string>::type
-         ToString(const T& value)
+      static typename std::enable_if<has_to_string<T>::value, std::string>::type ToString(const T& tValue)
       {
-         return DoToString(value);
+         const std::string tValueAsString(std::to_string(tValue));
+         return tValueAsString;
       }
 
       template<typename T>
-      static typename std::enable_if<!has_to_string<T>::value && std::is_enum<T>::value, std::string>::type
-         ToString(const T& value)
+      static typename std::enable_if<!has_to_string<T>::value && !std::is_enum<T>::value, std::string>::type ToString(const T& tValue)
       {
-         const std::string valueString = std::to_string(static_cast<typename std::underlying_type<T>::type>(value));
-         return valueString;
+         const std::string tValueAsString = DoToString(tValue);
+         return tValueAsString;
+      }
+
+      template<typename T>
+      static typename std::enable_if<!has_to_string<T>::value && std::is_enum<T>::value, std::string>::type ToString(const T& tValue)
+      {
+         const std::string tvalueAsString = std::to_string(static_cast<typename std::underlying_type<T>::type>(tValue));
+         return tvalueAsString;
       }
 
       template<typename T>
       static std::string ToString(T* pointerAddress)
       {
-         return PointerToAddressString(pointerAddress);
+         const std::string pointerAddressAsString = PointerToAddressString(pointerAddress);
+         return pointerAddressAsString;
       }
 
       template<typename T, typename Deleter>
       static std::string ToString(const std::unique_ptr<T, Deleter>& uniquePtr)
       {
-         return PointerToAddressString(uniquePtr.get());
+         const std::string pointerAddressAsString = PointerToAddressString(uniquePtr.get());
+         return pointerAddressAsString;
       }
 
       template<typename T>
       static std::string ToString(const std::shared_ptr<T>& sharedPtr)
       {
-         return PointerToAddressString(sharedPtr.get());
+         const std::string pointerAddressAsString = PointerToAddressString(sharedPtr.get());
+         return pointerAddressAsString;
       }
 
       template<typename FunctionReturnType, typename... ArgumentTypes>
-      static std::string ToString(const std::function<FunctionReturnType(ArgumentTypes...)>& stdFunction)
+      static const char* ToString(const std::function<FunctionReturnType(ArgumentTypes...)>& stdFunction)
       {
          if (stdFunction)
          {
-            static const std::string NonEmptyStdFunction("<non-empty std::function>");
-            return NonEmptyStdFunction;
+            return "<non-empty std::function>";
          }
-         static const std::string EmptyStdFunction("<empty std::function>");
-         return EmptyStdFunction;
+         return "<empty std::function>";
       }
 
       template<typename FirstType, typename SecondType>
@@ -1356,24 +1388,15 @@ namespace ZenUnit
          oss << "0x";
 #endif
          oss << pointer;
-         const std::string pointerAddressString(oss.str());
-         return pointerAddressString;
+         const std::string pointerAddressAsString(oss.str());
+         return pointerAddressAsString;
       }
 
       template<typename T, typename... Types>
       static void DoToStringConcat(std::ostringstream& oss, const T& value, Types&&... values)
       {
          oss << ToString(value);
-#if defined _WIN32
-         // C26496: The variable 'numberOfRemainingValues' is assigned only once, mark it as const.
-         // When variable 'numberOfRemainingValues' is marked const: C4127 conditional expression is constant
-#pragma warning(push)
-#pragma warning(suppress: 26496)
-#endif
          size_t numberOfRemainingValues = sizeof...(values);
-#if defined _WIN32
-#pragma warning(pop)
-#endif
          if (numberOfRemainingValues > 0)
          {
             oss << ", ";
@@ -1401,16 +1424,16 @@ namespace ZenUnit
 
       template<typename... MessageTypes>
       Anomaly(
-         const std::string& failedLinePrefix,
-         const std::string& whyBody,
+         std::string_view failedLinePrefix,
+         std::string_view whyBody,
          FileLine fileLine,
-         const char* messagePrefixSpaces,
-         const char* messagesText,
+         std::string_view messagePrefixSpaces,
+         std::string_view messagesText,
          MessageTypes&&... messages)
       {
          std::ostringstream whyBuilder;
          whyBuilder << '\n' << failedLinePrefix;
-         const bool messagesNonEmpty = strlen(messagesText) > 0;
+         const bool messagesNonEmpty = messagesText.length() > 0;
          if (messagesNonEmpty)
          {
             whyBuilder << ", " << messagesText;
@@ -1432,14 +1455,14 @@ namespace ZenUnit
 
       template<typename... MessageTypes>
       Anomaly(
-         const char* assertionName,
-         const char* arg1Text,
-         const char* arg2Text,
-         const char* arg3Text,
-         const char* messagesText,
+         std::string_view assertionName,
+         std::string_view arg1Text,
+         std::string_view arg2Text,
+         std::string_view arg3Text,
+         std::string_view messagesText,
          const Anomaly& becauseAnomaly,
-         const std::string& expected,
-         const std::string& actual,
+         std::string_view expected,
+         std::string_view actual,
          ExpectedActualFormat expectedActualFormat,
          FileLine fileLine,
          MessageTypes&&... messages)
@@ -1505,23 +1528,23 @@ namespace ZenUnit
       }
 
       static std::string MakeAssertExpression(
-         const char* assertionName,
-         const char* arg1Text,
-         const char* arg2Text,
-         const char* arg3Text,
-         const char* messagesText)
+         std::string_view assertionName,
+         std::string_view arg1Text,
+         std::string_view arg2Text,
+         std::string_view arg3Text,
+         std::string_view messagesText)
       {
          std::ostringstream assertExpressionBuilder;
          assertExpressionBuilder << assertionName << "(" << arg1Text;
-         if (strlen(arg2Text) > 0)
+         if (arg2Text.length() > 0)
          {
             assertExpressionBuilder << ", " << arg2Text;
          }
-         if (strlen(arg3Text) > 0)
+         if (arg3Text.length() > 0)
          {
             assertExpressionBuilder << ", " << arg3Text;
          }
-         if (strlen(messagesText) > 0)
+         if (messagesText.length() > 0)
          {
             assertExpressionBuilder << ", " << messagesText;
          }
@@ -1531,7 +1554,7 @@ namespace ZenUnit
       }
 
       static Anomaly ZENWrapped(
-         const std::string& zenMockAssertExpression,
+         std::string_view zenMockAssertExpression,
          const Anomaly& zenWrappedAnomaly,
          FileLine fileLine)
       {
@@ -1561,7 +1584,6 @@ namespace ZenUnit
       }
    };
 
-   // ZenMockException's key feature is that it is not a std::exception
    class ZenMockException
    {
    public:
@@ -1586,8 +1608,7 @@ namespace ZenUnit
       Transformer() = default;
       virtual ~Transformer() = default;
 
-      virtual std::vector<TransformedT> Transform(
-         const std::vector<T>* source, TransformedT(*transformFunction)(const T&)) const
+      virtual std::vector<TransformedT> Transform(const std::vector<T>* source, TransformedT(*transformFunction)(const T&)) const
       {
          const size_t sourceSize = source->size();
          std::vector<TransformedT> transformedElements(sourceSize);
@@ -1599,10 +1620,9 @@ namespace ZenUnit
          return transformedElements;
       }
 
-      virtual std::vector<TransformedT> RandomTransform(
-         std::vector<T>* source, TransformedT(*transformFunction)(const T&), unsigned seed) const
+      virtual std::vector<TransformedT> RandomTransform(std::vector<T>* source, TransformedT(*transformFunction)(const T&), unsigned randomSeed) const
       {
-         std::shuffle(source->begin(), source->end(), std::default_random_engine(seed));
+         std::shuffle(source->begin(), source->end(), std::default_random_engine(randomSeed));
          const size_t sourceSize = source->size();
          std::vector<TransformedT> transformedElements(sourceSize);
          for (size_t i = 0; i < sourceSize; ++i)
@@ -1630,8 +1650,8 @@ namespace ZenUnit
          transformedElements.reserve(elements.size());
          for (const ElementType& element : elements)
          {
-            const TransformedElementType transformedElement = (classInstance->*transformer)(element);
-            transformedElements.push_back(transformedElement);
+            TransformedElementType transformedElement = (classInstance->*transformer)(element);
+            transformedElements.emplace_back(std::move(transformedElement));
          }
          return transformedElements;
       }
@@ -1642,7 +1662,7 @@ namespace ZenUnit
       friend class RunFilterParserTests;
    private:
       std::unique_ptr<MemberFunctionTransformer<RunFilterParser, std::string, RunFilter>> _memberFunctionTransformer;
-      std::function<unsigned(const std::string&)> _call_String_ToUnsigned;
+      std::function<unsigned(std::string_view)> _call_String_ToUnsigned;
    public:
       RunFilterParser() noexcept
          : _memberFunctionTransformer(std::make_unique<MemberFunctionTransformer<RunFilterParser, std::string, RunFilter>>())
@@ -1662,8 +1682,8 @@ namespace ZenUnit
       RunFilter ParseRunFilterString(const std::string& testRunFilter) const
       {
          RunFilter runFilter;
-         const std::vector<std::string> testClassNameAndTestNameSlashTestCaseNumber
-            = String::SplitOnFirstStringDelimiter(testRunFilter, "::");
+         const std::vector<std::string> testClassNameAndTestNameSlashTestCaseNumber =
+            String::SplitOnFirstStringDelimiter(testRunFilter, "::");
          runFilter.testClassNamePattern = testClassNameAndTestNameSlashTestCaseNumber[0];
          if (testClassNameAndTestNameSlashTestCaseNumber.size() == 2)
          {
@@ -1686,7 +1706,7 @@ namespace ZenUnit
       static void ThrowInvalidArgumentOnAccountOfInvalidTestRunFilterString(const std::string& invalidTestRunFilterString)
       {
          throw std::invalid_argument("Invalid test run filter string: " +
-            invalidTestRunFilterString + ". Test run filter string format: TestClassName[::TestName[/TestCaseNumber]]");
+            std::string(invalidTestRunFilterString) + ". Test run filter string format: TestClassName[::TestName[/TestCaseNumber]]");
       }
    };
 
@@ -1726,8 +1746,8 @@ namespace ZenUnit
                oss << separator;
             }
          }
-         const std::string joinedVectorString = oss.str();
-         return joinedVectorString;
+         const std::string vectorJoinedAsString = oss.str();
+         return vectorJoinedAsString;
       }
    };
 
@@ -1756,27 +1776,27 @@ namespace ZenUnit
       Watch() noexcept = default;
       virtual ~Watch() = default;
 
-      // Returns local time now in format "YYYY-MM-DD 00:00:00"
+      // Returns the current local time in format "YYYY-MM-DD 00:00:00"
       virtual std::string DateTimeNow() const
       {
          const tm tmNow = TMNow();
-         std::ostringstream builder;
-         builder
+         std::ostringstream localTimeStringBuilder;
+         localTimeStringBuilder
             << std::setw(2) << std::setfill('0') << (tmNow.tm_year + 1900) << '-'
             << std::setw(2) << std::setfill('0') << (tmNow.tm_mon + 1) << '-'
             << std::setw(2) << std::setfill('0') << tmNow.tm_mday << ' '
             << std::setw(2) << std::setfill('0') << tmNow.tm_hour << ':'
             << std::setw(2) << std::setfill('0') << tmNow.tm_min << ':'
             << std::setw(2) << std::setfill('0') << tmNow.tm_sec;
-         const std::string dateTimeNow = builder.str();
-         return dateTimeNow;
+         const std::string localTimeString = localTimeStringBuilder.str();
+         return localTimeString;
       }
 
-      virtual unsigned short SecondsSince1970CastToUnsignedShort() const
+      virtual unsigned SecondsSince1970AsUnsigned() const
       {
          const long long secondsSince1970 = std::chrono::system_clock::now().time_since_epoch().count();
-         const unsigned short secondsSince1970CastToUnsignedShort = static_cast<unsigned short>(secondsSince1970);
-         return secondsSince1970CastToUnsignedShort;
+         const unsigned secondsSince1970AsUnsigned = static_cast<unsigned>(secondsSince1970);
+         return secondsSince1970AsUnsigned;
       }
 
       static std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(unsigned microseconds)
@@ -1820,12 +1840,6 @@ namespace ZenUnit
       }
    };
 
-   class Version
-   {
-   public:
-      static const char* Number() { return "0.4.0"; }
-   };
-
    class ArgsParser
    {
       friend class ArgsParserTests;
@@ -1834,8 +1848,8 @@ namespace ZenUnit
       std::unique_ptr<const RunFilterParser> _runFilterParser;
       std::unique_ptr<const OneArgMemberFunctionCaller<void, ArgsParser, ZenUnitArgs&>> _callerOfSetRandomSeedIfNotSetByUser;
       std::unique_ptr<const Watch> _watch;
-      std::function<int(const std::string&)> _call_String_ToInt;
-      std::function<unsigned(const std::string&)> _call_String_ToUnsigned;
+      std::function<int(std::string_view)> _call_String_ToInt;
+      std::function<unsigned(std::string_view)> _call_String_ToUnsigned;
    public:
       ArgsParser() noexcept
          : _console(std::make_unique<Console>())
@@ -1851,50 +1865,8 @@ namespace ZenUnit
 
       static const std::string& Usage()
       {
-         static const std::string usage = "C++ Unit Testing Framework ZenUnit - v " + std::string(Version::Number()) + R"(
-Usage: <ZenUnitTestsBinaryName> [Options...]
-
-Testing Rigor Options:
-
---random
-   Run test classes, tests, and value-parameterized test cases in a random order.
---seed=<Value>
-   Set to Value the random seed used by --random and
-   the ZenUnit::Random<T> family of random value generating functions.
-   The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
---test-runs=<N>
-   Repeat the running of all tests N times. Use a negative number to repeat forever.
-   For five random test run orderings, specify --random --test-runs=5.
---no-skips
-   Exit with code 1 if any tests are skipped.
-
-Testing Filtration Options:
-
---run=<TestClassName>[::TestName][/TestCaseNumber][,...]
-   Run only specified case-insensitive test classes, tests, and/or test cases.
-   Add a '*' character to the end of a test class name or test name
-   filter string to specify name-starts-with filtration.
- Example 1: --run=WidgetTests
-   Run only test class WidgetTests.
- Example 2: --run=WidgetTests::FunctionUnderTest*
-   Run all tests in WidgetTests that start with "FunctionUnderTest".
- Example 3: --run=WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior/3
-   Run the third test case of value-parameterized test
-   WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior.
---fail-fast
-   Immediately call exit(1) if a test fails.
-
-Testing Utility Options:
-
---pause
-   Wait for any key before running tests to allow attaching a debugger or profiler.
---exit-zero
-   Always exit with code 0 regardless of any failed tests.
---wait
-   Wait for any key at the end of the test run.
---help or -help
-   Print this message.)";
-         return usage;
+         const std::string& commandLineUsage = Version::CommandLineUsage();
+         return commandLineUsage;
       }
 
       virtual ZenUnitArgs Parse(const std::vector<std::string>& stringArgs) const
@@ -1920,7 +1892,7 @@ Testing Utility Options:
             }
             else if (arg == "--exit-zero")
             {
-               args.exitZero = true;
+               args.exitzero = true;
             }
             else if (arg == "--fail-fast")
             {
@@ -1964,7 +1936,7 @@ Testing Utility Options:
                   }
                   else if (argName == "--seed")
                   {
-                     args.randomseed = static_cast<unsigned short>(_call_String_ToUnsigned(argValueString));
+                     args.randomseed = _call_String_ToUnsigned(argValueString);
                      args.randomseedsetbyuser = true;
                   }
                   else
@@ -1987,19 +1959,16 @@ Testing Utility Options:
       {
          if (!outArgs.randomseedsetbyuser)
          {
-            outArgs.randomseed = _watch->SecondsSince1970CastToUnsignedShort();
+            outArgs.randomseed = _watch->SecondsSince1970AsUnsigned();
          }
       }
 
-      void WriteZenUnitArgumentErrorAndUsageThenExit1(const std::string& errorMessage) const
+      void WriteZenUnitArgumentErrorAndUsageThenExit1(std::string_view errorMessage) const
       {
-         _console->WriteLine("ZenUnit command line usage error: " + errorMessage + "\n");
+         _console->WriteLine("ZenUnit command line usage error: " + std::string(errorMessage) + "\n");
          _console->WriteLineAndExit(Usage(), 1);
       }
    };
-
-#define VRT(value) ZenUnit::VRText<decltype(value)>(value, #value)
-#define NAKED_VRT(value) ZenUnit::VRText<typename std::remove_const_t<typename std::remove_reference_t<decltype(value)>>>(value, #value)
 
    // Value Reference Text
    template<typename T>
@@ -2021,22 +1990,6 @@ Testing Utility Options:
       VRText(char* value, const char* text)
          : value(value), text(text) {}
    };
-
-   template<typename ExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
-   void ARE_COPIES_Throw(
-      VRText<ExpectedObjectType> expectedObjectVRT,
-      VRText<ActualObjectType> actualObjectVRT,
-      FileLine fileLine, const Anomaly& becauseAnomaly,
-      const char* messagesText, MessageTypes&&... messages)
-   {
-      const std::string toStringedExpectedObject = ToStringer::ToString(expectedObjectVRT.value);
-      const std::string toStringedActualObject = ToStringer::ToString(actualObjectVRT.value);
-      throw Anomaly("ARE_COPIES", expectedObjectVRT.text, actualObjectVRT.text, "",
-         messagesText, becauseAnomaly,
-         toStringedExpectedObject,
-         toStringedActualObject,
-         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
-   }
 
    template<typename ExpectedAndActualType>
    struct Equalizer
@@ -2230,9 +2183,19 @@ Testing Utility Options:
    }
 
    template<typename ExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
+   void ARE_COPIES_Throw(
+      VRText<ExpectedObjectType> expectedObjectVRT, VRText<ActualObjectType> actualObjectVRT,
+      FileLine fileLine, const Anomaly& becauseAnomaly, const char* messagesText, MessageTypes&&... messages)
+   {
+      const std::string toStringedExpectedObject = ToStringer::ToString(expectedObjectVRT.value);
+      const std::string toStringedActualObject = ToStringer::ToString(actualObjectVRT.value);
+      throw Anomaly("ARE_COPIES", expectedObjectVRT.text, actualObjectVRT.text, "", messagesText, becauseAnomaly,
+         toStringedExpectedObject, toStringedActualObject, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+   }
+
+   template<typename ExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
    void ARE_COPIES_Defined(
-      VRText<ExpectedObjectType> expectedObjectVRT,
-      VRText<ActualObjectType> actualObjectVRT,
+      VRText<ExpectedObjectType> expectedObjectVRT, VRText<ActualObjectType> actualObjectVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const ExpectedObjectType& expectedObject = expectedObjectVRT.value;
@@ -2260,31 +2223,23 @@ Testing Utility Options:
    template<typename ExpectedType, typename ActualType, typename... MessageTypes>
    void ARE_EQUAL_Throw(
       VRText<ExpectedType> expectedValueVRT, VRText<ActualType> actualValueVRT,
-      FileLine fileLine, const Anomaly& becauseAnomaly,
-      const char* messagesText, MessageTypes&&... messages)
+      FileLine fileLine, const Anomaly& becauseAnomaly, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedField = ToStringer::ToString(expectedValueVRT.value);
       const std::string actualField = ToStringer::ToString(actualValueVRT.value);
-      throw Anomaly("ARE_EQUAL", expectedValueVRT.text, actualValueVRT.text, "",
-         messagesText, becauseAnomaly,
-         expectedField,
-         actualField,
-         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+      throw Anomaly("ARE_EQUAL", expectedValueVRT.text, actualValueVRT.text, "", messagesText, becauseAnomaly,
+         expectedField, actualField, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename NotExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
    void ARE_NOT_SAME_Throw(
-      const VRText<NotExpectedObjectType>& notExpectedObjectVRT,
-      const VRText<ActualObjectType>& actualObjectVRT,
+      const VRText<NotExpectedObjectType>& notExpectedObjectVRT, const VRText<ActualObjectType>& actualObjectVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedField = "Not " + ToStringer::ToString(&notExpectedObjectVRT.value);
       const std::string actualField = "    " + ToStringer::ToString(&actualObjectVRT.value);
-      throw Anomaly("ARE_NOT_SAME", notExpectedObjectVRT.text, actualObjectVRT.text, "", messagesText,
-         Anomaly::Default(),
-         expectedField,
-         actualField,
-         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+      throw Anomaly("ARE_NOT_SAME", notExpectedObjectVRT.text, actualObjectVRT.text, "", messagesText, Anomaly::Default(),
+         expectedField, actualField, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename NotExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
@@ -2295,10 +2250,7 @@ Testing Utility Options:
    {
       if (&notExpectedObjectVRT.value == &actualObjectVRT.value)
       {
-         ARE_NOT_SAME_Throw(
-            notExpectedObjectVRT,
-            actualObjectVRT,
-            fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         ARE_NOT_SAME_Throw(notExpectedObjectVRT, actualObjectVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
@@ -2310,25 +2262,18 @@ Testing Utility Options:
    {
       const std::string expectedField = ToStringer::ToString(&expectedObjectVRT.value);
       const std::string actualField = ToStringer::ToString(&actualObjectVRT.value);
-      throw Anomaly("ARE_SAME", expectedObjectVRT.text, actualObjectVRT.text, "", messagesText,
-         Anomaly::Default(),
-         expectedField,
-         actualField,
-         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+      throw Anomaly("ARE_SAME", expectedObjectVRT.text, actualObjectVRT.text, "", messagesText, Anomaly::Default(),
+         expectedField, actualField, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
    void ARE_SAME_Defined(
-      const VRText<ExpectedObjectType>& expectedObjectVRT,
-      const VRText<ActualObjectType>& actualObjectVRT,
+      const VRText<ExpectedObjectType>& expectedObjectVRT, const VRText<ActualObjectType>& actualObjectVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (&expectedObjectVRT.value != &actualObjectVRT.value)
       {
-         ARE_SAME_Throw(
-            expectedObjectVRT,
-            actualObjectVRT,
-            fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         ARE_SAME_Throw(expectedObjectVRT, actualObjectVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
@@ -2366,24 +2311,19 @@ Testing Utility Options:
    {
       if (smartOrRawArrayPointer == nullptr)
       {
-         ARRAY_WAS_NEWED_Throw(
-            smartOrRawArrayPointerText,
-            fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         ARRAY_WAS_NEWED_Throw(smartOrRawArrayPointerText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
-      ArrayDeleter<typename std::remove_reference<
-         decltype(smartOrRawArrayPointer)>::type>::Delete(smartOrRawArrayPointer);
+      ArrayDeleter<typename std::remove_reference<decltype(smartOrRawArrayPointer)>::type>::Delete(smartOrRawArrayPointer);
    }
 
    template<typename ElementType, typename CollectionType, typename... MessageTypes>
    void CONTAINS_ELEMENT_Throw(
-      VRText<CollectionType> expectedElementVRT,
-      VRText<ElementType> collectionVRT,
+      VRText<CollectionType> expectedElementVRT, VRText<ElementType> collectionVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string toStringedElement = ToStringer::ToString(expectedElementVRT.value);
       const std::string singleQuotedToStringedElement = String::Concat("'", toStringedElement, "'");
-      throw Anomaly("CONTAINS_ELEMENT", expectedElementVRT.text, collectionVRT.text, "", messagesText,
-         Anomaly::Default(),
+      throw Anomaly("CONTAINS_ELEMENT", expectedElementVRT.text, collectionVRT.text, "", messagesText, Anomaly::Default(),
          "Collection contains element " + singleQuotedToStringedElement,
          "Collection does not contain element " + singleQuotedToStringedElement,
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
@@ -2395,36 +2335,23 @@ Testing Utility Options:
       VRText<ElementType> collectionVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-     const auto findIter = std::find(
-         collectionVRT.value.cbegin(),
-         collectionVRT.value.cend(),
-         expectedElementVRT.value);
+     const auto findIter = std::find(collectionVRT.value.cbegin(), collectionVRT.value.cend(), expectedElementVRT.value);
       if (findIter == collectionVRT.value.end())
       {
-         CONTAINS_ELEMENT_Throw(
-            expectedElementVRT,
-            collectionVRT,
+         CONTAINS_ELEMENT_Throw(expectedElementVRT, collectionVRT,
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
    inline void EQUALIZER_THROWS_ThrowOnAccountOfExceptionUnexpectedlyThrown(
-      const char* typeName,
-      const char* fieldName,
-      const char* arbitraryNonDefaultFieldValueText,
-      FileLine fileLine,
-      const ZenUnit::Anomaly& becauseAnomaly)
+      const char* typeName, const char* fieldName, const char* arbitraryNonDefaultFieldValueText, FileLine fileLine, const ZenUnit::Anomaly& becauseAnomaly)
    {
-      throw Anomaly(
-         "EQUALIZER_THROWS", typeName, fieldName, arbitraryNonDefaultFieldValueText, "",
+      throw Anomaly("EQUALIZER_THROWS", typeName, fieldName, arbitraryNonDefaultFieldValueText, "",
          becauseAnomaly, "N/A", "N/A", ExpectedActualFormat::Fields, fileLine);
    }
 
    inline void EQUALIZER_THROWS_ThrowOnAccountOfExpectedExceptionNotThrown(
-      const char* typeName,
-      const char* fieldName,
-      const char* arbitraryNonDefaultFieldValueText,
-      FileLine fileLine)
+      const char* typeName, const char* fieldName, const char* arbitraryNonDefaultFieldValueText, FileLine fileLine)
    {
       const std::string expectedField = String::Concat(
          R"(Function ZenUnit::Equalizer<Namespace::TestStruct>::AssertEqual(expected, actual)
@@ -2432,11 +2359,8 @@ Testing Utility Options:
           ARE_EQUAL(expected.)", fieldName, ", actual.", fieldName, ") assert statement.");
       const std::string actualField(String::Concat("No ZenUnit::Anomaly thrown despite field '", fieldName, R"('
           differing between objects expected and actual.)"));
-      throw Anomaly("EQUALIZER_THROWS", typeName, fieldName, arbitraryNonDefaultFieldValueText, "",
-         Anomaly::Default(),
-         expectedField,
-         actualField,
-         ExpectedActualFormat::Fields, fileLine);
+      throw Anomaly("EQUALIZER_THROWS", typeName, fieldName, arbitraryNonDefaultFieldValueText, "", Anomaly::Default(),
+         expectedField, actualField, ExpectedActualFormat::Fields, fileLine);
    }
 
    template<typename ConvertibleToBoolType, typename... MessageTypes>
@@ -2491,8 +2415,7 @@ Testing Utility Options:
    }
 
    template<typename StringType, typename... MessageTypes>
-   void FAIL_TEST_Defined(VRText<StringType> testFailureReasonVRT,
-      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void FAIL_TEST_Defined(VRText<StringType> testFailureReasonVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string failedLinePrefix = String::Concat(" Failed: FAIL_TEST(", testFailureReasonVRT.text);
       std::ostringstream whyBodyBuilder;
@@ -2532,11 +2455,8 @@ Testing Utility Options:
    {
       const std::string expectedField = "empty() == false";
       const std::string actualField = "empty() == true";
-      throw Anomaly("IS_NOT_EMPTY", collectionVRT.text, "", "", messagesText,
-         Anomaly::Default(),
-         expectedField,
-         actualField,
-         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+      throw Anomaly("IS_NOT_EMPTY", collectionVRT.text, "", "", messagesText, Anomaly::Default(),
+         expectedField, actualField, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename CollectionType, typename... MessageTypes>
@@ -2551,11 +2471,8 @@ Testing Utility Options:
    template<typename... MessageTypes>
    void IS_FALSE_Throw(const char* valueText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-      throw Anomaly("IS_FALSE", valueText, "", "", messagesText,
-         Anomaly::Default(),
-         "false",
-         "true",
-         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+      throw Anomaly("IS_FALSE", valueText, "", "", messagesText, Anomaly::Default(),
+         "false", "true", ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ConvertableToBoolType, typename... MessageTypes>
@@ -2570,11 +2487,8 @@ Testing Utility Options:
    template<typename... MessageTypes>
    void POINTER_IS_NOT_NULL_Throw(const char* pointerText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-      throw Anomaly("POINTER_IS_NOT_NULL", pointerText, "", "", messagesText,
-         Anomaly::Default(),
-         "not nullptr",
-         "nullptr",
-         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+      throw Anomaly("POINTER_IS_NOT_NULL", pointerText, "", "", messagesText, Anomaly::Default(),
+         "not nullptr", "nullptr", ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename... MessageTypes>
@@ -2589,19 +2503,14 @@ Testing Utility Options:
    template<typename... MessageTypes>
    void POINTEE_IS_EXACT_TYPE_Throw(
       const std::type_info& expectedPolymorphicPointeeTypeInfo,
-      const char* expectedPolymorphicPointeeText,
-      const std::string& actualField,
-      const char* actualPointeeText,
+      std::string_view expectedPolymorphicPointeeText, std::string_view actualField, std::string_view actualPointeeText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const char* const expectedPolymorphicPointeeTypeName = expectedPolymorphicPointeeTypeInfo.name();
       const std::string expectedField =
          "Pointee to be exact type: typeid(expectedPolymorphicPointeeType).name() = \"" + std::string(expectedPolymorphicPointeeTypeName) + "\"";
-      throw Anomaly("POINTEE_IS_EXACT_TYPE", expectedPolymorphicPointeeText, actualPointeeText, "", messagesText,
-         Anomaly::Default(),
-         expectedField,
-         actualField,
-         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+      throw Anomaly("POINTEE_IS_EXACT_TYPE", expectedPolymorphicPointeeText, actualPointeeText, "", messagesText, Anomaly::Default(),
+         expectedField, actualField, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ActualPointerType, typename... MessageTypes>
@@ -2637,11 +2546,8 @@ Testing Utility Options:
    void POINTER_IS_NULL_Throw(VRText<PointerType> pointerVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string actualField = ToStringer::ToString(pointerVRT.value);
-      throw Anomaly("POINTER_IS_NULL", pointerVRT.text, "", "", messagesText,
-         Anomaly::Default(),
-         "nullptr",
-         actualField,
-         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+      throw Anomaly("POINTER_IS_NULL", pointerVRT.text, "", "", messagesText, Anomaly::Default(),
+         "nullptr", actualField, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename PointerType, typename... MessageTypes>
@@ -2657,11 +2563,8 @@ Testing Utility Options:
    template<typename... MessageTypes>
    void IS_TRUE_Throw(const char* valueText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-      throw Anomaly("IS_TRUE", valueText, "", "", messagesText,
-         Anomaly::Default(),
-         "true",
-         "false",
-         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+      throw Anomaly("IS_TRUE", valueText, "", "", messagesText, Anomaly::Default(),
+         "true", "false", ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ValueType, typename DefaultValueType, typename... MessageTypes>
@@ -2669,11 +2572,8 @@ Testing Utility Options:
    {
       const std::string expectedField = ToStringer::ToString(defaultValue);
       const std::string actualField = ToStringer::ToString(valueVRT.value);
-      throw Anomaly("IS_ZERO", valueVRT.text, "", "", messagesText,
-         Anomaly::Default(),
-         expectedField,
-         actualField,
-         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+      throw Anomaly("IS_ZERO", valueVRT.text, "", "", messagesText, Anomaly::Default(),
+         expectedField, actualField, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ValueType, typename... MessageTypes>
@@ -2691,11 +2591,8 @@ Testing Utility Options:
    void IS_NOT_DEFAULT_Throw(VRText<ValueType> valueVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string actualField = ToStringer::ToString(valueVRT.value);
-      throw Anomaly("IS_NOT_DEFAULT", valueVRT.text, "", "", messagesText,
-         Anomaly::Default(),
-         "Not T{}",
-         actualField,
-         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+      throw Anomaly("IS_NOT_DEFAULT", valueVRT.text, "", "", messagesText, Anomaly::Default(),
+         "Not T{}", actualField, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ValueType, typename... MessageTypes>
@@ -2715,13 +2612,11 @@ Testing Utility Options:
       template<typename MapType, typename KeyType, typename ValueType>
       static const ValueType* InsertNoOverwrite(MapType& m, const KeyType& key, const ValueType& value)
       {
-         const std::pair<typename MapType::const_iterator, bool> insertIterAndDidInsert
-            = m.insert(std::make_pair(key, value));
+         const std::pair<typename MapType::const_iterator, bool> insertIterAndDidInsert = m.insert(std::make_pair(key, value));
          if (!insertIterAndDidInsert.second)
          {
             const std::string toStringedKey = ToStringer::ToString(key);
-            const std::string what = String::Concat(
-               "ZenUnit::Map::InsertNoOverwrite: Key already present in map: ", toStringedKey);
+            const std::string what = "ZenUnit::Map::InsertNoOverwrite: Key already present in map: " + toStringedKey;
             throw std::invalid_argument(what);
          }
          const ValueType* const constPointerToValueInMap = &(*insertIterAndDidInsert.first).second;
@@ -2731,7 +2626,7 @@ Testing Utility Options:
       // Map::At() because map.at() does not include the key not found in the exception what() text
       template<template<typename...>
       class MapType, typename KeyType, typename ValueType, typename... SubsequentTypes>
-         static const ValueType& At(const MapType<KeyType, ValueType, SubsequentTypes...>& m, const KeyType& key)
+      static const ValueType& At(const MapType<KeyType, ValueType, SubsequentTypes...>& m, const KeyType& key)
       {
          try
          {
@@ -2741,7 +2636,7 @@ Testing Utility Options:
          catch (const std::out_of_range&)
          {
             const std::string toStringedKey = ToStringer::ToString(key);
-            const std::string what = String::Concat("ZenUnit::Map::At: Key not found in map: ", toStringedKey);
+            const std::string what = String::Concat("ZenUnit::Map::At(): Key not found in map: ", toStringedKey);
             throw std::out_of_range(what);
          }
       }
@@ -2845,8 +2740,7 @@ Testing Utility Options:
       {
          const auto& expectedKey = expectedKeyValuePair.first;
          const auto& expectedValue = expectedKeyValuePair.second;
-         const std::pair<bool, bool> containsKeyValue =
-            Map::ContainsKeyWithValue(actualMap, expectedKey, expectedValue);
+         const std::pair<bool, bool> containsKeyValue = Map::ContainsKeyWithValue(actualMap, expectedKey, expectedValue);
          const bool mapContainsKey = containsKeyValue.first;
          if (!mapContainsKey)
          {
@@ -2867,38 +2761,35 @@ Testing Utility Options:
 
    template<typename... MessageTypes>
    void DOES_NOT_THROW_Throw(
-      const std::exception& e,
-      const char* expressionText,
+      const std::exception& ex, const char* expressionText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string failedLinePrefix = String::Concat("  Failed: DOES_NOT_THROW(", expressionText);
-      const std::string* const actualExceptionTypeName = Type::GetName(e);
+      const std::string* const actualExceptionTypeName = Type::GetName(ex);
       const std::string whyBody = String::Concat("Expected: No exception thrown\n",
          "  Actual: ", *actualExceptionTypeName, " thrown\n",
-         "  what(): \"", e.what(), "\"");
+         "  what(): \"", ex.what(), "\"");
       throw Anomaly(failedLinePrefix, whyBody, fileLine, " ", messagesText, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename... MessageTypes>
    void DOES_NOT_THROW_Defined(
-      const std::function<void()>& expression,
-      const char* expressionText,
+      const std::function<void()>& expression, const char* expressionText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       try
       {
          expression();
       }
-      catch (const std::exception& e)
+      catch (const std::exception& ex)
       {
-         DOES_NOT_THROW_Throw(e, expressionText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         DOES_NOT_THROW_Throw(ex, expressionText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
    template<typename PairType, typename... MessageTypes>
    void PAIRS_EQUAL_ToStringAndRethrow(
-      const Anomaly& becauseAnomaly,
-      VRText<PairType> expectedPairVRT, VRText<PairType> actualPairVRT,
+      const Anomaly& becauseAnomaly, VRText<PairType> expectedPairVRT, VRText<PairType> actualPairVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expected = ToStringer::ToString(expectedPairVRT.value);
@@ -2983,8 +2874,7 @@ Testing Utility Options:
       }
       catch (const Anomaly& anomaly)
       {
-         STD_ARRAYS_EQUAL_ToStringAndRethrow(anomaly,
-            expectedStdArrayVRT, actualStdArrayVRT,
+         STD_ARRAYS_EQUAL_ToStringAndRethrow(anomaly, expectedStdArrayVRT, actualStdArrayVRT,
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
@@ -3038,9 +2928,7 @@ Testing Utility Options:
       const std::string toStringedExpectedSet = ToStringer::ToString(expectedSetVRT.value);
       const std::string toStringedActualSet = ToStringer::ToString(actualSetVRT.value);
       throw Anomaly("SETS_EQUAL", expectedSetVRT.text, actualSetVRT.text, "", messagesText,
-         becauseAnomaly,
-         toStringedExpectedSet,
-         toStringedActualSet,
+         becauseAnomaly, toStringedExpectedSet, toStringedActualSet,
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
@@ -3060,9 +2948,7 @@ Testing Utility Options:
       }
       catch (const Anomaly& becauseAnomaly)
       {
-         SETS_EQUAL_Throw(
-            becauseAnomaly,
-            expectedSetVRT, actualSetVRT,
+         SETS_EQUAL_Throw(becauseAnomaly, expectedSetVRT, actualSetVRT,
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
@@ -3092,30 +2978,30 @@ Testing Utility Options:
       }
    }
 
-	template<typename ExpectedStdFunctionTargetType, typename StdFunctionType, typename... MessageTypes>
-	void STD_FUNCTION_TARGETS_OVERLOAD_Defined(
-		const ExpectedStdFunctionTargetType* expectedStdFunctionTargetValue,
-		const char* expectedStdFunctionTargetText,
-		VRText<StdFunctionType> stdFunctionVRT,
-		FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
-	{
-		const StdFunctionType stdFunction = stdFunctionVRT.value;
-		try
-		{
-			IS_TRUE(stdFunction);
-			POINTER_IS_NOT_NULL(stdFunction.template target<ExpectedStdFunctionTargetType*>());
-			typename std::add_pointer<ExpectedStdFunctionTargetType>::type expectedStdFunctionTarget(expectedStdFunctionTargetValue);
-			ARE_EQUAL(expectedStdFunctionTarget, *stdFunction.template target<ExpectedStdFunctionTargetType*>());
-		}
-		catch (const Anomaly& becauseAnomaly)
-		{
-			const std::string expectedField = ToStringer::ToString(expectedStdFunctionTargetValue);
-			const std::string actualField = ToStringer::ToString(stdFunctionVRT.value);
-			throw Anomaly("STD_FUNCTION_TARGETS_OVERLOAD", expectedStdFunctionTargetText, stdFunctionVRT.text, "", messagesText,
-				becauseAnomaly, expectedField, actualField,
-				ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
-		}
-	}
+   template<typename ExpectedStdFunctionTargetType, typename StdFunctionType, typename... MessageTypes>
+   void STD_FUNCTION_TARGETS_OVERLOAD_Defined(
+      const ExpectedStdFunctionTargetType* expectedStdFunctionTargetValue,
+      const char* expectedStdFunctionTargetText,
+      VRText<StdFunctionType> stdFunctionVRT,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   {
+      const StdFunctionType stdFunction = stdFunctionVRT.value;
+      try
+      {
+         IS_TRUE(stdFunction);
+         POINTER_IS_NOT_NULL(stdFunction.template target<ExpectedStdFunctionTargetType*>());
+         typename std::add_pointer<ExpectedStdFunctionTargetType>::type expectedStdFunctionTarget(expectedStdFunctionTargetValue);
+         ARE_EQUAL(expectedStdFunctionTarget, *stdFunction.template target<ExpectedStdFunctionTargetType*>());
+      }
+      catch (const Anomaly& becauseAnomaly)
+      {
+         const std::string expectedField = ToStringer::ToString(expectedStdFunctionTargetValue);
+         const std::string actualField = ToStringer::ToString(stdFunctionVRT.value);
+         throw Anomaly("STD_FUNCTION_TARGETS_OVERLOAD", expectedStdFunctionTargetText, stdFunctionVRT.text, "", messagesText,
+            becauseAnomaly, expectedField, actualField,
+            ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+      }
+   }
 
    template<typename ExpectedType, typename ActualType, typename... MessageTypes>
    void POINTEES_EQUAL_Throw_NullptrExpectedOrActual(
@@ -3142,7 +3028,7 @@ Testing Utility Options:
       const std::string actualField = ToStringer::ToString(*actualPointerVRT.value);
       throw Anomaly("POINTEES_EQUAL", expectedPointerVRT.text, actualPointerVRT.text, "",
          messagesText, becauseAnomaly, expectedField, actualField,
-			ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ActualType, typename... MessageTypes>
@@ -3191,8 +3077,7 @@ Testing Utility Options:
 
    template<typename ExpectedType, typename ActualType, typename... MessageTypes>
    void POINTEES_EQUAL_Defined(
-      VRText<ExpectedType> expectedPointerVRT,
-      VRText<ActualType> actualPointerVRT,
+      VRText<ExpectedType> expectedPointerVRT, VRText<ActualType> actualPointerVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (expectedPointerVRT.value == nullptr)
@@ -3235,12 +3120,12 @@ Testing Utility Options:
 
    template<typename... MessageTypes>
    void THROWS_ThrowAnomaly(
-      const char* expressionText,
-      const char* expectedExactExceptionTypeText,
-      const char* expectedWhatText,
-      const std::string& whyBody,
+      std::string_view expressionText,
+      std::string_view expectedExactExceptionTypeText,
+      std::string_view expectedWhatText,
+      std::string_view whyBody,
       FileLine fileLine,
-      const char* messagesText,
+      std::string_view messagesText,
       MessageTypes&&... messages)
    {
       const std::string failedLinePrefix = String::Concat(
@@ -3250,13 +3135,12 @@ Testing Utility Options:
    }
 
    template<typename ExpectedExceptionType>
-   std::string THROWS_MakeWhyBody_DerivedButNotExactExpectedExceptionTypeThrown(
-      const ExpectedExceptionType& e)
+   std::string THROWS_MakeWhyBody_DerivedButNotExactExpectedExceptionTypeThrown(const ExpectedExceptionType& ex)
    {
       std::ostringstream whyBodyBuilder;
-      const std::string* const actualExceptionTypeName = Type::GetName(e);
+      const std::string* const actualExceptionTypeName = Type::GetName(ex);
       THROWS_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, actualExceptionTypeName);
-      const char* const actualExactExceptionWhat = e.what();
+      const char* const actualExactExceptionWhat = ex.what();
       whyBodyBuilder << '\n' <<
          "  what(): \"" << actualExactExceptionWhat << "\"";
       const std::string whyBody = whyBodyBuilder.str();
@@ -3265,12 +3149,10 @@ Testing Utility Options:
 
    template<typename ExpectedExceptionType>
    std::string THROWS_MakeWhyBody_ExpectedWhatNotEqualToActualWhat(
-      const ExpectedExceptionType& e,
-      const std::string& expectedWhatText,
-      const char* actualExactExceptionWhatText)
+      const ExpectedExceptionType& ex, std::string_view expectedWhatText, const char* actualExactExceptionWhatText)
    {
       std::ostringstream whyBodyBuilder;
-      const std::string* const actualExceptionTypeName = Type::GetName(e);
+      const std::string* const actualExceptionTypeName = Type::GetName(ex);
       THROWS_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, actualExceptionTypeName);
       whyBodyBuilder << " exactly\n" <<
          "Expected what(): \"" << expectedWhatText << "\"\n" <<
@@ -3280,14 +3162,13 @@ Testing Utility Options:
    }
 
    template<typename ExpectedExceptionType, typename ActualExceptionType>
-   std::string THROWS_MakeWhyBody_ExpectedExceptionTypeNotThrown(
-      const ActualExceptionType& e)
+   std::string THROWS_MakeWhyBody_ExpectedExceptionTypeNotThrown(const ActualExceptionType& ex)
    {
       std::ostringstream whyBodyBuilder;
-      const std::string* const actualExceptionTypeName = Type::GetName(e);
+      const std::string* const actualExceptionTypeName = Type::GetName(ex);
       THROWS_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, actualExceptionTypeName);
       whyBodyBuilder << '\n' <<
-         "  what(): \"" << e.what() << "\"";
+         "  what(): \"" << ex.what() << "\"";
       const std::string whyBody = whyBodyBuilder.str();
       return whyBody;
    }
@@ -3296,8 +3177,8 @@ Testing Utility Options:
    std::string THROWS_MakeWhyBody_NoExceptionThrown()
    {
       std::ostringstream whyBodyBuilder;
-      static const std::string NoneThrown("No exception thrown");
-      THROWS_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, &NoneThrown);
+      static const std::string noExceptionThrownString("No exception thrown");
+      THROWS_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, &noExceptionThrownString);
       const std::string whyBody = whyBodyBuilder.str();
       return whyBody;
    }
@@ -3313,12 +3194,12 @@ Testing Utility Options:
    template<typename ExpectedExceptionType, typename... MessageTypes>
    void THROWS_Defined(
       const std::function<void()>& expression,
-      const char* expressionText,
-      const char* expectedExactExceptionTypeText,
-      const std::string& expectedExactWhatText,
-      const char* expectedExactWhatTextText,
+      std::string_view expressionText,
+      std::string_view expectedExactExceptionTypeText,
+      std::string_view expectedExactWhatText,
+      std::string_view expectedExactWhatTextText,
       FileLine fileLine,
-      const char* messagesText,
+      std::string_view messagesText,
       MessageTypes&&... messages)
    {
       try
@@ -4317,11 +4198,11 @@ Testing Utility Options:
          const std::string machineName = _machineNameGetter->GetMachineName();
          const std::string thirdLinePrefix = String::Concat(
             " Running ", numberOfTestClassesToBeRun, " test ", testClassesPlural ? "classes" : "class",
-            " on machine ", machineName, " with ZenUnit version ", Version::Number());
+            " on machine ", machineName, " with ZenUnit ", Version::Number());
          return thirdLinePrefix;
       }
 
-      virtual std::string MakeThirdLineSuffix(bool random, unsigned short randomseed) const
+      virtual std::string MakeThirdLineSuffix(bool random, unsigned randomseed) const
       {
          const std::string thirdLineSuffix = random ? " (random seed " + std::to_string(randomseed) + ")" : "";
          return thirdLineSuffix;
@@ -4512,7 +4393,7 @@ Testing Utility Options:
 
       virtual int DetermineExitCode(const ZenUnitArgs& args) const
       {
-         if (args.exitZero)
+         if (args.exitzero)
          {
             return 0;
          }
@@ -4839,13 +4720,13 @@ Testing Utility Options:
       std::unique_ptr<const TestPhaseRunner> _testPhaseRunner;
       std::unique_ptr<const TestResultFactory> _testResultFactory;
    protected:
-      FullTestName p_fullTestName;
-      FileLine p_fileLine;
+      FullTestName _protected_fullTestName;
+      FileLine _protected_fileLine;
    public:
-      Test(const char* testClassName, const char* testName, unsigned char arity)
+      Test(std::string_view testClassName, std::string_view testName, unsigned char arity)
          : _testPhaseRunner(std::make_unique<TestPhaseRunner>())
          , _testResultFactory(std::make_unique<TestResultFactory>())
-         , p_fullTestName(testClassName, testName, arity)
+         , _protected_fullTestName(testClassName, testName, arity)
       {
       }
 
@@ -4853,17 +4734,17 @@ Testing Utility Options:
 
       virtual const char* Name() const
       {
-         return p_fullTestName.testName;
+         return _protected_fullTestName.testName;
       }
 
       virtual std::string FullTestNameValue() const
       {
-         return p_fullTestName.Value();
+         return _protected_fullTestName.Value();
       }
 
       virtual std::string FileLineString() const
       {
-         const std::string fileLineString = p_fileLine.ToString();
+         const std::string fileLineString = _protected_fileLine.ToString();
          return fileLineString;
       }
 
@@ -4915,21 +4796,21 @@ Testing Utility Options:
          const TestPhaseResult constructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorTestPhaseResult.testOutcome != TestOutcome::Success)
          {
-            const TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(p_fullTestName, constructorTestPhaseResult);
+            const TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(_protected_fullTestName, constructorTestPhaseResult);
             return constructorFailTestResult;
          }
          const TestPhaseResult startupTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallStartup, this, TestPhase::Startup);
          if (startupTestPhaseResult.testOutcome != TestOutcome::Success)
          {
             const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-            const TestResult startupFailTestResult = _testResultFactory->MakeStartupFail(p_fullTestName, constructorTestPhaseResult, startupTestPhaseResult, destructorTestPhaseResult);
+            const TestResult startupFailTestResult = _testResultFactory->MakeStartupFail(_protected_fullTestName, constructorTestPhaseResult, startupTestPhaseResult, destructorTestPhaseResult);
             return startupFailTestResult;
          }
          const TestPhaseResult testBodyTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallTestBody, this, TestPhase::TestBody);
          const TestPhaseResult cleanupTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallCleanup, this, TestPhase::Cleanup);
          const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
          const TestResult testResult = _testResultFactory->MakeFullTestResult(
-            p_fullTestName, constructorTestPhaseResult, startupTestPhaseResult, testBodyTestPhaseResult, cleanupTestPhaseResult, destructorTestPhaseResult);
+            _protected_fullTestName, constructorTestPhaseResult, startupTestPhaseResult, testBodyTestPhaseResult, cleanupTestPhaseResult, destructorTestPhaseResult);
          return testResult;
       }
    };
@@ -4955,7 +4836,7 @@ Testing Utility Options:
          _console->WriteLine(anomaly.why);
          if (testPhase != TestPhase::TestBody)
          {
-            const int exitCode = args.exitZero ? 0 : 1;
+            const int exitCode = args.exitzero ? 0 : 1;
             _console->WriteLineColor("\n===========\nFatal Error\n===========", Color::Red);
             _console->WriteLineAndExit("A ZenUnit::Anomaly was thrown from a test class constructor, STARTUP function, or CLEANUP function.\nFail fasting with exit code "
                + std::to_string(exitCode) + ".", exitCode);
@@ -4992,7 +4873,7 @@ Testing Utility Options:
          _stopwatch->Stop();
          _console->WriteLineColor("\n===========\nFatal Error\n===========", Color::Red);
          const char* const testPhaseName = _testPhaseTranslator->TestPhaseToTestPhaseName(testPhase);
-         const int exitCode = args.exitZero ? 0 : 1;
+         const int exitCode = args.exitzero ? 0 : 1;
          const std::string exitLine = String::Concat(
             "Fatal ... exception thrown during test phase: ", testPhaseName, ".\nFail fasting with exit code ", exitCode, ".");
          _console->WriteLineAndExit(exitLine, exitCode);
@@ -5032,12 +4913,12 @@ Testing Utility Options:
          const TestPhaseResult constructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorTestPhaseResult.testOutcome != TestOutcome::Success)
          {
-            TestResult constructorFail = _testResultFactory->MakeConstructorFail(p_fullTestName, constructorTestPhaseResult);
+            TestResult constructorFail = _testResultFactory->MakeConstructorFail(_protected_fullTestName, constructorTestPhaseResult);
             constructorFail.microseconds = _stopwatch->Stop();
             return { constructorFail };
          }
          const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-         TestResult testResult = _testResultFactory->MakeCtorDtorSuccess(p_fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
+         TestResult testResult = _testResultFactory->MakeCtorDtorSuccess(_protected_fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
          testResult.microseconds = _stopwatch->Stop();
          return { testResult };
       }
@@ -5227,7 +5108,7 @@ Testing Utility Options:
 #endif
 
    public:
-      NormalTest(const char* testClassName, const char* testName, void (TestClassType::*testMemberFunction)())
+		NormalTest(std::string_view testClassName, std::string_view testName, void (TestClassType::*testMemberFunction)())
          : Test(testClassName, testName, 0)
          , _testMemberFunction(testMemberFunction)
       {
@@ -5294,8 +5175,6 @@ Testing Utility Options:
          return &pointerToMemberFunctionSpecificTemplateInstantiationObject;
       }
    };
-
-#define PMFTOKEN(pmf) ZenUnit::PmfToken::Instantiate<decltype(pmf), pmf>()
 
    template<typename TestClassType>
    class SpecSectionTestNXN : public Test
@@ -5396,8 +5275,7 @@ Testing Utility Options:
          {
             _randomTestCaseNumbers.push_back(testCaseNumber);
          }
-         std::shuffle(_randomTestCaseNumbers.begin(), _randomTestCaseNumbers.end(),
-            std::default_random_engine(args.randomseed));
+         std::shuffle(_randomTestCaseNumbers.begin(), _randomTestCaseNumbers.end(), std::default_random_engine(args.randomseed));
       }
 
       size_t NextTestCaseNumber() override
@@ -5437,16 +5315,15 @@ Testing Utility Options:
          std::vector<RunFilter>, bool(*)(const RunFilter&, const FullTestName&, size_t), const FullTestName&, size_t>;
       std::unique_ptr<CallerOfRunFilterMatchesTestCaseType> _callerOfRunFilterMatchesTestCase;
       std::function<const ZenUnitArgs&()> _call_TestRunner_GetArgs;
-      std::function<std::vector<std::string>(const char*)> _call_String_CommaSplitExceptQuotedCommas;
+      std::function<std::vector<std::string>(const char*)> _call_String_SplitOnNonQuotedCommas;
       std::function<void(int)> _call_exit;
       std::function<ITestCaseNumberGenerator*(bool)> _call_ITestCaseNumberGeneratorFactoryNew;
       const char* const _testCaseArgsText;
-
       std::unique_ptr<TestClassType> _testClass;
       size_t _currentTestCaseNumber;
       std::vector<TestResult> _testResults;
    protected:
-      const std::tuple<typename std::decay<TestCaseArgTypes>::type...> p_testCaseArgs;
+      const std::tuple<typename std::decay<TestCaseArgTypes>::type...> _protected_testCaseArgs;
    public:
       TestNXN(
          const char* testClassName,
@@ -5457,12 +5334,12 @@ Testing Utility Options:
          , _console(std::make_unique<Console>())
          , _callerOfRunFilterMatchesTestCase(std::make_unique<CallerOfRunFilterMatchesTestCaseType>())
          , _call_TestRunner_GetArgs(TestRunner::GetArgs)
-         , _call_String_CommaSplitExceptQuotedCommas(String::CommaSplitExceptQuotedCommas)
+         , _call_String_SplitOnNonQuotedCommas(String::SplitOnNonQuotedCommas)
          , _call_exit(::exit)
          , _call_ITestCaseNumberGeneratorFactoryNew(ITestCaseNumberGenerator::FactoryNew)
          , _testCaseArgsText(testCaseArgsText)
          , _currentTestCaseNumber(1)
-         , p_testCaseArgs(std::forward<TestCaseArgTypes>(testCaseArgs)...)
+         , _protected_testCaseArgs(std::forward<TestCaseArgTypes>(testCaseArgs)...)
       {
          const size_t numberOfTestCases = NumberOfTestCases();
          _testResults.reserve(numberOfTestCases);
@@ -5501,7 +5378,7 @@ Testing Utility Options:
          const size_t numberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
          ITestCaseNumberGenerator* testCaseNumberGenerator = _call_ITestCaseNumberGeneratorFactoryNew(args.random);
          testCaseNumberGenerator->Initialize(numberOfTestCaseArgs, N, args);
-         const std::vector<std::string> splitTestCaseArgs = _call_String_CommaSplitExceptQuotedCommas(_testCaseArgsText);
+         const std::vector<std::string> splitTestCaseArgs = _call_String_SplitOnNonQuotedCommas(_testCaseArgsText);
          while ((_currentTestCaseNumber = testCaseNumberGenerator->NextTestCaseNumber()) != std::numeric_limits<size_t>::max())
          {
             RunTestCaseIfNotFilteredOut(_currentTestCaseNumber, args, splitTestCaseArgs);
@@ -5525,7 +5402,7 @@ Testing Utility Options:
       virtual void RunTestCaseIfNotFilteredOut(
          size_t possiblyRandomizedTestCaseNumber, const ZenUnitArgs& args, const std::vector<std::string>& splitTestCaseArgs)
       {
-         const bool shouldRunTestCase = ShouldRunTestCase(args, p_fullTestName, possiblyRandomizedTestCaseNumber);
+         const bool shouldRunTestCase = ShouldRunTestCase(args, _protected_fullTestName, possiblyRandomizedTestCaseNumber);
          if (shouldRunTestCase)
          {
             RunTestCase(possiblyRandomizedTestCaseNumber, splitTestCaseArgs);
@@ -5844,7 +5721,7 @@ Testing Utility Options:
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call1ArgMemberFunction(testClass, _test1X1MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
+         Tuple::Call1ArgMemberFunction(testClass, _test1X1MemberFunction, testCaseArgsIndex, this->_protected_testCaseArgs);
       }
    };
 
@@ -5864,7 +5741,7 @@ Testing Utility Options:
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call2ArgMemberFunction(testClass, _test2X2MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
+         Tuple::Call2ArgMemberFunction(testClass, _test2X2MemberFunction, testCaseArgsIndex, this->_protected_testCaseArgs);
       }
    };
 
@@ -5884,7 +5761,7 @@ Testing Utility Options:
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call3ArgMemberFunction(testClass, _test3X3MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
+         Tuple::Call3ArgMemberFunction(testClass, _test3X3MemberFunction, testCaseArgsIndex, this->_protected_testCaseArgs);
       }
    };
 
@@ -5904,7 +5781,7 @@ Testing Utility Options:
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call4ArgMemberFunction(testClass, _test4X4MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
+         Tuple::Call4ArgMemberFunction(testClass, _test4X4MemberFunction, testCaseArgsIndex, this->_protected_testCaseArgs);
       }
    };
 
@@ -5924,7 +5801,7 @@ Testing Utility Options:
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call5ArgMemberFunction(testClass, _test5X5MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
+         Tuple::Call5ArgMemberFunction(testClass, _test5X5MemberFunction, testCaseArgsIndex, this->_protected_testCaseArgs);
       }
    };
 
@@ -5944,7 +5821,7 @@ Testing Utility Options:
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call6ArgMemberFunction(testClass, _test6X6MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
+         Tuple::Call6ArgMemberFunction(testClass, _test6X6MemberFunction, testCaseArgsIndex, this->_protected_testCaseArgs);
       }
    };
 
@@ -5963,7 +5840,7 @@ Testing Utility Options:
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call7ArgMemberFunction(testClass, _test7X7MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
+         Tuple::Call7ArgMemberFunction(testClass, _test7X7MemberFunction, testCaseArgsIndex, this->_protected_testCaseArgs);
       }
    };
 
@@ -5983,7 +5860,7 @@ Testing Utility Options:
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call8ArgMemberFunction(testClass, _test8X8MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
+         Tuple::Call8ArgMemberFunction(testClass, _test8X8MemberFunction, testCaseArgsIndex, this->_protected_testCaseArgs);
       }
    };
 
@@ -6003,7 +5880,7 @@ Testing Utility Options:
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call9ArgMemberFunction(testClass, _test9X9MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
+         Tuple::Call9ArgMemberFunction(testClass, _test9X9MemberFunction, testCaseArgsIndex, this->_protected_testCaseArgs);
       }
    };
 
@@ -6023,7 +5900,7 @@ Testing Utility Options:
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call10ArgMemberFunction(testClass, _test10X10MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
+         Tuple::Call10ArgMemberFunction(testClass, _test10X10MemberFunction, testCaseArgsIndex, this->_protected_testCaseArgs);
       }
    };
 
@@ -6075,7 +5952,7 @@ The fix for this error is to change FACTS(TestName) to AFACT(TestName)
 or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
 )";
             const ZenUnitArgs& args = TestRunner::GetArgs();
-            exit(args.exitZero ? 0 : 1);
+            exit(args.exitzero ? 0 : 1);
          }
          const std::unique_ptr<Test>* const testNXN = &findIter->second;
          return testNXN;
@@ -6168,7 +6045,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
                break;
             }
             const T& element = vec[i];
-            ToStringer::ZenUnitPrinterOrOStreamInsertionOperatorOrPrintTypeName(os, element);
+            ToStringer::CallZenUnitPrinterOrOStreamInsertionOperatorOrPrintTypeName(os, element);
             if (i < vectorSize - 1)
             {
                os << ",\n   ";

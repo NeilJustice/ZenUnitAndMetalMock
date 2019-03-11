@@ -39,7 +39,7 @@ namespace ZenUnit
    TEST(At_KeyNotPresentInMap_Throws)
    {
       string expectedToStringedKey = ToStringer::ToString(KeyType());
-      string expectedWhat = "ZenUnit::Map::At: Key not found in map: " + expectedToStringedKey;
+      string expectedWhat = "ZenUnit::Map::At(): Key not found in map: " + expectedToStringedKey;
       THROWS(Map::At(_map, KeyType()), out_of_range, expectedWhat);
    }
 

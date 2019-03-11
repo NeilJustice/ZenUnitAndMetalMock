@@ -45,16 +45,16 @@ namespace ZenUnit
       Test test(testClassName.c_str(), testName.c_str(), 0);
       POINTER_WAS_NEWED(test._testPhaseRunner);
       POINTER_WAS_NEWED(test._testResultFactory);
-      ARE_EQUAL(FileLine(), test.p_fileLine);
+      ARE_EQUAL(FileLine(), test._protected_fileLine);
 
       const char* const testNameValue = test.Name();
       ARE_EQUAL(testName.c_str(), testNameValue);
 
       const string fullTestName = test.FullTestNameValue();
-      ARE_EQUAL(fullTestName, test.p_fullTestName.Value());
+      ARE_EQUAL(fullTestName, test._protected_fullTestName.Value());
 
-      test.p_fileLine = FileLine("FilePath", 1);
-      ARE_EQUAL(test.p_fileLine.ToString(), test.FileLineString());
+      test._protected_fileLine = FileLine("FilePath", 1);
+      ARE_EQUAL(test._protected_fileLine.ToString(), test.FileLineString());
    }
 
    TEST(WritePostTestNameMessage_DoesNothing)
@@ -89,7 +89,7 @@ namespace ZenUnit
       const TestResult testResult = _test->BaseRunTest();
       //
       ZENMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledOnceWith(&Test::CallNewTestClass, _test.get(), TestPhase::Constructor));
-      ZENMOCK(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(_test->p_fullTestName, constructorFailTestPhaseResult));
+      ZENMOCK(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(_test->_protected_fullTestName, constructorFailTestPhaseResult));
       ARE_EQUAL(constructorFailTestResult, testResult);
    }
 
@@ -107,7 +107,7 @@ namespace ZenUnit
       _testResultFactoryMock->MakeStartupFailMock.Return(startupFailTestResult);
       const string testClassName = Random<string>();
       const string testName = Random<string>();
-      _test->p_fullTestName = FullTestName(testClassName.c_str(), testName.c_str(), 0);
+      _test->_protected_fullTestName = FullTestName(testClassName.c_str(), testName.c_str(), 0);
       //
       const TestResult testResult = _test->BaseRunTest();
       //
@@ -118,7 +118,7 @@ namespace ZenUnit
          { &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor }
       }));
       ZENMOCK(_testResultFactoryMock->MakeStartupFailMock.CalledOnceWith(
-         _test->p_fullTestName, constructorSuccessTestPhaseResult, startupFailTestPhaseResult, destructorTestPhaseResult));
+         _test->_protected_fullTestName, constructorSuccessTestPhaseResult, startupFailTestPhaseResult, destructorTestPhaseResult));
       ARE_EQUAL(startupFailTestResult, testResult);
    }
 
@@ -131,7 +131,7 @@ namespace ZenUnit
       _testResultFactoryMock->MakeFullTestResultMock.Return(sixArgTestResult);
       const string testClassName = Random<string>();
       const string testName = Random<string>();
-      _test->p_fullTestName = FullTestName(testClassName.c_str(), testName.c_str(), 0);
+      _test->_protected_fullTestName = FullTestName(testClassName.c_str(), testName.c_str(), 0);
       //
       const TestResult testResult = _test->BaseRunTest();
       //
@@ -144,7 +144,7 @@ namespace ZenUnit
          { &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor }
       }));
       ZENMOCK(_testResultFactoryMock->MakeFullTestResultMock.CalledOnceWith(
-         _test->p_fullTestName,
+         _test->_protected_fullTestName,
          TestPhaseResultWithOutcome(TestOutcome::Success),
          TestPhaseResultWithOutcome(TestOutcome::Success),
          TestPhaseResultWithOutcome(TestOutcome::Success),

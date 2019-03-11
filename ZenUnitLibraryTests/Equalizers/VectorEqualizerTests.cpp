@@ -42,11 +42,11 @@ namespace ZenUnit
       THROWS(Equalizer<vector<string>>::AssertEqual(
          expectedStringVector Comma actualStringVector), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: VECTORS_EQUAL(expectedVector, actualVector)",
-"Expected: std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >> (size 1):",
+"Expected: std::vector<std::basic_string> (size 1):",
 "{",
 "   \"\"",
 "}",
-"  Actual: std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >> (size 0):",
+"  Actual: std::vector<std::basic_string> (size 0):",
 "{",
 "}",
 " Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed",

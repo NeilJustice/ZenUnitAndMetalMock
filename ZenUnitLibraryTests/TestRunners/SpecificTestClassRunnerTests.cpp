@@ -216,7 +216,7 @@ namespace ZenUnit
    {
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.random = random;
-      zenUnitArgs.randomseed = Random<unsigned short>();
+      zenUnitArgs.randomseed = Random<unsigned>();
       GetArgs_ZenMockObject.Return(zenUnitArgs);
       if (expectRandomForEach)
       {

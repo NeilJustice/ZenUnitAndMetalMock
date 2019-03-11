@@ -71,7 +71,7 @@ namespace ZenUnit
       ZENMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledOnceWith(
          &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor));
       ZENMOCK(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(
-         _newableDeletableTest->p_fullTestName, failedConstructorTestPhaseResult));
+         _newableDeletableTest->_protected_fullTestName, failedConstructorTestPhaseResult));
       const vector<TestResult> expectedTestResults{ constructorFailTestResult };
       ZENMOCK(_stopwatchMock->StopMock.CalledOnce());
       VECTORS_EQUAL(expectedTestResults, testResults);
@@ -102,7 +102,7 @@ namespace ZenUnit
          { &Test::CallDeleteTestClass, _newableDeletableTest.get(), TestPhase::Destructor }
       }));
       ZENMOCK(_testResultFactoryMock->MakeCtorDtorSuccessMock.CalledOnceWith(
-         _newableDeletableTest->p_fullTestName, successConstructorTestPhaseResult, destructorTestPhaseResult));
+         _newableDeletableTest->_protected_fullTestName, successConstructorTestPhaseResult, destructorTestPhaseResult));
       ZENMOCK(_stopwatchMock->StopMock.CalledOnce());
       const vector<TestResult> expectedTestResults{ sixArgCtorTestResult };
       VECTORS_EQUAL(expectedTestResults, testResults);

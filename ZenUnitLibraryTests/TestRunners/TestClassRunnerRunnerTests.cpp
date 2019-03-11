@@ -247,7 +247,7 @@ namespace ZenUnit
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.random = true;
       zenUnitArgs.randomseedsetbyuser = ZenUnit::Random<bool>();
-      zenUnitArgs.randomseed = ZenUnit::Random<unsigned short>();
+      zenUnitArgs.randomseed = ZenUnit::Random<unsigned>();
       //
       const vector<TestClassResult> testClassResults = _testClassRunnerRunner.RunTestClasses(zenUnitArgs);
       //
