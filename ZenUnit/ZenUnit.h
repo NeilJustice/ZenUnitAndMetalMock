@@ -5200,7 +5200,7 @@ namespace ZenUnit
       virtual size_t NextTestCaseNumber() = 0;
       virtual void ResetTestCaseNumber() = 0;
       virtual ~ITestCaseNumberGenerator() = default;
-      static ITestCaseNumberGenerator* FactoryNew(bool randomMode);
+		static std::shared_ptr<ITestCaseNumberGenerator> FactoryNew(bool randomMode);
    };
 
    class SequentialTestCaseNumberGenerator : public ITestCaseNumberGenerator
@@ -5273,13 +5273,13 @@ namespace ZenUnit
       }
    };
 
-   inline ITestCaseNumberGenerator* ITestCaseNumberGenerator::FactoryNew(bool randomMode)
+   inline std::shared_ptr<ITestCaseNumberGenerator> ITestCaseNumberGenerator::FactoryNew(bool randomMode)
    {
       if (randomMode)
       {
-         return new RandomTestCaseNumberGenerator;
+         return std::make_shared<RandomTestCaseNumberGenerator>();
       }
-      return new SequentialTestCaseNumberGenerator;
+      return std::make_shared<SequentialTestCaseNumberGenerator>();
    }
 
    template<typename TestClassType, size_t N, typename... TestCaseArgTypes>
@@ -5294,7 +5294,7 @@ namespace ZenUnit
       std::function<const ZenUnitArgs&()> _call_TestRunner_GetArgs;
       std::function<std::vector<std::string>(const char*)> _call_String_SplitOnNonQuotedCommas;
       std::function<void(int)> _call_exit;
-      std::function<ITestCaseNumberGenerator*(bool)> _call_ITestCaseNumberGeneratorFactoryNew;
+      std::function<std::shared_ptr<ITestCaseNumberGenerator>(bool)> _call_ITestCaseNumberGeneratorFactoryNew;
       const char* const _testCaseArgsText;
       std::unique_ptr<TestClassType> _testClass;
       size_t _currentTestCaseNumber;
@@ -5302,11 +5302,7 @@ namespace ZenUnit
    protected:
       const std::tuple<typename std::decay<TestCaseArgTypes>::type...> _protected_testCaseArgs;
    public:
-      TestNXN(
-         const char* testClassName,
-         const char* testName,
-         const char* testCaseArgsText,
-         TestCaseArgTypes&&... testCaseArgs)
+      TestNXN(const char* testClassName, const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
          : Test(testClassName, testName, N)
          , _console(std::make_unique<Console>())
          , _callerOfRunFilterMatchesTestCase(std::make_unique<CallerOfRunFilterMatchesTestCaseType>())
@@ -5353,7 +5349,7 @@ namespace ZenUnit
          assert_true(_currentTestCaseNumber == 1);
          const ZenUnitArgs& args = _call_TestRunner_GetArgs();
          const size_t numberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
-         ITestCaseNumberGenerator* testCaseNumberGenerator = _call_ITestCaseNumberGeneratorFactoryNew(args.random);
+         std::shared_ptr<ITestCaseNumberGenerator> const testCaseNumberGenerator(_call_ITestCaseNumberGeneratorFactoryNew(args.random));
          testCaseNumberGenerator->Initialize(numberOfTestCaseArgs, N, args);
          const std::vector<std::string> splitTestCaseArgs = _call_String_SplitOnNonQuotedCommas(_testCaseArgsText);
          while ((_currentTestCaseNumber = testCaseNumberGenerator->NextTestCaseNumber()) != std::numeric_limits<size_t>::max())

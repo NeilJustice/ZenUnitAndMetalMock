@@ -58,7 +58,7 @@ namespace ZenUnit
       const SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests> specifiedTestNXN(
          testClassName.c_str(), testName.c_str(), PmfToken::Instantiate<decltype(
             &TestingTestClass_SpecSectionTestNXNTests::TestFunction),
-         &TestingTestClass_SpecSectionTestNXNTests::TestFunction>());
+				&TestingTestClass_SpecSectionTestNXNTests::TestFunction>());
       //
       ARE_EQUAL(testName, specifiedTestNXN.Name());
       ARE_EQUAL("TESTS(" + testClassName + ")\nTEST(" + testName + ")", specifiedTestNXN.FullName());

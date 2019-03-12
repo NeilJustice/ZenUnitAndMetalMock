@@ -128,7 +128,7 @@ namespace ZenUnit
       public:
          ZENMOCK_VOID3(RunTestCaseIfNotFilteredOut, size_t, const ZenUnitArgs&, const std::vector<std::string>&)
          ZENMOCK_VOID0_CONST(Exit1IfNonExistentTestCaseNumberSpecified)
-         ZENMOCK_NONVOID1_STATIC(ITestCaseNumberGenerator*, ITestCaseNumberGenerator, FactoryNew, bool)
+         ZENMOCK_NONVOID1_STATIC(std::shared_ptr<ITestCaseNumberGenerator>, ITestCaseNumberGenerator, FactoryNew, bool)
 
          Test1X1SelfMocked() noexcept
             : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>(
@@ -148,7 +148,7 @@ namespace ZenUnit
       const ZenUnitArgs args = GetArgs_ZenMockObject_SelfMocked.ReturnRandom();
       test1X1SelfMocked._call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject_SelfMocked);
 
-      ITestCaseNumberGeneratorMock* const testCaseNumberGeneratorMock = new ITestCaseNumberGeneratorMock;
+      shared_ptr<ITestCaseNumberGeneratorMock> testCaseNumberGeneratorMock = make_shared<ITestCaseNumberGeneratorMock>();
       testCaseNumberGeneratorMock->InitializeMock.Expect();
       testCaseNumberGeneratorMock->NextTestCaseNumberMock.ReturnValues(1, 2, std::numeric_limits<size_t>::max());
       test1X1SelfMocked.FactoryNew_ZenMockObject.Return(testCaseNumberGeneratorMock);
