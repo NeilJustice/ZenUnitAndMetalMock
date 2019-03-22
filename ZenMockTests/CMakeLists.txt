@@ -1,0 +1,33 @@
+cmake_minimum_required(VERSION 3.2)
+project(ZenMockTests)
+include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+include_directories(${CMAKE_SOURCE_DIR})
+include_directories(${ZenUnitIncludeDirectory})
+if(EXISTS ${GoogleBenchmarkIncludeDirectory})
+   include_directories(${GoogleBenchmarkIncludeDirectory})
+endif()
+
+folder_source_group(0)
+folder_source_group(1)
+folder_source_group(2)
+folder_source_group(Exceptions)
+folder_source_group(Mock)
+folder_source_group(Mocker)
+folder_source_group(Testing)
+folder_source_group(ZenMock)
+
+source_group("" FILES ZenMockTestMain.cpp pch.h pch.cpp)
+file(GLOB_RECURSE Sources *.h *.cpp)
+
+add_executable(ZenMockTests ${Sources})
+if(EXISTS ${GoogleBenchmarkIncludeDirectory})
+   target_link_libraries(ZenMockTests ${GoogleBenchmarkLibraryPath})
+   if(WIN32)
+      target_link_libraries(ZenMockTests shlwapi)
+   endif()
+endif()
+
+EnablePrecompiledHeaders()
+IfMSVCAddRunTestsPostBuildStep()

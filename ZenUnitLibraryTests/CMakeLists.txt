@@ -2,9 +2,8 @@ cmake_minimum_required(VERSION 3.2)
 project(ZenUnitLibraryTests)
 include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(${CMAKE_SOURCE_DIR})
-include_directories(${CMAKE_SOURCE_DIR}/ZenUnit)
+include_directories(${ZenUnitIncludeDirectory})
 include_directories(${ZenMockIncludeDirectory})
 if(EXISTS ${GoogleBenchmarkIncludeDirectory})
    include_directories(${GoogleBenchmarkIncludeDirectory})
@@ -27,6 +26,7 @@ folder_source_group_subfolder(Tests Mock)
 folder_source_group(ToStringer)
 folder_source_group_subfolder(ToStringer ZenUnitPrinter)
 folder_source_group_subfolder(ToStringer SFINAE)
+
 source_group("" FILES ZenUnitLibraryTestsMain.cpp pch.h pch.cpp)
 file(GLOB_RECURSE Sources *.h *.cpp)
 

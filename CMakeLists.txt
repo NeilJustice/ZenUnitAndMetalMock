@@ -29,15 +29,19 @@ elseif(MSVC)
    set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 endif()
 
-# Travis CI OSX tries to build header-only ZenUnit into a static library .a file
+# Travis CI OSX tries to build header-only ZenUnit and ZenMock into a static library .a files
 if(NOT APPLE)
    add_subdirectory(ZenUnit)
+	add_subdirectory(ZenMock)
 endif()
 add_subdirectory(ZenUnitUtilsAndAssertionTests)
 add_subdirectory(ZenUnitExamples)
 add_subdirectory(ZenUnitLibraryTests)
 add_subdirectory(ZenUnitTestUtils)
 add_subdirectory(ZenUnitCompileSpeed)
+
+add_subdirectory(ZenMockExamples)
+add_subdirectory(ZenMockTests)
 
 # Allows CMake command "cmake --build . --target install --config Debug/Release"
 # to just install ZenUnit and not also build ZenUnitTests

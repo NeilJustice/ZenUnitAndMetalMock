@@ -2,9 +2,8 @@ cmake_minimum_required(VERSION 3.2)
 project(ZenUnitUtilsAndAssertionTests)
 include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(${CMAKE_SOURCE_DIR})
-include_directories(${CMAKE_SOURCE_DIR}/ZenUnit)
+include_directories(${ZenUnitIncludeDirectory})
 include_directories(${ZenMockIncludeDirectory})
 
 folder_source_group(Assertions)
@@ -19,6 +18,7 @@ folder_source_group_subfolder(Utils Iteration)
 folder_source_group_subsubfolder(Utils Iteration Mock)
 folder_source_group_subfolder(Utils Time)
 folder_source_group_subsubfolder(Utils Time Mock)
+
 source_group("" FILES ZenUnitUtilsAndAssertionTestsMain.cpp pch.h pch.cpp)
 file(GLOB_RECURSE Sources *.h *.cpp)
 

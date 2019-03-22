@@ -1,18 +1,14 @@
 cmake_minimum_required(VERSION 3.2)
-project(ZenUnitExamples)
+project(ZenMockExamples)
 include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 
 include_directories(${ZenUnitIncludeDirectory})
 include_directories(${ZenMockIncludeDirectory})
 
-file(GLOB Sources *.h *.cpp)
+file(GLOB_RECURSE Sources *.h *.cpp)
 source_group("" FILES ${Sources})
 
-add_executable(ZenUnitExamples ${Sources})
+add_executable(ZenMockExamples ${Sources})
 
 EnablePrecompiledHeaders()
 IfMSVCAddRunTestsPostBuildStep()
-
-if(MSVC)
-   replace(CMAKE_CXX_FLAGS "/Wall" "/W4")
-endif()
