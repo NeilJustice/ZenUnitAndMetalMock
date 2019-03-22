@@ -9,7 +9,9 @@ namespace ZenUnit
    AFACT(DefaultConstructor_SetsWatchFunction)
    AFACT(CopyConstructor_CopiesForEacherAndTestResults)
    AFACT(AssignmentOperator_CopiesForEacherAndTestResults)
+#ifdef _WIN32
    AFACT(AssignmentOperator_SelfAssignment_NothingHappens)
+#endif
    AFACT(MoveConstructor_MovesForEacherAndTestResults)
    AFACT(MoveAssignmentOperator_MovesForEacherAndTestResults)
    AFACT(AddTestResults_AppendTestResultsToEndOfTestResultsVector)
@@ -66,6 +68,8 @@ namespace ZenUnit
       ARE_COPIES(copy, testClassResult);
    }
 
+// Clang treats self assignment as an error
+#ifdef _WIN32
    TEST(AssignmentOperator_SelfAssignment_NothingHappens)
    {
       TestClassResult testClassResult = TestClassResult::TestingNonDefault();
@@ -74,6 +78,7 @@ namespace ZenUnit
       //
       ARE_EQUAL(TestClassResult::TestingNonDefault(), testClassResult);
    }
+#endif
 
    TEST(MoveConstructor_MovesForEacherAndTestResults)
    {
