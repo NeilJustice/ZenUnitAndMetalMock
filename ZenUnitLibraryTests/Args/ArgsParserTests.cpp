@@ -9,9 +9,10 @@ namespace ZenUnit
    TESTS(ArgsParserTests)
    AFACT(DefaultConstructor_NewsComponents_SetsStringToUnsignedFunction)
    AFACT(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
-   FACTS(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1)
+   FACTS(Parse_ArgsSizeGreaterThanOrEqualTo13_PrintsTooManyArgumentsErrorMessageAndUsageAndExits1)
    FACTS(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1)
-   FACTS(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0)
+   FACTS(Parse_DashHelpOrDashDashHelp_PrintsUsageAndExits0)
+	FACTS(Parse_DashVersionOrDashDashVersion_PrintsVersionAndExits0)
    AFACT(Parse_AllArgsSpecifiedExpectForRunFilter_ReturnsZenUnitArgsWithAllFieldsSets)
    AFACT(Parse_RunArgument_ReturnsExpectedZenUnitArgs)
    AFACT(Parse_random_SetsrandomToTrue)
@@ -27,7 +28,8 @@ namespace ZenUnit
    EVIDENCE
 
    const string _testProgramPath = Random<string>();
-   const string expectedUsage = "C++ Unit Testing Framework ZenUnit " + std::string(Version::Number()) + R"(
+   const string _expectedUsage = "C++ Unit Testing Framework ZenUnit " + std::string(Version::Number()) + R"(
+https://github.com/NeilJustice/ZenUnit
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
 Testing Rigor Options:
@@ -69,7 +71,9 @@ Testing Utility Options:
 --wait
    Wait for any key at the end of the test run.
 --help or -help
-   Print this message.)";
+   Print this message.
+--version or -version
+	Print the ZenUnit version number.)";
 
    ArgsParser _argsParser;
    ConsoleMock* _consoleMock = nullptr;
@@ -125,10 +129,10 @@ Testing Utility Options:
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST1X1(Parse_ArgsSizeGreaterThanOnePlusNumberOfValidArgs_PrintsErrorMessageAndUsageAndExits1,
+   TEST1X1(Parse_ArgsSizeGreaterThanOrEqualTo13_PrintsTooManyArgumentsErrorMessageAndUsageAndExits1,
       size_t numberOfArgs,
-      11,
-      12)
+      13,
+      14)
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
@@ -137,38 +141,51 @@ Testing Utility Options:
       THROWS(_argsParser.Parse(args), WriteLineAndExitException, "");
       //
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith("ZenUnit command line usage error: Too many arguments.\n"));
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedUsage, 1));
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
    }
 
    TEST1X1(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1,
-      const string& invalidArg,
+      const string& invalidArgument,
       "--abc",
       "--Exit-zero",
       "--test-runs")
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
-      const vector<string> args { _testProgramPath, invalidArg };
+      const vector<string> stringArgs { _testProgramPath, invalidArgument };
       //
-      THROWS(_argsParser.Parse(args), WriteLineAndExitException, "");
+      THROWS(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
-         "ZenUnit command line usage error: Invalid argument \"" + invalidArg + "\"\n"));
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedUsage, 1));
+         "ZenUnit command line usage error: Invalid argument \"" + invalidArgument + "\"\n"));
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
    }
 
-   TEST1X1(Parse_DashhelpOrDashDashhelp_PrintsUsageAndExits0,
-      const string& helpArg,
-      "-help",
-      "--help")
+   TEST1X1(Parse_DashHelpOrDashDashHelp_PrintsUsageAndExits0,
+      const string& helpArgument,
+		"--help",
+      "-help")
    {
       _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
-      const vector<string> args { _testProgramPath, helpArg };
+      const vector<string> stringArgs { _testProgramPath, helpArgument };
       //
-      THROWS(_argsParser.Parse(args), WriteLineAndExitException, "");
+      THROWS(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedUsage, 0));
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 0));
    }
+
+	TEST1X1(Parse_DashVersionOrDashDashVersion_PrintsVersionAndExits0,
+		const string& versionArgument,
+		"--version",
+		"-version")
+	{
+		_consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
+      const vector<string> stringArgs { _testProgramPath, versionArgument };
+      //
+      THROWS(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      //
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("0.4.0", 0));
+	}
 
    TEST(Parse_AllArgsSpecifiedExpectForRunFilter_ReturnsZenUnitArgsWithAllFieldsSets)
    {
@@ -177,7 +194,7 @@ Testing Utility Options:
       ToInt_ZenMockObject.Return(testruns);
       const unsigned randomseed = ZenUnit::Random<unsigned>();
       ToUnsigned_ZenMockObject.Return(randomseed);
-      const vector<string> args
+      const vector<string> stringArgs
       {
          _testProgramPath,
          "--pause",
@@ -190,12 +207,12 @@ Testing Utility Options:
          "--seed=" + to_string(randomseed)
       };
       //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
+      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
       //
       ZENMOCK(ToInt_ZenMockObject.CalledOnceWith(to_string(testruns)));
       ZENMOCK(ToUnsigned_ZenMockObject.CalledOnceWith(to_string(randomseed)));
       ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
+      expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
       expectedZenUnitArgs.pause = true;
       expectedZenUnitArgs.wait = true;
       expectedZenUnitArgs.exitzero = true;
@@ -300,7 +317,7 @@ Testing Utility Options:
       //
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Invalid --name=value argument value: " + arg + "\n"));
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedUsage, 1));
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
    }
 
    TEST(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
@@ -316,7 +333,7 @@ Testing Utility Options:
       ZENMOCK(ToInt_ZenMockObject.CalledOnceWith("-1_for_example"));
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Invalid --name=value argument value: " + InvalidTimesArg + "\n"));
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedUsage, 1));
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
    }
 
    TEST(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
@@ -364,7 +381,7 @@ Testing Utility Options:
       //
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Unrecognized --name=value argument: " + unrecognizedNameArg + "\n"));
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedUsage, 1));
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
    }
 
    TEST(SetRandomSeedIfNotSetByUser_RandomSeedSetByUser_DoesNothing)

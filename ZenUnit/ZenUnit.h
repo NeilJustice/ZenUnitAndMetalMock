@@ -63,6 +63,7 @@ namespace ZenUnit
       static const std::string& CommandLineUsage()
       {
          static const std::string zenUnitCommandLineUsage = "C++ Unit Testing Framework ZenUnit " + std::string(Number()) + R"(
+https://github.com/NeilJustice/ZenUnit
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
 Testing Rigor Options:
@@ -104,7 +105,9 @@ Testing Utility Options:
 --wait
    Wait for any key at the end of the test run.
 --help or -help
-   Print this message.)";
+   Print this message.
+--version or -version
+	Print the ZenUnit version number.)";
          return zenUnitCommandLineUsage;
       }
    };
@@ -1866,7 +1869,7 @@ namespace ZenUnit
 
       virtual ZenUnitArgs Parse(const std::vector<std::string>& stringArgs) const
       {
-         if (stringArgs.size() > 10)
+         if (stringArgs.size() >= 13)
          {
             _console->WriteLine("ZenUnit command line usage error: Too many arguments.\n");
             _console->WriteLineAndExit(Usage(), 1);
@@ -1904,6 +1907,10 @@ namespace ZenUnit
             else if (arg == "--help" || arg == "-help")
             {
                _console->WriteLineAndExit(Usage(), 0);
+            }
+				else if (arg == "--version" || arg == "-version")
+            {
+               _console->WriteLineAndExit(Version::Number(), 0);
             }
             else if (!String::Contains(arg, "="))
             {
