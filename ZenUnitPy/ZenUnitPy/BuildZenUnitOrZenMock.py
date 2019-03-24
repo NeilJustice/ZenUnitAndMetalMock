@@ -10,12 +10,12 @@ def main(args):
    if len(args) != 5:
       Util.print_and_exit(
 'Invalid args: ' + ' '.join(args) + '\n'
-"""Usage: python3 BuildZenUnitOrZenMock.py --ZenUnitOrZenMock=<ZenUnitOrZenMock> --generator=<CMakeGenerator> --buildType=<CMakeBuildType> --definitions=<QuotedSpaceSeparatedCMakeDefinitions>""", 1)
+"""Usage: python3 BuildZenUnitOrZenMock.py --zenunit-or-zenmock=<ZenUnitOrZenMock> --cmake-generator=<CMakeGenerator> --cmake-build-type=<CMakeBuildType> --cmake-definitions=<QuotedSpaceSeparatedCMakeDefinitions>""", 1)
    else:
-      zenUnitOrZenMock = ArgParser.parse_arg('--ZenUnitOrZenMock', args[1])
-      cmakeGenerator = ArgParser.parse_arg('--generator', args[2])
-      cmakeBuildType = ArgParser.parse_arg('--buildType', args[3])
-      cmakeDefinitions = ArgParser.parse_arg('--definitions', args[4])
+      zenUnitOrZenMock = ArgParser.parse_arg('--zenunit-or-zenmock', args[1])
+      cmakeGenerator = ArgParser.parse_arg('--cmake-generator', args[2])
+      cmakeBuildType = ArgParser.parse_arg('--cmake-build-type', args[3])
+      cmakeDefinitions = ArgParser.parse_arg('--cmake-definitions', args[4])
       platformSystem = platform.system().casefold()
       if platformSystem == 'linux':
          linux_cmake_and_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions)

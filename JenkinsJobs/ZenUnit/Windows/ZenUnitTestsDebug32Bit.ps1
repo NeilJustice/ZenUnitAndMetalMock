@@ -1,1 +1,1 @@
-python.exe ZenUnitPy\ZenUnitPy\BuildZenUnitOrZenMock.py --ZenUnitOrZenMock=ZenUnit --generator="Visual Studio 15 2017" --buildType=Debug --definitions=""
+python.exe ZenUnitPy\ZenUnitPy\Buildzenunit-or-zenmock.py --zenunit-or-zenmock=ZenUnit --generator="Visual Studio 15 2017" --buildType=Debug --definitions=""

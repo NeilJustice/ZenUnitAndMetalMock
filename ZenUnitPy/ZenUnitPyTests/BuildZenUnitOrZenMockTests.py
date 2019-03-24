@@ -33,7 +33,7 @@ class BuildZenUnitTests(unittest.TestCase):
             #
             Util.print_and_exit.assert_called_once_with(
 'Invalid args: ' + ' '.join(invalidArgs) + '\n'
-"""Usage: python3 BuildZenUnitOrZenMock.py --ZenUnitOrZenMock=<ZenUnitOrZenMock> --generator=<CMakeGenerator> --buildType=<CMakeBuildType> --definitions=<QuotedSpaceSeparatedCMakeDefinitions>""", 1)
+"""Usage: python3 BuildZenUnitOrZenMock.py --zenunit-or-zenmock=<ZenUnitOrZenMock> --cmake-generator=<CMakeGenerator> --cmake-build-type=<CMakeBuildType> --cmake-definitions=<QuotedSpaceSeparatedCMakeDefinitions>""", 1)
       testcase(0)
       testcase(1)
       testcase(2)
@@ -58,10 +58,10 @@ class BuildZenUnitTests(unittest.TestCase):
             #
             self.assertEqual(4, len(ArgParser.parse_arg.call_args_list))
             ArgParser.parse_arg.assert_has_calls([
-               call('--ZenUnitOrZenMock', args[1]),
-               call('--generator', args[2]),
-               call('--buildType', args[3]),
-               call('--definitions', args[4])
+               call('--zenunit-or-zenmock', args[1]),
+               call('--cmake-generator', args[2]),
+               call('--cmake-build-type', args[3]),
+               call('--cmake-definitions', args[4])
             ])
             platform.system.assert_called_once_with()
             if expectLinux:
@@ -97,10 +97,10 @@ class BuildZenUnitTests(unittest.TestCase):
             #
             self.assertEqual(4, len(ArgParser.parse_arg.call_args_list))
             ArgParser.parse_arg.assert_has_calls([
-               call('--ZenUnitOrZenMock', args[1]),
-               call('--generator', args[2]),
-               call('--buildType', args[3]),
-               call('--definitions', args[4])
+               call('--zenunit-or-zenmock', args[1]),
+               call('--cmake-generator', args[2]),
+               call('--cmake-build-type', args[3]),
+               call('--cmake-definitions', args[4])
             ])
             platform.system.assert_called_once_with()
             if expectLinux:

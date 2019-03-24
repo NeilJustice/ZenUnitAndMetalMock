@@ -1,3 +1,3 @@
 #!/bin/bash
 set -e
-CXX=/usr/bin/g++ python3 ZenUnitPy/ZenUnitPy/BuildZenUnitOrZenMock.py --ZenUnitOrZenMock=ZenMock --generator=Ninja --buildType=Debug --definitions="" --installDirectory=NoInstall
+CXX=/usr/bin/g++ python3 ZenUnitPy/ZenUnitPy/BuildZenUnitOrZenMock.py --zenunit-or-zenmock=ZenMock --cmake-generator=Ninja --cmake-build-type=Debug --cmake-definitions=""
