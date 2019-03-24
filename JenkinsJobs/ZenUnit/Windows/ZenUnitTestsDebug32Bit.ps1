@@ -1,1 +1,1 @@
-python.exe ZenUnitPy\ZenUnitPy\Buildzenunit-or-zenmock.py --zenunit-or-zenmock=ZenUnit --generator="Visual Studio 15 2017" --buildType=Debug --definitions=""
+python.exe ZenUnitPy\ZenUnitPy\BuildZenUnitOrZenMock.py --zenunit-or-zenmock=ZenUnit --cmake-generator="Visual Studio 15 2017" --cmake-build-type=Debug --cmake-definitions=""
