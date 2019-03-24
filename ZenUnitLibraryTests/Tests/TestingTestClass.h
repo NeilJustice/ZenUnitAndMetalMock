@@ -10,7 +10,7 @@ class TestingTestClass : public Zen::Mock<TestClass<TestingTestClass>>, public T
 {
 public:
    static bool s_destructorCalled;
-   static bool s_allNXNTestsRegistered;
+   static bool ZenUnit_allNXNTestsRegistered;
 
    TestingTestClass() noexcept
    {

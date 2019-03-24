@@ -351,7 +351,7 @@ namespace ZenUnit
       //
       _testNXN->Exit1IfNonExistentTestCaseNumberSpecified();
       //
-      const std::string expectedErrorMessage = "\nError: Non-existent test case number specified in -run filter. Exiting with code 1.";
+      const std::string expectedErrorMessage = "\nError: Non-existent test case number specified in --run filter. Exiting with code 1.";
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedErrorMessage));
       ZENMOCK(exit_ZenMockObject.CalledOnceWith(1));
    }
