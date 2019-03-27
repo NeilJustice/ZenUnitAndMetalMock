@@ -1025,36 +1025,47 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Typ
 }
 
 
+// std::binds a zero-argument ZenMock object for assignment to a std::function
 #define BIND_0ARG_ZENMOCK_OBJECT(FunctionName_ZenMockObject) \
    std::bind(&decltype(FunctionName_ZenMockObject)::ZenMockItFunctionPointer, &(FunctionName_ZenMockObject))
 
+// std::binds a one-argument ZenMock object for assignment to a std::function
 #define BIND_1ARG_ZENMOCK_OBJECT(FunctionName_ZenMockObject) \
    std::bind(&decltype(FunctionName_ZenMockObject)::ZenMockItFunctionPointer, &(FunctionName_ZenMockObject), std::placeholders::_1)
 
+// std::binds a two-argument ZenMock object for assignment to a std::function
 #define BIND_2ARG_ZENMOCK_OBJECT(FunctionName_ZenMockObject) \
    std::bind(&decltype(FunctionName_ZenMockObject)::ZenMockItFunctionPointer, &(FunctionName_ZenMockObject), std::placeholders::_1, std::placeholders::_2)
 
+// std::binds a three-argument ZenMock object for assignment to a std::function
 #define BIND_3ARG_ZENMOCK_OBJECT(FunctionName_ZenMockObject) \
    std::bind(&decltype(FunctionName_ZenMockObject)::ZenMockItFunctionPointer, &(FunctionName_ZenMockObject), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
 
+// std::binds a four-argument ZenMock object for assignment to a std::function
 #define BIND_4ARG_ZENMOCK_OBJECT(FunctionName_ZenMockObject) \
    std::bind(&decltype(FunctionName_ZenMockObject)::ZenMockItFunctionPointer, &(FunctionName_ZenMockObject), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)
 
+// std::binds a five-argument ZenMock object for assignment to a std::function
 #define BIND_5ARG_ZENMOCK_OBJECT(FunctionName_ZenMockObject) \
    std::bind(&decltype(FunctionName_ZenMockObject)::ZenMockItFunctionPointer, &(FunctionName_ZenMockObject), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5)
 
+// std::binds a six-argument ZenMock object for assignment to a std::function
 #define BIND_6ARG_ZENMOCK_OBJECT(FunctionName_ZenMockObject) \
    std::bind(&decltype(FunctionName_ZenMockObject)::ZenMockItFunctionPointer, &(FunctionName_ZenMockObject), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6)
 
+// std::binds a seven-argument ZenMock object for assignment to a std::function
 #define BIND_7ARG_ZENMOCK_OBJECT(FunctionName_ZenMockObject) \
    std::bind(&decltype(FunctionName_ZenMockObject)::ZenMockItFunctionPointer, &(FunctionName_ZenMockObject), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7)
 
+// std::binds a eight-argument ZenMock object for assignment to a std::function
 #define BIND_8ARG_ZENMOCK_OBJECT(FunctionName_ZenMockObject) \
    std::bind(&decltype(FunctionName_ZenMockObject)::ZenMockItFunctionPointer, &(FunctionName_ZenMockObject), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8)
 
+// std::binds a nine-argument ZenMock object for assignment to a std::function
 #define BIND_9ARG_ZENMOCK_OBJECT(FunctionName_ZenMockObject) \
    std::bind(&decltype(FunctionName_ZenMockObject)::ZenMockItFunctionPointer, &(FunctionName_ZenMockObject), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8, std::placeholders::_9)
 
+// std::binds a ten-argument ZenMock object for assignment to a std::function
 #define BIND_10ARG_ZENMOCK_OBJECT(FunctionName_ZenMockObject) \
    std::bind(&decltype(FunctionName_ZenMockObject)::ZenMockItFunctionPointer, &(FunctionName_ZenMockObject), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8, std::placeholders::_9, std::placeholders::_10)
 
@@ -1066,8 +1077,7 @@ namespace ZenMock
       const std::string _what;
    public:
       template<typename... ArgTypes>
-      explicit UnexpectedCallException(
-         const std::string& zenMockedFunctionSignature, ArgTypes&&... args)
+      explicit UnexpectedCallException(const std::string& zenMockedFunctionSignature, ArgTypes&&... args)
          : _what(MakeWhat(zenMockedFunctionSignature, std::forward<ArgTypes>(args)...))
       {
       }
@@ -1090,11 +1100,7 @@ namespace ZenMock
       }
    private:
       template<typename ArgType, typename... SubsequentArgTypes>
-      static void AppendToStringedArgs(
-         std::ostringstream& outWhatBuilder,
-         size_t argIndex,
-         ArgType&& arg,
-         SubsequentArgTypes&&... args)
+      static void AppendToStringedArgs(std::ostringstream& outWhatBuilder, size_t argIndex, ArgType&& arg, SubsequentArgTypes&&... args)
       {
          const std::string toStringedArg = ZenUnit::ToStringer::ToString(std::forward<ArgType>(arg));
          outWhatBuilder << "\nArgument" << ++argIndex << ": " << toStringedArg;
@@ -1265,8 +1271,7 @@ Return(), ReturnValues(), ReturnRandom(), or Throw<T>() on a ZenMock object.)");
       {
          if (returnValues.empty())
          {
-            throw std::invalid_argument(
-               "ZenMock::ValueReturner::ZenMockAddContainerReturnValues(): Return values container cannot be empty.");
+            throw std::invalid_argument("ZenMock::ValueReturner::ZenMockAddContainerReturnValues(): Return values container cannot be empty.");
          }
          _returnValues.insert(_returnValues.end(), returnValues.cbegin(), returnValues.cend());
       }
@@ -1290,17 +1295,17 @@ Return(), ReturnValues(), ReturnRandom(), or Throw<T>() on a ZenMock object.)");
       }
    };
 
-   using ZenMockFunctionSequencingIndex = ZenUnit::SingleHeaderVariable<std::atomic<unsigned long long>>;
+   using ZenMockAtomicFunctionSequencingIndex = ZenUnit::SingleHeaderVariable<std::atomic<unsigned long long>>;
 
    struct FunctionSequencingToken
    {
-      unsigned long long index;
+      unsigned long long sequencingIndex;
 
-      FunctionSequencingToken() : index(ZenMockFunctionSequencingIndex::value++) {}
+      FunctionSequencingToken() : sequencingIndex(ZenMockAtomicFunctionSequencingIndex::value++) {}
 
       FunctionSequencingToken Then(FunctionSequencingToken functionSequencingToken)
       {
-         IS_TRUE(index < functionSequencingToken.index);
+         IS_TRUE(sequencingIndex < functionSequencingToken.sequencingIndex);
          return functionSequencingToken;
       }
    };
@@ -1311,7 +1316,7 @@ Return(), ReturnValues(), ReturnRandom(), or Throw<T>() on a ZenMock object.)");
       friend class ZenMockerTests;
    private:
       std::function<void(int)> _call_exit;
-      std::function<ZenUnit::ZenUnitArgs()> _call_TestRunner_GetArgs;
+      std::function<const ZenUnit::ZenUnitArgs&()> _call_TestRunner_GetArgs;
       bool _zenMockExceptionIsInFlight;
    protected:
       bool _expected;
@@ -1347,7 +1352,7 @@ Return(), ReturnValues(), ReturnRandom(), or Throw<T>() on a ZenMock object.)");
    protected:
       void AssignAndIncrementFunctionSequenceIndex()
       {
-         _functionSequencingToken.index = ZenMockFunctionSequencingIndex::value++;
+         _functionSequencingToken.sequencingIndex = ZenMockAtomicFunctionSequencingIndex::value++;
       }
 
       void ZenMockThrowIfExceptionSet()
@@ -1466,13 +1471,13 @@ Exiting with code )" + std::to_string(exitCode) + ".");
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
-      template<typename ReturnType, typename... ReturnTypes>
-      void ReturnValues(ReturnType&& firstReturnValue, ReturnTypes&&... subsequentReturnValues)
+      template<typename FirstReturnValue, typename... SubsequentReturnValues>
+      void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
          ZeroArgumentMocker<ExceptionThrower>::_expected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
-            std::forward<ReturnType>(firstReturnValue),
-            std::forward<ReturnTypes>(subsequentReturnValues)...);
+            std::forward<FirstReturnValue>(firstReturnValue),
+            std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
       }
 
       template<typename ContainerType>
@@ -2295,13 +2300,13 @@ Exiting with code )" + std::to_string(exitCode) + ".");
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
-      template<typename ReturnValueURef, typename... ReturnValueURefs>
-      void ReturnValues(ReturnValueURef&& firstReturnValue, ReturnValueURefs&&... subsequentReturnValues)
+      template<typename FirstReturnValue, typename... SubsequentReturnValues>
+      void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
          OneArgumentMocker<ArgType>::_expected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
-            std::forward<ReturnValueURef>(firstReturnValue),
-            std::forward<ReturnValueURef>(subsequentReturnValues)...);
+            std::forward<FirstReturnValue>(firstReturnValue),
+            std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
       }
 
       template<typename ContainerType>
@@ -2453,10 +2458,12 @@ Exiting with code )" + std::to_string(exitCode) + ".");
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
-      void ReturnValues(const FirstReturnValue& firstReturnValue, const SubsequentReturnValues&... subsequentReturnValues)
+      void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
          TwoArgumentMocker<Arg1Type, Arg2Type>::_expected = true;
-         ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(firstReturnValue, subsequentReturnValues...);
+         ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
+				std::forward<FirstReturnValue>(firstReturnValue),
+				std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
       }
 
       template<typename ContainerType>
@@ -2631,10 +2638,12 @@ Exiting with code )" + std::to_string(exitCode) + ".");
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
-      void ReturnValues(const FirstReturnValue& firstReturnValue, const SubsequentReturnValues&... subsequentReturnValues)
+      void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
          ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::_expected = true;
-         ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(firstReturnValue, subsequentReturnValues...);
+         ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
+				std::forward<FirstReturnValue>(firstReturnValue),
+				std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
       }
 
       template<typename ContainerType>
@@ -2818,10 +2827,12 @@ Exiting with code )" + std::to_string(exitCode) + ".");
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
-      void ReturnValues(const FirstReturnValue& firstReturnValue, const SubsequentReturnValues&... subsequentReturnValues)
+      void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
          FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::_expected = true;
-         ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(firstReturnValue, subsequentReturnValues...);
+         ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
+				std::forward<FirstReturnValue>(firstReturnValue),
+				std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
       }
 
       template<typename ContainerType>
@@ -2962,8 +2973,8 @@ Exiting with code )" + std::to_string(exitCode) + ".");
             ARE_EQUAL(expectedThirdArgument, zenMockObjectCallHistory[i].thirdArgument.value, zenMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedFourthArgument, zenMockObjectCallHistory[i].fourthArgument.value, zenMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedFifthArgument, zenMockObjectCallHistory[i].fifthArgument.value, zenMockedFunctionSignatureAndCallIndex);
-            return FunctionSequencingToken();
          }
+			return FunctionSequencingToken();
       }
 
       FunctionSequencingToken CalledAsFollows(const std::vector<FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>& expectedFiveArgumentCalls)
@@ -3011,10 +3022,12 @@ Exiting with code )" + std::to_string(exitCode) + ".");
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
-      void ReturnValues(const FirstReturnValue& firstReturnValue, const SubsequentReturnValues&... subsequentReturnValues)
+      void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
          FiveArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::_expected = true;
-         ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(firstReturnValue, subsequentReturnValues...);
+         ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
+				std::forward<FirstReturnValue>(firstReturnValue),
+				std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
       }
 
       template<typename ContainerType>
@@ -3161,8 +3174,8 @@ Exiting with code )" + std::to_string(exitCode) + ".");
             ARE_EQUAL(expectedFourthArgument, zenMockObjectCallHistory[i].fourthArgument.value, zenMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedFifthArgument, zenMockObjectCallHistory[i].fifthArgument.value, zenMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedSixthArgument, zenMockObjectCallHistory[i].sixthArgument.value, zenMockedFunctionSignatureAndCallIndex);
-            return FunctionSequencingToken();
          }
+			return FunctionSequencingToken();
       }
 
       FunctionSequencingToken CalledAsFollows(const std::vector<SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>& expectedSixArgumentCalls)
@@ -3210,10 +3223,12 @@ Exiting with code )" + std::to_string(exitCode) + ".");
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
-      void ReturnValues(const FirstReturnValue& firstReturnValue, const SubsequentReturnValues&... subsequentReturnValues)
+      void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
          SixArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::_expected = true;
-         ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(firstReturnValue, subsequentReturnValues...);
+         ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
+				std::forward<FirstReturnValue>(firstReturnValue),
+				std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
       }
 
       template<typename ContainerType>
@@ -3415,10 +3430,12 @@ Exiting with code )" + std::to_string(exitCode) + ".");
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
-      void ReturnValues(const FirstReturnValue& firstReturnValue, const SubsequentReturnValues&... subsequentReturnValues)
+      void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
          SevenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>::_expected = true;
-         ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(firstReturnValue, subsequentReturnValues...);
+         ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
+				std::forward<FirstReturnValue>(firstReturnValue),
+				std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
       }
 
       template<typename ContainerType>
@@ -3585,25 +3602,18 @@ Exiting with code )" + std::to_string(exitCode) + ".");
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedEightArgumentCalls.size());
          this->ZenMockSetAsserted();
-         const std::vector<EightArgumentCallRef<
-            Arg1Type, Arg2Type, Arg3Type, Arg4Type,
-            Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
+         const std::vector<EightArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
             actualEightArgumentCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
          VECTORS_EQUAL(expectedEightArgumentCalls, actualEightArgumentCalls, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
    private:
-      static std::vector<EightArgumentCallRef<
-         Arg1Type, Arg2Type, Arg3Type, Arg4Type,
-         Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
+      static std::vector<EightArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
          PrivateCallsToCallRefs(const std::vector<EightArgumentCall<
-            Arg1Type, Arg2Type, Arg3Type, Arg4Type,
-            Arg5Type, Arg6Type, Arg7Type, Arg8Type>>& zenMockObjectCallHistory)
+            Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>& zenMockObjectCallHistory)
       {
-         std::vector<EightArgumentCallRef<
-            Arg1Type, Arg2Type, Arg3Type, Arg4Type,
-            Arg5Type, Arg6Type, Arg7Type, Arg8Type>> eightArgumentCallRefs;
+         std::vector<EightArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>> eightArgumentCallRefs;
          eightArgumentCallRefs.reserve(zenMockObjectCallHistory.size());
          std::for_each(zenMockObjectCallHistory.cbegin(), zenMockObjectCallHistory.cend(),
             [&](const EightArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& eightArgumentCall)
@@ -3634,10 +3644,12 @@ Exiting with code )" + std::to_string(exitCode) + ".");
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
-      void ReturnValues(const FirstReturnValue& firstReturnValue, const SubsequentReturnValues&... subsequentReturnValues)
+      void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
          EightArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>::_expected = true;
-         ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(firstReturnValue, subsequentReturnValues...);
+         ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
+				std::forward<FirstReturnValue>(firstReturnValue),
+				std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
       }
 
       template<typename ContainerType>
@@ -3851,10 +3863,12 @@ Exiting with code )" + std::to_string(exitCode) + ".");
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
-      void ReturnValues(const FirstReturnValue& firstReturnValue, const SubsequentReturnValues&... subsequentReturnValues)
+      void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
          NineArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ExceptionThrower>::_expected = true;
-         ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(firstReturnValue, subsequentReturnValues...);
+         ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
+				std::forward<FirstReturnValue>(firstReturnValue),
+				std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
       }
 
       template<typename ContainerType>
@@ -4075,10 +4089,12 @@ Exiting with code )" + std::to_string(exitCode) + ".");
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
-      void ReturnValues(const FirstReturnValue& firstReturnValue, const SubsequentReturnValues&... subsequentReturnValues)
+      void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
          TenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>::_expected = true;
-         ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(firstReturnValue, subsequentReturnValues...);
+         ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
+				std::forward<FirstReturnValue>(firstReturnValue),
+				std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
       }
 
       template<typename ContainerType>
@@ -4107,9 +4123,7 @@ Exiting with code )" + std::to_string(exitCode) + ".");
    {
    public:
       explicit NonVoidTenArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
-         : NonVoidTenArgumentMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>(zenMockedFunctionSignature)
-      {
-      }
+         : NonVoidTenArgumentMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>(zenMockedFunctionSignature) {}
 
       static const FunctionReturnType& ZenMockItFunctionPointer(
          NonVoidTenArgFunctionPointerMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>* functionMocker,
@@ -4124,9 +4138,7 @@ Exiting with code )" + std::to_string(exitCode) + ".");
    {
    public:
       explicit VoidTenArgumentMocker(const std::string& zenMockedFunctionSignature)
-         : TenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>(zenMockedFunctionSignature)
-      {
-      }
+         : TenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>(zenMockedFunctionSignature) {}
 
       void Expect()
       {
@@ -4139,9 +4151,7 @@ Exiting with code )" + std::to_string(exitCode) + ".");
    {
    public:
       explicit VoidTenArgFunctionPointerMocker(const std::string& zenMockedFunctionSignature)
-         : VoidTenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>(zenMockedFunctionSignature)
-      {
-      }
+         : VoidTenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>(zenMockedFunctionSignature) {}
 
       static void ZenMockItFunctionPointer(
          VoidTenArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>* functionMocker,
@@ -4180,12 +4190,12 @@ Exiting with code )" + std::to_string(exitCode) + ".");
 
       static std::string FunctionPointer(const char* returnType, const char* unadornedFunctionSignature)
       {
-         const std::string zenMockedFunctionPointerSignature =
-            ZenUnit::String::Concat(returnType, " ", unadornedFunctionSignature);
+         const std::string zenMockedFunctionPointerSignature = ZenUnit::String::Concat(returnType, " ", unadornedFunctionSignature);
          return zenMockedFunctionPointerSignature;
       }
    };
 
+	// For use when confirming the correctness of ZenUnit::Random<T>() functions
    class RandomGeneratorMock : public Zen::Mock<ZenUnit::RandomGenerator>
    {
    public:
