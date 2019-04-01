@@ -44,9 +44,9 @@ TEST(Test)
    actionMock.Act();
    mutexMock.Unlock();
    //
-   mutexMock.LockMock.CalledOnce().Then(
-   actionMock.ActMock.CalledOnce()).Then(
-   mutexMock.UnlockMock.CalledOnce());
+   //mutexMock.LockMock.CalledOnce().Then(
+   //actionMock.ActMock.CalledOnce()).Then(
+   //mutexMock.UnlockMock.CalledOnce());
 }
 
 RUN_TESTS(Tests)

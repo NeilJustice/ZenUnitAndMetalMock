@@ -26,9 +26,9 @@ namespace ZenUnit
    //static_assert(sizeof(ZenUnitArgs) == 88);
    #elif defined(_WIN64)
    #if defined _DEBUG
-   static_assert(sizeof(ZenUnitArgs) == 104);
+   static_assert(sizeof(ZenUnitArgs) == 144);
    #elif NDEBUG
-   static_assert(sizeof(ZenUnitArgs) == 88);
+   static_assert(sizeof(ZenUnitArgs) == 120);
    #endif
    #endif
 

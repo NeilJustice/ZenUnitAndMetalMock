@@ -835,6 +835,7 @@ namespace ZenUnit
 
    struct ZenUnitArgs
    {
+		std::string startTime;
       std::string commandLine;
       std::vector<RunFilter> runFilters;
       bool pause = false;
@@ -1952,6 +1953,7 @@ namespace ZenUnit
                }
             }
          }
+			args.startTime = _watch->DateTimeNow();
          _callerOfSetRandomSeedIfNotSetByUser->ConstCall(this, &ArgsParser::SetRandomSeedIfNotSetByUser, args);
          ZenUnitRandomSeed::value = args.randomseed;
          return args;
@@ -4303,8 +4305,7 @@ namespace ZenUnit
          _memberForEacherSkippedTests->MemberForEach(&_skippedFullTestNamesAndReasons, this, &TestRunResult::PrintSkippedTestReminder);
       }
 
-      virtual void PrintConclusion(
-			const std::string& startTime, size_t totalNumberOfTestCases, unsigned testRunMilliseconds, const ZenUnitArgs& args) const
+      virtual void PrintConclusion(const std::string& startTime, size_t totalNumberOfTestCases, unsigned testRunMilliseconds, const ZenUnitArgs& args) const
       {
          assert_true(_numberOfFailedTestCases <= totalNumberOfTestCases);
          const Color greenOrRed = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
