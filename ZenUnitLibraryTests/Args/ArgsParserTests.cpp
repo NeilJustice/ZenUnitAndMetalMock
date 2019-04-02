@@ -118,11 +118,13 @@ Testing Utility Options:
 
    TEST(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
    {
+      _watchMock->DateTimeNowMock.ReturnRandom();
       ExpectCallToSetRandomSeedIfNotSetByUser();
       vector<string> args { _testProgramPath };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
+      ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = _testProgramPath;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
@@ -234,6 +236,8 @@ Testing Utility Options:
       const vector<RunFilter> runFilters = { Random<RunFilter>() };
       _runFilterParserMock->ParseMock.Return(runFilters);
 
+      _watchMock->DateTimeNowMock.ReturnRandom();
+
       const string runArgument = ZenUnit::Random<string>();
       const vector<string> args { ZenUnit::Random<string>(), "--run=" + runArgument };
       //
@@ -241,6 +245,8 @@ Testing Utility Options:
       //
       const vector<string> splitRunArgument = String::Split(runArgument, ',');
       ZENMOCK(_runFilterParserMock->ParseMock.CalledOnceWith(splitRunArgument));
+
+      ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
 
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
@@ -251,11 +257,13 @@ Testing Utility Options:
 
    TEST(Parse_random_SetsrandomToTrue)
    {
+      _watchMock->DateTimeNowMock.ReturnRandom();
       ExpectCallToSetRandomSeedIfNotSetByUser();
       const vector<string> args { ZenUnit::Random<string>(), "--random" };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
+      ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
       expectedZenUnitArgs.random = true;
@@ -277,11 +285,13 @@ Testing Utility Options:
    }
    void AssertArgSetsBoolField(const string& arg, bool ZenUnitArgs::* expectedFieldToBeSet)
    {
+      _watchMock->DateTimeNowMock.ReturnRandom();
       ExpectCallToSetRandomSeedIfNotSetByUser();
       const vector<string> args { _testProgramPath, arg };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
+      ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = _testProgramPath + " " + arg;
       (expectedZenUnitArgs.*expectedFieldToBeSet) = true;
@@ -291,11 +301,13 @@ Testing Utility Options:
 
    TEST(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
    {
+      _watchMock->DateTimeNowMock.ReturnRandom();
       ExpectCallToSetRandomSeedIfNotSetByUser();
       const vector<string> args { _testProgramPath, "--exit-zero", "--exit-zero" };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
+      ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
       expectedZenUnitArgs.exitzero = true;
@@ -339,6 +351,7 @@ Testing Utility Options:
 
    TEST(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
    {
+      _watchMock->DateTimeNowMock.ReturnRandom();
       ExpectCallToSetRandomSeedIfNotSetByUser();
       const unsigned timesArgValue = ToInt_ZenMockObject.ReturnRandom();
       const vector<string> args { _testProgramPath, "--test-runs=" + to_string(timesArgValue) };
@@ -346,6 +359,7 @@ Testing Utility Options:
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
       ZENMOCK(ToInt_ZenMockObject.CalledOnceWith(to_string(timesArgValue)));
+      ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
       expectedZenUnitArgs.testruns = timesArgValue;
@@ -355,6 +369,7 @@ Testing Utility Options:
 
    TEST(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
    {
+      _watchMock->DateTimeNowMock.ReturnRandom();
       ExpectCallToSetRandomSeedIfNotSetByUser();
       const unsigned randomSeed = ToUnsigned_ZenMockObject.ReturnRandom();
       const vector<string> args { _testProgramPath, "--seed=" + to_string(randomSeed) };
@@ -362,6 +377,7 @@ Testing Utility Options:
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
       //
       ZENMOCK(ToUnsigned_ZenMockObject.CalledOnceWith(to_string(randomSeed)));
+      ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
       expectedZenUnitArgs.random = false;
