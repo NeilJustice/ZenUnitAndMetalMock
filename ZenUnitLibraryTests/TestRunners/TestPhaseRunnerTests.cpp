@@ -202,7 +202,7 @@ namespace ZenUnit
       _consoleMock->WriteLineMock.Expect();
       _testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.Return(_testPhaseSuffix.c_str());
 
-      const TestPhase testPhase = ZenUnit::RandomEnum<TestPhase>(TestPhase::MaxValue);
+      const TestPhase testPhase = ZenUnit::RandomEnum<TestPhase>();
       //
       const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase([](Test*)
       {
@@ -302,7 +302,7 @@ namespace ZenUnit
 
       const string testPhaseName = ZenUnit::Random<string>();
       _testPhaseTranslatorMock->TestPhaseToTestPhaseNameMock.Return(testPhaseName.c_str());
-      const TestPhase testPhase = ZenUnit::RandomEnum<TestPhase>(TestPhase::MaxValue);
+      const TestPhase testPhase = ZenUnit::RandomEnum<TestPhase>();
       //
       const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase(ThrowInt, _testMock.get(), testPhase);
       //
