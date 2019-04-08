@@ -6105,17 +6105,17 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    };
 
    template<typename T>
-   T RandomBetween(long long inclusiveLowerBound, unsigned long long inclusiveUpperBound)
+   T RandomBetween(long long inclusiveMinValue, unsigned long long inclusiveMaxValue)
    {
       static std::default_random_engine defaultRandomEngine(ZenUnitRandomSeed::value);
-      const long long adjustedInclusiveLowerBound = inclusiveLowerBound < 0 ? 0 : inclusiveLowerBound;
-      const unsigned long long adjustedInclusiveUpperBound =
-         inclusiveLowerBound < 0 ? 2 * inclusiveUpperBound + 1 : inclusiveUpperBound;
+      const long long adjustedInclusiveMinValue = inclusiveMinValue < 0 ? 0 : inclusiveMinValue;
+      const unsigned long long adjustedInclusiveMaxValue =
+         inclusiveMinValue < 0 ? 2 * inclusiveMaxValue + 1 : inclusiveMaxValue;
 #if _WIN32
       const
 #endif
       std::uniform_int_distribution<unsigned long long>
-         distribution(adjustedInclusiveLowerBound, adjustedInclusiveUpperBound);
+         distribution(adjustedInclusiveMinValue, adjustedInclusiveMaxValue);
       const unsigned long long randomValueUnsignedLongLong = distribution(defaultRandomEngine);
       const T randomValueT = static_cast<T>(randomValueUnsignedLongLong);
       return randomValueT;
@@ -6264,21 +6264,16 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    class RandomGenerator
    {
    public:
-      virtual bool RandomBool() const
-      {
-         return ZenUnit::Random<bool>();
-      }
-
-      virtual unsigned RandomUnsigned() const
-      {
-         return ZenUnit::Random<unsigned>();
-      }
-
-      virtual std::string RandomString() const
-      {
-         return ZenUnit::Random<std::string>();
-      }
-
+		virtual char Char() const { return ZenUnit::Random<char>(); }
+		virtual unsigned char UnsignedChar() const { return ZenUnit::Random<unsigned char>(); }
+      virtual bool Bool() const { return ZenUnit::Random<bool>(); }
+		virtual int Enum(int exclusiveMaxValue) const { return ZenUnit::RandomBetween<int>(0, exclusiveMaxValue - 1); }
+		virtual short Short() const { return ZenUnit::Random<short>(); }
+		virtual unsigned short UnsignedShort() const { return ZenUnit::Random<unsigned short>(); }
+		virtual int Int() const { return ZenUnit::Random<int>(); }
+      virtual unsigned UnsignedInt() const { return ZenUnit::Random<unsigned int>(); }
+		virtual double Double() const { return ZenUnit::Random<double>(); }
+      virtual std::string String() const { return ZenUnit::Random<std::string>(); }
       virtual ~RandomGenerator() = default;
    };
 

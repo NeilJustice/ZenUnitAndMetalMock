@@ -4204,13 +4204,19 @@ Expected-But-Not-Asserted ZenMocked Function
       }
    };
 
-	// For use when confirming the correctness of ZenUnit::Random<T>() functions
+	// ZenMock::RandomGeneratorMock can be used to confirm the correctness of ZenUnit::Random<T>() functions
    class RandomGeneratorMock : public Zen::Mock<ZenUnit::RandomGenerator>
    {
    public:
-      ZENMOCK_NONVOID0_CONST(bool, RandomBool)
-      ZENMOCK_NONVOID0_CONST(unsigned, RandomUnsigned)
-      ZENMOCK_NONVOID0_CONST(std::string, RandomString)
+		ZENMOCK_NONVOID0_CONST(char, Char)
+		ZENMOCK_NONVOID0_CONST(unsigned char, UnsignedChar)
+      ZENMOCK_NONVOID0_CONST(bool, Bool)
+		ZENMOCK_NONVOID0_CONST(short, Short)
+		ZENMOCK_NONVOID0_CONST(unsigned short, UnsignedShort)
+		ZENMOCK_NONVOID1_CONST(int, Enum, int)
+      ZENMOCK_NONVOID0_CONST(unsigned int, UnsignedInt)
+		ZENMOCK_NONVOID0_CONST(double, Double)
+      ZENMOCK_NONVOID0_CONST(std::string, String)
    };
 }
 
