@@ -17,7 +17,6 @@ platform:
    - Win32
 
 before_build:
-   - curl https://raw.githubusercontent.com/NeilJustice/ZenMock/master/ZenMock/ZenMock.h -o ZenMock.h
    - cmake -A %platform% -G "%generator%" .
 
 build_script:
