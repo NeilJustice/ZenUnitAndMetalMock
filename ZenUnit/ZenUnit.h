@@ -76,9 +76,10 @@ Testing Rigor Options:
    The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
 --test-runs=<N>
    Repeat the running of all tests N times. Use a negative number to repeat forever.
-   For five random test run orderings, specify --random --test-runs=5.
+   For five random test run orderings on a CI/CD server to exercise the robustness of commits
+   with respect to test run ordering, specify --random --test-runs=5.
 --no-skips
-   Exit with code 1 if any tests are skipped.
+   If any tests are skipped, exit with code 1 after running all tests. Useful option for CI/CD servers.
 
 Testing Filtration Options:
 
@@ -98,16 +99,16 @@ Testing Filtration Options:
 
 Testing Utility Options:
 
---pause
-   Wait for any key before running tests to allow attaching a debugger or profiler.
---exit-zero
-   Always exit with code 0 regardless of any failed tests.
---wait
-   Wait for any key at the end of the test run.
 --help or -help
    Print this message.
 --version or -version
-	Print the ZenUnit version number.)";
+	Print the ZenUnit version number.
+--pause
+   Wait for any key before running tests to allow attaching a debugger or profiler.
+--exit-zero
+   Always exit with code 0.
+--wait
+   Wait for any key at the end of the test run.)";
          return zenUnitCommandLineUsage;
       }
    };

@@ -1,4 +1,5 @@
 #include "pch.h"
+using namespace std::literals::string_literals;
 
 std::string FizzBuzz(unsigned endNumber);
 
@@ -10,27 +11,27 @@ EVIDENCE
 TEST(FizzBuzz_EndNumber0_Throws)
 {
    THROWS(FizzBuzz(0), std::invalid_argument,
-      "FizzBuzz() error: endNumber must be 1 or greater");
+      "Invalid FizzBuzz() argument: endNumber must be 1 or greater");
 }
 
 TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
-   unsigned endNumber, const char* expectedFizzBuzzSequence,
-   1, "1",
-   2, "1 2",
-   3, "1 2 Fizz",
-   4, "1 2 Fizz 4",
-   5, "1 2 Fizz 4 Buzz",
-   6, "1 2 Fizz 4 Buzz Fizz",
-   7, "1 2 Fizz 4 Buzz Fizz 7",
-   8, "1 2 Fizz 4 Buzz Fizz 7 8",
-   9, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz",
-   10, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz",
-   11, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11",
-   12, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz",
-   13, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13",
-   14, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14",
-   15, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz",
-   16, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz 16")
+   unsigned endNumber, const std::string& expectedFizzBuzzSequence,
+   1, "1"s,
+   2, "1 2"s,
+   3, "1 2 Fizz"s,
+   4, "1 2 Fizz 4"s,
+   5, "1 2 Fizz 4 Buzz"s,
+   6, "1 2 Fizz 4 Buzz Fizz"s,
+   7, "1 2 Fizz 4 Buzz Fizz 7"s,
+   8, "1 2 Fizz 4 Buzz Fizz 7 8"s,
+   9, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz"s,
+   10, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz"s,
+   11, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11"s,
+   12, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz"s,
+   13, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13"s,
+   14, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14"s,
+   15, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz"s,
+   16, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz 16"s)
 {
    const std::string fizzBuzzSequence = FizzBuzz(endNumber);
    ARE_EQUAL(expectedFizzBuzzSequence, fizzBuzzSequence);
@@ -42,7 +43,7 @@ std::string FizzBuzz(unsigned endNumber)
 {
    if (endNumber == 0)
    {
-      throw std::invalid_argument("FizzBuzz() error: endNumber must be 1 or greater");
+      throw std::invalid_argument("Invalid FizzBuzz() argument: endNumber must be 1 or greater");
    }
    std::ostringstream oss;
    for (unsigned i = 1; i <= endNumber; ++i)

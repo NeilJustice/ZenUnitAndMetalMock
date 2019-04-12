@@ -25,19 +25,19 @@
 ### ZenUnit design and the N-by-N value-parameterized test syntax
 
 ```cpp
-#include "ZenUnit.h"
+#include "ZenUnit.h" // ZenUnit's single header file
+using namespace std::literals::string_literals; // For the 's' std::string literal
 
 // Function to be unit tested with ZenUnit
 std::string FizzBuzz(unsigned endNumber);
 
 // TESTS defines a ZenUnit test class and begins the FACTS section.
 TESTS(FizzBuzzTests)
-// By way of a carefully-considered design decision,
+// By way of a carefully-considered design decision to maximize long-term code maintainability,
 // in ZenUnit test names are duplicated between the FACTS section and the EVIDENCE section.
 // Having test names always up top instead of scattered throughout test files
-// makes it exceptionally easy to gauge the lay of the land
-// with respect to what a test class tests, and by extension,
-// what a class under test implements.
+// makes it exceptionally easy to read the lay of the land
+// with respect to what behaviors a test class tests.
 
 // AFACT declares a non-value-parameterized test.
 AFACT(FizzBuzz_EndNumber0_Throws)
@@ -56,7 +56,7 @@ TEST(FizzBuzz_EndNumber0_Throws)
    // This double exactness design of THROWS helps to maximize mutation coverage
    // by rendering the assertion immune to these two code mutations:
    // mutate-exception-type and mutate-exception-message.
-   THROWS(FizzBuzz(0), std::invalid_argument, "FizzBuzz() error: endNumber must be 1 or greater");
+   THROWS(FizzBuzz(0), std::invalid_argument, "Invalid FizzBuzz() argument: endNumber must be 1 or greater");
 }
 
 // TEST2X2 defines a 2-by-2 value-parameterized test
@@ -65,25 +65,23 @@ TEST(FizzBuzz_EndNumber0_Throws)
 // each of which will run independently and sequentially within separate instances of FizzBuzzTests.
 // ZenUnit command line argument --random can be specified to run test cases in a random order.
 TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
-   // const std::string& is used here instead of std::string_view or const char*
-   // because the return value of FizzBuzz() is std::string.
    unsigned endNumber, const std::string& expectedFizzBuzzSequence,
-   1, "1",
-   2, "1 2",
-   3, "1 2 Fizz",
-   4, "1 2 Fizz 4",
-   5, "1 2 Fizz 4 Buzz",
-   6, "1 2 Fizz 4 Buzz Fizz",
-   7, "1 2 Fizz 4 Buzz Fizz 7",
-   8, "1 2 Fizz 4 Buzz Fizz 7 8",
-   9, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz",
-   10, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz",
-   11, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11",
-   12, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz",
-   13, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13",
-   14, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14",
-   15, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz",
-   16, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz 16")
+   1, "1"s,
+   2, "1 2"s,
+   3, "1 2 Fizz"s,
+   4, "1 2 Fizz 4"s,
+   5, "1 2 Fizz 4 Buzz"s,
+   6, "1 2 Fizz 4 Buzz Fizz"s,
+   7, "1 2 Fizz 4 Buzz Fizz 7"s,
+   8, "1 2 Fizz 4 Buzz Fizz 7 8"s,
+   9, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz"s,
+   10, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz"s,
+   11, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11"s,
+   12, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz"s,
+   13, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13"s,
+   14, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14"s,
+   15, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz"s,
+   16, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz 16"s)
 {
    const std::string fizzBuzzSequence = FizzBuzz(endNumber);
    // ZenUnit assertion names are declarative in language style (ARE_EQUAL, THROWS, IS_TRUE, etc)
@@ -102,7 +100,7 @@ std::string FizzBuzz(unsigned endNumber)
    {
       // An exception is thrown here instead of returning empty string
       // to demonstrate the THROWS assertion.
-      throw std::invalid_argument("FizzBuzz() error: endNumber must be 1 or greater");
+      throw std::invalid_argument("Invalid FizzBuzz() argument: endNumber must be 1 or greater");
    }
    std::ostringstream oss;
    for (unsigned i = 1; i <= endNumber; ++i)
@@ -132,6 +130,7 @@ std::string FizzBuzz(unsigned endNumber)
 
 int main(int argc, char* argv[])
 {
+   // Runs all test classes registered with RUN_TESTS and RUN_TEMPLATE_TESTS
    const int exitCode = ZenUnit::RunTests(argc, argv);
    return exitCode;
 }
@@ -199,9 +198,10 @@ Testing Rigor Options:
    The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
 --test-runs=<N>
    Repeat the running of all tests N times. Use a negative number to repeat forever.
-   For five random test run orderings, specify --random --test-runs=5.
+   For five random test run orderings on a CI/CD server to exercise the robustness of commits
+   with respect to test run ordering, specify --random --test-runs=5.
 --no-skips
-   Exit with code 1 if any tests are skipped.
+   If any tests are skipped, exit with code 1 after running all tests. Useful option for CI/CD servers.
 
 Testing Filtration Options:
 
@@ -221,14 +221,16 @@ Testing Filtration Options:
 
 Testing Utility Options:
 
+--help or -help
+   Print this message.
+--version or -version
+	Print the ZenUnit version number.
 --pause
    Wait for any key before running tests to allow attaching a debugger or profiler.
 --exit-zero
-   Always exit with code 0 regardless of any failed tests.
+   Always exit with code 0.
 --wait
    Wait for any key at the end of the test run.
---help or -help
-   Print this message.
 ```
 
 ### Type-Parameterized Test Class Syntax
@@ -317,7 +319,7 @@ int main(int argc, char* argv[])
 |`IS_TRUE(value, messages...)`|Asserts that `value` is true.|
 |`IS_FALSE(value, messages...)`|Asserts that `value` is false.|
 |`IS_ZERO(value, messages...)`|Asserts that `value == ValueType{}` returns true.|
-|`IS_NOT_DEFAULT(value, messages...)`|Asserts that `value == ValueType{}` returns false. Note: This assertion is vulnerable to mutate-value mutations. I only use this assertion to confirm that custom ZenUnit::Random\<T\>() functions return all non-default field values.|
+|`IS_NOT_DEFAULT(value, messages...)`|Asserts that `value == ValueType{}` returns false.|
 
 #### Data Structure Assertions
 |||
@@ -329,7 +331,7 @@ int main(int argc, char* argv[])
 |`STD_ARRAYS_EQUAL(expectedStdArray, actualStdArray, messages...)`|Asserts `ARE_EQUAL` on each std::array expected and actual element.|
 |`DOES_CONTAIN(expectedElement, dataStructure, messages...)`|Asserts that `dataStructure.find(expectedElement) != dataStructure.end()`.|
 |`IS_EMPTY(dataStructure, messages...)`|Asserts that `dataStructure.empty()` returns true.|
-|`IS_NOT_EMPTY(dataStructure, messages...)`|Asserts that `dataStructure.empty()` returns false. Note: This assertion is vulnerable to mutate-collection mutations. I only use this assertion to confirm that custom ZenUnit::Random\<T\>() functions return all non-default field values.|
+|`IS_NOT_EMPTY(dataStructure, messages...)`|Asserts that `dataStructure.empty()` returns false.|
 
 #### Exception Assertions
 |||
@@ -345,8 +347,8 @@ int main(int argc, char* argv[])
 |`ARE_SAME(expectedObject, actualObject, messages...)`|Asserts that `&expectedObject == &actualObject`.|
 |`ARE_NOT_SAME(notExpectedObject, actualObject, messages...)`|Asserts that `&expectedObject != &actualObject`.
 |`POINTEES_EQUAL(expectedPointer, actualPointer, messages...)`|Asserts that `expectedPointer != nullptr` and `actualPointer != nullptr` then asserts `ARE_EQUAL(*expectedPointer, *actualPointer)`.|
-|`POINTER_WAS_NEWED(smartOrRawPointer, messages...)`|Asserts `smartOrRawPointer != nullptr` then calls `reset()` or `operator delete` on `smartOrRawPointer` to confirm the pointer was allocated using `make_unique`, `make_shared`, or `operator new`. This is a key assertion for robustness against swap-make-unique-with-nullptr code mutations.|
-|`POINTER_WAS_ARRAY_NEWED(smartOrRawArrayPointer, messages...)`|Asserts `smartOrRawArrayPointer != nullptr` then calls `reset()` or `operator delete[]` to confirm the pointer was allocated using `make_unique` or `operator new[]`. This is a key assertion for robustness against swap-make-unique-with-nullptr code mutations.|
+|`POINTER_WAS_NEWED(smartOrRawPointer, messages...)`|Asserts `smartOrRawPointer != nullptr` then calls `reset()` or `operator delete` on `smartOrRawPointer` to confirm the pointer was allocated using `make_unique`, `make_shared`, or `operator new`. This is a key assertion for robustness against the swap-new-with-null code mutation.|
+|`POINTER_WAS_ARRAY_NEWED(smartOrRawArrayPointer, messages...)`|Asserts `smartOrRawArrayPointer != nullptr` then calls `reset()` or `operator delete[]` to confirm the pointer was allocated using `make_unique` or `operator new[]`. This is a key assertion for robustness against the swap-new-with-null code mutation.|
 |`POINTEE_IS_EXACT_TYPE(expectedPolymorphicPointeeType, actualPointer, messages...)`|First `static_assert(std::is_polymorphic_v<expectedPolymorphicPointeeType>`, then asserts `actualPointer != nullptr`, then asserts `typeid(expectedPolymorphicPointeeType) == typeid(*actualPointer)`. This is a useful assertion for confirming that factory functions returning base class pointers to polymorphic strategy objects return expected exact types.|
 
 #### Test Assertions
@@ -366,8 +368,8 @@ int main(int argc, char* argv[])
 |------------|-----------|
 |`TESTS(HighQualityTestClassName)`|Defines a non-templatized test class.|
 |`TEMPLATE_TESTS(HighQualityTestClassName, TemplateParameterNames...)`|Defines a templatized test class. Precede with template\<parameter-list\>.|
-|`AFACT(HighQualityTestName)`|Specifies a non-value-parameterized test.|
-|`FACTS(HighQualityTestName)`|Specifies an N-by-N value-parameterized test.|
+|`AFACT(HighQualityTestName)`|Declares a non-value-parameterized test.|
+|`FACTS(HighQualityTestName)`|Declares an N-by-N value-parameterized test.|
 |`SKIPAFACT(HighQualityTestName, Reason)`|Skips a non-value-parameterized test.|
 |`SKIPFACTS(HighQualityTestName, Reason)`|Skips an N-by-N value-parameterized test.|
 |`EVIDENCE`|Concludes the declaration of FACTS section and begins the presentation of EVIDENCE section, also known as the test class body.|
@@ -379,10 +381,10 @@ int main(int argc, char* argv[])
 |...|...|
 |`TEST10X10(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, TenByTenTestValues...)`|Defines a 10-by-10 value-parameterized test.|
 |`RUN_TESTS(HighQualityTestClassName)`|Registers a `TEST_CLASS` to be run when `ZenUnit::RunTests(argc, argv)` is called.|
-|`RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)`|Registers a `TEMPLATE_TEST_CLASS` templatized with `TemplateArguments...` to be run when `ZenUnit::RunTests(argc, argv)` is called.|
-|`THEN_RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)`|Registers a `TEMPLATE_TEST_CLASS` templatized with `TemplateArguments...` to be run when `ZenUnit::RunTests(argc, argv)` is called. For use after `RUN_TEMPLATE_TESTS`.|
 |`SKIP_TESTS(HighQualityTestClassName, Reason)`|Skips a `TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called.|
+|`RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)`|Registers a `TEMPLATE_TEST_CLASS` templatized with `TemplateArguments...` to be run when `ZenUnit::RunTests(argc, argv)` is called.|
 |`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Skips a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called.|
+|`THEN_RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)`|Registers a `TEMPLATE_TEST_CLASS` templatized with `TemplateArguments...` to be run when `ZenUnit::RunTests(argc, argv)` is called. For use after `RUN_TEMPLATE_TESTS`.|
 |`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Skips a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called. For use after `SKIP_TEMPLATE_TESTS`.|
 
 ### Maximizing Mutation Coverage With Random Value Testing
@@ -391,18 +393,18 @@ ZenUnit provides the following random value generating functions for writing uni
 
 |Random Value Generating Function|Description|
 |--------------------------------|-----------|
-|`ZenUnit::Random<T>()`|By default returns a random integer T value between `std::numeric_limits<T>::min()` and `std::numeric_limits<T>::max()` selected from a uniform distribution. If `UserType ZenUnit::Random<UserType>()` is defined, returns the result from calling that function.|
-|`ZenUnit::RandomNon0<T>()`|Returns a random non-0 integer T value between `std::numeric_limits<T>::min()` and `std::numeric_limits<T>::max()` selected from a uniform distribution.|
-|`ZenUnit::RandomBetween<T>(long long inclusiveLowerBound, unsigned long long in+clusiveUpperBound)`|Returns a random integer T value between inclusiveLowerBound and inclusiveUpperBound selected from a uniform distribution.|
-|`ZenUnit::RandomEnum<EnumType>(EnumType exclusiveEnumMaxValue)`|Returns a random EnumType value between 0 and exclusiveEnumMaxValue - 1, selected from a uniform distribution.|
+|`ZenUnit::Random<T>()`|By default returns a random integer of type T between `std::numeric_limits<T>::min()` and `std::numeric_limits<T>::max()` selected from a uniform distribution. If `UserType ZenUnit::Random<UserType>()` is defined, returns the result from calling that function.|
+|`ZenUnit::RandomNon0<T>()`|Returns a random non-0 integer of type T between `std::numeric_limits<T>::min()` and `std::numeric_limits<T>::max()` selected from a uniform distribution.|
+|`ZenUnit::RandomBetween<T>(long long inclusiveMinValue, unsigned long long inclusiveMaxValue)`|Returns a random integer of type T between inclusiveMinValue and inclusiveMaxValue selected from a uniform distribution.|
+|`ZenUnit::RandomEnum<EnumType>()`|Returns a random EnumType value between 0 and EnumType::MaxValue - 1, selected from a uniform distribution.|
 |`ZenUnit::Random<float>()`|Returns a random float between `std::numeric_limits<float>::min()` and `std::numeric_limits<float>::max()` selected from a `std::uniform_real_distribution<float>`.|
 |`ZenUnit::Random<double>()`|Returns a random double between `std::numeric_limits<double>::min()` and `std::numeric_limits<double>::max()` from a `std::uniform_real_distribution<double>`.|
-|`ZenUnit::Random<std::string>()`|Returns `"RS" + std::to_string(ZenUnit::RandomBetween<int>(0, 10000))`.|
+|`ZenUnit::Random<std::string>()`|Returns `"RS" + std::to_string(ZenUnit::RandomBetween<int>(0, 100000))`.|
 |`ZenUnit::RandomVector<T>()`|Returns a `std::vector<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
 |`ZenUnit::RandomMap<KeyType, ValueType>()`|Returns a `std::map<KeyType, ValueType>` with size between 0 and 3 with each key a `ZenUnit::Random<KeyType>()` value and each value a `ZenUnit::Random<ValueType>()` value.|
 |`ZenUnit::RandomUnorderedMap<T>()`|Returns a `std::unordered_map<KeyType, ValueType>` with size between 0 and 3 with each key a `ZenUnit::Random<KeyType>()` value and each value a `ZenUnit::Random<ValueType>()` value.|
-|`ZenUnit::RandomSet<T>()`|Returns a `std::set<ElementType>` with size between 0 and 3 with each element a `ZenUnit::Random<ElementType>()` value.|
-|`ZenUnit::RandomUnorderedSet<T>()`|Returns a `std::unordered_set<ElementType>` with size between 0 and 3 with each element a `ZenUnit::Random<ElementType>()` value.|
+|`ZenUnit::RandomSet<T>()`|Returns a `std::set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
+|`ZenUnit::RandomUnorderedSet<T>()`|Returns a `std::unordered_set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
 
 ### ZenMock
 

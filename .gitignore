@@ -32,6 +32,7 @@ rules.ninja
 Makefile
 
 # Windows
+.vs/
 *.dir/
 x64/
 Win32/
