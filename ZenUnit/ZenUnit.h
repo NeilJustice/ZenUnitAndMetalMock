@@ -6174,13 +6174,13 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    }
 
    template<typename EnumType>
-   EnumType RandomEnum()
+   EnumType RandomEnum(EnumType exclusiveMaxValue)
    {
       using UnderlyingType = typename std::underlying_type<EnumType>::type;
       const EnumType randomEnum = static_cast<EnumType>(
          ZenUnit::RandomBetween<UnderlyingType>(
             static_cast<UnderlyingType>(0),
-            static_cast<UnderlyingType>(EnumType::MaxValue) - static_cast<UnderlyingType>(1)));
+            static_cast<UnderlyingType>(exclusiveMaxValue) - static_cast<UnderlyingType>(1)));
       return randomEnum;
    }
 
