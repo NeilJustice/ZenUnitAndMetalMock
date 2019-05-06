@@ -223,7 +223,7 @@ namespace ZenUnit
       _testRunResult.PrintConclusion(
          ZenUnit::Random<string>(), 0, ZenUnit::Random<unsigned>(), ZenUnit::Random<ZenUnitArgs>());
       //
-      ZENMOCK(_consoleMock->WriteColorMock.CalledOnceWith("[ZenUnit] ", Color::Green));
+      ZENMOCK(_consoleMock->WriteColorMock.CalledOnceWith("[ZenUnit] ", Color::Red));
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("Zero test classes run. Exiting with code 1.", 1));
    }
 

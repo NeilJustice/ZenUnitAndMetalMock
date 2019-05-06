@@ -66,7 +66,7 @@ namespace ZenUnit
       ZENMOCK(_preamblePrinterSelfMocked.consoleMock->WriteColorMock.CalledNTimesWith(3, "[ZenUnit]", Color::Green));
       ZENMOCK(_preamblePrinterSelfMocked.MakeThirdLinePrefixMock.CalledOnceWith(numberOfTestClassesToBeRun));
       ZENMOCK(_preamblePrinterSelfMocked.MakeThirdLineSuffixMock.CalledOnceWith(zenUnitArgs.random, zenUnitArgs.randomseed));
-      const string expectedThirdLineAndLineBreak = thirdLinePrefix + thirdLineSuffix + "\n";
+      const string expectedThirdLineAndLineBreak = thirdLinePrefix + thirdLineSuffix;
       ZENMOCK(_preamblePrinterSelfMocked.consoleMock->WriteLineMock.CalledAsFollows(
       {
          { " Running " + zenUnitArgs.commandLine },

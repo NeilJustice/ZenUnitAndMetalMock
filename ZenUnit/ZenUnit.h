@@ -4161,7 +4161,7 @@ namespace ZenUnit
          const size_t numberOfTestClassesToBeRun = testClassRunnerRunner->NumberOfTestClassesToBeRun();
          const std::string thirdLinePrefix = MakeThirdLinePrefix(numberOfTestClassesToBeRun);
          const std::string thirdLineSuffix = MakeThirdLineSuffix(args.random, args.randomseed);
-         const std::string thirdLineAndLineBreak = thirdLinePrefix + thirdLineSuffix + "\n";
+         const std::string thirdLineAndLineBreak = thirdLinePrefix + thirdLineSuffix;
          _console->WriteLine(thirdLineAndLineBreak);
          return startTime;
       }
@@ -4206,15 +4206,16 @@ namespace ZenUnit
       {
          if (_startTime == std::chrono::time_point<std::chrono::high_resolution_clock>())
          {
-            return 0;
+            return 0u;
          }
          const std::chrono::time_point<std::chrono::high_resolution_clock> stopTime = _call_highres_now();
          const std::chrono::duration<long long, std::nano> elapsedTime = stopTime - _startTime;
-         const long long elapsedMicroseconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsedTime).count();
+         const long long elapsedMicrosecondsAsLongLong = std::chrono::duration_cast<std::chrono::microseconds>(elapsedTime).count();
          _startTime = std::chrono::time_point<std::chrono::high_resolution_clock>();
-         assert_true(elapsedMicroseconds <= std::numeric_limits<unsigned>::max());
-         const unsigned elapsedMicrosecondsUnsigned = static_cast<unsigned>(elapsedMicroseconds);
-         return elapsedMicrosecondsUnsigned;
+         assert_true(elapsedMicrosecondsAsLongLong <= std::numeric_limits<unsigned>::max());
+         // Save 4 bytes per TestPhaseResult by casting to unsigned
+         const unsigned elapsedMicrosecondsAsUnsignedInt = static_cast<unsigned>(elapsedMicrosecondsAsLongLong);
+         return elapsedMicrosecondsAsUnsignedInt;
       }
    };
 
@@ -4225,10 +4226,7 @@ namespace ZenUnit
       MemberForEacher() noexcept = default;
       virtual ~MemberForEacher() = default;
 
-      virtual void MemberForEach(
-         const CollectionType* collection,
-         const ClassType* thisPointer,
-         FunctionType func) const
+      virtual void MemberForEach(const CollectionType* collection, const ClassType* thisPointer, FunctionType func) const
       {
          const auto collectionConstEnd = collection->cend();
          for (auto iter = collection->cbegin(); iter != collectionConstEnd; ++iter)
@@ -4312,7 +4310,7 @@ namespace ZenUnit
          const Color greenOrRed = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
          if (totalNumberOfTestCases == 0)
          {
-            _console->WriteColor("[ZenUnit] ", Color::Green);
+            _console->WriteColor("[ZenUnit] ", Color::Red);
             _console->WriteLineAndExit("Zero test classes run. Exiting with code 1.", 1);
          }
          else
@@ -4472,14 +4470,14 @@ namespace ZenUnit
 
       static TestRunner& Instance() noexcept
       {
-         static TestRunner testRunner;
-         return testRunner;
+         static TestRunner testRunnerSingleton;
+         return testRunnerSingleton;
       }
 
       static const ZenUnitArgs& GetArgs()
       {
-         const TestRunner& testRunner = Instance();
-         return testRunner._args;
+         const TestRunner& testRunnerSingleton = Instance();
+         return testRunnerSingleton._args;
       }
 
       std::nullptr_t AddTestClassRunner(TestClassRunner* testClassRunner)
@@ -4585,6 +4583,7 @@ namespace ZenUnit
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const TestPhaseTranslator> _testPhaseTranslator;
       std::unique_ptr<const TwoArgMemberFunctionCaller<void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>> _voidTwoArgMemberFunctionCaller;
+      std::unique_ptr<const Watch> _watch;
       std::function<const ZenUnitArgs&()> _call_TestRunner_GetArgs;
       std::unique_ptr<Stopwatch> _stopwatch;
    public:
@@ -4592,6 +4591,7 @@ namespace ZenUnit
          : _console(std::make_unique<Console>())
          , _testPhaseTranslator(std::make_unique<TestPhaseTranslator>())
          , _voidTwoArgMemberFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>>())
+         , _watch(new Watch)
          , _call_TestRunner_GetArgs(TestRunner::GetArgs)
          , _stopwatch(std::make_unique<Stopwatch>())
       {
@@ -4831,13 +4831,27 @@ namespace ZenUnit
       }
       catch (...)
       {
-         _stopwatch->Stop();
-         _console->WriteLineColor("\n===========\nFatal Error\n===========", Color::Red);
+         const unsigned testRunDurationInMilliseconds = _stopwatch->Stop();
+         _console->WriteLineColor("\n==========================\nFatal ... Exception Thrown\n==========================\n", Color::Red);
+
+         _console->WriteColor(">>------> ", Color::Red);
+         _console->WriteLine("Completed: " + args.commandLine);
+
+         _console->WriteColor(">>------> ", Color::Red);
+         _console->WriteLine("StartTime: " + args.startTime);
+
+         _console->WriteColor(">>------> ", Color::Red);
+         const std::string endTime = _watch->DateTimeNow();
+         _console->WriteLine("  EndTime: " + endTime);
+
          const char* const testPhaseName = _testPhaseTranslator->TestPhaseToTestPhaseName(testPhase);
          const int exitCode = args.exitzero ? 0 : 1;
-         const std::string exitLine = String::Concat(
-            "Fatal ... exception thrown during test phase: ", testPhaseName, ".\nFail fasting with exit code ", exitCode, ".");
-         _console->WriteLineAndExit(exitLine, exitCode);
+         _console->WriteColor(">>-FAIL-> ", Color::Red);
+         const std::string resultLine = String::Concat(
+            "   Result: Fatal ... exception thrown during the ", testPhaseName, " test phase. (",
+            testRunDurationInMilliseconds, " milliseconds). Fail fasting with exit code ", exitCode, ".");
+         _console->WriteLineAndExit(resultLine, exitCode);
+
          return TestPhaseResult();
       }
       _voidTwoArgMemberFunctionCaller->ConstCall(
@@ -4961,13 +4975,14 @@ namespace ZenUnit
 
       size_t NumberOfTestCases() const override
       {
-         const size_t totalNumberOfTestCases = std::accumulate(_tests.cbegin(), _tests.cend(), size_t(),
-            [](size_t cumulativeNumberOfTestCases, const std::unique_ptr<Test>& test)
+         const size_t numberOfTestCasesInTestClass = std::accumulate(_tests.cbegin(), _tests.cend(), size_t(),
+            [](size_t runningTotalNumberOfTestCasesInTestClass, const std::unique_ptr<Test>& test)
          {
-            const size_t numberOfTestCases = test->NumberOfTestCases();
-            return cumulativeNumberOfTestCases + numberOfTestCases;
+            const size_t numberOfTestCasesInTest = test->NumberOfTestCases();
+            const size_t newRunningTotalNumberOfTestCasesInTestClass = runningTotalNumberOfTestCasesInTestClass + numberOfTestCasesInTest;
+            return newRunningTotalNumberOfTestCasesInTestClass;
          });
-         return totalNumberOfTestCases;
+         return numberOfTestCasesInTestClass;
       }
 
       TestClassResult RunTests() override
