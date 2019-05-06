@@ -4210,13 +4210,25 @@ Expected-But-Not-Asserted ZenMocked Function
    public:
 		ZENMOCK_NONVOID0_CONST(char, Char)
 		ZENMOCK_NONVOID0_CONST(unsigned char, UnsignedChar)
+
       ZENMOCK_NONVOID0_CONST(bool, Bool)
+
 		ZENMOCK_NONVOID0_CONST(short, Short)
 		ZENMOCK_NONVOID0_CONST(unsigned short, UnsignedShort)
-		ZENMOCK_NONVOID1_CONST(int, Enum, int)
+
+      ZENMOCK_NONVOID0_CONST(int, Int)
       ZENMOCK_NONVOID0_CONST(unsigned int, UnsignedInt)
+
+      ZENMOCK_NONVOID1_CONST(int, Enum, int)
+
+      ZENMOCK_NONVOID0_CONST(long long, LongLong)
+      ZENMOCK_NONVOID0_CONST(unsigned long long, UnsignedLongLong)
+
+      ZENMOCK_NONVOID0_CONST(float, Float)
 		ZENMOCK_NONVOID0_CONST(double, Double)
+
       ZENMOCK_NONVOID0_CONST(std::string, String)
+      ZENMOCK_NONVOID0_CONST(std::vector<std::string>, StringVector)
    };
 }
 

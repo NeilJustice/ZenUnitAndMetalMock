@@ -34,7 +34,7 @@
 #include <io.h> // _isatty()
 #endif
 
-#define Comma ,
+#define Comma , // For when parentheses are not enough
 
 #define DOTOKENJOIN(a, b) a##b
 #define TOKENJOIN(a, b) DOTOKENJOIN(a, b)
@@ -6267,14 +6267,26 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    public:
 		virtual char Char() const { return ZenUnit::Random<char>(); }
 		virtual unsigned char UnsignedChar() const { return ZenUnit::Random<unsigned char>(); }
+
       virtual bool Bool() const { return ZenUnit::Random<bool>(); }
-		virtual int Enum(int exclusiveMaxValue) const { return ZenUnit::RandomBetween<int>(0, exclusiveMaxValue - 1); }
+
 		virtual short Short() const { return ZenUnit::Random<short>(); }
 		virtual unsigned short UnsignedShort() const { return ZenUnit::Random<unsigned short>(); }
+
 		virtual int Int() const { return ZenUnit::Random<int>(); }
       virtual unsigned UnsignedInt() const { return ZenUnit::Random<unsigned int>(); }
+
+      virtual int Enum(int exclusiveMaxValue) const { return ZenUnit::RandomBetween<int>(0, exclusiveMaxValue - 1); }
+
+      virtual long long LongLong() const { return ZenUnit::Random<long long>(); }
+      virtual unsigned long long UnsignedLongLong() const { return ZenUnit::Random<unsigned long long>(); }
+
+      virtual float Float() const { return ZenUnit::Random<float>(); }
 		virtual double Double() const { return ZenUnit::Random<double>(); }
+
       virtual std::string String() const { return ZenUnit::Random<std::string>(); }
+      virtual std::vector<std::string> StringVector() const { return ZenUnit::RandomVector<std::string>(); }
+
       virtual ~RandomGenerator() = default;
    };
 
