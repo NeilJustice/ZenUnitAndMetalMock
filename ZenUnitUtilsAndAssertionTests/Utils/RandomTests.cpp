@@ -87,16 +87,16 @@ namespace ZenUnit
 
 
    template<typename T>
-   TEMPLATE_TESTS(NonEmptyRandomVectorTests, T)
-   AFACT(NonEmptyRandomVector_ReturnsAVectorWithSizeBetween0And2WithRandomElements)
+   TEMPLATE_TESTS(RandomNonEmptyVectorTests, T)
+   AFACT(RandomNonEmptyVector_ReturnsAVectorWithSizeBetween0And2WithRandomElements)
    EVIDENCE
-   TEST(NonEmptyRandomVector_ReturnsAVectorWithSizeBetween0And2WithRandomElements)
+   TEST(RandomNonEmptyVector_ReturnsAVectorWithSizeBetween0And2WithRandomElements)
    {
-      const vector<T> nonEmptyRandomVector = ZenUnit::NonEmptyRandomVector<T>();
-      IS_TRUE(nonEmptyRandomVector.size() >= 1 && nonEmptyRandomVector.size() <= 3);
+      const vector<T> randomNonEmptyVector = ZenUnit::RandomNonEmptyVector<T>();
+      IS_TRUE(randomNonEmptyVector.size() >= 1 && randomNonEmptyVector.size() <= 3);
    }
-   RUN_TEMPLATE_TESTS(NonEmptyRandomVectorTests, int)
-   THEN_RUN_TEMPLATE_TESTS(NonEmptyRandomVectorTests, string)
+   RUN_TEMPLATE_TESTS(RandomNonEmptyVectorTests, int)
+   THEN_RUN_TEMPLATE_TESTS(RandomNonEmptyVectorTests, string)
 
 
    template<typename KeyType, typename ValueType>

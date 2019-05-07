@@ -2604,11 +2604,16 @@ namespace ZenUnit
    void IS_NOT_DEFAULT_Defined(VRText<ValueType> valueVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       static const typename std::remove_reference<ValueType>::type defaultValue{};
-      const bool valueIsDefaultValue = valueVRT.value == defaultValue;
-      if (valueIsDefaultValue)
+      const ValueType value = valueVRT.value;
+      try
       {
-         IS_NOT_DEFAULT_Throw(valueVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         ARE_EQUAL(defaultValue, value);
       }
+      catch (const ZenUnit::Anomaly&)
+      {
+         return;
+      }
+      IS_NOT_DEFAULT_Throw(valueVRT, fileLine, messagesText, messages...);
    }
 
    class Map
@@ -6148,9 +6153,11 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    T RandomNon0()
    {
       const T randomT = Random<T>();
-      if (randomT == 0)
+      static const T zeroT = static_cast<T>(0);
+      if (randomT == zeroT)
       {
-         return static_cast<T>(1);
+         static const T oneT = static_cast<T>(1);
+         return oneT;
       }
       return randomT;
    }
@@ -6199,6 +6206,17 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
       return randomEnum;
    }
 
+   template<typename EnumType>
+   EnumType RandomNon0Enum(EnumType exclusiveMaxValue)
+   {
+      using UnderlyingType = typename std::underlying_type<EnumType>::type;
+      const EnumType randomNon0Enum = static_cast<EnumType>(
+         ZenUnit::RandomBetween<UnderlyingType>(
+            static_cast<UnderlyingType>(1),
+            static_cast<UnderlyingType>(exclusiveMaxValue) - static_cast<UnderlyingType>(1)));
+      return randomNon0Enum;
+   }
+
    template<typename T>
    std::vector<T> RandomVector()
    {
@@ -6212,7 +6230,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    }
 
    template<typename T>
-   std::vector<T> NonEmptyRandomVector()
+   std::vector<T> RandomNonEmptyVector()
    {
       const std::size_t randomNonEmptyVectorSize = RandomBetween<size_t>(1, 3);
       std::vector<T> randomNonEmptyVector(randomNonEmptyVectorSize);
