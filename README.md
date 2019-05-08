@@ -22,7 +22,6 @@
       * [Function Assertions](#function-assertions)
    * [Macros For Defining Test Classes And Tests](#macros-for-defining-test-classes-and-tests)
    * [Maximizing Mutation Coverage With Random Value Testing](#maximizing-mutation-coverage-with-random-value-testing)
-   * [ZenMock](#zenmock)
 
 ### ZenUnit design and the N-by-N value-parameterized test syntax
 
@@ -407,7 +406,3 @@ ZenUnit provides the following random value generating functions for writing uni
 |`ZenUnit::RandomUnorderedMap<T>()`|Returns a `std::unordered_map<KeyType, ValueType>` with size between 0 and 3 with each key a `ZenUnit::Random<KeyType>()` value and each value a `ZenUnit::Random<ValueType>()` value.|
 |`ZenUnit::RandomSet<T>()`|Returns a `std::set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
 |`ZenUnit::RandomUnorderedSet<T>()`|Returns a `std::unordered_set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
-
-### ZenMock
-
-[ZenMock](https://github.com/NeilJustice/ZenMock) is a C++ single-header mocking framework powered by ZenUnit with a high-readability arrange-act-assert syntax for confirming the correctness of calls and return values to and from virtual, non-virtual, static, and free functions.
