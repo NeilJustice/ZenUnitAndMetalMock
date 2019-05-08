@@ -1,6 +1,8 @@
-<h1 align="center">ZenUnit</h1>
+<h1 align="center">ZenUnit & ZenMock</h1>
 
 <h4 align="center">ZenUnit is a single-header C++17 unit testing framework with a convenient syntax for writing value-parameterized and type-parameterized unit tests.</h4>
+
+<h4 align="center">ZenMock is a single-header C++17 mocking framework powered by ZenUnit that has a high-readability arrange-act-assert syntax for confirming the correctness of calls and return values to and from virtual, non-virtual, static, and free functions.</h4>
 
 |Build Type|Build Status|
 |----------|------------|
