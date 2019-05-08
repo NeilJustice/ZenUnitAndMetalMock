@@ -18,8 +18,8 @@ namespace ZenUnit
    AFACT(NumberOfFailedTestCases_ZeroTestClassResults_Returns0)
    AFACT(NumberOfFailedTestCases_ThreeTestClassResults_ReturnsSumOfNumberOfFailedTestCases)
    FACTS(PrintTestFailuresAndSkips_PrintsTestFailures_PrintsSkippedTestClassNames_PrintsSkippedFullTestNames);
-   AFACT(PrintConclusion_0TotalNumberOfTests_PrintsZeroTestClassesRegisteredToRun)
-   FACTS(PrintConclusion_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds)
+   AFACT(PrintConclusionLines_0TotalNumberOfTests_PrintsZeroTestClassesRegisteredToRun)
+   FACTS(PrintConclusionLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds)
    AFACT(PrintTestClassResultFailures_CallsTestClassResultPrintTestFailures)
    FACTS(DetermineExitCode_DefaultArgs_Returns1IfAnyTestFailures_OtherwiseReturns0)
    FACTS(DetermineExitCode_Exit0True_AlwaysReturns0)
@@ -215,19 +215,19 @@ namespace ZenUnit
       }));
    }
 
-   TEST(PrintConclusion_0TotalNumberOfTests_PrintsZeroTestClassesRegisteredToRun)
+   TEST(PrintConclusionLines_0TotalNumberOfTests_PrintsZeroTestClassesRegisteredToRun)
    {
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteLineAndExitMock.Expect();
       //
-      _testRunResult.PrintConclusion(
+      _testRunResult.PrintConclusionLines(
          ZenUnit::Random<string>(), 0, ZenUnit::Random<unsigned>(), ZenUnit::Random<ZenUnitArgs>());
       //
       ZENMOCK(_consoleMock->WriteColorMock.CalledOnceWith("[ZenUnit] ", Color::Red));
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("Zero test classes run. Exiting with code 1.", 1));
    }
 
-   TEST7X7(PrintConclusion_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds,
+   TEST7X7(PrintConclusionLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds,
       const string& expectedSuccessOrFailLinePrefix,
       ZenUnit::Color expectedColor,
       size_t numberOfFailedTestCases,
@@ -235,10 +235,10 @@ namespace ZenUnit
       const char* expectedClosingLineTestsCountText,
       unsigned testRunMilliseconds,
       const char* expectedMillisecondOrMilliseconds,
-      "+SUCCESS+", Color::Green, size_t(0), size_t(1), "1 test passed", 0, "milliseconds",
-      "+SUCCESS+", Color::Green, size_t(0), size_t(2), "2 tests passed", 1, "millisecond",
-      "+SUCCESS+", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds",
-      "+SUCCESS+", Color::Green, size_t(0), size_t(3), "3 tests passed", 2, "milliseconds",
+      "+SUCCESS+", Color::Green, size_t(0), size_t(1), "All 1 test passed!", 0, "milliseconds",
+      "+SUCCESS+", Color::Green, size_t(0), size_t(2), "All 2 tests passed!", 1, "millisecond",
+      "+SUCCESS+", Color::Green, size_t(0), size_t(3), "All 3 tests passed!", 2, "milliseconds",
+      "+SUCCESS+", Color::Green, size_t(0), size_t(3), "All 3 tests passed!", 2, "milliseconds",
       ">>-FAIL->", Color::Red, size_t(1), size_t(1), "1/1 test failed", 0, "milliseconds",
       ">>-FAIL->", Color::Red, size_t(1), size_t(2), "1/2 tests failed", 1, "millisecond",
       ">>-FAIL->", Color::Red, size_t(1), size_t(3), "1/3 tests failed", 2, "milliseconds",
@@ -252,31 +252,34 @@ namespace ZenUnit
       _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
       const string startTime = ZenUnit::Random<string>();
       const string dateTimeNow = _watchMock->DateTimeNowMock.ReturnRandom();
-      const ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
+      const ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
       //
-      _testRunResult.PrintConclusion(startTime, numberOfTotalTests, testRunMilliseconds, zenUnitArgs);
+      _testRunResult.PrintConclusionLines(startTime, numberOfTotalTests, testRunMilliseconds, args);
       //
-      const string expectedTripletLinesPrefix =
-         expectedSuccessOrFailLinePrefix == "+SUCCESS+" ? "+=======+ " : ">>------> ";
+      const string expectedTripletLinesPrefix = expectedSuccessOrFailLinePrefix == "+SUCCESS+" ? "+=======+ " : ">>------> ";
       ZENMOCK(_consoleMock->WriteColorMock.CalledAsFollows(
       {
          { expectedTripletLinesPrefix, expectedColor },
          { expectedTripletLinesPrefix, expectedColor },
          { expectedTripletLinesPrefix, expectedColor },
+         { expectedTripletLinesPrefix, expectedColor },
+         { expectedTripletLinesPrefix, expectedColor },
          { expectedSuccessOrFailLinePrefix + " ", expectedColor }
       }));
-      const string expectedCompletedLine = "Completed: " + zenUnitArgs.commandLine;
-      const string expectedStartTimeLine = "StartTime: " + startTime;
-      const string expectedEndTimeLine =   "  EndTime: " + dateTimeNow;
-      const string expectedNumberOfTestsAndMillisecondsLine = String::Concat("   Result: ",
-         expectedClosingLineTestsCountText, " in ", testRunMilliseconds, " ", expectedMillisecondOrMilliseconds,
-         " (random seed ", ZenUnitRandomSeed::value, ")");
+      const string expectedCompletedLine  = " Completed: " + args.commandLine;
+      const string expectedRandomSeedLine = "RandomSeed: " + to_string(args.randomSeed);
+      const string expectedStartTimeLine  = " StartTime: " + startTime;
+      const string expectedEndTimeLine    = "   EndTime: " + dateTimeNow;
+      const string expectedDurationLine   = "  Duration: " + to_string(testRunMilliseconds) + " " + expectedMillisecondOrMilliseconds;
+      const string expectedNumberOfTestsAndMillisecondsLine = String::Concat("    Result: ", expectedClosingLineTestsCountText);
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZENMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
       {
          { expectedCompletedLine },
+         { expectedRandomSeedLine },
          { expectedStartTimeLine },
          { expectedEndTimeLine },
+         { expectedDurationLine },
          { expectedNumberOfTestsAndMillisecondsLine }
       }));
    }
@@ -324,7 +327,7 @@ namespace ZenUnit
    {
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
       ZenUnitArgs args;
-      args.exitzero = true;
+      args.exitZero = true;
       //
       const int exitCode = _testRunResult.DetermineExitCode(args);
       //
@@ -343,8 +346,8 @@ namespace ZenUnit
    {
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
       ZenUnitArgs args;
-      args.exitzero = true;
-      args.noskips = true;
+      args.exitZero = true;
+      args.noSkips = true;
       //
       const int exitCode = _testRunResult.DetermineExitCode(args);
       //
@@ -368,7 +371,7 @@ namespace ZenUnit
    {
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
       ZenUnitArgs args;
-      args.noskips = true;
+      args.noSkips = true;
       //
       const int exitCode = _testRunResult.DetermineExitCode(args);
       //

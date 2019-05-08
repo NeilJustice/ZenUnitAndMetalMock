@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenMockTests/Mock/ExceptionThrowerMock.h"
+#include "ZenUnitLibraryTests/Random/RandomZenUnitArgs.h"
 
 struct CustomException
 {
@@ -179,16 +180,16 @@ namespace ZenMock
       _zenMocker->_asserted = false;
       _zenMocker->_zenMockExceptionIsInFlight = false;
 
-      ZenUnit::ZenUnitArgs zenUnitArgs;
-      zenUnitArgs.exitzero = exitZero;
+      ZenUnit::ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
+      zenUnitArgs.exitZero = exitZero;
       GetArgs_ZenMockObject.Return(zenUnitArgs);
       exit_ZenMockObject.Expect();
 
-      cout << "\n<ZenMock Error Message Testing>";
+      cout << "\n\n<ZenMock Error Message Testing>";
       //
       _zenMocker->ZenMockExitIfExpectedButNotAsserted();
       //
-      cout << "</ZenMock Error Message Testing>\n";
+      cout << "</ZenMock Error Message Testing>\n\n";
       ZENMOCK(GetArgs_ZenMockObject.CalledOnce());
       ZENMOCK(exit_ZenMockObject.CalledOnceWith(expectedExitCode));
       _zenMocker->_asserted = true;

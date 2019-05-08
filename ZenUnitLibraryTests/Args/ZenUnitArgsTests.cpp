@@ -14,15 +14,15 @@ namespace ZenUnit
       ARE_EQUAL("", zenUnitArgs.commandLine);
       IS_EMPTY(zenUnitArgs.runFilters);
       IS_FALSE(zenUnitArgs.wait);
-      IS_FALSE(zenUnitArgs.exitzero);
-      IS_FALSE(zenUnitArgs.failfast);
-      IS_FALSE(zenUnitArgs.noskips);
-      ARE_EQUAL(1, zenUnitArgs.testruns);
+      IS_FALSE(zenUnitArgs.exitZero);
+      IS_FALSE(zenUnitArgs.failFast);
+      IS_FALSE(zenUnitArgs.noSkips);
+      ARE_EQUAL(1, zenUnitArgs.testRuns);
       IS_FALSE(zenUnitArgs.random);
-      ARE_EQUAL(0, zenUnitArgs.randomseed);
-      IS_FALSE(zenUnitArgs.randomseedsetbyuser);
-      IS_ZERO(zenUnitArgs.maxtestmilliseconds);
-      IS_ZERO(zenUnitArgs.maxtotalseconds);
+      ARE_EQUAL(0, zenUnitArgs.randomSeed);
+      IS_FALSE(zenUnitArgs.randomSeedSetByUser);
+      IS_ZERO(zenUnitArgs.maxTestMilliseconds);
+      IS_ZERO(zenUnitArgs.maxTotalSeconds);
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
@@ -32,15 +32,15 @@ namespace ZenUnit
       EQUALIZER_THROWS(ZenUnitArgs, runFilters, vector<RunFilter> { RunFilter() });
       EQUALIZER_THROWS(ZenUnitArgs, pause, true);
       EQUALIZER_THROWS(ZenUnitArgs, wait, true);
-      EQUALIZER_THROWS(ZenUnitArgs, exitzero, true);
-      EQUALIZER_THROWS(ZenUnitArgs, failfast, true);
-      EQUALIZER_THROWS(ZenUnitArgs, noskips, true);
-      EQUALIZER_THROWS(ZenUnitArgs, testruns, 2u);
+      EQUALIZER_THROWS(ZenUnitArgs, exitZero, true);
+      EQUALIZER_THROWS(ZenUnitArgs, failFast, true);
+      EQUALIZER_THROWS(ZenUnitArgs, noSkips, true);
+      EQUALIZER_THROWS(ZenUnitArgs, testRuns, 2u);
       EQUALIZER_THROWS(ZenUnitArgs, random, true);
-      EQUALIZER_THROWS(ZenUnitArgs, randomseed, 3u);
-      EQUALIZER_THROWS(ZenUnitArgs, randomseedsetbyuser, true);
-      EQUALIZER_THROWS(ZenUnitArgs, maxtestmilliseconds, 4u);
-      EQUALIZER_THROWS(ZenUnitArgs, maxtotalseconds, 5u);
+      EQUALIZER_THROWS(ZenUnitArgs, randomSeed, 3u);
+      EQUALIZER_THROWS(ZenUnitArgs, randomSeedSetByUser, true);
+      EQUALIZER_THROWS(ZenUnitArgs, maxTestMilliseconds, 4u);
+      EQUALIZER_THROWS(ZenUnitArgs, maxTotalSeconds, 5u);
    }
 
    RUN_TESTS(ZenUnitArgsTests)

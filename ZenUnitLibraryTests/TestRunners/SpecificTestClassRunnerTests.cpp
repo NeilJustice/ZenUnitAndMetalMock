@@ -216,7 +216,7 @@ namespace ZenUnit
    {
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.random = random;
-      zenUnitArgs.randomseed = Random<unsigned>();
+      zenUnitArgs.randomSeed = Random<unsigned>();
       GetArgs_ZenMockObject.Return(zenUnitArgs);
       if (expectRandomForEach)
       {
@@ -236,7 +236,7 @@ namespace ZenUnit
             &_specificTestClassRunner->_tests, _specificTestClassRunner.get(),
             &SpecificTestClassRunner<TestingTestClass>::RunTest,
             &_specificTestClassRunner->_testClassResult,
-            zenUnitArgs.randomseed));
+            zenUnitArgs.randomSeed));
       }
       else
       {

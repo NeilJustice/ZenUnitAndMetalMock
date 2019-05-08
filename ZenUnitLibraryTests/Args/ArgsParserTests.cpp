@@ -193,7 +193,7 @@ Testing Utility Options:
    TEST(Parse_AllArgsSpecifiedExpectForRunFilter_ReturnsZenUnitArgsWithAllFieldsSets)
    {
       const int testruns = ToInt_ZenMockObject.ReturnRandom();
-      const unsigned randomseed = ToUnsigned_ZenMockObject.ReturnRandom();
+      const unsigned randomSeed = ToUnsigned_ZenMockObject.ReturnRandom();
 		_callerOfSetRandomSeedIfNotSetByUserMock->ConstCallMock.Expect();
 		const string startTime = _watchMock->DateTimeNowMock.ReturnRandom();
       const vector<string> stringArgs
@@ -206,25 +206,25 @@ Testing Utility Options:
          "--no-skips",
          "--random",
          "--test-runs=" + to_string(testruns),
-         "--seed=" + to_string(randomseed)
+         "--seed=" + to_string(randomSeed)
       };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
       //
       ZENMOCK(ToInt_ZenMockObject.CalledOnceWith(to_string(testruns)));
-      ZENMOCK(ToUnsigned_ZenMockObject.CalledOnceWith(to_string(randomseed)));
+      ZENMOCK(ToUnsigned_ZenMockObject.CalledOnceWith(to_string(randomSeed)));
 		ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
       expectedZenUnitArgs.pause = true;
       expectedZenUnitArgs.wait = true;
-      expectedZenUnitArgs.exitzero = true;
-      expectedZenUnitArgs.failfast = true;
-      expectedZenUnitArgs.noskips = true;
+      expectedZenUnitArgs.exitZero = true;
+      expectedZenUnitArgs.failFast = true;
+      expectedZenUnitArgs.noSkips = true;
       expectedZenUnitArgs.random = true;
-      expectedZenUnitArgs.testruns = testruns;
-      expectedZenUnitArgs.randomseed = randomseed;
-      expectedZenUnitArgs.randomseedsetbyuser = true;
+      expectedZenUnitArgs.testRuns = testruns;
+      expectedZenUnitArgs.randomSeed = randomSeed;
+      expectedZenUnitArgs.randomSeedSetByUser = true;
 		expectedZenUnitArgs.startTime = startTime;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
@@ -278,11 +278,11 @@ Testing Utility Options:
       Startup();
       AssertArgSetsBoolField("--wait", &ZenUnitArgs::wait);
       Startup();
-      AssertArgSetsBoolField("--exit-zero", &ZenUnitArgs::exitzero);
+      AssertArgSetsBoolField("--exit-zero", &ZenUnitArgs::exitZero);
       Startup();
-      AssertArgSetsBoolField("--fail-fast", &ZenUnitArgs::failfast);
+      AssertArgSetsBoolField("--fail-fast", &ZenUnitArgs::failFast);
       Startup();
-      AssertArgSetsBoolField("--no-skips", &ZenUnitArgs::noskips);
+      AssertArgSetsBoolField("--no-skips", &ZenUnitArgs::noSkips);
    }
    void AssertArgSetsBoolField(const string& arg, bool ZenUnitArgs::* expectedFieldToBeSet)
    {
@@ -311,7 +311,7 @@ Testing Utility Options:
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
-      expectedZenUnitArgs.exitzero = true;
+      expectedZenUnitArgs.exitZero = true;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
@@ -363,7 +363,7 @@ Testing Utility Options:
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
-      expectedZenUnitArgs.testruns = timesArgValue;
+      expectedZenUnitArgs.testRuns = timesArgValue;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
@@ -382,8 +382,8 @@ Testing Utility Options:
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
       expectedZenUnitArgs.random = false;
-      expectedZenUnitArgs.randomseed = randomSeed;
-      expectedZenUnitArgs.randomseedsetbyuser = true;
+      expectedZenUnitArgs.randomSeed = randomSeed;
+      expectedZenUnitArgs.randomSeedSetByUser = true;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
@@ -405,7 +405,7 @@ Testing Utility Options:
    TEST(SetRandomSeedIfNotSetByUser_RandomSeedSetByUser_DoesNothing)
    {
       ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
-      zenUnitArgs.randomseedsetbyuser = true;
+      zenUnitArgs.randomSeedSetByUser = true;
       ZenUnitArgs expectedResultingZenUnitArgs = zenUnitArgs;
       //
       _argsParser.SetRandomSeedIfNotSetByUser(zenUnitArgs);
@@ -416,11 +416,11 @@ Testing Utility Options:
    TEST(SetRandomSeedIfNotSetByUser_RandomSeedNotSetByUser_SetsRandomSeedToSecondsSince1970)
    {
       ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
-      zenUnitArgs.randomseedsetbyuser = false;
+      zenUnitArgs.randomSeedSetByUser = false;
       ZenUnitArgs expectedResultingZenUnitArgs = zenUnitArgs;
       const unsigned secondsSince1970CastToUnsigned =
          _watchMock->SecondsSince1970AsUnsignedMock.ReturnRandom();
-      expectedResultingZenUnitArgs.randomseed = secondsSince1970CastToUnsigned;
+      expectedResultingZenUnitArgs.randomSeed = secondsSince1970CastToUnsigned;
       //
       _argsParser.SetRandomSeedIfNotSetByUser(zenUnitArgs);
       //

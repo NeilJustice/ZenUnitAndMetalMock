@@ -82,7 +82,7 @@ namespace ZenUnit
    TEST(RunTestPhase_FunctionDoesNotThrow_ReturnsNoExceptionThrownTestPhaseResult)
    {
       ZenUnitArgs args;
-      args.failfast = ZenUnit::Random<bool>();
+      args.failFast = ZenUnit::Random<bool>();
       GetArgs_ZenMockObject.Return(args);
 
       ExpectStopwatchStartAndStopCalls();
@@ -114,7 +114,7 @@ namespace ZenUnit
    TEST(RunTestPhase_FunctionThrowsAnomaly_TestPhaseIsTestBody_ReturnsAnomalyResult)
    {
       ZenUnitArgs args;
-      args.failfast = ZenUnit::Random<bool>();
+      args.failFast = ZenUnit::Random<bool>();
       GetArgs_ZenMockObject.Return(args);
 
       _voidTwoArgMemberFunctionCallerMock->ConstCallMock.Expect();
@@ -155,8 +155,8 @@ namespace ZenUnit
       TestPhase::Destructor)
    {
       ZenUnitArgs args;
-      args.failfast = ZenUnit::Random<bool>();
-      args.exitzero = ZenUnit::Random<bool>();
+      args.failFast = ZenUnit::Random<bool>();
+      args.exitZero = ZenUnit::Random<bool>();
       GetArgs_ZenMockObject.Return(args);
 
       _voidTwoArgMemberFunctionCallerMock->ConstCallMock.Expect();
@@ -179,7 +179,7 @@ namespace ZenUnit
       const Anomaly expectedAnomaly("NonDefault", "NonDefault", FileLine(), "", "");
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedAnomaly.why));
       ZENMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith("\n===========\nFatal Error\n===========", Color::Red));
-      const int expectedExitCode = args.exitzero ? 0 : 1;
+      const int expectedExitCode = args.exitZero ? 0 : 1;
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(
          "A ZenUnit::Anomaly was thrown from a test class constructor, STARTUP function, or CLEANUP function.\nFail fasting with exit code " +
          std::to_string(expectedExitCode) + ".", expectedExitCode));
@@ -291,12 +291,12 @@ namespace ZenUnit
    }
 
    TEST2X2(RunTestPhase_FunctionThrowsAnIntToTriggerDotDotDotExceptionHandler_PrintsFailureDetails_Exits1,
-      bool exitzero, int expectedExitCode,
+      bool exitZero, int expectedExitCode,
       false, 1,
       true, 0)
    {
-      ZenUnitArgs args;
-      args.exitzero = exitzero;
+      ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
+      args.exitZero = exitZero;
       GetArgs_ZenMockObject.Return(args);
 
       _stopwatchMock->StartMock.Expect();
@@ -329,24 +329,27 @@ namespace ZenUnit
          { ">>------> ", Color::Red },
          { ">>------> ", Color::Red },
          { ">>------> ", Color::Red },
+         { ">>------> ", Color::Red },
+         { ">>------> ", Color::Red },
          { ">>-FAIL-> ", Color::Red }
       }));
       ZENMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
       {
-         { "Completed: " + args.commandLine },
-         { "StartTime: " + args.startTime },
-         { "  EndTime: " + endTime }
+         { " Completed: " + args.commandLine },
+         { "RandomSeed: " + to_string(args.randomSeed) },
+         { " StartTime: " + args.startTime },
+         { "   EndTime: " + endTime },
+         { "  Duration: " + to_string(testRunDurationInMilliseconds) + " milliseconds" }
       }));
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZENMOCK(_testPhaseTranslatorMock->TestPhaseToTestPhaseNameMock.CalledOnceWith(testPhase));
       const std::string expectedResultLine = String::Concat(
-         "   Result: Fatal ... exception thrown during the ", testPhaseName, " test phase. (",
-         testRunDurationInMilliseconds, " milliseconds). Fail fasting with exit code ", expectedExitCode, ".");
+         "    Result: Fatal ... exception thrown during the ", testPhaseName, " test phase. Fail fasting with exit code ", expectedExitCode, ".");
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedResultLine, expectedExitCode));
    }
 
    TEST3X3(RunTestPhase_TestPhaseResultIsNotSuccessAndFailFastIsTrue_WritesFailFastMessageAndExits1,
-      TestOutcome testOutcome, bool failfast, bool expectFailFast,
+      TestOutcome testOutcome, bool failFast, bool expectFailFast,
       TestOutcome::Unset, false, false,
       TestOutcome::Success, false, false,
       TestOutcome::Anomaly, false, false,
@@ -365,7 +368,7 @@ namespace ZenUnit
       const ZenUnitArgs args = [&]()
       {
          ZenUnitArgs args;
-         args.failfast = failfast;
+         args.failFast = failFast;
          return args;
       }();
       //

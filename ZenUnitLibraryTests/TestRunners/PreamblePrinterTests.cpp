@@ -56,7 +56,7 @@ namespace ZenUnit
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.commandLine = Random<string>();
       zenUnitArgs.random = Random<bool>();
-      zenUnitArgs.randomseed = Random<unsigned>();
+      zenUnitArgs.randomSeed = Random<unsigned>();
       //
       const string returnedStartTime = _preamblePrinterSelfMocked.
          PrintPreambleAndGetStartTime(zenUnitArgs, &testClassRunnerRunnerMock);
@@ -65,7 +65,7 @@ namespace ZenUnit
       ZENMOCK(testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.CalledOnce());
       ZENMOCK(_preamblePrinterSelfMocked.consoleMock->WriteColorMock.CalledNTimesWith(3, "[ZenUnit]", Color::Green));
       ZENMOCK(_preamblePrinterSelfMocked.MakeThirdLinePrefixMock.CalledOnceWith(numberOfTestClassesToBeRun));
-      ZENMOCK(_preamblePrinterSelfMocked.MakeThirdLineSuffixMock.CalledOnceWith(zenUnitArgs.random, zenUnitArgs.randomseed));
+      ZENMOCK(_preamblePrinterSelfMocked.MakeThirdLineSuffixMock.CalledOnceWith(zenUnitArgs.random, zenUnitArgs.randomSeed));
       const string expectedThirdLineAndLineBreak = thirdLinePrefix + thirdLineSuffix;
       ZENMOCK(_preamblePrinterSelfMocked.consoleMock->WriteLineMock.CalledAsFollows(
       {
@@ -92,12 +92,12 @@ namespace ZenUnit
    }
 
    TEST3X3(MakeThirdLineSuffix_ReturnsRandomSeedIfRandomModeOtherwiseEmptyString,
-      const string& expectedReturnValue, bool random, unsigned randomseed,
+      const string& expectedReturnValue, bool random, unsigned randomSeed,
       "", false, ZenUnit::Random<unsigned>(),
       " (random seed 0)", true, 0u,
       " (random seed 1)", true, 1u)
    {
-      const string thirdLineSuffix = _preamblePrinter.MakeThirdLineSuffix(random, randomseed);
+      const string thirdLineSuffix = _preamblePrinter.MakeThirdLineSuffix(random, randomSeed);
       ARE_EQUAL(expectedReturnValue, thirdLineSuffix);
    }
 

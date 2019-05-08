@@ -841,15 +841,15 @@ namespace ZenUnit
       std::vector<RunFilter> runFilters;
       bool pause = false;
       bool wait = false;
-      bool exitzero = false;
-      bool failfast = false;
-      bool noskips = false;
-      int testruns = 1;
+      bool exitZero = false;
+      bool failFast = false;
+      bool noSkips = false;
+      int testRuns = 1;
       bool random = false;
-      unsigned randomseed = 0;
-      bool randomseedsetbyuser = false;
-      unsigned maxtestmilliseconds = 0;
-      unsigned maxtotalseconds = 0;
+      unsigned randomSeed = 0;
+      bool randomSeedSetByUser = false;
+      unsigned maxTestMilliseconds = 0;
+      unsigned maxTotalSeconds = 0;
    };
 
    constexpr const char* ColorToLinuxColor(Color color) noexcept
@@ -1807,17 +1807,17 @@ namespace ZenUnit
          const double millisecondsRoundedToTwoDecimalPlaces = std::floor(milliseconds * 100 + 0.5) / 100;
 
          // Example: "0.120000"
-         const std::string millisecondsRoundedToTwoDecimalPlaces_sixDecimalPlaceString
-            = std::to_string(millisecondsRoundedToTwoDecimalPlaces);
+         const std::string millisecondsRoundedToTwoDecimalPlaces_sixDecimalPlaceString =
+            std::to_string(millisecondsRoundedToTwoDecimalPlaces);
 
          // Example: "0.12"
-         const std::string millisecondsRoundedToTwoDecimalPlaces_twoDecimalPlacesString
-            = millisecondsRoundedToTwoDecimalPlaces_sixDecimalPlaceString.substr(
+         const std::string millisecondsRoundedToTwoDecimalPlaces_twoDecimalPlacesString =
+            millisecondsRoundedToTwoDecimalPlaces_sixDecimalPlaceString.substr(
                0, millisecondsRoundedToTwoDecimalPlaces_sixDecimalPlaceString.find_first_of('.') + 3);
 
          // Example: "(0.12ms)"
-         const std::string twoDecimalPlaceMillisecondsString
-            = String::Concat("(", millisecondsRoundedToTwoDecimalPlaces_twoDecimalPlacesString, "ms)");
+         const std::string twoDecimalPlaceMillisecondsString =
+            String::Concat("(", millisecondsRoundedToTwoDecimalPlaces_twoDecimalPlacesString, "ms)");
 
          return twoDecimalPlaceMillisecondsString;
       }
@@ -1892,15 +1892,15 @@ namespace ZenUnit
             }
             else if (arg == "--exit-zero")
             {
-               args.exitzero = true;
+               args.exitZero = true;
             }
             else if (arg == "--fail-fast")
             {
-               args.failfast = true;
+               args.failFast = true;
             }
             else if (arg == "--no-skips")
             {
-               args.noskips = true;
+               args.noSkips = true;
             }
             else if (arg == "--random")
             {
@@ -1936,12 +1936,12 @@ namespace ZenUnit
                   }
                   else if (argName == "--test-runs")
                   {
-                     args.testruns = _call_String_ToInt(argValueString);
+                     args.testRuns = _call_String_ToInt(argValueString);
                   }
                   else if (argName == "--seed")
                   {
-                     args.randomseed = _call_String_ToUnsigned(argValueString);
-                     args.randomseedsetbyuser = true;
+                     args.randomSeed = _call_String_ToUnsigned(argValueString);
+                     args.randomSeedSetByUser = true;
                   }
                   else
                   {
@@ -1956,15 +1956,15 @@ namespace ZenUnit
          }
 			args.startTime = _watch->DateTimeNow();
          _callerOfSetRandomSeedIfNotSetByUser->ConstCall(this, &ArgsParser::SetRandomSeedIfNotSetByUser, args);
-         ZenUnitRandomSeed::value = args.randomseed;
+         ZenUnitRandomSeed::value = args.randomSeed;
          return args;
       }
    private:
       void SetRandomSeedIfNotSetByUser(ZenUnitArgs& outArgs) const
       {
-         if (!outArgs.randomseedsetbyuser)
+         if (!outArgs.randomSeedSetByUser)
          {
-            outArgs.randomseed = _watch->SecondsSince1970AsUnsigned();
+            outArgs.randomSeed = _watch->SecondsSince1970AsUnsigned();
          }
       }
 
@@ -3531,8 +3531,8 @@ namespace ZenUnit
             assert_true(cleanupTestPhaseResult.testOutcome == TestOutcome::Success);
             assert_true(destructorTestPhaseResult.testOutcome == TestOutcome::Success);
             const ZenUnitArgs& args = getArgs();
-            const unsigned maxtestmicroseconds = args.maxtestmilliseconds * 1000;
-            if (args.maxtestmilliseconds == 0 || microseconds <= maxtestmicroseconds)
+            const unsigned maxtestmicroseconds = args.maxTestMilliseconds * 1000;
+            if (args.maxTestMilliseconds == 0 || microseconds <= maxtestmicroseconds)
             {
                testOutcome = TestOutcome::Success;
             }
@@ -4098,7 +4098,7 @@ namespace ZenUnit
          if (args.random)
          {
             testClassResults = _transformer->RandomTransform(
-               &_testClassRunners, &TestClassRunnerRunner::RunTestClassRunner, args.randomseed);
+               &_testClassRunners, &TestClassRunnerRunner::RunTestClassRunner, args.randomSeed);
          }
          else
          {
@@ -4165,7 +4165,7 @@ namespace ZenUnit
          _console->WriteColor("[ZenUnit]", Color::Green);
          const size_t numberOfTestClassesToBeRun = testClassRunnerRunner->NumberOfTestClassesToBeRun();
          const std::string thirdLinePrefix = MakeThirdLinePrefix(numberOfTestClassesToBeRun);
-         const std::string thirdLineSuffix = MakeThirdLineSuffix(args.random, args.randomseed);
+         const std::string thirdLineSuffix = MakeThirdLineSuffix(args.random, args.randomSeed);
          const std::string thirdLineAndLineBreak = thirdLinePrefix + thirdLineSuffix;
          _console->WriteLine(thirdLineAndLineBreak);
          return startTime;
@@ -4181,9 +4181,9 @@ namespace ZenUnit
          return thirdLinePrefix;
       }
 
-      virtual std::string MakeThirdLineSuffix(bool random, unsigned randomseed) const
+      virtual std::string MakeThirdLineSuffix(bool random, unsigned randomSeed) const
       {
-         const std::string thirdLineSuffix = random ? " (random seed " + std::to_string(randomseed) + ")" : "";
+         const std::string thirdLineSuffix = random ? " (random seed " + std::to_string(randomSeed) + ")" : "";
          return thirdLineSuffix;
       }
    };
@@ -4309,7 +4309,7 @@ namespace ZenUnit
          _memberForEacherSkippedTests->MemberForEach(&_skippedFullTestNamesAndReasons, this, &TestRunResult::PrintSkippedTestReminder);
       }
 
-      virtual void PrintConclusion(const std::string& startTime, size_t totalNumberOfTestCases, unsigned testRunMilliseconds, const ZenUnitArgs& args) const
+      virtual void PrintConclusionLines(const std::string& startTime, size_t totalNumberOfTestCases, unsigned testRunMilliseconds, const ZenUnitArgs& args) const
       {
          assert_true(_numberOfFailedTestCases <= totalNumberOfTestCases);
          const Color greenOrRed = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
@@ -4322,51 +4322,56 @@ namespace ZenUnit
          {
             const std::string testOrTests = totalNumberOfTestCases == 1 ? "test" : "tests";
             const std::string millisecondOrMilliseconds = testRunMilliseconds == 1 ? "millisecond" : "milliseconds";
-            const std::string inMillisecondsPart = String::Concat("in ", testRunMilliseconds, ' ', millisecondOrMilliseconds);
             std::string tripletLinesPrefix;
             std::string successOrFailLinePrefix;
-            std::string numberOfTestsAndMillisecondsAndRandomSeedMessage;
+            std::string resultMessage;
             if (_numberOfFailedTestCases == 0)
             {
                tripletLinesPrefix = "+=======+ ";
                successOrFailLinePrefix = "+SUCCESS+ ";
-               numberOfTestsAndMillisecondsAndRandomSeedMessage = String::Concat("   Result: ",
-                  totalNumberOfTestCases, ' ', testOrTests, " passed ", inMillisecondsPart, " (random seed ", ZenUnitRandomSeed::value, ")");
+               resultMessage = String::Concat("    Result: All ", totalNumberOfTestCases, ' ', testOrTests, " passed!");
             }
             else
             {
                tripletLinesPrefix = ">>------> ";
                successOrFailLinePrefix = ">>-FAIL-> ";
-               numberOfTestsAndMillisecondsAndRandomSeedMessage = String::Concat("   Result: ",
-                  _numberOfFailedTestCases, '/', totalNumberOfTestCases, ' ', testOrTests, " failed ", inMillisecondsPart, " (random seed ", ZenUnitRandomSeed::value, ")");
+               resultMessage = String::Concat("    Result: ", _numberOfFailedTestCases, '/', totalNumberOfTestCases, ' ', testOrTests, " failed");
             }
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
-            const std::string completedCommandLineMessage = "Completed: " + args.commandLine;
+            const std::string completedCommandLineMessage = " Completed: " + args.commandLine;
             _console->WriteLine(completedCommandLineMessage);
 
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
-            const std::string startTimeMessage = "StartTime: " + startTime;
+            const std::string randomSeedMessage = "RandomSeed: " + std::to_string(args.randomSeed);
+            _console->WriteLine(randomSeedMessage);
+
+            _console->WriteColor(tripletLinesPrefix, greenOrRed);
+            const std::string startTimeMessage = " StartTime: " + startTime;
             _console->WriteLine(startTimeMessage);
 
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
-            const std::string endTimeMessage = "  EndTime: " + _watch->DateTimeNow();
+            const std::string endTimeMessage = "   EndTime: " + _watch->DateTimeNow();
             _console->WriteLine(endTimeMessage);
 
+            _console->WriteColor(tripletLinesPrefix, greenOrRed);
+            const std::string durationMessage = String::Concat("  Duration: ", testRunMilliseconds, " ", millisecondOrMilliseconds);
+            _console->WriteLine(durationMessage);
+
             _console->WriteColor(successOrFailLinePrefix, greenOrRed);
-            _console->WriteLine(numberOfTestsAndMillisecondsAndRandomSeedMessage);
+            _console->WriteLine(resultMessage);
          }
       }
 
       virtual int DetermineExitCode(const ZenUnitArgs& args) const
       {
-         if (args.exitzero)
+         if (args.exitZero)
          {
             return 0;
          }
          const bool haveSkippedTestsOrTestClasses =
             !_skippedFullTestNamesAndReasons.empty() ||
             !_skippedTestClassNamesAndReasons.empty();
-         if (args.noskips && haveSkippedTestsOrTestClasses)
+         if (args.noSkips && haveSkippedTestsOrTestClasses)
          {
             return 1;
          }
@@ -4508,11 +4513,11 @@ namespace ZenUnit
          _args = _argsParser->Parse(commandLineArgs);
          _testClassRunnerRunner->ApplyRunFiltersIfAny(_args.runFilters);
          int overallExitCode = 0;
-         const int numberOfTestRuns = _args.testruns < 0 ? std::numeric_limits<int>::max() : _args.testruns;
+         const int numberOfTestRuns = _args.testRuns < 0 ? std::numeric_limits<int>::max() : _args.testRuns;
          for (int testRunIndex = 0; testRunIndex < numberOfTestRuns; ++testRunIndex)
          {
             const int testRunExitCode = _nonVoidOneArgMemberFunctionCaller->NonConstCall(
-               this, &TestRunner::PrintPreambleRunTestClassesPrintConclusion, _args);
+               this, &TestRunner::PrintPreambleThenRunTestClassesThenPrintConclusionLines, _args);
             assert_true(testRunExitCode == 0 || testRunExitCode == 1);
             overallExitCode |= testRunExitCode;
             _testRunResult->ResetStateExceptForSkips();
@@ -4536,16 +4541,16 @@ namespace ZenUnit
          return true;
       }
 
-      int PrintPreambleRunTestClassesPrintConclusion(const ZenUnitArgs& args)
+      int PrintPreambleThenRunTestClassesThenPrintConclusionLines(const ZenUnitArgs& args)
       {
          const std::string startTime = _preamblePrinter->PrintPreambleAndGetStartTime(args, _testClassRunnerRunner.get());
          _havePaused = _nonVoidTwoArgMemberFunctionCaller->ConstCall(
             this, &TestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused, args.pause, _havePaused);
          _testRunStopwatch->Start();
-         if (args.maxtotalseconds > 0)
+         if (args.maxTotalSeconds > 0)
          {
             _voidOneArgMemberFunctionCaller->NonConstCall(
-               this, &TestRunner::RunTestClassesWithWaitableRunnerThread, args.maxtotalseconds);
+               this, &TestRunner::RunTestClassesWithWaitableRunnerThread, args.maxTotalSeconds);
          }
          else
          {
@@ -4555,7 +4560,7 @@ namespace ZenUnit
          const size_t numberOfTestCases = _testClassRunnerRunner->NumberOfTestCases();
          const unsigned testRunMicroseconds = _testRunStopwatch->Stop();
          const unsigned testRunMilliseconds = testRunMicroseconds / 1000;
-         _testRunResult->PrintConclusion(startTime, numberOfTestCases, testRunMilliseconds, args);
+         _testRunResult->PrintConclusionLines(startTime, numberOfTestCases, testRunMilliseconds, args);
          const int testRunExitCode = _testRunResult->DetermineExitCode(args);
          return testRunExitCode;
       }
@@ -4608,13 +4613,42 @@ namespace ZenUnit
 
       void FailFastIfTestFailedAndFailFastModeTrue(TestOutcome testOutcome, const ZenUnitArgs& args) const
       {
-         if (testOutcome != TestOutcome::Success && args.failfast)
+         if (testOutcome != TestOutcome::Success && args.failFast)
          {
             const std::string failFastMessage =
                "\n[ZenUnit] A test failed in --fail-fast mode. Exiting with code 1.\n[ZenUnit] Command line: " +
                args.commandLine + " (random seed " + std::to_string(ZenUnitRandomSeed::value) + ")";
             _console->WriteLineAndExit(failFastMessage, 1);
          }
+      }
+
+      void FailFastDueToDotDotDotException(const ZenUnitArgs& args, TestPhase testPhase) const
+      {
+         const unsigned testRunDurationInMilliseconds = _stopwatch->Stop();
+         _console->WriteLineColor("\n==========================\nFatal ... Exception Thrown\n==========================\n", Color::Red);
+
+         _console->WriteColor(">>------> ", Color::Red);
+         _console->WriteLine(" Completed: " + args.commandLine);
+
+         _console->WriteColor(">>------> ", Color::Red);
+         _console->WriteLine("RandomSeed: " + std::to_string(args.randomSeed));
+
+         _console->WriteColor(">>------> ", Color::Red);
+         _console->WriteLine(" StartTime: " + args.startTime);
+
+         _console->WriteColor(">>------> ", Color::Red);
+         const std::string endTime = _watch->DateTimeNow();
+         _console->WriteLine("   EndTime: " + endTime);
+
+         _console->WriteColor(">>------> ", Color::Red);
+         _console->WriteLine("  Duration: " + std::to_string(testRunDurationInMilliseconds) + " milliseconds");
+
+         const char* const testPhaseName = _testPhaseTranslator->TestPhaseToTestPhaseName(testPhase);
+         const int exitCode = args.exitZero ? 0 : 1;
+         _console->WriteColor(">>-FAIL-> ", Color::Red);
+         const std::string resultLine = String::Concat(
+            "    Result: Fatal ... exception thrown during the ", testPhaseName, " test phase. Fail fasting with exit code ", exitCode, ".");
+         _console->WriteLineAndExit(resultLine, exitCode);
       }
    private:
       template<typename ExceptionType>
@@ -4783,8 +4817,8 @@ namespace ZenUnit
 
    inline TestPhaseResult TestPhaseRunner::RunTestPhase(void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const
    {
-      TestPhaseResult testPhaseResult(testPhase);
       _stopwatch->Start();
+      TestPhaseResult testPhaseResult(testPhase);
       const ZenUnitArgs& args = _call_TestRunner_GetArgs();
       try
       {
@@ -4802,7 +4836,7 @@ namespace ZenUnit
          _console->WriteLine(anomaly.why);
          if (testPhase != TestPhase::TestBody)
          {
-            const int exitCode = args.exitzero ? 0 : 1;
+            const int exitCode = args.exitZero ? 0 : 1;
             _console->WriteLineColor("\n===========\nFatal Error\n===========", Color::Red);
             _console->WriteLineAndExit("A ZenUnit::Anomaly was thrown from a test class constructor, STARTUP function, or CLEANUP function.\nFail fasting with exit code "
                + std::to_string(exitCode) + ".", exitCode);
@@ -4836,27 +4870,7 @@ namespace ZenUnit
       }
       catch (...)
       {
-         const unsigned testRunDurationInMilliseconds = _stopwatch->Stop();
-         _console->WriteLineColor("\n==========================\nFatal ... Exception Thrown\n==========================\n", Color::Red);
-
-         _console->WriteColor(">>------> ", Color::Red);
-         _console->WriteLine("Completed: " + args.commandLine);
-
-         _console->WriteColor(">>------> ", Color::Red);
-         _console->WriteLine("StartTime: " + args.startTime);
-
-         _console->WriteColor(">>------> ", Color::Red);
-         const std::string endTime = _watch->DateTimeNow();
-         _console->WriteLine("  EndTime: " + endTime);
-
-         const char* const testPhaseName = _testPhaseTranslator->TestPhaseToTestPhaseName(testPhase);
-         const int exitCode = args.exitzero ? 0 : 1;
-         _console->WriteColor(">>-FAIL-> ", Color::Red);
-         const std::string resultLine = String::Concat(
-            "   Result: Fatal ... exception thrown during the ", testPhaseName, " test phase. (",
-            testRunDurationInMilliseconds, " milliseconds). Fail fasting with exit code ", exitCode, ".");
-         _console->WriteLineAndExit(resultLine, exitCode);
-
+         FailFastDueToDotDotDotException(args, testPhase);
          return TestPhaseResult();
       }
       _voidTwoArgMemberFunctionCaller->ConstCall(
@@ -5011,7 +5025,7 @@ namespace ZenUnit
          if (args.random)
          {
             _twoArgMemberForEacher->RandomTwoArgMemberForEach(
-               &_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult, args.randomseed);
+               &_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult, args.randomSeed);
          }
          else
          {
@@ -5256,7 +5270,7 @@ namespace ZenUnit
          {
             _randomTestCaseNumbers.push_back(testCaseNumber);
          }
-         std::shuffle(_randomTestCaseNumbers.begin(), _randomTestCaseNumbers.end(), std::default_random_engine(args.randomseed));
+         std::shuffle(_randomTestCaseNumbers.begin(), _randomTestCaseNumbers.end(), std::default_random_engine(args.randomSeed));
       }
 
       size_t NextTestCaseNumber() override
@@ -5926,7 +5940,7 @@ The fix for this error is to change FACTS(TestName) to AFACT(TestName)
 or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
 )";
             const ZenUnitArgs& args = TestRunner::GetArgs();
-            exit(args.exitzero ? 0 : 1);
+            exit(args.exitZero ? 0 : 1);
          }
          const std::unique_ptr<Test>* const testNXN = &findIter->second;
          return testNXN;

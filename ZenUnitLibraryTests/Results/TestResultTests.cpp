@@ -74,7 +74,7 @@ namespace ZenUnit
    TEST6X6(SixArgConstructor_SetsFields_SetsWatchFunction,
       TestOutcome testBodyOutcome,
       TestOutcome cleanupOutcome,
-      unsigned maxtestmilliseconds,
+      unsigned maxTestMilliseconds,
       int relativeMicroseconds,
       TestOutcome expectedOverallOutcome,
       TestPhaseResult TestResult::* expectedResponsibleTestPhaseResultField,
@@ -107,7 +107,7 @@ namespace ZenUnit
       ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitArgs, GetArgs)
 
       ZenUnitArgs zenUnitArgs;
-      zenUnitArgs.maxtestmilliseconds = maxtestmilliseconds;
+      zenUnitArgs.maxTestMilliseconds = maxTestMilliseconds;
       if (expectedOverallOutcome == TestOutcome::Success ||
          expectedOverallOutcome == TestOutcome::SuccessButPastDeadline)
       {

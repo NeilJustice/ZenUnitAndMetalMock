@@ -8,7 +8,7 @@ namespace ZenUnit
    TestClassResult Random<TestClassResult>()
    {
       TestClassResult randomTestClassResult;
-      const vector<TestResult> randomTestResults = { ZenUnit::Random<TestResult>() };
+      const vector<TestResult> randomTestResults = ZenUnit::RandomVector<TestResult>();
       randomTestClassResult.AddTestResults(randomTestResults);
       return randomTestClassResult;
    }

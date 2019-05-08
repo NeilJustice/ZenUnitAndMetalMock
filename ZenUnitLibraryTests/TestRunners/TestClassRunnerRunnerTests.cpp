@@ -246,13 +246,13 @@ namespace ZenUnit
 
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.random = true;
-      zenUnitArgs.randomseedsetbyuser = ZenUnit::Random<bool>();
-      zenUnitArgs.randomseed = ZenUnit::Random<unsigned>();
+      zenUnitArgs.randomSeedSetByUser = ZenUnit::Random<bool>();
+      zenUnitArgs.randomSeed = ZenUnit::Random<unsigned>();
       //
       const vector<TestClassResult> testClassResults = _testClassRunnerRunner.RunTestClasses(zenUnitArgs);
       //
       ZENMOCK(_transformerMock->RandomTransformMock.CalledOnceWith(
-         &_testClassRunnerRunner._testClassRunners, &TestClassRunnerRunner::RunTestClassRunner, zenUnitArgs.randomseed));
+         &_testClassRunnerRunner._testClassRunners, &TestClassRunnerRunner::RunTestClassRunner, zenUnitArgs.randomSeed));
       VECTORS_EQUAL(transformReturnValue, testClassResults);
    }
 

@@ -10,14 +10,14 @@ namespace ZenUnit
       VECTORS_EQUAL(expectedArguments.runFilters, actualArgs.runFilters);
       ARE_EQUAL(expectedArguments.pause, actualArgs.pause);
       ARE_EQUAL(expectedArguments.wait, actualArgs.wait);
-      ARE_EQUAL(expectedArguments.exitzero, actualArgs.exitzero);
-      ARE_EQUAL(expectedArguments.failfast, actualArgs.failfast);
-      ARE_EQUAL(expectedArguments.noskips, actualArgs.noskips);
-      ARE_EQUAL(expectedArguments.testruns, actualArgs.testruns);
+      ARE_EQUAL(expectedArguments.exitZero, actualArgs.exitZero);
+      ARE_EQUAL(expectedArguments.failFast, actualArgs.failFast);
+      ARE_EQUAL(expectedArguments.noSkips, actualArgs.noSkips);
+      ARE_EQUAL(expectedArguments.testRuns, actualArgs.testRuns);
       ARE_EQUAL(expectedArguments.random, actualArgs.random);
-      ARE_EQUAL(expectedArguments.randomseed, actualArgs.randomseed);
-      ARE_EQUAL(expectedArguments.randomseedsetbyuser, actualArgs.randomseedsetbyuser);
-      ARE_EQUAL(expectedArguments.maxtestmilliseconds, actualArgs.maxtestmilliseconds);
-      ARE_EQUAL(expectedArguments.maxtotalseconds, actualArgs.maxtotalseconds);
+      ARE_EQUAL(expectedArguments.randomSeed, actualArgs.randomSeed);
+      ARE_EQUAL(expectedArguments.randomSeedSetByUser, actualArgs.randomSeedSetByUser);
+      ARE_EQUAL(expectedArguments.maxTestMilliseconds, actualArgs.maxTestMilliseconds);
+      ARE_EQUAL(expectedArguments.maxTotalSeconds, actualArgs.maxTotalSeconds);
    }
 }

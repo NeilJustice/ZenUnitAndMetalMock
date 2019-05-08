@@ -1405,17 +1405,24 @@ Expected-But-Not-Asserted ZenMocked Function
             console.Write("ZenMocked Function: ");
 				console.WriteLine(ZenMockedFunctionSignature);
             const ZenUnit::ZenUnitArgs& args = _call_TestRunner_GetArgs();
+
 				console.WriteColor("\n>------>>", ZenUnit::Color::Red);
-				console.WriteLine(" Completed: " + args.commandLine);
+				console.WriteLine("  Completed: " + args.commandLine);
+
+            console.WriteColor(">------>>", ZenUnit::Color::Red);
+            console.WriteLine(" RandomSeed: " + std::to_string(args.randomSeed));
+
 				console.WriteColor(">------>>", ZenUnit::Color::Red);
-				console.WriteLine(" StartTime: " + args.startTime);
+				console.WriteLine("  StartTime: " + args.startTime);
+
 				console.WriteColor(">------>>", ZenUnit::Color::Red);
 				ZenUnit::Watch watch;
 				const std::string endTime = watch.DateTimeNow();
-				console.WriteLine("   EndTime: " + endTime);
-				const int exitCode = args.exitzero ? 0 : 1;
+				console.WriteLine("    EndTime: " + endTime);
+
+				const int exitCode = args.exitZero ? 0 : 1;
 				console.WriteColor(">-FAIL->>", ZenUnit::Color::Red);
-				console.WriteLine("    Result: Fatal EBNA. Exiting with code " + std::to_string(exitCode) + ". (random seed " + std::to_string(args.randomseed) + ")");
+				console.WriteLine("     Result: Fatal EBNA. Exiting with code " + std::to_string(exitCode) + ". (random seed " + std::to_string(args.randomSeed) + ")");
             _call_exit(exitCode);
          }
       }

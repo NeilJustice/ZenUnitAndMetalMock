@@ -29,7 +29,7 @@ namespace ZenUnit
    AFACT(WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeFalse_DoesNothing_ReturnsFalse)
    AFACT(WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrue_HavePausedTrue_DoesNothing_ReturnsTrue)
    AFACT(WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrueHavePausedFalse_WritesMessageAndWaitsForAnyKey_ReturnsTrue)
-   FACTS(PrintPreambleRunTestClassesPrintConclusion_RunsTestsAndPrintsResults_UsingBackgroundThreadIfMaxTotalSecondsGT0_Returns0IfAllTestsPassedOtherwiseReturns1)
+   FACTS(PrintPreambleThenRunTestClassesThenPrintConclusionLines_RunsTestsAndPrintsResults_UsingBackgroundThreadIfMaxTotalSecondsGT0_Returns0IfAllTestsPassedOtherwiseReturns1)
    AFACT(RunTestClasses_RunsTestClasses)
    //FACTS(RunTestClassesWithWaitableRunnerThread_SpawnsThreadToCallRunTestClasses_PrintsResultsAndExits1IfThreadTimesOut)
    EVIDENCE
@@ -117,7 +117,7 @@ namespace ZenUnit
       ZenUnitArgs parsedZenUnitArgs;
       parsedZenUnitArgs.runFilters = { Random<RunFilter>(), Random<RunFilter>() };
       parsedZenUnitArgs.wait = ZenUnit::Random<bool>();
-      parsedZenUnitArgs.testruns = testrunsArg;
+      parsedZenUnitArgs.testRuns = testrunsArg;
       _argsParserMock->ParseMock.Return(parsedZenUnitArgs);
 
       _testClassRunnerRunnerMock->ApplyRunFiltersIfAnyMock.Expect();
@@ -135,14 +135,14 @@ namespace ZenUnit
       ZENMOCK(_argsParserMock->ParseMock.CalledOnceWith(commandLineArgs));
       ZENMOCK(_testClassRunnerRunnerMock->ApplyRunFiltersIfAnyMock.CalledOnceWith(parsedZenUnitArgs.runFilters));
       ZENMOCK(_nonVoidOneArgMemberFunctionCallerMock->NonConstCallMock.CalledNTimesWith(
-         testrunsArg, &_testRunner, &TestRunner::PrintPreambleRunTestClassesPrintConclusion, parsedZenUnitArgs));
+         testrunsArg, &_testRunner, &TestRunner::PrintPreambleThenRunTestClassesThenPrintConclusionLines, parsedZenUnitArgs));
       ZENMOCK(_testRunResultMock->ResetStateExceptForSkipsMock.CalledNTimes(testrunsArg));
       ZENMOCK(_consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.CalledOnceWith(parsedZenUnitArgs.wait));
       ARE_EQUAL(expectedOverallExitCode, overallExitCode);
    }
 
-   TEST3X3(PrintPreambleRunTestClassesPrintConclusion_RunsTestsAndPrintsResults_UsingBackgroundThreadIfMaxTotalSecondsGT0_Returns0IfAllTestsPassedOtherwiseReturns1,
-      unsigned maxtotalseconds,
+   TEST3X3(PrintPreambleThenRunTestClassesThenPrintConclusionLines_RunsTestsAndPrintsResults_UsingBackgroundThreadIfMaxTotalSecondsGT0_Returns0IfAllTestsPassedOtherwiseReturns1,
+      unsigned maxTotalSeconds,
       bool expectRunTestClassesWithWaitableRunnerThread,
       int determineExitCodeReturnValueAndExpectedExitCode,
       0u, false, 0,
@@ -161,7 +161,7 @@ namespace ZenUnit
 
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.commandLine = Random<string>();
-      zenUnitArgs.maxtotalseconds = maxtotalseconds;
+      zenUnitArgs.maxTotalSeconds = maxTotalSeconds;
       const string startTime = _preamblePrinterMock->PrintPreambleAndGetStartTimeMock.ReturnRandom();
       if (expectRunTestClassesWithWaitableRunnerThread)
       {
@@ -172,7 +172,7 @@ namespace ZenUnit
          _voidZeroArgMemberFunctionCallerMock->NonConstCallMock.Expect();
       }
       _testRunResultMock->PrintTestFailuresAndSkipsMock.Expect();
-      _testRunResultMock->PrintConclusionMock.Expect();
+      _testRunResultMock->PrintConclusionLinesMock.Expect();
 
       const size_t TotalNumberOfTestCases = Random<size_t>();
       _testClassRunnerRunnerMock->NumberOfTestCasesMock.Return(TotalNumberOfTestCases);
@@ -181,7 +181,7 @@ namespace ZenUnit
 
       _testRunResultMock->DetermineExitCodeMock.Return(determineExitCodeReturnValueAndExpectedExitCode);
       //
-      const int exitCode = _testRunner.PrintPreambleRunTestClassesPrintConclusion(zenUnitArgs);
+      const int exitCode = _testRunner.PrintPreambleThenRunTestClassesThenPrintConclusionLines(zenUnitArgs);
       //
       ZENMOCK(_nonVoidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
          &_testRunner, &TestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused,
@@ -189,23 +189,23 @@ namespace ZenUnit
       ARE_EQUAL(waitForAnyKeyIfPauseModeReturnValue, _testRunner._havePaused);
       ZENMOCK(_testRunStopwatchMock->StartMock.CalledOnce());
       ZENMOCK(_preamblePrinterMock->PrintPreambleAndGetStartTimeMock.CalledOnceWith(
-          zenUnitArgs, _testRunner._testClassRunnerRunner.get()));
+         zenUnitArgs, _testRunner._testClassRunnerRunner.get()));
       if (expectRunTestClassesWithWaitableRunnerThread)
       {
          ZENMOCK(_voidOneArgMemberFunctionCallerMock->NonConstCallMock.CalledOnceWith(
-            &_testRunner, &TestRunner::RunTestClassesWithWaitableRunnerThread, zenUnitArgs.maxtotalseconds));
+            &_testRunner, &TestRunner::RunTestClassesWithWaitableRunnerThread, zenUnitArgs.maxTotalSeconds));
       }
       else
       {
          ZENMOCK(_voidZeroArgMemberFunctionCallerMock->NonConstCallMock.CalledOnceWith(
-             &_testRunner, &TestRunner::RunTestClasses));
+            &_testRunner, &TestRunner::RunTestClasses));
       }
       const unsigned expectedTestRunMilliseconds = testRunMicroseconds / 1000;
       ZENMOCK(_testRunResultMock->PrintTestFailuresAndSkipsMock.CalledOnce());
       ZENMOCK(_testClassRunnerRunnerMock->NumberOfTestCasesMock.CalledOnce());
       ZENMOCK(_testRunStopwatchMock->StopMock.CalledOnce());
-      ZENMOCK(_testRunResultMock->PrintConclusionMock.CalledOnceWith(
-          startTime, TotalNumberOfTestCases, expectedTestRunMilliseconds, zenUnitArgs));
+      ZENMOCK(_testRunResultMock->PrintConclusionLinesMock.CalledOnceWith(
+         startTime, TotalNumberOfTestCases, expectedTestRunMilliseconds, zenUnitArgs));
       ZENMOCK(_testRunResultMock->DetermineExitCodeMock.CalledOnceWith(zenUnitArgs));
       ARE_EQUAL(determineExitCodeReturnValueAndExpectedExitCode, exitCode);
    }
