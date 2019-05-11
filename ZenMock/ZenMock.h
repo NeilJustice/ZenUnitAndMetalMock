@@ -1,4 +1,4 @@
-// C++ Mocking Framework ZenMock 0.4.0
+// C++ Mocking Framework ZenMock 0.5.0
 // https://github.com/NeilJustice/ZenMock
 // MIT License
 
@@ -4236,6 +4236,8 @@ Expected-But-Not-Asserted ZenMocked Function
 
       ZENMOCK_NONVOID0_CONST(std::string, String)
       ZENMOCK_NONVOID0_CONST(std::vector<std::string>, StringVector)
+
+      ZENMOCK_NONVOID0_CONST(std::filesystem::path, Path)
    };
 }
 
@@ -4557,8 +4559,8 @@ namespace ZenUnit
       static void Print(std::ostream& os, const ZenMock::OneArgumentCallRef<ArgType>& oneArgumentCall)
       {
          const std::string toStringedArgument = ZenUnit::ToStringer::ToString(oneArgumentCall.argumentReference.value);
-         os << "ZenMock::OneArgumentCall:\n"
-            << "Argument: " << toStringedArgument;
+         os << "ZenMock::OneArgumentCall:\n" <<
+            "Argument: " << toStringedArgument;
       }
    };
 

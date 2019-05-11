@@ -187,7 +187,7 @@ Testing Utility Options:
       //
       THROWS(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("0.4.0", 0));
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("0.5.0", 0));
 	}
 
    TEST(Parse_AllArgsSpecifiedExpectForRunFilter_ReturnsZenUnitArgsWithAllFieldsSets)

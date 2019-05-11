@@ -16,7 +16,7 @@ namespace ZenUnit
    FACTS(PrintIfFailure_Anomaly_PrintsExpected)
    FACTS(PrintIfFailure_Exception_PrintsExpected)
    AFACT(PrintIfFailure_SuccessButPastDeadline_PrintsExpected)
-   AFACT(PrintIfFailure_InvalidOutcome_Throws)
+   FACTS(PrintIfFailure_InvalidOutcome_Throws)
    FACTS(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseNumberIfTestCaseNumberNotMaxValue)
    AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
@@ -369,13 +369,17 @@ namespace ZenUnit
       ZENMOCK(_consoleMock.WriteNewLineMock.CalledOnce());
    }
 
-   TEST(PrintIfFailure_InvalidOutcome_Throws)
+   TEST1X1(PrintIfFailure_InvalidOutcome_Throws,
+      TestOutcome invalidTestOutcome,
+      TestOutcome::Unset,
+      TestOutcome::MaxValue)
    {
       ConsoleMock consoleMock;
       TestFailureNumbererMock testFailureNumbererMock;
-      _testResult.testOutcome = TestOutcome::Unset;
+      _testResult.testOutcome = invalidTestOutcome;
+      //
       THROWS(_testResult.PrintIfFailure(&consoleMock, &testFailureNumbererMock),
-         invalid_argument, "Invalid TestOutcome::Unset");
+         invalid_argument, "Invalid TestOutcome: " + to_string(static_cast<int>(invalidTestOutcome)));
    }
 
    TEST2X2(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseNumberIfTestCaseNumberNotMaxValue,

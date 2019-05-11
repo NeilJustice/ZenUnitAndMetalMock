@@ -1,38 +1,26 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Console/Mock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/TestRunners/Mock/TestClassRunnerRunnerMock.h"
-#include "ZenUnitUtilsAndAssertionTests/Utils/Mock/MachineNameGetterMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Utils/Mock/EnvironmentalistMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Utils/Time/Mock/WatchMock.h"
 
 namespace ZenUnit
 {
    TESTS(PreamblePrinterTests)
    AFACT(Constructor_NewsConsoleAndWatch)
-   AFACT(PrintPreambleAndGetStartTime_PrintsCommandLineAndStartTimeAndTestAndTestClassCounts_ReturnsStartTime)
-   FACTS(MakeThirdLinePrefix_ReturnsNumberOfTestClassesBeingRunAndMachineName)
-   FACTS(MakeThirdLineSuffix_ReturnsRandomSeedIfRandomModeOtherwiseEmptyString)
+   AFACT(PrintPreambleLinesAndGetStartTime_PrintsCommandLineAndStartTimeAndTestAndTestClassCounts_ReturnsStartTime)
    EVIDENCE
 
-   class PreamblePrinterSelfMocked : public Zen::Mock<PreamblePrinter>
-   {
-   public:
-      const ConsoleMock* consoleMock = nullptr;
-      const WatchMock* watchMock = nullptr;
-      PreamblePrinterSelfMocked() noexcept
-      {
-         _console.reset(consoleMock = new ConsoleMock);
-         _watch.reset(watchMock = new WatchMock);
-      }
-      ZENMOCK_NONVOID1_CONST(string, MakeThirdLinePrefix, size_t)
-      ZENMOCK_NONVOID2_CONST(string, MakeThirdLineSuffix, bool, unsigned)
-   } _preamblePrinterSelfMocked;
-
    PreamblePrinter _preamblePrinter;
-   const MachineNameGetterMock* _machineNameGetterMock = nullptr;
+   const ConsoleMock* _consoleMock = nullptr;
+   const WatchMock* _watchMock = nullptr;
+   const EnvironmentalistMock* _environmentalistMock = nullptr;
 
    STARTUP
    {
-      _preamblePrinter._machineNameGetter.reset(_machineNameGetterMock = new MachineNameGetterMock);
+      _preamblePrinter._environmentalist.reset(_environmentalistMock = new EnvironmentalistMock);
+      _preamblePrinter._console.reset(_consoleMock = new ConsoleMock);
+      _preamblePrinter._watch.reset(_watchMock = new WatchMock);
    }
 
    TEST(Constructor_NewsConsoleAndWatch)
@@ -40,65 +28,51 @@ namespace ZenUnit
       PreamblePrinter preamblePrinter;
       POINTER_WAS_NEWED(preamblePrinter._console);
       POINTER_WAS_NEWED(preamblePrinter._watch);
-      POINTER_WAS_NEWED(preamblePrinter._machineNameGetter);
+      POINTER_WAS_NEWED(preamblePrinter._environmentalist);
    }
 
-   TEST(PrintPreambleAndGetStartTime_PrintsCommandLineAndStartTimeAndTestAndTestClassCounts_ReturnsStartTime)
+   TEST(PrintPreambleLinesAndGetStartTime_PrintsCommandLineAndStartTimeAndTestAndTestClassCounts_ReturnsStartTime)
    {
-      _preamblePrinterSelfMocked.consoleMock->WriteColorMock.Expect();
-      _preamblePrinterSelfMocked.consoleMock->WriteLineMock.Expect();
+      _consoleMock->WriteLineColorMock.Expect();
+
+      _consoleMock->WriteColorMock.Expect();
+
+      _consoleMock->WriteLineMock.Expect();
+
+      const string currentDirectoryPath = _environmentalistMock->GetCurrentDirectoryPathMock.ReturnRandom();
+
+      const string machineName = _environmentalistMock->GetCurrentMachineNameMock.ReturnRandom();
+
+      const string userName = _environmentalistMock->GetCurrentUserNameMock.ReturnRandom();
+
+      const string startTime = _watchMock->DateTimeNowMock.ReturnRandom();
+
       TestClassRunnerRunnerMock testClassRunnerRunnerMock;
       const size_t numberOfTestClassesToBeRun = testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.ReturnRandom();
-      const string startTime = _preamblePrinterSelfMocked.watchMock->DateTimeNowMock.ReturnRandom();
-      const string thirdLinePrefix = _preamblePrinterSelfMocked.MakeThirdLinePrefixMock.ReturnRandom();
-      const string thirdLineSuffix = _preamblePrinterSelfMocked.MakeThirdLineSuffixMock.ReturnRandom();
 
-      ZenUnitArgs zenUnitArgs;
-      zenUnitArgs.commandLine = Random<string>();
-      zenUnitArgs.random = Random<bool>();
-      zenUnitArgs.randomSeed = Random<unsigned>();
+      const ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
       //
-      const string returnedStartTime = _preamblePrinterSelfMocked.
-         PrintPreambleAndGetStartTime(zenUnitArgs, &testClassRunnerRunnerMock);
+      const string returnedStartTime = _preamblePrinter.PrintPreambleLinesAndGetStartTime(args, &testClassRunnerRunnerMock);
       //
-      ZENMOCK(_preamblePrinterSelfMocked.watchMock->DateTimeNowMock.CalledOnce());
+      const std::string expectedZenUnitVersionLine = "[C++ Unit Testing Framework ZenUnit v" + std::string(Version::Number()) + "]";
+      ZENMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith(expectedZenUnitVersionLine, Color::Green));
+      ZENMOCK(_consoleMock->WriteColorMock.CalledNTimesWith(7, "[ZenUnit]", Color::Green));
       ZENMOCK(testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.CalledOnce());
-      ZENMOCK(_preamblePrinterSelfMocked.consoleMock->WriteColorMock.CalledNTimesWith(3, "[ZenUnit]", Color::Green));
-      ZENMOCK(_preamblePrinterSelfMocked.MakeThirdLinePrefixMock.CalledOnceWith(numberOfTestClassesToBeRun));
-      ZENMOCK(_preamblePrinterSelfMocked.MakeThirdLineSuffixMock.CalledOnceWith(zenUnitArgs.random, zenUnitArgs.randomSeed));
-      const string expectedThirdLineAndLineBreak = thirdLinePrefix + thirdLineSuffix;
-      ZENMOCK(_preamblePrinterSelfMocked.consoleMock->WriteLineMock.CalledAsFollows(
+      ZENMOCK(_environmentalistMock->GetCurrentDirectoryPathMock.CalledOnce());
+      ZENMOCK(_environmentalistMock->GetCurrentMachineNameMock.CalledOnce());
+      ZENMOCK(_environmentalistMock->GetCurrentUserNameMock.CalledOnce());
+      ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
+      ZENMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
       {
-         { " Running " + zenUnitArgs.commandLine },
-         { " Running at " + startTime },
-         { expectedThirdLineAndLineBreak }
+         { "     Running: " + args.commandLine },
+         { "   Directory: " + currentDirectoryPath },
+         { " MachineName: " + machineName },
+         { "    UserName: " + userName },
+         { "  RandomSeed: " + to_string(args.randomSeed) },
+         { " TestClasses: " + std::to_string(numberOfTestClassesToBeRun) },
+         { "   StartTime: " + startTime + "\n" }
       }));
       ARE_EQUAL(startTime, returnedStartTime);
-   }
-
-   TEST2X2(MakeThirdLinePrefix_ReturnsNumberOfTestClassesBeingRunAndMachineName,
-      const string& expectedReturnValuePrefix, size_t numberOfTestClasses,
-      " Running 0 test classes on machine ", size_t(0),
-      " Running 1 test class on machine ", size_t(1),
-      " Running 2 test classes on machine ", size_t(2))
-   {
-      const string machineName = _machineNameGetterMock->GetMachineNameMock.ReturnRandom();
-      //
-      const string thirdLinePrefix = _preamblePrinter.MakeThirdLinePrefix(numberOfTestClasses);
-      //
-      ZENMOCK(_machineNameGetterMock->GetMachineNameMock.CalledOnce());
-      const string expectedReturnValue = expectedReturnValuePrefix + machineName + " with ZenUnit 0.4.0";
-      ARE_EQUAL(expectedReturnValue, thirdLinePrefix);
-   }
-
-   TEST3X3(MakeThirdLineSuffix_ReturnsRandomSeedIfRandomModeOtherwiseEmptyString,
-      const string& expectedReturnValue, bool random, unsigned randomSeed,
-      "", false, ZenUnit::Random<unsigned>(),
-      " (random seed 0)", true, 0u,
-      " (random seed 1)", true, 1u)
-   {
-      const string thirdLineSuffix = _preamblePrinter.MakeThirdLineSuffix(random, randomSeed);
-      ARE_EQUAL(expectedReturnValue, thirdLineSuffix);
    }
 
    RUN_TESTS(PreamblePrinterTests)

@@ -1,10 +1,11 @@
-// C++ Unit Testing Framework ZenUnit 0.4.0
+// C++ Unit Testing Framework ZenUnit 0.5.0
 // https://github.com/NeilJustice/ZenUnit
 // MIT License
 
 #pragma once
 #include <array>
 #include <chrono>
+#include <filesystem>
 #include <functional>
 #include <iomanip>
 #include <iostream>
@@ -58,7 +59,7 @@ namespace ZenUnit
    class Version
    {
    public:
-      static const char* Number() { return "0.4.0"; }
+      static const char* Number() { return "0.5.0"; }
 
       static const std::string& CommandLineUsage()
       {
@@ -444,7 +445,8 @@ namespace ZenUnit
       Success,
       SuccessButPastDeadline,
       Anomaly,
-      Exception
+      Exception,
+      MaxValue
    };
 
    enum class ExpectedActualFormat : unsigned char
@@ -3656,8 +3658,10 @@ namespace ZenUnit
             break;
          }
          case TestOutcome::Unset:
+         case TestOutcome::MaxValue:
+         default:
          {
-            throw std::invalid_argument("Invalid TestOutcome::Unset");
+            throw std::invalid_argument("Invalid TestOutcome: " + std::to_string(static_cast<int>(testOutcome)));
          }
          }
       }
@@ -3792,33 +3796,52 @@ namespace ZenUnit
       }
    };
 
-   class MachineNameGetter
+   class Environmentalist
    {
-      friend class MachineNameGetterTests;
+      friend class EnvironmentalistTests;
    private:
+      std::function<std::filesystem::path()> _call_filesystem_current_path;
 #if defined __linux__ || defined __APPLE__
       std::function<int(char*, size_t)> _call_gethostname;
 #elif defined _WIN32
       std::function<BOOL(LPSTR, LPDWORD)> _call_GetComputerName;
+      std::function<BOOL(LPSTR, LPDWORD)> _call_GetUserName;
 #endif
    public:
-      MachineNameGetter() noexcept
+      Environmentalist() noexcept
+         : _call_filesystem_current_path(static_cast<std::filesystem::path(*)()>(std::filesystem::current_path))
 #if defined __linux__ || defined __APPLE__
-         : _call_gethostname(::gethostname)
+         , _call_gethostname(::gethostname)
 #elif defined _WIN32
-         : _call_GetComputerName(::GetComputerNameA)
+         , _call_GetComputerName(::GetComputerNameA)
+         , _call_GetUserName(::GetUserName)
 #endif
       {
       }
 
-      virtual ~MachineNameGetter() = default;
+      virtual ~Environmentalist() = default;
 
-      virtual std::string GetMachineName() const
+      virtual std::string GetCurrentDirectoryPath() const
+      {
+         std::string currentDirectoryPath = _call_filesystem_current_path().string();
+         return currentDirectoryPath;
+      }
+
+      virtual std::string GetCurrentMachineName() const
       {
 #if defined __linux__ || defined __APPLE__
          return GetLinuxMachineName();
 #elif defined _WIN32
          return GetWindowsMachineName();
+#endif
+      }
+
+      virtual std::string GetCurrentUserName() const
+      {
+#ifdef __linux__
+         return GetLinuxUserName();
+#elif _WIN32
+         return GetWindowsUserName();
 #endif
       }
    private:
@@ -3840,6 +3863,23 @@ namespace ZenUnit
          assert_true(didGetComputerName == TRUE);
          const std::string windowsMachineName(computerNameChars);
          return windowsMachineName;
+      }
+#endif
+
+#ifdef __linux__
+      virtual std::string GetLinuxUserName() const
+      {
+         return "LinuxUserNamePlaceholder";
+      }
+#elif _WIN32
+      virtual std::string GetWindowsUserName() const
+      {
+         char windowsUserNameChars[257];
+         DWORD size = sizeof(windowsUserNameChars);
+         const BOOL didGetUserName = _call_GetUserName(windowsUserNameChars, &size);
+         assert_true(didGetUserName == TRUE);
+         const std::string windowsUserName(windowsUserNameChars);
+         return windowsUserName;
       }
 #endif
    };
@@ -4144,47 +4184,50 @@ namespace ZenUnit
    private:
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const Watch> _watch;
-      std::unique_ptr<const MachineNameGetter> _machineNameGetter;
+      std::unique_ptr<const Environmentalist> _environmentalist;
    public:
       PreamblePrinter() noexcept
          : _console(std::make_unique<Console>())
          , _watch(std::make_unique<Watch>())
-         , _machineNameGetter(std::make_unique<MachineNameGetter>())
+         , _environmentalist(std::make_unique<Environmentalist>())
       {
       }
 
       virtual ~PreamblePrinter() = default;
 
-      virtual std::string PrintPreambleAndGetStartTime(const ZenUnitArgs& args, const TestClassRunnerRunner* testClassRunnerRunner) const
+      virtual std::string PrintPreambleLinesAndGetStartTime(
+         const ZenUnitArgs& args, const TestClassRunnerRunner* testClassRunnerRunner) const
       {
+         const std::string zenUnitVersionLine = "[C++ Unit Testing Framework ZenUnit v" + std::string(Version::Number()) + "]";
+         _console->WriteLineColor(zenUnitVersionLine, Color::Green);
+
          _console->WriteColor("[ZenUnit]", Color::Green);
-         _console->WriteLine(" Running " + args.commandLine);
+         _console->WriteLine("     Running: " + args.commandLine);
+
          _console->WriteColor("[ZenUnit]", Color::Green);
-         const std::string startTime = _watch->DateTimeNow();
-         _console->WriteLine(" Running at " + startTime);
+         const std::string currentDirectoryPath = _environmentalist->GetCurrentDirectoryPath();
+         _console->WriteLine("   Directory: " + currentDirectoryPath);
+
+         _console->WriteColor("[ZenUnit]", Color::Green);
+         const std::string machineName = _environmentalist->GetCurrentMachineName();
+         _console->WriteLine(" MachineName: " + machineName);
+
+         _console->WriteColor("[ZenUnit]", Color::Green);
+         const std::string userName = _environmentalist->GetCurrentUserName();
+         _console->WriteLine("    UserName: " + userName);
+
+         _console->WriteColor("[ZenUnit]", Color::Green);
+         _console->WriteLine("  RandomSeed: " + std::to_string(args.randomSeed));
+
          _console->WriteColor("[ZenUnit]", Color::Green);
          const size_t numberOfTestClassesToBeRun = testClassRunnerRunner->NumberOfTestClassesToBeRun();
-         const std::string thirdLinePrefix = MakeThirdLinePrefix(numberOfTestClassesToBeRun);
-         const std::string thirdLineSuffix = MakeThirdLineSuffix(args.random, args.randomSeed);
-         const std::string thirdLineAndLineBreak = thirdLinePrefix + thirdLineSuffix;
-         _console->WriteLine(thirdLineAndLineBreak);
-         return startTime;
-      }
-   private:
-      virtual std::string MakeThirdLinePrefix(size_t numberOfTestClassesToBeRun) const
-      {
-         const bool testClassesPlural = numberOfTestClassesToBeRun > 1 || numberOfTestClassesToBeRun == 0;
-         const std::string machineName = _machineNameGetter->GetMachineName();
-         const std::string thirdLinePrefix = String::Concat(
-            " Running ", numberOfTestClassesToBeRun, " test ", testClassesPlural ? "classes" : "class",
-            " on machine ", machineName, " with ZenUnit ", Version::Number());
-         return thirdLinePrefix;
-      }
+         _console->WriteLine(" TestClasses: " + std::to_string(numberOfTestClassesToBeRun));
 
-      virtual std::string MakeThirdLineSuffix(bool random, unsigned randomSeed) const
-      {
-         const std::string thirdLineSuffix = random ? " (random seed " + std::to_string(randomSeed) + ")" : "";
-         return thirdLineSuffix;
+         _console->WriteColor("[ZenUnit]", Color::Green);
+         const std::string startTime = _watch->DateTimeNow();
+         _console->WriteLine("   StartTime: " + startTime + "\n"); // TimeZone
+
+         return startTime;
       }
    };
 
@@ -4517,7 +4560,7 @@ namespace ZenUnit
          for (int testRunIndex = 0; testRunIndex < numberOfTestRuns; ++testRunIndex)
          {
             const int testRunExitCode = _nonVoidOneArgMemberFunctionCaller->NonConstCall(
-               this, &TestRunner::PrintPreambleThenRunTestClassesThenPrintConclusionLines, _args);
+               this, &TestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, _args);
             assert_true(testRunExitCode == 0 || testRunExitCode == 1);
             overallExitCode |= testRunExitCode;
             _testRunResult->ResetStateExceptForSkips();
@@ -4541,9 +4584,9 @@ namespace ZenUnit
          return true;
       }
 
-      int PrintPreambleThenRunTestClassesThenPrintConclusionLines(const ZenUnitArgs& args)
+      int PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines(const ZenUnitArgs& args)
       {
-         const std::string startTime = _preamblePrinter->PrintPreambleAndGetStartTime(args, _testClassRunnerRunner.get());
+         const std::string startTime = _preamblePrinter->PrintPreambleLinesAndGetStartTime(args, _testClassRunnerRunner.get());
          _havePaused = _nonVoidTwoArgMemberFunctionCaller->ConstCall(
             this, &TestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused, args.pause, _havePaused);
          _testRunStopwatch->Start();
@@ -6209,6 +6252,25 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
       return randomString;
    }
 
+   template<>
+   inline std::filesystem::path Random<std::filesystem::path>()
+   {
+      std::ostringstream randomPathBuilder;
+
+      const int numberOfSubfolders = ZenUnit::RandomBetween<int>(0, 2);
+      for (int i = 0; i < numberOfSubfolders; ++i)
+      {
+         randomPathBuilder << ZenUnit::Random<std::string>() << "/";
+      }
+
+      const std::string folderName = ZenUnit::Random<std::string>();
+      randomPathBuilder << folderName;
+
+      const std::string randomPathString = randomPathBuilder.str();
+      const std::filesystem::path randomFolderPath = randomPathString;
+      return randomFolderPath;
+   }
+
    template<typename EnumType>
    EnumType RandomEnum(EnumType exclusiveMaxValue)
    {
@@ -6333,6 +6395,8 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
 
       virtual std::string String() const { return ZenUnit::Random<std::string>(); }
       virtual std::vector<std::string> StringVector() const { return ZenUnit::RandomVector<std::string>(); }
+
+      virtual std::filesystem::path Path() const { return ZenUnit::Random<std::filesystem::path>(); }
 
       virtual ~RandomGenerator() = default;
    };
