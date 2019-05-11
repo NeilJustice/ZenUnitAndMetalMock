@@ -5,7 +5,6 @@
 #pragma once
 #include <array>
 #include <chrono>
-#include <filesystem>
 #include <functional>
 #include <iomanip>
 #include <iostream>
@@ -23,6 +22,7 @@
 #if defined __linux__ || defined __APPLE__
 #include <climits>
 #include <cxxabi.h>
+#include <experimental/filesystem>
 #include <memory>
 #include <string.h>
 #include <unistd.h>
@@ -33,6 +33,7 @@
 #include "Windows.h" // SetConsoleTextAttribute()
 #include <conio.h> // _getch()
 #include <io.h> // _isatty()
+#include <filesystem>
 #endif
 
 #define Comma , // For when parentheses are not enough
