@@ -23,23 +23,23 @@ matrix:
           sources: [ 'ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0' ]
           packages: [ 'ninja-build', 'clang-6.0', 'libstdc++-7-dev' ]
 
-          #    - os: linux
-          #      compiler: gcc
-          #      env: CMAKE_BUILD_TYPE=Debug COMPILER=g++-7
-          #      addons:
-          #        apt:
-          #          update: true
-          #          sources: [ 'ubuntu-toolchain-r-test' ]
-          #          packages: [ 'ninja-build', 'g++-7' ]
+              - os: linux
+                compiler: gcc
+                env: CMAKE_BUILD_TYPE=Debug COMPILER=g++-7
+                addons:
+                  apt:
+                    update: true
+                    sources: [ 'ubuntu-toolchain-r-test' ]
+                    packages: [ 'ninja-build', 'g++-7' ]
 
-          #    - os: linux
-          #      compiler: gcc
-          #      env: CMAKE_BUILD_TYPE=Release COMPILER=g++-7
-          #      addons:
-          #        apt:
-          #          update: true
-          #          sources: [ 'ubuntu-toolchain-r-test' ]
-          #          packages: [ 'ninja-build', 'g++-7' ]
+              - os: linux
+                compiler: gcc
+                env: CMAKE_BUILD_TYPE=Release COMPILER=g++-7
+                addons:
+                  apt:
+                    update: true
+                    sources: [ 'ubuntu-toolchain-r-test' ]
+                    packages: [ 'ninja-build', 'g++-7' ]
 
     - os: osx
       osx_image: xcode9.3
@@ -58,7 +58,7 @@ matrix:
 script:
   - mkdir build && cd build
   - cmake -GNinja .. -Werror=dev -DCMAKE_CXX_COMPILER="$COMPILER" -DCMAKE_BUILD_TYPE="$CMAKE_BUILD_TYPE"
-  - ninja -v -j 3
+  - ninja -v
 
   - ./ZenMockTests/ZenMockTests
   - ./ZenMockExamples/ZenMockExamples
