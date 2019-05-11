@@ -1,16 +1,16 @@
 <h1 align="center">ZenUnit & ZenMock</h1>
 
-<h4 align="center">ZenUnit is a single-header C++17 unit testing framework with a convenient syntax for writing value-parameterized and type-parameterized unit tests.</h4>
+<h4 align="center">ZenUnit is a single-header C++17 unit testing framework with a high-readability syntax for specifying value-parameterized and type-parameterized unit tests.</h4>
 
-<h4 align="center">ZenMock is a single-header C++17 mocking framework powered by ZenUnit that has a high-readability arrange-act-assert syntax for confirming the correctness of calls and return values to and from virtual, non-virtual, static, and free functions.</h4>
+<h4 align="center">ZenMock is a single-header C++17 mocking framework powered by ZenUnit with a high-readability arrange-act-assert syntax for confirming the correctness of calls and return values to and from virtual, non-virtual, static, and free functions.</h4>
 
 |Build Type|Build Status|
 |----------|------------|
 |Linux (Clang 6.0.1, GCC 7.4.0) and macOS (AppleClang 9.1.0)|<a href="https://travis-ci.org/NeilJustice/ZenUnit"><img src="https://travis-ci.org/NeilJustice/ZenUnit.svg?branch=master"/></a>|
 |Windows (Visual Studio 2017 and 2017 Preview x64 and Win32)|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitZenMock"><img src="https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true"/></a>|
 
-   * [ZenUnit design and the N-by-N value-parameterized test syntax](#zenunit-design-and-the-n-by-n-value-parameterized-test-syntax)
-   * [STARTUP and CLEANUP](#startup-and-cleanup)
+   * [ZenUnit Syntax And Design Philosophy](#zenunit-syntax-and-design-philosophy)
+   * [STARTUP Then CLEANUP](#startup-then-cleanup)
    * [Command Line Usage](#command-line-usage)
    * [Type-Parameterized Test Class Syntax](#type-parameterized-test-class-syntax)
    * [ZenUnit Assertions](#zenunit-assertions)
@@ -20,53 +20,61 @@
       * [Pointer Assertions](#pointer-assertions)
       * [Test Assertions](#test-assertions)
       * [Function Assertions](#function-assertions)
-   * [Macros For Defining Test Classes And Tests](#macros-for-defining-test-classes-and-tests)
-   * [Maximizing Mutation Coverage With Random Value Testing](#maximizing-mutation-coverage-with-random-value-testing)
+   * [ZenUnit Test Class And Test Defining Macros](#zenunit-test-class-and-test-defining-macros)
+   * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
 
-### ZenUnit design and the N-by-N value-parameterized test syntax
+### ZenUnit Syntax And Design Philosophy
 
 ```cpp
-#include "ZenUnit.h" // ZenUnit's single header file
-using namespace std::literals::string_literals; // For the 's' std::string literal
+#include "ZenUnit.h" // Single header
+using namespace std::literals::string_literals;
 
 // Function to be unit tested with ZenUnit
-std::string FizzBuzz(unsigned endNumber);
+std::string FizzBuzz(int endNumber);
 
 // TESTS defines a ZenUnit test class and begins the FACTS section.
 TESTS(FizzBuzzTests)
-// By way of a carefully-considered design decision to maximize long-term code maintainability,
-// in ZenUnit test names are duplicated between the FACTS section and the EVIDENCE section.
-// Having test names always up top instead of scattered throughout test files
-// makes it exceptionally easy to read the lay of the land
-// with respect to what behaviors a test class tests.
 
-// AFACT declares a non-value-parameterized test.
-AFACT(FizzBuzz_EndNumber0_Throws)
-// FACTS declares an N-by-N value-parameterized test.
+// To maximize long-term reviewability of safety-critical unit test code,
+// in ZenUnit test names are duplicated between the FACTS section and the EVIDENCE section.
+// Test names always up top instead of scattered throughout large test files
+// makes it exceptionally easy to quickly read the lay of the land
+// with respect to what a test class tests.
+
+// FACTS declares an N-by-N value-parameterized test, the signature feature of ZenUnit.
+FACTS(FizzBuzz_EndNumber0OrNegative_Throws)
 FACTS(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)
+
 // EVIDENCE concludes the declaration of FACTS section
-// and begins the presentation of EVIDENCE section,
-// also known as the test class body.
+// and begins the presentation of EVIDENCE section, also known as the test class body.
 EVIDENCE
 
-// TEST defines a non-value-parameterized test.
-TEST(FizzBuzz_EndNumber0_Throws)
+// TEST2X2 defines a 1-by-1 value-parameterized test
+// that processes its typesafe variadic arguments list 1-by-1.
+TEST1X1(FizzBuzz_EndNumber0OrNegative_Throws,
+   int invalidFizzBuzzEndNumber,
+   std::numeric_limits<int>::min(),
+   -2,
+   -1,
+   0)
 {
    // The ZenUnit THROWS assertion asserts that an expression throws *exactly* (not a derived class of)
    // an expected exception type with *exactly* an expected exception what() text.
-   // This double exactness design of THROWS helps to maximize mutation coverage
+   // This double-exactness design of THROWS works to maximize mutation coverage,
+   // an exciting new software quality metric that will eclipse code coverage in the 2020s,
    // by rendering the assertion immune to these two code mutations:
    // mutate-exception-type and mutate-exception-message.
-   THROWS(FizzBuzz(0), std::invalid_argument, "Invalid FizzBuzz() argument: endNumber must be 1 or greater");
+   THROWS(FizzBuzz(invalidFizzBuzzEndNumber), std::invalid_argument,
+      "Invalid FizzBuzz() argument: endNumber must be 1 or greater. endNumber: " + std::to_string(invalidFizzBuzzEndNumber));
 }
 
 // TEST2X2 defines a 2-by-2 value-parameterized test
 // that processes its typesafe variadic arguments list 2-by-2.
 // This TEST2X2 defines 16 test cases for FizzBuzz(),
-// each of which will run independently and sequentially within separate instances of FizzBuzzTests.
+// each of which run independently and sequentially within separate instances of FizzBuzzTests.
 // ZenUnit command line argument --random can be specified to run test cases in a random order.
 TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
-   unsigned endNumber, const std::string& expectedFizzBuzzSequence,
+   int endNumber, const std::string& expectedFizzBuzzSequence,
    1, "1"s,
    2, "1 2"s,
    3, "1 2 Fizz"s,
@@ -87,8 +95,43 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
    const std::string fizzBuzzSequence = FizzBuzz(endNumber);
    // ZenUnit assertion names are declarative in language style (ARE_EQUAL, THROWS, IS_TRUE, etc)
    // instead of procedural in language style (ASSERT_EQUAL, ASSERT_THROWS, ASSERT_TRUE, etc)
-   // to give ZenUnit a test reading experience akin to reading an executable specification document.
+   // to give ZenUnit a test reading experience similar to reading an executable specification document.
    ARE_EQUAL(expectedFizzBuzzSequence, fizzBuzzSequence);
+}
+
+RUN_TESTS(FizzBuzzTests)
+
+// Function under test
+std::string FizzBuzz(int endNumber)
+{
+   if (endNumber <= 0)
+   {
+      throw std::invalid_argument("Invalid FizzBuzz() argument: endNumber must be 1 or greater. endNumber: " + std::to_string(endNumber));
+   }
+   std::ostringstream oss;
+   for (int i = 1; i <= endNumber; ++i)
+   {
+      const bool divisibleBy3 = i % 3 == 0;
+      const bool divisibleBy5 = i % 5 == 0;
+      if (divisibleBy3)
+      {
+         oss << "Fizz";
+      }
+      if (divisibleBy5)
+      {
+         oss << "Buzz";
+      }
+      if (!divisibleBy3 && !divisibleBy5)
+      {
+         oss << i;
+      }
+      if (i < endNumber)
+      {
+         oss << ' ';
+      }
+   }
+   const std::string fizzBuzzSequence(oss.str());
+   return fizzBuzzSequence;
 }
 
 // RUN_TESTS registers a test class to be run when ZenUnit::RunTests(argc, argv) is called.
@@ -141,9 +184,10 @@ int main(int argc, char* argv[])
 
 ![ZenUnit](Screenshots/ZenUnitFizzBuzz.png "ZenUnit")
 
-### STARTUP and CLEANUP
+### STARTUP Then CLEANUP
 
 For defining a function to be called before each test and test case, there is STARTUP.
+
 For defining a function to be called after each test and test case, there is CLEANUP.
 
 ```cpp
@@ -363,7 +407,7 @@ int main(int argc, char* argv[])
 |`STD_FUNCTION_TARGETS(expectedStaticOrFreeFunction, stdFunction, messages...)`|First asserts `IS_TRUE(stdFunction)`, which asserts that stdFunction points to a function, then asserts `ARE_EQUAL(expectedStaticOrFreeFunction, *stdFunction.target<decltype(expectedStaticOrFreeFunction)*>())`. This is a key assertion to call prior to overwriting a `std::function` with a [ZenMock](https://github.com/NeilJustice/ZenMock) mock object.|
 |`STD_FUNCTION_TARGETS_OVERLOAD(expectedOverloadTypeInTheFormOfAUsing, expectedStaticOrFreeFunction, stdFunction, messages...)`|Same as above but with `static_cast<expectedOverloadTypeInTheFormOfAUsing>(expectedStaticOrFreeFunction)`.|
 
-### Macros For Defining Test Classes And Tests
+### ZenUnit Test Class And Test Defining Macros
 
 |Test Classes|Description|
 |------------|-----------|
@@ -388,9 +432,9 @@ int main(int argc, char* argv[])
 |`THEN_RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)`|Registers a `TEMPLATE_TEST_CLASS` templatized with `TemplateArguments...` to be run when `ZenUnit::RunTests(argc, argv)` is called. For use after `RUN_TEMPLATE_TESTS`.|
 |`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Skips a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called. For use after `SKIP_TEMPLATE_TESTS`.|
 
-### Maximizing Mutation Coverage With Random Value Testing
+### Maximize Mutation Coverage By Testing With Random Values
 
-ZenUnit provides the following random value generating functions for writing unit tests that are robust to the swap-variable-with-constant code mutation, which is one of the most straightforward code mutations to induce manually today or automatically in the 2020s with an LLVM-powered mutation testing framework.
+ZenUnit provides the following random value generating functions for writing unit tests that are robust to the swap-variable-with-constant code mutation, which is one of the most straightforward code mutations to induce manually today during code reviews or automatically at CI/CD time in the 2020s with LLVM-powered mutation testing framework [Mull](https://github.com/mull-project/mull).
 
 |Random Value Generating Function|Description|
 |--------------------------------|-----------|

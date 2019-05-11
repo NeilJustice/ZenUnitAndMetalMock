@@ -1,21 +1,26 @@
 #include "pch.h"
 using namespace std::literals::string_literals;
 
-std::string FizzBuzz(unsigned endNumber);
+std::string FizzBuzz(int endNumber);
 
 TESTS(FizzBuzzTests)
-AFACT(FizzBuzz_EndNumber0_Throws)
+FACTS(FizzBuzz_EndNumber0OrNegative_Throws)
 FACTS(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence)
 EVIDENCE
 
-TEST(FizzBuzz_EndNumber0_Throws)
+TEST1X1(FizzBuzz_EndNumber0OrNegative_Throws,
+   int invalidFizzBuzzEndNumber,
+   std::numeric_limits<int>::min(),
+   -2,
+   -1,
+   0)
 {
-   THROWS(FizzBuzz(0), std::invalid_argument,
-      "Invalid FizzBuzz() argument: endNumber must be 1 or greater");
+   THROWS(FizzBuzz(invalidFizzBuzzEndNumber), std::invalid_argument,
+      "Invalid FizzBuzz() argument: endNumber must be 1 or greater. endNumber: " + std::to_string(invalidFizzBuzzEndNumber));
 }
 
 TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
-   unsigned endNumber, const std::string& expectedFizzBuzzSequence,
+   int endNumber, const std::string& expectedFizzBuzzSequence,
    1, "1"s,
    2, "1 2"s,
    3, "1 2 Fizz"s,
@@ -39,14 +44,14 @@ TEST2X2(FizzBuzz_EndNumberGreaterThan0_ReturnsFizzBuzzSequence,
 
 RUN_TESTS(FizzBuzzTests)
 
-std::string FizzBuzz(unsigned endNumber)
+std::string FizzBuzz(int endNumber)
 {
-   if (endNumber == 0)
+   if (endNumber <= 0)
    {
-      throw std::invalid_argument("Invalid FizzBuzz() argument: endNumber must be 1 or greater");
+      throw std::invalid_argument("Invalid FizzBuzz() argument: endNumber must be 1 or greater. endNumber: " + std::to_string(endNumber));
    }
    std::ostringstream oss;
-   for (unsigned i = 1; i <= endNumber; ++i)
+   for (int i = 1; i <= endNumber; ++i)
    {
       const bool divisibleBy3 = i % 3 == 0;
       const bool divisibleBy5 = i % 5 == 0;
