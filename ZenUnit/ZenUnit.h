@@ -23,6 +23,7 @@
 #include <climits>
 #include <cxxabi.h>
 #include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
 #include <memory>
 #include <string.h>
 #include <unistd.h>
@@ -34,6 +35,7 @@
 #include <conio.h> // _getch()
 #include <io.h> // _isatty()
 #include <filesystem>
+namespace fs = std::filesystem;
 #endif
 
 #define Comma , // For when parentheses are not enough
@@ -3801,7 +3803,7 @@ namespace ZenUnit
    {
       friend class EnvironmentalistTests;
    private:
-      std::function<std::filesystem::path()> _call_filesystem_current_path;
+      std::function<fs::path()> _call_filesystem_current_path;
 #if defined __linux__ || defined __APPLE__
       std::function<int(char*, size_t)> _call_gethostname;
 #elif defined _WIN32
@@ -3810,7 +3812,7 @@ namespace ZenUnit
 #endif
    public:
       Environmentalist() noexcept
-         : _call_filesystem_current_path(static_cast<std::filesystem::path(*)()>(std::filesystem::current_path))
+         : _call_filesystem_current_path(static_cast<fs::path(*)()>(fs::current_path))
 #if defined __linux__ || defined __APPLE__
          , _call_gethostname(::gethostname)
 #elif defined _WIN32
@@ -6254,7 +6256,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    }
 
    template<>
-   inline std::filesystem::path Random<std::filesystem::path>()
+   inline fs::path Random<fs::path>()
    {
       std::ostringstream randomPathBuilder;
 
@@ -6268,7 +6270,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
       randomPathBuilder << folderName;
 
       const std::string randomPathString = randomPathBuilder.str();
-      const std::filesystem::path randomFolderPath = randomPathString;
+      const fs::path randomFolderPath = randomPathString;
       return randomFolderPath;
    }
 
@@ -6397,7 +6399,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
       virtual std::string String() const { return ZenUnit::Random<std::string>(); }
       virtual std::vector<std::string> StringVector() const { return ZenUnit::RandomVector<std::string>(); }
 
-      virtual std::filesystem::path Path() const { return ZenUnit::Random<std::filesystem::path>(); }
+      virtual fs::path Path() const { return ZenUnit::Random<fs::path>(); }
 
       virtual ~RandomGenerator() = default;
    };

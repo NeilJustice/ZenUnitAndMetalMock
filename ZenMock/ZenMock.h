@@ -4237,7 +4237,7 @@ Expected-But-Not-Asserted ZenMocked Function
       ZENMOCK_NONVOID0_CONST(std::string, String)
       ZENMOCK_NONVOID0_CONST(std::vector<std::string>, StringVector)
 
-      ZENMOCK_NONVOID0_CONST(std::filesystem::path, Path)
+      ZENMOCK_NONVOID0_CONST(fs::path, Path)
    };
 }
 

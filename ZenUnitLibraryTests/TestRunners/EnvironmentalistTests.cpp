@@ -26,7 +26,7 @@ namespace ZenUnit
    } _environmentalistSelfMocked;
 
    Environmentalist _environmentalist;
-   ZENMOCK_NONVOID0_FREE(std::filesystem::path, current_path)
+   ZENMOCK_NONVOID0_FREE(fs::path, current_path)
 #if defined __linux__ || defined __APPLE__
    ZENMOCK_NONVOID2_FREE(int, gethostname, char*, size_t)
 #elif defined _WIN32
