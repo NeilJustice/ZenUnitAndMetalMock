@@ -25,9 +25,6 @@ add_executable(ZenMockTests ${Sources})
 
 if(UNIX)
    target_link_libraries(ZenMockTests stdc++fs)
-   if(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
-      target_link_libraries(ZenMockTests c++experimental)
-   endif()
 endif()
 
 if(EXISTS ${GoogleBenchmarkIncludeDirectory})

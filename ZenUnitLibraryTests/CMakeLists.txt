@@ -36,9 +36,6 @@ target_link_libraries(ZenUnitLibraryTests ZenUnitTestUtils)
 
 if(UNIX)
    target_link_libraries(ZenUnitLibraryTests stdc++fs)
-   if(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
-      target_link_libraries(ZenUnitLibraryTests c++experimental)
-   endif()
 endif()
 
 if(EXISTS ${GoogleBenchmarkIncludeDirectory})

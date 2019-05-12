@@ -12,9 +12,6 @@ add_executable(ZenMockExamples ${Sources})
 
 if(UNIX)
    target_link_libraries(ZenMockExamples stdc++fs)
-   if(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
-      target_link_libraries(ZenMockExamples c++experimental)
-   endif()
 endif()
 
 EnablePrecompiledHeaders()
