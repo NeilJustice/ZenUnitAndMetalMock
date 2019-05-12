@@ -10,6 +10,13 @@ source_group("" FILES ${Sources})
 
 add_executable(ZenUnitExamples ${Sources})
 
+if(UNIX)
+   target_link_libraries(ZenUnitExamples stdc++fs)
+   if(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
+      target_link_libraries(ZenUnitExamples c++experimental)
+   endif()
+endif()
+
 EnablePrecompiledHeaders()
 IfMSVCAddRunTestsPostBuildStep()
 

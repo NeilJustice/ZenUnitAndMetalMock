@@ -22,6 +22,14 @@ source_group("" FILES ZenMockTestMain.cpp pch.h pch.cpp)
 file(GLOB_RECURSE Sources *.h *.cpp)
 
 add_executable(ZenMockTests ${Sources})
+
+if(UNIX)
+   target_link_libraries(ZenMockTests stdc++fs)
+   if(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
+      target_link_libraries(ZenMockTests c++experimental)
+   endif()
+endif()
+
 if(EXISTS ${GoogleBenchmarkIncludeDirectory})
    target_link_libraries(ZenMockTests ${GoogleBenchmarkLibraryPath})
    if(WIN32)

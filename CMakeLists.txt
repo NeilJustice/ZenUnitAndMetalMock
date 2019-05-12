@@ -5,7 +5,7 @@ include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 if(UNIX)
    set(CMAKE_CXX_FLAGS "-std=c++17 -Wall -Wextra -Werror -pthread -Wno-unused-parameter")
    if(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
-      append(CMAKE_CXX_FLAGS "-pedantic -Wno-gnu-zero-variadic-macro-arguments")
+      append(CMAKE_CXX_FLAGS "-stdlib=libc++ -pedantic -Wno-gnu-zero-variadic-macro-arguments")
    elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
       append(CMAKE_CXX_FLAGS "-Wno-attributes -Wno-nonnull")
    endif()
@@ -47,8 +47,6 @@ add_subdirectory(ZenMockTests)
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
 
 if(UNIX)
-   link_libraries(stdc++fs)
-   
    include(ProcessorCount)
    ProcessorCount(NumberOfCores)
    add_custom_target(clang-tidy COMMAND

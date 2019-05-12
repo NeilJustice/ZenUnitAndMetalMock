@@ -13,7 +13,7 @@
       {
          "taskName": "Build Debug",
          "args": [ "cd ${workspaceRoot}/Debug && time ninja -v" ],
-         "isBuildCommand": false,
+         "isBuildCommand": true,
          "problemMatcher":
          {
             "owner": "cpp",
@@ -28,7 +28,7 @@
       {
          "taskName": "Build Release",
          "args": [ "cd ${workspaceRoot}/Release && time ninja -v" ],
-         "isBuildCommand": true,
+         "isBuildCommand": false,
          "problemMatcher":
          {
             "owner": "cpp",
@@ -42,7 +42,7 @@
       },
       {
          "taskName": "Run Debug",
-         "isTestCommand": false,
+         "isTestCommand": true,
          "args": [ "${workspaceRoot}/Debug/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests" ]
       },
       {
@@ -52,7 +52,7 @@
       },
       {
          "taskName": "Run Python",
-         "isTestCommand": true,
+         "isTestCommand": false,
          "args": [ "export PYTHONPATH=.. && python3 ${file}" ]
       },
       {

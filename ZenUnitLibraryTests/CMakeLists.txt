@@ -34,6 +34,13 @@ file(GLOB_RECURSE Sources *.h *.cpp)
 add_executable(ZenUnitLibraryTests ${Sources})
 target_link_libraries(ZenUnitLibraryTests ZenUnitTestUtils)
 
+if(UNIX)
+   target_link_libraries(ZenUnitLibraryTests stdc++fs)
+   if(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
+      target_link_libraries(ZenUnitLibraryTests c++experimental)
+   endif()
+endif()
+
 if(EXISTS ${GoogleBenchmarkIncludeDirectory})
    target_link_libraries(ZenUnitLibraryTests ${GoogleBenchmarkLibraryPath})
    if(WIN32)
