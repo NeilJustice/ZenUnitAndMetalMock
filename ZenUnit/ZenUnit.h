@@ -22,8 +22,8 @@
 #if defined __linux__ || defined __APPLE__
 #include <climits>
 #include <cxxabi.h>
-#include <experimental/filesystem>
-namespace fs = std::experimental::filesystem;
+#include <climits>
+#include <cxxabi.h>
 #include <memory>
 #include <string.h>
 #include <unistd.h>
@@ -34,6 +34,12 @@ namespace fs = std::experimental::filesystem;
 #include "Windows.h" // SetConsoleTextAttribute()
 #include <conio.h> // _getch()
 #include <io.h> // _isatty()
+#endif
+
+#if defined __linux__
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#elif defined _WIN32 || defined __APPLE__
 #include <filesystem>
 namespace fs = std::filesystem;
 #endif
