@@ -32,14 +32,13 @@ endif()
 # Travis CI OSX tries to build header-only ZenUnit and ZenMock into a static library .a files
 if(NOT APPLE)
    add_subdirectory(ZenUnit)
-	add_subdirectory(ZenMock)
+   add_subdirectory(ZenMock)
 endif()
 add_subdirectory(ZenUnitUtilsAndAssertionTests)
 add_subdirectory(ZenUnitExamples)
 add_subdirectory(ZenUnitLibraryTests)
 add_subdirectory(ZenUnitTestUtils)
 add_subdirectory(ZenUnitCompileSpeed)
-
 add_subdirectory(ZenMockExamples)
 add_subdirectory(ZenMockTests)
 
@@ -48,6 +47,8 @@ add_subdirectory(ZenMockTests)
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
 
 if(UNIX)
+   link_libraries(stdc++fs)
+   
    include(ProcessorCount)
    ProcessorCount(NumberOfCores)
    add_custom_target(clang-tidy COMMAND
