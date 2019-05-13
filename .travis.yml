@@ -46,19 +46,19 @@ matrix:
           sources: [ 'ubuntu-toolchain-r-test' ]
           packages: [ 'ninja-build', 'g++-8' ]
 
-    - os: osx
-      osx_image: xcode10
-      compiler: clang
-      env: CMAKE_BUILD_TYPE=Debug COMPILER=clang++
-      before_install:
-        - brew install ninja llvm
+          #- os: osx
+          #      osx_image: xcode10
+          #      compiler: clang
+          #      env: CMAKE_BUILD_TYPE=Debug COMPILER=clang++
+          #      before_install:
+          #        - brew install ninja llvm
 
-    - os: osx
-      osx_image: xcode10
-      compiler: clang
-      env: CMAKE_BUILD_TYPE=Release COMPILER=clang++
-      before_install:
-        - brew install ninja llvm
+          #    - os: osx
+          #      osx_image: xcode10
+          #      compiler: clang
+          #      env: CMAKE_BUILD_TYPE=Release COMPILER=clang++
+          #      before_install:
+          #        - brew install ninja llvm
 
 script:
   - clang++ --version
