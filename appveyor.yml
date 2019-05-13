@@ -19,7 +19,11 @@ init:
    - cmd: cmake --version
    - cmd: msbuild /version
 
+install:
+   - sudo apt-get install cmake
+
 before_build:
+   - cmake --version
    - cmake -A %platform% -G "%generator%" .
 
 build_script:
