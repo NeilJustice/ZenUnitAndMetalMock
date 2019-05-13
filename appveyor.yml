@@ -3,6 +3,7 @@ shallow_clone: true
 image:
     - Visual Studio 2017
     - Visual Studio 2017 Preview
+    - Visual Studio 2019 Preview
 
 environment:
    matrix:
@@ -11,7 +12,7 @@ environment:
 configuration:
    - Debug
    - Release
-   
+
 platform:
    - x64
    - Win32
@@ -21,3 +22,4 @@ before_build:
 
 build_script:
    - cmake --build . --config %configuration% -- /m
+
