@@ -8,14 +8,15 @@ image:
 environment:
    matrix:
       - generator: "Visual Studio 15 2017"
-
-configuration:
-   - Debug
-   - Release
+      - generator: "Visual Studio 16 2019"
 
 platform:
    - x64
    - Win32
+
+configuration:
+   - Debug
+   - Release
 
 before_build:
    - cmake -A %platform% -G "%generator%" .
