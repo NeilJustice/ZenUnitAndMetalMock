@@ -16,7 +16,7 @@ matrix:
         apt:
           update: true
           sources: [ 'ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0' ]
-          packages: [ 'ninja-build', 'clang-6.0', 'libstdc++-7-dev', 'lcov' ]
+          packages: [ 'ninja-build', 'clang-6.0', 'libjsoncpp-dev', 'libstdc++-7-dev', 'lcov' ]
 
     - os: linux
       compiler: clang
@@ -25,7 +25,7 @@ matrix:
         apt:
           update: true
           sources: [ 'ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0' ]
-          packages: [ 'ninja-build', 'clang-6.0', 'libstdc++-7-dev', 'lcov' ]
+          packages: [ 'ninja-build', 'clang-6.0', 'libjsoncpp-dev', 'libstdc++-7-dev', 'lcov' ]
 
     - os: linux
       compiler: gcc
