@@ -56,6 +56,8 @@ matrix:
     #    - brew install ninja llvm
 
 script:
+  - clang++ --version
+  - g++ --version
   - mkdir build && cd build
   - cmake -GNinja .. -Werror=dev -DCMAKE_CXX_COMPILER="$COMPILER" -DCMAKE_BUILD_TYPE="$CMAKE_BUILD_TYPE"
   - ninja -v
