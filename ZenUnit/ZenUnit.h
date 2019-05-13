@@ -36,10 +36,10 @@
 #include <io.h> // _isatty()
 #endif
 
-#if defined __linux__ || defined __APPLE__
+#if defined __linux__
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
-#elif defined _WIN32
+#elif defined _WIN32 || defined __APPLE__
 #include <filesystem>
 namespace fs = std::filesystem;
 #endif
