@@ -1,11 +1,11 @@
 shallow_clone: true
 
 image:
-    - Visual Studio 2019 Preview
+    - Visual Studio 2017
 
 environment:
    matrix:
-      - generator: "Visual Studio 16 2019"
+      - generator: "Visual Studio 15 2017"
 
 platform:
    - x64
@@ -18,9 +18,6 @@ configuration:
 init:
    - cmd: cmake --version
    - cmd: msbuild /version
-
-install:
-   - sudo apt-get install cmake
 
 before_build:
    - cmake --version
