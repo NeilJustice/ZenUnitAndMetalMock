@@ -15,6 +15,10 @@ configuration:
    - Debug
    - Release
 
+init:
+   - cmd: cmake --version
+   - cmd: msbuild /version
+
 before_build:
    - cmake -A %platform% -G "%generator%" .
 
