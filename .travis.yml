@@ -1,7 +1,6 @@
 os: linux
 dist: xenial
 sudo: false
-group: travis_latest
 language: cpp
 cache: ccache
 
