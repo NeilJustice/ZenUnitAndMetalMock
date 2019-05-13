@@ -1,13 +1,10 @@
 shallow_clone: true
 
 image:
-    - Visual Studio 2017
-    - Visual Studio 2017 Preview
     - Visual Studio 2019 Preview
 
 environment:
    matrix:
-      - generator: "Visual Studio 15 2017"
       - generator: "Visual Studio 16 2019"
 
 platform:
