@@ -17,7 +17,7 @@ matrix:
         apt:
           update: true
           sources: [ 'ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0' ]
-          packages: [ 'ninja-build', 'clang-6.0', 'libstdc++-7-dev' ]
+          packages: [ 'ninja-build', 'clang-6.0', 'libjsoncpp0', 'libstdc++-7-dev', 'lcov' ]
 
     - os: linux
       compiler: clang
@@ -26,7 +26,7 @@ matrix:
         apt:
           update: true
           sources: [ 'ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0' ]
-          packages: [ 'ninja-build', 'clang-6.0', 'libstdc++-7-dev' ]
+          packages: [ 'ninja-build', 'clang-6.0', 'libjsoncpp0', 'libstdc++-7-dev', 'lcov' ]
 
     - os: linux
       compiler: gcc
@@ -65,6 +65,7 @@ script:
   - g++ --version
   - cmake --version
   - ninja --version
+  - python3 --version
 
   - mkdir build && cd build
   - cmake -GNinja .. -Werror=dev -DCMAKE_CXX_COMPILER="$COMPILER" -DCMAKE_BUILD_TYPE="$CMAKE_BUILD_TYPE"
