@@ -22,6 +22,9 @@
       * [Function Assertions](#function-assertions)
    * [ZenUnit Test Class And Test Defining Macros](#zenunit-test-class-and-test-defining-macros)
    * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
+   * [ZenMock](#zenmock)
+   * [2019 ZenUnit Road Map](#2019-zenunit-road-map)
+   * [2019 ZenMock Road Map](#2019-zenmock-road-map)
 
 ### ZenUnit Syntax And Design Philosophy
 
@@ -450,3 +453,18 @@ ZenUnit provides the following random value generating functions for writing uni
 |`ZenUnit::RandomUnorderedMap<T>()`|Returns a `std::unordered_map<KeyType, ValueType>` with size between 0 and 3 with each key a `ZenUnit::Random<KeyType>()` value and each value a `ZenUnit::Random<ValueType>()` value.|
 |`ZenUnit::RandomSet<T>()`|Returns a `std::set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
 |`ZenUnit::RandomUnorderedSet<T>()`|Returns a `std::unordered_set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
+
+### ZenMock
+
+Guide To ZenMock
+
+### 2019 ZenUnit Road Map
+
+* 100% code coverage CodeCov badge
+* --parallel
+* Documentation showing how ZenUnit and ZenMock are clang-tidied, AddressSantized, UndefinedBehaviorSanitized, and ThreadSanitized in a Linux Jenkins build pipeline.
+
+### 2019 ZenMock Road Map
+
+* ZenMockObject.CallInstead(callable)
+* Ordered function call assertions
