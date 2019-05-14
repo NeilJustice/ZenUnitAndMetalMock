@@ -4210,35 +4210,6 @@ Expected-But-Not-Asserted ZenMocked Function
          return zenMockedFunctionPointerSignature;
       }
    };
-
-	// ZenMock::RandomGeneratorMock can be used to confirm the correctness of ZenUnit::Random<T>() functions
-   class RandomGeneratorMock : public Zen::Mock<ZenUnit::RandomGenerator>
-   {
-   public:
-		ZENMOCK_NONVOID0_CONST(char, Char)
-		ZENMOCK_NONVOID0_CONST(unsigned char, UnsignedChar)
-
-      ZENMOCK_NONVOID0_CONST(bool, Bool)
-
-		ZENMOCK_NONVOID0_CONST(short, Short)
-		ZENMOCK_NONVOID0_CONST(unsigned short, UnsignedShort)
-
-      ZENMOCK_NONVOID0_CONST(int, Int)
-      ZENMOCK_NONVOID0_CONST(unsigned int, UnsignedInt)
-
-      ZENMOCK_NONVOID1_CONST(int, Enum, int)
-
-      ZENMOCK_NONVOID0_CONST(long long, LongLong)
-      ZENMOCK_NONVOID0_CONST(unsigned long long, UnsignedLongLong)
-
-      ZENMOCK_NONVOID0_CONST(float, Float)
-		ZENMOCK_NONVOID0_CONST(double, Double)
-
-      ZENMOCK_NONVOID0_CONST(std::string, String)
-      ZENMOCK_NONVOID0_CONST(std::vector<std::string>, StringVector)
-
-      ZENMOCK_NONVOID0_CONST(fs::path, Path)
-   };
 }
 
 namespace ZenUnit
@@ -4558,9 +4529,8 @@ namespace ZenUnit
    {
       static void Print(std::ostream& os, const ZenMock::OneArgumentCallRef<ArgType>& oneArgumentCall)
       {
-         const std::string toStringedArgument = ZenUnit::ToStringer::ToString(oneArgumentCall.argumentReference.value);
          os << "ZenMock::OneArgumentCall:\n" <<
-            "Argument: " << toStringedArgument;
+               "Argument: " << ZenUnit::ToStringer::ToString(oneArgumentCall.argumentReference.value);
       }
    };
 
@@ -4569,11 +4539,9 @@ namespace ZenUnit
    {
       static void Print(std::ostream& os, const ZenMock::TwoArgumentCallRef<Arg1Type, Arg2Type>& twoArgumentCallRef)
       {
-         const std::string toStringedArgument1 = ZenUnit::ToStringer::ToString(twoArgumentCallRef.firstArgumentReference.value);
-         const std::string toStringedArgument2 = ZenUnit::ToStringer::ToString(twoArgumentCallRef.secondArgumentReference.value);
          os << "ZenMock::TwoArgumentCall:\n"
-            "Argument1: " << toStringedArgument1 << '\n' <<
-            "Argument2: " << toStringedArgument2;
+               "Argument1: " << ZenUnit::ToStringer::ToString(twoArgumentCallRef.firstArgumentReference.value) << '\n' <<
+               "Argument2: " << ZenUnit::ToStringer::ToString(twoArgumentCallRef.secondArgumentReference.value);
       }
    };
 
@@ -4582,13 +4550,10 @@ namespace ZenUnit
    {
       static void Print(std::ostream& os, const ZenMock::ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>& threeArgumentCallRef)
       {
-         const std::string toStringedArgument1 = ZenUnit::ToStringer::ToString(threeArgumentCallRef.firstArgumentReference.value);
-         const std::string toStringedArgument2 = ZenUnit::ToStringer::ToString(threeArgumentCallRef.secondArgumentReference.value);
-         const std::string toStringedArgument3 = ZenUnit::ToStringer::ToString(threeArgumentCallRef.thirdArgumentReference.value);
          os << "ZenMock::ThreeArgumentCall:\n"
-            "Argument1: " << toStringedArgument1 << '\n' <<
-            "Argument2: " << toStringedArgument2 << '\n' <<
-            "Argument3: " << toStringedArgument3;
+               "Argument1: " << ZenUnit::ToStringer::ToString(threeArgumentCallRef.firstArgumentReference.value) << '\n' <<
+               "Argument2: " << ZenUnit::ToStringer::ToString(threeArgumentCallRef.secondArgumentReference.value) << '\n' <<
+               "Argument3: " << ZenUnit::ToStringer::ToString(threeArgumentCallRef.thirdArgumentReference.value);
       }
    };
 
@@ -4597,15 +4562,11 @@ namespace ZenUnit
    {
       static void Print(std::ostream& os, const ZenMock::FourArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& fourArgumentCallRef)
       {
-         const std::string toStringedArgument1 = ZenUnit::ToStringer::ToString(fourArgumentCallRef.firstArgumentReference.value);
-         const std::string toStringedArgument2 = ZenUnit::ToStringer::ToString(fourArgumentCallRef.secondArgumentReference.value);
-         const std::string toStringedArgument3 = ZenUnit::ToStringer::ToString(fourArgumentCallRef.thirdArgumentReference.value);
-         const std::string toStringedArgument4 = ZenUnit::ToStringer::ToString(fourArgumentCallRef.fourthArgumentReference.value);
          os << "ZenMock::FourArgumentCall:\n"
-            "Argument1: " << toStringedArgument1 << '\n' <<
-            "Argument2: " << toStringedArgument2 << '\n' <<
-            "Argument3: " << toStringedArgument3 << '\n' <<
-            "Argument4: " << toStringedArgument4;
+               "Argument1: " << ZenUnit::ToStringer::ToString(fourArgumentCallRef.firstArgumentReference.value) << '\n' <<
+               "Argument2: " << ZenUnit::ToStringer::ToString(fourArgumentCallRef.secondArgumentReference.value) << '\n' <<
+               "Argument3: " << ZenUnit::ToStringer::ToString(fourArgumentCallRef.thirdArgumentReference.value) << '\n' <<
+               "Argument4: " << ZenUnit::ToStringer::ToString(fourArgumentCallRef.fourthArgumentReference.value);
       }
    };
 
@@ -4614,17 +4575,12 @@ namespace ZenUnit
    {
       static void Print(std::ostream& os, const ZenMock::FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& fiveArgumentCallRef)
       {
-         const std::string toStringedArgument1 = ZenUnit::ToStringer::ToString(fiveArgumentCallRef.firstArgumentReference.value);
-         const std::string toStringedArgument2 = ZenUnit::ToStringer::ToString(fiveArgumentCallRef.secondArgumentReference.value);
-         const std::string toStringedArgument3 = ZenUnit::ToStringer::ToString(fiveArgumentCallRef.thirdArgumentReference.value);
-         const std::string toStringedArgument4 = ZenUnit::ToStringer::ToString(fiveArgumentCallRef.fourthArgumentReference.value);
-         const std::string toStringedArgument5 = ZenUnit::ToStringer::ToString(fiveArgumentCallRef.fifthArgumentReference.value);
          os << "ZenMock::FiveArgumentCall:\n"
-            "Argument1: " << toStringedArgument1 << '\n' <<
-            "Argument2: " << toStringedArgument2 << '\n' <<
-            "Argument3: " << toStringedArgument3 << '\n' <<
-            "Argument4: " << toStringedArgument4 << '\n' <<
-            "Argument5: " << toStringedArgument5;
+               "Argument1: " << ZenUnit::ToStringer::ToString(fiveArgumentCallRef.firstArgumentReference.value) << '\n' <<
+               "Argument2: " << ZenUnit::ToStringer::ToString(fiveArgumentCallRef.secondArgumentReference.value) << '\n' <<
+               "Argument3: " << ZenUnit::ToStringer::ToString(fiveArgumentCallRef.thirdArgumentReference.value) << '\n' <<
+               "Argument4: " << ZenUnit::ToStringer::ToString(fiveArgumentCallRef.fourthArgumentReference.value) << '\n' <<
+               "Argument5: " << ZenUnit::ToStringer::ToString(fiveArgumentCallRef.fifthArgumentReference.value);
       }
    };
 
@@ -4633,19 +4589,13 @@ namespace ZenUnit
    {
       static void Print(std::ostream& os, const ZenMock::SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& sixArgumentCallRef)
       {
-         const std::string toStringedArgument1 = ZenUnit::ToStringer::ToString(sixArgumentCallRef.firstArgumentReference.value);
-         const std::string toStringedArgument2 = ZenUnit::ToStringer::ToString(sixArgumentCallRef.secondArgumentReference.value);
-         const std::string toStringedArgument3 = ZenUnit::ToStringer::ToString(sixArgumentCallRef.thirdArgumentReference.value);
-         const std::string toStringedArgument4 = ZenUnit::ToStringer::ToString(sixArgumentCallRef.fourthArgumentReference.value);
-         const std::string toStringedArgument5 = ZenUnit::ToStringer::ToString(sixArgumentCallRef.fifthArgumentReference.value);
-         const std::string toStringedArgument6 = ZenUnit::ToStringer::ToString(sixArgumentCallRef.sixthArgumentReference.value);
          os << "ZenMock::SixArgumentCall:\n"
-            "Argument1: " << toStringedArgument1 << '\n' <<
-            "Argument2: " << toStringedArgument2 << '\n' <<
-            "Argument3: " << toStringedArgument3 << '\n' <<
-            "Argument4: " << toStringedArgument4 << '\n' <<
-            "Argument5: " << toStringedArgument5 << '\n' <<
-            "Argument6: " << toStringedArgument6;
+               "Argument1: " << ZenUnit::ToStringer::ToString(sixArgumentCallRef.firstArgumentReference.value) << '\n' <<
+               "Argument2: " << ZenUnit::ToStringer::ToString(sixArgumentCallRef.secondArgumentReference.value) << '\n' <<
+               "Argument3: " << ZenUnit::ToStringer::ToString(sixArgumentCallRef.thirdArgumentReference.value) << '\n' <<
+               "Argument4: " << ZenUnit::ToStringer::ToString(sixArgumentCallRef.fourthArgumentReference.value) << '\n' <<
+               "Argument5: " << ZenUnit::ToStringer::ToString(sixArgumentCallRef.fifthArgumentReference.value) << '\n' <<
+               "Argument6: " << ZenUnit::ToStringer::ToString(sixArgumentCallRef.sixthArgumentReference.value);
       }
    };
 
@@ -4654,21 +4604,14 @@ namespace ZenUnit
    {
       static void Print(std::ostream& os, const ZenMock::SevenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& sevenArgumentCallRef)
       {
-         const std::string toStringedArgument1 = ZenUnit::ToStringer::ToString(sevenArgumentCallRef.firstArgumentReference.value);
-         const std::string toStringedArgument2 = ZenUnit::ToStringer::ToString(sevenArgumentCallRef.secondArgumentReference.value);
-         const std::string toStringedArgument3 = ZenUnit::ToStringer::ToString(sevenArgumentCallRef.thirdArgumentReference.value);
-         const std::string toStringedArgument4 = ZenUnit::ToStringer::ToString(sevenArgumentCallRef.fourthArgumentReference.value);
-         const std::string toStringedArgument5 = ZenUnit::ToStringer::ToString(sevenArgumentCallRef.fifthArgumentReference.value);
-         const std::string toStringedArgument6 = ZenUnit::ToStringer::ToString(sevenArgumentCallRef.sixthArgumentReference.value);
-         const std::string toStringedArgument7 = ZenUnit::ToStringer::ToString(sevenArgumentCallRef.seventhArgumentReference.value);
          os << "ZenMock::SevenArgumentCall:\n"
-            "Argument1: " << toStringedArgument1 << '\n' <<
-            "Argument2: " << toStringedArgument2 << '\n' <<
-            "Argument3: " << toStringedArgument3 << '\n' <<
-            "Argument4: " << toStringedArgument4 << '\n' <<
-            "Argument5: " << toStringedArgument5 << '\n' <<
-            "Argument6: " << toStringedArgument6 << '\n' <<
-            "Argument7: " << toStringedArgument7;
+               "Argument1: " << ZenUnit::ToStringer::ToString(sevenArgumentCallRef.firstArgumentReference.value) << '\n' <<
+               "Argument2: " << ZenUnit::ToStringer::ToString(sevenArgumentCallRef.secondArgumentReference.value) << '\n' <<
+               "Argument3: " << ZenUnit::ToStringer::ToString(sevenArgumentCallRef.thirdArgumentReference.value) << '\n' <<
+               "Argument4: " << ZenUnit::ToStringer::ToString(sevenArgumentCallRef.fourthArgumentReference.value) << '\n' <<
+               "Argument5: " << ZenUnit::ToStringer::ToString(sevenArgumentCallRef.fifthArgumentReference.value) << '\n' <<
+               "Argument6: " << ZenUnit::ToStringer::ToString(sevenArgumentCallRef.sixthArgumentReference.value) << '\n' <<
+               "Argument7: " << ZenUnit::ToStringer::ToString(sevenArgumentCallRef.seventhArgumentReference.value);
       }
    };
 
@@ -4677,23 +4620,15 @@ namespace ZenUnit
    {
       static void Print(std::ostream& os, const ZenMock::EightArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& eightArgumentCallRef)
       {
-         const std::string toStringedArgument1 = ZenUnit::ToStringer::ToString(eightArgumentCallRef.firstArgumentReference.value);
-         const std::string toStringedArgument2 = ZenUnit::ToStringer::ToString(eightArgumentCallRef.secondArgumentReference.value);
-         const std::string toStringedArgument3 = ZenUnit::ToStringer::ToString(eightArgumentCallRef.thirdArgumentReference.value);
-         const std::string toStringedArgument4 = ZenUnit::ToStringer::ToString(eightArgumentCallRef.fourthArgumentReference.value);
-         const std::string toStringedArgument5 = ZenUnit::ToStringer::ToString(eightArgumentCallRef.fifthArgumentReference.value);
-         const std::string toStringedArgument6 = ZenUnit::ToStringer::ToString(eightArgumentCallRef.sixthArgumentReference.value);
-         const std::string toStringedArgument7 = ZenUnit::ToStringer::ToString(eightArgumentCallRef.seventhArgumentReference.value);
-         const std::string toStringedArgument8 = ZenUnit::ToStringer::ToString(eightArgumentCallRef.eigthArgumentReference.value);
          os << "ZenMock::EightArgumentCall:\n"
-            "Argument1: " << toStringedArgument1 << '\n' <<
-            "Argument2: " << toStringedArgument2 << '\n' <<
-            "Argument3: " << toStringedArgument3 << '\n' <<
-            "Argument4: " << toStringedArgument4 << '\n' <<
-            "Argument5: " << toStringedArgument5 << '\n' <<
-            "Argument6: " << toStringedArgument6 << '\n' <<
-            "Argument7: " << toStringedArgument7 << '\n' <<
-            "Argument8: " << toStringedArgument8;
+               "Argument1: " << ZenUnit::ToStringer::ToString(eightArgumentCallRef.firstArgumentReference.value) << '\n' <<
+               "Argument2: " << ZenUnit::ToStringer::ToString(eightArgumentCallRef.secondArgumentReference.value) << '\n' <<
+               "Argument3: " << ZenUnit::ToStringer::ToString(eightArgumentCallRef.thirdArgumentReference.value) << '\n' <<
+               "Argument4: " << ZenUnit::ToStringer::ToString(eightArgumentCallRef.fourthArgumentReference.value) << '\n' <<
+               "Argument5: " << ZenUnit::ToStringer::ToString(eightArgumentCallRef.fifthArgumentReference.value) << '\n' <<
+               "Argument6: " << ZenUnit::ToStringer::ToString(eightArgumentCallRef.sixthArgumentReference.value) << '\n' <<
+               "Argument7: " << ZenUnit::ToStringer::ToString(eightArgumentCallRef.seventhArgumentReference.value) << '\n' <<
+               "Argument8: " << ZenUnit::ToStringer::ToString(eightArgumentCallRef.eigthArgumentReference.value);
       }
    };
 
@@ -4702,25 +4637,16 @@ namespace ZenUnit
    {
       static void Print(std::ostream& os, const ZenMock::NineArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& nineArgumentCallRef)
       {
-         const std::string toStringedArgument1 = ZenUnit::ToStringer::ToString(nineArgumentCallRef.firstArgumentReference.value);
-         const std::string toStringedArgument2 = ZenUnit::ToStringer::ToString(nineArgumentCallRef.secondArgumentReference.value);
-         const std::string toStringedArgument3 = ZenUnit::ToStringer::ToString(nineArgumentCallRef.thirdArgumentReference.value);
-         const std::string toStringedArgument4 = ZenUnit::ToStringer::ToString(nineArgumentCallRef.fourthArgumentReference.value);
-         const std::string toStringedArgument5 = ZenUnit::ToStringer::ToString(nineArgumentCallRef.fifthArgumentReference.value);
-         const std::string toStringedArgument6 = ZenUnit::ToStringer::ToString(nineArgumentCallRef.sixthArgumentReference.value);
-         const std::string toStringedArgument7 = ZenUnit::ToStringer::ToString(nineArgumentCallRef.seventhArgumentReference.value);
-         const std::string toStringedArgument8 = ZenUnit::ToStringer::ToString(nineArgumentCallRef.eigthArgumentReference.value);
-         const std::string toStringedArgument9 = ZenUnit::ToStringer::ToString(nineArgumentCallRef.ninthArgumentReference.value);
          os << "ZenMock::NineArgumentCall:\n"
-            "Argument1: " << toStringedArgument1 << '\n' <<
-            "Argument2: " << toStringedArgument2 << '\n' <<
-            "Argument3: " << toStringedArgument3 << '\n' <<
-            "Argument4: " << toStringedArgument4 << '\n' <<
-            "Argument5: " << toStringedArgument5 << '\n' <<
-            "Argument6: " << toStringedArgument6 << '\n' <<
-            "Argument7: " << toStringedArgument7 << '\n' <<
-            "Argument8: " << toStringedArgument8 << '\n' <<
-            "Argument9: " << toStringedArgument9;
+               "Argument1: " << ZenUnit::ToStringer::ToString(nineArgumentCallRef.firstArgumentReference.value) << '\n' <<
+               "Argument2: " << ZenUnit::ToStringer::ToString(nineArgumentCallRef.secondArgumentReference.value) << '\n' <<
+               "Argument3: " << ZenUnit::ToStringer::ToString(nineArgumentCallRef.thirdArgumentReference.value) << '\n' <<
+               "Argument4: " << ZenUnit::ToStringer::ToString(nineArgumentCallRef.fourthArgumentReference.value) << '\n' <<
+               "Argument5: " << ZenUnit::ToStringer::ToString(nineArgumentCallRef.fifthArgumentReference.value) << '\n' <<
+               "Argument6: " << ZenUnit::ToStringer::ToString(nineArgumentCallRef.sixthArgumentReference.value) << '\n' <<
+               "Argument7: " << ZenUnit::ToStringer::ToString(nineArgumentCallRef.seventhArgumentReference.value) << '\n' <<
+               "Argument8: " << ZenUnit::ToStringer::ToString(nineArgumentCallRef.eigthArgumentReference.value) << '\n' <<
+               "Argument9: " << ZenUnit::ToStringer::ToString(nineArgumentCallRef.ninthArgumentReference.value);
       }
    };
 
@@ -4729,27 +4655,49 @@ namespace ZenUnit
    {
       static void Print(std::ostream& os, const ZenMock::TenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& tenArgumentCallRef)
       {
-         const std::string toStringedArgument1 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.firstArgumentReference.value);
-         const std::string toStringedArgument2 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.secondArgumentReference.value);
-         const std::string toStringedArgument3 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.thirdArgumentReference.value);
-         const std::string toStringedArgument4 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.fourthArgumentReference.value);
-         const std::string toStringedArgument5 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.fifthArgumentReference.value);
-         const std::string toStringedArgument6 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.sixthArgumentReference.value);
-         const std::string toStringedArgument7 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.seventhArgumentReference.value);
-         const std::string toStringedArgument8 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.eigthArgumentReference.value);
-         const std::string toStringedArgument9 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.ninthArgumentReference.value);
-         const std::string toStringedArgument10 = ZenUnit::ToStringer::ToString(tenArgumentCallRef.tenthArgumentReference.value);
          os << "ZenMock::TenArgumentCall:\n"
-            " Argument1: " << toStringedArgument1 << '\n' <<
-            " Argument2: " << toStringedArgument2 << '\n' <<
-            " Argument3: " << toStringedArgument3 << '\n' <<
-            " Argument4: " << toStringedArgument4 << '\n' <<
-            " Argument5: " << toStringedArgument5 << '\n' <<
-            " Argument6: " << toStringedArgument6 << '\n' <<
-            " Argument7: " << toStringedArgument7 << '\n' <<
-            " Argument8: " << toStringedArgument8 << '\n' <<
-            " Argument9: " << toStringedArgument9 << '\n' <<
-            "Argument10: " << toStringedArgument10;
+              " Argument1: " << ZenUnit::ToStringer::ToString(tenArgumentCallRef.firstArgumentReference.value) << '\n' <<
+              " Argument2: " << ZenUnit::ToStringer::ToString(tenArgumentCallRef.secondArgumentReference.value) << '\n' <<
+              " Argument3: " << ZenUnit::ToStringer::ToString(tenArgumentCallRef.thirdArgumentReference.value) << '\n' <<
+              " Argument4: " << ZenUnit::ToStringer::ToString(tenArgumentCallRef.fourthArgumentReference.value) << '\n' <<
+              " Argument5: " << ZenUnit::ToStringer::ToString(tenArgumentCallRef.fifthArgumentReference.value) << '\n' <<
+              " Argument6: " << ZenUnit::ToStringer::ToString(tenArgumentCallRef.sixthArgumentReference.value) << '\n' <<
+              " Argument7: " << ZenUnit::ToStringer::ToString(tenArgumentCallRef.seventhArgumentReference.value) << '\n' <<
+              " Argument8: " << ZenUnit::ToStringer::ToString(tenArgumentCallRef.eigthArgumentReference.value) << '\n' <<
+              " Argument9: " << ZenUnit::ToStringer::ToString(tenArgumentCallRef.ninthArgumentReference.value) << '\n' <<
+              "Argument10: " << ZenUnit::ToStringer::ToString(tenArgumentCallRef.tenthArgumentReference.value);
       }
+   };
+}
+
+namespace ZenMock
+{
+   // ZenMock::RandomGeneratorMock can be used to confirm the correctness of ZenUnit::Random<T>() functions
+   class RandomGeneratorMock : public Zen::Mock<ZenUnit::RandomGenerator>
+   {
+   public:
+      ZENMOCK_NONVOID0_CONST(bool, Bool)
+
+      ZENMOCK_NONVOID0_CONST(char, Char)
+      ZENMOCK_NONVOID0_CONST(unsigned char, UnsignedChar)
+
+      ZENMOCK_NONVOID0_CONST(short, Short)
+      ZENMOCK_NONVOID0_CONST(unsigned short, UnsignedShort)
+
+      ZENMOCK_NONVOID0_CONST(int, Int)
+      ZENMOCK_NONVOID0_CONST(unsigned int, UnsignedInt)
+
+      ZENMOCK_NONVOID1_CONST(int, Enum, int)
+
+      ZENMOCK_NONVOID0_CONST(long long, LongLong)
+      ZENMOCK_NONVOID0_CONST(unsigned long long, UnsignedLongLong)
+
+      ZENMOCK_NONVOID0_CONST(float, Float)
+      ZENMOCK_NONVOID0_CONST(double, Double)
+
+      ZENMOCK_NONVOID0_CONST(std::string, String)
+      ZENMOCK_NONVOID0_CONST(std::vector<std::string>, StringVector)
+
+      ZENMOCK_NONVOID0_CONST(fs::path, Path)
    };
 }
