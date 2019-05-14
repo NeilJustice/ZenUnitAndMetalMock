@@ -63,12 +63,12 @@ TEST1X1(FizzBuzz_EndNumber0OrNegative_Throws,
 {
    // The ZenUnit THROWS assertion asserts that an expression throws *exactly* (not a derived class of)
    // an expected exception type with *exactly* an expected exception what() text.
-   // This double-exactness design of THROWS works to maximize mutation coverage,
-   // an exciting new software quality metric that will eclipse code coverage in the 2020s,
-   // by rendering the assertion immune to these two code mutations:
+   // This double-exactness design of THROWS works to maximize mutation coverage
+   // by rendering the assertion immune to these two easy-to-induce code mutations:
    // mutate-exception-type and mutate-exception-message.
    THROWS(FizzBuzz(invalidFizzBuzzEndNumber), std::invalid_argument,
-      "Invalid FizzBuzz() argument: endNumber must be 1 or greater. endNumber: " + std::to_string(invalidFizzBuzzEndNumber));
+      "Invalid FizzBuzz() argument: endNumber must be 1 or greater. endNumber: " + 
+         std::to_string(invalidFizzBuzzEndNumber));
 }
 
 // TEST2X2 defines a 2-by-2 value-parameterized test
