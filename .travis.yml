@@ -1,7 +1,11 @@
-language: cpp
+os: linux
 dist: trusty
 sudo: false
+language: cpp
 cache: ccache
+
+git:
+  depth: false
 
 matrix:
   include:
@@ -12,7 +16,7 @@ matrix:
         apt:
           update: true
           sources: [ 'ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0' ]
-          packages: [ 'ninja-build', 'clang-6.0', 'libstdc++-7-dev' ]
+          packages: [ 'ninja-build', 'clang-6.0', 'libstdc++-7-dev', 'lcov' ]
 
     - os: linux
       compiler: clang
@@ -21,44 +25,52 @@ matrix:
         apt:
           update: true
           sources: [ 'ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0' ]
-          packages: [ 'ninja-build', 'clang-6.0', 'libstdc++-7-dev' ]
+          packages: [ 'ninja-build', 'clang-6.0', 'libstdc++-7-dev', 'lcov' ]
 
     - os: linux
       compiler: gcc
-      env: CMAKE_BUILD_TYPE=Debug COMPILER=g++-7
+      env: CMAKE_BUILD_TYPE=Debug COMPILER=g++-8
       addons:
         apt:
           update: true
           sources: [ 'ubuntu-toolchain-r-test' ]
-          packages: [ 'ninja-build', 'g++-7' ]
+          packages: [ 'ninja-build', 'g++-8' ]
 
     - os: linux
       compiler: gcc
-      env: CMAKE_BUILD_TYPE=Release COMPILER=g++-7
+      env: CMAKE_BUILD_TYPE=Release COMPILER=g++-8
       addons:
         apt:
           update: true
           sources: [ 'ubuntu-toolchain-r-test' ]
-          packages: [ 'ninja-build', 'g++-7' ]
+          packages: [ 'ninja-build', 'g++-8' ]
 
-    - os: osx
-      osx_image: xcode9.3
-      compiler: clang
-      env: CMAKE_BUILD_TYPE=Debug COMPILER=clang++
-      before_install:
-        - brew install ninja llvm
+          #- os: osx
+          #      osx_image: xcode10
+          #      compiler: clang
+          #      env: CMAKE_BUILD_TYPE=Debug COMPILER=clang++
+          #      before_install:
+          #        - brew install ninja llvm
 
-    - os: osx
-      osx_image: xcode9.3
-      compiler: clang
-      env: CMAKE_BUILD_TYPE=Release COMPILER=clang++
-      before_install:
-        - brew install ninja llvm
+          #    - os: osx
+          #      osx_image: xcode10
+          #      compiler: clang
+          #      env: CMAKE_BUILD_TYPE=Release COMPILER=clang++
+          #      before_install:
+          #        - brew install ninja llvm
 
 script:
+  - apt search libjsoncpp
+  - clang++ --version
+  - g++ --version
+  - cmake --version
+  - ninja --version
+  - python3 --version
+
   - mkdir build && cd build
   - cmake -GNinja .. -Werror=dev -DCMAKE_CXX_COMPILER="$COMPILER" -DCMAKE_BUILD_TYPE="$CMAKE_BUILD_TYPE"
   - ninja -v
+
   - ./ZenMockTests/ZenMockTests
   - ./ZenMockExamples/ZenMockExamples
   - ./ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests
@@ -67,3 +79,4 @@ script:
 
 notifications:
   email: true
+

@@ -2,22 +2,27 @@ shallow_clone: true
 
 image:
     - Visual Studio 2017
-    - Visual Studio 2017 Preview
 
 environment:
    matrix:
       - generator: "Visual Studio 15 2017"
 
-configuration:
-   - Debug
-   - Release
-   
 platform:
    - x64
    - Win32
 
+configuration:
+   - Debug
+   - Release
+
+init:
+   - cmd: cmake --version
+   - cmd: msbuild /version
+
 before_build:
+   - cmake --version
    - cmake -A %platform% -G "%generator%" .
 
 build_script:
    - cmake --build . --config %configuration% -- /m
+
