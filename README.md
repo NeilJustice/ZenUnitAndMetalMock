@@ -6,8 +6,8 @@
 
 |Build Type|Build Status|
 |----------|------------|
-|Linux (Clang 6.0.1, GCC 7.4.0) and macOS (AppleClang 9.1.0)|<a href="https://travis-ci.org/NeilJustice/ZenUnitZenMock"><img src="https://travis-ci.org/NeilJustice/ZenUnitZenMock.svg?branch=master"/></a>|
-|Windows (Visual Studio 2017 and 2017 Preview x64 and Win32)|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitZenMock"><img src="https://ci.appveyor.com/api/projects/status/5m79b32buusbofmd?svg=true"/></a>|
+|Linux (Clang 6.0.1, GCC 8.1.0)|<a href="https://travis-ci.org/NeilJustice/ZenUnitZenMock"><img src="https://travis-ci.org/NeilJustice/ZenUnitZenMock.svg?branch=master"/></a>|
+|Windows (Visual Studio 2017 x64 and Win32)|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitZenMock"><img src="https://ci.appveyor.com/api/projects/status/5m79b32buusbofmd?svg=true"/></a>|
 
    * [ZenUnit Syntax And Design Philosophy](#zenunit-syntax-and-design-philosophy)
    * [STARTUP Then CLEANUP](#startup-then-cleanup)
