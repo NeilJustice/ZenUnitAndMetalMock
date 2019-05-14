@@ -109,7 +109,8 @@ std::string FizzBuzz(int endNumber)
 {
    if (endNumber <= 0)
    {
-      throw std::invalid_argument("Invalid FizzBuzz() argument: endNumber must be 1 or greater. endNumber: " + std::to_string(endNumber));
+      throw std::invalid_argument(
+         "Invalid FizzBuzz() argument: endNumber must be 1 or greater. endNumber: " + std::to_string(endNumber));
    }
    std::ostringstream oss;
    for (int i = 1; i <= endNumber; ++i)
