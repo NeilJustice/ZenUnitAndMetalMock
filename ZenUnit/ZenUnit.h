@@ -6122,21 +6122,45 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
       }
    };
 
+   template<typename SetType>
+   inline void DoPrintSet(std::ostream& os, const SetType& s, const char* setName, const std::string& elementTypeName)
+   {
+      os << setName << '<' << elementTypeName << R"(>
+{
+)";
+      const size_t numberOfElements = s.size();
+      size_t i = 0;
+      for (const auto& element : s)
+      {
+         const std::string elementAsString = ToStringer::ToString(element);
+         os << "   " << elementAsString;
+         if (i < numberOfElements - 1)
+         {
+            os << ',';
+         }
+         os << '\n';
+         ++i;
+      }
+      os << "}";
+   }
+
    template<typename T, typename LessComparator, typename Allocator>
    struct Printer<std::set<T, LessComparator, Allocator>>
    {
-      static void Print(std::ostream& os, const std::set<T, LessComparator, Allocator>&)
+      static void Print(std::ostream& os, const std::set<T, LessComparator, Allocator>& s)
       {
-         os << "SetType<T>";
+         const std::string* elementTypeName = Type::GetName<T>();
+         DoPrintSet(os, s, "std::set", *elementTypeName);
       }
    };
 
    template<typename T, typename Hasher, typename EqualityComparator, typename Allocator>
    struct Printer<std::unordered_set<T, Hasher, EqualityComparator, Allocator>>
    {
-      static void Print(std::ostream& os, const std::unordered_set<T, Hasher, EqualityComparator, Allocator>&)
+      static void Print(std::ostream& os, const std::unordered_set<T, Hasher, EqualityComparator, Allocator>& s)
       {
-         os << "SetType<T>";
+         const std::string* elementTypeName = Type::GetName<T>();
+         DoPrintSet(os, s, "std::unordered_set", *elementTypeName);
       }
    };
 
