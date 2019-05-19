@@ -28,6 +28,15 @@ namespace ZenUnit
 })", oss.str());
       oss = ostringstream();
 
+#ifdef __linux__
+      ZenUnit::Printer<set<T>>::Print(oss, { 1, 2 });
+      ARE_EQUAL("std::set<" + expectedTypeNameOfT + R"(>
+{
+   2,
+   1
+})", oss.str());
+      oss = ostringstream();
+#elif _WIN32
       ZenUnit::Printer<set<T>>::Print(oss, { 1, 2 });
       ARE_EQUAL("std::set<" + expectedTypeNameOfT + R"(>
 {
@@ -35,6 +44,7 @@ namespace ZenUnit
    2
 })", oss.str());
       oss = ostringstream();
+#endif
 
       ZenUnit::Printer<set<T>>::Print(oss, { 1, 2, 3 });
       ARE_EQUAL("std::set<" + expectedTypeNameOfT + R"(>
@@ -177,6 +187,15 @@ namespace ZenUnit
 })", oss.str());
       oss = ostringstream();
 
+#ifdef __linux__
+      ZenUnit::Printer<unordered_set<UserType>>::Print(oss, { 1, 2 });
+      ARE_EQUAL(R"(std::unordered_set<UserType>
+{
+   UserType@2,
+   UserType@1
+})", oss.str());
+      oss = ostringstream();
+#elif _WIN32
       ZenUnit::Printer<unordered_set<UserType>>::Print(oss, { 1, 2 });
       ARE_EQUAL(R"(std::unordered_set<UserType>
 {
@@ -184,6 +203,7 @@ namespace ZenUnit
    UserType@2
 })", oss.str());
       oss = ostringstream();
+#endif
 
       ZenUnit::Printer<unordered_set<UserType>>::Print(oss, { 1, 2, 3 });
       ARE_EQUAL(R"(std::unordered_set<UserType>
