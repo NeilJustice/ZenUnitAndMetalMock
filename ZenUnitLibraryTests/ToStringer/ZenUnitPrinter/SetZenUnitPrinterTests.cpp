@@ -3,33 +3,34 @@
 
 namespace ZenUnit
 {
-   template<typename T>
-   TEMPLATE_TESTS(SetZenUnitPrinterTests, T)
-   AFACT(Print_Set_PrintsStringRepresentationOfTheSet)
-   SKIPAFACT(Print_UnorderedSet_PrintsStringRepresentationOfTheUnorderedSet, "Pending writing of assertions that try all orderings")
+   template<
+      template<typename...>
+   typename SetType, typename T>
+   TEMPLATE_TESTS(SetZenUnitPrinterTests, SetType, T)
+   AFACT(Print_StdSet_PrintsExpectedStringRepresentationOfTheSet)
    EVIDENCE
 
-   TEST(Print_Set_PrintsStringRepresentationOfTheSet)
+   TEST(Print_StdSet_PrintsExpectedStringRepresentationOfTheSet)
    {
       ostringstream oss;
 
-      const string expectedTypeNameOfT = *Type::GetName<T>();
+      const string expectedSetTypeName = *Type::GetName<SetType<T>>();
 
       ZenUnit::Printer<set<T>>::Print(oss, {});
-      ARE_EQUAL("std::set<" + expectedTypeNameOfT + R"(>
+      ARE_EQUAL(expectedSetTypeName + R"(
 {
 })", oss.str());
       oss = ostringstream();
 
       ZenUnit::Printer<set<T>>::Print(oss, { 1 });
-      ARE_EQUAL("std::set<" + expectedTypeNameOfT + R"(>
+      ARE_EQUAL(expectedSetTypeName + R"(
 {
    1
 })", oss.str());
       oss = ostringstream();
 
       ZenUnit::Printer<set<T>>::Print(oss, { 1, 2 });
-      ARE_EQUAL("std::set<" + expectedTypeNameOfT + R"(>
+      ARE_EQUAL(expectedSetTypeName + R"(
 {
    1,
    2
@@ -37,7 +38,7 @@ namespace ZenUnit
       oss = ostringstream();
 
       ZenUnit::Printer<set<T>>::Print(oss, { 1, 2, 3 });
-      ARE_EQUAL("std::set<" + expectedTypeNameOfT + R"(>
+      ARE_EQUAL(expectedSetTypeName + R"(
 {
    1,
    2,
@@ -45,42 +46,52 @@ namespace ZenUnit
 })", oss.str());
       oss = ostringstream();
 
-
       // Does-compile confirmation
+      const string expectedSetTypeNameWithCustomLessCompator = *Type::GetName<SetType<T, CustomLessComparator<T>>>();
       ZenUnit::Printer<set<T, CustomLessComparator<T>>>::Print(oss, {});
-      ARE_EQUAL("std::set<" + expectedTypeNameOfT + R"(>
+      ARE_EQUAL(expectedSetTypeNameWithCustomLessCompator + R"(
 {
 })", oss.str());
       oss = ostringstream();
 
       // Does-compile confirmation
+      const string expectedSetTypeNameWithCustomLessCompatorAndAllocator = *Type::GetName<SetType<T, CustomLessComparator<T>, CustomAllocator<T>>>();
       ZenUnit::Printer<set<T, CustomLessComparator<T>, CustomAllocator<T>>>::Print(oss, {});
-      ARE_EQUAL("std::set<" + expectedTypeNameOfT + R"(>
+      ARE_EQUAL(expectedSetTypeNameWithCustomLessCompatorAndAllocator + R"(
 {
 })", oss.str());
    }
 
-   TEST(Print_UnorderedSet_PrintsStringRepresentationOfTheUnorderedSet)
+   RUN_TEMPLATE_TESTS(SetZenUnitPrinterTests, set, int);
+   THEN_RUN_TEMPLATE_TESTS(SetZenUnitPrinterTests, set, unsigned long long);
+
+
+   /*template<typename T>
+   TEMPLATE_TESTS(UnorderedSetZenUnitPrinterTests, T)
+   AFACT(Print_StdSet_PrintsExpectedStringRepresentationOfTheSet)
+   EVIDENCE
+
+   TEST(Print_StdSet_PrintsExpectedStringRepresentationOfTheSet)
    {
       ostringstream oss;
 
-      const string expectedTypeNameOfT = *Type::GetName<T>();
+      const string expectedSetTypeName = *Type::GetName<unordered_set<T>>();
 
       ZenUnit::Printer<unordered_set<T>>::Print(oss, {});
-      ARE_EQUAL("std::unordered_set<" + expectedTypeNameOfT + R"(>
+      ARE_EQUAL(expectedSetTypeName + R"(
 {
 })", oss.str());
       oss = ostringstream();
 
       ZenUnit::Printer<unordered_set<T>>::Print(oss, { 1 });
-      ARE_EQUAL("std::unordered_set<" + expectedTypeNameOfT + R"(>
+      ARE_EQUAL(expectedSetTypeName + R"(
 {
    1
 })", oss.str());
       oss = ostringstream();
 
       ZenUnit::Printer<unordered_set<T>>::Print(oss, { 1, 2 });
-      ARE_EQUAL("std::unordered_set<" + expectedTypeNameOfT + R"(>
+      ARE_EQUAL(expectedSetTypeName + R"(
 {
    1,
    2
@@ -88,7 +99,7 @@ namespace ZenUnit
       oss = ostringstream();
 
       ZenUnit::Printer<unordered_set<T>>::Print(oss, { 1, 2, 3 });
-      ARE_EQUAL("std::unordered_set<" + expectedTypeNameOfT + R"(>
+      ARE_EQUAL(expectedSetTypeName + R"(
 {
    1,
    2,
@@ -97,102 +108,22 @@ namespace ZenUnit
       oss = ostringstream();
 
       // Does-compile confirmation
+      const string expectedUnorderedSetTypeNameWithCustomHasher = *Type::GetName<unordered_set<T, CustomHasher<T>>>();
       ZenUnit::Printer<unordered_set<T, CustomHasher<T>>>::Print(oss, {});
-      ARE_EQUAL("std::unordered_set<" + expectedTypeNameOfT + R"(>
+      ARE_EQUAL(expectedUnorderedSetTypeNameWithCustomHasher + R"(
 {
 })", oss.str());
       oss = ostringstream();
 
       // Does-compile confirmation
+      const string expectedUnorderedSetTypeNameWithCustomHasherAndCustomerEqualityComparator =
+         *Type::GetName<unordered_set<T, CustomHasher<T>, CustomEqualityComparator<T>>>();
       ZenUnit::Printer<unordered_set<T, CustomHasher<T>, CustomEqualityComparator<T>>>::Print(oss, {});
-      ARE_EQUAL("std::unordered_set<" + expectedTypeNameOfT + R"(>
-{
-})", oss.str());
-      oss = ostringstream();
-
-      // Does-compile confirmation
-      ZenUnit::Printer<unordered_set<T, CustomHasher<T>, CustomEqualityComparator<T>, CustomAllocator<T>>>::Print(oss, {});
-      ARE_EQUAL("std::unordered_set<" + expectedTypeNameOfT + R"(>
+      ARE_EQUAL(expectedUnorderedSetTypeNameWithCustomHasherAndCustomerEqualityComparator + R"(
 {
 })", oss.str());
    }
 
-   RUN_TEMPLATE_TESTS(SetZenUnitPrinterTests, int)
-   THEN_RUN_TEMPLATE_TESTS(SetZenUnitPrinterTests, unsigned long long)
-
-
-   TESTS(UserTypeSetZenUnitPrinterTests)
-   AFACT(Print_Set_PrintsStringRepresentationOfTheSet)
-   SKIPAFACT(Print_UnorderedSet_PrintsStringRepresentationOfTheUnorderedSet, "Pending writing of assertions that try all orderings")
-   EVIDENCE
-
-   TEST(Print_Set_PrintsStringRepresentationOfTheSet)
-   {
-      ostringstream oss;
-
-      ZenUnit::Printer<set<UserType>>::Print(oss, {});
-      ARE_EQUAL(R"(std::set<UserType>
-{
-})", oss.str());
-      oss = ostringstream();
-
-      ZenUnit::Printer<set<UserType>>::Print(oss, { 1 });
-      ARE_EQUAL(R"(std::set<UserType>
-{
-   UserType@1
-})", oss.str());
-      oss = ostringstream();
-
-      ZenUnit::Printer<set<UserType>>::Print(oss, { 1, 2 });
-      ARE_EQUAL(R"(std::set<UserType>
-{
-   UserType@1,
-   UserType@2
-})", oss.str());
-      oss = ostringstream();
-
-      ZenUnit::Printer<set<UserType>>::Print(oss, { 1, 2, 3 });
-      ARE_EQUAL(R"(std::set<UserType>
-{
-   UserType@1,
-   UserType@2,
-   UserType@3
-})", oss.str());
-   }
-
-   TEST(Print_UnorderedSet_PrintsStringRepresentationOfTheUnorderedSet)
-   {
-      ostringstream oss;
-
-      ZenUnit::Printer<unordered_set<UserType>>::Print(oss, {});
-      ARE_EQUAL(R"(std::unordered_set<UserType>
-{
-})", oss.str());
-      oss = ostringstream();
-
-      ZenUnit::Printer<unordered_set<UserType>>::Print(oss, { 1 });
-      ARE_EQUAL(R"(std::unordered_set<UserType>
-{
-   UserType@1
-})", oss.str());
-      oss = ostringstream();
-
-      ZenUnit::Printer<unordered_set<UserType>>::Print(oss, { 1, 2 });
-      ARE_EQUAL(R"(std::unordered_set<UserType>
-{
-   UserType@1,
-   UserType@2
-})", oss.str());
-      oss = ostringstream();
-
-      ZenUnit::Printer<unordered_set<UserType>>::Print(oss, { 1, 2, 3 });
-      ARE_EQUAL(R"(std::unordered_set<UserType>
-{
-   UserType@1,
-   UserType@2,
-   UserType@3
-})", oss.str());
-   }
-
-   RUN_TESTS(UserTypeSetZenUnitPrinterTests)
+   RUN_TEMPLATE_TESTS(UnorderedSetZenUnitPrinterTests, int);
+   THEN_RUN_TEMPLATE_TESTS(UnorderedSetZenUnitPrinterTests, unsigned long long);*/
 }

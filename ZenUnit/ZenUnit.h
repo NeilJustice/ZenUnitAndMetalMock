@@ -6123,9 +6123,10 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    };
 
    template<typename SetType>
-   inline void DoPrintSet(std::ostream& os, const SetType& s, const char* setName, const std::string& elementTypeName)
+   inline void DoPrintSet(std::ostream& os, const SetType& s)
    {
-      os << setName << '<' << elementTypeName << R"(>
+      const std::string setName = *Type::GetName<SetType>();
+      os << setName << R"(
 {
 )";
       const size_t numberOfElements = s.size();
@@ -6149,8 +6150,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    {
       static void Print(std::ostream& os, const std::set<T, LessComparator, Allocator>& s)
       {
-         const std::string* elementTypeName = Type::GetName<T>();
-         DoPrintSet(os, s, "std::set", *elementTypeName);
+         DoPrintSet(os, s);
       }
    };
 
@@ -6159,8 +6159,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    {
       static void Print(std::ostream& os, const std::unordered_set<T, Hasher, EqualityComparator, Allocator>& s)
       {
-         const std::string* elementTypeName = Type::GetName<T>();
-         DoPrintSet(os, s, "std::unordered_set", *elementTypeName);
+         DoPrintSet(os, s);
       }
    };
 
