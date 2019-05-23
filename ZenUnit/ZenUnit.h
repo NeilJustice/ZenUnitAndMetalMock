@@ -583,27 +583,28 @@ namespace ZenUnit
          }
          const bool firstCharacterIsNegativeSign = str[0] == '-';
          long long valueAsLongLong = 0;
-         int place = 1;
+         long long place = 1;
          const int stoppingIndex = firstCharacterIsNegativeSign ? 1 : 0;
          for (int i = static_cast<int>(str.size() - 1); i >= stoppingIndex; --i, place *= 10)
          {
-            char c = str[static_cast<size_t>(i)];
+            char c = str[i];
             if (c < '0' || c > '9')
             {
                throw std::invalid_argument("ZenUnit::String::ToInt() called with a string not convertible to a 32-bit integer: \"" + std::string(str) + "\"");
             }
-            const int digit = "0123456789"[c - 48] - 48u;
+            const size_t zeroThroughNineIndex = static_cast<size_t>(c) - 48;
+            const long long digit = static_cast<long long>("0123456789"[zeroThroughNineIndex]);
             valueAsLongLong += digit * place;
          }
          if (firstCharacterIsNegativeSign)
          {
             valueAsLongLong *= -1;
          }
-         if (valueAsLongLong < std::numeric_limits<int>::min())
+         if (valueAsLongLong < static_cast<long long>(std::numeric_limits<int>::min()))
          {
             throw std::invalid_argument("ZenUnit::String::ToInt() called with a string containing a number less than std::numeric_limits<int>::min(): \"" + std::to_string(valueAsLongLong) + "\"");
          }
-         if (valueAsLongLong > std::numeric_limits<int>::max())
+         if (valueAsLongLong > static_cast<long long>(std::numeric_limits<int>::max()))
          {
             throw std::invalid_argument("ZenUnit::String::ToInt() called with a string containing a number greater than std::numeric_limits<int>::max(): \"" + std::to_string(valueAsLongLong) + "\"");
          }
@@ -1258,6 +1259,55 @@ namespace ZenUnit
          return valueAsString;
       }
 
+      template<typename T>
+      static typename std::enable_if<has_to_string<T>::value, std::string>::type ToString(const T& tValue)
+      {
+         const std::string tValueAsString(std::to_string(tValue));
+         return tValueAsString;
+      }
+
+      template<typename T>
+      static typename std::enable_if<!has_to_string<T>::value&& std::is_enum<T>::value, std::string>::type ToString(const T& tValue)
+      {
+         const std::string tvalueAsString = std::to_string(static_cast<typename std::underlying_type<T>::type>(tValue));
+         return tvalueAsString;
+      }
+
+      template<typename T>
+      static typename std::enable_if<!has_to_string<T>::value && !std::is_enum<T>::value, std::string>::type ToString(const T& tValue)
+      {
+         const std::string tValueAsString = DoToString(tValue);
+         return tValueAsString;
+      }
+
+      template<typename T>
+      static std::string ToString(T* pointerAddress)
+      {
+         const std::string pointerAddressAsString = PointerToAddressString(pointerAddress);
+         return pointerAddressAsString;
+      }
+
+      template<typename T>
+      static typename std::enable_if<std::is_pointer<T>::value>::type ToString(const T& tValue)
+      {
+         const std::string pointerAddressAsString = PointerToAddressString(pointerAddress);
+         return pointerAddressAsString;
+      }
+
+      template<typename T, typename Deleter>
+      static std::string ToString(const std::unique_ptr<T, Deleter>& uniquePtr)
+      {
+         const std::string pointerAddressAsString = PointerToAddressString(uniquePtr.get());
+         return pointerAddressAsString;
+      }
+
+      template<typename T>
+      static std::string ToString(const std::shared_ptr<T>& sharedPtr)
+      {
+         const std::string pointerAddressAsString = PointerToAddressString(sharedPtr.get());
+         return pointerAddressAsString;
+      }
+
       static const char* ToString(const std::nullptr_t&)
       {
          return "nullptr";
@@ -1307,48 +1357,6 @@ namespace ZenUnit
       {
          const std::string floatValueAsString = std::to_string(floatValue) + "f";
          return floatValueAsString;
-      }
-
-      template<typename T>
-      static typename std::enable_if<has_to_string<T>::value, std::string>::type ToString(const T& tValue)
-      {
-         const std::string tValueAsString(std::to_string(tValue));
-         return tValueAsString;
-      }
-
-      template<typename T>
-      static typename std::enable_if<!has_to_string<T>::value && !std::is_enum<T>::value, std::string>::type ToString(const T& tValue)
-      {
-         const std::string tValueAsString = DoToString(tValue);
-         return tValueAsString;
-      }
-
-      template<typename T>
-      static typename std::enable_if<!has_to_string<T>::value && std::is_enum<T>::value, std::string>::type ToString(const T& tValue)
-      {
-         const std::string tvalueAsString = std::to_string(static_cast<typename std::underlying_type<T>::type>(tValue));
-         return tvalueAsString;
-      }
-
-      template<typename T>
-      static std::string ToString(T* pointerAddress)
-      {
-         const std::string pointerAddressAsString = PointerToAddressString(pointerAddress);
-         return pointerAddressAsString;
-      }
-
-      template<typename T, typename Deleter>
-      static std::string ToString(const std::unique_ptr<T, Deleter>& uniquePtr)
-      {
-         const std::string pointerAddressAsString = PointerToAddressString(uniquePtr.get());
-         return pointerAddressAsString;
-      }
-
-      template<typename T>
-      static std::string ToString(const std::shared_ptr<T>& sharedPtr)
-      {
-         const std::string pointerAddressAsString = PointerToAddressString(sharedPtr.get());
-         return pointerAddressAsString;
       }
 
       template<typename FunctionReturnType, typename... ArgumentTypes>
@@ -6394,7 +6402,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
 		virtual int Int() const { return ZenUnit::Random<int>(); }
       virtual unsigned UnsignedInt() const { return ZenUnit::Random<unsigned int>(); }
 
-      virtual int Enum(int exclusiveMaxValue) const { return ZenUnit::RandomBetween<int>(0, exclusiveMaxValue - 1); }
+      virtual int Enum(int exclusiveMaxValue) const { return ZenUnit::RandomBetween<int>(0, static_cast<unsigned long long>(exclusiveMaxValue) - 1); }
 
       virtual long long LongLong() const { return ZenUnit::Random<long long>(); }
       virtual unsigned long long UnsignedLongLong() const { return ZenUnit::Random<unsigned long long>(); }
