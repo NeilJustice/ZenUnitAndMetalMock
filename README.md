@@ -461,8 +461,9 @@ ZenUnit provides the following random value generating functions for writing uni
 
 ### 2019 ZenUnit Road Map
 
+* Syntax comparisons between ZenUnit and Google Test, Catch2, and doctest
 * 100% code coverage CodeCov badge
-* --parallel
+* Coverity badge
 * Documentation showing how ZenUnit and ZenMock are clang-tidied, AddressSantized, UndefinedBehaviorSanitized, and ThreadSanitized in a Linux Jenkins build pipeline.
 
 ### 2019 ZenMock Road Map
