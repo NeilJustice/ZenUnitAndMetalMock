@@ -6,8 +6,8 @@
 
 |Build Type|Build Status|
 |----------|------------|
-|Linux (Clang 6.0.1, GCC 7.4.0) and macOS (AppleClang 9.1.0)|<a href="https://travis-ci.org/NeilJustice/ZenUnitZenMock"><img src="https://travis-ci.org/NeilJustice/ZenUnitZenMock.svg?branch=master"/></a>|
-|Windows (Visual Studio 2017 and 2017 Preview x64 and Win32)|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitZenMock"><img src="https://ci.appveyor.com/api/projects/status/nai2lbekcloq7psw?svg=true"/></a>|
+|Linux (Clang 6.0.1 and GCC 8.1.0)|<a href="https://travis-ci.org/NeilJustice/ZenUnitZenMock"><img src="https://travis-ci.org/NeilJustice/ZenUnitZenMock.svg?branch=master"/></a>|
+|Windows (Visual Studio 2017 x64 and Win32)|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitZenMock"><img src="https://ci.appveyor.com/api/projects/status/5m79b32buusbofmd?svg=true"/></a>|
 
    * [ZenUnit Syntax And Design Philosophy](#zenunit-syntax-and-design-philosophy)
    * [STARTUP Then CLEANUP](#startup-then-cleanup)
@@ -22,6 +22,9 @@
       * [Function Assertions](#function-assertions)
    * [ZenUnit Test Class And Test Defining Macros](#zenunit-test-class-and-test-defining-macros)
    * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
+   * [ZenMock](#zenmock)
+   * [2019 ZenUnit Road Map](#2019-zenunit-road-map)
+   * [2019 ZenMock Road Map](#2019-zenmock-road-map)
 
 ### ZenUnit Syntax And Design Philosophy
 
@@ -60,12 +63,12 @@ TEST1X1(FizzBuzz_EndNumber0OrNegative_Throws,
 {
    // The ZenUnit THROWS assertion asserts that an expression throws *exactly* (not a derived class of)
    // an expected exception type with *exactly* an expected exception what() text.
-   // This double-exactness design of THROWS works to maximize mutation coverage,
-   // an exciting new software quality metric that will eclipse code coverage in the 2020s,
-   // by rendering the assertion immune to these two code mutations:
+   // This double-exactness design of THROWS works to maximize mutation coverage
+   // by rendering the assertion immune to these two easy-to-induce code mutations:
    // mutate-exception-type and mutate-exception-message.
    THROWS(FizzBuzz(invalidFizzBuzzEndNumber), std::invalid_argument,
-      "Invalid FizzBuzz() argument: endNumber must be 1 or greater. endNumber: " + std::to_string(invalidFizzBuzzEndNumber));
+      "Invalid FizzBuzz() argument: endNumber must be 1 or greater. endNumber: " + 
+         std::to_string(invalidFizzBuzzEndNumber));
 }
 
 // TEST2X2 defines a 2-by-2 value-parameterized test
@@ -106,7 +109,8 @@ std::string FizzBuzz(int endNumber)
 {
    if (endNumber <= 0)
    {
-      throw std::invalid_argument("Invalid FizzBuzz() argument: endNumber must be 1 or greater. endNumber: " + std::to_string(endNumber));
+      throw std::invalid_argument(
+         "Invalid FizzBuzz() argument: endNumber must be 1 or greater. endNumber: " + std::to_string(endNumber));
    }
    std::ostringstream oss;
    for (int i = 1; i <= endNumber; ++i)
@@ -450,3 +454,19 @@ ZenUnit provides the following random value generating functions for writing uni
 |`ZenUnit::RandomUnorderedMap<T>()`|Returns a `std::unordered_map<KeyType, ValueType>` with size between 0 and 3 with each key a `ZenUnit::Random<KeyType>()` value and each value a `ZenUnit::Random<ValueType>()` value.|
 |`ZenUnit::RandomSet<T>()`|Returns a `std::set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
 |`ZenUnit::RandomUnorderedSet<T>()`|Returns a `std::unordered_set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
+
+### ZenMock
+
+[Guide To ZenMock](ZenMockREADME.md)
+
+### 2019 ZenUnit Road Map
+
+* Syntax comparisons between ZenUnit and Google Test, Catch2, and doctest
+* 100% code coverage CodeCov badge
+* Coverity badge
+* Documentation showing how ZenUnit and ZenMock are clang-tidied, AddressSantized, UndefinedBehaviorSanitized, and ThreadSanitized in a Linux Jenkins build pipeline.
+
+### 2019 ZenMock Road Map
+
+* ZenMockObject.CallInstead(callable)
+* Ordered function call assertions

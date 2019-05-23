@@ -36,10 +36,10 @@
 #include <io.h> // _isatty()
 #endif
 
-#if defined __linux__ || defined __APPLE__
+#if defined __linux__
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
-#elif defined _WIN32
+#elif defined _WIN32 || defined __APPLE__
 #include <filesystem>
 namespace fs = std::filesystem;
 #endif
@@ -6130,21 +6130,44 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
       }
    };
 
+   template<typename SetType>
+   inline void DoPrintSet(std::ostream& os, const SetType& s)
+   {
+      const std::string setName = *Type::GetName<SetType>();
+      os << setName << R"(
+{
+)";
+      const size_t numberOfElements = s.size();
+      size_t i = 0;
+      for (const auto& element : s)
+      {
+         const std::string elementAsString = ToStringer::ToString(element);
+         os << "   " << elementAsString;
+         if (i < numberOfElements - 1)
+         {
+            os << ',';
+         }
+         os << '\n';
+         ++i;
+      }
+      os << "}";
+   }
+
    template<typename T, typename LessComparator, typename Allocator>
    struct Printer<std::set<T, LessComparator, Allocator>>
    {
-      static void Print(std::ostream& os, const std::set<T, LessComparator, Allocator>&)
+      static void Print(std::ostream& os, const std::set<T, LessComparator, Allocator>& s)
       {
-         os << "SetType<T>";
+         DoPrintSet(os, s);
       }
    };
 
    template<typename T, typename Hasher, typename EqualityComparator, typename Allocator>
    struct Printer<std::unordered_set<T, Hasher, EqualityComparator, Allocator>>
    {
-      static void Print(std::ostream& os, const std::unordered_set<T, Hasher, EqualityComparator, Allocator>&)
+      static void Print(std::ostream& os, const std::unordered_set<T, Hasher, EqualityComparator, Allocator>& s)
       {
-         os << "SetType<T>";
+         DoPrintSet(os, s);
       }
    };
 
