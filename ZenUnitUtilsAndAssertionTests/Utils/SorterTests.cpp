@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnitTestUtils/CustomPolicyClasses.h"
+ #include "ZenUnitTestUtils/CustomPolicyClasses.h"
 
 namespace ZenUnit
 {
@@ -23,24 +23,23 @@ namespace ZenUnit
       }
    };
 
-   template<typename CollectionType>
-   TEMPLATE_TESTS(SorterTests, CollectionType)
-   AFACT(Sort_SortsTheCollection)
-   EVIDENCE
+    template<typename CollectionType>
+    TEMPLATE_TESTS(SorterTests, CollectionType)
+    AFACT(Sort_SortsTheCollection)
+    EVIDENCE
 
-   Sorter<CollectionType> _sorter;
+    Sorter<CollectionType> _sorter;
 
-   TEST(Sort_SortsTheCollection)
-   {
-      CollectionType collection { 2, 3, 1 };
-      //
-      _sorter.Sort(&collection);
-      //
-      const CollectionType expectedSortedCollection { 1, 2, 3 };
-      VECTORS_EQUAL(expectedSortedCollection, collection);
-   }
+    TEST(Sort_SortsTheCollection)
+    {
+       CollectionType collection { 2, 3, 1 };
+       //
+       _sorter.Sort(&collection);
+       //
+       const CollectionType expectedSortedCollection { 1, 2, 3 };
+       VECTORS_EQUAL(expectedSortedCollection, collection);
+    }
 
-   RUN_TEMPLATE_TESTS(SorterTests, vector<int>)
-   THEN_RUN_TEMPLATE_TESTS(SorterTests, vector<int, CustomAllocator<int>>)
-   THEN_RUN_TEMPLATE_TESTS(SorterTests, vector<SortableStruct>)
-}
+    RUN_TEMPLATE_TESTS(SorterTests, vector<int>)
+    THEN_RUN_TEMPLATE_TESTS(SorterTests, vector<SortableStruct>)
+ }

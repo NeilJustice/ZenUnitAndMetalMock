@@ -1290,7 +1290,7 @@ namespace ZenUnit
       template<typename T>
       static typename std::enable_if<std::is_pointer<T>::value>::type ToString(const T& tValue)
       {
-         const std::string pointerAddressAsString = PointerToAddressString(pointerAddress);
+         const std::string pointerAddressAsString = PointerToAddressString(tValue);
          return pointerAddressAsString;
       }
 
