@@ -60,7 +60,6 @@ matrix:
           #        - brew install ninja llvm
 
 script:
-  - apt search libjsoncpp
   - clang++ --version
   - g++ --version
   - cmake --version
