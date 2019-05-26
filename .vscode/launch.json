@@ -7,8 +7,8 @@
          "request": "launch",
          "type": "cppdbg",
          "preLaunchTask": "Build Debug",
-         "program": "${workspaceRoot}/Debug/ZenUnitLibraryTests/ZenUnitLibraryTests",
-         "args": [ "" ],
+         "program": "${workspaceRoot}/Debug/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests",
+         "args": [ "--run=StringTests" ],
          "cwd": "${fileDirname}",
          "linux": { "MIMode": "gdb" },
          "miDebuggerPath": "/usr/bin/gdb"

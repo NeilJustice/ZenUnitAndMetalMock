@@ -1,104 +1,72 @@
 {
-   "version": "0.1.0",
-   "command": "bash",
-   "args": [ "-c" ],
-   "options":
-   {
-      "cwd": "${fileDirname}"
-   },
-   "echoCommand": true,
-   "suppressTaskName": true,
+   "version": "2.0.0",
    "tasks":
    [
       {
-         "taskName": "Build Debug",
-         "args": [ "cd ${workspaceRoot}/Debug && time ninja -v" ],
-         "isBuildCommand": true,
-         "problemMatcher":
+         "label": "Ninja Build Debug",
+         "type": "shell",
+         "command": "ninja",
+         "args":
+         [
+            "-v",
+         ],
+         "options":
          {
-            "owner": "cpp",
-            "fileLocation": [ "relative", "${workspaceRoot}/DebugOrRelease" ],
-            "pattern":
-            {
-               "regexp": "^(.*):(\\d+):(\\d+):\\s+(error|fatal error|warning):\\s+(.*)$",
-               "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
-            }
+            "cwd": "${workspaceRoot}/Debug"
+         },
+         "group":
+         {
+            "kind": "build",
+            "isDefault": true
          }
       },
       {
-         "taskName": "Build Release",
-         "args": [ "cd ${workspaceRoot}/Release && time ninja -v" ],
-         "isBuildCommand": false,
-         "problemMatcher":
+         "label": "Ninja Build Release",
+         "type": "shell",
+         "command": "ninja",
+         "args":
+         [
+            "-v",
+         ],
+         "options":
          {
-            "owner": "cpp",
-            "fileLocation": [ "relative", "${workspaceRoot}/DebugOrRelease" ],
-            "pattern":
-            {
-               "regexp": "^(.*):(\\d+):(\\d+):\\s+(error|fatal error|warning):\\s+(.*)$",
-               "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
-            }
+            "cwd": "${workspaceRoot}/Release"
          }
       },
       {
-         "taskName": "Run Debug",
-         "isTestCommand": true,
-         "args": [ "${workspaceRoot}/Debug/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests" ]
+         "label": "Run All Debug Tests",
+         "type": "shell",
+         "command": "./RunAllDebugTests.sh",
+         "options":
+         {
+            "cwd": "${workspaceRoot}"
+         },
+         "group":
+         {
+            "kind": "test",
+            "isDefault": true
+         },
+         "presentation":
+         {
+            "panel": "dedicated",
+            "showReuseMessage": false,
+            "clear": true
+         }
       },
       {
-         "taskName": "Run Release",
-         "isTestCommand": false,
-         "args": [ "${workspaceRoot}/Release/ZenUnitLibraryTests/ZenUnitLibraryTests && ${workspaceRoot}/Release/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests" ]
-      },
-      {
-         "taskName": "Run Python",
-         "isTestCommand": false,
-         "args": [ "export PYTHONPATH=.. && python3 ${file}" ]
-      },
-      {
-         "taskName": "pylint File",
-         "args": [ "pylint --rcfile=${workspaceRoot}/ZenUnitPy/.pylintrc --init-hook=\"sys.path.append('..')\" ${file}" ]
-      },
-      {
-         "taskName": "pylint All",
-         "args": [ "cd ${workspaceRoot}/ZenUnitPy && time ag -g py$ -0 | xargs -0 -n 1 -P 32 --verbose pylint --rcfile=.pylintrc --score=n" ]
-      },
-      {
-         "taskName": "flake8 All",
-         "args": [ "time flake8 --config=${workspaceRoot}/ZenUnitPy/.flake8 --show-source ${workspaceRoot}" ]
-      },
-      {
-         "taskName": "Clean Debug",
-         "args": [ "cd ${workspaceRoot}/Debug && time ninja clean" ]
-      },
-      {
-         "taskName": "Clean Release",
-         "args": [ "cd ${workspaceRoot}/Release && time ninja clean" ]
-      },
-      {
-         "taskName": "Clean Debug & Pch",
-         "args": [ "rm -f ${workspaceRoot}/ZenUnit/pch.h.gch && rm -f ${workspaceRoot}/ZenUnitLibraryTests/pch.h.gch && rm -f ${workspaceRoot}/ZenUnitUtilsAndAssertionTests/pch.h.gch && cd ${workspaceRoot}/Debug && time ninja clean" ]
-      },
-      {
-         "taskName": "Clean Release & Pch",
-         "args": [ "rm -f ${workspaceRoot}/ZenUnit/pch.h.gch && rm -f ${workspaceRoot}/ZenUnitLibraryTests/pch.h.gch && rm -f ${workspaceRoot}/ZenUnitUtilsAndAssertionTests/pch.h.gch && cd ${workspaceRoot}/Release && time ninja clean" ]
-      },
-      {
-         "taskName": "clang++ Check Syntax",
-         "args": [ "clang++ -fsyntax-only -x c++-header -std=c++1z -Wno-pragma-once-outside-header -I${workspaceRoot} -I${workspaceRoot}/ZenUnit ${file}" ]
-      },
-      {
-         "taskName": "clang++ Compile File",
-         "args": [ "clang++ -c -std=c++1z -Wno-pragma-once-outside-header -I${workspaceRoot} -I${workspaceRoot}/ZenUnit -I${workspaceRoot}/ZenUnitTests ${file}" ]
-      },
-      {
-         "taskName": "g++ Check Syntax",
-         "args": [ "g++ -fsyntax-only -std=c++1z -I${workspaceRoot} -I${workspaceRoot}/ZenUnit -I${workspaceRoot}/ZenUnitTests ${file}" ]
-      },
-      {
-         "taskName": "g++ Compile File",
-         "args": [ "g++ -c -std=c++1z -I${workspaceRoot} -I${workspaceRoot}/ZenUnit -I${workspaceRoot}/ZenUnitTests ${file}" ]
+         "label": "Run All Release Tests",
+         "type": "shell",
+         "command": "./RunAllReleaseTests.sh",
+         "options":
+         {
+            "cwd": "${workspaceRoot}"
+         },
+         "presentation":
+         {
+            "panel": "dedicated",
+            "showReuseMessage": false,
+            "clear": true
+         }
       }
    ]
 }
-
