@@ -34,9 +34,9 @@
          }
       },
       {
-         "label": "Run All Debug Tests",
+         "label": "Run ZenUnitUtilsAndAssertionTests",
          "type": "shell",
-         "command": "./RunAllDebugTests.sh",
+         "command": "./Debug/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests",
          "options":
          {
             "cwd": "${workspaceRoot}"
@@ -45,6 +45,21 @@
          {
             "kind": "test",
             "isDefault": true
+         },
+         "presentation":
+         {
+            "panel": "dedicated",
+            "showReuseMessage": false,
+            "clear": true
+         }
+      },
+      {
+         "label": "Run All Debug Tests",
+         "type": "shell",
+         "command": "./RunAllDebugTests.sh",
+         "options":
+         {
+            "cwd": "${workspaceRoot}"
          },
          "presentation":
          {

@@ -3,32 +3,23 @@
    "configurations":
    [
       {
-         "name": "C++ Launch",
+         "name": "LLDB Debug ZenUnitUtilsAndAssertionTests",
+         "type": "lldb",
          "request": "launch",
+         "preLaunchTask": "Ninja Build Debug",
+         "cwd": "${workspaceRoot}",
+         "program": "Debug/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests",
+         "args": [ "--run=StringTests*" ]
+      },
+      {
+         "name": "GDB Debug ZenUnitUtilsAndAssertionTests",
          "type": "cppdbg",
-         "preLaunchTask": "Build Debug",
-         "program": "${workspaceRoot}/Debug/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests",
-         "args": [ "--run=StringTests" ],
-         "cwd": "${fileDirname}",
-         "linux": { "MIMode": "gdb" },
-         "miDebuggerPath": "/usr/bin/gdb"
+         "request": "launch",
+         "preLaunchTask": "Ninja Build Debug",
+         "cwd": "${workspaceRoot}",
+         "program": "Debug/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests",
+         "args": [ "--run=StringTests*" ],
+         "linux": { "MIMode": "gdb" }
       }
-      // {
-      //    "name": "Python",
-      //    "request": "launch",
-      //    "type": "python",
-      //    "pythonPath": "/usr/bin/python3",
-      //    "program": "${file}",
-      //    "args": [ "" ],
-      //    "cwd": "${workspaceRoot}",
-      //    "env": { "PYTHONPATH": "ZenUnitPy" },
-      //    "console": "externalTerminal", // integratedTerminal
-      //    "debugOptions":
-      //    [
-      //       "WaitOnAbnormalExit",
-      //       "WaitOnNormalExit",
-      //       "RedirectOutput"
-      //    ]
-      // }
    ]
 }
