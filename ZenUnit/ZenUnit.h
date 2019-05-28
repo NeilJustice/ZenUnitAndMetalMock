@@ -593,8 +593,9 @@ namespace ZenUnit
                throw std::invalid_argument("ZenUnit::String::ToInt() called with a string not convertible to a 32-bit integer: \"" + std::string(str) + "\"");
             }
             const size_t zeroThroughNineIndex = static_cast<size_t>(c) - 48;
-            const long long digit = static_cast<long long>("0123456789"[zeroThroughNineIndex]);
-            valueAsLongLong += digit * place;
+            const char charDigit = "0123456789"[zeroThroughNineIndex];
+            const long long longLongDigit = static_cast<long long>(charDigit) - 48;
+            valueAsLongLong += longLongDigit * place;
          }
          if (firstCharacterIsNegativeSign)
          {
