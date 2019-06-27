@@ -1277,15 +1277,15 @@ namespace ZenUnit
       template<typename T>
       static typename std::enable_if<!has_to_string<T>::value && !std::is_enum<T>::value, std::string>::type ToString(const T& tValue)
       {
-         const std::string tValueAsString = DoToString(tValue);
-         return tValueAsString;
+         const std::string tValueString = DoToString(tValue);
+         return tValueString;
       }
 
       template<typename T>
       static std::string ToString(T* pointerAddress)
       {
-         const std::string pointerAddressAsString = PointerToAddressString(pointerAddress);
-         return pointerAddressAsString;
+         const std::string pointerAddressString = PointerToAddressString(pointerAddress);
+         return pointerAddressString;
       }
 
       template<typename T>
@@ -1314,6 +1314,12 @@ namespace ZenUnit
          return "nullptr";
       }
 
+      static const char* ToString(bool boolValue)
+      {
+         const char* const boolValueAsConstCharPointer = boolValue ? "true" : "false";
+         return boolValueAsConstCharPointer;
+      }
+
       static std::string CharPointerToString(const char* str)
       {
          if (str == nullptr)
@@ -1334,12 +1340,6 @@ namespace ZenUnit
       {
          const std::string strAsString = CharPointerToString(str);
          return strAsString;
-      }
-
-      static const char* ToString(bool boolValue)
-      {
-         const char* const boolValueAsConstCharPointer = boolValue ? "true" : "false";
-         return boolValueAsConstCharPointer;
       }
 
       static std::string ToString(char charValue)
