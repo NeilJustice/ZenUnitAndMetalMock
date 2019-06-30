@@ -107,9 +107,10 @@ namespace ZenUnit
    {
       ToStringerTestStruct s(1);
       //
-      ToStringer::ToString(s);
+      const string str = ToStringer::ToString(s);
       //
       s.AssertInsertionOperatorCalledOnceWith(1);
+      ARE_EQUAL("", str);
    }
 
    TEST(ToString_Pointer_ReturnsNullptrIfNullptrOtherwiseMemoryAddress)
@@ -162,7 +163,8 @@ namespace ZenUnit
    TEST(ToString_UniquePtr_ReturnsPointeeAddress)
    {
       const unique_ptr<int> nullUniquePtr(nullptr);
-      ARE_EQUAL("nullptr", ToStringer::ToString(nullUniquePtr));
+      const string nullUniquePtrAsString = ToStringer::ToString(nullUniquePtr);
+      ARE_EQUAL("nullptr", nullUniquePtrAsString);
 
       const unique_ptr<int> nonNullUniquePtr(new int);
       const string nonNullUniquePtrString = ToStringer::ToString(nonNullUniquePtr);
@@ -210,7 +212,8 @@ namespace ZenUnit
    TEST(ToString_SharedPtr_ReturnsPointeeAddress)
    {
       const shared_ptr<const int> nullSharedPtr(nullptr);
-      ARE_EQUAL("nullptr", ToStringer::ToString(nullSharedPtr));
+      const string nullSharedPtrAsString = ToStringer::ToString(nullSharedPtr);
+      ARE_EQUAL("nullptr", nullSharedPtrAsString);
 
       const shared_ptr<const int> nonNullSharedPtr(new int);
       const string nonNullSharedPtrString = ToStringer::ToString(nonNullSharedPtr);

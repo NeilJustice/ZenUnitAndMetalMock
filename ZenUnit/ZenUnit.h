@@ -18,6 +18,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+using namespace std::literals::string_literals;
 
 #if defined __linux__ || defined __APPLE__
 #include <climits>
@@ -1221,143 +1222,115 @@ namespace ZenUnit
    {
    public:
       template<typename T>
-      static void CallZenUnitPrinterOrOStreamInsertionOperatorOrPrintTypeName(
-         std::ostream& os, [[maybe_unused]]const T& value)
+      static std::string ToString([[maybe_unused]]const T& value)
       {
-         if constexpr (has_ZenUnitPrinter<T>::value && has_ostream_left_shift<T>::value)
+         if constexpr (std::is_same_v<T, std::nullptr_t>)
          {
-            ZenUnit::Printer<T>::Print(os, value);
+            return "nullptr";
          }
-         if constexpr (has_ZenUnitPrinter<T>::value && !has_ostream_left_shift<T>::value)
+         else if constexpr (std::is_same_v<T, bool>)
          {
-            ZenUnit::Printer<T>::Print(os, value);
+            const std::string trueOrFalse = value ? "true"s : "false"s;
+            return trueOrFalse;
+         }
+         else if constexpr (std::is_enum_v<T>)
+         {
+            const std::string valueAsString = std::to_string(static_cast<typename std::underlying_type<T>::type>(value));
+            return valueAsString;
+         }
+         else if constexpr (std::is_same_v<T, char>)
+         {
+            if (value == 0)
+            {
+               return "'\\0' (0)";
+            }
+            std::ostringstream oss;
+            oss << '\'' << value << "\' (" << static_cast<int>(value) << ")";
+            const std::string valueAsString(oss.str());
+            return valueAsString;
+         }
+         else if constexpr (std::is_same_v<std::decay<T>::type, char*>)
+         {
+            if (value == nullptr)
+            {
+               return "nullptr";
+            }
+            std::ostringstream oss;
+            oss << "\"" << value << "\"";
+            const std::string quotedValue(oss.str());
+            return quotedValue;
+         }
+         else if constexpr (std::is_same_v<T, float>)
+         {
+            const std::string floatAsString = std::to_string(value) + "f";
+            return floatAsString;
+         }
+         else if constexpr (has_to_string<T>::value)
+         {
+            const std::string valueAsString(std::to_string(value));
+            return valueAsString;
+         }
+         else if constexpr (std::is_member_pointer_v<T>)
+         {
+            return "MemberPointer"s;
+         }
+         else if constexpr (std::is_member_function_pointer_v<T>)
+         {
+            return "MemberFunctionPointer"s;
+         }
+         else if constexpr (std::is_pointer_v<T>)
+         {
+            const std::string pointerAddressString = PointerToAddressString(value);
+            return pointerAddressString;
+         }
+         else if constexpr (has_ZenUnitPrinter<T>::value)
+         {
+            std::ostringstream oss;
+            ZenUnit::Printer<T>::Print(oss, value);
+            const std::string valueAsString = oss.str();
+            return valueAsString;
          }
          else if constexpr (!has_ZenUnitPrinter<T>::value && has_ostream_left_shift<T>::value)
          {
+            std::ostringstream oss;
             if (is_quoted_when_printed<T>::value)
             {
-               os << '\"';
+               oss << '\"';
             }
-            os << value;
+            oss << value;
             if (is_quoted_when_printed<T>::value)
             {
-               os << '\"';
+               oss << '\"';
             }
+            const std::string valueAsString = oss.str();
+            return valueAsString;
          }
          else if constexpr (!has_ZenUnitPrinter<T>::value && !has_ostream_left_shift<T>::value)
          {
+            std::ostringstream oss;
             const std::string* const typeName = Type::GetName<T>();
-            os << "<" << *typeName << ">";
+            oss << "<" << *typeName << ">";
+            const std::string valueAsString = oss.str();
+            return valueAsString;
          }
-      }
-
-      template<typename T>
-      static std::string DoToString(const T& value)
-      {
-         std::ostringstream oss;
-         CallZenUnitPrinterOrOStreamInsertionOperatorOrPrintTypeName(oss, value);
-         const std::string valueAsString(oss.str());
-         return valueAsString;
-      }
-
-      template<typename T>
-      static typename std::enable_if<has_to_string<T>::value, std::string>::type ToString(const T& tValue)
-      {
-         const std::string tValueAsString(std::to_string(tValue));
-         return tValueAsString;
-      }
-
-      template<typename T>
-      static typename std::enable_if<!has_to_string<T>::value&& std::is_enum<T>::value, std::string>::type ToString(const T& tValue)
-      {
-         const std::string tvalueAsString = std::to_string(static_cast<typename std::underlying_type<T>::type>(tValue));
-         return tvalueAsString;
-      }
-
-      template<typename T>
-      static typename std::enable_if<!has_to_string<T>::value && !std::is_enum<T>::value, std::string>::type ToString(const T& tValue)
-      {
-         const std::string tValueString = DoToString(tValue);
-         return tValueString;
-      }
-
-      template<typename T>
-      static std::string ToString(T* pointerAddress)
-      {
-         const std::string pointerAddressString = PointerToAddressString(pointerAddress);
-         return pointerAddressString;
-      }
-
-      template<typename T>
-      static typename std::enable_if<std::is_pointer<T>::value>::type ToString(const T& tValue)
-      {
-         const std::string pointerAddressAsString = PointerToAddressString(tValue);
-         return pointerAddressAsString;
+         else
+         {
+            static_assert(false, "Expect the impossible");
+         }
       }
 
       template<typename T, typename Deleter>
       static std::string ToString(const std::unique_ptr<T, Deleter>& uniquePtr)
       {
-         const std::string pointerAddressAsString = PointerToAddressString(uniquePtr.get());
-         return pointerAddressAsString;
+         const std::string pointerAddressString = PointerToAddressString(uniquePtr.get());
+         return pointerAddressString;
       }
 
       template<typename T>
       static std::string ToString(const std::shared_ptr<T>& sharedPtr)
       {
-         const std::string pointerAddressAsString = PointerToAddressString(sharedPtr.get());
-         return pointerAddressAsString;
-      }
-
-      static const char* ToString(const std::nullptr_t&)
-      {
-         return "nullptr";
-      }
-
-      static const char* ToString(bool boolValue)
-      {
-         const char* const boolValueAsConstCharPointer = boolValue ? "true" : "false";
-         return boolValueAsConstCharPointer;
-      }
-
-      static std::string CharPointerToString(const char* str)
-      {
-         if (str == nullptr)
-         {
-            return "nullptr";
-         }
-         const std::string strAsString = DoToString(str);
-         return strAsString;
-      }
-
-      static std::string ToString(const char* str)
-      {
-         const std::string strAsString = CharPointerToString(str);
-         return strAsString;
-      }
-
-      static std::string ToString(char* str)
-      {
-         const std::string strAsString = CharPointerToString(str);
-         return strAsString;
-      }
-
-      static std::string ToString(char charValue)
-      {
-         if (charValue == 0)
-         {
-            return "'\\0' (0)";
-         }
-         std::ostringstream oss;
-         oss << '\'' << charValue << "\' (" << static_cast<int>(charValue) << ")";
-         const std::string charValueAsString(oss.str());
-         return charValueAsString;
-      }
-
-      static std::string ToString(float floatValue)
-      {
-         const std::string floatValueAsString = std::to_string(floatValue) + "f";
-         return floatValueAsString;
+         const std::string pointerAddressString = PointerToAddressString(sharedPtr.get());
+         return pointerAddressString;
       }
 
       template<typename FunctionReturnType, typename... ArgumentTypes>
@@ -1415,7 +1388,8 @@ namespace ZenUnit
       template<typename T, typename... Types>
       static void DoToStringConcat(std::ostringstream& oss, const T& value, Types&&... values)
       {
-         oss << ToString(value);
+         const std::string valueAsString = ToString(value);
+         oss << valueAsString;
          size_t numberOfRemainingValues = sizeof...(values);
          if (numberOfRemainingValues > 0)
          {
@@ -6094,7 +6068,8 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
                break;
             }
             const T& element = vec[i];
-            ToStringer::CallZenUnitPrinterOrOStreamInsertionOperatorOrPrintTypeName(os, element);
+            const std::string elementAsString = ToStringer::ToString(element);
+            os << elementAsString;
             if (i < vectorSize - 1)
             {
                os << ",\n   ";
