@@ -9,9 +9,9 @@ import Random
 
 testNames = [
 'main_ArgsLengthIsNot5_PrintsUsageAndExits1_test',
-'main_ArgsLengthIs5_CMakes_Builds_RunsTestsIfLinuxOtherwisePostBuildStepRunsTestsOnWindows_test',
-'linux_cmake_and_build_CMakes_BuildsWithNinja_test',
-'windows_cmake_and_build_CMakes_BuildsWithMSBuild_test',
+'main_ArgsLengthIs5_CMakes_Builds_Installs_test',
+'linux_cmake_and_build_CMakes_BuildsWithNinja_RunsCMakeInstall_test',
+'windows_cmake_build_install_CMakes_BuildsWithMSBuild_RunsCMakeInstall_test',
 ]
 
 class BuildZenUnitTests(unittest.TestCase):
@@ -40,11 +40,11 @@ class BuildZenUnitTests(unittest.TestCase):
       testcase(4)
       testcase(6)
 
-   def main_ArgsLengthIs5_CMakes_Builds_RunsTestsIfLinuxOtherwisePostBuildStepRunsTestsOnWindows_test(self):
+   def main_ArgsLengthIs5_CMakes_Builds_Installs_test(self):
       @patch('platform.system', spec_set=True)
       @patch('ZenUnitPy.ArgParser.parse_arg', spec_set=True)
-      @patch('ZenUnitPy.BuildZenUnitAndZenMock.linux_cmake_and_build', spec_set=True)
-      @patch('ZenUnitPy.BuildZenUnitAndZenMock.windows_cmake_and_build', spec_set=True)
+      @patch('ZenUnitPy.BuildZenUnitAndZenMock.linux_cmake_build_install', spec_set=True)
+      @patch('ZenUnitPy.BuildZenUnitAndZenMock.windows_cmake_build_install', spec_set=True)
       @patch('ZenUnitPy.Process.run', spec_set=True)
       @patch('os.chdir', spec_true=True)
       def testcase(platformSystem, expectLinux, _1, _2, _3, _4, _5, _6):
@@ -64,7 +64,7 @@ class BuildZenUnitTests(unittest.TestCase):
             ])
             platform.system.assert_called_once_with()
             if expectLinux:
-               BuildZenUnitAndZenMock.linux_cmake_and_build.assert_called_once_with(self.cmakeGenerator, self.cmakeArch, self.cmakeBuildType, self.cmakeDefinitions)
+               BuildZenUnitAndZenMock.linux_cmake_build_install.assert_called_once_with(self.cmakeGenerator, self.cmakeArch, self.cmakeBuildType, self.cmakeDefinitions)
                self.assertEqual(3, len(Process.run.call_args_list))
                Process.run.assert_has_calls([
                   call('ZenMockTests/ZenMockTests'),
@@ -72,7 +72,7 @@ class BuildZenUnitTests(unittest.TestCase):
                   call('ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests')])
                os.chdir.assert_called_once_with('..')
             else:
-               BuildZenUnitAndZenMock.windows_cmake_and_build.assert_called_once_with(self.cmakeGenerator, self.cmakeArch, self.cmakeBuildType, self.cmakeDefinitions)
+               BuildZenUnitAndZenMock.windows_cmake_build_install.assert_called_once_with(self.cmakeGenerator, self.cmakeArch, self.cmakeBuildType, self.cmakeDefinitions)
                Process.run.assert_not_called()
                os.chdir.assert_not_called()
       testcase('Linux', True)
@@ -80,32 +80,36 @@ class BuildZenUnitTests(unittest.TestCase):
       testcase('Windows', False)
       testcase('OSX', False)
 
-   def linux_cmake_and_build_CMakes_BuildsWithNinja_test(self):
+   def linux_cmake_and_build_CMakes_BuildsWithNinja_RunsCMakeInstall_test(self):
       @patch('ZenUnitPy.CMake.generate', spec_set=True)
       @patch('ZenUnitPy.Process.run', spec_set=True)
-      def testcase(cmakeDefinitions, expectedCMakeDefinitionsArgument, _1, _2):
+      @patch('ZenUnitPy.CMake.install', spec_set=True)
+      def testcase(cmakeDefinitions, expectedCMakeDefinitionsArgument, _1, _2, _3):
          with self.subTest(f'{cmakeDefinitions, expectedCMakeDefinitionsArgument}'):
             #
-            BuildZenUnitAndZenMock.linux_cmake_and_build(self.cmakeGenerator, self.cmakeArch, self.cmakeBuildType, cmakeDefinitions)
+            BuildZenUnitAndZenMock.linux_cmake_build_install(self.cmakeGenerator, self.cmakeArch, self.cmakeBuildType, cmakeDefinitions)
             #
             CMake.generate.assert_called_once_with(
                self.cmakeBuildType, self.cmakeGenerator, self.cmakeArch, self.cmakeBuildType, expectedCMakeDefinitionsArgument, '..')
             Process.run.assert_called_once_with('ninja -v')
+            CMake.install.assert_called_once_with()
       testcase('', '')
       testcase('-DSanitizerMode=ON', '-DSanitizerMode=ON')
       testcase('-DOption=ON', '-DOption=ON')
 
-   def windows_cmake_and_build_CMakes_BuildsWithMSBuild_test(self):
+   def windows_cmake_build_install_CMakes_BuildsWithMSBuild_RunsCMakeInstall_test(self):
       @patch('ZenUnitPy.CMake.generate', spec_set=True)
       @patch('ZenUnitPy.Process.run', spec_set=True)
-      def testcase(cmakeDefinitions, expectedCMakeDefinitionsArgument, _1, _2):
+      @patch('ZenUnitPy.CMake.install', spec_set=True)
+      def testcase(cmakeDefinitions, expectedCMakeDefinitionsArgument, _1, _2, _3):
          with self.subTest(f'{cmakeDefinitions, expectedCMakeDefinitionsArgument, }'):
             #
-            BuildZenUnitAndZenMock.windows_cmake_and_build(self.cmakeGenerator, self.cmakeArch, self.cmakeBuildType, cmakeDefinitions)
+            BuildZenUnitAndZenMock.windows_cmake_build_install(self.cmakeGenerator, self.cmakeArch, self.cmakeBuildType, cmakeDefinitions)
             #
             CMake.generate.assert_called_once_with('.', self.cmakeGenerator, self.cmakeArch, self.cmakeBuildType, expectedCMakeDefinitionsArgument, '.')
             expectedCMakeBuildCommand = 'cmake --build . --config {0}'.format(self.cmakeBuildType)
             Process.run.assert_called_once_with(expectedCMakeBuildCommand)
+            CMake.install.assert_called_once_with()
       testcase('', '')
       testcase('-DSanitizerMode=ON', '-DSanitizerMode=ON')
       testcase('-DOption=ON', '-DOption=ON')

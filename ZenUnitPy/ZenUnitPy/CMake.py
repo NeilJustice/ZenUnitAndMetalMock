@@ -11,3 +11,6 @@ def generate(folderPath, generator, arch, buildType, cmakeDefinitions, cmakeList
    else:
       cmakeCommand = f'cmake -G"{generator}" -A"{arch}" {cmakeDefinitions} {cmakeListsFolderPath}'
    Process.run(cmakeCommand)
+
+def install():
+   Process.run('cmake --build . --target install')

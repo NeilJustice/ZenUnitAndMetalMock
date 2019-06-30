@@ -18,22 +18,24 @@ def main(args):
       cmakeDefinitions = ArgParser.parse_arg('--cmake-definitions', args[4])
       platformSystem = platform.system().casefold()
       if platformSystem == 'linux':
-         linux_cmake_and_build(cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions)
+         linux_cmake_build_install(cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions)
          Process.run(f'ZenMockTests/ZenMockTests')
          Process.run(f'ZenUnitLibraryTests/ZenUnitLibraryTests')
          Process.run(f'ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests')
          os.chdir('..')
       else:
-         windows_cmake_and_build(cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions)
+         windows_cmake_build_install(cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions)
 
-def linux_cmake_and_build(cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions):
+def linux_cmake_build_install(cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions):
    CMake.generate(cmakeBuildType, cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions, '..')
    Process.run('ninja -v')
+   CMake.install()
 
-def windows_cmake_and_build(cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions):
+def windows_cmake_build_install(cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions):
    CMake.generate('.', cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions, '.')
    buildCommand = f'cmake --build . --config {cmakeBuildType}'
    Process.run(buildCommand)
+   CMake.install()
 
 if __name__ == "__main__": # pragma nocover
    main(sys.argv)
