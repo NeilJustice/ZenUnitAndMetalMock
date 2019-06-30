@@ -1313,10 +1313,6 @@ namespace ZenUnit
             const std::string valueAsString = oss.str();
             return valueAsString;
          }
-         else
-         {
-            static_assert(false, "Expect the impossible");
-         }
       }
 
       template<typename T, typename Deleter>
