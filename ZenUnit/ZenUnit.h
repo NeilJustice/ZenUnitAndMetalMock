@@ -1249,7 +1249,7 @@ namespace ZenUnit
             const std::string valueAsString(oss.str());
             return valueAsString;
          }
-         else if constexpr (std::is_same_v<std::decay<T>::type, char*>)
+         else if constexpr (std::is_same_v<typename std::decay<T>::type, char*>)
          {
             if (value == nullptr)
             {
