@@ -22,7 +22,7 @@ class RunZenUnitPyTestsWithCoverageAndLintingTests(unittest.TestCase):
       os.chdir.assert_has_calls([
          call('ZenUnitPy/ZenUnitPyTests'),
          call('..')])
-      Process.run.assert_called_once_with('python3 RunAllWithCoverage.py')
+      Process.run.assert_called_once_with('python3 -u RunAllWithCoverage.py')
       Python.pylint_all.assert_called_once_with()
       Python.flake8_all.assert_called_once_with()
 

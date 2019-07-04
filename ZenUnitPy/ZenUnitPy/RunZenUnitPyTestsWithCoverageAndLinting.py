@@ -7,7 +7,7 @@ Usage = 'Usage: python3 RunZenUnitPyTestsWithCoverageAndLinting.py'
 
 def main():
    os.chdir('ZenUnitPy/ZenUnitPyTests')
-   Process.run('python3 RunAllWithCoverage.py')
+   Process.run('python3 -u RunAllWithCoverage.py')
    os.chdir('..')
    Python.pylint_all()
    Python.flake8_all()
