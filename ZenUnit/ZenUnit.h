@@ -1249,17 +1249,6 @@ namespace ZenUnit
             const std::string valueAsString(oss.str());
             return valueAsString;
          }
-         else if constexpr (std::is_same_v<typename std::decay<T>::type, char*>)
-         {
-            if (value == nullptr)
-            {
-               return "nullptr";
-            }
-            std::ostringstream oss;
-            oss << "\"" << value << "\"";
-            const std::string quotedValue(oss.str());
-            return quotedValue;
-         }
          else if constexpr (std::is_same_v<T, float>)
          {
             const std::string floatAsString = std::to_string(value) + "f";
@@ -1313,6 +1302,18 @@ namespace ZenUnit
             const std::string valueAsString = oss.str();
             return valueAsString;
          }
+      }
+
+      static std::string ToString(const char* value)
+      {
+         if (value == nullptr)
+         {
+            return "nullptr";
+         }
+         std::ostringstream oss;
+         oss << "\"" << value << "\"";
+         const std::string quotedValue(oss.str());
+         return quotedValue;
       }
 
       template<typename T, typename Deleter>
