@@ -6,7 +6,7 @@ from ZenUnitPy import CMake, Process, UnitTester
 
 testNames = [
 'generate_CreatesAndCdsToDirectory_RunsCMakeWithGeneratorAndBuildType_test',
-'install_RunsCMakeInstall'
+'install_RunsCMakeInstall_test'
 ]
 
 class CMakeTests(unittest.TestCase):
@@ -39,7 +39,7 @@ class CMakeTests(unittest.TestCase):
       testcase('Windows', '-DCMAKE_INSTALL_PREFIX=C:/install', 'cmake -G"Generator" -A"Arch" -DCMAKE_INSTALL_PREFIX=C:/install CMakeListsFolderPath')
 
    @patch('ZenUnitPy.Process.run', spec_set=True)
-   def install_RunsCMakeInstall(self, _1):
+   def install_RunsCMakeInstall_test(self, _1):
       #
       CMake.install()
       #
