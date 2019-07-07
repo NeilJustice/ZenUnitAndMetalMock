@@ -250,7 +250,7 @@ Testing Rigor Options:
    For five random test run orderings on a CI/CD server to exercise the robustness of commits
    with respect to test run ordering, specify --random --test-runs=5.
 --no-skips
-   If any tests are skipped, exit with code 1 after running all tests. Useful option for CI/CD servers.
+   Exit with code 1 after running all tests if any tests are skipped. Useful option for CI/CD servers.
 
 Testing Filtration Options:
 
@@ -271,7 +271,7 @@ Testing Filtration Options:
 Testing Utility Options:
 
 --help or -help
-   Print this message.
+   Print this help message.
 --version or -version
 	Print the ZenUnit version number.
 --pause

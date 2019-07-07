@@ -34,7 +34,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedRandomTestCaseNumbers.size(), _randomTestCaseNumberGenerator._randomTestCaseNumbers.size());
       for (size_t expectedTestCaseNumber : expectedRandomTestCaseNumbers)
       {
-         CONTAINS_ELEMENT(expectedTestCaseNumber, _randomTestCaseNumberGenerator._randomTestCaseNumbers);
+         DOES_CONTAIN_ELEMENT(expectedTestCaseNumber, _randomTestCaseNumberGenerator._randomTestCaseNumbers);
       }
       ARE_EQUAL(0, _randomTestCaseNumberGenerator._testCaseNumberIndex);
    }

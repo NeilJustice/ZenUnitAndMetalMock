@@ -38,8 +38,8 @@ namespace ZenUnit
    {
       const auto& calls = TestingTestClassType::s_calls;
       ARE_EQUAL(2, calls.size());
-      CONTAINS_ELEMENT(expectedFirstCall, calls);
-      CONTAINS_ELEMENT(expectedSecondCall, calls);
+      DOES_CONTAIN_ELEMENT(expectedFirstCall, calls);
+      DOES_CONTAIN_ELEMENT(expectedSecondCall, calls);
    }
 
    struct TestingTestClass1X1 : public StartupAndCleanup
