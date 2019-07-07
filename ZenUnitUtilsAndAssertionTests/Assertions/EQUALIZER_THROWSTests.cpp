@@ -53,7 +53,7 @@ namespace ZenUnit
          if (expected.field == TestStructB::ThrowWithFieldNameInWhatText)
          {
             Anomaly anomaly;
-            anomaly.expected = "field";
+            anomaly.expectedValueAsStringOrExpectedLine = "field";
             throw anomaly;
          }
       }

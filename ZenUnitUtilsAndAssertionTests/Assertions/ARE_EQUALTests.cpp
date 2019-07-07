@@ -1,44 +1,42 @@
 #include "pch.h"
 
-struct EqualizerOneTypeTestStruct {};
-struct EqualizerTwoTypeTestStruct {};
-struct EqualizerBothOneAndTwoTypeTestStruct {};
+struct EqualizerOneTypeTestStruct_AreEqualTests {};
+struct EqualizerTwoTypeTestStruct_AreEqualTests {};
+struct EqualizerBothOneAndTwoTypeTestStruct_AreEqualTests {};
 
 namespace ZenUnit
 {
    template<>
-   struct Equalizer<EqualizerOneTypeTestStruct>
+   struct Equalizer<EqualizerOneTypeTestStruct_AreEqualTests>
    {
-      static void AssertEqual(
-         const EqualizerOneTypeTestStruct&,
-         const EqualizerOneTypeTestStruct&)
+      static void AssertEqual(const EqualizerOneTypeTestStruct_AreEqualTests&, const EqualizerOneTypeTestStruct_AreEqualTests&)
       {
          ARE_EQUAL(10, 20);
       }
    };
 
    template<>
-   struct TwoTypeEqualizer<EqualizerTwoTypeTestStruct, int>
+   struct TwoTypeEqualizer<EqualizerTwoTypeTestStruct_AreEqualTests, int>
    {
-      static void AssertEqual(const EqualizerTwoTypeTestStruct&, const int&)
+      static void AssertEqual(const EqualizerTwoTypeTestStruct_AreEqualTests&, const int&)
       {
          ARE_EQUAL(30, 40);
       }
    };
 
    template<>
-   struct Equalizer<EqualizerBothOneAndTwoTypeTestStruct>
+   struct Equalizer<EqualizerBothOneAndTwoTypeTestStruct_AreEqualTests>
    {
-      static void AssertEqual(const EqualizerBothOneAndTwoTypeTestStruct&, const EqualizerBothOneAndTwoTypeTestStruct&)
+      static void AssertEqual(const EqualizerBothOneAndTwoTypeTestStruct_AreEqualTests&, const EqualizerBothOneAndTwoTypeTestStruct_AreEqualTests&)
       {
          ARE_EQUAL(50, 60);
       }
    };
 
    template<>
-   struct TwoTypeEqualizer<EqualizerBothOneAndTwoTypeTestStruct, EqualizerBothOneAndTwoTypeTestStruct>
+   struct TwoTypeEqualizer<EqualizerBothOneAndTwoTypeTestStruct_AreEqualTests, EqualizerBothOneAndTwoTypeTestStruct_AreEqualTests>
    {
-      static void AssertEqual(const EqualizerBothOneAndTwoTypeTestStruct&, const EqualizerBothOneAndTwoTypeTestStruct&)
+      static void AssertEqual(const EqualizerBothOneAndTwoTypeTestStruct_AreEqualTests&, const EqualizerBothOneAndTwoTypeTestStruct_AreEqualTests&)
       {
          throw invalid_argument("unexpected call");
       }
@@ -48,7 +46,7 @@ namespace ZenUnit
    AFACT(OneTypeEqualizerDefined_CallsIt)
    AFACT(TwoTypeEqualizerDefined_CallsIt)
    AFACT(BothOneAndTwoTypeEqualizersDefined_CallsTheOneTypeEqualizer)
-   AFACT(Int32sEqual_DoesNotThrow)
+   AFACT(Int32sAreEqual_DoesNotThrow)
    AFACT(IntLiteralsNotEqual_Throws)
    AFACT(IntVariablesNotEqual_Throws_MessagesTestCase)
    AFACT(StringsNotEqual_ThrowsWithStringsInQuotesToConfirmedToStringed)
@@ -58,11 +56,11 @@ namespace ZenUnit
 
    TEST(OneTypeEqualizerDefined_CallsIt)
    {
-      const EqualizerOneTypeTestStruct expected{}, actual{};
+      const EqualizerOneTypeTestStruct_AreEqualTests expected{}, actual{};
       THROWS(ARE_EQUAL(expected, actual), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARE_EQUAL(expected, actual)",
-"Expected: <EqualizerOneTypeTestStruct>",
-"  Actual: <EqualizerOneTypeTestStruct>",
+"Expected: <EqualizerOneTypeTestStruct_AreEqualTests>",
+"  Actual: <EqualizerOneTypeTestStruct_AreEqualTests>",
 " Because: ARE_EQUAL(10, 20) failed",
 "Expected: 10",
 "  Actual: 20",
@@ -72,10 +70,10 @@ namespace ZenUnit
 
    TEST(TwoTypeEqualizerDefined_CallsIt)
    {
-      const EqualizerTwoTypeTestStruct expected{};
+      const EqualizerTwoTypeTestStruct_AreEqualTests expected{};
       THROWS(ARE_EQUAL(expected, 1), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARE_EQUAL(expected, 1)",
-"Expected: <EqualizerTwoTypeTestStruct>",
+"Expected: <EqualizerTwoTypeTestStruct_AreEqualTests>",
 "  Actual: 1",
 " Because: ARE_EQUAL(30, 40) failed",
 "Expected: 30",
@@ -86,11 +84,11 @@ namespace ZenUnit
 
    TEST(BothOneAndTwoTypeEqualizersDefined_CallsTheOneTypeEqualizer)
    {
-      const EqualizerBothOneAndTwoTypeTestStruct expected{}, actual{};
+      const EqualizerBothOneAndTwoTypeTestStruct_AreEqualTests expected{}, actual{};
       THROWS(ARE_EQUAL(expected, actual), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARE_EQUAL(expected, actual)",
-"Expected: <EqualizerBothOneAndTwoTypeTestStruct>",
-"  Actual: <EqualizerBothOneAndTwoTypeTestStruct>",
+"Expected: <EqualizerBothOneAndTwoTypeTestStruct_AreEqualTests>",
+"  Actual: <EqualizerBothOneAndTwoTypeTestStruct_AreEqualTests>",
 " Because: ARE_EQUAL(50, 60) failed",
 "Expected: 50",
 "  Actual: 60",
@@ -98,7 +96,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(Int32sEqual_DoesNotThrow)
+   TEST(Int32sAreEqual_DoesNotThrow)
    {
       ARE_EQUAL(numeric_limits<int>::min(), numeric_limits<int>::min());
       ARE_EQUAL(numeric_limits<int>::min() + 1, numeric_limits<int>::min() + 1);
@@ -156,8 +154,8 @@ namespace ZenUnit
    TEST(EqualizerBothOneAndTwoTypeTestStruct_CodeCoverage)
    {
       THROWS(
-         (TwoTypeEqualizer<EqualizerBothOneAndTwoTypeTestStruct, EqualizerBothOneAndTwoTypeTestStruct>::AssertEqual(
-            EqualizerBothOneAndTwoTypeTestStruct{}, EqualizerBothOneAndTwoTypeTestStruct{})),
+         (TwoTypeEqualizer<EqualizerBothOneAndTwoTypeTestStruct_AreEqualTests, EqualizerBothOneAndTwoTypeTestStruct_AreEqualTests>::AssertEqual(
+            EqualizerBothOneAndTwoTypeTestStruct_AreEqualTests{}, EqualizerBothOneAndTwoTypeTestStruct_AreEqualTests{})),
          invalid_argument, "unexpected call");
    }
 

@@ -133,6 +133,10 @@ Testing Utility Options:
 #define ARE_EQUAL(expectedValue, actualValue, ...) \
    ZenUnit::ARE_EQUAL_Defined(VRT(expectedValue), VRT(actualValue), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
+// Asserts that !(expectedValue == actualValue) or if defined asserts that ZenUnit::Equalizer<T>::AssertEqual(const T& expectedValue, const T& actualValue) throws a ZenUnit::Anomaly.
+#define ARE_NOT_EQUAL(notExpectedValue, actualValue, ...) \
+   ZenUnit::ARE_NOT_EQUAL_Defined(VRT(notExpectedValue), VRT(actualValue), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
 // First asserts ARE_NOT_SAME(expectedObject, actualObject) then asserts ARE_EQUAL(expectedObject, actualObject).
 #define ARE_COPIES(expectedObject, actualObject, ...) \
    ZenUnit::ARE_COPIES_Defined(VRT(expectedObject), VRT(actualObject), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
@@ -1403,15 +1407,13 @@ namespace ZenUnit
    struct Anomaly : public std::exception
    {
       std::string assertExpression;
-      std::string expected;
-      std::string actual;
+      std::string expectedValueAsStringOrExpectedLine;
+      std::string actualValueAsStringOrActualLine;
       std::string message;
       std::string why;
       FileLine fileLine;
 
-      Anomaly() noexcept
-      {
-      }
+      Anomaly() noexcept {}
 
       template<typename... MessageTypes>
       Anomaly(
@@ -1452,15 +1454,15 @@ namespace ZenUnit
          std::string_view arg3Text,
          std::string_view messagesText,
          const Anomaly& becauseAnomaly,
-         std::string_view expected,
-         std::string_view actual,
+         std::string_view expectedValueAsStringOrExpectedLine,
+         std::string_view actualValueAsStringOrActualLine,
          ExpectedActualFormat expectedActualFormat,
          FileLine fileLine,
          MessageTypes&&... messages)
       {
          this->assertExpression = MakeAssertExpression(assertionName, arg1Text, arg2Text, arg3Text, messagesText);;
-         this->expected = expected;
-         this->actual = actual;
+         this->expectedValueAsStringOrExpectedLine = expectedValueAsStringOrExpectedLine;
+         this->actualValueAsStringOrActualLine = actualValueAsStringOrActualLine;
          this->message = ToStringer::ToStringConcat(std::forward<MessageTypes>(messages)...);
          this->fileLine = fileLine;
          std::ostringstream whyBuilder;
@@ -1470,11 +1472,11 @@ namespace ZenUnit
          if (becauseAnomalyPresent)
          {
             whyBuilder <<
-               "Expected: " << expected << '\n' <<
-               "  Actual: " << actual << '\n' <<
+               "Expected: " << expectedValueAsStringOrExpectedLine << '\n' <<
+               "  Actual: " << actualValueAsStringOrActualLine << '\n' <<
                " Because: " << becauseAnomaly.assertExpression << " failed\n" <<
-               "Expected: " << becauseAnomaly.expected << '\n' <<
-               "  Actual: " << becauseAnomaly.actual << '\n';
+               "Expected: " << becauseAnomaly.expectedValueAsStringOrExpectedLine << '\n' <<
+               "  Actual: " << becauseAnomaly.actualValueAsStringOrActualLine << '\n';
             if (!becauseAnomaly.message.empty())
             {
                whyBuilder << " Message: " << becauseAnomaly.message << '\n';
@@ -1485,15 +1487,15 @@ namespace ZenUnit
             if (expectedActualFormat == ExpectedActualFormat::Fields)
             {
                whyBuilder <<
-                  "Expected: " << expected << '\n' <<
-                  "  Actual: " << actual << '\n';
+                  "Expected: " << expectedValueAsStringOrExpectedLine << '\n' <<
+                  "  Actual: " << actualValueAsStringOrActualLine << '\n';
             }
             else
             {
                assert_true(expectedActualFormat == ExpectedActualFormat::WholeLines);
                whyBuilder <<
-                  expected << '\n' <<
-                  actual << '\n';
+                  expectedValueAsStringOrExpectedLine << '\n' <<
+                  actualValueAsStringOrActualLine << '\n';
             }
          }
          if (!this->message.empty())
@@ -1551,8 +1553,8 @@ namespace ZenUnit
       {
          Anomaly anomaly;
          anomaly.assertExpression = zenMockAssertExpression;
-         anomaly.expected = zenWrappedAnomaly.expected;
-         anomaly.actual = zenWrappedAnomaly.actual;
+         anomaly.expectedValueAsStringOrExpectedLine = zenWrappedAnomaly.expectedValueAsStringOrExpectedLine;
+         anomaly.actualValueAsStringOrActualLine = zenWrappedAnomaly.actualValueAsStringOrActualLine;
          anomaly.message = zenWrappedAnomaly.message;
          anomaly.fileLine = fileLine;
          std::ostringstream whyBuilder;
@@ -1560,8 +1562,8 @@ namespace ZenUnit
             "  Failed: " << zenMockAssertExpression << '\n';
          whyBuilder <<
             " Because: " << zenWrappedAnomaly.assertExpression << " failed\n"
-            "Expected: " << zenWrappedAnomaly.expected << "\n"
-            "  Actual: " << zenWrappedAnomaly.actual << "\n"
+            "Expected: " << zenWrappedAnomaly.expectedValueAsStringOrExpectedLine << "\n"
+            "  Actual: " << zenWrappedAnomaly.actualValueAsStringOrActualLine << "\n"
             " Message: " << zenWrappedAnomaly.message << '\n';
          whyBuilder << fileLine;
          anomaly.why = whyBuilder.str();
@@ -2178,6 +2180,32 @@ namespace ZenUnit
       }
    }
 
+   template<typename NotExpectedType, typename ActualType, typename... MessageTypes>
+   void ARE_NOT_EQUAL_Defined(VRText<NotExpectedType> notExpectedValueVRT, VRText<ActualType> actualValueVRT,
+      FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
+   {
+      try
+      {
+         using DecayedNotExpectedType = typename std::decay<NotExpectedType>::type;
+         using DecayedActualType = typename std::decay<ActualType>::type;
+         std::conditional<std::is_same<DecayedNotExpectedType, DecayedActualType>::value,
+            ZenUnit::Equalizer<DecayedNotExpectedType>,
+            ZenUnit::TwoTypeEqualizer<DecayedNotExpectedType, DecayedActualType>>
+            ::type::AssertEqual(notExpectedValueVRT.value, actualValueVRT.value);
+      }
+      catch (const EqualizerException&)
+      {
+         return;
+      }
+      catch (const Anomaly& becauseAnomaly)
+      {
+         ARE_NOT_EQUAL_Throw(notExpectedValueVRT, actualValueVRT, fileLine,
+            becauseAnomaly, messagesText, std::forward<MessageTypes>(messages)...);
+      }
+      ARE_NOT_EQUAL_Throw(notExpectedValueVRT, actualValueVRT, fileLine,
+         Anomaly::Default(), messagesText, std::forward<MessageTypes>(messages)...);
+   }
+
    template<typename ExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
    void ARE_COPIES_Throw(
       VRText<ExpectedObjectType> expectedObjectVRT, VRText<ActualObjectType> actualObjectVRT,
@@ -2225,6 +2253,17 @@ namespace ZenUnit
       const std::string actualField = ToStringer::ToString(actualValueVRT.value);
       throw Anomaly("ARE_EQUAL", expectedValueVRT.text, actualValueVRT.text, "", messagesText, becauseAnomaly,
          expectedField, actualField, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+   }
+
+   template<typename NotExpectedType, typename ActualType, typename... MessageTypes>
+   void ARE_NOT_EQUAL_Throw(
+      VRText<NotExpectedType> notExpectedValueVRT, VRText<ActualType> actualValueVRT,
+      FileLine fileLine, const Anomaly& becauseAnomaly, const char* messagesText, MessageTypes&& ... messages)
+   {
+      const std::string notExpectedLine = "Not Expected: " + ToStringer::ToString(notExpectedValueVRT.value);
+      const std::string actualLine = "      Actual: " + ToStringer::ToString(actualValueVRT.value);
+      throw Anomaly("ARE_NOT_EQUAL", notExpectedValueVRT.text, actualValueVRT.text, "", messagesText, becauseAnomaly,
+         notExpectedLine, actualLine, ExpectedActualFormat::WholeLines, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename NotExpectedObjectType, typename ActualObjectType, typename... MessageTypes>

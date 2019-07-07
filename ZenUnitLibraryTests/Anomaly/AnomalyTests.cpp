@@ -34,8 +34,8 @@ namespace ZenUnit
       Anomaly defaultAnomaly;
       Anomaly exepctedDefaultAnomaly;
       exepctedDefaultAnomaly.assertExpression = string();
-      exepctedDefaultAnomaly.expected = string();
-      exepctedDefaultAnomaly.actual = string();
+      exepctedDefaultAnomaly.expectedValueAsStringOrExpectedLine = string();
+      exepctedDefaultAnomaly.actualValueAsStringOrActualLine = string();
       exepctedDefaultAnomaly.message = string();
       exepctedDefaultAnomaly.why = string();
       exepctedDefaultAnomaly.fileLine = FileLine();
@@ -167,8 +167,8 @@ FileLineValue);
       //
       Anomaly expectedAnomaly;
       expectedAnomaly.assertExpression = expectedAssertExpression;
-      expectedAnomaly.expected = Expected;
-      expectedAnomaly.actual = Actual;
+      expectedAnomaly.expectedValueAsStringOrExpectedLine = Expected;
+      expectedAnomaly.actualValueAsStringOrActualLine = Actual;
       expectedAnomaly.message = messagesTextAndMessagesPresent ? "UserType@0, UserType@1" : "";
       string totalExpectedWhy = R"(
   Failed: )" + expectedAssertExpression + expectedWhy;
@@ -204,8 +204,8 @@ FileLineValue);
       //
       Anomaly expectedAnomaly;
       expectedAnomaly.assertExpression = "ASSERTION_NAME(Arg1Text)";
-      expectedAnomaly.expected = Expected;
-      expectedAnomaly.actual = Actual;
+      expectedAnomaly.expectedValueAsStringOrExpectedLine = Expected;
+      expectedAnomaly.actualValueAsStringOrActualLine = Actual;
       expectedAnomaly.message = "";
       expectedAnomaly.why = expectedWhy;
       expectedAnomaly.fileLine = FileLineValue;
@@ -261,8 +261,8 @@ FileLineValue);
    {
       Anomaly becauseAnomaly;
       becauseAnomaly.assertExpression = "BecauseAssertExpression";
-      becauseAnomaly.expected = "BecauseExpected";
-      becauseAnomaly.actual = "BecauseActual";
+      becauseAnomaly.expectedValueAsStringOrExpectedLine = "BecauseExpected";
+      becauseAnomaly.actualValueAsStringOrActualLine = "BecauseActual";
       becauseAnomaly.message = becauseMessage;
       becauseAnomaly.fileLine = FileLine("BecauseFilePath", 123);
       //
@@ -280,8 +280,8 @@ FileLineValue);
       //
       Anomaly expectedAnomaly;
       expectedAnomaly.assertExpression = "ASSERTION_NAME(Arg1Text)";
-      expectedAnomaly.expected = Expected;
-      expectedAnomaly.actual = Actual;
+      expectedAnomaly.expectedValueAsStringOrExpectedLine = Expected;
+      expectedAnomaly.actualValueAsStringOrActualLine = Actual;
       expectedAnomaly.message = "";
       expectedAnomaly.why = expectedWhy;
       expectedAnomaly.fileLine = FileLineValue;
@@ -313,8 +313,8 @@ FileLineValue);
       const string ZenMockAssertExpression = "ZENMOCK(zenMockObject.FunctionMock.CalledOnce())";
       Anomaly zenWrappedAnomaly;
       zenWrappedAnomaly.assertExpression = "ARE_EQUAL(expectedArgument, zenMockObjectCallHistory.firstArgument, this->ZenMockedFunctionSignature)";
-      zenWrappedAnomaly.expected = "\"expected\"";
-      zenWrappedAnomaly.actual = "\"actual\"";
+      zenWrappedAnomaly.expectedValueAsStringOrExpectedLine = "\"expected\"";
+      zenWrappedAnomaly.actualValueAsStringOrActualLine = "\"actual\"";
       zenWrappedAnomaly.message = "\"virtual void ZenUnit::Console::WriteLine(const string&) const\"";
       zenWrappedAnomaly.fileLine = FileLine("BecauseFilePath", 20);
       //
@@ -322,8 +322,8 @@ FileLineValue);
       //
       Anomaly expectedAnomaly;
       expectedAnomaly.assertExpression = ZenMockAssertExpression;
-      expectedAnomaly.expected = zenWrappedAnomaly.expected;
-      expectedAnomaly.actual = zenWrappedAnomaly.actual;
+      expectedAnomaly.expectedValueAsStringOrExpectedLine = zenWrappedAnomaly.expectedValueAsStringOrExpectedLine;
+      expectedAnomaly.actualValueAsStringOrActualLine = zenWrappedAnomaly.actualValueAsStringOrActualLine;
       expectedAnomaly.message = zenWrappedAnomaly.message;
       expectedAnomaly.why = R"(
   Failed: ZENMOCK(zenMockObject.FunctionMock.CalledOnce())
