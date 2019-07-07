@@ -368,8 +368,8 @@ int main(int argc, char* argv[])
 |`ARE_COPIES(expectedObject, actualObject, messages...)`|Asserts that `&expectedObject != &actualObject` then asserts `ARE_EQUAL(expectedObject, actualObject)`.|
 |`IS_TRUE(value, messages...)`|Asserts that `value` is true.|
 |`IS_FALSE(value, messages...)`|Asserts that `value` is false.|
-|`IS_ZERO(value, messages...)`|Asserts that `value == ValueType{}` returns true.|
-|`IS_NOT_DEFAULT(value, messages...)`|Asserts that `value == ValueType{}` returns false.|
+|`IS_ZERO(value, messages...)`|Asserts that `value == ValueType{}` equals true.|
+|`IS_NOT_DEFAULT(value, messages...)`|Asserts that `value == ValueType{}` equals false.|
 
 #### Data Structure Assertions
 |||
@@ -380,8 +380,8 @@ int main(int argc, char* argv[])
 |`PAIRS_EQUAL(expectedPair, actualPair, messages...)`|Asserts `ARE_EQUAL(expectedPair.first, actualPair.first)` then asserts `ARE_EQUAL(expectedPair.second, actualPair.second)`.|
 |`STD_ARRAYS_EQUAL(expectedStdArray, actualStdArray, messages...)`|Asserts `ARE_EQUAL` on each std::array expected and actual element.|
 |`DOES_CONTAIN(expectedElement, dataStructure, messages...)`|Asserts that `dataStructure.find(expectedElement) != dataStructure.end()`.|
-|`IS_EMPTY(dataStructure, messages...)`|Asserts that `dataStructure.empty()` returns true.|
-|`IS_NOT_EMPTY(dataStructure, messages...)`|Asserts that `dataStructure.empty()` returns false.|
+|`IS_EMPTY(dataStructure, messages...)`|Asserts that `dataStructure.empty()` equals true.|
+|`IS_NOT_EMPTY(dataStructure, messages...)`|Asserts that `dataStructure.empty()` equals false.|
 
 #### Exception Assertions
 |||
