@@ -239,6 +239,10 @@ Testing Utility Options:
 #define PAIRS_EQUAL(expectedPair, actualPair, ...) \
    ZenUnit::PAIRS_EQUAL_Defined(VRT(expectedPair), VRT(actualPair), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
+// Asserts that elements in expectedArray are equal to elements in actualArray, up to lengthToCompare number of elements.
+#define ARRAYS_EQUAL(expectedArray, actualArray, numberOfElementsToCompare, ...) \
+   ZenUnit::ARRAYS_EQUAL_Defined(NAKED_VRT(expectedArray), NAKED_VRT(actualArray), numberOfElementsToCompare, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
 // Asserts that each element of std::array<T, Size> expectedStdArray is equal to each element of std::array<T, Size> actualStdArray.
 #define STD_ARRAYS_EQUAL(expectedStdArray, actualStdArray, ...) \
    ZenUnit::STD_ARRAYS_EQUAL_Defined(NAKED_VRT(expectedStdArray), NAKED_VRT(actualStdArray), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
@@ -1985,7 +1989,7 @@ namespace ZenUnit
       char* value;
       const char* text;
 
-      VRText(char* value, const char* text)
+      VRText(char* value, const char* text) noexcept
          : value(value), text(text) {}
    };
 
@@ -2878,6 +2882,46 @@ namespace ZenUnit
       return numberOfCharsAppended;
    }
 
+   template<typename T, typename... MessageTypes>
+   void ARRAYS_EQUAL_ToStringAndRethrow(
+      const Anomaly& becauseAnomaly,
+      VRText<T> expectedArrayVRT, VRText<T> actualArrayVRT, size_t numberOfElementsToCompare,
+      FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
+   {
+      const std::string* arrayTypeName = Type::GetName<T>();
+      const std::string numberOfElementsToCompareString = std::to_string(numberOfElementsToCompare);
+      throw Anomaly("ARRAYS_EQUAL", expectedArrayVRT.text, actualArrayVRT.text, numberOfElementsToCompareString, messagesText,
+         becauseAnomaly, *arrayTypeName, *arrayTypeName, ExpectedActualFormat::Fields,
+         fileLine, std::forward<MessageTypes>(messages)...);
+   }
+
+   template<typename T, typename... MessageTypes>
+   void ARRAYS_EQUAL_Defined(
+      VRText<T> expectedArrayVRT, VRText<T> actualArrayVRT, size_t numberOfElementsToCompare,
+      FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
+   {
+      const T& expectedArray = expectedArrayVRT.value;
+      const T& actualArray = actualArrayVRT.value;
+      constexpr size_t IEqualsSignLength = 2;
+      constexpr size_t SizeTMaxValueLength = 21; // strlen("18446744073709551615")
+      char indexMessage[IEqualsSignLength + SizeTMaxValueLength]{ "i=" };
+      try
+      {
+         for (size_t i = 0; i < numberOfElementsToCompare; ++i)
+         {
+            const auto& ithExpectedElement = expectedArray[i];
+            const auto& ithActualElement = actualArray[i];
+            ULongLongToChars(i, indexMessage + IEqualsSignLength);
+            ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage);
+         }
+      }
+      catch (const Anomaly& anomaly)
+      {
+         ARRAYS_EQUAL_ToStringAndRethrow(anomaly, expectedArrayVRT, actualArrayVRT, numberOfElementsToCompare,
+            fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+      }
+   }
+
    template<typename T, std::size_t Size, typename... MessageTypes>
    void STD_ARRAYS_EQUAL_ToStringAndRethrow(
       const Anomaly& becauseAnomaly,
@@ -2899,8 +2943,8 @@ namespace ZenUnit
       const std::array<T, Size>& expectedStdArray = expectedStdArrayVRT.value;
       const std::array<T, Size>& actualStdArray = actualStdArrayVRT.value;
       const std::size_t expectedStdArraySize = expectedStdArray.size();
-      static const size_t IEqualsSignLength = 2;
-      static const size_t SizeTMaxValueLength = 21; // strlen("18446744073709551615")
+      constexpr size_t IEqualsSignLength = 2;
+      constexpr size_t SizeTMaxValueLength = 21; // strlen("18446744073709551615")
       char indexMessage[IEqualsSignLength + SizeTMaxValueLength]{ "i=" };
       try
       {
@@ -3316,8 +3360,8 @@ namespace ZenUnit
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
       const size_t expectedVectorSize = expectedVector.size();
-      static const size_t IEqualsSignLength = 2;
-      static const size_t SizeTMaxValueLength = 21; // strlen("18446744073709551615")
+      constexpr size_t IEqualsSignLength = 2;
+      constexpr size_t SizeTMaxValueLength = 21; // strlen("18446744073709551615")
       char indexMessage[IEqualsSignLength + SizeTMaxValueLength]{ "i=" };
       for (size_t i = 0; i < expectedVectorSize; ++i)
       {
@@ -6262,10 +6306,10 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    T RandomNon0()
    {
       const T randomT = Random<T>();
-      static const T zeroT = static_cast<T>(0);
+      constexpr T zeroT = static_cast<T>(0);
       if (randomT == zeroT)
       {
-         static const T oneT = static_cast<T>(1);
+         constexpr T oneT = static_cast<T>(1);
          return oneT;
       }
       return randomT;
