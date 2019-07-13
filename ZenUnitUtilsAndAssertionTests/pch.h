@@ -16,13 +16,12 @@
 #pragma warning(disable: 5045) // Compiler will insert Spectre mitigation for memory load if / Qspectre switch specified
 #endif
 
-#include <regex>
+namespace std {}
 using namespace std;
 
 #include "ZenMock.h"
 #include "ZenUnit.h"
 
-#include "ZenUnitUtilsAndAssertionTests/Assertions/REGEX_MATCHES.h"
 #include "ZenUnitTestUtils/UserType.h"
 #include "ZenUnitTestUtils/TestUtil.h"
 

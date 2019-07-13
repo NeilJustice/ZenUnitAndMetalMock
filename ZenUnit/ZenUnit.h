@@ -4,20 +4,14 @@
 
 #pragma once
 #include <array>
-#include <chrono>
 #include <functional>
-#include <iomanip>
 #include <iostream>
 #include <map>
-#include <numeric>
 #include <random>
 #include <set>
 #include <sstream>
-#include <string_view>
 #include <typeindex>
-#include <unordered_map>
 #include <unordered_set>
-#include <vector>
 using namespace std::literals::string_literals;
 
 #if defined __linux__ || defined __APPLE__
@@ -45,21 +39,16 @@ namespace fs = std::experimental::filesystem;
 namespace fs = std::filesystem;
 #endif
 
-#define Comma , // For when parentheses are not enough
-
+#define Comma , // Comma is for when the compiler needs more than parentheses to disambiguate
 #define DOTOKENJOIN(a, b) a##b
 #define TOKENJOIN(a, b) DOTOKENJOIN(a, b)
 #define DOVATEXT(placeholder, ...) #__VA_ARGS__
 #define VATEXT(...) DOVATEXT("", __VA_ARGS__)
 #define VA_TEXT_ARGS(...) VATEXT(__VA_ARGS__), ##__VA_ARGS__
-
 #define FILELINE ZenUnit::FileLine(ZenUnit::FileLiner::File(__FILE__), ZenUnit::FileLiner::Line(__LINE__))
-
 #define VRT(value) ZenUnit::VRText<decltype(value)>(value, #value)
 #define NAKED_VRT(value) ZenUnit::VRText<typename std::remove_const_t<typename std::remove_reference_t<decltype(value)>>>(value, #value)
-
 #define PMFTOKEN(pmf) ZenUnit::PmfToken::Instantiate<decltype(pmf), pmf>()
-
 #ifndef assert_true
 #define assert_true(predicate) ZenUnit::AssertTrue(predicate, #predicate, FILELINE, static_cast<const char*>(__func__))
 #endif
@@ -164,6 +153,14 @@ Testing Utility Options:
 // Asserts that value != T{}.
 #define IS_NOT_DEFAULT(value, ...) \
    ZenUnit::IS_NOT_DEFAULT_Defined(VRT(value), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+//
+// Floating Point Assertions
+//
+
+// Asserts that abs(expectedValue - actualValue) <= expectedTolerance.
+#define ARE_WITHIN(expectedValue, actualValue, expectedTolerance, ...) \
+   ZenUnit::ARE_WITHIN_Defined(VRT(expectedValue), VRT(actualValue), VRT(expectedTolerance), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
 // Pointer Assertions
@@ -1413,6 +1410,7 @@ namespace ZenUnit
       std::string assertExpression;
       std::string expectedValueAsStringOrExpectedLine;
       std::string actualValueAsStringOrActualLine;
+      std::string optionalThirdLine;
       std::string message;
       std::string why;
       FileLine fileLine;
@@ -2158,6 +2156,31 @@ namespace ZenUnit
          Equalizer<const char*>::AssertEqual(expected.c_str(), actual);
       }
    };
+
+   template<typename ExpectedType, typename ActualType, typename... MessageTypes>
+   void ARE_WITHIN_Throw(VRText<ExpectedType> expectedValueVRT, VRText<ActualType> actualValueVRT, VRText<double> expectedToleranceVRT,
+      FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
+   {
+      const std::string toStringedExpectedValue = ToStringer::ToString(expectedValueVRT.value);
+      const std::string toStringedActualValue = ToStringer::ToString(actualValueVRT.value);
+      const std::string expectedToleranceLineThenMessagesText =
+         "Expected Tolerance: " + std::to_string(expectedToleranceVRT.value) + ((messagesText != nullptr) ? "\n" + std::string(messagesText) : "");
+      throw Anomaly("ARE_WITHIN", expectedValueVRT.text, actualValueVRT.text, expectedToleranceVRT.text, messagesText, Anomaly::Default(),
+         toStringedExpectedValue, toStringedActualValue, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+   }
+
+   template<typename ExpectedType, typename ActualType, typename... MessageTypes>
+   void ARE_WITHIN_Defined(VRText<ExpectedType> expectedValueVRT, VRText<ActualType> actualValueVRT, VRText<double> expectedToleranceVRT,
+      FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
+   {
+      const double difference = static_cast<double>(expectedValueVRT.value - actualValueVRT.value);
+      const double absoluteDifference = std::abs(difference);
+      if (absoluteDifference > expectedToleranceVRT.value)
+      {
+         ARE_WITHIN_Throw(expectedValueVRT, actualValueVRT, expectedToleranceVRT,
+            fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+      }
+   }
 
    template<typename ExpectedType, typename ActualType, typename... MessageTypes>
    void ARE_EQUAL_Defined(VRText<ExpectedType> expectedValueVRT, VRText<ActualType> actualValueVRT,
@@ -3801,14 +3824,14 @@ namespace ZenUnit
          _testResults.insert(_testResults.end(), testResults.cbegin(), testResults.cend());
       }
 
+      // Hand-written std::accumulate() to minimize ZenUnit compile time by not including <numeric>
       virtual unsigned SumOfTestResultMicroseconds() const
       {
-         const unsigned sumOfTestResultMicroseconds = std::accumulate(
-            _testResults.cbegin(), _testResults.cend(), 0u,
-            [](unsigned cumulativeMicroseconds, const TestResult& testResult)
+         unsigned sumOfTestResultMicroseconds = 0;
+         for (const TestResult& testResult : _testResults)
          {
-            return cumulativeMicroseconds + testResult.microseconds;
-         });
+            sumOfTestResultMicroseconds += testResult.microseconds;
+         }
          return sumOfTestResultMicroseconds;
       }
 
@@ -4196,11 +4219,7 @@ namespace ZenUnit
 
       virtual size_t NumberOfTestCases() const
       {
-         const size_t numberOfTestCases = std::accumulate(_testClassRunners.cbegin(), _testClassRunners.cend(),
-            static_cast<size_t>(0), [](size_t cumulativeNumberOfTestCases, const std::unique_ptr<TestClassRunner>& testClassRunner)
-         {
-            return cumulativeNumberOfTestCases + testClassRunner->NumberOfTestCases();
-         });
+         const size_t numberOfTestCases = SumNumberOfTestCasesInAllTestClassRunners();
          return numberOfTestCases;
       }
 
@@ -4220,6 +4239,18 @@ namespace ZenUnit
          return testClassResults;
       }
    private:
+      // Hand-written std::accumulate() to minimize ZenUnit compile time by not including <numeric>
+      size_t SumNumberOfTestCasesInAllTestClassRunners() const
+      {
+         size_t numberOfTestCasesInAllTestClassRunners = 0;
+         for (const std::unique_ptr<TestClassRunner>& testClassRunner : _testClassRunners)
+         {
+            const size_t numberOfTestCases = testClassRunner->NumberOfTestCases();
+            numberOfTestCasesInAllTestClassRunners += numberOfTestCases;
+         }
+         return numberOfTestCasesInAllTestClassRunners;
+      }
+
       void ResetTestClassRunnerWithNoOpIfTestClassNameDoesNotMatchAnyRunFilter(
          std::unique_ptr<TestClassRunner>& testClassRunner, const std::vector<RunFilter>& runFilters)
       {
@@ -4501,15 +4532,16 @@ namespace ZenUnit
          _numberOfFailedTestCases = 0;
       }
    private:
+      // Hand-written std::accumulate() to minimize ZenUnit compile time by not including <numeric>
       virtual size_t NumberOfFailedTestCases(const std::vector<TestClassResult>& testClassResults) const
       {
-         const size_t numberOfFailedTestCases = std::accumulate(
-            testClassResults.cbegin(), testClassResults.cend(), size_t(),
-            [](size_t cumulativeNumberOfFailedTestCases, const TestClassResult& testClassResult)
+         size_t numberOfFailedTestCasesForAllTestClasses = 0;
+         for (const TestClassResult& testClassResult : testClassResults)
          {
-            return cumulativeNumberOfFailedTestCases + testClassResult.NumberOfFailedTestCases();
-         });
-         return numberOfFailedTestCases;
+            const size_t numberOfFailedTestCases = testClassResult.NumberOfFailedTestCases();
+            numberOfFailedTestCasesForAllTestClasses += numberOfFailedTestCases;
+         }
+         return numberOfFailedTestCasesForAllTestClasses;
       }
 
       void PrintTestClassResultFailures(const TestClassResult& testClassResult) const
@@ -5107,15 +5139,15 @@ namespace ZenUnit
          return runFilterMatchesTestName;
       }
 
+      // Hand-written std::accumulate() to minimize ZenUnit compile time by not including <numeric>
       size_t NumberOfTestCases() const override
       {
-         const size_t numberOfTestCasesInTestClass = std::accumulate(_tests.cbegin(), _tests.cend(), size_t(),
-            [](size_t runningTotalNumberOfTestCasesInTestClass, const std::unique_ptr<Test>& test)
+         size_t numberOfTestCasesInTestClass = 0;
+         for (const std::unique_ptr<Test>& test : _tests)
          {
             const size_t numberOfTestCasesInTest = test->NumberOfTestCases();
-            const size_t newRunningTotalNumberOfTestCasesInTestClass = runningTotalNumberOfTestCasesInTestClass + numberOfTestCasesInTest;
-            return newRunningTotalNumberOfTestCasesInTestClass;
-         });
+            numberOfTestCasesInTestClass += numberOfTestCasesInTest;
+         }
          return numberOfTestCasesInTestClass;
       }
 

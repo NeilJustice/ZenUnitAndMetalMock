@@ -1,4 +1,5 @@
 #pragma once
+#include <regex>
 
 // Asserts that str std::regex_matches expectedPattern.
 #define REGEX_MATCHES(expectedPattern, str, ...) \

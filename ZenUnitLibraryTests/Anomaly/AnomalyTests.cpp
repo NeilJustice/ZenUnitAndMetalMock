@@ -36,10 +36,11 @@ namespace ZenUnit
       exepctedDefaultAnomaly.assertExpression = string();
       exepctedDefaultAnomaly.expectedValueAsStringOrExpectedLine = string();
       exepctedDefaultAnomaly.actualValueAsStringOrActualLine = string();
+      exepctedDefaultAnomaly.optionalThirdLine = string();
       exepctedDefaultAnomaly.message = string();
       exepctedDefaultAnomaly.why = string();
       exepctedDefaultAnomaly.fileLine = FileLine();
-      ARE_EQUAL("", defaultAnomaly.why);
+      ARE_EQUAL(defaultAnomaly, exepctedDefaultAnomaly);
    }
 
    TEST(WhyConstructor_EmptyMessagesTextAndEmptyMessages_SetsWhy_DoesNotSetMessage)
