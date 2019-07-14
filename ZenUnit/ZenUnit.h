@@ -32,6 +32,7 @@ using namespace std::literals::string_literals;
 #endif
 
 #if defined __linux__
+#include <iomanip>
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
 #elif defined _WIN32 || defined __APPLE__
