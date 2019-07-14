@@ -6,7 +6,7 @@
 
 |Build Type|Build Status|
 |----------|------------|
-|Linux (Clang 6.0.1 and GCC 8.1.0)|<a href="https://travis-ci.org/NeilJustice/ZenUnitAndZenMock"><img src="https://travis-ci.org/NeilJustice/ZenUnitAndZenMock.svg?branch=master"/></a>|
+|Linux (Clang 6.0.1 and GCC 8.3.0)|<a href="https://travis-ci.org/NeilJustice/ZenUnitAndZenMock"><img src="https://travis-ci.org/NeilJustice/ZenUnitAndZenMock.svg?branch=master"/></a>|
 |Windows (Visual Studio 2017 x64 and Win32)|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndZenMock"><img src="https://ci.appveyor.com/api/projects/status/5m79b32buusbofmd?svg=true"/></a>|
 
    * [ZenUnit Syntax And Design Philosophy](#zenunit-syntax-and-design-philosophy)
