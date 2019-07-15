@@ -26,6 +26,8 @@ elseif(MSVC)
    set(CMAKE_CXX_FLAGS "/std:c++17 /Wall /WX /EHsc /MP")
    replace(CMAKE_EXE_LINKER_FLAGS_DEBUG "/debug" "/debug:fastlink")
    replace(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "/debug" "/debug:fastlink")
+   replace(CMAKE_CXX_FLAGS_RELEASE "/O2" "/Od")
+   replace(CMAKE_CXX_FLAGS_RELEASE "/Ob2" "/Ob0")
    set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 endif()
 
@@ -42,8 +44,9 @@ add_subdirectory(ZenUnitCompileSpeed)
 add_subdirectory(ZenMockExamples)
 add_subdirectory(ZenMockTests)
 
-# Allows CMake command "cmake --build . --target install --config Debug/Release"
-# to just install ZenUnit and not also build ZenUnitTests
+# CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true makes CMake command 
+# "cmake --build . --target install --config Debug/Release"
+# just install ZenUnit.h and ZenMock.h without also building all other ZenUnit test executables
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
 
 if(UNIX)
