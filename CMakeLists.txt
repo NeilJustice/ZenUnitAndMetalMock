@@ -23,7 +23,8 @@ if(UNIX)
       message("ClangCoverageMode enabled: -fcoverage-mapping -fprofile-instr-generate=coverage.profraw appended to CMAKE_CXX_FLAGS")
    endif()
 elseif(MSVC)
-   set(CMAKE_CXX_FLAGS "/std:c++17 /Wall /WX /EHsc /MP")
+   # /Zc:rvalueCast : Enforce type conversion rules
+   set(CMAKE_CXX_FLAGS "/EHsc /MP /sdl /std:c++17 /Wall /WX /Zc:rvalueCast")
    replace(CMAKE_EXE_LINKER_FLAGS_DEBUG "/debug" "/debug:fastlink")
    replace(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "/debug" "/debug:fastlink")
    replace(CMAKE_CXX_FLAGS_RELEASE "/O2" "/Od")
@@ -44,7 +45,7 @@ add_subdirectory(ZenUnitCompileSpeed)
 add_subdirectory(ZenMockExamples)
 add_subdirectory(ZenMockTests)
 
-# CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true makes CMake command 
+# CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true makes CMake command
 # "cmake --build . --target install --config Debug/Release"
 # just install ZenUnit.h and ZenMock.h without also building all other ZenUnit test executables
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
