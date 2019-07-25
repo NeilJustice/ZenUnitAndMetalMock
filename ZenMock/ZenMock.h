@@ -30,11 +30,11 @@ namespace Zen
 #define ZENMOCK(ZenMockAssertStatement) \
 try \
 { \
-   ZenMockAssertStatement; \
+   (ZenMockAssertStatement); \
 } \
-catch (const ZenUnit::Anomaly& zenWrappedAnomaly) \
+catch (const ZenUnit::Anomaly& zenMockWrappedAnomaly) \
 { \
-   throw ZenUnit::Anomaly::ZENWrapped("ZENMOCK("#ZenMockAssertStatement")", zenWrappedAnomaly, FILELINE); \
+   throw ZenUnit::Anomaly::ZENMOCKWrapped("ZENMOCK("#ZenMockAssertStatement")", zenMockWrappedAnomaly, FILELINE); \
 }
 
 // Defines a ZenMock object named <VirtualFunctionName>Mock for mocking a base class function with signature "virtual void VirtualFunctionName()".

@@ -15,7 +15,7 @@ namespace ZenUnit
    FACTS(FullConstructor_BecauseAnomalyPresent_UnaffectedByExpectedActualFormat_SetsFields)
    AFACT(what_ReturnsWhyCStr)
    AFACT(WriteLineWhy_CallsConsoleWriteLineWithWhy)
-   AFACT(ZENWrapped_ReturnsExpectedAnomaly)
+   AFACT(ZENMOCKWrapped_ReturnsExpectedAnomaly)
    AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
@@ -309,23 +309,23 @@ FileLineValue);
       ZENMOCK(consoleMock.WriteLineMock.CalledOnceWith(anomaly.why));
    }
 
-   TEST(ZENWrapped_ReturnsExpectedAnomaly)
+   TEST(ZENMOCKWrapped_ReturnsExpectedAnomaly)
    {
       const string ZenMockAssertExpression = "ZENMOCK(zenMockObject.FunctionMock.CalledOnce())";
-      Anomaly zenWrappedAnomaly;
-      zenWrappedAnomaly.assertExpression = "ARE_EQUAL(expectedArgument, zenMockObjectCallHistory.firstArgument, this->ZenMockedFunctionSignature)";
-      zenWrappedAnomaly.expectedValueAsStringOrExpectedLine = "\"expected\"";
-      zenWrappedAnomaly.actualValueAsStringOrActualLine = "\"actual\"";
-      zenWrappedAnomaly.message = "\"virtual void ZenUnit::Console::WriteLine(const string&) const\"";
-      zenWrappedAnomaly.fileLine = FileLine("BecauseFilePath", 20);
+      Anomaly zenMockWrappedAnomaly;
+      zenMockWrappedAnomaly.assertExpression = "ARE_EQUAL(expectedArgument, zenMockObjectCallHistory.firstArgument, this->ZenMockedFunctionSignature)";
+      zenMockWrappedAnomaly.expectedValueAsStringOrExpectedLine = "\"expected\"";
+      zenMockWrappedAnomaly.actualValueAsStringOrActualLine = "\"actual\"";
+      zenMockWrappedAnomaly.message = "\"virtual void ZenUnit::Console::WriteLine(const string&) const\"";
+      zenMockWrappedAnomaly.fileLine = FileLine("BecauseFilePath", 20);
       //
-      const Anomaly anomaly = Anomaly::ZENWrapped(ZenMockAssertExpression, zenWrappedAnomaly, FileLineValue);
+      const Anomaly anomaly = Anomaly::ZENMOCKWrapped(ZenMockAssertExpression, zenMockWrappedAnomaly, FileLineValue);
       //
       Anomaly expectedAnomaly;
       expectedAnomaly.assertExpression = ZenMockAssertExpression;
-      expectedAnomaly.expectedValueAsStringOrExpectedLine = zenWrappedAnomaly.expectedValueAsStringOrExpectedLine;
-      expectedAnomaly.actualValueAsStringOrActualLine = zenWrappedAnomaly.actualValueAsStringOrActualLine;
-      expectedAnomaly.message = zenWrappedAnomaly.message;
+      expectedAnomaly.expectedValueAsStringOrExpectedLine = zenMockWrappedAnomaly.expectedValueAsStringOrExpectedLine;
+      expectedAnomaly.actualValueAsStringOrActualLine = zenMockWrappedAnomaly.actualValueAsStringOrActualLine;
+      expectedAnomaly.message = zenMockWrappedAnomaly.message;
       expectedAnomaly.why = R"(
   Failed: ZENMOCK(zenMockObject.FunctionMock.CalledOnce())
  Because: ARE_EQUAL(expectedArgument, zenMockObjectCallHistory.firstArgument, this->ZenMockedFunctionSignature) failed

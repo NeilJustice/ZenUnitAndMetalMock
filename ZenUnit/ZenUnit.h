@@ -1450,6 +1450,41 @@ namespace ZenUnit
       }
 
       template<typename... MessageTypes>
+      static void ThrowThreeLineAssertionAnomaly(
+         std::string_view assertionName,
+         std::string_view arg1Text,
+         std::string_view arg2Text,
+         std::string_view arg3Text,
+         std::string_view messagesText,
+         std::string_view expectedValueAsString,
+         std::string_view actualValueAsString,
+         std::string_view thirdLine,
+         FileLine fileLine,
+         MessageTypes&& ... messages)
+      {
+         Anomaly anomaly;
+         anomaly.assertExpression = MakeAssertExpression(assertionName, arg1Text, arg2Text, arg3Text, messagesText);;
+         anomaly.expectedValueAsStringOrExpectedLine = expectedValueAsString;
+         anomaly.actualValueAsStringOrActualLine = actualValueAsString;
+         anomaly.optionalThirdLine = thirdLine;
+         anomaly.message = ToStringer::ToStringConcat(std::forward<MessageTypes>(messages)...);
+         anomaly.fileLine = fileLine;
+         std::ostringstream whyBuilder;
+         whyBuilder << '\n' <<
+            "  Failed: " << anomaly.assertExpression << '\n' <<
+            "Expected: " << expectedValueAsString << '\n' <<
+            "  Actual: " << actualValueAsString << '\n' <<
+            thirdLine << '\n';
+         if (!anomaly.message.empty())
+         {
+            whyBuilder << " Message: " << anomaly.message << '\n';
+         }
+         whyBuilder << fileLine;
+         anomaly.why = whyBuilder.str();
+         throw anomaly;
+      }
+
+      template<typename... MessageTypes>
       Anomaly(
          std::string_view assertionName,
          std::string_view arg1Text,
@@ -1549,25 +1584,25 @@ namespace ZenUnit
          return assertExpression;
       }
 
-      static Anomaly ZENWrapped(
+      static Anomaly ZENMOCKWrapped(
          std::string_view zenMockAssertExpression,
-         const Anomaly& zenWrappedAnomaly,
+         const Anomaly& zenMockWrappedAnomaly,
          FileLine fileLine)
       {
          Anomaly anomaly;
          anomaly.assertExpression = zenMockAssertExpression;
-         anomaly.expectedValueAsStringOrExpectedLine = zenWrappedAnomaly.expectedValueAsStringOrExpectedLine;
-         anomaly.actualValueAsStringOrActualLine = zenWrappedAnomaly.actualValueAsStringOrActualLine;
-         anomaly.message = zenWrappedAnomaly.message;
+         anomaly.expectedValueAsStringOrExpectedLine = zenMockWrappedAnomaly.expectedValueAsStringOrExpectedLine;
+         anomaly.actualValueAsStringOrActualLine = zenMockWrappedAnomaly.actualValueAsStringOrActualLine;
+         anomaly.message = zenMockWrappedAnomaly.message;
          anomaly.fileLine = fileLine;
          std::ostringstream whyBuilder;
          whyBuilder << "\n"
             "  Failed: " << zenMockAssertExpression << '\n';
          whyBuilder <<
-            " Because: " << zenWrappedAnomaly.assertExpression << " failed\n"
-            "Expected: " << zenWrappedAnomaly.expectedValueAsStringOrExpectedLine << "\n"
-            "  Actual: " << zenWrappedAnomaly.actualValueAsStringOrActualLine << "\n"
-            " Message: " << zenWrappedAnomaly.message << '\n';
+            " Because: " << zenMockWrappedAnomaly.assertExpression << " failed\n"
+            "Expected: " << zenMockWrappedAnomaly.expectedValueAsStringOrExpectedLine << "\n"
+            "  Actual: " << zenMockWrappedAnomaly.actualValueAsStringOrActualLine << "\n"
+            " Message: " << zenMockWrappedAnomaly.message << '\n';
          whyBuilder << fileLine;
          anomaly.why = whyBuilder.str();
          return anomaly;
@@ -1976,7 +2011,7 @@ namespace ZenUnit
    struct VRText
    {
       const T& value;
-      const char* text;
+      const char* const text;
 
       VRText(const T& value, const char* text) noexcept
          : value(value), text(text) {}
@@ -1986,7 +2021,7 @@ namespace ZenUnit
    struct VRText<char[N]>
    {
       char* value;
-      const char* text;
+      const char* const text;
 
       VRText(char* value, const char* text) noexcept
          : value(value), text(text) {}
@@ -2158,20 +2193,23 @@ namespace ZenUnit
       }
    };
 
-   template<typename ExpectedType, typename ActualType, typename... MessageTypes>
-   void ARE_WITHIN_Throw(VRText<ExpectedType> expectedValueVRT, VRText<ActualType> actualValueVRT, VRText<double> expectedToleranceVRT,
+   template<typename ExpectedType, typename ActualType, typename ToleranceType, typename... MessageTypes>
+   void ARE_WITHIN_Throw(VRText<ExpectedType> expectedValueVRT, VRText<ActualType> actualValueVRT, VRText<ToleranceType> expectedToleranceVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
    {
       const std::string toStringedExpectedValue = ToStringer::ToString(expectedValueVRT.value);
       const std::string toStringedActualValue = ToStringer::ToString(actualValueVRT.value);
-      const std::string expectedToleranceLineThenMessagesText =
-         "Expected Tolerance: " + std::to_string(expectedToleranceVRT.value) + ((messagesText != nullptr) ? "\n" + std::string(messagesText) : "");
-      throw Anomaly("ARE_WITHIN", expectedValueVRT.text, actualValueVRT.text, expectedToleranceVRT.text, messagesText, Anomaly::Default(),
-         toStringedExpectedValue, toStringedActualValue, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+      const std::string expectedToleranceLine = "Expected Tolerance: " + std::to_string(expectedToleranceVRT.value);
+      Anomaly::ThrowThreeLineAssertionAnomaly(
+         "ARE_WITHIN", expectedValueVRT.text, actualValueVRT.text, expectedToleranceVRT.text, messagesText,
+         toStringedExpectedValue,
+         toStringedActualValue,
+         expectedToleranceLine,
+         fileLine, std::forward<MessageTypes>(messages)...);
    }
 
-   template<typename ExpectedType, typename ActualType, typename... MessageTypes>
-   void ARE_WITHIN_Defined(VRText<ExpectedType> expectedValueVRT, VRText<ActualType> actualValueVRT, VRText<double> expectedToleranceVRT,
+   template<typename ExpectedType, typename ActualType, typename ToleranceType, typename... MessageTypes>
+   void ARE_WITHIN_Defined(VRText<ExpectedType> expectedValueVRT, VRText<ActualType> actualValueVRT, VRText<ToleranceType> expectedToleranceVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
    {
       const double difference = static_cast<double>(expectedValueVRT.value - actualValueVRT.value);

@@ -3,12 +3,12 @@
 
 namespace ZenMock
 {
-   TESTS(ZENTests)
-   AFACT(ZENWrappedAssertionDoesNotThrow_NothingHappens)
-   AFACT(ZENWrappedAssertionThrows_RethrowsZENWrappedAnomaly)
+   TESTS(ZENMOCKTests)
+   AFACT(ZENMOCKWrappedAssertionDoesNotThrow_NothingHappens)
+   AFACT(ZENMOCKWrappedAssertionThrows_RethrowsZENMOCKWrappedAnomaly)
    EVIDENCE
 
-   TEST(ZENWrappedAssertionDoesNotThrow_NothingHappens)
+   TEST(ZENMOCKWrappedAssertionDoesNotThrow_NothingHappens)
    {
       ConsoleMock consoleMock;
       consoleMock.WriteLineMock.Expect();
@@ -16,7 +16,7 @@ namespace ZenMock
       ZENMOCK(consoleMock.WriteLineMock.CalledOnceWith("message"));
    }
 
-   TEST(ZENWrappedAssertionThrows_RethrowsZENWrappedAnomaly)
+   TEST(ZENMOCKWrappedAssertionThrows_RethrowsZENMOCKWrappedAnomaly)
    {
       ConsoleMock consoleMock;
       consoleMock.WriteLineMock.Expect();
@@ -32,5 +32,5 @@ namespace ZenMock
       THROWS(ZENMOCK(consoleMock.WriteLineMock.CalledOnceWith(expectedMessage)), Anomaly, expectedWhat);
    }
 
-   RUN_TESTS(ZENTests)
+   RUN_TESTS(ZENMOCKTests)
 }
