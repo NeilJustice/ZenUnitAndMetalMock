@@ -15,6 +15,7 @@
    * [Type-Parameterized Test Class Syntax](#type-parameterized-test-class-syntax)
    * [ZenUnit Assertions](#zenunit-assertions)
       * [Value Assertions](#value-assertions)
+      * [Floating Point Assertions](#floating-point-assertions)
       * [Data Structure Assertions](#data-structure-assertions)
       * [Exception Assertions](#exception-assertions)
       * [Pointer Assertions](#pointer-assertions)
@@ -370,6 +371,11 @@ int main(int argc, char* argv[])
 |`IS_FALSE(value, messages...)`|Asserts that `value` is false.|
 |`IS_ZERO(value, messages...)`|Asserts that `value == ValueType{}` equals true.|
 |`IS_NOT_DEFAULT(value, messages...)`|Asserts that `value == ValueType{}` equals false.|
+
+### Floating Point Assertions
+|||
+|-|-|
+|`ARE_WITHIN(expectedFloatingPoint, actualFloatingPoint, expectedAbsoluteMaxDifference, messages...)`|Asserts that `std::abs(expectedFloatingPoint - actualFloatingPoint) <= expectedAbsoluteMaxDifference`.|
 
 #### Data Structure Assertions
 |||
