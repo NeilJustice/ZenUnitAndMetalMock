@@ -2,7 +2,7 @@
 
 namespace ZenUnit
 {
-   TESTS(DOES_CONTAIN_ELEMENTTests)
+   TESTS(CONTAINS_ELEMENTTests)
    AFACT(Vector_DoesContainElement_DoesNotThrow)
    AFACT(Vector_DoesNotContainElement_Throws)
    AFACT(Map_DoesContainElement_DoesNotThrow)
@@ -14,19 +14,19 @@ namespace ZenUnit
    TEST(Vector_DoesContainElement_DoesNotThrow)
    {
       const vector<int> ints { 1, 2 };
-      DOES_CONTAIN_ELEMENT(1, ints);
-      DOES_CONTAIN_ELEMENT(2, ints);
+      CONTAINS_ELEMENT(1, ints);
+      CONTAINS_ELEMENT(2, ints);
       for (const int i : ints)
       {
-         DOES_CONTAIN_ELEMENT(i, ints);
+         CONTAINS_ELEMENT(i, ints);
       }
    }
 
    TEST(Vector_DoesNotContainElement_Throws)
    {
       const vector<int> emptyIntVector;
-      THROWS(DOES_CONTAIN_ELEMENT(0, emptyIntVector), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: DOES_CONTAIN_ELEMENT(0, emptyIntVector)",
+      THROWS(CONTAINS_ELEMENT(0, emptyIntVector), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: CONTAINS_ELEMENT(0, emptyIntVector)",
 "Expected: Collection contains element '0'",
 "  Actual: Collection does not contain element '0'",
 "File.cpp(1)"));
@@ -37,11 +37,11 @@ namespace ZenUnit
       const map<int, int> intIntMap { { 0, 0 }, { 1, 1 } };
       const pair<const int, int> kvp0(0, 0);
       const pair<const int, int> kvp1(1, 1);
-      DOES_CONTAIN_ELEMENT(kvp0, intIntMap);
-      DOES_CONTAIN_ELEMENT(kvp1, intIntMap);
+      CONTAINS_ELEMENT(kvp0, intIntMap);
+      CONTAINS_ELEMENT(kvp1, intIntMap);
       for (const auto& kvp : intIntMap)
       {
-         DOES_CONTAIN_ELEMENT(kvp, intIntMap);
+         CONTAINS_ELEMENT(kvp, intIntMap);
       }
    }
 
@@ -49,8 +49,8 @@ namespace ZenUnit
    {
       const map<int, int> emptyIntIntMap;
       const pair<const int, int> kvp(0, 0);
-      THROWS(DOES_CONTAIN_ELEMENT(kvp, emptyIntIntMap), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: DOES_CONTAIN_ELEMENT(kvp, emptyIntIntMap)",
+      THROWS(CONTAINS_ELEMENT(kvp, emptyIntIntMap), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: CONTAINS_ELEMENT(kvp, emptyIntIntMap)",
 "Expected: Collection contains element '(0, 0)'",
 "  Actual: Collection does not contain element '(0, 0)'",
 "File.cpp(1)"));
@@ -59,11 +59,11 @@ namespace ZenUnit
    TEST(Set_DoesContainElement_DoesNotThrow)
    {
       const set<int> intSet { 1, 2 };
-      DOES_CONTAIN_ELEMENT(1, intSet);
-      DOES_CONTAIN_ELEMENT(2, intSet);
+      CONTAINS_ELEMENT(1, intSet);
+      CONTAINS_ELEMENT(2, intSet);
       for (int i : intSet)
       {
-         DOES_CONTAIN_ELEMENT(i, intSet);
+         CONTAINS_ELEMENT(i, intSet);
       }
    }
 
@@ -71,13 +71,13 @@ namespace ZenUnit
    {
       const set<int> emptyIntSet;
       const string messageA = "A", messageB = "B";
-      THROWS(DOES_CONTAIN_ELEMENT(0, emptyIntSet, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: DOES_CONTAIN_ELEMENT(0, emptyIntSet, messageA, messageB)",
+      THROWS(CONTAINS_ELEMENT(0, emptyIntSet, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: CONTAINS_ELEMENT(0, emptyIntSet, messageA, messageB)",
 "Expected: Collection contains element '0'",
 "  Actual: Collection does not contain element '0'",
 " Message: \"A\", \"B\"",
 "File.cpp(1)"));
    }
 
-   RUN_TESTS(DOES_CONTAIN_ELEMENTTests)
+   RUN_TESTS(CONTAINS_ELEMENTTests)
 }

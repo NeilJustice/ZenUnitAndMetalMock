@@ -246,7 +246,7 @@ Testing Utility Options:
    ZenUnit::STD_ARRAYS_EQUAL_Defined(NAKED_VRT(expectedStdArray), NAKED_VRT(actualStdArray), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that expectedElement is contained in collection.
-#define DOES_CONTAIN_ELEMENT(expectedElement, collection, ...) \
+#define CONTAINS_ELEMENT(expectedElement, collection, ...) \
    ZenUnit::CONTAINS_ELEMENT_Defined(VRT(expectedElement), VRT(collection), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
@@ -2424,7 +2424,7 @@ namespace ZenUnit
    {
       const std::string toStringedElement = ToStringer::ToString(expectedElementVRT.value);
       const std::string singleQuotedToStringedElement = String::Concat("'", toStringedElement, "'");
-      throw Anomaly("DOES_CONTAIN_ELEMENT", expectedElementVRT.text, collectionVRT.text, "", messagesText, Anomaly::Default(),
+      throw Anomaly("CONTAINS_ELEMENT", expectedElementVRT.text, collectionVRT.text, "", messagesText, Anomaly::Default(),
          "Collection contains element " + singleQuotedToStringedElement,
          "Collection does not contain element " + singleQuotedToStringedElement,
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
@@ -3089,7 +3089,7 @@ namespace ZenUnit
          ARE_EQUAL(expectedSet.size(), actualSet.size());
          for (const auto& expectedElement : expectedSet)
          {
-            DOES_CONTAIN_ELEMENT(expectedElement, actualSet);
+            CONTAINS_ELEMENT(expectedElement, actualSet);
          }
       }
       catch (const Anomaly& becauseAnomaly)

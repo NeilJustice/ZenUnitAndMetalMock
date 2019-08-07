@@ -66,7 +66,7 @@ TEST(CallAllMacros)
    MAPS_EQUAL((std::unordered_map<int, int>{}), (std::unordered_map<int, int>{}));
    SETS_EQUAL(std::set<int>{}, std::set<int>{});
    SETS_EQUAL(std::unordered_set<int>{}, std::unordered_set<int>{});
-   DOES_CONTAIN_ELEMENT(0, std::vector<int>{0});
+   CONTAINS_ELEMENT(0, std::vector<int>{0});
    IS_EMPTY(std::vector<int>());
    STD_ARRAYS_EQUAL((std::array<int, 5>{}), (std::array<int, 5>{}));
 
