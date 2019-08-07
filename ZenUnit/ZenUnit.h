@@ -4639,7 +4639,6 @@ namespace ZenUnit
       std::unique_ptr<const OneArgMemberFunctionCaller<void, TestRunner, unsigned>> _voidOneArgMemberFunctionCaller;
       std::unique_ptr<const TwoArgMemberFunctionCaller<bool, TestRunner, bool, bool>> _nonVoidTwoArgMemberFunctionCaller;
       std::unique_ptr<const ZeroArgMemberFunctionCaller<void, TestRunner>> _voidZeroArgMemberFunctionCaller;
-      //std::unique_ptr<const Futurist<TestRunner>> _futurist;
       std::unique_ptr<Stopwatch> _testRunStopwatch;
       std::unique_ptr<TestClassRunnerRunner> _testClassRunnerRunner;
       std::unique_ptr<TestRunResult> _testRunResult;
@@ -4654,7 +4653,6 @@ namespace ZenUnit
          , _voidOneArgMemberFunctionCaller(std::make_unique<OneArgMemberFunctionCaller<void, TestRunner, unsigned>>())
          , _nonVoidTwoArgMemberFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<bool, TestRunner, bool, bool>>())
          , _voidZeroArgMemberFunctionCaller(std::make_unique<ZeroArgMemberFunctionCaller<void, TestRunner>>())
-         //, _futurist(new Futurist<TestRunner>)
          , _testRunStopwatch(std::make_unique<Stopwatch>())
          , _testClassRunnerRunner(std::make_unique<TestClassRunnerRunner>())
          , _testRunResult(std::make_unique<TestRunResult>())
@@ -4759,14 +4757,6 @@ namespace ZenUnit
 
       void RunTestClassesWithWaitableRunnerThread(unsigned /*maxtTotalSeconds*/)
       {
-         // const std::shared_ptr<const VoidFuture> testClassRunnerDoneFuture = _futurist->Async(&TestRunner::RunTestClasses, this);
-         // const std::future_status waitResult = testClassRunnerDoneFuture->WaitAtMostSeconds(maxtTotalSeconds);
-         // if (waitResult == std::future_status::timeout)
-         // {
-         //    _testRunResult->PrintTestFailuresAndSkips();
-         //    _console->WriteLineAndExit(String::Concat(
-         //       "[ZenUnit] Total run time exceeded maximum run time of ", maxtTotalSeconds, " seconds."), 1);
-         // }
       }
    };
 

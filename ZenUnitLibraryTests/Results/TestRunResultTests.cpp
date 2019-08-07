@@ -38,11 +38,11 @@ namespace ZenUnit
 
    using TypedefMemberForEacherTestClassResultsMock = MemberForEacherMock<vector<TestClassResult>,
       TestRunResult, void(TestRunResult::*)(const TestClassResult&) const>;
-   TypedefMemberForEacherTestClassResultsMock* _memberForEacherTestClassResultsMock;
+   TypedefMemberForEacherTestClassResultsMock* _memberForEacherTestClassResultsMock = nullptr;
 
    using TypedefMemberForEacherSkippedTestsMock = MemberForEacherMock<vector<string>,
       TestRunResult, void(TestRunResult::*)(const string&) const>;
-   TypedefMemberForEacherSkippedTestsMock* _memberForEacherSkippedTestsMock;
+   TypedefMemberForEacherSkippedTestsMock* _memberForEacherSkippedTestsMock = nullptr;
 
    STARTUP
    {

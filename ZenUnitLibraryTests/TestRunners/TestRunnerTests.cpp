@@ -31,7 +31,6 @@ namespace ZenUnit
    AFACT(WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrueHavePausedFalse_WritesMessageAndWaitsForAnyKey_ReturnsTrue)
    FACTS(PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines_RunsTestsAndPrintsResults_UsingBackgroundThreadIfMaxTotalSecondsGT0_Returns0IfAllTestsPassedOtherwiseReturns1)
    AFACT(RunTestClasses_RunsTestClasses)
-   //FACTS(RunTestClassesWithWaitableRunnerThread_SpawnsThreadToCallRunTestClasses_PrintsResultsAndExits1IfThreadTimesOut)
    EVIDENCE
 
    TestRunner _testRunner;
@@ -40,17 +39,16 @@ namespace ZenUnit
    ArgsParserMock* _argsParserMock = nullptr;
 
    using NonVoidOneArgMemberFunctionCallerMockType = NonVoidOneArgMemberFunctionCallerMock<int, TestRunner, const ZenUnitArgs&>;
-   NonVoidOneArgMemberFunctionCallerMockType* _nonVoidOneArgMemberFunctionCallerMock;
+   NonVoidOneArgMemberFunctionCallerMockType* _nonVoidOneArgMemberFunctionCallerMock = nullptr;
 
    using VoidOneArgMemberFunctionCallerMockType = VoidOneArgMemberFunctionCallerMock<TestRunner, unsigned>;
-   VoidOneArgMemberFunctionCallerMockType* _voidOneArgMemberFunctionCallerMock;
+   VoidOneArgMemberFunctionCallerMockType* _voidOneArgMemberFunctionCallerMock = nullptr;
 
    using NonVoidTwoArgMemberFunctionCallerMockType = NonVoidTwoArgMemberFunctionCallerMock<bool, TestRunner, bool, bool >;
    NonVoidTwoArgMemberFunctionCallerMockType* _nonVoidTwoArgMemberFunctionCallerMock = nullptr;
 
    VoidZeroArgMemberFunctionCallerMock<TestRunner>* _voidZeroArgMemberFunctionCallerMock = nullptr;
 
-   //FuturistMock<TestRunner>* _futuristMock;
    TestClassRunnerRunnerMock* _testClassRunnerRunnerMock = nullptr;
    TestRunResultMock* _testRunResultMock = nullptr;
    StopwatchMock* _testRunStopwatchMock = nullptr;
@@ -278,33 +276,6 @@ namespace ZenUnit
       ZENMOCK(_testClassRunnerRunnerMock->RunTestClassesMock.CalledOnceWith(_testRunner._args));
       ZENMOCK(_testRunResultMock->SetTestClassResultsMock.CalledOnceWith(testClassResults));
    }
-
-   //TEST2X2(RunTestClassesWithWaitableRunnerThread_SpawnsThreadToCallRunTestClasses_PrintsResultsAndExits1IfThreadTimesOut,
-   //   future_status runnerThreadWaitResult, bool expectTimeoutHandling,
-   //   future_status::ready, false,
-   //   future_status::timeout, true)
-   //{
-   //   const shared_ptr<VoidFutureMock> testClassRunnerDoneFutureMock(new VoidFutureMock);
-   //   testClassRunnerDoneFutureMock->WaitAtMostSecondsMock.Return(runnerThreadWaitResult);
-   //   _futuristMock->AsyncMock.Return(testClassRunnerDoneFutureMock);
-   //   if (expectTimeoutHandling)
-   //   {
-   //      _testRunResultMock->PrintTestFailuresAndSkipsMock.Expect();
-   //      _consoleMock->WriteLineAndExitMock.Expect();
-   //   }
-   //   const unsigned MaxTotalSeconds = Random<unsigned>();
-   //   //
-   //   _testRunner.RunTestClassesWithWaitableRunnerThread(MaxTotalSeconds);
-   //   //
-   //   ZENMOCK(_futuristMock->AsyncMock.CalledOnceWith(&TestRunner::RunTestClasses, &_testRunner));
-   //   ZENMOCK(testClassRunnerDoneFutureMock->WaitAtMostSecondsMock.CalledOnceWith(MaxTotalSeconds));
-   //   if (expectTimeoutHandling)
-   //   {
-   //      ZENMOCK(_testRunResultMock->PrintTestFailuresAndSkipsMock.CalledOnce());
-   //      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(
-   //         "[ZenUnit] Total run time exceeded maximum run time of " + to_string(MaxTotalSeconds) + " seconds.", 1));
-   //   }
-   //}
 
    RUN_TESTS(TestRunnerTests)
 }

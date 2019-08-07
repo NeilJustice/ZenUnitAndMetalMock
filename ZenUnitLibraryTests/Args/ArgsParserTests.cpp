@@ -119,7 +119,7 @@ Testing Utility Options:
 
    TEST(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
    {
-      _watchMock->DateTimeNowMock.ReturnRandom();
+      const string startTime = _watchMock->DateTimeNowMock.ReturnRandom();
       ExpectCallToSetRandomSeedIfNotSetByUser();
       vector<string> args { _testProgramPath };
       //
@@ -128,6 +128,7 @@ Testing Utility Options:
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = _testProgramPath;
+      expectedZenUnitArgs.startTime = startTime;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
