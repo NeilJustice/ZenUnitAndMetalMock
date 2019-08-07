@@ -371,6 +371,11 @@ int main(int argc, char* argv[])
 |`IS_ZERO(value, messages...)`|Asserts that `value == ValueType{}` equals true.|
 |`IS_NOT_DEFAULT(value, messages...)`|Asserts that `value == ValueType{}` equals false.|
 
+#### Floating Point Assertions
+|||
+|-|-|
+|`ARE_WITHIN(expectedValue, actualValue, expectedTolerance, ...)`|Asserts that std::abs(expectedValue - actualValue) <= expectedTolerance.|
+
 #### Data Structure Assertions
 |||
 |-|-|

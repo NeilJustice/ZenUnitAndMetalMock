@@ -159,7 +159,7 @@ Testing Utility Options:
 // Floating Point Assertions
 //
 
-// Asserts that abs(expectedValue - actualValue) <= expectedTolerance.
+// Asserts that std::abs(expectedValue - actualValue) <= expectedTolerance.
 #define ARE_WITHIN(expectedValue, actualValue, expectedTolerance, ...) \
    ZenUnit::ARE_WITHIN_Defined(VRT(expectedValue), VRT(actualValue), VRT(expectedTolerance), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
