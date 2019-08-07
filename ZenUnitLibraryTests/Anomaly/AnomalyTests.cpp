@@ -1,11 +1,14 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Console/Mock/ConsoleMock.h"
+#include "ZenUnitLibraryTests/Random/RandomFileLine.h"
 #include "ZenUnitTestUtils/Equalizers/AnomalyEqualizer.h"
 
 namespace ZenUnit
 {
    TESTS(AnomalyTests)
    AFACT(DefaultConstructor_DoesNotSetAnyFieldsToNonDefaultValues)
+   AFACT(ThrowThreeLineAssertionAnomaly_WithoutMessages_ThrowsExpectedAnomaly)
+   AFACT(ThrowThreeLineAssertionAnomaly_WithTwoMessages_ThrowsExpectedAnomaly)
    AFACT(WhyConstructor_EmptyMessagesTextAndEmptyMessages_SetsWhy_DoesNotSetMessage)
    AFACT(WhyConstructor_EmptyMessagesTextAndEmptyMessages_EmptyWhyBody_SetsWhy_DoesNotSetMessage)
    AFACT(WhyConstructor_OneMessage_SetsWhy_SetsMessage)
@@ -41,6 +44,79 @@ namespace ZenUnit
       exepctedDefaultAnomaly.why = string();
       exepctedDefaultAnomaly.fileLine = FileLine();
       ARE_EQUAL(defaultAnomaly, exepctedDefaultAnomaly);
+   }
+
+   TEST(ThrowThreeLineAssertionAnomaly_WithoutMessages_ThrowsExpectedAnomaly)
+   {
+      const string assertionName = ZenUnit::Random<string>();
+      const string arg1Text = ZenUnit::Random<string>();
+      const string arg2Text = ZenUnit::Random<string>();
+      const string arg3Text = ZenUnit::Random<string>();
+      const string messagesText = "";
+      const string expectedValueAsString = ZenUnit::Random<string>();
+      const string actualValueAsString = ZenUnit::Random<string>();
+      const string thirdLine = ZenUnit::Random<string>();
+      const FileLine fileLine = ZenUnit::Random<FileLine>();
+
+      std::ostringstream expectedWhyBuilder;
+      expectedWhyBuilder << '\n' <<
+         "  Failed: " << assertionName << "(" << arg1Text << ", " << arg2Text << ", " << arg3Text << ")\n" <<
+         "Expected: " << expectedValueAsString << '\n' <<
+         "  Actual: " << actualValueAsString << '\n' <<
+         thirdLine << '\n';
+      expectedWhyBuilder << fileLine;
+      const string expectedWhy = expectedWhyBuilder.str();
+
+      THROWS(Anomaly::ThrowThreeLineAssertionAnomaly(
+         assertionName,
+         arg1Text,
+         arg2Text,
+         arg3Text,
+         messagesText,
+         expectedValueAsString,
+         actualValueAsString,
+         thirdLine,
+         fileLine),
+         Anomaly, expectedWhy);
+   }
+
+   TEST(ThrowThreeLineAssertionAnomaly_WithTwoMessages_ThrowsExpectedAnomaly)
+   {
+      const string assertionName = ZenUnit::Random<string>();
+      const string arg1Text = ZenUnit::Random<string>();
+      const string arg2Text = ZenUnit::Random<string>();
+      const string arg3Text = ZenUnit::Random<string>();
+      const string messagesText = ZenUnit::Random<string>();
+      const string expectedValueAsString = ZenUnit::Random<string>();
+      const string actualValueAsString = ZenUnit::Random<string>();
+      const string thirdLine = ZenUnit::Random<string>();
+      const FileLine fileLine = ZenUnit::Random<FileLine>();
+      const string messageA = ZenUnit::Random<string>();
+      const string messageB = ZenUnit::Random<string>();
+
+      std::ostringstream expectedWhyBuilder;
+      expectedWhyBuilder << '\n' <<
+         "  Failed: " << assertionName << "(" << arg1Text << ", " << arg2Text << ", " << arg3Text << ", " << messagesText << ")\n" <<
+         "Expected: " << expectedValueAsString << '\n' <<
+         "  Actual: " << actualValueAsString << '\n' <<
+         thirdLine << '\n' <<
+         " Message: \"" << messageA << "\", \"" << messageB << "\"\n";
+      expectedWhyBuilder << fileLine;
+      const string expectedWhy = expectedWhyBuilder.str();
+
+      THROWS(Anomaly::ThrowThreeLineAssertionAnomaly(
+         assertionName,
+         arg1Text,
+         arg2Text,
+         arg3Text,
+         messagesText,
+         expectedValueAsString,
+         actualValueAsString,
+         thirdLine,
+         fileLine,
+         messageA,
+         messageB),
+         Anomaly, expectedWhy);
    }
 
    TEST(WhyConstructor_EmptyMessagesTextAndEmptyMessages_SetsWhy_DoesNotSetMessage)
