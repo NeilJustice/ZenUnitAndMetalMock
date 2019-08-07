@@ -27,8 +27,8 @@ namespace ZenUnit
          ARE_EQUAL(TestUtil::NewlineConcat("",
 "  Failed: THROWS([]{}(), exception,",
 "          \"\")",
-"Expected thrown: std::exception exactly",
-"  Actual thrown: No exception thrown",
+"Expected thrown exception: std::exception exactly",
+"  Actual thrown exception: No exception thrown",
 "File.cpp(1)"), anomaly.why);
       }
    }
@@ -45,8 +45,8 @@ namespace ZenUnit
          ARE_EQUAL(TestUtil::NewlineConcat("",
 "  Failed: THROWS([]{}(), exception,",
 "          \"\", MessageA, MessageB)",
-"Expected thrown: std::exception exactly",
-"  Actual thrown: No exception thrown",
+"Expected thrown exception: std::exception exactly",
+"  Actual thrown exception: No exception thrown",
 " Message: \"A\", \"B\"",
 "File.cpp(1)"), anomaly.why);
       }
@@ -64,8 +64,8 @@ namespace ZenUnit
          ARE_EQUAL(TestUtil::NewlineConcat("",
 "  Failed: THROWS([]{ throw logic_error(\"\"); }(), exception,",
 "          \"\")",
-"Expected thrown: std::exception exactly",
-"  Actual thrown: std::logic_error",
+"Expected thrown exception: std::exception exactly",
+"  Actual thrown exception: std::logic_error",
 "  what(): \"\"",
 "File.cpp(1)"), anomaly.why);
       }
@@ -83,8 +83,8 @@ namespace ZenUnit
          ARE_EQUAL(TestUtil::NewlineConcat("",
 "  Failed: THROWS([]{ throw runtime_error(\"what\"); }(), logic_error,",
 "          \"\")",
-"Expected thrown: std::logic_error exactly",
-"  Actual thrown: std::runtime_error",
+"Expected thrown exception: std::logic_error exactly",
+"  Actual thrown exception: std::runtime_error",
 "  what(): \"what\"",
 "File.cpp(1)"), anomaly.why);
       }
@@ -102,8 +102,8 @@ namespace ZenUnit
          ARE_EQUAL(TestUtil::NewlineConcat("",
 "  Failed: THROWS([]{ throw runtime_error(\"what\"); }(), runtime_error,",
 "          \"\")",
-"Expected thrown: std::runtime_error exactly",
-"  Actual thrown: std::runtime_error exactly",
+"Expected thrown exception: std::runtime_error exactly",
+"  Actual thrown exception: std::runtime_error exactly",
 "Expected what(): \"\"",
 "  Actual what(): \"what\"",
 "File.cpp(1)"), anomaly.why);
@@ -122,8 +122,8 @@ namespace ZenUnit
          ARE_EQUAL(TestUtil::NewlineConcat("",
 "  Failed: THROWS([]{ throw runtime_error(\"hello\"); }(), runtime_error,",
 "          \"Hello\")",
-"Expected thrown: std::runtime_error exactly",
-"  Actual thrown: std::runtime_error exactly",
+"Expected thrown exception: std::runtime_error exactly",
+"  Actual thrown exception: std::runtime_error exactly",
 "Expected what(): \"Hello\"",
 "  Actual what(): \"hello\"",
 "File.cpp(1)"), anomaly.why);

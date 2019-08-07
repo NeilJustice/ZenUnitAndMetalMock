@@ -3260,8 +3260,8 @@ namespace ZenUnit
    {
       const std::string* const expectedExceptionTypeName = Type::GetName<ExpectedExceptionType>();
       outWhyBodyBuilder <<
-         "Expected thrown: " << *expectedExceptionTypeName << " exactly\n" <<
-         "  Actual thrown: " << *actualExceptionTypeName;
+         "Expected thrown exception: " << *expectedExceptionTypeName << " exactly\n" <<
+         "  Actual thrown exception: " << *actualExceptionTypeName;
    }
 
    template<typename... MessageTypes>
