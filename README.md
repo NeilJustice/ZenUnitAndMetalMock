@@ -15,6 +15,7 @@
    * [Type-Parameterized Test Class Syntax](#type-parameterized-test-class-syntax)
    * [ZenUnit Assertions](#zenunit-assertions)
       * [Value Assertions](#value-assertions)
+      * [Floating Point Assertions](#floating-point-assertions)
       * [Data Structure Assertions](#data-structure-assertions)
       * [Exception Assertions](#exception-assertions)
       * [Pointer Assertions](#pointer-assertions)
@@ -374,7 +375,7 @@ int main(int argc, char* argv[])
 #### Floating Point Assertions
 |||
 |-|-|
-|`ARE_WITHIN(expectedValue, actualValue, expectedTolerance, ...)`|Asserts that std::abs(expectedValue - actualValue) <= expectedTolerance.|
+|`ARE_WITHIN(expectedFloatingPoint, actualFloatingPoint, expectedAbsoluteMaxDifference, messages...)`|Asserts that `std::abs(expectedFloatingPoint - actualFloatingPoint) <= expectedAbsoluteMaxDifference`.|
 
 #### Data Structure Assertions
 |||
