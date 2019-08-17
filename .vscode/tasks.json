@@ -1,21 +1,17 @@
 {
    "version": "2.0.0",
-   "tasks":
-   [
+   "tasks": [
       {
          "label": "Ninja Build Debug",
          "type": "shell",
          "command": "ninja",
-         "args":
-         [
-            "-v",
+         "args": [
+            "-v"
          ],
-         "options":
-         {
+         "options": {
             "cwd": "${workspaceRoot}/Debug"
          },
-         "group":
-         {
+         "group": {
             "kind": "build",
             "isDefault": true
          }
@@ -24,12 +20,10 @@
          "label": "Ninja Build Release",
          "type": "shell",
          "command": "ninja",
-         "args":
-         [
-            "-v",
+         "args": [
+            "-v"
          ],
-         "options":
-         {
+         "options": {
             "cwd": "${workspaceRoot}/Release"
          }
       },
@@ -37,17 +31,14 @@
          "label": "Run All Debug Tests",
          "type": "shell",
          "command": "./RunAllDebugTests.sh",
-         "options":
-         {
+         "options": {
             "cwd": "${workspaceRoot}"
          },
-         "group":
-         {
+         "group": {
             "kind": "test",
             "isDefault": true
          },
-         "presentation":
-         {
+         "presentation": {
             "panel": "dedicated",
             "showReuseMessage": false,
             "clear": true
@@ -57,16 +48,34 @@
          "label": "Run All Release Tests",
          "type": "shell",
          "command": "./RunAllReleaseTests.sh",
-         "options":
-         {
+         "options": {
             "cwd": "${workspaceRoot}"
          },
-         "presentation":
-         {
+         "presentation": {
             "panel": "dedicated",
             "showReuseMessage": false,
             "clear": true
          }
+      },
+      {
+         "label": "clang++ build active file",
+         "type": "shell",
+         "command": "/usr/bin/clang++",
+         "args": [
+            "-std=c++17",
+            "-g",
+            "${file}",
+            "-I/usr/local/include/ZenUnit",
+            "-I/usr/local/include/ZenMock",
+            "-o",
+            "${fileDirname}/${fileBasenameNoExtension}"
+         ],
+         "options": {
+            "cwd": "/bin"
+         },
+         "problemMatcher": [
+            "$gcc"
+         ]
       }
    ]
 }

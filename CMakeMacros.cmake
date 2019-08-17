@@ -74,3 +74,4 @@ macro(IfMSVCAddRunTestsPostBuildStep)
       add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND $(TargetPath) --random --exit-zero)
    endif()
 endmacro()
+
