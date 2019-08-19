@@ -10,10 +10,10 @@ def main(args):
    if len(args) != 5:
       Util.print_and_exit(
 'Invalid args: ' + ' '.join(args) + '\n'
-"""Usage: python3 BuildZenUnitAndZenMock.py --cmake-generator=<CMakeGenerator> --cmake-arch=<x64OrWin32> --cmake-build-type=<CMakeBuildType> --cmake-definitions=<QuotedSpaceSeparatedCMakeDefinitions>""", 1)
+"""Usage: python3 BuildZenUnitAndZenMock.py --cmake-generator=<CMakeGenerator> --cmake-architecture=<x64OrWin32> --cmake-build-type=<CMakeBuildType> --cmake-definitions=<QuotedSpaceSeparatedCMakeDefinitions>""", 1)
    else:
       cmakeGenerator = ArgParser.parse_arg('--cmake-generator', args[1])
-      cmakeArch = ArgParser.parse_arg('--cmake-arch', args[2])
+      cmakeArch = ArgParser.parse_arg('--cmake-architecture', args[2])
       cmakeBuildType = ArgParser.parse_arg('--cmake-build-type', args[3])
       cmakeDefinitions = ArgParser.parse_arg('--cmake-definitions', args[4])
       platformSystem = platform.system().casefold()

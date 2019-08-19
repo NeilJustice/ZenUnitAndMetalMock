@@ -11,10 +11,10 @@
     <Name>ZenUnitPy</Name>
     <RootNamespace>ZenUnitPy</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>--generator="Visual Studio 15 2017 Win64" --buildType=Debug --definitions="" --installDirectory=noinstall</CommandLineArguments>
+    <CommandLineArguments>--cmake-generator="Visual Studio 16 2019" --cmake-architecture=x64 --cmake-build-type=Debug --cmake-definitions=""</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>
-    <WorkingDirectory>.</WorkingDirectory>
+    <WorkingDirectory>C:\Code\ZenUnitAndZenMock</WorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
