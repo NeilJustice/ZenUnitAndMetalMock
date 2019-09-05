@@ -4801,7 +4801,7 @@ namespace ZenUnit
       void FailFastDueToDotDotDotException(const ZenUnitArgs& args, TestPhase testPhase) const
       {
          const unsigned testRunDurationInMilliseconds = _stopwatch->Stop();
-         _console->WriteLineColor("\n==========================\nFatal ... Exception Thrown\n==========================\n", Color::Red);
+         _console->WriteLineColor("\n==========================\nFatal ... Exception Thrown\n==========================", Color::Red);
 
          _console->WriteColor(">>------> ", Color::Red);
          _console->WriteLine(" Completed: " + args.commandLine);
