@@ -402,7 +402,7 @@ Testing Utility Options:
       TestClassType::RegisterTest10X10(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
    void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)
 
-// Runs a test class.
+// Registers a test class to be run when ZenUnit::RunTests() is called.
 #define RUN_TESTS(HighQualityTestClassName) }; \
    const char* HighQualityTestClassName::ZenUnit_testClassName = nullptr; \
    bool HighQualityTestClassName::ZenUnit_allNXNTestsRegistered = false; \
@@ -4663,14 +4663,14 @@ namespace ZenUnit
 
       static ZenUnitTestRunner& Instance() noexcept
       {
-         static ZenUnitTestRunner testRunnerSingleton;
-         return testRunnerSingleton;
+         static ZenUnitTestRunner zenUnitTestRunner;
+         return zenUnitTestRunner;
       }
 
       static const ZenUnitArgs& GetArgs()
       {
-         const ZenUnitTestRunner& testRunnerSingleton = Instance();
-         return testRunnerSingleton._args;
+         const ZenUnitTestRunner& zenUnitTestRunner = Instance();
+         return zenUnitTestRunner._args;
       }
 
       std::nullptr_t AddTestClassRunner(TestClassRunner* testClassRunner)
