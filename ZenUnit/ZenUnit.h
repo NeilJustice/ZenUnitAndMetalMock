@@ -1746,17 +1746,17 @@ namespace ZenUnit
    public:
       static std::vector<std::string> FromArgcArgv(int argc, char* argv[])
       {
-         const std::vector<std::string> args = [&]()
+         const std::vector<std::string> stringArgs = [&]()
          {
-            std::vector<std::string> args;
-            args.reserve(argc);
-            std::for_each(argv, argv + argc, [&](char* arg)
+            std::vector<std::string> stringArgs;
+            stringArgs.reserve(argc);
+            std::for_each(argv, argv + argc, [&](char* charPointerArg)
             {
-               args.emplace_back(arg);
+               stringArgs.emplace_back(charPointerArg);
             });
-            return args;
+            return stringArgs;
          }();
-         return args;
+         return stringArgs;
       }
 
       template<typename T>
