@@ -2562,6 +2562,7 @@ Expected-But-Not-Asserted ZenMocked Function
       friend class ThreeArgumentMockerTests;
    private:
       std::vector<ThreeArgumentCall<Arg1Type, Arg2Type, Arg3Type>> zenMockObjectCallHistory;
+      std::function<void(Arg1Type, Arg2Type, Arg3Type)> optionalFunctionToCallInstead;
    public:
       explicit ThreeArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
@@ -2571,8 +2572,18 @@ Expected-But-Not-Asserted ZenMocked Function
       void ZenMockIt(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument)
       {
          this->ZenMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument);
-         zenMockObjectCallHistory.emplace_back(firstArgument, secondArgument, thirdArgument);
+         this->zenMockObjectCallHistory.emplace_back(firstArgument, secondArgument, thirdArgument);
+         if (this->optionalFunctionToCallInstead)
+         {
+            this->optionalFunctionToCallInstead(firstArgument, secondArgument, thirdArgument);
+         }
          this->ZenMockThrowIfExceptionSet();
+      }
+
+      void CallFunctionInstead(const std::function<void(Arg1Type, Arg2Type, Arg3Type)>& functionToCallInstead)
+      {
+         _expected = true;
+         this->optionalFunctionToCallInstead = functionToCallInstead;
       }
 
       FunctionSequencingToken CalledOnceWith(
@@ -2582,10 +2593,10 @@ Expected-But-Not-Asserted ZenMocked Function
       {
          this->ZenMockSetAsserted();
          const size_t expectedNumberOfCalls = 1;
-         ARE_EQUAL(expectedNumberOfCalls, zenMockObjectCallHistory.size(), this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedFirstArgument, zenMockObjectCallHistory[0].firstArgument.value, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedSecondArgument, zenMockObjectCallHistory[0].secondArgument.value, this->ZenMockedFunctionSignature);
-         ARE_EQUAL(expectedThirdArgument, zenMockObjectCallHistory[0].thirdArgument.value, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCalls, this->zenMockObjectCallHistory.size(), this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedFirstArgument, this->zenMockObjectCallHistory[0].firstArgument.value, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedSecondArgument, this->zenMockObjectCallHistory[0].secondArgument.value, this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedThirdArgument, this->zenMockObjectCallHistory[0].thirdArgument.value, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
@@ -2597,14 +2608,13 @@ Expected-But-Not-Asserted ZenMocked Function
       {
          this->ZenMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls);
          this->ZenMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCalls, zenMockObjectCallHistory.size(), this->ZenMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCalls, this->zenMockObjectCallHistory.size(), this->ZenMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCalls; ++i)
          {
-            const std::string zenMockedFunctionSignatureAndCallIndex =
-               ZenUnit::String::Concat(this->ZenMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedFirstArgument, zenMockObjectCallHistory[i].firstArgument.value, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSecondArgument, zenMockObjectCallHistory[i].secondArgument.value, zenMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedThirdArgument, zenMockObjectCallHistory[i].thirdArgument.value, zenMockedFunctionSignatureAndCallIndex);
+            const std::string zenMockedFunctionSignatureAndCallIndex = ZenUnit::String::Concat(this->ZenMockedFunctionSignature, " at i=", i);
+            ARE_EQUAL(expectedFirstArgument, this->zenMockObjectCallHistory[i].firstArgument.value, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSecondArgument, this->zenMockObjectCallHistory[i].secondArgument.value, zenMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedThirdArgument, this->zenMockObjectCallHistory[i].thirdArgument.value, zenMockedFunctionSignatureAndCallIndex);
          }
          return FunctionSequencingToken();
       }
@@ -2613,8 +2623,7 @@ Expected-But-Not-Asserted ZenMocked Function
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedThreeArgumentCalls.size());
          this->ZenMockSetAsserted();
-         const std::vector<ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>>
-            actualThreeArgumentCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
+         const std::vector<ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>> actualThreeArgumentCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
          VECTORS_EQUAL(expectedThreeArgumentCalls, actualThreeArgumentCalls, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
