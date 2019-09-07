@@ -6428,6 +6428,13 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
       return randomFolderPath;
    }
 
+   template<>
+   inline std::error_code Random<std::error_code>()
+   {
+      std::error_code randomErrorCode;
+      return randomErrorCode;
+   }
+
    template<typename EnumType>
    EnumType RandomEnum(EnumType exclusiveMaxValue)
    {
@@ -6533,28 +6540,20 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    public:
 		virtual char Char() const { return ZenUnit::Random<char>(); }
 		virtual unsigned char UnsignedChar() const { return ZenUnit::Random<unsigned char>(); }
-
       virtual bool Bool() const { return ZenUnit::Random<bool>(); }
-
 		virtual short Short() const { return ZenUnit::Random<short>(); }
 		virtual unsigned short UnsignedShort() const { return ZenUnit::Random<unsigned short>(); }
-
 		virtual int Int() const { return ZenUnit::Random<int>(); }
       virtual unsigned UnsignedInt() const { return ZenUnit::Random<unsigned int>(); }
-
       virtual int Enum(int exclusiveMaxValue) const { return ZenUnit::RandomBetween<int>(0, static_cast<unsigned long long>(exclusiveMaxValue) - 1); }
-
       virtual long long LongLong() const { return ZenUnit::Random<long long>(); }
       virtual unsigned long long UnsignedLongLong() const { return ZenUnit::Random<unsigned long long>(); }
-
       virtual float Float() const { return ZenUnit::Random<float>(); }
 		virtual double Double() const { return ZenUnit::Random<double>(); }
-
       virtual std::string String() const { return ZenUnit::Random<std::string>(); }
       virtual std::vector<std::string> StringVector() const { return ZenUnit::RandomVector<std::string>(); }
-
       virtual fs::path Path() const { return ZenUnit::Random<fs::path>(); }
-
+      virtual std::error_code ErrorCode() const { return ZenUnit::Random<std::error_code>(); }
       virtual ~RandomGenerator() = default;
    };
 

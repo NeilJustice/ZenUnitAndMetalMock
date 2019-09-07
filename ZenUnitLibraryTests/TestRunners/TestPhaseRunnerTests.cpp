@@ -140,7 +140,7 @@ namespace ZenUnit
       expectedTestPhaseResult.anomalyOrException = make_shared<AnomalyOrException>(anomaly);
       expectedTestPhaseResult.testOutcome = TestOutcome::Anomaly;
 
-      ZENMOCK(_consoleMock->WriteColorMock.CalledOnceWith("\n=======\nAnomaly Occurred\n=======", Color::Red));
+      ZENMOCK(_consoleMock->WriteColorMock.CalledOnceWith("\n=======\nAnomaly\n=======", Color::Red));
       ZENMOCK(_testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(TestPhase::TestBody));
       ZENMOCK(_consoleMock->WriteMock.CalledOnceWith(_testPhaseSuffix));
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(anomaly.why));
