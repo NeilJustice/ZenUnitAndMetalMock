@@ -1327,7 +1327,7 @@ Return(), ReturnValues(), ReturnRandom(), or Throw<T>() on a ZenMock object.)");
    public:
       explicit ZenMocker(std::string zenMockedFunctionSignature)
          : _call_exit(::exit)
-         , _call_TestRunner_GetArgs(ZenUnit::TestRunner::GetArgs)
+         , _call_TestRunner_GetArgs(ZenUnit::ZenUnitTestRunner::GetArgs)
          , _zenMockExceptionIsInFlight(false)
          , _expected(false)
          , _asserted(false)

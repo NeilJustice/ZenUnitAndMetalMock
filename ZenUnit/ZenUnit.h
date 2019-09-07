@@ -318,7 +318,7 @@ Testing Utility Options:
       testClassName, #HighQualityTestName, PMFTOKEN(&TestClassType::HighQualityTestName)));
 
 #define DOSKIP(HighQualityTestName, Reason) \
-   ZenUnit::TestRunner::Instance().SkipTest(testClassName, #HighQualityTestName, Reason);
+   ZenUnit::ZenUnitTestRunner::Instance().SkipTest(testClassName, #HighQualityTestName, Reason);
 
 // Skips a TEST.
 #define SKIPAFACT(HighQualityTestName, Reason) DOSKIP(HighQualityTestName, Reason)
@@ -407,18 +407,18 @@ Testing Utility Options:
    const char* HighQualityTestClassName::ZenUnit_testClassName = nullptr; \
    bool HighQualityTestClassName::ZenUnit_allNXNTestsRegistered = false; \
    std::nullptr_t ZenUnit_TestClassRegistrar_##HighQualityTestClassName = \
-      ZenUnit::TestRunner::Instance().AddTestClassRunner(new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName>(#HighQualityTestClassName));
+      ZenUnit::ZenUnitTestRunner::Instance().AddTestClassRunner(new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName>(#HighQualityTestClassName));
 
 // Skips a test class.
 #define SKIP_TESTS(HighQualityTestClassName, Reason) }; \
    const std::nullptr_t ZenUnit_TestClassSkipper_##HighQualityTestClassName = \
-      ZenUnit::TestRunner::Instance().SkipTestClass(#HighQualityTestClassName, Reason);
+      ZenUnit::ZenUnitTestRunner::Instance().SkipTestClass(#HighQualityTestClassName, Reason);
 
 #define DO_RUN_TEMPLATE_TESTS(HighQualityTestClassName, ...) \
    template<> const char* HighQualityTestClassName<__VA_ARGS__>::ZenUnit_testClassName = nullptr; \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::ZenUnit_allNXNTestsRegistered = false; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassRegistrar_, HighQualityTestClassName), _Line), __LINE__) = \
-      ZenUnit::TestRunner::Instance().AddTestClassRunner( \
+      ZenUnit::ZenUnitTestRunner::Instance().AddTestClassRunner( \
          new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName<__VA_ARGS__>>(#HighQualityTestClassName"<"#__VA_ARGS__">"));
 
 // Runs a templated test class. Specify __VA_ARGS__ with type names to be run. Example: RUN_TEMPLATE_TESTS(TestClassName, int, std::vector<int>).
@@ -433,7 +433,7 @@ Testing Utility Options:
    template<> const char* HighQualityTestClassName<__VA_ARGS__>::ZenUnit_testClassName = nullptr; \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::ZenUnit_allNXNTestsRegistered = false; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassSkipper_, HighQualityTestClassName), _Line), __LINE__) = \
-      ZenUnit::TestRunner::Instance().SkipTestClass(#HighQualityTestClassName"<"#__VA_ARGS__">", Reason);
+      ZenUnit::ZenUnitTestRunner::Instance().SkipTestClass(#HighQualityTestClassName"<"#__VA_ARGS__">", Reason);
 
 // Skips a templated test class.
 #define SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, ...) }; \
@@ -4134,19 +4134,18 @@ namespace ZenUnit
    {
       friend class TestClassRunnerTests;
    protected:
-      std::unique_ptr<const Console> p_console;
+      std::unique_ptr<const Console> _protected_console;
       using TwoArgMemberAnyerType = TwoArgMemberAnyer<
          std::vector<RunFilter>, TestClassRunner, bool(TestClassRunner::*)(const RunFilter&, const char*) const, const char*>;
-      std::unique_ptr<const TwoArgMemberAnyerType> p_twoArgMemberAnyer;
+      std::unique_ptr<const TwoArgMemberAnyerType> _protected_twoArgMemberAnyer;
    public:
       TestClassRunner() noexcept
-         : p_console(std::make_unique<Console>())
-         , p_twoArgMemberAnyer(std::make_unique<TwoArgMemberAnyerType>())
+         : _protected_console(std::make_unique<Console>())
+         , _protected_twoArgMemberAnyer(std::make_unique<TwoArgMemberAnyerType>())
       {
       }
 
       virtual ~TestClassRunner() = default;
-
       virtual const char* TestClassName() const = 0;
       virtual size_t NumberOfTestCases() const = 0;
       virtual bool HasTestThatMatchesRunFilter(const RunFilter& runFilter) const = 0;
@@ -4297,7 +4296,7 @@ namespace ZenUnit
             runFilters, this, &TestClassRunnerRunner::RunFilterMatchesTestClass, testClassRunner.get());
          if (!anyRunFilterMatchesTestClass)
          {
-            testClassRunner = std::make_unique<NoOpTestClassRunner>();
+            testClassRunner.reset(new NoOpTestClassRunner);
          }
       }
 
@@ -4628,31 +4627,31 @@ namespace ZenUnit
       virtual ~TwoArgMemberFunctionCaller() = default;
    };
 
-   class TestRunner
+   class ZenUnitTestRunner
    {
-      friend class TestRunnerTests;
+      friend class ZenUnitTestRunnerTests;
    private:
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const PreamblePrinter> _preamblePrinter;
       std::unique_ptr<const ArgsParser> _argsParser;
-      std::unique_ptr<const OneArgMemberFunctionCaller<int, TestRunner, const ZenUnitArgs&>> _nonVoidOneArgMemberFunctionCaller;
-      std::unique_ptr<const OneArgMemberFunctionCaller<void, TestRunner, unsigned>> _voidOneArgMemberFunctionCaller;
-      std::unique_ptr<const TwoArgMemberFunctionCaller<bool, TestRunner, bool, bool>> _nonVoidTwoArgMemberFunctionCaller;
-      std::unique_ptr<const ZeroArgMemberFunctionCaller<void, TestRunner>> _voidZeroArgMemberFunctionCaller;
+      std::unique_ptr<const OneArgMemberFunctionCaller<int, ZenUnitTestRunner, const ZenUnitArgs&>> _nonVoidOneArgMemberFunctionCaller;
+      std::unique_ptr<const OneArgMemberFunctionCaller<void, ZenUnitTestRunner, unsigned>> _voidOneArgMemberFunctionCaller;
+      std::unique_ptr<const TwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>> _nonVoidTwoArgMemberFunctionCaller;
+      std::unique_ptr<const ZeroArgMemberFunctionCaller<void, ZenUnitTestRunner>> _voidZeroArgMemberFunctionCaller;
       std::unique_ptr<Stopwatch> _testRunStopwatch;
       std::unique_ptr<TestClassRunnerRunner> _testClassRunnerRunner;
       std::unique_ptr<TestRunResult> _testRunResult;
       ZenUnitArgs _args;
       bool _havePaused;
    public:
-      TestRunner() noexcept
+      ZenUnitTestRunner() noexcept
          : _console(std::make_unique<Console>())
          , _preamblePrinter(std::make_unique<PreamblePrinter>())
          , _argsParser(std::make_unique<ArgsParser>())
-         , _nonVoidOneArgMemberFunctionCaller(std::make_unique<OneArgMemberFunctionCaller<int, TestRunner, const ZenUnitArgs&>>())
-         , _voidOneArgMemberFunctionCaller(std::make_unique<OneArgMemberFunctionCaller<void, TestRunner, unsigned>>())
-         , _nonVoidTwoArgMemberFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<bool, TestRunner, bool, bool>>())
-         , _voidZeroArgMemberFunctionCaller(std::make_unique<ZeroArgMemberFunctionCaller<void, TestRunner>>())
+         , _nonVoidOneArgMemberFunctionCaller(std::make_unique<OneArgMemberFunctionCaller<int, ZenUnitTestRunner, const ZenUnitArgs&>>())
+         , _voidOneArgMemberFunctionCaller(std::make_unique<OneArgMemberFunctionCaller<void, ZenUnitTestRunner, unsigned>>())
+         , _nonVoidTwoArgMemberFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>>())
+         , _voidZeroArgMemberFunctionCaller(std::make_unique<ZeroArgMemberFunctionCaller<void, ZenUnitTestRunner>>())
          , _testRunStopwatch(std::make_unique<Stopwatch>())
          , _testClassRunnerRunner(std::make_unique<TestClassRunnerRunner>())
          , _testRunResult(std::make_unique<TestRunResult>())
@@ -4660,17 +4659,17 @@ namespace ZenUnit
       {
       }
 
-      virtual ~TestRunner() = default;
+      virtual ~ZenUnitTestRunner() = default;
 
-      static TestRunner& Instance() noexcept
+      static ZenUnitTestRunner& Instance() noexcept
       {
-         static TestRunner testRunnerSingleton;
+         static ZenUnitTestRunner testRunnerSingleton;
          return testRunnerSingleton;
       }
 
       static const ZenUnitArgs& GetArgs()
       {
-         const TestRunner& testRunnerSingleton = Instance();
+         const ZenUnitTestRunner& testRunnerSingleton = Instance();
          return testRunnerSingleton._args;
       }
 
@@ -4692,16 +4691,16 @@ namespace ZenUnit
          return nullptr;
       }
 
-      int ParseArgsRunTestClassesPrintResults(const std::vector<std::string>& commandLineArgs)
+      int RunTests(const std::vector<std::string>& stringArgs)
       {
-         _args = _argsParser->Parse(commandLineArgs);
+         _args = _argsParser->Parse(stringArgs);
          _testClassRunnerRunner->ApplyRunFiltersIfAny(_args.runFilters);
          int overallExitCode = 0;
          const int numberOfTestRuns = _args.testRuns < 0 ? std::numeric_limits<int>::max() : _args.testRuns;
          for (int testRunIndex = 0; testRunIndex < numberOfTestRuns; ++testRunIndex)
          {
             const int testRunExitCode = _nonVoidOneArgMemberFunctionCaller->NonConstCall(
-               this, &TestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, _args);
+               this, &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, _args);
             assert_true(testRunExitCode == 0 || testRunExitCode == 1);
             overallExitCode |= testRunExitCode;
             _testRunResult->ResetStateExceptForSkips();
@@ -4729,16 +4728,16 @@ namespace ZenUnit
       {
          const std::string startTime = _preamblePrinter->PrintPreambleLinesAndGetStartTime(args, _testClassRunnerRunner.get());
          _havePaused = _nonVoidTwoArgMemberFunctionCaller->ConstCall(
-            this, &TestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused, args.pause, _havePaused);
+            this, &ZenUnitTestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused, args.pause, _havePaused);
          _testRunStopwatch->Start();
          if (args.maxTotalSeconds > 0)
          {
             _voidOneArgMemberFunctionCaller->NonConstCall(
-               this, &TestRunner::RunTestClassesWithWaitableRunnerThread, args.maxTotalSeconds);
+               this, &ZenUnitTestRunner::RunTestClassesWithWaitableRunnerThread, args.maxTotalSeconds);
          }
          else
          {
-            _voidZeroArgMemberFunctionCaller->NonConstCall(this, &TestRunner::RunTestClasses);
+            _voidZeroArgMemberFunctionCaller->NonConstCall(this, &ZenUnitTestRunner::RunTestClasses);
          }
          _testRunResult->PrintTestFailuresAndSkips();
          const size_t numberOfTestCases = _testClassRunnerRunner->NumberOfTestCases();
@@ -4778,7 +4777,7 @@ namespace ZenUnit
          , _testPhaseTranslator(std::make_unique<TestPhaseTranslator>())
          , _voidTwoArgMemberFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>>())
          , _watch(new Watch)
-         , _call_TestRunner_GetArgs(TestRunner::GetArgs)
+         , _call_TestRunner_GetArgs(ZenUnitTestRunner::GetArgs)
          , _stopwatch(std::make_unique<Stopwatch>())
       {
       }
@@ -4884,7 +4883,7 @@ namespace ZenUnit
             testBodyTestPhaseResult,
             cleanupTestPhaseResult,
             destructorTestPhaseResult,
-            TestRunner::GetArgs);
+            ZenUnitTestRunner::GetArgs);
       }
    };
 
@@ -5138,7 +5137,7 @@ namespace ZenUnit
          , _nonVoidTwoArgFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>>())
          , _voidOneArgFunctionCaller(std::make_unique<OneArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>, const TestClassResult*>>())
          , _twoArgTestAnyer(std::make_unique<TwoArgTestAnyerType>())
-         , _call_TestRunner_GetArgs(TestRunner::GetArgs)
+         , _call_TestRunner_GetArgs(ZenUnitTestRunner::GetArgs)
          , _testClassName(testClassName)
          , _newableDeletableTest(testClassName)
          , _tests(TestClassType::GetTests(testClassName))
@@ -5191,7 +5190,7 @@ namespace ZenUnit
             _voidZeroArgMemberFunctionCaller->NonConstCall(this, &SpecificTestClassRunner::DoRunTests);
          }
          _voidOneArgFunctionCaller->ConstCall(this, &SpecificTestClassRunner::PrintTestClassResultLine, &_testClassResult);
-         p_console->WriteNewLine();
+         _protected_console->WriteNewLine();
          return std::move(_testClassResult);
       }
    private:
@@ -5212,19 +5211,19 @@ namespace ZenUnit
 
       void PrintTestClassNameAndNumberOfNamedTests() const
       {
-         p_console->WriteColor("@", Color::Green);
-         p_console->WriteColor(_testClassName, Color::Green);
+         _protected_console->WriteColor("@", Color::Green);
+         _protected_console->WriteColor(_testClassName, Color::Green);
          const std::string spacePipeSpaceNumberOfNamedTests = String::Concat(
             " | ", _tests.size(), _tests.size() == 1 ? " named test" : " named tests");
-         p_console->WriteLine(spacePipeSpaceNumberOfNamedTests);
+         _protected_console->WriteLine(spacePipeSpaceNumberOfNamedTests);
       }
 
       bool ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(
          Test* newableDeletableTest, TestClassResult* outTestClassResult) const
       {
-         p_console->WriteColor("|", Color::Green);
+         _protected_console->WriteColor("|", Color::Green);
          static const std::string TestClassIsNewableAndDeletableString = "TestClassIsNewableAndDeletable -> ";
-         p_console->Write(TestClassIsNewableAndDeletableString);
+         _protected_console->Write(TestClassIsNewableAndDeletableString);
          const std::vector<TestResult> newableDeletableTestResults = newableDeletableTest->RunTest();
          assert_true(newableDeletableTestResults.size() == 1);
          outTestClassResult->AddTestResults(newableDeletableTestResults);
@@ -5232,10 +5231,10 @@ namespace ZenUnit
          const bool testClassIsNewableAndDeletable = newableDeletableTestResult.testOutcome == TestOutcome::Success;
          if (testClassIsNewableAndDeletable)
          {
-            p_console->WriteColor("OK ", Color::Green);
+            _protected_console->WriteColor("OK ", Color::Green);
             const std::string twoDecimalPlaceMillisecondsString = outTestClassResult->
                MicrosecondsToTwoDecimalPlaceMillisecondsString(newableDeletableTestResult.microseconds);
-            p_console->WriteLine(twoDecimalPlaceMillisecondsString);
+            _protected_console->WriteLine(twoDecimalPlaceMillisecondsString);
          }
          return testClassIsNewableAndDeletable;
       }
@@ -5244,22 +5243,22 @@ namespace ZenUnit
       {
          const ZenUnitArgs& args = _call_TestRunner_GetArgs();
          const char* const testName = test->Name();
-         const bool runFilterMatchesTestName = args.runFilters.empty() || p_twoArgMemberAnyer->TwoArgAny(
+         const bool runFilterMatchesTestName = args.runFilters.empty() || _protected_twoArgMemberAnyer->TwoArgAny(
             args.runFilters, this, &TestClassRunner::RunFilterMatchesTestName, testName);
          if (runFilterMatchesTestName)
          {
-            p_console->WriteColor("|", Color::Green);
-            p_console->Write(testName);
-            test->WritePostTestNameMessage(p_console.get());
+            _protected_console->WriteColor("|", Color::Green);
+            _protected_console->Write(testName);
+            test->WritePostTestNameMessage(_protected_console.get());
             const std::vector<TestResult> testResults = test->RunTest();
-            test->WritePostTestCompletionMessage(p_console.get(), testResults[0]);
+            test->WritePostTestCompletionMessage(_protected_console.get(), testResults[0]);
             outTestClassResult->AddTestResults(testResults);
          }
       }
 
       void PrintTestClassResultLine(const TestClassResult* testClassResult) const
       {
-         testClassResult->PrintTestClassResultLine(p_console.get());
+         testClassResult->PrintTestClassResultLine(_protected_console.get());
       }
    };
 
@@ -5500,7 +5499,7 @@ namespace ZenUnit
          : Test(testClassName, testName, N)
          , _console(std::make_unique<Console>())
          , _callerOfRunFilterMatchesTestCase(std::make_unique<CallerOfRunFilterMatchesTestCaseType>())
-         , _call_TestRunner_GetArgs(TestRunner::GetArgs)
+         , _call_TestRunner_GetArgs(ZenUnitTestRunner::GetArgs)
          , _call_String_SplitOnNonQuotedCommas(String::SplitOnNonQuotedCommas)
          , _call_exit(::exit)
          , _call_ITestCaseNumberGeneratorFactoryNew(ITestCaseNumberGenerator::FactoryNew)
@@ -6115,7 +6114,7 @@ Unexpectedly a TEST(TestName) definition exists in the EVIDENCE section.
 The fix for this error is to change FACTS(TestName) to AFACT(TestName)
 or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
 )";
-            const ZenUnitArgs& args = TestRunner::GetArgs();
+            const ZenUnitArgs& args = ZenUnitTestRunner::GetArgs();
             exit(args.exitZero ? 0 : 1);
          }
          const std::unique_ptr<Test>* const testNXN = &findIter->second;
@@ -6572,9 +6571,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
 
    inline int RunTests(int argc, char* argv[])
    {
-      const std::vector<std::string> args = Vector::FromArgcArgv(argc, argv);
-      TestRunner& zenUnitTestRunner = TestRunner::Instance();
-      const int exitCode = zenUnitTestRunner.ParseArgsRunTestClassesPrintResults(args);
+      const std::vector<std::string> stringArgs = Vector::FromArgcArgv(argc, argv);
+      ZenUnitTestRunner& zenUnitTestRunner = ZenUnitTestRunner::Instance();
+      const int exitCode = zenUnitTestRunner.RunTests(stringArgs);
       return exitCode;
    }
 }

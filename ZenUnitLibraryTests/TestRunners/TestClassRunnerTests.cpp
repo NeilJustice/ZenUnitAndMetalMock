@@ -25,8 +25,8 @@ namespace ZenUnit
    TEST(DefaultConstructor_NewsComponents)
    {
       TestingTestClassRunner testingTestClassRunner;
-      POINTER_WAS_NEWED(testingTestClassRunner.p_console);
-      POINTER_WAS_NEWED(testingTestClassRunner.p_twoArgMemberAnyer);
+      POINTER_WAS_NEWED(testingTestClassRunner._protected_console);
+      POINTER_WAS_NEWED(testingTestClassRunner._protected_twoArgMemberAnyer);
    }
 
    TEST(RunFilterMatchesTestName_ReturnsTrueIfRunFilterMatchesTestName)

@@ -26,7 +26,7 @@ namespace ZenUnit
    VoidTwoArgMemberFunctionCallerMock<TestPhaseRunner, TestOutcome, const ZenUnitArgs&>* _voidTwoArgMemberFunctionCallerMock = nullptr;
    WatchMock* _watchMock = nullptr;
    unique_ptr<TestMock> _testMock;
-   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
+   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetArgs)
    StopwatchMock* _stopwatchMock = nullptr;
 
    const unsigned _microseconds = ZenUnit::Random<unsigned>();
@@ -56,7 +56,7 @@ namespace ZenUnit
       POINTER_WAS_NEWED(testPhaseRunner._testPhaseTranslator);
       POINTER_WAS_NEWED(testPhaseRunner._voidTwoArgMemberFunctionCaller);
       POINTER_WAS_NEWED(testPhaseRunner._watch);
-      STD_FUNCTION_TARGETS(TestRunner::GetArgs, testPhaseRunner._call_TestRunner_GetArgs);
+      STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetArgs, testPhaseRunner._call_TestRunner_GetArgs);
       POINTER_WAS_NEWED(testPhaseRunner._stopwatch);
    }
 

@@ -46,7 +46,7 @@ namespace ZenUnit
    const string _testClassName = Random<string>();
    const string _testName = Random<string>();
    const string _testCaseArgsText = Random<string>();
-   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
+   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetArgs)
    ZENMOCK_VOID1_FREE(exit, int)
 
    STARTUP
@@ -66,7 +66,7 @@ namespace ZenUnit
       // Fields
       POINTER_WAS_NEWED(test2X2._console);
       POINTER_WAS_NEWED(test2X2._callerOfRunFilterMatchesTestCase);
-      STD_FUNCTION_TARGETS(TestRunner::GetArgs, test2X2._call_TestRunner_GetArgs);
+      STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetArgs, test2X2._call_TestRunner_GetArgs);
       STD_FUNCTION_TARGETS(::exit, test2X2._call_exit);
       STD_FUNCTION_TARGETS(ITestCaseNumberGenerator::FactoryNew, test2X2._call_ITestCaseNumberGeneratorFactoryNew);
       STD_FUNCTION_TARGETS(String::SplitOnNonQuotedCommas, test2X2._call_String_SplitOnNonQuotedCommas);
@@ -143,7 +143,7 @@ namespace ZenUnit
             }
       } test1X1SelfMocked;
 
-      ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs, _SelfMocked)
+      ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetArgs, _SelfMocked)
 
       const ZenUnitArgs args = GetArgs_ZenMockObject_SelfMocked.ReturnRandom();
       test1X1SelfMocked._call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject_SelfMocked);

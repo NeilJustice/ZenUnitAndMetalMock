@@ -29,7 +29,7 @@ namespace ZenMock
 
    unique_ptr<ZenMocker<ExceptionThrowerMock>> _zenMocker;
    ZENMOCK_VOID1_FREE(exit, int)
-   ZENMOCK_NONVOID0_STATIC(const ZenUnit::ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
+   ZENMOCK_NONVOID0_STATIC(const ZenUnit::ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetArgs)
    const string ZenMockedFunctionSignature = "virtual void ClassName::FunctionName() const";
 
    STARTUP
@@ -44,7 +44,7 @@ namespace ZenMock
       const ZenMocker<ExceptionThrower> zenMocker(ZenMockedFunctionSignature);
       //
       STD_FUNCTION_TARGETS(exit, zenMocker._call_exit);
-      STD_FUNCTION_TARGETS(ZenUnit::TestRunner::GetArgs, zenMocker._call_TestRunner_GetArgs);
+      STD_FUNCTION_TARGETS(ZenUnit::ZenUnitTestRunner::GetArgs, zenMocker._call_TestRunner_GetArgs);
       ARE_EQUAL(ZenMockedFunctionSignature, zenMocker.ZenMockedFunctionSignature);
       IS_FALSE(zenMocker._expected);
       IS_FALSE(zenMocker._asserted);

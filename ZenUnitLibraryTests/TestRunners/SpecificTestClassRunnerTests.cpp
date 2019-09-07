@@ -68,12 +68,12 @@ namespace ZenUnit
       bool(TestClassRunner::*)(const RunFilter&, const char*) const, const char*>;
    TwoArgMemberAnyerMockType* p_twoArgMemberAnyerMock = nullptr;
 
-   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::TestRunner, GetArgs)
+   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetArgs)
 
    STARTUP
    {
       _specificTestClassRunner = make_unique<SpecificTestClassRunner<TestingTestClass>>(_testClassName.c_str());
-      _specificTestClassRunner->p_console.reset(p_consoleMock = new ConsoleMock);
+      _specificTestClassRunner->_protected_console.reset(p_consoleMock = new ConsoleMock);
       _specificTestClassRunner->_call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject);
       _specificTestClassRunner->_twoArgMemberForEacher.reset(_twoArgMemberForEacherMock = new TwoArgMemberForEacherMockType);
       _specificTestClassRunner->_voidZeroArgMemberFunctionCaller.reset(
@@ -86,21 +86,21 @@ namespace ZenUnit
          new VoidOneArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, const TestClassResult*>);
       _specificTestClassRunner->_twoArgTestAnyer.reset(_twoArgTestAnyerMock = new TwoArgTestAnyerMockType);
       _specificTestClassRunner->_call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject);
-      _specificTestClassRunner->p_twoArgMemberAnyer.reset(p_twoArgMemberAnyerMock = new TwoArgMemberAnyerMockType);
+      _specificTestClassRunner->_protected_twoArgMemberAnyer.reset(p_twoArgMemberAnyerMock = new TwoArgMemberAnyerMockType);
    }
 
    TEST(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
    {
       SpecificTestClassRunner<TestingTestClass> specificTestClassRunner(_testClassName.c_str());
       //
-      POINTER_WAS_NEWED(specificTestClassRunner.p_console);
+      POINTER_WAS_NEWED(specificTestClassRunner._protected_console);
       POINTER_WAS_NEWED(specificTestClassRunner._twoArgMemberForEacher);
       POINTER_WAS_NEWED(specificTestClassRunner._voidZeroArgMemberFunctionCaller);
       POINTER_WAS_NEWED(specificTestClassRunner._twoArgTestAnyer);
       POINTER_WAS_NEWED(specificTestClassRunner._nonVoidTwoArgFunctionCaller);
       POINTER_WAS_NEWED(specificTestClassRunner._voidOneArgFunctionCaller);
       ARE_EQUAL(_testClassName.c_str(), specificTestClassRunner._testClassName);
-      STD_FUNCTION_TARGETS(TestRunner::GetArgs, specificTestClassRunner._call_TestRunner_GetArgs);
+      STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetArgs, specificTestClassRunner._call_TestRunner_GetArgs);
 
       vector<unique_ptr<Test>> expectedTests;
       expectedTests.emplace_back(nullptr);
@@ -393,11 +393,11 @@ namespace ZenUnit
       }
       ZENMOCK(p_consoleMock->WriteColorMock.CalledOnceWith("|", Color::Green));
       ZENMOCK(p_consoleMock->WriteMock.CalledOnceWith(testName));
-      ZENMOCK(testMock->WritePostTestNameMessageMock.CalledOnceWith(_specificTestClassRunner->p_console.get()));
+      ZENMOCK(testMock->WritePostTestNameMessageMock.CalledOnceWith(_specificTestClassRunner->_protected_console.get()));
       ZENMOCK(testMock->RunTestMock.CalledOnce());
       ZENMOCK(testClassResultMock.AddTestResultsMock.CalledOnceWith(TestResults));
       ZENMOCK(testMock->WritePostTestCompletionMessageMock.CalledOnceWith(
-         _specificTestClassRunner->p_console.get(), test0));
+         _specificTestClassRunner->_protected_console.get(), test0));
    }
 
    TEST(PrintTestClassResultLine_CallsTestClassResultPrintResultLine)
