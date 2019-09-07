@@ -74,7 +74,7 @@ namespace ZenUnit
    {
       _specificTestClassRunner = make_unique<SpecificTestClassRunner<TestingTestClass>>(_testClassName.c_str());
       _specificTestClassRunner->_protected_console.reset(p_consoleMock = new ConsoleMock);
-      _specificTestClassRunner->_call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject);
+      _specificTestClassRunner->_call_ZenUnitTestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject);
       _specificTestClassRunner->_twoArgMemberForEacher.reset(_twoArgMemberForEacherMock = new TwoArgMemberForEacherMockType);
       _specificTestClassRunner->_voidZeroArgMemberFunctionCaller.reset(
          _voidZeroArgMemberFunctionCallerMock =
@@ -85,7 +85,7 @@ namespace ZenUnit
       _specificTestClassRunner->_voidOneArgFunctionCaller.reset(_voidOneArgMemberFunctionCallerMock =
          new VoidOneArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, const TestClassResult*>);
       _specificTestClassRunner->_twoArgTestAnyer.reset(_twoArgTestAnyerMock = new TwoArgTestAnyerMockType);
-      _specificTestClassRunner->_call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject);
+      _specificTestClassRunner->_call_ZenUnitTestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject);
       _specificTestClassRunner->_protected_twoArgMemberAnyer.reset(p_twoArgMemberAnyerMock = new TwoArgMemberAnyerMockType);
    }
 
@@ -100,7 +100,7 @@ namespace ZenUnit
       POINTER_WAS_NEWED(specificTestClassRunner._nonVoidTwoArgFunctionCaller);
       POINTER_WAS_NEWED(specificTestClassRunner._voidOneArgFunctionCaller);
       ARE_EQUAL(_testClassName.c_str(), specificTestClassRunner._testClassName);
-      STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetArgs, specificTestClassRunner._call_TestRunner_GetArgs);
+      STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetArgs, specificTestClassRunner._call_ZenUnitTestRunner_GetArgs);
 
       vector<unique_ptr<Test>> expectedTests;
       expectedTests.emplace_back(nullptr);

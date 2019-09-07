@@ -40,7 +40,7 @@ namespace ZenUnit
       _testPhaseRunner._voidTwoArgMemberFunctionCaller.reset(
          _voidTwoArgMemberFunctionCallerMock = new VoidTwoArgMemberFunctionCallerMock<TestPhaseRunner, TestOutcome, const ZenUnitArgs&>);
       _testPhaseRunner._watch.reset(_watchMock = new WatchMock);
-      _testPhaseRunner._call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject);
+      _testPhaseRunner._call_ZenUnitTestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject);
       _testMock = make_unique<TestMock>();
    }
 
@@ -56,7 +56,7 @@ namespace ZenUnit
       POINTER_WAS_NEWED(testPhaseRunner._testPhaseTranslator);
       POINTER_WAS_NEWED(testPhaseRunner._voidTwoArgMemberFunctionCaller);
       POINTER_WAS_NEWED(testPhaseRunner._watch);
-      STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetArgs, testPhaseRunner._call_TestRunner_GetArgs);
+      STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetArgs, testPhaseRunner._call_ZenUnitTestRunner_GetArgs);
       POINTER_WAS_NEWED(testPhaseRunner._stopwatch);
    }
 

@@ -1316,7 +1316,7 @@ Return(), ReturnValues(), ReturnRandom(), or Throw<T>() on a ZenMock object.)");
       friend class ZenMockerTests;
    private:
       std::function<void(int)> _call_exit;
-      std::function<const ZenUnit::ZenUnitArgs&()> _call_TestRunner_GetArgs;
+      std::function<const ZenUnit::ZenUnitArgs&()> _call_ZenUnitTestRunner_GetArgs;
       bool _zenMockExceptionIsInFlight;
    protected:
       bool _expected;
@@ -1327,7 +1327,7 @@ Return(), ReturnValues(), ReturnRandom(), or Throw<T>() on a ZenMock object.)");
    public:
       explicit ZenMocker(std::string zenMockedFunctionSignature)
          : _call_exit(::exit)
-         , _call_TestRunner_GetArgs(ZenUnit::ZenUnitTestRunner::GetArgs)
+         , _call_ZenUnitTestRunner_GetArgs(ZenUnit::ZenUnitTestRunner::GetArgs)
          , _zenMockExceptionIsInFlight(false)
          , _expected(false)
          , _asserted(false)
@@ -1404,7 +1404,7 @@ Expected-But-Not-Asserted ZenMocked Function
 ============================================)", ZenUnit::Color::Red);
             console.Write("ZenMocked Function: ");
 				console.WriteLine(ZenMockedFunctionSignature);
-            const ZenUnit::ZenUnitArgs& args = _call_TestRunner_GetArgs();
+            const ZenUnit::ZenUnitArgs& args = _call_ZenUnitTestRunner_GetArgs();
 
 				console.WriteColor("\n>------>>", ZenUnit::Color::Red);
 				console.WriteLine("  Completed: " + args.commandLine);

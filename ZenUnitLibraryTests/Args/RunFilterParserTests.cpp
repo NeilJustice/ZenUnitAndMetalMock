@@ -84,13 +84,14 @@ namespace ZenUnit
       "TestClassName::TestName///1")
    {
       THROWS(_runFilterParser.ParseRunFilterString(invalidRunFilterString),
-         invalid_argument, ExpectedInvalidArgumentWhat(invalidRunFilterString));
+         invalid_argument, MakeExpectedInvalidArgumentWhat(invalidRunFilterString));
    }
 
-   static string ExpectedInvalidArgumentWhat(const string& invalidRunFilterString)
+   static string MakeExpectedInvalidArgumentWhat(const string& invalidRunFilterString)
    {
-      return "Invalid test run filter string: " + invalidRunFilterString
-         + ". Test run filter string format: TestClassName[::TestName[/TestCaseNumber]]";
+      const string expectedInvalidArgumentWhat = String::Concat("Invalid test run filter string: ", invalidRunFilterString,
+         + ". Test run filter string format: TestClassName[::TestName[/TestCaseNumber]]");
+      return expectedInvalidArgumentWhat;
    }
 
    RUN_TESTS(RunFilterParserTests)

@@ -13,7 +13,7 @@ namespace ZenUnit
    AFACT(NumberOfTestCases_Returns1)
    FACTS(RunTest_StartsStopWatch_CallsNewTestClassWhichFails_DoesNotCallDeleteTestClass_StopsStopwatch_ReturnsConstructorFailTestResult)
    AFACT(RunTest_StartsStopwatch_CallsNewTestClassWhichSucceeds_CallsDeleteTestClass_StopsStopwatch_ReturnsCtorDtorSuccessTestResult)
-   AFACT(NewAndDeleteTestClass_NewsAndDeleteFirstInstanceOfTestClass)
+   AFACT(NewAndDeleteTestClass_NewsThenDeletesTestClass)
    EVIDENCE
 
    class TestingTestClass {};
@@ -40,7 +40,7 @@ namespace ZenUnit
       POINTER_WAS_NEWED(newableDeletableTest._testResultFactory);
       POINTER_WAS_NEWED(newableDeletableTest._testPhaseRunner);
       POINTER_WAS_NEWED(newableDeletableTest._stopwatch);
-      POINTER_IS_NULL(newableDeletableTest._firstInstanceOfTestClass);
+      POINTER_IS_NULL(newableDeletableTest._instanceOfTestClass);
    }
 
    TEST(NumberOfTestCases_Returns1)
@@ -108,17 +108,17 @@ namespace ZenUnit
       VECTORS_EQUAL(expectedTestResults, testResults);
    }
 
-   TEST(NewAndDeleteTestClass_NewsAndDeleteFirstInstanceOfTestClass)
+   TEST(NewAndDeleteTestClass_NewsThenDeletesTestClass)
    {
-      POINTER_IS_NULL(_newableDeletableTest->_firstInstanceOfTestClass);
+      POINTER_IS_NULL(_newableDeletableTest->_instanceOfTestClass);
       //
       _newableDeletableTest->NewTestClass();
       //
-      POINTER_IS_NOT_NULL(_newableDeletableTest->_firstInstanceOfTestClass);
+      POINTER_IS_NOT_NULL(_newableDeletableTest->_instanceOfTestClass);
       //
       _newableDeletableTest->DeleteTestClass();
       //
-      POINTER_IS_NULL(_newableDeletableTest->_firstInstanceOfTestClass);
+      POINTER_IS_NULL(_newableDeletableTest->_instanceOfTestClass);
    }
 
    RUN_TESTS(NewableDeletableTestTests)

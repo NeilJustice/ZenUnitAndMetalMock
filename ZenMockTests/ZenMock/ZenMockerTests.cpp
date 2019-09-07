@@ -36,7 +36,7 @@ namespace ZenMock
    {
       _zenMocker = make_unique<ZenMocker<ExceptionThrowerMock>>(ZenMockedFunctionSignature);
       _zenMocker->_call_exit = BIND_1ARG_ZENMOCK_OBJECT(exit_ZenMockObject);
-      _zenMocker->_call_TestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject);
+      _zenMocker->_call_ZenUnitTestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject);
    }
 
    TEST(Constructor_SetsFields)
@@ -44,7 +44,7 @@ namespace ZenMock
       const ZenMocker<ExceptionThrower> zenMocker(ZenMockedFunctionSignature);
       //
       STD_FUNCTION_TARGETS(exit, zenMocker._call_exit);
-      STD_FUNCTION_TARGETS(ZenUnit::ZenUnitTestRunner::GetArgs, zenMocker._call_TestRunner_GetArgs);
+      STD_FUNCTION_TARGETS(ZenUnit::ZenUnitTestRunner::GetArgs, zenMocker._call_ZenUnitTestRunner_GetArgs);
       ARE_EQUAL(ZenMockedFunctionSignature, zenMocker.ZenMockedFunctionSignature);
       IS_FALSE(zenMocker._expected);
       IS_FALSE(zenMocker._asserted);

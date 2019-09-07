@@ -15,8 +15,8 @@ namespace ZenUnit
    AFACT(AddSkippedTest_AddsTestClassNameDotTestNameToSkippedFullTestNamesVector)
    AFACT(AddSkippedTestClassNameAndReason_AddsTestClassNameAndReasonToSkippedTestClassNamesAndReasonsVector)
    FACTS(SetTestClassResults_SetsNumberofFailedTestCases_MovesTestClassResultsIntoField)
-   AFACT(NumberOfFailedTestCases_ZeroTestClassResults_Returns0)
-   AFACT(NumberOfFailedTestCases_ThreeTestClassResults_ReturnsSumOfNumberOfFailedTestCases)
+   AFACT(CalculateNumberOfFailedTestCases_ZeroTestClassResults_Returns0)
+   AFACT(CalculateNumberOfFailedTestCases_ThreeTestClassResults_ReturnsSumOfNumberOfFailedTestCases)
    FACTS(PrintTestFailuresAndSkips_PrintsTestFailures_PrintsSkippedTestClassNames_PrintsSkippedFullTestNames);
    AFACT(PrintConclusionLines_0TotalNumberOfTests_PrintsZeroTestClassesRegisteredToRun)
    FACTS(PrintConclusionLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedMilliseconds)
@@ -133,27 +133,27 @@ namespace ZenUnit
       class TestRunResultSelfMocked : public Zen::Mock<TestRunResult>
       {
       public:
-         ZENMOCK_NONVOID1_CONST(size_t, NumberOfFailedTestCases, const vector<TestClassResult>&)
+         ZENMOCK_NONVOID1_CONST(size_t, CalculateNumberOfFailedTestCases, const vector<TestClassResult>&)
       } testRunResultSelfMocked;
-      testRunResultSelfMocked.NumberOfFailedTestCasesMock.Return(numberOfFailedTestCases);
+      testRunResultSelfMocked.CalculateNumberOfFailedTestCasesMock.Return(numberOfFailedTestCases);
 
       vector<TestClassResult> testClassResults{ TestClassResult() };
       const vector<TestClassResult> NonMovedFromTestClassResults = testClassResults;
       //
       testRunResultSelfMocked.SetTestClassResults(std::move(testClassResults));
       //
-      ZENMOCK(testRunResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnceWith(NonMovedFromTestClassResults));
+      ZENMOCK(testRunResultSelfMocked.CalculateNumberOfFailedTestCasesMock.CalledOnceWith(NonMovedFromTestClassResults));
       VECTORS_EQUAL(NonMovedFromTestClassResults, testRunResultSelfMocked._testClassResults);
       ARE_EQUAL(numberOfFailedTestCases, testRunResultSelfMocked._numberOfFailedTestCases);
    }
 
-   TEST(NumberOfFailedTestCases_ZeroTestClassResults_Returns0)
+   TEST(CalculateNumberOfFailedTestCases_ZeroTestClassResults_Returns0)
    {
-      const size_t numberOfFailedTestCases = _testRunResult.NumberOfFailedTestCases(vector<TestClassResult>());
+      const size_t numberOfFailedTestCases = _testRunResult.CalculateNumberOfFailedTestCases(vector<TestClassResult>());
       ARE_EQUAL(0, numberOfFailedTestCases);
    }
 
-   TEST(NumberOfFailedTestCases_ThreeTestClassResults_ReturnsSumOfNumberOfFailedTestCases)
+   TEST(CalculateNumberOfFailedTestCases_ThreeTestClassResults_ReturnsSumOfNumberOfFailedTestCases)
    {
       TestClassResult testClassResultA;
       TestResult testResultA1;
@@ -180,7 +180,7 @@ namespace ZenUnit
 
       const vector<TestClassResult> testClassResults{ testClassResultA, testClassResultB, testClassResultC };
       //
-      const size_t numberOfFailedTestCases = _testRunResult.NumberOfFailedTestCases(testClassResults);
+      const size_t numberOfFailedTestCases = _testRunResult.CalculateNumberOfFailedTestCases(testClassResults);
       //
       ARE_EQUAL(5, numberOfFailedTestCases);
    }

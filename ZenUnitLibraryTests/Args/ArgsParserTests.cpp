@@ -142,7 +142,7 @@ Testing Utility Options:
       _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
       const vector<string> stringArgs(numberOfArgs);
       //
-      THROWS(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith("ZenUnit command line usage error: Too many arguments.\n"));
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
@@ -158,7 +158,7 @@ Testing Utility Options:
       _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, invalidArgument };
       //
-      THROWS(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS(const ZenUnitArgs args = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Invalid argument \"" + invalidArgument + "\"\n"));
@@ -173,7 +173,7 @@ Testing Utility Options:
       _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, helpArgument };
       //
-      THROWS(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS(const ZenUnitArgs args = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 0));
    }
@@ -186,7 +186,7 @@ Testing Utility Options:
 		_consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, versionArgument };
       //
-      THROWS(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS(const ZenUnitArgs args = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("0.5.0", 0));
 	}
@@ -238,7 +238,7 @@ Testing Utility Options:
       const vector<RunFilter> runFilters = { Random<RunFilter>() };
       _runFilterParserMock->ParseMock.Return(runFilters);
 
-      _watchMock->DateTimeNowMock.ReturnRandom();
+      const string unusedDateTimeNow = _watchMock->DateTimeNowMock.ReturnRandom();
 
       const string runArgument = ZenUnit::Random<string>();
       const vector<string> args { ZenUnit::Random<string>(), "--run=" + runArgument };

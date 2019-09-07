@@ -72,7 +72,7 @@ namespace ZenUnit
       TestingTestClassRunner testingTestClassRunner;
       testingTestClassRunner.TestClassName();
       testingTestClassRunner.NumberOfTestCases();
-      testingTestClassRunner.RunTests();
+      const TestClassResult testClassResult = testingTestClassRunner.RunTests();
       testingTestClassRunner.HasTestThatMatchesRunFilter(RunFilter());
    }
 
