@@ -121,9 +121,9 @@ Testing Utility Options:
    {
       const string startTime = _watchMock->DateTimeNowMock.ReturnRandom();
       ExpectCallToSetRandomSeedIfNotSetByUser();
-      vector<string> args { _testProgramPath };
+      vector<string> stringArgs{ _testProgramPath };
       //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
+      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
       //
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
@@ -158,7 +158,7 @@ Testing Utility Options:
       _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, invalidArgument };
       //
-      THROWS(const ZenUnitArgs args = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Invalid argument \"" + invalidArgument + "\"\n"));
@@ -173,7 +173,7 @@ Testing Utility Options:
       _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, helpArgument };
       //
-      THROWS(const ZenUnitArgs args = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 0));
    }
@@ -186,7 +186,7 @@ Testing Utility Options:
 		_consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, versionArgument };
       //
-      THROWS(const ZenUnitArgs args = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("0.5.0", 0));
 	}
@@ -241,9 +241,9 @@ Testing Utility Options:
       const string unusedDateTimeNow = _watchMock->DateTimeNowMock.ReturnRandom();
 
       const string runArgument = ZenUnit::Random<string>();
-      const vector<string> args { ZenUnit::Random<string>(), "--run=" + runArgument };
+      const vector<string> stringArgs { ZenUnit::Random<string>(), "--run=" + runArgument };
       //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
+      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
       //
       const vector<string> splitRunArgument = String::Split(runArgument, ',');
       ZENMOCK(_runFilterParserMock->ParseMock.CalledOnceWith(splitRunArgument));
@@ -251,7 +251,7 @@ Testing Utility Options:
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
 
       ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
+      expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
       expectedZenUnitArgs.runFilters = runFilters;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
@@ -259,15 +259,15 @@ Testing Utility Options:
 
    TEST(Parse_random_SetsrandomToTrue)
    {
-      _watchMock->DateTimeNowMock.ReturnRandom();
+      const string dateTimeNow = _watchMock->DateTimeNowMock.ReturnRandom();
       ExpectCallToSetRandomSeedIfNotSetByUser();
-      const vector<string> args { ZenUnit::Random<string>(), "--random" };
+      const vector<string> stringArgs { ZenUnit::Random<string>(), "--random" };
       //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
+      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
       //
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
+      expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
       expectedZenUnitArgs.random = true;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
@@ -287,11 +287,11 @@ Testing Utility Options:
    }
    void AssertArgSetsBoolField(const string& arg, bool ZenUnitArgs::* expectedFieldToBeSet)
    {
-      _watchMock->DateTimeNowMock.ReturnRandom();
+      const string dateTimeNow = _watchMock->DateTimeNowMock.ReturnRandom();
       ExpectCallToSetRandomSeedIfNotSetByUser();
-      const vector<string> args { _testProgramPath, arg };
+      const vector<string> stringArgs { _testProgramPath, arg };
       //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
+      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
       //
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
@@ -303,15 +303,15 @@ Testing Utility Options:
 
    TEST(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
    {
-      _watchMock->DateTimeNowMock.ReturnRandom();
+      const string dateTimeNow = _watchMock->DateTimeNowMock.ReturnRandom();
       ExpectCallToSetRandomSeedIfNotSetByUser();
-      const vector<string> args { _testProgramPath, "--exit-zero", "--exit-zero" };
+      const vector<string> stringArgs { _testProgramPath, "--exit-zero", "--exit-zero" };
       //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
+      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
       //
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
+      expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
       expectedZenUnitArgs.exitZero = true;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
@@ -326,9 +326,9 @@ Testing Utility Options:
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
-      const vector<string> args { _testProgramPath, arg };
+      const vector<string> stringArgs { _testProgramPath, arg };
       //
-      THROWS(_argsParser.Parse(args), WriteLineAndExitException, "");
+      THROWS(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Invalid --name=value argument value: " + arg + "\n"));
@@ -341,9 +341,9 @@ Testing Utility Options:
       _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
       ToInt_ZenMockObject.Throw<invalid_argument>("");
       const string InvalidTimesArg = "--test-runs=-1_for_example";
-      const vector<string> args { _testProgramPath, InvalidTimesArg };
+      const vector<string> stringArgs { _testProgramPath, InvalidTimesArg };
       //
-      THROWS(_argsParser.Parse(args), WriteLineAndExitException, "");
+      THROWS(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       ZENMOCK(ToInt_ZenMockObject.CalledOnceWith("-1_for_example"));
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
@@ -353,17 +353,17 @@ Testing Utility Options:
 
    TEST(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
    {
-      _watchMock->DateTimeNowMock.ReturnRandom();
+      const string dateTimeNow = _watchMock->DateTimeNowMock.ReturnRandom();
       ExpectCallToSetRandomSeedIfNotSetByUser();
       const unsigned timesArgValue = ToInt_ZenMockObject.ReturnRandom();
-      const vector<string> args { _testProgramPath, "--test-runs=" + to_string(timesArgValue) };
+      const vector<string> stringArgs{ _testProgramPath, "--test-runs=" + to_string(timesArgValue) };
       //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
+      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
       //
       ZENMOCK(ToInt_ZenMockObject.CalledOnceWith(to_string(timesArgValue)));
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
+      expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
       expectedZenUnitArgs.testRuns = timesArgValue;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
@@ -371,17 +371,17 @@ Testing Utility Options:
 
    TEST(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
    {
-      _watchMock->DateTimeNowMock.ReturnRandom();
+      const string dateTimeNow = _watchMock->DateTimeNowMock.ReturnRandom();
       ExpectCallToSetRandomSeedIfNotSetByUser();
       const unsigned randomSeed = ToUnsigned_ZenMockObject.ReturnRandom();
-      const vector<string> args { _testProgramPath, "--seed=" + to_string(randomSeed) };
+      const vector<string> stringArgs{ _testProgramPath, "--seed=" + to_string(randomSeed) };
       //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args);
+      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
       //
       ZENMOCK(ToUnsigned_ZenMockObject.CalledOnceWith(to_string(randomSeed)));
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = Vector::Join(args, ' ');
+      expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
       expectedZenUnitArgs.random = false;
       expectedZenUnitArgs.randomSeed = randomSeed;
       expectedZenUnitArgs.randomSeedSetByUser = true;
@@ -394,9 +394,9 @@ Testing Utility Options:
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
       const string unrecognizedNameArg = "-" + ZenUnit::Random<string>() + "=" + ZenUnit::Random<string>();
-      const vector<string> args { _testProgramPath, unrecognizedNameArg };
+      const vector<string> stringArgs{ _testProgramPath, unrecognizedNameArg };
       //
-      THROWS(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args), WriteLineAndExitException, "");
+      THROWS(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Unrecognized --name=value argument: " + unrecognizedNameArg + "\n"));

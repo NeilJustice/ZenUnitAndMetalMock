@@ -83,7 +83,7 @@ namespace ZenUnit
       "TestClassName::TestName//1",
       "TestClassName::TestName///1")
    {
-      THROWS(_runFilterParser.ParseRunFilterString(invalidRunFilterString),
+      THROWS(const RunFilter runFilter = _runFilterParser.ParseRunFilterString(invalidRunFilterString),
          invalid_argument, MakeExpectedInvalidArgumentWhat(invalidRunFilterString));
    }
 
