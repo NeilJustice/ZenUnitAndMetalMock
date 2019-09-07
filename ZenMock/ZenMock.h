@@ -2582,7 +2582,7 @@ Expected-But-Not-Asserted ZenMocked Function
 
       void CallFunctionInstead(const std::function<void(Arg1Type, Arg2Type, Arg3Type)>& functionToCallInstead)
       {
-         _expected = true;
+         ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::_expected = true;
          this->optionalFunctionToCallInstead = functionToCallInstead;
       }
 
