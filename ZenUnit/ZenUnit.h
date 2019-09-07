@@ -6431,7 +6431,22 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    template<>
    inline std::error_code Random<std::error_code>()
    {
-      std::error_code randomErrorCode;
+      const int randomErrorCodeValue = ZenUnit::Random<int>();
+      const int randomIntBetween1And3 = ZenUnit::RandomBetween<int>(1, 3);
+      const std::error_category* errorCategory = nullptr;
+      if (randomIntBetween1And3 == 1)
+      {
+         errorCategory = &std::generic_category();
+      }
+      else if (randomIntBetween1And3 == 2)
+      {
+         errorCategory = &std::iostream_category();
+      }
+      else
+      {
+         errorCategory = &std::system_category();
+      }
+      std::error_code randomErrorCode(randomErrorCodeValue, *errorCategory);
       return randomErrorCode;
    }
 
