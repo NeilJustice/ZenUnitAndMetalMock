@@ -6412,17 +6412,18 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    template<>
    inline fs::path Random<fs::path>()
    {
-      std::ostringstream randomPathBuilder;
+      std::ostringstream randomPathStringBuilder;
       const int numberOfSubfolders = ZenUnit::RandomBetween<int>(0, 2);
       for (int i = 0; i < numberOfSubfolders; ++i)
       {
-         randomPathBuilder << ZenUnit::Random<std::string>() << "/";
+         const std::string randomSubfolderName = ZenUnit::Random<std::string>();
+         randomPathStringBuilder << randomSubfolderName << "/";
       }
-      const std::string folderName = ZenUnit::Random<std::string>();
-      randomPathBuilder << folderName;
-      const std::string randomPathString = randomPathBuilder.str();
-      const fs::path randomFolderPath = randomPathString;
-      return randomFolderPath;
+      const std::string randomFolderName = ZenUnit::Random<std::string>();
+      randomPathStringBuilder << randomFolderName;
+      const std::string randomPathString = randomPathStringBuilder.str();
+      const fs::path randomPath = randomPathString;
+      return randomPath;
    }
 
    template<>
