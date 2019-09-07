@@ -31,10 +31,10 @@ namespace ZenUnit
    {
    public:
       ZENMOCK_NONVOID0_CONST(size_t, NumberOfFailedTestCases)
-      ZENMOCK_NONVOID0_CONST(unsigned, SumOfTestResultMicroseconds)
+      ZENMOCK_NONVOID0_CONST(long long, SumOfTestResultMicroseconds)
    } _testClassResultSelfMocked;
 
-   ZENMOCK_NONVOID1_STATIC(string, ZenUnit::Watch, MicrosecondsToTwoDecimalPlaceMillisecondsString, unsigned)
+   ZENMOCK_NONVOID1_STATIC(string, ZenUnit::Watch, MicrosecondsToTwoDecimalPlaceMillisecondsString, long long)
 
    STARTUP
    {
@@ -165,7 +165,7 @@ namespace ZenUnit
    {
       ARE_EQUAL(0, _testClassResult._testResults.size());
       //
-      const unsigned microseconds = _testClassResult.SumOfTestResultMicroseconds();
+      const long long microseconds = _testClassResult.SumOfTestResultMicroseconds();
       //
       ARE_EQUAL(0, microseconds);
    }
@@ -173,12 +173,12 @@ namespace ZenUnit
    TEST(SumOfTestResultMicroseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMicroseconds)
    {
       TestResult testResultA;
-      testResultA.microseconds = ZenUnit::Random<unsigned>();
+      testResultA.microseconds = ZenUnit::Random<long long>();
       TestResult testResultB;
-      testResultB.microseconds = ZenUnit::Random<unsigned>();
+      testResultB.microseconds = ZenUnit::Random<long long>();
       _testClassResult._testResults = { testResultA, testResultB };
       //
-      const unsigned microseconds = _testClassResult.SumOfTestResultMicroseconds();
+      const long long microseconds = _testClassResult.SumOfTestResultMicroseconds();
       //
       ARE_EQUAL(testResultA.microseconds + testResultB.microseconds, microseconds);
    }
@@ -186,7 +186,7 @@ namespace ZenUnit
    TEST(PrintTestClassResultLine_0FailedTestCases_WritesOKInGreen)
    {
       _testClassResultSelfMocked.NumberOfFailedTestCasesMock.Return(0);
-      const unsigned sumOfTestResultMicroseconds =
+      const long long sumOfTestResultMicroseconds =
          _testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.ReturnRandom();
       const string oneDecimalPlaceMilliseconds = ZenUnit::Random<string>();
       MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject.Return(oneDecimalPlaceMilliseconds);
@@ -212,7 +212,7 @@ namespace ZenUnit
       size_t(3))
    {
       _testClassResultSelfMocked.NumberOfFailedTestCasesMock.Return(numberOfFailedTestCases);
-      const unsigned microseconds = _testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.ReturnRandom();
+      const long long microseconds = _testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.ReturnRandom();
       const string oneDecimalPlaceMilliseconds = MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject.ReturnRandom();
       ConsoleMock consoleMock;
       consoleMock.WriteLineColorMock.Expect();

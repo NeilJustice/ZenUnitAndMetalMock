@@ -175,7 +175,7 @@ namespace ZenUnit
       const size_t TotalNumberOfTestCases = Random<size_t>();
       _testClassRunnerRunnerMock->NumberOfTestCasesMock.Return(TotalNumberOfTestCases);
 
-      const unsigned testRunMicroseconds = _testRunStopwatchMock->StopMock.ReturnRandom();
+      const long long testRunMicroseconds = _testRunStopwatchMock->StopMock.ReturnRandom();
 
       _testRunResultMock->DetermineExitCodeMock.Return(determineExitCodeReturnValueAndExpectedExitCode);
       //
@@ -198,7 +198,7 @@ namespace ZenUnit
          ZENMOCK(_voidZeroArgMemberFunctionCallerMock->NonConstCallMock.CalledOnceWith(
             &_testRunner, &ZenUnitTestRunner::RunTestClasses));
       }
-      const unsigned expectedTestRunMilliseconds = testRunMicroseconds / 1000;
+      const long long expectedTestRunMilliseconds = testRunMicroseconds / static_cast<long long>(1000);
       ZENMOCK(_testRunResultMock->PrintTestFailuresAndSkipsMock.CalledOnce());
       ZENMOCK(_testClassRunnerRunnerMock->NumberOfTestCasesMock.CalledOnce());
       ZENMOCK(_testRunStopwatchMock->StopMock.CalledOnce());

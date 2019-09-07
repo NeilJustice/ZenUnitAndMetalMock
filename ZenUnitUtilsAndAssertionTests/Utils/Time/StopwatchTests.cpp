@@ -51,7 +51,7 @@ namespace ZenUnit
       now_ZenMockObject.Return(stopTime);
       _stopwatch._startTime = startTime;
       //
-      const unsigned elapsedMicroseconds = _stopwatch.Stop();
+      const long long elapsedMicroseconds = _stopwatch.Stop();
       //
       ZENMOCK(now_ZenMockObject.CalledOnce());
       ARE_EQUAL(randomMicrosecondDuration, elapsedMicroseconds);

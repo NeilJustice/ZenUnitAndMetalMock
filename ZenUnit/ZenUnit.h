@@ -1823,14 +1823,13 @@ namespace ZenUnit
          return localTimeString;
       }
 
-      virtual unsigned SecondsSince1970AsUnsigned() const
+      virtual long long SecondsSince1970() const
       {
          const long long secondsSince1970 = std::chrono::system_clock::now().time_since_epoch().count();
-         const unsigned secondsSince1970AsUnsigned = static_cast<unsigned>(secondsSince1970);
-         return secondsSince1970AsUnsigned;
+         return secondsSince1970;
       }
 
-      static std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(unsigned microseconds)
+      static std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(long long microseconds)
       {
          const double milliseconds = microseconds / 1000.0;
 
@@ -1995,7 +1994,8 @@ namespace ZenUnit
       {
          if (!outArgs.randomSeedSetByUser)
          {
-            outArgs.randomSeed = _watch->SecondsSince1970AsUnsigned();
+            const long long secondsSince1970 = _watch->SecondsSince1970();
+            outArgs.randomSeed = static_cast<unsigned>(secondsSince1970); // Cast to unsigned for use with std::default_random_engine(unsigned seed)
          }
       }
 
@@ -3569,7 +3569,7 @@ namespace ZenUnit
    {
       TestPhase testPhase;
       TestOutcome testOutcome;
-      unsigned microseconds;
+      long long microseconds;
       std::shared_ptr<const AnomalyOrException> anomalyOrException;
 
       TestPhaseResult() noexcept : testPhase(TestPhase::Unset), testOutcome(TestOutcome::Success), microseconds(0) {}
@@ -3593,10 +3593,10 @@ namespace ZenUnit
 #pragma warning(pop)
 #endif
       TestOutcome testOutcome;
-      unsigned microseconds;
+      long long microseconds;
       size_t testCaseNumber;
       size_t totalTestCases;
-      std::function<std::string(unsigned)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
+      std::function<std::string(long long)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
 
       TestResult() noexcept
          : responsibleTestPhaseResultField(nullptr)
@@ -3604,8 +3604,7 @@ namespace ZenUnit
          , microseconds(0)
          , testCaseNumber(std::numeric_limits<size_t>::max())
          , totalTestCases(0)
-         , _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(
-            Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
+         , _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
       {
       }
 
@@ -3786,7 +3785,7 @@ namespace ZenUnit
             console->WriteLineColor(testFailureNumber, Color::Red);
             console->WriteLine(fullTestName.Value());
             WriteTestCaseNumberIfAny(console, testCaseNumber);
-            const unsigned milliseconds = microseconds / 1000;
+            const long long milliseconds = microseconds / static_cast<long long>(1000);
             console->WriteLine(String::Concat("\nFailed because test took longer than --max-test-ms=", milliseconds, " milliseconds"));
             console->WriteNewLine();
             break;
@@ -3824,7 +3823,7 @@ namespace ZenUnit
       friend struct Equalizer<TestClassResult>;
    private:
       std::vector<TestResult> _testResults;
-		std::function<std::string(unsigned)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
+		std::function<std::string(long long)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
    public:
       TestClassResult() noexcept
          : _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
@@ -3864,9 +3863,9 @@ namespace ZenUnit
       }
 
       // Hand-written std::accumulate() to minimize ZenUnit compile time by not including <numeric>
-      virtual unsigned SumOfTestResultMicroseconds() const
+      virtual long long SumOfTestResultMicroseconds() const
       {
-         unsigned sumOfTestResultMicroseconds = 0;
+         long long sumOfTestResultMicroseconds = 0;
          for (const TestResult& testResult : _testResults)
          {
             sumOfTestResultMicroseconds += testResult.microseconds;
@@ -3874,7 +3873,7 @@ namespace ZenUnit
          return sumOfTestResultMicroseconds;
       }
 
-      virtual std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(unsigned microseconds) const
+      virtual std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(long long microseconds) const
       {
          const std::string twoDecimalPlaceMillisecondsString = _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
          return twoDecimalPlaceMillisecondsString;
@@ -3883,9 +3882,8 @@ namespace ZenUnit
       virtual void PrintTestClassResultLine(const Console* console) const
       {
          const size_t numberOfFailedTestCases = NumberOfFailedTestCases();
-         const unsigned sumOfTestResultMicroseconds = SumOfTestResultMicroseconds();
-         const std::string twoDecimalPlaceMillisecondsString
-            = MicrosecondsToTwoDecimalPlaceMillisecondsString(sumOfTestResultMicroseconds);
+         const long long sumOfTestResultMicroseconds = SumOfTestResultMicroseconds();
+         const std::string twoDecimalPlaceMillisecondsString = MicrosecondsToTwoDecimalPlaceMillisecondsString(sumOfTestResultMicroseconds);
          if (numberOfFailedTestCases == 0)
          {
             console->Write("[  ");
@@ -4391,7 +4389,7 @@ namespace ZenUnit
          _startTime = _call_highres_now();
       }
 
-      virtual unsigned Stop()
+      virtual long long Stop()
       {
          if (_startTime == std::chrono::time_point<std::chrono::high_resolution_clock>())
          {
@@ -4399,12 +4397,9 @@ namespace ZenUnit
          }
          const std::chrono::time_point<std::chrono::high_resolution_clock> stopTime = _call_highres_now();
          const std::chrono::duration<long long, std::nano> elapsedTime = stopTime - _startTime;
-         const long long elapsedMicrosecondsAsLongLong = std::chrono::duration_cast<std::chrono::microseconds>(elapsedTime).count();
+         const long long elapsedMicroseconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsedTime).count();
          _startTime = std::chrono::time_point<std::chrono::high_resolution_clock>();
-         assert_true(elapsedMicrosecondsAsLongLong <= std::numeric_limits<unsigned>::max());
-         // Save 4 bytes per TestPhaseResult by casting to unsigned
-         const unsigned elapsedMicrosecondsAsUnsignedInt = static_cast<unsigned>(elapsedMicrosecondsAsLongLong);
-         return elapsedMicrosecondsAsUnsignedInt;
+         return elapsedMicroseconds;
       }
    };
 
@@ -4493,7 +4488,8 @@ namespace ZenUnit
          _memberForEacherSkippedTests->MemberForEach(&_skippedFullTestNamesAndReasons, this, &TestRunResult::PrintSkippedTestReminder);
       }
 
-      virtual void PrintConclusionLines(const std::string& startTime, size_t totalNumberOfTestCases, unsigned testRunMilliseconds, const ZenUnitArgs& args) const
+      virtual void PrintConclusionLines(
+         const std::string& startTime, size_t totalNumberOfTestCases, long long testRunMilliseconds, const ZenUnitArgs& args) const
       {
          assert_true(_numberOfFailedTestCases <= totalNumberOfTestCases);
          const Color greenOrRed = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
@@ -4741,8 +4737,8 @@ namespace ZenUnit
          }
          _testRunResult->PrintTestFailuresAndSkips();
          const size_t numberOfTestCases = _testClassRunnerRunner->NumberOfTestCases();
-         const unsigned testRunMicroseconds = _testRunStopwatch->Stop();
-         const unsigned testRunMilliseconds = testRunMicroseconds / 1000;
+         const long long testRunMicroseconds = _testRunStopwatch->Stop();
+         const long long testRunMilliseconds = testRunMicroseconds / 1000;
          _testRunResult->PrintConclusionLines(startTime, numberOfTestCases, testRunMilliseconds, args);
          const int testRunExitCode = _testRunResult->DetermineExitCode(args);
          return testRunExitCode;
@@ -4799,7 +4795,7 @@ namespace ZenUnit
 
       void FailFastDueToDotDotDotException(const ZenUnitArgs& args, TestPhase testPhase) const
       {
-         const unsigned testRunDurationInMilliseconds = _stopwatch->Stop();
+         const long long testRunDurationInMilliseconds = _stopwatch->Stop();
          _console->WriteLineColor("\n==========================\nFatal ... Exception Thrown\n==========================\n", Color::Red);
 
          _console->WriteColor(">>------> ", Color::Red);
@@ -5445,7 +5441,7 @@ namespace ZenUnit
          {
             _randomTestCaseNumbers.push_back(testCaseNumber);
          }
-         std::shuffle(_randomTestCaseNumbers.begin(), _randomTestCaseNumbers.end(), std::default_random_engine(args.randomSeed));
+         std::shuffle(_randomTestCaseNumbers.begin(), _randomTestCaseNumbers.end(), std::default_random_engine(static_cast<unsigned int>(args.randomSeed)));
       }
 
       size_t NextTestCaseNumber() override

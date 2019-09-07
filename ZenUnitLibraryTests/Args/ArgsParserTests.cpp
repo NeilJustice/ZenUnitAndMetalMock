@@ -140,9 +140,9 @@ Testing Utility Options:
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
-      const vector<string> args(numberOfArgs);
+      const vector<string> stringArgs(numberOfArgs);
       //
-      THROWS(_argsParser.Parse(args), WriteLineAndExitException, "");
+      THROWS(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith("ZenUnit command line usage error: Too many arguments.\n"));
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
@@ -396,7 +396,7 @@ Testing Utility Options:
       const string unrecognizedNameArg = "-" + ZenUnit::Random<string>() + "=" + ZenUnit::Random<string>();
       const vector<string> args { _testProgramPath, unrecognizedNameArg };
       //
-      THROWS(_argsParser.Parse(args), WriteLineAndExitException, "");
+      THROWS(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(args), WriteLineAndExitException, "");
       //
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Unrecognized --name=value argument: " + unrecognizedNameArg + "\n"));
@@ -418,14 +418,14 @@ Testing Utility Options:
    {
       ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
       zenUnitArgs.randomSeedSetByUser = false;
+
       ZenUnitArgs expectedResultingZenUnitArgs = zenUnitArgs;
-      const unsigned secondsSince1970CastToUnsigned =
-         _watchMock->SecondsSince1970AsUnsignedMock.ReturnRandom();
-      expectedResultingZenUnitArgs.randomSeed = secondsSince1970CastToUnsigned;
+      const long long secondsSince1970 = _watchMock->SecondsSince1970Mock.ReturnRandom();
       //
       _argsParser.SetRandomSeedIfNotSetByUser(zenUnitArgs);
       //
-      ZENMOCK(_watchMock->SecondsSince1970AsUnsignedMock.CalledOnce());
+      ZENMOCK(_watchMock->SecondsSince1970Mock.CalledOnce());
+      expectedResultingZenUnitArgs.randomSeed = static_cast<unsigned>(secondsSince1970);
       ARE_EQUAL(expectedResultingZenUnitArgs, zenUnitArgs);
    }
 

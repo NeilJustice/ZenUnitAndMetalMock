@@ -52,17 +52,17 @@ namespace ZenUnit
 
    #if defined(_WIN64)
       #if defined _DEBUG
-         static_assert(sizeof(TestPhaseResult) == 24);
+         static_assert(sizeof(TestPhaseResult) == 32);
       #elif NDEBUG
-         static_assert(sizeof(TestPhaseResult) == 24);
+         static_assert(sizeof(TestPhaseResult) == 32);
       #endif
    #endif
 
    #if defined(_WIN64)
       #if defined _DEBUG
-         static_assert(sizeof(TestResult) == 248);
+         static_assert(sizeof(TestResult) == 288);
       #elif NDEBUG
-         static_assert(sizeof(TestResult) == 248);
+         static_assert(sizeof(TestResult) == 288);
       #endif
    #endif
 

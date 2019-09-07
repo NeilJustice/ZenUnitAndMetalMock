@@ -301,7 +301,7 @@ namespace ZenUnit
 
       _stopwatchMock->StartMock.Expect();
 
-      const unsigned testRunDurationInMilliseconds = _stopwatchMock->StopMock.ReturnRandom();
+      const long long testRunDurationInMilliseconds = _stopwatchMock->StopMock.ReturnRandom();
 
       _consoleMock->WriteLineColorMock.Expect();
 
