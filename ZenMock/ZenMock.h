@@ -1435,7 +1435,7 @@ Expected-But-Not-Asserted ZenMocked Function
       friend class ZeroArgumentMockerTests;
    private:
       size_t actualNumberOfCalls;
-      std::function<void()> optionalFunctionToCallInstead;
+      std::function<void()> voidFunctionToAlsoCall;
    public:
       explicit ZeroArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
@@ -1447,18 +1447,18 @@ Expected-But-Not-Asserted ZenMocked Function
       {
          this->ZenMockThrowIfNotExpected();
          ++actualNumberOfCalls;
-         if (this->optionalFunctionToCallInstead)
+         if (this->voidFunctionToAlsoCall)
          {
-            this->optionalFunctionToCallInstead();
+            this->voidFunctionToAlsoCall();
          }
          this->AssignAndIncrementFunctionSequenceIndex();
          this->ZenMockThrowIfExceptionSet();
       }
 
-      void CallFunctionInstead(const std::function<void()>& functionToCallInstead)
+      void AlsoCall(const std::function<void()>& voidFunction)
       {
          ZeroArgumentMocker::_expected = true;
-         this->optionalFunctionToCallInstead = functionToCallInstead;
+         this->voidFunctionToAlsoCall = voidFunction;
       }
 
       FunctionSequencingToken CalledOnce()
@@ -2572,7 +2572,7 @@ Expected-But-Not-Asserted ZenMocked Function
       friend class ThreeArgumentMockerTests;
    private:
       std::vector<ThreeArgumentCall<Arg1Type, Arg2Type, Arg3Type>> zenMockObjectCallHistory;
-      std::function<void(Arg1Type, Arg2Type, Arg3Type)> voidFunctionToCallInstead;
+      std::function<void(Arg1Type, Arg2Type, Arg3Type)> voidFunctionToAlsoCall;
    public:
       explicit ThreeArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
@@ -2583,9 +2583,9 @@ Expected-But-Not-Asserted ZenMocked Function
       {
          this->ZenMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument);
          this->zenMockObjectCallHistory.emplace_back(firstArgument, secondArgument, thirdArgument);
-         if (this->voidFunctionToCallInstead)
+         if (this->voidFunctionToAlsoCall)
          {
-            this->voidFunctionToCallInstead(firstArgument, secondArgument, thirdArgument);
+            this->voidFunctionToAlsoCall(firstArgument, secondArgument, thirdArgument);
          }
          this->ZenMockThrowIfExceptionSet();
       }
@@ -2727,10 +2727,10 @@ Expected-But-Not-Asserted ZenMocked Function
          ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::_expected = true;
       }
 
-      void CallFunctionInstead(const std::function<void(Arg1Type, Arg2Type, Arg3Type)>& voidFunctionToCallInstead)
+      void AlsoCall(const std::function<void(Arg1Type, Arg2Type, Arg3Type)>& voidFunction)
       {
          ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::_expected = true;
-         this->voidFunctionToCallInstead = voidFunctionToCallInstead;
+         this->voidFunctionToAlsoCall = voidFunction;
       }
    };
 
