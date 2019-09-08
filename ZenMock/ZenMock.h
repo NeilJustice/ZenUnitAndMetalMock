@@ -1435,6 +1435,7 @@ Expected-But-Not-Asserted ZenMocked Function
       friend class ZeroArgumentMockerTests;
    private:
       size_t actualNumberOfCalls;
+   protected:
       std::function<void()> voidFunctionToAlsoCall;
    public:
       explicit ZeroArgumentMocker(const std::string& zenMockedFunctionSignature)
@@ -1455,7 +1456,7 @@ Expected-But-Not-Asserted ZenMocked Function
          this->ZenMockThrowIfExceptionSet();
       }
 
-      void AlsoCall(const std::function<void()>& voidFunction)
+      void AlsoCallFunction(const std::function<void()>& voidFunction)
       {
          ZeroArgumentMocker::_expected = true;
          this->voidFunctionToAlsoCall = voidFunction;
@@ -2572,6 +2573,7 @@ Expected-But-Not-Asserted ZenMocked Function
       friend class ThreeArgumentMockerTests;
    private:
       std::vector<ThreeArgumentCall<Arg1Type, Arg2Type, Arg3Type>> zenMockObjectCallHistory;
+   protected:
       std::function<void(Arg1Type, Arg2Type, Arg3Type)> voidFunctionToAlsoCall;
    public:
       explicit ThreeArgumentMocker(const std::string& zenMockedFunctionSignature)
@@ -2727,7 +2729,7 @@ Expected-But-Not-Asserted ZenMocked Function
          ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::_expected = true;
       }
 
-      void AlsoCall(const std::function<void(Arg1Type, Arg2Type, Arg3Type)>& voidFunction)
+      void AlsoCallFunction(const std::function<void(Arg1Type, Arg2Type, Arg3Type)>& voidFunction)
       {
          ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::_expected = true;
          this->voidFunctionToAlsoCall = voidFunction;
