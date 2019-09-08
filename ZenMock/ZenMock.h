@@ -1348,7 +1348,6 @@ Return(), ReturnValues(), ReturnRandom(), or Throw<T>() on a ZenMock object.)");
       {
          ZenMockExitIfExpectedButNotAsserted();
       }
-
    protected:
       void AssignAndIncrementFunctionSequenceIndex()
       {
@@ -2573,6 +2572,7 @@ Expected-But-Not-Asserted ZenMocked Function
       friend class ThreeArgumentMockerTests;
    private:
       std::vector<ThreeArgumentCall<Arg1Type, Arg2Type, Arg3Type>> zenMockObjectCallHistory;
+      std::function<void(Arg1Type, Arg2Type, Arg3Type)> voidFunctionToCallInstead;
    public:
       explicit ThreeArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
@@ -2583,10 +2583,10 @@ Expected-But-Not-Asserted ZenMocked Function
       {
          this->ZenMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument);
          this->zenMockObjectCallHistory.emplace_back(firstArgument, secondArgument, thirdArgument);
-         //if (this->optionalFunctionToCallInstead)
-         //{
-         //   this->optionalFunctionToCallInstead(firstArgument, secondArgument, thirdArgument);
-         //}
+         if (this->voidFunctionToCallInstead)
+         {
+            this->voidFunctionToCallInstead(firstArgument, secondArgument, thirdArgument);
+         }
          this->ZenMockThrowIfExceptionSet();
       }
 
@@ -2716,8 +2716,6 @@ Expected-But-Not-Asserted ZenMocked Function
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
    class VoidThreeArgumentMocker : public ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>
    {
-   private:
-      std::function<void(Arg1Type, Arg2Type, Arg3Type)> optionalFunctionToCallInstead;
    public:
       explicit VoidThreeArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>(zenMockedFunctionSignature)
@@ -2729,10 +2727,10 @@ Expected-But-Not-Asserted ZenMocked Function
          ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::_expected = true;
       }
 
-      void CallFunctionInstead(const std::function<void(Arg1Type, Arg2Type, Arg3Type)>& functionToCallInstead)
+      void CallFunctionInstead(const std::function<void(Arg1Type, Arg2Type, Arg3Type)>& voidFunctionToCallInstead)
       {
          ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::_expected = true;
-         this->optionalFunctionToCallInstead = functionToCallInstead;
+         this->optionalVoidFunctionToCallInstead = voidFunctionToCallInstead;
       }
    };
 
