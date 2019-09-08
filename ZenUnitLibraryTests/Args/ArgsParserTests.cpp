@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Args/Mock/RunFilterParserMock.h"
-#include "ZenUnitLibraryTests/Console/Mock/ConsoleMock.h"
+#include "ZenUnitLibraryTests/Args/ZenMock/RunFilterParserMock.h"
+#include "ZenUnitLibraryTests/Console/ZenMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/Random/RandomRunFilter.h"
 #include "ZenUnitTestUtils/Equalizers/ZenUnitArgsEqualizer.h"
 

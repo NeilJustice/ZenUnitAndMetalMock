@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Random/RandomRunFilter.h"
-#include "ZenUnitUtilsAndAssertionTests/Utils/Iteration/Mock/MemberFunctionTransformerMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Utils/Iteration/ZenMock/MemberFunctionTransformerMock.h"
 #include "ZenUnitTestUtils/Equalizers/RunFilterEqualizer.h"
 
 namespace ZenUnit

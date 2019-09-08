@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Console/Mock/ConsoleMock.h"
+#include "ZenUnitLibraryTests/Console/ZenMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/Random/RandomFileLine.h"
 #include "ZenUnitTestUtils/Equalizers/AnomalyEqualizer.h"
 

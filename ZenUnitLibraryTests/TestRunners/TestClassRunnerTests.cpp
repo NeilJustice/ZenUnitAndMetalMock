@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Args/Mock/RunFilterMock.h"
-#include "ZenUnitLibraryTests/TestRunners/Mock/TestClassRunnerMock.h"
+#include "ZenUnitLibraryTests/Args/ZenMock/RunFilterMock.h"
+#include "ZenUnitLibraryTests/TestRunners/ZenMock/TestClassRunnerMock.h"
 
 namespace ZenUnit
 {

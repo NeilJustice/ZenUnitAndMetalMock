@@ -1,5 +1,5 @@
 #pragma once
-#include "ZenMockTests/Mock/TestingException.h"
+#include "ZenMockTests/ZenMock/TestingException.h"
 
 namespace ZenMock
 {

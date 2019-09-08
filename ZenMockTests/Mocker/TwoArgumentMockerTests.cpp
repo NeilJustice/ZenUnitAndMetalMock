@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenMockTests/Mock/ExceptionThrowerMock.h"
+#include "ZenMockTests/ZenMock/ExceptionThrowerMock.h"
 
 namespace ZenMock
 {

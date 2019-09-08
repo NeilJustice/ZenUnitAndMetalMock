@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Console/Mock/ConsoleMock.h"
-#include "ZenUnitLibraryTests/TestRunners/Mock/TestClassRunnerRunnerMock.h"
-#include "ZenUnitUtilsAndAssertionTests/Utils/Mock/EnvironmentalistMock.h"
-#include "ZenUnitUtilsAndAssertionTests/Utils/Time/Mock/WatchMock.h"
+#include "ZenUnitLibraryTests/Console/ZenMock/ConsoleMock.h"
+#include "ZenUnitLibraryTests/TestRunners/ZenMock/TestClassRunnerRunnerMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Utils/ZenMock/EnvironmentalistMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Utils/Time/ZenMock/WatchMock.h"
 
 namespace ZenUnit
 {

@@ -48,9 +48,9 @@ using namespace ZenUnit;
 
 #include "ZenUnitTestUtils/TestUtil.h"
 #include "ZenUnitTestUtils/UserType.h"
-#include "ZenUnitUtilsAndAssertionTests/Utils/Iteration/Mock/ThreeArgForEacherMock.h"
-#include "ZenUnitUtilsAndAssertionTests/Utils/Function/Mock/VoidOneArgMemberFunctionCallerMock.h"
-#include "ZenUnitUtilsAndAssertionTests/Utils/Time/Mock/WatchMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Utils/Iteration/ZenMock/ThreeArgForEacherMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Utils/Function/ZenMock/VoidOneArgMemberFunctionCallerMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Utils/Time/ZenMock/WatchMock.h"
 
 #include "ZenUnitLibraryTests/Random/RandomZenUnitArgs.h"
 

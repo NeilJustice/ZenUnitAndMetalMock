@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Console/Mock/ConsoleColorerMock.h"
+#include "ZenUnitLibraryTests/Console/ZenMock/ConsoleColorerMock.h"
 
 namespace ZenUnit
 {

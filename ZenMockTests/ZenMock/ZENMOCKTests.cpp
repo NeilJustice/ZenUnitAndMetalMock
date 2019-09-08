@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenMockTests/Mock/ConsoleMock.h"
+#include "ZenMockTests/ZenMock/ConsoleMock.h"
 
 namespace ZenMock
 {
