@@ -69,32 +69,18 @@ namespace ZenUnit
 #if defined __linux__ || defined __APPLE__
    TEST(GetMachineName_ReturnsEitherCallToGetLinuxOrGetWindowsMachineName)
    {
-      const string machineName = _environmentalistSelfMocked.GetLinuxMachineNameMock.ReturnRandom();
-      //
-      const string returnedMachineName = _environmentalistSelfMocked.GetMachineName();
-      //
-      ZENMOCK(_environmentalistSelfMocked.GetLinuxMachineNameMock.CalledOnce());
-      ARE_EQUAL(machineName, returnedMachineName);
    }
 
    TEST(GetCurrentMachineName_LinuxOrApple_ReturnsCallToGetLinuxMachineName)
    {
-      const string machineName = _environmentalistSelfMocked.GetLinuxMachineNameMock.ReturnRandom();
-      //
-      const string returnedMachineName = _environmentalistSelfMocked.GetCurrentMachineName();
-      //
-      ZENMOCK(_environmentalistSelfMocked.GetLinuxMachineNameMock.CalledOnce());
-      ARE_EQUAL(machineName, returnedMachineName);
    }
 
    TEST(GetLinuxMachineName_ReturnsResultOfgethostname)
    {
-      // todo: Implement when ZenMock gains CallInstead()
    }
 
    TEST(GetLinuxUserName_ReturnsResultOf)
    {
-      // todo: Implement when ZenMock gains CallInstead()
    }
 
 #elif defined _WIN32
@@ -110,12 +96,10 @@ namespace ZenUnit
 
    TEST(GetWindowsMachineName_ReturnsResultOfGetComputerName)
    {
-      // todo: Implement when ZenMock gains CallInstead()
    }
 
    TEST(GetWindowsUserName_ReturnsResultOfGetUserName)
    {
-      // todo: Implement when ZenMock gains CallInstead()
    }
 #endif
 
