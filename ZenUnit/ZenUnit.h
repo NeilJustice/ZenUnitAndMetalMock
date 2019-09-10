@@ -2212,7 +2212,7 @@ namespace ZenUnit
    void ARE_WITHIN_Defined(VRText<ExpectedType> expectedValueVRT, VRText<ActualType> actualValueVRT, VRText<ToleranceType> expectedToleranceVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
    {
-      const double difference = static_cast<double>(expectedValueVRT.value - actualValueVRT.value);
+      const double difference = static_cast<double>(expectedValueVRT.value) - static_cast<double>(actualValueVRT.value);
       const double absoluteDifference = std::abs(difference);
       if (absoluteDifference > expectedToleranceVRT.value)
       {
@@ -6433,8 +6433,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
       using UnderlyingType = typename std::underlying_type<EnumType>::type;
       const EnumType randomEnum = static_cast<EnumType>(
          ZenUnit::RandomBetween<UnderlyingType>(
-            static_cast<UnderlyingType>(0),
-            static_cast<UnderlyingType>(exclusiveMaxValue) - static_cast<UnderlyingType>(1)));
+            static_cast<UnderlyingType>(0), static_cast<unsigned long long>(exclusiveMaxValue) - 1ULL));
       return randomEnum;
    }
 
