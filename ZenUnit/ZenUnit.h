@@ -245,6 +245,10 @@ Testing Utility Options:
 #define STD_ARRAYS_EQUAL(expectedStdArray, actualStdArray, ...) \
    ZenUnit::STD_ARRAYS_EQUAL_Defined(NAKED_VRT(expectedStdArray), NAKED_VRT(actualStdArray), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
+// Asserts that the two containers have equal size and equal elements in any order.
+#define EQUAL_ELEMENTS_ANY_ORDER(expectedElements, actualElements, ...) \
+   ZenUnit::EQUAL_ELEMENTS_ANY_ORDER_Defined(VRT(expectedElements), VRT(actualElements), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
 // Asserts that expectedElement is contained in collection.
 #define CONTAINS_ELEMENT(expectedElement, collection, ...) \
    ZenUnit::CONTAINS_ELEMENT_Defined(VRT(expectedElement), VRT(collection), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
@@ -2942,6 +2946,44 @@ namespace ZenUnit
       *ptrA-- = '\0';
       *pointerToZero = valueBeforeOverwrittenWithZero;
       return numberOfCharsAppended;
+   }
+
+   template<typename ContainerType, typename... MessageTypes>
+   void EQUAL_ELEMENTS_ANY_ORDER_Defined(
+      VRText<ContainerType> expectedElementsVRT,
+      VRText<ContainerType> actualElementsVRT,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   {
+      const auto& expectedElements = expectedElementsVRT.value;
+      const auto& actualElements = actualElementsVRT.value;
+      const size_t expectedSize = expectedElements.size();
+      const size_t actualSize = actualElements.size();
+      try
+      {
+         ARE_EQUAL(expectedSize, actualSize);
+      }
+      catch (const Anomaly& becauseAnomaly)
+      {
+         const std::string expectedSizeString = std::to_string(expectedSize);
+         const std::string actualSizeString = std::to_string(actualSize);
+         throw Anomaly("EQUAL_ELEMENTS_ANY_ORDER", expectedElementsVRT.text, actualElementsVRT.text, "", messagesText,
+            becauseAnomaly, expectedSizeString, actualSizeString, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+      }
+      for (const auto& expectedElement : expectedElementsVRT.value)
+      {
+         const auto findIteratorForExpectedElementInActualElements = std::find(std::begin(actualElements), std::end(actualElements), expectedElement);
+         try
+         {
+            ARE_NOT_EQUAL(actualElements.end(), findIteratorForExpectedElementInActualElements);
+         }
+         catch (const Anomaly& becauseAnomaly)
+         {
+            const std::string expectedElementsAsString = "expectedElements";
+            const std::string actualElementsAsString = "actualElements";
+            throw Anomaly("EQUAL_ELEMENTS_ANY_ORDER", expectedElementsVRT.text, actualElementsVRT.text, "", messagesText,
+               becauseAnomaly, expectedElementsAsString, actualElementsAsString, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+         }
+      }
    }
 
    template<typename T, typename... MessageTypes>
