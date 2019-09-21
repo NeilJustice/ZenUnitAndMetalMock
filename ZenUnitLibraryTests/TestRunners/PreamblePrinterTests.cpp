@@ -54,7 +54,7 @@ namespace ZenUnit
       //
       const string returnedStartTime = _preamblePrinter.PrintPreambleLinesAndGetStartTime(args, &testClassRunnerRunnerMock);
       //
-      const std::string expectedZenUnitVersionLine = "[C++ Unit Testing Framework ZenUnit v" + std::string(Version::Number()) + "]";
+      const std::string expectedZenUnitVersionLine = "[C++ Unit Testing Framework ZenUnit " + std::string(Version::Number()) + "]";
       ZENMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith(expectedZenUnitVersionLine, Color::Green));
       ZENMOCK(_consoleMock->WriteColorMock.CalledNTimesWith(7, "[ZenUnit]", Color::Green));
       ZENMOCK(testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.CalledOnce());

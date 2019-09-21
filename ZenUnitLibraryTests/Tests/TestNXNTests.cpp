@@ -516,30 +516,30 @@ namespace ZenUnit
 
    template<typename T>
    TEMPLATE_TESTS(AllTestNXNsWithinATemplateTestClass, T)
-   AFACT(Test)
-   FACTS(Test1X1)
-   FACTS(Test2X2)
-   FACTS(Test3X3)
-   FACTS(Test4X4)
-   FACTS(Test5X5)
-   FACTS(Test6X6)
-   FACTS(Test7X7)
-   FACTS(Test8X8)
-   FACTS(Test9X9)
-   FACTS(Test10X10)
+   AFACT(NonParameterizedTest)
+   FACTS(Test1X1Test)
+   FACTS(Test2X2Test)
+   FACTS(Test3X3Test)
+   FACTS(Test4X4Test)
+   FACTS(Test5X5Test)
+   FACTS(Test6X6Test)
+   FACTS(Test7X7Test)
+   FACTS(Test8X8Test)
+   FACTS(Test9X9Test)
+   FACTS(Test10X10Test)
    EVIDENCE
 
-   TEST(Test) {}
-   TEST1X1(Test1X1, int, 0) {}
-   TEST2X2(Test2X2, int, int, 0, 0) {}
-   TEST3X3(Test3X3, int, int, int, 0, 0, 0) {}
-   TEST4X4(Test4X4, int, int, int, int, 0, 0, 0, 0) {}
-   TEST5X5(Test5X5, int, int, int, int, int, 0, 0, 0, 0, 0) {}
-   TEST6X6(Test6X6, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0) {}
-   TEST7X7(Test7X7, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0) {}
-   TEST8X8(Test8X8, int, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0, 0) {}
-   TEST9X9(Test9X9, int, int, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0, 0, 0) {}
-   TEST10X10(Test10X10, int, int, int, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0) {}
+   TEST(NonParameterizedTest) {}
+   TEST1X1(Test1X1Test, int, 0) {}
+   TEST2X2(Test2X2Test, int, int, 0, 0) {}
+   TEST3X3(Test3X3Test, int, int, int, 0, 0, 0) {}
+   TEST4X4(Test4X4Test, int, int, int, int, 0, 0, 0, 0) {}
+   TEST5X5(Test5X5Test, int, int, int, int, int, 0, 0, 0, 0, 0) {}
+   TEST6X6(Test6X6Test, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0) {}
+   TEST7X7(Test7X7Test, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0) {}
+   TEST8X8(Test8X8Test, int, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0, 0) {}
+   TEST9X9(Test9X9Test, int, int, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0, 0, 0) {}
+   TEST10X10(Test10X10Test, int, int, int, int, int, int, int, int, int, int, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0) {}
 
    RUN_TEMPLATE_TESTS(AllTestNXNsWithinATemplateTestClass, int)
 }
