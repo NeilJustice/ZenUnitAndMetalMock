@@ -4541,7 +4541,7 @@ namespace ZenUnit
             {
                tripletLinesPrefix = ">>------> ";
                successOrFailLinePrefix = ">>-FAIL-> ";
-               resultMessage = String::Concat("    Result: ", _numberOfFailedTestCases, '/', totalNumberOfTestCases, ' ', testOrTests, " failed");
+               resultMessage = String::Concat("    Result: ", _numberOfFailedTestCases, " of ", totalNumberOfTestCases, ' ', testOrTests, " failed");
             }
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
             const std::string completedCommandLineMessage = " Completed: " + args.commandLine;

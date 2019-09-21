@@ -239,13 +239,13 @@ namespace ZenUnit
       "+SUCCESS+", Color::Green, size_t(0), size_t(2), "All 2 tests passed", 1, "millisecond",
       "+SUCCESS+", Color::Green, size_t(0), size_t(3), "All 3 tests passed", 2, "milliseconds",
       "+SUCCESS+", Color::Green, size_t(0), size_t(3), "All 3 tests passed", 2, "milliseconds",
-      ">>-FAIL->", Color::Red, size_t(1), size_t(1), "1/1 test failed", 0, "milliseconds",
-      ">>-FAIL->", Color::Red, size_t(1), size_t(2), "1/2 tests failed", 1, "millisecond",
-      ">>-FAIL->", Color::Red, size_t(1), size_t(3), "1/3 tests failed", 2, "milliseconds",
-      ">>-FAIL->", Color::Red, size_t(2), size_t(2), "2/2 tests failed", 3, "milliseconds",
-      ">>-FAIL->", Color::Red, size_t(2), size_t(3), "2/3 tests failed", 4, "milliseconds",
-      ">>-FAIL->", Color::Red, size_t(2), size_t(3), "2/3 tests failed", 4, "milliseconds",
-      ">>-FAIL->", Color::Red, size_t(2), size_t(4), "2/4 tests failed", 5, "milliseconds")
+      ">>-FAIL->", Color::Red, size_t(1), size_t(1), "1 of 1 test failed", 0, "milliseconds",
+      ">>-FAIL->", Color::Red, size_t(1), size_t(2), "1 of 2 tests failed", 1, "millisecond",
+      ">>-FAIL->", Color::Red, size_t(1), size_t(3), "1 of 3 tests failed", 2, "milliseconds",
+      ">>-FAIL->", Color::Red, size_t(2), size_t(2), "2 of 2 tests failed", 3, "milliseconds",
+      ">>-FAIL->", Color::Red, size_t(2), size_t(3), "2 of 3 tests failed", 4, "milliseconds",
+      ">>-FAIL->", Color::Red, size_t(2), size_t(3), "2 of 3 tests failed", 4, "milliseconds",
+      ">>-FAIL->", Color::Red, size_t(2), size_t(4), "2 of 4 tests failed", 5, "milliseconds")
    {
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteLineMock.Expect();
