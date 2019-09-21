@@ -4535,7 +4535,7 @@ namespace ZenUnit
             {
                tripletLinesPrefix = "+=======+ ";
                successOrFailLinePrefix = "+SUCCESS+ ";
-               resultMessage = String::Concat("    Result: All ", totalNumberOfTestCases, ' ', testOrTests, " succeeded");
+               resultMessage = String::Concat("    Result: All ", totalNumberOfTestCases, ' ', testOrTests, " passed");
             }
             else
             {
