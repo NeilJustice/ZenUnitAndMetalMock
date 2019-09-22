@@ -1401,7 +1401,7 @@ Return(), ReturnValues(), ReturnRandom(), or Throw<T>() on a ZenMock object.)");
 ============================================
 Expected-But-Not-Asserted ZenMocked Function
 ============================================)", ZenUnit::Color::Red);
-            console.Write("ZenMocked Function: ");
+            console.Write("ZenMocked function:\n");
 				console.WriteLine(ZenMockedFunctionSignature);
             const ZenUnit::ZenUnitArgs& args = _call_ZenUnitTestRunner_GetArgs();
 
@@ -1421,7 +1421,7 @@ Expected-But-Not-Asserted ZenMocked Function
 
 				const int exitCode = args.exitZero ? 0 : 1;
 				console.WriteColor(">-FAIL->>", ZenUnit::Color::Red);
-				console.WriteLine("     Result: Fatal EBNA. Exiting with code " + std::to_string(exitCode) + ". (random seed " + std::to_string(args.randomSeed) + ")");
+				console.WriteLine("     Result: Fatal EBNA. Exiting with code " + std::to_string(exitCode) + ".");
             _call_exit(exitCode);
          }
       }
