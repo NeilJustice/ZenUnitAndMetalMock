@@ -96,7 +96,7 @@ namespace ZenUnit
       AssertStopwatchStartAndStopCalled();
 
       ZENMOCK(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
-         &_testPhaseRunner, &TestPhaseRunner::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Success, args));
+         &_testPhaseRunner, &TestPhaseRunner::FailFastIfTestOutcomeIsNotSuccessAndFailFastModeIsTrue, TestOutcome::Success, args));
 
       TestPhaseResult expectedTestPhaseResult;
       expectedTestPhaseResult.testPhase = TestPhase::Startup;
@@ -131,7 +131,7 @@ namespace ZenUnit
       AssertStopwatchStartAndStopCalled();
 
       ZENMOCK(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
-         &_testPhaseRunner, &TestPhaseRunner::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Anomaly, args));
+         &_testPhaseRunner, &TestPhaseRunner::FailFastIfTestOutcomeIsNotSuccessAndFailFastModeIsTrue, TestOutcome::Anomaly, args));
 
       TestPhaseResult expectedTestPhaseResult;
       expectedTestPhaseResult.testPhase = TestPhase::TestBody;
@@ -184,7 +184,7 @@ namespace ZenUnit
          "A ZenUnit::Anomaly was thrown from a test class constructor, STARTUP function, or CLEANUP function.\nFail fasting with exit code " +
          std::to_string(expectedExitCode) + ".", expectedExitCode));
       ZENMOCK(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
-         &_testPhaseRunner, &TestPhaseRunner::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Anomaly, args));
+         &_testPhaseRunner, &TestPhaseRunner::FailFastIfTestOutcomeIsNotSuccessAndFailFastModeIsTrue, TestOutcome::Anomaly, args));
    }
 
    static void ThrowStdException(Test* test)
@@ -216,7 +216,7 @@ namespace ZenUnit
       AssertStopwatchStartAndStopCalled();
 
       ZENMOCK(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
-         &_testPhaseRunner, &TestPhaseRunner::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Exception, args));
+         &_testPhaseRunner, &TestPhaseRunner::FailFastIfTestOutcomeIsNotSuccessAndFailFastModeIsTrue, TestOutcome::Exception, args));
 
       TestPhaseResult expectedTestPhaseResult;
       expectedTestPhaseResult.testPhase = testPhase;
@@ -266,7 +266,7 @@ namespace ZenUnit
       AssertStopwatchStartAndStopCalled();
 
       ZENMOCK(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
-         &_testPhaseRunner, &TestPhaseRunner::FailFastIfTestFailedAndFailFastModeTrue, TestOutcome::Exception, args));
+         &_testPhaseRunner, &TestPhaseRunner::FailFastIfTestOutcomeIsNotSuccessAndFailFastModeIsTrue, TestOutcome::Exception, args));
 
       TestPhaseResult expectedTestPhaseResult;
       expectedTestPhaseResult.testPhase = arbitraryTestPhase;
@@ -372,7 +372,7 @@ namespace ZenUnit
          return args;
       }();
       //
-      _testPhaseRunner.FailFastIfTestFailedAndFailFastModeTrue(testOutcome, args);
+      _testPhaseRunner.FailFastIfTestOutcomeIsNotSuccessAndFailFastModeIsTrue(testOutcome, args);
       //
       if (expectFailFast)
       {

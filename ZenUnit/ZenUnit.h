@@ -4827,7 +4827,7 @@ namespace ZenUnit
 
       virtual TestPhaseResult RunTestPhase(void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const;
 
-      void FailFastIfTestFailedAndFailFastModeTrue(TestOutcome testOutcome, const ZenUnitArgs& args) const
+      void FailFastIfTestOutcomeIsNotSuccessAndFailFastModeIsTrue(TestOutcome testOutcome, const ZenUnitArgs& args) const
       {
          if (testOutcome != TestOutcome::Success && args.failFast)
          {
@@ -5089,8 +5089,7 @@ namespace ZenUnit
          FailFastDueToDotDotDotException(args, testPhase);
          return TestPhaseResult();
       }
-      _voidTwoArgMemberFunctionCaller->ConstCall(
-         this, &TestPhaseRunner::FailFastIfTestFailedAndFailFastModeTrue, testPhaseResult.testOutcome, args);
+      _voidTwoArgMemberFunctionCaller->ConstCall(this, &TestPhaseRunner::FailFastIfTestOutcomeIsNotSuccessAndFailFastModeIsTrue, testPhaseResult.testOutcome, args);
       return testPhaseResult;
    }
 
