@@ -147,13 +147,17 @@ Testing Utility Options:
 #define IS_FALSE(value, ...) \
    ZenUnit::IS_FALSE_Defined(value, #value, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that value == T{}.
+// Asserts that value == 0 is true.
 #define IS_ZERO(value, ...) \
    ZenUnit::IS_ZERO_Defined(VRT(value), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that value != T{}.
-#define IS_NOT_DEFAULT(value, ...) \
-   ZenUnit::IS_NOT_DEFAULT_Defined(VRT(value), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+// Asserts that value == T{} is true.
+#define IS_DEFAULT_VALUE(value, ...) \
+   ZenUnit::IS_DEFAULT_VALUE_Defined(VRT(value), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Asserts that value == T{} is false.
+#define IS_NOT_DEFAULT_VALUE(value, ...) \
+   ZenUnit::IS_NOT_DEFAULT_VALUE_Defined(VRT(value), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
 // Floating Point Assertions
@@ -1614,7 +1618,7 @@ namespace ZenUnit
 
       static const Anomaly& Default() noexcept
       {
-         static Anomaly defaultAnomaly;
+         static const Anomaly defaultAnomaly;
          return defaultAnomaly;
       }
    };
@@ -2017,8 +2021,7 @@ namespace ZenUnit
       const T& value;
       const char* const text;
 
-      VRText(const T& value, const char* text) noexcept
-         : value(value), text(text) {}
+      VRText(const T& value, const char* text) noexcept : value(value), text(text) {}
    };
 
    template<size_t N>
@@ -2027,8 +2030,7 @@ namespace ZenUnit
       char* value;
       const char* const text;
 
-      VRText(char* value, const char* text) noexcept
-         : value(value), text(text) {}
+      VRText(char* value, const char* text) noexcept : value(value), text(text) {}
    };
 
    template<typename ExpectedAndActualType>
@@ -2540,10 +2542,7 @@ namespace ZenUnit
       const std::string expectedField = "empty() == true";
       const std::string actualField = "empty() == false (size() == " + std::to_string(size) + ")";
       throw Anomaly("IS_EMPTY", collectionVRT.text, "", "", messagesText,
-         Anomaly::Default(),
-         expectedField,
-         actualField,
-         ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+         Anomaly::Default(), expectedField, actualField, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename CollectionType, typename... MessageTypes>
@@ -2692,28 +2691,48 @@ namespace ZenUnit
       }
    }
 
-   template<typename ValueType, typename... MessageTypes>
-   void IS_NOT_DEFAULT_Throw(VRText<ValueType> valueVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   template<typename ValueType, typename DefaultValueType, typename... MessageTypes>
+   void IS_DEFAULT_VALUE_Throw(VRText<ValueType> valueVRT, const DefaultValueType& defaultValue, FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
    {
-      const std::string actualField = ToStringer::ToString(valueVRT.value);
-      throw Anomaly("IS_NOT_DEFAULT", valueVRT.text, "", "", messagesText, Anomaly::Default(),
-         "Not T{}", actualField, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+      const std::string expectedValueString = ToStringer::ToString(defaultValue);
+      const std::string actualValueString = ToStringer::ToString(valueVRT.value);
+      throw Anomaly("IS_DEFAULT_VALUE", valueVRT.text, "", "", messagesText, Anomaly::Default(),
+         expectedValueString, actualValueString, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ValueType, typename... MessageTypes>
-   void IS_NOT_DEFAULT_Defined(VRText<ValueType> valueVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_DEFAULT_VALUE_Defined(VRText<ValueType> valueVRT, FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
    {
-      static const typename std::remove_reference<ValueType>::type defaultValue{};
-      const ValueType value = valueVRT.value;
+      static const typename std::remove_reference<ValueType>::type defaultConstructedValueType{};
+      const bool valueIsDefaultValue = valueVRT.value == defaultConstructedValueType;
+      if (!valueIsDefaultValue)
+      {
+         IS_DEFAULT_VALUE_Throw(valueVRT, defaultConstructedValueType, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+      }
+   }
+
+   template<typename ValueType, typename... MessageTypes>
+   void IS_NOT_DEFAULT_VALUE_Throw(VRText<ValueType> valueVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   {
+      const std::string actualValueString = ToStringer::ToString(valueVRT.value);
+      throw Anomaly("IS_NOT_DEFAULT_VALUE", valueVRT.text, "", "", messagesText, Anomaly::Default(),
+         "Not T{}", actualValueString, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
+   }
+
+   template<typename ValueType, typename... MessageTypes>
+   void IS_NOT_DEFAULT_VALUE_Defined(VRText<ValueType> valueVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   {
+      static const typename std::remove_reference<ValueType>::type defaultConstructedValueType{};
+      const ValueType& value = valueVRT.value;
       try
       {
-         ARE_EQUAL(defaultValue, value);
+         ARE_EQUAL(defaultConstructedValueType, value);
       }
       catch (const ZenUnit::Anomaly&)
       {
          return;
       }
-      IS_NOT_DEFAULT_Throw(valueVRT, fileLine, messagesText, messages...);
+      IS_NOT_DEFAULT_VALUE_Throw(valueVRT, fileLine, messagesText, messages...);
    }
 
    class Map

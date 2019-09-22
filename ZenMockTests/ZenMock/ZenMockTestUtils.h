@@ -1,6 +1,6 @@
 #pragma once
 
-struct ZenMockTestUtils
+struct ZenMockTestUtil
 {
    template<typename Callable>
    static void CallNTimes(size_t n, Callable&& callable)

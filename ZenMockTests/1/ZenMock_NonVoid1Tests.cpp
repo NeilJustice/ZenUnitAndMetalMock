@@ -75,6 +75,7 @@ namespace ZenMock
 
    NonVoid1FunctionsMock mock;
    ZENMOCK_NONVOID1_FREE(int, NonVoid1, int)
+   // ZENMOCK_NONVOID1_NAMESPACED_FREE
    ZENMOCK_NONVOID1_STATIC(int, ZenMock, NonVoid1, int, _namespace)
    ZENMOCK_NONVOID1_STATIC(int, ZenMock::NonVoid1StaticFunctions, NonVoid1, int, _static)
    ZENMOCK_NONVOID1_STATIC(int, ZenMock::NonVoid1StaticFunctions, Static, int)

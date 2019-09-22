@@ -369,8 +369,9 @@ int main(int argc, char* argv[])
 |`ARE_COPIES(expectedObject, actualObject, messages...)`|Asserts that `&expectedObject != &actualObject` then asserts `ARE_EQUAL(expectedObject, actualObject)`.|
 |`IS_TRUE(value, messages...)`|Asserts that `value` is true.|
 |`IS_FALSE(value, messages...)`|Asserts that `value` is false.|
-|`IS_ZERO(value, messages...)`|Asserts that `value == ValueType{}` equals true.|
-|`IS_NOT_DEFAULT(value, messages...)`|Asserts that `value == ValueType{}` equals false.|
+|`IS_ZERO(value, messages...)`|Asserts that `value == 0` is true.|
+|`IS_DEFAULT_VALUE(value, messages...)`|Asserts that `value == ValueType{}` is true.|
+|`IS_NOT_DEFAULT_VALUE(value, messages...)`|Asserts that `value == ValueType{}` is false.|
 
 #### Floating Point Assertions
 |||

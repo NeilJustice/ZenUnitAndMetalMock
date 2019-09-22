@@ -42,6 +42,7 @@ namespace ZenMock
    EVIDENCE
 
    ZENMOCK_VOID0_FREE(Void0Function)
+   // ZENMOCK_VOID0_NAMESPACED_FREE
    ZENMOCK_VOID0_STATIC(ZenMock, Void0Function, _namespace)
    ZENMOCK_VOID0_STATIC(ZenMock::StaticVoid0Functions, StaticVoid0Function)
    ZENMOCK_VOID0_STATIC(ZenMock::StaticVoid0Functions, Void0Function, _static)

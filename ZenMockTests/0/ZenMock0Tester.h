@@ -20,8 +20,8 @@ namespace ZenMock
       FreeMockType freeMock;
       const string freeFunctionSignature;
 
-      NamespaceMockType namespaceMock;
-      const string namespaceFunctionSignature;
+      NamespaceMockType namespacedFreeMock;
+      const string namespacedFreeFunctionSignature;
 
       StaticMockType staticMock;
       const string staticFunctionSignature;
@@ -37,8 +37,8 @@ namespace ZenMock
          string nonVirtualConstFunctionSignature,
          FreeMockType freeMock,
          string freeFunctionSignature,
-         NamespaceMockType namespaceMock,
-         string namespaceFunctionSignature,
+         NamespaceMockType namespacedFreeMock,
+         string namespacedFreeFunctionSignature,
          StaticMockType staticMock,
          string staticFunctionSignature,
          StaticNameClashMockType staticNameClashMock,
@@ -50,8 +50,8 @@ namespace ZenMock
          , nonVirtualConstFunctionSignature(move(nonVirtualConstFunctionSignature))
          , freeMock(move(freeMock))
          , freeFunctionSignature(move(freeFunctionSignature))
-         , namespaceMock(move(namespaceMock))
-         , namespaceFunctionSignature(move(namespaceFunctionSignature))
+         , namespacedFreeMock(move(namespacedFreeMock))
+         , namespacedFreeFunctionSignature(move(namespacedFreeFunctionSignature))
          , staticMock(move(staticMock))
          , staticFunctionSignature(move(staticFunctionSignature))
          , staticNameClashMock(move(staticNameClashMock))
@@ -72,7 +72,7 @@ namespace ZenMock
          test(mock.NonVirtualConstMock, nonVirtualConstFunctionSignature);
 
          test(freeMock, freeFunctionSignature);
-         test(namespaceMock, namespaceFunctionSignature);
+         test(namespacedFreeMock, namespacedFreeFunctionSignature);
          test(staticMock, staticFunctionSignature);
          test(staticNameClashMock, staticNameClashFunctionSignature);
       }
@@ -108,7 +108,7 @@ namespace ZenMock
          test(mock.NonVirtualConstMock, nonVirtualConstFunctionSignature);
 
          test(freeMock, freeFunctionSignature);
-         test(namespaceMock, namespaceFunctionSignature);
+         test(namespacedFreeMock, namespacedFreeFunctionSignature);
          test(staticMock, staticFunctionSignature);
          test(staticNameClashMock, staticNameClashFunctionSignature);
       }
@@ -119,16 +119,16 @@ namespace ZenMock
          zenMockObject.CalledOnce();
          zenMockObject.CalledNTimes(1);
          THROWS(zenMockObject.CalledNTimes(2), Anomaly,
-            ZenMockTestUtil::ExpectedCallCountMismatchWhat(expectedFunctionSignature, 2, 1));
+            ZenMockTestUtils::ExpectedCallCountMismatchWhat(expectedFunctionSignature, 2, 1));
       }
       template<typename InnerZenMockObjectType>
       void AssertAfterSecondCall(InnerZenMockObjectType& zenMockObject, const string& expectedFunctionSignature)
       {
          THROWS(zenMockObject.CalledOnce(), Anomaly,
-            ZenMockTestUtil::ExpectedCallCountMismatchWhat(expectedFunctionSignature, 1, 2));
+            ZenMockTestUtils::ExpectedCallCountMismatchWhat(expectedFunctionSignature, 1, 2));
          zenMockObject.CalledNTimes(2);
          THROWS(zenMockObject.CalledNTimes(3), Anomaly,
-            ZenMockTestUtil::ExpectedCallCountMismatchWhat(expectedFunctionSignature, 3, 2));
+            ZenMockTestUtils::ExpectedCallCountMismatchWhat(expectedFunctionSignature, 3, 2));
       }
       void ZenMockedFunction_Expected_DoesNotThrow_CalledAsFollowsOnceDoesNotThrow_CalledNTimes1DoesNotThrow()
       {
@@ -156,32 +156,32 @@ namespace ZenMock
          mock.NonVirtualConst();
          AssertAfterSecondCall(mock.NonVirtualConstMock, nonVirtualConstFunctionSignature);
 
-         const function<void()> zenBoundFreeMock = BIND_0ARG_ZENMOCK_OBJECT(freeMock);
+         const function<void()> zenMockBoundFreeMock = BIND_0ARG_ZENMOCK_OBJECT(freeMock);
          freeMock.Expect();
-         zenBoundFreeMock();
+         zenMockBoundFreeMock();
          AssertAfterFirstCall(freeMock, freeFunctionSignature);
-         zenBoundFreeMock();
+         zenMockBoundFreeMock();
          AssertAfterSecondCall(freeMock, freeFunctionSignature);
 
-         const function<void()> zenBoundNamespaceMock = BIND_0ARG_ZENMOCK_OBJECT(namespaceMock);
-         namespaceMock.Expect();
-         zenBoundNamespaceMock();
-         AssertAfterFirstCall(namespaceMock, namespaceFunctionSignature);
-         zenBoundNamespaceMock();
-         AssertAfterSecondCall(namespaceMock, namespaceFunctionSignature);
+         const function<void()> zenMockBoundNamespacedFreeMock = BIND_0ARG_ZENMOCK_OBJECT(namespacedFreeMock);
+         namespacedFreeMock.Expect();
+         zenMockBoundNamespacedFreeMock();
+         AssertAfterFirstCall(namespacedFreeMock, namespacedFreeFunctionSignature);
+         zenMockBoundNamespacedFreeMock();
+         AssertAfterSecondCall(namespacedFreeMock, namespacedFreeFunctionSignature);
 
-         const function<void()> zenBoundStaticNameClashMock = BIND_0ARG_ZENMOCK_OBJECT(staticNameClashMock);
+         const function<void()> zenMockBoundStaticNameClashMock = BIND_0ARG_ZENMOCK_OBJECT(staticNameClashMock);
          staticNameClashMock.Expect();
-         zenBoundStaticNameClashMock();
+         zenMockBoundStaticNameClashMock();
          AssertAfterFirstCall(staticNameClashMock, staticNameClashFunctionSignature);
-         zenBoundStaticNameClashMock();
+         zenMockBoundStaticNameClashMock();
          AssertAfterSecondCall(staticNameClashMock, staticNameClashFunctionSignature);
 
-         const function<void()> zenBoundStaticMock = BIND_0ARG_ZENMOCK_OBJECT(staticMock);
+         const function<void()> zenMockBoundStaticMock = BIND_0ARG_ZENMOCK_OBJECT(staticMock);
          staticMock.Expect();
-         zenBoundStaticMock();
+         zenMockBoundStaticMock();
          AssertAfterFirstCall(staticMock, staticFunctionSignature);
-         zenBoundStaticMock();
+         zenMockBoundStaticMock();
          AssertAfterSecondCall(staticMock, staticFunctionSignature);
       }
 
@@ -199,20 +199,20 @@ namespace ZenMock
          THROWS(mock.NonVirtualConst(), UnexpectedCallException,
             UnexpectedCallException::MakeWhat(nonVirtualConstFunctionSignature));
 
-         const function<void()> zenBoundFreeMock = BIND_0ARG_ZENMOCK_OBJECT(freeMock);
-         THROWS(zenBoundFreeMock(), UnexpectedCallException,
+         const function<void()> zenMockBoundFreeMock = BIND_0ARG_ZENMOCK_OBJECT(freeMock);
+         THROWS(zenMockBoundFreeMock(), UnexpectedCallException,
             UnexpectedCallException::MakeWhat(freeFunctionSignature));
 
-         const function<void()> zenBoundNamespaceMock = BIND_0ARG_ZENMOCK_OBJECT(namespaceMock);
-         THROWS(zenBoundNamespaceMock(), UnexpectedCallException,
-            UnexpectedCallException::MakeWhat(namespaceFunctionSignature));
+         const function<void()> zenMockBoundNamespacedFreeMock = BIND_0ARG_ZENMOCK_OBJECT(namespacedFreeMock);
+         THROWS(zenMockBoundNamespacedFreeMock(), UnexpectedCallException,
+            UnexpectedCallException::MakeWhat(namespacedFreeFunctionSignature));
 
-         const function<void()> zenBoundStaticNameClashMock = BIND_0ARG_ZENMOCK_OBJECT(staticNameClashMock);
-         THROWS(zenBoundStaticNameClashMock(), UnexpectedCallException,
+         const function<void()> zenMockBoundStaticNameClashMock = BIND_0ARG_ZENMOCK_OBJECT(staticNameClashMock);
+         THROWS(zenMockBoundStaticNameClashMock(), UnexpectedCallException,
             UnexpectedCallException::MakeWhat(staticNameClashFunctionSignature));
 
-         const function<void()> zenBoundStaticMock = BIND_0ARG_ZENMOCK_OBJECT(staticMock);
-         THROWS(zenBoundStaticMock(), UnexpectedCallException,
+         const function<void()> zenMockBoundStaticMock = BIND_0ARG_ZENMOCK_OBJECT(staticMock);
+         THROWS(zenMockBoundStaticMock(), UnexpectedCallException,
             UnexpectedCallException::MakeWhat(staticFunctionSignature));
       }
 
@@ -242,15 +242,15 @@ namespace ZenMock
          THROWS(mock.NonVirtualConst(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(mock.NonVirtualConstMock);
 
-         const function<void()> zenBoundFreeVoid0 = BIND_0ARG_ZENMOCK_OBJECT(freeMock);
+         const function<void()> zenMockBoundFreeVoid0Function = BIND_0ARG_ZENMOCK_OBJECT(freeMock);
          freeMock.template Throw<runtime_error>(What);
-         THROWS(zenBoundFreeVoid0(), runtime_error, What);
+         THROWS(zenMockBoundFreeVoid0Function(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(freeMock);
 
-         const function<void()> zenBoundNamespaceVoid0 = BIND_0ARG_ZENMOCK_OBJECT(namespaceMock);
-         namespaceMock.template Throw<runtime_error>(What);
+         const function<void()> zenBoundNamespaceVoid0 = BIND_0ARG_ZENMOCK_OBJECT(namespacedFreeMock);
+         namespacedFreeMock.template Throw<runtime_error>(What);
          THROWS(zenBoundNamespaceVoid0(), runtime_error, What);
-         assertCalledOnceAndNTimesOnce(namespaceMock);
+         assertCalledOnceAndNTimesOnce(namespacedFreeMock);
 
          const function<void()> zenBoundStaticVoid0 = BIND_0ARG_ZENMOCK_OBJECT(staticNameClashMock);
          staticNameClashMock.template Throw<runtime_error>(What);

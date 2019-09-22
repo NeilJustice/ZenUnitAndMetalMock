@@ -56,6 +56,7 @@ namespace ZenMock
 
    Void1FunctionsMock _mock;
    ZENMOCK_VOID1_FREE(Void1Function, int)
+   // ZENMOCK_VOID1_NAMESPACED_FREE
    ZENMOCK_VOID1_STATIC(ZenMock, Void1Function, int, _namespace)
    ZENMOCK_VOID1_STATIC(ZenMock::Void1StaticFunctions, StaticVoid1Function, int)
    ZENMOCK_VOID1_STATIC(ZenMock::Void1StaticFunctions, OverloadedStaticVoid1Function, float, _float)
