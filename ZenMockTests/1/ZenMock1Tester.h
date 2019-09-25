@@ -192,15 +192,15 @@ namespace ZenMock
             zenMockObject.CalledOnceWith(0);
             zenMockObject.CalledNTimesWith(1, 0);
             THROWS(zenMockObject.CalledNTimesWith(2, 0), Anomaly,
-               ZenMockTestUtil::ExpectedCallCountMismatchWhat(expectedSignature, 2, 1));
+               ZenMockTestUtils::ExpectedCallCountMismatchWhat(expectedSignature, 2, 1));
          };
          const auto assertAfterSecondCall = [](auto& zenMockObject, const string& expectedSignature)
          {
             THROWS(zenMockObject.CalledOnceWith(0), Anomaly,
-               ZenMockTestUtil::ExpectedCallCountMismatchWhat(expectedSignature, 1, 2));
+               ZenMockTestUtils::ExpectedCallCountMismatchWhat(expectedSignature, 1, 2));
             zenMockObject.CalledNTimesWith(2, 0);
             THROWS(zenMockObject.CalledNTimesWith(3, 0), Anomaly,
-               ZenMockTestUtil::ExpectedCallCountMismatchWhat(expectedSignature, 3, 2));
+               ZenMockTestUtils::ExpectedCallCountMismatchWhat(expectedSignature, 3, 2));
          };
 
          mock.VirtualMock.Expect();
