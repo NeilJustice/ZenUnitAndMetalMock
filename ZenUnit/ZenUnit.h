@@ -4136,13 +4136,13 @@ namespace ZenUnit
       TwoArgAnyer() noexcept = default;
       virtual ~TwoArgAnyer() = default;
 
-      virtual bool TwoArgAny(const CollectionType* collection, PredicateType predicate, Arg2Type arg2) const
+      virtual bool TwoArgAny(const CollectionType* collection, PredicateType predicateFunction, Arg2Type arg2) const
       {
          const auto collectionConstEnd = collection->cend();
          for (auto iter = collection->cbegin(); iter != collectionConstEnd; ++iter)
          {
             const auto& element = *iter;
-            const bool elementMatchesPredicate = predicate(element, arg2);
+            const bool elementMatchesPredicate = predicateFunction(element, arg2);
             if (elementMatchesPredicate)
             {
                return true;
@@ -4160,13 +4160,13 @@ namespace ZenUnit
 
       virtual ~ThreeArgAnyer() = default;
 
-      virtual bool ThreeArgAny(const CollectionType& collection, PredicateType predicate, Arg2Type arg2, Arg3Type arg3) const
+      virtual bool ThreeArgAny(const CollectionType& collection, PredicateType predicateFunction, Arg2Type arg2, Arg3Type arg3) const
       {
          const auto collectionConstEnd = collection.cend();
          for (auto iter = collection.cbegin(); iter != collectionConstEnd; ++iter)
          {
             const auto& element = *iter;
-            const bool elementMatchesPredicate = predicate(element, arg2, arg3);
+            const bool elementMatchesPredicate = predicateFunction(element, arg2, arg3);
             if (elementMatchesPredicate)
             {
                return true;
