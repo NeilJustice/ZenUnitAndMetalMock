@@ -269,12 +269,12 @@ namespace ZenUnit
       if (expectTestsPlural)
       {
          ZENMOCK(p_consoleMock->WriteLineMock.CalledOnceWith(
-            String::Concat(" | ", numberOfTests, " named tests")));
+            String::Concat(" | Running ", numberOfTests, " tests")));
       }
       else
       {
          ZENMOCK(p_consoleMock->WriteLineMock.CalledOnceWith(
-            String::Concat(" | ", numberOfTests, " named test")));
+            String::Concat(" | Running ", numberOfTests, " test")));
       }
    }
 

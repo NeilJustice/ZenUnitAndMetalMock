@@ -4084,7 +4084,7 @@ namespace ZenUnit
       TwoArgMemberForEacher() noexcept = default;
       virtual ~TwoArgMemberForEacher() = default;
 
-      virtual void TwoArgMemberForEach(std::vector<T>* elements, ClassType* classPointer, MemberFunctionType memberFunction, Arg2Type arg2) const
+      virtual void TwoArgMemberForEach(std::vector<T>* elements, ClassType* classPointer, MemberFunctionType memberFunction, const Arg2Type& arg2) const
       {
          const typename std::vector<T>::iterator elementsEnd = elements->end();
          for (typename std::vector<T>::iterator iter = elements->begin(); iter != elementsEnd; ++iter)
@@ -4094,7 +4094,7 @@ namespace ZenUnit
          }
       }
 
-      virtual void RandomTwoArgMemberForEach(std::vector<T>* elements, ClassType* classPointer, MemberFunctionType memberFunction, Arg2Type arg2, unsigned seed) const
+      virtual void RandomTwoArgMemberForEach(std::vector<T>* elements, ClassType* classPointer, MemberFunctionType memberFunction, const Arg2Type& arg2, unsigned seed) const
       {
          std::shuffle(elements->begin(), elements->end(), std::default_random_engine(seed));
          const typename std::vector<T>::iterator elementsEnd = elements->end();
@@ -5253,13 +5253,11 @@ namespace ZenUnit
       {
          _protected_console->WriteColor("@", Color::Green);
          _protected_console->WriteColor(_testClassName, Color::Green);
-         const std::string spacePipeSpaceNumberOfNamedTests = String::Concat(
-            " | ", _tests.size(), _tests.size() == 1 ? " named test" : " named tests");
+         const std::string spacePipeSpaceNumberOfNamedTests = String::Concat(" | Running ", _tests.size(), _tests.size() == 1 ? " test" : " tests");
          _protected_console->WriteLine(spacePipeSpaceNumberOfNamedTests);
       }
 
-      bool ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(
-         Test* newableDeletableTest, TestClassResult* outTestClassResult) const
+      bool ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(Test* newableDeletableTest, TestClassResult* outTestClassResult) const
       {
          _protected_console->WriteColor("|", Color::Green);
          static const std::string TestClassIsNewableAndDeletableString = "TestClassIsNewableAndDeletable -> ";
@@ -5272,8 +5270,7 @@ namespace ZenUnit
          if (testClassIsNewableAndDeletable)
          {
             _protected_console->WriteColor("OK ", Color::Green);
-            const std::string twoDecimalPlaceMillisecondsString = outTestClassResult->
-               MicrosecondsToTwoDecimalPlaceMillisecondsString(newableDeletableTestResult.microseconds);
+            const std::string twoDecimalPlaceMillisecondsString = outTestClassResult->MicrosecondsToTwoDecimalPlaceMillisecondsString(newableDeletableTestResult.microseconds);
             _protected_console->WriteLine(twoDecimalPlaceMillisecondsString);
          }
          return testClassIsNewableAndDeletable;
