@@ -45,7 +45,7 @@ namespace ZenUnit
 
       const string userName = _environmentalistMock->GetCurrentUserNameMock.ReturnRandom();
 
-      const string startTime = _watchMock->DateTimeNowMock.ReturnRandom();
+      const string startDateTime = _watchMock->DateTimeNowMock.ReturnRandom();
 
       TestClassRunnerRunnerMock testClassRunnerRunnerMock;
       const size_t numberOfTestClassesToBeRun = testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.ReturnRandom();
@@ -70,9 +70,9 @@ namespace ZenUnit
          { "    UserName: " + userName },
          { "  RandomSeed: " + to_string(args.randomSeed) },
          { " TestClasses: " + std::to_string(numberOfTestClassesToBeRun) },
-         { "   StartTime: " + startTime + "\n" }
+         { "   StartTime: " + startDateTime + "\n" }
       }));
-      ARE_EQUAL(startTime, returnedStartTime);
+      ARE_EQUAL(startDateTime, returnedStartTime);
    }
 
    RUN_TESTS(PreamblePrinterTests)

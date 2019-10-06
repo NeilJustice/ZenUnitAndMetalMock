@@ -5,16 +5,16 @@ namespace ZenUnit
    TESTS(StopwatchTests)
    AFACT(Constructor_SetsNowFunction)
    AFACT(Start_SetsStartTimeToNow)
-   AFACT(Stop_StartNotPreviouslyCalled_Returns0)
-   AFACT(Stop_StartPreviouslyCalled_ReturnsElapsedMicroseconds)
+   AFACT(StopAndGetElapsedMicroseconds_StartNotPreviouslyCalled_Returns0)
+   AFACT(StopAndGetElapsedMicroseconds_StartPreviouslyCalled_ReturnsElapsedMicroseconds)
    EVIDENCE
 
-   Stopwatch _stopwatch;
+   Stopwatch _testPhaseStopwatch;
    ZENMOCK_NONVOID0_STATIC(chrono::time_point<chrono::high_resolution_clock>, chrono::high_resolution_clock, now)
 
    STARTUP
    {
-      _stopwatch._call_highres_now = BIND_0ARG_ZENMOCK_OBJECT(now_ZenMockObject);
+      _testPhaseStopwatch._call_highres_now = BIND_0ARG_ZENMOCK_OBJECT(now_ZenMockObject);
    }
 
    TEST(Constructor_SetsNowFunction)
@@ -30,28 +30,28 @@ namespace ZenUnit
          nonDefaultTimePoint = chrono::high_resolution_clock::now();
       now_ZenMockObject.Return(nonDefaultTimePoint);
       //
-      _stopwatch.Start();
+      _testPhaseStopwatch.Start();
       //
       now_ZenMockObject.CalledOnce();
-      ARE_EQUAL(nonDefaultTimePoint, _stopwatch._startTime);
+      ARE_EQUAL(nonDefaultTimePoint, _testPhaseStopwatch._startTime);
    }
 
-   TEST(Stop_StartNotPreviouslyCalled_Returns0)
+   TEST(StopAndGetElapsedMicroseconds_StartNotPreviouslyCalled_Returns0)
    {
-      ARE_EQUAL(0, _stopwatch.Stop());
-      ARE_EQUAL(0, _stopwatch.Stop());
+      ARE_EQUAL(0, _testPhaseStopwatch.StopAndGetElapsedMicroseconds());
+      ARE_EQUAL(0, _testPhaseStopwatch.StopAndGetElapsedMicroseconds());
    }
 
-   TEST(Stop_StartPreviouslyCalled_ReturnsElapsedMicroseconds)
+   TEST(StopAndGetElapsedMicroseconds_StartPreviouslyCalled_ReturnsElapsedMicroseconds)
    {
-      chrono::time_point<chrono::high_resolution_clock> startTime;
-      startTime += chrono::milliseconds(Random<unsigned>());
+      chrono::time_point<chrono::high_resolution_clock> startDateTime;
+      startDateTime += chrono::milliseconds(Random<unsigned>());
       const unsigned randomMicrosecondDuration = Random<unsigned>();
-      const chrono::time_point<chrono::high_resolution_clock> stopTime = startTime + chrono::microseconds(randomMicrosecondDuration);
+      const chrono::time_point<chrono::high_resolution_clock> stopTime = startDateTime + chrono::microseconds(randomMicrosecondDuration);
       now_ZenMockObject.Return(stopTime);
-      _stopwatch._startTime = startTime;
+      _testPhaseStopwatch._startTime = startDateTime;
       //
-      const long long elapsedMicroseconds = _stopwatch.Stop();
+      const long long elapsedMicroseconds = _testPhaseStopwatch.StopAndGetElapsedMicroseconds();
       //
       ZENMOCK(now_ZenMockObject.CalledOnce());
       ARE_EQUAL(randomMicrosecondDuration, elapsedMicroseconds);

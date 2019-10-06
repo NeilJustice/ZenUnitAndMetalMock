@@ -36,7 +36,7 @@ namespace ZenUnit
    {
       _testPhaseRunner._console.reset(_consoleMock = new ConsoleMock);
       _testPhaseRunner._testPhaseTranslator.reset(_testPhaseTranslatorMock = new TestPhaseTranslatorMock);
-      _testPhaseRunner._stopwatch.reset(_stopwatchMock = new StopwatchMock);
+      _testPhaseRunner._testPhaseStopwatch.reset(_stopwatchMock = new StopwatchMock);
       _testPhaseRunner._voidTwoArgMemberFunctionCaller.reset(
          _voidTwoArgMemberFunctionCallerMock = new VoidTwoArgMemberFunctionCallerMock<TestPhaseRunner, TestOutcome, const ZenUnitArgs&>);
       _testPhaseRunner._watch.reset(_watchMock = new WatchMock);
@@ -57,19 +57,19 @@ namespace ZenUnit
       POINTER_WAS_NEWED(testPhaseRunner._voidTwoArgMemberFunctionCaller);
       POINTER_WAS_NEWED(testPhaseRunner._watch);
       STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetArgs, testPhaseRunner._call_ZenUnitTestRunner_GetArgs);
-      POINTER_WAS_NEWED(testPhaseRunner._stopwatch);
+      POINTER_WAS_NEWED(testPhaseRunner._testPhaseStopwatch);
    }
 
    void ExpectStopwatchStartAndStopCalls()
    {
       _stopwatchMock->StartMock.Expect();
-      _stopwatchMock->StopMock.Return(_microseconds);
+      _stopwatchMock->StopAndGetElapsedMicrosecondsMock.Return(_microseconds);
    }
 
    void AssertStopwatchStartAndStopCalled()
    {
       ZENMOCK(_stopwatchMock->StartMock.CalledOnce());
-      ZENMOCK(_stopwatchMock->StopMock.CalledOnce());
+      ZENMOCK(_stopwatchMock->StopAndGetElapsedMicrosecondsMock.CalledOnce());
    }
 
    static int s_numberOfNoThrowCalls;
@@ -301,7 +301,7 @@ namespace ZenUnit
 
       _stopwatchMock->StartMock.Expect();
 
-      const long long testRunDurationInMilliseconds = _stopwatchMock->StopMock.ReturnRandom();
+      const string testRunDurationInSeconds = _stopwatchMock->StopAndGetElapsedSecondsMock.ReturnRandom();
 
       _consoleMock->WriteLineColorMock.Expect();
 
@@ -322,10 +322,11 @@ namespace ZenUnit
       //
       ZENMOCK(_stopwatchMock->StartMock.CalledOnce());
       ZENMOCK(GetArgs_ZenMockObject.CalledOnce());
-      ZENMOCK(_stopwatchMock->StopMock.CalledOnce());
+      ZENMOCK(_stopwatchMock->StopAndGetElapsedSecondsMock.CalledOnce());
       ZENMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith("\n==========================\nFatal ... Exception Thrown\n==========================\n", Color::Red));
       ZENMOCK(_consoleMock->WriteColorMock.CalledAsFollows(
       {
+         { ">>------> ", Color::Red },
          { ">>------> ", Color::Red },
          { ">>------> ", Color::Red },
          { ">>------> ", Color::Red },
@@ -335,17 +336,17 @@ namespace ZenUnit
       }));
       ZENMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
       {
-         { " Completed: " + args.commandLine },
-         { "RandomSeed: " + to_string(args.randomSeed) },
-         { " StartTime: " + args.startTime },
-         { "   EndTime: " + endTime },
-         { "  Duration: " + to_string(testRunDurationInMilliseconds) + " milliseconds" }
+         { "     Completed: " + args.commandLine },
+         { "     StartTime: " + args.startDateTime },
+         { "       EndTime: " + endTime },
+         { "      Duration: " + testRunDurationInSeconds + " seconds" },
+         { "    RandomSeed: " + to_string(args.randomSeed) },
+         { " TestRunResult: Fatal ... exception thrown during test phase: " + testPhaseName }
       }));
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZENMOCK(_testPhaseTranslatorMock->TestPhaseToTestPhaseNameMock.CalledOnceWith(testPhase));
-      const std::string expectedResultLine = String::Concat(
-         "    Result: Fatal ... exception thrown during the ", testPhaseName, " test phase. Fail fasting with exit code ", expectedExitCode, ".");
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedResultLine, expectedExitCode));
+      const string expectedExitCodeLine = "      ExitCode: " + to_string(expectedExitCode);
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedExitCodeLine, expectedExitCode));
    }
 
    TEST3X3(RunTestPhase_TestPhaseResultIsNotSuccessAndFailFastIsTrue_WritesFailFastMessageAndExits1,

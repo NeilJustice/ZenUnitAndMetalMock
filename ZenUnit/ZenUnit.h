@@ -864,7 +864,7 @@ namespace ZenUnit
 
    struct ZenUnitArgs
    {
-		std::string startTime;
+		std::string startDateTime;
       std::string commandLine;
       std::vector<RunFilter> runFilters;
       bool pause = false;
@@ -1819,16 +1819,16 @@ namespace ZenUnit
       virtual std::string DateTimeNow() const
       {
          const tm tmNow = TMNow();
-         std::ostringstream localTimeStringBuilder;
-         localTimeStringBuilder
+         std::ostringstream localDateTimeStringBuilder;
+         localDateTimeStringBuilder
             << std::setw(2) << std::setfill('0') << (tmNow.tm_year + 1900) << '-'
             << std::setw(2) << std::setfill('0') << (tmNow.tm_mon + 1) << '-'
             << std::setw(2) << std::setfill('0') << tmNow.tm_mday << ' '
             << std::setw(2) << std::setfill('0') << tmNow.tm_hour << ':'
             << std::setw(2) << std::setfill('0') << tmNow.tm_min << ':'
             << std::setw(2) << std::setfill('0') << tmNow.tm_sec;
-         const std::string localTimeString = localTimeStringBuilder.str();
-         return localTimeString;
+         const std::string localDateTimeString = localDateTimeStringBuilder.str();
+         return localDateTimeString;
       }
 
       virtual long long SecondsSince1970() const
@@ -1992,7 +1992,7 @@ namespace ZenUnit
                }
             }
          }
-			args.startTime = _watch->DateTimeNow();
+			args.startDateTime = _watch->DateTimeNow();
          _callerOfSetRandomSeedIfNotSetByUser->ConstCall(this, &ArgsParser::SetRandomSeedIfNotSetByUser, args);
          ZenUnitRandomSeed::value = args.randomSeed;
          return args;
@@ -4409,43 +4409,10 @@ namespace ZenUnit
          _console->WriteLine(" TestClasses: " + std::to_string(numberOfTestClassesToBeRun));
 
          _console->WriteColor("[ZenUnit]", Color::Green);
-         const std::string startTime = _watch->DateTimeNow();
-         _console->WriteLine("   StartTime: " + startTime + "\n"); // TimeZone
+         const std::string startDateTime = _watch->DateTimeNow();
+         _console->WriteLine("   StartTime: " + startDateTime + "\n"); // TimeZone
 
-         return startTime;
-      }
-   };
-
-   class Stopwatch
-   {
-      friend class StopwatchTests;
-   private:
-      std::function<std::chrono::time_point<std::chrono::high_resolution_clock>()> _call_highres_now;
-      std::chrono::time_point<std::chrono::high_resolution_clock> _startTime;
-   public:
-      Stopwatch() noexcept
-         : _call_highres_now(std::chrono::high_resolution_clock::now)
-      {
-      }
-
-      virtual ~Stopwatch() = default;
-
-      virtual void Start()
-      {
-         _startTime = _call_highres_now();
-      }
-
-      virtual long long Stop()
-      {
-         if (_startTime == std::chrono::time_point<std::chrono::high_resolution_clock>())
-         {
-            return 0u;
-         }
-         const std::chrono::time_point<std::chrono::high_resolution_clock> stopTime = _call_highres_now();
-         const std::chrono::duration<long long, std::nano> elapsedTime = stopTime - _startTime;
-         const long long elapsedMicroseconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsedTime).count();
-         _startTime = std::chrono::time_point<std::chrono::high_resolution_clock>();
-         return elapsedMicroseconds;
+         return startDateTime;
       }
    };
 
@@ -4534,7 +4501,7 @@ namespace ZenUnit
       }
 
       virtual void PrintConclusionLines(
-         const std::string& startTime, size_t totalNumberOfTestCases, long long testRunMilliseconds, const ZenUnitArgs& args) const
+         const std::string& startDateTime, size_t totalNumberOfTestCases, const std::string& testRunElapsedSeconds, const ZenUnitArgs& args) const
       {
          assert_true(_numberOfFailedTestCases <= totalNumberOfTestCases);
          const Color greenOrRed = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
@@ -4546,41 +4513,41 @@ namespace ZenUnit
          else
          {
             const std::string testOrTests = totalNumberOfTestCases == 1 ? "test" : "tests";
-            const std::string millisecondOrMilliseconds = testRunMilliseconds == 1 ? "millisecond" : "milliseconds";
             std::string tripletLinesPrefix;
             std::string successOrFailLinePrefix;
             std::string resultMessage;
             if (_numberOfFailedTestCases == 0)
             {
-               tripletLinesPrefix = "+=======+ ";
-               successOrFailLinePrefix = "+SUCCESS+ ";
-               resultMessage = String::Concat("    Result: All ", totalNumberOfTestCases, ' ', testOrTests, " passed");
+               tripletLinesPrefix = "+=======+";
+               successOrFailLinePrefix = "+SUCCESS+";
+               resultMessage = String::Concat(" TestRunResult: All ", totalNumberOfTestCases, ' ', testOrTests, " passed");
             }
             else
             {
-               tripletLinesPrefix = ">>------> ";
-               successOrFailLinePrefix = ">>-FAIL-> ";
-               resultMessage = String::Concat("    Result: ", _numberOfFailedTestCases, " of ", totalNumberOfTestCases, ' ', testOrTests, " failed");
+               tripletLinesPrefix = ">>------>";
+               successOrFailLinePrefix = ">>-FAIL->";
+               resultMessage = String::Concat(" TestRunResult: ", _numberOfFailedTestCases, " of ", totalNumberOfTestCases, ' ', testOrTests, " failed");
             }
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
-            const std::string completedCommandLineMessage = " Completed: " + args.commandLine;
+            const std::string completedCommandLineMessage = String::Concat("     Completed: ", args.commandLine);
             _console->WriteLine(completedCommandLineMessage);
 
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
-            const std::string randomSeedMessage = "RandomSeed: " + std::to_string(args.randomSeed);
-            _console->WriteLine(randomSeedMessage);
-
-            _console->WriteColor(tripletLinesPrefix, greenOrRed);
-            const std::string startTimeMessage = " StartTime: " + startTime;
+            const std::string startTimeMessage = String::Concat("     StartTime: ", startDateTime);
             _console->WriteLine(startTimeMessage);
 
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
-            const std::string endTimeMessage = "   EndTime: " + _watch->DateTimeNow();
+            const std::string endDateTime = _watch->DateTimeNow();
+            const std::string endTimeMessage = String::Concat("       EndTime: ", endDateTime);
             _console->WriteLine(endTimeMessage);
 
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
-            const std::string durationMessage = String::Concat("  Duration: ", testRunMilliseconds, " ", millisecondOrMilliseconds);
+            const std::string durationMessage = String::Concat("      Duration: ", testRunElapsedSeconds, " seconds");
             _console->WriteLine(durationMessage);
+
+            _console->WriteColor(tripletLinesPrefix, greenOrRed);
+            const std::string randomSeedMessage = String::Concat("    RandomSeed: ", args.randomSeed);
+            _console->WriteLine(randomSeedMessage);
 
             _console->WriteColor(successOrFailLinePrefix, greenOrRed);
             _console->WriteLine(resultMessage);
@@ -4668,6 +4635,60 @@ namespace ZenUnit
       virtual ~TwoArgMemberFunctionCaller() = default;
    };
 
+   class Stopwatch
+   {
+      friend class StopwatchTests;
+   private:
+      std::function<std::chrono::time_point<std::chrono::high_resolution_clock>()> _call_highres_now;
+      std::chrono::time_point<std::chrono::high_resolution_clock> _startTime;
+   public:
+      Stopwatch() noexcept : _call_highres_now(std::chrono::high_resolution_clock::now) {}
+      virtual ~Stopwatch() = default;
+
+      virtual void Start()
+      {
+         _startTime = _call_highres_now();
+      }
+
+      virtual long long StopAndGetElapsedMicroseconds()
+      {
+         if (_startTime == std::chrono::time_point<std::chrono::high_resolution_clock>())
+         {
+            return 0u;
+         }
+         const std::chrono::time_point<std::chrono::high_resolution_clock> stopTime = _call_highres_now();
+         const std::chrono::duration<long long, std::nano> elapsedTime = stopTime - _startTime;
+         const long long elapsedMicroseconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsedTime).count();
+         _startTime = std::chrono::time_point<std::chrono::high_resolution_clock>();
+         return elapsedMicroseconds;
+      }
+
+      virtual std::string StopAndGetElapsedSeconds()
+      {
+         // Example elapsedMicroseconds: 1000
+         const long long elapsedMicroseconds = StopAndGetElapsedMicroseconds();
+
+         // Example elapsedMilliseconds: 1
+         const long long elapsedMilliseconds = elapsedMicroseconds / 1000;
+
+         // Example elapsedSeconds: 0
+         const long long elapsedSeconds = elapsedMilliseconds / 1000;
+
+         const size_t numberOfLeadingZeros =
+            elapsedMilliseconds < 10 ? 2 : // 3 -> 0.003
+            elapsedMilliseconds < 100 ? 1 : // 33 -> 0.033
+            0; // 333 -> 0.333
+
+         // Example leadingZeros: "00"
+         const std::string leadingZeros(numberOfLeadingZeros, '0');
+
+         // Example formattedElapsedSeconds: 0.001
+         const std::string formattedElapsedSeconds = String::Concat(elapsedSeconds, '.', leadingZeros, elapsedMilliseconds);
+
+         return formattedElapsedSeconds;
+      }
+   };
+
    class ZenUnitTestRunner
    {
       friend class ZenUnitTestRunnerTests;
@@ -4749,6 +4770,12 @@ namespace ZenUnit
          _console->WaitForAnyKeyIfDebuggerPresentOrValueTrue(_args.wait);
          return overallExitCode;
       }
+
+      std::string StopTestRunStopwatchAndGetElapsedSeconds()
+      {
+         const std::string elapsedSeconds = _testRunStopwatch->StopAndGetElapsedSeconds();
+         return elapsedSeconds;
+      }
    private:
       bool WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(bool pauseMode, bool havePaused) const
       {
@@ -4767,7 +4794,7 @@ namespace ZenUnit
 
       int PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines(const ZenUnitArgs& args)
       {
-         const std::string startTime = _preamblePrinter->PrintPreambleLinesAndGetStartTime(args, _testClassRunnerRunner.get());
+         const std::string startDateTime = _preamblePrinter->PrintPreambleLinesAndGetStartTime(args, _testClassRunnerRunner.get());
          _havePaused = _nonVoidTwoArgMemberFunctionCaller->ConstCall(
             this, &ZenUnitTestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused, args.pause, _havePaused);
          _testRunStopwatch->Start();
@@ -4782,9 +4809,8 @@ namespace ZenUnit
          }
          _testRunResult->PrintTestFailuresAndSkips();
          const size_t numberOfTestCases = _testClassRunnerRunner->NumberOfTestCases();
-         const long long testRunMicroseconds = _testRunStopwatch->Stop();
-         const long long testRunMilliseconds = testRunMicroseconds / 1000;
-         _testRunResult->PrintConclusionLines(startTime, numberOfTestCases, testRunMilliseconds, args);
+         const std::string testRunElapsedSeconds = _testRunStopwatch->StopAndGetElapsedSeconds();
+         _testRunResult->PrintConclusionLines(startDateTime, numberOfTestCases, testRunElapsedSeconds, args);
          const int testRunExitCode = _testRunResult->DetermineExitCode(args);
          return testRunExitCode;
       }
@@ -4811,7 +4837,7 @@ namespace ZenUnit
       std::unique_ptr<const TwoArgMemberFunctionCaller<void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>> _voidTwoArgMemberFunctionCaller;
       std::unique_ptr<const Watch> _watch;
       std::function<const ZenUnitArgs&()> _call_ZenUnitTestRunner_GetArgs;
-      std::unique_ptr<Stopwatch> _stopwatch;
+      std::unique_ptr<Stopwatch> _testPhaseStopwatch;
    public:
       TestPhaseRunner() noexcept
          : _console(std::make_unique<Console>())
@@ -4819,7 +4845,7 @@ namespace ZenUnit
          , _voidTwoArgMemberFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>>())
          , _watch(new Watch)
          , _call_ZenUnitTestRunner_GetArgs(ZenUnitTestRunner::GetArgs)
-         , _stopwatch(std::make_unique<Stopwatch>())
+         , _testPhaseStopwatch(std::make_unique<Stopwatch>())
       {
       }
 
@@ -4840,40 +4866,42 @@ namespace ZenUnit
 
       void FailFastDueToDotDotDotException(const ZenUnitArgs& args, TestPhase testPhase) const
       {
-         const long long testRunDurationInMilliseconds = _stopwatch->Stop();
+         const std::string testRunDurationInSeconds = _testPhaseStopwatch->StopAndGetElapsedSeconds();
          _console->WriteLineColor("\n==========================\nFatal ... Exception Thrown\n==========================\n", Color::Red);
 
          _console->WriteColor(">>------> ", Color::Red);
-         _console->WriteLine(" Completed: " + args.commandLine);
+         _console->WriteLine("     Completed: " + args.commandLine);
 
          _console->WriteColor(">>------> ", Color::Red);
-         _console->WriteLine("RandomSeed: " + std::to_string(args.randomSeed));
+         _console->WriteLine("     StartTime: " + args.startDateTime);
 
          _console->WriteColor(">>------> ", Color::Red);
-         _console->WriteLine(" StartTime: " + args.startTime);
+         const std::string endDateTime = _watch->DateTimeNow();
+         _console->WriteLine("       EndTime: " + endDateTime);
 
          _console->WriteColor(">>------> ", Color::Red);
-         const std::string endTime = _watch->DateTimeNow();
-         _console->WriteLine("   EndTime: " + endTime);
+         _console->WriteLine("      Duration: " + testRunDurationInSeconds + " seconds");
 
          _console->WriteColor(">>------> ", Color::Red);
-         _console->WriteLine("  Duration: " + std::to_string(testRunDurationInMilliseconds) + " milliseconds");
+         _console->WriteLine("    RandomSeed: " + std::to_string(args.randomSeed));
 
+         _console->WriteColor(">>------> ", Color::Red);
          const char* const testPhaseName = _testPhaseTranslator->TestPhaseToTestPhaseName(testPhase);
+         const std::string testRunResultLine = String::Concat(" TestRunResult: Fatal ... exception thrown during test phase: ", testPhaseName);
+         _console->WriteLine(testRunResultLine);
+
          const int exitCode = args.exitZero ? 0 : 1;
          _console->WriteColor(">>-FAIL-> ", Color::Red);
-         const std::string resultLine = String::Concat(
-            "    Result: Fatal ... exception thrown during the ", testPhaseName, " test phase. Fail fasting with exit code ", exitCode, ".");
-         _console->WriteLineAndExit(resultLine, exitCode);
+         _console->WriteLineAndExit("      ExitCode: " + std::to_string(exitCode), exitCode);
       }
    private:
       template<typename ExceptionType>
-      void PopulateTestPhaseResultWithExceptionInformation(const ExceptionType& e, TestPhaseResult* outTestPhaseResult) const
+      void PopulateTestPhaseResultWithExceptionInformation(const ExceptionType& ex, TestPhaseResult* outTestPhaseResult) const
       {
-         outTestPhaseResult->microseconds = _stopwatch->Stop();
-         const std::string* const exceptionTypeName = Type::GetName(e);
-         const char* const what = e.what();
-         outTestPhaseResult->anomalyOrException = std::make_shared<AnomalyOrException>(exceptionTypeName, what);
+         outTestPhaseResult->microseconds = _testPhaseStopwatch->StopAndGetElapsedMicroseconds();
+         const std::string* const exceptionTypeName = Type::GetName(ex);
+         const char* const exceptionWhat = ex.what();
+         outTestPhaseResult->anomalyOrException = std::make_shared<AnomalyOrException>(exceptionTypeName, exceptionWhat);
          outTestPhaseResult->testOutcome = TestOutcome::Exception;
       }
    };
@@ -5033,17 +5061,17 @@ namespace ZenUnit
 
    inline TestPhaseResult TestPhaseRunner::RunTestPhase(void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const
    {
-      _stopwatch->Start();
+      _testPhaseStopwatch->Start();
       TestPhaseResult testPhaseResult(testPhase);
       const ZenUnitArgs& args = _call_ZenUnitTestRunner_GetArgs();
       try
       {
          testPhaseFunction(test);
-         testPhaseResult.microseconds = _stopwatch->Stop();
+         testPhaseResult.microseconds = _testPhaseStopwatch->StopAndGetElapsedMicroseconds();
       }
       catch (const Anomaly& anomaly)
       {
-         testPhaseResult.microseconds = _stopwatch->Stop();
+         testPhaseResult.microseconds = _testPhaseStopwatch->StopAndGetElapsedMicroseconds();
          testPhaseResult.anomalyOrException = std::make_shared<AnomalyOrException>(anomaly);
          testPhaseResult.testOutcome = TestOutcome::Anomaly;
          _console->WriteColor("\n=======\nAnomaly\n=======", Color::Red);
@@ -5100,14 +5128,14 @@ namespace ZenUnit
    private:
       std::unique_ptr<const TestPhaseRunner> _testPhaseRunner;
       std::unique_ptr<const TestResultFactory> _testResultFactory;
-      std::unique_ptr<Stopwatch> _stopwatch;
+      std::unique_ptr<Stopwatch> _testPhaseStopwatch;
       std::unique_ptr<TestClassType> _instanceOfTestClass;
    public:
       explicit NewableDeletableTest(const char* testClassName)
          : Test(testClassName, "TestClassIsNewableAndDeletable", 0)
          , _testPhaseRunner(std::make_unique<TestPhaseRunner>())
          , _testResultFactory(std::make_unique<TestResultFactory>())
-         , _stopwatch(std::make_unique<Stopwatch>())
+         , _testPhaseStopwatch(std::make_unique<Stopwatch>())
       {
       }
 
@@ -5118,17 +5146,17 @@ namespace ZenUnit
 
       std::vector<TestResult> RunTest() override
       {
-         _stopwatch->Start();
+         _testPhaseStopwatch->Start();
          const TestPhaseResult constructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorTestPhaseResult.testOutcome != TestOutcome::Success)
          {
             TestResult constructorFail = _testResultFactory->MakeConstructorFail(_protected_fullTestName, constructorTestPhaseResult);
-            constructorFail.microseconds = _stopwatch->Stop();
+            constructorFail.microseconds = _testPhaseStopwatch->StopAndGetElapsedMicroseconds();
             return { constructorFail };
          }
          const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
          TestResult testResult = _testResultFactory->MakeCtorDtorSuccess(_protected_fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
-         testResult.microseconds = _stopwatch->Stop();
+         testResult.microseconds = _testPhaseStopwatch->StopAndGetElapsedMicroseconds();
          return { testResult };
       }
 

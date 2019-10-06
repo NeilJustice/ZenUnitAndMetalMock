@@ -28,7 +28,7 @@ namespace ZenUnit
       _newableDeletableTest = make_unique<NewableDeletableTest<TestingTestClass>>(TestClassName.c_str());
       _newableDeletableTest->_testPhaseRunner.reset(_tryCatchCallerMock = new TestPhaseRunnerMock);
       _newableDeletableTest->_testResultFactory.reset(_testResultFactoryMock = new TestResultFactoryMock);
-      _newableDeletableTest->_stopwatch.reset(_stopwatchMock = new StopwatchMock);
+      _newableDeletableTest->_testPhaseStopwatch.reset(_stopwatchMock = new StopwatchMock);
    }
 
    TEST(Constructor_NewsComponents)
@@ -39,7 +39,7 @@ namespace ZenUnit
       ARE_EQUAL("(0)", newableDeletableTest.FileLineString());
       POINTER_WAS_NEWED(newableDeletableTest._testResultFactory);
       POINTER_WAS_NEWED(newableDeletableTest._testPhaseRunner);
-      POINTER_WAS_NEWED(newableDeletableTest._stopwatch);
+      POINTER_WAS_NEWED(newableDeletableTest._testPhaseStopwatch);
       POINTER_IS_NULL(newableDeletableTest._instanceOfTestClass);
    }
 
@@ -59,7 +59,7 @@ namespace ZenUnit
       failedConstructorTestPhaseResult.testOutcome = nonSuccessOutcome;
       _tryCatchCallerMock->RunTestPhaseMock.Return(failedConstructorTestPhaseResult);
 
-      const long long microseconds = _stopwatchMock->StopMock.ReturnRandom();
+      const long long microseconds = _stopwatchMock->StopAndGetElapsedMicrosecondsMock.ReturnRandom();
 
       TestResult constructorFailTestResult = TestResult::TestingNonDefault();
       constructorFailTestResult.microseconds = microseconds;
@@ -73,7 +73,7 @@ namespace ZenUnit
       ZENMOCK(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(
          _newableDeletableTest->_protected_fullTestName, failedConstructorTestPhaseResult));
       const vector<TestResult> expectedTestResults{ constructorFailTestResult };
-      ZENMOCK(_stopwatchMock->StopMock.CalledOnce());
+      ZENMOCK(_stopwatchMock->StopAndGetElapsedMicrosecondsMock.CalledOnce());
       VECTORS_EQUAL(expectedTestResults, testResults);
    }
 
@@ -87,7 +87,7 @@ namespace ZenUnit
       TestPhaseResult destructorTestPhaseResult;
       _tryCatchCallerMock->RunTestPhaseMock.ReturnValues(successConstructorTestPhaseResult, destructorTestPhaseResult);
 
-      const long long microseconds = _stopwatchMock->StopMock.ReturnRandom();
+      const long long microseconds = _stopwatchMock->StopAndGetElapsedMicrosecondsMock.ReturnRandom();
 
       TestResult sixArgCtorTestResult = TestResult::TestingNonDefault();
       sixArgCtorTestResult.microseconds = microseconds;
@@ -103,7 +103,7 @@ namespace ZenUnit
       }));
       ZENMOCK(_testResultFactoryMock->MakeCtorDtorSuccessMock.CalledOnceWith(
          _newableDeletableTest->_protected_fullTestName, successConstructorTestPhaseResult, destructorTestPhaseResult));
-      ZENMOCK(_stopwatchMock->StopMock.CalledOnce());
+      ZENMOCK(_stopwatchMock->StopAndGetElapsedMicrosecondsMock.CalledOnce());
       const vector<TestResult> expectedTestResults{ sixArgCtorTestResult };
       VECTORS_EQUAL(expectedTestResults, testResults);
    }

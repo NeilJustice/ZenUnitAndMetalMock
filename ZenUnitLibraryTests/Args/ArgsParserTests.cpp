@@ -119,7 +119,7 @@ Testing Utility Options:
 
    TEST(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
    {
-      const string startTime = _watchMock->DateTimeNowMock.ReturnRandom();
+      const string startDateTime = _watchMock->DateTimeNowMock.ReturnRandom();
       ExpectCallToSetRandomSeedIfNotSetByUser();
       vector<string> stringArgs{ _testProgramPath };
       //
@@ -128,7 +128,7 @@ Testing Utility Options:
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = _testProgramPath;
-      expectedZenUnitArgs.startTime = startTime;
+      expectedZenUnitArgs.startDateTime = startDateTime;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
@@ -196,7 +196,7 @@ Testing Utility Options:
       const int testruns = ToInt_ZenMockObject.ReturnRandom();
       const unsigned randomSeed = ToUnsigned_ZenMockObject.ReturnRandom();
 		_callerOfSetRandomSeedIfNotSetByUserMock->ConstCallMock.Expect();
-		const string startTime = _watchMock->DateTimeNowMock.ReturnRandom();
+		const string startDateTime = _watchMock->DateTimeNowMock.ReturnRandom();
       const vector<string> stringArgs
       {
          _testProgramPath,
@@ -226,7 +226,7 @@ Testing Utility Options:
       expectedZenUnitArgs.testRuns = testruns;
       expectedZenUnitArgs.randomSeed = randomSeed;
       expectedZenUnitArgs.randomSeedSetByUser = true;
-		expectedZenUnitArgs.startTime = startTime;
+		expectedZenUnitArgs.startDateTime = startDateTime;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }

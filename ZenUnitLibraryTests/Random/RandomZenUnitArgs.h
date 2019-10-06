@@ -7,7 +7,7 @@ namespace ZenUnit
    inline ZenUnitArgs Random<ZenUnitArgs>()
    {
       ZenUnitArgs randomZenUnitArgs;
-      randomZenUnitArgs.startTime = ZenUnit::Random<string>();
+      randomZenUnitArgs.startDateTime = ZenUnit::Random<string>();
       randomZenUnitArgs.commandLine = ZenUnit::Random<string>();
       randomZenUnitArgs.runFilters = ZenUnit::RandomVector<RunFilter>();
       randomZenUnitArgs.pause = ZenUnit::Random<bool>();
