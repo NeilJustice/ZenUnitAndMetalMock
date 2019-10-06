@@ -9,8 +9,8 @@ namespace ZenUnit
    AFACT(ZenUnitPrinter_Print_EmptyAndNonConst_PrintsElements)
    AFACT(ZenUnitPrinter_Print_OneElement_PrintsElement)
    AFACT(ZenUnitPrinter_Print_TwoElements_PrintsElements)
-   AFACT(ZenUnitPrinter_Print_SevenElements_PrintsAllSevenElements)
-   AFACT(ZenUnitPrinter_Print_EightElements_PrintsFirstSevenElements)
+   AFACT(ZenUnitPrinter_Print_TenElements_PrintsAllTenElements)
+   AFACT(ZenUnitPrinter_Print_ElevenElements_PrintsFirstTenElements)
    EVIDENCE
 
    const string _expectedVectorTypePrefix = "std::vector<" + *Type::GetName<T>() + "> (size ";
@@ -67,33 +67,14 @@ namespace ZenUnit
 "}"), printString);
    }
 
-   TEST(ZenUnitPrinter_Print_SevenElements_PrintsAllSevenElements)
+   TEST(ZenUnitPrinter_Print_TenElements_PrintsAllTenElements)
    {
-      const vector<T> v = { 1, 2, 3, 4, 5, 6, 7 };
+      const vector<T> v = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
       //
       ZenUnit::Printer<decltype(v)>::Print(_oss, v);
       //
       const string printString = _oss.str();
-      ARE_EQUAL(_expectedVectorTypePrefix + "7):" + TestUtil::NewlineConcat("",
-"{",
-"   1,",
-"   2,",
-"   3,",
-"   4,",
-"   5,",
-"   6,",
-"   7",
-"}"), printString);
-   }
-
-   TEST(ZenUnitPrinter_Print_EightElements_PrintsFirstSevenElements)
-   {
-      const vector<T> v = { 1, 2, 3, 4, 5, 6, 7, 8 };
-      //
-      ZenUnit::Printer<decltype(v)>::Print(_oss, v);
-      //
-      const string printString = _oss.str();
-      ARE_EQUAL(_expectedVectorTypePrefix + "8):" + TestUtil::NewlineConcat("",
+      ARE_EQUAL(_expectedVectorTypePrefix + "10):" + TestUtil::NewlineConcat("",
 "{",
 "   1,",
 "   2,",
@@ -102,7 +83,32 @@ namespace ZenUnit
 "   5,",
 "   6,",
 "   7,",
-"   ...elements beyond 7 elided for brevity...",
+"   8,",
+"   9,",
+"   10",
+"}"), printString);
+   }
+
+   TEST(ZenUnitPrinter_Print_ElevenElements_PrintsFirstTenElements)
+   {
+      const vector<T> v = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+      //
+      ZenUnit::Printer<decltype(v)>::Print(_oss, v);
+      //
+      const string printString = _oss.str();
+      ARE_EQUAL(_expectedVectorTypePrefix + "11):" + TestUtil::NewlineConcat("",
+"{",
+"   1,",
+"   2,",
+"   3,",
+"   4,",
+"   5,",
+"   6,",
+"   7,",
+"   8,",
+"   9,",
+"   10,",
+"   ...elements beyond 10 elided for brevity...",
 "}"), printString);
    }
 

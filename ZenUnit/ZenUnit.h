@@ -6270,9 +6270,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    )";
          for (std::size_t i = 0; i < vectorSize; ++i)
          {
-            if (i == 7)
+            if (i == 10)
             {
-               os << "...elements beyond 7 elided for brevity...";
+               os << "...elements beyond 10 elided for brevity...";
                break;
             }
             const T& element = vec[i];
