@@ -62,7 +62,7 @@ namespace ZenMock
       //
       _mocker->ZenMockIt(1, 2);
       //
-      using CallType = TwoArgumentCall<int, int>;
+      using CallType = TwoArgumentFunctionCall<int, int>;
       const vector<CallType> expectedCalls
       {
          CallType(1, 2)

@@ -63,7 +63,7 @@ namespace ZenMock
       //
       _mocker->ZenMockIt(1, 2, 3, 4, 5, 6, 7);
       //
-      using CallType = SevenArgumentCall<int, int, int, int, int, int, int>;
+      using CallType = SevenArgumentFunctionCall<int, int, int, int, int, int, int>;
       const vector<CallType> expectedCalls
       {
          CallType(1, 2, 3, 4, 5, 6, 7)

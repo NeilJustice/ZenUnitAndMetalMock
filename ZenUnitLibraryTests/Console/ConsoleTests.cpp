@@ -156,7 +156,7 @@ namespace ZenUnit
       //
       consoleSelfMocked.DoWriteStringsCommaSeparated(strings, startIndex, numberOfElements);
       //
-      vector<ZenMock::OneArgumentCallRef<string_view>> expectedConsoleWriteCalls;
+      vector<ZenMock::OneArgumentFunctionCallRef<string_view>> expectedConsoleWriteCalls;
       expectedConsoleWriteCalls.reserve(expectedConsoleWrites.size());
       for (const string& expectedConsoleWrite : expectedConsoleWrites)
       {

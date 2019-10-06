@@ -71,7 +71,7 @@ namespace ZenMock
       //
       _mocker->ZenMockIt(1);
       //
-      using CallType = OneArgumentCall<int>;
+      using CallType = OneArgumentFunctionCall<int>;
       const vector<CallType> expectedCalls
       {
          CallType(1)
@@ -94,7 +94,7 @@ namespace ZenMock
       _mocker->zenMockObjectCallHistory.resize(numberOfCalls);
       if (numberOfCalls == 1)
       {
-         _mocker->zenMockObjectCallHistory = { OneArgumentCall<int>(actualArg) };
+         _mocker->zenMockObjectCallHistory = { OneArgumentFunctionCall<int>(actualArg) };
       }
       //
       if (expectCallCountThrow)
@@ -164,14 +164,14 @@ File.cpp(1))");
    }
 
    TEST5X5(CalledAsFollowsWith_SetsAssertedTrue_NEqualToNumberOfCalls_ThrowsIfArgsDoNotMatch,
-      size_t expectedNumberOfCalls, int expectedArgument, const vector<OneArgumentCall<int>>& actualArgs,
+      size_t expectedNumberOfCalls, int expectedArgument, const vector<OneArgumentFunctionCall<int>>& actualArgs,
       bool expectThrow, size_t expectedResponsibleCallIndex,
-      size_t(1), 0, vector<OneArgumentCall<int>>{0}, false, ZenUnit::Random<size_t>(),
-      size_t(1), 0, vector<OneArgumentCall<int>>{1}, true, size_t(0),
-      size_t(1), 1, vector<OneArgumentCall<int>>{2}, true, size_t(0),
-      size_t(2), 1, vector<OneArgumentCall<int>>{1 Comma 1}, false, ZenUnit::Random<size_t>(),
-      size_t(2), 1, vector<OneArgumentCall<int>>{2 Comma 1}, true, size_t(0),
-      size_t(2), 1, vector<OneArgumentCall<int>>{1 Comma 2}, true, size_t(1))
+      size_t(1), 0, vector<OneArgumentFunctionCall<int>>{0}, false, ZenUnit::Random<size_t>(),
+      size_t(1), 0, vector<OneArgumentFunctionCall<int>>{1}, true, size_t(0),
+      size_t(1), 1, vector<OneArgumentFunctionCall<int>>{2}, true, size_t(0),
+      size_t(2), 1, vector<OneArgumentFunctionCall<int>>{1 Comma 1}, false, ZenUnit::Random<size_t>(),
+      size_t(2), 1, vector<OneArgumentFunctionCall<int>>{2 Comma 1}, true, size_t(0),
+      size_t(2), 1, vector<OneArgumentFunctionCall<int>>{1 Comma 2}, true, size_t(1))
    {
       IS_FALSE(_mocker->_asserted);
       //
@@ -208,16 +208,16 @@ File.cpp(1))");
    {
       IS_FALSE(_mocker->_asserted);
       const int zero = 0;
-      const vector<OneArgumentCallRef<int>> expectedOneArgumentCalls{ zero };
+      const vector<OneArgumentFunctionCallRef<int>> expectedOneArgumentCalls{ zero };
       //
       THROWS(_mocker->CalledAsFollows(expectedOneArgumentCalls), Anomaly, "\n"
 "  Failed: VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature)\n"
-"Expected: std::vector<ZenMock::OneArgumentCallRef<int>> (size 1):\n"
+"Expected: std::vector<ZenMock::OneArgumentFunctionCallRef<int>> (size 1):\n"
 "{\n"
 "   ZenMock::OneArgumentCall:\n"
 "Argument: 0\n"
 "}\n"
-"  Actual: std::vector<ZenMock::OneArgumentCallRef<int>> (size 0):\n"
+"  Actual: std::vector<ZenMock::OneArgumentFunctionCallRef<int>> (size 0):\n"
 "{\n"
 "}\n"
 " Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed\n"
@@ -234,19 +234,19 @@ File.cpp(1))");
    {
       IS_FALSE(_mocker->_asserted);
       const int x = 10, y = 10;
-      const vector<OneArgumentCallRef<int>> expectedOneArgumentCalls{ x, y };
+      const vector<OneArgumentFunctionCallRef<int>> expectedOneArgumentCalls{ x, y };
       _mocker->zenMockObjectCallHistory = { 10, 20 };
       //
       THROWS(_mocker->CalledAsFollows(expectedOneArgumentCalls), Anomaly, "\n"
 "  Failed: VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature)\n"
-"Expected: std::vector<ZenMock::OneArgumentCallRef<int>> (size 2):\n"
+"Expected: std::vector<ZenMock::OneArgumentFunctionCallRef<int>> (size 2):\n"
 "{\n"
 "   ZenMock::OneArgumentCall:\n"
 "Argument: 10,\n"
 "   ZenMock::OneArgumentCall:\n"
 "Argument: 10\n"
 "}\n"
-"  Actual: std::vector<ZenMock::OneArgumentCallRef<int>> (size 2):\n"
+"  Actual: std::vector<ZenMock::OneArgumentFunctionCallRef<int>> (size 2):\n"
 "{\n"
 "   ZenMock::OneArgumentCall:\n"
 "Argument: 10,\n"
@@ -271,7 +271,7 @@ File.cpp(1))");
       IS_FALSE(_mocker->_asserted);
       int firstArgument = 10;
       int secondArgument = 10;
-      const vector<OneArgumentCallRef<int>> expectedOneArgumentCalls
+      const vector<OneArgumentFunctionCallRef<int>> expectedOneArgumentCalls
       {
          firstArgument, secondArgument
       };

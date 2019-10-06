@@ -1,9 +1,8 @@
 #include "pch.h"
-#include "ZenMockTests/ZenMock/T.h"
 
 namespace ZenMock
 {
-   TESTS(FourArgumentCallTests)
+   TESTS(FourArgumentFunctionCallTests)
    AFACT(DefaultConstructor_DefaultInitializesFields)
    AFACT(FourArgConstructor_CopiesValuesToDecayTypeFields)
    AFACT(ZenUnitEqualizer_CallsAreEqualOnEachField)
@@ -18,7 +17,7 @@ namespace ZenMock
    const T<3> V3 = T<3>(true);
    const T<4> V4 = T<4>(true);
 
-   using Call4 = FourArgumentCall<T<1>, T<2>, T<3>, T<4>>;
+   using Call4 = FourArgumentFunctionCall<T<1>, T<2>, T<3>, T<4>>;
 
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
@@ -31,7 +30,7 @@ namespace ZenMock
 
    TEST(FourArgConstructor_CopiesValuesToDecayTypeFields)
    {
-      const FourArgumentCall<const T<1>&, const T<2>&, const T<3>&, const T<4>&>
+      const FourArgumentFunctionCall<const T<1>&, const T<2>&, const T<3>&, const T<4>&>
          call(V1, V2, V3, V4);
       //
       ARE_COPIES(V1, call.firstArgument.value);
@@ -53,12 +52,12 @@ namespace ZenMock
       EQUALIZER_THROWS(Call4, fourthArgument, V4);
    }
 
-   RUN_TESTS(FourArgumentCallTests)
+   RUN_TESTS(FourArgumentFunctionCallTests)
 
 
-   TESTS(FourArgumentCallRefTests)
+   TESTS(FourArgumentFunctionCallRefTests)
    AFACT(Constructor_SetsReferences)
-   AFACT(CallConstructor_SetsReferencesToFourArgumentCallArgs)
+   AFACT(CallConstructor_SetsReferencesToFourArgumentFunctionCallArgs)
    AFACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
    AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
@@ -68,9 +67,9 @@ namespace ZenMock
    const T<3> V3 = T<3>(true);
    const T<4> V4 = T<4>(true);
 
-   using Call4 = FourArgumentCall<T<1>, T<2>, T<3>, T<4>>;
-   using CallRef4 = FourArgumentCallRef<T<1>, T<2>, T<3>, T<4>>;
-   using CallRefString4 = FourArgumentCallRef<string, string, string, string>;
+   using Call4 = FourArgumentFunctionCall<T<1>, T<2>, T<3>, T<4>>;
+   using CallRef4 = FourArgumentFunctionCallRef<T<1>, T<2>, T<3>, T<4>>;
+   using CallRefString4 = FourArgumentFunctionCallRef<string, string, string, string>;
 
    TEST(Constructor_SetsReferences)
    {
@@ -82,7 +81,7 @@ namespace ZenMock
       ARE_SAME(V4, callRef.fourthArgumentReference.value);
    }
 
-   TEST(CallConstructor_SetsReferencesToFourArgumentCallArgs)
+   TEST(CallConstructor_SetsReferencesToFourArgumentFunctionCallArgs)
    {
       const Call4 call(V1, V2, V3, V4);
       //
@@ -102,7 +101,7 @@ namespace ZenMock
       ZenUnit::Printer<CallRefString4>::Print(oss, callRef);
       //
       const string zenUnitPrintResult = oss.str();
-      const string expected = "ZenMock::FourArgumentCall:\n"
+      const string expected = "ZenMock::FourArgumentFunctionCall:\n"
 "Argument1: \"1\"\n"
 "Argument2: \"2\"\n"
 "Argument3: \"3\"\n"
@@ -132,5 +131,5 @@ namespace ZenMock
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "fourthArgument");
    }
 
-   RUN_TESTS(FourArgumentCallRefTests)
+   RUN_TESTS(FourArgumentFunctionCallRefTests)
 }

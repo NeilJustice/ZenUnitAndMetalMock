@@ -1573,156 +1573,156 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    };
 
    template<typename T>
-   struct ArgStorage
+   struct ArgumentStorage
    {
       typename std::decay<T>::type value;
 
-      ArgStorage()
+      ArgumentStorage()
          : value() {}
 
-      ArgStorage(const T& value)
+      ArgumentStorage(const T& value)
          : value(value) {}
    };
 
    template<>
-   struct ArgStorage<std::string_view>
+   struct ArgumentStorage<std::string_view>
    {
       std::string value;
 
-      ArgStorage() = default;
+      ArgumentStorage() = default;
 
-      ArgStorage(std::string_view value)
+      ArgumentStorage(std::string_view value)
          : value(value) {}
    };
 
    template<typename T>
-   struct ReferenceArgStorage
+   struct ReferenceArgumentStorage
    {
       const T& value;
 
-      ReferenceArgStorage()
+      ReferenceArgumentStorage()
          : value() {}
 
-      ReferenceArgStorage(const T& argument)
+      ReferenceArgumentStorage(const T& argument)
          : value(argument) {}
    };
 
    template<>
-   struct ReferenceArgStorage<std::string_view>
+   struct ReferenceArgumentStorage<std::string_view>
    {
       std::string value;
 
-      ReferenceArgStorage() = default;
+      ReferenceArgumentStorage() = default;
 
-      ReferenceArgStorage(std::string_view argument)
+      ReferenceArgumentStorage(std::string_view argument)
          : value(argument) {}
    };
 
    template<typename Arg1Type>
-   struct OneArgumentCall
+   struct OneArgumentFunctionCall
    {
-      ArgStorage<Arg1Type> argument;
+      ArgumentStorage<Arg1Type> argument;
 
-      OneArgumentCall() noexcept
+      OneArgumentFunctionCall() noexcept
          : argument() {}
 
-      OneArgumentCall(const Arg1Type& argument)
+      OneArgumentFunctionCall(const Arg1Type& argument)
          : argument(argument) {}
    };
 
    template<typename ArgType>
-   struct OneArgumentCallRef
+   struct OneArgumentFunctionCallRef
    {
-      const ReferenceArgStorage<ArgType> argumentReference;
+      const ReferenceArgumentStorage<ArgType> argumentReference;
 
-      OneArgumentCallRef(const ArgType& argument)
+      OneArgumentFunctionCallRef(const ArgType& argument)
          : argumentReference(argument) {}
 
-      explicit OneArgumentCallRef(const OneArgumentCall<ArgType>& oneArgumentCall)
+      explicit OneArgumentFunctionCallRef(const OneArgumentFunctionCall<ArgType>& oneArgumentCall)
          : argumentReference(oneArgumentCall.argument.value) {}
    };
 
    template<typename Arg1Type, typename Arg2Type>
-   struct TwoArgumentCall
+   struct TwoArgumentFunctionCall
    {
-      ArgStorage<Arg1Type> firstArgument;
-      ArgStorage<Arg2Type> secondArgument;
+      ArgumentStorage<Arg1Type> firstArgument;
+      ArgumentStorage<Arg2Type> secondArgument;
 
-      TwoArgumentCall() noexcept
+      TwoArgumentFunctionCall() noexcept
          : firstArgument()
          , secondArgument() {}
 
-      TwoArgumentCall(const Arg1Type& firstArgument, const Arg2Type& secondArgument)
+      TwoArgumentFunctionCall(const Arg1Type& firstArgument, const Arg2Type& secondArgument)
          : firstArgument(firstArgument)
          , secondArgument(secondArgument) {}
    };
 
    template<typename Arg1Type, typename Arg2Type>
-   struct TwoArgumentCallRef
+   struct TwoArgumentFunctionCallRef
    {
-      const ReferenceArgStorage<Arg1Type> firstArgumentReference;
-      const ReferenceArgStorage<Arg2Type> secondArgumentReference;
+      const ReferenceArgumentStorage<Arg1Type> firstArgumentReference;
+      const ReferenceArgumentStorage<Arg2Type> secondArgumentReference;
 
-      TwoArgumentCallRef(const Arg1Type& firstArgument, const Arg2Type& secondArgument)
+      TwoArgumentFunctionCallRef(const Arg1Type& firstArgument, const Arg2Type& secondArgument)
          : firstArgumentReference(firstArgument)
          , secondArgumentReference(secondArgument) {}
 
-      explicit TwoArgumentCallRef(const TwoArgumentCall<Arg1Type, Arg2Type>& twoArgumentCall)
+      explicit TwoArgumentFunctionCallRef(const TwoArgumentFunctionCall<Arg1Type, Arg2Type>& twoArgumentCall)
          : firstArgumentReference(twoArgumentCall.firstArgument.value)
          , secondArgumentReference(twoArgumentCall.secondArgument.value) {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
-   struct ThreeArgumentCall
+   struct ThreeArgumentFunctionCall
    {
-      ArgStorage<Arg1Type> firstArgument;
-      ArgStorage<Arg2Type> secondArgument;
-      ArgStorage<Arg3Type> thirdArgument;
+      ArgumentStorage<Arg1Type> firstArgument;
+      ArgumentStorage<Arg2Type> secondArgument;
+      ArgumentStorage<Arg3Type> thirdArgument;
 
-      ThreeArgumentCall() noexcept
+      ThreeArgumentFunctionCall() noexcept
          : firstArgument()
          , secondArgument()
          , thirdArgument() {}
 
-      ThreeArgumentCall(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument)
+      ThreeArgumentFunctionCall(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument)
          : firstArgument(firstArgument)
          , secondArgument(secondArgument)
          , thirdArgument(thirdArgument) {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
-   struct ThreeArgumentCallRef
+   struct ThreeArgumentFunctionCallRef
    {
-      const ReferenceArgStorage<Arg1Type> firstArgumentReference;
-      const ReferenceArgStorage<Arg2Type> secondArgumentReference;
-      const ReferenceArgStorage<Arg3Type> thirdArgumentReference;
+      const ReferenceArgumentStorage<Arg1Type> firstArgumentReference;
+      const ReferenceArgumentStorage<Arg2Type> secondArgumentReference;
+      const ReferenceArgumentStorage<Arg3Type> thirdArgumentReference;
 
-      ThreeArgumentCallRef(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument)
+      ThreeArgumentFunctionCallRef(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument)
          : firstArgumentReference(firstArgument)
          , secondArgumentReference(secondArgument)
          , thirdArgumentReference(thirdArgument) {}
 
-      explicit ThreeArgumentCallRef(const ThreeArgumentCall<Arg1Type, Arg2Type, Arg3Type>& threeArgumentCall)
+      explicit ThreeArgumentFunctionCallRef(const ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>& threeArgumentCall)
          : firstArgumentReference(threeArgumentCall.firstArgument.value)
          , secondArgumentReference(threeArgumentCall.secondArgument.value)
          , thirdArgumentReference(threeArgumentCall.thirdArgument.value) {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
-   struct FourArgumentCall
+   struct FourArgumentFunctionCall
    {
-      ArgStorage<Arg1Type> firstArgument;
-      ArgStorage<Arg2Type> secondArgument;
-      ArgStorage<Arg3Type> thirdArgument;
-      ArgStorage<Arg4Type> fourthArgument;
+      ArgumentStorage<Arg1Type> firstArgument;
+      ArgumentStorage<Arg2Type> secondArgument;
+      ArgumentStorage<Arg3Type> thirdArgument;
+      ArgumentStorage<Arg4Type> fourthArgument;
 
-      FourArgumentCall() noexcept
+      FourArgumentFunctionCall() noexcept
          : firstArgument()
          , secondArgument()
          , thirdArgument()
          , fourthArgument() {}
 
-      FourArgumentCall(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument, const Arg4Type& fourthArgument)
+      FourArgumentFunctionCall(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument, const Arg4Type& fourthArgument)
          : firstArgument(firstArgument)
          , secondArgument(secondArgument)
          , thirdArgument(thirdArgument)
@@ -1730,20 +1730,20 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
-   struct FourArgumentCallRef
+   struct FourArgumentFunctionCallRef
    {
-      const ReferenceArgStorage<Arg1Type> firstArgumentReference;
-      const ReferenceArgStorage<Arg2Type> secondArgumentReference;
-      const ReferenceArgStorage<Arg3Type> thirdArgumentReference;
-      const ReferenceArgStorage<Arg4Type> fourthArgumentReference;
+      const ReferenceArgumentStorage<Arg1Type> firstArgumentReference;
+      const ReferenceArgumentStorage<Arg2Type> secondArgumentReference;
+      const ReferenceArgumentStorage<Arg3Type> thirdArgumentReference;
+      const ReferenceArgumentStorage<Arg4Type> fourthArgumentReference;
 
-      FourArgumentCallRef(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument, const Arg4Type& fourthArgument)
+      FourArgumentFunctionCallRef(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument, const Arg4Type& fourthArgument)
          : firstArgumentReference(firstArgument)
          , secondArgumentReference(secondArgument)
          , thirdArgumentReference(thirdArgument)
          , fourthArgumentReference(fourthArgument) {}
 
-      explicit FourArgumentCallRef(const FourArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& fourArgumentCall)
+      explicit FourArgumentFunctionCallRef(const FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& fourArgumentCall)
          : firstArgumentReference(fourArgumentCall.firstArgument.value)
          , secondArgumentReference(fourArgumentCall.secondArgument.value)
          , thirdArgumentReference(fourArgumentCall.thirdArgument.value)
@@ -1751,22 +1751,22 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
-   struct FiveArgumentCall
+   struct FiveArgumentFunctionCall
    {
-      ArgStorage<Arg1Type> firstArgument;
-      ArgStorage<Arg2Type> secondArgument;
-      ArgStorage<Arg3Type> thirdArgument;
-      ArgStorage<Arg4Type> fourthArgument;
-      ArgStorage<Arg5Type> fifthArgument;
+      ArgumentStorage<Arg1Type> firstArgument;
+      ArgumentStorage<Arg2Type> secondArgument;
+      ArgumentStorage<Arg3Type> thirdArgument;
+      ArgumentStorage<Arg4Type> fourthArgument;
+      ArgumentStorage<Arg5Type> fifthArgument;
 
-      FiveArgumentCall() noexcept
+      FiveArgumentFunctionCall() noexcept
          : firstArgument()
          , secondArgument()
          , thirdArgument()
          , fourthArgument()
          , fifthArgument() {}
 
-      FiveArgumentCall(
+      FiveArgumentFunctionCall(
          const Arg1Type& firstArgument,
          const Arg2Type& secondArgument,
          const Arg3Type& thirdArgument,
@@ -1780,15 +1780,15 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
-   struct FiveArgumentCallRef
+   struct FiveArgumentFunctionCallRef
    {
-      const ReferenceArgStorage<Arg1Type> firstArgumentReference;
-      const ReferenceArgStorage<Arg2Type> secondArgumentReference;
-      const ReferenceArgStorage<Arg3Type> thirdArgumentReference;
-      const ReferenceArgStorage<Arg4Type> fourthArgumentReference;
-      const ReferenceArgStorage<Arg5Type> fifthArgumentReference;
+      const ReferenceArgumentStorage<Arg1Type> firstArgumentReference;
+      const ReferenceArgumentStorage<Arg2Type> secondArgumentReference;
+      const ReferenceArgumentStorage<Arg3Type> thirdArgumentReference;
+      const ReferenceArgumentStorage<Arg4Type> fourthArgumentReference;
+      const ReferenceArgumentStorage<Arg5Type> fifthArgumentReference;
 
-      FiveArgumentCallRef(
+      FiveArgumentFunctionCallRef(
          const Arg1Type& firstArgument,
          const Arg2Type& secondArgument,
          const Arg3Type& thirdArgument,
@@ -1800,7 +1800,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
          , fourthArgumentReference(fourthArgument)
          , fifthArgumentReference(fifthArgument) {}
 
-      explicit FiveArgumentCallRef(const FiveArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& fiveArgumentCall)
+      explicit FiveArgumentFunctionCallRef(const FiveArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& fiveArgumentCall)
          : firstArgumentReference(fiveArgumentCall.firstArgument.value)
          , secondArgumentReference(fiveArgumentCall.secondArgument.value)
          , thirdArgumentReference(fiveArgumentCall.thirdArgument.value)
@@ -1809,16 +1809,16 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
-   struct SixArgumentCall
+   struct SixArgumentFunctionCall
    {
-      ArgStorage<Arg1Type> firstArgument;
-      ArgStorage<Arg2Type> secondArgument;
-      ArgStorage<Arg3Type> thirdArgument;
-      ArgStorage<Arg4Type> fourthArgument;
-      ArgStorage<Arg5Type> fifthArgument;
-      ArgStorage<Arg6Type> sixthArgument;
+      ArgumentStorage<Arg1Type> firstArgument;
+      ArgumentStorage<Arg2Type> secondArgument;
+      ArgumentStorage<Arg3Type> thirdArgument;
+      ArgumentStorage<Arg4Type> fourthArgument;
+      ArgumentStorage<Arg5Type> fifthArgument;
+      ArgumentStorage<Arg6Type> sixthArgument;
 
-      SixArgumentCall() noexcept
+      SixArgumentFunctionCall() noexcept
          : firstArgument()
          , secondArgument()
          , thirdArgument()
@@ -1826,7 +1826,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
          , fifthArgument()
          , sixthArgument() {}
 
-      SixArgumentCall(
+      SixArgumentFunctionCall(
          const Arg1Type& firstArgument,
          const Arg2Type& secondArgument,
          const Arg3Type& thirdArgument,
@@ -1842,16 +1842,16 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
-   struct SixArgumentCallRef
+   struct SixArgumentFunctionCallRef
    {
-      const ReferenceArgStorage<Arg1Type> firstArgumentReference;
-      const ReferenceArgStorage<Arg2Type> secondArgumentReference;
-      const ReferenceArgStorage<Arg3Type> thirdArgumentReference;
-      const ReferenceArgStorage<Arg4Type> fourthArgumentReference;
-      const ReferenceArgStorage<Arg5Type> fifthArgumentReference;
-      const ReferenceArgStorage<Arg6Type> sixthArgumentReference;
+      const ReferenceArgumentStorage<Arg1Type> firstArgumentReference;
+      const ReferenceArgumentStorage<Arg2Type> secondArgumentReference;
+      const ReferenceArgumentStorage<Arg3Type> thirdArgumentReference;
+      const ReferenceArgumentStorage<Arg4Type> fourthArgumentReference;
+      const ReferenceArgumentStorage<Arg5Type> fifthArgumentReference;
+      const ReferenceArgumentStorage<Arg6Type> sixthArgumentReference;
 
-      SixArgumentCallRef(
+      SixArgumentFunctionCallRef(
          const Arg1Type& firstArgument,
          const Arg2Type& secondArgument,
          const Arg3Type& thirdArgument,
@@ -1865,7 +1865,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
          , fifthArgumentReference(fifthArgument)
          , sixthArgumentReference(sixthArgument) {}
 
-      explicit SixArgumentCallRef(const SixArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& sixArgumentCall)
+      explicit SixArgumentFunctionCallRef(const SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& sixArgumentCall)
          : firstArgumentReference(sixArgumentCall.firstArgument.value)
          , secondArgumentReference(sixArgumentCall.secondArgument.value)
          , thirdArgumentReference(sixArgumentCall.thirdArgument.value)
@@ -1875,17 +1875,17 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type>
-   struct SevenArgumentCall
+   struct SevenArgumentFunctionCall
    {
-      ArgStorage<Arg1Type> firstArgument;
-      ArgStorage<Arg2Type> secondArgument;
-      ArgStorage<Arg3Type> thirdArgument;
-      ArgStorage<Arg4Type> fourthArgument;
-      ArgStorage<Arg5Type> fifthArgument;
-      ArgStorage<Arg6Type> sixthArgument;
-      ArgStorage<Arg7Type> seventhArgument;
+      ArgumentStorage<Arg1Type> firstArgument;
+      ArgumentStorage<Arg2Type> secondArgument;
+      ArgumentStorage<Arg3Type> thirdArgument;
+      ArgumentStorage<Arg4Type> fourthArgument;
+      ArgumentStorage<Arg5Type> fifthArgument;
+      ArgumentStorage<Arg6Type> sixthArgument;
+      ArgumentStorage<Arg7Type> seventhArgument;
 
-      SevenArgumentCall() noexcept
+      SevenArgumentFunctionCall() noexcept
          : firstArgument()
          , secondArgument()
          , thirdArgument()
@@ -1894,7 +1894,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
          , sixthArgument()
          , seventhArgument() {}
 
-      SevenArgumentCall(
+      SevenArgumentFunctionCall(
          const Arg1Type& firstArgument,
          const Arg2Type& secondArgument,
          const Arg3Type& thirdArgument,
@@ -1912,17 +1912,17 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type>
-   struct SevenArgumentCallRef
+   struct SevenArgumentFunctionCallRef
    {
-      const ReferenceArgStorage<Arg1Type> firstArgumentReference;
-      const ReferenceArgStorage<Arg2Type> secondArgumentReference;
-      const ReferenceArgStorage<Arg3Type> thirdArgumentReference;
-      const ReferenceArgStorage<Arg4Type> fourthArgumentReference;
-      const ReferenceArgStorage<Arg5Type> fifthArgumentReference;
-      const ReferenceArgStorage<Arg6Type> sixthArgumentReference;
-      const ReferenceArgStorage<Arg7Type> seventhArgumentReference;
+      const ReferenceArgumentStorage<Arg1Type> firstArgumentReference;
+      const ReferenceArgumentStorage<Arg2Type> secondArgumentReference;
+      const ReferenceArgumentStorage<Arg3Type> thirdArgumentReference;
+      const ReferenceArgumentStorage<Arg4Type> fourthArgumentReference;
+      const ReferenceArgumentStorage<Arg5Type> fifthArgumentReference;
+      const ReferenceArgumentStorage<Arg6Type> sixthArgumentReference;
+      const ReferenceArgumentStorage<Arg7Type> seventhArgumentReference;
 
-      SevenArgumentCallRef(
+      SevenArgumentFunctionCallRef(
          const Arg1Type& firstArgument,
          const Arg2Type& secondArgument,
          const Arg3Type& thirdArgument,
@@ -1938,7 +1938,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
          , sixthArgumentReference(sixthArgument)
          , seventhArgumentReference(seventhArgument) {}
 
-      explicit SevenArgumentCallRef(const SevenArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& sevenArgumentCall)
+      explicit SevenArgumentFunctionCallRef(const SevenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& sevenArgumentCall)
          : firstArgumentReference(sevenArgumentCall.firstArgument.value)
          , secondArgumentReference(sevenArgumentCall.secondArgument.value)
          , thirdArgumentReference(sevenArgumentCall.thirdArgument.value)
@@ -1949,18 +1949,18 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type>
-   struct EightArgumentCall
+   struct EightArgumentFunctionCall
    {
-      ArgStorage<Arg1Type> firstArgument;
-      ArgStorage<Arg2Type> secondArgument;
-      ArgStorage<Arg3Type> thirdArgument;
-      ArgStorage<Arg4Type> fourthArgument;
-      ArgStorage<Arg5Type> fifthArgument;
-      ArgStorage<Arg6Type> sixthArgument;
-      ArgStorage<Arg7Type> seventhArgument;
-      ArgStorage<Arg8Type> eigthArgument;
+      ArgumentStorage<Arg1Type> firstArgument;
+      ArgumentStorage<Arg2Type> secondArgument;
+      ArgumentStorage<Arg3Type> thirdArgument;
+      ArgumentStorage<Arg4Type> fourthArgument;
+      ArgumentStorage<Arg5Type> fifthArgument;
+      ArgumentStorage<Arg6Type> sixthArgument;
+      ArgumentStorage<Arg7Type> seventhArgument;
+      ArgumentStorage<Arg8Type> eigthArgument;
 
-      EightArgumentCall() noexcept
+      EightArgumentFunctionCall() noexcept
          : firstArgument()
          , secondArgument()
          , thirdArgument()
@@ -1970,7 +1970,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
          , seventhArgument()
          , eigthArgument() {}
 
-      EightArgumentCall(
+      EightArgumentFunctionCall(
          const Arg1Type& firstArgument,
          const Arg2Type& secondArgument,
          const Arg3Type& thirdArgument,
@@ -1990,18 +1990,18 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type>
-   struct EightArgumentCallRef
+   struct EightArgumentFunctionCallRef
    {
-      const ReferenceArgStorage<Arg1Type> firstArgumentReference;
-      const ReferenceArgStorage<Arg2Type> secondArgumentReference;
-      const ReferenceArgStorage<Arg3Type> thirdArgumentReference;
-      const ReferenceArgStorage<Arg4Type> fourthArgumentReference;
-      const ReferenceArgStorage<Arg5Type> fifthArgumentReference;
-      const ReferenceArgStorage<Arg6Type> sixthArgumentReference;
-      const ReferenceArgStorage<Arg7Type> seventhArgumentReference;
-      const ReferenceArgStorage<Arg8Type> eigthArgumentReference;
+      const ReferenceArgumentStorage<Arg1Type> firstArgumentReference;
+      const ReferenceArgumentStorage<Arg2Type> secondArgumentReference;
+      const ReferenceArgumentStorage<Arg3Type> thirdArgumentReference;
+      const ReferenceArgumentStorage<Arg4Type> fourthArgumentReference;
+      const ReferenceArgumentStorage<Arg5Type> fifthArgumentReference;
+      const ReferenceArgumentStorage<Arg6Type> sixthArgumentReference;
+      const ReferenceArgumentStorage<Arg7Type> seventhArgumentReference;
+      const ReferenceArgumentStorage<Arg8Type> eigthArgumentReference;
 
-      EightArgumentCallRef(
+      EightArgumentFunctionCallRef(
          const Arg1Type& firstArgument,
          const Arg2Type& secondArgument,
          const Arg3Type& thirdArgument,
@@ -2019,7 +2019,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
          , seventhArgumentReference(seventhArgument)
          , eigthArgumentReference(eigthArgument) {}
 
-      explicit EightArgumentCallRef(const EightArgumentCall<
+      explicit EightArgumentFunctionCallRef(const EightArgumentFunctionCall<
          Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& eightArgumentCall)
          : firstArgumentReference(eightArgumentCall.firstArgument.value)
          , secondArgumentReference(eightArgumentCall.secondArgument.value)
@@ -2032,19 +2032,19 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type>
-   struct NineArgumentCall
+   struct NineArgumentFunctionCall
    {
-      ArgStorage<Arg1Type> firstArgument;
-      ArgStorage<Arg2Type> secondArgument;
-      ArgStorage<Arg3Type> thirdArgument;
-      ArgStorage<Arg4Type> fourthArgument;
-      ArgStorage<Arg5Type> fifthArgument;
-      ArgStorage<Arg6Type> sixthArgument;
-      ArgStorage<Arg7Type> seventhArgument;
-      ArgStorage<Arg8Type> eigthArgument;
-      ArgStorage<Arg9Type> ninthArgument;
+      ArgumentStorage<Arg1Type> firstArgument;
+      ArgumentStorage<Arg2Type> secondArgument;
+      ArgumentStorage<Arg3Type> thirdArgument;
+      ArgumentStorage<Arg4Type> fourthArgument;
+      ArgumentStorage<Arg5Type> fifthArgument;
+      ArgumentStorage<Arg6Type> sixthArgument;
+      ArgumentStorage<Arg7Type> seventhArgument;
+      ArgumentStorage<Arg8Type> eigthArgument;
+      ArgumentStorage<Arg9Type> ninthArgument;
 
-      NineArgumentCall() noexcept
+      NineArgumentFunctionCall() noexcept
          : firstArgument()
          , secondArgument()
          , thirdArgument()
@@ -2055,7 +2055,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
          , eigthArgument()
          , ninthArgument() {}
 
-      NineArgumentCall(
+      NineArgumentFunctionCall(
          const Arg1Type& firstArgument,
          const Arg2Type& secondArgument,
          const Arg3Type& thirdArgument,
@@ -2077,19 +2077,19 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type>
-   struct NineArgumentCallRef
+   struct NineArgumentFunctionCallRef
    {
-      const ReferenceArgStorage<Arg1Type> firstArgumentReference;
-      const ReferenceArgStorage<Arg2Type> secondArgumentReference;
-      const ReferenceArgStorage<Arg3Type> thirdArgumentReference;
-      const ReferenceArgStorage<Arg4Type> fourthArgumentReference;
-      const ReferenceArgStorage<Arg5Type> fifthArgumentReference;
-      const ReferenceArgStorage<Arg6Type> sixthArgumentReference;
-      const ReferenceArgStorage<Arg7Type> seventhArgumentReference;
-      const ReferenceArgStorage<Arg8Type> eigthArgumentReference;
-      const ReferenceArgStorage<Arg9Type> ninthArgumentReference;
+      const ReferenceArgumentStorage<Arg1Type> firstArgumentReference;
+      const ReferenceArgumentStorage<Arg2Type> secondArgumentReference;
+      const ReferenceArgumentStorage<Arg3Type> thirdArgumentReference;
+      const ReferenceArgumentStorage<Arg4Type> fourthArgumentReference;
+      const ReferenceArgumentStorage<Arg5Type> fifthArgumentReference;
+      const ReferenceArgumentStorage<Arg6Type> sixthArgumentReference;
+      const ReferenceArgumentStorage<Arg7Type> seventhArgumentReference;
+      const ReferenceArgumentStorage<Arg8Type> eigthArgumentReference;
+      const ReferenceArgumentStorage<Arg9Type> ninthArgumentReference;
 
-      NineArgumentCallRef(
+      NineArgumentFunctionCallRef(
          const Arg1Type& firstArgument,
          const Arg2Type& secondArgument,
          const Arg3Type& thirdArgument,
@@ -2109,7 +2109,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
          , eigthArgumentReference(eigthArgument)
          , ninthArgumentReference(ninthArgument) {}
 
-      explicit NineArgumentCallRef(const NineArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& nineArgumentCall)
+      explicit NineArgumentFunctionCallRef(const NineArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& nineArgumentCall)
          : firstArgumentReference(nineArgumentCall.firstArgument.value)
          , secondArgumentReference(nineArgumentCall.secondArgument.value)
          , thirdArgumentReference(nineArgumentCall.thirdArgument.value)
@@ -2122,20 +2122,20 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type, typename Arg10Type>
-   struct TenArgumentCall
+   struct TenArgumentFunctionCall
    {
-      ArgStorage<Arg1Type> firstArgument;
-      ArgStorage<Arg2Type> secondArgument;
-      ArgStorage<Arg3Type> thirdArgument;
-      ArgStorage<Arg4Type> fourthArgument;
-      ArgStorage<Arg5Type> fifthArgument;
-      ArgStorage<Arg6Type> sixthArgument;
-      ArgStorage<Arg7Type> seventhArgument;
-      ArgStorage<Arg8Type> eigthArgument;
-      ArgStorage<Arg9Type> ninthArgument;
-      ArgStorage<Arg10Type> tenthArgument;
+      ArgumentStorage<Arg1Type> firstArgument;
+      ArgumentStorage<Arg2Type> secondArgument;
+      ArgumentStorage<Arg3Type> thirdArgument;
+      ArgumentStorage<Arg4Type> fourthArgument;
+      ArgumentStorage<Arg5Type> fifthArgument;
+      ArgumentStorage<Arg6Type> sixthArgument;
+      ArgumentStorage<Arg7Type> seventhArgument;
+      ArgumentStorage<Arg8Type> eigthArgument;
+      ArgumentStorage<Arg9Type> ninthArgument;
+      ArgumentStorage<Arg10Type> tenthArgument;
 
-      TenArgumentCall() noexcept
+      TenArgumentFunctionCall() noexcept
          : firstArgument()
          , secondArgument()
          , thirdArgument()
@@ -2147,7 +2147,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
          , ninthArgument()
          , tenthArgument() {}
 
-      TenArgumentCall(
+      TenArgumentFunctionCall(
          const Arg1Type& firstArgument,
          const Arg2Type& secondArgument,
          const Arg3Type& thirdArgument,
@@ -2171,20 +2171,20 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type, typename Arg10Type>
-   struct TenArgumentCallRef
+   struct TenArgumentFunctionCallRef
    {
-      const ReferenceArgStorage<Arg1Type> firstArgumentReference;
-      const ReferenceArgStorage<Arg2Type> secondArgumentReference;
-      const ReferenceArgStorage<Arg3Type> thirdArgumentReference;
-      const ReferenceArgStorage<Arg4Type> fourthArgumentReference;
-      const ReferenceArgStorage<Arg5Type> fifthArgumentReference;
-      const ReferenceArgStorage<Arg6Type> sixthArgumentReference;
-      const ReferenceArgStorage<Arg7Type> seventhArgumentReference;
-      const ReferenceArgStorage<Arg8Type> eigthArgumentReference;
-      const ReferenceArgStorage<Arg9Type> ninthArgumentReference;
-      const ReferenceArgStorage<Arg10Type> tenthArgumentReference;
+      const ReferenceArgumentStorage<Arg1Type> firstArgumentReference;
+      const ReferenceArgumentStorage<Arg2Type> secondArgumentReference;
+      const ReferenceArgumentStorage<Arg3Type> thirdArgumentReference;
+      const ReferenceArgumentStorage<Arg4Type> fourthArgumentReference;
+      const ReferenceArgumentStorage<Arg5Type> fifthArgumentReference;
+      const ReferenceArgumentStorage<Arg6Type> sixthArgumentReference;
+      const ReferenceArgumentStorage<Arg7Type> seventhArgumentReference;
+      const ReferenceArgumentStorage<Arg8Type> eigthArgumentReference;
+      const ReferenceArgumentStorage<Arg9Type> ninthArgumentReference;
+      const ReferenceArgumentStorage<Arg10Type> tenthArgumentReference;
 
-      TenArgumentCallRef(
+      TenArgumentFunctionCallRef(
          const Arg1Type& firstArgument,
          const Arg2Type& secondArgument,
          const Arg3Type& thirdArgument,
@@ -2206,7 +2206,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
          , ninthArgumentReference(ninthArgument)
          , tenthArgumentReference(tenthArgument) {}
 
-      explicit TenArgumentCallRef(const TenArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& tenArgumentCall)
+      explicit TenArgumentFunctionCallRef(const TenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& tenArgumentCall)
          : firstArgumentReference(tenArgumentCall.firstArgument.value)
          , secondArgumentReference(tenArgumentCall.secondArgument.value)
          , thirdArgumentReference(tenArgumentCall.thirdArgument.value)
@@ -2233,7 +2233,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
          typename StaticNameClashMockType>
       friend class ZenMock1Tester;
    private:
-      std::vector<OneArgumentCall<ArgType>> zenMockObjectCallHistory;
+      std::vector<OneArgumentFunctionCall<ArgType>> zenMockObjectCallHistory;
    public:
       explicit OneArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
@@ -2270,22 +2270,22 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
          return FunctionSequencingToken();
       }
 
-      FunctionSequencingToken CalledAsFollows(const std::vector<OneArgumentCallRef<ArgType>>& expectedOneArgumentCalls)
+      FunctionSequencingToken CalledAsFollows(const std::vector<OneArgumentFunctionCallRef<ArgType>>& expectedOneArgumentCalls)
       {
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedOneArgumentCalls.size());
          this->ZenMockSetAsserted();
-         const std::vector<OneArgumentCallRef<ArgType>> actualOneArgumentCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
+         const std::vector<OneArgumentFunctionCallRef<ArgType>> actualOneArgumentCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
          VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
    private:
-      static std::vector<OneArgumentCallRef<ArgType>>
-         PrivateCallsToCallRefs(const std::vector<OneArgumentCall<ArgType>>& zenMockObjectCallHistory)
+      static std::vector<OneArgumentFunctionCallRef<ArgType>>
+         PrivateCallsToCallRefs(const std::vector<OneArgumentFunctionCall<ArgType>>& zenMockObjectCallHistory)
       {
-         std::vector<OneArgumentCallRef<ArgType>> oneArgumentCallRefs;
+         std::vector<OneArgumentFunctionCallRef<ArgType>> oneArgumentCallRefs;
          oneArgumentCallRefs.reserve(zenMockObjectCallHistory.size());
          std::for_each(zenMockObjectCallHistory.cbegin(), zenMockObjectCallHistory.cend(),
-            [&](const OneArgumentCall<ArgType>& oneArgumentCall)
+            [&](const OneArgumentFunctionCall<ArgType>& oneArgumentCall)
          {
             oneArgumentCallRefs.emplace_back(oneArgumentCall);
          });
@@ -2397,7 +2397,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    {
       friend class TwoArgumentMockerTests;
    private:
-      std::vector<TwoArgumentCall<Arg1Type, Arg2Type>> zenMockObjectCallHistory;
+      std::vector<TwoArgumentFunctionCall<Arg1Type, Arg2Type>> zenMockObjectCallHistory;
    public:
       explicit TwoArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
@@ -2441,23 +2441,23 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
          return FunctionSequencingToken();
       }
 
-      FunctionSequencingToken CalledAsFollows(const std::vector<TwoArgumentCallRef<Arg1Type, Arg2Type>>& expectedTwoArgumentCalls)
+      FunctionSequencingToken CalledAsFollows(const std::vector<TwoArgumentFunctionCallRef<Arg1Type, Arg2Type>>& expectedTwoArgumentFunctionCalls)
       {
-         this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedTwoArgumentCalls.size());
+         this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedTwoArgumentFunctionCalls.size());
          this->ZenMockSetAsserted();
-         const std::vector<TwoArgumentCallRef<Arg1Type, Arg2Type>>
-            actualTwoArgumentCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
-         VECTORS_EQUAL(expectedTwoArgumentCalls, actualTwoArgumentCalls, this->ZenMockedFunctionSignature);
+         const std::vector<TwoArgumentFunctionCallRef<Arg1Type, Arg2Type>>
+            actualTwoArgumentFunctionCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
+         VECTORS_EQUAL(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
    private:
-      static std::vector<TwoArgumentCallRef<Arg1Type, Arg2Type>>
-         PrivateCallsToCallRefs(const std::vector<TwoArgumentCall<Arg1Type, Arg2Type>>& zenMockObjectCallHistory)
+      static std::vector<TwoArgumentFunctionCallRef<Arg1Type, Arg2Type>>
+         PrivateCallsToCallRefs(const std::vector<TwoArgumentFunctionCall<Arg1Type, Arg2Type>>& zenMockObjectCallHistory)
       {
-         std::vector<TwoArgumentCallRef<Arg1Type, Arg2Type>> twoArgumentCallRefs;
+         std::vector<TwoArgumentFunctionCallRef<Arg1Type, Arg2Type>> twoArgumentCallRefs;
          twoArgumentCallRefs.reserve(zenMockObjectCallHistory.size());
          std::for_each(zenMockObjectCallHistory.cbegin(), zenMockObjectCallHistory.cend(),
-            [&](const TwoArgumentCall<Arg1Type, Arg2Type>& twoArgumentCall)
+            [&](const TwoArgumentFunctionCall<Arg1Type, Arg2Type>& twoArgumentCall)
          {
             twoArgumentCallRefs.emplace_back(twoArgumentCall);
          });
@@ -2572,7 +2572,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    {
       friend class ThreeArgumentMockerTests;
    private:
-      std::vector<ThreeArgumentCall<Arg1Type, Arg2Type, Arg3Type>> zenMockObjectCallHistory;
+      std::vector<ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>> zenMockObjectCallHistory;
    protected:
       std::function<void(Arg1Type, Arg2Type, Arg3Type)> voidThreeArgFunctionToCallInstead;
    public:
@@ -2625,23 +2625,23 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
          return FunctionSequencingToken();
       }
 
-      FunctionSequencingToken CalledAsFollows(const std::vector<ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>>& expectedThreeArgumentCalls)
+      FunctionSequencingToken CalledAsFollows(const std::vector<ThreeArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type>>& expectedThreeArgumentFunctionCalls)
       {
-         this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedThreeArgumentCalls.size());
+         this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedThreeArgumentFunctionCalls.size());
          this->ZenMockSetAsserted();
-         const std::vector<ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>> actualThreeArgumentCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
-         VECTORS_EQUAL(expectedThreeArgumentCalls, actualThreeArgumentCalls, this->ZenMockedFunctionSignature);
+         const std::vector<ThreeArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type>> actualThreeArgumentFunctionCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
+         VECTORS_EQUAL(expectedThreeArgumentFunctionCalls, actualThreeArgumentFunctionCalls, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
    private:
-      static std::vector<ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>>
-         PrivateCallsToCallRefs(const std::vector<ThreeArgumentCall<Arg1Type, Arg2Type, Arg3Type>>& zenMockObjectCallHistory)
+      static std::vector<ThreeArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type>>
+         PrivateCallsToCallRefs(const std::vector<ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>>& zenMockObjectCallHistory)
       {
-         std::vector<ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>> threeArgumentCallRefs;
+         std::vector<ThreeArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type>> threeArgumentCallRefs;
          threeArgumentCallRefs.reserve(zenMockObjectCallHistory.size());
          std::for_each(zenMockObjectCallHistory.cbegin(), zenMockObjectCallHistory.cend(),
-            [&](const ThreeArgumentCall<Arg1Type, Arg2Type, Arg3Type>& threeArgumentCall)
+            [&](const ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>& threeArgumentCall)
          {
             threeArgumentCallRefs.emplace_back(threeArgumentCall);
          });
@@ -2763,7 +2763,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    {
       friend class FourArgumentMockerTests;
    private:
-      std::vector<FourArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> zenMockObjectCallHistory;
+      std::vector<FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> zenMockObjectCallHistory;
    public:
       explicit FourArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
@@ -2819,24 +2819,24 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
          return FunctionSequencingToken();
       }
 
-      FunctionSequencingToken CalledAsFollows(const std::vector<FourArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>& expectedFourArgumentCalls)
+      FunctionSequencingToken CalledAsFollows(const std::vector<FourArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>& expectedFourArgumentFunctionCalls)
       {
-         this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedFourArgumentCalls.size());
+         this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedFourArgumentFunctionCalls.size());
          this->ZenMockSetAsserted();
-         const std::vector<FourArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
-            actualFourArgumentCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
-         VECTORS_EQUAL(expectedFourArgumentCalls, actualFourArgumentCalls, this->ZenMockedFunctionSignature);
+         const std::vector<FourArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
+            actualFourArgumentFunctionCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
+         VECTORS_EQUAL(expectedFourArgumentFunctionCalls, actualFourArgumentFunctionCalls, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
    private:
-      static std::vector<FourArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
-         PrivateCallsToCallRefs(const std::vector<FourArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>& zenMockObjectCallHistory)
+      static std::vector<FourArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
+         PrivateCallsToCallRefs(const std::vector<FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>& zenMockObjectCallHistory)
       {
-         std::vector<FourArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> fourArgumentCallRefs;
+         std::vector<FourArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> fourArgumentCallRefs;
          fourArgumentCallRefs.reserve(zenMockObjectCallHistory.size());
          std::for_each(zenMockObjectCallHistory.cbegin(), zenMockObjectCallHistory.cend(),
-            [&](const FourArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& fourArgumentCall)
+            [&](const FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& fourArgumentCall)
          {
             fourArgumentCallRefs.emplace_back(fourArgumentCall);
          });
@@ -2953,7 +2953,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    {
       friend class FiveArgumentMockerTests;
    private:
-      std::vector<FiveArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>> zenMockObjectCallHistory;
+      std::vector<FiveArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>> zenMockObjectCallHistory;
    public:
       explicit FiveArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
@@ -3014,24 +3014,24 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
 			return FunctionSequencingToken();
       }
 
-      FunctionSequencingToken CalledAsFollows(const std::vector<FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>& expectedFiveArgumentCalls)
+      FunctionSequencingToken CalledAsFollows(const std::vector<FiveArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>& expectedFiveArgumentFunctionCalls)
       {
-         this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedFiveArgumentCalls.size());
+         this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedFiveArgumentFunctionCalls.size());
          this->ZenMockSetAsserted();
-         const std::vector<FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
-            actualFiveArgumentCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
-         VECTORS_EQUAL(expectedFiveArgumentCalls, actualFiveArgumentCalls, this->ZenMockedFunctionSignature);
+         const std::vector<FiveArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
+            actualFiveArgumentFunctionCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
+         VECTORS_EQUAL(expectedFiveArgumentFunctionCalls, actualFiveArgumentFunctionCalls, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
    private:
-      static std::vector<FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
-         PrivateCallsToCallRefs(const std::vector<FiveArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>& zenMockObjectCallHistory)
+      static std::vector<FiveArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
+         PrivateCallsToCallRefs(const std::vector<FiveArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>& zenMockObjectCallHistory)
       {
-         std::vector<FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>> fiveArgumentCallRefs;
+         std::vector<FiveArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>> fiveArgumentCallRefs;
          fiveArgumentCallRefs.reserve(zenMockObjectCallHistory.size());
          std::for_each(zenMockObjectCallHistory.cbegin(), zenMockObjectCallHistory.cend(),
-            [&](const FiveArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& fiveArgumentCall)
+            [&](const FiveArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& fiveArgumentCall)
          {
             fiveArgumentCallRefs.emplace_back(fiveArgumentCall);
          });
@@ -3149,7 +3149,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    {
       friend class SixArgumentMockerTests;
    private:
-      std::vector<SixArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>> zenMockObjectCallHistory;
+      std::vector<SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>> zenMockObjectCallHistory;
    public:
       explicit SixArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
@@ -3215,24 +3215,24 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
 			return FunctionSequencingToken();
       }
 
-      FunctionSequencingToken CalledAsFollows(const std::vector<SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>& expectedSixArgumentCalls)
+      FunctionSequencingToken CalledAsFollows(const std::vector<SixArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>& expectedSixArgumentFunctionCalls)
       {
-         this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedSixArgumentCalls.size());
+         this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedSixArgumentFunctionCalls.size());
          this->ZenMockSetAsserted();
-         const std::vector<SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
-            actualSixArgumentCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
-         VECTORS_EQUAL(expectedSixArgumentCalls, actualSixArgumentCalls, this->ZenMockedFunctionSignature);
+         const std::vector<SixArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
+            actualSixArgumentFunctionCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
+         VECTORS_EQUAL(expectedSixArgumentFunctionCalls, actualSixArgumentFunctionCalls, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
    private:
-      static std::vector<SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
-         PrivateCallsToCallRefs(const std::vector<SixArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>& zenMockObjectCallHistory)
+      static std::vector<SixArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
+         PrivateCallsToCallRefs(const std::vector<SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>& zenMockObjectCallHistory)
       {
-         std::vector<SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>> sixArgumentCallRefs;
+         std::vector<SixArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>> sixArgumentCallRefs;
          sixArgumentCallRefs.reserve(zenMockObjectCallHistory.size());
          std::for_each(zenMockObjectCallHistory.cbegin(), zenMockObjectCallHistory.cend(),
-            [&](const SixArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& sixArgumentCall)
+            [&](const SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& sixArgumentCall)
          {
             sixArgumentCallRefs.emplace_back(sixArgumentCall);
          });
@@ -3351,7 +3351,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    {
       friend class SevenArgumentMockerTests;
    private:
-      std::vector<SevenArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>> zenMockObjectCallHistory;
+      std::vector<SevenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>> zenMockObjectCallHistory;
    public:
       explicit SevenArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
@@ -3422,24 +3422,24 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
          return FunctionSequencingToken();
       }
 
-      FunctionSequencingToken CalledAsFollows(const std::vector<SevenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>& expectedSevenArgumentCalls)
+      FunctionSequencingToken CalledAsFollows(const std::vector<SevenArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>& expectedSevenArgumentFunctionCalls)
       {
-         this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedSevenArgumentCalls.size());
+         this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedSevenArgumentFunctionCalls.size());
          this->ZenMockSetAsserted();
-         const std::vector<SevenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>
-            actualSevenArgumentCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
-         VECTORS_EQUAL(expectedSevenArgumentCalls, actualSevenArgumentCalls, this->ZenMockedFunctionSignature);
+         const std::vector<SevenArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>
+            actualSevenArgumentFunctionCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
+         VECTORS_EQUAL(expectedSevenArgumentFunctionCalls, actualSevenArgumentFunctionCalls, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
    private:
-      static std::vector<SevenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>
-         PrivateCallsToCallRefs(const std::vector<SevenArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>& zenMockObjectCallHistory)
+      static std::vector<SevenArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>
+         PrivateCallsToCallRefs(const std::vector<SevenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>& zenMockObjectCallHistory)
       {
-         std::vector<SevenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>> sevenArgumentCallRefs;
+         std::vector<SevenArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>> sevenArgumentCallRefs;
          sevenArgumentCallRefs.reserve(zenMockObjectCallHistory.size());
          std::for_each(zenMockObjectCallHistory.cbegin(), zenMockObjectCallHistory.cend(),
-            [&](const SevenArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& sevenArgumentCall)
+            [&](const SevenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& sevenArgumentCall)
          {
             sevenArgumentCallRefs.emplace_back(sevenArgumentCall);
          });
@@ -3559,7 +3559,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    {
       friend class EightArgumentMockerTests;
    private:
-      std::vector<EightArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>> zenMockObjectCallHistory;
+      std::vector<EightArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>> zenMockObjectCallHistory;
    public:
       explicit EightArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
@@ -3635,25 +3635,25 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
          return FunctionSequencingToken();
       }
 
-      FunctionSequencingToken CalledAsFollows(const std::vector<EightArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>& expectedEightArgumentCalls)
+      FunctionSequencingToken CalledAsFollows(const std::vector<EightArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>& expectedEightArgumentFunctionCalls)
       {
-         this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedEightArgumentCalls.size());
+         this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedEightArgumentFunctionCalls.size());
          this->ZenMockSetAsserted();
-         const std::vector<EightArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
-            actualEightArgumentCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
-         VECTORS_EQUAL(expectedEightArgumentCalls, actualEightArgumentCalls, this->ZenMockedFunctionSignature);
+         const std::vector<EightArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
+            actualEightArgumentFunctionCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
+         VECTORS_EQUAL(expectedEightArgumentFunctionCalls, actualEightArgumentFunctionCalls, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
    private:
-      static std::vector<EightArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
-         PrivateCallsToCallRefs(const std::vector<EightArgumentCall<
+      static std::vector<EightArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
+         PrivateCallsToCallRefs(const std::vector<EightArgumentFunctionCall<
             Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>& zenMockObjectCallHistory)
       {
-         std::vector<EightArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>> eightArgumentCallRefs;
+         std::vector<EightArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>> eightArgumentCallRefs;
          eightArgumentCallRefs.reserve(zenMockObjectCallHistory.size());
          std::for_each(zenMockObjectCallHistory.cbegin(), zenMockObjectCallHistory.cend(),
-            [&](const EightArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& eightArgumentCall)
+            [&](const EightArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& eightArgumentCall)
          {
             eightArgumentCallRefs.emplace_back(eightArgumentCall);
          });
@@ -3774,7 +3774,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    {
       friend class NineArgumentMockerTests;
    private:
-      std::vector<NineArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>> zenMockObjectCallHistory;
+      std::vector<NineArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>> zenMockObjectCallHistory;
    public:
       explicit NineArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
@@ -3855,24 +3855,24 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
          return FunctionSequencingToken();
       }
 
-      FunctionSequencingToken CalledAsFollows(const std::vector<NineArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>& expectedNineArgumentCalls)
+      FunctionSequencingToken CalledAsFollows(const std::vector<NineArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>& expectedNineArgumentFunctionCalls)
       {
-         this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedNineArgumentCalls.size());
+         this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedNineArgumentFunctionCalls.size());
          this->ZenMockSetAsserted();
-         const std::vector<NineArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
-            actualNineArgumentCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
-         VECTORS_EQUAL(expectedNineArgumentCalls, actualNineArgumentCalls, this->ZenMockedFunctionSignature);
+         const std::vector<NineArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
+            actualNineArgumentFunctionCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
+         VECTORS_EQUAL(expectedNineArgumentFunctionCalls, actualNineArgumentFunctionCalls, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
    private:
-      static std::vector<NineArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
-         PrivateCallsToCallRefs(const std::vector<NineArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>& zenMockObjectCallHistory)
+      static std::vector<NineArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
+         PrivateCallsToCallRefs(const std::vector<NineArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>& zenMockObjectCallHistory)
       {
-         std::vector<NineArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>> nineArgumentCallRefs;
+         std::vector<NineArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>> nineArgumentCallRefs;
          nineArgumentCallRefs.reserve(zenMockObjectCallHistory.size());
          std::for_each(zenMockObjectCallHistory.cbegin(), zenMockObjectCallHistory.cend(),
-            [&](const NineArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& nineArgumentCall)
+            [&](const NineArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& nineArgumentCall)
          {
             nineArgumentCallRefs.emplace_back(nineArgumentCall);
          });
@@ -3994,7 +3994,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    {
       friend class TenArgumentMockerTests;
    private:
-      std::vector<TenArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>> zenMockObjectCallHistory;
+      std::vector<TenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>> zenMockObjectCallHistory;
    public:
       explicit TenArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
@@ -4080,25 +4080,25 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
          return FunctionSequencingToken();
       }
 
-      FunctionSequencingToken CalledAsFollows(const std::vector<TenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>& expectedTenArgumentCalls)
+      FunctionSequencingToken CalledAsFollows(const std::vector<TenArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>& expectedTenArgumentFunctionCalls)
       {
-         this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedTenArgumentCalls.size());
+         this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedTenArgumentFunctionCalls.size());
          this->ZenMockSetAsserted();
-         const std::vector<TenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
-            actualTenArgumentCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
-         VECTORS_EQUAL(expectedTenArgumentCalls, actualTenArgumentCalls, this->ZenMockedFunctionSignature);
+         const std::vector<TenArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
+            actualTenArgumentFunctionCalls = PrivateCallsToCallRefs(zenMockObjectCallHistory);
+         VECTORS_EQUAL(expectedTenArgumentFunctionCalls, actualTenArgumentFunctionCalls, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
    private:
-      static std::vector<TenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
-         PrivateCallsToCallRefs(const std::vector<TenArgumentCall<
+      static std::vector<TenArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
+         PrivateCallsToCallRefs(const std::vector<TenArgumentFunctionCall<
             Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>& zenMockObjectCallHistory)
       {
-         std::vector<TenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>> tenArgumentCallRefs;
+         std::vector<TenArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>> tenArgumentCallRefs;
          tenArgumentCallRefs.reserve(zenMockObjectCallHistory.size());
          std::for_each(zenMockObjectCallHistory.cbegin(), zenMockObjectCallHistory.cend(),
-            [&](const TenArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& tenArgumentCall)
+            [&](const TenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& tenArgumentCall)
          {
             tenArgumentCallRefs.emplace_back(tenArgumentCall);
          });
@@ -4236,319 +4236,319 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
 namespace ZenUnit
 {
    template<typename ArgType>
-   struct Equalizer<ZenMock::OneArgumentCall<ArgType>>
+   struct Equalizer<ZenMock::OneArgumentFunctionCall<ArgType>>
    {
       static void AssertEqual(
-         const ZenMock::OneArgumentCall<ArgType>& expectedOneArgumentCall,
-         const ZenMock::OneArgumentCall<ArgType>& actualOneArgumentCall)
+         const ZenMock::OneArgumentFunctionCall<ArgType>& expectedOneArgumentCall,
+         const ZenMock::OneArgumentFunctionCall<ArgType>& actualOneArgumentCall)
       {
          ARE_EQUAL(expectedOneArgumentCall.argument.value, actualOneArgumentCall.argument.value);
       }
    };
 
    template<typename ArgType>
-   struct Equalizer<ZenMock::OneArgumentCallRef<ArgType>>
+   struct Equalizer<ZenMock::OneArgumentFunctionCallRef<ArgType>>
    {
       static void AssertEqual(
-         const ZenMock::OneArgumentCallRef<ArgType>& expectedOneArgumentCall,
-         const ZenMock::OneArgumentCallRef<ArgType>& actualOneArgumentCall)
+         const ZenMock::OneArgumentFunctionCallRef<ArgType>& expectedOneArgumentCall,
+         const ZenMock::OneArgumentFunctionCallRef<ArgType>& actualOneArgumentCall)
       {
          ARE_EQUAL(expectedOneArgumentCall.argumentReference.value, actualOneArgumentCall.argumentReference.value);
       }
    };
 
    template<typename Arg1Type, typename Arg2Type>
-   struct Equalizer<ZenMock::TwoArgumentCall<Arg1Type, Arg2Type>>
+   struct Equalizer<ZenMock::TwoArgumentFunctionCall<Arg1Type, Arg2Type>>
    {
       static void AssertEqual(
-         const ZenMock::TwoArgumentCall<Arg1Type, Arg2Type>& expectedTwoArgumentCall,
-         const ZenMock::TwoArgumentCall<Arg1Type, Arg2Type>& actualTwoArgumentCall)
+         const ZenMock::TwoArgumentFunctionCall<Arg1Type, Arg2Type>& expectedTwoArgumentFunctionCall,
+         const ZenMock::TwoArgumentFunctionCall<Arg1Type, Arg2Type>& actualTwoArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedTwoArgumentCall.firstArgument.value, actualTwoArgumentCall.firstArgument.value);
-         ARE_EQUAL(expectedTwoArgumentCall.secondArgument.value, actualTwoArgumentCall.secondArgument.value);
+         ARE_EQUAL(expectedTwoArgumentFunctionCall.firstArgument.value, actualTwoArgumentFunctionCall.firstArgument.value);
+         ARE_EQUAL(expectedTwoArgumentFunctionCall.secondArgument.value, actualTwoArgumentFunctionCall.secondArgument.value);
       }
    };
 
    template<typename Arg1Type, typename Arg2Type>
-   struct Equalizer<ZenMock::TwoArgumentCallRef<Arg1Type, Arg2Type>>
+   struct Equalizer<ZenMock::TwoArgumentFunctionCallRef<Arg1Type, Arg2Type>>
    {
       static void AssertEqual(
-         const ZenMock::TwoArgumentCallRef<Arg1Type, Arg2Type>& expectedTwoArgumentCall,
-         const ZenMock::TwoArgumentCallRef<Arg1Type, Arg2Type>& actualTwoArgumentCall)
+         const ZenMock::TwoArgumentFunctionCallRef<Arg1Type, Arg2Type>& expectedTwoArgumentFunctionCall,
+         const ZenMock::TwoArgumentFunctionCallRef<Arg1Type, Arg2Type>& actualTwoArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedTwoArgumentCall.firstArgumentReference.value, actualTwoArgumentCall.firstArgumentReference.value);
-         ARE_EQUAL(expectedTwoArgumentCall.secondArgumentReference.value, actualTwoArgumentCall.secondArgumentReference.value);
+         ARE_EQUAL(expectedTwoArgumentFunctionCall.firstArgumentReference.value, actualTwoArgumentFunctionCall.firstArgumentReference.value);
+         ARE_EQUAL(expectedTwoArgumentFunctionCall.secondArgumentReference.value, actualTwoArgumentFunctionCall.secondArgumentReference.value);
       }
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
-   struct Equalizer<ZenMock::ThreeArgumentCall<Arg1Type, Arg2Type, Arg3Type>>
+   struct Equalizer<ZenMock::ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>>
    {
       static void AssertEqual(
-         const ZenMock::ThreeArgumentCall<Arg1Type, Arg2Type, Arg3Type>& expectedThreeArgumentCall,
-         const ZenMock::ThreeArgumentCall<Arg1Type, Arg2Type, Arg3Type>& actualThreeArgumentCall)
+         const ZenMock::ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>& expectedThreeArgumentFunctionCall,
+         const ZenMock::ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>& actualThreeArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedThreeArgumentCall.firstArgument.value, actualThreeArgumentCall.firstArgument.value);
-         ARE_EQUAL(expectedThreeArgumentCall.secondArgument.value, actualThreeArgumentCall.secondArgument.value);
-         ARE_EQUAL(expectedThreeArgumentCall.thirdArgument.value, actualThreeArgumentCall.thirdArgument.value);
+         ARE_EQUAL(expectedThreeArgumentFunctionCall.firstArgument.value, actualThreeArgumentFunctionCall.firstArgument.value);
+         ARE_EQUAL(expectedThreeArgumentFunctionCall.secondArgument.value, actualThreeArgumentFunctionCall.secondArgument.value);
+         ARE_EQUAL(expectedThreeArgumentFunctionCall.thirdArgument.value, actualThreeArgumentFunctionCall.thirdArgument.value);
       }
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
-   struct Equalizer<ZenMock::ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>>
+   struct Equalizer<ZenMock::ThreeArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type>>
    {
       static void AssertEqual(
-         const ZenMock::ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>& expectedThreeArgumentCall,
-         const ZenMock::ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>& actualThreeArgumentCall)
+         const ZenMock::ThreeArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type>& expectedThreeArgumentFunctionCall,
+         const ZenMock::ThreeArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type>& actualThreeArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedThreeArgumentCall.firstArgumentReference.value, actualThreeArgumentCall.firstArgumentReference.value);
-         ARE_EQUAL(expectedThreeArgumentCall.secondArgumentReference.value, actualThreeArgumentCall.secondArgumentReference.value);
-         ARE_EQUAL(expectedThreeArgumentCall.thirdArgumentReference.value, actualThreeArgumentCall.thirdArgumentReference.value);
+         ARE_EQUAL(expectedThreeArgumentFunctionCall.firstArgumentReference.value, actualThreeArgumentFunctionCall.firstArgumentReference.value);
+         ARE_EQUAL(expectedThreeArgumentFunctionCall.secondArgumentReference.value, actualThreeArgumentFunctionCall.secondArgumentReference.value);
+         ARE_EQUAL(expectedThreeArgumentFunctionCall.thirdArgumentReference.value, actualThreeArgumentFunctionCall.thirdArgumentReference.value);
       }
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
-   struct Equalizer<ZenMock::FourArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
+   struct Equalizer<ZenMock::FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
    {
       static void AssertEqual(
-         const ZenMock::FourArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& expectedFourArgumentCall,
-         const ZenMock::FourArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& actualFourArgumentCall)
+         const ZenMock::FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& expectedFourArgumentFunctionCall,
+         const ZenMock::FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& actualFourArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedFourArgumentCall.firstArgument.value, actualFourArgumentCall.firstArgument.value);
-         ARE_EQUAL(expectedFourArgumentCall.secondArgument.value, actualFourArgumentCall.secondArgument.value);
-         ARE_EQUAL(expectedFourArgumentCall.thirdArgument.value, actualFourArgumentCall.thirdArgument.value);
-         ARE_EQUAL(expectedFourArgumentCall.fourthArgument.value, actualFourArgumentCall.fourthArgument.value);
+         ARE_EQUAL(expectedFourArgumentFunctionCall.firstArgument.value, actualFourArgumentFunctionCall.firstArgument.value);
+         ARE_EQUAL(expectedFourArgumentFunctionCall.secondArgument.value, actualFourArgumentFunctionCall.secondArgument.value);
+         ARE_EQUAL(expectedFourArgumentFunctionCall.thirdArgument.value, actualFourArgumentFunctionCall.thirdArgument.value);
+         ARE_EQUAL(expectedFourArgumentFunctionCall.fourthArgument.value, actualFourArgumentFunctionCall.fourthArgument.value);
       }
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
-   struct Equalizer<ZenMock::FourArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
+   struct Equalizer<ZenMock::FourArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
    {
       static void AssertEqual(
-         const ZenMock::FourArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& expectedFourArgumentCall,
-         const ZenMock::FourArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& actualFourArgumentCall)
+         const ZenMock::FourArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& expectedFourArgumentFunctionCall,
+         const ZenMock::FourArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& actualFourArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedFourArgumentCall.firstArgumentReference.value, actualFourArgumentCall.firstArgumentReference.value);
-         ARE_EQUAL(expectedFourArgumentCall.secondArgumentReference.value, actualFourArgumentCall.secondArgumentReference.value);
-         ARE_EQUAL(expectedFourArgumentCall.thirdArgumentReference.value, actualFourArgumentCall.thirdArgumentReference.value);
-         ARE_EQUAL(expectedFourArgumentCall.fourthArgumentReference.value, actualFourArgumentCall.fourthArgumentReference.value);
+         ARE_EQUAL(expectedFourArgumentFunctionCall.firstArgumentReference.value, actualFourArgumentFunctionCall.firstArgumentReference.value);
+         ARE_EQUAL(expectedFourArgumentFunctionCall.secondArgumentReference.value, actualFourArgumentFunctionCall.secondArgumentReference.value);
+         ARE_EQUAL(expectedFourArgumentFunctionCall.thirdArgumentReference.value, actualFourArgumentFunctionCall.thirdArgumentReference.value);
+         ARE_EQUAL(expectedFourArgumentFunctionCall.fourthArgumentReference.value, actualFourArgumentFunctionCall.fourthArgumentReference.value);
       }
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
-   struct Equalizer<ZenMock::FiveArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
+   struct Equalizer<ZenMock::FiveArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
    {
       static void AssertEqual(
-         const ZenMock::FiveArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& expectedFiveArgumentCall,
-         const ZenMock::FiveArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& actualFiveArgumentCall)
+         const ZenMock::FiveArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& expectedFiveArgumentFunctionCall,
+         const ZenMock::FiveArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& actualFiveArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedFiveArgumentCall.firstArgument.value, actualFiveArgumentCall.firstArgument.value);
-         ARE_EQUAL(expectedFiveArgumentCall.secondArgument.value, actualFiveArgumentCall.secondArgument.value);
-         ARE_EQUAL(expectedFiveArgumentCall.thirdArgument.value, actualFiveArgumentCall.thirdArgument.value);
-         ARE_EQUAL(expectedFiveArgumentCall.fourthArgument.value, actualFiveArgumentCall.fourthArgument.value);
-         ARE_EQUAL(expectedFiveArgumentCall.fifthArgument.value, actualFiveArgumentCall.fifthArgument.value);
+         ARE_EQUAL(expectedFiveArgumentFunctionCall.firstArgument.value, actualFiveArgumentFunctionCall.firstArgument.value);
+         ARE_EQUAL(expectedFiveArgumentFunctionCall.secondArgument.value, actualFiveArgumentFunctionCall.secondArgument.value);
+         ARE_EQUAL(expectedFiveArgumentFunctionCall.thirdArgument.value, actualFiveArgumentFunctionCall.thirdArgument.value);
+         ARE_EQUAL(expectedFiveArgumentFunctionCall.fourthArgument.value, actualFiveArgumentFunctionCall.fourthArgument.value);
+         ARE_EQUAL(expectedFiveArgumentFunctionCall.fifthArgument.value, actualFiveArgumentFunctionCall.fifthArgument.value);
       }
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
-   struct Equalizer<ZenMock::FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
+   struct Equalizer<ZenMock::FiveArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
    {
       static void AssertEqual(
-         const ZenMock::FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& expectedFiveArgumentCall,
-         const ZenMock::FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& actualFiveArgumentCall)
+         const ZenMock::FiveArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& expectedFiveArgumentFunctionCall,
+         const ZenMock::FiveArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& actualFiveArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedFiveArgumentCall.firstArgumentReference.value, actualFiveArgumentCall.firstArgumentReference.value);
-         ARE_EQUAL(expectedFiveArgumentCall.secondArgumentReference.value, actualFiveArgumentCall.secondArgumentReference.value);
-         ARE_EQUAL(expectedFiveArgumentCall.thirdArgumentReference.value, actualFiveArgumentCall.thirdArgumentReference.value);
-         ARE_EQUAL(expectedFiveArgumentCall.fourthArgumentReference.value, actualFiveArgumentCall.fourthArgumentReference.value);
-         ARE_EQUAL(expectedFiveArgumentCall.fifthArgumentReference.value, actualFiveArgumentCall.fifthArgumentReference.value);
+         ARE_EQUAL(expectedFiveArgumentFunctionCall.firstArgumentReference.value, actualFiveArgumentFunctionCall.firstArgumentReference.value);
+         ARE_EQUAL(expectedFiveArgumentFunctionCall.secondArgumentReference.value, actualFiveArgumentFunctionCall.secondArgumentReference.value);
+         ARE_EQUAL(expectedFiveArgumentFunctionCall.thirdArgumentReference.value, actualFiveArgumentFunctionCall.thirdArgumentReference.value);
+         ARE_EQUAL(expectedFiveArgumentFunctionCall.fourthArgumentReference.value, actualFiveArgumentFunctionCall.fourthArgumentReference.value);
+         ARE_EQUAL(expectedFiveArgumentFunctionCall.fifthArgumentReference.value, actualFiveArgumentFunctionCall.fifthArgumentReference.value);
       }
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
-   struct Equalizer<ZenMock::SixArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
+   struct Equalizer<ZenMock::SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
    {
       static void AssertEqual(
-         const ZenMock::SixArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& expectedSixArgumentCall,
-         const ZenMock::SixArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& actualSixArgumentCall)
+         const ZenMock::SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& expectedSixArgumentFunctionCall,
+         const ZenMock::SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& actualSixArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedSixArgumentCall.firstArgument.value, actualSixArgumentCall.firstArgument.value);
-         ARE_EQUAL(expectedSixArgumentCall.secondArgument.value, actualSixArgumentCall.secondArgument.value);
-         ARE_EQUAL(expectedSixArgumentCall.thirdArgument.value, actualSixArgumentCall.thirdArgument.value);
-         ARE_EQUAL(expectedSixArgumentCall.fourthArgument.value, actualSixArgumentCall.fourthArgument.value);
-         ARE_EQUAL(expectedSixArgumentCall.fifthArgument.value, actualSixArgumentCall.fifthArgument.value);
-         ARE_EQUAL(expectedSixArgumentCall.sixthArgument.value, actualSixArgumentCall.sixthArgument.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.firstArgument.value, actualSixArgumentFunctionCall.firstArgument.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.secondArgument.value, actualSixArgumentFunctionCall.secondArgument.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.thirdArgument.value, actualSixArgumentFunctionCall.thirdArgument.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.fourthArgument.value, actualSixArgumentFunctionCall.fourthArgument.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.fifthArgument.value, actualSixArgumentFunctionCall.fifthArgument.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.sixthArgument.value, actualSixArgumentFunctionCall.sixthArgument.value);
       }
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
-   struct Equalizer<ZenMock::SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
+   struct Equalizer<ZenMock::SixArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
    {
       static void AssertEqual(
-         const ZenMock::SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& expectedSixArgumentCall,
-         const ZenMock::SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& actualSixArgumentCall)
+         const ZenMock::SixArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& expectedSixArgumentFunctionCall,
+         const ZenMock::SixArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& actualSixArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedSixArgumentCall.firstArgumentReference.value, actualSixArgumentCall.firstArgumentReference.value);
-         ARE_EQUAL(expectedSixArgumentCall.secondArgumentReference.value, actualSixArgumentCall.secondArgumentReference.value);
-         ARE_EQUAL(expectedSixArgumentCall.thirdArgumentReference.value, actualSixArgumentCall.thirdArgumentReference.value);
-         ARE_EQUAL(expectedSixArgumentCall.fourthArgumentReference.value, actualSixArgumentCall.fourthArgumentReference.value);
-         ARE_EQUAL(expectedSixArgumentCall.fifthArgumentReference.value, actualSixArgumentCall.fifthArgumentReference.value);
-         ARE_EQUAL(expectedSixArgumentCall.sixthArgumentReference.value, actualSixArgumentCall.sixthArgumentReference.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.firstArgumentReference.value, actualSixArgumentFunctionCall.firstArgumentReference.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.secondArgumentReference.value, actualSixArgumentFunctionCall.secondArgumentReference.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.thirdArgumentReference.value, actualSixArgumentFunctionCall.thirdArgumentReference.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.fourthArgumentReference.value, actualSixArgumentFunctionCall.fourthArgumentReference.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.fifthArgumentReference.value, actualSixArgumentFunctionCall.fifthArgumentReference.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.sixthArgumentReference.value, actualSixArgumentFunctionCall.sixthArgumentReference.value);
       }
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type>
-   struct Equalizer<ZenMock::SevenArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>
+   struct Equalizer<ZenMock::SevenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>
    {
       static void AssertEqual(
-         const ZenMock::SevenArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& expectedSevenArgumentCall,
-         const ZenMock::SevenArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& actualSevenArgumentCall)
+         const ZenMock::SevenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& expectedSevenArgumentFunctionCall,
+         const ZenMock::SevenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& actualSevenArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedSevenArgumentCall.firstArgument.value, actualSevenArgumentCall.firstArgument.value);
-         ARE_EQUAL(expectedSevenArgumentCall.secondArgument.value, actualSevenArgumentCall.secondArgument.value);
-         ARE_EQUAL(expectedSevenArgumentCall.thirdArgument.value, actualSevenArgumentCall.thirdArgument.value);
-         ARE_EQUAL(expectedSevenArgumentCall.fourthArgument.value, actualSevenArgumentCall.fourthArgument.value);
-         ARE_EQUAL(expectedSevenArgumentCall.fifthArgument.value, actualSevenArgumentCall.fifthArgument.value);
-         ARE_EQUAL(expectedSevenArgumentCall.sixthArgument.value, actualSevenArgumentCall.sixthArgument.value);
-         ARE_EQUAL(expectedSevenArgumentCall.seventhArgument.value, actualSevenArgumentCall.seventhArgument.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.firstArgument.value, actualSevenArgumentFunctionCall.firstArgument.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.secondArgument.value, actualSevenArgumentFunctionCall.secondArgument.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.thirdArgument.value, actualSevenArgumentFunctionCall.thirdArgument.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.fourthArgument.value, actualSevenArgumentFunctionCall.fourthArgument.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.fifthArgument.value, actualSevenArgumentFunctionCall.fifthArgument.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.sixthArgument.value, actualSevenArgumentFunctionCall.sixthArgument.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.seventhArgument.value, actualSevenArgumentFunctionCall.seventhArgument.value);
       }
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type>
-   struct Equalizer<ZenMock::SevenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>
+   struct Equalizer<ZenMock::SevenArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>
    {
       static void AssertEqual(
-         const ZenMock::SevenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& expectedSevenArgumentCall,
-         const ZenMock::SevenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& actualSevenArgumentCall)
+         const ZenMock::SevenArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& expectedSevenArgumentFunctionCall,
+         const ZenMock::SevenArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& actualSevenArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedSevenArgumentCall.firstArgumentReference.value, actualSevenArgumentCall.firstArgumentReference.value);
-         ARE_EQUAL(expectedSevenArgumentCall.secondArgumentReference.value, actualSevenArgumentCall.secondArgumentReference.value);
-         ARE_EQUAL(expectedSevenArgumentCall.thirdArgumentReference.value, actualSevenArgumentCall.thirdArgumentReference.value);
-         ARE_EQUAL(expectedSevenArgumentCall.fourthArgumentReference.value, actualSevenArgumentCall.fourthArgumentReference.value);
-         ARE_EQUAL(expectedSevenArgumentCall.fifthArgumentReference.value, actualSevenArgumentCall.fifthArgumentReference.value);
-         ARE_EQUAL(expectedSevenArgumentCall.sixthArgumentReference.value, actualSevenArgumentCall.sixthArgumentReference.value);
-         ARE_EQUAL(expectedSevenArgumentCall.seventhArgumentReference.value, actualSevenArgumentCall.seventhArgumentReference.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.firstArgumentReference.value, actualSevenArgumentFunctionCall.firstArgumentReference.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.secondArgumentReference.value, actualSevenArgumentFunctionCall.secondArgumentReference.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.thirdArgumentReference.value, actualSevenArgumentFunctionCall.thirdArgumentReference.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.fourthArgumentReference.value, actualSevenArgumentFunctionCall.fourthArgumentReference.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.fifthArgumentReference.value, actualSevenArgumentFunctionCall.fifthArgumentReference.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.sixthArgumentReference.value, actualSevenArgumentFunctionCall.sixthArgumentReference.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.seventhArgumentReference.value, actualSevenArgumentFunctionCall.seventhArgumentReference.value);
       }
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type>
-   struct Equalizer<ZenMock::EightArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
+   struct Equalizer<ZenMock::EightArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
    {
       static void AssertEqual(
-         const ZenMock::EightArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& expectedEightArgumentCall,
-         const ZenMock::EightArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& actualEightArgumentCall)
+         const ZenMock::EightArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& expectedEightArgumentFunctionCall,
+         const ZenMock::EightArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& actualEightArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedEightArgumentCall.firstArgument.value, actualEightArgumentCall.firstArgument.value);
-         ARE_EQUAL(expectedEightArgumentCall.secondArgument.value, actualEightArgumentCall.secondArgument.value);
-         ARE_EQUAL(expectedEightArgumentCall.thirdArgument.value, actualEightArgumentCall.thirdArgument.value);
-         ARE_EQUAL(expectedEightArgumentCall.fourthArgument.value, actualEightArgumentCall.fourthArgument.value);
-         ARE_EQUAL(expectedEightArgumentCall.fifthArgument.value, actualEightArgumentCall.fifthArgument.value);
-         ARE_EQUAL(expectedEightArgumentCall.sixthArgument.value, actualEightArgumentCall.sixthArgument.value);
-         ARE_EQUAL(expectedEightArgumentCall.seventhArgument.value, actualEightArgumentCall.seventhArgument.value);
-         ARE_EQUAL(expectedEightArgumentCall.eigthArgument.value, actualEightArgumentCall.eigthArgument.value);
+         ARE_EQUAL(expectedEightArgumentFunctionCall.firstArgument.value, actualEightArgumentFunctionCall.firstArgument.value);
+         ARE_EQUAL(expectedEightArgumentFunctionCall.secondArgument.value, actualEightArgumentFunctionCall.secondArgument.value);
+         ARE_EQUAL(expectedEightArgumentFunctionCall.thirdArgument.value, actualEightArgumentFunctionCall.thirdArgument.value);
+         ARE_EQUAL(expectedEightArgumentFunctionCall.fourthArgument.value, actualEightArgumentFunctionCall.fourthArgument.value);
+         ARE_EQUAL(expectedEightArgumentFunctionCall.fifthArgument.value, actualEightArgumentFunctionCall.fifthArgument.value);
+         ARE_EQUAL(expectedEightArgumentFunctionCall.sixthArgument.value, actualEightArgumentFunctionCall.sixthArgument.value);
+         ARE_EQUAL(expectedEightArgumentFunctionCall.seventhArgument.value, actualEightArgumentFunctionCall.seventhArgument.value);
+         ARE_EQUAL(expectedEightArgumentFunctionCall.eigthArgument.value, actualEightArgumentFunctionCall.eigthArgument.value);
       }
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type>
-   struct Equalizer<ZenMock::EightArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
+   struct Equalizer<ZenMock::EightArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
    {
       static void AssertEqual(
-         const ZenMock::EightArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& expectedEightArgumentCall,
-         const ZenMock::EightArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& actualEightArgumentCall)
+         const ZenMock::EightArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& expectedEightArgumentFunctionCall,
+         const ZenMock::EightArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& actualEightArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedEightArgumentCall.firstArgumentReference.value, actualEightArgumentCall.firstArgumentReference.value);
-         ARE_EQUAL(expectedEightArgumentCall.secondArgumentReference.value, actualEightArgumentCall.secondArgumentReference.value);
-         ARE_EQUAL(expectedEightArgumentCall.thirdArgumentReference.value, actualEightArgumentCall.thirdArgumentReference.value);
-         ARE_EQUAL(expectedEightArgumentCall.fourthArgumentReference.value, actualEightArgumentCall.fourthArgumentReference.value);
-         ARE_EQUAL(expectedEightArgumentCall.fifthArgumentReference.value, actualEightArgumentCall.fifthArgumentReference.value);
-         ARE_EQUAL(expectedEightArgumentCall.sixthArgumentReference.value, actualEightArgumentCall.sixthArgumentReference.value);
-         ARE_EQUAL(expectedEightArgumentCall.seventhArgumentReference.value, actualEightArgumentCall.seventhArgumentReference.value);
-         ARE_EQUAL(expectedEightArgumentCall.eigthArgumentReference.value, actualEightArgumentCall.eigthArgumentReference.value);
+         ARE_EQUAL(expectedEightArgumentFunctionCall.firstArgumentReference.value, actualEightArgumentFunctionCall.firstArgumentReference.value);
+         ARE_EQUAL(expectedEightArgumentFunctionCall.secondArgumentReference.value, actualEightArgumentFunctionCall.secondArgumentReference.value);
+         ARE_EQUAL(expectedEightArgumentFunctionCall.thirdArgumentReference.value, actualEightArgumentFunctionCall.thirdArgumentReference.value);
+         ARE_EQUAL(expectedEightArgumentFunctionCall.fourthArgumentReference.value, actualEightArgumentFunctionCall.fourthArgumentReference.value);
+         ARE_EQUAL(expectedEightArgumentFunctionCall.fifthArgumentReference.value, actualEightArgumentFunctionCall.fifthArgumentReference.value);
+         ARE_EQUAL(expectedEightArgumentFunctionCall.sixthArgumentReference.value, actualEightArgumentFunctionCall.sixthArgumentReference.value);
+         ARE_EQUAL(expectedEightArgumentFunctionCall.seventhArgumentReference.value, actualEightArgumentFunctionCall.seventhArgumentReference.value);
+         ARE_EQUAL(expectedEightArgumentFunctionCall.eigthArgumentReference.value, actualEightArgumentFunctionCall.eigthArgumentReference.value);
       }
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type>
-   struct Equalizer<ZenMock::NineArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
+   struct Equalizer<ZenMock::NineArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
    {
       static void AssertEqual(
-         const ZenMock::NineArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& expectedNineArgumentCall,
-         const ZenMock::NineArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& actualNineArgumentCall)
+         const ZenMock::NineArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& expectedNineArgumentFunctionCall,
+         const ZenMock::NineArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& actualNineArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedNineArgumentCall.firstArgument.value, actualNineArgumentCall.firstArgument.value);
-         ARE_EQUAL(expectedNineArgumentCall.secondArgument.value, actualNineArgumentCall.secondArgument.value);
-         ARE_EQUAL(expectedNineArgumentCall.thirdArgument.value, actualNineArgumentCall.thirdArgument.value);
-         ARE_EQUAL(expectedNineArgumentCall.fourthArgument.value, actualNineArgumentCall.fourthArgument.value);
-         ARE_EQUAL(expectedNineArgumentCall.fifthArgument.value, actualNineArgumentCall.fifthArgument.value);
-         ARE_EQUAL(expectedNineArgumentCall.sixthArgument.value, actualNineArgumentCall.sixthArgument.value);
-         ARE_EQUAL(expectedNineArgumentCall.seventhArgument.value, actualNineArgumentCall.seventhArgument.value);
-         ARE_EQUAL(expectedNineArgumentCall.eigthArgument.value, actualNineArgumentCall.eigthArgument.value);
-         ARE_EQUAL(expectedNineArgumentCall.ninthArgument.value, actualNineArgumentCall.ninthArgument.value);
+         ARE_EQUAL(expectedNineArgumentFunctionCall.firstArgument.value, actualNineArgumentFunctionCall.firstArgument.value);
+         ARE_EQUAL(expectedNineArgumentFunctionCall.secondArgument.value, actualNineArgumentFunctionCall.secondArgument.value);
+         ARE_EQUAL(expectedNineArgumentFunctionCall.thirdArgument.value, actualNineArgumentFunctionCall.thirdArgument.value);
+         ARE_EQUAL(expectedNineArgumentFunctionCall.fourthArgument.value, actualNineArgumentFunctionCall.fourthArgument.value);
+         ARE_EQUAL(expectedNineArgumentFunctionCall.fifthArgument.value, actualNineArgumentFunctionCall.fifthArgument.value);
+         ARE_EQUAL(expectedNineArgumentFunctionCall.sixthArgument.value, actualNineArgumentFunctionCall.sixthArgument.value);
+         ARE_EQUAL(expectedNineArgumentFunctionCall.seventhArgument.value, actualNineArgumentFunctionCall.seventhArgument.value);
+         ARE_EQUAL(expectedNineArgumentFunctionCall.eigthArgument.value, actualNineArgumentFunctionCall.eigthArgument.value);
+         ARE_EQUAL(expectedNineArgumentFunctionCall.ninthArgument.value, actualNineArgumentFunctionCall.ninthArgument.value);
       }
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type>
-   struct Equalizer<ZenMock::NineArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
+   struct Equalizer<ZenMock::NineArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
    {
       static void AssertEqual(
-         const ZenMock::NineArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& expectedNineArgumentCall,
-         const ZenMock::NineArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& actualNineArgumentCall)
+         const ZenMock::NineArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& expectedNineArgumentFunctionCall,
+         const ZenMock::NineArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& actualNineArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedNineArgumentCall.firstArgumentReference.value, actualNineArgumentCall.firstArgumentReference.value);
-         ARE_EQUAL(expectedNineArgumentCall.secondArgumentReference.value, actualNineArgumentCall.secondArgumentReference.value);
-         ARE_EQUAL(expectedNineArgumentCall.thirdArgumentReference.value, actualNineArgumentCall.thirdArgumentReference.value);
-         ARE_EQUAL(expectedNineArgumentCall.fourthArgumentReference.value, actualNineArgumentCall.fourthArgumentReference.value);
-         ARE_EQUAL(expectedNineArgumentCall.fifthArgumentReference.value, actualNineArgumentCall.fifthArgumentReference.value);
-         ARE_EQUAL(expectedNineArgumentCall.sixthArgumentReference.value, actualNineArgumentCall.sixthArgumentReference.value);
-         ARE_EQUAL(expectedNineArgumentCall.seventhArgumentReference.value, actualNineArgumentCall.seventhArgumentReference.value);
-         ARE_EQUAL(expectedNineArgumentCall.eigthArgumentReference.value, actualNineArgumentCall.eigthArgumentReference.value);
-         ARE_EQUAL(expectedNineArgumentCall.ninthArgumentReference.value, actualNineArgumentCall.ninthArgumentReference.value);
+         ARE_EQUAL(expectedNineArgumentFunctionCall.firstArgumentReference.value, actualNineArgumentFunctionCall.firstArgumentReference.value);
+         ARE_EQUAL(expectedNineArgumentFunctionCall.secondArgumentReference.value, actualNineArgumentFunctionCall.secondArgumentReference.value);
+         ARE_EQUAL(expectedNineArgumentFunctionCall.thirdArgumentReference.value, actualNineArgumentFunctionCall.thirdArgumentReference.value);
+         ARE_EQUAL(expectedNineArgumentFunctionCall.fourthArgumentReference.value, actualNineArgumentFunctionCall.fourthArgumentReference.value);
+         ARE_EQUAL(expectedNineArgumentFunctionCall.fifthArgumentReference.value, actualNineArgumentFunctionCall.fifthArgumentReference.value);
+         ARE_EQUAL(expectedNineArgumentFunctionCall.sixthArgumentReference.value, actualNineArgumentFunctionCall.sixthArgumentReference.value);
+         ARE_EQUAL(expectedNineArgumentFunctionCall.seventhArgumentReference.value, actualNineArgumentFunctionCall.seventhArgumentReference.value);
+         ARE_EQUAL(expectedNineArgumentFunctionCall.eigthArgumentReference.value, actualNineArgumentFunctionCall.eigthArgumentReference.value);
+         ARE_EQUAL(expectedNineArgumentFunctionCall.ninthArgumentReference.value, actualNineArgumentFunctionCall.ninthArgumentReference.value);
       }
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type, typename Arg10Type>
-   struct Equalizer<ZenMock::TenArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
+   struct Equalizer<ZenMock::TenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
    {
       static void AssertEqual(
-         const ZenMock::TenArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& expectedTenArgumentCall,
-         const ZenMock::TenArgumentCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& actualTenArgumentCall)
+         const ZenMock::TenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& expectedTenArgumentFunctionCall,
+         const ZenMock::TenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& actualTenArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedTenArgumentCall.firstArgument.value, actualTenArgumentCall.firstArgument.value);
-         ARE_EQUAL(expectedTenArgumentCall.secondArgument.value, actualTenArgumentCall.secondArgument.value);
-         ARE_EQUAL(expectedTenArgumentCall.thirdArgument.value, actualTenArgumentCall.thirdArgument.value);
-         ARE_EQUAL(expectedTenArgumentCall.fourthArgument.value, actualTenArgumentCall.fourthArgument.value);
-         ARE_EQUAL(expectedTenArgumentCall.fifthArgument.value, actualTenArgumentCall.fifthArgument.value);
-         ARE_EQUAL(expectedTenArgumentCall.sixthArgument.value, actualTenArgumentCall.sixthArgument.value);
-         ARE_EQUAL(expectedTenArgumentCall.seventhArgument.value, actualTenArgumentCall.seventhArgument.value);
-         ARE_EQUAL(expectedTenArgumentCall.eigthArgument.value, actualTenArgumentCall.eigthArgument.value);
-         ARE_EQUAL(expectedTenArgumentCall.ninthArgument.value, actualTenArgumentCall.ninthArgument.value);
-         ARE_EQUAL(expectedTenArgumentCall.tenthArgument.value, actualTenArgumentCall.tenthArgument.value);
+         ARE_EQUAL(expectedTenArgumentFunctionCall.firstArgument.value, actualTenArgumentFunctionCall.firstArgument.value);
+         ARE_EQUAL(expectedTenArgumentFunctionCall.secondArgument.value, actualTenArgumentFunctionCall.secondArgument.value);
+         ARE_EQUAL(expectedTenArgumentFunctionCall.thirdArgument.value, actualTenArgumentFunctionCall.thirdArgument.value);
+         ARE_EQUAL(expectedTenArgumentFunctionCall.fourthArgument.value, actualTenArgumentFunctionCall.fourthArgument.value);
+         ARE_EQUAL(expectedTenArgumentFunctionCall.fifthArgument.value, actualTenArgumentFunctionCall.fifthArgument.value);
+         ARE_EQUAL(expectedTenArgumentFunctionCall.sixthArgument.value, actualTenArgumentFunctionCall.sixthArgument.value);
+         ARE_EQUAL(expectedTenArgumentFunctionCall.seventhArgument.value, actualTenArgumentFunctionCall.seventhArgument.value);
+         ARE_EQUAL(expectedTenArgumentFunctionCall.eigthArgument.value, actualTenArgumentFunctionCall.eigthArgument.value);
+         ARE_EQUAL(expectedTenArgumentFunctionCall.ninthArgument.value, actualTenArgumentFunctionCall.ninthArgument.value);
+         ARE_EQUAL(expectedTenArgumentFunctionCall.tenthArgument.value, actualTenArgumentFunctionCall.tenthArgument.value);
       }
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type, typename Arg10Type>
-   struct Equalizer<ZenMock::TenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
+   struct Equalizer<ZenMock::TenArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
    {
       static void AssertEqual(
-         const ZenMock::TenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& expectedTenArgumentCall,
-         const ZenMock::TenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& actualTenArgumentCall)
+         const ZenMock::TenArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& expectedTenArgumentFunctionCall,
+         const ZenMock::TenArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& actualTenArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedTenArgumentCall.firstArgumentReference.value, actualTenArgumentCall.firstArgumentReference.value);
-         ARE_EQUAL(expectedTenArgumentCall.secondArgumentReference.value, actualTenArgumentCall.secondArgumentReference.value);
-         ARE_EQUAL(expectedTenArgumentCall.thirdArgumentReference.value, actualTenArgumentCall.thirdArgumentReference.value);
-         ARE_EQUAL(expectedTenArgumentCall.fourthArgumentReference.value, actualTenArgumentCall.fourthArgumentReference.value);
-         ARE_EQUAL(expectedTenArgumentCall.fifthArgumentReference.value, actualTenArgumentCall.fifthArgumentReference.value);
-         ARE_EQUAL(expectedTenArgumentCall.sixthArgumentReference.value, actualTenArgumentCall.sixthArgumentReference.value);
-         ARE_EQUAL(expectedTenArgumentCall.seventhArgumentReference.value, actualTenArgumentCall.seventhArgumentReference.value);
-         ARE_EQUAL(expectedTenArgumentCall.eigthArgumentReference.value, actualTenArgumentCall.eigthArgumentReference.value);
-         ARE_EQUAL(expectedTenArgumentCall.ninthArgumentReference.value, actualTenArgumentCall.ninthArgumentReference.value);
-         ARE_EQUAL(expectedTenArgumentCall.tenthArgumentReference.value, actualTenArgumentCall.tenthArgumentReference.value);
+         ARE_EQUAL(expectedTenArgumentFunctionCall.firstArgumentReference.value, actualTenArgumentFunctionCall.firstArgumentReference.value);
+         ARE_EQUAL(expectedTenArgumentFunctionCall.secondArgumentReference.value, actualTenArgumentFunctionCall.secondArgumentReference.value);
+         ARE_EQUAL(expectedTenArgumentFunctionCall.thirdArgumentReference.value, actualTenArgumentFunctionCall.thirdArgumentReference.value);
+         ARE_EQUAL(expectedTenArgumentFunctionCall.fourthArgumentReference.value, actualTenArgumentFunctionCall.fourthArgumentReference.value);
+         ARE_EQUAL(expectedTenArgumentFunctionCall.fifthArgumentReference.value, actualTenArgumentFunctionCall.fifthArgumentReference.value);
+         ARE_EQUAL(expectedTenArgumentFunctionCall.sixthArgumentReference.value, actualTenArgumentFunctionCall.sixthArgumentReference.value);
+         ARE_EQUAL(expectedTenArgumentFunctionCall.seventhArgumentReference.value, actualTenArgumentFunctionCall.seventhArgumentReference.value);
+         ARE_EQUAL(expectedTenArgumentFunctionCall.eigthArgumentReference.value, actualTenArgumentFunctionCall.eigthArgumentReference.value);
+         ARE_EQUAL(expectedTenArgumentFunctionCall.ninthArgumentReference.value, actualTenArgumentFunctionCall.ninthArgumentReference.value);
+         ARE_EQUAL(expectedTenArgumentFunctionCall.tenthArgumentReference.value, actualTenArgumentFunctionCall.tenthArgumentReference.value);
       }
    };
 
    template<typename ArgType>
-   struct Printer<ZenMock::OneArgumentCallRef<ArgType>>
+   struct Printer<ZenMock::OneArgumentFunctionCallRef<ArgType>>
    {
-      static void Print(std::ostream& os, const ZenMock::OneArgumentCallRef<ArgType>& oneArgumentCall)
+      static void Print(std::ostream& os, const ZenMock::OneArgumentFunctionCallRef<ArgType>& oneArgumentCall)
       {
          os << "ZenMock::OneArgumentCall:\n" <<
                "Argument: " << ZenUnit::ToStringer::ToString(oneArgumentCall.argumentReference.value);
@@ -4556,22 +4556,22 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type>
-   struct Printer<ZenMock::TwoArgumentCallRef<Arg1Type, Arg2Type>>
+   struct Printer<ZenMock::TwoArgumentFunctionCallRef<Arg1Type, Arg2Type>>
    {
-      static void Print(std::ostream& os, const ZenMock::TwoArgumentCallRef<Arg1Type, Arg2Type>& twoArgumentCallRef)
+      static void Print(std::ostream& os, const ZenMock::TwoArgumentFunctionCallRef<Arg1Type, Arg2Type>& twoArgumentCallRef)
       {
-         os << "ZenMock::TwoArgumentCall:\n"
+         os << "ZenMock::TwoArgumentFunctionCall:\n"
                "Argument1: " << ZenUnit::ToStringer::ToString(twoArgumentCallRef.firstArgumentReference.value) << '\n' <<
                "Argument2: " << ZenUnit::ToStringer::ToString(twoArgumentCallRef.secondArgumentReference.value);
       }
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
-   struct Printer<ZenMock::ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>>
+   struct Printer<ZenMock::ThreeArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type>>
    {
-      static void Print(std::ostream& os, const ZenMock::ThreeArgumentCallRef<Arg1Type, Arg2Type, Arg3Type>& threeArgumentCallRef)
+      static void Print(std::ostream& os, const ZenMock::ThreeArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type>& threeArgumentCallRef)
       {
-         os << "ZenMock::ThreeArgumentCall:\n"
+         os << "ZenMock::ThreeArgumentFunctionCall:\n"
                "Argument1: " << ZenUnit::ToStringer::ToString(threeArgumentCallRef.firstArgumentReference.value) << '\n' <<
                "Argument2: " << ZenUnit::ToStringer::ToString(threeArgumentCallRef.secondArgumentReference.value) << '\n' <<
                "Argument3: " << ZenUnit::ToStringer::ToString(threeArgumentCallRef.thirdArgumentReference.value);
@@ -4579,11 +4579,11 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
-   struct Printer<ZenMock::FourArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
+   struct Printer<ZenMock::FourArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
    {
-      static void Print(std::ostream& os, const ZenMock::FourArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& fourArgumentCallRef)
+      static void Print(std::ostream& os, const ZenMock::FourArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& fourArgumentCallRef)
       {
-         os << "ZenMock::FourArgumentCall:\n"
+         os << "ZenMock::FourArgumentFunctionCall:\n"
                "Argument1: " << ZenUnit::ToStringer::ToString(fourArgumentCallRef.firstArgumentReference.value) << '\n' <<
                "Argument2: " << ZenUnit::ToStringer::ToString(fourArgumentCallRef.secondArgumentReference.value) << '\n' <<
                "Argument3: " << ZenUnit::ToStringer::ToString(fourArgumentCallRef.thirdArgumentReference.value) << '\n' <<
@@ -4592,11 +4592,11 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
-   struct Printer<ZenMock::FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
+   struct Printer<ZenMock::FiveArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
    {
-      static void Print(std::ostream& os, const ZenMock::FiveArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& fiveArgumentCallRef)
+      static void Print(std::ostream& os, const ZenMock::FiveArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& fiveArgumentCallRef)
       {
-         os << "ZenMock::FiveArgumentCall:\n"
+         os << "ZenMock::FiveArgumentFunctionCall:\n"
                "Argument1: " << ZenUnit::ToStringer::ToString(fiveArgumentCallRef.firstArgumentReference.value) << '\n' <<
                "Argument2: " << ZenUnit::ToStringer::ToString(fiveArgumentCallRef.secondArgumentReference.value) << '\n' <<
                "Argument3: " << ZenUnit::ToStringer::ToString(fiveArgumentCallRef.thirdArgumentReference.value) << '\n' <<
@@ -4606,11 +4606,11 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
-   struct Printer<ZenMock::SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
+   struct Printer<ZenMock::SixArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
    {
-      static void Print(std::ostream& os, const ZenMock::SixArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& sixArgumentCallRef)
+      static void Print(std::ostream& os, const ZenMock::SixArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& sixArgumentCallRef)
       {
-         os << "ZenMock::SixArgumentCall:\n"
+         os << "ZenMock::SixArgumentFunctionCall:\n"
                "Argument1: " << ZenUnit::ToStringer::ToString(sixArgumentCallRef.firstArgumentReference.value) << '\n' <<
                "Argument2: " << ZenUnit::ToStringer::ToString(sixArgumentCallRef.secondArgumentReference.value) << '\n' <<
                "Argument3: " << ZenUnit::ToStringer::ToString(sixArgumentCallRef.thirdArgumentReference.value) << '\n' <<
@@ -4621,11 +4621,11 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type>
-   struct Printer<ZenMock::SevenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>
+   struct Printer<ZenMock::SevenArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>
    {
-      static void Print(std::ostream& os, const ZenMock::SevenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& sevenArgumentCallRef)
+      static void Print(std::ostream& os, const ZenMock::SevenArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& sevenArgumentCallRef)
       {
-         os << "ZenMock::SevenArgumentCall:\n"
+         os << "ZenMock::SevenArgumentFunctionCall:\n"
                "Argument1: " << ZenUnit::ToStringer::ToString(sevenArgumentCallRef.firstArgumentReference.value) << '\n' <<
                "Argument2: " << ZenUnit::ToStringer::ToString(sevenArgumentCallRef.secondArgumentReference.value) << '\n' <<
                "Argument3: " << ZenUnit::ToStringer::ToString(sevenArgumentCallRef.thirdArgumentReference.value) << '\n' <<
@@ -4637,11 +4637,11 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type>
-   struct Printer<ZenMock::EightArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
+   struct Printer<ZenMock::EightArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
    {
-      static void Print(std::ostream& os, const ZenMock::EightArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& eightArgumentCallRef)
+      static void Print(std::ostream& os, const ZenMock::EightArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& eightArgumentCallRef)
       {
-         os << "ZenMock::EightArgumentCall:\n"
+         os << "ZenMock::EightArgumentFunctionCall:\n"
                "Argument1: " << ZenUnit::ToStringer::ToString(eightArgumentCallRef.firstArgumentReference.value) << '\n' <<
                "Argument2: " << ZenUnit::ToStringer::ToString(eightArgumentCallRef.secondArgumentReference.value) << '\n' <<
                "Argument3: " << ZenUnit::ToStringer::ToString(eightArgumentCallRef.thirdArgumentReference.value) << '\n' <<
@@ -4654,11 +4654,11 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type>
-   struct Printer<ZenMock::NineArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
+   struct Printer<ZenMock::NineArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
    {
-      static void Print(std::ostream& os, const ZenMock::NineArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& nineArgumentCallRef)
+      static void Print(std::ostream& os, const ZenMock::NineArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& nineArgumentCallRef)
       {
-         os << "ZenMock::NineArgumentCall:\n"
+         os << "ZenMock::NineArgumentFunctionCall:\n"
                "Argument1: " << ZenUnit::ToStringer::ToString(nineArgumentCallRef.firstArgumentReference.value) << '\n' <<
                "Argument2: " << ZenUnit::ToStringer::ToString(nineArgumentCallRef.secondArgumentReference.value) << '\n' <<
                "Argument3: " << ZenUnit::ToStringer::ToString(nineArgumentCallRef.thirdArgumentReference.value) << '\n' <<
@@ -4672,11 +4672,11 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type, typename Arg10Type>
-   struct Printer<ZenMock::TenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
+   struct Printer<ZenMock::TenArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
    {
-      static void Print(std::ostream& os, const ZenMock::TenArgumentCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& tenArgumentCallRef)
+      static void Print(std::ostream& os, const ZenMock::TenArgumentFunctionCallRef<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& tenArgumentCallRef)
       {
-         os << "ZenMock::TenArgumentCall:\n"
+         os << "ZenMock::TenArgumentFunctionCall:\n"
               " Argument1: " << ZenUnit::ToStringer::ToString(tenArgumentCallRef.firstArgumentReference.value) << '\n' <<
               " Argument2: " << ZenUnit::ToStringer::ToString(tenArgumentCallRef.secondArgumentReference.value) << '\n' <<
               " Argument3: " << ZenUnit::ToStringer::ToString(tenArgumentCallRef.thirdArgumentReference.value) << '\n' <<

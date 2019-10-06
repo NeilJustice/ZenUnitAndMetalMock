@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenMockTests/ZenMock/T.h"
 
 namespace ZenMock
 {
@@ -10,13 +9,13 @@ namespace ZenMock
    const T<2> V2 = T<2>(true);
    const T<3> V3 = T<3>(true);
 
-   TESTS(ThreeArgumentCallTests)
+   TESTS(ThreeArgumentFunctionCallTests)
    AFACT(DefaultConstructor_DefaultInitializesFields)
    AFACT(Constructor_CopiesValuesToDecayTypeFields)
    AFACT(ZenUnitEqualizer_CallsAreEqualOnEachField)
    EVIDENCE
 
-   using Call3 = ThreeArgumentCall<T<1>, T<2>, T<3>>;
+   using Call3 = ThreeArgumentFunctionCall<T<1>, T<2>, T<3>>;
 
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
@@ -28,7 +27,7 @@ namespace ZenMock
 
    TEST(Constructor_CopiesValuesToDecayTypeFields)
    {
-      const ThreeArgumentCall<const T<1>&, const T<2>&, const T<3>&> call(V1, V2, V3);
+      const ThreeArgumentFunctionCall<const T<1>&, const T<2>&, const T<3>&> call(V1, V2, V3);
       ARE_COPIES(V1, call.firstArgument.value);
       ARE_COPIES(V2, call.secondArgument.value);
       ARE_COPIES(V3, call.thirdArgument.value);
@@ -45,19 +44,19 @@ namespace ZenMock
       EQUALIZER_THROWS(Call3, thirdArgument, V3);
    }
 
-   RUN_TESTS(ThreeArgumentCallTests)
+   RUN_TESTS(ThreeArgumentFunctionCallTests)
 
 
-   TESTS(ThreeArgumentCallRefTests)
+   TESTS(ThreeArgumentFunctionCallRefTests)
    AFACT(Constructor_SetsReferences)
-   AFACT(CallConstructor_SetsReferencesToThreeArgumentCallArgs)
+   AFACT(CallConstructor_SetsReferencesToThreeArgumentFunctionCallArgs)
    AFACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
    AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
-   using Call3 = ThreeArgumentCall<T<1>, T<2>, T<3>>;
-   using CallRef3 = ThreeArgumentCallRef<T<1>, T<2>, T<3>>;
-   using CallRefString3 = ThreeArgumentCallRef<string, string, string>;
+   using Call3 = ThreeArgumentFunctionCall<T<1>, T<2>, T<3>>;
+   using CallRef3 = ThreeArgumentFunctionCallRef<T<1>, T<2>, T<3>>;
+   using CallRefString3 = ThreeArgumentFunctionCallRef<string, string, string>;
 
    TEST(Constructor_SetsReferences)
    {
@@ -68,7 +67,7 @@ namespace ZenMock
       ARE_SAME(V3, callRef.thirdArgumentReference.value);
    }
 
-   TEST(CallConstructor_SetsReferencesToThreeArgumentCallArgs)
+   TEST(CallConstructor_SetsReferencesToThreeArgumentFunctionCallArgs)
    {
       const Call3 threeArgumentCall(V1, V2, V3);
       //
@@ -87,7 +86,7 @@ namespace ZenMock
       ZenUnit::Printer<CallRefString3>::Print(oss, callRef);
       //
       const string zenUnitPrintResult = oss.str();
-      const string expected = "ZenMock::ThreeArgumentCall:\n"
+      const string expected = "ZenMock::ThreeArgumentFunctionCall:\n"
 "Argument1: \"1\"\n"
 "Argument2: \"2\"\n"
 "Argument3: \"3\"";
@@ -112,5 +111,5 @@ namespace ZenMock
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "thirdArgument");
    }
 
-   RUN_TESTS(ThreeArgumentCallRefTests)
+   RUN_TESTS(ThreeArgumentFunctionCallRefTests)
 }

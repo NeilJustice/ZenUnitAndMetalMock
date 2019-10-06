@@ -476,7 +476,7 @@ File.cpp(1))");
 File.cpp(1)
 File.cpp(1))");
             const int lvalue = 0;
-            vector<OneArgumentCallRef<int>> expectedCalls;
+            vector<OneArgumentFunctionCallRef<int>> expectedCalls;
             ZenMockTestUtils::CallNTimes(expectedCallsSize, [&] { expectedCalls.emplace_back(lvalue); });
             THROWS(zenMockObject.CalledAsFollows(expectedCalls), Anomaly, expectedExceptionWhat);
          };
@@ -511,7 +511,7 @@ File.cpp(1))");
             }
             //
             const int expectedArgument = 10;
-            vector<OneArgumentCallRef<int>> expectedCalls;
+            vector<OneArgumentFunctionCallRef<int>> expectedCalls;
             ZenMockTestUtils::CallNTimes(expectedCallsSize, [&] { expectedCalls.emplace_back(expectedArgument); });
             const string expectedExceptionWhat = R"(
   Failed: VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature))"
@@ -542,7 +542,7 @@ File.cpp(1))";
             //
             ZenMockTestUtils::CallNTimes(expectedCallsSize, [&] { zenMockObject.ZenMockIt(argument); });
             //
-            vector<OneArgumentCallRef<int>> expectedCalls;
+            vector<OneArgumentFunctionCallRef<int>> expectedCalls;
             ZenMockTestUtils::CallNTimes(expectedCallsSize, [&] { expectedCalls.emplace_back(argument); });
             zenMockObject.CalledAsFollows(expectedCalls);
          };

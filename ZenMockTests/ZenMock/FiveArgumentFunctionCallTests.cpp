@@ -1,9 +1,8 @@
 #include "pch.h"
-#include "ZenMockTests/ZenMock/T.h"
 
 namespace ZenMock
 {
-   TESTS(FiveArgumentCallTests)
+   TESTS(FiveArgumentFunctionCallTests)
    AFACT(DefaultConstructor_DefaultInitializesFields)
    AFACT(FiveArgConstructor_CopiesValuesToDecayTypeFields)
    AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
@@ -20,7 +19,7 @@ namespace ZenMock
    const T<4> V4 = T<4>(true);
    const T<5> V5 = T<5>(true);
 
-   using Call5 = FiveArgumentCall<T<1>, T<2>, T<3>, T<4>, T<5>>;
+   using Call5 = FiveArgumentFunctionCall<T<1>, T<2>, T<3>, T<4>, T<5>>;
 
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
@@ -34,7 +33,7 @@ namespace ZenMock
 
    TEST(FiveArgConstructor_CopiesValuesToDecayTypeFields)
    {
-      const FiveArgumentCall<const T<1>&, const T<2>&, const T<3>&, const T<4>&, const T<5>&>
+      const FiveArgumentFunctionCall<const T<1>&, const T<2>&, const T<3>&, const T<4>&, const T<5>&>
          call(V1, V2, V3, V4, V5);
       //
       ARE_COPIES(V1, call.firstArgument.value);
@@ -59,10 +58,10 @@ namespace ZenMock
       EQUALIZER_THROWS(Call5, fifthArgument, V5);
    }
 
-   RUN_TESTS(FiveArgumentCallTests)
-   TESTS(FiveArgumentCallRefTests)
+   RUN_TESTS(FiveArgumentFunctionCallTests)
+   TESTS(FiveArgumentFunctionCallRefTests)
    AFACT(Constructor_SetsReferences)
-   AFACT(CallConstructor_SetsReferencesToFiveArgumentCallArgs)
+   AFACT(CallConstructor_SetsReferencesToFiveArgumentFunctionCallArgs)
    AFACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
    AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
@@ -73,9 +72,9 @@ namespace ZenMock
    const T<4> V4 = T<4>(true);
    const T<5> V5 = T<5>(true);
 
-   using Call5 = FiveArgumentCall<T<1>, T<2>, T<3>, T<4>, T<5>>;
-   using CallRef5 = FiveArgumentCallRef<T<1>, T<2>, T<3>, T<4>, T<5>>;
-   using CallRefString5 = FiveArgumentCallRef<string, string, string, string, string>;
+   using Call5 = FiveArgumentFunctionCall<T<1>, T<2>, T<3>, T<4>, T<5>>;
+   using CallRef5 = FiveArgumentFunctionCallRef<T<1>, T<2>, T<3>, T<4>, T<5>>;
+   using CallRefString5 = FiveArgumentFunctionCallRef<string, string, string, string, string>;
 
    TEST(Constructor_SetsReferences)
    {
@@ -88,7 +87,7 @@ namespace ZenMock
       ARE_SAME(V5, callRef.fifthArgumentReference.value);
    }
 
-   TEST(CallConstructor_SetsReferencesToFiveArgumentCallArgs)
+   TEST(CallConstructor_SetsReferencesToFiveArgumentFunctionCallArgs)
    {
       const Call5 call(V1, V2, V3, V4, V5);
       //
@@ -109,7 +108,7 @@ namespace ZenMock
       ZenUnit::Printer<CallRefString5>::Print(oss, callRef);
       //
       const string zenUnitPrintResult = oss.str();
-      const string expected = "ZenMock::FiveArgumentCall:\n"
+      const string expected = "ZenMock::FiveArgumentFunctionCall:\n"
 "Argument1: \"1\"\n"
 "Argument2: \"2\"\n"
 "Argument3: \"3\"\n"
@@ -144,5 +143,5 @@ namespace ZenMock
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "fifthArgument");
    }
 
-   RUN_TESTS(FiveArgumentCallRefTests)
+   RUN_TESTS(FiveArgumentFunctionCallRefTests)
 }

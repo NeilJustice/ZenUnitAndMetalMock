@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenMockTests/ZenMock/T.h"
 
 namespace ZenMock
 {
@@ -12,7 +11,7 @@ namespace ZenMock
    AFACT(ZenUnitEqualizer_ThrowsIfArg1NotEqual)
    EVIDENCE
 
-   using Call1 = OneArgumentCall<T<1>>;
+   using Call1 = OneArgumentFunctionCall<T<1>>;
 
    TEST(DefaultConstructor_DefaultInitializesArg)
    {
@@ -22,7 +21,7 @@ namespace ZenMock
 
    TEST(Constructor_CopiesArgToDecayedTypeArgField)
    {
-      const OneArgumentCall<const T<1>&> call(V1);
+      const OneArgumentFunctionCall<const T<1>&> call(V1);
       //
       ARE_COPIES(V1, call.argument.value);
       IS_TRUE((is_same<T<1>, decltype(call.argument.value)>::value));
@@ -37,16 +36,16 @@ namespace ZenMock
    RUN_TESTS(OneArgumentCallTests)
 
 
-   TESTS(OneArgumentCallRefTests)
+   TESTS(OneArgumentFunctionCallRefTests)
    AFACT(Constructor_SetsReferences)
    AFACT(CallConstructor_SetsReferencesToOneArgumentCallArg)
    AFACT(ZenUnitPrinter_WritesToStringedArg)
    AFACT(ZenUnitEqualizer_ThrowsIfArgFieldNotEqual)
    EVIDENCE
 
-   using Call1 = OneArgumentCall<T<1>>;
-   using CallRef1 = OneArgumentCallRef<T<1>>;
-   using CallRefString1 = OneArgumentCallRef<string>;
+   using Call1 = OneArgumentFunctionCall<T<1>>;
+   using CallRef1 = OneArgumentFunctionCallRef<T<1>>;
+   using CallRefString1 = OneArgumentFunctionCallRef<string>;
 
    TEST(Constructor_SetsReferences)
    {
@@ -85,5 +84,5 @@ namespace ZenMock
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "argument");
    }
 
-   RUN_TESTS(OneArgumentCallRefTests)
+   RUN_TESTS(OneArgumentFunctionCallRefTests)
 }

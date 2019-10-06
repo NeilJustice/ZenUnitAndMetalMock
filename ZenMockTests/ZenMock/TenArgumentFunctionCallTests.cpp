@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenMockTests/ZenMock/T.h"
 
 namespace ZenMock
 {
@@ -24,13 +23,13 @@ namespace ZenMock
    const T<9> V9 = T<9>(true);
    const T<10> V10 = T<10>(true);
 
-   TESTS(TenArgumentCallTests)
+   TESTS(TenArgumentFunctionCallTests)
    AFACT(DefaultConstructor_DefaultInitializesFields)
    AFACT(Constructor_CopiesValuesToDecayTypeFields)
    AFACT(ZenUnitEqualizer_CallsAreEqualOnEachField)
    EVIDENCE
 
-   using Call10 = TenArgumentCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>, T<10>>;
+   using Call10 = TenArgumentFunctionCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>, T<10>>;
 
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
@@ -49,7 +48,7 @@ namespace ZenMock
 
    TEST(Constructor_CopiesValuesToDecayTypeFields)
    {
-      const TenArgumentCall<
+      const TenArgumentFunctionCall<
          const T<1>&, const T<2>&, const T<3>&, const T<4>&, const T<5>&,
          const T<6>&, const T<7>&, const T<8>&, const T<9>&, const T<10>&>
          call(V1, V2, V3, V4, V5, V6, V7, V8, V9, V10);
@@ -91,21 +90,21 @@ namespace ZenMock
       EQUALIZER_THROWS(Call10, tenthArgument, V10);
    }
 
-   RUN_TESTS(TenArgumentCallTests)
+   RUN_TESTS(TenArgumentFunctionCallTests)
 }
 
 namespace ZenMock
 {
-   TESTS(TenArgumentCallRefTests)
+   TESTS(TenArgumentFunctionCallRefTests)
    AFACT(Constructor_SetsReferences)
    AFACT(CallConstructor_SetsReferencesToCallArgs)
    AFACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
    AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
-   using Call10 = const TenArgumentCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>, T<10>>;
-   using CallRef10 = TenArgumentCallRef<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>, T<10>>;
-   using CallRefString10 = TenArgumentCallRef<string, string, string, string, string, string, string, string, string, string>;
+   using Call10 = const TenArgumentFunctionCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>, T<10>>;
+   using CallRef10 = TenArgumentFunctionCallRef<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>, T<10>>;
+   using CallRefString10 = TenArgumentFunctionCallRef<string, string, string, string, string, string, string, string, string, string>;
 
    TEST(Constructor_SetsReferences)
    {
@@ -149,7 +148,7 @@ namespace ZenMock
       ZenUnit::Printer<CallRefString10>::Print(oss, callRef);
       //
       const string zenUnitPrintResult = oss.str();
-      const string expected = "ZenMock::TenArgumentCall:\n"
+      const string expected = "ZenMock::TenArgumentFunctionCall:\n"
 " Argument1: \"1\"\n"
 " Argument2: \"2\"\n"
 " Argument3: \"3\"\n"
@@ -208,5 +207,5 @@ namespace ZenMock
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg10); }, "tenthArgument");
    }
 
-   RUN_TESTS(TenArgumentCallRefTests)
+   RUN_TESTS(TenArgumentFunctionCallRefTests)
 }

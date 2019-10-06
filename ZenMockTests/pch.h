@@ -30,4 +30,6 @@ using namespace std;
 #include "ZenMock/ZenMock.h"
 using namespace ZenUnit;
 
+#include "ZenMockTests/ZenMock/T.h"
+
 #endif

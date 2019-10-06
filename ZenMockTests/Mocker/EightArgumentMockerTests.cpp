@@ -63,7 +63,7 @@ namespace ZenMock
       //
       _mocker->ZenMockIt(1, 2, 3, 4, 5, 6, 7, 8);
       //
-      using CallType = EightArgumentCall<int, int, int, int, int, int, int, int>;
+      using CallType = EightArgumentFunctionCall<int, int, int, int, int, int, int, int>;
       const vector<CallType> expectedCalls
       {
          CallType(1, 2, 3, 4, 5, 6, 7, 8)

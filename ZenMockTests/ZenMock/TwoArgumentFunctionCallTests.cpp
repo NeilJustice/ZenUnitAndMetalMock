@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenMockTests/ZenMock/T.h"
 
 namespace ZenMock
 {
@@ -8,13 +7,13 @@ namespace ZenMock
    const T<1> V1 = T<1>(true);
    const T<2> V2 = T<2>(true);
 
-   TESTS(TwoArgumentCallTests)
+   TESTS(TwoArgumentFunctionCallTests)
    AFACT(DefaultConstructor_DefaultInitializesFields)
    AFACT(Constructor_CopiesArgsToDecayedTypeArgFields)
    AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
-   using Call2 = TwoArgumentCall<T<1>, T<2>>;
+   using Call2 = TwoArgumentFunctionCall<T<1>, T<2>>;
 
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
@@ -25,7 +24,7 @@ namespace ZenMock
 
    TEST(Constructor_CopiesArgsToDecayedTypeArgFields)
    {
-      const TwoArgumentCall<const T<1>&, const T<2>&> call(V1, V2);
+      const TwoArgumentFunctionCall<const T<1>&, const T<2>&> call(V1, V2);
       //
       ARE_COPIES(V1, call.firstArgument.value);
       ARE_COPIES(V2, call.secondArgument.value);
@@ -40,19 +39,19 @@ namespace ZenMock
       EQUALIZER_THROWS(Call2, secondArgument, V2);
    }
 
-   RUN_TESTS(TwoArgumentCallTests)
+   RUN_TESTS(TwoArgumentFunctionCallTests)
 
 
-   TESTS(TwoArgumentCallRefTests)
+   TESTS(TwoArgumentFunctionCallRefTests)
    AFACT(Constructor_SetsReferences)
-   AFACT(CallConstructor_SetsReferencesToTwoArgumentCallArgs)
+   AFACT(CallConstructor_SetsReferencesToTwoArgumentFunctionCallArgs)
    AFACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
    AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
-   using Call2 = TwoArgumentCall<T<1>, T<2>>;
-   using CallRef2 = TwoArgumentCallRef<T<1>, T<2>>;
-   using CallRefString2 = TwoArgumentCallRef<string, string>;
+   using Call2 = TwoArgumentFunctionCall<T<1>, T<2>>;
+   using CallRef2 = TwoArgumentFunctionCallRef<T<1>, T<2>>;
+   using CallRefString2 = TwoArgumentFunctionCallRef<string, string>;
 
    TEST(Constructor_SetsReferences)
    {
@@ -62,7 +61,7 @@ namespace ZenMock
       ARE_SAME(V2, callRef.secondArgumentReference.value);
    }
 
-   TEST(CallConstructor_SetsReferencesToTwoArgumentCallArgs)
+   TEST(CallConstructor_SetsReferencesToTwoArgumentFunctionCallArgs)
    {
       const Call2 twoArgumentCall(V1, V2);
       //
@@ -80,7 +79,7 @@ namespace ZenMock
       ZenUnit::Printer<CallRefString2>::Print(oss, callRef);
       //
       const string zenUnitPrintResult = oss.str();
-      const string expected = "ZenMock::TwoArgumentCall:\n"
+      const string expected = "ZenMock::TwoArgumentFunctionCall:\n"
 "Argument1: \"1\"\n"
 "Argument2: \"2\"";
       ARE_EQUAL(expected, zenUnitPrintResult);
@@ -100,5 +99,5 @@ namespace ZenMock
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "secondArgument");
    }
 
-   RUN_TESTS(TwoArgumentCallRefTests)
+   RUN_TESTS(TwoArgumentFunctionCallRefTests)
 }
