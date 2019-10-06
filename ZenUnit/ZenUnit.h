@@ -4639,15 +4639,15 @@ namespace ZenUnit
    {
       friend class StopwatchTests;
    private:
-      std::function<std::chrono::time_point<std::chrono::high_resolution_clock>()> _call_highres_now;
+      std::function<std::chrono::time_point<std::chrono::high_resolution_clock>()> _call_high_resolution_clock_now;
       std::chrono::time_point<std::chrono::high_resolution_clock> _startTime;
    public:
-      Stopwatch() noexcept : _call_highres_now(std::chrono::high_resolution_clock::now) {}
+      Stopwatch() noexcept : _call_high_resolution_clock_now(std::chrono::high_resolution_clock::now) {}
       virtual ~Stopwatch() = default;
 
       virtual void Start()
       {
-         _startTime = _call_highres_now();
+         _startTime = _call_high_resolution_clock_now();
       }
 
       virtual long long StopAndGetElapsedMicroseconds()
@@ -4656,7 +4656,7 @@ namespace ZenUnit
          {
             return 0u;
          }
-         const std::chrono::time_point<std::chrono::high_resolution_clock> stopTime = _call_highres_now();
+         const std::chrono::time_point<std::chrono::high_resolution_clock> stopTime = _call_high_resolution_clock_now();
          const std::chrono::duration<long long, std::nano> elapsedTime = stopTime - _startTime;
          const long long elapsedMicroseconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsedTime).count();
          _startTime = std::chrono::time_point<std::chrono::high_resolution_clock>();
@@ -4671,21 +4671,24 @@ namespace ZenUnit
          // Example elapsedMilliseconds: 1
          const long long elapsedMilliseconds = elapsedMicroseconds / 1000;
 
+         // Example elapsedMillisecondsMod1000: 1
+         const long long elapsedMillisecondsMod1000 = elapsedMilliseconds % 1000;
+
          // Example elapsedSeconds: 0
          const long long elapsedSeconds = elapsedMilliseconds / 1000;
 
-         const size_t numberOfLeadingZeros =
-            elapsedMilliseconds < 10 ? 2 : // 3 -> 0.003
-            elapsedMilliseconds < 100 ? 1 : // 33 -> 0.033
+         const size_t numberOfLeadingMillisecondZeros =
+            elapsedMillisecondsMod1000 < 10 ? 2 : // 3 -> 0.003
+            elapsedMillisecondsMod1000 < 100 ? 1 : // 33 -> 0.033
             0; // 333 -> 0.333
 
          // Example leadingZeros: "00"
-         const std::string leadingZeros(numberOfLeadingZeros, '0');
+         const std::string leadingZeros(numberOfLeadingMillisecondZeros, '0');
 
-         // Example formattedElapsedSeconds: 0.001
-         const std::string formattedElapsedSeconds = String::Concat(elapsedSeconds, '.', leadingZeros, elapsedMilliseconds);
+         // Example elapsedSecondsWithMillisecondResolution: "0.001"
+         const std::string elapsedSecondsWithMillisecondResolution = String::Concat(elapsedSeconds, '.', leadingZeros, elapsedMillisecondsMod1000);
 
-         return formattedElapsedSeconds;
+         return elapsedSecondsWithMillisecondResolution;
       }
    };
 
