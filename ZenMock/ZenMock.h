@@ -1406,6 +1406,8 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
             const ZenUnit::ZenUnitArgs& args = _call_ZenUnitTestRunner_GetArgs();
 				console.WriteColor("\n>>------>", ZenUnit::Color::Red);
 				console.WriteLine("     Completed: " + args.commandLine);
+            console.WriteColor(">>------>", ZenUnit::Color::Red);
+            console.WriteLine("    RandomSeed: " + std::to_string(args.randomSeed));
 				console.WriteColor(">>------>", ZenUnit::Color::Red);
 				console.WriteLine("     StartTime: " + args.startDateTime);
 				console.WriteColor(">>------>", ZenUnit::Color::Red);
@@ -1415,8 +1417,6 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
             console.WriteColor(">>------> ", ZenUnit::Color::Red);
             const std::string testRunDurationInSeconds = ZenUnit::ZenUnitTestRunner::Instance().StopTestRunStopwatchAndGetElapsedSeconds();
             console.WriteLine("     Duration: " + testRunDurationInSeconds + " seconds");
-            console.WriteColor(">>------>", ZenUnit::Color::Red);
-            console.WriteLine("    RandomSeed: " + std::to_string(args.randomSeed));
             console.WriteColor(">>------>", ZenUnit::Color::Red);
 				console.WriteLine(" TestRunResult: Fatal EBNA");
             console.WriteColor(">>-FAIL->", ZenUnit::Color::Red);
