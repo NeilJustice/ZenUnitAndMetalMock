@@ -4533,6 +4533,10 @@ namespace ZenUnit
             _console->WriteLine(completedCommandLineMessage);
 
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
+            const std::string randomSeedMessage = String::Concat("    RandomSeed: ", args.randomSeed);
+            _console->WriteLine(randomSeedMessage);
+
+            _console->WriteColor(tripletLinesPrefix, greenOrRed);
             const std::string startTimeMessage = String::Concat("     StartTime: ", startDateTime);
             _console->WriteLine(startTimeMessage);
 
@@ -4544,10 +4548,6 @@ namespace ZenUnit
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
             const std::string durationMessage = String::Concat("      Duration: ", testRunElapsedSeconds, " seconds");
             _console->WriteLine(durationMessage);
-
-            _console->WriteColor(tripletLinesPrefix, greenOrRed);
-            const std::string randomSeedMessage = String::Concat("    RandomSeed: ", args.randomSeed);
-            _console->WriteLine(randomSeedMessage);
 
             _console->WriteColor(successOrFailLinePrefix, greenOrRed);
             _console->WriteLine(resultMessage);

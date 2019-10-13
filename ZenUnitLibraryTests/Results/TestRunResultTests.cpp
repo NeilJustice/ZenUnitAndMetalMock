@@ -266,19 +266,19 @@ namespace ZenUnit
          { expectedSuccessOrFailLinePrefix, expectedColor }
       }));
       const string expectedCompletedLine  = "     Completed: " + args.commandLine;
+      const string expectedRandomSeedLine = "    RandomSeed: " + to_string(args.randomSeed);
       const string expectedStartTimeLine  = "     StartTime: " + startDateTime;
       const string expectedEndTimeLine    = "       EndTime: " + dateTimeNow;
       const string expectedDurationLine   = "      Duration: " + testRunElapsedSeconds + " seconds";
-      const string expectedRandomSeedLine = "    RandomSeed: " + to_string(args.randomSeed);
       const string expectedTestRunResultLine = String::Concat(" TestRunResult: ", expectedClosingLineTestsCountText);
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZENMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
       {
          { expectedCompletedLine },
+         { expectedRandomSeedLine },
          { expectedStartTimeLine },
          { expectedEndTimeLine },
          { expectedDurationLine },
-         { expectedRandomSeedLine },
          { expectedTestRunResultLine }
       }));
    }
