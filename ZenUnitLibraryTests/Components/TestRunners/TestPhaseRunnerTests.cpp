@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleMock.h"
-#include "ZenUnitLibraryTests/ValueTypes/Results/ZenMock/TestPhaseTranslatorMock.h"
+#include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestPhaseTranslatorMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/ZenMock/TestMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Utils/Function/ZenMock/VoidTwoArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Utils/Time/ZenMock/StopwatchMock.h"

@@ -9,6 +9,8 @@ namespace ZenUnit
    struct ToStringerTestStruct
    {
       int value;
+      mutable int argValue;
+      mutable size_t numberOfCalls;
 
       ToStringerTestStruct(int value)
          : value(value)
@@ -16,9 +18,6 @@ namespace ZenUnit
          , numberOfCalls(0)
       {
       }
-
-      mutable int argValue;
-      mutable size_t numberOfCalls;
 
       friend ostream& operator<<(ostream& os, const ToStringerTestStruct& sts)
       {

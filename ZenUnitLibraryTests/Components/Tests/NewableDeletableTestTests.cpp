@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/ValueTypes/Results/ZenMock/TestResultFactoryMock.h"
+#include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestResultFactoryMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/ZenMock/TestPhaseRunnerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Utils/Time/ZenMock/StopwatchMock.h"
 #include "ZenUnitTestUtils/Equalizers/TestPhaseResultEqualizer.h"

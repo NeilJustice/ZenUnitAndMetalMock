@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/ValueTypes/Results/ZenMock/TestResultFactoryMock.h"
-#include "ZenUnitLibraryTests/ValueTypes/Results/ZenMock/TestResultMock.h"
+#include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestResultFactoryMock.h"
+#include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestResultMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/ZenMock/TestPhaseRunnerMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/ZenMock/TestMock.h"
 #include "ZenUnitTestUtils/Equalizers/TestPhaseResultEqualizer.h"

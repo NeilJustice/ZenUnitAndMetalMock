@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleMock.h"
-#include "ZenUnitLibraryTests/ValueTypes/Results/ZenMock/TestFailureNumbererMock.h"
+#include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestFailureNumbererMock.h"
 #include "ZenUnitTestUtils/Equalizers/TestResultEqualizer.h"
 
 namespace ZenUnit

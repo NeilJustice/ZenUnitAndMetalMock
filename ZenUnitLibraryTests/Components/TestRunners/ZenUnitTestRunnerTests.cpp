@@ -3,10 +3,10 @@
 #include <unistd.h>
 #endif
 
-#include "ZenUnitLibraryTests/ValueTypes/Args/ZenMock/ArgsParserMock.h"
+#include "ZenUnitLibraryTests/Components/Args/ZenMock/ArgsParserMock.h"
 #include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomRunFilter.h"
-#include "ZenUnitLibraryTests/ValueTypes/Results/ZenMock/TestRunResultMock.h"
+#include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestRunResultMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/ZenMock/PreamblePrinterMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/ZenMock/TestClassRunnerRunnerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Utils/Function/ZenMock/NonVoidOneArgMemberFunctionCallerMock.h"
