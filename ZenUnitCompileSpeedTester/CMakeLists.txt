@@ -2,11 +2,8 @@ cmake_minimum_required(VERSION 3.2)
 project(ZenUnitCompileSpeedTester)
 include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-include_directories(${CMAKE_SOURCE_DIR})
-include_directories(${CMAKE_SOURCE_DIR}/ZenUnit)
+include_directories(${ZenUnitIncludeDirectory})
 
-source_group("Main" FILES ZenUnitCompileSpeedTesterMain.cpp pch.h pch.cpp)
 file(GLOB_RECURSE Sources *.h *.cpp)
 
 add_executable(ZenUnitCompileSpeedTester ${Sources})

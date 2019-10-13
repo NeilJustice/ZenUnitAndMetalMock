@@ -5,11 +5,9 @@ include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 include_directories(${ZenUnitIncludeDirectory})
 include_directories(${ZenMockIncludeDirectory})
 
-file(GLOB Sources *.h *.cpp)
-source_group("" FILES ${Sources})
+file(GLOB_RECURSE Sources *.h *.cpp)
 
 add_executable(ZenUnitExamples ${Sources})
-
 if(UNIX)
    target_link_libraries(ZenUnitExamples stdc++fs)
 endif()

@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.2)
 project(ZenUnit)
 
+source_group("SingleHeader" FILES ZenUnit.h)
+
 # Adds a fake static library for single-header ZenUnit.h so that ZenUnit appears as a Visual Studio project
-add_library(ZenUnit ZenUnit.h)
+add_library(ZenUnit "ZenUnit.h")
 
 set_target_properties(ZenUnit PROPERTIES LINKER_LANGUAGE CXX)
 

@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.2)
 project(ZenMock)
 
+source_group("SingleHeader" FILES ZenMock.h)
+
 # Adds a fake static library for single-header ZenMock.h so that ZenMock appears as a Visual Studio project
 add_library(ZenMock ZenMock.h)
 
