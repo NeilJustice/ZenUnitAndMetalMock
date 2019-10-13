@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenMockTests/ZenMock/ExceptionThrowerMock.h"
-#include "ZenUnitLibraryTests/Random/RandomZenUnitArgs.h"
+#include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
 
 struct CustomException
 {

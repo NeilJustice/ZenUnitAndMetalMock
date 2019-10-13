@@ -52,6 +52,6 @@ using namespace ZenUnit;
 #include "ZenUnitUtilsAndAssertionTests/Utils/Function/ZenMock/VoidOneArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Utils/Time/ZenMock/WatchMock.h"
 
-#include "ZenUnitLibraryTests/Random/RandomZenUnitArgs.h"
+#include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
 
 #endif
