@@ -41,7 +41,7 @@ add_subdirectory(ZenUnitUtilsAndAssertionTests)
 add_subdirectory(ZenUnitExamples)
 add_subdirectory(ZenUnitLibraryTests)
 add_subdirectory(ZenUnitTestUtils)
-add_subdirectory(ZenUnitCompileSpeed)
+add_subdirectory(ZenUnitCompileSpeedTester)
 add_subdirectory(ZenMockExamples)
 add_subdirectory(ZenMockTests)
 
