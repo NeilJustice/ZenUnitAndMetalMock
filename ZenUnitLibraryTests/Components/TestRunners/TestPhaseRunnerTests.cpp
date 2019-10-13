@@ -2,8 +2,8 @@
 #include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestPhaseTranslatorMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/ZenMock/TestMock.h"
-#include "ZenUnitUtilsAndAssertionTests/Utils/Function/ZenMock/VoidTwoArgMemberFunctionCallerMock.h"
-#include "ZenUnitUtilsAndAssertionTests/Utils/Time/ZenMock/StopwatchMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/ZenMock/VoidTwoArgMemberFunctionCallerMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/Time/ZenMock/StopwatchMock.h"
 #include "ZenUnitTestUtils/Equalizers/TestPhaseResultEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/ZenUnitArgsEqualizer.h"
 

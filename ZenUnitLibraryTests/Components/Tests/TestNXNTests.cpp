@@ -4,7 +4,7 @@
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestResultMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/ZenMock/ITestCaseNumberGeneratorMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/TestingTestClass.h"
-#include "ZenUnitUtilsAndAssertionTests/Utils/Iteration/ZenMock/ThreeArgAnyerMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/Iteration/ZenMock/ThreeArgAnyerMock.h"
 #include "ZenUnitTestUtils/Equalizers/FullTestNameEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/RunFilterEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/TestResultEqualizer.h"

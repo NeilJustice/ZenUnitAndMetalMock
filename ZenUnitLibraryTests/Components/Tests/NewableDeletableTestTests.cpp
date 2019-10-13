@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestResultFactoryMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/ZenMock/TestPhaseRunnerMock.h"
-#include "ZenUnitUtilsAndAssertionTests/Utils/Time/ZenMock/StopwatchMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/Time/ZenMock/StopwatchMock.h"
 #include "ZenUnitTestUtils/Equalizers/TestPhaseResultEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/FullTestNameEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/TestResultEqualizer.h"
