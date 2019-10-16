@@ -8,3 +8,6 @@ file(GLOB_RECURSE Sources *.h *.cpp)
 
 add_executable(ZenUnitCompileSpeedTester ${Sources})
 target_link_libraries(ZenUnitCompileSpeedTester)
+if(UNIX)
+   target_link_libraries(ZenUnitCompileSpeedTester stdc++fs)
+endif()
