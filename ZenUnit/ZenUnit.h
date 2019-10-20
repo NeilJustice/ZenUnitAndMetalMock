@@ -1,5 +1,5 @@
 // C++ Unit Testing Framework ZenUnit 0.5.0
-// https://github.com/NeilJustice/ZenUnit
+// https://github.com/NeilJustice/ZenUnitAndZenMock
 // MIT License
 
 #pragma once

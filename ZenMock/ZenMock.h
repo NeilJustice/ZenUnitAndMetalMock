@@ -1,5 +1,5 @@
 // C++ Mocking Framework ZenMock 0.5.0
-// https://github.com/NeilJustice/ZenMock
+// https://github.com/NeilJustice/ZenUnitAndZenMock
 // MIT License
 
 #pragma once
