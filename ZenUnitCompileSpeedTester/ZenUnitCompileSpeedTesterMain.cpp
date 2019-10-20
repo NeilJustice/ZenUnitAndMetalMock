@@ -63,39 +63,24 @@ TESTS(Tests47) EVIDENCE RUN_TESTS(Tests47)
 TESTS(Tests48) EVIDENCE RUN_TESTS(Tests48)
 TESTS(Tests49) EVIDENCE RUN_TESTS(Tests49)
 TESTS(Tests50) EVIDENCE RUN_TESTS(Tests50)
-TESTS(Tests51) EVIDENCE RUN_TESTS(Tests51)
-TESTS(Tests52) EVIDENCE RUN_TESTS(Tests52)
-TESTS(Tests53) EVIDENCE RUN_TESTS(Tests53)
-TESTS(Tests54) EVIDENCE RUN_TESTS(Tests54)
-TESTS(Tests55) EVIDENCE RUN_TESTS(Tests55)
-TESTS(Tests56) EVIDENCE RUN_TESTS(Tests56)
-TESTS(Tests57) EVIDENCE RUN_TESTS(Tests57)
-TESTS(Tests58) EVIDENCE RUN_TESTS(Tests58)
-TESTS(Tests59) EVIDENCE RUN_TESTS(Tests59)
-TESTS(Tests60) EVIDENCE RUN_TESTS(Tests60)
-TESTS(Tests61) EVIDENCE RUN_TESTS(Tests61)
-TESTS(Tests62) EVIDENCE RUN_TESTS(Tests62)
-TESTS(Tests63) EVIDENCE RUN_TESTS(Tests63)
-TESTS(Tests64) EVIDENCE RUN_TESTS(Tests64)
-TESTS(Tests65) EVIDENCE RUN_TESTS(Tests65)
-TESTS(Tests66) EVIDENCE RUN_TESTS(Tests66)
 
-// 10/13/2019 measurements on a 32-core 64-core AMD Threadripper 2990WX clocked at 3.5 GHz
-// ---------------------------------------------------------------------------------------
+// 10/20/2019 measurements on a 32-core 64-core AMD Threadripper 2990WX clocked at 3.5 GHz
+
 // Measurement 1
-// 406 ms  Link
-// 5069 ms CL
+// 4448 ms CL
+//  388 ms Link
 
 // Measurement 2
-// 366 ms  Link
-// 5032 ms CL
+// 4423 ms CL
+//  397 ms Link
 
 // Measurement 3
-// 387 ms  Link
-// 5036 ms CL
+// 4371 ms CL
+//  450 ms Link
 
-// Average compile time: 5046 ms
-//    Average Link time: 387 ms
+// Average compile time: 4414 ms
+//    Average link time: 412 ms
+//   Average total time: 4826 ms
 
 int main()
 {
