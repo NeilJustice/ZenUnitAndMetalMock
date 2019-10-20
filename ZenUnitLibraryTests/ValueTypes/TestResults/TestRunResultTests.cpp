@@ -21,10 +21,10 @@ namespace ZenUnit
    AFACT(PrintConclusionLines_0TotalNumberOfTests_PrintsZeroTestClassesRegisteredToRun)
    FACTS(PrintConclusionLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedSeconds)
    AFACT(PrintTestClassResultFailures_CallsTestClassResultPrintTestFailures)
-   FACTS(DetermineExitCode_DefaultArgs_Returns1IfAnyTestFailures_OtherwiseReturns0)
-   FACTS(DetermineExitCode_Exit0True_AlwaysReturns0)
-   FACTS(DetermineExitCode_Exit0True_noskipsTrue_AlwaysReturns0)
-   FACTS(DetermineExitCode_noskipsTrue_Returns1IfAnyTestsOrTestClassesSkipped)
+   FACTS(DetermineZenUnitExitCode_DefaultArgs_Returns1IfAnyTestFailures_OtherwiseReturns0)
+   FACTS(DetermineZenUnitExitCode_Exit0True_AlwaysReturns0)
+   FACTS(DetermineZenUnitExitCode_Exit0True_noskipsTrue_AlwaysReturns0)
+   FACTS(DetermineZenUnitExitCode_noskipsTrue_Returns1IfAnyTestsOrTestClassesSkipped)
    AFACT(PrintSkippedTestClassReminder_PrintsExpectedToConsole)
    AFACT(PrintSkippedTestReminder_PrintsExpectedToConsole)
    AFACT(ResetStateExceptForSkips_ResetsTestFailureNumberer_ClearsTestClassResults_SetsNumberOfFailedTestCasesTo0)
@@ -65,8 +65,8 @@ namespace ZenUnit
       POINTER_WAS_NEWED(testRunResult._threeArgForEacher);
       POINTER_WAS_NEWED(testRunResult._testFailureNumberer);
       IS_EMPTY(testRunResult._testClassResults);
-      IS_EMPTY(testRunResult._skippedTestClassNamesAndReasons);
-      IS_EMPTY(testRunResult._skippedFullTestNamesAndReasons);
+      IS_EMPTY(testRunResult._skippedTestClassNamesAndSkipReasons);
+      IS_EMPTY(testRunResult._skippedFullTestNamesAndSkipReasons);
       ARE_EQUAL(0, testRunResult._numberOfFailedTestCases);
    }
 
@@ -79,7 +79,7 @@ namespace ZenUnit
       _testRunResult.AddSkippedTest(testClassName.c_str(), TestNameA, ReasonA);
       //
       TestRunResult expectedTestRunResultA;
-      expectedTestRunResultA._skippedFullTestNamesAndReasons = { testClassName + ".TestA because: ReasonA" };
+      expectedTestRunResultA._skippedFullTestNamesAndSkipReasons = { testClassName + ".TestA because: ReasonA" };
       ARE_EQUAL(expectedTestRunResultA, _testRunResult);
 
       const char* const TestNameB = "TestB";
@@ -88,7 +88,7 @@ namespace ZenUnit
       _testRunResult.AddSkippedTest(testClassName.c_str(), TestNameB, ReasonB);
       //
       TestRunResult expectedTestRunResultB;
-      expectedTestRunResultB._skippedFullTestNamesAndReasons =
+      expectedTestRunResultB._skippedFullTestNamesAndSkipReasons =
       {
          testClassName + ".TestA because: ReasonA",
          testClassName + ".TestB because: ReasonB"
@@ -104,7 +104,7 @@ namespace ZenUnit
       _testRunResult.AddSkippedTestClassNameAndReason(SkippedTestClassNameA, ReasonA);
       //
       TestRunResult expectedTestRunResultA;
-      expectedTestRunResultA._skippedTestClassNamesAndReasons =
+      expectedTestRunResultA._skippedTestClassNamesAndSkipReasons =
       {
          String::Concat(SkippedTestClassNameA, " because: ", ReasonA)
       };
@@ -116,7 +116,7 @@ namespace ZenUnit
       _testRunResult.AddSkippedTestClassNameAndReason(SkippedTestClassNameB, ReasonB);
       //
       TestRunResult expectedTestRunResultB;
-      expectedTestRunResultB._skippedTestClassNamesAndReasons =
+      expectedTestRunResultB._skippedTestClassNamesAndSkipReasons =
       {
          String::Concat(SkippedTestClassNameA, " because: ", ReasonA),
          String::Concat(SkippedTestClassNameB, " because: ", ReasonB)
@@ -210,8 +210,8 @@ namespace ZenUnit
       }
       ZENMOCK(_memberForEacherSkippedTestsMock->MemberForEachMock.CalledAsFollows(
       {
-         { &_testRunResult._skippedTestClassNamesAndReasons, &_testRunResult, &TestRunResult::PrintSkippedTestClassReminder },
-         { &_testRunResult._skippedFullTestNamesAndReasons, &_testRunResult, &TestRunResult::PrintSkippedTestReminder }
+         { &_testRunResult._skippedTestClassNamesAndSkipReasons, &_testRunResult, &TestRunResult::PrintSkippedTestClassReminder },
+         { &_testRunResult._skippedFullTestNamesAndSkipReasons, &_testRunResult, &TestRunResult::PrintSkippedTestReminder }
       }));
    }
 
@@ -296,11 +296,11 @@ namespace ZenUnit
          _testRunResult._testFailureNumberer.get()));
    }
 
-   TEST4X4(DetermineExitCode_DefaultArgs_Returns1IfAnyTestFailures_OtherwiseReturns0,
+   TEST4X4(DetermineZenUnitExitCode_DefaultArgs_Returns1IfAnyTestFailures_OtherwiseReturns0,
       size_t numberOfFailedTestCases,
       size_t numberOfSkippedTests,
       size_t numberOfSkippedTestClasses,
-      int expectedExitCode,
+      int expectedZenUnitExitCode,
       size_t(0), size_t(0), size_t(0), 0,
       size_t(0), size_t(1), size_t(2), 0,
       size_t(1), size_t(0), size_t(0), 1,
@@ -309,16 +309,16 @@ namespace ZenUnit
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
       const ZenUnitArgs args;
       //
-      const int exitCode = _testRunResult.DetermineExitCode(args);
+      const int zenUnitExitCode = _testRunResult.DetermineZenUnitExitCode(args);
       //
-      ARE_EQUAL(expectedExitCode, exitCode);
+      ARE_EQUAL(expectedZenUnitExitCode, zenUnitExitCode);
    }
 
-   TEST4X4(DetermineExitCode_Exit0True_AlwaysReturns0,
+   TEST4X4(DetermineZenUnitExitCode_Exit0True_AlwaysReturns0,
       size_t numberOfFailedTestCases,
       size_t numberOfSkippedTests,
       size_t numberOfSkippedTestClasses,
-      int expectedExitCode,
+      int expectedZenUnitExitCode,
       size_t(0), size_t(0), size_t(0), 0,
       size_t(0), size_t(1), size_t(2), 0,
       size_t(1), size_t(0), size_t(0), 0,
@@ -328,16 +328,16 @@ namespace ZenUnit
       ZenUnitArgs args;
       args.exitZero = true;
       //
-      const int exitCode = _testRunResult.DetermineExitCode(args);
+      const int zenUnitExitCode = _testRunResult.DetermineZenUnitExitCode(args);
       //
-      ARE_EQUAL(expectedExitCode, exitCode);
+      ARE_EQUAL(expectedZenUnitExitCode, zenUnitExitCode);
    }
 
-   TEST4X4(DetermineExitCode_Exit0True_noskipsTrue_AlwaysReturns0,
+   TEST4X4(DetermineZenUnitExitCode_Exit0True_noskipsTrue_AlwaysReturns0,
       size_t numberOfFailedTestCases,
       size_t numberOfSkippedTests,
       size_t numberOfSkippedTestClasses,
-      int expectedExitCode,
+      int expectedZenUnitExitCode,
       size_t(0), size_t(0), size_t(0), 0,
       size_t(0), size_t(1), size_t(2), 0,
       size_t(1), size_t(0), size_t(0), 0,
@@ -348,16 +348,16 @@ namespace ZenUnit
       args.exitZero = true;
       args.noSkips = true;
       //
-      const int exitCode = _testRunResult.DetermineExitCode(args);
+      const int zenUnitExitCode = _testRunResult.DetermineZenUnitExitCode(args);
       //
-      ARE_EQUAL(expectedExitCode, exitCode);
+      ARE_EQUAL(expectedZenUnitExitCode, zenUnitExitCode);
    }
 
-   TEST4X4(DetermineExitCode_noskipsTrue_Returns1IfAnyTestsOrTestClassesSkipped,
+   TEST4X4(DetermineZenUnitExitCode_noskipsTrue_Returns1IfAnyTestsOrTestClassesSkipped,
       size_t numberOfFailedTestCases,
       size_t numberOfSkippedTests,
       size_t numberOfSkippedTestClasses,
-      int expectedExitCode,
+      int expectedZenUnitExitCode,
       size_t(0), size_t(0), size_t(0), 0,
       size_t(1), size_t(0), size_t(0), 1,
       size_t(2), size_t(0), size_t(0), 1,
@@ -372,16 +372,16 @@ namespace ZenUnit
       ZenUnitArgs args;
       args.noSkips = true;
       //
-      const int exitCode = _testRunResult.DetermineExitCode(args);
+      const int zenUnitExitCode = _testRunResult.DetermineZenUnitExitCode(args);
       //
-      ARE_EQUAL(expectedExitCode, exitCode);
+      ARE_EQUAL(expectedZenUnitExitCode, zenUnitExitCode);
    }
 
    void SetState(size_t numberOfFailedTestCases, size_t numberOfSkippedTests, size_t numberOfSkippedTestClasses)
    {
       _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
-      _testRunResult._skippedFullTestNamesAndReasons.resize(numberOfSkippedTests);
-      _testRunResult._skippedTestClassNamesAndReasons.resize(numberOfSkippedTestClasses);
+      _testRunResult._skippedFullTestNamesAndSkipReasons.resize(numberOfSkippedTests);
+      _testRunResult._skippedTestClassNamesAndSkipReasons.resize(numberOfSkippedTestClasses);
    }
 
    TEST(PrintSkippedTestClassReminder_PrintsExpectedToConsole)
@@ -421,8 +421,8 @@ namespace ZenUnit
    {
       SETUP_EQUALIZER_THROWS_TEST(TestRunResult);
       EQUALIZER_THROWS(TestRunResult, _testClassResults, vector<TestClassResult> { TestClassResult() });
-      EQUALIZER_THROWS(TestRunResult, _skippedTestClassNamesAndReasons, vector<string> { "" });
-      EQUALIZER_THROWS(TestRunResult, _skippedFullTestNamesAndReasons, vector<string> { "" });
+      EQUALIZER_THROWS(TestRunResult, _skippedTestClassNamesAndSkipReasons, vector<string> { "" });
+      EQUALIZER_THROWS(TestRunResult, _skippedFullTestNamesAndSkipReasons, vector<string> { "" });
       EQUALIZER_THROWS(TestRunResult, _numberOfFailedTestCases, 1);
    }
 

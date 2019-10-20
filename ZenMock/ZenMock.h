@@ -1447,7 +1447,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
       void ZenMockIt()
       {
          this->ZenMockThrowIfNotExpected();
-         ++actualNumberOfCalls;
+         ++this->actualNumberOfCalls;
          if (this->voidZeroArgFunctionToCallInstead)
          {
             this->voidZeroArgFunctionToCallInstead();
@@ -1596,6 +1596,17 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
    };
 
    template<typename T>
+   struct ArgumentStorage<std::unique_ptr<T>>
+   {
+      const T* const value;
+
+      ArgumentStorage() = delete;
+
+      ArgumentStorage(const std::unique_ptr<T>& uniquePtr)
+         : value(uniquePtr.get()) {}
+   };
+
+   template<typename T>
    struct ReferenceArgumentStorage
    {
       const T& value;
@@ -1616,6 +1627,17 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
 
       ReferenceArgumentStorage(std::string_view argument)
          : value(argument) {}
+   };
+
+   template<typename T>
+   struct ReferenceArgumentStorage<std::unique_ptr<T>>
+   {
+      const T* const value;
+
+      ReferenceArgumentStorage() = delete;
+
+      ReferenceArgumentStorage(const std::unique_ptr<T>& uniquePtr)
+         : value(uniquePtr.get()) {}
    };
 
    template<typename Arg1Type>
@@ -2243,7 +2265,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
       void ZenMockIt(const ArgType& argument)
       {
          this->ZenMockThrowIfNotExpected(argument);
-         zenMockObjectCallHistory.emplace_back(argument);
+         this->zenMockObjectCallHistory.emplace_back(argument);
          this->ZenMockThrowIfExceptionSet();
       }
 
@@ -2253,6 +2275,14 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
          const size_t expectedNumberOfCalls = 1;
          ARE_EQUAL(expectedNumberOfCalls, zenMockObjectCallHistory.size(), this->ZenMockedFunctionSignature);
          ARE_EQUAL(expectedArgument, zenMockObjectCallHistory[0].argument.value, this->ZenMockedFunctionSignature);
+         return FunctionSequencingToken();
+      }
+
+      FunctionSequencingToken CalledOnceWithAny()
+      {
+         this->ZenMockSetAsserted();
+         const size_t expectedNumberOfCalls = 1;
+         ARE_EQUAL(expectedNumberOfCalls, zenMockObjectCallHistory.size(), this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 

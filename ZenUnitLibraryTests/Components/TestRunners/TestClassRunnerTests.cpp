@@ -1,32 +1,47 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Components/Args/ZenMock/RunFilterMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/ZenMock/TestClassRunnerMock.h"
+#include "ZenUnitTestUtils/Equalizers/TestClassResultEqualizer.h"
 
 namespace ZenUnit
 {
-   class TestingTestClassRunner : public TestClassRunner
-   {
-   public:
-      const char* TestClassName() const override { return nullptr; }
-      size_t NumberOfTestCases() const override { return 0; }
-      TestClassResult RunTests() override { return TestClassResult(); }
-      bool HasTestThatMatchesRunFilter(const RunFilter&) const override { return false; }
-   };
-
    TESTS(TestClassRunnerTests)
-   AFACT(DefaultConstructor_NewsComponents)
+   AFACT(DefaultConstructor_NewsConsoleAndNewArgMemberAnyer)
+   AFACT(TestClassName_ReturnNullptr)
+   AFACT(NumberOfTestCases_Returns0)
+   AFACT(HasTestThatMatchesRunFilter_ReturnsFalse)
+   AFACT(RunTests_ReturnsDefaultTestClassResult)
    AFACT(RunFilterMatchesTestName_ReturnsTrueIfRunFilterMatchesTestName)
    FACTS(OperatorLessThan_ReturnsTrueIfTestClassNameStrcmpResultIsLessThanZero)
-   AFACT(TestingTestClassRunnerCodeCoverage)
    EVIDENCE
 
-   TestingTestClassRunner _testingTestClassRunner;
+   TestClassRunner _testClassRunner;
 
-   TEST(DefaultConstructor_NewsComponents)
+   TEST(DefaultConstructor_NewsConsoleAndNewArgMemberAnyer)
    {
-      TestingTestClassRunner testingTestClassRunner;
-      POINTER_WAS_NEWED(testingTestClassRunner._protected_console);
-      POINTER_WAS_NEWED(testingTestClassRunner._protected_twoArgMemberAnyer);
+      TestClassRunner testClassRunner;
+      POINTER_WAS_NEWED(testClassRunner._protected_console);
+      POINTER_WAS_NEWED(testClassRunner._protected_twoArgMemberAnyer);
+   }
+
+   TEST(TestClassName_ReturnNullptr)
+   {
+      POINTER_IS_NULL(_testClassRunner.TestClassName());
+   }
+
+   TEST(NumberOfTestCases_Returns0)
+   {
+      ARE_EQUAL(0, _testClassRunner.NumberOfTestCases());
+   }
+
+   TEST(HasTestThatMatchesRunFilter_ReturnsFalse)
+   {
+      IS_FALSE(_testClassRunner.HasTestThatMatchesRunFilter(ZenUnit::Random<RunFilter>()));
+   }
+
+   TEST(RunTests_ReturnsDefaultTestClassResult)
+   {
+      ARE_EQUAL(TestClassResult{}, _testClassRunner.RunTests());
    }
 
    TEST(RunFilterMatchesTestName_ReturnsTrueIfRunFilterMatchesTestName)
@@ -35,7 +50,7 @@ namespace ZenUnit
       const bool runFilterMatchesTestName = runFilterMock.MatchesTestNameMock.ReturnRandom();
       const string testName = ZenUnit::Random<string>();
       //
-      const bool returnedRunFilterMatchesTestName = _testingTestClassRunner.RunFilterMatchesTestName(runFilterMock, testName.c_str());
+      const bool returnedRunFilterMatchesTestName = _testClassRunner.RunFilterMatchesTestName(runFilterMock, testName.c_str());
       //
       ZENMOCK(runFilterMock.MatchesTestNameMock.CalledOnceWith(testName.c_str()));
       ARE_EQUAL(runFilterMatchesTestName, returnedRunFilterMatchesTestName);
@@ -65,15 +80,6 @@ namespace ZenUnit
       ZENMOCK(leftTestClassRunnerMock->TestClassNameMock.CalledOnce());
       ZENMOCK(rightTestClassRunnerMock->TestClassNameMock.CalledOnce());
       ARE_EQUAL(expectedIsLessThan, isLessThan);
-   }
-
-   TEST(TestingTestClassRunnerCodeCoverage)
-   {
-      TestingTestClassRunner testingTestClassRunner;
-      testingTestClassRunner.TestClassName();
-      testingTestClassRunner.NumberOfTestCases();
-      const TestClassResult testClassResult = testingTestClassRunner.RunTests();
-      testingTestClassRunner.HasTestThatMatchesRunFilter(RunFilter());
    }
 
    RUN_TESTS(TestClassRunnerTests)

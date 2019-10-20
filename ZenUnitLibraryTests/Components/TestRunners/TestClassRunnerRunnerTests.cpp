@@ -17,7 +17,7 @@ namespace ZenUnit
    TESTS(TestClassRunnerRunnerTests)
    AFACT(Constructor_NewsComponents)
    AFACT(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
-   AFACT(AddTestClassRunner_EmplacesBackTestClassRunner_MakesNumberOfTestClassesToBeRunReturnAnIncreasingNumber)
+   AFACT(AddTestClassRunner_EmplacesBackTestClassRunner_MakesNumberOfTestClassesToBeRunReturnAnIncreasingNumberAsMoreNonNoOpTestClassRunnersAreAdded)
    AFACT(ApplyRunFiltersIfAny_RunFiltersEmpty_DoesNothing)
    AFACT(ApplyRunFiltersIfAny_RunFiltersNotEmpty_ResetsWithNoOpTestClassesThoseTestClassesThatMatchRunFilters)
    AFACT(ResetTestClassRunnerWithNoOpIfTestClassNameDoesNotMatchAnyRunFilter_TestClassNameMatchesAtLeastOneRunFilter_DoesNotResetTestClassRunnerWithNoOp)
@@ -70,41 +70,49 @@ namespace ZenUnit
       IS_EMPTY(testClassRunnerRunner._testClassRunners);
    }
 
-   TEST(AddTestClassRunner_EmplacesBackTestClassRunner_MakesNumberOfTestClassesToBeRunReturnAnIncreasingNumber)
+   TEST(AddTestClassRunner_EmplacesBackTestClassRunner_MakesNumberOfTestClassesToBeRunReturnAnIncreasingNumberAsMoreNonNoOpTestClassRunnersAreAdded)
    {
+      class TestingTestClassRunner : public TestClassRunner
+      {
+      public:
+         const char* TestClassName() const override
+         {
+            return "TestingTestClassRunner";
+         }
+      };
+
       ARE_EQUAL(0, _testClassRunnerRunner.NumberOfTestClassesToBeRun());
-      TestClassRunnerMock* testClassRunnerA = new TestClassRunnerMock;
+      unique_ptr<TestClassRunner> testingTestClassRunner1 = make_unique<TestingTestClassRunner>();
+      const TestClassRunner* const testingTestClassRunner1Pointer = testingTestClassRunner1.get();
       //
-      _testClassRunnerRunner.AddTestClassRunner(testClassRunnerA);
+      _testClassRunnerRunner.AddTestClassRunner(std::move(testingTestClassRunner1));
       //
       ARE_EQUAL(1, _testClassRunnerRunner._testClassRunners.size());
-      ARE_EQUAL(testClassRunnerA, _testClassRunnerRunner._testClassRunners[0].get());
-      testClassRunnerA->TestClassNameMock.Return("WidgetATests");
+      ARE_EQUAL(testingTestClassRunner1Pointer, _testClassRunnerRunner._testClassRunners[0].get());
       ARE_EQUAL(1, _testClassRunnerRunner.NumberOfTestClassesToBeRun());
-      ZENMOCK(testClassRunnerA->TestClassNameMock.CalledOnce());
 
 
-      NoOpTestClassRunner* noOpTestClassRunner = new NoOpTestClassRunner;
+      unique_ptr<NoOpTestClassRunner> noOpTestClassRunner = make_unique<NoOpTestClassRunner>();
+      const NoOpTestClassRunner* const noOpTestClassRunnerPointer = noOpTestClassRunner.get();
       //
-      _testClassRunnerRunner.AddTestClassRunner(noOpTestClassRunner);
+      _testClassRunnerRunner.AddTestClassRunner(std::move(noOpTestClassRunner));
       //
       ARE_EQUAL(2, _testClassRunnerRunner._testClassRunners.size());
-      ARE_EQUAL(testClassRunnerA, _testClassRunnerRunner._testClassRunners[0].get());
-      ARE_EQUAL(noOpTestClassRunner, _testClassRunnerRunner._testClassRunners[1].get());
+      ARE_EQUAL(testingTestClassRunner1Pointer, _testClassRunnerRunner._testClassRunners[0].get());
+      ARE_EQUAL(noOpTestClassRunnerPointer, _testClassRunnerRunner._testClassRunners[1].get());
       ARE_EQUAL(1, _testClassRunnerRunner.NumberOfTestClassesToBeRun());
 
 
-      TestClassRunnerMock* testClassRunnerB = new TestClassRunnerMock;
+      unique_ptr<TestClassRunner> testingTestClassRunner2 = make_unique<TestingTestClassRunner>();
+      const TestClassRunner* const testingTestClassRunner2Pointer = testingTestClassRunner2.get();
       //
-      _testClassRunnerRunner.AddTestClassRunner(testClassRunnerB);
+      _testClassRunnerRunner.AddTestClassRunner(std::move(testingTestClassRunner2));
       //
       ARE_EQUAL(3, _testClassRunnerRunner._testClassRunners.size());
-      ARE_EQUAL(testClassRunnerA, _testClassRunnerRunner._testClassRunners[0].get());
-      ARE_EQUAL(noOpTestClassRunner, _testClassRunnerRunner._testClassRunners[1].get());
-      ARE_EQUAL(testClassRunnerB, _testClassRunnerRunner._testClassRunners[2].get());
-      testClassRunnerB->TestClassNameMock.Return("WidgetBTests");
+      ARE_EQUAL(testingTestClassRunner1Pointer, _testClassRunnerRunner._testClassRunners[0].get());
+      ARE_EQUAL(noOpTestClassRunnerPointer, _testClassRunnerRunner._testClassRunners[1].get());
+      ARE_EQUAL(testingTestClassRunner2Pointer, _testClassRunnerRunner._testClassRunners[2].get());
       ARE_EQUAL(2, _testClassRunnerRunner.NumberOfTestClassesToBeRun());
-      ZENMOCK(testClassRunnerB->TestClassNameMock.CalledOnce());
    }
 
    TEST(ApplyRunFiltersIfAny_RunFiltersEmpty_DoesNothing)
@@ -156,22 +164,32 @@ namespace ZenUnit
 
    TEST(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
    {
-      TestClassRunnerMock* testClassRunnerAMock = new TestClassRunnerMock;
-      TestClassRunnerMock* testClassRunnerBMock = new TestClassRunnerMock;
-      TestClassRunnerMock* testClassRunnerCMock = new TestClassRunnerMock;
-      testClassRunnerAMock->NumberOfTestCasesMock.Return(10);
-      testClassRunnerBMock->NumberOfTestCasesMock.Return(0);
-      testClassRunnerCMock->NumberOfTestCasesMock.Return(20);
-      _testClassRunnerRunner.AddTestClassRunner(testClassRunnerAMock);
-      _testClassRunnerRunner.AddTestClassRunner(testClassRunnerBMock);
-      _testClassRunnerRunner.AddTestClassRunner(testClassRunnerCMock);
+      unique_ptr<TestClassRunnerMock> testClassRunner1Mock = make_unique<TestClassRunnerMock>();
+      TestClassRunnerMock* testClassRunner1MockPointer = testClassRunner1Mock.get();
+
+      unique_ptr<TestClassRunnerMock> testClassRunner2Mock = make_unique<TestClassRunnerMock>();
+      TestClassRunnerMock* testClassRunner2MockPointer = testClassRunner2Mock.get();
+
+      unique_ptr<TestClassRunnerMock> testClassRunner3Mock = make_unique<TestClassRunnerMock>();
+      TestClassRunnerMock* testClassRunner3MockPointer = testClassRunner3Mock.get();
+
+      const int numberOfTestCases1 = ZenUnit::RandomBetween<int>(0, 10);
+      const int numberOfTestCases2 = ZenUnit::RandomBetween<int>(0, 10);
+      const int numberOfTestCases3 = ZenUnit::RandomBetween<int>(0, 10);
+      testClassRunner1Mock->NumberOfTestCasesMock.Return(numberOfTestCases1);
+      testClassRunner2Mock->NumberOfTestCasesMock.Return(numberOfTestCases2);
+      testClassRunner3Mock->NumberOfTestCasesMock.Return(numberOfTestCases3);
+      _testClassRunnerRunner.AddTestClassRunner(std::move(testClassRunner1Mock));
+      _testClassRunnerRunner.AddTestClassRunner(std::move(testClassRunner2Mock));
+      _testClassRunnerRunner.AddTestClassRunner(std::move(testClassRunner3Mock));
       //
       const size_t totalNumberOfTestCases = _testClassRunnerRunner.NumberOfTestCases();
       //
-      ZENMOCK(testClassRunnerAMock->NumberOfTestCasesMock.CalledOnce());
-      ZENMOCK(testClassRunnerBMock->NumberOfTestCasesMock.CalledOnce());
-      ZENMOCK(testClassRunnerCMock->NumberOfTestCasesMock.CalledOnce());
-      ARE_EQUAL(30, totalNumberOfTestCases);
+      ZENMOCK(testClassRunner1MockPointer->NumberOfTestCasesMock.CalledOnce());
+      ZENMOCK(testClassRunner2MockPointer->NumberOfTestCasesMock.CalledOnce());
+      ZENMOCK(testClassRunner3MockPointer->NumberOfTestCasesMock.CalledOnce());
+      const int expectedTotalNumberOfTestCases = numberOfTestCases1 + numberOfTestCases2 + numberOfTestCases3;
+      ARE_EQUAL(expectedTotalNumberOfTestCases, totalNumberOfTestCases);
    }
 
    TEST(RunFilterMatchesTestClass_RunFilterDoesNotMatchTestClassName_ReturnsFalse)

@@ -29,7 +29,7 @@ namespace ZenUnit
 
    const string _testProgramPath = Random<string>();
    const string _expectedUsage = "C++ Unit Testing Framework ZenUnit " + std::string(Version::Number()) + R"(
-https://github.com/NeilJustice/ZenUnit
+https://github.com/NeilJustice/ZenUnitAndZenMock
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
 Testing Rigor Options:
