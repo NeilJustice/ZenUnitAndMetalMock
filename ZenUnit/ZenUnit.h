@@ -328,14 +328,14 @@ Testing Utility Options:
    tests.emplace_back(std::make_unique<ZenUnit::SpecSectionTestNXN<TestClassType>>( \
       testClassName, #HighQualityTestName, PMFTOKEN(&TestClassType::HighQualityTestName)));
 
-#define DOSKIP(HighQualityTestName, Reason) \
-   ZenUnit::ZenUnitTestRunner::Instance().SkipTest(testClassName, #HighQualityTestName, Reason);
+#define DOSKIP(HighQualityTestName, SkipReason) \
+   ZenUnit::ZenUnitTestRunner::Instance().SkipTest(testClassName, #HighQualityTestName, SkipReason);
 
 // Skips a TEST.
-#define SKIPAFACT(HighQualityTestName, Reason) DOSKIP(HighQualityTestName, Reason)
+#define SKIPAFACT(HighQualityTestName, SkipReason) DOSKIP(HighQualityTestName, SkipReason)
 
 // Skips a TESTNXN.
-#define SKIPFACTS(HighQualityTestName, Reason) DOSKIP(HighQualityTestName, Reason)
+#define SKIPFACTS(HighQualityTestName, SkipReason) DOSKIP(HighQualityTestName, SkipReason)
 
 // Ends the test specification section and begins the test body.
 #define EVIDENCE return tests; }
@@ -350,70 +350,59 @@ Testing Utility Options:
 #define TEST(HighQualityTestName) void HighQualityTestName()
 
 #define REGISTER_TESTNXN_ARGS(HighQualityTestName, ...) \
-   PMFTOKEN(&TestClassType::HighQualityTestName), &TestClassType::HighQualityTestName, \
-   #HighQualityTestName, #__VA_ARGS__, __VA_ARGS__
+   PMFTOKEN(&TestClassType::HighQualityTestName), &TestClassType::HighQualityTestName, #HighQualityTestName, #__VA_ARGS__, __VA_ARGS__
 
 // Defines a 1-by-1 value-parameterized test.
 #define TEST1X1(HighQualityTestName, Arg1Type, ...) \
-   const std::nullptr_t ZenUnit_Test1X1Registrar_##HighQualityTestName = \
-      TestClassType::RegisterTest1X1(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
+   const std::nullptr_t ZenUnit_Test1X1Registrar_##HighQualityTestName = TestClassType::RegisterTest1X1(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
    void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type)
 
 // Defines a 2-by-2 value-parameterized test.
 #define TEST2X2(HighQualityTestName, Arg1Type, Arg2Type, ...) \
-   const std::nullptr_t ZenUnit_Test2X2Registrar_##HighQualityTestName = \
-      TestClassType::RegisterTest2X2(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
+   const std::nullptr_t ZenUnit_Test2X2Registrar_##HighQualityTestName = TestClassType::RegisterTest2X2(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
    void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type)
 
 // Defines a 3-by-3 value-parameterized test.
 #define TEST3X3(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, ...) \
-   const std::nullptr_t ZenUnit_Test3X3Registrar_##HighQualityTestName = \
-      TestClassType::RegisterTest3X3(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
+   const std::nullptr_t ZenUnit_Test3X3Registrar_##HighQualityTestName = TestClassType::RegisterTest3X3(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
    void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type)
 
 // Defines a 4-by-4 value-parameterized test.
 #define TEST4X4(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
-   const std::nullptr_t ZenUnit_Test4X4Registrar_##HighQualityTestName = \
-      TestClassType::RegisterTest4X4(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
+   const std::nullptr_t ZenUnit_Test4X4Registrar_##HighQualityTestName = TestClassType::RegisterTest4X4(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
    void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type)
 
 // Defines a 5-by-5 value-parameterized test.
 #define TEST5X5(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
-   const std::nullptr_t ZenUnit_Test5X5Registrar_##HighQualityTestName = \
-      TestClassType::RegisterTest5X5(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
+   const std::nullptr_t ZenUnit_Test5X5Registrar_##HighQualityTestName = TestClassType::RegisterTest5X5(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
    void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)
 
 // Defines a 6-by-6 value-parameterized test.
 #define TEST6X6(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
-   const std::nullptr_t ZenUnit_Test6X6Registrar_##HighQualityTestName = \
-      TestClassType::RegisterTest6X6(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
+   const std::nullptr_t ZenUnit_Test6X6Registrar_##HighQualityTestName = TestClassType::RegisterTest6X6(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
    void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)
 
 // Defines a 7-by-7 value-parameterized test.
 #define TEST7X7(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
-   const std::nullptr_t ZenUnit_Test7X7Registrar_##HighQualityTestName = \
-      TestClassType::RegisterTest7X7(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
+   const std::nullptr_t ZenUnit_Test7X7Registrar_##HighQualityTestName = TestClassType::RegisterTest7X7(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
    void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)
 
 // Defines a 8-by-8 value-parameterized test.
 #define TEST8X8(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
-   const std::nullptr_t ZenUnit_Test8X8Registrar_##HighQualityTestName = \
-      TestClassType::RegisterTest8X8(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
+   const std::nullptr_t ZenUnit_Test8X8Registrar_##HighQualityTestName = TestClassType::RegisterTest8X8(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
    void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)
 
 // Defines a 9-by-9 value-parameterized test.
 #define TEST9X9(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...) \
-   const std::nullptr_t ZenUnit_Test9X9Registrar_##HighQualityTestName = \
-      TestClassType::RegisterTest9X9(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
+   const std::nullptr_t ZenUnit_Test9X9Registrar_##HighQualityTestName = TestClassType::RegisterTest9X9(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
    void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type)
 
 // Defines a 10-by-10 value-parameterized test.
 #define TEST10X10(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...) \
-   const std::nullptr_t ZenUnit_Test10X10Registrar_##HighQualityTestName = \
-      TestClassType::RegisterTest10X10(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
+   const std::nullptr_t ZenUnit_Test10X10Registrar_##HighQualityTestName = TestClassType::RegisterTest10X10(REGISTER_TESTNXN_ARGS(HighQualityTestName, __VA_ARGS__)); \
    void HighQualityTestName([[maybe_unused]] size_t __testCase, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)
 
-// Registers a test class to be run when ZenUnit::RunTests() is called.
+// Registers a test class to be run when ZenUnit::RunTests(int argc, char* argv[]) is called.
 #define RUN_TESTS(HighQualityTestClassName) }; \
    const char* HighQualityTestClassName::ZenUnit_testClassName = nullptr; \
    bool HighQualityTestClassName::ZenUnit_allNXNTestsHaveBeenRegistered = false; \
@@ -446,11 +435,11 @@ Testing Utility Options:
       ZenUnit::ZenUnitTestRunner::Instance().SkipTestClass(#HighQualityTestClassName"<"#__VA_ARGS__">", SkipReason);
 
 // Skips a templated test class.
-#define SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, ...) }; \
-   DO_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, __VA_ARGS__)
+#define SKIP_TEMPLATE_TESTS(HighQualityTestClassName, SkipReason, ...) }; \
+   DO_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, SkipReason, __VA_ARGS__)
 
-#define THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, ...) \
-   DO_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, __VA_ARGS__)
+#define THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, SkipReason, ...) \
+   DO_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, SkipReason, __VA_ARGS__)
 
 namespace ZenUnit
 {
@@ -544,8 +533,8 @@ namespace ZenUnit
       {
          std::ostringstream oss;
          oss << *this;
-         const std::string fileLineAsString = oss.str();
-         return fileLineAsString;
+         const std::string filePathAndLineNumber = oss.str();
+         return filePathAndLineNumber;
       }
 
       friend std::ostream& operator<<(std::ostream& os, FileLine fileLine)
