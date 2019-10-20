@@ -466,11 +466,11 @@ namespace ZenUnit
    TEST(DeleteTestClass_DeletesTestClass)
    {
       _testNXN->_testClass = make_unique<TestingTestClass>();
-      IS_FALSE(TestingTestClass::s_destructorCalled);
+      IS_FALSE(TestingTestClass::s_destructorHasBeenCalled);
       //
       _testNXN->DeleteTestClass();
       //
-      IS_TRUE(TestingTestClass::s_destructorCalled);
+      IS_TRUE(TestingTestClass::s_destructorHasBeenCalled);
    }
 
    TEST3X3(PrintTestCaseNumberThenArgsThenArrow_WritesTestCaseNumberArrow,

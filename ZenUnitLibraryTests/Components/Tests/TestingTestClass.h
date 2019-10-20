@@ -9,17 +9,17 @@ public:
 class TestingTestClass : public Zen::Mock<TestClass<TestingTestClass>>, public TestFunctionClass
 {
 public:
-   static bool s_destructorCalled;
-   static bool ZenUnit_allNXNTestsRegistered;
+   static bool s_destructorHasBeenCalled;
+   static bool ZenUnit_allNXNTestsHaveBeenRegistered;
 
    TestingTestClass() noexcept
    {
-      s_destructorCalled = false;
+      s_destructorHasBeenCalled = false;
    }
 
    ~TestingTestClass() override
    {
-      s_destructorCalled = true;
+      s_destructorHasBeenCalled = true;
    }
 
    ZENMOCK_VOID0(Startup)

@@ -107,11 +107,11 @@ namespace ZenUnit
    TEST(DeleteTestClass_DeletesTestClass)
    {
       _normalTest->_testClass = make_unique<TestingTestClass>();
-      IS_FALSE(TestingTestClass::s_destructorCalled);
+      IS_FALSE(TestingTestClass::s_destructorHasBeenCalled);
       //
       _normalTest->DeleteTestClass();
       //
-      IS_TRUE(TestingTestClass::s_destructorCalled);
+      IS_TRUE(TestingTestClass::s_destructorHasBeenCalled);
    }
 
    RUN_TESTS(NormalTestTests)

@@ -1,5 +1,5 @@
 #include "pch.h"
 #include "TestingTestClass.h"
 
-bool TestingTestClass::s_destructorCalled;
-bool TestingTestClass::ZenUnit_allNXNTestsRegistered;
+bool TestingTestClass::s_destructorHasBeenCalled;
+bool TestingTestClass::ZenUnit_allNXNTestsHaveBeenRegistered;
