@@ -299,7 +299,10 @@ Testing Utility Options:
    class HighQualityTestClassName : public ZenUnit::TestClass<HighQualityTestClassName> \
    TEST_CLASS_PREAMBLE(HighQualityTestClassName)
 
-// Defines a templated ZenUnit::TestClass. Precede TEMPLATE_TESTS with template<typename A, typename B, ...>. Specify __VA_ARGS__ with the names of template parameters. Example: TEMPLATE_TESTS(TestClassName, A, B).
+// Defines a templated ZenUnit::TestClass.
+// Example usage:
+// template<typename Argument1Type, typename Argument2Type>
+// TEMPLATE_TESTS(TestClassName, Argument1Type, Argument2Type)
 #define TEMPLATE_TESTS(HighQualityTestClassName, ...) \
    class HighQualityTestClassName : public ZenUnit::TestClass<HighQualityTestClassName<__VA_ARGS__>> \
    TEST_CLASS_PREAMBLE(HighQualityTestClassName)
@@ -335,7 +338,7 @@ Testing Utility Options:
 #define SKIPFACTS(HighQualityTestName, Reason) DOSKIP(HighQualityTestName, Reason)
 
 // Ends the test specification section and begins the test body.
-#define EVIDENCE return tests; }
+#define EVIDENCE return tests; } public:
 
 // Defines function Startup() to be called before each test.
 #define STARTUP void Startup() override
