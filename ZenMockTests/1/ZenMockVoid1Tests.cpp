@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenMock1Tester.h"
+#include "ZenMockTests/1/ZenMock1Tester.h"
 
 void Void1Function(int) {}
 
@@ -31,7 +31,7 @@ namespace ZenMock
       static void OverloadedStaticVoid1Function(double) {}
    };
 
-   TESTS(ZenMock_Void1Tests)
+   TESTS(ZenMockVoid1Tests)
    AFACT(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
    EVIDENCE
 
@@ -116,5 +116,5 @@ namespace ZenMock
       test(OverloadedStaticVoid1Function_ZenMockObject_float);
    }
 
-   RUN_TESTS(ZenMock_Void1Tests)
+   RUN_TESTS(ZenMockVoid1Tests)
 }

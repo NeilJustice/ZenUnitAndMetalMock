@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenMock1Tester.h"
+#include "ZenMockTests/1/ZenMock1Tester.h"
 
 int NonVoid1(int) { return 0; }
 
@@ -30,7 +30,7 @@ namespace ZenMock
       ZENMOCK_NONVOID1_NONVIRTUAL_CONST(int, NonVirtualConst, int)
    };
 
-   TESTS(ZenMock_NonVoid1Tests)
+   TESTS(ZenMockNonVoid1Tests)
    // Expect Tests
    AFACT(ZenMockedFunction_NotExpected_Throws)
    AFACT(ZenMockedFunction_Expected_DoesNotThrow)
@@ -417,5 +417,5 @@ namespace ZenMock
       _zenMock1Tester->CalledAsFollows_NonEmptyCalls_FunctionCalledCallsSizeTimesMatchingArgs_DoesNotThrow(expectedCallsSize);
    }
 
-   RUN_TESTS(ZenMock_NonVoid1Tests)
+   RUN_TESTS(ZenMockNonVoid1Tests)
 }

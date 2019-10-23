@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenMock0Tester.h"
+#include "ZenMockTests/0/ZenMock0Tester.h"
 
 void Void0Function() {}
 
@@ -30,7 +30,7 @@ namespace ZenMock
       static void Void0Function() {}
    };
 
-   TESTS(ZenMock_Void0Tests)
+   TESTS(ZenMockVoid0Tests)
    // ZeroArgumentMocker Tests
    AFACT(FunctionNotCalled_CalledAsFollowsWithN0_Throws)
    AFACT(FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows)
@@ -144,5 +144,5 @@ namespace ZenMock
       test(Void0Function_ZenMockObject_static);
    }
 
-   RUN_TESTS(ZenMock_Void0Tests)
+   RUN_TESTS(ZenMockVoid0Tests)
 }

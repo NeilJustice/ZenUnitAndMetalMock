@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenMock0Tester.h"
+#include "ZenMockTests/0/ZenMock0Tester.h"
 
 int NonVoid0Function() { return 0; }
 
@@ -30,7 +30,7 @@ namespace ZenMock
       ZENMOCK_NONVOID0_NONVIRTUAL_CONST(int, NonVirtualConst)
    };
 
-   TESTS(ZenMock_NonVoid0Tests)
+   TESTS(ZenMockNonVoid0Tests)
    // ZeroArgumentMocker Tests
    AFACT(FunctionNotCalled_CalledAsFollowsWithN0_Throws)
    AFACT(FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows)
@@ -186,5 +186,5 @@ namespace ZenMock
       test(StaticFunction_ZenMockObject, [&] { return BIND_0ARG_ZENMOCK_OBJECT(StaticFunction_ZenMockObject)(); });
    }
 
-   RUN_TESTS(ZenMock_NonVoid0Tests)
+   RUN_TESTS(ZenMockNonVoid0Tests)
 }
