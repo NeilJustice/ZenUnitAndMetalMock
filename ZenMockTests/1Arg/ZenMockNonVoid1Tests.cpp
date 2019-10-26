@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenMockTests/1/ZenMock1Tester.h"
+#include "ZenMockTests/1Arg/ZenMock1Tester.h"
 
 int NonVoid1(int) { return 0; }
 

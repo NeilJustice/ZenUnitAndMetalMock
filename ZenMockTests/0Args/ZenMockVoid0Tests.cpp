@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenMockTests/0/ZenMock0Tester.h"
+#include "ZenMockTests/0Args/ZenMock0Tester.h"
 
 void Void0Function() {}
 

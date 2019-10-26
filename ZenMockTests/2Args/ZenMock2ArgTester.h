@@ -8,7 +8,7 @@ namespace ZenMock
       typename FreeFunctionMockType,
       typename NamespacedFreeFunctionMockType,
       typename StaticFunctionMockType>
-   class ZenMock2Tester
+   class ZenMock2ArgTester
    {
    private:
       ZenMockObjectType zenMockObject;
@@ -27,7 +27,7 @@ namespace ZenMock
       StaticFunctionMockType staticFunctionMock;
       const string staticFunctionSignature;
    public:
-      ZenMock2Tester(
+      ZenMock2ArgTester(
          ZenMockObjectType zenMockObject,
          string virtualFunctionSignature,
          string virtualFunctionConstSignature,
