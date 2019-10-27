@@ -43,11 +43,11 @@ namespace ZenMock
       "void ZenMock::Void1Functions::NonVirtualFunction(int)";
    const string ExpectedNonVirtualConstFunctionSignature =
       "void ZenMock::Void1Functions::NonVirtualConstFunction(int) const";
-   const string ExpectedFreeFunctionSignature =
+   const string FreeFunctionSignature =
       "void ::Void1Function(int)";
    const string ExpectedNamespacedFunctionSignature =
       "void ZenMock::Void1Function(int)";
-   const string ExpectedStaticFunctionSignature =
+   const string StaticFunctionSignature =
       "void ZenMock::Void1StaticFunctions::StaticFunction(int)";
    const string ExpectedOverloadedStaticFunctionSignatureA =
       "void ZenMock::Void1StaticFunctions::OverloadedStaticFunction(float)";
@@ -84,13 +84,13 @@ namespace ZenMock
          ExpectedNonVirtualConstFunctionSignature,
 
          Void1Function_ZenMockObject,
-         ExpectedFreeFunctionSignature,
+         FreeFunctionSignature,
 
          Void1Function_ZenMockObject_namespace,
          ExpectedNamespacedFunctionSignature,
 
          StaticVoid1Function_ZenMockObject,
-         ExpectedStaticFunctionSignature,
+         StaticFunctionSignature,
 
          OverloadedStaticVoid1Function_ZenMockObject_float,
          ExpectedOverloadedStaticFunctionSignatureA);

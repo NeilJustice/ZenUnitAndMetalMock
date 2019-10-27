@@ -55,11 +55,11 @@ namespace ZenMock
       "void ZenMock::Void0Functions::NonVirtual()";
    const string ExpectedNonVirtualConstFunctionSignature =
       "void ZenMock::Void0Functions::NonVirtualConst() const";
-   const string ExpectedFreeFunctionSignature =
+   const string FreeFunctionSignature =
       "void ::Void0Function()";
    const string ExpectedNamespacedFunctionSignature =
       "void ZenMock::Void0Function()";
-   const string ExpectedStaticFunctionSignature =
+   const string StaticFunctionSignature =
       "void ZenMock::StaticVoid0Functions::StaticVoid0Function()";
    const string ExpectedStaticFunctionNameClashSignature =
       "void ZenMock::StaticVoid0Functions::Void0Function()";
@@ -86,11 +86,11 @@ namespace ZenMock
             ExpectedNonVirtualFunctionSignature,
             ExpectedNonVirtualConstFunctionSignature,
             Void0Function_ZenMockObject,
-            ExpectedFreeFunctionSignature,
+            FreeFunctionSignature,
             Void0Function_ZenMockObject_namespace,
             ExpectedNamespacedFunctionSignature,
             StaticVoid0Function_ZenMockObject,
-            ExpectedStaticFunctionSignature,
+            StaticFunctionSignature,
             Void0Function_ZenMockObject_static,
             ExpectedStaticFunctionNameClashSignature);
    }
