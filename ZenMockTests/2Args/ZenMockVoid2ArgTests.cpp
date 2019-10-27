@@ -7,19 +7,19 @@ namespace ZenMock
 {
    struct Void2ArgFunctions
    {
-      virtual void VirtualFunction(int, int) {}
-      virtual void VirtualConstFunction(int, int) const {}
-      void NonVirtualFunction(int, int) {}
-      void NonVirtualConstFunction(int, int) const {}
+      virtual void Virtual2ArgFunction(int, int) {}
+      virtual void Virtual2ArgConstFunction(int, int) const {}
+      void NonVirtual2ArgFunction(int, int) {}
+      void NonVirtual2ArgConstFunction(int, int) const {}
       virtual ~Void2ArgFunctions() = default;
    };
 
    struct Void2ArgFunctionsMock : public Zen::Mock<Void2ArgFunctions>
    {
-      ZENMOCK_VOID2(VirtualFunction, int, int)
-      ZENMOCK_VOID2_CONST(VirtualConstFunction, int, int)
-      ZENMOCK_VOID2_NONVIRTUAL(NonVirtualFunction, int, int)
-      ZENMOCK_VOID2_NONVIRTUAL_CONST(NonVirtualConstFunction, int, int)
+      ZENMOCK_VOID2(Virtual2ArgFunction, int, int)
+      ZENMOCK_VOID2_CONST(Virtual2ArgConstFunction, int, int)
+      ZENMOCK_VOID2_NONVIRTUAL(NonVirtual2ArgFunction, int, int)
+      ZENMOCK_VOID2_NONVIRTUAL_CONST(NonVirtual2ArgConstFunction, int, int)
    };
 
    void Void2ArgFreeFunction(int, int) {}
@@ -30,6 +30,7 @@ namespace ZenMock
    };
 
    TESTS(ZenMockVoid2ArgTests)
+   AFACT(ZenMockIt_ExpectNotPreviouslyCalled_ThrowsUnexpectedCallException)
    AFACT(Expect_DoesNotThrowWhenCalledTwice_MakesFunctionNotThrowWhenCalled)
    EVIDENCE
 
@@ -44,20 +45,20 @@ namespace ZenMock
       decltype(Void2ArgFreeFunction_ZenMockObject_namespaced),
       decltype(StaticVoid2ArgFunction_ZenMockObject)>> _zenMock2ArgTester;
 
-   const string ExpectedVirtualFunctionSignature =
-      "virtual void ZenMock::Void2ArgFunctions::VirtualFunction(int, int)";
-   const string ExpectedVirtualConstFunctionSignature =
-      "virtual void ZenMock::Void2ArgFunctions::VirtualConstFunction(int, int) const";
-   const string ExpectedNonVirtualFunctionSignature =
-      "void ZenMock::Void2ArgFunctions::NonVirtualFunction(int, int)";
-   const string ExpectedNonVirtualConstFunctionSignature =
-      "void ZenMock::Void2ArgFunctions::NonVirtualConstFunction(int, int) const";
+   const string ExpectedVirtual2ArgFunctionSignature =
+      "virtual void ZenMock::Void2ArgFunctions::Virtual2ArgFunction(int, int)";
+   const string ExpectedVirtual2ArgConstFunctionSignature =
+      "virtual void ZenMock::Void2ArgFunctions::Virtual2ArgConstFunction(int, int) const";
+   const string ExpectedNonVirtual2ArgFunctionSignature =
+      "void ZenMock::Void2ArgFunctions::NonVirtual2ArgFunction(int, int)";
+   const string ExpectedNonVirtual2ArgConstFunctionSignature =
+      "void ZenMock::Void2ArgFunctions::NonVirtual2ArgConstFunction(int, int) const";
    const string ExpectedFreeFunctionSignature =
       "void ::Void2ArgFreeFunction(int, int)";
    const string ExpectedNamespacedFreeFunctionSignature =
       "void ZenMock::Void2ArgFreeFunction(int, int)";
    const string ExpectedStaticFunctionSignature =
-      "void ZenMock::Void2ArgStaticFunctions::StaticFunction(int, int)";
+      "void ZenMock::Void2ArgStaticFunctions::StaticVoid2ArgFunction(int, int)";
 
    STARTUP
    {
@@ -68,10 +69,10 @@ namespace ZenMock
          decltype(StaticVoid2ArgFunction_ZenMockObject)>>(
          _zenMockObject,
 
-         ExpectedVirtualFunctionSignature,
-         ExpectedVirtualConstFunctionSignature,
-         ExpectedNonVirtualFunctionSignature,
-         ExpectedNonVirtualConstFunctionSignature,
+         ExpectedVirtual2ArgFunctionSignature,
+         ExpectedVirtual2ArgConstFunctionSignature,
+         ExpectedNonVirtual2ArgFunctionSignature,
+         ExpectedNonVirtual2ArgConstFunctionSignature,
 
          Void2ArgFreeFunction_ZenMockObject,
          ExpectedFreeFunctionSignature,
@@ -81,6 +82,29 @@ namespace ZenMock
 
          StaticVoid2ArgFunction_ZenMockObject,
          ExpectedStaticFunctionSignature);
+   }
+
+   TEST(ZenMockIt_ExpectNotPreviouslyCalled_ThrowsUnexpectedCallException)
+   {
+      const auto testcase = [](VoidTwoArgumentMocker<int, int>& zenMockObject, const string& expectedZenMockedFunctionSignature)
+      {
+         const int argument1 = ZenUnit::Random<int>();
+         const int argument2 = ZenUnit::Random<int>();
+         const string expectedExceptionMessage = R"(Unexpected call to ZenMocked function:
+)" + expectedZenMockedFunctionSignature + R"(
+Argument1: )" + to_string(argument1) + R"(
+Argument2: )" + to_string(argument2);
+         THROWS(zenMockObject.ZenMockIt(argument1, argument2),
+            ZenMock::UnexpectedCallException, expectedExceptionMessage);
+      };
+      testcase(_zenMockObject.Virtual2ArgFunctionMock, ExpectedVirtual2ArgFunctionSignature);
+      testcase(_zenMockObject.Virtual2ArgConstFunctionMock, ExpectedVirtual2ArgConstFunctionSignature);
+      testcase(_zenMockObject.NonVirtual2ArgFunctionMock, ExpectedNonVirtual2ArgFunctionSignature);
+      testcase(_zenMockObject.NonVirtual2ArgConstFunctionMock, ExpectedNonVirtual2ArgConstFunctionSignature);
+
+      testcase(Void2ArgFreeFunction_ZenMockObject, ExpectedFreeFunctionSignature);
+      testcase(Void2ArgFreeFunction_ZenMockObject_namespaced, ExpectedNamespacedFreeFunctionSignature);
+      testcase(StaticVoid2ArgFunction_ZenMockObject, ExpectedStaticFunctionSignature);
    }
 
    TEST(Expect_DoesNotThrowWhenCalledTwice_MakesFunctionNotThrowWhenCalled)
@@ -93,10 +117,10 @@ namespace ZenMock
          zenMockObject.Expect();
          zenMockObject.CalledOnceWith(0, 0);
       };
-      testcase(_zenMockObject.VirtualFunctionMock);
-      testcase(_zenMockObject.VirtualConstFunctionMock);
-      testcase(_zenMockObject.NonVirtualFunctionMock);
-      testcase(_zenMockObject.NonVirtualConstFunctionMock);
+      testcase(_zenMockObject.Virtual2ArgFunctionMock);
+      testcase(_zenMockObject.Virtual2ArgConstFunctionMock);
+      testcase(_zenMockObject.NonVirtual2ArgFunctionMock);
+      testcase(_zenMockObject.NonVirtual2ArgConstFunctionMock);
 
       testcase(Void2ArgFreeFunction_ZenMockObject);
       testcase(Void2ArgFreeFunction_ZenMockObject_namespaced);
