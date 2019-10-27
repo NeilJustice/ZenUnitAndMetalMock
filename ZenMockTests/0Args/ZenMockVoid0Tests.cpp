@@ -36,7 +36,7 @@ namespace ZenMock
    AFACT(FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows)
    AFACT(ZenMockedFunction_NotExpected_Throws)
    AFACT(ZenMockedFunction_Expected_DoesNotThrow_CalledAsFollowsOnceDoesNotThrow_CalledNTimes1DoesNotThrow)
-   AFACT(Throw_ThenZenMockedFunction_ThrowsTheException)
+   AFACT(ThrowException_ThenZenMockedFunction_ThrowsTheException)
    // Void0 Tests
    AFACT(Expect_MakesFunctionCallNotThrow_DoesNotThrowIfExpectCalledTwice)
    EVIDENCE
@@ -115,9 +115,9 @@ namespace ZenMock
       _zenMock0Tester->ZenMockedFunction_Expected_DoesNotThrow_CalledAsFollowsOnceDoesNotThrow_CalledNTimes1DoesNotThrow();
    }
 
-   TEST(Throw_ThenZenMockedFunction_ThrowsTheException)
+   TEST(ThrowException_ThenZenMockedFunction_ThrowsTheException)
    {
-      _zenMock0Tester->Throw_ThenZenMockedFunction_ThrowsTheException();
+      _zenMock0Tester->ThrowException_ThenZenMockedFunction_ThrowsTheException();
    }
 
    // Void0 Tests

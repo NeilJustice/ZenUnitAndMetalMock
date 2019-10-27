@@ -216,7 +216,7 @@ namespace ZenMock
             UnexpectedCallException::MakeWhat(staticFunctionSignature));
       }
 
-      void Throw_ThenZenMockedFunction_ThrowsTheException()
+      void ThrowException_ThenZenMockedFunction_ThrowsTheException()
       {
          auto assertCalledOnceAndNTimesOnce = [](auto& zenMockObject)
          {
@@ -226,39 +226,39 @@ namespace ZenMock
 
          const string What = "what";
 
-         mock.VirtualMock.template Throw<runtime_error>(What);
+         mock.VirtualMock.template ThrowException<runtime_error>(What);
          THROWS(mock.Virtual(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(mock.VirtualMock);
 
-         mock.VirtualConstMock.template Throw<runtime_error>(What);
+         mock.VirtualConstMock.template ThrowException<runtime_error>(What);
          THROWS(mock.VirtualConst(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(mock.VirtualConstMock);
 
-         mock.NonVirtualMock.template Throw<runtime_error>(What);
+         mock.NonVirtualMock.template ThrowException<runtime_error>(What);
          THROWS(mock.NonVirtual(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(mock.NonVirtualMock);
 
-         mock.NonVirtualConstMock.template Throw<runtime_error>(What);
+         mock.NonVirtualConstMock.template ThrowException<runtime_error>(What);
          THROWS(mock.NonVirtualConst(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(mock.NonVirtualConstMock);
 
          const function<void()> zenMockBoundFreeVoid0Function = BIND_0ARG_ZENMOCK_OBJECT(freeMock);
-         freeMock.template Throw<runtime_error>(What);
+         freeMock.template ThrowException<runtime_error>(What);
          THROWS(zenMockBoundFreeVoid0Function(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(freeMock);
 
          const function<void()> zenBoundNamespaceVoid0 = BIND_0ARG_ZENMOCK_OBJECT(namespacedFreeMock);
-         namespacedFreeMock.template Throw<runtime_error>(What);
+         namespacedFreeMock.template ThrowException<runtime_error>(What);
          THROWS(zenBoundNamespaceVoid0(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(namespacedFreeMock);
 
          const function<void()> zenBoundStaticVoid0 = BIND_0ARG_ZENMOCK_OBJECT(staticNameClashMock);
-         staticNameClashMock.template Throw<runtime_error>(What);
+         staticNameClashMock.template ThrowException<runtime_error>(What);
          THROWS(zenBoundStaticVoid0(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(staticNameClashMock);
 
          const function<void()> zenBoundStatic = BIND_0ARG_ZENMOCK_OBJECT(staticMock);
-         staticMock.template Throw<runtime_error>(What);
+         staticMock.template ThrowException<runtime_error>(What);
          THROWS(zenBoundStatic(), runtime_error, What);
          assertCalledOnceAndNTimesOnce(staticMock);
       }

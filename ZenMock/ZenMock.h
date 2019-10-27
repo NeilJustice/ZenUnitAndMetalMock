@@ -1161,7 +1161,7 @@ ZenMock objects by design do not support asserting that
 their corresponding ZenMocked functions were called zero times.
 To state the intention that a ZenMocked function
 is expected to be called zero times, simply do not call Expect(),
-Return(), ReturnValues(), ReturnRandom(), or Throw<T>() on a ZenMock object.)");
+Return(), ReturnValues(), ReturnRandom(), or ThrowException<T>() on a ZenMock object.)");
          return what;
       }
 
@@ -1174,32 +1174,31 @@ Return(), ReturnValues(), ReturnRandom(), or Throw<T>() on a ZenMock object.)");
    class Throwable
    {
    public:
-      virtual void Throw() const = 0;
+      virtual void ThrowException() const = 0;
       virtual ~Throwable() = default;
    };
 
-   template<typename ExpectedExceptionType>
+   template<typename ExceptionType>
    class TemplateThrowable : public Throwable
    {
       template<typename T>
       friend class TemplateThrowableTests;
    private:
-      std::unique_ptr<const ExpectedExceptionType> _exception;
+      std::unique_ptr<const ExceptionType> _exceptionToBeThrown;
    public:
       template<typename... ExceptionArgTypes>
       static const Throwable* New(ExceptionArgTypes&&... exceptionArgs)
       {
-         auto* templateThrowable = new TemplateThrowable<ExpectedExceptionType>;
-         templateThrowable->_exception = std::make_unique<ExpectedExceptionType>(
-            std::forward<ExceptionArgTypes>(exceptionArgs)...);
-         return templateThrowable;
+         auto* newInstanceOfTemplateThrowable = new TemplateThrowable<ExceptionType>;
+         newInstanceOfTemplateThrowable->_exceptionToBeThrown = std::make_unique<ExceptionType>(std::forward<ExceptionArgTypes>(exceptionArgs)...);
+         return newInstanceOfTemplateThrowable;
       }
 
-      void Throw() const override
+      void ThrowException() const override
       {
-         if (_exception != nullptr)
+         if (_exceptionToBeThrown != nullptr)
          {
-            throw *_exception;
+            throw * _exceptionToBeThrown;
          }
       }
    };
@@ -1210,24 +1209,24 @@ Return(), ReturnValues(), ReturnRandom(), or Throw<T>() on a ZenMock object.)");
       std::shared_ptr<const Throwable> _throwable;
    public:
       template<typename ExceptionType, typename... ExceptionArgTypes>
-      void Throw(ExceptionArgTypes&&... exceptionArgs)
+      void ThrowException(ExceptionArgTypes&&... exceptionArgs)
       {
          if (_throwable != nullptr)
          {
-            throw std::logic_error("ExceptionThrower::Throw<T>() called twice");
+            throw std::logic_error("ExceptionThrower::ThrowException<T>() called twice");
          }
-         _throwable.reset(TemplateThrowable<ExceptionType>::New(
-            std::forward<ExceptionArgTypes>(exceptionArgs)...));
+         _throwable.reset(TemplateThrowable<ExceptionType>::New(std::forward<ExceptionArgTypes>(exceptionArgs)...));
       }
 
-      void ZenMockThrowIfExceptionSet() const
+      void ZenMockThrowExceptionIfExceptionSet() const
       {
          if (_throwable != nullptr)
          {
-            _throwable->Throw();
+            _throwable->ThrowException();
          }
       }
 
+      // virtual for ZenMockability
       virtual ~ExceptionThrower() = default;
    };
 
@@ -1338,9 +1337,9 @@ Return(), ReturnValues(), ReturnRandom(), or Throw<T>() on a ZenMock object.)");
       ZenMocker& operator=(const ZenMocker&) = delete;
 
       template<typename ExceptionType, typename... ExceptionArgTypes>
-      void Throw(ExceptionArgTypes&&... exceptionArgs)
+      void ThrowException(ExceptionArgTypes&&... exceptionArgs)
       {
-         _exceptionThrower.template Throw<ExceptionType>(std::forward<ExceptionArgTypes>(exceptionArgs)...);
+         _exceptionThrower.template ThrowException<ExceptionType>(std::forward<ExceptionArgTypes>(exceptionArgs)...);
          _expected = true;
       }
 
@@ -1354,9 +1353,9 @@ Return(), ReturnValues(), ReturnRandom(), or Throw<T>() on a ZenMock object.)");
          _functionSequencingToken.sequencingIndex = ZenMockAtomicFunctionSequencingIndex::value++;
       }
 
-      void ZenMockThrowIfExceptionSet()
+      void ZenMockThrowExceptionIfExceptionSet()
       {
-         _exceptionThrower.ZenMockThrowIfExceptionSet();
+         _exceptionThrower.ZenMockThrowExceptionIfExceptionSet();
       }
 
       template<typename... ArgTypes>
@@ -1453,7 +1452,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
             this->voidZeroArgFunctionToCallInstead();
          }
          this->AssignAndIncrementFunctionSequenceIndex();
-         this->ZenMockThrowIfExceptionSet();
+         this->ZenMockThrowExceptionIfExceptionSet();
       }
 
       void CallInstead(const std::function<void()>& voidZeroArgFunction)
@@ -2266,7 +2265,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
       {
          this->ZenMockThrowIfNotExpected(argument);
          this->zenMockObjectCallHistory.emplace_back(argument);
-         this->ZenMockThrowIfExceptionSet();
+         this->ZenMockThrowExceptionIfExceptionSet();
       }
 
       FunctionSequencingToken CalledOnceWith(const ArgType& expectedArgument)
@@ -2438,7 +2437,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
       {
          this->ZenMockThrowIfNotExpected(firstArgument, secondArgument);
          zenMockObjectCallHistory.emplace_back(firstArgument, secondArgument);
-         this->ZenMockThrowIfExceptionSet();
+         this->ZenMockThrowExceptionIfExceptionSet();
       }
 
       FunctionSequencingToken CalledOnceWith(
@@ -2619,7 +2618,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
          {
             this->voidThreeArgFunctionToCallInstead(firstArgument, secondArgument, thirdArgument);
          }
-         this->ZenMockThrowIfExceptionSet();
+         this->ZenMockThrowExceptionIfExceptionSet();
       }
 
       FunctionSequencingToken CalledOnceWith(
@@ -2808,7 +2807,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
       {
          this->ZenMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument, fourthArgument);
          zenMockObjectCallHistory.emplace_back(firstArgument, secondArgument, thirdArgument, fourthArgument);
-         this->ZenMockThrowIfExceptionSet();
+         this->ZenMockThrowExceptionIfExceptionSet();
       }
 
       FunctionSequencingToken CalledOnceWith(
@@ -2999,7 +2998,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
       {
          this->ZenMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument);
          zenMockObjectCallHistory.emplace_back(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument);
-         this->ZenMockThrowIfExceptionSet();
+         this->ZenMockThrowExceptionIfExceptionSet();
       }
 
       FunctionSequencingToken CalledOnceWith(
@@ -3196,7 +3195,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
       {
          this->ZenMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument);
          zenMockObjectCallHistory.emplace_back(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument);
-         this->ZenMockThrowIfExceptionSet();
+         this->ZenMockThrowExceptionIfExceptionSet();
       }
 
       FunctionSequencingToken CalledOnceWith(
@@ -3399,7 +3398,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
       {
          this->ZenMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument);
          zenMockObjectCallHistory.emplace_back(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument);
-         this->ZenMockThrowIfExceptionSet();
+         this->ZenMockThrowExceptionIfExceptionSet();
       }
 
       FunctionSequencingToken CalledOnceWith(
@@ -3608,7 +3607,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
       {
          this->ZenMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument);
          zenMockObjectCallHistory.emplace_back(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument);
-         this->ZenMockThrowIfExceptionSet();
+         this->ZenMockThrowExceptionIfExceptionSet();
       }
 
       FunctionSequencingToken CalledOnceWith(
@@ -3824,7 +3823,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
       {
          this->ZenMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument);
          zenMockObjectCallHistory.emplace_back(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument);
-         this->ZenMockThrowIfExceptionSet();
+         this->ZenMockThrowExceptionIfExceptionSet();
       }
 
       FunctionSequencingToken CalledOnceWith(
@@ -4045,7 +4044,7 @@ Fatal Expected-But-Not-Asserted ZenMocked Function
       {
          this->ZenMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument, tenthArgument);
          zenMockObjectCallHistory.emplace_back(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument, tenthArgument);
-         this->ZenMockThrowIfExceptionSet();
+         this->ZenMockThrowExceptionIfExceptionSet();
       }
 
       FunctionSequencingToken CalledOnceWith(

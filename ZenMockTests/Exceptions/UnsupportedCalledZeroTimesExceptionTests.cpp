@@ -21,7 +21,7 @@ ZenMock objects by design do not support asserting that
 their corresponding ZenMocked functions were called zero times.
 To state the intention that a ZenMocked function
 is expected to be called zero times, simply do not call Expect(),
-Return(), ReturnValues(), ReturnRandom(), or Throw<T>() on a ZenMock object.)");
+Return(), ReturnValues(), ReturnRandom(), or ThrowException<T>() on a ZenMock object.)");
       const string actualWhat = ex.what();
       ARE_EQUAL(expectedWhat, actualWhat);
       IS_TRUE((is_base_of<ZenMockException, UnsupportedCalledZeroTimesException>::value));

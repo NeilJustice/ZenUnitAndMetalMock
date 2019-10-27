@@ -139,7 +139,7 @@ Testing Utility Options:
       14)
    {
       _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
+      _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
       const vector<string> stringArgs(numberOfArgs);
       //
       THROWS(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
@@ -155,7 +155,7 @@ Testing Utility Options:
       "--test-runs")
    {
       _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
+      _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, invalidArgument };
       //
       THROWS(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
@@ -170,7 +170,7 @@ Testing Utility Options:
 		"--help",
       "-help")
    {
-      _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
+      _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, helpArgument };
       //
       THROWS(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
@@ -183,7 +183,7 @@ Testing Utility Options:
 		"--version",
 		"-version")
 	{
-		_consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
+		_consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, versionArgument };
       //
       THROWS(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
@@ -325,7 +325,7 @@ Testing Utility Options:
       "--seed===")
    {
       _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
+      _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, arg };
       //
       THROWS(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
@@ -338,8 +338,8 @@ Testing Utility Options:
    TEST(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
    {
       _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
-      ToInt_ZenMockObject.Throw<invalid_argument>("");
+      _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
+      ToInt_ZenMockObject.ThrowException<invalid_argument>("");
       const string InvalidTimesArg = "--test-runs=-1_for_example";
       const vector<string> stringArgs { _testProgramPath, InvalidTimesArg };
       //
@@ -392,7 +392,7 @@ Testing Utility Options:
    TEST(Parse_UnrecognizedEqualsSignArgName_PrintsUsageAndExits1)
    {
       _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WriteLineAndExitMock.Throw<WriteLineAndExitException>();
+      _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
       const string unrecognizedNameArg = "-" + ZenUnit::Random<string>() + "=" + ZenUnit::Random<string>();
       const vector<string> stringArgs{ _testProgramPath, unrecognizedNameArg };
       //

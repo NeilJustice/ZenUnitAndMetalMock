@@ -32,8 +32,8 @@ namespace ZenMock
    TESTS(ZenMockVoid2ArgTests)
    AFACT(ZenMockIt_ExpectNotPreviouslyCalled_ThrowsUnexpectedCallException)
    AFACT(Expect_DoesNotThrowWhenCalledTwice_MakesFunctionNotThrowWhenCalled)
-   AFACT(Throw_MakesSubsequentCallsToZenMockedFunctionThrowSpecifiedException__runtime_error_TestCase)
-   AFACT(Throw_MakesSubsequentCallsToZenMockedFunctionThrowSpecifiedException__invalid_argument_TestCase)
+   AFACT(ThrowException_MakesSubsequentCallsToZenMockedFunctionThrowSpecifiedException__runtime_error_TestCase)
+   AFACT(ThrowException_MakesSubsequentCallsToZenMockedFunctionThrowSpecifiedException__runtime_error_then_invalid_argument_TestCase)
    AFACT(CalledOnceWith_ZenMockedFunctionNotPreviouslyCalled_Throws)
    AFACT(CalledAsFollows_ZenMockedFunctionNotPreviouslyCalled_Throws)
    AFACT(CalledNTimesWith_ZenMockedFunctionNotPreviouslyCalled_Throws)
@@ -132,12 +132,12 @@ Argument2: )" + to_string(argument2);
       testcase(StaticVoid2ArgFunction_ZenMockObject);
    }
 
-   TEST(Throw_MakesSubsequentCallsToZenMockedFunctionThrowSpecifiedException__runtime_error_TestCase)
+   TEST(ThrowException_MakesSubsequentCallsToZenMockedFunctionThrowSpecifiedException__runtime_error_TestCase)
    {
       const auto testcase = [](VoidTwoArgumentMocker<int, int>& zenMockObject)
       {
          const string exceptionMessage = ZenUnit::Random<string>();
-         zenMockObject.Throw<runtime_error>(exceptionMessage);
+         zenMockObject.ThrowException<runtime_error>(exceptionMessage);
          const int argument1 = ZenUnit::Random<int>();
          const int argument2 = ZenUnit::Random<int>();
          //
@@ -156,12 +156,12 @@ Argument2: )" + to_string(argument2);
       testcase(StaticVoid2ArgFunction_ZenMockObject);
    }
 
-   TEST(Throw_MakesSubsequentCallsToZenMockedFunctionThrowSpecifiedException__invalid_argument_TestCase)
+   TEST(ThrowException_MakesSubsequentCallsToZenMockedFunctionThrowSpecifiedException__runtime_error_then_invalid_argument_TestCase)
    {
       const auto testcase = [](VoidTwoArgumentMocker<int, int>& zenMockObject)
       {
          const string exceptionMessage = ZenUnit::Random<string>();
-         zenMockObject.Throw<invalid_argument>(exceptionMessage);
+         zenMockObject.ThrowException<invalid_argument>(exceptionMessage);
          const int argument1 = ZenUnit::Random<int>();
          const int argument2 = ZenUnit::Random<int>();
          //

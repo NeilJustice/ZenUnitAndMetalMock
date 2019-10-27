@@ -4,30 +4,30 @@ namespace ZenMock
 {
    template<typename ExceptionType>
    TEMPLATE_TESTS(TemplateThrowableTests, ExceptionType)
-   AFACT(New_ReturnsNewInstanceOfSelfAsThrowablePointerWithExceptionCreatedFromExceptionArgs)
-   AFACT(Throw_ExceptionIsNullptr_DoesNothing)
-   AFACT(Throw_ExceptionIsNotNullptr_ThrowsTheException)
+   AFACT(New_ReturnsNewInstanceOfSelfAsThrowablePointerWithExceptionToBeThrownCreatedFromExceptionArgs)
+   AFACT(ThrowException_ExceptionToBeThrownIsNullptr_DoesNothing)
+   AFACT(ThrowException_ExceptionToBeThrownIsNotNullptr_ThrowsTheException)
    EVIDENCE
 
    TemplateThrowable<ExceptionType> _templateThrowable;
-   const string _exceptionWhat = ZenUnit::Random<string>();
+   const string _exceptionMessage = ZenUnit::Random<string>();
 
-   TEST(New_ReturnsNewInstanceOfSelfAsThrowablePointerWithExceptionCreatedFromExceptionArgs)
+   TEST(New_ReturnsNewInstanceOfSelfAsThrowablePointerWithExceptionToBeThrownCreatedFromExceptionArgs)
    {
-      const Throwable* const throwable = TemplateThrowable<ExceptionType>::New(_exceptionWhat);
-      THROWS(throwable->Throw(), ExceptionType, _exceptionWhat);
+      const Throwable* const throwable = TemplateThrowable<ExceptionType>::New(_exceptionMessage);
+      THROWS(throwable->ThrowException(), ExceptionType, _exceptionMessage);
       delete throwable;
    }
 
-   TEST(Throw_ExceptionIsNullptr_DoesNothing)
+   TEST(ThrowException_ExceptionToBeThrownIsNullptr_DoesNothing)
    {
-      _templateThrowable.Throw();
+      _templateThrowable.ThrowException();
    }
 
-   TEST(Throw_ExceptionIsNotNullptr_ThrowsTheException)
+   TEST(ThrowException_ExceptionToBeThrownIsNotNullptr_ThrowsTheException)
    {
-      _templateThrowable._exception = make_unique<ExceptionType>(_exceptionWhat);
-      THROWS(_templateThrowable.Throw(), ExceptionType, _exceptionWhat);
+      _templateThrowable._exceptionToBeThrown = make_unique<ExceptionType>(_exceptionMessage);
+      THROWS(_templateThrowable.ThrowException(), ExceptionType, _exceptionMessage);
    }
 
    RUN_TEMPLATE_TESTS(TemplateThrowableTests, runtime_error)

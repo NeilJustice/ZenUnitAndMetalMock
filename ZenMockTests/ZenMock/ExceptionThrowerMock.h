@@ -8,64 +8,63 @@ namespace ZenMock
    private:
       string exceptionTypeName;
       size_t exceptionArgCount;
-      string stringConcattedExceptionArgs;
-      unsigned numberOfCallsToZenMockThrowIfExceptionSet;
-      bool expectCallToExpectAndThrow;
-      bool expectCallToZenMockThrowIfExceptionSet;
+      string stringConcatenatedExceptionArgs;
+      unsigned numberOfCallsToZenMockThrowExceptionIfExceptionSet;
+      bool expectCallToExpectAndThrowException;
+      bool expectCallToZenMockThrowExceptionIfExceptionSet;
    public:
       ExceptionThrowerMock() noexcept
          : exceptionArgCount(0)
-         , numberOfCallsToZenMockThrowIfExceptionSet(0)
-         , expectCallToExpectAndThrow(false)
-         , expectCallToZenMockThrowIfExceptionSet(false)
+         , numberOfCallsToZenMockThrowExceptionIfExceptionSet(0)
+         , expectCallToExpectAndThrowException(false)
+         , expectCallToZenMockThrowExceptionIfExceptionSet(false)
       {
       }
 
-      void ExpectCallToExpectAndThrow()
+      void ExpectCallToExpectAndThrowException()
       {
-         expectCallToExpectAndThrow = true;
+         expectCallToExpectAndThrowException = true;
       }
 
-      void ExpectCallToZenMockThrowIfExceptionSet()
+      void ExpectCallToZenMockThrowExceptionIfExceptionSet()
       {
-         expectCallToZenMockThrowIfExceptionSet = true;
+         expectCallToZenMockThrowExceptionIfExceptionSet = true;
       }
 
       template<typename ExceptionType, typename... ExceptionArgTypes>
-      void Throw(ExceptionArgTypes&&... exceptionArgs)
+      void ThrowException(ExceptionArgTypes&&... exceptionArgs)
       {
-         if (!expectCallToExpectAndThrow)
+         if (!expectCallToExpectAndThrowException)
          {
-            throw runtime_error("Unexpected call to ExceptionThrowerMock::Throw()");
+            throw runtime_error("Unexpected call to ExceptionThrowerMock::ThrowException()");
          }
-         assert_true(exceptionTypeName.empty());
          exceptionTypeName = *Type::GetName<ExceptionType>();
          exceptionArgCount = sizeof...(ExceptionArgTypes);
-         stringConcattedExceptionArgs = String::Concat(forward<ExceptionArgTypes>(exceptionArgs)...);
+         stringConcatenatedExceptionArgs = String::Concat(forward<ExceptionArgTypes>(exceptionArgs)...);
       }
 
-      void ZenMockThrowIfExceptionSet()
+      void ZenMockThrowExceptionIfExceptionSet()
       {
-         if (!expectCallToZenMockThrowIfExceptionSet)
+         if (!expectCallToZenMockThrowExceptionIfExceptionSet)
          {
-            throw runtime_error("Unexpected call to ExceptionThrowerMock::ZenMockThrowIfExceptionSet()");
+            throw runtime_error("Unexpected call to ExceptionThrowerMock::ZenMockThrowExceptionIfExceptionSet()");
          }
-         ++numberOfCallsToZenMockThrowIfExceptionSet;
+         ++numberOfCallsToZenMockThrowExceptionIfExceptionSet;
       }
 
-      void AssertExpectAndThrowCalledOnceWith(
+      void AssertExpectAndThrowExceptionCalledOnceWith(
          const string& expectedExceptionTypeName,
          size_t expectedExceptionArgCount,
          const string& expectedStringConcattedExceptionArgs)
       {
          ARE_EQUAL(expectedExceptionTypeName, exceptionTypeName);
          ARE_EQUAL(expectedExceptionArgCount, exceptionArgCount);
-         ARE_EQUAL(expectedStringConcattedExceptionArgs, stringConcattedExceptionArgs);
+         ARE_EQUAL(expectedStringConcattedExceptionArgs, stringConcatenatedExceptionArgs);
       }
 
-      void AssertZenMockThrowIfExceptionSetCalledOnce()
+      void AssertZenMockThrowExceptionIfExceptionSetCalledOnce()
       {
-         ARE_EQUAL(1, numberOfCallsToZenMockThrowIfExceptionSet);
+         ARE_EQUAL(1, numberOfCallsToZenMockThrowExceptionIfExceptionSet);
       }
    };
 }

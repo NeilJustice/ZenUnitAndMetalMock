@@ -11,8 +11,8 @@ namespace ZenMock
 {
    TESTS(ZenMockerTests)
    AFACT(Constructor_SetsFields)
-   AFACT(Throw_CallsExceptionThrowerThrow_SetsExpectedTrue_runtime_error_testcase)
-   AFACT(Throw_CallsExceptionThrowerThrow_SetsExpectedTrue_CustomException_testcase)
+   AFACT(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue_runtime_error_testcase)
+   AFACT(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue_CustomException_testcase)
    AFACT(ZenMockSetAsserted_SetsAssertedTrue_CallableTwice)
    AFACT(ZenMockThrowIfNotExpected_ExpectedTrue_DoesNotThrow)
    AFACT(ZenMockThrowIfNotExpected_ExpectedFalse_Throws)
@@ -20,7 +20,7 @@ namespace ZenMock
    FACTS(ZenMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCallsGreaterThan0_DoesNotThrow)
    AFACT(ZenMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSize0_Throws)
    FACTS(ZenMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSizeGreaterThan0_DoesNotThrow)
-   AFACT(ZenMockThrowIfExceptionSet_CallsExceptionThrowerZenMockThrowIfExceptionSet)
+   AFACT(ZenMockThrowExceptionIfExceptionSet_CallsExceptionThrowerZenMockThrowIfExceptionSet)
    FACTS(ZenMockExitIfExpectedButNotAsserted_ExpectedFalse_DoesNothing)
    FACTS(ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedTrue_DoesNothing)
    FACTS(ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedFalse_ZenMockExceptionIsInFlightFalse_WritesError_Exits1)
@@ -51,28 +51,28 @@ namespace ZenMock
       IS_FALSE(zenMocker._zenMockExceptionIsInFlight);
    }
 
-   TEST(Throw_CallsExceptionThrowerThrow_SetsExpectedTrue_runtime_error_testcase)
+   TEST(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue_runtime_error_testcase)
    {
-      _zenMocker->_exceptionThrower.ExpectCallToExpectAndThrow();
+      _zenMocker->_exceptionThrower.ExpectCallToExpectAndThrowException();
       IS_FALSE(_zenMocker->_expected);
       const string what = Random<string>();
       //
-      _zenMocker->Throw<runtime_error>(what);
+      _zenMocker->ThrowException<runtime_error>(what);
       //
-      _zenMocker->_exceptionThrower.AssertExpectAndThrowCalledOnceWith("std::runtime_error", 1, what);
+      _zenMocker->_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith("std::runtime_error", 1, what);
       IS_TRUE(_zenMocker->_expected);
 
       _zenMocker->_expected = false; // Set _expected to false to prevent Fatal EBNA
    }
 
-   TEST(Throw_CallsExceptionThrowerThrow_SetsExpectedTrue_CustomException_testcase)
+   TEST(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue_CustomException_testcase)
    {
-      _zenMocker->_exceptionThrower.ExpectCallToExpectAndThrow();
+      _zenMocker->_exceptionThrower.ExpectCallToExpectAndThrowException();
       IS_FALSE(_zenMocker->_expected);
       //
-      _zenMocker->Throw<CustomException>(1, '2', 3.3);
+      _zenMocker->ThrowException<CustomException>(1, '2', 3.3);
       //
-      _zenMocker->_exceptionThrower.AssertExpectAndThrowCalledOnceWith("CustomException", 3, "123.3");
+      _zenMocker->_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith("CustomException", 3, "123.3");
       IS_TRUE(_zenMocker->_expected);
 
       _zenMocker->_expected = false; // Set _expected to false to prevent Fatal EBNA
@@ -136,13 +136,13 @@ namespace ZenMock
       DOES_NOT_THROW(_zenMocker->ZenMockThrowIfExpectedCallsSizeIsZero(expectedCallsSize));
    }
 
-   TEST(ZenMockThrowIfExceptionSet_CallsExceptionThrowerZenMockThrowIfExceptionSet)
+   TEST(ZenMockThrowExceptionIfExceptionSet_CallsExceptionThrowerZenMockThrowIfExceptionSet)
    {
-      _zenMocker->_exceptionThrower.ExpectCallToZenMockThrowIfExceptionSet();
+      _zenMocker->_exceptionThrower.ExpectCallToZenMockThrowExceptionIfExceptionSet();
       //
-      _zenMocker->ZenMockThrowIfExceptionSet();
+      _zenMocker->ZenMockThrowExceptionIfExceptionSet();
       //
-      ZENMOCK(_zenMocker->_exceptionThrower.AssertZenMockThrowIfExceptionSetCalledOnce());
+      ZENMOCK(_zenMocker->_exceptionThrower.AssertZenMockThrowExceptionIfExceptionSetCalledOnce());
    }
 
    TEST2X2(ZenMockExitIfExpectedButNotAsserted_ExpectedFalse_DoesNothing,

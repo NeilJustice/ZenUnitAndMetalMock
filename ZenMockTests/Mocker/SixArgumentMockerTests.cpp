@@ -5,7 +5,7 @@ namespace ZenMock
 {
    TESTS(SixArgumentMockerTests)
    AFACT(Constructor_SetsFields)
-   AFACT(Throw_CallsExceptionThrowerThrow_SetsExpectedTrue)
+   AFACT(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue)
    AFACT(ZenMockIt_ExpectedFalse_Throws)
    AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
    EVIDENCE
@@ -17,10 +17,10 @@ namespace ZenMock
    STARTUP
    {
       _signature = ZenUnit::Random<string>();
-   _mocker = make_unique<MockerType>(_signature);
+      _mocker = make_unique<MockerType>(_signature);
    }
 
-      void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
+   void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
    {
       _mocker->_asserted = true;
    }
@@ -35,15 +35,14 @@ namespace ZenMock
       IS_EMPTY(mocker.zenMockObjectCallHistory);
    }
 
-   TEST(Throw_CallsExceptionThrowerThrow_SetsExpectedTrue)
+   TEST(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue)
    {
       IS_FALSE(_mocker->_expected);
-      _mocker->_exceptionThrower.ExpectCallToExpectAndThrow();
+      _mocker->_exceptionThrower.ExpectCallToExpectAndThrowException();
       //
-      _mocker->Throw<TestingException>("argument", 100);
+      _mocker->ThrowException<TestingException>("argument", 100);
       //
-      _mocker->_exceptionThrower.
-         AssertExpectAndThrowCalledOnceWith("ZenMock::TestingException", 2, "argument100");
+      _mocker->_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith("ZenMock::TestingException", 2, "argument100");
       IS_TRUE(_mocker->_expected);
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
@@ -58,7 +57,7 @@ namespace ZenMock
    TEST(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
    {
       _mocker->_expected = true;
-      _mocker->_exceptionThrower.ExpectCallToZenMockThrowIfExceptionSet();
+      _mocker->_exceptionThrower.ExpectCallToZenMockThrowExceptionIfExceptionSet();
       IS_EMPTY(_mocker->zenMockObjectCallHistory);
       //
       _mocker->ZenMockIt(1, 2, 3, 4, 5, 6);
@@ -69,7 +68,7 @@ namespace ZenMock
          CallType(1, 2, 3, 4, 5, 6)
       };
       VECTORS_EQUAL(expectedCalls, _mocker->zenMockObjectCallHistory);
-      ZENMOCK(_mocker->_exceptionThrower.AssertZenMockThrowIfExceptionSetCalledOnce());
+      ZENMOCK(_mocker->_exceptionThrower.AssertZenMockThrowExceptionIfExceptionSetCalledOnce());
       DOES_NOT_THROW(_mocker->CalledOnceWith(1, 2, 3, 4, 5, 6));
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }

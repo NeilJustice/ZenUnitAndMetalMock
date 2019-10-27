@@ -35,7 +35,7 @@ namespace ZenMock
    AFACT(FunctionNotCalled_CalledAsFollowsWithN0_Throws)
    AFACT(FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows)
    AFACT(ZenMockedFunction_NotExpected_Throws)
-   AFACT(Throw_ThenZenMockedFunction_ThrowsTheException)
+   AFACT(ThrowException_ThenZenMockedFunction_ThrowsTheException)
    // Value Return Tests
    AFACT(Return_CausesFunctionToReturnValue)
    AFACT(ReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
@@ -116,9 +116,9 @@ namespace ZenMock
       _zenMock0Tester->ZenMockedFunction_NotExpected_Throws();
    }
 
-   TEST(Throw_ThenZenMockedFunction_ThrowsTheException)
+   TEST(ThrowException_ThenZenMockedFunction_ThrowsTheException)
    {
-      _zenMock0Tester->Throw_ThenZenMockedFunction_ThrowsTheException();
+      _zenMock0Tester->ThrowException_ThenZenMockedFunction_ThrowsTheException();
    }
 
    // Value Return Tests
