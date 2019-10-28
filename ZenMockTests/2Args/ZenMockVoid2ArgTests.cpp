@@ -223,7 +223,7 @@ Expected: std::vector<ZenMock::TwoArgumentFunctionCallRef<int,)" + spaceIfLinux 
 Argument1: )" + to_string(argument1) + R"(
 Argument2: )" + to_string(argument2) + R"(
 }
-  Actual: std::vector<ZenMock::TwoArgumentFunctionCallRef<int)" + spaceIfLinux + R"(,int>> (size 0):
+  Actual: std::vector<ZenMock::TwoArgumentFunctionCallRef<int,)" + spaceIfLinux + R"(int>> (size 0):
 {
 }
  Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed
