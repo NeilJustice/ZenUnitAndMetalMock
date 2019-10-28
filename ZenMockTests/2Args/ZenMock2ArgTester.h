@@ -14,9 +14,9 @@ namespace ZenMock
       ZenMockObjectType zenMockObject;
 
       const string virtualFunctionSignature;
-      const string virtualConstFunctionSignature;
+      const string virtualFunctionConstSignature;
       const string nonVirtualFunctionSignature;
-      const string nonVirtualConstFunctionSignature;
+      const string nonVirtualFunctionConstSignature;
 
       FreeFunctionMockType freeFunctionMock;
       const string freeFunctionSignature;
@@ -32,7 +32,7 @@ namespace ZenMock
          string virtualFunctionSignature,
          string virtualFunctionConstSignature,
          string nonVirtualFunctionSignature,
-         string nonVirtualConstFunctionSignature,
+         string nonVirtualFunctionConstSignature,
 
          FreeFunctionMockType freeFunctionMock,
          string freeFunctionSignature,
@@ -44,9 +44,9 @@ namespace ZenMock
          string staticFunctionSignature)
          : zenMockObject(move(zenMockObject))
          , virtualFunctionSignature(move(virtualFunctionSignature))
-         , virtualConstFunctionSignature(move(virtualConstFunctionSignature))
+         , virtualFunctionConstSignature(move(virtualFunctionConstSignature))
          , nonVirtualFunctionSignature(move(nonVirtualFunctionSignature))
-         , nonVirtualConstFunctionSignature(move(nonVirtualConstFunctionSignature))
+         , nonVirtualFunctionConstSignature(move(nonVirtualFunctionConstSignature))
 
          , freeFunctionMock(move(freeFunctionMock))
          , freeFunctionSignature(move(freeFunctionSignature))
@@ -67,9 +67,9 @@ namespace ZenMock
             THROWS(zenMockObjectFunctionCallLambda(), UnexpectedCallException, expectedExceptionMessage);
          };
          testcase([&] { zenMockObject.Virtual(0); }, virtualFunctionSignature);
-         testcase([&] { zenMockObject.VirtualConst(0); }, virtualConstFunctionSignature);
+         testcase([&] { zenMockObject.VirtualConst(0); }, virtualFunctionConstSignature);
          testcase([&] { zenMockObject.NonVirtual(0); }, nonVirtualFunctionSignature);
-         testcase([&] { zenMockObject.NonVirtualConst(0); }, nonVirtualConstFunctionSignature);
+         testcase([&] { zenMockObject.NonVirtualConst(0); }, nonVirtualFunctionConstSignature);
 
          function<void(int)> zenMockBoundFreeFunctionMock = BIND_1ARG_ZENMOCK_OBJECT(freeFunctionMock);
          testcase([&] { zenMockBoundFreeFunctionMock(0); }, freeFunctionSignature);
