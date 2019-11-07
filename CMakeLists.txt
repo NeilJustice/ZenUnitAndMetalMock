@@ -45,11 +45,6 @@ add_subdirectory(ZenUnitCompileSpeedTester)
 add_subdirectory(ZenMockExamples)
 add_subdirectory(ZenMockTests)
 
-# CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true makes CMake command
-# "cmake --build . --target install --config Debug/Release"
-# just install ZenUnit.h and ZenMock.h without also building all other ZenUnit test executables
-set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
-
 if(UNIX)
    include(ProcessorCount)
    ProcessorCount(numberOfThreads)
