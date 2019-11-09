@@ -1132,8 +1132,7 @@ namespace ZenMock
       static std::string MakeWhat(const std::string& zenMockedFunctionSignature)
       {
          const std::string what = "For ZenMocked function \"" + zenMockedFunctionSignature + R"(":
-ZenMocked functions with non-void return types
-must have their return value or values set explicitly by calling
+ZenMocked functions with non-void return types must have their return value or values set explicitly by calling:
 [FunctionName]Mock.[Return|ReturnValues]())";
          return what;
       }
