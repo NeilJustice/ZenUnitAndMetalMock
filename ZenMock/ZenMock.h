@@ -1396,9 +1396,9 @@ Return(), ReturnValues(), ReturnRandom(), or ThrowException<T>() on a ZenMock ob
          {
             const ZenUnit::Console console;
             console.WriteLineColor(R"(
-==================================================
-Fatal Expected-But-Not-Asserted ZenMocked Function
-==================================================)", ZenUnit::Color::Red);
+========================================================
+Fatal EBNA: ZenMocked Function Expected But Not Asserted
+========================================================)", ZenUnit::Color::Red);
             console.Write("ZenMocked function that was expected but not later asserted as having been called:\n");
 				console.WriteLine(ZenMockedFunctionSignature);
             const ZenUnit::ZenUnitArgs& args = _call_ZenUnitTestRunner_GetArgs();
