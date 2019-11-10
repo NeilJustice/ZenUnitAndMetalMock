@@ -1,6 +1,6 @@
-./Debug/ZenMockExamples/ZenMockExamples
 ./Debug/ZenMockTests/ZenMockTests
-./Debug/ZenUnitExamples/ZenUnitExamples
+./Debug/ZenMockExamples/ZenMockExamples
 ./Debug/ZenUnitLibraryTests/ZenUnitLibraryTests
 ./Debug/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests
+./Debug/ZenUnitExamples/ZenUnitExamples
 

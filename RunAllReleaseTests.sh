@@ -1,6 +1,6 @@
-./Release/ZenMockExamples/ZenMockExamples
 ./Release/ZenMockTests/ZenMockTests
-./Release/ZenUnitExamples/ZenUnitExamples
+./Release/ZenMockExamples/ZenMockExamples
 ./Release/ZenUnitLibraryTests/ZenUnitLibraryTests
 ./Release/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests
+./Release/ZenUnitExamples/ZenUnitExamples
 

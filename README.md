@@ -12,23 +12,34 @@
 #### ZenUnit.h single header: <a href="https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenUnit/ZenUnit.h">ZenUnit.h</a>
 #### ZenMock.h single header: <a href="https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenMock/ZenMock.h">ZenMock.h</a>
 
+### How To Compile And Run ZenUnit And ZenMock Unit Tests And Then Install ZenUnit.h And ZenMock.h On Linux
+
+```
+git clone https://github.com/NeilJustice/ZenUnitAndZenMock
+cd ZenUnitAndZenMock && mkdir Debug && cd Debug
+CXX=clang++ cmake .. -GNinja -DCMAKE_BUILD_TYPE=Debug
+# Builds ZenUnit and ZenMock unit test binaries then copies
+# ZenUnit.h to /usr/local/include/ZenUnit/ZenUnit.h and
+# ZenMock.h to /usr/local/include/ZenMock/ZenMock.h
+sudo cmake --build . --target install
+cd ..
+# Runs unit test binaries ZenMockTests, ZenMockExamples,
+# ZenUnitLibraryTests, ZenUnitUtilsAndAssertionTests, then ZenUnitExamples
+./RunAllDebugTests.sh
+```
+
 ### How To Compile And Run ZenUnit And ZenMock Unit Tests And Then Install ZenUnit.h And ZenMock.h On Windows
 
 ```
 git clone https://github.com/NeilJustice/ZenUnitAndZenMock
 cd ZenUnitAndZenMock
 cmake . -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=C:\usr_local
-# Builds then runs ZenUnit and ZenMock unit tests as post-build events then copies
+# Builds ZenUnit and ZenMock unit test binaries and then runs them as Visual Studio post-build events,
+# then copies
 # ZenUnit.h to C:\usr_local\include\ZenUnit\ZenUnit.h and
 # ZenMock.h to C:\usr_local\include\ZenMock\ZenMock.h
 cmake --build . --target install
 ```
-
-### How To Compile And Run ZenUnit And ZenMock Unit Tests And Then Install ZenUnit.h And ZenMock.h On Linux
-
-```
-```
-
    * [ZenUnit Command Line Usage](#zenunit-command-line-usage)
    * [ZenUnit Assertions](#zenunit-assertions)
    * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
