@@ -46,62 +46,62 @@ namespace ZenMock
       STD_FUNCTION_TARGETS(exit, zenMocker._call_exit);
       STD_FUNCTION_TARGETS(ZenUnit::ZenUnitTestRunner::GetArgs, zenMocker._call_ZenUnitTestRunner_GetArgs);
       ARE_EQUAL(ZenMockedFunctionSignature, zenMocker.ZenMockedFunctionSignature);
-      IS_FALSE(zenMocker._expected);
-      IS_FALSE(zenMocker._asserted);
+      IS_FALSE(zenMocker._wasExpected);
+      IS_FALSE(zenMocker._wasAsserted);
       IS_FALSE(zenMocker._zenMockExceptionIsInFlight);
    }
 
    TEST(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue_runtime_error_testcase)
    {
       _zenMocker->_exceptionThrower.ExpectCallToExpectAndThrowException();
-      IS_FALSE(_zenMocker->_expected);
+      IS_FALSE(_zenMocker->_wasExpected);
       const string what = Random<string>();
       //
       _zenMocker->ThrowException<runtime_error>(what);
       //
       _zenMocker->_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith("std::runtime_error", 1, what);
-      IS_TRUE(_zenMocker->_expected);
+      IS_TRUE(_zenMocker->_wasExpected);
 
-      _zenMocker->_expected = false; // Set _expected to false to prevent Fatal EBNA
+      _zenMocker->_wasExpected = false; // Set _expected to false to prevent Fatal EBNA
    }
 
    TEST(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue_CustomException_testcase)
    {
       _zenMocker->_exceptionThrower.ExpectCallToExpectAndThrowException();
-      IS_FALSE(_zenMocker->_expected);
+      IS_FALSE(_zenMocker->_wasExpected);
       //
       _zenMocker->ThrowException<CustomException>(1, '2', 3.3);
       //
       _zenMocker->_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith("CustomException", 3, "123.3");
-      IS_TRUE(_zenMocker->_expected);
+      IS_TRUE(_zenMocker->_wasExpected);
 
-      _zenMocker->_expected = false; // Set _expected to false to prevent Fatal EBNA
+      _zenMocker->_wasExpected = false; // Set _expected to false to prevent Fatal EBNA
       CustomException customException(1, '2', 3.3); // 100% code coverage
    }
 
    TEST(ZenMockSetAsserted_SetsAssertedTrue_CallableTwice)
    {
-      IS_FALSE(_zenMocker->_asserted);
+      IS_FALSE(_zenMocker->_wasAsserted);
       //
       _zenMocker->ZenMockSetAsserted();
       //
-      IS_TRUE(_zenMocker->_asserted);
+      IS_TRUE(_zenMocker->_wasAsserted);
 
       _zenMocker->ZenMockSetAsserted();
-      IS_TRUE(_zenMocker->_asserted);
+      IS_TRUE(_zenMocker->_wasAsserted);
    }
 
    TEST(ZenMockThrowIfNotExpected_ExpectedTrue_DoesNotThrow)
    {
-      _zenMocker->_expected = true;
+      _zenMocker->_wasExpected = true;
       DOES_NOT_THROW(_zenMocker->ZenMockThrowIfNotExpected());
       DOES_NOT_THROW(_zenMocker->ZenMockThrowIfNotExpected(1, 2, 3));
-      _zenMocker->_asserted = true;
+      _zenMocker->_wasAsserted = true;
    }
 
    TEST(ZenMockThrowIfNotExpected_ExpectedFalse_Throws)
    {
-      IS_FALSE(_zenMocker->_expected);
+      IS_FALSE(_zenMocker->_wasExpected);
       THROWS(_zenMocker->ZenMockThrowIfNotExpected(), UnexpectedCallException,
          UnexpectedCallException::MakeWhat(ZenMockedFunctionSignature));
       THROWS(_zenMocker->ZenMockThrowIfNotExpected(1, 2, 3), UnexpectedCallException,
@@ -152,8 +152,8 @@ namespace ZenMock
       false, true,
       true, true)
    {
-      _zenMocker->_expected = false;
-      _zenMocker->_asserted = asserted;
+      _zenMocker->_wasExpected = false;
+      _zenMocker->_wasAsserted = asserted;
       _zenMocker->_zenMockExceptionIsInFlight = zenMockExceptionIsInFlight;
       //
       _zenMocker->ZenMockExitIfExpectedButNotAsserted();
@@ -164,8 +164,8 @@ namespace ZenMock
       false,
       true)
    {
-      _zenMocker->_expected = true;
-      _zenMocker->_asserted = true;
+      _zenMocker->_wasExpected = true;
+      _zenMocker->_wasAsserted = true;
       _zenMocker->_zenMockExceptionIsInFlight = _zenMockExceptionIsInFlight;
       //
       _zenMocker->ZenMockExitIfExpectedButNotAsserted();
@@ -176,8 +176,8 @@ namespace ZenMock
       false, 1,
       true, 0)
    {
-      _zenMocker->_expected = true;
-      _zenMocker->_asserted = false;
+      _zenMocker->_wasExpected = true;
+      _zenMocker->_wasAsserted = false;
       _zenMocker->_zenMockExceptionIsInFlight = false;
 
       ZenUnit::ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
@@ -192,13 +192,13 @@ namespace ZenMock
       cout << "</ZenMock Error Message Testing>\n\n";
       ZENMOCK(GetArgs_ZenMockObject.CalledOnce());
       ZENMOCK(exit_ZenMockObject.CalledOnceWith(expectedExitCode));
-      _zenMocker->_asserted = true;
+      _zenMocker->_wasAsserted = true;
    }
 
    TEST(ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedFalse_ZenMockExceptionIsInFlightTrue_DoesNothing)
    {
-      _zenMocker->_expected = true;
-      _zenMocker->_asserted = false;
+      _zenMocker->_wasExpected = true;
+      _zenMocker->_wasAsserted = false;
       _zenMocker->_zenMockExceptionIsInFlight = true;
       //
       _zenMocker->ZenMockExitIfExpectedButNotAsserted();

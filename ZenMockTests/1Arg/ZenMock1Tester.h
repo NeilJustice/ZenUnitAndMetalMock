@@ -87,7 +87,7 @@ namespace ZenMock
       {
          const auto test = [](auto& zenMockObject)
          {
-            zenMockObject._expected = true;
+            zenMockObject._wasExpected = true;
             zenMockObject.ZenMockIt(0);
             zenMockObject.CalledOnceWith(0);
          };
@@ -263,7 +263,7 @@ namespace ZenMock
       {
          const auto test = [&](auto& zenMockObject, const string& expectedSignature)
          {
-            zenMockObject._expected = true;
+            zenMockObject._wasExpected = true;
             for (size_t i = 0; i < numberOfCalls; ++i)
             {
                zenMockObject.ZenMockIt(0);
@@ -291,7 +291,7 @@ File.cpp(1))");
       {
          const auto test = [](auto& zenMockObject, const string& expectedSignature)
          {
-            zenMockObject._expected = true;
+            zenMockObject._wasExpected = true;
             //
             zenMockObject.ZenMockIt(10);
             //
@@ -318,7 +318,7 @@ File.cpp(1))");
       {
          const auto test = [](auto& zenMockObject)
          {
-            zenMockObject._expected = true;
+            zenMockObject._wasExpected = true;
             //
             zenMockObject.ZenMockIt(10);
             //
@@ -357,7 +357,7 @@ File.cpp(1))");
       {
          const auto test = [&](auto& zenMockObject, const string& expectedSignature)
          {
-            zenMockObject._expected = true;
+            zenMockObject._wasExpected = true;
             for (size_t i = 0; i < numberOfCalls; ++i)
             {
                zenMockObject.ZenMockIt(0);
@@ -386,7 +386,7 @@ File.cpp(1))");
       {
          const auto test = [&](auto& zenMockObject, const string& expectedSignature)
          {
-            zenMockObject._expected = true;
+            zenMockObject._wasExpected = true;
             //
             for (size_t i = 0; i < n; ++i)
             {
@@ -423,7 +423,7 @@ File.cpp(1))");
       {
          const auto test = [&](auto& zenMockObject)
          {
-            zenMockObject._expected = true;
+            zenMockObject._wasExpected = true;
             //
             for (size_t i = 0; i < n; ++i)
             {
@@ -466,7 +466,7 @@ File.cpp(1))");
       {
          const auto test = [&](auto& zenMockObject, const string& expectedSignature)
          {
-            zenMockObject._expected = true;
+            zenMockObject._wasExpected = true;
             //
             ZenMockTestUtils::CallNTimes(numberOfCalls, [&] { zenMockObject.ZenMockIt(0); });
             //
@@ -496,7 +496,7 @@ File.cpp(1))");
       {
          const auto test = [&](auto& zenMockObject, const string& expectedSignature)
          {
-            zenMockObject._expected = true;
+            zenMockObject._wasExpected = true;
             //
             for (size_t i = 0; i < expectedCallsSize; ++i)
             {
@@ -537,7 +537,7 @@ File.cpp(1))";
       {
          const auto test = [&](auto& zenMockObject)
          {
-            zenMockObject._expected = true;
+            zenMockObject._wasExpected = true;
             const int argument = ZenUnit::Random<int>();
             //
             ZenMockTestUtils::CallNTimes(expectedCallsSize, [&] { zenMockObject.ZenMockIt(argument); });

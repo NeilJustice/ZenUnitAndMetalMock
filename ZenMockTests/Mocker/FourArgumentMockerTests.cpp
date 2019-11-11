@@ -22,7 +22,7 @@ namespace ZenMock
 
    void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
    {
-      _mocker->_asserted = true;
+      _mocker->_wasAsserted = true;
    }
 
    TEST(Constructor_SetsFields)
@@ -30,33 +30,33 @@ namespace ZenMock
       const MockerType mocker(_signature);
       //
       ARE_EQUAL(_signature, mocker.ZenMockedFunctionSignature);
-      IS_FALSE(mocker._expected);
-      IS_FALSE(mocker._asserted);
+      IS_FALSE(mocker._wasExpected);
+      IS_FALSE(mocker._wasAsserted);
       IS_EMPTY(mocker.zenMockedFunctionCallHistory);
    }
 
    TEST(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue)
    {
-      IS_FALSE(_mocker->_expected);
+      IS_FALSE(_mocker->_wasExpected);
       _mocker->_exceptionThrower.ExpectCallToExpectAndThrowException();
       //
       _mocker->ThrowException<TestingException>("argument", 100);
       //
       _mocker->_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith("ZenMock::TestingException", 2, "argument100");
-      IS_TRUE(_mocker->_expected);
+      IS_TRUE(_mocker->_wasExpected);
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
    TEST(ZenMockIt_ExpectedFalse_Throws)
    {
-      IS_FALSE(_mocker->_expected);
+      IS_FALSE(_mocker->_wasExpected);
       THROWS(_mocker->ZenMockIt(1, 2, 3, 4), UnexpectedCallException,
          UnexpectedCallException::MakeWhat(_signature, 1, 2, 3, 4));
    }
 
    TEST(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
    {
-      _mocker->_expected = true;
+      _mocker->_wasExpected = true;
       _mocker->_exceptionThrower.ExpectCallToZenMockThrowExceptionIfExceptionSet();
       IS_EMPTY(_mocker->zenMockedFunctionCallHistory);
       //

@@ -85,7 +85,7 @@ namespace ZenMock
       {
          const auto testcase = [](auto& zenMockObject)
          {
-            zenMockObject._expected = true;
+            zenMockObject._wasExpected = true;
             //
             zenMockObject.ZenMockIt(0, 0);
             //

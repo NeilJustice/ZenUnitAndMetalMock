@@ -1317,8 +1317,8 @@ Return(), ReturnValues(), ReturnRandom(), or ThrowException<T>() on a ZenMock ob
       std::function<const ZenUnit::ZenUnitArgs&()> _call_ZenUnitTestRunner_GetArgs;
       bool _zenMockExceptionIsInFlight;
    protected:
-      bool _expected;
-      bool _asserted;
+      bool _wasExpected;
+      bool _wasAsserted;
       FunctionSequencingToken _functionSequencingToken;
       const std::string ZenMockedFunctionSignature;
       MockableExceptionThrowerType _exceptionThrower;
@@ -1327,8 +1327,8 @@ Return(), ReturnValues(), ReturnRandom(), or ThrowException<T>() on a ZenMock ob
          : _call_exit(::exit)
          , _call_ZenUnitTestRunner_GetArgs(ZenUnit::ZenUnitTestRunner::GetArgs)
          , _zenMockExceptionIsInFlight(false)
-         , _expected(false)
-         , _asserted(false)
+         , _wasExpected(false)
+         , _wasAsserted(false)
          , ZenMockedFunctionSignature(std::move(zenMockedFunctionSignature))
       {
       }
@@ -1339,7 +1339,7 @@ Return(), ReturnValues(), ReturnRandom(), or ThrowException<T>() on a ZenMock ob
       void ThrowException(ExceptionArgTypes&&... exceptionArgs)
       {
          _exceptionThrower.template ThrowException<ExceptionType>(std::forward<ExceptionArgTypes>(exceptionArgs)...);
-         _expected = true;
+         _wasExpected = true;
       }
 
       ~ZenMocker()
@@ -1360,7 +1360,7 @@ Return(), ReturnValues(), ReturnRandom(), or ThrowException<T>() on a ZenMock ob
       template<typename... ArgTypes>
       void ZenMockThrowIfNotExpected(ArgTypes&&... args)
       {
-         if (!_expected)
+         if (!_wasExpected)
          {
             _zenMockExceptionIsInFlight = true;
             throw UnexpectedCallException(ZenMockedFunctionSignature, std::forward<ArgTypes>(args)...);
@@ -1369,7 +1369,7 @@ Return(), ReturnValues(), ReturnRandom(), or ThrowException<T>() on a ZenMock ob
 
       void ZenMockSetAsserted()
       {
-         _asserted = true;
+         _wasAsserted = true;
       }
 
       void ZenMockThrowIfExpectedNumberOfCalls0(size_t expectedNumberOfCalls)
@@ -1392,7 +1392,7 @@ Return(), ReturnValues(), ReturnRandom(), or ThrowException<T>() on a ZenMock ob
    private:
       void ZenMockExitIfExpectedButNotAsserted() const
       {
-         if (_expected && !_asserted && !_zenMockExceptionIsInFlight)
+         if (_wasExpected && !_wasAsserted && !_zenMockExceptionIsInFlight)
          {
             const ZenUnit::Console console;
             console.WriteLineColor(R"(
@@ -1456,7 +1456,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
 
       void CallInstead(const std::function<void()>& voidZeroArgFunction)
       {
-         ZeroArgumentMocker::_expected = true;
+         ZeroArgumentMocker::_wasExpected = true;
          this->_callInstead_voidZeroArgFunction = voidZeroArgFunction;
       }
 
@@ -1492,14 +1492,14 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         ZeroArgumentMocker<ExceptionThrower>::_expected = true;
+         ZeroArgumentMocker<ExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         ZeroArgumentMocker<ExceptionThrower>::_expected = true;
+         ZeroArgumentMocker<ExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
             std::forward<FirstReturnValue>(firstReturnValue),
             std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -1508,13 +1508,13 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         ZeroArgumentMocker<ExceptionThrower>::_expected = true;
+         ZeroArgumentMocker<ExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         ZeroArgumentMocker<ExceptionThrower>::_expected = true;
+         ZeroArgumentMocker<ExceptionThrower>::_wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::ZenMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -1552,7 +1552,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
 
       void Expect()
       {
-         ZeroArgumentMocker<ExceptionThrower>::_expected = true;
+         ZeroArgumentMocker<ExceptionThrower>::_wasExpected = true;
       }
    };
 
@@ -2332,7 +2332,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
 
       void Expect()
       {
-         OneArgumentMocker<ArgType>::_expected = true;
+         OneArgumentMocker<ArgType>::_wasExpected = true;
       }
    };
 
@@ -2351,14 +2351,14 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         OneArgumentMocker<ArgType>::_expected = true;
+         OneArgumentMocker<ArgType>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         OneArgumentMocker<ArgType>::_expected = true;
+         OneArgumentMocker<ArgType>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
             std::forward<FirstReturnValue>(firstReturnValue),
             std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -2367,13 +2367,13 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         OneArgumentMocker<ArgType>::_expected = true;
+         OneArgumentMocker<ArgType>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         OneArgumentMocker<ArgType>::_expected = true;
+         OneArgumentMocker<ArgType>::_wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::ZenMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -2508,14 +2508,14 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         TwoArgumentMocker<Arg1Type, Arg2Type>::_expected = true;
+         TwoArgumentMocker<Arg1Type, Arg2Type>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         TwoArgumentMocker<Arg1Type, Arg2Type>::_expected = true;
+         TwoArgumentMocker<Arg1Type, Arg2Type>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
 				std::forward<FirstReturnValue>(firstReturnValue),
 				std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -2524,13 +2524,13 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         TwoArgumentMocker<Arg1Type, Arg2Type>::_expected = true;
+         TwoArgumentMocker<Arg1Type, Arg2Type>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         TwoArgumentMocker<Arg1Type, Arg2Type>::_expected = true;
+         TwoArgumentMocker<Arg1Type, Arg2Type>::_wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::ZenMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -2570,7 +2570,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
 
       void Expect()
       {
-         TwoArgumentMocker<Arg1Type, Arg2Type>::_expected = true;
+         TwoArgumentMocker<Arg1Type, Arg2Type>::_wasExpected = true;
       }
    };
 
@@ -2613,7 +2613,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       {
          if (_callInstead_voidThreeArgFunction)
          {
-            this->_asserted = true;
+            this->_wasAsserted = true;
          }
       }
 
@@ -2700,14 +2700,14 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::_expected = true;
+         ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::_expected = true;
+         ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
 				std::forward<FirstReturnValue>(firstReturnValue),
 				std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -2716,13 +2716,13 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::_expected = true;
+         ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::_expected = true;
+         ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::_wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::ZenMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -2762,12 +2762,12 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
 
       void Expect()
       {
-         ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::_expected = true;
+         ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::_wasExpected = true;
       }
 
       void CallInstead(const std::function<void(Arg1Type, Arg2Type, Arg3Type)>& voidThreeArgFunction)
       {
-         ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::_expected = true;
+         ThreeArgumentMocker<Arg1Type, Arg2Type, Arg3Type>::_wasExpected = true;
          this->_callInstead_voidThreeArgFunction = voidThreeArgFunction;
       }
    };
@@ -2895,14 +2895,14 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::_expected = true;
+         FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::_expected = true;
+         FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
 				std::forward<FirstReturnValue>(firstReturnValue),
 				std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -2911,13 +2911,13 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::_expected = true;
+         FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::_expected = true;
+         FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::_wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::ZenMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -2957,7 +2957,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
 
       void Expect()
       {
-         FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::_expected = true;
+         FourArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::_wasExpected = true;
       }
    };
 
@@ -3090,14 +3090,14 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         FiveArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::_expected = true;
+         FiveArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         FiveArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::_expected = true;
+         FiveArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
 				std::forward<FirstReturnValue>(firstReturnValue),
 				std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -3106,13 +3106,13 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         FiveArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::_expected = true;
+         FiveArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         FiveArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::_expected = true;
+         FiveArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::_wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::ZenMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -3152,7 +3152,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
 
       void Expect()
       {
-         FiveArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::_expected = true;
+         FiveArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::_wasExpected = true;
       }
    };
 
@@ -3291,14 +3291,14 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         SixArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::_expected = true;
+         SixArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         SixArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::_expected = true;
+         SixArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
 				std::forward<FirstReturnValue>(firstReturnValue),
 				std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -3307,13 +3307,13 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         SixArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::_expected = true;
+         SixArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         SixArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::_expected = true;
+         SixArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::_wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::ZenMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -3353,7 +3353,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
 
       void Expect()
       {
-         SixArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::_expected = true;
+         SixArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::_wasExpected = true;
       }
    };
 
@@ -3498,14 +3498,14 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         SevenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>::_expected = true;
+         SevenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         SevenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>::_expected = true;
+         SevenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
 				std::forward<FirstReturnValue>(firstReturnValue),
 				std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -3514,13 +3514,13 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         SevenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>::_expected = true;
+         SevenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         SevenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>::_expected = true;
+         SevenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>::_wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::ZenMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -3560,7 +3560,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
 
       void Expect()
       {
-         SevenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>::_expected = true;
+         SevenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>::_wasExpected = true;
       }
    };
 
@@ -3712,14 +3712,14 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         EightArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>::_expected = true;
+         EightArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         EightArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>::_expected = true;
+         EightArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
 				std::forward<FirstReturnValue>(firstReturnValue),
 				std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -3728,13 +3728,13 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         EightArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>::_expected = true;
+         EightArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         EightArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>::_expected = true;
+         EightArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>::_wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::ZenMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -3774,7 +3774,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
 
       void Expect()
       {
-         EightArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>::_expected = true;
+         EightArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>::_wasExpected = true;
       }
    };
 
@@ -3931,14 +3931,14 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         NineArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ExceptionThrower>::_expected = true;
+         NineArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         NineArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ExceptionThrower>::_expected = true;
+         NineArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
 				std::forward<FirstReturnValue>(firstReturnValue),
 				std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -3947,13 +3947,13 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         NineArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ExceptionThrower>::_expected = true;
+         NineArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         NineArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ExceptionThrower>::_expected = true;
+         NineArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ExceptionThrower>::_wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::ZenMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -3993,7 +3993,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
 
       void Expect()
       {
-         NineArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ExceptionThrower>::_expected = true;
+         NineArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ExceptionThrower>::_wasExpected = true;
       }
    };
 
@@ -4157,14 +4157,14 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         TenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>::_expected = true;
+         TenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         TenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>::_expected = true;
+         TenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddReturnValues(
 				std::forward<FirstReturnValue>(firstReturnValue),
 				std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -4173,13 +4173,13 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         TenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>::_expected = true;
+         TenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::ZenMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         TenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>::_expected = true;
+         TenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>::_wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::ZenMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -4215,7 +4215,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
 
       void Expect()
       {
-         TenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>::_expected = true;
+         TenArgumentMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>::_wasExpected = true;
       }
    };
 
