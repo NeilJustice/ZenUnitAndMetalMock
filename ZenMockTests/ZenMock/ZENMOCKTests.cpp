@@ -24,7 +24,7 @@ namespace ZenMock
       const string expectedMessage = "Message";
       const string expectedWhat = "\n"
 "  Failed: ZENMOCK(consoleMock.WriteLineMock.CalledOnceWith(expectedMessage))\n"
-" Because: ARE_EQUAL(expectedArgument, zenMockObjectCallHistory[0].argument.value, this->ZenMockedFunctionSignature) failed\n"
+" Because: ARE_EQUAL(expectedArgument, zenMockedFunctionCallHistory[0].argument.value, this->ZenMockedFunctionSignature) failed\n"
 "Expected: \"Message\"\n"
 "  Actual: \"message\"\n"
 " Message: \"virtual void ZenUnit::Console::WriteLine(string_view) const\"\n"

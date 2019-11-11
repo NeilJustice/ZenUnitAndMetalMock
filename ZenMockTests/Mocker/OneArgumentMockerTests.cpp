@@ -40,7 +40,7 @@ namespace ZenMock
       ARE_EQUAL(_functionSignature, mocker.ZenMockedFunctionSignature);
       IS_FALSE(mocker._expected);
       IS_FALSE(mocker._asserted);
-      IS_EMPTY(mocker.zenMockObjectCallHistory);
+      IS_EMPTY(mocker.zenMockedFunctionCallHistory);
    }
 
    TEST(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue)
@@ -66,7 +66,7 @@ namespace ZenMock
    {
       _mocker->_expected = true;
       _mocker->_exceptionThrower.ExpectCallToZenMockThrowExceptionIfExceptionSet();
-      IS_EMPTY(_mocker->zenMockObjectCallHistory);
+      IS_EMPTY(_mocker->zenMockedFunctionCallHistory);
       //
       _mocker->ZenMockIt(1);
       //
@@ -75,7 +75,7 @@ namespace ZenMock
       {
          CallType(1)
       };
-      VECTORS_EQUAL(expectedCalls, _mocker->zenMockObjectCallHistory);
+      VECTORS_EQUAL(expectedCalls, _mocker->zenMockedFunctionCallHistory);
       ZENMOCK(_mocker->_exceptionThrower.AssertZenMockThrowExceptionIfExceptionSetCalledOnce());
       DOES_NOT_THROW(_mocker->CalledOnceWith(1));
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
@@ -90,16 +90,16 @@ namespace ZenMock
       size_t(1), 1, 1, false, false)
    {
       IS_FALSE(_mocker->_asserted);
-      _mocker->zenMockObjectCallHistory.resize(numberOfCalls);
+      _mocker->zenMockedFunctionCallHistory.resize(numberOfCalls);
       if (numberOfCalls == 1)
       {
-         _mocker->zenMockObjectCallHistory = { OneArgumentFunctionCall<int>(actualArg) };
+         _mocker->zenMockedFunctionCallHistory = { OneArgumentFunctionCall<int>(actualArg) };
       }
       //
       if (expectCallCountThrow)
       {
          THROWS(_mocker->CalledOnceWith(expectedArgument), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfCalls, zenMockObjectCallHistory.size(), this->ZenMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedNumberOfCalls, zenMockedFunctionCallHistory.size(), this->ZenMockedFunctionSignature)\n"
 "Expected: 1\n"
 "  Actual: " + to_string(numberOfCalls) + "\n"
 " Message: \"" + _functionSignature + "\"\n"
@@ -110,7 +110,7 @@ namespace ZenMock
          if (expectArgEqualityThrow)
          {
             THROWS(_mocker->CalledOnceWith(expectedArgument), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedArgument, zenMockObjectCallHistory[0].argument.value, this->ZenMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedArgument, zenMockedFunctionCallHistory[0].argument.value, this->ZenMockedFunctionSignature)\n"
 "Expected: " + to_string(expectedArgument) + "\n"
 "  Actual: " + to_string(actualArg) + "\n"
 " Message: \"" + _functionSignature + "\"\n"
@@ -142,12 +142,12 @@ namespace ZenMock
       size_t(2), size_t(3), true)
    {
       IS_FALSE(_mocker->_asserted);
-      _mocker->zenMockObjectCallHistory.resize(numberOfCalls);
+      _mocker->zenMockedFunctionCallHistory.resize(numberOfCalls);
       //
       if (expectThrow)
       {
          const string expectedWhat = String::Concat(R"(
-  Failed: ARE_EQUAL(expectedNumberOfCalls, zenMockObjectCallHistory.size(), this->ZenMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCalls, zenMockedFunctionCallHistory.size(), this->ZenMockedFunctionSignature)
 Expected: )", expectedNumberOfCalls, R"(
   Actual: )", numberOfCalls, R"(
  Message: ")", _functionSignature, R"("
@@ -174,14 +174,14 @@ File.cpp(1))");
    {
       IS_FALSE(_mocker->_asserted);
       //
-      _mocker->zenMockObjectCallHistory = actualArgs;
+      _mocker->zenMockedFunctionCallHistory = actualArgs;
       if (expectThrow)
       {
          const int actualArg = actualArgs[expectedResponsibleCallIndex].argument.value;
          const string expectedSignatureAndCallIndex =
             _functionSignature + " at i=" + to_string(expectedResponsibleCallIndex);
          THROWS(_mocker->CalledNTimesWith(expectedNumberOfCalls, expectedArgument), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedArgument, zenMockObjectCallHistory[i].argument.value, zenMockedFunctionSignatureAndCallIndex)\n"
+"  Failed: ARE_EQUAL(expectedArgument, zenMockedFunctionCallHistory[i].argument.value, zenMockedFunctionSignatureAndCallIndex)\n"
 "Expected: " + to_string(expectedArgument) + "\n"
 "  Actual: " + to_string(actualArg) + "\n"
 " Message: \"" + expectedSignatureAndCallIndex + "\"\n"
@@ -234,7 +234,7 @@ File.cpp(1))");
       IS_FALSE(_mocker->_asserted);
       const int x = 10, y = 10;
       const vector<OneArgumentFunctionCallRef<int>> expectedOneArgumentCalls{ x, y };
-      _mocker->zenMockObjectCallHistory = { 10, 20 };
+      _mocker->zenMockedFunctionCallHistory = { 10, 20 };
       //
       THROWS(_mocker->CalledAsFollows(expectedOneArgumentCalls), Anomaly, "\n"
 "  Failed: VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature)\n"
@@ -274,7 +274,7 @@ File.cpp(1))");
       {
          firstArgument, secondArgument
       };
-      _mocker->zenMockObjectCallHistory = { 10, 10 };
+      _mocker->zenMockedFunctionCallHistory = { 10, 10 };
       //
       _mocker->CalledAsFollows(expectedOneArgumentCalls);
       //

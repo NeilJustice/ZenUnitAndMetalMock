@@ -32,7 +32,7 @@ namespace ZenMock
       ARE_EQUAL(_functionSignature, mocker.ZenMockedFunctionSignature);
       IS_FALSE(mocker._expected);
       IS_FALSE(mocker._asserted);
-      IS_EMPTY(mocker.zenMockObjectCallHistory);
+      IS_EMPTY(mocker.zenMockedFunctionCallHistory);
    }
 
    TEST(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue)
@@ -58,7 +58,7 @@ namespace ZenMock
    {
       _mocker->_expected = true;
       _mocker->_exceptionThrower.ExpectCallToZenMockThrowExceptionIfExceptionSet();
-      IS_EMPTY(_mocker->zenMockObjectCallHistory);
+      IS_EMPTY(_mocker->zenMockedFunctionCallHistory);
       //
       _mocker->ZenMockIt(1, 2);
       //
@@ -67,7 +67,7 @@ namespace ZenMock
       {
          CallType(1, 2)
       };
-      VECTORS_EQUAL(expectedCalls, _mocker->zenMockObjectCallHistory);
+      VECTORS_EQUAL(expectedCalls, _mocker->zenMockedFunctionCallHistory);
       ZENMOCK(_mocker->_exceptionThrower.AssertZenMockThrowExceptionIfExceptionSetCalledOnce());
       DOES_NOT_THROW(_mocker->CalledOnceWith(1, 2));
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
