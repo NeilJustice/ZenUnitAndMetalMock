@@ -2252,9 +2252,9 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
          typename StaticMockType,
          typename StaticNameClashMockType>
       friend class ZenMock1Tester;
-   private:
-      std::vector<OneArgumentFunctionCall<ArgType>> zenMockedFunctionCallHistory;
    public:
+      std::vector<OneArgumentFunctionCall<ArgType>> zenMockedFunctionCallHistory;
+
       explicit OneArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
@@ -2424,9 +2424,9 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
    class TwoArgumentMocker : public ZenMocker<MockableExceptionThrowerType>
    {
       friend class TwoArgumentMockerTests;
-   private:
-      std::vector<TwoArgumentFunctionCall<Arg1Type, Arg2Type>> zenMockedFunctionCallHistory;
    public:
+      std::vector<TwoArgumentFunctionCall<Arg1Type, Arg2Type>> zenMockedFunctionCallHistory;
+
       explicit TwoArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
@@ -2599,11 +2599,11 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
    class ThreeArgumentMocker : public ZenMocker<MockableExceptionThrowerType>
    {
       friend class ThreeArgumentMockerTests;
-   private:
-      std::vector<ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>> zenMockedFunctionCallHistory;
    protected:
       std::function<void(Arg1Type, Arg2Type, Arg3Type)> _callInstead_voidThreeArgFunction;
    public:
+      std::vector<ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>> zenMockedFunctionCallHistory;
+
       explicit ThreeArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
@@ -2798,9 +2798,9 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
    class FourArgumentMocker : public ZenMocker<MockableExceptionThrowerType>
    {
       friend class FourArgumentMockerTests;
-   private:
-      std::vector<FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> zenMockedFunctionCallHistory;
    public:
+      std::vector<FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> zenMockedFunctionCallHistory;
+
       explicit FourArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
@@ -2988,9 +2988,9 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
    class FiveArgumentMocker : public ZenMocker<MockableExceptionThrowerType>
    {
       friend class FiveArgumentMockerTests;
-   private:
-      std::vector<FiveArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>> zenMockedFunctionCallHistory;
    public:
+      std::vector<FiveArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>> zenMockedFunctionCallHistory;
+
       explicit FiveArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
@@ -3184,9 +3184,9 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
    class SixArgumentMocker : public ZenMocker<MockableExceptionThrowerType>
    {
       friend class SixArgumentMockerTests;
-   private:
-      std::vector<SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>> zenMockedFunctionCallHistory;
    public:
+      std::vector<SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>> zenMockedFunctionCallHistory;
+
       explicit SixArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
@@ -3386,9 +3386,9 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
    class SevenArgumentMocker : public ZenMocker<MockableExceptionThrowerType>
    {
       friend class SevenArgumentMockerTests;
-   private:
-      std::vector<SevenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>> zenMockedFunctionCallHistory;
    public:
+      std::vector<SevenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>> zenMockedFunctionCallHistory;
+
       explicit SevenArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
@@ -3594,9 +3594,9 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
    class EightArgumentMocker : public ZenMocker<MockableExceptionThrowerType>
    {
       friend class EightArgumentMockerTests;
-   private:
-      std::vector<EightArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>> zenMockedFunctionCallHistory;
    public:
+      std::vector<EightArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>> zenMockedFunctionCallHistory;
+
       explicit EightArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
@@ -3809,9 +3809,9 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
    class NineArgumentMocker : public ZenMocker<MockableExceptionThrowerType>
    {
       friend class NineArgumentMockerTests;
-   private:
-      std::vector<NineArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>> zenMockedFunctionCallHistory;
    public:
+      std::vector<NineArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>> zenMockedFunctionCallHistory;
+
       explicit NineArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
@@ -4029,9 +4029,9 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
    class TenArgumentMocker : public ZenMocker<MockableExceptionThrowerType>
    {
       friend class TenArgumentMockerTests;
-   private:
-      std::vector<TenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>> zenMockedFunctionCallHistory;
    public:
+      std::vector<TenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>> zenMockedFunctionCallHistory;
+
       explicit TenArgumentMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
