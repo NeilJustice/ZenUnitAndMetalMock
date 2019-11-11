@@ -25,7 +25,7 @@ sudo cmake --build . --target install
 cd ..
 # Runs unit test binaries ZenMockTests, ZenMockExamples,
 # ZenUnitLibraryTests, ZenUnitUtilsAndAssertionTests, then ZenUnitExamples
-./RunAllDebugTests.sh
+./Testing/RunAllDebugTests.sh
 ```
 
 ### How To Compile And Run ZenUnit And ZenMock Unit Tests And Then Install ZenUnit.h And ZenMock.h On Windows

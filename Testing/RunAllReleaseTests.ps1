@@ -1,0 +1,5 @@
+ZenMockTests\Release\ZenMockTests.exe
+ZenMockExamples\Release\ZenMockExamples.exe
+ZenUnitLibraryTests\Release\ZenUnitLibraryTests.exe
+ZenUnitUtilsAndAssertionTests\Release\ZenUnitUtilsAndAssertionTests.exe
+ZenUnitExamples\Release\ZenUnitExamples.exe

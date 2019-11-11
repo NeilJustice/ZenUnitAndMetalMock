@@ -1,0 +1,5 @@
+ZenMockTests\Debug\ZenMockTests.exe
+ZenMockExamples\Debug\ZenMockExamples.exe
+ZenUnitLibraryTests\Debug\ZenUnitLibraryTests.exe
+ZenUnitUtilsAndAssertionTests\Debug\ZenUnitUtilsAndAssertionTests.exe
+ZenUnitExamples\Debug\ZenUnitExamples.exe
