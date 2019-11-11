@@ -1317,19 +1317,20 @@ Return(), ReturnValues(), ReturnRandom(), or ThrowException<T>() on a ZenMock ob
       std::function<const ZenUnit::ZenUnitArgs&()> _call_ZenUnitTestRunner_GetArgs;
       bool _zenMockExceptionIsInFlight;
    protected:
+      MockableExceptionThrowerType _exceptionThrower;
+      FunctionSequencingToken _functionSequencingToken;
+   public:
+      const std::string ZenMockedFunctionSignature;
       bool _wasExpected;
       bool _wasAsserted;
-      FunctionSequencingToken _functionSequencingToken;
-      const std::string ZenMockedFunctionSignature;
-      MockableExceptionThrowerType _exceptionThrower;
-   public:
+
       explicit ZenMocker(std::string zenMockedFunctionSignature)
          : _call_exit(::exit)
          , _call_ZenUnitTestRunner_GetArgs(ZenUnit::ZenUnitTestRunner::GetArgs)
          , _zenMockExceptionIsInFlight(false)
+         , ZenMockedFunctionSignature(std::move(zenMockedFunctionSignature))
          , _wasExpected(false)
          , _wasAsserted(false)
-         , ZenMockedFunctionSignature(std::move(zenMockedFunctionSignature))
       {
       }
 
