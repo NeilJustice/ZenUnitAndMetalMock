@@ -19,7 +19,7 @@ namespace ZenUnit
       const function<void()> _incrementDestructorCallCount;
 
       Deletable(function<void()> incrementDestructorCallCount)
-         : _incrementDestructorCallCount(move(incrementDestructorCallCount))
+         : _incrementDestructorCallCount(std::move(incrementDestructorCallCount))
       {
       }
 

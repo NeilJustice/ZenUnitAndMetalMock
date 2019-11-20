@@ -5,17 +5,19 @@ void Void2ArgFreeFunction(int, int) {}
 
 namespace ZenMock
 {
-   struct Void2ArgFunctions
+   class Void2ArgFunctions
    {
+   public:
+      virtual ~Void2ArgFunctions() = default;
       virtual void Virtual2ArgFunction(int, int) {}
       virtual void Virtual2ArgConstFunction(int, int) const {}
       void NonVirtual2ArgFunction(int, int) {}
       void NonVirtual2ArgConstFunction(int, int) const {}
-      virtual ~Void2ArgFunctions() = default;
    };
 
-   struct Void2ArgFunctionsMock : public Zen::Mock<Void2ArgFunctions>
+   class Void2ArgFunctionsMock : public Zen::Mock<Void2ArgFunctions>
    {
+   public:
       ZENMOCK_VOID2(Virtual2ArgFunction, int, int)
       ZENMOCK_VOID2_CONST(Virtual2ArgConstFunction, int, int)
       ZENMOCK_VOID2_NONVIRTUAL(NonVirtual2ArgFunction, int, int)
@@ -24,8 +26,9 @@ namespace ZenMock
 
    void Void2ArgFreeFunction(int, int) {}
 
-   struct Void2ArgStaticFunctions
+   class Void2ArgStaticFunctions
    {
+   public:
       static void StaticVoid2ArgFunction(int, int) {}
    };
 
@@ -52,16 +55,22 @@ namespace ZenMock
 
    const string Virtual2ArgFunctionSignature =
       "virtual void ZenMock::Void2ArgFunctions::Virtual2ArgFunction(int, int)";
+
    const string Virtual2ArgConstFunctionSignature =
       "virtual void ZenMock::Void2ArgFunctions::Virtual2ArgConstFunction(int, int) const";
+
    const string NonVirtual2ArgFunctionSignature =
       "void ZenMock::Void2ArgFunctions::NonVirtual2ArgFunction(int, int)";
+
    const string NonVirtual2ArgConstFunctionSignature =
       "void ZenMock::Void2ArgFunctions::NonVirtual2ArgConstFunction(int, int) const";
+
    const string FreeFunctionSignature =
       "void ::Void2ArgFreeFunction(int, int)";
+
    const string NamespacedFreeFunctionSignature =
       "void ZenMock::Void2ArgFreeFunction(int, int)";
+
    const string StaticFunctionSignature =
       "void ZenMock::Void2ArgStaticFunctions::StaticVoid2ArgFunction(int, int)";
 

@@ -9,9 +9,11 @@ namespace ZenMock
       typename NamespaceMockType,
       typename StaticMockType,
       typename StaticNameClashMockType>
-   struct ZenMock0Tester
+   class ZenMock0Tester
    {
+   private:
       ZenMockObjectType mock;
+
       const string virtualFunctionSignature;
       const string virtualConstFunctionSignature;
       const string nonVirtualFunctionSignature;
@@ -28,7 +30,7 @@ namespace ZenMock
 
       StaticNameClashMockType staticNameClashMock;
       const string staticNameClashFunctionSignature;
-
+   public:
       ZenMock0Tester(
          ZenMockObjectType mock,
          string virtualFunctionSignature,
@@ -43,19 +45,19 @@ namespace ZenMock
          string staticFunctionSignature,
          StaticNameClashMockType staticNameClashMock,
          string staticNameClashFunctionSignature)
-         : mock(move(mock))
-         , virtualFunctionSignature(move(virtualFunctionSignature))
-         , virtualConstFunctionSignature(move(virtualConstFunctionSignature))
-         , nonVirtualFunctionSignature(move(nonVirtualFunctionSignature))
-         , nonVirtualConstFunctionSignature(move(nonVirtualConstFunctionSignature))
-         , freeMock(move(freeMock))
-         , freeFunctionSignature(move(freeFunctionSignature))
-         , namespacedFreeMock(move(namespacedFreeMock))
-         , namespacedFreeFunctionSignature(move(namespacedFreeFunctionSignature))
-         , staticMock(move(staticMock))
-         , staticFunctionSignature(move(staticFunctionSignature))
-         , staticNameClashMock(move(staticNameClashMock))
-         , staticNameClashFunctionSignature(move(staticNameClashFunctionSignature))
+         : mock(std::move(mock))
+         , virtualFunctionSignature(std::move(virtualFunctionSignature))
+         , virtualConstFunctionSignature(std::move(virtualConstFunctionSignature))
+         , nonVirtualFunctionSignature(std::move(nonVirtualFunctionSignature))
+         , nonVirtualConstFunctionSignature(std::move(nonVirtualConstFunctionSignature))
+         , freeMock(std::move(freeMock))
+         , freeFunctionSignature(std::move(freeFunctionSignature))
+         , namespacedFreeMock(std::move(namespacedFreeMock))
+         , namespacedFreeFunctionSignature(std::move(namespacedFreeFunctionSignature))
+         , staticMock(std::move(staticMock))
+         , staticFunctionSignature(std::move(staticFunctionSignature))
+         , staticNameClashMock(std::move(staticNameClashMock))
+         , staticNameClashFunctionSignature(std::move(staticNameClashFunctionSignature))
       {
       }
 

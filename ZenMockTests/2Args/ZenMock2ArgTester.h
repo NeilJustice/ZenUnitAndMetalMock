@@ -42,20 +42,20 @@ namespace ZenMock
 
          StaticFunctionMockType staticFunctionMock,
          string staticFunctionSignature)
-         : zenMockObject(move(zenMockObject))
-         , virtualFunctionSignature(move(virtualFunctionSignature))
-         , virtualFunctionConstSignature(move(virtualFunctionConstSignature))
-         , nonVirtualFunctionSignature(move(nonVirtualFunctionSignature))
-         , nonVirtualFunctionConstSignature(move(nonVirtualFunctionConstSignature))
+         : zenMockObject(std::move(zenMockObject))
+         , virtualFunctionSignature(std::move(virtualFunctionSignature))
+         , virtualFunctionConstSignature(std::move(virtualFunctionConstSignature))
+         , nonVirtualFunctionSignature(std::move(nonVirtualFunctionSignature))
+         , nonVirtualFunctionConstSignature(std::move(nonVirtualFunctionConstSignature))
 
-         , freeFunctionMock(move(freeFunctionMock))
-         , freeFunctionSignature(move(freeFunctionSignature))
+         , freeFunctionMock(std::move(freeFunctionMock))
+         , freeFunctionSignature(std::move(freeFunctionSignature))
 
-         , namespacedFreeFunctionMock(move(namespacedFreeFunctionMock))
-         , namespacedFreeFunctionSignature(move(namespacedFreeFunctionSignature))
+         , namespacedFreeFunctionMock(std::move(namespacedFreeFunctionMock))
+         , namespacedFreeFunctionSignature(std::move(namespacedFreeFunctionSignature))
 
-         , staticFunctionMock(move(staticFunctionMock))
-         , staticFunctionSignature(move(staticFunctionSignature))
+         , staticFunctionMock(std::move(staticFunctionMock))
+         , staticFunctionSignature(std::move(staticFunctionSignature))
       {
       }
 
