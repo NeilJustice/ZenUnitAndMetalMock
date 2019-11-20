@@ -14,8 +14,9 @@ namespace ZenUnit
    AFACT(NonEmptyUserTypeSharedPointer_CallsDestructor_ThrowsWhenCalledAgain)
    EVIDENCE
 
-   struct Deletable
+   class Deletable
    {
+   public:
       const function<void()> _incrementDestructorCallCount;
 
       Deletable(function<void()> incrementDestructorCallCount)

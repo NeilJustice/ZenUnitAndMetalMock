@@ -109,7 +109,8 @@ namespace ZenUnit
    TEST(ElementsAreNonDefaultAndNotEqualAtIndex0_Throws)
    {
       const array<T, 2> expectedArray_index0 = { { _randomElementA, _randomElementB } };
-      const array<T, 2> actualArray_index0 = { { _randomElementA + T{ 1 }, _randomElementB } };
+      const T randomT = ZenUnit::Random<T>();
+      const array<T, 2> actualArray_index0 = { { _randomElementA + randomT, _randomElementB } };
       //
 #if defined __linux__
       THROWS(STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0), Anomaly, TestUtil::NewlineConcat("",
@@ -150,7 +151,8 @@ namespace ZenUnit
    TEST(ElementsAreNonDefaultAndNotEqualAtIndex1_Throws)
    {
       const array<T, 2> expectedArray_index1 = { { _randomElementA, _randomElementB } };
-      const array<T, 2> actualArray_index1 = { { _randomElementA, _randomElementB + T{ 1 } } };
+      const T randomT = ZenUnit::RandomNon0<T>();
+      const array<T, 2> actualArray_index1 = { { _randomElementA, _randomElementB + randomT } };
       //
 #if defined __linux__
       THROWS(STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1), Anomaly, TestUtil::NewlineConcat("",
@@ -197,6 +199,8 @@ namespace ZenUnit
       STD_ARRAYS_EQUAL(expectedArray, actualArray);
    }
 
-   RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size2Arrays, int)
-   THEN_RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size2Arrays, unsigned long long)
+   RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size2Arrays, char)
+   THEN_RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size2Arrays, int)
+   THEN_RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size2Arrays, size_t)
+   THEN_RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size2Arrays, string)
 }

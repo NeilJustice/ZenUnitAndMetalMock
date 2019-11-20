@@ -6465,6 +6465,13 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    }
 
    template<>
+   inline std::string RandomNon0<std::string>()
+   {
+      const std::string randomString = Random<std::string>();
+      return randomString;
+   }
+
+   template<>
    inline fs::path Random<fs::path>()
    {
       std::ostringstream randomPathStringBuilder;

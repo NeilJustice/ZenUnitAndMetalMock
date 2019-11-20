@@ -12,7 +12,9 @@ namespace ZenUnit
    EVIDENCE
 
    static void FunctionA() {}
+
    static void FunctionB(int) {}
+
    static void FunctionC()
    {
       // Side effect to ensure FunctionA and FunctionC have different addresses.

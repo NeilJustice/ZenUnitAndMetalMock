@@ -24,7 +24,7 @@ namespace ZenUnit
 "  Failed: VECTORS_EQUAL(expectedVector, actualVector)",
 "Expected: std::vector<" + TypeName + "> (size 1):",
 "{",
-"   1",
+"   " + ToStringer::ToString(expectedVector[0]),
 "}",
 "  Actual: std::vector<" + TypeName + "> (size 0):",
 "{",
@@ -44,7 +44,7 @@ namespace ZenUnit
 "  Failed: VECTORS_EQUAL(expectedVector, actualVector, MessageA, MessageB)",
 "Expected: std::vector<" + TypeName + "> (size 1):",
 "{",
-"   1",
+"   " + ToStringer::ToString(expectedVector[0]),
 "}",
 "  Actual: std::vector<" + TypeName + "> (size 0):",
 "{",
@@ -65,11 +65,11 @@ namespace ZenUnit
 "  Failed: VECTORS_EQUAL(v1, v2, MessageA, MessageB)",
 "Expected: std::vector<" + TypeName + "> (size 1):",
 "{",
-"   1",
+"   " + ToStringer::ToString(v1[0]),
 "}",
 "  Actual: std::vector<" + TypeName + "> (size 1):",
 "{",
-"   2",
+"   " + ToStringer::ToString(v2[0]),
 "}",
 " Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed",
 "Expected: " + ToStringer::ToString(v1[0]),
@@ -88,13 +88,13 @@ namespace ZenUnit
 "  Failed: VECTORS_EQUAL(v1, v2)",
 "Expected: std::vector<" + TypeName + "> (size 2):",
 "{",
-"   0,",
-"   1",
+"   " + ToStringer::ToString(v1[0]) + ",",
+"   " + ToStringer::ToString(v1[1]),
 "}",
 "  Actual: std::vector<" + TypeName + "> (size 2):",
 "{",
-"   0,",
-"   2",
+"   " + ToStringer::ToString(v2[0]) + ",",
+"   " + ToStringer::ToString(v2[1]),
 "}",
 " Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed",
 "Expected: " + ToStringer::ToString(v1[1]),
@@ -125,6 +125,7 @@ namespace ZenUnit
       VECTORS_EQUAL(expectedVector, actualVector);
    }
 
-   RUN_TEMPLATE_TESTS(VECTORS_EQUALTests, int)
-   THEN_RUN_TEMPLATE_TESTS(VECTORS_EQUALTests, unsigned)
+   RUN_TEMPLATE_TESTS(VECTORS_EQUALTests, char)
+   THEN_RUN_TEMPLATE_TESTS(VECTORS_EQUALTests, int)
+   THEN_RUN_TEMPLATE_TESTS(VECTORS_EQUALTests, size_t)
 }

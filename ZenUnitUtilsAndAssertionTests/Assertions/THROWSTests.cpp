@@ -13,7 +13,8 @@ namespace ZenUnit
    AFACT(NeverThrownType_whatReturnsNullptr)
    EVIDENCE
 
-   const string MessageA = "A", MessageB = "B";
+   const string MessageA = "A";
+   const string MessageB = "B";
 
    TEST(CallDoesNotThrow_Throws)
    {
