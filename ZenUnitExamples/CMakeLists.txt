@@ -5,6 +5,8 @@ include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 include_directories(${ZenUnitIncludeDirectory})
 include_directories(${ZenMockIncludeDirectory})
 
+source_group("" FILES ZenUnitExamplesTestsMain.cpp pch.h pch.cpp EveryZenUnitAssertion.cpp FizzBuzzTests.cpp SetTests.cpp STARTUPAndCLEANUPTests.cpp ZenUnitExamplesTestsMain.cpp)
+
 file(GLOB_RECURSE Sources *.h *.cpp)
 
 add_executable(ZenUnitExamples ${Sources})
