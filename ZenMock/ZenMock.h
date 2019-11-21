@@ -53,19 +53,19 @@ catch (const ZenUnit::Anomaly& zenMockWrappedAnomaly) \
 #define ZENMOCK_VOID0_NONVIRTUAL_CONST(NonVirtualFunctionName) \
         ZENMOCK_VOID0_DEFINED(NonVirtualFunctionName,        , const, mutable,         )
 
-// Defines a ZenMock object named <StaticFunctionName>_ZenMockObject for mocking a static function with signature "void NamespaceQualifiedClassName::StaticFunctionName()".
+// Defines a ZenMock object named <StaticFunctionName>Mock for mocking a static function with signature "void NamespaceQualifiedClassName::StaticFunctionName()".
 #define ZENMOCK_VOID0_STATIC(NamespaceQualifiedClassName, StaticFunctionName, ...) \
-   ZenMock::VoidZeroArgFunctionPointerMocker StaticFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::VoidZeroArgFunctionPointerMocker StaticFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::VoidZeroArgFunctionPointerMocker( \
          ZenMock::FunctionSignature::FunctionPointer("void", #NamespaceQualifiedClassName"::"#StaticFunctionName"()"));
 
-// Defines a ZenMock object named <NamespacedFreeFunctionName>_ZenMockObject for mocking a namespaced free function with signature "void Namespace::NamespacedFreeFunctionName()".
+// Defines a ZenMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "void Namespace::NamespacedFreeFunctionName()".
 #define ZENMOCK_VOID0_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, ...) \
    ZENMOCK_VOID0_STATIC(Namespace, FreeFunctionName, __VA_ARGS__)
 
-// Defines a ZenMock object named <GlobalFreeFunctionName>_ZenMockObject for mocking a global free function with signature "void ::FreeFunctionName()".
+// Defines a ZenMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "void ::FreeFunctionName()".
 #define ZENMOCK_VOID0_FREE(GlobalFreeFunctionName) \
-   ZenMock::VoidZeroArgFunctionPointerMocker GlobalFreeFunctionName##_ZenMockObject = \
+   ZenMock::VoidZeroArgFunctionPointerMocker GlobalFreeFunctionName##Mock = \
       ZenMock::VoidZeroArgFunctionPointerMocker(ZenMock::FunctionSignature::FunctionPointer("void", "::"#GlobalFreeFunctionName"()"));
 
 #define ZENMOCK_VOID0_DEFINED(FunctionName, Virtualness, Constness, Mutableness, Finalness) \
@@ -100,19 +100,19 @@ void FunctionName() Constness Finalness \
 #define ZENMOCK_NONVOID0_NONVIRTUAL_CONST(ReturnType, FunctionName) \
         ZENMOCK_NONVOID0_DEFINED(ReturnType, FunctionName,        , const, mutable,         )
 
-// Defines a ZenMock object named <StaticFunctionName>_ZenMockObject for mocking a static function with signature "ReturnType NamespaceQualifiedClassName::StaticFunctionName()".
+// Defines a ZenMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType NamespaceQualifiedClassName::StaticFunctionName()".
 #define ZENMOCK_NONVOID0_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, ...) \
-   ZenMock::NonVoidZeroArgFunctionPointerMocker<ReturnType> StaticFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::NonVoidZeroArgFunctionPointerMocker<ReturnType> StaticFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::NonVoidZeroArgFunctionPointerMocker<ReturnType>( \
          ZenMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"()"));
 
-// Defines a ZenMock object named <NamespacedFreeFunctionName>_ZenMockObject for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName()".
+// Defines a ZenMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName()".
 #define ZENMOCK_NONVOID0_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, ...) \
    ZENMOCK_NONVOID0_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, __VA_ARGS__)
 
-// Defines a ZenMock object named <GlobalFreeFunctionName>_ZenMockObject for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName()".
+// Defines a ZenMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName()".
 #define ZENMOCK_NONVOID0_FREE(ReturnType, GlobalFreeFunctionName) \
-   ZenMock::NonVoidZeroArgFunctionPointerMocker<ReturnType> GlobalFreeFunctionName##_ZenMockObject = \
+   ZenMock::NonVoidZeroArgFunctionPointerMocker<ReturnType> GlobalFreeFunctionName##Mock = \
       ZenMock::NonVoidZeroArgFunctionPointerMocker<ReturnType>( \
          ZenMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"()"));
 
@@ -141,20 +141,20 @@ ReturnType FunctionName() Constness Finalness \
 #define ZENMOCK_NONVOID1_NONVIRTUAL_CONST(ReturnType, FunctionName, Arg1Type, ...) \
         ZENMOCK_NONVOID1_DEFINED(ReturnType, FunctionName, Arg1Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a ZenMock object named <StaticFunctionName>_ZenMockObject for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type)".
+// Defines a ZenMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type)".
 #define ZENMOCK_NONVOID1_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, ...) \
    ZenMock::NonVoidOneArgFunctionPointerMocker<ReturnType, Arg1Type> \
-      StaticFunctionName##_ZenMockObject##__VA_ARGS__ = ZenMock::NonVoidOneArgFunctionPointerMocker<ReturnType, Arg1Type>( \
+      StaticFunctionName##Mock##__VA_ARGS__ = ZenMock::NonVoidOneArgFunctionPointerMocker<ReturnType, Arg1Type>( \
          ZenMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type")"));
 
-// Defines a ZenMock object named <NamespacedFreeFunctionName>_ZenMockObject for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type)".
+// Defines a ZenMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type)".
 #define ZENMOCK_NONVOID1_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, ...) \
    ZENMOCK_NONVOID1_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, __VA_ARGS__)
 
-// Defines a ZenMock object named <GlobalFreeFunctionName>_ZenMockObject for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type)".
+// Defines a ZenMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type)".
 #define ZENMOCK_NONVOID1_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, ...) \
    ZenMock::NonVoidOneArgFunctionPointerMocker<ReturnType, Arg1Type> \
-      GlobalFreeFunctionName##_ZenMockObject##__VA_ARGS__ = ZenMock::NonVoidOneArgFunctionPointerMocker<ReturnType, Arg1Type>( \
+      GlobalFreeFunctionName##Mock##__VA_ARGS__ = ZenMock::NonVoidOneArgFunctionPointerMocker<ReturnType, Arg1Type>( \
          ZenMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type")"));
 
 #define ZENMOCK_NONVOID1_DEFINED(ReturnType, FunctionName, Arg1Type, Virtualness, Constness, Mutableness, Finalness, ...) \
@@ -186,19 +186,19 @@ ReturnType FunctionName(Arg1Type arg) Constness Finalness \
 #define ZENMOCK_VOID1_NONVIRTUAL_CONST(FunctionName, Arg1Type, ...) \
         ZENMOCK_VOID1_DEFINED(FunctionName, Arg1Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a ZenMock object named <StaticFunctionName>_ZenMockObject for mocking a static function with signature "void NamespaceQualifiedClassName::StaticFunctionName(Arg1Type)".
+// Defines a ZenMock object named <StaticFunctionName>Mock for mocking a static function with signature "void NamespaceQualifiedClassName::StaticFunctionName(Arg1Type)".
 #define ZENMOCK_VOID1_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, ...) \
-   ZenMock::VoidOneArgFunctionPointerMocker<Arg1Type> StaticFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::VoidOneArgFunctionPointerMocker<Arg1Type> StaticFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::VoidOneArgFunctionPointerMocker<Arg1Type>( \
          ZenMock::FunctionSignature::FunctionPointer("void", #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type")"));
 
-// Defines a ZenMock object named <NamespacedFreeFunctionName>_ZenMockObject for mocking a namespaced free function with signature "void Namespace::NamespacedFreeFunctionName(Arg1Type)".
+// Defines a ZenMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "void Namespace::NamespacedFreeFunctionName(Arg1Type)".
 #define ZENMOCK_VOID1_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, ...) \
    ZENMOCK_VOID1_STATIC(NamespaceQualifiedClassName, NamespacedFreeFunctionName, Arg1Type, __VA_ARGS__)
 
-// Defines a ZenMock object named <GlobalFreeFunctionName>_ZenMockObject for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type)".
+// Defines a ZenMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type)".
 #define ZENMOCK_VOID1_FREE(GlobalFreeFunctionName, Arg1Type, ...) \
-   ZenMock::VoidOneArgFunctionPointerMocker<Arg1Type> GlobalFreeFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::VoidOneArgFunctionPointerMocker<Arg1Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::VoidOneArgFunctionPointerMocker<Arg1Type>( \
          ZenMock::FunctionSignature::FunctionPointer("void", "::"#GlobalFreeFunctionName"("#Arg1Type")"));
 
@@ -231,19 +231,19 @@ void FunctionName(Arg1Type arg) Constness Finalness \
 #define ZENMOCK_NONVOID2_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, ...) \
         ZENMOCK_NONVOID2_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a ZenMock object named <StaticFunctionName>_ZenMockObject for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type)".
+// Defines a ZenMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type)".
 #define ZENMOCK_NONVOID2_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, ...) \
-   ZenMock::NonVoidTwoArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type> StaticFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::NonVoidTwoArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type> StaticFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::NonVoidTwoArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type>( \
          ZenMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type")"));
 
-// Defines a ZenMock object named <NamespacedFreeFunctionName>_ZenMockObject for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type)".
+// Defines a ZenMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type)".
 #define ZENMOCK_NONVOID2_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, ...) \
    ZENMOCK_NONVOID2_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, __VA_ARGS__)
 
-// Defines a ZenMock object named <GlobalFreeFunctionName>_ZenMockObject for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type)".
+// Defines a ZenMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type)".
 #define ZENMOCK_NONVOID2_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, ...) \
-   ZenMock::NonVoidTwoArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type> GlobalFreeFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::NonVoidTwoArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::NonVoidTwoArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type>( \
          ZenMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type")"));
 
@@ -276,19 +276,19 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument) Constne
 #define ZENMOCK_VOID2_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, ...) \
         ZENMOCK_VOID2_DEFINED(NonVirtualFunctionName, Arg1Type, Arg2Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a ZenMock object named <FunctionName>_ZenMockObject for mocking a static function with signature "void QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type)".
+// Defines a ZenMock object named <FunctionName>Mock for mocking a static function with signature "void QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type)".
 #define ZENMOCK_VOID2_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, ...) \
-   ZenMock::VoidTwoArgFunctionPointerMocker<Arg1Type, Arg2Type> StaticFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::VoidTwoArgFunctionPointerMocker<Arg1Type, Arg2Type> StaticFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::VoidTwoArgFunctionPointerMocker<Arg1Type, Arg2Type>( \
          ZenMock::FunctionSignature::FunctionPointer("void", #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type")"));
 
-// Defines a ZenMock object named <NamespacedFreeFunctionName>_ZenMockObject for mocking a namespaced free function with signature "void Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type)".
+// Defines a ZenMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "void Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type)".
 #define ZENMOCK_VOID2_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, ...) \
    ZENMOCK_VOID2_STATIC(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, __VA_ARGS__)
 
-// Defines a ZenMock object named <GlobalFreeFunctionName>_ZenMockObject for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type)".
+// Defines a ZenMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type)".
 #define ZENMOCK_VOID2_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, ...) \
-   ZenMock::VoidTwoArgFunctionPointerMocker<Arg1Type, Arg2Type> GlobalFreeFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::VoidTwoArgFunctionPointerMocker<Arg1Type, Arg2Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::VoidTwoArgFunctionPointerMocker<Arg1Type, Arg2Type>( \
          ZenMock::FunctionSignature::FunctionPointer("void", "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type")"));
 
@@ -321,19 +321,19 @@ void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument) Constness Fin
 #define ZENMOCK_NONVOID3_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
         ZENMOCK_NONVOID3_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a ZenMock object named <StaticFunctionName>_ZenMockObject for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type)".
+// Defines a ZenMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type)".
 #define ZENMOCK_NONVOID3_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
-   ZenMock::NonVoidThreeArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type> StaticFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::NonVoidThreeArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type> StaticFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::NonVoidThreeArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type>( \
          ZenMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type")"));
 
-// Defines a ZenMock object named <NamespacedFreeFunctionName>_ZenMockObject for mocking a static function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type)".
+// Defines a ZenMock object named <NamespacedFreeFunctionName>Mock for mocking a static function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type)".
 #define ZENMOCK_NONVOID3_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
    ZENMOCK_NONVOID3_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type)
 
-// Defines a ZenMock object named <GlobalFreeFunctionName>_ZenMockObject for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type)".
+// Defines a ZenMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type)".
 #define ZENMOCK_NONVOID3_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
-   ZenMock::NonVoidThreeArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type> GlobalFreeFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::NonVoidThreeArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::NonVoidThreeArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type>( \
          ZenMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type")"));
 
@@ -366,19 +366,19 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Typ
 #define ZENMOCK_VOID3_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
         ZENMOCK_VOID3_DEFINED(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a ZenMock object named <StaticFunctionName>_ZenMockObject for mocking a static function with signature "void NamespaceQualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type)".
+// Defines a ZenMock object named <StaticFunctionName>Mock for mocking a static function with signature "void NamespaceQualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type)".
 #define ZENMOCK_VOID3_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
-   ZenMock::VoidThreeArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type> StaticFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::VoidThreeArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type> StaticFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::VoidThreeArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type>( \
          ZenMock::FunctionSignature::FunctionPointer("void", #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type")"));
 
-// Defines a ZenMock object named <NamespacedFreeFunctionName>_ZenMockObject for mocking a static function with signature "void Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type)".
+// Defines a ZenMock object named <NamespacedFreeFunctionName>Mock for mocking a static function with signature "void Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type)".
 #define ZENMOCK_VOID3_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
    ZENMOCK_VOID3_STATIC(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, __VA_ARGS__)
 
-// Defines a ZenMock object named <GlobalFreeFunctionName>_ZenMockObject for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type)".
+// Defines a ZenMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type)".
 #define ZENMOCK_VOID3_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
-   ZenMock::VoidThreeArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type> GlobalFreeFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::VoidThreeArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::VoidThreeArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type>( \
          ZenMock::FunctionSignature::FunctionPointer("void", "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type")"));
 
@@ -411,19 +411,19 @@ void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thir
 #define ZENMOCK_NONVOID4_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
         ZENMOCK_NONVOID4_DEFINED(ReturnType, FunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a ZenMock object named <StaticFunctionName>_ZenMockObject for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
+// Defines a ZenMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
 #define ZENMOCK_NONVOID4_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
-   ZenMock::NonVoidFourArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type> StaticFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::NonVoidFourArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type> StaticFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::NonVoidFourArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>( \
          ZenMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type")"));
 
-// Defines a ZenMock object named <NamespaceFreeFunctionName>_ZenMockObject for mocking a static function with signature "ReturnType Namespace::NamespaceFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
+// Defines a ZenMock object named <NamespaceFreeFunctionName>Mock for mocking a static function with signature "ReturnType Namespace::NamespaceFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
 #define ZENMOCK_NONVOID4_NAMESPACED_FREE(ReturnType, Namespace, NamespaceFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
    ZENMOCK_NONVOID4_STATIC(ReturnType, Namespace, NamespaceFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, __VA_ARGS__)
 
-// Defines a ZenMock object named <GlobalFreeFunctionName>_ZenMockObject for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
+// Defines a ZenMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
 #define ZENMOCK_NONVOID4_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
-   ZenMock::NonVoidFourArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type> GlobalFreeFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::NonVoidFourArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::NonVoidFourArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>( \
          ZenMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type")"));
 
@@ -456,19 +456,19 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Typ
 #define ZENMOCK_VOID4_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
         ZENMOCK_VOID4_DEFINED(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a ZenMock object named <StaticFunctionName>_ZenMockObject for mocking a static function with signature "void NamespaceQualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
+// Defines a ZenMock object named <StaticFunctionName>Mock for mocking a static function with signature "void NamespaceQualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
 #define ZENMOCK_VOID4_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
-   ZenMock::VoidFourArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type> StaticFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::VoidFourArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type> StaticFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::VoidFourArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>( \
          ZenMock::FunctionSignature::FunctionPointer("void", #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type")"));
 
-// Defines a ZenMock object named <NamespacedFreeFunctionName>_ZenMockObject for mocking a namespaced free function with signature "void Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
+// Defines a ZenMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "void Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
 #define ZENMOCK_VOID4_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
    ZENMOCK_VOID4_STATIC(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, __VA_ARGS__)
 
-// Defines a ZenMock object named <GlobalFreeFunctionName>_ZenMockObject for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
+// Defines a ZenMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
 #define ZENMOCK_VOID4_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
-   ZenMock::VoidFourArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type> GlobalFreeFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::VoidFourArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::VoidFourArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>( \
          ZenMock::FunctionSignature::FunctionPointer("void", "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type")"));
 
@@ -501,19 +501,19 @@ void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thir
 #define ZENMOCK_NONVOID5_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
         ZENMOCK_NONVOID5_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a ZenMock object named <StaticFunctionName>_ZenMockObject for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
+// Defines a ZenMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
 #define ZENMOCK_NONVOID5_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
-   ZenMock::NonVoidFiveArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type> StaticFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::NonVoidFiveArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type> StaticFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::NonVoidFiveArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>( \
          ZenMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type")"));
 
-// Defines a ZenMock object named <NamespacedFreeFunctionName>_ZenMockObject for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
+// Defines a ZenMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
 #define ZENMOCK_NONVOID5_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
    ZENMOCK_NONVOID5_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, __VA_ARGS__)
 
-// Defines a ZenMock object named <GlobalFreeFunctionName>_ZenMockObject for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
+// Defines a ZenMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
 #define ZENMOCK_NONVOID5_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
-   ZenMock::NonVoidFiveArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type> GlobalFreeFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::NonVoidFiveArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::NonVoidFiveArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>( \
          ZenMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type")"));
 
@@ -546,19 +546,19 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Typ
 #define ZENMOCK_VOID5_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
         ZENMOCK_VOID5_DEFINED(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type,       , const, mutable,          , __VA_ARGS__)
 
-// Defines a ZenMock object named <StaticFunctionName>_ZenMockObject for mocking a static function with signature "void NamespaceQualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
+// Defines a ZenMock object named <StaticFunctionName>Mock for mocking a static function with signature "void NamespaceQualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
 #define ZENMOCK_VOID5_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
-   ZenMock::VoidFiveArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type> StaticFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::VoidFiveArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type> StaticFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::VoidFiveArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>( \
          ZenMock::FunctionSignature::FunctionPointer("void", #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type")"));
 
-// Defines a ZenMock object named <NamespacedFreeFunctionName>_ZenMockObject for mocking a namespaced free function with signature "void Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
+// Defines a ZenMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "void Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
 #define ZENMOCK_VOID5_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
    ZENMOCK_VOID5_STATIC(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, __VA_ARGS__)
 
-// Defines a ZenMock object named <GlobalFreeFunctionName>_ZenMockObject for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
+// Defines a ZenMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
 #define ZENMOCK_VOID5_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
-   ZenMock::VoidFiveArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type> GlobalFreeFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::VoidFiveArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::VoidFiveArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>( \
          ZenMock::FunctionSignature::FunctionPointer("void", "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type")"));
 
@@ -591,19 +591,19 @@ void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thir
 #define ZENMOCK_NONVOID6_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
         ZENMOCK_NONVOID6_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a ZenMock object named <StaticFunctionName>_ZenMockObject for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
+// Defines a ZenMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
 #define ZENMOCK_NONVOID6_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
-   ZenMock::NonVoidSixArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type> StaticFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::NonVoidSixArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type> StaticFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::NonVoidSixArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>( \
          ZenMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type")"));
 
-// Defines a ZenMock object named <NamespacedFreeFunctionName>_ZenMockObject for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
+// Defines a ZenMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
 #define ZENMOCK_NONVOID6_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
    ZENMOCK_NONVOID6_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, __VA_ARGS__)
 
-// Defines a ZenMock object named <GlobalFreeFunctionName>_ZenMockObject for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
+// Defines a ZenMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
 #define ZENMOCK_NONVOID6_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
-   ZenMock::NonVoidSixArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type> GlobalFreeFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::NonVoidSixArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::NonVoidSixArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>( \
          ZenMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type")"));
 
@@ -636,19 +636,19 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Typ
 #define ZENMOCK_VOID6_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
         ZENMOCK_VOID6_DEFINED(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a ZenMock object named <StaticFunctionName>_ZenMockObject for mocking a static function with signature "void NamespaceQualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
+// Defines a ZenMock object named <StaticFunctionName>Mock for mocking a static function with signature "void NamespaceQualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
 #define ZENMOCK_VOID6_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
-   ZenMock::VoidSixArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type> StaticFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::VoidSixArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type> StaticFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::VoidSixArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>( \
          ZenMock::FunctionSignature::FunctionPointer("void", #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type")"));
 
-// Defines a ZenMock object named <NamespacedFreeFunctionName>_ZenMockObject for mocking a static function with signature "void Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
+// Defines a ZenMock object named <NamespacedFreeFunctionName>Mock for mocking a static function with signature "void Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
 #define ZENMOCK_VOID6_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
    ZENMOCK_VOID6_STATIC(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, __VA_ARGS__) \
 
-// Defines a ZenMock object named <GlobalFreeFunctionName>_ZenMockObject for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
+// Defines a ZenMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
 #define ZENMOCK_VOID6_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
-   ZenMock::VoidSixArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type> GlobalFreeFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::VoidSixArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::VoidSixArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>( \
          ZenMock::FunctionSignature::FunctionPointer("void", "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type")"));
 
@@ -681,19 +681,19 @@ void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thir
 #define ZENMOCK_NONVOID7_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
         ZENMOCK_NONVOID7_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a ZenMock object named <StaticFunctionName>_ZenMockObject for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
+// Defines a ZenMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
 #define ZENMOCK_NONVOID7_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
-   ZenMock::NonVoidSevenArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type> StaticFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::NonVoidSevenArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type> StaticFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::NonVoidSevenArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>( \
          ZenMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type")"));
 
-// Defines a ZenMock object named <NamespacedFreeFunctionName>_ZenMockObject for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
+// Defines a ZenMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
 #define ZENMOCK_NONVOID7_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
    ZENMOCK_NONVOID7_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, __VA_ARGS__)
 
-// Defines a ZenMock object named <GlobalFreeFunctionName>_ZenMockObject for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
+// Defines a ZenMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
 #define ZENMOCK_NONVOID7_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
-   ZenMock::NonVoidSevenArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type> GlobalFreeFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::NonVoidSevenArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::NonVoidSevenArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>( \
          ZenMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type")"));
 
@@ -726,19 +726,19 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Typ
 #define ZENMOCK_VOID7_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
         ZENMOCK_VOID7_DEFINED(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a ZenMock object named <StaticFunctionName>_ZenMockObject for mocking a static function with signature "void NamespaceQualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
+// Defines a ZenMock object named <StaticFunctionName>Mock for mocking a static function with signature "void NamespaceQualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
 #define ZENMOCK_VOID7_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
-   ZenMock::VoidSevenArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type> StaticFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::VoidSevenArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type> StaticFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::VoidSevenArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>( \
          ZenMock::FunctionSignature::FunctionPointer("void", #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type")"));
 
-// Defines a ZenMock object named <NamespacedFreeFunctionName>_ZenMockObject for mocking a namespaced free function with signature "void Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
+// Defines a ZenMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "void Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
 #define ZENMOCK_VOID7_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
    ZENMOCK_VOID7_STATIC(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, __VA_ARGS__) \
 
-// Defines a ZenMock object named <GlobalFreeFunctionName>_ZenMockObject for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
+// Defines a ZenMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
 #define ZENMOCK_VOID7_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
-   ZenMock::VoidSevenArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type> GlobalFreeFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::VoidSevenArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::VoidSevenArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>( \
          ZenMock::FunctionSignature::FunctionPointer("void", "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type")"));
 
@@ -771,19 +771,19 @@ void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thir
 #define ZENMOCK_NONVOID8_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
         ZENMOCK_NONVOID8_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a ZenMock object named <StaticFunctionName>_ZenMockObject for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
+// Defines a ZenMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
 #define ZENMOCK_NONVOID8_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
-   ZenMock::NonVoidEightArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type> StaticFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::NonVoidEightArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type> StaticFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::NonVoidEightArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>( \
          ZenMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type", "#Arg8Type")"));
 
-// Defines a ZenMock object named <NamespacedFreeFunctionName>_ZenMockObject for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
+// Defines a ZenMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
 #define ZENMOCK_NONVOID8_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
    ZENMOCK_NONVOID8_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, __VA_ARGS__)
 
-// Defines a ZenMock object named <GlobalFreeFunctionName>_ZenMockObject for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
+// Defines a ZenMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
 #define ZENMOCK_NONVOID8_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
-   ZenMock::NonVoidEightArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type> GlobalFreeFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::NonVoidEightArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::NonVoidEightArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>( \
          ZenMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type", "#Arg8Type")"));
 
@@ -816,19 +816,19 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Typ
 #define ZENMOCK_VOID8_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
         ZENMOCK_VOID8_DEFINED(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a ZenMock object named <StaticFunctionName>_ZenMockObject for mocking a static function with signature "void NamespaceQualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
+// Defines a ZenMock object named <StaticFunctionName>Mock for mocking a static function with signature "void NamespaceQualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
 #define ZENMOCK_VOID8_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
-   ZenMock::VoidEightArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type> StaticFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::VoidEightArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type> StaticFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::VoidEightArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>( \
          ZenMock::FunctionSignature::FunctionPointer("void", #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type", "#Arg8Type")"));
 
-// Defines a ZenMock object named <NamespacedFreeFunctionName>_ZenMockObject for mocking a namespaced free function with signature "void Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
+// Defines a ZenMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "void Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
 #define ZENMOCK_VOID8_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
    ZENMOCK_VOID8_STATIC(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, __VA_ARGS__) \
 
-// Defines a ZenMock object named <GlobalFreeFunctionName>_ZenMockObject for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
+// Defines a ZenMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
 #define ZENMOCK_VOID8_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
-   ZenMock::VoidEightArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type> GlobalFreeFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::VoidEightArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::VoidEightArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>( \
          ZenMock::FunctionSignature::FunctionPointer("void", "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type", "#Arg8Type")"));
 
@@ -861,19 +861,19 @@ void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thir
 #define ZENMOCK_VOID9_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...) \
         ZENMOCK_VOID9_DEFINED(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a ZenMock object named <StaticFunctionName>_ZenMockObject for mocking a static function with signature "void NamespaceQualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type)".
+// Defines a ZenMock object named <StaticFunctionName>Mock for mocking a static function with signature "void NamespaceQualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type)".
 #define ZENMOCK_VOID9_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...) \
-   ZenMock::VoidNineArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type> StaticFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::VoidNineArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type> StaticFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::VoidNineArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>( \
          ZenMock::FunctionSignature::FunctionPointer("void", #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type", "#Arg8Type", "#Arg9Type")"));
 
-// Defines a ZenMock object named <NamespacedFreeFunctionName>_ZenMockObject for mocking a namespaced free function with signature "void Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type)".
+// Defines a ZenMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "void Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type)".
 #define ZENMOCK_VOID9_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...) \
    ZENMOCK_VOID9_STATIC(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, __VA_ARGS__) \
 
-// Defines a ZenMock object named <GlobalFreeFunctionName>_ZenMockObject for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type)".
+// Defines a ZenMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type)".
 #define ZENMOCK_VOID9_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...) \
-   ZenMock::VoidNineArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type> GlobalFreeFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::VoidNineArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::VoidNineArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>( \
          ZenMock::FunctionSignature::FunctionPointer("void", "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type", "#Arg8Type", "#Arg9Type")"));
 
@@ -906,19 +906,19 @@ void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thir
 #define ZENMOCK_NONVOID9_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...) \
         ZENMOCK_NONVOID9_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type,       , const, mutable,         , __VA_ARGS__)
 
-// Defines a ZenMock object named <StaticFunctionName>_ZenMockObject for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type)".
+// Defines a ZenMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type)".
 #define ZENMOCK_NONVOID9_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...) \
-   ZenMock::NonVoidNineArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type> StaticFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::NonVoidNineArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type> StaticFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::NonVoidNineArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>( \
          ZenMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type", "#Arg8Type", "#Arg9Type")"));
 
-// Defines a ZenMock object named <NamespacedFreeFunctionName>_ZenMockObject for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type)".
+// Defines a ZenMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type)".
 #define ZENMOCK_NONVOID9_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...) \
    ZENMOCK_NONVOID9_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, __VA_ARGS__) \
 
-// Defines a ZenMock object named <GlobalFreeFunctionName>_ZenMockObject for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type)".
+// Defines a ZenMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type)".
 #define ZENMOCK_NONVOID9_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...) \
-   ZenMock::NonVoidNineArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type> GlobalFreeFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::NonVoidNineArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::NonVoidNineArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>( \
          ZenMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type", "#Arg8Type", "#Arg9Type")"));
 
@@ -951,19 +951,19 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Typ
 #define ZENMOCK_VOID10_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...) \
         ZENMOCK_VOID10_DEFINED(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a ZenMock object named <StaticFunctionName>_ZenMockObject for mocking a static function with signature "void NamespaceQualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)".
+// Defines a ZenMock object named <StaticFunctionName>Mock for mocking a static function with signature "void NamespaceQualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)".
 #define ZENMOCK_VOID10_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...) \
-   ZenMock::VoidTenArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type> StaticFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::VoidTenArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type> StaticFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::VoidTenArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>( \
          ZenMock::FunctionSignature::FunctionPointer("void", #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type", "#Arg8Type", "#Arg9Type", "#Arg10Type")"));
 
-// Defines a ZenMock object named <NamespacedFreeFunctionName>_ZenMockObject for mocking a static function with signature "void Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)".
+// Defines a ZenMock object named <NamespacedFreeFunctionName>Mock for mocking a static function with signature "void Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)".
 #define ZENMOCK_VOID10_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...) \
    ZENMOCK_VOID10_STATIC(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, __VA_ARGS__) \
 
-// Defines a ZenMock object named <GlobalFreeFunctionName>_ZenMockObject for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)".
+// Defines a ZenMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)".
 #define ZENMOCK_VOID10_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...) \
-   ZenMock::VoidTenArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type> GlobalFreeFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::VoidTenArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::VoidTenArgFunctionPointerMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>( \
          ZenMock::FunctionSignature::FunctionPointer("void", "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type", "#Arg8Type", "#Arg9Type", "#Arg10Type")"));
 
@@ -996,19 +996,19 @@ void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thir
 #define ZENMOCK_NONVOID10_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...) \
         ZENMOCK_NONVOID10_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type,      , const, mutable,         , __VA_ARGS__)
 
-// Defines a ZenMock object named <StaticFunctionName>_ZenMockObject for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)".
+// Defines a ZenMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)".
 #define ZENMOCK_NONVOID10_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...) \
-   ZenMock::NonVoidTenArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type> StaticFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::NonVoidTenArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type> StaticFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::NonVoidTenArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>( \
          ZenMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type", "#Arg8Type", "#Arg9Type", "#Arg10Type")"));
 
-// Defines a ZenMock object named <NamespacedFunctionName>_ZenMockObject for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)".
+// Defines a ZenMock object named <NamespacedFunctionName>Mock for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)".
 #define ZENMOCK_NONVOID10_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...) \
    ZENMOCK_NONVOID10_STATIC(ReturnType, Namespace, NamespacedFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, __VA_ARGS__)
 
-// Defines a ZenMock object named <GlobalFreeFunctionName>_ZenMockObject for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)".
+// Defines a ZenMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)".
 #define ZENMOCK_NONVOID10_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...) \
-   ZenMock::NonVoidTenArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type> GlobalFreeFunctionName##_ZenMockObject##__VA_ARGS__ = \
+   ZenMock::NonVoidTenArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
       ZenMock::NonVoidTenArgFunctionPointerMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>( \
          ZenMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type", "#Arg8Type", "#Arg9Type", "#Arg10Type")"));
 
@@ -1026,48 +1026,48 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Typ
 
 
 // std::binds a zero-argument ZenMock object for assignment to a std::function
-#define BIND_0ARG_ZENMOCK_OBJECT(FunctionName_ZenMockObject) \
-   std::bind(&decltype(FunctionName_ZenMockObject)::ZenMockItFunctionPointer, &(FunctionName_ZenMockObject))
+#define BIND_0ARG_ZENMOCK_OBJECT(FunctionNameMock) \
+   std::bind(&decltype(FunctionNameMock)::ZenMockItFunctionPointer, &(FunctionNameMock))
 
 // std::binds a one-argument ZenMock object for assignment to a std::function
-#define BIND_1ARG_ZENMOCK_OBJECT(FunctionName_ZenMockObject) \
-   std::bind(&decltype(FunctionName_ZenMockObject)::ZenMockItFunctionPointer, &(FunctionName_ZenMockObject), std::placeholders::_1)
+#define BIND_1ARG_ZENMOCK_OBJECT(FunctionNameMock) \
+   std::bind(&decltype(FunctionNameMock)::ZenMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1)
 
 // std::binds a two-argument ZenMock object for assignment to a std::function
-#define BIND_2ARG_ZENMOCK_OBJECT(FunctionName_ZenMockObject) \
-   std::bind(&decltype(FunctionName_ZenMockObject)::ZenMockItFunctionPointer, &(FunctionName_ZenMockObject), std::placeholders::_1, std::placeholders::_2)
+#define BIND_2ARG_ZENMOCK_OBJECT(FunctionNameMock) \
+   std::bind(&decltype(FunctionNameMock)::ZenMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2)
 
 // std::binds a three-argument ZenMock object for assignment to a std::function
-#define BIND_3ARG_ZENMOCK_OBJECT(FunctionName_ZenMockObject) \
-   std::bind(&decltype(FunctionName_ZenMockObject)::ZenMockItFunctionPointer, &(FunctionName_ZenMockObject), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
+#define BIND_3ARG_ZENMOCK_OBJECT(FunctionNameMock) \
+   std::bind(&decltype(FunctionNameMock)::ZenMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
 
 // std::binds a four-argument ZenMock object for assignment to a std::function
-#define BIND_4ARG_ZENMOCK_OBJECT(FunctionName_ZenMockObject) \
-   std::bind(&decltype(FunctionName_ZenMockObject)::ZenMockItFunctionPointer, &(FunctionName_ZenMockObject), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)
+#define BIND_4ARG_ZENMOCK_OBJECT(FunctionNameMock) \
+   std::bind(&decltype(FunctionNameMock)::ZenMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)
 
 // std::binds a five-argument ZenMock object for assignment to a std::function
-#define BIND_5ARG_ZENMOCK_OBJECT(FunctionName_ZenMockObject) \
-   std::bind(&decltype(FunctionName_ZenMockObject)::ZenMockItFunctionPointer, &(FunctionName_ZenMockObject), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5)
+#define BIND_5ARG_ZENMOCK_OBJECT(FunctionNameMock) \
+   std::bind(&decltype(FunctionNameMock)::ZenMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5)
 
 // std::binds a six-argument ZenMock object for assignment to a std::function
-#define BIND_6ARG_ZENMOCK_OBJECT(FunctionName_ZenMockObject) \
-   std::bind(&decltype(FunctionName_ZenMockObject)::ZenMockItFunctionPointer, &(FunctionName_ZenMockObject), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6)
+#define BIND_6ARG_ZENMOCK_OBJECT(FunctionNameMock) \
+   std::bind(&decltype(FunctionNameMock)::ZenMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6)
 
 // std::binds a seven-argument ZenMock object for assignment to a std::function
-#define BIND_7ARG_ZENMOCK_OBJECT(FunctionName_ZenMockObject) \
-   std::bind(&decltype(FunctionName_ZenMockObject)::ZenMockItFunctionPointer, &(FunctionName_ZenMockObject), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7)
+#define BIND_7ARG_ZENMOCK_OBJECT(FunctionNameMock) \
+   std::bind(&decltype(FunctionNameMock)::ZenMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7)
 
 // std::binds a eight-argument ZenMock object for assignment to a std::function
-#define BIND_8ARG_ZENMOCK_OBJECT(FunctionName_ZenMockObject) \
-   std::bind(&decltype(FunctionName_ZenMockObject)::ZenMockItFunctionPointer, &(FunctionName_ZenMockObject), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8)
+#define BIND_8ARG_ZENMOCK_OBJECT(FunctionNameMock) \
+   std::bind(&decltype(FunctionNameMock)::ZenMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8)
 
 // std::binds a nine-argument ZenMock object for assignment to a std::function
-#define BIND_9ARG_ZENMOCK_OBJECT(FunctionName_ZenMockObject) \
-   std::bind(&decltype(FunctionName_ZenMockObject)::ZenMockItFunctionPointer, &(FunctionName_ZenMockObject), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8, std::placeholders::_9)
+#define BIND_9ARG_ZENMOCK_OBJECT(FunctionNameMock) \
+   std::bind(&decltype(FunctionNameMock)::ZenMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8, std::placeholders::_9)
 
 // std::binds a ten-argument ZenMock object for assignment to a std::function
-#define BIND_10ARG_ZENMOCK_OBJECT(FunctionName_ZenMockObject) \
-   std::bind(&decltype(FunctionName_ZenMockObject)::ZenMockItFunctionPointer, &(FunctionName_ZenMockObject), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8, std::placeholders::_9, std::placeholders::_10)
+#define BIND_10ARG_ZENMOCK_OBJECT(FunctionNameMock) \
+   std::bind(&decltype(FunctionNameMock)::ZenMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8, std::placeholders::_9, std::placeholders::_10)
 
 namespace ZenMock
 {

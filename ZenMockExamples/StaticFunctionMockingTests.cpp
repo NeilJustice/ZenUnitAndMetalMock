@@ -42,9 +42,9 @@ ZENMOCK_NONVOID1_STATIC(int, Utilities, NonVoidStaticFunction, int)
 STARTUP
 {
    _classUnderTest._call_VoidStaticFunction =
-      BIND_0ARG_ZENMOCK_OBJECT(VoidStaticFunction_ZenMockObject);
+      BIND_0ARG_ZENMOCK_OBJECT(VoidStaticFunctionMock);
    _classUnderTest._call_NonVoidStaticFunction =
-      BIND_1ARG_ZENMOCK_OBJECT(NonVoidStaticFunction_ZenMockObject);
+      BIND_1ARG_ZENMOCK_OBJECT(NonVoidStaticFunctionMock);
 }
 
 TEST(DefaultConstructor_SetsFunctionsToExpectedFunctions)
@@ -62,14 +62,14 @@ TEST(FunctionUnderTest_CallsVoidStaticFunction_ReturnsResultOfCallingNonVoidStat
    // ZenMock is a double-strict mocking library, meaning that all mocked-out
    // functions must be explicitly expected and all explicitly-expected
    // mocked-out functions must be explicitly asserted as having been called.
-   VoidStaticFunction_ZenMockObject.Expect();
-   const int nonVoidStaticFunctionReturnValue = NonVoidStaticFunction_ZenMockObject.ReturnRandom();
+   VoidStaticFunctionMock.Expect();
+   const int nonVoidStaticFunctionReturnValue = NonVoidStaticFunctionMock.ReturnRandom();
    const int input = ZenUnit::Random<int>();
    //
    const int returnValue = _classUnderTest.FunctionUnderTest(input);
    //
-   ZENMOCK(VoidStaticFunction_ZenMockObject.CalledOnce());
-   ZENMOCK(NonVoidStaticFunction_ZenMockObject.CalledOnceWith(input));
+   ZENMOCK(VoidStaticFunctionMock.CalledOnce());
+   ZENMOCK(NonVoidStaticFunctionMock.CalledOnceWith(input));
    ARE_EQUAL(nonVoidStaticFunctionReturnValue, returnValue);
 }
 

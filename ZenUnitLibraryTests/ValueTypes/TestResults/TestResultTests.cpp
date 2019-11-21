@@ -48,7 +48,7 @@ namespace ZenUnit
       DestructorTestPhaseResult.microseconds = 3000;
       _testResult.fullTestName = FullTestNameValue;
       _testResult._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString =
-         BIND_1ARG_ZENMOCK_OBJECT(MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject);
+         BIND_1ARG_ZENMOCK_OBJECT(MicrosecondsToTwoDecimalPlaceMillisecondsStringMock);
    }
 
    TEST(DefaultConstructor_SetsFieldsTo0_SetsWatchFunction)
@@ -111,9 +111,9 @@ namespace ZenUnit
       if (expectedOverallOutcome == TestOutcome::Success ||
          expectedOverallOutcome == TestOutcome::SuccessButPastDeadline)
       {
-         GetArgs_ZenMockObject.Return(zenUnitArgs);
+         GetArgsMock.Return(zenUnitArgs);
       }
-      const function<const ZenUnitArgs&()> getArgsMockFunction = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject);
+      const function<const ZenUnitArgs&()> getArgsMockFunction = BIND_0ARG_ZENMOCK_OBJECT(GetArgsMock);
       //
       const TestResult testResult(
          FullTestNameValue,
@@ -127,7 +127,7 @@ namespace ZenUnit
       if (expectedOverallOutcome == TestOutcome::Success ||
          expectedOverallOutcome == TestOutcome::SuccessButPastDeadline)
       {
-         GetArgs_ZenMockObject.CalledOnce();
+         GetArgsMock.CalledOnce();
       }
       STD_FUNCTION_TARGETS(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString,
          testResult._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString);
@@ -219,7 +219,7 @@ namespace ZenUnit
       {
          _consoleMock.WriteColorMock.Expect();
          _consoleMock.WriteLineMock.Expect();
-         twoDecimalPlaceMillisecondsString = MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject.ReturnRandom();
+         twoDecimalPlaceMillisecondsString = MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
       }
       const unsigned microseconds = ZenUnit::Random<unsigned>();
       _testResult.microseconds = microseconds;
@@ -229,7 +229,7 @@ namespace ZenUnit
       if (expectWriteLineOK)
       {
          ZENMOCK(_consoleMock.WriteColorMock.CalledOnceWith("OK ", Color::Green));
-         ZENMOCK(MicrosecondsToTwoDecimalPlaceMillisecondsString_ZenMockObject.CalledOnceWith(microseconds));
+         ZENMOCK(MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.CalledOnceWith(microseconds));
          ZENMOCK(_consoleMock.WriteLineMock.CalledOnceWith(twoDecimalPlaceMillisecondsString));
       }
    }

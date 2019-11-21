@@ -35,8 +35,8 @@ namespace ZenMock
    STARTUP
    {
       _zenMocker = make_unique<ZenMocker<ExceptionThrowerMock>>(ZenMockedFunctionSignature);
-      _zenMocker->_call_exit = BIND_1ARG_ZENMOCK_OBJECT(exit_ZenMockObject);
-      _zenMocker->_call_ZenUnitTestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject);
+      _zenMocker->_call_exit = BIND_1ARG_ZENMOCK_OBJECT(exitMock);
+      _zenMocker->_call_ZenUnitTestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgsMock);
    }
 
    TEST(Constructor_SetsFields)
@@ -182,16 +182,16 @@ namespace ZenMock
 
       ZenUnit::ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
       zenUnitArgs.exitZero = exitZero;
-      GetArgs_ZenMockObject.Return(zenUnitArgs);
-      exit_ZenMockObject.Expect();
+      GetArgsMock.Return(zenUnitArgs);
+      exitMock.Expect();
 
       cout << "\n\n<ZenMock Error Message Testing>";
       //
       _zenMocker->ZenMockExitIfExpectedButNotAsserted();
       //
       cout << "</ZenMock Error Message Testing>\n\n";
-      ZENMOCK(GetArgs_ZenMockObject.CalledOnce());
-      ZENMOCK(exit_ZenMockObject.CalledOnceWith(expectedExitCode));
+      ZENMOCK(GetArgsMock.CalledOnce());
+      ZENMOCK(exitMock.CalledOnceWith(expectedExitCode));
       _zenMocker->_wasAsserted = true;
    }
 

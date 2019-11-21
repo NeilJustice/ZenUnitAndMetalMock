@@ -37,11 +37,11 @@ namespace ZenUnit
 
    STARTUP
    {
-      _environmentalist._call_filesystem_current_path = BIND_0ARG_ZENMOCK_OBJECT(current_path_ZenMockObject);
+      _environmentalist._call_filesystem_current_path = BIND_0ARG_ZENMOCK_OBJECT(current_pathMock);
 #if defined __linux__ || defined __APPLE__
-      _environmentalist._call_gethostname = BIND_2ARG_ZENMOCK_OBJECT(gethostname_ZenMockObject);
+      _environmentalist._call_gethostname = BIND_2ARG_ZENMOCK_OBJECT(gethostnameMock);
 #elif defined _WIN32
-      _environmentalist._call_GetComputerName = BIND_2ARG_ZENMOCK_OBJECT(GetComputerName_ZenMockObject);
+      _environmentalist._call_GetComputerName = BIND_2ARG_ZENMOCK_OBJECT(GetComputerNameMock);
 #endif
    }
 
@@ -58,11 +58,11 @@ namespace ZenUnit
 
    TEST(GetCurrentDirectoryPath_ReturnsCurrentDirectoryPath)
    {
-      const fs::path currentDirectoryPath = current_path_ZenMockObject.ReturnRandom();
+      const fs::path currentDirectoryPath = current_pathMock.ReturnRandom();
       //
       const string returnedCurrentDirectoryPath = _environmentalist.GetCurrentDirectoryPath();
       //
-      ZENMOCK(current_path_ZenMockObject.CalledOnce());
+      ZENMOCK(current_pathMock.CalledOnce());
       ARE_EQUAL(currentDirectoryPath, returnedCurrentDirectoryPath);
    }
 

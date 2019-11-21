@@ -49,9 +49,9 @@ namespace ZenMock
 
    unique_ptr<ZenMock2ArgTester<
       Void2ArgFunctionsMock,
-      decltype(Void2ArgFreeFunction_ZenMockObject),
-      decltype(Void2ArgFreeFunction_ZenMockObject_namespaced),
-      decltype(StaticVoid2ArgFunction_ZenMockObject)>> _zenMock2ArgTester;
+      decltype(Void2ArgFreeFunctionMock),
+      decltype(Void2ArgFreeFunctionMock_namespaced),
+      decltype(StaticVoid2ArgFunctionMock)>> _zenMock2ArgTester;
 
    const string Virtual2ArgFunctionSignature =
       "virtual void ZenMock::Void2ArgFunctions::Virtual2ArgFunction(int, int)";
@@ -78,9 +78,9 @@ namespace ZenMock
    {
       _zenMock2ArgTester = make_unique<ZenMock2ArgTester<
          Void2ArgFunctionsMock,
-         decltype(Void2ArgFreeFunction_ZenMockObject),
-         decltype(Void2ArgFreeFunction_ZenMockObject_namespaced),
-         decltype(StaticVoid2ArgFunction_ZenMockObject)>>(
+         decltype(Void2ArgFreeFunctionMock),
+         decltype(Void2ArgFreeFunctionMock_namespaced),
+         decltype(StaticVoid2ArgFunctionMock)>>(
          _zenMockObject,
 
          Virtual2ArgFunctionSignature,
@@ -88,13 +88,13 @@ namespace ZenMock
          NonVirtual2ArgFunctionSignature,
          NonVirtual2ArgConstFunctionSignature,
 
-         Void2ArgFreeFunction_ZenMockObject,
+         Void2ArgFreeFunctionMock,
          FreeFunctionSignature,
 
-         Void2ArgFreeFunction_ZenMockObject_namespaced,
+         Void2ArgFreeFunctionMock_namespaced,
          NamespacedFreeFunctionSignature,
 
-         StaticVoid2ArgFunction_ZenMockObject,
+         StaticVoid2ArgFunctionMock,
          StaticFunctionSignature);
    }
 
@@ -116,9 +116,9 @@ Argument2: )" + to_string(argument2);
       testcase(_zenMockObject.NonVirtual2ArgFunctionMock, NonVirtual2ArgFunctionSignature);
       testcase(_zenMockObject.NonVirtual2ArgConstFunctionMock, NonVirtual2ArgConstFunctionSignature);
 
-      testcase(Void2ArgFreeFunction_ZenMockObject, FreeFunctionSignature);
-      testcase(Void2ArgFreeFunction_ZenMockObject_namespaced, NamespacedFreeFunctionSignature);
-      testcase(StaticVoid2ArgFunction_ZenMockObject, StaticFunctionSignature);
+      testcase(Void2ArgFreeFunctionMock, FreeFunctionSignature);
+      testcase(Void2ArgFreeFunctionMock_namespaced, NamespacedFreeFunctionSignature);
+      testcase(StaticVoid2ArgFunctionMock, StaticFunctionSignature);
    }
 
    TEST(Expect_DoesNotThrowWhenCalledTwice_MakesFunctionNotThrowWhenCalled)
@@ -136,9 +136,9 @@ Argument2: )" + to_string(argument2);
       testcase(_zenMockObject.NonVirtual2ArgFunctionMock);
       testcase(_zenMockObject.NonVirtual2ArgConstFunctionMock);
 
-      testcase(Void2ArgFreeFunction_ZenMockObject);
-      testcase(Void2ArgFreeFunction_ZenMockObject_namespaced);
-      testcase(StaticVoid2ArgFunction_ZenMockObject);
+      testcase(Void2ArgFreeFunctionMock);
+      testcase(Void2ArgFreeFunctionMock_namespaced);
+      testcase(StaticVoid2ArgFunctionMock);
    }
 
    TEST(ThrowException_MakesSubsequentCallsToZenMockedFunctionThrowSpecifiedException__runtime_error_TestCase)
@@ -160,9 +160,9 @@ Argument2: )" + to_string(argument2);
       testcase(_zenMockObject.NonVirtual2ArgFunctionMock);
       testcase(_zenMockObject.NonVirtual2ArgConstFunctionMock);
 
-      testcase(Void2ArgFreeFunction_ZenMockObject);
-      testcase(Void2ArgFreeFunction_ZenMockObject_namespaced);
-      testcase(StaticVoid2ArgFunction_ZenMockObject);
+      testcase(Void2ArgFreeFunctionMock);
+      testcase(Void2ArgFreeFunctionMock_namespaced);
+      testcase(StaticVoid2ArgFunctionMock);
    }
 
    TEST(ThrowException_MakesSubsequentCallsToZenMockedFunctionThrowSpecifiedException__runtime_error_then_invalid_argument_TestCase)
@@ -184,9 +184,9 @@ Argument2: )" + to_string(argument2);
       testcase(_zenMockObject.NonVirtual2ArgFunctionMock);
       testcase(_zenMockObject.NonVirtual2ArgConstFunctionMock);
 
-      testcase(Void2ArgFreeFunction_ZenMockObject);
-      testcase(Void2ArgFreeFunction_ZenMockObject_namespaced);
-      testcase(StaticVoid2ArgFunction_ZenMockObject);
+      testcase(Void2ArgFreeFunctionMock);
+      testcase(Void2ArgFreeFunctionMock_namespaced);
+      testcase(StaticVoid2ArgFunctionMock);
    }
 
    TEST(CalledOnceWith_ZenMockedFunctionNotPreviouslyCalled_Throws)
@@ -209,9 +209,9 @@ File.cpp(1))";
       testcase(_zenMockObject.NonVirtual2ArgFunctionMock, NonVirtual2ArgFunctionSignature);
       testcase(_zenMockObject.NonVirtual2ArgConstFunctionMock, NonVirtual2ArgConstFunctionSignature);
 
-      testcase(Void2ArgFreeFunction_ZenMockObject, FreeFunctionSignature);
-      testcase(Void2ArgFreeFunction_ZenMockObject_namespaced, NamespacedFreeFunctionSignature);
-      testcase(StaticVoid2ArgFunction_ZenMockObject, StaticFunctionSignature);
+      testcase(Void2ArgFreeFunctionMock, FreeFunctionSignature);
+      testcase(Void2ArgFreeFunctionMock_namespaced, NamespacedFreeFunctionSignature);
+      testcase(StaticVoid2ArgFunctionMock, StaticFunctionSignature);
    }
 
    TEST(CalledAsFollows_ZenMockedFunctionNotPreviouslyCalled_Throws)
@@ -251,9 +251,9 @@ File.cpp(1))";
       testcase(_zenMockObject.NonVirtual2ArgFunctionMock, NonVirtual2ArgFunctionSignature);
       testcase(_zenMockObject.NonVirtual2ArgConstFunctionMock, NonVirtual2ArgConstFunctionSignature);
 
-      testcase(Void2ArgFreeFunction_ZenMockObject, FreeFunctionSignature);
-      testcase(Void2ArgFreeFunction_ZenMockObject_namespaced, NamespacedFreeFunctionSignature);
-      testcase(StaticVoid2ArgFunction_ZenMockObject, StaticFunctionSignature);
+      testcase(Void2ArgFreeFunctionMock, FreeFunctionSignature);
+      testcase(Void2ArgFreeFunctionMock_namespaced, NamespacedFreeFunctionSignature);
+      testcase(StaticVoid2ArgFunctionMock, StaticFunctionSignature);
    }
 
    TEST(CalledNTimesWith_ZenMockedFunctionNotPreviouslyCalled_Throws)
@@ -277,9 +277,9 @@ File.cpp(1))";
       testcase(_zenMockObject.NonVirtual2ArgFunctionMock, NonVirtual2ArgFunctionSignature);
       testcase(_zenMockObject.NonVirtual2ArgConstFunctionMock, NonVirtual2ArgConstFunctionSignature);
 
-      testcase(Void2ArgFreeFunction_ZenMockObject, FreeFunctionSignature);
-      testcase(Void2ArgFreeFunction_ZenMockObject_namespaced, NamespacedFreeFunctionSignature);
-      testcase(StaticVoid2ArgFunction_ZenMockObject, StaticFunctionSignature);
+      testcase(Void2ArgFreeFunctionMock, FreeFunctionSignature);
+      testcase(Void2ArgFreeFunctionMock_namespaced, NamespacedFreeFunctionSignature);
+      testcase(StaticVoid2ArgFunctionMock, StaticFunctionSignature);
    }
 
    RUN_TESTS(ZenMockVoid2ArgTests)

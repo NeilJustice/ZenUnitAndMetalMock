@@ -50,10 +50,10 @@ namespace ZenMock
    ZENMOCK_NONVOID0_STATIC(int, ZenMock::NonVoid0StaticFunctions, StaticFunction)
    unique_ptr<ZenMock0Tester<
    NonVoid0FunctionsMock,
-   decltype(NonVoid0Function_ZenMockObject),
-   decltype(NonVoid0Function_ZenMockObject_namespace),
-   decltype(NonVoid0Function_ZenMockObject_static),
-   decltype(StaticFunction_ZenMockObject)>> _zenMock0Tester;
+   decltype(NonVoid0FunctionMock),
+   decltype(NonVoid0FunctionMock_namespace),
+   decltype(NonVoid0FunctionMock_static),
+   decltype(StaticFunctionMock)>> _zenMock0Tester;
 
    const string VirtualSignature =
       "virtual int ZenMock::NonVoid0Functions::Virtual()";
@@ -76,26 +76,26 @@ namespace ZenMock
    {
       _zenMock0Tester = make_unique<ZenMock0Tester<
       NonVoid0FunctionsMock,
-      decltype(NonVoid0Function_ZenMockObject),
-      decltype(NonVoid0Function_ZenMockObject_namespace),
-      decltype(StaticFunction_ZenMockObject),
-      decltype(NonVoid0Function_ZenMockObject_static)>>(
+      decltype(NonVoid0FunctionMock),
+      decltype(NonVoid0FunctionMock_namespace),
+      decltype(StaticFunctionMock),
+      decltype(NonVoid0FunctionMock_static)>>(
       _mock,
       VirtualSignature,
       VirtualConstSignature,
       NonVirtualSignature,
       NonVirtualConstSignature,
 
-      NonVoid0Function_ZenMockObject,
+      NonVoid0FunctionMock,
       FreeSignature,
 
-      NonVoid0Function_ZenMockObject_namespace,
+      NonVoid0FunctionMock_namespace,
       NamespaceSignature,
 
-      StaticFunction_ZenMockObject,
+      StaticFunctionMock,
       StaticUniqueSignature,
 
-      NonVoid0Function_ZenMockObject_static,
+      NonVoid0FunctionMock_static,
       StaticNameClashSignature);
    }
 
@@ -137,10 +137,10 @@ namespace ZenMock
       test(_mock.NonVirtualMock, [&] { return _mock.NonVirtual(); });
       test(_mock.NonVirtualConstMock, [&] { return _mock.NonVirtualConst(); });
 
-      test(NonVoid0Function_ZenMockObject, [&] { return BIND_0ARG_ZENMOCK_OBJECT(NonVoid0Function_ZenMockObject)(); });
-      test(NonVoid0Function_ZenMockObject_namespace, [&] { return BIND_0ARG_ZENMOCK_OBJECT(NonVoid0Function_ZenMockObject_namespace)(); });
-      test(NonVoid0Function_ZenMockObject_static, [&] { return BIND_0ARG_ZENMOCK_OBJECT(NonVoid0Function_ZenMockObject_static)(); });
-      test(StaticFunction_ZenMockObject, [&] { return BIND_0ARG_ZENMOCK_OBJECT(StaticFunction_ZenMockObject)(); });
+      test(NonVoid0FunctionMock, [&] { return BIND_0ARG_ZENMOCK_OBJECT(NonVoid0FunctionMock)(); });
+      test(NonVoid0FunctionMock_namespace, [&] { return BIND_0ARG_ZENMOCK_OBJECT(NonVoid0FunctionMock_namespace)(); });
+      test(NonVoid0FunctionMock_static, [&] { return BIND_0ARG_ZENMOCK_OBJECT(NonVoid0FunctionMock_static)(); });
+      test(StaticFunctionMock, [&] { return BIND_0ARG_ZENMOCK_OBJECT(StaticFunctionMock)(); });
    }
 
    TEST(ReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
@@ -158,10 +158,10 @@ namespace ZenMock
       test(_mock.NonVirtualMock, [&] { return _mock.NonVirtual(); });
       test(_mock.NonVirtualConstMock, [&] { return _mock.NonVirtualConst(); });
 
-      test(NonVoid0Function_ZenMockObject, [&] { return BIND_0ARG_ZENMOCK_OBJECT(NonVoid0Function_ZenMockObject)(); });
-      test(NonVoid0Function_ZenMockObject_namespace, [&] { return BIND_0ARG_ZENMOCK_OBJECT(NonVoid0Function_ZenMockObject_namespace)(); });
-      test(NonVoid0Function_ZenMockObject_static, [&] { return BIND_0ARG_ZENMOCK_OBJECT(NonVoid0Function_ZenMockObject_static)(); });
-      test(StaticFunction_ZenMockObject, [&] { return BIND_0ARG_ZENMOCK_OBJECT(StaticFunction_ZenMockObject)(); });
+      test(NonVoid0FunctionMock, [&] { return BIND_0ARG_ZENMOCK_OBJECT(NonVoid0FunctionMock)(); });
+      test(NonVoid0FunctionMock_namespace, [&] { return BIND_0ARG_ZENMOCK_OBJECT(NonVoid0FunctionMock_namespace)(); });
+      test(NonVoid0FunctionMock_static, [&] { return BIND_0ARG_ZENMOCK_OBJECT(NonVoid0FunctionMock_static)(); });
+      test(StaticFunctionMock, [&] { return BIND_0ARG_ZENMOCK_OBJECT(StaticFunctionMock)(); });
    }
 
    TEST(ReturnValuesVector_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
@@ -180,10 +180,10 @@ namespace ZenMock
       test(_mock.NonVirtualMock, [&] { return _mock.NonVirtual(); });
       test(_mock.NonVirtualConstMock, [&] { return _mock.NonVirtualConst(); });
 
-      test(NonVoid0Function_ZenMockObject, [&] { return BIND_0ARG_ZENMOCK_OBJECT(NonVoid0Function_ZenMockObject)(); });
-      test(NonVoid0Function_ZenMockObject_namespace, [&] { return BIND_0ARG_ZENMOCK_OBJECT(NonVoid0Function_ZenMockObject_namespace)(); });
-      test(NonVoid0Function_ZenMockObject_static, [&] { return BIND_0ARG_ZENMOCK_OBJECT(NonVoid0Function_ZenMockObject_static)(); });
-      test(StaticFunction_ZenMockObject, [&] { return BIND_0ARG_ZENMOCK_OBJECT(StaticFunction_ZenMockObject)(); });
+      test(NonVoid0FunctionMock, [&] { return BIND_0ARG_ZENMOCK_OBJECT(NonVoid0FunctionMock)(); });
+      test(NonVoid0FunctionMock_namespace, [&] { return BIND_0ARG_ZENMOCK_OBJECT(NonVoid0FunctionMock_namespace)(); });
+      test(NonVoid0FunctionMock_static, [&] { return BIND_0ARG_ZENMOCK_OBJECT(NonVoid0FunctionMock_static)(); });
+      test(StaticFunctionMock, [&] { return BIND_0ARG_ZENMOCK_OBJECT(StaticFunctionMock)(); });
    }
 
    RUN_TESTS(ZenMockNonVoid0Tests)

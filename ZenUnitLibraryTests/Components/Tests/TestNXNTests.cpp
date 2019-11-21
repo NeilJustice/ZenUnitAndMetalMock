@@ -54,8 +54,8 @@ namespace ZenUnit
       _testNXN = make_unique<TestNXN<TestingTestClass, N, int>>("", "", "", 0);
       _testNXN->_console.reset(_consoleMock = new ConsoleMock);
       _testNXN->_callerOfRunFilterMatchesTestCase.reset(_callerOfRunFilterMatchesTestCaseMock = new CallerOfRunFilterMatchesTestCaseMockType);
-      _testNXN->_call_ZenUnitTestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject);
-      _testNXN->_call_exit = BIND_1ARG_ZENMOCK_OBJECT(exit_ZenMockObject);
+      _testNXN->_call_ZenUnitTestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgsMock);
+      _testNXN->_call_exit = BIND_1ARG_ZENMOCK_OBJECT(exitMock);
    }
 
    TEST(Constructor_NewsComponents_SetsFields_MakesGettersReturnExpected)
@@ -139,19 +139,19 @@ namespace ZenUnit
                0 // test case arg 1
                )
             {
-               _call_ITestCaseNumberGeneratorFactoryNew = BIND_1ARG_ZENMOCK_OBJECT(FactoryNew_ZenMockObject);
+               _call_ITestCaseNumberGeneratorFactoryNew = BIND_1ARG_ZENMOCK_OBJECT(FactoryNewMock);
             }
       } test1X1SelfMocked;
 
       ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetArgs, _SelfMocked)
 
-      const ZenUnitArgs args = GetArgs_ZenMockObject_SelfMocked.ReturnRandom();
-      test1X1SelfMocked._call_ZenUnitTestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgs_ZenMockObject_SelfMocked);
+      const ZenUnitArgs args = GetArgsMock_SelfMocked.ReturnRandom();
+      test1X1SelfMocked._call_ZenUnitTestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgsMock_SelfMocked);
 
       shared_ptr<ITestCaseNumberGeneratorMock> testCaseNumberGeneratorMock = make_shared<ITestCaseNumberGeneratorMock>();
       testCaseNumberGeneratorMock->InitializeMock.Expect();
       testCaseNumberGeneratorMock->NextTestCaseNumberMock.ReturnValues(1, 2, std::numeric_limits<size_t>::max());
-      test1X1SelfMocked.FactoryNew_ZenMockObject.Return(testCaseNumberGeneratorMock);
+      test1X1SelfMocked.FactoryNewMock.Return(testCaseNumberGeneratorMock);
 
       ZENMOCK_NONVOID0_STATIC(vector<string>, ZenUnit::String, SplitOnNonQuotedCommas, _SelfMocked)
       const vector<string> splitTestCaseArgs =
@@ -160,9 +160,9 @@ namespace ZenUnit
          ZenUnit::Random<string>(),
          ZenUnit::Random<string>()
       };
-      SplitOnNonQuotedCommas_ZenMockObject_SelfMocked.Return(splitTestCaseArgs);
+      SplitOnNonQuotedCommasMock_SelfMocked.Return(splitTestCaseArgs);
       test1X1SelfMocked._call_String_SplitOnNonQuotedCommas =
-         BIND_0ARG_ZENMOCK_OBJECT(SplitOnNonQuotedCommas_ZenMockObject_SelfMocked);
+         BIND_0ARG_ZENMOCK_OBJECT(SplitOnNonQuotedCommasMock_SelfMocked);
 
       test1X1SelfMocked.Exit1IfNonExistentTestCaseNumberSpecifiedMock.Expect();
 
@@ -178,10 +178,10 @@ namespace ZenUnit
       //
       const vector<TestResult> testResults = test1X1SelfMocked.RunTest();
       //
-      ZENMOCK(GetArgs_ZenMockObject_SelfMocked.CalledOnce());
-      ZENMOCK(test1X1SelfMocked.FactoryNew_ZenMockObject.CalledOnceWith(args.random));
+      ZENMOCK(GetArgsMock_SelfMocked.CalledOnce());
+      ZENMOCK(test1X1SelfMocked.FactoryNewMock.CalledOnceWith(args.random));
       ZENMOCK(testCaseNumberGeneratorMock->InitializeMock.CalledOnceWith(2, N, args));
-      ZENMOCK(SplitOnNonQuotedCommas_ZenMockObject_SelfMocked.CalledOnce());
+      ZENMOCK(SplitOnNonQuotedCommasMock_SelfMocked.CalledOnce());
       ZENMOCK(testCaseNumberGeneratorMock->NextTestCaseNumberMock.CalledNTimes(3));
       ZENMOCK(test1X1SelfMocked.RunTestCaseIfNotFilteredOutMock.CalledAsFollows(
       {
@@ -346,14 +346,14 @@ namespace ZenUnit
    TEST(Exit1IfNonExistentTestCaseNumberSpecified_EmptyTestResults_WritesErrorMessage_Exits1)
    {
       _consoleMock->WriteLineMock.Expect();
-      exit_ZenMockObject.Expect();
+      exitMock.Expect();
       IS_EMPTY(_testNXN->_testResults);
       //
       _testNXN->Exit1IfNonExistentTestCaseNumberSpecified();
       //
       const std::string expectedErrorMessage = "\nError: Non-existent test case number specified in --run filter. Exiting with code 1.";
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedErrorMessage));
-      ZENMOCK(exit_ZenMockObject.CalledOnceWith(1));
+      ZENMOCK(exitMock.CalledOnceWith(1));
    }
 
    TEST(ShouldRunTestCase_EmptyRunFilters_ReturnsTrue)

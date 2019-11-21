@@ -15,7 +15,7 @@ namespace ZenUnit
 
    STARTUP
    {
-      _stopwatch._call_high_resolution_clock_now = BIND_0ARG_ZENMOCK_OBJECT(now_ZenMockObject);
+      _stopwatch._call_high_resolution_clock_now = BIND_0ARG_ZENMOCK_OBJECT(nowMock);
    }
 
    TEST(Constructor_SetsNowFunction)
@@ -28,11 +28,11 @@ namespace ZenUnit
    TEST(Start_SetsStartTimeToNow)
    {
       const chrono::time_point<chrono::high_resolution_clock> nonDefaultTimePoint = chrono::high_resolution_clock::now();
-      now_ZenMockObject.Return(nonDefaultTimePoint);
+      nowMock.Return(nonDefaultTimePoint);
       //
       _stopwatch.Start();
       //
-      now_ZenMockObject.CalledOnce();
+      nowMock.CalledOnce();
       ARE_EQUAL(nonDefaultTimePoint, _stopwatch._startTime);
    }
 
@@ -48,12 +48,12 @@ namespace ZenUnit
       startDateTime += chrono::milliseconds(Random<unsigned>());
       const unsigned randomMicrosecondDuration = Random<unsigned>();
       const chrono::time_point<chrono::high_resolution_clock> stopTime = startDateTime + chrono::microseconds(randomMicrosecondDuration);
-      now_ZenMockObject.Return(stopTime);
+      nowMock.Return(stopTime);
       _stopwatch._startTime = startDateTime;
       //
       const long long elapsedMicroseconds = _stopwatch.StopAndGetElapsedMicroseconds();
       //
-      ZENMOCK(now_ZenMockObject.CalledOnce());
+      ZENMOCK(nowMock.CalledOnce());
       ARE_EQUAL(randomMicrosecondDuration, elapsedMicroseconds);
    }
 
@@ -86,11 +86,11 @@ namespace ZenUnit
       const long long elapsedMicroseconds = elapsedMilliseconds * 1000;
       const chrono::time_point<chrono::high_resolution_clock>
          stopTimeThatIsElapsedMicrosecondsAheadOfStartTime = startTime + chrono::microseconds(elapsedMicroseconds);
-      now_ZenMockObject.Return(stopTimeThatIsElapsedMicrosecondsAheadOfStartTime);
+      nowMock.Return(stopTimeThatIsElapsedMicrosecondsAheadOfStartTime);
       //
       const string elapsedSeconds = _stopwatch.StopAndGetElapsedSeconds();
       //
-      ZENMOCK(now_ZenMockObject.CalledOnce());
+      ZENMOCK(nowMock.CalledOnce());
       ARE_EQUAL(chrono::time_point<chrono::high_resolution_clock>(), _stopwatch._startTime);
       ARE_EQUAL(expectedReturnValue, elapsedSeconds);
    }

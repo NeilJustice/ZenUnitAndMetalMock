@@ -64,35 +64,35 @@ namespace ZenMock
 
    unique_ptr<ZenMock1Tester<
       Void1FunctionsMock,
-      decltype(Void1Function_ZenMockObject),
-      decltype(Void1Function_ZenMockObject_namespace),
-      decltype(StaticVoid1Function_ZenMockObject),
-      decltype(OverloadedStaticVoid1Function_ZenMockObject_float)>> _zenMock1Tester;
+      decltype(Void1FunctionMock),
+      decltype(Void1FunctionMock_namespace),
+      decltype(StaticVoid1FunctionMock),
+      decltype(OverloadedStaticVoid1FunctionMock_float)>> _zenMock1Tester;
 
    STARTUP
    {
       _zenMock1Tester = make_unique<ZenMock1Tester<
          Void1FunctionsMock,
-         decltype(Void1Function_ZenMockObject),
-         decltype(Void1Function_ZenMockObject_namespace),
-         decltype(StaticVoid1Function_ZenMockObject),
-         decltype(OverloadedStaticVoid1Function_ZenMockObject_float)>>(
+         decltype(Void1FunctionMock),
+         decltype(Void1FunctionMock_namespace),
+         decltype(StaticVoid1FunctionMock),
+         decltype(OverloadedStaticVoid1FunctionMock_float)>>(
          _mock,
          ExpectedVirtualFunctionSignature,
          ExpectedVirtualConstFunctionSignature,
          ExpectedNonVirtualFunctionSignature,
          ExpectedNonVirtualConstFunctionSignature,
 
-         Void1Function_ZenMockObject,
+         Void1FunctionMock,
          FreeFunctionSignature,
 
-         Void1Function_ZenMockObject_namespace,
+         Void1FunctionMock_namespace,
          ExpectedNamespacedFunctionSignature,
 
-         StaticVoid1Function_ZenMockObject,
+         StaticVoid1FunctionMock,
          StaticFunctionSignature,
 
-         OverloadedStaticVoid1Function_ZenMockObject_float,
+         OverloadedStaticVoid1FunctionMock_float,
          ExpectedOverloadedStaticFunctionSignatureA);
    }
 
@@ -110,10 +110,10 @@ namespace ZenMock
       test(_mock.NonVirtualFunctionMock);
       test(_mock.NonVirtualConstFunctionMock);
 
-      test(Void1Function_ZenMockObject);
-      test(Void1Function_ZenMockObject_namespace);
-      test(StaticVoid1Function_ZenMockObject);
-      test(OverloadedStaticVoid1Function_ZenMockObject_float);
+      test(Void1FunctionMock);
+      test(Void1FunctionMock_namespace);
+      test(StaticVoid1FunctionMock);
+      test(OverloadedStaticVoid1FunctionMock_float);
    }
 
    RUN_TESTS(ZenMockVoid1Tests)

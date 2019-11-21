@@ -44,19 +44,19 @@ EVIDENCE
 
 FreeFunctionMockingClassUnderTest _classUnderTest;
 
-// Creates a ZenMock object named GlobalFreeFunction_ZenMockObject.
+// Creates a ZenMock object named GlobalFreeFunctionMock.
 ZENMOCK_NONVOID1_FREE(int, GlobalFreeFunction, int)
 
-// Creates a ZenMock object named NamespacedFreeFunction_ZenMockObject.
+// Creates a ZenMock object named NamespacedFreeFunctionMock.
 ZENMOCK_NONVOID2_NAMESPACED_FREE(int, Namespace, NamespacedFreeFunction, int, int)
 
 STARTUP
 {
    // Dependency injection binding of ZenMock objects to std::functions
    _classUnderTest._call_GlobalFreeFunction =
-      BIND_1ARG_ZENMOCK_OBJECT(GlobalFreeFunction_ZenMockObject);
+      BIND_1ARG_ZENMOCK_OBJECT(GlobalFreeFunctionMock);
    _classUnderTest._call_NamespacedFreeFunction =
-      BIND_2ARG_ZENMOCK_OBJECT(NamespacedFreeFunction_ZenMockObject);
+      BIND_2ARG_ZENMOCK_OBJECT(NamespacedFreeFunctionMock);
 }
 
 TEST(DefaultConstructor_SetsFunctionsToExpectedFunctions)
@@ -72,13 +72,13 @@ TEST(FunctionUnderTest_ReturnsSumOfReturnValuesFromCallingFreeFunctions)
 {
    // ZenMockObject.ReturnRandom() instructs the ZenMock object to return
    // a ZenUnit::Random<ReturnType>() in response to each call to the ZenMocked function.
-   const int globalFreeFunctionReturnValue = GlobalFreeFunction_ZenMockObject.ReturnRandom();
+   const int globalFreeFunctionReturnValue = GlobalFreeFunctionMock.ReturnRandom();
 
    // ZenMockObject.ReturnValues(firstReturnValue, subsequentReturnValues...)
    // instructs the ZenMock object to return firstReturnValue followed by subsequentReturnValues.
    const int namespacedFreeFunctionReturnValueA = ZenUnit::Random<int>();
    const int namespacedFreeFunctionReturnValueB = ZenUnit::Random<int>();
-   NamespacedFreeFunction_ZenMockObject.ReturnValues(
+   NamespacedFreeFunctionMock.ReturnValues(
       namespacedFreeFunctionReturnValueA, namespacedFreeFunctionReturnValueB);
 
    // Testing with a random input for robustnest to code mutations.
@@ -90,12 +90,12 @@ TEST(FunctionUnderTest_ReturnsSumOfReturnValuesFromCallingFreeFunctions)
    // ZenMocked function was called exactly once with expectedArgument.
    // Wrapping ZenMock assertion calls in ZENMOCK() augments potential assertion-failed
    // error messages with __FILE__ and __LINE__ information.
-   ZENMOCK(GlobalFreeFunction_ZenMockObject.CalledOnceWith(input));
+   ZENMOCK(GlobalFreeFunctionMock.CalledOnceWith(input));
 
    // ZenMockObject.CalledAsFollows(expectedCallsVector) asserts that the
    // ZenMocked function was called exactly expectedCallsVector.size() times
    // and in the order specified by expectedCallsVector.
-   ZENMOCK(NamespacedFreeFunction_ZenMockObject.CalledAsFollows(
+   ZENMOCK(NamespacedFreeFunctionMock.CalledAsFollows(
    {
       { 1, 2 },
       { 3, 4 }

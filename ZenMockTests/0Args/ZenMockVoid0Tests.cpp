@@ -68,30 +68,30 @@ namespace ZenMock
 
    unique_ptr<ZenMock0Tester<
       Void0FunctionsMock,
-      decltype(Void0Function_ZenMockObject),
-      decltype(Void0Function_ZenMockObject_namespace),
-      decltype(StaticVoid0Function_ZenMockObject),
-      decltype(Void0Function_ZenMockObject_static)>> _zenMock0Tester;
+      decltype(Void0FunctionMock),
+      decltype(Void0FunctionMock_namespace),
+      decltype(StaticVoid0FunctionMock),
+      decltype(Void0FunctionMock_static)>> _zenMock0Tester;
 
    STARTUP
    {
       _zenMock0Tester = make_unique<ZenMock0Tester<
          Void0FunctionsMock,
-         decltype(Void0Function_ZenMockObject),
-         decltype(Void0Function_ZenMockObject_namespace),
-         decltype(StaticVoid0Function_ZenMockObject),
-         decltype(Void0Function_ZenMockObject_static)>>(_mock,
+         decltype(Void0FunctionMock),
+         decltype(Void0FunctionMock_namespace),
+         decltype(StaticVoid0FunctionMock),
+         decltype(Void0FunctionMock_static)>>(_mock,
             ExpectedVirtualFunctionSignature,
             ExpectedVirtualConstFunctionSignature,
             ExpectedNonVirtualFunctionSignature,
             ExpectedNonVirtualConstFunctionSignature,
-            Void0Function_ZenMockObject,
+            Void0FunctionMock,
             FreeFunctionSignature,
-            Void0Function_ZenMockObject_namespace,
+            Void0FunctionMock_namespace,
             ExpectedNamespacedFunctionSignature,
-            StaticVoid0Function_ZenMockObject,
+            StaticVoid0FunctionMock,
             StaticFunctionSignature,
-            Void0Function_ZenMockObject_static,
+            Void0FunctionMock_static,
             ExpectedStaticFunctionNameClashSignature);
    }
 
@@ -138,10 +138,10 @@ namespace ZenMock
       test(_mock.NonVirtualMock);
       test(_mock.NonVirtualConstMock);
 
-      test(Void0Function_ZenMockObject);
-      test(Void0Function_ZenMockObject_namespace);
-      test(StaticVoid0Function_ZenMockObject);
-      test(Void0Function_ZenMockObject_static);
+      test(Void0FunctionMock);
+      test(Void0FunctionMock_namespace);
+      test(StaticVoid0FunctionMock);
+      test(Void0FunctionMock_static);
    }
 
    RUN_TESTS(ZenMockVoid0Tests)

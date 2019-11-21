@@ -128,15 +128,15 @@ namespace ZenUnit
       ZENMOCK_NONVOID1_FREE(int, fileno, FILE*)
       ZENMOCK_NONVOID1_FREE(int, isatty, int)
       const int StdoutFileHandle = 1;
-      fileno_ZenMockObject.Return(StdoutFileHandle);
-      isatty_ZenMockObject.Return(isattyReturnValue);
-      _consoleColorer._call_fileno = BIND_1ARG_ZENMOCK_OBJECT(fileno_ZenMockObject);
-      _consoleColorer._call_isatty = BIND_1ARG_ZENMOCK_OBJECT(isatty_ZenMockObject);
+      filenoMock.Return(StdoutFileHandle);
+      isattyMock.Return(isattyReturnValue);
+      _consoleColorer._call_fileno = BIND_1ARG_ZENMOCK_OBJECT(filenoMock);
+      _consoleColorer._call_isatty = BIND_1ARG_ZENMOCK_OBJECT(isattyMock);
       //
       const bool consoleSupportsColor = _consoleColorer.StandardOutputSupportsColor();
       //
-      ZENMOCK(fileno_ZenMockObject.CalledOnceWith(stdout));
-      ZENMOCK(isatty_ZenMockObject.CalledOnceWith(StdoutFileHandle));
+      ZENMOCK(filenoMock.CalledOnceWith(stdout));
+      ZENMOCK(isattyMock.CalledOnceWith(StdoutFileHandle));
       ARE_EQUAL(expectedReturnValue, consoleSupportsColor);
    }
 
@@ -150,18 +150,18 @@ namespace ZenUnit
    {
       ZENMOCK_NONVOID1_FREE(HANDLE, GetStdHandle, DWORD)
       ZENMOCK_NONVOID2_FREE(BOOL, SetConsoleTextAttribute, HANDLE, WORD)
-      _consoleColorer._call_GetStdHandle = BIND_1ARG_ZENMOCK_OBJECT(GetStdHandle_ZenMockObject);
-      _consoleColorer._call_SetConsoleTextAttribute = BIND_2ARG_ZENMOCK_OBJECT(SetConsoleTextAttribute_ZenMockObject);
+      _consoleColorer._call_GetStdHandle = BIND_1ARG_ZENMOCK_OBJECT(GetStdHandleMock);
+      _consoleColorer._call_SetConsoleTextAttribute = BIND_2ARG_ZENMOCK_OBJECT(SetConsoleTextAttributeMock);
 
       const HANDLE getStdHandleReturnValue = reinterpret_cast<HANDLE>(1);
-      GetStdHandle_ZenMockObject.Return(getStdHandleReturnValue);
+      GetStdHandleMock.Return(getStdHandleReturnValue);
 
-      SetConsoleTextAttribute_ZenMockObject.Return(TRUE);
+      SetConsoleTextAttributeMock.Return(TRUE);
       //
       _consoleColorer.SetTextColor(color);
       //
-      ZENMOCK(GetStdHandle_ZenMockObject.CalledOnceWith(STD_OUTPUT_HANDLE));
-      ZENMOCK(SetConsoleTextAttribute_ZenMockObject.CalledOnceWith(
+      ZENMOCK(GetStdHandleMock.CalledOnceWith(STD_OUTPUT_HANDLE));
+      ZENMOCK(SetConsoleTextAttributeMock.CalledOnceWith(
          getStdHandleReturnValue, static_cast<WORD>(expectedWindowsColorSet)));
    }
 #endif
