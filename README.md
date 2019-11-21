@@ -1,8 +1,8 @@
 <h1 align="center">ZenUnit & ZenMock</h1>
 
-<h4 align="center">ZenUnit is a single-header C++17 unit testing framework with a high-readability syntax for specifying value-parameterized and type-parameterized unit tests.</h4>
+<h4 align="center">ZenUnit is a single-header C++ unit testing framework with a unique syntax for specifying value-parameterized and type-parameterized unit tests.</h4>
 
-<h4 align="center">ZenMock is a single-header C++17 mocking framework powered by ZenUnit with a high-readability arrange-act-assert syntax for confirming the correctness of calls and return values to and from virtual, non-virtual, static, and free functions.</h4>
+<h4 align="center">ZenMock is a single-header C++ mocking framework powered by ZenUnit with the ability to confirm the correctness of calls and return values to and from virtual, non-virtual, static, and free functions with an easily readable arrange-act-assert syntax.</h4>
 
 |Build Type|Build Status|
 |----------|------------|
@@ -12,37 +12,19 @@
 #### ZenUnit.h single header: <a href="https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenUnit/ZenUnit.h">ZenUnit.h</a>
 #### ZenMock.h single header: <a href="https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenMock/ZenMock.h">ZenMock.h</a>
 
-### How To Compile And Run ZenUnit And ZenMock Unit Tests And Then Install ZenUnit.h And ZenMock.h On Linux
-
-```
-git clone https://github.com/NeilJustice/ZenUnitAndZenMock
-cd ZenUnitAndZenMock && mkdir Debug && cd Debug
-CXX=clang++ cmake .. -GNinja -DCMAKE_BUILD_TYPE=Debug
-# Builds ZenUnit and ZenMock unit test binaries then copies
-# ZenUnit.h to /usr/local/include/ZenUnit/ZenUnit.h and
-# ZenMock.h to /usr/local/include/ZenMock/ZenMock.h
-sudo cmake --build . --target install
-cd ..
-# Runs unit test binaries ZenMockTests, ZenMockExamples,
-# ZenUnitLibraryTests, ZenUnitUtilsAndAssertionTests, then ZenUnitExamples
-./Testing/RunAllDebugTests.sh
-```
-
-### How To Compile And Run ZenUnit And ZenMock Unit Tests And Then Install ZenUnit.h And ZenMock.h On Windows
-
-```
-git clone https://github.com/NeilJustice/ZenUnitAndZenMock
-cd ZenUnitAndZenMock
-cmake . -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=C:\usr_local
-# Builds ZenUnit and ZenMock unit test binaries and then runs them as Visual Studio post-build events,
-# then copies
-# ZenUnit.h to C:\usr_local\include\ZenUnit\ZenUnit.h and
-# ZenMock.h to C:\usr_local\include\ZenMock\ZenMock.h
-cmake --build . --target install
-```
    * [ZenUnit Command Line Usage](#zenunit-command-line-usage)
    * [ZenUnit Assertions](#zenunit-assertions)
-   * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
+      * [Value Assertions](#value-assertions)
+      * [Floating Point Assertions](#floating-point-assertions)
+      * [Data Structure Assertions](#data-structure-assertions)
+      * [Exception Assertions](#exception-assertions)
+      * [Pointer Assertions](#pointer-assertions)
+      * [Test Assertions](#test-assertions)
+      * [Function Assertions](#function-assertions)
+   * [Macros For Defining ZenUnit Test Classes And Tests](#macros-for-defining-zenunit-test-classes-and-tests)
+   * [ZenUnit Random Value Generating Functions For Maximizing Mutation Coverage Which Will Be The Hottest Software Quality Metric Of the 2020s](#list-of-zenunit-Random-Value-Generating-Functions-For-Maximizing-Mutation-Coverage-Which-Will-Be-The-Hottest-Software-Quality-Metric-Of-The-2020s)
+   * [How To Compile And Run ZenUnit And ZenMock Unit Tests And Then Install ZenUnit.h And ZenMock.h On Linux](#how-to-compile-and-run-zenunit-and-zenmock-unit-tests-and-then-install-zenunit.h-and-zenmock.h-on-linux)
+   * [How To Compile And Run ZenUnit And ZenMock Unit Tests And Then Install ZenUnit.h And ZenMock.h On Windows](#how-to-compile-and-run-zenunit-and-zenmock-unit-tests-and-then-install-zenunit.h-and-zenmock.h-on-windows)
 
 ### ZenUnit Command Line Usage
 
@@ -156,7 +138,7 @@ Testing Utility Options:
 |`STD_FUNCTION_TARGETS(expectedStaticOrFreeFunction, stdFunction, messages...)`|First asserts `IS_TRUE(stdFunction)`, which asserts that stdFunction points to a function, then asserts `ARE_EQUAL(expectedStaticOrFreeFunction, *stdFunction.target<decltype(expectedStaticOrFreeFunction)*>())`. This is a key assertion to call prior to overwriting a `std::function` with a [ZenMock](https://github.com/NeilJustice/ZenMock) mock object.|
 |`STD_FUNCTION_TARGETS_OVERLOAD(expectedOverloadTypeInTheFormOfAUsing, expectedStaticOrFreeFunction, stdFunction, messages...)`|Same as above but with `static_cast<expectedOverloadTypeInTheFormOfAUsing>(expectedStaticOrFreeFunction)`.|
 
-### ZenUnit Test Class And Test Defining Macros
+### Macros For Defining ZenUnit Test Classes And Tests
 
 |Test Classes|Description|
 |------------|-----------|
@@ -170,18 +152,24 @@ Testing Utility Options:
 |`STARTUP`|Defines a function to be run before each test.|
 |`CLEANUP`|Defines a function to be run after each test.|
 |`TEST(HighQualityTestName)`|Defines a non-value-parameterized test.|
-|`TEST1X1(HighQualityTestName, Arg1Type, OneByOneTestValues...)`|Defines a 1-by-1 value-parameterized test.|
-|`TEST2X2(HighQualityTestName, Arg1Type, Arg2Type, TwoByTwoTestValues...)`|Defines a 2-by-2 value-parameterized test.|
-|...|...|
-|`TEST10X10(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, TenByTenTestValues...)`|Defines a 10-by-10 value-parameterized test.|
+|`TEST1X1(HighQualityTestName, Arg1Type, 1By1CommaSeparatedTestCaseValueLiterals...)`|Defines a 1-by-1 value-parameterized test.|
+|`TEST2X2(HighQualityTestName, Arg1Type, Arg2Type, 2By2CommaSeparatedTestCaseValueLiterals...)`|Defines a 2-by-2 value-parameterized test.|
+|`TEST3X3|HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, 3By3CommaSeparatedTestCaseValueLiterals...)`|Defines a 3-by-3 value-parameterized test.|
+|`TEST4X4|HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, 4By4CommaSeparatedTestCaseValueLiterals...)`|Defines a 4-by-4 value-parameterized test.|
+|`TEST5X5|HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, 5By5CommaSeparatedTestCaseValueLiterals...)`|Defines a 5-by-5 value-parameterized test.|
+|`TEST6X6|HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, 6By6CommaSeparatedTestCaseValueLiterals...)`|Defines a 6-by-6 value-parameterized test.|
+|`TEST7X7|HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, 7By7CommaSeparatedTestCaseValueLiterals...)`|Defines a 7-by-7 value-parameterized test.|
+|`TEST8X8|HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, 8By8CommaSeparatedTestCaseValueLiterals...)`|Defines an 8-by-8 value-parameterized test.|
+|`TEST9X9|HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, 9By9CommaSeparatedTestCaseValueLiterals...)`|Defines a 9-by-9 value-parameterized test.|
+|`TEST10X10(HighQualityTestName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, 10By10CommaSeparatedTestCaseValueLiterals...)`|Defines a 10-by-10 value-parameterized test.|
 |`RUN_TESTS(HighQualityTestClassName)`|Registers a `TEST_CLASS` to be run when `ZenUnit::RunTests(argc, argv)` is called.|
-|`SKIP_TESTS(HighQualityTestClassName, Reason)`|Skips a `TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called.|
+|`SKIP_TESTS(HighQualityTestClassName, Reason)`|Prevents a `TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called.|
 |`RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)`|Registers a `TEMPLATE_TEST_CLASS` templatized with `TemplateArguments...` to be run when `ZenUnit::RunTests(argc, argv)` is called.|
-|`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Skips a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called.|
 |`THEN_RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)`|Registers a `TEMPLATE_TEST_CLASS` templatized with `TemplateArguments...` to be run when `ZenUnit::RunTests(argc, argv)` is called. For use after `RUN_TEMPLATE_TESTS`.|
-|`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Skips a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called. For use after `SKIP_TEMPLATE_TESTS`.|
+|`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Prevents a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called.|
+|`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Prevents a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called. For use after `SKIP_TEMPLATE_TESTS`.|
 
-### Maximize Mutation Coverage By Testing With Random Values
+### ZenUnit Random Value Generating Functions For Maximizing Mutation Coverage Which Will Be The Hottest Software Quality Metric Of The 2020s
 
 ZenUnit provides the following random value generating functions for writing unit tests that are robust to the swap-variable-with-constant code mutation, which is one of the most straightforward code mutations to induce manually today during code reviews or automatically at CI/CD time in the 2020s with LLVM-powered mutation testing framework [Mull](https://github.com/mull-project/mull).
 
@@ -199,3 +187,37 @@ ZenUnit provides the following random value generating functions for writing uni
 |`ZenUnit::RandomUnorderedMap<T>()`|Returns a `std::unordered_map<KeyType, ValueType>` with size between 0 and 3 with each key a `ZenUnit::Random<KeyType>()` value and each value a `ZenUnit::Random<ValueType>()` value.|
 |`ZenUnit::RandomSet<T>()`|Returns a `std::set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
 |`ZenUnit::RandomUnorderedSet<T>()`|Returns a `std::unordered_set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
+
+### How To Compile And Run ZenUnit And ZenMock Unit Tests And Then Install ZenUnit.h And ZenMock.h On Linux
+
+```
+git clone https://github.com/NeilJustice/ZenUnitAndZenMock
+
+cd ZenUnitAndZenMock && mkdir Debug && cd Debug
+
+CXX=clang++ cmake .. -GNinja -DCMAKE_BUILD_TYPE=Debug
+
+# Builds ZenUnit and ZenMock unit test binaries then copies
+# ZenUnit.h to /usr/local/include/ZenUnit/ZenUnit.h and
+# ZenMock.h to /usr/local/include/ZenMock/ZenMock.h
+sudo cmake --build . --target install
+
+cd ..
+
+# Runs unit test binaries ZenMockTests, ZenMockExamples,
+# ZenUnitLibraryTests, ZenUnitUtilsAndAssertionTests, then ZenUnitExamples
+./TestScripts/RunAllDebugTests.sh
+```
+
+### How To Compile And Run ZenUnit And ZenMock Unit Tests And Then Install ZenUnit.h And ZenMock.h On Windows
+
+```
+git clone https://github.com/NeilJustice/ZenUnitAndZenMock
+cd ZenUnitAndZenMock
+cmake . -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=C:\usr_local
+# Builds ZenUnit and ZenMock unit test binaries and then runs them as Visual Studio post-build events,
+# then copies
+# ZenUnit.h to C:\usr_local\include\ZenUnit\ZenUnit.h and
+# ZenMock.h to C:\usr_local\include\ZenMock\ZenMock.h
+cmake --build . --target install
+```
