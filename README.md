@@ -22,7 +22,7 @@
       * [Test Assertions](#test-assertions)
       * [Function Assertions](#function-assertions)
    * [Macros For Defining ZenUnit Test Classes And Tests](#macros-for-defining-zenunit-test-classes-and-tests)
-   * [ZenUnit Random Value Generating Functions For Maximizing Mutation Coverage Which Will Be The Hottest Software Quality Metric Of the 2020s](#list-of-zenunit-Random-Value-Generating-Functions-For-Maximizing-Mutation-Coverage-Which-Will-Be-The-Hottest-Software-Quality-Metric-Of-The-2020s)
+   * [ZenUnit Random Value Generating Functions For Maximizing Mutation Coverage Which Will Be The Hottest Software Quality Metric Of the 2020s](#zenunit-Random-Value-Generating-Functions-For-Maximizing-Mutation-Coverage-Which-Will-Be-The-Hottest-Software-Quality-Metric-Of-The-2020s)
    * [How To Compile And Run ZenUnit And ZenMock Unit Tests And Then Install ZenUnit.h And ZenMock.h On Linux](#how-to-compile-and-run-zenunit-and-zenmock-unit-tests-and-then-install-zenunit.h-and-zenmock.h-on-linux)
    * [How To Compile And Run ZenUnit And ZenMock Unit Tests And Then Install ZenUnit.h And ZenMock.h On Windows](#how-to-compile-and-run-zenunit-and-zenmock-unit-tests-and-then-install-zenunit.h-and-zenmock.h-on-windows)
 
