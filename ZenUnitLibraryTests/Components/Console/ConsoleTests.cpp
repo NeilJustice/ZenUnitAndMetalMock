@@ -47,7 +47,7 @@ namespace ZenUnit
    TEST(Constructor_NewsConsoleColorer_SetsFunctionPointers)
    {
       Console console;
-      POINTER_WAS_NEWED(console._consoleColorer);
+      DELETE_TO_ASSERT_NEWED(console._consoleColorer);
       STD_FUNCTION_TARGETS(::exit, console._call_exit);
 #if defined _WIN32
       STD_FUNCTION_TARGETS(::IsDebuggerPresent, console._call_IsDebuggerPresent);

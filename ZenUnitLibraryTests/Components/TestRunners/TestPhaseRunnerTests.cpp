@@ -52,12 +52,12 @@ namespace ZenUnit
    TEST(Constructor_NewsComponents_SetsGetArgsFunction)
    {
       TestPhaseRunner testPhaseRunner;
-      POINTER_WAS_NEWED(testPhaseRunner._console);
-      POINTER_WAS_NEWED(testPhaseRunner._testPhaseTranslator);
-      POINTER_WAS_NEWED(testPhaseRunner._voidTwoArgMemberFunctionCaller);
-      POINTER_WAS_NEWED(testPhaseRunner._watch);
+      DELETE_TO_ASSERT_NEWED(testPhaseRunner._console);
+      DELETE_TO_ASSERT_NEWED(testPhaseRunner._testPhaseTranslator);
+      DELETE_TO_ASSERT_NEWED(testPhaseRunner._voidTwoArgMemberFunctionCaller);
+      DELETE_TO_ASSERT_NEWED(testPhaseRunner._watch);
       STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetArgs, testPhaseRunner._call_ZenUnitTestRunner_GetArgs);
-      POINTER_WAS_NEWED(testPhaseRunner._testPhaseStopwatch);
+      DELETE_TO_ASSERT_NEWED(testPhaseRunner._testPhaseStopwatch);
    }
 
    void ExpectStopwatchStartAndStopCalls()

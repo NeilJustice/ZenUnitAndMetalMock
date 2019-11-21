@@ -98,10 +98,10 @@ Testing Utility Options:
    TEST(DefaultConstructor_NewsComponents_SetsStringToUnsignedFunction)
    {
       ArgsParser argsParser;
-      POINTER_WAS_NEWED(argsParser._console);
-      POINTER_WAS_NEWED(argsParser._runFilterParser);
-      POINTER_WAS_NEWED(argsParser._callerOfSetRandomSeedIfNotSetByUser);
-      POINTER_WAS_NEWED(argsParser._watch);
+      DELETE_TO_ASSERT_NEWED(argsParser._console);
+      DELETE_TO_ASSERT_NEWED(argsParser._runFilterParser);
+      DELETE_TO_ASSERT_NEWED(argsParser._callerOfSetRandomSeedIfNotSetByUser);
+      DELETE_TO_ASSERT_NEWED(argsParser._watch);
       STD_FUNCTION_TARGETS(String::ToInt, argsParser._call_String_ToInt);
       STD_FUNCTION_TARGETS(String::ToUnsigned, argsParser._call_String_ToUnsigned);
    }

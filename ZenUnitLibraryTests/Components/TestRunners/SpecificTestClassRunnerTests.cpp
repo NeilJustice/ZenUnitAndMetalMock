@@ -93,12 +93,12 @@ namespace ZenUnit
    {
       SpecificTestClassRunner<TestingTestClass> specificTestClassRunner(_testClassName.c_str());
       //
-      POINTER_WAS_NEWED(specificTestClassRunner._protected_console);
-      POINTER_WAS_NEWED(specificTestClassRunner._twoArgMemberForEacher);
-      POINTER_WAS_NEWED(specificTestClassRunner._voidZeroArgMemberFunctionCaller);
-      POINTER_WAS_NEWED(specificTestClassRunner._twoArgTestAnyer);
-      POINTER_WAS_NEWED(specificTestClassRunner._nonVoidTwoArgFunctionCaller);
-      POINTER_WAS_NEWED(specificTestClassRunner._voidOneArgFunctionCaller);
+      DELETE_TO_ASSERT_NEWED(specificTestClassRunner._protected_console);
+      DELETE_TO_ASSERT_NEWED(specificTestClassRunner._twoArgMemberForEacher);
+      DELETE_TO_ASSERT_NEWED(specificTestClassRunner._voidZeroArgMemberFunctionCaller);
+      DELETE_TO_ASSERT_NEWED(specificTestClassRunner._twoArgTestAnyer);
+      DELETE_TO_ASSERT_NEWED(specificTestClassRunner._nonVoidTwoArgFunctionCaller);
+      DELETE_TO_ASSERT_NEWED(specificTestClassRunner._voidOneArgFunctionCaller);
       ARE_EQUAL(_testClassName.c_str(), specificTestClassRunner._testClassName);
       STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetArgs, specificTestClassRunner._call_ZenUnitTestRunner_GetArgs);
 

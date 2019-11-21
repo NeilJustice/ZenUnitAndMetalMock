@@ -26,9 +26,9 @@ namespace ZenUnit
    TEST(Constructor_NewsConsoleAndWatch)
    {
       PreamblePrinter preamblePrinter;
-      POINTER_WAS_NEWED(preamblePrinter._console);
-      POINTER_WAS_NEWED(preamblePrinter._watch);
-      POINTER_WAS_NEWED(preamblePrinter._environmentalist);
+      DELETE_TO_ASSERT_NEWED(preamblePrinter._console);
+      DELETE_TO_ASSERT_NEWED(preamblePrinter._watch);
+      DELETE_TO_ASSERT_NEWED(preamblePrinter._environmentalist);
    }
 
    TEST(PrintPreambleLinesAndGetStartTime_PrintsCommandLineAndStartTimeAndTestAndTestClassCounts_ReturnsStartTime)

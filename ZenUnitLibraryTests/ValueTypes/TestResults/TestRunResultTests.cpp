@@ -58,12 +58,12 @@ namespace ZenUnit
    TEST(Constructor_NewsComponents)
    {
       TestRunResult testRunResult;
-      POINTER_WAS_NEWED(testRunResult._console);
-      POINTER_WAS_NEWED(testRunResult._watch);
-      POINTER_WAS_NEWED(testRunResult._memberForEacherTestClassResults);
-      POINTER_WAS_NEWED(testRunResult._memberForEacherSkippedTests);
-      POINTER_WAS_NEWED(testRunResult._threeArgForEacher);
-      POINTER_WAS_NEWED(testRunResult._testFailureNumberer);
+      DELETE_TO_ASSERT_NEWED(testRunResult._console);
+      DELETE_TO_ASSERT_NEWED(testRunResult._watch);
+      DELETE_TO_ASSERT_NEWED(testRunResult._memberForEacherTestClassResults);
+      DELETE_TO_ASSERT_NEWED(testRunResult._memberForEacherSkippedTests);
+      DELETE_TO_ASSERT_NEWED(testRunResult._threeArgForEacher);
+      DELETE_TO_ASSERT_NEWED(testRunResult._testFailureNumberer);
       IS_EMPTY(testRunResult._testClassResults);
       IS_EMPTY(testRunResult._skippedTestClassNamesAndSkipReasons);
       IS_EMPTY(testRunResult._skippedFullTestNamesAndSkipReasons);

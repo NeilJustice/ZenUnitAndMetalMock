@@ -79,16 +79,16 @@ namespace ZenUnit
    TEST(Constructor_NewsComponents)
    {
       ZenUnitTestRunner testRunner;
-      POINTER_WAS_NEWED(testRunner._console);
-      POINTER_WAS_NEWED(testRunner._preamblePrinter);
-      POINTER_WAS_NEWED(testRunner._argsParser);
-      POINTER_WAS_NEWED(testRunner._nonVoidOneArgMemberFunctionCaller);
-      POINTER_WAS_NEWED(testRunner._voidOneArgMemberFunctionCaller);
-      POINTER_WAS_NEWED(testRunner._nonVoidTwoArgMemberFunctionCaller);
-      POINTER_WAS_NEWED(testRunner._voidZeroArgMemberFunctionCaller);
-      POINTER_WAS_NEWED(testRunner._testClassRunnerRunner);
-      POINTER_WAS_NEWED(testRunner._testRunResult);
-      POINTER_WAS_NEWED(testRunner._testRunStopwatch);
+      DELETE_TO_ASSERT_NEWED(testRunner._console);
+      DELETE_TO_ASSERT_NEWED(testRunner._preamblePrinter);
+      DELETE_TO_ASSERT_NEWED(testRunner._argsParser);
+      DELETE_TO_ASSERT_NEWED(testRunner._nonVoidOneArgMemberFunctionCaller);
+      DELETE_TO_ASSERT_NEWED(testRunner._voidOneArgMemberFunctionCaller);
+      DELETE_TO_ASSERT_NEWED(testRunner._nonVoidTwoArgMemberFunctionCaller);
+      DELETE_TO_ASSERT_NEWED(testRunner._voidZeroArgMemberFunctionCaller);
+      DELETE_TO_ASSERT_NEWED(testRunner._testClassRunnerRunner);
+      DELETE_TO_ASSERT_NEWED(testRunner._testRunResult);
+      DELETE_TO_ASSERT_NEWED(testRunner._testRunStopwatch);
       ARE_EQUAL(ZenUnitArgs(), testRunner._args);
       IS_FALSE(testRunner._havePaused);
    }

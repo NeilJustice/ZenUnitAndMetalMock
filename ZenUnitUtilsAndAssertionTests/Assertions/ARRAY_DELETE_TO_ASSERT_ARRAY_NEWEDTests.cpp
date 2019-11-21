@@ -2,7 +2,7 @@
 
 namespace ZenUnit
 {
-   TESTS(ARRAY_WAS_NEWEDTests)
+   TESTS(ARRAY_DELETE_TO_ASSERT_ARRAY_NEWEDTests)
    AFACT(PointerIsNullRawPointer_ThrowsAnomaly)
    AFACT(PointerIsNullRawPointer_ThrowsAnomaly__MessagesTestCase)
    AFACT(PointerIsEmptyUniqueArrayPtr_ThrowsAnomaly)
@@ -24,9 +24,9 @@ namespace ZenUnit
    TEST(PointerIsNullRawPointer_ThrowsAnomaly)
    {
       const char* nullRawPointer = nullptr;
-      THROWS_EXCEPTION(ARRAY_WAS_NEWED(nullRawPointer),
+      THROWS_EXCEPTION(ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(nullRawPointer),
          Anomaly, TestUtil::NewlineConcat("",
-"  Failed: ARRAY_WAS_NEWED(nullRawPointer)",
+"  Failed: ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(nullRawPointer)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
 "File.cpp(1)"));
@@ -37,9 +37,9 @@ namespace ZenUnit
       const char* nullRawPointer = nullptr;
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
-      THROWS_EXCEPTION(ARRAY_WAS_NEWED(nullRawPointer, messageA, messageB),
+      THROWS_EXCEPTION(ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(nullRawPointer, messageA, messageB),
          Anomaly, TestUtil::NewlineConcat("",
-"  Failed: ARRAY_WAS_NEWED(nullRawPointer, messageA, messageB)",
+"  Failed: ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(nullRawPointer, messageA, messageB)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
 " Message: \"" + messageA + "\", \"" + messageB + "\"",
@@ -49,9 +49,9 @@ namespace ZenUnit
    TEST(PointerIsEmptyUniqueArrayPtr_ThrowsAnomaly)
    {
       unique_ptr<const int[]> emptyUniqueArrayPtr;
-      THROWS_EXCEPTION(ARRAY_WAS_NEWED(emptyUniqueArrayPtr),
+      THROWS_EXCEPTION(ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(emptyUniqueArrayPtr),
          Anomaly, TestUtil::NewlineConcat("",
-"  Failed: ARRAY_WAS_NEWED(emptyUniqueArrayPtr)",
+"  Failed: ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(emptyUniqueArrayPtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
 "File.cpp(1)"));
@@ -62,12 +62,12 @@ namespace ZenUnit
       DestructorCountingElement* destructorCountingElements = new DestructorCountingElement[3];
       ARE_EQUAL(0, DestructorCountingElement::s_destructorCallCount);
       //
-      ARRAY_WAS_NEWED(destructorCountingElements);
+      ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(destructorCountingElements);
       //
       ARE_EQUAL(3, DestructorCountingElement::s_destructorCallCount);
 
       int* ints = new int[1];
-      ARRAY_WAS_NEWED(ints);
+      ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(ints);
    }
 
    TEST(PointerIsNonNullUniqueArrayPtr_DestructsEachElement_ThrowsWhenCalledTwice)
@@ -75,28 +75,28 @@ namespace ZenUnit
       unique_ptr<const DestructorCountingElement[]> nonNullUniqueArrayPtr(new DestructorCountingElement[5]);
       ARE_EQUAL(0, DestructorCountingElement::s_destructorCallCount);
       //
-      ARRAY_WAS_NEWED(nonNullUniqueArrayPtr);
+      ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(nonNullUniqueArrayPtr);
       //
       ARE_EQUAL(5, DestructorCountingElement::s_destructorCallCount);
 
-      THROWS_EXCEPTION(ARRAY_WAS_NEWED(nonNullUniqueArrayPtr),
+      THROWS_EXCEPTION(ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(nonNullUniqueArrayPtr),
          Anomaly, TestUtil::NewlineConcat("",
-"  Failed: ARRAY_WAS_NEWED(nonNullUniqueArrayPtr)",
+"  Failed: ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(nonNullUniqueArrayPtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
 "File.cpp(1)"));
 
       unique_ptr<const int[]> ints(new int[1]);
-      ARRAY_WAS_NEWED(ints);
-      THROWS_EXCEPTION(ARRAY_WAS_NEWED(ints),
+      ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(ints);
+      THROWS_EXCEPTION(ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(ints),
          Anomaly, TestUtil::NewlineConcat("",
-"  Failed: ARRAY_WAS_NEWED(ints)",
+"  Failed: ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(ints)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
 "File.cpp(1)"));
    }
 
-   RUN_TESTS(ARRAY_WAS_NEWEDTests)
+   RUN_TESTS(ARRAY_DELETE_TO_ASSERT_ARRAY_NEWEDTests)
 
-   size_t ARRAY_WAS_NEWEDTests::DestructorCountingElement::s_destructorCallCount = 0;
+   size_t ARRAY_DELETE_TO_ASSERT_ARRAY_NEWEDTests::DestructorCountingElement::s_destructorCallCount = 0;
 }

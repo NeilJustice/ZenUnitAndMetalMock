@@ -206,12 +206,12 @@ Testing Utility Options:
 //
 
 // Effectively asserts that smartOrRawPointer was operator newed by calling .reset() or operator delete on smartOrRawPointer.
-#define POINTER_WAS_NEWED(smartOrRawPointer, ...) \
-   ZenUnit::POINTER_WAS_NEWED_Defined(smartOrRawPointer, #smartOrRawPointer, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+#define DELETE_TO_ASSERT_NEWED(smartOrRawPointer, ...) \
+   ZenUnit::DELETE_TO_ASSERT_NEWED_Defined(smartOrRawPointer, #smartOrRawPointer, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Effectively asserts that smartOrRawArrayPointer was array operator newed by calling .rest() or delete[] on smartOrRawArrayPointer.
-#define ARRAY_WAS_NEWED(smartOrRawArrayPointer, ...) \
-   ZenUnit::ARRAY_WAS_NEWED_Defined(smartOrRawArrayPointer, #smartOrRawArrayPointer, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+#define ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(smartOrRawArrayPointer, ...) \
+   ZenUnit::ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED_Defined(smartOrRawArrayPointer, #smartOrRawArrayPointer, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
 // Data Structure Assertions
@@ -2408,24 +2408,27 @@ namespace ZenUnit
    };
 
    template<typename... MessageTypes>
-   void ARRAY_WAS_NEWED_Throw(const char* smartOrRawArrayPointerText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED_ThrowAnomaly(const char* smartOrRawArrayPointerText,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-      throw Anomaly("ARRAY_WAS_NEWED", smartOrRawArrayPointerText, "", "", messagesText, Anomaly::Default(),
+      throw Anomaly("ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED", smartOrRawArrayPointerText, "", "", messagesText, Anomaly::Default(),
          "not a nullptr", "nullptr", ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename PointerType, typename... MessageTypes>
-   void ARRAY_WAS_NEWED_Defined(PointerType& smartOrRawArrayPointer, const char* smartOrRawArrayPointerText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED_Defined(PointerType& smartOrRawArrayPointer, const char* smartOrRawArrayPointerText,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (smartOrRawArrayPointer == nullptr)
       {
-         ARRAY_WAS_NEWED_Throw(smartOrRawArrayPointerText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED_ThrowAnomaly(smartOrRawArrayPointerText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
       ArrayDeleter<typename std::remove_reference<decltype(smartOrRawArrayPointer)>::type>::Delete(smartOrRawArrayPointer);
    }
 
    template<typename ElementType, typename CollectionType, typename... MessageTypes>
-   void CONTAINS_ELEMENT_Throw(VRText<CollectionType> expectedElementVRT, VRText<ElementType> collectionVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void CONTAINS_ELEMENT_Throw(VRText<CollectionType> expectedElementVRT, VRText<ElementType> collectionVRT,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string toStringedElement = ToStringer::ToString(expectedElementVRT.value);
       const std::string singleQuotedToStringedElement = String::Concat("'", toStringedElement, "'");
@@ -2436,7 +2439,8 @@ namespace ZenUnit
    }
 
    template<typename ElementType, typename CollectionType, typename... MessageTypes>
-   void CONTAINS_ELEMENT_Defined(VRText<CollectionType> expectedElementVRT, VRText<ElementType> collectionVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void CONTAINS_ELEMENT_Defined(VRText<CollectionType> expectedElementVRT, VRText<ElementType> collectionVRT,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
      const auto findIter = std::find(collectionVRT.value.cbegin(), collectionVRT.value.cend(), expectedElementVRT.value);
       if (findIter == collectionVRT.value.end())
@@ -2446,7 +2450,8 @@ namespace ZenUnit
       }
    }
 
-   inline void EQUALIZER_THROWS_ThrowOnAccountOfExceptionUnexpectedlyThrown(const char* typeName, const char* fieldName, const char* arbitraryNonDefaultFieldValueText, FileLine fileLine, const ZenUnit::Anomaly& becauseAnomaly)
+   inline void EQUALIZER_THROWS_ThrowOnAccountOfExceptionUnexpectedlyThrown(const char* typeName, const char* fieldName, const char* arbitraryNonDefaultFieldValueText,
+      FileLine fileLine, const ZenUnit::Anomaly& becauseAnomaly)
    {
       throw Anomaly("EQUALIZER_THROWS", typeName, fieldName, arbitraryNonDefaultFieldValueText, "",
          becauseAnomaly, "N/A", "N/A", ExpectedActualFormat::Fields, fileLine);
@@ -2465,7 +2470,8 @@ namespace ZenUnit
    }
 
    template<typename ConvertibleToBoolType, typename... MessageTypes>
-   void IS_TRUE_Defined(const ConvertibleToBoolType& value, const char* valueText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_TRUE_Defined(const ConvertibleToBoolType& value, const char* valueText,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (!value)
       {
@@ -2514,7 +2520,8 @@ namespace ZenUnit
    }
 
    template<typename StringType, typename... MessageTypes>
-   void FAIL_TEST_Defined(VRText<StringType> testFailureReasonVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void FAIL_TEST_Defined(VRText<StringType> testFailureReasonVRT,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string failedLinePrefix = String::Concat(" Failed: FAIL_TEST(", testFailureReasonVRT.text);
       std::ostringstream whyBodyBuilder;
@@ -2528,7 +2535,8 @@ namespace ZenUnit
    }
 
    template<typename CollectionType, typename... MessageTypes>
-   void IS_EMPTY_Throw(VRText<CollectionType> collectionVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_EMPTY_Throw(VRText<CollectionType> collectionVRT,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const size_t size = collectionVRT.value.size();
       const std::string expectedField = "empty() == true";
@@ -2538,7 +2546,8 @@ namespace ZenUnit
    }
 
    template<typename CollectionType, typename... MessageTypes>
-   void IS_EMPTY_Defined(VRText<CollectionType> collectionVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_EMPTY_Defined(VRText<CollectionType> collectionVRT,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (!collectionVRT.value.empty())
       {
@@ -2547,7 +2556,8 @@ namespace ZenUnit
    }
 
    template<typename CollectionType, typename... MessageTypes>
-   void IS_NOT_EMPTY_Throw(VRText<CollectionType> collectionVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_NOT_EMPTY_Throw(VRText<CollectionType> collectionVRT,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedField = "empty() == false";
       const std::string actualField = "empty() == true";
@@ -2556,7 +2566,8 @@ namespace ZenUnit
    }
 
    template<typename CollectionType, typename... MessageTypes>
-   void IS_NOT_EMPTY_Defined(VRText<CollectionType> collectionVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_NOT_EMPTY_Defined(VRText<CollectionType> collectionVRT,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (collectionVRT.value.empty())
       {
@@ -2565,14 +2576,16 @@ namespace ZenUnit
    }
 
    template<typename... MessageTypes>
-   void IS_FALSE_Throw(const char* valueText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_FALSE_Throw(const char* valueText,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       throw Anomaly("IS_FALSE", valueText, "", "", messagesText, Anomaly::Default(),
          "false", "true", ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ConvertableToBoolType, typename... MessageTypes>
-   void IS_FALSE_Defined(const ConvertableToBoolType& value, const char* valueText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_FALSE_Defined(const ConvertableToBoolType& value, const char* valueText,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (value)
       {
@@ -2581,14 +2594,16 @@ namespace ZenUnit
    }
 
    template<typename... MessageTypes>
-   void POINTER_IS_NOT_NULL_Throw(const char* pointerText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void POINTER_IS_NOT_NULL_Throw(const char* pointerText,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       throw Anomaly("POINTER_IS_NOT_NULL", pointerText, "", "", messagesText, Anomaly::Default(),
          "not nullptr", "nullptr", ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename... MessageTypes>
-   void POINTER_IS_NOT_NULL_Defined(bool pointerIsNotNullptr, const char* pointerText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void POINTER_IS_NOT_NULL_Defined(bool pointerIsNotNullptr, const char* pointerText,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (!pointerIsNotNullptr)
       {
@@ -2639,7 +2654,8 @@ namespace ZenUnit
    }
 
    template<typename PointerType, typename... MessageTypes>
-   void POINTER_IS_NULL_Throw(VRText<PointerType> pointerVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void POINTER_IS_NULL_Throw(VRText<PointerType> pointerVRT,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string actualField = ToStringer::ToString(pointerVRT.value);
       throw Anomaly("POINTER_IS_NULL", pointerVRT.text, "", "", messagesText, Anomaly::Default(),
@@ -2647,7 +2663,8 @@ namespace ZenUnit
    }
 
    template<typename PointerType, typename... MessageTypes>
-   void POINTER_IS_NULL_Defined(VRText<PointerType> pointerVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void POINTER_IS_NULL_Defined(VRText<PointerType> pointerVRT,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const bool pointerIsNull = pointerVRT.value == nullptr;
       if (!pointerIsNull)
@@ -2657,14 +2674,16 @@ namespace ZenUnit
    }
 
    template<typename... MessageTypes>
-   void IS_TRUE_Throw(const char* valueText, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_TRUE_Throw(const char* valueText,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       throw Anomaly("IS_TRUE", valueText, "", "", messagesText, Anomaly::Default(),
          "true", "false", ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ValueType, typename DefaultValueType, typename... MessageTypes>
-   void IS_ZERO_Throw(VRText<ValueType> valueVRT, const DefaultValueType& defaultValue, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_ZERO_Throw(VRText<ValueType> valueVRT, const DefaultValueType& defaultValue,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedField = ToStringer::ToString(defaultValue);
       const std::string actualField = ToStringer::ToString(valueVRT.value);
@@ -2673,7 +2692,8 @@ namespace ZenUnit
    }
 
    template<typename ValueType, typename... MessageTypes>
-   void IS_ZERO_Defined(VRText<ValueType> valueVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_ZERO_Defined(VRText<ValueType> valueVRT,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       static const typename std::remove_reference<ValueType>::type defaultValue{};
       const bool valueIsDefaultValue = valueVRT.value == defaultValue;
@@ -2704,7 +2724,8 @@ namespace ZenUnit
    }
 
    template<typename ValueType, typename... MessageTypes>
-   void IS_NOT_DEFAULT_VALUE_Throw(VRText<ValueType> valueVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_NOT_DEFAULT_VALUE_Throw(VRText<ValueType> valueVRT,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string actualValueString = ToStringer::ToString(valueVRT.value);
       throw Anomaly("IS_NOT_DEFAULT_VALUE", valueVRT.text, "", "", messagesText, Anomaly::Default(),
@@ -2712,7 +2733,8 @@ namespace ZenUnit
    }
 
    template<typename ValueType, typename... MessageTypes>
-   void IS_NOT_DEFAULT_VALUE_Defined(VRText<ValueType> valueVRT, FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_NOT_DEFAULT_VALUE_Defined(VRText<ValueType> valueVRT,
+      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       static const typename std::remove_reference<ValueType>::type defaultConstructedValueType{};
       const ValueType& value = valueVRT.value;
@@ -3097,22 +3119,20 @@ namespace ZenUnit
    };
 
    template<typename... MessageTypes>
-   void WAS_NEWED_Throw(
-      const char* smartOrRawPointerText,
+   void DELETED_TO_ASSERT_NEWED_ThrowAnomaly(const char* smartOrRawPointerText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-      throw Anomaly("POINTER_WAS_NEWED", smartOrRawPointerText, "", "", messagesText, Anomaly::Default(),
+      throw Anomaly("DELETE_TO_ASSERT_NEWED", smartOrRawPointerText, "", "", messagesText, Anomaly::Default(),
          "not a nullptr", "nullptr", ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename PointerType, typename... MessageTypes>
-   void POINTER_WAS_NEWED_Defined(
-      PointerType& smartOrRawPointer, const char* smartOrRawPointerText,
+   void DELETE_TO_ASSERT_NEWED_Defined(PointerType& smartOrRawPointer, const char* smartOrRawPointerText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (smartOrRawPointer == nullptr)
       {
-         WAS_NEWED_Throw(smartOrRawPointerText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         DELETED_TO_ASSERT_NEWED_ThrowAnomaly(smartOrRawPointerText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
       ScalarDeleter<typename std::remove_reference<
          decltype(smartOrRawPointer)>::type>::Delete(smartOrRawPointer);

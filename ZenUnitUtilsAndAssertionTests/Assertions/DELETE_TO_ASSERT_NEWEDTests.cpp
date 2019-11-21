@@ -2,7 +2,7 @@
 
 namespace ZenUnit
 {
-   TESTS(POINTER_WAS_NEWEDTests_RawPointers)
+   TESTS(DELETE_TO_ASSERT_NEWEDTests)
    AFACT(PointerIsNullRawPointer_ThrowsAnomaly)
    AFACT(PointerIsNullRawPointer_ThrowsAnomaly__MessagesTestCase)
    AFACT(PointerIsEmptyUniquePtr_ThrowsAnomaly)
@@ -33,8 +33,8 @@ namespace ZenUnit
    TEST(PointerIsNullRawPointer_ThrowsAnomaly)
    {
       const int* nullRawPointer = nullptr;
-      THROWS_EXCEPTION(POINTER_WAS_NEWED(nullRawPointer), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: POINTER_WAS_NEWED(nullRawPointer)",
+      THROWS_EXCEPTION(DELETE_TO_ASSERT_NEWED(nullRawPointer), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: DELETE_TO_ASSERT_NEWED(nullRawPointer)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
 "File.cpp(1)"));
@@ -45,8 +45,8 @@ namespace ZenUnit
       const char* nullRawPointer = nullptr;
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
-      THROWS_EXCEPTION(POINTER_WAS_NEWED(nullRawPointer, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: POINTER_WAS_NEWED(nullRawPointer, messageA, messageB)",
+      THROWS_EXCEPTION(DELETE_TO_ASSERT_NEWED(nullRawPointer, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: DELETE_TO_ASSERT_NEWED(nullRawPointer, messageA, messageB)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
 " Message: \"" + messageA + "\", \"" + messageB + "\"",
@@ -56,8 +56,8 @@ namespace ZenUnit
    TEST(PointerIsEmptyUniquePtr_ThrowsAnomaly)
    {
       unique_ptr<const int> emptyUniquePtr;
-      THROWS_EXCEPTION(POINTER_WAS_NEWED(emptyUniquePtr), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: POINTER_WAS_NEWED(emptyUniquePtr)",
+      THROWS_EXCEPTION(DELETE_TO_ASSERT_NEWED(emptyUniquePtr), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: DELETE_TO_ASSERT_NEWED(emptyUniquePtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
 "File.cpp(1)"));
@@ -66,8 +66,8 @@ namespace ZenUnit
    TEST(PointerIsEmptySharedPtr_ThrowsAnomaly)
    {
       shared_ptr<const int> emptySharedPtr;
-      THROWS_EXCEPTION(POINTER_WAS_NEWED(emptySharedPtr), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: POINTER_WAS_NEWED(emptySharedPtr)",
+      THROWS_EXCEPTION(DELETE_TO_ASSERT_NEWED(emptySharedPtr), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: DELETE_TO_ASSERT_NEWED(emptySharedPtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
 "File.cpp(1)"));
@@ -78,7 +78,7 @@ namespace ZenUnit
       size_t destructorCallCount = 0;
       const DestructorCountingElement* nonNullRawPointer = new DestructorCountingElement([&] { ++destructorCallCount; });
       //
-      POINTER_WAS_NEWED(nonNullRawPointer);
+      DELETE_TO_ASSERT_NEWED(nonNullRawPointer);
       //
       ARE_EQUAL(1, destructorCallCount);
    }
@@ -86,11 +86,11 @@ namespace ZenUnit
    TEST(PointerIsNonEmptyUniquePtr_DeletesPointer_ThrowsAnomalyWhenCalledTwice)
    {
       unique_ptr<const int> nonEmptyUniquePtr(new int);
-      POINTER_WAS_NEWED(nonEmptyUniquePtr);
+      DELETE_TO_ASSERT_NEWED(nonEmptyUniquePtr);
 
-      THROWS_EXCEPTION(POINTER_WAS_NEWED(nonEmptyUniquePtr),
+      THROWS_EXCEPTION(DELETE_TO_ASSERT_NEWED(nonEmptyUniquePtr),
          Anomaly, TestUtil::NewlineConcat("",
-"  Failed: POINTER_WAS_NEWED(nonEmptyUniquePtr)",
+"  Failed: DELETE_TO_ASSERT_NEWED(nonEmptyUniquePtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
 "File.cpp(1)"));
@@ -99,11 +99,11 @@ namespace ZenUnit
    TEST(PointerIsNonEmptySharedPtr_DeletesPointer_ThrowsAnomalyWhenCalledTwice)
    {
       shared_ptr<const int> nonEmptySharedPtr(new int);
-      POINTER_WAS_NEWED(nonEmptySharedPtr);
+      DELETE_TO_ASSERT_NEWED(nonEmptySharedPtr);
 
-      THROWS_EXCEPTION(POINTER_WAS_NEWED(nonEmptySharedPtr),
+      THROWS_EXCEPTION(DELETE_TO_ASSERT_NEWED(nonEmptySharedPtr),
          Anomaly, TestUtil::NewlineConcat("",
-"  Failed: POINTER_WAS_NEWED(nonEmptySharedPtr)",
+"  Failed: DELETE_TO_ASSERT_NEWED(nonEmptySharedPtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
 "File.cpp(1)"));
@@ -114,12 +114,12 @@ namespace ZenUnit
       size_t destructorCallCount = 0;
       unique_ptr<const DestructorCountingElement> uniquePtr(new DestructorCountingElement([&] { ++destructorCallCount; }));
       //
-      POINTER_WAS_NEWED(uniquePtr);
+      DELETE_TO_ASSERT_NEWED(uniquePtr);
       //
       ARE_EQUAL(1, destructorCallCount);
-      THROWS_EXCEPTION(POINTER_WAS_NEWED(uniquePtr),
+      THROWS_EXCEPTION(DELETE_TO_ASSERT_NEWED(uniquePtr),
          Anomaly, TestUtil::NewlineConcat("",
-"  Failed: POINTER_WAS_NEWED(uniquePtr)",
+"  Failed: DELETE_TO_ASSERT_NEWED(uniquePtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
 "File.cpp(1)"));
@@ -130,16 +130,16 @@ namespace ZenUnit
       size_t destructorCallCount = 0;
       shared_ptr<const DestructorCountingElement> sharedPtr(new DestructorCountingElement([&] { ++destructorCallCount; }));
       //
-      POINTER_WAS_NEWED(sharedPtr);
+      DELETE_TO_ASSERT_NEWED(sharedPtr);
       //
       ARE_EQUAL(1, destructorCallCount);
-      THROWS_EXCEPTION(POINTER_WAS_NEWED(sharedPtr),
+      THROWS_EXCEPTION(DELETE_TO_ASSERT_NEWED(sharedPtr),
          Anomaly, TestUtil::NewlineConcat("",
-"  Failed: POINTER_WAS_NEWED(sharedPtr)",
+"  Failed: DELETE_TO_ASSERT_NEWED(sharedPtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
 "File.cpp(1)"));
    }
 
-   RUN_TESTS(POINTER_WAS_NEWEDTests_RawPointers)
+   RUN_TESTS(DELETE_TO_ASSERT_NEWEDTests)
 }

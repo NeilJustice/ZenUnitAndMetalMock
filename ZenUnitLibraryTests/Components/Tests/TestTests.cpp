@@ -43,8 +43,8 @@ namespace ZenUnit
       const string testName = Random<string>();
       //
       Test test(testClassName.c_str(), testName.c_str(), 0);
-      POINTER_WAS_NEWED(test._testPhaseRunner);
-      POINTER_WAS_NEWED(test._testResultFactory);
+      DELETE_TO_ASSERT_NEWED(test._testPhaseRunner);
+      DELETE_TO_ASSERT_NEWED(test._testResultFactory);
       ARE_EQUAL(FileLine(), test._protected_fileLine);
 
       const char* const testNameValue = test.Name();

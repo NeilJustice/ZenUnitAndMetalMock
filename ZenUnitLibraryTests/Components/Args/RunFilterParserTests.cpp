@@ -28,7 +28,7 @@ namespace ZenUnit
    TEST(DefaultConstructor_NewsTransformer)
    {
       RunFilterParser runFilterParser;
-      POINTER_WAS_NEWED(runFilterParser._memberFunctionTransformer);
+      DELETE_TO_ASSERT_NEWED(runFilterParser._memberFunctionTransformer);
       STD_FUNCTION_TARGETS(String::ToUnsigned, runFilterParser._call_String_ToUnsigned);
    }
 

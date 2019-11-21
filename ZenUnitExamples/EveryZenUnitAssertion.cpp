@@ -58,9 +58,9 @@ TEST(CallAllMacros)
    POINTER_IS_NULL(nullptr);
    POINTER_IS_NOT_NULL(std::make_unique<int>());
    const int* operatorNewedInt = new int;
-   POINTER_WAS_NEWED(operatorNewedInt);
+   DELETE_TO_ASSERT_NEWED(operatorNewedInt);
    const int* operatorNewedIntArray = new int[3];
-   ARRAY_WAS_NEWED(operatorNewedIntArray);
+   ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(operatorNewedIntArray);
    POINTEES_EQUAL(&x, &x);
 
    // Data Structures

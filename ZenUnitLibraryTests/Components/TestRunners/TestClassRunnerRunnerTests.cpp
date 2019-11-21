@@ -62,11 +62,11 @@ namespace ZenUnit
    TEST(Constructor_NewsComponents)
    {
       TestClassRunnerRunner testClassRunnerRunner;
-      POINTER_WAS_NEWED(testClassRunnerRunner._twoArgMemberForEacher);
-      POINTER_WAS_NEWED(testClassRunnerRunner._twoArgMemberAnyer);
-      POINTER_WAS_NEWED(testClassRunnerRunner._sorter);
-      POINTER_WAS_NEWED(testClassRunnerRunner._transformer);
-      POINTER_WAS_NEWED(testClassRunnerRunner._watch);
+      DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._twoArgMemberForEacher);
+      DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._twoArgMemberAnyer);
+      DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._sorter);
+      DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._transformer);
+      DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._watch);
       IS_EMPTY(testClassRunnerRunner._testClassRunners);
    }
 

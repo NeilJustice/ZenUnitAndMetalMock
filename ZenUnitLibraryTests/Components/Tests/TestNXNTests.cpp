@@ -64,8 +64,8 @@ namespace ZenUnit
          _testClassName.c_str(), _testName.c_str(), _testCaseArgsText.c_str(), 0, 0, 0, 0);
 
       // Fields
-      POINTER_WAS_NEWED(test2X2._console);
-      POINTER_WAS_NEWED(test2X2._callerOfRunFilterMatchesTestCase);
+      DELETE_TO_ASSERT_NEWED(test2X2._console);
+      DELETE_TO_ASSERT_NEWED(test2X2._callerOfRunFilterMatchesTestCase);
       STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetArgs, test2X2._call_ZenUnitTestRunner_GetArgs);
       STD_FUNCTION_TARGETS(::exit, test2X2._call_exit);
       STD_FUNCTION_TARGETS(ITestCaseNumberGenerator::FactoryNew, test2X2._call_ITestCaseNumberGeneratorFactoryNew);
@@ -412,7 +412,7 @@ namespace ZenUnit
       //
       _testNXN->NewTestClass();
       //
-      POINTER_WAS_NEWED(_testNXN->_testClass);
+      DELETE_TO_ASSERT_NEWED(_testNXN->_testClass);
       _testNXN->_testClass.reset();
    }
 

@@ -20,8 +20,8 @@ namespace ZenUnit
    TEST(DefaultConstructor_NewsConsoleAndNewArgMemberAnyer)
    {
       TestClassRunner testClassRunner;
-      POINTER_WAS_NEWED(testClassRunner._protected_console);
-      POINTER_WAS_NEWED(testClassRunner._protected_twoArgMemberAnyer);
+      DELETE_TO_ASSERT_NEWED(testClassRunner._protected_console);
+      DELETE_TO_ASSERT_NEWED(testClassRunner._protected_twoArgMemberAnyer);
    }
 
    TEST(TestClassName_ReturnNullptr)
