@@ -74,7 +74,7 @@ TEST(CallAllMacros)
    STD_ARRAYS_EQUAL((std::array<int, 5>{}), (std::array<int, 5>{}));
 
    // Exceptions
-   THROWS([]{ throw std::runtime_error("what"); }(), std::runtime_error, "what");
+   THROWS_EXCEPTION([]{ throw std::runtime_error("what"); }(), std::runtime_error, "what");
    DOES_NOT_THROW([]{}());
 
    // Equalizers

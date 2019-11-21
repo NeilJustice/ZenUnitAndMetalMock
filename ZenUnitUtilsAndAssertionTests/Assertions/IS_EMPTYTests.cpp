@@ -18,7 +18,7 @@ namespace ZenUnit
 
    TEST(VectorIsNotEmpty_Throws)
    {
-      THROWS(IS_EMPTY(vector<int>(1)), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_EMPTY(vector<int>(1)), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_EMPTY(vector<int>(1))",
 "Expected: empty() == true",
 "  Actual: empty() == false (size() == 1)",
@@ -28,7 +28,7 @@ namespace ZenUnit
    TEST(StringIsNotEmpty_Throws_MessagesTestCase)
    {
       const string messageA = "A", messageB = "B";
-      THROWS(IS_EMPTY(string(10, 'a'), messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_EMPTY(string(10, 'a'), messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_EMPTY(string(10, 'a'), messageA, messageB)",
 "Expected: empty() == true",
 "  Actual: empty() == false (size() == 10)",

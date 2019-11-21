@@ -57,7 +57,7 @@ namespace ZenUnit
    TEST(OneTypeEqualizerDefined_CallsIt)
    {
       const EqualizerOneTypeTestStruct_AreNotEqualTests notExpected{}, actual{};
-      THROWS(ARE_NOT_EQUAL(notExpected, actual), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(ARE_NOT_EQUAL(notExpected, actual), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARE_NOT_EQUAL(notExpected, actual)",
 "Expected: Not Expected: <EqualizerOneTypeTestStruct_AreNotEqualTests>",
 "  Actual:       Actual: <EqualizerOneTypeTestStruct_AreNotEqualTests>",
@@ -71,7 +71,7 @@ namespace ZenUnit
    TEST(TwoTypeEqualizerDefined_CallsIt)
    {
       const EqualizerTwoTypeTestStruct_AreNotEqualTests notExpected{};
-      THROWS(ARE_NOT_EQUAL(notExpected, 1), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(ARE_NOT_EQUAL(notExpected, 1), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARE_NOT_EQUAL(notExpected, 1)",
 "Expected: Not Expected: <EqualizerTwoTypeTestStruct_AreNotEqualTests>",
 "  Actual:       Actual: 1",
@@ -85,7 +85,7 @@ namespace ZenUnit
    TEST(BothOneAndTwoTypeEqualizersDefined_CallsTheOneTypeEqualizer)
    {
       const EqualizerBothOneAndTwoTypeTestStruct_AreNotEqualTests notExpected{}, actual{};
-      THROWS(ARE_NOT_EQUAL(notExpected, actual), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(ARE_NOT_EQUAL(notExpected, actual), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARE_NOT_EQUAL(notExpected, actual)",
 "Expected: Not Expected: <EqualizerBothOneAndTwoTypeTestStruct_AreNotEqualTests>",
 "  Actual:       Actual: <EqualizerBothOneAndTwoTypeTestStruct_AreNotEqualTests>",
@@ -109,7 +109,7 @@ namespace ZenUnit
 
    TEST(IntLiteralsAreEqual_Throws)
    {
-      THROWS(ARE_NOT_EQUAL(0, 0), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(ARE_NOT_EQUAL(0, 0), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARE_NOT_EQUAL(0, 0)",
 "Not Expected: 0",
 "      Actual: 0",
@@ -121,7 +121,7 @@ namespace ZenUnit
       const int notExpected = 0;
       const int actual = notExpected;
       const string messageA = "A", messageB = "B";
-      THROWS(ARE_NOT_EQUAL(notExpected, actual, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(ARE_NOT_EQUAL(notExpected, actual, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARE_NOT_EQUAL(notExpected, actual, messageA, messageB)",
 "Not Expected: 0",
 "      Actual: 0",
@@ -133,7 +133,7 @@ namespace ZenUnit
    {
       const string notExpected = "not expected";
       const string actual = notExpected;
-      THROWS(ARE_NOT_EQUAL(notExpected, actual), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(ARE_NOT_EQUAL(notExpected, actual), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARE_NOT_EQUAL(notExpected, actual)",
 "Not Expected: \"not expected\"",
 "      Actual: \"not expected\"",
@@ -144,7 +144,7 @@ namespace ZenUnit
    {
       const string_view notExpected = "not expected";
       const string_view actual = notExpected;
-      THROWS(ARE_NOT_EQUAL(notExpected, actual), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(ARE_NOT_EQUAL(notExpected, actual), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARE_NOT_EQUAL(notExpected, actual)",
 "Not Expected: \"not expected\"",
 "      Actual: \"not expected\"",
@@ -153,7 +153,7 @@ namespace ZenUnit
 
    TEST(EqualizerBothOneAndTwoTypeTestStruct_CodeCoverage)
    {
-      THROWS(
+      THROWS_EXCEPTION(
          (TwoTypeEqualizer<EqualizerBothOneAndTwoTypeTestStruct_AreNotEqualTests, EqualizerBothOneAndTwoTypeTestStruct_AreNotEqualTests>::AssertEqual(
             EqualizerBothOneAndTwoTypeTestStruct_AreNotEqualTests{}, EqualizerBothOneAndTwoTypeTestStruct_AreNotEqualTests{})),
          invalid_argument, "unexpected call");

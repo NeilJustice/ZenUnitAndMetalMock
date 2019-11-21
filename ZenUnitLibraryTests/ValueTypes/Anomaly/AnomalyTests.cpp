@@ -67,7 +67,7 @@ namespace ZenUnit
       expectedWhyBuilder << fileLine;
       const string expectedWhy = expectedWhyBuilder.str();
 
-      THROWS(Anomaly::ThrowThreeLineAssertionAnomaly(
+      THROWS_EXCEPTION(Anomaly::ThrowThreeLineAssertionAnomaly(
          assertionName,
          arg1Text,
          arg2Text,
@@ -104,7 +104,7 @@ namespace ZenUnit
       expectedWhyBuilder << fileLine;
       const string expectedWhy = expectedWhyBuilder.str();
 
-      THROWS(Anomaly::ThrowThreeLineAssertionAnomaly(
+      THROWS_EXCEPTION(Anomaly::ThrowThreeLineAssertionAnomaly(
          assertionName,
          arg1Text,
          arg2Text,

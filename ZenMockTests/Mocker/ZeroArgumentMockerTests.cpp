@@ -48,7 +48,7 @@ namespace ZenMock
    TEST(ZenMockIt_ExpectedFalse_Throws)
    {
       IS_FALSE(_mocker->_wasExpected);
-      THROWS(_mocker->ZenMockIt(), UnexpectedCallException,
+      THROWS_EXCEPTION(_mocker->ZenMockIt(), UnexpectedCallException,
          UnexpectedCallException::MakeWhat(_signature));
    }
 
@@ -82,7 +82,7 @@ Expected: 1
   Actual: )", numberOfCalls, R"(
  Message: ")", _signature, R"("
 File.cpp(1))");
-         THROWS(_mocker->CalledOnce(), Anomaly, expectedWhat);
+         THROWS_EXCEPTION(_mocker->CalledOnce(), Anomaly, expectedWhat);
       }
       else
       {
@@ -94,7 +94,7 @@ File.cpp(1))");
 
    TEST(CalledNTimes_NIsZero_Throws)
    {
-      THROWS(_mocker->CalledNTimes(0), UnsupportedCalledZeroTimesException,
+      THROWS_EXCEPTION(_mocker->CalledNTimes(0), UnsupportedCalledZeroTimesException,
          UnsupportedCalledZeroTimesException::MakeWhat(_signature));
    }
 
@@ -120,7 +120,7 @@ Expected: )", expectedNumberOfCalls, R"(
   Actual: )", numberOfCalls, R"(
  Message: ")", _signature, R"("
 File.cpp(1))");
-         THROWS(_mocker->CalledNTimes(expectedNumberOfCalls), Anomaly, expectedWhat);
+         THROWS_EXCEPTION(_mocker->CalledNTimes(expectedNumberOfCalls), Anomaly, expectedWhat);
       }
       else
       {

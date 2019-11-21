@@ -108,7 +108,7 @@ namespace ZenMock
 )" + zenMockedFunctionSignature + R"(
 Argument1: )" + to_string(argument1) + R"(
 Argument2: )" + to_string(argument2);
-         THROWS(zenMockObject.ZenMockIt(argument1, argument2),
+         THROWS_EXCEPTION(zenMockObject.ZenMockIt(argument1, argument2),
             ZenMock::UnexpectedCallException, expectedExceptionMessage);
       };
       testcase(_zenMockObject.Virtual2ArgFunctionMock, Virtual2ArgFunctionSignature);
@@ -150,7 +150,7 @@ Argument2: )" + to_string(argument2);
          const int argument1 = ZenUnit::Random<int>();
          const int argument2 = ZenUnit::Random<int>();
          //
-         THROWS(zenMockObject.ZenMockIt(argument1, argument2),
+         THROWS_EXCEPTION(zenMockObject.ZenMockIt(argument1, argument2),
             runtime_error, exceptionMessage);
          //
          ZENMOCK(zenMockObject.CalledOnceWith(argument1, argument2));
@@ -174,7 +174,7 @@ Argument2: )" + to_string(argument2);
          const int argument1 = ZenUnit::Random<int>();
          const int argument2 = ZenUnit::Random<int>();
          //
-         THROWS(zenMockObject.ZenMockIt(argument1, argument2),
+         THROWS_EXCEPTION(zenMockObject.ZenMockIt(argument1, argument2),
             invalid_argument, exceptionMessage);
          //
          ZENMOCK(zenMockObject.CalledOnceWith(argument1, argument2));
@@ -201,7 +201,7 @@ Expected: 1
   Actual: 0
  Message: ")" + zenMockedFunctionSignature + R"("
 File.cpp(1))";
-         THROWS(zenMockObject.CalledOnceWith(argument1, argument2),
+         THROWS_EXCEPTION(zenMockObject.CalledOnceWith(argument1, argument2),
             ZenUnit::Anomaly, expectedExceptionMessage);
       };
       testcase(_zenMockObject.Virtual2ArgFunctionMock, Virtual2ArgFunctionSignature);
@@ -241,7 +241,7 @@ Expected: 1
  Message: ")" + zenMockedFunctionSignature + R"("
 File.cpp(1)
 File.cpp(1))";
-         THROWS(zenMockObject.CalledAsFollows(
+         THROWS_EXCEPTION(zenMockObject.CalledAsFollows(
          {
             { argument1, argument2 }
          }), ZenUnit::Anomaly, expectedExceptionMessage);
@@ -269,7 +269,7 @@ Expected: )" + to_string(n) + R"(
   Actual: 0
  Message: ")" + zenMockedFunctionSignature + R"("
 File.cpp(1))";
-         THROWS(zenMockObject.CalledNTimesWith(n, argument1, argument2),
+         THROWS_EXCEPTION(zenMockObject.CalledNTimesWith(n, argument1, argument2),
             ZenUnit::Anomaly, expectedExceptionMessage);
       };
       testcase(_zenMockObject.Virtual2ArgFunctionMock, Virtual2ArgFunctionSignature);

@@ -42,7 +42,7 @@ namespace ZenUnit
       //
       IS_EMPTY(transformedElements);
 
-      THROWS(_classInstance.ConstMemberFunctionThatThrowsIfCalled(ElementType{}), runtime_error,
+      THROWS_EXCEPTION(_classInstance.ConstMemberFunctionThatThrowsIfCalled(ElementType{}), runtime_error,
          "Expected call to ConstMemberFunctionThatThrows()"); // 100% code coverage
    }
 

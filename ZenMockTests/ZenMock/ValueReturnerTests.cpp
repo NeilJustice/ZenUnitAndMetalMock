@@ -51,11 +51,11 @@ namespace ZenMock
    TEST(ZenMockNextReturnValue_DefaultConstructibleReturnType_NoReturnValuesSpecified_Throws)
    {
       ValueReturner<int> valueReturnerInt(_zenMockedFunctionSignature);
-      THROWS(valueReturnerInt.ZenMockNextReturnValue(), ReturnValueMustBeSpecifiedException,
+      THROWS_EXCEPTION(valueReturnerInt.ZenMockNextReturnValue(), ReturnValueMustBeSpecifiedException,
          ReturnValueMustBeSpecifiedException::MakeWhat(_zenMockedFunctionSignature));
 
       ValueReturner<const string&> valueReturnerConstStringRef(_zenMockedFunctionSignature);
-      THROWS(valueReturnerConstStringRef.ZenMockNextReturnValue(), ReturnValueMustBeSpecifiedException,
+      THROWS_EXCEPTION(valueReturnerConstStringRef.ZenMockNextReturnValue(), ReturnValueMustBeSpecifiedException,
          ReturnValueMustBeSpecifiedException::MakeWhat(_zenMockedFunctionSignature));
    }
 
@@ -85,7 +85,7 @@ namespace ZenMock
    TEST(ZenMockNextReturnValue_NonDefaultConstructibleReturnType_NoReturnValuesSpecified_Throws)
    {
       ValueReturner<NonDefaultConstructible> valueReturner(_zenMockedFunctionSignature);
-      THROWS(valueReturner.ZenMockNextReturnValue(), ReturnValueMustBeSpecifiedException,
+      THROWS_EXCEPTION(valueReturner.ZenMockNextReturnValue(), ReturnValueMustBeSpecifiedException,
          ReturnValueMustBeSpecifiedException::MakeWhat(_zenMockedFunctionSignature));
    }
 
@@ -108,7 +108,7 @@ namespace ZenMock
    {
       ValueReturner<int> valueReturner(_zenMockedFunctionSignature);
       const char* const ExpectedWhat = "ZenMock::ValueReturner::ZenMockAddContainerReturnValues(): Return values container cannot be empty.";
-      THROWS(valueReturner.ZenMockAddContainerReturnValues(vector<int>{}), invalid_argument, ExpectedWhat);
+      THROWS_EXCEPTION(valueReturner.ZenMockAddContainerReturnValues(vector<int>{}), invalid_argument, ExpectedWhat);
    }
 
    RUN_TESTS(ValueReturnerTests)

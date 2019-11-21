@@ -29,7 +29,7 @@ namespace ZenMock
 "  Actual: \"message\"\n"
 " Message: \"virtual void ZenUnit::Console::WriteLine(string_view) const\"\n"
 "File.cpp(1)";
-      THROWS(ZENMOCK(consoleMock.WriteLineMock.CalledOnceWith(expectedMessage)), Anomaly, expectedWhat);
+      THROWS_EXCEPTION(ZENMOCK(consoleMock.WriteLineMock.CalledOnceWith(expectedMessage)), Anomaly, expectedWhat);
    }
 
    RUN_TESTS(ZENMOCKTests)

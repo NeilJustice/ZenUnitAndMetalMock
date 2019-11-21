@@ -118,7 +118,7 @@ namespace ZenUnit
 
    TEST(PredicateThatThrowsIfCalled_CodeCoverage)
    {
-      THROWS(PredicateThatThrowsIfCalled(T(), Arg2Type(), Arg3Type()), invalid_argument, "unexpected call");
+      THROWS_EXCEPTION(PredicateThatThrowsIfCalled(T(), Arg2Type(), Arg3Type()), invalid_argument, "unexpected call");
    }
 
    RUN_TEMPLATE_TESTS(ThreeArgAnyerTests, vector, int, int, int)

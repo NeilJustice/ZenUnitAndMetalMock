@@ -34,8 +34,8 @@ namespace ZenUnit
    }
    TEST(TemplateZenUnitEqualizer_ValuesNotEqualityOperatorEqual_Throws)
    {
-      THROWS(Equalizer<int>::AssertEqual(0, 1), EqualizerException, "");
-      THROWS(Equalizer<string>::AssertEqual(string("abc"), string("def")), EqualizerException, "");
+      THROWS_EXCEPTION(Equalizer<int>::AssertEqual(0, 1), EqualizerException, "");
+      THROWS_EXCEPTION(Equalizer<string>::AssertEqual(string("abc"), string("def")), EqualizerException, "");
    }
 
    TEST(TemplateTwoTypeZenUnitEqualizer_ValuesAreEqualityOperatorEqual_DoesNotThrow)
@@ -45,9 +45,9 @@ namespace ZenUnit
    }
    TEST(TemplateTwoTypeZenUnitEqualizer_ValuesNotEqualityOperatorEqual_Throws)
    {
-      THROWS(TwoTypeEqualizer<UserType Comma UserType>::AssertEqual(
+      THROWS_EXCEPTION(TwoTypeEqualizer<UserType Comma UserType>::AssertEqual(
          UserType(1) Comma UserType(2)), EqualizerException, "");
-      THROWS(TwoTypeEqualizer<int Comma char>::AssertEqual(
+      THROWS_EXCEPTION(TwoTypeEqualizer<int Comma char>::AssertEqual(
          1 Comma '1'), EqualizerException, "");
    }
 
@@ -59,12 +59,12 @@ namespace ZenUnit
    }
    TEST(ConstCharPointer_ConstCharPointer_NotEqual_Throws)
    {
-      THROWS(Equalizer<const char*>::AssertEqual("a", "A"), EqualizerException, "");
-      THROWS(Equalizer<const char*>::AssertEqual("a", "a "), EqualizerException, "");
-      THROWS(Equalizer<const char*>::AssertEqual(nullptr, ""), EqualizerException, "");
-      THROWS(Equalizer<const char*>::AssertEqual(nullptr, "a"), EqualizerException, "");
-      THROWS(Equalizer<const char*>::AssertEqual("", nullptr), EqualizerException, "");
-      THROWS(Equalizer<const char*>::AssertEqual("a", nullptr), EqualizerException, "");
+      THROWS_EXCEPTION(Equalizer<const char*>::AssertEqual("a", "A"), EqualizerException, "");
+      THROWS_EXCEPTION(Equalizer<const char*>::AssertEqual("a", "a "), EqualizerException, "");
+      THROWS_EXCEPTION(Equalizer<const char*>::AssertEqual(nullptr, ""), EqualizerException, "");
+      THROWS_EXCEPTION(Equalizer<const char*>::AssertEqual(nullptr, "a"), EqualizerException, "");
+      THROWS_EXCEPTION(Equalizer<const char*>::AssertEqual("", nullptr), EqualizerException, "");
+      THROWS_EXCEPTION(Equalizer<const char*>::AssertEqual("a", nullptr), EqualizerException, "");
    }
 
    template<typename T1, typename T2>
@@ -79,12 +79,12 @@ namespace ZenUnit
    template<typename T1, typename T2>
    static void ThrowsTwoTypeTestCases()
    {
-      THROWS(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1("a"), T2("A")), EqualizerException, "");
-      THROWS(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1("a"), T2("a ")), EqualizerException, "");
-      THROWS(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(nullptr, T2("")), EqualizerException, "");
-      THROWS(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(nullptr, T2("a")), EqualizerException, "");
-      THROWS(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1(""), nullptr), EqualizerException, "");
-      THROWS(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1("a"), nullptr), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1("a"), T2("A")), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1("a"), T2("a ")), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(nullptr, T2("")), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(nullptr, T2("a")), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1(""), nullptr), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1("a"), nullptr), EqualizerException, "");
    }
 
    TEST(CharPointer_CharPointer_Equal_DoesNotThrow)
@@ -128,19 +128,19 @@ namespace ZenUnit
    }
    TEST(ConstCharPointer_StdString_NotEqual_Throws)
    {
-      THROWS(TwoTypeEqualizer<const char* Comma string>::AssertEqual("a", "A"), EqualizerException, "");
-      THROWS(TwoTypeEqualizer<const char* Comma string>::AssertEqual("a", "a "), EqualizerException, "");
-      THROWS(TwoTypeEqualizer<const char* Comma string>::AssertEqual(nullptr, ""), EqualizerException, "");
-      THROWS(TwoTypeEqualizer<const char* Comma string>::AssertEqual(nullptr, "a"), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<const char* Comma string>::AssertEqual("a", "A"), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<const char* Comma string>::AssertEqual("a", "a "), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<const char* Comma string>::AssertEqual(nullptr, ""), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<const char* Comma string>::AssertEqual(nullptr, "a"), EqualizerException, "");
    }
 
    template<typename T1, typename T2>
    static void ThrowsStringTwoTypeTestCases()
    {
-      THROWS(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1("a"), T2("A")), EqualizerException, "");
-      THROWS(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1("a"), T2("a ")), EqualizerException, "");
-      THROWS(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1(""), nullptr), EqualizerException, "");
-      THROWS(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1("a"), nullptr), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1("a"), T2("A")), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1("a"), T2("a ")), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1(""), nullptr), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1("a"), nullptr), EqualizerException, "");
    }
 
    TEST(StdString_ConstCharPointer_Equal_DoesNotThrow)
@@ -160,7 +160,7 @@ namespace ZenUnit
 
    TEST(Double_Double_NotExactlyEqual_Throws)
    {
-      THROWS(Equalizer<double>::AssertEqual(0.0, 1.0), EqualizerException, "");
+      THROWS_EXCEPTION(Equalizer<double>::AssertEqual(0.0, 1.0), EqualizerException, "");
    }
 
    TEST(Double_Float_ExactlyEqual_DoesNotThrow)
@@ -171,14 +171,14 @@ namespace ZenUnit
 
    TEST(Double_Float_NotExactlyEqual_Throws)
    {
-      THROWS(Equalizer<float>::AssertEqual(0.0f, 1.0f), EqualizerException, "");
+      THROWS_EXCEPTION(Equalizer<float>::AssertEqual(0.0f, 1.0f), EqualizerException, "");
    }
 
    TEST(Int_Unsigned_ThrowsIfIntNegative_OtherwiseCallsAssertEqualUnsignedUnsigned)
    {
-      THROWS(TwoTypeEqualizer<int Comma unsigned>::AssertEqual(
+      THROWS_EXCEPTION(TwoTypeEqualizer<int Comma unsigned>::AssertEqual(
          -2 Comma static_cast<unsigned>(0)), EqualizerException, "");
-      THROWS(TwoTypeEqualizer<int Comma unsigned>::AssertEqual(
+      THROWS_EXCEPTION(TwoTypeEqualizer<int Comma unsigned>::AssertEqual(
          -1 Comma static_cast<unsigned>(0)), EqualizerException, "");
 
       TwoTypeEqualizer<int, unsigned>::AssertEqual(0, static_cast<unsigned>(0));
@@ -189,9 +189,9 @@ namespace ZenUnit
 
    TEST(Int_SizeT_ThrowsIfIntNegative_OtherwiseCallsAssertEqualSizeTSizeT)
    {
-      THROWS(TwoTypeEqualizer<int Comma size_t>::AssertEqual(
+      THROWS_EXCEPTION(TwoTypeEqualizer<int Comma size_t>::AssertEqual(
          -2 Comma size_t(0)), EqualizerException, "");
-      THROWS(TwoTypeEqualizer<int Comma size_t>::AssertEqual(
+      THROWS_EXCEPTION(TwoTypeEqualizer<int Comma size_t>::AssertEqual(
          -1 Comma size_t(0)), EqualizerException, "");
 
       TwoTypeEqualizer<int, size_t>::AssertEqual(0, static_cast<size_t>(0));

@@ -283,8 +283,8 @@ Testing Utility Options:
 //
 
 // Asserts that expression() throws exactly expectedExactExceptionType with what() text that exactly equals expectedExactWhatText.
-#define THROWS(expression, expectedExactExceptionType, expectedExactWhatText, ...) \
-   ZenUnit::THROWS_Defined<expectedExactExceptionType>([&]() { expression; }, #expression, #expectedExactExceptionType, expectedExactWhatText, #expectedExactWhatText, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+#define THROWS_EXCEPTION(expression, expectedExactExceptionType, expectedExactWhatText, ...) \
+   ZenUnit::THROWS_EXCEPTION_Defined<expectedExactExceptionType>([&]() { expression; }, #expression, #expectedExactExceptionType, expectedExactWhatText, #expectedExactWhatText, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Does nothing to implicitly assert that expression() does not throw an exception. Useful for emphasis to the reader of a unit test.
 #define DOES_NOT_THROW(expression, ...) \
@@ -3307,7 +3307,7 @@ namespace ZenUnit
    }
 
    template<typename ExpectedExceptionType>
-   void THROWS_BuildWhyBody(
+   void THROWS_EXCEPTION_BuildWhyBody(
       std::ostringstream& outWhyBodyBuilder,
       const std::string* actualExceptionTypeName)
    {
@@ -3318,7 +3318,7 @@ namespace ZenUnit
    }
 
    template<typename... MessageTypes>
-   void THROWS_ThrowAnomaly(
+   void THROWS_EXCEPTION_ThrowAnomaly(
       std::string_view expressionText,
       std::string_view expectedExactExceptionTypeText,
       std::string_view expectedWhatText,
@@ -3328,17 +3328,17 @@ namespace ZenUnit
       MessageTypes&&... messages)
    {
       const std::string failedLinePrefix = String::Concat(
-         "  Failed: THROWS(", expressionText, ", ", expectedExactExceptionTypeText, ",\n",
+         "  Failed: THROWS_EXCEPTION(", expressionText, ", ", expectedExactExceptionTypeText, ",\n",
          "          ", expectedWhatText);
       throw Anomaly(failedLinePrefix, whyBody, fileLine, " ", messagesText, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ExpectedExceptionType>
-   std::string THROWS_MakeWhyBody_DerivedButNotExactExpectedExceptionTypeThrown(const ExpectedExceptionType& ex)
+   std::string THROWS_EXCEPTION_MakeWhyBody_DerivedButNotExactExpectedExceptionTypeThrown(const ExpectedExceptionType& ex)
    {
       std::ostringstream whyBodyBuilder;
       const std::string* const actualExceptionTypeName = Type::GetName(ex);
-      THROWS_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, actualExceptionTypeName);
+      THROWS_EXCEPTION_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, actualExceptionTypeName);
       const char* const actualExactExceptionWhat = ex.what();
       whyBodyBuilder << '\n' <<
          "  what(): \"" << actualExactExceptionWhat << "\"";
@@ -3347,12 +3347,12 @@ namespace ZenUnit
    }
 
    template<typename ExpectedExceptionType>
-   std::string THROWS_MakeWhyBody_ExpectedWhatNotEqualToActualWhat(
+   std::string THROWS_EXCEPTION_MakeWhyBody_ExpectedWhatNotEqualToActualWhat(
       const ExpectedExceptionType& ex, std::string_view expectedWhatText, const char* actualExactExceptionWhatText)
    {
       std::ostringstream whyBodyBuilder;
       const std::string* const actualExceptionTypeName = Type::GetName(ex);
-      THROWS_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, actualExceptionTypeName);
+      THROWS_EXCEPTION_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, actualExceptionTypeName);
       whyBodyBuilder << " exactly\n" <<
          "Expected what(): \"" << expectedWhatText << "\"\n" <<
          "  Actual what(): \"" << actualExactExceptionWhatText << "\"";
@@ -3361,11 +3361,11 @@ namespace ZenUnit
    }
 
    template<typename ExpectedExceptionType, typename ActualExceptionType>
-   std::string THROWS_MakeWhyBody_ExpectedExceptionTypeNotThrown(const ActualExceptionType& ex)
+   std::string THROWS_EXCEPTION_MakeWhyBody_ExpectedExceptionTypeNotThrown(const ActualExceptionType& ex)
    {
       std::ostringstream whyBodyBuilder;
       const std::string* const actualExceptionTypeName = Type::GetName(ex);
-      THROWS_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, actualExceptionTypeName);
+      THROWS_EXCEPTION_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, actualExceptionTypeName);
       whyBodyBuilder << '\n' <<
          "  what(): \"" << ex.what() << "\"";
       const std::string whyBody = whyBodyBuilder.str();
@@ -3373,11 +3373,11 @@ namespace ZenUnit
    }
 
    template<typename ExpectedExceptionType>
-   std::string THROWS_MakeWhyBody_NoExceptionThrown()
+   std::string THROWS_EXCEPTION_MakeWhyBody_NoExceptionThrown()
    {
       std::ostringstream whyBodyBuilder;
       static const std::string noExceptionThrownString("No exception thrown");
-      THROWS_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, &noExceptionThrownString);
+      THROWS_EXCEPTION_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, &noExceptionThrownString);
       const std::string whyBody = whyBodyBuilder.str();
       return whyBody;
    }
@@ -3391,7 +3391,7 @@ namespace ZenUnit
    };
 
    template<typename ExpectedExceptionType, typename... MessageTypes>
-   void THROWS_Defined(
+   void THROWS_EXCEPTION_Defined(
       const std::function<void()>& expression,
       std::string_view expressionText,
       std::string_view expectedExactExceptionTypeText,
@@ -3405,35 +3405,36 @@ namespace ZenUnit
       {
          expression();
       }
-      catch (const ExpectedExceptionType& e)
+      catch (const ExpectedExceptionType& ex)
       {
-         const bool exactExpectedExceptionTypeThrown =
-            std::type_index(typeid(e)) == std::type_index(typeid(ExpectedExceptionType));
-         if (!exactExpectedExceptionTypeThrown)
+         const std::type_index exceptionTypeIndex = std::type_index(typeid(ex));
+         const std::type_index expectedExceptionTypeIndex = std::type_index(typeid(ExpectedExceptionType));
+         const bool exactExpectedExceptionTypeWasThrown = exceptionTypeIndex == expectedExceptionTypeIndex;
+         if (!exactExpectedExceptionTypeWasThrown)
          {
-            THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedExactWhatTextText,
-               THROWS_MakeWhyBody_DerivedButNotExactExpectedExceptionTypeThrown(e),
+            THROWS_EXCEPTION_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedExactWhatTextText,
+               THROWS_EXCEPTION_MakeWhyBody_DerivedButNotExactExpectedExceptionTypeThrown(ex),
                fileLine, messagesText, std::forward<MessageTypes>(messages)...);
          }
-         const char* const actualExactExceptionWhat = e.what();
+         const char* const actualExactExceptionWhat = ex.what();
          const int compareResult = expectedExactWhatText.compare(actualExactExceptionWhat);
          if (compareResult != 0)
          {
-            THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedExactWhatTextText,
-               THROWS_MakeWhyBody_ExpectedWhatNotEqualToActualWhat(e, expectedExactWhatText, actualExactExceptionWhat),
+            THROWS_EXCEPTION_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedExactWhatTextText,
+               THROWS_EXCEPTION_MakeWhyBody_ExpectedWhatNotEqualToActualWhat(ex, expectedExactWhatText, actualExactExceptionWhat),
                fileLine, messagesText, std::forward<MessageTypes>(messages)...);
          }
          return;
       }
       catch (const typename std::conditional<std::is_same<
-         ExpectedExceptionType, std::exception>::value, NeverThrownType, std::exception>::type& e)
+         ExpectedExceptionType, std::exception>::value, NeverThrownType, std::exception>::type& ex)
       {
-         const std::string whyBody = THROWS_MakeWhyBody_ExpectedExceptionTypeNotThrown<ExpectedExceptionType>(e);
-         THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedExactWhatTextText,
+         const std::string whyBody = THROWS_EXCEPTION_MakeWhyBody_ExpectedExceptionTypeNotThrown<ExpectedExceptionType>(ex);
+         THROWS_EXCEPTION_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedExactWhatTextText,
             whyBody, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
-      THROWS_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedExactWhatTextText,
-         THROWS_MakeWhyBody_NoExceptionThrown<ExpectedExceptionType>(),
+      THROWS_EXCEPTION_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedExactWhatTextText,
+         THROWS_EXCEPTION_MakeWhyBody_NoExceptionThrown<ExpectedExceptionType>(),
          fileLine, messagesText, std::forward<MessageTypes>(messages)...);
    }
 

@@ -33,7 +33,7 @@ namespace ZenUnit
    TEST(PointerIsNullRawPointer_ThrowsAnomaly)
    {
       const int* nullRawPointer = nullptr;
-      THROWS(POINTER_WAS_NEWED(nullRawPointer), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(POINTER_WAS_NEWED(nullRawPointer), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: POINTER_WAS_NEWED(nullRawPointer)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
@@ -45,7 +45,7 @@ namespace ZenUnit
       const char* nullRawPointer = nullptr;
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
-      THROWS(POINTER_WAS_NEWED(nullRawPointer, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(POINTER_WAS_NEWED(nullRawPointer, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: POINTER_WAS_NEWED(nullRawPointer, messageA, messageB)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
@@ -56,7 +56,7 @@ namespace ZenUnit
    TEST(PointerIsEmptyUniquePtr_ThrowsAnomaly)
    {
       unique_ptr<const int> emptyUniquePtr;
-      THROWS(POINTER_WAS_NEWED(emptyUniquePtr), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(POINTER_WAS_NEWED(emptyUniquePtr), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: POINTER_WAS_NEWED(emptyUniquePtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
@@ -66,7 +66,7 @@ namespace ZenUnit
    TEST(PointerIsEmptySharedPtr_ThrowsAnomaly)
    {
       shared_ptr<const int> emptySharedPtr;
-      THROWS(POINTER_WAS_NEWED(emptySharedPtr), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(POINTER_WAS_NEWED(emptySharedPtr), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: POINTER_WAS_NEWED(emptySharedPtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
@@ -88,7 +88,7 @@ namespace ZenUnit
       unique_ptr<const int> nonEmptyUniquePtr(new int);
       POINTER_WAS_NEWED(nonEmptyUniquePtr);
 
-      THROWS(POINTER_WAS_NEWED(nonEmptyUniquePtr),
+      THROWS_EXCEPTION(POINTER_WAS_NEWED(nonEmptyUniquePtr),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: POINTER_WAS_NEWED(nonEmptyUniquePtr)",
 "Expected: not a nullptr",
@@ -101,7 +101,7 @@ namespace ZenUnit
       shared_ptr<const int> nonEmptySharedPtr(new int);
       POINTER_WAS_NEWED(nonEmptySharedPtr);
 
-      THROWS(POINTER_WAS_NEWED(nonEmptySharedPtr),
+      THROWS_EXCEPTION(POINTER_WAS_NEWED(nonEmptySharedPtr),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: POINTER_WAS_NEWED(nonEmptySharedPtr)",
 "Expected: not a nullptr",
@@ -117,7 +117,7 @@ namespace ZenUnit
       POINTER_WAS_NEWED(uniquePtr);
       //
       ARE_EQUAL(1, destructorCallCount);
-      THROWS(POINTER_WAS_NEWED(uniquePtr),
+      THROWS_EXCEPTION(POINTER_WAS_NEWED(uniquePtr),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: POINTER_WAS_NEWED(uniquePtr)",
 "Expected: not a nullptr",
@@ -133,7 +133,7 @@ namespace ZenUnit
       POINTER_WAS_NEWED(sharedPtr);
       //
       ARE_EQUAL(1, destructorCallCount);
-      THROWS(POINTER_WAS_NEWED(sharedPtr),
+      THROWS_EXCEPTION(POINTER_WAS_NEWED(sharedPtr),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: POINTER_WAS_NEWED(sharedPtr)",
 "Expected: not a nullptr",

@@ -20,13 +20,13 @@ namespace ZenUnit
    {
       try
       {
-         THROWS([]{}(), exception, "");
-         FAIL_TEST("THROWS() did not throw");
+         THROWS_EXCEPTION([]{}(), exception, "");
+         FAIL_TEST("THROWS_EXCEPTION() did not throw");
       }
       catch (const Anomaly& anomaly)
       {
          ARE_EQUAL(TestUtil::NewlineConcat("",
-"  Failed: THROWS([]{}(), exception,",
+"  Failed: THROWS_EXCEPTION([]{}(), exception,",
 "          \"\")",
 "Expected exception thrown: std::exception exactly",
 "  Actual exception thrown: No exception thrown",
@@ -38,13 +38,13 @@ namespace ZenUnit
    {
       try
       {
-         THROWS([]{}(), exception, "", _messageA, _messageB);
-         FAIL_TEST("THROWS() did not throw");
+         THROWS_EXCEPTION([]{}(), exception, "", _messageA, _messageB);
+         FAIL_TEST("THROWS_EXCEPTION() did not throw");
       }
       catch (const Anomaly& anomaly)
       {
          ARE_EQUAL(TestUtil::NewlineConcat("",
-"  Failed: THROWS([]{}(), exception,",
+"  Failed: THROWS_EXCEPTION([]{}(), exception,",
 "          \"\", _messageA, _messageB)",
 "Expected exception thrown: std::exception exactly",
 "  Actual exception thrown: No exception thrown",
@@ -57,13 +57,13 @@ namespace ZenUnit
    {
       try
       {
-         THROWS([]{ throw logic_error(""); }(), exception, "");
-         FAIL_TEST("THROWS() did not throw");
+         THROWS_EXCEPTION([]{ throw logic_error(""); }(), exception, "");
+         FAIL_TEST("THROWS_EXCEPTION() did not throw");
       }
       catch (const Anomaly& anomaly)
       {
          ARE_EQUAL(TestUtil::NewlineConcat("",
-"  Failed: THROWS([]{ throw logic_error(\"\"); }(), exception,",
+"  Failed: THROWS_EXCEPTION([]{ throw logic_error(\"\"); }(), exception,",
 "          \"\")",
 "Expected exception thrown: std::exception exactly",
 "  Actual exception thrown: std::logic_error",
@@ -76,13 +76,13 @@ namespace ZenUnit
    {
       try
       {
-         THROWS([]{ throw runtime_error("what"); }(), logic_error, "");
-         FAIL_TEST("THROWS() did not throw");
+         THROWS_EXCEPTION([]{ throw runtime_error("what"); }(), logic_error, "");
+         FAIL_TEST("THROWS_EXCEPTION() did not throw");
       }
       catch (const Anomaly& anomaly)
       {
          ARE_EQUAL(TestUtil::NewlineConcat("",
-"  Failed: THROWS([]{ throw runtime_error(\"what\"); }(), logic_error,",
+"  Failed: THROWS_EXCEPTION([]{ throw runtime_error(\"what\"); }(), logic_error,",
 "          \"\")",
 "Expected exception thrown: std::logic_error exactly",
 "  Actual exception thrown: std::runtime_error",
@@ -95,13 +95,13 @@ namespace ZenUnit
    {
       try
       {
-         THROWS([]{ throw runtime_error("what"); }(), runtime_error, "");
-         FAIL_TEST("THROWS() did not throw");
+         THROWS_EXCEPTION([]{ throw runtime_error("what"); }(), runtime_error, "");
+         FAIL_TEST("THROWS_EXCEPTION() did not throw");
       }
       catch (const Anomaly& anomaly)
       {
          ARE_EQUAL(TestUtil::NewlineConcat("",
-"  Failed: THROWS([]{ throw runtime_error(\"what\"); }(), runtime_error,",
+"  Failed: THROWS_EXCEPTION([]{ throw runtime_error(\"what\"); }(), runtime_error,",
 "          \"\")",
 "Expected exception thrown: std::runtime_error exactly",
 "  Actual exception thrown: std::runtime_error exactly",
@@ -115,13 +115,13 @@ namespace ZenUnit
    {
       try
       {
-         THROWS([]{ throw runtime_error("hello"); }(), runtime_error, "Hello");
-         FAIL_TEST("THROWS() did not throw");
+         THROWS_EXCEPTION([]{ throw runtime_error("hello"); }(), runtime_error, "Hello");
+         FAIL_TEST("THROWS_EXCEPTION() did not throw");
       }
       catch (const Anomaly& anomaly)
       {
          ARE_EQUAL(TestUtil::NewlineConcat("",
-"  Failed: THROWS([]{ throw runtime_error(\"hello\"); }(), runtime_error,",
+"  Failed: THROWS_EXCEPTION([]{ throw runtime_error(\"hello\"); }(), runtime_error,",
 "          \"Hello\")",
 "Expected exception thrown: std::runtime_error exactly",
 "  Actual exception thrown: std::runtime_error exactly",
@@ -133,8 +133,8 @@ namespace ZenUnit
 
    TEST(CallThrowsExactExpectedException_WhatTextMatchesExactly_DoesNotThrow)
    {
-      THROWS([]{ throw runtime_error("what"); }(), runtime_error, "what");
-      THROWS([]{ throw logic_error("what"); }(), logic_error, "what");
+      THROWS_EXCEPTION([]{ throw runtime_error("what"); }(), runtime_error, "what");
+      THROWS_EXCEPTION([]{ throw logic_error("what"); }(), logic_error, "what");
    }
 
    TEST(NeverThrownType_whatReturnsNullptr)

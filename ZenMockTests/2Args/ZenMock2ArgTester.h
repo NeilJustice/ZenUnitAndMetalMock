@@ -64,7 +64,7 @@ namespace ZenMock
          const auto testcase = [](auto zenMockObjectFunctionCallLambda, const string& expectedFunctionSignature)
          {
             const string expectedExceptionMessage = UnexpectedCallException::MakeWhat(expectedFunctionSignature, 0);
-            THROWS(zenMockObjectFunctionCallLambda(), UnexpectedCallException, expectedExceptionMessage);
+            THROWS_EXCEPTION(zenMockObjectFunctionCallLambda(), UnexpectedCallException, expectedExceptionMessage);
          };
          testcase([&] { zenMockObject.Virtual(0); }, virtualFunctionSignature);
          testcase([&] { zenMockObject.VirtualConst(0); }, virtualFunctionConstSignature);

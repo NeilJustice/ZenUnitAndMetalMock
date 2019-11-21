@@ -12,7 +12,7 @@ namespace ZenUnit
    TEST(PointerIsNullRawPointer_ThrowsAnomaly)
    {
       const int* const nullRawPointer = nullptr;
-      THROWS(POINTER_IS_NOT_NULL(nullRawPointer), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(POINTER_IS_NOT_NULL(nullRawPointer), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: POINTER_IS_NOT_NULL(nullRawPointer)",
 "Expected: not nullptr",
 "  Actual: nullptr",
@@ -23,7 +23,7 @@ namespace ZenUnit
    {
       const unique_ptr<const int> nullUniquePtr = nullptr;
       const string messageA = "A", messageB = "B";
-      THROWS(POINTER_IS_NOT_NULL(nullUniquePtr, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(POINTER_IS_NOT_NULL(nullUniquePtr, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: POINTER_IS_NOT_NULL(nullUniquePtr, messageA, messageB)",
 "Expected: not nullptr",
 "  Actual: nullptr",

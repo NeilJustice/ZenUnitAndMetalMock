@@ -15,7 +15,7 @@ namespace ZenMock
    TEST(New_ReturnsNewInstanceOfSelfAsThrowablePointerWithExceptionToBeThrownCreatedFromExceptionArgs)
    {
       const Throwable* const throwable = TemplateThrowable<ExceptionType>::New(_exceptionMessage);
-      THROWS(throwable->ThrowException(), ExceptionType, _exceptionMessage);
+      THROWS_EXCEPTION(throwable->ThrowException(), ExceptionType, _exceptionMessage);
       delete throwable;
    }
 
@@ -27,7 +27,7 @@ namespace ZenMock
    TEST(ThrowException_ExceptionToBeThrownIsNotNullptr_ThrowsTheException)
    {
       _templateThrowable._exceptionToBeThrown = make_unique<ExceptionType>(_exceptionMessage);
-      THROWS(_templateThrowable.ThrowException(), ExceptionType, _exceptionMessage);
+      THROWS_EXCEPTION(_templateThrowable.ThrowException(), ExceptionType, _exceptionMessage);
    }
 
    RUN_TEMPLATE_TESTS(TemplateThrowableTests, runtime_error)

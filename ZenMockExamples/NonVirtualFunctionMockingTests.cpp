@@ -78,7 +78,7 @@ TEST(SendOrder_CallsNetworkSendWhichReturnsFalse_Throws)
    _orderSender._network.SendMock.Return(false);
    const unsigned size = ZenUnit::Random<unsigned>();
    //
-   THROWS(_orderSender.SendOrder(size),
+   THROWS_EXCEPTION(_orderSender.SendOrder(size),
       std::runtime_error, "Failed to send order to exchange");
    //
    ZENMOCK(_orderSender._network.SendMock.CalledOnceWith(size));

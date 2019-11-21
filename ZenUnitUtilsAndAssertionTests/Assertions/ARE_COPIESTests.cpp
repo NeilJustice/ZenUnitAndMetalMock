@@ -22,7 +22,7 @@ namespace ZenUnit
 expectedAreNotSameWhatText,
 "File.cpp(1)",
 "File.cpp(1)");
-      THROWS(ARE_COPIES(x, x), Anomaly, expectedWhat);
+      THROWS_EXCEPTION(ARE_COPIES(x, x), Anomaly, expectedWhat);
    }
 
    TEST(ObjectsHaveSameAddress_Throws_MessagesTestCase)
@@ -38,7 +38,7 @@ expectedAreNotSameWhatText,
 " Message: \"A\", \"B\"",
 "File.cpp(1)",
 "File.cpp(1)");
-      THROWS(ARE_COPIES(x, x, messageA, messageB), Anomaly, expectedWhat);
+      THROWS_EXCEPTION(ARE_COPIES(x, x, messageA, messageB), Anomaly, expectedWhat);
    }
 
    static string MakeExpectedARE_NOT_SAME_WhatText(const void* notExpectedAddress, const void* actualAddress)
@@ -62,7 +62,7 @@ expectedAreNotSameWhatText,
    {
       const int x = 1;
       int y = 2;
-      THROWS(ARE_COPIES(x, y), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(ARE_COPIES(x, y), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARE_COPIES(x, y)",
 "Expected: 1",
 "  Actual: 2",
@@ -77,7 +77,7 @@ expectedAreNotSameWhatText,
    {
       UserType x(1);
       const UserType y(2);
-      THROWS(ARE_COPIES(x, y), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(ARE_COPIES(x, y), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARE_COPIES(x, y)",
 "Expected: UserType@1",
 "  Actual: UserType@2",
@@ -93,7 +93,7 @@ expectedAreNotSameWhatText,
       UserType x(1);
       UserType y(2);
       const string messageA = "A", messageB = "B";
-      THROWS(ARE_COPIES(x, y, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(ARE_COPIES(x, y, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARE_COPIES(x, y, messageA, messageB)",
 "Expected: UserType@1",
 "  Actual: UserType@2",

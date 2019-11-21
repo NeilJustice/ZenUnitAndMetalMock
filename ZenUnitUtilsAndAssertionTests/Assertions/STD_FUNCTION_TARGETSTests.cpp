@@ -89,7 +89,7 @@ namespace ZenUnit
    {
       const function<void()> stdFunctionA(FunctionA);
 #if defined __linux__ || defined __APPLE__
-      THROWS(STD_FUNCTION_TARGETS(FunctionC, stdFunctionA), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(STD_FUNCTION_TARGETS(FunctionC, stdFunctionA), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: STD_FUNCTION_TARGETS(FunctionC, stdFunctionA)",
 "Expected: 1",
 "  Actual: <non-empty std::function>",

@@ -46,7 +46,7 @@ Expected: nullptr
       expectedWhat += " Message: \"A\", \"B\"\n";
       expectedWhat += "File.cpp(1)";
       const string messageA = "A", messageB = "B";
-      THROWS(POINTER_IS_NULL(nonNullRawPointer, messageA, messageB), Anomaly, expectedWhat);
+      THROWS_EXCEPTION(POINTER_IS_NULL(nonNullRawPointer, messageA, messageB), Anomaly, expectedWhat);
    }
 
    struct NullDeleter
@@ -73,7 +73,7 @@ Expected: nullptr
       expectedWhat += "0x67890123";
 #endif
       expectedWhat += "\nFile.cpp(1)";
-      THROWS(POINTER_IS_NULL(nonNullUniquePointer), Anomaly, expectedWhat);
+      THROWS_EXCEPTION(POINTER_IS_NULL(nonNullUniquePointer), Anomaly, expectedWhat);
    }
 
    TEST(NonNullSharedPtr_Throws)
@@ -92,7 +92,7 @@ Expected: nullptr
       expectedWhat += "0x67890123";
 #endif
       expectedWhat += "\nFile.cpp(1)";
-      THROWS(POINTER_IS_NULL(nonNullSharedPointer), Anomaly, expectedWhat);
+      THROWS_EXCEPTION(POINTER_IS_NULL(nonNullSharedPointer), Anomaly, expectedWhat);
    }
 
    RUN_TESTS(POINTER_IS_NULL_Tests)

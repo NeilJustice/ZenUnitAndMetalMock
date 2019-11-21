@@ -378,7 +378,7 @@ namespace ZenUnit
       TestFailureNumbererMock testFailureNumbererMock;
       _testResult.testOutcome = invalidTestOutcome;
       //
-      THROWS(_testResult.PrintIfFailure(&consoleMock, &testFailureNumbererMock),
+      THROWS_EXCEPTION(_testResult.PrintIfFailure(&consoleMock, &testFailureNumbererMock),
          invalid_argument, "Invalid TestOutcome: " + to_string(static_cast<int>(invalidTestOutcome)));
    }
 

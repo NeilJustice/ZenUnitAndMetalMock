@@ -24,7 +24,7 @@ namespace ZenUnit
    TEST(PointerIsNullRawPointer_ThrowsAnomaly)
    {
       const char* nullRawPointer = nullptr;
-      THROWS(ARRAY_WAS_NEWED(nullRawPointer),
+      THROWS_EXCEPTION(ARRAY_WAS_NEWED(nullRawPointer),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARRAY_WAS_NEWED(nullRawPointer)",
 "Expected: not a nullptr",
@@ -37,7 +37,7 @@ namespace ZenUnit
       const char* nullRawPointer = nullptr;
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
-      THROWS(ARRAY_WAS_NEWED(nullRawPointer, messageA, messageB),
+      THROWS_EXCEPTION(ARRAY_WAS_NEWED(nullRawPointer, messageA, messageB),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARRAY_WAS_NEWED(nullRawPointer, messageA, messageB)",
 "Expected: not a nullptr",
@@ -49,7 +49,7 @@ namespace ZenUnit
    TEST(PointerIsEmptyUniqueArrayPtr_ThrowsAnomaly)
    {
       unique_ptr<const int[]> emptyUniqueArrayPtr;
-      THROWS(ARRAY_WAS_NEWED(emptyUniqueArrayPtr),
+      THROWS_EXCEPTION(ARRAY_WAS_NEWED(emptyUniqueArrayPtr),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARRAY_WAS_NEWED(emptyUniqueArrayPtr)",
 "Expected: not a nullptr",
@@ -79,7 +79,7 @@ namespace ZenUnit
       //
       ARE_EQUAL(5, DestructorCountingElement::s_destructorCallCount);
 
-      THROWS(ARRAY_WAS_NEWED(nonNullUniqueArrayPtr),
+      THROWS_EXCEPTION(ARRAY_WAS_NEWED(nonNullUniqueArrayPtr),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARRAY_WAS_NEWED(nonNullUniqueArrayPtr)",
 "Expected: not a nullptr",
@@ -88,7 +88,7 @@ namespace ZenUnit
 
       unique_ptr<const int[]> ints(new int[1]);
       ARRAY_WAS_NEWED(ints);
-      THROWS(ARRAY_WAS_NEWED(ints),
+      THROWS_EXCEPTION(ARRAY_WAS_NEWED(ints),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARRAY_WAS_NEWED(ints)",
 "Expected: not a nullptr",

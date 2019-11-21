@@ -25,7 +25,7 @@ namespace ZenUnit
    {
       const int i = 0;
       const int* const intPointer = &i;
-      THROWS(POINTEES_EQUAL(nullptr, intPointer),
+      THROWS_EXCEPTION(POINTEES_EQUAL(nullptr, intPointer),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: POINTEES_EQUAL(nullptr, intPointer)",
 "Expected: expected pointer != nullptr",
@@ -37,7 +37,7 @@ namespace ZenUnit
    {
       const int i = 0;
       const int* const intPointer = &i;
-      THROWS(POINTEES_EQUAL(intPointer, nullptr),
+      THROWS_EXCEPTION(POINTEES_EQUAL(intPointer, nullptr),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: POINTEES_EQUAL(intPointer, nullptr)",
 "Expected: actual pointer != nullptr",
@@ -51,7 +51,7 @@ namespace ZenUnit
       const string actualPointee = ZenUnit::Random<string>();
       const string* const expectedPointer = &expectedPointee;
       const string* const actualPointer = &actualPointee;
-      THROWS(POINTEES_EQUAL(expectedPointer, actualPointer),
+      THROWS_EXCEPTION(POINTEES_EQUAL(expectedPointer, actualPointer),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: POINTEES_EQUAL(expectedPointer, actualPointer)",
 "Expected: \"" + expectedPointee + "\"",
@@ -71,7 +71,7 @@ namespace ZenUnit
       const string* const actualPointer = &actualPointee;
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
-      THROWS(POINTEES_EQUAL(expectedPointer, actualPointer, messageA, messageB),
+      THROWS_EXCEPTION(POINTEES_EQUAL(expectedPointer, actualPointer, messageA, messageB),
          Anomaly, TestUtil::NewlineConcat("",
             "  Failed: POINTEES_EQUAL(expectedPointer, actualPointer, messageA, messageB)",
             "Expected: \"" + expectedPointee + "\"",
@@ -88,7 +88,7 @@ namespace ZenUnit
    {
       const unique_ptr<const UserType> expectedPointer(new UserType(1));
       const unique_ptr<const UserType> actualPointer(new UserType(2));
-      THROWS(POINTEES_EQUAL(expectedPointer, actualPointer),
+      THROWS_EXCEPTION(POINTEES_EQUAL(expectedPointer, actualPointer),
          Anomaly, TestUtil::NewlineConcat("",
             "  Failed: POINTEES_EQUAL(expectedPointer, actualPointer)",
             "Expected: UserType@1",

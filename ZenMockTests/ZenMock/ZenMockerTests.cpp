@@ -102,15 +102,15 @@ namespace ZenMock
    TEST(ZenMockThrowIfNotExpected_ExpectedFalse_Throws)
    {
       IS_FALSE(_zenMocker->_wasExpected);
-      THROWS(_zenMocker->ZenMockThrowIfNotExpected(), UnexpectedCallException,
+      THROWS_EXCEPTION(_zenMocker->ZenMockThrowIfNotExpected(), UnexpectedCallException,
          UnexpectedCallException::MakeWhat(ZenMockedFunctionSignature));
-      THROWS(_zenMocker->ZenMockThrowIfNotExpected(1, 2, 3), UnexpectedCallException,
+      THROWS_EXCEPTION(_zenMocker->ZenMockThrowIfNotExpected(1, 2, 3), UnexpectedCallException,
          UnexpectedCallException::MakeWhat(ZenMockedFunctionSignature, 1, 2, 3));
    }
 
    TEST(ZenMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCalls0_Throws)
    {
-      THROWS(_zenMocker->ZenMockThrowIfExpectedNumberOfCalls0(0), UnsupportedCalledZeroTimesException,
+      THROWS_EXCEPTION(_zenMocker->ZenMockThrowIfExpectedNumberOfCalls0(0), UnsupportedCalledZeroTimesException,
          UnsupportedCalledZeroTimesException::MakeWhat(ZenMockedFunctionSignature));
    }
 
@@ -124,7 +124,7 @@ namespace ZenMock
 
    TEST(ZenMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSize0_Throws)
    {
-      THROWS(_zenMocker->ZenMockThrowIfExpectedCallsSizeIsZero(0), UnsupportedCalledZeroTimesException,
+      THROWS_EXCEPTION(_zenMocker->ZenMockThrowIfExpectedCallsSizeIsZero(0), UnsupportedCalledZeroTimesException,
          UnsupportedCalledZeroTimesException::MakeWhat(ZenMockedFunctionSignature));
    }
 

@@ -15,7 +15,7 @@ TEST1X1(FizzBuzz_EndNumber0OrNegative_Throws,
    -1,
    0)
 {
-   THROWS(const std::string fizzBuzzSequence = FizzBuzz(invalidFizzBuzzEndNumber), std::invalid_argument,
+   THROWS_EXCEPTION(const std::string fizzBuzzSequence = FizzBuzz(invalidFizzBuzzEndNumber), std::invalid_argument,
       "Invalid FizzBuzz() argument: endNumber must be 1 or greater. endNumber: " + std::to_string(invalidFizzBuzzEndNumber));
 }
 

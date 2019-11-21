@@ -50,7 +50,7 @@ namespace ZenMock
    TEST(ZenMockIt_ExpectedFalse_Throws)
    {
       IS_FALSE(_mocker->_wasExpected);
-      THROWS(_mocker->ZenMockIt(1, 2), UnexpectedCallException,
+      THROWS_EXCEPTION(_mocker->ZenMockIt(1, 2), UnexpectedCallException,
          UnexpectedCallException::MakeWhat(_functionSignature, 1, 2));
    }
 

@@ -25,21 +25,21 @@ namespace ZenUnit
 
    TEST(PatternDoesNotMatchAnyOfInput_Throws)
    {
-      THROWS(REGEX_MATCHES("a", "1"), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(REGEX_MATCHES("a", "1"), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: REGEX_MATCHES(\"a\", \"1\")",
 "Expected string to match: \"a\"",
 "     Non-matching string: \"1\"",
 "File.cpp(1)"));
 
       const string pattern = "a";
-      THROWS(REGEX_MATCHES(pattern, "1"), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(REGEX_MATCHES(pattern, "1"), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: REGEX_MATCHES(pattern, \"1\")",
 "Expected string to match: \"a\"",
 "     Non-matching string: \"1\"",
 "File.cpp(1)"));
 
       const string str = "1";
-      THROWS(REGEX_MATCHES("a", str), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(REGEX_MATCHES("a", str), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: REGEX_MATCHES(\"a\", str)",
 "Expected string to match: \"a\"",
 "     Non-matching string: \"1\"",
@@ -48,7 +48,7 @@ namespace ZenUnit
 
    TEST(PatternMatchesOnlyPartOfInput_Throws)
    {
-      THROWS(REGEX_MATCHES("a", "a1"), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(REGEX_MATCHES("a", "a1"), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: REGEX_MATCHES(\"a\", \"a1\")",
 "Expected string to match: \"a\"",
 "     Non-matching string: \"a1\"",
@@ -58,7 +58,7 @@ namespace ZenUnit
    TEST(PatternMismatchesOnCase_Throws_MessagesTestCase)
    {
       const string messageA = "A", messageB = "B";
-      THROWS(REGEX_MATCHES("a", "A", messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(REGEX_MATCHES("a", "A", messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: REGEX_MATCHES(\"a\", \"A\", messageA, messageB)",
 "Expected string to match: \"a\"",
 "     Non-matching string: \"A\"",

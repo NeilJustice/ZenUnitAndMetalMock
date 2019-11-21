@@ -142,7 +142,7 @@ Testing Utility Options:
       _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
       const vector<string> stringArgs(numberOfArgs);
       //
-      THROWS(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith("ZenUnit command line usage error: Too many arguments.\n"));
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
@@ -158,7 +158,7 @@ Testing Utility Options:
       _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, invalidArgument };
       //
-      THROWS(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Invalid argument \"" + invalidArgument + "\"\n"));
@@ -173,7 +173,7 @@ Testing Utility Options:
       _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, helpArgument };
       //
-      THROWS(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 0));
    }
@@ -186,7 +186,7 @@ Testing Utility Options:
 		_consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, versionArgument };
       //
-      THROWS(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("0.5.0", 0));
 	}
@@ -328,7 +328,7 @@ Testing Utility Options:
       _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, arg };
       //
-      THROWS(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Invalid --name=value argument value: " + arg + "\n"));
@@ -343,7 +343,7 @@ Testing Utility Options:
       const string InvalidTimesArg = "--test-runs=-1_for_example";
       const vector<string> stringArgs { _testProgramPath, InvalidTimesArg };
       //
-      THROWS(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       ZENMOCK(ToInt_ZenMockObject.CalledOnceWith("-1_for_example"));
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
@@ -396,7 +396,7 @@ Testing Utility Options:
       const string unrecognizedNameArg = "-" + ZenUnit::Random<string>() + "=" + ZenUnit::Random<string>();
       const vector<string> stringArgs{ _testProgramPath, unrecognizedNameArg };
       //
-      THROWS(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Unrecognized --name=value argument: " + unrecognizedNameArg + "\n"));

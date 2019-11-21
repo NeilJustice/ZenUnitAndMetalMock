@@ -22,7 +22,7 @@ namespace ZenUnit
       _map[KeyType()] = ValueType();
       string expectedToStringedKey = ToStringer::ToString(KeyType());
       string expectedWhat = "ZenUnit::Map::InsertNoOverwrite: Key already present in map: " + expectedToStringedKey;
-      THROWS(Map::InsertNoOverwrite(_map, KeyType(), ValueType()), invalid_argument, expectedWhat);
+      THROWS_EXCEPTION(Map::InsertNoOverwrite(_map, KeyType(), ValueType()), invalid_argument, expectedWhat);
    }
 
    TEST(InsertNoOverwrite_KeyNotAlreadyInMap_InsertsKeyAndValue_ReturnsCostPointerToInsertedValue)
@@ -40,7 +40,7 @@ namespace ZenUnit
    {
       string expectedToStringedKey = ToStringer::ToString(KeyType());
       string expectedWhat = "ZenUnit::Map::At(): Key not found in map: " + expectedToStringedKey;
-      THROWS(Map::At(_map, KeyType()), out_of_range, expectedWhat);
+      THROWS_EXCEPTION(Map::At(_map, KeyType()), out_of_range, expectedWhat);
    }
 
    TEST(At_KeyPresentInMap_ReturnsConstReferenceToValue)

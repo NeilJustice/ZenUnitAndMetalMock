@@ -42,7 +42,7 @@ namespace ZenUnit
    {
       const vector<T> expectedVector(1);
       const vector<T> actualVector;
-      THROWS(VECTORS_EQUAL(expectedVector, actualVector),
+      THROWS_EXCEPTION(VECTORS_EQUAL(expectedVector, actualVector),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: VECTORS_EQUAL(expectedVector, actualVector)",
 "Expected: std::vector<" + TypeName + "> (size 1):",
@@ -63,7 +63,7 @@ namespace ZenUnit
    {
       const vector<T> expectedVector(1);
       const vector<T> actualVector;
-      THROWS(VECTORS_EQUAL(expectedVector, actualVector, _messageA, _messageB),
+      THROWS_EXCEPTION(VECTORS_EQUAL(expectedVector, actualVector, _messageA, _messageB),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: VECTORS_EQUAL(expectedVector, actualVector, _messageA, _messageB)",
 "Expected: std::vector<" + TypeName + "> (size 1):",
@@ -87,7 +87,7 @@ namespace ZenUnit
       const T randomElement2 = RandomNon0<T>();
       const vector<T> v1 { randomElement1 };
       const vector<T> v2 { randomElement1 + randomElement2 };
-      THROWS(VECTORS_EQUAL(v1, v2, _messageA, _messageB),
+      THROWS_EXCEPTION(VECTORS_EQUAL(v1, v2, _messageA, _messageB),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: VECTORS_EQUAL(v1, v2, _messageA, _messageB)",
 "Expected: std::vector<" + TypeName + "> (size 1):",
@@ -114,7 +114,7 @@ namespace ZenUnit
       const T randomElement3 = RandomNon0<T>();
       const vector<T> v1 { randomElement1, randomElement2 };
       const vector<T> v2 { randomElement1, randomElement3 };
-      THROWS(VECTORS_EQUAL(v1, v2),
+      THROWS_EXCEPTION(VECTORS_EQUAL(v1, v2),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: VECTORS_EQUAL(v1, v2)",
 "Expected: std::vector<" + TypeName + "> (size 2):",

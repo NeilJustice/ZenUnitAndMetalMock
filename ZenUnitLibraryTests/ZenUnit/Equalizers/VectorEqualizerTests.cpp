@@ -16,7 +16,7 @@ namespace ZenUnit
       const vector<int> actualIntVector;
       Equalizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector);
       expectedIntVector.push_back(1);
-      THROWS(Equalizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(Equalizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: VECTORS_EQUAL(expectedVector, actualVector)",
 "Expected: std::vector<int> (size 1):",
 "{",
@@ -39,7 +39,7 @@ namespace ZenUnit
       const vector<string> actualStringVector;
       Equalizer<vector<string>>::AssertEqual(expectedStringVector, actualStringVector);
       expectedStringVector.emplace_back();
-      THROWS(Equalizer<vector<string>>::AssertEqual(
+      THROWS_EXCEPTION(Equalizer<vector<string>>::AssertEqual(
          expectedStringVector Comma actualStringVector), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: VECTORS_EQUAL(expectedVector, actualVector)",
 "Expected: std::vector<std::basic_string> (size 1):",
@@ -63,7 +63,7 @@ namespace ZenUnit
       const vector<UserType> actualUserTypeVector;
       Equalizer<vector<UserType>>::AssertEqual(expectedUserTypeVector, actualUserTypeVector);
       expectedUserTypeVector.emplace_back();
-      THROWS(Equalizer<vector<UserType>>::AssertEqual(
+      THROWS_EXCEPTION(Equalizer<vector<UserType>>::AssertEqual(
          expectedUserTypeVector Comma actualUserTypeVector), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: VECTORS_EQUAL(expectedVector, actualVector)",
 "Expected: std::vector<UserType> (size 1):",

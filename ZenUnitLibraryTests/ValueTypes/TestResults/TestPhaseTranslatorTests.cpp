@@ -25,7 +25,7 @@ namespace ZenUnit
       TestPhase::Destructor,
       TestPhase::MaxValue)
    {
-      THROWS(_testPhaseTranslator.TestPhaseToTestPhaseSuffix(testPhase),
+      THROWS_EXCEPTION(_testPhaseTranslator.TestPhaseToTestPhaseSuffix(testPhase),
          invalid_argument, "Invalid testPhase:" + to_string(static_cast<int>(testPhase)));
    }
 

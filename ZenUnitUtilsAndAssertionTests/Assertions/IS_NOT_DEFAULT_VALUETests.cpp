@@ -63,7 +63,7 @@ namespace ZenUnit
 
    TEST(IntIsZero_Throws)
    {
-      THROWS(IS_NOT_DEFAULT_VALUE(0), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(0), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_NOT_DEFAULT_VALUE(0)",
 "Expected: Not T{}",
 "  Actual: 0",
@@ -72,7 +72,7 @@ namespace ZenUnit
 
    TEST(DoubleIsZero_Throws)
    {
-      THROWS(IS_NOT_DEFAULT_VALUE(0.0), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(0.0), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_NOT_DEFAULT_VALUE(0.0)",
 "Expected: Not T{}",
 "  Actual: 0.000000",
@@ -81,7 +81,7 @@ namespace ZenUnit
 
    TEST(FloatIsZero_Throws)
    {
-      THROWS(IS_NOT_DEFAULT_VALUE(0.0f), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(0.0f), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_NOT_DEFAULT_VALUE(0.0f)",
 "Expected: Not T{}",
 "  Actual: 0.000000f",
@@ -90,7 +90,7 @@ namespace ZenUnit
 
    TEST(StringIsEmptyString_Throws)
    {
-      THROWS(IS_NOT_DEFAULT_VALUE(""s), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(""s), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_NOT_DEFAULT_VALUE(\"\"s)",
 "Expected: Not T{}",
 "  Actual: \"\"",
@@ -100,7 +100,7 @@ namespace ZenUnit
    TEST(IntVectorIsEmpty_Throws)
    {
       const vector<int> defaultIntVector;
-      THROWS(IS_NOT_DEFAULT_VALUE(defaultIntVector), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(defaultIntVector), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_NOT_DEFAULT_VALUE(defaultIntVector)",
 "Expected: Not T{}",
 "  Actual: std::vector<int> (size 0):",
@@ -112,7 +112,7 @@ namespace ZenUnit
    TEST(UserTypeIsDefault_Throws)
    {
       const UserType defaultUserType;
-      THROWS(IS_NOT_DEFAULT_VALUE(defaultUserType), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(defaultUserType), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_NOT_DEFAULT_VALUE(defaultUserType)",
 "Expected: Not T{}",
 "  Actual: UserType@0",

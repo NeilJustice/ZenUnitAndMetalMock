@@ -30,7 +30,7 @@ namespace ZenUnit
    {
       const BaseClassA* const nullBaseClassPointer = nullptr;
       const string expectedPolymorphicPointeeTypeName = typeid(BaseClassA).name();
-      THROWS(POINTEE_IS_EXACT_TYPE(BaseClassA, nullBaseClassPointer), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(POINTEE_IS_EXACT_TYPE(BaseClassA, nullBaseClassPointer), Anomaly, TestUtil::NewlineConcat("",
          "  Failed: POINTEE_IS_EXACT_TYPE(BaseClassA, nullBaseClassPointer)",
          "Expected: Pointee to be exact type: typeid(expectedPolymorphicPointeeType).name() = \"" + expectedPolymorphicPointeeTypeName + "\"",
          "  Actual: Pointer has no pointee because pointer is nullptr",
@@ -43,7 +43,7 @@ namespace ZenUnit
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
       const string expectedPolymorphicPointeeTypeName = typeid(BaseClassA).name();
-      THROWS(POINTEE_IS_EXACT_TYPE(BaseClassA, nullBaseClassPointer, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(POINTEE_IS_EXACT_TYPE(BaseClassA, nullBaseClassPointer, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
          "  Failed: POINTEE_IS_EXACT_TYPE(BaseClassA, nullBaseClassPointer, messageA, messageB)",
          "Expected: Pointee to be exact type: typeid(expectedPolymorphicPointeeType).name() = \"" + expectedPolymorphicPointeeTypeName + "\"",
          "  Actual: Pointer has no pointee because pointer is nullptr",
@@ -57,7 +57,7 @@ namespace ZenUnit
       const int* const actualPointer = &x;
       const string expectedPolymorphicPointeeTypeName = typeid(BaseClassB).name();
       const string expectedActualPointeeTypeName = typeid(*actualPointer).name();
-      THROWS(POINTEE_IS_EXACT_TYPE(BaseClassB, actualPointer), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(POINTEE_IS_EXACT_TYPE(BaseClassB, actualPointer), Anomaly, TestUtil::NewlineConcat("",
          "  Failed: POINTEE_IS_EXACT_TYPE(BaseClassB, actualPointer)",
          "Expected: Pointee to be exact type: typeid(expectedPolymorphicPointeeType).name() = \"" + expectedPolymorphicPointeeTypeName + "\"",
          "  Actual:    Pointee is exact type:                 typeid(*actualPointer).name() = \"" + expectedActualPointeeTypeName + "\"",
@@ -70,7 +70,7 @@ namespace ZenUnit
       const BaseClassA* const actualPointer = &derivedClassInstance;
       const string expectedPolymorphicPointeeTypeName = typeid(BaseClassA).name();
       const string expectedActualPointeeTypeName = typeid(*actualPointer).name();
-      THROWS(POINTEE_IS_EXACT_TYPE(BaseClassA, actualPointer), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(POINTEE_IS_EXACT_TYPE(BaseClassA, actualPointer), Anomaly, TestUtil::NewlineConcat("",
          "  Failed: POINTEE_IS_EXACT_TYPE(BaseClassA, actualPointer)",
          "Expected: Pointee to be exact type: typeid(expectedPolymorphicPointeeType).name() = \"" + expectedPolymorphicPointeeTypeName + "\"",
          "  Actual:    Pointee is exact type:                 typeid(*actualPointer).name() = \"" + expectedActualPointeeTypeName + "\"",

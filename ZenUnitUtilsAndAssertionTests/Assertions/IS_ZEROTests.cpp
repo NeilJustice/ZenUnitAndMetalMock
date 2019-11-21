@@ -57,7 +57,7 @@ namespace ZenUnit
       -1,
       1)
    {
-      THROWS(IS_ZERO(value), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_ZERO(value), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_ZERO(value)",
 "Expected: 0",
 "  Actual: " + to_string(value),
@@ -69,7 +69,7 @@ namespace ZenUnit
       -1.0,
       1.0)
    {
-      THROWS(IS_ZERO(value), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_ZERO(value), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_ZERO(value)",
 "Expected: 0.000000",
 "  Actual: " + to_string(value),
@@ -86,7 +86,7 @@ namespace ZenUnit
    {
       const UserType userType1(1);
       const string messageA = "A", messageB = "B";
-      THROWS(IS_ZERO(userType1, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_ZERO(userType1, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_ZERO(userType1, messageA, messageB)",
 "Expected: UserType@0",
 "  Actual: UserType@1",
@@ -103,7 +103,7 @@ namespace ZenUnit
    TEST(IntializerConstructable_IsNotZero_Throws)
    {
       const IntializerConstructable i { 1 };
-      THROWS(IS_ZERO(i), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_ZERO(i), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_ZERO(i)",
 "Expected: InitializerConstructable@0",
 "  Actual: InitializerConstructable@1",

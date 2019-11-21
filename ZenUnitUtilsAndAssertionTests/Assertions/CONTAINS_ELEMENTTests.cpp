@@ -25,7 +25,7 @@ namespace ZenUnit
    TEST(Vector_DoesNotContainElement_Throws)
    {
       const vector<int> emptyIntVector;
-      THROWS(CONTAINS_ELEMENT(0, emptyIntVector), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(CONTAINS_ELEMENT(0, emptyIntVector), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: CONTAINS_ELEMENT(0, emptyIntVector)",
 "Expected: Collection contains element '0'",
 "  Actual: Collection does not contain element '0'",
@@ -49,7 +49,7 @@ namespace ZenUnit
    {
       const map<int, int> emptyIntIntMap;
       const pair<const int, int> kvp(0, 0);
-      THROWS(CONTAINS_ELEMENT(kvp, emptyIntIntMap), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(CONTAINS_ELEMENT(kvp, emptyIntIntMap), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: CONTAINS_ELEMENT(kvp, emptyIntIntMap)",
 "Expected: Collection contains element '(0, 0)'",
 "  Actual: Collection does not contain element '(0, 0)'",
@@ -71,7 +71,7 @@ namespace ZenUnit
    {
       const set<int> emptyIntSet;
       const string messageA = "A", messageB = "B";
-      THROWS(CONTAINS_ELEMENT(0, emptyIntSet, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(CONTAINS_ELEMENT(0, emptyIntSet, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: CONTAINS_ELEMENT(0, emptyIntSet, messageA, messageB)",
 "Expected: Collection contains element '0'",
 "  Actual: Collection does not contain element '0'",

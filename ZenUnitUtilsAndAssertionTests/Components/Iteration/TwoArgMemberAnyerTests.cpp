@@ -131,7 +131,7 @@ namespace ZenUnit
 
    TEST(PredicateThatThrowsIfCalledCodeCoverage)
    {
-      THROWS(_classInstance.PredicateThatThrowsIfCalled(T{}, Arg2Type{}),
+      THROWS_EXCEPTION(_classInstance.PredicateThatThrowsIfCalled(T{}, Arg2Type{}),
          invalid_argument, "unexpected call");
    }
 

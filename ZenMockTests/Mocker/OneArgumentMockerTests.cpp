@@ -58,7 +58,7 @@ namespace ZenMock
    TEST(ZenMockIt_ExpectedFalse_Throws)
    {
       IS_FALSE(_mocker->_wasExpected);
-      THROWS(_mocker->ZenMockIt(0), UnexpectedCallException,
+      THROWS_EXCEPTION(_mocker->ZenMockIt(0), UnexpectedCallException,
          UnexpectedCallException::MakeWhat(_functionSignature, 0));
    }
 
@@ -98,7 +98,7 @@ namespace ZenMock
       //
       if (expectCallCountThrow)
       {
-         THROWS(_mocker->CalledOnceWith(expectedArgument), Anomaly, "\n"
+         THROWS_EXCEPTION(_mocker->CalledOnceWith(expectedArgument), Anomaly, "\n"
 "  Failed: ARE_EQUAL(expectedNumberOfCalls, zenMockedFunctionCallHistory.size(), this->ZenMockedFunctionSignature)\n"
 "Expected: 1\n"
 "  Actual: " + to_string(numberOfCalls) + "\n"
@@ -109,7 +109,7 @@ namespace ZenMock
       {
          if (expectArgEqualityThrow)
          {
-            THROWS(_mocker->CalledOnceWith(expectedArgument), Anomaly, "\n"
+            THROWS_EXCEPTION(_mocker->CalledOnceWith(expectedArgument), Anomaly, "\n"
 "  Failed: ARE_EQUAL(expectedArgument, zenMockedFunctionCallHistory[0].argument.value, this->ZenMockedFunctionSignature)\n"
 "Expected: " + to_string(expectedArgument) + "\n"
 "  Actual: " + to_string(actualArg) + "\n"
@@ -127,7 +127,7 @@ namespace ZenMock
 
    TEST(CalledAsFollowsWith_NIsZero_Throws)
    {
-      THROWS(_mocker->CalledNTimesWith(0, 0), UnsupportedCalledZeroTimesException,
+      THROWS_EXCEPTION(_mocker->CalledNTimesWith(0, 0), UnsupportedCalledZeroTimesException,
          UnsupportedCalledZeroTimesException::MakeWhat(_functionSignature));
    }
 
@@ -152,7 +152,7 @@ Expected: )", expectedNumberOfCalls, R"(
   Actual: )", numberOfCalls, R"(
  Message: ")", _functionSignature, R"("
 File.cpp(1))");
-         THROWS(_mocker->CalledNTimesWith(expectedNumberOfCalls, 0), Anomaly, expectedWhat);
+         THROWS_EXCEPTION(_mocker->CalledNTimesWith(expectedNumberOfCalls, 0), Anomaly, expectedWhat);
       }
       else
       {
@@ -180,7 +180,7 @@ File.cpp(1))");
          const int actualArg = actualArgs[expectedResponsibleCallIndex].argument.value;
          const string expectedSignatureAndCallIndex =
             _functionSignature + " at i=" + to_string(expectedResponsibleCallIndex);
-         THROWS(_mocker->CalledNTimesWith(expectedNumberOfCalls, expectedArgument), Anomaly, "\n"
+         THROWS_EXCEPTION(_mocker->CalledNTimesWith(expectedNumberOfCalls, expectedArgument), Anomaly, "\n"
 "  Failed: ARE_EQUAL(expectedArgument, zenMockedFunctionCallHistory[i].argument.value, zenMockedFunctionSignatureAndCallIndex)\n"
 "Expected: " + to_string(expectedArgument) + "\n"
 "  Actual: " + to_string(actualArg) + "\n"
@@ -198,7 +198,7 @@ File.cpp(1))");
    TEST(CalledAsFollows_ExpectedCallsSize0_Throws_DoesNotSetAssertedTrue)
    {
       IS_FALSE(_mocker->_wasAsserted);
-      THROWS(_mocker->CalledAsFollows({}), UnsupportedCalledZeroTimesException,
+      THROWS_EXCEPTION(_mocker->CalledAsFollows({}), UnsupportedCalledZeroTimesException,
          UnsupportedCalledZeroTimesException::MakeWhat(_functionSignature));
       IS_FALSE(_mocker->_wasAsserted);
    }
@@ -209,7 +209,7 @@ File.cpp(1))");
       const int zero = 0;
       const vector<OneArgumentFunctionCallRef<int>> expectedOneArgumentCalls{ zero };
       //
-      THROWS(_mocker->CalledAsFollows(expectedOneArgumentCalls), Anomaly, "\n"
+      THROWS_EXCEPTION(_mocker->CalledAsFollows(expectedOneArgumentCalls), Anomaly, "\n"
 "  Failed: VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature)\n"
 "Expected: std::vector<ZenMock::OneArgumentFunctionCallRef<int>> (size 1):\n"
 "{\n"
@@ -236,7 +236,7 @@ File.cpp(1))");
       const vector<OneArgumentFunctionCallRef<int>> expectedOneArgumentCalls{ x, y };
       _mocker->zenMockedFunctionCallHistory = { 10, 20 };
       //
-      THROWS(_mocker->CalledAsFollows(expectedOneArgumentCalls), Anomaly, "\n"
+      THROWS_EXCEPTION(_mocker->CalledAsFollows(expectedOneArgumentCalls), Anomaly, "\n"
 "  Failed: VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature)\n"
 "Expected: std::vector<ZenMock::OneArgumentFunctionCallRef<int>> (size 2):\n"
 "{\n"

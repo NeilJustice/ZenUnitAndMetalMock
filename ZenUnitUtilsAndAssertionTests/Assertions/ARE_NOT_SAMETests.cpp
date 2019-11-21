@@ -21,7 +21,7 @@ namespace ZenUnit
       const int& actualObject = notExpectedObject;
       string expectedWhat = MakeExpectedWhat(
          "notExpectedObject", "actualObject", &notExpectedObject, &actualObject, false);
-      THROWS(ARE_NOT_SAME(notExpectedObject, actualObject), Anomaly, expectedWhat);
+      THROWS_EXCEPTION(ARE_NOT_SAME(notExpectedObject, actualObject), Anomaly, expectedWhat);
    }
 
    TEST(ExpectedAndActualAddressesEqual_Throws_MessagesTestCase)
@@ -30,7 +30,7 @@ namespace ZenUnit
       const string& b = a;
       const string expectedWhat = MakeExpectedWhat("a", "b", &a, &b, true);
       const string messageA = "A", messageB = "B";
-      THROWS(ARE_NOT_SAME(a, b, messageA, messageB), Anomaly, expectedWhat);
+      THROWS_EXCEPTION(ARE_NOT_SAME(a, b, messageA, messageB), Anomaly, expectedWhat);
    }
 
    static string MakeExpectedWhat(

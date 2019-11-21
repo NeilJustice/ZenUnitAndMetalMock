@@ -14,7 +14,7 @@ namespace ZenMock
    TEST(ExpectAndThrowCalledTwice_Throws)
    {
       _exceptionThrower.ThrowException<runtime_error>("runtime_error_what");
-      THROWS(_exceptionThrower.ThrowException<runtime_error>("runtime_error_what"), logic_error,
+      THROWS_EXCEPTION(_exceptionThrower.ThrowException<runtime_error>("runtime_error_what"), logic_error,
          "ExceptionThrower::ThrowException<T>() called twice");
    }
 
@@ -26,13 +26,13 @@ namespace ZenMock
    TEST(ZenMockThrowExceptionIfExceptionSet_ExpectAndThrowPreviousCalled_ThrowsTheException_TestCaseRuntimeError)
    {
       _exceptionThrower.ThrowException<runtime_error>("runtime_error_what");
-      THROWS(_exceptionThrower.ZenMockThrowExceptionIfExceptionSet(), runtime_error, "runtime_error_what");
+      THROWS_EXCEPTION(_exceptionThrower.ZenMockThrowExceptionIfExceptionSet(), runtime_error, "runtime_error_what");
    }
 
    TEST(ZenMockThrowExceptionIfExceptionSet_ExpectAndThrowPreviousCalled_ThrowsTheException_TestCaseLogicError)
    {
       _exceptionThrower.ThrowException<logic_error>("logic_error_what");
-      THROWS(_exceptionThrower.ZenMockThrowExceptionIfExceptionSet(), logic_error, "logic_error_what");
+      THROWS_EXCEPTION(_exceptionThrower.ZenMockThrowExceptionIfExceptionSet(), logic_error, "logic_error_what");
    }
 
    RUN_TESTS(ExceptionThrowerTests)

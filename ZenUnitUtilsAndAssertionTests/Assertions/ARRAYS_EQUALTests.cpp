@@ -34,7 +34,7 @@ namespace ZenUnit
       const T expectedArray[1] = { randomElement };
       const T actualArray[1] = { randomElement + T{1} };
       //
-      THROWS(ARRAYS_EQUAL(expectedArray, actualArray, 1), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(ARRAYS_EQUAL(expectedArray, actualArray, 1), Anomaly, TestUtil::NewlineConcat("",
          "  Failed: ARRAYS_EQUAL(expectedArray, actualArray, 1)",
          "Expected: " + typeName + " [1]",
          "  Actual: " + typeName + " [1]",
@@ -62,7 +62,7 @@ namespace ZenUnit
       const T expectedArray[2] = { randomElement0, randomElement1 };
       const T actualArray[2] = { expectedArray[0], expectedArray[1] + 1 };
       //
-      THROWS(ARRAYS_EQUAL(expectedArray, actualArray, 2), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(ARRAYS_EQUAL(expectedArray, actualArray, 2), Anomaly, TestUtil::NewlineConcat("",
          "  Failed: ARRAYS_EQUAL(expectedArray, actualArray, 2)",
          "Expected: " + typeName + " [2]",
          "  Actual: " + typeName + " [2]",

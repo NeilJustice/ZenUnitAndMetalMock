@@ -40,7 +40,7 @@ namespace ZenUnit
       const array<T, 1> actualArray = { { randomElement + T{ 1 } } };
       //
 #if defined __linux__
-      THROWS(STD_ARRAYS_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(STD_ARRAYS_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: STD_ARRAYS_EQUAL(expectedArray, actualArray)",
 "Expected: <std::array<" + TypeName + ", 1ul>>",
 "  Actual: <std::array<" + TypeName + ", 1ul>>",
@@ -51,7 +51,7 @@ namespace ZenUnit
 "File.cpp(1)",
 "File.cpp(1)"));
 #elif defined __APPLE__
-      THROWS(STD_ARRAYS_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(STD_ARRAYS_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: STD_ARRAYS_EQUAL(expectedArray, actualArray)",
 "Expected: <std::__1::array<" + TypeName + ", 1ul>>",
 "  Actual: <std::__1::array<" + TypeName + ", 1ul>>",
@@ -62,7 +62,7 @@ namespace ZenUnit
 "File.cpp(1)",
 "File.cpp(1)"));
 #elif defined _WIN32
-      THROWS(STD_ARRAYS_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(STD_ARRAYS_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: STD_ARRAYS_EQUAL(expectedArray, actualArray)",
 "Expected: <std::array<" + TypeName + ",1>>",
 "  Actual: <std::array<" + TypeName + ",1>>",
@@ -113,7 +113,7 @@ namespace ZenUnit
       const array<T, 2> actualArray_index0 = { { _randomElementA + randomT, _randomElementB } };
       //
 #if defined __linux__
-      THROWS(STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0)",
 "Expected: <std::array<" + TypeName + ", 2ul>>",
 "  Actual: <std::array<" + TypeName + ", 2ul>>",
@@ -124,7 +124,7 @@ namespace ZenUnit
 "File.cpp(1)",
 "File.cpp(1)"));
 #elif defined __APPLE__
-      THROWS(STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0)",
 "Expected: <std::__1::array<" + TypeName + ", 2ul>>",
 "  Actual: <std::__1::array<" + TypeName + ", 2ul>>",
@@ -135,7 +135,7 @@ namespace ZenUnit
 "File.cpp(1)",
 "File.cpp(1)"));
 #elif defined _WIN32
-      THROWS(STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0)",
 "Expected: <std::array<" + TypeName + ",2>>",
 "  Actual: <std::array<" + TypeName + ",2>>",
@@ -155,7 +155,7 @@ namespace ZenUnit
       const array<T, 2> actualArray_index1 = { { _randomElementA, _randomElementB + randomT } };
       //
 #if defined __linux__
-      THROWS(STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1)",
 "Expected: <std::array<" + TypeName + ", 2ul>>",
 "  Actual: <std::array<" + TypeName + ", 2ul>>",
@@ -166,7 +166,7 @@ namespace ZenUnit
 "File.cpp(1)",
 "File.cpp(1)"));
 #elif defined __APPLE__
-      THROWS(STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1)",
 "Expected: <std::__1::array<" + TypeName + ", 2ul>>",
 "  Actual: <std::__1::array<" + TypeName + ", 2ul>>",
@@ -177,7 +177,7 @@ namespace ZenUnit
 "File.cpp(1)",
 "File.cpp(1)"));
 #elif defined _WIN32
-      THROWS(STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1)",
 "Expected: <std::array<" + TypeName + ",2>>",
 "  Actual: <std::array<" + TypeName + ",2>>",
