@@ -146,14 +146,14 @@ FileLineValue);
 
    TEST(WhyConstructor_OneMessage_SetsWhy_SetsMessage)
    {
-      const string MessageA = "A";
+      const string message = ZenUnit::Random<string>();
       //
-      const Anomaly anomaly(StartOfFailedLine, WhyBody, FileLineValue, "", "MessageA", MessageA);
+      const Anomaly anomaly(StartOfFailedLine, WhyBody, FileLineValue, "", "Message", message);
       //
       Anomaly expectedAnomaly;
-      expectedAnomaly.message = R"("A")";
+      expectedAnomaly.message = "\"" + message + "\"";
       expectedAnomaly.why = TestUtil::NewlineConcat("",
-"StartOfFailedLine, MessageA)",
+"StartOfFailedLine, Message)",
 "WhyBody",
 "Message: " + expectedAnomaly.message,
 FileLineValue);
@@ -167,16 +167,17 @@ FileLineValue);
       " ",
       "  ")
    {
-      const string MessageA = "A", MessageB = "B";
+      const string messageA = "A";
+      const string messageB = "B";
       //
       const Anomaly anomaly(
          StartOfFailedLine, WhyBody, FileLineValue,
-         messagePrefixSpaces, "MessageA, MessageB", MessageA, MessageB);
+         messagePrefixSpaces, "messageA, messageB", messageA, messageB);
       //
       Anomaly expectedAnomaly;
       expectedAnomaly.message = R"("A", "B")";
       expectedAnomaly.why = String::Concat('\n',
-"StartOfFailedLine, MessageA, MessageB)\n",
+"StartOfFailedLine, messageA, messageB)\n",
 "WhyBody\n",
 string(messagePrefixSpaces) + "Message: " + expectedAnomaly.message + "\n",
 FileLineValue);

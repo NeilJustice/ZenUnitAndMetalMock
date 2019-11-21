@@ -3,34 +3,34 @@
 namespace ZenUnit
 {
    TESTS(POINTER_WAS_NEWEDTests_RawPointers)
-   AFACT(NullRawPointer_Throws)
-   AFACT(NullRawPointer_Throws_MessagesTestCase)
-   AFACT(EmptyUniquePointer_Throws)
-   AFACT(EmptySharedPointer_Throws)
-   AFACT(NonNullRawPointer_DoesNotThrow_CannotBeCalledTwiceWithoutUndefinedBehavior)
-   AFACT(NonEmptyUniquePointer_DoesNotThrow_ThrowsWhenCalledAgain)
-   AFACT(NonEmptySharedPointer_DoesNotThrow_ThrowsWhenCalledAgain)
-   AFACT(NonEmptyUserTypeUniquePointer_CallsDestructor_ThrowsWhenCalledAgain)
-   AFACT(NonEmptyUserTypeSharedPointer_CallsDestructor_ThrowsWhenCalledAgain)
+   AFACT(PointerIsNullRawPointer_ThrowsAnomaly)
+   AFACT(PointerIsNullRawPointer_ThrowsAnomaly__MessagesTestCase)
+   AFACT(PointerIsEmptyUniquePtr_ThrowsAnomaly)
+   AFACT(PointerIsEmptySharedPtr_ThrowsAnomaly)
+   AFACT(PointerIsNonNullRawPointer_OperatorDeletesPointer)
+   AFACT(PointerIsNonEmptyUniquePtr_DeletesPointer_ThrowsAnomalyWhenCalledTwice)
+   AFACT(PointerIsNonEmptySharedPtr_DeletesPointer_ThrowsAnomalyWhenCalledTwice)
+   AFACT(NonEmptyUserTypeUniquePointer_CallsDestructor_ThrowsWhenCalledTwice)
+   AFACT(NonEmptyUserTypeSharedPointer_CallsDestructor_ThrowsWhenCalledTwice)
    EVIDENCE
 
-   class Deletable
+   class DestructorCountingElement
    {
    public:
       const function<void()> _incrementDestructorCallCount;
 
-      Deletable(function<void()> incrementDestructorCallCount)
+      DestructorCountingElement(function<void()> incrementDestructorCallCount)
          : _incrementDestructorCallCount(std::move(incrementDestructorCallCount))
       {
       }
 
-      ~Deletable()
+      ~DestructorCountingElement()
       {
          _incrementDestructorCallCount();
       }
    };
 
-   TEST(NullRawPointer_Throws)
+   TEST(PointerIsNullRawPointer_ThrowsAnomaly)
    {
       const int* nullRawPointer = nullptr;
       THROWS(POINTER_WAS_NEWED(nullRawPointer), Anomaly, TestUtil::NewlineConcat("",
@@ -40,19 +40,20 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(NullRawPointer_Throws_MessagesTestCase)
+   TEST(PointerIsNullRawPointer_ThrowsAnomaly__MessagesTestCase)
    {
       const char* nullRawPointer = nullptr;
-      const string MessageA = "A", MessageB = "B";
-      THROWS(POINTER_WAS_NEWED(nullRawPointer, MessageA, MessageB), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: POINTER_WAS_NEWED(nullRawPointer, MessageA, MessageB)",
+      const string messageA = ZenUnit::Random<string>();
+      const string messageB = ZenUnit::Random<string>();
+      THROWS(POINTER_WAS_NEWED(nullRawPointer, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: POINTER_WAS_NEWED(nullRawPointer, messageA, messageB)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
-" Message: \"A\", \"B\"",
+" Message: \"" + messageA + "\", \"" + messageB + "\"",
 "File.cpp(1)"));
    }
 
-   TEST(EmptyUniquePointer_Throws)
+   TEST(PointerIsEmptyUniquePtr_ThrowsAnomaly)
    {
       unique_ptr<const int> emptyUniquePtr;
       THROWS(POINTER_WAS_NEWED(emptyUniquePtr), Anomaly, TestUtil::NewlineConcat("",
@@ -62,7 +63,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(EmptySharedPointer_Throws)
+   TEST(PointerIsEmptySharedPtr_ThrowsAnomaly)
    {
       shared_ptr<const int> emptySharedPtr;
       THROWS(POINTER_WAS_NEWED(emptySharedPtr), Anomaly, TestUtil::NewlineConcat("",
@@ -72,64 +73,68 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(NonNullRawPointer_DoesNotThrow_CannotBeCalledTwiceWithoutUndefinedBehavior)
+   TEST(PointerIsNonNullRawPointer_OperatorDeletesPointer)
    {
-      unsigned destructorCallCount = 0;
-      const Deletable* nonNullRawPointer = new Deletable([&] { ++destructorCallCount; });
+      size_t destructorCallCount = 0;
+      const DestructorCountingElement* nonNullRawPointer = new DestructorCountingElement([&] { ++destructorCallCount; });
       //
       POINTER_WAS_NEWED(nonNullRawPointer);
       //
       ARE_EQUAL(1, destructorCallCount);
    }
 
-   TEST(NonEmptyUniquePointer_DoesNotThrow_ThrowsWhenCalledAgain)
+   TEST(PointerIsNonEmptyUniquePtr_DeletesPointer_ThrowsAnomalyWhenCalledTwice)
    {
       unique_ptr<const int> nonEmptyUniquePtr(new int);
       POINTER_WAS_NEWED(nonEmptyUniquePtr);
 
-      THROWS(POINTER_WAS_NEWED(nonEmptyUniquePtr), Anomaly, TestUtil::NewlineConcat("",
+      THROWS(POINTER_WAS_NEWED(nonEmptyUniquePtr),
+         Anomaly, TestUtil::NewlineConcat("",
 "  Failed: POINTER_WAS_NEWED(nonEmptyUniquePtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
 "File.cpp(1)"));
    }
 
-   TEST(NonEmptySharedPointer_DoesNotThrow_ThrowsWhenCalledAgain)
+   TEST(PointerIsNonEmptySharedPtr_DeletesPointer_ThrowsAnomalyWhenCalledTwice)
    {
       shared_ptr<const int> nonEmptySharedPtr(new int);
       POINTER_WAS_NEWED(nonEmptySharedPtr);
 
-      THROWS(POINTER_WAS_NEWED(nonEmptySharedPtr), Anomaly, TestUtil::NewlineConcat("",
+      THROWS(POINTER_WAS_NEWED(nonEmptySharedPtr),
+         Anomaly, TestUtil::NewlineConcat("",
 "  Failed: POINTER_WAS_NEWED(nonEmptySharedPtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
 "File.cpp(1)"));
    }
 
-   TEST(NonEmptyUserTypeUniquePointer_CallsDestructor_ThrowsWhenCalledAgain)
+   TEST(NonEmptyUserTypeUniquePointer_CallsDestructor_ThrowsWhenCalledTwice)
    {
-      unsigned destructorCallCount = 0;
-      unique_ptr<const Deletable> uniquePtr(new Deletable([&] { ++destructorCallCount; }));
+      size_t destructorCallCount = 0;
+      unique_ptr<const DestructorCountingElement> uniquePtr(new DestructorCountingElement([&] { ++destructorCallCount; }));
       //
       POINTER_WAS_NEWED(uniquePtr);
       //
       ARE_EQUAL(1, destructorCallCount);
-      THROWS(POINTER_WAS_NEWED(uniquePtr), Anomaly, TestUtil::NewlineConcat("",
+      THROWS(POINTER_WAS_NEWED(uniquePtr),
+         Anomaly, TestUtil::NewlineConcat("",
 "  Failed: POINTER_WAS_NEWED(uniquePtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
 "File.cpp(1)"));
    }
 
-   TEST(NonEmptyUserTypeSharedPointer_CallsDestructor_ThrowsWhenCalledAgain)
+   TEST(NonEmptyUserTypeSharedPointer_CallsDestructor_ThrowsWhenCalledTwice)
    {
-      unsigned destructorCallCount = 0;
-      shared_ptr<const Deletable> sharedPtr(new Deletable([&] { ++destructorCallCount; }));
+      size_t destructorCallCount = 0;
+      shared_ptr<const DestructorCountingElement> sharedPtr(new DestructorCountingElement([&] { ++destructorCallCount; }));
       //
       POINTER_WAS_NEWED(sharedPtr);
       //
       ARE_EQUAL(1, destructorCallCount);
-      THROWS(POINTER_WAS_NEWED(sharedPtr), Anomaly, TestUtil::NewlineConcat("",
+      THROWS(POINTER_WAS_NEWED(sharedPtr),
+         Anomaly, TestUtil::NewlineConcat("",
 "  Failed: POINTER_WAS_NEWED(sharedPtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",

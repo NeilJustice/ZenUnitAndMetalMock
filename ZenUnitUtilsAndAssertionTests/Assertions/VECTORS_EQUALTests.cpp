@@ -4,23 +4,46 @@ namespace ZenUnit
 {
    template<typename T>
    TEMPLATE_TESTS(VECTORS_EQUALTests, T)
-   AFACT(VectorSizesNotEqual_Throws)
-   AFACT(VectorSizesNotEqual_Throws_MessagesTestCase)
-   AFACT(VectorSizesEqual_ElementsNotEqualAtIndex0_Throws_MessagesTestCase)
-   AFACT(VectorSizesEqual_ElementsNotEqualAtIndex1_Throws)
-   AFACT(TwoEmptyVectors_DoesNotThrow)
-   AFACT(VectorSizesEqual_VectorElementsEqual_DoesNotThrow)
+   AFACT(VectorSizesAreEqualAndVectorElementsAreEqual_DoesNotThrowException)
+   AFACT(VectorSizesAreNotEqual_ThrowsAnomaly)
+   AFACT(VectorSizesAreNotEqual_ThrowsAnomaly_MessagesTestCase)
+   AFACT(VectorSizesAreEqual_ElementsAreNotEqualAtIndex0_ThrowsAnomaly__MessagesTestCase)
+   AFACT(VectorSizesAreEqual_ElementsAreNotEqualAtIndex1_ThrowsAnomaly)
    EVIDENCE
 
    const string TypeName = *Type::GetName<T>();
-   const string MessageA = "A";
-   const string MessageB = "B";
+   const string _messageA = ZenUnit::Random<string>();
+   const string _messageB = ZenUnit::Random<string>();
 
-   TEST(VectorSizesNotEqual_Throws)
+   TEST(VectorSizesAreEqualAndVectorElementsAreEqual_DoesNotThrowException)
    {
-      const vector<T> expectedVector { 1 };
+      vector<T> expectedVector;;
+      vector<T> actualVector;
+
+      VECTORS_EQUAL(expectedVector, actualVector);
+
+      const T randomElement1 = Random<T>();
+      expectedVector.push_back(randomElement1);
+      actualVector.push_back(randomElement1);
+      VECTORS_EQUAL(expectedVector, actualVector);
+
+      const T randomElement2 = Random<T>();
+      expectedVector.push_back(randomElement2);
+      actualVector.push_back(randomElement2);
+      VECTORS_EQUAL(expectedVector, actualVector);
+
+      const T randomElement3 = Random<T>();
+      expectedVector.push_back(randomElement3);
+      actualVector.push_back(randomElement3);
+      VECTORS_EQUAL(expectedVector, actualVector);
+   }
+
+   TEST(VectorSizesAreNotEqual_ThrowsAnomaly)
+   {
+      const vector<T> expectedVector(1);
       const vector<T> actualVector;
-      THROWS(VECTORS_EQUAL(expectedVector, actualVector), Anomaly, TestUtil::NewlineConcat("",
+      THROWS(VECTORS_EQUAL(expectedVector, actualVector),
+         Anomaly, TestUtil::NewlineConcat("",
 "  Failed: VECTORS_EQUAL(expectedVector, actualVector)",
 "Expected: std::vector<" + TypeName + "> (size 1):",
 "{",
@@ -36,12 +59,13 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(VectorSizesNotEqual_Throws_MessagesTestCase)
+   TEST(VectorSizesAreNotEqual_ThrowsAnomaly_MessagesTestCase)
    {
-      const vector<T> expectedVector { 1 };
+      const vector<T> expectedVector(1);
       const vector<T> actualVector;
-      THROWS(VECTORS_EQUAL(expectedVector, actualVector, MessageA, MessageB), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: VECTORS_EQUAL(expectedVector, actualVector, MessageA, MessageB)",
+      THROWS(VECTORS_EQUAL(expectedVector, actualVector, _messageA, _messageB),
+         Anomaly, TestUtil::NewlineConcat("",
+"  Failed: VECTORS_EQUAL(expectedVector, actualVector, _messageA, _messageB)",
 "Expected: std::vector<" + TypeName + "> (size 1):",
 "{",
 "   " + ToStringer::ToString(expectedVector[0]),
@@ -52,17 +76,20 @@ namespace ZenUnit
 " Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed",
 "Expected: 1",
 "  Actual: 0",
-" Message: \"A\", \"B\"",
+" Message: \"" + _messageA + "\", \"" + _messageB + "\"",
 "File.cpp(1)",
 "File.cpp(1)"));
    }
 
-   TEST(VectorSizesEqual_ElementsNotEqualAtIndex0_Throws_MessagesTestCase)
+   TEST(VectorSizesAreEqual_ElementsAreNotEqualAtIndex0_ThrowsAnomaly__MessagesTestCase)
    {
-      const vector<T> v1 { 1 };
-      const vector<T> v2 { 2 };
-      THROWS(VECTORS_EQUAL(v1, v2, MessageA, MessageB), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: VECTORS_EQUAL(v1, v2, MessageA, MessageB)",
+      const T randomElement1 = Random<T>();
+      const T randomElement2 = RandomNon0<T>();
+      const vector<T> v1 { randomElement1 };
+      const vector<T> v2 { randomElement1 + randomElement2 };
+      THROWS(VECTORS_EQUAL(v1, v2, _messageA, _messageB),
+         Anomaly, TestUtil::NewlineConcat("",
+"  Failed: VECTORS_EQUAL(v1, v2, _messageA, _messageB)",
 "Expected: std::vector<" + TypeName + "> (size 1):",
 "{",
 "   " + ToStringer::ToString(v1[0]),
@@ -75,16 +102,20 @@ namespace ZenUnit
 "Expected: " + ToStringer::ToString(v1[0]),
 "  Actual: " + ToStringer::ToString(v2[0]),
 " Message: \"i=0\"",
-" Message: \"A\", \"B\"",
+" Message: \"" + _messageA + "\", \"" + _messageB + "\"",
 "File.cpp(1)",
 "File.cpp(1)"));
    }
 
-   TEST(VectorSizesEqual_ElementsNotEqualAtIndex1_Throws)
+   TEST(VectorSizesAreEqual_ElementsAreNotEqualAtIndex1_ThrowsAnomaly)
    {
-      const vector<T> v1 { 0, 1 };
-      const vector<T> v2 { 0, 2 };
-      THROWS(VECTORS_EQUAL(v1, v2), Anomaly, TestUtil::NewlineConcat("",
+      const T randomElement1 = Random<T>();
+      const T randomElement2 = RandomNon0<T>();
+      const T randomElement3 = RandomNon0<T>();
+      const vector<T> v1 { randomElement1, randomElement2 };
+      const vector<T> v2 { randomElement1, randomElement3 };
+      THROWS(VECTORS_EQUAL(v1, v2),
+         Anomaly, TestUtil::NewlineConcat("",
 "  Failed: VECTORS_EQUAL(v1, v2)",
 "Expected: std::vector<" + TypeName + "> (size 2):",
 "{",
@@ -104,28 +135,8 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(TwoEmptyVectors_DoesNotThrow)
-   {
-      const vector<T> expectedVector;
-      const vector<T> actualVector;
-      VECTORS_EQUAL(expectedVector, actualVector);
-   }
-
-   TEST(VectorSizesEqual_VectorElementsEqual_DoesNotThrow)
-   {
-      vector<T> expectedVector;;
-      vector<T> actualVector;
-
-      expectedVector.push_back(1);
-      actualVector.push_back(1);
-      VECTORS_EQUAL(expectedVector, actualVector);
-
-      expectedVector.push_back(2);
-      actualVector.push_back(2);
-      VECTORS_EQUAL(expectedVector, actualVector);
-   }
-
    RUN_TEMPLATE_TESTS(VECTORS_EQUALTests, char)
    THEN_RUN_TEMPLATE_TESTS(VECTORS_EQUALTests, int)
    THEN_RUN_TEMPLATE_TESTS(VECTORS_EQUALTests, size_t)
+   THEN_RUN_TEMPLATE_TESTS(VECTORS_EQUALTests, string)
 }

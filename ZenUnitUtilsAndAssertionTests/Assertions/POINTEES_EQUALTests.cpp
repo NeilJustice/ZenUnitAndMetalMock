@@ -3,17 +3,17 @@
 namespace ZenUnit
 {
    TESTS(POINTEES_EQUALTests)
-   AFACT(ExpectedPointerNullptr_ActualPointerNullptr_DoesNotThrow)
-   AFACT(ExpectedPointerNullptr_ActualPointerNotNullptr_Throws)
-   AFACT(ExpectedPointerNotNullptr_ActualPointerNullptr_Throws)
-   AFACT(ExpectedPointerNotNull_ActualPointerNotNull_PointeesNotEqual_Throws)
-   AFACT(ExpectedPointerNotNull_ActualPointerNotNull_PointeesNotEqual_Throws_MessagesTestCase)
-   AFACT(ExpectedPointerNotNull_ActualPointerNotNull_PointeesNotEqual_UserTypes_Throws)
-   AFACT(ExpectedPointerNotNull_ActualPointerNotNull_PointeesEqual_DoesNotThrow)
-   AFACT(ExpectedPointerNotNull_ActualPointerNotNull_PointeesEqual_UserTypes_DoesNotThrow)
+   AFACT(ExpectedPointerIsNullptr_ActualPointerIsNullptr_DoesNotThrowException)
+   AFACT(ExpectedPointerIsNullptr_ActualPointerIsNotNullptr_ThrowsAnomaly)
+   AFACT(ExpectedPointerIsNotNullptr_ActualPointerIsNullptr_ThrowsAnomaly)
+   AFACT(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreNotEqual_ThrowsAnomaly__StringPointersTestCase)
+   AFACT(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreNotEqual_ThrowsAnomaly__StringPointersTestCase_MessagesTestCase)
+   AFACT(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreNotEqual_ThrowsAnomaly__UserTypesTestCase)
+   AFACT(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreEqual_DoesNotThrowException__StringPointersTestCase)
+   AFACT(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreEqual_DoesNotThrowExceeption__UserTypePointersTestCase)
    EVIDENCE
 
-   TEST(ExpectedPointerNullptr_ActualPointerNullptr_DoesNotThrow)
+   TEST(ExpectedPointerIsNullptr_ActualPointerIsNullptr_DoesNotThrowException)
    {
       POINTEES_EQUAL(nullptr, nullptr);
       int* x = nullptr;
@@ -21,92 +21,99 @@ namespace ZenUnit
       POINTEES_EQUAL(x, y);
    }
 
-   TEST(ExpectedPointerNullptr_ActualPointerNotNullptr_Throws)
+   TEST(ExpectedPointerIsNullptr_ActualPointerIsNotNullptr_ThrowsAnomaly)
    {
       const int i = 0;
       const int* const intPointer = &i;
-      THROWS(POINTEES_EQUAL(nullptr, intPointer), Anomaly, TestUtil::NewlineConcat("",
+      THROWS(POINTEES_EQUAL(nullptr, intPointer),
+         Anomaly, TestUtil::NewlineConcat("",
 "  Failed: POINTEES_EQUAL(nullptr, intPointer)",
 "Expected: expected pointer != nullptr",
 "  Actual: expected pointer == nullptr",
 "File.cpp(1)"));
    }
 
-   TEST(ExpectedPointerNotNullptr_ActualPointerNullptr_Throws)
+   TEST(ExpectedPointerIsNotNullptr_ActualPointerIsNullptr_ThrowsAnomaly)
    {
       const int i = 0;
       const int* const intPointer = &i;
-      THROWS(POINTEES_EQUAL(intPointer, nullptr), Anomaly, TestUtil::NewlineConcat("",
+      THROWS(POINTEES_EQUAL(intPointer, nullptr),
+         Anomaly, TestUtil::NewlineConcat("",
 "  Failed: POINTEES_EQUAL(intPointer, nullptr)",
 "Expected: actual pointer != nullptr",
 "  Actual: actual pointer == nullptr",
 "File.cpp(1)"));
    }
 
-   TEST(ExpectedPointerNotNull_ActualPointerNotNull_PointeesNotEqual_Throws)
+   TEST(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreNotEqual_ThrowsAnomaly__StringPointersTestCase)
    {
-      const string expectedPointee = "expected_text";
-      const string actualPointee = "actual_text";
+      const string expectedPointee = ZenUnit::Random<string>();
+      const string actualPointee = ZenUnit::Random<string>();
       const string* const expectedPointer = &expectedPointee;
       const string* const actualPointer = &actualPointee;
-      THROWS(POINTEES_EQUAL(expectedPointer, actualPointer), Anomaly, TestUtil::NewlineConcat("",
+      THROWS(POINTEES_EQUAL(expectedPointer, actualPointer),
+         Anomaly, TestUtil::NewlineConcat("",
 "  Failed: POINTEES_EQUAL(expectedPointer, actualPointer)",
-"Expected: \"expected_text\"",
-"  Actual: \"actual_text\"",
+"Expected: \"" + expectedPointee + "\"",
+"  Actual: \"" + actualPointee + "\"",
 " Because: ARE_EQUAL(*expectedPointee, *actualPointee) failed",
-"Expected: \"expected_text\"",
-"  Actual: \"actual_text\"",
+"Expected: \"" + expectedPointee + "\"",
+"  Actual: \"" + actualPointee + "\"",
 "File.cpp(1)",
 "File.cpp(1)"));
    }
 
-   TEST(ExpectedPointerNotNull_ActualPointerNotNull_PointeesNotEqual_Throws_MessagesTestCase)
+   TEST(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreNotEqual_ThrowsAnomaly__StringPointersTestCase_MessagesTestCase)
    {
-      const string expectedPointee = "expected_text";
-      const string actualPointee = "actual_text";
+      const string expectedPointee = ZenUnit::Random<string>();
+      const string actualPointee = ZenUnit::Random<string>();
       const string* const expectedPointer = &expectedPointee;
       const string* const actualPointer = &actualPointee;
-      const string MessageA = "A", MessageB = "B";
-      THROWS(POINTEES_EQUAL(expectedPointer, actualPointer, MessageA, MessageB), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: POINTEES_EQUAL(expectedPointer, actualPointer, MessageA, MessageB)",
-"Expected: \"expected_text\"",
-"  Actual: \"actual_text\"",
-" Because: ARE_EQUAL(*expectedPointee, *actualPointee) failed",
-"Expected: \"expected_text\"",
-"  Actual: \"actual_text\"",
-" Message: \"A\", \"B\"",
-"File.cpp(1)",
-"File.cpp(1)"));
+      const string messageA = ZenUnit::Random<string>();
+      const string messageB = ZenUnit::Random<string>();
+      THROWS(POINTEES_EQUAL(expectedPointer, actualPointer, messageA, messageB),
+         Anomaly, TestUtil::NewlineConcat("",
+            "  Failed: POINTEES_EQUAL(expectedPointer, actualPointer, messageA, messageB)",
+            "Expected: \"" + expectedPointee + "\"",
+            "  Actual: \"" + actualPointee + "\"",
+            " Because: ARE_EQUAL(*expectedPointee, *actualPointee) failed",
+            "Expected: \"" + expectedPointee + "\"",
+            "  Actual: \"" + actualPointee + "\"",
+            " Message: \"" + messageA + "\", \"" + messageB + "\"",
+            "File.cpp(1)",
+            "File.cpp(1)"));
    }
 
-   TEST(ExpectedPointerNotNull_ActualPointerNotNull_PointeesNotEqual_UserTypes_Throws)
+   TEST(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreNotEqual_ThrowsAnomaly__UserTypesTestCase)
    {
       const unique_ptr<const UserType> expectedPointer(new UserType(1));
       const unique_ptr<const UserType> actualPointer(new UserType(2));
-      THROWS(POINTEES_EQUAL(expectedPointer, actualPointer), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: POINTEES_EQUAL(expectedPointer, actualPointer)",
-"Expected: UserType@1",
-"  Actual: UserType@2",
-" Because: ARE_EQUAL(*expectedPointee, *actualPointee) failed",
-"Expected: UserType@1",
-"  Actual: UserType@2",
-"File.cpp(1)",
-"File.cpp(1)"));
+      THROWS(POINTEES_EQUAL(expectedPointer, actualPointer),
+         Anomaly, TestUtil::NewlineConcat("",
+            "  Failed: POINTEES_EQUAL(expectedPointer, actualPointer)",
+            "Expected: UserType@1",
+            "  Actual: UserType@2",
+            " Because: ARE_EQUAL(*expectedPointee, *actualPointee) failed",
+            "Expected: UserType@1",
+            "  Actual: UserType@2",
+            "File.cpp(1)",
+            "File.cpp(1)"));
    }
 
-   TEST(ExpectedPointerNotNull_ActualPointerNotNull_PointeesEqual_DoesNotThrow)
+   TEST(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreEqual_DoesNotThrowException__StringPointersTestCase)
    {
-      const string expectedPointee = "expected_text";
-      const string actualPointee = "expected_text";
+      const string expectedPointee = ZenUnit::Random<string>();
+      const string actualPointee = expectedPointee;
       const string* const expectedPointer = &expectedPointee;
       const string* const actualPointer = &actualPointee;
       POINTEES_EQUAL(expectedPointer, actualPointer);
    }
 
-   TEST(ExpectedPointerNotNull_ActualPointerNotNull_PointeesEqual_UserTypes_DoesNotThrow)
+   TEST(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreEqual_DoesNotThrowExceeption__UserTypePointersTestCase)
    {
-      const shared_ptr<const UserType> expectedPointer(new UserType(1));
-      const shared_ptr<const UserType> actualPointer(new UserType(1));
+      const int randomInt = ZenUnit::Random<int>();
+      const shared_ptr<const UserType> expectedPointer(new UserType(randomInt));
+      const shared_ptr<const UserType> actualPointer(new UserType(randomInt));
       POINTEES_EQUAL(expectedPointer, actualPointer);
    }
 

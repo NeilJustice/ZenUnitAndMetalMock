@@ -3,13 +3,13 @@
 namespace ZenUnit
 {
    TESTS(POINTER_IS_NOT_NULLTests)
-   AFACT(NullRawPointer_Throws)
+   AFACT(PointerIsNullRawPointer_ThrowsAnomaly)
    AFACT(NullUniquePointer_Throws_MessagesTestCase)
    AFACT(NonNullRawPointer_DoesNotThrow)
    AFACT(NonNullUniquePointer_DoesNotThrow)
    EVIDENCE
 
-   TEST(NullRawPointer_Throws)
+   TEST(PointerIsNullRawPointer_ThrowsAnomaly)
    {
       const int* const nullRawPointer = nullptr;
       THROWS(POINTER_IS_NOT_NULL(nullRawPointer), Anomaly, TestUtil::NewlineConcat("",

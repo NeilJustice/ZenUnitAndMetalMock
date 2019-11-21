@@ -3,14 +3,14 @@
 namespace ZenUnit
 {
    TESTS(DOES_NOT_THROWTests)
-   AFACT(LambdaCallThrows_Throws)
-   AFACT(LambdaCallThrows_Throws_MessagesTestCase)
-   AFACT(FunctionCallThrows_Throws)
-   AFACT(LambdaCallDoesNotThrow_DoesNotThrow)
-   AFACT(FunctionCallDoesNotThrow_DoesNotThrow)
+   AFACT(LambdaCallThrowsException_ThrowsException)
+   AFACT(LambdaCallThrowsException_ThrowsException__MessagesTestCase)
+   AFACT(FunctionCallThrowsException_ThrowsAnomaly)
+   AFACT(LambdaCallDoesNotThrowException_DoesNotThrowException)
+   AFACT(FunctionCallDoesNotThrowException_DoesNotThrowException)
    EVIDENCE
 
-   TEST(LambdaCallThrows_Throws)
+   TEST(LambdaCallThrowsException_ThrowsException)
    {
       THROWS(DOES_NOT_THROW([] { throw runtime_error("what text"); }()), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: DOES_NOT_THROW([] { throw runtime_error(\"what text\"); }())",
@@ -20,43 +20,45 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(LambdaCallThrows_Throws_MessagesTestCase)
+   TEST(LambdaCallThrowsException_ThrowsException__MessagesTestCase)
    {
-      const string MessageA = "A", MessageB = "B";
-      THROWS(DOES_NOT_THROW([] { throw runtime_error(""); }(), MessageA, MessageB), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: DOES_NOT_THROW([] { throw runtime_error(\"\"); }(), MessageA, MessageB)",
+      const string messageA = ZenUnit::Random<string>();
+      const string messageB = ZenUnit::Random<string>();
+      THROWS(DOES_NOT_THROW([] { throw runtime_error(""); }(), messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: DOES_NOT_THROW([] { throw runtime_error(\"\"); }(), messageA, messageB)",
 "Expected: No exception thrown",
 "  Actual: std::runtime_error thrown",
 "  what(): \"\"",
-" Message: \"A\", \"B\"",
+" Message: \"" + messageA + "\", \"" + messageB + "\"",
 "File.cpp(1)"));
    }
 
-   void Throw()
+   void FunctionThatThrowsAnInvalidArgumentException()
    {
       throw invalid_argument("what text");
    }
 
-   TEST(FunctionCallThrows_Throws)
+   TEST(FunctionCallThrowsException_ThrowsAnomaly)
    {
-      THROWS(DOES_NOT_THROW(Throw()), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: DOES_NOT_THROW(Throw())",
+      THROWS(DOES_NOT_THROW(FunctionThatThrowsAnInvalidArgumentException()),
+         Anomaly, TestUtil::NewlineConcat("",
+"  Failed: DOES_NOT_THROW(FunctionThatThrowsAnInvalidArgumentException())",
 "Expected: No exception thrown",
 "  Actual: std::invalid_argument thrown",
 "  what(): \"what text\"",
 "File.cpp(1)"));
    }
 
-   TEST(LambdaCallDoesNotThrow_DoesNotThrow)
+   TEST(LambdaCallDoesNotThrowException_DoesNotThrowException)
    {
       DOES_NOT_THROW([]{}());
    }
 
-   void NoThrow() {}
+   void FunctionThatDoesNotThrowAnException() {}
 
-   TEST(FunctionCallDoesNotThrow_DoesNotThrow)
+   TEST(FunctionCallDoesNotThrowException_DoesNotThrowException)
    {
-      DOES_NOT_THROW(NoThrow());
+      DOES_NOT_THROW(FunctionThatDoesNotThrowAnException());
    }
 
    RUN_TESTS(DOES_NOT_THROWTests)

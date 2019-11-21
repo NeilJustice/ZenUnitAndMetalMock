@@ -6,10 +6,10 @@ namespace ZenUnit
       template<typename...>
       class MapType>
    TEMPLATE_TESTS(MAPS_EQUALTests, MapType)
-   AFACT(BothEmpty_DoesNotThrow)
-   AFACT(SizesDifferent_Throws)
+   AFACT(BothMapsAreEmpty_DoesNotThrowException)
+   AFACT(ExpectedAndActualMapSizesAreDifferent_ThrowsAnomaly)
    AFACT(SizesDifferent_Throws_MessagesTestCase)
-   AFACT(SizesEqual_KeysNotEqual_Throws)
+   AFACT(MapSizesAreEqual_KeysAreNotEqual_ThrowsAnomaly)
    AFACT(SizesEqual_KeysNotEqual_Throws_MessagesTestCase)
    AFACT(SizesEqual_KeysEqual_ValuesNotEqual_Throws)
    AFACT(SizesEqual_KeysEqual_ValuesNotEqual_Throws_MessagesTestCase)
@@ -17,14 +17,14 @@ namespace ZenUnit
    AFACT(SizesEqual_UserTypeKeysEqual_ValuesNotEqual_Throws)
    EVIDENCE
 
-   const string MessageA = "A", MessageB = "B";
-
-   TEST(BothEmpty_DoesNotThrow)
+   TEST(BothMapsAreEmpty_DoesNotThrowException)
    {
       MAPS_EQUAL((MapType<int, int>()), (MapType<int, int>()));
+
       MapType<int, int> expectedMap;
       MapType<int, int> actualMap;
       MAPS_EQUAL(expectedMap, actualMap);
+
       expectedMap.insert({ 1, 1 });
       expectedMap.insert({ 2, 2 });
       actualMap.insert({ 1, 1 });
@@ -32,12 +32,15 @@ namespace ZenUnit
       MAPS_EQUAL(expectedMap, actualMap);
    }
 
-   TEST(SizesDifferent_Throws)
+   TEST(ExpectedAndActualMapSizesAreDifferent_ThrowsAnomaly)
    {
       MapType<int, int> expectedMap;
-      expectedMap.insert({ 0, 0 });
+      expectedMap[ZenUnit::Random<int>()] = ZenUnit::Random<int>();
+
       MapType<int, int> actualMap;
-      THROWS(MAPS_EQUAL(expectedMap, actualMap), ZenUnit::Anomaly, TestUtil::NewlineConcat("",
+
+      THROWS(MAPS_EQUAL(expectedMap, actualMap),
+         ZenUnit::Anomaly, TestUtil::NewlineConcat("",
 "  Failed: MAPS_EQUAL(expectedMap, actualMap)",
 " Because: ARE_EQUAL(expectedMap.size(), actualMap.size()) failed",
 "Expected: 1",
@@ -48,27 +51,38 @@ namespace ZenUnit
    TEST(SizesDifferent_Throws_MessagesTestCase)
    {
       MapType<int, int> expectedMap;
-      expectedMap.insert({ 0, 0 });
+      expectedMap[ZenUnit::Random<int>()] = ZenUnit::Random<int>();
+
       MapType<int, int> actualMap;
-      THROWS(MAPS_EQUAL(expectedMap, actualMap, MessageA, MessageB), ZenUnit::Anomaly, TestUtil::NewlineConcat("",
-"  Failed: MAPS_EQUAL(expectedMap, actualMap, MessageA, MessageB)",
+
+      const string messageA = ZenUnit::Random<string>();
+      const string messageB = ZenUnit::Random<string>();
+
+      THROWS(MAPS_EQUAL(expectedMap, actualMap, messageA, messageB), ZenUnit::Anomaly, TestUtil::NewlineConcat("",
+"  Failed: MAPS_EQUAL(expectedMap, actualMap, messageA, messageB)",
 " Because: ARE_EQUAL(expectedMap.size(), actualMap.size()) failed",
 "Expected: 1",
 "  Actual: 0",
-" Message: \"A\", \"B\"",
+" Message: \"" + messageA + "\", \"" + messageB + "\"",
 "File.cpp(1)"));
    }
 
-   TEST(SizesEqual_KeysNotEqual_Throws)
+   TEST(MapSizesAreEqual_KeysAreNotEqual_ThrowsAnomaly)
    {
+      const int key = ZenUnit::Random<int>();
+      const int valueThatDoesNotEqualKey = key + ZenUnit::RandomNon0<int>();
+
       MapType<int, int> expectedMap;
-      expectedMap.insert({ 10, 0 });
+      expectedMap.insert({ key, ZenUnit::Random<int>() });
+
       MapType<int, int> actualMap;
-      actualMap.insert({ 20, 0 });
-      THROWS(MAPS_EQUAL(expectedMap, actualMap), ZenUnit::Anomaly, TestUtil::NewlineConcat("",
+      actualMap.insert({ valueThatDoesNotEqualKey, ZenUnit::Random<int>() });
+
+      THROWS(MAPS_EQUAL(expectedMap, actualMap),
+         ZenUnit::Anomaly, TestUtil::NewlineConcat("",
 " Failed: MAPS_EQUAL(expectedMap, actualMap)",
 "Because: Actual map does not contain expected key",
-"Expected key: 10",
+"Expected key: " + to_string(key),
 "File.cpp(1)"));
    }
 
@@ -76,13 +90,18 @@ namespace ZenUnit
    {
       MapType<int, int> expectedMap;
       expectedMap.insert({ 10, 0 });
+
       MapType<int, int> actualMap;
       actualMap.insert({ 20, 0 });
-      THROWS(MAPS_EQUAL(expectedMap, actualMap, MessageA, MessageB), ZenUnit::Anomaly, TestUtil::NewlineConcat("",
-" Failed: MAPS_EQUAL(expectedMap, actualMap, MessageA, MessageB)",
+
+      const string messageA = ZenUnit::Random<string>();
+      const string messageB = ZenUnit::Random<string>();
+
+      THROWS(MAPS_EQUAL(expectedMap, actualMap, messageA, messageB), ZenUnit::Anomaly, TestUtil::NewlineConcat("",
+" Failed: MAPS_EQUAL(expectedMap, actualMap, messageA, messageB)",
 "Because: Actual map does not contain expected key",
 "Expected key: 10",
-"Message: \"A\", \"B\"",
+"Message: \"" + messageA + "\", \"" + messageB + "\"",
 "File.cpp(1)"));
    }
 
@@ -90,8 +109,10 @@ namespace ZenUnit
    {
       MapType<string, string> expectedMap;
       expectedMap.insert({ "key", "value" });
+
       MapType<string, string> actualMap;
       actualMap.insert({ "key", "not_value" });
+
       THROWS(MAPS_EQUAL(expectedMap, actualMap), ZenUnit::Anomaly, TestUtil::NewlineConcat("",
 " Failed: MAPS_EQUAL(expectedMap, actualMap)",
 "Because: Actual map contains expected key but with an unexpected value",
@@ -106,16 +127,21 @@ namespace ZenUnit
    {
       MapType<string, string> expectedMap;
       expectedMap.insert({ "key", "value" });
+
       MapType<string, string> actualMap;
       actualMap.insert({ "key", "not_value" });
-      THROWS(MAPS_EQUAL(expectedMap, actualMap, MessageA, MessageB), ZenUnit::Anomaly, TestUtil::NewlineConcat("",
-" Failed: MAPS_EQUAL(expectedMap, actualMap, MessageA, MessageB)",
+
+      const string messageA = ZenUnit::Random<string>();
+      const string messageB = ZenUnit::Random<string>();
+
+      THROWS(MAPS_EQUAL(expectedMap, actualMap, messageA, messageB), ZenUnit::Anomaly, TestUtil::NewlineConcat("",
+" Failed: MAPS_EQUAL(expectedMap, actualMap, messageA, messageB)",
 "Because: Actual map contains expected key but with an unexpected value",
 "  Expected key: \"key\"",
 "    Actual key: \"key\"",
 "Expected value: \"value\"",
 "  Actual value: \"not_value\"",
-"Message: \"A\", \"B\"",
+"Message: \"" + messageA + "\", \"" + messageB + "\"",
 "File.cpp(1)"));
    }
 
@@ -123,8 +149,10 @@ namespace ZenUnit
    {
       MapType<UserType, int> expectedMap;
       expectedMap.insert({ 10, 0 });
+
       MapType<UserType, int> actualMap;
       actualMap.insert({ 20, 0 });
+
       THROWS(MAPS_EQUAL(expectedMap, actualMap), ZenUnit::Anomaly, TestUtil::NewlineConcat("",
 " Failed: MAPS_EQUAL(expectedMap, actualMap)",
 "Because: Actual map does not contain expected key",
@@ -136,8 +164,10 @@ namespace ZenUnit
    {
       MapType<string, UserType> expectedMap;
       expectedMap.insert({ "key", 10 });
+
       MapType<string, UserType> actualMap;
       actualMap.insert({ "key", 20 });
+
       THROWS(MAPS_EQUAL(expectedMap, actualMap), ZenUnit::Anomaly, TestUtil::NewlineConcat("",
 " Failed: MAPS_EQUAL(expectedMap, actualMap)",
 "Because: Actual map contains expected key but with an unexpected value",

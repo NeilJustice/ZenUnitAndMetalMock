@@ -13,8 +13,8 @@ namespace ZenUnit
    AFACT(NeverThrownType_whatReturnsNullptr)
    EVIDENCE
 
-   const string MessageA = "A";
-   const string MessageB = "B";
+   const string _messageA = "A";
+   const string _messageB = "B";
 
    TEST(CallDoesNotThrow_Throws)
    {
@@ -38,14 +38,14 @@ namespace ZenUnit
    {
       try
       {
-         THROWS([]{}(), exception, "", MessageA, MessageB);
+         THROWS([]{}(), exception, "", _messageA, _messageB);
          FAIL_TEST("THROWS() did not throw");
       }
       catch (const Anomaly& anomaly)
       {
          ARE_EQUAL(TestUtil::NewlineConcat("",
 "  Failed: THROWS([]{}(), exception,",
-"          \"\", MessageA, MessageB)",
+"          \"\", _messageA, _messageB)",
 "Expected exception thrown: std::exception exactly",
 "  Actual exception thrown: No exception thrown",
 " Message: \"A\", \"B\"",
