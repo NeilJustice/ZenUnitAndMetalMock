@@ -199,8 +199,7 @@ namespace ZenUnit
       STD_ARRAYS_EQUAL(expectedArray, actualArray);
    }
 
-   RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size2Arrays, char)
-   THEN_RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size2Arrays, int)
+   RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size2Arrays, int)
    THEN_RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size2Arrays, size_t)
    THEN_RUN_TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size2Arrays, string)
 }
