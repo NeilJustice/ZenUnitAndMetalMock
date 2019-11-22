@@ -20,3 +20,4 @@ ninja -v
 ./ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests --test-runs=3 --random
 ./ZenUnitLibraryTests/ZenUnitLibraryTests --test-runs=3 --random
 ./ZenUnitExamples/ZenUnitExamples --test-runs=3 --random
+
