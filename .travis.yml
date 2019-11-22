@@ -1,8 +1,8 @@
 os: linux
-dist: trusty
-sudo: false
+dist: bionic
 language: cpp
 cache: ccache
+sudo: false
 
 git:
   depth: false
@@ -60,22 +60,10 @@ matrix:
           #        - brew install ninja llvm
 
 script:
-  - clang++ --version
-  - g++ --version
-  - cmake --version
-  - ninja --version
-  - python3 --version
+   - ./CloudJobs/travis_script.sh
 
-  - mkdir build && cd build
-  - cmake -GNinja .. -Werror=dev -DCMAKE_CXX_COMPILER="$COMPILER" -DCMAKE_BUILD_TYPE="$CMAKE_BUILD_TYPE"
-  - ninja -v
-
-  - ./ZenMockTests/ZenMockTests
-  - ./ZenMockExamples/ZenMockExamples
-  - ./ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests
-  - ./ZenUnitLibraryTests/ZenUnitLibraryTests
-  - ./ZenUnitExamples/ZenUnitExamples
+after_success:
+   - ./CloudJobs/travis_after_success.sh
 
 notifications:
   email: true
-

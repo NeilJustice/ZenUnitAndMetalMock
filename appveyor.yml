@@ -25,4 +25,3 @@ before_build:
 
 build_script:
    - cmake --build . --config %configuration% -- /m
-

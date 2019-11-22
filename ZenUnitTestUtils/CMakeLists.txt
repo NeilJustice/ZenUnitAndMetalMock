@@ -14,3 +14,9 @@ source_group("" FILES ${Sources})
 add_library(ZenUnitTestUtils ${Sources})
 
 EnablePrecompiledHeaders()
+
+if(UNIX)
+   if(CodeCovMode)
+     target_link_libraries(ZenUnitTestUtils CodeCovLibraryInterface)
+   endif()
+endif()

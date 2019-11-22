@@ -44,3 +44,9 @@ endif()
 
 EnablePrecompiledHeaders()
 IfMSVCAddRunTestsPostBuildStep()
+
+if(UNIX)
+   if(CodeCovMode)
+     target_link_libraries(ZenMockTests CodeCovLibraryInterface)
+   endif()
+endif()

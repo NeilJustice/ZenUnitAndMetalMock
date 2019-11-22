@@ -12,3 +12,9 @@ install(DIRECTORY .
         DESTINATION include/ZenMock
         FILES_MATCHING REGEX "ZenMock.h"
         PATTERN REGEX "CMakeFiles|Debug|Release|RelWithDebInfo|MinSizeRel|ZenMock.dir" EXCLUDE)
+
+if(UNIX)
+   if(CodeCovMode)
+     target_link_libraries(ZenMock CodeCovLibraryInterface)
+   endif()
+endif()
