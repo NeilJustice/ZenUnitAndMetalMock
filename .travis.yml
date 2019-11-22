@@ -29,21 +29,21 @@ matrix:
 
     - os: linux
       compiler: gcc
-      env: CMAKE_BUILD_TYPE=Debug COMPILER=g++-8 CODE_COV_MODE=OFF
+      env: CMAKE_BUILD_TYPE=Debug COMPILER=g++ CODE_COV_MODE=OFF
       addons:
         apt:
           update: true
           sources: [ 'ubuntu-toolchain-r-test' ]
-          packages: [ 'ninja-build', 'g++-8' ]
+          packages: [ 'ninja-build' ]
 
     - os: linux
       compiler: gcc
-      env: CMAKE_BUILD_TYPE=Release COMPILER=g++-8 CODE_COV_MODE=ON
+      env: CMAKE_BUILD_TYPE=Release COMPILER=g++ CODE_COV_MODE=ON
       addons:
         apt:
           update: true
           sources: [ 'ubuntu-toolchain-r-test' ]
-          packages: [ 'ninja-build', 'g++-8', 'lcov' ]
+          packages: [ 'ninja-build', 'lcov' ]
 
           #- os: osx
           #      osx_image: xcode10
@@ -67,4 +67,3 @@ after_success:
 
 notifications:
   email: true
-
