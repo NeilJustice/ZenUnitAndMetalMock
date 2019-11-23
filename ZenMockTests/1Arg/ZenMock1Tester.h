@@ -476,7 +476,7 @@ File.cpp(1))");
 File.cpp(1)
 File.cpp(1))");
             const int lvalue = 0;
-            vector<OneArgumentFunctionCallRef<int>> expectedCalls;
+            vector<OneArgumentFunctionCallReference<int>> expectedCalls;
             ZenMockTestUtils::CallNTimes(expectedCallsSize, [&] { expectedCalls.emplace_back(lvalue); });
             THROWS_EXCEPTION(zenMockObject.CalledAsFollows(expectedCalls), Anomaly, expectedExceptionWhat);
          };
@@ -511,15 +511,15 @@ File.cpp(1))");
             }
             //
             const int expectedArgument = 10;
-            vector<OneArgumentFunctionCallRef<int>> expectedCalls;
-            ZenMockTestUtils::CallNTimes(expectedCallsSize, [&] { expectedCalls.emplace_back(expectedArgument); });
+            vector<OneArgumentFunctionCallReference<int>> expectedOneArgumentFunctionCalls;
+            ZenMockTestUtils::CallNTimes(expectedCallsSize, [&] { expectedOneArgumentFunctionCalls.emplace_back(expectedArgument); });
             const string expectedExceptionWhat = R"(
-  Failed: VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature))"
+  Failed: VECTORS_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->ZenMockedFunctionSignature))"
                + expectedExceptionWhatPrefix + R"(
  Message: ")" + expectedSignature + R"("
 File.cpp(1)
 File.cpp(1))";
-            THROWS_EXCEPTION(zenMockObject.CalledAsFollows(expectedCalls), Anomaly, expectedExceptionWhat);
+            THROWS_EXCEPTION(zenMockObject.CalledAsFollows(expectedOneArgumentFunctionCalls), Anomaly, expectedExceptionWhat);
          };
          test(mock.VirtualMock, virtualSignature);
          test(mock.VirtualConstMock, virtualConstSignature);
@@ -542,7 +542,7 @@ File.cpp(1))";
             //
             ZenMockTestUtils::CallNTimes(expectedCallsSize, [&] { zenMockObject.ZenMockIt(argument); });
             //
-            vector<OneArgumentFunctionCallRef<int>> expectedCalls;
+            vector<OneArgumentFunctionCallReference<int>> expectedCalls;
             ZenMockTestUtils::CallNTimes(expectedCallsSize, [&] { expectedCalls.emplace_back(argument); });
             zenMockObject.CalledAsFollows(expectedCalls);
          };

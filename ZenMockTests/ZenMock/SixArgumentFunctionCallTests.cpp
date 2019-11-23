@@ -25,13 +25,13 @@ namespace ZenMock
 
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      const Call6 sixArgumentCall;
-      ARE_EQUAL(DV1, sixArgumentCall.firstArgument.value);
-      ARE_EQUAL(DV2, sixArgumentCall.secondArgument.value);
-      ARE_EQUAL(DV3, sixArgumentCall.thirdArgument.value);
-      ARE_EQUAL(DV4, sixArgumentCall.fourthArgument.value);
-      ARE_EQUAL(DV5, sixArgumentCall.fifthArgument.value);
-      ARE_EQUAL(DV6, sixArgumentCall.sixthArgument.value);
+      const Call6 sixArgumentFunctionCall;
+      ARE_EQUAL(DV1, sixArgumentFunctionCall.firstArgument.value);
+      ARE_EQUAL(DV2, sixArgumentFunctionCall.secondArgument.value);
+      ARE_EQUAL(DV3, sixArgumentFunctionCall.thirdArgument.value);
+      ARE_EQUAL(DV4, sixArgumentFunctionCall.fourthArgument.value);
+      ARE_EQUAL(DV5, sixArgumentFunctionCall.fifthArgument.value);
+      ARE_EQUAL(DV6, sixArgumentFunctionCall.sixthArgument.value);
    }
 
    TEST(Constructor_CopiesValuesToDecayTypeFields)
@@ -67,7 +67,7 @@ namespace ZenMock
    RUN_TESTS(SixArgumentFunctionCallTests)
 
 
-   TESTS(SixArgumentFunctionCallRefTests)
+   TESTS(SixArgumentFunctionCallReferencesTests)
    AFACT(Constructor_SetsReferences)
    AFACT(CallConstructor_SetsReferencesToFiveArgumentFunctionCallArgs)
    AFACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
@@ -75,8 +75,8 @@ namespace ZenMock
    EVIDENCE
 
    using Call6 = SixArgumentFunctionCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>>;
-   using CallRef6 = SixArgumentFunctionCallRef<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>>;
-   using CallRefString6 = SixArgumentFunctionCallRef<string, string, string, string, string, string>;
+   using CallRef6 = SixArgumentFunctionCallReferences<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>>;
+   using CallRefString6 = SixArgumentFunctionCallReferences<string, string, string, string, string, string>;
 
    TEST(Constructor_SetsReferences)
    {
@@ -152,5 +152,5 @@ namespace ZenMock
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "sixthArgument");
    }
 
-   RUN_TESTS(SixArgumentFunctionCallRefTests)
+   RUN_TESTS(SixArgumentFunctionCallReferencesTests)
 }

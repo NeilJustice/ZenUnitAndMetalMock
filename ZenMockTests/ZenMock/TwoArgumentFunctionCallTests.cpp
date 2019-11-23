@@ -17,9 +17,9 @@ namespace ZenMock
 
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      const Call2 twoArgumentCall;
-      ARE_EQUAL(DV1, twoArgumentCall.firstArgument.value);
-      ARE_EQUAL(DV2, twoArgumentCall.secondArgument.value);
+      const Call2 twoArgumentFunctionCall;
+      ARE_EQUAL(DV1, twoArgumentFunctionCall.firstArgument.value);
+      ARE_EQUAL(DV2, twoArgumentFunctionCall.secondArgument.value);
    }
 
    TEST(Constructor_CopiesArgsToDecayedTypeArgFields)
@@ -50,8 +50,8 @@ namespace ZenMock
    EVIDENCE
 
    using Call2 = TwoArgumentFunctionCall<T<1>, T<2>>;
-   using CallRef2 = TwoArgumentFunctionCallRef<T<1>, T<2>>;
-   using CallRefString2 = TwoArgumentFunctionCallRef<string, string>;
+   using CallRef2 = TwoArgumentFunctionCallReferences<T<1>, T<2>>;
+   using CallRefString2 = TwoArgumentFunctionCallReferences<string, string>;
 
    TEST(Constructor_SetsReferences)
    {
@@ -63,12 +63,12 @@ namespace ZenMock
 
    TEST(CallConstructor_SetsReferencesToTwoArgumentFunctionCallArgs)
    {
-      const Call2 twoArgumentCall(V1, V2);
+      const Call2 twoArgumentFunctionCall(V1, V2);
       //
-      const CallRef2 callRef(twoArgumentCall);
+      const CallRef2 callRef(twoArgumentFunctionCall);
       //
-      ARE_SAME(twoArgumentCall.firstArgument.value, callRef.firstArgumentReference.value);
-      ARE_SAME(twoArgumentCall.secondArgument.value, callRef.secondArgumentReference.value);
+      ARE_SAME(twoArgumentFunctionCall.firstArgument.value, callRef.firstArgumentReference.value);
+      ARE_SAME(twoArgumentFunctionCall.secondArgument.value, callRef.secondArgumentReference.value);
    }
 
    TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)

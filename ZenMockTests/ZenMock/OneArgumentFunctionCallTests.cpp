@@ -5,7 +5,7 @@ namespace ZenMock
    const T<1> DV1;
    const T<1> V1 = T<1>(true);
 
-   TESTS(OneArgumentCallTests)
+   TESTS(ArgumentFunctionCallTests)
    AFACT(DefaultConstructor_DefaultInitializesArg)
    AFACT(Constructor_CopiesArgToDecayedTypeArgField)
    AFACT(ZenUnitEqualizer_ThrowsIfArg1NotEqual)
@@ -15,8 +15,8 @@ namespace ZenMock
 
    TEST(DefaultConstructor_DefaultInitializesArg)
    {
-      const Call1 intOneArgumentCall;
-      ARE_EQUAL(DV1, intOneArgumentCall.argument.value);
+      const Call1 intArgumentFunctionCall;
+      ARE_EQUAL(DV1, intArgumentFunctionCall.argument.value);
    }
 
    TEST(Constructor_CopiesArgToDecayedTypeArgField)
@@ -33,19 +33,19 @@ namespace ZenMock
       EQUALIZER_THROWS(Call1, argument, V1);
    }
 
-   RUN_TESTS(OneArgumentCallTests)
+   RUN_TESTS(ArgumentFunctionCallTests)
 
 
-   TESTS(OneArgumentFunctionCallRefTests)
+   TESTS(OneArgumentFunctionCallReferenceTests)
    AFACT(Constructor_SetsReferences)
-   AFACT(CallConstructor_SetsReferencesToOneArgumentCallArg)
+   AFACT(CallConstructor_SetsReferencesToArgumentFunctionCallArg)
    AFACT(ZenUnitPrinter_WritesToStringedArg)
    AFACT(ZenUnitEqualizer_ThrowsIfArgFieldNotEqual)
    EVIDENCE
 
    using Call1 = OneArgumentFunctionCall<T<1>>;
-   using CallRef1 = OneArgumentFunctionCallRef<T<1>>;
-   using CallRefString1 = OneArgumentFunctionCallRef<string>;
+   using CallRef1 = OneArgumentFunctionCallReference<T<1>>;
+   using CallRefString1 = OneArgumentFunctionCallReference<string>;
 
    TEST(Constructor_SetsReferences)
    {
@@ -53,7 +53,7 @@ namespace ZenMock
       ARE_SAME(V1, callRef.argumentReference.value);
    }
 
-   TEST(CallConstructor_SetsReferencesToOneArgumentCallArg)
+   TEST(CallConstructor_SetsReferencesToArgumentFunctionCallArg)
    {
       const Call1 call(V1);
       //
@@ -70,7 +70,7 @@ namespace ZenMock
       ZenUnit::Printer<CallRefString1>::Print(oss, callRef);
       //
       const string zenUnitPrintResult = oss.str();
-      const string expected = "ZenMock::OneArgumentCall:\n"
+      const string expected = "ZenMock::OneArgumentFunctionCall:\n"
 "Argument: \"1\"";
       ARE_EQUAL(expected, zenUnitPrintResult);
    }
@@ -84,5 +84,5 @@ namespace ZenMock
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "argument");
    }
 
-   RUN_TESTS(OneArgumentFunctionCallRefTests)
+   RUN_TESTS(OneArgumentFunctionCallReferenceTests)
 }

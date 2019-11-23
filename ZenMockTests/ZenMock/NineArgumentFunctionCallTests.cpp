@@ -31,16 +31,16 @@ namespace ZenMock
 
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      const Call9 nineArgumentCall;
-      ARE_EQUAL(DV1, nineArgumentCall.firstArgument.value);
-      ARE_EQUAL(DV2, nineArgumentCall.secondArgument.value);
-      ARE_EQUAL(DV3, nineArgumentCall.thirdArgument.value);
-      ARE_EQUAL(DV4, nineArgumentCall.fourthArgument.value);
-      ARE_EQUAL(DV5, nineArgumentCall.fifthArgument.value);
-      ARE_EQUAL(DV6, nineArgumentCall.sixthArgument.value);
-      ARE_EQUAL(DV7, nineArgumentCall.seventhArgument.value);
-      ARE_EQUAL(DV8, nineArgumentCall.eigthArgument.value);
-      ARE_EQUAL(DV9, nineArgumentCall.ninthArgument.value);
+      const Call9 nineArgumentFunctionCall;
+      ARE_EQUAL(DV1, nineArgumentFunctionCall.firstArgument.value);
+      ARE_EQUAL(DV2, nineArgumentFunctionCall.secondArgument.value);
+      ARE_EQUAL(DV3, nineArgumentFunctionCall.thirdArgument.value);
+      ARE_EQUAL(DV4, nineArgumentFunctionCall.fourthArgument.value);
+      ARE_EQUAL(DV5, nineArgumentFunctionCall.fifthArgument.value);
+      ARE_EQUAL(DV6, nineArgumentFunctionCall.sixthArgument.value);
+      ARE_EQUAL(DV7, nineArgumentFunctionCall.seventhArgument.value);
+      ARE_EQUAL(DV8, nineArgumentFunctionCall.eigthArgument.value);
+      ARE_EQUAL(DV9, nineArgumentFunctionCall.ninthArgument.value);
    }
 
    TEST(Constructor_CopiesValuesToDecayTypeFields)
@@ -85,7 +85,7 @@ namespace ZenMock
    RUN_TESTS(NineArgumentFunctionCallTests)
 
 
-   TESTS(NineArgumentFunctionCallRefTests)
+   TESTS(NineArgumentFunctionCallReferencesTests)
    AFACT(Constructor_SetsReferences)
    AFACT(CallConstructor_SetsReferencesToCallArgs)
    AFACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
@@ -103,8 +103,8 @@ namespace ZenMock
    const T<9> V9 = T<9>(true);
 
    using Call9 = const NineArgumentFunctionCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>>;
-   using CallRef9 = NineArgumentFunctionCallRef<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>>;
-   using CallRefString9 = NineArgumentFunctionCallRef<string, string, string, string, string, string, string, string, string>;
+   using CallRef9 = NineArgumentFunctionCallReferences<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>>;
+   using CallRefString9 = NineArgumentFunctionCallReferences<string, string, string, string, string, string, string, string, string>;
 
    TEST(Constructor_SetsReferences)
    {
@@ -201,5 +201,5 @@ namespace ZenMock
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg9); }, "ninthArgument");
    }
 
-   RUN_TESTS(NineArgumentFunctionCallRefTests)
+   RUN_TESTS(NineArgumentFunctionCallReferencesTests)
 }

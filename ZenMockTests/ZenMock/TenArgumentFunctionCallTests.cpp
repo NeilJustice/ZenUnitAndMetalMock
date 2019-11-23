@@ -33,17 +33,17 @@ namespace ZenMock
 
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      const Call10 tenArgumentCall;
-      ARE_EQUAL(DV1, tenArgumentCall.firstArgument.value);
-      ARE_EQUAL(DV2, tenArgumentCall.secondArgument.value);
-      ARE_EQUAL(DV3, tenArgumentCall.thirdArgument.value);
-      ARE_EQUAL(DV4, tenArgumentCall.fourthArgument.value);
-      ARE_EQUAL(DV5, tenArgumentCall.fifthArgument.value);
-      ARE_EQUAL(DV6, tenArgumentCall.sixthArgument.value);
-      ARE_EQUAL(DV7, tenArgumentCall.seventhArgument.value);
-      ARE_EQUAL(DV8, tenArgumentCall.eigthArgument.value);
-      ARE_EQUAL(DV9, tenArgumentCall.ninthArgument.value);
-      ARE_EQUAL(DV10, tenArgumentCall.tenthArgument.value);
+      const Call10 tenArgumentFunctionCall;
+      ARE_EQUAL(DV1, tenArgumentFunctionCall.firstArgument.value);
+      ARE_EQUAL(DV2, tenArgumentFunctionCall.secondArgument.value);
+      ARE_EQUAL(DV3, tenArgumentFunctionCall.thirdArgument.value);
+      ARE_EQUAL(DV4, tenArgumentFunctionCall.fourthArgument.value);
+      ARE_EQUAL(DV5, tenArgumentFunctionCall.fifthArgument.value);
+      ARE_EQUAL(DV6, tenArgumentFunctionCall.sixthArgument.value);
+      ARE_EQUAL(DV7, tenArgumentFunctionCall.seventhArgument.value);
+      ARE_EQUAL(DV8, tenArgumentFunctionCall.eigthArgument.value);
+      ARE_EQUAL(DV9, tenArgumentFunctionCall.ninthArgument.value);
+      ARE_EQUAL(DV10, tenArgumentFunctionCall.tenthArgument.value);
    }
 
    TEST(Constructor_CopiesValuesToDecayTypeFields)
@@ -103,8 +103,8 @@ namespace ZenMock
    EVIDENCE
 
    using Call10 = const TenArgumentFunctionCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>, T<10>>;
-   using CallRef10 = TenArgumentFunctionCallRef<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>, T<10>>;
-   using CallRefString10 = TenArgumentFunctionCallRef<string, string, string, string, string, string, string, string, string, string>;
+   using CallRef10 = TenArgumentFunctionCallReferences<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>, T<9>, T<10>>;
+   using CallRefString10 = TenArgumentFunctionCallReferences<string, string, string, string, string, string, string, string, string, string>;
 
    TEST(Constructor_SetsReferences)
    {

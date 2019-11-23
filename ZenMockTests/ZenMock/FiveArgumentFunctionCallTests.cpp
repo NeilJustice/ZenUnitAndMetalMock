@@ -23,12 +23,12 @@ namespace ZenMock
 
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      const Call5 fiveArgumentCall;
-      ARE_EQUAL(DV1, fiveArgumentCall.firstArgument.value);
-      ARE_EQUAL(DV2, fiveArgumentCall.secondArgument.value);
-      ARE_EQUAL(DV3, fiveArgumentCall.thirdArgument.value);
-      ARE_EQUAL(DV4, fiveArgumentCall.fourthArgument.value);
-      ARE_EQUAL(DV5, fiveArgumentCall.fifthArgument.value);
+      const Call5 fiveArgumentFunctionCall;
+      ARE_EQUAL(DV1, fiveArgumentFunctionCall.firstArgument.value);
+      ARE_EQUAL(DV2, fiveArgumentFunctionCall.secondArgument.value);
+      ARE_EQUAL(DV3, fiveArgumentFunctionCall.thirdArgument.value);
+      ARE_EQUAL(DV4, fiveArgumentFunctionCall.fourthArgument.value);
+      ARE_EQUAL(DV5, fiveArgumentFunctionCall.fifthArgument.value);
    }
 
    TEST(FiveArgConstructor_CopiesValuesToDecayTypeFields)
@@ -59,7 +59,7 @@ namespace ZenMock
    }
 
    RUN_TESTS(FiveArgumentFunctionCallTests)
-   TESTS(FiveArgumentFunctionCallRefTests)
+   TESTS(FiveArgumentFunctionCallReferencesTests)
    AFACT(Constructor_SetsReferences)
    AFACT(CallConstructor_SetsReferencesToFiveArgumentFunctionCallArgs)
    AFACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
@@ -73,8 +73,8 @@ namespace ZenMock
    const T<5> V5 = T<5>(true);
 
    using Call5 = FiveArgumentFunctionCall<T<1>, T<2>, T<3>, T<4>, T<5>>;
-   using CallRef5 = FiveArgumentFunctionCallRef<T<1>, T<2>, T<3>, T<4>, T<5>>;
-   using CallRefString5 = FiveArgumentFunctionCallRef<string, string, string, string, string>;
+   using CallRef5 = FiveArgumentFunctionCallReferences<T<1>, T<2>, T<3>, T<4>, T<5>>;
+   using CallRefString5 = FiveArgumentFunctionCallReferences<string, string, string, string, string>;
 
    TEST(Constructor_SetsReferences)
    {
@@ -143,5 +143,5 @@ namespace ZenMock
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "fifthArgument");
    }
 
-   RUN_TESTS(FiveArgumentFunctionCallRefTests)
+   RUN_TESTS(FiveArgumentFunctionCallReferencesTests)
 }

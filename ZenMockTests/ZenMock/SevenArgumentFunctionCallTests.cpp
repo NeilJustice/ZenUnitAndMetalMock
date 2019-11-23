@@ -27,14 +27,14 @@ namespace ZenMock
 
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      const Call7 sevenArgumentCall;
-      ARE_EQUAL(DV1, sevenArgumentCall.firstArgument.value);
-      ARE_EQUAL(DV2, sevenArgumentCall.secondArgument.value);
-      ARE_EQUAL(DV3, sevenArgumentCall.thirdArgument.value);
-      ARE_EQUAL(DV4, sevenArgumentCall.fourthArgument.value);
-      ARE_EQUAL(DV5, sevenArgumentCall.fifthArgument.value);
-      ARE_EQUAL(DV6, sevenArgumentCall.sixthArgument.value);
-      ARE_EQUAL(DV7, sevenArgumentCall.seventhArgument.value);
+      const Call7 sevenArgumentFunctionCall;
+      ARE_EQUAL(DV1, sevenArgumentFunctionCall.firstArgument.value);
+      ARE_EQUAL(DV2, sevenArgumentFunctionCall.secondArgument.value);
+      ARE_EQUAL(DV3, sevenArgumentFunctionCall.thirdArgument.value);
+      ARE_EQUAL(DV4, sevenArgumentFunctionCall.fourthArgument.value);
+      ARE_EQUAL(DV5, sevenArgumentFunctionCall.fifthArgument.value);
+      ARE_EQUAL(DV6, sevenArgumentFunctionCall.sixthArgument.value);
+      ARE_EQUAL(DV7, sevenArgumentFunctionCall.seventhArgument.value);
    }
 
    TEST(Constructor_CopiesValuesToDecayTypeFields)
@@ -73,7 +73,7 @@ namespace ZenMock
    RUN_TESTS(SevenArgumentFunctionCallTests)
 
 
-   TESTS(SevenArgumentFunctionCallRefTests)
+   TESTS(SevenArgumentFunctionCallReferencesTests)
    AFACT(Constructor_SetsReferences)
    AFACT(CallConstructor_SetsReferencesToFiveArgumentFunctionCallArgs)
    AFACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
@@ -81,8 +81,8 @@ namespace ZenMock
    EVIDENCE
 
    using Call7 = SevenArgumentFunctionCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>>;
-   using CallRef7 = SevenArgumentFunctionCallRef<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>>;
-   using CallRefString7 = SevenArgumentFunctionCallRef<string, string, string, string, string, string, string>;
+   using CallRef7 = SevenArgumentFunctionCallReferences<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>>;
+   using CallRefString7 = SevenArgumentFunctionCallReferences<string, string, string, string, string, string, string>;
 
    TEST(Constructor_SetsReferences)
    {
@@ -165,5 +165,5 @@ namespace ZenMock
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg7); }, "seventhArgument");
    }
 
-   RUN_TESTS(SevenArgumentFunctionCallRefTests)
+   RUN_TESTS(SevenArgumentFunctionCallReferencesTests)
 }

@@ -19,10 +19,10 @@ namespace ZenMock
 
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      const Call3 threeArgumentCall;
-      ARE_EQUAL(DV1, threeArgumentCall.firstArgument.value);
-      ARE_EQUAL(DV2, threeArgumentCall.secondArgument.value);
-      ARE_EQUAL(DV3, threeArgumentCall.thirdArgument.value);
+      const Call3 threeArgumentFunctionCall;
+      ARE_EQUAL(DV1, threeArgumentFunctionCall.firstArgument.value);
+      ARE_EQUAL(DV2, threeArgumentFunctionCall.secondArgument.value);
+      ARE_EQUAL(DV3, threeArgumentFunctionCall.thirdArgument.value);
    }
 
    TEST(Constructor_CopiesValuesToDecayTypeFields)
@@ -55,8 +55,8 @@ namespace ZenMock
    EVIDENCE
 
    using Call3 = ThreeArgumentFunctionCall<T<1>, T<2>, T<3>>;
-   using CallRef3 = ThreeArgumentFunctionCallRef<T<1>, T<2>, T<3>>;
-   using CallRefString3 = ThreeArgumentFunctionCallRef<string, string, string>;
+   using CallRef3 = ThreeArgumentFunctionCallReferences<T<1>, T<2>, T<3>>;
+   using CallRefString3 = ThreeArgumentFunctionCallReferences<string, string, string>;
 
    TEST(Constructor_SetsReferences)
    {
@@ -69,13 +69,13 @@ namespace ZenMock
 
    TEST(CallConstructor_SetsReferencesToThreeArgumentFunctionCallArgs)
    {
-      const Call3 threeArgumentCall(V1, V2, V3);
+      const Call3 threeArgumentFunctionCall(V1, V2, V3);
       //
-      const CallRef3 callRef(threeArgumentCall);
+      const CallRef3 callRef(threeArgumentFunctionCall);
       //
-      ARE_SAME(threeArgumentCall.firstArgument.value, callRef.firstArgumentReference.value);
-      ARE_SAME(threeArgumentCall.secondArgument.value, callRef.secondArgumentReference.value);
-      ARE_SAME(threeArgumentCall.thirdArgument.value, callRef.thirdArgumentReference.value);
+      ARE_SAME(threeArgumentFunctionCall.firstArgument.value, callRef.firstArgumentReference.value);
+      ARE_SAME(threeArgumentFunctionCall.secondArgument.value, callRef.secondArgumentReference.value);
+      ARE_SAME(threeArgumentFunctionCall.thirdArgument.value, callRef.thirdArgumentReference.value);
    }
 
    TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)

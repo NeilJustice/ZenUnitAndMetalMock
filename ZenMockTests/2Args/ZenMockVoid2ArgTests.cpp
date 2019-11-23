@@ -226,13 +226,13 @@ File.cpp(1))";
 #endif
          const string expectedExceptionMessage = R"(
   Failed: VECTORS_EQUAL(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->ZenMockedFunctionSignature)
-Expected: std::vector<ZenMock::TwoArgumentFunctionCallRef<int,)" + spaceIfLinux + R"(int>> (size 1):
+Expected: std::vector<ZenMock::TwoArgumentFunctionCallReferences<int,)" + spaceIfLinux + R"(int>> (size 1):
 {
    ZenMock::TwoArgumentFunctionCall:
 Argument1: )" + to_string(argument1) + R"(
 Argument2: )" + to_string(argument2) + R"(
 }
-  Actual: std::vector<ZenMock::TwoArgumentFunctionCallRef<int,)" + spaceIfLinux + R"(int>> (size 0):
+  Actual: std::vector<ZenMock::TwoArgumentFunctionCallReferences<int,)" + spaceIfLinux + R"(int>> (size 0):
 {
 }
  Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed

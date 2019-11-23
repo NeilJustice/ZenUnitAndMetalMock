@@ -21,11 +21,11 @@ namespace ZenMock
 
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
-      const Call4 fourArgumentCall;
-      ARE_EQUAL(DV1, fourArgumentCall.firstArgument.value);
-      ARE_EQUAL(DV2, fourArgumentCall.secondArgument.value);
-      ARE_EQUAL(DV3, fourArgumentCall.thirdArgument.value);
-      ARE_EQUAL(DV4, fourArgumentCall.fourthArgument.value);
+      const Call4 fourArgumentFunctionCall;
+      ARE_EQUAL(DV1, fourArgumentFunctionCall.firstArgument.value);
+      ARE_EQUAL(DV2, fourArgumentFunctionCall.secondArgument.value);
+      ARE_EQUAL(DV3, fourArgumentFunctionCall.thirdArgument.value);
+      ARE_EQUAL(DV4, fourArgumentFunctionCall.fourthArgument.value);
    }
 
    TEST(FourArgConstructor_CopiesValuesToDecayTypeFields)
@@ -68,8 +68,8 @@ namespace ZenMock
    const T<4> V4 = T<4>(true);
 
    using Call4 = FourArgumentFunctionCall<T<1>, T<2>, T<3>, T<4>>;
-   using CallRef4 = FourArgumentFunctionCallRef<T<1>, T<2>, T<3>, T<4>>;
-   using CallRefString4 = FourArgumentFunctionCallRef<string, string, string, string>;
+   using CallRef4 = FourArgumentFunctionCallReference<T<1>, T<2>, T<3>, T<4>>;
+   using CallRefString4 = FourArgumentFunctionCallReference<string, string, string, string>;
 
    TEST(Constructor_SetsReferences)
    {

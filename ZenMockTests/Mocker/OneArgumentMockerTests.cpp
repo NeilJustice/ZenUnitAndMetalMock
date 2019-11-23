@@ -207,16 +207,16 @@ File.cpp(1))");
    {
       IS_FALSE(_mocker->_wasAsserted);
       const int zero = 0;
-      const vector<OneArgumentFunctionCallRef<int>> expectedOneArgumentCalls{ zero };
+      const vector<OneArgumentFunctionCallReference<int>> expectedOneArgumentFunctionCalls{ zero };
       //
-      THROWS_EXCEPTION(_mocker->CalledAsFollows(expectedOneArgumentCalls), Anomaly, "\n"
-"  Failed: VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature)\n"
-"Expected: std::vector<ZenMock::OneArgumentFunctionCallRef<int>> (size 1):\n"
+      THROWS_EXCEPTION(_mocker->CalledAsFollows(expectedOneArgumentFunctionCalls), Anomaly, "\n"
+"  Failed: VECTORS_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->ZenMockedFunctionSignature)\n"
+"Expected: std::vector<ZenMock::OneArgumentFunctionCallReference<int>> (size 1):\n"
 "{\n"
-"   ZenMock::OneArgumentCall:\n"
+"   ZenMock::OneArgumentFunctionCall:\n"
 "Argument: 0\n"
 "}\n"
-"  Actual: std::vector<ZenMock::OneArgumentFunctionCallRef<int>> (size 0):\n"
+"  Actual: std::vector<ZenMock::OneArgumentFunctionCallReference<int>> (size 0):\n"
 "{\n"
 "}\n"
 " Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed\n"
@@ -233,29 +233,29 @@ File.cpp(1))");
    {
       IS_FALSE(_mocker->_wasAsserted);
       const int x = 10, y = 10;
-      const vector<OneArgumentFunctionCallRef<int>> expectedOneArgumentCalls{ x, y };
+      const vector<OneArgumentFunctionCallReference<int>> expectedOneArgumentFunctionCalls{ x, y };
       _mocker->zenMockedFunctionCallHistory = { 10, 20 };
       //
-      THROWS_EXCEPTION(_mocker->CalledAsFollows(expectedOneArgumentCalls), Anomaly, "\n"
-"  Failed: VECTORS_EQUAL(expectedOneArgumentCalls, actualOneArgumentCalls, this->ZenMockedFunctionSignature)\n"
-"Expected: std::vector<ZenMock::OneArgumentFunctionCallRef<int>> (size 2):\n"
+      THROWS_EXCEPTION(_mocker->CalledAsFollows(expectedOneArgumentFunctionCalls), Anomaly, "\n"
+"  Failed: VECTORS_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->ZenMockedFunctionSignature)\n"
+"Expected: std::vector<ZenMock::OneArgumentFunctionCallReference<int>> (size 2):\n"
 "{\n"
-"   ZenMock::OneArgumentCall:\n"
+"   ZenMock::OneArgumentFunctionCall:\n"
 "Argument: 10,\n"
-"   ZenMock::OneArgumentCall:\n"
+"   ZenMock::OneArgumentFunctionCall:\n"
 "Argument: 10\n"
 "}\n"
-"  Actual: std::vector<ZenMock::OneArgumentFunctionCallRef<int>> (size 2):\n"
+"  Actual: std::vector<ZenMock::OneArgumentFunctionCallReference<int>> (size 2):\n"
 "{\n"
-"   ZenMock::OneArgumentCall:\n"
+"   ZenMock::OneArgumentFunctionCall:\n"
 "Argument: 10,\n"
-"   ZenMock::OneArgumentCall:\n"
+"   ZenMock::OneArgumentFunctionCall:\n"
 "Argument: 20\n"
 "}\n"
 " Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed\n"
-"Expected: ZenMock::OneArgumentCall:\n"
+"Expected: ZenMock::OneArgumentFunctionCall:\n"
 "Argument: 10\n"
-"  Actual: ZenMock::OneArgumentCall:\n"
+"  Actual: ZenMock::OneArgumentFunctionCall:\n"
 "Argument: 20\n"
 " Message: \"i=1\"\n"
 " Message: \"" + _functionSignature + "\"\n"
@@ -270,13 +270,13 @@ File.cpp(1))");
       IS_FALSE(_mocker->_wasAsserted);
       int firstArgument = 10;
       int secondArgument = 10;
-      const vector<OneArgumentFunctionCallRef<int>> expectedOneArgumentCalls
+      const vector<OneArgumentFunctionCallReference<int>> expectedArgumentFunctionCalls
       {
          firstArgument, secondArgument
       };
       _mocker->zenMockedFunctionCallHistory = { 10, 10 };
       //
-      _mocker->CalledAsFollows(expectedOneArgumentCalls);
+      _mocker->CalledAsFollows(expectedArgumentFunctionCalls);
       //
       IS_TRUE(_mocker->_wasAsserted);
    }

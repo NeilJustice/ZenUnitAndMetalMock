@@ -30,15 +30,15 @@ namespace ZenMock
       const T<7> DV7;
       const T<8> DV8;
 
-      const Call8 eightArgumentCall;
-      ARE_EQUAL(DV1, eightArgumentCall.firstArgument.value);
-      ARE_EQUAL(DV2, eightArgumentCall.secondArgument.value);
-      ARE_EQUAL(DV3, eightArgumentCall.thirdArgument.value);
-      ARE_EQUAL(DV4, eightArgumentCall.fourthArgument.value);
-      ARE_EQUAL(DV5, eightArgumentCall.fifthArgument.value);
-      ARE_EQUAL(DV6, eightArgumentCall.sixthArgument.value);
-      ARE_EQUAL(DV7, eightArgumentCall.seventhArgument.value);
-      ARE_EQUAL(DV8, eightArgumentCall.eigthArgument.value);
+      const Call8 eightArgumentFunctionCall;
+      ARE_EQUAL(DV1, eightArgumentFunctionCall.firstArgument.value);
+      ARE_EQUAL(DV2, eightArgumentFunctionCall.secondArgument.value);
+      ARE_EQUAL(DV3, eightArgumentFunctionCall.thirdArgument.value);
+      ARE_EQUAL(DV4, eightArgumentFunctionCall.fourthArgument.value);
+      ARE_EQUAL(DV5, eightArgumentFunctionCall.fifthArgument.value);
+      ARE_EQUAL(DV6, eightArgumentFunctionCall.sixthArgument.value);
+      ARE_EQUAL(DV7, eightArgumentFunctionCall.seventhArgument.value);
+      ARE_EQUAL(DV8, eightArgumentFunctionCall.eigthArgument.value);
    }
 
    TEST(Constructor_CopiesValuesToDecayTypeFields)
@@ -80,7 +80,7 @@ namespace ZenMock
    RUN_TESTS(EightArgumentFunctionCallTests)
 
 
-   TESTS(EightArgumentFunctionCallRefTests)
+   TESTS(EightArgumentFunctionCallReferencesTests)
    AFACT(Constructor_SetsReferences)
    AFACT(CallConstructor_SetsReferencesToCallArgs)
    AFACT(ZenUnitPrinterPrint_WritesToStringeredArgs)
@@ -97,8 +97,8 @@ namespace ZenMock
    const T<8> V8 = T<8>(true);
 
    using Call8 = const EightArgumentFunctionCall<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>>;
-   using CallRef8 = EightArgumentFunctionCallRef<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>>;
-   using CallRefString8 = EightArgumentFunctionCallRef<string, string, string, string, string, string, string, string>;
+   using CallRef8 = EightArgumentFunctionCallReferences<T<1>, T<2>, T<3>, T<4>, T<5>, T<6>, T<7>, T<8>>;
+   using CallRefString8 = EightArgumentFunctionCallReferences<string, string, string, string, string, string, string, string>;
 
    TEST(Constructor_SetsReferences)
    {
@@ -188,5 +188,5 @@ namespace ZenMock
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg8); }, "eigthArgument");
    }
 
-   RUN_TESTS(EightArgumentFunctionCallRefTests)
+   RUN_TESTS(EightArgumentFunctionCallReferencesTests)
 }
