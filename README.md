@@ -191,7 +191,7 @@ ZenUnit provides the following random value generating functions for writing uni
 ### Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Linux
 
 ```
-git clone https://github.com/NeilJustice/ZenUnitAndZenMock
+git clone https://github.com/NeilJustice/ZenUnitAndZenMock --depth 1
 
 cd ZenUnitAndZenMock && mkdir Debug && cd Debug
 
@@ -212,7 +212,7 @@ cd ..
 ### Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Windows
 
 ```
-git clone https://github.com/NeilJustice/ZenUnitAndZenMock
+git clone https://github.com/NeilJustice/ZenUnitAndZenMock --depth 1
 
 cd ZenUnitAndZenMock
 
