@@ -23,8 +23,8 @@
       * [Function Assertions](#function-assertions)
    * [ZenUnit Test-Defining Macros](#zenunit-test-defining-macros)
    * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
-   * [How To Compile And Run ZenUnit And ZenMock Unit Tests And Then Install ZenUnit.h And ZenMock.h On Linux](#how-to-compile-and-run-zenunit-and-zenmock-unit-tests-and-then-install-zenunit.h-and-zenmock.h-on-linux)
-   * [How To Compile And Run ZenUnit And ZenMock Unit Tests And Then Install ZenUnit.h And ZenMock.h On Windows](#how-to-compile-and-run-zenunit-and-zenmock-unit-tests-and-then-install-zenunit.h-and-zenmock.h-on-windows)
+   * [Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Linux](#steps-to-compile-and-run-zenunit-and-zenmock-unit-tests-then-install-zenunit.h-and-zenmock.h-on-linux)
+   * [Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Windows](#steps-to-compile-and-run-zenunit-and-zenmock-unit-tests-then-install-zenunit.h-and-zenmock.h-on-windows)
 
 ### ZenUnit Command Line Usage
 
@@ -188,7 +188,7 @@ ZenUnit provides the following random value generating functions for writing uni
 |`ZenUnit::RandomSet<T>()`|Returns a `std::set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
 |`ZenUnit::RandomUnorderedSet<T>()`|Returns a `std::unordered_set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
 
-### How To Compile And Run ZenUnit And ZenMock Unit Tests And Then Install ZenUnit.h And ZenMock.h On Linux
+### Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Linux
 
 ```
 git clone https://github.com/NeilJustice/ZenUnitAndZenMock
@@ -209,7 +209,7 @@ cd ..
 ./TestScripts/RunAllDebugTests.sh
 ```
 
-### How To Compile And Run ZenUnit And ZenMock Unit Tests And Then Install ZenUnit.h And ZenMock.h On Windows
+### Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Windows
 
 ```
 git clone https://github.com/NeilJustice/ZenUnitAndZenMock
