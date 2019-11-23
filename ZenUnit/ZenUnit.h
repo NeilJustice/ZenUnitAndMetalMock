@@ -186,7 +186,7 @@ Testing Utility Options:
    ZenUnit::POINTEE_IS_EXACT_TYPE_Defined(typeid(expectedPolymorphicPointeeType), #expectedPolymorphicPointeeType, VRT(actualPointer), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that *expectedPointer is equal to *actualPointer.
-#define POINTEES_EQUAL(expectedPointer, actualPointer, ...) \
+#define POINTEES_ARE_EQUAL(expectedPointer, actualPointer, ...) \
    ZenUnit::POINTEES_EQUAL_Defined(VRT(expectedPointer), VRT(actualPointer), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
@@ -3227,81 +3227,43 @@ namespace ZenUnit
       }
    }
 
-   template<typename ExpectedType, typename ActualType, typename... MessageTypes>
-   void POINTEES_EQUAL_Throw_NullptrExpectedOrActual(
-      VRText<ExpectedType> expectedPointerVRT,
-      VRText<ActualType> actualPointerVRT,
+   template<typename T, typename... MessageTypes>
+   void POINTEES_EQUAL_ThrowAnomaly_NullptrExpectedOrActual(
+      VRText<T> expectedPointerVRT,
+      VRText<T> actualPointerVRT,
       const char* expectedOrActual,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedField = expectedOrActual + std::string(" pointer != nullptr");
       const std::string actualField = expectedOrActual + std::string(" pointer == nullptr");
-      throw Anomaly("POINTEES_EQUAL", expectedPointerVRT.text, actualPointerVRT.text, "",
+      throw Anomaly("POINTEES_ARE_EQUAL", expectedPointerVRT.text, actualPointerVRT.text, "",
          messagesText, Anomaly::Default(), expectedField, actualField,
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
-   template<typename ExpectedType, typename ActualType, typename... MessageTypes>
+   template<typename T, typename... MessageTypes>
    void POINTEES_EQUAL_ThrowAnomaly(
-      VRText<ExpectedType> expectedPointerVRT,
-      VRText<ActualType> actualPointerVRT,
+      VRText<T> expectedPointerVRT,
+      VRText<T> actualPointerVRT,
       const Anomaly& becauseAnomaly,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedField = ToStringer::ToString(*expectedPointerVRT.value);
       const std::string actualField = ToStringer::ToString(*actualPointerVRT.value);
-      throw Anomaly("POINTEES_EQUAL", expectedPointerVRT.text, actualPointerVRT.text, "",
+      throw Anomaly("POINTEES_ARE_EQUAL", expectedPointerVRT.text, actualPointerVRT.text, "",
          messagesText, becauseAnomaly, expectedField, actualField,
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
-   template<typename ActualType, typename... MessageTypes>
-   void POINTEES_EQUAL_ThrowAnomaly(
-      VRText<std::nullptr_t>, VRText<ActualType>, const Anomaly&, FileLine, const char*, MessageTypes&&...)
-   {
-      assert_true(false);
-   }
-
-   template<typename ExpectedType, typename... MessageTypes>
-   void POINTEES_EQUAL_ThrowAnomaly(
-      VRText<ExpectedType>, VRText<std::nullptr_t>, const Anomaly&, FileLine, const char*, MessageTypes&&...)
-   {
-      assert_true(false);
-   }
-
-   template<typename... MessageTypes>
-   void POINTEES_EQUAL_ThrowAnomaly(
-      VRText<std::nullptr_t>, VRText<std::nullptr_t>, const Anomaly&, FileLine, const char*, MessageTypes&&...)
-   {
-      assert_true(false);
-   }
-
-   template<typename ExpectedType, typename ActualType>
-   void POINTEES_EQUAL_AssertAreEqual(const ExpectedType& expectedPointee, const ActualType& actualPointee)
+   template<typename T>
+   void POINTEES_EQUAL_AssertAreEqual(const T& expectedPointee, const T& actualPointee)
    {
       ARE_EQUAL(*expectedPointee, *actualPointee);
    }
 
-   template<typename ExpectedType>
-   void POINTEES_EQUAL_AssertAreEqual(const ExpectedType&, const std::nullptr_t&)
-   {
-      assert_true(false);
-   }
-
-   template<typename ActualType>
-   void POINTEES_EQUAL_AssertAreEqual(const std::nullptr_t&, const ActualType&)
-   {
-      assert_true(false);
-   }
-
-   inline void POINTEES_EQUAL_AssertAreEqual(const std::nullptr_t&, const std::nullptr_t&)
-   {
-      assert_true(false);
-   }
-
-   template<typename ExpectedType, typename ActualType, typename... MessageTypes>
+   template<typename T, typename... MessageTypes>
    void POINTEES_EQUAL_Defined(
-      VRText<ExpectedType> expectedPointerVRT, VRText<ActualType> actualPointerVRT,
+      VRText<T> expectedPointerVRT, VRText<T> actualPointerVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (expectedPointerVRT.value == nullptr)
@@ -3310,12 +3272,12 @@ namespace ZenUnit
          {
             return;
          }
-         POINTEES_EQUAL_Throw_NullptrExpectedOrActual(expectedPointerVRT, actualPointerVRT, "expected",
+         POINTEES_EQUAL_ThrowAnomaly_NullptrExpectedOrActual(expectedPointerVRT, actualPointerVRT, "expected",
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
       else if (actualPointerVRT.value == nullptr)
       {
-         POINTEES_EQUAL_Throw_NullptrExpectedOrActual(expectedPointerVRT, actualPointerVRT, "actual",
+         POINTEES_EQUAL_ThrowAnomaly_NullptrExpectedOrActual(expectedPointerVRT, actualPointerVRT, "actual",
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
       try

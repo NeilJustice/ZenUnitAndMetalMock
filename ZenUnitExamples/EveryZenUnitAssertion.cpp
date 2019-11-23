@@ -61,7 +61,7 @@ TEST(CallAllMacros)
    DELETE_TO_ASSERT_NEWED(operatorNewedInt);
    const int* operatorNewedIntArray = new int[3];
    ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(operatorNewedIntArray);
-   POINTEES_EQUAL(&x, &x);
+   POINTEES_ARE_EQUAL(&x, &x);
 
    // Data Structures
    VECTORS_EQUAL(std::vector<int>{0}, std::vector<int>{0});

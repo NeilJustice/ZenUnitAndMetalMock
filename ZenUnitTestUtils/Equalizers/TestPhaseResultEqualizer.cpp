@@ -9,6 +9,6 @@ namespace ZenUnit
       ARE_EQUAL(expectedTestPhaseResult.testPhase, actualTestPhaseResult.testPhase);
       ARE_EQUAL(expectedTestPhaseResult.testOutcome, actualTestPhaseResult.testOutcome);
       ARE_EQUAL(expectedTestPhaseResult.microseconds, actualTestPhaseResult.microseconds);
-      POINTEES_EQUAL(expectedTestPhaseResult.anomalyOrException, actualTestPhaseResult.anomalyOrException);
+      POINTEES_ARE_EQUAL(expectedTestPhaseResult.anomalyOrException, actualTestPhaseResult.anomalyOrException);
    }
 }
