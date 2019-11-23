@@ -7,8 +7,9 @@ struct UserTypeOnlyZenUnitPrintable
 namespace ZenUnit
 {
    template<>
-   struct Printer<UserTypeOnlyZenUnitPrintable>
+   class Printer<UserTypeOnlyZenUnitPrintable>
    {
+   public:
       static void Print(ostream& os, const UserTypeOnlyZenUnitPrintable& value);
    };
 }

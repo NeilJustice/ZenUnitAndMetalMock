@@ -32,8 +32,9 @@ namespace ZenUnit
    };
 
    template<>
-   struct Printer<UserType>
+   class Printer<UserType>
    {
+   public:
       static void Print(ostream& os, const UserType& userType);
    };
 }

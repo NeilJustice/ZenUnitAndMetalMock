@@ -1129,7 +1129,7 @@ namespace ZenUnit
    };
 
    template<typename T>
-   struct Printer;
+   class Printer;
 
    template<typename T>
    class has_ZenUnitPrinter
@@ -6229,8 +6229,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    };
 
    template<typename T, typename Allocator>
-   struct Printer<const std::vector<T, Allocator>>
+   class Printer<const std::vector<T, Allocator>>
    {
+   public:
       static void Print(std::ostream& os, const std::vector<T, Allocator>& vec)
       {
          const std::string* typeName = Type::GetName<T>();
@@ -6266,8 +6267,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    };
 
    template<typename T, typename Allocator>
-   struct Printer<std::vector<T, Allocator>>
+   class Printer<std::vector<T, Allocator>>
    {
+   public:
       static void Print(std::ostream& os, const std::vector<T, Allocator>& vec)
       {
          Printer<const std::vector<T, Allocator>>::Print(os, vec);
@@ -6275,8 +6277,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    };
 
    template<typename TKey, typename TValue, typename LessComparator, typename Allocator>
-   struct Printer<std::map<TKey, TValue, LessComparator, Allocator>>
+   class Printer<std::map<TKey, TValue, LessComparator, Allocator>>
    {
+   public:
       static void Print(std::ostream& os, const std::map<TKey, TValue, LessComparator, Allocator>&)
       {
          os << "std::map<TKey, TValue>";
@@ -6284,8 +6287,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    };
 
    template<typename TKey, typename TValue, typename Hasher, typename EqualityComparator, typename Allocator>
-   struct Printer<std::unordered_map<TKey, TValue, Hasher, EqualityComparator, Allocator>>
+   class Printer<std::unordered_map<TKey, TValue, Hasher, EqualityComparator, Allocator>>
    {
+   public:
       static void Print(std::ostream& os, const std::unordered_map<TKey, TValue, Hasher, EqualityComparator, Allocator>&)
       {
          os << "std::unordered_map<TKey, TValue>";
@@ -6316,8 +6320,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    }
 
    template<typename T, typename LessComparator, typename Allocator>
-   struct Printer<std::set<T, LessComparator, Allocator>>
+   class Printer<std::set<T, LessComparator, Allocator>>
    {
+   public:
       static void Print(std::ostream& os, const std::set<T, LessComparator, Allocator>& s)
       {
          DoPrintSet(os, s);
@@ -6325,8 +6330,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    };
 
    template<typename T, typename Hasher, typename EqualityComparator, typename Allocator>
-   struct Printer<std::unordered_set<T, Hasher, EqualityComparator, Allocator>>
+   class Printer<std::unordered_set<T, Hasher, EqualityComparator, Allocator>>
    {
+   public:
       static void Print(std::ostream& os, const std::unordered_set<T, Hasher, EqualityComparator, Allocator>& s)
       {
          DoPrintSet(os, s);

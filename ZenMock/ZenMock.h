@@ -4579,8 +4579,9 @@ namespace ZenUnit
    };
 
    template<typename ArgType>
-   struct Printer<ZenMock::OneArgumentFunctionCallReference<ArgType>>
+   class Printer<ZenMock::OneArgumentFunctionCallReference<ArgType>>
    {
+   public:
       static void Print(std::ostream& os, const ZenMock::OneArgumentFunctionCallReference<ArgType>& oneArgumentFunctionCall)
       {
          os << "ZenMock::OneArgumentFunctionCall:\n" <<
@@ -4589,8 +4590,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type>
-   struct Printer<ZenMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>>
+   class Printer<ZenMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>>
    {
+   public:
       static void Print(std::ostream& os, const ZenMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>& twoArgumentFunctionCallRef)
       {
          os << "ZenMock::TwoArgumentFunctionCall:\n"
@@ -4600,8 +4602,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
-   struct Printer<ZenMock::ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>>
+   class Printer<ZenMock::ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>>
    {
+   public:
       static void Print(std::ostream& os, const ZenMock::ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>& threeArgumentFunctionCallRef)
       {
          os << "ZenMock::ThreeArgumentFunctionCall:\n"
@@ -4612,8 +4615,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
-   struct Printer<ZenMock::FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
+   class Printer<ZenMock::FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
    {
+   public:
       static void Print(std::ostream& os, const ZenMock::FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& fourArgumentFunctionCallRef)
       {
          os << "ZenMock::FourArgumentFunctionCall:\n"
@@ -4625,8 +4629,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
-   struct Printer<ZenMock::FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
+   class Printer<ZenMock::FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
    {
+   public:
       static void Print(std::ostream& os, const ZenMock::FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& fiveArgumentFunctionCallRef)
       {
          os << "ZenMock::FiveArgumentFunctionCall:\n"
@@ -4639,8 +4644,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
-   struct Printer<ZenMock::SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
+   class Printer<ZenMock::SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
    {
+   public:
       static void Print(std::ostream& os, const ZenMock::SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& sixArgumentFunctionCallRef)
       {
          os << "ZenMock::SixArgumentFunctionCall:\n"
@@ -4654,8 +4660,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type>
-   struct Printer<ZenMock::SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>
+   class Printer<ZenMock::SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>
    {
+   public:
       static void Print(std::ostream& os, const ZenMock::SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& sevenArgumentFunctionCallRef)
       {
          os << "ZenMock::SevenArgumentFunctionCall:\n"
@@ -4670,8 +4677,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type>
-   struct Printer<ZenMock::EightArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
+   class Printer<ZenMock::EightArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
    {
+   public:
       static void Print(std::ostream& os, const ZenMock::EightArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& eightArgumentFunctionCallRef)
       {
          os << "ZenMock::EightArgumentFunctionCall:\n"
@@ -4687,8 +4695,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type>
-   struct Printer<ZenMock::NineArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
+   class Printer<ZenMock::NineArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
    {
+   public:
       static void Print(std::ostream& os, const ZenMock::NineArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& nineArgumentFunctionCallRef)
       {
          os << "ZenMock::NineArgumentFunctionCall:\n"
@@ -4705,21 +4714,22 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type, typename Arg10Type>
-   struct Printer<ZenMock::TenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
+   class Printer<ZenMock::TenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
    {
+   public:
       static void Print(std::ostream& os, const ZenMock::TenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& tenArgumentFunctionCallRef)
       {
          os << "ZenMock::TenArgumentFunctionCall:\n"
-              " Argument1: " << ZenUnit::ToStringer::ToString(tenArgumentFunctionCallRef.firstArgumentReference.value) << '\n' <<
-              " Argument2: " << ZenUnit::ToStringer::ToString(tenArgumentFunctionCallRef.secondArgumentReference.value) << '\n' <<
-              " Argument3: " << ZenUnit::ToStringer::ToString(tenArgumentFunctionCallRef.thirdArgumentReference.value) << '\n' <<
-              " Argument4: " << ZenUnit::ToStringer::ToString(tenArgumentFunctionCallRef.fourthArgumentReference.value) << '\n' <<
-              " Argument5: " << ZenUnit::ToStringer::ToString(tenArgumentFunctionCallRef.fifthArgumentReference.value) << '\n' <<
-              " Argument6: " << ZenUnit::ToStringer::ToString(tenArgumentFunctionCallRef.sixthArgumentReference.value) << '\n' <<
-              " Argument7: " << ZenUnit::ToStringer::ToString(tenArgumentFunctionCallRef.seventhArgumentReference.value) << '\n' <<
-              " Argument8: " << ZenUnit::ToStringer::ToString(tenArgumentFunctionCallRef.eigthArgumentReference.value) << '\n' <<
-              " Argument9: " << ZenUnit::ToStringer::ToString(tenArgumentFunctionCallRef.ninthArgumentReference.value) << '\n' <<
-              "Argument10: " << ZenUnit::ToStringer::ToString(tenArgumentFunctionCallRef.tenthArgumentReference.value);
+               " Argument1: " << ZenUnit::ToStringer::ToString(tenArgumentFunctionCallRef.firstArgumentReference.value) << '\n' <<
+               " Argument2: " << ZenUnit::ToStringer::ToString(tenArgumentFunctionCallRef.secondArgumentReference.value) << '\n' <<
+               " Argument3: " << ZenUnit::ToStringer::ToString(tenArgumentFunctionCallRef.thirdArgumentReference.value) << '\n' <<
+               " Argument4: " << ZenUnit::ToStringer::ToString(tenArgumentFunctionCallRef.fourthArgumentReference.value) << '\n' <<
+               " Argument5: " << ZenUnit::ToStringer::ToString(tenArgumentFunctionCallRef.fifthArgumentReference.value) << '\n' <<
+               " Argument6: " << ZenUnit::ToStringer::ToString(tenArgumentFunctionCallRef.sixthArgumentReference.value) << '\n' <<
+               " Argument7: " << ZenUnit::ToStringer::ToString(tenArgumentFunctionCallRef.seventhArgumentReference.value) << '\n' <<
+               " Argument8: " << ZenUnit::ToStringer::ToString(tenArgumentFunctionCallRef.eigthArgumentReference.value) << '\n' <<
+               " Argument9: " << ZenUnit::ToStringer::ToString(tenArgumentFunctionCallRef.ninthArgumentReference.value) << '\n' <<
+               "Argument10: " << ZenUnit::ToStringer::ToString(tenArgumentFunctionCallRef.tenthArgumentReference.value);
       }
    };
 }

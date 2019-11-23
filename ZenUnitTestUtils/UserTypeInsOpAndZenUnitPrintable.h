@@ -12,8 +12,9 @@ struct UserTypeInsOpAndZenUnitPrintable
 namespace ZenUnit
 {
    template<>
-   struct Printer<UserTypeInsOpAndZenUnitPrintable>
+   class Printer<UserTypeInsOpAndZenUnitPrintable>
    {
+   public:
       static void Print(ostream& os, const UserTypeInsOpAndZenUnitPrintable& value);
    };
 }

@@ -12,21 +12,24 @@ namespace ZenUnit
 {
    struct NonConstReferenceZenUnitPrint {};
    template<>
-   struct Printer<NonConstReferenceZenUnitPrint>
+   class Printer<NonConstReferenceZenUnitPrint>
    {
+   public:
       static void Print(ostream&, NonConstReferenceZenUnitPrint&);
    };
 
    struct RValueReferenceZenUnitPrint {};
    template<>
-   struct Printer<RValueReferenceZenUnitPrint>
+   class Printer<RValueReferenceZenUnitPrint>
    {
+   public:
       static void Print(ostream&, RValueReferenceZenUnitPrint&&);
    };
 
    template<>
-   struct Printer<Namespace::StructInsideNamespace_ZenUnitPrintOutsideNamespace>
+   class Printer<Namespace::StructInsideNamespace_ZenUnitPrintOutsideNamespace>
    {
+   public:
       static void Print(ostream&, const Namespace::StructInsideNamespace_ZenUnitPrintOutsideNamespace&);
    };
 
