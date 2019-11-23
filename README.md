@@ -213,8 +213,11 @@ cd ..
 
 ```
 git clone https://github.com/NeilJustice/ZenUnitAndZenMock
+
 cd ZenUnitAndZenMock
+
 cmake . -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=C:\usr_local
+
 # Builds ZenUnit and ZenMock unit test binaries and then runs them as Visual Studio post-build events,
 # then copies
 # ZenUnit.h to C:\usr_local\include\ZenUnit\ZenUnit.h and
