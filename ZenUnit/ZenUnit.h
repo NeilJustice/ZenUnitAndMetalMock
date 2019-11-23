@@ -2194,7 +2194,7 @@ namespace ZenUnit
    };
 
    template<typename ExpectedType, typename ActualType, typename ToleranceType, typename... MessageTypes>
-   void ARE_WITHIN_Throw(
+   void ARE_WITHIN_ThrowAnomaly(
       VRText<ExpectedType> expectedFloatingPointValueVRT,
       VRText<ActualType> actualFloatingPointValueVRT,
       VRText<ToleranceType> expectedAbsoluteMaxDifferenceVRT,
@@ -2222,7 +2222,7 @@ namespace ZenUnit
       const double absoluteDifference = std::abs(difference);
       if (absoluteDifference > expectedAbsoluteMaxDifferenceVRT.value)
       {
-         ARE_WITHIN_Throw(expectedFloatingPointValueVRT, actualFloatingPointValueVRT, expectedAbsoluteMaxDifferenceVRT,
+         ARE_WITHIN_ThrowAnomaly(expectedFloatingPointValueVRT, actualFloatingPointValueVRT, expectedAbsoluteMaxDifferenceVRT,
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
@@ -2244,12 +2244,12 @@ namespace ZenUnit
       }
       catch (const EqualizerException&)
       {
-         ARE_EQUAL_Throw(expectedValueVRT, actualValueVRT, fileLine,
+         ARE_EQUAL_ThrowAnomaly(expectedValueVRT, actualValueVRT, fileLine,
             Anomaly::Default(), messagesText, std::forward<MessageTypes>(messages)...);
       }
       catch (const Anomaly& becauseAnomaly)
       {
-         ARE_EQUAL_Throw(expectedValueVRT, actualValueVRT, fileLine,
+         ARE_EQUAL_ThrowAnomaly(expectedValueVRT, actualValueVRT, fileLine,
             becauseAnomaly, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
@@ -2275,15 +2275,15 @@ namespace ZenUnit
       }
       catch (const Anomaly& becauseAnomaly)
       {
-         ARE_NOT_EQUAL_Throw(notExpectedValueVRT, actualValueVRT, fileLine,
+         ARE_NOT_EQUAL_ThrowAnomaly(notExpectedValueVRT, actualValueVRT, fileLine,
             becauseAnomaly, messagesText, std::forward<MessageTypes>(messages)...);
       }
-      ARE_NOT_EQUAL_Throw(notExpectedValueVRT, actualValueVRT, fileLine,
+      ARE_NOT_EQUAL_ThrowAnomaly(notExpectedValueVRT, actualValueVRT, fileLine,
          Anomaly::Default(), messagesText, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
-   void ARE_COPIES_Throw(
+   void ARE_COPIES_ThrowAnomaly(
       VRText<ExpectedObjectType> expectedObjectVRT,
       VRText<ActualObjectType> actualObjectVRT,
       FileLine fileLine, const Anomaly& becauseAnomaly, const char* messagesText, MessageTypes&&... messages)
@@ -2308,7 +2308,7 @@ namespace ZenUnit
       }
       catch (const Anomaly& becauseAnomaly)
       {
-         ARE_COPIES_Throw(expectedObjectVRT, actualObjectVRT,
+         ARE_COPIES_ThrowAnomaly(expectedObjectVRT, actualObjectVRT,
             fileLine, becauseAnomaly, messagesText, std::forward<MessageTypes>(messages)...);
       }
       try
@@ -2317,13 +2317,13 @@ namespace ZenUnit
       }
       catch (const Anomaly& becauseAnomaly)
       {
-         ARE_COPIES_Throw(expectedObjectVRT, actualObjectVRT,
+         ARE_COPIES_ThrowAnomaly(expectedObjectVRT, actualObjectVRT,
             fileLine, becauseAnomaly, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
    template<typename ExpectedType, typename ActualType, typename... MessageTypes>
-   void ARE_EQUAL_Throw(
+   void ARE_EQUAL_ThrowAnomaly(
       VRText<ExpectedType> expectedValueVRT,
       VRText<ActualType> actualValueVRT,
       FileLine fileLine, const Anomaly& becauseAnomaly, const char* messagesText, MessageTypes&&... messages)
@@ -2335,7 +2335,7 @@ namespace ZenUnit
    }
 
    template<typename NotExpectedType, typename ActualType, typename... MessageTypes>
-   void ARE_NOT_EQUAL_Throw(
+   void ARE_NOT_EQUAL_ThrowAnomaly(
       VRText<NotExpectedType> notExpectedValueVRT,
       VRText<ActualType> actualValueVRT,
       FileLine fileLine, const Anomaly& becauseAnomaly, const char* messagesText, MessageTypes&& ... messages)
@@ -2347,7 +2347,7 @@ namespace ZenUnit
    }
 
    template<typename NotExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
-   void ARE_NOT_SAME_Throw(
+   void ARE_NOT_SAME_ThrowAnomaly(
       const VRText<NotExpectedObjectType>& notExpectedObjectVRT,
       const VRText<ActualObjectType>& actualObjectVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
@@ -2366,12 +2366,12 @@ namespace ZenUnit
    {
       if (&notExpectedObjectVRT.value == &actualObjectVRT.value)
       {
-         ARE_NOT_SAME_Throw(notExpectedObjectVRT, actualObjectVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         ARE_NOT_SAME_ThrowAnomaly(notExpectedObjectVRT, actualObjectVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
    template<typename ExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
-   void ARE_SAME_Throw(
+   void ARE_SAME_ThrowAnomaly(
       const VRText<ExpectedObjectType>& expectedObjectVRT,
       const VRText<ActualObjectType>& actualObjectVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
@@ -2390,7 +2390,7 @@ namespace ZenUnit
    {
       if (&expectedObjectVRT.value != &actualObjectVRT.value)
       {
-         ARE_SAME_Throw(expectedObjectVRT, actualObjectVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         ARE_SAME_ThrowAnomaly(expectedObjectVRT, actualObjectVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
@@ -2432,7 +2432,7 @@ namespace ZenUnit
    }
 
    template<typename ElementType, typename CollectionType, typename... MessageTypes>
-   void CONTAINS_ELEMENT_Throw(VRText<CollectionType> expectedElementVRT, VRText<ElementType> collectionVRT,
+   void CONTAINS_ELEMENT_ThrowAnomaly(VRText<CollectionType> expectedElementVRT, VRText<ElementType> collectionVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string toStringedElement = ToStringer::ToString(expectedElementVRT.value);
@@ -2450,7 +2450,7 @@ namespace ZenUnit
      const auto findIter = std::find(collectionVRT.value.cbegin(), collectionVRT.value.cend(), expectedElementVRT.value);
       if (findIter == collectionVRT.value.end())
       {
-         CONTAINS_ELEMENT_Throw(expectedElementVRT, collectionVRT,
+         CONTAINS_ELEMENT_ThrowAnomaly(expectedElementVRT, collectionVRT,
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
@@ -2480,7 +2480,7 @@ namespace ZenUnit
    {
       if (!value)
       {
-         IS_TRUE_Throw(valueText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         IS_TRUE_ThrowAnomaly(valueText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
@@ -2540,7 +2540,7 @@ namespace ZenUnit
    }
 
    template<typename CollectionType, typename... MessageTypes>
-   void IS_EMPTY_Throw(VRText<CollectionType> collectionVRT,
+   void IS_EMPTY_ThrowAnomaly(VRText<CollectionType> collectionVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const size_t size = collectionVRT.value.size();
@@ -2556,12 +2556,12 @@ namespace ZenUnit
    {
       if (!collectionVRT.value.empty())
       {
-         IS_EMPTY_Throw(collectionVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         IS_EMPTY_ThrowAnomaly(collectionVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
    template<typename CollectionType, typename... MessageTypes>
-   void IS_NOT_EMPTY_Throw(VRText<CollectionType> collectionVRT,
+   void IS_NOT_EMPTY_ThrowAnomaly(VRText<CollectionType> collectionVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedField = "empty() == false";
@@ -2576,12 +2576,12 @@ namespace ZenUnit
    {
       if (collectionVRT.value.empty())
       {
-         IS_NOT_EMPTY_Throw(collectionVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         IS_NOT_EMPTY_ThrowAnomaly(collectionVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
    template<typename... MessageTypes>
-   void IS_FALSE_Throw(const char* valueText,
+   void IS_FALSE_ThrowAnomaly(const char* valueText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       throw Anomaly("IS_FALSE", valueText, "", "", messagesText, Anomaly::Default(),
@@ -2594,12 +2594,12 @@ namespace ZenUnit
    {
       if (value)
       {
-         IS_FALSE_Throw(valueText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         IS_FALSE_ThrowAnomaly(valueText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
    template<typename... MessageTypes>
-   void POINTER_IS_NOT_NULL_Throw(const char* pointerText,
+   void POINTER_IS_NOT_NULL_ThrowAnomaly(const char* pointerText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       throw Anomaly("POINTER_IS_NOT_NULL", pointerText, "", "", messagesText, Anomaly::Default(),
@@ -2612,12 +2612,12 @@ namespace ZenUnit
    {
       if (!pointerIsNotNullptr)
       {
-         POINTER_IS_NOT_NULL_Throw(pointerText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         POINTER_IS_NOT_NULL_ThrowAnomaly(pointerText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
    template<typename... MessageTypes>
-   void POINTEE_IS_EXACT_TYPE_Throw(
+   void POINTEE_IS_EXACT_TYPE_ThrowAnomaly(
       const std::type_info& expectedPolymorphicPointeeTypeInfo,
       std::string_view expectedPolymorphicPointeeText, std::string_view actualField, std::string_view actualPointeeText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
@@ -2636,7 +2636,7 @@ namespace ZenUnit
    {
       if (actualPointerVRT.value == nullptr)
       {
-         POINTEE_IS_EXACT_TYPE_Throw(
+         POINTEE_IS_EXACT_TYPE_ThrowAnomaly(
             expectedPolymorphicPointeeTypeInfo,
             expectedPolymorphicPointeeText,
             "Pointer has no pointee because pointer is nullptr",
@@ -2649,7 +2649,7 @@ namespace ZenUnit
          const char* const actualPointeeTypeName = typeid(*actualPointerVRT.value).name();
          const std::string actualField =
             "   Pointee is exact type:                 typeid(*actualPointer).name() = \"" + std::string(actualPointeeTypeName) + "\"";
-         POINTEE_IS_EXACT_TYPE_Throw(
+         POINTEE_IS_EXACT_TYPE_ThrowAnomaly(
             expectedPolymorphicPointeeTypeInfo,
             expectedPolymorphicPointeeText,
             actualField,
@@ -2659,7 +2659,7 @@ namespace ZenUnit
    }
 
    template<typename PointerType, typename... MessageTypes>
-   void POINTER_IS_NULL_Throw(VRText<PointerType> pointerVRT,
+   void POINTER_IS_NULL_ThrowAnomaly(VRText<PointerType> pointerVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string actualField = ToStringer::ToString(pointerVRT.value);
@@ -2674,12 +2674,12 @@ namespace ZenUnit
       const bool pointerIsNull = pointerVRT.value == nullptr;
       if (!pointerIsNull)
       {
-         POINTER_IS_NULL_Throw(pointerVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         POINTER_IS_NULL_ThrowAnomaly(pointerVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
    template<typename... MessageTypes>
-   void IS_TRUE_Throw(const char* valueText,
+   void IS_TRUE_ThrowAnomaly(const char* valueText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       throw Anomaly("IS_TRUE", valueText, "", "", messagesText, Anomaly::Default(),
@@ -2687,7 +2687,7 @@ namespace ZenUnit
    }
 
    template<typename ValueType, typename DefaultValueType, typename... MessageTypes>
-   void IS_ZERO_Throw(VRText<ValueType> valueVRT, const DefaultValueType& defaultValue,
+   void IS_ZERO_ThrowAnomaly(VRText<ValueType> valueVRT, const DefaultValueType& defaultValue,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedField = ToStringer::ToString(defaultValue);
@@ -2704,12 +2704,12 @@ namespace ZenUnit
       const bool valueIsDefaultValue = valueVRT.value == defaultValue;
       if (!valueIsDefaultValue)
       {
-         IS_ZERO_Throw(valueVRT, defaultValue, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         IS_ZERO_ThrowAnomaly(valueVRT, defaultValue, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
    template<typename ValueType, typename DefaultValueType, typename... MessageTypes>
-   void IS_DEFAULT_VALUE_Throw(VRText<ValueType> valueVRT, const DefaultValueType& defaultValue, FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
+   void IS_DEFAULT_VALUE_ThrowAnomaly(VRText<ValueType> valueVRT, const DefaultValueType& defaultValue, FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
    {
       const std::string expectedValueString = ToStringer::ToString(defaultValue);
       const std::string actualValueString = ToStringer::ToString(valueVRT.value);
@@ -2724,12 +2724,12 @@ namespace ZenUnit
       const bool valueIsDefaultValue = valueVRT.value == defaultConstructedValueType;
       if (!valueIsDefaultValue)
       {
-         IS_DEFAULT_VALUE_Throw(valueVRT, defaultConstructedValueType, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         IS_DEFAULT_VALUE_ThrowAnomaly(valueVRT, defaultConstructedValueType, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
    template<typename ValueType, typename... MessageTypes>
-   void IS_NOT_DEFAULT_VALUE_Throw(VRText<ValueType> valueVRT,
+   void IS_NOT_DEFAULT_VALUE_ThrowAnomaly(VRText<ValueType> valueVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string actualValueString = ToStringer::ToString(valueVRT.value);
@@ -2751,7 +2751,7 @@ namespace ZenUnit
       {
          return;
       }
-      IS_NOT_DEFAULT_VALUE_Throw(valueVRT, fileLine, messagesText, messages...);
+      IS_NOT_DEFAULT_VALUE_ThrowAnomaly(valueVRT, fileLine, messagesText, messages...);
    }
 
    class Map
@@ -2810,7 +2810,7 @@ namespace ZenUnit
    };
 
    template<typename... MessageTypes>
-   void MAPS_EQUAL_Throw(
+   void MAPS_EQUAL_ThrowAnomaly(
       const char* failedPrefixSpaces,
       const char* expectedMapText,
       const char* actualMapText,
@@ -2880,7 +2880,7 @@ namespace ZenUnit
       }
       catch (const Anomaly&)
       {
-         MAPS_EQUAL_Throw("  ", expectedMapText, actualMapText,
+         MAPS_EQUAL_ThrowAnomaly("  ", expectedMapText, actualMapText,
             MAPS_EQUAL_MakeWhyBody_SizesNotEqual(expectedMap.size(), actualMap.size()),
             fileLine, " ", messagesText, std::forward<MessageTypes>(messages)...);
       }
@@ -2892,7 +2892,7 @@ namespace ZenUnit
          const bool mapContainsKey = containsKeyValue.first;
          if (!mapContainsKey)
          {
-            MAPS_EQUAL_Throw(" ", expectedMapText, actualMapText,
+            MAPS_EQUAL_ThrowAnomaly(" ", expectedMapText, actualMapText,
                MAPS_EQUAL_MakeWhyBody_ExpectedKeyNotInActualMap(expectedKey),
                fileLine, "", messagesText, std::forward<MessageTypes>(messages)...);
          }
@@ -2900,7 +2900,7 @@ namespace ZenUnit
          if (!mapContainsValue)
          {
             assert_true(containsKeyValue.first);
-            MAPS_EQUAL_Throw(" ", expectedMapText, actualMapText,
+            MAPS_EQUAL_ThrowAnomaly(" ", expectedMapText, actualMapText,
                MAPS_EQUAL_MakeWhyBody_KeysEqualValuesNotEqual(expectedKey, expectedValue, actualMap),
                fileLine, "", messagesText, std::forward<MessageTypes>(messages)...);
          }
@@ -2908,7 +2908,7 @@ namespace ZenUnit
    }
 
    template<typename... MessageTypes>
-   void DOES_NOT_THROW_Throw(
+   void DOES_NOT_THROW_ThrowAnomaly(
       const std::exception& ex, const char* expressionText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
@@ -2931,7 +2931,7 @@ namespace ZenUnit
       }
       catch (const std::exception& ex)
       {
-         DOES_NOT_THROW_Throw(ex, expressionText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         DOES_NOT_THROW_ThrowAnomaly(ex, expressionText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
@@ -3144,7 +3144,7 @@ namespace ZenUnit
    }
 
    template<typename SetType, typename... MessageTypes>
-   void SETS_EQUAL_Throw(
+   void SETS_EQUAL_ThrowAnomaly(
       const Anomaly& becauseAnomaly,
       VRText<SetType> expectedSetVRT, VRText<SetType> actualSetVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
@@ -3172,7 +3172,7 @@ namespace ZenUnit
       }
       catch (const Anomaly& becauseAnomaly)
       {
-         SETS_EQUAL_Throw(becauseAnomaly, expectedSetVRT, actualSetVRT,
+         SETS_EQUAL_ThrowAnomaly(becauseAnomaly, expectedSetVRT, actualSetVRT,
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
@@ -3242,7 +3242,7 @@ namespace ZenUnit
    }
 
    template<typename ExpectedType, typename ActualType, typename... MessageTypes>
-   void POINTEES_EQUAL_Throw(
+   void POINTEES_EQUAL_ThrowAnomaly(
       VRText<ExpectedType> expectedPointerVRT,
       VRText<ActualType> actualPointerVRT,
       const Anomaly& becauseAnomaly,
@@ -3256,21 +3256,21 @@ namespace ZenUnit
    }
 
    template<typename ActualType, typename... MessageTypes>
-   void POINTEES_EQUAL_Throw(
+   void POINTEES_EQUAL_ThrowAnomaly(
       VRText<std::nullptr_t>, VRText<ActualType>, const Anomaly&, FileLine, const char*, MessageTypes&&...)
    {
       assert_true(false);
    }
 
    template<typename ExpectedType, typename... MessageTypes>
-   void POINTEES_EQUAL_Throw(
+   void POINTEES_EQUAL_ThrowAnomaly(
       VRText<ExpectedType>, VRText<std::nullptr_t>, const Anomaly&, FileLine, const char*, MessageTypes&&...)
    {
       assert_true(false);
    }
 
    template<typename... MessageTypes>
-   void POINTEES_EQUAL_Throw(
+   void POINTEES_EQUAL_ThrowAnomaly(
       VRText<std::nullptr_t>, VRText<std::nullptr_t>, const Anomaly&, FileLine, const char*, MessageTypes&&...)
    {
       assert_true(false);
@@ -3324,7 +3324,7 @@ namespace ZenUnit
       }
       catch (const Anomaly& becauseAnomaly)
       {
-         POINTEES_EQUAL_Throw(
+         POINTEES_EQUAL_ThrowAnomaly(
             expectedPointerVRT,
             actualPointerVRT,
             becauseAnomaly, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
@@ -3466,7 +3466,7 @@ namespace ZenUnit
    template<
       template<typename...>
       class VectorType, typename T, typename Allocator, typename... MessageTypes>
-   void VECTORS_EQUAL_Throw(
+   void VECTORS_EQUAL_ThrowAnomaly(
       const Anomaly& becauseAnomaly,
       const VectorType<T, Allocator>& expectedVector, const char* expectedVectorText,
       const VectorType<T, Allocator>& actualVector, const char* actualVectorText,
@@ -3495,7 +3495,7 @@ namespace ZenUnit
       }
       catch (const Anomaly& becauseAnomaly)
       {
-         VECTORS_EQUAL_Throw(becauseAnomaly,
+         VECTORS_EQUAL_ThrowAnomaly(becauseAnomaly,
             expectedVector, expectedVectorText,
             actualVector, actualVectorText,
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
@@ -3515,7 +3515,7 @@ namespace ZenUnit
          }
          catch (const Anomaly& becauseAnomaly)
          {
-            VECTORS_EQUAL_Throw(becauseAnomaly,
+            VECTORS_EQUAL_ThrowAnomaly(becauseAnomaly,
                expectedVector, expectedVectorText,
                actualVector, actualVectorText,
                fileLine, messagesText, std::forward<MessageTypes>(messages)...);
