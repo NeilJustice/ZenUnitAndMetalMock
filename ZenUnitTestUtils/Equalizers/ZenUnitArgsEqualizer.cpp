@@ -18,6 +18,5 @@ namespace ZenUnit
       ARE_EQUAL(expectedArguments.randomSeed, actualArgs.randomSeed);
       ARE_EQUAL(expectedArguments.randomSeedSetByUser, actualArgs.randomSeedSetByUser);
       ARE_EQUAL(expectedArguments.maxTestMilliseconds, actualArgs.maxTestMilliseconds);
-      ARE_EQUAL(expectedArguments.maxTotalSeconds, actualArgs.maxTotalSeconds);
    }
 }

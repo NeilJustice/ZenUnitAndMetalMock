@@ -22,7 +22,6 @@ namespace ZenUnit
       ARE_EQUAL(0, zenUnitArgs.randomSeed);
       IS_FALSE(zenUnitArgs.randomSeedSetByUser);
       IS_ZERO(zenUnitArgs.maxTestMilliseconds);
-      IS_ZERO(zenUnitArgs.maxTotalSeconds);
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
@@ -40,7 +39,6 @@ namespace ZenUnit
       EQUALIZER_THROWS(ZenUnitArgs, randomSeed, 3u);
       EQUALIZER_THROWS(ZenUnitArgs, randomSeedSetByUser, true);
       EQUALIZER_THROWS(ZenUnitArgs, maxTestMilliseconds, 4u);
-      EQUALIZER_THROWS(ZenUnitArgs, maxTotalSeconds, 5u);
    }
 
    RUN_TESTS(ZenUnitArgsTests)

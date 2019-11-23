@@ -868,7 +868,6 @@ namespace ZenUnit
       unsigned randomSeed = 0;
       bool randomSeedSetByUser = false;
       unsigned maxTestMilliseconds = 0;
-      unsigned maxTotalSeconds = 0;
    };
 
    constexpr const char* ColorToLinuxColor(Color color) noexcept
@@ -4793,15 +4792,7 @@ namespace ZenUnit
          _havePaused = _nonVoidTwoArgMemberFunctionCaller->ConstCall(
             this, &ZenUnitTestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused, args.pause, _havePaused);
          _testRunStopwatch->Start();
-         if (args.maxTotalSeconds > 0)
-         {
-            _voidOneArgMemberFunctionCaller->NonConstCall(
-               this, &ZenUnitTestRunner::RunTestClassesWithWaitableRunnerThread, args.maxTotalSeconds);
-         }
-         else
-         {
-            _voidZeroArgMemberFunctionCaller->NonConstCall(this, &ZenUnitTestRunner::RunTestClasses);
-         }
+         _voidZeroArgMemberFunctionCaller->NonConstCall(this, &ZenUnitTestRunner::RunTestClasses);
          _testRunResult->PrintTestFailuresAndSkips();
          const size_t numberOfTestCases = _testClassRunnerRunner->NumberOfTestCases();
          const std::string testRunElapsedSeconds = _testRunStopwatch->StopAndGetElapsedSeconds();
@@ -4814,10 +4805,6 @@ namespace ZenUnit
       {
          std::vector<TestClassResult> testClassResults = _testClassRunnerRunner->RunTestClasses(_args);
          _testRunResult->SetTestClassResults(std::move(testClassResults));
-      }
-
-      void RunTestClassesWithWaitableRunnerThread(unsigned /*maxtTotalSeconds*/)
-      {
       }
    };
 

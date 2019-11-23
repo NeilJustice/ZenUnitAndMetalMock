@@ -20,7 +20,6 @@ namespace ZenUnit
       randomZenUnitArgs.randomSeed = ZenUnit::Random<unsigned>();
       randomZenUnitArgs.randomSeedSetByUser = ZenUnit::Random<bool>();
       randomZenUnitArgs.maxTestMilliseconds = ZenUnit::Random<unsigned>();
-      randomZenUnitArgs.maxTotalSeconds = ZenUnit::Random<unsigned>();
       return randomZenUnitArgs;
    }
 }
