@@ -1410,8 +1410,9 @@ namespace ZenUnit
       }
    };
 
-   struct Anomaly : public std::exception
+   class Anomaly : public std::exception
    {
+   public:
       std::string assertExpression;
       std::string expectedValueAsStringOrExpectedLine;
       std::string actualValueAsStringOrActualLine;
