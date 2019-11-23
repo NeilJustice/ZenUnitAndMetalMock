@@ -163,9 +163,9 @@ Testing Utility Options:
 // Floating Point Assertions
 //
 
-// Asserts that std::abs(expectedValue - actualValue) <= expectedTolerance.
-#define ARE_WITHIN(expectedValue, actualValue, expectedTolerance, ...) \
-   ZenUnit::ARE_WITHIN_Defined(VRT(expectedValue), VRT(actualValue), VRT(expectedTolerance), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+// Asserts that std::abs(expectedFloatingPointValue - actualFloatingPointValue) <= expectedTolerance.
+#define ARE_WITHIN(expectedFloatingPointValue, actualFloatingPointValue, expectedAbsoluteMaxDifference, ...) \
+   ZenUnit::ARE_WITHIN_Defined(VRT(expectedFloatingPointValue), VRT(actualFloatingPointValue), VRT(expectedAbsoluteMaxDifference), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
 // Pointer Assertions
@@ -2190,34 +2190,34 @@ namespace ZenUnit
 
    template<typename ExpectedType, typename ActualType, typename ToleranceType, typename... MessageTypes>
    void ARE_WITHIN_Throw(
-      VRText<ExpectedType> expectedValueVRT,
-      VRText<ActualType> actualValueVRT,
-      VRText<ToleranceType> expectedToleranceVRT,
+      VRText<ExpectedType> expectedFloatingPointValueVRT,
+      VRText<ActualType> actualFloatingPointValueVRT,
+      VRText<ToleranceType> expectedAbsoluteMaxDifferenceVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
    {
-      const std::string toStringedExpectedValue = ToStringer::ToString(expectedValueVRT.value);
-      const std::string toStringedActualValue = ToStringer::ToString(actualValueVRT.value);
-      const std::string expectedToleranceLine = "Expected Tolerance: " + std::to_string(expectedToleranceVRT.value);
+      const std::string toStringedExpectedFloatingPointValue = ToStringer::ToString(expectedFloatingPointValueVRT.value);
+      const std::string toStringedActualFloatingPointValue = ToStringer::ToString(actualFloatingPointValueVRT.value);
+      const std::string expectedToleranceLine = "Expected Tolerance: " + std::to_string(expectedAbsoluteMaxDifferenceVRT.value);
       Anomaly::ThrowThreeLineAssertionAnomaly(
-         "ARE_WITHIN", expectedValueVRT.text, actualValueVRT.text, expectedToleranceVRT.text, messagesText,
-         toStringedExpectedValue,
-         toStringedActualValue,
+         "ARE_WITHIN", expectedFloatingPointValueVRT.text, actualFloatingPointValueVRT.text, expectedAbsoluteMaxDifferenceVRT.text, messagesText,
+         toStringedExpectedFloatingPointValue,
+         toStringedActualFloatingPointValue,
          expectedToleranceLine,
          fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ExpectedType, typename ActualType, typename ToleranceType, typename... MessageTypes>
    void ARE_WITHIN_Defined(
-      VRText<ExpectedType> expectedValueVRT,
-      VRText<ActualType> actualValueVRT,
-      VRText<ToleranceType> expectedToleranceVRT,
+      VRText<ExpectedType> expectedFloatingPointValueVRT,
+      VRText<ActualType> actualFloatingPointValueVRT,
+      VRText<ToleranceType> expectedAbsoluteMaxDifferenceVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
    {
-      const double difference = static_cast<double>(expectedValueVRT.value) - static_cast<double>(actualValueVRT.value);
+      const double difference = static_cast<double>(expectedFloatingPointValueVRT.value) - static_cast<double>(actualFloatingPointValueVRT.value);
       const double absoluteDifference = std::abs(difference);
-      if (absoluteDifference > expectedToleranceVRT.value)
+      if (absoluteDifference > expectedAbsoluteMaxDifferenceVRT.value)
       {
-         ARE_WITHIN_Throw(expectedValueVRT, actualValueVRT, expectedToleranceVRT,
+         ARE_WITHIN_Throw(expectedFloatingPointValueVRT, actualFloatingPointValueVRT, expectedAbsoluteMaxDifferenceVRT,
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
