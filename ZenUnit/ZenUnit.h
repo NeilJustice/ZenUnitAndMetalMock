@@ -3242,14 +3242,14 @@ namespace ZenUnit
    }
 
    template<typename T, typename... MessageTypes>
-   void POINTEES_EQUAL_ThrowAnomaly_NullptrExpectedOrActual(
+   void POINTEES_EQUAL_ThrowAnomaly_ExpectedOrActualPointerIsNullptr(
       VRText<T> expectedPointerVRT,
       VRText<T> actualPointerVRT,
-      const char* expectedOrActual,
+      const char* expectedPointerOrActualPointer,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-      const std::string expectedField = expectedOrActual + std::string(" pointer != nullptr");
-      const std::string actualField = expectedOrActual + std::string(" pointer == nullptr");
+      const std::string expectedField = expectedPointerOrActualPointer + std::string(" != nullptr");
+      const std::string actualField = expectedPointerOrActualPointer + std::string(" == nullptr");
       throw Anomaly("POINTEES_ARE_EQUAL", expectedPointerVRT.text, actualPointerVRT.text, "",
          messagesText, Anomaly::Default(), expectedField, actualField,
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
@@ -3286,12 +3286,12 @@ namespace ZenUnit
          {
             return;
          }
-         POINTEES_EQUAL_ThrowAnomaly_NullptrExpectedOrActual(expectedPointerVRT, actualPointerVRT, "expected",
+         POINTEES_EQUAL_ThrowAnomaly_ExpectedOrActualPointerIsNullptr(expectedPointerVRT, actualPointerVRT, "expected pointer",
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
       else if (actualPointerVRT.value == nullptr)
       {
-         POINTEES_EQUAL_ThrowAnomaly_NullptrExpectedOrActual(expectedPointerVRT, actualPointerVRT, "actual",
+         POINTEES_EQUAL_ThrowAnomaly_ExpectedOrActualPointerIsNullptr(expectedPointerVRT, actualPointerVRT, "actual pointer",
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
       try

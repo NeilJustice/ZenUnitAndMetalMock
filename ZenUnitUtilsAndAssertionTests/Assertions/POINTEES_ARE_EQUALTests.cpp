@@ -3,12 +3,51 @@
 namespace ZenUnit
 {
    TESTS(POINTEES_ARE_EQUALTests)
+   AFACT(ExpectedPointerIsNullptr_ActualPointerIsNullptr_DoesNotThrowException)
+   AFACT(ExpectedPointerIsNullptr_ActualPointerIsNotNullptr_ThrowsAnomaly)
+   AFACT(ExpectedPointerIsNotNullptr_ActualPointerIsNullptr_ThrowsAnomaly)
    AFACT(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreNotEqual_ThrowsAnomaly__StringPointersTestCase)
    AFACT(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreNotEqual_ThrowsAnomaly__StringPointersTestCase_MessagesTestCase)
    AFACT(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreNotEqual_ThrowsAnomaly__UserTypesTestCase)
    AFACT(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreEqual_DoesNotThrowException__StringPointersTestCase)
    AFACT(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreEqual_DoesNotThrowExceeption__UserTypePointersTestCase)
    EVIDENCE
+
+   TEST(ExpectedPointerIsNullptr_ActualPointerIsNullptr_DoesNotThrowException)
+   {
+      const int* nullExpectedPointer = nullptr;
+      const int* nullActualPointer = nullptr;
+      //
+      POINTEES_ARE_EQUAL(nullExpectedPointer, nullActualPointer);
+   }
+
+   TEST(ExpectedPointerIsNullptr_ActualPointerIsNotNullptr_ThrowsAnomaly)
+   {
+      const int* nullExpectedPointer = nullptr;
+      const int actualInt = ZenUnit::Random<int>();
+      const int* nonNullActualPointer = &actualInt;;
+      //
+      THROWS_EXCEPTION(POINTEES_ARE_EQUAL(nullExpectedPointer, nonNullActualPointer),
+         Anomaly, TestUtil::NewlineConcat("",
+            "  Failed: POINTEES_ARE_EQUAL(nullExpectedPointer, nonNullActualPointer)",
+            "Expected: expected pointer != nullptr",
+            "  Actual: expected pointer == nullptr",
+            "File.cpp(1)"));
+   }
+
+   TEST(ExpectedPointerIsNotNullptr_ActualPointerIsNullptr_ThrowsAnomaly)
+   {
+      const int expectedInt = ZenUnit::Random<int>();
+      const int* nonNullExpectedPointer = &expectedInt;
+      const int* nullActualPointer = nullptr;
+      //
+      THROWS_EXCEPTION(POINTEES_ARE_EQUAL(nonNullExpectedPointer, nullActualPointer),
+         Anomaly, TestUtil::NewlineConcat("",
+            "  Failed: POINTEES_ARE_EQUAL(nonNullExpectedPointer, nullActualPointer)",
+            "Expected: actual pointer != nullptr",
+            "  Actual: actual pointer == nullptr",
+            "File.cpp(1)"));
+   }
 
    TEST(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreNotEqual_ThrowsAnomaly__StringPointersTestCase)
    {
@@ -18,14 +57,14 @@ namespace ZenUnit
       const string* const actualPointer = &actualPointee;
       THROWS_EXCEPTION(POINTEES_ARE_EQUAL(expectedPointer, actualPointer),
          Anomaly, TestUtil::NewlineConcat("",
-"  Failed: POINTEES_ARE_EQUAL(expectedPointer, actualPointer)",
-"Expected: \"" + expectedPointee + "\"",
-"  Actual: \"" + actualPointee + "\"",
-" Because: ARE_EQUAL(*expectedPointee, *actualPointee) failed",
-"Expected: \"" + expectedPointee + "\"",
-"  Actual: \"" + actualPointee + "\"",
-"File.cpp(1)",
-"File.cpp(1)"));
+            "  Failed: POINTEES_ARE_EQUAL(expectedPointer, actualPointer)",
+            "Expected: \"" + expectedPointee + "\"",
+            "  Actual: \"" + actualPointee + "\"",
+            " Because: ARE_EQUAL(*expectedPointee, *actualPointee) failed",
+            "Expected: \"" + expectedPointee + "\"",
+            "  Actual: \"" + actualPointee + "\"",
+            "File.cpp(1)",
+            "File.cpp(1)"));
    }
 
    TEST(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreNotEqual_ThrowsAnomaly__StringPointersTestCase_MessagesTestCase)
