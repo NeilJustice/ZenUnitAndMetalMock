@@ -222,7 +222,12 @@ cd ZenUnitAndZenMock
 
 cmake . -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=C:\usr_local
 
-# Builds ZenUnit and ZenMock unit test binaries and then runs them as Visual Studio post-build events.
+# Builds these Debug unit test binaries then runs their tests as Visual Studio post-build events:
+# ZenMockTests\Debug\ZenMockTests.exe
+# ZenMockExamples\Debug\ZenMockExamples.exe
+# ZenUnitLibraryTests\Debug\ZenUnitLibraryTests.exe
+# ZenUnitUtilsAndAssertionTests\Debug\ZenUnitUtilsAndAssertionTests.exe
+# ZenUnitExamples\Debug\ZenUnitExamples.exe
 # Then copies
 # ZenUnit.h to C:\usr_local\include\ZenUnit\ZenUnit.h and
 # ZenMock.h to C:\usr_local\include\ZenMock\ZenMock.h
