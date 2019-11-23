@@ -6,7 +6,7 @@
 
 |Build Type|Build Status|
 |----------|------------|
-|Linux (Clang 6.0.1 and GCC 8.3.0)|<a href="https://travis-ci.org/NeilJustice/ZenUnitAndZenMock"><img src="https://travis-ci.org/NeilJustice/ZenUnitAndZenMock.svg?branch=master"/></a>|
+|Linux (Clang 6.0.0 and GCC 7.4.0)|<a href="https://travis-ci.org/NeilJustice/ZenUnitAndZenMock"><img src="https://travis-ci.org/NeilJustice/ZenUnitAndZenMock.svg?branch=master"/></a>|
 |Windows (Visual Studio 2019 x64 and Win32)|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndZenMock"><img src="https://ci.appveyor.com/api/projects/status/neqqkha7xbc93260?svg=true"/></a>|
 
 #### ZenUnit.h single header: <a href="https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenUnit/ZenUnit.h">ZenUnit.h</a>
