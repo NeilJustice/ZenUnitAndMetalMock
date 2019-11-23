@@ -1,8 +1,8 @@
 <h1 align="center">ZenUnit & ZenMock</h1>
 
-<h4 align="center">ZenUnit is a single-header C++ unit testing framework with a unique syntax for specifying value-parameterized and type-parameterized unit tests.</h4>
+<h4 align="center">ZenUnit is a single-header C++ unit testing framework that features a convenient syntax for writing value-parameterized and type-parameterized unit tests.</h4>
 
-<h4 align="center">ZenMock is a single-header C++ mocking framework powered by ZenUnit with the ability to confirm the correctness of calls and return values to and from virtual, non-virtual, static, and free functions with an easily readable arrange-act-assert syntax.</h4>
+<h4 align="center">ZenMock is a single-header C++ mocking framework powered by ZenUnit that features an intuitive arrange-act-assert syntax for confirming the correctness of calls and return values to and from virtual, non-virtual, static, and free functions.</h4>
 
 |Build Type|Build Status|
 |----------|------------|
@@ -21,8 +21,8 @@
       * [Pointer Assertions](#pointer-assertions)
       * [Test Assertions](#test-assertions)
       * [Function Assertions](#function-assertions)
-   * [Macros For Defining ZenUnit Test Classes And Tests](#macros-for-defining-zenunit-test-classes-and-tests)
-   * [ZenUnit Random Value Generating Functions For Maximizing Mutation Coverage Which Will Be The Hottest Software Quality Metric Of the 2020s](#zenunit-Random-Value-Generating-Functions-For-Maximizing-Mutation-Coverage-Which-Will-Be-The-Hottest-Software-Quality-Metric-Of-The-2020s)
+   * [ZenUnit Test-Defining Macros](#zenunit-test-defining-macros)
+   * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
    * [How To Compile And Run ZenUnit And ZenMock Unit Tests And Then Install ZenUnit.h And ZenMock.h On Linux](#how-to-compile-and-run-zenunit-and-zenmock-unit-tests-and-then-install-zenunit.h-and-zenmock.h-on-linux)
    * [How To Compile And Run ZenUnit And ZenMock Unit Tests And Then Install ZenUnit.h And ZenMock.h On Windows](#how-to-compile-and-run-zenunit-and-zenmock-unit-tests-and-then-install-zenunit.h-and-zenmock.h-on-windows)
 
@@ -138,7 +138,7 @@ Testing Utility Options:
 |`STD_FUNCTION_TARGETS(expectedStaticOrFreeFunction, stdFunction, messages...)`|First asserts `IS_TRUE(stdFunction)`, which asserts that stdFunction points to a function, then asserts `ARE_EQUAL(expectedStaticOrFreeFunction, *stdFunction.target<decltype(expectedStaticOrFreeFunction)*>())`. This is a key assertion to call prior to overwriting a `std::function` with a [ZenMock](https://github.com/NeilJustice/ZenMock) mock object.|
 |`STD_FUNCTION_TARGETS_OVERLOAD(expectedOverloadTypeInTheFormOfAUsing, expectedStaticOrFreeFunction, stdFunction, messages...)`|Same as above but with `static_cast<expectedOverloadTypeInTheFormOfAUsing>(expectedStaticOrFreeFunction)`.|
 
-### Macros For Defining ZenUnit Test Classes And Tests
+### ZenUnit Test-Defining Macros
 
 |Test Classes|Description|
 |------------|-----------|
@@ -169,9 +169,9 @@ Testing Utility Options:
 |`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Prevents a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called.|
 |`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Prevents a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called. For use after `SKIP_TEMPLATE_TESTS`.|
 
-### ZenUnit Random Value Generating Functions For Maximizing Mutation Coverage Which Will Be The Hottest Software Quality Metric Of The 2020s
+### Maximize Mutation Coverage By Testing With Random Values
 
-ZenUnit provides the following random value generating functions for writing unit tests that are robust to the swap-variable-with-constant code mutation, which is one of the most straightforward code mutations to induce manually today during code reviews or automatically at CI/CD time in the 2020s with LLVM-powered mutation testing framework [Mull](https://github.com/mull-project/mull).
+ZenUnit provides the following random value generating functions for writing unit tests that are robust to the swap-variable-with-constant code mutation, which is one of the most straightforward code mutations to induce manually today during code reviews or automatically at CI/CD time in the 2020s using LLVM-powered mutation testing framework [Mull](https://github.com/mull-project/mull).
 
 |Random Value Generating Function|Description|
 |--------------------------------|-----------|
