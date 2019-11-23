@@ -23,8 +23,8 @@
       * [Function Assertions](#function-assertions)
    * [ZenUnit Test-Defining Macros](#zenunit-test-defining-macros)
    * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
-   * [Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Linux](#steps-to-compile-and-run-zenunit-and-zenmock-unit-tests-then-install-zenunit.h-and-zenmock.h-on-linux)
-   * [Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Windows](#steps-to-compile-and-run-zenunit-and-zenmock-unit-tests-then-install-zenunit.h-and-zenmock.h-on-windows)
+   * [Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Linux](#steps-to-compile-and-run-zenunit-and-zenmock-unit-tests-then-install-zenunith-and-zenmockh-on-linux)
+   * [Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Windows](#steps-to-compile-and-run-zenunit-and-zenmock-unit-tests-then-install-zenunith-and-zenmockh-on-windows)
 
 ### ZenUnit Command Line Usage
 
