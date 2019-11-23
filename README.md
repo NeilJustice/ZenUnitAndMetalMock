@@ -94,7 +94,7 @@ Testing Utility Options:
 #### Floating Point Assertions
 |||
 |-|-|
-|`ARE_WITHIN(expectedFloatingPoint, actualFloatingPoint, expectedAbsoluteMaxDifference, messages...)`|Asserts that `std::abs(expectedFloatingPoint - actualFloatingPoint) <= expectedAbsoluteMaxDifference`.|
+|`ARE_WITHIN(expectedFloatingPointValue, actualFloatingPointValue, expectedAbsoluteMaxDifference, messages...)`|Asserts that `std::abs(expectedFloatingPointValue - actualFloatingPointValue) <= expectedAbsoluteMaxDifference`.|
 
 #### Data Structure Assertions
 |||
