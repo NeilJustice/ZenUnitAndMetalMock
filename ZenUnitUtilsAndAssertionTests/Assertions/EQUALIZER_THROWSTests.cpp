@@ -18,8 +18,9 @@ namespace Namespace
 namespace ZenUnit
 {
    template<>
-   struct Equalizer<Namespace::TestStruct>
+   class Equalizer<Namespace::TestStruct>
    {
+   public:
       static void AssertEqual(const Namespace::TestStruct& expected, const Namespace::TestStruct& actual)
       {
          ARE_EQUAL(expected.fieldA, actual.fieldA);
@@ -42,8 +43,9 @@ const int TestStructB::ThrowWithFieldNameInWhatText = 2;
 namespace ZenUnit
 {
    template<>
-   struct Equalizer<TestStructB>
+   class Equalizer<TestStructB>
    {
+   public:
       static void AssertEqual(const TestStructB& expected, const TestStructB&)
       {
          if (expected.field == TestStructB::ThrowWithoutFieldNameInWhatText)

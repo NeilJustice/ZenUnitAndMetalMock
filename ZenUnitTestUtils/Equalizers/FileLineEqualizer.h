@@ -3,8 +3,9 @@
 namespace ZenUnit
 {
    template<>
-   struct Equalizer<FileLine>
+   class Equalizer<FileLine>
    {
+   public:
        static void AssertEqual(const FileLine& expectedFileLine, const FileLine& actualFileLine);
    };
 }

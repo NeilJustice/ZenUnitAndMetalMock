@@ -3,8 +3,9 @@
 namespace ZenUnit
 {
    template<>
-   struct Equalizer<AnomalyOrException>
+   class Equalizer<AnomalyOrException>
    {
+   public:
       static void AssertEqual(const AnomalyOrException& expectedAnomalyOrException, const AnomalyOrException& actualAnomalyOrException);
    };
 }

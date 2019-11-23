@@ -3,8 +3,9 @@
 namespace ZenUnit
 {
    template<>
-   struct Equalizer<tm>
+   class Equalizer<tm>
    {
+   public:
       static void AssertEqual(const tm& expectedTm, const tm& actualTm)
       {
          ARE_EQUAL(expectedTm.tm_sec, actualTm.tm_sec);

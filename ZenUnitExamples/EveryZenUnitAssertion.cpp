@@ -9,8 +9,9 @@ struct Struct
 namespace ZenUnit
 {
    template<>
-   struct Equalizer<Struct>
+   class Equalizer<Struct>
    {
+   public:
       static void AssertEqual(const Struct& expectedStruct, const Struct& actualStruct)
       {
          ARE_EQUAL(expectedStruct.firstField, actualStruct.firstField);

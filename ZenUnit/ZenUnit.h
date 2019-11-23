@@ -2029,8 +2029,9 @@ namespace ZenUnit
    };
 
    template<typename ExpectedAndActualType>
-   struct Equalizer
+   class Equalizer
    {
+   public:
       static void AssertEqual(const ExpectedAndActualType& expected, const ExpectedAndActualType& actual)
       {
          if (!(expected == actual))
@@ -2041,8 +2042,9 @@ namespace ZenUnit
    };
 
    template<typename ExpectedType, typename ActualType>
-   struct TwoTypeEqualizer
+   class TwoTypeEqualizer
    {
+   public:
       static void AssertEqual(const ExpectedType& expected, const ActualType& actual)
       {
          if (!(expected == actual))
@@ -2053,8 +2055,9 @@ namespace ZenUnit
    };
 
    template<>
-   struct Equalizer<const char*>
+   class Equalizer<const char*>
    {
+   public:
       static void AssertEqual(const char* expected, const char* actual)
       {
          if (expected == nullptr && actual == nullptr)
@@ -2078,8 +2081,9 @@ namespace ZenUnit
    };
 
    template<>
-   struct Equalizer<char*>
+   class Equalizer<char*>
    {
+   public:
       static void AssertEqual(char* expected, char* actual)
       {
          Equalizer<const char*>::AssertEqual(expected, actual);
@@ -2087,8 +2091,9 @@ namespace ZenUnit
    };
 
    template<>
-   struct Equalizer<double>
+   class Equalizer<double>
    {
+   public:
       static void AssertEqual(double expected, double actual)
       {
          // Tentative exactly-equal implementation
@@ -2100,8 +2105,9 @@ namespace ZenUnit
    };
 
    template<>
-   struct Equalizer<float>
+   class Equalizer<float>
    {
+   public:
       static void AssertEqual(float expected, float actual)
       {
          // Tentative exactly-equal implementation
@@ -2113,8 +2119,9 @@ namespace ZenUnit
    };
 
    template<>
-   struct TwoTypeEqualizer<int, unsigned>
+   class TwoTypeEqualizer<int, unsigned>
    {
+   public:
       static void AssertEqual(int expected, unsigned actual)
       {
          if (expected < 0)
@@ -2127,8 +2134,9 @@ namespace ZenUnit
 
 #if defined __linux__ || defined __APPLE__ || defined _WIN64
    template<>
-   struct TwoTypeEqualizer<int, size_t>
+   class TwoTypeEqualizer<int, size_t>
    {
+   public:
       static void AssertEqual(int expected, size_t actual)
       {
          if (expected < 0)
@@ -2141,8 +2149,9 @@ namespace ZenUnit
 #endif
 
    template<>
-   struct TwoTypeEqualizer<const char*, char*>
+   class TwoTypeEqualizer<const char*, char*>
    {
+   public:
       static void AssertEqual(const char* expected, char* actual)
       {
          Equalizer<const char*>::AssertEqual(expected, actual);
@@ -2150,8 +2159,9 @@ namespace ZenUnit
    };
 
    template<>
-   struct TwoTypeEqualizer<char*, const char*>
+   class TwoTypeEqualizer<char*, const char*>
    {
+   public:
       static void AssertEqual(char* expected, const char* actual)
       {
          Equalizer<const char*>::AssertEqual(expected, actual);
@@ -2159,8 +2169,9 @@ namespace ZenUnit
    };
 
    template<>
-   struct TwoTypeEqualizer<const char*, std::string>
+   class TwoTypeEqualizer<const char*, std::string>
    {
+   public:
       static void AssertEqual(const char* expected, const std::string& actual)
       {
          Equalizer<const char*>::AssertEqual(expected, actual.c_str());
@@ -2168,8 +2179,9 @@ namespace ZenUnit
    };
 
    template<>
-   struct TwoTypeEqualizer<std::string, const char*>
+   class TwoTypeEqualizer<std::string, const char*>
    {
+   public:
       static void AssertEqual(const std::string& expected, const char* actual)
       {
          Equalizer<const char*>::AssertEqual(expected.c_str(), actual);
@@ -2177,8 +2189,9 @@ namespace ZenUnit
    };
 
    template<>
-   struct TwoTypeEqualizer<char*, std::string>
+   class TwoTypeEqualizer<char*, std::string>
    {
+   public:
       static void AssertEqual(char* expected, const std::string& actual)
       {
          Equalizer<const char*>::AssertEqual(expected, actual.c_str());
@@ -2186,8 +2199,9 @@ namespace ZenUnit
    };
 
    template<>
-   struct TwoTypeEqualizer<std::string, char*>
+   class TwoTypeEqualizer<std::string, char*>
    {
+   public:
       static void AssertEqual(const std::string& expected, char* actual)
       {
          Equalizer<const char*>::AssertEqual(expected.c_str(), actual);
@@ -3863,7 +3877,7 @@ namespace ZenUnit
    class TestClassResult
    {
       friend class TestClassResultTests;
-      friend struct Equalizer<TestClassResult>;
+      friend class Equalizer<TestClassResult>;
    private:
       std::vector<TestResult> _testResults;
 		std::function<std::string(long long)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
@@ -4417,7 +4431,7 @@ namespace ZenUnit
    class TestRunResult
    {
       friend class TestRunResultTests;
-      friend struct Equalizer<TestRunResult>;
+      friend class Equalizer<TestRunResult>;
       using MemberForEacherTestClassResultsType = MemberForEacher<std::vector<TestClassResult>,
          TestRunResult, void(TestRunResult::*)(const TestClassResult&) const>;
       using MemberForEacherSkippedTestsType = MemberForEacher<std::vector<std::string>,
@@ -6355,8 +6369,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
       typename ValueType,
       typename PredicateType,
       typename AllocatorType>
-   struct Equalizer<std::map<KeyType, ValueType, PredicateType, AllocatorType>>
+   class Equalizer<std::map<KeyType, ValueType, PredicateType, AllocatorType>>
    {
+   public:
       static void AssertEqual(
          const std::map<KeyType, ValueType, PredicateType, AllocatorType>& expectedStdMap,
          const std::map<KeyType, ValueType, PredicateType, AllocatorType>& actualStdMap)
@@ -6371,8 +6386,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
       typename HasherType,
       typename KeyEqualityComparator,
       typename AllocatorType>
-   struct Equalizer<std::unordered_map<KeyType, ValueType, HasherType, KeyEqualityComparator, AllocatorType>>
+   class Equalizer<std::unordered_map<KeyType, ValueType, HasherType, KeyEqualityComparator, AllocatorType>>
    {
+   public:
       static void AssertEqual(
          const std::unordered_map<KeyType, ValueType, HasherType, KeyEqualityComparator, AllocatorType>& expectedStdUnorderedMap,
          const std::unordered_map<KeyType, ValueType, HasherType, KeyEqualityComparator, AllocatorType>& actualStdUnorderedMap)
@@ -6382,8 +6398,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    };
 
    template<typename T>
-   struct Equalizer<std::vector<T>>
+   class Equalizer<std::vector<T>>
    {
+   public:
       static void AssertEqual(const std::vector<T>& expectedVector, const std::vector<T>& actualVector)
       {
          VECTORS_EQUAL(expectedVector, actualVector);

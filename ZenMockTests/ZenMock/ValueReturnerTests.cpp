@@ -10,11 +10,10 @@ struct NonDefaultConstructible
 namespace ZenUnit
 {
    template<>
-   struct Equalizer<NonDefaultConstructible>
+   class Equalizer<NonDefaultConstructible>
    {
-      static void AssertEqual(
-         const NonDefaultConstructible& expected,
-         const NonDefaultConstructible& actual)
+   public:
+      static void AssertEqual(const NonDefaultConstructible& expected, const NonDefaultConstructible& actual)
       {
          ARE_EQUAL(expected.x, actual.x);
       }

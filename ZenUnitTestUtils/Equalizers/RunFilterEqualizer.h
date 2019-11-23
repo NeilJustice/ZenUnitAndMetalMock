@@ -3,8 +3,9 @@
 namespace ZenUnit
 {
    template<>
-   struct Equalizer<RunFilter>
+   class Equalizer<RunFilter>
    {
+   public:
       static void AssertEqual(const RunFilter& expectedRunFilter, const RunFilter& actualRunFilter);
    };
 }

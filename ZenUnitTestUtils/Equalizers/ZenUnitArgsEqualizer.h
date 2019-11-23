@@ -3,8 +3,9 @@
 namespace ZenUnit
 {
    template<>
-   struct Equalizer<ZenUnitArgs>
+   class Equalizer<ZenUnitArgs>
    {
+   public:
       static void AssertEqual(const ZenUnitArgs& expectedArguments, const ZenUnitArgs& actualArgs);
    };
 }

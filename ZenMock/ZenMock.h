@@ -4269,8 +4269,9 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
 namespace ZenUnit
 {
    template<typename ArgType>
-   struct Equalizer<ZenMock::OneArgumentFunctionCall<ArgType>>
+   class Equalizer<ZenMock::OneArgumentFunctionCall<ArgType>>
    {
+   public:
       static void AssertEqual(
          const ZenMock::OneArgumentFunctionCall<ArgType>& expectedOneArgumentFunctionCall,
          const ZenMock::OneArgumentFunctionCall<ArgType>& actualOneArgumentFunctionCall)
@@ -4280,8 +4281,9 @@ namespace ZenUnit
    };
 
    template<typename ArgType>
-   struct Equalizer<ZenMock::OneArgumentFunctionCallReference<ArgType>>
+   class Equalizer<ZenMock::OneArgumentFunctionCallReference<ArgType>>
    {
+   public:
       static void AssertEqual(
          const ZenMock::OneArgumentFunctionCallReference<ArgType>& expectedOneArgumentFunctionCall,
          const ZenMock::OneArgumentFunctionCallReference<ArgType>& actualOneArgumentFunctionCall)
@@ -4291,8 +4293,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type>
-   struct Equalizer<ZenMock::TwoArgumentFunctionCall<Arg1Type, Arg2Type>>
+   class Equalizer<ZenMock::TwoArgumentFunctionCall<Arg1Type, Arg2Type>>
    {
+   public:
       static void AssertEqual(
          const ZenMock::TwoArgumentFunctionCall<Arg1Type, Arg2Type>& expectedTwoArgumentFunctionCall,
          const ZenMock::TwoArgumentFunctionCall<Arg1Type, Arg2Type>& actualTwoArgumentFunctionCall)
@@ -4303,8 +4306,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type>
-   struct Equalizer<ZenMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>>
+   class Equalizer<ZenMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>>
    {
+   public:
       static void AssertEqual(
          const ZenMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>& expectedTwoArgumentFunctionCall,
          const ZenMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>& actualTwoArgumentFunctionCall)
@@ -4315,8 +4319,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
-   struct Equalizer<ZenMock::ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>>
+   class Equalizer<ZenMock::ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>>
    {
+   public:
       static void AssertEqual(
          const ZenMock::ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>& expectedThreeArgumentFunctionCall,
          const ZenMock::ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>& actualThreeArgumentFunctionCall)
@@ -4328,8 +4333,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
-   struct Equalizer<ZenMock::ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>>
+   class Equalizer<ZenMock::ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>>
    {
+   public:
       static void AssertEqual(
          const ZenMock::ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>& expectedThreeArgumentFunctionCall,
          const ZenMock::ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>& actualThreeArgumentFunctionCall)
@@ -4341,8 +4347,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
-   struct Equalizer<ZenMock::FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
+   class Equalizer<ZenMock::FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
    {
+   public:
       static void AssertEqual(
          const ZenMock::FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& expectedFourArgumentFunctionCall,
          const ZenMock::FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& actualFourArgumentFunctionCall)
@@ -4355,8 +4362,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
-   struct Equalizer<ZenMock::FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
+   class Equalizer<ZenMock::FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
    {
+   public:
       static void AssertEqual(
          const ZenMock::FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& expectedFourArgumentFunctionCall,
          const ZenMock::FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& actualFourArgumentFunctionCall)
@@ -4369,8 +4377,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
-   struct Equalizer<ZenMock::FiveArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
+   class Equalizer<ZenMock::FiveArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
    {
+   public:
       static void AssertEqual(
          const ZenMock::FiveArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& expectedFiveArgumentFunctionCall,
          const ZenMock::FiveArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& actualFiveArgumentFunctionCall)
@@ -4384,8 +4393,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
-   struct Equalizer<ZenMock::FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
+   class Equalizer<ZenMock::FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
    {
+   public:
       static void AssertEqual(
          const ZenMock::FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& expectedFiveArgumentFunctionCall,
          const ZenMock::FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& actualFiveArgumentFunctionCall)
@@ -4399,8 +4409,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
-   struct Equalizer<ZenMock::SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
+   class Equalizer<ZenMock::SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
    {
+   public:
       static void AssertEqual(
          const ZenMock::SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& expectedSixArgumentFunctionCall,
          const ZenMock::SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& actualSixArgumentFunctionCall)
@@ -4415,8 +4426,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
-   struct Equalizer<ZenMock::SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
+   class Equalizer<ZenMock::SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
    {
+   public:
       static void AssertEqual(
          const ZenMock::SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& expectedSixArgumentFunctionCall,
          const ZenMock::SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& actualSixArgumentFunctionCall)
@@ -4431,8 +4443,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type>
-   struct Equalizer<ZenMock::SevenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>
+   class Equalizer<ZenMock::SevenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>
    {
+   public:
       static void AssertEqual(
          const ZenMock::SevenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& expectedSevenArgumentFunctionCall,
          const ZenMock::SevenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& actualSevenArgumentFunctionCall)
@@ -4448,8 +4461,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type>
-   struct Equalizer<ZenMock::SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>
+   class Equalizer<ZenMock::SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>
    {
+   public:
       static void AssertEqual(
          const ZenMock::SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& expectedSevenArgumentFunctionCall,
          const ZenMock::SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& actualSevenArgumentFunctionCall)
@@ -4465,8 +4479,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type>
-   struct Equalizer<ZenMock::EightArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
+   class Equalizer<ZenMock::EightArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
    {
+   public:
       static void AssertEqual(
          const ZenMock::EightArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& expectedEightArgumentFunctionCall,
          const ZenMock::EightArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& actualEightArgumentFunctionCall)
@@ -4483,8 +4498,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type>
-   struct Equalizer<ZenMock::EightArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
+   class Equalizer<ZenMock::EightArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
    {
+   public:
       static void AssertEqual(
          const ZenMock::EightArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& expectedEightArgumentFunctionCall,
          const ZenMock::EightArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& actualEightArgumentFunctionCall)
@@ -4501,8 +4517,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type>
-   struct Equalizer<ZenMock::NineArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
+   class Equalizer<ZenMock::NineArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
    {
+   public:
       static void AssertEqual(
          const ZenMock::NineArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& expectedNineArgumentFunctionCall,
          const ZenMock::NineArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& actualNineArgumentFunctionCall)
@@ -4520,8 +4537,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type>
-   struct Equalizer<ZenMock::NineArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
+   class Equalizer<ZenMock::NineArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
    {
+   public:
       static void AssertEqual(
          const ZenMock::NineArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& expectedNineArgumentFunctionCall,
          const ZenMock::NineArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& actualNineArgumentFunctionCall)
@@ -4539,8 +4557,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type, typename Arg10Type>
-   struct Equalizer<ZenMock::TenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
+   class Equalizer<ZenMock::TenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
    {
+   public:
       static void AssertEqual(
          const ZenMock::TenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& expectedTenArgumentFunctionCall,
          const ZenMock::TenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& actualTenArgumentFunctionCall)
@@ -4559,8 +4578,9 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type, typename Arg10Type>
-   struct Equalizer<ZenMock::TenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
+   class Equalizer<ZenMock::TenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
    {
+   public:
       static void AssertEqual(
          const ZenMock::TenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& expectedTenArgumentFunctionCall,
          const ZenMock::TenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& actualTenArgumentFunctionCall)

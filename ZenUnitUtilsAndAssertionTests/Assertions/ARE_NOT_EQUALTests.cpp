@@ -7,8 +7,9 @@ struct EqualizerBothOneAndTwoTypeTestStruct_AreNotEqualTests {};
 namespace ZenUnit
 {
    template<>
-   struct Equalizer<EqualizerOneTypeTestStruct_AreNotEqualTests>
+   class Equalizer<EqualizerOneTypeTestStruct_AreNotEqualTests>
    {
+   public:
       static void AssertEqual(const EqualizerOneTypeTestStruct_AreNotEqualTests&, const EqualizerOneTypeTestStruct_AreNotEqualTests&)
       {
          ARE_NOT_EQUAL(10, 10);
@@ -16,8 +17,9 @@ namespace ZenUnit
    };
 
    template<>
-   struct TwoTypeEqualizer<EqualizerTwoTypeTestStruct_AreNotEqualTests, int>
+   class TwoTypeEqualizer<EqualizerTwoTypeTestStruct_AreNotEqualTests, int>
    {
+   public:
       static void AssertEqual(const EqualizerTwoTypeTestStruct_AreNotEqualTests&, const int&)
       {
          ARE_NOT_EQUAL(20, 20);
@@ -25,8 +27,9 @@ namespace ZenUnit
    };
 
    template<>
-   struct Equalizer<EqualizerBothOneAndTwoTypeTestStruct_AreNotEqualTests>
+   class Equalizer<EqualizerBothOneAndTwoTypeTestStruct_AreNotEqualTests>
    {
+   public:
       static void AssertEqual(const EqualizerBothOneAndTwoTypeTestStruct_AreNotEqualTests&, const EqualizerBothOneAndTwoTypeTestStruct_AreNotEqualTests&)
       {
          ARE_NOT_EQUAL(30, 30);
@@ -34,8 +37,9 @@ namespace ZenUnit
    };
 
    template<>
-   struct TwoTypeEqualizer<EqualizerBothOneAndTwoTypeTestStruct_AreNotEqualTests, EqualizerBothOneAndTwoTypeTestStruct_AreNotEqualTests>
+   class TwoTypeEqualizer<EqualizerBothOneAndTwoTypeTestStruct_AreNotEqualTests, EqualizerBothOneAndTwoTypeTestStruct_AreNotEqualTests>
    {
+   public:
       static void AssertEqual(const EqualizerBothOneAndTwoTypeTestStruct_AreNotEqualTests&, const EqualizerBothOneAndTwoTypeTestStruct_AreNotEqualTests&)
       {
          throw invalid_argument("unexpected call");
