@@ -3618,8 +3618,9 @@ namespace ZenUnit
       explicit TestPhaseResult(TestPhase testPhase) noexcept : testPhase(testPhase), testOutcome(TestOutcome::Success), microseconds(0) {}
    };
 
-   struct TestResult
+   class TestResult
    {
+   public:
       FullTestName fullTestName;
       TestPhaseResult constructorTestPhaseResult;
       TestPhaseResult startupTestPhaseResult;
