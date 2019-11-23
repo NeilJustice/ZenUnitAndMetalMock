@@ -1321,6 +1321,11 @@ namespace ZenUnit
          return quotedValue;
       }
 
+      static std::string ToString(char* value)
+      {
+         return ToString(static_cast<const char*>(value));
+      }
+
       template<typename T, typename Deleter>
       static std::string ToString(const std::unique_ptr<T, Deleter>& uniquePtr)
       {
@@ -2961,24 +2966,24 @@ namespace ZenUnit
       }
    }
 
-   inline size_t ULongLongToChars(unsigned long long value, char* outChars) noexcept
+   inline void WriteUnsignedLongLongToCharacters(unsigned long long value, char* outChars) noexcept
    {
-      char* ptrA = outChars;
-      unsigned long long helperValue = 0;
-      size_t numberOfCharsAppended = 0;
+      char* writingPointer = outChars;
+      unsigned long long runningValue = 0;
+      size_t numberOfCharactersWritten = 0;
       do
       {
-         helperValue = value;
+         runningValue = value;
          value /= 10;
-         unsigned long long index = 35 + (helperValue - value * 10);
-         *ptrA++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"[index];
-         ++numberOfCharsAppended;
+         unsigned long long index = 35 + (runningValue - value * 10);
+         *writingPointer++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"[index];
+         ++numberOfCharactersWritten;
       } while (value != 0);
-      char valueBeforeOverwrittenWithZero = *ptrA;
-      char* const pointerToZero = ptrA;
-      *ptrA-- = '\0';
-      *pointerToZero = valueBeforeOverwrittenWithZero;
-      return numberOfCharsAppended;
+      char lastCharacter = *writingPointer;
+      char* const pointerToTerminatingZero = writingPointer;
+      *writingPointer-- = '\0';
+      *pointerToTerminatingZero = lastCharacter;
+      std::reverse(outChars, outChars + numberOfCharactersWritten);
    }
 
    template<typename ContainerType, typename... MessageTypes>
@@ -3048,7 +3053,7 @@ namespace ZenUnit
          {
             const auto& ithExpectedElement = expectedArray[i];
             const auto& ithActualElement = actualArray[i];
-            ULongLongToChars(i, indexMessage + IEqualsSignLength);
+            WriteUnsignedLongLongToCharacters(i, indexMessage + IEqualsSignLength);
             ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage);
          }
       }
@@ -3089,7 +3094,7 @@ namespace ZenUnit
          {
             const T& ithExpectedElement = expectedStdArray[i];
             const T& ithActualElement = actualStdArray[i];
-            ULongLongToChars(i, indexMessage + IEqualsSignLength);
+            WriteUnsignedLongLongToCharacters(i, indexMessage + IEqualsSignLength);
             ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage);
          }
       }
@@ -3503,7 +3508,7 @@ namespace ZenUnit
       {
          const T& ithExpectedElement = expectedVector[i];
          const T& ithActualElement = actualVector[i];
-         ULongLongToChars(i, indexMessage + IEqualsSignLength);
+         WriteUnsignedLongLongToCharacters(i, indexMessage + IEqualsSignLength);
          try
          {
             ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage);

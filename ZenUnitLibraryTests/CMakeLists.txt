@@ -30,6 +30,7 @@ folder_source_group_subfolder(ValueTypes Tests)
 folder_source_group_subfolder(StaticComponents ToStringer)
 folder_source_group_subsubfolder(StaticComponents ToStringer ZenUnitPrinter)
 folder_source_group_subsubfolder(StaticComponents ToStringer SFINAE)
+folder_source_group(Utilities)
 folder_source_group_subfolder(ZenUnit Equalizers)
 folder_source_group_subfolder(ZenUnit Random)
 
