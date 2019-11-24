@@ -10,7 +10,6 @@ namespace ZenUnit
    AFACT(DefaultConstructor_DoesNotThrow)
    AFACT(Startup_DoesNotThrow)
    AFACT(Cleanup_DoesNotThrow)
-   AFACT(TestFromTestNXNPmfToken_Found_ReturnsTest)
    AFACT(TestFromTestNXNPmfToken_NotFound_Exits0IfExitZeroIsTrueOtherwiseExits1_ReturnsNullptr)
    EVIDENCE
 
@@ -29,11 +28,6 @@ namespace ZenUnit
    TEST(Cleanup_DoesNotThrow)
    {
       _testClass.Cleanup();
-   }
-
-   TEST(TestFromTestNXNPmfToken_Found_ReturnsTest)
-   {
-
    }
 
    TEST(TestFromTestNXNPmfToken_NotFound_Exits0IfExitZeroIsTrueOtherwiseExits1_ReturnsNullptr)
