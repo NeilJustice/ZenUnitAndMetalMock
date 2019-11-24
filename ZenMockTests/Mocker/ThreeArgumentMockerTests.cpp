@@ -8,69 +8,98 @@ namespace ZenMock
    AFACT(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue)
    AFACT(ZenMockIt_ExpectedFalse_Throws)
    AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
+   AFACT(CallInstead_CallsSuppliedFunctionWhenZenMockedFunctionIsCalled)
    EVIDENCE
 
-   using MockerType = ThreeArgumentMocker<int, int, int, ExceptionThrowerMock>;
-   unique_ptr<MockerType> _mocker;
-   string _signature;
+   using ThreeArgumentMockerType = ThreeArgumentMocker<int, int, int, ExceptionThrowerMock>;
+   unique_ptr<ThreeArgumentMockerType> _threeArgumentMocker;
+   string _zenMockedFunctionSignature;
 
    STARTUP
    {
-      _signature = ZenUnit::Random<string>();
-      _mocker = make_unique<MockerType>(_signature);
+      _zenMockedFunctionSignature = ZenUnit::Random<string>();
+      _threeArgumentMocker = make_unique<ThreeArgumentMockerType>(_zenMockedFunctionSignature);
    }
 
    void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
    {
-      _mocker->_wasAsserted = true;
+      _threeArgumentMocker->_wasAsserted = true;
    }
 
    TEST(Constructor_SetsFields)
    {
-      const MockerType mocker(_signature);
+      const ThreeArgumentMockerType threeArgumentMocker(_zenMockedFunctionSignature);
       //
-      ARE_EQUAL(_signature, mocker.ZenMockedFunctionSignature);
-      IS_FALSE(mocker._wasExpected);
-      IS_FALSE(mocker._wasAsserted);
-      IS_EMPTY(mocker.zenMockedFunctionCallHistory);
+      ARE_EQUAL(_zenMockedFunctionSignature, threeArgumentMocker.ZenMockedFunctionSignature);
+      IS_FALSE(threeArgumentMocker._wasExpected);
+      IS_FALSE(threeArgumentMocker._wasAsserted);
+      IS_EMPTY(threeArgumentMocker.zenMockedFunctionCallHistory);
    }
 
    TEST(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue)
    {
-      IS_FALSE(_mocker->_wasExpected);
-      _mocker->_exceptionThrower.ExpectCallToExpectAndThrowException();
+      IS_FALSE(_threeArgumentMocker->_wasExpected);
+      _threeArgumentMocker->_exceptionThrower.ExpectCallToExpectAndThrowException();
       //
-      _mocker->ThrowException<TestingException>("argument", 100);
+      _threeArgumentMocker->ThrowException<TestingException>("argument", 100);
       //
-      _mocker->_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith("ZenMock::TestingException", 2, "argument100");
-      IS_TRUE(_mocker->_wasExpected);
+      _threeArgumentMocker->_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith("ZenMock::TestingException", 2, "argument100");
+      IS_TRUE(_threeArgumentMocker->_wasExpected);
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
    TEST(ZenMockIt_ExpectedFalse_Throws)
    {
-      IS_FALSE(_mocker->_wasExpected);
-      THROWS_EXCEPTION(_mocker->ZenMockIt(1, 2, 3), UnexpectedCallException,
-         UnexpectedCallException::MakeWhat(_signature, 1, 2, 3));
+      IS_FALSE(_threeArgumentMocker->_wasExpected);
+      THROWS_EXCEPTION(_threeArgumentMocker->ZenMockIt(1, 2, 3), UnexpectedCallException,
+         UnexpectedCallException::MakeWhat(_zenMockedFunctionSignature, 1, 2, 3));
    }
 
    TEST(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
    {
-      _mocker->_wasExpected = true;
-      _mocker->_exceptionThrower.ExpectCallToZenMockThrowExceptionIfExceptionSet();
-      IS_EMPTY(_mocker->zenMockedFunctionCallHistory);
+      _threeArgumentMocker->_wasExpected = true;
+      _threeArgumentMocker->_exceptionThrower.ExpectCallToZenMockThrowExceptionIfExceptionSet();
+      IS_EMPTY(_threeArgumentMocker->zenMockedFunctionCallHistory);
       //
-      _mocker->ZenMockIt(1, 2, 3);
+      _threeArgumentMocker->ZenMockIt(1, 2, 3);
       //
       using CallType = ThreeArgumentFunctionCall<int, int, int>;
       const vector<CallType> expectedCalls
       {
          CallType(1, 2, 3)
       };
-      VECTORS_EQUAL(expectedCalls, _mocker->zenMockedFunctionCallHistory);
-      ZENMOCK(_mocker->_exceptionThrower.AssertZenMockThrowExceptionIfExceptionSetCalledOnce());
-      DOES_NOT_THROW(_mocker->CalledOnceWith(1, 2, 3));
+      VECTORS_EQUAL(expectedCalls, _threeArgumentMocker->zenMockedFunctionCallHistory);
+      ZENMOCK(_threeArgumentMocker->_exceptionThrower.AssertZenMockThrowExceptionIfExceptionSetCalledOnce());
+      DOES_NOT_THROW(_threeArgumentMocker->CalledOnceWith(1, 2, 3));
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
+   }
+
+   TEST(CallInstead_CallsSuppliedFunctionWhenZenMockedFunctionIsCalled)
+   {
+      VoidThreeArgumentMocker<int, int, int> voidThreeArgumentMocker(_zenMockedFunctionSignature);
+
+      bool voidThreeArgFunctionWasCalled = false;
+      int receivedArg1 = 0;
+      int receivedArg2 = 0;
+      int receivedArg3 = 0;
+      const auto voidThreeArgFunction = [&](int arg1, int arg2, int arg3)
+      {
+         receivedArg1 = arg1;
+         receivedArg2 = arg2;
+         receivedArg3 = arg3;
+         voidThreeArgFunctionWasCalled = true;
+      };
+      //
+      voidThreeArgumentMocker.CallInstead(voidThreeArgFunction);
+      const int arg1 = ZenUnit::Random<int>();
+      const int arg2 = ZenUnit::Random<int>();
+      const int arg3 = ZenUnit::Random<int>();
+      voidThreeArgumentMocker.ZenMockIt(arg1, arg2, arg3);
+      //
+      ARE_EQUAL(arg1, receivedArg1);
+      ARE_EQUAL(arg2, receivedArg2);
+      ARE_EQUAL(arg3, receivedArg3);
+      IS_TRUE(voidThreeArgFunctionWasCalled);
    }
 
    RUN_TESTS(ThreeArgumentMockerTests)
