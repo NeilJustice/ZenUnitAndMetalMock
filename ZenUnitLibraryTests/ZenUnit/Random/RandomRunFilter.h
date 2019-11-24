@@ -2,13 +2,18 @@
 
 namespace ZenUnit
 {
+   inline RunFilter TestableRandomRunFilter(const RandomGenerator& randomGenerator)
+   {
+      RunFilter randomRunFilter;
+      randomRunFilter.testClassNamePattern = randomGenerator.String();
+      randomRunFilter.testNamePattern = randomGenerator.String();
+      randomRunFilter.testCaseNumber = randomGenerator.UnsignedLongLong();
+      return randomRunFilter;
+   }
+
    template<>
    inline RunFilter Random<RunFilter>()
    {
-      RunFilter randomRunFilter;
-      randomRunFilter.testClassNamePattern = ZenUnit::Random<std::string>();
-      randomRunFilter.testNamePattern = ZenUnit::Random<std::string>();
-      randomRunFilter.testCaseNumber = ZenUnit::Random<size_t>();
-      return randomRunFilter;
+      return TestableRandomRunFilter(RandomGenerator());
    }
 }

@@ -1,4 +1,6 @@
 #include "pch.h"
+#include "ZenUnitTestUtils/TestUtil.h"
+#include "ZenUnitTestUtils/UserType.h"
 
 namespace ZenUnit
 {

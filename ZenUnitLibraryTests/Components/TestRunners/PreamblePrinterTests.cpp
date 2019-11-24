@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/ZenMock/TestClassRunnerRunnerMock.h"
+#include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/ZenMock/EnvironmentalistMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/ZenMock/WatchMock.h"
 

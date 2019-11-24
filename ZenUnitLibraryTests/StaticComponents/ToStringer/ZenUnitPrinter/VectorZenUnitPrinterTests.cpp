@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnitTestUtils/CustomPolicyClasses.h"
+#include "ZenUnitTestUtils/TestUtil.h"
 
 namespace ZenUnit
 {

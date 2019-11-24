@@ -6,10 +6,15 @@ namespace ZenUnit
    template<>
    TestPhaseResult Random<TestPhaseResult>()
    {
+      return TestableRandomTestPhaseResult(RandomGenerator());
+   }
+
+   TestPhaseResult TestableRandomTestPhaseResult(const RandomGenerator& randomGenerator)
+   {
       TestPhaseResult randomTestPhaseResult;
-      randomTestPhaseResult.testPhase = ZenUnit::RandomNon0Enum<TestPhase>(TestPhase::MaxValue);
-      randomTestPhaseResult.testOutcome = ZenUnit::RandomNon0Enum<TestOutcome>(TestOutcome::MaxValue);
-      randomTestPhaseResult.microseconds = ZenUnit::Random<unsigned>();
+      randomTestPhaseResult.testPhase = static_cast<TestPhase>(randomGenerator.Enum(static_cast<int>(TestPhase::MaxValue)));
+      randomTestPhaseResult.testOutcome = static_cast<TestOutcome>(randomGenerator.Enum(static_cast<int>(TestOutcome::MaxValue)));
+      randomTestPhaseResult.microseconds = randomGenerator.LongLong();
       randomTestPhaseResult.anomalyOrException = nullptr;
       return randomTestPhaseResult;
    }

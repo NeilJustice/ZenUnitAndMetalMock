@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Components/Args/ZenMock/RunFilterMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/ZenMock/TestClassRunnerMock.h"
+#include "ZenUnitLibraryTests/ZenUnit/Random/RandomRunFilter.h"
 #include "ZenUnitTestUtils/Equalizers/TestClassResultEqualizer.h"
 
 namespace ZenUnit

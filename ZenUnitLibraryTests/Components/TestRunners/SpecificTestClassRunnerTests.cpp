@@ -2,6 +2,7 @@
 #include "ZenUnitLibraryTests/Components/Args/ZenMock/RunFilterMock.h"
 #include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomRunFilter.h"
+#include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestClassResultMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/ZenMock/TestMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/ZenMock/NonVoidTwoArgMemberFunctionCallerMock.h"

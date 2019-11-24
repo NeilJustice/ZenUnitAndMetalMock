@@ -3,6 +3,7 @@
 #include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/Components/Misc/ZenMock/ExitCallerMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/ZenMock/ZenUnitTestRunnerMock.h"
+#include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
 
 namespace ZenUnit
 {

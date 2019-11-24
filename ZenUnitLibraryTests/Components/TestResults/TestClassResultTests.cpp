@@ -2,6 +2,7 @@
 #include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestResultMock.h"
 #include "ZenUnitTestUtils/Equalizers/TestClassResultEqualizer.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/Iteration/ZenMock/ThreeArgForEacherMock.h"
 
 namespace ZenUnit
 {

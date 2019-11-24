@@ -3,6 +3,7 @@
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestClassResultMock.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestFailureNumbererMock.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestResultMock.h"
+#include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/ZenMock/MemberForEacherMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/ZenMock/WatchMock.h"
 #include "ZenUnitTestUtils/Equalizers/TestClassResultEqualizer.h"

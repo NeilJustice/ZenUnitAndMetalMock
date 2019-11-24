@@ -4787,7 +4787,10 @@ namespace ZenMock
       ZENMOCK_NONVOID0_CONST(float, Float)
       ZENMOCK_NONVOID0_CONST(double, Double)
 
+      ZENMOCK_NONVOID0_CONST(const char*, ConstCharPointer)
+
       ZENMOCK_NONVOID0_CONST(std::string, String)
+
       ZENMOCK_NONVOID0_CONST(std::vector<std::string>, StringVector)
 
       ZENMOCK_NONVOID0_CONST(fs::path, Path)

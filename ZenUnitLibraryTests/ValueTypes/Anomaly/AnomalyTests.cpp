@@ -2,6 +2,8 @@
 #include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomFileLine.h"
 #include "ZenUnitTestUtils/Equalizers/AnomalyEqualizer.h"
+#include "ZenUnitTestUtils/TestUtil.h"
+#include "ZenUnitTestUtils/UserType.h"
 
 namespace ZenUnit
 {

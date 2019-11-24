@@ -6,10 +6,15 @@ namespace ZenUnit
    template<>
    FullTestName Random<FullTestName>()
    {
+      return TestableRandomFullTestName(RandomGenerator());
+   }
+
+   FullTestName TestableRandomFullTestName(const RandomGenerator& randomGenerator)
+   {
       FullTestName randomFullTestName;
-      randomFullTestName.testClassName = reinterpret_cast<const char*>(&randomFullTestName.testClassName);
-      randomFullTestName.testName = reinterpret_cast<const char*>(&randomFullTestName.testName);
-      randomFullTestName.arity = ZenUnit::RandomNon0<unsigned char>();
+      randomFullTestName.testClassName = randomGenerator.ConstCharPointer();
+      randomFullTestName.testName = randomGenerator.ConstCharPointer();
+      randomFullTestName.arity = randomGenerator.UnsignedChar();
       return randomFullTestName;
    }
 }

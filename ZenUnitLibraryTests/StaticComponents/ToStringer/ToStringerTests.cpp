@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnitUtilsAndAssertionTests/Assertions/REGEX_MATCHES.h"
+#include "ZenUnitTestUtils/UserType.h"
 #include "ZenUnitTestUtils/UserTypeInsOpAndZenUnitPrintable.h"
 #include "ZenUnitTestUtils/UserTypeNonPrintable.h"
 #include "ZenUnitTestUtils/UserTypeOnlyZenUnitPrintable.h"

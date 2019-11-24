@@ -6513,6 +6513,26 @@ Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
    }
 
    template<>
+   inline const char* Random<const char*>()
+   {
+      const int randomIntBetween1And10 = ZenUnit::RandomBetween<int>(1, 10);
+      switch (randomIntBetween1And10)
+      {
+      case 1: return "RandomConstCharPointer1";
+      case 2: return "RandomConstCharPointer2";
+      case 3: return "RandomConstCharPointer3";
+      case 4: return "RandomConstCharPointer4";
+      case 5: return "RandomConstCharPointer5";
+      case 6: return "RandomConstCharPointer6";
+      case 7: return "RandomConstCharPointer7";
+      case 8: return "RandomConstCharPointer8";
+      case 9: return "RandomConstCharPointer9";
+      case 10: return "RandomConstCharPointer10";
+      default: throw std::invalid_argument("unexpected non 1-10 int: " + std::to_string(randomIntBetween1And10));
+      }
+   }
+
+   template<>
    inline std::string Random<std::string>()
    {
       const std::string randomString = "RS" + std::to_string(RandomBetween<int>(0, 100000));
@@ -6679,8 +6699,14 @@ Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
       virtual unsigned long long UnsignedLongLong() const { return ZenUnit::Random<unsigned long long>(); }
       virtual float Float() const { return ZenUnit::Random<float>(); }
       virtual double Double() const { return ZenUnit::Random<double>(); }
+      virtual const char* ConstCharPointer() const { return ZenUnit::Random<const char*>(); }
       virtual std::string String() const { return ZenUnit::Random<std::string>(); }
+
+      template<typename T>
+      std::vector<T> Vector() const { return ZenUnit::RandomVector<T>(); }
+
       virtual std::vector<std::string> StringVector() const { return ZenUnit::RandomVector<std::string>(); }
+
       virtual fs::path Path() const { return ZenUnit::Random<fs::path>(); }
       virtual std::error_code ErrorCode() const { return ZenUnit::Random<std::error_code>(); }
       virtual ~RandomGenerator() = default;

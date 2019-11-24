@@ -6,8 +6,13 @@ namespace ZenUnit
    template<>
    FileLine Random<FileLine>()
    {
+      return TestableRandomFileLine(RandomGenerator());
+   }
+
+   FileLine TestableRandomFileLine(const RandomGenerator& randomGenerator)
+   {
       FileLine randomFileLine;
-      randomFileLine.lineNumber = ZenUnit::Random<unsigned>();
+      randomFileLine.lineNumber = randomGenerator.UnsignedInt();
       return randomFileLine;
    }
 }

@@ -30,6 +30,7 @@ source_group("" FILES ZenMockTestMain.cpp pch.h pch.cpp)
 file(GLOB_RECURSE Sources *.h *.cpp)
 
 add_executable(ZenMockTests ${Sources})
+target_link_libraries(ZenMockTests ZenUnitTestUtils)
 
 if(UNIX)
    target_link_libraries(ZenMockTests stdc++fs)

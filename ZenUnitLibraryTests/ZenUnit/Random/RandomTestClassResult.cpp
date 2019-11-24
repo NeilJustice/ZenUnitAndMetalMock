@@ -7,8 +7,13 @@ namespace ZenUnit
    template<>
    TestClassResult Random<TestClassResult>()
    {
+      return TestableRandomTestClassResult(RandomGenerator());
+   }
+
+   TestClassResult TestableRandomTestClassResult(const RandomGenerator& randomGenerator)
+   {
       TestClassResult randomTestClassResult;
-      const vector<TestResult> randomTestResults = ZenUnit::RandomVector<TestResult>();
+      const vector<TestResult> randomTestResults = randomGenerator.Vector<TestResult>();
       randomTestClassResult.AddTestResults(randomTestResults);
       return randomTestClassResult;
    }

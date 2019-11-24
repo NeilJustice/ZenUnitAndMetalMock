@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenMockTests/Testing/UserType.h"
+#include "ZenUnitTestUtils/UserType.h"
 
 namespace ZenUnit
 {
