@@ -264,3 +264,61 @@ namespace Namespace
    ZENMOCK_NONVOID9_NAMESPACED_FREE(int, Namespace, nonvoid_namespaced_9, int, int, int, int, int, int, int, int, int)
    ZENMOCK_NONVOID10_NAMESPACED_FREE(int, Namespace, nonvoid_namespaced_10, int, int, int, int, int, int, int, int, int, int)
 }
+
+
+TESTS(EveryMacroCompilesTest_CodeCoverage)
+AFACT(CodeCoverage)
+EVIDENCE
+
+TEST(CodeCoverage)
+{
+   void_global_0();
+   void_global_1(0);
+   void_global_2(0, 0);
+   void_global_3(0, 0, 0);
+   void_global_4(0, 0, 0, 0);
+   void_global_5(0, 0, 0, 0, 0);
+   void_global_6(0, 0, 0, 0, 0, 0);
+   void_global_7(0, 0, 0, 0, 0, 0, 0);
+   void_global_8(0, 0, 0, 0, 0, 0, 0, 0);
+   void_global_9(0, 0, 0, 0, 0, 0, 0, 0, 0);
+   void_global_10(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+   nonvoid_global_0();
+   nonvoid_global_1(0);
+   nonvoid_global_2(0, 0);
+   nonvoid_global_3(0, 0, 0);
+   nonvoid_global_4(0, 0, 0, 0);
+   nonvoid_global_5(0, 0, 0, 0, 0);
+   nonvoid_global_6(0, 0, 0, 0, 0, 0);
+   nonvoid_global_7(0, 0, 0, 0, 0, 0, 0);
+   nonvoid_global_8(0, 0, 0, 0, 0, 0, 0, 0);
+   nonvoid_global_9(0, 0, 0, 0, 0, 0, 0, 0, 0);
+   nonvoid_global_10(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+   Namespace::void_namespaced_0();
+   Namespace::void_namespaced_1(0);
+   Namespace::void_namespaced_2(0, 0);
+   Namespace::void_namespaced_3(0, 0, 0);
+   Namespace::void_namespaced_4(0, 0, 0, 0);
+   Namespace::void_namespaced_5(0, 0, 0, 0, 0);
+   Namespace::void_namespaced_6(0, 0, 0, 0, 0, 0);
+   Namespace::void_namespaced_7(0, 0, 0, 0, 0, 0, 0);
+   Namespace::void_namespaced_8(0, 0, 0, 0, 0, 0, 0, 0);
+   Namespace::void_namespaced_9(0, 0, 0, 0, 0, 0, 0, 0, 0);
+   Namespace::void_namespaced_10(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+   Namespace::nonvoid_namespaced_0();
+   Namespace::nonvoid_namespaced_1(0);
+   Namespace::nonvoid_namespaced_2(0, 0);
+   Namespace::nonvoid_namespaced_3(0, 0, 0);
+   Namespace::nonvoid_namespaced_4(0, 0, 0, 0);
+   Namespace::nonvoid_namespaced_5(0, 0, 0, 0, 0);
+   Namespace::nonvoid_namespaced_6(0, 0, 0, 0, 0, 0);
+   Namespace::nonvoid_namespaced_7(0, 0, 0, 0, 0, 0, 0);
+   Namespace::nonvoid_namespaced_8(0, 0, 0, 0, 0, 0, 0, 0);
+   Namespace::nonvoid_namespaced_9(0, 0, 0, 0, 0, 0, 0, 0, 0);
+   Namespace::nonvoid_namespaced_10(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+}
+
+RUN_TESTS(EveryMacroCompilesTest_CodeCoverage)
