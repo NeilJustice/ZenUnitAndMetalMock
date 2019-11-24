@@ -23,9 +23,6 @@ namespace ZenUnit
       const string commandLine = ZenUnit::Random<string>();
       randomGeneratorMock.StringMock.ReturnValues(startDateTime, commandLine);
 
-      const vector<RunFilter> runFilters = ZenUnit::RandomVector<RunFilter>();
-      //randomGeneratorMock.VectorMock.Return(runFilters);
-
       const bool pause = ZenUnit::Random<bool>();
       const bool wait = ZenUnit::Random<bool>();
       const bool exitZero = ZenUnit::Random<bool>();
