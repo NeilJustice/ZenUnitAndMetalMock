@@ -20,6 +20,26 @@ namespace VirtualFunctionMockingTestingNamespace
       virtual ~Widget() = default;
    };
 
+   TESTS(WidgetTestsForCodeCoverage)
+   AFACT(AllFunctionsCalledForCodeCoverage)
+   EVIDENCE
+
+   TEST(AllFunctionsCalledForCodeCoverage)
+   {
+      Widget widget;
+      widget.VoidZeroArgVirtualFunction();
+      widget.VoidZeroArgConstVirtualFunction();
+      widget.VoidOneArgVirtualFunction(ZenUnit::Random<int>());
+      widget.VoidOneArgConstVirtualFunction(ZenUnit::Random<int>());
+      widget.NonVoidZeroArgVirtualFunction();
+      widget.NonVoidZeroArgConstVirtualFunction();
+      widget.NonVoidOneArgVirtualFunction(ZenUnit::Random<int>());
+      widget.NonVoidOneArgConstVirtualFunction(ZenUnit::Random<int>());
+   }
+
+   RUN_TESTS(WidgetTestsForCodeCoverage)
+
+
    class WidgetMock : public Zen::Mock<Widget>
    {
    public:
