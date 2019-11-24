@@ -83,8 +83,8 @@ Testing Utility Options:
 ## ZenUnit Assertions
 
 #### Value Assertions
-|||
-|-|-|
+|Assertion|Behavior|
+|---------|--------|
 |`ARE_EQUAL(expectedValue, actualValue, messages...)`|By default, asserts that `expectedValue == actualValue` returns true, otherwise throws a `ZenUnit::Anomaly`, which is caught by ZenUnit to fail the current test. `messages...` are variables of any type writable with `operator<<(std::ostream&, const T&)` or `ZenUnit::Printer<T>::Print(std::ostream&, const T&)`.|
 |`ARE_NOT_EQUAL(notExpectedValue, actualValue, messages...)`|By default, asserts that `!(expectedValue == actualValue)` returns true, otherwise throws a `ZenUnit::Anomaly`.|
 |`ARE_COPIES(expectedObject, actualObject, messages...)`|Asserts that `&expectedObject != &actualObject` then asserts `ARE_EQUAL(expectedObject, actualObject)`.|
@@ -95,13 +95,13 @@ Testing Utility Options:
 |`IS_NOT_DEFAULT_VALUE(value, messages...)`|Asserts that `value == ValueType{}` is false.|
 
 #### Floating Point Assertions
-|||
-|-|-|
+|Assertion|Behavior|
+|---------|--------|
 |`ARE_WITHIN(expectedFloatingPointValue, actualFloatingPointValue, expectedAbsoluteMaxDifference, messages...)`|Asserts that `std::abs(expectedFloatingPointValue - actualFloatingPointValue) <= expectedAbsoluteMaxDifference`.|
 
 #### Data Structure Assertions
-|||
-|-|-|
+|Assertion|Behavior|
+|---------|--------|
 |`VECTORS_EQUAL(expectedVector, actualVector, messages...)`|Asserts that `expectedVector.size() == actualVector.size()` then calls `ARE_EQUAL(ithExpectedElement, ithActualElement)` on each pair of expected and actual elements.|
 |`SETS_EQUAL(expectedSet, actualSet, messages...)`|Asserts that `expectedSet.size() == actualSet.size()` then calls `ARE_EQUAL(expectedElement, actualElement)` on each pair of expected and actual elements.|
 |`MAPS_EQUAL(expectedMap, actualMap, messages...)`|Asserts that `expectedMap.size() == actualMap.size()` then calls `ARE_EQUAL(expectedKeyValuePair, actualKeyValuePair)` on each pair of expected and actual key-value pairs.
@@ -113,14 +113,14 @@ Testing Utility Options:
 |`IS_NOT_EMPTY(dataStructure, messages...)`|Asserts that `dataStructure.empty()` equals false.|
 
 #### Exception Assertions
-|||
-|-|-|
+|Assertion|Behavior|
+|---------|--------|
 |`THROWS_EXCEPTION(expression, expectedExactExceptionType, expectedExactWhatMessage, messages...)`|Asserts that `expression` throws \*exactly\* (not a derived class of) `expectedExactExceptionType` with \*exactly\* a what() message equal to `expectedWhatMessage`.|
 |`DOES_NOT_THROW(expression, messages...)`|If `expression` throws, throws a `ZenUnit::Anomaly`, otherwise does nothing. Useful assertion for emphasis to the reader of a unit test.|
 
 #### Pointer Assertions
-|||
-|-|-|
+|Assertion|Behavior|
+|---------|--------|
 |`POINTER_IS_NULL(pointer, messages...)`|Asserts that `pointer == nullptr`.|
 |`POINTER_IS_NOT_NULL(pointer, messages...)`|Asserts that `pointer != nullptr`.|
 |`POINTEES_ARE_EQUAL(expectedPointer, actualPointer, messages...)`|Asserts that `expectedPointer != nullptr` and `actualPointer != nullptr` then asserts `ARE_EQUAL(*expectedPointer, *actualPointer)`.|
@@ -131,13 +131,13 @@ Testing Utility Options:
 |`DELETE_TO_ASSERT_ARRAY_NEWED(smartOrRawArrayPointer, messages...)`|Asserts `smartOrRawArrayPointer != nullptr` then calls `reset()` or `operator delete[]` to confirm the pointer was allocated using `make_unique` or `operator new[]`. This is a key assertion for robustness against the swap-new-with-null code mutation.|
 
 #### Test Assertions
-|||
-|-|-|
+|Assertion|Behavior|
+|---------|--------|
 |`FAIL_TEST(testFailureReason, messages...)`|Throws a `ZenUnit::Anomaly` which is caught by ZenUnit to end the current test and begin the next test.|
 
 #### Function Assertions
-|||
-|-|-|
+|Assertion|Behavior|
+|---------|--------|
 |`STD_FUNCTION_TARGETS(expectedStaticOrFreeFunction, stdFunction, messages...)`|First asserts `IS_TRUE(stdFunction)`, which asserts that stdFunction points to a function, then asserts `ARE_EQUAL(expectedStaticOrFreeFunction, *stdFunction.target<decltype(expectedStaticOrFreeFunction)*>())`. This is a key assertion to call prior to overwriting a `std::function` with a [ZenMock](https://github.com/NeilJustice/ZenMock) mock object.|
 |`STD_FUNCTION_TARGETS_OVERLOAD(expectedOverloadTypeInTheFormOfAUsing, expectedStaticOrFreeFunction, stdFunction, messages...)`|Same as above but with `static_cast<expectedOverloadTypeInTheFormOfAUsing>(expectedStaticOrFreeFunction)`.|
 
@@ -174,7 +174,7 @@ Testing Utility Options:
 
 ### Maximize Mutation Coverage By Testing With Random Values
 
-ZenUnit provides the following random value generating functions for writing unit tests that are robust to the swap-variable-with-constant code mutation, which is one of the most straightforward code mutations to induce manually today during code reviews or automatically at CI/CD time in the 2020s using LLVM-powered mutation testing framework [Mull](https://github.com/mull-project/mull).
+ZenUnit provides the following random value generating functions for writing unit tests that are robust to the swap-variable-with-constant code mutation, which is one of the most straightforward code mutations to induce manually today during code reviews and automatically at CI/CD time in the 2020s by running LLVM-powered mutation testing framework [Mull](https://github.com/mull-project/mull).
 
 |Random Value Generating Function|Description|
 |--------------------------------|-----------|
