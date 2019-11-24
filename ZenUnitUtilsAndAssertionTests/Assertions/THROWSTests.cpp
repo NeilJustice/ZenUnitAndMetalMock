@@ -21,7 +21,7 @@ namespace ZenUnit
       try
       {
          THROWS_EXCEPTION([]{}(), exception, "");
-         FAIL_TEST("THROWS_EXCEPTION() did not throw");
+         FAIL_TEST("THROWS_EXCEPTION() did not throw"); // LCOV_EXCL_LINE
       }
       catch (const Anomaly& anomaly)
       {
@@ -39,7 +39,7 @@ namespace ZenUnit
       try
       {
          THROWS_EXCEPTION([]{}(), exception, "", _messageA, _messageB);
-         FAIL_TEST("THROWS_EXCEPTION() did not throw");
+         FAIL_TEST("THROWS_EXCEPTION() did not throw"); // LCOV_EXCL_LINE
       }
       catch (const Anomaly& anomaly)
       {
@@ -58,7 +58,7 @@ namespace ZenUnit
       try
       {
          THROWS_EXCEPTION([]{ throw logic_error(""); }(), exception, "");
-         FAIL_TEST("THROWS_EXCEPTION() did not throw");
+         FAIL_TEST("THROWS_EXCEPTION() did not throw"); // LCOV_EXCL_LINE
       }
       catch (const Anomaly& anomaly)
       {
@@ -77,7 +77,7 @@ namespace ZenUnit
       try
       {
          THROWS_EXCEPTION([]{ throw runtime_error("what"); }(), logic_error, "");
-         FAIL_TEST("THROWS_EXCEPTION() did not throw");
+         FAIL_TEST("THROWS_EXCEPTION() did not throw"); // LCOV_EXCL_LINE
       }
       catch (const Anomaly& anomaly)
       {
@@ -96,7 +96,7 @@ namespace ZenUnit
       try
       {
          THROWS_EXCEPTION([]{ throw runtime_error("what"); }(), runtime_error, "");
-         FAIL_TEST("THROWS_EXCEPTION() did not throw");
+         FAIL_TEST("THROWS_EXCEPTION() did not throw"); // LCOV_EXCL_LINE
       }
       catch (const Anomaly& anomaly)
       {
@@ -116,7 +116,7 @@ namespace ZenUnit
       try
       {
          THROWS_EXCEPTION([]{ throw runtime_error("hello"); }(), runtime_error, "Hello");
-         FAIL_TEST("THROWS_EXCEPTION() did not throw");
+         FAIL_TEST("THROWS_EXCEPTION() did not throw"); // LCOV_EXCL_LINE
       }
       catch (const Anomaly& anomaly)
       {

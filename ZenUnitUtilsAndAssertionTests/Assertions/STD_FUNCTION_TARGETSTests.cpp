@@ -30,7 +30,7 @@ namespace ZenUnit
       try
       {
          STD_FUNCTION_TARGETS(FunctionA, emptyStdFunction, messageA, messageB);
-         FAIL_TEST("STD_FUNCTION_TARGETS() did not throw Anomaly");
+         FAIL_TEST("STD_FUNCTION_TARGETS() did not throw Anomaly"); // LCOV_EXCL_LINE
       }
       catch (const Anomaly& anomaly)
       {
@@ -61,7 +61,7 @@ namespace ZenUnit
       try
       {
          STD_FUNCTION_TARGETS(FunctionB, stdFunctionA);
-         FAIL_TEST("STD_FUNCTION_TARGETS() did not throw Anomaly");
+         FAIL_TEST("STD_FUNCTION_TARGETS() did not throw Anomaly"); // LCOV_EXCL_LINE
       }
       catch (const Anomaly& anomaly)
       {
@@ -102,7 +102,7 @@ namespace ZenUnit
       try
       {
          STD_FUNCTION_TARGETS(FunctionC, stdFunctionA);
-         FAIL_TEST("STD_FUNCTION_TARGETS() did not throw Anomaly");
+         FAIL_TEST("STD_FUNCTION_TARGETS() did not throw Anomaly"); // LCOV_EXCL_LINE
       }
       catch (const Anomaly& anomaly)
       {
