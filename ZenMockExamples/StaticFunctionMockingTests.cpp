@@ -15,6 +15,32 @@ public:
    Utilities() = delete;
 };
 
+TESTS(UtilitiesTests)
+AFACT(VoidStaticFunction_DoesNothing)
+FACTS(NonVoidStaticFunction_RetursnInputPlus100)
+EVIDENCE
+
+TEST(VoidStaticFunction_DoesNothing)
+{
+   Utilities::VoidStaticFunction();
+}
+
+TEST2X2(NonVoidStaticFunction_RetursnInputPlus100,
+   int input, int expectedReturnValue,
+   -101, -1,
+   -100, 0,
+   -99, 1,
+   -1, 99,
+   0, 100,
+   1, 101)
+{
+   const int inputPlus100 = Utilities::NonVoidStaticFunction(input);
+   ARE_EQUAL(expectedReturnValue, inputPlus100);
+}
+
+RUN_TESTS(UtilitiesTests)
+
+
 class StaticFunctionMockingClassUnderTest
 {
    friend class StaticFunctionMockingClassUnderTestTests;
