@@ -329,7 +329,7 @@ Testing Utility Options:
       testClassName, #HighQualityTestName, PMFTOKEN(&TestClassType::HighQualityTestName)));
 
 #define DOSKIP(HighQualityTestName, SkipReason) \
-   ZenUnit::ZenUnitTestRunner::Instance().SkipTest(testClassName, #HighQualityTestName, SkipReason);
+   ZenUnit::ZenUnitTestRunner::Instance()->SkipTest(testClassName, #HighQualityTestName, SkipReason);
 
 // Skips a TEST.
 #define SKIPAFACT(HighQualityTestName, SkipReason) DOSKIP(HighQualityTestName, SkipReason)
@@ -407,18 +407,18 @@ Testing Utility Options:
    const char* HighQualityTestClassName::ZenUnit_testClassName = nullptr; \
    bool HighQualityTestClassName::ZenUnit_allNXNTestsHaveBeenRegistered = false; \
    std::nullptr_t ZenUnit_TestClassRegistrar_##HighQualityTestClassName = \
-      ZenUnit::ZenUnitTestRunner::Instance().AddTestClassRunner(std::make_unique<ZenUnit::SpecificTestClassRunner<HighQualityTestClassName>>(#HighQualityTestClassName));
+      ZenUnit::ZenUnitTestRunner::Instance()->AddTestClassRunner(std::make_unique<ZenUnit::SpecificTestClassRunner<HighQualityTestClassName>>(#HighQualityTestClassName));
 
 // Skips a test class.
 #define SKIP_TESTS(HighQualityTestClassName, SkipReason) }; \
    const std::nullptr_t ZenUnit_TestClassSkipper_##HighQualityTestClassName = \
-      ZenUnit::ZenUnitTestRunner::Instance().SkipTestClass(#HighQualityTestClassName, SkipReason);
+      ZenUnit::ZenUnitTestRunner::Instance()->SkipTestClass(#HighQualityTestClassName, SkipReason);
 
 #define DO_RUN_TEMPLATE_TESTS(HighQualityTestClassName, ...) \
    template<> const char* HighQualityTestClassName<__VA_ARGS__>::ZenUnit_testClassName = nullptr; \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::ZenUnit_allNXNTestsHaveBeenRegistered = false; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassRegistrar_, HighQualityTestClassName), _Line), __LINE__) = \
-      ZenUnit::ZenUnitTestRunner::Instance().AddTestClassRunner(std::make_unique<ZenUnit::SpecificTestClassRunner<HighQualityTestClassName<__VA_ARGS__>>>(#HighQualityTestClassName"<"#__VA_ARGS__">"));
+      ZenUnit::ZenUnitTestRunner::Instance()->AddTestClassRunner(std::make_unique<ZenUnit::SpecificTestClassRunner<HighQualityTestClassName<__VA_ARGS__>>>(#HighQualityTestClassName"<"#__VA_ARGS__">"));
 
 // Runs a templated test class. Specify __VA_ARGS__ with type names to be run. Example: RUN_TEMPLATE_TESTS(TestClassName, int, std::vector<int>).
 #define RUN_TEMPLATE_TESTS(HighQualityTestClassName, ...) \
@@ -432,7 +432,7 @@ Testing Utility Options:
    template<> const char* HighQualityTestClassName<__VA_ARGS__>::ZenUnit_testClassName = nullptr; \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::ZenUnit_allNXNTestsHaveBeenRegistered = false; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassSkipper_, HighQualityTestClassName), _Line), __LINE__) = \
-      ZenUnit::ZenUnitTestRunner::Instance().SkipTestClass(#HighQualityTestClassName"<"#__VA_ARGS__">", SkipReason);
+      ZenUnit::ZenUnitTestRunner::Instance()->SkipTestClass(#HighQualityTestClassName"<"#__VA_ARGS__">", SkipReason);
 
 // Skips a templated test class.
 #define SKIP_TEMPLATE_TESTS(HighQualityTestClassName, SkipReason, ...) }; \
@@ -914,8 +914,8 @@ namespace ZenUnit
       std::function<HANDLE(DWORD)> _call_GetStdHandle;
       std::function<BOOL(HANDLE, WORD)> _call_SetConsoleTextAttribute;
 #endif
-      bool _standardOutputSupportsColor;
-      bool _standardOutputSupportsColorSet;
+      mutable bool _standardOutputSupportsColor;
+      mutable bool _standardOutputSupportsColorSet;
    public:
       ConsoleColorer() noexcept
 #if defined _WIN32
@@ -936,7 +936,13 @@ namespace ZenUnit
 
       virtual ~ConsoleColorer() = default;
 
-      virtual bool SetColor(Color color)
+      static const ConsoleColorer* Instance()
+      {
+         static ConsoleColorer consoleColorer;
+         return &consoleColorer;
+      }
+
+      virtual bool SetColor(Color color) const
       {
          SetSupportsColorIfUnset();
          const bool doSetTextColor = color != Color::White && _standardOutputSupportsColor;
@@ -969,7 +975,7 @@ namespace ZenUnit
 #endif
       }
    private:
-      virtual void SetSupportsColorIfUnset()
+      virtual void SetSupportsColorIfUnset() const
       {
          if (!_standardOutputSupportsColorSet)
          {
@@ -1009,6 +1015,12 @@ namespace ZenUnit
       }
 
       virtual ~Console() = default;
+
+      static const Console* Instance()
+      {
+         static const Console staticConsoleInstance;
+         return &staticConsoleInstance;
+      }
 
       virtual void Write(std::string_view message) const
       {
@@ -4717,16 +4729,21 @@ namespace ZenUnit
 
       virtual ~ZenUnitTestRunner() = default;
 
-      static ZenUnitTestRunner& Instance() noexcept
+      static ZenUnitTestRunner* Instance() noexcept
       {
          static ZenUnitTestRunner zenUnitTestRunner;
-         return zenUnitTestRunner;
+         return &zenUnitTestRunner;
       }
 
       static const ZenUnitArgs& GetArgs()
       {
-         const ZenUnitTestRunner& zenUnitTestRunner = Instance();
-         return zenUnitTestRunner._args;
+         ZenUnitTestRunner* zenUnitTestRunner = Instance();
+         return zenUnitTestRunner->_args;
+      }
+
+      virtual const ZenUnitArgs& VirtualGetArgs() const
+      {
+         return _args;
       }
 
       std::nullptr_t AddTestClassRunner(std::unique_ptr<TestClassRunner> testClassRunner)
@@ -5393,6 +5410,31 @@ namespace ZenUnit
       }
    };
 
+   class ExitCaller
+   {
+      friend class ExitCallerTests;
+   private:
+      std::function<void(int)> _call_exit;
+   public:
+      ExitCaller()
+         : _call_exit(::exit)
+      {
+      }
+
+      static const ExitCaller* Instance()
+      {
+         static const ExitCaller exitCaller;
+         return &exitCaller;
+      }
+
+      virtual void CallExit(int exitCode) const
+      {
+         _call_exit(exitCode);
+      }
+
+      virtual ~ExitCaller() = default;
+   };
+
    template<typename TestClassType>
    class SpecSectionTestNXN : public Test
    {
@@ -5427,7 +5469,8 @@ namespace ZenUnit
    private:
       virtual const std::unique_ptr<Test>* PmfTokenToTest() const
       {
-         const std::unique_ptr<Test>* const test = TestClassType::TestFromTestNXNPmfToken(_testNXNPmfToken);
+         const std::unique_ptr<Test>* const test = TestClassType::TestFromTestNXNPmfToken(
+            _testNXNPmfToken, Console::Instance(), ZenUnitTestRunner::Instance(), ExitCaller::Instance());
          assert_true(test != nullptr);
          return test;
       }
@@ -6145,27 +6188,38 @@ namespace ZenUnit
          DerivedTestClass::ZenUnit_allNXNTestsHaveBeenRegistered = true;
       }
 
-      static const std::unique_ptr<ZenUnit::Test>* TestFromTestNXNPmfToken(const PmfToken* pmfToken)
+      static const std::unique_ptr<ZenUnit::Test>* TestFromTestNXNPmfToken(
+         const PmfToken* pmfToken,
+         const Console* console,
+         const ZenUnitTestRunner* zenUnitTestRunner,
+         const ExitCaller* exitCaller)
       {
          const std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>& testNXNPmfTokenToTest = GetTestNXNPmfTokenToTestMap();
          const std::unordered_map<const PmfToken*, std::unique_ptr<Test>>::const_iterator findIter = testNXNPmfTokenToTest.find(pmfToken);
          if (findIter == testNXNPmfTokenToTest.end())
          {
-            ConsoleColorer consoleColorer;
-            const bool didSetColor = consoleColorer.SetColor(Color::Red);
-            std::cout << "====================\nZenUnit Syntax Error\n====================\n";
-            consoleColorer.UnsetColor(didSetColor);
-            std::cout << R"(The above test name was specified using FACTS(TestName).
-Therefore a TESTNXN(TestName, ...) definition is expected in the EVIDENCE section.
-Unexpectedly a TEST(TestName) definition exists in the EVIDENCE section.
+            console->WriteLineColor("====================================\nZenUnit Test Definition Syntax Error\n====================================\n", Color::Red);
+            const ZenUnitArgs& args = zenUnitTestRunner->VirtualGetArgs();
+            const int exitCode = args.exitZero ? 0 : 1;
+            console->WriteLineColor(R"(The above test name was declared using FACTS(TestName).
+
+Therefore a TESTNXN(TestName, ...) definition was expected to be found in the EVIDENCE section of the test class.
+
+Unexpectedly a TEST(TestName) definition was found in the EVIDENCE section of the test class.
+
 The fix for this error is to change FACTS(TestName) to AFACT(TestName)
+
 or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
-)";
-            const ZenUnitArgs& args = ZenUnitTestRunner::GetArgs();
-            exit(args.exitZero ? 0 : 1);
+
+Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
+            exitCaller->CallExit(exitCode);
+            return nullptr;
          }
-         const std::unique_ptr<Test>* const testNXN = &findIter->second;
-         return testNXN;
+         else
+         {
+            const std::unique_ptr<Test>* const testNXN = &findIter->second;
+            return testNXN;
+         }
       }
 
       template<typename Arg1Type, typename... TestCaseArgTypes>
@@ -6634,8 +6688,8 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
    inline int RunTests(int argc, char* argv[])
    {
       const std::vector<std::string> stringArgs = Vector::FromArgcArgv(argc, argv);
-      ZenUnitTestRunner& zenUnitTestRunner = ZenUnitTestRunner::Instance();
-      const int exitCode = zenUnitTestRunner.RunTests(stringArgs);
+      ZenUnitTestRunner* zenUnitTestRunner = ZenUnitTestRunner::Instance();
+      const int exitCode = zenUnitTestRunner->RunTests(stringArgs);
       return exitCode;
    }
 }

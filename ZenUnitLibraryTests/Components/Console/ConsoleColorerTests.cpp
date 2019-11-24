@@ -30,7 +30,7 @@ namespace ZenUnit
    class ConsoleColorer_SetCallsMocked : public Zen::Mock<ConsoleColorer>
    {
    public:
-      ZENMOCK_VOID0(SetSupportsColorIfUnset)
+      ZENMOCK_VOID0_CONST(SetSupportsColorIfUnset)
       ZENMOCK_VOID1_CONST(SetTextColor, Color)
    };
 

@@ -1414,7 +1414,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
 				const std::string endDateTime = watch.DateTimeNow();
 				console.WriteLine("       EndTime: " + endDateTime);
             console.WriteColor(">>------> ", ZenUnit::Color::Red);
-            const std::string testRunDurationInSeconds = ZenUnit::ZenUnitTestRunner::Instance().StopTestRunStopwatchAndGetElapsedSeconds();
+            const std::string testRunDurationInSeconds = ZenUnit::ZenUnitTestRunner::Instance()->StopTestRunStopwatchAndGetElapsedSeconds();
             console.WriteLine("     Duration: " + testRunDurationInSeconds + " seconds");
             console.WriteColor(">>------>", ZenUnit::Color::Red);
 				console.WriteLine(" TestRunResult: Fatal EBNA");
