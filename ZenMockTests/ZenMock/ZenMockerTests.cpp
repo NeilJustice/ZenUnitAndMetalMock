@@ -29,14 +29,14 @@ namespace ZenMock
 
    unique_ptr<ZenMocker<ExceptionThrowerMock>> _zenMocker;
    ZENMOCK_VOID1_FREE(exit, int)
-   ZENMOCK_NONVOID0_STATIC(const ZenUnit::ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetArgs)
+   ZENMOCK_NONVOID0_STATIC(const ZenUnit::ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetZenUnitArgs)
    const string ZenMockedFunctionSignature = "virtual void ClassName::FunctionName() const";
 
    STARTUP
    {
       _zenMocker = make_unique<ZenMocker<ExceptionThrowerMock>>(ZenMockedFunctionSignature);
       _zenMocker->_call_exit = BIND_1ARG_ZENMOCK_OBJECT(exitMock);
-      _zenMocker->_call_ZenUnitTestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgsMock);
+      _zenMocker->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_ZENMOCK_OBJECT(GetZenUnitArgsMock);
    }
 
    TEST(Constructor_SetsFields)
@@ -44,7 +44,7 @@ namespace ZenMock
       const ZenMocker<ExceptionThrower> zenMocker(ZenMockedFunctionSignature);
       //
       STD_FUNCTION_TARGETS(exit, zenMocker._call_exit);
-      STD_FUNCTION_TARGETS(ZenUnit::ZenUnitTestRunner::GetArgs, zenMocker._call_ZenUnitTestRunner_GetArgs);
+      STD_FUNCTION_TARGETS(ZenUnit::ZenUnitTestRunner::GetZenUnitArgs, zenMocker._call_ZenUnitTestRunner_GetZenUnitArgs);
       ARE_EQUAL(ZenMockedFunctionSignature, zenMocker.ZenMockedFunctionSignature);
       IS_FALSE(zenMocker._wasExpected);
       IS_FALSE(zenMocker._wasAsserted);
@@ -182,7 +182,7 @@ namespace ZenMock
 
       ZenUnit::ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
       zenUnitArgs.exitZero = exitZero;
-      GetArgsMock.Return(zenUnitArgs);
+      GetZenUnitArgsMock.Return(zenUnitArgs);
       exitMock.Expect();
 
       cout << "\n\n<ZenMock Error Message Testing>";
@@ -190,7 +190,7 @@ namespace ZenMock
       _zenMocker->ZenMockExitIfExpectedButNotAsserted();
       //
       cout << "</ZenMock Error Message Testing>\n\n";
-      ZENMOCK(GetArgsMock.CalledOnce());
+      ZENMOCK(GetZenUnitArgsMock.CalledOnce());
       ZENMOCK(exitMock.CalledOnceWith(expectedExitCode));
       _zenMocker->_wasAsserted = true;
    }

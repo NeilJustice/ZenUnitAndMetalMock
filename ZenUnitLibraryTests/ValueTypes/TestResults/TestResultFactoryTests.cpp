@@ -65,7 +65,7 @@ namespace ZenUnit
       //
       const TestResult expectedTestResult(
          FullTestNameValue, ConstructorTestPhaseResult, StartupTestPhaseResult,
-         TestBodyTestPhaseResult, CleanupTestPhaseResult, DestructorTestPhaseResult, ZenUnitTestRunner::GetArgs);
+         TestBodyTestPhaseResult, CleanupTestPhaseResult, DestructorTestPhaseResult, ZenUnitTestRunner::GetZenUnitArgs);
       ARE_EQUAL(expectedTestResult, testResult);
    }
 

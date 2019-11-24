@@ -1314,7 +1314,7 @@ Return(), ReturnValues(), ReturnRandom(), or ThrowException<T>() on a ZenMock ob
       friend class ZenMockerTests;
    private:
       std::function<void(int)> _call_exit;
-      std::function<const ZenUnit::ZenUnitArgs&()> _call_ZenUnitTestRunner_GetArgs;
+      std::function<const ZenUnit::ZenUnitArgs&()> _call_ZenUnitTestRunner_GetZenUnitArgs;
       bool _zenMockExceptionIsInFlight;
    protected:
       MockableExceptionThrowerType _exceptionThrower;
@@ -1326,7 +1326,7 @@ Return(), ReturnValues(), ReturnRandom(), or ThrowException<T>() on a ZenMock ob
 
       explicit ZenMocker(std::string zenMockedFunctionSignature)
          : _call_exit(::exit)
-         , _call_ZenUnitTestRunner_GetArgs(ZenUnit::ZenUnitTestRunner::GetArgs)
+         , _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnit::ZenUnitTestRunner::GetZenUnitArgs)
          , _zenMockExceptionIsInFlight(false)
          , ZenMockedFunctionSignature(std::move(zenMockedFunctionSignature))
          , _wasExpected(false)
@@ -1402,13 +1402,13 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
 ========================================================)", ZenUnit::Color::Red);
             console.Write("ZenMocked function that was expected but not later asserted as having been called:\n");
 				console.WriteLine(ZenMockedFunctionSignature);
-            const ZenUnit::ZenUnitArgs& args = _call_ZenUnitTestRunner_GetArgs();
+            const ZenUnit::ZenUnitArgs& zenUnitArgs = _call_ZenUnitTestRunner_GetZenUnitArgs();
 				console.WriteColor("\n>>------>", ZenUnit::Color::Red);
-				console.WriteLine("     Completed: " + args.commandLine);
+				console.WriteLine("     Completed: " + zenUnitArgs.commandLine);
             console.WriteColor(">>------>", ZenUnit::Color::Red);
-            console.WriteLine("    RandomSeed: " + std::to_string(args.randomSeed));
+            console.WriteLine("    RandomSeed: " + std::to_string(zenUnitArgs.randomSeed));
 				console.WriteColor(">>------>", ZenUnit::Color::Red);
-				console.WriteLine("     StartTime: " + args.startDateTime);
+				console.WriteLine("     StartTime: " + zenUnitArgs.startDateTime);
 				console.WriteColor(">>------>", ZenUnit::Color::Red);
 				ZenUnit::Watch watch;
 				const std::string endDateTime = watch.DateTimeNow();
@@ -1419,7 +1419,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
             console.WriteColor(">>------>", ZenUnit::Color::Red);
 				console.WriteLine(" TestRunResult: Fatal EBNA");
             console.WriteColor(">>-FAIL->", ZenUnit::Color::Red);
-            const int exitCode = args.exitZero ? 0 : 1;
+            const int exitCode = zenUnitArgs.exitZero ? 0 : 1;
             console.WriteLine("      ExitCode: " + std::to_string(exitCode));
             _call_exit(exitCode);
          }

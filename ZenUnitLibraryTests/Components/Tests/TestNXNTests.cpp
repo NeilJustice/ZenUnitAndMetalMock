@@ -46,7 +46,7 @@ namespace ZenUnit
    const string _testClassName = Random<string>();
    const string _testName = Random<string>();
    const string _testCaseArgsText = Random<string>();
-   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetArgs)
+   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetZenUnitArgs)
    ZENMOCK_VOID1_FREE(exit, int)
 
    STARTUP
@@ -54,7 +54,7 @@ namespace ZenUnit
       _testNXN = make_unique<TestNXN<TestingTestClass, N, int>>("", "", "", 0);
       _testNXN->_console.reset(_consoleMock = new ConsoleMock);
       _testNXN->_callerOfRunFilterMatchesTestCase.reset(_callerOfRunFilterMatchesTestCaseMock = new CallerOfRunFilterMatchesTestCaseMockType);
-      _testNXN->_call_ZenUnitTestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgsMock);
+      _testNXN->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_ZENMOCK_OBJECT(GetZenUnitArgsMock);
       _testNXN->_call_exit = BIND_1ARG_ZENMOCK_OBJECT(exitMock);
    }
 
@@ -66,7 +66,7 @@ namespace ZenUnit
       // Fields
       DELETE_TO_ASSERT_NEWED(test2X2._console);
       DELETE_TO_ASSERT_NEWED(test2X2._callerOfRunFilterMatchesTestCase);
-      STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetArgs, test2X2._call_ZenUnitTestRunner_GetArgs);
+      STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetZenUnitArgs, test2X2._call_ZenUnitTestRunner_GetZenUnitArgs);
       STD_FUNCTION_TARGETS(::exit, test2X2._call_exit);
       STD_FUNCTION_TARGETS(ITestCaseNumberGenerator::FactoryNew, test2X2._call_ITestCaseNumberGeneratorFactoryNew);
       STD_FUNCTION_TARGETS(String::SplitOnNonQuotedCommas, test2X2._call_String_SplitOnNonQuotedCommas);
@@ -146,7 +146,7 @@ namespace ZenUnit
       ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetArgs, _SelfMocked)
 
       const ZenUnitArgs args = GetArgsMock_SelfMocked.ReturnRandom();
-      test1X1SelfMocked._call_ZenUnitTestRunner_GetArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgsMock_SelfMocked);
+      test1X1SelfMocked._call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgsMock_SelfMocked);
 
       shared_ptr<ITestCaseNumberGeneratorMock> testCaseNumberGeneratorMock = make_shared<ITestCaseNumberGeneratorMock>();
       testCaseNumberGeneratorMock->InitializeMock.Expect();

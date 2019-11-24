@@ -22,6 +22,8 @@ namespace ZenUnit
 {
    TESTS(ZenUnitTestRunnerTests)
    AFACT(Constructor_NewsComponents)
+   AFACT(GetZenUnitArgs_ReturnsConstReferenceToZenUnitArgsFieldOnStaticInstanceOfZenUnitTestRunner)
+   AFACT(VirtualGetZenUnitArgs_ReturnsConstReferenceToZenUnitArgsField)
    AFACT(AddTestClassRunner_EmplacesBackTestClassRunner_ReturnsNullptr)
    AFACT(SkipTest_CallsTestRunResultAddSkippedFullTestName)
    AFACT(SkipTestClass_CallsTestRunResultAddSkippedTestClassNameAndReason)
@@ -78,19 +80,31 @@ namespace ZenUnit
 
    TEST(Constructor_NewsComponents)
    {
-      ZenUnitTestRunner testRunner;
-      DELETE_TO_ASSERT_NEWED(testRunner._console);
-      DELETE_TO_ASSERT_NEWED(testRunner._preamblePrinter);
-      DELETE_TO_ASSERT_NEWED(testRunner._argsParser);
-      DELETE_TO_ASSERT_NEWED(testRunner._nonVoidOneArgMemberFunctionCaller);
-      DELETE_TO_ASSERT_NEWED(testRunner._voidOneArgMemberFunctionCaller);
-      DELETE_TO_ASSERT_NEWED(testRunner._nonVoidTwoArgMemberFunctionCaller);
-      DELETE_TO_ASSERT_NEWED(testRunner._voidZeroArgMemberFunctionCaller);
-      DELETE_TO_ASSERT_NEWED(testRunner._testClassRunnerRunner);
-      DELETE_TO_ASSERT_NEWED(testRunner._testRunResult);
-      DELETE_TO_ASSERT_NEWED(testRunner._testRunStopwatch);
-      ARE_EQUAL(ZenUnitArgs(), testRunner._zenUnitArgs);
-      IS_FALSE(testRunner._havePaused);
+      ZenUnitTestRunner zenUnitTestRunner;
+      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._console);
+      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._preamblePrinter);
+      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._argsParser);
+      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._nonVoidOneArgMemberFunctionCaller);
+      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._voidOneArgMemberFunctionCaller);
+      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._nonVoidTwoArgMemberFunctionCaller);
+      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._voidZeroArgMemberFunctionCaller);
+      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._testClassRunnerRunner);
+      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._testRunResult);
+      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._testRunStopwatch);
+      ARE_EQUAL(ZenUnitArgs(), zenUnitTestRunner._zenUnitArgs);
+      IS_FALSE(zenUnitTestRunner._havePaused);
+   }
+
+   TEST(GetZenUnitArgs_ReturnsConstReferenceToZenUnitArgsFieldOnStaticInstanceOfZenUnitTestRunner)
+   {
+      const ZenUnitArgs& zenUnitArgs = ZenUnitTestRunner::GetZenUnitArgs();
+      ARE_SAME(ZenUnitTestRunner::Instance()->_zenUnitArgs, zenUnitArgs);
+   }
+
+   TEST(VirtualGetZenUnitArgs_ReturnsConstReferenceToZenUnitArgsField)
+   {
+      const ZenUnitArgs& zenUnitArgs = _zenUnitTestRunner.VirtualGetZenUnitArgs();
+      ARE_SAME(_zenUnitTestRunner._zenUnitArgs, zenUnitArgs);
    }
 
    TEST(AddTestClassRunner_EmplacesBackTestClassRunner_ReturnsNullptr)
