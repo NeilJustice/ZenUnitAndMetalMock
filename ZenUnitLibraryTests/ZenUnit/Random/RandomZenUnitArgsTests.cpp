@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
+#include "ZenUnitTestUtils/Equalizers/RunFilterEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/ZenUnitArgsEqualizer.h"
 
 namespace ZenUnit
@@ -35,31 +36,38 @@ namespace ZenUnit
       randomGeneratorMock.BoolMock.ReturnValues(
          pause, wait, exitZero, failFast, noSkips, random, randomSeedSetByUser);
 
-      const unsigned testRuns = ZenUnit::Random<unsigned>();
+      const int testRuns = randomGeneratorMock.IntMock.ReturnRandom();
+
       const unsigned randomSeed = ZenUnit::Random<unsigned>();
       const unsigned maxTestMilliseconds = ZenUnit::Random<unsigned>();
-      randomGeneratorMock.UnsignedIntMock.ReturnValues(testRuns, randomSeed, maxTestMilliseconds);
+      randomGeneratorMock.UnsignedIntMock.ReturnValues(randomSeed, maxTestMilliseconds);
       //
       const ZenUnitArgs randomZenUnitArgs = TestableRandomZenUnitArgs(randomGeneratorMock);
       //
       ZENMOCK(randomGeneratorMock.StringMock.CalledNTimes(2));
       ZENMOCK(randomGeneratorMock.BoolMock.CalledNTimes(7));
-      ZENMOCK(randomGeneratorMock.UnsignedIntMock.CalledNTimes(3));
-      ZenUnitArgs expectedRandomZenUnitArgs;
-      expectedRandomZenUnitArgs.startDateTime = startDateTime;
-      expectedRandomZenUnitArgs.commandLine = commandLine;
-      expectedRandomZenUnitArgs.runFilters = runFilters;
-      expectedRandomZenUnitArgs.pause = pause;
-      expectedRandomZenUnitArgs.wait = wait;
-      expectedRandomZenUnitArgs.exitZero = exitZero;
-      expectedRandomZenUnitArgs.failFast = failFast;
-      expectedRandomZenUnitArgs.noSkips = noSkips;
-      expectedRandomZenUnitArgs.testRuns = testRuns;
-      expectedRandomZenUnitArgs.random = random;
-      expectedRandomZenUnitArgs.randomSeed = randomSeed;
-      expectedRandomZenUnitArgs.randomSeedSetByUser = randomSeedSetByUser;
-      expectedRandomZenUnitArgs.maxTestMilliseconds = maxTestMilliseconds;
-      ARE_EQUAL(expectedRandomZenUnitArgs, randomZenUnitArgs);
+      ZENMOCK(randomGeneratorMock.IntMock.CalledOnce());
+      ZENMOCK(randomGeneratorMock.UnsignedIntMock.CalledNTimes(2));
+
+      ARE_EQUAL(startDateTime, randomZenUnitArgs.startDateTime);
+      ARE_EQUAL(commandLine, randomZenUnitArgs.commandLine);
+
+      IS_NOT_EMPTY(randomZenUnitArgs.runFilters);
+      for (size_t i = 0; i < randomZenUnitArgs.runFilters.size(); ++i)
+      {
+         IS_NOT_DEFAULT_VALUE(randomZenUnitArgs.runFilters[i]);
+      }
+
+      ARE_EQUAL(pause, randomZenUnitArgs.pause);
+      ARE_EQUAL(wait, randomZenUnitArgs.wait);
+      ARE_EQUAL(exitZero, randomZenUnitArgs.exitZero);
+      ARE_EQUAL(failFast, randomZenUnitArgs.failFast);
+      ARE_EQUAL(noSkips, randomZenUnitArgs.noSkips);
+      ARE_EQUAL(testRuns, randomZenUnitArgs.testRuns);
+      ARE_EQUAL(random, randomZenUnitArgs.random);
+      ARE_EQUAL(randomSeed, randomZenUnitArgs.randomSeed);
+      ARE_EQUAL(randomSeedSetByUser, randomZenUnitArgs.randomSeedSetByUser);
+      ARE_EQUAL(maxTestMilliseconds, randomZenUnitArgs.maxTestMilliseconds);
    }
 
    RUN_TESTS(RandomZenUnitArgsTests)

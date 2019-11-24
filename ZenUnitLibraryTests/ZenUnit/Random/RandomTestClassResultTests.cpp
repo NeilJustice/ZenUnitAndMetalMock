@@ -19,15 +19,14 @@ namespace ZenUnit
    TEST(TestableRandomTestClassResult_ReturnsTestClassResultWithAllRandomFields)
    {
       ZenMock::RandomGeneratorMock randomGeneratorMock;
-      const vector<TestResult> randomTestResults = ZenUnit::RandomVector<TestResult>();
-      //randomGeneratorMock.VectorMock.Return(randomTestResults);
       //
       const TestClassResult randomTestClassResult = TestableRandomTestClassResult(randomGeneratorMock);
       //
-      //ZENMOCK(randomGeneratorMock.VectorMock.CalledOnce());
-      TestClassResult expectedRandomTestClassResult;
-      expectedRandomTestClassResult.AddTestResults(randomTestResults);
-      ARE_EQUAL(expectedRandomTestClassResult, randomTestClassResult);
+      IS_NOT_EMPTY(randomTestClassResult._testResults);
+      for (size_t i = 0; i < randomTestClassResult._testResults.size(); ++i)
+      {
+         IS_NOT_DEFAULT_VALUE(randomTestClassResult._testResults[i]);
+      }
    }
 
    RUN_TESTS(RandomTestClassResultTests)

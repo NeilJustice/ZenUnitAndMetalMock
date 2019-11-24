@@ -13,7 +13,7 @@ namespace ZenUnit
    TestClassResult TestableRandomTestClassResult(const RandomGenerator& randomGenerator)
    {
       TestClassResult randomTestClassResult;
-      const vector<TestResult> randomTestResults = randomGenerator.Vector<TestResult>();
+      const vector<TestResult> randomTestResults = randomGenerator.NonEmptyVector<TestResult>();
       randomTestClassResult.AddTestResults(randomTestResults);
       return randomTestClassResult;
    }

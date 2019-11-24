@@ -8,13 +8,13 @@ namespace ZenUnit
       ZenUnitArgs randomZenUnitArgs;
       randomZenUnitArgs.startDateTime = randomGenerator.String();
       randomZenUnitArgs.commandLine = randomGenerator.String();
-      randomZenUnitArgs.runFilters = ZenUnit::RandomVector<RunFilter>();
+      randomZenUnitArgs.runFilters = ZenUnit::RandomNonEmptyVector<RunFilter>();
       randomZenUnitArgs.pause = randomGenerator.Bool();
       randomZenUnitArgs.wait = randomGenerator.Bool();
       randomZenUnitArgs.exitZero = randomGenerator.Bool();
       randomZenUnitArgs.failFast = randomGenerator.Bool();
       randomZenUnitArgs.noSkips = randomGenerator.Bool();
-      randomZenUnitArgs.testRuns = randomGenerator.UnsignedInt();
+      randomZenUnitArgs.testRuns = randomGenerator.Int();
       randomZenUnitArgs.random = randomGenerator.Bool();
       randomZenUnitArgs.randomSeed = randomGenerator.UnsignedInt();
       randomZenUnitArgs.randomSeedSetByUser = randomGenerator.Bool();

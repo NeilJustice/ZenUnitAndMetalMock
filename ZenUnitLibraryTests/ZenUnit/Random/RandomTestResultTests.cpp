@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomTestResult.h"
+#include "ZenUnitTestUtils/Equalizers/FullTestNameEqualizer.h"
+#include "ZenUnitTestUtils/Equalizers/TestPhaseResultEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/TestResultEqualizer.h"
 
 namespace ZenUnit
@@ -18,7 +20,8 @@ namespace ZenUnit
    {
       ZenMock::RandomGeneratorMock randomGeneratorMock;
 
-      const int testOutcomeInt = randomGeneratorMock.EnumMock.ReturnRandom();
+      const int testOutcomeInt = ZenUnit::RandomBetween<int>(0, numeric_limits<unsigned char>::max());
+      randomGeneratorMock.EnumMock.Return(testOutcomeInt);
 
       const unsigned microseconds = randomGeneratorMock.UnsignedIntMock.ReturnRandom();
 
@@ -31,19 +34,18 @@ namespace ZenUnit
       ZENMOCK(randomGeneratorMock.EnumMock.CalledOnceWith(static_cast<int>(TestOutcome::MaxValue)));
       ZENMOCK(randomGeneratorMock.UnsignedIntMock.CalledOnce());
       ZENMOCK(randomGeneratorMock.UnsignedLongLongMock.CalledNTimes(2));
-      TestResult expectedRandomTestResult;
-      //expectedRandomTestResult.fullTestName = fullTestName;
-      //expectedRandomTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
-      //expectedRandomTestResult.startupTestPhaseResult = startupTestPhaseResult;
-      //expectedRandomTestResult.testBodyTestPhaseResult = testBodyTestPhaseResult;
-      //expectedRandomTestResult.cleanupTestPhaseResult = cleanupTestPhaseResult;
-      //expectedRandomTestResult.destructorTestPhaseResult = destructorTestPhaseResult;
-      expectedRandomTestResult.responsibleTestPhaseResultField = nullptr;
-      expectedRandomTestResult.testOutcome = static_cast<TestOutcome>(testOutcomeInt);
-      expectedRandomTestResult.microseconds = microseconds;
-      expectedRandomTestResult.testCaseNumber = testCaseNumber;
-      expectedRandomTestResult.totalTestCases = totalTestCases;
-      ARE_EQUAL(expectedRandomTestResult, randomTestResult);
+
+      IS_NOT_DEFAULT_VALUE(randomTestResult.fullTestName);
+      IS_NOT_DEFAULT_VALUE(randomTestResult.constructorTestPhaseResult);
+      IS_NOT_DEFAULT_VALUE(randomTestResult.startupTestPhaseResult);
+      IS_NOT_DEFAULT_VALUE(randomTestResult.testBodyTestPhaseResult);
+      IS_NOT_DEFAULT_VALUE(randomTestResult.cleanupTestPhaseResult);
+      IS_NOT_DEFAULT_VALUE(randomTestResult.destructorTestPhaseResult);
+      POINTER_IS_NULL(randomTestResult.responsibleTestPhaseResultField);
+      ARE_EQUAL(testOutcomeInt, static_cast<int>(randomTestResult.testOutcome));
+      ARE_EQUAL(microseconds, randomTestResult.microseconds);
+      ARE_EQUAL(testCaseNumber, randomTestResult.testCaseNumber);
+      ARE_EQUAL(totalTestCases, randomTestResult.totalTestCases);
    }
 
    RUN_TESTS(RandomTestResultTests)

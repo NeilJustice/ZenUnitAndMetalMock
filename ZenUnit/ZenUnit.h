@@ -3889,9 +3889,10 @@ namespace ZenUnit
    {
       friend class TestClassResultTests;
       friend class Equalizer<TestClassResult>;
+      friend class RandomTestClassResultTests;
    private:
-      std::vector<TestResult> _testResults;
       std::function<std::string(long long)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
+      std::vector<TestResult> _testResults;
    public:
       TestClassResult() noexcept
          : _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
@@ -6701,14 +6702,22 @@ Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
       virtual double Double() const { return ZenUnit::Random<double>(); }
       virtual const char* ConstCharPointer() const { return ZenUnit::Random<const char*>(); }
       virtual std::string String() const { return ZenUnit::Random<std::string>(); }
-
-      template<typename T>
-      std::vector<T> Vector() const { return ZenUnit::RandomVector<T>(); }
-
       virtual std::vector<std::string> StringVector() const { return ZenUnit::RandomVector<std::string>(); }
-
       virtual fs::path Path() const { return ZenUnit::Random<fs::path>(); }
       virtual std::error_code ErrorCode() const { return ZenUnit::Random<std::error_code>(); }
+
+      template<typename T>
+      std::vector<T> Vector() const
+      {
+         return ZenUnit::RandomVector<T>();
+      }
+
+      template<typename T>
+      std::vector<T> NonEmptyVector() const
+      {
+         return ZenUnit::RandomNonEmptyVector<T>();
+      }
+
       virtual ~RandomGenerator() = default;
    };
 
