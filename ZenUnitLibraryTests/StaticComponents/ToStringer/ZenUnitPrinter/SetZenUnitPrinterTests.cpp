@@ -12,54 +12,54 @@ namespace ZenUnit
 
    TEST(Print_PrintsEachSetElementsUsingZenUnitPrinterPrint)
    {
-      ostringstream oss;
+      ostringstream expectedMessageBuilder;
 
       const string expectedSetTypeName = *Type::GetName<SetType<T>>();
 
-      ZenUnit::Printer<SetType<T>>::Print(oss, {});
+      ZenUnit::Printer<SetType<T>>::Print(expectedMessageBuilder, {});
       ARE_EQUAL(expectedSetTypeName + R"(
 {
-})", oss.str());
-      oss = ostringstream();
+})", expectedMessageBuilder.str());
+      expectedMessageBuilder = ostringstream();
 
-      ZenUnit::Printer<SetType<T>>::Print(oss, { 1 });
+      ZenUnit::Printer<SetType<T>>::Print(expectedMessageBuilder, { 1 });
       ARE_EQUAL(expectedSetTypeName + R"(
 {
    1
-})", oss.str());
-      oss = ostringstream();
+})", expectedMessageBuilder.str());
+      expectedMessageBuilder = ostringstream();
 
-      ZenUnit::Printer<SetType<T>>::Print(oss, { 1, 2 });
+      ZenUnit::Printer<SetType<T>>::Print(expectedMessageBuilder, { 1, 2 });
       ARE_EQUAL(expectedSetTypeName + R"(
 {
    1,
    2
-})", oss.str());
-      oss = ostringstream();
+})", expectedMessageBuilder.str());
+      expectedMessageBuilder = ostringstream();
 
-      ZenUnit::Printer<SetType<T>>::Print(oss, { 1, 2, 3 });
+      ZenUnit::Printer<SetType<T>>::Print(expectedMessageBuilder, { 1, 2, 3 });
       ARE_EQUAL(expectedSetTypeName + R"(
 {
    1,
    2,
    3
-})", oss.str());
-      oss = ostringstream();
+})", expectedMessageBuilder.str());
+      expectedMessageBuilder = ostringstream();
 
       // Does-compile confirmation
       const string expectedSetTypeNameWithCustomLessCompator = *Type::GetName<SetType<T, CustomLessComparator<T>>>();
-      ZenUnit::Printer<SetType<T, CustomLessComparator<T>>>::Print(oss, {});
+      ZenUnit::Printer<SetType<T, CustomLessComparator<T>>>::Print(expectedMessageBuilder, {});
       ARE_EQUAL(expectedSetTypeNameWithCustomLessCompator + R"(
 {
-})", oss.str());
-      oss = ostringstream();
+})", expectedMessageBuilder.str());
+      expectedMessageBuilder = ostringstream();
 
       // Does-compile confirmation
       const string expectedSetTypeNameWithCustomLessCompatorAndAllocator = *Type::GetName<SetType<T, CustomLessComparator<T>, CustomAllocator<T>>>();
-      ZenUnit::Printer<SetType<T, CustomLessComparator<T>, CustomAllocator<T>>>::Print(oss, {});
+      ZenUnit::Printer<SetType<T, CustomLessComparator<T>, CustomAllocator<T>>>::Print(expectedMessageBuilder, {});
       ARE_EQUAL(expectedSetTypeNameWithCustomLessCompatorAndAllocator + R"(
 {
-})", oss.str());
+})", expectedMessageBuilder.str());
    }
 
    RUN_TEMPLATE_TESTS(SetZenUnitPrinterTests, set, int)
