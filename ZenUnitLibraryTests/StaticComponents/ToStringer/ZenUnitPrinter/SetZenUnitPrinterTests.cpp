@@ -30,21 +30,22 @@ namespace ZenUnit
       expectedMessageBuilder = ostringstream();
 
       ZenUnit::Printer<SetType<T>>::Print(expectedMessageBuilder, { 1, 2 });
-      ARE_EQUAL(expectedSetTypeName + R"(
+      const string zenUnitPrintedSetPossibility1 = expectedSetTypeName + R"(
 {
    1,
    2
-})", expectedMessageBuilder.str());
-      expectedMessageBuilder = ostringstream();
-
-      ZenUnit::Printer<SetType<T>>::Print(expectedMessageBuilder, { 1, 2, 3 });
-      ARE_EQUAL(expectedSetTypeName + R"(
+})";
+      const string zenUnitPrintedSetPossibility2 = expectedSetTypeName + R"(
 {
-   1,
    2,
-   3
-})", expectedMessageBuilder.str());
-      expectedMessageBuilder = ostringstream();
+   1
+})";
+      const string zenUnitPrintedSet = expectedMessageBuilder.str();
+      if (zenUnitPrintedSet != zenUnitPrintedSetPossibility1 &&
+          zenUnitPrintedSet != zenUnitPrintedSetPossibility2)
+      {
+         FAIL_TEST("Unexpected ZenUnit::Printer::Print() set string: " + zenUnitPrintedSet);
+      }
 
 //      // Does-compile confirmation
 //      const string expectedSetTypeNameWithCustomLessCompator = *Type::GetName<SetType<T, CustomLessComparator<T>>>();
