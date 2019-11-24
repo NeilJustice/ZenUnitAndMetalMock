@@ -66,7 +66,7 @@ namespace ZenUnit
    using TwoArgMemberAnyerMockType = TwoArgMemberAnyerMock<
       std::vector<RunFilter>, TestClassRunner,
       bool(TestClassRunner::*)(const RunFilter&, const char*) const, const char*>;
-   TwoArgMemberAnyerMockType* p_twoArgMemberAnyerMock = nullptr;
+   TwoArgMemberAnyerMockType* _protected_twoArgMemberAnyerMock = nullptr;
 
    ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetZenUnitArgs)
 
@@ -86,7 +86,7 @@ namespace ZenUnit
          new VoidOneArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, const TestClassResult*>);
       _specificTestClassRunner->_twoArgTestAnyer.reset(_twoArgTestAnyerMock = new TwoArgTestAnyerMockType);
       _specificTestClassRunner->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_ZENMOCK_OBJECT(GetZenUnitArgsMock);
-      _specificTestClassRunner->_protected_twoArgMemberAnyer.reset(p_twoArgMemberAnyerMock = new TwoArgMemberAnyerMockType);
+      _specificTestClassRunner->_protected_twoArgMemberAnyer.reset(_protected_twoArgMemberAnyerMock = new TwoArgMemberAnyerMockType);
    }
 
    TEST(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
@@ -340,7 +340,7 @@ namespace ZenUnit
       testMock->NameMock.Return(testName.c_str());
       const unique_ptr<Test> test(testMock);
 
-      p_twoArgMemberAnyerMock->TwoArgAnyMock.Return(false);
+      _protected_twoArgMemberAnyerMock->TwoArgAnyMock.Return(false);
 
       TestClassResultMock testClassResultMock;
       //
@@ -348,7 +348,7 @@ namespace ZenUnit
       //
       ZENMOCK(GetZenUnitArgsMock.CalledOnce());
       ZENMOCK(testMock->NameMock.CalledOnce());
-      ZENMOCK(p_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
+      ZENMOCK(_protected_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
          zenUnitArgs.runFilters, _specificTestClassRunner.get(), &TestClassRunner::RunFilterMatchesTestName, testName.c_str()));
    }
 
@@ -377,7 +377,7 @@ namespace ZenUnit
       const unique_ptr<Test> test(testMock);
       if (expectAnyerCall)
       {
-         p_twoArgMemberAnyerMock->TwoArgAnyMock.Return(true);
+         _protected_twoArgMemberAnyerMock->TwoArgAnyMock.Return(true);
       }
       TestClassResultMock testClassResultMock;
       testClassResultMock.AddTestResultsMock.Expect();
@@ -388,7 +388,7 @@ namespace ZenUnit
       ZENMOCK(testMock->NameMock.CalledOnce());
       if (expectAnyerCall)
       {
-         ZENMOCK(p_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
+         ZENMOCK(_protected_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
             zenUnitArgs.runFilters, _specificTestClassRunner.get(), &TestClassRunner::RunFilterMatchesTestName, testName.c_str()));
       }
       ZENMOCK(_protected_consoleMock->WriteColorMock.CalledOnceWith("|", Color::Green));
