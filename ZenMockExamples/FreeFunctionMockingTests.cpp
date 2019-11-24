@@ -9,12 +9,42 @@ int GlobalFreeFunction(int x)
 namespace Namespace
 {
    // Namespaced free function to be ZenMocked
-   int NamespacedFreeFunction(int x1, int x2)
+   int NamespacedFreeFunction(int left, int right)
    {
-      const int returnValue = x1 + x2;
-      return returnValue;
+      const int sum = left + right;
+      return sum;
    }
 }
+
+TESTS(TestsForCodeCoverageOFreeFunctions)
+FACTS(GlobalFreeFunction_ReturnsArgumentPlus1)
+FACTS(NamespacedFreeFunction_ReturnsSumOfArguments)
+EVIDENCE
+
+TEST2X2(GlobalFreeFunction_ReturnsArgumentPlus1,
+   int x, int expectedReturnValue,
+   -2, -1,
+   -1, 0,
+   0, 1,
+   1, 2)
+{
+   const int returnValue = GlobalFreeFunction(x);
+   ARE_EQUAL(expectedReturnValue, returnValue);
+}
+
+TEST3X3(NamespacedFreeFunction_ReturnsSumOfArguments,
+   int left, int right, int expectedSum,
+   -1, -2, -3,
+   -1, 1, 0,
+   0, 0, 0,
+   1, 2, 3)
+{
+   const int sum = Namespace::NamespacedFreeFunction(left, right);
+   ARE_EQUAL(expectedSum, sum);
+}
+
+RUN_TESTS(TestsForCodeCoverageOFreeFunctions)
+
 
 // Class to be unit tested with ZenUnit and ZenMock
 class FreeFunctionMockingClassUnderTest
