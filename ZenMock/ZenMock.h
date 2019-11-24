@@ -1443,6 +1443,14 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       {
       }
 
+      ~ZeroArgumentMocker()
+      {
+         if (_callInstead_voidZeroArgFunction)
+         {
+            this->_wasAsserted = true;
+         }
+      }
+
       void ZenMockIt()
       {
          this->ZenMockThrowIfNotExpected();
