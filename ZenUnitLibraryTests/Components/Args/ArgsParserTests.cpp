@@ -12,7 +12,7 @@ namespace ZenUnit
    FACTS(Parse_ArgsSizeGreaterThanOrEqualTo13_PrintsTooManyArgumentsErrorMessageAndUsageAndExits1)
    FACTS(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1)
    FACTS(Parse_DashHelpOrDashDashHelp_PrintsUsageAndExits0)
-	FACTS(Parse_DashVersionOrDashDashVersion_PrintsVersionAndExits0)
+   FACTS(Parse_DashVersionOrDashDashVersion_PrintsVersionAndExits0)
    AFACT(Parse_AllArgsSpecifiedExpectForRunFilter_ReturnsZenUnitArgsWithAllFieldsSets)
    AFACT(Parse_RunArgument_ReturnsExpectedZenUnitArgs)
    AFACT(Parse_random_SetsrandomToTrue)
@@ -68,7 +68,7 @@ Testing Utility Options:
 --help or -help
    Print this help message.
 --version or -version
-	Print the ZenUnit version number.
+   Print the ZenUnit version number.
 --pause
    Wait for any key before running tests to allow attaching a debugger or profiler.
 --exit-zero
@@ -167,7 +167,7 @@ Testing Utility Options:
 
    TEST1X1(Parse_DashHelpOrDashDashHelp_PrintsUsageAndExits0,
       const string& helpArgument,
-		"--help",
+      "--help",
       "-help")
    {
       _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
@@ -178,25 +178,25 @@ Testing Utility Options:
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 0));
    }
 
-	TEST1X1(Parse_DashVersionOrDashDashVersion_PrintsVersionAndExits0,
-		const string& versionArgument,
-		"--version",
-		"-version")
-	{
-		_consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
+   TEST1X1(Parse_DashVersionOrDashDashVersion_PrintsVersionAndExits0,
+      const string& versionArgument,
+      "--version",
+      "-version")
+   {
+      _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, versionArgument };
       //
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("0.5.0", 0));
-	}
+   }
 
    TEST(Parse_AllArgsSpecifiedExpectForRunFilter_ReturnsZenUnitArgsWithAllFieldsSets)
    {
       const int testruns = ToIntMock.ReturnRandom();
       const unsigned randomSeed = ToUnsignedMock.ReturnRandom();
-		_callerOfSetRandomSeedIfNotSetByUserMock->ConstCallMock.Expect();
-		const string startDateTime = _watchMock->DateTimeNowMock.ReturnRandom();
+      _callerOfSetRandomSeedIfNotSetByUserMock->ConstCallMock.Expect();
+      const string startDateTime = _watchMock->DateTimeNowMock.ReturnRandom();
       const vector<string> stringArgs
       {
          _testProgramPath,
@@ -214,7 +214,7 @@ Testing Utility Options:
       //
       ZENMOCK(ToIntMock.CalledOnceWith(to_string(testruns)));
       ZENMOCK(ToUnsignedMock.CalledOnceWith(to_string(randomSeed)));
-		ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
+      ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
       expectedZenUnitArgs.pause = true;
@@ -226,7 +226,7 @@ Testing Utility Options:
       expectedZenUnitArgs.testRuns = testruns;
       expectedZenUnitArgs.randomSeed = randomSeed;
       expectedZenUnitArgs.randomSeedSetByUser = true;
-		expectedZenUnitArgs.startDateTime = startDateTime;
+      expectedZenUnitArgs.startDateTime = startDateTime;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }

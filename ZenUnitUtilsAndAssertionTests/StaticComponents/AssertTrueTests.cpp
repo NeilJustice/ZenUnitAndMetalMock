@@ -38,7 +38,7 @@ namespace ZenUnit
 #elif defined _WIN32
       expectedOperatorParenthesesName = R"(operator \(\)\(\))";
 #endif
-		bool didThrowLogicError = false;
+      bool didThrowLogicError = false;
       try
       {
          struct X
@@ -58,12 +58,12 @@ namespace ZenUnit
             ".*File.cpp\\(1\\)");
          const char* const what = e.what();
          REGEX_MATCHES(expectedWhatPattern, what);
-			didThrowLogicError = true;
+         didThrowLogicError = true;
       }
-		if (!didThrowLogicError)
-		{
-			FAIL_TEST("assert_true did not throw"); // LCOV_EXCL_LINE
-		}
+      if (!didThrowLogicError)
+      {
+         FAIL_TEST("assert_true did not throw"); // LCOV_EXCL_LINE
+      }
    }
 
    TEST(assert_true_IsFalse_FromFunction_ThrowsLogicError)

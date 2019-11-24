@@ -103,7 +103,7 @@ Testing Utility Options:
 --help or -help
    Print this help message.
 --version or -version
-	Print the ZenUnit version number.
+   Print the ZenUnit version number.
 --pause
    Wait for any key before running tests to allow attaching a debugger or profiler.
 --exit-zero
@@ -737,7 +737,7 @@ namespace ZenUnit
    inline void ThrowLogicError(const char* predicateText, FileLine fileLine, const char* functionName)
    {
       const std::string assertTrueFailedErrorMessage = String::Concat(
-			"assert_true(", predicateText, ") failed in ", functionName, "()\n", fileLine.filePath, "(", fileLine.lineNumber, ")");
+         "assert_true(", predicateText, ") failed in ", functionName, "()\n", fileLine.filePath, "(", fileLine.lineNumber, ")");
       throw std::logic_error(assertTrueFailedErrorMessage);
    }
 
@@ -756,9 +756,9 @@ namespace ZenUnit
       unsigned char arity;
 
       FullTestName() noexcept
-			: testClassName(""), testName(""), arity(0) {}
+         : testClassName(""), testName(""), arity(0) {}
 
-		FullTestName(const char* testClassName, const char* testName, unsigned char arity) noexcept
+      FullTestName(const char* testClassName, const char* testName, unsigned char arity) noexcept
          : testClassName(testClassName), testName(testName), arity(arity) {}
 
       std::string Value() const
@@ -768,11 +768,11 @@ namespace ZenUnit
          if (arity == 0)
          {
             const std::string fullTestName = String::Concat(testsOrTemplateTests, testClassName, ")\n",
-					"TEST(", testName, ')');
+               "TEST(", testName, ')');
             return fullTestName;
          }
          const std::string fullTestName = String::Concat(testsOrTemplateTests, testClassName, ")\n",
-				"TEST", static_cast<unsigned>(arity), 'X', static_cast<unsigned>(arity), '(', testName, ')');
+            "TEST", static_cast<unsigned>(arity), 'X', static_cast<unsigned>(arity), '(', testName, ')');
          return fullTestName;
       }
    };
@@ -855,7 +855,7 @@ namespace ZenUnit
 
    struct ZenUnitArgs
    {
-		std::string startDateTime;
+      std::string startDateTime;
       std::string commandLine;
       std::vector<RunFilter> runFilters;
       bool pause = false;
@@ -1956,7 +1956,7 @@ namespace ZenUnit
             {
                _console->WriteLineAndExit(Usage(), 0);
             }
-				else if (arg == "--version" || arg == "-version")
+            else if (arg == "--version" || arg == "-version")
             {
                _console->WriteLineAndExit(Version::Number(), 0);
             }
@@ -2000,7 +2000,7 @@ namespace ZenUnit
                }
             }
          }
-			zenUnitArgs.startDateTime = _watch->DateTimeNow();
+         zenUnitArgs.startDateTime = _watch->DateTimeNow();
          _callerOfSetRandomSeedIfNotSetByUser->ConstCall(this, &ArgsParser::SetRandomSeedIfNotSetByUser, zenUnitArgs);
          ZenUnitRandomSeed::value = zenUnitArgs.randomSeed;
          return zenUnitArgs;
@@ -3750,7 +3750,7 @@ namespace ZenUnit
 
       static TestResult ConstructorFail(
          const FullTestName& fullTestName,
-			const TestPhaseResult& constructorTestPhaseResult) noexcept
+         const TestPhaseResult& constructorTestPhaseResult) noexcept
       {
          TestResult constructorFailTestResult;
          constructorFailTestResult.fullTestName = fullTestName;
@@ -3883,7 +3883,7 @@ namespace ZenUnit
       }
    };
 
-	using ThreeArgForEacherType = const ThreeArgForEacher<std::vector<TestResult>, void(*)(const TestResult&, const Console*, TestFailureNumberer*), const Console*, TestFailureNumberer*>;
+   using ThreeArgForEacherType = const ThreeArgForEacher<std::vector<TestResult>, void(*)(const TestResult&, const Console*, TestFailureNumberer*), const Console*, TestFailureNumberer*>;
 
    class TestClassResult
    {
@@ -3891,7 +3891,7 @@ namespace ZenUnit
       friend class Equalizer<TestClassResult>;
    private:
       std::vector<TestResult> _testResults;
-		std::function<std::string(long long)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
+      std::function<std::string(long long)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
    public:
       TestClassResult() noexcept
          : _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
@@ -4048,7 +4048,7 @@ namespace ZenUnit
 #if defined __linux__ || defined __APPLE__
       virtual std::string GetLinuxMachineName() const
       {
-			char hostname[65]{};
+         char hostname[65]{};
          const int gethostnameResult = _call_gethostname(hostname, sizeof(hostname));
          assert_true(gethostnameResult == 0);
          const std::string linuxMachineName(hostname);
@@ -4982,7 +4982,7 @@ namespace ZenUnit
       virtual std::string FullName() const
       {
          const std::string fullTestName = _protected_fullTestName.Value();
-			return fullTestName;
+         return fullTestName;
       }
 
       virtual std::string FileLineString() const
@@ -5343,7 +5343,7 @@ namespace ZenUnit
 #endif
 
    public:
-		NormalTest(const char* testClassName, const char* testName, void (TestClassType::*testMemberFunction)())
+      NormalTest(const char* testClassName, const char* testName, void (TestClassType::*testMemberFunction)())
          : Test(testClassName, testName, 0)
          , _testMemberFunction(testMemberFunction)
       {
@@ -5480,7 +5480,7 @@ namespace ZenUnit
    class ITestCaseNumberGenerator
    {
    public:
-		static std::shared_ptr<ITestCaseNumberGenerator> FactoryNew(bool randomMode);
+      static std::shared_ptr<ITestCaseNumberGenerator> FactoryNew(bool randomMode);
       virtual void Initialize(size_t numberOfTestCaseArgs, size_t N, const ZenUnitArgs& zenUnitArgs) = 0;
       virtual size_t NextTestCaseNumber() = 0;
       virtual void ResetTestCaseNumber() = 0;
@@ -6667,18 +6667,18 @@ Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
    class RandomGenerator
    {
    public:
-		virtual char Char() const { return ZenUnit::Random<char>(); }
-		virtual unsigned char UnsignedChar() const { return ZenUnit::Random<unsigned char>(); }
+      virtual char Char() const { return ZenUnit::Random<char>(); }
+      virtual unsigned char UnsignedChar() const { return ZenUnit::Random<unsigned char>(); }
       virtual bool Bool() const { return ZenUnit::Random<bool>(); }
-		virtual short Short() const { return ZenUnit::Random<short>(); }
-		virtual unsigned short UnsignedShort() const { return ZenUnit::Random<unsigned short>(); }
-		virtual int Int() const { return ZenUnit::Random<int>(); }
+      virtual short Short() const { return ZenUnit::Random<short>(); }
+      virtual unsigned short UnsignedShort() const { return ZenUnit::Random<unsigned short>(); }
+      virtual int Int() const { return ZenUnit::Random<int>(); }
       virtual unsigned UnsignedInt() const { return ZenUnit::Random<unsigned int>(); }
       virtual int Enum(int exclusiveMaxValue) const { return ZenUnit::RandomBetween<int>(0, static_cast<unsigned long long>(exclusiveMaxValue) - 1); }
       virtual long long LongLong() const { return ZenUnit::Random<long long>(); }
       virtual unsigned long long UnsignedLongLong() const { return ZenUnit::Random<unsigned long long>(); }
       virtual float Float() const { return ZenUnit::Random<float>(); }
-		virtual double Double() const { return ZenUnit::Random<double>(); }
+      virtual double Double() const { return ZenUnit::Random<double>(); }
       virtual std::string String() const { return ZenUnit::Random<std::string>(); }
       virtual std::vector<std::string> StringVector() const { return ZenUnit::RandomVector<std::string>(); }
       virtual fs::path Path() const { return ZenUnit::Random<fs::path>(); }
