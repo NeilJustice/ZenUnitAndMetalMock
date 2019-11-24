@@ -26,13 +26,6 @@ namespace std
 namespace ZenUnit
 {
    template<>
-   class Equalizer<UserType>
-   {
-   public:
-      static void AssertEqual(const UserType& expectedUserType, const UserType& actualUserType);
-   };
-
-   template<>
    class Printer<UserType>
    {
    public:

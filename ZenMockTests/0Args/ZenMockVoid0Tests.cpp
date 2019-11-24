@@ -36,7 +36,8 @@ namespace ZenMock
 
    TEST(CodeCoverage)
    {
-      Void0Function();
+      ::Void0Function();
+      ZenMock::Void0Function();
 
       ZenMock::Void0Functions void0Functions;
       void0Functions.Virtual();

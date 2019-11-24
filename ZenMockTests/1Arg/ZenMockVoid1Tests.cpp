@@ -37,19 +37,20 @@ namespace ZenMock
 
    TEST(CodeCoverage)
    {
-      Void1Function(ZenUnit::Random<int>());
+      ::Void1Function(0);
+      ZenMock::Void1Function(0);
 
       ZenMock::Void1Functions void1Functions;
-      void1Functions.VirtualFunction(ZenUnit::Random<int>());
-      void1Functions.VirtualConstFunction(ZenUnit::Random<int>());
-      void1Functions.NonVirtualFunction(ZenUnit::Random<int>());
-      void1Functions.NonVirtualConstFunction(ZenUnit::Random<int>());
+      void1Functions.VirtualFunction(0);
+      void1Functions.VirtualConstFunction(0);
+      void1Functions.NonVirtualFunction(0);
+      void1Functions.NonVirtualConstFunction(0);
 
-      ZenMock::Void1Function(ZenUnit::Random<int>());
+      ZenMock::Void1Function(0);
 
-      ZenMock::Void1StaticFunctions::StaticVoid1Function(ZenUnit::Random<int>());
-      ZenMock::Void1StaticFunctions::OverloadedStaticVoid1Function(ZenUnit::Random<float>());
-      ZenMock::Void1StaticFunctions::OverloadedStaticVoid1Function(ZenUnit::Random<double>());
+      ZenMock::Void1StaticFunctions::StaticVoid1Function(0);
+      ZenMock::Void1StaticFunctions::OverloadedStaticVoid1Function(0.0f);
+      ZenMock::Void1StaticFunctions::OverloadedStaticVoid1Function(0.0);
    }
 
    RUN_TESTS(ZenMockVoid1Tests_CodeCoverage)

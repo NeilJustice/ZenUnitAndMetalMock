@@ -8,7 +8,7 @@ namespace ZenUnit
    AFACT(OneArgConstructor_SetsValue)
    AFACT(OperatorLessThan_ReturnsTrueIfLeftXLessThanRightX)
    AFACT(OperatorEquals_ReturnsTrueIfLeftXEqualsRightX)
-   AFACT(ZenUnitPrint_WritesExpected_ReturnOStream)
+   AFACT(ZenUnitPrinterPrint_WritesExpected_ReturnOStream)
    AFACT(OperatorBool_ValueIs1_ReturnsTrue)
    AFACT(OperatorBool_ValueIsNot1_ReturnsFalse)
    AFACT(has_ostream_left_shift_False)
@@ -44,17 +44,18 @@ namespace ZenUnit
       IS_FALSE(userType1 == userType2);
    }
 
-   TEST(ZenUnitPrint_WritesExpected_ReturnOStream)
+   TEST(ZenUnitPrinterPrint_WritesExpected_ReturnOStream)
    {
-      const UserType userType1(1);
-      const UserType userTypeNegative1(-1);
+      const UserType userType1(ZenUnit::Random<int>());
+      const UserType userType2(ZenUnit::Random<int>());
       ostringstream oss;
       //
       ZenUnit::Printer<UserType>::Print(oss, userType1);
       oss << " ";
-      ZenUnit::Printer<UserType>::Print(oss, userTypeNegative1);
+      ZenUnit::Printer<UserType>::Print(oss, userType2);
       //
-      ARE_EQUAL("UserType@1 UserType@-1", oss.str());
+      const string expectedMessage = "UserType@" + to_string(userType1.value) + " UserType@" + to_string(userType2.value);
+      ARE_EQUAL(expectedMessage, oss.str());
    }
 
    TEST(OperatorBool_ValueIs1_ReturnsTrue)

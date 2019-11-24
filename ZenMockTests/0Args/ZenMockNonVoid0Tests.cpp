@@ -28,10 +28,12 @@ namespace ZenMock
 
    TEST(CodeCoverage)
    {
-      NonVoid0Function();
+      ::NonVoid0Function();
       ZenMock::NonVoid0Function();
+
       ZenMock::NonVoid0StaticFunctions::NonVoid0Function();
       ZenMock::NonVoid0StaticFunctions::StaticFunction();
+
       ZenMock::NonVoid0Functions nonVoid0Functions;
       nonVoid0Functions.Virtual();
       nonVoid0Functions.VirtualConst();

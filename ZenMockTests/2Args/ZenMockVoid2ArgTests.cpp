@@ -38,17 +38,18 @@ namespace ZenMock
 
    TEST(CodeCoverage)
    {
-      Void2ArgFreeFunction(ZenUnit::Random<int>(), ZenUnit::Random<int>());
+      ::Void2ArgFreeFunction(0, 0);
+      Void2ArgFreeFunction(0, 0);
 
       ZenMock::Void2ArgFunctions void2ArgFunctions;
-      void2ArgFunctions.Virtual2ArgFunction(ZenUnit::Random<int>(), ZenUnit::Random<int>());
-      void2ArgFunctions.Virtual2ArgConstFunction(ZenUnit::Random<int>(), ZenUnit::Random<int>());
-      void2ArgFunctions.NonVirtual2ArgFunction(ZenUnit::Random<int>(), ZenUnit::Random<int>());
-      void2ArgFunctions.NonVirtual2ArgConstFunction(ZenUnit::Random<int>(), ZenUnit::Random<int>());
+      void2ArgFunctions.Virtual2ArgFunction(0, 0);
+      void2ArgFunctions.Virtual2ArgConstFunction(0, 0);
+      void2ArgFunctions.NonVirtual2ArgFunction(0, 0);
+      void2ArgFunctions.NonVirtual2ArgConstFunction(0, 0);
 
-      ZenMock::Void2ArgFreeFunction(ZenUnit::Random<int>(), ZenUnit::Random<int>());
+      ZenMock::Void2ArgFreeFunction(0, 0);
 
-      ZenMock::Void2ArgStaticFunctions::StaticVoid2ArgFunction(ZenUnit::Random<int>(), ZenUnit::Random<int>());
+      ZenMock::Void2ArgStaticFunctions::StaticVoid2ArgFunction(0, 0);
    }
 
    RUN_TESTS(ZenMockVoid2ArgTests_CodeCoverage)
