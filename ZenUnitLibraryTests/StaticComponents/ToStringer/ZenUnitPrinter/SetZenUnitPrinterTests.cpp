@@ -7,29 +7,29 @@ namespace ZenUnit
       template<typename...>
    typename SetType, typename T>
    TEMPLATE_TESTS(SetZenUnitPrinterTests, SetType, T)
-   AFACT(Print_StdSet_PrintsExpectedStringRepresentationOfTheSet)
+   AFACT(Print_PrintsEachSetElementsUsingZenUnitPrinterPrint)
    EVIDENCE
 
-   TEST(Print_StdSet_PrintsExpectedStringRepresentationOfTheSet)
+   TEST(Print_PrintsEachSetElementsUsingZenUnitPrinterPrint)
    {
       ostringstream oss;
 
       const string expectedSetTypeName = *Type::GetName<SetType<T>>();
 
-      ZenUnit::Printer<set<T>>::Print(oss, {});
+      ZenUnit::Printer<SetType<T>>::Print(oss, {});
       ARE_EQUAL(expectedSetTypeName + R"(
 {
 })", oss.str());
       oss = ostringstream();
 
-      ZenUnit::Printer<set<T>>::Print(oss, { 1 });
+      ZenUnit::Printer<SetType<T>>::Print(oss, { 1 });
       ARE_EQUAL(expectedSetTypeName + R"(
 {
    1
 })", oss.str());
       oss = ostringstream();
 
-      ZenUnit::Printer<set<T>>::Print(oss, { 1, 2 });
+      ZenUnit::Printer<SetType<T>>::Print(oss, { 1, 2 });
       ARE_EQUAL(expectedSetTypeName + R"(
 {
    1,
@@ -37,7 +37,7 @@ namespace ZenUnit
 })", oss.str());
       oss = ostringstream();
 
-      ZenUnit::Printer<set<T>>::Print(oss, { 1, 2, 3 });
+      ZenUnit::Printer<SetType<T>>::Print(oss, { 1, 2, 3 });
       ARE_EQUAL(expectedSetTypeName + R"(
 {
    1,
@@ -48,7 +48,7 @@ namespace ZenUnit
 
       // Does-compile confirmation
       const string expectedSetTypeNameWithCustomLessCompator = *Type::GetName<SetType<T, CustomLessComparator<T>>>();
-      ZenUnit::Printer<set<T, CustomLessComparator<T>>>::Print(oss, {});
+      ZenUnit::Printer<SetType<T, CustomLessComparator<T>>>::Print(oss, {});
       ARE_EQUAL(expectedSetTypeNameWithCustomLessCompator + R"(
 {
 })", oss.str());
@@ -56,12 +56,14 @@ namespace ZenUnit
 
       // Does-compile confirmation
       const string expectedSetTypeNameWithCustomLessCompatorAndAllocator = *Type::GetName<SetType<T, CustomLessComparator<T>, CustomAllocator<T>>>();
-      ZenUnit::Printer<set<T, CustomLessComparator<T>, CustomAllocator<T>>>::Print(oss, {});
+      ZenUnit::Printer<SetType<T, CustomLessComparator<T>, CustomAllocator<T>>>::Print(oss, {});
       ARE_EQUAL(expectedSetTypeNameWithCustomLessCompatorAndAllocator + R"(
 {
 })", oss.str());
    }
 
-   RUN_TEMPLATE_TESTS(SetZenUnitPrinterTests, set, int);
-   THEN_RUN_TEMPLATE_TESTS(SetZenUnitPrinterTests, set, unsigned long long);
+   RUN_TEMPLATE_TESTS(SetZenUnitPrinterTests, set, int)
+   THEN_RUN_TEMPLATE_TESTS(SetZenUnitPrinterTests, set, unsigned long long)
+   THEN_RUN_TEMPLATE_TESTS(SetZenUnitPrinterTests, unordered_set, int)
+   THEN_RUN_TEMPLATE_TESTS(SetZenUnitPrinterTests, unordered_set, unsigned long long)
 }

@@ -113,5 +113,5 @@ namespace ZenUnit
    }
 
    RUN_TEMPLATE_TESTS(IntegralVectorZenUnitPrinterTests, int)
-   THEN_RUN_TEMPLATE_TESTS(IntegralVectorZenUnitPrinterTests, unsigned)
+   THEN_RUN_TEMPLATE_TESTS(IntegralVectorZenUnitPrinterTests, unsigned long long)
 }

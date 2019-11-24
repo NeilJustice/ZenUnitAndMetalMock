@@ -46,5 +46,5 @@ namespace ZenUnit
    }
 
    RUN_TEMPLATE_TESTS(MapZenUnitPrinterTests, int, int)
-   THEN_RUN_TEMPLATE_TESTS(MapZenUnitPrinterTests, char, unsigned)
+   THEN_RUN_TEMPLATE_TESTS(MapZenUnitPrinterTests, char, unsigned long long)
 }
