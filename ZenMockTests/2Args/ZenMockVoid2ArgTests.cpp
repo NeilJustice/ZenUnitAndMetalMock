@@ -32,6 +32,27 @@ namespace ZenMock
       static void StaticVoid2ArgFunction(int, int) {}
    };
 
+   TESTS(ZenMockVoid2ArgTests_CodeCoverage)
+   AFACT(CodeCoverage)
+   EVIDENCE
+
+   TEST(CodeCoverage)
+   {
+      Void2ArgFreeFunction(ZenUnit::Random<int>(), ZenUnit::Random<int>());
+
+      ZenMock::Void2ArgFunctions void2ArgFunctions;
+      void2ArgFunctions.Virtual2ArgFunction(ZenUnit::Random<int>(), ZenUnit::Random<int>());
+      void2ArgFunctions.Virtual2ArgConstFunction(ZenUnit::Random<int>(), ZenUnit::Random<int>());
+      void2ArgFunctions.NonVirtual2ArgFunction(ZenUnit::Random<int>(), ZenUnit::Random<int>());
+      void2ArgFunctions.NonVirtual2ArgConstFunction(ZenUnit::Random<int>(), ZenUnit::Random<int>());
+
+      ZenMock::Void2ArgFreeFunction(ZenUnit::Random<int>(), ZenUnit::Random<int>());
+
+      ZenMock::Void2ArgStaticFunctions::StaticVoid2ArgFunction(ZenUnit::Random<int>(), ZenUnit::Random<int>());
+   }
+
+   RUN_TESTS(ZenMockVoid2ArgTests_CodeCoverage)
+
    TESTS(ZenMockVoid2ArgTests)
    AFACT(ZenMockIt_ExpectNotPreviouslyCalled_ThrowsUnexpectedCallException)
    AFACT(Expect_DoesNotThrowWhenCalledTwice_MakesFunctionNotThrowWhenCalled)

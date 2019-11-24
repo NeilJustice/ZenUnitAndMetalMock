@@ -31,6 +31,29 @@ namespace ZenMock
       static void OverloadedStaticVoid1Function(double) {}
    };
 
+   TESTS(ZenMockVoid1Tests_CodeCoverage)
+   AFACT(CodeCoverage)
+   EVIDENCE
+
+   TEST(CodeCoverage)
+   {
+      Void1Function(ZenUnit::Random<int>());
+
+      ZenMock::Void1Functions void1Functions;
+      void1Functions.VirtualFunction(ZenUnit::Random<int>());
+      void1Functions.VirtualConstFunction(ZenUnit::Random<int>());
+      void1Functions.NonVirtualFunction(ZenUnit::Random<int>());
+      void1Functions.NonVirtualConstFunction(ZenUnit::Random<int>());
+
+      ZenMock::Void1Function(ZenUnit::Random<int>());
+
+      ZenMock::Void1StaticFunctions::StaticVoid1Function(ZenUnit::Random<int>());
+      ZenMock::Void1StaticFunctions::OverloadedStaticVoid1Function(ZenUnit::Random<float>());
+      ZenMock::Void1StaticFunctions::OverloadedStaticVoid1Function(ZenUnit::Random<double>());
+   }
+
+   RUN_TESTS(ZenMockVoid1Tests_CodeCoverage)
+
    TESTS(ZenMockVoid1Tests)
    AFACT(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
    EVIDENCE

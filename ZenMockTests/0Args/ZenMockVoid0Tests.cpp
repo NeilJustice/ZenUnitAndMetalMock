@@ -30,6 +30,28 @@ namespace ZenMock
       static void Void0Function() {}
    };
 
+   TESTS(ZenMockVoid0Tests_CodeCoverage)
+   AFACT(CodeCoverage)
+   EVIDENCE
+
+   TEST(CodeCoverage)
+   {
+      Void0Function();
+
+      ZenMock::Void0Functions void0Functions;
+      void0Functions.Virtual();
+      void0Functions.VirtualConst();
+      void0Functions.NonVirtual();
+      void0Functions.NonVirtualConst();
+
+      ZenMock::Void0Function();
+
+      ZenMock::StaticVoid0Functions::StaticVoid0Function();
+      ZenMock::StaticVoid0Functions::Void0Function();
+   }
+
+   RUN_TESTS(ZenMockVoid0Tests_CodeCoverage)
+
    TESTS(ZenMockVoid0Tests)
    // ZeroArgumentMocker Tests
    AFACT(FunctionNotCalled_CalledAsFollowsWithN0_Throws)

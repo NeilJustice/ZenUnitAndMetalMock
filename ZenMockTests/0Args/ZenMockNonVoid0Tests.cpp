@@ -22,6 +22,26 @@ namespace ZenMock
       virtual ~NonVoid0Functions() = default;
    };
 
+   TESTS(ZenMockNonVoid0Tests_CodeCoverage)
+   AFACT(CodeCoverage)
+   EVIDENCE
+
+   TEST(CodeCoverage)
+   {
+      NonVoid0Function();
+      ZenMock::NonVoid0Function();
+      ZenMock::NonVoid0StaticFunctions::NonVoid0Function();
+      ZenMock::NonVoid0StaticFunctions::StaticFunction();
+      ZenMock::NonVoid0Functions nonVoid0Functions;
+      nonVoid0Functions.Virtual();
+      nonVoid0Functions.VirtualConst();
+      nonVoid0Functions.NonVirtual();
+      nonVoid0Functions.NonVirtualConst();
+   }
+
+   RUN_TESTS(ZenMockNonVoid0Tests_CodeCoverage)
+
+
    struct NonVoid0FunctionsMock : public Zen::Mock<NonVoid0Functions>
    {
       ZENMOCK_NONVOID0(int, Virtual)
