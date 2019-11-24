@@ -36,7 +36,7 @@ namespace ZenMock
       {
          if (!expectCallToExpectAndThrowException)
          {
-            throw runtime_error("Unexpected call to ExceptionThrowerMock::ThrowException()");
+            throw runtime_error("Unexpected call to ExceptionThrowerMock::ThrowException()"); // LCOV_EXCL_LINE
          }
          exceptionTypeName = *Type::GetName<ExceptionType>();
          exceptionArgCount = sizeof...(ExceptionArgTypes);
@@ -47,7 +47,7 @@ namespace ZenMock
       {
          if (!expectCallToZenMockThrowExceptionIfExceptionSet)
          {
-            throw runtime_error("Unexpected call to ExceptionThrowerMock::ZenMockThrowExceptionIfExceptionSet()");
+            throw runtime_error("Unexpected call to ExceptionThrowerMock::ZenMockThrowExceptionIfExceptionSet()"); // LCOV_EXCL_LINE
          }
          ++numberOfCallsToZenMockThrowExceptionIfExceptionSet;
       }
