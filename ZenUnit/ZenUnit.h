@@ -4709,7 +4709,7 @@ namespace ZenUnit
       std::unique_ptr<Stopwatch> _testRunStopwatch;
       std::unique_ptr<TestClassRunnerRunner> _testClassRunnerRunner;
       std::unique_ptr<TestRunResult> _testRunResult;
-      ZenUnitArgs _args;
+      ZenUnitArgs _zenUnitArgs;
       bool _havePaused;
    public:
       ZenUnitTestRunner() noexcept
@@ -4738,12 +4738,12 @@ namespace ZenUnit
       static const ZenUnitArgs& GetArgs()
       {
          ZenUnitTestRunner* zenUnitTestRunner = Instance();
-         return zenUnitTestRunner->_args;
+         return zenUnitTestRunner->_zenUnitArgs;
       }
 
-      virtual const ZenUnitArgs& VirtualGetArgs() const
+      virtual const ZenUnitArgs& VirtualGetZenUnitArgs() const
       {
-         return _args;
+         return _zenUnitArgs;
       }
 
       std::nullptr_t AddTestClassRunner(std::unique_ptr<TestClassRunner> testClassRunner)
@@ -4766,19 +4766,19 @@ namespace ZenUnit
 
       int RunTests(const std::vector<std::string>& stringArgs)
       {
-         _args = _argsParser->Parse(stringArgs);
-         _testClassRunnerRunner->ApplyRunFiltersIfAny(_args.runFilters);
+         _zenUnitArgs = _argsParser->Parse(stringArgs);
+         _testClassRunnerRunner->ApplyRunFiltersIfAny(_zenUnitArgs.runFilters);
          int overallExitCode = 0;
-         const int numberOfTestRuns = _args.testRuns < 0 ? std::numeric_limits<int>::max() : _args.testRuns;
+         const int numberOfTestRuns = _zenUnitArgs.testRuns < 0 ? std::numeric_limits<int>::max() : _zenUnitArgs.testRuns;
          for (int testRunIndex = 0; testRunIndex < numberOfTestRuns; ++testRunIndex)
          {
             const int testRunExitCode = _nonVoidOneArgMemberFunctionCaller->NonConstCall(
-               this, &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, _args);
+               this, &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, _zenUnitArgs);
             assert_true(testRunExitCode == 0 || testRunExitCode == 1);
             overallExitCode |= testRunExitCode;
             _testRunResult->ResetStateExceptForSkips();
          }
-         _console->WaitForAnyKeyIfDebuggerPresentOrValueTrue(_args.wait);
+         _console->WaitForAnyKeyIfDebuggerPresentOrValueTrue(_zenUnitArgs.wait);
          return overallExitCode;
       }
 
@@ -4820,7 +4820,7 @@ namespace ZenUnit
 
       void RunTestClasses()
       {
-         std::vector<TestClassResult> testClassResults = _testClassRunnerRunner->RunTestClasses(_args);
+         std::vector<TestClassResult> testClassResults = _testClassRunnerRunner->RunTestClasses(_zenUnitArgs);
          _testRunResult->SetTestClassResults(std::move(testClassResults));
       }
    };
@@ -6199,8 +6199,8 @@ namespace ZenUnit
          if (findIter == testNXNPmfTokenToTest.end())
          {
             console->WriteLineColor("====================================\nZenUnit Test Definition Syntax Error\n====================================\n", Color::Red);
-            const ZenUnitArgs& args = zenUnitTestRunner->VirtualGetArgs();
-            const int exitCode = args.exitZero ? 0 : 1;
+            const ZenUnitArgs& zenUnitArgs = zenUnitTestRunner->VirtualGetZenUnitArgs();
+            const int exitCode = zenUnitArgs.exitZero ? 0 : 1;
             console->WriteLineColor(R"(The above test name was declared using FACTS(TestName).
 
 Therefore a TESTNXN(TestName, ...) definition was expected to be found in the EVIDENCE section of the test class.

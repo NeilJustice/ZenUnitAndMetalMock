@@ -37,14 +37,14 @@ namespace ZenUnit
 
       ZenUnitTestRunnerMock zenUnitTestRunnerMock;
       const ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
-      zenUnitTestRunnerMock.VirtualGetArgsMock.Return(zenUnitArgs);
+      zenUnitTestRunnerMock.VirtualGetZenUnitArgsMock.Return(zenUnitArgs);
 
       ExitCallerMock exitCallerMock;
       exitCallerMock.CallExitMock.Expect();
       //
       const std::unique_ptr<ZenUnit::Test>* test = TestClass::TestFromTestNXNPmfToken(nullptr, &consoleMock, &zenUnitTestRunnerMock, &exitCallerMock);
       //
-      ZENMOCK(zenUnitTestRunnerMock.VirtualGetArgsMock.CalledOnce());
+      ZENMOCK(zenUnitTestRunnerMock.VirtualGetZenUnitArgsMock.CalledOnce());
 
       const int expectedExitCode = zenUnitArgs.exitZero ? 0 : 1;
       const string expectedMessage = R"(The above test name was declared using FACTS(TestName).

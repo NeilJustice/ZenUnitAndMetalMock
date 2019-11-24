@@ -89,7 +89,7 @@ namespace ZenUnit
       DELETE_TO_ASSERT_NEWED(testRunner._testClassRunnerRunner);
       DELETE_TO_ASSERT_NEWED(testRunner._testRunResult);
       DELETE_TO_ASSERT_NEWED(testRunner._testRunStopwatch);
-      ARE_EQUAL(ZenUnitArgs(), testRunner._args);
+      ARE_EQUAL(ZenUnitArgs(), testRunner._zenUnitArgs);
       IS_FALSE(testRunner._havePaused);
    }
 
@@ -235,9 +235,9 @@ namespace ZenUnit
 
    TEST(RunTestClasses_RunsTestClasses)
    {
-      ZenUnitArgs args;
-      args.commandLine = Random<string>();
-      _zenUnitTestRunner._args = args;
+      ZenUnitArgs zenUnitArgs;
+      zenUnitArgs.commandLine = Random<string>();
+      _zenUnitTestRunner._zenUnitArgs = zenUnitArgs;
 
       vector<TestClassResult> testClassResults(1);
       _testClassRunnerRunnerMock->RunTestClassesMock.Return(testClassResults);
@@ -245,7 +245,7 @@ namespace ZenUnit
       //
       _zenUnitTestRunner.RunTestClasses();
       //
-      ZENMOCK(_testClassRunnerRunnerMock->RunTestClassesMock.CalledOnceWith(_zenUnitTestRunner._args));
+      ZENMOCK(_testClassRunnerRunnerMock->RunTestClassesMock.CalledOnceWith(_zenUnitTestRunner._zenUnitArgs));
       ZENMOCK(_testRunResultMock->SetTestClassResultsMock.CalledOnceWith(testClassResults));
    }
 
