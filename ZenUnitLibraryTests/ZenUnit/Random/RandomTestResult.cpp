@@ -8,6 +8,11 @@ namespace ZenUnit
    template<>
    TestResult Random<TestResult>()
    {
+      return TestableRandomTestResult(RandomGenerator());
+   }
+
+   TestResult TestableRandomTestResult(const RandomGenerator& randomGenerator)
+   {
       TestResult randomTestResult;
       randomTestResult.fullTestName = ZenUnit::Random<FullTestName>();
       randomTestResult.constructorTestPhaseResult = ZenUnit::Random<TestPhaseResult>();
@@ -16,10 +21,10 @@ namespace ZenUnit
       randomTestResult.cleanupTestPhaseResult = ZenUnit::Random<TestPhaseResult>();
       randomTestResult.destructorTestPhaseResult = ZenUnit::Random<TestPhaseResult>();
       randomTestResult.responsibleTestPhaseResultField = nullptr;
-      randomTestResult.testOutcome = ZenUnit::RandomNon0Enum<TestOutcome>(TestOutcome::MaxValue);
-      randomTestResult.microseconds = ZenUnit::RandomNon0<unsigned>();
-      randomTestResult.testCaseNumber = ZenUnit::RandomNon0<size_t>();
-      randomTestResult.totalTestCases = ZenUnit::RandomNon0<size_t>();
+      randomTestResult.testOutcome = static_cast<TestOutcome>(randomGenerator.Enum(static_cast<int>(TestOutcome::MaxValue)));
+      randomTestResult.microseconds = randomGenerator.UnsignedInt();
+      randomTestResult.testCaseNumber = randomGenerator.UnsignedLongLong();
+      randomTestResult.totalTestCases = randomGenerator.UnsignedLongLong();
       return randomTestResult;
    }
 }
