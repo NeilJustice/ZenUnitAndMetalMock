@@ -143,8 +143,8 @@ Testing Utility Options:
 
 ### ZenUnit Test-Defining Macros
 
-|Test Classes|Description|
-|------------|-----------|
+|Test Classes|Behavior|
+|------------|--------|
 |`TESTS(HighQualityTestClassName)`|Defines a non-templatized test class.|
 |`TEMPLATE_TESTS(HighQualityTestClassName, TemplateParameterNames...)`|Defines a templatized test class. Precede with template\<parameter-list\>.|
 |`AFACT(HighQualityTestName)`|Declares a non-value-parameterized test.|
@@ -176,8 +176,8 @@ Testing Utility Options:
 
 ZenUnit provides the following random value generating functions for writing unit tests that are robust to the swap-variable-with-constant code mutation, which is one of the most straightforward code mutations to induce manually today during code reviews and automatically at CI/CD time in the 2020s by running LLVM-powered mutation testing framework [Mull](https://github.com/mull-project/mull).
 
-|Random Value Generating Function|Description|
-|--------------------------------|-----------|
+|Random Value Generating Function|Behavior|
+|--------------------------------|--------|
 |`ZenUnit::Random<T>()`|By default returns a random integer of type T between `std::numeric_limits<T>::min()` and `std::numeric_limits<T>::max()` selected from a uniform distribution. If `UserType ZenUnit::Random<UserType>()` is defined, returns the result from calling that function.|
 |`ZenUnit::RandomNon0<T>()`|Returns a random non-0 integer of type T between `std::numeric_limits<T>::min()` and `std::numeric_limits<T>::max()` selected from a uniform distribution.|
 |`ZenUnit::RandomBetween<T>(long long inclusiveMinValue, unsigned long long inclusiveMaxValue)`|Returns a random integer of type T between inclusiveMinValue and inclusiveMaxValue selected from a uniform distribution.|
