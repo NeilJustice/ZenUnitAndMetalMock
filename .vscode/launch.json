@@ -9,7 +9,7 @@
          "preLaunchTask": "Ninja Build Debug",
          "cwd": "${workspaceRoot}",
          "program": "Debug/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests",
-         "args": [ "--run=StringTests*" ]
+         "args": [ "" ]
       },
       {
          "name": "GDB Debug ZenUnitUtilsAndAssertionTests",
@@ -18,7 +18,7 @@
          "preLaunchTask": "Ninja Build Debug",
          "cwd": "${workspaceRoot}",
          "program": "Debug/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests",
-         "args": [ "--run=StringTests*" ],
+         "args": [ "" ],
          "linux": { "MIMode": "gdb" }
       }
    ]
