@@ -20,8 +20,8 @@ namespace ZenUnit
    };
 }
 
-void OverloadedFunction(int) {}
-void OverloadedFunction(std::string_view) {}
+//void OverloadedFunction(int) {}
+//void OverloadedFunction(std::string_view) {}
 
 TESTS(EveryZenUnitAssertion)
 AFACT(CallAllMacros)
