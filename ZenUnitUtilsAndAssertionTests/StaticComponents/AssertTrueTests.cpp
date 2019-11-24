@@ -62,7 +62,7 @@ namespace ZenUnit
       }
 		if (!didThrowLogicError)
 		{
-			FAIL_TEST("assert_true did not throw");
+			FAIL_TEST("assert_true did not throw"); // LCOV_EXCL_LINE
 		}
    }
 
