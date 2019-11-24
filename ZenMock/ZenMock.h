@@ -1780,7 +1780,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
-   struct FiveArgumentFunctionCall
+   struct FiveArgumentFunctionCall // LCOV_EXCL_LINE
    {
       ArgumentStorage<Arg1Type> firstArgument;
       ArgumentStorage<Arg2Type> secondArgument;
