@@ -44,7 +44,7 @@ namespace ZenUnit
       if (zenUnitPrintedSet != zenUnitPrintedSetPossibility1 &&
           zenUnitPrintedSet != zenUnitPrintedSetPossibility2)
       {
-         FAIL_TEST("Unexpected ZenUnit::Printer::Print() set string: " + zenUnitPrintedSet);
+         FAIL_TEST("Unexpected ZenUnit::Printer::Print() set string: " + zenUnitPrintedSet); // LCOV_EXCL_LINE
       }
 
 //      // Does-compile confirmation
