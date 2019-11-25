@@ -11,7 +11,7 @@ namespace ZenUnit
 
    TEST(RandomFileLine_CodeCoverage)
    {
-      const FileLine randomFileLine = Random<FileLine>();
+      Random<FileLine>();
    }
 
    TEST(TestableRandomFileLine_ReturnsFileLineWithRandomLineNumber)

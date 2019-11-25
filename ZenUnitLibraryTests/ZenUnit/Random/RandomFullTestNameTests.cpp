@@ -11,7 +11,7 @@ namespace ZenUnit
 
    TEST(RandomFullTestName_CodeCoverage)
    {
-      const FullTestName randomFullTestName = ZenUnit::Random<FullTestName>();
+      ZenUnit::Random<FullTestName>();
    }
 
    TEST(TestableRandomFullTestName_ReturnsFullTestNameWithAllRandomFields)
