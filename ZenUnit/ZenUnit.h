@@ -2766,13 +2766,13 @@ namespace ZenUnit
    {
    public:
       template<typename MapType, typename KeyType, typename ValueType>
-      static const ValueType* InsertNoOverwrite(MapType& m, const KeyType& key, const ValueType& value)
+      static const ValueType* InsertKeyAndValueWithoutOverwritingKey(MapType& m, const KeyType& key, const ValueType& value)
       {
          const std::pair<typename MapType::const_iterator, bool> insertIterAndDidInsert = m.insert(std::make_pair(key, value));
          if (!insertIterAndDidInsert.second)
          {
             const std::string toStringedKey = ToStringer::ToString(key);
-            const std::string what = "ZenUnit::Map::InsertNoOverwrite: Key already present in map: " + toStringedKey;
+            const std::string what = "ZenUnit::Map::InsertKeyAndValueWithoutOverwritingKey: Key already present in map: " + toStringedKey;
             throw std::invalid_argument(what);
          }
          const ValueType* const constPointerToValueInMap = &(*insertIterAndDidInsert.first).second;

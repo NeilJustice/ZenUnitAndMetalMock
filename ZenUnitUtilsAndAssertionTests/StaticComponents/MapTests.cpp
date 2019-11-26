@@ -6,8 +6,8 @@ namespace ZenUnit
       template<typename...>
    class MapType, typename KeyType, typename ValueType>
    TEMPLATE_TESTS(MapTests, MapType, KeyType, ValueType)
-   AFACT(InsertNoOverwrite_KeyAlreadyInMap_Throws)
-   AFACT(InsertNoOverwrite_KeyNotAlreadyInMap_InsertsKeyAndValue_ReturnsCostPointerToInsertedValue);
+   AFACT(InsertKeyAndValueWithoutOverwritingKey_KeyAlreadyInMap_Throws)
+   AFACT(InsertKeyAndValueWithoutOverwritingKey_KeyNotAlreadyInMap_InsertsKeyAndValue_ReturnsCostPointerToInsertedValue);
    AFACT(At_KeyNotPresentInMap_Throws)
    AFACT(At_KeyPresentInMap_ReturnsConstReferenceToValue)
    AFACT(ContainsKeyWithValue_MapDoesNotContainKey_ReturnsFalseAndFalse)
@@ -17,19 +17,19 @@ namespace ZenUnit
 
    MapType<KeyType, ValueType> _map;
 
-   TEST(InsertNoOverwrite_KeyAlreadyInMap_Throws)
+   TEST(InsertKeyAndValueWithoutOverwritingKey_KeyAlreadyInMap_Throws)
    {
       _map[KeyType()] = ValueType();
       string expectedToStringedKey = ToStringer::ToString(KeyType());
-      string expectedWhat = "ZenUnit::Map::InsertNoOverwrite: Key already present in map: " + expectedToStringedKey;
-      THROWS_EXCEPTION(Map::InsertNoOverwrite(_map, KeyType(), ValueType()), invalid_argument, expectedWhat);
+      string expectedWhat = "ZenUnit::Map::InsertKeyAndValueWithoutOverwritingKey: Key already present in map: " + expectedToStringedKey;
+      THROWS_EXCEPTION(Map::InsertKeyAndValueWithoutOverwritingKey(_map, KeyType(), ValueType()), invalid_argument, expectedWhat);
    }
 
-   TEST(InsertNoOverwrite_KeyNotAlreadyInMap_InsertsKeyAndValue_ReturnsCostPointerToInsertedValue)
+   TEST(InsertKeyAndValueWithoutOverwritingKey_KeyNotAlreadyInMap_InsertsKeyAndValue_ReturnsCostPointerToInsertedValue)
    {
       ValueType nonDefaultValueType(1);
       //
-      const ValueType* constPointerToInsertedValue = Map::InsertNoOverwrite(_map, KeyType(), nonDefaultValueType);
+      const ValueType* constPointerToInsertedValue = Map::InsertKeyAndValueWithoutOverwritingKey(_map, KeyType(), nonDefaultValueType);
       //
       IS_TRUE(constPointerToInsertedValue != &nonDefaultValueType);
       ARE_EQUAL(nonDefaultValueType, *constPointerToInsertedValue);
