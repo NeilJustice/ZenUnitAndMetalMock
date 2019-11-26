@@ -1729,13 +1729,11 @@ namespace ZenUnit
       RunFilter ParseRunFilterString(const std::string& testRunFilter) const
       {
          RunFilter runFilter;
-         const std::vector<std::string> testClassNameAndTestNameSlashTestCaseNumber =
-            String::SplitOnFirstStringDelimiter(testRunFilter, "::");
+         const std::vector<std::string> testClassNameAndTestNameSlashTestCaseNumber = String::SplitOnFirstStringDelimiter(testRunFilter, "::");
          runFilter.testClassNamePattern = testClassNameAndTestNameSlashTestCaseNumber[0];
          if (testClassNameAndTestNameSlashTestCaseNumber.size() == 2)
          {
-            const std::vector<std::string> testNameAndTestCaseNumber =
-               String::Split(testClassNameAndTestNameSlashTestCaseNumber[1], '/');
+            const std::vector<std::string> testNameAndTestCaseNumber = String::Split(testClassNameAndTestNameSlashTestCaseNumber[1], '/');
             if (testNameAndTestCaseNumber.size() > 2)
             {
                ThrowInvalidArgumentOnAccountOfInvalidTestRunFilterString(testRunFilter);
@@ -1752,8 +1750,9 @@ namespace ZenUnit
 
       static void ThrowInvalidArgumentOnAccountOfInvalidTestRunFilterString(const std::string& invalidTestRunFilterString)
       {
-         throw std::invalid_argument("Invalid test run filter string: " +
-            std::string(invalidTestRunFilterString) + ". Test run filter string format: TestClassName[::TestName[/TestCaseNumber]]");
+         const std::string exceptionMessage = "Invalid test run filter string: " +
+            std::string(invalidTestRunFilterString) + ". Test run filter string format: TestClassName[::TestName[/TestCaseNumber]]";
+         throw std::invalid_argument(exceptionMessage);
       }
    };
 
@@ -1802,14 +1801,12 @@ namespace ZenUnit
    class OneArgMemberFunctionCaller
    {
    public:
-      virtual ReturnType ConstCall(
-         const ClassType* classPointer, ReturnType(ClassType::*constMemberFunction)(Arg1Type) const, Arg1Type arg1) const
+      virtual ReturnType ConstCall(const ClassType* classPointer, ReturnType(ClassType::*constMemberFunction)(Arg1Type) const, Arg1Type arg1) const
       {
          return (classPointer->*constMemberFunction)(arg1);
       }
 
-      virtual ReturnType NonConstCall(
-         ClassType* classPointer, ReturnType(ClassType::*nonConstMemberFunction)(Arg1Type), Arg1Type arg1) const
+      virtual ReturnType NonConstCall(ClassType* classPointer, ReturnType(ClassType::*nonConstMemberFunction)(Arg1Type), Arg1Type arg1) const
       {
          return (classPointer->*nonConstMemberFunction)(arg1);
       }
@@ -2281,9 +2278,7 @@ namespace ZenUnit
    }
 
    template<typename NotExpectedType, typename ActualType, typename... MessageTypes>
-   void ARE_NOT_EQUAL_Defined(
-      VRText<NotExpectedType> notExpectedValueVRT,
-      VRText<ActualType> actualValueVRT,
+   void ARE_NOT_EQUAL_Defined(VRText<NotExpectedType> notExpectedValueVRT, VRText<ActualType> actualValueVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
    {
       try
@@ -2309,9 +2304,7 @@ namespace ZenUnit
    }
 
    template<typename ExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
-   void ARE_COPIES_ThrowAnomaly(
-      VRText<ExpectedObjectType> expectedObjectVRT,
-      VRText<ActualObjectType> actualObjectVRT,
+   void ARE_COPIES_ThrowAnomaly(VRText<ExpectedObjectType> expectedObjectVRT, VRText<ActualObjectType> actualObjectVRT,
       FileLine fileLine, const Anomaly& becauseAnomaly, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string toStringedExpectedObject = ToStringer::ToString(expectedObjectVRT.value);
@@ -2321,9 +2314,7 @@ namespace ZenUnit
    }
 
    template<typename ExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
-   void ARE_COPIES_Defined(
-      VRText<ExpectedObjectType> expectedObjectVRT,
-      VRText<ActualObjectType> actualObjectVRT,
+   void ARE_COPIES_Defined(VRText<ExpectedObjectType> expectedObjectVRT, VRText<ActualObjectType> actualObjectVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const ExpectedObjectType& expectedObject = expectedObjectVRT.value;
@@ -2349,9 +2340,7 @@ namespace ZenUnit
    }
 
    template<typename ExpectedType, typename ActualType, typename... MessageTypes>
-   void ARE_EQUAL_ThrowAnomaly(
-      VRText<ExpectedType> expectedValueVRT,
-      VRText<ActualType> actualValueVRT,
+   void ARE_EQUAL_ThrowAnomaly(VRText<ExpectedType> expectedValueVRT, VRText<ActualType> actualValueVRT,
       FileLine fileLine, const Anomaly& becauseAnomaly, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedValueAsString = ToStringer::ToString(expectedValueVRT.value);
@@ -2361,9 +2350,7 @@ namespace ZenUnit
    }
 
    template<typename NotExpectedType, typename ActualType, typename... MessageTypes>
-   void ARE_NOT_EQUAL_ThrowAnomaly(
-      VRText<NotExpectedType> notExpectedValueVRT,
-      VRText<ActualType> actualValueVRT,
+   void ARE_NOT_EQUAL_ThrowAnomaly(VRText<NotExpectedType> notExpectedValueVRT, VRText<ActualType> actualValueVRT,
       FileLine fileLine, const Anomaly& becauseAnomaly, const char* messagesText, MessageTypes&& ... messages)
    {
       const std::string notExpectedValueAsStringLine = "Not Expected: " + ToStringer::ToString(notExpectedValueVRT.value);
@@ -2373,9 +2360,7 @@ namespace ZenUnit
    }
 
    template<typename NotExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
-   void ARE_NOT_SAME_ThrowAnomaly(
-      const VRText<NotExpectedObjectType>& notExpectedObjectVRT,
-      const VRText<ActualObjectType>& actualObjectVRT,
+   void ARE_NOT_SAME_ThrowAnomaly(const VRText<NotExpectedObjectType>& notExpectedObjectVRT, const VRText<ActualObjectType>& actualObjectVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedValueAsString = "Not " + ToStringer::ToString(&notExpectedObjectVRT.value);
@@ -2385,9 +2370,7 @@ namespace ZenUnit
    }
 
    template<typename NotExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
-   void ARE_NOT_SAME_Defined(
-      const VRText<NotExpectedObjectType>& notExpectedObjectVRT,
-      const VRText<ActualObjectType>& actualObjectVRT,
+   void ARE_NOT_SAME_Defined(const VRText<NotExpectedObjectType>& notExpectedObjectVRT, const VRText<ActualObjectType>& actualObjectVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (&notExpectedObjectVRT.value == &actualObjectVRT.value)
@@ -2397,9 +2380,7 @@ namespace ZenUnit
    }
 
    template<typename ExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
-   void ARE_SAME_ThrowAnomaly(
-      const VRText<ExpectedObjectType>& expectedObjectVRT,
-      const VRText<ActualObjectType>& actualObjectVRT,
+   void ARE_SAME_ThrowAnomaly(const VRText<ExpectedObjectType>& expectedObjectVRT, const VRText<ActualObjectType>& actualObjectVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedValueAsString = ToStringer::ToString(&expectedObjectVRT.value);
@@ -2409,9 +2390,7 @@ namespace ZenUnit
    }
 
    template<typename ExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
-   void ARE_SAME_Defined(
-      const VRText<ExpectedObjectType>& expectedObjectVRT,
-      const VRText<ActualObjectType>& actualObjectVRT,
+   void ARE_SAME_Defined(const VRText<ExpectedObjectType>& expectedObjectVRT, const VRText<ActualObjectType>& actualObjectVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (&expectedObjectVRT.value != &actualObjectVRT.value)
@@ -2481,14 +2460,16 @@ namespace ZenUnit
       }
    }
 
-   inline void EQUALIZER_THROWS_ThrowOnAccountOfExceptionUnexpectedlyThrown(const char* typeName, const char* fieldName, const char* arbitraryNonDefaultFieldValueText,
+   inline void EQUALIZER_THROWS_ThrowOnAccountOfExceptionUnexpectedlyThrown(
+      const char* typeName, const char* fieldName, const char* arbitraryNonDefaultFieldValueText,
       FileLine fileLine, const ZenUnit::Anomaly& becauseAnomaly)
    {
       throw Anomaly("EQUALIZER_THROWS", typeName, fieldName, arbitraryNonDefaultFieldValueText, "",
          becauseAnomaly, "N/A", "N/A", ExpectedActualFormat::Fields, fileLine);
    }
 
-   inline void EQUALIZER_THROWS_ThrowOnAccountOfExpectedExceptionNotThrown(const char* typeName, const char* fieldName, const char* arbitraryNonDefaultFieldValueText, FileLine fileLine)
+   inline void EQUALIZER_THROWS_ThrowOnAccountOfExpectedExceptionNotThrown(
+      const char* typeName, const char* fieldName, const char* arbitraryNonDefaultFieldValueText, FileLine fileLine)
    {
       const std::string messageForExpected = String::Concat(
          R"(Function ZenUnit::Equalizer<Namespace::TestStruct>::AssertEqual(expected, actual)
@@ -2644,20 +2625,20 @@ namespace ZenUnit
 
    template<typename... MessageTypes>
    void POINTEE_IS_EXACT_TYPE_ThrowAnomaly(
-      const std::type_info& expectedPolymorphicPointeeTypeInfo,
-      std::string_view expectedPolymorphicPointeeText, std::string_view actualField, std::string_view actualPointeeText,
+      const std::type_info& expectedPolymorphicPointeeTypeInfo, std::string_view expectedPolymorphicPointeeText,
+      std::string_view actualField, std::string_view actualPointeeText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const char* const expectedPolymorphicPointeeTypeName = expectedPolymorphicPointeeTypeInfo.name();
-      const std::string expectedField =
-         "Pointee to be exact type: typeid(expectedPolymorphicPointeeType).name() = \"" + std::string(expectedPolymorphicPointeeTypeName) + "\"";
+      const std::string expectedField = "Pointee to be exact type: typeid(expectedPolymorphicPointeeType).name() = \"" + std::string(expectedPolymorphicPointeeTypeName) + "\"";
       throw Anomaly("POINTEE_IS_EXACT_TYPE", expectedPolymorphicPointeeText, actualPointeeText, "", messagesText, Anomaly::Default(),
          expectedField, actualField, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ActualPointerType, typename... MessageTypes>
    void POINTEE_IS_EXACT_TYPE_Defined(
-      const std::type_info& expectedPolymorphicPointeeTypeInfo, const char* expectedPolymorphicPointeeText, VRText<ActualPointerType> actualPointerVRT,
+      const std::type_info& expectedPolymorphicPointeeTypeInfo, const char* expectedPolymorphicPointeeText,
+      VRText<ActualPointerType> actualPointerVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (actualPointerVRT.value == nullptr)
@@ -2673,8 +2654,7 @@ namespace ZenUnit
       if (expectedPolymorphicPointeeTypeInfo != actualPointeeTypeInfo)
       {
          const char* const actualPointeeTypeName = typeid(*actualPointerVRT.value).name();
-         const std::string actualField =
-            "   Pointee is exact type:                 typeid(*actualPointer).name() = \"" + std::string(actualPointeeTypeName) + "\"";
+         const std::string actualField = "   Pointee is exact type:                 typeid(*actualPointer).name() = \"" + std::string(actualPointeeTypeName) + "\"";
          POINTEE_IS_EXACT_TYPE_ThrowAnomaly(
             expectedPolymorphicPointeeTypeInfo,
             expectedPolymorphicPointeeText,
@@ -2735,7 +2715,8 @@ namespace ZenUnit
    }
 
    template<typename ValueType, typename DefaultValueType, typename... MessageTypes>
-   void IS_DEFAULT_VALUE_ThrowAnomaly(VRText<ValueType> valueVRT, const DefaultValueType& defaultValue, FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
+   void IS_DEFAULT_VALUE_ThrowAnomaly(VRText<ValueType> valueVRT, const DefaultValueType& defaultValue,
+      FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
    {
       const std::string expectedValueString = ToStringer::ToString(defaultValue);
       const std::string actualValueString = ToStringer::ToString(valueVRT.value);
@@ -2744,7 +2725,8 @@ namespace ZenUnit
    }
 
    template<typename ValueType, typename... MessageTypes>
-   void IS_DEFAULT_VALUE_Defined(VRText<ValueType> valueVRT, FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
+   void IS_DEFAULT_VALUE_Defined(VRText<ValueType> valueVRT,
+      FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
    {
       static const typename std::remove_reference<ValueType>::type defaultConstructedValueType{};
       const bool valueIsDefaultValue = valueVRT.value == defaultConstructedValueType;
@@ -2798,8 +2780,9 @@ namespace ZenUnit
       }
 
       // Map::At() because map.at() does not include the key not found in the exception what() text
-      template<template<typename...>
-      class MapType, typename KeyType, typename ValueType, typename... SubsequentTypes>
+      template<
+         template<typename...>
+         class MapType, typename KeyType, typename ValueType, typename... SubsequentTypes>
       static const ValueType& At(const MapType<KeyType, ValueType, SubsequentTypes...>& m, const KeyType& key)
       {
          try
@@ -2846,8 +2829,7 @@ namespace ZenUnit
       const char* messagesText,
       MessageTypes&&... messages)
    {
-      const std::string failedLinePrefix = String::Concat(
-         failedPrefixSpaces, "Failed: MAPS_EQUAL(", expectedMapText, ", ", actualMapText);
+      const std::string failedLinePrefix = String::Concat(failedPrefixSpaces, "Failed: MAPS_EQUAL(", expectedMapText, ", ", actualMapText);
       throw Anomaly(failedLinePrefix, whyBody, fileLine, messagePrefixSpaces, messagesText, std::forward<MessageTypes>(messages)...);
    }
 
@@ -2867,11 +2849,9 @@ namespace ZenUnit
    {
       const std::string toStringedExpectedKey = ToStringer::ToString<KeyType>(expectedKey);
       const std::string& toStringedActualKey = toStringedExpectedKey;
-      const std::string toStringedExpectedValue =
-         ToStringer::ToString<typename std::decay<decltype(expectedValue)>::type>(expectedValue);
+      const std::string toStringedExpectedValue = ToStringer::ToString<typename std::decay<decltype(expectedValue)>::type>(expectedValue);
       const auto& actualValue = Map::At(actualMap, expectedKey);
-      const std::string toStringedActualValue =
-         ToStringer::ToString<typename std::decay<decltype(actualValue)>::type>(actualValue);
+      const std::string toStringedActualValue = ToStringer::ToString<typename std::decay<decltype(actualValue)>::type>(actualValue);
       const std::string whyBody = String::Concat(
          "Because: Actual map contains expected key but with an unexpected value\n",
          "  Expected key: ", toStringedExpectedKey, '\n',
@@ -2891,9 +2871,7 @@ namespace ZenUnit
    }
 
    template<typename MapType, typename... MessageTypes>
-   void MAPS_EQUAL_Defined(
-      VRText<MapType> expectedMapVRT,
-      VRText<MapType> actualMapVRT,
+   void MAPS_EQUAL_Defined(VRText<MapType> expectedMapVRT, VRText<MapType> actualMapVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const char* const expectedMapText = expectedMapVRT.text;
@@ -2934,8 +2912,7 @@ namespace ZenUnit
    }
 
    template<typename... MessageTypes>
-   void DOES_NOT_THROW_ThrowAnomaly(
-      const std::exception& ex, const char* expressionText,
+   void DOES_NOT_THROW_ThrowAnomaly(const std::exception& ex, const char* expressionText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string failedLinePrefix = String::Concat("  Failed: DOES_NOT_THROW(", expressionText);
@@ -2947,8 +2924,7 @@ namespace ZenUnit
    }
 
    template<typename... MessageTypes>
-   void DOES_NOT_THROW_Defined(
-      const std::function<void()>& expression, const char* expressionText,
+   void DOES_NOT_THROW_Defined(const std::function<void()>& expression, const char* expressionText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       try
@@ -2962,8 +2938,7 @@ namespace ZenUnit
    }
 
    template<typename PairType, typename... MessageTypes>
-   void PAIRS_EQUAL_ToStringAndRethrow(
-      const Anomaly& becauseAnomaly, VRText<PairType> expectedPairVRT, VRText<PairType> actualPairVRT,
+   void PAIRS_EQUAL_ToStringAndRethrow(const Anomaly& becauseAnomaly, VRText<PairType> expectedPairVRT, VRText<PairType> actualPairVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expected = ToStringer::ToString(expectedPairVRT.value);
@@ -2973,8 +2948,7 @@ namespace ZenUnit
    }
 
    template<typename PairType, typename... MessageTypes>
-   void PAIRS_EQUAL_Defined(
-      VRText<PairType> expectedPairVRT, VRText<PairType> actualPairVRT,
+   void PAIRS_EQUAL_Defined(VRText<PairType> expectedPairVRT, VRText<PairType> actualPairVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       try
@@ -2986,8 +2960,7 @@ namespace ZenUnit
       }
       catch (const Anomaly& anomaly)
       {
-         PAIRS_EQUAL_ToStringAndRethrow(anomaly,
-            expectedPairVRT, actualPairVRT,
+         PAIRS_EQUAL_ToStringAndRethrow(anomaly, expectedPairVRT, actualPairVRT,
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
@@ -3013,9 +2986,7 @@ namespace ZenUnit
    }
 
    template<typename ContainerType, typename... MessageTypes>
-   void EQUAL_ELEMENTS_ANY_ORDER_Defined(
-      VRText<ContainerType> expectedElementsVRT,
-      VRText<ContainerType> actualElementsVRT,
+   void EQUAL_ELEMENTS_ANY_ORDER_Defined(VRText<ContainerType> expectedElementsVRT, VRText<ContainerType> actualElementsVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const auto& expectedElements = expectedElementsVRT.value;
@@ -3035,7 +3006,8 @@ namespace ZenUnit
       }
       for (const auto& expectedElement : expectedElementsVRT.value)
       {
-         const auto findIteratorForExpectedElementInActualElements = std::find(std::begin(actualElements), std::end(actualElements), expectedElement);
+         const auto findIteratorForExpectedElementInActualElements =
+            std::find(std::begin(actualElements), std::end(actualElements), expectedElement);
          try
          {
             ARE_NOT_EQUAL(actualElements.end(), findIteratorForExpectedElementInActualElements);
@@ -3052,8 +3024,7 @@ namespace ZenUnit
 
    template<typename T, typename... MessageTypes>
    void ARRAYS_EQUAL_ToStringAndRethrow(
-      const Anomaly& becauseAnomaly,
-      VRText<T> expectedArrayVRT, VRText<T> actualArrayVRT, size_t numberOfElementsToCompare,
+      const Anomaly& becauseAnomaly, VRText<T> expectedArrayVRT, VRText<T> actualArrayVRT, size_t numberOfElementsToCompare,
       FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
    {
       const std::string* arrayTypeName = Type::GetName<T>();
@@ -3092,8 +3063,7 @@ namespace ZenUnit
 
    template<typename T, std::size_t Size, typename... MessageTypes>
    void STD_ARRAYS_EQUAL_ToStringAndRethrow(
-      const Anomaly& becauseAnomaly,
-      VRText<std::array<T, Size>> expectedStdArrayVRT, VRText<std::array<T, Size>> actualStdArrayVRT,
+      const Anomaly& becauseAnomaly, VRText<std::array<T, Size>> expectedStdArrayVRT, VRText<std::array<T, Size>> actualStdArrayVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedToString = ToStringer::ToString(expectedStdArrayVRT.value);
@@ -3124,9 +3094,9 @@ namespace ZenUnit
             ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage);
          }
       }
-      catch (const Anomaly& anomaly)
+      catch (const Anomaly& becauseAnomaly)
       {
-         STD_ARRAYS_EQUAL_ToStringAndRethrow(anomaly, expectedStdArrayVRT, actualStdArrayVRT,
+         STD_ARRAYS_EQUAL_ToStringAndRethrow(becauseAnomaly, expectedStdArrayVRT, actualStdArrayVRT,
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
@@ -3150,7 +3120,7 @@ namespace ZenUnit
    };
 
    template<typename... MessageTypes>
-   void DELETED_TO_ASSERT_NEWED_ThrowAnomaly(const char* smartOrRawPointerText,
+   void DELETE_TO_ASSERT_NEWED_ThrowAnomaly(const char* smartOrRawPointerText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       throw Anomaly("DELETE_TO_ASSERT_NEWED", smartOrRawPointerText, "", "", messagesText, Anomaly::Default(),
@@ -3163,16 +3133,14 @@ namespace ZenUnit
    {
       if (smartOrRawPointer == nullptr)
       {
-         DELETED_TO_ASSERT_NEWED_ThrowAnomaly(smartOrRawPointerText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         DELETE_TO_ASSERT_NEWED_ThrowAnomaly(smartOrRawPointerText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
-      ScalarDeleter<typename std::remove_reference<
-         decltype(smartOrRawPointer)>::type>::Delete(smartOrRawPointer);
+      ScalarDeleter<typename std::remove_reference<decltype(smartOrRawPointer)>::type>::Delete(smartOrRawPointer);
    }
 
    template<typename SetType, typename... MessageTypes>
    void SETS_EQUAL_ThrowAnomaly(
-      const Anomaly& becauseAnomaly,
-      VRText<SetType> expectedSetVRT, VRText<SetType> actualSetVRT,
+      const Anomaly& becauseAnomaly, VRText<SetType> expectedSetVRT, VRText<SetType> actualSetVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string toStringedExpectedSet = ToStringer::ToString(expectedSetVRT.value);
@@ -3183,7 +3151,8 @@ namespace ZenUnit
    }
 
    template<typename SetType, typename... MessageTypes>
-   void SETS_EQUAL_Defined(VRText<SetType> expectedSetVRT, VRText<SetType> actualSetVRT,
+   void SETS_EQUAL_Defined(
+      VRText<SetType> expectedSetVRT, VRText<SetType> actualSetVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const SetType& expectedSet = expectedSetVRT.value;
@@ -3205,9 +3174,7 @@ namespace ZenUnit
 
    template<typename ExpectedStdFunctionTargetType, typename StdFunctionType, typename... MessageTypes>
    void STD_FUNCTION_TARGETS_Defined(
-      const ExpectedStdFunctionTargetType* expectedStdFunctionTargetValue,
-      const char* expectedStdFunctionTargetText,
-      VRText<StdFunctionType> stdFunctionVRT,
+      const ExpectedStdFunctionTargetType* expectedStdFunctionTargetValue, const char* expectedStdFunctionTargetText, VRText<StdFunctionType> stdFunctionVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const StdFunctionType stdFunction = stdFunctionVRT.value;
@@ -3230,9 +3197,7 @@ namespace ZenUnit
 
    template<typename ExpectedStdFunctionTargetType, typename StdFunctionType, typename... MessageTypes>
    void STD_FUNCTION_TARGETS_OVERLOAD_Defined(
-      const ExpectedStdFunctionTargetType* expectedStdFunctionTargetValue,
-      const char* expectedStdFunctionTargetText,
-      VRText<StdFunctionType> stdFunctionVRT,
+      const ExpectedStdFunctionTargetType* expectedStdFunctionTargetValue, const char* expectedStdFunctionTargetText, VRText<StdFunctionType> stdFunctionVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const StdFunctionType stdFunction = stdFunctionVRT.value;
@@ -3255,9 +3220,7 @@ namespace ZenUnit
 
    template<typename T, typename... MessageTypes>
    void POINTEES_EQUAL_ThrowAnomaly_ExpectedOrActualPointerIsNullptr(
-      VRText<T> expectedPointerVRT,
-      VRText<T> actualPointerVRT,
-      const char* expectedPointerOrActualPointer,
+      VRText<T> expectedPointerVRT, VRText<T> actualPointerVRT, const char* expectedPointerOrActualPointer,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedField = expectedPointerOrActualPointer + std::string(" != nullptr");
@@ -3269,9 +3232,7 @@ namespace ZenUnit
 
    template<typename T, typename... MessageTypes>
    void POINTEES_EQUAL_ThrowAnomaly(
-      VRText<T> expectedPointerVRT,
-      VRText<T> actualPointerVRT,
-      const Anomaly& becauseAnomaly,
+      VRText<T> expectedPointerVRT, VRText<T> actualPointerVRT, const Anomaly& becauseAnomaly,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedField = ToStringer::ToString(*expectedPointerVRT.value);
@@ -3298,12 +3259,14 @@ namespace ZenUnit
          {
             return;
          }
-         POINTEES_EQUAL_ThrowAnomaly_ExpectedOrActualPointerIsNullptr(expectedPointerVRT, actualPointerVRT, "expected pointer",
+         POINTEES_EQUAL_ThrowAnomaly_ExpectedOrActualPointerIsNullptr(
+            expectedPointerVRT, actualPointerVRT, "expected pointer",
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
       else if (actualPointerVRT.value == nullptr)
       {
-         POINTEES_EQUAL_ThrowAnomaly_ExpectedOrActualPointerIsNullptr(expectedPointerVRT, actualPointerVRT, "actual pointer",
+         POINTEES_EQUAL_ThrowAnomaly_ExpectedOrActualPointerIsNullptr(
+            expectedPointerVRT, actualPointerVRT, "actual pointer",
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
       try
@@ -3313,16 +3276,14 @@ namespace ZenUnit
       catch (const Anomaly& becauseAnomaly)
       {
          POINTEES_EQUAL_ThrowAnomaly(
-            expectedPointerVRT,
-            actualPointerVRT,
-            becauseAnomaly, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+            expectedPointerVRT, actualPointerVRT, becauseAnomaly,
+            fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
    template<typename ExpectedExceptionType>
    void THROWS_EXCEPTION_BuildWhyBody(
-      std::ostringstream& outWhyBodyBuilder,
-      const std::string* actualExceptionTypeName)
+      std::ostringstream& outWhyBodyBuilder, const std::string* actualExceptionTypeName)
    {
       const std::string* const expectedExceptionTypeName = Type::GetName<ExpectedExceptionType>();
       outWhyBodyBuilder <<
@@ -3336,9 +3297,7 @@ namespace ZenUnit
       std::string_view expectedExactExceptionTypeText,
       std::string_view expectedWhatText,
       std::string_view whyBody,
-      FileLine fileLine,
-      std::string_view messagesText,
-      MessageTypes&&... messages)
+      FileLine fileLine, std::string_view messagesText, MessageTypes&&... messages)
    {
       const std::string failedLinePrefix = String::Concat(
          "  Failed: THROWS_EXCEPTION(", expressionText, ", ", expectedExactExceptionTypeText, ",\n",
@@ -3347,7 +3306,8 @@ namespace ZenUnit
    }
 
    template<typename ExpectedExceptionType>
-   std::string THROWS_EXCEPTION_MakeWhyBody_DerivedButNotExactExpectedExceptionTypeThrown(const ExpectedExceptionType& ex)
+   std::string THROWS_EXCEPTION_MakeWhyBody_DerivedButNotExactExpectedExceptionTypeThrown(
+      const ExpectedExceptionType& ex)
    {
       std::ostringstream whyBodyBuilder;
       const std::string* const actualExceptionTypeName = Type::GetName(ex);
@@ -3374,7 +3334,8 @@ namespace ZenUnit
    }
 
    template<typename ExpectedExceptionType, typename ActualExceptionType>
-   std::string THROWS_EXCEPTION_MakeWhyBody_ExpectedExceptionTypeNotThrown(const ActualExceptionType& ex)
+   std::string THROWS_EXCEPTION_MakeWhyBody_ExpectedExceptionTypeNotThrown(
+      const ActualExceptionType& ex)
    {
       std::ostringstream whyBodyBuilder;
       const std::string* const actualExceptionTypeName = Type::GetName(ex);
@@ -3410,9 +3371,7 @@ namespace ZenUnit
       std::string_view expectedExactExceptionTypeText,
       std::string_view expectedExactWhatText,
       std::string_view expectedExactWhatTextText,
-      FileLine fileLine,
-      std::string_view messagesText,
-      MessageTypes&&... messages)
+      FileLine fileLine, std::string_view messagesText, MessageTypes&&... messages)
    {
       try
       {
@@ -3537,9 +3496,7 @@ namespace ZenUnit
       ThreeArgForEacher() noexcept = default;
       virtual ~ThreeArgForEacher() = default;
 
-      virtual void ThreeArgForEach(
-         const CollectionType* collection,
-         FunctionType func, const Arg2Type& arg2, const Arg3Type& arg3) const
+      virtual void ThreeArgForEach(const CollectionType* collection, FunctionType func, const Arg2Type& arg2, const Arg3Type& arg3) const
       {
          const auto collectionConstEnd = collection->cend();
          for (auto iter = collection->cbegin(); iter != collectionConstEnd; ++iter)
@@ -3639,8 +3596,19 @@ namespace ZenUnit
       long long microseconds;
       std::shared_ptr<const AnomalyOrException> anomalyOrException;
 
-      TestPhaseResult() noexcept : testPhase(TestPhase::Unset), testOutcome(TestOutcome::Success), microseconds(0) {}
-      explicit TestPhaseResult(TestPhase testPhase) noexcept : testPhase(testPhase), testOutcome(TestOutcome::Success), microseconds(0) {}
+      TestPhaseResult() noexcept
+         : testPhase(TestPhase::Unset)
+         , testOutcome(TestOutcome::Success)
+         , microseconds(0)
+      {
+      }
+
+      explicit TestPhaseResult(TestPhase testPhase) noexcept
+         : testPhase(testPhase)
+         , testOutcome(TestOutcome::Success)
+         , microseconds(0)
+      {
+      }
    };
 
    class TestResult
@@ -3683,7 +3651,7 @@ namespace ZenUnit
          const TestPhaseResult& testBodyTestPhaseResult,
          const TestPhaseResult& cleanupTestPhaseResult,
          const TestPhaseResult& destructorTestPhaseResult,
-         const std::function<const ZenUnitArgs&()>& getArgs)
+         const std::function<const ZenUnitArgs&()>& getZenUnitArgs)
          : fullTestName(fullTestName)
          , constructorTestPhaseResult(constructorTestPhaseResult)
          , startupTestPhaseResult(startupTestPhaseResult)
@@ -3733,7 +3701,7 @@ namespace ZenUnit
             assert_true(testBodyTestPhaseResult.testOutcome == TestOutcome::Success);
             assert_true(cleanupTestPhaseResult.testOutcome == TestOutcome::Success);
             assert_true(destructorTestPhaseResult.testOutcome == TestOutcome::Success);
-            const ZenUnitArgs& zenUnitArgs = getArgs();
+            const ZenUnitArgs& zenUnitArgs = getZenUnitArgs();
             const unsigned maxtestmicroseconds = zenUnitArgs.maxTestMilliseconds * 1000;
             if (zenUnitArgs.maxTestMilliseconds == 0 || microseconds <= maxtestmicroseconds)
             {
@@ -3883,7 +3851,8 @@ namespace ZenUnit
       }
    };
 
-   using ThreeArgForEacherType = const ThreeArgForEacher<std::vector<TestResult>, void(*)(const TestResult&, const Console*, TestFailureNumberer*), const Console*, TestFailureNumberer*>;
+   using ThreeArgForEacherType = const ThreeArgForEacher<
+      std::vector<TestResult>, void(*)(const TestResult&, const Console*, TestFailureNumberer*), const Console*, TestFailureNumberer*>;
 
    class TestClassResult
    {
@@ -3904,6 +3873,11 @@ namespace ZenUnit
          *this = testClassResult;
       }
 
+      TestClassResult(TestClassResult&& testClassResult) noexcept
+      {
+         *this = std::move(testClassResult);
+      }
+
       TestClassResult& operator=(const TestClassResult& testClassResult)
       {
          if (this != &testClassResult)
@@ -3911,11 +3885,6 @@ namespace ZenUnit
             _testResults = testClassResult._testResults;
          }
          return *this;
-      }
-
-      TestClassResult(TestClassResult&& testClassResult) noexcept
-      {
-         *this = std::move(testClassResult);
       }
 
       TestClassResult& operator=(TestClassResult&& testClassResult) noexcept
@@ -3991,7 +3960,9 @@ namespace ZenUnit
       }
    private:
       static void PrintTestResultIfFailure(
-         const TestResult& testResult, const Console* console, TestFailureNumberer* testFailureNumberer)
+         const TestResult& testResult,
+         const Console* console,
+         TestFailureNumberer* testFailureNumberer)
       {
          testResult.PrintIfFailure(console, testFailureNumberer);
       }
@@ -4092,7 +4063,11 @@ namespace ZenUnit
       TwoArgMemberForEacher() noexcept = default;
       virtual ~TwoArgMemberForEacher() = default;
 
-      virtual void TwoArgMemberForEach(std::vector<T>* elements, ClassType* classPointer, MemberFunctionType memberFunction, const Arg2Type& arg2) const
+      virtual void TwoArgMemberForEach(
+         std::vector<T>* elements,
+         ClassType* classPointer,
+         MemberFunctionType memberFunction,
+         const Arg2Type& arg2) const
       {
          const typename std::vector<T>::iterator elementsEnd = elements->end();
          for (typename std::vector<T>::iterator iter = elements->begin(); iter != elementsEnd; ++iter)
@@ -4102,9 +4077,14 @@ namespace ZenUnit
          }
       }
 
-      virtual void RandomTwoArgMemberForEach(std::vector<T>* elements, ClassType* classPointer, MemberFunctionType memberFunction, const Arg2Type& arg2, unsigned seed) const
+      virtual void RandomTwoArgMemberForEach(
+         std::vector<T>* elements,
+         ClassType* classPointer,
+         MemberFunctionType memberFunction,
+         const Arg2Type& arg2,
+         unsigned randomSeed) const
       {
-         std::shuffle(elements->begin(), elements->end(), std::default_random_engine(seed));
+         std::shuffle(elements->begin(), elements->end(), std::default_random_engine(randomSeed));
          const typename std::vector<T>::iterator elementsEnd = elements->end();
          for (typename std::vector<T>::iterator iter = elements->begin(); iter != elementsEnd; ++iter)
          {
@@ -4114,20 +4094,24 @@ namespace ZenUnit
       }
    };
 
-   template<typename CollectionType, typename ClassType, typename MemberPredicateType, typename Arg2Type>
+   template<typename CollectionType, typename ClassType, typename TwoArgMemberFunctionPredicateType, typename Arg2Type>
    class TwoArgMemberAnyer
    {
    public:
       TwoArgMemberAnyer() noexcept = default;
       virtual ~TwoArgMemberAnyer() = default;
 
-      virtual bool TwoArgAny(const CollectionType& collection, const ClassType* classInstance, MemberPredicateType memberPredicate, Arg2Type arg2) const
+      virtual bool TwoArgAny(
+         const CollectionType& collection,
+         const ClassType* classInstance,
+         TwoArgMemberFunctionPredicateType twoArgMemberFunctionPredicate,
+         Arg2Type arg2) const
       {
          const auto collectionConstEnd = collection.cend();
          for (auto iter = collection.cbegin(); iter != collectionConstEnd; ++iter)
          {
             const auto& element = *iter;
-            const bool elementMatchesPredicate = (classInstance->*memberPredicate)(element, arg2);
+            const bool elementMatchesPredicate = (classInstance->*twoArgMemberFunctionPredicate)(element, arg2);
             if (elementMatchesPredicate)
             {
                return true;
@@ -4137,20 +4121,20 @@ namespace ZenUnit
       }
    };
 
-   template<typename CollectionType, typename PredicateType, typename Arg2Type>
+   template<typename CollectionType, typename TwoArgPredicateFunctionType, typename Arg2Type>
    class TwoArgAnyer
    {
    public:
       TwoArgAnyer() noexcept = default;
       virtual ~TwoArgAnyer() = default;
 
-      virtual bool TwoArgAny(const CollectionType* collection, PredicateType predicateFunction, Arg2Type arg2) const
+      virtual bool TwoArgAny(const CollectionType* collection, TwoArgPredicateFunctionType twoArgPredicateFunction, Arg2Type arg2) const
       {
          const auto collectionConstEnd = collection->cend();
          for (auto iter = collection->cbegin(); iter != collectionConstEnd; ++iter)
          {
             const auto& element = *iter;
-            const bool elementMatchesPredicate = predicateFunction(element, arg2);
+            const bool elementMatchesPredicate = twoArgPredicateFunction(element, arg2);
             if (elementMatchesPredicate)
             {
                return true;
@@ -4160,21 +4144,24 @@ namespace ZenUnit
       }
    };
 
-   template<typename CollectionType, typename PredicateType, typename Arg2Type, typename Arg3Type>
+   template<typename CollectionType, typename ThreeArgPredicateFunctionType, typename Arg2Type, typename Arg3Type>
    class ThreeArgAnyer
    {
    public:
       ThreeArgAnyer() noexcept {}
-
       virtual ~ThreeArgAnyer() = default;
 
-      virtual bool ThreeArgAny(const CollectionType& collection, PredicateType predicateFunction, Arg2Type arg2, Arg3Type arg3) const
+      virtual bool ThreeArgAny(
+         const CollectionType& collection,
+         ThreeArgPredicateFunctionType threeArgPredicateFunction,
+         Arg2Type arg2,
+         Arg3Type arg3) const
       {
          const auto collectionConstEnd = collection.cend();
          for (auto iter = collection.cbegin(); iter != collectionConstEnd; ++iter)
          {
             const auto& element = *iter;
-            const bool elementMatchesPredicate = predicateFunction(element, arg2, arg3);
+            const bool elementMatchesPredicate = threeArgPredicateFunction(element, arg2, arg3);
             if (elementMatchesPredicate)
             {
                return true;
@@ -4247,30 +4234,29 @@ namespace ZenUnit
    {
       friend class TestClassRunnerRunnerTests;
    private:
-      using TwoArgMemberForEacherType = TwoArgMemberForEacher<
-         std::unique_ptr<TestClassRunner>,
-         TestClassRunnerRunner,
-         void(TestClassRunnerRunner::*)(std::unique_ptr<TestClassRunner>&, const std::vector<RunFilter>&),
-         const std::vector<RunFilter>&>;
-      std::unique_ptr<const TwoArgMemberForEacherType> _twoArgMemberForEacher;
-
+      std::unique_ptr<const Sorter<std::vector<std::unique_ptr<TestClassRunner>>>> _sorter;
+      std::unique_ptr<const Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>> _transformer;
       using TwoArgMemberAnyerType = TwoArgMemberAnyer<
          std::vector<RunFilter>,
          TestClassRunnerRunner,
          bool(TestClassRunnerRunner::*)(const RunFilter&, const TestClassRunner*) const,
          const TestClassRunner*>;
       std::unique_ptr<const TwoArgMemberAnyerType> _twoArgMemberAnyer;
-
-      std::unique_ptr<const Sorter<std::vector<std::unique_ptr<TestClassRunner>>>> _sorter;
-      std::unique_ptr<const Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>> _transformer;
+      using TwoArgMemberForEacherType = TwoArgMemberForEacher<
+         std::unique_ptr<TestClassRunner>,
+         TestClassRunnerRunner,
+         void(TestClassRunnerRunner::*)(std::unique_ptr<TestClassRunner>&, const std::vector<RunFilter>&),
+         const std::vector<RunFilter>&>;
+      std::unique_ptr<const TwoArgMemberForEacherType> _twoArgMemberForEacher;
       std::unique_ptr<const Watch> _watch;
+
       std::vector<std::unique_ptr<TestClassRunner>> _testClassRunners;
    public:
       TestClassRunnerRunner() noexcept
-         : _twoArgMemberForEacher(std::make_unique<TwoArgMemberForEacherType>())
-         , _twoArgMemberAnyer(std::make_unique<TwoArgMemberAnyerType>())
-         , _sorter(std::make_unique<Sorter<std::vector<std::unique_ptr<TestClassRunner>>>>())
+         : _sorter(std::make_unique<Sorter<std::vector<std::unique_ptr<TestClassRunner>>>>())
          , _transformer(std::make_unique<Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>>())
+         , _twoArgMemberAnyer(std::make_unique<TwoArgMemberAnyerType>())
+         , _twoArgMemberForEacher(std::make_unique<TwoArgMemberForEacherType>())
          , _watch(std::make_unique<Watch>())
       {
       }
@@ -4374,13 +4360,13 @@ namespace ZenUnit
       friend class PreamblePrinterTests;
    private:
       std::unique_ptr<const Console> _console;
-      std::unique_ptr<const Watch> _watch;
       std::unique_ptr<const Environmentalist> _environmentalist;
+      std::unique_ptr<const Watch> _watch;
    public:
       PreamblePrinter() noexcept
          : _console(std::make_unique<Console>())
-         , _watch(std::make_unique<Watch>())
          , _environmentalist(std::make_unique<Environmentalist>())
+         , _watch(std::make_unique<Watch>())
       {
       }
 
@@ -4422,20 +4408,23 @@ namespace ZenUnit
       }
    };
 
-   template<typename CollectionType, typename ClassType, typename FunctionType>
+   template<typename CollectionType, typename ClassType, typename OneArgMemberFunctionPointerType>
    class MemberForEacher
    {
    public:
       MemberForEacher() noexcept = default;
       virtual ~MemberForEacher() = default;
 
-      virtual void MemberForEach(const CollectionType* collection, const ClassType* classInstancePointer, FunctionType func) const
+      virtual void MemberForEach(
+         const CollectionType* collection,
+         const ClassType* classInstancePointer,
+         OneArgMemberFunctionPointerType oneArgMemberFunctionPointer) const
       {
          const auto collectionConstEnd = collection->cend();
          for (auto iter = collection->cbegin(); iter != collectionConstEnd; ++iter)
          {
             const auto& element = *iter;
-            (classInstancePointer->*func)(element);
+            (classInstancePointer->*oneArgMemberFunctionPointer)(element);
          }
       }
    };
@@ -4444,8 +4433,10 @@ namespace ZenUnit
    {
       friend class TestRunResultTests;
       friend class Equalizer<TestRunResult>;
+
       using MemberForEacherTestClassResultsType = MemberForEacher<std::vector<TestClassResult>,
          TestRunResult, void(TestRunResult::*)(const TestClassResult&) const>;
+
       using MemberForEacherSkippedTestsType = MemberForEacher<std::vector<std::string>,
          TestRunResult, void(TestRunResult::*)(const std::string&) const>;
    private:

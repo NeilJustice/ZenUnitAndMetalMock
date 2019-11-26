@@ -14,13 +14,13 @@ namespace ZenUnit
 
    PreamblePrinter _preamblePrinter;
    const ConsoleMock* _consoleMock = nullptr;
-   const WatchMock* _watchMock = nullptr;
    const EnvironmentalistMock* _environmentalistMock = nullptr;
+   const WatchMock* _watchMock = nullptr;
 
    STARTUP
    {
-      _preamblePrinter._environmentalist.reset(_environmentalistMock = new EnvironmentalistMock);
       _preamblePrinter._console.reset(_consoleMock = new ConsoleMock);
+   _preamblePrinter._environmentalist.reset(_environmentalistMock = new EnvironmentalistMock);
       _preamblePrinter._watch.reset(_watchMock = new WatchMock);
    }
 
@@ -28,8 +28,8 @@ namespace ZenUnit
    {
       PreamblePrinter preamblePrinter;
       DELETE_TO_ASSERT_NEWED(preamblePrinter._console);
-      DELETE_TO_ASSERT_NEWED(preamblePrinter._watch);
       DELETE_TO_ASSERT_NEWED(preamblePrinter._environmentalist);
+      DELETE_TO_ASSERT_NEWED(preamblePrinter._watch);
    }
 
    TEST(PrintPreambleLinesAndGetStartTime_PrintsCommandLineAndStartTimeAndTestAndTestClassCounts_ReturnsStartTime)

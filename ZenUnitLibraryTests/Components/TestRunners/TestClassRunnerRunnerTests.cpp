@@ -30,24 +30,20 @@ namespace ZenUnit
    EVIDENCE
 
    TestClassRunnerRunner _testClassRunnerRunner;
-
-   using TwoArgMemberForEacherMockType = TwoArgMemberForEacherMock<
-      std::unique_ptr<TestClassRunner>,
-      TestClassRunnerRunner,
-      void(TestClassRunnerRunner::*)(std::unique_ptr<TestClassRunner>&, const std::vector<RunFilter>&),
-      const std::vector<RunFilter>&>;
-   TwoArgMemberForEacherMockType* _twoArgMemberForEacherMock = nullptr;
-
+   SorterMock<vector<unique_ptr<TestClassRunner>>>* _sorterMock = nullptr;
+   TransformerMock<unique_ptr<TestClassRunner>, TestClassResult>* _transformerMock = nullptr;
    using TwoArgMemberAnyerMockType = TwoArgMemberAnyerMock<
       std::vector<RunFilter>,
       TestClassRunnerRunner,
       bool(TestClassRunnerRunner::*)(const RunFilter&, const TestClassRunner*) const,
       const TestClassRunner*>;
    TwoArgMemberAnyerMockType* _twoArgMemberAnyerMock = nullptr;
-
-   SorterMock<vector<unique_ptr<TestClassRunner>>>* _sorterMock = nullptr;
-   using TransformerMockType = TransformerMock<unique_ptr<TestClassRunner>, TestClassResult>;
-   TransformerMockType* _transformerMock = nullptr;
+   using TwoArgMemberForEacherMockType = TwoArgMemberForEacherMock<
+      std::unique_ptr<TestClassRunner>,
+      TestClassRunnerRunner,
+      void(TestClassRunnerRunner::*)(std::unique_ptr<TestClassRunner>&, const std::vector<RunFilter>&),
+      const std::vector<RunFilter>&>;
+   TwoArgMemberForEacherMockType* _twoArgMemberForEacherMock = nullptr;
    WatchMock* _watchMock = nullptr;
 
    STARTUP
@@ -55,17 +51,17 @@ namespace ZenUnit
       _testClassRunnerRunner._twoArgMemberForEacher.reset(_twoArgMemberForEacherMock = new TwoArgMemberForEacherMockType);
       _testClassRunnerRunner._twoArgMemberAnyer.reset(_twoArgMemberAnyerMock = new TwoArgMemberAnyerMockType);
       _testClassRunnerRunner._sorter.reset(_sorterMock = new SorterMock<vector<unique_ptr<TestClassRunner>>>);
-      _testClassRunnerRunner._transformer.reset(_transformerMock = new TransformerMockType);
+      _testClassRunnerRunner._transformer.reset(_transformerMock = new TransformerMock<unique_ptr<TestClassRunner>, TestClassResult>);
       _testClassRunnerRunner._watch.reset(_watchMock = new WatchMock);
    }
 
    TEST(Constructor_NewsComponents)
    {
       TestClassRunnerRunner testClassRunnerRunner;
-      DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._twoArgMemberForEacher);
-      DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._twoArgMemberAnyer);
       DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._sorter);
       DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._transformer);
+      DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._twoArgMemberAnyer);
+      DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._twoArgMemberForEacher);
       DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._watch);
       IS_EMPTY(testClassRunnerRunner._testClassRunners);
    }
