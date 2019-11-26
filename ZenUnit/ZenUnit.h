@@ -4442,24 +4442,25 @@ namespace ZenUnit
          TestRunResult, void(TestRunResult::*)(const std::string&) const>;
    private:
       std::unique_ptr<const Console> _console;
-      std::unique_ptr<const Watch> _watch;
-      std::unique_ptr<const MemberForEacherTestClassResultsType> _memberForEacherTestClassResults;
       std::unique_ptr<const MemberForEacherSkippedTestsType> _memberForEacherSkippedTests;
+      std::unique_ptr<const MemberForEacherTestClassResultsType> _memberForEacherTestClassResults;
       std::unique_ptr<const ThreeArgForEacherType> _threeArgForEacher;
-      std::unique_ptr<TestFailureNumberer> _testFailureNumberer;
-      std::vector<std::string> _skippedTestClassNamesAndSkipReasons;
-      std::vector<std::string> _skippedFullTestNamesAndSkipReasons;
-      std::vector<TestClassResult> _testClassResults;
+      std::unique_ptr<const Watch> _watch;
+
       size_t _numberOfFailedTestCases;
+      std::vector<std::string> _skippedFullTestNamesAndSkipReasons;
+      std::vector<std::string> _skippedTestClassNamesAndSkipReasons;
+      std::vector<TestClassResult> _testClassResults;
+      std::unique_ptr<TestFailureNumberer> _testFailureNumberer;
    public:
       TestRunResult() noexcept
          : _console(std::make_unique<Console>())
-         , _watch(std::make_unique<Watch>())
-         , _memberForEacherTestClassResults(std::make_unique<MemberForEacherTestClassResultsType>())
          , _memberForEacherSkippedTests(std::make_unique<MemberForEacherSkippedTestsType>())
+         , _memberForEacherTestClassResults(std::make_unique<MemberForEacherTestClassResultsType>())
          , _threeArgForEacher(std::make_unique<ThreeArgForEacherType>())
-         , _testFailureNumberer(std::make_unique<TestFailureNumberer>())
+         , _watch(std::make_unique<Watch>())
          , _numberOfFailedTestCases(0)
+         , _testFailureNumberer(std::make_unique<TestFailureNumberer>())
       {
       }
 
@@ -4467,7 +4468,8 @@ namespace ZenUnit
 
       virtual void AddSkippedTest(const char* testClassName, const char* testName, const char* skipReason)
       {
-         const std::string fullTestNameAndSkipReason = String::Concat(testClassName, ".", testName, " because: ", skipReason);
+         const std::string fullTestNameAndSkipReason =
+            String::Concat(testClassName, ".", testName, " because: ", skipReason);
          _skippedFullTestNamesAndSkipReasons.push_back(fullTestNameAndSkipReason);
       }
 
@@ -4499,7 +4501,10 @@ namespace ZenUnit
       }
 
       virtual void PrintConclusionLines(
-         const std::string& startDateTime, size_t totalNumberOfTestCases, const std::string& testRunElapsedSeconds, const ZenUnitArgs& zenUnitArgs) const
+         const std::string& startDateTime,
+         size_t totalNumberOfTestCases,
+         const std::string& testRunElapsedSeconds,
+         const ZenUnitArgs& zenUnitArgs) const
       {
          assert_true(_numberOfFailedTestCases <= totalNumberOfTestCases);
          const Color greenOrRed = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
@@ -4558,7 +4563,8 @@ namespace ZenUnit
          {
             return 0;
          }
-         const bool haveSkippedTestsOrTestClasses = !_skippedFullTestNamesAndSkipReasons.empty() || !_skippedTestClassNamesAndSkipReasons.empty();
+         const bool haveSkippedTestsOrTestClasses =
+            !_skippedFullTestNamesAndSkipReasons.empty() || !_skippedTestClassNamesAndSkipReasons.empty();
          if (zenUnitArgs.noSkips && haveSkippedTestsOrTestClasses)
          {
             return 1;
@@ -4606,6 +4612,8 @@ namespace ZenUnit
    class ZeroArgMemberFunctionCaller
    {
    public:
+      virtual ~ZeroArgMemberFunctionCaller() = default;
+
       virtual ReturnType ConstCall(const ClassType* classPointer, ReturnType (ClassType::*constMemberFunction)() const) const
       {
          return (classPointer->*constMemberFunction)();
@@ -4615,20 +4623,22 @@ namespace ZenUnit
       {
          return (classPointer->*nonConstMemberFunction)();
       }
-
-      virtual ~ZeroArgMemberFunctionCaller() = default;
    };
 
    template<typename ReturnType, typename ClassType, typename Arg1Type, typename Arg2Type>
    class TwoArgMemberFunctionCaller
    {
    public:
-      virtual ReturnType ConstCall(const ClassType* classPointer, ReturnType(ClassType::*constMemberFunction)(Arg1Type, Arg2Type) const, Arg1Type arg1, Arg2Type arg2) const
+      virtual ~TwoArgMemberFunctionCaller() = default;
+
+      virtual ReturnType ConstCall(
+         const ClassType* classPointer,
+         ReturnType(ClassType::*constMemberFunction)(Arg1Type, Arg2Type) const,
+         Arg1Type arg1,
+         Arg2Type arg2) const
       {
          return (classPointer->*constMemberFunction)(arg1, arg2);
       }
-
-      virtual ~TwoArgMemberFunctionCaller() = default;
    };
 
    class Stopwatch
@@ -4699,6 +4709,7 @@ namespace ZenUnit
       std::unique_ptr<const OneArgMemberFunctionCaller<void, ZenUnitTestRunner, unsigned>> _voidOneArgMemberFunctionCaller;
       std::unique_ptr<const TwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>> _nonVoidTwoArgMemberFunctionCaller;
       std::unique_ptr<const ZeroArgMemberFunctionCaller<void, ZenUnitTestRunner>> _voidZeroArgMemberFunctionCaller;
+
       std::unique_ptr<Stopwatch> _testRunStopwatch;
       std::unique_ptr<TestClassRunnerRunner> _testClassRunnerRunner;
       std::unique_ptr<TestRunResult> _testRunResult;
@@ -4829,6 +4840,7 @@ namespace ZenUnit
       std::unique_ptr<const TwoArgMemberFunctionCaller<void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>> _voidTwoArgMemberFunctionCaller;
       std::unique_ptr<const Watch> _watch;
       std::function<const ZenUnitArgs&()> _call_ZenUnitTestRunner_GetZenUnitArgs;
+
       std::unique_ptr<Stopwatch> _testPhaseStopwatch;
    public:
       TestPhaseRunner() noexcept
@@ -4905,7 +4917,8 @@ namespace ZenUnit
       virtual ~TestResultFactory() = default;
 
       virtual TestResult MakeConstructorFail(
-         const FullTestName& fullTestName, const TestPhaseResult& constructorTestPhaseResult) const
+         const FullTestName& fullTestName,
+         const TestPhaseResult& constructorTestPhaseResult) const
       {
          return TestResult::ConstructorFail(fullTestName, constructorTestPhaseResult);
       }
@@ -4917,7 +4930,10 @@ namespace ZenUnit
          const TestPhaseResult& destructorTestPhaseResult) const
       {
          return TestResult::StartupFail(
-            fullTestName, constructorTestPhaseResult, startupTestPhaseResult, destructorTestPhaseResult);
+            fullTestName,
+            constructorTestPhaseResult,
+            startupTestPhaseResult,
+            destructorTestPhaseResult);
       }
 
       virtual TestResult MakeCtorDtorSuccess(
@@ -4925,8 +4941,7 @@ namespace ZenUnit
          const TestPhaseResult& constructorTestPhaseResult,
          const TestPhaseResult& destructorTestPhaseResult) const
       {
-         return TestResult::CtorDtorSuccess(
-            fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
+         return TestResult::CtorDtorSuccess(fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
       }
 
       virtual TestResult MakeFullTestResult(
@@ -4985,6 +5000,7 @@ namespace ZenUnit
       }
 
       virtual void WritePostTestNameMessage(const Console*) const {}
+
       virtual void WritePostTestCompletionMessage(const Console*, const TestResult&) const {}
 
       virtual size_t NumberOfTestCases() const
@@ -5029,29 +5045,48 @@ namespace ZenUnit
    protected:
       TestResult BaseRunTest()
       {
-         const TestPhaseResult constructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
+         const TestPhaseResult constructorTestPhaseResult = _testPhaseRunner->RunTestPhase(
+            &Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorTestPhaseResult.testOutcome != TestOutcome::Success)
          {
-            const TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(_protected_fullTestName, constructorTestPhaseResult);
+            const TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(
+               _protected_fullTestName, constructorTestPhaseResult);
             return constructorFailTestResult;
          }
-         const TestPhaseResult startupTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallStartup, this, TestPhase::Startup);
+
+         const TestPhaseResult startupTestPhaseResult = _testPhaseRunner->RunTestPhase(
+            &Test::CallStartup, this, TestPhase::Startup);
          if (startupTestPhaseResult.testOutcome != TestOutcome::Success)
          {
-            const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-            const TestResult startupFailTestResult = _testResultFactory->MakeStartupFail(_protected_fullTestName, constructorTestPhaseResult, startupTestPhaseResult, destructorTestPhaseResult);
+            const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(
+               &Test::CallDeleteTestClass, this, TestPhase::Destructor);
+            const TestResult startupFailTestResult = _testResultFactory->MakeStartupFail(
+               _protected_fullTestName, constructorTestPhaseResult, startupTestPhaseResult, destructorTestPhaseResult);
             return startupFailTestResult;
          }
-         const TestPhaseResult testBodyTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallTestBody, this, TestPhase::TestBody);
-         const TestPhaseResult cleanupTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallCleanup, this, TestPhase::Cleanup);
-         const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+
+         const TestPhaseResult testBodyTestPhaseResult = _testPhaseRunner->RunTestPhase(
+            &Test::CallTestBody, this, TestPhase::TestBody);
+
+         const TestPhaseResult cleanupTestPhaseResult = _testPhaseRunner->RunTestPhase(
+            &Test::CallCleanup, this, TestPhase::Cleanup);
+
+         const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(
+            &Test::CallDeleteTestClass, this, TestPhase::Destructor);
+
          const TestResult testResult = _testResultFactory->MakeFullTestResult(
-            _protected_fullTestName, constructorTestPhaseResult, startupTestPhaseResult, testBodyTestPhaseResult, cleanupTestPhaseResult, destructorTestPhaseResult);
+            _protected_fullTestName,
+            constructorTestPhaseResult,
+            startupTestPhaseResult,
+            testBodyTestPhaseResult,
+            cleanupTestPhaseResult,
+            destructorTestPhaseResult);
          return testResult;
       }
    };
 
-   inline TestPhaseResult TestPhaseRunner::RunTestPhase(void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const
+   inline TestPhaseResult TestPhaseRunner::RunTestPhase(
+      void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const
    {
       _testPhaseStopwatch->Start();
       TestPhaseResult testPhaseResult(testPhase);
@@ -5078,20 +5113,20 @@ namespace ZenUnit
                + std::to_string(exitCode) + ".", exitCode);
          }
       }
-      catch (const std::exception& e)
+      catch (const std::exception& ex)
       {
-         PopulateTestPhaseResultWithExceptionInformation(e, &testPhaseResult);
+         PopulateTestPhaseResultWithExceptionInformation(ex, &testPhaseResult);
          _console->WriteColor("\n================\nException Thrown\n================", Color::Red);
          const char* const testPhaseSuffix = _testPhaseTranslator->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          const std::string exceptionTypeNameAndWhat = String::Concat('\n',
-            "  Type: ", *Type::GetName(e), '\n',
-            "what(): \"", e.what(), "\"");
+            "  Type: ", *Type::GetName(ex), '\n',
+            "what(): \"", ex.what(), "\"");
          _console->WriteLine(exceptionTypeNameAndWhat);
       }
-      catch (const ZenMockException& e)
+      catch (const ZenMockException& ex)
       {
-         const std::string exceptionTypeName = *Type::GetName(e);
+         const std::string exceptionTypeName = *Type::GetName(ex);
          const char* const testPhaseSuffix = _testPhaseTranslator->TestPhaseToTestPhaseSuffix(testPhase);
          const size_t equalsSignsLength = exceptionTypeName.size() + strlen(testPhaseSuffix);
          const std::string equalsSigns(equalsSignsLength, '=');
@@ -5100,8 +5135,8 @@ namespace ZenUnit
             exceptionTypeName, testPhaseSuffix, '\n',
             equalsSigns);
          _console->WriteLineColor(exceptionTypeNameFourLines, Color::Red);
-         PopulateTestPhaseResultWithExceptionInformation(e, &testPhaseResult);
-         const std::string testPhaseSuffixAndExceptionWhatLine = String::Concat("what(): \"", e.what(), "\"");
+         PopulateTestPhaseResultWithExceptionInformation(ex, &testPhaseResult);
+         const std::string testPhaseSuffixAndExceptionWhatLine = String::Concat("what(): \"", ex.what(), "\"");
          _console->WriteLine(testPhaseSuffixAndExceptionWhatLine);
       }
       catch (...)
@@ -5109,8 +5144,10 @@ namespace ZenUnit
          FailFastDueToDotDotDotException(zenUnitArgs, testPhase);
          return TestPhaseResult();
       }
-      _voidTwoArgMemberFunctionCaller->ConstCall(
-         this, &TestPhaseRunner::FailFastIfTestOutcomeIsNotSuccessAndFailFastModeIsTrue, testPhaseResult.testOutcome, zenUnitArgs);
+      _voidTwoArgMemberFunctionCaller->ConstCall(this,
+         &TestPhaseRunner::FailFastIfTestOutcomeIsNotSuccessAndFailFastModeIsTrue,
+         testPhaseResult.testOutcome,
+         zenUnitArgs);
       return testPhaseResult;
    }
 
@@ -5140,15 +5177,19 @@ namespace ZenUnit
       std::vector<TestResult> RunTest() override
       {
          _testPhaseStopwatch->Start();
-         const TestPhaseResult constructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
+         const TestPhaseResult constructorTestPhaseResult = _testPhaseRunner->RunTestPhase(
+            &Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorTestPhaseResult.testOutcome != TestOutcome::Success)
          {
-            TestResult constructorFail = _testResultFactory->MakeConstructorFail(_protected_fullTestName, constructorTestPhaseResult);
+            TestResult constructorFail = _testResultFactory->MakeConstructorFail(
+               _protected_fullTestName, constructorTestPhaseResult);
             constructorFail.microseconds = _testPhaseStopwatch->StopAndGetElapsedMicroseconds();
             return { constructorFail };
          }
-         const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-         TestResult testResult = _testResultFactory->MakeCtorDtorSuccess(_protected_fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
+         const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(
+            &Test::CallDeleteTestClass, this, TestPhase::Destructor);
+         TestResult testResult = _testResultFactory->MakeCtorDtorSuccess(
+            _protected_fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
          testResult.microseconds = _testPhaseStopwatch->StopAndGetElapsedMicroseconds();
          return { testResult };
       }
@@ -5186,10 +5227,10 @@ namespace ZenUnit
          const RunFilter&), const RunFilter&>;
       std::unique_ptr<const TwoArgTestAnyerType> _twoArgTestAnyer;
       std::function<const ZenUnitArgs&()> _call_ZenUnitTestRunner_GetZenUnitArgs;
+
       const char* _testClassName;
       NewableDeletableTest<TestClassType> _newableDeletableTest;
       std::vector<std::unique_ptr<Test>> _tests;
-
       TestClassResult _testClassResult;
    public:
       explicit SpecificTestClassRunner(const char* testClassName)
@@ -6217,63 +6258,162 @@ Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
       }
 
       template<typename Arg1Type, typename... TestCaseArgTypes>
-      static std::nullptr_t RegisterTest1X1(const PmfToken* pmfToken, void (DerivedTestClass::*test1X1Function)(size_t, Arg1Type), const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
+      static std::nullptr_t RegisterTest1X1(
+         const PmfToken* pmfToken,
+         void (DerivedTestClass::*test1X1Function)(size_t, Arg1Type),
+         const char* testName,
+         const char* testCaseArgsText,
+         TestCaseArgTypes&&... testCaseArgs)
       {
-         return RegisterTestNXN(pmfToken, [&]{ return new ZenUnit::Test1X1<DerivedTestClass, Arg1Type, TestCaseArgTypes...>(DerivedTestClass::ZenUnit_testClassName, testName, test1X1Function, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...); });
+         return RegisterTestNXN(pmfToken, [&]
+         {
+            return new ZenUnit::Test1X1<DerivedTestClass, Arg1Type, TestCaseArgTypes...>(
+               DerivedTestClass::ZenUnit_testClassName, testName, test1X1Function, testCaseArgsText,
+               std::forward<TestCaseArgTypes>(testCaseArgs)...);
+         });
       }
 
       template<typename Arg1Type, typename Arg2Type, typename... TestCaseArgTypes>
-      static std::nullptr_t RegisterTest2X2(const PmfToken* pmfToken, void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type), const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
+      static std::nullptr_t RegisterTest2X2(
+         const PmfToken* pmfToken,
+         void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type),
+         const char* testName,
+         const char* testCaseArgsText,
+         TestCaseArgTypes&&... testCaseArgs)
       {
-         return RegisterTestNXN(pmfToken, [&]{ return new ZenUnit::Test2X2<DerivedTestClass, Arg1Type, Arg2Type, TestCaseArgTypes...>(DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...); });
+         return RegisterTestNXN(pmfToken, [&]
+         {
+            return new ZenUnit::Test2X2<DerivedTestClass, Arg1Type, Arg2Type, TestCaseArgTypes...>(
+               DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
+               std::forward<TestCaseArgTypes>(testCaseArgs)...);
+         });
       }
 
       template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename... TestCaseArgTypes>
-      static std::nullptr_t RegisterTest3X3(const PmfToken* pmfToken, void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type), const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
+      static std::nullptr_t RegisterTest3X3(
+         const PmfToken* pmfToken,
+         void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type),
+         const char* testName,
+         const char* testCaseArgsText,
+         TestCaseArgTypes&&... testCaseArgs)
       {
-         return RegisterTestNXN(pmfToken, [&]{ return new ZenUnit::Test3X3<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, TestCaseArgTypes...>(DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...); });
+         return RegisterTestNXN(pmfToken, [&]
+         {
+            return new ZenUnit::Test3X3<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, TestCaseArgTypes...>(
+               DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
+               std::forward<TestCaseArgTypes>(testCaseArgs)...);
+         });
       }
 
       template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename... TestCaseArgTypes>
-      static std::nullptr_t RegisterTest4X4(const PmfToken* pmfToken, void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type), const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
+      static std::nullptr_t RegisterTest4X4(
+         const PmfToken* pmfToken,
+         void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type),
+         const char* testName,
+         const char* testCaseArgsText,
+         TestCaseArgTypes&&... testCaseArgs)
       {
-         return RegisterTestNXN(pmfToken, [&]{ return new ZenUnit::Test4X4<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, TestCaseArgTypes...>(DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...); });
+         return RegisterTestNXN(pmfToken, [&]
+         {
+            return new ZenUnit::Test4X4<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, TestCaseArgTypes...>(
+               DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
+               std::forward<TestCaseArgTypes>(testCaseArgs)...);
+         });
       }
 
       template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename... TestCaseArgTypes>
-      static std::nullptr_t RegisterTest5X5(const PmfToken* pmfToken, void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type), const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
+      static std::nullptr_t RegisterTest5X5(
+         const PmfToken* pmfToken,
+         void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type),
+         const char* testName,
+         const char* testCaseArgsText,
+         TestCaseArgTypes&&... testCaseArgs)
       {
-         return RegisterTestNXN(pmfToken, [&]{ return new ZenUnit::Test5X5<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, TestCaseArgTypes...>(DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...); });
+         return RegisterTestNXN(pmfToken, [&]
+         {
+            return new ZenUnit::Test5X5<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, TestCaseArgTypes...>(
+               DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
+               std::forward<TestCaseArgTypes>(testCaseArgs)...);
+         });
       }
 
       template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename... TestCaseArgTypes>
-      static std::nullptr_t RegisterTest6X6(const PmfToken* pmfToken, void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type), const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
+      static std::nullptr_t RegisterTest6X6(
+         const PmfToken* pmfToken,
+         void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type),
+         const char* testName,
+         const char* testCaseArgsText,
+         TestCaseArgTypes&&... testCaseArgs)
       {
-         return RegisterTestNXN(pmfToken, [&]{ return new ZenUnit::Test6X6<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, TestCaseArgTypes...>(DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...); });
+         return RegisterTestNXN(pmfToken, [&]
+         {
+            return new ZenUnit::Test6X6<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, TestCaseArgTypes...>(
+               DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
+               std::forward<TestCaseArgTypes>(testCaseArgs)...);
+         });
       }
 
       template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename... TestCaseArgTypes>
-      static std::nullptr_t RegisterTest7X7(const PmfToken* pmfToken, void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type), const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
+      static std::nullptr_t RegisterTest7X7(
+         const PmfToken* pmfToken,
+         void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type),
+         const char* testName,
+         const char* testCaseArgsText,
+         TestCaseArgTypes&&... testCaseArgs)
       {
-         return RegisterTestNXN(pmfToken, [&]{ return new ZenUnit::Test7X7<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, TestCaseArgTypes...>(DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...); });
+         return RegisterTestNXN(pmfToken, [&]
+         {
+            return new ZenUnit::Test7X7<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, TestCaseArgTypes...>(
+               DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
+               std::forward<TestCaseArgTypes>(testCaseArgs)...);
+         });
       }
 
       template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename... TestCaseArgTypes>
-      static std::nullptr_t RegisterTest8X8(const PmfToken* pmfToken, void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type), const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
+      static std::nullptr_t RegisterTest8X8(
+         const PmfToken* pmfToken,
+         void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type),
+         const char* testName,
+         const char* testCaseArgsText,
+         TestCaseArgTypes&&... testCaseArgs)
       {
-         return RegisterTestNXN(pmfToken, [&]{ return new ZenUnit::Test8X8<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, TestCaseArgTypes...>(DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...); });
+         return RegisterTestNXN(pmfToken, [&]
+         {
+            return new ZenUnit::Test8X8<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, TestCaseArgTypes...>(
+               DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
+               std::forward<TestCaseArgTypes>(testCaseArgs)...); });
       }
 
       template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type, typename... TestCaseArgTypes>
-      static std::nullptr_t RegisterTest9X9(const PmfToken* pmfToken, void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type), const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
+      static std::nullptr_t RegisterTest9X9(
+         const PmfToken* pmfToken,
+         void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type),
+         const char* testName,
+         const char* testCaseArgsText,
+         TestCaseArgTypes&&... testCaseArgs)
       {
-         return RegisterTestNXN(pmfToken, [&]{ return new ZenUnit::Test9X9<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, TestCaseArgTypes...>(DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...); });
+         return RegisterTestNXN(pmfToken, [&]
+         {
+            return new ZenUnit::Test9X9<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, TestCaseArgTypes...>(
+               DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
+               std::forward<TestCaseArgTypes>(testCaseArgs)...);
+         });
       }
 
       template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type, typename Arg10Type, typename... TestCaseArgTypes>
-      static std::nullptr_t RegisterTest10X10(const PmfToken* pmfToken, void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type), const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
+      static std::nullptr_t RegisterTest10X10(
+         const PmfToken* pmfToken,
+         void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type),
+         const char* testName,
+         const char* testCaseArgsText,
+         TestCaseArgTypes&&... testCaseArgs)
       {
-         return RegisterTestNXN(pmfToken, [&]{ return new ZenUnit::Test10X10<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, TestCaseArgTypes...>(DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...); });
+         return RegisterTestNXN(pmfToken, [&]
+         {
+            return new ZenUnit::Test10X10<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, TestCaseArgTypes...>(
+               DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
+               std::forward<TestCaseArgTypes>(testCaseArgs)...);
+         });
       }
    };
 
@@ -6449,9 +6589,6 @@ Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
       const long long adjustedInclusiveMinValue = inclusiveMinValue < 0 ? 0 : inclusiveMinValue;
       const unsigned long long adjustedInclusiveMaxValue =
          inclusiveMinValue < 0 ? 2 * inclusiveMaxValue + 1 : inclusiveMaxValue;
-#if _WIN32
-      const
-#endif
       std::uniform_int_distribution<unsigned long long>
          distribution(adjustedInclusiveMinValue, adjustedInclusiveMaxValue);
       const unsigned long long randomValueUnsignedLongLong = distribution(defaultRandomEngine);
@@ -6483,9 +6620,6 @@ Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
    inline float Random<float>()
    {
       static std::default_random_engine defaultRandomEngine(ZenUnitRandomSeed::value);
-#if _WIN32
-      const
-#endif
       std::uniform_real_distribution<float> uniformFloatDistribution(
          std::numeric_limits<float>::min(), std::numeric_limits<float>::max());
       const float randomFloat = uniformFloatDistribution(defaultRandomEngine);
@@ -6496,9 +6630,6 @@ Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
    inline double Random<double>()
    {
       static std::default_random_engine defaultRandomEngine(ZenUnitRandomSeed::value);
-#if _WIN32
-      const
-#endif
       std::uniform_real_distribution<double> uniformDoubleDistribution(
          std::numeric_limits<double>::min(), std::numeric_limits<double>::max());
       const double randomDouble = uniformDoubleDistribution(defaultRandomEngine);
@@ -6680,6 +6811,7 @@ Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
    class RandomGenerator
    {
    public:
+      virtual ~RandomGenerator() = default;
       virtual char Char() const { return ZenUnit::Random<char>(); }
       virtual unsigned char UnsignedChar() const { return ZenUnit::Random<unsigned char>(); }
       virtual bool Bool() const { return ZenUnit::Random<bool>(); }
@@ -6710,14 +6842,12 @@ Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
       {
          return ZenUnit::RandomNonEmptyVector<T>();
       }
-
-      virtual ~RandomGenerator() = default;
    };
 
    inline int RunTests(int argc, char* argv[])
    {
       const std::vector<std::string> stringArgs = Vector::FromArgcArgv(argc, argv);
-      ZenUnitTestRunner* zenUnitTestRunner = ZenUnitTestRunner::Instance();
+      ZenUnitTestRunner* const zenUnitTestRunner = ZenUnitTestRunner::Instance();
       const int exitCode = zenUnitTestRunner->RunTests(stringArgs);
       return exitCode;
    }

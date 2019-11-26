@@ -34,41 +34,43 @@ namespace ZenUnit
 
    TestRunResult _testRunResult;
    const ConsoleMock* _consoleMock = nullptr;
-   const WatchMock* _watchMock = nullptr;
-   TestFailureNumbererMock* _testFailureNumbererMock = nullptr;
-
-   using TypedefMemberForEacherTestClassResultsMock = MemberForEacherMock<vector<TestClassResult>,
-      TestRunResult, void(TestRunResult::*)(const TestClassResult&) const>;
-   TypedefMemberForEacherTestClassResultsMock* _memberForEacherTestClassResultsMock = nullptr;
 
    using TypedefMemberForEacherSkippedTestsMock = MemberForEacherMock<vector<string>,
       TestRunResult, void(TestRunResult::*)(const string&) const>;
    TypedefMemberForEacherSkippedTestsMock* _memberForEacherSkippedTestsMock = nullptr;
 
+   using TypedefMemberForEacherTestClassResultsMock = MemberForEacherMock<vector<TestClassResult>,
+      TestRunResult, void(TestRunResult::*)(const TestClassResult&) const>;
+   TypedefMemberForEacherTestClassResultsMock* _memberForEacherTestClassResultsMock = nullptr;
+
+   const WatchMock* _watchMock = nullptr;
+   TestFailureNumbererMock* _testFailureNumbererMock = nullptr;
+
    STARTUP
    {
       _testRunResult._console.reset(_consoleMock = new ConsoleMock);
-      _testRunResult._watch.reset(_watchMock = new WatchMock);
-      _testRunResult._testFailureNumberer.reset(_testFailureNumbererMock = new TestFailureNumbererMock);
-      _testRunResult._memberForEacherTestClassResults.reset(
-         _memberForEacherTestClassResultsMock = new TypedefMemberForEacherTestClassResultsMock);
       _testRunResult._memberForEacherSkippedTests.reset(
          _memberForEacherSkippedTestsMock = new TypedefMemberForEacherSkippedTestsMock);
+      _testRunResult._memberForEacherTestClassResults.reset(
+         _memberForEacherTestClassResultsMock = new TypedefMemberForEacherTestClassResultsMock);
+      _testRunResult._testFailureNumberer.reset(_testFailureNumbererMock = new TestFailureNumbererMock);
+      _testRunResult._watch.reset(_watchMock = new WatchMock);
    }
 
    TEST(Constructor_NewsComponents)
    {
       TestRunResult testRunResult;
       DELETE_TO_ASSERT_NEWED(testRunResult._console);
-      DELETE_TO_ASSERT_NEWED(testRunResult._watch);
-      DELETE_TO_ASSERT_NEWED(testRunResult._memberForEacherTestClassResults);
       DELETE_TO_ASSERT_NEWED(testRunResult._memberForEacherSkippedTests);
+      DELETE_TO_ASSERT_NEWED(testRunResult._memberForEacherTestClassResults);
       DELETE_TO_ASSERT_NEWED(testRunResult._threeArgForEacher);
-      DELETE_TO_ASSERT_NEWED(testRunResult._testFailureNumberer);
-      IS_EMPTY(testRunResult._testClassResults);
-      IS_EMPTY(testRunResult._skippedTestClassNamesAndSkipReasons);
-      IS_EMPTY(testRunResult._skippedFullTestNamesAndSkipReasons);
+      DELETE_TO_ASSERT_NEWED(testRunResult._watch);
+
       ARE_EQUAL(0, testRunResult._numberOfFailedTestCases);
+      IS_EMPTY(testRunResult._skippedFullTestNamesAndSkipReasons);
+      IS_EMPTY(testRunResult._skippedTestClassNamesAndSkipReasons);
+      IS_EMPTY(testRunResult._testClassResults);
+      DELETE_TO_ASSERT_NEWED(testRunResult._testFailureNumberer);
    }
 
    TEST(AddSkippedTest_AddsTestClassNameDotTestNameToSkippedFullTestNamesVector)
