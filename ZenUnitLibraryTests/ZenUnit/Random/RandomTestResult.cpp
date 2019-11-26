@@ -23,8 +23,8 @@ namespace ZenUnit
       randomTestResult.responsibleTestPhaseResultField = nullptr;
       randomTestResult.testOutcome = static_cast<TestOutcome>(randomGenerator.Enum(static_cast<int>(TestOutcome::MaxValue)));
       randomTestResult.microseconds = randomGenerator.UnsignedInt();
-      randomTestResult.testCaseNumber = randomGenerator.UnsignedLongLong();
-      randomTestResult.totalTestCases = randomGenerator.UnsignedLongLong();
+      randomTestResult.testCaseNumber = randomGenerator.SizeT();
+      randomTestResult.totalTestCases = randomGenerator.SizeT();
       return randomTestResult;
    }
 }

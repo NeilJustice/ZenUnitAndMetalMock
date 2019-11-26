@@ -4783,6 +4783,7 @@ namespace ZenMock
 
       ZENMOCK_NONVOID0_CONST(long long, LongLong)
       ZENMOCK_NONVOID0_CONST(unsigned long long, UnsignedLongLong)
+      ZENMOCK_NONVOID0_CONST(size_t, SizeT)
 
       ZENMOCK_NONVOID0_CONST(float, Float)
       ZENMOCK_NONVOID0_CONST(double, Double)

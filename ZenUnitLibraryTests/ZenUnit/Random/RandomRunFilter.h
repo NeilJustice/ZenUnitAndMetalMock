@@ -7,7 +7,7 @@ namespace ZenUnit
       RunFilter randomRunFilter;
       randomRunFilter.testClassNamePattern = randomGenerator.String();
       randomRunFilter.testNamePattern = randomGenerator.String();
-      randomRunFilter.testCaseNumber = randomGenerator.UnsignedLongLong();
+      randomRunFilter.testCaseNumber = randomGenerator.SizeT();
       return randomRunFilter;
    }
 

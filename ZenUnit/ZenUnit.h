@@ -2766,7 +2766,8 @@ namespace ZenUnit
    {
    public:
       template<typename MapType, typename KeyType, typename ValueType>
-      static const ValueType* InsertKeyAndValueWithoutOverwritingKey(MapType& m, const KeyType& key, const ValueType& value)
+      static const ValueType* InsertKeyAndValueWithoutOverwritingKey(
+         MapType& m, const KeyType& key, const ValueType& value)
       {
          const std::pair<typename MapType::const_iterator, bool> insertIterAndDidInsert = m.insert(std::make_pair(key, value));
          if (!insertIterAndDidInsert.second)
@@ -6689,6 +6690,7 @@ Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
       virtual int Enum(int exclusiveMaxValue) const { return ZenUnit::RandomBetween<int>(0, static_cast<unsigned long long>(exclusiveMaxValue) - 1); }
       virtual long long LongLong() const { return ZenUnit::Random<long long>(); }
       virtual unsigned long long UnsignedLongLong() const { return ZenUnit::Random<unsigned long long>(); }
+      virtual size_t SizeT() const { return ZenUnit::Random<size_t>(); }
       virtual float Float() const { return ZenUnit::Random<float>(); }
       virtual double Double() const { return ZenUnit::Random<double>(); }
       virtual const char* ConstCharPointer() const { return ZenUnit::Random<const char*>(); }

@@ -20,12 +20,12 @@ TEST(TestableRandomRunFilter_ReturnsRunFilterWithAllRandomFields)
    const string testNamePattern = ZenUnit::Random<string>();
    randomGeneratorMock.StringMock.ReturnValues(testClassNamePattern, testNamePattern);
 
-   const size_t testCaseNumber = randomGeneratorMock.UnsignedLongLongMock.ReturnRandom();
+   const size_t testCaseNumber = randomGeneratorMock.SizeTMock.ReturnRandom();
    //
    const RunFilter randomRunFilter = TestableRandomRunFilter(randomGeneratorMock);
    //
    ZENMOCK(randomGeneratorMock.StringMock.CalledNTimes(2));
-   ZENMOCK(randomGeneratorMock.UnsignedLongLongMock.CalledOnce());
+   ZENMOCK(randomGeneratorMock.SizeTMock.CalledOnce());
    RunFilter expectedRandomRunFilter;
    expectedRandomRunFilter.testClassNamePattern = testClassNamePattern;
    expectedRandomRunFilter.testNamePattern = testNamePattern;

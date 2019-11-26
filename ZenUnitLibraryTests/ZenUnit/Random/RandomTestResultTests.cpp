@@ -25,15 +25,15 @@ namespace ZenUnit
 
       const unsigned microseconds = randomGeneratorMock.UnsignedIntMock.ReturnRandom();
 
-      const unsigned long long testCaseNumber = ZenUnit::Random<unsigned long long>();
-      const unsigned long long totalTestCases = ZenUnit::Random<unsigned long long>();
-      randomGeneratorMock.UnsignedLongLongMock.ReturnValues(testCaseNumber, totalTestCases);
+      const size_t testCaseNumber = ZenUnit::Random<size_t>();
+      const size_t totalTestCases = ZenUnit::Random<size_t>();
+      randomGeneratorMock.SizeTMock.ReturnValues(testCaseNumber, totalTestCases);
       //
       const TestResult randomTestResult = TestableRandomTestResult(randomGeneratorMock);
       //
       ZENMOCK(randomGeneratorMock.EnumMock.CalledOnceWith(static_cast<int>(TestOutcome::MaxValue)));
       ZENMOCK(randomGeneratorMock.UnsignedIntMock.CalledOnce());
-      ZENMOCK(randomGeneratorMock.UnsignedLongLongMock.CalledNTimes(2));
+      ZENMOCK(randomGeneratorMock.SizeTMock.CalledNTimes(2));
 
       IS_NOT_DEFAULT_VALUE(randomTestResult.fullTestName);
       IS_NOT_DEFAULT_VALUE(randomTestResult.constructorTestPhaseResult);
