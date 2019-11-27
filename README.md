@@ -223,16 +223,10 @@ git clone https://github.com/NeilJustice/ZenUnitAndZenMock --depth 1
 
 cd ZenUnitAndZenMock
 
-# Substitute C:\usr_local with the folder path where you prefer to install C++ header files
+# Substitute C:\usr_local with the folder path where you install C++ header files
 cmake . -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=C:\usr_local
 
-# Builds these Debug unit test binaries then runs them as Visual Studio post-build events:
-# ZenMockTests\Debug\ZenMockTests.exe
-# ZenMockExamples\Debug\ZenMockExamples.exe
-# ZenUnitLibraryTests\Debug\ZenUnitLibraryTests.exe
-# ZenUnitUtilsAndAssertionTests\Debug\ZenUnitUtilsAndAssertionTests.exe
-# ZenUnitExamples\Debug\ZenUnitExamples.exe
-# Then copies
+# Builds and runs Debug unit test binaries then copies
 # ZenUnit.h to C:\usr_local\include\ZenUnit\ZenUnit.h and
 # ZenMock.h to C:\usr_local\include\ZenMock\ZenMock.h
 cmake --build . --target install
