@@ -6689,7 +6689,6 @@ Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
    template<>
    inline std::error_code Random<std::error_code>()
    {
-      const int randomErrorCodeValue = ZenUnit::Random<int>();
       const int randomIntBetween1And3 = ZenUnit::RandomBetween<int>(1, 3);
       const std::error_category* errorCategory = nullptr;
       if (randomIntBetween1And3 == 1)
@@ -6704,7 +6703,8 @@ Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
       {
          errorCategory = &std::system_category();
       }
-      std::error_code randomErrorCode(randomErrorCodeValue, *errorCategory);
+      const int randomErrorCodeValue = ZenUnit::Random<int>();
+      const std::error_code randomErrorCode(randomErrorCodeValue, *errorCategory);
       return randomErrorCode;
    }
 

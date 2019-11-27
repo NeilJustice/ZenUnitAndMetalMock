@@ -8,12 +8,14 @@ namespace ZenUnit
    AFACT(Random_Float_ReturnsRandomFloat)
    AFACT(Random_Double_ReturnsRandomDouble)
    AFACT(Random_ConstCharPointer_ReturnsRandomConstCharPointer1Through10)
+   AFACT(Random_ErrorCode_ReturnsEitherGenericCategoryOrIostreamCategoryOrSystemCategoryErrorCode)
    AFACT(Random_String_ReturnsRandomStringThatBeginsWithRandomString)
    AFACT(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
    EVIDENCE
 
    TEST(Random_AllIntegerTypes_ReturnsRandomValueBetweenMinAndMaxForThatType)
    {
+
       Random<char>();
       Random<unsigned char>();
       Random<short>();
@@ -53,6 +55,15 @@ namespace ZenUnit
    TEST(Random_ConstCharPointer_ReturnsRandomConstCharPointer1Through10)
    {
       Random<const char*>();
+   }
+
+   TEST(Random_ErrorCode_ReturnsEitherGenericCategoryOrIostreamCategoryOrSystemCategoryErrorCode)
+   {
+      // 100 iterations to coverage all three branches
+      for (size_t i = 0; i < 100; ++i)
+      {
+         Random<error_code>();
+      }
    }
 
    TEST(Random_String_ReturnsRandomStringThatBeginsWithRandomString)
