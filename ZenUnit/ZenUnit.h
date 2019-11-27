@@ -6651,8 +6651,7 @@ Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
       case 7: return "RandomConstCharPointer7";
       case 8: return "RandomConstCharPointer8";
       case 9: return "RandomConstCharPointer9";
-      case 10: return "RandomConstCharPointer10";
-      default: throw std::invalid_argument("unexpected non 1-10 int: " + std::to_string(randomIntBetween1And10));
+      default: assert_true(randomIntBetween1And10 == 10); return "RandomConstCharPointer10";
       }
    }
 

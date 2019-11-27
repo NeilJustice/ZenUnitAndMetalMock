@@ -7,6 +7,7 @@ namespace ZenUnit
    AFACT(RandomNon0_ReturnsRandomValueBetweenMinAndMaxForThatTypeButNeverZero)
    AFACT(Random_Float_ReturnsRandomFloat)
    AFACT(Random_Double_ReturnsRandomDouble)
+   AFACT(Random_ConstCharPointer_ReturnsRandomConstCharPointer1Through10)
    AFACT(Random_String_ReturnsRandomStringThatBeginsWithRandomString)
    AFACT(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
    EVIDENCE
@@ -47,6 +48,11 @@ namespace ZenUnit
    TEST(Random_Double_ReturnsRandomDouble)
    {
       Random<double>();
+   }
+
+   TEST(Random_ConstCharPointer_ReturnsRandomConstCharPointer1Through10)
+   {
+      Random<const char*>();
    }
 
    TEST(Random_String_ReturnsRandomStringThatBeginsWithRandomString)
