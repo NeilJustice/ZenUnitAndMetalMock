@@ -77,9 +77,9 @@ namespace ZenUnit
       {
          throw logic_error("message");
       }
-      catch (const exception& e)
+      catch (const exception& ex)
       {
-         ARE_EQUAL("std::logic_error", *Type::GetName(e));
+         ARE_EQUAL("std::logic_error", *Type::GetName(ex));
       }
    }
 
@@ -136,12 +136,12 @@ namespace ZenUnit
    // Disable unreference local variable because MSVC does not count decltype(localVariable) as referencing localVariable
    #pragma warning(disable: 4101)
    #endif
-      catch (const exception& e)
+      catch (const exception& ex)
    #if defined _WIN32
    #pragma warning(pop)
    #endif
       {
-         ARE_EQUAL("std::exception", *Type::GetName<decltype(e)>());
+         ARE_EQUAL("std::exception", *Type::GetName<decltype(ex)>());
       }
    }
 

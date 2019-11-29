@@ -54,9 +54,9 @@ namespace ZenUnit
    {
       TestClassResult testClassResult = TestClassResult::TestingNonDefault();
       //
-      TestClassResult copy(testClassResult);
+      TestClassResult copyOfTestClassResult(testClassResult);
       //
-      ARE_COPIES(copy, testClassResult);
+      ARE_COPIES(copyOfTestClassResult, testClassResult);
    }
 
    TEST(AssignmentOperator_CopiesForEacherAndTestResults)
@@ -94,12 +94,12 @@ namespace ZenUnit
    TEST(MoveAssignmentOperator_MovesForEacherAndTestResults)
    {
       TestClassResult testClassResult = TestClassResult::TestingNonDefault();
-      TestClassResult moved;
+      TestClassResult movedTestClassResult;
       //
-      moved = std::move(testClassResult);
+      movedTestClassResult = std::move(testClassResult);
       //
       ARE_EQUAL(TestClassResult(), testClassResult);
-      ARE_EQUAL(TestClassResult::TestingNonDefault(), moved);
+      ARE_EQUAL(TestClassResult::TestingNonDefault(), movedTestClassResult);
    }
 
    TEST(AddTestResults_AppendTestResultsToEndOfTestResultsVector)
@@ -129,16 +129,22 @@ namespace ZenUnit
    TEST(NumberOfFailedTestCases_ReturnsNumberOfNonSuccessTestsInTestResultsVector)
    {
       ARE_EQUAL(0, _testClassResult.NumberOfFailedTestCases());
+
       TestResult testFailure1;
       testFailure1.testOutcome = TestOutcome::Anomaly;
+
       TestResult testSuccess1;
       testSuccess1.testOutcome = TestOutcome::Success;
+
       TestResult testFailure2;
       testFailure2.testOutcome = TestOutcome::SuccessButPastDeadline;
+
       TestResult testSuccess2;
       testSuccess2.testOutcome = TestOutcome::Success;
+
       TestResult testFailure3;
       testFailure3.testOutcome = TestOutcome::Exception;
+
       _testClassResult._testResults = { testFailure1, testSuccess1, testFailure2, testSuccess2, testFailure3 };
       //
       const size_t numberOfFailedTestCases = _testClassResult.NumberOfFailedTestCases();
@@ -153,6 +159,7 @@ namespace ZenUnit
          const Console*, TestFailureNumberer*>;
       const TypedefThreeArgForEacherMock forEacherThreeArgsMock;
       forEacherThreeArgsMock.ThreeArgForEachMock.Expect();
+
       const Console console;
       TestFailureNumberer testFailureNumberer;
       //
@@ -189,8 +196,9 @@ namespace ZenUnit
       _testClassResultSelfMocked.NumberOfFailedTestCasesMock.Return(0);
       const long long sumOfTestResultMicroseconds =
          _testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.ReturnRandom();
-      const string oneDecimalPlaceMilliseconds = ZenUnit::Random<string>();
-      MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.Return(oneDecimalPlaceMilliseconds);
+
+      const string oneDecimalPlaceMilliseconds = MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
+
       ConsoleMock consoleMock;
       consoleMock.WriteMock.Expect();
       consoleMock.WriteColorMock.Expect();
@@ -214,7 +222,9 @@ namespace ZenUnit
    {
       _testClassResultSelfMocked.NumberOfFailedTestCasesMock.Return(numberOfFailedTestCases);
       const long long microseconds = _testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.ReturnRandom();
+
       const string oneDecimalPlaceMilliseconds = MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
+
       ConsoleMock consoleMock;
       consoleMock.WriteLineColorMock.Expect();
       //
@@ -230,6 +240,7 @@ namespace ZenUnit
    {
       TestResultMock testResultMock;
       testResultMock.PrintIfFailureMock.Expect();
+
       const Console console;
       TestFailureNumberer testFailureNumberer;
       //

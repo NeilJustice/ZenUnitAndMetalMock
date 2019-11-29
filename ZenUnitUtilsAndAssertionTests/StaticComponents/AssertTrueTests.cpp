@@ -23,10 +23,10 @@ namespace ZenUnit
       {
          assert_true(1 == 0);
       }
-      catch (const logic_error& e)
+      catch (const logic_error& ex)
       {
          REGEX_MATCHES(TestUtil::NewlineConcat("assert_true\\(1 == 0\\) failed in f\\(\\)",
-".*?File.cpp\\(1\\)"), e.what());
+".*?File.cpp\\(1\\)"), ex.what());
       }
    }
 
@@ -51,12 +51,12 @@ namespace ZenUnit
          X x;
          x();
       }
-      catch (const logic_error& e)
+      catch (const logic_error& ex)
       {
          const string expectedWhatPattern = String::Concat(
             "assert_true\\(false\\) failed in ", expectedOperatorParenthesesName, '\n',
             ".*File.cpp\\(1\\)");
-         const char* const what = e.what();
+         const char* const what = ex.what();
          REGEX_MATCHES(expectedWhatPattern, what);
          didThrowLogicError = true;
       }

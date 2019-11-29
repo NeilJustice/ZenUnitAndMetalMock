@@ -4,9 +4,9 @@
 namespace ZenMock
 {
    TESTS(UnexpectedCallExceptionTests)
-   FACTS(Constructor_SetsWhatToExpected_ClassIsSubclassOfZenMockException)
-   AFACT(Constructor_Void1Arg_SetsWhat_IncludesToStringedArg1)
-   AFACT(Constructor_Void2Args_SetsWhat_IncludesToStringedArg1AndArg2)
+   FACTS(OneArgumentConstructor_SetsWhatToExpectedMessage_ClassIsSubclassOfZenMockException)
+   AFACT(OneOrMoreArgumentsConstructor_Void1Arg_SetsWhat_IncludesToStringedArg1)
+   AFACT(OneOrMoreArgumentsConstructor_Void2Args_SetsWhat_IncludesToStringedArg1AndArg2)
    EVIDENCE
 
    const string ExpectedUnexpectedCallPrefix = "Unexpected call to ZenMocked function:\n";
@@ -17,44 +17,44 @@ namespace ZenMock
    const string VoidSignature1 = "void ClassName::FunctionName(int)";
    const string VoidSignature2 = "void ClassName::FunctionName(int, int)";
 
-   TEST1X1(Constructor_SetsWhatToExpected_ClassIsSubclassOfZenMockException,
+   TEST1X1(OneArgumentConstructor_SetsWhatToExpectedMessage_ClassIsSubclassOfZenMockException,
       const string& zenMockedFunctionSignature,
       VoidSignature0,
       VirtualVoidSignature0,
       NonVoidASignature0,
       NonVoidBSignature0)
    {
-      const UnexpectedCallException e(zenMockedFunctionSignature);
+      const UnexpectedCallException ex(zenMockedFunctionSignature);
       //
       const string expectedWhat = ExpectedUnexpectedCallPrefix + zenMockedFunctionSignature;
-      const char* const what = e.what();
+      const char* const what = ex.what();
       ARE_EQUAL(expectedWhat, what);
       IS_TRUE((is_base_of<ZenMockException, UnexpectedCallException>::value));
    }
 
-   TEST(Constructor_Void1Arg_SetsWhat_IncludesToStringedArg1)
+   TEST(OneOrMoreArgumentsConstructor_Void1Arg_SetsWhat_IncludesToStringedArg1)
    {
       const UserType Argument1(1);
       //
-      const UnexpectedCallException e(VoidSignature0, Argument1);
+      const UnexpectedCallException ex(VoidSignature0, Argument1);
       //
       const string ExpectedWhat = ExpectedUnexpectedCallPrefix + VoidSignature0 + R"(
 Argument1: UserType@1)";
-      const char* const what = e.what();
+      const char* const what = ex.what();
       ARE_EQUAL(ExpectedWhat, what);
    }
 
-   TEST(Constructor_Void2Args_SetsWhat_IncludesToStringedArg1AndArg2)
+   TEST(OneOrMoreArgumentsConstructor_Void2Args_SetsWhat_IncludesToStringedArg1AndArg2)
    {
       const UserType Argument1(1);
       const UserType Argument2(2);
       //
-      const UnexpectedCallException e(VoidSignature0, Argument1, Argument2);
+      const UnexpectedCallException ex(VoidSignature0, Argument1, Argument2);
       //
       const string ExpectedWhat = ExpectedUnexpectedCallPrefix + VoidSignature0 + R"(
 Argument1: UserType@1
 Argument2: UserType@2)";
-      const char* const what = e.what();
+      const char* const what = ex.what();
       ARE_EQUAL(ExpectedWhat, what);
    }
 

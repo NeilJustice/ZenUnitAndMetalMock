@@ -3,7 +3,7 @@
 namespace ZenUnit
 {
    TESTS(ExitCallerTests)
-   AFACT(DefaultConstructor_SetsExitFunctionPointer)
+   AFACT(DefaultConstructor_SetsExitFunction)
    AFACT(CallExit_CallsExitWithExitCode)
    EVIDENCE
 
@@ -15,7 +15,7 @@ namespace ZenUnit
       _exitCaller._call_exit = BIND_1ARG_ZENMOCK_OBJECT(exitMock);
    }
 
-   TEST(DefaultConstructor_SetsExitFunctionPointer)
+   TEST(DefaultConstructor_SetsExitFunction)
    {
       ExitCaller exitCaller;
       STD_FUNCTION_TARGETS(::exit, exitCaller._call_exit);

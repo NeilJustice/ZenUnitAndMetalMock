@@ -11,7 +11,7 @@
 namespace ZenUnit
 {
    TESTS(ConsoleColorerTests)
-   AFACT(Constructor_SetsFunctionPointers_SetsSupportsColorAndSupportsColorSetToFalse)
+   AFACT(DefaultConstructor_SetsFunctionPointers_SetsSupportsColorAndSupportsColorSetToFalse)
    FACTS(SetSupportsColorIfUnset_SetsSupportsColorIfUnset)
    FACTS(SetColor_CallsSupportsColorAndSetTextColorIfColorNotWhite)
    FACTS(UnsetColor_CallsSetTextColorWhiteIfDidSetTextColorTrue)
@@ -38,7 +38,7 @@ namespace ZenUnit
    ConsoleColorer_StandardOutputSupportsColorMocked _consoleColorer_StandardOutputSupportsColorMocked;
    ConsoleColorer_SetCallsMocked _consoleColorer_SetCallsMocked;
 
-   TEST(Constructor_SetsFunctionPointers_SetsSupportsColorAndSupportsColorSetToFalse)
+   TEST(DefaultConstructor_SetsFunctionPointers_SetsSupportsColorAndSupportsColorSetToFalse)
    {
       const ConsoleColorer consoleColorer;
       STD_FUNCTION_TARGETS(::fileno, consoleColorer._call_fileno);
