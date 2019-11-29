@@ -84,9 +84,8 @@ namespace ZenUnit
    TEST(VectorSizesAreEqual_ElementsAreNotEqualAtIndex0_ThrowsAnomaly__MessagesTestCase)
    {
       const T randomElement1 = Random<T>();
-      const T randomElement2 = RandomNon0<T>();
       const vector<T> v1 { randomElement1 };
-      const vector<T> v2 { randomElement1 + randomElement2 };
+      const vector<T> v2 { randomElement1 + T{1} };
       THROWS_EXCEPTION(VECTORS_EQUAL(v1, v2, _messageA, _messageB),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: VECTORS_EQUAL(v1, v2, _messageA, _messageB)",
