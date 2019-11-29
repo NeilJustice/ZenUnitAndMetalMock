@@ -30,7 +30,7 @@
       {
          "label": "Run All Debug Tests",
          "type": "shell",
-         "command": "./RunAllDebugTests.sh",
+         "command": "./TestScripts/RunAllDebugTests.sh",
          "options": {
             "cwd": "${workspaceRoot}"
          },
@@ -47,7 +47,7 @@
       {
          "label": "Run All Release Tests",
          "type": "shell",
-         "command": "./RunAllReleaseTests.sh",
+         "command": "./TestScripts/RunAllReleaseTests.sh",
          "options": {
             "cwd": "${workspaceRoot}"
          },
