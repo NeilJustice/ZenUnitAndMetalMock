@@ -181,9 +181,11 @@ namespace ZenUnit
    TEST(SumOfTestResultMicroseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMicroseconds)
    {
       TestResult testResultA;
-      testResultA.microseconds = ZenUnit::Random<long long>();
+      testResultA.microseconds = ZenUnit::RandomBetween<long long>(0, 100);
+
       TestResult testResultB;
-      testResultB.microseconds = ZenUnit::Random<long long>();
+      testResultB.microseconds = ZenUnit::RandomBetween<long long>(0, 1000);
+
       _testClassResult._testResults = { testResultA, testResultB };
       //
       const long long microseconds = _testClassResult.SumOfTestResultMicroseconds();
