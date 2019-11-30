@@ -236,13 +236,12 @@ cmake --build . --target install
 
 ### Linux Jenkins Jobs That Compile, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, and ThreadSanitize ZenUnit And ZenMock
 
-A Jenkins Blue Ocean build pipeline builds the following ZenUnit and ZenMock Jenkins jobs on Linux:
+A Jenkins Blue Ocean build pipeline builds the following ZenUnit and ZenMock Jenkins jobs on Fedora 31 Linux:
 
-![Linux Jenkins Jobs That Compile, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, and ThreadSanitize ZenUnit And ZenMock](Screenshots/LinuxZenUnitAndZenMockJenkinsJobs.png)
+![Linux Jenkins Jobs That Compile, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, and ThreadSanitize ZenUnit And ZenMock](Screenshots/LinuxJenkinsJobsForZenUnitAndZenMock.png)
 
 ### Windows Jenkins Jobs That Compile ZenUnit And ZenMock
 
-A Jenkins Blue Ocean build pipeline builds the following ZenUnit and ZenMock Jenkins jobs on Windows:
+A Jenkins Blue Ocean build pipeline builds the following ZenUnit and ZenMock Jenkins jobs on Windows 10:
 
-![Windows Jenkins Jobs That Compile ZenUnit And ZenMock](Screenshots/WindowsZenUnitAndZenMockJenkinsJobs.png)
-
+![Windows Jenkins Jobs That Compile ZenUnit And ZenMock](Screenshots/WindowsJenkinsJobsForZenUnitAndZenMock.png)
