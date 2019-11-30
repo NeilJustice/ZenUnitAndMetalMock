@@ -26,10 +26,10 @@
       * [Function Assertions](#function-assertions)
    * [ZenUnit Test-Defining Macros](#zenunit-test-defining-macros)
    * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
-   * [Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Linux](#steps-to-compile-and-run-zenunit-and-zenmock-unit-tests-then-install-zenunith-and-zenmockh-on-linux)
-   * [Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Windows](#steps-to-compile-and-run-zenunit-and-zenmock-unit-tests-then-install-zenunith-and-zenmockh-on-windows)
    * [Linux Jenkins Jobs That Compile, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, and ThreadSanitize ZenUnit And ZenMock](#linux-jenkins-jobs-that-compile-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-zenmock)
    * [Windows Jenkins Jobs That Compile ZenUnit And ZenMock](#windows-jenkins-jobs-that-compile-zenunit-and-zenmock)
+   * [Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Linux](#steps-to-compile-and-run-zenunit-and-zenmock-unit-tests-then-install-zenunith-and-zenmockh-on-linux)
+   * [Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Windows](#steps-to-compile-and-run-zenunit-and-zenmock-unit-tests-then-install-zenunith-and-zenmockh-on-windows)
 
 ### ZenUnit Command Line Usage
 
@@ -193,6 +193,18 @@ ZenUnit provides the following random value generating functions for writing uni
 |`ZenUnit::RandomSet<T>()`|Returns a `std::set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
 |`ZenUnit::RandomUnorderedSet<T>()`|Returns a `std::unordered_set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
 
+### Linux Jenkins Jobs That Compile, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, and ThreadSanitize ZenUnit And ZenMock
+
+A Jenkins Blue Ocean build pipeline builds the following ZenUnit and ZenMock Jenkins jobs on Fedora 31 Linux:
+
+![Linux Jenkins Jobs That Compile, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, and ThreadSanitize ZenUnit And ZenMock](Screenshots/LinuxJenkinsJobsForZenUnitAndZenMock.png)
+
+### Windows Jenkins Jobs That Compile ZenUnit And ZenMock
+
+A Jenkins Blue Ocean build pipeline builds the following ZenUnit and ZenMock Jenkins jobs on Windows 10:
+
+![Windows Jenkins Jobs That Compile ZenUnit And ZenMock](Screenshots/WindowsJenkinsJobsForZenUnitAndZenMock.png)
+
 ### Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Linux
 
 ```
@@ -233,15 +245,3 @@ cmake . -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=C:\usr_local
 # ZenMock.h to C:\usr_local\include\ZenMock\ZenMock.h
 cmake --build . --target install
 ```
-
-### Linux Jenkins Jobs That Compile, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, and ThreadSanitize ZenUnit And ZenMock
-
-A Jenkins Blue Ocean build pipeline builds the following ZenUnit and ZenMock Jenkins jobs on Fedora 31 Linux:
-
-![Linux Jenkins Jobs That Compile, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, and ThreadSanitize ZenUnit And ZenMock](Screenshots/LinuxJenkinsJobsForZenUnitAndZenMock.png)
-
-### Windows Jenkins Jobs That Compile ZenUnit And ZenMock
-
-A Jenkins Blue Ocean build pipeline builds the following ZenUnit and ZenMock Jenkins jobs on Windows 10:
-
-![Windows Jenkins Jobs That Compile ZenUnit And ZenMock](Screenshots/WindowsJenkinsJobsForZenUnitAndZenMock.png)
