@@ -20,24 +20,24 @@ namespace ZenUnit
 
    template<typename T>
    TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size1Arrays, T)
-   AFACT(ElementsAreDefaults_DoesNotThrow)
-   AFACT(ElementAreNonDefaultAndNotEqual_Throws)
-   AFACT(ElementAreNonDefaultAndEqual_DoesNotThrow)
+   AFACT(ElementsAreDefaultValues_DoesNotThrowException)
+   AFACT(ElementAreNonDefaultValuesAndAreNotEqual_ThrowsAnomaly)
+   AFACT(ElementAreNonDefaultValuesAndAreEqual_DoesNotThrowException)
    EVIDENCE
 
-   TEST(ElementsAreDefaults_DoesNotThrow)
+   TEST(ElementsAreDefaultValues_DoesNotThrowException)
    {
       const array<T, 1> expectedArray{};
       const array<T, 1> actualArray{};
       STD_ARRAYS_EQUAL(expectedArray, actualArray);
    }
 
-   TEST(ElementAreNonDefaultAndNotEqual_Throws)
+   TEST(ElementAreNonDefaultValuesAndAreNotEqual_ThrowsAnomaly)
    {
       const string TypeName = *Type::GetName<T>();
       const T randomElement = ZenUnit::Random<T>();
       const array<T, 1> expectedArray = { { randomElement } };
-      const array<T, 1> actualArray = { { randomElement + T{ 1 } } };
+      const array<T, 1> actualArray = { { randomElement + T{1} } };
       //
 #if defined __linux__
       THROWS_EXCEPTION(STD_ARRAYS_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
@@ -75,7 +75,7 @@ namespace ZenUnit
    #endif
    }
 
-   TEST(ElementAreNonDefaultAndEqual_DoesNotThrow)
+   TEST(ElementAreNonDefaultValuesAndAreEqual_DoesNotThrowException)
    {
       const T randomElement = ZenUnit::Random<T>();
       const array<T, 1> expectedArray = { { randomElement } };
@@ -89,113 +89,113 @@ namespace ZenUnit
 
    template<typename T>
    TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size2Arrays, T)
-   AFACT(ElementsAreDefaults_DoesNotThrow)
-   AFACT(ElementsAreNonDefaultAndNotEqualAtIndex0_Throws)
-   AFACT(ElementsAreNonDefaultAndNotEqualAtIndex1_Throws)
-   AFACT(ElementsAreNonDefaultAndBothEqual_DoesNotThrow)
+   AFACT(ElementsAreDefaultsValues_DoesNotThrowException)
+   AFACT(ElementsAreNotDefaultValuesAndAreNotEqualAtIndex0_ThrowsAnomaly)
+   AFACT(ElementsAreNotDefaultValuesAndAreNotEqualAtIndex1_ThrowsAnomaly)
+   AFACT(ElementsAreNotDefaultValuesAndBothAreEqual_DoesNotThrowException)
    EVIDENCE
 
    const string TypeName = *Type::GetName<T>();
-   const T _randomElementA = ZenUnit::Random<T>();
-   const T _randomElementB = ZenUnit::Random<T>();
 
-   TEST(ElementsAreDefaults_DoesNotThrow)
+   TEST(ElementsAreDefaultsValues_DoesNotThrowException)
    {
       const array<T, 2> expectedArray{};
       const array<T, 2> actualArray{};
       STD_ARRAYS_EQUAL(expectedArray, actualArray);
    }
 
-   TEST(ElementsAreNonDefaultAndNotEqualAtIndex0_Throws)
+   TEST(ElementsAreNotDefaultValuesAndAreNotEqualAtIndex0_ThrowsAnomaly)
    {
-      const array<T, 2> expectedArray_index0 = { { _randomElementA, _randomElementB } };
-      const T randomT = ZenUnit::Random<T>();
-      const array<T, 2> actualArray_index0 = { { _randomElementA + randomT, _randomElementB } };
+      const T randomElement1 = ZenUnit::Random<T>();
+      const T randomElement2 = ZenUnit::Random<T>();
+      const array<T, 2> expectedArray = { { randomElement1, randomElement2 } };
+      const array<T, 2> actualArray = { { randomElement1 + T{1}, randomElement2 } };
       //
 #if defined __linux__
-      THROWS_EXCEPTION(STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0)",
+      THROWS_EXCEPTION(STD_ARRAYS_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: STD_ARRAYS_EQUAL(expectedArray, actualArray)",
 "Expected: <std::array<" + TypeName + ", 2ul>>",
 "  Actual: <std::array<" + TypeName + ", 2ul>>",
 " Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed",
-"Expected: " + ToStringer::ToString(expectedArray_index0[0]),
-"  Actual: " + ToStringer::ToString(actualArray_index0[0]),
+"Expected: " + ToStringer::ToString(expectedArray[0]),
+"  Actual: " + ToStringer::ToString(actualArray[0]),
 " Message: \"i=0\"",
 "File.cpp(1)",
 "File.cpp(1)"));
 #elif defined __APPLE__
-      THROWS_EXCEPTION(STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0)",
+      THROWS_EXCEPTION(STD_ARRAYS_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: STD_ARRAYS_EQUAL(expectedArray, actualArray)",
 "Expected: <std::__1::array<" + TypeName + ", 2ul>>",
 "  Actual: <std::__1::array<" + TypeName + ", 2ul>>",
 " Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed",
-"Expected: " + ToStringer::ToString(expectedArray_index0[0]),
-"  Actual: " + ToStringer::ToString(actualArray_index0[0]),
+"Expected: " + ToStringer::ToString(expectedArray[0]),
+"  Actual: " + ToStringer::ToString(actualArray[0]),
 " Message: \"i=0\"",
 "File.cpp(1)",
 "File.cpp(1)"));
 #elif defined _WIN32
-      THROWS_EXCEPTION(STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: STD_ARRAYS_EQUAL(expectedArray_index0, actualArray_index0)",
+      THROWS_EXCEPTION(STD_ARRAYS_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: STD_ARRAYS_EQUAL(expectedArray, actualArray)",
 "Expected: <std::array<" + TypeName + ",2>>",
 "  Actual: <std::array<" + TypeName + ",2>>",
 " Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed",
-"Expected: " + ToStringer::ToString(expectedArray_index0[0]),
-"  Actual: " + ToStringer::ToString(actualArray_index0[0]),
+"Expected: " + ToStringer::ToString(expectedArray[0]),
+"  Actual: " + ToStringer::ToString(actualArray[0]),
 " Message: \"i=0\"",
 "File.cpp(1)",
 "File.cpp(1)"));
    #endif
    }
 
-   TEST(ElementsAreNonDefaultAndNotEqualAtIndex1_Throws)
+   TEST(ElementsAreNotDefaultValuesAndAreNotEqualAtIndex1_ThrowsAnomaly)
    {
-      const array<T, 2> expectedArray_index1 = { { _randomElementA, _randomElementB } };
-      const T randomT = ZenUnit::RandomNon0<T>();
-      const array<T, 2> actualArray_index1 = { { _randomElementA, _randomElementB + randomT } };
+      const T randomElement1 = ZenUnit::Random<T>();
+      const T randomElement2 = ZenUnit::Random<T>();
+      const array<T, 2> expectedArray = { { randomElement1, randomElement2 } };
+      const array<T, 2> actualArray = { { randomElement1, randomElement2 + T{1} } };
       //
 #if defined __linux__
-      THROWS_EXCEPTION(STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1)",
+      THROWS_EXCEPTION(STD_ARRAYS_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: STD_ARRAYS_EQUAL(expectedArray, actualArray)",
 "Expected: <std::array<" + TypeName + ", 2ul>>",
 "  Actual: <std::array<" + TypeName + ", 2ul>>",
 " Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed",
-"Expected: " + ToStringer::ToString(expectedArray_index1[1]),
-"  Actual: " + ToStringer::ToString(actualArray_index1[1]),
+"Expected: " + ToStringer::ToString(expectedArray[1]),
+"  Actual: " + ToStringer::ToString(actualArray[1]),
 " Message: \"i=1\"",
 "File.cpp(1)",
 "File.cpp(1)"));
 #elif defined __APPLE__
-      THROWS_EXCEPTION(STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1)",
+      THROWS_EXCEPTION(STD_ARRAYS_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: STD_ARRAYS_EQUAL(expectedArray, actualArray)",
 "Expected: <std::__1::array<" + TypeName + ", 2ul>>",
 "  Actual: <std::__1::array<" + TypeName + ", 2ul>>",
 " Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed",
-"Expected: " + ToStringer::ToString(expectedArray_index1[1]),
-"  Actual: " + ToStringer::ToString(actualArray_index1[1]),
+"Expected: " + ToStringer::ToString(expectedArray[1]),
+"  Actual: " + ToStringer::ToString(actualArray[1]),
 " Message: \"i=1\"",
 "File.cpp(1)",
 "File.cpp(1)"));
 #elif defined _WIN32
-      THROWS_EXCEPTION(STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: STD_ARRAYS_EQUAL(expectedArray_index1, actualArray_index1)",
+      THROWS_EXCEPTION(STD_ARRAYS_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: STD_ARRAYS_EQUAL(expectedArray, actualArray)",
 "Expected: <std::array<" + TypeName + ",2>>",
 "  Actual: <std::array<" + TypeName + ",2>>",
 " Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed",
-"Expected: " + ToStringer::ToString(expectedArray_index1[1]),
-"  Actual: " + ToStringer::ToString(actualArray_index1[1]),
+"Expected: " + ToStringer::ToString(expectedArray[1]),
+"  Actual: " + ToStringer::ToString(actualArray[1]),
 " Message: \"i=1\"",
 "File.cpp(1)",
 "File.cpp(1)"));
    #endif
    }
 
-   TEST(ElementsAreNonDefaultAndBothEqual_DoesNotThrow)
+   TEST(ElementsAreNotDefaultValuesAndBothAreEqual_DoesNotThrowException)
    {
-      const T randomElementA = ZenUnit::Random<T>();
-      const T randomElementB = ZenUnit::Random<T>();
-      const array<T, 2> expectedArray = { { randomElementA, randomElementB } };
-      const array<T, 2> actualArray = { { randomElementA, randomElementB } };
+      const T randomElement1 = ZenUnit::Random<T>();
+      const T randomElement2 = ZenUnit::Random<T>();
+      const array<T, 2> expectedArray = { { randomElement1, randomElement2 } };
+      const array<T, 2> actualArray = { { randomElement1, randomElement2 } };
       STD_ARRAYS_EQUAL(expectedArray, actualArray);
    }
 
