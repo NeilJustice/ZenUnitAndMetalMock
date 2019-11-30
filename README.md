@@ -201,7 +201,7 @@ A Jenkins Blue Ocean build pipeline builds the following ZenUnit and ZenMock Jen
 
 ### Windows Jenkins Jobs That Compile ZenUnit And ZenMock
 
-A Jenkins Blue Ocean build pipeline builds the following ZenUnit and ZenMock Jenkins jobs on Windows 10:
+A Jenkins Blue Ocean build pipeline builds the following ZenUnit and ZenMock Jenkins jobs on Windows:
 
 ![Windows Jenkins Jobs That Compile ZenUnit And ZenMock](Screenshots/WindowsJenkinsJobsForZenUnitAndZenMock.png)
 
