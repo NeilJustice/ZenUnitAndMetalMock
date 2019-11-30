@@ -69,8 +69,8 @@ namespace ZenUnit
 
    TEST(MapSizesAreEqual_KeysAreNotEqual_ThrowsAnomaly)
    {
-      const int key = ZenUnit::Random<int>();
-      const int valueThatDoesNotEqualKey = key + ZenUnit::RandomNon0<int>();
+      const int key = ZenUnit::RandomBetween<int>(-10, 10);
+      const int valueThatDoesNotEqualKey = key + ZenUnit::RandomBetween<int>(1, 3);
 
       MapType<int, int> expectedMap;
       expectedMap.insert({ key, ZenUnit::Random<int>() });
