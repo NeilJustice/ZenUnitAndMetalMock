@@ -2918,7 +2918,7 @@ namespace ZenUnit
    {
       const std::string failedLinePrefix = String::Concat("  Failed: DOES_NOT_THROW(", expressionText);
       const std::string* const actualExceptionTypeName = Type::GetName(ex);
-      const std::string whyBody = String::Concat("Expected: No exception thrown\n",
+      const std::string whyBody = String::Concat("Expected: No exception was thrown\n",
          "  Actual: ", *actualExceptionTypeName, " thrown\n",
          "  what(): \"", ex.what(), "\"");
       throw Anomaly(failedLinePrefix, whyBody, fileLine, " ", messagesText, std::forward<MessageTypes>(messages)...);
@@ -3351,7 +3351,7 @@ namespace ZenUnit
    std::string THROWS_EXCEPTION_MakeWhyBody_NoExceptionThrown()
    {
       std::ostringstream whyBodyBuilder;
-      static const std::string noExceptionThrownString("No exception thrown");
+      static const std::string noExceptionThrownString("No exception was thrown");
       THROWS_EXCEPTION_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, &noExceptionThrownString);
       const std::string whyBody = whyBodyBuilder.str();
       return whyBody;

@@ -14,7 +14,7 @@ namespace ZenUnit
    {
       THROWS_EXCEPTION(DOES_NOT_THROW([] { throw runtime_error("what text"); }()), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: DOES_NOT_THROW([] { throw runtime_error(\"what text\"); }())",
-"Expected: No exception thrown",
+"Expected: No exception was thrown",
 "  Actual: std::runtime_error thrown",
 "  what(): \"what text\"",
 "File.cpp(1)"));
@@ -26,7 +26,7 @@ namespace ZenUnit
       const string messageB = ZenUnit::Random<string>();
       THROWS_EXCEPTION(DOES_NOT_THROW([] { throw runtime_error(""); }(), messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: DOES_NOT_THROW([] { throw runtime_error(\"\"); }(), messageA, messageB)",
-"Expected: No exception thrown",
+"Expected: No exception was thrown",
 "  Actual: std::runtime_error thrown",
 "  what(): \"\"",
 " Message: \"" + messageA + "\", \"" + messageB + "\"",
@@ -43,7 +43,7 @@ namespace ZenUnit
       THROWS_EXCEPTION(DOES_NOT_THROW(FunctionThatThrowsAnInvalidArgumentException()),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: DOES_NOT_THROW(FunctionThatThrowsAnInvalidArgumentException())",
-"Expected: No exception thrown",
+"Expected: No exception was thrown",
 "  Actual: std::invalid_argument thrown",
 "  what(): \"what text\"",
 "File.cpp(1)"));
