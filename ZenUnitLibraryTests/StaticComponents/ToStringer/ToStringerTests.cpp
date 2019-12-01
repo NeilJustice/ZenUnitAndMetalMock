@@ -34,7 +34,7 @@ namespace ZenUnit
       }
    };
 
-   enum Enum { E0, E1 };
+   enum ClassicEnum { E0, E1 };
    enum class EnumClass : long long
    {
       EC0,
@@ -84,8 +84,8 @@ namespace ZenUnit
 
    TEST(ToString_Enum_ReturnsStdToStringOnTheValue)
    {
-      ARE_EQUAL("0", ToStringer::ToString(Enum::E0));
-      ARE_EQUAL("1", ToStringer::ToString(Enum::E1));
+      ARE_EQUAL("0", ToStringer::ToString(ClassicEnum::E0));
+      ARE_EQUAL("1", ToStringer::ToString(ClassicEnum::E1));
    }
 
    TEST(ToString_EnumClass_ReturnsStdToStringOnTheValue)

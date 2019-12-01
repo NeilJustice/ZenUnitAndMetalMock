@@ -1,31 +1,43 @@
 #include "pch.h"
 
 TESTS(RandomGeneratorTests)
-AFACT(AllFunctions_CodeCoverage)
+AFACT(AllRandomGeneratorFunctions_ReturnsRandomValues)
 EVIDENCE
 
-RandomGenerator _randomGenerator;
-
-TEST(AllFunctions_CodeCoverage)
+TEST(AllRandomGeneratorFunctions_ReturnsRandomValues)
 {
-   _randomGenerator.Char();
-   _randomGenerator.UnsignedChar();
-   _randomGenerator.Bool();
-   _randomGenerator.Short();
-   _randomGenerator.UnsignedShort();
-   _randomGenerator.Int();
-   _randomGenerator.UnsignedInt();
-   _randomGenerator.Enum(0);
-   _randomGenerator.LongLong();
-   _randomGenerator.UnsignedLongLong();
-   _randomGenerator.SizeT();
-   _randomGenerator.Float();
-   _randomGenerator.Double();
-   _randomGenerator.ConstCharPointer();
-   _randomGenerator.String();
-   _randomGenerator.StringVector();
-   _randomGenerator.Path();
-   _randomGenerator.ErrorCode();
+   const RandomGenerator randomGenerator;
+
+   const char randomChar = randomGenerator.Char();
+   const unsigned char randomUnsignedChar = randomGenerator.UnsignedChar();
+
+   const bool randomBool = randomGenerator.Bool();
+
+   const short randomShort = randomGenerator.Short();
+   const unsigned short randomUnsignedShort = randomGenerator.UnsignedShort();
+
+   const int randomInt = randomGenerator.Int();
+   const unsigned int randomUnsignedInt = randomGenerator.UnsignedInt();
+
+   const int randomEnumIntValue = randomGenerator.Enum(0);
+
+   const long long randomLongLong = randomGenerator.LongLong();
+   const unsigned long long randomUnsignedLongLong = randomGenerator.UnsignedLongLong();
+   const size_t randomSizeT = randomGenerator.SizeT();
+
+   const float randomFloat = randomGenerator.Float();
+   const double randomDouble = randomGenerator.Double();
+
+   const char* const randomConstCharPointer = randomGenerator.ConstCharPointer();
+   POINTER_IS_NOT_NULL(randomConstCharPointer);
+
+   const string randomString = randomGenerator.String();
+
+   const vector<string> randomStringVector = randomGenerator.StringVector();
+
+   const fs::path randomPath = randomGenerator.Path();
+
+   const error_code randomErrorCode = randomGenerator.ErrorCode();
 }
 
 RUN_TESTS(RandomGeneratorTests)
