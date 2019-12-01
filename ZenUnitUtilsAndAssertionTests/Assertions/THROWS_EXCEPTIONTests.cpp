@@ -24,11 +24,11 @@ namespace ZenUnit
       catch (const Anomaly& anomaly)
       {
          const string expectedWhy = TestUtil::NewlineConcat("",
-            "  Failed: THROWS_EXCEPTION([]{}(), exception,",
-            "          \"\")",
-            "Expected exception thrown: std::exception exactly",
-            "  Actual exception thrown: No exception was thrown",
-            "File.cpp(1)");
+"  Failed: THROWS_EXCEPTION([]{}(),",
+"             exception, \"\")",
+"Expected exception thrown: std::exception exactly",
+"  Actual exception thrown: No exception was thrown",
+"File.cpp(1)");
          ARE_EQUAL(expectedWhy, anomaly.why);
       }
    }
@@ -45,12 +45,12 @@ namespace ZenUnit
       catch (const Anomaly& anomaly)
       {
          const string expectedWhy = TestUtil::NewlineConcat("",
-            "  Failed: THROWS_EXCEPTION([]{}(), exception,",
-            "          \"\", messageA, messageB)",
-            "Expected exception thrown: std::exception exactly",
-            "  Actual exception thrown: No exception was thrown",
-            " Message: \"" + messageA + "\", \"" + messageB + "\"",
-            "File.cpp(1)");
+"  Failed: THROWS_EXCEPTION([]{}(),",
+"             exception, \"\", messageA, messageB)",
+"Expected exception thrown: std::exception exactly",
+"  Actual exception thrown: No exception was thrown",
+" Message: \"" + messageA + "\", \"" + messageB + "\"",
+"File.cpp(1)");
          ARE_EQUAL(expectedWhy, anomaly.why);
       }
    }
@@ -65,12 +65,12 @@ namespace ZenUnit
       catch (const Anomaly& anomaly)
       {
          const string expectedWhy = TestUtil::NewlineConcat("",
-            "  Failed: THROWS_EXCEPTION([]{ throw logic_error(\"\"); }(), exception,",
-            "          \"\")",
-            "Expected exception thrown: std::exception exactly",
-            "  Actual exception thrown: std::logic_error",
-            "  what(): \"\"",
-            "File.cpp(1)");
+"  Failed: THROWS_EXCEPTION([]{ throw logic_error(\"\"); }(),",
+"             exception, \"\")",
+"Expected exception thrown: std::exception exactly",
+"  Actual exception thrown: std::logic_error",
+"  what(): \"\"",
+"File.cpp(1)");
          ARE_EQUAL(expectedWhy, anomaly.why);
       }
    }
@@ -86,12 +86,12 @@ namespace ZenUnit
       catch (const Anomaly& anomaly)
       {
          const string expectedWhy = TestUtil::NewlineConcat("",
-            "  Failed: THROWS_EXCEPTION([&]{ throw runtime_error(whatText); }(), logic_error,",
-            "          \"\")",
-            "Expected exception thrown: std::logic_error exactly",
-            "  Actual exception thrown: std::runtime_error",
-            "  what(): \"" + whatText + "\"",
-            "File.cpp(1)");
+"  Failed: THROWS_EXCEPTION([&]{ throw runtime_error(whatText); }(),",
+"             logic_error, \"\")",
+"Expected exception thrown: std::logic_error exactly",
+"  Actual exception thrown: std::runtime_error",
+"  what(): \"" + whatText + "\"",
+"File.cpp(1)");
          ARE_EQUAL(expectedWhy, anomaly.why);
       }
    }
@@ -107,13 +107,13 @@ namespace ZenUnit
       catch (const Anomaly& anomaly)
       {
          const string expectedWhy = TestUtil::NewlineConcat("",
-            "  Failed: THROWS_EXCEPTION([&]{ throw runtime_error(whatText); }(), runtime_error,",
-            "          \"\")",
-            "Expected exception thrown: std::runtime_error exactly",
-            "  Actual exception thrown: std::runtime_error exactly",
-            "Expected what(): \"\"",
-            "  Actual what(): \"" + whatText + "\"",
-            "File.cpp(1)");
+"  Failed: THROWS_EXCEPTION([&]{ throw runtime_error(whatText); }(),",
+"             runtime_error, \"\")",
+"Expected exception thrown: std::runtime_error exactly",
+"  Actual exception thrown: std::runtime_error exactly",
+"Expected what(): \"\"",
+"  Actual what(): \"" + whatText + "\"",
+"File.cpp(1)");
          ARE_EQUAL(expectedWhy, anomaly.why);
       }
    }
@@ -128,13 +128,13 @@ namespace ZenUnit
       catch (const Anomaly& anomaly)
       {
          const string expectedWhy = TestUtil::NewlineConcat("",
-            "  Failed: THROWS_EXCEPTION([]{ throw runtime_error(\"ERROR MESSAGE\"); }(), runtime_error,",
-            "          \"error message\")",
-            "Expected exception thrown: std::runtime_error exactly",
-            "  Actual exception thrown: std::runtime_error exactly",
-            "Expected what(): \"error message\"",
-            "  Actual what(): \"ERROR MESSAGE\"",
-            "File.cpp(1)");
+"  Failed: THROWS_EXCEPTION([]{ throw runtime_error(\"ERROR MESSAGE\"); }(),",
+"             runtime_error, \"error message\")",
+"Expected exception thrown: std::runtime_error exactly",
+"  Actual exception thrown: std::runtime_error exactly",
+"Expected what(): \"error message\"",
+"  Actual what(): \"ERROR MESSAGE\"",
+"File.cpp(1)");
          ARE_EQUAL(expectedWhy, anomaly.why);
       }
    }

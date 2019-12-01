@@ -3301,8 +3301,8 @@ namespace ZenUnit
       FileLine fileLine, std::string_view messagesText, MessageTypes&&... messages)
    {
       const std::string failedLinePrefix = String::Concat(
-         "  Failed: THROWS_EXCEPTION(", expressionText, ", ", expectedExactExceptionTypeText, ",\n",
-         "          ", expectedWhatText);
+         "  Failed: THROWS_EXCEPTION(", expressionText, ",\n",
+         "             ", expectedExactExceptionTypeText, ", ", expectedWhatText);
       throw Anomaly(failedLinePrefix, whyBody, fileLine, " ", messagesText, std::forward<MessageTypes>(messages)...);
    }
 
