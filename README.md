@@ -71,7 +71,8 @@ TEST1X1(FizzBuzz_EndNumber0OrNegative_Throws,
    // by rendering the THROWS_EXCEPTION assertion immune to these two code mutations:
    // mutate-exception-type, mutate-exception-message.
    THROWS_EXCEPTION(FizzBuzz(invalidFizzBuzzEndNumber), std::invalid_argument, 
-      "Invalid FizzBuzz() argument: endNumber must be 1 or greater. endNumber: " + std::to_string(invalidFizzBuzzEndNumber));
+      "Invalid FizzBuzz() argument: endNumber must be 1 or greater. endNumber: "
+         + std::to_string(invalidFizzBuzzEndNumber));
 }
 
 // TEST2X2 defines a 2-by-2 value-parameterized test
