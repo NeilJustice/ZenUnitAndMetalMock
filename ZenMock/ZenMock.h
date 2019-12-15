@@ -1598,8 +1598,19 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
 
       ArgumentStorage() = default;
 
-      ArgumentStorage(std::string_view value)
-         : value(value) {}
+      ArgumentStorage(std::string_view stringView)
+         : value(stringView) {}
+   };
+
+   template<>
+   struct ArgumentStorage<std::wstring_view>
+   {
+      std::wstring value;
+
+      ArgumentStorage() = default;
+
+      ArgumentStorage(std::wstring_view wideStringView)
+         : value(wideStringView) {}
    };
 
    template<typename T>
@@ -2443,10 +2454,22 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       {
       }
 
+      ~TwoArgumentMocker()
+      {
+         if (_callInstead_voidTwoArgFunction)
+         {
+            this->_wasAsserted = true;
+         }
+      }
+
       void ZenMockIt(const Arg1Type& firstArgument, const Arg2Type& secondArgument)
       {
          this->ZenMockThrowIfNotExpected(firstArgument, secondArgument);
          zenMockedFunctionCallHistory.emplace_back(firstArgument, secondArgument);
+         if (this->_callInstead_voidTwoArgFunction)
+         {
+            this->_callInstead_voidTwoArgFunction(firstArgument, secondArgument);
+         }
          this->ZenMockThrowExceptionIfExceptionSet();
       }
 

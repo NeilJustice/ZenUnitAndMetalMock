@@ -9,7 +9,8 @@ namespace ZenUnit
    AFACT(Random_Double_ReturnsRandomDouble)
    AFACT(Random_ConstCharPointer_ReturnsRandomConstCharPointer1Through10)
    AFACT(Random_ErrorCode_ReturnsEitherGenericCategoryOrIostreamCategoryOrSystemCategoryErrorCode)
-   AFACT(Random_String_ReturnsRandomStringThatBeginsWithRandomString)
+   AFACT(Random_String_ReturnsRandomStringThatBeginsWithRS)
+   AFACT(Random_WideString_ReturnsRandomWideStringThatBeginsWithRWS)
    AFACT(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
    EVIDENCE
 
@@ -66,10 +67,16 @@ namespace ZenUnit
       }
    }
 
-   TEST(Random_String_ReturnsRandomStringThatBeginsWithRandomString)
+   TEST(Random_String_ReturnsRandomStringThatBeginsWithRS)
    {
       const string randomString = Random<string>();
       IS_TRUE(randomString.find("RS") != string::npos);
+   }
+
+   TEST(Random_WideString_ReturnsRandomWideStringThatBeginsWithRWS)
+   {
+      const wstring randomWideString = Random<wstring>();
+      IS_TRUE(randomWideString.find(L"RWS") != string::npos);
    }
 
    TEST(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)

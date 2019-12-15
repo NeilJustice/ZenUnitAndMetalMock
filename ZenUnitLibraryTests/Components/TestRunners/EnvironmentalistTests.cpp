@@ -10,9 +10,9 @@ namespace ZenUnit
    AFACT(GetLinuxMachineName_ReturnsResultOfgethostname)
    AFACT(GetLinuxUserName_ReturnsResultOf)
 #elif defined _WIN32
-   AFACT(GetCurrentMachineName_Windows_ReturnsCallToGetWindowsMachineName)
-   AFACT(GetWindowsMachineName_ReturnsResultOfGetComputerName)
-   AFACT(GetWindowsUserName_ReturnsResultOfGetUserName)
+   AFACT(GetMachineName_Windows_ReturnsCallToGetWindowsMachineName)
+   AFACT(GetWindowsMachineNameW_ReturnsResultOfGetComputerName)
+   AFACT(GetWindowsUserNameW_ReturnsResultOfGetUserName)
 #endif
    EVIDENCE
 
@@ -31,8 +31,8 @@ namespace ZenUnit
 #if defined __linux__ || defined __APPLE__
    ZENMOCK_NONVOID2_FREE(int, gethostname, char*, size_t)
 #elif defined _WIN32
-   ZENMOCK_NONVOID2_FREE(BOOL, GetComputerName, LPSTR, LPDWORD)
-   ZENMOCK_NONVOID2_FREE(BOOL, GetUserName, LPSTR, LPDWORD)
+   ZENMOCK_NONVOID2_FREE(BOOL, GetComputerNameA, LPSTR, LPDWORD)
+   ZENMOCK_NONVOID2_FREE(BOOL, GetUserNameA, LPSTR, LPDWORD)
 #endif
 
    STARTUP
@@ -41,7 +41,7 @@ namespace ZenUnit
 #if defined __linux__ || defined __APPLE__
       _environmentalist._call_gethostname = BIND_2ARG_ZENMOCK_OBJECT(gethostnameMock);
 #elif defined _WIN32
-      _environmentalist._call_GetComputerName = BIND_2ARG_ZENMOCK_OBJECT(GetComputerNameMock);
+      _environmentalist._call_GetComputerNameA = BIND_2ARG_ZENMOCK_OBJECT(GetComputerNameAMock);
 #endif
    }
 
@@ -51,8 +51,8 @@ namespace ZenUnit
 #if defined __linux__ || defined __APPLE__
       STD_FUNCTION_TARGETS(::gethostname, environmentalist._call_gethostname);
 #elif defined _WIN32
-      STD_FUNCTION_TARGETS(::GetComputerName, environmentalist._call_GetComputerName);
-      STD_FUNCTION_TARGETS(::GetUserName, environmentalist._call_GetUserName);
+      STD_FUNCTION_TARGETS(::GetComputerNameA, environmentalist._call_GetComputerNameA);
+      STD_FUNCTION_TARGETS(::GetUserNameA, environmentalist._call_GetUserNameA);
 #endif
    }
 
@@ -84,21 +84,21 @@ namespace ZenUnit
    }
 
 #elif defined _WIN32
-   TEST(GetCurrentMachineName_Windows_ReturnsCallToGetWindowsMachineName)
+   TEST(GetMachineName_Windows_ReturnsCallToGetWindowsMachineName)
    {
       const string machineName = _environmentalistSelfMocked.GetWindowsMachineNameMock.ReturnRandom();
       //
-      const string returnedMachineName = _environmentalistSelfMocked.GetCurrentMachineName();
+      const string returnedMachineName = _environmentalistSelfMocked.GetMachineName();
       //
       ZENMOCK(_environmentalistSelfMocked.GetWindowsMachineNameMock.CalledOnce());
       ARE_EQUAL(machineName, returnedMachineName);
    }
 
-   TEST(GetWindowsMachineName_ReturnsResultOfGetComputerName)
+   TEST(GetWindowsMachineNameW_ReturnsResultOfGetComputerName)
    {
    }
 
-   TEST(GetWindowsUserName_ReturnsResultOfGetUserName)
+   TEST(GetWindowsUserNameW_ReturnsResultOfGetUserName)
    {
    }
 #endif

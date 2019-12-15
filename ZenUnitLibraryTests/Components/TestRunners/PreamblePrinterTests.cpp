@@ -35,16 +35,14 @@ namespace ZenUnit
    TEST(PrintPreambleLinesAndGetStartTime_PrintsCommandLineAndStartTimeAndTestAndTestClassCounts_ReturnsStartTime)
    {
       _consoleMock->WriteLineColorMock.Expect();
-
       _consoleMock->WriteColorMock.Expect();
-
       _consoleMock->WriteLineMock.Expect();
 
       const string currentDirectoryPath = _environmentalistMock->GetCurrentDirectoryPathMock.ReturnRandom();
 
-      const string machineName = _environmentalistMock->GetCurrentMachineNameMock.ReturnRandom();
+      const string machineName = _environmentalistMock->GetMachineNameMock.ReturnRandom();
 
-      const string userName = _environmentalistMock->GetCurrentUserNameMock.ReturnRandom();
+      const string userNameRunningThisProgram = _environmentalistMock->GetUserNameRunningThisProgramMock.ReturnRandom();
 
       const string startDateTime = _watchMock->DateTimeNowMock.ReturnRandom();
 
@@ -60,15 +58,15 @@ namespace ZenUnit
       ZENMOCK(_consoleMock->WriteColorMock.CalledNTimesWith(7, "[ZenUnit]", Color::Green));
       ZENMOCK(testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.CalledOnce());
       ZENMOCK(_environmentalistMock->GetCurrentDirectoryPathMock.CalledOnce());
-      ZENMOCK(_environmentalistMock->GetCurrentMachineNameMock.CalledOnce());
-      ZENMOCK(_environmentalistMock->GetCurrentUserNameMock.CalledOnce());
+      ZENMOCK(_environmentalistMock->GetMachineNameMock.CalledOnce());
+      ZENMOCK(_environmentalistMock->GetUserNameRunningThisProgramMock.CalledOnce());
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZENMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
       {
          { "     Running: " + args.commandLine },
          { "   Directory: " + currentDirectoryPath },
          { " MachineName: " + machineName },
-         { "    UserName: " + userName },
+         { "    UserName: " + userNameRunningThisProgram },
          { "  RandomSeed: " + to_string(args.randomSeed) },
          { " TestClasses: " + std::to_string(numberOfTestClassesToBeRun) },
          { "   StartTime: " + startDateTime + "\n" }

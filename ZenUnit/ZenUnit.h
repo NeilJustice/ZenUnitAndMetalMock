@@ -26,6 +26,7 @@ using namespace std::literals::string_literals;
 #define WIN32_LEAN_AND_MEAN // ~40% faster Windows.h compile speed
 #define NOGDI // ~10% faster Windows.h compile speed
 #define NOMINMAX
+#define UNICODE
 #include "Windows.h" // SetConsoleTextAttribute()
 #include <conio.h> // _getch()
 #include <io.h> // _isatty()
@@ -3977,8 +3978,8 @@ namespace ZenUnit
 #if defined __linux__ || defined __APPLE__
       std::function<int(char*, size_t)> _call_gethostname;
 #elif defined _WIN32
-      std::function<BOOL(LPSTR, LPDWORD)> _call_GetComputerName;
-      std::function<BOOL(LPSTR, LPDWORD)> _call_GetUserName;
+      std::function<BOOL(LPSTR, LPDWORD)> _call_GetComputerNameA;
+      std::function<BOOL(LPSTR, LPDWORD)> _call_GetUserNameA;
 #endif
    public:
       Environmentalist() noexcept
@@ -3986,8 +3987,8 @@ namespace ZenUnit
 #if defined __linux__ || defined __APPLE__
          , _call_gethostname(::gethostname)
 #elif defined _WIN32
-         , _call_GetComputerName(::GetComputerNameA)
-         , _call_GetUserName(::GetUserName)
+         , _call_GetComputerNameA(::GetComputerNameA)
+         , _call_GetUserNameA(::GetUserNameA)
 #endif
       {
       }
@@ -4000,7 +4001,7 @@ namespace ZenUnit
          return currentDirectoryPath;
       }
 
-      virtual std::string GetCurrentMachineName() const
+      virtual std::string GetMachineName() const
       {
 #if defined __linux__ || defined __APPLE__
          return GetLinuxMachineName();
@@ -4009,7 +4010,7 @@ namespace ZenUnit
 #endif
       }
 
-      virtual std::string GetCurrentUserName() const
+      virtual std::string GetUserNameRunningThisProgram() const
       {
 #ifdef __linux__
          return GetLinuxUserName();
@@ -4032,7 +4033,7 @@ namespace ZenUnit
       {
          CHAR computerNameChars[41]{};
          DWORD size = sizeof(computerNameChars);
-         const BOOL didGetComputerName = _call_GetComputerName(computerNameChars, &size);
+         const BOOL didGetComputerName = _call_GetComputerNameA(computerNameChars, &size);
          assert_true(didGetComputerName == TRUE);
          const std::string windowsMachineName(computerNameChars);
          return windowsMachineName;
@@ -4040,18 +4041,18 @@ namespace ZenUnit
 #endif
 
 #ifdef __linux__
-      virtual std::string GetLinuxUserName() const
+      virtual std::wstring GetLinuxUserName() const
       {
-         return "LinuxUserNamePlaceholder";
+         return L"LinuxUserNamePlaceholder";
       }
 #elif _WIN32
       virtual std::string GetWindowsUserName() const
       {
-         char windowsUserNameChars[257];
-         DWORD size = sizeof(windowsUserNameChars);
-         const BOOL didGetUserName = _call_GetUserName(windowsUserNameChars, &size);
+         CHAR windowsUserNameCharacters[257];
+         DWORD size = sizeof(windowsUserNameCharacters);
+         const BOOL didGetUserName = _call_GetUserNameA(windowsUserNameCharacters, &size);
          assert_true(didGetUserName == TRUE);
-         const std::string windowsUserName(windowsUserNameChars);
+         const std::string windowsUserName(windowsUserNameCharacters);
          return windowsUserName;
       }
 #endif
@@ -4387,12 +4388,12 @@ namespace ZenUnit
          _console->WriteLine("   Directory: " + currentDirectoryPath);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
-         const std::string machineName = _environmentalist->GetCurrentMachineName();
+         const std::string machineName = _environmentalist->GetMachineName();
          _console->WriteLine(" MachineName: " + machineName);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
-         const std::string userName = _environmentalist->GetCurrentUserName();
-         _console->WriteLine("    UserName: " + userName);
+         const std::string userNameRunningThisProgram = _environmentalist->GetUserNameRunningThisProgram();
+         _console->WriteLine("    UserName: " + userNameRunningThisProgram);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
          _console->WriteLine("  RandomSeed: " + std::to_string(zenUnitArgs.randomSeed));
@@ -4403,7 +4404,7 @@ namespace ZenUnit
 
          _console->WriteColor("[ZenUnit]", Color::Green);
          const std::string startDateTime = _watch->DateTimeNow();
-         _console->WriteLine("   StartTime: " + startDateTime + "\n"); // TimeZone
+         _console->WriteLine("   StartTime: " + startDateTime + "\n");
 
          return startDateTime;
       }
@@ -6660,6 +6661,13 @@ Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
    {
       const std::string randomString = "RS" + std::to_string(RandomBetween<int>(0, 100000));
       return randomString;
+   }
+
+   template<>
+   inline std::wstring Random<std::wstring>()
+   {
+      const std::wstring randomWideString = L"RWS" + std::to_wstring(RandomBetween<int>(0, 100000));
+      return randomWideString;
    }
 
    template<>
