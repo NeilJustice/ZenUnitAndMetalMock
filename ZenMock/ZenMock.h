@@ -2433,6 +2433,8 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
    class TwoArgumentMocker : public ZenMocker<MockableExceptionThrowerType>
    {
       friend class TwoArgumentMockerTests;
+   protected:
+      std::function<void(Arg1Type, Arg2Type)> _callInstead_voidTwoArgFunction;
    public:
       std::vector<TwoArgumentFunctionCall<Arg1Type, Arg2Type>> zenMockedFunctionCallHistory;
 
@@ -2580,6 +2582,12 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       void Expect()
       {
          TwoArgumentMocker<Arg1Type, Arg2Type>::_wasExpected = true;
+      }
+
+      void CallInstead(const std::function<void(Arg1Type, Arg2Type)>& voidTwoArgFunction)
+      {
+         TwoArgumentMocker<Arg1Type, Arg2Type>::_wasExpected = true;
+         this->_callInstead_voidTwoArgFunction = voidTwoArgFunction;
       }
    };
 
