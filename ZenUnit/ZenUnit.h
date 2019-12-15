@@ -4041,9 +4041,9 @@ namespace ZenUnit
 #endif
 
 #ifdef __linux__
-      virtual std::wstring GetLinuxUserName() const
+      virtual std::string GetLinuxUserName() const
       {
-         return L"LinuxUserNamePlaceholder";
+         return "LinuxUserNamePlaceholder";
       }
 #elif _WIN32
       virtual std::string GetWindowsUserName() const
