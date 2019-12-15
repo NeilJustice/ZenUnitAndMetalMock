@@ -8,16 +8,17 @@ namespace ZenMock
    AFACT(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue)
    AFACT(ZenMockIt_ExpectedFalse_Throws)
    AFACT(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
+   AFACT(CallInstead_CallsSuppliedFunctionWhenZenMockedFunctionIsCalled)
    EVIDENCE
 
    using MockerType = TwoArgumentMocker<int, int, ExceptionThrowerMock>;
    unique_ptr<MockerType> _mocker;
-   string _functionSignature;
+   string _zenMockedFunctionSignature;
 
    STARTUP
    {
-      _functionSignature = ZenUnit::Random<string>();
-      _mocker = make_unique<MockerType>(_functionSignature);
+      _zenMockedFunctionSignature = ZenUnit::Random<string>();
+      _mocker = make_unique<MockerType>(_zenMockedFunctionSignature);
    }
 
    void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
@@ -27,9 +28,9 @@ namespace ZenMock
 
    TEST(Constructor_SetsFields)
    {
-      const MockerType mocker(_functionSignature);
+      const MockerType mocker(_zenMockedFunctionSignature);
       //
-      ARE_EQUAL(_functionSignature, mocker.ZenMockedFunctionSignature);
+      ARE_EQUAL(_zenMockedFunctionSignature, mocker.ZenMockedFunctionSignature);
       IS_FALSE(mocker._wasExpected);
       IS_FALSE(mocker._wasAsserted);
       IS_EMPTY(mocker.zenMockedFunctionCallHistory);
@@ -50,8 +51,9 @@ namespace ZenMock
    TEST(ZenMockIt_ExpectedFalse_Throws)
    {
       IS_FALSE(_mocker->_wasExpected);
-      THROWS_EXCEPTION(_mocker->ZenMockIt(1, 2), UnexpectedCallException,
-         UnexpectedCallException::MakeWhat(_functionSignature, 1, 2));
+      const string expectedExceptionMessage = UnexpectedCallException::MakeWhat(_zenMockedFunctionSignature, 1, 2);
+      THROWS_EXCEPTION(_mocker->ZenMockIt(1, 2),
+         UnexpectedCallException, expectedExceptionMessage);
    }
 
    TEST(ZenMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsZenMockThrowIfExceptionSet)
@@ -71,6 +73,30 @@ namespace ZenMock
       ZENMOCK(_mocker->_exceptionThrower.AssertZenMockThrowExceptionIfExceptionSetCalledOnce());
       DOES_NOT_THROW(_mocker->CalledOnceWith(1, 2));
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
+   }
+
+   TEST(CallInstead_CallsSuppliedFunctionWhenZenMockedFunctionIsCalled)
+   {
+      VoidTwoArgumentMocker<int, int> voidTwoArgumentMocker(_zenMockedFunctionSignature);
+
+      bool voidTwoArgFunctionWasCalled = false;
+      int receivedArg1 = 0;
+      int receivedArg2 = 0;
+      const auto voidTwoArgFunction = [&](int arg1, int arg2)
+      {
+         receivedArg1 = arg1;
+         receivedArg2 = arg2;
+         voidTwoArgFunctionWasCalled = true;
+      };
+      //
+      voidTwoArgumentMocker.CallInstead(voidTwoArgFunction);
+      const int arg1 = ZenUnit::Random<int>();
+      const int arg2 = ZenUnit::Random<int>();
+      voidTwoArgumentMocker.ZenMockIt(arg1, arg2);
+      //
+      ARE_EQUAL(arg1, receivedArg1);
+      ARE_EQUAL(arg2, receivedArg2);
+      IS_TRUE(voidTwoArgFunctionWasCalled);
    }
 
    RUN_TESTS(TwoArgumentMockerTests)
