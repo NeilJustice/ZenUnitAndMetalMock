@@ -16,7 +16,7 @@
 |AppVeyor Windows Visual Studio 2019 x64 and Win32 Debug And Release|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndZenMock"><img src="https://ci.appveyor.com/api/projects/status/neqqkha7xbc93260?svg=true"/></a>|
 |Code Coverage Of The Travis CI GCC 7.4.0 Release Build|[![codecov](https://codecov.io/gh/NeilJustice/ZenUnitAndZenMock/branch/master/graph/badge.svg)](https://codecov.io/gh/NeilJustice/ZenUnitAndZenMock)|
 
-   * [Unit Testing FizzBuzz With ZenUnit And Its Value-Parameterized Test Syntax](#unit-testing-fizzbuzz-with-zenunit-and-its-value-parameterized-test-syntax)
+   * [Unit Testing FizzBuzz With ZenUnit's Convenient Value-Parameterized Test Syntax](#unit-testing-fizzbuzz-with-zenunits-convenient-value-parameterized-test-syntax)
    * [ZenUnit Command Line Usage](#zenunit-command-line-usage)
    * [ZenUnit Assertions](#zenunit-assertions)
       * [Value Assertions](#value-assertions)
@@ -33,7 +33,7 @@
    * [Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Linux](#steps-to-compile-and-run-zenunit-and-zenmock-unit-tests-then-install-zenunith-and-zenmockh-on-linux)
    * [Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Windows](#steps-to-compile-and-run-zenunit-and-zenmock-unit-tests-then-install-zenunith-and-zenmockh-on-windows)
 
-### Unit Testing FizzBuzz With ZenUnit And Its Value-Parameterized Test Syntax
+### Unit Testing FizzBuzz With ZenUnit's Convenient Value-Parameterized Test Syntax
 
 ```cpp
 #include "ZenUnit.h" // Single header
