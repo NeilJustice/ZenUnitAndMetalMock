@@ -314,7 +314,7 @@ ZenUnit provides the following random value generating functions for writing uni
 
 ### Linux Jenkins Jobs That Compile, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, and ThreadSanitize ZenUnit And ZenMock
 
-A Jenkins Blue Ocean build pipeline builds the following ZenUnit and ZenMock Jenkins jobs on Fedora 31 Linux:
+A Jenkins Blue Ocean build pipeline builds the following ZenUnit and ZenMock Jenkins jobs on Fedora 31:
 
 ![Linux Jenkins Jobs That Compile, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, and ThreadSanitize ZenUnit And ZenMock](Screenshots/LinuxJenkinsJobsForZenUnitAndZenMock.png)
 
