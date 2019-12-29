@@ -4,7 +4,6 @@ import unittest
 from unittest.mock import patch
 from unittest.mock import call
 from ZenUnitPy import RunZenUnitPyTestsWithCoverageAndLinting, Process, Python, UnitTester
-from ZenUnitPyTests import Random
 
 testNames = ['main_ParsesArgs_RunAllTestsWithCoverage_PylintsAll_Flake8sAll_test']
 
