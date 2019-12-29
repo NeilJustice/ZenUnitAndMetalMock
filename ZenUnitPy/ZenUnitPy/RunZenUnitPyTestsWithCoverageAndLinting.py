@@ -1,13 +1,14 @@
 import os
+import platform
 import sys
 sys.path.append('ZenUnitPy') # Jenkins
 from ZenUnitPy import Process, Python
 
-Usage = 'Usage: python3 RunZenUnitPyTestsWithCoverageAndLinting.py'
-
 def main():
    os.chdir('ZenUnitPy/ZenUnitPyTests')
-   Process.run('python3 -u RunAllWithCoverage.py')
+   lowercasePlatformSystem = platform.system().casefold()
+   pythonExecutableName = 'python3' if lowercasePlatformSystem == 'linux' else 'python.exe'
+   Process.run(f'{pythonExecutableName} -u RunAllWithCoverage.py')
    os.chdir('..')
    Python.pylint_all()
    Python.flake8_all()
