@@ -26,7 +26,6 @@ using namespace std::literals::string_literals;
 #define WIN32_LEAN_AND_MEAN // ~40% faster Windows.h compile speed
 #define NOGDI // ~10% faster Windows.h compile speed
 #define NOMINMAX
-#define UNICODE
 #include "Windows.h" // SetConsoleTextAttribute()
 #include <conio.h> // _getch()
 #include <io.h> // _isatty()
