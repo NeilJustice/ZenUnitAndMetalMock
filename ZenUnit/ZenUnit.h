@@ -1816,24 +1816,26 @@ namespace ZenUnit
 
    class Watch
    {
+      friend class WatchTests;
+   private:
+      std::function<size_t(char*, size_t, const char*, const tm*)> _call_strftime;
    public:
-      Watch() noexcept = default;
+      Watch() noexcept
+         : _call_strftime(strftime)
+      {
+      }
+
       virtual ~Watch() = default;
 
       // Returns the current local time in format "YYYY-MM-DD 00:00:00"
       virtual std::string DateTimeNow() const
       {
          const tm tmNow = TMNow();
-         std::ostringstream localDateTimeStringBuilder;
-         localDateTimeStringBuilder
-            << std::setw(2) << std::setfill('0') << (tmNow.tm_year + 1900) << '-'
-            << std::setw(2) << std::setfill('0') << (tmNow.tm_mon + 1) << '-'
-            << std::setw(2) << std::setfill('0') << tmNow.tm_mday << ' '
-            << std::setw(2) << std::setfill('0') << tmNow.tm_hour << ':'
-            << std::setw(2) << std::setfill('0') << tmNow.tm_min << ':'
-            << std::setw(2) << std::setfill('0') << tmNow.tm_sec;
-         const std::string localDateTimeString = localDateTimeStringBuilder.str();
-         return localDateTimeString;
+         const std::string timeZone = GetTimeZone(tmNow);
+         char localTimeWithTimezoneChars[128];
+         strftime(localTimeWithTimezoneChars, sizeof(localTimeWithTimezoneChars), "%F %r ", &tmNow);
+         const std::string localTimeWithTimezone = std::string(localTimeWithTimezoneChars) + timeZone;
+         return localTimeWithTimezone;
       }
 
       virtual long long SecondsSince1970() const
@@ -1865,6 +1867,14 @@ namespace ZenUnit
          return twoDecimalPlaceMillisecondsString;
       }
    private:
+      virtual std::string GetTimeZone(const tm& tmNow) const
+      {
+         char timeZoneChars[64];
+         strftime(timeZoneChars, sizeof(timeZoneChars), "%Z", &tmNow);
+         const std::string timeZone(timeZoneChars);
+         return timeZone;
+      }
+
       virtual tm TMNow() const
       {
          const std::chrono::time_point<std::chrono::system_clock> nowTimePoint = std::chrono::system_clock::now();

@@ -21,7 +21,9 @@ namespace ZenUnit
    };
 
    TESTS(WatchTests)
+   AFACT(Constructor_SetsStrftTimeFunctionPointer)
    FACTS(DateTimeNow_ReturnsLocalDateTimeNow)
+   AFACT(GetTimeZone_ReturnTimeZoneOfExecutingProcess)
    FACTS(MicrosecondsToTwoDecimalPlaceMillisecondsString_ReturnsMicrosecondsAsMillisecondsRoundedToThreePlaces)
    EVIDENCE
 
@@ -29,28 +31,40 @@ namespace ZenUnit
    {
    public:
       ZENMOCK_NONVOID0_CONST(tm, TMNow)
+      ZENMOCK_NONVOID1_CONST(string, GetTimeZone, const tm&)
    };
    unique_ptr<WatchSelfMocked> _watchSelfMocked;
+   ZENMOCK_NONVOID4_FREE(size_t, strftime, char*, size_t, char const*, const tm*)
 
    STARTUP
    {
       _watchSelfMocked = make_unique<WatchSelfMocked>();
+      _watchSelfMocked->_call_strftime = BIND_4ARG_ZENMOCK_OBJECT(strftimeMock);
+   }
+
+   TEST(Constructor_SetsStrftTimeFunctionPointer)
+   {
+      const Watch watch;
+      STD_FUNCTION_TARGETS(strftime, watch._call_strftime);
    }
 
    TEST2X2(DateTimeNow_ReturnsLocalDateTimeNow,
-      tm tmNow, const char* expectedDateTimeNow,
-      Tm(0, 1, 0, 0, 0, 0), "1900-01-01 00:00:00",
-      Tm(1, 2, 1, 1, 1, 1), "1901-02-02 01:01:01",
-      Tm(2, 3, 2, 11, 11, 11), "1902-03-03 11:11:11",
-      Tm(11, 31, 99, 23, 59, 59), "1999-12-31 23:59:59",
-      Tm(0, 1, 100, 0, 0, 0), "2000-01-01 00:00:00",
-      Tm(1, 3, 101, 4, 5, 6), "2001-02-03 04:05:06")
+      const tm& tmNow, const string& expectedDateTimeNowPrefix,
+      Tm(0, 1, 0, 0, 0, 0), "1900-01-01 12:00:00 AM ",
+      Tm(1, 2, 1, 1, 1, 1), "1901-02-02 01:01:01 AM ",
+      Tm(2, 3, 2, 11, 11, 11), "1902-03-03 11:11:11 AM ",
+      Tm(11, 31, 99, 23, 59, 59), "1999-12-31 11:59:59 PM ",
+      Tm(0, 1, 100, 0, 0, 0), "2000-01-01 12:00:00 AM ",
+      Tm(1, 3, 101, 4, 5, 6), "2001-02-03 04:05:06 AM ")
    {
       _watchSelfMocked->TMNowMock.Return(tmNow);
+      const string timeZone = _watchSelfMocked->GetTimeZoneMock.ReturnRandom();
       //
       const string dateTimeNow = _watchSelfMocked->DateTimeNow();
       //
       ZENMOCK(_watchSelfMocked->TMNowMock.CalledOnce());
+      ZENMOCK(_watchSelfMocked->GetTimeZoneMock.CalledOnceWith(tmNow));
+      const string expectedDateTimeNow = expectedDateTimeNowPrefix + timeZone;
       ARE_EQUAL(expectedDateTimeNow, dateTimeNow);
    }
 
@@ -67,6 +81,19 @@ namespace ZenUnit
       tmNow.tm_yday = 0;
       tmNow.tm_isdst = 0;
       return tmNow;
+   }
+
+   TEST(GetTimeZone_ReturnTimeZoneOfExecutingProcess)
+   {
+      Watch watch;
+      const tm tmNow = watch.TMNow();
+      //
+      const string timeZone = watch.GetTimeZone(tmNow);
+      //
+      char expectedTimeZoneChars[64];
+      strftime(expectedTimeZoneChars, sizeof(expectedTimeZoneChars), "%Z", &tmNow);
+      const string expectedTimeZone(expectedTimeZoneChars);
+      ARE_EQUAL(expectedTimeZone, timeZone);
    }
 
    TEST2X2(MicrosecondsToTwoDecimalPlaceMillisecondsString_ReturnsMicrosecondsAsMillisecondsRoundedToThreePlaces,
