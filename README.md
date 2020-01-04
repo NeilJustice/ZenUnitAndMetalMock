@@ -2,19 +2,18 @@
 
 [![Standard](https://img.shields.io/badge/c%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B17) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-<h4 align="center">ZenUnit is a single-header C++ unit testing framework designed for test readability and assertion exactness and features a convenient syntax for writing value-parameterized and type-parameterized unit tests.</h4>
+<h4 align="center">ZenUnit is a single-header C++ unit testing framework designed for test readability and exactness and features a unique syntax for writing value-parameterized and type-parameterized unit tests.</h4>
 
-##### ZenUnit.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenUnit/ZenUnit.h)
-
-<h4 align="center">ZenMock is a single-header C++ mocking framework powered by ZenUnit that features an intuitive arrange-act-assert syntax for confirming the correctness of function call arguments and return values to and from virtual, non-virtual, static, and free functions.</h4>
-
-##### ZenMock.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenMock/ZenMock.h)
+<h4 align="center">ZenMock is a single-header C++ mocking framework powered by ZenUnit that features a high-readability arrange-act-assert syntax for confirming the correctness of function call arguments and return values to and from virtual, non-virtual, static, and free functions.</h4>
 
 |Build Type|Build Status|
 |----------|------------|
 |Travis CI Linux Clang 6.0.0 and GCC 7.4.0 Debug And Release|<a href="https://travis-ci.org/NeilJustice/ZenUnitAndZenMock"><img src="https://travis-ci.org/NeilJustice/ZenUnitAndZenMock.svg?branch=master"/></a>|
 |AppVeyor Windows Visual Studio 2019 x64 and Win32 Debug And Release|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndZenMock"><img src="https://ci.appveyor.com/api/projects/status/neqqkha7xbc93260?svg=true"/></a>|
 |Code Coverage Of The Travis CI GCC 7.4.0 Release Build|[![codecov](https://codecov.io/gh/NeilJustice/ZenUnitAndZenMock/branch/master/graph/badge.svg)](https://codecov.io/gh/NeilJustice/ZenUnitAndZenMock)|
+
+##### ZenUnit.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenUnit/ZenUnit.h) 
+##### ZenMock.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenMock/ZenMock.h)
 
    * [Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Case Syntax](#unit-testing-fizzzuzz-with-zenunits-value-parameterized-test-case-syntax)
    * [ZenUnit Console Output Design](#zenunit-console-output-design)
@@ -29,10 +28,10 @@
       * [Function Assertions](#function-assertions)
    * [ZenUnit Test-Defining Macros](#zenunit-test-defining-macros)
    * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
-   * [Linux Jenkins Jobs That Compile, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, and ThreadSanitize ZenUnit And ZenMock](#linux-jenkins-jobs-that-compile-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-zenmock)
+   * [Linux Jenkins Jobs That Compile, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And ZenMock](#linux-jenkins-jobs-that-compile-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-zenmock)
    * [Windows Jenkins Jobs That Compile ZenUnit And ZenMock](#windows-jenkins-jobs-that-compile-zenunit-and-zenmock)
-   * [Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Linux](#steps-to-compile-and-run-zenunit-and-zenmock-unit-tests-then-install-zenunith-and-zenmockh-on-linux)
-   * [Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Windows](#steps-to-compile-and-run-zenunit-and-zenmock-unit-tests-then-install-zenunith-and-zenmockh-on-windows)
+   * [Six Steps To Build ZenUnit And ZenMock Unit Tests, Run Them, Then Install ZenUnit.h And ZenMock.h On Linux](#six-steps-to-build-zenunit-and-zenmock-unit-tests-run-them-then-install-zenunit.h-and-zenmock.h-on-linux)
+   * [Four Steps To Build ZenUnit And ZenMock Unit Tests, Run Them, Then Install ZenUnit.h And ZenMock.h On Windows](#four-steps-to-build-zenunit-and-zenmock-unit-tests-run-them-then-install-zenunit.h-and-zenmock.h-on-windows)
 
 ### Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Case Syntax
 
@@ -321,7 +320,7 @@ ZenUnit provides the following random-value-generating functions for maximizing 
 |`ZenUnit::RandomSet<T>()`|Returns a `std::set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
 |`ZenUnit::RandomUnorderedSet<T>()`|Returns a `std::unordered_set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
 
-### Linux Jenkins Jobs That Compile, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, and ThreadSanitize ZenUnit And ZenMock
+### Linux Jenkins Jobs That Compile, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And ZenMock
 
 A Jenkins Blue Ocean build pipeline builds the following ZenUnit and ZenMock Jenkins jobs on Fedora 31:
 
@@ -333,7 +332,7 @@ A Jenkins Blue Ocean build pipeline builds the following ZenUnit and ZenMock Jen
 
 ![Windows Jenkins Jobs That Compile ZenUnit And ZenMock](Screenshots/WindowsJenkinsJobsForZenUnitAndZenMock.png)
 
-### Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Linux
+### Six Steps To Build ZenUnit And ZenMock Unit Tests, Run Them, Then Install ZenUnit.h And ZenMock.h On Linux
 
 ```
 git clone https://github.com/NeilJustice/ZenUnitAndZenMock --depth 1
@@ -358,7 +357,7 @@ cd ..
 ./TestScripts/RunAllDebugTests.sh
 ```
 
-### Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Windows
+### Four Steps To Build ZenUnit And ZenMock Unit Tests, Run Them, Then Install ZenUnit.h And ZenMock.h On Windows
 
 ```
 git clone https://github.com/NeilJustice/ZenUnitAndZenMock --depth 1
