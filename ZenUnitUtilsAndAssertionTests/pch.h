@@ -1,8 +1,6 @@
 #ifndef ZENUNITTESTS_PCH
 #define ZENUNITTESTS_PCH
 
-#define _CRT_SECURE_NO_WARNINGS
-
 #if defined _WIN32
 #pragma warning(disable: 4365) // signed / unsigned mismatch - C:\VS2017\VC\Tools\MSVC\14.12.25827\include\memory
 #pragma warning(disable: 4571) // catch (...) semantics changed since Visual C++ 7.1; structured exceptions(SEH) are no longer caught
