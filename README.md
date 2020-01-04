@@ -16,7 +16,8 @@
 |AppVeyor Windows Visual Studio 2019 x64 and Win32 Debug And Release|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndZenMock"><img src="https://ci.appveyor.com/api/projects/status/neqqkha7xbc93260?svg=true"/></a>|
 |Code Coverage Of The Travis CI GCC 7.4.0 Release Build|[![codecov](https://codecov.io/gh/NeilJustice/ZenUnitAndZenMock/branch/master/graph/badge.svg)](https://codecov.io/gh/NeilJustice/ZenUnitAndZenMock)|
 
-   * [Unit Testing FizzBuzz With ZenUnit's Convenient Value-Parameterized Test Syntax](#unit-testing-fizzbuzz-with-zenunits-convenient-value-parameterized-test-syntax)
+   * [Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Case Syntax](#unit-testing-fizzzuzz-with-zenunits-value-parameterized-test-case-syntax)
+   * [ZenUnit Console Output Design](#zenunit-console-output-design)
    * [ZenUnit Command Line Usage](#zenunit-command-line-usage)
    * [ZenUnit Assertions](#zenunit-assertions)
       * [Value Assertions](#value-assertions)
@@ -33,7 +34,7 @@
    * [Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Linux](#steps-to-compile-and-run-zenunit-and-zenmock-unit-tests-then-install-zenunith-and-zenmockh-on-linux)
    * [Steps To Compile And Run ZenUnit And ZenMock Unit Tests Then Install ZenUnit.h And ZenMock.h On Windows](#steps-to-compile-and-run-zenunit-and-zenmock-unit-tests-then-install-zenunith-and-zenmockh-on-windows)
 
-### Unit Testing FizzBuzz With ZenUnit's Convenient Value-Parameterized Test Syntax
+### Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Case Syntax
 
 ```cpp
 #include "ZenUnit.h" // ZenUnit's single header file
@@ -47,19 +48,19 @@ TESTS(FizzBuzzTests)
 FACTS(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgument)
 FACTS(FizzBuzz_EndNumberIsGreaterThan0_ReturnsFizzBuzzSequence)
 // EVIDENCE concludes the declaration of facts section
-// and begins the presentation of evidence section, also known as the test class body.
+// and begins the presentation of evidence section - also known as the test class body.
 EVIDENCE
 
 // In ZenUnit test names are duplicated between the FACTS section and the EVIDENCE section
 // by way of a carefully-considered design decision to maximize long-term readability of safety-critical test code.
 // This design of test names always up top instead of scattered throughout potentially large test files
-// makes it a quick read to confirm that a test class tests
+// makes it straightforward to quickly confirm that a test class tests
 // a cohesive set of functionality using a consistent test naming convention.
 
 // TEST1X1 defines a 1-by-1 value-parameterized test
 // that processes its typesafe variadic arguments list 1-by-1.
 // This TEST1X1 defines 4 independent unit tests for FizzBuzz(),
-// each of which will run within separate instances of test class FizzBuzzTests at ZenUnit run time.
+// each of which will run within separate instances of test class FizzBuzzTests.
 TEST1X1(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgument,
    int invalidFizzBuzzEndNumber,
    std::numeric_limits<int>::min(),
@@ -69,9 +70,12 @@ TEST1X1(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgument,
 {
    // The ZenUnit THROWS_EXCEPTION assertion asserts that an expression throws *exactly* (not a derived class of)
    // an expected exception type with *exactly* an expected exception what() text.
-   // This double-exactness design of THROWS_EXCEPTION works to maximize mutation coverage
+
+   // This double-exactness design of THROWS_EXCEPTION works to maximize mutation coverage,
+   // the next frontier of software quality metrics,
    // by rendering the THROWS_EXCEPTION assertion immune to these two code mutations:
-   // mutate-exception-type, mutate-exception-message.
+   // mutate-exception-type and mutate-exception-message.
+
    THROWS_EXCEPTION(FizzBuzz(invalidFizzBuzzEndNumber), std::invalid_argument,
       "Invalid FizzBuzz(int endNumber) argument: endNumber must be 1 or greater. endNumber="
          + std::to_string(invalidFizzBuzzEndNumber));
@@ -80,7 +84,7 @@ TEST1X1(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgument,
 // TEST2X2 defines a 2-by-2 value-parameterized test
 // that processes its typesafe variadic arguments list 2-by-2.
 // This TEST2X2 defines 16 independent unit tests for FizzBuzz(),
-// each of which will run within separate instances of test class FizzBuzzTests at ZenUnit run time.
+// each of which will run within separate instances of test class FizzBuzzTests.
 TEST2X2(FizzBuzz_EndNumberIsGreaterThan0_ReturnsFizzBuzzSequence,
    int endNumber, std::string_view expectedFizzBuzzSequence,
    1, "1",
@@ -150,6 +154,10 @@ int main(int argc, char* argv[])
    return exitCode;
 }
 ```
+
+### ZenUnit Console Output Design
+
+![ZenUnit Console Output Design](Screenshots/FizzBuzzConsoleOutput.png)
 
 ### ZenUnit Command Line Usage
 
