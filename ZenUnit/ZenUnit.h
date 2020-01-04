@@ -4052,7 +4052,15 @@ namespace ZenUnit
 #ifdef __linux__
       virtual std::string GetLinuxUserName() const
       {
-         return "LinuxUserNamePlaceholder";
+         char usernameChars[_SC_LOGIN_NAME_MAX];
+         const int getloginReturnValue = getlogin_r(usernameChars, sizeof(usernameChars));
+         if (getloginReturnValue != 0)
+         {
+            const std::string exceptionMessage = "getlogin_r() returned non-0 value: " + std::to_string(getloginReturnValue);
+            throw std::invalid_argument(exceptionMessage);
+         }
+         const std::string username(usernameChars);
+         return username;
       }
 #elif _WIN32
       virtual std::string GetWindowsUserName() const
