@@ -304,7 +304,7 @@ Testing Utility Options:
 
 ### Maximize Mutation Coverage By Testing With Random Values
 
-ZenUnit provides the following random value generating functions for writing unit tests that are robust to the swap-variable-with-constant code mutation, which is one of the most straightforward code mutations to induce manually today during code reviews and automatically at CI/CD time in the 2020s by running LLVM-powered mutation testing framework [Mull](https://github.com/mull-project/mull).
+ZenUnit provides the following random-value-generating functions for maximizing [mutation coverage](https://en.wikipedia.org/wiki/Mutation_testing), the next frontier in software quality metrics. Testing using random values instead of constant values renders test code immune to the swap-variable-with-constant code mutation, which is one of the most straightforward code mutations to induce manually today during code review time or automatically in the 2020s at CI/CD time by running an LLVM-powered mutation testing framework such as [Mull](https://github.com/mull-project/mull).
 
 |Random Value Generating Function|Behavior|
 |--------------------------------|--------|
