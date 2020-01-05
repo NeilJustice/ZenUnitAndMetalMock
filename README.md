@@ -15,7 +15,7 @@
 ##### ZenUnit.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenUnit/ZenUnit.h) 
 ##### ZenMock.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenMock/ZenMock.h)
 
-   * [Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Case Syntax](#unit-testing-fizzzuzz-with-zenunits-value-parameterized-test-case-syntax)
+   * [Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Case Syntax](#unit-testing-fizzbuzz-with-zenunits-value-parameterized-test-case-syntax)
    * [ZenUnit Console Output Design](#zenunit-console-output-design)
    * [ZenUnit Command Line Usage](#zenunit-command-line-usage)
    * [ZenUnit Assertions](#zenunit-assertions)
