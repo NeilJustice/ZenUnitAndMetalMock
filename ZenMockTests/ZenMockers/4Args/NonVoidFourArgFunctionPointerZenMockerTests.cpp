@@ -1,12 +1,21 @@
 #include "pch.h"
 
-template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
-class NonVoidFourArgFunctionPointerZenMockerMock : public Zen::Mock<
-   ZenMock::NonVoidFourArgFunctionPointerZenMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
+namespace ZenMock
 {
-public:
-   ZENMOCK_NONVOID4(const FunctionReturnType&, ZenMockItAndReturnValue, Arg1Type, Arg2Type, Arg3Type, Arg4Type)
-};
+   template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
+   class NonVoidFourArgFunctionPointerZenMockerMock : public Zen::Mock<
+      NonVoidFourArgFunctionPointerZenMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
+   {
+   public:
+      NonVoidFourArgFunctionPointerZenMockerMock()
+         : Zen::Mock<NonVoidFourArgFunctionPointerZenMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>>(
+            "FunctionSignature_NonVoidFourArgFunctionPointerZenMockerMock")
+      {
+      }
+
+      ZENMOCK_NONVOID4(const FunctionReturnType&, ZenMockItAndReturnValue, Arg1Type, Arg2Type, Arg3Type, Arg4Type)
+   };
+}
 
 template<
    typename FunctionReturnType,
@@ -25,11 +34,10 @@ EVIDENCE
 
 using NonVoidFourArgFunctionPointerZenMockerType = ZenMock::NonVoidFourArgFunctionPointerZenMocker<
    FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>;
-NonVoidFourArgFunctionPointerZenMockerType* _nonVoidFourArgFunctionPointerZenMocker = nullptr;
 
 TEST(ZenMockItFunctionPointer_ReturnsResultOfCallingToZenMockItAndReturnValue)
 {
-   NonVoidFourArgFunctionPointerZenMockerMock<
+   ZenMock::NonVoidFourArgFunctionPointerZenMockerMock<
       FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>
       nonVoidFourArgFunctionPointerZenMockerMock;
    const FunctionReturnType& functionReturnValue =

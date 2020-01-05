@@ -1225,7 +1225,7 @@ Return(), ReturnValues(), ReturnRandom(), or ThrowException<T>() on a ZenMock ob
          }
       }
 
-      // virtual for ZenMockability
+      // virtual for ExceptionThrowerMock
       virtual ~ExceptionThrower() = default;
    };
 
@@ -2849,10 +2849,6 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
    public:
       std::vector<FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> zenMockedFunctionCallHistory;
 
-      FourArgumentZenMocker()
-      {
-      }
-
       explicit FourArgumentZenMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
@@ -2938,10 +2934,6 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
    private:
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    public:
-      NonVoidFourArgumentZenMocker()
-      {
-      }
-
       explicit NonVoidFourArgumentZenMocker(const std::string& zenMockedFunctionSignature)
          : FourArgumentZenMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>(zenMockedFunctionSignature)
          , ValueReturner<FunctionReturnType>(zenMockedFunctionSignature)
@@ -2991,8 +2983,6 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
    class NonVoidFourArgFunctionPointerZenMocker : public NonVoidFourArgumentZenMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>
    {
    public:
-      NonVoidFourArgFunctionPointerZenMocker() = default;
-
       explicit NonVoidFourArgFunctionPointerZenMocker(const std::string& zenMockedFunctionSignature)
          : NonVoidFourArgumentZenMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>(zenMockedFunctionSignature)
       {
