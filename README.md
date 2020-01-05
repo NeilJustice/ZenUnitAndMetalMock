@@ -30,8 +30,8 @@
    * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
    * [Linux Jenkins Jobs That Compile, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And ZenMock](#linux-jenkins-jobs-that-compile-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-zenmock)
    * [Windows Jenkins Jobs That Compile ZenUnit And ZenMock](#windows-jenkins-jobs-that-compile-zenunit-and-zenmock)
-   * [Six Steps To Build ZenUnit And ZenMock Unit Tests, Run Them, Then Install ZenUnit.h And ZenMock.h On Linux](#six-steps-to-build-zenunit-and-zenmock-unit-tests-run-them-then-install-zenunit.h-and-zenmock.h-on-linux)
-   * [Four Steps To Build ZenUnit And ZenMock Unit Tests, Run Them, Then Install ZenUnit.h And ZenMock.h On Windows](#four-steps-to-build-zenunit-and-zenmock-unit-tests-run-them-then-install-zenunit.h-and-zenmock.h-on-windows)
+   * [Six Steps To Build ZenUnit And ZenMock Unit Tests, Run Them, Then Install ZenUnit.h And ZenMock.h On Linux](#six-steps-to-build-zenunit-and-zenmock-unit-tests-run-them-then-install-zenunith-and-zenmockh-on-linux)
+   * [Four Steps To Build ZenUnit And ZenMock Unit Tests, Run Them, Then Install ZenUnit.h And ZenMock.h On Windows](#four-steps-to-build-zenunit-and-zenmock-unit-tests-run-them-then-install-zenunith-and-zenmockh-on-windows)
 
 ### Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Case Syntax
 
