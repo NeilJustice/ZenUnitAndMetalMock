@@ -122,7 +122,7 @@ namespace ZenMock
 
    TEST(ZenMockIt_ExpectNotPreviouslyCalled_ThrowsUnexpectedCallException)
    {
-      const auto testcase = [](VoidTwoArgumentMocker<int, int>& zenMockObject, const string& zenMockedFunctionSignature)
+      const auto testcase = [](VoidTwoArgumentZenMocker<int, int>& zenMockObject, const string& zenMockedFunctionSignature)
       {
          const int argument1 = ZenUnit::Random<int>();
          const int argument2 = ZenUnit::Random<int>();
@@ -145,7 +145,7 @@ Argument2: )" + to_string(argument2);
 
    TEST(Expect_DoesNotThrowWhenCalledTwice_MakesFunctionNotThrowWhenCalled)
    {
-      const auto testcase = [](VoidTwoArgumentMocker<int, int>& zenMockObject)
+      const auto testcase = [](VoidTwoArgumentZenMocker<int, int>& zenMockObject)
       {
          zenMockObject.Expect();
          zenMockObject.Expect();
@@ -165,7 +165,7 @@ Argument2: )" + to_string(argument2);
 
    TEST(ThrowException_MakesSubsequentCallsToZenMockedFunctionThrowSpecifiedException__runtime_error_TestCase)
    {
-      const auto testcase = [](VoidTwoArgumentMocker<int, int>& zenMockObject)
+      const auto testcase = [](VoidTwoArgumentZenMocker<int, int>& zenMockObject)
       {
          const string exceptionMessage = ZenUnit::Random<string>();
          zenMockObject.ThrowException<runtime_error>(exceptionMessage);
@@ -189,7 +189,7 @@ Argument2: )" + to_string(argument2);
 
    TEST(ThrowException_MakesSubsequentCallsToZenMockedFunctionThrowSpecifiedException__runtime_error_then_invalid_argument_TestCase)
    {
-      const auto testcase = [](VoidTwoArgumentMocker<int, int>& zenMockObject)
+      const auto testcase = [](VoidTwoArgumentZenMocker<int, int>& zenMockObject)
       {
          const string exceptionMessage = ZenUnit::Random<string>();
          zenMockObject.ThrowException<invalid_argument>(exceptionMessage);
@@ -213,7 +213,7 @@ Argument2: )" + to_string(argument2);
 
    TEST(CalledOnceWith_ZenMockedFunctionNotPreviouslyCalled_Throws)
    {
-      const auto testcase = [](VoidTwoArgumentMocker<int, int>& zenMockObject, const string& zenMockedFunctionSignature)
+      const auto testcase = [](VoidTwoArgumentZenMocker<int, int>& zenMockObject, const string& zenMockedFunctionSignature)
       {
          const int argument1 = ZenUnit::Random<int>();
          const int argument2 = ZenUnit::Random<int>();
@@ -238,7 +238,7 @@ File.cpp(1))";
 
    TEST(CalledAsFollows_ZenMockedFunctionNotPreviouslyCalled_Throws)
    {
-      const auto testcase = [](VoidTwoArgumentMocker<int, int>& zenMockObject, const string& zenMockedFunctionSignature)
+      const auto testcase = [](VoidTwoArgumentZenMocker<int, int>& zenMockObject, const string& zenMockedFunctionSignature)
       {
          const int argument1 = ZenUnit::Random<int>();
          const int argument2 = ZenUnit::Random<int>();
@@ -280,7 +280,7 @@ File.cpp(1))";
 
    TEST(CalledNTimesWith_ZenMockedFunctionNotPreviouslyCalled_Throws)
    {
-      const auto testcase = [](VoidTwoArgumentMocker<int, int>& zenMockObject, const string& zenMockedFunctionSignature)
+      const auto testcase = [](VoidTwoArgumentZenMocker<int, int>& zenMockObject, const string& zenMockedFunctionSignature)
       {
          const size_t n = ZenUnit::Random<size_t>();
          const int argument1 = ZenUnit::Random<int>();

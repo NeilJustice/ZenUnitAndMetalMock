@@ -54,7 +54,7 @@ namespace ZenMock
    RUN_TESTS(ZenMockVoid0Tests_CodeCoverage)
 
    TESTS(ZenMockVoid0Tests)
-   // ZeroArgumentMocker Tests
+   // ZeroArgumentZenMocker Tests
    AFACT(FunctionNotCalled_CalledAsFollowsWithN0_Throws)
    AFACT(FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows)
    AFACT(ZenMockedFunction_NotExpected_Throws)
