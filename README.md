@@ -32,6 +32,7 @@
    * [Windows Jenkins Jobs That Compile ZenUnit And ZenMock](#windows-jenkins-jobs-that-compile-zenunit-and-zenmock)
    * [Six Steps To Build ZenUnit And ZenMock Unit Tests, Run Them, Then Install ZenUnit.h And ZenMock.h On Linux](#six-steps-to-build-zenunit-and-zenmock-unit-tests-run-them-then-install-zenunith-and-zenmockh-on-linux)
    * [Four Steps To Build ZenUnit And ZenMock Unit Tests, Run Them, Then Install ZenUnit.h And ZenMock.h On Windows](#four-steps-to-build-zenunit-and-zenmock-unit-tests-run-them-then-install-zenunith-and-zenmockh-on-windows)
+   * [Prioritized ZenUnit And ZenMock Backlog As Of 01-06-2020](#prioritized-zenunit-and-zenmock-backlog-as-of-01-06-2020)
 
 ### Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Case Syntax
 
@@ -372,3 +373,13 @@ cmake . -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=C:\usr_local
 # ZenMock.h to C:\usr_local\include\ZenMock\ZenMock.h
 cmake --build . --target install
 ```
+
+### Prioritized ZenUnit And ZenMock Backlog As Of 01-06-2020
+
+1. Document the syntax for ZenUnit templatized test classes and provide a screenshot of console output.
+2. Document how to define a custom ZenUnit::Equalizer<T>.
+3. Document how to define a custom ZenUnit::Printer<T>.
+4. Rewrite ZenMock's documentation from scratch.
+5. Add ZenUnit command line argument --informal-spec for printing a list of all test names contained with a ZenUnit binary, which is effectively an informal specification document for the program under test.
+6. Add to ZenUnit console output when --test-runs=X is specified to print the test run number currently being run.
+7. Add to ZenMock the ability to assert the expected order of function calls, which can of course be critical to software correctness.
