@@ -381,5 +381,5 @@ cmake --build . --target install
 3. Document how to define a custom ZenUnit::Printer<T>.
 4. Rewrite ZenMock's documentation from scratch.
 5. Add ZenUnit command line argument --informal-spec for printing a list of all test names contained with a ZenUnit binary, which is effectively an informal specification document for the program under test.
-6. Add to ZenUnit console output when --test-runs=X is specified to print the test run number currently being run.
+6. Modify ZenUnit console output when --test-runs=N is specified to print the test run number currently being run.
 7. Add to ZenMock the ability to assert the expected order of function calls, which can of course be critical to software correctness.
