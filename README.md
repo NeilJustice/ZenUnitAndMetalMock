@@ -107,7 +107,7 @@ TEST2X2(FizzBuzz_EndNumberIsGreaterThan0_ReturnsFizzBuzzSequence,
    const std::string fizzBuzzSequence = FizzBuzz(endNumber);
    // ZenUnit assertion names are declarative in language style (ARE_EQUAL, THROWS_EXCEPTION, etc)
    // instead of procedural in language style (ASSERT_EQUAL, ASSERT_THROWS, etc)
-   // to give ZenUnit a test reading experience similar to reading a mythical executable specification document.
+   // to give ZenUnit a test reading experience similar to reading an executable specification document.
    ARE_EQUAL(expectedFizzBuzzSequence, fizzBuzzSequence);
 }
 
