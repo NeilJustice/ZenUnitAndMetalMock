@@ -2647,8 +2647,6 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
    class ThreeArgumentZenMocker : public ZenMocker<MockableExceptionThrowerType>
    {
       friend class ThreeArgumentZenMockerTests;
-   protected:
-      std::function<void(Arg1Type, Arg2Type, Arg3Type)> _callInstead_voidThreeArgFunction;
    public:
       std::vector<ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>> zenMockedFunctionCallHistory;
 
@@ -2657,22 +2655,12 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       {
       }
 
-      ~ThreeArgumentZenMocker()
-      {
-         if (_callInstead_voidThreeArgFunction)
-         {
-            this->_wasAsserted = true;
-         }
-      }
+      virtual ~ThreeArgumentZenMocker() = default;
 
-      void ZenMockIt(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument)
+      virtual void ZenMockIt(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument)
       {
          this->ZenMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument);
          this->zenMockedFunctionCallHistory.emplace_back(firstArgument, secondArgument, thirdArgument);
-         if (this->_callInstead_voidThreeArgFunction)
-         {
-            this->_callInstead_voidThreeArgFunction(firstArgument, secondArgument, thirdArgument);
-         }
          this->ZenMockThrowExceptionIfExceptionSet();
       }
 
@@ -2738,11 +2726,20 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
    {
    private:
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
+      std::function<const FunctionReturnType&(Arg1Type, Arg2Type, Arg3Type)> _callInstead_nonVoidThreeArgFunction;
    public:
       explicit NonVoidThreeArgumentZenMocker(const std::string& zenMockedFunctionSignature)
          : ThreeArgumentZenMocker<Arg1Type, Arg2Type, Arg3Type>(zenMockedFunctionSignature)
          , ValueReturner<FunctionReturnType>(zenMockedFunctionSignature)
       {
+      }
+
+      ~NonVoidThreeArgumentZenMocker()
+      {
+         if (_callInstead_nonVoidThreeArgFunction)
+         {
+            this->_wasAsserted = true;
+         }
       }
 
       template<typename ReturnType>
@@ -2775,9 +2772,19 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
          return randomReturnValue;
       }
 
+      void CallInstead(const std::function<const FunctionReturnType&(Arg1Type, Arg2Type, Arg3Type)>& nonVoidThreeArgFunction)
+      {
+         ThreeArgumentZenMocker<Arg1Type, Arg2Type, Arg3Type>::_wasExpected = true;
+         this->_callInstead_nonVoidThreeArgFunction = nonVoidThreeArgFunction;
+      }
+
       const FunctionReturnType& ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument)
       {
          ThreeArgumentZenMocker<Arg1Type, Arg2Type, Arg3Type>::ZenMockIt(firstArgument, secondArgument, thirdArgument);
+         if (this->_callInstead_nonVoidThreeArgFunction)
+         {
+            return this->_callInstead_nonVoidThreeArgFunction(firstArgument, secondArgument, thirdArgument);
+         }
          return ValueReturner<FunctionReturnType>::ZenMockNextReturnValue();
       }
    };
@@ -2802,10 +2809,20 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
    class VoidThreeArgumentZenMocker : public ThreeArgumentZenMocker<Arg1Type, Arg2Type, Arg3Type>
    {
+   protected:
+      std::function<void(Arg1Type, Arg2Type, Arg3Type)> _callInstead_voidThreeArgFunction;
    public:
       explicit VoidThreeArgumentZenMocker(const std::string& zenMockedFunctionSignature)
          : ThreeArgumentZenMocker<Arg1Type, Arg2Type, Arg3Type>(zenMockedFunctionSignature)
       {
+      }
+
+      ~VoidThreeArgumentZenMocker()
+      {
+         if (_callInstead_voidThreeArgFunction)
+         {
+            this->_wasAsserted = true;
+         }
       }
 
       void Expect()
@@ -2817,6 +2834,17 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       {
          ThreeArgumentZenMocker<Arg1Type, Arg2Type, Arg3Type>::_wasExpected = true;
          this->_callInstead_voidThreeArgFunction = voidThreeArgFunction;
+      }
+
+      void ZenMockIt(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument) override
+      {
+         this->ZenMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument);
+         this->zenMockedFunctionCallHistory.emplace_back(firstArgument, secondArgument, thirdArgument);
+         if (this->_callInstead_voidThreeArgFunction)
+         {
+            this->_callInstead_voidThreeArgFunction(firstArgument, secondArgument, thirdArgument);
+         }
+         this->ZenMockThrowExceptionIfExceptionSet();
       }
    };
 
