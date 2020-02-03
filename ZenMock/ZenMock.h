@@ -2724,9 +2724,10 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type>
    class NonVoidThreeArgumentZenMocker : public ThreeArgumentZenMocker<Arg1Type, Arg2Type, Arg3Type>, protected ValueReturner<FunctionReturnType>
    {
+      friend class NonVoidThreeArgumentZenMockerTests;
    private:
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
-      std::function<const FunctionReturnType&(Arg1Type, Arg2Type, Arg3Type)> _callInstead_nonVoidThreeArgFunction;
+      std::function<FunctionReturnType(Arg1Type, Arg2Type, Arg3Type)> _callInstead_nonVoidThreeArgFunction;
    public:
       explicit NonVoidThreeArgumentZenMocker(const std::string& zenMockedFunctionSignature)
          : ThreeArgumentZenMocker<Arg1Type, Arg2Type, Arg3Type>(zenMockedFunctionSignature)
@@ -2772,18 +2773,19 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
          return randomReturnValue;
       }
 
-      void CallInstead(const std::function<const FunctionReturnType&(Arg1Type, Arg2Type, Arg3Type)>& nonVoidThreeArgFunction)
+      void CallInstead(const std::function<FunctionReturnType(Arg1Type, Arg2Type, Arg3Type)>& nonVoidThreeArgFunction)
       {
          ThreeArgumentZenMocker<Arg1Type, Arg2Type, Arg3Type>::_wasExpected = true;
          this->_callInstead_nonVoidThreeArgFunction = nonVoidThreeArgFunction;
       }
 
-      const FunctionReturnType& ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument)
+      FunctionReturnType ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument)
       {
          ThreeArgumentZenMocker<Arg1Type, Arg2Type, Arg3Type>::ZenMockIt(firstArgument, secondArgument, thirdArgument);
          if (this->_callInstead_nonVoidThreeArgFunction)
          {
-            return this->_callInstead_nonVoidThreeArgFunction(firstArgument, secondArgument, thirdArgument);
+            const FunctionReturnType returnValue = this->_callInstead_nonVoidThreeArgFunction(firstArgument, secondArgument, thirdArgument);
+            return returnValue;
          }
          return ValueReturner<FunctionReturnType>::ZenMockNextReturnValue();
       }
