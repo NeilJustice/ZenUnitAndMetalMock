@@ -1,6 +1,6 @@
 # 🧪 ZenUnit &  ZenMock ⚗️</h1>
 
-[![Standard](https://img.shields.io/badge/c%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B17) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Standard](https://img.shields.io/badge/c%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B17) [![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)
 
 ZenUnit is a single-header C++ unit testing framework designed for test readability and assertion exactness and features a convenient syntax for writing value-parameterized and type-parameterized unit tests.
 
