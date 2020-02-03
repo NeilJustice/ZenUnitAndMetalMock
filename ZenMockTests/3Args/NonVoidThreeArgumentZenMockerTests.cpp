@@ -8,15 +8,16 @@ namespace ZenMock
    AFACT(ZenMockItAndReturnValue_CallInsteadNotPreviouslyCalled_CallsBaseZenMockIt_ReturnsResultOfCallingValueReturnerZenMockNextReturnValue)
    EVIDENCE
 
-   NonVoidThreeArgumentZenMocker<int, int, int, int> _nonVoidThreeArgumentZenMocker;
-   string _zenMockedFunctionSignature = ZenUnit::Random<string>();
+   unique_ptr<NonVoidThreeArgumentZenMocker<int, int, int, int>> _nonVoidThreeArgumentZenMocker;
+   string _zenMockedFunctionSignature;
 
    const int _callInsteadFunctionReturnValue = ZenUnit::Random<int>();
    vector<tuple<int, int, int>> _callInsteadFunctionArguments;
 
-   NonVoidThreeArgumentZenMockerTests()
-      : _nonVoidThreeArgumentZenMocker(_zenMockedFunctionSignature)
+   STARTUP
    {
+      _zenMockedFunctionSignature = ZenUnit::Random<string>();
+      _nonVoidThreeArgumentZenMocker.reset(new NonVoidThreeArgumentZenMocker<int, int, int, int>(_zenMockedFunctionSignature));
    }
 
    int NonVoidThreeArgFunction(int firstArgument, int secondArgument, int thirdArgument)
@@ -27,27 +28,27 @@ namespace ZenMock
 
    TEST(CallInstead_SetsWasExpectedToTrue_SetsCallInsteadFunction)
    {
-      IS_FALSE(_nonVoidThreeArgumentZenMocker._wasExpected);
-      IS_FALSE(_nonVoidThreeArgumentZenMocker._callInstead_nonVoidThreeArgFunction);
+      IS_FALSE(_nonVoidThreeArgumentZenMocker->_wasExpected);
+      IS_FALSE(_nonVoidThreeArgumentZenMocker->_callInstead_nonVoidThreeArgFunction);
       //
-      _nonVoidThreeArgumentZenMocker.CallInstead(
+      _nonVoidThreeArgumentZenMocker->CallInstead(
          std::bind(&NonVoidThreeArgumentZenMockerTests::NonVoidThreeArgFunction, this,
             std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
       //
       IS_EMPTY(_callInsteadFunctionArguments);
-      IS_TRUE(_nonVoidThreeArgumentZenMocker._wasExpected);
+      IS_TRUE(_nonVoidThreeArgumentZenMocker->_wasExpected);
    }
 
    TEST(ZenMockItAndReturnValue_CallInsteadPreviousCalled_CallsBaseZenMockIt_ReturnsResultOfCallingCallInsteadFunctionOnce)
    {
-      _nonVoidThreeArgumentZenMocker.CallInstead(
+      _nonVoidThreeArgumentZenMocker->CallInstead(
          std::bind(&NonVoidThreeArgumentZenMockerTests::NonVoidThreeArgFunction, this,
             std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
       const int firstArgument = ZenUnit::Random<int>();
       const int secondArgument = ZenUnit::Random<int>();
       const int thirdArgument = ZenUnit::Random<int>();
       //
-      const int returnValue = _nonVoidThreeArgumentZenMocker.ZenMockItAndReturnValue(firstArgument, secondArgument, thirdArgument);
+      const int returnValue = _nonVoidThreeArgumentZenMocker->ZenMockItAndReturnValue(firstArgument, secondArgument, thirdArgument);
       //
       vector<tuple<int, int, int>> expectedCallInsteadFunctionArguments =
       {
@@ -60,14 +61,14 @@ namespace ZenMock
    TEST(ZenMockItAndReturnValue_CallInsteadNotPreviouslyCalled_CallsBaseZenMockIt_ReturnsResultOfCallingValueReturnerZenMockNextReturnValue)
    {
       const int returnValue = ZenUnit::Random<int>();
-      _nonVoidThreeArgumentZenMocker.Return(returnValue);
+      _nonVoidThreeArgumentZenMocker->Return(returnValue);
       const int firstArgument = ZenUnit::Random<int>();
       const int secondArgument = ZenUnit::Random<int>();
       const int thirdArgument = ZenUnit::Random<int>();
       //
-      const int returnedReturnValue = _nonVoidThreeArgumentZenMocker.ZenMockItAndReturnValue(firstArgument, secondArgument, thirdArgument);
+      const int returnedReturnValue = _nonVoidThreeArgumentZenMocker->ZenMockItAndReturnValue(firstArgument, secondArgument, thirdArgument);
       //
-      _nonVoidThreeArgumentZenMocker.CalledOnceWith(firstArgument, secondArgument, thirdArgument);
+      _nonVoidThreeArgumentZenMocker->CalledOnceWith(firstArgument, secondArgument, thirdArgument);
       ARE_EQUAL(returnValue, returnedReturnValue);
    }
 
