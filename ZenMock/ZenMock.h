@@ -2800,7 +2800,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       {
       }
 
-      static const FunctionReturnType& ZenMockItFunctionPointer(
+      static FunctionReturnType ZenMockItFunctionPointer(
          NonVoidThreeArgFunctionPointerZenMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type>* functionMocker,
          Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument)
       {
