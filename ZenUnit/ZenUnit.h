@@ -4390,7 +4390,7 @@ namespace ZenUnit
       virtual std::string PrintPreambleLinesAndGetStartTime(
          const ZenUnitArgs& zenUnitArgs, const TestClassRunnerRunner* testClassRunnerRunner) const
       {
-         const std::string zenUnitVersionLine = "[C++ Unit Testing Framework ZenUnit " + std::string(Version::Number()) + "]";
+         const std::string zenUnitVersionLine = "[ZenUnit v" + std::string(Version::Number()) + "]";
          _console->WriteLineColor(zenUnitVersionLine, Color::Green);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
@@ -4524,8 +4524,8 @@ namespace ZenUnit
          const Color greenOrRed = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
          if (totalNumberOfTestCases == 0)
          {
-            _console->WriteColor("[ZenUnit] ", Color::Red);
-            _console->WriteLineAndExit("Zero test classes run. Exiting with code 1.", 1);
+            _console->WriteColor("[ZenUnit]", Color::Red);
+            _console->WriteLineAndExit(" Zero test classes run. Exiting with code 1.", 1);
          }
          else
          {
@@ -4535,35 +4535,35 @@ namespace ZenUnit
             std::string resultMessage;
             if (_numberOfFailedTestCases == 0)
             {
-               tripletLinesPrefix = "+=======+";
-               successOrFailLinePrefix = "+SUCCESS+";
-               resultMessage = String::Concat(" TestRunResult: All ", totalNumberOfTestCases, ' ', testOrTests, " passed");
+               tripletLinesPrefix = "[ZenUnit]";
+               successOrFailLinePrefix = "[ZenUnit]";
+               resultMessage = String::Concat("     Result: All ", totalNumberOfTestCases, ' ', testOrTests, " passed");
             }
             else
             {
                tripletLinesPrefix = ">>------>";
                successOrFailLinePrefix = ">>-FAIL->";
-               resultMessage = String::Concat(" TestRunResult: ", _numberOfFailedTestCases, " of ", totalNumberOfTestCases, ' ', testOrTests, " failed");
+               resultMessage = String::Concat("     Result: ", _numberOfFailedTestCases, " of ", totalNumberOfTestCases, ' ', testOrTests, " failed");
             }
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
-            const std::string completedCommandLineMessage = String::Concat("     Completed: ", zenUnitArgs.commandLine);
+            const std::string completedCommandLineMessage = String::Concat("  Completed: ", zenUnitArgs.commandLine);
             _console->WriteLine(completedCommandLineMessage);
 
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
-            const std::string randomSeedMessage = String::Concat("    RandomSeed: ", zenUnitArgs.randomSeed);
+            const std::string randomSeedMessage = String::Concat(" RandomSeed: ", zenUnitArgs.randomSeed);
             _console->WriteLine(randomSeedMessage);
 
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
-            const std::string startTimeMessage = String::Concat("     StartTime: ", startDateTime);
+            const std::string startTimeMessage = String::Concat("  StartTime: ", startDateTime);
             _console->WriteLine(startTimeMessage);
 
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
             const std::string endDateTime = _watch->DateTimeNow();
-            const std::string endTimeMessage = String::Concat("       EndTime: ", endDateTime);
+            const std::string endTimeMessage = String::Concat("    EndTime: ", endDateTime);
             _console->WriteLine(endTimeMessage);
 
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
-            const std::string durationMessage = String::Concat("      Duration: ", testRunElapsedSeconds, " seconds");
+            const std::string durationMessage = String::Concat("   Duration: ", testRunElapsedSeconds, " seconds");
             _console->WriteLine(durationMessage);
 
             _console->WriteColor(successOrFailLinePrefix, greenOrRed);
@@ -4888,29 +4888,29 @@ namespace ZenUnit
          _console->WriteLineColor("\n==========================\nFatal ... Exception Thrown\n==========================\n", Color::Red);
 
          _console->WriteColor(">>------> ", Color::Red);
-         _console->WriteLine("     Completed: " + zenUnitArgs.commandLine);
+         _console->WriteLine(" Completed: " + zenUnitArgs.commandLine);
 
          _console->WriteColor(">>------> ", Color::Red);
-         _console->WriteLine("     StartTime: " + zenUnitArgs.startDateTime);
+         _console->WriteLine(" StartTime: " + zenUnitArgs.startDateTime);
 
          _console->WriteColor(">>------> ", Color::Red);
          const std::string endDateTime = _watch->DateTimeNow();
-         _console->WriteLine("       EndTime: " + endDateTime);
+         _console->WriteLine("   EndTime: " + endDateTime);
 
          _console->WriteColor(">>------> ", Color::Red);
-         _console->WriteLine("      Duration: " + testRunDurationInSeconds + " seconds");
+         _console->WriteLine("  Duration: " + testRunDurationInSeconds + " seconds");
 
          _console->WriteColor(">>------> ", Color::Red);
-         _console->WriteLine("    RandomSeed: " + std::to_string(zenUnitArgs.randomSeed));
+         _console->WriteLine("RandomSeed: " + std::to_string(zenUnitArgs.randomSeed));
 
          _console->WriteColor(">>------> ", Color::Red);
          const char* const testPhaseName = _testPhaseTranslator->TestPhaseToTestPhaseName(testPhase);
-         const std::string testRunResultLine = String::Concat(" TestRunResult: Fatal ... exception thrown during test phase: ", testPhaseName);
+         const std::string testRunResultLine = String::Concat("    Result: Fatal ... exception thrown during test phase: ", testPhaseName);
          _console->WriteLine(testRunResultLine);
 
          const int exitCode = zenUnitArgs.exitZero ? 0 : 1;
          _console->WriteColor(">>-FAIL-> ", Color::Red);
-         _console->WriteLineAndExit("      ExitCode: " + std::to_string(exitCode), exitCode);
+         _console->WriteLineAndExit("  ExitCode: " + std::to_string(exitCode), exitCode);
       }
    private:
       template<typename ExceptionType>

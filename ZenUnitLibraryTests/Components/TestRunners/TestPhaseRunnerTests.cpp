@@ -339,16 +339,16 @@ namespace ZenUnit
       }));
       ZENMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
       {
-         { "     Completed: " + zenUnitArgs.commandLine },
-         { "     StartTime: " + zenUnitArgs.startDateTime },
-         { "       EndTime: " + endTime },
-         { "      Duration: " + testRunDurationInSeconds + " seconds" },
-         { "    RandomSeed: " + to_string(zenUnitArgs.randomSeed) },
-         { " TestRunResult: Fatal ... exception thrown during test phase: " + testPhaseName }
+         { " Completed: " + zenUnitArgs.commandLine },
+         { " StartTime: " + zenUnitArgs.startDateTime },
+         { "   EndTime: " + endTime },
+         { "  Duration: " + testRunDurationInSeconds + " seconds" },
+         { "RandomSeed: " + to_string(zenUnitArgs.randomSeed) },
+         { "    Result: Fatal ... exception thrown during test phase: " + testPhaseName }
       }));
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZENMOCK(_testPhaseTranslatorMock->TestPhaseToTestPhaseNameMock.CalledOnceWith(testPhase));
-      const string expectedExitCodeLine = "      ExitCode: " + to_string(expectedExitCode);
+      const string expectedExitCodeLine = "  ExitCode: " + to_string(expectedExitCode);
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedExitCodeLine, expectedExitCode));
    }
 
