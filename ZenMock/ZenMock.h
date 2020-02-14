@@ -2538,13 +2538,23 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type>
    class NonVoidTwoArgumentZenMocker : public TwoArgumentZenMocker<Arg1Type, Arg2Type>, protected ValueReturner<FunctionReturnType>
    {
+      friend class NonVoidTwoArgumentZenMockerTests;
    private:
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
+      std::function<FunctionReturnType(Arg1Type, Arg2Type)> _callInstead_nonVoidTwoArgFunction;
    public:
       explicit NonVoidTwoArgumentZenMocker(const std::string& zenMockedFunctionSignature)
          : TwoArgumentZenMocker<Arg1Type, Arg2Type>(zenMockedFunctionSignature)
          , ValueReturner<FunctionReturnType>(zenMockedFunctionSignature)
       {
+      }
+
+      ~NonVoidTwoArgumentZenMocker()
+      {
+         if (_callInstead_nonVoidTwoArgFunction)
+         {
+            this->_wasAsserted = true;
+         }
       }
 
       template<typename ReturnType>
@@ -2577,9 +2587,20 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
          return randomReturnValue;
       }
 
-      const FunctionReturnType& ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument)
+      void CallInstead(const std::function<FunctionReturnType(Arg1Type, Arg2Type)>& nonVoidTwoArgFunction)
+      {
+         TwoArgumentZenMocker<Arg1Type, Arg2Type>::_wasExpected = true;
+         this->_callInstead_nonVoidTwoArgFunction = nonVoidTwoArgFunction;
+      }
+
+      FunctionReturnType ZenMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument)
       {
          TwoArgumentZenMocker<Arg1Type, Arg2Type>::ZenMockIt(firstArgument, secondArgument);
+         if (this->_callInstead_nonVoidTwoArgFunction)
+         {
+            const FunctionReturnType returnValue = this->_callInstead_nonVoidTwoArgFunction(firstArgument, secondArgument);
+            return returnValue;
+         }
          return ValueReturner<FunctionReturnType>::ZenMockNextReturnValue();
       }
    };
@@ -2593,7 +2614,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
       {
       }
 
-      static const FunctionReturnType& ZenMockItFunctionPointer(
+      static FunctionReturnType ZenMockItFunctionPointer(
          NonVoidTwoArgFunctionPointerZenMocker<FunctionReturnType, Arg1Type, Arg2Type>* functionMocker,
          Arg1Type firstArgument, Arg2Type secondArgument)
       {
