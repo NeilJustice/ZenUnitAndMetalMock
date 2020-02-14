@@ -1,6 +1,6 @@
-// C++ Mocking Framework ZenMock 0.5.0
+// C++ Mocking Framework ZenMock v0.5.0
 // https://github.com/NeilJustice/ZenUnitAndZenMock
-// MIT License
+// Unlicense (public domain)
 
 #pragma once
 #include "ZenUnit.h"
@@ -1412,23 +1412,23 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
             console.WriteLine(ZenMockedFunctionSignature);
             const ZenUnit::ZenUnitArgs& zenUnitArgs = _call_ZenUnitTestRunner_GetZenUnitArgs();
             console.WriteColor("\n>>------>", ZenUnit::Color::Red);
-            console.WriteLine("     Completed: " + zenUnitArgs.commandLine);
+            console.WriteLine("  Completed: " + zenUnitArgs.commandLine);
             console.WriteColor(">>------>", ZenUnit::Color::Red);
-            console.WriteLine("    RandomSeed: " + std::to_string(zenUnitArgs.randomSeed));
+            console.WriteLine(" RandomSeed: " + std::to_string(zenUnitArgs.randomSeed));
             console.WriteColor(">>------>", ZenUnit::Color::Red);
-            console.WriteLine("     StartTime: " + zenUnitArgs.startDateTime);
+            console.WriteLine("  StartTime: " + zenUnitArgs.startDateTime);
             console.WriteColor(">>------>", ZenUnit::Color::Red);
             ZenUnit::Watch watch;
             const std::string endDateTime = watch.DateTimeNow();
-            console.WriteLine("       EndTime: " + endDateTime);
-            console.WriteColor(">>------> ", ZenUnit::Color::Red);
-            const std::string testRunDurationInSeconds = ZenUnit::ZenUnitTestRunner::Instance()->StopTestRunStopwatchAndGetElapsedSeconds();
-            console.WriteLine("     Duration: " + testRunDurationInSeconds + " seconds");
+            console.WriteLine("    EndTime: " + endDateTime);
             console.WriteColor(">>------>", ZenUnit::Color::Red);
-            console.WriteLine(" Result: Fatal EBNA");
+            const std::string testRunDurationInSeconds = ZenUnit::ZenUnitTestRunner::Instance()->StopTestRunStopwatchAndGetElapsedSeconds();
+            console.WriteLine("   Duration: " + testRunDurationInSeconds + " seconds");
+            console.WriteColor(">>------>", ZenUnit::Color::Red);
+            console.WriteLine(" TestResult: Fatal EBNA");
             console.WriteColor(">>-FAIL->", ZenUnit::Color::Red);
             const int exitCode = zenUnitArgs.exitZero ? 0 : 1;
-            console.WriteLine("      ExitCode: " + std::to_string(exitCode));
+            console.WriteLine("   ExitCode: " + std::to_string(exitCode));
             _call_exit(exitCode);
          }
       }

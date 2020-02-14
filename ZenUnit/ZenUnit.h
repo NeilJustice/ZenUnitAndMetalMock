@@ -1,6 +1,6 @@
-// C++ Unit Testing Framework ZenUnit 0.5.0
+// C++ Unit Testing Framework ZenUnit v0.5.0
 // https://github.com/NeilJustice/ZenUnitAndZenMock
-// MIT License
+// Unlicense (public domain)
 
 #pragma once
 #include <array>
