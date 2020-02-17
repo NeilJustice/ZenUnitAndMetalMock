@@ -6690,6 +6690,15 @@ Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
       return randomString;
    }
 
+   template<typename KeyType, typename ValueType>
+   inline std::pair<KeyType, ValueType> RandomPair()
+   {
+      const KeyType randomKey = ZenUnit::Random<KeyType>();
+      const ValueType randomValue = ZenUnit::Random<ValueType>();
+      const std::pair<KeyType, ValueType> randomPair(randomKey, randomValue);
+      return randomPair;
+   }
+
    template<>
    inline fs::path Random<fs::path>()
    {

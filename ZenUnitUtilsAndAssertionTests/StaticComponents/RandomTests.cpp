@@ -97,6 +97,22 @@ namespace ZenUnit
    RUN_TESTS(RandomTests)
 
 
+   template<typename KeyType, typename ValueType>
+   TEMPLATE_TESTS(RandomPairTests, KeyType, ValueType)
+   AFACT(RandomPair_ReturnsNewPairWithRandomKeyAndRandomValue)
+   EVIDENCE
+
+   TEST(RandomPair_ReturnsNewPairWithRandomKeyAndRandomValue)
+   {
+      const pair<KeyType, ValueType> randomPair = ZenUnit::RandomPair<KeyType, ValueType>();
+      IS_NOT_DEFAULT_VALUE(randomPair.first);
+      IS_NOT_DEFAULT_VALUE(randomPair.second);
+   }
+
+   RUN_TEMPLATE_TESTS(RandomPairTests, int, int)
+   THEN_RUN_TEMPLATE_TESTS(RandomPairTests, string, long long)
+
+
    template<typename T>
    TEMPLATE_TESTS(RandomVectorTests, T)
    AFACT(RandomVector_ReturnsAVectorWithSizeBetween0And2WithRandomElements)
