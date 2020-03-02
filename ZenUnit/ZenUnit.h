@@ -25,7 +25,7 @@ using namespace std::literals::string_literals;
 #elif defined _WIN32
 #define WIN32_LEAN_AND_MEAN // ~40% faster Windows.h compile speed
 #define NOGDI // ~10% faster Windows.h compile speed
-#define NOMINMAX
+#define NOMINMAX // Allows for std::numeric_limits<int>::min() and std::numeric_limits<int>::max() to not result in compiler errors when including Windows.h
 #include "Windows.h" // SetConsoleTextAttribute()
 #include <conio.h> // _getch()
 #include <io.h> // _isatty()
