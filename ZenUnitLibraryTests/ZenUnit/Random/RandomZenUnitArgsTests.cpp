@@ -23,15 +23,15 @@ namespace ZenUnit
       const string commandLine = ZenUnit::Random<string>();
       randomGeneratorMock.StringMock.ReturnValues(startDateTime, commandLine);
 
-      const bool pause = ZenUnit::Random<bool>();
-      const bool wait = ZenUnit::Random<bool>();
-      const bool exitZero = ZenUnit::Random<bool>();
+      const bool pauseBefore = ZenUnit::Random<bool>();
+      const bool pauseAfter = ZenUnit::Random<bool>();
+      const bool alwaysExit0 = ZenUnit::Random<bool>();
       const bool failFast = ZenUnit::Random<bool>();
-      const bool noSkips = ZenUnit::Random<bool>();
-      const bool random = ZenUnit::Random<bool>();
+      const bool exit1IfTestsSkipped = ZenUnit::Random<bool>();
+      const bool randomTestOrdering = ZenUnit::Random<bool>();
       const bool randomSeedSetByUser = ZenUnit::Random<bool>();
       randomGeneratorMock.BoolMock.ReturnValues(
-         pause, wait, exitZero, failFast, noSkips, random, randomSeedSetByUser);
+         pauseBefore, pauseAfter, alwaysExit0, failFast, exit1IfTestsSkipped, randomTestOrdering, randomSeedSetByUser);
 
       const int testRuns = randomGeneratorMock.IntMock.ReturnRandom();
 
@@ -55,13 +55,13 @@ namespace ZenUnit
          IS_NOT_DEFAULT_VALUE(randomZenUnitArgs.runFilters[i]);
       }
 
-      ARE_EQUAL(pause, randomZenUnitArgs.pause);
-      ARE_EQUAL(wait, randomZenUnitArgs.wait);
-      ARE_EQUAL(exitZero, randomZenUnitArgs.exitZero);
+      ARE_EQUAL(pauseBefore, randomZenUnitArgs.pauseBefore);
+      ARE_EQUAL(pauseAfter, randomZenUnitArgs.pauseAfter);
+      ARE_EQUAL(alwaysExit0, randomZenUnitArgs.alwaysExit0);
       ARE_EQUAL(failFast, randomZenUnitArgs.failFast);
-      ARE_EQUAL(noSkips, randomZenUnitArgs.noSkips);
+      ARE_EQUAL(exit1IfTestsSkipped, randomZenUnitArgs.exit1IfTestsSkipped);
       ARE_EQUAL(testRuns, randomZenUnitArgs.testRuns);
-      ARE_EQUAL(random, randomZenUnitArgs.random);
+      ARE_EQUAL(randomTestOrdering, randomZenUnitArgs.randomTestOrdering);
       ARE_EQUAL(randomSeed, randomZenUnitArgs.randomSeed);
       ARE_EQUAL(randomSeedSetByUser, randomZenUnitArgs.randomSeedSetByUser);
       ARE_EQUAL(maxTestMilliseconds, randomZenUnitArgs.maxTestMilliseconds);

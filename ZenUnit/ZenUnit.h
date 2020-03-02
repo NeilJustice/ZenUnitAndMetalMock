@@ -1,6 +1,7 @@
-// C++ Unit Testing Framework ZenUnit v0.5.0
+// C++ Unit Testing Framework ZenUnit 0.6.0
+// ZenMock is licensed with the Unlicense license:
+// "This is free and unencumbered software released into the public domain."
 // https://github.com/NeilJustice/ZenUnitAndZenMock
-// Unlicense (public domain)
 
 #pragma once
 #include <array>
@@ -41,15 +42,25 @@ namespace fs = std::filesystem;
 #endif
 
 #define Comma , // Comma is for when the compiler needs more than parentheses to disambiguate
+
 #define DOTOKENJOIN(a, b) a##b
+
 #define TOKENJOIN(a, b) DOTOKENJOIN(a, b)
+
 #define DOVATEXT(placeholder, ...) #__VA_ARGS__
+
 #define VATEXT(...) DOVATEXT("", __VA_ARGS__)
+
 #define VA_TEXT_ARGS(...) VATEXT(__VA_ARGS__), ##__VA_ARGS__
+
 #define FILELINE ZenUnit::FileLine(ZenUnit::FileLiner::File(__FILE__), ZenUnit::FileLiner::Line(__LINE__))
+
 #define VRT(value) ZenUnit::VRText<decltype(value)>(value, #value)
+
 #define NAKED_VRT(value) ZenUnit::VRText<typename std::remove_const_t<typename std::remove_reference_t<decltype(value)>>>(value, #value)
+
 #define PMFTOKEN(pmf) ZenUnit::PmfToken::Instantiate<decltype(pmf), pmf>()
+
 #ifndef assert_true
 #define assert_true(predicate) ZenUnit::AssertTrue(predicate, #predicate, FILELINE, static_cast<const char*>(__func__))
 #endif
@@ -59,7 +70,7 @@ namespace ZenUnit
    class Version
    {
    public:
-      static const char* Number() { return "0.5.0"; }
+      static const char* Number() { return "0.6.0"; }
 
       static const std::string& CommandLineUsage()
       {
@@ -67,49 +78,54 @@ namespace ZenUnit
 https://github.com/NeilJustice/ZenUnitAndZenMock
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
-Testing Rigor Options:
+Options For Testing Rigor:
 
---random
-   Run test classes, tests, and value-parameterized test cases in a random order.
---seed=<Value>
-   Set to Value the random seed used by --random and
-   the ZenUnit::Random<T> family of random value generating functions.
-   The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
 --test-runs=<N>
-   Repeat the running of all tests N times. Use a negative number to repeat forever.
-   For five random test run orderings on a CI/CD server to exercise the robustness of commits
-   with respect to test run ordering, specify --random --test-runs=5.
---no-skips
-   Exit with code 1 after running all tests if any tests are skipped. Useful option for CI/CD servers.
+   Repeat N times the running of all tests.
+   Specify a negative number to repeat the running of run tests indefinitely.
+--random-test-ordering
+   Run test classes, tests, and value-parameterized test cases in a random order.
+--random-seed=<32BitUnsignedValue>
+   Sets the random seed which sets the ordering for --random-test-ordering and
+   the ZenUnit::Random<T> family of random-value-generating functions.
+   The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
+--exit-1-if-tests-skipped
+   After having run all tests, exit with code 1 if any tests were skipped.
 
-Testing Filtration Options:
+Options For Testing Selection:
 
+--fail-fast
+   If a test fails, call exit(1).
 --run=<TestClassName>[::TestName][/TestCaseNumber][,...]
-   Run only specified case-insensitive test classes, tests, and/or test cases.
+   Run only the specified case-insensitive test classes, tests, and/or test case numbers.
    Add a '*' character to the end of a test class name or test name
    filter string to specify name-starts-with filtration.
- Example 1: --run=WidgetTests
-   Run only test class WidgetTests.
- Example 2: --run=WidgetTests::FunctionUnderTest*
-   Run all tests in WidgetTests that start with "FunctionUnderTest".
- Example 3: --run=WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior/3
-   Run the third test case of value-parameterized test
-   WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior.
---fail-fast
-   Immediately call exit(1) if a test fails.
+ Example 1: --run=APITests
+   Run only test class APITests.
+ Example 2: --run=APITests::FunctionUnderTest*
+   Run only tests in APITests that start with "FunctionUnderTest".
+ Example 3: --run=APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue/3
+   Run only the third test case of the value-parameterized test named
+   APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue.
 
-Testing Utility Options:
+Options For Testing Utility:
 
---help or -help
+--pause-before
+   Wait for any key before running tests to allow attaching of a profiler or debugger.
+--pause-after
+   Wait for any key after running tests.
+   This is a useful command line argument for desktop shortcuts that run ZenUnit tests.
+--always-exit-0
+   Always exit with code 0 even if there are test failures.
+--help
    Print this help message.
---version or -version
+--version
    Print the ZenUnit version number.
---pause
-   Wait for any key before running tests to allow attaching a debugger or profiler.
---exit-zero
-   Always exit with code 0.
---wait
-   Wait for any key at the end of the test run.)";
+
+Example ZenUnit command line arguments:
+
+--test-runs=5 --random-test-ordering --exit-1-if-tests-skipped
+)";
          return zenUnitCommandLineUsage;
       }
    };
@@ -202,7 +218,7 @@ Testing Utility Options:
    ZenUnit::STD_FUNCTION_TARGETS_OVERLOAD_Defined(static_cast<expectedOverloadTypeInTheFormOfAUsing>(expectedStaticOrFreeFunction), #expectedStaticOrFreeFunction, VRT(stdFunction), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
-// Memory Assertions
+// Memory Allocation Assertions
 //
 
 // Effectively asserts that smartOrRawPointer was operator newed by calling .reset() or operator delete on smartOrRawPointer.
@@ -274,7 +290,7 @@ Testing Utility Options:
 // Test Assertions
 //
 
-// Fails the current test with a specified failure reason.
+// Fails the current test with specified failure reason text.
 #define FAIL_TEST(failureReason, ...) \
    ZenUnit::FAIL_TEST_Defined(VRT(failureReason), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
@@ -282,9 +298,12 @@ Testing Utility Options:
 // Exception Assertions
 //
 
-// Asserts that expression() throws exactly expectedExactExceptionType with what() text that exactly equals expectedExactWhatText.
+// Asserts that an expression throws an exception with exactly type expectedExactExceptionType
+// and with what() text exactly equal to expectedExactWhatText.
 #define THROWS_EXCEPTION(expression, expectedExactExceptionType, expectedExactWhatText, ...) \
-   ZenUnit::THROWS_EXCEPTION_Defined<expectedExactExceptionType>([&]() { expression; }, #expression, #expectedExactExceptionType, expectedExactWhatText, #expectedExactWhatText, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::THROWS_EXCEPTION_Defined<expectedExactExceptionType>([&]() { expression; }, #expression, \
+      #expectedExactExceptionType, expectedExactWhatText, #expectedExactWhatText, \
+      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Does nothing to implicitly assert that expression() does not throw an exception. Useful for emphasis to the reader of a unit test.
 #define DOES_NOT_THROW(expression, ...) \
@@ -328,14 +347,14 @@ Testing Utility Options:
    tests.emplace_back(std::make_unique<ZenUnit::SpecSectionTestNXN<TestClassType>>( \
       testClassName, #HighQualityTestName, PMFTOKEN(&TestClassType::HighQualityTestName)));
 
-#define DOSKIP(HighQualityTestName, SkipReason) \
+#define DOSKIPTEST(HighQualityTestName, SkipReason) \
    ZenUnit::ZenUnitTestRunner::Instance()->SkipTest(testClassName, #HighQualityTestName, SkipReason);
 
 // Skips a TEST.
-#define SKIPAFACT(HighQualityTestName, SkipReason) DOSKIP(HighQualityTestName, SkipReason)
+#define SKIPAFACT(HighQualityTestName, SkipReason) DOSKIPTEST(HighQualityTestName, SkipReason)
 
 // Skips a TESTNXN.
-#define SKIPFACTS(HighQualityTestName, SkipReason) DOSKIP(HighQualityTestName, SkipReason)
+#define SKIPFACTS(HighQualityTestName, SkipReason) DOSKIPTEST(HighQualityTestName, SkipReason)
 
 // Ends the test specification section and begins the test body.
 #define EVIDENCE return tests; }
@@ -858,13 +877,13 @@ namespace ZenUnit
       std::string startDateTime;
       std::string commandLine;
       std::vector<RunFilter> runFilters;
-      bool pause = false;
-      bool wait = false;
-      bool exitZero = false;
+      bool pauseBefore = false;
+      bool pauseAfter = false;
+      bool alwaysExit0 = false;
       bool failFast = false;
-      bool noSkips = false;
+      bool exit1IfTestsSkipped = false;
       int testRuns = 1;
-      bool random = false;
+      bool randomTestOrdering = false;
       unsigned randomSeed = 0;
       bool randomSeedSetByUser = false;
       unsigned maxTestMilliseconds = 0;
@@ -1935,31 +1954,31 @@ namespace ZenUnit
          for (size_t argIndex = 1; argIndex < numberOfArgs; ++argIndex)
          {
             const std::string& arg = stringArgs[argIndex];
-            if (arg == "--pause")
+            if (arg == "--pause-before")
             {
-               zenUnitArgs.pause = true;
+               zenUnitArgs.pauseBefore = true;
             }
-            else if (arg == "--wait")
+            else if (arg == "--pause-after")
             {
-               zenUnitArgs.wait = true;
+               zenUnitArgs.pauseAfter = true;
             }
-            else if (arg == "--exit-zero")
+            else if (arg == "--always-exit-0")
             {
-               zenUnitArgs.exitZero = true;
+               zenUnitArgs.alwaysExit0 = true;
             }
             else if (arg == "--fail-fast")
             {
                zenUnitArgs.failFast = true;
             }
-            else if (arg == "--no-skips")
+            else if (arg == "--exit-1-if-tests-skipped")
             {
-               zenUnitArgs.noSkips = true;
+               zenUnitArgs.exit1IfTestsSkipped = true;
             }
-            else if (arg == "--random")
+            else if (arg == "--random-test-ordering")
             {
-               zenUnitArgs.random = true;
+               zenUnitArgs.randomTestOrdering = true;
             }
-            else if (arg == "--help" || arg == "-help")
+            else if (arg == "--help")
             {
                _console->WriteLineAndExit(Usage(), 0);
             }
@@ -1991,7 +2010,7 @@ namespace ZenUnit
                   {
                      zenUnitArgs.testRuns = _call_String_ToInt(argValueString);
                   }
-                  else if (argName == "--seed")
+                  else if (argName == "--random-seed")
                   {
                      zenUnitArgs.randomSeed = _call_String_ToUnsigned(argValueString);
                      zenUnitArgs.randomSeedSetByUser = true;
@@ -4315,7 +4334,7 @@ namespace ZenUnit
       virtual std::vector<TestClassResult> RunTestClasses(ZenUnitArgs& zenUnitArgs)
       {
          std::vector<TestClassResult> testClassResults;
-         if (zenUnitArgs.random)
+         if (zenUnitArgs.randomTestOrdering)
          {
             testClassResults = _transformer->RandomTransform(
                &_testClassRunners, &TestClassRunnerRunner::RunTestClassRunner, zenUnitArgs.randomSeed);
@@ -4573,13 +4592,13 @@ namespace ZenUnit
 
       virtual int DetermineZenUnitExitCode(const ZenUnitArgs& zenUnitArgs) const
       {
-         if (zenUnitArgs.exitZero)
+         if (zenUnitArgs.alwaysExit0)
          {
             return 0;
          }
          const bool haveSkippedTestsOrTestClasses =
             !_skippedFullTestNamesAndSkipReasons.empty() || !_skippedTestClassNamesAndSkipReasons.empty();
-         if (zenUnitArgs.noSkips && haveSkippedTestsOrTestClasses)
+         if (zenUnitArgs.exit1IfTestsSkipped && haveSkippedTestsOrTestClasses)
          {
             return 1;
          }
@@ -4796,7 +4815,7 @@ namespace ZenUnit
             overallExitCode |= testRunExitCode;
             _testRunResult->ResetStateExceptForSkips();
          }
-         _console->WaitForAnyKeyIfDebuggerPresentOrValueTrue(_zenUnitArgs.wait);
+         _console->WaitForAnyKeyIfDebuggerPresentOrValueTrue(_zenUnitArgs.pauseAfter);
          return overallExitCode;
       }
 
@@ -4825,7 +4844,7 @@ namespace ZenUnit
       {
          const std::string startDateTime = _preamblePrinter->PrintPreambleLinesAndGetStartTime(zenUnitArgs, _testClassRunnerRunner.get());
          _havePaused = _nonVoidTwoArgMemberFunctionCaller->ConstCall(
-            this, &ZenUnitTestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused, zenUnitArgs.pause, _havePaused);
+            this, &ZenUnitTestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused, zenUnitArgs.pauseBefore, _havePaused);
          _testRunStopwatch->Start();
          _voidZeroArgMemberFunctionCaller->NonConstCall(this, &ZenUnitTestRunner::RunTestClasses);
          _testRunResult->PrintTestFailuresAndSkips();
@@ -4908,7 +4927,7 @@ namespace ZenUnit
          const std::string testRunResultLine = String::Concat("    Result: Fatal ... exception thrown during test phase: ", testPhaseName);
          _console->WriteLine(testRunResultLine);
 
-         const int exitCode = zenUnitArgs.exitZero ? 0 : 1;
+         const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
          _console->WriteColor(">>-FAIL-> ", Color::Red);
          _console->WriteLineAndExit("  ExitCode: " + std::to_string(exitCode), exitCode);
       }
@@ -5121,7 +5140,7 @@ namespace ZenUnit
          _console->WriteLine(anomaly.why);
          if (testPhase != TestPhase::TestBody)
          {
-            const int exitCode = zenUnitArgs.exitZero ? 0 : 1;
+            const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
             _console->WriteLineColor("\n===========\nFatal Error\n===========", Color::Red);
             _console->WriteLineAndExit("A ZenUnit::Anomaly was thrown from a test class constructor, STARTUP function, or CLEANUP function.\nFail fasting with exit code "
                + std::to_string(exitCode) + ".", exitCode);
@@ -5313,7 +5332,7 @@ namespace ZenUnit
       void DoRunTests()
       {
          const ZenUnitArgs& zenUnitArgs = _call_ZenUnitTestRunner_GetZenUnitArgs();
-         if (zenUnitArgs.random)
+         if (zenUnitArgs.randomTestOrdering)
          {
             _twoArgMemberForEacher->RandomTwoArgMemberForEach(
                &_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult, zenUnitArgs.randomSeed);
@@ -5681,7 +5700,8 @@ namespace ZenUnit
          assert_true(_currentTestCaseNumber == 1);
          const ZenUnitArgs& zenUnitArgs = _call_ZenUnitTestRunner_GetZenUnitArgs();
          const size_t numberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
-         std::shared_ptr<ITestCaseNumberGenerator> const testCaseNumberGenerator(_call_ITestCaseNumberGeneratorFactoryNew(zenUnitArgs.random));
+         std::shared_ptr<ITestCaseNumberGenerator> const testCaseNumberGenerator(
+            _call_ITestCaseNumberGeneratorFactoryNew(zenUnitArgs.randomTestOrdering));
          testCaseNumberGenerator->Initialize(numberOfTestCaseArgs, N, zenUnitArgs);
          const std::vector<std::string> splitTestCaseArgs = _call_String_SplitOnNonQuotedCommas(_testCaseArgsText);
          while ((_currentTestCaseNumber = testCaseNumberGenerator->NextTestCaseNumber()) != std::numeric_limits<size_t>::max())
@@ -6249,7 +6269,7 @@ namespace ZenUnit
          {
             console->WriteLineColor("====================================\nZenUnit Test Definition Syntax Error\n====================================\n", Color::Red);
             const ZenUnitArgs& zenUnitArgs = zenUnitTestRunner->VirtualGetZenUnitArgs();
-            const int exitCode = zenUnitArgs.exitZero ? 0 : 1;
+            const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
             console->WriteLineColor(R"(The above test name was declared using FACTS(TestName).
 
 Therefore a TESTNXN(TestName, ...) definition was expected to be found in the EVIDENCE section of the test class.

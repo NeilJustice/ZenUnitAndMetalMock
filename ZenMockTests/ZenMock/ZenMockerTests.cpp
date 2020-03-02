@@ -172,7 +172,7 @@ namespace ZenMock
    }
 
    TEST2X2(ZenMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedFalse_ZenMockExceptionIsInFlightFalse_WritesError_Exits1,
-      bool exitZero, int expectedExitCode,
+      bool alwaysExit0, int expectedExitCode,
       false, 1,
       true, 0)
    {
@@ -181,7 +181,7 @@ namespace ZenMock
       _zenMocker->_zenMockExceptionIsInFlight = false;
 
       ZenUnit::ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
-      zenUnitArgs.exitZero = exitZero;
+      zenUnitArgs.alwaysExit0 = alwaysExit0;
       GetZenUnitArgsMock.Return(zenUnitArgs);
       exitMock.Expect();
 

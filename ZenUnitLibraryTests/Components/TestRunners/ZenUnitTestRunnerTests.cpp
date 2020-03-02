@@ -127,7 +127,7 @@ namespace ZenUnit
    {
       ZenUnitArgs parsedZenUnitArgs;
       parsedZenUnitArgs.runFilters = { Random<RunFilter>(), Random<RunFilter>() };
-      parsedZenUnitArgs.wait = ZenUnit::Random<bool>();
+      parsedZenUnitArgs.pauseAfter = ZenUnit::Random<bool>();
       parsedZenUnitArgs.testRuns = testrunsArg;
       _argsParserMock->ParseMock.Return(parsedZenUnitArgs);
 
@@ -148,7 +148,7 @@ namespace ZenUnit
       ZENMOCK(_nonVoidOneArgMemberFunctionCallerMock->NonConstCallMock.CalledNTimesWith(
          testrunsArg, &_zenUnitTestRunner, &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, parsedZenUnitArgs));
       ZENMOCK(_testRunResultMock->ResetStateExceptForSkipsMock.CalledNTimes(testrunsArg));
-      ZENMOCK(_consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.CalledOnceWith(parsedZenUnitArgs.wait));
+      ZENMOCK(_consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.CalledOnceWith(parsedZenUnitArgs.pauseAfter));
       ARE_EQUAL(expectedOverallExitCode, overallExitCode);
    }
 
@@ -179,7 +179,7 @@ namespace ZenUnit
       //
       ZENMOCK(_nonVoidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
          &_zenUnitTestRunner, &ZenUnitTestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused,
-         zenUnitArgs.pause, havePausedInitialValue));
+         zenUnitArgs.pauseBefore, havePausedInitialValue));
       ARE_EQUAL(waitForAnyKeyIfPauseModeReturnValue, _zenUnitTestRunner._havePaused);
       ZENMOCK(_testRunStopwatchMock->StartMock.CalledOnce());
       ZENMOCK(_preamblePrinterMock->PrintPreambleLinesAndGetStartTimeMock.CalledOnceWith(

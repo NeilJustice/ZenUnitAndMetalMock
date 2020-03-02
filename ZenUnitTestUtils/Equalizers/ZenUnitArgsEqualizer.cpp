@@ -8,13 +8,13 @@ namespace ZenUnit
    {
       ARE_EQUAL(expectedArguments.commandLine, actualArgs.commandLine);
       VECTORS_EQUAL(expectedArguments.runFilters, actualArgs.runFilters);
-      ARE_EQUAL(expectedArguments.pause, actualArgs.pause);
-      ARE_EQUAL(expectedArguments.wait, actualArgs.wait);
-      ARE_EQUAL(expectedArguments.exitZero, actualArgs.exitZero);
+      ARE_EQUAL(expectedArguments.pauseBefore, actualArgs.pauseBefore);
+      ARE_EQUAL(expectedArguments.pauseAfter, actualArgs.pauseAfter);
+      ARE_EQUAL(expectedArguments.alwaysExit0, actualArgs.alwaysExit0);
       ARE_EQUAL(expectedArguments.failFast, actualArgs.failFast);
-      ARE_EQUAL(expectedArguments.noSkips, actualArgs.noSkips);
+      ARE_EQUAL(expectedArguments.exit1IfTestsSkipped, actualArgs.exit1IfTestsSkipped);
       ARE_EQUAL(expectedArguments.testRuns, actualArgs.testRuns);
-      ARE_EQUAL(expectedArguments.random, actualArgs.random);
+      ARE_EQUAL(expectedArguments.randomTestOrdering, actualArgs.randomTestOrdering);
       ARE_EQUAL(expectedArguments.randomSeed, actualArgs.randomSeed);
       ARE_EQUAL(expectedArguments.randomSeedSetByUser, actualArgs.randomSeedSetByUser);
       ARE_EQUAL(expectedArguments.maxTestMilliseconds, actualArgs.maxTestMilliseconds);

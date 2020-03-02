@@ -180,7 +180,7 @@ namespace ZenUnit
       const vector<TestResult> testResults = test1X1SelfMocked.RunTest();
       //
       ZENMOCK(GetArgsMock_SelfMocked.CalledOnce());
-      ZENMOCK(test1X1SelfMocked.FactoryNewMock.CalledOnceWith(args.random));
+      ZENMOCK(test1X1SelfMocked.FactoryNewMock.CalledOnceWith(args.randomTestOrdering));
       ZENMOCK(testCaseNumberGeneratorMock->InitializeMock.CalledOnceWith(2, N, args));
       ZENMOCK(SplitOnNonQuotedCommasMock_SelfMocked.CalledOnce());
       ZENMOCK(testCaseNumberGeneratorMock->NextTestCaseNumberMock.CalledNTimes(3));

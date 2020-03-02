@@ -1,6 +1,7 @@
-// C++ Mocking Framework ZenMock v0.5.0
+// C++ Mocking Framework ZenMock 0.6.0
+// ZenMock is licensed with the Unlicense license:
+// "This is free and unencumbered software released into the public domain."
 // https://github.com/NeilJustice/ZenUnitAndZenMock
-// Unlicense (public domain)
 
 #pragma once
 #include "ZenUnit.h"
@@ -1427,7 +1428,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
             console.WriteColor(">>------>", ZenUnit::Color::Red);
             console.WriteLine(" TestResult: Fatal EBNA");
             console.WriteColor(">>-FAIL->", ZenUnit::Color::Red);
-            const int exitCode = zenUnitArgs.exitZero ? 0 : 1;
+            const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
             console.WriteLine("   ExitCode: " + std::to_string(exitCode));
             _call_exit(exitCode);
          }

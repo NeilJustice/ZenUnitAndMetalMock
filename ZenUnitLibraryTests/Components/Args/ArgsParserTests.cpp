@@ -14,8 +14,8 @@ namespace ZenUnit
    AFACT(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
    FACTS(Parse_ArgsSizeGreaterThanOrEqualTo13_PrintsTooManyArgumentsErrorMessageAndUsageAndExits1)
    FACTS(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1)
-   FACTS(Parse_DashHelpOrDashDashHelp_PrintsUsageAndExits0)
-   FACTS(Parse_DashVersionOrDashDashVersion_PrintsVersionAndExits0)
+   AFACT(Parse_DashDashHelp_PrintsUsageAndExits0)
+   AFACT(Parse_DashDashVersion_PrintsVersionAndExits0)
    AFACT(Parse_AllArgsSpecifiedExpectForRunFilter_ReturnsZenUnitArgsWithAllFieldsSets)
    AFACT(Parse_RunArgument_ReturnsExpectedZenUnitArgs)
    AFACT(Parse_random_SetsrandomToTrue)
@@ -35,49 +35,54 @@ namespace ZenUnit
 https://github.com/NeilJustice/ZenUnitAndZenMock
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
-Testing Rigor Options:
+Options For Testing Rigor:
 
---random
-   Run test classes, tests, and value-parameterized test cases in a random order.
---seed=<Value>
-   Set to Value the random seed used by --random and
-   the ZenUnit::Random<T> family of random value generating functions.
-   The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
 --test-runs=<N>
-   Repeat the running of all tests N times. Use a negative number to repeat forever.
-   For five random test run orderings on a CI/CD server to exercise the robustness of commits
-   with respect to test run ordering, specify --random --test-runs=5.
---no-skips
-   Exit with code 1 after running all tests if any tests are skipped. Useful option for CI/CD servers.
+   Repeat N times the running of all tests.
+   Specify a negative number to repeat the running of run tests indefinitely.
+--random-test-ordering
+   Run test classes, tests, and value-parameterized test cases in a random order.
+--random-seed=<32BitUnsignedValue>
+   Sets the random seed which sets the ordering for --random-test-ordering and
+   the ZenUnit::Random<T> family of random-value-generating functions.
+   The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
+--exit-1-if-tests-skipped
+   After having run all tests, exit with code 1 if any tests were skipped.
 
-Testing Filtration Options:
+Options For Testing Selection:
 
+--fail-fast
+   If a test fails, call exit(1).
 --run=<TestClassName>[::TestName][/TestCaseNumber][,...]
-   Run only specified case-insensitive test classes, tests, and/or test cases.
+   Run only the specified case-insensitive test classes, tests, and/or test case numbers.
    Add a '*' character to the end of a test class name or test name
    filter string to specify name-starts-with filtration.
- Example 1: --run=WidgetTests
-   Run only test class WidgetTests.
- Example 2: --run=WidgetTests::FunctionUnderTest*
-   Run all tests in WidgetTests that start with "FunctionUnderTest".
- Example 3: --run=WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior/3
-   Run the third test case of value-parameterized test
-   WidgetTests::FunctionUnderTest_ScenarioUnderTest_ExpectedBehavior.
---fail-fast
-   Immediately call exit(1) if a test fails.
+ Example 1: --run=APITests
+   Run only test class APITests.
+ Example 2: --run=APITests::FunctionUnderTest*
+   Run only tests in APITests that start with "FunctionUnderTest".
+ Example 3: --run=APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue/3
+   Run only the third test case of the value-parameterized test named
+   APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue.
 
-Testing Utility Options:
+Options For Testing Utility:
 
---help or -help
+--pause-before
+   Wait for any key before running tests to allow attaching of a profiler or debugger.
+--pause-after
+   Wait for any key after running tests.
+   This is a useful command line argument for desktop shortcuts that run ZenUnit tests.
+--always-exit-0
+   Always exit with code 0 even if there are test failures.
+--help
    Print this help message.
---version or -version
+--version
    Print the ZenUnit version number.
---pause
-   Wait for any key before running tests to allow attaching a debugger or profiler.
---exit-zero
-   Always exit with code 0.
---wait
-   Wait for any key at the end of the test run.)";
+
+Example ZenUnit command line arguments:
+
+--test-runs=5 --random-test-ordering --exit-1-if-tests-skipped
+)";
 
    ArgsParser _argsParser;
    ConsoleMock* _consoleMock = nullptr;
@@ -154,7 +159,7 @@ Testing Utility Options:
    TEST1X1(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1,
       const string& invalidArgument,
       "--abc",
-      "--Exit-zero",
+      "--Always-exit-0",
       "--test-runs")
    {
       _consoleMock->WriteLineMock.Expect();
@@ -168,30 +173,24 @@ Testing Utility Options:
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
    }
 
-   TEST1X1(Parse_DashHelpOrDashDashHelp_PrintsUsageAndExits0,
-      const string& helpArgument,
-      "--help",
-      "-help")
+   TEST(Parse_DashDashHelp_PrintsUsageAndExits0)
    {
       _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
-      const vector<string> stringArgs { _testProgramPath, helpArgument };
+      const vector<string> stringArgs { _testProgramPath, "--help" };
       //
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 0));
    }
 
-   TEST1X1(Parse_DashVersionOrDashDashVersion_PrintsVersionAndExits0,
-      const string& versionArgument,
-      "--version",
-      "-version")
+   TEST(Parse_DashDashVersion_PrintsVersionAndExits0)
    {
       _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
-      const vector<string> stringArgs { _testProgramPath, versionArgument };
+      const vector<string> stringArgs { _testProgramPath, "--version" };
       //
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("0.5.0", 0));
+      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("0.6.0", 0));
    }
 
    TEST(Parse_AllArgsSpecifiedExpectForRunFilter_ReturnsZenUnitArgsWithAllFieldsSets)
@@ -203,14 +202,14 @@ Testing Utility Options:
       const vector<string> stringArgs
       {
          _testProgramPath,
-         "--pause",
-         "--wait",
-         "--exit-zero",
+         "--pause-before",
+         "--pause-after",
+         "--always-exit-0",
          "--fail-fast",
-         "--no-skips",
-         "--random",
+         "--exit-1-if-tests-skipped",
+         "--random-test-ordering",
          "--test-runs=" + to_string(testruns),
-         "--seed=" + to_string(randomSeed)
+         "--random-seed=" + to_string(randomSeed)
       };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
@@ -220,12 +219,12 @@ Testing Utility Options:
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
-      expectedZenUnitArgs.pause = true;
-      expectedZenUnitArgs.wait = true;
-      expectedZenUnitArgs.exitZero = true;
+      expectedZenUnitArgs.pauseBefore = true;
+      expectedZenUnitArgs.pauseAfter = true;
+      expectedZenUnitArgs.alwaysExit0 = true;
       expectedZenUnitArgs.failFast = true;
-      expectedZenUnitArgs.noSkips = true;
-      expectedZenUnitArgs.random = true;
+      expectedZenUnitArgs.exit1IfTestsSkipped = true;
+      expectedZenUnitArgs.randomTestOrdering = true;
       expectedZenUnitArgs.testRuns = testruns;
       expectedZenUnitArgs.randomSeed = randomSeed;
       expectedZenUnitArgs.randomSeedSetByUser = true;
@@ -264,29 +263,29 @@ Testing Utility Options:
    {
       const string dateTimeNow = _watchMock->DateTimeNowMock.ReturnRandom();
       ExpectCallToSetRandomSeedIfNotSetByUser();
-      const vector<string> stringArgs { ZenUnit::Random<string>(), "--random" };
+      const vector<string> stringArgs { ZenUnit::Random<string>(), "--random-test-ordering" };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
       //
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
-      expectedZenUnitArgs.random = true;
+      expectedZenUnitArgs.randomTestOrdering = true;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
    TEST(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    {
-      AssertArgSetsBoolField("--pause", &ZenUnitArgs::pause);
+      AssertArgSetsBoolField("--pause-before", &ZenUnitArgs::pauseBefore);
       Startup();
-      AssertArgSetsBoolField("--wait", &ZenUnitArgs::wait);
+      AssertArgSetsBoolField("--pause-after", &ZenUnitArgs::pauseAfter);
       Startup();
-      AssertArgSetsBoolField("--exit-zero", &ZenUnitArgs::exitZero);
+      AssertArgSetsBoolField("--always-exit-0", &ZenUnitArgs::alwaysExit0);
       Startup();
       AssertArgSetsBoolField("--fail-fast", &ZenUnitArgs::failFast);
       Startup();
-      AssertArgSetsBoolField("--no-skips", &ZenUnitArgs::noSkips);
+      AssertArgSetsBoolField("--exit-1-if-tests-skipped", &ZenUnitArgs::exit1IfTestsSkipped);
    }
    void AssertArgSetsBoolField(const string& arg, bool ZenUnitArgs::* expectedFieldToBeSet)
    {
@@ -308,14 +307,14 @@ Testing Utility Options:
    {
       const string dateTimeNow = _watchMock->DateTimeNowMock.ReturnRandom();
       ExpectCallToSetRandomSeedIfNotSetByUser();
-      const vector<string> stringArgs { _testProgramPath, "--exit-zero", "--exit-zero" };
+      const vector<string> stringArgs { _testProgramPath, "--always-exit-0", "--always-exit-0" };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
       //
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
-      expectedZenUnitArgs.exitZero = true;
+      expectedZenUnitArgs.alwaysExit0 = true;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
@@ -324,8 +323,8 @@ Testing Utility Options:
       const string& arg,
       "--test-runs=",
       "--test-runs===",
-      "--seed=",
-      "--seed===")
+      "--random-seed=",
+      "--random-seed===")
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
@@ -377,7 +376,7 @@ Testing Utility Options:
       const string dateTimeNow = _watchMock->DateTimeNowMock.ReturnRandom();
       ExpectCallToSetRandomSeedIfNotSetByUser();
       const unsigned randomSeed = ToUnsignedMock.ReturnRandom();
-      const vector<string> stringArgs{ _testProgramPath, "--seed=" + to_string(randomSeed) };
+      const vector<string> stringArgs{ _testProgramPath, "--random-seed=" + to_string(randomSeed) };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
       //
@@ -385,7 +384,7 @@ Testing Utility Options:
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
-      expectedZenUnitArgs.random = false;
+      expectedZenUnitArgs.randomTestOrdering = false;
       expectedZenUnitArgs.randomSeed = randomSeed;
       expectedZenUnitArgs.randomSeedSetByUser = true;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);

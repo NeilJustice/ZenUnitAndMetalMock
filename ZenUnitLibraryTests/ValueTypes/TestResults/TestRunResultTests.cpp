@@ -329,7 +329,7 @@ namespace ZenUnit
    {
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
       ZenUnitArgs args;
-      args.exitZero = true;
+      args.alwaysExit0 = true;
       //
       const int zenUnitExitCode = _testRunResult.DetermineZenUnitExitCode(args);
       //
@@ -348,8 +348,8 @@ namespace ZenUnit
    {
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
       ZenUnitArgs args;
-      args.exitZero = true;
-      args.noSkips = true;
+      args.alwaysExit0 = true;
+      args.exit1IfTestsSkipped = true;
       //
       const int zenUnitExitCode = _testRunResult.DetermineZenUnitExitCode(args);
       //
@@ -373,7 +373,7 @@ namespace ZenUnit
    {
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
       ZenUnitArgs args;
-      args.noSkips = true;
+      args.exit1IfTestsSkipped = true;
       //
       const int zenUnitExitCode = _testRunResult.DetermineZenUnitExitCode(args);
       //

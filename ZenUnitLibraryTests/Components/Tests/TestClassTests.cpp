@@ -47,7 +47,7 @@ namespace ZenUnit
       //
       ZENMOCK(zenUnitTestRunnerMock.VirtualGetZenUnitArgsMock.CalledOnce());
 
-      const int expectedExitCode = zenUnitArgs.exitZero ? 0 : 1;
+      const int expectedExitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
       const string expectedMessage = R"(The above test name was declared using FACTS(TestName).
 
 Therefore a TESTNXN(TestName, ...) definition was expected to be found in the EVIDENCE section of the test class.
