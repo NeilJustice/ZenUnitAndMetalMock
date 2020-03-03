@@ -12,11 +12,11 @@ ZenMock is a single-header C++ mocking framework powered by ZenUnit and features
 |AppVeyor Windows Visual Studio 2019 x64 and Win32 Debug And Release|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndZenMock"><img src="https://ci.appveyor.com/api/projects/status/neqqkha7xbc93260?svg=true"/></a>|
 |Code Coverage Of The Travis CI GCC 7.4.0 Release Build|[![codecov](https://codecov.io/gh/NeilJustice/ZenUnitAndZenMock/branch/master/graph/badge.svg)](https://codecov.io/gh/NeilJustice/ZenUnitAndZenMock)|
 
-##### ZenUnit.h quick download: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenUnit/ZenUnit.h) 
-##### ZenMock.h quick download: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenMock/ZenMock.h)
+##### ZenUnit.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenUnit/ZenUnit.h) 
+##### ZenMock.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenMock/ZenMock.h)
 
-   * [Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Case Syntax](#unit-testing-fizzbuzz-with-zenunits-value-parameterized-test-case-syntax)
-   * [ZenUnit Console Output Design](#zenunit-console-output-design)
+   * [Unit Testing FizzBuzz With ZenUnit's Convenient Value-Parameterized Test Case Syntax](#unit-testing-fizzbuzz-with-zenunits-convenient-value-parameterized-test-case-syntax)
+   * [ZenUnit Console Output](#zenunit-console-output)
    * [ZenUnit Command Line Usage](#zenunit-command-line-usage)
    * [ZenUnit Assertions](#zenunit-assertions)
       * [Value Assertions](#value-assertions)
@@ -28,18 +28,18 @@ ZenMock is a single-header C++ mocking framework powered by ZenUnit and features
       * [Memory Allocation Assertions](#memory-allocation-assertions)
       * [The FAIL_TEST Assertion](#the-fail_test-assertion)
    * [Macros For Defining And Running ZenUnit Unit Tests](#macros-for-defining-and-running-zenunit-unit-tests)
-   * [Maximizing Mutation Coverage By Testing With ZenUnit-Generated Random Values](#maximizing-mutation-coverage-by-testing-with-zenunit-generated-random-values)
+   * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
    * [Linux Jenkins Jobs That Build, Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And ZenMock](#linux-jenkins-jobs-that-build-test-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-zenmock)
    * [Windows Jenkins Jobs That Build And Test ZenUnit And ZenMock](#windows-jenkins-jobs-that-build-and-test-zenunit-and-zenmock)
-   * [On Linux How To Build ZenUnit And ZenMock Unit Tests, Run The Unit Tests, Then Install ZenUnit.h And ZenMock.h](#on-linux-how-to-build-zenunit-and-zenmock-unit-tests-run-the-unit-tests-then-install-zenunit.h-and-zenmock.h)
-   * [On Windows How To Build ZenUnit And ZenMock Unit Tests, Run The Unit Tests, Then Install ZenUnit.h And ZenMock.h](#on-windows-how-to-build-zenunit-and-zenmock-unit-tests-run-the-unit-tests-then-install-zenunit.h-and-zenmock.h)
+   * [On Linux How To Build, Test, And Install ZenUnit.h And ZenMock.h](#on-linux-how-to-build-test-and-install-zenunit.h-and-zenmock.h)
+   * [On Windows How To Build, Test, And Install ZenUnit.h And ZenMock.h](#on-windows-how-to-build-test-and-install-zenunit.h-and-zenmock.h)
 
-### Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Case Syntax
+### Unit Testing FizzBuzz With ZenUnit's Convenient Value-Parameterized Test Case Syntax
 
 ```cpp
-#include "ZenUnit.h" // ZenUnit's single header file
+#include "ZenUnit.h"
 
-// Function whose correctness is to be confirmed using ZenUnit
+// Function to be unit tested with ZenUnit
 std::string FizzBuzz(int endNumber);
 
 // TESTS defines a ZenUnit test class and begins the FACTS section.
@@ -52,15 +52,17 @@ FACTS(FizzBuzz_EndNumberIsGreaterThan0_ReturnsFizzBuzzSequence)
 EVIDENCE
 
 // In ZenUnit test names are duplicated between the FACTS section and the EVIDENCE section
-// by way of a carefully-considered design decision to maximize long-term readability of safety-critical test code.
-// This design of test names always up top instead of scattered throughout potentially large test files
-// makes it straightforward to quickly confirm that a test class tests
-// a cohesive set of functionality using a consistent test naming convention.
+// by way of a carefully-considered design decision to maximize long-term readability
+// of safety-critical unit test code.
+// This design of test names always up top instead of scattered throughout test files
+// makes it easy to quickly confirm that a test class tests
+// a cohesive set of functionality using a consistent test naming convention
+// by simply reading the top of a ZenUnit tests file.
 
 // TEST1X1 defines a 1-by-1 value-parameterized test
 // that processes its typesafe variadic arguments list 1-by-1.
 // This TEST1X1 defines 4 independent unit tests for FizzBuzz(),
-// each of which will run within separate instances of test class FizzBuzzTests.
+// each of which will run sequentially within separate instances of test class FizzBuzzTests.
 TEST1X1(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgument,
    int invalidFizzBuzzEndNumber,
    std::numeric_limits<int>::min(),
@@ -68,12 +70,13 @@ TEST1X1(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgument,
    -1,
    0)
 {
-   // The ZenUnit THROWS_EXCEPTION assertion asserts that an expression throws *exactly* (not a derived class of)
-   // an expected exception type with *exactly* an expected exception what() text.
+   // The ZenUnit THROWS_EXCEPTION assertion asserts that an expression throws
+   // *exactly* (not a derived class of) an expected exception type with
+   // *exactly* expected exception what() text.
 
-   // This double-exactness design of THROWS_EXCEPTION works to maximize mutation coverage,
-   // the next frontier of software quality metrics,
-   // by rendering the THROWS_EXCEPTION assertion immune to these two code mutations:
+   // This double-exactness design of THROWS_EXCEPTION maximize mutation coverage,
+   // the next frontier in software quality metrics beyond code coverage,
+   // by rendering the THROWS_EXCEPTION assertion immune to these two easy-to-induce code mutations:
    // mutate-exception-type and mutate-exception-message.
 
    THROWS_EXCEPTION(FizzBuzz(invalidFizzBuzzEndNumber), std::invalid_argument,
@@ -84,7 +87,7 @@ TEST1X1(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgument,
 // TEST2X2 defines a 2-by-2 value-parameterized test
 // that processes its typesafe variadic arguments list 2-by-2.
 // This TEST2X2 defines 16 independent unit tests for FizzBuzz(),
-// each of which will run within separate instances of test class FizzBuzzTests.
+// each of which will run sequentially within separate instances of test class FizzBuzzTests.
 TEST2X2(FizzBuzz_EndNumberIsGreaterThan0_ReturnsFizzBuzzSequence,
    int endNumber, std::string_view expectedFizzBuzzSequence,
    1, "1",
@@ -105,19 +108,19 @@ TEST2X2(FizzBuzz_EndNumberIsGreaterThan0_ReturnsFizzBuzzSequence,
    16, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz 16")
 {
    const std::string fizzBuzzSequence = FizzBuzz(endNumber);
-   // ZenUnit assertion names are declarative in language style (ARE_EQUAL, THROWS_EXCEPTION, etc)
-   // instead of procedural in language style (ASSERT_EQUAL, ASSERT_THROWS, etc)
-   // to give ZenUnit a test reading experience similar to reading an executable specification document.
+   // ZenUnit assertion names are declarative in language style (ARE_EQUAL, THROWS_EXCEPTION)
+   // instead of procedural in language style (ASSERT_EQUAL, ASSERT_THROWS)
+   // to give ZenUnit a test reading experience akin to reading an executable specification document.
    ARE_EQUAL(expectedFizzBuzzSequence, fizzBuzzSequence);
 }
 
-// Function to be unit tested with ZenUnit
 std::string FizzBuzz(int endNumber)
 {
    if (endNumber <= 0)
    {
       throw std::invalid_argument(
-         "Invalid FizzBuzz(int endNumber) argument: endNumber must be 1 or greater. endNumber=" + std::to_string(endNumber));
+         "Invalid FizzBuzz(int endNumber) argument: endNumber must be 1 or greater. endNumber="
+         + std::to_string(endNumber));
    }
    std::ostringstream fizzBuzzSequenceBuilder;
    for (int i = 1; i <= endNumber; ++i)
@@ -155,7 +158,7 @@ int main(int argc, char* argv[])
 }
 ```
 
-### ZenUnit Console Output Design
+### ZenUnit Console Output
 
 ![ZenUnit Console Output Design](Screenshots/FizzBuzzConsoleOutput.png)
 
@@ -312,9 +315,9 @@ Example ZenUnit command line arguments:
 |`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Prevents a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called.|
 |`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Prevents a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called. For use after `SKIP_TEMPLATE_TESTS`.|
 
-### Maximizing Mutation Coverage By Testing With ZenUnit-Generated Random Values
+### Maximize Mutation Coverage By Testing With Random Values
 
-ZenUnit provides the following random-value-generating functions for maximizing [mutation coverage](https://en.wikipedia.org/wiki/Mutation_testing), the next frontier software quality metric beyond code coverage. Testing using random values instead of constant values renders test code immune to the swap-variable-with-constant code mutation, which is a straightforward code mutation to induce manually today during code review time or automatically in the 2020s during CI/CD time by running an LLVM-powered mutation testing framework such as [Mull](https://github.com/mull-project/mull).
+ZenUnit provides the following random-value-generating functions for maximizing [mutation coverage](https://en.wikipedia.org/wiki/Mutation_testing), the next frontier in software quality metrics beyond code coverage. Testing using random values instead of constant values renders test code immune to the `swap-variable-with-constant` code mutation, which is a straightforward code mutation to induce manually today during code review time or automatically in the 2020s during CI/CD time by running an LLVM-powered mutation testing framework such as [Mull](https://github.com/mull-project/mull).
 
 |Random Value Generating Function|Behavior|
 |--------------------------------|--------|
@@ -339,7 +342,7 @@ ZenUnit provides the following random-value-generating functions for maximizing 
 
 ![Windows Jenkins Jobs That Compile ZenUnit And ZenMock](Screenshots/WindowsJenkinsJobsForZenUnitAndZenMock.png)
 
-### On Linux How To Build ZenUnit And ZenMock Unit Tests, Run The Unit Tests, Then Install ZenUnit.h And ZenMock.h
+### On Linux How To Build, Test, And Install ZenUnit.h And ZenMock.h
 
 ```
 git clone https://github.com/NeilJustice/ZenUnitAndZenMock
@@ -364,7 +367,7 @@ cd ..
 ./TestScripts/RunAllDebugTests.sh
 ```
 
-### On Windows How To Build ZenUnit And ZenMock Unit Tests, Run The Unit Tests, Then Install ZenUnit.h And ZenMock.h
+### On Windows How To Build, Test, And Install ZenUnit.h And ZenMock.h
 
 ```
 git clone https://github.com/NeilJustice/ZenUnitAndZenMock
