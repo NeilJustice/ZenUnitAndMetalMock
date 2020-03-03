@@ -6,4 +6,3 @@ then
   lcov --list coverage.info
   bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
 fi
-
