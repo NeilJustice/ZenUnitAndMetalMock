@@ -64,24 +64,6 @@ TESTS(Tests48) EVIDENCE RUN_TESTS(Tests48)
 TESTS(Tests49) EVIDENCE RUN_TESTS(Tests49)
 TESTS(Tests50) EVIDENCE RUN_TESTS(Tests50)
 
-// 10/20/2019 measurements on a 32-core 64-core AMD Threadripper 2990WX clocked at 3.5 GHz
-
-// Measurement 1
-// 4448 ms CL
-//  388 ms Link
-
-// Measurement 2
-// 4423 ms CL
-//  397 ms Link
-
-// Measurement 3
-// 4371 ms CL
-//  450 ms Link
-
-// Average compile time: 4414 ms
-//    Average link time: 412 ms
-//   Average total time: 4826 ms
-
 int main()
 {
    return 0;
