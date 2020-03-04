@@ -2,18 +2,18 @@
 
 [![Standard](https://img.shields.io/badge/c%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B17) [![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)
 
-ZenUnit is a single-header C++ unit testing framework designed for test readability and assertion exactness and features a convenient syntax for writing value-parameterized and type-parameterized unit tests.
+ZenUnit is a single-header C++ unit testing framework designed for test readability and assertion exactness with its signature feature being a convenient syntax for writing value-parameterized unit tests.
 
-ZenMock is a single-header C++ mocking framework powered by ZenUnit and features a high-readability arrange-act-assert syntax for confirming the correctness of function call arguments and return values to and from virtual, non-virtual, static, and free functions.
+ZenMock is a single-header C++ mocking framework powered by ZenUnit assertions and features a high-readability arrange-act-assert syntax for confirming the correctness of function call arguments and return values to and from virtual, non-virtual, static, and free functions.
 
-|Build Type|Build Status|
+##### ZenUnit.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenUnit/ZenUnit.h) 
+##### ZenMock.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenMock/ZenMock.h)
+
+|Build|Build Status|
 |----------|------------|
 |Travis CI Linux Clang 6.0.0 and GCC 7.4.0 Debug And Release|<a href="https://travis-ci.org/NeilJustice/ZenUnitAndZenMock"><img src="https://travis-ci.org/NeilJustice/ZenUnitAndZenMock.svg?branch=master"/></a>|
 |AppVeyor Windows Visual Studio 2019 x64 and Win32 Debug And Release|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndZenMock"><img src="https://ci.appveyor.com/api/projects/status/neqqkha7xbc93260?svg=true"/></a>|
 |Code Coverage Of The Travis CI GCC 7.4.0 Release Build|[![codecov](https://codecov.io/gh/NeilJustice/ZenUnitAndZenMock/branch/master/graph/badge.svg)](https://codecov.io/gh/NeilJustice/ZenUnitAndZenMock)|
-
-##### ZenUnit.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenUnit/ZenUnit.h) 
-##### ZenMock.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenMock/ZenMock.h)
 
    * [Unit Testing FizzBuzz With ZenUnit's Convenient Value-Parameterized Test Case Syntax](#unit-testing-fizzbuzz-with-zenunits-convenient-value-parameterized-test-case-syntax)
    * [ZenUnit Console Output](#zenunit-console-output)
