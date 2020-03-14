@@ -28,9 +28,9 @@ folder_source_group(ZenMock)
 folder_source_group(ZenMockers)
 
 source_group("" FILES ZenMockTestMain.cpp pch.h pch.cpp)
-file(GLOB_RECURSE Sources *.h *.cpp)
+file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 
-add_executable(ZenMockTests ${Sources})
+add_executable(ZenMockTests ${sourceFilePaths})
 target_link_libraries(ZenMockTests ZenUnitTestUtils)
 
 if(UNIX)

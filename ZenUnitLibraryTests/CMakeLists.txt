@@ -37,10 +37,10 @@ folder_source_group(Utilities)
 folder_source_group_subfolder(ZenUnit Equalizers)
 folder_source_group_subfolder(ZenUnit Random)
 
-source_group("" FILES ZenUnitLibraryTestsMain.cpp pch.h pch.cpp)
-file(GLOB_RECURSE Sources *.h *.cpp)
+source_group("" FILES ZenUnitLibraryTestsMain.cpp MSVCIgnoredWarnings.h pch.h pch.cpp)
+file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 
-add_executable(ZenUnitLibraryTests ${Sources})
+add_executable(ZenUnitLibraryTests ${sourceFilePaths})
 target_link_libraries(ZenUnitLibraryTests ZenUnitTestUtils)
 
 if(UNIX)

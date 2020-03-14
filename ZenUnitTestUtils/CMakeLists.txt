@@ -8,10 +8,10 @@ include_directories(${ZenUnitIncludeDirectory})
 
 folder_source_group(Equalizers)
 
-file(GLOB_RECURSE Sources *.h *.cpp)
-source_group("" FILES ${Sources})
+file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
+source_group("" FILES ${sourceFilePaths})
 
-add_library(ZenUnitTestUtils ${Sources})
+add_library(ZenUnitTestUtils ${sourceFilePaths})
 
 EnablePrecompiledHeaders()
 

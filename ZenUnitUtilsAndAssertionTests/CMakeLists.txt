@@ -22,9 +22,9 @@ folder_source_group(StaticComponents)
 folder_source_group(ValueTypes)
 
 source_group("" FILES ZenUnitUtilsAndAssertionTestsMain.cpp pch.h pch.cpp)
-file(GLOB_RECURSE Sources *.h *.cpp)
+file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 
-add_executable(ZenUnitUtilsAndAssertionTests ${Sources})
+add_executable(ZenUnitUtilsAndAssertionTests ${sourceFilePaths})
 target_link_libraries(ZenUnitUtilsAndAssertionTests ZenUnitTestUtils)
 
 if(UNIX)

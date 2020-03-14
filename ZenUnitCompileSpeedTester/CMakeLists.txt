@@ -5,10 +5,9 @@ include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 include_directories(${ZenUnitIncludeDirectory})
 
 source_group("" FILES ZenUnitCompileSpeedTesterMain.cpp)
+file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 
-file(GLOB_RECURSE Sources *.h *.cpp)
-
-add_executable(ZenUnitCompileSpeedTester ${Sources})
+add_executable(ZenUnitCompileSpeedTester ${sourceFilePaths})
 target_link_libraries(ZenUnitCompileSpeedTester)
 if(UNIX)
    target_link_libraries(ZenUnitCompileSpeedTester stdc++fs)
