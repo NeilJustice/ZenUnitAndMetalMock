@@ -54,8 +54,8 @@ if(EXISTS ${GoogleBenchmarkIncludeDirectory})
    endif()
 endif()
 
-EnablePrecompiledHeaders()
-IfMSVCAddRunTestsPostBuildStep()
+ConfigurePlatformSpecificPrecompiledHeaders()
+OnWindowsAddPostBuildStepToRunTests()
 
 if(UNIX)
    if(CodeCovMode)

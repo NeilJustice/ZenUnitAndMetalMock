@@ -31,6 +31,7 @@ source_group("" FILES ZenMockTestMain.cpp pch.h pch.cpp)
 file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 
 add_executable(ZenMockTests ${sourceFilePaths})
+
 target_link_libraries(ZenMockTests ZenUnitTestUtils)
 
 if(UNIX)
@@ -44,8 +45,8 @@ if(EXISTS ${GoogleBenchmarkIncludeDirectory})
    endif()
 endif()
 
-EnablePrecompiledHeaders()
-IfMSVCAddRunTestsPostBuildStep()
+ConfigurePlatformSpecificPrecompiledHeaders()
+OnWindowsAddPostBuildStepToRunTests()
 
 if(UNIX)
    if(CodeCovMode)

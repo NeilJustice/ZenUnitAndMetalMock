@@ -29,39 +29,45 @@ endif()
 
 set(ZenUnitIncludeDirectory "${CMAKE_SOURCE_DIR}/ZenUnit")
 set(ZenMockIncludeDirectory "${CMAKE_SOURCE_DIR}/ZenMock")
-set(PchDotHFilePath "${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h")
 if(UNIX)
    set(GoogleBenchmarkIncludeDirectory "/usr/local/include/benchmark")
    set(GoogleBenchmarkLibraryPath "/usr/local/lib/benchmark/libbenchmark${CMAKE_BUILD_TYPE}.a")
 elseif(MSVC)
-   set(GoogleBenchmarkIncludeDirectory "C:/usr_local/include/benchmark")
-   set(GoogleBenchmarkLibraryPath "C:/usr_local/lib/benchmark/benchmark$(Configuration).lib")
+   set(GoogleBenchmarkIncludeDirectory "C:/include/benchmark")
+   set(GoogleBenchmarkLibraryPath "C:/lib/benchmark/benchmark$(Configuration).lib")
 endif()
 
-macro(EnablePrecompiledHeaders)
+macro(ConfigurePlatformSpecificPrecompiledHeaders)
    if(UNIX OR APPLE)
       if(ClangSanitizerMode_AddressAndUndefined)
          set(SanitizerArgs "-fsanitize=address,undefined")
       elseif(ClangSanitizerMode_Thread)
          set(SanitizerArgs "-fsanitize=thread")
+      else()
+         set(SanitizerArgs "")
       endif()
+      set(PchDotHFilePath "${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h")
       if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+         set(SharedClangCompilerFlags "-std=c++17 -Wall -Wextra -Werror -pthread -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments")
          if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++17 -Wall -Wextra -Werror -pthread
-               -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments
+            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER}
+               ${SharedClangCompilerFlags}
                ${SanitizerArgs} -I${CMAKE_SOURCE_DIR} -I${ZenUnitIncludeDirectory} -I${ZenMockIncludeDirectory} -x c++-header ${PchDotHFilePath})
          elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++17 -Wall -Wextra -Werror -pthread -O2
-               -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments
+            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER}
+               ${SharedClangCompilerFlags} -O2
                ${SanitizerArgs} -I${CMAKE_SOURCE_DIR} -I${ZenUnitIncludeDirectory} -I${ZenMockIncludeDirectory} -x c++-header ${PchDotHFilePath})
          endif()
          append(CMAKE_CXX_FLAGS "-include-pch ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h.gch")
       elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+         set(SharedGCCCompilerFlags "-std=c++17 -Wall -Wextra -Werror -pthread -Wno-attributes")
          if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++17 -Wall -Wextra -Werror -pthread -g -Wno-attributes
+            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER}
+               ${SharedGCCCompilerFlags} -g
                ${SanitizerArgs} -I${CMAKE_SOURCE_DIR} -I${ZenUnitIncludeDirectory} -I${ZenMockIncludeDirectory} -x c++-header ${PchDotHFilePath})
          elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER} -std=c++17 -Wall -Wextra -Werror -pthread -O2 -DNDEBUG -Wno-attributes
+            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER}
+               ${SharedGCCCompilerFlags} -DNDEBUG -O2
                ${SanitizerArgs} -I${CMAKE_SOURCE_DIR} -I${ZenUnitIncludeDirectory} -I${ZenMockIncludeDirectory} -x c++-header ${PchDotHFilePath})
          endif()
       endif()
@@ -72,9 +78,8 @@ macro(EnablePrecompiledHeaders)
    endif()
 endmacro()
 
-macro(IfMSVCAddRunTestsPostBuildStep)
+macro(OnWindowsAddPostBuildStepToRunTests)
    if(MSVC)
       add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND $(TargetPath) --random-test-ordering --always-exit-0)
    endif()
 endmacro()
-

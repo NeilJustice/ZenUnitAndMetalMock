@@ -8,6 +8,7 @@ source_group("" FILES ZenUnitCompileSpeedTesterMain.cpp)
 file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 
 add_executable(ZenUnitCompileSpeedTester ${sourceFilePaths})
+
 target_link_libraries(ZenUnitCompileSpeedTester)
 if(UNIX)
    target_link_libraries(ZenUnitCompileSpeedTester stdc++fs)

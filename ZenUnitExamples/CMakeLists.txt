@@ -22,8 +22,8 @@ if(UNIX)
    target_link_libraries(ZenUnitExamples stdc++fs)
 endif()
 
-EnablePrecompiledHeaders()
-IfMSVCAddRunTestsPostBuildStep()
+ConfigurePlatformSpecificPrecompiledHeaders()
+OnWindowsAddPostBuildStepToRunTests()
 
 if(UNIX)
    if(CodeCovMode)
