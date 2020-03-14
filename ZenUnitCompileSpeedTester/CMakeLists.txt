@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.2)
 project(ZenUnitCompileSpeedTester)
 include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 
+include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${ZenUnitIncludeDirectory})
 
 source_group("" FILES ZenUnitCompileSpeedTesterMain.cpp)
