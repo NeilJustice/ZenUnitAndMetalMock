@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>7442c4b6-4d10-4aea-a009-421f7252d55e</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>BuildZenUnitAndZenMock.py</StartupFile>
+    <StartupFile>BuildAndInstallZenUnitAndZenMock.py</StartupFile>
     <SearchPath>..\</SearchPath>
     <OutputPath>.</OutputPath>
     <Name>ZenUnitPy</Name>
@@ -28,7 +28,7 @@
     <Compile Include="ArgParser.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BuildZenUnitAndZenMock.py" />
+    <Compile Include="BuildAndInstallZenUnitAndZenMock.py" />
     <Compile Include="CMake.py" />
     <Compile Include="FileSystem.py" />
     <Compile Include="Process.py" />
