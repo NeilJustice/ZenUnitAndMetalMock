@@ -7,6 +7,7 @@
 #pragma warning(disable: 4626) // assignment operator was implicitly defined as deleted
 #pragma warning(disable: 4710) // function not inlined
 #pragma warning(disable: 4711) // function selected for automatic inline expansion
+#pragma warning(disable: 4738) // storing 32 - bit float result in memory, possible loss of performance
 #pragma warning(disable: 4774) // format string expected in argument 1 is not a string literal
 #pragma warning(disable: 4820) // '4' bytes padding added after data member
 #pragma warning(disable: 5026) // move constructor was implicitly defined as deleted
