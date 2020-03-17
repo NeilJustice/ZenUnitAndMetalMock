@@ -4071,11 +4071,12 @@ namespace ZenUnit
 #ifdef __linux__
       virtual std::string GetLinuxUserName() const
       {
-         char usernameChars[_SC_LOGIN_NAME_MAX];
-         const int getloginReturnValue = getlogin_r(usernameChars, sizeof(usernameChars));
-         assert_true(getloginReturnValue == 0);
-         const std::string username(usernameChars);
-         return username;
+         return "LinuxUserNamePlaceholder";
+         //char usernameChars[_SC_LOGIN_NAME_MAX];
+         //const int getloginReturnValue = getlogin_r(usernameChars, sizeof(usernameChars));
+         //assert_true(getloginReturnValue == 0);
+         //const std::string username(usernameChars);
+         //return username;
       }
 #elif _WIN32
       virtual std::string GetWindowsUserName() const
