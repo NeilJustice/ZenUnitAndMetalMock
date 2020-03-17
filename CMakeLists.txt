@@ -55,6 +55,8 @@ add_subdirectory(ZenUnitCompileSpeedTester)
 add_subdirectory(ZenMockExamples)
 add_subdirectory(ZenMockTests)
 
+set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY ON)
+
 if(UNIX)
    include(ProcessorCount)
    ProcessorCount(numberOfThreads)
