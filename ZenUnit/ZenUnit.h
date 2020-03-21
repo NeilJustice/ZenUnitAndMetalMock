@@ -1653,6 +1653,7 @@ namespace ZenUnit
    class ZenMockException
    {
    public:
+      virtual ~ZenMockException() = default;
       virtual const char* what() const noexcept = 0;
    };
 
