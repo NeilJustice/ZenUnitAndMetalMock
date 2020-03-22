@@ -6,7 +6,7 @@ ZenUnit is a single-header C++ unit testing framework designed for test readabil
 
 ZenMock is a single-header C++ mocking framework powered by ZenUnit assertions and features a high-readability arrange-act-assert syntax for confirming the correctness of function call arguments and return values to and from virtual, non-virtual, static, and free functions.
 
-##### ZenUnit.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenUnit/ZenUnit.h) 
+##### ZenUnit.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenUnit/ZenUnit.h)
 ##### ZenMock.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenMock/ZenMock.h)
 
 |Build|Build Status|
@@ -15,7 +15,7 @@ ZenMock is a single-header C++ mocking framework powered by ZenUnit assertions a
 |AppVeyor Windows Visual Studio 2019 x64 and Win32 Debug And Release|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndZenMock"><img src="https://ci.appveyor.com/api/projects/status/neqqkha7xbc93260?svg=true"/></a>|
 |Code Coverage Of The Travis CI GCC 7.4.0 Release Build|[![codecov](https://codecov.io/gh/NeilJustice/ZenUnitAndZenMock/branch/master/graph/badge.svg)](https://codecov.io/gh/NeilJustice/ZenUnitAndZenMock)|
 
-   * [Unit Testing FizzBuzz With ZenUnit's Convenient Value-Parameterized Test Case Syntax](#unit-testing-fizzbuzz-with-zenunits-convenient-value-parameterized-test-case-syntax)
+   * [Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Case Syntax](#unit-testing-fizzbuzz-with-zenunits-value-parameterized-test-case-syntax)
    * [ZenUnit Console Output](#zenunit-console-output)
    * [ZenUnit Command Line Usage](#zenunit-command-line-usage)
    * [ZenUnit Assertions](#zenunit-assertions)
@@ -31,10 +31,10 @@ ZenMock is a single-header C++ mocking framework powered by ZenUnit assertions a
    * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
    * [Linux Jenkins Jobs That Build, Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And ZenMock](#linux-jenkins-jobs-that-build-test-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-zenmock)
    * [Windows Jenkins Jobs That Build And Test ZenUnit And ZenMock](#windows-jenkins-jobs-that-build-and-test-zenunit-and-zenmock)
-   * [On Linux How To Build, Test, And Install ZenUnit.h And ZenMock.h](#on-linux-how-to-build-test-and-install-zenunit.h-and-zenmock.h)
-   * [On Windows How To Build, Test, And Install ZenUnit.h And ZenMock.h](#on-windows-how-to-build-test-and-install-zenunit.h-and-zenmock.h)
+   * [How To Build, Unit Test, And Install ZenUnit.h And ZenMock.h On Linux](#how-to-build-unit-test-and-install-zenunit.h-and-zenmock.h-on-linux)
+   * [How To Build, Unit Test, And Install ZenUnit.h And ZenMock.h On Windows](#how-to-build-unit-test-and-install-zenunit.h-and-zenmock.h-on-windows)
 
-### Unit Testing FizzBuzz With ZenUnit's Convenient Value-Parameterized Test Case Syntax
+### Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Case Syntax
 
 ```cpp
 #include "ZenUnit.h"
@@ -342,7 +342,7 @@ ZenUnit provides the following random-value-generating functions for maximizing 
 
 ![Windows Jenkins Jobs That Compile ZenUnit And ZenMock](Screenshots/WindowsJenkinsJobsForZenUnitAndZenMock.png)
 
-### On Linux How To Build, Test, And Install ZenUnit.h And ZenMock.h
+### How To Build, Unit Test, And Install ZenUnit.h And ZenMock.h On Linux
 
 ```
 git clone https://github.com/NeilJustice/ZenUnitAndZenMock
@@ -351,14 +351,15 @@ cd ZenUnitAndZenMock && mkdir Debug && cd Debug
 
 CXX=clang++ cmake .. -GNinja -DCMAKE_BUILD_TYPE=Debug
 
-# Builds ZenUnit and ZenMock Debug unit test binaries then copies
+# Builds ZenUnit and ZenMock Debug unit test binaries
+# then copies ZenUnit.h and ZenMock.h:
 # ZenUnit.h to /usr/local/include/ZenUnit/ZenUnit.h and
 # ZenMock.h to /usr/local/include/ZenMock/ZenMock.h
 sudo cmake --build . --target install
 
 cd ..
 
-# Runs all the Debug test binaries:
+# Runs all ZenUnit and ZenMock Debug test binaries:
 # Debug/ZenMockTests/ZenMockTests
 # Debug/ZenMockExamples/ZenMockExamples
 # Debug/ZenUnitLibraryTests/ZenUnitLibraryTests
@@ -367,7 +368,7 @@ cd ..
 ./TestScripts/RunAllDebugTests.sh
 ```
 
-### On Windows How To Build, Test, And Install ZenUnit.h And ZenMock.h
+### How To Build, Unit Test, And Install ZenUnit.h And ZenMock.h On Windows
 
 ```
 git clone https://github.com/NeilJustice/ZenUnitAndZenMock
@@ -376,14 +377,17 @@ cd ZenUnitAndZenMock
 
 cmake . -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=C:\
 
-# Builds and runs during post-build events all the Debug test binaries:
+# Builds and runs during post-build events all
+# ZenUnit and ZenMock Debug test binaries:
 # ZenMockTests\Debug\ZenMockTests.exe
 # ZenMockExamples\Debug\ZenMockExamples.exe
 # ZenUnitLibraryTests\Debug\ZenUnitLibraryTests.exe
 # ZenUnitUtilsAndAssertionTests\Debug\ZenUnitUtilsAndAssertionTests.exe
 # ZenUnitExamples\Debug\ZenUnitExamples.exe
-# Then copies:
+
+# Then copies ZenUnit.h and ZenMock.h:
 # ZenUnit.h to C:\include\ZenUnit\ZenUnit.h
 # ZenMock.h to C:\include\ZenMock\ZenMock.h
+
 cmake --build . --target install
 ```
