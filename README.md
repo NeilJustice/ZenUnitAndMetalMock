@@ -4,7 +4,7 @@
 
 ZenUnit is a single-header C++ unit testing framework designed for assertion exactness and long-term test readability. ZenUnit's signature feature is its unique syntax for writing value-parameterized and type-parameterized unit tests.
 
-ZenMock is a single-header C++ mocking framework designed for mocking exactness and features an arrange-act-assert syntax for expecting and asserting the correctness of arguments and return values to and from virtual, non-virtual, static, and free functions.
+ZenMock is a single-header C++ mocking framework designed for function mocking exactness. ZenMock features an intuitive arrange-act-assert syntax for expecting and asserting the correctness of arguments and return values to and from virtual, non-virtual, static, and free functions.
 
 |Build|Build Status|
 |----------|------------|
