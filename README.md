@@ -31,8 +31,8 @@ ZenMock is a single-header C++ mocking framework designed for function mocking e
    * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
    * [Linux Jenkins Jobs That Build, Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And ZenMock](#linux-jenkins-jobs-that-build-test-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-zenmock)
    * [Windows Jenkins Jobs That Build And Test ZenUnit And ZenMock](#windows-jenkins-jobs-that-build-and-test-zenunit-and-zenmock)
-   * [How To Build, Unit Test, And Install ZenUnit.h And ZenMock.h On Linux](#how-to-build-unit-test-and-install-zenunit.h-and-zenmock.h-on-linux)
-   * [How To Build, Unit Test, And Install ZenUnit.h And ZenMock.h On Windows](#how-to-build-unit-test-and-install-zenunit.h-and-zenmock.h-on-windows)
+   * [How To Build, Unit Test, And Install ZenUnit.h And ZenMock.h On Linux](#how-to-build-unit-test-and-install-zenunit-h-and-zenmock-h-on-linux)
+   * [How To Build, Unit Test, And Install ZenUnit.h And ZenMock.h On Windows](#how-to-build-unit-test-and-install-zenunit-h-and-zenmock-h-on-windows)
 
 ### Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Case Syntax
 
