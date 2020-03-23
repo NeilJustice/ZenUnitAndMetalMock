@@ -11,21 +11,21 @@ matrix:
   include:
     - os: linux
       compiler: clang
-      env: CMAKE_BUILD_TYPE=Debug COMPILER=clang++-6.0 CODE_COV_MODE=OFF
+      env: CMAKE_BUILD_TYPE=Debug COMPILER=clang++-7 CODE_COV_MODE=OFF
       addons:
         apt:
           update: true
-          sources: [ 'ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0' ]
-          packages: [ 'ninja-build', 'clang-6.0', 'libstdc++-7-dev' ]
+          sources: [ 'ubuntu-toolchain-r-test' ]
+          packages: [ 'ninja-build', 'clang-7', 'libstdc++-8-dev' ]
 
     - os: linux
       compiler: clang
-      env: CMAKE_BUILD_TYPE=Release COMPILER=clang++-6.0 CODE_COV_MODE=OFF
+      env: CMAKE_BUILD_TYPE=Release COMPILER=clang++-7 CODE_COV_MODE=OFF
       addons:
         apt:
           update: true
-          sources: [ 'ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0' ]
-          packages: [ 'ninja-build', 'clang-6.0', 'libstdc++-7-dev' ]
+          sources: [ 'ubuntu-toolchain-r-test' ]
+          packages: [ 'ninja-build', 'clang-7', 'libstdc++-8-dev' ]
 
     - os: linux
       compiler: gcc
