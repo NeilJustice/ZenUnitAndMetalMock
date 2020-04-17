@@ -26,7 +26,7 @@ using namespace std::literals::string_literals;
 #elif defined _WIN32
 #define WIN32_LEAN_AND_MEAN // ~40% faster Windows.h compile speed
 #define NOGDI // ~10% faster Windows.h compile speed
-#define NOMINMAX // Allows for std::numeric_limits<int>::min() and std::numeric_limits<int>::max() to not result in compiler errors when including Windows.h
+#define NOMINMAX // Undefines Windows.h macros min and max so as to not cause a compiler error when calling std::numeric_limits<int>::min() and std::numeric_limits<int>::max()
 #include "Windows.h" // SetConsoleTextAttribute()
 #include <conio.h> // _getch()
 #include <io.h> // _isatty()
@@ -41,7 +41,7 @@ namespace fs = std::experimental::filesystem;
 namespace fs = std::filesystem;
 #endif
 
-#define Comma , // Comma is for when the compiler needs more than parentheses to disambiguate
+#define Comma , // Comma is for those times when the compiler needs more than an actual comma within parentheses to be able to parse an expression
 
 #define DOTOKENJOIN(a, b) a##b
 
@@ -78,7 +78,7 @@ namespace ZenUnit
 https://github.com/NeilJustice/ZenUnitAndZenMock
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
-Options For Testing Rigor:
+Testing Rigor Options:
 
 --test-runs=<N>
    Repeat N times the running of all tests.
@@ -92,7 +92,7 @@ Options For Testing Rigor:
 --exit-1-if-tests-skipped
    After having run all tests, exit with code 1 if any tests were skipped.
 
-Options For Testing Selection:
+Testing Selection Options:
 
 --fail-fast
    If a test fails, call exit(1).
@@ -108,7 +108,7 @@ Options For Testing Selection:
    Run only the third test case of the value-parameterized test named
    APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue.
 
-Options For Testing Utility:
+Testing Utility Options:
 
 --pause-before
    Wait for any key before running tests to allow attaching of a profiler or debugger.
@@ -122,9 +122,9 @@ Options For Testing Utility:
 --version
    Print the ZenUnit version number.
 
-Example ZenUnit command line arguments:
+Example command line arguments:
 
---test-runs=5 --random-test-ordering --exit-1-if-tests-skipped
+./SafetyCriticalProductTests --test-runs=5 --random-test-ordering --exit-1-if-tests-skipped
 )";
          return zenUnitCommandLineUsage;
       }

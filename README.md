@@ -2,20 +2,20 @@
 
 [![Standard](https://img.shields.io/badge/c%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B17) [![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)
 
-ZenUnit is a single-header C++ unit testing framework designed for assertion exactness and long-term test readability. ZenUnit's signature feature is its intuitive syntax for writing value-parameterized and type-parameterized unit tests.
+ZenUnit is a single-header C++ unit testing framework designed for long-term test code readability and non-ambiguously specifying expected program behaviors, as is ideal when unit testing safety-critical software. ZenUnit's signature feature is its intuitive syntax for writing value-parameterized and type-parameterized unit tests.
 
-ZenMock is a single-header C++ mocking framework designed for function mocking exactness. ZenMock features an intuitive arrange-act-assert syntax for expecting and asserting the correctness of arguments and return values to and from virtual, non-virtual, static, and free functions.
+ZenMock is a single-header C++ mocking framework powered by ZenUnit and designed for non-ambiguously specifying expected function call arguments and return values to and from virtual, non-virtual, static, and free functions by way of an intuitive arrange-act-assert syntax.
 
 |Build|Build Status|
 |----------|------------|
-|Travis CI Linux Clang 7.0.0 and GCC 7.4.0 Debug And Release|<a href="https://travis-ci.org/NeilJustice/ZenUnitAndZenMock"><img src="https://travis-ci.org/NeilJustice/ZenUnitAndZenMock.svg?branch=master"/></a>|
-|AppVeyor Windows Visual Studio 2019 x64 and Win32 Debug And Release|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndZenMock"><img src="https://ci.appveyor.com/api/projects/status/neqqkha7xbc93260?svg=true"/></a>|
+|Travis CI Linux Clang 7.0.0 and GCC 7.4.0 Debug and Release|<a href="https://travis-ci.org/NeilJustice/ZenUnitAndZenMock"><img src="https://travis-ci.org/NeilJustice/ZenUnitAndZenMock.svg?branch=master"/></a>|
+|AppVeyor Windows Visual Studio 2019 x64 and Win32 Debug and Release|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndZenMock"><img src="https://ci.appveyor.com/api/projects/status/neqqkha7xbc93260?svg=true"/></a>|
 |Code Coverage Of The Travis CI GCC 7.4.0 Release Build|[![codecov](https://codecov.io/gh/NeilJustice/ZenUnitAndZenMock/branch/master/graph/badge.svg)](https://codecov.io/gh/NeilJustice/ZenUnitAndZenMock)|
 
 ##### ZenUnit.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenUnit/ZenUnit.h)
 ##### ZenMock.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenMock/ZenMock.h)
 
-   * [Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Case Syntax](#unit-testing-fizzbuzz-with-zenunits-value-parameterized-test-case-syntax)
+   * [Unit Testing FizzBuzz With ZenUnit's Signature Feature: Value-Parameterized Tests](#unit-testing-fizzbuzz-with-zenunits-signature-feature-value-parameterized-tests)
    * [ZenUnit Console Output](#zenunit-console-output)
    * [ZenUnit Command Line Usage](#zenunit-command-line-usage)
    * [ZenUnit Assertions](#zenunit-assertions)
@@ -27,14 +27,14 @@ ZenMock is a single-header C++ mocking framework designed for function mocking e
       * [Function Assertions](#function-assertions)
       * [Memory Allocation Assertions](#memory-allocation-assertions)
       * [The FAIL_TEST Assertion](#the-fail_test-assertion)
-   * [Macros For Defining And Running ZenUnit Unit Tests](#macros-for-defining-and-running-zenunit-unit-tests)
+   * [ZenUnit Test Class And Test Defining Macros](#zenunit-test-class-and-test-defining-macros)
    * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
    * [Linux Jenkins Jobs That Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And ZenMock](#linux-jenkins-jobs-that-build-unit-test-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-zenmock)
    * [Windows Jenkins Jobs That Build And Unit Test ZenUnit And ZenMock](#windows-jenkins-jobs-that-build-and-unit-test-zenunit-and-zenmock)
    * [How To Build, Unit Test, And Install ZenUnit.h And ZenMock.h On Linux](#how-to-build-unit-test-and-install-zenunith-and-zenmockh-on-linux)
    * [How To Build, Unit Test, And Install ZenUnit.h And ZenMock.h On Windows](#how-to-build-unit-test-and-install-zenunith-and-zenmockh-on-windows)
 
-### Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Case Syntax
+### Unit Testing FizzBuzz With ZenUnit's Signature Feature: Value-Parameterized Tests
 
 ```cpp
 #include "ZenUnit.h"
@@ -167,10 +167,9 @@ int main(int argc, char* argv[])
 ```
 C++ Unit Testing Framework ZenUnit 0.6.0
 https://github.com/NeilJustice/ZenUnitAndZenMock
-
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
-Options For Testing Rigor:
+Testing Rigor Options:
 
 --test-runs=<N>
    Repeat N times the running of all tests.
@@ -184,7 +183,7 @@ Options For Testing Rigor:
 --exit-1-if-tests-skipped
    After having run all tests, exit with code 1 if any tests were skipped.
 
-Options For Testing Selection:
+Testing Selection Options:
 
 --fail-fast
    If a test fails, call exit(1).
@@ -200,7 +199,7 @@ Options For Testing Selection:
    Run only the third test case of the value-parameterized test named
    APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue.
 
-Options For Testing Utility:
+Testing Utility Options:
 
 --pause-before
    Wait for any key before running tests to allow attaching of a profiler or debugger.
@@ -214,9 +213,9 @@ Options For Testing Utility:
 --version
    Print the ZenUnit version number.
 
-Example ZenUnit command line arguments:
+Example command line arguments:
 
---test-runs=5 --random-test-ordering --exit-1-if-tests-skipped
+./SafetyCriticalProductTests --test-runs=5 --random-test-ordering --exit-1-if-tests-skipped
 ```
 
 ## ZenUnit Assertions
@@ -284,7 +283,7 @@ Example ZenUnit command line arguments:
 |---------|--------|
 |`FAIL_TEST(testFailureReason, messages...)`|Throws a `ZenUnit::Anomaly` which is caught by ZenUnit to end the current test and begin the next test.|
 
-### Macros For Defining And Running ZenUnit Unit Tests
+### ZenUnit Test Class And Test Defining Macros
 
 |Test Classes|Behavior|
 |------------|--------|

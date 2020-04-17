@@ -35,7 +35,7 @@ namespace ZenUnit
 https://github.com/NeilJustice/ZenUnitAndZenMock
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
-Options For Testing Rigor:
+Testing Rigor Options:
 
 --test-runs=<N>
    Repeat N times the running of all tests.
@@ -49,7 +49,7 @@ Options For Testing Rigor:
 --exit-1-if-tests-skipped
    After having run all tests, exit with code 1 if any tests were skipped.
 
-Options For Testing Selection:
+Testing Selection Options:
 
 --fail-fast
    If a test fails, call exit(1).
@@ -65,7 +65,7 @@ Options For Testing Selection:
    Run only the third test case of the value-parameterized test named
    APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue.
 
-Options For Testing Utility:
+Testing Utility Options:
 
 --pause-before
    Wait for any key before running tests to allow attaching of a profiler or debugger.
@@ -79,9 +79,9 @@ Options For Testing Utility:
 --version
    Print the ZenUnit version number.
 
-Example ZenUnit command line arguments:
+Example command line arguments:
 
---test-runs=5 --random-test-ordering --exit-1-if-tests-skipped
+./SafetyCriticalProductTests --test-runs=5 --random-test-ordering --exit-1-if-tests-skipped
 )";
 
    ArgsParser _argsParser;
