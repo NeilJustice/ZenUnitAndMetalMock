@@ -74,7 +74,7 @@ TEST1X1(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgument,
    // *exactly* (not a derived class of) an expected exception type with
    // *exactly* expected exception what() text.
 
-   // This double-exactness design of THROWS_EXCEPTION maximize mutation coverage,
+   // This double-exactness design of THROWS_EXCEPTION maximizes mutation coverage,
    // the next frontier in software quality metrics beyond code coverage,
    // by rendering the THROWS_EXCEPTION assertion immune to these two easy-to-induce code mutations:
    // mutate-exception-type and mutate-exception-message.
