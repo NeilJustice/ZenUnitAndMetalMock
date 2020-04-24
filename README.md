@@ -114,6 +114,7 @@ TEST2X2(FizzBuzz_EndNumberIsGreaterThan0_ReturnsFizzBuzzSequence,
    ARE_EQUAL(expectedFizzBuzzSequence, fizzBuzzSequence);
 }
 
+// Function under test
 std::string FizzBuzz(int endNumber)
 {
    if (endNumber <= 0)
