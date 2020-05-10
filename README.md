@@ -2,9 +2,9 @@
 
 [![Standard](https://img.shields.io/badge/c%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B17) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-ZenUnit is a single-header C++ unit testing framework designed for long-term test code readability and non-ambiguously specifying expected program behaviors, as is ideal when unit testing safety-critical software. ZenUnit's signature feature is its intuitive syntax for writing value-parameterized and type-parameterized unit tests.
+ZenUnit is a single-header C++ unit testing framework designed for long-term test code readability and has as its signature feature an intuitive syntax for writing value-parameterized and type-parameterized unit tests.
 
-ZenMock is a single-header C++ mocking framework powered by ZenUnit and designed for non-ambiguously specifying expected function call arguments and return values to and from virtual, non-virtual, static, and free functions by way of an intuitive arrange-act-assert syntax.
+ZenMock is a single-header C++ mocking framework powered by ZenUnit and designed for specifying expected function call arguments and return values to and from virtual, non-virtual, static, and free functions by way of an intuitive arrange-act-assert syntax.
 
 |Build|Build Status|
 |----------|------------|
@@ -15,7 +15,7 @@ ZenMock is a single-header C++ mocking framework powered by ZenUnit and designed
 ##### ZenUnit.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenUnit/ZenUnit.h)
 ##### ZenMock.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenMock/ZenMock.h)
 
-   * [Unit Testing FizzBuzz With ZenUnit's Signature Feature: Value-Parameterized Tests](#unit-testing-fizzbuzz-with-zenunits-signature-feature-value-parameterized-tests)
+   * [Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Feature](#unit-testing-fizzbuzz-with-zenunits-value-parameterized-test-feature)
    * [ZenUnit Console Output](#zenunit-console-output)
    * [ZenUnit Command Line Usage](#zenunit-command-line-usage)
    * [ZenUnit Assertions](#zenunit-assertions)
@@ -34,7 +34,7 @@ ZenMock is a single-header C++ mocking framework powered by ZenUnit and designed
    * [How To Build, Unit Test, And Install ZenUnit.h And ZenMock.h On Linux](#how-to-build-unit-test-and-install-zenunith-and-zenmockh-on-linux)
    * [How To Build, Unit Test, And Install ZenUnit.h And ZenMock.h On Windows](#how-to-build-unit-test-and-install-zenunith-and-zenmockh-on-windows)
 
-### Unit Testing FizzBuzz With ZenUnit's Signature Feature: Value-Parameterized Tests
+### Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Feature
 
 ```cpp
 #include "ZenUnit.h"
