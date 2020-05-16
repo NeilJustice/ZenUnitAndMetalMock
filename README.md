@@ -6,7 +6,7 @@ ZenUnit is a C++ single-header unit testing framework designed for assertion exa
 
 ZenMock is a C++ single-header mocking framework powered by ZenUnit assertions and features an intuitive arrange-act-assert syntax for specifying function return values and expected function call arguments from and to virtual functions, non-virtual/template functions, static functions, and free functions.
 
-A key testing rigorousness feature of ZenMock is that ZenMock is a "double-strict mocking framework" to be suitable for testing safety-critical software - meaning two-fold: 1) Unexpected calls to ZenMocked functions throw a ZenMock::UnexpectedCallException, and 2) Expected calls to ZenMocked functions not thereafter asserted as having been called results in a destructor-driven terminal error with error message "ZenMocked Function Expected But Not Asserted".
+A key testing rigorousness feature of ZenMock is that ZenMock is a "double-strict mocking framework" to be suitable for testing safety-critical software - meaning twofold: 1) Unexpected calls to ZenMocked functions throw a ZenMock::UnexpectedCallException, and 2) Expected calls to ZenMocked functions not thereafter explicitly asserted as having been called with **exact** expected arguments results in a fail-fast terminal error with error message "ZenMocked Function Expected But Not Asserted".
 
 |Build|Build Status|
 |----------|------------|
