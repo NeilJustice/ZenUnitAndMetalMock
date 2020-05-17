@@ -3838,7 +3838,7 @@ namespace ZenUnit
                TestPhaseTranslator::DoTestPhaseToTestPhaseSuffix(responsibleTestPhaseResult.testPhase);
             console->Write(responsibleTestPhaseSuffix);
             WriteTestCaseNumberIfAny(console, testCaseNumber);
-            console->WriteLineColor("\n================\nException Thrown\n================", Color::Red);
+            console->WriteLineColor("\n==================\nUncaught Exception\n==================", Color::Red);
             const std::string exceptionTypeAndWhatLines = String::Concat(
                "  Type: ", *responsibleTestPhaseResult.anomalyOrException->exceptionTypeName, '\n',
                "what(): \"", *responsibleTestPhaseResult.anomalyOrException->exceptionWhat, "\"");
@@ -5151,7 +5151,7 @@ namespace ZenUnit
       catch (const std::exception& ex)
       {
          PopulateTestPhaseResultWithExceptionInformation(ex, &testPhaseResult);
-         _console->WriteColor("\n================\nException Thrown\n================", Color::Red);
+         _console->WriteColor("\n==================\nUncaught Exception\n==================", Color::Red);
          const char* const testPhaseSuffix = _testPhaseTranslator->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          const std::string exceptionTypeNameAndWhat = String::Concat('\n',

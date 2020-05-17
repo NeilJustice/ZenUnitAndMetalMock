@@ -330,7 +330,7 @@ namespace ZenUnit
       ZENMOCK(_consoleMock.WriteLineColorMock.CalledAsFollows(
       {
          { testFailureNumber, Color::Red },
-         { "\n================\nException Thrown\n================", Color::Red }
+         { "\n==================\nUncaught Exception\n==================", Color::Red }
       }));
       ZENMOCK(_consoleMock.WriteLineMock.CalledOnceWith(
          "  Type: " + exceptionTypeName + "\n"
