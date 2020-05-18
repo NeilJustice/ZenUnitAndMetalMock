@@ -172,7 +172,7 @@ C++ Unit Testing Framework ZenUnit 0.6.0
 https://github.com/NeilJustice/ZenUnitAndZenMock
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
-Testing Rigor Options:
+Testing Rigorousness Options:
 
 --test-runs=<N>
    Repeat N times the running of all tests.
@@ -186,7 +186,7 @@ Testing Rigor Options:
 --exit-1-if-tests-skipped
    After having run all tests, exit with code 1 if any tests were skipped.
 
-Testing Selection Options:
+Testing Specificity Options:
 
 --fail-fast
    If a test fails, call exit(1).
@@ -215,10 +215,12 @@ Testing Utility Options:
    Print this help message.
 --version
    Print the ZenUnit version number.
+--informal-spec
+   Print every test class name and test name.
 
-Example command line arguments:
+Example Command Line Arguments:
 
-./SafetyCriticalProductTests --test-runs=5 --random-test-ordering --exit-1-if-tests-skipped
+./SafetyCriticalSoftwareTests --test-runs=5 --random-test-ordering --exit-1-if-tests-skipped
 ```
 
 ## ZenUnit Assertions

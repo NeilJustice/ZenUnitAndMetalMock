@@ -14,6 +14,7 @@ namespace ZenUnit
       randomZenUnitArgs.alwaysExit0 = randomGenerator.Bool();
       randomZenUnitArgs.failFast = randomGenerator.Bool();
       randomZenUnitArgs.exit1IfTestsSkipped = randomGenerator.Bool();
+      randomZenUnitArgs.informalSpecMode = randomGenerator.Bool();
       randomZenUnitArgs.testRuns = randomGenerator.Int();
       randomZenUnitArgs.randomTestOrdering = randomGenerator.Bool();
       randomZenUnitArgs.randomSeed = randomGenerator.UnsignedInt();
