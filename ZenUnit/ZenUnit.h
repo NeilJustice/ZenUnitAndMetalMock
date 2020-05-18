@@ -1678,26 +1678,28 @@ namespace ZenUnit
       Transformer() = default;
       virtual ~Transformer() = default;
 
-      virtual std::vector<TransformedT> Transform(const std::vector<T>* source, TransformedT(*transformFunction)(const T&)) const
+      virtual std::vector<TransformedT> Transform(
+         const std::vector<T>* elements, TransformedT(*transformFunction)(const T&)) const
       {
-         const size_t sourceSize = source->size();
-         std::vector<TransformedT> transformedElements(sourceSize);
-         for (size_t i = 0; i < sourceSize; ++i)
+         const size_t elementsSize = elements->size();
+         std::vector<TransformedT> transformedElements(elementsSize);
+         for (size_t i = 0; i < elementsSize; ++i)
          {
-            const T& element = (*source)[i];
+            const T& element = (*elements)[i];
             transformedElements[i] = transformFunction(element);
          }
          return transformedElements;
       }
 
-      virtual std::vector<TransformedT> RandomTransform(std::vector<T>* source, TransformedT(*transformFunction)(const T&), unsigned randomSeed) const
+      virtual std::vector<TransformedT> RandomTransform(
+         std::vector<T>* elements, TransformedT(*transformFunction)(const T&), unsigned randomSeed) const
       {
-         std::shuffle(source->begin(), source->end(), std::default_random_engine(randomSeed));
-         const size_t sourceSize = source->size();
-         std::vector<TransformedT> transformedElements(sourceSize);
-         for (size_t i = 0; i < sourceSize; ++i)
+         std::shuffle(elements->begin(), elements->end(), std::default_random_engine(randomSeed));
+         const size_t elementsSize = elements->size();
+         std::vector<TransformedT> transformedElements(elementsSize);
+         for (size_t i = 0; i < elementsSize; ++i)
          {
-            const T& randomElement = (*source)[i];
+            const T& randomElement = (*elements)[i];
             transformedElements[i] = transformFunction(randomElement);
          }
          return transformedElements;
@@ -1824,12 +1826,18 @@ namespace ZenUnit
    class OneArgMemberFunctionCaller
    {
    public:
-      virtual ReturnType ConstCall(const ClassType* classPointer, ReturnType(ClassType::*constMemberFunction)(Arg1Type) const, Arg1Type arg1) const
+      virtual ReturnType ConstCall(
+         const ClassType* classPointer,
+         ReturnType(ClassType::*constMemberFunction)(Arg1Type) const,
+         Arg1Type arg1) const
       {
          return (classPointer->*constMemberFunction)(arg1);
       }
 
-      virtual ReturnType NonConstCall(ClassType* classPointer, ReturnType(ClassType::*nonConstMemberFunction)(Arg1Type), Arg1Type arg1) const
+      virtual ReturnType NonConstCall(
+         ClassType* classPointer,
+         ReturnType(ClassType::*nonConstMemberFunction)(Arg1Type),
+         Arg1Type arg1) const
       {
          return (classPointer->*nonConstMemberFunction)(arg1);
       }
@@ -4415,7 +4423,7 @@ namespace ZenUnit
 
       virtual ~PreamblePrinter() = default;
 
-      virtual std::string PrintPreambleLinesAndGetStartTime(
+      virtual std::string PrintPreambleLinesAndGetStartDateTime(
          const ZenUnitArgs& zenUnitArgs, const TestClassRunnerRunner* testClassRunnerRunner) const
       {
          const std::string zenUnitVersionLine = "[ZenUnit v" + std::string(Version::Number()) + "]";
@@ -4856,7 +4864,8 @@ namespace ZenUnit
 
       int PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines(const ZenUnitArgs& zenUnitArgs)
       {
-         const std::string startDateTime = _preamblePrinter->PrintPreambleLinesAndGetStartTime(zenUnitArgs, _testClassRunnerRunner.get());
+         const std::string startDateTime =
+            _preamblePrinter->PrintPreambleLinesAndGetStartDateTime(zenUnitArgs, _testClassRunnerRunner.get());
          _havePaused = _nonVoidTwoArgMemberFunctionCaller->ConstCall(
             this, &ZenUnitTestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused, zenUnitArgs.pauseBefore, _havePaused);
          _testRunStopwatch->Start();

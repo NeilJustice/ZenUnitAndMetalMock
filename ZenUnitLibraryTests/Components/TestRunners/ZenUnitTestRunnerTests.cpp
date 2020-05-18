@@ -163,7 +163,7 @@ namespace ZenUnit
 
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.commandLine = Random<string>();
-      const string startDateTime = _preamblePrinterMock->PrintPreambleLinesAndGetStartTimeMock.ReturnRandom();
+      const string startDateTime = _preamblePrinterMock->PrintPreambleLinesAndGetStartDateTimeMock.ReturnRandom();
       _voidZeroArgMemberFunctionCallerMock->NonConstCallMock.Expect();
       _testRunResultMock->PrintTestFailuresAndSkipsMock.Expect();
       _testRunResultMock->PrintConclusionLinesMock.Expect();
@@ -182,7 +182,7 @@ namespace ZenUnit
          zenUnitArgs.pauseBefore, havePausedInitialValue));
       ARE_EQUAL(waitForAnyKeyIfPauseModeReturnValue, _zenUnitTestRunner._havePaused);
       ZENMOCK(_testRunStopwatchMock->StartMock.CalledOnce());
-      ZENMOCK(_preamblePrinterMock->PrintPreambleLinesAndGetStartTimeMock.CalledOnceWith(
+      ZENMOCK(_preamblePrinterMock->PrintPreambleLinesAndGetStartDateTimeMock.CalledOnceWith(
          zenUnitArgs, _zenUnitTestRunner._testClassRunnerRunner.get()));
       ZENMOCK(_voidZeroArgMemberFunctionCallerMock->NonConstCallMock.CalledOnceWith(
          &_zenUnitTestRunner, &ZenUnitTestRunner::RunTestClasses));

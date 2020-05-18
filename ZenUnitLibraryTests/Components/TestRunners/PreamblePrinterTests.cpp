@@ -8,8 +8,8 @@
 namespace ZenUnit
 {
    TESTS(PreamblePrinterTests)
-   AFACT(Constructor_NewsConsoleAndWatch)
-   AFACT(PrintPreambleLinesAndGetStartTime_PrintsCommandLineAndStartTimeAndTestAndTestClassCounts_ReturnsStartTime)
+   AFACT(DefaultConstructor_NewsComponents)
+   AFACT(PrintPreambleLinesAndGetStartDateTime_PrintsPreambleLines_ReturnsStartDateTime)
    EVIDENCE
 
    PreamblePrinter _preamblePrinter;
@@ -20,11 +20,11 @@ namespace ZenUnit
    STARTUP
    {
       _preamblePrinter._console.reset(_consoleMock = new ConsoleMock);
-   _preamblePrinter._environmentalist.reset(_environmentalistMock = new EnvironmentalistMock);
+      _preamblePrinter._environmentalist.reset(_environmentalistMock = new EnvironmentalistMock);
       _preamblePrinter._watch.reset(_watchMock = new WatchMock);
    }
 
-   TEST(Constructor_NewsConsoleAndWatch)
+   TEST(DefaultConstructor_NewsComponents)
    {
       PreamblePrinter preamblePrinter;
       DELETE_TO_ASSERT_NEWED(preamblePrinter._console);
@@ -32,7 +32,7 @@ namespace ZenUnit
       DELETE_TO_ASSERT_NEWED(preamblePrinter._watch);
    }
 
-   TEST(PrintPreambleLinesAndGetStartTime_PrintsCommandLineAndStartTimeAndTestAndTestClassCounts_ReturnsStartTime)
+   TEST(PrintPreambleLinesAndGetStartDateTime_PrintsPreambleLines_ReturnsStartDateTime)
    {
       _consoleMock->WriteLineColorMock.Expect();
       _consoleMock->WriteColorMock.Expect();
@@ -51,7 +51,7 @@ namespace ZenUnit
 
       const ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
       //
-      const string returnedStartTime = _preamblePrinter.PrintPreambleLinesAndGetStartTime(args, &testClassRunnerRunnerMock);
+      const string returnedStartTime = _preamblePrinter.PrintPreambleLinesAndGetStartDateTime(args, &testClassRunnerRunnerMock);
       //
       const std::string expectedZenUnitVersionLine = "[ZenUnit v" + std::string(Version::Number()) + "]";
       ZENMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith(expectedZenUnitVersionLine, Color::Green));
