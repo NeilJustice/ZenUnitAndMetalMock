@@ -4503,13 +4503,13 @@ namespace ZenUnit
       virtual void AddSkippedTest(const char* testClassName, const char* testName, const char* skipReason)
       {
          const std::string fullTestNameAndSkipReason =
-            String::Concat(testClassName, ".", testName, " because: ", skipReason);
+            String::Concat(testClassName, ".", testName, " skipped because \"", skipReason, "\"");
          _skippedFullTestNamesAndSkipReasons.push_back(fullTestNameAndSkipReason);
       }
 
       virtual void AddSkippedTestClassNameAndReason(const char* testClassName, const char* skipReason)
       {
-         const std::string testClassNameAndSkipReason = String::Concat(testClassName, " because: ", skipReason);
+         const std::string testClassNameAndSkipReason = String::Concat(testClassName, " skipped because \"", skipReason, "\"");
          _skippedTestClassNamesAndSkipReasons.push_back(testClassNameAndSkipReason);
       }
 
