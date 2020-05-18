@@ -109,9 +109,6 @@ Testing Specificity Options:
 
 Testing Utility Options:
 
---informal-specification
-   Print every test class name and test name, which forms an informal specification document
-   for the program under test.
 --pause-before
    Wait for any key before running tests to allow attaching of a profiler or debugger.
 --pause-after
@@ -884,7 +881,6 @@ namespace ZenUnit
       bool alwaysExit0 = false;
       bool failFast = false;
       bool exit1IfTestsSkipped = false;
-      bool informalSpecificationMode = false;
       int testRuns = 1;
       bool randomTestOrdering = false;
       unsigned randomSeed = 0;
@@ -1955,7 +1951,7 @@ namespace ZenUnit
 
       virtual ZenUnitArgs Parse(const std::vector<std::string>& stringArgs) const
       {
-         if (stringArgs.size() >= 14)
+         if (stringArgs.size() >= 13)
          {
             _console->WriteLine("ZenUnit command line usage error: Too many arguments.\n");
             _console->WriteLineAndExit(Usage(), 1);
@@ -1989,10 +1985,6 @@ namespace ZenUnit
             else if (arg == "--random-test-ordering")
             {
                zenUnitArgs.randomTestOrdering = true;
-            }
-            else if (arg == "--informal-specification")
-            {
-               zenUnitArgs.informalSpecificationMode = true;
             }
             else if (arg == "--help")
             {

@@ -204,9 +204,6 @@ Testing Specificity Options:
 
 Testing Utility Options:
 
---informal-specification
-   Print every test class name and test name, which forms an informal specification document
-   for the program under test.
 --pause-before
    Wait for any key before running tests to allow attaching of a profiler or debugger.
 --pause-after

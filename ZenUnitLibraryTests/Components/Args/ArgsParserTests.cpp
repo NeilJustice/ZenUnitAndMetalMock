@@ -12,7 +12,7 @@ namespace ZenUnit
    TESTS(ArgsParserTests)
    AFACT(DefaultConstructor_NewsComponents_SetsStringToUnsignedFunction)
    AFACT(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
-   FACTS(Parse_ArgsSizeGreaterThanOrEqualTo14_PrintsTooManyArgumentsErrorMessageAndUsageAndExits1)
+   FACTS(Parse_ArgsSizeGreaterThanOrEqualTo13_PrintsTooManyArgumentsErrorMessageAndUsageAndExits1)
    FACTS(Parse_InvalidArgument_PrintsErrorMessageAndUsageAndExits1)
    AFACT(Parse_DashDashHelp_PrintsUsageAndExits0)
    AFACT(Parse_DashDashVersion_PrintsVersionAndExits0)
@@ -66,9 +66,6 @@ Testing Specificity Options:
 
 Testing Utility Options:
 
---informal-specification
-   Print every test class name and test name, which forms an informal specification document
-   for the program under test.
 --pause-before
    Wait for any key before running tests to allow attaching of a profiler or debugger.
 --pause-after
@@ -143,10 +140,10 @@ Example Command Line Arguments:
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST1X1(Parse_ArgsSizeGreaterThanOrEqualTo14_PrintsTooManyArgumentsErrorMessageAndUsageAndExits1,
+   TEST1X1(Parse_ArgsSizeGreaterThanOrEqualTo13_PrintsTooManyArgumentsErrorMessageAndUsageAndExits1,
       size_t numberOfStringArgs,
-      14,
-      15)
+      13,
+      14)
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
@@ -210,7 +207,6 @@ Example Command Line Arguments:
          "--fail-fast",
          "--exit-1-if-tests-skipped",
          "--random-test-ordering",
-         "--informal-specification",
          "--test-runs=" + to_string(testruns),
          "--random-seed=" + to_string(randomSeed)
       };
@@ -228,7 +224,6 @@ Example Command Line Arguments:
       expectedZenUnitArgs.failFast = true;
       expectedZenUnitArgs.exit1IfTestsSkipped = true;
       expectedZenUnitArgs.randomTestOrdering = true;
-      expectedZenUnitArgs.informalSpecificationMode = true;
       expectedZenUnitArgs.testRuns = testruns;
       expectedZenUnitArgs.randomSeed = randomSeed;
       expectedZenUnitArgs.randomSeedSetByUser = true;
@@ -282,8 +277,6 @@ Example Command Line Arguments:
 
       AssertArgSetsBoolField("--random-test-ordering", &ZenUnitArgs::randomTestOrdering);
       Startup();
-
-      AssertArgSetsBoolField("--informal-specification", &ZenUnitArgs::informalSpecificationMode);
    }
    void AssertArgSetsBoolField(const string& arg, bool ZenUnitArgs::* expectedFieldToBeSet)
    {
