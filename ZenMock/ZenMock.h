@@ -1,7 +1,6 @@
 // C++ Mocking Framework ZenMock 0.6.0
-// ZenMock is licensed with the Unlicense license:
-// "This is free and unencumbered software released into the public domain."
 // https://github.com/NeilJustice/ZenUnitAndZenMock
+// ZenUnit and ZenMock are released with the MIT license
 
 #pragma once
 #include "ZenUnit.h"
