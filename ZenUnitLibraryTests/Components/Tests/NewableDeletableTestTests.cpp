@@ -59,7 +59,7 @@ namespace ZenUnit
       failedConstructorTestPhaseResult.testOutcome = nonSuccessOutcome;
       _tryCatchCallerMock->RunTestPhaseMock.Return(failedConstructorTestPhaseResult);
 
-      const long long microseconds = _stopwatchMock->StopAndGetElapsedMicrosecondsMock.ReturnRandom();
+      const long long microseconds = _stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.ReturnRandom();
 
       TestResult constructorFailTestResult = TestResult::TestingNonDefault();
       constructorFailTestResult.microseconds = microseconds;
@@ -73,7 +73,7 @@ namespace ZenUnit
       ZENMOCK(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(
          _newableDeletableTest->_protected_fullTestName, failedConstructorTestPhaseResult));
       const vector<TestResult> expectedTestResults{ constructorFailTestResult };
-      ZENMOCK(_stopwatchMock->StopAndGetElapsedMicrosecondsMock.CalledOnce());
+      ZENMOCK(_stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.CalledOnce());
       VECTORS_EQUAL(expectedTestResults, testResults);
    }
 
@@ -87,7 +87,7 @@ namespace ZenUnit
       TestPhaseResult destructorTestPhaseResult;
       _tryCatchCallerMock->RunTestPhaseMock.ReturnValues(successConstructorTestPhaseResult, destructorTestPhaseResult);
 
-      const long long microseconds = _stopwatchMock->StopAndGetElapsedMicrosecondsMock.ReturnRandom();
+      const long long microseconds = _stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.ReturnRandom();
 
       TestResult sixArgCtorTestResult = TestResult::TestingNonDefault();
       sixArgCtorTestResult.microseconds = microseconds;
@@ -103,7 +103,7 @@ namespace ZenUnit
       }));
       ZENMOCK(_testResultFactoryMock->MakeCtorDtorSuccessMock.CalledOnceWith(
          _newableDeletableTest->_protected_fullTestName, successConstructorTestPhaseResult, destructorTestPhaseResult));
-      ZENMOCK(_stopwatchMock->StopAndGetElapsedMicrosecondsMock.CalledOnce());
+      ZENMOCK(_stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.CalledOnce());
       const vector<TestResult> expectedTestResults{ sixArgCtorTestResult };
       VECTORS_EQUAL(expectedTestResults, testResults);
    }

@@ -3,7 +3,7 @@
 namespace ZenUnit
 {
    TESTS(StopwatchTests)
-   AFACT(Constructor_SetsNowFunction)
+   AFACT(Constructor_SetsNowFunctionToHighResolutionClockNow)
    AFACT(Start_SetsStartTimeToNow)
    AFACT(StopAndGetElapsedMicroseconds_StartNotPreviouslyCalled_Returns0)
    AFACT(StopAndGetElapsedMicroseconds_StartPreviouslyCalled_ReturnsElapsedMicroseconds)
@@ -18,7 +18,7 @@ namespace ZenUnit
       _stopwatch._call_high_resolution_clock_now = BIND_0ARG_ZENMOCK_OBJECT(nowMock);
    }
 
-   TEST(Constructor_SetsNowFunction)
+   TEST(Constructor_SetsNowFunctionToHighResolutionClockNow)
    {
       Stopwatch stopwatch;
       STD_FUNCTION_TARGETS(chrono::high_resolution_clock::now, stopwatch._call_high_resolution_clock_now);
@@ -38,8 +38,8 @@ namespace ZenUnit
 
    TEST(StopAndGetElapsedMicroseconds_StartNotPreviouslyCalled_Returns0)
    {
-      ARE_EQUAL(0, _stopwatch.StopAndGetElapsedMicroseconds());
-      ARE_EQUAL(0, _stopwatch.StopAndGetElapsedMicroseconds());
+      ARE_EQUAL(0, _stopwatch.GetElapsedMicrosecondsThenResetStopwatch());
+      ARE_EQUAL(0, _stopwatch.GetElapsedMicrosecondsThenResetStopwatch());
    }
 
    TEST(StopAndGetElapsedMicroseconds_StartPreviouslyCalled_ReturnsElapsedMicroseconds)
@@ -51,7 +51,7 @@ namespace ZenUnit
       nowMock.Return(stopTime);
       _stopwatch._startTime = startDateTime;
       //
-      const long long elapsedMicroseconds = _stopwatch.StopAndGetElapsedMicroseconds();
+      const long long elapsedMicroseconds = _stopwatch.GetElapsedMicrosecondsThenResetStopwatch();
       //
       ZENMOCK(nowMock.CalledOnce());
       ARE_EQUAL(randomMicrosecondDuration, elapsedMicroseconds);

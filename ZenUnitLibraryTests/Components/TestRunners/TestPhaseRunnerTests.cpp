@@ -66,13 +66,13 @@ namespace ZenUnit
    void ExpectStopwatchStartAndStopCalls()
    {
       _stopwatchMock->StartMock.Expect();
-      _stopwatchMock->StopAndGetElapsedMicrosecondsMock.Return(_microseconds);
+      _stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.Return(_microseconds);
    }
 
    void AssertStopwatchStartAndStopCalled()
    {
       ZENMOCK(_stopwatchMock->StartMock.CalledOnce());
-      ZENMOCK(_stopwatchMock->StopAndGetElapsedMicrosecondsMock.CalledOnce());
+      ZENMOCK(_stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.CalledOnce());
    }
 
    static int s_numberOfNoThrowCalls;

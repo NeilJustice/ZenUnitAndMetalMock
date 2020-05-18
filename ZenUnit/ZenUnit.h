@@ -4683,7 +4683,11 @@ namespace ZenUnit
       std::function<std::chrono::time_point<std::chrono::high_resolution_clock>()> _call_high_resolution_clock_now;
       std::chrono::time_point<std::chrono::high_resolution_clock> _startTime;
    public:
-      Stopwatch() noexcept : _call_high_resolution_clock_now(std::chrono::high_resolution_clock::now) {}
+      Stopwatch() noexcept
+         : _call_high_resolution_clock_now(std::chrono::high_resolution_clock::now)
+      {
+      }
+
       virtual ~Stopwatch() = default;
 
       virtual void Start()
@@ -4691,7 +4695,7 @@ namespace ZenUnit
          _startTime = _call_high_resolution_clock_now();
       }
 
-      virtual long long StopAndGetElapsedMicroseconds()
+      virtual long long GetElapsedMicrosecondsThenResetStopwatch()
       {
          if (_startTime == std::chrono::time_point<std::chrono::high_resolution_clock>())
          {
@@ -4707,7 +4711,7 @@ namespace ZenUnit
       virtual std::string StopAndGetElapsedSeconds()
       {
          // Example elapsedMicroseconds: 1000
-         const long long elapsedMicroseconds = StopAndGetElapsedMicroseconds();
+         const long long elapsedMicroseconds = GetElapsedMicrosecondsThenResetStopwatch();
 
          // Example elapsedMilliseconds: 1
          const long long elapsedMilliseconds = elapsedMicroseconds / 1000;
@@ -4737,6 +4741,7 @@ namespace ZenUnit
    {
       friend class ZenUnitTestRunnerTests;
    private:
+      // Constant Components
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const PreamblePrinter> _preamblePrinter;
       std::unique_ptr<const ArgsParser> _argsParser;
@@ -4744,7 +4749,7 @@ namespace ZenUnit
       std::unique_ptr<const OneArgMemberFunctionCaller<void, ZenUnitTestRunner, unsigned>> _voidOneArgMemberFunctionCaller;
       std::unique_ptr<const TwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>> _nonVoidTwoArgMemberFunctionCaller;
       std::unique_ptr<const ZeroArgMemberFunctionCaller<void, ZenUnitTestRunner>> _voidZeroArgMemberFunctionCaller;
-
+      // Mutable Components
       std::unique_ptr<Stopwatch> _testRunStopwatch;
       std::unique_ptr<TestClassRunnerRunner> _testClassRunnerRunner;
       std::unique_ptr<TestRunResult> _testRunResult;
@@ -4937,7 +4942,7 @@ namespace ZenUnit
       template<typename ExceptionType>
       void PopulateTestPhaseResultWithExceptionInformation(const ExceptionType& ex, TestPhaseResult* outTestPhaseResult) const
       {
-         outTestPhaseResult->microseconds = _testPhaseStopwatch->StopAndGetElapsedMicroseconds();
+         outTestPhaseResult->microseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
          const std::string* const exceptionTypeName = Type::GetName(ex);
          const char* const exceptionWhat = ex.what();
          outTestPhaseResult->anomalyOrException = std::make_shared<AnomalyOrException>(exceptionTypeName, exceptionWhat);
@@ -5129,11 +5134,11 @@ namespace ZenUnit
       try
       {
          testPhaseFunction(test);
-         testPhaseResult.microseconds = _testPhaseStopwatch->StopAndGetElapsedMicroseconds();
+         testPhaseResult.microseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
       }
       catch (const Anomaly& anomaly)
       {
-         testPhaseResult.microseconds = _testPhaseStopwatch->StopAndGetElapsedMicroseconds();
+         testPhaseResult.microseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
          testPhaseResult.anomalyOrException = std::make_shared<AnomalyOrException>(anomaly);
          testPhaseResult.testOutcome = TestOutcome::Anomaly;
          _console->WriteColor("\n=======\nAnomaly\n=======", Color::Red);
@@ -5212,20 +5217,20 @@ namespace ZenUnit
       std::vector<TestResult> RunTest() override
       {
          _testPhaseStopwatch->Start();
-         const TestPhaseResult constructorTestPhaseResult = _testPhaseRunner->RunTestPhase(
-            &Test::CallNewTestClass, this, TestPhase::Constructor);
+         const TestPhaseResult constructorTestPhaseResult =
+            _testPhaseRunner->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorTestPhaseResult.testOutcome != TestOutcome::Success)
          {
-            TestResult constructorFail = _testResultFactory->MakeConstructorFail(
-               _protected_fullTestName, constructorTestPhaseResult);
-            constructorFail.microseconds = _testPhaseStopwatch->StopAndGetElapsedMicroseconds();
+            TestResult constructorFail =
+               _testResultFactory->MakeConstructorFail(_protected_fullTestName, constructorTestPhaseResult);
+            constructorFail.microseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
             return { constructorFail };
          }
-         const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(
-            &Test::CallDeleteTestClass, this, TestPhase::Destructor);
-         TestResult testResult = _testResultFactory->MakeCtorDtorSuccess(
-            _protected_fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
-         testResult.microseconds = _testPhaseStopwatch->StopAndGetElapsedMicroseconds();
+         const TestPhaseResult destructorTestPhaseResult =
+            _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+         TestResult testResult =
+            _testResultFactory->MakeCtorDtorSuccess(_protected_fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
+         testResult.microseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
          return { testResult };
       }
 
