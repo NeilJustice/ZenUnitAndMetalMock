@@ -1928,20 +1928,20 @@ namespace ZenUnit
    {
       friend class ArgsParserTests;
    private:
-      std::unique_ptr<const Console> _console;
-      std::unique_ptr<const TestNameFilterStringParser> _testNameFilterStringParser;
-      std::unique_ptr<const OneArgMemberFunctionCaller<void, ArgsParser, ZenUnitArgs&>> _callerOfSetRandomSeedIfNotSetByUser;
-      std::unique_ptr<const Watch> _watch;
       std::function<int(std::string_view)> _call_String_ToInt;
       std::function<unsigned(std::string_view)> _call_String_ToUnsigned;
+      std::unique_ptr<const OneArgMemberFunctionCaller<void, ArgsParser, ZenUnitArgs&>> _caller_SetRandomSeedIfNotSetByUser;
+      std::unique_ptr<const Console> _console;
+      std::unique_ptr<const TestNameFilterStringParser> _testNameFilterStringParser;
+      std::unique_ptr<const Watch> _watch;
    public:
       ArgsParser() noexcept
-         : _console(std::make_unique<Console>())
-         , _testNameFilterStringParser(std::make_unique<TestNameFilterStringParser>())
-         , _callerOfSetRandomSeedIfNotSetByUser(new OneArgMemberFunctionCaller<void, ArgsParser, ZenUnitArgs&>)
-         , _watch(new Watch)
-         , _call_String_ToInt(String::ToInt)
+         : _call_String_ToInt(String::ToInt)
          , _call_String_ToUnsigned(String::ToUnsigned)
+         , _caller_SetRandomSeedIfNotSetByUser(new OneArgMemberFunctionCaller<void, ArgsParser, ZenUnitArgs&>)
+         , _console(std::make_unique<Console>())
+         , _testNameFilterStringParser(std::make_unique<TestNameFilterStringParser>())
+         , _watch(new Watch)
       {
       }
 
@@ -2043,7 +2043,7 @@ namespace ZenUnit
             }
          }
          zenUnitArgs.startDateTime = _watch->DateTimeNow();
-         _callerOfSetRandomSeedIfNotSetByUser->ConstCall(this, &ArgsParser::SetRandomSeedIfNotSetByUser, zenUnitArgs);
+         _caller_SetRandomSeedIfNotSetByUser->ConstCall(this, &ArgsParser::SetRandomSeedIfNotSetByUser, zenUnitArgs);
          ZenUnitRandomSeed::value = zenUnitArgs.randomSeed;
          return zenUnitArgs;
       }
@@ -4760,10 +4760,9 @@ namespace ZenUnit
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const PreamblePrinter> _preamblePrinter;
       std::unique_ptr<const ArgsParser> _argsParser;
-      std::unique_ptr<const OneArgMemberFunctionCaller<int, ZenUnitTestRunner, const ZenUnitArgs&>> _nonVoidOneArgMemberFunctionCaller;
-      std::unique_ptr<const OneArgMemberFunctionCaller<void, ZenUnitTestRunner, unsigned>> _voidOneArgMemberFunctionCaller;
-      std::unique_ptr<const TwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>> _nonVoidTwoArgMemberFunctionCaller;
-      std::unique_ptr<const ZeroArgMemberFunctionCaller<void, ZenUnitTestRunner>> _voidZeroArgMemberFunctionCaller;
+      std::unique_ptr<const OneArgMemberFunctionCaller<int, ZenUnitTestRunner, const ZenUnitArgs&>> _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines;
+      std::unique_ptr<const TwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>> _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused;
+      std::unique_ptr<const ZeroArgMemberFunctionCaller<void, ZenUnitTestRunner>> _caller_RunTestClasses;
       // Mutable Components
       std::unique_ptr<Stopwatch> _testRunStopwatch;
       std::unique_ptr<TestClassRunnerRunner> _testClassRunnerRunner;
@@ -4775,10 +4774,9 @@ namespace ZenUnit
          : _console(std::make_unique<Console>())
          , _preamblePrinter(std::make_unique<PreamblePrinter>())
          , _argsParser(std::make_unique<ArgsParser>())
-         , _nonVoidOneArgMemberFunctionCaller(std::make_unique<OneArgMemberFunctionCaller<int, ZenUnitTestRunner, const ZenUnitArgs&>>())
-         , _voidOneArgMemberFunctionCaller(std::make_unique<OneArgMemberFunctionCaller<void, ZenUnitTestRunner, unsigned>>())
-         , _nonVoidTwoArgMemberFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>>())
-         , _voidZeroArgMemberFunctionCaller(std::make_unique<ZeroArgMemberFunctionCaller<void, ZenUnitTestRunner>>())
+         , _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines(std::make_unique<OneArgMemberFunctionCaller<int, ZenUnitTestRunner, const ZenUnitArgs&>>())
+         , _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(std::make_unique<TwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>>())
+         , _caller_RunTestClasses(std::make_unique<ZeroArgMemberFunctionCaller<void, ZenUnitTestRunner>>())
          , _testRunStopwatch(std::make_unique<Stopwatch>())
          , _testClassRunnerRunner(std::make_unique<TestClassRunnerRunner>())
          , _testRunResult(std::make_unique<TestRunResult>())
@@ -4831,7 +4829,7 @@ namespace ZenUnit
          const int numberOfTestRuns = _zenUnitArgs.testRuns < 0 ? std::numeric_limits<int>::max() : _zenUnitArgs.testRuns;
          for (int testRunIndex = 0; testRunIndex < numberOfTestRuns; ++testRunIndex)
          {
-            const int testRunExitCode = _nonVoidOneArgMemberFunctionCaller->NonConstCall(
+            const int testRunExitCode = _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines->NonConstCall(
                this, &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, _zenUnitArgs);
             assert_true(testRunExitCode == 0 || testRunExitCode == 1);
             overallExitCode |= testRunExitCode;
@@ -4866,10 +4864,10 @@ namespace ZenUnit
       {
          const std::string startDateTime =
             _preamblePrinter->PrintPreambleLinesAndGetStartDateTime(zenUnitArgs, _testClassRunnerRunner.get());
-         _havePaused = _nonVoidTwoArgMemberFunctionCaller->ConstCall(
+         _havePaused = _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused->ConstCall(
             this, &ZenUnitTestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused, zenUnitArgs.pauseBefore, _havePaused);
          _testRunStopwatch->Start();
-         _voidZeroArgMemberFunctionCaller->NonConstCall(this, &ZenUnitTestRunner::RunTestClasses);
+         _caller_RunTestClasses->NonConstCall(this, &ZenUnitTestRunner::RunTestClasses);
          _testRunResult->PrintTestFailuresAndSkips();
          const size_t numberOfTestCases = _testClassRunnerRunner->NumberOfTestCases();
          const std::string testRunElapsedSeconds = _testRunStopwatch->StopAndGetElapsedSeconds();

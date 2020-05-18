@@ -41,15 +41,12 @@ namespace ZenUnit
    ArgsParserMock* _argsParserMock = nullptr;
 
    using NonVoidOneArgMemberFunctionCallerMockType = NonVoidOneArgMemberFunctionCallerMock<int, ZenUnitTestRunner, const ZenUnitArgs&>;
-   NonVoidOneArgMemberFunctionCallerMockType* _nonVoidOneArgMemberFunctionCallerMock = nullptr;
-
-   using VoidOneArgMemberFunctionCallerMockType = VoidOneArgMemberFunctionCallerMock<ZenUnitTestRunner, unsigned>;
-   VoidOneArgMemberFunctionCallerMockType* _voidOneArgMemberFunctionCallerMock = nullptr;
+   NonVoidOneArgMemberFunctionCallerMockType* _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock = nullptr;
 
    using NonVoidTwoArgMemberFunctionCallerMockType = NonVoidTwoArgMemberFunctionCallerMock<bool, ZenUnitTestRunner, bool, bool >;
-   NonVoidTwoArgMemberFunctionCallerMockType* _nonVoidTwoArgMemberFunctionCallerMock = nullptr;
+   NonVoidTwoArgMemberFunctionCallerMockType* _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPausedMock = nullptr;
 
-   VoidZeroArgMemberFunctionCallerMock<ZenUnitTestRunner>* _voidZeroArgMemberFunctionCallerMock = nullptr;
+   VoidZeroArgMemberFunctionCallerMock<ZenUnitTestRunner>* _caller_RunTestClassesMock = nullptr;
 
    TestClassRunnerRunnerMock* _testClassRunnerRunnerMock = nullptr;
    TestRunResultMock* _testRunResultMock = nullptr;
@@ -70,10 +67,9 @@ namespace ZenUnit
       _zenUnitTestRunner._preamblePrinter.reset(_preamblePrinterMock = new PreamblePrinterMock);
       _zenUnitTestRunner._argsParser.reset(_argsParserMock = new ArgsParserMock);
       _zenUnitTestRunner._testRunResult.reset(_testRunResultMock = new TestRunResultMock);
-      _zenUnitTestRunner._nonVoidOneArgMemberFunctionCaller.reset(_nonVoidOneArgMemberFunctionCallerMock = new NonVoidOneArgMemberFunctionCallerMockType);
-      _zenUnitTestRunner._voidOneArgMemberFunctionCaller.reset(_voidOneArgMemberFunctionCallerMock = new VoidOneArgMemberFunctionCallerMockType);
-      _zenUnitTestRunner._nonVoidTwoArgMemberFunctionCaller.reset(_nonVoidTwoArgMemberFunctionCallerMock = new NonVoidTwoArgMemberFunctionCallerMockType);
-      _zenUnitTestRunner._voidZeroArgMemberFunctionCaller.reset(_voidZeroArgMemberFunctionCallerMock = new VoidZeroArgMemberFunctionCallerMock<ZenUnitTestRunner>);
+      _zenUnitTestRunner._caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines.reset(_caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock = new NonVoidOneArgMemberFunctionCallerMockType);
+      _zenUnitTestRunner._caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused.reset(_caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPausedMock = new NonVoidTwoArgMemberFunctionCallerMockType);
+      _zenUnitTestRunner._caller_RunTestClasses.reset(_caller_RunTestClassesMock = new VoidZeroArgMemberFunctionCallerMock<ZenUnitTestRunner>);
       _zenUnitTestRunner._testClassRunnerRunner.reset(_testClassRunnerRunnerMock = new TestClassRunnerRunnerMock);
       _zenUnitTestRunner._testRunStopwatch.reset(_testRunStopwatchMock = new StopwatchMock);
    }
@@ -84,10 +80,9 @@ namespace ZenUnit
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._console);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._preamblePrinter);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._argsParser);
-      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._nonVoidOneArgMemberFunctionCaller);
-      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._voidOneArgMemberFunctionCaller);
-      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._nonVoidTwoArgMemberFunctionCaller);
-      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._voidZeroArgMemberFunctionCaller);
+      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines);
+      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused);
+      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_RunTestClasses);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._testClassRunnerRunner);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._testRunResult);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._testRunStopwatch);
@@ -133,7 +128,8 @@ namespace ZenUnit
 
       _testClassRunnerRunnerMock->ApplyTestNameFiltersIfAnyMock.Expect();
 
-      _nonVoidOneArgMemberFunctionCallerMock->NonConstCallMock.ReturnValues(firstTestRunExitCode, secondTestRunExitCode);
+      _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock->
+         NonConstCallMock.ReturnValues(firstTestRunExitCode, secondTestRunExitCode);
 
       _testRunResultMock->ResetStateExceptForSkipsMock.Expect();
 
@@ -145,7 +141,7 @@ namespace ZenUnit
       //
       ZENMOCK(_argsParserMock->ParseMock.CalledOnceWith(commandLineArgs));
       ZENMOCK(_testClassRunnerRunnerMock->ApplyTestNameFiltersIfAnyMock.CalledOnceWith(parsedZenUnitArgs.testNameFilters));
-      ZENMOCK(_nonVoidOneArgMemberFunctionCallerMock->NonConstCallMock.CalledNTimesWith(
+      ZENMOCK(_caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock->NonConstCallMock.CalledNTimesWith(
          testrunsArg, &_zenUnitTestRunner, &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, parsedZenUnitArgs));
       ZENMOCK(_testRunResultMock->ResetStateExceptForSkipsMock.CalledNTimes(testrunsArg));
       ZENMOCK(_consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.CalledOnceWith(parsedZenUnitArgs.pauseAfter));
@@ -155,7 +151,7 @@ namespace ZenUnit
    TEST(PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines_RunsTestsAndPrintsResults_Returns0IfAllTestsPassedOtherwiseReturns1)
    {
       const bool waitForAnyKeyIfPauseModeReturnValue = ZenUnit::Random<bool>();
-      _nonVoidTwoArgMemberFunctionCallerMock->ConstCallMock.Return(waitForAnyKeyIfPauseModeReturnValue);
+      _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPausedMock->ConstCallMock.Return(waitForAnyKeyIfPauseModeReturnValue);
       const bool havePausedInitialValue = ZenUnit::Random<bool>();
       _zenUnitTestRunner._havePaused = havePausedInitialValue;
 
@@ -164,7 +160,7 @@ namespace ZenUnit
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.commandLine = Random<string>();
       const string startDateTime = _preamblePrinterMock->PrintPreambleLinesAndGetStartDateTimeMock.ReturnRandom();
-      _voidZeroArgMemberFunctionCallerMock->NonConstCallMock.Expect();
+      _caller_RunTestClassesMock->NonConstCallMock.Expect();
       _testRunResultMock->PrintTestFailuresAndSkipsMock.Expect();
       _testRunResultMock->PrintConclusionLinesMock.Expect();
 
@@ -177,15 +173,14 @@ namespace ZenUnit
       //
       const int exitCode = _zenUnitTestRunner.PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines(zenUnitArgs);
       //
-      ZENMOCK(_nonVoidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
+      ZENMOCK(_caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPausedMock->ConstCallMock.CalledOnceWith(
          &_zenUnitTestRunner, &ZenUnitTestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused,
          zenUnitArgs.pauseBefore, havePausedInitialValue));
       ARE_EQUAL(waitForAnyKeyIfPauseModeReturnValue, _zenUnitTestRunner._havePaused);
       ZENMOCK(_testRunStopwatchMock->StartMock.CalledOnce());
       ZENMOCK(_preamblePrinterMock->PrintPreambleLinesAndGetStartDateTimeMock.CalledOnceWith(
          zenUnitArgs, _zenUnitTestRunner._testClassRunnerRunner.get()));
-      ZENMOCK(_voidZeroArgMemberFunctionCallerMock->NonConstCallMock.CalledOnceWith(
-         &_zenUnitTestRunner, &ZenUnitTestRunner::RunTestClasses));
+      ZENMOCK(_caller_RunTestClassesMock->NonConstCallMock.CalledOnceWith(&_zenUnitTestRunner, &ZenUnitTestRunner::RunTestClasses));
       ZENMOCK(_testRunResultMock->PrintTestFailuresAndSkipsMock.CalledOnce());
       ZENMOCK(_testClassRunnerRunnerMock->NumberOfTestCasesMock.CalledOnce());
       ZENMOCK(_testRunStopwatchMock->StopAndGetElapsedSecondsMock.CalledOnce());

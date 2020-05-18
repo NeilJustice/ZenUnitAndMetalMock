@@ -87,43 +87,43 @@ Example Command Line Arguments:
 )";
 
    ArgsParser _argsParser;
-   ConsoleMock* _consoleMock = nullptr;
-   TestNameFilterStringParserMock* _testNameFilterStringParserMock = nullptr;
-   VoidOneArgMemberFunctionCallerMock<ArgsParser, ZenUnitArgs&>* _callerOfSetRandomSeedIfNotSetByUserMock = nullptr;
-   WatchMock* _watchMock = nullptr;
    ZENMOCK_NONVOID1_STATIC(int, ZenUnit::String, ToInt, std::string_view)
    ZENMOCK_NONVOID1_STATIC(unsigned, ZenUnit::String, ToUnsigned, std::string_view)
+   VoidOneArgMemberFunctionCallerMock<ArgsParser, ZenUnitArgs&>* _caller_SetRandomSeedIfNotSetByUserMock = nullptr;
+   ConsoleMock* _consoleMock = nullptr;
+   TestNameFilterStringParserMock* _testNameFilterStringParserMock = nullptr;
+   WatchMock* _watchMock = nullptr;
 
    STARTUP
    {
-      _argsParser._console.reset(_consoleMock = new ConsoleMock);
-      _argsParser._testNameFilterStringParser.reset(_testNameFilterStringParserMock = new TestNameFilterStringParserMock);
-      _argsParser._callerOfSetRandomSeedIfNotSetByUser.reset(
-         _callerOfSetRandomSeedIfNotSetByUserMock = new VoidOneArgMemberFunctionCallerMock<ArgsParser, ZenUnitArgs&>);
-      _argsParser._watch.reset(_watchMock = new WatchMock);
       _argsParser._call_String_ToInt = BIND_1ARG_ZENMOCK_OBJECT(ToIntMock);
       _argsParser._call_String_ToUnsigned = BIND_1ARG_ZENMOCK_OBJECT(ToUnsignedMock);
+      _argsParser._caller_SetRandomSeedIfNotSetByUser.reset(
+         _caller_SetRandomSeedIfNotSetByUserMock = new VoidOneArgMemberFunctionCallerMock<ArgsParser, ZenUnitArgs&>);
+      _argsParser._console.reset(_consoleMock = new ConsoleMock);
+      _argsParser._testNameFilterStringParser.reset(_testNameFilterStringParserMock = new TestNameFilterStringParserMock);
+      _argsParser._watch.reset(_watchMock = new WatchMock);
    }
 
    TEST(DefaultConstructor_NewsComponents_SetsStringToUnsignedFunction)
    {
       ArgsParser argsParser;
-      DELETE_TO_ASSERT_NEWED(argsParser._console);
-      DELETE_TO_ASSERT_NEWED(argsParser._testNameFilterStringParser);
-      DELETE_TO_ASSERT_NEWED(argsParser._callerOfSetRandomSeedIfNotSetByUser);
-      DELETE_TO_ASSERT_NEWED(argsParser._watch);
       STD_FUNCTION_TARGETS(String::ToInt, argsParser._call_String_ToInt);
       STD_FUNCTION_TARGETS(String::ToUnsigned, argsParser._call_String_ToUnsigned);
+      DELETE_TO_ASSERT_NEWED(argsParser._caller_SetRandomSeedIfNotSetByUser);
+      DELETE_TO_ASSERT_NEWED(argsParser._console);
+      DELETE_TO_ASSERT_NEWED(argsParser._testNameFilterStringParser);
+      DELETE_TO_ASSERT_NEWED(argsParser._watch);
    }
 
    void ExpectCallToSetRandomSeedIfNotSetByUser()
    {
-      _callerOfSetRandomSeedIfNotSetByUserMock->ConstCallMock.Expect();
+      _caller_SetRandomSeedIfNotSetByUserMock->ConstCallMock.Expect();
    }
 
    void AssertCallToSetRandomSeedIfNotSetByUser(ZenUnitArgs& expectedZenUnitArgsArg)
    {
-      ZENMOCK(_callerOfSetRandomSeedIfNotSetByUserMock->ConstCallMock.CalledOnceWith(
+      ZENMOCK(_caller_SetRandomSeedIfNotSetByUserMock->ConstCallMock.CalledOnceWith(
          &_argsParser, &ArgsParser::SetRandomSeedIfNotSetByUser, expectedZenUnitArgsArg));
    }
 
@@ -199,7 +199,7 @@ Example Command Line Arguments:
    {
       const int testruns = ToIntMock.ReturnRandom();
       const unsigned randomSeed = ToUnsignedMock.ReturnRandom();
-      _callerOfSetRandomSeedIfNotSetByUserMock->ConstCallMock.Expect();
+      _caller_SetRandomSeedIfNotSetByUserMock->ConstCallMock.Expect();
       const string startDateTime = _watchMock->DateTimeNowMock.ReturnRandom();
       const vector<string> stringArgs
       {
@@ -239,7 +239,7 @@ Example Command Line Arguments:
 
    TEST(Parse_DashDashRun_ReturnsZenUnitArgsWithExpectedTestNameFilters)
    {
-      _callerOfSetRandomSeedIfNotSetByUserMock->ConstCallMock.Expect();
+      _caller_SetRandomSeedIfNotSetByUserMock->ConstCallMock.Expect();
 
       const vector<TestNameFilter> testNameFilters = { Random<TestNameFilter>() };
       _testNameFilterStringParserMock->ParseTestNameFilterStringsMock.Return(testNameFilters);
