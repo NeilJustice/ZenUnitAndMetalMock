@@ -28,11 +28,12 @@ namespace ZenUnit
       const bool alwaysExit0 = ZenUnit::Random<bool>();
       const bool failFast = ZenUnit::Random<bool>();
       const bool exit1IfTestsSkipped = ZenUnit::Random<bool>();
-      const bool informalSpecMode = ZenUnit::Random<bool>();
+      const bool informalSpecificationMode = ZenUnit::Random<bool>();
       const bool randomTestOrdering = ZenUnit::Random<bool>();
       const bool randomSeedSetByUser = ZenUnit::Random<bool>();
       randomGeneratorMock.BoolMock.ReturnValues(
-         pauseBefore, pauseAfter, alwaysExit0, failFast, exit1IfTestsSkipped, informalSpecMode, randomTestOrdering, randomSeedSetByUser);
+         pauseBefore, pauseAfter, alwaysExit0, failFast, exit1IfTestsSkipped,
+         informalSpecificationMode, randomTestOrdering, randomSeedSetByUser);
 
       const int testRuns = randomGeneratorMock.IntMock.ReturnRandom();
 
@@ -61,7 +62,7 @@ namespace ZenUnit
       ARE_EQUAL(alwaysExit0, randomZenUnitArgs.alwaysExit0);
       ARE_EQUAL(failFast, randomZenUnitArgs.failFast);
       ARE_EQUAL(exit1IfTestsSkipped, randomZenUnitArgs.exit1IfTestsSkipped);
-      ARE_EQUAL(informalSpecMode, randomZenUnitArgs.informalSpecMode);
+      ARE_EQUAL(informalSpecificationMode, randomZenUnitArgs.informalSpecificationMode);
       ARE_EQUAL(testRuns, randomZenUnitArgs.testRuns);
       ARE_EQUAL(randomTestOrdering, randomZenUnitArgs.randomTestOrdering);
       ARE_EQUAL(randomSeed, randomZenUnitArgs.randomSeed);

@@ -13,7 +13,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedZenUnitArgs.alwaysExit0, actualZenUnitArgs.alwaysExit0);
       ARE_EQUAL(expectedZenUnitArgs.failFast, actualZenUnitArgs.failFast);
       ARE_EQUAL(expectedZenUnitArgs.exit1IfTestsSkipped, actualZenUnitArgs.exit1IfTestsSkipped);
-      ARE_EQUAL(expectedZenUnitArgs.informalSpecMode, actualZenUnitArgs.informalSpecMode);
+      ARE_EQUAL(expectedZenUnitArgs.informalSpecificationMode, actualZenUnitArgs.informalSpecificationMode);
       ARE_EQUAL(expectedZenUnitArgs.testRuns, actualZenUnitArgs.testRuns);
       ARE_EQUAL(expectedZenUnitArgs.randomTestOrdering, actualZenUnitArgs.randomTestOrdering);
       ARE_EQUAL(expectedZenUnitArgs.randomSeed, actualZenUnitArgs.randomSeed);

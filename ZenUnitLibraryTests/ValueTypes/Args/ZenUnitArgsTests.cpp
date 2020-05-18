@@ -18,7 +18,7 @@ namespace ZenUnit
       IS_FALSE(zenUnitArgs.alwaysExit0);
       IS_FALSE(zenUnitArgs.failFast);
       IS_FALSE(zenUnitArgs.exit1IfTestsSkipped);
-      IS_FALSE(zenUnitArgs.informalSpecMode);
+      IS_FALSE(zenUnitArgs.informalSpecificationMode);
       ARE_EQUAL(1, zenUnitArgs.testRuns);
       IS_FALSE(zenUnitArgs.randomTestOrdering);
       ARE_EQUAL(0, zenUnitArgs.randomSeed);
@@ -36,7 +36,7 @@ namespace ZenUnit
       EQUALIZER_THROWS(ZenUnitArgs, alwaysExit0, true);
       EQUALIZER_THROWS(ZenUnitArgs, failFast, true);
       EQUALIZER_THROWS(ZenUnitArgs, exit1IfTestsSkipped, true);
-      EQUALIZER_THROWS(ZenUnitArgs, informalSpecMode, true);
+      EQUALIZER_THROWS(ZenUnitArgs, informalSpecificationMode, true);
       EQUALIZER_THROWS(ZenUnitArgs, testRuns, 2u);
       EQUALIZER_THROWS(ZenUnitArgs, randomTestOrdering, true);
       EQUALIZER_THROWS(ZenUnitArgs, randomSeed, 3u);

@@ -109,6 +109,9 @@ Testing Specificity Options:
 
 Testing Utility Options:
 
+--informal-specification
+   Print every test class name and test name, which forms an informal specification document
+   for the program under test.
 --pause-before
    Wait for any key before running tests to allow attaching of a profiler or debugger.
 --pause-after
@@ -120,8 +123,6 @@ Testing Utility Options:
    Print this help message.
 --version
    Print the ZenUnit version number.
---informal-spec
-   Print every test class name and test name.
 
 Example Command Line Arguments:
 
@@ -883,7 +884,7 @@ namespace ZenUnit
       bool alwaysExit0 = false;
       bool failFast = false;
       bool exit1IfTestsSkipped = false;
-      bool informalSpecMode = false;
+      bool informalSpecificationMode = false;
       int testRuns = 1;
       bool randomTestOrdering = false;
       unsigned randomSeed = 0;
@@ -1946,7 +1947,7 @@ namespace ZenUnit
 
       virtual ZenUnitArgs Parse(const std::vector<std::string>& stringArgs) const
       {
-         if (stringArgs.size() >= 13)
+         if (stringArgs.size() >= 14)
          {
             _console->WriteLine("ZenUnit command line usage error: Too many arguments.\n");
             _console->WriteLineAndExit(Usage(), 1);
@@ -1981,6 +1982,10 @@ namespace ZenUnit
             {
                zenUnitArgs.randomTestOrdering = true;
             }
+            else if (arg == "--informal-specification")
+            {
+               zenUnitArgs.informalSpecificationMode = true;
+            }
             else if (arg == "--help")
             {
                _console->WriteLineAndExit(Usage(), 0);
@@ -1991,14 +1996,14 @@ namespace ZenUnit
             }
             else if (!String::Contains(arg, "="))
             {
-               WriteZenUnitArgumentErrorAndUsageThenExit1("Invalid argument \"" + arg + "\"");
+               WriteZenUnitCommandLineUsageErrorThenExit1("Invalid argument \"" + arg + "\"");
             }
             else
             {
                const std::vector<std::string> splitArg = String::Split(arg, '=');
                if (splitArg.size() != 2)
                {
-                  WriteZenUnitArgumentErrorAndUsageThenExit1("Invalid --name=value argument value: " + arg);
+                  WriteZenUnitCommandLineUsageErrorThenExit1("String::Split(arg, '=') unexpectedly returned not 2 for arg = \"" + arg + "\"");
                }
                try
                {
@@ -2020,12 +2025,12 @@ namespace ZenUnit
                   }
                   else
                   {
-                     WriteZenUnitArgumentErrorAndUsageThenExit1("Unrecognized --name=value argument: " + arg);
+                     WriteZenUnitCommandLineUsageErrorThenExit1("Unrecognized --name=value argument: " + arg);
                   }
                }
                catch (const std::invalid_argument&)
                {
-                  WriteZenUnitArgumentErrorAndUsageThenExit1("Invalid --name=value argument value: " + arg);
+                  WriteZenUnitCommandLineUsageErrorThenExit1("Invalid --name=value argument value: " + arg);
                }
             }
          }
@@ -2035,16 +2040,16 @@ namespace ZenUnit
          return zenUnitArgs;
       }
    private:
-      void SetRandomSeedIfNotSetByUser(ZenUnitArgs& outArgs) const
+      void SetRandomSeedIfNotSetByUser(ZenUnitArgs& outZenUnitArgs) const
       {
-         if (!outArgs.randomSeedSetByUser)
+         if (!outZenUnitArgs.randomSeedSetByUser)
          {
             const long long secondsSince1970 = _watch->SecondsSince1970();
-            outArgs.randomSeed = static_cast<unsigned>(secondsSince1970); // Cast to unsigned for use with std::default_random_engine(unsigned seed)
+            outZenUnitArgs.randomSeed = static_cast<unsigned>(secondsSince1970);
          }
       }
 
-      void WriteZenUnitArgumentErrorAndUsageThenExit1(std::string_view errorMessage) const
+      void WriteZenUnitCommandLineUsageErrorThenExit1(std::string_view errorMessage) const
       {
          _console->WriteLine("ZenUnit command line usage error: " + std::string(errorMessage) + "\n");
          _console->WriteLineAndExit(Usage(), 1);

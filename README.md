@@ -204,6 +204,9 @@ Testing Specificity Options:
 
 Testing Utility Options:
 
+--informal-specification
+   Print every test class name and test name, which forms an informal specification document
+   for the program under test.
 --pause-before
    Wait for any key before running tests to allow attaching of a profiler or debugger.
 --pause-after
@@ -215,8 +218,6 @@ Testing Utility Options:
    Print this help message.
 --version
    Print the ZenUnit version number.
---informal-spec
-   Print every test class name and test name.
 
 Example Command Line Arguments:
 

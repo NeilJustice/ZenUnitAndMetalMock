@@ -12,16 +12,15 @@ namespace ZenUnit
    TESTS(ArgsParserTests)
    AFACT(DefaultConstructor_NewsComponents_SetsStringToUnsignedFunction)
    AFACT(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
-   FACTS(Parse_ArgsSizeGreaterThanOrEqualTo13_PrintsTooManyArgumentsErrorMessageAndUsageAndExits1)
-   FACTS(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1)
+   FACTS(Parse_ArgsSizeGreaterThanOrEqualTo14_PrintsTooManyArgumentsErrorMessageAndUsageAndExits1)
+   FACTS(Parse_InvalidArgument_PrintsErrorMessageAndUsageAndExits1)
    AFACT(Parse_DashDashHelp_PrintsUsageAndExits0)
    AFACT(Parse_DashDashVersion_PrintsVersionAndExits0)
-   AFACT(Parse_AllArgsSpecifiedExpectForTestNameFilter_ReturnsZenUnitArgsWithAllFieldsSets)
-   AFACT(Parse_RunArgument_ReturnsExpectedZenUnitArgs)
-   AFACT(Parse_random_SetsrandomToTrue)
+   AFACT(Parse_AllArgumentsSpecifiedExpectForTestNameFilter_ReturnsZenUnitArgsWithAllFieldsSet)
+   AFACT(Parse_DashDashRun_ReturnsZenUnitArgsWithExpectedTestNameFilters)
    AFACT(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    AFACT(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
-   FACTS(Parse_EqualsSignContainingArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1)
+   FACTS(Parse_ArgContainsEqualsSign_ValueIsEmptyString_PrintsErrorMessageAndUsageAndExits1)
    AFACT(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
    AFACT(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
    AFACT(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
@@ -67,6 +66,9 @@ Testing Specificity Options:
 
 Testing Utility Options:
 
+--informal-specification
+   Print every test class name and test name, which forms an informal specification document
+   for the program under test.
 --pause-before
    Wait for any key before running tests to allow attaching of a profiler or debugger.
 --pause-after
@@ -78,8 +80,6 @@ Testing Utility Options:
    Print this help message.
 --version
    Print the ZenUnit version number.
---informal-spec
-   Print every test class name and test name.
 
 Example Command Line Arguments:
 
@@ -143,14 +143,14 @@ Example Command Line Arguments:
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST1X1(Parse_ArgsSizeGreaterThanOrEqualTo13_PrintsTooManyArgumentsErrorMessageAndUsageAndExits1,
-      size_t numberOfArgs,
-      13,
-      14)
+   TEST1X1(Parse_ArgsSizeGreaterThanOrEqualTo14_PrintsTooManyArgumentsErrorMessageAndUsageAndExits1,
+      size_t numberOfStringArgs,
+      14,
+      15)
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
-      const vector<string> stringArgs(numberOfArgs);
+      const vector<string> stringArgs(numberOfStringArgs);
       //
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
@@ -158,7 +158,7 @@ Example Command Line Arguments:
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
    }
 
-   TEST1X1(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1,
+   TEST1X1(Parse_InvalidArgument_PrintsErrorMessageAndUsageAndExits1,
       const string& invalidArgument,
       "--abc",
       "--Always-exit-0",
@@ -195,7 +195,7 @@ Example Command Line Arguments:
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("0.6.0", 0));
    }
 
-   TEST(Parse_AllArgsSpecifiedExpectForTestNameFilter_ReturnsZenUnitArgsWithAllFieldsSets)
+   TEST(Parse_AllArgumentsSpecifiedExpectForTestNameFilter_ReturnsZenUnitArgsWithAllFieldsSet)
    {
       const int testruns = ToIntMock.ReturnRandom();
       const unsigned randomSeed = ToUnsignedMock.ReturnRandom();
@@ -210,6 +210,7 @@ Example Command Line Arguments:
          "--fail-fast",
          "--exit-1-if-tests-skipped",
          "--random-test-ordering",
+         "--informal-specification",
          "--test-runs=" + to_string(testruns),
          "--random-seed=" + to_string(randomSeed)
       };
@@ -227,6 +228,7 @@ Example Command Line Arguments:
       expectedZenUnitArgs.failFast = true;
       expectedZenUnitArgs.exit1IfTestsSkipped = true;
       expectedZenUnitArgs.randomTestOrdering = true;
+      expectedZenUnitArgs.informalSpecificationMode = true;
       expectedZenUnitArgs.testRuns = testruns;
       expectedZenUnitArgs.randomSeed = randomSeed;
       expectedZenUnitArgs.randomSeedSetByUser = true;
@@ -235,7 +237,7 @@ Example Command Line Arguments:
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST(Parse_RunArgument_ReturnsExpectedZenUnitArgs)
+   TEST(Parse_DashDashRun_ReturnsZenUnitArgsWithExpectedTestNameFilters)
    {
       _callerOfSetRandomSeedIfNotSetByUserMock->ConstCallMock.Expect();
 
@@ -261,33 +263,27 @@ Example Command Line Arguments:
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST(Parse_random_SetsrandomToTrue)
-   {
-      const string dateTimeNow = _watchMock->DateTimeNowMock.ReturnRandom();
-      ExpectCallToSetRandomSeedIfNotSetByUser();
-      const vector<string> stringArgs { ZenUnit::Random<string>(), "--random-test-ordering" };
-      //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
-      //
-      ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
-      ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
-      expectedZenUnitArgs.randomTestOrdering = true;
-      AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
-      ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
-   }
-
    TEST(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    {
       AssertArgSetsBoolField("--pause-before", &ZenUnitArgs::pauseBefore);
       Startup();
+
       AssertArgSetsBoolField("--pause-after", &ZenUnitArgs::pauseAfter);
       Startup();
+
       AssertArgSetsBoolField("--always-exit-0", &ZenUnitArgs::alwaysExit0);
       Startup();
+
       AssertArgSetsBoolField("--fail-fast", &ZenUnitArgs::failFast);
       Startup();
+
       AssertArgSetsBoolField("--exit-1-if-tests-skipped", &ZenUnitArgs::exit1IfTestsSkipped);
+      Startup();
+
+      AssertArgSetsBoolField("--random-test-ordering", &ZenUnitArgs::randomTestOrdering);
+      Startup();
+
+      AssertArgSetsBoolField("--informal-specification", &ZenUnitArgs::informalSpecificationMode);
    }
    void AssertArgSetsBoolField(const string& arg, bool ZenUnitArgs::* expectedFieldToBeSet)
    {
@@ -321,7 +317,7 @@ Example Command Line Arguments:
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST1X1(Parse_EqualsSignContainingArg_EmptyValue_PrintsErrorMessageAndUsageAndExits1,
+   TEST1X1(Parse_ArgContainsEqualsSign_ValueIsEmptyString_PrintsErrorMessageAndUsageAndExits1,
       const string& arg,
       "--test-runs=",
       "--test-runs===",
@@ -334,8 +330,9 @@ Example Command Line Arguments:
       //
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
-      ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
-         "ZenUnit command line usage error: Invalid --name=value argument value: " + arg + "\n"));
+      const string expectedErrorMessage =
+         "ZenUnit command line usage error: " + string("String::Split(arg, '=') unexpectedly returned not 2 for arg = \"" + arg + "\"") + "\n";
+      ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedErrorMessage));
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
    }
 
