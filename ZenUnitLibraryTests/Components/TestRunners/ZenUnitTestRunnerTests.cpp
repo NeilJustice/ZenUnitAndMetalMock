@@ -5,7 +5,7 @@
 
 #include "ZenUnitLibraryTests/Components/Args/ZenMock/ArgsParserMock.h"
 #include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleMock.h"
-#include "ZenUnitLibraryTests/ZenUnit/Random/RandomRunFilter.h"
+#include "ZenUnitLibraryTests/ZenUnit/Random/RandomTestNameFilter.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestRunResultMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/ZenMock/PreamblePrinterMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/ZenMock/TestClassRunnerRunnerMock.h"
@@ -14,7 +14,7 @@
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/ZenMock/VoidOneArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/ZenMock/VoidZeroArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/ZenMock/StopwatchMock.h"
-#include "ZenUnitTestUtils/Equalizers/RunFilterEqualizer.h"
+#include "ZenUnitTestUtils/Equalizers/TestNameFilterEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/TestClassResultEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/ZenUnitArgsEqualizer.h"
 
@@ -126,12 +126,12 @@ namespace ZenUnit
       2, 1, 1, 1)
    {
       ZenUnitArgs parsedZenUnitArgs;
-      parsedZenUnitArgs.runFilters = { Random<RunFilter>(), Random<RunFilter>() };
+      parsedZenUnitArgs.testNameFilters = { Random<TestNameFilter>(), Random<TestNameFilter>() };
       parsedZenUnitArgs.pauseAfter = ZenUnit::Random<bool>();
       parsedZenUnitArgs.testRuns = testrunsArg;
       _argsParserMock->ParseMock.Return(parsedZenUnitArgs);
 
-      _testClassRunnerRunnerMock->ApplyRunFiltersIfAnyMock.Expect();
+      _testClassRunnerRunnerMock->ApplyTestNameFiltersIfAnyMock.Expect();
 
       _nonVoidOneArgMemberFunctionCallerMock->NonConstCallMock.ReturnValues(firstTestRunExitCode, secondTestRunExitCode);
 
@@ -144,7 +144,7 @@ namespace ZenUnit
       const int overallExitCode = _zenUnitTestRunner.RunTests(commandLineArgs);
       //
       ZENMOCK(_argsParserMock->ParseMock.CalledOnceWith(commandLineArgs));
-      ZENMOCK(_testClassRunnerRunnerMock->ApplyRunFiltersIfAnyMock.CalledOnceWith(parsedZenUnitArgs.runFilters));
+      ZENMOCK(_testClassRunnerRunnerMock->ApplyTestNameFiltersIfAnyMock.CalledOnceWith(parsedZenUnitArgs.testNameFilters));
       ZENMOCK(_nonVoidOneArgMemberFunctionCallerMock->NonConstCallMock.CalledNTimesWith(
          testrunsArg, &_zenUnitTestRunner, &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, parsedZenUnitArgs));
       ZENMOCK(_testRunResultMock->ResetStateExceptForSkipsMock.CalledNTimes(testrunsArg));

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Components/Args/ZenMock/RunFilterMock.h"
+#include "ZenUnitLibraryTests/Components/Args/ZenMock/TestNameFilterMock.h"
 #include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/ZenMock/ITestCaseNumberGeneratorMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/TestingTestClass.h"
@@ -7,7 +7,7 @@
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/ZenMock/ThreeArgAnyerMock.h"
 #include "ZenUnitTestUtils/Equalizers/FullTestNameEqualizer.h"
-#include "ZenUnitTestUtils/Equalizers/RunFilterEqualizer.h"
+#include "ZenUnitTestUtils/Equalizers/TestNameFilterEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/TestResultEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/ZenUnitArgsEqualizer.h"
 
@@ -26,9 +26,9 @@ namespace ZenUnit
    AFACT(RunTestCase_2X2_DoesSo)
    AFACT(Exit1IfNonExistentTestCaseNumberSpecified_NonEmptyTestResults_DoesNothing)
    AFACT(Exit1IfNonExistentTestCaseNumberSpecified_EmptyTestResults_WritesErrorMessage_Exits1)
-   AFACT(ShouldRunTestCase_EmptyRunFilters_ReturnsTrue)
-   FACTS(ShouldRunTestCase_NonEmptyRunFilters_ReturnsTrueIfAnyRunFilterMatchesTestClassNameTestNameTestCaseNumber)
-   AFACT(RunFilterMatchesTestCase_ReturnsTrueIfRunFilterMatchesTestCaseNumberAndTestClassNameAndTestName)
+   AFACT(ShouldRunTestCase_TestNameFiltersAreEmpty_ReturnsTrue)
+   FACTS(ShouldRunTestCase_TestNameFiltersAreNonEmpty_ReturnsTrueIfAnyTestNameFilterMatchesTestClassNameTestNameTestCaseNumber)
+   AFACT(TestNameFilterMatchesTestCase_ReturnsTrueIfTestNameFilterMatchesTestCaseNumberAndTestClassNameAndTestName)
    AFACT(NewTestClass_NewsTestClass)
    AFACT(Startup_CallsTestClassStartup)
    AFACT(TestBody_CallsRunNXNTestCase)
@@ -41,9 +41,9 @@ namespace ZenUnit
 
    unique_ptr<TestNXN<TestingTestClass, N, int>> _testNXN;
    ConsoleMock* _consoleMock = nullptr;
-   using CallerOfRunFilterMatchesTestCaseMockType = ThreeArgAnyerMock<
-      std::vector<RunFilter>, bool(*)(const RunFilter&, const FullTestName&, size_t), const FullTestName&, size_t>;
-   CallerOfRunFilterMatchesTestCaseMockType* _callerOfRunFilterMatchesTestCaseMock = nullptr;
+   using CallerOfTestNameFilterMatchesTestCaseMockType = ThreeArgAnyerMock<
+      std::vector<TestNameFilter>, bool(*)(const TestNameFilter&, const FullTestName&, size_t), const FullTestName&, size_t>;
+   CallerOfTestNameFilterMatchesTestCaseMockType* _callerOfTestNameFilterMatchesTestCaseMock = nullptr;
    const string _testClassName = Random<string>();
    const string _testName = Random<string>();
    const string _testCaseArgsText = Random<string>();
@@ -54,7 +54,7 @@ namespace ZenUnit
    {
       _testNXN = make_unique<TestNXN<TestingTestClass, N, int>>("", "", "", 0);
       _testNXN->_console.reset(_consoleMock = new ConsoleMock);
-      _testNXN->_callerOfRunFilterMatchesTestCase.reset(_callerOfRunFilterMatchesTestCaseMock = new CallerOfRunFilterMatchesTestCaseMockType);
+      _testNXN->_callerOfTestNameFilterMatchesTestCase.reset(_callerOfTestNameFilterMatchesTestCaseMock = new CallerOfTestNameFilterMatchesTestCaseMockType);
       _testNXN->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_ZENMOCK_OBJECT(GetZenUnitArgsMock);
       _testNXN->_call_exit = BIND_1ARG_ZENMOCK_OBJECT(exitMock);
    }
@@ -66,7 +66,7 @@ namespace ZenUnit
 
       // Fields
       DELETE_TO_ASSERT_NEWED(test2X2._console);
-      DELETE_TO_ASSERT_NEWED(test2X2._callerOfRunFilterMatchesTestCase);
+      DELETE_TO_ASSERT_NEWED(test2X2._callerOfTestNameFilterMatchesTestCase);
       STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetZenUnitArgs, test2X2._call_ZenUnitTestRunner_GetZenUnitArgs);
       STD_FUNCTION_TARGETS(::exit, test2X2._call_exit);
       STD_FUNCTION_TARGETS(ITestCaseNumberGenerator::FactoryNew, test2X2._call_ITestCaseNumberGeneratorFactoryNew);
@@ -357,41 +357,43 @@ namespace ZenUnit
       ZENMOCK(exitMock.CalledOnceWith(1));
    }
 
-   TEST(ShouldRunTestCase_EmptyRunFilters_ReturnsTrue)
+   TEST(ShouldRunTestCase_TestNameFiltersAreEmpty_ReturnsTrue)
    {
-      const ZenUnitArgs args;
+      const ZenUnitArgs zenUnitArgs;
+      IS_EMPTY(zenUnitArgs.testNameFilters);
       const FullTestName fullTestName;
       const size_t testCaseNumber = ZenUnit::Random<size_t>();
       //
-      const bool shouldRunTestCase = _testNXN->ShouldRunTestCase(args, fullTestName, testCaseNumber);
+      const bool shouldRunTestCase = _testNXN->ShouldRunTestCase(zenUnitArgs, fullTestName, testCaseNumber);
       //
       IS_TRUE(shouldRunTestCase);
    }
 
-   TEST2X2(ShouldRunTestCase_NonEmptyRunFilters_ReturnsTrueIfAnyRunFilterMatchesTestClassNameTestNameTestCaseNumber,
-      bool anyRunFilterMatchesThisTest, bool expectedReturnValue,
+   TEST2X2(ShouldRunTestCase_TestNameFiltersAreNonEmpty_ReturnsTrueIfAnyTestNameFilterMatchesTestClassNameTestNameTestCaseNumber,
+      bool anyTestNameFilterMatchesThisTest, bool expectedReturnValue,
       false, false,
       true, true)
    {
-      _callerOfRunFilterMatchesTestCaseMock->ThreeArgAnyMock.Return(anyRunFilterMatchesThisTest);
-      ZenUnitArgs args;
-      args.runFilters.resize(ZenUnit::RandomBetween<size_t>(1, 2));
+      _callerOfTestNameFilterMatchesTestCaseMock->ThreeArgAnyMock.Return(anyTestNameFilterMatchesThisTest);
+      ZenUnitArgs zenUnitArgs;
+      zenUnitArgs.testNameFilters.resize(ZenUnit::RandomBetween<size_t>(1, 2));
       FullTestName fullTestName;
       const string nonDefaultTestClassName = ZenUnit::Random<string>();
       fullTestName.testClassName = nonDefaultTestClassName.c_str();
       const size_t testCaseNumber = ZenUnit::Random<size_t>();
       //
-      const bool shouldRunTestCase = _testNXN->ShouldRunTestCase(args, fullTestName, testCaseNumber);
+      const bool shouldRunTestCase = _testNXN->ShouldRunTestCase(zenUnitArgs, fullTestName, testCaseNumber);
       //
-      ZENMOCK(_callerOfRunFilterMatchesTestCaseMock->ThreeArgAnyMock.CalledOnceWith(
-         args.runFilters, TestNXN<TestingTestClass, N, int>::RunFilterMatchesTestCase, fullTestName, testCaseNumber));
+      ZENMOCK(_callerOfTestNameFilterMatchesTestCaseMock->ThreeArgAnyMock.CalledOnceWith(
+         zenUnitArgs.testNameFilters, TestNXN<TestingTestClass, N, int>::TestNameFilterMatchesTestCase, fullTestName, testCaseNumber));
       ARE_EQUAL(expectedReturnValue, shouldRunTestCase);
    }
 
-   TEST(RunFilterMatchesTestCase_ReturnsTrueIfRunFilterMatchesTestCaseNumberAndTestClassNameAndTestName)
+   TEST(TestNameFilterMatchesTestCase_ReturnsTrueIfTestNameFilterMatchesTestCaseNumberAndTestClassNameAndTestName)
    {
-      RunFilterMock runFilterMock;
-      const bool runFilterMatchesTestCase = runFilterMock.MatchesTestCaseMock.ReturnRandom();
+      TestNameFilterMock testNameFilterMock;
+      const bool testNameMatchesTestCase = testNameFilterMock.MatchesTestCaseMock.ReturnRandom();
+
       FullTestName fullTestName;
       const string testClassName = ZenUnit::Random<string>();
       const string testName = ZenUnit::Random<string>();
@@ -400,11 +402,11 @@ namespace ZenUnit
       fullTestName.arity = ZenUnit::Random<unsigned char>();
       const size_t testCaseNumber = ZenUnit::Random<size_t>();
       //
-      const bool returnedRunFilterMatchesTestCase = TestNXN<TestingTestClass, 1, int>::
-         RunFilterMatchesTestCase(runFilterMock, fullTestName, testCaseNumber);
+      const bool returnedTestNameMatchesTestCase =
+         TestNXN<TestingTestClass, 1, int>::TestNameFilterMatchesTestCase(testNameFilterMock, fullTestName, testCaseNumber);
       //
-      ZENMOCK(runFilterMock.MatchesTestCaseMock.CalledOnceWith(fullTestName.testClassName, fullTestName.testName, testCaseNumber));
-      ARE_EQUAL(runFilterMatchesTestCase, returnedRunFilterMatchesTestCase);
+      ZENMOCK(testNameFilterMock.MatchesTestCaseMock.CalledOnceWith(fullTestName.testClassName, fullTestName.testName, testCaseNumber));
+      ARE_EQUAL(testNameMatchesTestCase, returnedTestNameMatchesTestCase);
    }
 
    TEST(NewTestClass_NewsTestClass)

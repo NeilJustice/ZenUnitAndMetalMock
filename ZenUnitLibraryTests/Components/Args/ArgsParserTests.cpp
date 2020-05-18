@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Components/Args/ZenMock/RunFilterParserMock.h"
+#include "ZenUnitLibraryTests/Components/Args/ZenMock/TestNameFilterStringParserMock.h"
 #include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleMock.h"
-#include "ZenUnitLibraryTests/ZenUnit/Random/RandomRunFilter.h"
+#include "ZenUnitLibraryTests/ZenUnit/Random/RandomTestNameFilter.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
 #include "ZenUnitTestUtils/Equalizers/ZenUnitArgsEqualizer.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/ZenMock/VoidOneArgMemberFunctionCallerMock.h"
@@ -16,7 +16,7 @@ namespace ZenUnit
    FACTS(Parse_InvalidArg_PrintsErrorMessageAndUsageAndExits1)
    AFACT(Parse_DashDashHelp_PrintsUsageAndExits0)
    AFACT(Parse_DashDashVersion_PrintsVersionAndExits0)
-   AFACT(Parse_AllArgsSpecifiedExpectForRunFilter_ReturnsZenUnitArgsWithAllFieldsSets)
+   AFACT(Parse_AllArgsSpecifiedExpectForTestNameFilter_ReturnsZenUnitArgsWithAllFieldsSets)
    AFACT(Parse_RunArgument_ReturnsExpectedZenUnitArgs)
    AFACT(Parse_random_SetsrandomToTrue)
    AFACT(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
@@ -88,7 +88,7 @@ Example Command Line Arguments:
 
    ArgsParser _argsParser;
    ConsoleMock* _consoleMock = nullptr;
-   RunFilterParserMock* _runFilterParserMock = nullptr;
+   TestNameFilterStringParserMock* _testNameFilterStringParserMock = nullptr;
    VoidOneArgMemberFunctionCallerMock<ArgsParser, ZenUnitArgs&>* _callerOfSetRandomSeedIfNotSetByUserMock = nullptr;
    WatchMock* _watchMock = nullptr;
    ZENMOCK_NONVOID1_STATIC(int, ZenUnit::String, ToInt, std::string_view)
@@ -97,7 +97,7 @@ Example Command Line Arguments:
    STARTUP
    {
       _argsParser._console.reset(_consoleMock = new ConsoleMock);
-      _argsParser._runFilterParser.reset(_runFilterParserMock = new RunFilterParserMock);
+      _argsParser._testNameFilterStringParser.reset(_testNameFilterStringParserMock = new TestNameFilterStringParserMock);
       _argsParser._callerOfSetRandomSeedIfNotSetByUser.reset(
          _callerOfSetRandomSeedIfNotSetByUserMock = new VoidOneArgMemberFunctionCallerMock<ArgsParser, ZenUnitArgs&>);
       _argsParser._watch.reset(_watchMock = new WatchMock);
@@ -109,7 +109,7 @@ Example Command Line Arguments:
    {
       ArgsParser argsParser;
       DELETE_TO_ASSERT_NEWED(argsParser._console);
-      DELETE_TO_ASSERT_NEWED(argsParser._runFilterParser);
+      DELETE_TO_ASSERT_NEWED(argsParser._testNameFilterStringParser);
       DELETE_TO_ASSERT_NEWED(argsParser._callerOfSetRandomSeedIfNotSetByUser);
       DELETE_TO_ASSERT_NEWED(argsParser._watch);
       STD_FUNCTION_TARGETS(String::ToInt, argsParser._call_String_ToInt);
@@ -195,7 +195,7 @@ Example Command Line Arguments:
       ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("0.6.0", 0));
    }
 
-   TEST(Parse_AllArgsSpecifiedExpectForRunFilter_ReturnsZenUnitArgsWithAllFieldsSets)
+   TEST(Parse_AllArgsSpecifiedExpectForTestNameFilter_ReturnsZenUnitArgsWithAllFieldsSets)
    {
       const int testruns = ToIntMock.ReturnRandom();
       const unsigned randomSeed = ToUnsignedMock.ReturnRandom();
@@ -239,8 +239,8 @@ Example Command Line Arguments:
    {
       _callerOfSetRandomSeedIfNotSetByUserMock->ConstCallMock.Expect();
 
-      const vector<RunFilter> runFilters = { Random<RunFilter>() };
-      _runFilterParserMock->ParseMock.Return(runFilters);
+      const vector<TestNameFilter> testNameFilters = { Random<TestNameFilter>() };
+      _testNameFilterStringParserMock->ParseTestNameFilterStringsMock.Return(testNameFilters);
 
       const string unusedDateTimeNow = _watchMock->DateTimeNowMock.ReturnRandom();
 
@@ -250,13 +250,13 @@ Example Command Line Arguments:
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
       //
       const vector<string> splitRunArgument = String::Split(runArgument, ',');
-      ZENMOCK(_runFilterParserMock->ParseMock.CalledOnceWith(splitRunArgument));
+      ZENMOCK(_testNameFilterStringParserMock->ParseTestNameFilterStringsMock.CalledOnceWith(splitRunArgument));
 
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
 
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
-      expectedZenUnitArgs.runFilters = runFilters;
+      expectedZenUnitArgs.testNameFilters = testNameFilters;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }

@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Components/Args/ZenMock/RunFilterMock.h"
+#include "ZenUnitLibraryTests/Components/Args/ZenMock/TestNameFilterMock.h"
 #include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleMock.h"
-#include "ZenUnitLibraryTests/ZenUnit/Random/RandomRunFilter.h"
+#include "ZenUnitLibraryTests/ZenUnit/Random/RandomTestNameFilter.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestClassResultMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/ZenMock/TestMock.h"
@@ -11,7 +11,7 @@
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/ZenMock/TwoArgAnyerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/ZenMock/TwoArgMemberAnyerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/ZenMock/TwoArgMemberForEacherMock.h"
-#include "ZenUnitTestUtils/Equalizers/RunFilterEqualizer.h"
+#include "ZenUnitTestUtils/Equalizers/TestNameFilterEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/TestClassResultEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/TestResultEqualizer.h"
 
@@ -20,16 +20,16 @@ namespace ZenUnit
    TESTS(SpecificTestClassRunnerTests)
    AFACT(Constructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
    AFACT(TestClassName_ReturnsTestClassName)
-   AFACT(HasTestThatMatchesRunFilter_RunFilterTestNamePatternIsEmpty_ReturnsTrue)
-   AFACT(HasTestThatMatchesRunFilter_RunFilterTestNamePatternIsNotEmpty_ReturnsTrueIfRunFilterMatchesTestNameReturnsTrue)
-   AFACT(RunFilterMatchesTestName_ReturnsTrueIfRunFilterMatchesTestNameReturnsTrue)
+   AFACT(HasTestThatMatchesTestNameFilter_TestNameFilterTestNamePatternIsEmpty_ReturnsTrue)
+   AFACT(HasTestThatMatchesTestNameFilter_TestNameFilterTestNamePatternIsNotEmpty_ReturnsTrueIfTestNameFilterMatchesTestNameReturnsTrue)
+   AFACT(TestNameFilterMatchesTestName_ReturnsTrueIfTestNameFilterMatchesTestName)
    AFACT(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
    FACTS(RunTests_PrintsTestClassNameAndNumberOfNamedTests_ConfirmsTestClassNewableAndDeletable_RunsTests_PrintsAndReturnsTestClassResult)
    FACTS(DoRunTests_RandomlyRunsTestsIfRandomOtherwiseSequentiallyRunsTests)
    FACTS(PrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVerticalBarNumberOfTests)
    FACTS(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewableDeletableTest_AddsResultToResults_ReturnsTrueIfNewableAndDeletable)
-   AFACT(RunTest_RunFiltersNonEmpty_NoneOfTheRunFiltersMatchTheTestName_DoesNotRunTest)
-   FACTS(RunTest_RunFiltersEmptyOrIfNotEmptyARunFilterMatchesTheTestName_RunsTest)
+   AFACT(RunTest_TestNameFiltersAreNonEmpty_NoneOfTheTestNameFiltersMatchTheTestName_DoesNotRunTest)
+   FACTS(RunTest_TestNameFiltersAreEmptyOrIfNotEmptyATestNameFilterMatchesTheTestName_RunsTest)
    AFACT(PrintTestClassResultLine_CallsTestClassResultPrintResultLine)
    EVIDENCE
 
@@ -60,13 +60,13 @@ namespace ZenUnit
 
    using TwoArgTestAnyerMockType = TwoArgAnyerMock<
       const std::vector<std::unique_ptr<Test>>,
-      bool(*)(const std::unique_ptr<Test>&, const RunFilter&),
-      const RunFilter&>;
+      bool(*)(const std::unique_ptr<Test>&, const TestNameFilter&),
+      const TestNameFilter&>;
    TwoArgTestAnyerMockType* _twoArgTestAnyerMock = nullptr;
 
    using TwoArgMemberAnyerMockType = TwoArgMemberAnyerMock<
-      std::vector<RunFilter>, TestClassRunner,
-      bool(TestClassRunner::*)(const RunFilter&, const char*) const, const char*>;
+      std::vector<TestNameFilter>, TestClassRunner,
+      bool(TestClassRunner::*)(const TestNameFilter&, const char*) const, const char*>;
    TwoArgMemberAnyerMockType* _protected_twoArgMemberAnyerMock = nullptr;
 
    ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetZenUnitArgs)
@@ -114,44 +114,43 @@ namespace ZenUnit
       ARE_EQUAL(_testClassName.c_str(), testClassName);
    }
 
-   TEST(HasTestThatMatchesRunFilter_RunFilterTestNamePatternIsEmpty_ReturnsTrue)
+   TEST(HasTestThatMatchesTestNameFilter_TestNameFilterTestNamePatternIsEmpty_ReturnsTrue)
    {
-      const RunFilter runFilterWithEmptyTestName;
-      IS_EMPTY(runFilterWithEmptyTestName.testNamePattern);
+      const TestNameFilter testNameFilterWithEmptyTestName;
+      IS_EMPTY(testNameFilterWithEmptyTestName.testNamePattern);
       //
-      const bool hasTestThatMatchesRunFilter = _specificTestClassRunner->HasTestThatMatchesRunFilter(runFilterWithEmptyTestName);
+      const bool hasTestThatMatchesTestNameFilter = _specificTestClassRunner->HasTestThatMatchesTestNameFilter(testNameFilterWithEmptyTestName);
       //
-      IS_TRUE(hasTestThatMatchesRunFilter);
+      IS_TRUE(hasTestThatMatchesTestNameFilter);
    }
 
-   TEST(HasTestThatMatchesRunFilter_RunFilterTestNamePatternIsNotEmpty_ReturnsTrueIfRunFilterMatchesTestNameReturnsTrue)
+   TEST(HasTestThatMatchesTestNameFilter_TestNameFilterTestNamePatternIsNotEmpty_ReturnsTrueIfTestNameFilterMatchesTestNameReturnsTrue)
    {
       const bool twoArgAnyerReturnValue = _twoArgTestAnyerMock->TwoArgAnyMock.ReturnRandom();
-      const RunFilter runFilter = ZenUnit::Random<RunFilter>();
+      const TestNameFilter testNameFilter = ZenUnit::Random<TestNameFilter>();
       //
-      const bool hasTestThatMatchesRunFilter = _specificTestClassRunner->HasTestThatMatchesRunFilter(runFilter);
+      const bool hasTestThatMatchesTestNameFilter = _specificTestClassRunner->HasTestThatMatchesTestNameFilter(testNameFilter);
       //
       ZENMOCK(_twoArgTestAnyerMock->TwoArgAnyMock.CalledOnceWith(
-         &_specificTestClassRunner->_tests, SpecificTestClassRunner<TestingTestClass>::RunFilterMatchesTestName, runFilter));
-      ARE_EQUAL(twoArgAnyerReturnValue, hasTestThatMatchesRunFilter);
+         &_specificTestClassRunner->_tests, SpecificTestClassRunner<TestingTestClass>::TestNameFilterMatchesTestName, testNameFilter));
+      ARE_EQUAL(twoArgAnyerReturnValue, hasTestThatMatchesTestNameFilter);
    }
 
-   TEST(RunFilterMatchesTestName_ReturnsTrueIfRunFilterMatchesTestNameReturnsTrue)
+   TEST(TestNameFilterMatchesTestName_ReturnsTrueIfTestNameFilterMatchesTestName)
    {
       TestMock* testMock = new TestMock;
       const string testName = ZenUnit::Random<string>();
       testMock->NameMock.Return(testName.c_str());
       unique_ptr<Test> test(testMock);
 
-      RunFilterMock runFilterMock;
-      const bool runFilterMatchesTestName = ZenUnit::Random<bool>();
-      runFilterMock.MatchesTestNameMock.Return(runFilterMatchesTestName);
+      TestNameFilterMock testNameFilterMock;
+      const bool testNameFilterMatchesTestName = testNameFilterMock.MatchesTestNameMock.ReturnRandom();
       //
-      const bool returnedRunFilterMatchesTestName = _specificTestClassRunner->RunFilterMatchesTestName(test, runFilterMock);
+      const bool returnedTestNameFilterMatchesTestName = _specificTestClassRunner->TestNameFilterMatchesTestName(test, testNameFilterMock);
       //
       ZENMOCK(testMock->NameMock.CalledOnce());
-      ZENMOCK(runFilterMock.MatchesTestNameMock.CalledOnceWith(testName.c_str()));
-      ARE_EQUAL(runFilterMatchesTestName, returnedRunFilterMatchesTestName);
+      ZENMOCK(testNameFilterMock.MatchesTestNameMock.CalledOnceWith(testName.c_str()));
+      ARE_EQUAL(testNameFilterMatchesTestName, returnedTestNameFilterMatchesTestName);
    }
 
    TEST(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
@@ -330,10 +329,10 @@ namespace ZenUnit
       ARE_EQUAL(expectedReturnValue, testClassTypeIsNewableAndDeletable);
    }
 
-   TEST(RunTest_RunFiltersNonEmpty_NoneOfTheRunFiltersMatchTheTestName_DoesNotRunTest)
+   TEST(RunTest_TestNameFiltersAreNonEmpty_NoneOfTheTestNameFiltersMatchTheTestName_DoesNotRunTest)
    {
       ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
-      zenUnitArgs.runFilters.resize(ZenUnit::RandomBetween<size_t>(1, 2));
+      zenUnitArgs.testNameFilters.resize(ZenUnit::RandomBetween<size_t>(1, 2));
       GetZenUnitArgsMock.Return(zenUnitArgs);
 
       TestMock* const testMock = new TestMock;
@@ -350,17 +349,17 @@ namespace ZenUnit
       ZENMOCK(GetZenUnitArgsMock.CalledOnce());
       ZENMOCK(testMock->NameMock.CalledOnce());
       ZENMOCK(_protected_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
-         zenUnitArgs.runFilters, _specificTestClassRunner.get(), &TestClassRunner::RunFilterMatchesTestName, testName.c_str()));
+         zenUnitArgs.testNameFilters, _specificTestClassRunner.get(), &TestClassRunner::TestNameFilterMatchesTestName, testName.c_str()));
    }
 
-   TEST2X2(RunTest_RunFiltersEmptyOrIfNotEmptyARunFilterMatchesTheTestName_RunsTest,
-      size_t runFiltersSize, bool expectAnyerCall,
+   TEST2X2(RunTest_TestNameFiltersAreEmptyOrIfNotEmptyATestNameFilterMatchesTheTestName_RunsTest,
+      size_t testNameFiltersSize, bool expectAnyerCall,
       0, false,
       1, true,
       2, true)
    {
       ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
-      zenUnitArgs.runFilters.resize(runFiltersSize);
+      zenUnitArgs.testNameFilters.resize(testNameFiltersSize);
       GetZenUnitArgsMock.Return(zenUnitArgs);
 
       _protected_consoleMock->WriteColorMock.Expect();
@@ -390,7 +389,7 @@ namespace ZenUnit
       if (expectAnyerCall)
       {
          ZENMOCK(_protected_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
-            zenUnitArgs.runFilters, _specificTestClassRunner.get(), &TestClassRunner::RunFilterMatchesTestName, testName.c_str()));
+            zenUnitArgs.testNameFilters, _specificTestClassRunner.get(), &TestClassRunner::TestNameFilterMatchesTestName, testName.c_str()));
       }
       ZENMOCK(_protected_consoleMock->WriteColorMock.CalledOnceWith("|", Color::Green));
       ZENMOCK(_protected_consoleMock->WriteMock.CalledOnceWith(testName));

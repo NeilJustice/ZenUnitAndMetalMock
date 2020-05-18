@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
-#include "ZenUnitTestUtils/Equalizers/RunFilterEqualizer.h"
+#include "ZenUnitTestUtils/Equalizers/TestNameFilterEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/ZenUnitArgsEqualizer.h"
 
 namespace ZenUnit
@@ -50,10 +50,10 @@ namespace ZenUnit
       ARE_EQUAL(startDateTime, randomZenUnitArgs.startDateTime);
       ARE_EQUAL(commandLine, randomZenUnitArgs.commandLine);
 
-      IS_NOT_EMPTY(randomZenUnitArgs.runFilters);
-      for (size_t i = 0; i < randomZenUnitArgs.runFilters.size(); ++i)
+      IS_NOT_EMPTY(randomZenUnitArgs.testNameFilters);
+      for (size_t i = 0; i < randomZenUnitArgs.testNameFilters.size(); ++i)
       {
-         IS_NOT_DEFAULT_VALUE(randomZenUnitArgs.runFilters[i]);
+         IS_NOT_DEFAULT_VALUE(randomZenUnitArgs.testNameFilters[i]);
       }
 
       ARE_EQUAL(pauseBefore, randomZenUnitArgs.pauseBefore);

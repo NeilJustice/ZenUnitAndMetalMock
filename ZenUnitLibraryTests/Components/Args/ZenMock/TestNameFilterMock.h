@@ -1,6 +1,6 @@
 #pragma once
 
-class RunFilterMock : public Zen::Mock<RunFilter>
+class TestNameFilterMock : public Zen::Mock<TestNameFilter>
 {
 public:
    ZENMOCK_NONVOID1_CONST(bool, MatchesTestName, std::string_view)

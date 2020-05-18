@@ -12,7 +12,7 @@ namespace ZenUnit
    {
       ZenUnitArgs zenUnitArgs;
       ARE_EQUAL("", zenUnitArgs.commandLine);
-      IS_EMPTY(zenUnitArgs.runFilters);
+      IS_EMPTY(zenUnitArgs.testNameFilters);
       IS_FALSE(zenUnitArgs.pauseBefore);
       IS_FALSE(zenUnitArgs.pauseAfter);
       IS_FALSE(zenUnitArgs.alwaysExit0);
@@ -30,7 +30,7 @@ namespace ZenUnit
    {
       SETUP_EQUALIZER_THROWS_TEST(ZenUnitArgs);
       EQUALIZER_THROWS(ZenUnitArgs, commandLine, "ZenUnitTests.exe");
-      EQUALIZER_THROWS(ZenUnitArgs, runFilters, vector<RunFilter> { RunFilter() });
+      EQUALIZER_THROWS(ZenUnitArgs, testNameFilters, vector<TestNameFilter> { TestNameFilter() });
       EQUALIZER_THROWS(ZenUnitArgs, pauseBefore, true);
       EQUALIZER_THROWS(ZenUnitArgs, pauseAfter, true);
       EQUALIZER_THROWS(ZenUnitArgs, alwaysExit0, true);

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/ZenUnit/Random/RandomRunFilter.h"
+#include "ZenUnitLibraryTests/ZenUnit/Random/RandomTestNameFilter.h"
 #include "ZenUnitTestUtils/Equalizers/TestClassResultEqualizer.h"
 
 namespace ZenUnit
@@ -8,7 +8,7 @@ namespace ZenUnit
    AFACT(TestClassName_ReturnsNoOpTestClassRunner)
    AFACT(NumberOfTestCases_Returns0)
    AFACT(RunTests_ReturnsDefaultTestClassResult)
-   AFACT(HasTestThatMatchesRunFilter_ReturnsFalse)
+   AFACT(HasTestThatMatchesTestNameFilter_ReturnsFalse)
    EVIDENCE
 
    NoOpTestClassRunner _noOpTestClassRunner;
@@ -28,9 +28,9 @@ namespace ZenUnit
       ARE_EQUAL(TestClassResult(), _noOpTestClassRunner.RunTests());
    }
 
-   TEST(HasTestThatMatchesRunFilter_ReturnsFalse)
+   TEST(HasTestThatMatchesTestNameFilter_ReturnsFalse)
    {
-      IS_FALSE(_noOpTestClassRunner.HasTestThatMatchesRunFilter(ZenUnit::Random<RunFilter>()));
+      IS_FALSE(_noOpTestClassRunner.HasTestThatMatchesTestNameFilter(ZenUnit::Random<TestNameFilter>()));
    }
 
    RUN_TESTS(NoOpTestClassRunnerTests)

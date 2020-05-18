@@ -1,5 +1,5 @@
 #pragma once
-#include "ZenUnitLibraryTests/ZenUnit/Random/RandomRunFilter.h"
+#include "ZenUnitLibraryTests/ZenUnit/Random/RandomTestNameFilter.h"
 
 namespace ZenUnit
 {
@@ -8,7 +8,7 @@ namespace ZenUnit
       ZenUnitArgs randomZenUnitArgs;
       randomZenUnitArgs.startDateTime = randomGenerator.String();
       randomZenUnitArgs.commandLine = randomGenerator.String();
-      randomZenUnitArgs.runFilters = ZenUnit::RandomNonEmptyVector<RunFilter>();
+      randomZenUnitArgs.testNameFilters = ZenUnit::RandomNonEmptyVector<TestNameFilter>();
       randomZenUnitArgs.pauseBefore = randomGenerator.Bool();
       randomZenUnitArgs.pauseAfter = randomGenerator.Bool();
       randomZenUnitArgs.alwaysExit0 = randomGenerator.Bool();

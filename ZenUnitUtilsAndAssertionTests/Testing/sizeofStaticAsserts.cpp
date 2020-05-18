@@ -12,9 +12,9 @@ namespace ZenUnit
 
    #if defined(_WIN64)
       #if defined _DEBUG
-         static_assert(sizeof(RunFilter) == 96);
+         static_assert(sizeof(TestNameFilter) == 96);
       #elif NDEBUG
-         static_assert(sizeof(RunFilter) == 80);
+         static_assert(sizeof(TestNameFilter) == 80);
       #endif
    #endif
 
