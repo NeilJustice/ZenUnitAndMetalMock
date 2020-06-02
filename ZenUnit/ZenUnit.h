@@ -6874,6 +6874,12 @@ Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
    class RandomGenerator
    {
    public:
+      static const RandomGenerator* Instance()
+      {
+         const RandomGenerator randomGenerator;
+         return &randomGenerator;
+      }
+
       virtual ~RandomGenerator() = default;
       virtual char Char() const { return ZenUnit::Random<char>(); }
       virtual unsigned char UnsignedChar() const { return ZenUnit::Random<unsigned char>(); }
