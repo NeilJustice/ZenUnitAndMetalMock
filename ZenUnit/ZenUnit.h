@@ -6876,7 +6876,7 @@ Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
    public:
       static const RandomGenerator* Instance()
       {
-         const RandomGenerator randomGenerator;
+         static const RandomGenerator randomGenerator;
          return &randomGenerator;
       }
 
