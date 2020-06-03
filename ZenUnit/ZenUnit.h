@@ -6881,9 +6881,9 @@ Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
       }
 
       virtual ~RandomGenerator() = default;
+      virtual bool Bool() const { return ZenUnit::Random<bool>(); }
       virtual char Char() const { return ZenUnit::Random<char>(); }
       virtual unsigned char UnsignedChar() const { return ZenUnit::Random<unsigned char>(); }
-      virtual bool Bool() const { return ZenUnit::Random<bool>(); }
       virtual short Short() const { return ZenUnit::Random<short>(); }
       virtual unsigned short UnsignedShort() const { return ZenUnit::Random<unsigned short>(); }
       virtual int Int() const { return ZenUnit::Random<int>(); }
@@ -6910,6 +6910,35 @@ Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
       std::vector<T> NonEmptyVector() const
       {
          return ZenUnit::RandomNonEmptyVector<T>();
+      }
+
+      template<typename KeyType, typename ValueType>
+      std::unordered_map<KeyType, ValueType> UnorderedMap() const
+      {
+         return ZenUnit::RandomUnorderedMap<KeyType, ValueType>();
+      }
+   };
+
+   template<typename KeyType, typename ValueType>
+   class RandomMapGenerator
+   {
+   public:
+      static const RandomMapGenerator<KeyType, ValueType>* Instance()
+      {
+         static const RandomMapGenerator<KeyType, ValueType> randomMapGenerator;
+         return &randomMapGenerator;
+      }
+
+      virtual ~RandomMapGenerator() = default;
+
+      virtual std::map<KeyType, ValueType> Map() const
+      {
+         return ZenUnit::RandomMap<KeyType, ValueType>();
+      }
+
+      virtual std::unordered_map<KeyType, ValueType> UnorderedMap() const
+      {
+         return ZenUnit::RandomUnorderedMap<KeyType, ValueType>();
       }
    };
 

@@ -4855,36 +4855,37 @@ namespace ZenUnit
 
 namespace ZenMock
 {
-   // ZenMock::RandomGeneratorMock can be used to confirm the correctness of ZenUnit::Random<T>() functions
    class RandomGeneratorMock : public Zen::Mock<ZenUnit::RandomGenerator>
    {
    public:
       ZENMOCK_NONVOID0_CONST(bool, Bool)
-
       ZENMOCK_NONVOID0_CONST(char, Char)
       ZENMOCK_NONVOID0_CONST(unsigned char, UnsignedChar)
-
       ZENMOCK_NONVOID0_CONST(short, Short)
       ZENMOCK_NONVOID0_CONST(unsigned short, UnsignedShort)
-
       ZENMOCK_NONVOID0_CONST(int, Int)
       ZENMOCK_NONVOID0_CONST(unsigned int, UnsignedInt)
-
       ZENMOCK_NONVOID1_CONST(int, Enum, int)
-
       ZENMOCK_NONVOID0_CONST(long long, LongLong)
       ZENMOCK_NONVOID0_CONST(unsigned long long, UnsignedLongLong)
       ZENMOCK_NONVOID0_CONST(size_t, SizeT)
-
       ZENMOCK_NONVOID0_CONST(float, Float)
       ZENMOCK_NONVOID0_CONST(double, Double)
-
       ZENMOCK_NONVOID0_CONST(const char*, ConstCharPointer)
-
       ZENMOCK_NONVOID0_CONST(std::string, String)
-
       ZENMOCK_NONVOID0_CONST(std::vector<std::string>, StringVector)
-
       ZENMOCK_NONVOID0_CONST(fs::path, Path)
+      ZENMOCK_NONVOID0_CONST(std::error_code, ErrorCode)
+   };
+
+   template<typename KeyType, typename ValueType>
+   class RandomMapGeneratorMock : public Zen::Mock<ZenUnit::RandomMapGenerator<KeyType, ValueType>>
+   {
+   public:
+      using MapType = std::map<KeyType, ValueType>;
+      ZENMOCK_NONVOID0_CONST(MapType, Map)
+
+      using UnorderedMapType = std::unordered_map<KeyType, ValueType>;
+      ZENMOCK_NONVOID0_CONST(UnorderedMapType, UnorderedMap)
    };
 }
