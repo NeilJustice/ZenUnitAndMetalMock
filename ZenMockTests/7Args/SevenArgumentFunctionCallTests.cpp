@@ -60,14 +60,14 @@ namespace ZenMock
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
-      SETUP_EQUALIZER_THROWS_TEST(Call7);
-      EQUALIZER_THROWS(Call7, firstArgument, V1);
-      EQUALIZER_THROWS(Call7, secondArgument, V2);
-      EQUALIZER_THROWS(Call7, thirdArgument, V3);
-      EQUALIZER_THROWS(Call7, fourthArgument, V4);
-      EQUALIZER_THROWS(Call7, fifthArgument, V5);
-      EQUALIZER_THROWS(Call7, sixthArgument, V6);
-      EQUALIZER_THROWS(Call7, seventhArgument, V7);
+      SETUP_EQUALIZER_TEST(Call7);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call7, firstArgument, V1);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call7, secondArgument, V2);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call7, thirdArgument, V3);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call7, fourthArgument, V4);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call7, fifthArgument, V5);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call7, sixthArgument, V6);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call7, seventhArgument, V7);
    }
 
    RUN_TESTS(SevenArgumentFunctionCallTests)

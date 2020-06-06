@@ -45,11 +45,11 @@ namespace ZenMock
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
-      SETUP_EQUALIZER_THROWS_TEST(Call4);
-      EQUALIZER_THROWS(Call4, firstArgument, V1);
-      EQUALIZER_THROWS(Call4, secondArgument, V2);
-      EQUALIZER_THROWS(Call4, thirdArgument, V3);
-      EQUALIZER_THROWS(Call4, fourthArgument, V4);
+      SETUP_EQUALIZER_TEST(Call4);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call4, firstArgument, V1);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call4, secondArgument, V2);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call4, thirdArgument, V3);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call4, fourthArgument, V4);
    }
 
    RUN_TESTS(FourArgumentFunctionCallTests)

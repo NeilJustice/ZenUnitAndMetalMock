@@ -27,19 +27,19 @@ namespace ZenUnit
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      SETUP_EQUALIZER_THROWS_TEST(ZenUnitArgs);
-      EQUALIZER_THROWS(ZenUnitArgs, commandLine, "ZenUnitTests.exe");
-      EQUALIZER_THROWS(ZenUnitArgs, testNameFilters, vector<TestNameFilter> { TestNameFilter() });
-      EQUALIZER_THROWS(ZenUnitArgs, pauseBefore, true);
-      EQUALIZER_THROWS(ZenUnitArgs, pauseAfter, true);
-      EQUALIZER_THROWS(ZenUnitArgs, alwaysExit0, true);
-      EQUALIZER_THROWS(ZenUnitArgs, failFast, true);
-      EQUALIZER_THROWS(ZenUnitArgs, exit1IfTestsSkipped, true);
-      EQUALIZER_THROWS(ZenUnitArgs, testRuns, 2u);
-      EQUALIZER_THROWS(ZenUnitArgs, randomTestOrdering, true);
-      EQUALIZER_THROWS(ZenUnitArgs, randomSeed, 3u);
-      EQUALIZER_THROWS(ZenUnitArgs, randomSeedSetByUser, true);
-      EQUALIZER_THROWS(ZenUnitArgs, maxTestMilliseconds, 4u);
+      SETUP_EQUALIZER_TEST(ZenUnitArgs);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, commandLine, "ZenUnitTests.exe");
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, testNameFilters, vector<TestNameFilter> { TestNameFilter() });
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, pauseBefore, true);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, pauseAfter, true);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, alwaysExit0, true);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, failFast, true);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, exit1IfTestsSkipped, true);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, testRuns, 2u);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, randomTestOrdering, true);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, randomSeed, 3u);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, randomSeedSetByUser, true);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, maxTestMilliseconds, 4u);
    }
 
    RUN_TESTS(ZenUnitArgsTests)

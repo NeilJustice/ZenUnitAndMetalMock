@@ -34,9 +34,9 @@ namespace ZenMock
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      SETUP_EQUALIZER_THROWS_TEST(Call2);
-      EQUALIZER_THROWS(Call2, firstArgument, V1);
-      EQUALIZER_THROWS(Call2, secondArgument, V2);
+      SETUP_EQUALIZER_TEST(Call2);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call2, firstArgument, V1);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call2, secondArgument, V2);
    }
 
    RUN_TESTS(TwoArgumentFunctionCallTests)

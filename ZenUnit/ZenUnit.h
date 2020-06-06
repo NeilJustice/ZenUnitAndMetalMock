@@ -277,13 +277,14 @@ Example Command Line Arguments:
 //
 
 // Initializes ZenUnit::Equalizer test variables.
-#define SETUP_EQUALIZER_THROWS_TEST(typeName) \
-   typeName equalizerTestObjectA, equalizerTestObjectB; \
+#define SETUP_EQUALIZER_TEST(typeName) \
+   typeName equalizerTestObjectA{}; \
+   typeName equalizerTestObjectB{}; \
    ARE_EQUAL(equalizerTestObjectA, equalizerTestObjectB)
 
 // Asserts that ZenUnit::Equalizer<T>::AssertEqual() throws when the specified field is not equal.
-#define EQUALIZER_THROWS(typeName, nonQuotedFieldName, arbitraryNonDefaultFieldValue) \
-   ZenUnit::EQUALIZER_THROWS_Defined(equalizerTestObjectA, equalizerTestObjectB, &typeName::nonQuotedFieldName, #typeName, #nonQuotedFieldName, arbitraryNonDefaultFieldValue, #arbitraryNonDefaultFieldValue, FILELINE)
+#define EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(typeName, nonQuotedFieldName, arbitraryNonDefaultFieldValue) \
+   ZenUnit::EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_Defined(equalizerTestObjectA, equalizerTestObjectB, &typeName::nonQuotedFieldName, #typeName, #nonQuotedFieldName, arbitraryNonDefaultFieldValue, #arbitraryNonDefaultFieldValue, FILELINE)
 
 //
 // Test Assertions
@@ -2497,15 +2498,15 @@ namespace ZenUnit
       }
    }
 
-   inline void EQUALIZER_THROWS_ThrowOnAccountOfExceptionUnexpectedlyThrown(
+   inline void EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_ThrowOnAccountOfExceptionUnexpectedlyThrown(
       const char* typeName, const char* fieldName, const char* arbitraryNonDefaultFieldValueText,
       FileLine fileLine, const ZenUnit::Anomaly& becauseAnomaly)
    {
-      throw Anomaly("EQUALIZER_THROWS", typeName, fieldName, arbitraryNonDefaultFieldValueText, "",
+      throw Anomaly("EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL", typeName, fieldName, arbitraryNonDefaultFieldValueText, "",
          becauseAnomaly, "N/A", "N/A", ExpectedActualFormat::Fields, fileLine);
    }
 
-   inline void EQUALIZER_THROWS_ThrowOnAccountOfExpectedExceptionNotThrown(
+   inline void EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_ThrowOnAccountOfExpectedExceptionNotThrown(
       const char* typeName, const char* fieldName, const char* arbitraryNonDefaultFieldValueText, FileLine fileLine)
    {
       const std::string messageForExpected = String::Concat(
@@ -2514,7 +2515,7 @@ namespace ZenUnit
           ARE_EQUAL(expected.)", fieldName, ", actual.", fieldName, ") assert statement.");
       const std::string messageForActual(String::Concat("No ZenUnit::Anomaly thrown despite field '", fieldName, R"('
           differing between objects expected and actual.)"));
-      throw Anomaly("EQUALIZER_THROWS", typeName, fieldName, arbitraryNonDefaultFieldValueText, "", Anomaly::Default(),
+      throw Anomaly("EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL", typeName, fieldName, arbitraryNonDefaultFieldValueText, "", Anomaly::Default(),
          messageForExpected, messageForActual, ExpectedActualFormat::Fields, fileLine);
    }
 
@@ -2533,7 +2534,7 @@ namespace ZenUnit
       typename ActualType,
       typename FieldMemberPointerType,
       typename FieldType>
-      void EQUALIZER_THROWS_Defined(
+      void EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_Defined(
          ExpectedType& equalizerTestObjectA,
          ActualType& equalizerTestObjectB,
          FieldMemberPointerType fieldMemberPointer,
@@ -2559,12 +2560,12 @@ namespace ZenUnit
          }
          catch (const ZenUnit::Anomaly& becauseAnomaly)
          {
-            EQUALIZER_THROWS_ThrowOnAccountOfExceptionUnexpectedlyThrown(
+            EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_ThrowOnAccountOfExceptionUnexpectedlyThrown(
                typeName, fieldName, arbitraryNonDefaultFieldValueText, fileLine, becauseAnomaly);
          }
          return;
       }
-      EQUALIZER_THROWS_ThrowOnAccountOfExpectedExceptionNotThrown(
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_ThrowOnAccountOfExpectedExceptionNotThrown(
          typeName, fieldName, arbitraryNonDefaultFieldValueText, fileLine);
    }
 

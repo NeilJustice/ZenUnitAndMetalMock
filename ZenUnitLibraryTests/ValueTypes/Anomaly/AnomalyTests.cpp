@@ -418,8 +418,8 @@ FilePath(1))";
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      SETUP_EQUALIZER_THROWS_TEST(Anomaly);
-      EQUALIZER_THROWS(Anomaly, why, "whyValue");
+      SETUP_EQUALIZER_TEST(Anomaly);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Anomaly, why, "whyValue");
    }
 
    RUN_TESTS(AnomalyTests)

@@ -38,10 +38,10 @@ namespace ZenMock
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
-      SETUP_EQUALIZER_THROWS_TEST(Call3);
-      EQUALIZER_THROWS(Call3, firstArgument, V1);
-      EQUALIZER_THROWS(Call3, secondArgument, V2);
-      EQUALIZER_THROWS(Call3, thirdArgument, V3);
+      SETUP_EQUALIZER_TEST(Call3);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call3, firstArgument, V1);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call3, secondArgument, V2);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call3, thirdArgument, V3);
    }
 
    RUN_TESTS(ThreeArgumentFunctionCallTests)

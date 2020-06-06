@@ -253,8 +253,8 @@ namespace ZenUnit
 
    TEST(ZenUnitEqualizer_ThrowsIfTestResultsNotEqual)
    {
-      SETUP_EQUALIZER_THROWS_TEST(TestClassResult);
-      EQUALIZER_THROWS(TestClassResult, _testResults, vector<TestResult> { TestResult() });
+      SETUP_EQUALIZER_TEST(TestClassResult);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestClassResult, _testResults, vector<TestResult> { TestResult() });
    }
 
    RUN_TESTS(TestClassResultTests)

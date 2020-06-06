@@ -405,34 +405,34 @@ namespace ZenUnit
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      SETUP_EQUALIZER_THROWS_TEST(TestResult);
-      EQUALIZER_THROWS(TestResult, fullTestName, FullTestName("ClassName", "TestName", 0));
+      SETUP_EQUALIZER_TEST(TestResult);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, fullTestName, FullTestName("ClassName", "TestName", 0));
 
       TestPhaseResult nonDefaultConstructorTestPhaseResult;
       nonDefaultConstructorTestPhaseResult.testPhase = TestPhase::Constructor;
-      EQUALIZER_THROWS(TestResult, constructorTestPhaseResult, nonDefaultConstructorTestPhaseResult);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, constructorTestPhaseResult, nonDefaultConstructorTestPhaseResult);
 
       TestPhaseResult nonDefaultStartupTestPhaseResult;
       nonDefaultStartupTestPhaseResult.testPhase = TestPhase::Startup;
-      EQUALIZER_THROWS(TestResult, startupTestPhaseResult, nonDefaultStartupTestPhaseResult);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, startupTestPhaseResult, nonDefaultStartupTestPhaseResult);
 
       TestPhaseResult nonDefaultTestBodyTestPhaseResult;
       nonDefaultTestBodyTestPhaseResult.testPhase = TestPhase::TestBody;
-      EQUALIZER_THROWS(TestResult, testBodyTestPhaseResult, nonDefaultTestBodyTestPhaseResult);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, testBodyTestPhaseResult, nonDefaultTestBodyTestPhaseResult);
 
       TestPhaseResult nonDefaultCleanupTestPhaseResult;
       nonDefaultCleanupTestPhaseResult.testPhase = TestPhase::Cleanup;
-      EQUALIZER_THROWS(TestResult, cleanupTestPhaseResult, nonDefaultCleanupTestPhaseResult);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, cleanupTestPhaseResult, nonDefaultCleanupTestPhaseResult);
 
       TestPhaseResult nonDefaultDestructorTestPhaseResult;
       nonDefaultDestructorTestPhaseResult.testPhase = TestPhase::Destructor;
-      EQUALIZER_THROWS(TestResult, destructorTestPhaseResult, nonDefaultDestructorTestPhaseResult);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, destructorTestPhaseResult, nonDefaultDestructorTestPhaseResult);
 
-      EQUALIZER_THROWS(TestResult, responsibleTestPhaseResultField, &TestResult::constructorTestPhaseResult);
-      EQUALIZER_THROWS(TestResult, testOutcome, TestOutcome::Anomaly);
-      EQUALIZER_THROWS(TestResult, testCaseNumber, size_t(10));
-      EQUALIZER_THROWS(TestResult, totalTestCases, size_t(20));
-      EQUALIZER_THROWS(TestResult, microseconds, 30u);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, responsibleTestPhaseResultField, &TestResult::constructorTestPhaseResult);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, testOutcome, TestOutcome::Anomaly);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, testCaseNumber, size_t(10));
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, totalTestCases, size_t(20));
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, microseconds, 30u);
    }
 
    RUN_TESTS(TestResultTests)

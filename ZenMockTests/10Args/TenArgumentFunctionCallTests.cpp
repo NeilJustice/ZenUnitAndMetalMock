@@ -77,17 +77,17 @@ namespace ZenMock
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
-      SETUP_EQUALIZER_THROWS_TEST(Call10);
-      EQUALIZER_THROWS(Call10, firstArgument, V1);
-      EQUALIZER_THROWS(Call10, secondArgument, V2);
-      EQUALIZER_THROWS(Call10, thirdArgument, V3);
-      EQUALIZER_THROWS(Call10, fourthArgument, V4);
-      EQUALIZER_THROWS(Call10, fifthArgument, V5);
-      EQUALIZER_THROWS(Call10, sixthArgument, V6);
-      EQUALIZER_THROWS(Call10, seventhArgument, V7);
-      EQUALIZER_THROWS(Call10, eigthArgument, V8);
-      EQUALIZER_THROWS(Call10, ninthArgument, V9);
-      EQUALIZER_THROWS(Call10, tenthArgument, V10);
+      SETUP_EQUALIZER_TEST(Call10);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call10, firstArgument, V1);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call10, secondArgument, V2);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call10, thirdArgument, V3);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call10, fourthArgument, V4);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call10, fifthArgument, V5);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call10, sixthArgument, V6);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call10, seventhArgument, V7);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call10, eigthArgument, V8);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call10, ninthArgument, V9);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call10, tenthArgument, V10);
    }
 
    RUN_TESTS(TenArgumentFunctionCallTests)

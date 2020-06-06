@@ -56,9 +56,9 @@ namespace ZenUnit
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      SETUP_EQUALIZER_THROWS_TEST(FileLine);
-      EQUALIZER_THROWS(FileLine, filePath, "arbitrary non-default const char* value");
-      EQUALIZER_THROWS(FileLine, lineNumber, 1u);
+      SETUP_EQUALIZER_TEST(FileLine);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FileLine, filePath, "arbitrary non-default const char* value");
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FileLine, lineNumber, 1u);
    }
 
    RUN_TESTS(FileLineTests)

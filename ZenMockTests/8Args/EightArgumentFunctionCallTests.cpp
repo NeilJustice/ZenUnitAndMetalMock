@@ -66,15 +66,15 @@ namespace ZenMock
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
-      SETUP_EQUALIZER_THROWS_TEST(Call8);
-      EQUALIZER_THROWS(Call8, firstArgument, V1);
-      EQUALIZER_THROWS(Call8, secondArgument, V2);
-      EQUALIZER_THROWS(Call8, thirdArgument, V3);
-      EQUALIZER_THROWS(Call8, fourthArgument, V4);
-      EQUALIZER_THROWS(Call8, fifthArgument, V5);
-      EQUALIZER_THROWS(Call8, sixthArgument, V6);
-      EQUALIZER_THROWS(Call8, seventhArgument, V7);
-      EQUALIZER_THROWS(Call8, eigthArgument, V8);
+      SETUP_EQUALIZER_TEST(Call8);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call8, firstArgument, V1);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call8, secondArgument, V2);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call8, thirdArgument, V3);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call8, fourthArgument, V4);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call8, fifthArgument, V5);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call8, sixthArgument, V6);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call8, seventhArgument, V7);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call8, eigthArgument, V8);
    }
 
    RUN_TESTS(EightArgumentFunctionCallTests)

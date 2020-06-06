@@ -29,8 +29,8 @@ namespace ZenMock
 
    TEST(ZenUnitEqualizer_ThrowsIfArg1NotEqual)
    {
-      SETUP_EQUALIZER_THROWS_TEST(Call1);
-      EQUALIZER_THROWS(Call1, argument, V1);
+      SETUP_EQUALIZER_TEST(Call1);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call1, argument, V1);
    }
 
    RUN_TESTS(ArgumentFunctionCallTests)

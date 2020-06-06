@@ -135,10 +135,10 @@ namespace ZenUnit
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      SETUP_EQUALIZER_THROWS_TEST(TestNameFilter);
-      EQUALIZER_THROWS(TestNameFilter, testClassNamePattern, "testClassNamePattern");
-      EQUALIZER_THROWS(TestNameFilter, testNamePattern, "testNamePattern");
-      EQUALIZER_THROWS(TestNameFilter, testCaseNumber, 1);
+      SETUP_EQUALIZER_TEST(TestNameFilter);
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestNameFilter, testClassNamePattern, "testClassNamePattern");
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestNameFilter, testNamePattern, "testNamePattern");
+      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestNameFilter, testCaseNumber, 1);
    }
 
    RUN_TESTS(TestNameFilterTests)
