@@ -1,6 +1,6 @@
-// C++ Mocking Framework ZenMock 0.6.0
-// https://github.com/NeilJustice/ZenUnitAndZenMock
-// ZenUnit and ZenMock are released with the MIT license
+// C++ Mocking Framework ZenMock v0.6.0
+// GitHub: https://github.com/NeilJustice/ZenUnitAndZenMock
+// ZenUnit and ZenMock are licensed with the MIT license
 
 #pragma once
 #include "ZenUnit.h"
@@ -1233,15 +1233,17 @@ Return(), ReturnValues(), ReturnRandom(), or ThrowException<T>() on a ZenMock ob
    class ValueReturner
    {
       friend class ValueReturnerTests;
+      friend class NonVoidOneArgumentZenMockerTests;
    public:
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    private:
       const std::string _zenMockedFunctionSignature;
-      // std::deque here instead of std::vector due to the implementation of std::vector<bool>
+      // std::deque here instead of std::vector due to the infamous implementation of std::vector<bool>
       std::deque<DecayedFunctionReturnType> _returnValues;
       size_t _returnValueIndex;
    public:
       ValueReturner()
+         : _returnValueIndex(0)
       {
       }
 
@@ -1329,6 +1331,9 @@ Return(), ReturnValues(), ReturnRandom(), or ThrowException<T>() on a ZenMock ob
       bool _wasAsserted;
 
       ZenMocker()
+         : _zenMockExceptionIsInFlight(false)
+         , _wasExpected(false)
+         , _wasAsserted(false)
       {
       }
 
@@ -2282,6 +2287,10 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
    public:
       std::vector<OneArgumentFunctionCall<ArgType>> zenMockedFunctionCallHistory;
 
+      OneArgumentZenMocker()
+      {
+      }
+
       explicit OneArgumentZenMocker(const std::string& zenMockedFunctionSignature)
          : ZenMocker<MockableExceptionThrowerType>(zenMockedFunctionSignature)
       {
@@ -2366,13 +2375,32 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
    template<typename FunctionReturnType, typename ArgType>
    class NonVoidOneArgumentZenMocker : public OneArgumentZenMocker<ArgType>, protected ValueReturner<FunctionReturnType>
    {
+      friend class NonVoidOneArgumentZenMockerTests;
    private:
+      std::function<FunctionReturnType(ArgType)> _callInsteadFunction;
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    public:
+      NonVoidOneArgumentZenMocker()
+      {
+      }
+
       explicit NonVoidOneArgumentZenMocker(const std::string& zenMockedFunctionSignature)
          : OneArgumentZenMocker<ArgType>(zenMockedFunctionSignature)
          , ValueReturner<FunctionReturnType>(zenMockedFunctionSignature)
       {
+      }
+
+      ~NonVoidOneArgumentZenMocker()
+      {
+         if (_callInsteadFunction)
+         {
+            this->_wasAsserted = true;
+         }
+      }
+
+      void CallInstead(const std::function<FunctionReturnType(ArgType)>& callInsteadFunction)
+      {
+         _callInsteadFunction = callInsteadFunction;
       }
 
       template<typename ReturnType>
