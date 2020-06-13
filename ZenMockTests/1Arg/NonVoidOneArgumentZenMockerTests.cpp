@@ -5,14 +5,22 @@ namespace ZenMock
    TESTS(NonVoidOneArgumentZenMockerTests)
    AFACT(DefaultConstructor_DoesNotThrowException_DoesNotSetCallInsteadFunction)
    AFACT(OneArgConstructor_DoesNotThrowException_DoesNotSetCallInsteadFunction)
-   AFACT(CallInstead_SetsCallInsteadFunction)
+   AFACT(CallInstead_SetsCallInsteadFunction_SetsWasExpectedToTrue_MakesZenMockItAndReturnValueCallTheCallInsteadFunction)
    AFACT(Return_SetsWasExpectedToTrue_AddsReturnValueToReturnValuesDeque)
    AFACT(VariadicReturnValues_SetsWasExpectedToTrue_AddsReturnValuesToReturnValuesDeque)
    AFACT(ContainerReturnValues_SetsWasExpectedToTrue_AddsReturnValuesToReturnValuesDeque)
-   AFACT(ReturnRandom_SetWasExpectedToTrue_ReturnsRandomValue)
+   AFACT(ReturnRandom_SetWasExpectedToTrue_AddsToReturnValuesDeque)
    EVIDENCE
 
    ZenMock::NonVoidOneArgumentZenMocker<int, int> _nonVoidOneArgumentZenMocker;
+   static int s_numberOfCallsToCallInsteadFunction;
+   static int s_callInsteadReturnValue;
+
+   STARTUP
+   {
+      s_numberOfCallsToCallInsteadFunction = 0;
+      s_callInsteadReturnValue = ZenUnit::Random<int>();
+   }
 
    TEST(DefaultConstructor_DoesNotThrowException_DoesNotSetCallInsteadFunction)
    {
@@ -34,13 +42,21 @@ namespace ZenMock
 
    static int CallInsteadFunction(int)
    {
-      return 0;
+      ++s_numberOfCallsToCallInsteadFunction;
+      return s_callInsteadReturnValue;
    }
 
-   TEST(CallInstead_SetsCallInsteadFunction)
+   TEST(CallInstead_SetsCallInsteadFunction_SetsWasExpectedToTrue_MakesZenMockItAndReturnValueCallTheCallInsteadFunction)
    {
       _nonVoidOneArgumentZenMocker.CallInstead(CallInsteadFunction);
+      IS_TRUE(_nonVoidOneArgumentZenMocker._wasExpected);
       STD_FUNCTION_TARGETS(CallInsteadFunction, _nonVoidOneArgumentZenMocker._callInsteadFunction);
+      const int argument = ZenUnit::Random<int>();
+      //
+      const int returnValue = _nonVoidOneArgumentZenMocker.ZenMockItAndReturnValue(argument);
+      //
+      ARE_EQUAL(1, s_numberOfCallsToCallInsteadFunction);
+      ARE_EQUAL(s_callInsteadReturnValue, returnValue);
    }
 
    TEST(Return_SetsWasExpectedToTrue_AddsReturnValueToReturnValuesDeque)
@@ -91,7 +107,7 @@ namespace ZenMock
       VECTORS_EQUAL(expectedReturnValues, _nonVoidOneArgumentZenMocker._returnValues);
    }
 
-   TEST(ReturnRandom_SetWasExpectedToTrue_ReturnsRandomValue)
+   TEST(ReturnRandom_SetWasExpectedToTrue_AddsToReturnValuesDeque)
    {
       const int randomReturnValue1 = _nonVoidOneArgumentZenMocker.ReturnRandom();
       const int randomReturnValue2 = _nonVoidOneArgumentZenMocker.ReturnRandom();
@@ -107,4 +123,7 @@ namespace ZenMock
    }
 
    RUN_TESTS(NonVoidOneArgumentZenMockerTests)
+
+   int NonVoidOneArgumentZenMockerTests::s_numberOfCallsToCallInsteadFunction = 0;
+   int NonVoidOneArgumentZenMockerTests::s_callInsteadReturnValue = 0;
 }

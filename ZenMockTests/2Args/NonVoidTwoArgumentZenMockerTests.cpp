@@ -30,7 +30,7 @@ namespace ZenMock
    TEST(CallInstead_SetsWasExpectedToTrue_SetsCallInsteadFunction)
    {
       IS_FALSE(_nonVoidTwoArgumentZenMocker->_wasExpected);
-      IS_FALSE(_nonVoidTwoArgumentZenMocker->_callInstead_nonVoidTwoArgFunction);
+      IS_FALSE(_nonVoidTwoArgumentZenMocker->_callInsteadFunction);
       //
       _nonVoidTwoArgumentZenMocker->CallInstead(
          std::bind(&NonVoidTwoArgumentZenMockerTests::NonVoidTwoArgFunction, this,
