@@ -1,6 +1,6 @@
-// C++ Unit Testing Framework ZenUnit 0.6.0
-// https://github.com/NeilJustice/ZenUnitAndZenMock
-// ZenUnit and ZenMock are released with the MIT license
+// C++ Unit Testing Framework ZenUnit v0.6.0
+// GitHub: https://github.com/NeilJustice/ZenUnitAndZenMock
+// License: MIT
 
 #pragma once
 #include <array>
@@ -25,7 +25,7 @@ using namespace std::literals::string_literals;
 #elif defined _WIN32
 #define WIN32_LEAN_AND_MEAN // ~40% faster Windows.h compile speed
 #define NOGDI // ~10% faster Windows.h compile speed
-#define NOMINMAX // Undefines Windows.h macros min and max so as to not cause a compiler error when calling std::numeric_limits<int>::min() and std::numeric_limits<int>::max()
+#define NOMINMAX // Undefines Windows.h macros min and max
 #include "Windows.h" // SetConsoleTextAttribute()
 #include <conio.h> // _getch()
 #include <io.h> // _isatty()
@@ -40,7 +40,7 @@ namespace fs = std::experimental::filesystem;
 namespace fs = std::filesystem;
 #endif
 
-#define Comma , // Comma is for those times when the compiler needs more than an actual comma within parentheses to be able to parse an expression
+#define Comma , // Comma is for those times when parentheses are not quite enough for the compiler
 
 #define DOTOKENJOIN(a, b) a##b
 
