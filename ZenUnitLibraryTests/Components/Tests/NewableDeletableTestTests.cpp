@@ -74,7 +74,7 @@ namespace ZenUnit
          _newableDeletableTest->_protected_fullTestName, failedConstructorTestPhaseResult));
       const vector<TestResult> expectedTestResults{ constructorFailTestResult };
       ZENMOCK(_stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.CalledOnce());
-      INDEXABLES_ARE_EQUAL(expectedTestResults, testResults);
+      VECTORS_ARE_EQUAL(expectedTestResults, testResults);
    }
 
    TEST(RunTest_StartsStopwatch_CallsNewTestClassWhichSucceeds_CallsDeleteTestClass_StopsStopwatch_ReturnsCtorDtorSuccessTestResult)
@@ -105,7 +105,7 @@ namespace ZenUnit
          _newableDeletableTest->_protected_fullTestName, successConstructorTestPhaseResult, destructorTestPhaseResult));
       ZENMOCK(_stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.CalledOnce());
       const vector<TestResult> expectedTestResults{ sixArgCtorTestResult };
-      INDEXABLES_ARE_EQUAL(expectedTestResults, testResults);
+      VECTORS_ARE_EQUAL(expectedTestResults, testResults);
    }
 
    TEST(NewAndDeleteTestClass_NewsThenDeletesTestClass)

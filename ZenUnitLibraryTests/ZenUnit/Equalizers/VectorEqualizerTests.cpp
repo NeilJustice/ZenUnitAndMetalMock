@@ -5,21 +5,21 @@
 namespace ZenUnit
 {
    TESTS(VectorEqualizerTests)
-   AFACT(AssertEqual_IntVectors_CallsINDEXABLES_ARE_EQUAL)
+   AFACT(AssertEqual_IntVectors_CallsVECTORS_ARE_EQUAL)
 #if _WIN32
-   AFACT(AssertEqual_StringVectors_CallsINDEXABLES_ARE_EQUAL)
+   AFACT(AssertEqual_StringVectors_CallsVECTORS_ARE_EQUAL)
 #endif
-   AFACT(AssertEqual_UserTypeVectors_CallsINDEXABLES_ARE_EQUAL)
+   AFACT(AssertEqual_UserTypeVectors_CallsVECTORS_ARE_EQUAL)
    EVIDENCE
 
-   TEST(AssertEqual_IntVectors_CallsINDEXABLES_ARE_EQUAL)
+   TEST(AssertEqual_IntVectors_CallsVECTORS_ARE_EQUAL)
    {
       vector<int> expectedIntVector;
       const vector<int> actualIntVector;
       Equalizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector);
       expectedIntVector.push_back(1);
       THROWS_EXCEPTION(Equalizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: INDEXABLES_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure)",
+"  Failed: VECTORS_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure)",
 "Expected: std::vector<int> (size 1):",
 "{",
 "   1",
@@ -35,7 +35,7 @@ namespace ZenUnit
    }
 
 #if _WIN32
-   TEST(AssertEqual_StringVectors_CallsINDEXABLES_ARE_EQUAL)
+   TEST(AssertEqual_StringVectors_CallsVECTORS_ARE_EQUAL)
    {
       vector<string> expectedStringVector;
       const vector<string> actualStringVector;
@@ -43,7 +43,7 @@ namespace ZenUnit
       expectedStringVector.emplace_back();
       THROWS_EXCEPTION(Equalizer<vector<string>>::AssertEqual(
          expectedStringVector Comma actualStringVector), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: INDEXABLES_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure)",
+"  Failed: VECTORS_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure)",
 "Expected: std::vector<std::basic_string> (size 1):",
 "{",
 "   \"\"",
@@ -59,7 +59,7 @@ namespace ZenUnit
    }
 #endif
 
-   TEST(AssertEqual_UserTypeVectors_CallsINDEXABLES_ARE_EQUAL)
+   TEST(AssertEqual_UserTypeVectors_CallsVECTORS_ARE_EQUAL)
    {
       vector<UserType> expectedUserTypeVector;
       const vector<UserType> actualUserTypeVector;
@@ -67,7 +67,7 @@ namespace ZenUnit
       expectedUserTypeVector.emplace_back();
       THROWS_EXCEPTION(Equalizer<vector<UserType>>::AssertEqual(
          expectedUserTypeVector Comma actualUserTypeVector), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: INDEXABLES_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure)",
+"  Failed: VECTORS_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure)",
 "Expected: std::vector<UserType> (size 1):",
 "{",
 "   UserType@0",

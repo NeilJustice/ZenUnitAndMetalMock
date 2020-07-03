@@ -249,7 +249,7 @@ namespace ZenUnit
       const ZenUnitArgs expectedResultingZenUnitArgs;
       ARE_EQUAL(expectedResultingZenUnitArgs, zenUnitArgs);
 
-      INDEXABLES_ARE_EQUAL(transformReturnValue, testClassResults);
+      VECTORS_ARE_EQUAL(transformReturnValue, testClassResults);
    }
 
    TEST(RunTestClasses_RandomMode_RunsTestClassesRandomly_ReturnsTestClassResults)
@@ -268,7 +268,7 @@ namespace ZenUnit
       //
       ZENMOCK(_transformerMock->RandomTransformMock.CalledOnceWith(
          &_testClassRunnerRunner._testClassRunners, &TestClassRunnerRunner::RunTestClassRunner, zenUnitArgs.randomSeed));
-      INDEXABLES_ARE_EQUAL(transformReturnValue, testClassResults);
+      VECTORS_ARE_EQUAL(transformReturnValue, testClassResults);
    }
 
    TEST(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)

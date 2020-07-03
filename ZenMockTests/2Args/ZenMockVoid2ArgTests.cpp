@@ -247,7 +247,7 @@ File.cpp(1))";
          spaceIfLinux = " ";
 #endif
          const string expectedExceptionMessage = R"(
-  Failed: INDEXABLES_ARE_EQUAL(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->ZenMockedFunctionSignature)
+  Failed: VECTORS_ARE_EQUAL(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->ZenMockedFunctionSignature)
 Expected: std::vector<ZenMock::TwoArgumentFunctionCallReferences<int,)" + spaceIfLinux + R"(int>> (size 1):
 {
    ZenMock::TwoArgumentFunctionCall:

@@ -83,7 +83,7 @@ namespace ZenUnit
          &oneElementCollection, AlwaysFalsePredicate, _arg2);
       //
       const vector<pair<T, Arg2Type>> expectedPredicateArgs = { { T{1}, _arg2 } };
-      INDEXABLES_ARE_EQUAL(expectedPredicateArgs, s_predicateArgs);
+      VECTORS_ARE_EQUAL(expectedPredicateArgs, s_predicateArgs);
       IS_FALSE(anyElementMatchesPredicate);
    }
 
@@ -93,7 +93,7 @@ namespace ZenUnit
          &_twoElementCollection, ElementValueOneReturnsTruePredicate, _arg2);
       //
       const vector<pair<T, Arg2Type>> expectedPredicateArgs = { { T{1}, _arg2 } };
-      INDEXABLES_ARE_EQUAL(expectedPredicateArgs, s_predicateArgs);
+      VECTORS_ARE_EQUAL(expectedPredicateArgs, s_predicateArgs);
       IS_TRUE(anyElementMatchesPredicate);
 
       IS_FALSE(ElementValueOneReturnsTruePredicate(T(2), Arg2Type{}));
@@ -105,7 +105,7 @@ namespace ZenUnit
          &_twoElementCollection, ElementValueTwoReturnsTruePredicate, _arg2);
       //
       const vector<pair<T, Arg2Type>> expectedPredicateArgs = { { T{1}, _arg2 },{ T{2}, _arg2 } };
-      INDEXABLES_ARE_EQUAL(expectedPredicateArgs, s_predicateArgs);
+      VECTORS_ARE_EQUAL(expectedPredicateArgs, s_predicateArgs);
       IS_TRUE(anyElementMatchesPredicate);
    }
 
@@ -115,7 +115,7 @@ namespace ZenUnit
          &_twoElementCollection, AlwaysFalsePredicate, _arg2);
       //
       const vector<pair<T, Arg2Type>> expectedPredicateArgs = { { T(1), _arg2 },{ T(2), _arg2 } };
-      INDEXABLES_ARE_EQUAL(expectedPredicateArgs, s_predicateArgs);
+      VECTORS_ARE_EQUAL(expectedPredicateArgs, s_predicateArgs);
       IS_FALSE(anyElementMatchesPredicate);
    }
 

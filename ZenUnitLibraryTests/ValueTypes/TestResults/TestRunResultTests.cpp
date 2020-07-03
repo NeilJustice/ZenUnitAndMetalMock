@@ -146,7 +146,7 @@ namespace ZenUnit
       testRunResultSelfMocked.SetTestClassResults(std::move(testClassResults));
       //
       ZENMOCK(testRunResultSelfMocked.CalculateNumberOfFailedTestCasesMock.CalledOnceWith(NonMovedFromTestClassResults));
-      INDEXABLES_ARE_EQUAL(NonMovedFromTestClassResults, testRunResultSelfMocked._testClassResults);
+      VECTORS_ARE_EQUAL(NonMovedFromTestClassResults, testRunResultSelfMocked._testClassResults);
       ARE_EQUAL(numberOfFailedTestCases, testRunResultSelfMocked._numberOfFailedTestCases);
    }
 

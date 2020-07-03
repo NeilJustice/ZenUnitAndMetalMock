@@ -2339,7 +2339,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedOneArgumentFunctionCalls.size());
          this->ZenMockSetAsserted();
          const std::vector<OneArgumentFunctionCallReference<ArgType>> actualOneArgumentFunctionCalls = PrivateCallsToCallRefs(zenMockedFunctionCallHistory);
-         INDEXABLES_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->ZenMockedFunctionSignature);
+         VECTORS_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
    private:
@@ -2550,7 +2550,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
          this->ZenMockSetAsserted();
          const std::vector<TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>>
             actualTwoArgumentFunctionCalls = PrivateCallsToCallRefs(zenMockedFunctionCallHistory);
-         INDEXABLES_ARE_EQUAL(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->ZenMockedFunctionSignature);
+         VECTORS_ARE_EQUAL(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
    private:
@@ -2756,7 +2756,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
          this->ZenMockThrowIfExpectedCallsSizeIsZero(expectedThreeArgumentFunctionCalls.size());
          this->ZenMockSetAsserted();
          const std::vector<ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>> actualThreeArgumentFunctionCalls = PrivateCallsToCallRefs(zenMockedFunctionCallHistory);
-         INDEXABLES_ARE_EQUAL(expectedThreeArgumentFunctionCalls, actualThreeArgumentFunctionCalls, this->ZenMockedFunctionSignature);
+         VECTORS_ARE_EQUAL(expectedThreeArgumentFunctionCalls, actualThreeArgumentFunctionCalls, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
@@ -2993,7 +2993,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
          this->ZenMockSetAsserted();
          const std::vector<FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
             actualFourArgumentFunctionCalls = PrivateCallsToCallRefs(zenMockedFunctionCallHistory);
-         INDEXABLES_ARE_EQUAL(expectedFourArgumentFunctionCalls, actualFourArgumentFunctionCalls, this->ZenMockedFunctionSignature);
+         VECTORS_ARE_EQUAL(expectedFourArgumentFunctionCalls, actualFourArgumentFunctionCalls, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
@@ -3189,7 +3189,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
          this->ZenMockSetAsserted();
          const std::vector<FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
             actualFiveArgumentFunctionCalls = PrivateCallsToCallRefs(zenMockedFunctionCallHistory);
-         INDEXABLES_ARE_EQUAL(expectedFiveArgumentFunctionCalls, actualFiveArgumentFunctionCalls, this->ZenMockedFunctionSignature);
+         VECTORS_ARE_EQUAL(expectedFiveArgumentFunctionCalls, actualFiveArgumentFunctionCalls, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
@@ -3390,7 +3390,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
          this->ZenMockSetAsserted();
          const std::vector<SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
             actualSixArgumentFunctionCalls = PrivateCallsToCallRefs(zenMockedFunctionCallHistory);
-         INDEXABLES_ARE_EQUAL(expectedSixArgumentFunctionCalls, actualSixArgumentFunctionCalls, this->ZenMockedFunctionSignature);
+         VECTORS_ARE_EQUAL(expectedSixArgumentFunctionCalls, actualSixArgumentFunctionCalls, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
@@ -3597,7 +3597,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
          this->ZenMockSetAsserted();
          const std::vector<SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>
             actualSevenArgumentFunctionCalls = PrivateCallsToCallRefs(zenMockedFunctionCallHistory);
-         INDEXABLES_ARE_EQUAL(expectedSevenArgumentFunctionCalls, actualSevenArgumentFunctionCalls, this->ZenMockedFunctionSignature);
+         VECTORS_ARE_EQUAL(expectedSevenArgumentFunctionCalls, actualSevenArgumentFunctionCalls, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
@@ -3810,7 +3810,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
          this->ZenMockSetAsserted();
          const std::vector<EightArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
             actualEightArgumentFunctionCalls = PrivateCallsToCallRefs(zenMockedFunctionCallHistory);
-         INDEXABLES_ARE_EQUAL(expectedEightArgumentFunctionCalls, actualEightArgumentFunctionCalls, this->ZenMockedFunctionSignature);
+         VECTORS_ARE_EQUAL(expectedEightArgumentFunctionCalls, actualEightArgumentFunctionCalls, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
@@ -4029,7 +4029,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
          this->ZenMockSetAsserted();
          const std::vector<NineArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
             actualNineArgumentFunctionCalls = PrivateCallsToCallRefs(zenMockedFunctionCallHistory);
-         INDEXABLES_ARE_EQUAL(expectedNineArgumentFunctionCalls, actualNineArgumentFunctionCalls, this->ZenMockedFunctionSignature);
+         VECTORS_ARE_EQUAL(expectedNineArgumentFunctionCalls, actualNineArgumentFunctionCalls, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
@@ -4254,7 +4254,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
          this->ZenMockSetAsserted();
          const std::vector<TenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
             actualTenArgumentFunctionCalls = PrivateCallsToCallRefs(zenMockedFunctionCallHistory);
-         INDEXABLES_ARE_EQUAL(expectedTenArgumentFunctionCalls, actualTenArgumentFunctionCalls, this->ZenMockedFunctionSignature);
+         VECTORS_ARE_EQUAL(expectedTenArgumentFunctionCalls, actualTenArgumentFunctionCalls, this->ZenMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 

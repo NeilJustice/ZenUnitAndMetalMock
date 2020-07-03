@@ -54,7 +54,7 @@ namespace ZenMock
       {
          { firstArgument, secondArgument }
       };
-      INDEXABLES_ARE_EQUAL(expectedCallInsteadFunctionArguments, _callInsteadFunctionArguments);
+      VECTORS_ARE_EQUAL(expectedCallInsteadFunctionArguments, _callInsteadFunctionArguments);
       ARE_EQUAL(_callInsteadFunctionReturnValue, returnValue);
    }
 

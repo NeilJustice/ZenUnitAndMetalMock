@@ -242,7 +242,11 @@ Example Command Line Arguments:
 
 // Asserts that the elements of expectedIndexableDataStructure are equal to the elements of actualIndexableDataStructure.
 #define INDEXABLES_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure, ...) \
-   ZenUnit::INDEXABLES_ARE_EQUAL_Defined(expectedIndexableDataStructure, #expectedIndexableDataStructure, actualIndexableDataStructure, #actualIndexableDataStructure, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::INDEXABLES_ARE_EQUAL_Defined("INDEXABLES_ARE_EQUAL", expectedIndexableDataStructure, #expectedIndexableDataStructure, actualIndexableDataStructure, #actualIndexableDataStructure, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Asserts that the elements of expectedVector are equal to the elements of actualVector.
+#define VECTORS_ARE_EQUAL(expectedVector, actualVector, ...) \
+   ZenUnit::INDEXABLES_ARE_EQUAL_Defined("VECTORS_ARE_EQUAL", expectedVector, #expectedVector, actualVector, #actualVector, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that the elements of expectedSet are equal to the elements of actualSet.
 #define SETS_EQUAL(expectedSet, actualSet, ...) \
@@ -3453,14 +3457,14 @@ namespace ZenUnit
       template<typename...>
       class IndexableDataStructureType, typename T, typename Allocator, typename... MessageTypes>
    void INDEXABLES_ARE_EQUAL_ThrowAnomaly(
-      const Anomaly& becauseAnomaly,
+      const char* indexablesAreEqualOrVectorsAreEqualMacroName, const Anomaly& becauseAnomaly,
       const IndexableDataStructureType<T, Allocator>& expectedIndexableDataStructure, const char* expectedIndexableDataStructureText,
       const IndexableDataStructureType<T, Allocator>& actualIndexableDataStructure, const char* actualIndexableDataStructureText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string toStringedExpectedIndexableDataStructure = ToStringer::ToString(expectedIndexableDataStructure);
       const std::string toStringedActualIndexableDataStructure = ToStringer::ToString(actualIndexableDataStructure);
-      throw Anomaly("INDEXABLES_ARE_EQUAL", expectedIndexableDataStructureText, actualIndexableDataStructureText, "", messagesText,
+      throw Anomaly(indexablesAreEqualOrVectorsAreEqualMacroName, expectedIndexableDataStructureText, actualIndexableDataStructureText, "", messagesText,
          becauseAnomaly,
          toStringedExpectedIndexableDataStructure,
          toStringedActualIndexableDataStructure,
@@ -3471,6 +3475,7 @@ namespace ZenUnit
       template<typename...>
       class IndexableDataStructureType, typename T, typename Allocator, typename... MessageTypes>
    void INDEXABLES_ARE_EQUAL_Defined(
+      const char* indexablesAreEqualOrVectorsAreEqualMacroName,
       const IndexableDataStructureType<T, Allocator>& expectedIndexableDataStructure, const char* expectedIndexableDataStructureText,
       const IndexableDataStructureType<T, Allocator>& actualIndexableDataStructure, const char* actualIndexableDataStructureText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
@@ -3481,7 +3486,8 @@ namespace ZenUnit
       }
       catch (const Anomaly& becauseAnomaly)
       {
-         INDEXABLES_ARE_EQUAL_ThrowAnomaly(becauseAnomaly,
+         INDEXABLES_ARE_EQUAL_ThrowAnomaly(
+            indexablesAreEqualOrVectorsAreEqualMacroName, becauseAnomaly,
             expectedIndexableDataStructure, expectedIndexableDataStructureText,
             actualIndexableDataStructure, actualIndexableDataStructureText,
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
@@ -3501,7 +3507,8 @@ namespace ZenUnit
          }
          catch (const Anomaly& becauseAnomaly)
          {
-            INDEXABLES_ARE_EQUAL_ThrowAnomaly(becauseAnomaly,
+            INDEXABLES_ARE_EQUAL_ThrowAnomaly(
+               indexablesAreEqualOrVectorsAreEqualMacroName, becauseAnomaly,
                expectedIndexableDataStructure, expectedIndexableDataStructureText,
                actualIndexableDataStructure, actualIndexableDataStructureText,
                fileLine, messagesText, std::forward<MessageTypes>(messages)...);
@@ -6627,7 +6634,7 @@ Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
    public:
       static void AssertEqual(const std::vector<T>& expectedIndexableDataStructure, const std::vector<T>& actualIndexableDataStructure)
       {
-         INDEXABLES_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure);
+         VECTORS_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure);
       }
    };
 

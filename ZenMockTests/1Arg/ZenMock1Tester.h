@@ -514,7 +514,7 @@ File.cpp(1))");
             vector<OneArgumentFunctionCallReference<int>> expectedOneArgumentFunctionCalls;
             ZenMockTestUtils::CallNTimes(expectedCallsSize, [&] { expectedOneArgumentFunctionCalls.emplace_back(expectedArgument); });
             const string expectedExceptionWhat = R"(
-  Failed: INDEXABLES_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->ZenMockedFunctionSignature))"
+  Failed: VECTORS_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->ZenMockedFunctionSignature))"
                + expectedExceptionWhatPrefix + R"(
  Message: ")" + expectedSignature + R"("
 File.cpp(1)

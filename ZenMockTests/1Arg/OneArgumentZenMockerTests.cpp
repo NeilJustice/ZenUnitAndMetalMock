@@ -75,7 +75,7 @@ namespace ZenMock
       {
          CallType(1)
       };
-      INDEXABLES_ARE_EQUAL(expectedCalls, _zenMocker->zenMockedFunctionCallHistory);
+      VECTORS_ARE_EQUAL(expectedCalls, _zenMocker->zenMockedFunctionCallHistory);
       ZENMOCK(_zenMocker->_exceptionThrower.AssertZenMockThrowExceptionIfExceptionSetCalledOnce());
       DOES_NOT_THROW(_zenMocker->CalledOnceWith(1));
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
@@ -210,7 +210,7 @@ File.cpp(1))");
       const vector<OneArgumentFunctionCallReference<int>> expectedOneArgumentFunctionCalls{ zero };
       //
       THROWS_EXCEPTION(_zenMocker->CalledAsFollows(expectedOneArgumentFunctionCalls), Anomaly, "\n"
-"  Failed: INDEXABLES_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->ZenMockedFunctionSignature)\n"
+"  Failed: VECTORS_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->ZenMockedFunctionSignature)\n"
 "Expected: std::vector<ZenMock::OneArgumentFunctionCallReference<int>> (size 1):\n"
 "{\n"
 "   ZenMock::OneArgumentFunctionCall:\n"
@@ -237,7 +237,7 @@ File.cpp(1))");
       _zenMocker->zenMockedFunctionCallHistory = { 10, 20 };
       //
       THROWS_EXCEPTION(_zenMocker->CalledAsFollows(expectedOneArgumentFunctionCalls), Anomaly, "\n"
-"  Failed: INDEXABLES_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->ZenMockedFunctionSignature)\n"
+"  Failed: VECTORS_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->ZenMockedFunctionSignature)\n"
 "Expected: std::vector<ZenMock::OneArgumentFunctionCallReference<int>> (size 2):\n"
 "{\n"
 "   ZenMock::OneArgumentFunctionCall:\n"

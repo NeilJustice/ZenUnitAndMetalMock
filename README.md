@@ -248,6 +248,7 @@ Example Command Line Arguments:
 #### Data Structure Assertions
 |Assertion|Behavior|
 |---------|--------|
+|`VECTORS_ARE_EQUAL(expectedVector, actualVector, messages...)`|Calls `ELEMENTS_ARE_EQUAL(expectedVector, actualVector, messages...)`|
 |`INDEXABLES_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure, messages...)`|Asserts that `expectedIndexableDataStructure.size() == actualIndexableDataStructure.size()` then calls `ARE_EQUAL(ithExpectedElement, ithActualElement)` on each pair of expected and actual elements.|
 |`SETS_EQUAL(expectedSet, actualSet, messages...)`|Asserts that `expectedSet.size() == actualSet.size()` then calls `ARE_EQUAL(expectedElement, actualElement)` on each pair of expected and actual elements.|
 |`MAPS_EQUAL(expectedMap, actualMap, messages...)`|Asserts that `expectedMap.size() == actualMap.size()` then calls `ARE_EQUAL(expectedKeyValuePair, actualKeyValuePair)` on each pair of expected and actual key-value pairs.

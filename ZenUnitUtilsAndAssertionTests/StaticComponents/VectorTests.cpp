@@ -36,7 +36,7 @@ namespace ZenUnit
    static void ToArgcArgvTestCase(
       int argc, const char* argv[], const vector<string>& expectedStringVector)
    {
-      INDEXABLES_ARE_EQUAL(expectedStringVector, Vector::FromArgcArgv(argc, const_cast<char**>(argv)));
+      VECTORS_ARE_EQUAL(expectedStringVector, Vector::FromArgcArgv(argc, const_cast<char**>(argv)));
    }
 
    TEST(Join_EmptyStringVector_ReturnsEmptyString)

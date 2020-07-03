@@ -65,7 +65,7 @@ TEST(CallAllMacros)
    POINTEES_ARE_EQUAL(&x, &x);
 
    // Data Structures
-   INDEXABLES_ARE_EQUAL(std::vector<int>{0}, std::vector<int>{0});
+   VECTORS_ARE_EQUAL(std::vector<int>{0}, std::vector<int>{0});
    MAPS_EQUAL((std::map<int, int>{}), (std::map<int, int>{}));
    MAPS_EQUAL((std::unordered_map<int, int>{}), (std::unordered_map<int, int>{}));
    SETS_EQUAL(std::set<int>{}, std::set<int>{});

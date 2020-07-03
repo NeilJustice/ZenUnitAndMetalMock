@@ -7,6 +7,6 @@ namespace ZenUnit
 {
    void Equalizer<TestClassResult>::AssertEqual(const TestClassResult& expectedTestClassResult, const TestClassResult& actualTestClassResult)
    {
-      INDEXABLES_ARE_EQUAL(expectedTestClassResult._testResults, actualTestClassResult._testResults);
+      VECTORS_ARE_EQUAL(expectedTestClassResult._testResults, actualTestClassResult._testResults);
    }
 }

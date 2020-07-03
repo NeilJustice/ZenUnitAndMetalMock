@@ -58,14 +58,14 @@ namespace ZenUnit
          ElementType{ 1 },
          ElementType{ 2 }
       };
-      INDEXABLES_ARE_EQUAL(expectedCalls, _classInstance.calls);
+      VECTORS_ARE_EQUAL(expectedCalls, _classInstance.calls);
 
       vector<TransformedElementType> expectedTransformedElements =
       {
          static_cast<TransformedElementType>(elements[0]) + 1,
          static_cast<TransformedElementType>(elements[1]) + 1
       };
-      INDEXABLES_ARE_EQUAL(expectedTransformedElements, transformedElements);
+      VECTORS_ARE_EQUAL(expectedTransformedElements, transformedElements);
    }
 
    RUN_TEMPLATE_TESTS(MemberFunctionTransformerTests, int, int)
