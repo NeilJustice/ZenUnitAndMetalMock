@@ -112,7 +112,7 @@ namespace ZenUnit
       //
       ZENMOCK(_specSectionTestNXNSelfMocked->PmfTokenToTestMock.CalledOnce());
       ZENMOCK(testMock->RunTestMock.CalledOnce());
-      VECTORS_EQUAL(testTestResults, testResults);
+      INDEXABLES_ARE_EQUAL(testTestResults, testResults);
    }
 
    TEST(PmfTokenToTest_ReturnsTestClassTypeTestNXNPmfToTestReturnValue)

@@ -71,7 +71,7 @@ namespace ZenMock
       {
          returnValue
       };
-      VECTORS_EQUAL(expectedReturnValues, _nonVoidOneArgumentZenMocker._returnValues);
+      INDEXABLES_ARE_EQUAL(expectedReturnValues, _nonVoidOneArgumentZenMocker._returnValues);
    }
 
    TEST(VariadicReturnValues_SetsWasExpectedToTrue_AddsReturnValuesToReturnValuesDeque)
@@ -87,7 +87,7 @@ namespace ZenMock
       {
          returnValue1, returnValue2
       };
-      VECTORS_EQUAL(expectedReturnValues, _nonVoidOneArgumentZenMocker._returnValues);
+      INDEXABLES_ARE_EQUAL(expectedReturnValues, _nonVoidOneArgumentZenMocker._returnValues);
    }
 
    TEST(ContainerReturnValues_SetsWasExpectedToTrue_AddsReturnValuesToReturnValuesDeque)
@@ -104,7 +104,7 @@ namespace ZenMock
       {
          returnValue1, returnValue2
       };
-      VECTORS_EQUAL(expectedReturnValues, _nonVoidOneArgumentZenMocker._returnValues);
+      INDEXABLES_ARE_EQUAL(expectedReturnValues, _nonVoidOneArgumentZenMocker._returnValues);
    }
 
    TEST(ReturnRandom_SetWasExpectedToTrue_AddsToReturnValuesDeque)
@@ -119,7 +119,7 @@ namespace ZenMock
          randomReturnValue1,
          randomReturnValue2
       };
-      VECTORS_EQUAL(expectedReturnValues, _nonVoidOneArgumentZenMocker._returnValues);
+      INDEXABLES_ARE_EQUAL(expectedReturnValues, _nonVoidOneArgumentZenMocker._returnValues);
    }
 
    RUN_TESTS(NonVoidOneArgumentZenMockerTests)

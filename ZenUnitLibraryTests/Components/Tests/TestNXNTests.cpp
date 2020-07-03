@@ -290,7 +290,7 @@ namespace ZenUnit
       expectedTestResult.fullTestName.testName = testName.c_str();
       ZENMOCK(test1X1SelfMocked.WriteLineOKIfSuccessMock.CalledOnceWith(expectedTestResult));
       vector<TestResult> expectedResulingTestResults = { expectedTestResult };
-      VECTORS_EQUAL(expectedResulingTestResults, test1X1SelfMocked._testResults);
+      INDEXABLES_ARE_EQUAL(expectedResulingTestResults, test1X1SelfMocked._testResults);
    }
 
    TEST(RunTestCase_2X2_DoesSo)
@@ -335,7 +335,7 @@ namespace ZenUnit
       expectedTestResult.fullTestName.testName = testName.c_str();
       ZENMOCK(test2X2SelfMocked.WriteLineOKIfSuccessMock.CalledOnceWith(expectedTestResult));
       vector<TestResult> expectedResulingTestResults = { expectedTestResult };
-      VECTORS_EQUAL(expectedResulingTestResults, test2X2SelfMocked._testResults);
+      INDEXABLES_ARE_EQUAL(expectedResulingTestResults, test2X2SelfMocked._testResults);
    }
 
    TEST(Exit1IfNonExistentTestCaseNumberSpecified_NonEmptyTestResults_DoesNothing)

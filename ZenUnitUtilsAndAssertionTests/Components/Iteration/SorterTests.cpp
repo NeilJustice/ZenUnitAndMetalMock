@@ -37,7 +37,7 @@ namespace ZenUnit
        _sorter.Sort(&collection);
        //
        const CollectionType expectedSortedCollection { 1, 2, 3 };
-       VECTORS_EQUAL(expectedSortedCollection, collection);
+       INDEXABLES_ARE_EQUAL(expectedSortedCollection, collection);
     }
 
     RUN_TEMPLATE_TESTS(SorterTests, vector<int>)

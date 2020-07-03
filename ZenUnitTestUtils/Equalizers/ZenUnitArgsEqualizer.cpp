@@ -7,7 +7,7 @@ namespace ZenUnit
    void Equalizer<ZenUnitArgs>::AssertEqual(const ZenUnitArgs& expectedZenUnitArgs, const ZenUnitArgs& actualZenUnitArgs)
    {
       ARE_EQUAL(expectedZenUnitArgs.commandLine, actualZenUnitArgs.commandLine);
-      VECTORS_EQUAL(expectedZenUnitArgs.testNameFilters, actualZenUnitArgs.testNameFilters);
+      INDEXABLES_ARE_EQUAL(expectedZenUnitArgs.testNameFilters, actualZenUnitArgs.testNameFilters);
       ARE_EQUAL(expectedZenUnitArgs.pauseBefore, actualZenUnitArgs.pauseBefore);
       ARE_EQUAL(expectedZenUnitArgs.pauseAfter, actualZenUnitArgs.pauseAfter);
       ARE_EQUAL(expectedZenUnitArgs.alwaysExit0, actualZenUnitArgs.alwaysExit0);

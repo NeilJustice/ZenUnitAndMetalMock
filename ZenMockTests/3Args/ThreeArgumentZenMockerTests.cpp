@@ -68,7 +68,7 @@ namespace ZenMock
       {
          CallType(1, 2, 3)
       };
-      VECTORS_EQUAL(expectedCalls, _threeArgumentZenMocker->zenMockedFunctionCallHistory);
+      INDEXABLES_ARE_EQUAL(expectedCalls, _threeArgumentZenMocker->zenMockedFunctionCallHistory);
       ZENMOCK(_threeArgumentZenMocker->_exceptionThrower.AssertZenMockThrowExceptionIfExceptionSetCalledOnce());
       DOES_NOT_THROW(_threeArgumentZenMocker->CalledOnceWith(1, 2, 3));
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();

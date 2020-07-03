@@ -80,7 +80,7 @@ namespace ZenUnit
       const bool anyElementMatchesPredicate = _threeArgAnyer.ThreeArgAny(collection, AlwaysFalsePredicate, _arg2, _arg3);
       //
       const vector<tuple<T, Arg2Type, Arg3Type>> expectedPredicateArgs = { { T{1}, _arg2, _arg3 } };
-      VECTORS_EQUAL(expectedPredicateArgs, s_predicateArgs);
+      INDEXABLES_ARE_EQUAL(expectedPredicateArgs, s_predicateArgs);
       IS_FALSE(anyElementMatchesPredicate);
    }
 
@@ -90,7 +90,7 @@ namespace ZenUnit
          _twoElementCollection, ElementValueOneReturnsTruePredicate, _arg2, _arg3);
       //
       const vector<tuple<T, Arg2Type, Arg3Type>> expectedPredicateArgs = { { T{1}, _arg2, _arg3 } };
-      VECTORS_EQUAL(expectedPredicateArgs, s_predicateArgs);
+      INDEXABLES_ARE_EQUAL(expectedPredicateArgs, s_predicateArgs);
       IS_TRUE(anyElementMatchesPredicate);
 
       IS_FALSE(ElementValueOneReturnsTruePredicate(T(), Arg2Type(), Arg3Type()));
@@ -102,7 +102,7 @@ namespace ZenUnit
          _twoElementCollection, ElementValueTwoReturnsTruePredicate, _arg2, _arg3);
       //
       const vector<tuple<T, Arg2Type, Arg3Type>> expectedPredicateArgs = { { T{1}, _arg2, _arg3 },{ T{2}, _arg2, _arg3 } };
-      VECTORS_EQUAL(expectedPredicateArgs, s_predicateArgs);
+      INDEXABLES_ARE_EQUAL(expectedPredicateArgs, s_predicateArgs);
       IS_TRUE(anyElementMatchesPredicate);
    }
 
@@ -112,7 +112,7 @@ namespace ZenUnit
          _twoElementCollection, AlwaysFalsePredicate, _arg2, _arg3);
       //
       const vector<tuple<T, Arg2Type, Arg3Type>> expectedPredicateArgs = { { T(1), _arg2, _arg3 },{ T(2), _arg2, _arg3 } };
-      VECTORS_EQUAL(expectedPredicateArgs, s_predicateArgs);
+      INDEXABLES_ARE_EQUAL(expectedPredicateArgs, s_predicateArgs);
       IS_FALSE(anyElementMatchesPredicate);
    }
 

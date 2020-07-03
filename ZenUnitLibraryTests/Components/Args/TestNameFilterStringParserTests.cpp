@@ -43,7 +43,7 @@ namespace ZenUnit
       //
       ZENMOCK(_memberFunctionTransformerMock->TransformMock.CalledOnceWith(
          testNameFilterStrings, &_testNameFilterStringParser, &TestNameFilterStringParser::ParseTestNameFilterString));
-      VECTORS_EQUAL(transformReturnValue, testNameFilters);
+      INDEXABLES_ARE_EQUAL(transformReturnValue, testNameFilters);
    }
 
    TEST2X2(ParseTestNameFilterString_JustTestClassName_ReturnsExpectedTestNameFilter,

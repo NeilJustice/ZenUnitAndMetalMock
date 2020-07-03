@@ -240,9 +240,9 @@ Example Command Line Arguments:
 #define IS_NOT_EMPTY(collection, ...) \
    ZenUnit::IS_NOT_EMPTY_Defined(VRT(collection), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that the elements of expectedVector are equal to the elements of actualVector.
-#define VECTORS_EQUAL(expectedVector, actualVector, ...) \
-   ZenUnit::VECTORS_EQUAL_Defined(expectedVector, #expectedVector, actualVector, #actualVector, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+// Asserts that the elements of expectedIndexableDataStructure are equal to the elements of actualIndexableDataStructure.
+#define INDEXABLES_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure, ...) \
+   ZenUnit::INDEXABLES_ARE_EQUAL_Defined(expectedIndexableDataStructure, #expectedIndexableDataStructure, actualIndexableDataStructure, #actualIndexableDataStructure, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that the elements of expectedSet are equal to the elements of actualSet.
 #define SETS_EQUAL(expectedSet, actualSet, ...) \
@@ -3451,49 +3451,49 @@ namespace ZenUnit
 
    template<
       template<typename...>
-      class VectorType, typename T, typename Allocator, typename... MessageTypes>
-   void VECTORS_EQUAL_ThrowAnomaly(
+      class IndexableDataStructureType, typename T, typename Allocator, typename... MessageTypes>
+   void INDEXABLES_ARE_EQUAL_ThrowAnomaly(
       const Anomaly& becauseAnomaly,
-      const VectorType<T, Allocator>& expectedVector, const char* expectedVectorText,
-      const VectorType<T, Allocator>& actualVector, const char* actualVectorText,
+      const IndexableDataStructureType<T, Allocator>& expectedIndexableDataStructure, const char* expectedIndexableDataStructureText,
+      const IndexableDataStructureType<T, Allocator>& actualIndexableDataStructure, const char* actualIndexableDataStructureText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-      const std::string toStringedExpectedVector = ToStringer::ToString(expectedVector);
-      const std::string toStringedActualVector = ToStringer::ToString(actualVector);
-      throw Anomaly("VECTORS_EQUAL", expectedVectorText, actualVectorText, "", messagesText,
+      const std::string toStringedExpectedIndexableDataStructure = ToStringer::ToString(expectedIndexableDataStructure);
+      const std::string toStringedActualIndexableDataStructure = ToStringer::ToString(actualIndexableDataStructure);
+      throw Anomaly("INDEXABLES_ARE_EQUAL", expectedIndexableDataStructureText, actualIndexableDataStructureText, "", messagesText,
          becauseAnomaly,
-         toStringedExpectedVector,
-         toStringedActualVector,
+         toStringedExpectedIndexableDataStructure,
+         toStringedActualIndexableDataStructure,
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<
       template<typename...>
-      class VectorType, typename T, typename Allocator, typename... MessageTypes>
-   void VECTORS_EQUAL_Defined(
-      const VectorType<T, Allocator>& expectedVector, const char* expectedVectorText,
-      const VectorType<T, Allocator>& actualVector, const char* actualVectorText,
+      class IndexableDataStructureType, typename T, typename Allocator, typename... MessageTypes>
+   void INDEXABLES_ARE_EQUAL_Defined(
+      const IndexableDataStructureType<T, Allocator>& expectedIndexableDataStructure, const char* expectedIndexableDataStructureText,
+      const IndexableDataStructureType<T, Allocator>& actualIndexableDataStructure, const char* actualIndexableDataStructureText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       try
       {
-         ARE_EQUAL(expectedVector.size(), actualVector.size());
+         ARE_EQUAL(expectedIndexableDataStructure.size(), actualIndexableDataStructure.size());
       }
       catch (const Anomaly& becauseAnomaly)
       {
-         VECTORS_EQUAL_ThrowAnomaly(becauseAnomaly,
-            expectedVector, expectedVectorText,
-            actualVector, actualVectorText,
+         INDEXABLES_ARE_EQUAL_ThrowAnomaly(becauseAnomaly,
+            expectedIndexableDataStructure, expectedIndexableDataStructureText,
+            actualIndexableDataStructure, actualIndexableDataStructureText,
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
-      const size_t expectedVectorSize = expectedVector.size();
+      const size_t expectedIndexableDataStructureSize = expectedIndexableDataStructure.size();
       constexpr size_t IEqualsSignLength = 2;
       constexpr size_t SizeTMaxValueLength = 21; // strlen("18446744073709551615")
       char indexMessage[IEqualsSignLength + SizeTMaxValueLength]{ "i=" };
-      for (size_t i = 0; i < expectedVectorSize; ++i)
+      for (size_t i = 0; i < expectedIndexableDataStructureSize; ++i)
       {
-         const T& ithExpectedElement = expectedVector[i];
-         const T& ithActualElement = actualVector[i];
+         const T& ithExpectedElement = expectedIndexableDataStructure[i];
+         const T& ithActualElement = actualIndexableDataStructure[i];
          WriteUnsignedLongLongToCharacters(i, indexMessage + IEqualsSignLength);
          try
          {
@@ -3501,9 +3501,9 @@ namespace ZenUnit
          }
          catch (const Anomaly& becauseAnomaly)
          {
-            VECTORS_EQUAL_ThrowAnomaly(becauseAnomaly,
-               expectedVector, expectedVectorText,
-               actualVector, actualVectorText,
+            INDEXABLES_ARE_EQUAL_ThrowAnomaly(becauseAnomaly,
+               expectedIndexableDataStructure, expectedIndexableDataStructureText,
+               actualIndexableDataStructure, actualIndexableDataStructureText,
                fileLine, messagesText, std::forward<MessageTypes>(messages)...);
          }
       }
@@ -6625,9 +6625,9 @@ Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
    class Equalizer<std::vector<T>>
    {
    public:
-      static void AssertEqual(const std::vector<T>& expectedVector, const std::vector<T>& actualVector)
+      static void AssertEqual(const std::vector<T>& expectedIndexableDataStructure, const std::vector<T>& actualIndexableDataStructure)
       {
-         VECTORS_EQUAL(expectedVector, actualVector);
+         INDEXABLES_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure);
       }
    };
 

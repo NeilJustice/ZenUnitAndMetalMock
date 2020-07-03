@@ -44,7 +44,7 @@ namespace ZenUnit
       {
          { 1, c, s }
       };
-      VECTORS_EQUAL(expectedFuncCalls, _funcCalls);
+      INDEXABLES_ARE_EQUAL(expectedFuncCalls, _funcCalls);
    }
 
    TEST(ThreeArgForEach_TwoItemCollection_CallsFuncOnItemTwice)
@@ -60,7 +60,7 @@ namespace ZenUnit
          { 1, c, s },
          { 2, c, s }
       };
-      VECTORS_EQUAL(expectedFuncCalls, _funcCalls);
+      INDEXABLES_ARE_EQUAL(expectedFuncCalls, _funcCalls);
    }
 
    RUN_TESTS(ThreeArgForEacherTests)

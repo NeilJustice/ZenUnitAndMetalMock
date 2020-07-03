@@ -3,7 +3,7 @@
 namespace ZenUnit
 {
    template<typename T>
-   TEMPLATE_TESTS(VECTORS_EQUALTests, T)
+   TEMPLATE_TESTS(INDEXABLES_ARE_EQUALTests, T)
    AFACT(VectorSizesAreEqualAndVectorElementsAreEqual_DoesNotThrowException)
    AFACT(VectorSizesAreNotEqual_ThrowsAnomaly)
    AFACT(VectorSizesAreNotEqual_ThrowsAnomaly_MessagesTestCase)
@@ -17,42 +17,42 @@ namespace ZenUnit
 
    TEST(VectorSizesAreEqualAndVectorElementsAreEqual_DoesNotThrowException)
    {
-      vector<T> expectedVector;;
-      vector<T> actualVector;
+      vector<T> expectedIndexableDataStructure;;
+      vector<T> actualIndexableDataStructure;
 
-      VECTORS_EQUAL(expectedVector, actualVector);
+      INDEXABLES_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure);
 
       const T randomElement1 = Random<T>();
-      expectedVector.push_back(randomElement1);
-      actualVector.push_back(randomElement1);
-      VECTORS_EQUAL(expectedVector, actualVector);
+      expectedIndexableDataStructure.push_back(randomElement1);
+      actualIndexableDataStructure.push_back(randomElement1);
+      INDEXABLES_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure);
 
       const T randomElement2 = Random<T>();
-      expectedVector.push_back(randomElement2);
-      actualVector.push_back(randomElement2);
-      VECTORS_EQUAL(expectedVector, actualVector);
+      expectedIndexableDataStructure.push_back(randomElement2);
+      actualIndexableDataStructure.push_back(randomElement2);
+      INDEXABLES_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure);
 
       const T randomElement3 = Random<T>();
-      expectedVector.push_back(randomElement3);
-      actualVector.push_back(randomElement3);
-      VECTORS_EQUAL(expectedVector, actualVector);
+      expectedIndexableDataStructure.push_back(randomElement3);
+      actualIndexableDataStructure.push_back(randomElement3);
+      INDEXABLES_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure);
    }
 
    TEST(VectorSizesAreNotEqual_ThrowsAnomaly)
    {
-      const vector<T> expectedVector(1);
-      const vector<T> actualVector;
-      THROWS_EXCEPTION(VECTORS_EQUAL(expectedVector, actualVector),
+      const vector<T> expectedIndexableDataStructure(1);
+      const vector<T> actualIndexableDataStructure;
+      THROWS_EXCEPTION(INDEXABLES_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure),
          Anomaly, TestUtil::NewlineConcat("",
-"  Failed: VECTORS_EQUAL(expectedVector, actualVector)",
+"  Failed: INDEXABLES_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure)",
 "Expected: std::vector<" + TypeName + "> (size 1):",
 "{",
-"   " + ToStringer::ToString(expectedVector[0]),
+"   " + ToStringer::ToString(expectedIndexableDataStructure[0]),
 "}",
 "  Actual: std::vector<" + TypeName + "> (size 0):",
 "{",
 "}",
-" Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed",
+" Because: ARE_EQUAL(expectedIndexableDataStructure.size(), actualIndexableDataStructure.size()) failed",
 "Expected: 1",
 "  Actual: 0",
 "File.cpp(1)",
@@ -61,19 +61,19 @@ namespace ZenUnit
 
    TEST(VectorSizesAreNotEqual_ThrowsAnomaly_MessagesTestCase)
    {
-      const vector<T> expectedVector(1);
-      const vector<T> actualVector;
-      THROWS_EXCEPTION(VECTORS_EQUAL(expectedVector, actualVector, _messageA, _messageB),
+      const vector<T> expectedIndexableDataStructure(1);
+      const vector<T> actualIndexableDataStructure;
+      THROWS_EXCEPTION(INDEXABLES_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure, _messageA, _messageB),
          Anomaly, TestUtil::NewlineConcat("",
-"  Failed: VECTORS_EQUAL(expectedVector, actualVector, _messageA, _messageB)",
+"  Failed: INDEXABLES_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure, _messageA, _messageB)",
 "Expected: std::vector<" + TypeName + "> (size 1):",
 "{",
-"   " + ToStringer::ToString(expectedVector[0]),
+"   " + ToStringer::ToString(expectedIndexableDataStructure[0]),
 "}",
 "  Actual: std::vector<" + TypeName + "> (size 0):",
 "{",
 "}",
-" Because: ARE_EQUAL(expectedVector.size(), actualVector.size()) failed",
+" Because: ARE_EQUAL(expectedIndexableDataStructure.size(), actualIndexableDataStructure.size()) failed",
 "Expected: 1",
 "  Actual: 0",
 " Message: \"" + _messageA + "\", \"" + _messageB + "\"",
@@ -86,9 +86,9 @@ namespace ZenUnit
       const T randomElement1 = Random<T>();
       const vector<T> v1 { randomElement1 };
       const vector<T> v2 { randomElement1 + T{1} };
-      THROWS_EXCEPTION(VECTORS_EQUAL(v1, v2, _messageA, _messageB),
+      THROWS_EXCEPTION(INDEXABLES_ARE_EQUAL(v1, v2, _messageA, _messageB),
          Anomaly, TestUtil::NewlineConcat("",
-"  Failed: VECTORS_EQUAL(v1, v2, _messageA, _messageB)",
+"  Failed: INDEXABLES_ARE_EQUAL(v1, v2, _messageA, _messageB)",
 "Expected: std::vector<" + TypeName + "> (size 1):",
 "{",
 "   " + ToStringer::ToString(v1[0]),
@@ -113,9 +113,9 @@ namespace ZenUnit
       const T randomElement3 = RandomNon0<T>();
       const vector<T> v1 { randomElement1, randomElement2 };
       const vector<T> v2 { randomElement1, randomElement3 };
-      THROWS_EXCEPTION(VECTORS_EQUAL(v1, v2),
+      THROWS_EXCEPTION(INDEXABLES_ARE_EQUAL(v1, v2),
          Anomaly, TestUtil::NewlineConcat("",
-"  Failed: VECTORS_EQUAL(v1, v2)",
+"  Failed: INDEXABLES_ARE_EQUAL(v1, v2)",
 "Expected: std::vector<" + TypeName + "> (size 2):",
 "{",
 "   " + ToStringer::ToString(v1[0]) + ",",
@@ -134,7 +134,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   RUN_TEMPLATE_TESTS(VECTORS_EQUALTests, int)
-   THEN_RUN_TEMPLATE_TESTS(VECTORS_EQUALTests, size_t)
-   THEN_RUN_TEMPLATE_TESTS(VECTORS_EQUALTests, string)
+   RUN_TEMPLATE_TESTS(INDEXABLES_ARE_EQUALTests, int)
+   THEN_RUN_TEMPLATE_TESTS(INDEXABLES_ARE_EQUALTests, size_t)
+   THEN_RUN_TEMPLATE_TESTS(INDEXABLES_ARE_EQUALTests, string)
 }

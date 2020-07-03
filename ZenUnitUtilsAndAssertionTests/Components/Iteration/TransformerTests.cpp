@@ -35,7 +35,7 @@ namespace ZenUnit
       //
       const vector<TransformedType> dest = _transformer.Transform(&source, PlusOne);
       //
-      VECTORS_EQUAL(vector<TransformedType>{ 2 }, dest);
+      INDEXABLES_ARE_EQUAL(vector<TransformedType>{ 2 }, dest);
    }
 
    TEST(Transform_TwoItemRange_CallsTransformerTwice)
@@ -44,7 +44,7 @@ namespace ZenUnit
       //
       const vector<TransformedType> dest = _transformer.Transform(&source, PlusOne);
       //
-      VECTORS_EQUAL((vector<TransformedType>{ 2, 3 }), dest);
+      INDEXABLES_ARE_EQUAL((vector<TransformedType>{ 2, 3 }), dest);
    }
 
    TEST(RandomTransform_EmptyRange_DoesNothing)
@@ -62,7 +62,7 @@ namespace ZenUnit
       //
       const vector<TransformedType> dest = _transformer.RandomTransform(&source, PlusOne, 0);
       //
-      VECTORS_EQUAL(vector<TransformedType>{ 2 }, dest);
+      INDEXABLES_ARE_EQUAL(vector<TransformedType>{ 2 }, dest);
    }
 
    TEST(RandomTransform_ThreeItemRange_CallsTransformerThreeTimesInRandomOrder)

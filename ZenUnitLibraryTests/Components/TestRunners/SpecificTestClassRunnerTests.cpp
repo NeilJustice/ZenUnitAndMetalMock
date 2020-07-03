@@ -105,7 +105,7 @@ namespace ZenUnit
 
       vector<unique_ptr<Test>> expectedTests;
       expectedTests.emplace_back(nullptr);
-      VECTORS_EQUAL(expectedTests, specificTestClassRunner._tests);
+      INDEXABLES_ARE_EQUAL(expectedTests, specificTestClassRunner._tests);
    }
 
    TEST(TestClassName_ReturnsTestClassName)

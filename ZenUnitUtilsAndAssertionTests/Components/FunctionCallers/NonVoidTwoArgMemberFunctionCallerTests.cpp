@@ -35,7 +35,7 @@ namespace ZenUnit
       {
          { arg1A, arg2A }
       };
-      VECTORS_EQUAL(expectedCallsA, classInstance.calls);
+      INDEXABLES_ARE_EQUAL(expectedCallsA, classInstance.calls);
       ARE_EQUAL(classInstance.returnValue, returnValueA);
 
 
@@ -49,7 +49,7 @@ namespace ZenUnit
          { arg1A, arg2A },
          { arg1B, arg2B }
       };
-      VECTORS_EQUAL(expectedCallsB, classInstance.calls);
+      INDEXABLES_ARE_EQUAL(expectedCallsB, classInstance.calls);
       ARE_EQUAL(classInstance.returnValue, returnValueB);
    }
 
