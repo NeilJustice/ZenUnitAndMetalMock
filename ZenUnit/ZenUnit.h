@@ -1263,64 +1263,56 @@ namespace ZenUnit
       template<typename T>
       static std::string ToString([[maybe_unused]]const T& value)
       {
+         std::ostringstream oss;
          if constexpr (std::is_same_v<T, std::nullptr_t>)
          {
-            return "nullptr";
+            oss << "nullptr";
          }
          else if constexpr (std::is_same_v<T, bool>)
          {
-            const std::string trueOrFalse = value ? "true"s : "false"s;
-            return trueOrFalse;
+            oss << (value ? "true" : "false");
          }
          else if constexpr (std::is_enum_v<T>)
          {
-            const std::string valueAsString = std::to_string(static_cast<typename std::underlying_type<T>::type>(value));
-            return valueAsString;
+            oss << std::to_string(static_cast<typename std::underlying_type<T>::type>(value));
          }
          else if constexpr (std::is_same_v<T, char>)
          {
             if (value == 0)
             {
-               return "'\\0' (0)";
+               oss << "'\\0' (0)";
             }
-            std::ostringstream oss;
-            oss << '\'' << value << "\' (" << static_cast<int>(value) << ")";
-            const std::string valueAsString(oss.str());
-            return valueAsString;
+            else
+            {
+               oss << '\'' << value << "\' (" << static_cast<int>(value) << ")";
+            }
          }
          else if constexpr (std::is_same_v<T, float>)
          {
-            const std::string floatAsString = std::to_string(value) + "f";
-            return floatAsString;
+            oss << std::to_string(value) + "f";
          }
          else if constexpr (has_to_string<T>::value)
          {
-            const std::string valueAsString(std::to_string(value));
-            return valueAsString;
+            oss << std::to_string(value);
          }
          else if constexpr (std::is_member_pointer_v<T>)
          {
-            return "MemberPointer"s;
+            oss << "MemberPointer";
          }
          else if constexpr (std::is_member_function_pointer_v<T>)
          {
-            return "MemberFunctionPointer"s;
+            oss << "MemberFunctionPointer";
          }
          else if constexpr (std::is_pointer_v<T>)
          {
-            const std::string pointerAddressString = PointerToAddressString(value);
-            return pointerAddressString;
+            oss << PointerToAddressString(value);
          }
          else if constexpr (has_ZenUnitPrinter<T>::value)
          {
-            std::ostringstream oss;
             ZenUnit::Printer<T>::Print(oss, value);
-            const std::string valueAsString = oss.str();
-            return valueAsString;
          }
          else if constexpr (!has_ZenUnitPrinter<T>::value && has_ostream_left_shift<T>::value)
          {
-            std::ostringstream oss;
             if (is_quoted_when_printed<T>::value)
             {
                oss << '\"';
@@ -1330,17 +1322,14 @@ namespace ZenUnit
             {
                oss << '\"';
             }
-            const std::string valueAsString = oss.str();
-            return valueAsString;
          }
          else if constexpr (!has_ZenUnitPrinter<T>::value && !has_ostream_left_shift<T>::value)
          {
-            std::ostringstream oss;
             const std::string* const typeName = Type::GetName<T>();
             oss << "<" << *typeName << ">";
-            const std::string valueAsString = oss.str();
-            return valueAsString;
          }
+         const std::string valueAsString(oss.str());
+         return valueAsString;
       }
 
       static std::string ToString(const char* value)
@@ -1358,6 +1347,19 @@ namespace ZenUnit
       static std::string ToString(char* value)
       {
          return ToString(static_cast<const char*>(value));
+      }
+
+      static std::string ToString(const wchar_t* value)
+      {
+         if (value == nullptr)
+         {
+            return "nullptr";
+         }
+         std::wostringstream oss;
+         oss << L"\"" << value << L"\"";
+         const std::wstring quotedValueAsWideString(oss.str());
+         const std::string quotedValueAsNarrowString = fs::path(quotedValueAsWideString).string();
+         return quotedValueAsNarrowString;
       }
 
       template<typename T, typename Deleter>

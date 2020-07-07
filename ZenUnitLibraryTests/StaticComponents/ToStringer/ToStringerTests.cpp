@@ -84,7 +84,12 @@ namespace ZenUnit
 
    TEST(ToString_Enum_ReturnsStdToStringOnTheValue)
    {
+#ifdef _WIN32
+#pragma warning(push)
+#pragma warning(disable: 26812)
       ARE_EQUAL("0", ToStringer::ToString(ClassicEnum::E0));
+#pragma warning(pop)
+#endif
       ARE_EQUAL("1", ToStringer::ToString(ClassicEnum::E1));
    }
 
