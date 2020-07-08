@@ -288,6 +288,9 @@ namespace ZenUnit
    {
       ARE_EQUAL("nullptr", ToStringer::ToString(static_cast<const wchar_t*>(nullptr)));
       ARE_EQUAL("\"\"", ToStringer::ToString(L""));
+      ARE_EQUAL("\".\"", ToStringer::ToString(L"."));
+      ARE_EQUAL("\"a\\b\\c\"", ToStringer::ToString(L"a\\b\\c"));
+      ARE_EQUAL("\"a/b/c\"", ToStringer::ToString(L"a/b/c"));
       ARE_EQUAL("\"ABC\"", ToStringer::ToString(L"ABC"));
    }
 

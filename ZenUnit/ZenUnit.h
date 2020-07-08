@@ -4,7 +4,6 @@
 
 #pragma once
 #include <array>
-#include <codecvt>
 #include <functional>
 #include <iostream>
 #include <map>
@@ -1354,8 +1353,14 @@ namespace ZenUnit
          std::wostringstream oss;
          oss << L"\"" << constWideCharPointerString << L"\"";
          const std::wstring quotedWideString(oss.str());
-         std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> wstringConverter;
-         const std::string quotedNarrowString = wstringConverter.to_bytes(quotedWideString);
+
+         // Ideal wstring-to-string implementation but requires includers of ZenUnit.h
+         // to define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING on Windows
+         // std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> wstringConverter;
+         // const std::string quotedNarrowString = wstringConverter.to_bytes(quotedWideString);
+
+         // Hacky wstring-to-string implementation
+         const std::string quotedNarrowString = fs::path(quotedWideString).string();
          return quotedNarrowString;
       }
 
