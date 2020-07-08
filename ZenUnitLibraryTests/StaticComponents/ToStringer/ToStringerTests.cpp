@@ -55,6 +55,8 @@ namespace ZenUnit
    FACTS(ToString_NonVoidNonZeroArgStdFunction_ReturnsEmptyOrNonEmptyStdFunction)
    AFACT(ToString_CharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)
    AFACT(ToString_ConstCharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)
+   AFACT(ToString_WideCharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)
+   AFACT(ToString_WideConstCharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)
    AFACT(ToString_Char_ReturnsQuotedChar)
    AFACT(ToString_Bool_ReturnsBoolAlpha)
    AFACT(ToString_Pair_ReturnsLeftParenFirstValueCommaSecondValueRightParen)
@@ -271,6 +273,22 @@ namespace ZenUnit
       ARE_EQUAL("nullptr", ToStringer::ToString(static_cast<const char*>(nullptr)));
       ARE_EQUAL("\"\"", ToStringer::ToString(""));
       ARE_EQUAL("\"ABC\"", ToStringer::ToString("ABC"));
+   }
+
+   TEST(ToString_WideCharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)
+   {
+      ARE_EQUAL("nullptr", ToStringer::ToString(static_cast<wchar_t*>(nullptr)));
+      const wchar_t chars[]{ 0 };
+      ARE_EQUAL("\"\"", ToStringer::ToString(chars));
+      const wchar_t charsABC[]{ 'A', 'B', 'C', 0 };
+      ARE_EQUAL("\"ABC\"", ToStringer::ToString(charsABC));
+   }
+
+   TEST(ToString_WideConstCharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)
+   {
+      ARE_EQUAL("nullptr", ToStringer::ToString(static_cast<const wchar_t*>(nullptr)));
+      ARE_EQUAL("\"\"", ToStringer::ToString(L""));
+      ARE_EQUAL("\"ABC\"", ToStringer::ToString(L"ABC"));
    }
 
    TEST(ToString_Char_ReturnsQuotedChar)

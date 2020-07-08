@@ -4,6 +4,7 @@
 
 #pragma once
 #include <array>
+#include <codecvt>
 #include <functional>
 #include <iostream>
 #include <map>
@@ -40,7 +41,7 @@ namespace fs = std::experimental::filesystem;
 namespace fs = std::filesystem;
 #endif
 
-#define Comma , // Comma is for those times when parentheses are not quite enough for the compiler
+#define Comma , // For when parentheses are not quite enough for the compiler
 
 #define DOTOKENJOIN(a, b) a##b
 
@@ -1264,7 +1265,11 @@ namespace ZenUnit
       static std::string ToString([[maybe_unused]]const T& value)
       {
          std::ostringstream oss;
-         if constexpr (std::is_same_v<T, std::nullptr_t>)
+         if constexpr (has_ZenUnitPrinter<T>::value)
+         {
+            ZenUnit::Printer<T>::Print(oss, value);
+         }
+         else if constexpr (std::is_same_v<T, std::nullptr_t>)
          {
             oss << "nullptr";
          }
@@ -1307,10 +1312,6 @@ namespace ZenUnit
          {
             oss << PointerToAddressString(value);
          }
-         else if constexpr (has_ZenUnitPrinter<T>::value)
-         {
-            ZenUnit::Printer<T>::Print(oss, value);
-         }
          else if constexpr (!has_ZenUnitPrinter<T>::value && has_ostream_left_shift<T>::value)
          {
             if (is_quoted_when_printed<T>::value)
@@ -1332,34 +1333,30 @@ namespace ZenUnit
          return valueAsString;
       }
 
-      static std::string ToString(const char* value)
+      static std::string ToString(const char* constCharPointerString)
       {
-         if (value == nullptr)
+         if (constCharPointerString == nullptr)
          {
             return "nullptr";
          }
          std::ostringstream oss;
-         oss << "\"" << value << "\"";
-         const std::string quotedValue(oss.str());
-         return quotedValue;
+         oss << "\"" << constCharPointerString << "\"";
+         const std::string quotedString(oss.str());
+         return quotedString;
       }
 
-      static std::string ToString(char* value)
+      static std::string ToString(const wchar_t* constWideCharPointerString)
       {
-         return ToString(static_cast<const char*>(value));
-      }
-
-      static std::string ToString(const wchar_t* value)
-      {
-         if (value == nullptr)
+         if (constWideCharPointerString == nullptr)
          {
             return "nullptr";
          }
          std::wostringstream oss;
-         oss << L"\"" << value << L"\"";
-         const std::wstring quotedValueAsWideString(oss.str());
-         const std::string quotedValueAsNarrowString = fs::path(quotedValueAsWideString).string();
-         return quotedValueAsNarrowString;
+         oss << L"\"" << constWideCharPointerString << L"\"";
+         const std::wstring quotedWideString(oss.str());
+         std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> wstringConverter;
+         const std::string quotedNarrowString = wstringConverter.to_bytes(quotedWideString);
+         return quotedNarrowString;
       }
 
       template<typename T, typename Deleter>
@@ -2084,9 +2081,9 @@ namespace ZenUnit
    class Equalizer
    {
    public:
-      static void AssertEqual(const ExpectedAndActualType& expected, const ExpectedAndActualType& actual)
+      static void AssertEqual(const ExpectedAndActualType& expectedValue, const ExpectedAndActualType& actualValue)
       {
-         if (!(expected == actual))
+         if (!(expectedValue == actualValue))
          {
             throw ZenUnit::EqualizerException();
          }
@@ -2097,9 +2094,9 @@ namespace ZenUnit
    class TwoTypeEqualizer
    {
    public:
-      static void AssertEqual(const ExpectedType& expected, const ActualType& actual)
+      static void AssertEqual(const ExpectedType& expectedValue, const ActualType& actualValue)
       {
-         if (!(expected == actual))
+         if (!(expectedValue == actualValue))
          {
             throw ZenUnit::EqualizerException();
          }
@@ -2110,21 +2107,21 @@ namespace ZenUnit
    class Equalizer<const char*>
    {
    public:
-      static void AssertEqual(const char* expected, const char* actual)
+      static void AssertEqual(const char* expectedString, const char* actualString)
       {
-         if (expected == nullptr && actual == nullptr)
+         if (expectedString == nullptr && actualString == nullptr)
          {
             return;
          }
-         if (expected == nullptr && actual != nullptr)
+         if (expectedString == nullptr && actualString != nullptr)
          {
             throw EqualizerException();
          }
-         if (expected != nullptr && actual == nullptr)
+         if (expectedString != nullptr && actualString == nullptr)
          {
             throw EqualizerException();
          }
-         const int strcmpResult = strcmp(expected, actual);
+         const int strcmpResult = strcmp(expectedString, actualString);
          if (strcmpResult != 0)
          {
             throw EqualizerException();
@@ -2136,9 +2133,9 @@ namespace ZenUnit
    class Equalizer<char*>
    {
    public:
-      static void AssertEqual(char* expected, char* actual)
+      static void AssertEqual(char* expectedString, char* actualString)
       {
-         Equalizer<const char*>::AssertEqual(expected, actual);
+         Equalizer<const char*>::AssertEqual(expectedString, actualString);
       }
    };
 
@@ -2146,10 +2143,10 @@ namespace ZenUnit
    class Equalizer<double>
    {
    public:
-      static void AssertEqual(double expected, double actual)
+      static void AssertEqual(double expectedDouble, double actualDouble)
       {
          // Tentative exactly-equal implementation
-         if (!(expected == actual))
+         if (!(expectedDouble == actualDouble))
          {
             throw EqualizerException();
          }
@@ -2160,10 +2157,10 @@ namespace ZenUnit
    class Equalizer<float>
    {
    public:
-      static void AssertEqual(float expected, float actual)
+      static void AssertEqual(float expectedFloat, float actualFloat)
       {
          // Tentative exactly-equal implementation
-         if (!(expected == actual))
+         if (!(expectedFloat == actualFloat))
          {
             throw EqualizerException();
          }
@@ -2174,13 +2171,13 @@ namespace ZenUnit
    class TwoTypeEqualizer<int, unsigned>
    {
    public:
-      static void AssertEqual(int expected, unsigned actual)
+      static void AssertEqual(int expectedInt, unsigned actualUnsigned)
       {
-         if (expected < 0)
+         if (expectedInt < 0)
          {
             throw EqualizerException();
          }
-         Equalizer<unsigned>::AssertEqual(static_cast<unsigned>(expected), actual);
+         Equalizer<unsigned>::AssertEqual(static_cast<unsigned>(expectedInt), actualUnsigned);
       }
    };
 
@@ -2189,13 +2186,13 @@ namespace ZenUnit
    class TwoTypeEqualizer<int, size_t>
    {
    public:
-      static void AssertEqual(int expected, size_t actual)
+      static void AssertEqual(int expectedInt, size_t actualSizeT)
       {
-         if (expected < 0)
+         if (expectedInt < 0)
          {
             throw EqualizerException();
          }
-         Equalizer<size_t>::AssertEqual(static_cast<size_t>(expected), actual);
+         Equalizer<size_t>::AssertEqual(static_cast<size_t>(expectedInt), actualSizeT);
       }
    };
 #endif
@@ -2204,9 +2201,9 @@ namespace ZenUnit
    class TwoTypeEqualizer<const char*, char*>
    {
    public:
-      static void AssertEqual(const char* expected, char* actual)
+      static void AssertEqual(const char* expectedConstCharPointer, char* actualCharPointer)
       {
-         Equalizer<const char*>::AssertEqual(expected, actual);
+         Equalizer<const char*>::AssertEqual(expectedConstCharPointer, actualCharPointer);
       }
    };
 
@@ -2214,9 +2211,9 @@ namespace ZenUnit
    class TwoTypeEqualizer<char*, const char*>
    {
    public:
-      static void AssertEqual(char* expected, const char* actual)
+      static void AssertEqual(char* expectedCharPointer, const char* actualConstCharPointer)
       {
-         Equalizer<const char*>::AssertEqual(expected, actual);
+         Equalizer<const char*>::AssertEqual(expectedCharPointer, actualConstCharPointer);
       }
    };
 
@@ -2224,9 +2221,9 @@ namespace ZenUnit
    class TwoTypeEqualizer<const char*, std::string>
    {
    public:
-      static void AssertEqual(const char* expected, const std::string& actual)
+      static void AssertEqual(const char* expectedConstCharPointer, const std::string& actualString)
       {
-         Equalizer<const char*>::AssertEqual(expected, actual.c_str());
+         Equalizer<const char*>::AssertEqual(expectedConstCharPointer, actualString.c_str());
       }
    };
 
@@ -2234,9 +2231,9 @@ namespace ZenUnit
    class TwoTypeEqualizer<std::string, const char*>
    {
    public:
-      static void AssertEqual(const std::string& expected, const char* actual)
+      static void AssertEqual(const std::string& expectedString, const char* actualConstCharPointer)
       {
-         Equalizer<const char*>::AssertEqual(expected.c_str(), actual);
+         Equalizer<const char*>::AssertEqual(expectedString.c_str(), actualConstCharPointer);
       }
    };
 
@@ -2244,9 +2241,9 @@ namespace ZenUnit
    class TwoTypeEqualizer<char*, std::string>
    {
    public:
-      static void AssertEqual(char* expected, const std::string& actual)
+      static void AssertEqual(char* expectedCharPointer, const std::string& actualString)
       {
-         Equalizer<const char*>::AssertEqual(expected, actual.c_str());
+         Equalizer<const char*>::AssertEqual(expectedCharPointer, actualString.c_str());
       }
    };
 
@@ -2254,9 +2251,9 @@ namespace ZenUnit
    class TwoTypeEqualizer<std::string, char*>
    {
    public:
-      static void AssertEqual(const std::string& expected, char* actual)
+      static void AssertEqual(const std::string& expectedString, char* actualCharPointer)
       {
-         Equalizer<const char*>::AssertEqual(expected.c_str(), actual);
+         Equalizer<const char*>::AssertEqual(expectedString.c_str(), actualCharPointer);
       }
    };
 
