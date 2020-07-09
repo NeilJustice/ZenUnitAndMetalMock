@@ -2135,6 +2135,32 @@ namespace ZenUnit
    };
 
    template<>
+   class Equalizer<const wchar_t*>
+   {
+   public:
+      static void AssertEqual(const wchar_t* expectedString, const wchar_t* actualString)
+      {
+         if (expectedString == nullptr && actualString == nullptr)
+         {
+            return;
+         }
+         if (expectedString == nullptr && actualString != nullptr)
+         {
+            throw EqualizerException();
+         }
+         if (expectedString != nullptr && actualString == nullptr)
+         {
+            throw EqualizerException();
+         }
+         const int wcscmpResult = wcscmp(expectedString, actualString);
+         if (wcscmpResult != 0)
+         {
+            throw EqualizerException();
+         }
+      }
+   };
+
+   template<>
    class Equalizer<char*>
    {
    public:
