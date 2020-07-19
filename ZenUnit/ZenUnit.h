@@ -4618,13 +4618,13 @@ namespace ZenUnit
             {
                tripletLinesPrefix = "[ZenUnit]";
                successOrFailLinePrefix = "[ZenUnit]";
-               resultMessage = String::Concat("     Result: All ", totalNumberOfTestCases, ' ', testOrTests, " passed!");
+               resultMessage = String::Concat("  RunResult: All ", totalNumberOfTestCases, ' ', testOrTests, " passed");
             }
             else
             {
                tripletLinesPrefix = ">>------>";
                successOrFailLinePrefix = ">>-FAIL->";
-               resultMessage = String::Concat("     Result: ", _numberOfFailedTestCases, " of ", totalNumberOfTestCases, ' ', testOrTests, " failed");
+               resultMessage = String::Concat("  RunResult: ", _numberOfFailedTestCases, " of ", totalNumberOfTestCases, ' ', testOrTests, " failed");
             }
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
             const std::string completedCommandLineMessage = String::Concat("  Completed: ", zenUnitArgs.commandLine);
@@ -4990,7 +4990,7 @@ namespace ZenUnit
 
          _console->WriteColor(">>------> ", Color::Red);
          const char* const testPhaseName = _testPhaseTranslator->TestPhaseToTestPhaseName(testPhase);
-         const std::string testRunResultLine = String::Concat("    Result: Fatal ... exception thrown during test phase: ", testPhaseName);
+         const std::string testRunResultLine = String::Concat("  RunResult: Fatal ... exception thrown during test phase: ", testPhaseName);
          _console->WriteLine(testRunResultLine);
 
          const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;

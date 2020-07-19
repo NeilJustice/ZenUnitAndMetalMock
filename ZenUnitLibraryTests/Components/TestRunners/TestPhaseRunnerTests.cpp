@@ -344,7 +344,7 @@ namespace ZenUnit
          { "   EndTime: " + endTime },
          { "  Duration: " + testRunDurationInSeconds + " seconds" },
          { "RandomSeed: " + to_string(zenUnitArgs.randomSeed) },
-         { "    Result: Fatal ... exception thrown during test phase: " + testPhaseName }
+         { "  RunResult: Fatal ... exception thrown during test phase: " + testPhaseName }
       }));
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZENMOCK(_testPhaseTranslatorMock->TestPhaseToTestPhaseNameMock.CalledOnceWith(testPhase));

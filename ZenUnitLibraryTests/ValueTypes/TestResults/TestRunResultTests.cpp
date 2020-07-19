@@ -235,10 +235,10 @@ namespace ZenUnit
       size_t numberOfFailedTestCases,
       size_t numberOfTotalTests,
       const char* expectedClosingLineTestsCountText,
-      "[ZenUnit]", Color::Green, size_t(0), size_t(1), "All 1 test passed!",
-      "[ZenUnit]", Color::Green, size_t(0), size_t(2), "All 2 tests passed!",
-      "[ZenUnit]", Color::Green, size_t(0), size_t(3), "All 3 tests passed!",
-      "[ZenUnit]", Color::Green, size_t(0), size_t(3), "All 3 tests passed!",
+      "[ZenUnit]", Color::Green, size_t(0), size_t(1), "All 1 test passed",
+      "[ZenUnit]", Color::Green, size_t(0), size_t(2), "All 2 tests passed",
+      "[ZenUnit]", Color::Green, size_t(0), size_t(3), "All 3 tests passed",
+      "[ZenUnit]", Color::Green, size_t(0), size_t(3), "All 3 tests passed",
       ">>-FAIL->", Color::Red, size_t(1), size_t(1), "1 of 1 test failed",
       ">>-FAIL->", Color::Red, size_t(1), size_t(2), "1 of 2 tests failed",
       ">>-FAIL->", Color::Red, size_t(1), size_t(3), "1 of 3 tests failed",
@@ -273,7 +273,7 @@ namespace ZenUnit
       const string expectedStartTimeLine  = "  StartTime: " + startDateTime;
       const string expectedEndTimeLine    = "    EndTime: " + dateTimeNow;
       const string expectedDurationLine   = "   Duration: " + testRunElapsedSeconds + " seconds";
-      const string expectedTestRunResultLine = String::Concat("     Result: ", expectedClosingLineTestsCountText);
+      const string expectedRunResultLine = String::Concat("  RunResult: ", expectedClosingLineTestsCountText);
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZENMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
       {
@@ -282,7 +282,7 @@ namespace ZenUnit
          { expectedStartTimeLine },
          { expectedEndTimeLine },
          { expectedDurationLine },
-         { expectedTestRunResultLine }
+         { expectedRunResultLine }
       }));
    }
 
