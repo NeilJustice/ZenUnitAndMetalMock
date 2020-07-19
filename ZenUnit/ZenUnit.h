@@ -4490,7 +4490,7 @@ namespace ZenUnit
          _console->WriteLine("    UserName: " + userNameRunningThisProgram);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
-         _console->WriteLine("  RandomSeed: " + std::to_string(zenUnitArgs.randomSeed));
+         _console->WriteLine("  RandomSeed: --random-seed=" + std::to_string(zenUnitArgs.randomSeed));
 
          _console->WriteColor("[ZenUnit]", Color::Green);
          const size_t numberOfTestClassesToBeRun = testClassRunnerRunner->NumberOfTestClassesToBeRun();
@@ -4631,7 +4631,7 @@ namespace ZenUnit
             _console->WriteLine(completedCommandLineMessage);
 
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
-            const std::string randomSeedMessage = String::Concat(" RandomSeed: ", zenUnitArgs.randomSeed);
+            const std::string randomSeedMessage = String::Concat(" RandomSeed: --random-seed=", zenUnitArgs.randomSeed);
             _console->WriteLine(randomSeedMessage);
 
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
@@ -4936,33 +4936,36 @@ namespace ZenUnit
    private:
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const TestPhaseTranslator> _testPhaseTranslator;
-      std::unique_ptr<const TwoArgMemberFunctionCaller<void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>> _voidTwoArgMemberFunctionCaller;
       std::unique_ptr<const Watch> _watch;
+      // Function Callers
+      std::unique_ptr<const TwoArgMemberFunctionCaller<void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>> _voidTwoArgMemberFunctionCaller;
       std::function<const ZenUnitArgs&()> _call_ZenUnitTestRunner_GetZenUnitArgs;
-
+      // Mutables
       std::unique_ptr<Stopwatch> _testPhaseStopwatch;
    public:
       TestPhaseRunner() noexcept
          : _console(std::make_unique<Console>())
          , _testPhaseTranslator(std::make_unique<TestPhaseTranslator>())
-         , _voidTwoArgMemberFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>>())
          , _watch(new Watch)
+         // Function Callers
+         , _voidTwoArgMemberFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>>())
          , _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnitTestRunner::GetZenUnitArgs)
+         // Mutables
          , _testPhaseStopwatch(std::make_unique<Stopwatch>())
       {
       }
 
       virtual ~TestPhaseRunner() = default;
 
-      virtual TestPhaseResult RunTestPhase(void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const;
+      virtual TestPhaseResult RunTestPhase(void(*testPhaseFunction)(Test*), Test* testPointer, TestPhase testPhase) const;
 
       void FailFastIfTestOutcomeIsNotSuccessAndFailFastModeIsTrue(TestOutcome testOutcome, const ZenUnitArgs& zenUnitArgs) const
       {
          if (testOutcome != TestOutcome::Success && zenUnitArgs.failFast)
          {
-            const std::string failFastMessage =
-               "\n[ZenUnit] A test failed in --fail-fast mode. Exiting with code 1.\n[ZenUnit] Command line: " +
-               zenUnitArgs.commandLine + " (random seed " + std::to_string(ZenUnitRandomSeed::value) + ")";
+            const std::string failFastMessage = String::Concat(
+               "\n[ZenUnit] A test failed in --fail-fast mode. Exiting with code 1.\n[ZenUnit] Command line: ",
+               zenUnitArgs.commandLine, " (--random-seed=", ZenUnitRandomSeed::value, ')');
             _console->WriteLineAndExit(failFastMessage, 1);
          }
       }
@@ -4986,11 +4989,11 @@ namespace ZenUnit
          _console->WriteLine("  Duration: " + testRunDurationInSeconds + " seconds");
 
          _console->WriteColor(">>------> ", Color::Red);
-         _console->WriteLine("RandomSeed: " + std::to_string(zenUnitArgs.randomSeed));
+         _console->WriteLine("RandomSeed: --random-seed=" + std::to_string(zenUnitArgs.randomSeed));
 
          _console->WriteColor(">>------> ", Color::Red);
          const char* const testPhaseName = _testPhaseTranslator->TestPhaseToTestPhaseName(testPhase);
-         const std::string testRunResultLine = String::Concat("  RunResult: Fatal ... exception thrown during test phase: ", testPhaseName);
+         const std::string testRunResultLine = String::Concat("    Result: Fatal ... exception thrown during test phase: ", testPhaseName);
          _console->WriteLine(testRunResultLine);
 
          const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;

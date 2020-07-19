@@ -269,7 +269,7 @@ namespace ZenUnit
          { expectedSuccessOrFailLinePrefix, expectedColor }
       }));
       const string expectedCompletedLine  = "  Completed: " + args.commandLine;
-      const string expectedRandomSeedLine = " RandomSeed: " + to_string(args.randomSeed);
+      const string expectedRandomSeedLine = " RandomSeed: --random-seed=" + to_string(args.randomSeed);
       const string expectedStartTimeLine  = "  StartTime: " + startDateTime;
       const string expectedEndTimeLine    = "    EndTime: " + dateTimeNow;
       const string expectedDurationLine   = "   Duration: " + testRunElapsedSeconds + " seconds";

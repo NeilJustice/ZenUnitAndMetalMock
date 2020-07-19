@@ -26,12 +26,14 @@ namespace ZenUnit
    TestPhaseRunner _testPhaseRunner;
    ConsoleMock* _consoleMock = nullptr;
    TestPhaseTranslatorMock* _testPhaseTranslatorMock = nullptr;
+   // Function Callers
    VoidTwoArgMemberFunctionCallerMock<TestPhaseRunner, TestOutcome, const ZenUnitArgs&>* _voidTwoArgMemberFunctionCallerMock = nullptr;
    WatchMock* _watchMock = nullptr;
-   unique_ptr<TestMock> _testMock;
    ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetZenUnitArgs)
-   StopwatchMock* _stopwatchMock = nullptr;
-
+   // Mutables
+   StopwatchMock* _testPhaseStopwatchMock = nullptr;
+   // Testing
+   unique_ptr<TestMock> _testMock;
    const unsigned _microseconds = ZenUnit::Random<unsigned>();
    const string _testPhaseSuffix = ZenUnit::Random<string>();
 
@@ -39,11 +41,13 @@ namespace ZenUnit
    {
       _testPhaseRunner._console.reset(_consoleMock = new ConsoleMock);
       _testPhaseRunner._testPhaseTranslator.reset(_testPhaseTranslatorMock = new TestPhaseTranslatorMock);
-      _testPhaseRunner._testPhaseStopwatch.reset(_stopwatchMock = new StopwatchMock);
-      _testPhaseRunner._voidTwoArgMemberFunctionCaller.reset(
-         _voidTwoArgMemberFunctionCallerMock = new VoidTwoArgMemberFunctionCallerMock<TestPhaseRunner, TestOutcome, const ZenUnitArgs&>);
       _testPhaseRunner._watch.reset(_watchMock = new WatchMock);
+      // Function Callers
+      _testPhaseRunner._voidTwoArgMemberFunctionCaller.reset(_voidTwoArgMemberFunctionCallerMock = new VoidTwoArgMemberFunctionCallerMock<TestPhaseRunner, TestOutcome, const ZenUnitArgs&>);
       _testPhaseRunner._call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_ZENMOCK_OBJECT(GetZenUnitArgsMock);
+      // Mutables
+      _testPhaseRunner._testPhaseStopwatch.reset(_testPhaseStopwatchMock = new StopwatchMock);
+      // Testing
       _testMock = make_unique<TestMock>();
    }
 
@@ -65,14 +69,14 @@ namespace ZenUnit
 
    void ExpectStopwatchStartAndStopCalls()
    {
-      _stopwatchMock->StartMock.Expect();
-      _stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.Return(_microseconds);
+      _testPhaseStopwatchMock->StartMock.Expect();
+      _testPhaseStopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.Return(_microseconds);
    }
 
    void AssertStopwatchStartAndStopCalled()
    {
-      ZENMOCK(_stopwatchMock->StartMock.CalledOnce());
-      ZENMOCK(_stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.CalledOnce());
+      ZENMOCK(_testPhaseStopwatchMock->StartMock.CalledOnce());
+      ZENMOCK(_testPhaseStopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.CalledOnce());
    }
 
    static int s_numberOfNoThrowCalls;
@@ -302,9 +306,9 @@ namespace ZenUnit
       zenUnitArgs.alwaysExit0 = alwaysExit0;
       GetZenUnitArgsMock.Return(zenUnitArgs);
 
-      _stopwatchMock->StartMock.Expect();
+      _testPhaseStopwatchMock->StartMock.Expect();
 
-      const string testRunDurationInSeconds = _stopwatchMock->StopAndGetElapsedSecondsMock.ReturnRandom();
+      const string testRunDurationInSeconds = _testPhaseStopwatchMock->StopAndGetElapsedSecondsMock.ReturnRandom();
 
       _consoleMock->WriteLineColorMock.Expect();
 
@@ -323,9 +327,9 @@ namespace ZenUnit
       //
       const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase(ThrowInt, _testMock.get(), testPhase);
       //
-      ZENMOCK(_stopwatchMock->StartMock.CalledOnce());
+      ZENMOCK(_testPhaseStopwatchMock->StartMock.CalledOnce());
       ZENMOCK(GetZenUnitArgsMock.CalledOnce());
-      ZENMOCK(_stopwatchMock->StopAndGetElapsedSecondsMock.CalledOnce());
+      ZENMOCK(_testPhaseStopwatchMock->StopAndGetElapsedSecondsMock.CalledOnce());
       ZENMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith("\n==========================\nFatal ... Exception Thrown\n==========================\n", Color::Red));
       ZENMOCK(_consoleMock->WriteColorMock.CalledAsFollows(
       {
@@ -343,8 +347,8 @@ namespace ZenUnit
          { " StartTime: " + zenUnitArgs.startDateTime },
          { "   EndTime: " + endTime },
          { "  Duration: " + testRunDurationInSeconds + " seconds" },
-         { "RandomSeed: " + to_string(zenUnitArgs.randomSeed) },
-         { "  RunResult: Fatal ... exception thrown during test phase: " + testPhaseName }
+         { "RandomSeed: --random-seed=" + to_string(zenUnitArgs.randomSeed) },
+         { "    Result: Fatal ... exception thrown during test phase: " + testPhaseName }
       }));
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZENMOCK(_testPhaseTranslatorMock->TestPhaseToTestPhaseNameMock.CalledOnceWith(testPhase));
@@ -380,9 +384,9 @@ namespace ZenUnit
       //
       if (expectFailFast)
       {
-         const string expectedFailFastMessage =
-            "\n[ZenUnit] A test failed in --fail-fast mode. Exiting with code 1.\n[ZenUnit] Command line: " +
-            args.commandLine + " (random seed " + std::to_string(ZenUnitRandomSeed::value) + ")";
+         const string expectedFailFastMessage = String::Concat(
+            "\n[ZenUnit] A test failed in --fail-fast mode. Exiting with code 1.\n[ZenUnit] Command line: ",
+            args.commandLine, " (--random-seed=", ZenUnitRandomSeed::value, ')');
          ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedFailFastMessage, 1));
       }
    }

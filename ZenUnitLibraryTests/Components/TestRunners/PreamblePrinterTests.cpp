@@ -67,7 +67,7 @@ namespace ZenUnit
          { "   Directory: " + currentDirectoryPath },
          { " MachineName: " + machineName },
          { "    UserName: " + userNameRunningThisProgram },
-         { "  RandomSeed: " + to_string(args.randomSeed) },
+         { "  RandomSeed: --random-seed=" + to_string(args.randomSeed) },
          { " TestClasses: " + std::to_string(numberOfTestClassesToBeRun) },
          { "   StartTime: " + startDateTime + "\n" }
       }));

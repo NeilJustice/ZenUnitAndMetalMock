@@ -1418,7 +1418,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
             console.WriteColor("\n>>------>", ZenUnit::Color::Red);
             console.WriteLine("  Completed: " + zenUnitArgs.commandLine);
             console.WriteColor(">>------>", ZenUnit::Color::Red);
-            console.WriteLine(" RandomSeed: " + std::to_string(zenUnitArgs.randomSeed));
+            console.WriteLine(" RandomSeed: --random-seed=" + std::to_string(zenUnitArgs.randomSeed));
             console.WriteColor(">>------>", ZenUnit::Color::Red);
             console.WriteLine("  StartTime: " + zenUnitArgs.startDateTime);
             console.WriteColor(">>------>", ZenUnit::Color::Red);
