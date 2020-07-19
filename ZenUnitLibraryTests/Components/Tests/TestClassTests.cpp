@@ -11,7 +11,7 @@ namespace ZenUnit
    AFACT(DefaultConstructor_DoesNotThrow)
    AFACT(Startup_DoesNotThrow)
    AFACT(Cleanup_DoesNotThrow)
-   AFACT(TestFromTestNXNPmfToken_NotFound_Exits0IfExitZeroIsTrueOtherwiseExits1_ReturnsNullptr)
+   FACTS(GetTestPointerForTestNXNPmfToken_PMFTokenIsNotFoundInPmfTokenToTestPointerMap_ExitsWithCode1OrWithCode0IfAlwaysExit0IsTrue)
    EVIDENCE
 
    TestClass _testClass;
@@ -31,41 +31,44 @@ namespace ZenUnit
       _testClass.Cleanup();
    }
 
-   TEST(TestFromTestNXNPmfToken_NotFound_Exits0IfExitZeroIsTrueOtherwiseExits1_ReturnsNullptr)
+   TEST3X3(GetTestPointerForTestNXNPmfToken_PMFTokenIsNotFoundInPmfTokenToTestPointerMap_ExitsWithCode1OrWithCode0IfAlwaysExit0IsTrue,
+      bool alwaysExit0, int expectedExitCode, Color expectedExitCodeLineColor,
+      true, 0, Color::Green,
+      false, 1, Color::Red)
    {
       ConsoleMock consoleMock;
+      consoleMock.WriteLineMock.Expect();
       consoleMock.WriteLineColorMock.Expect();
 
       ZenUnitTestRunnerMock zenUnitTestRunnerMock;
-      const ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
+      ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
+      zenUnitArgs.alwaysExit0 = alwaysExit0;
       zenUnitTestRunnerMock.VirtualGetZenUnitArgsMock.Return(zenUnitArgs);
 
       ExitCallerMock exitCallerMock;
       exitCallerMock.CallExitMock.Expect();
       //
-      const std::unique_ptr<ZenUnit::Test>* test = TestClass::TestFromTestNXNPmfToken(nullptr, &consoleMock, &zenUnitTestRunnerMock, &exitCallerMock);
+      const std::unique_ptr<ZenUnit::Test>* testPointer =
+         TestClass::GetTestPointerForTestNXNPmfToken(nullptr, &consoleMock, &zenUnitTestRunnerMock, &exitCallerMock);
       //
       ZENMOCK(zenUnitTestRunnerMock.VirtualGetZenUnitArgsMock.CalledOnce());
-
-      const int expectedExitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
-      const string expectedMessage = R"(The above test name was declared using FACTS(TestName).
-
-Therefore a TESTNXN(TestName, ...) definition was expected to be found in the EVIDENCE section of the test class.
-
-Unexpectedly a TEST(TestName) definition was found in the EVIDENCE section of the test class.
-
-The fix for this error is to change FACTS(TestName) to AFACT(TestName)
-
-or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
-
-Exiting with code )" + std::to_string(expectedExitCode) + ".\n";
+      const string expectedExitCodeMessage = String::Concat("[ZenUnit] ExitCode: ", expectedExitCode);
       ZENMOCK(consoleMock.WriteLineColorMock.CalledAsFollows(
-         {
-            { "====================================\nZenUnit Test Definition Syntax Error\n====================================\n", Color::Red },
-            { expectedMessage, Color::Red }
-         }));
+      {
+         { "=======================================================\nZenUnit Test Declaration Test Definition Mismatch Error\n=======================================================", Color::Red },
+         { expectedExitCodeMessage, expectedExitCodeLineColor }
+      }));
+      const string expectedErrorMessage = ZenUnit::String::Concat(R"(The above test name was declared using FACTS(TestName).
+
+Unexpectedly, a corresponding TESTNXN(TestName, ...) test definition was not found in the EVIDENCE section of this test class.
+
+To fix this mismatch, either change FACTS(TestName) to AFACT(TestName) in the test declaration section of this test class,
+
+or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10, in the EVIDENCE section of this test class.
+)");
+      ZENMOCK(consoleMock.WriteLineMock.CalledOnceWith(expectedErrorMessage));
       ZENMOCK(exitCallerMock.CallExitMock.CalledOnceWith(expectedExitCode));
-      POINTER_IS_NULL(test);
+      POINTER_IS_NULL(testPointer);
    }
 
    RUN_TESTS(TestClassTests)

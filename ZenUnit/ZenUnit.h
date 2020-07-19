@@ -2737,8 +2737,11 @@ namespace ZenUnit
    }
 
    template<typename PointerType, typename... MessageTypes>
-   void POINTER_IS_NULL_ThrowAnomaly(VRText<PointerType> pointerVRT,
-      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void POINTER_IS_NULL_ThrowAnomaly(
+      VRText<PointerType> pointerVRT,
+      FileLine fileLine,
+      const char* messagesText,
+      MessageTypes&&... messages)
    {
       const std::string actualField = ToStringer::ToString(pointerVRT.value);
       throw Anomaly("POINTER_IS_NULL", pointerVRT.text, "", "", messagesText, Anomaly::Default(),
@@ -2746,8 +2749,11 @@ namespace ZenUnit
    }
 
    template<typename PointerType, typename... MessageTypes>
-   void POINTER_IS_NULL_Defined(VRText<PointerType> pointerVRT,
-      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void POINTER_IS_NULL_Defined(
+      VRText<PointerType> pointerVRT,
+      FileLine fileLine,
+      const char* messagesText,
+      MessageTypes&&... messages)
    {
       const bool pointerIsNull = pointerVRT.value == nullptr;
       if (!pointerIsNull)
@@ -2757,16 +2763,23 @@ namespace ZenUnit
    }
 
    template<typename... MessageTypes>
-   void IS_TRUE_ThrowAnomaly(const char* valueText,
-      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_TRUE_ThrowAnomaly(
+      const char* valueText,
+      FileLine fileLine,
+      const char* messagesText,
+      MessageTypes&&... messages)
    {
       throw Anomaly("IS_TRUE", valueText, "", "", messagesText, Anomaly::Default(),
          "true", "false", ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename ValueType, typename DefaultValueType, typename... MessageTypes>
-   void IS_ZERO_ThrowAnomaly(VRText<ValueType> valueVRT, const DefaultValueType& defaultValue,
-      FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
+   void IS_ZERO_ThrowAnomaly(
+      VRText<ValueType> valueVRT,
+      const DefaultValueType& defaultValue,
+      FileLine fileLine,
+      const char* messagesText,
+      MessageTypes&&... messages)
    {
       const std::string expectedField = ToStringer::ToString(defaultValue);
       const std::string actualField = ToStringer::ToString(valueVRT.value);
@@ -4292,7 +4305,9 @@ namespace ZenUnit
          return testNameFilterMatchesTestName;
       }
 
-      friend bool operator<(const std::unique_ptr<TestClassRunner>& leftTestClassRunner, const std::unique_ptr<TestClassRunner>& rightTestClassRunner)
+      friend bool operator<(
+         const std::unique_ptr<TestClassRunner>& leftTestClassRunner,
+         const std::unique_ptr<TestClassRunner>& rightTestClassRunner)
       {
          const char* leftTestClassName = leftTestClassRunner->TestClassName();
          const char* rightTestClassName = rightTestClassRunner->TestClassName();
@@ -4315,7 +4330,7 @@ namespace ZenUnit
    {
       friend class TestClassRunnerRunnerTests;
    private:
-      std::unique_ptr<const Sorter<std::vector<std::unique_ptr<TestClassRunner>>>> _sorter;
+      std::unique_ptr<const Sorter<std::vector<std::unique_ptr<TestClassRunner>>>> _testClassRunnerSorter;
       std::unique_ptr<const Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>> _transformer;
       using TwoArgMemberAnyerType = TwoArgMemberAnyer<
          std::vector<TestNameFilter>,
@@ -4334,7 +4349,7 @@ namespace ZenUnit
       std::vector<std::unique_ptr<TestClassRunner>> _testClassRunners;
    public:
       TestClassRunnerRunner() noexcept
-         : _sorter(std::make_unique<Sorter<std::vector<std::unique_ptr<TestClassRunner>>>>())
+         : _testClassRunnerSorter(std::make_unique<Sorter<std::vector<std::unique_ptr<TestClassRunner>>>>())
          , _transformer(std::make_unique<Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>>())
          , _twoArgMemberAnyer(std::make_unique<TwoArgMemberAnyerType>())
          , _twoArgMemberForEacher(std::make_unique<TwoArgMemberForEacherType>())
@@ -4388,7 +4403,7 @@ namespace ZenUnit
          }
          else
          {
-            _sorter->Sort(&_testClassRunners); // Sort test class runners by test class name
+            _testClassRunnerSorter->Sort(&_testClassRunners); // Sort test class runners by test class name
             testClassResults = _transformer->Transform(&_testClassRunners, &TestClassRunnerRunner::RunTestClassRunner);
          }
          return testClassResults;
@@ -5588,10 +5603,10 @@ namespace ZenUnit
    private:
       virtual const std::unique_ptr<Test>* PmfTokenToTest() const
       {
-         const std::unique_ptr<Test>* const test = TestClassType::TestFromTestNXNPmfToken(
+         const std::unique_ptr<Test>* const testPointer = TestClassType::GetTestPointerForTestNXNPmfToken(
             _testNXNPmfToken, Console::Instance(), ZenUnitTestRunner::Instance(), ExitCaller::Instance());
-         assert_true(test != nullptr);
-         return test;
+         assert_true(testPointer != nullptr);
+         return testPointer;
       }
    };
 
@@ -5855,56 +5870,56 @@ namespace ZenUnit
    public:
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
       static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call1ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+         Call1ArgMemberFunction(ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ull)
          {
-            (classPtr->*std::forward<MemberFunction>(memberFunction))(
+            (classPointer->*std::forward<MemberFunction>(memberFunction))(
                I + 1ull,
                std::get<I>(args));
          }
          Call1ArgMemberFunction<ClassType, MemberFunction, I + 1ull, ArgTypes...>(
-            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 1ull, args);
+            classPointer, std::forward<MemberFunction>(memberFunction), argsIndex - 1ull, args);
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
       static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call2ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+         Call2ArgMemberFunction(ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ull)
          {
-            (classPtr->*std::forward<MemberFunction>(memberFunction))(
+            (classPointer->*std::forward<MemberFunction>(memberFunction))(
                I / 2ull + 1ull,
                std::get<I>(args),
                std::get<I + 1ull>(args));
          }
          Call2ArgMemberFunction<ClassType, MemberFunction, I + 2ull, ArgTypes...>(
-            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 2, args);
+            classPointer, std::forward<MemberFunction>(memberFunction), argsIndex - 2, args);
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
       static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call3ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+         Call3ArgMemberFunction(ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ull)
          {
-            (classPtr->*std::forward<MemberFunction>(memberFunction))(
+            (classPointer->*std::forward<MemberFunction>(memberFunction))(
                I / 3ull + 1ull,
                std::get<I>(args),
                std::get<I + 1ull>(args),
                std::get<I + 2ull>(args));
          }
          Call3ArgMemberFunction<ClassType, MemberFunction, I + 3ull, ArgTypes...>(
-            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 3ull, args);
+            classPointer, std::forward<MemberFunction>(memberFunction), argsIndex - 3ull, args);
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
       static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call4ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+         Call4ArgMemberFunction(ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ull)
          {
-            (classPtr->*std::forward<MemberFunction>(memberFunction))(
+            (classPointer->*std::forward<MemberFunction>(memberFunction))(
                I / 4ull + 1ull,
                std::get<I>(args),
                std::get<I + 1ull>(args),
@@ -5912,16 +5927,16 @@ namespace ZenUnit
                std::get<I + 3ull>(args));
          }
          Call4ArgMemberFunction<ClassType, MemberFunction, I + 4ull, ArgTypes...>(
-            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 4ull, args);
+            classPointer, std::forward<MemberFunction>(memberFunction), argsIndex - 4ull, args);
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
       static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call5ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+         Call5ArgMemberFunction(ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ull)
          {
-            (classPtr->*std::forward<MemberFunction>(memberFunction))(
+            (classPointer->*std::forward<MemberFunction>(memberFunction))(
                I / 5ull + 1ull,
                std::get<I>(args),
                std::get<I + 1ull>(args),
@@ -5930,16 +5945,16 @@ namespace ZenUnit
                std::get<I + 4ull>(args));
          }
          Call5ArgMemberFunction<ClassType, MemberFunction, I + 5ull, ArgTypes...>(
-            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 5ull, args);
+            classPointer, std::forward<MemberFunction>(memberFunction), argsIndex - 5ull, args);
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
       static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call6ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+         Call6ArgMemberFunction(ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ull)
          {
-            (classPtr->*std::forward<MemberFunction>(memberFunction))(
+            (classPointer->*std::forward<MemberFunction>(memberFunction))(
                I / 6ull + 1ull,
                std::get<I>(args),
                std::get<I + 1ull>(args),
@@ -5949,16 +5964,16 @@ namespace ZenUnit
                std::get<I + 5ull>(args));
          }
          Call6ArgMemberFunction<ClassType, MemberFunction, I + 6ull, ArgTypes...>(
-            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 6ull, args);
+            classPointer, std::forward<MemberFunction>(memberFunction), argsIndex - 6ull, args);
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
       static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call7ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+         Call7ArgMemberFunction(ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ull)
          {
-            (classPtr->*std::forward<MemberFunction>(memberFunction))(
+            (classPointer->*std::forward<MemberFunction>(memberFunction))(
                I / 7ull + 1ull,
                std::get<I>(args),
                std::get<I + 1ull>(args),
@@ -5969,16 +5984,16 @@ namespace ZenUnit
                std::get<I + 6ull>(args));
          }
          Call7ArgMemberFunction<ClassType, MemberFunction, I + 7ull, ArgTypes...>(
-            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 7ull, args);
+            classPointer, std::forward<MemberFunction>(memberFunction), argsIndex - 7ull, args);
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
       static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call8ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+         Call8ArgMemberFunction(ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ull)
          {
-            (classPtr->*std::forward<MemberFunction>(memberFunction))(
+            (classPointer->*std::forward<MemberFunction>(memberFunction))(
                I / 8ull + 1ull,
                std::get<I>(args),
                std::get<I + 1ull>(args),
@@ -5990,16 +6005,16 @@ namespace ZenUnit
                std::get<I + 7ull>(args));
          }
          Call8ArgMemberFunction<ClassType, MemberFunction, I + 8ull, ArgTypes...>(
-            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 8ull, args);
+            classPointer, std::forward<MemberFunction>(memberFunction), argsIndex - 8ull, args);
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
       static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call9ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+         Call9ArgMemberFunction(ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ull)
          {
-            (classPtr->*std::forward<MemberFunction>(memberFunction))(
+            (classPointer->*std::forward<MemberFunction>(memberFunction))(
                I / 9ull + 1ull,
                std::get<I>(args),
                std::get<I + 1ull>(args),
@@ -6012,16 +6027,16 @@ namespace ZenUnit
                std::get<I + 8ull>(args));
          }
          Call9ArgMemberFunction<ClassType, MemberFunction, I + 9ull, ArgTypes...>(
-            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 9ull, args);
+            classPointer, std::forward<MemberFunction>(memberFunction), argsIndex - 9ull, args);
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
       static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call10ArgMemberFunction(ClassType* classPtr, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+         Call10ArgMemberFunction(ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ull)
          {
-            (classPtr->*std::forward<MemberFunction>(memberFunction))(
+            (classPointer->*std::forward<MemberFunction>(memberFunction))(
                I / 10ull + 1ull,
                std::get<I>(args),
                std::get<I + 1ull>(args),
@@ -6035,7 +6050,7 @@ namespace ZenUnit
                std::get<I + 9ull>(args));
          }
          Call10ArgMemberFunction<ClassType, MemberFunction, I + 10ull, ArgTypes...>(
-            classPtr, std::forward<MemberFunction>(memberFunction), argsIndex - 10ull, args);
+            classPointer, std::forward<MemberFunction>(memberFunction), argsIndex - 10ull, args);
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I, typename... ArgTypes>
@@ -6266,7 +6281,8 @@ namespace ZenUnit
    private:
       const Test10X10MemberFunction _test10X10MemberFunction;
    public:
-      Test10X10(const char* testClassName, const char* testName, Test10X10MemberFunction test10X10MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
+      Test10X10(
+         const char* testClassName, const char* testName, Test10X10MemberFunction test10X10MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
          : TestNXN<TestClassType, 10, TestCaseArgTypes...>(testClassName, testName, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
          , _test10X10MemberFunction(test10X10MemberFunction)
       {
@@ -6285,18 +6301,19 @@ namespace ZenUnit
    private:
       static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>& GetTestNXNPmfTokenToTestMap()
       {
-         static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> testNXNPmfTokenToTest;
-         return testNXNPmfTokenToTest;
+         static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> testNXNPmfTokenToTestPointer;
+         return testNXNPmfTokenToTestPointer;
       }
 
       static std::nullptr_t RegisterTestNXN(const PmfToken* pmfToken, const std::function<Test*()>& operatorNewTestNXN)
       {
          if (!DerivedTestClass::ZenUnit_allNXNTestsHaveBeenRegistered)
          {
-            Test* const newTestNXN = operatorNewTestNXN();
-            std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>& testNXNPmfTokenToTest = GetTestNXNPmfTokenToTestMap();
-            const bool didEmplaceTestNXN = testNXNPmfTokenToTest.emplace(pmfToken, newTestNXN).second;
-            assert_true(didEmplaceTestNXN);
+            Test* const newTestNXNPointer = operatorNewTestNXN();
+            std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>&
+               testNXNPmfTokenToTestPointer = GetTestNXNPmfTokenToTestMap();
+            const bool didEmplaceTestNXNPointer = testNXNPmfTokenToTestPointer.emplace(pmfToken, newTestNXNPointer).second;
+            assert_true(didEmplaceTestNXNPointer);
          }
          return nullptr;
       }
@@ -6309,37 +6326,40 @@ namespace ZenUnit
          DerivedTestClass::ZenUnit_allNXNTestsHaveBeenRegistered = true;
       }
 
-      static const std::unique_ptr<ZenUnit::Test>* TestFromTestNXNPmfToken(
+      static const std::unique_ptr<ZenUnit::Test>* GetTestPointerForTestNXNPmfToken(
          const PmfToken* pmfToken,
          const Console* console,
          const ZenUnitTestRunner* zenUnitTestRunner,
          const ExitCaller* exitCaller)
       {
-         const std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>& testNXNPmfTokenToTest = GetTestNXNPmfTokenToTestMap();
-         const std::unordered_map<const PmfToken*, std::unique_ptr<Test>>::const_iterator findIter = testNXNPmfTokenToTest.find(pmfToken);
-         if (findIter == testNXNPmfTokenToTest.end())
+         const std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>&
+            testNXNPmfTokenToTestPointer = GetTestNXNPmfTokenToTestMap();
+         const std::unordered_map<const PmfToken*, std::unique_ptr<Test>>::const_iterator
+            findIter = testNXNPmfTokenToTestPointer.find(pmfToken);
+         if (findIter == testNXNPmfTokenToTestPointer.end())
          {
-            console->WriteLineColor("====================================\nZenUnit Test Definition Syntax Error\n====================================\n", Color::Red);
+            console->WriteLineColor("=======================================================\nZenUnit Test Declaration Test Definition Mismatch Error\n=======================================================", Color::Red);
             const ZenUnitArgs& zenUnitArgs = zenUnitTestRunner->VirtualGetZenUnitArgs();
             const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
-            console->WriteLineColor(R"(The above test name was declared using FACTS(TestName).
+            const std::string testSyntaxMismatchErrorMessage = R"(The above test name was declared using FACTS(TestName).
 
-Therefore a TESTNXN(TestName, ...) definition was expected to be found in the EVIDENCE section of the test class.
+Unexpectedly, a corresponding TESTNXN(TestName, ...) test definition was not found in the EVIDENCE section of this test class.
 
-Unexpectedly a TEST(TestName) definition was found in the EVIDENCE section of the test class.
+To fix this mismatch, either change FACTS(TestName) to AFACT(TestName) in the test declaration section of this test class,
 
-The fix for this error is to change FACTS(TestName) to AFACT(TestName)
-
-or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10.
-
-Exiting with code )" + std::to_string(exitCode) + ".\n", Color::Red);
+or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10, in the EVIDENCE section of this test class.
+)";
+            console->WriteLine(testSyntaxMismatchErrorMessage);
+            const std::string exitCodeLine = String::Concat("[ZenUnit] ExitCode: ", exitCode);
+            const Color exitCodeLineColor = exitCode == 0 ? Color::Green : Color::Red;
+            console->WriteLineColor(exitCodeLine, exitCodeLineColor);
             exitCaller->CallExit(exitCode);
             return nullptr;
          }
          else
          {
-            const std::unique_ptr<Test>* const testNXN = &findIter->second;
-            return testNXN;
+            const std::unique_ptr<Test>* const testPointer = &findIter->second;
+            return testPointer;
          }
       }
 

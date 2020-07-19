@@ -8,25 +8,25 @@ namespace ZenUnit
    class TestingTestClass_SpecSectionTestNXNTests
    {
    public:
-      static bool didCallTestNXNPmfToTest;
-      static unique_ptr<Test> TestNXNPmfToTestReturnValue;
+      static bool didCall_GetTestPointerForTestNXNPmfToken;
+      static unique_ptr<Test> returnValue_GetTestPointerForTestNXNPmfToken;
 
-      static const unique_ptr<Test>* TestFromTestNXNPmfToken(
+      static const unique_ptr<Test>* GetTestPointerForTestNXNPmfToken(
          const PmfToken* /*pmfToken*/,
          const Console* /*console*/,
          const ZenUnitTestRunner* /*zenUnitTestRunner*/,
          const ExitCaller* /*exitCaller*/)
       {
-         didCallTestNXNPmfToTest = true;
-         return &TestNXNPmfToTestReturnValue;
+         didCall_GetTestPointerForTestNXNPmfToken = true;
+         return &returnValue_GetTestPointerForTestNXNPmfToken;
       }
 
       void TestFunction(int) {}
       virtual ~TestingTestClass_SpecSectionTestNXNTests() = default;
    };
 
-   bool TestingTestClass_SpecSectionTestNXNTests::didCallTestNXNPmfToTest;
-   unique_ptr<Test> TestingTestClass_SpecSectionTestNXNTests::TestNXNPmfToTestReturnValue;
+   bool TestingTestClass_SpecSectionTestNXNTests::didCall_GetTestPointerForTestNXNPmfToken;
+   unique_ptr<Test> TestingTestClass_SpecSectionTestNXNTests::returnValue_GetTestPointerForTestNXNPmfToken;
 
    TESTS(SpecSectionTestNXNTests)
    AFACT(ThreeArgConstructor_SetsTestName_SetsTestNXNPmf)
@@ -117,12 +117,12 @@ namespace ZenUnit
 
    TEST(PmfTokenToTest_ReturnsTestClassTypeTestNXNPmfToTestReturnValue)
    {
-      TestingTestClass_SpecSectionTestNXNTests::didCallTestNXNPmfToTest = false;
+      TestingTestClass_SpecSectionTestNXNTests::didCall_GetTestPointerForTestNXNPmfToken = false;
       //
       const unique_ptr<Test>* testNXN = _specSectionTestNXN->PmfTokenToTest();
       //
-      IS_TRUE(TestingTestClass_SpecSectionTestNXNTests::didCallTestNXNPmfToTest);
-      ARE_EQUAL(testNXN, &TestingTestClass_SpecSectionTestNXNTests::TestNXNPmfToTestReturnValue);
+      IS_TRUE(TestingTestClass_SpecSectionTestNXNTests::didCall_GetTestPointerForTestNXNPmfToken);
+      ARE_EQUAL(testNXN, &TestingTestClass_SpecSectionTestNXNTests::returnValue_GetTestPointerForTestNXNPmfToken);
    }
 
    TEST(TestFunction_CodeCoverage)

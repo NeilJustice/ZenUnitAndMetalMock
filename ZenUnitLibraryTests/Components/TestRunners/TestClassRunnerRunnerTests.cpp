@@ -30,7 +30,7 @@ namespace ZenUnit
    EVIDENCE
 
    TestClassRunnerRunner _testClassRunnerRunner;
-   SorterMock<vector<unique_ptr<TestClassRunner>>>* _sorterMock = nullptr;
+   SorterMock<vector<unique_ptr<TestClassRunner>>>* _testClassRunnerSorterMock = nullptr;
    TransformerMock<unique_ptr<TestClassRunner>, TestClassResult>* _transformerMock = nullptr;
    using TwoArgMemberAnyerMockType = TwoArgMemberAnyerMock<
       std::vector<TestNameFilter>,
@@ -50,7 +50,7 @@ namespace ZenUnit
    {
       _testClassRunnerRunner._twoArgMemberForEacher.reset(_twoArgMemberForEacherMock = new TwoArgMemberForEacherMockType);
       _testClassRunnerRunner._twoArgMemberAnyer.reset(_twoArgMemberAnyerMock = new TwoArgMemberAnyerMockType);
-      _testClassRunnerRunner._sorter.reset(_sorterMock = new SorterMock<vector<unique_ptr<TestClassRunner>>>);
+      _testClassRunnerRunner._testClassRunnerSorter.reset(_testClassRunnerSorterMock = new SorterMock<vector<unique_ptr<TestClassRunner>>>);
       _testClassRunnerRunner._transformer.reset(_transformerMock = new TransformerMock<unique_ptr<TestClassRunner>, TestClassResult>);
       _testClassRunnerRunner._watch.reset(_watchMock = new WatchMock);
    }
@@ -58,7 +58,7 @@ namespace ZenUnit
    TEST(Constructor_NewsComponents)
    {
       TestClassRunnerRunner testClassRunnerRunner;
-      DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._sorter);
+      DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._testClassRunnerSorter);
       DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._transformer);
       DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._twoArgMemberAnyer);
       DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._twoArgMemberForEacher);
@@ -234,14 +234,14 @@ namespace ZenUnit
       ZenUnitArgs zenUnitArgs;
       IS_FALSE(zenUnitArgs.randomTestOrdering);
 
-      _sorterMock->SortMock.Expect();
+      _testClassRunnerSorterMock->SortMock.Expect();
 
       const vector<TestClassResult> transformReturnValue = ZenUnit::RandomVector<TestClassResult>();
       _transformerMock->TransformMock.Return(transformReturnValue);
       //
       const vector<TestClassResult> testClassResults = _testClassRunnerRunner.RunTestClasses(zenUnitArgs);
       //
-      ZENMOCK(_sorterMock->SortMock.CalledOnceWith(&_testClassRunnerRunner._testClassRunners));
+      ZENMOCK(_testClassRunnerSorterMock->SortMock.CalledOnceWith(&_testClassRunnerRunner._testClassRunners));
 
       ZENMOCK(_transformerMock->TransformMock.CalledOnceWith(
          &_testClassRunnerRunner._testClassRunners, &TestClassRunnerRunner::RunTestClassRunner));
