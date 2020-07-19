@@ -48,10 +48,10 @@ namespace ZenUnit
    }
    TEST(TemplateTwoTypeZenUnitEqualizer_ValuesNotEqualityOperatorEqual_ThrowsEqualizerException)
    {
-      THROWS_EXCEPTION(TwoTypeEqualizer<UserType Comma UserType>::AssertEqual(
-         UserType(1) Comma UserType(2)), EqualizerException, "");
-      THROWS_EXCEPTION(TwoTypeEqualizer<int Comma char>::AssertEqual(
-         1 Comma '1'), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<UserType COMMA UserType>::AssertEqual(
+         UserType(1) COMMA UserType(2)), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<int COMMA char>::AssertEqual(
+         1 COMMA '1'), EqualizerException, "");
    }
 
    TEST(ConstCharPointer_ConstCharPointer_StringsAreBothNullptrOrAreEqual_DoesNotThrowException)
@@ -100,12 +100,12 @@ namespace ZenUnit
    template<typename T1, typename T2>
    static void ThrowsTwoTypeTestCases()
    {
-      THROWS_EXCEPTION(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1("a"), T2("A")), EqualizerException, "");
-      THROWS_EXCEPTION(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1("a"), T2("a ")), EqualizerException, "");
-      THROWS_EXCEPTION(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(nullptr, T2("")), EqualizerException, "");
-      THROWS_EXCEPTION(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(nullptr, T2("a")), EqualizerException, "");
-      THROWS_EXCEPTION(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1(""), nullptr), EqualizerException, "");
-      THROWS_EXCEPTION(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1("a"), nullptr), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<T1 COMMA T2>::AssertEqual(T1("a"), T2("A")), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<T1 COMMA T2>::AssertEqual(T1("a"), T2("a ")), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<T1 COMMA T2>::AssertEqual(nullptr, T2("")), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<T1 COMMA T2>::AssertEqual(nullptr, T2("a")), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<T1 COMMA T2>::AssertEqual(T1(""), nullptr), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<T1 COMMA T2>::AssertEqual(T1("a"), nullptr), EqualizerException, "");
    }
 
    TEST(CharPointer_CharPointer_StringsAreBothNullptrOrBothEqual_DoesNotThrowException)
@@ -149,19 +149,19 @@ namespace ZenUnit
    }
    TEST(ConstCharPointer_StdString_NotEqual_ThrowsEqualizerException)
    {
-      THROWS_EXCEPTION(TwoTypeEqualizer<const char* Comma string>::AssertEqual("a", "A"), EqualizerException, "");
-      THROWS_EXCEPTION(TwoTypeEqualizer<const char* Comma string>::AssertEqual("a", "a "), EqualizerException, "");
-      THROWS_EXCEPTION(TwoTypeEqualizer<const char* Comma string>::AssertEqual(nullptr, ""), EqualizerException, "");
-      THROWS_EXCEPTION(TwoTypeEqualizer<const char* Comma string>::AssertEqual(nullptr, "a"), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<const char* COMMA string>::AssertEqual("a", "A"), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<const char* COMMA string>::AssertEqual("a", "a "), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<const char* COMMA string>::AssertEqual(nullptr, ""), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<const char* COMMA string>::AssertEqual(nullptr, "a"), EqualizerException, "");
    }
 
    template<typename T1, typename T2>
    static void ThrowsStringTwoTypeTestCases()
    {
-      THROWS_EXCEPTION(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1("a"), T2("A")), EqualizerException, "");
-      THROWS_EXCEPTION(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1("a"), T2("a ")), EqualizerException, "");
-      THROWS_EXCEPTION(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1(""), nullptr), EqualizerException, "");
-      THROWS_EXCEPTION(TwoTypeEqualizer<T1 Comma T2>::AssertEqual(T1("a"), nullptr), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<T1 COMMA T2>::AssertEqual(T1("a"), T2("A")), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<T1 COMMA T2>::AssertEqual(T1("a"), T2("a ")), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<T1 COMMA T2>::AssertEqual(T1(""), nullptr), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<T1 COMMA T2>::AssertEqual(T1("a"), nullptr), EqualizerException, "");
    }
 
    TEST(StdString_ConstCharPointer_Equal_DoesNotThrowException)
@@ -197,10 +197,10 @@ namespace ZenUnit
 
    TEST(Int_Unsigned_ThrowsIfIntNegative_OtherwiseCallsAssertEqualUnsignedUnsigned)
    {
-      THROWS_EXCEPTION(TwoTypeEqualizer<int Comma unsigned>::AssertEqual(
-         -2 Comma static_cast<unsigned>(0)), EqualizerException, "");
-      THROWS_EXCEPTION(TwoTypeEqualizer<int Comma unsigned>::AssertEqual(
-         -1 Comma static_cast<unsigned>(0)), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<int COMMA unsigned>::AssertEqual(
+         -2 COMMA static_cast<unsigned>(0)), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<int COMMA unsigned>::AssertEqual(
+         -1 COMMA static_cast<unsigned>(0)), EqualizerException, "");
 
       TwoTypeEqualizer<int, unsigned>::AssertEqual(0, static_cast<unsigned>(0));
       TwoTypeEqualizer<int, unsigned>::AssertEqual(1, static_cast<unsigned>(1));
@@ -210,10 +210,10 @@ namespace ZenUnit
 
    TEST(Int_SizeT_ThrowsIfIntNegative_OtherwiseCallsAssertEqualSizeTSizeT)
    {
-      THROWS_EXCEPTION(TwoTypeEqualizer<int Comma size_t>::AssertEqual(
-         -2 Comma size_t(0)), EqualizerException, "");
-      THROWS_EXCEPTION(TwoTypeEqualizer<int Comma size_t>::AssertEqual(
-         -1 Comma size_t(0)), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<int COMMA size_t>::AssertEqual(
+         -2 COMMA size_t(0)), EqualizerException, "");
+      THROWS_EXCEPTION(TwoTypeEqualizer<int COMMA size_t>::AssertEqual(
+         -1 COMMA size_t(0)), EqualizerException, "");
 
       TwoTypeEqualizer<int, size_t>::AssertEqual(0, static_cast<size_t>(0));
       TwoTypeEqualizer<int, size_t>::AssertEqual(1, static_cast<size_t>(1));

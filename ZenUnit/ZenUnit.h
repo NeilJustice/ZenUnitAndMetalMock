@@ -40,7 +40,7 @@ namespace fs = std::experimental::filesystem;
 namespace fs = std::filesystem;
 #endif
 
-#define Comma , // For when parentheses are not quite enough for the compiler
+#define COMMA , // For those times when parentheses are not enough for the compiler
 
 #define DOTOKENJOIN(a, b) a##b
 

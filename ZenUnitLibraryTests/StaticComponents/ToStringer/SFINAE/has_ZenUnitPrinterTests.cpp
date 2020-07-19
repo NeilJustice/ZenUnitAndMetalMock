@@ -53,10 +53,10 @@ namespace ZenUnit
       IS_TRUE(has_ZenUnitPrinter<vector<int>>::value);
       IS_TRUE(has_ZenUnitPrinter<vector<string>>::value);
 
-      IS_TRUE(has_ZenUnitPrinter<map<int Comma int>>::value);
-      IS_TRUE(has_ZenUnitPrinter<unordered_map<int Comma int>>::value);
-      IS_TRUE(has_ZenUnitPrinter<map<char Comma string>>::value);
-      IS_TRUE(has_ZenUnitPrinter<unordered_map<char Comma string>>::value);
+      IS_TRUE(has_ZenUnitPrinter<map<int COMMA int>>::value);
+      IS_TRUE(has_ZenUnitPrinter<unordered_map<int COMMA int>>::value);
+      IS_TRUE(has_ZenUnitPrinter<map<char COMMA string>>::value);
+      IS_TRUE(has_ZenUnitPrinter<unordered_map<char COMMA string>>::value);
 
       IS_TRUE(has_ZenUnitPrinter<set<int>>::value);
       IS_TRUE(has_ZenUnitPrinter<unordered_set<int>>::value);
