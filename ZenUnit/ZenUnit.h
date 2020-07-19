@@ -4618,13 +4618,13 @@ namespace ZenUnit
             {
                tripletLinesPrefix = "[ZenUnit]";
                successOrFailLinePrefix = "[ZenUnit]";
-               resultMessage = String::Concat("  RunResult: All ", totalNumberOfTestCases, ' ', testOrTests, " passed");
+               resultMessage = String::Concat("     Result: All ", totalNumberOfTestCases, ' ', testOrTests, " passed");
             }
             else
             {
                tripletLinesPrefix = ">>------>";
                successOrFailLinePrefix = ">>-FAIL->";
-               resultMessage = String::Concat("  RunResult: ", _numberOfFailedTestCases, " of ", totalNumberOfTestCases, ' ', testOrTests, " failed");
+               resultMessage = String::Concat("     Result: ", _numberOfFailedTestCases, " of ", totalNumberOfTestCases, ' ', testOrTests, " failed");
             }
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
             const std::string completedCommandLineMessage = String::Concat("  Completed: ", zenUnitArgs.commandLine);

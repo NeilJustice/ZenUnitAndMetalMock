@@ -1429,7 +1429,7 @@ Fatal EBNA: ZenMocked Function Expected But Not Asserted
             const std::string testRunDurationInSeconds = ZenUnit::ZenUnitTestRunner::Instance()->StopTestRunStopwatchAndGetElapsedSeconds();
             console.WriteLine("   Duration: " + testRunDurationInSeconds + " seconds");
             console.WriteColor(">>------>", ZenUnit::Color::Red);
-            console.WriteLine(" TestResult: Fatal EBNA");
+            console.WriteLine("     Result: Fatal EBNA");
             console.WriteColor(">>-FAIL->", ZenUnit::Color::Red);
             const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
             console.WriteLine("   ExitCode: " + std::to_string(exitCode));

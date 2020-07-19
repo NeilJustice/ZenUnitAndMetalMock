@@ -273,7 +273,7 @@ namespace ZenUnit
       const string expectedStartTimeLine  = "  StartTime: " + startDateTime;
       const string expectedEndTimeLine    = "    EndTime: " + dateTimeNow;
       const string expectedDurationLine   = "   Duration: " + testRunElapsedSeconds + " seconds";
-      const string expectedRunResultLine = String::Concat("  RunResult: ", expectedClosingLineTestsCountText);
+      const string expectedRunResultLine = String::Concat("     Result: ", expectedClosingLineTestsCountText);
       ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZENMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
       {
