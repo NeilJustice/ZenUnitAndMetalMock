@@ -5203,7 +5203,7 @@ namespace ZenUnit
          testPhaseResult.microseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
          testPhaseResult.anomalyOrException = std::make_shared<AnomalyOrException>(anomaly);
          testPhaseResult.testOutcome = TestOutcome::Anomaly;
-         _console->WriteColor("\n=======\nAnomaly\n=======", Color::Red);
+         _console->WriteColor("\n================\nFailed Assertion\n================", Color::Red);
          const char* const testPhaseSuffix = _testPhaseTranslator->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
          _console->WriteLine(anomaly.why);
