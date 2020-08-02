@@ -6869,7 +6869,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<typename T>
    std::vector<T> RandomNonEmptyVector()
    {
-      const std::size_t randomNonEmptyVectorSize = RandomBetween<size_t>(2, 3);
+      const std::size_t randomNonEmptyVectorSize = RandomBetween<size_t>(1, 3);
       std::vector<T> randomNonEmptyVector(randomNonEmptyVectorSize);
       for (size_t i = 0; i < randomNonEmptyVectorSize; ++i)
       {

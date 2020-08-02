@@ -128,12 +128,14 @@ namespace ZenUnit
 
    template<typename T>
    TEMPLATE_TESTS(RandomNonEmptyVectorTests, T)
-   AFACT(RandomNonEmptyVector_ReturnsANewVectorOfSize2Or3WithRandomElements)
+   AFACT(RandomNonEmptyVector_ReturnsANewVectorOfSize1Or3WithRandomElements)
    EVIDENCE
-   TEST(RandomNonEmptyVector_ReturnsANewVectorOfSize2Or3WithRandomElements)
+   TEST(RandomNonEmptyVector_ReturnsANewVectorOfSize1Or3WithRandomElements)
    {
       const vector<T> randomNonEmptyVector = ZenUnit::RandomNonEmptyVector<T>();
-      IS_TRUE(randomNonEmptyVector.size() == 2 || randomNonEmptyVector.size() == 3);
+      IS_TRUE(randomNonEmptyVector.size() == 1 ||
+              randomNonEmptyVector.size() == 2 ||
+              randomNonEmptyVector.size() == 3);
    }
    RUN_TEMPLATE_TESTS(RandomNonEmptyVectorTests, int)
    THEN_RUN_TEMPLATE_TESTS(RandomNonEmptyVectorTests, string)
