@@ -1,6 +1,6 @@
 // C++ Unit Testing Framework ZenUnit v0.6.0
-// GitHub: https://github.com/NeilJustice/ZenUnitAndMetalMock
-// License: MIT
+// https://github.com/NeilJustice/ZenUnitAndMetalMock
+// MIT License
 
 #pragma once
 #include <array>

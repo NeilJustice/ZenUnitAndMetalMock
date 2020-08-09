@@ -1,6 +1,6 @@
 // C++ Mocking Framework MetalMock v0.6.0
-// GitHub: https://github.com/NeilJustice/ZenUnitAndMetalMock
-// ZenUnit and MetalMock are licensed with the MIT license
+// https://github.com/NeilJustice/ZenUnitAndMetalMock
+// MIT License
 
 #pragma once
 #include "ZenUnit.h"
