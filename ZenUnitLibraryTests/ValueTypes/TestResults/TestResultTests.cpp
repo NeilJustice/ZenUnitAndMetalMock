@@ -32,7 +32,7 @@ namespace ZenUnit
 
    const unsigned MaxTestMilliseconds = 1 + 2 + 3 + 4 + 5;
 
-   class TestResult_WriteTestCaseNumberIfAnyMocked : public Zen::Mock<TestResult>
+   class TestResult_WriteTestCaseNumberIfAnyMocked : public Metal::Mock<TestResult>
    {
    public:
       METALMOCK_VOID2_CONST(WriteTestCaseNumberIfAny, const Console*, size_t)

@@ -6,7 +6,7 @@ public:
    void TestFunction() {}
 };
 
-class TestingTestClass : public Zen::Mock<TestClass<TestingTestClass>>, public TestFunctionClass
+class TestingTestClass : public Metal::Mock<TestClass<TestingTestClass>>, public TestFunctionClass
 {
 public:
    static bool s_destructorHasBeenCalled;

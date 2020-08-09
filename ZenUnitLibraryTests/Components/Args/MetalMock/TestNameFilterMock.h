@@ -1,6 +1,6 @@
 #pragma once
 
-class TestNameFilterMock : public Zen::Mock<TestNameFilter>
+class TestNameFilterMock : public Metal::Mock<TestNameFilter>
 {
 public:
    METALMOCK_NONVOID1_CONST(bool, MatchesTestName, std::string_view)

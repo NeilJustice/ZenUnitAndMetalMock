@@ -1,7 +1,7 @@
 #pragma once
 
 template<typename T, typename TransformedT>
-class TransformerMock : public Zen::Mock<Transformer<T, TransformedT>>
+class TransformerMock : public Metal::Mock<Transformer<T, TransformedT>>
 {
 public:
    using TransformerFunctionType = TransformedT(*)(const T&);

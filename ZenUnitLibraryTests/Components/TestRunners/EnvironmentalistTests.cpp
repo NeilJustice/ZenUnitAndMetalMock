@@ -16,7 +16,7 @@ namespace ZenUnit
 #endif
    EVIDENCE
 
-   class EnvironmentalistSelfMocked : public Zen::Mock<Environmentalist>
+   class EnvironmentalistSelfMocked : public Metal::Mock<Environmentalist>
    {
    public:
 #if defined __linux__ || defined __APPLE__

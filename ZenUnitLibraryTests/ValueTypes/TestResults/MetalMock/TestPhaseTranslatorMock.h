@@ -1,6 +1,6 @@
 #pragma once
 
-class TestPhaseTranslatorMock : public Zen::Mock<TestPhaseTranslator>
+class TestPhaseTranslatorMock : public Metal::Mock<TestPhaseTranslator>
 {
 public:
    METALMOCK_NONVOID1_CONST(const char*, TestPhaseToTestPhaseSuffix, TestPhase)

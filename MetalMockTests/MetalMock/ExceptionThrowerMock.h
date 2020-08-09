@@ -3,7 +3,7 @@
 
 namespace MetalMock
 {
-   class ExceptionThrowerMock : public Zen::Mock<MetalMock::ExceptionThrower>
+   class ExceptionThrowerMock : public Metal::Mock<MetalMock::ExceptionThrower>
    {
    private:
       string exceptionTypeName;

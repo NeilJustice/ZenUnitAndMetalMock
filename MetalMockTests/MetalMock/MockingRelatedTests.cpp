@@ -1,6 +1,6 @@
 #include "pch.h"
 
-namespace Zen
+namespace Metal
 {
    struct X
    {
@@ -13,7 +13,7 @@ namespace Zen
 
    TEST(MetalMockedClassName_ReturnsPointerToCachedRTTINameOfMetalMockedClass)
    {
-      ARE_EQUAL("Zen::X", *Mock<Zen::X>::MetalMockedClassName());
+      ARE_EQUAL("Metal::X", *Mock<Metal::X>::MetalMockedClassName());
    }
 
    RUN_TESTS(MockTests)

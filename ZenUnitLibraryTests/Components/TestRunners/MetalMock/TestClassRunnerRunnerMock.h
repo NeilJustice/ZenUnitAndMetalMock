@@ -1,6 +1,6 @@
 #pragma once
 
-class TestClassRunnerRunnerMock : public Zen::Mock<TestClassRunnerRunner>
+class TestClassRunnerRunnerMock : public Metal::Mock<TestClassRunnerRunner>
 {
 public:
    METALMOCK_VOID1(AddTestClassRunner, unique_ptr<TestClassRunner>)

@@ -26,7 +26,7 @@ namespace ZenUnit
    METALMOCK_NONVOID0_FREE(int, _getch)
 #endif
 
-   class ConsoleSelfMocked : public Zen::Mock<Console>
+   class ConsoleSelfMocked : public Metal::Mock<Console>
    {
    public:
       METALMOCK_VOID2_CONST(WriteColor, std::string_view, Color)
@@ -125,7 +125,7 @@ namespace ZenUnit
 
    TEST(WriteStringsCommaSeparated_CallsDoWriteStringsCommaSeparated)
    {
-      class ConsoleSelfMocked : public Zen::Mock<Console>
+      class ConsoleSelfMocked : public Metal::Mock<Console>
       {
       public:
          METALMOCK_VOID3_CONST(DoWriteStringsCommaSeparated, const vector<string>&, size_t, size_t)
@@ -147,7 +147,7 @@ namespace ZenUnit
       vector<string>{ "Argument1", "Argument2" }, size_t(1), size_t(1), vector<string>{ "Argument2" },
       vector<string>{ "Argument1", "Argument2", "Argument3", "Argument4" }, size_t(2), size_t(2), vector<string>{ "Argument3", ", ", "Argument4" })
    {
-      class ConsoleSelfMocked : public Zen::Mock<Console>
+      class ConsoleSelfMocked : public Metal::Mock<Console>
       {
       public:
          METALMOCK_VOID1_CONST(Write, std::string_view)

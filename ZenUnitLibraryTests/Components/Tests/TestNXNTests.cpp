@@ -124,7 +124,7 @@ namespace ZenUnit
 
    TEST(RunTest_RunsAllTestCases_ResetsTestCaseArgsIndexTo0_ReturnsVectorOfTestResults)
    {
-      class Test1X1SelfMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
+      class Test1X1SelfMocked : public Metal::Mock<TestNXN<TestingTestClass, 1, int, int>>
       {
       public:
          METALMOCK_VOID3(RunTestCaseIfNotFilteredOut, size_t, const ZenUnitArgs&, const std::vector<std::string>&)
@@ -132,7 +132,7 @@ namespace ZenUnit
          METALMOCK_NONVOID1_STATIC(std::shared_ptr<ITestCaseNumberGenerator>, ITestCaseNumberGenerator, FactoryNew, bool)
 
          Test1X1SelfMocked() noexcept
-            : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>(
+            : Metal::Mock<TestNXN<TestingTestClass, 1, int, int>>(
                "", // testClassName
                "", // testName
                "", // testCaseArgsText
@@ -194,14 +194,14 @@ namespace ZenUnit
       IS_EMPTY(testResults);
    }
 
-   class Test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
+   class Test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests : public Metal::Mock<TestNXN<TestingTestClass, 1, int, int>>
    {
    public:
       METALMOCK_NONVOID3_CONST(bool, ShouldRunTestCase, const ZenUnitArgs&, const FullTestName&, size_t)
       METALMOCK_VOID2(RunTestCase, size_t, const std::vector<std::string>&)
 
       Test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests() noexcept
-         : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>(
+         : Metal::Mock<TestNXN<TestingTestClass, 1, int, int>>(
             "", // testClassName
             "", // testName
             "", // testCaseArgsText
@@ -250,14 +250,14 @@ namespace ZenUnit
 
    TEST(RunTestCase_1X1_DoesSo)
    {
-      class Test1X1SelfMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
+      class Test1X1SelfMocked : public Metal::Mock<TestNXN<TestingTestClass, 1, int, int>>
       {
       public:
          METALMOCK_VOID2_CONST(PrintTestCaseNumberThenArgsThenArrow, size_t, const vector<string>&)
          METALMOCK_NONVOID0(TestResult, MockableCallBaseRunTest)
          METALMOCK_VOID1_CONST(WriteLineOKIfSuccess, const TestResult&)
          Test1X1SelfMocked() noexcept
-            : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>(
+            : Metal::Mock<TestNXN<TestingTestClass, 1, int, int>>(
                "", // testClassName
                "", // testName
                "", // testCaseArgsText
@@ -295,14 +295,14 @@ namespace ZenUnit
 
    TEST(RunTestCase_2X2_DoesSo)
    {
-      class Test2X2SelfMocked : public Zen::Mock<TestNXN<TestingTestClass, 2, int, int, int, int, int, int>>
+      class Test2X2SelfMocked : public Metal::Mock<TestNXN<TestingTestClass, 2, int, int, int, int, int, int>>
       {
       public:
          METALMOCK_VOID2_CONST(PrintTestCaseNumberThenArgsThenArrow, size_t, const vector<string>&)
          METALMOCK_NONVOID0(TestResult, MockableCallBaseRunTest)
          METALMOCK_VOID1_CONST(WriteLineOKIfSuccess, const TestResult&)
          Test2X2SelfMocked() noexcept
-            : Zen::Mock<TestNXN<TestingTestClass, 2, int, int, int, int, int, int>>(
+            : Metal::Mock<TestNXN<TestingTestClass, 2, int, int, int, int, int, int>>(
                "", // testClassName
                "", // testName
                "", // testCaseArgsText
@@ -431,12 +431,12 @@ namespace ZenUnit
 
    TEST(TestBody_CallsRunNXNTestCase)
    {
-      class TestNXN_RunNXNTestCaseMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int>>
+      class TestNXN_RunNXNTestCaseMocked : public Metal::Mock<TestNXN<TestingTestClass, 1, int>>
       {
       public:
          METALMOCK_VOID2(RunNXNTestCase, TestingTestClass*, size_t)
             TestNXN_RunNXNTestCaseMocked() noexcept
-            : Zen::Mock<TestNXN<TestingTestClass, 1, int>>("", "", "", 0) {}
+            : Metal::Mock<TestNXN<TestingTestClass, 1, int>>("", "", "", 0) {}
       } testNXN_RunNXNTestCaseMocked;
 
       testNXN_RunNXNTestCaseMocked._testClass = make_unique<TestingTestClass>();

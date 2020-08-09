@@ -28,7 +28,7 @@ namespace ZenUnit
 
    TestClassResult _testClassResult;
 
-   class TestClassResultSelfMocked : public Zen::Mock<TestClassResult>
+   class TestClassResultSelfMocked : public Metal::Mock<TestClassResult>
    {
    public:
       METALMOCK_NONVOID0_CONST(size_t, NumberOfFailedTestCases)

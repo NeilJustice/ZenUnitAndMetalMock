@@ -1,6 +1,6 @@
 #pragma once
 
-class EnvironmentalistMock : public Zen::Mock<Environmentalist>
+class EnvironmentalistMock : public Metal::Mock<Environmentalist>
 {
 public:
    METALMOCK_NONVOID0_CONST(string, GetCurrentDirectoryPath)

@@ -27,7 +27,7 @@ namespace ZenUnit
    FACTS(MicrosecondsToTwoDecimalPlaceMillisecondsString_ReturnsMicrosecondsAsMillisecondsRoundedToThreePlaces)
    EVIDENCE
 
-   class WatchSelfMocked : public Zen::Mock<ZenUnit::Watch>
+   class WatchSelfMocked : public Metal::Mock<ZenUnit::Watch>
    {
    public:
       METALMOCK_NONVOID0_CONST(tm, TMNow)

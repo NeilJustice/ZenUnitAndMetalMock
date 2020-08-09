@@ -1,6 +1,6 @@
 #pragma once
 
-class ConsoleMock : public Zen::Mock<Console>
+class ConsoleMock : public Metal::Mock<Console>
 {
 public:
    METALMOCK_VOID1_CONST(Write, std::string_view)

@@ -1,6 +1,6 @@
 #pragma once
 
-class ConsoleColorerMock : public Zen::Mock<ZenUnit::ConsoleColorer>
+class ConsoleColorerMock : public Metal::Mock<ZenUnit::ConsoleColorer>
 {
 public:
    METALMOCK_NONVOID1_CONST(bool, SetColor, Color)

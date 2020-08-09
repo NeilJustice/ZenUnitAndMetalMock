@@ -15,7 +15,7 @@ public:
    }
 };
 
-class KernelBypassNetworkMock : Zen::Mock<KernelBypassNetwork>
+class KernelBypassNetworkMock : Metal::Mock<KernelBypassNetwork>
 {
 public:
    METALMOCK_VOID0_NONVIRTUAL(Initialize)

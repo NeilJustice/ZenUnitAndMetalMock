@@ -1,10 +1,10 @@
 #pragma once
 
-class TestMock : public Zen::Mock<Test>
+class TestMock : public Metal::Mock<Test>
 {
 public:
    TestMock() noexcept
-      : Zen::Mock<Test>("", "", static_cast<unsigned char>(0))
+      : Metal::Mock<Test>("", "", static_cast<unsigned char>(0))
    {
    }
 

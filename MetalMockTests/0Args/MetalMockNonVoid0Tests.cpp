@@ -44,7 +44,7 @@ namespace MetalMock
    RUN_TESTS(MetalMockNonVoid0Tests_CodeCoverage)
 
 
-   struct NonVoid0FunctionsMock : public Zen::Mock<NonVoid0Functions>
+   struct NonVoid0FunctionsMock : public Metal::Mock<NonVoid0Functions>
    {
       METALMOCK_NONVOID0(int, Virtual)
       METALMOCK_NONVOID0_CONST(int, VirtualConst)

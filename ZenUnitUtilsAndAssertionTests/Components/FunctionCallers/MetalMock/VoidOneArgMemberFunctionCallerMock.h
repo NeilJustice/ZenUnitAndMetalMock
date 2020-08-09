@@ -1,7 +1,7 @@
 #pragma once
 
 template<typename ClassType, typename Arg1Type>
-class VoidOneArgMemberFunctionCallerMock : public Zen::Mock<OneArgMemberFunctionCaller<void, ClassType, Arg1Type>>
+class VoidOneArgMemberFunctionCallerMock : public Metal::Mock<OneArgMemberFunctionCaller<void, ClassType, Arg1Type>>
 {
 public:
    using ConstMemberFunctionType = void(ClassType::*)(Arg1Type) const;

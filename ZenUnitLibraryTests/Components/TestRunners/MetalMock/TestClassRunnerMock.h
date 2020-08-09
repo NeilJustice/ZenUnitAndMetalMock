@@ -1,6 +1,6 @@
 #pragma once
 
-class TestClassRunnerMock : public Zen::Mock<TestClassRunner>
+class TestClassRunnerMock : public Metal::Mock<TestClassRunner>
 {
 public:
    METALMOCK_NONVOID0_CONST(const char*, TestClassName)

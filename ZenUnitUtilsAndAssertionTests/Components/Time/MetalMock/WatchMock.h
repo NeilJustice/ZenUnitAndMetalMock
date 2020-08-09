@@ -1,6 +1,6 @@
 #pragma once
 
-class WatchMock : public Zen::Mock<ZenUnit::Watch>
+class WatchMock : public Metal::Mock<ZenUnit::Watch>
 {
 public:
    METALMOCK_NONVOID0_CONST(string, DateTimeNow)

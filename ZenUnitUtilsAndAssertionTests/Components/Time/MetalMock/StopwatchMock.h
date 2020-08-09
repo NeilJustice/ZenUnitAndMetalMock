@@ -1,6 +1,6 @@
 #pragma once
 
-class StopwatchMock : public Zen::Mock<ZenUnit::Stopwatch>
+class StopwatchMock : public Metal::Mock<ZenUnit::Stopwatch>
 {
 public:
    METALMOCK_VOID0(Start)

@@ -15,7 +15,7 @@ namespace MetalMock
       void NonVirtual2ArgConstFunction(int, int) const {}
    };
 
-   class Void2ArgFunctionsMock : public Zen::Mock<Void2ArgFunctions>
+   class Void2ArgFunctionsMock : public Metal::Mock<Void2ArgFunctions>
    {
    public:
       METALMOCK_VOID2(Virtual2ArgFunction, int, int)

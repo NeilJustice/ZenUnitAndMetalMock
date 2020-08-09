@@ -14,7 +14,7 @@ namespace MetalMock
       virtual ~Void0Functions() = default;
    };
 
-   struct Void0FunctionsMock : public Zen::Mock<Void0Functions>
+   struct Void0FunctionsMock : public Metal::Mock<Void0Functions>
    {
       METALMOCK_VOID0(Virtual)
       METALMOCK_VOID0_CONST(VirtualConst)

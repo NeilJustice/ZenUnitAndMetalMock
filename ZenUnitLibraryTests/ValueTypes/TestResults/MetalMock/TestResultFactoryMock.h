@@ -1,6 +1,6 @@
 #pragma once
 
-class TestResultFactoryMock : public Zen::Mock<TestResultFactory>
+class TestResultFactoryMock : public Metal::Mock<TestResultFactory>
 {
 public:
    METALMOCK_NONVOID2_CONST(TestResult, MakeConstructorFail, const FullTestName&, const TestPhaseResult&)

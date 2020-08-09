@@ -133,7 +133,7 @@ namespace ZenUnit
       size_t(1),
       size_t(2))
    {
-      class TestRunResultSelfMocked : public Zen::Mock<TestRunResult>
+      class TestRunResultSelfMocked : public Metal::Mock<TestRunResult>
       {
       public:
          METALMOCK_NONVOID1_CONST(size_t, CalculateNumberOfFailedTestCases, const vector<TestClassResult>&)

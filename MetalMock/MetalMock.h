@@ -7,7 +7,7 @@
 #include <atomic>
 #include <deque>
 
-namespace Zen
+namespace Metal
 {
    template<typename MetalMockedClass>
    class Mock : public MetalMockedClass
@@ -4889,7 +4889,7 @@ namespace ZenUnit
 
 namespace MetalMock
 {
-   class RandomGeneratorMock : public Zen::Mock<ZenUnit::RandomGenerator>
+   class RandomGeneratorMock : public Metal::Mock<ZenUnit::RandomGenerator>
    {
    public:
       METALMOCK_NONVOID0_CONST(bool, Bool)
@@ -4913,7 +4913,7 @@ namespace MetalMock
    };
 
    template<typename KeyType, typename ValueType>
-   class RandomMapGeneratorMock : public Zen::Mock<ZenUnit::RandomMapGenerator<KeyType, ValueType>>
+   class RandomMapGeneratorMock : public Metal::Mock<ZenUnit::RandomMapGenerator<KeyType, ValueType>>
    {
    public:
       using MapType = std::map<KeyType, ValueType>;

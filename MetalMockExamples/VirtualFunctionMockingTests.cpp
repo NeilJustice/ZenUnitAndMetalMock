@@ -40,7 +40,7 @@ namespace VirtualFunctionMockingTestingNamespace
    RUN_TESTS(WidgetTestsForCodeCoverage)
 
 
-   class WidgetMock : public Zen::Mock<Widget>
+   class WidgetMock : public Metal::Mock<Widget>
    {
    public:
       METALMOCK_VOID0(VoidZeroArgVirtualFunction)

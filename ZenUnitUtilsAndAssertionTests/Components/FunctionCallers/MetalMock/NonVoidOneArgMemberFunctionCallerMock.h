@@ -1,7 +1,7 @@
 #pragma once
 
 template<typename ReturnType, typename ClassType, typename Arg1Type>
-class NonVoidOneArgMemberFunctionCallerMock : public Zen::Mock<OneArgMemberFunctionCaller<ReturnType, ClassType, Arg1Type>>
+class NonVoidOneArgMemberFunctionCallerMock : public Metal::Mock<OneArgMemberFunctionCaller<ReturnType, ClassType, Arg1Type>>
 {
 public:
    using NonVoidOneArgMemberFunctionType = ReturnType(ClassType::*)(Arg1Type);

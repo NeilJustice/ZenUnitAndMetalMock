@@ -37,11 +37,11 @@ namespace ZenUnit
    AFACT(TestFunction_CodeCoverage)
    EVIDENCE
 
-   class SpecSectionTestNXNSelfMocked : public Zen::Mock<SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests>>
+   class SpecSectionTestNXNSelfMocked : public Metal::Mock<SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests>>
    {
    public:
       SpecSectionTestNXNSelfMocked() noexcept
-         : Zen::Mock<SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests>>("", "", nullptr) {}
+         : Metal::Mock<SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests>>("", "", nullptr) {}
       METALMOCK_NONVOID0_CONST(const unique_ptr<Test>*, PmfTokenToTest)
    };
 

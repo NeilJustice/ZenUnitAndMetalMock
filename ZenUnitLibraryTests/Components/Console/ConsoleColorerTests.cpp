@@ -21,13 +21,13 @@ namespace ZenUnit
 #endif
    EVIDENCE
 
-   class ConsoleColorer_StandardOutputSupportsColorMocked : public Zen::Mock<ConsoleColorer>
+   class ConsoleColorer_StandardOutputSupportsColorMocked : public Metal::Mock<ConsoleColorer>
    {
    public:
       METALMOCK_NONVOID0_CONST(bool, StandardOutputSupportsColor)
    };
 
-   class ConsoleColorer_SetCallsMocked : public Zen::Mock<ConsoleColorer>
+   class ConsoleColorer_SetCallsMocked : public Metal::Mock<ConsoleColorer>
    {
    public:
       METALMOCK_VOID0_CONST(SetSupportsColorIfUnset)

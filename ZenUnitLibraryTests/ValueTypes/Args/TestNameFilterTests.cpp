@@ -15,7 +15,7 @@ namespace ZenUnit
    AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
-   class TestNameFilterSelfMocked : public Zen::Mock<TestNameFilter>
+   class TestNameFilterSelfMocked : public Metal::Mock<TestNameFilter>
    {
    public:
       METALMOCK_NONVOID2_CONST(bool, FilterPatternMatchesString, std::string_view, std::string_view)

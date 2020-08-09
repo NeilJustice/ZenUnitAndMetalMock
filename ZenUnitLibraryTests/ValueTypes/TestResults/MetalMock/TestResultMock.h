@@ -1,6 +1,6 @@
 #pragma once
 
-class TestResultMock : public Zen::Mock<TestResult>
+class TestResultMock : public Metal::Mock<TestResult>
 {
 public:
    METALMOCK_VOID1_CONST(WriteLineOKIfSuccess, const Console*)

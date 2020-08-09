@@ -1,6 +1,6 @@
 #pragma once
 
-class ITestCaseNumberGeneratorMock : public Zen::Mock<ITestCaseNumberGenerator>
+class ITestCaseNumberGeneratorMock : public Metal::Mock<ITestCaseNumberGenerator>
 {
 public:
    METALMOCK_VOID3(Initialize, size_t, size_t, const ZenUnitArgs&)

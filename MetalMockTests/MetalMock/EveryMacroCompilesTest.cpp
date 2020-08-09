@@ -30,7 +30,7 @@ public:
    virtual ~VirtualWidget() = default;
 };
 
-class VirtualWidgetMock : public Zen::Mock<VirtualWidget>
+class VirtualWidgetMock : public Metal::Mock<VirtualWidget>
 {
 public:
    METALMOCK_VOID0(void_virtual_0)
@@ -86,7 +86,7 @@ public:
    int nonvoid_nonvirtual_10(int, int, int, int, int, int, int, int, int, int) { return 0; }
 };
 
-class NonVirtualWidgetMock : public Zen::Mock<NonVirtualWidget>
+class NonVirtualWidgetMock : public Metal::Mock<NonVirtualWidget>
 {
 public:
    METALMOCK_VOID0_NONVIRTUAL(void_nonvirtual_0)

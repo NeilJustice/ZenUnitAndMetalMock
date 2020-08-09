@@ -1,6 +1,6 @@
 #pragma once
 
-class TestFailureNumbererMock : public Zen::Mock<TestFailureNumberer>
+class TestFailureNumbererMock : public Metal::Mock<TestFailureNumberer>
 {
 public:
    METALMOCK_NONVOID0(string, Next)

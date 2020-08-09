@@ -1,6 +1,6 @@
 #pragma once
 
-class TestRunResultMock : public Zen::Mock<TestRunResult>
+class TestRunResultMock : public Metal::Mock<TestRunResult>
 {
 public:
    METALMOCK_VOID3(AddSkippedTest, const char*, const char*, const char*)

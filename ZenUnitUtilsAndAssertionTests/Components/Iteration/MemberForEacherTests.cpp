@@ -19,7 +19,7 @@ namespace ZenUnit
       virtual ~ClassType() = default;
    };
 
-   class ClassTypeMock : public Zen::Mock<ClassType>
+   class ClassTypeMock : public Metal::Mock<ClassType>
    {
    public:
       CollectionType<ElementType> collection;

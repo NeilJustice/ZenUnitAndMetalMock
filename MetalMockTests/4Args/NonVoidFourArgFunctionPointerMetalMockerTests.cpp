@@ -3,12 +3,12 @@
 namespace MetalMock
 {
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
-   class NonVoidFourArgFunctionPointerMetalMockerMock : public Zen::Mock<
+   class NonVoidFourArgFunctionPointerMetalMockerMock : public Metal::Mock<
       NonVoidFourArgFunctionPointerMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
    {
    public:
       NonVoidFourArgFunctionPointerMetalMockerMock()
-         : Zen::Mock<NonVoidFourArgFunctionPointerMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>>(
+         : Metal::Mock<NonVoidFourArgFunctionPointerMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>>(
             "FunctionSignature_NonVoidFourArgFunctionPointerMetalMockerMock")
       {
       }

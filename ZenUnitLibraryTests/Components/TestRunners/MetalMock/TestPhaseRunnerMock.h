@@ -1,6 +1,6 @@
 #pragma once
 
-class TestPhaseRunnerMock : public Zen::Mock<TestPhaseRunner>
+class TestPhaseRunnerMock : public Metal::Mock<TestPhaseRunner>
 {
 public:
    using TypedefTestPhaseFunction = void(*)(Test*);

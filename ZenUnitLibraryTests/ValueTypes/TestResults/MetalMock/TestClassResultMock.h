@@ -1,6 +1,6 @@
 #pragma once
 
-class TestClassResultMock : public Zen::Mock<TestClassResult>
+class TestClassResultMock : public Metal::Mock<TestClassResult>
 {
 public:
    METALMOCK_VOID1(AddTestResults, const vector<TestResult>&)
