@@ -115,8 +115,8 @@ namespace ZenUnit
       123456789, "[123456.79 ms]",
       1234567890, "[1234567.89 ms]")
    {
-      const string twoDecimalPlaceMilliseconds = Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
-      ARE_EQUAL(expectedReturnValue, twoDecimalPlaceMilliseconds);
+      const string twoDecimalPlaceMillisecondsString = Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
+      ARE_EQUAL(expectedReturnValue, twoDecimalPlaceMillisecondsString);
    }
 
    RUN_TESTS(WatchTests)

@@ -1882,23 +1882,23 @@ namespace ZenUnit
 
       static std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(long long microseconds)
       {
-         const double milliseconds = microseconds / 1000.0;
+         const double unroundedMilliseconds = static_cast<double>(microseconds) / 1000.0;
 
          // Example: 0.1200000000001
-         const double millisecondsRoundedToTwoDecimalPlaces = std::floor(milliseconds * 100 + 0.5) / 100;
+         const double millisecondsRoundedToTwoDecimalPlaces = std::floor(unroundedMilliseconds * 100 + 0.5) / 100;
 
          // Example: "0.120000"
-         const std::string millisecondsRoundedToTwoDecimalPlaces_sixDecimalPlaceString =
+         const std::string millisecondsRoundedToTwoDecimalPlacesAsSixDecimalPlaceString =
             std::to_string(millisecondsRoundedToTwoDecimalPlaces);
 
          // Example: "0.12"
-         const std::string millisecondsRoundedToTwoDecimalPlaces_twoDecimalPlacesString =
-            millisecondsRoundedToTwoDecimalPlaces_sixDecimalPlaceString.substr(
-               0, millisecondsRoundedToTwoDecimalPlaces_sixDecimalPlaceString.find_first_of('.') + 3);
+         const std::string millisecondsRoundedToTwoDecimalPlacesAsTwoDecimalPlacesString =
+            millisecondsRoundedToTwoDecimalPlacesAsSixDecimalPlaceString.substr(
+               0, millisecondsRoundedToTwoDecimalPlacesAsSixDecimalPlaceString.find_first_of('.') + 3);
 
          // Example: "[0.12 ms]"
          const std::string twoDecimalPlaceMillisecondsString =
-            String::Concat("[", millisecondsRoundedToTwoDecimalPlaces_twoDecimalPlacesString, " ms]");
+            String::Concat("[", millisecondsRoundedToTwoDecimalPlacesAsTwoDecimalPlacesString, " ms]");
 
          return twoDecimalPlaceMillisecondsString;
       }
