@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleMock.h"
-#include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestFailureNumbererMock.h"
+#include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
+#include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestFailureNumbererMock.h"
 #include "ZenUnitTestUtils/Equalizers/TestResultEqualizer.h"
 
 namespace ZenUnit
@@ -28,14 +28,14 @@ namespace ZenUnit
    ConsoleMock _consoleMock;
    TestFailureNumbererMock _testFailureNumbererMock;
    const FullTestName FullTestNameValue = FullTestName("ClassName", "TestClassName", ZenUnit::Random<unsigned char>());
-   ZENMOCK_NONVOID1_STATIC(string, ZenUnit::Watch, MicrosecondsToTwoDecimalPlaceMillisecondsString, long long)
+   METALMOCK_NONVOID1_STATIC(string, ZenUnit::Watch, MicrosecondsToTwoDecimalPlaceMillisecondsString, long long)
 
    const unsigned MaxTestMilliseconds = 1 + 2 + 3 + 4 + 5;
 
    class TestResult_WriteTestCaseNumberIfAnyMocked : public Zen::Mock<TestResult>
    {
    public:
-      ZENMOCK_VOID2_CONST(WriteTestCaseNumberIfAny, const Console*, size_t)
+      METALMOCK_VOID2_CONST(WriteTestCaseNumberIfAny, const Console*, size_t)
    } _testResult_WriteTestCaseNumberIfAnyMocked;
 
    STARTUP
@@ -48,7 +48,7 @@ namespace ZenUnit
       DestructorTestPhaseResult.microseconds = 3000;
       _testResult.fullTestName = FullTestNameValue;
       _testResult._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString =
-         BIND_1ARG_ZENMOCK_OBJECT(MicrosecondsToTwoDecimalPlaceMillisecondsStringMock);
+         BIND_1ARG_METALMOCK_OBJECT(MicrosecondsToTwoDecimalPlaceMillisecondsStringMock);
    }
 
    TEST(DefaultConstructor_SetsFieldsTo0_SetsWatchFunction)
@@ -104,7 +104,7 @@ namespace ZenUnit
       cleanupTestPhaseResult.testOutcome = cleanupOutcome;
       cleanupTestPhaseResult.microseconds = static_cast<long long>(5000) + static_cast<long long>(relativeMicroseconds);
 
-      ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitArgs, GetArgs)
+      METALMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitArgs, GetArgs)
 
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.maxTestMilliseconds = maxTestMilliseconds;
@@ -113,7 +113,7 @@ namespace ZenUnit
       {
          GetArgsMock.Return(zenUnitArgs);
       }
-      const function<const ZenUnitArgs&()> getArgsMockFunction = BIND_0ARG_ZENMOCK_OBJECT(GetArgsMock);
+      const function<const ZenUnitArgs&()> getArgsMockFunction = BIND_0ARG_METALMOCK_OBJECT(GetArgsMock);
       //
       const TestResult testResult(
          FullTestNameValue,
@@ -228,9 +228,9 @@ namespace ZenUnit
       //
       if (expectWriteLineOK)
       {
-         ZENMOCK(_consoleMock.WriteColorMock.CalledOnceWith("OK ", Color::Green));
-         ZENMOCK(MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.CalledOnceWith(microseconds));
-         ZENMOCK(_consoleMock.WriteLineMock.CalledOnceWith(twoDecimalPlaceMillisecondsString));
+         METALMOCK(_consoleMock.WriteColorMock.CalledOnceWith("OK ", Color::Green));
+         METALMOCK(MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.CalledOnceWith(microseconds));
+         METALMOCK(_consoleMock.WriteLineMock.CalledOnceWith(twoDecimalPlaceMillisecondsString));
       }
    }
 
@@ -274,17 +274,17 @@ namespace ZenUnit
       //
       _testResult_WriteTestCaseNumberIfAnyMocked.PrintIfFailure(&_consoleMock, &_testFailureNumbererMock);
       //
-      ZENMOCK(_testFailureNumbererMock.NextMock.CalledOnce());
-      ZENMOCK(_consoleMock.WriteMock.CalledAsFollows(
+      METALMOCK(_testFailureNumbererMock.NextMock.CalledOnce());
+      METALMOCK(_consoleMock.WriteMock.CalledAsFollows(
       {
          { _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value() },
          { expectedTestPhaseSuffix }
       }));
-      ZENMOCK(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
+      METALMOCK(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
          CalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber));
-      ZENMOCK(_consoleMock.WriteLineColorMock.CalledOnceWith(testFailureNumber, Color::Red));
-      ZENMOCK(_consoleMock.WriteLineMock.CalledOnceWith(anomalyWhy));
-      ZENMOCK(_consoleMock.WriteNewLineMock.CalledOnce());
+      METALMOCK(_consoleMock.WriteLineColorMock.CalledOnceWith(testFailureNumber, Color::Red));
+      METALMOCK(_consoleMock.WriteLineMock.CalledOnceWith(anomalyWhy));
+      METALMOCK(_consoleMock.WriteNewLineMock.CalledOnce());
    }
 
    TEST3X3(PrintIfFailure_Exception_PrintsExpected,
@@ -321,23 +321,23 @@ namespace ZenUnit
       //
       _testResult_WriteTestCaseNumberIfAnyMocked.PrintIfFailure(&_consoleMock, &_testFailureNumbererMock);
       //
-      ZENMOCK(_testFailureNumbererMock.NextMock.CalledOnce());
-      ZENMOCK(_consoleMock.WriteMock.CalledAsFollows(
+      METALMOCK(_testFailureNumbererMock.NextMock.CalledOnce());
+      METALMOCK(_consoleMock.WriteMock.CalledAsFollows(
       {
          { _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value() },
          { expectedTestPhaseSuffix }
       }));
-      ZENMOCK(_consoleMock.WriteLineColorMock.CalledAsFollows(
+      METALMOCK(_consoleMock.WriteLineColorMock.CalledAsFollows(
       {
          { testFailureNumber, Color::Red },
          { "\n==================\nUncaught Exception\n==================", Color::Red }
       }));
-      ZENMOCK(_consoleMock.WriteLineMock.CalledOnceWith(
+      METALMOCK(_consoleMock.WriteLineMock.CalledOnceWith(
          "  Type: " + exceptionTypeName + "\n"
          "what(): \""s + exceptionWhat + "\""));
-      ZENMOCK(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
+      METALMOCK(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
          CalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber));
-      ZENMOCK(_consoleMock.WriteNewLineMock.CalledOnce());
+      METALMOCK(_consoleMock.WriteNewLineMock.CalledOnce());
    }
 
    TEST(PrintIfFailure_SuccessButPastDeadline_PrintsExpected)
@@ -357,16 +357,16 @@ namespace ZenUnit
       //
       _testResult_WriteTestCaseNumberIfAnyMocked.PrintIfFailure(&_consoleMock, &_testFailureNumbererMock);
       //
-      ZENMOCK(_testFailureNumbererMock.NextMock.CalledOnce());
-      ZENMOCK(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
+      METALMOCK(_testFailureNumbererMock.NextMock.CalledOnce());
+      METALMOCK(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
          CalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber));
-      ZENMOCK(_consoleMock.WriteLineColorMock.CalledOnceWith(testFailureNumber, Color::Red));
-      ZENMOCK(_consoleMock.WriteLineMock.CalledAsFollows(
+      METALMOCK(_consoleMock.WriteLineColorMock.CalledOnceWith(testFailureNumber, Color::Red));
+      METALMOCK(_consoleMock.WriteLineMock.CalledAsFollows(
       {
          { _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value() },
          { "\nFailed because test took longer than --max-test-ms=10 milliseconds"s }
       }));
-      ZENMOCK(_consoleMock.WriteNewLineMock.CalledOnce());
+      METALMOCK(_consoleMock.WriteNewLineMock.CalledOnce());
    }
 
    TEST1X1(PrintIfFailure_InvalidOutcome_Throws,
@@ -399,7 +399,7 @@ namespace ZenUnit
       //
       if (expectConsoleWriteLine)
       {
-         ZENMOCK(_consoleMock.WriteMock.CalledOnceWith(" test case " + to_string(testCaseNumber) + "/" + to_string(_testResult.totalTestCases)));
+         METALMOCK(_consoleMock.WriteMock.CalledOnceWith(" test case " + to_string(testCaseNumber) + "/" + to_string(_testResult.totalTestCases)));
       }
    }
 

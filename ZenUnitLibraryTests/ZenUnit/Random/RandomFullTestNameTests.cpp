@@ -16,7 +16,7 @@ namespace ZenUnit
 
    TEST(TestableRandomFullTestName_ReturnsFullTestNameWithAllRandomFields)
    {
-      ZenMock::RandomGeneratorMock randomGeneratorMock;
+      MetalMock::RandomGeneratorMock randomGeneratorMock;
       const char* const testClassName = ZenUnit::Random<const char*>();
       const char* const testName = ZenUnit::Random<const char*>();
       randomGeneratorMock.ConstCharPointerMock.ReturnValues(testClassName, testName);
@@ -25,8 +25,8 @@ namespace ZenUnit
       //
       const FullTestName randomFullTestName = TestableRandomFullTestName(randomGeneratorMock);
       //
-      ZENMOCK(randomGeneratorMock.ConstCharPointerMock.CalledNTimes(2));
-      ZENMOCK(randomGeneratorMock.UnsignedCharMock.CalledOnce());
+      METALMOCK(randomGeneratorMock.ConstCharPointerMock.CalledNTimes(2));
+      METALMOCK(randomGeneratorMock.UnsignedCharMock.CalledOnce());
       FullTestName expectedRandomFullTestName;
       expectedRandomFullTestName.testClassName = testClassName;
       expectedRandomFullTestName.testName = testName;

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleMock.h"
+#include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomFileLine.h"
 #include "ZenUnitTestUtils/Equalizers/AnomalyEqualizer.h"
 #include "ZenUnitTestUtils/TestUtil.h"
@@ -20,7 +20,7 @@ namespace ZenUnit
    FACTS(FullConstructor_BecauseAnomalyPresent_UnaffectedByExpectedActualFormat_SetsFields)
    AFACT(what_ReturnsWhyCStr)
    AFACT(WriteLineWhy_CallsConsoleWriteLineWithWhy)
-   AFACT(ZENMOCKWrapped_ReturnsExpectedAnomaly)
+   AFACT(METALMOCKWrapped_ReturnsExpectedAnomaly)
    AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
@@ -385,29 +385,29 @@ FileLineValue);
       //
       anomaly.WriteLineWhy(&consoleMock);
       //
-      ZENMOCK(consoleMock.WriteLineMock.CalledOnceWith(anomaly.why));
+      METALMOCK(consoleMock.WriteLineMock.CalledOnceWith(anomaly.why));
    }
 
-   TEST(ZENMOCKWrapped_ReturnsExpectedAnomaly)
+   TEST(METALMOCKWrapped_ReturnsExpectedAnomaly)
    {
-      const string ZenMockAssertExpression = "ZENMOCK(zenMockObject.FunctionMock.CalledOnce())";
-      Anomaly zenMockWrappedAnomaly;
-      zenMockWrappedAnomaly.assertExpression = "ARE_EQUAL(expectedArgument, zenMockedFunctionCallHistory.firstArgument, this->ZenMockedFunctionSignature)";
-      zenMockWrappedAnomaly.expectedValueAsStringOrExpectedLine = "\"expected\"";
-      zenMockWrappedAnomaly.actualValueAsStringOrActualLine = "\"actual\"";
-      zenMockWrappedAnomaly.message = "\"virtual void ZenUnit::Console::WriteLine(const string&) const\"";
-      zenMockWrappedAnomaly.fileLine = FileLine("BecauseFilePath", 20);
+      const string MetalMockAssertExpression = "METALMOCK(metalMockObject.FunctionMock.CalledOnce())";
+      Anomaly metalMockWrappedAnomaly;
+      metalMockWrappedAnomaly.assertExpression = "ARE_EQUAL(expectedArgument, metalMockedFunctionCallHistory.firstArgument, this->MetalMockedFunctionSignature)";
+      metalMockWrappedAnomaly.expectedValueAsStringOrExpectedLine = "\"expected\"";
+      metalMockWrappedAnomaly.actualValueAsStringOrActualLine = "\"actual\"";
+      metalMockWrappedAnomaly.message = "\"virtual void ZenUnit::Console::WriteLine(const string&) const\"";
+      metalMockWrappedAnomaly.fileLine = FileLine("BecauseFilePath", 20);
       //
-      const Anomaly anomaly = Anomaly::ZENMOCKWrapped(ZenMockAssertExpression, zenMockWrappedAnomaly, FileLineValue);
+      const Anomaly anomaly = Anomaly::METALMOCKWrapped(MetalMockAssertExpression, metalMockWrappedAnomaly, FileLineValue);
       //
       Anomaly expectedAnomaly;
-      expectedAnomaly.assertExpression = ZenMockAssertExpression;
-      expectedAnomaly.expectedValueAsStringOrExpectedLine = zenMockWrappedAnomaly.expectedValueAsStringOrExpectedLine;
-      expectedAnomaly.actualValueAsStringOrActualLine = zenMockWrappedAnomaly.actualValueAsStringOrActualLine;
-      expectedAnomaly.message = zenMockWrappedAnomaly.message;
+      expectedAnomaly.assertExpression = MetalMockAssertExpression;
+      expectedAnomaly.expectedValueAsStringOrExpectedLine = metalMockWrappedAnomaly.expectedValueAsStringOrExpectedLine;
+      expectedAnomaly.actualValueAsStringOrActualLine = metalMockWrappedAnomaly.actualValueAsStringOrActualLine;
+      expectedAnomaly.message = metalMockWrappedAnomaly.message;
       expectedAnomaly.why = R"(
-  Failed: ZENMOCK(zenMockObject.FunctionMock.CalledOnce())
- Because: ARE_EQUAL(expectedArgument, zenMockedFunctionCallHistory.firstArgument, this->ZenMockedFunctionSignature) failed
+  Failed: METALMOCK(metalMockObject.FunctionMock.CalledOnce())
+ Because: ARE_EQUAL(expectedArgument, metalMockedFunctionCallHistory.firstArgument, this->MetalMockedFunctionSignature) failed
 Expected: "expected"
   Actual: "actual"
  Message: "virtual void ZenUnit::Console::WriteLine(const string&) const"

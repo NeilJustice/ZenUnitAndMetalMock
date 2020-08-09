@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleMock.h"
-#include "ZenUnitLibraryTests/Components/TestRunners/ZenMock/TestClassRunnerRunnerMock.h"
+#include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
+#include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/TestClassRunnerRunnerMock.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
-#include "ZenUnitUtilsAndAssertionTests/Components/ZenMock/EnvironmentalistMock.h"
-#include "ZenUnitUtilsAndAssertionTests/Components/Time/ZenMock/WatchMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/MetalMock/EnvironmentalistMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/WatchMock.h"
 
 namespace ZenUnit
 {
@@ -54,14 +54,14 @@ namespace ZenUnit
       const string returnedStartTime = _preamblePrinter.PrintPreambleLinesAndGetStartDateTime(args, &testClassRunnerRunnerMock);
       //
       const std::string expectedZenUnitVersionLine = "[ZenUnit v" + std::string(Version::Number()) + "]";
-      ZENMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith(expectedZenUnitVersionLine, Color::Green));
-      ZENMOCK(_consoleMock->WriteColorMock.CalledNTimesWith(7, "[ZenUnit]", Color::Green));
-      ZENMOCK(testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.CalledOnce());
-      ZENMOCK(_environmentalistMock->GetCurrentDirectoryPathMock.CalledOnce());
-      ZENMOCK(_environmentalistMock->GetMachineNameMock.CalledOnce());
-      ZENMOCK(_environmentalistMock->GetUserNameRunningThisProgramMock.CalledOnce());
-      ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
-      ZENMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
+      METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith(expectedZenUnitVersionLine, Color::Green));
+      METALMOCK(_consoleMock->WriteColorMock.CalledNTimesWith(7, "[ZenUnit]", Color::Green));
+      METALMOCK(testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.CalledOnce());
+      METALMOCK(_environmentalistMock->GetCurrentDirectoryPathMock.CalledOnce());
+      METALMOCK(_environmentalistMock->GetMachineNameMock.CalledOnce());
+      METALMOCK(_environmentalistMock->GetUserNameRunningThisProgramMock.CalledOnce());
+      METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
+      METALMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
       {
          { "     Running: " + args.commandLine },
          { "   Directory: " + currentDirectoryPath },

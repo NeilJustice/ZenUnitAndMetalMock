@@ -24,14 +24,14 @@ namespace ZenUnit
    class ConsoleColorer_StandardOutputSupportsColorMocked : public Zen::Mock<ConsoleColorer>
    {
    public:
-      ZENMOCK_NONVOID0_CONST(bool, StandardOutputSupportsColor)
+      METALMOCK_NONVOID0_CONST(bool, StandardOutputSupportsColor)
    };
 
    class ConsoleColorer_SetCallsMocked : public Zen::Mock<ConsoleColorer>
    {
    public:
-      ZENMOCK_VOID0_CONST(SetSupportsColorIfUnset)
-      ZENMOCK_VOID1_CONST(SetTextColor, Color)
+      METALMOCK_VOID0_CONST(SetSupportsColorIfUnset)
+      METALMOCK_VOID1_CONST(SetTextColor, Color)
    };
 
    ConsoleColorer _consoleColorer;
@@ -67,7 +67,7 @@ namespace ZenUnit
       //
       if (expectSupportsColorCall)
       {
-         ZENMOCK(_consoleColorer_StandardOutputSupportsColorMocked.StandardOutputSupportsColorMock.CalledOnce());
+         METALMOCK(_consoleColorer_StandardOutputSupportsColorMocked.StandardOutputSupportsColorMock.CalledOnce());
          ARE_EQUAL(_consoleColorer_StandardOutputSupportsColorMocked._standardOutputSupportsColor, supportsColorReturnValue);
       }
       IS_TRUE(_consoleColorer_StandardOutputSupportsColorMocked._standardOutputSupportsColorSet);
@@ -93,10 +93,10 @@ namespace ZenUnit
       //
       const bool didSetColor = _consoleColorer_SetCallsMocked.SetColor(color);
       //
-      ZENMOCK(_consoleColorer_SetCallsMocked.SetSupportsColorIfUnsetMock.CalledOnce());
+      METALMOCK(_consoleColorer_SetCallsMocked.SetSupportsColorIfUnsetMock.CalledOnce());
       if (expectSetTextColorCallAndExpectedReturnValue)
       {
-         ZENMOCK(_consoleColorer_SetCallsMocked.SetTextColorMock.CalledOnceWith(color));
+         METALMOCK(_consoleColorer_SetCallsMocked.SetTextColorMock.CalledOnceWith(color));
       }
       ARE_EQUAL(expectSetTextColorCallAndExpectedReturnValue, didSetColor);
    }
@@ -125,18 +125,18 @@ namespace ZenUnit
       0, false,
       1, true)
    {
-      ZENMOCK_NONVOID1_FREE(int, fileno, FILE*)
-      ZENMOCK_NONVOID1_FREE(int, isatty, int)
+      METALMOCK_NONVOID1_FREE(int, fileno, FILE*)
+      METALMOCK_NONVOID1_FREE(int, isatty, int)
       const int StdoutFileHandle = 1;
       filenoMock.Return(StdoutFileHandle);
       isattyMock.Return(isattyReturnValue);
-      _consoleColorer._call_fileno = BIND_1ARG_ZENMOCK_OBJECT(filenoMock);
-      _consoleColorer._call_isatty = BIND_1ARG_ZENMOCK_OBJECT(isattyMock);
+      _consoleColorer._call_fileno = BIND_1ARG_METALMOCK_OBJECT(filenoMock);
+      _consoleColorer._call_isatty = BIND_1ARG_METALMOCK_OBJECT(isattyMock);
       //
       const bool consoleSupportsColor = _consoleColorer.StandardOutputSupportsColor();
       //
-      ZENMOCK(filenoMock.CalledOnceWith(stdout));
-      ZENMOCK(isattyMock.CalledOnceWith(StdoutFileHandle));
+      METALMOCK(filenoMock.CalledOnceWith(stdout));
+      METALMOCK(isattyMock.CalledOnceWith(StdoutFileHandle));
       ARE_EQUAL(expectedReturnValue, consoleSupportsColor);
    }
 
@@ -148,10 +148,10 @@ namespace ZenUnit
       Color::Red, WindowsColor::Red,
       Color::Teal, WindowsColor::Teal)
    {
-      ZENMOCK_NONVOID1_FREE(HANDLE, GetStdHandle, DWORD)
-      ZENMOCK_NONVOID2_FREE(BOOL, SetConsoleTextAttribute, HANDLE, WORD)
-      _consoleColorer._call_GetStdHandle = BIND_1ARG_ZENMOCK_OBJECT(GetStdHandleMock);
-      _consoleColorer._call_SetConsoleTextAttribute = BIND_2ARG_ZENMOCK_OBJECT(SetConsoleTextAttributeMock);
+      METALMOCK_NONVOID1_FREE(HANDLE, GetStdHandle, DWORD)
+      METALMOCK_NONVOID2_FREE(BOOL, SetConsoleTextAttribute, HANDLE, WORD)
+      _consoleColorer._call_GetStdHandle = BIND_1ARG_METALMOCK_OBJECT(GetStdHandleMock);
+      _consoleColorer._call_SetConsoleTextAttribute = BIND_2ARG_METALMOCK_OBJECT(SetConsoleTextAttributeMock);
 
       const HANDLE getStdHandleReturnValue = reinterpret_cast<HANDLE>(1);
       GetStdHandleMock.Return(getStdHandleReturnValue);
@@ -160,8 +160,8 @@ namespace ZenUnit
       //
       _consoleColorer.SetTextColor(color);
       //
-      ZENMOCK(GetStdHandleMock.CalledOnceWith(STD_OUTPUT_HANDLE));
-      ZENMOCK(SetConsoleTextAttributeMock.CalledOnceWith(
+      METALMOCK(GetStdHandleMock.CalledOnceWith(STD_OUTPUT_HANDLE));
+      METALMOCK(SetConsoleTextAttributeMock.CalledOnceWith(
          getStdHandleReturnValue, static_cast<WORD>(expectedWindowsColorSet)));
    }
 #endif

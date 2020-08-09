@@ -18,7 +18,7 @@ namespace ZenUnit
 
    TEST(TestableRandomTestClassResult_ReturnsTestClassResultWithAllRandomFields)
    {
-      ZenMock::RandomGeneratorMock randomGeneratorMock;
+      MetalMock::RandomGeneratorMock randomGeneratorMock;
       //
       const TestClassResult randomTestClassResult = TestableRandomTestClassResult(randomGeneratorMock);
       //

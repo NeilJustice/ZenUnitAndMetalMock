@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomTestNameFilter.h"
-#include "ZenUnitUtilsAndAssertionTests/Components/Iteration/ZenMock/MemberFunctionTransformerMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/MemberFunctionTransformerMock.h"
 #include "ZenUnitTestUtils/Equalizers/TestNameFilterEqualizer.h"
 
 namespace ZenUnit
@@ -16,13 +16,13 @@ namespace ZenUnit
 
    TestNameFilterStringParser _testNameFilterStringParser;
    MemberFunctionTransformerMock<TestNameFilterStringParser, string, TestNameFilter>* _memberFunctionTransformerMock = nullptr;
-   ZENMOCK_NONVOID1_STATIC(unsigned, String, ToUnsigned, string_view)
+   METALMOCK_NONVOID1_STATIC(unsigned, String, ToUnsigned, string_view)
 
    STARTUP
    {
       _testNameFilterStringParser._memberFunctionTransformer.reset(
          _memberFunctionTransformerMock = new MemberFunctionTransformerMock<TestNameFilterStringParser, string, TestNameFilter>);
-      _testNameFilterStringParser._call_String_ToUnsigned = BIND_1ARG_ZENMOCK_OBJECT(ToUnsignedMock);
+      _testNameFilterStringParser._call_String_ToUnsigned = BIND_1ARG_METALMOCK_OBJECT(ToUnsignedMock);
    }
 
    TEST(DefaultConstructor_NewsMemberFunctionTransformer_SetsStringToUnsignedFunction)
@@ -41,7 +41,7 @@ namespace ZenUnit
       //
       const vector<TestNameFilter> testNameFilters = _testNameFilterStringParser.ParseTestNameFilterStrings(testNameFilterStrings);
       //
-      ZENMOCK(_memberFunctionTransformerMock->TransformMock.CalledOnceWith(
+      METALMOCK(_memberFunctionTransformerMock->TransformMock.CalledOnceWith(
          testNameFilterStrings, &_testNameFilterStringParser, &TestNameFilterStringParser::ParseTestNameFilterString));
       VECTORS_ARE_EQUAL(transformReturnValue, testNameFilters);
    }
@@ -75,7 +75,7 @@ namespace ZenUnit
       //
       const TestNameFilter testNameFilter = _testNameFilterStringParser.ParseTestNameFilterString(testNameFilterString);
       //
-      ZENMOCK(ToUnsignedMock.CalledOnceWith(expectedTestCaseNumberString));
+      METALMOCK(ToUnsignedMock.CalledOnceWith(expectedTestCaseNumberString));
       ARE_EQUAL(expectedTestNameFilter, testNameFilter);
    }
 

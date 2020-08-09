@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>7442c4b6-4d10-4aea-a009-421f7252d55e</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>BuildAndInstallZenUnitAndZenMock.py</StartupFile>
+    <StartupFile>BuildAndInstallZenUnitAndMetalMock.py</StartupFile>
     <SearchPath>..\</SearchPath>
     <OutputPath>.</OutputPath>
     <Name>ZenUnitPy</Name>
@@ -14,7 +14,7 @@
     <CommandLineArguments>--cmake-generator="Visual Studio 16 2019" --cmake-architecture=x64 --cmake-build-type=Debug --cmake-definitions=""</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>
-    <WorkingDirectory>C:\Code\ZenUnitAndZenMock</WorkingDirectory>
+    <WorkingDirectory>C:\Code\ZenUnitAndMetalMock</WorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,7 +28,7 @@
     <Compile Include="ArgParser.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BuildAndInstallZenUnitAndZenMock.py" />
+    <Compile Include="BuildAndInstallZenUnitAndMetalMock.py" />
     <Compile Include="CMake.py" />
     <Compile Include="FileSystem.py" />
     <Compile Include="Process.py" />

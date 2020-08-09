@@ -11,11 +11,11 @@ namespace ZenUnit
    EVIDENCE
 
    Stopwatch _stopwatch;
-   ZENMOCK_NONVOID0_STATIC(chrono::time_point<chrono::high_resolution_clock>, chrono::high_resolution_clock, now)
+   METALMOCK_NONVOID0_STATIC(chrono::time_point<chrono::high_resolution_clock>, chrono::high_resolution_clock, now)
 
    STARTUP
    {
-      _stopwatch._call_high_resolution_clock_now = BIND_0ARG_ZENMOCK_OBJECT(nowMock);
+      _stopwatch._call_high_resolution_clock_now = BIND_0ARG_METALMOCK_OBJECT(nowMock);
    }
 
    TEST(Constructor_SetsNowFunctionToHighResolutionClockNow)
@@ -53,7 +53,7 @@ namespace ZenUnit
       //
       const long long elapsedMicroseconds = _stopwatch.GetElapsedMicrosecondsThenResetStopwatch();
       //
-      ZENMOCK(nowMock.CalledOnce());
+      METALMOCK(nowMock.CalledOnce());
       ARE_EQUAL(randomMicrosecondDuration, elapsedMicroseconds);
    }
 
@@ -90,7 +90,7 @@ namespace ZenUnit
       //
       const string elapsedSeconds = _stopwatch.StopAndGetElapsedSeconds();
       //
-      ZENMOCK(nowMock.CalledOnce());
+      METALMOCK(nowMock.CalledOnce());
       ARE_EQUAL(chrono::time_point<chrono::high_resolution_clock>(), _stopwatch._startTime);
       ARE_EQUAL(expectedReturnValue, elapsedSeconds);
    }

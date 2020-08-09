@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleColorerMock.h"
+#include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleColorerMock.h"
 
 namespace ZenUnit
 {
@@ -23,24 +23,24 @@ namespace ZenUnit
    ConsoleColorerMock* _consoleColorerMock = nullptr;
    const string _message = Random<string>();
 #if _WIN32
-   ZENMOCK_NONVOID0_FREE(int, _getch)
+   METALMOCK_NONVOID0_FREE(int, _getch)
 #endif
 
    class ConsoleSelfMocked : public Zen::Mock<Console>
    {
    public:
-      ZENMOCK_VOID2_CONST(WriteColor, std::string_view, Color)
-      ZENMOCK_VOID2_CONST(WriteLineColor, std::string_view, Color)
-      ZENMOCK_NONVOID0_CONST(bool, DebuggerIsPresent)
-      ZENMOCK_VOID0_CONST(WaitForAnyKey)
-      ZENMOCK_VOID0_CONST(WriteNewLine)
+      METALMOCK_VOID2_CONST(WriteColor, std::string_view, Color)
+      METALMOCK_VOID2_CONST(WriteLineColor, std::string_view, Color)
+      METALMOCK_NONVOID0_CONST(bool, DebuggerIsPresent)
+      METALMOCK_VOID0_CONST(WaitForAnyKey)
+      METALMOCK_VOID0_CONST(WriteNewLine)
    } _consoleSelfMocked;
 
    STARTUP
    {
       _console._consoleColorer.reset(_consoleColorerMock = new ConsoleColorerMock);
 #if _WIN32
-      _console._call_getch = BIND_0ARG_ZENMOCK_OBJECT(_getchMock);
+      _console._call_getch = BIND_0ARG_METALMOCK_OBJECT(_getchMock);
 #endif
    }
 
@@ -61,7 +61,7 @@ namespace ZenUnit
       //
       _consoleSelfMocked.Write(_message);
       //
-      ZENMOCK(_consoleSelfMocked.WriteColorMock.CalledOnceWith(_message, Color::White));
+      METALMOCK(_consoleSelfMocked.WriteColorMock.CalledOnceWith(_message, Color::White));
    }
 
    TEST2X2(WriteColor_WritesMessageInSpecifiedColor,
@@ -78,8 +78,8 @@ namespace ZenUnit
       //
       _console.WriteColor(_message, color);
       //
-      ZENMOCK(_consoleColorerMock->SetColorMock.CalledOnceWith(color));
-      ZENMOCK(_consoleColorerMock->UnsetColorMock.CalledOnceWith(setColorReturnValue));
+      METALMOCK(_consoleColorerMock->SetColorMock.CalledOnceWith(color));
+      METALMOCK(_consoleColorerMock->UnsetColorMock.CalledOnceWith(setColorReturnValue));
    }
 
    TEST(WriteLine_CallsWriteLineWithWhite)
@@ -88,7 +88,7 @@ namespace ZenUnit
       //
       _consoleSelfMocked.WriteLine(_message);
       //
-      ZENMOCK(_consoleSelfMocked.WriteLineColorMock.CalledOnceWith(_message, Color::White));
+      METALMOCK(_consoleSelfMocked.WriteLineColorMock.CalledOnceWith(_message, Color::White));
    }
 
    TEST2X2(WriteLineColor_WritesMessageInSpecifiedColorThenNewLine,
@@ -105,8 +105,8 @@ namespace ZenUnit
       //
       _console.WriteLineColor(_message, color);
       //
-      ZENMOCK(_consoleColorerMock->SetColorMock.CalledOnceWith(color));
-      ZENMOCK(_consoleColorerMock->UnsetColorMock.CalledOnceWith(setColorReturnValue));
+      METALMOCK(_consoleColorerMock->SetColorMock.CalledOnceWith(color));
+      METALMOCK(_consoleColorerMock->UnsetColorMock.CalledOnceWith(setColorReturnValue));
    }
 
    TEST1X1(WriteLineAndExit_CallsWriteLineAndExit,
@@ -114,13 +114,13 @@ namespace ZenUnit
       0,
       1)
    {
-      ZENMOCK_VOID1_FREE(exit, int)
+      METALMOCK_VOID1_FREE(exit, int)
       exitMock.Expect();
-      _console._call_exit = BIND_1ARG_ZENMOCK_OBJECT(exitMock);
+      _console._call_exit = BIND_1ARG_METALMOCK_OBJECT(exitMock);
       //
       _console.WriteLineAndExit(_message, exitCode);
       //
-      ZENMOCK(exitMock.CalledOnceWith(exitCode));
+      METALMOCK(exitMock.CalledOnceWith(exitCode));
    }
 
    TEST(WriteStringsCommaSeparated_CallsDoWriteStringsCommaSeparated)
@@ -128,7 +128,7 @@ namespace ZenUnit
       class ConsoleSelfMocked : public Zen::Mock<Console>
       {
       public:
-         ZENMOCK_VOID3_CONST(DoWriteStringsCommaSeparated, const vector<string>&, size_t, size_t)
+         METALMOCK_VOID3_CONST(DoWriteStringsCommaSeparated, const vector<string>&, size_t, size_t)
       } consoleSelfMocked;
       vector<string> strings = { Random<string>() };
       const size_t startIndex = Random<size_t>();
@@ -150,19 +150,19 @@ namespace ZenUnit
       class ConsoleSelfMocked : public Zen::Mock<Console>
       {
       public:
-         ZENMOCK_VOID1_CONST(Write, std::string_view)
+         METALMOCK_VOID1_CONST(Write, std::string_view)
       } consoleSelfMocked;
       consoleSelfMocked.WriteMock.Expect();
       //
       consoleSelfMocked.DoWriteStringsCommaSeparated(strings, startIndex, numberOfElements);
       //
-      vector<ZenMock::OneArgumentFunctionCallReference<string_view>> expectedConsoleWriteCalls;
+      vector<MetalMock::OneArgumentFunctionCallReference<string_view>> expectedConsoleWriteCalls;
       expectedConsoleWriteCalls.reserve(expectedConsoleWrites.size());
       for (const string& expectedConsoleWrite : expectedConsoleWrites)
       {
          expectedConsoleWriteCalls.emplace_back(expectedConsoleWrite);
       }
-      ZENMOCK(consoleSelfMocked.WriteMock.CalledAsFollows(expectedConsoleWriteCalls));
+      METALMOCK(consoleSelfMocked.WriteMock.CalledAsFollows(expectedConsoleWriteCalls));
    }
 
    TEST3X3(WaitForAnyKeyIfDebuggerPresentOrValueTrue_WritesPressAnyKeyAndGetsCharIfDebuggerPresentOrValueTrue,
@@ -186,12 +186,12 @@ namespace ZenUnit
       //
       if (!doWait)
       {
-         ZENMOCK(_consoleSelfMocked.DebuggerIsPresentMock.CalledOnce());
+         METALMOCK(_consoleSelfMocked.DebuggerIsPresentMock.CalledOnce());
       }
       if (expectPressAnyKeyAndGetChar)
       {
-         ZENMOCK(_consoleSelfMocked.WriteLineColorMock.CalledOnceWith("Press any key to continue . . .", Color::White));
-         ZENMOCK(_consoleSelfMocked.WaitForAnyKeyMock.CalledOnce());
+         METALMOCK(_consoleSelfMocked.WriteLineColorMock.CalledOnceWith("Press any key to continue . . .", Color::White));
+         METALMOCK(_consoleSelfMocked.WaitForAnyKeyMock.CalledOnce());
       }
    }
 
@@ -202,13 +202,13 @@ namespace ZenUnit
       1, true,
       2, false)
    {
-      ZENMOCK_NONVOID0_FREE(int, IsDebuggerPresent)
+      METALMOCK_NONVOID0_FREE(int, IsDebuggerPresent)
       IsDebuggerPresentMock.Return(isDebuggerPresentReturnValue);
-      _console._call_IsDebuggerPresent = BIND_0ARG_ZENMOCK_OBJECT(IsDebuggerPresentMock);
+      _console._call_IsDebuggerPresent = BIND_0ARG_METALMOCK_OBJECT(IsDebuggerPresentMock);
       //
       const bool debuggerIsPresent = _console.DebuggerIsPresent();
       //
-      ZENMOCK(IsDebuggerPresentMock.CalledOnce());
+      METALMOCK(IsDebuggerPresentMock.CalledOnce());
       ARE_EQUAL(expectedReturnValue, debuggerIsPresent);
    }
 #endif
@@ -222,7 +222,7 @@ namespace ZenUnit
       _console.WaitForAnyKey();
       //
 #if defined _WIN32
-      ZENMOCK(_getchMock.CalledOnce());
+      METALMOCK(_getchMock.CalledOnce());
 #endif
    }
 

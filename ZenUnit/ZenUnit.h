@@ -1,5 +1,5 @@
 // C++ Unit Testing Framework ZenUnit v0.6.0
-// GitHub: https://github.com/NeilJustice/ZenUnitAndZenMock
+// GitHub: https://github.com/NeilJustice/ZenUnitAndMetalMock
 // License: MIT
 
 #pragma once
@@ -74,7 +74,7 @@ namespace ZenUnit
       static const std::string& CommandLineUsage()
       {
          static const std::string zenUnitCommandLineUsage = "C++ Unit Testing Framework ZenUnit " + std::string(Number()) + R"(
-https://github.com/NeilJustice/ZenUnitAndZenMock
+https://github.com/NeilJustice/ZenUnitAndMetalMock
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
 Testing Rigorousness Options:
@@ -1627,25 +1627,25 @@ namespace ZenUnit
          return assertExpression;
       }
 
-      static Anomaly ZENMOCKWrapped(
-         std::string_view zenMockAssertExpression,
-         const Anomaly& zenMockWrappedAnomaly,
+      static Anomaly METALMOCKWrapped(
+         std::string_view metalMockAssertExpression,
+         const Anomaly& metalMockWrappedAnomaly,
          FileLine fileLine)
       {
          Anomaly anomaly;
-         anomaly.assertExpression = zenMockAssertExpression;
-         anomaly.expectedValueAsStringOrExpectedLine = zenMockWrappedAnomaly.expectedValueAsStringOrExpectedLine;
-         anomaly.actualValueAsStringOrActualLine = zenMockWrappedAnomaly.actualValueAsStringOrActualLine;
-         anomaly.message = zenMockWrappedAnomaly.message;
+         anomaly.assertExpression = metalMockAssertExpression;
+         anomaly.expectedValueAsStringOrExpectedLine = metalMockWrappedAnomaly.expectedValueAsStringOrExpectedLine;
+         anomaly.actualValueAsStringOrActualLine = metalMockWrappedAnomaly.actualValueAsStringOrActualLine;
+         anomaly.message = metalMockWrappedAnomaly.message;
          anomaly.fileLine = fileLine;
          std::ostringstream whyBuilder;
          whyBuilder << "\n"
-            "  Failed: " << zenMockAssertExpression << '\n';
+            "  Failed: " << metalMockAssertExpression << '\n';
          whyBuilder <<
-            " Because: " << zenMockWrappedAnomaly.assertExpression << " failed\n"
-            "Expected: " << zenMockWrappedAnomaly.expectedValueAsStringOrExpectedLine << "\n"
-            "  Actual: " << zenMockWrappedAnomaly.actualValueAsStringOrActualLine << "\n"
-            " Message: " << zenMockWrappedAnomaly.message << '\n';
+            " Because: " << metalMockWrappedAnomaly.assertExpression << " failed\n"
+            "Expected: " << metalMockWrappedAnomaly.expectedValueAsStringOrExpectedLine << "\n"
+            "  Actual: " << metalMockWrappedAnomaly.actualValueAsStringOrActualLine << "\n"
+            " Message: " << metalMockWrappedAnomaly.message << '\n';
          whyBuilder << fileLine;
          anomaly.why = whyBuilder.str();
          return anomaly;
@@ -1658,10 +1658,10 @@ namespace ZenUnit
       }
    };
 
-   class ZenMockException
+   class MetalMockException
    {
    public:
-      virtual ~ZenMockException() = default;
+      virtual ~MetalMockException() = default;
       virtual const char* what() const noexcept = 0;
    };
 
@@ -5226,7 +5226,7 @@ namespace ZenUnit
             "what(): \"", ex.what(), "\"");
          _console->WriteLine(exceptionTypeNameAndWhat);
       }
-      catch (const ZenMockException& ex)
+      catch (const MetalMockException& ex)
       {
          const std::string exceptionTypeName = *Type::GetName(ex);
          const char* const testPhaseSuffix = _testPhaseTranslator->TestPhaseToTestPhaseSuffix(testPhase);

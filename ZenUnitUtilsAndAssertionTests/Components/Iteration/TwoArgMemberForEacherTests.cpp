@@ -24,7 +24,7 @@ namespace ZenUnit
    {
    public:
       vector<ElementType> vec;
-      ZENMOCK_VOID2(TwoArgFunction, ElementType, Arg2Type)
+      METALMOCK_VOID2(TwoArgFunction, ElementType, Arg2Type)
    };
 
    using TwoArgMemberForEacherType = TwoArgMemberForEacher<

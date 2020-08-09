@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Components/Args/ZenMock/TestNameFilterMock.h"
-#include "ZenUnitLibraryTests/Components/TestRunners/ZenMock/TestClassRunnerMock.h"
+#include "ZenUnitLibraryTests/Components/Args/MetalMock/TestNameFilterMock.h"
+#include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/TestClassRunnerMock.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomTestNameFilter.h"
 #include "ZenUnitTestUtils/Equalizers/TestClassResultEqualizer.h"
 
@@ -53,7 +53,7 @@ namespace ZenUnit
       //
       const bool testNameFilterMatchesTestName = _testClassRunner.TestNameFilterMatchesTestName(testNameFilterMock, testName.c_str());
       //
-      ZENMOCK(testNameFilterMock.MatchesTestNameMock.CalledOnceWith(testName.c_str()));
+      METALMOCK(testNameFilterMock.MatchesTestNameMock.CalledOnceWith(testName.c_str()));
       ARE_EQUAL(matchesTestNameReturnValue, testNameFilterMatchesTestName);
    }
 
@@ -78,8 +78,8 @@ namespace ZenUnit
       //
       const bool isLessThan = leftTestClassRunner < rightTestClassRunner;
       //
-      ZENMOCK(leftTestClassRunnerMock->TestClassNameMock.CalledOnce());
-      ZENMOCK(rightTestClassRunnerMock->TestClassNameMock.CalledOnce());
+      METALMOCK(leftTestClassRunnerMock->TestClassNameMock.CalledOnce());
+      METALMOCK(rightTestClassRunnerMock->TestClassNameMock.CalledOnce());
       ARE_EQUAL(expectedIsLessThan, isLessThan);
    }
 

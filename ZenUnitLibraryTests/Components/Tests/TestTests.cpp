@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestResultFactoryMock.h"
-#include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestResultMock.h"
-#include "ZenUnitLibraryTests/Components/TestRunners/ZenMock/TestPhaseRunnerMock.h"
-#include "ZenUnitLibraryTests/Components/Tests/ZenMock/TestMock.h"
+#include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestResultFactoryMock.h"
+#include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestResultMock.h"
+#include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/TestPhaseRunnerMock.h"
+#include "ZenUnitLibraryTests/Components/Tests/MetalMock/TestMock.h"
 #include "ZenUnitTestUtils/Equalizers/TestPhaseResultEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/FileLineEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/FullTestNameEqualizer.h"
@@ -88,8 +88,8 @@ namespace ZenUnit
       //
       const TestResult testResult = _test->BaseRunTest();
       //
-      ZENMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledOnceWith(&Test::CallNewTestClass, _test.get(), TestPhase::Constructor));
-      ZENMOCK(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(_test->_protected_fullTestName, constructorFailTestPhaseResult));
+      METALMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledOnceWith(&Test::CallNewTestClass, _test.get(), TestPhase::Constructor));
+      METALMOCK(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(_test->_protected_fullTestName, constructorFailTestPhaseResult));
       ARE_EQUAL(constructorFailTestResult, testResult);
    }
 
@@ -111,13 +111,13 @@ namespace ZenUnit
       //
       const TestResult testResult = _test->BaseRunTest();
       //
-      ZENMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledAsFollows(
+      METALMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledAsFollows(
       {
          { &Test::CallNewTestClass, _test.get(), TestPhase::Constructor },
          { &Test::CallStartup, _test.get(), TestPhase::Startup },
          { &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor }
       }));
-      ZENMOCK(_testResultFactoryMock->MakeStartupFailMock.CalledOnceWith(
+      METALMOCK(_testResultFactoryMock->MakeStartupFailMock.CalledOnceWith(
          _test->_protected_fullTestName, constructorSuccessTestPhaseResult, startupFailTestPhaseResult, destructorTestPhaseResult));
       ARE_EQUAL(startupFailTestResult, testResult);
    }
@@ -135,7 +135,7 @@ namespace ZenUnit
       //
       const TestResult testResult = _test->BaseRunTest();
       //
-      ZENMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledAsFollows(
+      METALMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledAsFollows(
       {
          { &Test::CallNewTestClass, _test.get(), TestPhase::Constructor },
          { &Test::CallStartup, _test.get(), TestPhase::Startup },
@@ -143,7 +143,7 @@ namespace ZenUnit
          { &Test::CallCleanup, _test.get(), TestPhase::Cleanup },
          { &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor }
       }));
-      ZENMOCK(_testResultFactoryMock->MakeFullTestResultMock.CalledOnceWith(
+      METALMOCK(_testResultFactoryMock->MakeFullTestResultMock.CalledOnceWith(
          _test->_protected_fullTestName,
          TestPhaseResultWithOutcome(TestOutcome::Success),
          TestPhaseResultWithOutcome(TestOutcome::Success),
@@ -159,7 +159,7 @@ namespace ZenUnit
       //
       Test::CallNewTestClass(&_testMock);
       //
-      ZENMOCK(_testMock.NewTestClassMock.CalledOnce());
+      METALMOCK(_testMock.NewTestClassMock.CalledOnce());
    }
 
    TEST(StaticCallStartup_CallsStartup)
@@ -168,7 +168,7 @@ namespace ZenUnit
       //
       Test::CallStartup(&_testMock);
       //
-      ZENMOCK(_testMock.StartupMock.CalledOnce());
+      METALMOCK(_testMock.StartupMock.CalledOnce());
    }
 
    TEST(StaticTestBody_CallsTestBody)
@@ -177,7 +177,7 @@ namespace ZenUnit
       //
       Test::CallTestBody(&_testMock);
       //
-      ZENMOCK(_testMock.TestBodyMock.CalledOnce());
+      METALMOCK(_testMock.TestBodyMock.CalledOnce());
    }
 
    TEST(StaticCallCleanup_CallsCleanup)
@@ -186,7 +186,7 @@ namespace ZenUnit
       //
       Test::CallCleanup(&_testMock);
       //
-      ZENMOCK(_testMock.CleanupMock.CalledOnce());
+      METALMOCK(_testMock.CleanupMock.CalledOnce());
    }
 
    TEST(StaticCallDeleteTestClass_CallsDeleteTestClass)
@@ -195,7 +195,7 @@ namespace ZenUnit
       //
       Test::CallDeleteTestClass(&_testMock);
       //
-      ZENMOCK(_testMock.DeleteTestClassMock.CalledOnce());
+      METALMOCK(_testMock.DeleteTestClassMock.CalledOnce());
    }
 
    TEST(PseudoAbstractFunctions_DoNothingOrReturn0)

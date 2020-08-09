@@ -5,7 +5,7 @@
 namespace std {}
 using namespace std;
 
-#include "ZenMock.h"
+#include "MetalMock.h"
 #include "ZenUnit.h"
 
 #include "ZenUnitTestUtils/UserType.h"

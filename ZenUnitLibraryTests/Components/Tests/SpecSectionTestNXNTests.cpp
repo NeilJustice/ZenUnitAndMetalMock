@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleMock.h"
-#include "ZenUnitLibraryTests/Components/Tests/ZenMock/TestMock.h"
+#include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
+#include "ZenUnitLibraryTests/Components/Tests/MetalMock/TestMock.h"
 #include "ZenUnitTestUtils/Equalizers/TestResultEqualizer.h"
 
 namespace ZenUnit
@@ -42,7 +42,7 @@ namespace ZenUnit
    public:
       SpecSectionTestNXNSelfMocked() noexcept
          : Zen::Mock<SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests>>("", "", nullptr) {}
-      ZENMOCK_NONVOID0_CONST(const unique_ptr<Test>*, PmfTokenToTest)
+      METALMOCK_NONVOID0_CONST(const unique_ptr<Test>*, PmfTokenToTest)
    };
 
    unique_ptr<SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests>> _specSectionTestNXN;
@@ -85,8 +85,8 @@ namespace ZenUnit
       //
       const size_t numberOfTestCases = _specSectionTestNXNSelfMocked->NumberOfTestCases();
       //
-      ZENMOCK(_specSectionTestNXNSelfMocked->PmfTokenToTestMock.CalledOnce());
-      ZENMOCK(testMock->NumberOfTestCasesMock.CalledOnce());
+      METALMOCK(_specSectionTestNXNSelfMocked->PmfTokenToTestMock.CalledOnce());
+      METALMOCK(testMock->NumberOfTestCasesMock.CalledOnce());
       ARE_EQUAL(testNumberOfTestCases, numberOfTestCases);
    }
 
@@ -97,7 +97,7 @@ namespace ZenUnit
       //
       _specSectionTestNXN->WritePostTestNameMessage(&consoleMock);
       //
-      ZENMOCK(consoleMock.WriteLineMock.CalledOnceWith("..."));
+      METALMOCK(consoleMock.WriteLineMock.CalledOnceWith("..."));
    }
 
    TEST(RunTest_GetsTestFromAddress_RunsTest_ReturnsTestResults)
@@ -110,8 +110,8 @@ namespace ZenUnit
       //
       const vector<TestResult> testResults = _specSectionTestNXNSelfMocked->RunTest();
       //
-      ZENMOCK(_specSectionTestNXNSelfMocked->PmfTokenToTestMock.CalledOnce());
-      ZENMOCK(testMock->RunTestMock.CalledOnce());
+      METALMOCK(_specSectionTestNXNSelfMocked->PmfTokenToTestMock.CalledOnce());
+      METALMOCK(testMock->RunTestMock.CalledOnce());
       VECTORS_ARE_EQUAL(testTestResults, testResults);
    }
 

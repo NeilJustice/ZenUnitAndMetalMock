@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Components/Args/ZenMock/TestNameFilterMock.h"
-#include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleMock.h"
-#include "ZenUnitLibraryTests/Components/Tests/ZenMock/ITestCaseNumberGeneratorMock.h"
+#include "ZenUnitLibraryTests/Components/Args/MetalMock/TestNameFilterMock.h"
+#include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
+#include "ZenUnitLibraryTests/Components/Tests/MetalMock/ITestCaseNumberGeneratorMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/TestingTestClass.h"
-#include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestResultMock.h"
+#include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestResultMock.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
-#include "ZenUnitUtilsAndAssertionTests/Components/Iteration/ZenMock/ThreeArgAnyerMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/ThreeArgAnyerMock.h"
 #include "ZenUnitTestUtils/Equalizers/FullTestNameEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/TestNameFilterEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/TestResultEqualizer.h"
@@ -47,16 +47,16 @@ namespace ZenUnit
    const string _testClassName = Random<string>();
    const string _testName = Random<string>();
    const string _testCaseArgsText = Random<string>();
-   ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetZenUnitArgs)
-   ZENMOCK_VOID1_FREE(exit, int)
+   METALMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetZenUnitArgs)
+   METALMOCK_VOID1_FREE(exit, int)
 
    STARTUP
    {
       _testNXN = make_unique<TestNXN<TestingTestClass, N, int>>("", "", "", 0);
       _testNXN->_console.reset(_consoleMock = new ConsoleMock);
       _testNXN->_callerOfTestNameFilterMatchesTestCase.reset(_callerOfTestNameFilterMatchesTestCaseMock = new CallerOfTestNameFilterMatchesTestCaseMockType);
-      _testNXN->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_ZENMOCK_OBJECT(GetZenUnitArgsMock);
-      _testNXN->_call_exit = BIND_1ARG_ZENMOCK_OBJECT(exitMock);
+      _testNXN->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(GetZenUnitArgsMock);
+      _testNXN->_call_exit = BIND_1ARG_METALMOCK_OBJECT(exitMock);
    }
 
    TEST(Constructor_NewsComponents_SetsFields_MakesGettersReturnExpected)
@@ -127,9 +127,9 @@ namespace ZenUnit
       class Test1X1SelfMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
       {
       public:
-         ZENMOCK_VOID3(RunTestCaseIfNotFilteredOut, size_t, const ZenUnitArgs&, const std::vector<std::string>&)
-         ZENMOCK_VOID0_CONST(Exit1IfNonExistentTestCaseNumberSpecified)
-         ZENMOCK_NONVOID1_STATIC(std::shared_ptr<ITestCaseNumberGenerator>, ITestCaseNumberGenerator, FactoryNew, bool)
+         METALMOCK_VOID3(RunTestCaseIfNotFilteredOut, size_t, const ZenUnitArgs&, const std::vector<std::string>&)
+         METALMOCK_VOID0_CONST(Exit1IfNonExistentTestCaseNumberSpecified)
+         METALMOCK_NONVOID1_STATIC(std::shared_ptr<ITestCaseNumberGenerator>, ITestCaseNumberGenerator, FactoryNew, bool)
 
          Test1X1SelfMocked() noexcept
             : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>(
@@ -140,21 +140,21 @@ namespace ZenUnit
                0 // test case arg 1
                )
             {
-               _call_ITestCaseNumberGeneratorFactoryNew = BIND_1ARG_ZENMOCK_OBJECT(FactoryNewMock);
+               _call_ITestCaseNumberGeneratorFactoryNew = BIND_1ARG_METALMOCK_OBJECT(FactoryNewMock);
             }
       } test1X1SelfMocked;
 
-      ZENMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetArgs, _SelfMocked)
+      METALMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetArgs, _SelfMocked)
 
       const ZenUnitArgs args = GetArgsMock_SelfMocked.ReturnRandom();
-      test1X1SelfMocked._call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_ZENMOCK_OBJECT(GetArgsMock_SelfMocked);
+      test1X1SelfMocked._call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(GetArgsMock_SelfMocked);
 
       shared_ptr<ITestCaseNumberGeneratorMock> testCaseNumberGeneratorMock = make_shared<ITestCaseNumberGeneratorMock>();
       testCaseNumberGeneratorMock->InitializeMock.Expect();
       testCaseNumberGeneratorMock->NextTestCaseNumberMock.ReturnValues(1, 2, std::numeric_limits<size_t>::max());
       test1X1SelfMocked.FactoryNewMock.Return(testCaseNumberGeneratorMock);
 
-      ZENMOCK_NONVOID0_STATIC(vector<string>, ZenUnit::String, SplitOnNonQuotedCommas, _SelfMocked)
+      METALMOCK_NONVOID0_STATIC(vector<string>, ZenUnit::String, SplitOnNonQuotedCommas, _SelfMocked)
       const vector<string> splitTestCaseArgs =
       {
          ZenUnit::Random<string>(),
@@ -163,7 +163,7 @@ namespace ZenUnit
       };
       SplitOnNonQuotedCommasMock_SelfMocked.Return(splitTestCaseArgs);
       test1X1SelfMocked._call_String_SplitOnNonQuotedCommas =
-         BIND_0ARG_ZENMOCK_OBJECT(SplitOnNonQuotedCommasMock_SelfMocked);
+         BIND_0ARG_METALMOCK_OBJECT(SplitOnNonQuotedCommasMock_SelfMocked);
 
       test1X1SelfMocked.Exit1IfNonExistentTestCaseNumberSpecifiedMock.Expect();
 
@@ -179,17 +179,17 @@ namespace ZenUnit
       //
       const vector<TestResult> testResults = test1X1SelfMocked.RunTest();
       //
-      ZENMOCK(GetArgsMock_SelfMocked.CalledOnce());
-      ZENMOCK(test1X1SelfMocked.FactoryNewMock.CalledOnceWith(args.randomTestOrdering));
-      ZENMOCK(testCaseNumberGeneratorMock->InitializeMock.CalledOnceWith(2, N, args));
-      ZENMOCK(SplitOnNonQuotedCommasMock_SelfMocked.CalledOnce());
-      ZENMOCK(testCaseNumberGeneratorMock->NextTestCaseNumberMock.CalledNTimes(3));
-      ZENMOCK(test1X1SelfMocked.RunTestCaseIfNotFilteredOutMock.CalledAsFollows(
+      METALMOCK(GetArgsMock_SelfMocked.CalledOnce());
+      METALMOCK(test1X1SelfMocked.FactoryNewMock.CalledOnceWith(args.randomTestOrdering));
+      METALMOCK(testCaseNumberGeneratorMock->InitializeMock.CalledOnceWith(2, N, args));
+      METALMOCK(SplitOnNonQuotedCommasMock_SelfMocked.CalledOnce());
+      METALMOCK(testCaseNumberGeneratorMock->NextTestCaseNumberMock.CalledNTimes(3));
+      METALMOCK(test1X1SelfMocked.RunTestCaseIfNotFilteredOutMock.CalledAsFollows(
       {
          { 1, args, splitTestCaseArgs },
          { 2, args, splitTestCaseArgs }
       }));
-      ZENMOCK(test1X1SelfMocked.Exit1IfNonExistentTestCaseNumberSpecifiedMock.CalledOnce());
+      METALMOCK(test1X1SelfMocked.Exit1IfNonExistentTestCaseNumberSpecifiedMock.CalledOnce());
       ARE_EQUAL(1, test1X1SelfMocked._currentTestCaseNumber);
       IS_EMPTY(testResults);
    }
@@ -197,8 +197,8 @@ namespace ZenUnit
    class Test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
    {
    public:
-      ZENMOCK_NONVOID3_CONST(bool, ShouldRunTestCase, const ZenUnitArgs&, const FullTestName&, size_t)
-      ZENMOCK_VOID2(RunTestCase, size_t, const std::vector<std::string>&)
+      METALMOCK_NONVOID3_CONST(bool, ShouldRunTestCase, const ZenUnitArgs&, const FullTestName&, size_t)
+      METALMOCK_VOID2(RunTestCase, size_t, const std::vector<std::string>&)
 
       Test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests() noexcept
          : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>(
@@ -226,7 +226,7 @@ namespace ZenUnit
       test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.
          RunTestCaseIfNotFilteredOut(testCaseNumber, args, splitTestCaseArgs);
       //
-      ZENMOCK(test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.ShouldRunTestCaseMock.CalledOnceWith(
+      METALMOCK(test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.ShouldRunTestCaseMock.CalledOnceWith(
          args, test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests._protected_fullTestName, testCaseNumber));
    }
 
@@ -242,9 +242,9 @@ namespace ZenUnit
       test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.
          RunTestCaseIfNotFilteredOut(testCaseNumber, args, splitTestCaseArgs);
       //
-      ZENMOCK(test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.ShouldRunTestCaseMock.CalledOnceWith(
+      METALMOCK(test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.ShouldRunTestCaseMock.CalledOnceWith(
          args, test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests._protected_fullTestName, testCaseNumber));
-      ZENMOCK(test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.RunTestCaseMock.
+      METALMOCK(test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.RunTestCaseMock.
          CalledOnceWith(testCaseNumber, splitTestCaseArgs));
    }
 
@@ -253,9 +253,9 @@ namespace ZenUnit
       class Test1X1SelfMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>
       {
       public:
-         ZENMOCK_VOID2_CONST(PrintTestCaseNumberThenArgsThenArrow, size_t, const vector<string>&)
-         ZENMOCK_NONVOID0(TestResult, MockableCallBaseRunTest)
-         ZENMOCK_VOID1_CONST(WriteLineOKIfSuccess, const TestResult&)
+         METALMOCK_VOID2_CONST(PrintTestCaseNumberThenArgsThenArrow, size_t, const vector<string>&)
+         METALMOCK_NONVOID0(TestResult, MockableCallBaseRunTest)
+         METALMOCK_VOID1_CONST(WriteLineOKIfSuccess, const TestResult&)
          Test1X1SelfMocked() noexcept
             : Zen::Mock<TestNXN<TestingTestClass, 1, int, int>>(
                "", // testClassName
@@ -282,13 +282,13 @@ namespace ZenUnit
       //
       test1X1SelfMocked.RunTestCase(testCaseNumber, splitTestCaseArgs);
       //
-      ZENMOCK(test1X1SelfMocked.PrintTestCaseNumberThenArgsThenArrowMock.CalledOnceWith(testCaseNumber, splitTestCaseArgs));
-      ZENMOCK(test1X1SelfMocked.MockableCallBaseRunTestMock.CalledOnce());
+      METALMOCK(test1X1SelfMocked.PrintTestCaseNumberThenArgsThenArrowMock.CalledOnceWith(testCaseNumber, splitTestCaseArgs));
+      METALMOCK(test1X1SelfMocked.MockableCallBaseRunTestMock.CalledOnce());
       TestResult expectedTestResult;
       expectedTestResult.testCaseNumber = testCaseNumber;
       expectedTestResult.totalTestCases = 2;
       expectedTestResult.fullTestName.testName = testName.c_str();
-      ZENMOCK(test1X1SelfMocked.WriteLineOKIfSuccessMock.CalledOnceWith(expectedTestResult));
+      METALMOCK(test1X1SelfMocked.WriteLineOKIfSuccessMock.CalledOnceWith(expectedTestResult));
       vector<TestResult> expectedResulingTestResults = { expectedTestResult };
       VECTORS_ARE_EQUAL(expectedResulingTestResults, test1X1SelfMocked._testResults);
    }
@@ -298,9 +298,9 @@ namespace ZenUnit
       class Test2X2SelfMocked : public Zen::Mock<TestNXN<TestingTestClass, 2, int, int, int, int, int, int>>
       {
       public:
-         ZENMOCK_VOID2_CONST(PrintTestCaseNumberThenArgsThenArrow, size_t, const vector<string>&)
-         ZENMOCK_NONVOID0(TestResult, MockableCallBaseRunTest)
-         ZENMOCK_VOID1_CONST(WriteLineOKIfSuccess, const TestResult&)
+         METALMOCK_VOID2_CONST(PrintTestCaseNumberThenArgsThenArrow, size_t, const vector<string>&)
+         METALMOCK_NONVOID0(TestResult, MockableCallBaseRunTest)
+         METALMOCK_VOID1_CONST(WriteLineOKIfSuccess, const TestResult&)
          Test2X2SelfMocked() noexcept
             : Zen::Mock<TestNXN<TestingTestClass, 2, int, int, int, int, int, int>>(
                "", // testClassName
@@ -327,13 +327,13 @@ namespace ZenUnit
       //
       test2X2SelfMocked.RunTestCase(testCaseNumber, splitTestCaseArgs);
       //
-      ZENMOCK(test2X2SelfMocked.PrintTestCaseNumberThenArgsThenArrowMock.CalledOnceWith(testCaseNumber, splitTestCaseArgs));
-      ZENMOCK(test2X2SelfMocked.MockableCallBaseRunTestMock.CalledOnce());
+      METALMOCK(test2X2SelfMocked.PrintTestCaseNumberThenArgsThenArrowMock.CalledOnceWith(testCaseNumber, splitTestCaseArgs));
+      METALMOCK(test2X2SelfMocked.MockableCallBaseRunTestMock.CalledOnce());
       TestResult expectedTestResult;
       expectedTestResult.testCaseNumber = testCaseNumber;
       expectedTestResult.totalTestCases = 3;
       expectedTestResult.fullTestName.testName = testName.c_str();
-      ZENMOCK(test2X2SelfMocked.WriteLineOKIfSuccessMock.CalledOnceWith(expectedTestResult));
+      METALMOCK(test2X2SelfMocked.WriteLineOKIfSuccessMock.CalledOnceWith(expectedTestResult));
       vector<TestResult> expectedResulingTestResults = { expectedTestResult };
       VECTORS_ARE_EQUAL(expectedResulingTestResults, test2X2SelfMocked._testResults);
    }
@@ -353,8 +353,8 @@ namespace ZenUnit
       _testNXN->Exit1IfNonExistentTestCaseNumberSpecified();
       //
       const std::string expectedErrorMessage = "\nError: Non-existent test case number specified in --run filter. Exiting with code 1.";
-      ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedErrorMessage));
-      ZENMOCK(exitMock.CalledOnceWith(1));
+      METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedErrorMessage));
+      METALMOCK(exitMock.CalledOnceWith(1));
    }
 
    TEST(ShouldRunTestCase_TestNameFiltersAreEmpty_ReturnsTrue)
@@ -384,7 +384,7 @@ namespace ZenUnit
       //
       const bool shouldRunTestCase = _testNXN->ShouldRunTestCase(zenUnitArgs, fullTestName, testCaseNumber);
       //
-      ZENMOCK(_callerOfTestNameFilterMatchesTestCaseMock->ThreeArgAnyMock.CalledOnceWith(
+      METALMOCK(_callerOfTestNameFilterMatchesTestCaseMock->ThreeArgAnyMock.CalledOnceWith(
          zenUnitArgs.testNameFilters, TestNXN<TestingTestClass, N, int>::TestNameFilterMatchesTestCase, fullTestName, testCaseNumber));
       ARE_EQUAL(expectedReturnValue, shouldRunTestCase);
    }
@@ -405,7 +405,7 @@ namespace ZenUnit
       const bool returnedTestNameMatchesTestCase =
          TestNXN<TestingTestClass, 1, int>::TestNameFilterMatchesTestCase(testNameFilterMock, fullTestName, testCaseNumber);
       //
-      ZENMOCK(testNameFilterMock.MatchesTestCaseMock.CalledOnceWith(fullTestName.testClassName, fullTestName.testName, testCaseNumber));
+      METALMOCK(testNameFilterMock.MatchesTestCaseMock.CalledOnceWith(fullTestName.testClassName, fullTestName.testName, testCaseNumber));
       ARE_EQUAL(testNameMatchesTestCase, returnedTestNameMatchesTestCase);
    }
 
@@ -426,7 +426,7 @@ namespace ZenUnit
       //
       _testNXN->Startup();
       //
-      ZENMOCK(_testNXN->_testClass->StartupMock.CalledOnce());
+      METALMOCK(_testNXN->_testClass->StartupMock.CalledOnce());
    }
 
    TEST(TestBody_CallsRunNXNTestCase)
@@ -434,7 +434,7 @@ namespace ZenUnit
       class TestNXN_RunNXNTestCaseMocked : public Zen::Mock<TestNXN<TestingTestClass, 1, int>>
       {
       public:
-         ZENMOCK_VOID2(RunNXNTestCase, TestingTestClass*, size_t)
+         METALMOCK_VOID2(RunNXNTestCase, TestingTestClass*, size_t)
             TestNXN_RunNXNTestCaseMocked() noexcept
             : Zen::Mock<TestNXN<TestingTestClass, 1, int>>("", "", "", 0) {}
       } testNXN_RunNXNTestCaseMocked;
@@ -447,7 +447,7 @@ namespace ZenUnit
       testNXN_RunNXNTestCaseMocked.TestBody();
       //
       const size_t expectedTestCaseArgsIndex = (currentTestCaseNumber - 1) * N;
-      ZENMOCK(testNXN_RunNXNTestCaseMocked.RunNXNTestCaseMock.CalledOnceWith(
+      METALMOCK(testNXN_RunNXNTestCaseMocked.RunNXNTestCaseMock.CalledOnceWith(
          testNXN_RunNXNTestCaseMocked._testClass.get(), expectedTestCaseArgsIndex));
    }
 
@@ -463,7 +463,7 @@ namespace ZenUnit
       //
       _testNXN->Cleanup();
       //
-      ZENMOCK(_testNXN->_testClass->CleanupMock.CalledOnce());
+      METALMOCK(_testNXN->_testClass->CleanupMock.CalledOnce());
    }
 
    TEST(DeleteTestClass_DeletesTestClass)
@@ -489,14 +489,14 @@ namespace ZenUnit
       //
       _testNXN->PrintTestCaseNumberThenArgsThenArrow(testCaseNumber, splitTestCaseArgs);
       //
-      ZENMOCK(_consoleMock->WriteColorMock.CalledAsFollows(
+      METALMOCK(_consoleMock->WriteColorMock.CalledAsFollows(
       {
          { " [", Color::Green },
          { "]", Color::Green }
       }));
-      ZENMOCK(_consoleMock->WriteStringsCommaSeparatedMock.CalledOnceWith(
+      METALMOCK(_consoleMock->WriteStringsCommaSeparatedMock.CalledOnceWith(
          splitTestCaseArgs, expectedTestCaseArgsPrintingStartIndex, N));
-      ZENMOCK(_consoleMock->WriteMock.CalledAsFollows(
+      METALMOCK(_consoleMock->WriteMock.CalledAsFollows(
       {
          { to_string(expectedTestCaseNumber) },
          { " ("s },
@@ -511,7 +511,7 @@ namespace ZenUnit
       //
       _testNXN->WriteLineOKIfSuccess(testResultMock);
       //
-      ZENMOCK(testResultMock.WriteLineOKIfSuccessMock.CalledOnceWith(_testNXN->_console.get()));
+      METALMOCK(testResultMock.WriteLineOKIfSuccessMock.CalledOnceWith(_testNXN->_console.get()));
    }
 
    RUN_TESTS(TestNXNTests)

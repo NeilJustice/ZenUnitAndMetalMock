@@ -14,7 +14,7 @@ TEST(RandomTestNameFilter_CodeCoverage)
 
 TEST(TestableRandomTestNameFilter_ReturnsTestNameFilterWithAllRandomFields)
 {
-   ZenMock::RandomGeneratorMock randomGeneratorMock;
+   MetalMock::RandomGeneratorMock randomGeneratorMock;
 
    const string testClassNamePattern = ZenUnit::Random<string>();
    const string testNamePattern = ZenUnit::Random<string>();
@@ -24,8 +24,8 @@ TEST(TestableRandomTestNameFilter_ReturnsTestNameFilterWithAllRandomFields)
    //
    const TestNameFilter randomTestNameFilter = TestableRandomTestNameFilter(randomGeneratorMock);
    //
-   ZENMOCK(randomGeneratorMock.StringMock.CalledNTimes(2));
-   ZENMOCK(randomGeneratorMock.SizeTMock.CalledOnce());
+   METALMOCK(randomGeneratorMock.StringMock.CalledNTimes(2));
+   METALMOCK(randomGeneratorMock.SizeTMock.CalledOnce());
    TestNameFilter expectedRandomTestNameFilter;
    expectedRandomTestNameFilter.testClassNamePattern = testClassNamePattern;
    expectedRandomTestNameFilter.testNamePattern = testNamePattern;

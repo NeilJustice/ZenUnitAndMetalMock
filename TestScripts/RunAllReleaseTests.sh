@@ -1,5 +1,5 @@
-./Release/ZenMockTests/ZenMockTests
-./Release/ZenMockExamples/ZenMockExamples
+./Release/MetalMockTests/MetalMockTests
+./Release/MetalMockExamples/MetalMockExamples
 ./Release/ZenUnitLibraryTests/ZenUnitLibraryTests
 ./Release/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests
 ./Release/ZenUnitExamples/ZenUnitExamples

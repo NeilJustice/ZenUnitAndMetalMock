@@ -16,7 +16,7 @@ namespace ZenUnit
 
    TEST(TestableRandomTestPhaseResult_ReturnsTestPhaseResultWithAllRandomFields)
    {
-      ZenMock::RandomGeneratorMock randomGeneratorMock;
+      MetalMock::RandomGeneratorMock randomGeneratorMock;
 
       const int testPhaseInt = ZenUnit::Random<int>();
       const int testOutcomeInt = ZenUnit::Random<int>();
@@ -26,12 +26,12 @@ namespace ZenUnit
       //
       const TestPhaseResult randomTestPhaseResult = TestableRandomTestPhaseResult(randomGeneratorMock);
       //
-      ZENMOCK(randomGeneratorMock.EnumMock.CalledAsFollows(
+      METALMOCK(randomGeneratorMock.EnumMock.CalledAsFollows(
       {
          static_cast<int>(TestPhase::MaxValue),
          static_cast<int>(TestOutcome::MaxValue)
       }));
-      ZENMOCK(randomGeneratorMock.LongLongMock.CalledOnce());
+      METALMOCK(randomGeneratorMock.LongLongMock.CalledOnce());
       TestPhaseResult expectedRandomTestPhaseResult;
       expectedRandomTestPhaseResult.testPhase = static_cast<TestPhase>(testPhaseInt);
       expectedRandomTestPhaseResult.testOutcome = static_cast<TestOutcome>(testOutcomeInt);

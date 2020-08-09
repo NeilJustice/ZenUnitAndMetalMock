@@ -16,14 +16,14 @@ namespace ZenUnit
 
    TEST(TestableRandomFileLine_ReturnsFileLineWithRandomLineNumber)
    {
-      ZenMock::RandomGeneratorMock randomGeneratorMock;
+      MetalMock::RandomGeneratorMock randomGeneratorMock;
       const unsigned lineNumber = randomGeneratorMock.UnsignedIntMock.ReturnRandom();
       //
       const FileLine randomFileLine = TestableRandomFileLine(randomGeneratorMock);
       //
       FileLine expectedRandomFileLine;
       expectedRandomFileLine.lineNumber = lineNumber;
-      ZENMOCK(randomGeneratorMock.UnsignedIntMock.CalledOnce());
+      METALMOCK(randomGeneratorMock.UnsignedIntMock.CalledOnce());
       ARE_EQUAL(expectedRandomFileLine, randomFileLine);
    }
 

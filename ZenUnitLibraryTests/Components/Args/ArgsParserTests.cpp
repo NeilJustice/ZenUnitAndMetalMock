@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Components/Args/ZenMock/TestNameFilterStringParserMock.h"
-#include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleMock.h"
+#include "ZenUnitLibraryTests/Components/Args/MetalMock/TestNameFilterStringParserMock.h"
+#include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomTestNameFilter.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
 #include "ZenUnitTestUtils/Equalizers/ZenUnitArgsEqualizer.h"
-#include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/ZenMock/VoidOneArgMemberFunctionCallerMock.h"
-#include "ZenUnitUtilsAndAssertionTests/Components/Time/ZenMock/WatchMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidOneArgMemberFunctionCallerMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/WatchMock.h"
 
 namespace ZenUnit
 {
@@ -31,7 +31,7 @@ namespace ZenUnit
 
    const string _testProgramPath = Random<string>();
    const string _expectedUsage = "C++ Unit Testing Framework ZenUnit " + std::string(Version::Number()) + R"(
-https://github.com/NeilJustice/ZenUnitAndZenMock
+https://github.com/NeilJustice/ZenUnitAndMetalMock
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
 Testing Rigorousness Options:
@@ -84,8 +84,8 @@ Example Command Line Arguments:
 )";
 
    ArgsParser _argsParser;
-   ZENMOCK_NONVOID1_STATIC(int, ZenUnit::String, ToInt, std::string_view)
-   ZENMOCK_NONVOID1_STATIC(unsigned, ZenUnit::String, ToUnsigned, std::string_view)
+   METALMOCK_NONVOID1_STATIC(int, ZenUnit::String, ToInt, std::string_view)
+   METALMOCK_NONVOID1_STATIC(unsigned, ZenUnit::String, ToUnsigned, std::string_view)
    VoidOneArgMemberFunctionCallerMock<ArgsParser, ZenUnitArgs&>* _caller_SetRandomSeedIfNotSetByUserMock = nullptr;
    ConsoleMock* _consoleMock = nullptr;
    TestNameFilterStringParserMock* _testNameFilterStringParserMock = nullptr;
@@ -93,8 +93,8 @@ Example Command Line Arguments:
 
    STARTUP
    {
-      _argsParser._call_String_ToInt = BIND_1ARG_ZENMOCK_OBJECT(ToIntMock);
-      _argsParser._call_String_ToUnsigned = BIND_1ARG_ZENMOCK_OBJECT(ToUnsignedMock);
+      _argsParser._call_String_ToInt = BIND_1ARG_METALMOCK_OBJECT(ToIntMock);
+      _argsParser._call_String_ToUnsigned = BIND_1ARG_METALMOCK_OBJECT(ToUnsignedMock);
       _argsParser._caller_SetRandomSeedIfNotSetByUser.reset(
          _caller_SetRandomSeedIfNotSetByUserMock = new VoidOneArgMemberFunctionCallerMock<ArgsParser, ZenUnitArgs&>);
       _argsParser._console.reset(_consoleMock = new ConsoleMock);
@@ -120,7 +120,7 @@ Example Command Line Arguments:
 
    void AssertCallToSetRandomSeedIfNotSetByUser(ZenUnitArgs& expectedZenUnitArgsArg)
    {
-      ZENMOCK(_caller_SetRandomSeedIfNotSetByUserMock->ConstCallMock.CalledOnceWith(
+      METALMOCK(_caller_SetRandomSeedIfNotSetByUserMock->ConstCallMock.CalledOnceWith(
          &_argsParser, &ArgsParser::SetRandomSeedIfNotSetByUser, expectedZenUnitArgsArg));
    }
 
@@ -132,7 +132,7 @@ Example Command Line Arguments:
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
       //
-      ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
+      METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = _testProgramPath;
       expectedZenUnitArgs.startDateTime = startDateTime;
@@ -151,8 +151,8 @@ Example Command Line Arguments:
       //
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
-      ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith("ZenUnit command line usage error: Too many arguments.\n"));
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
+      METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith("ZenUnit command line usage error: Too many arguments.\n"));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
    }
 
    TEST1X1(Parse_InvalidArgument_PrintsErrorMessageAndUsageAndExits1,
@@ -167,9 +167,9 @@ Example Command Line Arguments:
       //
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
-      ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
+      METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Invalid argument \"" + invalidArgument + "\"\n"));
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
    }
 
    TEST(Parse_DashDashHelp_PrintsUsageAndExits0)
@@ -179,7 +179,7 @@ Example Command Line Arguments:
       //
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 0));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 0));
    }
 
    TEST(Parse_DashDashVersion_PrintsVersionAndExits0)
@@ -189,7 +189,7 @@ Example Command Line Arguments:
       //
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("0.6.0", 0));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("0.6.0", 0));
    }
 
    TEST(Parse_AllArgumentsSpecifiedExpectForTestNameFilter_ReturnsZenUnitArgsWithAllFieldsSet)
@@ -213,9 +213,9 @@ Example Command Line Arguments:
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
       //
-      ZENMOCK(ToIntMock.CalledOnceWith(to_string(testruns)));
-      ZENMOCK(ToUnsignedMock.CalledOnceWith(to_string(randomSeed)));
-      ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
+      METALMOCK(ToIntMock.CalledOnceWith(to_string(testruns)));
+      METALMOCK(ToUnsignedMock.CalledOnceWith(to_string(randomSeed)));
+      METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
       expectedZenUnitArgs.pauseBefore = true;
@@ -247,9 +247,9 @@ Example Command Line Arguments:
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
       //
       const vector<string> splitRunArgument = String::Split(runArgument, ',');
-      ZENMOCK(_testNameFilterStringParserMock->ParseTestNameFilterStringsMock.CalledOnceWith(splitRunArgument));
+      METALMOCK(_testNameFilterStringParserMock->ParseTestNameFilterStringsMock.CalledOnceWith(splitRunArgument));
 
-      ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
+      METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
 
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
@@ -286,7 +286,7 @@ Example Command Line Arguments:
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
       //
-      ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
+      METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = _testProgramPath + " " + arg;
       (expectedZenUnitArgs.*expectedFieldToBeSet) = true;
@@ -302,7 +302,7 @@ Example Command Line Arguments:
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
       //
-      ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
+      METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
       expectedZenUnitArgs.alwaysExit0 = true;
@@ -325,8 +325,8 @@ Example Command Line Arguments:
       //
       const string expectedErrorMessage =
          "ZenUnit command line usage error: " + string("String::Split(arg, '=') unexpectedly returned not 2 for arg = \"" + arg + "\"") + "\n";
-      ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedErrorMessage));
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
+      METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedErrorMessage));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
    }
 
    TEST(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
@@ -339,10 +339,10 @@ Example Command Line Arguments:
       //
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
-      ZENMOCK(ToIntMock.CalledOnceWith("-1_for_example"));
-      ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
+      METALMOCK(ToIntMock.CalledOnceWith("-1_for_example"));
+      METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Invalid --name=value argument value: " + InvalidTimesArg + "\n"));
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
    }
 
    TEST(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
@@ -354,8 +354,8 @@ Example Command Line Arguments:
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
       //
-      ZENMOCK(ToIntMock.CalledOnceWith(to_string(timesArgValue)));
-      ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
+      METALMOCK(ToIntMock.CalledOnceWith(to_string(timesArgValue)));
+      METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
       expectedZenUnitArgs.testRuns = timesArgValue;
@@ -372,8 +372,8 @@ Example Command Line Arguments:
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
       //
-      ZENMOCK(ToUnsignedMock.CalledOnceWith(to_string(randomSeed)));
-      ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
+      METALMOCK(ToUnsignedMock.CalledOnceWith(to_string(randomSeed)));
+      METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
       expectedZenUnitArgs.randomTestOrdering = false;
@@ -392,9 +392,9 @@ Example Command Line Arguments:
       //
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
-      ZENMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
+      METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Unrecognized --name=value argument: " + unrecognizedNameArg + "\n"));
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
    }
 
    TEST(SetRandomSeedIfNotSetByUser_RandomSeedSetByUser_DoesNothing)
@@ -418,7 +418,7 @@ Example Command Line Arguments:
       //
       _argsParser.SetRandomSeedIfNotSetByUser(zenUnitArgs);
       //
-      ZENMOCK(_watchMock->SecondsSince1970Mock.CalledOnce());
+      METALMOCK(_watchMock->SecondsSince1970Mock.CalledOnce());
       expectedResultingZenUnitArgs.randomSeed = static_cast<unsigned>(secondsSince1970);
       ARE_EQUAL(expectedResultingZenUnitArgs, zenUnitArgs);
    }

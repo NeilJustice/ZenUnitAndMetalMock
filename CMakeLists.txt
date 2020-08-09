@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.2)
-project(ZenUnitAndZenMock)
+project(ZenUnitAndMetalMock)
 include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 
 if(UNIX)
@@ -44,15 +44,15 @@ endif()
 
 if(NOT APPLE)
    add_subdirectory(ZenUnit)
-   add_subdirectory(ZenMock)
+   add_subdirectory(MetalMock)
 endif()
 add_subdirectory(ZenUnitUtilsAndAssertionTests)
 add_subdirectory(ZenUnitExamples)
 add_subdirectory(ZenUnitLibraryTests)
 add_subdirectory(ZenUnitTestUtils)
 add_subdirectory(ZenUnitCompileSpeedTester)
-add_subdirectory(ZenMockExamples)
-add_subdirectory(ZenMockTests)
+add_subdirectory(MetalMockExamples)
+add_subdirectory(MetalMockTests)
 
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY ON)
 
@@ -62,6 +62,6 @@ if(UNIX)
    add_custom_target(clang-tidy COMMAND
       find -name "*.cpp" -print0 | xargs -0 -n 1 -P ${numberOfThreads} -t clang-tidy -header-filter=.* -p ${CMAKE_BUILD_TYPE}
       WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} VERBATIM USES_TERMINAL)
-   add_dependencies(clang-tidy ZenUnitUtilsAndAssertionTestsPch ZenUnitExamplesPch ZenUnitLibraryTestsPch ZenUnitTestUtilsPch ZenMockTestsPch ZenMockExamplesPch)
+   add_dependencies(clang-tidy ZenUnitUtilsAndAssertionTestsPch ZenUnitExamplesPch ZenUnitLibraryTestsPch ZenUnitTestUtilsPch MetalMockTestsPch MetalMockExamplesPch)
 endif()
 

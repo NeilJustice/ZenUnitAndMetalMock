@@ -17,7 +17,7 @@ namespace ZenUnit
 
    TEST(TestableRandomZenUnitArgs_ReturnsZenUnitArgsWithAllRandomFields)
    {
-      ZenMock::RandomGeneratorMock randomGeneratorMock;
+      MetalMock::RandomGeneratorMock randomGeneratorMock;
 
       const string startDateTime = ZenUnit::Random<string>();
       const string commandLine = ZenUnit::Random<string>();
@@ -41,10 +41,10 @@ namespace ZenUnit
       //
       const ZenUnitArgs randomZenUnitArgs = TestableRandomZenUnitArgs(randomGeneratorMock);
       //
-      ZENMOCK(randomGeneratorMock.StringMock.CalledNTimes(2));
-      ZENMOCK(randomGeneratorMock.BoolMock.CalledNTimes(7));
-      ZENMOCK(randomGeneratorMock.IntMock.CalledOnce());
-      ZENMOCK(randomGeneratorMock.UnsignedIntMock.CalledNTimes(2));
+      METALMOCK(randomGeneratorMock.StringMock.CalledNTimes(2));
+      METALMOCK(randomGeneratorMock.BoolMock.CalledNTimes(7));
+      METALMOCK(randomGeneratorMock.IntMock.CalledOnce());
+      METALMOCK(randomGeneratorMock.UnsignedIntMock.CalledNTimes(2));
 
       ARE_EQUAL(startDateTime, randomZenUnitArgs.startDateTime);
       ARE_EQUAL(commandLine, randomZenUnitArgs.commandLine);

@@ -1,21 +1,21 @@
-# 🧪 ZenUnit &  ZenMock ⚗️</h1>
+# 🧪 ZenUnit &  MetalMock ⚗️</h1>
 
 [![Standard](https://img.shields.io/badge/c%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B17) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ZenUnit is a C++ single-header unit testing framework designed for assertion exactness, long-term test code reviewability, robustness to a variety of mutation testing operators, and features an intuitive syntax for writing value-parameterized and type-parameterized unit tests.
 
-ZenMock is a C++ single-header mocking framework powered by ZenUnit assertions and features an intuitive arrange-act-assert syntax for specifying function return values and expected function call arguments from and to virtual functions, non-virtual/template functions, static functions, and free functions.
+MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions and features an intuitive arrange-act-assert syntax for specifying function return values and expected function call arguments from and to virtual functions, non-virtual/template functions, static functions, and free functions.
 
-A key testing rigorousness feature of ZenMock is that ZenMock is a "double-strict mocking framework" to be suitable for testing safety-critical software - meaning twofold: 1) Unexpected calls to ZenMocked functions throw a ZenMock::UnexpectedCallException, and 2) Expected calls to ZenMocked functions not thereafter explicitly asserted as having been called with exact expected arguments results in ZenUnit fail-fasting the test run with error message "ZenMocked Function Expected But Not Asserted".
+A key testing rigorousness feature of MetalMock is that MetalMock is a "double-strict mocking framework" to be suitable for testing safety-critical software - meaning twofold: 1) Unexpected calls to MetalMocked functions throw a MetalMock::UnexpectedCallException, and 2) Expected calls to MetalMocked functions not thereafter explicitly asserted as having been called with exact expected arguments results in ZenUnit fail-fasting the test run with error message "MetalMocked Function Expected But Not Asserted".
 
 |Build|Build Status|
 |----------|------------|
-|Travis CI Linux Clang 7.0.0 and GCC 7.4.0 Debug and Release|<a href="https://travis-ci.org/NeilJustice/ZenUnitAndZenMock"><img src="https://travis-ci.org/NeilJustice/ZenUnitAndZenMock.svg?branch=master"/></a>|
-|AppVeyor Windows Visual Studio 2019 x64 and Win32 Debug and Release|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndZenMock"><img src="https://ci.appveyor.com/api/projects/status/neqqkha7xbc93260?svg=true"/></a>|
-|Code Coverage Of The Travis CI GCC 7.4.0 Release Build|[![codecov](https://codecov.io/gh/NeilJustice/ZenUnitAndZenMock/branch/master/graph/badge.svg)](https://codecov.io/gh/NeilJustice/ZenUnitAndZenMock)|
+|Travis CI Linux Clang 7.0.0 and GCC 7.4.0 Debug and Release|<a href="https://travis-ci.org/NeilJustice/ZenUnitAndMetalMock"><img src="https://travis-ci.org/NeilJustice/ZenUnitAndMetalMock.svg?branch=master"/></a>|
+|AppVeyor Windows Visual Studio 2019 x64 and Win32 Debug and Release|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndMetalMock"><img src="https://ci.appveyor.com/api/projects/status/neqqkha7xbc93260?svg=true"/></a>|
+|Code Coverage Of The Travis CI GCC 7.4.0 Release Build|[![codecov](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock/branch/master/graph/badge.svg)](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock)|
 
-##### ZenUnit.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenUnit/ZenUnit.h)
-##### ZenMock.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndZenMock/master/ZenMock/ZenMock.h)
+##### ZenUnit.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/master/ZenUnit/ZenUnit.h)
+##### MetalMock.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/master/MetalMock/MetalMock.h)
 
    * [Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Feature](#unit-testing-fizzbuzz-with-zenunits-value-parameterized-test-feature)
    * [ZenUnit Console Output](#zenunit-console-output)
@@ -31,10 +31,10 @@ A key testing rigorousness feature of ZenMock is that ZenMock is a "double-stric
       * [The FAIL_TEST Assertion](#the-fail_test-assertion)
    * [ZenUnit Test Class And Test Defining Macros](#zenunit-test-class-and-test-defining-macros)
    * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
-   * [Linux Jenkins Jobs That Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And ZenMock](#linux-jenkins-jobs-that-build-unit-test-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-zenmock)
-   * [Windows Jenkins Jobs That Build And Unit Test ZenUnit And ZenMock](#windows-jenkins-jobs-that-build-and-unit-test-zenunit-and-zenmock)
-   * [How To Build, Unit Test, And Install ZenUnit.h And ZenMock.h On Linux](#how-to-build-unit-test-and-install-zenunith-and-zenmockh-on-linux)
-   * [How To Build, Unit Test, And Install ZenUnit.h And ZenMock.h On Windows](#how-to-build-unit-test-and-install-zenunith-and-zenmockh-on-windows)
+   * [Linux Jenkins Jobs That Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And MetalMock](#linux-jenkins-jobs-that-build-unit-test-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-metalmock)
+   * [Windows Jenkins Jobs That Build And Unit Test ZenUnit And MetalMock](#windows-jenkins-jobs-that-build-and-unit-test-zenunit-and-metalmock)
+   * [How To Build, Unit Test, And Install ZenUnit.h And MetalMock.h On Linux](#how-to-build-unit-test-and-install-zenunith-and-metalmockh-on-linux)
+   * [How To Build, Unit Test, And Install ZenUnit.h And MetalMock.h On Windows](#how-to-build-unit-test-and-install-zenunith-and-metalmockh-on-windows)
 
 ### Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Feature
 
@@ -169,7 +169,7 @@ int main(int argc, char* argv[])
 
 ```
 C++ Unit Testing Framework ZenUnit 0.6.0
-https://github.com/NeilJustice/ZenUnitAndZenMock
+https://github.com/NeilJustice/ZenUnitAndMetalMock
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
 Testing Rigorousness Options:
@@ -273,7 +273,7 @@ Example Command Line Arguments:
 #### Function Assertions
 |Assertion|Behavior|
 |---------|--------|
-|`STD_FUNCTION_TARGETS(expectedStaticOrFreeFunction, stdFunction, messages...)`|First asserts `IS_TRUE(stdFunction)`, which asserts that stdFunction points to a function, then asserts `ARE_EQUAL(expectedStaticOrFreeFunction, *stdFunction.target<decltype(expectedStaticOrFreeFunction)*>())`. This is a key assertion to call prior to overwriting a `std::function` with a ZenMock mock object.|
+|`STD_FUNCTION_TARGETS(expectedStaticOrFreeFunction, stdFunction, messages...)`|First asserts `IS_TRUE(stdFunction)`, which asserts that stdFunction points to a function, then asserts `ARE_EQUAL(expectedStaticOrFreeFunction, *stdFunction.target<decltype(expectedStaticOrFreeFunction)*>())`. This is a key assertion to call prior to overwriting a `std::function` with a MetalMock mock object.|
 |`STD_FUNCTION_TARGETS_OVERLOAD(expectedOverloadTypeInTheFormOfAUsing, expectedStaticOrFreeFunction, stdFunction, messages...)`|Same as above but with `static_cast<expectedOverloadTypeInTheFormOfAUsing>(expectedStaticOrFreeFunction)`.|
 
 ### Memory Allocation Assertions
@@ -337,60 +337,60 @@ ZenUnit provides the following random-value-generating functions for maximizing 
 |`ZenUnit::RandomSet<T>()`|Returns a `std::set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
 |`ZenUnit::RandomUnorderedSet<T>()`|Returns a `std::unordered_set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
 
-### Linux Jenkins Jobs That Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And ZenMock
+### Linux Jenkins Jobs That Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And MetalMock
 
-![Linux Jenkins Jobs That Compile, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, and ThreadSanitize ZenUnit And ZenMock](Screenshots/LinuxJenkinsJobsForZenUnitAndZenMock.png)
+![Linux Jenkins Jobs That Compile, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, and ThreadSanitize ZenUnit And MetalMock](Screenshots/LinuxJenkinsJobsForZenUnitAndMetalMock.png)
 
-### Windows Jenkins Jobs That Build And Unit Test ZenUnit And ZenMock
+### Windows Jenkins Jobs That Build And Unit Test ZenUnit And MetalMock
 
-![Windows Jenkins Jobs That Compile ZenUnit And ZenMock](Screenshots/WindowsJenkinsJobsForZenUnitAndZenMock.png)
+![Windows Jenkins Jobs That Compile ZenUnit And MetalMock](Screenshots/WindowsJenkinsJobsForZenUnitAndMetalMock.png)
 
-### How To Build, Unit Test, And Install ZenUnit.h And ZenMock.h On Linux
+### How To Build, Unit Test, And Install ZenUnit.h And MetalMock.h On Linux
 
 ```
-git clone https://github.com/NeilJustice/ZenUnitAndZenMock
+git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
 
-cd ZenUnitAndZenMock && mkdir Debug && cd Debug
+cd ZenUnitAndMetalMock && mkdir Debug && cd Debug
 
 CXX=clang++ cmake .. -GNinja -DCMAKE_BUILD_TYPE=Debug
 
-# Builds ZenUnit and ZenMock Debug unit test binaries
-# then copies ZenUnit.h and ZenMock.h:
+# Builds ZenUnit and MetalMock Debug unit test binaries
+# then copies ZenUnit.h and MetalMock.h:
 # ZenUnit.h to /usr/local/include/ZenUnit/ZenUnit.h and
-# ZenMock.h to /usr/local/include/ZenMock/ZenMock.h
+# MetalMock.h to /usr/local/include/MetalMock/MetalMock.h
 sudo cmake --build . --target install
 
 cd ..
 
-# Runs all ZenUnit and ZenMock Debug test binaries:
-# Debug/ZenMockTests/ZenMockTests
-# Debug/ZenMockExamples/ZenMockExamples
+# Runs all ZenUnit and MetalMock Debug test binaries:
+# Debug/MetalMockTests/MetalMockTests
+# Debug/MetalMockExamples/MetalMockExamples
 # Debug/ZenUnitLibraryTests/ZenUnitLibraryTests
 # Debug/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests
 # Debug/ZenUnitExamples/ZenUnitExamples
 ./TestScripts/RunAllDebugTests.sh
 ```
 
-### How To Build, Unit Test, And Install ZenUnit.h And ZenMock.h On Windows
+### How To Build, Unit Test, And Install ZenUnit.h And MetalMock.h On Windows
 
 ```
-git clone https://github.com/NeilJustice/ZenUnitAndZenMock
+git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
 
-cd ZenUnitAndZenMock
+cd ZenUnitAndMetalMock
 
 cmake . -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=C:\
 
 # Builds and runs during post-build events all
-# ZenUnit and ZenMock Debug test binaries:
-# ZenMockTests\Debug\ZenMockTests.exe
-# ZenMockExamples\Debug\ZenMockExamples.exe
+# ZenUnit and MetalMock Debug test binaries:
+# MetalMockTests\Debug\MetalMockTests.exe
+# MetalMockExamples\Debug\MetalMockExamples.exe
 # ZenUnitLibraryTests\Debug\ZenUnitLibraryTests.exe
 # ZenUnitUtilsAndAssertionTests\Debug\ZenUnitUtilsAndAssertionTests.exe
 # ZenUnitExamples\Debug\ZenUnitExamples.exe
 
-# Then copies ZenUnit.h and ZenMock.h:
+# Then copies ZenUnit.h and MetalMock.h:
 # ZenUnit.h to C:\include\ZenUnit\ZenUnit.h
-# ZenMock.h to C:\include\ZenMock\ZenMock.h
+# MetalMock.h to C:\include\MetalMock\MetalMock.h
 
 cmake --build . --target install
 ```

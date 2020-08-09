@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleMock.h"
-#include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestClassResultMock.h"
-#include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestFailureNumbererMock.h"
-#include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestResultMock.h"
+#include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
+#include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestClassResultMock.h"
+#include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestFailureNumbererMock.h"
+#include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestResultMock.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
-#include "ZenUnitUtilsAndAssertionTests/Components/Iteration/ZenMock/MemberForEacherMock.h"
-#include "ZenUnitUtilsAndAssertionTests/Components/Time/ZenMock/WatchMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/MemberForEacherMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/WatchMock.h"
 #include "ZenUnitTestUtils/Equalizers/TestClassResultEqualizer.h"
 #include "ZenUnitTestUtils/Equalizers/TestRunResultEqualizer.h"
 
@@ -136,7 +136,7 @@ namespace ZenUnit
       class TestRunResultSelfMocked : public Zen::Mock<TestRunResult>
       {
       public:
-         ZENMOCK_NONVOID1_CONST(size_t, CalculateNumberOfFailedTestCases, const vector<TestClassResult>&)
+         METALMOCK_NONVOID1_CONST(size_t, CalculateNumberOfFailedTestCases, const vector<TestClassResult>&)
       } testRunResultSelfMocked;
       testRunResultSelfMocked.CalculateNumberOfFailedTestCasesMock.Return(numberOfFailedTestCases);
 
@@ -145,7 +145,7 @@ namespace ZenUnit
       //
       testRunResultSelfMocked.SetTestClassResults(std::move(testClassResults));
       //
-      ZENMOCK(testRunResultSelfMocked.CalculateNumberOfFailedTestCasesMock.CalledOnceWith(NonMovedFromTestClassResults));
+      METALMOCK(testRunResultSelfMocked.CalculateNumberOfFailedTestCasesMock.CalledOnceWith(NonMovedFromTestClassResults));
       VECTORS_ARE_EQUAL(NonMovedFromTestClassResults, testRunResultSelfMocked._testClassResults);
       ARE_EQUAL(numberOfFailedTestCases, testRunResultSelfMocked._numberOfFailedTestCases);
    }
@@ -207,11 +207,11 @@ namespace ZenUnit
       //
       if (expectTestsFailedLineAndPrintFailuresCall)
       {
-         ZENMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith(expectedTestsFailedLine, Color::Red));
-         ZENMOCK(_memberForEacherTestClassResultsMock->MemberForEachMock.
+         METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith(expectedTestsFailedLine, Color::Red));
+         METALMOCK(_memberForEacherTestClassResultsMock->MemberForEachMock.
             CalledOnceWith(&_testRunResult._testClassResults, &_testRunResult, &TestRunResult::PrintTestClassResultFailures));
       }
-      ZENMOCK(_memberForEacherSkippedTestsMock->MemberForEachMock.CalledAsFollows(
+      METALMOCK(_memberForEacherSkippedTestsMock->MemberForEachMock.CalledAsFollows(
       {
          { &_testRunResult._skippedTestClassNamesAndSkipReasons, &_testRunResult, &TestRunResult::PrintSkippedTestClassReminder },
          { &_testRunResult._skippedFullTestNamesAndSkipReasons, &_testRunResult, &TestRunResult::PrintSkippedTestReminder }
@@ -225,8 +225,8 @@ namespace ZenUnit
       //
       _testRunResult.PrintConclusionLines(ZenUnit::Random<string>(), 0, ZenUnit::Random<string>(), ZenUnit::Random<ZenUnitArgs>());
       //
-      ZENMOCK(_consoleMock->WriteColorMock.CalledOnceWith("[ZenUnit]", Color::Red));
-      ZENMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(" Zero test classes run. Exiting with code 1.", 1));
+      METALMOCK(_consoleMock->WriteColorMock.CalledOnceWith("[ZenUnit]", Color::Red));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(" Zero test classes run. Exiting with code 1.", 1));
    }
 
    TEST5X5(PrintConclusionLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedSeconds,
@@ -259,7 +259,7 @@ namespace ZenUnit
       _testRunResult.PrintConclusionLines(startDateTime, numberOfTotalTests, testRunElapsedSeconds, args);
       //
       const string expectedTripletLinesPrefix = expectedSuccessOrFailLinePrefix == "[ZenUnit]" ? "[ZenUnit]" : ">>------>";
-      ZENMOCK(_consoleMock->WriteColorMock.CalledAsFollows(
+      METALMOCK(_consoleMock->WriteColorMock.CalledAsFollows(
       {
          { expectedTripletLinesPrefix, expectedColor },
          { expectedTripletLinesPrefix, expectedColor },
@@ -274,8 +274,8 @@ namespace ZenUnit
       const string expectedEndTimeLine    = "    EndTime: " + dateTimeNow;
       const string expectedDurationLine   = "   Duration: " + testRunElapsedSeconds + " seconds";
       const string expectedRunResultLine = String::Concat("     Result: ", expectedClosingLineTestsCountText);
-      ZENMOCK(_watchMock->DateTimeNowMock.CalledOnce());
-      ZENMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
+      METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
+      METALMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
       {
          { expectedCompletedLine },
          { expectedRandomSeedLine },
@@ -293,7 +293,7 @@ namespace ZenUnit
       //
       _testRunResult.PrintTestClassResultFailures(testClassResultMock);
       //
-      ZENMOCK(testClassResultMock.PrintTestFailuresMock.CalledOnceWith(
+      METALMOCK(testClassResultMock.PrintTestFailuresMock.CalledOnceWith(
          _testRunResult._threeArgForEacher.get(),
          _testRunResult._console.get(),
          _testRunResult._testFailureNumberer.get()));
@@ -394,7 +394,7 @@ namespace ZenUnit
       //
       _testRunResult.PrintSkippedTestClassReminder(skippedTestClassNameAndReason);
       //
-      ZENMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith("[SKIPPED] Test class " + skippedTestClassNameAndReason, Color::Yellow));
+      METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith("[SKIPPED] Test class " + skippedTestClassNameAndReason, Color::Yellow));
    }
 
    TEST(PrintSkippedTestReminder_PrintsExpectedToConsole)
@@ -404,7 +404,7 @@ namespace ZenUnit
       //
       _testRunResult.PrintSkippedTestReminder(skippedTestName);
       //
-      ZENMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith("[SKIPPED] Test " + skippedTestName, Color::Yellow));
+      METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith("[SKIPPED] Test " + skippedTestName, Color::Yellow));
    }
 
    TEST(ResetStateExceptForSkips_ResetsTestFailureNumberer_ClearsTestClassResults_SetsNumberOfFailedTestCasesTo0)
@@ -415,7 +415,7 @@ namespace ZenUnit
       //
       _testRunResult.ResetStateExceptForSkips();
       //
-      ZENMOCK(_testFailureNumbererMock->ResetMock.CalledOnce());
+      METALMOCK(_testFailureNumbererMock->ResetMock.CalledOnce());
       IS_EMPTY(_testRunResult._testClassResults);
       ARE_EQUAL(0, _testRunResult._numberOfFailedTestCases);
    }

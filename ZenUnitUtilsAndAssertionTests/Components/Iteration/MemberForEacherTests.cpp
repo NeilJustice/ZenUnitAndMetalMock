@@ -23,7 +23,7 @@ namespace ZenUnit
    {
    public:
       CollectionType<ElementType> collection;
-      ZENMOCK_VOID1_CONST(Func, ElementType)
+      METALMOCK_VOID1_CONST(Func, ElementType)
    };
 
    using MemberForEacherType = MemberForEacher<

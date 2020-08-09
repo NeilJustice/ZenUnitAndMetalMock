@@ -4,7 +4,7 @@ include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${ZenUnitIncludeDirectory})
-include_directories(${ZenMockIncludeDirectory})
+include_directories(${MetalMockIncludeDirectory})
 
 source_group("" FILES
    ZenUnitExamplesTestsMain.cpp

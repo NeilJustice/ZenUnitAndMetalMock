@@ -1,5 +1,5 @@
-ZenMockTests\Debug\ZenMockTests.exe
-ZenMockExamples\Debug\ZenMockExamples.exe
+MetalMockTests\Debug\MetalMockTests.exe
+MetalMockExamples\Debug\MetalMockExamples.exe
 ZenUnitLibraryTests\Debug\ZenUnitLibraryTests.exe
 ZenUnitUtilsAndAssertionTests\Debug\ZenUnitUtilsAndAssertionTests.exe
 ZenUnitExamples\Debug\ZenUnitExamples.exe

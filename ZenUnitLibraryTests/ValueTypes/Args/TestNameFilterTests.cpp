@@ -18,7 +18,7 @@ namespace ZenUnit
    class TestNameFilterSelfMocked : public Zen::Mock<TestNameFilter>
    {
    public:
-      ZENMOCK_NONVOID2_CONST(bool, FilterPatternMatchesString, std::string_view, std::string_view)
+      METALMOCK_NONVOID2_CONST(bool, FilterPatternMatchesString, std::string_view, std::string_view)
    } _testNameFilterSelfMocked;
 
    TEST(DefaultConstructor_SetsTestCaseNumberToUnsignedMaxValue)
@@ -50,7 +50,7 @@ namespace ZenUnit
       //
       const bool matchesTestClassName = _testNameFilterSelfMocked.MatchesTestClassName(testClassName.c_str());
       //
-      ZENMOCK(_testNameFilterSelfMocked.FilterPatternMatchesStringMock.CalledOnceWith(
+      METALMOCK(_testNameFilterSelfMocked.FilterPatternMatchesStringMock.CalledOnceWith(
          _testNameFilterSelfMocked.testClassNamePattern, testClassName.c_str()));
       ARE_EQUAL(filterPatternMatchesStringReturnValue, matchesTestClassName);
    }
@@ -63,7 +63,7 @@ namespace ZenUnit
       //
       const bool matchesTestName = _testNameFilterSelfMocked.MatchesTestName(testName.c_str());
       //
-      ZENMOCK(_testNameFilterSelfMocked.FilterPatternMatchesStringMock.CalledOnceWith(
+      METALMOCK(_testNameFilterSelfMocked.FilterPatternMatchesStringMock.CalledOnceWith(
          _testNameFilterSelfMocked.testNamePattern, testName.c_str()));
       ARE_EQUAL(filterPatternMatchesStringReturnValue, matchesTestName);
    }
@@ -101,7 +101,7 @@ namespace ZenUnit
       //
       const bool matchesTestCase = _testNameFilterSelfMocked.MatchesTestCase(testClassName.c_str(), testName.c_str(), testNXNTestCaseNumber);
       //
-      ZENMOCK(_testNameFilterSelfMocked.FilterPatternMatchesStringMock.CalledOnceWith(
+      METALMOCK(_testNameFilterSelfMocked.FilterPatternMatchesStringMock.CalledOnceWith(
          _testNameFilterSelfMocked.testClassNamePattern, testClassName.c_str()));
       IS_FALSE(matchesTestCase);
    }
@@ -125,7 +125,7 @@ namespace ZenUnit
       const bool matchesTestCase = _testNameFilterSelfMocked.MatchesTestCase(
          testClassName.c_str(), testName.c_str(), testNXNTestCaseNumber);
       //
-      ZENMOCK(_testNameFilterSelfMocked.FilterPatternMatchesStringMock.CalledAsFollows(
+      METALMOCK(_testNameFilterSelfMocked.FilterPatternMatchesStringMock.CalledAsFollows(
       {
          { _testNameFilterSelfMocked.testClassNamePattern, testClassName.c_str() },
          { _testNameFilterSelfMocked.testNamePattern, testName.c_str() }

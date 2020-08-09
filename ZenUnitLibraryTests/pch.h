@@ -28,7 +28,7 @@ using namespace std;
 #include "Windows.h"
 #endif
 
-#include "ZenMock.h"
+#include "MetalMock.h"
 #include "ZenUnit.h"
 using namespace ZenUnit;
 

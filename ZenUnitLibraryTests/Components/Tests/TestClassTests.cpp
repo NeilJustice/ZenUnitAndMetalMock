@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleColorerMock.h"
-#include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleMock.h"
-#include "ZenUnitLibraryTests/Components/Misc/ZenMock/ExitCallerMock.h"
-#include "ZenUnitLibraryTests/Components/TestRunners/ZenMock/ZenUnitTestRunnerMock.h"
+#include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleColorerMock.h"
+#include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
+#include "ZenUnitLibraryTests/Components/Misc/MetalMock/ExitCallerMock.h"
+#include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/ZenUnitTestRunnerMock.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
 
 namespace ZenUnit
@@ -51,9 +51,9 @@ namespace ZenUnit
       const std::unique_ptr<ZenUnit::Test>* testPointer =
          TestClass::GetTestPointerForTestNXNPmfToken(nullptr, &consoleMock, &zenUnitTestRunnerMock, &exitCallerMock);
       //
-      ZENMOCK(zenUnitTestRunnerMock.VirtualGetZenUnitArgsMock.CalledOnce());
+      METALMOCK(zenUnitTestRunnerMock.VirtualGetZenUnitArgsMock.CalledOnce());
       const string expectedExitCodeMessage = String::Concat("[ZenUnit] ExitCode: ", expectedExitCode);
-      ZENMOCK(consoleMock.WriteLineColorMock.CalledAsFollows(
+      METALMOCK(consoleMock.WriteLineColorMock.CalledAsFollows(
       {
          { "=======================================================\nZenUnit Test Declaration Test Definition Mismatch Error\n=======================================================", Color::Red },
          { expectedExitCodeMessage, expectedExitCodeLineColor }
@@ -66,8 +66,8 @@ To fix this mismatch, either change FACTS(TestName) to AFACT(TestName) in the te
 
 or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10, in the EVIDENCE section of this test class.
 )");
-      ZENMOCK(consoleMock.WriteLineMock.CalledOnceWith(expectedErrorMessage));
-      ZENMOCK(exitCallerMock.CallExitMock.CalledOnceWith(expectedExitCode));
+      METALMOCK(consoleMock.WriteLineMock.CalledOnceWith(expectedErrorMessage));
+      METALMOCK(exitCallerMock.CallExitMock.CalledOnceWith(expectedExitCode));
       POINTER_IS_NULL(testPointer);
    }
 

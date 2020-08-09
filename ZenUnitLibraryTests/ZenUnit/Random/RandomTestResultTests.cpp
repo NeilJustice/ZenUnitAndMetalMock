@@ -18,7 +18,7 @@ namespace ZenUnit
 
    TEST(TestableRandomTestResult_ReturnsTestResultWithAllRandomFields)
    {
-      ZenMock::RandomGeneratorMock randomGeneratorMock;
+      MetalMock::RandomGeneratorMock randomGeneratorMock;
 
       const int testOutcomeInt = ZenUnit::RandomBetween<int>(0, numeric_limits<unsigned char>::max());
       randomGeneratorMock.EnumMock.Return(testOutcomeInt);
@@ -31,9 +31,9 @@ namespace ZenUnit
       //
       const TestResult randomTestResult = TestableRandomTestResult(randomGeneratorMock);
       //
-      ZENMOCK(randomGeneratorMock.EnumMock.CalledOnceWith(static_cast<int>(TestOutcome::MaxValue)));
-      ZENMOCK(randomGeneratorMock.UnsignedIntMock.CalledOnce());
-      ZENMOCK(randomGeneratorMock.SizeTMock.CalledNTimes(2));
+      METALMOCK(randomGeneratorMock.EnumMock.CalledOnceWith(static_cast<int>(TestOutcome::MaxValue)));
+      METALMOCK(randomGeneratorMock.UnsignedIntMock.CalledOnce());
+      METALMOCK(randomGeneratorMock.SizeTMock.CalledNTimes(2));
 
       IS_NOT_DEFAULT_VALUE(randomTestResult.fullTestName);
       IS_NOT_DEFAULT_VALUE(randomTestResult.constructorTestPhaseResult);

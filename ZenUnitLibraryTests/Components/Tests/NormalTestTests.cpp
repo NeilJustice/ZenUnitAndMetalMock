@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Components/Console/ZenMock/ConsoleMock.h"
-#include "ZenUnitLibraryTests/ValueTypes/TestResults/ZenMock/TestResultMock.h"
+#include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
+#include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestResultMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/TestingTestClass.h"
 
 namespace ZenUnit
@@ -39,7 +39,7 @@ namespace ZenUnit
       //
       _normalTest->WritePostTestNameMessage(&consoleMock);
       //
-      ZENMOCK(consoleMock.WriteMock.CalledOnceWith(" -> "));
+      METALMOCK(consoleMock.WriteMock.CalledOnceWith(" -> "));
    }
 
    TEST(WritePostTestCompletionMessage_CallsTestResultPrintOKIfTestPassedAndDoWriteMessageTrue)
@@ -50,7 +50,7 @@ namespace ZenUnit
       //
       _normalTest->WritePostTestCompletionMessage(&consoleMock, testResultMock);
       //
-      ZENMOCK(testResultMock.WriteLineOKIfSuccessMock.CalledOnceWith(&consoleMock));
+      METALMOCK(testResultMock.WriteLineOKIfSuccessMock.CalledOnceWith(&consoleMock));
    }
 
    TEST(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)
@@ -80,7 +80,7 @@ namespace ZenUnit
       //
       _normalTest->Startup();
       //
-      ZENMOCK(_normalTest->_testClass->StartupMock.CalledOnce());
+      METALMOCK(_normalTest->_testClass->StartupMock.CalledOnce());
    }
 
    TEST(TestBody_CallsMemberTestFunctionBoundToTestClassPointer)
@@ -91,7 +91,7 @@ namespace ZenUnit
       //
       _normalTest->TestBody();
       //
-      ZENMOCK(_normalTest->_testClass->TestFunctionMock.CalledOnce());
+      METALMOCK(_normalTest->_testClass->TestFunctionMock.CalledOnce());
    }
 
    TEST(Cleanup_CallsCleanupOnTestClass)
@@ -101,7 +101,7 @@ namespace ZenUnit
       //
       _normalTest->Cleanup();
       //
-      ZENMOCK(_normalTest->_testClass->CleanupMock.CalledOnce());
+      METALMOCK(_normalTest->_testClass->CleanupMock.CalledOnce());
    }
 
    TEST(DeleteTestClass_DeletesTestClass)

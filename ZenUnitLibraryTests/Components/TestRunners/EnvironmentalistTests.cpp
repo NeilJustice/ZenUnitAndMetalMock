@@ -20,28 +20,28 @@ namespace ZenUnit
    {
    public:
 #if defined __linux__ || defined __APPLE__
-      ZENMOCK_NONVOID0_CONST(string, GetLinuxMachineName)
+      METALMOCK_NONVOID0_CONST(string, GetLinuxMachineName)
 #elif defined _WIN32
-      ZENMOCK_NONVOID0_CONST(string, GetWindowsMachineName)
+      METALMOCK_NONVOID0_CONST(string, GetWindowsMachineName)
 #endif
    } _environmentalistSelfMocked;
 
    Environmentalist _environmentalist;
-   ZENMOCK_NONVOID0_FREE(fs::path, current_path)
+   METALMOCK_NONVOID0_FREE(fs::path, current_path)
 #if defined __linux__ || defined __APPLE__
-   ZENMOCK_NONVOID2_FREE(int, gethostname, char*, size_t)
+   METALMOCK_NONVOID2_FREE(int, gethostname, char*, size_t)
 #elif defined _WIN32
-   ZENMOCK_NONVOID2_FREE(BOOL, GetComputerNameA, LPSTR, LPDWORD)
-   ZENMOCK_NONVOID2_FREE(BOOL, GetUserNameA, LPSTR, LPDWORD)
+   METALMOCK_NONVOID2_FREE(BOOL, GetComputerNameA, LPSTR, LPDWORD)
+   METALMOCK_NONVOID2_FREE(BOOL, GetUserNameA, LPSTR, LPDWORD)
 #endif
 
    STARTUP
    {
-      _environmentalist._call_filesystem_current_path = BIND_0ARG_ZENMOCK_OBJECT(current_pathMock);
+      _environmentalist._call_filesystem_current_path = BIND_0ARG_METALMOCK_OBJECT(current_pathMock);
 #if defined __linux__ || defined __APPLE__
-      _environmentalist._call_gethostname = BIND_2ARG_ZENMOCK_OBJECT(gethostnameMock);
+      _environmentalist._call_gethostname = BIND_2ARG_METALMOCK_OBJECT(gethostnameMock);
 #elif defined _WIN32
-      _environmentalist._call_GetComputerNameA = BIND_2ARG_ZENMOCK_OBJECT(GetComputerNameAMock);
+      _environmentalist._call_GetComputerNameA = BIND_2ARG_METALMOCK_OBJECT(GetComputerNameAMock);
 #endif
    }
 
@@ -62,7 +62,7 @@ namespace ZenUnit
       //
       const string returnedCurrentDirectoryPath = _environmentalist.GetCurrentDirectoryPath();
       //
-      ZENMOCK(current_pathMock.CalledOnce());
+      METALMOCK(current_pathMock.CalledOnce());
       ARE_EQUAL(currentDirectoryPath, returnedCurrentDirectoryPath);
    }
 
@@ -90,7 +90,7 @@ namespace ZenUnit
       //
       const string returnedMachineName = _environmentalistSelfMocked.GetMachineName();
       //
-      ZENMOCK(_environmentalistSelfMocked.GetWindowsMachineNameMock.CalledOnce());
+      METALMOCK(_environmentalistSelfMocked.GetWindowsMachineNameMock.CalledOnce());
       ARE_EQUAL(machineName, returnedMachineName);
    }
 

@@ -1,5 +1,5 @@
-./Debug/ZenMockTests/ZenMockTests
-./Debug/ZenMockExamples/ZenMockExamples
+./Debug/MetalMockTests/MetalMockTests
+./Debug/MetalMockExamples/MetalMockExamples
 ./Debug/ZenUnitLibraryTests/ZenUnitLibraryTests
 ./Debug/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests
 ./Debug/ZenUnitExamples/ZenUnitExamples

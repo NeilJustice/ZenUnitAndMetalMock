@@ -30,16 +30,16 @@ namespace ZenUnit
    class WatchSelfMocked : public Zen::Mock<ZenUnit::Watch>
    {
    public:
-      ZENMOCK_NONVOID0_CONST(tm, TMNow)
-      ZENMOCK_NONVOID1_CONST(string, GetTimeZone, const tm&)
+      METALMOCK_NONVOID0_CONST(tm, TMNow)
+      METALMOCK_NONVOID1_CONST(string, GetTimeZone, const tm&)
    };
    unique_ptr<WatchSelfMocked> _watchSelfMocked;
-   ZENMOCK_NONVOID4_FREE(size_t, strftime, char*, size_t, char const*, const tm*)
+   METALMOCK_NONVOID4_FREE(size_t, strftime, char*, size_t, char const*, const tm*)
 
    STARTUP
    {
       _watchSelfMocked = make_unique<WatchSelfMocked>();
-      _watchSelfMocked->_call_strftime = BIND_4ARG_ZENMOCK_OBJECT(strftimeMock);
+      _watchSelfMocked->_call_strftime = BIND_4ARG_METALMOCK_OBJECT(strftimeMock);
    }
 
    TEST(Constructor_SetsStrftTimeFunctionPointer)
@@ -62,8 +62,8 @@ namespace ZenUnit
       //
       const string dateTimeNow = _watchSelfMocked->DateTimeNow();
       //
-      ZENMOCK(_watchSelfMocked->TMNowMock.CalledOnce());
-      ZENMOCK(_watchSelfMocked->GetTimeZoneMock.CalledOnceWith(tmNow));
+      METALMOCK(_watchSelfMocked->TMNowMock.CalledOnce());
+      METALMOCK(_watchSelfMocked->GetTimeZoneMock.CalledOnceWith(tmNow));
       const string expectedDateTimeNow = expectedDateTimeNowPrefix + timeZone;
       ARE_EQUAL(expectedDateTimeNow, dateTimeNow);
    }

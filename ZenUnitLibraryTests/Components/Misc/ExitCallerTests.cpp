@@ -8,11 +8,11 @@ namespace ZenUnit
    EVIDENCE
 
    ExitCaller _exitCaller;
-   ZENMOCK_VOID1_FREE(exit, int)
+   METALMOCK_VOID1_FREE(exit, int)
 
    STARTUP
    {
-      _exitCaller._call_exit = BIND_1ARG_ZENMOCK_OBJECT(exitMock);
+      _exitCaller._call_exit = BIND_1ARG_METALMOCK_OBJECT(exitMock);
    }
 
    TEST(DefaultConstructor_SetsExitFunction)
@@ -28,7 +28,7 @@ namespace ZenUnit
       //
       _exitCaller.CallExit(exitCode);
       //
-      ZENMOCK(exitMock.CalledOnceWith(exitCode));
+      METALMOCK(exitMock.CalledOnceWith(exitCode));
    }
 
    RUN_TESTS(ExitCallerTests)
