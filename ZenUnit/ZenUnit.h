@@ -240,9 +240,13 @@ Example Command Line Arguments:
 #define IS_NOT_EMPTY(collection, ...) \
    ZenUnit::IS_NOT_EMPTY_Defined(VRT(collection), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that the elements of expectedIndexableDataStructure are equal to the elements of actualIndexableDataStructure.
+// Asserts that two indexable data structures have equal sizes and equal elements according to ARE_EQUAL(expectedElement, actualElement) assertions.
 #define INDEXABLES_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure, ...) \
    ZenUnit::INDEXABLES_ARE_EQUAL_Defined("INDEXABLES_ARE_EQUAL", expectedIndexableDataStructure, #expectedIndexableDataStructure, actualIndexableDataStructure, #actualIndexableDataStructure, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Asserts that two indexable data structures have equal sizes and, in any order, equal elements according to ARE_EQUAL(expectedElement, actualElement) assertions. Useful assertion for test code that calls nondeterministic parallel code.
+#define INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedElements, actualElements, ...) \
+   ZenUnit::INDEXABLES_ARE_EQUAL_IN_ANY_ORDER_Defined(VRT(expectedElements), VRT(actualElements), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that the elements of expectedVector are equal to the elements of actualVector.
 #define VECTORS_ARE_EQUAL(expectedVector, actualVector, ...) \
@@ -267,10 +271,6 @@ Example Command Line Arguments:
 // Asserts that each element of std::array<T, Size> expectedStdArray is equal to each element of std::array<T, Size> actualStdArray.
 #define STD_ARRAYS_EQUAL(expectedStdArray, actualStdArray, ...) \
    ZenUnit::STD_ARRAYS_EQUAL_Defined(NAKED_VRT(expectedStdArray), NAKED_VRT(actualStdArray), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
-
-// Asserts that the two containers have equal size and equal elements in any order.
-#define EQUAL_ELEMENTS_ANY_ORDER(expectedElements, actualElements, ...) \
-   ZenUnit::EQUAL_ELEMENTS_ANY_ORDER_Defined(VRT(expectedElements), VRT(actualElements), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that expectedElement is contained in collection.
 #define CONTAINS_ELEMENT(expectedElement, collection, ...) \
@@ -3072,7 +3072,7 @@ namespace ZenUnit
    }
 
    template<typename ContainerType, typename... MessageTypes>
-   void EQUAL_ELEMENTS_ANY_ORDER_Defined(VRText<ContainerType> expectedElementsVRT, VRText<ContainerType> actualElementsVRT,
+   void INDEXABLES_ARE_EQUAL_IN_ANY_ORDER_Defined(VRText<ContainerType> expectedElementsVRT, VRText<ContainerType> actualElementsVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const auto& expectedElements = expectedElementsVRT.value;
@@ -3087,7 +3087,7 @@ namespace ZenUnit
       {
          const std::string expectedSizeString = std::to_string(expectedSize);
          const std::string actualSizeString = std::to_string(actualSize);
-         throw Anomaly("EQUAL_ELEMENTS_ANY_ORDER", expectedElementsVRT.text, actualElementsVRT.text, "", messagesText,
+         throw Anomaly("INDEXABLES_ARE_EQUAL_IN_ANY_ORDER", expectedElementsVRT.text, actualElementsVRT.text, "", messagesText,
             becauseAnomaly, expectedSizeString, actualSizeString, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
       }
       for (const auto& expectedElement : expectedElementsVRT.value)
@@ -3102,7 +3102,7 @@ namespace ZenUnit
          {
             const std::string expectedElementsAsString = "expectedElements";
             const std::string actualElementsAsString = "actualElements";
-            throw Anomaly("EQUAL_ELEMENTS_ANY_ORDER", expectedElementsVRT.text, actualElementsVRT.text, "", messagesText,
+            throw Anomaly("INDEXABLES_ARE_EQUAL_IN_ANY_ORDER", expectedElementsVRT.text, actualElementsVRT.text, "", messagesText,
                becauseAnomaly, expectedElementsAsString, actualElementsAsString, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
          }
       }
