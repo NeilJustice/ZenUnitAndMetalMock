@@ -11,7 +11,7 @@ A key testing rigorousness feature of MetalMock is that MetalMock is a "double-s
 |Build|Build Status|
 |----------|------------|
 |Travis CI Linux Clang 7.0.0 and GCC 7.4.0 Debug and Release|<a href="https://travis-ci.org/NeilJustice/ZenUnitAndMetalMock"><img src="https://travis-ci.org/NeilJustice/ZenUnitAndMetalMock.svg?branch=master"/></a>|
-|AppVeyor Windows Visual Studio 2019 x64 and Win32 Debug and Release|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndMetalMock"><img src="https://ci.appveyor.com/api/projects/status/neqqkha7xbc93260?svg=true"/></a>|
+|AppVeyor Windows Visual Studio 2019 x64 and Win32 Debug and Release|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndMetalMock"><img src="https://ci.appveyor.com/api/projects/status/9m1224h38bk4lxn7?svg=true"/></a>|
 |Code Coverage Of The Travis CI GCC 7.4.0 Release Build|[![codecov](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock/branch/master/graph/badge.svg)](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock)|
 
 ##### ZenUnit.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/master/ZenUnit/ZenUnit.h)
