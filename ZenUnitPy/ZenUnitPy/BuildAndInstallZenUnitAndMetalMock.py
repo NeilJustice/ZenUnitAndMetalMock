@@ -19,9 +19,9 @@ def main(args):
       platformSystem = platform.system().casefold()
       if platformSystem == 'linux':
          linux_cmake_build_install(cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions)
-         Process.run(f'MetalMockTests/MetalMockTests')
-         Process.run(f'ZenUnitLibraryTests/ZenUnitLibraryTests')
-         Process.run(f'ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests')
+         Process.run('MetalMockTests/MetalMockTests')
+         Process.run('ZenUnitLibraryTests/ZenUnitLibraryTests')
+         Process.run('ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests')
          os.chdir('..')
       else:
          windows_cmake_build_install(cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions)
