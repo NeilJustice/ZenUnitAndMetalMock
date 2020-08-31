@@ -1,7 +1,6 @@
 #pragma once
 #include <regex>
 
-// Asserts that str std::regex_matches expectedPattern.
 #define REGEX_MATCHES(expectedPattern, str, ...) \
    ZenUnit::REGEX_MATCHES_Defined(VRT(expectedPattern), VRT(str), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 

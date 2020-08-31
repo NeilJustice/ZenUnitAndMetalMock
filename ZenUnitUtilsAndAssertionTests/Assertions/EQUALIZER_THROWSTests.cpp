@@ -65,7 +65,7 @@ namespace ZenUnit
    AFACT(EqualizerDoesNotAssertSpecifiedFieldEqual_Throws)
    AFACT(EqualizerThrowsAnomalyThatDoesNotContainFieldName_Throws)
    AFACT(EqualizerThrowsAnomalyThatContainsFieldName_ButStillThrowsThatAnomalyWhenAllFieldsEqual_Throws)
-   AFACT(EqualizerAssertsSpecifiedFieldEqual_DoesNotThrow)
+   AFACT(EqualizerAssertsSpecifiedFieldEqual_DoesNotThrowException)
    EVIDENCE
 
    TEST(EqualizerDoesNotAssertSpecifiedFieldEqual_Throws)
@@ -109,7 +109,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(EqualizerAssertsSpecifiedFieldEqual_DoesNotThrow)
+   TEST(EqualizerAssertsSpecifiedFieldEqual_DoesNotThrowException)
    {
       SETUP_EQUALIZER_TEST(Namespace::TestStruct);
       EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Namespace::TestStruct, fieldA, 1);

@@ -3,7 +3,7 @@
 namespace ZenUnit
 {
    TESTS(IS_NOT_DEFAULT_VALUETests)
-   AFACT(ValueIsNotDefault_DoesNotThrow)
+   AFACT(ValueIsNotDefault_DoesNotThrowException)
    AFACT(IntIsZero_Throws)
    AFACT(DoubleIsZero_Throws)
    AFACT(FloatIsZero_Throws)
@@ -28,7 +28,7 @@ namespace ZenUnit
       }
    };
 
-   TEST(ValueIsNotDefault_DoesNotThrow)
+   TEST(ValueIsNotDefault_DoesNotThrowException)
    {
       IS_NOT_DEFAULT_VALUE(-1);
       IS_NOT_DEFAULT_VALUE(1);

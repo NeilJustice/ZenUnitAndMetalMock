@@ -3,12 +3,12 @@
 namespace ZenUnit
 {
    TESTS(IS_ZEROTests)
-   AFACT(ValueIsZero_DoesNotThrow)
+   AFACT(ValueIsZero_DoesNotThrowException)
    FACTS(IntNotZero_Throws)
    FACTS(DoubleNotZero_Throws)
-   AFACT(UserTypeZero_DoesNotThrow)
+   AFACT(UserTypeZero_DoesNotThrowException)
    AFACT(UserTypeNotZero_Throws_MessagesTestCase)
-   AFACT(IntializerConstructable_IsZero_DoesNotThrow)
+   AFACT(IntializerConstructable_IsZero_DoesNotThrowException)
    AFACT(IntializerConstructable_IsNotZero_Throws)
    EVIDENCE
 
@@ -30,7 +30,7 @@ namespace ZenUnit
       }
    };
 
-   TEST(ValueIsZero_DoesNotThrow)
+   TEST(ValueIsZero_DoesNotThrowException)
    {
       IS_ZERO(0);
 
@@ -76,7 +76,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(UserTypeZero_DoesNotThrow)
+   TEST(UserTypeZero_DoesNotThrowException)
    {
       const UserType userType0(0);
       IS_ZERO(userType0);
@@ -94,7 +94,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(IntializerConstructable_IsZero_DoesNotThrow)
+   TEST(IntializerConstructable_IsZero_DoesNotThrowException)
    {
       const IntializerConstructable i { 0 };
       IS_ZERO(i);

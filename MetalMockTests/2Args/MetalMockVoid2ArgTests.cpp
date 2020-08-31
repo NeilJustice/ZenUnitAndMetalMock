@@ -56,7 +56,7 @@ namespace MetalMock
 
    TESTS(MetalMockVoid2ArgTests)
    AFACT(MetalMockIt_ExpectNotPreviouslyCalled_ThrowsUnexpectedCallException)
-   AFACT(Expect_DoesNotThrowWhenCalledTwice_MakesFunctionNotThrowWhenCalled)
+   AFACT(Expect_DoesNotThrowExceptionWhenCalledTwice_MakesFunctionNotThrowWhenCalled)
    AFACT(ThrowException_MakesSubsequentCallsToMetalMockedFunctionThrowSpecifiedException__runtime_error_TestCase)
    AFACT(ThrowException_MakesSubsequentCallsToMetalMockedFunctionThrowSpecifiedException__runtime_error_then_invalid_argument_TestCase)
    AFACT(CalledOnceWith_MetalMockedFunctionNotPreviouslyCalled_Throws)
@@ -143,7 +143,7 @@ Argument2: )" + to_string(argument2);
       testcase(StaticVoid2ArgFunctionMock, StaticFunctionSignature);
    }
 
-   TEST(Expect_DoesNotThrowWhenCalledTwice_MakesFunctionNotThrowWhenCalled)
+   TEST(Expect_DoesNotThrowExceptionWhenCalledTwice_MakesFunctionNotThrowWhenCalled)
    {
       const auto testcase = [](VoidTwoArgumentMetalMocker<int, int>& metalMockObject)
       {
@@ -168,7 +168,7 @@ Argument2: )" + to_string(argument2);
       const auto testcase = [](VoidTwoArgumentMetalMocker<int, int>& metalMockObject)
       {
          const string exceptionMessage = ZenUnit::Random<string>();
-         metalMockObject.ThrowException<runtime_error>(exceptionMessage);
+         metalMockObject.ThrowExceptionWhenCalled<runtime_error>(exceptionMessage);
          const int argument1 = ZenUnit::Random<int>();
          const int argument2 = ZenUnit::Random<int>();
          //
@@ -192,7 +192,7 @@ Argument2: )" + to_string(argument2);
       const auto testcase = [](VoidTwoArgumentMetalMocker<int, int>& metalMockObject)
       {
          const string exceptionMessage = ZenUnit::Random<string>();
-         metalMockObject.ThrowException<invalid_argument>(exceptionMessage);
+         metalMockObject.ThrowExceptionWhenCalled<invalid_argument>(exceptionMessage);
          const int argument1 = ZenUnit::Random<int>();
          const int argument2 = ZenUnit::Random<int>();
          //

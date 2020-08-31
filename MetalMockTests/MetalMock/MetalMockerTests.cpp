@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "MetalMockTests/MetalMock/ExceptionThrowerMock.h"
+#include "MetalMockTests/MetalMock/MetalMockExceptionThrowerMock.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
 
 struct CustomException
@@ -14,12 +14,12 @@ namespace MetalMock
    AFACT(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue_runtime_error_testcase)
    AFACT(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue_CustomException_testcase)
    AFACT(MetalMockSetAsserted_SetsAssertedTrue_CallableTwice)
-   AFACT(MetalMockThrowIfNotExpected_ExpectedTrue_DoesNotThrow)
-   AFACT(MetalMockThrowIfNotExpected_ExpectedFalse_Throws)
-   AFACT(MetalMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCalls0_Throws)
-   FACTS(MetalMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCallsGreaterThan0_DoesNotThrow)
-   AFACT(MetalMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSize0_Throws)
-   FACTS(MetalMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSizeGreaterThan0_DoesNotThrow)
+   AFACT(MetalMockThrowIfNotExpected_ExpectedTrue_DoesNotThrowException)
+   AFACT(MetalMockThrowIfNotExpected_ExpectedFalse_ThrowsUnexpectedCallException)
+   AFACT(MetalMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCalls0_ThrowsUnsupportedCalledZeroTimesException)
+   FACTS(MetalMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCallsGreaterThan0_DoesNotThrowException)
+   AFACT(MetalMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSize0_ThrowsUnsupportedCalledZeroTimesException)
+   FACTS(MetalMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSizeGreaterThan0_DoesNotThrowException)
    AFACT(MetalMockThrowExceptionIfExceptionSet_CallsExceptionThrowerMetalMockThrowIfExceptionSet)
    FACTS(MetalMockExitIfExpectedButNotAsserted_ExpectedFalse_DoesNothing)
    FACTS(MetalMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedTrue_DoesNothing)
@@ -27,21 +27,21 @@ namespace MetalMock
    AFACT(MetalMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedFalse_MetalMockExceptionIsInFlightTrue_DoesNothing)
    EVIDENCE
 
-   unique_ptr<MetalMocker<ExceptionThrowerMock>> _metalMocker;
+   unique_ptr<MetalMocker<MetalMockExceptionThrowerMock>> _metalMocker;
    METALMOCK_VOID1_FREE(exit, int)
    METALMOCK_NONVOID0_STATIC(const ZenUnit::ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetZenUnitArgs)
    const string MetalMockedFunctionSignature = "virtual void ClassName::FunctionName() const";
 
    STARTUP
    {
-      _metalMocker = make_unique<MetalMocker<ExceptionThrowerMock>>(MetalMockedFunctionSignature);
+      _metalMocker = make_unique<MetalMocker<MetalMockExceptionThrowerMock>>(MetalMockedFunctionSignature);
       _metalMocker->_call_exit = BIND_1ARG_METALMOCK_OBJECT(exitMock);
       _metalMocker->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(GetZenUnitArgsMock);
    }
 
    TEST(Constructor_SetsFields)
    {
-      const MetalMocker<ExceptionThrower> metalMocker(MetalMockedFunctionSignature);
+      const MetalMocker<MetalMockExceptionThrower> metalMocker(MetalMockedFunctionSignature);
       //
       STD_FUNCTION_TARGETS(exit, metalMocker._call_exit);
       STD_FUNCTION_TARGETS(ZenUnit::ZenUnitTestRunner::GetZenUnitArgs, metalMocker._call_ZenUnitTestRunner_GetZenUnitArgs);
@@ -57,7 +57,7 @@ namespace MetalMock
       IS_FALSE(_metalMocker->_wasExpected);
       const string what = Random<string>();
       //
-      _metalMocker->ThrowException<runtime_error>(what);
+      _metalMocker->ThrowExceptionWhenCalled<runtime_error>(what);
       //
       _metalMocker->_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith("std::runtime_error", 1, what);
       IS_TRUE(_metalMocker->_wasExpected);
@@ -70,7 +70,7 @@ namespace MetalMock
       _metalMocker->_exceptionThrower.ExpectCallToExpectAndThrowException();
       IS_FALSE(_metalMocker->_wasExpected);
       //
-      _metalMocker->ThrowException<CustomException>(1, '2', 3.3);
+      _metalMocker->ThrowExceptionWhenCalled<CustomException>(1, '2', 3.3);
       //
       _metalMocker->_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith("CustomException", 3, "123.3");
       IS_TRUE(_metalMocker->_wasExpected);
@@ -91,7 +91,7 @@ namespace MetalMock
       IS_TRUE(_metalMocker->_wasAsserted);
    }
 
-   TEST(MetalMockThrowIfNotExpected_ExpectedTrue_DoesNotThrow)
+   TEST(MetalMockThrowIfNotExpected_ExpectedTrue_DoesNotThrowException)
    {
       _metalMocker->_wasExpected = true;
       DOES_NOT_THROW(_metalMocker->MetalMockThrowIfNotExpected());
@@ -99,7 +99,7 @@ namespace MetalMock
       _metalMocker->_wasAsserted = true;
    }
 
-   TEST(MetalMockThrowIfNotExpected_ExpectedFalse_Throws)
+   TEST(MetalMockThrowIfNotExpected_ExpectedFalse_ThrowsUnexpectedCallException)
    {
       IS_FALSE(_metalMocker->_wasExpected);
       THROWS_EXCEPTION(_metalMocker->MetalMockThrowIfNotExpected(), UnexpectedCallException,
@@ -108,13 +108,13 @@ namespace MetalMock
          UnexpectedCallException::MakeWhat(MetalMockedFunctionSignature, 1, 2, 3));
    }
 
-   TEST(MetalMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCalls0_Throws)
+   TEST(MetalMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCalls0_ThrowsUnsupportedCalledZeroTimesException)
    {
-      THROWS_EXCEPTION(_metalMocker->MetalMockThrowIfExpectedNumberOfCalls0(0), UnsupportedCalledZeroTimesException,
-         UnsupportedCalledZeroTimesException::MakeWhat(MetalMockedFunctionSignature));
+      THROWS_EXCEPTION(_metalMocker->MetalMockThrowIfExpectedNumberOfCalls0(0),
+         UnsupportedCalledZeroTimesException, UnsupportedCalledZeroTimesException::MakeWhat(MetalMockedFunctionSignature));
    }
 
-   TEST1X1(MetalMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCallsGreaterThan0_DoesNotThrow,
+   TEST1X1(MetalMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCallsGreaterThan0_DoesNotThrowException,
       size_t expectedNumberOfCalls,
       size_t(1),
       size_t(2))
@@ -122,13 +122,13 @@ namespace MetalMock
       DOES_NOT_THROW(_metalMocker->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls));
    }
 
-   TEST(MetalMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSize0_Throws)
+   TEST(MetalMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSize0_ThrowsUnsupportedCalledZeroTimesException)
    {
-      THROWS_EXCEPTION(_metalMocker->MetalMockThrowIfExpectedCallsSizeIsZero(0), UnsupportedCalledZeroTimesException,
-         UnsupportedCalledZeroTimesException::MakeWhat(MetalMockedFunctionSignature));
+      THROWS_EXCEPTION(_metalMocker->MetalMockThrowIfExpectedCallsSizeIsZero(0),
+         UnsupportedCalledZeroTimesException, UnsupportedCalledZeroTimesException::MakeWhat(MetalMockedFunctionSignature));
    }
 
-   TEST1X1(MetalMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSizeGreaterThan0_DoesNotThrow,
+   TEST1X1(MetalMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSizeGreaterThan0_DoesNotThrowException,
       size_t expectedCallsSize,
       size_t(1),
       size_t(2))

@@ -3,27 +3,27 @@
 namespace ZenUnit
 {
    TESTS(POINTER_IS_NULL_Tests)
-   AFACT(NullRawPointer_DoesNotThrow)
-   AFACT(NullUniquePointer_DoesNotThrow)
-   AFACT(NullSharedPointer_DoesNotThrow)
+   AFACT(NullRawPointer_DoesNotThrowException)
+   AFACT(NullUniquePointer_DoesNotThrowException)
+   AFACT(NullSharedPointer_DoesNotThrowException)
    AFACT(NonNullRawPointer_Throws_MessagesTestCase)
    AFACT(NonNullUniquePtr_Throws)
    AFACT(NonNullSharedPtr_Throws)
    EVIDENCE
 
-   TEST(NullRawPointer_DoesNotThrow)
+   TEST(NullRawPointer_DoesNotThrowException)
    {
       const int* const nullRawPointer = nullptr;
       POINTER_IS_NULL(nullRawPointer);
    }
 
-   TEST(NullUniquePointer_DoesNotThrow)
+   TEST(NullUniquePointer_DoesNotThrowException)
    {
       const unique_ptr<const int> nullUniquePtr;
       POINTER_IS_NULL(nullUniquePtr);
    }
 
-   TEST(NullSharedPointer_DoesNotThrow)
+   TEST(NullSharedPointer_DoesNotThrowException)
    {
       const shared_ptr<const int> nullSharedPtr;
       POINTER_IS_NULL(nullSharedPtr);

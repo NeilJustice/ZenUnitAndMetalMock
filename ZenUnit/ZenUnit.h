@@ -40,7 +40,7 @@ namespace fs = std::experimental::filesystem;
 namespace fs = std::filesystem;
 #endif
 
-#define COMMA , // For those times when parentheses are not enough for the compiler
+#define COMMA , // For those times when parentheses are not enough disambiguation for the compiler
 
 #define DOTOKENJOIN(a, b) a##b
 
@@ -91,7 +91,7 @@ Testing Rigorousness Options:
 --exit-1-if-tests-skipped
    After having run all tests, exit with code 1 if any tests were skipped.
 
-Testing Specificity Options:
+Testing Filtration Options:
 
 --fail-fast
    If a test fails, call exit(1).

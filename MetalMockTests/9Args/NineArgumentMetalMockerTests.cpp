@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "MetalMockTests/MetalMock/ExceptionThrowerMock.h"
+#include "MetalMockTests/MetalMock/MetalMockExceptionThrowerMock.h"
 
 namespace MetalMock
 {
@@ -10,7 +10,7 @@ namespace MetalMock
    AFACT(MetalMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsMetalMockThrowIfExceptionSet)
    EVIDENCE
 
-   using MetalMockerType = NineArgumentMetalMocker<int, int, int, int, int, int, int, int, int, ExceptionThrowerMock>;
+   using MetalMockerType = NineArgumentMetalMocker<int, int, int, int, int, int, int, int, int, MetalMockExceptionThrowerMock>;
    unique_ptr<MetalMockerType> _metalMocker;
    string _metalMockedFunctionSignature;
 
@@ -40,7 +40,7 @@ namespace MetalMock
       IS_FALSE(_metalMocker->_wasExpected);
       _metalMocker->_exceptionThrower.ExpectCallToExpectAndThrowException();
       //
-      _metalMocker->ThrowException<TestingException>("argument", 100);
+      _metalMocker->ThrowExceptionWhenCalled<TestingException>("argument", 100);
       //
       _metalMocker->_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith("MetalMock::TestingException", 2, "argument100");
       IS_TRUE(_metalMocker->_wasExpected);

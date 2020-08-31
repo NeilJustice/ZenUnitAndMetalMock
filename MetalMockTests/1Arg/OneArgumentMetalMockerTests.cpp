@@ -1,24 +1,24 @@
 #include "pch.h"
-#include "MetalMockTests/MetalMock/ExceptionThrowerMock.h"
+#include "MetalMockTests/MetalMock/MetalMockExceptionThrowerMock.h"
 
 namespace MetalMock
 {
    TESTS(OneArgumentMetalMockerTests)
    AFACT(Constructor_SetsFields)
-   AFACT(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue)
+   AFACT(ThrowExceptionWhenCalled_CallsExceptionThrowerThrow_SetsExpectedTrue)
    AFACT(MetalMockIt_ExpectedFalse_Throws)
    AFACT(MetalMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsMetalMockThrowIfExceptionSet)
-   FACTS(CalledOnceWith_SetsAssertedTrue_FunctionWasCalledOnceWithExpectedArg_DoesNotThrow)
+   FACTS(CalledOnceWith_SetsAssertedTrue_FunctionWasCalledOnceWithExpectedArg_DoesNotThrowException)
    AFACT(CalledAsFollowsWith_NIsZero_Throws)
    FACTS(CalledAsFollowsWith_SetsAssertedTrue_NDiffersFromActualCallCount_Throws)
    FACTS(CalledAsFollowsWith_SetsAssertedTrue_NEqualToNumberOfCalls_ThrowsIfArgsDoNotMatch)
    AFACT(CalledAsFollows_ExpectedCallsSize0_Throws_DoesNotSetAssertedTrue)
    AFACT(CalledAsFollows_SetsAssertedTrue_ExpectedCallsSizeNon0AndNotEqualToActualCallsSize_Throws_DoesNotCopyTheExpectedArg)
    AFACT(CalledAsFollows_SetsAssertedTrue_ExpectedCallsSizeNon0AndEqualToNumberOfCalls_ArgsNotEqual_Throws_DoesNotCopyTheExpectedArg)
-   AFACT(CalledAsFollows_SetsAssertedTrue_ExpectedCallsSizeNon0AndEqualToNumberOfCalls_ArgsEqual_DoesNotThrow_DoesNotCopyTheExpectedArg)
+   AFACT(CalledAsFollows_SetsAssertedTrue_ExpectedCallsSizeNon0AndEqualToNumberOfCalls_ArgsEqual_DoesNotThrowException_DoesNotCopyTheExpectedArg)
    EVIDENCE
 
-   using MetalMockerType = OneArgumentMetalMocker<int, ExceptionThrowerMock>;
+   using MetalMockerType = OneArgumentMetalMocker<int, MetalMockExceptionThrowerMock>;
    unique_ptr<MetalMockerType> _metalMocker;
    string _metalMockedFunctionSignature;
 
@@ -43,12 +43,12 @@ namespace MetalMock
       IS_EMPTY(mocker.metalMockedFunctionCallHistory);
    }
 
-   TEST(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue)
+   TEST(ThrowExceptionWhenCalled_CallsExceptionThrowerThrow_SetsExpectedTrue)
    {
       IS_FALSE(_metalMocker->_wasExpected);
       _metalMocker->_exceptionThrower.ExpectCallToExpectAndThrowException();
       //
-      _metalMocker->ThrowException<TestingException>("argument", 100);
+      _metalMocker->ThrowExceptionWhenCalled<TestingException>("argument", 100);
       //
       _metalMocker->_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith("MetalMock::TestingException", 2, "argument100");
       IS_TRUE(_metalMocker->_wasExpected);
@@ -81,7 +81,7 @@ namespace MetalMock
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-   TEST5X5(CalledOnceWith_SetsAssertedTrue_FunctionWasCalledOnceWithExpectedArg_DoesNotThrow,
+   TEST5X5(CalledOnceWith_SetsAssertedTrue_FunctionWasCalledOnceWithExpectedArg_DoesNotThrowException,
       size_t numberOfCalls, int expectedArgument, int actualArg, bool expectCallCountThrow, bool expectArgEqualityThrow,
       size_t(0), ZenUnit::Random<int>(), ZenUnit::Random<int>(), true, false,
       size_t(2), ZenUnit::Random<int>(), ZenUnit::Random<int>(), true, false,
@@ -265,7 +265,7 @@ File.cpp(1))");
       IS_TRUE(_metalMocker->_wasAsserted);
    }
 
-   TEST(CalledAsFollows_SetsAssertedTrue_ExpectedCallsSizeNon0AndEqualToNumberOfCalls_ArgsEqual_DoesNotThrow_DoesNotCopyTheExpectedArg)
+   TEST(CalledAsFollows_SetsAssertedTrue_ExpectedCallsSizeNon0AndEqualToNumberOfCalls_ArgsEqual_DoesNotThrowException_DoesNotCopyTheExpectedArg)
    {
       IS_FALSE(_metalMocker->_wasAsserted);
       int firstArgument = 10;

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "MetalMockTests/MetalMock/ExceptionThrowerMock.h"
+#include "MetalMockTests/MetalMock/MetalMockExceptionThrowerMock.h"
 
 namespace MetalMock
 {
@@ -11,7 +11,7 @@ namespace MetalMock
    AFACT(CallInstead_CallsSuppliedFunctionWhenMetalMockedFunctionIsCalled)
    EVIDENCE
 
-   using ThreeArgumentMetalMockerType = ThreeArgumentMetalMocker<int, int, int, ExceptionThrowerMock>;
+   using ThreeArgumentMetalMockerType = ThreeArgumentMetalMocker<int, int, int, MetalMockExceptionThrowerMock>;
    unique_ptr<ThreeArgumentMetalMockerType> _threeArgumentMetalMocker;
    string _metalMockedFunctionSignature;
 
@@ -41,7 +41,7 @@ namespace MetalMock
       IS_FALSE(_threeArgumentMetalMocker->_wasExpected);
       _threeArgumentMetalMocker->_exceptionThrower.ExpectCallToExpectAndThrowException();
       //
-      _threeArgumentMetalMocker->ThrowException<TestingException>("argument", 100);
+      _threeArgumentMetalMocker->ThrowExceptionWhenCalled<TestingException>("argument", 100);
       //
       _threeArgumentMetalMocker->_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith("MetalMock::TestingException", 2, "argument100");
       IS_TRUE(_threeArgumentMetalMocker->_wasExpected);

@@ -3,12 +3,12 @@
 namespace ZenUnit
 {
    TESTS(IS_EMPTYTests)
-   AFACT(ContainerIsEmpty_DoesNotThrow)
+   AFACT(ContainerIsEmpty_DoesNotThrowException)
    AFACT(VectorIsNotEmpty_Throws)
    AFACT(StringIsNotEmpty_Throws_MessagesTestCase)
    EVIDENCE
 
-   TEST(ContainerIsEmpty_DoesNotThrow)
+   TEST(ContainerIsEmpty_DoesNotThrowException)
    {
       IS_EMPTY(string());
       IS_EMPTY(vector<int>());

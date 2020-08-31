@@ -23,7 +23,7 @@ namespace ZenUnit
    AFACT(ActualPointerIsNull_Throws__MessagesTestCase)
    AFACT(ActualPointerIsNotNull_ActualPointeeTypeIsUnrelatedToExpectedPointeeType_Throws)
    AFACT(ActualPointerIsNotNull_ActualPointeeTypeIsASubclassOfExpectedPointeeType_Throws)
-   AFACT(ActualPointerIsNotNull_ActualPointeeTypeIsExactlyExpectedPointeeType_DoesNotThrow)
+   AFACT(ActualPointerIsNotNull_ActualPointeeTypeIsExactlyExpectedPointeeType_DoesNotThrowException)
    EVIDENCE
 
    TEST(ActualPointerIsNull_Throws)
@@ -77,7 +77,7 @@ namespace ZenUnit
          "File.cpp(1)"));
    }
 
-   TEST(ActualPointerIsNotNull_ActualPointeeTypeIsExactlyExpectedPointeeType_DoesNotThrow)
+   TEST(ActualPointerIsNotNull_ActualPointeeTypeIsExactlyExpectedPointeeType_DoesNotThrowException)
    {
       const DerivedClassA derivedClassInstance;
       const BaseClassA* const actualPointer = &derivedClassInstance;

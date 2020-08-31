@@ -7,7 +7,7 @@ namespace ZenUnit
    AFACT(FunctionDoesNotPointToAFunction_Throws_MessagesTestsCase)
    AFACT(FunctionPointsToFunctionWithDifferentSignatureThanExpected_Throws)
    AFACT(FunctionPointsToFunctionWithSameSignatureButDifferentFunctionThanExpected_Throws)
-   AFACT(FunctionPointsToSameFunctionAsExpected_DoesNotThrow)
+   AFACT(FunctionPointsToSameFunctionAsExpected_DoesNotThrowException)
    AFACT(FunctionABC_CodeCoverage)
    EVIDENCE
 
@@ -131,7 +131,7 @@ namespace ZenUnit
    #endif
    }
 
-   TEST(FunctionPointsToSameFunctionAsExpected_DoesNotThrow)
+   TEST(FunctionPointsToSameFunctionAsExpected_DoesNotThrowException)
    {
       const function<void()> stdFunctionA(FunctionA);
       STD_FUNCTION_TARGETS(FunctionA, stdFunctionA);

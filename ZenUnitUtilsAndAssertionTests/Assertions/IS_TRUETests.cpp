@@ -3,22 +3,22 @@
 namespace ZenUnit
 {
    TESTS(IS_TRUETests)
-   AFACT(TrueBoolLiteral_DoesNotThrow)
-   AFACT(TrueBoolVariable_DoesNotThrow)
+   AFACT(TrueBoolLiteral_DoesNotThrowException)
+   AFACT(TrueBoolVariable_DoesNotThrowException)
    AFACT(FalseBoolLiteral_Throws)
    AFACT(FalseBoolVariable_Throws_MessagesTestCase)
-   AFACT(StdFunctionPointsToAFunction_DoesNotThrow)
+   AFACT(StdFunctionPointsToAFunction_DoesNotThrowException)
    AFACT(StdFunctionDoesNotPointToAFunction_Throws)
-   AFACT(UserTypeConvertsToTrue_DoesNotThrow)
+   AFACT(UserTypeConvertsToTrue_DoesNotThrowException)
    AFACT(UserTypeConvertsToFalse_Throws)
    EVIDENCE
 
-   TEST(TrueBoolLiteral_DoesNotThrow)
+   TEST(TrueBoolLiteral_DoesNotThrowException)
    {
       IS_TRUE(true);
    }
 
-   TEST(TrueBoolVariable_DoesNotThrow)
+   TEST(TrueBoolVariable_DoesNotThrowException)
    {
       const bool trueBool = true;
       IS_TRUE(trueBool);
@@ -45,7 +45,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(StdFunctionPointsToAFunction_DoesNotThrow)
+   TEST(StdFunctionPointsToAFunction_DoesNotThrowException)
    {
       const function<void(int)> nonemptyStdFunction = exit;
       IS_TRUE(nonemptyStdFunction);
@@ -61,7 +61,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(UserTypeConvertsToTrue_DoesNotThrow)
+   TEST(UserTypeConvertsToTrue_DoesNotThrowException)
    {
       const UserType trueUserType(1);
       IS_TRUE(trueUserType);

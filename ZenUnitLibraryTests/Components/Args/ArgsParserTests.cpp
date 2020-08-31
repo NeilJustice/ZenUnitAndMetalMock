@@ -48,7 +48,7 @@ Testing Rigorousness Options:
 --exit-1-if-tests-skipped
    After having run all tests, exit with code 1 if any tests were skipped.
 
-Testing Specificity Options:
+Testing Filtration Options:
 
 --fail-fast
    If a test fails, call exit(1).
@@ -146,7 +146,7 @@ Example Command Line Arguments:
       14)
    {
       _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
+      _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
       const vector<string> stringArgs(numberOfStringArgs);
       //
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
@@ -162,7 +162,7 @@ Example Command Line Arguments:
       "--test-runs")
    {
       _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
+      _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, invalidArgument };
       //
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
@@ -174,7 +174,7 @@ Example Command Line Arguments:
 
    TEST(Parse_DashDashHelp_PrintsUsageAndExits0)
    {
-      _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
+      _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, "--help" };
       //
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
@@ -184,7 +184,7 @@ Example Command Line Arguments:
 
    TEST(Parse_DashDashVersion_PrintsVersionAndExits0)
    {
-      _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
+      _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, "--version" };
       //
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
@@ -318,7 +318,7 @@ Example Command Line Arguments:
       "--random-seed===")
    {
       _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
+      _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, arg };
       //
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
@@ -332,8 +332,8 @@ Example Command Line Arguments:
    TEST(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
    {
       _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
-      ToIntMock.ThrowException<invalid_argument>("");
+      _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
+      ToIntMock.ThrowExceptionWhenCalled<invalid_argument>("");
       const string InvalidTimesArg = "--test-runs=-1_for_example";
       const vector<string> stringArgs { _testProgramPath, InvalidTimesArg };
       //
@@ -386,7 +386,7 @@ Example Command Line Arguments:
    TEST(Parse_UnrecognizedEqualsSignArgName_PrintsUsageAndExits1)
    {
       _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WriteLineAndExitMock.ThrowException<WriteLineAndExitException>();
+      _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
       const string unrecognizedNameArg = "-" + ZenUnit::Random<string>() + "=" + ZenUnit::Random<string>();
       const vector<string> stringArgs{ _testProgramPath, unrecognizedNameArg };
       //

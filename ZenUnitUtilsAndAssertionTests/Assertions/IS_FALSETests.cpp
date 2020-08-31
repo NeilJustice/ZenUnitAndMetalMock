@@ -3,16 +3,16 @@
 namespace ZenUnit
 {
    TESTS(IS_FALSETests)
-   AFACT(BoolIsFalse_DoesNotThrow)
+   AFACT(BoolIsFalse_DoesNotThrowException)
    AFACT(BoolIsTrue_Throws)
    AFACT(BoolVariableIsTrue_Throws_MessagesTestCase)
-   AFACT(StdFunctionDoesNotPointToAFunction_DoesNotThrow)
+   AFACT(StdFunctionDoesNotPointToAFunction_DoesNotThrowException)
    AFACT(StdFunctionPointsToAFunction_Throws)
-   AFACT(UserTypeConvertsToFalse_DoesNotThrow)
+   AFACT(UserTypeConvertsToFalse_DoesNotThrowException)
    AFACT(UserTypeConvertsToTrue_Throws)
    EVIDENCE
 
-   TEST(BoolIsFalse_DoesNotThrow)
+   TEST(BoolIsFalse_DoesNotThrowException)
    {
       IS_FALSE(false);
       const bool falseBool = false;
@@ -40,7 +40,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(StdFunctionDoesNotPointToAFunction_DoesNotThrow)
+   TEST(StdFunctionDoesNotPointToAFunction_DoesNotThrowException)
    {
       const function<void()> barrenStdFunction;
       IS_FALSE(barrenStdFunction);
@@ -56,7 +56,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(UserTypeConvertsToFalse_DoesNotThrow)
+   TEST(UserTypeConvertsToFalse_DoesNotThrowException)
    {
       const UserType falseUserType(0);
       IS_FALSE(falseUserType);

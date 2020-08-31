@@ -4,13 +4,13 @@
 namespace ZenUnit
 {
    TESTS(REGEX_MATCHESTests)
-   AFACT(PatternMatchesAllOfInput_DoesNotThrow)
+   AFACT(PatternMatchesAllOfInput_DoesNotThrowException)
    AFACT(PatternDoesNotMatchAnyOfInput_Throws)
    AFACT(PatternMatchesOnlyPartOfInput_Throws)
    AFACT(PatternMismatchesOnCase_Throws_MessagesTestCase)
    EVIDENCE
 
-   TEST(PatternMatchesAllOfInput_DoesNotThrow)
+   TEST(PatternMatchesAllOfInput_DoesNotThrowException)
    {
       REGEX_MATCHES("", "");
       REGEX_MATCHES("a", "a");

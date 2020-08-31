@@ -3,27 +3,31 @@
 namespace MetalMock
 {
    TESTS(UnsupportedCalledZeroTimesExceptionTests)
-   AFACT(Constructor_SetsWhat_ClassIsSubclassOfMetalMockException)
+   AFACT(OneArgConstructor_SetsExceptionMessage__ClassIsASubclassOfMetalMockException)
    EVIDENCE
 
-   TEST(Constructor_SetsWhat_ClassIsSubclassOfMetalMockException)
+   TEST(OneArgConstructor_SetsExceptionMessage__ClassIsASubclassOfMetalMockException)
    {
       // Example MetalMocked function signature: "virtual void ClassName::FunctionName(int, int) const"
       const string metalMockedFunctionSignature = ZenUnit::Random<string>();
       //
       const UnsupportedCalledZeroTimesException ex(metalMockedFunctionSignature);
       //
-      const std::string expectedWhat = ZenUnit::String::Concat(
+      const std::string expectedExceptionMessage = ZenUnit::String::Concat(
          "For MetalMocked function \"", metalMockedFunctionSignature, R"(":
 
-Due to MetalMock being a strict mocking library,
-MetalMock objects by design do not support asserting that
+Because MetalMock is a strict mocking framework,
+by design MetalMock objects do not support asserting that
 their corresponding MetalMocked functions were called zero times.
-To state the intention that a MetalMocked function
-is expected to be called zero times, simply do not call Expect(),
-Return(), ReturnValues(), ReturnRandom(), or ThrowException<T>() on a MetalMock object.)");
-      const string actualWhat = ex.what();
-      ARE_EQUAL(expectedWhat, actualWhat);
+To effectively assert that a MetalMocked function is expected to be called zero times,
+simply do not call any of the expectation functions:
+MetalMockObject.Expect()
+MetalMockObject.Return()
+MetalMockObject.ReturnValues()
+MetalMockObject.ReturnRandom() or
+MetalMockObject.ThrowExceptionWhenCalled<T>())");
+      const string actualExceptionMessage = ex.what();
+      ARE_EQUAL(expectedExceptionMessage, actualExceptionMessage);
       IS_TRUE((is_base_of<MetalMockException, UnsupportedCalledZeroTimesException>::value));
    }
 

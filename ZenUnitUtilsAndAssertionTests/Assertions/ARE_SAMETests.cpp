@@ -3,12 +3,12 @@
 namespace ZenUnit
 {
    TESTS(ARE_SAMETests)
-   AFACT(ExpectedAndActualAddressesEqual_DoesNotThrow)
+   AFACT(ExpectedAndActualAddressesEqual_DoesNotThrowException)
    AFACT(ExpectedAndActualValuesEqual_AddressesNotEqual_Throws)
    AFACT(ExpectedAndActualValuesNotEqual_AddressesNotEqual_Throws_MessagesTestCase)
    EVIDENCE
 
-   TEST(ExpectedAndActualAddressesEqual_DoesNotThrow)
+   TEST(ExpectedAndActualAddressesEqual_DoesNotThrowException)
    {
       const int expectedObject = 0;
       const int& actualObject = expectedObject;

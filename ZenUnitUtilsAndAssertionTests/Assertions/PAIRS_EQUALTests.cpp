@@ -7,10 +7,10 @@ namespace ZenUnit
    AFACT(FirstNotEqual_SecondEqual_Throws_MessagesTestCase)
    AFACT(FirstEqual_SecondNotEqual_Throws)
    AFACT(FirstNotEqual_SecondNotEqual_Throws)
-   AFACT(FirstEqual_SecondEqual_DoesNotThrow)
+   AFACT(FirstEqual_SecondEqual_DoesNotThrowException)
    AFACT(FirstNotEqual_SecondEqual_Throws_UserTypeTestCase)
    AFACT(FirstEqual_SecondNotEqual_Throws_UserTypeTestCase)
-   AFACT(FirstEqual_SecondEqual_DoesNotThrow_UserTypeTestCase)
+   AFACT(FirstEqual_SecondEqual_DoesNotThrowException_UserTypeTestCase)
    EVIDENCE
 
    TEST(FirstNotEqual_SecondEqual_Throws)
@@ -75,7 +75,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(FirstEqual_SecondEqual_DoesNotThrow)
+   TEST(FirstEqual_SecondEqual_DoesNotThrowException)
    {
       const pair<int, int> expectedPair;
       const pair<int, int> actualPair;
@@ -112,7 +112,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(FirstEqual_SecondEqual_DoesNotThrow_UserTypeTestCase)
+   TEST(FirstEqual_SecondEqual_DoesNotThrowException_UserTypeTestCase)
    {
       const pair<UserType, UserType> expectedPair{10,10};
       const pair<UserType, UserType> actualPair{10,10};

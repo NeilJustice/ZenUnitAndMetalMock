@@ -6,9 +6,9 @@ namespace ZenUnit
       template<typename...>
       class SetType>
    TEMPLATE_TESTS(SETS_EQUALTests, SetType)
-   AFACT(EmptySets_DoesNotThrow)
-   AFACT(OneEqualElement_DoesNotThrow)
-   AFACT(TwoEqualElements_DoesNotThrow)
+   AFACT(EmptySets_DoesNotThrowException)
+   AFACT(OneEqualElement_DoesNotThrowException)
+   AFACT(TwoEqualElements_DoesNotThrowException)
    AFACT(DifferentSize_Throws)
    AFACT(SameSize1_ElementsNotEqual_Throws_MessagesTestCase)
    AFACT(SameSize2_ElementsNotEqual_Throws)
@@ -24,13 +24,13 @@ namespace ZenUnit
       _expectedUserTypeSetTypeName = *Type::GetName<SetType<UserType>>();
    }
 
-   TEST(EmptySets_DoesNotThrow)
+   TEST(EmptySets_DoesNotThrowException)
    {
       SetType<int> expectedSet, actualSet;
       SETS_EQUAL(expectedSet, actualSet);
    }
 
-   TEST(OneEqualElement_DoesNotThrow)
+   TEST(OneEqualElement_DoesNotThrowException)
    {
       SetType<int> expectedSet;
       expectedSet.insert(1);
@@ -39,7 +39,7 @@ namespace ZenUnit
       SETS_EQUAL(expectedSet, actualSet);
    }
 
-   TEST(TwoEqualElements_DoesNotThrow)
+   TEST(TwoEqualElements_DoesNotThrowException)
    {
       SetType<int> expectedSetAscending;
       expectedSetAscending.insert(1);

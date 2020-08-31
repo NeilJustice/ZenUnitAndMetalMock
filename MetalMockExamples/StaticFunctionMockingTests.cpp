@@ -85,9 +85,9 @@ TEST(FunctionUnderTest_CallsVoidStaticFunction_ReturnsResultOfCallingNonVoidStat
    // MetalMockObject.Expect() instructs the MetalMock object to not throw
    // a MetalMock::UnexpectedCallException when the MetalMocked function is called.
 
-   // MetalMock is a double-strict mocking library, meaning that all mocked-out
-   // functions must be explicitly expected and all explicitly-expected
-   // mocked-out functions must be explicitly asserted as having been called.
+   // MetalMock is a double-strict mocking library, meaning that mocked functions must
+   // 1) be explicitly expected
+   // 2) be explicitly asserted as having been called
    VoidStaticFunctionMock.Expect();
    const int nonVoidStaticFunctionReturnValue = NonVoidStaticFunctionMock.ReturnRandom();
    const int input = ZenUnit::Random<int>();

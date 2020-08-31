@@ -50,7 +50,7 @@ namespace ZenUnit
    AFACT(OneTypeEqualizerDefined_CallsIt)
    AFACT(TwoTypeEqualizerDefined_CallsIt)
    AFACT(BothOneAndTwoTypeEqualizersDefined_CallsTheOneTypeEqualizer)
-   AFACT(Int32sAreEqual_DoesNotThrow)
+   AFACT(Int32sAreEqual_DoesNotThrowException)
    AFACT(IntLiteralsNotEqual_Throws)
    AFACT(IntVariablesNotEqual_Throws_MessagesTestCase)
    AFACT(StringsNotEqual_ThrowsWithStringsInQuotesToConfirmedToStringed)
@@ -100,7 +100,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(Int32sAreEqual_DoesNotThrow)
+   TEST(Int32sAreEqual_DoesNotThrowException)
    {
       ARE_EQUAL(numeric_limits<int>::min(), numeric_limits<int>::min());
       ARE_EQUAL(numeric_limits<int>::min() + 1, numeric_limits<int>::min() + 1);

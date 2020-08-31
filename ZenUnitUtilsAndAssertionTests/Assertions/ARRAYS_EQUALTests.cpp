@@ -4,14 +4,14 @@ namespace ZenUnit
 {
    template<typename T>
    TEMPLATE_TESTS(ARRAYS_EQUALTests, T)
-   AFACT(LengthToCompareIs0_DoesNotThrow)
-   AFACT(LengthToCompareIs1_FirstElementsAreEqual_DoesNotThrow)
+   AFACT(LengthToCompareIs0_DoesNotThrowException)
+   AFACT(LengthToCompareIs1_FirstElementsAreEqual_DoesNotThrowException)
    AFACT(LengthToCompareIs1_FirstElementsAreNotEqual_Throws)
-   AFACT(LengthToCompareIs2_FirstElementsAreEqual_SecondElementsAreEqual_DoesNotThrow)
+   AFACT(LengthToCompareIs2_FirstElementsAreEqual_SecondElementsAreEqual_DoesNotThrowException)
    AFACT(LengthToCompareIs2_FirstElementsAreEqual_SecondElementsAreNotEqual_Throws)
    EVIDENCE
 
-   TEST(LengthToCompareIs0_DoesNotThrow)
+   TEST(LengthToCompareIs0_DoesNotThrowException)
    {
       const T expectedArray[1] = { ZenUnit::Random<T>() };
       const T actualArray[1] = { ZenUnit::Random<T>() };
@@ -19,7 +19,7 @@ namespace ZenUnit
       ARRAYS_EQUAL(expectedArray, actualArray, 0);
    }
 
-   TEST(LengthToCompareIs1_FirstElementsAreEqual_DoesNotThrow)
+   TEST(LengthToCompareIs1_FirstElementsAreEqual_DoesNotThrowException)
    {
       const T expectedArray[1] = { ZenUnit::Random<T>() };
       const T actualArray[1] = { expectedArray[0] };
@@ -46,7 +46,7 @@ namespace ZenUnit
          "File.cpp(1)"));
    }
 
-   TEST(LengthToCompareIs2_FirstElementsAreEqual_SecondElementsAreEqual_DoesNotThrow)
+   TEST(LengthToCompareIs2_FirstElementsAreEqual_SecondElementsAreEqual_DoesNotThrowException)
    {
       const T expectedArray[2] = { ZenUnit::Random<T>(), ZenUnit::Random<T>() };
       const T actualArray[2] = { expectedArray[0], expectedArray[1] };

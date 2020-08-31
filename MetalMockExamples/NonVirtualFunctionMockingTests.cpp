@@ -3,12 +3,10 @@
 class KernelBypassNetwork
 {
 public:
-   // Non-virtual for performance
    void Initialize()
    {
    }
 
-   // Non-virtual for performance
    bool Send(unsigned)
    {
       return true;
@@ -22,7 +20,6 @@ public:
    METALMOCK_NONVOID1_NONVIRTUAL(bool, Send, unsigned)
 };
 
-// Increased code complexity (which may be worth it) by having to templatize the class under test
 template<typename NetworkType = KernelBypassNetwork>
 class OrderSender
 {
@@ -35,9 +32,9 @@ public:
       _network.Initialize();
    }
 
-   void SendOrder(unsigned size)
+   void SendOrder(unsigned numberOfShares)
    {
-      const bool didSendOrder = _network.Send(size);
+      const bool didSendOrder = _network.Send(numberOfShares);
       if (!didSendOrder)
       {
          throw std::runtime_error("Failed to send order to exchange");
@@ -48,7 +45,7 @@ public:
 TESTS(OrderSenderTests)
 AFACT(Initialize_CallsNetworkInitialize)
 AFACT(SendOrder_CallsNetworkSendWhichReturnsTrue_Returns)
-AFACT(SendOrder_CallsNetworkSendWhichReturnsFalse_Throws)
+AFACT(SendOrder_CallsNetworkSendWhichReturnsFalse_ThrowsRuntimeError)
 EVIDENCE
 
 // Template parameter dependency injection of MetalMock class KernelBypassNetworkMock
@@ -73,7 +70,7 @@ TEST(SendOrder_CallsNetworkSendWhichReturnsTrue_Returns)
    METALMOCK(_orderSender._network.SendMock.CalledOnceWith(size));
 }
 
-TEST(SendOrder_CallsNetworkSendWhichReturnsFalse_Throws)
+TEST(SendOrder_CallsNetworkSendWhichReturnsFalse_ThrowsRuntimeError)
 {
    _orderSender._network.SendMock.Return(false);
    const unsigned size = ZenUnit::Random<unsigned>();

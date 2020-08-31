@@ -4,10 +4,10 @@ namespace ZenUnit
 {
    template<typename T>
    TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size0Arrays, T)
-   AFACT(TwoSize0Arrays_DoesNotThrow)
+   AFACT(TwoSize0Arrays_DoesNotThrowException)
    EVIDENCE
 
-   TEST(TwoSize0Arrays_DoesNotThrow)
+   TEST(TwoSize0Arrays_DoesNotThrowException)
    {
       const array<T, 0> expectedArray{};
       const array<T, 0> actualArray{};
@@ -20,12 +20,12 @@ namespace ZenUnit
 
    template<typename T>
    TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size1Arrays, T)
-   AFACT(ElementsAreDefaultValues_DoesNotThrowException)
+   AFACT(ElementsAreDefaultValues_DoesNotThrowExceptionException)
    AFACT(ElementAreNonDefaultValuesAndAreNotEqual_ThrowsAnomaly)
-   AFACT(ElementAreNonDefaultValuesAndAreEqual_DoesNotThrowException)
+   AFACT(ElementAreNonDefaultValuesAndAreEqual_DoesNotThrowExceptionException)
    EVIDENCE
 
-   TEST(ElementsAreDefaultValues_DoesNotThrowException)
+   TEST(ElementsAreDefaultValues_DoesNotThrowExceptionException)
    {
       const array<T, 1> expectedArray{};
       const array<T, 1> actualArray{};
@@ -75,7 +75,7 @@ namespace ZenUnit
    #endif
    }
 
-   TEST(ElementAreNonDefaultValuesAndAreEqual_DoesNotThrowException)
+   TEST(ElementAreNonDefaultValuesAndAreEqual_DoesNotThrowExceptionException)
    {
       const T randomElement = ZenUnit::Random<T>();
       const array<T, 1> expectedArray = { { randomElement } };
@@ -89,15 +89,15 @@ namespace ZenUnit
 
    template<typename T>
    TEMPLATE_TESTS(STD_ARRAYS_EQUALTests_Size2Arrays, T)
-   AFACT(ElementsAreDefaultsValues_DoesNotThrowException)
+   AFACT(ElementsAreDefaultsValues_DoesNotThrowExceptionException)
    AFACT(ElementsAreNotDefaultValuesAndAreNotEqualAtIndex0_ThrowsAnomaly)
    AFACT(ElementsAreNotDefaultValuesAndAreNotEqualAtIndex1_ThrowsAnomaly)
-   AFACT(ElementsAreNotDefaultValuesAndBothAreEqual_DoesNotThrowException)
+   AFACT(ElementsAreNotDefaultValuesAndBothAreEqual_DoesNotThrowExceptionException)
    EVIDENCE
 
    const string TypeName = *Type::GetName<T>();
 
-   TEST(ElementsAreDefaultsValues_DoesNotThrowException)
+   TEST(ElementsAreDefaultsValues_DoesNotThrowExceptionException)
    {
       const array<T, 2> expectedArray{};
       const array<T, 2> actualArray{};
@@ -190,7 +190,7 @@ namespace ZenUnit
    #endif
    }
 
-   TEST(ElementsAreNotDefaultValuesAndBothAreEqual_DoesNotThrowException)
+   TEST(ElementsAreNotDefaultValuesAndBothAreEqual_DoesNotThrowExceptionException)
    {
       const T randomElement1 = ZenUnit::Random<T>();
       const T randomElement2 = ZenUnit::Random<T>();

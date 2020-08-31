@@ -18,13 +18,13 @@ namespace MetalMock
       const string nonVirtualFunctionSignature;
       const string nonVirtualFunctionConstSignature;
 
-      FreeFunctionMockType freeFunctionMock;
+      FreeFunctionMockType freeFunctionMockObject;
       const string freeFunctionSignature;
 
-      NamespacedFreeFunctionMockType namespacedFreeFunctionMock;
+      NamespacedFreeFunctionMockType namespacedFreeFunctionMockObject;
       const string namespacedFreeFunctionSignature;
 
-      StaticFunctionMockType staticFunctionMock;
+      StaticFunctionMockType staticFunctionMockObject;
       const string staticFunctionSignature;
    public:
       MetalMock2ArgTester(
@@ -34,13 +34,13 @@ namespace MetalMock
          string nonVirtualFunctionSignature,
          string nonVirtualFunctionConstSignature,
 
-         FreeFunctionMockType freeFunctionMock,
+         FreeFunctionMockType freeFunctionMockObject,
          string freeFunctionSignature,
 
-         NamespacedFreeFunctionMockType namespacedFreeFunctionMock,
+         NamespacedFreeFunctionMockType namespacedFreeFunctionMockObject,
          string namespacedFreeFunctionSignature,
 
-         StaticFunctionMockType staticFunctionMock,
+         StaticFunctionMockType staticFunctionMockObject,
          string staticFunctionSignature)
          : metalMockObject(std::move(metalMockObject))
          , virtualFunctionSignature(std::move(virtualFunctionSignature))
@@ -48,13 +48,13 @@ namespace MetalMock
          , nonVirtualFunctionSignature(std::move(nonVirtualFunctionSignature))
          , nonVirtualFunctionConstSignature(std::move(nonVirtualFunctionConstSignature))
 
-         , freeFunctionMock(std::move(freeFunctionMock))
+         , freeFunctionMockObject(std::move(freeFunctionMockObject))
          , freeFunctionSignature(std::move(freeFunctionSignature))
 
-         , namespacedFreeFunctionMock(std::move(namespacedFreeFunctionMock))
+         , namespacedFreeFunctionMockObject(std::move(namespacedFreeFunctionMockObject))
          , namespacedFreeFunctionSignature(std::move(namespacedFreeFunctionSignature))
 
-         , staticFunctionMock(std::move(staticFunctionMock))
+         , staticFunctionMockObject(std::move(staticFunctionMockObject))
          , staticFunctionSignature(std::move(staticFunctionSignature))
       {
       }
@@ -71,17 +71,17 @@ namespace MetalMock
          testcase([&] { metalMockObject.NonVirtual(0); }, nonVirtualFunctionSignature);
          testcase([&] { metalMockObject.NonVirtualConst(0); }, nonVirtualFunctionConstSignature);
 
-         function<void(int)> metalMockBoundFreeFunctionMock = BIND_1ARG_METALMOCK_OBJECT(freeFunctionMock);
+         function<void(int)> metalMockBoundFreeFunctionMock = BIND_1ARG_METALMOCK_OBJECT(freeFunctionMockObject);
          testcase([&] { metalMockBoundFreeFunctionMock(0); }, freeFunctionSignature);
 
-         function<void(int)> metalMockBoundNamespacedFreeFunctionMock = BIND_1ARG_METALMOCK_OBJECT(namespacedFreeFunctionMock);
+         function<void(int)> metalMockBoundNamespacedFreeFunctionMock = BIND_1ARG_METALMOCK_OBJECT(namespacedFreeFunctionMockObject);
          testcase([&] { metalMockBoundNamespacedFreeFunctionMock(0); }, namespacedFreeFunctionSignature);
 
-         function<void(int)> metalMockBoundStaticFunctionMock = BIND_1ARG_METALMOCK_OBJECT(staticFunctionMock);
+         function<void(int)> metalMockBoundStaticFunctionMock = BIND_1ARG_METALMOCK_OBJECT(staticFunctionMockObject);
          testcase([&] { metalMockBoundStaticFunctionMock(0); }, staticFunctionSignature);
       }
 
-      void MetalMockedFunction_Expected_DoesNotThrow()
+      void MetalMockedFunction_Expected_DoesNotThrowException()
       {
          const auto testcase = [](auto& metalMockObject)
          {
@@ -96,9 +96,9 @@ namespace MetalMock
          testcase(metalMockObject.NonVirtualFunctionMock);
          testcase(metalMockObject.NonVirtualConstFunctionMock);
 
-         testcase(freeFunctionMock);
-         testcase(namespacedFreeFunctionMock);
-         testcase(staticFunctionMock);
+         testcase(freeFunctionMockObject);
+         testcase(namespacedFreeFunctionMockObject);
+         testcase(staticFunctionMockObject);
       }
    };
 }

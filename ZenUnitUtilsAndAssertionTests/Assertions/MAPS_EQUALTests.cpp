@@ -6,7 +6,7 @@ namespace ZenUnit
       template<typename...>
       class MapType>
    TEMPLATE_TESTS(MAPS_EQUALTests, MapType)
-   AFACT(BothMapsAreEmpty_DoesNotThrowException)
+   AFACT(BothMapsAreEmpty_DoesNotThrowExceptionException)
    AFACT(ExpectedAndActualMapSizesAreDifferent_ThrowsAnomaly)
    AFACT(SizesDifferent_Throws_MessagesTestCase)
    AFACT(MapSizesAreEqual_KeysAreNotEqual_ThrowsAnomaly)
@@ -17,7 +17,7 @@ namespace ZenUnit
    AFACT(SizesEqual_UserTypeKeysEqual_ValuesNotEqual_Throws)
    EVIDENCE
 
-   TEST(BothMapsAreEmpty_DoesNotThrowException)
+   TEST(BothMapsAreEmpty_DoesNotThrowExceptionException)
    {
       MAPS_EQUAL((MapType<int, int>()), (MapType<int, int>()));
 

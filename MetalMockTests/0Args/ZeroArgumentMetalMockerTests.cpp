@@ -1,20 +1,20 @@
 #include "pch.h"
-#include "MetalMockTests/MetalMock/ExceptionThrowerMock.h"
+#include "MetalMockTests/MetalMock/MetalMockExceptionThrowerMock.h"
 
 namespace MetalMock
 {
    TESTS(ZeroArgumentMetalMockerTests)
    AFACT(Constructor_SetsFields)
-   AFACT(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue)
-   AFACT(MetalMockIt_ExpectedFalse_Throws)
+   AFACT(ThrowExceptionWhenCalled_CallsExceptionThrowerThrow_SetsExpectedTrue)
+   AFACT(MetalMockIt_ExpectedFalse_ThrowsUnexpectedCallException)
    AFACT(MetalMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsMetalMockThrowIfExceptionSet)
-   FACTS(CalledOnce_SetsAssertedTrue_FunctionWasCalledOnce_DoesNotThrow)
-   AFACT(CalledNTimes_NIsZero_Throws)
-   FACTS(CalledNTimes_SetsAssertedTrue_FunctionWasCalledNTimes_DoesNotThrow)
+   FACTS(CalledOnce_SetsAssertedTrue_FunctionWasCalledOnce_DoesNotThrowException)
+   AFACT(CalledNTimes_NIsZero_ThrowsUnsupportedCalledZeroTimesException)
+   FACTS(CalledNTimes_SetsAssertedTrue_FunctionWasCalledNTimes_DoesNotThrowException)
    AFACT(CallInstead_CallsSuppliedFunctionWhenMetalMockedFunctionIsCalled)
    EVIDENCE
 
-   using ZeroArgumentMetalMockerType = ZeroArgumentMetalMocker<ExceptionThrowerMock>;
+   using ZeroArgumentMetalMockerType = ZeroArgumentMetalMocker<MetalMockExceptionThrowerMock>;
    unique_ptr<ZeroArgumentMetalMockerType> _zeroArgumentMetalMocker;
    string _metalMockedFunctionSignature;
 
@@ -34,14 +34,14 @@ namespace MetalMock
       IS_ZERO(zeroArgumentMetalMocker.actualNumberOfCalls);
    }
 
-   TEST(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue)
+   TEST(ThrowExceptionWhenCalled_CallsExceptionThrowerThrow_SetsExpectedTrue)
    {
       IS_FALSE(_zeroArgumentMetalMocker->_wasExpected);
       _zeroArgumentMetalMocker->_exceptionThrower.ExpectCallToExpectAndThrowException();
       const string argumentStringValue = ZenUnit::Random<string>();
       const int argumentIntValue = ZenUnit::Random<int>();
       //
-      _zeroArgumentMetalMocker->ThrowException<TestingException>(argumentStringValue, argumentIntValue);
+      _zeroArgumentMetalMocker->ThrowExceptionWhenCalled<TestingException>(argumentStringValue, argumentIntValue);
       //
       _zeroArgumentMetalMocker->_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith(
          "MetalMock::TestingException", 2, argumentStringValue + to_string(argumentIntValue));
@@ -49,11 +49,11 @@ namespace MetalMock
       _zeroArgumentMetalMocker->_wasAsserted = true;
    }
 
-   TEST(MetalMockIt_ExpectedFalse_Throws)
+   TEST(MetalMockIt_ExpectedFalse_ThrowsUnexpectedCallException)
    {
       IS_FALSE(_zeroArgumentMetalMocker->_wasExpected);
-      THROWS_EXCEPTION(_zeroArgumentMetalMocker->MetalMockIt(), UnexpectedCallException,
-         UnexpectedCallException::MakeWhat(_metalMockedFunctionSignature));
+      THROWS_EXCEPTION(_zeroArgumentMetalMocker->MetalMockIt(),
+         UnexpectedCallException, UnexpectedCallException::MakeWhat(_metalMockedFunctionSignature));
    }
 
    TEST(MetalMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsMetalMockThrowIfExceptionSet)
@@ -69,7 +69,7 @@ namespace MetalMock
       DOES_NOT_THROW(_zeroArgumentMetalMocker->CalledOnce());
    }
 
-   TEST2X2(CalledOnce_SetsAssertedTrue_FunctionWasCalledOnce_DoesNotThrow,
+   TEST2X2(CalledOnce_SetsAssertedTrue_FunctionWasCalledOnce_DoesNotThrowException,
       size_t numberOfCalls, bool expectThrow,
       size_t(0), true,
       size_t(1), false,
@@ -96,13 +96,13 @@ File.cpp(1))");
       IS_TRUE(_zeroArgumentMetalMocker->_wasAsserted);
    }
 
-   TEST(CalledNTimes_NIsZero_Throws)
+   TEST(CalledNTimes_NIsZero_ThrowsUnsupportedCalledZeroTimesException)
    {
-      THROWS_EXCEPTION(_zeroArgumentMetalMocker->CalledNTimes(0), UnsupportedCalledZeroTimesException,
-         UnsupportedCalledZeroTimesException::MakeWhat(_metalMockedFunctionSignature));
+      THROWS_EXCEPTION(_zeroArgumentMetalMocker->CalledNTimes(0),
+         UnsupportedCalledZeroTimesException, UnsupportedCalledZeroTimesException::MakeWhat(_metalMockedFunctionSignature));
    }
 
-   TEST3X3(CalledNTimes_SetsAssertedTrue_FunctionWasCalledNTimes_DoesNotThrow,
+   TEST3X3(CalledNTimes_SetsAssertedTrue_FunctionWasCalledNTimes_DoesNotThrowException,
       size_t expectedNumberOfCalls, size_t numberOfCalls, bool expectThrow,
       size_t(1), size_t(0), true,
 

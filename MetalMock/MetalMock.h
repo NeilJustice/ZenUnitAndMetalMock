@@ -1152,16 +1152,20 @@ MetalMocked functions with non-void return types must have their return value or
 
       static std::string MakeWhat(const std::string& metalMockedFunctionSignature)
       {
-         const std::string what = ZenUnit::String::Concat(
+         const std::string exceptionMessage = ZenUnit::String::Concat(
             "For MetalMocked function \"", metalMockedFunctionSignature, R"(":
 
-Due to MetalMock being a strict mocking library,
-MetalMock objects by design do not support asserting that
+Because MetalMock is a strict mocking framework,
+by design MetalMock objects do not support asserting that
 their corresponding MetalMocked functions were called zero times.
-To state the intention that a MetalMocked function
-is expected to be called zero times, simply do not call Expect(),
-Return(), ReturnValues(), ReturnRandom(), or ThrowException<T>() on a MetalMock object.)");
-         return what;
+To effectively assert that a MetalMocked function is expected to be called zero times,
+simply do not call any of the expectation functions:
+MetalMockObject.Expect()
+MetalMockObject.Return()
+MetalMockObject.ReturnValues()
+MetalMockObject.ReturnRandom() or
+MetalMockObject.ThrowExceptionWhenCalled<T>())");
+         return exceptionMessage;
       }
 
       const char* what() const noexcept override
@@ -1170,63 +1174,60 @@ Return(), ReturnValues(), ReturnRandom(), or ThrowException<T>() on a MetalMock 
       }
    };
 
-   class Throwable
+   class ExceptionThrower
    {
    public:
       virtual void ThrowException() const = 0;
-      virtual ~Throwable() = default;
+      virtual ~ExceptionThrower() = default;
    };
 
    template<typename ExceptionType>
-   class TemplateThrowable : public Throwable
+   class TemplateExceptionThrower : public ExceptionThrower
    {
       template<typename T>
-      friend class TemplateThrowableTests;
+      friend class TemplateExceptionThrowerTests;
    private:
       std::unique_ptr<const ExceptionType> _exceptionToBeThrown;
    public:
       template<typename... ExceptionArgTypes>
-      static const Throwable* New(ExceptionArgTypes&&... exceptionArgs)
+      static const ExceptionThrower* New(ExceptionArgTypes&&... exceptionArgs)
       {
-         auto* newInstanceOfTemplateThrowable = new TemplateThrowable<ExceptionType>;
-         newInstanceOfTemplateThrowable->_exceptionToBeThrown = std::make_unique<ExceptionType>(std::forward<ExceptionArgTypes>(exceptionArgs)...);
-         return newInstanceOfTemplateThrowable;
+         auto* const newInstanceOfTemplateExceptionThrower = new TemplateExceptionThrower<ExceptionType>;
+         newInstanceOfTemplateExceptionThrower->_exceptionToBeThrown = std::make_unique<ExceptionType>(std::forward<ExceptionArgTypes>(exceptionArgs)...);
+         return newInstanceOfTemplateExceptionThrower;
       }
 
       void ThrowException() const override
       {
          if (_exceptionToBeThrown != nullptr)
          {
-            throw * _exceptionToBeThrown;
+            throw *_exceptionToBeThrown;
          }
       }
    };
 
-   class ExceptionThrower
+   class MetalMockExceptionThrower
    {
    private:
-      std::shared_ptr<const Throwable> _throwable;
+      std::shared_ptr<const ExceptionThrower> _exceptionThrower;
    public:
       template<typename ExceptionType, typename... ExceptionArgTypes>
-      void ThrowException(ExceptionArgTypes&&... exceptionArgs)
+      void ThrowExceptionWhenCalled(ExceptionArgTypes&&... exceptionArgs)
       {
-         if (_throwable != nullptr)
+         if (_exceptionThrower != nullptr)
          {
-            throw std::logic_error("ExceptionThrower::ThrowException<T>() called twice");
+            throw std::logic_error("MetalMockExceptionThrower::ThrowExceptionWhenCalled<T>() called twice");
          }
-         _throwable.reset(TemplateThrowable<ExceptionType>::New(std::forward<ExceptionArgTypes>(exceptionArgs)...));
+         _exceptionThrower.reset(TemplateExceptionThrower<ExceptionType>::New(std::forward<ExceptionArgTypes>(exceptionArgs)...));
       }
 
       void MetalMockThrowExceptionIfExceptionSet() const
       {
-         if (_throwable != nullptr)
+         if (_exceptionThrower != nullptr)
          {
-            _throwable->ThrowException();
+            _exceptionThrower->ThrowException();
          }
       }
-
-      // virtual for ExceptionThrowerMock
-      virtual ~ExceptionThrower() = default;
    };
 
    template<typename FunctionReturnType>
@@ -1350,9 +1351,9 @@ Return(), ReturnValues(), ReturnRandom(), or ThrowException<T>() on a MetalMock 
       MetalMocker& operator=(const MetalMocker&) = delete;
 
       template<typename ExceptionType, typename... ExceptionArgTypes>
-      void ThrowException(ExceptionArgTypes&&... exceptionArgs)
+      void ThrowExceptionWhenCalled(ExceptionArgTypes&&... exceptionArgs)
       {
-         _exceptionThrower.template ThrowException<ExceptionType>(std::forward<ExceptionArgTypes>(exceptionArgs)...);
+         _exceptionThrower.template ThrowExceptionWhenCalled<ExceptionType>(std::forward<ExceptionArgTypes>(exceptionArgs)...);
          _wasExpected = true;
       }
 
@@ -1440,7 +1441,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
 
    class ZeroArgumentMetalMockerTests;
 
-   template<typename MockableExceptionThrowerType = ExceptionThrower>
+   template<typename MockableExceptionThrowerType = MetalMockExceptionThrower>
    class ZeroArgumentMetalMocker : public MetalMocker<MockableExceptionThrowerType>
    {
       friend class ZeroArgumentMetalMockerTests;
@@ -1499,13 +1500,13 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
    };
 
    template<typename FunctionReturnType>
-   class NonVoidZeroArgumentMetalMocker : public ZeroArgumentMetalMocker<ExceptionThrower>, protected ValueReturner<FunctionReturnType>
+   class NonVoidZeroArgumentMetalMocker : public ZeroArgumentMetalMocker<MetalMockExceptionThrower>, protected ValueReturner<FunctionReturnType>
    {
    private:
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    public:
       explicit NonVoidZeroArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
-         : ZeroArgumentMetalMocker<ExceptionThrower>(metalMockedFunctionSignature)
+         : ZeroArgumentMetalMocker<MetalMockExceptionThrower>(metalMockedFunctionSignature)
          , ValueReturner<FunctionReturnType>(metalMockedFunctionSignature)
       {
       }
@@ -1513,14 +1514,14 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         ZeroArgumentMetalMocker<ExceptionThrower>::_wasExpected = true;
+         ZeroArgumentMetalMocker<MetalMockExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         ZeroArgumentMetalMocker<ExceptionThrower>::_wasExpected = true;
+         ZeroArgumentMetalMocker<MetalMockExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValues(
             std::forward<FirstReturnValue>(firstReturnValue),
             std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -1529,13 +1530,13 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         ZeroArgumentMetalMocker<ExceptionThrower>::_wasExpected = true;
+         ZeroArgumentMetalMocker<MetalMockExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         ZeroArgumentMetalMocker<ExceptionThrower>::_wasExpected = true;
+         ZeroArgumentMetalMocker<MetalMockExceptionThrower>::_wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::MetalMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -1563,17 +1564,17 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
       }
    };
 
-   class VoidZeroArgumentMetalMocker : public ZeroArgumentMetalMocker<ExceptionThrower>
+   class VoidZeroArgumentMetalMocker : public ZeroArgumentMetalMocker<MetalMockExceptionThrower>
    {
    public:
       explicit VoidZeroArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
-         : ZeroArgumentMetalMocker<ExceptionThrower>(metalMockedFunctionSignature)
+         : ZeroArgumentMetalMocker<MetalMockExceptionThrower>(metalMockedFunctionSignature)
       {
       }
 
       void Expect()
       {
-         ZeroArgumentMetalMocker<ExceptionThrower>::_wasExpected = true;
+         ZeroArgumentMetalMocker<MetalMockExceptionThrower>::_wasExpected = true;
       }
    };
 
@@ -2273,7 +2274,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
 
    template<
       typename ArgType,
-      typename MockableExceptionThrowerType = ExceptionThrower>
+      typename MockableExceptionThrowerType = MetalMockExceptionThrower>
    class OneArgumentMetalMocker : public MetalMocker<MockableExceptionThrowerType>
    {
       friend class OneArgumentMetalMockerTests;
@@ -2481,7 +2482,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
    template<
       typename Arg1Type,
       typename Arg2Type,
-      typename MockableExceptionThrowerType = ExceptionThrower>
+      typename MockableExceptionThrowerType = MetalMockExceptionThrower>
    class TwoArgumentMetalMocker : public MetalMocker<MockableExceptionThrowerType>
    {
       friend class TwoArgumentMetalMockerTests;
@@ -2697,7 +2698,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
       typename Arg1Type,
       typename Arg2Type,
       typename Arg3Type,
-      typename MockableExceptionThrowerType = ExceptionThrower>
+      typename MockableExceptionThrowerType = MetalMockExceptionThrower>
    class ThreeArgumentMetalMocker : public MetalMocker<MockableExceptionThrowerType>
    {
       friend class ThreeArgumentMetalMockerTests;
@@ -2926,7 +2927,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
       typename Arg2Type,
       typename Arg3Type,
       typename Arg4Type,
-      typename MockableExceptionThrowerType = ExceptionThrower>
+      typename MockableExceptionThrowerType = MetalMockExceptionThrower>
    class FourArgumentMetalMocker : public MetalMocker<MockableExceptionThrowerType>
    {
       friend class FourArgumentMetalMockerTests;
@@ -3118,7 +3119,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
       typename Arg3Type,
       typename Arg4Type,
       typename Arg5Type,
-      typename MockableExceptionThrowerType = ExceptionThrower>
+      typename MockableExceptionThrowerType = MetalMockExceptionThrower>
    class FiveArgumentMetalMocker : public MetalMocker<MockableExceptionThrowerType>
    {
       friend class FiveArgumentMetalMockerTests;
@@ -3313,7 +3314,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
       typename Arg4Type,
       typename Arg5Type,
       typename Arg6Type,
-      typename MockableExceptionThrowerType = ExceptionThrower>
+      typename MockableExceptionThrowerType = MetalMockExceptionThrower>
    class SixArgumentMetalMocker : public MetalMocker<MockableExceptionThrowerType>
    {
       friend class SixArgumentMetalMockerTests;
@@ -3453,7 +3454,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
 
       const FunctionReturnType& MetalMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument)
       {
-         SixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ExceptionThrower>::MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument);
+         SixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, MetalMockExceptionThrower>::MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument);
          return ValueReturner<FunctionReturnType>::MetalMockNextReturnValue();
       }
    };
@@ -3515,7 +3516,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
       typename Arg5Type,
       typename Arg6Type,
       typename Arg7Type,
-      typename MockableExceptionThrowerType = ExceptionThrower>
+      typename MockableExceptionThrowerType = MetalMockExceptionThrower>
    class SevenArgumentMetalMocker : public MetalMocker<MockableExceptionThrowerType>
    {
       friend class SevenArgumentMetalMockerTests;
@@ -3617,7 +3618,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
    };
 
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type>
-   class NonVoidSevenArgumentMetalMocker : public SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>, protected ValueReturner<FunctionReturnType>
+   class NonVoidSevenArgumentMetalMocker : public SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, MetalMockExceptionThrower>, protected ValueReturner<FunctionReturnType>
    {
    private:
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
@@ -3631,14 +3632,14 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>::_wasExpected = true;
+         SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, MetalMockExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>::_wasExpected = true;
+         SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, MetalMockExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValues(
             std::forward<FirstReturnValue>(firstReturnValue),
             std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -3647,13 +3648,13 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>::_wasExpected = true;
+         SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, MetalMockExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>::_wasExpected = true;
+         SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, MetalMockExceptionThrower>::_wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::MetalMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -3683,7 +3684,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type>
-   class VoidSevenArgumentMetalMocker : public SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>
+   class VoidSevenArgumentMetalMocker : public SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, MetalMockExceptionThrower>
    {
    public:
       explicit VoidSevenArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
@@ -3693,7 +3694,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
 
       void Expect()
       {
-         SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ExceptionThrower>::_wasExpected = true;
+         SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, MetalMockExceptionThrower>::_wasExpected = true;
       }
    };
 
@@ -3723,7 +3724,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
       typename Arg6Type,
       typename Arg7Type,
       typename Arg8Type,
-      typename MockableExceptionThrowerType = ExceptionThrower>
+      typename MockableExceptionThrowerType = MetalMockExceptionThrower>
    class EightArgumentMetalMocker : public MetalMocker<MockableExceptionThrowerType>
    {
       friend class EightArgumentMetalMockerTests;
@@ -3830,7 +3831,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
    };
 
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type>
-   class NonVoidEightArgumentMetalMocker : public EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>, protected ValueReturner<FunctionReturnType>
+   class NonVoidEightArgumentMetalMocker : public EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, MetalMockExceptionThrower>, protected ValueReturner<FunctionReturnType>
    {
    private:
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
@@ -3844,14 +3845,14 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>::_wasExpected = true;
+         EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, MetalMockExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>::_wasExpected = true;
+         EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, MetalMockExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValues(
             std::forward<FirstReturnValue>(firstReturnValue),
             std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -3860,13 +3861,13 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>::_wasExpected = true;
+         EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, MetalMockExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>::_wasExpected = true;
+         EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, MetalMockExceptionThrower>::_wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::MetalMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -3896,7 +3897,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type>
-   class VoidEightArgumentMetalMocker : public EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>
+   class VoidEightArgumentMetalMocker : public EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, MetalMockExceptionThrower>
    {
    public:
       explicit VoidEightArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
@@ -3906,7 +3907,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
 
       void Expect()
       {
-         EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ExceptionThrower>::_wasExpected = true;
+         EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, MetalMockExceptionThrower>::_wasExpected = true;
       }
    };
 
@@ -3937,7 +3938,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
       typename Arg7Type,
       typename Arg8Type,
       typename Arg9Type,
-      typename MockableExceptionThrowerType = ExceptionThrower>
+      typename MockableExceptionThrowerType = MetalMockExceptionThrower>
    class NineArgumentMetalMocker : public MetalMocker<MockableExceptionThrowerType>
    {
       friend class NineArgumentMetalMockerTests;
@@ -4049,7 +4050,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
    };
 
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type>
-   class NonVoidNineArgumentMetalMocker : public NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ExceptionThrower>, protected ValueReturner<FunctionReturnType>
+   class NonVoidNineArgumentMetalMocker : public NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, MetalMockExceptionThrower>, protected ValueReturner<FunctionReturnType>
    {
    private:
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
@@ -4063,14 +4064,14 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ExceptionThrower>::_wasExpected = true;
+         NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, MetalMockExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ExceptionThrower>::_wasExpected = true;
+         NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, MetalMockExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValues(
             std::forward<FirstReturnValue>(firstReturnValue),
             std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -4079,13 +4080,13 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ExceptionThrower>::_wasExpected = true;
+         NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, MetalMockExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ExceptionThrower>::_wasExpected = true;
+         NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, MetalMockExceptionThrower>::_wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::MetalMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -4115,7 +4116,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type>
-   class VoidNineArgumentMetalMocker : public NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ExceptionThrower>
+   class VoidNineArgumentMetalMocker : public NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, MetalMockExceptionThrower>
    {
    public:
       explicit VoidNineArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
@@ -4125,7 +4126,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
 
       void Expect()
       {
-         NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ExceptionThrower>::_wasExpected = true;
+         NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, MetalMockExceptionThrower>::_wasExpected = true;
       }
    };
 
@@ -4157,7 +4158,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
       typename Arg8Type,
       typename Arg9Type,
       typename Arg10Type,
-      typename MockableExceptionThrowerType = ExceptionThrower>
+      typename MockableExceptionThrowerType = MetalMockExceptionThrower>
    class TenArgumentMetalMocker : public MetalMocker<MockableExceptionThrowerType>
    {
       friend class TenArgumentMetalMockerTests;
@@ -4274,7 +4275,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
    };
 
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type, typename Arg10Type>
-   class NonVoidTenArgumentMetalMocker : public TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>, protected ValueReturner<FunctionReturnType>
+   class NonVoidTenArgumentMetalMocker : public TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, MetalMockExceptionThrower>, protected ValueReturner<FunctionReturnType>
    {
    private:
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
@@ -4288,14 +4289,14 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>::_wasExpected = true;
+         TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, MetalMockExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>::_wasExpected = true;
+         TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, MetalMockExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValues(
             std::forward<FirstReturnValue>(firstReturnValue),
             std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -4304,13 +4305,13 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>::_wasExpected = true;
+         TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, MetalMockExceptionThrower>::_wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>::_wasExpected = true;
+         TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, MetalMockExceptionThrower>::_wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::MetalMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -4338,7 +4339,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type, typename Arg10Type>
-   class VoidTenArgumentMetalMocker : public TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>
+   class VoidTenArgumentMetalMocker : public TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, MetalMockExceptionThrower>
    {
    public:
       explicit VoidTenArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
@@ -4346,7 +4347,7 @@ Fatal EBNA: MetalMocked Function Expected But Not Asserted
 
       void Expect()
       {
-         TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ExceptionThrower>::_wasExpected = true;
+         TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, MetalMockExceptionThrower>::_wasExpected = true;
       }
    };
 

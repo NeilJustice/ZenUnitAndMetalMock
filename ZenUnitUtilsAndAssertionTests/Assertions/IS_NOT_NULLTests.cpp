@@ -5,8 +5,8 @@ namespace ZenUnit
    TESTS(POINTER_IS_NOT_NULLTests)
    AFACT(PointerIsNullRawPointer_ThrowsAnomaly)
    AFACT(NullUniquePointer_Throws_MessagesTestCase)
-   AFACT(NonNullRawPointer_DoesNotThrow)
-   AFACT(NonNullUniquePointer_DoesNotThrow)
+   AFACT(NonNullRawPointer_DoesNotThrowException)
+   AFACT(NonNullUniquePointer_DoesNotThrowException)
    EVIDENCE
 
    TEST(PointerIsNullRawPointer_ThrowsAnomaly)
@@ -31,14 +31,14 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(NonNullRawPointer_DoesNotThrow)
+   TEST(NonNullRawPointer_DoesNotThrowException)
    {
       const int x = 10;
       const int* const nonNullRawPointer = &x;
       POINTER_IS_NOT_NULL(nonNullRawPointer);
    }
 
-   TEST(NonNullUniquePointer_DoesNotThrow)
+   TEST(NonNullUniquePointer_DoesNotThrowException)
    {
       const unique_ptr<const char> nonNullUniquePtr(new char);
       POINTER_IS_NOT_NULL(nonNullUniquePtr);

@@ -8,7 +8,7 @@ namespace ZenUnit
    AFACT(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws)
    AFACT(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws_UserTypeTestCase)
    AFACT(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws_MessagesTestCase)
-   AFACT(ObjectsHaveDifferentAddresses_ObjectsAreEqual_DoesNotThrow)
+   AFACT(ObjectsHaveDifferentAddresses_ObjectsAreEqual_DoesNotThrowException)
    EVIDENCE
 
    TEST(ObjectsHaveSameAddress_Throws)
@@ -105,7 +105,7 @@ expectedAreNotSameWhatText,
 "File.cpp(1)"));
    }
 
-   TEST(ObjectsHaveDifferentAddresses_ObjectsAreEqual_DoesNotThrow)
+   TEST(ObjectsHaveDifferentAddresses_ObjectsAreEqual_DoesNotThrowException)
    {
       const int x = 1;
       const int y = 1;

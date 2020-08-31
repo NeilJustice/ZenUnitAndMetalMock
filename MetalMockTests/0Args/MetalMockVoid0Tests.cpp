@@ -55,13 +55,13 @@ namespace MetalMock
 
    TESTS(MetalMockVoid0Tests)
    // ZeroArgumentMetalMocker Tests
-   AFACT(FunctionNotCalled_CalledAsFollowsWithN0_Throws)
+   AFACT(FunctionNotCalled_CalledAsFollowsWithN0_ThrowsUnsupportedCalledZeroTimesException)
    AFACT(FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows)
-   AFACT(MetalMockedFunction_NotExpected_Throws)
-   AFACT(MetalMockedFunction_Expected_DoesNotThrow_CalledAsFollowsOnceDoesNotThrow_CalledNTimes1DoesNotThrow)
-   AFACT(ThrowException_ThenMetalMockedFunction_ThrowsTheException)
+   AFACT(MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException)
+   AFACT(MetalMockedFunction_Expected_DoesNotThrowException_CalledAsFollowsOnceDoesNotThrow_CalledNTimes1DoesNotThrow)
+   AFACT(ThrowExceptionWhenCalled_MetalMockedFunctionIsThenCalled_ThrowsTheSpecifiedExceptionTypeWithExceptionMessage)
    // Void0 Tests
-   AFACT(Expect_MakesFunctionCallNotThrow_DoesNotThrowIfExpectCalledTwice)
+   AFACT(Expect_MakesFunctionCallNotThrow_DoesNotThrowExceptionIfExpectCalledTwice)
    EVIDENCE
 
    METALMOCK_VOID0_FREE(Void0Function)
@@ -118,9 +118,9 @@ namespace MetalMock
             ExpectedStaticFunctionNameClashSignature);
    }
 
-   TEST(FunctionNotCalled_CalledAsFollowsWithN0_Throws)
+   TEST(FunctionNotCalled_CalledAsFollowsWithN0_ThrowsUnsupportedCalledZeroTimesException)
    {
-      _metalMock0Tester->FunctionNotCalled_CalledAsFollowsWithN0_Throws();
+      _metalMock0Tester->FunctionNotCalled_CalledAsFollowsWithN0_ThrowsUnsupportedCalledZeroTimesException();
    }
 
    TEST(FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows)
@@ -128,24 +128,24 @@ namespace MetalMock
       _metalMock0Tester->FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows();
    }
 
-   TEST(MetalMockedFunction_NotExpected_Throws)
+   TEST(MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException)
    {
-      _metalMock0Tester->MetalMockedFunction_NotExpected_Throws();
+      _metalMock0Tester->MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException();
    }
 
-   TEST(MetalMockedFunction_Expected_DoesNotThrow_CalledAsFollowsOnceDoesNotThrow_CalledNTimes1DoesNotThrow)
+   TEST(MetalMockedFunction_Expected_DoesNotThrowException_CalledAsFollowsOnceDoesNotThrow_CalledNTimes1DoesNotThrow)
    {
-      _metalMock0Tester->MetalMockedFunction_Expected_DoesNotThrow_CalledAsFollowsOnceDoesNotThrow_CalledNTimes1DoesNotThrow();
+      _metalMock0Tester->MetalMockedFunction_Expected_DoesNotThrowException_CalledAsFollowsOnceDoesNotThrow_CalledNTimes1DoesNotThrow();
    }
 
-   TEST(ThrowException_ThenMetalMockedFunction_ThrowsTheException)
+   TEST(ThrowExceptionWhenCalled_MetalMockedFunctionIsThenCalled_ThrowsTheSpecifiedExceptionTypeWithExceptionMessage)
    {
-      _metalMock0Tester->ThrowException_ThenMetalMockedFunction_ThrowsTheException();
+      _metalMock0Tester->ThrowExceptionWhenCalled_MetalMockedFunctionIsThenCalled_ThrowsTheSpecifiedExceptionTypeWithExceptionMessage();
    }
 
    // Void0 Tests
 
-   TEST(Expect_MakesFunctionCallNotThrow_DoesNotThrowIfExpectCalledTwice)
+   TEST(Expect_MakesFunctionCallNotThrow_DoesNotThrowExceptionIfExpectCalledTwice)
    {
       const auto test = [](auto& metalMockObject)
       {

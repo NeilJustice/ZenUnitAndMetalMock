@@ -3,36 +3,47 @@
 namespace MetalMock
 {
    TESTS(ExceptionThrowerTests)
-   AFACT(ExpectAndThrowCalledTwice_Throws)
+   AFACT(ThrowExceptionWhenCalled_CalledTwice_ThrowsLogicError)
    AFACT(MetalMockThrowExceptionIfExceptionSet_ExpectAndThrowNotPreviouslyCalled_DoesNothing)
    AFACT(MetalMockThrowExceptionIfExceptionSet_ExpectAndThrowPreviousCalled_ThrowsTheException_TestCaseRuntimeError)
    AFACT(MetalMockThrowExceptionIfExceptionSet_ExpectAndThrowPreviousCalled_ThrowsTheException_TestCaseLogicError)
    EVIDENCE
 
-   ExceptionThrower _exceptionThrower;
+   MetalMockExceptionThrower _metalMockExceptionThrower;
 
-   TEST(ExpectAndThrowCalledTwice_Throws)
+   TEST(ThrowExceptionWhenCalled_CalledTwice_ThrowsLogicError)
    {
-      _exceptionThrower.ThrowException<runtime_error>("runtime_error_what");
-      THROWS_EXCEPTION(_exceptionThrower.ThrowException<runtime_error>("runtime_error_what"), logic_error,
-         "ExceptionThrower::ThrowException<T>() called twice");
+      const string exceptionMessage = ZenUnit::Random<string>();
+      //
+      _metalMockExceptionThrower.ThrowExceptionWhenCalled<runtime_error>(exceptionMessage);
+      //
+      THROWS_EXCEPTION(_metalMockExceptionThrower.ThrowExceptionWhenCalled<runtime_error>(exceptionMessage),
+         logic_error, "MetalMockExceptionThrower::ThrowExceptionWhenCalled<T>() called twice");
    }
 
    TEST(MetalMockThrowExceptionIfExceptionSet_ExpectAndThrowNotPreviouslyCalled_DoesNothing)
    {
-      _exceptionThrower.MetalMockThrowExceptionIfExceptionSet();
+      _metalMockExceptionThrower.MetalMockThrowExceptionIfExceptionSet();
    }
 
    TEST(MetalMockThrowExceptionIfExceptionSet_ExpectAndThrowPreviousCalled_ThrowsTheException_TestCaseRuntimeError)
    {
-      _exceptionThrower.ThrowException<runtime_error>("runtime_error_what");
-      THROWS_EXCEPTION(_exceptionThrower.MetalMockThrowExceptionIfExceptionSet(), runtime_error, "runtime_error_what");
+      const string exceptionMessage = ZenUnit::Random<string>();
+      //
+      _metalMockExceptionThrower.ThrowExceptionWhenCalled<runtime_error>(exceptionMessage);
+      //
+      THROWS_EXCEPTION(_metalMockExceptionThrower.MetalMockThrowExceptionIfExceptionSet(),
+         runtime_error, exceptionMessage);
    }
 
    TEST(MetalMockThrowExceptionIfExceptionSet_ExpectAndThrowPreviousCalled_ThrowsTheException_TestCaseLogicError)
    {
-      _exceptionThrower.ThrowException<logic_error>("logic_error_what");
-      THROWS_EXCEPTION(_exceptionThrower.MetalMockThrowExceptionIfExceptionSet(), logic_error, "logic_error_what");
+      const string exceptionMessage = ZenUnit::Random<string>();
+      //
+      _metalMockExceptionThrower.ThrowExceptionWhenCalled<logic_error>(exceptionMessage);
+      //
+      THROWS_EXCEPTION(_metalMockExceptionThrower.MetalMockThrowExceptionIfExceptionSet(),
+         logic_error, exceptionMessage);
    }
 
    RUN_TESTS(ExceptionThrowerTests)

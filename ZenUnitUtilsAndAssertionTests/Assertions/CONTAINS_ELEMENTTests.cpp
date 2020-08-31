@@ -3,15 +3,15 @@
 namespace ZenUnit
 {
    TESTS(CONTAINS_ELEMENTTests)
-   AFACT(Vector_DoesContainElement_DoesNotThrow)
+   AFACT(Vector_DoesContainElement_DoesNotThrowException)
    AFACT(Vector_DoesNotContainElement_Throws)
-   AFACT(Map_DoesContainElement_DoesNotThrow)
+   AFACT(Map_DoesContainElement_DoesNotThrowException)
    AFACT(Map_DoesNotContainElement_Throws)
-   AFACT(Set_DoesContainElement_DoesNotThrow)
+   AFACT(Set_DoesContainElement_DoesNotThrowException)
    AFACT(Set_DoesNotContainElement_Throws_MessagesTestCase)
    EVIDENCE
 
-   TEST(Vector_DoesContainElement_DoesNotThrow)
+   TEST(Vector_DoesContainElement_DoesNotThrowException)
    {
       const vector<int> ints { 1, 2 };
       CONTAINS_ELEMENT(1, ints);
@@ -32,7 +32,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(Map_DoesContainElement_DoesNotThrow)
+   TEST(Map_DoesContainElement_DoesNotThrowException)
    {
       const map<int, int> intIntMap { { 0, 0 }, { 1, 1 } };
       const pair<const int, int> kvp0(0, 0);
@@ -56,7 +56,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(Set_DoesContainElement_DoesNotThrow)
+   TEST(Set_DoesContainElement_DoesNotThrowException)
    {
       const set<int> intSet { 1, 2 };
       CONTAINS_ELEMENT(1, intSet);

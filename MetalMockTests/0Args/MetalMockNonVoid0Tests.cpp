@@ -54,10 +54,10 @@ namespace MetalMock
 
    TESTS(MetalMockNonVoid0Tests)
    // ZeroArgumentMetalMocker Tests
-   AFACT(FunctionNotCalled_CalledAsFollowsWithN0_Throws)
+   AFACT(FunctionNotCalled_CalledAsFollowsWithN0_ThrowsUnsupportedCalledZeroTimesException)
    AFACT(FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows)
-   AFACT(MetalMockedFunction_NotExpected_Throws)
-   AFACT(ThrowException_ThenMetalMockedFunction_ThrowsTheException)
+   AFACT(MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException)
+   AFACT(ThrowExceptionWhenCalled_MetalMockedFunctionIsThenCalled_ThrowsTheSpecifiedExceptionTypeWithExceptionMessage)
    // Value Return Tests
    AFACT(Return_CausesFunctionToReturnValue)
    AFACT(ReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
@@ -123,9 +123,9 @@ namespace MetalMock
 
    // ZeroArgumentMetalMocker Tests
 
-   TEST(FunctionNotCalled_CalledAsFollowsWithN0_Throws)
+   TEST(FunctionNotCalled_CalledAsFollowsWithN0_ThrowsUnsupportedCalledZeroTimesException)
    {
-      _metalMock0Tester->FunctionNotCalled_CalledAsFollowsWithN0_Throws();
+      _metalMock0Tester->FunctionNotCalled_CalledAsFollowsWithN0_ThrowsUnsupportedCalledZeroTimesException();
    }
 
    TEST(FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows)
@@ -133,14 +133,14 @@ namespace MetalMock
       _metalMock0Tester->FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows();
    }
 
-   TEST(MetalMockedFunction_NotExpected_Throws)
+   TEST(MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException)
    {
-      _metalMock0Tester->MetalMockedFunction_NotExpected_Throws();
+      _metalMock0Tester->MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException();
    }
 
-   TEST(ThrowException_ThenMetalMockedFunction_ThrowsTheException)
+   TEST(ThrowExceptionWhenCalled_MetalMockedFunctionIsThenCalled_ThrowsTheSpecifiedExceptionTypeWithExceptionMessage)
    {
-      _metalMock0Tester->ThrowException_ThenMetalMockedFunction_ThrowsTheException();
+      _metalMock0Tester->ThrowExceptionWhenCalled_MetalMockedFunctionIsThenCalled_ThrowsTheSpecifiedExceptionTypeWithExceptionMessage();
    }
 
    // Value Return Tests

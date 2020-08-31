@@ -98,7 +98,7 @@ namespace VirtualFunctionMockingTestingNamespace
 
    STARTUP
    {
-      // Post-construction dependency injection of MetalMock object _widgetMock
+      // Dependency injection of MetalMock object _widgetMock
       _classUnderTest._widget.reset(_widgetMock = new WidgetMock);
    }
 

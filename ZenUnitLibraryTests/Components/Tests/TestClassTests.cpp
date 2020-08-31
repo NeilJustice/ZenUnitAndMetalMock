@@ -8,25 +8,25 @@
 namespace ZenUnit
 {
    TESTS(TestClassTests)
-   AFACT(DefaultConstructor_DoesNotThrow)
-   AFACT(Startup_DoesNotThrow)
-   AFACT(Cleanup_DoesNotThrow)
+   AFACT(DefaultConstructor_DoesNotThrowException)
+   AFACT(Startup_DoesNotThrowException)
+   AFACT(Cleanup_DoesNotThrowException)
    FACTS(GetTestPointerForTestNXNPmfToken_PMFTokenIsNotFoundInPmfTokenToTestPointerMap_ExitsWithCode1OrWithCode0IfAlwaysExit0IsTrue)
    EVIDENCE
 
    TestClass _testClass;
 
-   TEST(DefaultConstructor_DoesNotThrow)
+   TEST(DefaultConstructor_DoesNotThrowException)
    {
       const TestClass testClass{};
    }
 
-   TEST(Startup_DoesNotThrow)
+   TEST(Startup_DoesNotThrowException)
    {
       _testClass.Startup();
    }
 
-   TEST(Cleanup_DoesNotThrow)
+   TEST(Cleanup_DoesNotThrowException)
    {
       _testClass.Cleanup();
    }

@@ -186,7 +186,7 @@ Testing Rigorousness Options:
 --exit-1-if-tests-skipped
    After having run all tests, exit with code 1 if any tests were skipped.
 
-Testing Specificity Options:
+Testing Filtration Options:
 
 --fail-fast
    If a test fails, call exit(1).

@@ -3,8 +3,8 @@
 namespace MetalMock
 {
    TESTS(NonVoidOneArgumentMetalMockerTests)
-   AFACT(DefaultConstructor_DoesNotThrowException_DoesNotSetCallInsteadFunction)
-   AFACT(OneArgConstructor_DoesNotThrowException_DoesNotSetCallInsteadFunction)
+   AFACT(DefaultConstructor_DoesNotThrowExceptionException_DoesNotSetCallInsteadFunction)
+   AFACT(OneArgConstructor_DoesNotThrowExceptionException_DoesNotSetCallInsteadFunction)
    AFACT(CallInstead_SetsCallInsteadFunction_SetsWasExpectedToTrue_MakesMetalMockItAndReturnValueCallTheCallInsteadFunction)
    AFACT(Return_SetsWasExpectedToTrue_AddsReturnValueToReturnValuesDeque)
    AFACT(VariadicReturnValues_SetsWasExpectedToTrue_AddsReturnValuesToReturnValuesDeque)
@@ -22,7 +22,7 @@ namespace MetalMock
       s_callInsteadReturnValue = ZenUnit::Random<int>();
    }
 
-   TEST(DefaultConstructor_DoesNotThrowException_DoesNotSetCallInsteadFunction)
+   TEST(DefaultConstructor_DoesNotThrowExceptionException_DoesNotSetCallInsteadFunction)
    {
       MetalMock::NonVoidOneArgumentMetalMocker<int, int> nonVoidOneArgumentMetalMocker;
       //
@@ -30,7 +30,7 @@ namespace MetalMock
       IS_FALSE(nonVoidOneArgumentMetalMocker._callInsteadFunction);
    }
 
-   TEST(OneArgConstructor_DoesNotThrowException_DoesNotSetCallInsteadFunction)
+   TEST(OneArgConstructor_DoesNotThrowExceptionException_DoesNotSetCallInsteadFunction)
    {
       const string metalMockedFunctionSignature = ZenUnit::Random<string>();
       //
