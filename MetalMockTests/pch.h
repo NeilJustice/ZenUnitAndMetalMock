@@ -1,5 +1,5 @@
-#ifndef METALMOCKTESTS_PCH // Classic include guard for GCC compilability
-#define METALMOCKTESTS_PCH
+#ifndef MetalMockTests_PCH
+#define MetalMockTests_PCH
 
 #include "ZenUnitLibraryTests/MSVCIgnoredWarnings.h"
 namespace std {}

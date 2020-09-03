@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MetalMockExamples_PCH
+#define MetalMockExamples_PCH
 #include "ZenUnitLibraryTests/MSVCIgnoredWarnings.h"
 
 #if defined _WIN32

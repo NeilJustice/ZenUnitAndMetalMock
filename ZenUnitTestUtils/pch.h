@@ -1,5 +1,5 @@
-#ifndef ZENUNITTESTS_PCH
-#define ZENUNITTESTS_PCH
+#ifndef ZenUnitTestUtils_PCH
+#define ZenUnitTestUtils_PCH
 
 #include "ZenUnitLibraryTests/MSVCIgnoredWarnings.h"
 #include "ZenUnit.h"

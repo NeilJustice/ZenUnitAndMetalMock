@@ -1,5 +1,5 @@
-#ifndef ZENUNITEXAMPLES_PCH
-#define ZENUNITEXAMPLES_PCH
+#ifndef ZenUnitExamples_PCH
+#define ZenUnitExamples_PCH
 
 #include "ZenUnitLibraryTests/MSVCIgnoredWarnings.h"
 #include "MetalMock.h"
