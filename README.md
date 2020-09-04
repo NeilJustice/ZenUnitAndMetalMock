@@ -6,8 +6,6 @@ ZenUnit is a C++ single-header unit testing framework designed for assertion exa
 
 MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions and features an intuitive arrange-act-assert syntax for specifying function return values and expected function call arguments from and to virtual functions, non-virtual/template functions, static functions, and free functions.
 
-A key testing rigorousness feature of MetalMock is that MetalMock is a "double-strict mocking framework" to be suitable for testing safety-critical software - meaning twofold: 1) Unexpected calls to MetalMocked functions throw a MetalMock::UnexpectedCallException, and 2) Expected calls to MetalMocked functions not thereafter explicitly asserted as having been called with exact expected arguments results in ZenUnit fail-fasting the test run with error message "MetalMocked Function Expected But Not Asserted".
-
 |Build|Build Status|
 |----------|------------|
 |Travis CI Linux Clang 7.0.0 and GCC 7.4.0 Debug and Release|<a href="https://travis-ci.org/NeilJustice/ZenUnitAndMetalMock"><img src="https://travis-ci.org/NeilJustice/ZenUnitAndMetalMock.svg?branch=master"/></a>|
