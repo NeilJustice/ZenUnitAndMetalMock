@@ -80,38 +80,36 @@ Usage: <ZenUnitTestsBinaryName> [Options...]
 Testing Utility Options:
 
 --pause-before
-   Wait for any key before running tests to allow attaching of a profiler or debugger.
+   Wait for any key before running tests to allow for attaching a debugger or profiler.
 --pause-after
    Wait for any key after running tests.
-   This is a useful command line argument for desktop shortcuts that run ZenUnit tests.
 --always-exit-0
-   Always exit with code 0 even if there are test failures.
+   Always exit with code 0.
 --help
-   Print this help message.
+   Print this usage message.
 --version
    Print the ZenUnit version number.
 
 Testing Filtration Options:
 
---fail-fast
-   If a test fails, call exit(1).
 --run=<TestClassName>[::TestName][/TestCaseNumber][,...]
-   Run only the specified case-insensitive test classes, tests, and/or test case numbers.
-   Add a '*' character to the end of a test class name or test name
-   filter string to specify name-starts-with filtration.
+   Run only specified case-insensitive test classes, tests, and/or test case numbers.
+   Add a '*' character to the end of a test class name or test name to indicate name-starts-with.
  Example 1: --run=APITests
    Run only test class APITests.
  Example 2: --run=APITests::FunctionUnderTest*
    Run only tests in APITests that start with "FunctionUnderTest".
  Example 3: --run=APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue/3
    Run only the third test case of the value-parameterized test named
-   APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue.
+   APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue
+--fail-fast
+   Call exit(1) if a test fails.
 
 Testing Rigorousness Options:
 
 --test-runs=<N>
    Repeat N times the running of all tests.
-   Specify a negative number to repeat the running of run tests indefinitely.
+   Specify a negative number such as -1 to repeat forever the running of all tests.
 --random-test-ordering
    Run test classes, tests, and value-parameterized test cases in a random order.
 --random-seed=<32BitUnsignedInteger>
@@ -122,9 +120,10 @@ Testing Rigorousness Options:
 --exit-1-if-tests-skipped
    After having run all tests, exit with code 1 if any tests were skipped.
 
-Example Command Line Arguments:
+Example ZenUnit Command Line Arguments:
 
 ./SafetyCriticalUnitTests --test-runs=5 --random-test-ordering --exit-1-if-tests-skipped
+./SafetyCriticalUnitTests --random-test-ordering --random-seed=1122334455 --pause-before
 )";
          return zenUnitCommandLineUsage;
       }
