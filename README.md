@@ -166,23 +166,22 @@ int main(int argc, char* argv[])
 ### ZenUnit Command Line Usage
 
 ```
-C++ Unit Testing Framework ZenUnit 0.6.0
-https://github.com/NeilJustice/ZenUnitAndMetalMock
+C++ Unit Testing Framework ZenUnit v0.6.0
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
-Testing Rigorousness Options:
+Testing Utility Options:
 
---test-runs=<N>
-   Repeat N times the running of all tests.
-   Specify a negative number to repeat the running of run tests indefinitely.
---random-test-ordering
-   Run test classes, tests, and value-parameterized test cases in a random order.
---random-seed=<32BitUnsignedValue>
-   Sets the random seed which sets the ordering for --random-test-ordering and
-   the ZenUnit::Random<T> family of random-value-generating functions.
-   The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
---exit-1-if-tests-skipped
-   After having run all tests, exit with code 1 if any tests were skipped.
+--pause-before
+   Wait for any key before running tests to allow attaching of a profiler or debugger.
+--pause-after
+   Wait for any key after running tests.
+   This is a useful command line argument for desktop shortcuts that run ZenUnit tests.
+--always-exit-0
+   Always exit with code 0 even if there are test failures.
+--help
+   Print this help message.
+--version
+   Print the ZenUnit version number.
 
 Testing Filtration Options:
 
@@ -200,23 +199,24 @@ Testing Filtration Options:
    Run only the third test case of the value-parameterized test named
    APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue.
 
-Testing Utility Options:
+Testing Rigorousness Options:
 
---pause-before
-   Wait for any key before running tests to allow attaching of a profiler or debugger.
---pause-after
-   Wait for any key after running tests.
-   This is a useful command line argument for desktop shortcuts that run ZenUnit tests.
---always-exit-0
-   Always exit with code 0 even if there are test failures.
---help
-   Print this help message.
---version
-   Print the ZenUnit version number.
+--test-runs=<N>
+   Repeat N times the running of all tests.
+   Specify a negative number to repeat the running of run tests indefinitely.
+--random-test-ordering
+   Run test classes, tests, and value-parameterized test cases in a random order.
+--random-seed=<32BitUnsignedInteger>
+   Sets the random seed which sets the test ordering for --random-test-ordering and
+   sets the sequence of values returned by the ZenUnit::Random<T>
+   family of random-value-generating functions.
+   The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
+--exit-1-if-tests-skipped
+   After having run all tests, exit with code 1 if any tests were skipped.
 
 Example Command Line Arguments:
 
-./SafetyCriticalSoftwareTests --test-runs=5 --random-test-ordering --exit-1-if-tests-skipped
+./SafetyCriticalUnitTests --test-runs=5 --random-test-ordering --exit-1-if-tests-skipped
 ```
 
 ## ZenUnit Assertions
