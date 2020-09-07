@@ -4,8 +4,8 @@ import sys
 import unittest
 from unittest.mock import call, patch
 sys.path.append('..') # Jenkins
-from ZenUnitPy import ArgParser, CMake, BuildAndInstallZenUnitAndMetalMock, Process, UnitTester, Util
 import Random
+from ZenUnitPy import ArgParser, CMake, BuildAndInstallZenUnitAndMetalMock, Process, UnitTester, Util
 
 testNames = [
 'main_ArgsLengthIsNot5_PrintsUsageAndExits1_test',

@@ -3,8 +3,8 @@ import platform
 import sys
 import unittest
 from unittest.mock import patch
-from ZenUnitPy import Python, Process, UnitTester
 import Random
+from ZenUnitPy import Python, Process, UnitTester
 
 testNames = [
 'pylint_file_CallsPylintOnAllPythonFilesInCurrentFolderAndSubFolders_test',

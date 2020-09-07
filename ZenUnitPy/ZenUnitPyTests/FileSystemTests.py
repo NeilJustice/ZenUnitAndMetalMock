@@ -3,8 +3,8 @@ import os
 import shutil
 import unittest
 from unittest.mock import patch
-from ZenUnitPy import FileSystem, UnitTester
 import Random
+from ZenUnitPy import FileSystem, UnitTester
 
 testNames = [
 'delete_folder_if_exists_DeletesEmptyOrNonEmptyFolderIfItExists_test',

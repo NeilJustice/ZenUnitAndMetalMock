@@ -19,7 +19,7 @@
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <InterpreterArguments>
     </InterpreterArguments>
-    <InterpreterId>Global|PythonCore|3.8</InterpreterId>
+    <InterpreterId>Global|PythonCore|3.7</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,7 +50,7 @@
     <Compile Include="UtilTests.py" />
   </ItemGroup>
   <ItemGroup>
-    <InterpreterReference Include="Global|PythonCore|3.8" />
+    <InterpreterReference Include="Global|PythonCore|3.7" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

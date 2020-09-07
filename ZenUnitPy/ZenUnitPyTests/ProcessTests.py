@@ -6,8 +6,8 @@ import sys
 import subprocess
 import unittest
 from unittest.mock import patch, call, sentinel
-from ZenUnitPy import Process, UnitTester
 import Random
+from ZenUnitPy import Process, UnitTester
 
 testNames = [
 'run_RunsProcess_SysExitsIfExitCodeNonZero_test',

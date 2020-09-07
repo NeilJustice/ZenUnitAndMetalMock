@@ -3,8 +3,8 @@ import sys
 import unittest
 from unittest.mock import patch
 from unittest.mock import call
-from ZenUnitPy import UnitTester, Util
 import Random
+from ZenUnitPy import UnitTester, Util
 
 testNames = [
 'home_folder_join_test',
