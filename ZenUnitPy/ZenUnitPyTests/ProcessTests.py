@@ -5,7 +5,7 @@ import shlex
 import sys
 import subprocess
 import unittest
-from unittest.mock import patch, call, sentinel
+from unittest.mock import patch, sentinel
 import Random
 from ZenUnitPy import Process, UnitTester
 

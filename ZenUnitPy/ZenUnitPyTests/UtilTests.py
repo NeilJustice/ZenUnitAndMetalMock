@@ -1,8 +1,6 @@
-import os
 import sys
 import unittest
 from unittest.mock import patch
-from unittest.mock import call
 import Random
 from ZenUnitPy import UnitTester, Util
 

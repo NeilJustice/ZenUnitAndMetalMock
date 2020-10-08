@@ -1,4 +1,3 @@
-import os
 import sys
 
 def print_and_exit(message, exitCode):
