@@ -9,9 +9,9 @@ from ZenUnitPy import ArgParser, CMake, BuildAndInstallZenUnitAndMetalMock, Proc
 
 testNames = [
 'main_ArgsLengthIsNot5_PrintsUsageAndExits1_test',
-'main_ArgsLengthIs5_CMakes_Builds_Installs_test',
-'linux_cmake_and_build_CMakes_BuildsWithNinja_RunsCMakeInstall_test',
-'windows_cmake_build_install_CMakes_BuildsWithMSBuild_RunsCMakeInstall_test',
+'main_ArgsLengthIs5_CMakes_Builds_Installs_Returns0_test',
+'linux_cmake_and_build_RunsCMakes_RunsNinja_RunsCMakeInstall_test',
+'windows_cmake_build_install_RunsCMakes_RunsCMakeBuildToRunMSBuild_RunsCMakeInstall_test',
 ]
 
 class BuildAndInstallZenUnitTests(unittest.TestCase):
@@ -40,7 +40,7 @@ class BuildAndInstallZenUnitTests(unittest.TestCase):
       testcase(4)
       testcase(6)
 
-   def main_ArgsLengthIs5_CMakes_Builds_Installs_test(self):
+   def main_ArgsLengthIs5_CMakes_Builds_Installs_Returns0_test(self):
       @patch('platform.system', spec_set=True)
       @patch('ZenUnitPy.ArgParser.parse_arg', spec_set=True)
       @patch('ZenUnitPy.BuildAndInstallZenUnitAndMetalMock.linux_cmake_build_install', spec_set=True)
@@ -53,7 +53,7 @@ class BuildAndInstallZenUnitTests(unittest.TestCase):
             platform.system.return_value = platformSystem
             args = [Random.string(), Random.string(), Random.string(), Random.string(), Random.string()]
             #
-            BuildAndInstallZenUnitAndMetalMock.main(args)
+            exitCode = BuildAndInstallZenUnitAndMetalMock.main(args)
             #
             self.assertEqual(4, len(ArgParser.parse_arg.call_args_list))
             ArgParser.parse_arg.assert_has_calls([
@@ -75,19 +75,21 @@ class BuildAndInstallZenUnitTests(unittest.TestCase):
                BuildAndInstallZenUnitAndMetalMock.windows_cmake_build_install.assert_called_once_with(self.cmakeGenerator, self.cmakeArchitecture, self.cmakeBuildType, self.cmakeDefinitions)
                Process.run.assert_not_called()
                os.chdir.assert_not_called()
+            self.assertEqual(0, exitCode)
       testcase('Linux', True)
       testcase('linux', True)
       testcase('Windows', False)
       testcase('OSX', False)
 
-   def linux_cmake_and_build_CMakes_BuildsWithNinja_RunsCMakeInstall_test(self):
+   def linux_cmake_and_build_RunsCMakes_RunsNinja_RunsCMakeInstall_test(self):
       @patch('ZenUnitPy.CMake.generate', spec_set=True)
       @patch('ZenUnitPy.Process.run', spec_set=True)
       @patch('ZenUnitPy.CMake.install', spec_set=True)
       def testcase(cmakeDefinitions, expectedCMakeDefinitionsArgument, _1, _2, _3):
          with self.subTest(f'{cmakeDefinitions, expectedCMakeDefinitionsArgument}'):
             #
-            BuildAndInstallZenUnitAndMetalMock.linux_cmake_build_install(self.cmakeGenerator, self.cmakeArchitecture, self.cmakeBuildType, cmakeDefinitions)
+            BuildAndInstallZenUnitAndMetalMock.linux_cmake_build_install(
+               self.cmakeGenerator, self.cmakeArchitecture, self.cmakeBuildType, cmakeDefinitions)
             #
             CMake.generate.assert_called_once_with(
                self.cmakeBuildType, self.cmakeGenerator, self.cmakeArchitecture, self.cmakeBuildType, expectedCMakeDefinitionsArgument, '..')
@@ -97,14 +99,15 @@ class BuildAndInstallZenUnitTests(unittest.TestCase):
       testcase('-DSanitizerMode=ON', '-DSanitizerMode=ON')
       testcase('-DOption=ON', '-DOption=ON')
 
-   def windows_cmake_build_install_CMakes_BuildsWithMSBuild_RunsCMakeInstall_test(self):
+   def windows_cmake_build_install_RunsCMakes_RunsCMakeBuildToRunMSBuild_RunsCMakeInstall_test(self):
       @patch('ZenUnitPy.CMake.generate', spec_set=True)
       @patch('ZenUnitPy.Process.run', spec_set=True)
       @patch('ZenUnitPy.CMake.install', spec_set=True)
       def testcase(cmakeDefinitions, expectedCMakeDefinitionsArgument, _1, _2, _3):
          with self.subTest(f'{cmakeDefinitions, expectedCMakeDefinitionsArgument, }'):
             #
-            BuildAndInstallZenUnitAndMetalMock.windows_cmake_build_install(self.cmakeGenerator, self.cmakeArchitecture, self.cmakeBuildType, cmakeDefinitions)
+            BuildAndInstallZenUnitAndMetalMock.windows_cmake_build_install(
+               self.cmakeGenerator, self.cmakeArchitecture, self.cmakeBuildType, cmakeDefinitions)
             #
             CMake.generate.assert_called_once_with('.', self.cmakeGenerator, self.cmakeArchitecture, self.cmakeBuildType, expectedCMakeDefinitionsArgument, '.')
             expectedCMakeBuildCommand = 'cmake --build . --config {0}'.format(self.cmakeBuildType)

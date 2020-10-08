@@ -25,6 +25,7 @@ def main(args):
          os.chdir('..')
       else:
          windows_cmake_build_install(cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions)
+      return 0
 
 def linux_cmake_build_install(cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions):
    CMake.generate(cmakeBuildType, cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions, '..')

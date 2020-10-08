@@ -4,8 +4,7 @@ import sys
 from ZenUnitPy import Process
 
 def pylint_file(pythonFilePath):
-   pylintCommand =\
-      "pylint --rcfile=.pylintrc --score=n --init-hook=\"sys.path.append('.')\" {0}".format(pythonFilePath)
+   pylintCommand = "pylint --rcfile=.pylintrc --score=n --init-hook=\"sys.path.append('.')\" {0}".format(pythonFilePath)
    pylintExitCode = Process.run_and_get_exitcode(pylintCommand)
    return pylintExitCode
 

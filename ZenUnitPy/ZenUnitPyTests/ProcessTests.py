@@ -12,12 +12,6 @@ from ZenUnitPy import Process, UnitTester
 testNames = [
 'run_RunsProcess_SysExitsIfExitCodeNonZero_test',
 'run_and_get_exitcode_CallsSubprocessCallCommand_WithShlexCommandIfNotWindows_ReturnsExitCode_test',
-'run_and_get_stdout_RunsProcess_ReturnsStandardOutput_test',
-'to_utf8_ReturnsBytesDecodedToUtf8_test',
-'run_and_check_stdout_for_substring_test',
-'run_exe_ArgsNotSpecified_CallsRunWithExpected_test',
-'run_exe_ArgSpecified_CallsRunWithExpected_test',
-'append_args_AppendsSpaceThenArgsIfArgsNotEmpty_test',
 'map_parallel_CallsMultiprocessingPoolMap_Returns1IfAnyExitCodesNon0_test',
 'map_sequential_CallsMap_ReturnsTrueIfAllExitCodes0_test'
 ]
@@ -103,88 +97,6 @@ class RunTests(unittest.TestCase):
       testcase('Windows', False)
       testcase('windows', True)
       testcase('Linux', True)
-
-   @patch('shlex.split', spec_set=True)
-   @patch('subprocess.check_output', spec_set=True)
-   @patch('ZenUnitPy.Process.to_utf8', spec_set=True)
-   def run_and_get_stdout_RunsProcess_ReturnsStandardOutput_test(self, _1, _2, _3):
-      ShlexReturnValue = 'ShlexReturnValue'
-      shlex.split.return_value = ShlexReturnValue
-      CheckOutputReturnValue = 'CheckOutputReturnValue'
-      subprocess.check_output.return_value = CheckOutputReturnValue
-      ToUtf8ReturnValue = 'ToUtf8ReturnValue'
-      Process.to_utf8.return_value = ToUtf8ReturnValue
-      #
-      standardOutput = Process.run_and_get_stdout(self.command)
-      #
-      shlex.split.assert_called_once_with(self.command)
-      subprocess.check_output.assert_called_once_with(ShlexReturnValue)
-      Process.to_utf8.assert_called_once_with(CheckOutputReturnValue)
-      self.assertEqual(ToUtf8ReturnValue, standardOutput)
-
-   def to_utf8_ReturnsBytesDecodedToUtf8_test(self):
-      self.assertEqual('', Process.to_utf8(b''))
-
-   def run_and_check_stdout_for_substring_test(self):
-      @patch('builtins.print', spec_set=True)
-      @patch('ZenUnitPy.Process.run_and_get_stdout', spec_set=True)
-      @patch('sys.exit', spec_set=True)
-      def testcase(stdout, substring, expectExit, _1, _2, _3):
-         with self.subTest(f'{stdout}, {substring}, {expectExit}'):
-            Process.run_and_get_stdout.return_value = stdout
-            #
-            Process.run_and_check_stdout_for_substring(self.command, substring)
-            #
-            self.assertEqual(2, len(print.call_args_list))
-            print.assert_has_calls([
-               call('Running \'' + self.command + '\' and checking for substring \'' + substring + '\''),
-               call('Substring \'' + substring + '\' ' + ('found.' if not expectExit else 'not found.'))])
-            if expectExit:
-               sys.exit.assert_called_once_with(1)
-            else:
-               sys.exit.assert_not_called()
-      testcase('stdout', 'abc', True)
-      testcase('stdout', 'StdOut', True)
-      testcase('stdout', 'stdout', False)
-      testcase('prefix stdout suffix', 'stdout', False)
-
-   @patch('ZenUnitPy.Process.run', spec_set=True)
-   @patch('ZenUnitPy.Process.append_args', spec_set=True)
-   def run_exe_ArgsNotSpecified_CallsRunWithExpected_test(self, _1, _2):
-      Process.append_args.return_value = self.appendArgsReturnValue
-      #
-      Process.run_exe(self.projectName, self.configuration)
-      #
-      self.assert_exe_behavior('')
-
-   @patch('ZenUnitPy.Process.run', spec_set=True)
-   @patch('ZenUnitPy.Process.append_args', spec_set=True)
-   def run_exe_ArgSpecified_CallsRunWithExpected_test(self, _1, _2):
-      Process.append_args.return_value = self.appendArgsReturnValue
-      args = Random.string()
-      #
-      Process.run_exe(self.projectName, self.configuration, args)
-      #
-      self.assert_exe_behavior(args)
-
-   def assert_exe_behavior(self, expectedArgs):
-      expectedExePath = '{0}\\{1}\\{0}.exe'.format(self.projectName, self.configuration)
-      Process.append_args.assert_called_once_with(expectedExePath, expectedArgs)
-      Process.run.assert_called_once_with(self.appendArgsReturnValue)
-
-   def append_args_AppendsSpaceThenArgsIfArgsNotEmpty_test(self):
-      def testcase(expectedReturnValueSuffix, args):
-         with self.subTest(f'{expectedReturnValueSuffix}, {args}'):
-            exePath = Random.string()
-            #
-            returnValue = Process.append_args(exePath, args)
-            #
-            expectedReturnValue = exePath + expectedReturnValueSuffix
-            self.assertEqual(expectedReturnValue, returnValue)
-      testcase('', '')
-      testcase('  ', ' ')
-      testcase(' arg1', 'arg1')
-      testcase(' arg1 arg2', 'arg1 arg2')
 
    def map_parallel_CallsMultiprocessingPoolMap_Returns1IfAnyExitCodesNon0_test(self):
       @patch('multiprocessing.Pool', spec_set=True)

@@ -35,49 +35,6 @@ class FolderTests(unittest.TestCase):
       testcase(False, False)
       testcase(True, True)
 
-   def get_filepaths_ReturnsAllFilePathsInAndBelowFolderPath_test(self): # pragma nocover
-      @patch('os.walk', spec_set=True)
-      def testcase(expectedFilePaths, oswalkReturnValue, _1):
-         with self.subTest(f'{expectedFilePaths}, {oswalkReturnValue}'):
-            os.walk.return_value = oswalkReturnValue
-            folderPath = Random.string()
-            #
-            filePaths = FileSystem.get_filepaths(folderPath)
-            #
-            os.walk.assert_called_once_with(folderPath)
-            self.assertEqual(expectedFilePaths, filePaths)
-      testcase([], [])
-      if platform.system() == 'Windows':
-         testcase(['.\\a.txt'], [('.', [], ['a.txt'])])
-         testcase([
-            '.\\file1.bin',
-            '.\\file2',
-            '.\\folderB\\b2.txt',
-            '.\\folderB\\b1.txt',
-            '.\\folderA\\a1.txt',
-            '.\\folderA\\a2.txt'
-         ], [
-            ('.', ['folderB', 'folderA'], ['file1.bin', 'file2']),
-            ('.\\folderB', ['emptyfolder'], ['b2.txt', 'b1.txt']),
-            ('.\\folderB/emptyfolder', [], []),
-            ('.\\folderA', [], ['a1.txt', 'a2.txt'])
-         ])
-      else:
-         testcase(['./a.txt'], [('.', [], ['a.txt'])])
-         testcase([
-            './file1.bin',
-            './file2',
-            './folderB/b2.txt',
-            './folderB/b1.txt',
-            './folderA/a1.txt',
-            './folderA/a2.txt'
-         ], [
-            ('.', ['folderB', 'folderA'], ['file1.bin', 'file2']),
-            ('./folderB', ['emptyfolder'], ['b2.txt', 'b1.txt']),
-            ('./folderB/emptyfolder', [], []),
-            ('./folderA', [], ['a1.txt', 'a2.txt'])
-         ])
-
    @patch('os.path.join', spec_set=True)
    @patch('os.path.dirname', spec_set=True)
    @patch('os.makedirs', spec_set=True)

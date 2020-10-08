@@ -28,8 +28,8 @@ class RunZenUnitPyTestsWithCoverageAndLintingTests(unittest.TestCase):
             Process.run.assert_called_once_with(f'{expectedPythonExecutableName} -u RunAllWithCoverage.py')
             Python.pylint_all.assert_called_once_with()
             Python.flake8_all.assert_called_once_with()
-      testcase('Linux', 'python3')
-      testcase('linux', 'python3')
+      testcase('Linux', 'python')
+      testcase('linux', 'python')
       testcase('Windows', 'python.exe')
       testcase('windows', 'python.exe')
 

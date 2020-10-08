@@ -7,7 +7,7 @@ from ZenUnitPy import Process, Python
 def main():
    os.chdir('ZenUnitPy/ZenUnitPyTests')
    lowercasePlatformSystem = platform.system().casefold()
-   pythonExecutableName = 'python3' if lowercasePlatformSystem == 'linux' else 'python.exe'
+   pythonExecutableName = 'python' if lowercasePlatformSystem == 'linux' else 'python.exe'
    Process.run(f'{pythonExecutableName} -u RunAllWithCoverage.py')
    os.chdir('..')
    Python.pylint_all()
