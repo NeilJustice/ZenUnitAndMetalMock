@@ -172,7 +172,7 @@ ReturnType FunctionName(Arg1Type arg) Constness Finalness \
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a base class function with signature "virtual void VirtualFunctionName(Arg1Type)".
 #define METALMOCK_VOID1(VirtualFunctionName, Arg1Type, ...) \
-        METALMOCK_VOID1_DEFINED(FunctionName, Arg1Type, virtual,      ,        , final, __VA_ARGS__)
+        METALMOCK_VOID1_DEFINED(VirtualFunctionName, Arg1Type, virtual,      ,        , final, __VA_ARGS__)
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a base class function with signature "virtual void VirtualFunctionName(Arg1Type) const".
 #define METALMOCK_VOID1_CONST(VirtualFunctionName, Arg1Type, ...) \
