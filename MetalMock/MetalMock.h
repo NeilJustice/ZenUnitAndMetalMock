@@ -81,24 +81,24 @@ void FunctionName() Constness Finalness \
 }
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName()".
-#define METALMOCK_NONVOID0(ReturnType, FunctionName) \
-        METALMOCK_NONVOID0_DEFINED(ReturnType, FunctionName, virtual,      ,        , final)
+#define METALMOCK_NONVOID0(ReturnType, VirtualFunctionName) \
+        METALMOCK_NONVOID0_DEFINED(ReturnType, VirtualFunctionName, virtual,      ,        , final)
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type)".
-#define METALMOCK_NONVOID1(ReturnType, FunctionName, Arg1Type, ...) \
-        METALMOCK_NONVOID1_DEFINED(ReturnType, FunctionName, Arg1Type, virtual,      ,        , final, __VA_ARGS__)
+#define METALMOCK_NONVOID1(ReturnType, VirtualFunctionName, Arg1Type, ...) \
+        METALMOCK_NONVOID1_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, virtual,      ,        , final, __VA_ARGS__)
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName() const".
-#define METALMOCK_NONVOID0_CONST(ReturnType, FunctionName) \
-        METALMOCK_NONVOID0_DEFINED(ReturnType, FunctionName, virtual, const, mutable, final)
+#define METALMOCK_NONVOID0_CONST(ReturnType, VirtualFunctionName) \
+        METALMOCK_NONVOID0_DEFINED(ReturnType, VirtualFunctionName, virtual, const, mutable, final)
 
 // Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName()".
-#define METALMOCK_NONVOID0_NONVIRTUAL(ReturnType, FunctionName) \
-        METALMOCK_NONVOID0_DEFINED(ReturnType, FunctionName,        ,      ,        ,         )
+#define METALMOCK_NONVOID0_NONVIRTUAL(ReturnType, VirtualFunctionName) \
+        METALMOCK_NONVOID0_DEFINED(ReturnType, VirtualFunctionName,        ,      ,        ,         )
 
 // Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName() const".
-#define METALMOCK_NONVOID0_NONVIRTUAL_CONST(ReturnType, FunctionName) \
-        METALMOCK_NONVOID0_DEFINED(ReturnType, FunctionName,        , const, mutable,         )
+#define METALMOCK_NONVOID0_NONVIRTUAL_CONST(ReturnType, VirtualFunctionName) \
+        METALMOCK_NONVOID0_DEFINED(ReturnType, VirtualFunctionName,        , const, mutable,         )
 
 // Defines a MetalMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType NamespaceQualifiedClassName::StaticFunctionName()".
 #define METALMOCK_NONVOID0_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, ...) \
@@ -170,13 +170,13 @@ ReturnType FunctionName(Arg1Type arg) Constness Finalness \
 }
 
 
-// Defines a MetalMock object named <FunctionName>Mock for mocking a base class function with signature "virtual void FunctionName(Arg1Type)".
-#define METALMOCK_VOID1(FunctionName, Arg1Type, ...) \
+// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a base class function with signature "virtual void VirtualFunctionName(Arg1Type)".
+#define METALMOCK_VOID1(VirtualFunctionName, Arg1Type, ...) \
         METALMOCK_VOID1_DEFINED(FunctionName, Arg1Type, virtual,      ,        , final, __VA_ARGS__)
 
-// Defines a MetalMock object named <FunctionName>Mock for mocking a base class function with signature "virtual void FunctionName(Arg1Type) const".
-#define METALMOCK_VOID1_CONST(FunctionName, Arg1Type, ...) \
-        METALMOCK_VOID1_DEFINED(FunctionName, Arg1Type, virtual, const, mutable, final, __VA_ARGS__)
+// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a base class function with signature "virtual void VirtualFunctionName(Arg1Type) const".
+#define METALMOCK_VOID1_CONST(VirtualFunctionName, Arg1Type, ...) \
+        METALMOCK_VOID1_DEFINED(VirtualFunctionName, Arg1Type, virtual, const, mutable, final, __VA_ARGS__)
 
 // Defines a MetalMock object named <FunctionName>Mock for mocking a base class function with signature "void FunctionName(Arg1Type)".
 #define METALMOCK_VOID1_NONVIRTUAL(FunctionName, Arg1Type, ...) \
