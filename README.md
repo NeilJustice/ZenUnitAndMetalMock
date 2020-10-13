@@ -535,7 +535,7 @@ ZenUnit provides the following random-value-generating functions for maximizing 
 |`METALMOCK_NONVOID9_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
 |`METALMOCK_NONVOID10_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
 
-#### Non-Void Namespaced Free Functions]
+#### Non-Void Namespaced Free Functions
 
 |MetalMock Macro|
 |---------------|
