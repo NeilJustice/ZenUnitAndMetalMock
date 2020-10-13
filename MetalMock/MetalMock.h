@@ -1411,9 +1411,9 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
          {
             const ZenUnit::Console console;
             console.WriteLineColor(R"(
-========================================================
+==========================================================
 Fatal EBNA: MetalMocked Function Expected But Not Asserted
-========================================================)", ZenUnit::Color::Red);
+==========================================================)", ZenUnit::Color::Red);
             console.WriteLine(MetalMockedFunctionSignature);
             const ZenUnit::ZenUnitArgs& zenUnitArgs = _call_ZenUnitTestRunner_GetZenUnitArgs();
             console.WriteColor("\n>>------>", ZenUnit::Color::Red);
