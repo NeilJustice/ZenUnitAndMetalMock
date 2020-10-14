@@ -9,6 +9,17 @@
 
 namespace Metal
 {
+   // Inherit from Metal::Mock<T> to define a MetalMock mock object class.
+   //
+   // Example MetalMock class definition:
+   //
+   // class WidgetMock : public Metal::Mock<Widget>
+   // {
+   // public:
+   //    METALMOCK_VOID0_CONST(Foo)
+   //    METALMOCK_NONVOID2_CONST(int, Add, int, int)
+   // };
+
    template<typename MetalMockedClass>
    class Mock : public MetalMockedClass
    {
@@ -27,6 +38,7 @@ namespace Metal
    };
 }
 
+// Wrap MetalMock assert statements with METALMOCK(MetalMockAssertStatement()); to add file path and line numbers to assertion-failed error messages.
 #define METALMOCK(MetalMockAssertStatement) \
 try \
 { \
@@ -36,6 +48,10 @@ catch (const ZenUnit::Anomaly& metalMockWrappedAnomaly) \
 { \
    throw ZenUnit::Anomaly::METALMOCKWrapped("METALMOCK("#MetalMockAssertStatement")", metalMockWrappedAnomaly, FILELINE); \
 }
+
+//
+// 0-Argument Function-Mocking Macros
+//
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a base class function with signature "virtual void VirtualFunctionName()".
 #define METALMOCK_VOID0(VirtualFunctionName) \
@@ -128,47 +144,9 @@ ReturnType FunctionName() Constness Finalness \
    return FunctionName##Mock.MetalMockItAndReturnValue(); \
 }
 
-
-// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type) const".
-#define METALMOCK_NONVOID1_CONST(ReturnType, FunctionName, Arg1Type, ...) \
-        METALMOCK_NONVOID1_DEFINED(ReturnType, FunctionName, Arg1Type, virtual, const, mutable, final, __VA_ARGS__)
-
-// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type)".
-#define METALMOCK_NONVOID1_NONVIRTUAL(ReturnType, FunctionName, Arg1Type, ...) \
-        METALMOCK_NONVOID1_DEFINED(ReturnType, FunctionName, Arg1Type,        ,      ,        ,         , __VA_ARGS__)
-
-// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type) const".
-#define METALMOCK_NONVOID1_NONVIRTUAL_CONST(ReturnType, FunctionName, Arg1Type, ...) \
-        METALMOCK_NONVOID1_DEFINED(ReturnType, FunctionName, Arg1Type,        , const, mutable,         , __VA_ARGS__)
-
-// Defines a MetalMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type)".
-#define METALMOCK_NONVOID1_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, ...) \
-   MetalMock::NonVoidOneArgFunctionPointerMetalMocker<ReturnType, Arg1Type> \
-      StaticFunctionName##Mock##__VA_ARGS__ = MetalMock::NonVoidOneArgFunctionPointerMetalMocker<ReturnType, Arg1Type>( \
-         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type")"));
-
-// Defines a MetalMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type)".
-#define METALMOCK_NONVOID1_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, ...) \
-   METALMOCK_NONVOID1_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, __VA_ARGS__)
-
-// Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type)".
-#define METALMOCK_NONVOID1_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, ...) \
-   MetalMock::NonVoidOneArgFunctionPointerMetalMocker<ReturnType, Arg1Type> \
-      GlobalFreeFunctionName##Mock##__VA_ARGS__ = MetalMock::NonVoidOneArgFunctionPointerMetalMocker<ReturnType, Arg1Type>( \
-         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type")"));
-
-#define METALMOCK_NONVOID1_DEFINED(ReturnType, FunctionName, Arg1Type, Virtualness, Constness, Mutableness, Finalness, ...) \
-struct MetalMock_##FunctionName##__VA_ARGS__ : public MetalMock::NonVoidOneArgumentMetalMocker<ReturnType, Arg1Type> \
-{ \
-   explicit MetalMock_##FunctionName##__VA_ARGS__(const std::string* metalMockedClassName) \
-      : MetalMock::NonVoidOneArgumentMetalMocker<ReturnType, Arg1Type>(MetalMock::FunctionSignature::Function( \
-         #Virtualness, #ReturnType, metalMockedClassName, #FunctionName"("#Arg1Type")", #Constness)) {} \
-} Mutableness FunctionName##Mock##__VA_ARGS__ = MetalMock_##FunctionName##__VA_ARGS__(this->MetalMockedClassName()); \
-ReturnType FunctionName(Arg1Type arg) Constness Finalness \
-{ \
-   return FunctionName##Mock##__VA_ARGS__.MetalMockItAndReturnValue(arg); \
-}
-
+//
+// 1-Argument Function-Mocking Macros
+//
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a base class function with signature "virtual void VirtualFunctionName(Arg1Type)".
 #define METALMOCK_VOID1(VirtualFunctionName, Arg1Type, ...) \
@@ -214,51 +192,49 @@ void FunctionName(Arg1Type arg) Constness Finalness \
    FunctionName##Mock##__VA_ARGS__.MetalMockIt(arg); \
 }
 
+// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type) const".
+#define METALMOCK_NONVOID1_CONST(ReturnType, FunctionName, Arg1Type, ...) \
+        METALMOCK_NONVOID1_DEFINED(ReturnType, FunctionName, Arg1Type, virtual, const, mutable, final, __VA_ARGS__)
 
-// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type)".
-#define METALMOCK_NONVOID2(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, ...) \
-        METALMOCK_NONVOID2_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, virtual,      ,        , final, __VA_ARGS__)
+// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type)".
+#define METALMOCK_NONVOID1_NONVIRTUAL(ReturnType, FunctionName, Arg1Type, ...) \
+        METALMOCK_NONVOID1_DEFINED(ReturnType, FunctionName, Arg1Type,        ,      ,        ,         , __VA_ARGS__)
 
-// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type) const".
-#define METALMOCK_NONVOID2_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, ...) \
-        METALMOCK_NONVOID2_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, virtual, const, mutable, final, __VA_ARGS__)
+// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type) const".
+#define METALMOCK_NONVOID1_NONVIRTUAL_CONST(ReturnType, FunctionName, Arg1Type, ...) \
+        METALMOCK_NONVOID1_DEFINED(ReturnType, FunctionName, Arg1Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type)".
-#define METALMOCK_NONVOID2_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, ...) \
-        METALMOCK_NONVOID2_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type,        ,      ,        ,         , __VA_ARGS__)
+// Defines a MetalMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type)".
+#define METALMOCK_NONVOID1_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, ...) \
+   MetalMock::NonVoidOneArgFunctionPointerMetalMocker<ReturnType, Arg1Type> \
+      StaticFunctionName##Mock##__VA_ARGS__ = MetalMock::NonVoidOneArgFunctionPointerMetalMocker<ReturnType, Arg1Type>( \
+         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type")"));
 
-// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type) const".
-#define METALMOCK_NONVOID2_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, ...) \
-        METALMOCK_NONVOID2_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type,        , const, mutable,         , __VA_ARGS__)
+// Defines a MetalMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type)".
+#define METALMOCK_NONVOID1_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, ...) \
+   METALMOCK_NONVOID1_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, __VA_ARGS__)
 
-// Defines a MetalMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type)".
-#define METALMOCK_NONVOID2_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, ...) \
-   MetalMock::NonVoidTwoArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type> StaticFunctionName##Mock##__VA_ARGS__ = \
-      MetalMock::NonVoidTwoArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type>( \
-         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type")"));
+// Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type)".
+#define METALMOCK_NONVOID1_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, ...) \
+   MetalMock::NonVoidOneArgFunctionPointerMetalMocker<ReturnType, Arg1Type> \
+      GlobalFreeFunctionName##Mock##__VA_ARGS__ = MetalMock::NonVoidOneArgFunctionPointerMetalMocker<ReturnType, Arg1Type>( \
+         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type")"));
 
-// Defines a MetalMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type)".
-#define METALMOCK_NONVOID2_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, ...) \
-   METALMOCK_NONVOID2_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, __VA_ARGS__)
-
-// Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type)".
-#define METALMOCK_NONVOID2_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, ...) \
-   MetalMock::NonVoidTwoArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
-      MetalMock::NonVoidTwoArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type>( \
-         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type")"));
-
-#define METALMOCK_NONVOID2_DEFINED(ReturnType, FunctionName, Arg1Type, Arg2Type, Virtualness, Constness, Mutableness, Finalness, ...) \
-struct MetalMock_##FunctionName##__VA_ARGS__ : public MetalMock::NonVoidTwoArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type> \
+#define METALMOCK_NONVOID1_DEFINED(ReturnType, FunctionName, Arg1Type, Virtualness, Constness, Mutableness, Finalness, ...) \
+struct MetalMock_##FunctionName##__VA_ARGS__ : public MetalMock::NonVoidOneArgumentMetalMocker<ReturnType, Arg1Type> \
 { \
    explicit MetalMock_##FunctionName##__VA_ARGS__(const std::string* metalMockedClassName) \
-      : MetalMock::NonVoidTwoArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type>(MetalMock::FunctionSignature::Function( \
-         #Virtualness, #ReturnType, metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type")", #Constness)) {} \
+      : MetalMock::NonVoidOneArgumentMetalMocker<ReturnType, Arg1Type>(MetalMock::FunctionSignature::Function( \
+         #Virtualness, #ReturnType, metalMockedClassName, #FunctionName"("#Arg1Type")", #Constness)) {} \
 } Mutableness FunctionName##Mock##__VA_ARGS__ = MetalMock_##FunctionName##__VA_ARGS__(this->MetalMockedClassName()); \
-ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument) Constness Finalness \
+ReturnType FunctionName(Arg1Type arg) Constness Finalness \
 { \
-   return FunctionName##Mock##__VA_ARGS__.MetalMockItAndReturnValue(firstArgument, secondArgument); \
+   return FunctionName##Mock##__VA_ARGS__.MetalMockItAndReturnValue(arg); \
 }
 
+//
+// 2-Argument Function-Mocking Macros
+//
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "void VirtualFunctionName(Arg1Type, Arg2Type)".
 #define METALMOCK_VOID2(VirtualFunctionName, Arg1Type, Arg2Type, ...) \
@@ -304,51 +280,53 @@ void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument) Constness Fin
    FunctionName##Mock##__VA_ARGS__.MetalMockIt(firstArgument, secondArgument); \
 }
 
+// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type)".
+#define METALMOCK_NONVOID2(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, ...) \
+        METALMOCK_NONVOID2_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, virtual,      ,        , final, __VA_ARGS__)
 
-// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type)".
-#define METALMOCK_NONVOID3(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
-        METALMOCK_NONVOID3_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, virtual,      ,        , final, __VA_ARGS__)
+// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type) const".
+#define METALMOCK_NONVOID2_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, ...) \
+        METALMOCK_NONVOID2_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, virtual, const, mutable, final, __VA_ARGS__)
 
-// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type) const".
-#define METALMOCK_NONVOID3_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
-        METALMOCK_NONVOID3_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, virtual, const, mutable, final, __VA_ARGS__)
+// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type)".
+#define METALMOCK_NONVOID2_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, ...) \
+        METALMOCK_NONVOID2_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type,        ,      ,        ,         , __VA_ARGS__)
 
-// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type)".
-#define METALMOCK_NONVOID3_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
-        METALMOCK_NONVOID3_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type,        ,      ,        ,         , __VA_ARGS__)
+// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type) const".
+#define METALMOCK_NONVOID2_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, ...) \
+        METALMOCK_NONVOID2_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type) const".
-#define METALMOCK_NONVOID3_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
-        METALMOCK_NONVOID3_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type,        , const, mutable,         , __VA_ARGS__)
+// Defines a MetalMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type)".
+#define METALMOCK_NONVOID2_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, ...) \
+   MetalMock::NonVoidTwoArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type> StaticFunctionName##Mock##__VA_ARGS__ = \
+      MetalMock::NonVoidTwoArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type>( \
+         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type")"));
 
-// Defines a MetalMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type)".
-#define METALMOCK_NONVOID3_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
-   MetalMock::NonVoidThreeArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type> StaticFunctionName##Mock##__VA_ARGS__ = \
-      MetalMock::NonVoidThreeArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type>( \
-         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type")"));
+// Defines a MetalMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type)".
+#define METALMOCK_NONVOID2_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, ...) \
+   METALMOCK_NONVOID2_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, __VA_ARGS__)
 
-// Defines a MetalMock object named <NamespacedFreeFunctionName>Mock for mocking a static function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type)".
-#define METALMOCK_NONVOID3_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
-   METALMOCK_NONVOID3_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type)
+// Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type)".
+#define METALMOCK_NONVOID2_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, ...) \
+   MetalMock::NonVoidTwoArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
+      MetalMock::NonVoidTwoArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type>( \
+         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type")"));
 
-// Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type)".
-#define METALMOCK_NONVOID3_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
-   MetalMock::NonVoidThreeArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
-      MetalMock::NonVoidThreeArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type>( \
-         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type")"));
-
-#define METALMOCK_NONVOID3_DEFINED(ReturnType, FunctionName, Arg1Type, Arg2Type, Arg3Type, Virtualness, Constness, Mutableness, Finalness, ...) \
-struct MetalMock_##FunctionName##__VA_ARGS__ : public MetalMock::NonVoidThreeArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type> \
+#define METALMOCK_NONVOID2_DEFINED(ReturnType, FunctionName, Arg1Type, Arg2Type, Virtualness, Constness, Mutableness, Finalness, ...) \
+struct MetalMock_##FunctionName##__VA_ARGS__ : public MetalMock::NonVoidTwoArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type> \
 { \
    explicit MetalMock_##FunctionName##__VA_ARGS__(const std::string* metalMockedClassName) \
-      : MetalMock::NonVoidThreeArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type>(MetalMock::FunctionSignature::Function( \
-         #Virtualness, #ReturnType, metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type")", #Constness)) {} \
+      : MetalMock::NonVoidTwoArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type>(MetalMock::FunctionSignature::Function( \
+         #Virtualness, #ReturnType, metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type")", #Constness)) {} \
 } Mutableness FunctionName##Mock##__VA_ARGS__ = MetalMock_##FunctionName##__VA_ARGS__(this->MetalMockedClassName()); \
-ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument) Constness Finalness \
+ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument) Constness Finalness \
 { \
-   return FunctionName##Mock##__VA_ARGS__.MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument); \
+   return FunctionName##Mock##__VA_ARGS__.MetalMockItAndReturnValue(firstArgument, secondArgument); \
 }
 
+//
+// 3-Argument Function-Mocking Macros
+//
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "void VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type)".
 #define METALMOCK_VOID3(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
@@ -394,51 +372,53 @@ void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thir
    FunctionName##Mock##__VA_ARGS__.MetalMockIt(firstArgument, secondArgument, thirdArgument); \
 }
 
+// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type)".
+#define METALMOCK_NONVOID3(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
+        METALMOCK_NONVOID3_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, virtual,      ,        , final, __VA_ARGS__)
 
-// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
-#define METALMOCK_NONVOID4(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
-        METALMOCK_NONVOID4_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, virtual,      ,        , final, __VA_ARGS__)
+// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type) const".
+#define METALMOCK_NONVOID3_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
+        METALMOCK_NONVOID3_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, virtual, const, mutable, final, __VA_ARGS__)
 
-// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type) const".
-#define METALMOCK_NONVOID4_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
-        METALMOCK_NONVOID4_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, virtual, const, mutable, final, __VA_ARGS__)
+// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type)".
+#define METALMOCK_NONVOID3_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
+        METALMOCK_NONVOID3_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type,        ,      ,        ,         , __VA_ARGS__)
 
-// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
-#define METALMOCK_NONVOID4_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
-        METALMOCK_NONVOID4_DEFINED(ReturnType, FunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type,        ,      ,        ,         , __VA_ARGS__)
+// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type) const".
+#define METALMOCK_NONVOID3_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
+        METALMOCK_NONVOID3_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type) const".
-#define METALMOCK_NONVOID4_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
-        METALMOCK_NONVOID4_DEFINED(ReturnType, FunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type,        , const, mutable,         , __VA_ARGS__)
+// Defines a MetalMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type)".
+#define METALMOCK_NONVOID3_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
+   MetalMock::NonVoidThreeArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type> StaticFunctionName##Mock##__VA_ARGS__ = \
+      MetalMock::NonVoidThreeArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type>( \
+         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type")"));
 
-// Defines a MetalMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
-#define METALMOCK_NONVOID4_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
-   MetalMock::NonVoidFourArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type> StaticFunctionName##Mock##__VA_ARGS__ = \
-      MetalMock::NonVoidFourArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>( \
-         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type")"));
+// Defines a MetalMock object named <NamespacedFreeFunctionName>Mock for mocking a static function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type)".
+#define METALMOCK_NONVOID3_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
+   METALMOCK_NONVOID3_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type)
 
-// Defines a MetalMock object named <NamespaceFreeFunctionName>Mock for mocking a static function with signature "ReturnType Namespace::NamespaceFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
-#define METALMOCK_NONVOID4_NAMESPACED_FREE(ReturnType, Namespace, NamespaceFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
-   METALMOCK_NONVOID4_STATIC(ReturnType, Namespace, NamespaceFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, __VA_ARGS__)
+// Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type)".
+#define METALMOCK_NONVOID3_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, ...) \
+   MetalMock::NonVoidThreeArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
+      MetalMock::NonVoidThreeArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type>( \
+         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type")"));
 
-// Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
-#define METALMOCK_NONVOID4_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
-   MetalMock::NonVoidFourArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
-      MetalMock::NonVoidFourArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>( \
-         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type")"));
-
-#define METALMOCK_NONVOID4_DEFINED(ReturnType, FunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Virtualness, Constness, Mutableness, Finalness, ...) \
-struct MetalMock_##FunctionName##__VA_ARGS__ : public MetalMock::NonVoidFourArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type> \
+#define METALMOCK_NONVOID3_DEFINED(ReturnType, FunctionName, Arg1Type, Arg2Type, Arg3Type, Virtualness, Constness, Mutableness, Finalness, ...) \
+struct MetalMock_##FunctionName##__VA_ARGS__ : public MetalMock::NonVoidThreeArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type> \
 { \
    explicit MetalMock_##FunctionName##__VA_ARGS__(const std::string* metalMockedClassName) \
-      : MetalMock::NonVoidFourArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>(MetalMock::FunctionSignature::Function( \
-         #Virtualness, #ReturnType, metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type")", #Constness)) {} \
+      : MetalMock::NonVoidThreeArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type>(MetalMock::FunctionSignature::Function( \
+         #Virtualness, #ReturnType, metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type")", #Constness)) {} \
 } Mutableness FunctionName##Mock##__VA_ARGS__ = MetalMock_##FunctionName##__VA_ARGS__(this->MetalMockedClassName()); \
-ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument) Constness Finalness \
+ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument) Constness Finalness \
 { \
-   return FunctionName##Mock##__VA_ARGS__.MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument); \
+   return FunctionName##Mock##__VA_ARGS__.MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument); \
 }
 
+//
+// 4-Argument Function-Mocking Macros
+//
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "void VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
 #define METALMOCK_VOID4(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
@@ -484,51 +464,53 @@ void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thir
    FunctionName##Mock##__VA_ARGS__.MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument); \
 }
 
+// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
+#define METALMOCK_NONVOID4(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
+        METALMOCK_NONVOID4_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, virtual,      ,        , final, __VA_ARGS__)
 
-// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
-#define METALMOCK_NONVOID5(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
-        METALMOCK_NONVOID5_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, virtual,      ,        , final, __VA_ARGS__)
+// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type) const".
+#define METALMOCK_NONVOID4_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
+        METALMOCK_NONVOID4_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, virtual, const, mutable, final, __VA_ARGS__)
 
-// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type) const".
-#define METALMOCK_NONVOID5_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
-        METALMOCK_NONVOID5_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, virtual, const, mutable, final, __VA_ARGS__)
+// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
+#define METALMOCK_NONVOID4_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
+        METALMOCK_NONVOID4_DEFINED(ReturnType, FunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type,        ,      ,        ,         , __VA_ARGS__)
 
-// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
-#define METALMOCK_NONVOID5_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
-        METALMOCK_NONVOID5_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type,        ,      ,        ,         , __VA_ARGS__)
+// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type) const".
+#define METALMOCK_NONVOID4_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
+        METALMOCK_NONVOID4_DEFINED(ReturnType, FunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type) const".
-#define METALMOCK_NONVOID5_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
-        METALMOCK_NONVOID5_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type,        , const, mutable,         , __VA_ARGS__)
+// Defines a MetalMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
+#define METALMOCK_NONVOID4_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
+   MetalMock::NonVoidFourArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type> StaticFunctionName##Mock##__VA_ARGS__ = \
+      MetalMock::NonVoidFourArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>( \
+         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type")"));
 
-// Defines a MetalMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
-#define METALMOCK_NONVOID5_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
-   MetalMock::NonVoidFiveArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type> StaticFunctionName##Mock##__VA_ARGS__ = \
-      MetalMock::NonVoidFiveArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>( \
-         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type")"));
+// Defines a MetalMock object named <NamespaceFreeFunctionName>Mock for mocking a static function with signature "ReturnType Namespace::NamespaceFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
+#define METALMOCK_NONVOID4_NAMESPACED_FREE(ReturnType, Namespace, NamespaceFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
+   METALMOCK_NONVOID4_STATIC(ReturnType, Namespace, NamespaceFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, __VA_ARGS__)
 
-// Defines a MetalMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
-#define METALMOCK_NONVOID5_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
-   METALMOCK_NONVOID5_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, __VA_ARGS__)
+// Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
+#define METALMOCK_NONVOID4_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...) \
+   MetalMock::NonVoidFourArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
+      MetalMock::NonVoidFourArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>( \
+         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type")"));
 
-// Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
-#define METALMOCK_NONVOID5_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
-   MetalMock::NonVoidFiveArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
-      MetalMock::NonVoidFiveArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>( \
-         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type")"));
-
-#define METALMOCK_NONVOID5_DEFINED(ReturnType, FunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Virtualness, Constness, Mutableness, Finalness, ...) \
-struct MetalMock_##FunctionName##__VA_ARGS__ : public MetalMock::NonVoidFiveArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type> \
+#define METALMOCK_NONVOID4_DEFINED(ReturnType, FunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Virtualness, Constness, Mutableness, Finalness, ...) \
+struct MetalMock_##FunctionName##__VA_ARGS__ : public MetalMock::NonVoidFourArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type> \
 { \
    explicit MetalMock_##FunctionName##__VA_ARGS__(const std::string* metalMockedClassName) \
-      : MetalMock::NonVoidFiveArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>(MetalMock::FunctionSignature::Function( \
-         #Virtualness, #ReturnType, metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type")", #Constness)) {} \
+      : MetalMock::NonVoidFourArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>(MetalMock::FunctionSignature::Function( \
+         #Virtualness, #ReturnType, metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type")", #Constness)) {} \
 } Mutableness FunctionName##Mock##__VA_ARGS__ = MetalMock_##FunctionName##__VA_ARGS__(this->MetalMockedClassName()); \
-ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument) Constness Finalness \
+ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument) Constness Finalness \
 { \
-   return FunctionName##Mock##__VA_ARGS__.MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument); \
+   return FunctionName##Mock##__VA_ARGS__.MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument); \
 }
 
+//
+// 5-Argument Function-Mocking Macros
+//
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "void VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
 #define METALMOCK_VOID5(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
@@ -574,51 +556,53 @@ void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thir
    FunctionName##Mock##__VA_ARGS__.MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument); \
 }
 
+// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
+#define METALMOCK_NONVOID5(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
+        METALMOCK_NONVOID5_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, virtual,      ,        , final, __VA_ARGS__)
 
-// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
-#define METALMOCK_NONVOID6(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
-        METALMOCK_NONVOID6_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, virtual,      ,        , final, __VA_ARGS__)
+// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type) const".
+#define METALMOCK_NONVOID5_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
+        METALMOCK_NONVOID5_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, virtual, const, mutable, final, __VA_ARGS__)
 
-// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type) const".
-#define METALMOCK_NONVOID6_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
-        METALMOCK_NONVOID6_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, virtual, const, mutable, final, __VA_ARGS__)
+// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
+#define METALMOCK_NONVOID5_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
+        METALMOCK_NONVOID5_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type,        ,      ,        ,         , __VA_ARGS__)
 
-// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
-#define METALMOCK_NONVOID6_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
-        METALMOCK_NONVOID6_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type,        ,      ,        ,         , __VA_ARGS__)
+// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type) const".
+#define METALMOCK_NONVOID5_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
+        METALMOCK_NONVOID5_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type) const".
-#define METALMOCK_NONVOID6_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
-        METALMOCK_NONVOID6_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type,        , const, mutable,         , __VA_ARGS__)
+// Defines a MetalMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
+#define METALMOCK_NONVOID5_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
+   MetalMock::NonVoidFiveArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type> StaticFunctionName##Mock##__VA_ARGS__ = \
+      MetalMock::NonVoidFiveArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>( \
+         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type")"));
 
-// Defines a MetalMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
-#define METALMOCK_NONVOID6_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
-   MetalMock::NonVoidSixArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type> StaticFunctionName##Mock##__VA_ARGS__ = \
-      MetalMock::NonVoidSixArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>( \
-         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type")"));
+// Defines a MetalMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
+#define METALMOCK_NONVOID5_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
+   METALMOCK_NONVOID5_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, __VA_ARGS__)
 
-// Defines a MetalMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
-#define METALMOCK_NONVOID6_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
-   METALMOCK_NONVOID6_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, __VA_ARGS__)
+// Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
+#define METALMOCK_NONVOID5_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...) \
+   MetalMock::NonVoidFiveArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
+      MetalMock::NonVoidFiveArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>( \
+         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type")"));
 
-// Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
-#define METALMOCK_NONVOID6_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
-   MetalMock::NonVoidSixArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
-      MetalMock::NonVoidSixArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>( \
-         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type")"));
-
-#define METALMOCK_NONVOID6_DEFINED(ReturnType, FunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Virtualness, Constness, Mutableness, Finalness, ...) \
-struct MetalMock_##FunctionName##__VA_ARGS__ : public MetalMock::NonVoidSixArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type> \
+#define METALMOCK_NONVOID5_DEFINED(ReturnType, FunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Virtualness, Constness, Mutableness, Finalness, ...) \
+struct MetalMock_##FunctionName##__VA_ARGS__ : public MetalMock::NonVoidFiveArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type> \
 { \
    explicit MetalMock_##FunctionName##__VA_ARGS__(const std::string* metalMockedClassName) \
-      : MetalMock::NonVoidSixArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>(MetalMock::FunctionSignature::Function( \
-         #Virtualness, #ReturnType, metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type")", #Constness)) {} \
+      : MetalMock::NonVoidFiveArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>(MetalMock::FunctionSignature::Function( \
+         #Virtualness, #ReturnType, metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type")", #Constness)) {} \
 } Mutableness FunctionName##Mock##__VA_ARGS__ = MetalMock_##FunctionName##__VA_ARGS__(this->MetalMockedClassName()); \
-ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument) Constness Finalness \
+ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument) Constness Finalness \
 { \
-   return FunctionName##Mock##__VA_ARGS__.MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument); \
+   return FunctionName##Mock##__VA_ARGS__.MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument); \
 }
 
+//
+// 6-Argument Function-Mocking Macros
+//
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "void VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
 #define METALMOCK_VOID6(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
@@ -664,51 +648,53 @@ void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thir
    FunctionName##Mock##__VA_ARGS__.MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument); \
 }
 
+// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
+#define METALMOCK_NONVOID6(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
+        METALMOCK_NONVOID6_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, virtual,      ,        , final, __VA_ARGS__)
 
-// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
-#define METALMOCK_NONVOID7(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
-        METALMOCK_NONVOID7_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, virtual,      ,        , final, __VA_ARGS__)
+// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type) const".
+#define METALMOCK_NONVOID6_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
+        METALMOCK_NONVOID6_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, virtual, const, mutable, final, __VA_ARGS__)
 
-// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type) const".
-#define METALMOCK_NONVOID7_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
-        METALMOCK_NONVOID7_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, virtual, const, mutable, final, __VA_ARGS__)
+// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
+#define METALMOCK_NONVOID6_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
+        METALMOCK_NONVOID6_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type,        ,      ,        ,         , __VA_ARGS__)
 
-// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
-#define METALMOCK_NONVOID7_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
-        METALMOCK_NONVOID7_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type,        ,      ,        ,         , __VA_ARGS__)
+// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type) const".
+#define METALMOCK_NONVOID6_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
+        METALMOCK_NONVOID6_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type) const".
-#define METALMOCK_NONVOID7_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
-        METALMOCK_NONVOID7_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type,        , const, mutable,         , __VA_ARGS__)
+// Defines a MetalMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
+#define METALMOCK_NONVOID6_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
+   MetalMock::NonVoidSixArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type> StaticFunctionName##Mock##__VA_ARGS__ = \
+      MetalMock::NonVoidSixArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>( \
+         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type")"));
 
-// Defines a MetalMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
-#define METALMOCK_NONVOID7_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
-   MetalMock::NonVoidSevenArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type> StaticFunctionName##Mock##__VA_ARGS__ = \
-      MetalMock::NonVoidSevenArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>( \
-         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type")"));
+// Defines a MetalMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
+#define METALMOCK_NONVOID6_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
+   METALMOCK_NONVOID6_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, __VA_ARGS__)
 
-// Defines a MetalMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
-#define METALMOCK_NONVOID7_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
-   METALMOCK_NONVOID7_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, __VA_ARGS__)
+// Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
+#define METALMOCK_NONVOID6_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...) \
+   MetalMock::NonVoidSixArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
+      MetalMock::NonVoidSixArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>( \
+         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type")"));
 
-// Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
-#define METALMOCK_NONVOID7_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
-   MetalMock::NonVoidSevenArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
-      MetalMock::NonVoidSevenArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>( \
-         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type")"));
-
-#define METALMOCK_NONVOID7_DEFINED(ReturnType, FunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Virtualness, Constness, Mutableness, Finalness, ...) \
-struct MetalMock_##FunctionName##__VA_ARGS__ : public MetalMock::NonVoidSevenArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type> \
+#define METALMOCK_NONVOID6_DEFINED(ReturnType, FunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Virtualness, Constness, Mutableness, Finalness, ...) \
+struct MetalMock_##FunctionName##__VA_ARGS__ : public MetalMock::NonVoidSixArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type> \
 { \
    explicit MetalMock_##FunctionName##__VA_ARGS__(const std::string* metalMockedClassName) \
-      : MetalMock::NonVoidSevenArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>(MetalMock::FunctionSignature::Function( \
-         #Virtualness, #ReturnType, metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type")", #Constness)) {} \
+      : MetalMock::NonVoidSixArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>(MetalMock::FunctionSignature::Function( \
+         #Virtualness, #ReturnType, metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type")", #Constness)) {} \
 } Mutableness FunctionName##Mock##__VA_ARGS__ = MetalMock_##FunctionName##__VA_ARGS__(this->MetalMockedClassName()); \
-ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument, Arg7Type seventhArgument) Constness Finalness \
+ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument) Constness Finalness \
 { \
-   return FunctionName##Mock##__VA_ARGS__.MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument); \
+   return FunctionName##Mock##__VA_ARGS__.MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument); \
 }
 
+//
+// 7-Argument Function-Mocking Macros
+//
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "void VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
 #define METALMOCK_VOID7(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
@@ -754,51 +740,53 @@ void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thir
    FunctionName##Mock##__VA_ARGS__.MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument); \
 }
 
+// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
+#define METALMOCK_NONVOID7(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
+        METALMOCK_NONVOID7_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, virtual,      ,        , final, __VA_ARGS__)
 
-// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
-#define METALMOCK_NONVOID8(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
-        METALMOCK_NONVOID8_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, virtual,      ,        , final, __VA_ARGS__)
+// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type) const".
+#define METALMOCK_NONVOID7_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
+        METALMOCK_NONVOID7_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, virtual, const, mutable, final, __VA_ARGS__)
 
-// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type) const".
-#define METALMOCK_NONVOID8_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
-        METALMOCK_NONVOID8_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, virtual, const, mutable, final, __VA_ARGS__)
+// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
+#define METALMOCK_NONVOID7_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
+        METALMOCK_NONVOID7_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type,        ,      ,        ,         , __VA_ARGS__)
 
-// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
-#define METALMOCK_NONVOID8_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
-        METALMOCK_NONVOID8_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type,        ,      ,        ,         , __VA_ARGS__)
+// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type) const".
+#define METALMOCK_NONVOID7_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
+        METALMOCK_NONVOID7_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type,        , const, mutable,         , __VA_ARGS__)
 
-// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type) const".
-#define METALMOCK_NONVOID8_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
-        METALMOCK_NONVOID8_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type,        , const, mutable,         , __VA_ARGS__)
+// Defines a MetalMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
+#define METALMOCK_NONVOID7_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
+   MetalMock::NonVoidSevenArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type> StaticFunctionName##Mock##__VA_ARGS__ = \
+      MetalMock::NonVoidSevenArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>( \
+         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type")"));
 
-// Defines a MetalMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
-#define METALMOCK_NONVOID8_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
-   MetalMock::NonVoidEightArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type> StaticFunctionName##Mock##__VA_ARGS__ = \
-      MetalMock::NonVoidEightArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>( \
-         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type", "#Arg8Type")"));
+// Defines a MetalMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
+#define METALMOCK_NONVOID7_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
+   METALMOCK_NONVOID7_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, __VA_ARGS__)
 
-// Defines a MetalMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
-#define METALMOCK_NONVOID8_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
-   METALMOCK_NONVOID8_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, __VA_ARGS__)
+// Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
+#define METALMOCK_NONVOID7_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...) \
+   MetalMock::NonVoidSevenArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
+      MetalMock::NonVoidSevenArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>( \
+         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type")"));
 
-// Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
-#define METALMOCK_NONVOID8_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
-   MetalMock::NonVoidEightArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
-      MetalMock::NonVoidEightArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>( \
-         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type", "#Arg8Type")"));
-
-#define METALMOCK_NONVOID8_DEFINED(ReturnType, FunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Virtualness, Constness, Mutableness, Finalness, ...) \
-struct MetalMock_##FunctionName##__VA_ARGS__ : public MetalMock::NonVoidEightArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type> \
+#define METALMOCK_NONVOID7_DEFINED(ReturnType, FunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Virtualness, Constness, Mutableness, Finalness, ...) \
+struct MetalMock_##FunctionName##__VA_ARGS__ : public MetalMock::NonVoidSevenArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type> \
 { \
    explicit MetalMock_##FunctionName##__VA_ARGS__(const std::string* metalMockedClassName) \
-      : MetalMock::NonVoidEightArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>(MetalMock::FunctionSignature::Function( \
-         #Virtualness, #ReturnType, metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type", "#Arg8Type")", #Constness)) {} \
+      : MetalMock::NonVoidSevenArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>(MetalMock::FunctionSignature::Function( \
+         #Virtualness, #ReturnType, metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type")", #Constness)) {} \
 } Mutableness FunctionName##Mock##__VA_ARGS__ = MetalMock_##FunctionName##__VA_ARGS__(this->MetalMockedClassName()); \
-ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument, Arg7Type seventhArgument, Arg8Type eigthArgument) Constness Finalness \
+ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument, Arg7Type seventhArgument) Constness Finalness \
 { \
-   return FunctionName##Mock##__VA_ARGS__.MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument); \
+   return FunctionName##Mock##__VA_ARGS__.MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument); \
 }
 
+//
+// 8-Argument Function-Mocking Macros
+//
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "void VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
 #define METALMOCK_VOID8(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
@@ -844,6 +832,53 @@ void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thir
    FunctionName##Mock##__VA_ARGS__.MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument); \
 }
 
+// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
+#define METALMOCK_NONVOID8(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
+        METALMOCK_NONVOID8_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, virtual,      ,        , final, __VA_ARGS__)
+
+// Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type) const".
+#define METALMOCK_NONVOID8_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
+        METALMOCK_NONVOID8_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, virtual, const, mutable, final, __VA_ARGS__)
+
+// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
+#define METALMOCK_NONVOID8_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
+        METALMOCK_NONVOID8_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type,        ,      ,        ,         , __VA_ARGS__)
+
+// Defines a MetalMock object named <NonVirtualFunctionName>Mock for mocking a non-virtual base class function with signature "ReturnType NonVirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type) const".
+#define METALMOCK_NONVOID8_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
+        METALMOCK_NONVOID8_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type,        , const, mutable,         , __VA_ARGS__)
+
+// Defines a MetalMock object named <StaticFunctionName>Mock for mocking a static function with signature "ReturnType QualifiedClassName::StaticFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
+#define METALMOCK_NONVOID8_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
+   MetalMock::NonVoidEightArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type> StaticFunctionName##Mock##__VA_ARGS__ = \
+      MetalMock::NonVoidEightArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>( \
+         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type", "#Arg8Type")"));
+
+// Defines a MetalMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "ReturnType Namespace::NamespacedFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
+#define METALMOCK_NONVOID8_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
+   METALMOCK_NONVOID8_STATIC(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, __VA_ARGS__)
+
+// Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
+#define METALMOCK_NONVOID8_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...) \
+   MetalMock::NonVoidEightArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type> GlobalFreeFunctionName##Mock##__VA_ARGS__ = \
+      MetalMock::NonVoidEightArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>( \
+         MetalMock::FunctionSignature::FunctionPointer(#ReturnType, "::"#GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type", "#Arg8Type")"));
+
+#define METALMOCK_NONVOID8_DEFINED(ReturnType, FunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Virtualness, Constness, Mutableness, Finalness, ...) \
+struct MetalMock_##FunctionName##__VA_ARGS__ : public MetalMock::NonVoidEightArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type> \
+{ \
+   explicit MetalMock_##FunctionName##__VA_ARGS__(const std::string* metalMockedClassName) \
+      : MetalMock::NonVoidEightArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>(MetalMock::FunctionSignature::Function( \
+         #Virtualness, #ReturnType, metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type", "#Arg8Type")", #Constness)) {} \
+} Mutableness FunctionName##Mock##__VA_ARGS__ = MetalMock_##FunctionName##__VA_ARGS__(this->MetalMockedClassName()); \
+ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument, Arg7Type seventhArgument, Arg8Type eigthArgument) Constness Finalness \
+{ \
+   return FunctionName##Mock##__VA_ARGS__.MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument); \
+}
+
+//
+// 9-Argument Function-Mocking Macros
+//
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "void VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type)".
 #define METALMOCK_VOID9(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...) \
@@ -889,7 +924,6 @@ void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thir
    FunctionName##Mock##__VA_ARGS__.MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument); \
 }
 
-
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type)".
 #define METALMOCK_NONVOID9(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...) \
         METALMOCK_NONVOID9_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, virtual,      ,        , final, __VA_ARGS__)
@@ -934,6 +968,9 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Typ
    return FunctionName##Mock##__VA_ARGS__.MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument); \
 }
 
+//
+// 10-Argument Function-Mocking Macros
+//
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "void VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)".
 #define METALMOCK_VOID10(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...) \
@@ -979,7 +1016,6 @@ void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thir
    FunctionName##Mock##__VA_ARGS__.MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument, tenthArgument); \
 }
 
-
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)".
 #define METALMOCK_NONVOID10(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...) \
         METALMOCK_NONVOID10_DEFINED(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, virtual,      ,        , final, __VA_ARGS__)
@@ -1024,48 +1060,51 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Typ
    return FunctionName##Mock##__VA_ARGS__.MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument, tenthArgument); \
 }
 
+//
+// MetalMock Binding Macros For Static And Free MetalMock Objects
+//
 
-// std::binds a zero-argument MetalMock object for assignment to a std::function
+// std::binds a 0-argument MetalMock object in preparation for assignment to a std::function to be mocked out
 #define BIND_0ARG_METALMOCK_OBJECT(FunctionNameMock) \
    std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &(FunctionNameMock))
 
-// std::binds a one-argument MetalMock object for assignment to a std::function
+// std::binds a 1-argument MetalMock object in preparation for assignment to a std::function to be mocked out
 #define BIND_1ARG_METALMOCK_OBJECT(FunctionNameMock) \
    std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1)
 
-// std::binds a two-argument MetalMock object for assignment to a std::function
+// std::binds a 2-argument MetalMock object in preparation for assignment to a std::function to be mocked out
 #define BIND_2ARG_METALMOCK_OBJECT(FunctionNameMock) \
    std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2)
 
-// std::binds a three-argument MetalMock object for assignment to a std::function
+// std::binds a 3-argument MetalMock object in preparation for assignment to a std::function to be mocked out
 #define BIND_3ARG_METALMOCK_OBJECT(FunctionNameMock) \
    std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
 
-// std::binds a four-argument MetalMock object for assignment to a std::function
+// std::binds a 4-argument MetalMock object in preparation for assignment to a std::function to be mocked out
 #define BIND_4ARG_METALMOCK_OBJECT(FunctionNameMock) \
    std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)
 
-// std::binds a five-argument MetalMock object for assignment to a std::function
+// std::binds a 5-argument MetalMock object in preparation for assignment to a std::function to be mocked out
 #define BIND_5ARG_METALMOCK_OBJECT(FunctionNameMock) \
    std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5)
 
-// std::binds a six-argument MetalMock object for assignment to a std::function
+// std::binds a 6-argument MetalMock object in preparation for assignment to a std::function to be mocked out
 #define BIND_6ARG_METALMOCK_OBJECT(FunctionNameMock) \
    std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6)
 
-// std::binds a seven-argument MetalMock object for assignment to a std::function
+// std::binds a 7-argument MetalMock object in preparation for assignment to a std::function to be mocked out
 #define BIND_7ARG_METALMOCK_OBJECT(FunctionNameMock) \
    std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7)
 
-// std::binds a eight-argument MetalMock object for assignment to a std::function
+// std::binds a 8-argument MetalMock object in preparation for assignment to a std::function to be mocked out
 #define BIND_8ARG_METALMOCK_OBJECT(FunctionNameMock) \
    std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8)
 
-// std::binds a nine-argument MetalMock object for assignment to a std::function
+// std::binds a 9-argument MetalMock object in preparation for assignment to a std::function to be mocked out
 #define BIND_9ARG_METALMOCK_OBJECT(FunctionNameMock) \
    std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8, std::placeholders::_9)
 
-// std::binds a ten-argument MetalMock object for assignment to a std::function
+// std::binds a 10-argument MetalMock object in preparation for assignment to a std::function to be mocked out
 #define BIND_10ARG_METALMOCK_OBJECT(FunctionNameMock) \
    std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8, std::placeholders::_9, std::placeholders::_10)
 
