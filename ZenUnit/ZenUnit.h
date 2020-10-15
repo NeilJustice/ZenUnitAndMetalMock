@@ -1778,10 +1778,10 @@ namespace ZenUnit
          return testNameFilter;
       }
 
-      static void ThrowInvalidArgumentDueToInvalidTestNameFilterString(const std::string& invalidTestNameFilterString)
+      static void ThrowInvalidArgumentDueToInvalidTestNameFilterString(std::string_view invalidTestNameFilterString)
       {
-         const std::string exceptionMessage = "Invalid test name filter string: " + std::string(invalidTestNameFilterString) +
-            ". This is the test name filter string format: TestClassName[::TestName[/TestCaseNumber]]";
+         const std::string exceptionMessage = String::Concat("Invalid test name filter string: ", invalidTestNameFilterString,
+            ". This is the test name filter string format: TestClassName[::TestName[/TestCaseNumber]]");
          throw std::invalid_argument(exceptionMessage);
       }
    };
@@ -2909,7 +2909,7 @@ namespace ZenUnit
       const char* failedPrefixSpaces,
       const char* expectedMapText,
       const char* actualMapText,
-      const std::string& whyBody,
+      std::string_view whyBody,
       FileLine fileLine,
       const char* messagePrefixSpaces,
       const char* messagesText,
@@ -4596,9 +4596,9 @@ namespace ZenUnit
       }
 
       virtual void PrintConclusionLines(
-         const std::string& startDateTime,
+         std::string_view startDateTime,
          size_t totalNumberOfTestCases,
-         const std::string& testRunElapsedSeconds,
+         std::string_view testRunElapsedSeconds,
          const ZenUnitArgs& zenUnitArgs) const
       {
          assert_true(_numberOfFailedTestCases <= totalNumberOfTestCases);
