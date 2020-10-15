@@ -1933,8 +1933,10 @@ namespace ZenUnit
    {
       friend class ArgsParserTests;
    private:
+      // Function Callers
       std::function<int(std::string_view)> _call_String_ToInt;
       std::function<unsigned(std::string_view)> _call_String_ToUnsigned;
+      // Constant Components
       std::unique_ptr<const OneArgMemberFunctionCaller<void, ArgsParser, ZenUnitArgs&>> _caller_SetRandomSeedIfNotSetByUser;
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const TestNameFilterStringParser> _testNameFilterStringParser;
@@ -4330,7 +4332,7 @@ namespace ZenUnit
    {
       friend class TestClassRunnerRunnerTests;
    private:
-      std::unique_ptr<const Sorter<std::vector<std::unique_ptr<TestClassRunner>>>> _testClassRunnerSorter;
+      // Function Callers
       std::unique_ptr<const Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>> _transformer;
       using TwoArgMemberAnyerType = TwoArgMemberAnyer<
          std::vector<TestNameFilter>,
@@ -4344,15 +4346,17 @@ namespace ZenUnit
          void(TestClassRunnerRunner::*)(std::unique_ptr<TestClassRunner>&, const std::vector<TestNameFilter>&),
          const std::vector<TestNameFilter>&>;
       std::unique_ptr<const TwoArgMemberForEacherType> _twoArgMemberForEacher;
+      // Constant Components
+      std::unique_ptr<const Sorter<std::vector<std::unique_ptr<TestClassRunner>>>> _testClassRunnerSorter;
       std::unique_ptr<const Watch> _watch;
-
+      // Mutable Components
       std::vector<std::unique_ptr<TestClassRunner>> _testClassRunners;
    public:
       TestClassRunnerRunner() noexcept
-         : _testClassRunnerSorter(std::make_unique<Sorter<std::vector<std::unique_ptr<TestClassRunner>>>>())
-         , _transformer(std::make_unique<Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>>())
+         : _transformer(std::make_unique<Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>>())
          , _twoArgMemberAnyer(std::make_unique<TwoArgMemberAnyerType>())
          , _twoArgMemberForEacher(std::make_unique<TwoArgMemberForEacherType>())
+         , _testClassRunnerSorter(std::make_unique<Sorter<std::vector<std::unique_ptr<TestClassRunner>>>>())
          , _watch(std::make_unique<Watch>())
       {
       }
@@ -4536,17 +4540,19 @@ namespace ZenUnit
       using MemberForEacherSkippedTestsType = MemberForEacher<std::vector<std::string>,
          TestRunResult, void(TestRunResult::*)(const std::string&) const>;
    private:
+      // Constant Components
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const MemberForEacherSkippedTestsType> _memberForEacherSkippedTests;
       std::unique_ptr<const MemberForEacherTestClassResultsType> _memberForEacherTestClassResults;
       std::unique_ptr<const ThreeArgForEacherType> _threeArgForEacher;
       std::unique_ptr<const Watch> _watch;
-
+      // Mutable Components
+      std::unique_ptr<TestFailureNumberer> _testFailureNumberer;
+      // Mutable Fields
       size_t _numberOfFailedTestCases;
       std::vector<std::string> _skippedFullTestNamesAndSkipReasons;
       std::vector<std::string> _skippedTestClassNamesAndSkipReasons;
       std::vector<TestClassResult> _testClassResults;
-      std::unique_ptr<TestFailureNumberer> _testFailureNumberer;
    public:
       TestRunResult() noexcept
          : _console(std::make_unique<Console>())
@@ -4554,8 +4560,8 @@ namespace ZenUnit
          , _memberForEacherTestClassResults(std::make_unique<MemberForEacherTestClassResultsType>())
          , _threeArgForEacher(std::make_unique<ThreeArgForEacherType>())
          , _watch(std::make_unique<Watch>())
-         , _numberOfFailedTestCases(0)
          , _testFailureNumberer(std::make_unique<TestFailureNumberer>())
+         , _numberOfFailedTestCases(0)
       {
       }
 
@@ -4812,6 +4818,7 @@ namespace ZenUnit
       std::unique_ptr<Stopwatch> _testRunStopwatch;
       std::unique_ptr<TestClassRunnerRunner> _testClassRunnerRunner;
       std::unique_ptr<TestRunResult> _testRunResult;
+      // Mutable Fields
       ZenUnitArgs _zenUnitArgs;
       bool _havePaused;
    public:
@@ -4934,23 +4941,25 @@ namespace ZenUnit
    {
       friend class TestPhaseRunnerTests;
    private:
+      // Function Callers
+      std::function<const ZenUnitArgs& ()> _call_ZenUnitTestRunner_GetZenUnitArgs;
+      std::unique_ptr<const TwoArgMemberFunctionCaller<void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>> _voidTwoArgMemberFunctionCaller;
+      // Constant Components
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const TestPhaseTranslator> _testPhaseTranslator;
       std::unique_ptr<const Watch> _watch;
-      // Function Callers
-      std::unique_ptr<const TwoArgMemberFunctionCaller<void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>> _voidTwoArgMemberFunctionCaller;
-      std::function<const ZenUnitArgs&()> _call_ZenUnitTestRunner_GetZenUnitArgs;
-      // Mutables
+      // Mutable Components
       std::unique_ptr<Stopwatch> _testPhaseStopwatch;
    public:
       TestPhaseRunner() noexcept
-         : _console(std::make_unique<Console>())
-         , _testPhaseTranslator(std::make_unique<TestPhaseTranslator>())
-         , _watch(new Watch)
          // Function Callers
+         : _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnitTestRunner::GetZenUnitArgs)
          , _voidTwoArgMemberFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>>())
-         , _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnitTestRunner::GetZenUnitArgs)
-         // Mutables
+         // Constant Components
+         , _console(std::make_unique<Console>())
+         , _testPhaseTranslator(std::make_unique<TestPhaseTranslator>())
+         , _watch(std::make_unique<Watch>())
+         // Mutable Components
          , _testPhaseStopwatch(std::make_unique<Stopwatch>())
       {
       }
@@ -5258,15 +5267,19 @@ namespace ZenUnit
    {
       friend class NewableDeletableTestTests;
    private:
+      // Constant Components
       std::unique_ptr<const TestPhaseRunner> _testPhaseRunner;
       std::unique_ptr<const TestResultFactory> _testResultFactory;
+      // Mutable Components
       std::unique_ptr<Stopwatch> _testPhaseStopwatch;
       std::unique_ptr<TestClassType> _instanceOfTestClass;
    public:
       explicit NewableDeletableTest(const char* testClassName)
          : Test(testClassName, "TestClassIsNewableAndDeletable", 0)
+         // Constant Components
          , _testPhaseRunner(std::make_unique<TestPhaseRunner>())
          , _testResultFactory(std::make_unique<TestResultFactory>())
+         // Mutable Components
          , _testPhaseStopwatch(std::make_unique<Stopwatch>())
       {
       }
@@ -5312,6 +5325,7 @@ namespace ZenUnit
    {
       friend class SpecificTestClassRunnerTests;
    private:
+      // Function Callers
       using TwoArgMemberForEacherType = TwoArgMemberForEacher<
          std::unique_ptr<Test>,
          SpecificTestClassRunner,
@@ -5329,19 +5343,21 @@ namespace ZenUnit
          const TestNameFilter&), const TestNameFilter&>;
       std::unique_ptr<const TwoArgTestAnyerType> _twoArgTestAnyer;
       std::function<const ZenUnitArgs&()> _call_ZenUnitTestRunner_GetZenUnitArgs;
-
+      // Mutable Fields
       const char* _testClassName;
       NewableDeletableTest<TestClassType> _newableDeletableTest;
       std::vector<std::unique_ptr<Test>> _tests;
       TestClassResult _testClassResult;
    public:
       explicit SpecificTestClassRunner(const char* testClassName)
+         // Function Callers
          : _twoArgMemberForEacher(std::make_unique<TwoArgMemberForEacherType>())
          , _voidZeroArgMemberFunctionCaller(std::make_unique<ZeroArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>>>())
          , _nonVoidTwoArgFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>>())
          , _voidOneArgFunctionCaller(std::make_unique<OneArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>, const TestClassResult*>>())
          , _twoArgTestAnyer(std::make_unique<TwoArgTestAnyerType>())
          , _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnitTestRunner::GetZenUnitArgs)
+         // Mutable Fields
          , _testClassName(testClassName)
          , _newableDeletableTest(testClassName)
          , _tests(TestClassType::GetTests(testClassName))
@@ -5707,6 +5723,7 @@ namespace ZenUnit
    {
       friend class TestNXNTests;
    private:
+      // Constant Components
       std::unique_ptr<const Console> _console;
       using CallerOfTestNameFilterMatchesTestCaseType = ThreeArgAnyer<
          std::vector<TestNameFilter>, bool(*)(const TestNameFilter&, const FullTestName&, size_t), const FullTestName&, size_t>;
@@ -5715,6 +5732,7 @@ namespace ZenUnit
       std::function<std::vector<std::string>(const char*)> _call_String_SplitOnNonQuotedCommas;
       std::function<void(int)> _call_exit;
       std::function<std::shared_ptr<ITestCaseNumberGenerator>(bool)> _call_ITestCaseNumberGeneratorFactoryNew;
+      // Mutable Fields
       const char* const _testCaseArgsText;
       std::unique_ptr<TestClassType> _testClass;
       size_t _currentTestCaseNumber;
@@ -5724,12 +5742,14 @@ namespace ZenUnit
    public:
       TestNXN(const char* testClassName, const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
          : Test(testClassName, testName, N)
+         // Constant Components
          , _console(std::make_unique<Console>())
          , _callerOfTestNameFilterMatchesTestCase(std::make_unique<CallerOfTestNameFilterMatchesTestCaseType>())
          , _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnitTestRunner::GetZenUnitArgs)
          , _call_String_SplitOnNonQuotedCommas(String::SplitOnNonQuotedCommas)
          , _call_exit(::exit)
          , _call_ITestCaseNumberGeneratorFactoryNew(ITestCaseNumberGenerator::FactoryNew)
+         // Mutable Fields
          , _testCaseArgsText(testCaseArgsText)
          , _currentTestCaseNumber(1)
          , _protected_testCaseArgs(std::forward<TestCaseArgTypes>(testCaseArgs)...)
