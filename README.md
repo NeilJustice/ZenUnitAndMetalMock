@@ -1,21 +1,21 @@
-# 🧪 ZenUnit &  MetalMock ⚗️</h1>
+# 🧪 ZenUnit &  MetalMock ⚗️
 
 [![Standard](https://img.shields.io/badge/c%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B17) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-ZenUnit is a C++ single-header unit testing framework designed for assertion exactness, long-term test code reviewability, robustness to a variety of mutation testing operators, and features an intuitive syntax for writing value-parameterized and type-parameterized unit tests.
+ZenUnit is a C++ single-header unit testing framework designed for long-term test code readability and assertion non-ambiguity while unit testing safety-critical software, and features a convenient syntax for writing value-parameterized and type-parameterized unit tests.
 
-MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions and features an intuitive arrange-act-assert syntax for specifying function return values and expected function call arguments from and to virtual functions, non-virtual/template functions, static functions, and free functions.
+MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions and features a convenient arrange-act-assert syntax for specifying function return values and expected function call arguments from and to virtual functions, non-virtual/template functions, static functions, and global/free functions.
 
 |Build|Build Status|
 |----------|------------|
 |Travis CI Linux Clang 7.0.0 and GCC 7.4.0 Debug and Release|<a href="https://travis-ci.org/NeilJustice/ZenUnitAndMetalMock"><img src="https://travis-ci.org/NeilJustice/ZenUnitAndMetalMock.svg?branch=master"/></a>|
 |AppVeyor Windows Visual Studio 2019 x64 and Win32 Debug and Release|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndMetalMock"><img src="https://ci.appveyor.com/api/projects/status/9m1224h38bk4lxn7?svg=true"/></a>|
-|Code Coverage Of The Travis CI GCC 7.4.0 Release Build|[![codecov](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock/branch/master/graph/badge.svg)](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock)|
+|Code Coverage For The Travis CI GCC 7.4.0 Release Build|[![codecov](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock/branch/master/graph/badge.svg)](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock)|
 
 ##### ZenUnit.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/master/ZenUnit/ZenUnit.h)
 ##### MetalMock.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/master/MetalMock/MetalMock.h)
 
-   * [Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Feature](#unit-testing-fizzbuzz-with-zenunits-value-parameterized-test-feature)
+   * [Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Syntax](#unit-testing-fizzbuzz-with-zenunits-value-parameterized-test-syntax)
    * [ZenUnit Console Output](#zenunit-console-output)
    * [ZenUnit Command Line Usage](#zenunit-command-line-usage)
    * [ZenUnit Assertions](#zenunit-assertions)
@@ -27,25 +27,25 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
       * [Function Assertions](#function-assertions)
       * [Memory Allocation Assertions](#memory-allocation-assertions)
       * [The FAIL_TEST Assertion](#the-fail_test-assertion)
-   * [ZenUnit Test Class And Test Defining Macros](#zenunit-test-class-and-test-defining-macros)
-   * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
+   * [ZenUnit Test-Defining Macros](#zenunit-test-defining-macros)
    * [MetalMock Function-Mocking Macros](#metalmock-function-mocking-macros)
       * [Void Virtual Functions](#void-virtual-functions)
-      * [Void Non-Virtual Functions](#void-non-virtual-functions)
-      * [Void Static Functions](#void-static-functions)
-      * [Void Global Free Functions](#void-global-free-functions)
-      * [Void Namespaced Free Functions](#void-namespaced-free-functions)
       * [Non-Void Virtual Functions](#non-void-virtual-functions)
+      * [Void Non-Virtual Functions](#void-non-virtual-functions)
       * [Non-Void Non-Virtual Functions](#non-void-non-virtual-functions)
+      * [Void Static Functions](#void-static-functions)
       * [Non-Void Static Functions](#non-void-static-functions)
-      * [Non-Void Global Free Functions](#non-void-free-functions)
+      * [Void Global Free Functions](#void-global-free-functions)
+      * [Non-Void Global Free Functions](#non-void-global-free-functions)
+      * [Void Namespaced Free Functions](#void-namespaced-free-functions)
       * [Non-Void Namespaced Free Functions](#non-void-namespaced-free-functions)
-   * [Linux Jenkins Jobs That Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And MetalMock](#linux-jenkins-jobs-that-build-unit-test-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-metalmock)
-   * [Windows Jenkins Jobs That Build And Unit Test ZenUnit And MetalMock](#windows-jenkins-jobs-that-build-and-unit-test-zenunit-and-metalmock)
-   * [How To Build, Unit Test, And Install ZenUnit.h And MetalMock.h On Linux](#how-to-build-unit-test-and-install-zenunith-and-metalmockh-on-linux)
-   * [How To Build, Unit Test, And Install ZenUnit.h And MetalMock.h On Windows](#how-to-build-unit-test-and-install-zenunith-and-metalmockh-on-windows)
+   * [Linux Jenkins Jobs Which Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And MetalMock](#linux-jenkins-jobs-which-build-unit-test-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-metalmock)
+   * [Windows Jenkins Jobs Which Build And Unit Test ZenUnit And MetalMock](#windows-jenkins-jobs-which-build-and-unit-test-zenunit-and-metalmock)
+   * [6 Linux Commands To Build And Run ZenUnit And MetalMock's Unit Tests Then Install ZenUnit.h And MetalMock.h](#6-linux-commands-to-build-and-run-zenUnit-and-metalmocks-unit-tests-then-install-zenunith-and-metalmockh)
+   * [4 Windows Commands To Build And Run ZenUnit And MetalMock's Unit Tests Then Install ZenUnit.h And MetalMock.h](#4-windows-commands-to-build-and-run-zenunit-and-metalmocks-unit-tests-then-install-zenunith-and-metalmockh)
+   * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
 
-### Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Feature
+### Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Syntax
 
 ```cpp
 #include "ZenUnit.h"
@@ -65,13 +65,13 @@ EVIDENCE
 // In ZenUnit test names are duplicated between the FACTS section and the EVIDENCE section
 // by way of a carefully-considered design decision to maximize long-term readability
 // of safety-critical unit test code.
-// This design of test names always up top instead of scattered throughout test files
+// This design of test names always up top instead of scattered throughout large test files
 // makes it easy to quickly confirm that a test class tests
 // a cohesive set of functionality using a consistent test naming convention
-// by simply reading the top of a ZenUnit tests file.
+// by simply reading the top of a ZenUnit test class .cpp file.
 
 // TEST1X1 defines a 1-by-1 value-parameterized test
-// that processes its typesafe variadic arguments list 1-by-1.
+// which processes its typesafe variadic arguments list 1-by-1.
 // This TEST1X1 defines 4 independent unit tests for FizzBuzz(),
 // each of which will run sequentially within separate instances of test class FizzBuzzTests.
 TEST1X1(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgument,
@@ -83,11 +83,11 @@ TEST1X1(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgument,
 {
    // The ZenUnit THROWS_EXCEPTION assertion asserts that an expression throws
    // *exactly* (not a derived class of) an expected exception type with
-   // *exactly* expected exception what() text.
+   // *exactly* an expected exception what() text.
 
-   // This double-exactness design of THROWS_EXCEPTION maximizes mutation coverage,
+   // This double-exactness design of THROWS_EXCEPTION serves to maximizes mutation coverage,
    // the next frontier in software quality metrics beyond code coverage,
-   // by rendering the THROWS_EXCEPTION assertion immune to these two easy-to-induce code mutations:
+   // by rendering the THROWS_EXCEPTION assertion immune to these two mutation testing operators:
    // mutate-exception-type and mutate-exception-message.
 
    THROWS_EXCEPTION(FizzBuzz(invalidFizzBuzzEndNumber), std::invalid_argument,
@@ -96,7 +96,7 @@ TEST1X1(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgument,
 }
 
 // TEST2X2 defines a 2-by-2 value-parameterized test
-// that processes its typesafe variadic arguments list 2-by-2.
+// which processes its typesafe variadic arguments list 2-by-2.
 // This TEST2X2 defines 16 independent unit tests for FizzBuzz(),
 // each of which will run sequentially within separate instances of test class FizzBuzzTests.
 TEST2X2(FizzBuzz_EndNumberIsGreaterThan0_ReturnsFizzBuzzSequence,
@@ -119,8 +119,8 @@ TEST2X2(FizzBuzz_EndNumberIsGreaterThan0_ReturnsFizzBuzzSequence,
    16, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz 16")
 {
    const std::string fizzBuzzSequence = FizzBuzz(endNumber);
-   // ZenUnit assertion names are declarative in language style (ARE_EQUAL, THROWS_EXCEPTION)
-   // instead of procedural in language style (ASSERT_EQUAL, ASSERT_THROWS)
+   // ZenUnit assertion names are declarative in language style (ARE_EQUAL, THROWS_EXCEPTION, et al)
+   // instead of procedural in language style (ASSERT_EQUAL, ASSERT_THROWS, et al)
    // to give ZenUnit a test reading experience akin to reading an executable specification document.
    ARE_EQUAL(expectedFizzBuzzSequence, fizzBuzzSequence);
 }
@@ -180,35 +180,7 @@ int main(int argc, char* argv[])
 C++ Unit Testing Framework ZenUnit v0.6.0
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
-Testing Utility Options:
-
---pause-before
-   Wait for any key before running tests to allow for attaching a debugger or profiler.
---pause-after
-   Wait for any key after running tests.
---always-exit-0
-   Always exit with code 0.
---help
-   Print this usage message.
---version
-   Print the ZenUnit version number.
-
-Testing Filtration Options:
-
---run=<TestClassName>[::TestName][/TestCaseNumber][,...]
-   Run only specified case-insensitive test classes, tests, and/or test case numbers.
-   Add a '*' character to the end of a test class name or test name to indicate name-starts-with.
- Example 1: --run=APITests
-   Run only test class APITests.
- Example 2: --run=APITests::FunctionUnderTest*
-   Run only tests in APITests that start with "FunctionUnderTest".
- Example 3: --run=APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue/3
-   Run only the third test case of the value-parameterized test named
-   APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue
---fail-fast
-   Call exit(1) if a test fails.
-
-Testing Rigorousness Options:
+Testing Rigorousness:
 
 --test-runs=<N>
    Repeat N times the running of all tests.
@@ -223,10 +195,38 @@ Testing Rigorousness Options:
 --exit-1-if-tests-skipped
    After having run all tests, exit with code 1 if any tests were skipped.
 
+Testing Filtration:
+
+--run=<TestClassName>[::TestName][/TestCaseNumber][,...]
+   Run only specified case-insensitive test classes, tests, and/or test case numbers.
+   Add a '*' character to the end of a test class name or test name to indicate name-starts-with.
+ Example 1: --run=APITests
+   Run only test class APITests.
+ Example 2: --run=APITests::FunctionUnderTest*
+   Run only tests in APITests that start with "FunctionUnderTest".
+ Example 3: --run=APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue/3
+   Run only the third test case of the value-parameterized test named
+   APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue
+--fail-fast
+   Call exit(1) if a test fails.
+
+Testing Utility:
+
+--pause-before
+   Wait for any key before running tests to allow for attaching a debugger or performance profiler.
+--pause-after
+   Wait for any key after running tests.
+--always-exit-0
+   Always exit with code 0.
+--help
+   Print this usage message.
+--version
+   Print the ZenUnit version number.
+
 Example ZenUnit Command Line Arguments:
 
 ./SafetyCriticalUnitTests --test-runs=5 --random-test-ordering --exit-1-if-tests-skipped
-./SafetyCriticalUnitTests --random-test-ordering --random-seed=1122334455 --pause-before
+./SafetyCriticalUnitTests --pause-before --random-test-ordering --random-seed=12345
 ```
 
 ## ZenUnit Assertions
@@ -256,7 +256,7 @@ Example ZenUnit Command Line Arguments:
 #### Data Structure Assertions
 |Assertion|Behavior|
 |---------|--------|
-|`VECTORS_ARE_EQUAL(expectedVector, actualVector, messages...)`|Calls `ELEMENTS_ARE_EQUAL(expectedVector, actualVector, messages...)`|
+|`VECTORS_ARE_EQUAL(expectedVector, actualVector, messages...)`|Calls `INDEXABLES_ARE_EQUAL(expectedVector, actualVector, messages...)`|
 |`INDEXABLES_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure, messages...)`|Asserts that `expectedIndexableDataStructure.size() == actualIndexableDataStructure.size()` then calls `ARE_EQUAL(ithExpectedElement, ithActualElement)` on each pair of expected and actual elements.|
 |`SETS_EQUAL(expectedSet, actualSet, messages...)`|Asserts that `expectedSet.size() == actualSet.size()` then calls `ARE_EQUAL(expectedElement, actualElement)` on each pair of expected and actual elements.|
 |`MAPS_EQUAL(expectedMap, actualMap, messages...)`|Asserts that `expectedMap.size() == actualMap.size()` then calls `ARE_EQUAL(expectedKeyValuePair, actualKeyValuePair)` on each pair of expected and actual key-value pairs.
@@ -287,15 +287,15 @@ Example ZenUnit Command Line Arguments:
 ### Memory Allocation Assertions
 |Assertion|Behavior|
 |---------|--------|
-|`DELETE_TO_ASSERT_NEWED(smartOrRawPointer, messages...)`|Asserts `smartOrRawPointer != nullptr` then calls `reset()` or `operator delete` on `smartOrRawPointer` to confirm the pointer was allocated using `make_unique`, `make_shared`, or `operator new`. This is a key assertion for robustness against the swap-new-with-null code mutation.|
-|`DELETE_TO_ASSERT_ARRAY_NEWED(smartOrRawArrayPointer, messages...)`|Asserts `smartOrRawArrayPointer != nullptr` then calls `reset()` or `operator delete[]` to confirm the pointer was allocated using `make_unique` or `operator new[]`. This is a key assertion for robustness against the swap-new-with-null code mutation.|
+|`DELETE_TO_ASSERT_NEWED(smartOrRawPointer, messages...)`|Asserts `smartOrRawPointer != nullptr` then calls `reset()` or `operator delete` on `smartOrRawPointer` to confirm the pointer was allocated using `make_unique`, `make_shared`, or `operator new`. This is a key assertion for robustness against the `swap-new-with-nullptr` mutation testing operator.|
+|`DELETE_TO_ASSERT_ARRAY_NEWED(smartOrRawArrayPointer, messages...)`|Asserts `smartOrRawArrayPointer != nullptr` then calls `reset()` or `operator delete[]` to confirm the pointer was allocated using `make_unique` or `operator new[]`. This is a key assertion for robustness against the `swap-new-with-nullptr` mutation testing operator.|
 
 #### The FAIL_TEST Assertion
 |Assertion|Behavior|
 |---------|--------|
 |`FAIL_TEST(testFailureReason, messages...)`|Throws a `ZenUnit::Anomaly` which is caught by ZenUnit to end the current test and begin the next test.|
 
-### ZenUnit Test Class And Test Defining Macros
+### ZenUnit Test-Defining Macros
 
 |Test Classes|Behavior|
 |------------|--------|
@@ -326,25 +326,6 @@ Example ZenUnit Command Line Arguments:
 |`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Prevents a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called.|
 |`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Prevents a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called. For use after `SKIP_TEMPLATE_TESTS`.|
 
-### Maximize Mutation Coverage By Testing With Random Values
-
-ZenUnit provides the following random-value-generating functions for maximizing [mutation coverage](https://en.wikipedia.org/wiki/Mutation_testing), the next frontier in software quality metrics beyond code coverage. Testing using random values instead of constant values renders test code immune to the `swap-variable-with-constant` code mutation, which is a straightforward code mutation to induce manually today during code review time or automatically in the 2020s during CI/CD time by running an LLVM-powered mutation testing framework such as [Mull](https://github.com/mull-project/mull).
-
-|Random Value Generating Function|Behavior|
-|--------------------------------|--------|
-|`ZenUnit::Random<T>()`|By default returns a random integer of type T between `std::numeric_limits<T>::min()` and `std::numeric_limits<T>::max()` selected from a uniform distribution. If `UserType ZenUnit::Random<UserType>()` is defined, returns the result from calling that function.|
-|`ZenUnit::RandomNon0<T>()`|Returns a random non-0 integer of type T between `std::numeric_limits<T>::min()` and `std::numeric_limits<T>::max()` selected from a uniform distribution.|
-|`ZenUnit::RandomBetween<T>(long long inclusiveMinValue, unsigned long long inclusiveMaxValue)`|Returns a random integer of type T between inclusiveMinValue and inclusiveMaxValue selected from a uniform distribution.|
-|`ZenUnit::RandomEnum<EnumType>()`|Returns a random EnumType value between 0 and EnumType::MaxValue - 1, selected from a uniform distribution.|
-|`ZenUnit::Random<float>()`|Returns a random float between `std::numeric_limits<float>::min()` and `std::numeric_limits<float>::max()` selected from a `std::uniform_real_distribution<float>`.|
-|`ZenUnit::Random<double>()`|Returns a random double between `std::numeric_limits<double>::min()` and `std::numeric_limits<double>::max()` from a `std::uniform_real_distribution<double>`.|
-|`ZenUnit::Random<std::string>()`|Returns `"RS" + std::to_string(ZenUnit::RandomBetween<int>(0, 100000))`.|
-|`ZenUnit::RandomVector<T>()`|Returns a `std::vector<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
-|`ZenUnit::RandomMap<KeyType, ValueType>()`|Returns a `std::map<KeyType, ValueType>` with size between 0 and 3 with each key a `ZenUnit::Random<KeyType>()` value and each value a `ZenUnit::Random<ValueType>()` value.|
-|`ZenUnit::RandomUnorderedMap<T>()`|Returns a `std::unordered_map<KeyType, ValueType>` with size between 0 and 3 with each key a `ZenUnit::Random<KeyType>()` value and each value a `ZenUnit::Random<ValueType>()` value.|
-|`ZenUnit::RandomSet<T>()`|Returns a `std::set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
-|`ZenUnit::RandomUnorderedSet<T>()`|Returns a `std::unordered_set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
-
 ### MetalMock Function-Mocking Macros
 
 #### Void Virtual Functions
@@ -352,54 +333,108 @@ ZenUnit provides the following random-value-generating functions for maximizing 
 |MetalMock Macro|
 |---------------|
 |`METALMOCK_VOID0(VirtualFunctionName)`|
-|`METALMOCK_VOID1(VirtualFunctionName, Arg1Type, ...)`|
-|`METALMOCK_VOID2(VirtualFunctionName, Arg1Type, Arg2Type, ...)`|
-|`METALMOCK_VOID3(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
-|`METALMOCK_VOID4(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
-|`METALMOCK_VOID5(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
-|`METALMOCK_VOID6(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
-|`METALMOCK_VOID7(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
-|`METALMOCK_VOID8(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...)`|
-|`METALMOCK_VOID9(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
-|`METALMOCK_VOID10(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
 |`METALMOCK_VOID0_CONST(VirtualFunctionName)`|
+|`METALMOCK_VOID1(VirtualFunctionName, Arg1Type, ...)`|
 |`METALMOCK_VOID1_CONST(VirtualFunctionName, Arg1Type, ...)`|
+|`METALMOCK_VOID2(VirtualFunctionName, Arg1Type, Arg2Type, ...)`|
 |`METALMOCK_VOID2_CONST(VirtualFunctionName, Arg1Type, Arg2Type, ...)`|
+|`METALMOCK_VOID3(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
 |`METALMOCK_VOID3_CONST(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
+|`METALMOCK_VOID4(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
 |`METALMOCK_VOID4_CONST(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
+|`METALMOCK_VOID5(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
 |`METALMOCK_VOID5_CONST(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
+|`METALMOCK_VOID6(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
 |`METALMOCK_VOID6_CONST(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
+|`METALMOCK_VOID7(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
 |`METALMOCK_VOID7_CONST(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+|`METALMOCK_VOID8(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...)`|
 |`METALMOCK_VOID8_CONST(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...)`|
+|`METALMOCK_VOID9(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
 |`METALMOCK_VOID9_CONST(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
+|`METALMOCK_VOID10(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
 |`METALMOCK_VOID10_CONST(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
+
+#### Non-Void Virtual Functions
+
+|MetalMock Macro|
+|---------------|
+|`METALMOCK_NONVOID0(ReturnType, VirtualFunctionName)`|
+|`METALMOCK_NONVOID0_CONST(ReturnType, VirtualFunctionName)`|
+|`METALMOCK_NONVOID1(ReturnType, VirtualFunctionName, Arg1Type, ...)`|
+|`METALMOCK_NONVOID1_CONST(ReturnType, FunctionName, Arg1Type, ...)`|
+|`METALMOCK_NONVOID2(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, ...)`|
+|`METALMOCK_NONVOID2_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, ...)`|
+|`METALMOCK_NONVOID3(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
+|`METALMOCK_NONVOID3_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
+|`METALMOCK_NONVOID4(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
+|`METALMOCK_NONVOID4_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
+|`METALMOCK_NONVOID5(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
+|`METALMOCK_NONVOID5_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
+|`METALMOCK_NONVOID6(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
+|`METALMOCK_NONVOID6_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
+|`METALMOCK_NONVOID7(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+|`METALMOCK_NONVOID7_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+|`METALMOCK_NONVOID8(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...)`|
+|`METALMOCK_NONVOID8_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...)`|
+|`METALMOCK_NONVOID9(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
+|`METALMOCK_NONVOID9_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
+|`METALMOCK_NONVOID10(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
+|`METALMOCK_NONVOID10_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
 
 #### Void Non-Virtual Functions
 
 |MetalMock Macro|
 |---------------|
 |`METALMOCK_VOID0_NONVIRTUAL(NonVirtualFunctionName)`|
-|`METALMOCK_VOID1_NONVIRTUAL(FunctionName, Arg1Type, ...)`|
-|`METALMOCK_VOID2_NONVIRTUAL(VirtualFunctionName, Arg1Type, Arg2Type, ...)`|
-|`METALMOCK_VOID3_NONVIRTUAL(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
-|`METALMOCK_VOID4_NONVIRTUAL(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
-|`METALMOCK_VOID5_NONVIRTUAL(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
-|`METALMOCK_VOID6_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
-|`METALMOCK_VOID7_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
-|`METALMOCK_VOID8_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...)`|
-|`METALMOCK_VOID9_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
-|`METALMOCK_VOID10_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
 |`METALMOCK_VOID0_NONVIRTUAL_CONST(NonVirtualFunctionName)`|
+|`METALMOCK_VOID1_NONVIRTUAL(FunctionName, Arg1Type, ...)`|
 |`METALMOCK_VOID1_NONVIRTUAL_CONST(FunctionName, Arg1Type, ...)`|
+|`METALMOCK_VOID2_NONVIRTUAL(VirtualFunctionName, Arg1Type, Arg2Type, ...)`|
 |`METALMOCK_VOID2_NONVIRTUAL_CONST(VirtualFunctionName, Arg1Type, Arg2Type, ...)`|
+|`METALMOCK_VOID3_NONVIRTUAL(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
 |`METALMOCK_VOID3_NONVIRTUAL_CONST(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
+|`METALMOCK_VOID4_NONVIRTUAL(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
 |`METALMOCK_VOID4_NONVIRTUAL_CONST(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
+|`METALMOCK_VOID5_NONVIRTUAL(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
 |`METALMOCK_VOID5_NONVIRTUAL_CONST(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
+|`METALMOCK_VOID6_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
 |`METALMOCK_VOID6_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
+|`METALMOCK_VOID7_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
 |`METALMOCK_VOID7_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+|`METALMOCK_VOID8_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...)`|
 |`METALMOCK_VOID8_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...)`|
+|`METALMOCK_VOID9_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
 |`METALMOCK_VOID9_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
+|`METALMOCK_VOID10_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
 |`METALMOCK_VOID10_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
+
+#### Non-Void Non-Virtual Functions
+
+|MetalMock Macro|
+|---------------|
+|`METALMOCK_NONVOID0_NONVIRTUAL(ReturnType, VirtualFunctionName)`|
+|`METALMOCK_NONVOID0_NONVIRTUAL_CONST(ReturnType, VirtualFunctionName)`|
+|`METALMOCK_NONVOID1_NONVIRTUAL(ReturnType, FunctionName, Arg1Type, ...)`|
+|`METALMOCK_NONVOID1_NONVIRTUAL_CONST(ReturnType, FunctionName, Arg1Type, ...)`|
+|`METALMOCK_NONVOID2_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, ...)`|
+|`METALMOCK_NONVOID2_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, ...)`|
+|`METALMOCK_NONVOID3_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
+|`METALMOCK_NONVOID3_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
+|`METALMOCK_NONVOID4_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
+|`METALMOCK_NONVOID4_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
+|`METALMOCK_NONVOID5_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
+|`METALMOCK_NONVOID5_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
+|`METALMOCK_NONVOID6_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
+|`METALMOCK_NONVOID6_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
+|`METALMOCK_NONVOID7_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+|`METALMOCK_NONVOID7_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+|`METALMOCK_NONVOID8_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...)`|
+|`METALMOCK_NONVOID8_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...)`|
+|`METALMOCK_NONVOID9_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
+|`METALMOCK_NONVOID9_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
+|`METALMOCK_NONVOID10_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
+|`METALMOCK_NONVOID10_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
 
 #### Void Static Functions
 
@@ -417,92 +452,6 @@ ZenUnit provides the following random-value-generating functions for maximizing 
 |`METALMOCK_VOID9_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
 |`METALMOCK_VOID10_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
 
-#### Void Global Free Functions
-
-|MetalMock Macro|
-|---------------|
-|`METALMOCK_VOID0_FREE(GlobalFreeFunctionName)`|
-|`METALMOCK_VOID1_FREE(GlobalFreeFunctionName, Arg1Type, ...)`|
-|`METALMOCK_VOID2_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, ...)`|
-|`METALMOCK_VOID3_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
-|`METALMOCK_VOID4_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
-|`METALMOCK_VOID5_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
-|`METALMOCK_VOID6_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
-|`METALMOCK_VOID7_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
-|`METALMOCK_VOID8_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...)`|
-|`METALMOCK_VOID9_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
-|`METALMOCK_VOID10_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
-
-#### Void Namespaced Free Functions
-
-|MetalMock Macro|
-|---------------|
-|`METALMOCK_VOID0_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, ...)`|
-|`METALMOCK_VOID1_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, ...)`|
-|`METALMOCK_VOID2_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, ...)`|
-|`METALMOCK_VOID3_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
-|`METALMOCK_VOID4_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
-|`METALMOCK_VOID5_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
-|`METALMOCK_VOID6_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
-|`METALMOCK_VOID7_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
-|`METALMOCK_VOID8_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...)`|
-|`METALMOCK_VOID9_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
-|`METALMOCK_VOID10_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
-
-#### Non-Void Virtual Functions
-
-|MetalMock Macro|
-|---------------|
-|`METALMOCK_NONVOID0(ReturnType, VirtualFunctionName)`|
-|`METALMOCK_NONVOID1(ReturnType, VirtualFunctionNameFunctionName, Arg1Type, ...)`|
-|`METALMOCK_NONVOID2(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, ...)`|
-|`METALMOCK_NONVOID3(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
-|`METALMOCK_NONVOID4(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
-|`METALMOCK_NONVOID5(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
-|`METALMOCK_NONVOID6(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
-|`METALMOCK_NONVOID7(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
-|`METALMOCK_NONVOID8(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...)`|
-|`METALMOCK_NONVOID9(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
-|`METALMOCK_NONVOID10(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
-|`METALMOCK_NONVOID0_CONST(ReturnType, VirtualFunctionName)`|
-|`METALMOCK_NONVOID1_CONST(ReturnType, FunctionName, Arg1Type, ...)`|
-|`METALMOCK_NONVOID2_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, ...)`|
-|`METALMOCK_NONVOID3_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
-|`METALMOCK_NONVOID4_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
-|`METALMOCK_NONVOID5_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
-|`METALMOCK_NONVOID6_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
-|`METALMOCK_NONVOID7_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
-|`METALMOCK_NONVOID8_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...)`|
-|`METALMOCK_NONVOID9_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
-|`METALMOCK_NONVOID10_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
-
-#### Non-Void Non-Virtual Functions
-
-|MetalMock Macro|
-|---------------|
-|`METALMOCK_NONVOID0_NONVIRTUAL(ReturnType, VirtualFunctionName)`|
-|`METALMOCK_NONVOID1_NONVIRTUAL(ReturnType, FunctionName, Arg1Type, ...)`|
-|`METALMOCK_NONVOID2_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, ...)`|
-|`METALMOCK_NONVOID3_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
-|`METALMOCK_NONVOID4_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
-|`METALMOCK_NONVOID5_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
-|`METALMOCK_NONVOID6_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
-|`METALMOCK_NONVOID7_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
-|`METALMOCK_NONVOID8_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...)`|
-|`METALMOCK_NONVOID9_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
-|`METALMOCK_NONVOID10_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
-|`METALMOCK_NONVOID0_NONVIRTUAL_CONST(ReturnType, VirtualFunctionName)`|
-|`METALMOCK_NONVOID1_NONVIRTUAL_CONST(ReturnType, FunctionName, Arg1Type, ...)`|
-|`METALMOCK_NONVOID2_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, ...)`|
-|`METALMOCK_NONVOID3_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
-|`METALMOCK_NONVOID4_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
-|`METALMOCK_NONVOID5_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
-|`METALMOCK_NONVOID6_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
-|`METALMOCK_NONVOID7_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
-|`METALMOCK_NONVOID8_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...)`|
-|`METALMOCK_NONVOID9_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
-|`METALMOCK_NONVOID10_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
-
 #### Non-Void Static Functions
 
 |MetalMock Macro|
@@ -518,6 +467,22 @@ ZenUnit provides the following random-value-generating functions for maximizing 
 |`METALMOCK_NONVOID8_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...)`|
 |`METALMOCK_NONVOID9_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
 |`METALMOCK_NONVOID10_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
+
+#### Void Global Free Functions
+
+|MetalMock Macro|
+|---------------|
+|`METALMOCK_VOID0_FREE(GlobalFreeFunctionName)`|
+|`METALMOCK_VOID1_FREE(GlobalFreeFunctionName, Arg1Type, ...)`|
+|`METALMOCK_VOID2_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, ...)`|
+|`METALMOCK_VOID3_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
+|`METALMOCK_VOID4_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
+|`METALMOCK_VOID5_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
+|`METALMOCK_VOID6_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
+|`METALMOCK_VOID7_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+|`METALMOCK_VOID8_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...)`|
+|`METALMOCK_VOID9_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
+|`METALMOCK_VOID10_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
 
 #### Non-Void Global Free Functions
 
@@ -535,6 +500,22 @@ ZenUnit provides the following random-value-generating functions for maximizing 
 |`METALMOCK_NONVOID9_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
 |`METALMOCK_NONVOID10_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
 
+#### Void Namespaced Free Functions
+
+|MetalMock Macro|
+|---------------|
+|`METALMOCK_VOID0_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, ...)`|
+|`METALMOCK_VOID1_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, ...)`|
+|`METALMOCK_VOID2_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, ...)`|
+|`METALMOCK_VOID3_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
+|`METALMOCK_VOID4_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
+|`METALMOCK_VOID5_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
+|`METALMOCK_VOID6_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
+|`METALMOCK_VOID7_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+|`METALMOCK_VOID8_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...)`|
+|`METALMOCK_VOID9_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
+|`METALMOCK_VOID10_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
+
 #### Non-Void Namespaced Free Functions
 
 |MetalMock Macro|
@@ -551,25 +532,22 @@ ZenUnit provides the following random-value-generating functions for maximizing 
 |`METALMOCK_NONVOID9_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
 |`METALMOCK_NONVOID10_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
 
-### Linux Jenkins Jobs That Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And MetalMock
+### Linux Jenkins Jobs Which Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And MetalMock
 
-![Linux Jenkins Jobs That Compile, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, and ThreadSanitize ZenUnit And MetalMock](Screenshots/LinuxJenkinsJobsForZenUnitAndMetalMock.png)
+![Linux Jenkins Jobs](Screenshots/LinuxJenkinsJobsForZenUnitAndMetalMock.png)
 
-### Windows Jenkins Jobs That Build And Unit Test ZenUnit And MetalMock
+### Windows Jenkins Jobs Which Build And Unit Test ZenUnit And MetalMock
 
-![Windows Jenkins Jobs That Compile ZenUnit And MetalMock](Screenshots/WindowsJenkinsJobsForZenUnitAndMetalMock.png)
+![Windows Jenkins Jobs](Screenshots/WindowsJenkinsJobsForZenUnitAndMetalMock.png)
 
-### How To Build, Unit Test, And Install ZenUnit.h And MetalMock.h On Linux
+### 6 Linux Commands To Build And Run ZenUnit And MetalMock's Unit Tests Then Install ZenUnit.h And MetalMock.h
 
 ```
 git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
-
 cd ZenUnitAndMetalMock && mkdir Debug && cd Debug
-
 CXX=clang++ cmake .. -GNinja -DCMAKE_BUILD_TYPE=Debug
 
-# Builds ZenUnit and MetalMock Debug unit test binaries
-# then copies ZenUnit.h and MetalMock.h:
+# Builds ZenUnit and MetalMock Debug unit test binaries then copies
 # ZenUnit.h to /usr/local/include/ZenUnit/ZenUnit.h and
 # MetalMock.h to /usr/local/include/MetalMock/MetalMock.h
 sudo cmake --build . --target install
@@ -585,16 +563,14 @@ cd ..
 ./TestScripts/RunAllDebugTests.sh
 ```
 
-### How To Build, Unit Test, And Install ZenUnit.h And MetalMock.h On Windows
+### 4 Windows Commands To Build And Run ZenUnit And MetalMock's Unit Tests Then Install ZenUnit.h And MetalMock.h
 
 ```
 git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
-
 cd ZenUnitAndMetalMock
-
 cmake . -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=C:\
 
-# Builds and runs during post-build events all
+# Builds and runs during post-build events all of these
 # ZenUnit and MetalMock Debug test binaries:
 # MetalMockTests\Debug\MetalMockTests.exe
 # MetalMockExamples\Debug\MetalMockExamples.exe
@@ -602,9 +578,26 @@ cmake . -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=C:\
 # ZenUnitUtilsAndAssertionTests\Debug\ZenUnitUtilsAndAssertionTests.exe
 # ZenUnitExamples\Debug\ZenUnitExamples.exe
 
-# Then copies ZenUnit.h and MetalMock.h:
-# ZenUnit.h to C:\include\ZenUnit\ZenUnit.h
-# MetalMock.h to C:\include\MetalMock\MetalMock.h
-
+# Copies ZenUnit.h to C:\include\ZenUnit\ZenUnit.h
+# Copies MetalMock.h to C:\include\MetalMock\MetalMock.h
 cmake --build . --target install
 ```
+
+### Maximize Mutation Coverage By Testing With Random Values
+
+ZenUnit provides the following random-value-generating functions for maximizing [mutation coverage](https://en.wikipedia.org/wiki/Mutation_testing), the next frontier in software quality metrics beyond code coverage. Testing using random values instead of constant values renders test code immune to the `swap-variable-with-constant` code mutation, which is a straightforward code mutation to induce manually today during code review time or automatically in the mid-2020s during CI/CD time by running an LLVM-powered mutation testing framework such as [Mull](https://github.com/mull-project/mull).
+
+|Random Value Generating Function|Behavior|
+|--------------------------------|--------|
+|`ZenUnit::Random<T>()`|By default returns a random integer of type T between `std::numeric_limits<T>::min()` and `std::numeric_limits<T>::max()` selected from a uniform distribution. If `UserType ZenUnit::Random<UserType>()` is defined, returns the result from calling that function.|
+|`ZenUnit::RandomNon0<T>()`|Returns a random non-0 integer of type T between `std::numeric_limits<T>::min()` and `std::numeric_limits<T>::max()` selected from a uniform distribution.|
+|`ZenUnit::RandomBetween<T>(long long inclusiveMinValue, unsigned long long inclusiveMaxValue)`|Returns a random integer of type T between inclusiveMinValue and inclusiveMaxValue selected from a uniform distribution.|
+|`ZenUnit::RandomEnum<EnumType>()`|Returns a random EnumType value between 0 and EnumType::MaxValue - 1, selected from a uniform distribution.|
+|`ZenUnit::Random<float>()`|Returns a random float between `std::numeric_limits<float>::min()` and `std::numeric_limits<float>::max()` selected from a `std::uniform_real_distribution<float>`.|
+|`ZenUnit::Random<double>()`|Returns a random double between `std::numeric_limits<double>::min()` and `std::numeric_limits<double>::max()` from a `std::uniform_real_distribution<double>`.|
+|`ZenUnit::Random<std::string>()`|Returns `"RS" + std::to_string(ZenUnit::RandomBetween<int>(0, 100000))`.|
+|`ZenUnit::RandomVector<T>()`|Returns a `std::vector<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
+|`ZenUnit::RandomMap<KeyType, ValueType>()`|Returns a `std::map<KeyType, ValueType>` with size between 0 and 3 with each key a `ZenUnit::Random<KeyType>()` value and each value a `ZenUnit::Random<ValueType>()` value.|
+|`ZenUnit::RandomUnorderedMap<T>()`|Returns a `std::unordered_map<KeyType, ValueType>` with size between 0 and 3 with each key a `ZenUnit::Random<KeyType>()` value and each value a `ZenUnit::Random<ValueType>()` value.|
+|`ZenUnit::RandomSet<T>()`|Returns a `std::set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
+|`ZenUnit::RandomUnorderedSet<T>()`|Returns a `std::unordered_set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|

@@ -31,38 +31,9 @@ namespace ZenUnit
 
    const string _testProgramPath = Random<string>();
    const string _expectedUsage = "C++ Unit Testing Framework ZenUnit v" + std::string(Version::Number()) + R"(
-https://github.com/NeilJustice/ZenUnitAndMetalMock
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
-Testing Utility Options:
-
---pause-before
-   Wait for any key before running tests to allow for attaching a debugger or profiler.
---pause-after
-   Wait for any key after running tests.
---always-exit-0
-   Always exit with code 0.
---help
-   Print this usage message.
---version
-   Print the ZenUnit version number.
-
-Testing Filtration Options:
-
---run=<TestClassName>[::TestName][/TestCaseNumber][,...]
-   Run only specified case-insensitive test classes, tests, and/or test case numbers.
-   Add a '*' character to the end of a test class name or test name to indicate name-starts-with.
- Example 1: --run=APITests
-   Run only test class APITests.
- Example 2: --run=APITests::FunctionUnderTest*
-   Run only tests in APITests that start with "FunctionUnderTest".
- Example 3: --run=APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue/3
-   Run only the third test case of the value-parameterized test named
-   APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue
---fail-fast
-   Call exit(1) if a test fails.
-
-Testing Rigorousness Options:
+Testing Rigorousness:
 
 --test-runs=<N>
    Repeat N times the running of all tests.
@@ -77,10 +48,38 @@ Testing Rigorousness Options:
 --exit-1-if-tests-skipped
    After having run all tests, exit with code 1 if any tests were skipped.
 
+Testing Filtration:
+
+--run=<TestClassName>[::TestName][/TestCaseNumber][,...]
+   Run only specified case-insensitive test classes, tests, and/or test case numbers.
+   Add a '*' character to the end of a test class name or test name to indicate name-starts-with.
+ Example 1: --run=APITests
+   Run only test class APITests.
+ Example 2: --run=APITests::FunctionUnderTest*
+   Run only tests in APITests that start with "FunctionUnderTest".
+ Example 3: --run=APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue/3
+   Run only the third test case of the value-parameterized test named
+   APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue
+--fail-fast
+   Call exit(1) if a test fails.
+
+Testing Utility:
+
+--pause-before
+   Wait for any key before running tests to allow for attaching a debugger or performance profiler.
+--pause-after
+   Wait for any key after running tests.
+--always-exit-0
+   Always exit with code 0.
+--help
+   Print this usage message.
+--version
+   Print the ZenUnit version number.
+
 Example ZenUnit Command Line Arguments:
 
 ./SafetyCriticalUnitTests --test-runs=5 --random-test-ordering --exit-1-if-tests-skipped
-./SafetyCriticalUnitTests --random-test-ordering --random-seed=1122334455 --pause-before
+./SafetyCriticalUnitTests --pause-before --random-test-ordering --random-seed=12345
 )";
 
    ArgsParser _argsParser;
