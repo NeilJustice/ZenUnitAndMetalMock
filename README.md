@@ -608,7 +608,7 @@ ZenUnit provides the following random-value-generating functions for maximizing 
 [The many authors of Google Test and Google Mock](https://github.com/google/googletest)<br/>
 [The authors of Typemock Isolator and Typemock Isolator++](https://www.typemock.com)<br/>
 [Viktor Kirilov, the author of doctest](https://github.com/onqtam)<br/>
-[Jason Turner](https://github.com/lefticus)<br/>
-[Martin Moene](https://github.com/martinmoene)<br/>
+[Martin Moene, the author of lest and much more](https://github.com/martinmoene)<br/>
+[Jason Turner, C++ extraordinaire](https://github.com/lefticus)<br/>
 [Quantlab Financial](https://www.quantlab.com)<br/>
 [Emerson Electric](https://www.emerson.com/en-us/automation/deltav)
