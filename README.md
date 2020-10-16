@@ -362,7 +362,7 @@ Example ZenUnit Command Line Arguments:
 |`METALMOCK_NONVOID0(ReturnType, VirtualFunctionName)`|
 |`METALMOCK_NONVOID0_CONST(ReturnType, VirtualFunctionName)`|
 |`METALMOCK_NONVOID1(ReturnType, VirtualFunctionName, Arg1Type, ...)`|
-|`METALMOCK_NONVOID1_CONST(ReturnType, FunctionName, Arg1Type, ...)`|
+|`METALMOCK_NONVOID1_CONST(ReturnType, VirtualFunctionName, Arg1Type, ...)`|
 |`METALMOCK_NONVOID2(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, ...)`|
 |`METALMOCK_NONVOID2_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, ...)`|
 |`METALMOCK_NONVOID3(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
@@ -388,16 +388,16 @@ Example ZenUnit Command Line Arguments:
 |---------------|
 |`METALMOCK_VOID0_NONVIRTUAL(NonVirtualFunctionName)`|
 |`METALMOCK_VOID0_NONVIRTUAL_CONST(NonVirtualFunctionName)`|
-|`METALMOCK_VOID1_NONVIRTUAL(FunctionName, Arg1Type, ...)`|
-|`METALMOCK_VOID1_NONVIRTUAL_CONST(FunctionName, Arg1Type, ...)`|
-|`METALMOCK_VOID2_NONVIRTUAL(VirtualFunctionName, Arg1Type, Arg2Type, ...)`|
-|`METALMOCK_VOID2_NONVIRTUAL_CONST(VirtualFunctionName, Arg1Type, Arg2Type, ...)`|
-|`METALMOCK_VOID3_NONVIRTUAL(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
-|`METALMOCK_VOID3_NONVIRTUAL_CONST(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
-|`METALMOCK_VOID4_NONVIRTUAL(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
-|`METALMOCK_VOID4_NONVIRTUAL_CONST(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
-|`METALMOCK_VOID5_NONVIRTUAL(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
-|`METALMOCK_VOID5_NONVIRTUAL_CONST(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
+|`METALMOCK_VOID1_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, ...)`|
+|`METALMOCK_VOID1_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, ...)`|
+|`METALMOCK_VOID2_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, ...)`|
+|`METALMOCK_VOID2_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, ...)`|
+|`METALMOCK_VOID3_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
+|`METALMOCK_VOID3_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
+|`METALMOCK_VOID4_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
+|`METALMOCK_VOID4_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
+|`METALMOCK_VOID5_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
+|`METALMOCK_VOID5_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
 |`METALMOCK_VOID6_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
 |`METALMOCK_VOID6_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
 |`METALMOCK_VOID7_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
@@ -413,10 +413,10 @@ Example ZenUnit Command Line Arguments:
 
 |MetalMock Macro|
 |---------------|
-|`METALMOCK_NONVOID0_NONVIRTUAL(ReturnType, VirtualFunctionName)`|
-|`METALMOCK_NONVOID0_NONVIRTUAL_CONST(ReturnType, VirtualFunctionName)`|
-|`METALMOCK_NONVOID1_NONVIRTUAL(ReturnType, FunctionName, Arg1Type, ...)`|
-|`METALMOCK_NONVOID1_NONVIRTUAL_CONST(ReturnType, FunctionName, Arg1Type, ...)`|
+|`METALMOCK_NONVOID0_NONVIRTUAL(ReturnType, NonVirtualFunctionName)`|
+|`METALMOCK_NONVOID0_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName)`|
+|`METALMOCK_NONVOID1_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, ...)`|
+|`METALMOCK_NONVOID1_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, ...)`|
 |`METALMOCK_NONVOID2_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, ...)`|
 |`METALMOCK_NONVOID2_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, ...)`|
 |`METALMOCK_NONVOID3_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
