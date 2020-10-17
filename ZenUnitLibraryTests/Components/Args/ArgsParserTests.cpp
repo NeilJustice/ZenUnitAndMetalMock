@@ -31,6 +31,7 @@ namespace ZenUnit
 
    const string _testProgramPath = Random<string>();
    const string _expectedUsage = "C++ Unit Testing Framework ZenUnit v" + std::string(Version::Number()) + R"(
+https://github.com/NeilJustice/ZenUnitAndMetalMock
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
 Testing Rigorousness:
