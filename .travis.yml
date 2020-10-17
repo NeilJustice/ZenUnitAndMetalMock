@@ -6,7 +6,7 @@ cache: ccache
 git:
   depth: false
 
-matrix:
+jobs:
   include:
     - os: linux
       compiler: clang
