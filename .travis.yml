@@ -2,7 +2,6 @@ os: linux
 dist: bionic
 language: cpp
 cache: ccache
-sudo: false
 
 git:
   depth: false
