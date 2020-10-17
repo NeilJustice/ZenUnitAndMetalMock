@@ -50,7 +50,7 @@ TEST(AllRandomGeneratorFunctions_ReturnsRandomValues)
    const char* const randomConstCharPointer = randomGenerator->ConstCharPointer();
    ARE_EQUAL(randomConstCharPointer, randomConstCharPointer);
 
-   POINTER_IS_NOT_NULL(randomConstCharPointer);
+   IS_NOT_NULLPTR(randomConstCharPointer);
 
    const string randomString = randomGenerator->String();
    ARE_EQUAL(randomString, randomString);

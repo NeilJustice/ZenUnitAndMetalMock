@@ -110,7 +110,7 @@ namespace ZenUnit
       const std::nullptr_t returnValue = _zenUnitTestRunner.AddTestClassRunner(std::move(specificTestClassRunner));
       //
       METALMOCK(_testClassRunnerRunnerMock->AddTestClassRunnerMock.CalledOnceWithAny());
-      POINTER_IS_NULL(returnValue);
+      IS_NULLPTR(returnValue);
    }
 
    TEST4X4(RunTests_ParsesArgs_RunsTestClassesTimesNumberOfTimes_Returns0IfAllTestRunsPassOtherwiseReturns1,

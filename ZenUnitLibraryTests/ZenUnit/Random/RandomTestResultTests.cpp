@@ -41,7 +41,7 @@ namespace ZenUnit
       IS_NOT_DEFAULT_VALUE(randomTestResult.testBodyTestPhaseResult);
       IS_NOT_DEFAULT_VALUE(randomTestResult.cleanupTestPhaseResult);
       IS_NOT_DEFAULT_VALUE(randomTestResult.destructorTestPhaseResult);
-      POINTER_IS_NULL(randomTestResult.responsibleTestPhaseResultField);
+      IS_NULLPTR(randomTestResult.responsibleTestPhaseResultField);
       ARE_EQUAL(testOutcomeInt, static_cast<int>(randomTestResult.testOutcome));
       ARE_EQUAL(microseconds, randomTestResult.microseconds);
       ARE_EQUAL(testCaseNumber, randomTestResult.testCaseNumber);

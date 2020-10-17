@@ -68,7 +68,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
 )");
       METALMOCK(consoleMock.WriteLineMock.CalledOnceWith(expectedErrorMessage));
       METALMOCK(exitCallerMock.CallExitMock.CalledOnceWith(expectedExitCode));
-      POINTER_IS_NULL(testPointer);
+      IS_NULLPTR(testPointer);
    }
 
    RUN_TESTS(TestClassTests)

@@ -40,7 +40,7 @@ namespace ZenUnit
       DELETE_TO_ASSERT_NEWED(newableDeletableTest._testResultFactory);
       DELETE_TO_ASSERT_NEWED(newableDeletableTest._testPhaseRunner);
       DELETE_TO_ASSERT_NEWED(newableDeletableTest._testPhaseStopwatch);
-      POINTER_IS_NULL(newableDeletableTest._instanceOfTestClass);
+      IS_NULLPTR(newableDeletableTest._instanceOfTestClass);
    }
 
    TEST(NumberOfTestCases_Returns1)
@@ -110,15 +110,15 @@ namespace ZenUnit
 
    TEST(NewAndDeleteTestClass_NewsThenDeletesTestClass)
    {
-      POINTER_IS_NULL(_newableDeletableTest->_instanceOfTestClass);
+      IS_NULLPTR(_newableDeletableTest->_instanceOfTestClass);
       //
       _newableDeletableTest->NewTestClass();
       //
-      POINTER_IS_NOT_NULL(_newableDeletableTest->_instanceOfTestClass);
+      IS_NOT_NULLPTR(_newableDeletableTest->_instanceOfTestClass);
       //
       _newableDeletableTest->DeleteTestClass();
       //
-      POINTER_IS_NULL(_newableDeletableTest->_instanceOfTestClass);
+      IS_NULLPTR(_newableDeletableTest->_instanceOfTestClass);
    }
 
    RUN_TESTS(NewableDeletableTestTests)

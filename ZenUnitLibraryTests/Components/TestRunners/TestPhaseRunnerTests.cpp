@@ -82,7 +82,7 @@ namespace ZenUnit
    static int s_numberOfNoThrowCalls;
    static void NoThrow(Test* test)
    {
-      POINTER_IS_NOT_NULL(test);
+      IS_NOT_NULLPTR(test);
       ++s_numberOfNoThrowCalls;
    }
 
@@ -114,7 +114,7 @@ namespace ZenUnit
 
    static void ThrowAnomaly(Test* test)
    {
-      POINTER_IS_NOT_NULL(test);
+      IS_NOT_NULLPTR(test);
       throw Anomaly("NonDefault", "NonDefault", FileLine(), "", "");
    }
 
@@ -196,7 +196,7 @@ namespace ZenUnit
 
    static void ThrowStdException(Test* test)
    {
-      POINTER_IS_NOT_NULL(test);
+      IS_NOT_NULLPTR(test);
       throw runtime_error("runtime_error_what");
    }
 

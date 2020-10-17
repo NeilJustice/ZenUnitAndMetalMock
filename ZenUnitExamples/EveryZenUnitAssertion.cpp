@@ -56,8 +56,8 @@ TEST(CallAllMacros)
    //STD_FUNCTION_TARGETS_OVERLOAD(ExpectedStringViewOverloadType, ::OverloadedFunction, overloadedStringViewStdFunction);
 
    // Pointers
-   POINTER_IS_NULL(nullptr);
-   POINTER_IS_NOT_NULL(std::make_unique<int>());
+   IS_NULLPTR(nullptr);
+   IS_NOT_NULLPTR(std::make_unique<int>());
    const int* operatorNewedInt = new int;
    DELETE_TO_ASSERT_NEWED(operatorNewedInt);
    const int* operatorNewedIntArray = new int[3];

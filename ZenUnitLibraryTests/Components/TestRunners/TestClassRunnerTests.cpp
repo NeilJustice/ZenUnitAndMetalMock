@@ -27,7 +27,7 @@ namespace ZenUnit
 
    TEST(TestClassName_ReturnNullptr)
    {
-      POINTER_IS_NULL(_testClassRunner.TestClassName());
+      IS_NULLPTR(_testClassRunner.TestClassName());
    }
 
    TEST(NumberOfTestCases_Returns0)

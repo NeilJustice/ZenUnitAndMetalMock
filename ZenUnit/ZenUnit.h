@@ -187,12 +187,12 @@ Example ZenUnit Command Line Arguments:
 //
 
 // Asserts that (pointer == nullptr) is true.
-#define POINTER_IS_NULL(pointer, ...) \
-   ZenUnit::POINTER_IS_NULL_Defined(VRT(pointer), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+#define IS_NULLPTR(pointer, ...) \
+   ZenUnit::IS_NULLPTR_Defined(VRT(pointer), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that (pointer != nullptr) is true.
-#define POINTER_IS_NOT_NULL(pointer, ...) \
-   ZenUnit::POINTER_IS_NOT_NULL_Defined(pointer != nullptr, #pointer, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+#define IS_NOT_NULLPTR(pointer, ...) \
+   ZenUnit::IS_NOT_NULLPTR_Defined(pointer != nullptr, #pointer, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that typeid(expectedPointeeType) == typeid(*actualPointer). expectedPointeeType must be a polymorphic type.
 #define POINTEE_IS_EXACT_TYPE(expectedPolymorphicPointeeType, actualPointer, ...) \
@@ -2680,20 +2680,20 @@ namespace ZenUnit
    }
 
    template<typename... MessageTypes>
-   void POINTER_IS_NOT_NULL_ThrowAnomaly(const char* pointerText,
+   void IS_NOT_NULLPTR_ThrowAnomaly(const char* pointerText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-      throw Anomaly("POINTER_IS_NOT_NULL", pointerText, "", "", messagesText, Anomaly::Default(),
+      throw Anomaly("IS_NOT_NULLPTR", pointerText, "", "", messagesText, Anomaly::Default(),
          "not nullptr", "nullptr", ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename... MessageTypes>
-   void POINTER_IS_NOT_NULL_Defined(bool pointerIsNotNullptr, const char* pointerText,
+   void IS_NOT_NULLPTR_Defined(bool pointerIsNotNullptr, const char* pointerText,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       if (!pointerIsNotNullptr)
       {
-         POINTER_IS_NOT_NULL_ThrowAnomaly(pointerText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         IS_NOT_NULLPTR_ThrowAnomaly(pointerText, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
@@ -2739,19 +2739,19 @@ namespace ZenUnit
    }
 
    template<typename PointerType, typename... MessageTypes>
-   void POINTER_IS_NULL_ThrowAnomaly(
+   void IS_NULLPTR_ThrowAnomaly(
       VRText<PointerType> pointerVRT,
       FileLine fileLine,
       const char* messagesText,
       MessageTypes&&... messages)
    {
       const std::string actualField = ToStringer::ToString(pointerVRT.value);
-      throw Anomaly("POINTER_IS_NULL", pointerVRT.text, "", "", messagesText, Anomaly::Default(),
+      throw Anomaly("IS_NULLPTR", pointerVRT.text, "", "", messagesText, Anomaly::Default(),
          "nullptr", actualField, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename PointerType, typename... MessageTypes>
-   void POINTER_IS_NULL_Defined(
+   void IS_NULLPTR_Defined(
       VRText<PointerType> pointerVRT,
       FileLine fileLine,
       const char* messagesText,
@@ -2760,7 +2760,7 @@ namespace ZenUnit
       const bool pointerIsNull = pointerVRT.value == nullptr;
       if (!pointerIsNull)
       {
-         POINTER_IS_NULL_ThrowAnomaly(pointerVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         IS_NULLPTR_ThrowAnomaly(pointerVRT, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
@@ -3269,7 +3269,7 @@ namespace ZenUnit
       try
       {
          IS_TRUE(stdFunction);
-         POINTER_IS_NOT_NULL(stdFunction.template target<ExpectedStdFunctionTargetType*>());
+         IS_NOT_NULLPTR(stdFunction.template target<ExpectedStdFunctionTargetType*>());
          typename std::add_pointer<ExpectedStdFunctionTargetType>::type expectedStdFunctionTarget(expectedStdFunctionTargetValue);
          ARE_EQUAL(expectedStdFunctionTarget, *stdFunction.template target<ExpectedStdFunctionTargetType*>());
       }
@@ -3292,7 +3292,7 @@ namespace ZenUnit
       try
       {
          IS_TRUE(stdFunction);
-         POINTER_IS_NOT_NULL(stdFunction.template target<ExpectedStdFunctionTargetType*>());
+         IS_NOT_NULLPTR(stdFunction.template target<ExpectedStdFunctionTargetType*>());
          typename std::add_pointer<ExpectedStdFunctionTargetType>::type expectedStdFunctionTarget(expectedStdFunctionTargetValue);
          ARE_EQUAL(expectedStdFunctionTarget, *stdFunction.template target<ExpectedStdFunctionTargetType*>());
       }

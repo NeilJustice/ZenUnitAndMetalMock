@@ -170,7 +170,7 @@ namespace ZenUnit
    TEST(NeverThrownType_whatReturnsNullptr_CodeCoverage)
    {
       const ZenUnit::NeverThrownType neverThrownType;
-      POINTER_IS_NULL(neverThrownType.what());
+      IS_NULLPTR(neverThrownType.what());
    }
 
    RUN_TESTS(THROWS_EXCEPTIONTests)

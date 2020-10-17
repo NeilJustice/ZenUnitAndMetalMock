@@ -60,16 +60,16 @@ namespace ZenUnit
       ARE_EQUAL("TESTS(" + TestClassName + ")\nTEST(" + TestName + ")", normalTest.FullName());
       ARE_EQUAL("(0)", normalTest.FileLineString());
       ARE_EQUAL(&TestingTestClass::TestFunction, normalTest._testMemberFunction);
-      POINTER_IS_NULL(normalTest._testClass);
+      IS_NULLPTR(normalTest._testClass);
    }
 
    TEST(NewTestClass_NewsTestClass)
    {
-      POINTER_IS_NULL(_normalTest->_testClass);
+      IS_NULLPTR(_normalTest->_testClass);
       //
       _normalTest->NewTestClass();
       //
-      POINTER_IS_NOT_NULL(_normalTest->_testClass);
+      IS_NOT_NULLPTR(_normalTest->_testClass);
       _normalTest->_testClass.reset();
    }
 

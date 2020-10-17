@@ -246,8 +246,8 @@ Example ZenUnit Command Line Arguments:
 #### Pointer Assertions
 |Assertion|Behavior|
 |---------|--------|
-|`POINTER_IS_NULL(pointer, messages...)`|Asserts that `pointer == nullptr`.|
-|`POINTER_IS_NOT_NULL(pointer, messages...)`|Asserts that `pointer != nullptr`.|
+|`IS_NULLPTR(pointer, messages...)`|Asserts that `pointer == nullptr`.|
+|`IS_NOT_NULLPTR(pointer, messages...)`|Asserts that `pointer != nullptr`.|
 |`ARE_SAME(expectedObject, actualObject, messages...)`|Asserts that `&expectedObject == &actualObject`.|
 |`ARE_NOT_SAME(notExpectedObject, actualObject, messages...)`|Asserts that `&expectedObject != &actualObject`.
 |`POINTEES_ARE_EQUAL(expectedPointer, actualPointer, messages...)`|Asserts that `expectedPointer != nullptr` and `actualPointer != nullptr` then asserts `ARE_EQUAL(*expectedPointer, *actualPointer)`.|
