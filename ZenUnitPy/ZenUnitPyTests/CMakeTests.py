@@ -36,7 +36,7 @@ class CMakeTests(unittest.TestCase):
       testcase('Linux', '-DSanitizersMode=ON', 'cmake -G"Generator" -DCMAKE_BUILD_TYPE=BuildType -DSanitizersMode=ON CMakeListsFolderPath')
       testcase('linux', '', 'cmake -G"Generator" -A"Architecture"  CMakeListsFolderPath')
       testcase('Windows', '', 'cmake -G"Generator" -A"Architecture"  CMakeListsFolderPath')
-      testcase('Windows', '-DCMAKE_INSTALL_PREFIX=C:/install', 'cmake -G"Generator" -A"Architecture" -DCMAKE_INSTALL_PREFIX=C:/install CMakeListsFolderPath')
+      testcase('Windows', '-DCMAKE_INSTALL_PREFIX=C:/', 'cmake -G"Generator" -A"Architecture" -DCMAKE_INSTALL_PREFIX=C:/ CMakeListsFolderPath')
 
    @patch('ZenUnitPy.Process.run', spec_set=True)
    def install_RunsCMakeInstall_test(self, _1):
