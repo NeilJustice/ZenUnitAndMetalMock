@@ -44,6 +44,7 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
    * [6 Linux Commands To Build And Run ZenUnit And MetalMock's Unit Tests Then Install ZenUnit.h And MetalMock.h](#6-linux-commands-to-build-and-run-zenUnit-and-metalmocks-unit-tests-then-install-zenunith-and-metalmockh)
    * [4 Windows Commands To Build And Run ZenUnit And MetalMock's Unit Tests Then Install ZenUnit.h And MetalMock.h](#4-windows-commands-to-build-and-run-zenunit-and-metalmocks-unit-tests-then-install-zenunith-and-metalmockh)
    * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
+   * [Special Thanks](#special-thanks)
 
 ### Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Syntax
 
@@ -601,3 +602,13 @@ ZenUnit provides the following random-value-generating functions for maximizing 
 |`ZenUnit::RandomUnorderedMap<T>()`|Returns a `std::unordered_map<KeyType, ValueType>` with size between 0 and 3 with each key a `ZenUnit::Random<KeyType>()` value and each value a `ZenUnit::Random<ValueType>()` value.|
 |`ZenUnit::RandomSet<T>()`|Returns a `std::set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
 |`ZenUnit::RandomUnorderedSet<T>()`|Returns a `std::unordered_set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
+
+### Special Thanks
+
+[The many authors of Google Test and Google Mock](https://github.com/google/googletest)<br/>
+[The many authors of Typemock Isolator and Typemock Isolator++](https://www.typemock.com)<br/>
+[Viktor Kirilov, the author of doctest and much more](https://github.com/onqtam)<br/>
+[Martin Moene, the author of lest and much more](https://github.com/martinmoene)<br/>
+[Jason Turner, C++ extraordinaire](https://github.com/lefticus)<br/>
+[Quantlab Financial](https://www.quantlab.com)<br/>
+[Emerson Electric](https://www.emerson.com/en-us/automation/deltav)
