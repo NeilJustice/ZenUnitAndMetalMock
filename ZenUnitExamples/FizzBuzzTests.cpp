@@ -6,7 +6,7 @@ std::string FizzBuzz(int endNumber);
 // TESTS defines a ZenUnit test class and begins the FACTS section.
 TESTS(FizzBuzzTests)
 // FACTS declares an N-by-N value-parameterized test, the signature feature of ZenUnit.
-FACTS(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgument)
+FACTS(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgumentException)
 FACTS(FizzBuzz_EndNumberIsGreaterThan0_ReturnsFizzBuzzSequence)
 // EVIDENCE concludes the declaration of facts section
 // and begins the presentation of evidence section, also known as the test class body.
@@ -22,7 +22,7 @@ EVIDENCE
 // that processes its typesafe variadic arguments list 1-by-1.
 // This TEST1X1 defines 4 independent unit tests for FizzBuzz(),
 // each of which will run within separate instances of test class FizzBuzzTests at ZenUnit run time.
-TEST1X1(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgument,
+TEST1X1(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgumentException,
    int invalidFizzBuzzEndNumber,
    std::numeric_limits<int>::min(),
    -2,

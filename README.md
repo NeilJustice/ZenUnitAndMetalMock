@@ -41,8 +41,8 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
       * [Non-Void Global Free Functions](#non-void-global-free-functions)
       * [Void Namespaced Free Functions](#void-namespaced-free-functions)
       * [Non-Void Namespaced Free Functions](#non-void-namespaced-free-functions)
-   * [How To Unit Test Calls To MetalMocked Virtual Functions With ZenUnit And MetalMock](#how-to-unit-test-calls-to-metalmocked-virtual-functions-with-zenunit-and-metalmock)
-     * [Console Output From Running The Above Virtual Function Mocking Example](#console-output-from-running-the-above-virtual-function-mocking-example)
+   * [How To MetalMock Virtual Functions](#how-to-metalmock-virtual-functions)
+     * [Console Output From Running The Above Virtual Function MetalMock Example](#console-output-from-running-the-above-virtual-function-metalmock-example)
    * [Linux Jenkins Jobs Which Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And MetalMock](#linux-jenkins-jobs-which-build-unit-test-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-metalmock)
    * [Windows Jenkins Jobs Which Build And Unit Test ZenUnit And MetalMock](#windows-jenkins-jobs-which-build-and-unit-test-zenunit-and-metalmock)
    * [6 Linux Commands To Build And Run ZenUnit And MetalMock's Unit Tests Then Install ZenUnit.h And MetalMock.h](#6-linux-commands-to-build-and-run-zenUnit-and-metalmocks-unit-tests-then-install-zenunith-and-metalmockh)
@@ -53,7 +53,7 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
 ### How To Unit Test FizzBuzz With ZenUnit's Value-Parameterized Test Syntax
 
 ```cpp
-// Single header
+// Single header ZenUnit.h
 #include "ZenUnit.h"
 
 // FizzBuzz function to be unit tested with ZenUnit
@@ -62,7 +62,7 @@ std::string FizzBuzz(int endNumber);
 // TESTS defines a ZenUnit test class and begins the FACTS section.
 TESTS(FizzBuzzTests)
 // FACTS declares an N-by-N value-parameterized test, the signature feature of ZenUnit.
-FACTS(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgument)
+FACTS(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgumentException)
 FACTS(FizzBuzz_EndNumberIsGreaterThan0_ReturnsFizzBuzzSequence)
 // EVIDENCE concludes the declaration of facts section
 // and begins the presentation of evidence section - also known as the test class body.
@@ -75,12 +75,14 @@ EVIDENCE
 // by simply reading the top part of a ZenUnit test class .cpp file.
 // In contrast, ZenUnit could have been designed to allow test names to be scattered throughout test files
 // for initial writeability convenience but at a cost of long-term code readability convenience.
+// Because code is read much more often than it is written, long-term code readability was chosen for ZenUnit.
 
 // TEST1X1 defines a 1-by-1 value-parameterized test
 // which processes its typesafe variadic arguments list 1-by-1.
 // This TEST1X1 defines 4 independent unit tests for FizzBuzz(),
 // each of which will run sequentially within separate instances of test class FizzBuzzTests.
-TEST1X1(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgument,
+// Adding support for parallel test execution appears prominently on ZenUnit's Azure DevOps backlog.
+TEST1X1(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgumentException,
    int invalidFizzBuzzEndNumber,
    std::numeric_limits<int>::min(),
    -2,
@@ -649,9 +651,12 @@ Example ZenUnit Command Line Arguments:
 |`METALMOCK_NONVOID9_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
 |`METALMOCK_NONVOID10_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
 
-### How To Unit Test Calls To MetalMocked Virtual Functions With ZenUnit And MetalMock
+### How To MetalMock Virtual Functions
 
 ```
+// Single header MetalMock.h
+#include "MetalMock.h"
+
 // Component To Be MetalMocked
 class ComponentB
 {
@@ -664,9 +669,9 @@ public:
 // Class Under Test
 class ComponentA
 {
+   // Friend for the ability to perform dependency injection of a MetalMock mock object
    friend class ComponentATests;
 private:
-   // ComponentB will be replaced with a MetalMock mock object in the below ZenUnit SETUP function
    std::unique_ptr<ComponentB> _componentB;
 public:
    ComponentA()
@@ -682,7 +687,7 @@ public:
    }
 };
 
-// MetalMock Class Definition
+// MetalMock class definition by way of inheritance from Metal::Mock<T>
 class ComponentBMock : public Metal::Mock<ComponentB>
 {
 public:
@@ -701,12 +706,15 @@ ComponentBMock* _componentBMock = nullptr;
 
 STARTUP
 {
-   // Post-construction dependency injection of MetalMock mock object ComponentBMock
+   // Post-construction dependency injection of MetalMock mock object _componentBMock
    _componentA._componentB.reset(_componentBMock = new ComponentBMock);
 }
 
 TEST(DefaultConstructor_NewsComponentB)
 {
+   // Asserts that _componentA._componentB was make_unique'd so as to render
+   // ComponentA's unit tests immune to the swap-make-unique-with-nullptr code mutation,
+   // thereby maximizing mutation coverage.
    DELETE_TO_ASSERT_NEWED(_componentA._componentB);
 }
 
@@ -724,9 +732,9 @@ TEST(Act_CallsComponentBVirtualFunctions)
 RUN_TESTS(ComponentATests)
 ```
 
-#### Console Output From Running The Above Virtual Function Mocking Example
+#### Console Output From Running The Above Virtual Function MetalMock Example
 
-![Console Output From Running The Above Virtual Function Mocking Example](Screenshots/ConsoleOutputFromRunningTheAboveVirtualFunctionMockingExample.png)
+![Console Output From Running The Above Virtual Function MetalMock Example](Screenshots/ConsoleOutputFromRunningTheAboveVirtualFunctionMetalMockExample.png)
 
 ### Linux Jenkins Jobs Which Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And MetalMock
 
@@ -772,7 +780,6 @@ cmake . -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=C:\
 # ZenUnitLibraryTests\Debug\ZenUnitLibraryTests.exe
 # ZenUnitUtilsAndAssertionTests\Debug\ZenUnitUtilsAndAssertionTests.exe
 # ZenUnitExamples\Debug\ZenUnitExamples.exe
-
 # Copies ZenUnit.h to C:\include\ZenUnit\ZenUnit.h
 # Copies MetalMock.h to C:\include\MetalMock\MetalMock.h
 cmake --build . --target install
@@ -789,7 +796,7 @@ ZenUnit provides the following random-value-generating functions for maximizing 
 |`ZenUnit::RandomBetween<T>(long long inclusiveMinValue, unsigned long long inclusiveMaxValue)`|Returns a random integer of type T between inclusiveMinValue and inclusiveMaxValue selected from a uniform distribution.|
 |`ZenUnit::RandomEnum<EnumType>()`|Returns a random EnumType value between 0 and EnumType::MaxValue - 1, selected from a uniform distribution.|
 |`ZenUnit::Random<float>()`|Returns a random float between `std::numeric_limits<float>::min()` and `std::numeric_limits<float>::max()` selected from a `std::uniform_real_distribution<float>`.|
-|`ZenUnit::Random<double>()`|Returns a random double between `std::numeric_limits<double>::min()` and `std::numeric_limits<double>::max()` from a `std::uniform_real_distribution<double>`.|
+|`ZenUnit::Random<double>()`|Returns a random double between `std::numeric_limits<double>::min()` and `std::numeric_limits<double>::max()` selected from a `std::uniform_real_distribution<double>`.|
 |`ZenUnit::Random<std::string>()`|Returns `"RS" + std::to_string(ZenUnit::RandomBetween<int>(0, 100000))`.|
 |`ZenUnit::RandomVector<T>()`|Returns a `std::vector<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
 |`ZenUnit::RandomMap<KeyType, ValueType>()`|Returns a `std::map<KeyType, ValueType>` with size between 0 and 3 with each key a `ZenUnit::Random<KeyType>()` value and each value a `ZenUnit::Random<ValueType>()` value.|
