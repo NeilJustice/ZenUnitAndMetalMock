@@ -4475,7 +4475,7 @@ namespace ZenUnit
       virtual std::string PrintPreambleLinesAndGetStartDateTime(
          const ZenUnitArgs& zenUnitArgs, const TestClassRunnerRunner* testClassRunnerRunner) const
       {
-         const std::string zenUnitVersionLine = "[ZenUnit v" + std::string(Version::Number()) + "]";
+         const std::string zenUnitVersionLine = "[C++ Unit Testing Framework ZenUnit v" + std::string(Version::Number()) + "]";
          _console->WriteLineColor(zenUnitVersionLine, Color::Green);
 
          _console->WriteColor("[ZenUnit]", Color::Green);

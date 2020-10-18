@@ -15,7 +15,7 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
 ##### ZenUnit.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/master/ZenUnit/ZenUnit.h)
 ##### MetalMock.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/master/MetalMock/MetalMock.h)
 
-   * [Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Syntax](#unit-testing-fizzbuzz-with-zenunits-value-parameterized-test-syntax)
+   * [How To Unit Test FizzBuzz With ZenUnit's Value-Parameterized Test Syntax](#how-to-unit-test-fizzbuzz-with-zenunits-value-parameterized-test-syntax)
    * [ZenUnit Console Output](#zenunit-console-output)
    * [ZenUnit Command Line Usage](#zenunit-command-line-usage)
    * [ZenUnit Assertions](#zenunit-assertions)
@@ -39,6 +39,8 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
       * [Non-Void Global Free Functions](#non-void-global-free-functions)
       * [Void Namespaced Free Functions](#void-namespaced-free-functions)
       * [Non-Void Namespaced Free Functions](#non-void-namespaced-free-functions)
+   * [How To Unit Test Calls To Mocked-Out Virtual Functions With ZenUnit And MetalMock](#how-to-unit-test-calls-to-mocked-out-virtual-functions-with-zenunit-and-metalmock)
+     * [Console Output From Running The Above Virtual Function Mocking Example](#console-output-from-running-the-above-virtual-function-mocking-example)
    * [Linux Jenkins Jobs Which Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And MetalMock](#linux-jenkins-jobs-which-build-unit-test-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-metalmock)
    * [Windows Jenkins Jobs Which Build And Unit Test ZenUnit And MetalMock](#windows-jenkins-jobs-which-build-and-unit-test-zenunit-and-metalmock)
    * [6 Linux Commands To Build And Run ZenUnit And MetalMock's Unit Tests Then Install ZenUnit.h And MetalMock.h](#6-linux-commands-to-build-and-run-zenUnit-and-metalmocks-unit-tests-then-install-zenunith-and-metalmockh)
@@ -46,12 +48,13 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
    * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
    * [Special Thanks](#special-thanks)
 
-### Unit Testing FizzBuzz With ZenUnit's Value-Parameterized Test Syntax
+### How To Unit Test FizzBuzz With ZenUnit's Value-Parameterized Test Syntax
 
 ```cpp
+// Single header
 #include "ZenUnit.h"
 
-// Function to be unit tested with ZenUnit
+// FizzBuzz function to be unit tested with ZenUnit
 std::string FizzBuzz(int endNumber);
 
 // TESTS defines a ZenUnit test class and begins the FACTS section.
@@ -63,13 +66,13 @@ FACTS(FizzBuzz_EndNumberIsGreaterThan0_ReturnsFizzBuzzSequence)
 // and begins the presentation of evidence section - also known as the test class body.
 EVIDENCE
 
-// In ZenUnit test names are duplicated between the FACTS section and the EVIDENCE section
-// by way of a carefully-considered design decision to maximize long-term readability
-// of safety-critical unit test code.
-// This design of test names always up top instead of scattered throughout large test files
-// makes it easy to quickly confirm that a test class tests
-// a cohesive set of functionality using a consistent test naming convention
-// by simply reading the top of a ZenUnit test class .cpp file.
+// In ZenUnit test names are by-design duplicated between the FACTS section and the EVIDENCE section.
+// This carefully-considered design decision is to maximize long-term test code readability
+// by making it easy for code reviewers to quickly confirm 
+// whether a test class tests a cohesive set of functionality using a consistent test naming convention
+// by simply reading the top part of a ZenUnit test class .cpp file.
+// In contrast, ZenUnit could have been designed to allow test names to be scattered throughout test files
+// for initial writeability convenience but at a cost of long-term code readability convenience.
 
 // TEST1X1 defines a 1-by-1 value-parameterized test
 // which processes its typesafe variadic arguments list 1-by-1.
@@ -533,6 +536,85 @@ Example ZenUnit Command Line Arguments:
 |`METALMOCK_NONVOID9_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
 |`METALMOCK_NONVOID10_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
 
+### How To Unit Test Calls To Mocked-Out Virtual Functions With ZenUnit And MetalMock
+
+```
+// Component To Be MetalMocked
+class ComponentB
+{
+public:
+   virtual void ConstVirtualFunction() const {}
+   virtual void NonConstVirtualFunction() {}
+   virtual ~ComponentB() = default;
+};
+
+// Class Under Test
+class ComponentA
+{
+   friend class ComponentATests;
+private:
+   // ComponentB will be replaced with a MetalMock mock object in the below ZenUnit SETUP function
+   std::unique_ptr<ComponentB> _componentB;
+public:
+   ComponentA()
+      : _componentB(std::make_unique<ComponentB>())
+   {
+   }
+
+   // Function Under Test
+   void Act()
+   {
+      _componentB->ConstVirtualFunction();
+      _componentB->NonConstVirtualFunction();
+   }
+};
+
+// MetalMock Class Definition
+class ComponentBMock : public Metal::Mock<ComponentB>
+{
+public:
+   METALMOCK_VOID0_CONST(ConstVirtualFunction)
+   METALMOCK_VOID0(NonConstVirtualFunction)
+};
+
+// ZenUnit Test Class
+TESTS(ComponentATests)
+AFACT(DefaultConstructor_NewsComponentB)
+AFACT(Act_CallsComponentBVirtualFunctions)
+EVIDENCE
+
+ComponentA _componentA;
+ComponentBMock* _componentBMock = nullptr;
+
+STARTUP
+{
+   // Post-construction dependency injection of MetalMock mock object ComponentBMock
+   _componentA._componentB.reset(_componentBMock = new ComponentBMock);
+}
+
+TEST(DefaultConstructor_NewsComponentB)
+{
+   DELETE_TO_ASSERT_NEWED(_componentA._componentB);
+}
+
+TEST(Act_CallsComponentBVirtualFunctions)
+{
+   _componentBMock->ConstVirtualFunctionMock.Expect();
+   _componentBMock->NonConstVirtualFunctionMock.Expect();
+   //
+   _componentA.Act();
+   //
+   METALMOCK(_componentBMock->ConstVirtualFunctionMock.CalledOnce());
+   METALMOCK(_componentBMock->NonConstVirtualFunctionMock.CalledOnce());
+}
+
+RUN_TESTS(ComponentATests)
+```
+
+#### Console Output From Running The Above Virtual Function Mocking Example
+
+![Console Output From Running The Above Virtual Function Mocking Example](Screenshots/ConsoleOutputFromRunningTheAboveVirtualFunctionMockingExample.png)
+
 ### Linux Jenkins Jobs Which Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And MetalMock
 
 ![Linux Jenkins Jobs](Screenshots/LinuxJenkinsJobsForZenUnitAndMetalMock.png)
@@ -553,14 +635,13 @@ CXX=clang++ cmake .. -GNinja -DCMAKE_BUILD_TYPE=Debug
 # MetalMock.h to /usr/local/include/MetalMock/MetalMock.h
 sudo cmake --build . --target install
 
-cd ..
-
 # Runs all ZenUnit and MetalMock Debug test binaries:
 # Debug/MetalMockTests/MetalMockTests
 # Debug/MetalMockExamples/MetalMockExamples
 # Debug/ZenUnitLibraryTests/ZenUnitLibraryTests
 # Debug/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests
 # Debug/ZenUnitExamples/ZenUnitExamples
+cd ..
 ./TestScripts/RunAllDebugTests.sh
 ```
 
