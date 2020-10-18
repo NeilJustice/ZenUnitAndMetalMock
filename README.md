@@ -4,7 +4,7 @@
 
 ZenUnit is a C++ single-header unit testing framework designed for assertion exactness, error message clarity, long-term test code readability, and supports testing with randomized values to maximize [mutation coverage](https://en.wikipedia.org/wiki/Mutation_testing), the next frontier in software quality metrics beyond code coverage. ZenUnit's signature feature is its convenient syntax for writing value-parameterized and type-parameterized unit tests.
 
-MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions and features a convenient arrange-act-assert syntax for specifying function return values and expected function call arguments from and to virtual functions, non-virtual/template functions, static functions, and global/free functions. MetalMock is a "double strict" mocking framework so as to rigorously confirm the correcntess of safety-critical C++ software, meaning that all MetalMocked function calls must be both explicitly expected to be called and explicitly asserted to have been called.
+MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions and features a convenient arrange-act-assert syntax for specifying function return values and expected function call arguments from and to virtual functions, non-virtual/template functions, static functions, and global/free functions. MetalMock is a "double strict" mocking framework so as to suitable for rigorously confirming the correcntess of safety-critical C++ software - meaning that all MetalMocked function calls must be both explicitly expected to be called and explicitly asserted to have been called.
 
 |Build|Build Status|
 |----------|------------|
