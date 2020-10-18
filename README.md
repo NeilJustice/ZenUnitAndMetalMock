@@ -41,7 +41,7 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
       * [Non-Void Global Free Functions](#non-void-global-free-functions)
       * [Void Namespaced Free Functions](#void-namespaced-free-functions)
       * [Non-Void Namespaced Free Functions](#non-void-namespaced-free-functions)
-   * [How To Unit Test Calls To Mocked-Out Virtual Functions With ZenUnit And MetalMock](#how-to-unit-test-calls-to-mocked-out-virtual-functions-with-zenunit-and-metalmock)
+   * [How To Unit Test Calls To MetalMocked Virtual Functions With ZenUnit And MetalMock](#how-to-unit-test-calls-to-metalmocked-virtual-functions-with-zenunit-and-metalmock)
      * [Console Output From Running The Above Virtual Function Mocking Example](#console-output-from-running-the-above-virtual-function-mocking-example)
    * [Linux Jenkins Jobs Which Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And MetalMock](#linux-jenkins-jobs-which-build-unit-test-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-metalmock)
    * [Windows Jenkins Jobs Which Build And Unit Test ZenUnit And MetalMock](#windows-jenkins-jobs-which-build-and-unit-test-zenunit-and-metalmock)
@@ -647,9 +647,9 @@ Example ZenUnit Command Line Arguments:
 |`METALMOCK_NONVOID7_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
 |`METALMOCK_NONVOID8_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, ...)`|
 |`METALMOCK_NONVOID9_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, ...)`|
-|`METALMOCK_NONVOID10_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
+|`METALMOCK_NONVOID10_NAMESPACED_FREE(ReturnType, Namespace, NamespacedFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, ...)`|
 
-### How To Unit Test Calls To Mocked-Out Virtual Functions With ZenUnit And MetalMock
+### How To Unit Test Calls To MetalMocked Virtual Functions With ZenUnit And MetalMock
 
 ```
 // Component To Be MetalMocked
