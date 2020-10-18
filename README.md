@@ -812,5 +812,5 @@ ZenUnit provides the following random-value-generating functions for maximizing 
 * [Viktor Kirilov, the author of doctest and much more](https://github.com/onqtam)
 * [Martin Moene, the author of lest and much more](https://github.com/martinmoene)
 * [Jason Turner, host of C++ Weekly and much more](https://github.com/lefticus)
-* [My colleagues at Quantlab Financial](https://www.quantlab.com)
+* [My colleagues at Quantlab](https://www.quantlab.com)
 * [My colleagues at Emerson](https://www.emerson.com/en-us/automation/deltav)
