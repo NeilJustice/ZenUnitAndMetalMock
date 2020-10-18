@@ -16,7 +16,9 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
 ##### MetalMock.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/master/MetalMock/MetalMock.h)
 
    * [How To Unit Test FizzBuzz With ZenUnit's Value-Parameterized Test Syntax](#how-to-unit-test-fizzbuzz-with-zenunits-value-parameterized-test-syntax)
-   * [ZenUnit Console Output](#zenunit-console-output)
+      * [Console Output When Running ZenUnit Value-Parameterized Tests](#console-output-when-running-zenunit-value-parameterized-tests)
+   * [How To Unit Test Templated Class PredicateCounter's CountWhere() Function With ZenUnit's Type-Parameterized Test Syntax](#how-to-unit-test-templated-class-predicatecounters-countwhere-function-with-zenunits-type-parameterized-test-syntax)
+      * [Console Output When Running ZenUnit Type-Parameterized Tests](#console-output-when-running-zenunit-type-parameterized-tests)
    * [ZenUnit Command Line Usage](#zenunit-command-line-usage)
    * [ZenUnit Assertions](#zenunit-assertions)
       * [Value Assertions](#value-assertions)
@@ -174,9 +176,120 @@ int main(int argc, char* argv[])
 }
 ```
 
-### ZenUnit Console Output
+### Console Output When Running ZenUnit Value-Parameterized Tests
 
-![ZenUnit Console Output Design](Screenshots/FizzBuzzConsoleOutput.png)
+![Console Output When Running ZenUnit Value-Parameterized Tests](Screenshots/FizzBuzzConsoleOutput.png)
+
+### How To Unit Test Templated Class PredicateCounter's CountWhere() Function With ZenUnit's Type-Parameterized Test Syntax
+
+How might you confirm the correctness of this templated class PredicateCounter with its function CountWhere() for counting the number of elements in a container that match a predicate function?
+
+```
+namespace Utils
+{
+   template<
+      template<typename T>
+      typename ContainerType, typename T>
+   class PredicateCounter
+   {
+   public:
+      virtual size_t CountWhere(const ContainerType<T>& elements, bool(*elementPredicate)(const T&)) const
+      {
+         size_t numberOfMatchingElements = 0;
+         for (const T& element : elements)
+         {
+            const bool elementMatchesPredicate = elementPredicate(element);
+            if (elementMatchesPredicate)
+            {
+               ++numberOfMatchingElements;
+            }
+         }
+         return numberOfMatchingElements;
+      }
+
+      virtual ~PredicateCounter() = default;
+   };
+}
+```
+
+Here is how the CountWhere() function's correctness can be confirmed across multiple `ContainerType` types and `T` types by using ZenUnit's type-parameterized test class syntax:
+
+```
+#include "ZenUnit.h"
+
+template<
+   template<typename T>
+   typename ContainerType, typename T>
+TEMPLATE_TESTS(PredicateCounterTests, ContainerType, T)
+AFACT(CountWhere_ElementsAreEmpty_Returns0)
+AFACT(CountWhere_ElementsAreSize2_ElementDoNotMatch_Returns0)
+AFACT(CountWhere_ElementsAreSize2_BothElementsMatch_Returns2)
+AFACT(CountWhere_ElementsAreSize4_TwoElementsMatchOutOf4_Returns2)
+EVIDENCE
+
+Utils::PredicateCounter<ContainerType, T> _predicateCounter;
+
+static bool IsEven(const T& element)
+{
+   const bool elementIsEven = element % 2 == 0;
+   return elementIsEven;
+}
+
+static bool AlwaysMatchingPredicate(const T&)
+{
+   return true;
+}
+
+static bool NeverMatchingPredicate(const T&)
+{
+   return false;
+}
+
+TEST(CountWhere_ElementsAreEmpty_Returns0)
+{
+   const ContainerType<T> emptyElements;
+   //
+   const size_t numberOfMatchingElements = _predicateCounter.CountWhere(emptyElements, NeverMatchingPredicate);
+   //
+   ARE_EQUAL(0, numberOfMatchingElements);
+}
+
+TEST(CountWhere_ElementsAreSize2_ElementDoNotMatch_Returns0)
+{
+   const ContainerType<T> elements{ ZenUnit::Random<T>(), ZenUnit::Random<T>() };
+   //
+   const size_t numberOfMatchingElements = _predicateCounter.CountWhere(elements, NeverMatchingPredicate);
+   //
+   ARE_EQUAL(0, numberOfMatchingElements);
+}
+
+TEST(CountWhere_ElementsAreSize2_BothElementsMatch_Returns2)
+{
+   const ContainerType<T> elements{ ZenUnit::Random<T>(), ZenUnit::Random<T>() };
+   //
+   const size_t numberOfMatchingElements = _predicateCounter.CountWhere(elements, AlwaysMatchingPredicate);
+   //
+   ARE_EQUAL(2, numberOfMatchingElements);
+}
+
+TEST(CountWhere_ElementsAreSize4_TwoElementsMatchOutOf4_Returns2)
+{
+   const ContainerType<T> elements{ T{1}, T{2}, T{3}, T{4} };
+   //
+   const size_t numberOfEvenElements = _predicateCounter.CountWhere(elements, IsEven);
+   //
+   ARE_EQUAL(2, numberOfEvenElements);
+}
+
+RUN_TEMPLATE_TESTS(PredicateCounterTests, vector, int)
+THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, vector, unsigned long long)
+THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, unordered_set, int)
+THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, unordered_set, unsigned long long)
+```
+
+### Console Output When Running ZenUnit Type-Parameterized Tests
+
+![Console Output When Running ZenUnit Type-Parameterized Tests](Screenshots/ConsoleOutputWhenRunningZenUnitTypeParameterizedTests.png)
 
 ### ZenUnit Command Line Usage
 
