@@ -3,34 +3,17 @@
 namespace ZenUnit
 {
    TESTS(IS_DEFAULT_VALUETests)
-   AFACT(ValueIsZero_DoesNotThrowException)
-   FACTS(IntNotZero_Throws)
-   FACTS(DoubleNotZero_Throws)
-   AFACT(UserTypeZero_DoesNotThrowException)
-   AFACT(UserTypeNotZero_Throws_MessagesTestCase)
-   AFACT(IntializerConstructable_IsZero_DoesNotThrowException)
-   AFACT(IntializerConstructable_IsNotZero_Throws)
+   AFACT(ValueIsDefaultValue_DoesNotThrowAnomaly)
+   FACTS(IntIsNotZero_ThrowsAnomaly)
+   FACTS(DoubleIsNotZero_ThrowsAnomaly)
+   AFACT(UserTypeOnlyZenUnitEqualizableIsZero_DoesNotThrowAnomaly)
+   AFACT(UserTypeOnlyZenUnitEqualizableIsNotZero_ThrowsAnomaly)
+   AFACT(UserTypeIsZero_DoesNotThrowAnomaly)
+   AFACT(UserTypeIsNotZero_ThrowsAnomaly)
+   AFACT(UserTypeIsNotZero_ThrowsAnomaly__MessagesTestCase)
    EVIDENCE
 
-   struct IntializerConstructable
-   {
-      int value;
-
-      friend bool operator==(
-         const IntializerConstructable& lhs,
-         const IntializerConstructable& rhs)
-      {
-         return lhs.value == rhs.value;
-      }
-
-      friend ostream& operator<<(ostream& os, const IntializerConstructable& right)
-      {
-         os << "InitializerConstructable@" << right.value;
-         return os;
-      }
-   };
-
-   TEST(ValueIsZero_DoesNotThrowException)
+   TEST(ValueIsDefaultValue_DoesNotThrowAnomaly)
    {
       IS_DEFAULT_VALUE(0);
 
@@ -50,9 +33,18 @@ namespace ZenUnit
       IS_DEFAULT_VALUE(0.0);
       const double doubleZero = 0.0;
       IS_DEFAULT_VALUE(doubleZero);
+
+      const string defaultString;
+      IS_DEFAULT_VALUE(defaultString);
+
+      const vector<int> defaultVector;
+      IS_DEFAULT_VALUE(defaultVector);
+
+      const UserType defaultUserType;
+      IS_DEFAULT_VALUE(defaultUserType);
    }
 
-   TEST1X1(IntNotZero_Throws,
+   TEST1X1(IntIsNotZero_ThrowsAnomaly,
       int value,
       -1,
       1)
@@ -64,7 +56,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST1X1(DoubleNotZero_Throws,
+   TEST1X1(DoubleIsNotZero_ThrowsAnomaly,
       double value,
       -1.0,
       1.0)
@@ -76,37 +68,47 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(UserTypeZero_DoesNotThrowException)
+   TEST(UserTypeOnlyZenUnitEqualizableIsZero_DoesNotThrowAnomaly)
+   {
+      const UserTypeOnlyZenUnitEqualizable defaultUserTypeOnlyZenUnitEqualizable;
+      IS_DEFAULT_VALUE(defaultUserTypeOnlyZenUnitEqualizable);
+   }
+
+   TEST(UserTypeOnlyZenUnitEqualizableIsNotZero_ThrowsAnomaly)
+   {
+      const UserTypeOnlyZenUnitEqualizable userTypeOnlyZenUnitEqualizable1{1};
+      THROWS_EXCEPTION(IS_DEFAULT_VALUE(userTypeOnlyZenUnitEqualizable1), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: IS_DEFAULT_VALUE(userTypeOnlyZenUnitEqualizable1)",
+"Expected: <UserTypeOnlyZenUnitEqualizable>",
+"  Actual: <UserTypeOnlyZenUnitEqualizable>",
+"File.cpp(1)"));
+   }
+
+   TEST(UserTypeIsZero_DoesNotThrowAnomaly)
    {
       const UserType userType0(0);
       IS_DEFAULT_VALUE(userType0);
    }
 
-   TEST(UserTypeNotZero_Throws_MessagesTestCase)
+   TEST(UserTypeIsNotZero_ThrowsAnomaly)
    {
-      const UserType userType1(1);
-      const string messageA = "A", messageB = "B";
-      THROWS_EXCEPTION(IS_DEFAULT_VALUE(userType1, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: IS_DEFAULT_VALUE(userType1, messageA, messageB)",
+      const UserType userType1{1};
+      THROWS_EXCEPTION(IS_DEFAULT_VALUE(userType1), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: IS_DEFAULT_VALUE(userType1)",
 "Expected: UserType@0",
 "  Actual: UserType@1",
-" Message: \"A\", \"B\"",
 "File.cpp(1)"));
    }
 
-   TEST(IntializerConstructable_IsZero_DoesNotThrowException)
+   TEST(UserTypeIsNotZero_ThrowsAnomaly__MessagesTestCase)
    {
-      const IntializerConstructable i { 0 };
-      IS_DEFAULT_VALUE(i);
-   }
-
-   TEST(IntializerConstructable_IsNotZero_Throws)
-   {
-      const IntializerConstructable i { 1 };
-      THROWS_EXCEPTION(IS_DEFAULT_VALUE(i), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: IS_DEFAULT_VALUE(i)",
-"Expected: InitializerConstructable@0",
-"  Actual: InitializerConstructable@1",
+      const UserType userType10(10);
+      const string messageA = "A", messageB = "B";
+      THROWS_EXCEPTION(IS_DEFAULT_VALUE(userType10, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: IS_DEFAULT_VALUE(userType10, messageA, messageB)",
+"Expected: UserType@0",
+"  Actual: UserType@10",
+" Message: \"A\", \"B\"",
 "File.cpp(1)"));
    }
 

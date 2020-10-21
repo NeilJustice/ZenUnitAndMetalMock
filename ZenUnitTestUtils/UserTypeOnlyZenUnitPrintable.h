@@ -10,6 +10,6 @@ namespace ZenUnit
    class Printer<UserTypeOnlyZenUnitPrintable>
    {
    public:
-      static void Print(ostream& os, const UserTypeOnlyZenUnitPrintable& value);
+      static void Print(ostream& os, const UserTypeOnlyZenUnitPrintable&);
    };
 }

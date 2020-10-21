@@ -31,8 +31,7 @@ UserType::operator bool() const
 
 namespace ZenUnit
 {
-   void Equalizer<UserType>::
-   AssertEqual(const UserType& expectedUserType, const UserType& actualUserType)
+   void Equalizer<UserType>::AssertEqual(const UserType& expectedUserType, const UserType& actualUserType)
    {
       ARE_EQUAL(expectedUserType.value, actualUserType.value);
    }

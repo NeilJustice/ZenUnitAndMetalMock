@@ -6,6 +6,8 @@ namespace ZenUnit
    class Equalizer<AnomalyOrException>
    {
    public:
-      static void AssertEqual(const AnomalyOrException& expectedAnomalyOrException, const AnomalyOrException& actualAnomalyOrException);
+      static void AssertEqual(
+         const AnomalyOrException& expectedAnomalyOrException,
+         const AnomalyOrException& actualAnomalyOrException);
    };
 }

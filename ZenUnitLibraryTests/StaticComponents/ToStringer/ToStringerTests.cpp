@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ZenUnitUtilsAndAssertionTests/Assertions/REGEX_MATCHES.h"
 #include "ZenUnitTestUtils/UserType.h"
-#include "ZenUnitTestUtils/UserTypeInsOpAndZenUnitPrintable.h"
+#include "ZenUnitTestUtils/UserTypeInsertionOperatorAndZenUnitPrintable.h"
 #include "ZenUnitTestUtils/UserTypeNonPrintable.h"
 #include "ZenUnitTestUtils/UserTypeOnlyZenUnitPrintable.h"
 
@@ -358,15 +358,15 @@ namespace ZenUnit
 
    TEST(ToString_TypeHasOStreamInsertionOperatorAndZenUnitPrint_ReturnsQuotedZenUnitPrintResult)
    {
-      const UserTypeInsOpAndZenUnitPrintable userTypeInsOpAndZenUnitPrintable{};
+      const UserTypeInsertionOperatorAndZenUnitPrintable userTypeInsOpAndZenUnitPrintable{};
       //
       const string toStringResult = ZenUnit::ToStringer::ToString(userTypeInsOpAndZenUnitPrintable);
       //
       ostringstream oss;
-      ZenUnit::Printer<UserTypeInsOpAndZenUnitPrintable>::Print(oss, userTypeInsOpAndZenUnitPrintable);
+      ZenUnit::Printer<UserTypeInsertionOperatorAndZenUnitPrintable>::Print(oss, userTypeInsOpAndZenUnitPrintable);
       const string zenUnitPrintResult = oss.str();
       ARE_EQUAL(zenUnitPrintResult, toStringResult);
-      ARE_EQUAL("UserTypeInsOpAndZenUnitPrintable", toStringResult);
+      ARE_EQUAL("UserTypeInsertionOperatorAndZenUnitPrintable", toStringResult);
    }
 
    TEST(ToStringConcat_ReturnsCommaSeparatedToStringedValues)

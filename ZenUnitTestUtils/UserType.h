@@ -18,7 +18,8 @@ namespace std
    {
       size_t operator()(const UserType& userType) const
       {
-         return static_cast<size_t>(userType.value);
+         const size_t valueAsSizeT = static_cast<size_t>(userType.value);
+         return valueAsSizeT;
       }
    };
 }

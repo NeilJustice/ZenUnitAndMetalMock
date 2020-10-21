@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnitTestUtils/UserType.h"
-#include "ZenUnitTestUtils/UserTypeInsOpAndZenUnitPrintable.h"
+#include "ZenUnitTestUtils/UserTypeInsertionOperatorAndZenUnitPrintable.h"
 #include "ZenUnitTestUtils/UserTypeNonPrintable.h"
 #include "ZenUnitTestUtils/UserTypeOnlyZenUnitPrintable.h"
 
@@ -37,10 +37,10 @@ namespace ZenUnit
       IS_TRUE(has_ostream_left_shift<int>::value);
       IS_TRUE(has_ostream_left_shift<int*>::value);
 
-      IS_TRUE(has_ostream_left_shift<UserTypeInsOpAndZenUnitPrintable>::value);
-      IS_TRUE(has_ostream_left_shift<UserTypeInsOpAndZenUnitPrintable&>::value);
-      IS_TRUE(has_ostream_left_shift<const UserTypeInsOpAndZenUnitPrintable&>::value);
-      IS_TRUE(has_ostream_left_shift<UserTypeInsOpAndZenUnitPrintable&&>::value);
+      IS_TRUE(has_ostream_left_shift<UserTypeInsertionOperatorAndZenUnitPrintable>::value);
+      IS_TRUE(has_ostream_left_shift<UserTypeInsertionOperatorAndZenUnitPrintable&>::value);
+      IS_TRUE(has_ostream_left_shift<const UserTypeInsertionOperatorAndZenUnitPrintable&>::value);
+      IS_TRUE(has_ostream_left_shift<UserTypeInsertionOperatorAndZenUnitPrintable&&>::value);
    }
 
    RUN_TESTS(has_ostream_left_shiftTests)

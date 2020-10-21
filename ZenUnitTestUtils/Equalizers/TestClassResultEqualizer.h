@@ -6,6 +6,8 @@ namespace ZenUnit
    class Equalizer<TestClassResult>
    {
    public:
-      static void AssertEqual(const TestClassResult& expectedTestClassResult, const TestClassResult& actualTestClassResult);
+      static void AssertEqual(
+         const TestClassResult& expectedTestClassResult,
+         const TestClassResult& actualTestClassResult);
    };
 }

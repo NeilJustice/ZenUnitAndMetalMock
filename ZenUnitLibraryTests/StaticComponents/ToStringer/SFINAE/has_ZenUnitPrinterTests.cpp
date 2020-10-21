@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnitTestUtils/UserType.h"
-#include "ZenUnitTestUtils/UserTypeInsOpAndZenUnitPrintable.h"
+#include "ZenUnitTestUtils/UserTypeInsertionOperatorAndZenUnitPrintable.h"
 #include "ZenUnitTestUtils/UserTypeNonPrintable.h"
 #include "ZenUnitTestUtils/UserTypeOnlyZenUnitPrintable.h"
 
@@ -65,7 +65,7 @@ namespace ZenUnit
 
       IS_TRUE(has_ZenUnitPrinter<UserType>::value);
       IS_TRUE(has_ZenUnitPrinter<UserTypeOnlyZenUnitPrintable>::value);
-      IS_TRUE(has_ZenUnitPrinter<UserTypeInsOpAndZenUnitPrintable>::value);
+      IS_TRUE(has_ZenUnitPrinter<UserTypeInsertionOperatorAndZenUnitPrintable>::value);
       IS_TRUE(has_ZenUnitPrinter<Namespace::StructInsideNamespace_ZenUnitPrintOutsideNamespace>::value);
    }
 

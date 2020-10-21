@@ -3,32 +3,17 @@
 namespace ZenUnit
 {
    TESTS(IS_NOT_DEFAULT_VALUETests)
-   AFACT(ValueIsNotDefault_DoesNotThrowException)
-   AFACT(IntIsZero_Throws)
-   AFACT(DoubleIsZero_Throws)
-   AFACT(FloatIsZero_Throws)
-   AFACT(StringIsEmptyString_Throws)
-   AFACT(IntVectorIsEmpty_Throws)
-   AFACT(UserTypeIsDefault_Throws)
+   AFACT(ValueIsNotDefaultValue_DoesNotThrowAnomaly)
+   AFACT(IntIsZero_ThrowsAnomaly)
+   AFACT(FloatIsZero_ThrowsAnomaly)
+   AFACT(DoubleIsZero_ThrowsAnomaly)
+   AFACT(StringIsEmptyString_ThrowsAnomaly)
+   AFACT(IntVectorIsEmpty_ThrowsAnomaly)
+   AFACT(UserTypeIsDefaultValue_ThrowsAnomaly)
+   AFACT(UserTypeIsDefaultValue_ThrowsAnomaly__MessagesTestCase)
    EVIDENCE
 
-   struct IntializerConstructable
-   {
-      int value;
-
-      friend bool operator==(const IntializerConstructable& lhs, const IntializerConstructable& rhs)
-      {
-         return lhs.value == rhs.value;
-      }
-
-      friend ostream& operator<<(ostream& os, const IntializerConstructable& right)
-      {
-         os << "InitializerConstructable@" << right.value;
-         return os;
-      }
-   };
-
-   TEST(ValueIsNotDefault_DoesNotThrowException)
+   TEST(ValueIsNotDefaultValue_DoesNotThrowAnomaly)
    {
       IS_NOT_DEFAULT_VALUE(-1);
       IS_NOT_DEFAULT_VALUE(1);
@@ -61,7 +46,7 @@ namespace ZenUnit
       IS_NOT_DEFAULT_VALUE(nonDefaultUserType);
    }
 
-   TEST(IntIsZero_Throws)
+   TEST(IntIsZero_ThrowsAnomaly)
    {
       THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(0), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_NOT_DEFAULT_VALUE(0)",
@@ -70,16 +55,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(DoubleIsZero_Throws)
-   {
-      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(0.0), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: IS_NOT_DEFAULT_VALUE(0.0)",
-"Expected: Not T{}",
-"  Actual: 0.000000",
-"File.cpp(1)"));
-   }
-
-   TEST(FloatIsZero_Throws)
+   TEST(FloatIsZero_ThrowsAnomaly)
    {
       THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(0.0f), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_NOT_DEFAULT_VALUE(0.0f)",
@@ -88,7 +64,16 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(StringIsEmptyString_Throws)
+   TEST(DoubleIsZero_ThrowsAnomaly)
+   {
+      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(0.0), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: IS_NOT_DEFAULT_VALUE(0.0)",
+"Expected: Not T{}",
+"  Actual: 0.000000",
+"File.cpp(1)"));
+   }
+
+   TEST(StringIsEmptyString_ThrowsAnomaly)
    {
       THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(""s), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_NOT_DEFAULT_VALUE(\"\"s)",
@@ -97,7 +82,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(IntVectorIsEmpty_Throws)
+   TEST(IntVectorIsEmpty_ThrowsAnomaly)
    {
       const vector<int> defaultIntVector;
       THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(defaultIntVector), Anomaly, TestUtil::NewlineConcat("",
@@ -109,13 +94,25 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(UserTypeIsDefault_Throws)
+   TEST(UserTypeIsDefaultValue_ThrowsAnomaly)
    {
       const UserType defaultUserType;
       THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(defaultUserType), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_NOT_DEFAULT_VALUE(defaultUserType)",
 "Expected: Not T{}",
 "  Actual: UserType@0",
+"File.cpp(1)"));
+   }
+
+   TEST(UserTypeIsDefaultValue_ThrowsAnomaly__MessagesTestCase)
+   {
+      const UserType defaultUserType;
+      const string messageA = "A", messageB = "B";
+      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(defaultUserType, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: IS_NOT_DEFAULT_VALUE(defaultUserType, messageA, messageB)",
+"Expected: Not T{}",
+"  Actual: UserType@0",
+" Message: \"A\", \"B\"",
 "File.cpp(1)"));
    }
 

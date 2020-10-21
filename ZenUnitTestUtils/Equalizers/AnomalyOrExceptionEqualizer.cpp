@@ -4,7 +4,9 @@
 
 namespace ZenUnit
 {
-   void Equalizer<AnomalyOrException>::AssertEqual(const AnomalyOrException& expectedAnomalyOrException, const AnomalyOrException& actualAnomalyOrException)
+   void Equalizer<AnomalyOrException>::AssertEqual(
+      const AnomalyOrException& expectedAnomalyOrException,
+      const AnomalyOrException& actualAnomalyOrException)
    {
       POINTEES_ARE_EQUAL(expectedAnomalyOrException.anomaly, actualAnomalyOrException.anomaly);
       ARE_EQUAL(expectedAnomalyOrException.exceptionTypeName, actualAnomalyOrException.exceptionTypeName);

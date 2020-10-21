@@ -8,7 +8,9 @@ using namespace std;
 #include "MetalMock.h"
 #include "ZenUnit.h"
 
+#include "ZenUnitTestUtils/IntializerConstructable.h"
 #include "ZenUnitTestUtils/UserType.h"
+#include "ZenUnitTestUtils/UserTypeOnlyZenUnitEqualizable.h"
 #include "ZenUnitTestUtils/TestUtil.h"
 
 #endif

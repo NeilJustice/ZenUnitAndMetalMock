@@ -5,7 +5,9 @@
 
 namespace ZenUnit
 {
-   void Equalizer<TestClassResult>::AssertEqual(const TestClassResult& expectedTestClassResult, const TestClassResult& actualTestClassResult)
+   void Equalizer<TestClassResult>::AssertEqual(
+      const TestClassResult& expectedTestClassResult,
+      const TestClassResult& actualTestClassResult)
    {
       VECTORS_ARE_EQUAL(expectedTestClassResult._testResults, actualTestClassResult._testResults);
    }

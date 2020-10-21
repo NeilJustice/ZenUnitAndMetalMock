@@ -3,8 +3,7 @@
 
 namespace ZenUnit
 {
-   void Printer<UserTypeOnlyZenUnitPrintable>::
-      Print(ostream& os, const UserTypeOnlyZenUnitPrintable&)
+   void Printer<UserTypeOnlyZenUnitPrintable>::Print(ostream& os, const UserTypeOnlyZenUnitPrintable&)
    {
       os << "UserTypeOnlyZenUnitPrintable";
    }

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnitTestUtils/UserType.h"
-#include "ZenUnitTestUtils/UserTypeInsOpAndZenUnitPrintable.h"
+#include "ZenUnitTestUtils/UserTypeInsertionOperatorAndZenUnitPrintable.h"
 #include "ZenUnitTestUtils/UserTypeNonPrintable.h"
 #include "ZenUnitTestUtils/UserTypeOnlyZenUnitPrintable.h"
 

@@ -166,11 +166,11 @@ Example ZenUnit Command Line Arguments:
 #define IS_ZERO(value, ...) \
    ZenUnit::IS_ZERO_Defined(VRT(value), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that value == T{} is true.
+// Asserts that ZenUnit::Equalizer<T>::AssertEqual(T{}, value) does not throw a ZenUnit::Anomaly exception.
 #define IS_DEFAULT_VALUE(value, ...) \
    ZenUnit::IS_DEFAULT_VALUE_Defined(VRT(value), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that value == T{} is false.
+// Asserts that ZenUnit::Equalizer<T>::AssertEqual(T{}, value) throws a ZenUnit::Anomaly exception.
 #define IS_NOT_DEFAULT_VALUE(value, ...) \
    ZenUnit::IS_NOT_DEFAULT_VALUE_Defined(VRT(value), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
@@ -2802,10 +2802,10 @@ namespace ZenUnit
    }
 
    template<typename ValueType, typename DefaultValueType, typename... MessageTypes>
-   void IS_DEFAULT_VALUE_ThrowAnomaly(VRText<ValueType> valueVRT, const DefaultValueType& defaultValue,
+   void IS_DEFAULT_VALUE_ThrowAnomaly(VRText<ValueType> valueVRT, const DefaultValueType& defaultConstructedValue,
       FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
    {
-      const std::string expectedValueString = ToStringer::ToString(defaultValue);
+      const std::string expectedValueString = ToStringer::ToString(defaultConstructedValue);
       const std::string actualValueString = ToStringer::ToString(valueVRT.value);
       throw Anomaly("IS_DEFAULT_VALUE", valueVRT.text, "", "", messagesText, Anomaly::Default(),
          expectedValueString, actualValueString, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
@@ -2815,11 +2815,16 @@ namespace ZenUnit
    void IS_DEFAULT_VALUE_Defined(VRText<ValueType> valueVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
    {
-      static const typename std::remove_reference<ValueType>::type defaultConstructedValueType{};
-      const bool valueIsDefaultValue = valueVRT.value == defaultConstructedValueType;
-      if (!valueIsDefaultValue)
+      static const typename std::remove_reference<ValueType>::type defaultConstructedValue{};
+      const ValueType& value = valueVRT.value;
+      try
       {
-         IS_DEFAULT_VALUE_ThrowAnomaly(valueVRT, defaultConstructedValueType, fileLine, messagesText, std::forward<MessageTypes>(messages)...);
+         ARE_EQUAL(defaultConstructedValue, value);
+      }
+      catch (const ZenUnit::Anomaly&)
+      {
+         IS_DEFAULT_VALUE_ThrowAnomaly(valueVRT, defaultConstructedValue,
+            fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
