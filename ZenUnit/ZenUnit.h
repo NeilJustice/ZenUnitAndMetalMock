@@ -261,20 +261,20 @@ Example ZenUnit Command Line Arguments:
    ZenUnit::MAPS_ARE_EQUAL_Defined(VRT(expectedMap), VRT(actualMap), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that the first and second element of expectedPair is equal to the first and second element of actualPair.
-#define PAIRS_EQUAL(expectedPair, actualPair, ...) \
-   ZenUnit::PAIRS_EQUAL_Defined(VRT(expectedPair), VRT(actualPair), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+#define PAIRS_ARE_EQUAL(expectedPair, actualPair, ...) \
+   ZenUnit::PAIRS_ARE_EQUAL_Defined(VRT(expectedPair), VRT(actualPair), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that elements in expectedArray are equal to elements in actualArray, up to lengthToCompare number of elements.
-#define ARRAYS_EQUAL(expectedArray, actualArray, numberOfElementsToCompare, ...) \
-   ZenUnit::ARRAYS_EQUAL_Defined(NAKED_VRT(expectedArray), NAKED_VRT(actualArray), numberOfElementsToCompare, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+#define ARRAYS_ARE_EQUAL(expectedArray, actualArray, numberOfElementsToCompare, ...) \
+   ZenUnit::ARRAYS_ARE_EQUAL_Defined(NAKED_VRT(expectedArray), NAKED_VRT(actualArray), numberOfElementsToCompare, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that each element of std::array<T, Size> expectedStdArray is equal to each element of std::array<T, Size> actualStdArray.
-#define STD_ARRAYS_EQUAL(expectedStdArray, actualStdArray, ...) \
-   ZenUnit::STD_ARRAYS_EQUAL_Defined(NAKED_VRT(expectedStdArray), NAKED_VRT(actualStdArray), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+#define STD_ARRAYS_ARE_EQUAL(expectedStdArray, actualStdArray, ...) \
+   ZenUnit::STD_ARRAYS_ARE_EQUAL_Defined(NAKED_VRT(expectedStdArray), NAKED_VRT(actualStdArray), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that expectedElement is contained in collection.
-#define CONTAINS_ELEMENT(expectedElement, collection, ...) \
-   ZenUnit::CONTAINS_ELEMENT_Defined(VRT(expectedElement), VRT(collection), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+#define CONTAINS_ELEMENT(expectedElement, dataStructure, ...) \
+   ZenUnit::CONTAINS_ELEMENT_Defined(VRT(expectedElement), VRT(dataStructure), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
 // ZenUnit::Equalizer<T> Assertions
@@ -2523,13 +2523,13 @@ namespace ZenUnit
    }
 
    template<typename ElementType, typename CollectionType, typename... MessageTypes>
-   void CONTAINS_ELEMENT_Defined(VRText<CollectionType> expectedElementVRT, VRText<ElementType> collectionVRT,
+   void CONTAINS_ELEMENT_Defined(VRText<CollectionType> expectedElementVRT, VRText<ElementType> dataStructureVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-     const auto findIter = std::find(collectionVRT.value.cbegin(), collectionVRT.value.cend(), expectedElementVRT.value);
-      if (findIter == collectionVRT.value.end())
+     const auto findIter = std::find(dataStructureVRT.value.cbegin(), dataStructureVRT.value.cend(), expectedElementVRT.value);
+      if (findIter == dataStructureVRT.value.end())
       {
-         CONTAINS_ELEMENT_ThrowAnomaly(expectedElementVRT, collectionVRT,
+         CONTAINS_ELEMENT_ThrowAnomaly(expectedElementVRT, dataStructureVRT,
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
@@ -3031,17 +3031,17 @@ namespace ZenUnit
    }
 
    template<typename PairType, typename... MessageTypes>
-   void PAIRS_EQUAL_ToStringAndRethrow(const Anomaly& becauseAnomaly, VRText<PairType> expectedPairVRT, VRText<PairType> actualPairVRT,
+   void PAIRS_ARE_EQUAL_ToStringAndRethrow(const Anomaly& becauseAnomaly, VRText<PairType> expectedPairVRT, VRText<PairType> actualPairVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expected = ToStringer::ToString(expectedPairVRT.value);
       const std::string actual = ToStringer::ToString(actualPairVRT.value);
-      throw Anomaly("PAIRS_EQUAL", expectedPairVRT.text, actualPairVRT.text, "", messagesText,
+      throw Anomaly("PAIRS_ARE_EQUAL", expectedPairVRT.text, actualPairVRT.text, "", messagesText,
          becauseAnomaly, expected, actual, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename PairType, typename... MessageTypes>
-   void PAIRS_EQUAL_Defined(VRText<PairType> expectedPairVRT, VRText<PairType> actualPairVRT,
+   void PAIRS_ARE_EQUAL_Defined(VRText<PairType> expectedPairVRT, VRText<PairType> actualPairVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       try
@@ -3053,7 +3053,7 @@ namespace ZenUnit
       }
       catch (const Anomaly& anomaly)
       {
-         PAIRS_EQUAL_ToStringAndRethrow(anomaly, expectedPairVRT, actualPairVRT,
+         PAIRS_ARE_EQUAL_ToStringAndRethrow(anomaly, expectedPairVRT, actualPairVRT,
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
@@ -3116,19 +3116,19 @@ namespace ZenUnit
    }
 
    template<typename T, typename... MessageTypes>
-   void ARRAYS_EQUAL_ToStringAndRethrow(
+   void ARRAYS_ARE_EQUAL_ToStringAndRethrow(
       const Anomaly& becauseAnomaly, VRText<T> expectedArrayVRT, VRText<T> actualArrayVRT, size_t numberOfElementsToCompare,
       FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
    {
       const std::string* arrayTypeName = Type::GetName<T>();
       const std::string numberOfElementsToCompareString = std::to_string(numberOfElementsToCompare);
-      throw Anomaly("ARRAYS_EQUAL", expectedArrayVRT.text, actualArrayVRT.text, numberOfElementsToCompareString, messagesText,
+      throw Anomaly("ARRAYS_ARE_EQUAL", expectedArrayVRT.text, actualArrayVRT.text, numberOfElementsToCompareString, messagesText,
          becauseAnomaly, *arrayTypeName, *arrayTypeName, ExpectedActualFormat::Fields,
          fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename T, typename... MessageTypes>
-   void ARRAYS_EQUAL_Defined(
+   void ARRAYS_ARE_EQUAL_Defined(
       VRText<T> expectedArrayVRT, VRText<T> actualArrayVRT, size_t numberOfElementsToCompare,
       FileLine fileLine, const char* messagesText, MessageTypes&& ... messages)
    {
@@ -3149,25 +3149,25 @@ namespace ZenUnit
       }
       catch (const Anomaly& anomaly)
       {
-         ARRAYS_EQUAL_ToStringAndRethrow(anomaly, expectedArrayVRT, actualArrayVRT, numberOfElementsToCompare,
+         ARRAYS_ARE_EQUAL_ToStringAndRethrow(anomaly, expectedArrayVRT, actualArrayVRT, numberOfElementsToCompare,
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
    template<typename T, std::size_t Size, typename... MessageTypes>
-   void STD_ARRAYS_EQUAL_ToStringAndRethrow(
+   void STD_ARRAYS_ARE_EQUAL_ToStringAndRethrow(
       const Anomaly& becauseAnomaly, VRText<std::array<T, Size>> expectedStdArrayVRT, VRText<std::array<T, Size>> actualStdArrayVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedToString = ToStringer::ToString(expectedStdArrayVRT.value);
       const std::string actualToString = ToStringer::ToString(actualStdArrayVRT.value);
-      throw Anomaly("STD_ARRAYS_EQUAL", expectedStdArrayVRT.text, actualStdArrayVRT.text, "", messagesText,
+      throw Anomaly("STD_ARRAYS_ARE_EQUAL", expectedStdArrayVRT.text, actualStdArrayVRT.text, "", messagesText,
          becauseAnomaly, expectedToString, actualToString, ExpectedActualFormat::Fields,
          fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename T, std::size_t Size, typename... MessageTypes>
-   void STD_ARRAYS_EQUAL_Defined(
+   void STD_ARRAYS_ARE_EQUAL_Defined(
       VRText<std::array<T, Size>> expectedStdArrayVRT, VRText<std::array<T, Size>> actualStdArrayVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
@@ -3189,7 +3189,7 @@ namespace ZenUnit
       }
       catch (const Anomaly& becauseAnomaly)
       {
-         STD_ARRAYS_EQUAL_ToStringAndRethrow(becauseAnomaly, expectedStdArrayVRT, actualStdArrayVRT,
+         STD_ARRAYS_ARE_EQUAL_ToStringAndRethrow(becauseAnomaly, expectedStdArrayVRT, actualStdArrayVRT,
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }

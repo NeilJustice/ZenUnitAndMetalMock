@@ -72,7 +72,7 @@ TEST(CallAllMacros)
    SETS_ARE_EQUAL(std::unordered_set<int>{}, std::unordered_set<int>{});
    CONTAINS_ELEMENT(0, std::vector<int>{0});
    IS_EMPTY(std::vector<int>());
-   STD_ARRAYS_EQUAL((std::array<int, 5>{}), (std::array<int, 5>{}));
+   STD_ARRAYS_ARE_EQUAL((std::array<int, 5>{}), (std::array<int, 5>{}));
 
    // Exceptions
    THROWS_EXCEPTION([]{ throw std::runtime_error("what"); }(), std::runtime_error, "what");
