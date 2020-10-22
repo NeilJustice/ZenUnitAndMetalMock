@@ -2,7 +2,7 @@
 
 [![Standard](https://img.shields.io/badge/c%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B17) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-ZenUnit is a C++ single-header unit testing framework designed for assertion exactness, error message clarity, long-term test code readability, and supports testing with randomized values to maximize [mutation coverage](https://en.wikipedia.org/wiki/Mutation_testing), the next frontier in software quality metrics beyond code coverage. ZenUnit's signature feature is its convenient syntax for writing value-parameterized and type-parameterized unit tests.
+ZenUnit is a C++ single-header unit testing framework designed for assertion exactness, error message clarity, long-term test code readability, and supports testing with randomized values to maximize [mutation coverage](https://en.wikipedia.org/wiki/Mutation_testing), the next frontier in software quality metrics beyond code coverage. ZenUnit's key feature is its convenient syntax for writing value-parameterized and type-parameterized unit tests.
 
 MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions and features a convenient arrange-act-assert syntax for specifying function return values and expected function call arguments from and to virtual functions, non-virtual/template functions, static functions, and global/free functions. MetalMock is a "double strict" mocking framework so as to suitable for rigorously confirming the correcntess of safety-critical C++ software - meaning that all MetalMocked function calls must be first explicitly expected to be called and then explicitly asserted as having been called.
 
@@ -811,8 +811,9 @@ ZenUnit provides the following random-value-generating functions for maximizing 
 * [The many authors of Google Test and Google Mock](https://github.com/google/googletest)
 * [The many authors of Typemock Isolator and Typemock Isolator++](https://www.typemock.com)
 * [Roy Osherove, the author of The Art of Unit Testing, a book that early on influenced my thinking on unit testing](https://osherove.com/)
+* [Phil Nash and the many authors of Catch2](https://github.com/catchorg/Catch2)
 * [Viktor Kirilov, the author of doctest and much more](https://github.com/onqtam)
 * [Martin Moene, the author of lest and much more](https://github.com/martinmoene)
 * [Jason Turner, host of C++ Weekly and much more](https://github.com/lefticus)
-* [My colleagues at Quantlab Financial](https://www.quantlab.com)
+* [My colleagues at Quantlab](https://www.quantlab.com)
 * [My colleagues at Emerson](https://www.emerson.com/en-us/automation/deltav)
