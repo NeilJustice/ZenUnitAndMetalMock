@@ -212,9 +212,9 @@ Example ZenUnit Command Line Arguments:
 #define STD_FUNCTION_TARGETS(expectedStaticOrFreeFunction, stdFunction, ...) \
    ZenUnit::STD_FUNCTION_TARGETS_Defined<decltype(expectedStaticOrFreeFunction)>(expectedStaticOrFreeFunction, #expectedStaticOrFreeFunction, VRT(stdFunction), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that a std::function targets static_cast<expectedOverloadTypeInTheFormOfAUsing>(expectedStaticOrFreeFunction).
-#define STD_FUNCTION_TARGETS_OVERLOAD(expectedOverloadTypeInTheFormOfAUsing, expectedStaticOrFreeFunction, stdFunction, ...) \
-   ZenUnit::STD_FUNCTION_TARGETS_OVERLOAD_Defined(static_cast<expectedOverloadTypeInTheFormOfAUsing>(expectedStaticOrFreeFunction), #expectedStaticOrFreeFunction, VRT(stdFunction), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+// Asserts that a std::function targets static_cast<expectedFunctionOverloadAsAUsing>(expectedStaticOrFreeFunction).
+#define STD_FUNCTION_TARGETS_OVERLOAD(expectedFunctionOverloadAsAUsing, expectedStaticOrFreeFunction, stdFunction, ...) \
+   ZenUnit::STD_FUNCTION_TARGETS_OVERLOAD_Defined(static_cast<expectedFunctionOverloadAsAUsing>(expectedStaticOrFreeFunction), #expectedStaticOrFreeFunction, VRT(stdFunction), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
 // Memory Allocation Assertions
