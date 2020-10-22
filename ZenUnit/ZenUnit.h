@@ -253,8 +253,8 @@ Example ZenUnit Command Line Arguments:
    ZenUnit::INDEXABLES_ARE_EQUAL_Defined("VECTORS_ARE_EQUAL", expectedVector, #expectedVector, actualVector, #actualVector, FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that the elements of expectedSet are equal to the elements of actualSet.
-#define SETS_EQUAL(expectedSet, actualSet, ...) \
-   ZenUnit::SETS_EQUAL_Defined(VRT(expectedSet), VRT(actualSet), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+#define SETS_ARE_EQUAL(expectedSet, actualSet, ...) \
+   ZenUnit::SETS_ARE_EQUAL_Defined(VRT(expectedSet), VRT(actualSet), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that the elements of expectedMap are equal to the elements of actualMap.
 #define MAPS_EQUAL(expectedMap, actualMap, ...) \
@@ -3232,19 +3232,19 @@ namespace ZenUnit
    }
 
    template<typename SetType, typename... MessageTypes>
-   void SETS_EQUAL_ThrowAnomaly(
+   void SETS_ARE_EQUAL_ThrowAnomaly(
       const Anomaly& becauseAnomaly, VRText<SetType> expectedSetVRT, VRText<SetType> actualSetVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string toStringedExpectedSet = ToStringer::ToString(expectedSetVRT.value);
       const std::string toStringedActualSet = ToStringer::ToString(actualSetVRT.value);
-      throw Anomaly("SETS_EQUAL", expectedSetVRT.text, actualSetVRT.text, "", messagesText,
+      throw Anomaly("SETS_ARE_EQUAL", expectedSetVRT.text, actualSetVRT.text, "", messagesText,
          becauseAnomaly, toStringedExpectedSet, toStringedActualSet,
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename SetType, typename... MessageTypes>
-   void SETS_EQUAL_Defined(
+   void SETS_ARE_EQUAL_Defined(
       VRText<SetType> expectedSetVRT, VRText<SetType> actualSetVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
@@ -3260,7 +3260,7 @@ namespace ZenUnit
       }
       catch (const Anomaly& becauseAnomaly)
       {
-         SETS_EQUAL_ThrowAnomaly(becauseAnomaly, expectedSetVRT, actualSetVRT,
+         SETS_ARE_EQUAL_ThrowAnomaly(becauseAnomaly, expectedSetVRT, actualSetVRT,
             fileLine, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
