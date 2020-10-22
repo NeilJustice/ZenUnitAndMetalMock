@@ -62,7 +62,7 @@ namespace MetalMock
       _metalMocker->_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith("std::runtime_error", 1, what);
       IS_TRUE(_metalMocker->_wasExpected);
 
-      _metalMocker->_wasExpected = false; // Set _expected to false to prevent Fatal EBNA
+      _metalMocker->_wasExpected = false; // Set _expected to false to prevent MetalMocked Function Expected But Not Asserted
    }
 
    TEST(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue_CustomException_testcase)
@@ -75,7 +75,7 @@ namespace MetalMock
       _metalMocker->_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith("CustomException", 3, "123.3");
       IS_TRUE(_metalMocker->_wasExpected);
 
-      _metalMocker->_wasExpected = false; // Set _expected to false to prevent Fatal EBNA
+      _metalMocker->_wasExpected = false; // Set _expected to false to prevent MetalMocked Function Expected But Not Asserted
       CustomException customException(1, '2', 3.3); // 100% code coverage
    }
 
