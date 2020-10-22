@@ -4,6 +4,7 @@ namespace ZenUnit
 {
    TESTS(RandomTests)
    AFACT(Random_AllIntegerTypes_ReturnsRandomValueBetweenMinAndMaxForThatType)
+   AFACT(Random_TIsAVector_ReturnsRandomVectorOfT)
    AFACT(RandomNon0_ReturnsRandomValueBetweenMinAndMaxForThatTypeButNeverZero)
    AFACT(Random_Float_ReturnsRandomFloat)
    AFACT(Random_Double_ReturnsRandomDouble)
@@ -25,6 +26,12 @@ namespace ZenUnit
       Random<long long>();
       Random<unsigned long long>();
       Random<size_t>();
+   }
+
+   TEST(Random_TIsAVector_ReturnsRandomVectorOfT)
+   {
+      vector<int> randomIntVector = Random<vector<int>>();
+      IS_TRUE(randomIntVector.size() <= 3);
    }
 
    TEST(RandomNon0_ReturnsRandomValueBetweenMinAndMaxForThatTypeButNeverZero)

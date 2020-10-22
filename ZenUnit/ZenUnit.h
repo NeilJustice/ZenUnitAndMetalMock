@@ -6726,6 +6726,10 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
    };
 
+   //
+   // Random Value Generators
+   //
+
    template<typename T>
    T RandomBetween(long long inclusiveMinValue, unsigned long long inclusiveMaxValue)
    {
@@ -6743,8 +6747,16 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<typename T>
    T Random()
    {
-      const T randomT = RandomBetween<T>(std::numeric_limits<T>::min(), std::numeric_limits<T>::max());
-      return randomT;
+      if constexpr (is_vector<T>::value)
+      {
+         const std::vector<typename T::value_type> randomVector = RandomVector<typename T::value_type>();
+         return randomVector;
+      }
+      else
+      {
+         const T randomInteger = RandomBetween<T>(std::numeric_limits<T>::min(), std::numeric_limits<T>::max());
+         return randomInteger;
+      }
    }
 
    template<typename T>
