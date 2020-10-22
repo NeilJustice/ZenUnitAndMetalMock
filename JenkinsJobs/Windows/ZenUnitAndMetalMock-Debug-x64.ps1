@@ -6,5 +6,6 @@ python.exe ZenUnitPy\ZenUnitPy\BuildAndInstallZenUnitAndMetalMock.py `
    --cmake-architecture="x64" `
    --cmake-build-type="Debug" `
    --cmake-definitions="-DCMAKE_INSTALL_PREFIX=$installFolder"
-   
+exit $LastExitCode
+
 Set-PSDebug -Trace 0
