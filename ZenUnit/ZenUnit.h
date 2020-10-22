@@ -1131,6 +1131,16 @@ namespace ZenUnit
       }
    };
 
+   //
+   // Custom Type Traits
+   //
+
+   template<typename T>
+   struct is_vector : std::false_type {};
+
+   template<typename T>
+   struct is_vector<std::vector<T>> : std::true_type {};
+
    template<typename T>
    class has_to_string
    {

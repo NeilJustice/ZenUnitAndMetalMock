@@ -1,5 +1,4 @@
 #include "pch.h"
-//#include "ZenUnitTestUtils/CustomPolicyClasses.h"
 
 namespace ZenUnit
 {
@@ -46,21 +45,6 @@ namespace ZenUnit
       {
          FAIL_TEST("Unexpected ZenUnit::Printer::Print() set string: " + zenUnitPrintedSet); // LCOV_EXCL_LINE
       }
-
-//      // Does-compile confirmation
-//      const string expectedSetTypeNameWithCustomLessCompator = *Type::GetName<SetType<T, CustomLessComparator<T>>>();
-//      ZenUnit::Printer<SetType<T, CustomLessComparator<T>>>::Print(expectedMessageBuilder, {});
-//      ARE_EQUAL(expectedSetTypeNameWithCustomLessCompator + R"(
-//{
-//})", expectedMessageBuilder.str());
-//      expectedMessageBuilder = ostringstream();
-//
-//      // Does-compile confirmation
-//      const string expectedSetTypeNameWithCustomLessCompatorAndAllocator = *Type::GetName<SetType<T, CustomLessComparator<T>, CustomAllocator<T>>>();
-//      ZenUnit::Printer<SetType<T, CustomLessComparator<T>, CustomAllocator<T>>>::Print(expectedMessageBuilder, {});
-//      ARE_EQUAL(expectedSetTypeNameWithCustomLessCompatorAndAllocator + R"(
-//{
-//})", expectedMessageBuilder.str());
    }
 
    RUN_TEMPLATE_TESTS(SetZenUnitPrinterTests, set, int)

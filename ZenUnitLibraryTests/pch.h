@@ -33,3 +33,10 @@ using namespace std;
 using namespace ZenUnit;
 
 #endif
+
+// ZenUnitTestUtils
+#include "ZenUnitTestUtils/TestUtil.h"
+#include "ZenUnitTestUtils/UserType.h"
+#include "ZenUnitTestUtils/UserTypeInsertionOperatorAndZenUnitPrintable.h"
+#include "ZenUnitTestUtils/UserTypeNonPrintable.h"
+#include "ZenUnitTestUtils/UserTypeOnlyZenUnitPrintable.h"
