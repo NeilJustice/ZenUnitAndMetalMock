@@ -257,8 +257,8 @@ Example ZenUnit Command Line Arguments:
    ZenUnit::SETS_ARE_EQUAL_Defined(VRT(expectedSet), VRT(actualSet), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that the elements of expectedMap are equal to the elements of actualMap.
-#define MAPS_EQUAL(expectedMap, actualMap, ...) \
-   ZenUnit::MAPS_EQUAL_Defined(VRT(expectedMap), VRT(actualMap), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+#define MAPS_ARE_EQUAL(expectedMap, actualMap, ...) \
+   ZenUnit::MAPS_ARE_EQUAL_Defined(VRT(expectedMap), VRT(actualMap), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that the first and second element of expectedPair is equal to the first and second element of actualPair.
 #define PAIRS_EQUAL(expectedPair, actualPair, ...) \
@@ -2912,7 +2912,7 @@ namespace ZenUnit
    };
 
    template<typename... MessageTypes>
-   void MAPS_EQUAL_ThrowAnomaly(
+   void MAPS_ARE_EQUAL_ThrowAnomaly(
       const char* failedPrefixSpaces,
       const char* expectedMapText,
       const char* actualMapText,
@@ -2922,12 +2922,12 @@ namespace ZenUnit
       const char* messagesText,
       MessageTypes&&... messages)
    {
-      const std::string failedLinePrefix = String::Concat(failedPrefixSpaces, "Failed: MAPS_EQUAL(", expectedMapText, ", ", actualMapText);
+      const std::string failedLinePrefix = String::Concat(failedPrefixSpaces, "Failed: MAPS_ARE_EQUAL(", expectedMapText, ", ", actualMapText);
       throw Anomaly(failedLinePrefix, whyBody, fileLine, messagePrefixSpaces, messagesText, std::forward<MessageTypes>(messages)...);
    }
 
    template<typename KeyType>
-   std::string MAPS_EQUAL_MakeWhyBody_ExpectedKeyNotInActualMap(const KeyType& expectedKey)
+   std::string MAPS_ARE_EQUAL_MakeWhyBody_ExpectedKeyNotInActualMap(const KeyType& expectedKey)
    {
       const std::string toStringedExpectedKey = ToStringer::ToString<KeyType>(expectedKey);
       const std::string whyBody = String::Concat(
@@ -2937,7 +2937,7 @@ namespace ZenUnit
    }
 
    template<typename KeyType, typename ValueType, typename MapType>
-   std::string MAPS_EQUAL_MakeWhyBody_KeysEqualValuesNotEqual(
+   std::string MAPS_ARE_EQUAL_MakeWhyBody_KeysEqualValuesNotEqual(
       const KeyType& expectedKey, const ValueType& expectedValue, const MapType& actualMap)
    {
       const std::string toStringedExpectedKey = ToStringer::ToString<KeyType>(expectedKey);
@@ -2954,7 +2954,7 @@ namespace ZenUnit
       return whyBody;
    }
 
-   inline std::string MAPS_EQUAL_MakeWhyBody_SizesNotEqual(size_t expectedMapSize, size_t actualMapSize)
+   inline std::string MAPS_ARE_EQUAL_MakeWhyBody_SizesNotEqual(size_t expectedMapSize, size_t actualMapSize)
    {
       const std::string whyBody = String::Concat(
          " Because: ARE_EQUAL(expectedMap.size(), actualMap.size()) failed\n",
@@ -2964,7 +2964,7 @@ namespace ZenUnit
    }
 
    template<typename MapType, typename... MessageTypes>
-   void MAPS_EQUAL_Defined(VRText<MapType> expectedMapVRT, VRText<MapType> actualMapVRT,
+   void MAPS_ARE_EQUAL_Defined(VRText<MapType> expectedMapVRT, VRText<MapType> actualMapVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const char* const expectedMapText = expectedMapVRT.text;
@@ -2977,8 +2977,8 @@ namespace ZenUnit
       }
       catch (const Anomaly&)
       {
-         MAPS_EQUAL_ThrowAnomaly("  ", expectedMapText, actualMapText,
-            MAPS_EQUAL_MakeWhyBody_SizesNotEqual(expectedMap.size(), actualMap.size()),
+         MAPS_ARE_EQUAL_ThrowAnomaly("  ", expectedMapText, actualMapText,
+            MAPS_ARE_EQUAL_MakeWhyBody_SizesNotEqual(expectedMap.size(), actualMap.size()),
             fileLine, " ", messagesText, std::forward<MessageTypes>(messages)...);
       }
       for (const auto& expectedKeyValuePair : expectedMapVRT.value)
@@ -2989,16 +2989,16 @@ namespace ZenUnit
          const bool mapContainsKey = containsKeyValue.first;
          if (!mapContainsKey)
          {
-            MAPS_EQUAL_ThrowAnomaly(" ", expectedMapText, actualMapText,
-               MAPS_EQUAL_MakeWhyBody_ExpectedKeyNotInActualMap(expectedKey),
+            MAPS_ARE_EQUAL_ThrowAnomaly(" ", expectedMapText, actualMapText,
+               MAPS_ARE_EQUAL_MakeWhyBody_ExpectedKeyNotInActualMap(expectedKey),
                fileLine, "", messagesText, std::forward<MessageTypes>(messages)...);
          }
          const bool mapContainsValue = containsKeyValue.second;
          if (!mapContainsValue)
          {
             assert_true(containsKeyValue.first);
-            MAPS_EQUAL_ThrowAnomaly(" ", expectedMapText, actualMapText,
-               MAPS_EQUAL_MakeWhyBody_KeysEqualValuesNotEqual(expectedKey, expectedValue, actualMap),
+            MAPS_ARE_EQUAL_ThrowAnomaly(" ", expectedMapText, actualMapText,
+               MAPS_ARE_EQUAL_MakeWhyBody_KeysEqualValuesNotEqual(expectedKey, expectedValue, actualMap),
                fileLine, "", messagesText, std::forward<MessageTypes>(messages)...);
          }
       }
@@ -6685,7 +6685,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          const std::map<KeyType, ValueType, PredicateType, AllocatorType>& expectedStdMap,
          const std::map<KeyType, ValueType, PredicateType, AllocatorType>& actualStdMap)
       {
-         MAPS_EQUAL(expectedStdMap, actualStdMap);
+         MAPS_ARE_EQUAL(expectedStdMap, actualStdMap);
       }
    };
 
@@ -6702,7 +6702,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          const std::unordered_map<KeyType, ValueType, HasherType, KeyEqualityComparator, AllocatorType>& expectedStdUnorderedMap,
          const std::unordered_map<KeyType, ValueType, HasherType, KeyEqualityComparator, AllocatorType>& actualStdUnorderedMap)
       {
-         MAPS_EQUAL(expectedStdUnorderedMap, actualStdUnorderedMap);
+         MAPS_ARE_EQUAL(expectedStdUnorderedMap, actualStdUnorderedMap);
       }
    };
 
