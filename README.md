@@ -809,6 +809,7 @@ ZenUnit provides the following random-value-generating functions for maximizing 
 * [The many authors of Google Test and Google Mock](https://github.com/google/googletest)
 * [The many authors of Typemock Isolator and Typemock Isolator++](https://www.typemock.com)
 * [Roy Osherove, the author of The Art of Unit Testing, a book that early on influenced my thinking on unit testing](https://osherove.com/)
+* [Phil Nash and the many authors of Catch2](https://github.com/catchorg/Catch2)
 * [Viktor Kirilov, the author of doctest and much more](https://github.com/onqtam)
 * [Martin Moene, the author of lest and much more](https://github.com/martinmoene)
 * [Jason Turner, host of C++ Weekly and much more](https://github.com/lefticus)
