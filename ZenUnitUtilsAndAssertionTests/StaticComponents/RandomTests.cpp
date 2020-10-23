@@ -6,6 +6,7 @@ namespace ZenUnit
    AFACT(Random_AllIntegerTypes_ReturnsRandomValueBetweenMinAndMaxForThatType)
    AFACT(Random_TIsAVector_ReturnsRandomVectorOfT)
    AFACT(Random_TIsAPair_ReturnsRandomPair)
+   AFACT(Random_TIsAnUnorderedMap_ReturnsRandomUnorderedMap)
    AFACT(RandomNon0_ReturnsRandomValueBetweenMinAndMaxForThatTypeButNeverZero)
    AFACT(Random_Float_ReturnsRandomFloat)
    AFACT(Random_Double_ReturnsRandomDouble)
@@ -42,6 +43,12 @@ namespace ZenUnit
    {
       const pair<int, string> randomIntStringPair = Random<pair<int, string>>();
       const pair<double, char> randomDoubleCharPair = Random<pair<double, char>>();
+   }
+
+   TEST(Random_TIsAnUnorderedMap_ReturnsRandomUnorderedMap)
+   {
+      const unordered_map<int, int> intIntUnorderedMap = Random<unordered_map<int, int>>();
+      const unordered_map<string, double> stringDoubleUnorderedMap = Random<unordered_map<string, double>>();
    }
 
    TEST(RandomNon0_ReturnsRandomValueBetweenMinAndMaxForThatTypeButNeverZero)
