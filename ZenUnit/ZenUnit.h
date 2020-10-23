@@ -6760,6 +6760,67 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename T>
+   T Random();
+
+   template<typename T>
+   std::vector<T> RandomVector()
+   {
+      const std::size_t randomVectorSize = RandomBetween<size_t>(0, 3);
+      std::vector<T> randomVector(randomVectorSize);
+      for (size_t i = 0; i < randomVectorSize; ++i)
+      {
+         randomVector[i] = Random<T>();
+      }
+      return randomVector;
+   }
+
+   template<typename T>
+   std::vector<T> RandomNonEmptyVector()
+   {
+      const std::size_t randomNonEmptyVectorSize = RandomBetween<size_t>(1, 3);
+      std::vector<T> randomNonEmptyVector(randomNonEmptyVectorSize);
+      for (size_t i = 0; i < randomNonEmptyVectorSize; ++i)
+      {
+         randomNonEmptyVector[i] = Random<T>();
+      }
+      return randomNonEmptyVector;
+   }
+
+   template<typename T>
+   std::vector<T> RandomVectorWithSize(size_t size)
+   {
+      std::vector<T> randomVectorWithSize(size);
+      for (size_t i = 0; i < size; ++i)
+      {
+         randomVectorWithSize[i] = Random<T>();
+      }
+      return randomVectorWithSize;
+   }
+
+   template<typename KeyType, typename ValueType>
+   inline std::pair<KeyType, ValueType> RandomPair()
+   {
+      const KeyType randomKey = Random<KeyType>();
+      const ValueType randomValue = Random<ValueType>();
+      const std::pair<KeyType, ValueType> randomPair(randomKey, randomValue);
+      return randomPair;
+   }
+
+   template<typename KeyType, typename ValueType>
+   std::unordered_map<KeyType, ValueType> RandomUnorderedMap()
+   {
+      const std::size_t randomUnorderedMapSize = RandomBetween<size_t>(0, 3);
+      std::unordered_map<KeyType, ValueType> randomUnorderedMap;
+      for (size_t i = 0; i < randomUnorderedMapSize; ++i)
+      {
+         const KeyType randomKey = Random<KeyType>();
+         const ValueType randomValue = Random<ValueType>();
+         randomUnorderedMap[randomKey] = randomValue;
+      }
+      return randomUnorderedMap;
+   }
+
+   template<typename T>
    T Random()
    {
       if constexpr (is_vector<T>::value)
@@ -6822,7 +6883,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<>
    inline const char* Random<const char*>()
    {
-      const int randomIntBetween1And10 = ZenUnit::RandomBetween<int>(1, 10);
+      const int randomIntBetween1And10 = RandomBetween<int>(1, 10);
       switch (randomIntBetween1And10)
       {
       case 1: return "RandomConstCharPointer1";
@@ -6859,26 +6920,17 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       return randomString;
    }
 
-   template<typename KeyType, typename ValueType>
-   inline std::pair<KeyType, ValueType> RandomPair()
-   {
-      const KeyType randomKey = ZenUnit::Random<KeyType>();
-      const ValueType randomValue = ZenUnit::Random<ValueType>();
-      const std::pair<KeyType, ValueType> randomPair(randomKey, randomValue);
-      return randomPair;
-   }
-
    template<>
    inline fs::path Random<fs::path>()
    {
       std::ostringstream randomPathStringBuilder;
-      const int numberOfSubfolders = ZenUnit::RandomBetween<int>(0, 2);
+      const int numberOfSubfolders = RandomBetween<int>(0, 2);
       for (int i = 0; i < numberOfSubfolders; ++i)
       {
-         const std::string randomSubfolderName = ZenUnit::Random<std::string>();
+         const std::string randomSubfolderName = Random<std::string>();
          randomPathStringBuilder << randomSubfolderName << "/";
       }
-      const std::string randomFolderName = ZenUnit::Random<std::string>();
+      const std::string randomFolderName = Random<std::string>();
       randomPathStringBuilder << randomFolderName;
       const std::string randomPathString = randomPathStringBuilder.str();
       const fs::path randomPath = randomPathString;
@@ -6888,7 +6940,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<>
    inline std::error_code Random<std::error_code>()
    {
-      const int randomIntBetween1And3 = ZenUnit::RandomBetween<int>(1, 3);
+      const int randomIntBetween1And3 = RandomBetween<int>(1, 3);
       const std::error_category* errorCategory = nullptr;
       if (randomIntBetween1And3 == 1)
       {
@@ -6902,7 +6954,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          errorCategory = &std::system_category();
       }
-      const int randomErrorCodeValue = ZenUnit::Random<int>();
+      const int randomErrorCodeValue = Random<int>();
       const std::error_code randomErrorCode(randomErrorCodeValue, *errorCategory);
       return randomErrorCode;
    }
@@ -6912,7 +6964,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    {
       using UnderlyingType = typename std::underlying_type<EnumType>::type;
       const EnumType randomEnum = static_cast<EnumType>(
-         ZenUnit::RandomBetween<UnderlyingType>(
+         RandomBetween<UnderlyingType>(
             static_cast<UnderlyingType>(0), static_cast<unsigned long long>(exclusiveMaxValue) - 1ULL));
       return randomEnum;
    }
@@ -6922,45 +6974,10 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    {
       using UnderlyingType = typename std::underlying_type<EnumType>::type;
       const EnumType randomNon0Enum = static_cast<EnumType>(
-         ZenUnit::RandomBetween<UnderlyingType>(
+         RandomBetween<UnderlyingType>(
             static_cast<UnderlyingType>(1),
             static_cast<UnderlyingType>(exclusiveMaxValue) - static_cast<UnderlyingType>(1)));
       return randomNon0Enum;
-   }
-
-   template<typename T>
-   std::vector<T> RandomVector()
-   {
-      const std::size_t randomVectorSize = RandomBetween<size_t>(0, 3);
-      std::vector<T> randomVector(randomVectorSize);
-      for (size_t i = 0; i < randomVectorSize; ++i)
-      {
-         randomVector[i] = ZenUnit::Random<T>();
-      }
-      return randomVector;
-   }
-
-   template<typename T>
-   std::vector<T> RandomNonEmptyVector()
-   {
-      const std::size_t randomNonEmptyVectorSize = RandomBetween<size_t>(1, 3);
-      std::vector<T> randomNonEmptyVector(randomNonEmptyVectorSize);
-      for (size_t i = 0; i < randomNonEmptyVectorSize; ++i)
-      {
-         randomNonEmptyVector[i] = ZenUnit::Random<T>();
-      }
-      return randomNonEmptyVector;
-   }
-
-   template<typename T>
-   std::vector<T> RandomVectorWithSize(size_t size)
-   {
-      std::vector<T> randomVectorWithSize(size);
-      for (size_t i = 0; i < size; ++i)
-      {
-         randomVectorWithSize[i] = ZenUnit::Random<T>();
-      }
-      return randomVectorWithSize;
    }
 
    template<typename KeyType, typename ValueType>
@@ -6975,20 +6992,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          randomMap[randomKey] = randomValue;
       }
       return randomMap;
-   }
-
-   template<typename KeyType, typename ValueType>
-   std::unordered_map<KeyType, ValueType> RandomUnorderedMap()
-   {
-      const std::size_t randomUnorderedMapSize = RandomBetween<size_t>(0, 3);
-      std::unordered_map<KeyType, ValueType> randomUnorderedMap;
-      for (size_t i = 0; i < randomUnorderedMapSize; ++i)
-      {
-         const KeyType randomKey = Random<KeyType>();
-         const ValueType randomValue = Random<ValueType>();
-         randomUnorderedMap[randomKey] = randomValue;
-      }
-      return randomUnorderedMap;
    }
 
    template<typename ElementType>
@@ -7027,41 +7030,41 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
 
       virtual ~RandomGenerator() = default;
-      virtual bool Bool() const { return ZenUnit::Random<bool>(); }
-      virtual char Char() const { return ZenUnit::Random<char>(); }
-      virtual unsigned char UnsignedChar() const { return ZenUnit::Random<unsigned char>(); }
-      virtual short Short() const { return ZenUnit::Random<short>(); }
-      virtual unsigned short UnsignedShort() const { return ZenUnit::Random<unsigned short>(); }
-      virtual int Int() const { return ZenUnit::Random<int>(); }
-      virtual unsigned UnsignedInt() const { return ZenUnit::Random<unsigned int>(); }
-      virtual int Enum(int exclusiveMaxValue) const { return ZenUnit::RandomBetween<int>(0, static_cast<unsigned long long>(exclusiveMaxValue) - 1); }
-      virtual long long LongLong() const { return ZenUnit::Random<long long>(); }
-      virtual unsigned long long UnsignedLongLong() const { return ZenUnit::Random<unsigned long long>(); }
-      virtual size_t SizeT() const { return ZenUnit::Random<size_t>(); }
-      virtual float Float() const { return ZenUnit::Random<float>(); }
-      virtual double Double() const { return ZenUnit::Random<double>(); }
-      virtual const char* ConstCharPointer() const { return ZenUnit::Random<const char*>(); }
-      virtual std::string String() const { return ZenUnit::Random<std::string>(); }
-      virtual std::vector<std::string> StringVector() const { return ZenUnit::RandomVector<std::string>(); }
-      virtual fs::path Path() const { return ZenUnit::Random<fs::path>(); }
-      virtual std::error_code ErrorCode() const { return ZenUnit::Random<std::error_code>(); }
+      virtual bool Bool() const { return Random<bool>(); }
+      virtual char Char() const { return Random<char>(); }
+      virtual unsigned char UnsignedChar() const { return Random<unsigned char>(); }
+      virtual short Short() const { return Random<short>(); }
+      virtual unsigned short UnsignedShort() const { return Random<unsigned short>(); }
+      virtual int Int() const { return Random<int>(); }
+      virtual unsigned UnsignedInt() const { return Random<unsigned int>(); }
+      virtual int Enum(int exclusiveMaxValue) const { return RandomBetween<int>(0, static_cast<unsigned long long>(exclusiveMaxValue) - 1); }
+      virtual long long LongLong() const { return Random<long long>(); }
+      virtual unsigned long long UnsignedLongLong() const { return Random<unsigned long long>(); }
+      virtual size_t SizeT() const { return Random<size_t>(); }
+      virtual float Float() const { return Random<float>(); }
+      virtual double Double() const { return Random<double>(); }
+      virtual const char* ConstCharPointer() const { return Random<const char*>(); }
+      virtual std::string String() const { return Random<std::string>(); }
+      virtual std::vector<std::string> StringVector() const { return RandomVector<std::string>(); }
+      virtual fs::path Path() const { return Random<fs::path>(); }
+      virtual std::error_code ErrorCode() const { return Random<std::error_code>(); }
 
       template<typename T>
       std::vector<T> Vector() const
       {
-         return ZenUnit::RandomVector<T>();
+         return RandomVector<T>();
       }
 
       template<typename T>
       std::vector<T> NonEmptyVector() const
       {
-         return ZenUnit::RandomNonEmptyVector<T>();
+         return RandomNonEmptyVector<T>();
       }
 
       template<typename KeyType, typename ValueType>
       std::unordered_map<KeyType, ValueType> UnorderedMap() const
       {
-         return ZenUnit::RandomUnorderedMap<KeyType, ValueType>();
+         return RandomUnorderedMap<KeyType, ValueType>();
       }
    };
 
@@ -7079,12 +7082,12 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
 
       virtual std::map<KeyType, ValueType> Map() const
       {
-         return ZenUnit::RandomMap<KeyType, ValueType>();
+         return RandomMap<KeyType, ValueType>();
       }
 
       virtual std::unordered_map<KeyType, ValueType> UnorderedMap() const
       {
-         return ZenUnit::RandomUnorderedMap<KeyType, ValueType>();
+         return RandomUnorderedMap<KeyType, ValueType>();
       }
    };
 
