@@ -1141,6 +1141,12 @@ namespace ZenUnit
    template<typename T>
    struct is_vector<std::vector<T>> : std::true_type {};
 
+   template<typename PairType>
+   struct is_pair : std::false_type {};
+
+   template<typename T1, typename T2>
+   struct is_pair<std::pair<T1, T2>> : std::true_type {};
+
    template<typename T>
    class has_to_string
    {
@@ -6751,6 +6757,12 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          const std::vector<typename T::value_type> randomVector = RandomVector<typename T::value_type>();
          return randomVector;
+      }
+      else if constexpr (is_pair<T>::value)
+      {
+         const std::pair<typename T::first_type, typename T::second_type> randomPair =
+            RandomPair<typename T::first_type, typename T::second_type>();
+         return randomPair;
       }
       else
       {

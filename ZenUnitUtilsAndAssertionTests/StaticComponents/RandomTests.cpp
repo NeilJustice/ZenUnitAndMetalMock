@@ -5,6 +5,7 @@ namespace ZenUnit
    TESTS(RandomTests)
    AFACT(Random_AllIntegerTypes_ReturnsRandomValueBetweenMinAndMaxForThatType)
    AFACT(Random_TIsAVector_ReturnsRandomVectorOfT)
+   AFACT(Random_TIsAPair_ReturnsRandomPair)
    AFACT(RandomNon0_ReturnsRandomValueBetweenMinAndMaxForThatTypeButNeverZero)
    AFACT(Random_Float_ReturnsRandomFloat)
    AFACT(Random_Double_ReturnsRandomDouble)
@@ -30,8 +31,17 @@ namespace ZenUnit
 
    TEST(Random_TIsAVector_ReturnsRandomVectorOfT)
    {
-      vector<int> randomIntVector = Random<vector<int>>();
+      const vector<int> randomIntVector = Random<vector<int>>();
       IS_TRUE(randomIntVector.size() <= 3);
+
+      const vector<string> randomStringVector = Random<vector<string>>();
+      IS_TRUE(randomStringVector.size() <= 3);
+   }
+
+   TEST(Random_TIsAPair_ReturnsRandomPair)
+   {
+      const pair<int, string> randomIntStringPair = Random<pair<int, string>>();
+      const pair<double, char> randomDoubleCharPair = Random<pair<double, char>>();
    }
 
    TEST(RandomNon0_ReturnsRandomValueBetweenMinAndMaxForThatTypeButNeverZero)
