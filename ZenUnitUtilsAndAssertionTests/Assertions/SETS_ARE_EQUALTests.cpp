@@ -7,12 +7,13 @@ namespace ZenUnit
       class SetType>
    TEMPLATE_TESTS(SETS_ARE_EQUALTests, SetType)
    AFACT(EmptySets_DoesNotThrowException)
-   AFACT(OneEqualElement_DoesNotThrowException)
-   AFACT(TwoEqualElements_DoesNotThrowException)
-   AFACT(DifferentSize_Throws)
-   AFACT(SameSize1_ElementsNotEqual_Throws_MessagesTestCase)
-   AFACT(SameSize2_ElementsNotEqual_Throws)
-   AFACT(UserTypeSets_SameSize1_ElementsNotEqual_Throws)
+   AFACT(ConstNonConstEmptySets_CompilesAndDoesNotThrowException)
+   AFACT(SetsWithOneEqualElement_DoesNotThrowException)
+   AFACT(SetsWithTwoEqualElements_DoesNotThrowException)
+   AFACT(SetsWithDifferentSizes_ThrowsAnomaly)
+   AFACT(SetsWithSameSizeOf1_ElementsAreNotEqual_ThrowsAnomaly__MessagesTestCase)
+   AFACT(SetsWithSameSizeOf2_ElementsAreNotEqual_ThrowsAnomaly)
+   AFACT(UserTypeSetsWithSameSizeOf1_ElementsAreNotEqual_ThrowsAnomaly)
    EVIDENCE
 
    string _expectedIntSetTypeName;
@@ -26,11 +27,20 @@ namespace ZenUnit
 
    TEST(EmptySets_DoesNotThrowException)
    {
-      SetType<int> expectedSet, actualSet;
-      SETS_ARE_EQUAL(expectedSet, actualSet);
+      SetType<int> expectedEmptySet;
+      SetType<int> actualEmptySet;
+      SETS_ARE_EQUAL(expectedEmptySet, actualEmptySet);
    }
 
-   TEST(OneEqualElement_DoesNotThrowException)
+   TEST(ConstNonConstEmptySets_CompilesAndDoesNotThrowException)
+   {
+      const SetType<int> constSet;
+      SetType<int> nonConstSet;
+      SETS_ARE_EQUAL(constSet, nonConstSet);
+      SETS_ARE_EQUAL(nonConstSet, constSet);
+   }
+
+   TEST(SetsWithOneEqualElement_DoesNotThrowException)
    {
       SetType<int> expectedSet;
       expectedSet.insert(1);
@@ -39,7 +49,7 @@ namespace ZenUnit
       SETS_ARE_EQUAL(expectedSet, actualSet);
    }
 
-   TEST(TwoEqualElements_DoesNotThrowException)
+   TEST(SetsWithTwoEqualElements_DoesNotThrowException)
    {
       SetType<int> expectedSetAscending;
       expectedSetAscending.insert(1);
@@ -55,12 +65,13 @@ namespace ZenUnit
       SETS_ARE_EQUAL(expectedSetAscending, actualSetDescending);
    }
 
-   TEST(DifferentSize_Throws)
+   TEST(SetsWithDifferentSizes_ThrowsAnomaly)
    {
       SetType<int> expectedSet;
       expectedSet.insert(1);
       SetType<int> actualSet;
-      THROWS_EXCEPTION(SETS_ARE_EQUAL(expectedSet, actualSet), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(SETS_ARE_EQUAL(expectedSet, actualSet),
+         Anomaly, TestUtil::NewlineConcat("",
 "  Failed: SETS_ARE_EQUAL(expectedSet, actualSet)",
 "Expected: " + _expectedIntSetTypeName,
 "{",
@@ -76,7 +87,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(SameSize1_ElementsNotEqual_Throws_MessagesTestCase)
+   TEST(SetsWithSameSizeOf1_ElementsAreNotEqual_ThrowsAnomaly__MessagesTestCase)
    {
       SetType<int> expectedSet;
       expectedSet.insert(1);
@@ -101,7 +112,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(SameSize2_ElementsNotEqual_Throws)
+   TEST(SetsWithSameSizeOf2_ElementsAreNotEqual_ThrowsAnomaly)
    {
       SetType<int> expectedSet;
       expectedSet.insert(1);
@@ -128,7 +139,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(UserTypeSets_SameSize1_ElementsNotEqual_Throws)
+   TEST(UserTypeSetsWithSameSizeOf1_ElementsAreNotEqual_ThrowsAnomaly)
    {
       SetType<UserType> expectedSet;
       expectedSet.insert(UserType(1));
@@ -152,5 +163,5 @@ namespace ZenUnit
    }
 
    RUN_TEMPLATE_TESTS(SETS_ARE_EQUALTests, set)
-   //THEN_RUN_TEMPLATE_TESTS(SETS_ARE_EQUALTests, unordered_set)
+   THEN_RUN_TEMPLATE_TESTS(SETS_ARE_EQUALTests, unordered_set)
 }

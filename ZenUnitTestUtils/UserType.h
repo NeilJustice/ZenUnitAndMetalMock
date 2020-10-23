@@ -27,6 +27,9 @@ namespace std
 namespace ZenUnit
 {
    template<>
+   UserType Random();
+
+   template<>
    class Equalizer<UserType>
    {
    public:

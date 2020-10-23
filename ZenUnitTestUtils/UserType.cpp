@@ -31,6 +31,14 @@ UserType::operator bool() const
 
 namespace ZenUnit
 {
+   template<>
+   UserType Random()
+   {
+      const int randomInt = ZenUnit::Random<int>();
+      const UserType randomUserType(randomInt);
+      return randomUserType;
+   }
+
    void Equalizer<UserType>::AssertEqual(const UserType& expectedUserType, const UserType& actualUserType)
    {
       ARE_EQUAL(expectedUserType.value, actualUserType.value);

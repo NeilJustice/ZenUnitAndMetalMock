@@ -2979,14 +2979,14 @@ namespace ZenUnit
       return whyBody;
    }
 
-   template<typename MapType, typename... MessageTypes>
-   void MAPS_ARE_EQUAL_Defined(VRText<MapType> expectedMapVRT, VRText<MapType> actualMapVRT,
+   template<typename ExpectedMapType, typename ActualMapType, typename... MessageTypes>
+   void MAPS_ARE_EQUAL_Defined(VRText<ExpectedMapType> expectedMapVRT, VRText<ActualMapType> actualMapVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const char* const expectedMapText = expectedMapVRT.text;
       const char* const actualMapText = actualMapVRT.text;
-      const MapType& expectedMap = expectedMapVRT.value;
-      const MapType& actualMap = actualMapVRT.value;
+      const ExpectedMapType& expectedMap = expectedMapVRT.value;
+      const ActualMapType& actualMap = actualMapVRT.value;
       try
       {
          ARE_EQUAL(expectedMap.size(), actualMap.size());
@@ -3046,8 +3046,11 @@ namespace ZenUnit
       }
    }
 
-   template<typename PairType, typename... MessageTypes>
-   void PAIRS_ARE_EQUAL_ToStringAndRethrow(const Anomaly& becauseAnomaly, VRText<PairType> expectedPairVRT, VRText<PairType> actualPairVRT,
+   template<typename ExpectedPairType, typename ActualPairType, typename... MessageTypes>
+   void PAIRS_ARE_EQUAL_ToStringAndRethrow(
+      const Anomaly& becauseAnomaly,
+      VRText<ExpectedPairType> expectedPairVRT,
+      VRText<ActualPairType> actualPairVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expected = ToStringer::ToString(expectedPairVRT.value);
@@ -3056,8 +3059,8 @@ namespace ZenUnit
          becauseAnomaly, expected, actual, ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
-   template<typename PairType, typename... MessageTypes>
-   void PAIRS_ARE_EQUAL_Defined(VRText<PairType> expectedPairVRT, VRText<PairType> actualPairVRT,
+   template<typename ExpectedPairType, typename ActualPairType, typename... MessageTypes>
+   void PAIRS_ARE_EQUAL_Defined(VRText<ExpectedPairType> expectedPairVRT, VRText<ActualPairType> actualPairVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       try
@@ -3247,9 +3250,9 @@ namespace ZenUnit
       ScalarDeleter<typename std::remove_reference<decltype(smartOrRawPointer)>::type>::Delete(smartOrRawPointer);
    }
 
-   template<typename SetType, typename... MessageTypes>
+   template<typename ExpectedSetType, typename ActualSetType, typename... MessageTypes>
    void SETS_ARE_EQUAL_ThrowAnomaly(
-      const Anomaly& becauseAnomaly, VRText<SetType> expectedSetVRT, VRText<SetType> actualSetVRT,
+      const Anomaly& becauseAnomaly, VRText<ExpectedSetType> expectedSetVRT, VRText<ActualSetType> actualSetVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string toStringedExpectedSet = ToStringer::ToString(expectedSetVRT.value);
@@ -3259,13 +3262,13 @@ namespace ZenUnit
          ExpectedActualFormat::Fields, fileLine, std::forward<MessageTypes>(messages)...);
    }
 
-   template<typename SetType, typename... MessageTypes>
+   template<typename ExpectedSetType, typename ActualSetType, typename... MessageTypes>
    void SETS_ARE_EQUAL_Defined(
-      VRText<SetType> expectedSetVRT, VRText<SetType> actualSetVRT,
+      VRText<ExpectedSetType> expectedSetVRT, VRText<ActualSetType> actualSetVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
-      const SetType& expectedSet = expectedSetVRT.value;
-      const SetType& actualSet = actualSetVRT.value;
+      const ExpectedSetType& expectedSet = expectedSetVRT.value;
+      const ActualSetType& actualSet = actualSetVRT.value;
       try
       {
          ARE_EQUAL(expectedSet.size(), actualSet.size());

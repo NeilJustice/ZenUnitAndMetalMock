@@ -6,30 +6,31 @@ namespace ZenUnit
       template<typename...>
       class MapType>
    TEMPLATE_TESTS(MAPS_ARE_EQUALTests, MapType)
-   AFACT(BothMapsAreEmpty_DoesNotThrowExceptionException)
+   AFACT(BothMapsAreEmpty_DoesNotThrowException)
    AFACT(ExpectedAndActualMapSizesAreDifferent_ThrowsAnomaly)
-   AFACT(SizesDifferent_Throws_MessagesTestCase)
+   AFACT(MapSizesAreDifferent_ThrowsAnomaly__MessagesTestCase)
    AFACT(MapSizesAreEqual_KeysAreNotEqual_ThrowsAnomaly)
-   AFACT(SizesEqual_KeysNotEqual_Throws_MessagesTestCase)
-   AFACT(SizesEqual_KeysEqual_ValuesNotEqual_Throws)
-   AFACT(SizesEqual_KeysEqual_ValuesNotEqual_Throws_MessagesTestCase)
-   AFACT(SizesEqual_UserTypeKeysNotEqual_Throws)
-   AFACT(SizesEqual_UserTypeKeysEqual_ValuesNotEqual_Throws)
+   AFACT(MapSizesAreEqual_KeysAreNotEqual_ThrowsAnomaly__MessagesTestCase)
+   AFACT(MapSizesAreEqual_KeysAreEqual_ValuesAreNotEqual_ThrowsAnomaly)
+   AFACT(MapSizesAreEqual_KeysAreEqual_ValuesAreNotEqual_ThrowsAnomaly__MessagesTestCase)
+   AFACT(MapSizesAreEqual_UserTypeKeysAreNotEqual_ThrowsAnomaly)
+   AFACT(MapSizesAreEqual_UserTypeKeysAreEqual_ValuesAreNotEqual_ThrowsAnomaly)
    EVIDENCE
 
-   TEST(BothMapsAreEmpty_DoesNotThrowExceptionException)
+   TEST(BothMapsAreEmpty_DoesNotThrowException)
    {
       MAPS_ARE_EQUAL((MapType<int, int>()), (MapType<int, int>()));
 
-      MapType<int, int> expectedMap;
-      MapType<int, int> actualMap;
-      MAPS_ARE_EQUAL(expectedMap, actualMap);
+      const MapType<int, int> constExpectedMap;
+      const MapType<int, int> constActualMap;
+      MAPS_ARE_EQUAL(constExpectedMap, constActualMap);
 
-      expectedMap.insert({ 1, 1 });
-      expectedMap.insert({ 2, 2 });
-      actualMap.insert({ 1, 1 });
-      actualMap.insert({ 2, 2 });
-      MAPS_ARE_EQUAL(expectedMap, actualMap);
+      MapType<int, int> nonConstExpectedMap;
+      MapType<int, int> nonConstActualMap;
+      MAPS_ARE_EQUAL(nonConstExpectedMap, nonConstActualMap);
+
+      MAPS_ARE_EQUAL(constExpectedMap, nonConstActualMap);
+      MAPS_ARE_EQUAL(nonConstActualMap, constExpectedMap);
    }
 
    TEST(ExpectedAndActualMapSizesAreDifferent_ThrowsAnomaly)
@@ -48,7 +49,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(SizesDifferent_Throws_MessagesTestCase)
+   TEST(MapSizesAreDifferent_ThrowsAnomaly__MessagesTestCase)
    {
       MapType<int, int> expectedMap;
       expectedMap[ZenUnit::Random<int>()] = ZenUnit::Random<int>();
@@ -86,7 +87,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(SizesEqual_KeysNotEqual_Throws_MessagesTestCase)
+   TEST(MapSizesAreEqual_KeysAreNotEqual_ThrowsAnomaly__MessagesTestCase)
    {
       MapType<int, int> expectedMap;
       expectedMap.insert({ 10, 0 });
@@ -105,7 +106,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(SizesEqual_KeysEqual_ValuesNotEqual_Throws)
+   TEST(MapSizesAreEqual_KeysAreEqual_ValuesAreNotEqual_ThrowsAnomaly)
    {
       MapType<string, string> expectedMap;
       expectedMap.insert({ "key", "value" });
@@ -123,7 +124,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(SizesEqual_KeysEqual_ValuesNotEqual_Throws_MessagesTestCase)
+   TEST(MapSizesAreEqual_KeysAreEqual_ValuesAreNotEqual_ThrowsAnomaly__MessagesTestCase)
    {
       MapType<string, string> expectedMap;
       expectedMap.insert({ "key", "value" });
@@ -145,7 +146,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(SizesEqual_UserTypeKeysNotEqual_Throws)
+   TEST(MapSizesAreEqual_UserTypeKeysAreNotEqual_ThrowsAnomaly)
    {
       MapType<UserType, int> expectedMap;
       expectedMap.insert({ 10, 0 });
@@ -160,7 +161,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(SizesEqual_UserTypeKeysEqual_ValuesNotEqual_Throws)
+   TEST(MapSizesAreEqual_UserTypeKeysAreEqual_ValuesAreNotEqual_ThrowsAnomaly)
    {
       MapType<string, UserType> expectedMap;
       expectedMap.insert({ "key", 10 });

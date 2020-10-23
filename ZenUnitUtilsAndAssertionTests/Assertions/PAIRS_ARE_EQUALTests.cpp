@@ -3,17 +3,40 @@
 namespace ZenUnit
 {
    TESTS(PAIRS_ARE_EQUALTests)
-   AFACT(FirstNotEqual_SecondEqual_Throws)
-   AFACT(FirstNotEqual_SecondEqual_Throws_MessagesTestCase)
-   AFACT(FirstEqual_SecondNotEqual_Throws)
-   AFACT(FirstNotEqual_SecondNotEqual_Throws)
-   AFACT(FirstEqual_SecondEqual_DoesNotThrowException)
-   AFACT(FirstNotEqual_SecondEqual_Throws_UserTypeTestCase)
-   AFACT(FirstEqual_SecondNotEqual_Throws_UserTypeTestCase)
-   AFACT(FirstEqual_SecondEqual_DoesNotThrowException_UserTypeTestCase)
+   AFACT(FirstValueIsEqual_SecondValueIsEqual_DoesNotThrowException)
+   AFACT(FirstValueIsEqual_SecondValueIsEqual_DoesNotThrowException__UserTypeTestCase)
+   AFACT(FirstValueIsNotEqual_SecondValueIsEqual_ThrowsAnomaly)
+   AFACT(FirstValueIsNotEqual_SecondValueIsEqual_ThrowsAnomaly__MessagesTestCase)
+   AFACT(FirstValueIsEqual_SecondValueIsNotEqual_ThrowsAnomaly)
+   AFACT(FirstValueIsNotEqual_SecondValueIsNotEqual_ThrowsAnomaly)
+   AFACT(FirstValueIsNotEqual_SecondValueIsEqual_ThrowsAnomaly_UserTypeTestCase)
+   AFACT(FirstValueIsEqual_SecondValueIsNotEqual_ThrowsAnomaly__UserTypeTestCase)
    EVIDENCE
 
-   TEST(FirstNotEqual_SecondEqual_Throws)
+   TEST(FirstValueIsEqual_SecondValueIsEqual_DoesNotThrowException)
+   {
+      const pair<int, int> constExpectedPair;
+      const pair<int, int> constActualPair;
+      PAIRS_ARE_EQUAL(constExpectedPair, constActualPair);
+
+      pair<int, int> nonConstExpectedPair;
+      pair<int, int> nonConstActualPair;
+      PAIRS_ARE_EQUAL(nonConstExpectedPair, nonConstActualPair);
+
+      PAIRS_ARE_EQUAL(constExpectedPair, nonConstActualPair);
+      PAIRS_ARE_EQUAL(nonConstActualPair, constExpectedPair);
+   }
+
+   TEST(FirstValueIsEqual_SecondValueIsEqual_DoesNotThrowException__UserTypeTestCase)
+   {
+      const UserType value1 = ZenUnit::Random<UserType>();
+      const UserType value2 = ZenUnit::Random<UserType>();
+      const pair<UserType, UserType> expectedPair{ value1, value2 };
+      const pair<UserType, UserType> actualPair{ value1, value2 };
+      PAIRS_ARE_EQUAL(expectedPair, actualPair);
+   }
+
+   TEST(FirstValueIsNotEqual_SecondValueIsEqual_ThrowsAnomaly)
    {
       const pair<int, int> expectedPair{1, 0};
       const pair<int, int> actualPair{0, 0};
@@ -28,7 +51,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(FirstNotEqual_SecondEqual_Throws_MessagesTestCase)
+   TEST(FirstValueIsNotEqual_SecondValueIsEqual_ThrowsAnomaly__MessagesTestCase)
    {
       const pair<int, int> expectedPair{1, 0};
       const pair<int, int> actualPair{0, 0};
@@ -45,7 +68,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(FirstNotEqual_SecondNotEqual_Throws)
+   TEST(FirstValueIsNotEqual_SecondValueIsNotEqual_ThrowsAnomaly)
    {
       const pair<int, int> expectedPair{1, 1};
       const pair<int, int> actualPair{0, 0};
@@ -60,7 +83,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(FirstEqual_SecondNotEqual_Throws)
+   TEST(FirstValueIsEqual_SecondValueIsNotEqual_ThrowsAnomaly)
    {
       const pair<int, int> expectedPair{1, 1};
       const pair<int, int> actualPair{1, 0};
@@ -75,14 +98,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(FirstEqual_SecondEqual_DoesNotThrowException)
-   {
-      const pair<int, int> expectedPair;
-      const pair<int, int> actualPair;
-      PAIRS_ARE_EQUAL(expectedPair, actualPair);
-   }
-
-   TEST(FirstNotEqual_SecondEqual_Throws_UserTypeTestCase)
+   TEST(FirstValueIsNotEqual_SecondValueIsEqual_ThrowsAnomaly_UserTypeTestCase)
    {
       const pair<UserType, UserType> expectedPair{1,0};
       const pair<UserType, UserType> actualPair{0,0};
@@ -97,7 +113,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(FirstEqual_SecondNotEqual_Throws_UserTypeTestCase)
+   TEST(FirstValueIsEqual_SecondValueIsNotEqual_ThrowsAnomaly__UserTypeTestCase)
    {
       const pair<UserType, UserType> expectedPair{0,0};
       const pair<UserType, UserType> actualPair{0,1};
@@ -110,13 +126,6 @@ namespace ZenUnit
 "  Actual: UserType@1",
 "File.cpp(1)",
 "File.cpp(1)"));
-   }
-
-   TEST(FirstEqual_SecondEqual_DoesNotThrowException_UserTypeTestCase)
-   {
-      const pair<UserType, UserType> expectedPair{10,10};
-      const pair<UserType, UserType> actualPair{10,10};
-      PAIRS_ARE_EQUAL(expectedPair, actualPair);
    }
 
    RUN_TESTS(PAIRS_ARE_EQUALTests)
