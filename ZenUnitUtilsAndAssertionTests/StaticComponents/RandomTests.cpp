@@ -4,7 +4,7 @@ namespace ZenUnit
 {
    TESTS(RandomTests)
    AFACT(Random_AllIntegerTypes_ReturnsRandomValueBetweenMinAndMaxForThatType)
-   AFACT(Random_TIsAVector_ReturnsRandomVectorOfT)
+   AFACT(Random_TIsAVector_ReturnsRandomVectorOfTWithSizeLessThanOrEqualTo3)
    AFACT(Random_TIsAPair_ReturnsRandomPair)
    AFACT(Random_TIsAnUnorderedMap_ReturnsRandomUnorderedMap)
    AFACT(RandomNon0_ReturnsRandomValueBetweenMinAndMaxForThatTypeButNeverZero)
@@ -30,7 +30,7 @@ namespace ZenUnit
       Random<size_t>();
    }
 
-   TEST(Random_TIsAVector_ReturnsRandomVectorOfT)
+   TEST(Random_TIsAVector_ReturnsRandomVectorOfTWithSizeLessThanOrEqualTo3)
    {
       const vector<int> randomIntVector = Random<vector<int>>();
       IS_TRUE(randomIntVector.size() <= 3);
@@ -41,13 +41,19 @@ namespace ZenUnit
 
    TEST(Random_TIsAPair_ReturnsRandomPair)
    {
+      [[maybe_unused]]
       const pair<int, string> randomIntStringPair = Random<pair<int, string>>();
+
+      [[maybe_unused]]
       const pair<double, char> randomDoubleCharPair = Random<pair<double, char>>();
    }
 
    TEST(Random_TIsAnUnorderedMap_ReturnsRandomUnorderedMap)
    {
+      [[maybe_unused]]
       const unordered_map<int, int> intIntUnorderedMap = Random<unordered_map<int, int>>();
+
+      [[maybe_unused]]
       const unordered_map<string, double> stringDoubleUnorderedMap = Random<unordered_map<string, double>>();
    }
 
