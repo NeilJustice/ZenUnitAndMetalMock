@@ -12,7 +12,6 @@ namespace ZenUnit
    AFACT(SetsWithTwoEqualElements_DoesNotThrowException)
    AFACT(SetsWithDifferentSizes_ThrowsAnomaly)
    AFACT(SetsWithSameSizeOf1_ElementsAreNotEqual_ThrowsAnomaly__MessagesTestCase)
-   AFACT(SetsWithSameSizeOf2_ElementsAreNotEqual_ThrowsAnomaly)
    AFACT(UserTypeSetsWithSameSizeOf1_ElementsAreNotEqual_ThrowsAnomaly)
    EVIDENCE
 
@@ -108,33 +107,6 @@ namespace ZenUnit
 "Expected: Collection contains element '1'",
 "  Actual: Collection does not contain element '1'",
 " Message: \"A\", \"B\"",
-"File.cpp(1)",
-"File.cpp(1)"));
-   }
-
-   TEST(SetsWithSameSizeOf2_ElementsAreNotEqual_ThrowsAnomaly)
-   {
-      SetType<int> expectedSet;
-      expectedSet.insert(1);
-      expectedSet.insert(3);
-      SetType<int> actualSet;
-      actualSet.insert(1);
-      actualSet.insert(2);
-      THROWS_EXCEPTION(SETS_ARE_EQUAL(expectedSet, actualSet), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: SETS_ARE_EQUAL(expectedSet, actualSet)",
-"Expected: " + _expectedIntSetTypeName,
-"{",
-"   1,",
-"   3",
-"}",
-"  Actual: " + _expectedIntSetTypeName,
-"{",
-"   1,",
-"   2",
-"}",
-" Because: CONTAINS_ELEMENT(expectedElement, actualSet) failed",
-"Expected: Collection contains element '3'",
-"  Actual: Collection does not contain element '3'",
 "File.cpp(1)",
 "File.cpp(1)"));
    }
