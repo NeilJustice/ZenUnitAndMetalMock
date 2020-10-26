@@ -16,7 +16,7 @@ namespace ZenUnit
 
    TEST(TestableRandomFileLine_ReturnsFileLineWithRandomLineNumber)
    {
-      MetalMock::RandomGeneratorMock randomGeneratorMock;
+      ZenUnit::RandomGeneratorMock randomGeneratorMock;
       const unsigned lineNumber = randomGeneratorMock.UnsignedIntMock.ReturnRandom();
       //
       const FileLine randomFileLine = TestableRandomFileLine(randomGeneratorMock);

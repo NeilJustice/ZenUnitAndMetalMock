@@ -16,7 +16,7 @@ namespace ZenUnit
 
    TEST(TestableRandomTestPhaseResult_ReturnsTestPhaseResultWithAllRandomFields)
    {
-      MetalMock::RandomGeneratorMock randomGeneratorMock;
+      ZenUnit::RandomGeneratorMock randomGeneratorMock;
 
       const int testPhaseInt = ZenUnit::Random<int>();
       const int testOutcomeInt = ZenUnit::Random<int>();

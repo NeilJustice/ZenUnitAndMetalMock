@@ -14,7 +14,7 @@ TEST(RandomTestNameFilter_CodeCoverage)
 
 TEST(TestableRandomTestNameFilter_ReturnsTestNameFilterWithAllRandomFields)
 {
-   MetalMock::RandomGeneratorMock randomGeneratorMock;
+   ZenUnit::RandomGeneratorMock randomGeneratorMock;
 
    const string testClassNamePattern = ZenUnit::Random<string>();
    const string testNamePattern = ZenUnit::Random<string>();

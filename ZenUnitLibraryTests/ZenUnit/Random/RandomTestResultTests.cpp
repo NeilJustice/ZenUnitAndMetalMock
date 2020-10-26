@@ -18,7 +18,7 @@ namespace ZenUnit
 
    TEST(TestableRandomTestResult_ReturnsTestResultWithAllRandomFields)
    {
-      MetalMock::RandomGeneratorMock randomGeneratorMock;
+      ZenUnit::RandomGeneratorMock randomGeneratorMock;
 
       const int testOutcomeInt = ZenUnit::RandomBetween<int>(0, numeric_limits<unsigned char>::max());
       randomGeneratorMock.EnumMock.Return(testOutcomeInt);

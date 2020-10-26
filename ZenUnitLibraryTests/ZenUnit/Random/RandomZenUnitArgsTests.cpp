@@ -17,7 +17,7 @@ namespace ZenUnit
 
    TEST(TestableRandomZenUnitArgs_ReturnsZenUnitArgsWithAllRandomFields)
    {
-      MetalMock::RandomGeneratorMock randomGeneratorMock;
+      ZenUnit::RandomGeneratorMock randomGeneratorMock;
 
       const string startDateTime = ZenUnit::Random<string>();
       const string commandLine = ZenUnit::Random<string>();

@@ -4927,7 +4927,7 @@ namespace ZenUnit
    };
 }
 
-namespace MetalMock
+namespace ZenUnit
 {
    class RandomGeneratorMock : public Metal::Mock<ZenUnit::RandomGenerator>
    {
