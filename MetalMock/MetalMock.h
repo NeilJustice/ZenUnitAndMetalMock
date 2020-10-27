@@ -1450,9 +1450,9 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
          {
             const ZenUnit::Console console;
             console.WriteLineColor(R"(
-==========================================================================
-MetalMocked Function Expected But Not Later Asserted As Having Been Called
-==========================================================================)", ZenUnit::Color::Red);
+==============================================================================
+MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
+==============================================================================)", ZenUnit::Color::Red);
             console.WriteLine(MetalMockedFunctionSignature);
             const ZenUnit::ZenUnitArgs& zenUnitArgs = _call_ZenUnitTestRunner_GetZenUnitArgs();
             console.WriteColor("\n>>------>", ZenUnit::Color::Red);
@@ -1469,7 +1469,7 @@ MetalMocked Function Expected But Not Later Asserted As Having Been Called
             const std::string testRunDurationInSeconds = ZenUnit::ZenUnitTestRunner::Instance()->StopTestRunStopwatchAndGetElapsedSeconds();
             console.WriteLine("   Duration: " + testRunDurationInSeconds + " seconds");
             console.WriteColor(">>------>", ZenUnit::Color::Red);
-            console.WriteLine("     Result: MetalMocked Function Expected But Not Asserted As Having Been Called");
+            console.WriteLine("     Result: MetalMocked Function Was Expected But Not Asserted As Having Been Called");
             console.WriteColor(">>-FAIL->", ZenUnit::Color::Red);
             const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
             console.WriteLine("   ExitCode: " + std::to_string(exitCode));
