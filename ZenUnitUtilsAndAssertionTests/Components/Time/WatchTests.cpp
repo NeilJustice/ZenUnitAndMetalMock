@@ -98,22 +98,22 @@ namespace ZenUnit
 
    TEST2X2(MicrosecondsToTwoDecimalPlaceMillisecondsString_ReturnsMicrosecondsAsMillisecondsRoundedToThreePlaces,
       unsigned microseconds, const char* expectedReturnValue,
-      0, "[0.00 ms]",
-      1, "[0.00 ms]",
-      2, "[0.00 ms]",
-      10, "[0.01 ms]",
-      12, "[0.01 ms]",
-      100, "[0.10 ms]",
-      120, "[0.12 ms]",
-      123, "[0.12 ms]",
-      1000, "[1.00 ms]",
-      1234, "[1.23 ms]",
-      12345, "[12.35 ms]",
-      123456, "[123.46 ms]",
-      1234567, "[1234.57 ms]",
-      12345678, "[12345.68 ms]",
-      123456789, "[123456.79 ms]",
-      1234567890, "[1234567.89 ms]")
+      0, "[0.00ms]",
+      1, "[0.00ms]",
+      2, "[0.00ms]",
+      10, "[0.01ms]",
+      12, "[0.01ms]",
+      100, "[0.10ms]",
+      120, "[0.12ms]",
+      123, "[0.12ms]",
+      1000, "[1.00ms]",
+      1234, "[1.23ms]",
+      12345, "[12.35ms]",
+      123456, "[123.46ms]",
+      1234567, "[1234.57ms]",
+      12345678, "[12345.68ms]",
+      123456789, "[123456.79ms]",
+      1234567890, "[1234567.89ms]")
    {
       const string twoDecimalPlaceMillisecondsString = Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
       ARE_EQUAL(expectedReturnValue, twoDecimalPlaceMillisecondsString);

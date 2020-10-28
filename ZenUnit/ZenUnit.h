@@ -1918,9 +1918,9 @@ namespace ZenUnit
             millisecondsRoundedToTwoDecimalPlacesAsSixDecimalPlaceString.substr(
                0, millisecondsRoundedToTwoDecimalPlacesAsSixDecimalPlaceString.find_first_of('.') + 3);
 
-         // Example: "[0.12 ms]"
+         // Example: "[0.12ms]"
          const std::string twoDecimalPlaceMillisecondsString =
-            String::Concat("[", millisecondsRoundedToTwoDecimalPlacesAsTwoDecimalPlacesString, " ms]");
+            String::Concat("[", millisecondsRoundedToTwoDecimalPlacesAsTwoDecimalPlacesString, "ms]");
 
          return twoDecimalPlaceMillisecondsString;
       }
