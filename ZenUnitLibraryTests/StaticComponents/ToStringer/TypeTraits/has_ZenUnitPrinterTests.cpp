@@ -39,7 +39,7 @@ namespace ZenUnit
    {
       IS_FALSE(has_ZenUnitPrinter<int>::value);
       IS_FALSE(has_ZenUnitPrinter<string>::value);
-      IS_FALSE(has_ZenUnitPrinter<UserTypeNonPrintable>::value);
+      IS_FALSE(has_ZenUnitPrinter<NonPrintableUserType>::value);
       IS_FALSE(has_ZenUnitPrinter<NonConstReferenceZenUnitPrint>::value);
       IS_FALSE(has_ZenUnitPrinter<RValueReferenceZenUnitPrint>::value);
    }
@@ -60,8 +60,8 @@ namespace ZenUnit
       IS_TRUE(has_ZenUnitPrinter<unordered_set<string>>::value);
 
       IS_TRUE(has_ZenUnitPrinter<UserType>::value);
-      IS_TRUE(has_ZenUnitPrinter<UserTypeOnlyZenUnitPrintable>::value);
-      IS_TRUE(has_ZenUnitPrinter<UserTypeInsertionOperatorAndZenUnitPrintable>::value);
+      IS_TRUE(has_ZenUnitPrinter<OnlyZenUnitPrintableUserType>::value);
+      IS_TRUE(has_ZenUnitPrinter<DoublyPrintableUserType>::value);
       IS_TRUE(has_ZenUnitPrinter<Namespace::StructInsideNamespace_ZenUnitPrintOutsideNamespace>::value);
    }
 

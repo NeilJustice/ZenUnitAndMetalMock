@@ -70,17 +70,17 @@ namespace ZenUnit
 
    TEST(UserTypeOnlyZenUnitEqualizableIsZero_DoesNotThrowAnomaly)
    {
-      const UserTypeOnlyZenUnitEqualizable defaultUserTypeOnlyZenUnitEqualizable;
+      const UserType_HasZenUnitEqualizer_DoesNotHaveOperatorEquals defaultUserTypeOnlyZenUnitEqualizable;
       IS_DEFAULT_VALUE(defaultUserTypeOnlyZenUnitEqualizable);
    }
 
    TEST(UserTypeOnlyZenUnitEqualizableIsNotZero_ThrowsAnomaly)
    {
-      const UserTypeOnlyZenUnitEqualizable userTypeOnlyZenUnitEqualizable1{1};
+      const UserType_HasZenUnitEqualizer_DoesNotHaveOperatorEquals userTypeOnlyZenUnitEqualizable1{1};
       THROWS_EXCEPTION(IS_DEFAULT_VALUE(userTypeOnlyZenUnitEqualizable1), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_DEFAULT_VALUE(userTypeOnlyZenUnitEqualizable1)",
-"Expected: <UserTypeOnlyZenUnitEqualizable>",
-"  Actual: <UserTypeOnlyZenUnitEqualizable>",
+"Expected: <UserType_HasZenUnitEqualizer_DoesNotHaveOperatorEquals>",
+"  Actual: <UserType_HasZenUnitEqualizer_DoesNotHaveOperatorEquals>",
 "File.cpp(1)"));
    }
 

@@ -25,4 +25,4 @@ static_assert(!is_quoted_when_printed<int>::value);
 static_assert(!is_quoted_when_printed<char>::value);
 static_assert(!is_quoted_when_printed<exception>::value);
 static_assert(!is_quoted_when_printed<UserType>::value);
-static_assert(!is_quoted_when_printed<UserTypeNonPrintable>::value);
+static_assert(!is_quoted_when_printed<NonPrintableUserType>::value);

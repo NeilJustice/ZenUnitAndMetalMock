@@ -32,11 +32,12 @@ using namespace std;
 #include "ZenUnit.h"
 using namespace ZenUnit;
 
-#endif
-
 // ZenUnitTestUtils
+#include "ZenUnitTestUtils/DoublyPrintableUserType.h"
+#include "ZenUnitTestUtils/NonPrintableUserType.h"
+#include "ZenUnitTestUtils/OnlyInsertionOperatorPrintableUserType.h"
+#include "ZenUnitTestUtils/OnlyZenUnitPrintableUserType.h"
 #include "ZenUnitTestUtils/TestUtil.h"
 #include "ZenUnitTestUtils/UserType.h"
-#include "ZenUnitTestUtils/UserTypeInsertionOperatorAndZenUnitPrintable.h"
-#include "ZenUnitTestUtils/UserTypeNonPrintable.h"
-#include "ZenUnitTestUtils/UserTypeOnlyZenUnitPrintable.h"
+
+#endif

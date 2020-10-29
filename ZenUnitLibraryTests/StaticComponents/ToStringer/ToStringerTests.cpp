@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "ZenUnitUtilsAndAssertionTests/Assertions/REGEX_MATCHES.h"
 #include "ZenUnitTestUtils/UserType.h"
-#include "ZenUnitTestUtils/UserTypeInsertionOperatorAndZenUnitPrintable.h"
-#include "ZenUnitTestUtils/UserTypeNonPrintable.h"
-#include "ZenUnitTestUtils/UserTypeOnlyZenUnitPrintable.h"
+#include "ZenUnitTestUtils/DoublyPrintableUserType.h"
+#include "ZenUnitTestUtils/NonPrintableUserType.h"
+#include "ZenUnitTestUtils/OnlyZenUnitPrintableUserType.h"
 
 namespace ZenUnit
 {
@@ -53,6 +53,7 @@ namespace ZenUnit
    AFACT(ToString_SharedPtr_ReturnsPointeeAddress)
    FACTS(ToString_VoidZeroArgStdFunction_ReturnsEmptyOrNonEmptyStdFunction)
    FACTS(ToString_NonVoidNonZeroArgStdFunction_ReturnsEmptyOrNonEmptyStdFunction)
+   AFACT(ToString_StdString_ReturnsQuotedString)
    AFACT(ToString_CharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)
    AFACT(ToString_ConstCharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)
    AFACT(ToString_WideCharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)
@@ -60,10 +61,10 @@ namespace ZenUnit
    AFACT(ToString_Char_ReturnsQuotedChar)
    AFACT(ToString_Bool_ReturnsBoolAlpha)
    AFACT(ToString_Pair_ReturnsLeftParenFirstValueCommaSecondValueRightParen)
-   AFACT(ToString_TypeHasNeitherOStreamInsertionOperatorOrZenUnitPrint_ReturnsRTTINameInBrackets)
-   AFACT(ToString_TypeHasOStreamInsertionOperatorAndNotZenUnitPrint_ReturnsOStreamLeftShiftResult)
-   AFACT(ToString_TypeDoesNotHaveOStreamInsertionOperatorAndHasZenUnitPrint_ReturnsQuotedZenUnitPrintResult)
-   AFACT(ToString_TypeHasOStreamInsertionOperatorAndZenUnitPrint_ReturnsQuotedZenUnitPrintResult)
+   AFACT(ToString_TypeDoesNotHaveZenUnitPrinter_TypeDoesNotHaveOStreamInsertionOperator_ReturnsRTTITypeNameInBrackets)
+   AFACT(ToString_TypeDoesNotHaveZenUnitPrinter_TypeHasOStreamInsertionOperator_ReturnsOStreamLeftShiftResult)
+   AFACT(ToString_TypeHasZenUnitPrinter_TypeDoesNotHaveOStreamInsertionOperator_ReturnsZenUnitPrinterResult)
+   AFACT(ToString_TypeHasZenUnitPrinter_TypeHasOStreamInsertionOperator_ReturnsZenUnitPrinterResult)
    AFACT(ToStringConcat_ReturnsCommaSeparatedToStringedValues)
    EVIDENCE
 
@@ -259,11 +260,23 @@ namespace ZenUnit
       ARE_EQUAL(expectedReturnValue, ToStringer::ToString(stdFunction));
    }
 
+   TEST(ToString_StdString_ReturnsQuotedString)
+   {
+      const string str = ZenUnit::Random<string>();
+      //
+      const string toStringResult = ToStringer::ToString(str);
+      //
+      const string expectedToStringResult = "\"" + str + "\"";
+      ARE_EQUAL(expectedToStringResult, toStringResult);
+   }
+
    TEST(ToString_CharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)
    {
       ARE_EQUAL("nullptr", ToStringer::ToString(static_cast<char*>(nullptr)));
+
       const char chars[] { 0 };
       ARE_EQUAL("\"\"", ToStringer::ToString(chars));
+
       const char charsABC[] { 'A', 'B', 'C', 0 };
       ARE_EQUAL("\"ABC\"", ToStringer::ToString(charsABC));
    }
@@ -273,13 +286,19 @@ namespace ZenUnit
       ARE_EQUAL("nullptr", ToStringer::ToString(static_cast<const char*>(nullptr)));
       ARE_EQUAL("\"\"", ToStringer::ToString(""));
       ARE_EQUAL("\"ABC\"", ToStringer::ToString("ABC"));
+
+      const string expected = R"("a\b\c")";
+      const string actual = ToStringer::ToString(R"(a\b\c)");
+      ARE_EQUAL(expected, actual);
    }
 
    TEST(ToString_WideCharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)
    {
       ARE_EQUAL("nullptr", ToStringer::ToString(static_cast<wchar_t*>(nullptr)));
+
       const wchar_t chars[]{ 0 };
       ARE_EQUAL("\"\"", ToStringer::ToString(chars));
+
       const wchar_t charsABC[]{ 'A', 'B', 'C', 0 };
       ARE_EQUAL("\"ABC\"", ToStringer::ToString(charsABC));
    }
@@ -289,7 +308,11 @@ namespace ZenUnit
       ARE_EQUAL("nullptr", ToStringer::ToString(static_cast<const wchar_t*>(nullptr)));
       ARE_EQUAL("\"\"", ToStringer::ToString(L""));
       ARE_EQUAL("\".\"", ToStringer::ToString(L"."));
-      ARE_EQUAL("\"a\\b\\c\"", ToStringer::ToString(L"a\\b\\c"));
+
+      const string expected = R"("a\b\c")";
+      const string actual = ToStringer::ToString(L"a\\b\\c");
+      ARE_EQUAL(expected, actual);
+
       ARE_EQUAL("\"a/b/c\"", ToStringer::ToString(L"a/b/c"));
       ARE_EQUAL("\"ABC\"", ToStringer::ToString(L"ABC"));
    }
@@ -325,48 +348,52 @@ namespace ZenUnit
 #endif
    }
 
-   TEST(ToString_TypeHasNeitherOStreamInsertionOperatorOrZenUnitPrint_ReturnsRTTINameInBrackets)
+   TEST(ToString_TypeDoesNotHaveZenUnitPrinter_TypeDoesNotHaveOStreamInsertionOperator_ReturnsRTTITypeNameInBrackets)
    {
-      const UserTypeNonPrintable userTypeNonPrintable;
+      const NonPrintableUserType nonPrintableUserType;
       //
-      const string toStringResult = ZenUnit::ToStringer::ToString(userTypeNonPrintable);
+      const string toStringResult = ZenUnit::ToStringer::ToString(nonPrintableUserType);
       //
-      ARE_EQUAL("<UserTypeNonPrintable>", toStringResult);
+      ARE_EQUAL("<NonPrintableUserType>", toStringResult);
    }
 
-   TEST(ToString_TypeHasOStreamInsertionOperatorAndNotZenUnitPrint_ReturnsOStreamLeftShiftResult)
+   TEST(ToString_TypeDoesNotHaveZenUnitPrinter_TypeHasOStreamInsertionOperator_ReturnsOStreamLeftShiftResult)
    {
-      const UserType userType(1);
+      const OnlyInsertionOperatorPrintableUserType onlyInsertionOperatorPrintableUserType(1);
       //
-      const string toStringResult = ZenUnit::ToStringer::ToString(userType);
+      const string toStringResult = ZenUnit::ToStringer::ToString(onlyInsertionOperatorPrintableUserType);
       //
-      ARE_EQUAL("UserType@1", toStringResult);
+      ARE_EQUAL("OnlyInsertionOperatorPrintableUserType@1", toStringResult);
    }
 
-   TEST(ToString_TypeDoesNotHaveOStreamInsertionOperatorAndHasZenUnitPrint_ReturnsQuotedZenUnitPrintResult)
+   TEST(ToString_TypeHasZenUnitPrinter_TypeDoesNotHaveOStreamInsertionOperator_ReturnsZenUnitPrinterResult)
    {
-      const UserTypeOnlyZenUnitPrintable zenUnitPrintOnly{};
+      const OnlyZenUnitPrintableUserType onlyZenUnitPrintableUserType{};
       //
-      const string toStringResult = ZenUnit::ToStringer::ToString(zenUnitPrintOnly);
+      const string toStringResult = ZenUnit::ToStringer::ToString(onlyZenUnitPrintableUserType);
       //
+      ARE_EQUAL("OnlyZenUnitPrintableUserType", toStringResult);
+
       ostringstream oss;
-      ZenUnit::Printer<UserTypeOnlyZenUnitPrintable>::Print(oss, zenUnitPrintOnly);
-      const string zenUnitPrintResult = oss.str();
-      ARE_EQUAL(zenUnitPrintResult, toStringResult);
-      ARE_EQUAL("UserTypeOnlyZenUnitPrintable", toStringResult);
+      ZenUnit::Printer<OnlyZenUnitPrintableUserType>::Print(oss, onlyZenUnitPrintableUserType);
+      const string expectedZenUnitPrinterResult = oss.str();
+      ARE_EQUAL(expectedZenUnitPrinterResult, toStringResult);
+      ARE_EQUAL("OnlyZenUnitPrintableUserType", expectedZenUnitPrinterResult);
    }
 
-   TEST(ToString_TypeHasOStreamInsertionOperatorAndZenUnitPrint_ReturnsQuotedZenUnitPrintResult)
+   TEST(ToString_TypeHasZenUnitPrinter_TypeHasOStreamInsertionOperator_ReturnsZenUnitPrinterResult)
    {
-      const UserTypeInsertionOperatorAndZenUnitPrintable userTypeInsOpAndZenUnitPrintable{};
+      const DoublyPrintableUserType doublyPrintableUserType{};
       //
-      const string toStringResult = ZenUnit::ToStringer::ToString(userTypeInsOpAndZenUnitPrintable);
+      const string toStringResult = ZenUnit::ToStringer::ToString(doublyPrintableUserType);
       //
+      ARE_EQUAL("DoublyPrintableUserType", toStringResult);
+
       ostringstream oss;
-      ZenUnit::Printer<UserTypeInsertionOperatorAndZenUnitPrintable>::Print(oss, userTypeInsOpAndZenUnitPrintable);
-      const string zenUnitPrintResult = oss.str();
-      ARE_EQUAL(zenUnitPrintResult, toStringResult);
-      ARE_EQUAL("UserTypeInsertionOperatorAndZenUnitPrintable", toStringResult);
+      ZenUnit::Printer<DoublyPrintableUserType>::Print(oss, doublyPrintableUserType);
+      const string expectedZenUnitPrinterResult = oss.str();
+      ARE_EQUAL(expectedZenUnitPrinterResult, toStringResult);
+      ARE_EQUAL("DoublyPrintableUserType", expectedZenUnitPrinterResult);
    }
 
    TEST(ToStringConcat_ReturnsCommaSeparatedToStringedValues)
@@ -374,8 +401,8 @@ namespace ZenUnit
       ARE_EQUAL("1", ToStringer::ToStringConcat(1));
       ARE_EQUAL("1, 2", ToStringer::ToStringConcat(1, 2));
       ARE_EQUAL("1, \"2\", 3", ToStringer::ToStringConcat(1, "2", 3));
-      ARE_EQUAL("UserType@1, <UserTypeNonPrintable>, UserTypeOnlyZenUnitPrintable", ToStringer::ToStringConcat(
-         UserType(1), UserTypeNonPrintable(), UserTypeOnlyZenUnitPrintable()));
+      ARE_EQUAL("UserType@1, <NonPrintableUserType>, OnlyZenUnitPrintableUserType", ToStringer::ToStringConcat(
+         UserType(1), NonPrintableUserType(), OnlyZenUnitPrintableUserType()));
    }
 
    RUN_TESTS(ToStringerTests)

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnitTestUtils/UserTypeNonPrintable.h"
+#include "ZenUnitTestUtils/NonPrintableUserType.h"
 
 namespace ZenUnit
 {
@@ -13,20 +13,20 @@ namespace ZenUnit
 
    TEST(DefaultConstructor_SetsXTo0)
    {
-      const UserTypeNonPrintable userType;
+      const NonPrintableUserType userType;
       IS_ZERO(userType.x);
    }
 
    TEST(OneArgConstructor_SetsX)
    {
-      const UserTypeNonPrintable userType(1);
+      const NonPrintableUserType userType(1);
       ARE_EQUAL(1, userType.x);
    }
 
    TEST(OperatorLessThan_ReturnsTrueIfLeftXLessThanRightX)
    {
-      const UserTypeNonPrintable userType1(1);
-      const UserTypeNonPrintable userType2(2);
+      const NonPrintableUserType userType1(1);
+      const NonPrintableUserType userType2(2);
       IS_TRUE(userType1 < userType2);
       IS_FALSE(userType2 < userType1);
       IS_FALSE(userType1 < userType1);
@@ -34,15 +34,15 @@ namespace ZenUnit
 
    TEST(OperatorEquals_ReturnsTrueIfLeftXEqualsRightX)
    {
-      const UserTypeNonPrintable userType1(1);
-      const UserTypeNonPrintable userType2(2);
+      const NonPrintableUserType userType1(1);
+      const NonPrintableUserType userType2(2);
       IS_TRUE(userType1 == userType1);
       IS_FALSE(userType1 == userType2);
    }
 
    TEST(has_ostream_left_shift_ValueEqualsFalse)
    {
-      IS_FALSE(has_ostream_left_shift<UserTypeNonPrintable>::value);
+      IS_FALSE(has_ostream_insertion_operator<NonPrintableUserType>::value);
    }
 
    RUN_TESTS(UserTypeNonPrintableTests)

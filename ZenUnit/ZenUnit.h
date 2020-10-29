@@ -1161,18 +1161,20 @@ namespace ZenUnit
       static auto SFINAE(const U& value) -> decltype(std::to_string(value));
       static std::false_type SFINAE(...);
    public:
-      static constexpr bool value = std::is_same<std::string, decltype(SFINAE(std::declval<T>()))>::value;
+      static constexpr bool value = std::is_same<
+         std::string, decltype(SFINAE(std::declval<T>()))>::value;
    };
 
    template<typename T>
-   class has_ostream_left_shift
+   class has_ostream_insertion_operator
    {
    private:
       template<typename U>
       static auto SFINAE(std::ostream& os, const U& value) -> decltype(os << value);
       static std::false_type SFINAE(...);
    public:
-      static constexpr bool value = std::is_same<std::ostream&, decltype(SFINAE(std::declval<std::ostream&>(), std::declval<T>()))>::value;
+      static constexpr bool value = std::is_same<
+         std::ostream&, decltype(SFINAE(std::declval<std::ostream&>(), std::declval<T>()))>::value;
    };
 
    template<typename T>
@@ -1196,85 +1198,85 @@ namespace ZenUnit
       template<typename U>
       static std::false_type SFINAE(...);
    public:
-      static constexpr bool value = std::is_same<void, decltype(SFINAE<T>(std::declval<std::ostream&>(), std::declval<T>()))>::value;
+      static constexpr bool value = std::is_same<
+         void, decltype(SFINAE<T>(std::declval<std::ostream&>(), std::declval<T>()))>::value;
    };
 
    class Type
    {
-      friend class TypeTests;
-   private:
-      static std::unordered_map<const char*, std::string>& MangledToDemangledTypeNameMap()
-      {
-         static std::unordered_map<const char*, std::string> mangledToDemangledTypeNameMap;
-         return mangledToDemangledTypeNameMap;
-      }
-
    public:
       template<typename T>
       static const std::string* GetName(T&& variable)
       {
-         const std::string* const typeName = TypeInfoToTypeName(typeid(std::forward<T>(variable)));
+         const std::string* const typeName = GetTypeNameFromTypeInfo(typeid(std::forward<T>(variable)));
          return typeName;
       }
 
       template<typename T>
       static const std::string* GetName()
       {
-         const std::string* const typeName = TypeInfoToTypeName(typeid(T));
+         const std::string* const typeName = GetTypeNameFromTypeInfo(typeid(T));
          return typeName;
       }
    private:
-      static const std::string* TypeInfoToTypeName(const std::type_info& typeInfo)
+      static std::unordered_map<const char*, std::string>& GetMangledToDemangledTypeNameCache()
+      {
+         static std::unordered_map<const char*, std::string> mangledToDemangledTypeNameCache;
+         return mangledToDemangledTypeNameCache;
+      }
+
+      static const std::string* GetTypeNameFromTypeInfo(const std::type_info& typeInfo)
       {
          const char* const mangledTypeName = typeInfo.name();
-         std::unordered_map<const char*, std::string>& mangledToDemangledTypeNameMap = MangledToDemangledTypeNameMap();
+         std::unordered_map<const char*, std::string>& mangledToDemangledTypeNameCache = GetMangledToDemangledTypeNameCache();
          const std::unordered_map<const char*, std::string>::const_iterator findIter =
-            mangledToDemangledTypeNameMap.find(mangledTypeName);
-         if (findIter == mangledToDemangledTypeNameMap.end())
+            mangledToDemangledTypeNameCache.find(mangledTypeName);
+         if (findIter == mangledToDemangledTypeNameCache.end())
          {
-            const std::string demangledTypeName = Demangle(mangledTypeName);
-            const std::pair<std::unordered_map<const char*, std::string>::const_iterator, bool> emplaceResult =
-               mangledToDemangledTypeNameMap.emplace(mangledTypeName, demangledTypeName);
-            const std::string* const cachedDemangledTypeName = &emplaceResult.first->second;
-            return cachedDemangledTypeName;
+            const std::string demangledTypeName = DemangleTypeName(mangledTypeName);
+            const std::pair<std::unordered_map<const char*, std::string>::const_iterator, bool>
+               emplaceResult = mangledToDemangledTypeNameCache.emplace(mangledTypeName, demangledTypeName);
+            const std::string* const newlyCachedDemangledTypeName = &emplaceResult.first->second;
+            return newlyCachedDemangledTypeName;
          }
          const std::string* cachedDemangledTypeName = &findIter->second;
          return cachedDemangledTypeName;
       }
 
 #if defined __linux__ || defined __APPLE__
-      static std::string Demangle(const char* mangledTypeName)
+      static std::string DemangleTypeName(const char* mangledTypeName)
       {
-         int demangleStatus = -1;
-         std::unique_ptr<char, void(*)(void*)> demangledTypeNamePointer(
-            abi::__cxa_demangle(mangledTypeName, nullptr, nullptr, &demangleStatus),
-            std::free);
-         assert_true(demangleStatus == 0);
-         std::string demangledTypeName(demangledTypeNamePointer.get());
+         int demangleReturnCode = -1;
+         std::unique_ptr<char, void(*)(void*)> demangledTypeNameUniquePtr(
+            abi::__cxa_demangle(mangledTypeName, nullptr, nullptr, &demangleReturnCode), std::free);
+         assert_true(demangleReturnCode == 0);
+         const std::string demangledTypeName(demangledTypeNameUniquePtr.get());
          return demangledTypeName;
       }
 #elif defined _WIN32
-      static void InplaceEraseAllSubstrings(std::string& str, std::string_view substring)
+      static std::string DemangleTypeName(const char* mangledTypeName)
       {
+         std::string demangledTypeName(mangledTypeName);
+         // Remove noisy type name adornments on Windows
+         InplaceEraseAllSubstrings(&demangledTypeName, "class ");
+         InplaceEraseAllSubstrings(&demangledTypeName, "struct ");
+         InplaceEraseAllSubstrings(&demangledTypeName, "<char,std::char_traits<char>,std::allocator<char> >");
+         InplaceEraseAllSubstrings(&demangledTypeName, " const & __ptr64");
+         return demangledTypeName;
+      }
+
+      static void InplaceEraseAllSubstrings(std::string* outStr, std::string_view substring)
+      {
+         const size_t substringSize = substring.size();
          while (true)
          {
-            const std::size_t findPosition = str.find(substring);
-            if (findPosition == std::string::npos)
+            const std::size_t substringFindPosition = outStr->find(substring);
+            if (substringFindPosition == std::string::npos)
             {
                break;
             }
-            str = str.erase(findPosition, substring.size());
+            outStr->assign(outStr->erase(substringFindPosition, substringSize));
          }
-      }
-
-      static std::string Demangle(const char* mangledTypeName)
-      {
-         std::string demangledTypeName(mangledTypeName);
-         InplaceEraseAllSubstrings(demangledTypeName, "class ");
-         InplaceEraseAllSubstrings(demangledTypeName, "struct ");
-         InplaceEraseAllSubstrings(demangledTypeName, "<char,std::char_traits<char>,std::allocator<char> >");
-         InplaceEraseAllSubstrings(demangledTypeName, " const & __ptr64");
-         return demangledTypeName;
       }
 #endif
    };
@@ -1315,7 +1317,7 @@ namespace ZenUnit
          }
          else if constexpr (std::is_same_v<T, float>)
          {
-            oss << std::to_string(value) + "f";
+            oss << std::to_string(value) << 'f';
          }
          else if constexpr (has_to_string<T>::value)
          {
@@ -1333,19 +1335,20 @@ namespace ZenUnit
          {
             oss << PointerToAddressString(value);
          }
-         else if constexpr (!has_ZenUnitPrinter<T>::value && has_ostream_left_shift<T>::value)
+         else if constexpr (has_ostream_insertion_operator<T>::value)
          {
-            if (is_quoted_when_printed<T>::value)
+            if constexpr (is_quoted_when_printed<T>::value)
             {
+               // std::quoted not called here because std::quoted escapes backslashes in addition to quoting
                oss << '\"';
             }
             oss << value;
-            if (is_quoted_when_printed<T>::value)
+            if constexpr (is_quoted_when_printed<T>::value)
             {
                oss << '\"';
             }
          }
-         else if constexpr (!has_ZenUnitPrinter<T>::value && !has_ostream_left_shift<T>::value)
+         else
          {
             const std::string* const typeName = Type::GetName<T>();
             oss << "<" << *typeName << ">";
@@ -1361,7 +1364,7 @@ namespace ZenUnit
             return "nullptr";
          }
          std::ostringstream oss;
-         oss << "\"" << constCharPointerString << "\"";
+         oss << '\"' << constCharPointerString << '\"';
          const std::string quotedString(oss.str());
          return quotedString;
       }
@@ -1373,16 +1376,18 @@ namespace ZenUnit
             return "nullptr";
          }
          std::wostringstream oss;
-         oss << L"\"" << constWideCharPointerString << L"\"";
+         oss << '\"' << constWideCharPointerString << '\"';
          const std::wstring quotedWideString(oss.str());
 
-         // Ideal wstring-to-string implementation but requires includers of ZenUnit.h
-         // to define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING on Windows
+         // Hack wstring-to-string implementation
+         const std::string quotedNarrowString = fs::path(quotedWideString).string();
+
+         // The below proper wstring-to-string implementation would require Windows includers of ZenUnit.h
+         // to inconveniently have to define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING.
+
          // std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> wstringConverter;
          // const std::string quotedNarrowString = wstringConverter.to_bytes(quotedWideString);
 
-         // Hacky wstring-to-string implementation
-         const std::string quotedNarrowString = fs::path(quotedWideString).string();
          return quotedNarrowString;
       }
 
