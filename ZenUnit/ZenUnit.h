@@ -1880,25 +1880,18 @@ namespace ZenUnit
    class Watch
    {
       friend class WatchTests;
-   private:
-      std::function<size_t(char*, size_t, const char*, const tm*)> _call_strftime;
    public:
-      Watch() noexcept
-         : _call_strftime(strftime)
-      {
-      }
-
       virtual ~Watch() = default;
 
-      // Returns the current local time in format "YYYY-MM-DD 00:00:00"
+      // Returns the current local time in format "YYYY-MM-DD 00:00:00 TimeZone"
       virtual std::string DateTimeNow() const
       {
          const tm tmNow = TMNow();
-         const std::string timeZone = GetTimeZone(tmNow);
-         char localTimeWithTimezoneChars[128];
-         strftime(localTimeWithTimezoneChars, sizeof(localTimeWithTimezoneChars), "%F %r ", &tmNow);
-         const std::string localTimeWithTimezone = std::string(localTimeWithTimezoneChars) + timeZone;
-         return localTimeWithTimezone;
+         const std::string timeZone = TimeZone(tmNow);
+         char localTimeWithTimeZoneChars[128];
+         strftime(localTimeWithTimeZoneChars, sizeof(localTimeWithTimeZoneChars), "%F %r ", &tmNow);
+         const std::string localTimeWithTimeZone = std::string(localTimeWithTimeZoneChars) + timeZone;
+         return localTimeWithTimeZone;
       }
 
       virtual long long SecondsSince1970() const
@@ -1930,7 +1923,7 @@ namespace ZenUnit
          return twoDecimalPlaceMillisecondsString;
       }
    private:
-      virtual std::string GetTimeZone(const tm& tmNow) const
+      virtual std::string TimeZone(const tm& tmNow) const
       {
          char timeZoneChars[64];
          strftime(timeZoneChars, sizeof(timeZoneChars), "%Z", &tmNow);
@@ -1948,7 +1941,7 @@ namespace ZenUnit
          return *tmNow;
 #elif defined _WIN32
          const __time64_t nowTimeT = std::chrono::system_clock::to_time_t(nowTimePoint);
-         tm tmNow;
+         tm tmNow{};
          const errno_t localtimeResult = localtime_s(&tmNow, &nowTimeT);
          assert_true(localtimeResult == 0);
          return tmNow;
@@ -3896,7 +3889,8 @@ namespace ZenUnit
          if (testOutcome == TestOutcome::Success)
          {
             console->WriteColor("OK ", Color::Green);
-            const std::string twoDecimalPlaceMillisecondsString = _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
+            const std::string twoDecimalPlaceMillisecondsString =
+               _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(this->microseconds);
             console->WriteLine(twoDecimalPlaceMillisecondsString);
          }
       }

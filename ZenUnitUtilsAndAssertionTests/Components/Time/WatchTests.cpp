@@ -21,9 +21,8 @@ namespace ZenUnit
    };
 
    TESTS(WatchTests)
-   AFACT(Constructor_SetsStrftTimeFunctionPointer)
    FACTS(DateTimeNow_ReturnsLocalDateTimeNow)
-   AFACT(GetTimeZone_ReturnTimeZoneOfExecutingProcess)
+   AFACT(TimeZone_ReturnTimeZoneOfExecutingProcess)
    FACTS(MicrosecondsToTwoDecimalPlaceMillisecondsString_ReturnsMicrosecondsAsMillisecondsRoundedToThreePlaces)
    EVIDENCE
 
@@ -31,21 +30,13 @@ namespace ZenUnit
    {
    public:
       METALMOCK_NONVOID0_CONST(tm, TMNow)
-      METALMOCK_NONVOID1_CONST(string, GetTimeZone, const tm&)
+      METALMOCK_NONVOID1_CONST(string, TimeZone, const tm&)
    };
    unique_ptr<WatchSelfMocked> _watchSelfMocked;
-   METALMOCK_NONVOID4_FREE(size_t, strftime, char*, size_t, char const*, const tm*)
 
    STARTUP
    {
       _watchSelfMocked = make_unique<WatchSelfMocked>();
-      _watchSelfMocked->_call_strftime = BIND_4ARG_METALMOCK_OBJECT(strftimeMock);
-   }
-
-   TEST(Constructor_SetsStrftTimeFunctionPointer)
-   {
-      const Watch watch;
-      STD_FUNCTION_TARGETS(strftime, watch._call_strftime);
    }
 
    TEST2X2(DateTimeNow_ReturnsLocalDateTimeNow,
@@ -58,12 +49,12 @@ namespace ZenUnit
       Tm(1, 3, 101, 4, 5, 6), "2001-02-03 04:05:06 AM ")
    {
       _watchSelfMocked->TMNowMock.Return(tmNow);
-      const string timeZone = _watchSelfMocked->GetTimeZoneMock.ReturnRandom();
+      const string timeZone = _watchSelfMocked->TimeZoneMock.ReturnRandom();
       //
       const string dateTimeNow = _watchSelfMocked->DateTimeNow();
       //
       METALMOCK(_watchSelfMocked->TMNowMock.CalledOnce());
-      METALMOCK(_watchSelfMocked->GetTimeZoneMock.CalledOnceWith(tmNow));
+      METALMOCK(_watchSelfMocked->TimeZoneMock.CalledOnceWith(tmNow));
       const string expectedDateTimeNow = expectedDateTimeNowPrefix + timeZone;
       ARE_EQUAL(expectedDateTimeNow, dateTimeNow);
    }
@@ -83,12 +74,12 @@ namespace ZenUnit
       return tmNow;
    }
 
-   TEST(GetTimeZone_ReturnTimeZoneOfExecutingProcess)
+   TEST(TimeZone_ReturnTimeZoneOfExecutingProcess)
    {
       Watch watch;
       const tm tmNow = watch.TMNow();
       //
-      const string timeZone = watch.GetTimeZone(tmNow);
+      const string timeZone = watch.TimeZone(tmNow);
       //
       char expectedTimeZoneChars[64];
       strftime(expectedTimeZoneChars, sizeof(expectedTimeZoneChars), "%Z", &tmNow);
@@ -97,7 +88,7 @@ namespace ZenUnit
    }
 
    TEST2X2(MicrosecondsToTwoDecimalPlaceMillisecondsString_ReturnsMicrosecondsAsMillisecondsRoundedToThreePlaces,
-      unsigned microseconds, const char* expectedReturnValue,
+      long long microseconds, const string& expectedReturnValue,
       0, "[0.00ms]",
       1, "[0.00ms]",
       2, "[0.00ms]",
