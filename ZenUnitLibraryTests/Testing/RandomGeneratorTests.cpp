@@ -58,8 +58,8 @@ TEST(AllRandomGeneratorFunctions_ReturnsRandomValues)
    const vector<string> randomStringVector = randomGenerator->StringVector();
    ARE_EQUAL(randomStringVector, randomStringVector);
 
-   const fs::path randomPath = randomGenerator->Path();
-   ARE_EQUAL(randomPath, randomPath);
+   const fs::path randomFilesystemPath = randomGenerator->FilesystemPath();
+   ARE_EQUAL(randomFilesystemPath, randomFilesystemPath);
 
    const error_code randomErrorCode = randomGenerator->ErrorCode();
    ARE_EQUAL(randomErrorCode, randomErrorCode);

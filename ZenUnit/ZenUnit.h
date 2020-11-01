@@ -7045,8 +7045,8 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       virtual const char* ConstCharPointer() const { return Random<const char*>(); }
       virtual std::string String() const { return Random<std::string>(); }
       virtual std::vector<std::string> StringVector() const { return RandomVector<std::string>(); }
-      virtual fs::path Path() const { return Random<fs::path>(); }
       virtual std::error_code ErrorCode() const { return Random<std::error_code>(); }
+      virtual fs::path FilesystemPath() const { return Random<fs::path>(); }
 
       template<typename T>
       std::vector<T> Vector() const

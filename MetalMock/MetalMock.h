@@ -4948,8 +4948,8 @@ namespace ZenUnit
       METALMOCK_NONVOID0_CONST(const char*, ConstCharPointer)
       METALMOCK_NONVOID0_CONST(std::string, String)
       METALMOCK_NONVOID0_CONST(std::vector<std::string>, StringVector)
-      METALMOCK_NONVOID0_CONST(fs::path, Path)
       METALMOCK_NONVOID0_CONST(std::error_code, ErrorCode)
+      METALMOCK_NONVOID0_CONST(fs::path, FilesystemPath)
    };
 
    template<typename KeyType, typename ValueType>
