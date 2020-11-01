@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnitTestUtils/Equalizers/FileLineEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/FileLineEqualizer.h"
 
 namespace ZenUnit
 {
@@ -56,9 +56,9 @@ namespace ZenUnit
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      SETUP_EQUALIZER_TEST(FileLine);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FileLine, filePath, "arbitrary non-default const char* value");
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FileLine, lineNumber, 1u);
+      ZENUNIT_EQUALIZER_TEST_SETUP(FileLine);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FileLine, filePath, "arbitrary non-default const char* value");
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FileLine, lineNumber, 1u);
    }
 
    RUN_TESTS(FileLineTests)

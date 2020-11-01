@@ -11,9 +11,9 @@
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/TwoArgAnyerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/TwoArgMemberAnyerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/TwoArgMemberForEacherMock.h"
-#include "ZenUnitTestUtils/Equalizers/TestNameFilterEqualizer.h"
-#include "ZenUnitTestUtils/Equalizers/TestClassResultEqualizer.h"
-#include "ZenUnitTestUtils/Equalizers/TestResultEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestClassResultEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestResultEqualizerAndRandom.h"
 
 namespace ZenUnit
 {

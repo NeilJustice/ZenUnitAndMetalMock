@@ -3,7 +3,7 @@
 #include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomTestNameFilter.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
-#include "ZenUnitTestUtils/Equalizers/ZenUnitArgsEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizer.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidOneArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/WatchMock.h"
 

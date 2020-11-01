@@ -40,4 +40,14 @@ using namespace ZenUnit;
 #include "ZenUnitTestUtils/TestUtil.h"
 #include "ZenUnitTestUtils/UserType.h"
 
+// ZenUnitTestUtils Equalizers And Randoms
+#include "ZenUnitTestUtils/EqualizersAndRandoms/AnomalyEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/FullTestNameEqualizerAndRandom.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestClassResultEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestPhaseResultEqualizerAndRandom.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestResultEqualizerAndRandom.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestRunResultEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizer.h"
+
 #endif

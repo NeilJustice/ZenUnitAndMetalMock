@@ -45,11 +45,11 @@ namespace MetalMock
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
-      SETUP_EQUALIZER_TEST(Call4);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call4, firstArgument, V1);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call4, secondArgument, V2);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call4, thirdArgument, V3);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call4, fourthArgument, V4);
+      ZENUNIT_EQUALIZER_TEST_SETUP(Call4);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call4, firstArgument, V1);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call4, secondArgument, V2);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call4, thirdArgument, V3);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call4, fourthArgument, V4);
    }
 
    RUN_TESTS(FourArgumentFunctionCallTests)

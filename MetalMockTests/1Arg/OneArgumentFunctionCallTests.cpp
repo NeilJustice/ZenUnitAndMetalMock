@@ -29,8 +29,8 @@ namespace MetalMock
 
    TEST(ZenUnitEqualizer_ThrowsIfArg1NotEqual)
    {
-      SETUP_EQUALIZER_TEST(Call1);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call1, argument, V1);
+      ZENUNIT_EQUALIZER_TEST_SETUP(Call1);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call1, argument, V1);
    }
 
    RUN_TESTS(ArgumentFunctionCallTests)

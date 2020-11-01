@@ -38,10 +38,10 @@ namespace MetalMock
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
-      SETUP_EQUALIZER_TEST(Call3);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call3, firstArgument, V1);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call3, secondArgument, V2);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call3, thirdArgument, V3);
+      ZENUNIT_EQUALIZER_TEST_SETUP(Call3);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call3, firstArgument, V1);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call3, secondArgument, V2);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call3, thirdArgument, V3);
    }
 
    RUN_TESTS(ThreeArgumentFunctionCallTests)

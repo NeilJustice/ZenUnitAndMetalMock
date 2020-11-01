@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestResultMock.h"
-#include "ZenUnitTestUtils/Equalizers/TestClassResultEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestClassResultEqualizer.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/ThreeArgForEacherMock.h"
 
 namespace ZenUnit
@@ -253,8 +253,8 @@ namespace ZenUnit
 
    TEST(ZenUnitEqualizer_ThrowsIfTestResultsNotEqual)
    {
-      SETUP_EQUALIZER_TEST(TestClassResult);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestClassResult, _testResults, vector<TestResult> { TestResult() });
+      ZENUNIT_EQUALIZER_TEST_SETUP(TestClassResult);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestClassResult, _testResults, ZenUnit::RandomNonEmptyVector<TestResult>());
    }
 
    RUN_TESTS(TestClassResultTests)

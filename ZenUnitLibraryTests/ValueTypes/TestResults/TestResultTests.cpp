@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestFailureNumbererMock.h"
-#include "ZenUnitTestUtils/Equalizers/TestResultEqualizer.h"
 
 namespace ZenUnit
 {
@@ -10,7 +9,7 @@ namespace ZenUnit
    FACTS(SixArgConstructor_SetsFields_SetsWatchFunction)
    FACTS(ConstructorFail_ReturnsExpectedTestResult)
    FACTS(StartupFail_ReturnsExpectedTestResult)
-   AFACT(CtorDtorSuccess_ReturnsExpectedTestResult);
+   AFACT(ConstructorDestructorSuccess_ReturnsExpectedTestResult);
    FACTS(WriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess)
    AFACT(PrintIfFailure_Success_PrintsNothing)
    FACTS(PrintIfFailure_Anomaly_PrintsExpected)
@@ -186,14 +185,15 @@ namespace ZenUnit
       ARE_EQUAL(expectedTestResult, startupFailTestResult);
    }
 
-   TEST(CtorDtorSuccess_ReturnsExpectedTestResult)
+   TEST(ConstructorDestructorSuccess_ReturnsExpectedTestResult)
    {
       TestPhaseResult constructorTestPhaseResult(TestPhase::Constructor);
       constructorTestPhaseResult.microseconds = 10;
       TestPhaseResult destructorTestPhaseResult(TestPhase::Destructor);
       destructorTestPhaseResult.microseconds = 20;
       //
-      const TestResult testResult = TestResult::CtorDtorSuccess(FullTestNameValue, constructorTestPhaseResult, destructorTestPhaseResult);
+      const TestResult testResult = TestResult::ConstructorDestructorSuccess(
+         FullTestNameValue, constructorTestPhaseResult, destructorTestPhaseResult);
       //
       TestResult expectedTestResult;
       expectedTestResult.fullTestName = FullTestNameValue;
@@ -405,34 +405,34 @@ namespace ZenUnit
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      SETUP_EQUALIZER_TEST(TestResult);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, fullTestName, FullTestName("ClassName", "TestName", 0));
+      ZENUNIT_EQUALIZER_TEST_SETUP(TestResult);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, fullTestName, FullTestName("ClassName", "TestName", 0));
 
       TestPhaseResult nonDefaultConstructorTestPhaseResult;
       nonDefaultConstructorTestPhaseResult.testPhase = TestPhase::Constructor;
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, constructorTestPhaseResult, nonDefaultConstructorTestPhaseResult);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, constructorTestPhaseResult, nonDefaultConstructorTestPhaseResult);
 
       TestPhaseResult nonDefaultStartupTestPhaseResult;
       nonDefaultStartupTestPhaseResult.testPhase = TestPhase::Startup;
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, startupTestPhaseResult, nonDefaultStartupTestPhaseResult);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, startupTestPhaseResult, nonDefaultStartupTestPhaseResult);
 
       TestPhaseResult nonDefaultTestBodyTestPhaseResult;
       nonDefaultTestBodyTestPhaseResult.testPhase = TestPhase::TestBody;
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, testBodyTestPhaseResult, nonDefaultTestBodyTestPhaseResult);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, testBodyTestPhaseResult, nonDefaultTestBodyTestPhaseResult);
 
       TestPhaseResult nonDefaultCleanupTestPhaseResult;
       nonDefaultCleanupTestPhaseResult.testPhase = TestPhase::Cleanup;
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, cleanupTestPhaseResult, nonDefaultCleanupTestPhaseResult);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, cleanupTestPhaseResult, nonDefaultCleanupTestPhaseResult);
 
       TestPhaseResult nonDefaultDestructorTestPhaseResult;
       nonDefaultDestructorTestPhaseResult.testPhase = TestPhase::Destructor;
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, destructorTestPhaseResult, nonDefaultDestructorTestPhaseResult);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, destructorTestPhaseResult, nonDefaultDestructorTestPhaseResult);
 
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, responsibleTestPhaseResultField, &TestResult::constructorTestPhaseResult);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, testOutcome, TestOutcome::Anomaly);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, testCaseNumber, size_t(10));
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, totalTestCases, size_t(20));
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, microseconds, 30u);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, responsibleTestPhaseResultField, &TestResult::constructorTestPhaseResult);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, testOutcome, TestOutcome::Anomaly);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, testCaseNumber, size_t(10));
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, totalTestCases, size_t(20));
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, microseconds, 30u);
    }
 
    RUN_TESTS(TestResultTests)

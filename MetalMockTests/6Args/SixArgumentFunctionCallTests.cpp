@@ -55,13 +55,13 @@ namespace MetalMock
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
-      SETUP_EQUALIZER_TEST(Call6);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, firstArgument, V1);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, secondArgument, V2);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, thirdArgument, V3);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, fourthArgument, V4);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, fifthArgument, V5);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, sixthArgument, V6);
+      ZENUNIT_EQUALIZER_TEST_SETUP(Call6);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, firstArgument, V1);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, secondArgument, V2);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, thirdArgument, V3);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, fourthArgument, V4);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, fifthArgument, V5);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, sixthArgument, V6);
    }
 
    RUN_TESTS(SixArgumentFunctionCallTests)

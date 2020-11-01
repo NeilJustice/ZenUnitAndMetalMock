@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomFullTestName.h"
-#include "ZenUnitTestUtils/Equalizers/FullTestNameEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/FullTestNameEqualizerAndRandom.h"
 
 namespace ZenUnit
 {

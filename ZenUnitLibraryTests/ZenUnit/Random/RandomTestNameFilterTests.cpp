@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomTestNameFilter.h"
-#include "ZenUnitTestUtils/Equalizers/TestNameFilterEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizer.h"
 
 TESTS(RandomTestNameFilterTests)
 AFACT(RandomTestNameFilter_CodeCoverage)

@@ -50,12 +50,12 @@ namespace MetalMock
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      SETUP_EQUALIZER_TEST(Call5);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call5, firstArgument, V1);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call5, secondArgument, V2);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call5, thirdArgument, V3);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call5, fourthArgument, V4);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call5, fifthArgument, V5);
+      ZENUNIT_EQUALIZER_TEST_SETUP(Call5);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call5, firstArgument, V1);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call5, secondArgument, V2);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call5, thirdArgument, V3);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call5, fourthArgument, V4);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call5, fifthArgument, V5);
    }
 
    RUN_TESTS(FiveArgumentFunctionCallTests)

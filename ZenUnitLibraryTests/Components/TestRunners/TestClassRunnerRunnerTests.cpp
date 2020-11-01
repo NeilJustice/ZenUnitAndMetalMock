@@ -8,9 +8,9 @@
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/TwoArgMemberForEacherMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/MetalMock/SorterMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/WatchMock.h"
-#include "ZenUnitTestUtils/Equalizers/TestNameFilterEqualizer.h"
-#include "ZenUnitTestUtils/Equalizers/TestClassResultEqualizer.h"
-#include "ZenUnitTestUtils/Equalizers/ZenUnitArgsEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestClassResultEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizer.h"
 
 namespace ZenUnit
 {

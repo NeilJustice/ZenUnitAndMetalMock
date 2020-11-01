@@ -2,7 +2,7 @@
 #include "ZenUnitLibraryTests/Components/Args/MetalMock/TestNameFilterMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/TestClassRunnerMock.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomTestNameFilter.h"
-#include "ZenUnitTestUtils/Equalizers/TestClassResultEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestClassResultEqualizer.h"
 
 namespace ZenUnit
 {

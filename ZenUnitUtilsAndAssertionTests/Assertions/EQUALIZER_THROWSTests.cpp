@@ -24,7 +24,7 @@ namespace ZenUnit
       static void AssertEqual(const Namespace::TestStruct& expected, const Namespace::TestStruct& actual)
       {
          ARE_EQUAL(expected.fieldA, actual.fieldA);
-         // Absence of line ARE_EQUAL(expected.fieldB, actual.fieldB);
+         // Purposeful absence of line ARE_EQUAL(expected.fieldB, actual.fieldB);
       }
    };
 }
@@ -62,17 +62,18 @@ namespace ZenUnit
    };
 
    TESTS(EQUALIZER_THROWSTests)
-   AFACT(EqualizerDoesNotAssertSpecifiedFieldEqual_Throws)
-   AFACT(EqualizerThrowsAnomalyThatDoesNotContainFieldName_Throws)
-   AFACT(EqualizerThrowsAnomalyThatContainsFieldName_ButStillThrowsThatAnomalyWhenAllFieldsEqual_Throws)
+   AFACT(EqualizerDoesNotAssertSpecifiedFieldEqual_ThrowsAnomaly)
+   AFACT(EqualizerThrowsAnomalyThatDoesNotContainFieldName_ThrowsAnomaly)
+   AFACT(EqualizerThrowsAnomalyThatContainsFieldName_ButStillThrowsThatAnomalyWhenAllFieldsEqual_ThrowsAnomaly)
    AFACT(EqualizerAssertsSpecifiedFieldEqual_DoesNotThrowException)
    EVIDENCE
 
-   TEST(EqualizerDoesNotAssertSpecifiedFieldEqual_Throws)
+   TEST(EqualizerDoesNotAssertSpecifiedFieldEqual_ThrowsAnomaly)
    {
-      SETUP_EQUALIZER_TEST(Namespace::TestStruct);
-      THROWS_EXCEPTION(EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Namespace::TestStruct, fieldB, 1), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Namespace::TestStruct, fieldB, 1)",
+      ZENUNIT_EQUALIZER_TEST_SETUP(Namespace::TestStruct);
+      THROWS_EXCEPTION(ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Namespace::TestStruct, fieldB, 1),
+         Anomaly, TestUtil::NewlineConcat("",
+"  Failed: ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Namespace::TestStruct, fieldB, 1)",
 "Expected: Function ZenUnit::Equalizer<Namespace::TestStruct>::AssertEqual(expected, actual)",
 "          to throw a ZenUnit::Anomaly from an",
 "          ARE_EQUAL(expected.fieldB, actual.fieldB) assert statement.",
@@ -81,28 +82,30 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(EqualizerThrowsAnomalyThatDoesNotContainFieldName_Throws)
+   TEST(EqualizerThrowsAnomalyThatDoesNotContainFieldName_ThrowsAnomaly)
    {
-      SETUP_EQUALIZER_TEST(TestStructB);
-      THROWS_EXCEPTION(EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestStructB, field, TestStructB::ThrowWithoutFieldNameInWhatText), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestStructB, field, TestStructB::ThrowWithoutFieldNameInWhatText)",
+      ZENUNIT_EQUALIZER_TEST_SETUP(TestStructB);
+      THROWS_EXCEPTION(ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestStructB, field, TestStructB::ThrowWithoutFieldNameInWhatText),
+         Anomaly, TestUtil::NewlineConcat("",
+"  Failed: ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestStructB, field, TestStructB::ThrowWithoutFieldNameInWhatText)",
 "Expected: N/A",
 "  Actual: N/A",
-" Because: IS_TRUE(String::Contains(anomalyWhat, fieldName)) failed",
+" Because: IS_TRUE(String::Contains(anomalyExceptionMessage, fieldName)) failed",
 "Expected: true",
 "  Actual: false",
 "File.cpp(1)",
 "File.cpp(1)"));
    }
 
-   TEST(EqualizerThrowsAnomalyThatContainsFieldName_ButStillThrowsThatAnomalyWhenAllFieldsEqual_Throws)
+   TEST(EqualizerThrowsAnomalyThatContainsFieldName_ButStillThrowsThatAnomalyWhenAllFieldsEqual_ThrowsAnomaly)
    {
-      SETUP_EQUALIZER_TEST(TestStructB);
-      THROWS_EXCEPTION(EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestStructB, field, TestStructB::ThrowWithFieldNameInWhatText), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestStructB, field, TestStructB::ThrowWithFieldNameInWhatText)",
+      ZENUNIT_EQUALIZER_TEST_SETUP(TestStructB);
+      THROWS_EXCEPTION(ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestStructB, field, TestStructB::ThrowWithFieldNameInWhatText),
+         Anomaly, TestUtil::NewlineConcat("",
+"  Failed: ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestStructB, field, TestStructB::ThrowWithFieldNameInWhatText)",
 "Expected: N/A",
 "  Actual: N/A",
-" Because: ARE_EQUAL(equalizerTestObjectA, equalizerTestObjectB) failed",
+" Because: ARE_EQUAL(expectedZenUnitEqualizerTestObject, actualZenUnitEqualizerTestObject) failed",
 "Expected: <TestStructB>",
 "  Actual: <TestStructB>",
 "File.cpp(1)",
@@ -111,8 +114,8 @@ namespace ZenUnit
 
    TEST(EqualizerAssertsSpecifiedFieldEqual_DoesNotThrowException)
    {
-      SETUP_EQUALIZER_TEST(Namespace::TestStruct);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Namespace::TestStruct, fieldA, 1);
+      ZENUNIT_EQUALIZER_TEST_SETUP(Namespace::TestStruct);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Namespace::TestStruct, fieldA, ZenUnit::RandomNon0<int>());
    }
 
    RUN_TESTS(EQUALIZER_THROWSTests)

@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnitTestUtils/Equalizers/ZenUnitArgsEqualizer.h"
 
 namespace ZenUnit
 {
@@ -27,19 +26,19 @@ namespace ZenUnit
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      SETUP_EQUALIZER_TEST(ZenUnitArgs);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, commandLine, "ZenUnitTests.exe");
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, testNameFilters, vector<TestNameFilter> { TestNameFilter() });
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, pauseBefore, true);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, pauseAfter, true);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, alwaysExit0, true);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, failFast, true);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, exit1IfTestsSkipped, true);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, testRuns, 2u);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, randomTestOrdering, true);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, randomSeed, 3u);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, randomSeedSetByUser, true);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, maxTestMilliseconds, 4u);
+      ZENUNIT_EQUALIZER_TEST_SETUP(ZenUnitArgs);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, commandLine, "ZenUnitTests.exe");
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, testNameFilters, vector<TestNameFilter> { TestNameFilter() });
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, pauseBefore, true);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, pauseAfter, true);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, alwaysExit0, true);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, failFast, true);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, exit1IfTestsSkipped, true);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, testRuns, 2u);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, randomTestOrdering, true);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, randomSeed, 3u);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, randomSeedSetByUser, true);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, maxTestMilliseconds, 4u);
    }
 
    RUN_TESTS(ZenUnitArgsTests)

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnitTestUtils/Equalizers/FullTestNameEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/FullTestNameEqualizerAndRandom.h"
 
 struct StartupAndCleanup
 {

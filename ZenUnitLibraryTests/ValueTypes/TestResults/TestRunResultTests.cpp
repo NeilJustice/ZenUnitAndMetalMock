@@ -6,8 +6,6 @@
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/MemberForEacherMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/WatchMock.h"
-#include "ZenUnitTestUtils/Equalizers/TestClassResultEqualizer.h"
-#include "ZenUnitTestUtils/Equalizers/TestRunResultEqualizer.h"
 
 namespace ZenUnit
 {
@@ -422,11 +420,11 @@ namespace ZenUnit
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      SETUP_EQUALIZER_TEST(TestRunResult);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestRunResult, _testClassResults, vector<TestClassResult> { TestClassResult() });
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestRunResult, _skippedTestClassNamesAndSkipReasons, vector<string> { "" });
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestRunResult, _skippedFullTestNamesAndSkipReasons, vector<string> { "" });
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestRunResult, _numberOfFailedTestCases, 1);
+      ZENUNIT_EQUALIZER_TEST_SETUP(TestRunResult);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestRunResult, _testClassResults, vector<TestClassResult> { TestClassResult() });
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestRunResult, _skippedTestClassNamesAndSkipReasons, vector<string> { "" });
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestRunResult, _skippedFullTestNamesAndSkipReasons, vector<string> { "" });
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestRunResult, _numberOfFailedTestCases, 1);
    }
 
    RUN_TESTS(TestRunResultTests)

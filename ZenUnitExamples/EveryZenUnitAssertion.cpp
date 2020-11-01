@@ -79,9 +79,9 @@ TEST(CallAllMacros)
    DOES_NOT_THROW([]{}());
 
    // Equalizers
-   SETUP_EQUALIZER_TEST(Struct);
-   EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Struct, firstField, 1);
-   EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Struct, secondField, 'A');
+   ZENUNIT_EQUALIZER_TEST_SETUP(Struct);
+   ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Struct, firstField, 1);
+   ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Struct, secondField, 'A');
 }
 
 RUN_TESTS(EveryZenUnitAssertion)

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomFileLine.h"
-#include "ZenUnitTestUtils/Equalizers/FileLineEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/FileLineEqualizer.h"
 
 namespace ZenUnit
 {

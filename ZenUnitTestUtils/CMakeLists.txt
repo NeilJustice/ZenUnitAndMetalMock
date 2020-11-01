@@ -6,7 +6,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${ZenUnitIncludeDirectory})
 
-folder_source_group(Equalizers)
+folder_source_group(EqualizersAndRandoms)
 
 file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 source_group("" FILES ${sourceFilePaths})

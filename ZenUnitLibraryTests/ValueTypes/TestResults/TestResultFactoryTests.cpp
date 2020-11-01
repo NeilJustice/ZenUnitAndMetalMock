@@ -1,12 +1,11 @@
 #include "pch.h"
-#include "ZenUnitTestUtils/Equalizers/TestResultEqualizer.h"
 
 namespace ZenUnit
 {
    TESTS(TestResultFactoryTests)
    AFACT(MakeConstructorFail_ReturnsTestResultConstructorFail)
    AFACT(MakeStartupFail_ReturnsTestResultStartupFail)
-   AFACT(MakeCtorDtorSuccess_ReturnsTestResultCtorDtorSuccess)
+   AFACT(MakeConstructorDestructorSuccess_ReturnsTestResultConstructorDestructorSuccess)
    AFACT(MakeFullTestResult_ReturnsTestResultSixArgCtor)
    EVIDENCE
 
@@ -47,12 +46,12 @@ namespace ZenUnit
       ARE_EQUAL(expectedTestResult, startupFailTestResult);
    }
 
-   TEST(MakeCtorDtorSuccess_ReturnsTestResultCtorDtorSuccess)
+   TEST(MakeConstructorDestructorSuccess_ReturnsTestResultConstructorDestructorSuccess)
    {
-      const TestResult ctorDtorSuccessResult = _testResultFactory.MakeCtorDtorSuccess(
+      const TestResult ctorDtorSuccessResult = _testResultFactory.MakeConstructorDestructorSuccess(
          FullTestNameValue, ConstructorTestPhaseResult, DestructorTestPhaseResult);
       //
-      const TestResult expectedTestResult = TestResult::CtorDtorSuccess(
+      const TestResult expectedTestResult = TestResult::ConstructorDestructorSuccess(
          FullTestNameValue, ConstructorTestPhaseResult, DestructorTestPhaseResult);
       ARE_EQUAL(expectedTestResult, ctorDtorSuccessResult);
    }

@@ -281,14 +281,17 @@ Example ZenUnit Command Line Arguments:
 //
 
 // Initializes ZenUnit::Equalizer test variables.
-#define SETUP_EQUALIZER_TEST(typeName) \
-   typeName equalizerTestObjectA{}; \
-   typeName equalizerTestObjectB{}; \
-   ARE_EQUAL(equalizerTestObjectA, equalizerTestObjectB)
+#define ZENUNIT_EQUALIZER_TEST_SETUP(typeName) \
+   typeName expectedZenUnitEqualizerTestObject{}; \
+   typeName actualZenUnitEqualizerTestObject{}; \
+   ARE_EQUAL(expectedZenUnitEqualizerTestObject, actualZenUnitEqualizerTestObject)
 
 // Asserts that ZenUnit::Equalizer<T>::AssertEqual() throws when the specified field is not equal.
-#define EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(typeName, nonQuotedFieldName, arbitraryNonDefaultFieldValue) \
-   ZenUnit::EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_Defined(equalizerTestObjectA, equalizerTestObjectB, &typeName::nonQuotedFieldName, #typeName, #nonQuotedFieldName, arbitraryNonDefaultFieldValue, #arbitraryNonDefaultFieldValue, FILELINE)
+#define ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(typeName, nonQuotedFieldName, randomNonDefaultFieldValue) \
+   ZenUnit::ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_Defined( \
+      expectedZenUnitEqualizerTestObject, actualZenUnitEqualizerTestObject, \
+      &typeName::nonQuotedFieldName, #typeName, #nonQuotedFieldName, \
+      randomNonDefaultFieldValue, #randomNonDefaultFieldValue, FILELINE)
 
 //
 // Test Assertions
@@ -776,7 +779,7 @@ namespace ZenUnit
    {
       const char* testClassName;
       const char* testName;
-      unsigned char arity;
+      unsigned char arity; // 0 if TEST, 1 if TEST1X2, 2 if TEST2X2, 3 if TEST3X3
 
       FullTestName() noexcept
          : testClassName(""), testName(""), arity(0) {}
@@ -2554,25 +2557,29 @@ namespace ZenUnit
       }
    }
 
-   inline void EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_ThrowOnAccountOfExceptionUnexpectedlyThrown(
+   inline void ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_ThrowAnomalyBecauseEqualizerThrewUnexpectedAnomaly(
       const char* typeName, const char* fieldName, const char* arbitraryNonDefaultFieldValueText,
       FileLine fileLine, const ZenUnit::Anomaly& becauseAnomaly)
    {
-      throw Anomaly("EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL", typeName, fieldName, arbitraryNonDefaultFieldValueText, "",
+      const Anomaly anomaly("ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL",
+         typeName, fieldName, arbitraryNonDefaultFieldValueText, "",
          becauseAnomaly, "N/A", "N/A", ExpectedActualFormat::Fields, fileLine);
+      throw anomaly;
    }
 
-   inline void EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_ThrowOnAccountOfExpectedExceptionNotThrown(
+   inline void ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_ThrowAnomalyBecauseEqualizerDidNotThrowAnomaly(
       const char* typeName, const char* fieldName, const char* arbitraryNonDefaultFieldValueText, FileLine fileLine)
    {
-      const std::string messageForExpected = String::Concat(
+      const std::string messageForExpectedField = String::Concat(
          R"(Function ZenUnit::Equalizer<Namespace::TestStruct>::AssertEqual(expected, actual)
           to throw a ZenUnit::Anomaly from an
           ARE_EQUAL(expected.)", fieldName, ", actual.", fieldName, ") assert statement.");
-      const std::string messageForActual(String::Concat("No ZenUnit::Anomaly thrown despite field '", fieldName, R"('
+      const std::string messageForActualField(String::Concat("No ZenUnit::Anomaly thrown despite field '", fieldName, R"('
           differing between objects expected and actual.)"));
-      throw Anomaly("EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL", typeName, fieldName, arbitraryNonDefaultFieldValueText, "", Anomaly::Default(),
-         messageForExpected, messageForActual, ExpectedActualFormat::Fields, fileLine);
+      const Anomaly anomaly("ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL",
+         typeName, fieldName, arbitraryNonDefaultFieldValueText, "", Anomaly::Default(),
+         messageForExpectedField, messageForActualField, ExpectedActualFormat::Fields, fileLine);
+      throw anomaly;
    }
 
    template<typename ConvertibleToBoolType, typename... MessageTypes>
@@ -2585,44 +2592,39 @@ namespace ZenUnit
       }
    }
 
-   template<
-      typename ExpectedType,
-      typename ActualType,
-      typename FieldMemberPointerType,
-      typename FieldType>
-      void EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_Defined(
-         ExpectedType& equalizerTestObjectA,
-         ActualType& equalizerTestObjectB,
+   template<typename ExpectedType, typename ActualType, typename FieldMemberPointerType, typename FieldType>
+      void ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_Defined(
+         ExpectedType& expectedZenUnitEqualizerTestObject, ActualType& actualZenUnitEqualizerTestObject,
          FieldMemberPointerType fieldMemberPointer,
          const char* typeName,
          const char* fieldName,
-         const FieldType& nonDefaultFieldValue,
-         const char* arbitraryNonDefaultFieldValueText,
+         const FieldType& randomNonDefaultFieldValue,
+         const char* randomNonDefaultFieldValueText,
          FileLine fileLine)
    {
-      (equalizerTestObjectA.*fieldMemberPointer) = nonDefaultFieldValue;
+      (expectedZenUnitEqualizerTestObject.*fieldMemberPointer) = randomNonDefaultFieldValue;
       try
       {
-         ARE_EQUAL(equalizerTestObjectA, equalizerTestObjectB);
+         ARE_EQUAL(expectedZenUnitEqualizerTestObject, actualZenUnitEqualizerTestObject);
       }
       catch (const ZenUnit::Anomaly& anomaly)
       {
-         const char* anomalyWhat = anomaly.what();
+         const char* const anomalyExceptionMessage = anomaly.what();
          try
          {
-            IS_TRUE(String::Contains(anomalyWhat, fieldName));
-            (equalizerTestObjectB.*fieldMemberPointer) = nonDefaultFieldValue;
-            ARE_EQUAL(equalizerTestObjectA, equalizerTestObjectB);
+            IS_TRUE(String::Contains(anomalyExceptionMessage, fieldName));
+            (actualZenUnitEqualizerTestObject.*fieldMemberPointer) = randomNonDefaultFieldValue;
+            ARE_EQUAL(expectedZenUnitEqualizerTestObject, actualZenUnitEqualizerTestObject);
          }
          catch (const ZenUnit::Anomaly& becauseAnomaly)
          {
-            EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_ThrowOnAccountOfExceptionUnexpectedlyThrown(
-               typeName, fieldName, arbitraryNonDefaultFieldValueText, fileLine, becauseAnomaly);
+            ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_ThrowAnomalyBecauseEqualizerThrewUnexpectedAnomaly(
+               typeName, fieldName, randomNonDefaultFieldValueText, fileLine, becauseAnomaly);
          }
          return;
       }
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_ThrowOnAccountOfExpectedExceptionNotThrown(
-         typeName, fieldName, arbitraryNonDefaultFieldValueText, fileLine);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_ThrowAnomalyBecauseEqualizerDidNotThrowAnomaly(
+         typeName, fieldName, randomNonDefaultFieldValueText, fileLine);
    }
 
    template<typename StringType, typename... MessageTypes>
@@ -3867,7 +3869,7 @@ namespace ZenUnit
          return startupFail;
       }
 
-      static TestResult CtorDtorSuccess(
+      static TestResult ConstructorDestructorSuccess(
          const FullTestName& fullTestName,
          const TestPhaseResult& constructorTestPhaseResult,
          const TestPhaseResult& destructorTestPhaseResult)
@@ -3972,7 +3974,10 @@ namespace ZenUnit
    };
 
    using ThreeArgForEacherType = const ThreeArgForEacher<
-      std::vector<TestResult>, void(*)(const TestResult&, const Console*, TestFailureNumberer*), const Console*, TestFailureNumberer*>;
+      std::vector<TestResult>,
+      void(*)(const TestResult&, const Console*, TestFailureNumberer*),
+      const Console*,
+      TestFailureNumberer*>;
 
    class TestClassResult
    {
@@ -4041,7 +4046,8 @@ namespace ZenUnit
       {
          const size_t numberOfFailedTestCases = NumberOfFailedTestCases();
          const long long sumOfTestResultMicroseconds = SumOfTestResultMicroseconds();
-         const std::string twoDecimalPlaceMillisecondsString = MicrosecondsToTwoDecimalPlaceMillisecondsString(sumOfTestResultMicroseconds);
+         const std::string twoDecimalPlaceMillisecondsString =
+            MicrosecondsToTwoDecimalPlaceMillisecondsString(sumOfTestResultMicroseconds);
          if (numberOfFailedTestCases == 0)
          {
             console->Write("[  ");
@@ -4253,7 +4259,10 @@ namespace ZenUnit
       TwoArgAnyer() noexcept = default;
       virtual ~TwoArgAnyer() = default;
 
-      virtual bool TwoArgAny(const CollectionType* collection, TwoArgPredicateFunctionType twoArgPredicateFunction, Arg2Type arg2) const
+      virtual bool TwoArgAny(
+         const CollectionType* collection,
+         TwoArgPredicateFunctionType twoArgPredicateFunction,
+         Arg2Type arg2) const
       {
          const auto collectionConstEnd = collection->cend();
          for (auto iter = collection->cbegin(); iter != collectionConstEnd; ++iter)
@@ -4315,7 +4324,10 @@ namespace ZenUnit
    protected:
       std::unique_ptr<const Console> _protected_console;
       using TwoArgMemberAnyerType = TwoArgMemberAnyer<
-         std::vector<TestNameFilter>, TestClassRunner, bool(TestClassRunner::*)(const TestNameFilter&, const char*) const, const char*>;
+         std::vector<TestNameFilter>,
+         TestClassRunner,
+         bool(TestClassRunner::*)(const TestNameFilter&, const char*) const,
+         const char*>;
       std::unique_ptr<const TwoArgMemberAnyerType> _protected_twoArgMemberAnyer;
    public:
       TestClassRunner() noexcept
@@ -4327,7 +4339,7 @@ namespace ZenUnit
       virtual ~TestClassRunner() = default;
       virtual const char* TestClassName() const { return nullptr; }
       virtual size_t NumberOfTestCases() const { return 0; }
-      virtual bool HasTestThatMatchesTestNameFilter(const TestNameFilter& /*testNameFilter*/) const { return false; }
+      virtual bool HasTestThatMatchesTestNameFilter(const TestNameFilter&) const { return false; }
       virtual TestClassResult RunTests() { return TestClassResult{}; }
 
       bool TestNameFilterMatchesTestName(const TestNameFilter& testNameFilter, const char* testName) const
@@ -4363,21 +4375,25 @@ namespace ZenUnit
    private:
       // Function Callers
       std::unique_ptr<const Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>> _transformer;
+
       using TwoArgMemberAnyerType = TwoArgMemberAnyer<
          std::vector<TestNameFilter>,
          TestClassRunnerRunner,
          bool(TestClassRunnerRunner::*)(const TestNameFilter&, const TestClassRunner*) const,
          const TestClassRunner*>;
       std::unique_ptr<const TwoArgMemberAnyerType> _twoArgMemberAnyer;
+
       using TwoArgMemberForEacherType = TwoArgMemberForEacher<
          std::unique_ptr<TestClassRunner>,
          TestClassRunnerRunner,
          void(TestClassRunnerRunner::*)(std::unique_ptr<TestClassRunner>&, const std::vector<TestNameFilter>&),
          const std::vector<TestNameFilter>&>;
       std::unique_ptr<const TwoArgMemberForEacherType> _twoArgMemberForEacher;
+
       // Constant Components
       std::unique_ptr<const Sorter<std::vector<std::unique_ptr<TestClassRunner>>>> _testClassRunnerSorter;
       std::unique_ptr<const Watch> _watch;
+
       // Mutable Components
       std::vector<std::unique_ptr<TestClassRunner>> _testClassRunners;
    public:
@@ -4562,10 +4578,8 @@ namespace ZenUnit
    {
       friend class TestRunResultTests;
       friend class Equalizer<TestRunResult>;
-
       using MemberForEacherTestClassResultsType = MemberForEacher<std::vector<TestClassResult>,
          TestRunResult, void(TestRunResult::*)(const TestClassResult&) const>;
-
       using MemberForEacherSkippedTestsType = MemberForEacher<std::vector<std::string>,
          TestRunResult, void(TestRunResult::*)(const std::string&) const>;
    private:
@@ -4626,8 +4640,10 @@ namespace ZenUnit
             _console->WriteLineColor(numberOfTestFailuresLine, Color::Red);
             _memberForEacherTestClassResults->MemberForEach(&_testClassResults, this, &TestRunResult::PrintTestClassResultFailures);
          }
-         _memberForEacherSkippedTests->MemberForEach(&_skippedTestClassNamesAndSkipReasons, this, &TestRunResult::PrintSkippedTestClassReminder);
-         _memberForEacherSkippedTests->MemberForEach(&_skippedFullTestNamesAndSkipReasons, this, &TestRunResult::PrintSkippedTestReminder);
+         _memberForEacherSkippedTests->MemberForEach(
+            &_skippedTestClassNamesAndSkipReasons, this, &TestRunResult::PrintSkippedTestClassReminder);
+         _memberForEacherSkippedTests->MemberForEach(
+            &_skippedFullTestNamesAndSkipReasons, this, &TestRunResult::PrintSkippedTestReminder);
       }
 
       virtual void PrintConclusionLines(
@@ -4659,7 +4675,8 @@ namespace ZenUnit
             {
                tripletLinesPrefix = ">>------>";
                successOrFailLinePrefix = ">>-FAIL->";
-               resultMessage = String::Concat("     Result: ", _numberOfFailedTestCases, " of ", totalNumberOfTestCases, ' ', testOrTests, " failed");
+               resultMessage = String::Concat(
+                  "     Result: ", _numberOfFailedTestCases, " of ", totalNumberOfTestCases, ' ', testOrTests, " failed");
             }
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
             const std::string completedCommandLineMessage = String::Concat("  Completed: ", zenUnitArgs.commandLine);
@@ -4826,7 +4843,8 @@ namespace ZenUnit
          const std::string leadingZeros(numberOfLeadingMillisecondZeros, '0');
 
          // Example elapsedSecondsWithMillisecondResolution: "0.001"
-         const std::string elapsedSecondsWithMillisecondResolution = String::Concat(elapsedSeconds, '.', leadingZeros, elapsedMillisecondsMod1000);
+         const std::string elapsedSecondsWithMillisecondResolution = String::Concat(
+            elapsedSeconds, '.', leadingZeros, elapsedMillisecondsMod1000);
 
          return elapsedSecondsWithMillisecondResolution;
       }
@@ -4840,8 +4858,10 @@ namespace ZenUnit
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const PreamblePrinter> _preamblePrinter;
       std::unique_ptr<const ArgsParser> _argsParser;
-      std::unique_ptr<const OneArgMemberFunctionCaller<int, ZenUnitTestRunner, const ZenUnitArgs&>> _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines;
-      std::unique_ptr<const TwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>> _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused;
+      std::unique_ptr<const OneArgMemberFunctionCaller<int, ZenUnitTestRunner, const ZenUnitArgs&>>
+         _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines;
+      std::unique_ptr<const TwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>>
+         _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused;
       std::unique_ptr<const ZeroArgMemberFunctionCaller<void, ZenUnitTestRunner>> _caller_RunTestClasses;
       // Mutable Components
       std::unique_ptr<Stopwatch> _testRunStopwatch;
@@ -4855,8 +4875,10 @@ namespace ZenUnit
          : _console(std::make_unique<Console>())
          , _preamblePrinter(std::make_unique<PreamblePrinter>())
          , _argsParser(std::make_unique<ArgsParser>())
-         , _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines(std::make_unique<OneArgMemberFunctionCaller<int, ZenUnitTestRunner, const ZenUnitArgs&>>())
-         , _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(std::make_unique<TwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>>())
+         , _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines(
+            std::make_unique<OneArgMemberFunctionCaller<int, ZenUnitTestRunner, const ZenUnitArgs&>>())
+         , _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(
+            std::make_unique<TwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>>())
          , _caller_RunTestClasses(std::make_unique<ZeroArgMemberFunctionCaller<void, ZenUnitTestRunner>>())
          , _testRunStopwatch(std::make_unique<Stopwatch>())
          , _testClassRunnerRunner(std::make_unique<TestClassRunnerRunner>())
@@ -4875,7 +4897,7 @@ namespace ZenUnit
 
       static const ZenUnitArgs& GetZenUnitArgs()
       {
-         ZenUnitTestRunner* zenUnitTestRunner = Instance();
+         ZenUnitTestRunner* const zenUnitTestRunner = Instance();
          return zenUnitTestRunner->_zenUnitArgs;
       }
 
@@ -4972,7 +4994,8 @@ namespace ZenUnit
    private:
       // Function Callers
       std::function<const ZenUnitArgs& ()> _call_ZenUnitTestRunner_GetZenUnitArgs;
-      std::unique_ptr<const TwoArgMemberFunctionCaller<void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>> _voidTwoArgMemberFunctionCaller;
+      std::unique_ptr<const TwoArgMemberFunctionCaller<
+         void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>> _voidTwoArgMemberFunctionCaller;
       // Constant Components
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const TestPhaseTranslator> _testPhaseTranslator;
@@ -4983,7 +5006,8 @@ namespace ZenUnit
       TestPhaseRunner() noexcept
          // Function Callers
          : _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnitTestRunner::GetZenUnitArgs)
-         , _voidTwoArgMemberFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>>())
+         , _voidTwoArgMemberFunctionCaller(std::make_unique<
+            TwoArgMemberFunctionCaller<void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>>())
          // Constant Components
          , _console(std::make_unique<Console>())
          , _testPhaseTranslator(std::make_unique<TestPhaseTranslator>())
@@ -5076,12 +5100,12 @@ namespace ZenUnit
             destructorTestPhaseResult);
       }
 
-      virtual TestResult MakeCtorDtorSuccess(
+      virtual TestResult MakeConstructorDestructorSuccess(
          const FullTestName& fullTestName,
          const TestPhaseResult& constructorTestPhaseResult,
          const TestPhaseResult& destructorTestPhaseResult) const
       {
-         return TestResult::CtorDtorSuccess(fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
+         return TestResult::ConstructorDestructorSuccess(fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
       }
 
       virtual TestResult MakeFullTestResult(
@@ -5249,8 +5273,10 @@ namespace ZenUnit
          {
             const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
             _console->WriteLineColor("\n===========\nFatal Error\n===========", Color::Red);
-            _console->WriteLineAndExit("A ZenUnit::Anomaly was thrown from a test class constructor, STARTUP function, or CLEANUP function.\nFail fasting with exit code "
-               + std::to_string(exitCode) + ".", exitCode);
+            const std::string exitMessage = String::Concat(
+               "A ZenUnit::Anomaly was thrown from a test class constructor, STARTUP function, or CLEANUP function.\n",
+               "Fail fasting with exit code ", exitCode, ".");
+            _console->WriteLineAndExit(exitMessage, exitCode);
          }
       }
       catch (const std::exception& ex)
@@ -5333,7 +5359,8 @@ namespace ZenUnit
          const TestPhaseResult destructorTestPhaseResult =
             _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
          TestResult testResult =
-            _testResultFactory->MakeCtorDtorSuccess(_protected_fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
+            _testResultFactory->MakeConstructorDestructorSuccess(
+               _protected_fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
          testResult.microseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
          return { testResult };
       }
@@ -5361,17 +5388,23 @@ namespace ZenUnit
          void (SpecificTestClassRunner::*)(const std::unique_ptr<Test>& test, TestClassResult*) const,
          TestClassResult*>;
       std::unique_ptr<const TwoArgMemberForEacherType> _twoArgMemberForEacher;
+
       std::unique_ptr<const ZeroArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>>> _voidZeroArgMemberFunctionCaller;
+
       std::unique_ptr<const TwoArgMemberFunctionCaller<
          bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>> _nonVoidTwoArgFunctionCaller;
+
       std::unique_ptr<const OneArgMemberFunctionCaller<
          void, SpecificTestClassRunner<TestClassType>, const TestClassResult*>> _voidOneArgFunctionCaller;
+
       using TwoArgTestAnyerType = TwoArgAnyer<
          const std::vector<std::unique_ptr<Test>>,
          bool(*)(const std::unique_ptr<Test>&,
          const TestNameFilter&), const TestNameFilter&>;
       std::unique_ptr<const TwoArgTestAnyerType> _twoArgTestAnyer;
+
       std::function<const ZenUnitArgs&()> _call_ZenUnitTestRunner_GetZenUnitArgs;
+
       // Mutable Fields
       const char* _testClassName;
       NewableDeletableTest<TestClassType> _newableDeletableTest;
@@ -5433,7 +5466,8 @@ namespace ZenUnit
          _voidZeroArgMemberFunctionCaller->ConstCall(
             this, &SpecificTestClassRunner::PrintTestClassNameAndNumberOfNamedTests);
          const bool testClassIsNewableAndDeletable = _nonVoidTwoArgFunctionCaller->ConstCall(
-            this, &SpecificTestClassRunner::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests, &_newableDeletableTest, &_testClassResult);
+            this, &SpecificTestClassRunner::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests,
+            &_newableDeletableTest, &_testClassResult);
          if (testClassIsNewableAndDeletable)
          {
             _voidZeroArgMemberFunctionCaller->NonConstCall(this, &SpecificTestClassRunner::DoRunTests);
@@ -5462,11 +5496,13 @@ namespace ZenUnit
       {
          _protected_console->WriteColor("@", Color::Green);
          _protected_console->WriteColor(_testClassName, Color::Green);
-         const std::string spacePipeSpaceNumberOfNamedTests = String::Concat(" | Running ", _tests.size(), _tests.size() == 1 ? " test" : " tests");
+         const std::string spacePipeSpaceNumberOfNamedTests = String::Concat(
+            " | Running ", _tests.size(), _tests.size() == 1 ? " test" : " tests");
          _protected_console->WriteLine(spacePipeSpaceNumberOfNamedTests);
       }
 
-      bool ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(Test* newableDeletableTest, TestClassResult* outTestClassResult) const
+      bool ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(
+         Test* newableDeletableTest, TestClassResult* outTestClassResult) const
       {
          _protected_console->WriteColor("|", Color::Green);
          static const std::string TestClassIsNewableAndDeletableString = "TestClassIsNewableAndDeletable -> ";
@@ -5479,7 +5515,8 @@ namespace ZenUnit
          if (testClassIsNewableAndDeletable)
          {
             _protected_console->WriteColor("OK ", Color::Green);
-            const std::string twoDecimalPlaceMillisecondsString = outTestClassResult->MicrosecondsToTwoDecimalPlaceMillisecondsString(newableDeletableTestResult.microseconds);
+            const std::string twoDecimalPlaceMillisecondsString =
+               outTestClassResult->MicrosecondsToTwoDecimalPlaceMillisecondsString(newableDeletableTestResult.microseconds);
             _protected_console->WriteLine(twoDecimalPlaceMillisecondsString);
          }
          return testClassIsNewableAndDeletable;
@@ -5717,7 +5754,8 @@ namespace ZenUnit
          {
             _randomTestCaseNumbers.push_back(testCaseNumber);
          }
-         std::shuffle(_randomTestCaseNumbers.begin(), _randomTestCaseNumbers.end(), std::default_random_engine(static_cast<unsigned int>(zenUnitArgs.randomSeed)));
+         std::shuffle(_randomTestCaseNumbers.begin(), _randomTestCaseNumbers.end(),
+            std::default_random_engine(static_cast<unsigned int>(zenUnitArgs.randomSeed)));
       }
 
       size_t NextTestCaseNumber() override
@@ -5752,15 +5790,19 @@ namespace ZenUnit
    {
       friend class TestNXNTests;
    private:
-      // Constant Components
-      std::unique_ptr<const Console> _console;
+      // Function Callers
+      std::function<void(int)> _call_exit;
+      std::function<std::shared_ptr<ITestCaseNumberGenerator>(bool)> _call_ITestCaseNumberGeneratorFactoryNew;
+      std::function<std::vector<std::string>(const char*)> _call_String_SplitOnNonQuotedCommas;
+      std::function<const ZenUnitArgs& ()> _call_ZenUnitTestRunner_GetZenUnitArgs;
+
       using CallerOfTestNameFilterMatchesTestCaseType = ThreeArgAnyer<
          std::vector<TestNameFilter>, bool(*)(const TestNameFilter&, const FullTestName&, size_t), const FullTestName&, size_t>;
       std::unique_ptr<CallerOfTestNameFilterMatchesTestCaseType> _callerOfTestNameFilterMatchesTestCase;
-      std::function<const ZenUnitArgs&()> _call_ZenUnitTestRunner_GetZenUnitArgs;
-      std::function<std::vector<std::string>(const char*)> _call_String_SplitOnNonQuotedCommas;
-      std::function<void(int)> _call_exit;
-      std::function<std::shared_ptr<ITestCaseNumberGenerator>(bool)> _call_ITestCaseNumberGeneratorFactoryNew;
+
+      // Constant Components
+      std::unique_ptr<const Console> _console;
+
       // Mutable Fields
       const char* const _testCaseArgsText;
       std::unique_ptr<TestClassType> _testClass;
@@ -5771,13 +5813,14 @@ namespace ZenUnit
    public:
       TestNXN(const char* testClassName, const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
          : Test(testClassName, testName, N)
-         // Constant Components
-         , _console(std::make_unique<Console>())
-         , _callerOfTestNameFilterMatchesTestCase(std::make_unique<CallerOfTestNameFilterMatchesTestCaseType>())
-         , _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnitTestRunner::GetZenUnitArgs)
-         , _call_String_SplitOnNonQuotedCommas(String::SplitOnNonQuotedCommas)
+         // Function Callers
          , _call_exit(::exit)
          , _call_ITestCaseNumberGeneratorFactoryNew(ITestCaseNumberGenerator::FactoryNew)
+         , _call_String_SplitOnNonQuotedCommas(String::SplitOnNonQuotedCommas)
+         , _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnitTestRunner::GetZenUnitArgs)
+         , _callerOfTestNameFilterMatchesTestCase(std::make_unique<CallerOfTestNameFilterMatchesTestCaseType>())
+         // Constant Components
+         , _console(std::make_unique<Console>())
          // Mutable Fields
          , _testCaseArgsText(testCaseArgsText)
          , _currentTestCaseNumber(1)
@@ -5899,7 +5942,8 @@ namespace ZenUnit
          return testNameFilterMatchesTestCase;
       }
 
-      virtual void PrintTestCaseNumberThenArgsThenArrow(size_t testCaseNumber, const std::vector<std::string>& splitTestCaseArgs) const
+      virtual void PrintTestCaseNumberThenArgsThenArrow(
+         size_t testCaseNumber, const std::vector<std::string>& splitTestCaseArgs) const
       {
          _console->WriteColor(" [", Color::Green);
          const std::string testCaseNumberString = std::to_string(testCaseNumber);
@@ -5921,8 +5965,9 @@ namespace ZenUnit
    {
    public:
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call1ArgMemberFunction(ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+      static typename std::enable_if < I < sizeof...(ArgTypes)>::type Call1ArgMemberFunction(
+         ClassType* classPointer, MemberFunction&& memberFunction,
+         unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ull)
          {
@@ -5935,8 +5980,9 @@ namespace ZenUnit
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call2ArgMemberFunction(ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+      static typename std::enable_if < I < sizeof...(ArgTypes)>::type Call2ArgMemberFunction(
+         ClassType* classPointer, MemberFunction&& memberFunction,
+         unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ull)
          {
@@ -5950,8 +5996,9 @@ namespace ZenUnit
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call3ArgMemberFunction(ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+      static typename std::enable_if < I < sizeof...(ArgTypes)>::type Call3ArgMemberFunction(
+         ClassType* classPointer, MemberFunction&& memberFunction,
+         unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ull)
          {
@@ -5966,8 +6013,9 @@ namespace ZenUnit
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call4ArgMemberFunction(ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+      static typename std::enable_if < I < sizeof...(ArgTypes)>::type Call4ArgMemberFunction(
+         ClassType* classPointer, MemberFunction&& memberFunction,
+         unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ull)
          {
@@ -5983,8 +6031,9 @@ namespace ZenUnit
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call5ArgMemberFunction(ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+      static typename std::enable_if < I < sizeof...(ArgTypes)>::type Call5ArgMemberFunction(
+         ClassType* classPointer, MemberFunction&& memberFunction,
+         unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ull)
          {
@@ -6001,8 +6050,9 @@ namespace ZenUnit
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call6ArgMemberFunction(ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+      static typename std::enable_if < I < sizeof...(ArgTypes)>::type Call6ArgMemberFunction(
+         ClassType* classPointer, MemberFunction&& memberFunction,
+         unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ull)
          {
@@ -6020,8 +6070,9 @@ namespace ZenUnit
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call7ArgMemberFunction(ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+      static typename std::enable_if < I < sizeof...(ArgTypes)>::type Call7ArgMemberFunction(
+         ClassType* classPointer, MemberFunction&& memberFunction,
+         unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ull)
          {
@@ -6040,8 +6091,9 @@ namespace ZenUnit
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call8ArgMemberFunction(ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+      static typename std::enable_if < I < sizeof...(ArgTypes)>::type Call8ArgMemberFunction(
+         ClassType* classPointer, MemberFunction&& memberFunction,
+         unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ull)
          {
@@ -6061,8 +6113,9 @@ namespace ZenUnit
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call9ArgMemberFunction(ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+      static typename std::enable_if < I < sizeof...(ArgTypes)>::type Call9ArgMemberFunction(
+         ClassType* classPointer, MemberFunction&& memberFunction,
+         unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ull)
          {
@@ -6083,8 +6136,9 @@ namespace ZenUnit
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type
-         Call10ArgMemberFunction(ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+      static typename std::enable_if < I < sizeof...(ArgTypes)>::type Call10ArgMemberFunction(
+         ClassType* classPointer, MemberFunction&& memberFunction,
+         unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ull)
          {
@@ -6154,8 +6208,10 @@ namespace ZenUnit
    private:
       const Test1X1MemberFunction _test1X1MemberFunction;
    public:
-      Test1X1(const char* testClassName, const char* testName, Test1X1MemberFunction test1X1MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
-         : TestNXN<TestClassType, 1, TestCaseArgTypes...>(testClassName, testName, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
+      Test1X1(const char* testClassName, const char* testName,
+         Test1X1MemberFunction test1X1MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
+         : TestNXN<TestClassType, 1, TestCaseArgTypes...>(testClassName, testName,
+            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
          , _test1X1MemberFunction(test1X1MemberFunction)
       {
       }
@@ -6174,8 +6230,10 @@ namespace ZenUnit
    private:
       const Test2X2MemberFunction _test2X2MemberFunction;
    public:
-      Test2X2(const char* testClassName, const char* testName, Test2X2MemberFunction test2X2MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
-         : TestNXN<TestClassType, 2, TestCaseArgTypes...>(testClassName, testName, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
+      Test2X2(const char* testClassName, const char* testName,
+         Test2X2MemberFunction test2X2MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
+         : TestNXN<TestClassType, 2, TestCaseArgTypes...>(testClassName, testName,
+            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
          , _test2X2MemberFunction(test2X2MemberFunction)
       {
       }
@@ -6194,8 +6252,10 @@ namespace ZenUnit
    private:
       const Test3X3MemberFunction _test3X3MemberFunction;
    public:
-      Test3X3(const char* testClassName, const char* testName, Test3X3MemberFunction test3X3MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
-         : TestNXN<TestClassType, 3, TestCaseArgTypes...>(testClassName, testName, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
+      Test3X3(const char* testClassName, const char* testName,
+         Test3X3MemberFunction test3X3MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
+         : TestNXN<TestClassType, 3, TestCaseArgTypes...>(testClassName, testName,
+            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
          , _test3X3MemberFunction(test3X3MemberFunction)
       {
       }
@@ -6214,8 +6274,10 @@ namespace ZenUnit
    private:
       const Test4X4MemberFunction _test4X4MemberFunction;
    public:
-      Test4X4(const char* testClassName, const char* testName, Test4X4MemberFunction test4X4MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
-         : TestNXN<TestClassType, 4, TestCaseArgTypes...>(testClassName, testName, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
+      Test4X4(const char* testClassName, const char* testName,
+         Test4X4MemberFunction test4X4MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
+         : TestNXN<TestClassType, 4, TestCaseArgTypes...>(testClassName, testName,
+            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
          , _test4X4MemberFunction(test4X4MemberFunction)
       {
       }
@@ -6234,8 +6296,10 @@ namespace ZenUnit
    private:
       const Test5X5MemberFunction _test5X5MemberFunction;
    public:
-      Test5X5(const char* testClassName, const char* testName, Test5X5MemberFunction test5X5MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
-         : TestNXN<TestClassType, 5, TestCaseArgTypes...>(testClassName, testName, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
+      Test5X5(const char* testClassName, const char* testName,
+         Test5X5MemberFunction test5X5MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
+         : TestNXN<TestClassType, 5, TestCaseArgTypes...>(testClassName, testName,
+            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
          , _test5X5MemberFunction(test5X5MemberFunction)
       {
       }
@@ -6254,8 +6318,10 @@ namespace ZenUnit
    private:
       const Test6X6MemberFunction _test6X6MemberFunction;
    public:
-      Test6X6(const char* testClassName, const char* testName, Test6X6MemberFunction test6X6MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
-         : TestNXN<TestClassType, 6, TestCaseArgTypes...>(testClassName, testName, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
+      Test6X6(const char* testClassName, const char* testName,
+         Test6X6MemberFunction test6X6MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
+         : TestNXN<TestClassType, 6, TestCaseArgTypes...>(testClassName, testName,
+            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
          , _test6X6MemberFunction(test6X6MemberFunction)
       {
       }
@@ -6274,8 +6340,10 @@ namespace ZenUnit
    private:
       const Test7X7MemberFunction _test7X7MemberFunction;
    public:
-      Test7X7(const char* testClassName, const char* testName, Test7X7MemberFunction test7X7MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
-         : TestNXN<TestClassType, 7, TestCaseArgTypes...>(testClassName, testName, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...), _test7X7MemberFunction(test7X7MemberFunction)
+      Test7X7(const char* testClassName, const char* testName,
+         Test7X7MemberFunction test7X7MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
+         : TestNXN<TestClassType, 7, TestCaseArgTypes...>(testClassName, testName,
+            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...), _test7X7MemberFunction(test7X7MemberFunction)
       {
       }
 
@@ -6294,8 +6362,10 @@ namespace ZenUnit
       const Test8X8MemberFunction _test8X8MemberFunction;
    public:
       Test8X8(
-         const char* testClassName, const char* testName, Test8X8MemberFunction test8X8MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
-         : TestNXN<TestClassType, 8, TestCaseArgTypes...>(testClassName, testName, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...), _test8X8MemberFunction(test8X8MemberFunction)
+         const char* testClassName, const char* testName,
+         Test8X8MemberFunction test8X8MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
+         : TestNXN<TestClassType, 8, TestCaseArgTypes...>(testClassName, testName,
+            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...), _test8X8MemberFunction(test8X8MemberFunction)
       {
       }
 
@@ -6313,8 +6383,10 @@ namespace ZenUnit
    private:
       const Test9X9MemberFunction _test9X9MemberFunction;
    public:
-      Test9X9(const char* testClassName, const char* testName, Test9X9MemberFunction test9X9MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
-         : TestNXN<TestClassType, 9, TestCaseArgTypes...>(testClassName, testName, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
+      Test9X9(const char* testClassName, const char* testName,
+         Test9X9MemberFunction test9X9MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
+         : TestNXN<TestClassType, 9, TestCaseArgTypes...>(testClassName, testName,
+            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
          , _test9X9MemberFunction(test9X9MemberFunction)
       {
       }
@@ -6333,9 +6405,10 @@ namespace ZenUnit
    private:
       const Test10X10MemberFunction _test10X10MemberFunction;
    public:
-      Test10X10(
-         const char* testClassName, const char* testName, Test10X10MemberFunction test10X10MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
-         : TestNXN<TestClassType, 10, TestCaseArgTypes...>(testClassName, testName, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
+      Test10X10(const char* testClassName, const char* testName,
+         Test10X10MemberFunction test10X10MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
+         : TestNXN<TestClassType, 10, TestCaseArgTypes...>(testClassName, testName,
+            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
          , _test10X10MemberFunction(test10X10MemberFunction)
       {
       }
@@ -6419,9 +6492,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       static std::nullptr_t RegisterTest1X1(
          const PmfToken* pmfToken,
          void (DerivedTestClass::*test1X1Function)(size_t, Arg1Type),
-         const char* testName,
-         const char* testCaseArgsText,
-         TestCaseArgTypes&&... testCaseArgs)
+         const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
       {
          return RegisterTestNXN(pmfToken, [&]
          {
@@ -6435,9 +6506,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       static std::nullptr_t RegisterTest2X2(
          const PmfToken* pmfToken,
          void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type),
-         const char* testName,
-         const char* testCaseArgsText,
-         TestCaseArgTypes&&... testCaseArgs)
+         const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
       {
          return RegisterTestNXN(pmfToken, [&]
          {
@@ -6451,9 +6520,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       static std::nullptr_t RegisterTest3X3(
          const PmfToken* pmfToken,
          void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type),
-         const char* testName,
-         const char* testCaseArgsText,
-         TestCaseArgTypes&&... testCaseArgs)
+         const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
       {
          return RegisterTestNXN(pmfToken, [&]
          {
@@ -6467,9 +6534,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       static std::nullptr_t RegisterTest4X4(
          const PmfToken* pmfToken,
          void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type),
-         const char* testName,
-         const char* testCaseArgsText,
-         TestCaseArgTypes&&... testCaseArgs)
+         const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
       {
          return RegisterTestNXN(pmfToken, [&]
          {
@@ -6483,9 +6548,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       static std::nullptr_t RegisterTest5X5(
          const PmfToken* pmfToken,
          void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type),
-         const char* testName,
-         const char* testCaseArgsText,
-         TestCaseArgTypes&&... testCaseArgs)
+         const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
       {
          return RegisterTestNXN(pmfToken, [&]
          {
@@ -6499,9 +6562,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       static std::nullptr_t RegisterTest6X6(
          const PmfToken* pmfToken,
          void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type),
-         const char* testName,
-         const char* testCaseArgsText,
-         TestCaseArgTypes&&... testCaseArgs)
+         const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
       {
          return RegisterTestNXN(pmfToken, [&]
          {
@@ -6515,9 +6576,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       static std::nullptr_t RegisterTest7X7(
          const PmfToken* pmfToken,
          void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type),
-         const char* testName,
-         const char* testCaseArgsText,
-         TestCaseArgTypes&&... testCaseArgs)
+         const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
       {
          return RegisterTestNXN(pmfToken, [&]
          {
@@ -6531,9 +6590,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       static std::nullptr_t RegisterTest8X8(
          const PmfToken* pmfToken,
          void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type),
-         const char* testName,
-         const char* testCaseArgsText,
-         TestCaseArgTypes&&... testCaseArgs)
+         const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
       {
          return RegisterTestNXN(pmfToken, [&]
          {
@@ -6546,9 +6603,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       static std::nullptr_t RegisterTest9X9(
          const PmfToken* pmfToken,
          void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type),
-         const char* testName,
-         const char* testCaseArgsText,
-         TestCaseArgTypes&&... testCaseArgs)
+         const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
       {
          return RegisterTestNXN(pmfToken, [&]
          {
@@ -6562,9 +6617,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       static std::nullptr_t RegisterTest10X10(
          const PmfToken* pmfToken,
          void (DerivedTestClass::*nxnTestFunction)(size_t, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type),
-         const char* testName,
-         const char* testCaseArgsText,
-         TestCaseArgTypes&&... testCaseArgs)
+         const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
       {
          return RegisterTestNXN(pmfToken, [&]
          {

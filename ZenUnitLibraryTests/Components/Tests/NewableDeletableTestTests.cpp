@@ -2,9 +2,8 @@
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestResultFactoryMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/TestPhaseRunnerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/StopwatchMock.h"
-#include "ZenUnitTestUtils/Equalizers/TestPhaseResultEqualizer.h"
-#include "ZenUnitTestUtils/Equalizers/FullTestNameEqualizer.h"
-#include "ZenUnitTestUtils/Equalizers/TestResultEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/FullTestNameEqualizerAndRandom.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestResultEqualizerAndRandom.h"
 
 namespace ZenUnit
 {
@@ -12,7 +11,7 @@ namespace ZenUnit
    AFACT(Constructor_NewsComponents)
    AFACT(NumberOfTestCases_Returns1)
    FACTS(RunTest_StartsStopWatch_CallsNewTestClassWhichFails_DoesNotCallDeleteTestClass_StopsStopwatch_ReturnsConstructorFailTestResult)
-   AFACT(RunTest_StartsStopwatch_CallsNewTestClassWhichSucceeds_CallsDeleteTestClass_StopsStopwatch_ReturnsCtorDtorSuccessTestResult)
+   AFACT(RunTest_StartsStopwatch_CallsNewTestClassWhichSucceeds_CallsDeleteTestClass_StopsStopwatch_ReturnsConstructorDestructorSuccessTestResult)
    AFACT(NewAndDeleteTestClass_NewsThenDeletesTestClass)
    EVIDENCE
 
@@ -77,7 +76,7 @@ namespace ZenUnit
       VECTORS_ARE_EQUAL(expectedTestResults, testResults);
    }
 
-   TEST(RunTest_StartsStopwatch_CallsNewTestClassWhichSucceeds_CallsDeleteTestClass_StopsStopwatch_ReturnsCtorDtorSuccessTestResult)
+   TEST(RunTest_StartsStopwatch_CallsNewTestClassWhichSucceeds_CallsDeleteTestClass_StopsStopwatch_ReturnsConstructorDestructorSuccessTestResult)
    {
       _stopwatchMock->StartMock.Expect();
 
@@ -91,7 +90,7 @@ namespace ZenUnit
 
       TestResult sixArgCtorTestResult = TestResult::TestingNonDefault();
       sixArgCtorTestResult.microseconds = microseconds;
-      _testResultFactoryMock->MakeCtorDtorSuccessMock.Return(sixArgCtorTestResult);
+      _testResultFactoryMock->MakeConstructorDestructorSuccessMock.Return(sixArgCtorTestResult);
       //
       const vector<TestResult> testResults = _newableDeletableTest->RunTest();
       //
@@ -101,7 +100,7 @@ namespace ZenUnit
          { &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor },
          { &Test::CallDeleteTestClass, _newableDeletableTest.get(), TestPhase::Destructor }
       }));
-      METALMOCK(_testResultFactoryMock->MakeCtorDtorSuccessMock.CalledOnceWith(
+      METALMOCK(_testResultFactoryMock->MakeConstructorDestructorSuccessMock.CalledOnceWith(
          _newableDeletableTest->_protected_fullTestName, successConstructorTestPhaseResult, destructorTestPhaseResult));
       METALMOCK(_stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.CalledOnce());
       const vector<TestResult> expectedTestResults{ sixArgCtorTestResult };

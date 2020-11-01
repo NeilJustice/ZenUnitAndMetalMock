@@ -6,10 +6,10 @@
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestResultMock.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/ThreeArgAnyerMock.h"
-#include "ZenUnitTestUtils/Equalizers/FullTestNameEqualizer.h"
-#include "ZenUnitTestUtils/Equalizers/TestNameFilterEqualizer.h"
-#include "ZenUnitTestUtils/Equalizers/TestResultEqualizer.h"
-#include "ZenUnitTestUtils/Equalizers/ZenUnitArgsEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/FullTestNameEqualizerAndRandom.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestResultEqualizerAndRandom.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizer.h"
 
 namespace ZenUnit
 {
@@ -40,23 +40,29 @@ namespace ZenUnit
    EVIDENCE
 
    unique_ptr<TestNXN<TestingTestClass, N, int>> _testNXN;
-   ConsoleMock* _consoleMock = nullptr;
+   // Function Callers
+   METALMOCK_VOID1_FREE(exit, int)
+   METALMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetZenUnitArgs)
    using CallerOfTestNameFilterMatchesTestCaseMockType = ThreeArgAnyerMock<
       std::vector<TestNameFilter>, bool(*)(const TestNameFilter&, const FullTestName&, size_t), const FullTestName&, size_t>;
    CallerOfTestNameFilterMatchesTestCaseMockType* _callerOfTestNameFilterMatchesTestCaseMock = nullptr;
+
+   // Constant Components
+   ConsoleMock* _consoleMock = nullptr;
+
    const string _testClassName = Random<string>();
    const string _testName = Random<string>();
    const string _testCaseArgsText = Random<string>();
-   METALMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetZenUnitArgs)
-   METALMOCK_VOID1_FREE(exit, int)
 
    STARTUP
    {
       _testNXN = make_unique<TestNXN<TestingTestClass, N, int>>("", "", "", 0);
-      _testNXN->_console.reset(_consoleMock = new ConsoleMock);
-      _testNXN->_callerOfTestNameFilterMatchesTestCase.reset(_callerOfTestNameFilterMatchesTestCaseMock = new CallerOfTestNameFilterMatchesTestCaseMockType);
-      _testNXN->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(GetZenUnitArgsMock);
+      // Function Callers
       _testNXN->_call_exit = BIND_1ARG_METALMOCK_OBJECT(exitMock);
+      _testNXN->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(GetZenUnitArgsMock);
+      _testNXN->_callerOfTestNameFilterMatchesTestCase.reset(_callerOfTestNameFilterMatchesTestCaseMock = new CallerOfTestNameFilterMatchesTestCaseMockType);
+      // Constant Components
+      _testNXN->_console.reset(_consoleMock = new ConsoleMock);
    }
 
    TEST(Constructor_NewsComponents_SetsFields_MakesGettersReturnExpected)

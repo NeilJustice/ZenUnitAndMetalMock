@@ -6,8 +6,7 @@
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidTwoArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/StopwatchMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/WatchMock.h"
-#include "ZenUnitTestUtils/Equalizers/TestPhaseResultEqualizer.h"
-#include "ZenUnitTestUtils/Equalizers/ZenUnitArgsEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizer.h"
 #include "ZenUnitTestUtils/TestUtil.h"
 
 namespace ZenUnit

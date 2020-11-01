@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/MetalMock/TestMock.h"
-#include "ZenUnitTestUtils/Equalizers/TestResultEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestResultEqualizerAndRandom.h"
 
 namespace ZenUnit
 {

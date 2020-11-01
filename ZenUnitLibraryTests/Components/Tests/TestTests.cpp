@@ -3,10 +3,9 @@
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestResultMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/TestPhaseRunnerMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/MetalMock/TestMock.h"
-#include "ZenUnitTestUtils/Equalizers/TestPhaseResultEqualizer.h"
-#include "ZenUnitTestUtils/Equalizers/FileLineEqualizer.h"
-#include "ZenUnitTestUtils/Equalizers/FullTestNameEqualizer.h"
-#include "ZenUnitTestUtils/Equalizers/TestResultEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/FileLineEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/FullTestNameEqualizerAndRandom.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestResultEqualizerAndRandom.h"
 
 namespace ZenUnit
 {

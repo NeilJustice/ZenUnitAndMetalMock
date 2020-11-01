@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnitTestUtils/Equalizers/TestPhaseResultEqualizer.h"
 
 namespace ZenUnit
 {
@@ -33,14 +32,14 @@ namespace ZenUnit
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      SETUP_EQUALIZER_TEST(TestPhaseResult);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestPhaseResult, testPhase, TestPhase::Constructor);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestPhaseResult, testOutcome, TestOutcome::Exception);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestPhaseResult, microseconds, 1u);
+      ZENUNIT_EQUALIZER_TEST_SETUP(TestPhaseResult);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestPhaseResult, testPhase, TestPhase::Constructor);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestPhaseResult, testOutcome, TestOutcome::Exception);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestPhaseResult, microseconds, 1u);
 
       shared_ptr<AnomalyOrException> nonDefaultAnomalyOrException = make_shared<AnomalyOrException>(Anomaly());
       nonDefaultAnomalyOrException->anomaly->why = "why";
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestPhaseResult, anomalyOrException, nonDefaultAnomalyOrException);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestPhaseResult, anomalyOrException, nonDefaultAnomalyOrException);
    }
 
    RUN_TESTS(TestPhaseResultTests)

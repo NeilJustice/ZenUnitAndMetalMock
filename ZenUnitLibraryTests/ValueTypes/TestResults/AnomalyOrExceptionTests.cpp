@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnitTestUtils/Equalizers/AnomalyEqualizer.h"
 
 namespace ZenUnit
 {

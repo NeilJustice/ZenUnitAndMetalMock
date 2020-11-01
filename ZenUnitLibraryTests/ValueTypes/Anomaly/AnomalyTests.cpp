@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomFileLine.h"
-#include "ZenUnitTestUtils/Equalizers/AnomalyEqualizer.h"
 #include "ZenUnitTestUtils/TestUtil.h"
 #include "ZenUnitTestUtils/UserType.h"
 
@@ -418,8 +417,8 @@ FilePath(1))";
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      SETUP_EQUALIZER_TEST(Anomaly);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Anomaly, why, "whyValue");
+      ZENUNIT_EQUALIZER_TEST_SETUP(Anomaly);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Anomaly, why, "whyValue");
    }
 
    RUN_TESTS(AnomalyTests)

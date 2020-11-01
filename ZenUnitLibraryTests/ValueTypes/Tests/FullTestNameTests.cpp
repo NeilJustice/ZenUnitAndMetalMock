@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnitTestUtils/Equalizers/FullTestNameEqualizer.h"
 
 namespace ZenUnit
 {
@@ -50,10 +49,10 @@ namespace ZenUnit
 
    TEST(ZenUnitEqualizer_ThrowsIfClassNameOrTestNameNotEqual)
    {
-      SETUP_EQUALIZER_TEST(FullTestName);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FullTestName, testClassName, "TestClassName");
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FullTestName, testName, "TestName");
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FullTestName, arity, static_cast<unsigned char>(1));
+      ZENUNIT_EQUALIZER_TEST_SETUP(FullTestName);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FullTestName, testClassName, "TestClassName");
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FullTestName, testName, "TestName");
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FullTestName, arity, static_cast<unsigned char>(1));
    }
 
    RUN_TESTS(FullTestNameTests)

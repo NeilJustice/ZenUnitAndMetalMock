@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/ZenUnit/Random/RandomTestNameFilter.h"
-#include "ZenUnitTestUtils/Equalizers/TestNameFilterEqualizer.h"
 
 namespace ZenUnit
 {
@@ -135,10 +134,10 @@ namespace ZenUnit
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
-      SETUP_EQUALIZER_TEST(TestNameFilter);
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestNameFilter, testClassNamePattern, "testClassNamePattern");
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestNameFilter, testNamePattern, "testNamePattern");
-      EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestNameFilter, testCaseNumber, 1);
+      ZENUNIT_EQUALIZER_TEST_SETUP(TestNameFilter);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestNameFilter, testClassNamePattern, "testClassNamePattern");
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestNameFilter, testNamePattern, "testNamePattern");
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestNameFilter, testCaseNumber, 1);
    }
 
    RUN_TESTS(TestNameFilterTests)
