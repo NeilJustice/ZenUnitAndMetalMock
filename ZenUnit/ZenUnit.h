@@ -284,7 +284,7 @@ Example ZenUnit Command Line Arguments:
 #define ZENUNIT_EQUALIZER_TEST_SETUP(typeName) \
    typeName expectedZenUnitEqualizerTestObject{}; \
    typeName actualZenUnitEqualizerTestObject{}; \
-   ARE_EQUAL(expectedZenUnitEqualizerTestObject, actualZenUnitEqualizerTestObject)
+   DOES_NOT_THROW(ARE_EQUAL(expectedZenUnitEqualizerTestObject, actualZenUnitEqualizerTestObject))
 
 // Asserts that ZenUnit::Equalizer<T>::AssertEqual() throws when the specified field is not equal.
 #define ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(typeName, nonQuotedFieldName, randomNonDefaultFieldValue) \
@@ -2558,8 +2558,11 @@ namespace ZenUnit
    }
 
    inline void ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_ThrowAnomalyBecauseEqualizerThrewUnexpectedAnomaly(
-      const char* typeName, const char* fieldName, const char* arbitraryNonDefaultFieldValueText,
-      FileLine fileLine, const ZenUnit::Anomaly& becauseAnomaly)
+      const char* typeName,
+      const char* fieldName,
+      const char* arbitraryNonDefaultFieldValueText,
+      FileLine fileLine,
+      const ZenUnit::Anomaly& becauseAnomaly)
    {
       const Anomaly anomaly("ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL",
          typeName, fieldName, arbitraryNonDefaultFieldValueText, "",
@@ -2568,7 +2571,10 @@ namespace ZenUnit
    }
 
    inline void ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_ThrowAnomalyBecauseEqualizerDidNotThrowAnomaly(
-      const char* typeName, const char* fieldName, const char* arbitraryNonDefaultFieldValueText, FileLine fileLine)
+      const char* typeName,
+      const char* fieldName,
+      const char* arbitraryNonDefaultFieldValueText,
+      FileLine fileLine)
    {
       const std::string messageForExpectedField = String::Concat(
          R"(Function ZenUnit::Equalizer<Namespace::TestStruct>::AssertEqual(expected, actual)
@@ -2595,7 +2601,8 @@ namespace ZenUnit
 
    template<typename ExpectedType, typename ActualType, typename FieldMemberPointerType, typename FieldType>
       void ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_Defined(
-         ExpectedType& expectedZenUnitEqualizerTestObject, ActualType& actualZenUnitEqualizerTestObject,
+         ExpectedType& expectedZenUnitEqualizerTestObject,
+         ActualType& actualZenUnitEqualizerTestObject,
          FieldMemberPointerType fieldMemberPointer,
          const char* typeName,
          const char* fieldName,
