@@ -61,7 +61,7 @@ namespace ZenUnit
       }
    };
 
-   TESTS(EQUALIZER_THROWSTests)
+   TESTS(ZENUNIT_EQUALIZER_THROWSTests)
    AFACT(EqualizerDoesNotAssertSpecifiedFieldEqual_ThrowsAnomaly)
    AFACT(EqualizerThrowsAnomalyThatDoesNotContainFieldName_ThrowsAnomaly)
    AFACT(EqualizerThrowsAnomalyThatContainsFieldName_ButStillThrowsThatAnomalyWhenAllFieldsEqual_ThrowsAnomaly)
@@ -77,8 +77,8 @@ namespace ZenUnit
 "Expected: Function ZenUnit::Equalizer<Namespace::TestStruct>::AssertEqual(expected, actual)",
 "          to throw a ZenUnit::Anomaly from an",
 "          ARE_EQUAL(expected.fieldB, actual.fieldB) assert statement.",
-"  Actual: No ZenUnit::Anomaly thrown despite field 'fieldB'",
-"          differing between objects expected and actual.",
+"  Actual: No ZenUnit::Anomaly was thrown despite field 'fieldB'",
+"          differing between the expected and actual objects.",
 "File.cpp(1)"));
    }
 
@@ -118,5 +118,5 @@ namespace ZenUnit
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Namespace::TestStruct, fieldA, ZenUnit::RandomNon0<int>());
    }
 
-   RUN_TESTS(EQUALIZER_THROWSTests)
+   RUN_TESTS(ZENUNIT_EQUALIZER_THROWSTests)
 }

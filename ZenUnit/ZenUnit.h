@@ -2574,8 +2574,9 @@ namespace ZenUnit
          R"(Function ZenUnit::Equalizer<Namespace::TestStruct>::AssertEqual(expected, actual)
           to throw a ZenUnit::Anomaly from an
           ARE_EQUAL(expected.)", fieldName, ", actual.", fieldName, ") assert statement.");
-      const std::string messageForActualField(String::Concat("No ZenUnit::Anomaly thrown despite field '", fieldName, R"('
-          differing between objects expected and actual.)"));
+      const std::string messageForActualField(String::Concat(
+         "No ZenUnit::Anomaly was thrown despite field '", fieldName, R"('
+          differing between the expected and actual objects.)"));
       const Anomaly anomaly("ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL",
          typeName, fieldName, arbitraryNonDefaultFieldValueText, "", Anomaly::Default(),
          messageForExpectedField, messageForActualField, ExpectedActualFormat::Fields, fileLine);
