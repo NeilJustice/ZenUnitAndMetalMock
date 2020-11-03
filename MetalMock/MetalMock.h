@@ -4933,22 +4933,35 @@ namespace ZenUnit
    {
    public:
       METALMOCK_NONVOID0_CONST(bool, Bool)
+
       METALMOCK_NONVOID0_CONST(char, Char)
       METALMOCK_NONVOID0_CONST(unsigned char, UnsignedChar)
+
       METALMOCK_NONVOID0_CONST(short, Short)
       METALMOCK_NONVOID0_CONST(unsigned short, UnsignedShort)
+
       METALMOCK_NONVOID0_CONST(int, Int)
       METALMOCK_NONVOID0_CONST(unsigned int, UnsignedInt)
+
       METALMOCK_NONVOID1_CONST(int, Enum, int)
+
+      METALMOCK_NONVOID0_CONST(long, Long)
+      METALMOCK_NONVOID0_CONST(unsigned long, UnsignedLong)
+
       METALMOCK_NONVOID0_CONST(long long, LongLong)
       METALMOCK_NONVOID0_CONST(unsigned long long, UnsignedLongLong)
       METALMOCK_NONVOID0_CONST(size_t, SizeT)
+
       METALMOCK_NONVOID0_CONST(float, Float)
       METALMOCK_NONVOID0_CONST(double, Double)
+
       METALMOCK_NONVOID0_CONST(const char*, ConstCharPointer)
+
       METALMOCK_NONVOID0_CONST(std::string, String)
       METALMOCK_NONVOID0_CONST(std::vector<std::string>, StringVector)
+
       METALMOCK_NONVOID0_CONST(std::error_code, ErrorCode)
+
       METALMOCK_NONVOID0_CONST(fs::path, FilesystemPath)
    };
 

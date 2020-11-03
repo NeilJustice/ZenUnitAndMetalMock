@@ -7091,22 +7091,35 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
 
       virtual ~RandomGenerator() = default;
       virtual bool Bool() const { return Random<bool>(); }
+
       virtual char Char() const { return Random<char>(); }
       virtual unsigned char UnsignedChar() const { return Random<unsigned char>(); }
+
       virtual short Short() const { return Random<short>(); }
       virtual unsigned short UnsignedShort() const { return Random<unsigned short>(); }
+
       virtual int Int() const { return Random<int>(); }
       virtual unsigned UnsignedInt() const { return Random<unsigned int>(); }
+
       virtual int Enum(int exclusiveMaxValue) const { return RandomBetween<int>(0, static_cast<unsigned long long>(exclusiveMaxValue) - 1); }
+
+      virtual long Long() const { return Random<long>(); }
+      virtual unsigned long UnsignedLong() const { return Random<unsigned long>(); }
+
       virtual long long LongLong() const { return Random<long long>(); }
       virtual unsigned long long UnsignedLongLong() const { return Random<unsigned long long>(); }
       virtual size_t SizeT() const { return Random<size_t>(); }
+
       virtual float Float() const { return Random<float>(); }
       virtual double Double() const { return Random<double>(); }
+
       virtual const char* ConstCharPointer() const { return Random<const char*>(); }
+
       virtual std::string String() const { return Random<std::string>(); }
       virtual std::vector<std::string> StringVector() const { return RandomVector<std::string>(); }
+
       virtual std::error_code ErrorCode() const { return Random<std::error_code>(); }
+
       virtual fs::path FilesystemPath() const { return Random<fs::path>(); }
 
       template<typename T>
