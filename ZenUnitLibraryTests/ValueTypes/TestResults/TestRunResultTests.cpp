@@ -233,10 +233,10 @@ namespace ZenUnit
       size_t numberOfFailedTestCases,
       size_t numberOfTotalTests,
       const char* expectedClosingLineTestsCountText,
-      "[ZenUnit]", Color::Green, size_t(0), size_t(1), "All 1 test passed",
-      "[ZenUnit]", Color::Green, size_t(0), size_t(2), "All 2 tests passed",
-      "[ZenUnit]", Color::Green, size_t(0), size_t(3), "All 3 tests passed",
-      "[ZenUnit]", Color::Green, size_t(0), size_t(3), "All 3 tests passed",
+      "[SUCCESS]", Color::Green, size_t(0), size_t(1), "All 1 test passed",
+      "[SUCCESS]", Color::Green, size_t(0), size_t(2), "All 2 tests passed",
+      "[SUCCESS]", Color::Green, size_t(0), size_t(3), "All 3 tests passed",
+      "[SUCCESS]", Color::Green, size_t(0), size_t(3), "All 3 tests passed",
       ">>-FAIL->", Color::Red, size_t(1), size_t(1), "1 of 1 test failed",
       ">>-FAIL->", Color::Red, size_t(1), size_t(2), "1 of 2 tests failed",
       ">>-FAIL->", Color::Red, size_t(1), size_t(3), "1 of 3 tests failed",
@@ -256,7 +256,7 @@ namespace ZenUnit
       //
       _testRunResult.PrintConclusionLines(startDateTime, numberOfTotalTests, testRunElapsedSeconds, args);
       //
-      const string expectedTripletLinesPrefix = expectedSuccessOrFailLinePrefix == "[ZenUnit]" ? "[ZenUnit]" : ">>------>";
+      const string expectedTripletLinesPrefix = expectedSuccessOrFailLinePrefix == "[SUCCESS]" ? "[ZenUnit]" : ">>------>";
       METALMOCK(_consoleMock->WriteColorMock.CalledAsFollows(
       {
          { expectedTripletLinesPrefix, expectedColor },

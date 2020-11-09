@@ -4676,7 +4676,7 @@ namespace ZenUnit
             if (_numberOfFailedTestCases == 0)
             {
                tripletLinesPrefix = "[ZenUnit]";
-               successOrFailLinePrefix = "[ZenUnit]";
+               successOrFailLinePrefix = "[SUCCESS]";
                resultMessage = String::Concat("     Result: All ", totalNumberOfTestCases, ' ', testOrTests, " passed");
             }
             else
