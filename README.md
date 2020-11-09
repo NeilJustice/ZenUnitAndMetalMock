@@ -43,6 +43,8 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
       * [Non-Void Namespaced Free Functions](#non-void-namespaced-free-functions)
    * [How To MetalMock Virtual Functions](#how-to-metalmock-virtual-functions)
      * [Console Output From Running The Above Virtual Function MetalMock Example](#console-output-from-running-the-above-virtual-function-metalmock-example)
+   * [How To MetalMock Template Functions](#how-to-metalmock-template-functions)
+     * [Console Output From Running The Above Template Function MetalMock Example](#console-output-from-running-the-above-template-function-metalmock-example)
    * [How To MetalMock Free Functions](#how-to-metalmock-free-functions)
      * [Console Output From Running The Above Free Function MetalMock Example](#console-output-from-running-the-above-free-function-metalmock-example)
    * [Linux Jenkins Jobs Which Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And MetalMock](#linux-jenkins-jobs-which-build-unit-test-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-metalmock)
@@ -656,8 +658,9 @@ Example ZenUnit Command Line Arguments:
 ### How To MetalMock Virtual Functions
 
 ```
-// Single header MetalMock.h
-#include "MetalMock.h"
+// This is the contents of file MetalMockExamples/VirtualFunctionMockingTests.cpp
+
+#include "pch.h"
 
 // Component To Be MetalMocked
 class ComponentB
@@ -738,9 +741,116 @@ RUN_TESTS(ComponentATests)
 
 ![Console Output From Running The Above Virtual Function MetalMock Example](Screenshots/ConsoleOutputFromRunningTheAboveVirtualFunctionMetalMockExample.png)
 
+### How To MetalMock Template Functions
+
+```
+// This is the contents of file MetalMockExamples/TemplateFunctionMockingTests.cpp
+
+#include "pch.h"
+
+class KernelBypassNetwork
+{
+public:
+   // Non-virtual function for slightly increased performance in a high-frequency trading environment
+   void Initialize()
+   {
+   }
+
+   // Non-virtual function for slightly increased performance in a high-frequency trading environment
+   size_t Send(size_t numberOfBytes)
+   {
+      return numberOfBytes;
+   }
+};
+
+class KernelBypassNetworkMock : Metal::Mock<KernelBypassNetwork>
+{
+public:
+   METALMOCK_VOID0_NONVIRTUAL(Initialize)
+   METALMOCK_NONVOID1_NONVIRTUAL(size_t, Send, size_t)
+};
+
+// Default NetworkType to KernelBypassNetwork for production trading,
+// with OrderSender unit tests to set NetworkType to KernelBypassNetworkMock
+template<typename NetworkType = KernelBypassNetwork>
+class OrderSender
+{
+   friend class OrderSenderTests;
+private:
+   NetworkType _network;
+public:
+   void InitializeNetwork()
+   {
+      _network.Initialize();
+   }
+
+   void SendOrder()
+   {
+      constexpr size_t numberOfBytesForOneOrder = 123;
+      const size_t numberOfBytesSent = _network.Send(numberOfBytesForOneOrder);
+      if (numberOfBytesSent != numberOfBytesForOneOrder)
+      {
+         throw std::runtime_error("Failed to send complete order to the exchange");
+      }
+   }
+};
+
+TESTS(OrderSenderTests)
+AFACT(InitializeNetwork_CallsNetworkInitialize)
+AFACT(SendOrder_CallsNetworkSendWhichReturns123_Returns)
+FACTS(SendOrder_CallsNetworkSendWhichDoesNotReturn123_ThrowsRuntimeError)
+EVIDENCE
+
+// Template parameter dependency injection of MetalMock class KernelBypassNetworkMock
+OrderSender<KernelBypassNetworkMock> _orderSender;
+
+TEST(InitializeNetwork_CallsNetworkInitialize)
+{
+   _orderSender._network.InitializeMock.Expect();
+   //
+   _orderSender.InitializeNetwork();
+   //
+   METALMOCK(_orderSender._network.InitializeMock.CalledOnce());
+}
+
+TEST(SendOrder_CallsNetworkSendWhichReturns123_Returns)
+{
+   _orderSender._network.SendMock.Return(123);
+   //
+   _orderSender.SendOrder();
+   //
+   METALMOCK(_orderSender._network.SendMock.CalledOnceWith(123));
+}
+
+TEST1X1(SendOrder_CallsNetworkSendWhichDoesNotReturn123_ThrowsRuntimeError,
+   size_t sendReturnValue,
+   0,
+   122,
+   124,
+   1000)
+{
+   _orderSender._network.SendMock.Return(sendReturnValue);
+   //
+   THROWS_EXCEPTION(_orderSender.SendOrder(),
+      std::runtime_error, "Failed to send complete order to the exchange");
+   //
+   METALMOCK(_orderSender._network.SendMock.CalledOnceWith(123));
+}
+
+RUN_TESTS(OrderSenderTests)
+```
+
+#### Console Output From Running The Above Template Function MetalMock Example
+
+![Console Output From Running The Above Template Function MetalMock Example](Screenshots/ConsoleOutputForMetalMockTemplateFunctionMockingExample.png)
+
 ### How To MetalMock Free Functions
 
 ```
+// This is the contents of file MetalMockExamples/FreeFunctionMockingTests.cpp
+
+#include "pch.h"
+
 // Global free function to be MetalMocked
 int GlobalFreeFunction(int value)
 {
