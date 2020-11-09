@@ -1,9 +1,10 @@
 #include "pch.h"
 
 // Global free function to be MetalMocked
-int GlobalFreeFunction(int x)
+int GlobalFreeFunction(int value)
 {
-   return x + 1;
+   const int valuePlus1 = value + 1;
+   return valuePlus1;
 }
 
 namespace Namespace
@@ -16,46 +17,44 @@ namespace Namespace
    }
 }
 
-TESTS(TestsForCodeCoverageOFreeFunctions)
+TESTS(FreeFunctionTests)
 FACTS(GlobalFreeFunction_ReturnsArgumentPlus1)
 FACTS(NamespacedFreeFunction_ReturnsSumOfArguments)
 EVIDENCE
 
 TEST2X2(GlobalFreeFunction_ReturnsArgumentPlus1,
-   int x, int expectedReturnValue,
+   int value, int expectedReturnValue,
    -2, -1,
    -1, 0,
    0, 1,
    1, 2)
 {
-   const int returnValue = GlobalFreeFunction(x);
+   const int returnValue = GlobalFreeFunction(value);
    ARE_EQUAL(expectedReturnValue, returnValue);
 }
 
 TEST3X3(NamespacedFreeFunction_ReturnsSumOfArguments,
-   int left, int right, int expectedSum,
+   int left, int right, int expectedReturnValue,
    -1, -2, -3,
    -1, 1, 0,
    0, 0, 0,
    1, 2, 3)
 {
    const int sum = Namespace::NamespacedFreeFunction(left, right);
-   ARE_EQUAL(expectedSum, sum);
+   ARE_EQUAL(expectedReturnValue, sum);
 }
 
-RUN_TESTS(TestsForCodeCoverageOFreeFunctions)
+RUN_TESTS(FreeFunctionTests)
 
 
-// Class to be unit tested with ZenUnit and MetalMock
-class FreeFunctionMockingClassUnderTest
+class ClassUnderTest_MetalMockFreeFunctionMockingExample
 {
-   friend class FreeFunctionMockingClassUnderTestTests;
+   friend class FreeFunctionMockingTests;
 private:
-   // MetalMockable std::functions
+   // MetalMockable std::function pointers
    std::function<int(int)> _call_GlobalFreeFunction = ::GlobalFreeFunction;
    std::function<int(int, int)> _call_NamespacedFreeFunction = Namespace::NamespacedFreeFunction;
 public:
-   // Function to be unit tested with ZenUnit and MetalMock
    int FunctionUnderTest(int input)
    {
       const int returnValueA = _call_GlobalFreeFunction(input);
@@ -66,23 +65,23 @@ public:
    }
 };
 
-// ZenUnit test class
-TESTS(FreeFunctionMockingClassUnderTestTests)
+TESTS(FreeFunctionMockingTests)
 AFACT(DefaultConstructor_SetsFunctionsToExpectedFunctions)
 AFACT(FunctionUnderTest_ReturnsSumOfReturnValuesFromCallingFreeFunctions)
 EVIDENCE
 
-FreeFunctionMockingClassUnderTest _classUnderTest;
+ClassUnderTest_MetalMockFreeFunctionMockingExample _classUnderTest;
 
-// Creates a MetalMock object named GlobalFreeFunctionMock.
+// Creates a MetalMock object named GlobalFreeFunctionMock for mocking a free function
 METALMOCK_NONVOID1_FREE(int, GlobalFreeFunction, int)
 
-// Creates a MetalMock object named NamespacedFreeFunctionMock.
+// Creates a MetalMock object named NamespacedFreeFunctionMock for mocking a namespaced free function
 METALMOCK_NONVOID2_NAMESPACED_FREE(int, Namespace, NamespacedFreeFunction, int, int)
 
 STARTUP
 {
-   // Dependency injection binding of MetalMock objects to std::functions
+   // Post-construction dependency injection of MetalMock objects
+   // to overwrite std::functions with MetalMock objects
    _classUnderTest._call_GlobalFreeFunction =
       BIND_1ARG_METALMOCK_OBJECT(GlobalFreeFunctionMock);
    _classUnderTest._call_NamespacedFreeFunction =
@@ -91,40 +90,25 @@ STARTUP
 
 TEST(DefaultConstructor_SetsFunctionsToExpectedFunctions)
 {
-   const FreeFunctionMockingClassUnderTest classUnderTest;
-   // STD_FUNCTION_TARGETS is a key ZenUnit assertion to call when MetalMocking std::functions.
-   // It ensures that prior to being MetalMocked, a std::function pointed to an expected function.
+   const ClassUnderTest_MetalMockFreeFunctionMockingExample classUnderTest;
    STD_FUNCTION_TARGETS(::GlobalFreeFunction, classUnderTest._call_GlobalFreeFunction);
    STD_FUNCTION_TARGETS(Namespace::NamespacedFreeFunction, classUnderTest._call_NamespacedFreeFunction);
 }
 
 TEST(FunctionUnderTest_ReturnsSumOfReturnValuesFromCallingFreeFunctions)
 {
-   // MetalMockObject.ReturnRandom() instructs the MetalMock object to return
-   // a ZenUnit::Random<ReturnType>() in response to each call to the MetalMocked function.
    const int globalFreeFunctionReturnValue = GlobalFreeFunctionMock.ReturnRandom();
 
-   // MetalMockObject.ReturnValues(firstReturnValue, subsequentReturnValues...)
-   // instructs the MetalMock object to return firstReturnValue followed by subsequentReturnValues.
    const int namespacedFreeFunctionReturnValueA = ZenUnit::Random<int>();
    const int namespacedFreeFunctionReturnValueB = ZenUnit::Random<int>();
    NamespacedFreeFunctionMock.ReturnValues(
       namespacedFreeFunctionReturnValueA, namespacedFreeFunctionReturnValueB);
 
-   // Testing with a random input for robustnest to code mutations.
    const int input = ZenUnit::Random<int>();
    //
    const int returnValue = _classUnderTest.FunctionUnderTest(input);
    //
-   // MetalMockObject.CalledOnceWith(expectedArgument) asserts that the
-   // MetalMocked function was called exactly once with expectedArgument.
-   // Wrapping MetalMock assertion calls in METALMOCK() augments potential assertion-failed
-   // error messages with __FILE__ and __LINE__ information.
    METALMOCK(GlobalFreeFunctionMock.CalledOnceWith(input));
-
-   // MetalMockObject.CalledAsFollows(expectedCallsVector) asserts that the
-   // MetalMocked function was called exactly expectedCallsVector.size() times
-   // and in the order specified by expectedCallsVector.
    METALMOCK(NamespacedFreeFunctionMock.CalledAsFollows(
    {
       { 1, 2 },
@@ -137,4 +121,4 @@ TEST(FunctionUnderTest_ReturnsSumOfReturnValuesFromCallingFreeFunctions)
    ARE_EQUAL(expectedReturnValue, returnValue);
 }
 
-RUN_TESTS(FreeFunctionMockingClassUnderTestTests)
+RUN_TESTS(FreeFunctionMockingTests)
