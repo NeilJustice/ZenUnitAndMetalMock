@@ -51,7 +51,7 @@ class ClassUnderTest_MetalMockFreeFunctionMockingExample
 {
    friend class FreeFunctionMockingTests;
 private:
-   // MetalMockable std::function pointers
+   // MetalMockable std::functions
    std::function<int(int)> _call_GlobalFreeFunction = ::GlobalFreeFunction;
    std::function<int(int, int)> _call_NamespacedFreeFunction = Namespace::NamespacedFreeFunction;
 public:

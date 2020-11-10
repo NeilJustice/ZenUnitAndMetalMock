@@ -9,7 +9,8 @@ public:
 
    static int NonVoidStaticFunction(int input)
    {
-      return input + 100;
+      const int inputPlus100 = input + 100;
+      return inputPlus100;
    }
 
    Utilities() = delete;
@@ -40,11 +41,11 @@ TEST2X2(NonVoidStaticFunction_RetursnInputPlus100,
 
 RUN_TESTS(UtilitiesTests)
 
-
-class StaticFunctionMockingClassUnderTest
+class StaticFunctionMockingExample
 {
-   friend class StaticFunctionMockingClassUnderTestTests;
+   friend class StaticFunctionMockingExampleTests;
 private:
+   // MetalMockable std::functions
    std::function<void()> _call_VoidStaticFunction = Utilities::VoidStaticFunction;
    std::function<int(int)> _call_NonVoidStaticFunction = Utilities::NonVoidStaticFunction;
 public:
@@ -56,38 +57,39 @@ public:
    }
 };
 
-TESTS(StaticFunctionMockingClassUnderTestTests)
+TESTS(StaticFunctionMockingExampleTests)
 AFACT(DefaultConstructor_SetsFunctionsToExpectedFunctions)
 AFACT(FunctionUnderTest_CallsVoidStaticFunction_ReturnsResultOfCallingNonVoidStaticFunction)
 EVIDENCE
 
-StaticFunctionMockingClassUnderTest _classUnderTest;
+StaticFunctionMockingExample _classUnderTest;
+
+// Creates a MetalMock object named VoidStaticFunctionMock
+// for mocking void 0-arguments static function Utilities::VoidStaticFunction()
 METALMOCK_VOID0_STATIC(Utilities, VoidStaticFunction)
+
+// Creates a MetalMock object named NonVoidStaticFunctionMock
+// for mocking non-void 1-argument static function Utilities::NonVoidStaticFunction(int)
 METALMOCK_NONVOID1_STATIC(int, Utilities, NonVoidStaticFunction, int)
 
 STARTUP
 {
    _classUnderTest._call_VoidStaticFunction =
       BIND_0ARG_METALMOCK_OBJECT(VoidStaticFunctionMock);
+
    _classUnderTest._call_NonVoidStaticFunction =
       BIND_1ARG_METALMOCK_OBJECT(NonVoidStaticFunctionMock);
 }
 
 TEST(DefaultConstructor_SetsFunctionsToExpectedFunctions)
 {
-   const StaticFunctionMockingClassUnderTest classUnderTest;
+   const StaticFunctionMockingExample classUnderTest;
    STD_FUNCTION_TARGETS(Utilities::VoidStaticFunction, classUnderTest._call_VoidStaticFunction);
    STD_FUNCTION_TARGETS(Utilities::NonVoidStaticFunction, classUnderTest._call_NonVoidStaticFunction);
 }
 
 TEST(FunctionUnderTest_CallsVoidStaticFunction_ReturnsResultOfCallingNonVoidStaticFunction)
 {
-   // MetalMockObject.Expect() instructs the MetalMock object to not throw
-   // a MetalMock::UnexpectedCallException when the MetalMocked function is called.
-
-   // MetalMock is a double-strict mocking library, meaning that mocked functions must
-   // 1) be explicitly expected
-   // 2) be explicitly asserted as having been called
    VoidStaticFunctionMock.Expect();
    const int nonVoidStaticFunctionReturnValue = NonVoidStaticFunctionMock.ReturnRandom();
    const int input = ZenUnit::Random<int>();
@@ -99,4 +101,4 @@ TEST(FunctionUnderTest_CallsVoidStaticFunction_ReturnsResultOfCallingNonVoidStat
    ARE_EQUAL(nonVoidStaticFunctionReturnValue, returnValue);
 }
 
-RUN_TESTS(StaticFunctionMockingClassUnderTestTests)
+RUN_TESTS(StaticFunctionMockingExampleTests)

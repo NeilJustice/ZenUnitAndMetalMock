@@ -4,7 +4,7 @@
 
 ZenUnit is a C++ single-header unit testing framework designed for assertion exactness, error message clarity, long-term test code readability, and supports testing with randomized values to maximize [mutation coverage](https://en.wikipedia.org/wiki/Mutation_testing), the next frontier in software quality metrics beyond code coverage. ZenUnit's key feature is its convenient syntax for writing value-parameterized and type-parameterized unit tests.
 
-MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions and features a convenient arrange-act-assert syntax for specifying function return values and expected function call arguments from and to virtual functions, template functions, static functions, and free functions. MetalMock is a "double strict" mocking framework so as to suitable for rigorously confirming the correcntess of safety-critical and financial-critical C++ software - meaning that all MetalMocked function calls must be first explicitly expected and then explicitly asserted as having been called with exact expected argument values.
+MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions and features a convenient arrange-act-assert syntax for specifying function return values and expected function call arguments from and to virtual functions, non-virtual functions, static functions, and free functions. MetalMock is a "double strict" mocking framework so as to be suitable for rigorously confirming the correctness of safety-critical and financially-critical C++ software - meaning that all MetalMocked function calls must be first explicitly expected and then explicitly asserted as having been called with exact expected arguments.
 
 |Build|Build Status|
 |----------|------------|
@@ -45,6 +45,8 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
      * [Console Output From Running The Above Virtual Function MetalMock Example](#console-output-from-running-the-above-virtual-function-metalmock-example)
    * [How To MetalMock Template Functions](#how-to-metalmock-template-functions)
      * [Console Output From Running The Above Template Function MetalMock Example](#console-output-from-running-the-above-template-function-metalmock-example)
+   * [How To MetalMock Static Functions](#how-to-metalmock-static-functions)
+     * [Console Output From Running The Above Static Function MetalMock Example](#console-output-from-running-the-above-static-function-metalmock-example)
    * [How To MetalMock Free Functions](#how-to-metalmock-free-functions)
      * [Console Output From Running The Above Free Function MetalMock Example](#console-output-from-running-the-above-free-function-metalmock-example)
    * [Linux Jenkins Jobs Which Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And MetalMock](#linux-jenkins-jobs-which-build-unit-test-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-metalmock)
@@ -844,6 +846,121 @@ RUN_TESTS(OrderSenderTests)
 #### Console Output From Running The Above Template Function MetalMock Example
 
 ![Console Output From Running The Above Template Function MetalMock Example](Screenshots/ConsoleOutputForMetalMockTemplateFunctionMockingExample.png)
+
+### How To MetalMock Static Functions
+
+```
+// This is the contents of file MetalMockExamples/StaticFunctionMockingTests.cpp
+
+#include "pch.h"
+
+class Utilities
+{
+public:
+   static void VoidStaticFunction()
+   {
+   }
+
+   static int NonVoidStaticFunction(int input)
+   {
+      const int inputPlus100 = input + 100;
+      return inputPlus100;
+   }
+
+   Utilities() = delete;
+};
+
+TESTS(UtilitiesTests)
+AFACT(VoidStaticFunction_DoesNothing)
+FACTS(NonVoidStaticFunction_RetursnInputPlus100)
+EVIDENCE
+
+TEST(VoidStaticFunction_DoesNothing)
+{
+   Utilities::VoidStaticFunction();
+}
+
+TEST2X2(NonVoidStaticFunction_RetursnInputPlus100,
+   int input, int expectedReturnValue,
+   -101, -1,
+   -100, 0,
+   -99, 1,
+   -1, 99,
+   0, 100,
+   1, 101)
+{
+   const int inputPlus100 = Utilities::NonVoidStaticFunction(input);
+   ARE_EQUAL(expectedReturnValue, inputPlus100);
+}
+
+RUN_TESTS(UtilitiesTests)
+
+class StaticFunctionMockingExample
+{
+   friend class StaticFunctionMockingExampleTests;
+private:
+   // MetalMockable std::functions
+   std::function<void()> _call_VoidStaticFunction = Utilities::VoidStaticFunction;
+   std::function<int(int)> _call_NonVoidStaticFunction = Utilities::NonVoidStaticFunction;
+public:
+   int FunctionUnderTest(int input)
+   {
+      _call_VoidStaticFunction();
+      const int returnValue = _call_NonVoidStaticFunction(input);
+      return returnValue;
+   }
+};
+
+TESTS(StaticFunctionMockingExampleTests)
+AFACT(DefaultConstructor_SetsFunctionsToExpectedFunctions)
+AFACT(FunctionUnderTest_CallsVoidStaticFunction_ReturnsResultOfCallingNonVoidStaticFunction)
+EVIDENCE
+
+StaticFunctionMockingExample _classUnderTest;
+
+// Creates a MetalMock object named VoidStaticFunctionMock
+// for mocking void 0-arguments static function Utilities::VoidStaticFunction()
+METALMOCK_VOID0_STATIC(Utilities, VoidStaticFunction)
+
+// Creates a MetalMock object named NonVoidStaticFunctionMock
+// for mocking non-void 1-argument static function Utilities::NonVoidStaticFunction(int)
+METALMOCK_NONVOID1_STATIC(int, Utilities, NonVoidStaticFunction, int)
+
+STARTUP
+{
+   _classUnderTest._call_VoidStaticFunction =
+      BIND_0ARG_METALMOCK_OBJECT(VoidStaticFunctionMock);
+
+   _classUnderTest._call_NonVoidStaticFunction =
+      BIND_1ARG_METALMOCK_OBJECT(NonVoidStaticFunctionMock);
+}
+
+TEST(DefaultConstructor_SetsFunctionsToExpectedFunctions)
+{
+   const StaticFunctionMockingExample classUnderTest;
+   STD_FUNCTION_TARGETS(Utilities::VoidStaticFunction, classUnderTest._call_VoidStaticFunction);
+   STD_FUNCTION_TARGETS(Utilities::NonVoidStaticFunction, classUnderTest._call_NonVoidStaticFunction);
+}
+
+TEST(FunctionUnderTest_CallsVoidStaticFunction_ReturnsResultOfCallingNonVoidStaticFunction)
+{
+   VoidStaticFunctionMock.Expect();
+   const int nonVoidStaticFunctionReturnValue = NonVoidStaticFunctionMock.ReturnRandom();
+   const int input = ZenUnit::Random<int>();
+   //
+   const int returnValue = _classUnderTest.FunctionUnderTest(input);
+   //
+   METALMOCK(VoidStaticFunctionMock.CalledOnce());
+   METALMOCK(NonVoidStaticFunctionMock.CalledOnceWith(input));
+   ARE_EQUAL(nonVoidStaticFunctionReturnValue, returnValue);
+}
+
+RUN_TESTS(StaticFunctionMockingExampleTests)
+```
+
+#### Console Output From Running The Above Static Function MetalMock Example
+
+![Console Output From Running The Above Static Function MetalMock Example](Screenshots/ConsoleOutputForMetalMockStaticFunctionMockingExample.png)
 
 ### How To MetalMock Free Functions
 
