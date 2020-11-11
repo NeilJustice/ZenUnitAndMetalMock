@@ -3434,9 +3434,9 @@ namespace ZenUnit
       std::ostringstream whyBodyBuilder;
       const std::string* const actualExceptionTypeName = Type::GetName(ex);
       THROWS_EXCEPTION_BuildWhyBody<ExpectedExceptionType>(whyBodyBuilder, actualExceptionTypeName);
-      const char* const actualExactExceptionWhat = ex.what();
+      const char* const actualExactExceptionMessage = ex.what();
       whyBodyBuilder << '\n' <<
-         "  what(): \"" << actualExactExceptionWhat << "\"";
+         "  what(): \"" << actualExactExceptionMessage << "\"";
       const std::string whyBody = whyBodyBuilder.str();
       return whyBody;
    }
@@ -3510,12 +3510,12 @@ namespace ZenUnit
                THROWS_EXCEPTION_MakeWhyBody_DerivedButNotExactExpectedExceptionTypeThrown(ex),
                filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
          }
-         const char* const actualExactExceptionWhat = ex.what();
-         const int compareResult = expectedExactWhatText.compare(actualExactExceptionWhat);
+         const char* const actualExactExceptionMessage = ex.what();
+         const int compareResult = expectedExactWhatText.compare(actualExactExceptionMessage);
          if (compareResult != 0)
          {
             THROWS_EXCEPTION_ThrowAnomaly(expressionText, expectedExactExceptionTypeText, expectedExactWhatTextText,
-               THROWS_EXCEPTION_MakeWhyBody_ExpectedWhatNotEqualToActualWhat(ex, expectedExactWhatText, actualExactExceptionWhat),
+               THROWS_EXCEPTION_MakeWhyBody_ExpectedWhatNotEqualToActualWhat(ex, expectedExactWhatText, actualExactExceptionMessage),
                filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
          }
          return;
@@ -3934,10 +3934,10 @@ namespace ZenUnit
             console->Write(responsibleTestPhaseSuffix);
             WriteTestCaseNumberIfAny(console, testCaseNumber);
             console->WriteLineColor("\n==================\nUncaught Exception\n==================", Color::Red);
-            const std::string exceptionTypeAndWhatLines = String::Concat(
+            const std::string exceptionTypeAndMessageLines = String::Concat(
                "  Type: ", *responsibleTestPhaseResult.anomalyOrException->exceptionTypeName, '\n',
                "what(): \"", *responsibleTestPhaseResult.anomalyOrException->exceptionWhat, "\"");
-            console->WriteLine(exceptionTypeAndWhatLines);
+            console->WriteLine(exceptionTypeAndMessageLines);
             console->WriteNewLine();
             break;
          }
@@ -4998,8 +4998,8 @@ namespace ZenUnit
    private:
       // Function Callers
       std::function<const ZenUnitArgs& ()> _call_ZenUnitTestRunner_GetZenUnitArgs;
-      std::unique_ptr<const TwoArgMemberFunctionCaller<
-         void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>> _voidTwoArgMemberFunctionCaller;
+      std::unique_ptr<const TwoArgMemberFunctionCaller<void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>>
+         _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess;
       // Constant Components
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const TestPhaseTranslator> _testPhaseTranslator;
@@ -5010,7 +5010,7 @@ namespace ZenUnit
       TestPhaseRunner() noexcept
          // Function Callers
          : _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnitTestRunner::GetZenUnitArgs)
-         , _voidTwoArgMemberFunctionCaller(std::make_unique<
+         , _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess(std::make_unique<
             TwoArgMemberFunctionCaller<void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>>())
          // Constant Components
          , _console(std::make_unique<Console>())
@@ -5025,14 +5025,17 @@ namespace ZenUnit
 
       virtual TestPhaseResult RunTestPhase(void(*testPhaseFunction)(Test*), Test* testPointer, TestPhase testPhase) const;
 
-      void FailFastIfTestOutcomeIsNotSuccessAndFailFastModeIsTrue(TestOutcome testOutcome, const ZenUnitArgs& zenUnitArgs) const
+      void FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess(TestOutcome testOutcome, const ZenUnitArgs& zenUnitArgs) const
       {
-         if (testOutcome != TestOutcome::Success && zenUnitArgs.failFast)
+         if (zenUnitArgs.failFast && testOutcome != TestOutcome::Success)
          {
-            const std::string failFastMessage = String::Concat(
-               "\n[ZenUnit] A test failed in --fail-fast mode. Exiting with code 1.\n[ZenUnit] Command line: ",
-               zenUnitArgs.commandLine, " (--random-seed=", ZenUnitRandomSeed::value, ')');
-            _console->WriteLineAndExit(failFastMessage, 1);
+            const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
+            const std::string failFastMessage = String::Concat('\n',
+               "[ZenUnit] A test failed in --fail-fast mode.\n",
+               "[ZenUnit] CommandLine: ", zenUnitArgs.commandLine, '\n',
+               "[ZenUnit]  RandomSeed: --random-seed=", ZenUnitRandomSeed::value, '\n',
+               "[ZenUnit]    ExitCode: ", exitCode);
+            _console->WriteLineAndExit(failFastMessage, exitCode);
          }
       }
 
@@ -5067,13 +5070,16 @@ namespace ZenUnit
          _console->WriteLineAndExit("  ExitCode: " + std::to_string(exitCode), exitCode);
       }
    private:
+      void FailFastDueToAnomalyOrExceptionThrownFromTestClassConstructorOrStartupOrCleanup(
+         const char* anomalyOrException, const ZenUnitArgs& zenUnitArgs) const;
+
       template<typename ExceptionType>
       void PopulateTestPhaseResultWithExceptionInformation(const ExceptionType& ex, TestPhaseResult* outTestPhaseResult) const
       {
          outTestPhaseResult->microseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
          const std::string* const exceptionTypeName = Type::GetName(ex);
-         const char* const exceptionWhat = ex.what();
-         outTestPhaseResult->anomalyOrException = std::make_shared<AnomalyOrException>(exceptionTypeName, exceptionWhat);
+         const char* const exceptionMessage = ex.what();
+         outTestPhaseResult->anomalyOrException = std::make_shared<AnomalyOrException>(exceptionTypeName, exceptionMessage);
          outTestPhaseResult->testOutcome = TestOutcome::Exception;
       }
    };
@@ -5244,6 +5250,17 @@ namespace ZenUnit
       }
    };
 
+   inline void TestPhaseRunner::FailFastDueToAnomalyOrExceptionThrownFromTestClassConstructorOrStartupOrCleanup(
+      const char* anomalyOrException, const ZenUnitArgs& zenUnitArgs) const
+   {
+      const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
+      _console->WriteLineColor("\n===========\nFatal Error\n===========", Color::Red);
+      const std::string exitMessage = String::Concat(
+         "[ZenUnit] TestResult: A ", anomalyOrException, " was thrown from a test class constructor, STARTUP function, or CLEANUP function.\n",
+         "[ZenUnit]   ExitCode: ", exitCode);
+      _console->WriteLineAndExit(exitMessage, exitCode);
+   }
+
    inline TestPhaseResult TestPhaseRunner::RunTestPhase(
       void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const
    {
@@ -5266,12 +5283,7 @@ namespace ZenUnit
          _console->WriteLine(anomaly.why);
          if (testPhase != TestPhase::TestBody)
          {
-            const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
-            _console->WriteLineColor("\n===========\nFatal Error\n===========", Color::Red);
-            const std::string exitMessage = String::Concat(
-               "[ZenUnit] TestResult: A ZenUnit::Anomaly was thrown from a test class constructor, STARTUP function, or CLEANUP function.\n",
-               "[ZenUnit]   ExitCode: ", exitCode);
-            _console->WriteLineAndExit(exitMessage, exitCode);
+            FailFastDueToAnomalyOrExceptionThrownFromTestClassConstructorOrStartupOrCleanup("ZenUnit::Anomaly", zenUnitArgs);
          }
       }
       catch (const std::exception& ex)
@@ -5280,10 +5292,15 @@ namespace ZenUnit
          _console->WriteColor("\n==================\nUncaught Exception\n==================", Color::Red);
          const char* const testPhaseSuffix = _testPhaseTranslator->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
-         const std::string exceptionTypeNameAndWhat = String::Concat('\n',
+         const std::string exceptionTypeNameAndException = String::Concat('\n',
             "  Type: ", *Type::GetName(ex), '\n',
             "what(): \"", ex.what(), "\"");
-         _console->WriteLine(exceptionTypeNameAndWhat);
+         _console->WriteLine(exceptionTypeNameAndException);
+         if (testPhase != TestPhase::TestBody)
+         {
+            FailFastDueToAnomalyOrExceptionThrownFromTestClassConstructorOrStartupOrCleanup(
+               "std::exception or std::exception subclass", zenUnitArgs);
+         }
       }
       catch (const MetalMockException& ex)
       {
@@ -5305,10 +5322,9 @@ namespace ZenUnit
          FailFastDueToDotDotDotException(zenUnitArgs, testPhase);
          return TestPhaseResult();
       }
-      _voidTwoArgMemberFunctionCaller->ConstCall(this,
-         &TestPhaseRunner::FailFastIfTestOutcomeIsNotSuccessAndFailFastModeIsTrue,
-         testPhaseResult.testOutcome,
-         zenUnitArgs);
+      _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess->ConstCall(
+         this, &TestPhaseRunner::FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess,
+         testPhaseResult.testOutcome, zenUnitArgs);
       return testPhaseResult;
    }
 
