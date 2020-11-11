@@ -3914,8 +3914,8 @@ namespace ZenUnit
          }
          case TestOutcome::Anomaly:
          {
-            const std::string testFailureNumber = testFailureNumberer->NextNumberedTestFailureArrow();
-            console->WriteLineColor(testFailureNumber, Color::Red);
+            const std::string numberedTestFailureArrow = testFailureNumberer->NextNumberedTestFailureArrow();
+            console->WriteLineColor(numberedTestFailureArrow, Color::Red);
             console->Write(fullTestName.Value());
             const TestPhaseResult& responsibleTestPhaseResult = (this->*responsibleTestPhaseResultField);
             const char* const responsibleTestPhaseSuffix =
@@ -3928,8 +3928,8 @@ namespace ZenUnit
          }
          case TestOutcome::Exception:
          {
-            const std::string testFailureNumber = testFailureNumberer->NextNumberedTestFailureArrow();
-            console->WriteLineColor(testFailureNumber, Color::Red);
+            const std::string numberedTestFailureArrow = testFailureNumberer->NextNumberedTestFailureArrow();
+            console->WriteLineColor(numberedTestFailureArrow, Color::Red);
             console->Write(fullTestName.Value());
             const TestPhaseResult& responsibleTestPhaseResult = this->*responsibleTestPhaseResultField;
             const char* const responsibleTestPhaseSuffix =
@@ -3946,8 +3946,8 @@ namespace ZenUnit
          }
          case TestOutcome::SuccessButPastDeadline:
          {
-            const std::string testFailureNumber = testFailureNumberer->NextNumberedTestFailureArrow();
-            console->WriteLineColor(testFailureNumber, Color::Red);
+            const std::string numberedTestFailureArrow = testFailureNumberer->NextNumberedTestFailureArrow();
+            console->WriteLineColor(numberedTestFailureArrow, Color::Red);
             console->WriteLine(fullTestName.Value());
             WriteTestCaseNumberIfAny(console, testCaseNumber);
             const long long milliseconds = microseconds / static_cast<long long>(1000);
