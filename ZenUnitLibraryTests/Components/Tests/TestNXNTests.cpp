@@ -87,7 +87,7 @@ namespace ZenUnit
       // Getters
       ARE_EQUAL(_testName, test2X2.Name());
       ARE_EQUAL("TESTS(" + _testClassName + ")\nTEST2X2(" + _testName + ")", test2X2.FullName());
-      ARE_EQUAL("(0)", test2X2.FileLineString());
+      ARE_EQUAL("(0)", test2X2.FilePathLineNumberString());
    }
 
    TEST(Constructor_StoresDecayedTypeCopiesOfTestCaseArguments)

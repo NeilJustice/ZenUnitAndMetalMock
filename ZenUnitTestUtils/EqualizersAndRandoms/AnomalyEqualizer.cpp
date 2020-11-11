@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/AnomalyEqualizer.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/FileLineEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/FilePathLineNumberEqualizer.h"
 
 namespace ZenUnit
 {
@@ -12,6 +12,6 @@ namespace ZenUnit
       ARE_EQUAL(expectedAnomaly.optionalThirdLine, actualAnomaly.optionalThirdLine);
       ARE_EQUAL(expectedAnomaly.message, actualAnomaly.message);
       ARE_EQUAL(expectedAnomaly.why, actualAnomaly.why);
-      ARE_EQUAL(expectedAnomaly.fileLine, actualAnomaly.fileLine);
+      ARE_EQUAL(expectedAnomaly.filePathLineNumber, actualAnomaly.filePathLineNumber);
    }
 }

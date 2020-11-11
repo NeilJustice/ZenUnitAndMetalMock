@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/FileLineEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/FilePathLineNumberEqualizer.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestClassResultEqualizer.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestResultEqualizerAndRandom.h"
 

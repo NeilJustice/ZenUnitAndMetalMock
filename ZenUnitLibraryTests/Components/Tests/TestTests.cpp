@@ -3,7 +3,7 @@
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestResultMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/TestPhaseRunnerMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/MetalMock/TestMock.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/FileLineEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/FilePathLineNumberEqualizer.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/FullTestNameEqualizerAndRandom.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestResultEqualizerAndRandom.h"
 
@@ -44,7 +44,7 @@ namespace ZenUnit
       Test test(testClassName.c_str(), testName.c_str(), 0);
       DELETE_TO_ASSERT_NEWED(test._testPhaseRunner);
       DELETE_TO_ASSERT_NEWED(test._testResultFactory);
-      ARE_EQUAL(FileLine(), test._protected_fileLine);
+      ARE_EQUAL(FilePathLineNumber(), test._protected_fileLine);
 
       const char* const testNameValue = test.Name();
       ARE_EQUAL(testName.c_str(), testNameValue);
@@ -52,8 +52,8 @@ namespace ZenUnit
       const string fullTestName = test.FullName();
       ARE_EQUAL(fullTestName, test._protected_fullTestName.Value());
 
-      test._protected_fileLine = FileLine("FilePath", 1);
-      ARE_EQUAL(test._protected_fileLine.ToString(), test.FileLineString());
+      test._protected_fileLine = FilePathLineNumber("FilePath", 1);
+      ARE_EQUAL(test._protected_fileLine.ToString(), test.FilePathLineNumberString());
    }
 
    TEST(WritePostTestNameMessage_DoesNothing)

@@ -4,9 +4,9 @@ namespace ZenUnit
 {
    #if defined(_WIN64)
       #if defined _DEBUG
-         static_assert(sizeof(FileLine) == 16);
+         static_assert(sizeof(FilePathLineNumber) == 16);
       #elif NDEBUG
-         static_assert(sizeof(FileLine) == 16);
+         static_assert(sizeof(FilePathLineNumber) == 16);
       #endif
    #endif
 

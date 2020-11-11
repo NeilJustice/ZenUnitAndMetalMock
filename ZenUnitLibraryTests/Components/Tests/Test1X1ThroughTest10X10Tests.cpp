@@ -20,7 +20,7 @@ namespace ZenUnit
    {
       ARE_EQUAL("Test", testNXN.Name());
       ARE_EQUAL(expectedFullTestName, testNXN.FullName());
-      ARE_EQUAL("(0)", testNXN.FileLineString());
+      ARE_EQUAL("(0)", testNXN.FilePathLineNumberString());
       ARE_EQUAL(expectedNumberOfTestCases, testNXN.NumberOfTestCases());
    }
 

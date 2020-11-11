@@ -114,7 +114,7 @@ namespace ZenUnit
    static void ThrowAnomaly(Test* test)
    {
       IS_NOT_NULLPTR(test);
-      throw Anomaly("NonDefault", "NonDefault", FileLine(), "", "");
+      throw Anomaly("NonDefault", "NonDefault", FilePathLineNumber(), "", "");
    }
 
    TEST(RunTestPhase_FunctionThrowsAnomaly_TestPhaseIsTestBody_ReturnsAnomalyResult)
@@ -142,7 +142,7 @@ namespace ZenUnit
       TestPhaseResult expectedTestPhaseResult;
       expectedTestPhaseResult.testPhase = TestPhase::TestBody;
       expectedTestPhaseResult.microseconds = _microseconds;
-      Anomaly anomaly("NonDefault", "NonDefault", FileLine(), "", "");
+      Anomaly anomaly("NonDefault", "NonDefault", FilePathLineNumber(), "", "");
       expectedTestPhaseResult.anomalyOrException = make_shared<AnomalyOrException>(anomaly);
       expectedTestPhaseResult.testOutcome = TestOutcome::Anomaly;
 
@@ -182,7 +182,7 @@ namespace ZenUnit
       METALMOCK(_consoleMock->WriteColorMock.CalledOnceWith("\n================\nFailed Assertion\n================", Color::Red));
       METALMOCK(_testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(testPhase));
       METALMOCK(_consoleMock->WriteMock.CalledOnceWith(_testPhaseSuffix));
-      const Anomaly expectedAnomaly("NonDefault", "NonDefault", FileLine(), "", "");
+      const Anomaly expectedAnomaly("NonDefault", "NonDefault", FilePathLineNumber(), "", "");
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedAnomaly.why));
       METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith("\n===========\nFatal Error\n===========", Color::Red));
       const int expectedExitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
