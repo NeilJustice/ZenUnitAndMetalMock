@@ -30,6 +30,7 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
       * [Memory Allocation Assertions](#memory-allocation-assertions)
       * [The FAIL_TEST Assertion](#the-fail_test-assertion)
    * [ZenUnit Test-Defining Macros](#zenunit-test-defining-macros)
+   * [How To Write A Custom ZenUnit::Equalizer\<T\> struct To Achieve Field-By-Field Assertion Granularity](#how-to-write-a-custom-zenunit-equalizer-struct-to-achieve-field-by-field-assertion-granularity)
    * [MetalMock Function-Mocking Macros](#metalmock-function-mocking-macros)
       * [Void Virtual Functions](#void-virtual-functions)
       * [Non-Void Virtual Functions](#non-void-virtual-functions)
@@ -451,6 +452,16 @@ Example ZenUnit Command Line Arguments:
 |`THEN_RUN_TEMPLATE_TESTS(HighQualityTestClassName, TemplateArguments...)`|Registers a `TEMPLATE_TEST_CLASS` templatized with `TemplateArguments...` to be run when `ZenUnit::RunTests(argc, argv)` is called. For use after `RUN_TEMPLATE_TESTS`.|
 |`SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Prevents a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called.|
 |`THEN_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, Reason, TemplateArguments...)`|Prevents a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called. For use after `SKIP_TEMPLATE_TESTS`.|
+
+### How To Write A Custom ZenUnit::Equalizer\<T\> struct To Achieve Field-By-Field Assertion Granularity
+
+By default, ZenUnit assertion `ARE_EQUAL(expectedObject, actualObject)` calls `expectedObject == actualObject` to determine whether `expectedObject` is equal to `actualObject`.
+
+Here is the implementation of `ARE_EQUAL` in ZenUnit.h, which shows that the default behavior of calling `operator==` can be overridden for type `T` by defining a custom `ZenUnit::Equalizer<T>` struct with an `AssertEqual(const T&, const T&)` function.
+
+![ARE_EQUAL Implementation](Screenshots/ARE_EQUALImplementation.png)
+
+![Default Equalizer Implementation](Screenshots/DefaultEqualizerImplementation.png)
 
 ### MetalMock Function-Mocking Macros
 

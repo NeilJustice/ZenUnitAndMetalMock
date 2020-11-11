@@ -2349,8 +2349,7 @@ namespace ZenUnit
 
    template<typename ExpectedType, typename ActualType, typename... MessageTypes>
    void ARE_EQUAL_Defined(
-      VRText<ExpectedType> expectedValueVRT,
-      VRText<ActualType> actualValueVRT,
+      VRText<ExpectedType> expectedValueVRT, VRText<ActualType> actualValueVRT,
       FileLine fileLine, const char* messagesText, MessageTypes&&... messages)
    {
       try
