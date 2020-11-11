@@ -407,13 +407,13 @@ namespace ZenUnit
 
    TEST(ResetStateExceptForSkips_ResetsTestFailureNumberer_ClearsTestClassResults_SetsNumberOfFailedTestCasesTo0)
    {
-      _testFailureNumbererMock->ResetMock.Expect();
+      _testFailureNumbererMock->ResetTestFailureNumberMock.Expect();
       _testRunResult._testClassResults.resize(1);
       _testRunResult._numberOfFailedTestCases = 1;
       //
       _testRunResult.ResetStateExceptForSkips();
       //
-      METALMOCK(_testFailureNumbererMock->ResetMock.CalledOnce());
+      METALMOCK(_testFailureNumbererMock->ResetTestFailureNumberMock.CalledOnce());
       IS_EMPTY(_testRunResult._testClassResults);
       ARE_EQUAL(0, _testRunResult._numberOfFailedTestCases);
    }

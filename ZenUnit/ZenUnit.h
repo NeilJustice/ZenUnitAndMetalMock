@@ -3644,13 +3644,13 @@ namespace ZenUnit
       TestFailureNumberer() noexcept = default;
       virtual ~TestFailureNumberer() = default;
 
-      virtual std::string Next()
+      virtual std::string NextNumberedTestFailureArrow()
       {
-         const std::string nextTestFailureNumber = ">>-Test Failure " + std::to_string(_testFailureNumber++) + "->";
-         return nextTestFailureNumber;
+         const std::string nextNumberedTestFailureArrow = String::Concat(">>-Test Failure ", _testFailureNumber++, "->");
+         return nextNumberedTestFailureArrow;
       }
 
-      virtual void Reset()
+      virtual void ResetTestFailureNumber()
       {
          _testFailureNumber = 1u;
       }
@@ -3914,7 +3914,7 @@ namespace ZenUnit
          }
          case TestOutcome::Anomaly:
          {
-            const std::string testFailureNumber = testFailureNumberer->Next();
+            const std::string testFailureNumber = testFailureNumberer->NextNumberedTestFailureArrow();
             console->WriteLineColor(testFailureNumber, Color::Red);
             console->Write(fullTestName.Value());
             const TestPhaseResult& responsibleTestPhaseResult = (this->*responsibleTestPhaseResultField);
@@ -3928,7 +3928,7 @@ namespace ZenUnit
          }
          case TestOutcome::Exception:
          {
-            const std::string testFailureNumber = testFailureNumberer->Next();
+            const std::string testFailureNumber = testFailureNumberer->NextNumberedTestFailureArrow();
             console->WriteLineColor(testFailureNumber, Color::Red);
             console->Write(fullTestName.Value());
             const TestPhaseResult& responsibleTestPhaseResult = this->*responsibleTestPhaseResultField;
@@ -3946,7 +3946,7 @@ namespace ZenUnit
          }
          case TestOutcome::SuccessButPastDeadline:
          {
-            const std::string testFailureNumber = testFailureNumberer->Next();
+            const std::string testFailureNumber = testFailureNumberer->NextNumberedTestFailureArrow();
             console->WriteLineColor(testFailureNumber, Color::Red);
             console->WriteLine(fullTestName.Value());
             WriteTestCaseNumberIfAny(console, testCaseNumber);
@@ -4729,7 +4729,7 @@ namespace ZenUnit
 
       virtual void ResetStateExceptForSkips()
       {
-         _testFailureNumberer->Reset();
+         _testFailureNumberer->ResetTestFailureNumber();
          _testClassResults.clear();
          _numberOfFailedTestCases = 0;
       }

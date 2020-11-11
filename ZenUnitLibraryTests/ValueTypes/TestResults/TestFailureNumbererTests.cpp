@@ -3,19 +3,19 @@
 namespace ZenUnit
 {
    TESTS(TestFailureNumbererTests)
-   AFACT(TestFailureNumberer_NextReturnsIncrementingAngleBracketedSequence)
+   AFACT(TestFailureNumberer_NextNumberedTestFailureArrowReturnsIncreasingNumberedTestFailureArrows)
    EVIDENCE
 
-   TEST(TestFailureNumberer_NextReturnsIncrementingAngleBracketedSequence)
+   TEST(TestFailureNumberer_NextNumberedTestFailureArrowReturnsIncreasingNumberedTestFailureArrows)
    {
       TestFailureNumberer testFailureNumberer;
-      ARE_EQUAL(">>-Test Failure 1->", testFailureNumberer.Next());
-      ARE_EQUAL(">>-Test Failure 2->", testFailureNumberer.Next());
-      ARE_EQUAL(">>-Test Failure 3->", testFailureNumberer.Next());
-      testFailureNumberer.Reset();
-      ARE_EQUAL(">>-Test Failure 1->", testFailureNumberer.Next());
-      ARE_EQUAL(">>-Test Failure 2->", testFailureNumberer.Next());
-      ARE_EQUAL(">>-Test Failure 3->", testFailureNumberer.Next());
+      ARE_EQUAL(">>-Test Failure 1->", testFailureNumberer.NextNumberedTestFailureArrow());
+      ARE_EQUAL(">>-Test Failure 2->", testFailureNumberer.NextNumberedTestFailureArrow());
+      ARE_EQUAL(">>-Test Failure 3->", testFailureNumberer.NextNumberedTestFailureArrow());
+      testFailureNumberer.ResetTestFailureNumber();
+      ARE_EQUAL(">>-Test Failure 1->", testFailureNumberer.NextNumberedTestFailureArrow());
+      ARE_EQUAL(">>-Test Failure 2->", testFailureNumberer.NextNumberedTestFailureArrow());
+      ARE_EQUAL(">>-Test Failure 3->", testFailureNumberer.NextNumberedTestFailureArrow());
    }
 
    RUN_TESTS(TestFailureNumbererTests)

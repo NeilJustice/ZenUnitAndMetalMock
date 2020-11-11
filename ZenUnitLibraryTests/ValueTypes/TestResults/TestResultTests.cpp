@@ -262,7 +262,7 @@ namespace ZenUnit
 
       _testResult_WriteTestCaseNumberIfAnyMocked.responsibleTestPhaseResultField = expectedResponsibleTestPhaseResultField;
 
-      const string testFailureNumber = _testFailureNumbererMock.NextMock.ReturnRandom();
+      const string numberedTestFailureArrow = _testFailureNumbererMock.NextNumberedTestFailureArrowMock.ReturnRandom();
 
       _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber = ZenUnit::Random<size_t>();
       _testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.Expect();
@@ -274,7 +274,7 @@ namespace ZenUnit
       //
       _testResult_WriteTestCaseNumberIfAnyMocked.PrintIfFailure(&_consoleMock, &_testFailureNumbererMock);
       //
-      METALMOCK(_testFailureNumbererMock.NextMock.CalledOnce());
+      METALMOCK(_testFailureNumbererMock.NextNumberedTestFailureArrowMock.CalledOnce());
       METALMOCK(_consoleMock.WriteMock.CalledAsFollows(
       {
          { _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value() },
@@ -282,7 +282,7 @@ namespace ZenUnit
       }));
       METALMOCK(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
          CalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber));
-      METALMOCK(_consoleMock.WriteLineColorMock.CalledOnceWith(testFailureNumber, Color::Red));
+      METALMOCK(_consoleMock.WriteLineColorMock.CalledOnceWith(numberedTestFailureArrow, Color::Red));
       METALMOCK(_consoleMock.WriteLineMock.CalledOnceWith(anomalyWhy));
       METALMOCK(_consoleMock.WriteNewLineMock.CalledOnce());
    }
@@ -303,13 +303,14 @@ namespace ZenUnit
       const string exceptionWhatString = Random<string>();
       const char* const exceptionWhat = exceptionWhatString.c_str();
       (_testResult_WriteTestCaseNumberIfAnyMocked.*
-         expectedResponsibleTestPhaseResultField).anomalyOrException = make_shared<AnomalyOrException>(&exceptionTypeName, exceptionWhat);
+         expectedResponsibleTestPhaseResultField).anomalyOrException =
+         make_shared<AnomalyOrException>(&exceptionTypeName, exceptionWhat);
       (_testResult_WriteTestCaseNumberIfAnyMocked.*
          expectedResponsibleTestPhaseResultField).testPhase = testPhase;
       _testResult_WriteTestCaseNumberIfAnyMocked.
          responsibleTestPhaseResultField = expectedResponsibleTestPhaseResultField;
 
-      const string testFailureNumber = _testFailureNumbererMock.NextMock.ReturnRandom();
+      const string numberedTestFailureArrow = _testFailureNumbererMock.NextNumberedTestFailureArrowMock.ReturnRandom();
 
       _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber = ZenUnit::Random<size_t>();
       _testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.Expect();
@@ -321,7 +322,7 @@ namespace ZenUnit
       //
       _testResult_WriteTestCaseNumberIfAnyMocked.PrintIfFailure(&_consoleMock, &_testFailureNumbererMock);
       //
-      METALMOCK(_testFailureNumbererMock.NextMock.CalledOnce());
+      METALMOCK(_testFailureNumbererMock.NextNumberedTestFailureArrowMock.CalledOnce());
       METALMOCK(_consoleMock.WriteMock.CalledAsFollows(
       {
          { _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value() },
@@ -329,7 +330,7 @@ namespace ZenUnit
       }));
       METALMOCK(_consoleMock.WriteLineColorMock.CalledAsFollows(
       {
-         { testFailureNumber, Color::Red },
+         { numberedTestFailureArrow, Color::Red },
          { "\n==================\nUncaught Exception\n==================", Color::Red }
       }));
       METALMOCK(_consoleMock.WriteLineMock.CalledOnceWith(
@@ -346,7 +347,7 @@ namespace ZenUnit
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::SuccessButPastDeadline;
       _testResult_WriteTestCaseNumberIfAnyMocked.microseconds = 10000;
 
-      const string testFailureNumber = _testFailureNumbererMock.NextMock.ReturnRandom();
+      const string numberedTestFailureArrow = _testFailureNumbererMock.NextNumberedTestFailureArrowMock.ReturnRandom();
 
       _consoleMock.WriteLineColorMock.Expect();
       _consoleMock.WriteLineMock.Expect();
@@ -357,10 +358,10 @@ namespace ZenUnit
       //
       _testResult_WriteTestCaseNumberIfAnyMocked.PrintIfFailure(&_consoleMock, &_testFailureNumbererMock);
       //
-      METALMOCK(_testFailureNumbererMock.NextMock.CalledOnce());
+      METALMOCK(_testFailureNumbererMock.NextNumberedTestFailureArrowMock.CalledOnce());
       METALMOCK(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
          CalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber));
-      METALMOCK(_consoleMock.WriteLineColorMock.CalledOnceWith(testFailureNumber, Color::Red));
+      METALMOCK(_consoleMock.WriteLineColorMock.CalledOnceWith(numberedTestFailureArrow, Color::Red));
       METALMOCK(_consoleMock.WriteLineMock.CalledAsFollows(
       {
          { _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value() },
