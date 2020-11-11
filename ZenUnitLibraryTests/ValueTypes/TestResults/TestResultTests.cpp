@@ -296,7 +296,7 @@ namespace ZenUnit
       &TestResult::testBodyTestPhaseResult, TestPhase::TestBody, "",
       &TestResult::cleanupTestPhaseResult, TestPhase::Cleanup, " in CLEANUP function")
    {
-      _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName = FullTestName("TestClass", "Test", 0);
+      _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName = ZenUnit::Random<FullTestName>();
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::Exception;
 
       const string exceptionTypeName = Random<string>();
