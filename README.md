@@ -43,8 +43,8 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
       * [Non-Void Namespaced Free Functions](#non-void-namespaced-free-functions)
    * [How To MetalMock Virtual Functions](#how-to-metalmock-virtual-functions)
      * [Console Output From Running The Above Virtual Function MetalMock Example](#console-output-from-running-the-above-virtual-function-metalmock-example)
-   * [How To MetalMock Template Functions](#how-to-metalmock-template-functions)
-     * [Console Output From Running The Above Template Function MetalMock Example](#console-output-from-running-the-above-template-function-metalmock-example)
+   * [How To MetalMock Non-Virtual Functions](#how-to-metalmock-non-virtual-functions)
+     * [Console Output From Running The Above Non-Virtual Function MetalMock Example](#console-output-from-running-the-above-non-virtual-function-metalmock-example)
    * [How To MetalMock Static Functions](#how-to-metalmock-static-functions)
      * [Console Output From Running The Above Static Function MetalMock Example](#console-output-from-running-the-above-static-function-metalmock-example)
    * [How To MetalMock Free Functions](#how-to-metalmock-free-functions)
@@ -744,10 +744,10 @@ RUN_TESTS(ComponentATests)
 
 ![Console Output From Running The Above Virtual Function MetalMock Example](Screenshots/ConsoleOutputFromRunningTheAboveVirtualFunctionMetalMockExample.png)
 
-### How To MetalMock Template Functions
+### How To MetalMock Non-Virtual Functions
 
 ```
-// This is the contents of file MetalMockExamples/TemplateFunctionMockingTests.cpp
+// This is the contents of file MetalMockExamples/NonVirtualFunctionMockingTests.cpp
 
 #include "pch.h"
 
@@ -843,9 +843,9 @@ TEST1X1(SendOrder_CallsNetworkSendWhichDoesNotReturn123_ThrowsRuntimeError,
 RUN_TESTS(OrderSenderTests)
 ```
 
-#### Console Output From Running The Above Template Function MetalMock Example
+#### Console Output From Running The Above Non-Virtual Function MetalMock Example
 
-![Console Output From Running The Above Template Function MetalMock Example](Screenshots/ConsoleOutputForMetalMockTemplateFunctionMockingExample.png)
+![Console Output From Running The Above Non-Virtual Function MetalMock Example](Screenshots/ConsoleOutputForMetalMockNonVirtualFunctionMockingExample.png)
 
 ### How To MetalMock Static Functions
 
