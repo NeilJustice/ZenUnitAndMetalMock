@@ -422,8 +422,8 @@ namespace ZenUnit
    {
       ZENUNIT_EQUALIZER_TEST_SETUP(TestRunResult);
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestRunResult, _testClassResults, vector<TestClassResult> { TestClassResult() });
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestRunResult, _skippedTestClassNamesAndSkipReasons, vector<string> { "" });
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestRunResult, _skippedFullTestNamesAndSkipReasons, vector<string> { "" });
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestRunResult, _skippedTestClassNamesAndSkipReasons, ZenUnit::RandomNonEmptyVector<string>());
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestRunResult, _skippedFullTestNamesAndSkipReasons, ZenUnit::RandomNonEmptyVector<string>());
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestRunResult, _numberOfFailedTestCases, 1);
    }
 
