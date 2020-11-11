@@ -186,9 +186,10 @@ namespace ZenUnit
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedAnomaly.why));
       METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith("\n===========\nFatal Error\n===========", Color::Red));
       const int expectedExitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
-      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(
-         "A ZenUnit::Anomaly was thrown from a test class constructor, STARTUP function, or CLEANUP function.\nFail fasting with exit code " +
-         std::to_string(expectedExitCode) + ".", expectedExitCode));
+      const string expectedExitMessage = String::Concat(
+         "[ZenUnit] TestResult: A ZenUnit::Anomaly was thrown from a test class constructor, STARTUP function, or CLEANUP function.\n",
+         "[ZenUnit]   ExitCode: ", expectedExitCode);
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedExitMessage, expectedExitCode));
       METALMOCK(_voidTwoArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
          &_testPhaseRunner, &TestPhaseRunner::FailFastIfTestOutcomeIsNotSuccessAndFailFastModeIsTrue, TestOutcome::Anomaly, zenUnitArgs));
    }

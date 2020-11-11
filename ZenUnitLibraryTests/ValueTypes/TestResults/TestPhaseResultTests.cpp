@@ -36,9 +36,9 @@ namespace ZenUnit
    TEST2X2(TestPhaseToTestPhaseSuffix_ReturnsTestPhaseSuffix,
       TestPhase testPhase, const char* expectedTestPhaseSuffix,
       TestPhase::Constructor, " in test class constructor",
-      TestPhase::Startup, " in STARTUP",
+      TestPhase::Startup, " in STARTUP function",
       TestPhase::TestBody, "",
-      TestPhase::Cleanup, " in CLEANUP")
+      TestPhase::Cleanup, " in CLEANUP function")
    {
       ARE_EQUAL(expectedTestPhaseSuffix, _testPhaseTranslator.TestPhaseToTestPhaseSuffix(testPhase));
    }

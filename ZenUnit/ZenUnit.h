@@ -3694,7 +3694,7 @@ namespace ZenUnit
          }
          case TestPhase::Startup:
          {
-            testPhaseSuffix = " in STARTUP";
+            testPhaseSuffix = " in STARTUP function";
             break;
          }
          case TestPhase::TestBody:
@@ -3705,7 +3705,7 @@ namespace ZenUnit
          case TestPhase::Cleanup:
          {
             assert_true(testPhase == TestPhase::Cleanup);
-            testPhaseSuffix = " in CLEANUP";
+            testPhaseSuffix = " in CLEANUP function";
             break;
          }
          case TestPhase::Unset:
@@ -5281,8 +5281,8 @@ namespace ZenUnit
             const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
             _console->WriteLineColor("\n===========\nFatal Error\n===========", Color::Red);
             const std::string exitMessage = String::Concat(
-               "A ZenUnit::Anomaly was thrown from a test class constructor, STARTUP function, or CLEANUP function.\n",
-               "Fail fasting with exit code ", exitCode, ".");
+               "[ZenUnit] TestResult: A ZenUnit::Anomaly was thrown from a test class constructor, STARTUP function, or CLEANUP function.\n",
+               "[ZenUnit]   ExitCode: ", exitCode);
             _console->WriteLineAndExit(exitMessage, exitCode);
          }
       }

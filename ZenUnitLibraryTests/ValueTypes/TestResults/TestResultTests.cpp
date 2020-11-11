@@ -245,9 +245,9 @@ namespace ZenUnit
       TestPhase testPhase,
       const string& expectedTestPhaseSuffix,
       &TestResult::constructorTestPhaseResult, TestPhase::Constructor, " in test class constructor",
-      &TestResult::startupTestPhaseResult, TestPhase::Startup, " in STARTUP",
+      &TestResult::startupTestPhaseResult, TestPhase::Startup, " in STARTUP function",
       &TestResult::testBodyTestPhaseResult, TestPhase::TestBody, "",
-      &TestResult::cleanupTestPhaseResult, TestPhase::Cleanup, " in CLEANUP")
+      &TestResult::cleanupTestPhaseResult, TestPhase::Cleanup, " in CLEANUP function")
    {
       _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName = FullTestName("TestClass", "Test", 0);
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::Anomaly;
@@ -292,9 +292,9 @@ namespace ZenUnit
       TestPhase testPhase,
       const string& expectedTestPhaseSuffix,
       &TestResult::constructorTestPhaseResult, TestPhase::Constructor, " in test class constructor",
-      &TestResult::startupTestPhaseResult, TestPhase::Startup, " in STARTUP",
+      &TestResult::startupTestPhaseResult, TestPhase::Startup, " in STARTUP function",
       &TestResult::testBodyTestPhaseResult, TestPhase::TestBody, "",
-      &TestResult::cleanupTestPhaseResult, TestPhase::Cleanup, " in CLEANUP")
+      &TestResult::cleanupTestPhaseResult, TestPhase::Cleanup, " in CLEANUP function")
    {
       _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName = FullTestName("TestClass", "Test", 0);
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::Exception;
