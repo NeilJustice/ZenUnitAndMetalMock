@@ -457,11 +457,17 @@ Example ZenUnit Command Line Arguments:
 
 By default, ZenUnit assertion `ARE_EQUAL(expectedObject, actualObject)` calls `expectedObject == actualObject` to determine whether `expectedObject` is equal to `actualObject`.
 
-Here is the implementation of `ARE_EQUAL` in ZenUnit.h, which shows that the default behavior of calling `operator==` can be overridden for type `T` by defining a custom `ZenUnit::Equalizer<T>` struct with an `AssertEqual(const T&, const T&)` function.
+Here is the implementation of `ARE_EQUAL` in ZenUnit.h, which shows the default behavior of calling `expectedObject == actualObject` can be overridden for type `T` by defining a `namespace ZenUnit { Equalizer<T> }` struct with static function `static void AssertEqual(const T&, const T&)`. In this custom `AssertEqual` function, field-by-field `ARE_EQUAL(expectedObject.fieldName, actualObject.fieldName)` assert statements can be written to achieve field-by-field assertion granularity.
 
-![ARE_EQUAL Implementation](Screenshots/ARE_EQUALImplementation.png)
+![ARE_EQUAL Implementation](Screenshots/Equalizers/ARE_EQUALImplementation.png)
 
-![Default Equalizer Implementation](Screenshots/DefaultEqualizerImplementation.png)
+![Default Equalizer Implementation](Screenshots/Equalizers/DefaultEqualizerImplementation.png)
+
+For struct `DomainStruct` as defined below, here is the `binary '==': no operator found` error message which appears when asserting that two instances of `DomainStruct` are equal with ZenUnit assertion `ARE_EQUAL(expectedDomainStruct, actualDomainStruct)`.
+
+The `binary '==': no operator found` error message appears because `DomainStruct` has not defined `operator==` and a custom ZenUnit Equalizer function `ZenUnit::Equalizer<DomainStruct>::AssertEqual(const DomainStruct& expectedDomainStruct, const DomainStruct& actualDomainStruct)` has not yet been defined.
+
+![Operator Equals Error Message When Two Structs ARE_EQUAL](Screenshots/Equalizers/OperatorEqualsErrorMessageWhenTwoStructsARE_EQUAL.png)
 
 ### MetalMock Function-Mocking Macros
 
