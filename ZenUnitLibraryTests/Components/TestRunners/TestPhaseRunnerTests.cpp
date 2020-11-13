@@ -44,8 +44,7 @@ namespace ZenUnit
 
    static int s_numberOfCallsToFunctionThatDoesNotThrowAnException;
    static string s_stdExceptionMessage;
-   static string s_failedLinePrefix;
-   static string s_whyBody;
+   static Anomaly s_anomaly;
 
    STARTUP
    {
@@ -64,8 +63,7 @@ namespace ZenUnit
       _testMock = make_unique<TestMock>();
 
       s_stdExceptionMessage = ZenUnit::Random<string>();
-      s_failedLinePrefix = ZenUnit::Random<string>();
-      s_whyBody = ZenUnit::Random<string>();
+      s_anomaly = Anomaly(ZenUnit::Random<string>(), ZenUnit::Random<string>(), FilePathLineNumber(), "", "");
    }
 
    CLEANUP
@@ -134,14 +132,12 @@ namespace ZenUnit
    static void ThrowAnomaly(Test* test)
    {
       IS_NOT_NULLPTR(test);
-      throw Anomaly(s_failedLinePrefix, s_whyBody, FilePathLineNumber(), "", "");
+      throw s_anomaly;
    }
 
    TEST(RunTestPhase_FunctionThrowsAnomaly_TestPhaseIsTestBody_ReturnsAnomalyResult)
    {
-      ZenUnitArgs zenUnitArgs;
-      zenUnitArgs.failFast = ZenUnit::Random<bool>();
-      GetZenUnitArgsMock.Return(zenUnitArgs);
+      const ZenUnitArgs zenUnitArgs = GetZenUnitArgsMock.ReturnRandom();
 
       _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->ConstCallMock.Expect();
 
@@ -163,15 +159,14 @@ namespace ZenUnit
       TestPhaseResult expectedTestPhaseResult;
       expectedTestPhaseResult.testPhase = TestPhase::TestBody;
       expectedTestPhaseResult.microseconds = _microseconds;
-      const Anomaly expectedAnomaly(s_failedLinePrefix, s_whyBody, FilePathLineNumber(), "", "");
-      expectedTestPhaseResult.anomalyOrException = make_shared<AnomalyOrException>(expectedAnomaly);
+      expectedTestPhaseResult.anomalyOrException = make_shared<AnomalyOrException>(s_anomaly);
       expectedTestPhaseResult.testOutcome = TestOutcome::Anomaly;
 
       METALMOCK(_consoleMock->WriteColorMock.CalledOnceWith(
          "\n================\nFailed Assertion\n================", Color::Red));
       METALMOCK(_testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(TestPhase::TestBody));
       METALMOCK(_consoleMock->WriteMock.CalledOnceWith(_testPhaseSuffix));
-      METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedAnomaly.why));
+      METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(s_anomaly.why));
       ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
    }
 
@@ -186,8 +181,7 @@ namespace ZenUnit
       TestPhase::Cleanup, true, 0,
       TestPhase::Destructor, true, 0)
    {
-      ZenUnitArgs zenUnitArgs;
-      zenUnitArgs.failFast = ZenUnit::Random<bool>();
+      ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
       zenUnitArgs.alwaysExit0 = alwaysExit0;
       GetZenUnitArgsMock.Return(zenUnitArgs);
 
@@ -205,25 +199,68 @@ namespace ZenUnit
       //
       METALMOCK(GetZenUnitArgsMock.CalledOnce());
       AssertStopwatchStartAndStopCalled();
+
       METALMOCK(_consoleMock->WriteColorMock.CalledOnceWith(
          "\n================\nFailed Assertion\n================", Color::Red));
       METALMOCK(_testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(testPhase));
       METALMOCK(_consoleMock->WriteMock.CalledOnceWith(_testPhaseSuffix));
-      const Anomaly expectedAnomaly(s_failedLinePrefix, s_whyBody, FilePathLineNumber(), "", "");
-      METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedAnomaly.why));
+      METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(s_anomaly.why));
+
       METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith("\n===========\nFatal Error\n===========", Color::Red));
       const string expectedExitMessage = String::Concat(
          "[ZenUnit] TestResult: A ZenUnit::Anomaly was thrown from a test class constructor, STARTUP function, or CLEANUP function.\n",
          "[ZenUnit]   ExitCode: ", expectedExitCode);
       METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedExitMessage, expectedExitCode));
+
       METALMOCK(_caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->ConstCallMock.CalledOnceWith(
          &_testPhaseRunner, &TestPhaseRunner::FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess,
          TestOutcome::Anomaly, zenUnitArgs));
+
+      TestPhaseResult expectedTestPhaseResult;
+      expectedTestPhaseResult.testPhase = testPhase;
+      expectedTestPhaseResult.microseconds = _microseconds;
+      expectedTestPhaseResult.testOutcome = TestOutcome::Anomaly;
+      expectedTestPhaseResult.anomalyOrException = make_shared<AnomalyOrException>(s_anomaly);
+      ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
    }
 
    TEST(RunTestPhase_FunctionThrowsStdException_TestPhaseIsTestBody_ReturnsExceptionResult)
    {
+      const ZenUnitArgs zenUnitArgs = GetZenUnitArgsMock.ReturnRandom();
 
+      ExpectStopwatchStartAndStopCalls();
+      _consoleMock->WriteMock.Expect();
+      _consoleMock->WriteColorMock.Expect();
+      _consoleMock->WriteLineMock.Expect();
+
+      _testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.Return(_testPhaseSuffix.c_str());
+
+      _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->ConstCallMock.Expect();
+      //
+      const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase(ThrowStdException, _testMock.get(), TestPhase::TestBody);
+      //
+      METALMOCK(GetZenUnitArgsMock.CalledOnce());
+      AssertStopwatchStartAndStopCalled();
+
+      METALMOCK(_consoleMock->WriteColorMock.CalledOnceWith(
+         "\n==================\nUncaught Exception\n==================", Color::Red));
+      METALMOCK(_testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(TestPhase::TestBody));
+      METALMOCK(_consoleMock->WriteMock.CalledOnceWith(_testPhaseSuffix));
+      METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(TestUtil::NewlineConcat("",
+         "  Type: std::runtime_error",
+         "what(): \"" + s_stdExceptionMessage + "\"")));
+
+      METALMOCK(_caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->ConstCallMock.CalledOnceWith(
+         &_testPhaseRunner, &TestPhaseRunner::FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess,
+         TestOutcome::Exception, zenUnitArgs));
+
+      TestPhaseResult expectedTestPhaseResult;
+      expectedTestPhaseResult.testPhase = TestPhase::TestBody;
+      expectedTestPhaseResult.microseconds = _microseconds;
+      expectedTestPhaseResult.testOutcome = TestOutcome::Exception;
+      expectedTestPhaseResult.anomalyOrException = make_shared<AnomalyOrException>(
+         Type::GetName<runtime_error>(), s_stdExceptionMessage.c_str());
+      ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
    }
 
    TEST3X3(RunTestPhase_FunctionThrowsStdException_TestPhaseIsNotTestBody_WritesErrorMessageAndFailFastExitsWithCode1UnlessAlwaysExit0IsTrue,
@@ -256,17 +293,6 @@ namespace ZenUnit
       METALMOCK(GetZenUnitArgsMock.CalledOnce());
       AssertStopwatchStartAndStopCalled();
 
-      METALMOCK(_caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->ConstCallMock.CalledOnceWith(
-         &_testPhaseRunner, &TestPhaseRunner::FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess,
-         TestOutcome::Exception, zenUnitArgs));
-
-      TestPhaseResult expectedTestPhaseResult;
-      expectedTestPhaseResult.testPhase = testPhase;
-      expectedTestPhaseResult.microseconds = _microseconds;
-      expectedTestPhaseResult.testOutcome = TestOutcome::Exception;
-      expectedTestPhaseResult.anomalyOrException
-         = make_shared<AnomalyOrException>(Type::GetName<runtime_error>(), s_stdExceptionMessage.c_str());
-
       METALMOCK(_consoleMock->WriteColorMock.CalledOnceWith(
          "\n==================\nUncaught Exception\n==================", Color::Red));
       METALMOCK(_testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(testPhase));
@@ -281,6 +307,16 @@ namespace ZenUnit
          "[ZenUnit]   ExitCode: ", expectedExitCode);
       METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedExitMessage, expectedExitCode));
 
+      METALMOCK(_caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->ConstCallMock.CalledOnceWith(
+         &_testPhaseRunner, &TestPhaseRunner::FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess,
+         TestOutcome::Exception, zenUnitArgs));
+
+      TestPhaseResult expectedTestPhaseResult;
+      expectedTestPhaseResult.testPhase = testPhase;
+      expectedTestPhaseResult.microseconds = _microseconds;
+      expectedTestPhaseResult.testOutcome = TestOutcome::Exception;
+      expectedTestPhaseResult.anomalyOrException = make_shared<AnomalyOrException>(
+         Type::GetName<runtime_error>(), s_stdExceptionMessage.c_str());
       ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
    }
 
@@ -312,6 +348,23 @@ namespace ZenUnit
       METALMOCK(GetZenUnitArgsMock.CalledOnce());
       AssertStopwatchStartAndStopCalled();
 
+      const string exceptionTypeName = "MetalMock::UnexpectedCallException";
+      const size_t expectedEqualsSignsLength =
+         exceptionTypeName.size() + strlen(_testPhaseSuffix.c_str());
+      const std::string expectedEqualsSigns(expectedEqualsSignsLength, '=');
+      const string expectedExceptionNameAndTestPhaseSuffixLines = String::Concat('\n',
+         expectedEqualsSigns, '\n',
+         exceptionTypeName, _testPhaseSuffix, '\n',
+         expectedEqualsSigns);
+      METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith(
+         expectedExceptionNameAndTestPhaseSuffixLines, Color::Red));
+
+      METALMOCK(_testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(testPhase));
+      const string expectedWhat = MetalMock::UnexpectedCallException::MakeWhat("MetalMockedFunctionSignature");
+      const string expectedTestPhaseSuffixAndWhatLines = String::Concat(
+         "what(): \"", expectedWhat, "\"");
+      METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedTestPhaseSuffixAndWhatLines));
+
       METALMOCK(_caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->ConstCallMock.CalledOnceWith(
          &_testPhaseRunner, &TestPhaseRunner::FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess,
          TestOutcome::Exception, zenUnitArgs));
@@ -323,22 +376,6 @@ namespace ZenUnit
          Type::GetName<MetalMock::UnexpectedCallException>(),
          MetalMock::UnexpectedCallException::MakeWhat("MetalMockedFunctionSignature").c_str());
       expectedTestPhaseResult.microseconds = _microseconds;
-
-      const string exceptionTypeName = "MetalMock::UnexpectedCallException";
-      const size_t expectedEqualsSignsLength =
-         exceptionTypeName.size() + strlen(_testPhaseSuffix.c_str());
-      const std::string expectedEqualsSigns(expectedEqualsSignsLength, '=');
-      const string expectedExceptionNameAndTestPhaseSuffixLines = String::Concat('\n',
-         expectedEqualsSigns, '\n',
-         exceptionTypeName, _testPhaseSuffix, '\n',
-         expectedEqualsSigns);
-      METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith(
-         expectedExceptionNameAndTestPhaseSuffixLines, Color::Red));
-      METALMOCK(_testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(testPhase));
-      const string expectedWhat = MetalMock::UnexpectedCallException::MakeWhat("MetalMockedFunctionSignature");
-      const string expectedTestPhaseSuffixAndWhatLines = String::Concat(
-         "what(): \"", expectedWhat, "\"");
-      METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedTestPhaseSuffixAndWhatLines));
       ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
    }
 
@@ -452,6 +489,5 @@ namespace ZenUnit
 
    int TestPhaseRunnerTests::s_numberOfCallsToFunctionThatDoesNotThrowAnException;
    string TestPhaseRunnerTests::s_stdExceptionMessage;
-   string TestPhaseRunnerTests::s_failedLinePrefix;
-   string TestPhaseRunnerTests::s_whyBody;
+   Anomaly TestPhaseRunnerTests::s_anomaly;
 }
