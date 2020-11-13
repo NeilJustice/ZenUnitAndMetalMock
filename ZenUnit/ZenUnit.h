@@ -2402,8 +2402,9 @@ namespace ZenUnit
    {
       const std::string toStringedExpectedObject = ToStringer::ToString(expectedObjectVRT.value);
       const std::string toStringedActualObject = ToStringer::ToString(actualObjectVRT.value);
-      throw Anomaly("ARE_COPIES", expectedObjectVRT.text, actualObjectVRT.text, "", messagesText, becauseAnomaly,
+      const Anomaly anomaly("ARE_COPIES", expectedObjectVRT.text, actualObjectVRT.text, "", messagesText, becauseAnomaly,
          toStringedExpectedObject, toStringedActualObject, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename ExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
@@ -2438,8 +2439,9 @@ namespace ZenUnit
    {
       const std::string expectedValueAsString = ToStringer::ToString(expectedValueVRT.value);
       const std::string actualValueAsString = ToStringer::ToString(actualValueVRT.value);
-      throw Anomaly("ARE_EQUAL", expectedValueVRT.text, actualValueVRT.text, "", messagesText, becauseAnomaly,
+      const Anomaly anomaly("ARE_EQUAL", expectedValueVRT.text, actualValueVRT.text, "", messagesText, becauseAnomaly,
          expectedValueAsString, actualValueAsString, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename NotExpectedType, typename ActualType, typename... MessageTypes>
@@ -2448,8 +2450,9 @@ namespace ZenUnit
    {
       const std::string notExpectedValueAsStringLine = "Not Expected: " + ToStringer::ToString(notExpectedValueVRT.value);
       const std::string actualValueAsStringLine = "      Actual: " + ToStringer::ToString(actualValueVRT.value);
-      throw Anomaly("ARE_NOT_EQUAL", notExpectedValueVRT.text, actualValueVRT.text, "", messagesText, becauseAnomaly,
+      const Anomaly anomaly("ARE_NOT_EQUAL", notExpectedValueVRT.text, actualValueVRT.text, "", messagesText, becauseAnomaly,
          notExpectedValueAsStringLine, actualValueAsStringLine, ExpectedActualFormat::WholeLines, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename NotExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
@@ -2458,8 +2461,9 @@ namespace ZenUnit
    {
       const std::string expectedValueAsString = "Not " + ToStringer::ToString(&notExpectedObjectVRT.value);
       const std::string actualValueAsString = "    " + ToStringer::ToString(&actualObjectVRT.value);
-      throw Anomaly("ARE_NOT_SAME", notExpectedObjectVRT.text, actualObjectVRT.text, "", messagesText, Anomaly::Default(),
+      const Anomaly anomaly("ARE_NOT_SAME", notExpectedObjectVRT.text, actualObjectVRT.text, "", messagesText, Anomaly::Default(),
          expectedValueAsString, actualValueAsString, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename NotExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
@@ -2478,8 +2482,9 @@ namespace ZenUnit
    {
       const std::string expectedValueAsString = ToStringer::ToString(&expectedObjectVRT.value);
       const std::string actualValueAsString = ToStringer::ToString(&actualObjectVRT.value);
-      throw Anomaly("ARE_SAME", expectedObjectVRT.text, actualObjectVRT.text, "", messagesText, Anomaly::Default(),
+      const Anomaly anomaly("ARE_SAME", expectedObjectVRT.text, actualObjectVRT.text, "", messagesText, Anomaly::Default(),
          expectedValueAsString, actualValueAsString, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename ExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
@@ -2514,8 +2519,9 @@ namespace ZenUnit
    void ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED_ThrowAnomaly(const char* smartOrRawArrayPointerText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
-      throw Anomaly("ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED", smartOrRawArrayPointerText, "", "", messagesText, Anomaly::Default(),
+      const Anomaly anomaly("ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED", smartOrRawArrayPointerText, "", "", messagesText, Anomaly::Default(),
          "not a nullptr", "nullptr", ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename PointerType, typename... MessageTypes>
@@ -2535,10 +2541,11 @@ namespace ZenUnit
    {
       const std::string toStringedElement = ToStringer::ToString(expectedElementVRT.value);
       const std::string singleQuotedToStringedElement = String::Concat("'", toStringedElement, "'");
-      throw Anomaly("CONTAINS_ELEMENT", expectedElementVRT.text, collectionVRT.text, "", messagesText, Anomaly::Default(),
+      const Anomaly anomaly("CONTAINS_ELEMENT", expectedElementVRT.text, collectionVRT.text, "", messagesText, Anomaly::Default(),
          "Collection contains element " + singleQuotedToStringedElement,
          "Collection does not contain element " + singleQuotedToStringedElement,
          ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename ElementType, typename CollectionType, typename... MessageTypes>
@@ -2643,7 +2650,8 @@ namespace ZenUnit
          whyBodyBuilder << "Because: " << quotedTestFailureReason;
       }
       const std::string whyBody = whyBodyBuilder.str();
-      throw Anomaly(failedLinePrefix, whyBody, filePathLineNumber, "", messagesText, std::forward<MessageTypes>(messages)...);
+      const Anomaly anomaly(failedLinePrefix, whyBody, filePathLineNumber, "", messagesText, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename CollectionType, typename... MessageTypes>
@@ -2653,8 +2661,9 @@ namespace ZenUnit
       const size_t size = collectionVRT.value.size();
       const std::string expectedField = "empty() == true";
       const std::string actualField = "empty() == false (size() == " + std::to_string(size) + ")";
-      throw Anomaly("IS_EMPTY", collectionVRT.text, "", "", messagesText,
+      const Anomaly anomaly("IS_EMPTY", collectionVRT.text, "", "", messagesText,
          Anomaly::Default(), expectedField, actualField, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename CollectionType, typename... MessageTypes>
@@ -2673,8 +2682,9 @@ namespace ZenUnit
    {
       const std::string expectedField = "empty() == false";
       const std::string actualField = "empty() == true";
-      throw Anomaly("IS_NOT_EMPTY", collectionVRT.text, "", "", messagesText, Anomaly::Default(),
+      const Anomaly anomaly("IS_NOT_EMPTY", collectionVRT.text, "", "", messagesText, Anomaly::Default(),
          expectedField, actualField, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename CollectionType, typename... MessageTypes>
@@ -2691,8 +2701,9 @@ namespace ZenUnit
    void IS_FALSE_ThrowAnomaly(const char* valueText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
-      throw Anomaly("IS_FALSE", valueText, "", "", messagesText, Anomaly::Default(),
+      const Anomaly anomaly("IS_FALSE", valueText, "", "", messagesText, Anomaly::Default(),
          "false", "true", ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename ConvertableToBoolType, typename... MessageTypes>
@@ -2709,8 +2720,9 @@ namespace ZenUnit
    void IS_NOT_NULLPTR_ThrowAnomaly(const char* pointerText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
-      throw Anomaly("IS_NOT_NULLPTR", pointerText, "", "", messagesText, Anomaly::Default(),
+      const Anomaly anomaly("IS_NOT_NULLPTR", pointerText, "", "", messagesText, Anomaly::Default(),
          "not nullptr", "nullptr", ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename... MessageTypes>
@@ -2731,8 +2743,9 @@ namespace ZenUnit
    {
       const char* const expectedPolymorphicPointeeTypeName = expectedPolymorphicPointeeTypeInfo.name();
       const std::string expectedField = "Pointee to be exact type: typeid(expectedPolymorphicPointeeType).name() = \"" + std::string(expectedPolymorphicPointeeTypeName) + "\"";
-      throw Anomaly("POINTEE_IS_EXACT_TYPE", expectedPolymorphicPointeeText, actualPointeeText, "", messagesText, Anomaly::Default(),
+      const Anomaly anomaly("POINTEE_IS_EXACT_TYPE", expectedPolymorphicPointeeText, actualPointeeText, "", messagesText, Anomaly::Default(),
          expectedField, actualField, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename ActualPointerType, typename... MessageTypes>
@@ -2772,8 +2785,9 @@ namespace ZenUnit
       MessageTypes&&... messages)
    {
       const std::string actualField = ToStringer::ToString(pointerVRT.value);
-      throw Anomaly("IS_NULLPTR", pointerVRT.text, "", "", messagesText, Anomaly::Default(),
+      const Anomaly anomaly("IS_NULLPTR", pointerVRT.text, "", "", messagesText, Anomaly::Default(),
          "nullptr", actualField, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename PointerType, typename... MessageTypes>
@@ -2797,8 +2811,9 @@ namespace ZenUnit
       const char* messagesText,
       MessageTypes&&... messages)
    {
-      throw Anomaly("IS_TRUE", valueText, "", "", messagesText, Anomaly::Default(),
+      const Anomaly anomaly("IS_TRUE", valueText, "", "", messagesText, Anomaly::Default(),
          "true", "false", ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename ValueType, typename DefaultValueType, typename... MessageTypes>
@@ -2811,8 +2826,9 @@ namespace ZenUnit
    {
       const std::string expectedField = ToStringer::ToString(defaultValue);
       const std::string actualField = ToStringer::ToString(valueVRT.value);
-      throw Anomaly("IS_ZERO", valueVRT.text, "", "", messagesText, Anomaly::Default(),
+      const Anomaly anomaly("IS_ZERO", valueVRT.text, "", "", messagesText, Anomaly::Default(),
          expectedField, actualField, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename ValueType, typename... MessageTypes>
@@ -2833,8 +2849,9 @@ namespace ZenUnit
    {
       const std::string expectedValueString = ToStringer::ToString(defaultConstructedValue);
       const std::string actualValueString = ToStringer::ToString(valueVRT.value);
-      throw Anomaly("IS_DEFAULT_VALUE", valueVRT.text, "", "", messagesText, Anomaly::Default(),
+      const Anomaly anomaly("IS_DEFAULT_VALUE", valueVRT.text, "", "", messagesText, Anomaly::Default(),
          expectedValueString, actualValueString, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename ValueType, typename... MessageTypes>
@@ -2859,8 +2876,9 @@ namespace ZenUnit
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string actualValueString = ToStringer::ToString(valueVRT.value);
-      throw Anomaly("IS_NOT_DEFAULT_VALUE", valueVRT.text, "", "", messagesText, Anomaly::Default(),
+      const Anomaly anomaly("IS_NOT_DEFAULT_VALUE", valueVRT.text, "", "", messagesText, Anomaly::Default(),
          "Not T{}", actualValueString, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename ValueType, typename... MessageTypes>
@@ -2949,7 +2967,8 @@ namespace ZenUnit
       MessageTypes&&... messages)
    {
       const std::string failedLinePrefix = String::Concat(failedPrefixSpaces, "Failed: MAPS_ARE_EQUAL(", expectedMapText, ", ", actualMapText);
-      throw Anomaly(failedLinePrefix, whyBody, filePathLineNumber, messagePrefixSpaces, messagesText, std::forward<MessageTypes>(messages)...);
+      const Anomaly anomaly(failedLinePrefix, whyBody, filePathLineNumber, messagePrefixSpaces, messagesText, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename KeyType>
@@ -3039,7 +3058,8 @@ namespace ZenUnit
       const std::string whyBody = String::Concat("Expected: No exception was thrown\n",
          "  Actual: ", *actualExceptionTypeName, " thrown\n",
          "  what(): \"", ex.what(), "\"");
-      throw Anomaly(failedLinePrefix, whyBody, filePathLineNumber, " ", messagesText, std::forward<MessageTypes>(messages)...);
+      const Anomaly anomaly(failedLinePrefix, whyBody, filePathLineNumber, " ", messagesText, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename... MessageTypes>
@@ -3065,8 +3085,9 @@ namespace ZenUnit
    {
       const std::string expected = ToStringer::ToString(expectedPairVRT.value);
       const std::string actual = ToStringer::ToString(actualPairVRT.value);
-      throw Anomaly("PAIRS_ARE_EQUAL", expectedPairVRT.text, actualPairVRT.text, "", messagesText,
+      const Anomaly anomaly("PAIRS_ARE_EQUAL", expectedPairVRT.text, actualPairVRT.text, "", messagesText,
          becauseAnomaly, expected, actual, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename ExpectedPairType, typename ActualPairType, typename... MessageTypes>
@@ -3123,8 +3144,9 @@ namespace ZenUnit
       {
          const std::string expectedSizeString = std::to_string(expectedSize);
          const std::string actualSizeString = std::to_string(actualSize);
-         throw Anomaly("INDEXABLES_ARE_EQUAL_IN_ANY_ORDER", expectedElementsVRT.text, actualElementsVRT.text, "", messagesText,
+         const Anomaly anomaly("INDEXABLES_ARE_EQUAL_IN_ANY_ORDER", expectedElementsVRT.text, actualElementsVRT.text, "", messagesText,
             becauseAnomaly, expectedSizeString, actualSizeString, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+         throw anomaly;
       }
       for (const auto& expectedElement : expectedElementsVRT.value)
       {
@@ -3138,8 +3160,9 @@ namespace ZenUnit
          {
             const std::string expectedElementsAsString = "expectedElements";
             const std::string actualElementsAsString = "actualElements";
-            throw Anomaly("INDEXABLES_ARE_EQUAL_IN_ANY_ORDER", expectedElementsVRT.text, actualElementsVRT.text, "", messagesText,
+            const Anomaly anomaly("INDEXABLES_ARE_EQUAL_IN_ANY_ORDER", expectedElementsVRT.text, actualElementsVRT.text, "", messagesText,
                becauseAnomaly, expectedElementsAsString, actualElementsAsString, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+            throw anomaly;
          }
       }
    }
@@ -3151,9 +3174,10 @@ namespace ZenUnit
    {
       const std::string* arrayTypeName = Type::GetName<T>();
       const std::string numberOfElementsToCompareString = std::to_string(numberOfElementsToCompare);
-      throw Anomaly("ARRAYS_ARE_EQUAL", expectedArrayVRT.text, actualArrayVRT.text, numberOfElementsToCompareString, messagesText,
+      const Anomaly anomaly("ARRAYS_ARE_EQUAL", expectedArrayVRT.text, actualArrayVRT.text, numberOfElementsToCompareString, messagesText,
          becauseAnomaly, *arrayTypeName, *arrayTypeName, ExpectedActualFormat::Fields,
          filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename T, typename... MessageTypes>
@@ -3190,9 +3214,10 @@ namespace ZenUnit
    {
       const std::string expectedToString = ToStringer::ToString(expectedStdArrayVRT.value);
       const std::string actualToString = ToStringer::ToString(actualStdArrayVRT.value);
-      throw Anomaly("STD_ARRAYS_ARE_EQUAL", expectedStdArrayVRT.text, actualStdArrayVRT.text, "", messagesText,
+      const Anomaly anomaly("STD_ARRAYS_ARE_EQUAL", expectedStdArrayVRT.text, actualStdArrayVRT.text, "", messagesText,
          becauseAnomaly, expectedToString, actualToString, ExpectedActualFormat::Fields,
          filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename T, std::size_t Size, typename... MessageTypes>
@@ -3245,8 +3270,9 @@ namespace ZenUnit
    void DELETE_TO_ASSERT_NEWED_ThrowAnomaly(const char* smartOrRawPointerText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
-      throw Anomaly("DELETE_TO_ASSERT_NEWED", smartOrRawPointerText, "", "", messagesText, Anomaly::Default(),
+      const Anomaly anomaly("DELETE_TO_ASSERT_NEWED", smartOrRawPointerText, "", "", messagesText, Anomaly::Default(),
          "not a nullptr", "nullptr", ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename PointerType, typename... MessageTypes>
@@ -3267,9 +3293,10 @@ namespace ZenUnit
    {
       const std::string toStringedExpectedSet = ToStringer::ToString(expectedSetVRT.value);
       const std::string toStringedActualSet = ToStringer::ToString(actualSetVRT.value);
-      throw Anomaly("SETS_ARE_EQUAL", expectedSetVRT.text, actualSetVRT.text, "", messagesText,
+      const Anomaly anomaly("SETS_ARE_EQUAL", expectedSetVRT.text, actualSetVRT.text, "", messagesText,
          becauseAnomaly, toStringedExpectedSet, toStringedActualSet,
          ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename ExpectedSetType, typename ActualSetType, typename... MessageTypes>
@@ -3311,9 +3338,10 @@ namespace ZenUnit
       {
          const std::string expectedField = ToStringer::ToString(expectedStdFunctionTargetValue);
          const std::string actualField = ToStringer::ToString(stdFunctionVRT.value);
-         throw Anomaly("STD_FUNCTION_TARGETS", expectedStdFunctionTargetText, stdFunctionVRT.text, "", messagesText,
+         const Anomaly anomaly("STD_FUNCTION_TARGETS", expectedStdFunctionTargetText, stdFunctionVRT.text, "", messagesText,
             becauseAnomaly, expectedField, actualField,
             ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+         throw anomaly;
       }
    }
 
@@ -3334,9 +3362,10 @@ namespace ZenUnit
       {
          const std::string expectedField = ToStringer::ToString(expectedStdFunctionTargetValue);
          const std::string actualField = ToStringer::ToString(stdFunctionVRT.value);
-         throw Anomaly("STD_FUNCTION_TARGETS_OVERLOAD", expectedStdFunctionTargetText, stdFunctionVRT.text, "", messagesText,
+         const Anomaly anomaly("STD_FUNCTION_TARGETS_OVERLOAD", expectedStdFunctionTargetText, stdFunctionVRT.text, "", messagesText,
             becauseAnomaly, expectedField, actualField,
             ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+         throw anomaly;
       }
    }
 
@@ -3347,9 +3376,10 @@ namespace ZenUnit
    {
       const std::string expectedField = expectedPointerOrActualPointer + std::string(" != nullptr");
       const std::string actualField = expectedPointerOrActualPointer + std::string(" == nullptr");
-      throw Anomaly("POINTEES_ARE_EQUAL", expectedPointerVRT.text, actualPointerVRT.text, "",
+      const Anomaly anomaly("POINTEES_ARE_EQUAL", expectedPointerVRT.text, actualPointerVRT.text, "",
          messagesText, Anomaly::Default(), expectedField, actualField,
          ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename T, typename... MessageTypes>
@@ -3359,9 +3389,10 @@ namespace ZenUnit
    {
       const std::string expectedField = ToStringer::ToString(*expectedPointerVRT.value);
       const std::string actualField = ToStringer::ToString(*actualPointerVRT.value);
-      throw Anomaly("POINTEES_ARE_EQUAL", expectedPointerVRT.text, actualPointerVRT.text, "",
+      const Anomaly anomaly("POINTEES_ARE_EQUAL", expectedPointerVRT.text, actualPointerVRT.text, "",
          messagesText, becauseAnomaly, expectedField, actualField,
          ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename T>
@@ -3424,7 +3455,8 @@ namespace ZenUnit
       const std::string failedLinePrefix = String::Concat(
          "  Failed: THROWS_EXCEPTION(", expressionText, ",\n",
          "             ", expectedExactExceptionTypeText, ", ", expectedWhatText);
-      throw Anomaly(failedLinePrefix, whyBody, filePathLineNumber, " ", messagesText, std::forward<MessageTypes>(messages)...);
+      const Anomaly anomaly(failedLinePrefix, whyBody, filePathLineNumber, " ", messagesText, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename ExpectedExceptionType>
@@ -3543,11 +3575,12 @@ namespace ZenUnit
    {
       const std::string toStringedExpectedIndexableDataStructure = ToStringer::ToString(expectedIndexableDataStructure);
       const std::string toStringedActualIndexableDataStructure = ToStringer::ToString(actualIndexableDataStructure);
-      throw Anomaly(indexablesAreEqualOrVectorsAreEqualMacroName, expectedIndexableDataStructureText, actualIndexableDataStructureText, "", messagesText,
+      const Anomaly anomaly(indexablesAreEqualOrVectorsAreEqualMacroName, expectedIndexableDataStructureText, actualIndexableDataStructureText, "", messagesText,
          becauseAnomaly,
          toStringedExpectedIndexableDataStructure,
          toStringedActualIndexableDataStructure,
          ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<
