@@ -15,9 +15,9 @@ namespace ZenUnit
    AFACT(DefaultConstructor_NewsComponents_SetsGetArgsFunction)
    AFACT(RunTestPhase_FunctionDoesNotThrowException_ReturnsNoExceptionThrownTestPhaseResult)
    AFACT(RunTestPhase_FunctionThrowsAnomaly_TestPhaseIsTestBody_ReturnsAnomalyResult)
-   FACTS(RunTestPhase_FunctionThrowsAnomaly_TestPhaseIsNotTestBody_WritesErrorMessageAndExits0Or1DependingOnAlwaysExit0Setting)
+   FACTS(RunTestPhase_FunctionThrowsAnomaly_TestPhaseIsNotTestBody_WritesErrorMessageAndFailFastExitsWithCode1UnlessAlwaysExit0IsTrue)
    AFACT(RunTestPhase_FunctionThrowsStdException_TestPhaseIsTestBody_ReturnsExceptionResult)
-   FACTS(RunTestPhase_FunctionThrowsStdException_TestPhaseIsNotTestBody_WritesErrorMessageAndExitsWithCode1UnlessAlwaysExit0IsTrue)
+   FACTS(RunTestPhase_FunctionThrowsStdException_TestPhaseIsNotTestBody_WritesErrorMessageAndFailFastExitsWithCode1UnlessAlwaysExit0IsTrue)
    AFACT(RunTestPhase_FunctionThrowsMetalMockException_ReturnsExceptionResult)
    FACTS(RunTestPhase_FunctionThrowsAnIntToTriggerDotDotDotExceptionHandler_PrintsFailureDetails_Exits1)
    AFACT(FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess_FailFastIsFalse_DoesNothing)
@@ -44,6 +44,8 @@ namespace ZenUnit
 
    static int s_numberOfCallsToFunctionThatDoesNotThrowAnException;
    static string s_stdExceptionMessage;
+   static string s_failedLinePrefix;
+   static string s_whyBody;
 
    STARTUP
    {
@@ -62,6 +64,8 @@ namespace ZenUnit
       _testMock = make_unique<TestMock>();
 
       s_stdExceptionMessage = ZenUnit::Random<string>();
+      s_failedLinePrefix = ZenUnit::Random<string>();
+      s_whyBody = ZenUnit::Random<string>();
    }
 
    CLEANUP
@@ -130,7 +134,7 @@ namespace ZenUnit
    static void ThrowAnomaly(Test* test)
    {
       IS_NOT_NULLPTR(test);
-      throw Anomaly("NonDefault", "NonDefault", FilePathLineNumber(), "", "");
+      throw Anomaly(s_failedLinePrefix, s_whyBody, FilePathLineNumber(), "", "");
    }
 
    TEST(RunTestPhase_FunctionThrowsAnomaly_TestPhaseIsTestBody_ReturnsAnomalyResult)
@@ -159,7 +163,7 @@ namespace ZenUnit
       TestPhaseResult expectedTestPhaseResult;
       expectedTestPhaseResult.testPhase = TestPhase::TestBody;
       expectedTestPhaseResult.microseconds = _microseconds;
-      const Anomaly expectedAnomaly("NonDefault", "NonDefault", FilePathLineNumber(), "", "");
+      const Anomaly expectedAnomaly(s_failedLinePrefix, s_whyBody, FilePathLineNumber(), "", "");
       expectedTestPhaseResult.anomalyOrException = make_shared<AnomalyOrException>(expectedAnomaly);
       expectedTestPhaseResult.testOutcome = TestOutcome::Anomaly;
 
@@ -171,16 +175,20 @@ namespace ZenUnit
       ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
    }
 
-   TEST1X1(RunTestPhase_FunctionThrowsAnomaly_TestPhaseIsNotTestBody_WritesErrorMessageAndExits0Or1DependingOnAlwaysExit0Setting,
-      TestPhase testPhase,
-      TestPhase::Constructor,
-      TestPhase::Startup,
-      TestPhase::Cleanup,
-      TestPhase::Destructor)
+   TEST3X3(RunTestPhase_FunctionThrowsAnomaly_TestPhaseIsNotTestBody_WritesErrorMessageAndFailFastExitsWithCode1UnlessAlwaysExit0IsTrue,
+      TestPhase testPhase, bool alwaysExit0, int expectedExitCode,
+      TestPhase::Constructor, false, 1,
+      TestPhase::Startup, false, 1,
+      TestPhase::Cleanup, false, 1,
+      TestPhase::Destructor, false, 1,
+      TestPhase::Constructor, true, 0,
+      TestPhase::Startup, true, 0,
+      TestPhase::Cleanup, true, 0,
+      TestPhase::Destructor, true, 0)
    {
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.failFast = ZenUnit::Random<bool>();
-      zenUnitArgs.alwaysExit0 = ZenUnit::Random<bool>();
+      zenUnitArgs.alwaysExit0 = alwaysExit0;
       GetZenUnitArgsMock.Return(zenUnitArgs);
 
       _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->ConstCallMock.Expect();
@@ -201,16 +209,13 @@ namespace ZenUnit
          "\n================\nFailed Assertion\n================", Color::Red));
       METALMOCK(_testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(testPhase));
       METALMOCK(_consoleMock->WriteMock.CalledOnceWith(_testPhaseSuffix));
-      const Anomaly expectedAnomaly("NonDefault", "NonDefault", FilePathLineNumber(), "", "");
+      const Anomaly expectedAnomaly(s_failedLinePrefix, s_whyBody, FilePathLineNumber(), "", "");
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedAnomaly.why));
-
       METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith("\n===========\nFatal Error\n===========", Color::Red));
-      const int expectedExitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
       const string expectedExitMessage = String::Concat(
          "[ZenUnit] TestResult: A ZenUnit::Anomaly was thrown from a test class constructor, STARTUP function, or CLEANUP function.\n",
          "[ZenUnit]   ExitCode: ", expectedExitCode);
       METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedExitMessage, expectedExitCode));
-
       METALMOCK(_caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->ConstCallMock.CalledOnceWith(
          &_testPhaseRunner, &TestPhaseRunner::FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess,
          TestOutcome::Anomaly, zenUnitArgs));
@@ -221,7 +226,7 @@ namespace ZenUnit
 
    }
 
-   TEST3X3(RunTestPhase_FunctionThrowsStdException_TestPhaseIsNotTestBody_WritesErrorMessageAndExitsWithCode1UnlessAlwaysExit0IsTrue,
+   TEST3X3(RunTestPhase_FunctionThrowsStdException_TestPhaseIsNotTestBody_WritesErrorMessageAndFailFastExitsWithCode1UnlessAlwaysExit0IsTrue,
       TestPhase testPhase, bool alwaysExit0, int expectedExitCode,
       TestPhase::Constructor, false, 1,
       TestPhase::Startup, false, 1,
@@ -447,4 +452,6 @@ namespace ZenUnit
 
    int TestPhaseRunnerTests::s_numberOfCallsToFunctionThatDoesNotThrowAnException;
    string TestPhaseRunnerTests::s_stdExceptionMessage;
+   string TestPhaseRunnerTests::s_failedLinePrefix;
+   string TestPhaseRunnerTests::s_whyBody;
 }

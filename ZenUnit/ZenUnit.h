@@ -3599,7 +3599,7 @@ namespace ZenUnit
    {
       std::shared_ptr<Anomaly> anomaly;
       const std::string* exceptionTypeName;
-      std::shared_ptr<std::string> exceptionWhat;
+      std::shared_ptr<std::string> exceptionMessage;
 
       AnomalyOrException(const Anomaly& anomaly)
          : anomaly(std::make_shared<Anomaly>(anomaly))
@@ -3607,9 +3607,9 @@ namespace ZenUnit
       {
       }
 
-      AnomalyOrException(const std::string* exceptionTypeName, const char* exceptionWhat)
+      AnomalyOrException(const std::string* exceptionTypeName, const char* exceptionMessage)
          : exceptionTypeName(exceptionTypeName)
-         , exceptionWhat(std::make_shared<std::string>(exceptionWhat))
+         , exceptionMessage(std::make_shared<std::string>(exceptionMessage))
       {
       }
    };
@@ -3936,7 +3936,7 @@ namespace ZenUnit
             console->WriteLineColor("\n==================\nUncaught Exception\n==================", Color::Red);
             const std::string exceptionTypeAndMessageLines = String::Concat(
                "  Type: ", *responsibleTestPhaseResult.anomalyOrException->exceptionTypeName, '\n',
-               "what(): \"", *responsibleTestPhaseResult.anomalyOrException->exceptionWhat, "\"");
+               "what(): \"", *responsibleTestPhaseResult.anomalyOrException->exceptionMessage, "\"");
             console->WriteLine(exceptionTypeAndMessageLines);
             console->WriteNewLine();
             break;

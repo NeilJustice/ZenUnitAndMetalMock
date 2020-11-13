@@ -3,14 +3,9 @@
 namespace ZenUnit
 {
    TESTS(RandomTestPhaseResultTests)
-   AFACT(RandomTestPhaseResult_CodeCoverage)
    AFACT(TestableRandomTestPhaseResult_ReturnsTestPhaseResultWithAllRandomFields)
+   AFACT(RandomTestPhaseResult_DoesNotThrowException)
    EVIDENCE
-
-   TEST(RandomTestPhaseResult_CodeCoverage)
-   {
-      const TestPhaseResult randomTestPhaseResult = ZenUnit::Random<TestPhaseResult>();
-   }
 
    TEST(TestableRandomTestPhaseResult_ReturnsTestPhaseResultWithAllRandomFields)
    {
@@ -36,6 +31,11 @@ namespace ZenUnit
       expectedRandomTestPhaseResult.microseconds = microseconds;
       expectedRandomTestPhaseResult.anomalyOrException = nullptr;
       ARE_EQUAL(expectedRandomTestPhaseResult, randomTestPhaseResult);
+   }
+
+   TEST(RandomTestPhaseResult_DoesNotThrowException)
+   {
+      ZenUnit::Random<TestPhaseResult>();
    }
 
    RUN_TESTS(RandomTestPhaseResultTests)

@@ -4,7 +4,9 @@
 
 namespace ZenUnit
 {
-   void Equalizer<TestPhaseResult>::AssertEqual(const TestPhaseResult& expectedTestPhaseResult, const TestPhaseResult& actualTestPhaseResult)
+   void Equalizer<TestPhaseResult>::AssertEqual(
+      const TestPhaseResult& expectedTestPhaseResult,
+      const TestPhaseResult& actualTestPhaseResult)
    {
       ARE_EQUAL(expectedTestPhaseResult.testPhase, actualTestPhaseResult.testPhase);
       ARE_EQUAL(expectedTestPhaseResult.testOutcome, actualTestPhaseResult.testOutcome);

@@ -10,6 +10,6 @@ namespace ZenUnit
    {
       POINTEES_ARE_EQUAL(expectedAnomalyOrException.anomaly, actualAnomalyOrException.anomaly);
       ARE_EQUAL(expectedAnomalyOrException.exceptionTypeName, actualAnomalyOrException.exceptionTypeName);
-      POINTEES_ARE_EQUAL(expectedAnomalyOrException.exceptionWhat, actualAnomalyOrException.exceptionWhat);
+      POINTEES_ARE_EQUAL(expectedAnomalyOrException.exceptionMessage, actualAnomalyOrException.exceptionMessage);
    }
 }

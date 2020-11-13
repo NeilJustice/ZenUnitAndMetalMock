@@ -6,7 +6,9 @@ namespace ZenUnit
    class Equalizer<TestPhaseResult>
    {
    public:
-      static void AssertEqual(const TestPhaseResult& expectedTestPhaseResult, const TestPhaseResult& actualTestPhaseResult);
+      static void AssertEqual(
+         const TestPhaseResult& expectedTestPhaseResult,
+         const TestPhaseResult& actualTestPhaseResult);
    };
 
    template<>
