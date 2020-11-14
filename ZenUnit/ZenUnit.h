@@ -4508,13 +4508,13 @@ namespace ZenUnit
       }
 
       void ResetTestClassRunnerWithNoOpIfTestClassNameDoesNotMatchAnyTestNameFilter(
-         std::unique_ptr<TestClassRunner>& testClassRunner, const std::vector<TestNameFilter>& testNameFilters)
+         std::unique_ptr<TestClassRunner>& outTestClassRunner, const std::vector<TestNameFilter>& testNameFilters)
       {
          const bool anyTestNameFilterMatchesTestClass = _twoArgMemberAnyer->TwoArgAny(
-            testNameFilters, this, &TestClassRunnerRunner::TestNameFilterMatchesTestClass, testClassRunner.get());
+            testNameFilters, this, &TestClassRunnerRunner::TestNameFilterMatchesTestClass, outTestClassRunner.get());
          if (!anyTestNameFilterMatchesTestClass)
          {
-            testClassRunner.reset(new NoOpTestClassRunner);
+            outTestClassRunner = std::make_unique<NoOpTestClassRunner>();
          }
       }
 
