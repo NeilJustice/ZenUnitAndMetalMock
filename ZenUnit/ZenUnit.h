@@ -1965,10 +1965,10 @@ namespace ZenUnit
       ArgsParser() noexcept
          : _call_String_ToInt(String::ToInt)
          , _call_String_ToUnsigned(String::ToUnsigned)
-         , _caller_SetRandomSeedIfNotSetByUser(new OneArgMemberFunctionCaller<void, ArgsParser, ZenUnitArgs&>)
+         , _caller_SetRandomSeedIfNotSetByUser(std::make_unique<OneArgMemberFunctionCaller<void, ArgsParser, ZenUnitArgs&>>())
          , _console(std::make_unique<Console>())
          , _testNameFilterStringParser(std::make_unique<TestNameFilterStringParser>())
-         , _watch(new Watch)
+         , _watch(std::make_unique<Watch>())
       {
       }
 
