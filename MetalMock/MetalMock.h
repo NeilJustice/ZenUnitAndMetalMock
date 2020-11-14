@@ -2495,8 +2495,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
       }
 
-      static FunctionReturnType MetalMockItFunctionPointer(
-         NonVoidOneArgFunctionPointerMetalMocker* functionMocker, Arg1Type argument)
+      static FunctionReturnType MetalMockItFunctionPointer(NonVoidOneArgFunctionPointerMetalMocker* functionMocker, Arg1Type argument)
       {
          return functionMocker->MetalMockItAndReturnValue(argument);
       }
@@ -2511,8 +2510,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
       }
 
-      static void MetalMockItFunctionPointer(
-         VoidOneArgFunctionPointerMetalMocker<Arg1Type>* functionMocker, Arg1Type argument)
+      static void MetalMockItFunctionPointer(VoidOneArgFunctionPointerMetalMocker<Arg1Type>* functionMocker, Arg1Type argument)
       {
          functionMocker->MetalMockIt(argument);
       }
@@ -2726,8 +2724,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       }
 
       static void MetalMockItFunctionPointer(
-         VoidTwoArgFunctionPointerMetalMocker<Arg1Type, Arg2Type>* functionMocker,
-         Arg1Type firstArgument, Arg2Type secondArgument)
+         VoidTwoArgFunctionPointerMetalMocker<Arg1Type, Arg2Type>* functionMocker, Arg1Type firstArgument, Arg2Type secondArgument)
       {
          functionMocker->MetalMockIt(firstArgument, secondArgument);
       }
@@ -2791,7 +2788,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          return FunctionSequencingToken();
       }
 
-      FunctionSequencingToken CalledAsFollows(const std::vector<ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>>& expectedThreeArgumentFunctionCalls)
+      FunctionSequencingToken CalledAsFollows(
+         const std::vector<ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>>& expectedThreeArgumentFunctionCalls)
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedThreeArgumentFunctionCalls.size());
          this->MetalMockSetAsserted();
@@ -3017,8 +3015,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          ARE_EQUAL(expectedNumberOfCalls, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCalls; ++i)
          {
-            const std::string metalMockedFunctionSignatureAndCallIndex =
-               ZenUnit::String::Concat(this->MetalMockedFunctionSignature, " at i=", i);
+            const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::Concat(this->MetalMockedFunctionSignature, " at i=", i);
             ARE_EQUAL(expectedFirstArgument, metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedSecondArgument, metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedThirdArgument, metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
@@ -3027,7 +3024,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          return FunctionSequencingToken();
       }
 
-      FunctionSequencingToken CalledAsFollows(const std::vector<FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>& expectedFourArgumentFunctionCalls)
+      FunctionSequencingToken CalledAsFollows(
+         const std::vector<FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>& expectedFourArgumentFunctionCalls)
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedFourArgumentFunctionCalls.size());
          this->MetalMockSetAsserted();
@@ -3412,8 +3410,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          ARE_EQUAL(expectedNumberOfCalls, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCalls; ++i)
          {
-            const std::string metalMockedFunctionSignatureAndCallIndex =
-               ZenUnit::String::Concat(this->MetalMockedFunctionSignature, " at i=", i);
+            const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::Concat(this->MetalMockedFunctionSignature, " at i=", i);
             ARE_EQUAL(expectedFirstArgument, metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedSecondArgument, metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedThirdArgument, metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
@@ -3491,9 +3488,11 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          return randomReturnValue;
       }
 
-      const FunctionReturnType& MetalMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument)
+      const FunctionReturnType& MetalMockItAndReturnValue(
+         Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument)
       {
-         SixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, MetalMockExceptionThrower>::MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument);
+         SixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, MetalMockExceptionThrower>::MetalMockIt(
+            firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument);
          return ValueReturner<FunctionReturnType>::MetalMockNextReturnValue();
       }
    };
@@ -3509,7 +3508,12 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       static const FunctionReturnType& MetalMockItFunctionPointer(
          NonVoidSixArgFunctionPointerMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>* functionMocker,
-         Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument)
+         Arg1Type firstArgument,
+         Arg2Type secondArgument,
+         Arg3Type thirdArgument,
+         Arg4Type fourthArgument,
+         Arg5Type fifthArgument,
+         Arg6Type sixthArgument)
       {
          return functionMocker->MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument);
       }
@@ -3618,8 +3622,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          ARE_EQUAL(expectedNumberOfCalls, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCalls; ++i)
          {
-            const std::string metalMockedFunctionSignatureAndCallIndex =
-               ZenUnit::String::Concat(this->MetalMockedFunctionSignature, " at i=", i);
+            const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::Concat(this->MetalMockedFunctionSignature, " at i=", i);
             ARE_EQUAL(expectedFirstArgument, metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedSecondArgument, metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedThirdArgument, metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
@@ -3698,9 +3701,17 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          return randomReturnValue;
       }
 
-      const FunctionReturnType& MetalMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument, Arg7Type seventhArgument)
+      const FunctionReturnType& MetalMockItAndReturnValue(
+         Arg1Type firstArgument,
+         Arg2Type secondArgument,
+         Arg3Type thirdArgument,
+         Arg4Type fourthArgument,
+         Arg5Type fifthArgument,
+         Arg6Type sixthArgument,
+         Arg7Type seventhArgument)
       {
-         SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>::MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument);
+         SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>::MetalMockIt(
+            firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument);
          return ValueReturner<FunctionReturnType>::MetalMockNextReturnValue();
       }
    };
@@ -3716,9 +3727,16 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       static const FunctionReturnType& MetalMockItFunctionPointer(
          NonVoidSevenArgFunctionPointerMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>* functionMocker,
-         Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument, Arg7Type seventhArgument)
+         Arg1Type firstArgument,
+         Arg2Type secondArgument,
+         Arg3Type thirdArgument,
+         Arg4Type fourthArgument,
+         Arg5Type fifthArgument,
+         Arg6Type sixthArgument,
+         Arg7Type seventhArgument)
       {
-         return functionMocker->MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument);
+         return functionMocker->MetalMockItAndReturnValue(
+            firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument);
       }
    };
 
@@ -3830,8 +3848,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          ARE_EQUAL(expectedNumberOfCalls, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCalls; ++i)
          {
-            const std::string metalMockedFunctionSignatureAndCallIndex =
-               ZenUnit::String::Concat(this->MetalMockedFunctionSignature, " at i=", i);
+            const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::Concat(this->MetalMockedFunctionSignature, " at i=", i);
             ARE_EQUAL(expectedFirstArgument, metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedSecondArgument, metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedThirdArgument, metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
@@ -3911,9 +3928,18 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          return randomReturnValue;
       }
 
-      const FunctionReturnType& MetalMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument, Arg7Type seventhArgument, Arg8Type eigthArgument)
+      const FunctionReturnType& MetalMockItAndReturnValue(
+         Arg1Type firstArgument,
+         Arg2Type secondArgument,
+         Arg3Type thirdArgument,
+         Arg4Type fourthArgument,
+         Arg5Type fifthArgument,
+         Arg6Type sixthArgument,
+         Arg7Type seventhArgument,
+         Arg8Type eigthArgument)
       {
-         EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>::MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument);
+         EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>::MetalMockIt(
+            firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument);
          return ValueReturner<FunctionReturnType>::MetalMockNextReturnValue();
       }
    };
@@ -3929,7 +3955,14 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       static const FunctionReturnType& MetalMockItFunctionPointer(
          NonVoidEightArgFunctionPointerMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>* functionMocker,
-         Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument, Arg7Type seventhArgument, Arg8Type eigthArgument)
+         Arg1Type firstArgument,
+         Arg2Type secondArgument,
+         Arg3Type thirdArgument,
+         Arg4Type fourthArgument,
+         Arg5Type fifthArgument,
+         Arg6Type sixthArgument,
+         Arg7Type seventhArgument,
+         Arg8Type eigthArgument)
       {
          return functionMocker->MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument);
       }
@@ -4048,8 +4081,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          ARE_EQUAL(expectedNumberOfCalls, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCalls; ++i)
          {
-            const std::string metalMockedFunctionSignatureAndCallIndex =
-               ZenUnit::String::Concat(this->MetalMockedFunctionSignature, " at i=", i);
+            const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::Concat(this->MetalMockedFunctionSignature, " at i=", i);
             ARE_EQUAL(expectedFirstArgument, metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedSecondArgument, metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedThirdArgument, metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
@@ -4063,7 +4095,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          return FunctionSequencingToken();
       }
 
-      FunctionSequencingToken CalledAsFollows(const std::vector<NineArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>& expectedNineArgumentFunctionCalls)
+      FunctionSequencingToken CalledAsFollows(
+         const std::vector<NineArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>& expectedNineArgumentFunctionCalls)
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedNineArgumentFunctionCalls.size());
          this->MetalMockSetAsserted();
@@ -4130,9 +4163,19 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          return randomReturnValue;
       }
 
-      const FunctionReturnType& MetalMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument, Arg7Type seventhArgument, Arg8Type eigthArgument, Arg9Type ninthArgument)
+      const FunctionReturnType& MetalMockItAndReturnValue(
+         Arg1Type firstArgument,
+         Arg2Type secondArgument,
+         Arg3Type thirdArgument,
+         Arg4Type fourthArgument,
+         Arg5Type fifthArgument,
+         Arg6Type sixthArgument,
+         Arg7Type seventhArgument,
+         Arg8Type eigthArgument,
+         Arg9Type ninthArgument)
       {
-         NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>::MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument);
+         NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>::MetalMockIt(
+            firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument);
          return ValueReturner<FunctionReturnType>::MetalMockNextReturnValue();
       }
    };
@@ -4148,7 +4191,15 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       static const FunctionReturnType& MetalMockItFunctionPointer(
          NonVoidNineArgFunctionPointerMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>* functionMocker,
-         Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument, Arg7Type seventhArgument, Arg8Type eigthArgument, Arg9Type ninthArgument)
+         Arg1Type firstArgument,
+         Arg2Type secondArgument,
+         Arg3Type thirdArgument,
+         Arg4Type fourthArgument,
+         Arg5Type fifthArgument,
+         Arg6Type sixthArgument,
+         Arg7Type seventhArgument,
+         Arg8Type eigthArgument,
+         Arg9Type ninthArgument)
       {
          return functionMocker->MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument);
       }
@@ -4180,7 +4231,15 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       static void MetalMockItFunctionPointer(
          VoidNineArgFunctionPointerMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>* functionMocker,
-         Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument, Arg7Type seventhArgument, Arg8Type eigthArgument, Arg9Type ninthArgument)
+         Arg1Type firstArgument,
+         Arg2Type secondArgument,
+         Arg3Type thirdArgument,
+         Arg4Type fourthArgument,
+         Arg5Type fifthArgument,
+         Arg6Type sixthArgument,
+         Arg7Type seventhArgument,
+         Arg8Type eigthArgument,
+         Arg9Type ninthArgument)
       {
          functionMocker->MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument);
       }
@@ -4272,8 +4331,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          ARE_EQUAL(expectedNumberOfCalls, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCalls; ++i)
          {
-            const std::string metalMockedFunctionSignatureAndCallIndex =
-               ZenUnit::String::Concat(this->MetalMockedFunctionSignature, " at i=", i);
+            const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::Concat(this->MetalMockedFunctionSignature, " at i=", i);
             ARE_EQUAL(expectedFirstArgument, metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedSecondArgument, metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedThirdArgument, metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
@@ -4288,7 +4346,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          return FunctionSequencingToken();
       }
 
-      FunctionSequencingToken CalledAsFollows(const std::vector<TenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>& expectedTenArgumentFunctionCalls)
+      FunctionSequencingToken CalledAsFollows(
+         const std::vector<TenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>& expectedTenArgumentFunctionCalls)
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedTenArgumentFunctionCalls.size());
          this->MetalMockSetAsserted();
@@ -4355,9 +4414,20 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          return randomReturnValue;
       }
 
-      const FunctionReturnType& MetalMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument, Arg7Type seventhArgument, Arg8Type eigthArgument, Arg9Type ninthArgument, Arg10Type tenthArgument)
+      const FunctionReturnType& MetalMockItAndReturnValue(
+         Arg1Type firstArgument,
+         Arg2Type secondArgument,
+         Arg3Type thirdArgument,
+         Arg4Type fourthArgument,
+         Arg5Type fifthArgument,
+         Arg6Type sixthArgument,
+         Arg7Type seventhArgument,
+         Arg8Type eigthArgument,
+         Arg9Type ninthArgument,
+         Arg10Type tenthArgument)
       {
-         TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>::MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument, tenthArgument);
+         TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>::MetalMockIt(
+            firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument, tenthArgument);
          return ValueReturner<FunctionReturnType>::MetalMockNextReturnValue();
       }
    };
@@ -4371,7 +4441,16 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       static const FunctionReturnType& MetalMockItFunctionPointer(
          NonVoidTenArgFunctionPointerMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>* functionMocker,
-         Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument, Arg7Type seventhArgument, Arg8Type eigthArgument, Arg9Type ninthArgument, Arg10Type tenthArgument)
+         Arg1Type firstArgument,
+         Arg2Type secondArgument,
+         Arg3Type thirdArgument,
+         Arg4Type fourthArgument,
+         Arg5Type fifthArgument,
+         Arg6Type sixthArgument,
+         Arg7Type seventhArgument,
+         Arg8Type eigthArgument,
+         Arg9Type ninthArgument,
+         Arg10Type tenthArgument)
       {
          return functionMocker->MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument, tenthArgument);
       }
@@ -4399,7 +4478,16 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       static void MetalMockItFunctionPointer(
          VoidTenArgFunctionPointerMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>* functionMocker,
-         Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument, Arg7Type seventhArgument, Arg8Type eigthArgument, Arg9Type ninthArgument, Arg10Type tenthArgument)
+         Arg1Type firstArgument,
+         Arg2Type secondArgument,
+         Arg3Type thirdArgument,
+         Arg4Type fourthArgument,
+         Arg5Type fifthArgument,
+         Arg6Type sixthArgument,
+         Arg7Type seventhArgument,
+         Arg8Type eigthArgument,
+         Arg9Type ninthArgument,
+         Arg10Type tenthArgument)
       {
          functionMocker->MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument, tenthArgument);
       }
