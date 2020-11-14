@@ -12,25 +12,25 @@ namespace ZenUnit
    TESTS(ArgsParserTests)
    AFACT(DefaultConstructor_NewsComponents_SetsStringToUnsignedFunction)
    AFACT(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
-   FACTS(Parse_ArgsSizeGreaterThanOrEqualTo13_PrintsTooManyArgumentsErrorMessageAndUsageAndExits1)
-   FACTS(Parse_InvalidArgument_PrintsErrorMessageAndUsageAndExits1)
-   AFACT(Parse_DashDashHelp_PrintsUsageAndExits0)
+   FACTS(Parse_ArgsSizeGreaterThanOrEqualTo13_PrintsTooManyArgumentsErrorMessageAndCommandLineUsageAndExits1)
+   FACTS(Parse_InvalidArgument_PrintsErrorMessageAndCommandLineUsageAndExits1)
+   AFACT(Parse_DashDashHelp_PrintsCommandLineUsageAndExits0)
    AFACT(Parse_DashDashVersion_PrintsVersionAndExits0)
    AFACT(Parse_AllArgumentsSpecifiedExpectForTestNameFilter_ReturnsZenUnitArgsWithAllFieldsSet)
    AFACT(Parse_DashDashRun_ReturnsZenUnitArgsWithExpectedTestNameFilters)
    AFACT(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    AFACT(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
-   FACTS(Parse_ArgContainsEqualsSign_ValueIsEmptyString_PrintsErrorMessageAndUsageAndExits1)
-   AFACT(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
+   FACTS(Parse_ArgContainsEqualsSign_ValueIsEmptyString_PrintsErrorMessageAndCommandLineUsageAndExits1)
+   AFACT(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndCommandLineUsageAndExits1)
    AFACT(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
    AFACT(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
-   AFACT(Parse_UnrecognizedEqualsSignArgName_PrintsUsageAndExits1)
+   AFACT(Parse_UnrecognizedEqualsSignArgName_PrintsCommandLineUsageAndExits1)
    AFACT(SetRandomSeedIfNotSetByUser_RandomSeedSetByUser_DoesNothing)
    AFACT(SetRandomSeedIfNotSetByUser_RandomSeedNotSetByUser_SetsRandomSeedToSecondsSince1970)
    EVIDENCE
 
    const string _testProgramPath = Random<string>();
-   const string _expectedUsage = "C++ Unit Testing Framework ZenUnit v" + std::string(Version::Number()) + R"(
+   const string _expectedCommandLineUsage = "C++ Unit Testing Framework ZenUnit v" + std::string(Version::Number()) + R"(
 https://github.com/NeilJustice/ZenUnitAndMetalMock
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
@@ -140,7 +140,7 @@ Example ZenUnit Command Line Arguments:
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST1X1(Parse_ArgsSizeGreaterThanOrEqualTo13_PrintsTooManyArgumentsErrorMessageAndUsageAndExits1,
+   TEST1X1(Parse_ArgsSizeGreaterThanOrEqualTo13_PrintsTooManyArgumentsErrorMessageAndCommandLineUsageAndExits1,
       size_t numberOfStringArgs,
       13,
       14)
@@ -152,10 +152,10 @@ Example ZenUnit Command Line Arguments:
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith("ZenUnit command line usage error: Too many arguments.\n"));
-      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedCommandLineUsage, 1));
    }
 
-   TEST1X1(Parse_InvalidArgument_PrintsErrorMessageAndUsageAndExits1,
+   TEST1X1(Parse_InvalidArgument_PrintsErrorMessageAndCommandLineUsageAndExits1,
       const string& invalidArgument,
       "--abc",
       "--Always-exit-0",
@@ -169,17 +169,17 @@ Example ZenUnit Command Line Arguments:
       //
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Invalid argument \"" + invalidArgument + "\"\n"));
-      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedCommandLineUsage, 1));
    }
 
-   TEST(Parse_DashDashHelp_PrintsUsageAndExits0)
+   TEST(Parse_DashDashHelp_PrintsCommandLineUsageAndExits0)
    {
       _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, "--help" };
       //
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
-      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 0));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedCommandLineUsage, 0));
    }
 
    TEST(Parse_DashDashVersion_PrintsVersionAndExits0)
@@ -310,7 +310,7 @@ Example ZenUnit Command Line Arguments:
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST1X1(Parse_ArgContainsEqualsSign_ValueIsEmptyString_PrintsErrorMessageAndUsageAndExits1,
+   TEST1X1(Parse_ArgContainsEqualsSign_ValueIsEmptyString_PrintsErrorMessageAndCommandLineUsageAndExits1,
       const string& arg,
       "--test-runs=",
       "--test-runs===",
@@ -326,10 +326,10 @@ Example ZenUnit Command Line Arguments:
       const string expectedErrorMessage =
          "ZenUnit command line usage error: " + string("String::Split(arg, '=') unexpectedly returned not 2 for arg = \"" + arg + "\"") + "\n";
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedErrorMessage));
-      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedCommandLineUsage, 1));
    }
 
-   TEST(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndUsageAndExits1)
+   TEST(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndCommandLineUsageAndExits1)
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
@@ -342,7 +342,7 @@ Example ZenUnit Command Line Arguments:
       METALMOCK(ToIntMock.CalledOnceWith("-1_for_example"));
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Invalid --name=value argument value: " + InvalidTimesArg + "\n"));
-      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedCommandLineUsage, 1));
    }
 
    TEST(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
@@ -383,7 +383,7 @@ Example ZenUnit Command Line Arguments:
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST(Parse_UnrecognizedEqualsSignArgName_PrintsUsageAndExits1)
+   TEST(Parse_UnrecognizedEqualsSignArgName_PrintsCommandLineUsageAndExits1)
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
@@ -394,7 +394,7 @@ Example ZenUnit Command Line Arguments:
       //
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Unrecognized --name=value argument: " + unrecognizedNameArg + "\n"));
-      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedUsage, 1));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedCommandLineUsage, 1));
    }
 
    TEST(SetRandomSeedIfNotSetByUser_RandomSeedSetByUser_DoesNothing)

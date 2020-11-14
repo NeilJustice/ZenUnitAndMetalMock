@@ -1974,7 +1974,7 @@ namespace ZenUnit
 
       virtual ~ArgsParser() = default;
 
-      static const std::string& Usage()
+      static const std::string& CommandLineUsage()
       {
          const std::string& commandLineUsage = Version::CommandLineUsage();
          return commandLineUsage;
@@ -1985,7 +1985,7 @@ namespace ZenUnit
          if (stringArgs.size() >= 13)
          {
             _console->WriteLine("ZenUnit command line usage error: Too many arguments.\n");
-            _console->WriteLineAndExit(Usage(), 1);
+            _console->WriteLineAndExit(CommandLineUsage(), 1);
          }
          ZenUnitArgs zenUnitArgs;
          zenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
@@ -2019,7 +2019,7 @@ namespace ZenUnit
             }
             else if (arg == "--help")
             {
-               _console->WriteLineAndExit(Usage(), 0);
+               _console->WriteLineAndExit(CommandLineUsage(), 0);
             }
             else if (arg == "--version" || arg == "-version")
             {
@@ -2083,7 +2083,7 @@ namespace ZenUnit
       void WriteZenUnitCommandLineUsageErrorThenExit1(std::string_view errorMessage) const
       {
          _console->WriteLine("ZenUnit command line usage error: " + std::string(errorMessage) + "\n");
-         _console->WriteLineAndExit(Usage(), 1);
+         _console->WriteLineAndExit(CommandLineUsage(), 1);
       }
    };
 
