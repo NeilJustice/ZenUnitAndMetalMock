@@ -4,9 +4,9 @@
 namespace ZenUnit
 {
    TESTS(STD_FUNCTION_TARGETSTests)
-   AFACT(FunctionDoesNotPointToAFunction_Throws_MessagesTestsCase)
-   AFACT(FunctionPointsToFunctionWithDifferentSignatureThanExpected_Throws)
-   AFACT(FunctionPointsToFunctionWithSameSignatureButDifferentFunctionThanExpected_Throws)
+   AFACT(FunctionDoesNotPointToAFunction_ThrowsAnomaly__MessagesTestsCase)
+   AFACT(FunctionPointsToFunctionWithDifferentSignatureThanExpected_ThrowsAnomaly)
+   AFACT(FunctionPointsToFunctionWithSameSignatureButDifferentFunctionThanExpected_ThrowsAnomaly)
    AFACT(FunctionPointsToSameFunctionAsExpected_DoesNotThrowException)
    AFACT(FunctionABC_CodeCoverage)
    EVIDENCE
@@ -23,7 +23,7 @@ namespace ZenUnit
       cout << ' ';
    }
 
-   TEST(FunctionDoesNotPointToAFunction_Throws_MessagesTestsCase)
+   TEST(FunctionDoesNotPointToAFunction_ThrowsAnomaly__MessagesTestsCase)
    {
       const function<void()> emptyStdFunction;
       const string messageA = "A", messageB = "B";
@@ -55,7 +55,7 @@ namespace ZenUnit
       }
    }
 
-   TEST(FunctionPointsToFunctionWithDifferentSignatureThanExpected_Throws)
+   TEST(FunctionPointsToFunctionWithDifferentSignatureThanExpected_ThrowsAnomaly)
    {
       const function<void()> stdFunctionA(FunctionA);
       try
@@ -85,7 +85,7 @@ namespace ZenUnit
       }
    }
 
-   TEST(FunctionPointsToFunctionWithSameSignatureButDifferentFunctionThanExpected_Throws)
+   TEST(FunctionPointsToFunctionWithSameSignatureButDifferentFunctionThanExpected_ThrowsAnomaly)
    {
       const function<void()> stdFunctionA(FunctionA);
 #if defined __linux__ || defined __APPLE__

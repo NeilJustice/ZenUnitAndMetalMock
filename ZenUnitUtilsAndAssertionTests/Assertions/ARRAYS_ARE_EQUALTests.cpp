@@ -6,9 +6,9 @@ namespace ZenUnit
    TEMPLATE_TESTS(ARRAYS_ARE_EQUALTests, T)
    AFACT(LengthToCompareIs0_DoesNotThrowException)
    AFACT(LengthToCompareIs1_FirstElementsAreEqual_DoesNotThrowException)
-   AFACT(LengthToCompareIs1_FirstElementsAreNotEqual_Throws)
+   AFACT(LengthToCompareIs1_FirstElementsAreNotEqual_ThrowsAnomaly)
    AFACT(LengthToCompareIs2_FirstElementsAreEqual_SecondElementsAreEqual_DoesNotThrowException)
-   AFACT(LengthToCompareIs2_FirstElementsAreEqual_SecondElementsAreNotEqual_Throws)
+   AFACT(LengthToCompareIs2_FirstElementsAreEqual_SecondElementsAreNotEqual_ThrowsAnomaly)
    EVIDENCE
 
    TEST(LengthToCompareIs0_DoesNotThrowException)
@@ -27,7 +27,7 @@ namespace ZenUnit
       ARRAYS_ARE_EQUAL(expectedArray, actualArray, 1);
    }
 
-   TEST(LengthToCompareIs1_FirstElementsAreNotEqual_Throws)
+   TEST(LengthToCompareIs1_FirstElementsAreNotEqual_ThrowsAnomaly)
    {
       const string typeName = *Type::GetName<T>();
       const T randomElement = ZenUnit::Random<T>();
@@ -54,7 +54,7 @@ namespace ZenUnit
       ARRAYS_ARE_EQUAL(expectedArray, actualArray, 2);
    }
 
-   TEST(LengthToCompareIs2_FirstElementsAreEqual_SecondElementsAreNotEqual_Throws)
+   TEST(LengthToCompareIs2_FirstElementsAreEqual_SecondElementsAreNotEqual_ThrowsAnomaly)
    {
       const string typeName = *Type::GetName<T>();
       const T randomElement0 = ZenUnit::Random<T>();

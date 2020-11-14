@@ -19,14 +19,14 @@ public:
 namespace ZenUnit
 {
    TESTS(POINTEE_IS_EXACT_TYPETests)
-   AFACT(ActualPointerIsNull_Throws)
-   AFACT(ActualPointerIsNull_Throws__MessagesTestCase)
-   AFACT(ActualPointerIsNotNull_ActualPointeeTypeIsUnrelatedToExpectedPointeeType_Throws)
-   AFACT(ActualPointerIsNotNull_ActualPointeeTypeIsASubclassOfExpectedPointeeType_Throws)
+   AFACT(ActualPointerIsNull_ThrowsAnomaly)
+   AFACT(ActualPointerIsNull_ThrowsAnomaly__MessagesTestCase)
+   AFACT(ActualPointerIsNotNull_ActualPointeeTypeIsUnrelatedToExpectedPointeeType_ThrowsAnomaly)
+   AFACT(ActualPointerIsNotNull_ActualPointeeTypeIsASubclassOfExpectedPointeeType_ThrowsAnomaly)
    AFACT(ActualPointerIsNotNull_ActualPointeeTypeIsExactlyExpectedPointeeType_DoesNotThrowException)
    EVIDENCE
 
-   TEST(ActualPointerIsNull_Throws)
+   TEST(ActualPointerIsNull_ThrowsAnomaly)
    {
       const BaseClassA* const nullBaseClassPointer = nullptr;
       const string expectedPolymorphicPointeeTypeName = typeid(BaseClassA).name();
@@ -37,13 +37,14 @@ namespace ZenUnit
          "File.cpp(1)"));
    }
 
-   TEST(ActualPointerIsNull_Throws__MessagesTestCase)
+   TEST(ActualPointerIsNull_ThrowsAnomaly__MessagesTestCase)
    {
       const BaseClassA* const nullBaseClassPointer = nullptr;
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
       const string expectedPolymorphicPointeeTypeName = typeid(BaseClassA).name();
-      THROWS_EXCEPTION(POINTEE_IS_EXACT_TYPE(BaseClassA, nullBaseClassPointer, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(POINTEE_IS_EXACT_TYPE(BaseClassA, nullBaseClassPointer, messageA, messageB),
+         Anomaly, TestUtil::NewlineConcat("",
          "  Failed: POINTEE_IS_EXACT_TYPE(BaseClassA, nullBaseClassPointer, messageA, messageB)",
          "Expected: Pointee to be exact type: typeid(expectedPolymorphicPointeeType).name() = \"" + expectedPolymorphicPointeeTypeName + "\"",
          "  Actual: Pointer has no pointee because pointer is nullptr",
@@ -51,7 +52,7 @@ namespace ZenUnit
          "File.cpp(1)"));
    }
 
-   TEST(ActualPointerIsNotNull_ActualPointeeTypeIsUnrelatedToExpectedPointeeType_Throws)
+   TEST(ActualPointerIsNotNull_ActualPointeeTypeIsUnrelatedToExpectedPointeeType_ThrowsAnomaly)
    {
       const int x = ZenUnit::Random<int>();
       const int* const actualPointer = &x;
@@ -64,7 +65,7 @@ namespace ZenUnit
          "File.cpp(1)"));
    }
 
-   TEST(ActualPointerIsNotNull_ActualPointeeTypeIsASubclassOfExpectedPointeeType_Throws)
+   TEST(ActualPointerIsNotNull_ActualPointeeTypeIsASubclassOfExpectedPointeeType_ThrowsAnomaly)
    {
       const DerivedClassA derivedClassInstance;
       const BaseClassA* const actualPointer = &derivedClassInstance;

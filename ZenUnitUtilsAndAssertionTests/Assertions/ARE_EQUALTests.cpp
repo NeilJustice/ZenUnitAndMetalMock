@@ -51,8 +51,8 @@ namespace ZenUnit
    AFACT(TwoTypeEqualizerDefined_CallsIt)
    AFACT(BothOneAndTwoTypeEqualizersDefined_CallsTheOneTypeEqualizer)
    AFACT(Int32sAreEqual_DoesNotThrowException)
-   AFACT(IntLiteralsNotEqual_Throws)
-   AFACT(IntVariablesNotEqual_Throws_MessagesTestCase)
+   AFACT(IntLiteralsNotEqual_ThrowsAnomaly)
+   AFACT(IntVariablesNotEqual_ThrowsAnomaly_MessagesTestCase)
    AFACT(StringsNotEqual_ThrowsWithStringsInQuotesToConfirmedToStringed)
    AFACT(StringViewsNotEqual_ThrowsWithStringViewsInQuotesToConfirmedToStringed)
    AFACT(EqualizerBothOneAndTwoTypeTestStruct_CodeCoverage)
@@ -111,7 +111,7 @@ namespace ZenUnit
       ARE_EQUAL(numeric_limits<int>::max(), numeric_limits<int>::max());
    }
 
-   TEST(IntLiteralsNotEqual_Throws)
+   TEST(IntLiteralsNotEqual_ThrowsAnomaly)
    {
       THROWS_EXCEPTION(ARE_EQUAL(0, 1), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARE_EQUAL(0, 1)",
@@ -120,7 +120,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(IntVariablesNotEqual_Throws_MessagesTestCase)
+   TEST(IntVariablesNotEqual_ThrowsAnomaly_MessagesTestCase)
    {
       const int expected = 0;
       const int actual = 1;

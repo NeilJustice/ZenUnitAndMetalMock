@@ -6,9 +6,9 @@ namespace ZenUnit
       template<typename...>
    class MapType, typename KeyType, typename ValueType>
    TEMPLATE_TESTS(MapTests, MapType, KeyType, ValueType)
-   AFACT(InsertKeyAndValueWithoutOverwritingKey_KeyAlreadyInMap_Throws)
+   AFACT(InsertKeyAndValueWithoutOverwritingKey_KeyAlreadyInMap_ThrowsInvalidArgument)
    AFACT(InsertKeyAndValueWithoutOverwritingKey_KeyNotAlreadyInMap_InsertsKeyAndValue_ReturnsCostPointerToInsertedValue);
-   AFACT(At_KeyNotPresentInMap_Throws)
+   AFACT(At_KeyNotPresentInMap_ThrowsInvalidArgument)
    AFACT(At_KeyPresentInMap_ReturnsConstReferenceToValue)
    AFACT(ContainsKeyWithValue_MapDoesNotContainKey_ReturnsFalseAndFalse)
    AFACT(ContainsKeyWithValue_MapContainsKeyWithMismatchingValue_ReturnsTrueAndFalse)
@@ -17,12 +17,13 @@ namespace ZenUnit
 
    MapType<KeyType, ValueType> _map;
 
-   TEST(InsertKeyAndValueWithoutOverwritingKey_KeyAlreadyInMap_Throws)
+   TEST(InsertKeyAndValueWithoutOverwritingKey_KeyAlreadyInMap_ThrowsInvalidArgument)
    {
       _map[KeyType()] = ValueType();
       string expectedToStringedKey = ToStringer::ToString(KeyType());
       string expectedWhat = "ZenUnit::Map::InsertKeyAndValueWithoutOverwritingKey: Key already present in map: " + expectedToStringedKey;
-      THROWS_EXCEPTION(Map::InsertKeyAndValueWithoutOverwritingKey(_map, KeyType(), ValueType()), invalid_argument, expectedWhat);
+      THROWS_EXCEPTION(Map::InsertKeyAndValueWithoutOverwritingKey(_map, KeyType(), ValueType()),
+         invalid_argument, expectedWhat);
    }
 
    TEST(InsertKeyAndValueWithoutOverwritingKey_KeyNotAlreadyInMap_InsertsKeyAndValue_ReturnsCostPointerToInsertedValue)
@@ -36,7 +37,7 @@ namespace ZenUnit
       ARE_EQUAL(constPointerToInsertedValue, &_map[KeyType()]);
    }
 
-   TEST(At_KeyNotPresentInMap_Throws)
+   TEST(At_KeyNotPresentInMap_ThrowsInvalidArgument)
    {
       string expectedToStringedKey = ToStringer::ToString(KeyType());
       string expectedWhat = "ZenUnit::Map::At(): Key not found in map: " + expectedToStringedKey;

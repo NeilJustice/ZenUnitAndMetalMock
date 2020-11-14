@@ -6,14 +6,14 @@ namespace ZenUnit
    FACTS(Split_ReturnsExpected)
    AFACT(Concat_ConcatsValuesIntoString)
    FACTS(CommaSplitExceptQuotedCommas_ReturnsStringSplitOnCommasWithQuotedCommasIgnored)
-   AFACT(ToInt_EmptyString_Throws)
-   FACTS(ToInt_StringNotConvertibleToInt_Throws)
-   FACTS(ToInt_StringIsValueLessThanThanIntMin_Throws)
-   FACTS(ToInt_StringIsValueGreaterThanIntMax_Throws)
+   AFACT(ToInt_EmptyString_ThrowsInvalidArgument)
+   FACTS(ToInt_StringNotConvertibleToInt_ThrowsInvalidArgument)
+   FACTS(ToInt_StringIsValueLessThanThanIntMin_ThrowsInvalidArgument)
+   FACTS(ToInt_StringIsValueGreaterThanIntMax_ThrowsInvalidArgument)
    FACTS(ToInt_StringIsValidInt_ReturnsInt)
-   AFACT(ToUnsigned_EmptyString_Throws)
-   FACTS(ToUnsigned_StringNotConvertibleToUnsigned_Throws)
-   FACTS(ToUnsigned_StringIsValueGreaterThanUnsignedMax_Throws)
+   AFACT(ToUnsigned_EmptyString_ThrowsInvalidArgument)
+   FACTS(ToUnsigned_StringNotConvertibleToUnsigned_ThrowsInvalidArgument)
+   FACTS(ToUnsigned_StringIsValueGreaterThanUnsignedMax_ThrowsInvalidArgument)
    FACTS(ToUnsigned_StrIsUnsignedNumber_ReturnsNumber)
    FACTS(CaseInsensitiveStrcmp_ReturnsCrossPlatformCaseInsensitiveStrcmpResult)
    FACTS(CaseInsensitiveStartsWith_ReturnsExpected)
@@ -70,12 +70,12 @@ namespace ZenUnit
       VECTORS_ARE_EQUAL(expectedReturnValue, String::SplitOnNonQuotedCommas(text));
    }
 
-   TEST(ToInt_EmptyString_Throws)
+   TEST(ToInt_EmptyString_ThrowsInvalidArgument)
    {
       THROWS_EXCEPTION(String::ToInt(""), invalid_argument, "ZenUnit::String::ToInt() called with empty string");
    }
 
-   TEST1X1(ToInt_StringNotConvertibleToInt_Throws,
+   TEST1X1(ToInt_StringNotConvertibleToInt_ThrowsInvalidArgument,
       const string& str,
       " ",
       "a",
@@ -91,7 +91,7 @@ namespace ZenUnit
          "ZenUnit::String::ToInt() called with a string not convertible to a 32-bit integer: \"" + str + "\"");
    }
 
-   TEST1X1(ToInt_StringIsValueLessThanThanIntMin_Throws,
+   TEST1X1(ToInt_StringIsValueLessThanThanIntMin_ThrowsInvalidArgument,
       const string& str,
       to_string(static_cast<long long>(numeric_limits<int>::min()) - 1),
       to_string(static_cast<long long>(numeric_limits<int>::min()) - 2))
@@ -100,7 +100,7 @@ namespace ZenUnit
          "ZenUnit::String::ToInt() called with a string containing a number less than std::numeric_limits<int>::min(): \"" + str + "\"");
    }
 
-   TEST1X1(ToInt_StringIsValueGreaterThanIntMax_Throws,
+   TEST1X1(ToInt_StringIsValueGreaterThanIntMax_ThrowsInvalidArgument,
       const string& str,
       to_string(static_cast<long long>(numeric_limits<int>::max()) + 1),
       to_string(static_cast<long long>(numeric_limits<int>::max()) + 2))
@@ -145,12 +145,13 @@ namespace ZenUnit
       ARE_EQUAL(expectedReturnValue, String::ToInt(str));
    }
 
-   TEST(ToUnsigned_EmptyString_Throws)
+   TEST(ToUnsigned_EmptyString_ThrowsInvalidArgument)
    {
-      THROWS_EXCEPTION(String::ToUnsigned(""), invalid_argument, "ZenUnit::String::ToUnsigned() called with empty string");
+      THROWS_EXCEPTION(String::ToUnsigned(""),
+         invalid_argument, "ZenUnit::String::ToUnsigned() called with empty string");
    }
 
-   TEST1X1(ToUnsigned_StringNotConvertibleToUnsigned_Throws,
+   TEST1X1(ToUnsigned_StringNotConvertibleToUnsigned_ThrowsInvalidArgument,
       string_view str,
       " ",
       "a",
@@ -167,7 +168,7 @@ namespace ZenUnit
          "ZenUnit::String::ToUnsigned() called with string not convertible to unsigned integer: \"" + string(str) + "\"");
    }
 
-   TEST1X1(ToUnsigned_StringIsValueGreaterThanUnsignedMax_Throws,
+   TEST1X1(ToUnsigned_StringIsValueGreaterThanUnsignedMax_ThrowsInvalidArgument,
       string_view expectedGreaterThanUnsignedMaxValueString,
       to_string(static_cast<unsigned long long>(numeric_limits<unsigned int>::max()) + 1ull),
       to_string(static_cast<unsigned long long>(numeric_limits<unsigned int>::max()) + 2ull))

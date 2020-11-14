@@ -5,9 +5,9 @@ namespace ZenUnit
 {
    TESTS(REGEX_MATCHESTests)
    AFACT(PatternMatchesAllOfInput_DoesNotThrowException)
-   AFACT(PatternDoesNotMatchAnyOfInput_Throws)
-   AFACT(PatternMatchesOnlyPartOfInput_Throws)
-   AFACT(PatternMismatchesOnCase_Throws_MessagesTestCase)
+   AFACT(PatternDoesNotMatchAnyOfInput_ThrowsAnomaly)
+   AFACT(PatternMatchesOnlyPartOfInput_ThrowsAnomaly)
+   AFACT(PatternMismatchesOnCase_ThrowsAnomaly__MessagesTestCase)
    EVIDENCE
 
    TEST(PatternMatchesAllOfInput_DoesNotThrowException)
@@ -23,7 +23,7 @@ namespace ZenUnit
       REGEX_MATCHES("\nabc\n", "\nabc\n");
    }
 
-   TEST(PatternDoesNotMatchAnyOfInput_Throws)
+   TEST(PatternDoesNotMatchAnyOfInput_ThrowsAnomaly)
    {
       THROWS_EXCEPTION(REGEX_MATCHES("a", "1"), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: REGEX_MATCHES(\"a\", \"1\")",
@@ -46,7 +46,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(PatternMatchesOnlyPartOfInput_Throws)
+   TEST(PatternMatchesOnlyPartOfInput_ThrowsAnomaly)
    {
       THROWS_EXCEPTION(REGEX_MATCHES("a", "a1"), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: REGEX_MATCHES(\"a\", \"a1\")",
@@ -55,7 +55,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(PatternMismatchesOnCase_Throws_MessagesTestCase)
+   TEST(PatternMismatchesOnCase_ThrowsAnomaly__MessagesTestCase)
    {
       const string messageA = "A", messageB = "B";
       THROWS_EXCEPTION(REGEX_MATCHES("a", "A", messageA, messageB), Anomaly, TestUtil::NewlineConcat("",

@@ -4,8 +4,8 @@ namespace ZenUnit
 {
    TESTS(IS_EMPTYTests)
    AFACT(ContainerIsEmpty_DoesNotThrowException)
-   AFACT(VectorIsNotEmpty_Throws)
-   AFACT(StringIsNotEmpty_Throws_MessagesTestCase)
+   AFACT(VectorIsNotEmpty_ThrowsAnomaly)
+   AFACT(StringIsNotEmpty_ThrowsAnomaly__MessagesTestCase)
    EVIDENCE
 
    TEST(ContainerIsEmpty_DoesNotThrowException)
@@ -16,7 +16,7 @@ namespace ZenUnit
       IS_EMPTY(unordered_set<int>());
    }
 
-   TEST(VectorIsNotEmpty_Throws)
+   TEST(VectorIsNotEmpty_ThrowsAnomaly)
    {
       THROWS_EXCEPTION(IS_EMPTY(vector<int>(1)), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_EMPTY(vector<int>(1))",
@@ -25,7 +25,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(StringIsNotEmpty_Throws_MessagesTestCase)
+   TEST(StringIsNotEmpty_ThrowsAnomaly__MessagesTestCase)
    {
       const string messageA = "A", messageB = "B";
       THROWS_EXCEPTION(IS_EMPTY(string(10, 'a'), messageA, messageB), Anomaly, TestUtil::NewlineConcat("",

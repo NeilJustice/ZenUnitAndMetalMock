@@ -5,10 +5,10 @@ namespace ZenUnit
    TESTS(ARE_WITHINTests)
    AFACT(FloatsAreBoth0_DoesNotThrowException)
    FACTS(FloatsAreEasilyWithinTolerance_DoesNotThrowException)
-   AFACT(FloatsAreNotWithinTolerance_Throws)
+   AFACT(FloatsAreNotWithinTolerance_ThrowsAnomaly)
    FACTS(DoublesAreEasilyWithinTolerance_DoesNotThrowException)
    AFACT(DoublesAreBoth0_DoesNotThrowException)
-   AFACT(DoublesAreNotWithinTolerance_Throws)
+   AFACT(DoublesAreNotWithinTolerance_ThrowsAnomaly)
    EVIDENCE
 
    TEST(FloatsAreBoth0_DoesNotThrowException)
@@ -26,7 +26,7 @@ namespace ZenUnit
       ARE_WITHIN(expectedFloat, actualFloat, expectedTolerance);
    }
 
-   TEST(FloatsAreNotWithinTolerance_Throws)
+   TEST(FloatsAreNotWithinTolerance_ThrowsAnomaly)
    {
       THROWS_EXCEPTION(ARE_WITHIN(0.0f, 0.2f, 0.1),
          Anomaly, R"(
@@ -52,7 +52,7 @@ File.cpp(1))");
       ARE_WITHIN(0.0f, 0.0f, 0.0);
    }
 
-   TEST(DoublesAreNotWithinTolerance_Throws)
+   TEST(DoublesAreNotWithinTolerance_ThrowsAnomaly)
    {
       THROWS_EXCEPTION(ARE_WITHIN(0.0, 0.2, 0.1),
          Anomaly, R"(

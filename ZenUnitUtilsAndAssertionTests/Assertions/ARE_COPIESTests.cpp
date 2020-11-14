@@ -3,15 +3,15 @@
 namespace ZenUnit
 {
    TESTS(ARE_COPIESTests)
-   AFACT(ObjectsHaveSameAddress_Throws)
-   AFACT(ObjectsHaveSameAddress_Throws_MessagesTestCase)
-   AFACT(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws)
-   AFACT(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws_UserTypeTestCase)
-   AFACT(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws_MessagesTestCase)
+   AFACT(ObjectsHaveSameAddress_ThrowsAnomaly)
+   AFACT(ObjectsHaveSameAddress_ThrowsAnomaly__MessagesTestCase)
+   AFACT(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_ThrowsAnomaly)
+   AFACT(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_ThrowsAnomaly_UserTypeTestCase)
+   AFACT(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_ThrowsAnomaly_MessagesTestCase)
    AFACT(ObjectsHaveDifferentAddresses_ObjectsAreEqual_DoesNotThrowException)
    EVIDENCE
 
-   TEST(ObjectsHaveSameAddress_Throws)
+   TEST(ObjectsHaveSameAddress_ThrowsAnomaly)
    {
       int x = 0;
       const string expectedAreNotSameWhatText = MakeExpectedARE_NOT_SAME_WhatText(&x, &x);
@@ -25,7 +25,7 @@ expectedAreNotSameWhatText,
       THROWS_EXCEPTION(ARE_COPIES(x, x), Anomaly, expectedWhat);
    }
 
-   TEST(ObjectsHaveSameAddress_Throws_MessagesTestCase)
+   TEST(ObjectsHaveSameAddress_ThrowsAnomaly__MessagesTestCase)
    {
       int x = 0;
       const string messageA = "A", messageB = "B";
@@ -58,7 +58,7 @@ expectedAreNotSameWhatText,
       return expectedWhatPattern;
    }
 
-   TEST(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws)
+   TEST(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_ThrowsAnomaly)
    {
       const int x = 1;
       int y = 2;
@@ -73,7 +73,7 @@ expectedAreNotSameWhatText,
 "File.cpp(1)"));
    }
 
-   TEST(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws_UserTypeTestCase)
+   TEST(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_ThrowsAnomaly_UserTypeTestCase)
    {
       UserType x(1);
       const UserType y(2);
@@ -88,7 +88,7 @@ expectedAreNotSameWhatText,
 "File.cpp(1)"));
    }
 
-   TEST(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_Throws_MessagesTestCase)
+   TEST(ObjectsHaveDifferentAddresses_ObjectsAreNotEqual_ThrowsAnomaly_MessagesTestCase)
    {
       UserType x(1);
       UserType y(2);

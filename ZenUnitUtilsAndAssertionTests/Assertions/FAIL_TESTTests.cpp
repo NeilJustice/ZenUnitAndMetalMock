@@ -3,18 +3,18 @@
 namespace ZenUnit
 {
    TESTS(FAIL_TESTTests)
-   AFACT(StringLiteralBecause_Throws)
-   AFACT(StringVariableBecause_MessagesTestCase_Throws)
+   AFACT(StringLiteralBecause_ThrowsAnomaly)
+   AFACT(StringVariableBecause_MessagesTestCase_ThrowsAnomaly)
    EVIDENCE
 
-   TEST(StringLiteralBecause_Throws)
+   TEST(StringLiteralBecause_ThrowsAnomaly)
    {
       THROWS_EXCEPTION(FAIL_TEST("Because"), Anomaly, TestUtil::NewlineConcat("",
 " Failed: FAIL_TEST(\"Because\")",
 "File.cpp(1)"));
    }
 
-   TEST(StringVariableBecause_MessagesTestCase_Throws)
+   TEST(StringVariableBecause_MessagesTestCase_ThrowsAnomaly)
    {
       const string Because = "BecauseValue";
       const string messageA = "A", messageB = "B";

@@ -4,8 +4,8 @@ namespace ZenUnit
 {
    TESTS(ARE_NOT_SAMETests)
    AFACT(ExpectedAndActualAddressesNotEqual_DoesNotThrowException)
-   AFACT(ExpectedAndActualAddressesEqual_Throws)
-   AFACT(ExpectedAndActualAddressesEqual_Throws_MessagesTestCase)
+   AFACT(ExpectedAndActualAddressesEqual_ThrowsAnomaly)
+   AFACT(ExpectedAndActualAddressesEqual_ThrowsAnomaly__MessagesTestCase)
    EVIDENCE
 
    TEST(ExpectedAndActualAddressesNotEqual_DoesNotThrowException)
@@ -15,7 +15,7 @@ namespace ZenUnit
       ARE_NOT_SAME(notExpectedObject, actualObject);
    }
 
-   TEST(ExpectedAndActualAddressesEqual_Throws)
+   TEST(ExpectedAndActualAddressesEqual_ThrowsAnomaly)
    {
       int notExpectedObject = 0;
       const int& actualObject = notExpectedObject;
@@ -24,7 +24,7 @@ namespace ZenUnit
       THROWS_EXCEPTION(ARE_NOT_SAME(notExpectedObject, actualObject), Anomaly, expectedWhat);
    }
 
-   TEST(ExpectedAndActualAddressesEqual_Throws_MessagesTestCase)
+   TEST(ExpectedAndActualAddressesEqual_ThrowsAnomaly__MessagesTestCase)
    {
       const string a = "a";
       const string& b = a;

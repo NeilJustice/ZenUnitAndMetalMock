@@ -4,11 +4,11 @@ namespace ZenUnit
 {
    TESTS(CONTAINS_ELEMENTTests)
    AFACT(Vector_DoesContainElement_DoesNotThrowException)
-   AFACT(Vector_DoesNotContainElement_Throws)
+   AFACT(Vector_DoesNotContainElement_ThrowsAnomaly)
    AFACT(Map_DoesContainElement_DoesNotThrowException)
-   AFACT(Map_DoesNotContainElement_Throws)
+   AFACT(Map_DoesNotContainElement_ThrowsAnomaly)
    AFACT(Set_DoesContainElement_DoesNotThrowException)
-   AFACT(Set_DoesNotContainElement_Throws_MessagesTestCase)
+   AFACT(Set_DoesNotContainElement_ThrowsAnomaly__MessagesTestCase)
    EVIDENCE
 
    TEST(Vector_DoesContainElement_DoesNotThrowException)
@@ -22,7 +22,7 @@ namespace ZenUnit
       }
    }
 
-   TEST(Vector_DoesNotContainElement_Throws)
+   TEST(Vector_DoesNotContainElement_ThrowsAnomaly)
    {
       const vector<int> emptyIntVector;
       THROWS_EXCEPTION(CONTAINS_ELEMENT(0, emptyIntVector), Anomaly, TestUtil::NewlineConcat("",
@@ -45,7 +45,7 @@ namespace ZenUnit
       }
    }
 
-   TEST(Map_DoesNotContainElement_Throws)
+   TEST(Map_DoesNotContainElement_ThrowsAnomaly)
    {
       const map<int, int> emptyIntIntMap;
       const pair<const int, int> kvp(0, 0);
@@ -67,7 +67,7 @@ namespace ZenUnit
       }
    }
 
-   TEST(Set_DoesNotContainElement_Throws_MessagesTestCase)
+   TEST(Set_DoesNotContainElement_ThrowsAnomaly__MessagesTestCase)
    {
       const set<int> emptyIntSet;
       const string messageA = "A", messageB = "B";

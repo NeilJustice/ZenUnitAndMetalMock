@@ -5,12 +5,12 @@ namespace ZenUnit
    TESTS(IS_TRUETests)
    AFACT(TrueBoolLiteral_DoesNotThrowException)
    AFACT(TrueBoolVariable_DoesNotThrowException)
-   AFACT(FalseBoolLiteral_Throws)
-   AFACT(FalseBoolVariable_Throws_MessagesTestCase)
+   AFACT(FalseBoolLiteral_ThrowsAnomaly)
+   AFACT(FalseBoolVariable_ThrowsAnomaly__MessagesTestCase)
    AFACT(StdFunctionPointsToAFunction_DoesNotThrowException)
-   AFACT(StdFunctionDoesNotPointToAFunction_Throws)
+   AFACT(StdFunctionDoesNotPointToAFunction_ThrowsAnomaly)
    AFACT(UserTypeConvertsToTrue_DoesNotThrowException)
-   AFACT(UserTypeConvertsToFalse_Throws)
+   AFACT(UserTypeConvertsToFalse_ThrowsAnomaly)
    EVIDENCE
 
    TEST(TrueBoolLiteral_DoesNotThrowException)
@@ -24,7 +24,7 @@ namespace ZenUnit
       IS_TRUE(trueBool);
    }
 
-   TEST(FalseBoolLiteral_Throws)
+   TEST(FalseBoolLiteral_ThrowsAnomaly)
    {
       THROWS_EXCEPTION(IS_TRUE(false), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_TRUE(false)",
@@ -33,7 +33,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(FalseBoolVariable_Throws_MessagesTestCase)
+   TEST(FalseBoolVariable_ThrowsAnomaly__MessagesTestCase)
    {
       const bool falseBool = false;
       const string messageA = "A", messageB = "B";
@@ -51,7 +51,7 @@ namespace ZenUnit
       IS_TRUE(nonemptyStdFunction);
    }
 
-   TEST(StdFunctionDoesNotPointToAFunction_Throws)
+   TEST(StdFunctionDoesNotPointToAFunction_ThrowsAnomaly)
    {
       const function<void()> emptyStdFunction;
       THROWS_EXCEPTION(IS_TRUE(emptyStdFunction), Anomaly, TestUtil::NewlineConcat("",
@@ -67,7 +67,7 @@ namespace ZenUnit
       IS_TRUE(trueUserType);
    }
 
-   TEST(UserTypeConvertsToFalse_Throws)
+   TEST(UserTypeConvertsToFalse_ThrowsAnomaly)
    {
       const UserType falseUserType(0);
       THROWS_EXCEPTION(IS_TRUE(falseUserType), Anomaly, TestUtil::NewlineConcat("",
