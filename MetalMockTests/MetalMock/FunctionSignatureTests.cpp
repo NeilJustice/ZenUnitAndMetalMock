@@ -2,7 +2,7 @@
 
 namespace MetalMock
 {
-   TESTS(SignatureTests)
+   TESTS(FunctionSignatureTests)
    FACTS(Function_ReturnsFunctionSignature)
    FACTS(FunctionPointer_ReturnsExpected)
    EVIDENCE
@@ -37,5 +37,5 @@ namespace MetalMock
       ARE_EQUAL(expectedFunctionPointerSignature, functionPointerSignature);
    }
 
-   RUN_TESTS(SignatureTests)
+   RUN_TESTS(FunctionSignatureTests)
 }
