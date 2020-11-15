@@ -17,7 +17,6 @@ namespace ZenUnit
    AFACT(PrintIfFailure_SuccessButPastDeadline_PrintsExpected)
    FACTS(PrintIfFailure_InvalidOutcome_Throws)
    FACTS(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseNumberIfTestCaseNumberNotMaxValue)
-   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
    TestResult _testResult;
@@ -402,38 +401,6 @@ namespace ZenUnit
       {
          METALMOCK(_consoleMock.WriteMock.CalledOnceWith(" test case " + to_string(testCaseNumber) + "/" + to_string(_testResult.totalTestCases)));
       }
-   }
-
-   TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   {
-      ZENUNIT_EQUALIZER_TEST_SETUP(TestResult);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, fullTestName, FullTestName("ClassName", "TestName", 0));
-
-      TestPhaseResult nonDefaultConstructorTestPhaseResult;
-      nonDefaultConstructorTestPhaseResult.testPhase = TestPhase::Constructor;
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, constructorTestPhaseResult, nonDefaultConstructorTestPhaseResult);
-
-      TestPhaseResult nonDefaultStartupTestPhaseResult;
-      nonDefaultStartupTestPhaseResult.testPhase = TestPhase::Startup;
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, startupTestPhaseResult, nonDefaultStartupTestPhaseResult);
-
-      TestPhaseResult nonDefaultTestBodyTestPhaseResult;
-      nonDefaultTestBodyTestPhaseResult.testPhase = TestPhase::TestBody;
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, testBodyTestPhaseResult, nonDefaultTestBodyTestPhaseResult);
-
-      TestPhaseResult nonDefaultCleanupTestPhaseResult;
-      nonDefaultCleanupTestPhaseResult.testPhase = TestPhase::Cleanup;
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, cleanupTestPhaseResult, nonDefaultCleanupTestPhaseResult);
-
-      TestPhaseResult nonDefaultDestructorTestPhaseResult;
-      nonDefaultDestructorTestPhaseResult.testPhase = TestPhase::Destructor;
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, destructorTestPhaseResult, nonDefaultDestructorTestPhaseResult);
-
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, responsibleTestPhaseResultField, &TestResult::constructorTestPhaseResult);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, testOutcome, TestOutcome::Anomaly);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, testCaseNumber, size_t(10));
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, totalTestCases, size_t(20));
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, microseconds, 30u);
    }
 
    RUN_TESTS(TestResultTests)

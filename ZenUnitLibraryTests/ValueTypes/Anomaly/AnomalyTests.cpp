@@ -17,7 +17,6 @@ namespace ZenUnit
    AFACT(what_ReturnsWhyCStr)
    AFACT(WriteLineWhy_CallsConsoleWriteLineWithWhy)
    AFACT(METALMOCKWrapped_ReturnsExpectedAnomaly)
-   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
    const char* AssertionName = "ASSERTION_NAME";
@@ -410,12 +409,6 @@ Expected: "expected"
 FilePath(1))";
       expectedAnomaly.filePathLineNumber = FilePathLineNumberValue;
       ARE_EQUAL(expectedAnomaly, anomaly);
-   }
-
-   TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   {
-      ZENUNIT_EQUALIZER_TEST_SETUP(Anomaly);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Anomaly, why, "whyValue");
    }
 
    RUN_TESTS(AnomalyTests)
