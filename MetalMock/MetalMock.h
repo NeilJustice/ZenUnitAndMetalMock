@@ -1443,6 +1443,20 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
             throw UnsupportedCalledZeroTimesException(MetalMockedFunctionSignature);
          }
       }
+
+      template<typename NArgumentFunctionCallReferencesType, typename NArgumentFunctionCallType>
+      static std::vector<NArgumentFunctionCallReferencesType> ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences(
+         const std::vector<NArgumentFunctionCallType>& metalMockFunctionCalls)
+      {
+         std::vector<NArgumentFunctionCallReferencesType> metalMockFunctionCallReferences;
+         metalMockFunctionCallReferences.reserve(metalMockFunctionCalls.size());
+         std::for_each(metalMockFunctionCalls.cbegin(), metalMockFunctionCalls.cend(),
+            [&](const NArgumentFunctionCallType& metalMockFunctionCall)
+            {
+               metalMockFunctionCallReferences.emplace_back(metalMockFunctionCall);
+            });
+         return metalMockFunctionCallReferences;
+      }
    private:
       void MetalMockExitIfExpectedButNotAsserted() const
       {
@@ -2380,22 +2394,12 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedOneArgumentFunctionCalls.size());
          this->MetalMockSetAsserted();
-         const std::vector<OneArgumentFunctionCallReference<ArgType>> actualOneArgumentFunctionCalls = PrivateCallsToCallRefs(metalMockedFunctionCallHistory);
+         const std::vector<OneArgumentFunctionCallReference<ArgType>> actualOneArgumentFunctionCalls =
+            ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
+            OneArgumentFunctionCallReference<ArgType>,
+            OneArgumentFunctionCall<ArgType>>(metalMockedFunctionCallHistory);
          VECTORS_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
-      }
-   private:
-      static std::vector<OneArgumentFunctionCallReference<ArgType>>
-         PrivateCallsToCallRefs(const std::vector<OneArgumentFunctionCall<ArgType>>& metalMockedFunctionCallHistory)
-      {
-         std::vector<OneArgumentFunctionCallReference<ArgType>> oneArgumentFunctionCallRefs;
-         oneArgumentFunctionCallRefs.reserve(metalMockedFunctionCallHistory.size());
-         std::for_each(metalMockedFunctionCallHistory.cbegin(), metalMockedFunctionCallHistory.cend(),
-            [&](const OneArgumentFunctionCall<ArgType>& oneArgumentFunctionCall)
-         {
-            oneArgumentFunctionCallRefs.emplace_back(oneArgumentFunctionCall);
-         });
-         return oneArgumentFunctionCallRefs;
       }
    };
 
@@ -2596,20 +2600,6 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          VECTORS_ARE_EQUAL(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
       }
-   private:
-      template<typename NArgumentFunctionCallReferencesType, typename NArgumentFunctionCallType>
-      static std::vector<NArgumentFunctionCallReferencesType> ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences(
-         const std::vector<NArgumentFunctionCallType>& metalMockFunctionCalls)
-      {
-         std::vector<NArgumentFunctionCallReferencesType> metalMockFunctionCallReferences;
-         metalMockFunctionCallReferences.reserve(metalMockFunctionCalls.size());
-         std::for_each(metalMockFunctionCalls.cbegin(), metalMockFunctionCalls.cend(),
-            [&](const NArgumentFunctionCallType& metalMockFunctionCall)
-            {
-               metalMockFunctionCallReferences.emplace_back(metalMockFunctionCall);
-            });
-         return metalMockFunctionCallReferences;
-      }
    };
 
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type>
@@ -2799,23 +2789,12 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedThreeArgumentFunctionCalls.size());
          this->MetalMockSetAsserted();
-         const std::vector<ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>> actualThreeArgumentFunctionCalls = PrivateCallsToCallRefs(metalMockedFunctionCallHistory);
+         const std::vector<ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>> actualThreeArgumentFunctionCalls =
+            ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
+            ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>,
+            ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>>(metalMockedFunctionCallHistory);
          VECTORS_ARE_EQUAL(expectedThreeArgumentFunctionCalls, actualThreeArgumentFunctionCalls, this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
-      }
-
-   private:
-      static std::vector<ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>>
-         PrivateCallsToCallRefs(const std::vector<ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>>& metalMockedFunctionCallHistory)
-      {
-         std::vector<ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>> threeArgumentFunctionCallRefs;
-         threeArgumentFunctionCallRefs.reserve(metalMockedFunctionCallHistory.size());
-         std::for_each(metalMockedFunctionCallHistory.cbegin(), metalMockedFunctionCallHistory.cend(),
-            [&](const ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>& threeArgumentFunctionCall)
-         {
-            threeArgumentFunctionCallRefs.emplace_back(threeArgumentFunctionCall);
-         });
-         return threeArgumentFunctionCallRefs;
       }
    };
 
@@ -3035,24 +3014,12 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedFourArgumentFunctionCalls.size());
          this->MetalMockSetAsserted();
-         const std::vector<FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
-            actualFourArgumentFunctionCalls = PrivateCallsToCallRefs(metalMockedFunctionCallHistory);
+         const std::vector<FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> actualFourArgumentFunctionCalls =
+            ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
+            FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>,
+            FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>(metalMockedFunctionCallHistory);
          VECTORS_ARE_EQUAL(expectedFourArgumentFunctionCalls, actualFourArgumentFunctionCalls, this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
-      }
-
-   private:
-      static std::vector<FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
-         PrivateCallsToCallRefs(const std::vector<FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>& metalMockedFunctionCallHistory)
-      {
-         std::vector<FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> fourArgumentFunctionCallRefs;
-         fourArgumentFunctionCallRefs.reserve(metalMockedFunctionCallHistory.size());
-         std::for_each(metalMockedFunctionCallHistory.cbegin(), metalMockedFunctionCallHistory.cend(),
-            [&](const FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& fourArgumentFunctionCall)
-         {
-            fourArgumentFunctionCallRefs.emplace_back(fourArgumentFunctionCall);
-         });
-         return fourArgumentFunctionCallRefs;
       }
    };
 
@@ -3233,24 +3200,12 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedFiveArgumentFunctionCalls.size());
          this->MetalMockSetAsserted();
-         const std::vector<FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
-            actualFiveArgumentFunctionCalls = PrivateCallsToCallRefs(metalMockedFunctionCallHistory);
+         const std::vector<FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>> actualFiveArgumentFunctionCalls =
+            ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
+            FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>,
+            FiveArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>(metalMockedFunctionCallHistory);
          VECTORS_ARE_EQUAL(expectedFiveArgumentFunctionCalls, actualFiveArgumentFunctionCalls, this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
-      }
-
-   private:
-      static std::vector<FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>
-         PrivateCallsToCallRefs(const std::vector<FiveArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>& metalMockedFunctionCallHistory)
-      {
-         std::vector<FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>> fiveArgumentFunctionCallRefs;
-         fiveArgumentFunctionCallRefs.reserve(metalMockedFunctionCallHistory.size());
-         std::for_each(metalMockedFunctionCallHistory.cbegin(), metalMockedFunctionCallHistory.cend(),
-            [&](const FiveArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& fiveArgumentFunctionCall)
-         {
-            fiveArgumentFunctionCallRefs.emplace_back(fiveArgumentFunctionCall);
-         });
-         return fiveArgumentFunctionCallRefs;
       }
    };
 
@@ -3431,28 +3386,17 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          return FunctionSequencingToken();
       }
 
-      FunctionSequencingToken CalledAsFollows(const std::vector<SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>& expectedSixArgumentFunctionCalls)
+      FunctionSequencingToken CalledAsFollows(
+         const std::vector<SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>& expectedSixArgumentFunctionCalls)
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedSixArgumentFunctionCalls.size());
          this->MetalMockSetAsserted();
-         const std::vector<SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
-            actualSixArgumentFunctionCalls = PrivateCallsToCallRefs(metalMockedFunctionCallHistory);
+         const std::vector<SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>> actualSixArgumentFunctionCalls =
+            ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
+            SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>,
+            SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>(metalMockedFunctionCallHistory);
          VECTORS_ARE_EQUAL(expectedSixArgumentFunctionCalls, actualSixArgumentFunctionCalls, this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
-      }
-
-   private:
-      static std::vector<SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>
-         PrivateCallsToCallRefs(const std::vector<SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>& metalMockedFunctionCallHistory)
-      {
-         std::vector<SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>> sixArgumentFunctionCallRefs;
-         sixArgumentFunctionCallRefs.reserve(metalMockedFunctionCallHistory.size());
-         std::for_each(metalMockedFunctionCallHistory.cbegin(), metalMockedFunctionCallHistory.cend(),
-            [&](const SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& sixArgumentFunctionCall)
-         {
-            sixArgumentFunctionCallRefs.emplace_back(sixArgumentFunctionCall);
-         });
-         return sixArgumentFunctionCallRefs;
       }
    };
 
@@ -3646,28 +3590,17 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          return FunctionSequencingToken();
       }
 
-      FunctionSequencingToken CalledAsFollows(const std::vector<SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>& expectedSevenArgumentFunctionCalls)
+      FunctionSequencingToken CalledAsFollows(
+         const std::vector<SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>& expectedSevenArgumentFunctionCalls)
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedSevenArgumentFunctionCalls.size());
          this->MetalMockSetAsserted();
-         const std::vector<SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>
-            actualSevenArgumentFunctionCalls = PrivateCallsToCallRefs(metalMockedFunctionCallHistory);
+         const std::vector<SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>> actualSevenArgumentFunctionCalls =
+            ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
+            SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>,
+            SevenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>(metalMockedFunctionCallHistory);
          VECTORS_ARE_EQUAL(expectedSevenArgumentFunctionCalls, actualSevenArgumentFunctionCalls, this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
-      }
-
-   private:
-      static std::vector<SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>
-         PrivateCallsToCallRefs(const std::vector<SevenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>& metalMockedFunctionCallHistory)
-      {
-         std::vector<SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>> sevenArgumentFunctionCallRefs;
-         sevenArgumentFunctionCallRefs.reserve(metalMockedFunctionCallHistory.size());
-         std::for_each(metalMockedFunctionCallHistory.cbegin(), metalMockedFunctionCallHistory.cend(),
-            [&](const SevenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& sevenArgumentFunctionCall)
-         {
-            sevenArgumentFunctionCallRefs.emplace_back(sevenArgumentFunctionCall);
-         });
-         return sevenArgumentFunctionCallRefs;
       }
    };
 
@@ -3874,28 +3807,17 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          return FunctionSequencingToken();
       }
 
-      FunctionSequencingToken CalledAsFollows(const std::vector<EightArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>& expectedEightArgumentFunctionCalls)
+      FunctionSequencingToken CalledAsFollows(
+         const std::vector<EightArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>& expectedEightArgumentFunctionCalls)
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedEightArgumentFunctionCalls.size());
          this->MetalMockSetAsserted();
-         const std::vector<EightArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
-            actualEightArgumentFunctionCalls = PrivateCallsToCallRefs(metalMockedFunctionCallHistory);
+         const std::vector<EightArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>> actualEightArgumentFunctionCalls =
+            ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
+            EightArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>,
+            EightArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>(metalMockedFunctionCallHistory);
          VECTORS_ARE_EQUAL(expectedEightArgumentFunctionCalls, actualEightArgumentFunctionCalls, this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
-      }
-
-   private:
-      static std::vector<EightArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>
-         PrivateCallsToCallRefs(const std::vector<EightArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>>& metalMockedFunctionCallHistory)
-      {
-         std::vector<EightArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>> eightArgumentFunctionCallRefs;
-         eightArgumentFunctionCallRefs.reserve(metalMockedFunctionCallHistory.size());
-         std::for_each(metalMockedFunctionCallHistory.cbegin(), metalMockedFunctionCallHistory.cend(),
-            [&](const EightArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type>& eightArgumentFunctionCall)
-         {
-            eightArgumentFunctionCallRefs.emplace_back(eightArgumentFunctionCall);
-         });
-         return eightArgumentFunctionCallRefs;
       }
    };
 
@@ -4115,24 +4037,12 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedNineArgumentFunctionCalls.size());
          this->MetalMockSetAsserted();
-         const std::vector<NineArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
-            actualNineArgumentFunctionCalls = PrivateCallsToCallRefs(metalMockedFunctionCallHistory);
+         const std::vector<NineArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>> actualNineArgumentFunctionCalls =
+            ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
+            NineArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>,
+            NineArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>(metalMockedFunctionCallHistory);
          VECTORS_ARE_EQUAL(expectedNineArgumentFunctionCalls, actualNineArgumentFunctionCalls, this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
-      }
-
-   private:
-      static std::vector<NineArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>
-         PrivateCallsToCallRefs(const std::vector<NineArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>>& metalMockedFunctionCallHistory)
-      {
-         std::vector<NineArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>> nineArgumentFunctionCallRefs;
-         nineArgumentFunctionCallRefs.reserve(metalMockedFunctionCallHistory.size());
-         std::for_each(metalMockedFunctionCallHistory.cbegin(), metalMockedFunctionCallHistory.cend(),
-            [&](const NineArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type>& nineArgumentFunctionCall)
-         {
-            nineArgumentFunctionCallRefs.emplace_back(nineArgumentFunctionCall);
-         });
-         return nineArgumentFunctionCallRefs;
       }
    };
 
@@ -4368,24 +4278,12 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedTenArgumentFunctionCalls.size());
          this->MetalMockSetAsserted();
-         const std::vector<TenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
-            actualTenArgumentFunctionCalls = PrivateCallsToCallRefs(metalMockedFunctionCallHistory);
+         const std::vector<TenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>> actualTenArgumentFunctionCalls =
+            ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
+            TenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>,
+            TenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>(metalMockedFunctionCallHistory);
          VECTORS_ARE_EQUAL(expectedTenArgumentFunctionCalls, actualTenArgumentFunctionCalls, this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
-      }
-
-   private:
-      static std::vector<TenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>
-         PrivateCallsToCallRefs(const std::vector<TenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>>& metalMockedFunctionCallHistory)
-      {
-         std::vector<TenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>> tenArgumentFunctionCallRefs;
-         tenArgumentFunctionCallRefs.reserve(metalMockedFunctionCallHistory.size());
-         std::for_each(metalMockedFunctionCallHistory.cbegin(), metalMockedFunctionCallHistory.cend(),
-            [&](const TenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type>& tenArgumentFunctionCall)
-         {
-            tenArgumentFunctionCallRefs.emplace_back(tenArgumentFunctionCall);
-         });
-         return tenArgumentFunctionCallRefs;
       }
    };
 
