@@ -1213,27 +1213,27 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
       }
    };
 
-   class ExceptionThrower
+   class IExceptionThrower
    {
    public:
       virtual void ThrowException() const = 0;
-      virtual ~ExceptionThrower() = default;
+      virtual ~IExceptionThrower() = default;
    };
 
    template<typename ExceptionType>
-   class TemplateExceptionThrower : public ExceptionThrower
+   class TemplatedExceptionThrower : public IExceptionThrower
    {
       template<typename T>
-      friend class TemplateExceptionThrowerTests;
+      friend class TemplatedExceptionThrowerTests;
    private:
       std::unique_ptr<const ExceptionType> _exceptionToBeThrown;
    public:
       template<typename... ExceptionArgTypes>
-      static const ExceptionThrower* New(ExceptionArgTypes&&... exceptionArgs)
+      static const IExceptionThrower* New(ExceptionArgTypes&&... exceptionArgs)
       {
-         auto* const newInstanceOfTemplateExceptionThrower = new TemplateExceptionThrower<ExceptionType>;
-         newInstanceOfTemplateExceptionThrower->_exceptionToBeThrown = std::make_unique<ExceptionType>(std::forward<ExceptionArgTypes>(exceptionArgs)...);
-         return newInstanceOfTemplateExceptionThrower;
+         TemplatedExceptionThrower<ExceptionType>* const newTemplatedExceptionThrower = new TemplatedExceptionThrower<ExceptionType>;
+         newTemplatedExceptionThrower->_exceptionToBeThrown = std::make_unique<ExceptionType>(std::forward<ExceptionArgTypes>(exceptionArgs)...);
+         return newTemplatedExceptionThrower;
       }
 
       void ThrowException() const override
@@ -1248,7 +1248,7 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
    class MetalMockExceptionThrower
    {
    private:
-      std::shared_ptr<const ExceptionThrower> _exceptionThrower;
+      std::shared_ptr<const IExceptionThrower> _exceptionThrower;
    public:
       template<typename ExceptionType, typename... ExceptionArgTypes>
       void ThrowExceptionWhenCalled(ExceptionArgTypes&&... exceptionArgs)
@@ -1257,7 +1257,7 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
          {
             throw std::logic_error("MetalMock::MetalMockExceptionThrower::ThrowExceptionWhenCalled<T>() called twice");
          }
-         _exceptionThrower.reset(TemplateExceptionThrower<ExceptionType>::New(std::forward<ExceptionArgTypes>(exceptionArgs)...));
+         _exceptionThrower.reset(TemplatedExceptionThrower<ExceptionType>::New(std::forward<ExceptionArgTypes>(exceptionArgs)...));
       }
 
       void MetalMockThrowExceptionIfExceptionSet() const
