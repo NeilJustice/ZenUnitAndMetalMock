@@ -8,16 +8,15 @@ namespace ZenUnit
    FACTS(TwoArgConstructor_SetsFilePathAndLineNumber)
    AFACT(ToString_ReturnsFilePathLeftParenLineNumberRightParen)
    AFACT(OStreamInsertionOperator_WritesExpected)
-   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
    TEST(DefaultConstructor_SetsFieldsTo0)
    {
-      const FilePathLineNumber filePathLineNumber;
-      FilePathLineNumber expectedFilePathLineNumber;
-      expectedFilePathLineNumber.filePath = "";
-      expectedFilePathLineNumber.lineNumber = 0;
-      ARE_EQUAL(expectedFilePathLineNumber, filePathLineNumber);
+      const FilePathLineNumber defaultFilePathLineNumber;
+      FilePathLineNumber expectedDefaultFilePathLineNumber;
+      expectedDefaultFilePathLineNumber.filePath = "";
+      expectedDefaultFilePathLineNumber.lineNumber = 0;
+      ARE_EQUAL(expectedDefaultFilePathLineNumber, defaultFilePathLineNumber);
    }
 
    TEST4X4(TwoArgConstructor_SetsFilePathAndLineNumber,
@@ -35,13 +34,17 @@ namespace ZenUnit
 
    TEST(OStreamInsertionOperator_WritesExpected)
    {
-      const FilePathLineNumber filePathLineNumber("File", 1);
+      const string filePath = ZenUnit::Random<string>();
+      const unsigned lineNumber = ZenUnit::Random<long>();
+      //
+      const FilePathLineNumber filePathLineNumber(filePath.c_str(), lineNumber);
       //
       ostringstream oss;
       oss << filePathLineNumber;
       //
       const string result = oss.str();
-      ARE_EQUAL("File(1)", result);
+      const string expected = filePath + "(" + to_string(lineNumber) + ")";
+      ARE_EQUAL(expected, result);
    }
 
    TEST(ToString_ReturnsFilePathLeftParenLineNumberRightParen)
@@ -52,13 +55,6 @@ namespace ZenUnit
       filePathLineNumber.filePath = "FilePath";
       filePathLineNumber.lineNumber = 10;
       ARE_EQUAL("FilePath(10)", filePathLineNumber.ToString());
-   }
-
-   TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   {
-      ZENUNIT_EQUALIZER_TEST_SETUP(FilePathLineNumber);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FilePathLineNumber, filePath, "arbitrary non-default const char* value");
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FilePathLineNumber, lineNumber, 1u);
    }
 
    RUN_TESTS(FilePathLineNumberTests)
