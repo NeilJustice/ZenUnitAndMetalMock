@@ -50,7 +50,7 @@ catch (const ZenUnit::Anomaly& metalMockWrappedAnomaly) \
 }
 
 //
-// 0-Argument Function-Mocking Macros
+// Macros For MetalMocking 0-Argument Functions
 //
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a base class function with signature "virtual void VirtualFunctionName()".
@@ -141,7 +141,7 @@ ReturnType FunctionName() Constness Finalness \
 }
 
 //
-// 1-Argument Function-Mocking Macros
+// Macros For MetalMocking 1-Argument Functions
 //
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a base class function with signature "virtual void VirtualFunctionName(Arg1Type)".
@@ -233,7 +233,7 @@ ReturnType FunctionName(Arg1Type arg) Constness Finalness \
 }
 
 //
-// 2-Argument Function-Mocking Macros
+// Macros For MetalMocking 2-Argument Functions
 //
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "void VirtualFunctionName(Arg1Type, Arg2Type)".
@@ -325,7 +325,7 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument) Constne
 }
 
 //
-// 3-Argument Function-Mocking Macros
+// Macros For MetalMocking 3-Argument Functions
 //
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "void VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type)".
@@ -417,7 +417,7 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Typ
 }
 
 //
-// 4-Argument Function-Mocking Macros
+// Macros For MetalMocking 4-Argument Functions
 //
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "void VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
@@ -509,7 +509,7 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Typ
 }
 
 //
-// 5-Argument Function-Mocking Macros
+// Macros For MetalMocking 5-Argument Functions
 //
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "void VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
@@ -601,7 +601,7 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Typ
 }
 
 //
-// 6-Argument Function-Mocking Macros
+// Macros For MetalMocking 6-Argument Functions
 //
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "void VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
@@ -693,7 +693,7 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Typ
 }
 
 //
-// 7-Argument Function-Mocking Macros
+// Macros For MetalMocking 7-Argument Functions
 //
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "void VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
@@ -785,7 +785,7 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Typ
 }
 
 //
-// 8-Argument Function-Mocking Macros
+// Macros For MetalMocking 8-Argument Functions
 //
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "void VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type)".
@@ -877,7 +877,7 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Typ
 }
 
 //
-// 9-Argument Function-Mocking Macros
+// Macros For MetalMocking 9-Argument Functions
 //
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "void VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type)".
@@ -969,7 +969,7 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Typ
 }
 
 //
-// 10-Argument Function-Mocking Macros
+// Macros For MetalMocking 10-Argument Functions
 //
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "void VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type)".
@@ -1061,52 +1061,52 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Typ
 }
 
 //
-// MetalMock Binding Macros For Static And Free MetalMock Objects
+// MetalMock Binding Macros For Overwriting std::functions With Static And Free MetalMock Objects
 //
 
-// std::binds a 0-argument MetalMock object in preparation for assignment to a std::function to be mocked out
+// std::binds a 0-argument MetalMock object
 #define BIND_0ARG_METALMOCK_OBJECT(FunctionNameMock) \
-   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &(FunctionNameMock))
+   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock)
 
-// std::binds a 1-argument MetalMock object in preparation for assignment to a std::function to be mocked out
+// std::binds a 1-argument MetalMock object
 #define BIND_1ARG_METALMOCK_OBJECT(FunctionNameMock) \
-   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1)
+   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock, std::placeholders::_1)
 
-// std::binds a 2-argument MetalMock object in preparation for assignment to a std::function to be mocked out
+// std::binds a 2-argument MetalMock object
 #define BIND_2ARG_METALMOCK_OBJECT(FunctionNameMock) \
-   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2)
+   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock, std::placeholders::_1, std::placeholders::_2)
 
-// std::binds a 3-argument MetalMock object in preparation for assignment to a std::function to be mocked out
+// std::binds a 3-argument MetalMock object
 #define BIND_3ARG_METALMOCK_OBJECT(FunctionNameMock) \
-   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
+   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
 
-// std::binds a 4-argument MetalMock object in preparation for assignment to a std::function to be mocked out
+// std::binds a 4-argument MetalMock object
 #define BIND_4ARG_METALMOCK_OBJECT(FunctionNameMock) \
-   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)
+   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)
 
-// std::binds a 5-argument MetalMock object in preparation for assignment to a std::function to be mocked out
+// std::binds a 5-argument MetalMock object
 #define BIND_5ARG_METALMOCK_OBJECT(FunctionNameMock) \
-   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5)
+   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5)
 
-// std::binds a 6-argument MetalMock object in preparation for assignment to a std::function to be mocked out
+// std::binds a 6-argument MetalMock object
 #define BIND_6ARG_METALMOCK_OBJECT(FunctionNameMock) \
-   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6)
+   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6)
 
-// std::binds a 7-argument MetalMock object in preparation for assignment to a std::function to be mocked out
+// std::binds a 7-argument MetalMock object
 #define BIND_7ARG_METALMOCK_OBJECT(FunctionNameMock) \
-   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7)
+   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7)
 
-// std::binds a 8-argument MetalMock object in preparation for assignment to a std::function to be mocked out
+// std::binds an 8-argument MetalMock object
 #define BIND_8ARG_METALMOCK_OBJECT(FunctionNameMock) \
-   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8)
+   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8)
 
-// std::binds a 9-argument MetalMock object in preparation for assignment to a std::function to be mocked out
+// std::binds a 9-argument MetalMock object
 #define BIND_9ARG_METALMOCK_OBJECT(FunctionNameMock) \
-   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8, std::placeholders::_9)
+   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8, std::placeholders::_9)
 
-// std::binds a 10-argument MetalMock object in preparation for assignment to a std::function to be mocked out
+// std::binds a 10-argument MetalMock object
 #define BIND_10ARG_METALMOCK_OBJECT(FunctionNameMock) \
-   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &(FunctionNameMock), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8, std::placeholders::_9, std::placeholders::_10)
+   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8, std::placeholders::_9, std::placeholders::_10)
 
 namespace MetalMock
 {
@@ -1117,20 +1117,20 @@ namespace MetalMock
    public:
       template<typename... ArgTypes>
       explicit UnexpectedCallException(const std::string& metalMockedFunctionSignature, ArgTypes&&... args)
-         : _what(MakeWhat(metalMockedFunctionSignature, std::forward<ArgTypes>(args)...))
+         : _what(MakeExceptionMessage(metalMockedFunctionSignature, std::forward<ArgTypes>(args)...))
       {
       }
 
       virtual ~UnexpectedCallException() = default;
 
       template<typename... ArgTypes>
-      static std::string MakeWhat(const std::string& metalMockedFunctionSignature, ArgTypes&&... args)
+      static std::string MakeExceptionMessage(const std::string& metalMockedFunctionSignature, ArgTypes&&... args)
       {
          std::ostringstream whatBuilder;
          whatBuilder << "Unexpected call to MetalMocked function:\n" << metalMockedFunctionSignature;
          AppendToStringedArgs(whatBuilder, 0, std::forward<ArgTypes>(args)...);
-         const std::string what = whatBuilder.str();
-         return what;
+         const std::string exceptionMessage = whatBuilder.str();
+         return exceptionMessage;
       }
 
       const char* what() const noexcept override
@@ -1157,7 +1157,7 @@ namespace MetalMock
       const std::string _what;
    public:
       explicit ReturnValueMustBeSpecifiedException(const std::string& metalMockedFunctionSignature)
-         : _what(MakeWhat(metalMockedFunctionSignature))
+         : _what(MakeExceptionMessage(metalMockedFunctionSignature))
       {
       }
 
@@ -1168,7 +1168,7 @@ namespace MetalMock
          return _what.c_str();
       }
 
-      static std::string MakeWhat(const std::string& metalMockedFunctionSignature)
+      static std::string MakeExceptionMessage(const std::string& metalMockedFunctionSignature)
       {
          const std::string what = "For MetalMocked function \"" + metalMockedFunctionSignature + R"(":
 MetalMocked functions with non-void return types must have their return value or values set explicitly by calling:
@@ -1183,13 +1183,13 @@ MetalMocked functions with non-void return types must have their return value or
       const std::string _what;
    public:
       explicit UnsupportedCalledZeroTimesException(const std::string& metalMockedFunctionSignature)
-         : _what(MakeWhat(metalMockedFunctionSignature))
+         : _what(MakeExceptionMessage(metalMockedFunctionSignature))
       {
       }
 
       virtual ~UnsupportedCalledZeroTimesException() = default;
 
-      static std::string MakeWhat(const std::string& metalMockedFunctionSignature)
+      static std::string MakeExceptionMessage(const std::string& metalMockedFunctionSignature)
       {
          const std::string exceptionMessage = ZenUnit::String::Concat(
             "For MetalMocked function \"", metalMockedFunctionSignature, R"(":

@@ -52,7 +52,7 @@ namespace MetalMock
    {
       IS_FALSE(_threeArgumentMetalMocker->_wasExpected);
       THROWS_EXCEPTION(_threeArgumentMetalMocker->MetalMockIt(1, 2, 3), UnexpectedCallException,
-         UnexpectedCallException::MakeWhat(_metalMockedFunctionSignature, 1, 2, 3));
+         UnexpectedCallException::MakeExceptionMessage(_metalMockedFunctionSignature, 1, 2, 3));
    }
 
    TEST(MetalMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsMetalMockThrowIfExceptionSet)

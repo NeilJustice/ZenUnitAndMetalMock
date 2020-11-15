@@ -66,7 +66,7 @@ namespace MetalMock
          const auto test = [](auto functionCallLambda, const string& expectedSignature)
          {
             THROWS_EXCEPTION(functionCallLambda(), UnexpectedCallException,
-               UnexpectedCallException::MakeWhat(expectedSignature, 0));
+               UnexpectedCallException::MakeExceptionMessage(expectedSignature, 0));
          };
          test([&] { metalMockObject.Virtual(0); }, virtualSignature);
          test([&] { metalMockObject.VirtualConst(0); }, virtualConstSignature);
@@ -341,7 +341,7 @@ File.cpp(1))");
          const auto test = [](auto& metalMockObject, const string& expectedSignature)
          {
             THROWS_EXCEPTION(metalMockObject.CalledNTimesWith(0, 0), UnsupportedCalledZeroTimesException,
-               UnsupportedCalledZeroTimesException::MakeWhat(expectedSignature));
+               UnsupportedCalledZeroTimesException::MakeExceptionMessage(expectedSignature));
          };
          test(metalMockObject.VirtualMock, virtualSignature);
          test(metalMockObject.VirtualConstMock, virtualConstSignature);
@@ -449,7 +449,7 @@ File.cpp(1))");
          const auto test = [](auto& metalMockObject, const string& expectedSignature)
          {
             THROWS_EXCEPTION(metalMockObject.CalledAsFollows({}), UnsupportedCalledZeroTimesException,
-               UnsupportedCalledZeroTimesException::MakeWhat(expectedSignature));
+               UnsupportedCalledZeroTimesException::MakeExceptionMessage(expectedSignature));
          };
          test(metalMockObject.VirtualMock, virtualSignature);
          test(metalMockObject.VirtualConstMock, virtualConstSignature);

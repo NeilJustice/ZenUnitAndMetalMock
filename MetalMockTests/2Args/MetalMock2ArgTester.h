@@ -63,7 +63,7 @@ namespace MetalMock
       {
          const auto testcase = [](auto metalMockObjectFunctionCallLambda, const string& expectedFunctionSignature)
          {
-            const string expectedExceptionMessage = UnexpectedCallException::MakeWhat(expectedFunctionSignature, 0);
+            const string expectedExceptionMessage = UnexpectedCallException::MakeExceptionMessage(expectedFunctionSignature, 0);
             THROWS_EXCEPTION(metalMockObjectFunctionCallLambda(), UnexpectedCallException, expectedExceptionMessage);
          };
          testcase([&] { metalMockObject.Virtual(0); }, virtualFunctionSignature);

@@ -105,15 +105,15 @@ namespace MetalMock
    {
       IS_FALSE(_metalMocker->_wasExpected);
       THROWS_EXCEPTION(_metalMocker->MetalMockThrowIfNotExpected(), UnexpectedCallException,
-         UnexpectedCallException::MakeWhat(MetalMockedFunctionSignature));
+         UnexpectedCallException::MakeExceptionMessage(MetalMockedFunctionSignature));
       THROWS_EXCEPTION(_metalMocker->MetalMockThrowIfNotExpected(1, 2, 3), UnexpectedCallException,
-         UnexpectedCallException::MakeWhat(MetalMockedFunctionSignature, 1, 2, 3));
+         UnexpectedCallException::MakeExceptionMessage(MetalMockedFunctionSignature, 1, 2, 3));
    }
 
    TEST(MetalMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCalls0_ThrowsUnsupportedCalledZeroTimesException)
    {
       THROWS_EXCEPTION(_metalMocker->MetalMockThrowIfExpectedNumberOfCalls0(0),
-         UnsupportedCalledZeroTimesException, UnsupportedCalledZeroTimesException::MakeWhat(MetalMockedFunctionSignature));
+         UnsupportedCalledZeroTimesException, UnsupportedCalledZeroTimesException::MakeExceptionMessage(MetalMockedFunctionSignature));
    }
 
    TEST1X1(MetalMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCallsGreaterThan0_DoesNotThrowException,
@@ -127,7 +127,7 @@ namespace MetalMock
    TEST(MetalMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSize0_ThrowsUnsupportedCalledZeroTimesException)
    {
       THROWS_EXCEPTION(_metalMocker->MetalMockThrowIfExpectedCallsSizeIsZero(0),
-         UnsupportedCalledZeroTimesException, UnsupportedCalledZeroTimesException::MakeWhat(MetalMockedFunctionSignature));
+         UnsupportedCalledZeroTimesException, UnsupportedCalledZeroTimesException::MakeExceptionMessage(MetalMockedFunctionSignature));
    }
 
    TEST1X1(MetalMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSizeGreaterThan0_DoesNotThrowException,

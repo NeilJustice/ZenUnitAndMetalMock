@@ -51,11 +51,11 @@ namespace MetalMock
    {
       ValueReturner<int> valueReturnerInt(_metalMockedFunctionSignature);
       THROWS_EXCEPTION(valueReturnerInt.MetalMockNextReturnValue(), ReturnValueMustBeSpecifiedException,
-         ReturnValueMustBeSpecifiedException::MakeWhat(_metalMockedFunctionSignature));
+         ReturnValueMustBeSpecifiedException::MakeExceptionMessage(_metalMockedFunctionSignature));
 
       ValueReturner<const string&> valueReturnerConstStringRef(_metalMockedFunctionSignature);
       THROWS_EXCEPTION(valueReturnerConstStringRef.MetalMockNextReturnValue(), ReturnValueMustBeSpecifiedException,
-         ReturnValueMustBeSpecifiedException::MakeWhat(_metalMockedFunctionSignature));
+         ReturnValueMustBeSpecifiedException::MakeExceptionMessage(_metalMockedFunctionSignature));
    }
 
    TEST(MetalMockNextReturnValue_DefaultConstructibleReturnType_ReturnValuesSpecified_ReturnsValuesThenLastValueThereafter)
@@ -85,7 +85,7 @@ namespace MetalMock
    {
       ValueReturner<NonDefaultConstructible> valueReturner(_metalMockedFunctionSignature);
       THROWS_EXCEPTION(valueReturner.MetalMockNextReturnValue(), ReturnValueMustBeSpecifiedException,
-         ReturnValueMustBeSpecifiedException::MakeWhat(_metalMockedFunctionSignature));
+         ReturnValueMustBeSpecifiedException::MakeExceptionMessage(_metalMockedFunctionSignature));
    }
 
    TEST(MetalMockNextReturnValue_NonDefaultConstructibleReturnType_ReturnValuesPreviouslySpecified_ReturnsValuesThenLastValueTherafter)

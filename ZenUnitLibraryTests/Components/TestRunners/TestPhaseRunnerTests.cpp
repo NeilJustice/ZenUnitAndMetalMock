@@ -360,7 +360,7 @@ namespace ZenUnit
          expectedExceptionNameAndTestPhaseSuffixLines, Color::Red));
 
       METALMOCK(_testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(testPhase));
-      const string expectedWhat = MetalMock::UnexpectedCallException::MakeWhat("MetalMockedFunctionSignature");
+      const string expectedWhat = MetalMock::UnexpectedCallException::MakeExceptionMessage("MetalMockedFunctionSignature");
       const string expectedTestPhaseSuffixAndWhatLines = String::Concat(
          "what(): \"", expectedWhat, "\"");
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedTestPhaseSuffixAndWhatLines));
@@ -374,7 +374,7 @@ namespace ZenUnit
       expectedTestPhaseResult.testOutcome = TestOutcome::Exception;
       expectedTestPhaseResult.anomalyOrException = make_shared<AnomalyOrException>(
          Type::GetName<MetalMock::UnexpectedCallException>(),
-         MetalMock::UnexpectedCallException::MakeWhat("MetalMockedFunctionSignature").c_str());
+         MetalMock::UnexpectedCallException::MakeExceptionMessage("MetalMockedFunctionSignature").c_str());
       expectedTestPhaseResult.microseconds = _microseconds;
       ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
    }

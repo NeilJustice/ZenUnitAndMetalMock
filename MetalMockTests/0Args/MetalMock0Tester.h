@@ -66,7 +66,7 @@ namespace MetalMock
          auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
             THROWS_EXCEPTION(metalMockObject.CalledNTimes(0), MetalMock::UnsupportedCalledZeroTimesException,
-               MetalMock::UnsupportedCalledZeroTimesException::MakeWhat(expectedFunctionSignature));
+               MetalMock::UnsupportedCalledZeroTimesException::MakeExceptionMessage(expectedFunctionSignature));
          };
          test(metalMockObject.VirtualMock, virtualFunctionSignature);
          test(metalMockObject.VirtualConstMock, virtualConstFunctionSignature);
@@ -190,32 +190,32 @@ namespace MetalMock
       void MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException()
       {
          THROWS_EXCEPTION(metalMockObject.Virtual(),
-            UnexpectedCallException, UnexpectedCallException::MakeWhat(virtualFunctionSignature));
+            UnexpectedCallException, UnexpectedCallException::MakeExceptionMessage(virtualFunctionSignature));
 
          THROWS_EXCEPTION(metalMockObject.VirtualConst(),
-            UnexpectedCallException, UnexpectedCallException::MakeWhat(virtualConstFunctionSignature));
+            UnexpectedCallException, UnexpectedCallException::MakeExceptionMessage(virtualConstFunctionSignature));
 
          THROWS_EXCEPTION(metalMockObject.NonVirtual(),
-            UnexpectedCallException, UnexpectedCallException::MakeWhat(nonVirtualFunctionSignature));
+            UnexpectedCallException, UnexpectedCallException::MakeExceptionMessage(nonVirtualFunctionSignature));
 
          THROWS_EXCEPTION(metalMockObject.NonVirtualConst(),
-            UnexpectedCallException, UnexpectedCallException::MakeWhat(nonVirtualConstFunctionSignature));
+            UnexpectedCallException, UnexpectedCallException::MakeExceptionMessage(nonVirtualConstFunctionSignature));
 
          const function<void()> metalMockBoundFreeMock = BIND_0ARG_METALMOCK_OBJECT(freeMock);
          THROWS_EXCEPTION(metalMockBoundFreeMock(),
-            UnexpectedCallException, UnexpectedCallException::MakeWhat(freeFunctionSignature));
+            UnexpectedCallException, UnexpectedCallException::MakeExceptionMessage(freeFunctionSignature));
 
          const function<void()> metalMockBoundNamespacedFreeMock = BIND_0ARG_METALMOCK_OBJECT(namespacedFreeMock);
          THROWS_EXCEPTION(metalMockBoundNamespacedFreeMock(),
-            UnexpectedCallException, UnexpectedCallException::MakeWhat(namespacedFreeFunctionSignature));
+            UnexpectedCallException, UnexpectedCallException::MakeExceptionMessage(namespacedFreeFunctionSignature));
 
          const function<void()> metalMockBoundStaticNameClashMock = BIND_0ARG_METALMOCK_OBJECT(staticNameClashMock);
          THROWS_EXCEPTION(metalMockBoundStaticNameClashMock(),
-            UnexpectedCallException, UnexpectedCallException::MakeWhat(staticNameClashFunctionSignature));
+            UnexpectedCallException, UnexpectedCallException::MakeExceptionMessage(staticNameClashFunctionSignature));
 
          const function<void()> metalMockBoundStaticMock = BIND_0ARG_METALMOCK_OBJECT(staticMock);
          THROWS_EXCEPTION(metalMockBoundStaticMock(),
-            UnexpectedCallException, UnexpectedCallException::MakeWhat(staticFunctionSignature));
+            UnexpectedCallException, UnexpectedCallException::MakeExceptionMessage(staticFunctionSignature));
       }
 
       void ThrowExceptionWhenCalled_MetalMockedFunctionIsThenCalled_ThrowsTheSpecifiedExceptionTypeWithExceptionMessage()

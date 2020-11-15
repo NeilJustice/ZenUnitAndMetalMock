@@ -59,7 +59,7 @@ namespace MetalMock
    {
       IS_FALSE(_metalMocker->_wasExpected);
       THROWS_EXCEPTION(_metalMocker->MetalMockIt(0), UnexpectedCallException,
-         UnexpectedCallException::MakeWhat(_metalMockedFunctionSignature, 0));
+         UnexpectedCallException::MakeExceptionMessage(_metalMockedFunctionSignature, 0));
    }
 
    TEST(MetalMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsMetalMockThrowIfExceptionSet)
@@ -128,7 +128,7 @@ namespace MetalMock
    TEST(CalledAsFollowsWith_NIsZero_Throws)
    {
       THROWS_EXCEPTION(_metalMocker->CalledNTimesWith(0, 0), UnsupportedCalledZeroTimesException,
-         UnsupportedCalledZeroTimesException::MakeWhat(_metalMockedFunctionSignature));
+         UnsupportedCalledZeroTimesException::MakeExceptionMessage(_metalMockedFunctionSignature));
    }
 
    TEST3X3(CalledAsFollowsWith_SetsAssertedTrue_NDiffersFromActualCallCount_Throws,
@@ -199,7 +199,7 @@ File.cpp(1))");
    {
       IS_FALSE(_metalMocker->_wasAsserted);
       THROWS_EXCEPTION(_metalMocker->CalledAsFollows({}), UnsupportedCalledZeroTimesException,
-         UnsupportedCalledZeroTimesException::MakeWhat(_metalMockedFunctionSignature));
+         UnsupportedCalledZeroTimesException::MakeExceptionMessage(_metalMockedFunctionSignature));
       IS_FALSE(_metalMocker->_wasAsserted);
    }
 

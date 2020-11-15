@@ -51,7 +51,7 @@ namespace MetalMock
    TEST(MetalMockIt_ExpectedFalse_Throws)
    {
       IS_FALSE(_metalMocker->_wasExpected);
-      const string expectedExceptionMessage = UnexpectedCallException::MakeWhat(_metalMockedFunctionSignature, 1, 2);
+      const string expectedExceptionMessage = UnexpectedCallException::MakeExceptionMessage(_metalMockedFunctionSignature, 1, 2);
       THROWS_EXCEPTION(_metalMocker->MetalMockIt(1, 2),
          UnexpectedCallException, expectedExceptionMessage);
    }
