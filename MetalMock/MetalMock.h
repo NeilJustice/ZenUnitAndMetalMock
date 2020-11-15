@@ -1583,7 +1583,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       const FunctionReturnType& MetalMockItAndReturnValue()
       {
          ZeroArgumentMetalMocker::MetalMockIt();
-         return ValueReturner<FunctionReturnType>::MetalMockNextReturnValue();
+         const FunctionReturnType& returnValue = ValueReturner<FunctionReturnType>::MetalMockNextReturnValue();
+         return returnValue;
       }
    };
 
@@ -1599,7 +1600,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       static const FunctionReturnType& MetalMockItFunctionPointer(
          NonVoidZeroArgFunctionPointerMetalMocker<FunctionReturnType>* functionPointerMetalMocker)
       {
-         return functionPointerMetalMocker->MetalMockItAndReturnValue();
+         const FunctionReturnType& returnValue = functionPointerMetalMocker->MetalMockItAndReturnValue();
+         return returnValue;
       }
    };
 
@@ -3115,7 +3117,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          NonVoidFourArgFunctionPointerMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>* functionMocker,
          Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument)
       {
-         return functionMocker->MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument);
+         const FunctionReturnType& returnValue = functionMocker->MetalMockItAndReturnValue(
+            firstArgument, secondArgument, thirdArgument, fourthArgument);
+         return returnValue;
       }
    };
 
@@ -3309,8 +3313,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          NonVoidFiveArgFunctionPointerMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>* functionMocker,
          Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument)
       {
-         return functionMocker->MetalMockItAndReturnValue(
+         const FunctionReturnType& returnValue = functionMocker->MetalMockItAndReturnValue(
             firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument);
+         return returnValue;
       }
    };
 
@@ -3517,8 +3522,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          Arg5Type fifthArgument,
          Arg6Type sixthArgument)
       {
-         return functionMocker->MetalMockItAndReturnValue(
+         const FunctionReturnType& returnValue = functionMocker->MetalMockItAndReturnValue(
             firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument);
+         return returnValue;
       }
    };
 
@@ -3738,8 +3744,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          Arg6Type sixthArgument,
          Arg7Type seventhArgument)
       {
-         return functionMocker->MetalMockItAndReturnValue(
+         const FunctionReturnType& returnValue = functionMocker->MetalMockItAndReturnValue(
             firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument);
+         return returnValue;
       }
    };
 
@@ -3967,8 +3974,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          Arg7Type seventhArgument,
          Arg8Type eigthArgument)
       {
-         return functionMocker->MetalMockItAndReturnValue(
+         const FunctionReturnType& returnValue = functionMocker->MetalMockItAndReturnValue(
             firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument);
+         return returnValue;
       }
    };
 
@@ -4205,8 +4213,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          Arg8Type eigthArgument,
          Arg9Type ninthArgument)
       {
-         return functionMocker->MetalMockItAndReturnValue(
+         const FunctionReturnType& returnValue = functionMocker->MetalMockItAndReturnValue(
             firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument);
+         return returnValue;
       }
    };
 
@@ -4457,8 +4466,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          Arg9Type ninthArgument,
          Arg10Type tenthArgument)
       {
-         return functionMocker->MetalMockItAndReturnValue(
+         const FunctionReturnType& returnValue = functionMocker->MetalMockItAndReturnValue(
             firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument, tenthArgument);
+         return returnValue;
       }
    };
 
@@ -4495,7 +4505,17 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          Arg9Type ninthArgument,
          Arg10Type tenthArgument)
       {
-         functionMocker->MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument, tenthArgument);
+         functionMocker->MetalMockIt(
+            firstArgument,
+            secondArgument,
+            thirdArgument,
+            fourthArgument,
+            fifthArgument,
+            sixthArgument,
+            seventhArgument,
+            eigthArgument,
+            ninthArgument,
+            tenthArgument);
       }
    };
 
