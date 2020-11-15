@@ -1255,7 +1255,7 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
       {
          if (_exceptionThrower != nullptr)
          {
-            throw std::logic_error("MetalMockExceptionThrower::ThrowExceptionWhenCalled<T>() called twice");
+            throw std::logic_error("MetalMock::MetalMockExceptionThrower::ThrowExceptionWhenCalled<T>() called twice");
          }
          _exceptionThrower.reset(TemplateExceptionThrower<ExceptionType>::New(std::forward<ExceptionArgTypes>(exceptionArgs)...));
       }
