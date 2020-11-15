@@ -23,7 +23,6 @@ namespace ZenUnit
    AFACT(PrintTestClassResultLine_0FailedTestCases_WritesOKInGreen)
    FACTS(PrintTestClassResultLine_1OrMoreFailedTests_WritesFailedInRed)
    AFACT(PrintTestResultIfFailure_CallsTestResultPrintIfFailure)
-   AFACT(ZenUnitEqualizer_ThrowsIfTestResultsNotEqual)
    EVIDENCE
 
    TestClassResult _testClassResult;
@@ -249,12 +248,6 @@ namespace ZenUnit
       TestClassResult::PrintTestResultIfFailure(testResultMock, &console, &testFailureNumberer);
       //
       METALMOCK(testResultMock.PrintIfFailureMock.CalledOnceWith(&console, &testFailureNumberer));
-   }
-
-   TEST(ZenUnitEqualizer_ThrowsIfTestResultsNotEqual)
-   {
-      ZENUNIT_EQUALIZER_TEST_SETUP(TestClassResult);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestClassResult, _testResults, ZenUnit::RandomNonEmptyVector<TestResult>());
    }
 
    RUN_TESTS(TestClassResultTests)

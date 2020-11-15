@@ -6,7 +6,6 @@ namespace ZenUnit
    AFACT(DefaultConstructor_SetsClassNameAndTestNameToNullptr)
    AFACT(ThreeArgConstructor_SetsFields)
    FACTS(Value_ReturnsExpected)
-   AFACT(ZenUnitEqualizer_ThrowsIfClassNameOrTestNameNotEqual)
    EVIDENCE
 
    TEST(DefaultConstructor_SetsClassNameAndTestNameToNullptr)
@@ -45,14 +44,6 @@ namespace ZenUnit
       const string value = testName.Value();
       //
       ARE_EQUAL(expectedReturnValue, value);
-   }
-
-   TEST(ZenUnitEqualizer_ThrowsIfClassNameOrTestNameNotEqual)
-   {
-      ZENUNIT_EQUALIZER_TEST_SETUP(FullTestName);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FullTestName, testClassName, "TestClassName");
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FullTestName, testName, "TestName");
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FullTestName, arity, static_cast<unsigned char>(1));
    }
 
    RUN_TESTS(FullTestNameTests)

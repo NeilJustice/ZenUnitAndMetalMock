@@ -11,7 +11,6 @@ namespace ZenUnit
    FACTS(FilterPatternMatchesString_ReturnsTrueIfFilterPatternCaseInsensitiveEqualsString_OrIfFilterPatternEndsInStar_ReturnsTrueIfStringCaseInsensitiveStartsWithFilterPattern)
    AFACT(MatchesTestCase_TestClassNameDoesNotMatch_ReturnsFalse)
    FACTS(MatchesTestCase_TestClassNameMatches_ReturnsTrueIfMatchesTestClassNameAndTestNameAndEitherTestCaseNumberIsUnsetOrItMatches)
-   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
    class TestNameFilterSelfMocked : public Metal::Mock<TestNameFilter>
@@ -130,14 +129,6 @@ namespace ZenUnit
          { _testNameFilterSelfMocked.testNamePattern, testName.c_str() }
       }));
       ARE_EQUAL(expectedReturnValue, matchesTestCase);
-   }
-
-   TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   {
-      ZENUNIT_EQUALIZER_TEST_SETUP(TestNameFilter);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestNameFilter, testClassNamePattern, "testClassNamePattern");
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestNameFilter, testNamePattern, "testNamePattern");
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestNameFilter, testCaseNumber, 1);
    }
 
    RUN_TESTS(TestNameFilterTests)
