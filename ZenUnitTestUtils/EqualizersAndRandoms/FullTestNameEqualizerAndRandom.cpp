@@ -10,12 +10,18 @@ namespace ZenUnit
       ARE_EQUAL(expectedFullTestName.arity, actualFullTestName.arity);
    }
 
-   FullTestName Random()
+   FullTestName TestableRandomFullTestName(const ZenUnit::RandomGenerator* randomGenerator)
    {
       FullTestName randomFullTestName;
-      randomFullTestName.testClassName = ZenUnit::Random<const char*>();
-      randomFullTestName.testName = ZenUnit::Random<const char*>();
-      randomFullTestName.arity = ZenUnit::Random<unsigned char>();
+      randomFullTestName.testClassName = randomGenerator->ConstCharPointer();
+      randomFullTestName.testName = randomGenerator->ConstCharPointer();
+      randomFullTestName.arity = randomGenerator->UnsignedChar();
       return randomFullTestName;
+   }
+
+   template<>
+   FullTestName Random()
+   {
+      return TestableRandomFullTestName(ZenUnit::RandomGenerator::Instance());
    }
 };

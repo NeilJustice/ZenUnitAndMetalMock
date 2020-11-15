@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestResultMock.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/TestClassResultEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestClassResultEqualizerAndRandom.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/ThreeArgForEacherMock.h"
 
 namespace ZenUnit
@@ -10,9 +10,9 @@ namespace ZenUnit
    AFACT(DefaultConstructor_SetsWatchFunction)
    AFACT(CopyConstructor_CopiesForEacherAndTestResults)
    AFACT(AssignmentOperator_CopiesForEacherAndTestResults)
-#ifdef _WIN32
+   #ifdef _WIN32
    AFACT(AssignmentOperator_SelfAssignment_NothingHappens)
-#endif
+   #endif
    AFACT(MoveConstructor_MovesForEacherAndTestResults)
    AFACT(MoveAssignmentOperator_MovesForEacherAndTestResults)
    AFACT(AddTestResults_AppendTestResultsToEndOfTestResultsVector)
@@ -69,8 +69,8 @@ namespace ZenUnit
       ARE_COPIES(copy, testClassResult);
    }
 
-// Clang treats self assignment as an error
-#ifdef _WIN32
+   // Clang treats self assignment as an error
+   #ifdef _WIN32
    TEST(AssignmentOperator_SelfAssignment_NothingHappens)
    {
       TestClassResult testClassResult = TestClassResult::TestingNonDefault();
@@ -79,7 +79,7 @@ namespace ZenUnit
       //
       ARE_EQUAL(TestClassResult::TestingNonDefault(), testClassResult);
    }
-#endif
+   #endif
 
    TEST(MoveConstructor_MovesForEacherAndTestResults)
    {
@@ -128,7 +128,7 @@ namespace ZenUnit
 
    TEST(NumberOfFailedTestCases_ReturnsNumberOfNonSuccessTestsInTestResultsVector)
    {
-      ARE_EQUAL(0, _testClassResult.NumberOfFailedTestCases());
+      IS_ZERO(_testClassResult.NumberOfFailedTestCases());
 
       TestResult testFailure1;
       testFailure1.testOutcome = TestOutcome::Anomaly;
@@ -171,11 +171,11 @@ namespace ZenUnit
 
    TEST(SumOfTestResultMicroseconds_EmptyTestResultsVector_Returns0)
    {
-      ARE_EQUAL(0, _testClassResult._testResults.size());
+      IS_ZERO(_testClassResult._testResults.size());
       //
       const long long microseconds = _testClassResult.SumOfTestResultMicroseconds();
       //
-      ARE_EQUAL(0, microseconds);
+      IS_ZERO(microseconds);
    }
 
    TEST(SumOfTestResultMicroseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMicroseconds)
@@ -211,7 +211,7 @@ namespace ZenUnit
       METALMOCK(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnce());
       METALMOCK(_testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.CalledOnce());
       METALMOCK(MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.CalledOnceWith(sumOfTestResultMicroseconds));
-      METALMOCK(consoleMock.WriteMock.CalledOnceWith("[  " ));
+      METALMOCK(consoleMock.WriteMock.CalledOnceWith("[  "));
       METALMOCK(consoleMock.WriteColorMock.CalledOnceWith("OK", Color::Green));
       METALMOCK(consoleMock.WriteLineMock.CalledOnceWith("  ] " + oneDecimalPlaceMilliseconds));
    }

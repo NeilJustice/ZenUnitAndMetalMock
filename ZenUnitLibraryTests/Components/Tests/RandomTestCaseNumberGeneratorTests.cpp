@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.h"
 
 namespace ZenUnit
 {
@@ -15,7 +15,7 @@ namespace ZenUnit
    {
       RandomTestCaseNumberGenerator randomTestCaseNumberGenerator;
       IS_EMPTY(randomTestCaseNumberGenerator._randomTestCaseNumbers);
-      ARE_EQUAL(0, randomTestCaseNumberGenerator._testCaseNumberIndex);
+      IS_ZERO(randomTestCaseNumberGenerator._testCaseNumberIndex);
    }
 
    TEST3X3(Initialize_SetsRandomTestCaseNumbersVector,
@@ -37,7 +37,7 @@ namespace ZenUnit
       {
          CONTAINS_ELEMENT(expectedTestCaseNumber, _randomTestCaseNumberGenerator._randomTestCaseNumbers);
       }
-      ARE_EQUAL(0, _randomTestCaseNumberGenerator._testCaseNumberIndex);
+      IS_ZERO(_randomTestCaseNumberGenerator._testCaseNumberIndex);
    }
 
    TEST(ResetTestCaseNumber_SetsTestRunNumberIndexTo0)
@@ -49,7 +49,7 @@ namespace ZenUnit
       _randomTestCaseNumberGenerator.ResetTestCaseNumber();
       //
       ARE_EQUAL(initialRandomTestCaseNumbers, _randomTestCaseNumberGenerator._randomTestCaseNumbers);
-      ARE_EQUAL(0, _randomTestCaseNumberGenerator._testCaseNumberIndex);
+      IS_ZERO(_randomTestCaseNumberGenerator._testCaseNumberIndex);
    }
 
    RUN_TESTS(RandomTestCaseNumberGeneratorTests)

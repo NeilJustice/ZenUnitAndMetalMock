@@ -31,7 +31,7 @@ namespace ZenUnit
 
    TEST(ConstCall_CallsConstMemberFunctionOnce)
    {
-      ARE_EQUAL(0, c.numberOfCalls);
+      IS_ZERO(c.numberOfCalls);
       //
       const ReturnType returnValueA = nonVoidZeroArgMemberFunctionCaller.ConstCall(&c, &C::ConstMemberZeroArgFunction);
       //
@@ -46,7 +46,7 @@ namespace ZenUnit
 
    TEST(NonConstCall_CallsNonConstMemberFunctionOnce)
    {
-      ARE_EQUAL(0, c.numberOfCalls);
+      IS_ZERO(c.numberOfCalls);
       //
       const ReturnType returnValueA = nonVoidZeroArgMemberFunctionCaller.NonConstCall(&c, &C::NonConstMemberZeroArgFunction);
       //

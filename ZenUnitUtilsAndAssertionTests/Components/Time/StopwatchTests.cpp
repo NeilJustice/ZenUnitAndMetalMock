@@ -38,8 +38,8 @@ namespace ZenUnit
 
    TEST(StopAndGetElapsedMicroseconds_StartNotPreviouslyCalled_Returns0)
    {
-      ARE_EQUAL(0, _stopwatch.GetElapsedMicrosecondsThenResetStopwatch());
-      ARE_EQUAL(0, _stopwatch.GetElapsedMicrosecondsThenResetStopwatch());
+      IS_ZERO(_stopwatch.GetElapsedMicrosecondsThenResetStopwatch());
+      IS_ZERO(_stopwatch.GetElapsedMicrosecondsThenResetStopwatch());
    }
 
    TEST(StopAndGetElapsedMicroseconds_StartPreviouslyCalled_ReturnsElapsedMicroseconds)

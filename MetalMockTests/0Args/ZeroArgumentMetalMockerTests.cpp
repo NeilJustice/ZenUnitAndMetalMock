@@ -60,7 +60,7 @@ namespace MetalMock
    {
       _zeroArgumentMetalMocker->_wasExpected = true;
       _zeroArgumentMetalMocker->_exceptionThrower.ExpectCallToMetalMockThrowExceptionIfExceptionSet();
-      ARE_EQUAL(0, _zeroArgumentMetalMocker->actualNumberOfCalls);
+      IS_ZERO(_zeroArgumentMetalMocker->actualNumberOfCalls);
       //
       _zeroArgumentMetalMocker->MetalMockIt();
       //

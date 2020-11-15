@@ -3,7 +3,7 @@
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestResultMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/TestPhaseRunnerMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/MetalMock/TestMock.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/FilePathLineNumberEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/FilePathLineNumberEqualizerAndRandom.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/FullTestNameEqualizerAndRandom.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestResultEqualizerAndRandom.h"
 
@@ -200,7 +200,7 @@ namespace ZenUnit
    TEST(PseudoAbstractFunctions_DoNothingOrReturn0)
    {
       Test test("", "", 0);
-      ARE_EQUAL(0, test.NumberOfTestCases());
+      IS_ZERO(test.NumberOfTestCases());
       IS_EMPTY(test.RunTest());
       test.NewTestClass();
       test.Startup();

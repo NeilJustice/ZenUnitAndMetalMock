@@ -1,6 +1,4 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/ZenUnit/Random/RandomTestNameFilter.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/TestClassResultEqualizer.h"
 
 namespace ZenUnit
 {
@@ -20,7 +18,7 @@ namespace ZenUnit
 
    TEST(NumberOfTestCases_Returns0)
    {
-      ARE_EQUAL(0, _noOpTestClassRunner.NumberOfTestCases());
+      IS_ZERO(_noOpTestClassRunner.NumberOfTestCases());
    }
 
    TEST(RunTests_ReturnsDefaultTestClassResult)

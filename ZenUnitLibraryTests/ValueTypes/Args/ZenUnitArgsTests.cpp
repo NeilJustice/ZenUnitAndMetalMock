@@ -19,7 +19,7 @@ namespace ZenUnit
       IS_FALSE(zenUnitArgs.exit1IfTestsSkipped);
       ARE_EQUAL(1, zenUnitArgs.testRuns);
       IS_FALSE(zenUnitArgs.randomTestOrdering);
-      ARE_EQUAL(0, zenUnitArgs.randomSeed);
+      IS_ZERO(zenUnitArgs.randomSeed);
       IS_FALSE(zenUnitArgs.randomSeedSetByUser);
       IS_ZERO(zenUnitArgs.maxTestMilliseconds);
    }

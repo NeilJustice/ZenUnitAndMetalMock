@@ -1,68 +1,71 @@
 #include "pch.h"
 
-TESTS(RandomGeneratorTests)
-AFACT(AllRandomGeneratorFunctions_ReturnsRandomValues)
-EVIDENCE
-
-TEST(AllRandomGeneratorFunctions_ReturnsRandomValues)
+namespace ZenUnit
 {
-   const RandomGenerator* randomGenerator = RandomGenerator::Instance();
+   TESTS(RandomGeneratorTests)
+   AFACT(AllRandomGeneratorFunctions_ReturnsRandomValues)
+   EVIDENCE
 
-   const char randomChar = randomGenerator->Char();
-   ARE_EQUAL(randomChar, randomChar);
+   TEST(AllRandomGeneratorFunctions_ReturnsRandomValues)
+   {
+      const RandomGenerator* randomGenerator = RandomGenerator::Instance();
 
-   const unsigned char randomUnsignedChar = randomGenerator->UnsignedChar();
-   ARE_EQUAL(randomUnsignedChar, randomUnsignedChar);
+      const char randomChar = randomGenerator->Char();
+      ARE_EQUAL(randomChar, randomChar);
 
-   const bool randomBool = randomGenerator->Bool();
-   ARE_EQUAL(randomBool, randomBool);
+      const unsigned char randomUnsignedChar = randomGenerator->UnsignedChar();
+      ARE_EQUAL(randomUnsignedChar, randomUnsignedChar);
 
-   const short randomShort = randomGenerator->Short();
-   ARE_EQUAL(randomShort, randomShort);
+      const bool randomBool = randomGenerator->Bool();
+      ARE_EQUAL(randomBool, randomBool);
 
-   const unsigned short randomUnsignedShort = randomGenerator->UnsignedShort();
-   ARE_EQUAL(randomUnsignedShort, randomUnsignedShort);
+      const short randomShort = randomGenerator->Short();
+      ARE_EQUAL(randomShort, randomShort);
 
-   const int randomInt = randomGenerator->Int();
-   ARE_EQUAL(randomInt, randomInt);
+      const unsigned short randomUnsignedShort = randomGenerator->UnsignedShort();
+      ARE_EQUAL(randomUnsignedShort, randomUnsignedShort);
 
-   const unsigned int randomUnsignedInt = randomGenerator->UnsignedInt();
-   ARE_EQUAL(randomUnsignedInt, randomUnsignedInt);
+      const int randomInt = randomGenerator->Int();
+      ARE_EQUAL(randomInt, randomInt);
 
-   const int randomEnumIntValue = randomGenerator->Enum(0);
-   ARE_EQUAL(randomEnumIntValue, randomEnumIntValue);
+      const unsigned int randomUnsignedInt = randomGenerator->UnsignedInt();
+      ARE_EQUAL(randomUnsignedInt, randomUnsignedInt);
 
-   const long long randomLongLong = randomGenerator->LongLong();
-   ARE_EQUAL(randomLongLong, randomLongLong);
+      const int randomEnumIntValue = randomGenerator->Enum(0);
+      ARE_EQUAL(randomEnumIntValue, randomEnumIntValue);
 
-   const unsigned long long randomUnsignedLongLong = randomGenerator->UnsignedLongLong();
-   ARE_EQUAL(randomUnsignedLongLong, randomUnsignedLongLong);
+      const long long randomLongLong = randomGenerator->LongLong();
+      ARE_EQUAL(randomLongLong, randomLongLong);
 
-   const size_t randomSizeT = randomGenerator->SizeT();
-   ARE_EQUAL(randomSizeT, randomSizeT);
+      const unsigned long long randomUnsignedLongLong = randomGenerator->UnsignedLongLong();
+      ARE_EQUAL(randomUnsignedLongLong, randomUnsignedLongLong);
 
-   const float randomFloat = randomGenerator->Float();
-   ARE_EQUAL(randomFloat, randomFloat);
+      const size_t randomSizeT = randomGenerator->SizeT();
+      ARE_EQUAL(randomSizeT, randomSizeT);
 
-   const double randomDouble = randomGenerator->Double();
-   ARE_EQUAL(randomDouble, randomDouble);
+      const float randomFloat = randomGenerator->Float();
+      ARE_EQUAL(randomFloat, randomFloat);
 
-   const char* const randomConstCharPointer = randomGenerator->ConstCharPointer();
-   ARE_EQUAL(randomConstCharPointer, randomConstCharPointer);
+      const double randomDouble = randomGenerator->Double();
+      ARE_EQUAL(randomDouble, randomDouble);
 
-   IS_NOT_NULLPTR(randomConstCharPointer);
+      const char* const randomConstCharPointer = randomGenerator->ConstCharPointer();
+      ARE_EQUAL(randomConstCharPointer, randomConstCharPointer);
 
-   const string randomString = randomGenerator->String();
-   ARE_EQUAL(randomString, randomString);
+      IS_NOT_NULLPTR(randomConstCharPointer);
 
-   const vector<string> randomStringVector = randomGenerator->StringVector();
-   ARE_EQUAL(randomStringVector, randomStringVector);
+      const string randomString = randomGenerator->String();
+      ARE_EQUAL(randomString, randomString);
 
-   const fs::path randomFilesystemPath = randomGenerator->FilesystemPath();
-   ARE_EQUAL(randomFilesystemPath, randomFilesystemPath);
+      const vector<string> randomStringVector = randomGenerator->StringVector();
+      ARE_EQUAL(randomStringVector, randomStringVector);
 
-   const error_code randomErrorCode = randomGenerator->ErrorCode();
-   ARE_EQUAL(randomErrorCode, randomErrorCode);
+      const fs::path randomFilesystemPath = randomGenerator->FilesystemPath();
+      ARE_EQUAL(randomFilesystemPath, randomFilesystemPath);
+
+      const error_code randomErrorCode = randomGenerator->ErrorCode();
+      ARE_EQUAL(randomErrorCode, randomErrorCode);
+   }
+
+   RUN_TESTS(RandomGeneratorTests)
 }
-
-RUN_TESTS(RandomGeneratorTests)

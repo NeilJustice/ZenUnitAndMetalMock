@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Components/Args/MetalMock/TestNameFilterMock.h"
 #include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
-#include "ZenUnitLibraryTests/ZenUnit/Random/RandomTestNameFilter.h"
-#include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizerAndRandom.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestClassResultMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/MetalMock/TestMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/NonVoidTwoArgMemberFunctionCallerMock.h"
@@ -11,9 +11,6 @@
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/TwoArgAnyerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/TwoArgMemberAnyerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/TwoArgMemberForEacherMock.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizer.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/TestClassResultEqualizer.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/TestResultEqualizerAndRandom.h"
 
 namespace ZenUnit
 {

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.h"
 
 namespace ZenUnit
 {
@@ -15,7 +15,7 @@ namespace ZenUnit
    TEST(DefaultConstructor_SetsMaxTestCaseNumberTo0_SetsCurrentTestCaseNumberTo1)
    {
       SequentialTestCaseNumberGenerator sequentialTestCaseNumberGenerator;
-      ARE_EQUAL(0, sequentialTestCaseNumberGenerator._maxTestCaseNumber);
+      IS_ZERO(sequentialTestCaseNumberGenerator._maxTestCaseNumber);
       ARE_EQUAL(1, sequentialTestCaseNumberGenerator._currentTestCaseNumber);
    }
 

@@ -3,7 +3,7 @@
 #include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/Components/Misc/MetalMock/ExitCallerMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/ZenUnitTestRunnerMock.h"
-#include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.h"
 
 namespace ZenUnit
 {

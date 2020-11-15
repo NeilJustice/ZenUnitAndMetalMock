@@ -5,7 +5,7 @@
 
 #include "ZenUnitLibraryTests/Components/Args/MetalMock/ArgsParserMock.h"
 #include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
-#include "ZenUnitLibraryTests/ZenUnit/Random/RandomTestNameFilter.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizerAndRandom.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestRunResultMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/PreamblePrinterMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/TestClassRunnerRunnerMock.h"
@@ -14,9 +14,9 @@
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidOneArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidZeroArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/StopwatchMock.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizer.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/TestClassResultEqualizer.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizerAndRandom.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestClassResultEqualizerAndRandom.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.h"
 
 namespace ZenUnit
 {

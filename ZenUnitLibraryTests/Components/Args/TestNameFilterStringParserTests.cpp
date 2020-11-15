@@ -1,7 +1,6 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/ZenUnit/Random/RandomTestNameFilter.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/MemberFunctionTransformerMock.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizer.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizerAndRandom.h"
 
 namespace ZenUnit
 {

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "MetalMockTests/MetalMock/MetalMockExceptionThrowerMock.h"
-#include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.h"
 
 struct CustomException
 {

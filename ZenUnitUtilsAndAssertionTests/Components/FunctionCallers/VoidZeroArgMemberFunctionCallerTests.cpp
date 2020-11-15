@@ -27,7 +27,7 @@ namespace ZenUnit
 
    TEST(ConstCall_CallsConstMemberFunctionOnce)
    {
-      ARE_EQUAL(0, c.numberOfCalls);
+      IS_ZERO(c.numberOfCalls);
       //
       voidZeroArgMemberFunctionCaller.ConstCall(&c, &C::ConstMemberZeroArgFunction);
       //
@@ -40,7 +40,7 @@ namespace ZenUnit
 
    TEST(NonConstCall_CallsNonConstMemberFunctionOnce)
    {
-      ARE_EQUAL(0, c.numberOfCalls);
+      IS_ZERO(c.numberOfCalls);
       //
       voidZeroArgMemberFunctionCaller.NonConstCall(&c, &C::NonConstMemberZeroArgFunction);
       //

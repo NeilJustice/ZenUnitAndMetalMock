@@ -3,14 +3,24 @@
 namespace ZenUnit
 {
    TESTS(AnomalyOrExceptionTests)
-   AFACT(AnomalyConstructor_SetsAnomaly)
+   AFACT(DefaultConstructor_SetsFieldsToDefaultValues)
+   AFACT(OneArgAnomalyConstructor_SetsAnomaly)
    AFACT(ExceptionTypeNameAndExceptionMessageConstructor_SetsExceptionTypeNameAndExceptionMessage)
    EVIDENCE
 
-   TEST(AnomalyConstructor_SetsAnomaly)
+   TEST(DefaultConstructor_SetsFieldsToDefaultValues)
    {
-      Anomaly anomaly;
-      anomaly.why = "NonDefault";
+      const AnomalyOrException defaultAnomalyOrException;
+      AnomalyOrException expectedDefaultAnomalyOrException;
+      expectedDefaultAnomalyOrException.anomaly = nullptr;
+      expectedDefaultAnomalyOrException.exceptionTypeName = nullptr;
+      expectedDefaultAnomalyOrException.exceptionMessage = nullptr;
+      ARE_EQUAL(expectedDefaultAnomalyOrException, defaultAnomalyOrException);
+   }
+
+   TEST(OneArgAnomalyConstructor_SetsAnomaly)
+   {
+      const Anomaly anomaly = ZenUnit::Random<Anomaly>();
       //
       const AnomalyOrException anomalyOrException(anomaly);
       //

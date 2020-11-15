@@ -1,8 +1,5 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
-#include "ZenUnitLibraryTests/ZenUnit/Random/RandomFilePathLineNumber.h"
-#include "ZenUnitTestUtils/TestUtil.h"
-#include "ZenUnitTestUtils/UserType.h"
 
 namespace ZenUnit
 {

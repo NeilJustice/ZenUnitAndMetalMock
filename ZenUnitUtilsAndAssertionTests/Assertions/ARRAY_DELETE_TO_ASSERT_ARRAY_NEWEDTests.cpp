@@ -60,7 +60,7 @@ namespace ZenUnit
    TEST(PointerIsNonNullRawPointer_DestructsEachElement)
    {
       DestructorCountingElement* destructorCountingElements = new DestructorCountingElement[3];
-      ARE_EQUAL(0, DestructorCountingElement::s_destructorCallCount);
+      IS_ZERO(DestructorCountingElement::s_destructorCallCount);
       //
       ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(destructorCountingElements);
       //
@@ -73,7 +73,7 @@ namespace ZenUnit
    TEST(PointerIsNonNullUniqueArrayPtr_DestructsEachElement_ThrowsWhenCalledTwice)
    {
       unique_ptr<const DestructorCountingElement[]> nonNullUniqueArrayPtr(new DestructorCountingElement[5]);
-      ARE_EQUAL(0, DestructorCountingElement::s_destructorCallCount);
+      IS_ZERO(DestructorCountingElement::s_destructorCallCount);
       //
       ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(nonNullUniqueArrayPtr);
       //

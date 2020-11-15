@@ -20,11 +20,6 @@ namespace ZenUnit
       ARE_EQUAL(expectedTestResult.microseconds, actualTestResult.microseconds);
    }
 
-   TestResult Random()
-   {
-      return TestableRandomTestResult(RandomGenerator::Instance());
-   }
-
    TestResult TestableRandomTestResult(const RandomGenerator* randomGenerator)
    {
       TestResult randomTestResult;
@@ -40,5 +35,11 @@ namespace ZenUnit
       randomTestResult.testCaseNumber = randomGenerator->SizeT();
       randomTestResult.totalTestCases = randomGenerator->SizeT();
       return randomTestResult;
+   }
+
+   template<>
+   TestResult Random()
+   {
+      return TestableRandomTestResult(RandomGenerator::Instance());
    }
 }

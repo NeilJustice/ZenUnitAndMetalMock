@@ -1,16 +1,13 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Components/Args/MetalMock/TestNameFilterMock.h"
-#include "ZenUnitLibraryTests/ZenUnit/Random/RandomTestNameFilter.h"
-#include "ZenUnitLibraryTests/ZenUnit/Random/RandomTestClassResult.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizerAndRandom.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestClassResultEqualizerAndRandom.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/TestClassRunnerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/TransformerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/TwoArgMemberAnyerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/TwoArgMemberForEacherMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/MetalMock/SorterMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/WatchMock.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizer.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/TestClassResultEqualizer.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizer.h"
 
 namespace ZenUnit
 {
@@ -77,7 +74,7 @@ namespace ZenUnit
          }
       };
 
-      ARE_EQUAL(0, _testClassRunnerRunner.NumberOfTestClassesToBeRun());
+      IS_ZERO(_testClassRunnerRunner.NumberOfTestClassesToBeRun());
       unique_ptr<TestClassRunner> testingTestClassRunner1 = make_unique<TestingTestClassRunner>();
       const TestClassRunner* const testingTestClassRunner1Pointer = testingTestClassRunner1.get();
       //

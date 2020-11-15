@@ -7,11 +7,10 @@ namespace ZenUnit
    {
    public:
       static void AssertEqual(
-         const TestPhaseResult& expectedTestPhaseResult,
-         const TestPhaseResult& actualTestPhaseResult);
+         const TestPhaseResult& expectedTestPhaseResult, const TestPhaseResult& actualTestPhaseResult);
    };
 
+   TestPhaseResult TestableRandomTestPhaseResult(const RandomGenerator* randomGenerator);
    template<>
    TestPhaseResult Random<TestPhaseResult>();
-   TestPhaseResult TestableRandomTestPhaseResult(const RandomGenerator& randomGenerator);
 }

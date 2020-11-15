@@ -3,14 +3,13 @@
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestClassResultMock.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestFailureNumbererMock.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestResultMock.h"
-#include "ZenUnitLibraryTests/ZenUnit/Random/RandomZenUnitArgs.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/MemberForEacherMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/WatchMock.h"
 
 namespace ZenUnit
 {
    TESTS(TestRunResultTests)
-   AFACT(Constructor_NewsComponents)
+   AFACT(DefaultConstructor_NewsComponents_SetsFieldsToDefaultValues)
    AFACT(AddSkippedTest_AddsTestClassNameDotTestNameToSkippedFullTestNamesVector)
    AFACT(AddSkippedTestClassNameAndReason_AddsTestClassNameAndReasonToSkippedTestClassNamesAndReasonsVector)
    FACTS(SetTestClassResults_SetsNumberofFailedTestCases_MovesTestClassResultsIntoField)
@@ -27,10 +26,10 @@ namespace ZenUnit
    AFACT(PrintSkippedTestClassReminder_PrintsExpectedToConsole)
    AFACT(PrintSkippedTestReminder_PrintsExpectedToConsole)
    AFACT(ResetStateExceptForSkips_ResetsTestFailureNumberer_ClearsTestClassResults_SetsNumberOfFailedTestCasesTo0)
-   AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
    TestRunResult _testRunResult;
+   // Constant Components
    const ConsoleMock* _consoleMock = nullptr;
 
    using TypedefMemberForEacherSkippedTestsMock = MemberForEacherMock<vector<string>,
@@ -42,51 +41,56 @@ namespace ZenUnit
    TypedefMemberForEacherTestClassResultsMock* _memberForEacherTestClassResultsMock = nullptr;
 
    const WatchMock* _watchMock = nullptr;
+   // Mutable Components
    TestFailureNumbererMock* _testFailureNumbererMock = nullptr;
 
    STARTUP
    {
+      // Constant Components
       _testRunResult._console.reset(_consoleMock = new ConsoleMock);
       _testRunResult._memberForEacherSkippedTests.reset(
          _memberForEacherSkippedTestsMock = new TypedefMemberForEacherSkippedTestsMock);
       _testRunResult._memberForEacherTestClassResults.reset(
          _memberForEacherTestClassResultsMock = new TypedefMemberForEacherTestClassResultsMock);
-      _testRunResult._testFailureNumberer.reset(_testFailureNumbererMock = new TestFailureNumbererMock);
       _testRunResult._watch.reset(_watchMock = new WatchMock);
+      // Mutable Components
+      _testRunResult._testFailureNumberer.reset(_testFailureNumbererMock = new TestFailureNumbererMock);
    }
 
-   TEST(Constructor_NewsComponents)
+   TEST(DefaultConstructor_NewsComponents_SetsFieldsToDefaultValues)
    {
       TestRunResult testRunResult;
+      // Constant Components
       DELETE_TO_ASSERT_NEWED(testRunResult._console);
       DELETE_TO_ASSERT_NEWED(testRunResult._memberForEacherSkippedTests);
       DELETE_TO_ASSERT_NEWED(testRunResult._memberForEacherTestClassResults);
       DELETE_TO_ASSERT_NEWED(testRunResult._threeArgForEacher);
       DELETE_TO_ASSERT_NEWED(testRunResult._watch);
+      // Mutable Components
+      DELETE_TO_ASSERT_NEWED(testRunResult._testFailureNumberer);
 
-      ARE_EQUAL(0, testRunResult._numberOfFailedTestCases);
+      IS_ZERO(testRunResult._numberOfFailedTestCases);
       IS_EMPTY(testRunResult._skippedFullTestNamesAndSkipReasons);
       IS_EMPTY(testRunResult._skippedTestClassNamesAndSkipReasons);
       IS_EMPTY(testRunResult._testClassResults);
-      DELETE_TO_ASSERT_NEWED(testRunResult._testFailureNumberer);
    }
 
    TEST(AddSkippedTest_AddsTestClassNameDotTestNameToSkippedFullTestNamesVector)
    {
       const string testClassName = Random<string>();
-      const char* const TestNameA = "TestA";
-      const char* const ReasonA = "ReasonA";
+      const char* const testNameA = "TestA";
+      const char* const reasonA = "ReasonA";
       //
-      _testRunResult.AddSkippedTest(testClassName.c_str(), TestNameA, ReasonA);
+      _testRunResult.AddSkippedTest(testClassName.c_str(), testNameA, reasonA);
       //
       TestRunResult expectedTestRunResultA;
       expectedTestRunResultA._skippedFullTestNamesAndSkipReasons = { testClassName + ".TestA skipped because \"ReasonA\"" };
       ARE_EQUAL(expectedTestRunResultA, _testRunResult);
 
-      const char* const TestNameB = "TestB";
-      const char* const ReasonB = "ReasonB";
+      const char* const testNameB = "TestB";
+      const char* const reasonB = "ReasonB";
       //
-      _testRunResult.AddSkippedTest(testClassName.c_str(), TestNameB, ReasonB);
+      _testRunResult.AddSkippedTest(testClassName.c_str(), testNameB, reasonB);
       //
       TestRunResult expectedTestRunResultB;
       expectedTestRunResultB._skippedFullTestNamesAndSkipReasons =
@@ -151,7 +155,7 @@ namespace ZenUnit
    TEST(CalculateNumberOfFailedTestCases_ZeroTestClassResults_Returns0)
    {
       const size_t numberOfFailedTestCases = _testRunResult.CalculateNumberOfFailedTestCases(vector<TestClassResult>());
-      ARE_EQUAL(0, numberOfFailedTestCases);
+      IS_ZERO(numberOfFailedTestCases);
    }
 
    TEST(CalculateNumberOfFailedTestCases_ThreeTestClassResults_ReturnsSumOfNumberOfFailedTestCases)
@@ -221,7 +225,8 @@ namespace ZenUnit
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteLineAndExitMock.Expect();
       //
-      _testRunResult.PrintConclusionLines(ZenUnit::Random<string>(), 0, ZenUnit::Random<string>(), ZenUnit::Random<ZenUnitArgs>());
+      _testRunResult.PrintConclusionLines(
+         ZenUnit::Random<string>(), 0, ZenUnit::Random<string>(), ZenUnit::Random<ZenUnitArgs>());
       //
       METALMOCK(_consoleMock->WriteColorMock.CalledOnceWith("[ZenUnit]", Color::Red));
       METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(" Zero test classes run. Exiting with code 1.", 1));
@@ -415,16 +420,7 @@ namespace ZenUnit
       //
       METALMOCK(_testFailureNumbererMock->ResetTestFailureNumberMock.CalledOnce());
       IS_EMPTY(_testRunResult._testClassResults);
-      ARE_EQUAL(0, _testRunResult._numberOfFailedTestCases);
-   }
-
-   TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   {
-      ZENUNIT_EQUALIZER_TEST_SETUP(TestRunResult);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestRunResult, _testClassResults, vector<TestClassResult> { TestClassResult() });
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestRunResult, _skippedTestClassNamesAndSkipReasons, ZenUnit::RandomNonEmptyVector<string>());
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestRunResult, _skippedFullTestNamesAndSkipReasons, ZenUnit::RandomNonEmptyVector<string>());
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestRunResult, _numberOfFailedTestCases, 1);
+      IS_ZERO(_testRunResult._numberOfFailedTestCases);
    }
 
    RUN_TESTS(TestRunResultTests)

@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Components/Args/MetalMock/TestNameFilterMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/TestClassRunnerMock.h"
-#include "ZenUnitLibraryTests/ZenUnit/Random/RandomTestNameFilter.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/TestClassResultEqualizer.h"
 
 namespace ZenUnit
 {
@@ -32,7 +30,7 @@ namespace ZenUnit
 
    TEST(NumberOfTestCases_Returns0)
    {
-      ARE_EQUAL(0, _testClassRunner.NumberOfTestCases());
+      IS_ZERO(_testClassRunner.NumberOfTestCases());
    }
 
    TEST(HasTestThatMatchesTestNameFilter_ReturnsFalse)

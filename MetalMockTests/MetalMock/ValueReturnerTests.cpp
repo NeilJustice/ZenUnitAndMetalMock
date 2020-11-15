@@ -43,7 +43,7 @@ namespace MetalMock
       ValueReturner<int> valueReturner(_metalMockedFunctionSignature);
       //
       ARE_EQUAL(_metalMockedFunctionSignature, valueReturner._metalMockedFunctionSignature);
-      ARE_EQUAL(0, valueReturner._returnValueIndex);
+      IS_ZERO(valueReturner._returnValueIndex);
       IS_EMPTY(valueReturner._returnValues);
    }
 

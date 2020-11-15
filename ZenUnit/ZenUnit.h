@@ -776,7 +776,7 @@ namespace ZenUnit
    {
       const char* testClassName;
       const char* testName;
-      unsigned char arity; // 0 if TEST, 1 if TEST1X2, 2 if TEST2X2, 3 if TEST3X3
+      unsigned char arity; // 0 if TEST, 1 if TEST1X2, 2 if TEST2X2, 3 if TEST3X3, ...
 
       FullTestName() noexcept
          : testClassName(""), testName(""), arity(0) {}
@@ -3631,8 +3631,12 @@ namespace ZenUnit
    struct AnomalyOrException
    {
       std::shared_ptr<Anomaly> anomaly;
-      const std::string* exceptionTypeName;
+      const std::string* exceptionTypeName = nullptr;
       std::shared_ptr<std::string> exceptionMessage;
+
+      AnomalyOrException()
+      {
+      }
 
       AnomalyOrException(const Anomaly& anomaly)
          : anomaly(std::make_shared<Anomaly>(anomaly))
@@ -4020,9 +4024,11 @@ namespace ZenUnit
    {
       friend class TestClassResultTests;
       friend class Equalizer<TestClassResult>;
-      friend class RandomTestClassResultTests;
+      friend class TestClassResultEqualizerAndRandomTests;
    private:
       std::function<std::string(long long)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
+   public:
+      // public for testability in TestClassResultEqualizerAndRandom.cpp
       std::vector<TestResult> _testResults;
    public:
       TestClassResult() noexcept
@@ -4075,7 +4081,8 @@ namespace ZenUnit
 
       virtual std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(long long microseconds) const
       {
-         const std::string twoDecimalPlaceMillisecondsString = _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
+         const std::string twoDecimalPlaceMillisecondsString =
+            _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
          return twoDecimalPlaceMillisecondsString;
       }
 
@@ -4628,6 +4635,8 @@ namespace ZenUnit
       std::unique_ptr<const Watch> _watch;
       // Mutable Components
       std::unique_ptr<TestFailureNumberer> _testFailureNumberer;
+   public:
+      // public fields for testability in TestRunResultEqualizerAndRandomTests.cpp
       // Mutable Fields
       size_t _numberOfFailedTestCases;
       std::vector<std::string> _skippedFullTestNamesAndSkipReasons;
@@ -4675,7 +4684,8 @@ namespace ZenUnit
             const std::string secondLineEqualsSigns(firstLine.size(), '=');
             const std::string numberOfTestFailuresLine = String::Concat(firstLine, '\n', secondLineEqualsSigns, '\n');
             _console->WriteLineColor(numberOfTestFailuresLine, Color::Red);
-            _memberForEacherTestClassResults->MemberForEach(&_testClassResults, this, &TestRunResult::PrintTestClassResultFailures);
+            _memberForEacherTestClassResults->MemberForEach(
+               &_testClassResults, this, &TestRunResult::PrintTestClassResultFailures);
          }
          _memberForEacherSkippedTests->MemberForEach(
             &_skippedTestClassNamesAndSkipReasons, this, &TestRunResult::PrintSkippedTestClassReminder);
