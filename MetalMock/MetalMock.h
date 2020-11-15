@@ -2589,23 +2589,26 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedTwoArgumentFunctionCalls.size());
          this->MetalMockSetAsserted();
-         const std::vector<TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>>
-            actualTwoArgumentFunctionCalls = PrivateCallsToCallRefs(metalMockedFunctionCallHistory);
+         const std::vector<TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>> actualTwoArgumentFunctionCalls =
+            ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
+               TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>,
+               TwoArgumentFunctionCall<Arg1Type, Arg2Type>>(metalMockedFunctionCallHistory);
          VECTORS_ARE_EQUAL(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
       }
    private:
-      static std::vector<TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>>
-         PrivateCallsToCallRefs(const std::vector<TwoArgumentFunctionCall<Arg1Type, Arg2Type>>& metalMockedFunctionCallHistory)
+      template<typename NArgumentFunctionCallReferencesType, typename NArgumentFunctionCallType>
+      static std::vector<NArgumentFunctionCallReferencesType> ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences(
+         const std::vector<NArgumentFunctionCallType>& metalMockFunctionCalls)
       {
-         std::vector<TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>> twoArgumentFunctionCallRefs;
-         twoArgumentFunctionCallRefs.reserve(metalMockedFunctionCallHistory.size());
-         std::for_each(metalMockedFunctionCallHistory.cbegin(), metalMockedFunctionCallHistory.cend(),
-            [&](const TwoArgumentFunctionCall<Arg1Type, Arg2Type>& twoArgumentFunctionCall)
-         {
-            twoArgumentFunctionCallRefs.emplace_back(twoArgumentFunctionCall);
-         });
-         return twoArgumentFunctionCallRefs;
+         std::vector<NArgumentFunctionCallReferencesType> metalMockFunctionCallReferences;
+         metalMockFunctionCallReferences.reserve(metalMockFunctionCalls.size());
+         std::for_each(metalMockFunctionCalls.cbegin(), metalMockFunctionCalls.cend(),
+            [&](const NArgumentFunctionCallType& metalMockFunctionCall)
+            {
+               metalMockFunctionCallReferences.emplace_back(metalMockFunctionCall);
+            });
+         return metalMockFunctionCallReferences;
       }
    };
 
