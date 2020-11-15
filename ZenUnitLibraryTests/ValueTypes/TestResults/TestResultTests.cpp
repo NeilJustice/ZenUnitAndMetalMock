@@ -107,7 +107,7 @@ namespace ZenUnit
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.maxTestMilliseconds = maxTestMilliseconds;
       if (expectedOverallOutcome == TestOutcome::Success ||
-         expectedOverallOutcome == TestOutcome::SuccessButPastDeadline)
+          expectedOverallOutcome == TestOutcome::SuccessButPastDeadline)
       {
          GetArgsMock.Return(zenUnitArgs);
       }

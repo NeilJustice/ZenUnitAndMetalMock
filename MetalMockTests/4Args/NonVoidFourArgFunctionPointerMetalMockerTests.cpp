@@ -13,7 +13,7 @@ namespace MetalMock
       {
       }
 
-      METALMOCK_NONVOID4(const FunctionReturnType&, MetalMockItAndReturnValue, Arg1Type, Arg2Type, Arg3Type, Arg4Type)
+      METALMOCK_NONVOID4(FunctionReturnType, MetalMockItAndReturnValue, Arg1Type, Arg2Type, Arg3Type, Arg4Type)
    };
 }
 
