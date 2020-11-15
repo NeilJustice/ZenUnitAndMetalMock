@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestResultMock.h"
-#include "ZenUnitLibraryTests/Components/Tests/TestingTestClass.h"
 
 namespace ZenUnit
 {

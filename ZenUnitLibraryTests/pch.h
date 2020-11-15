@@ -38,6 +38,7 @@ using namespace ZenUnit;
 #include "ZenUnitTestUtils/OnlyInsertionOperatorPrintableUserType.h"
 #include "ZenUnitTestUtils/OnlyZenUnitPrintableUserType.h"
 #include "ZenUnitTestUtils/TestUtil.h"
+#include "ZenUnitTestUtils/TestingTestClass.h"
 #include "ZenUnitTestUtils/UserType.h"
 
 // ZenUnitTestUtils Equalizers And Randoms
