@@ -38,7 +38,7 @@ namespace Metal
    };
 }
 
-// Wrap MetalMock assert statements with METALMOCK(MetalMockAssertStatement()); to add file path and line numbers to assertion-failed error messages.
+// METALMOCK adds file path and line number information to potential MetalMock assertion failed error messages
 #define METALMOCK(MetalMockAssertStatement) \
 try \
 { \
