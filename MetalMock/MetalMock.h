@@ -1363,13 +1363,13 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
       std::function<const ZenUnit::ZenUnitArgs&()> _call_ZenUnitTestRunner_GetZenUnitArgs;
       bool _metalMockExceptionIsInFlight;
    protected:
+      // Mockable template parameter instead of mockable unique_ptr for performance
       MockableExceptionThrowerType _exceptionThrower;
       FunctionSequencingToken _functionSequencingToken;
-   public:
       const std::string MetalMockedFunctionSignature;
       bool _wasExpected;
       bool _wasAsserted;
-
+   public:
       MetalMocker()
          : _metalMockExceptionIsInFlight(false)
          , _wasExpected(false)
@@ -1387,6 +1387,11 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
       {
       }
 
+      ~MetalMocker()
+      {
+         MetalMockExitIfExpectedButNotAsserted();
+      }
+
       MetalMocker& operator=(const MetalMocker&) = delete;
 
       template<typename ExceptionType, typename... ExceptionArgTypes>
@@ -1394,11 +1399,6 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
       {
          _exceptionThrower.template ThrowExceptionWhenCalled<ExceptionType>(std::forward<ExceptionArgTypes>(exceptionArgs)...);
          _wasExpected = true;
-      }
-
-      ~MetalMocker()
-      {
-         MetalMockExitIfExpectedButNotAsserted();
       }
    protected:
       void AssignAndIncrementFunctionSequenceIndex()
