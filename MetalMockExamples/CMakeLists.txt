@@ -4,7 +4,6 @@ include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${ZenUnitIncludeDirectory})
-include_directories(${MetalMockIncludeDirectory})
 
 file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 source_group("" FILES ${sourceFilePaths})

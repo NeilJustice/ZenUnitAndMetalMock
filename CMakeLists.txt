@@ -43,7 +43,6 @@ elseif(MSVC)
 endif()
 
 add_subdirectory(ZenUnit)
-add_subdirectory(MetalMock)
 add_subdirectory(ZenUnitUtilsAndAssertionTests)
 add_subdirectory(ZenUnitExamples)
 add_subdirectory(ZenUnitLibraryTests)

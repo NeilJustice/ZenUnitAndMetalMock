@@ -2,7 +2,7 @@
 #define ZenUnitExamples_PCH
 
 #include "ZenUnitLibraryTests/MSVCIgnoredWarnings.h"
-#include "MetalMock.h"
-#include "ZenUnit.h"
+#include "ZenUnit/ZenUnit.h"
+#include "ZenUnit/MetalMock.h"
 
 #endif

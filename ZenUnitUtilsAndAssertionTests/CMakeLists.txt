@@ -5,7 +5,6 @@ include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${ZenUnitIncludeDirectory})
-include_directories(${MetalMockIncludeDirectory})
 
 folder_source_group(Assertions)
 folder_source_group_subfolder(Components FunctionCallers)

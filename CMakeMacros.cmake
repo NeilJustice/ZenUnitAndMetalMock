@@ -28,7 +28,6 @@ if(UNIX)
 endif()
 
 set(ZenUnitIncludeDirectory "${CMAKE_SOURCE_DIR}/ZenUnit")
-set(MetalMockIncludeDirectory "${CMAKE_SOURCE_DIR}/MetalMock")
 if(UNIX)
    set(GoogleBenchmarkIncludeDirectory "/usr/local/include/benchmark")
    set(GoogleBenchmarkLibraryPath "/usr/local/lib/benchmark/libbenchmark${CMAKE_BUILD_TYPE}.a")
