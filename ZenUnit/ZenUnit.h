@@ -6021,7 +6021,7 @@ namespace ZenUnit
    {
    public:
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type Call1ArgMemberFunction(
+      static typename std::enable_if< I < sizeof...(ArgTypes)>::type Call1ArgMemberFunction(
          ClassType* classPointer, MemberFunction&& memberFunction,
          unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
@@ -6036,7 +6036,7 @@ namespace ZenUnit
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type Call2ArgMemberFunction(
+      static typename std::enable_if< I < sizeof...(ArgTypes)>::type Call2ArgMemberFunction(
          ClassType* classPointer, MemberFunction&& memberFunction,
          unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
@@ -6052,7 +6052,7 @@ namespace ZenUnit
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type Call3ArgMemberFunction(
+      static typename std::enable_if< I < sizeof...(ArgTypes)>::type Call3ArgMemberFunction(
          ClassType* classPointer, MemberFunction&& memberFunction,
          unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
@@ -6069,7 +6069,7 @@ namespace ZenUnit
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type Call4ArgMemberFunction(
+      static typename std::enable_if< I < sizeof...(ArgTypes)>::type Call4ArgMemberFunction(
          ClassType* classPointer, MemberFunction&& memberFunction,
          unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
@@ -6087,7 +6087,7 @@ namespace ZenUnit
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type Call5ArgMemberFunction(
+      static typename std::enable_if< I < sizeof...(ArgTypes)>::type Call5ArgMemberFunction(
          ClassType* classPointer, MemberFunction&& memberFunction,
          unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
@@ -6106,7 +6106,7 @@ namespace ZenUnit
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type Call6ArgMemberFunction(
+      static typename std::enable_if< I < sizeof...(ArgTypes)>::type Call6ArgMemberFunction(
          ClassType* classPointer, MemberFunction&& memberFunction,
          unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
@@ -6126,7 +6126,7 @@ namespace ZenUnit
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type Call7ArgMemberFunction(
+      static typename std::enable_if< I < sizeof...(ArgTypes)>::type Call7ArgMemberFunction(
          ClassType* classPointer, MemberFunction&& memberFunction,
          unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
@@ -6147,7 +6147,7 @@ namespace ZenUnit
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type Call8ArgMemberFunction(
+      static typename std::enable_if< I < sizeof...(ArgTypes)>::type Call8ArgMemberFunction(
          ClassType* classPointer, MemberFunction&& memberFunction,
          unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
@@ -6169,7 +6169,7 @@ namespace ZenUnit
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type Call9ArgMemberFunction(
+      static typename std::enable_if< I < sizeof...(ArgTypes)>::type Call9ArgMemberFunction(
          ClassType* classPointer, MemberFunction&& memberFunction,
          unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
@@ -6192,7 +6192,7 @@ namespace ZenUnit
       }
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ull, typename... ArgTypes>
-      static typename std::enable_if < I < sizeof...(ArgTypes)>::type Call10ArgMemberFunction(
+      static typename std::enable_if< I < sizeof...(ArgTypes)>::type Call10ArgMemberFunction(
          ClassType* classPointer, MemberFunction&& memberFunction,
          unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
