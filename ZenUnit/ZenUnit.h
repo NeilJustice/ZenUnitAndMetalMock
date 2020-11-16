@@ -616,7 +616,7 @@ namespace ZenUnit
          const int stoppingIndex = firstCharacterIsNegativeSign ? 1 : 0;
          for (int i = static_cast<int>(str.size() - 1); i >= stoppingIndex; --i, place *= 10)
          {
-            char c = str[i];
+            char c = str[static_cast<size_t>(i)];
             if (c < '0' || c > '9')
             {
                throw std::invalid_argument("ZenUnit::String::ToInt() called with a string not convertible to a 32-bit integer: \"" + std::string(str) + "\"");
