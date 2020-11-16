@@ -110,11 +110,48 @@ namespace ZenUnit
 
    TEST(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
    {
-      const int randomInt = RandomBetween<int>(1, 3);
-      IS_TRUE(randomInt >= 1 && randomInt <= 3, "randomInt=" + to_string(randomInt));
-
-      const long long randomLongLong = RandomBetween<long long>(100, 200);
-      IS_TRUE(randomLongLong >= 100 && randomLongLong <= 200, "randomLongLong=" + to_string(randomLongLong));
+      bool randomBetweenReturnedNegative2 = false;
+      bool randomBetweenReturnedNegative1 = false;
+      bool randomBetweenReturned0 = false;
+      bool randomBetweenReturnedPositive1 = false;
+      bool randomBetweenReturnedPositive2 = false;
+      for (size_t i = 0; i < 300; ++i)
+      {
+         const long long randomLongLong = RandomBetween<long long>(-2, 2);
+         if (randomLongLong == -2)
+         {
+            randomBetweenReturnedNegative2 = true;
+         }
+         else if (randomLongLong == -1)
+         {
+            randomBetweenReturnedNegative1 = true;
+         }
+         else if (randomLongLong == 0)
+         {
+            randomBetweenReturned0 = true;
+         }
+         else if (randomLongLong == 1)
+         {
+            randomBetweenReturnedPositive1 = true;
+         }
+         else if (randomLongLong == 2)
+         {
+            randomBetweenReturnedPositive2 = true;
+         }
+         if (randomBetweenReturnedNegative2 &&
+             randomBetweenReturnedNegative1 &&
+             randomBetweenReturned0 &&
+             randomBetweenReturnedPositive1 &&
+             randomBetweenReturnedPositive2)
+         {
+            break;
+         }
+      }
+      IS_TRUE(randomBetweenReturnedNegative2);
+      IS_TRUE(randomBetweenReturnedNegative1);
+      IS_TRUE(randomBetweenReturned0);
+      IS_TRUE(randomBetweenReturnedPositive1);
+      IS_TRUE(randomBetweenReturnedPositive2);
    }
 
    RUN_TESTS(RandomTests)

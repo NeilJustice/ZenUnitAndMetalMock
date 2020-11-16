@@ -4,11 +4,12 @@ namespace ZenUnit
 {
    TESTS(RandomGeneratorTests)
    AFACT(AllRandomGeneratorFunctions_ReturnsRandomValues)
+   AFACT(Enum_ReturnsIntBetween0InclusiveAndEnumMaxValueExclusive)
    EVIDENCE
 
    TEST(AllRandomGeneratorFunctions_ReturnsRandomValues)
    {
-      const RandomGenerator* randomGenerator = RandomGenerator::Instance();
+      const RandomGenerator* const randomGenerator = RandomGenerator::Instance();
 
       const char randomChar = randomGenerator->Char();
       ARE_EQUAL(randomChar, randomChar);
@@ -31,8 +32,8 @@ namespace ZenUnit
       const unsigned int randomUnsignedInt = randomGenerator->UnsignedInt();
       ARE_EQUAL(randomUnsignedInt, randomUnsignedInt);
 
-      const int randomEnumIntValue = randomGenerator->Enum(0);
-      ARE_EQUAL(randomEnumIntValue, randomEnumIntValue);
+      const int randomEnumIntValue = randomGenerator->Enum(1);
+      IS_ZERO(randomEnumIntValue);
 
       const long long randomLongLong = randomGenerator->LongLong();
       ARE_EQUAL(randomLongLong, randomLongLong);
@@ -65,6 +66,49 @@ namespace ZenUnit
 
       const error_code randomErrorCode = randomGenerator->ErrorCode();
       ARE_EQUAL(randomErrorCode, randomErrorCode);
+   }
+
+   enum TestEnum
+   {
+      A,
+      B,
+      C,
+      MaxValue
+   };
+
+   TEST(Enum_ReturnsIntBetween0InclusiveAndEnumMaxValueExclusive)
+   {
+      const RandomGenerator* const randomGenerator = RandomGenerator::Instance();
+      bool didSee0 = false;
+      bool didSee1 = false;
+      bool didSee2 = false;
+      for (size_t i = 0; i < 100; ++i)
+      {
+         const int randomEnumInt = randomGenerator->Enum(TestEnum::MaxValue);
+         if (randomEnumInt == 0)
+         {
+            didSee0 = true;
+         }
+         else if (randomEnumInt == 1)
+         {
+            didSee1 = true;
+         }
+         else if (randomEnumInt == 2)
+         {
+            didSee2 = true;
+         }
+         else
+         {
+            FAIL_TEST("randomGenerator->Enum(TestEnum::MaxValue) did not return 0, 1, or 2"); // LCOV_EXCL_LINE
+         }
+         if (didSee0 && didSee1 && didSee2)
+         {
+            break;
+         }
+      }
+      IS_TRUE(didSee0);
+      IS_TRUE(didSee1);
+      IS_TRUE(didSee2);
    }
 
    RUN_TESTS(RandomGeneratorTests)

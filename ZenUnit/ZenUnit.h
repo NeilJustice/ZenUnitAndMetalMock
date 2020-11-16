@@ -6841,9 +6841,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    class Equalizer<std::vector<T>>
    {
    public:
-      static void AssertEqual(const std::vector<T>& expectedIndexableDataStructure, const std::vector<T>& actualIndexableDataStructure)
+      static void AssertEqual(const std::vector<T>& expectedVector, const std::vector<T>& actualVector)
       {
-         VECTORS_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure);
+         VECTORS_ARE_EQUAL(expectedVector, actualVector);
       }
    };
 
@@ -6852,21 +6852,23 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    //
 
    template<typename T>
-   T RandomBetween(long long inclusiveMinValue, unsigned long long inclusiveMaxValue)
+   T RandomBetween(long long inclusiveMinValue, long long inclusiveMaxValue)
    {
       static std::default_random_engine defaultRandomEngine(ZenUnitRandomSeed::value);
-      const long long adjustedInclusiveMinValue = inclusiveMinValue < 0 ? 0 : inclusiveMinValue;
-      const unsigned long long adjustedInclusiveMaxValue =
-         inclusiveMinValue < 0 ? 2 * inclusiveMaxValue + 1 : inclusiveMaxValue;
-      std::uniform_int_distribution<unsigned long long>
-         distribution(adjustedInclusiveMinValue, adjustedInclusiveMaxValue);
-      const unsigned long long randomValueUnsignedLongLong = distribution(defaultRandomEngine);
-      const T randomValueT = static_cast<T>(randomValueUnsignedLongLong);
+      std::uniform_int_distribution<long long> distribution(inclusiveMinValue, inclusiveMaxValue);
+      const long long randomValueLongLong = distribution(defaultRandomEngine);
+      const T randomValueT = static_cast<T>(randomValueLongLong);
       return randomValueT;
    }
 
-   template<typename T>
-   T Random();
+   inline unsigned long long RandomUnsignedLongLong()
+   {
+      static std::default_random_engine defaultRandomEngine(ZenUnitRandomSeed::value);
+      constexpr unsigned long long maximumUnsignedLongLong = std::numeric_limits<unsigned long long>::max();
+      std::uniform_int_distribution<unsigned long long> distribution(0, maximumUnsignedLongLong);
+      const unsigned long long randomUnsignedLongLong = distribution(defaultRandomEngine);
+      return randomUnsignedLongLong;
+   }
 
    template<typename T>
    std::vector<T> RandomVector()
@@ -6946,9 +6948,16 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
             RandomUnorderedMap<typename T::key_type, typename T::mapped_type>();
          return randomUnorderedMap;
       }
+      else if constexpr (std::is_same_v<T, unsigned long long>)
+      {
+         const unsigned long long randomUnsignedLongLong = RandomUnsignedLongLong();
+         return randomUnsignedLongLong;
+      }
       else
       {
-         const T randomInteger = RandomBetween<T>(std::numeric_limits<T>::min(), std::numeric_limits<T>::max());
+         constexpr T minTValue = std::numeric_limits<T>::min();
+         constexpr T maxTValue = std::numeric_limits<T>::max();
+         const T randomInteger = RandomBetween<T>(minTValue, maxTValue);
          return randomInteger;
       }
    }
@@ -6956,11 +6965,12 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<typename T>
    T RandomNon0()
    {
+      static_assert(!is_same_v<T, std::string>);
       const T randomT = Random<T>();
-      constexpr T zeroT = static_cast<T>(0);
+      static const T zeroT = static_cast<T>(0);
       if (randomT == zeroT)
       {
-         constexpr T oneT = static_cast<T>(1);
+         static const T oneT = static_cast<T>(1);
          return oneT;
       }
       return randomT;
@@ -6970,8 +6980,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    inline float Random<float>()
    {
       static std::default_random_engine defaultRandomEngine(ZenUnitRandomSeed::value);
-      std::uniform_real_distribution<float> uniformFloatDistribution(
-         std::numeric_limits<float>::min(), std::numeric_limits<float>::max());
+      constexpr float minFloatValue = std::numeric_limits<float>::min();
+      constexpr float maxFloatValue = std::numeric_limits<float>::max();
+      std::uniform_real_distribution<float> uniformFloatDistribution(minFloatValue, maxFloatValue);
       const float randomFloat = uniformFloatDistribution(defaultRandomEngine);
       return randomFloat;
    }
@@ -6980,8 +6991,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    inline double Random<double>()
    {
       static std::default_random_engine defaultRandomEngine(ZenUnitRandomSeed::value);
-      std::uniform_real_distribution<double> uniformDoubleDistribution(
-         std::numeric_limits<double>::min(), std::numeric_limits<double>::max());
+      constexpr double minDoubleValue = std::numeric_limits<double>::min();
+      constexpr double maxDoubleValue = std::numeric_limits<double>::max();
+      std::uniform_real_distribution<double> uniformDoubleDistribution(minDoubleValue, maxDoubleValue);
       const double randomDouble = uniformDoubleDistribution(defaultRandomEngine);
       return randomDouble;
    }
@@ -7008,22 +7020,17 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<>
    inline std::string Random<std::string>()
    {
-      const std::string randomString = "RS" + std::to_string(RandomBetween<int>(0, 100000));
+      const int randomInt = RandomBetween<int>(0, 100000);
+      const std::string randomString = "RS" + std::to_string(randomInt);
       return randomString;
    }
 
    template<>
    inline std::wstring Random<std::wstring>()
    {
-      const std::wstring randomWideString = L"RWS" + std::to_wstring(RandomBetween<int>(0, 100000));
+      const int randomInt = RandomBetween<int>(0, 100000);
+      const std::wstring randomWideString = L"RWS" + std::to_wstring(randomInt);
       return randomWideString;
-   }
-
-   template<>
-   inline std::string RandomNon0<std::string>()
-   {
-      const std::string randomString = Random<std::string>();
-      return randomString;
    }
 
    template<>
@@ -7069,9 +7076,8 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    EnumType RandomEnum(EnumType exclusiveMaxValue)
    {
       using UnderlyingType = typename std::underlying_type<EnumType>::type;
-      const EnumType randomEnum = static_cast<EnumType>(
-         RandomBetween<UnderlyingType>(
-            static_cast<UnderlyingType>(0), static_cast<unsigned long long>(exclusiveMaxValue) - 1ULL));
+      const long long inclusiveMaxValue = static_cast<long long>(exclusiveMaxValue) - 1LL;
+      const EnumType randomEnum = static_cast<EnumType>(RandomBetween<UnderlyingType>(0LL, inclusiveMaxValue));
       return randomEnum;
    }
 
@@ -7079,10 +7085,8 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    EnumType RandomNon0Enum(EnumType exclusiveMaxValue)
    {
       using UnderlyingType = typename std::underlying_type<EnumType>::type;
-      const EnumType randomNon0Enum = static_cast<EnumType>(
-         RandomBetween<UnderlyingType>(
-            static_cast<UnderlyingType>(1),
-            static_cast<UnderlyingType>(exclusiveMaxValue) - static_cast<UnderlyingType>(1)));
+      const long long inclusiveMaxValue = static_cast<long long>(exclusiveMaxValue) - 1LL;
+      const EnumType randomNon0Enum = static_cast<EnumType>(RandomBetween<UnderlyingType>(1LL, inclusiveMaxValue));
       return randomNon0Enum;
    }
 
@@ -7136,54 +7140,149 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
 
       virtual ~RandomGenerator() = default;
-      virtual bool Bool() const { return Random<bool>(); }
 
-      virtual char Char() const { return Random<char>(); }
-      virtual unsigned char UnsignedChar() const { return Random<unsigned char>(); }
+      virtual bool Bool() const
+      {
+         const bool randomBool = Random<bool>();
+         return randomBool;
+      }
 
-      virtual short Short() const { return Random<short>(); }
-      virtual unsigned short UnsignedShort() const { return Random<unsigned short>(); }
+      virtual char Char() const
+      {
+         const char randomChar = Random<char>();
+         return randomChar;
+      }
+      virtual unsigned char UnsignedChar() const
+      {
+         const unsigned char randomUnsignedChar = Random<unsigned char>();
+         return randomUnsignedChar;
+      }
 
-      virtual int Int() const { return Random<int>(); }
-      virtual unsigned UnsignedInt() const { return Random<unsigned int>(); }
+      virtual short Short() const
+      {
+         const short randomShort = Random<short>();
+         return randomShort;
+      }
+      virtual unsigned short UnsignedShort() const
+      {
+         const unsigned short randomUnsignedShort = Random<unsigned short>();
+         return randomUnsignedShort;
+      }
 
-      virtual int Enum(int exclusiveMaxValue) const { return RandomBetween<int>(0, static_cast<unsigned long long>(exclusiveMaxValue) - 1); }
+      virtual int Int() const
+      {
+         const int randomInt = Random<int>();
+         return randomInt;
+      }
+      virtual unsigned UnsignedInt() const
+      {
+         const unsigned int randomUnsignedInt = Random<unsigned int>();
+         return randomUnsignedInt;
+      }
 
-      virtual long Long() const { return Random<long>(); }
-      virtual unsigned long UnsignedLong() const { return Random<unsigned long>(); }
+      // Example Enum(int exclusiveEnumMaxValue) usage:
+      // enum Color
+      // {
+      //    Red,
+      //    White,
+      //    Blue,
+      //    MaxValue
+      // };
+      // const ZenUnit::RandomGenerator* const zenUnitRandomGenerator = ZenUnit::RandomGenerator::Instance();
+      // const Color randomColor = static_cast<Color>(zenUnitRandomGenerator->Enum(Color::MaxValue));
+      virtual int Enum(int exclusiveEnumMaxValue) const
+      {
+         const int inclusiveEnumMaxValue = exclusiveEnumMaxValue - 1;
+         const int randomEnumAsInt = RandomBetween<int>(0, inclusiveEnumMaxValue);
+         return randomEnumAsInt;
+      }
 
-      virtual long long LongLong() const { return Random<long long>(); }
-      virtual unsigned long long UnsignedLongLong() const { return Random<unsigned long long>(); }
-      virtual size_t SizeT() const { return Random<size_t>(); }
+      virtual long Long() const
+      {
+         const long randomLong = Random<long>();
+         return randomLong;
+      }
+      virtual unsigned long UnsignedLong() const
+      {
+         const unsigned long randomUnsignedLong = Random<unsigned long>();
+         return randomUnsignedLong;
+      }
 
-      virtual float Float() const { return Random<float>(); }
-      virtual double Double() const { return Random<double>(); }
+      virtual long long LongLong() const
+      {
+         const long long randomLongLong = Random<long long>();
+         return randomLongLong;
+      }
+      virtual unsigned long long UnsignedLongLong() const
+      {
+         const unsigned long long randomUnsignedLongLong = Random<unsigned long long>();
+         return randomUnsignedLongLong;
+      }
+      virtual size_t SizeT() const
+      {
+         const size_t randomSizeT = Random<size_t>();
+         return randomSizeT;
+      }
 
-      virtual const char* ConstCharPointer() const { return Random<const char*>(); }
+      virtual float Float() const
+      {
+         const float randomFloat = Random<float>();
+         return randomFloat;
+      }
+      virtual double Double() const
+      {
+         const double randomDouble = Random<double>();
+         return randomDouble;
+      }
 
-      virtual std::string String() const { return Random<std::string>(); }
-      virtual std::vector<std::string> StringVector() const { return RandomVector<std::string>(); }
+      virtual const char* ConstCharPointer() const
+      {
+         const char* const randomConstChraPointer = Random<const char*>();
+         return randomConstChraPointer;
+      }
+      virtual std::string String() const
+      {
+         const std::string randomString = Random<std::string>();
+         return randomString;
+      }
 
-      virtual std::error_code ErrorCode() const { return Random<std::error_code>(); }
+      virtual std::vector<std::string> StringVector() const
+      {
+         const std::vector<std::string> randomStringVector = RandomVector<std::string>();
+         return randomStringVector;
+      }
 
-      virtual fs::path FilesystemPath() const { return Random<fs::path>(); }
+      virtual std::error_code ErrorCode() const
+      {
+         const std::error_code randomErrorCode = Random<std::error_code>();
+         return randomErrorCode;
+      }
+
+      virtual fs::path FilesystemPath() const
+      {
+         const fs::path randomFilesystemPath = Random<fs::path>();
+         return randomFilesystemPath;
+      }
 
       template<typename T>
       std::vector<T> Vector() const
       {
-         return RandomVector<T>();
+         const std::vector<T> randomVectorOfTBetweenSize0And3 = RandomVector<T>();
+         return randomVectorOfTBetweenSize0And3;
       }
 
       template<typename T>
       std::vector<T> NonEmptyVector() const
       {
-         return RandomNonEmptyVector<T>();
+         const std::vector<T> randomVectorOfTBetweenSize1And3 = RandomNonEmptyVector<T>();
+         return randomVectorOfTBetweenSize1And3;
       }
 
       template<typename KeyType, typename ValueType>
       std::unordered_map<KeyType, ValueType> UnorderedMap() const
       {
-         return RandomUnorderedMap<KeyType, ValueType>();
+         const std::unordered_map<KeyType, ValueType> randomUnorderedMap = RandomUnorderedMap<KeyType, ValueType>();
+         return randomUnorderedMap;
       }
    };
 
@@ -7201,12 +7300,14 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
 
       virtual std::map<KeyType, ValueType> Map() const
       {
-         return RandomMap<KeyType, ValueType>();
+         const std::map<KeyType, ValueType> randomMap = RandomMap<KeyType, ValueType>();
+         return randomMap;
       }
 
       virtual std::unordered_map<KeyType, ValueType> UnorderedMap() const
       {
-         return RandomUnorderedMap<KeyType, ValueType>();
+         const std::unordered_map<KeyType, ValueType> randomUnorderedMap = RandomUnorderedMap<KeyType, ValueType>();
+         return randomUnorderedMap;
       }
    };
 
