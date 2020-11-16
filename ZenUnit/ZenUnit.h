@@ -1821,7 +1821,7 @@ namespace ZenUnit
          const std::vector<std::string> stringArgs = [&]()
          {
             std::vector<std::string> stringArgs;
-            stringArgs.reserve(argc);
+            stringArgs.reserve(static_cast<size_t>(argc));
             std::for_each(argv, argv + argc, [&](char* charPointerArg)
             {
                stringArgs.emplace_back(charPointerArg);
