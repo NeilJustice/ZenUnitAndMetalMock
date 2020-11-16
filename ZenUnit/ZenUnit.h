@@ -1813,7 +1813,7 @@ namespace ZenUnit
       }
    };
 
-   class Vector
+   class VectorUtils
    {
    public:
       static std::vector<std::string> FromArgcArgv(int argc, char* argv[])
@@ -1832,7 +1832,7 @@ namespace ZenUnit
       }
 
       template<typename T>
-      static std::string Join(const std::vector<T>& vec, char separator)
+      static std::string JoinWithSeparator(const std::vector<T>& vec, char separator)
       {
          const size_t vectorSize = vec.size();
          if (vectorSize == 0)
@@ -1852,6 +1852,8 @@ namespace ZenUnit
          const std::string vectorJoinedAsString = oss.str();
          return vectorJoinedAsString;
       }
+
+      VectorUtils() = delete;
    };
 
    template<typename ReturnType, typename ClassType, typename Arg1Type>
@@ -1988,7 +1990,7 @@ namespace ZenUnit
             _console->WriteLineAndExit(CommandLineUsage(), 1);
          }
          ZenUnitArgs zenUnitArgs;
-         zenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
+         zenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
          const size_t numberOfArgs = stringArgs.size();
          for (size_t argIndex = 1; argIndex < numberOfArgs; ++argIndex)
          {
@@ -7313,7 +7315,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
 
    inline int RunTests(int argc, char* argv[])
    {
-      const std::vector<std::string> stringArgs = Vector::FromArgcArgv(argc, argv);
+      const std::vector<std::string> stringArgs = VectorUtils::FromArgcArgv(argc, argv);
       ZenUnitTestRunner* const zenUnitTestRunner = ZenUnitTestRunner::Instance();
       const int exitCode = zenUnitTestRunner->RunTests(stringArgs);
       return exitCode;

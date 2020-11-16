@@ -216,7 +216,7 @@ Example ZenUnit Command Line Arguments:
       METALMOCK(ToUnsignedMock.CalledOnceWith(to_string(randomSeed)));
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
+      expectedZenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
       expectedZenUnitArgs.pauseBefore = true;
       expectedZenUnitArgs.pauseAfter = true;
       expectedZenUnitArgs.alwaysExit0 = true;
@@ -251,7 +251,7 @@ Example ZenUnit Command Line Arguments:
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
 
       ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
+      expectedZenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
       expectedZenUnitArgs.testNameFilters = testNameFilters;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
@@ -303,7 +303,7 @@ Example ZenUnit Command Line Arguments:
       //
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
+      expectedZenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
       expectedZenUnitArgs.alwaysExit0 = true;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
@@ -356,7 +356,7 @@ Example ZenUnit Command Line Arguments:
       METALMOCK(ToIntMock.CalledOnceWith(to_string(timesArgValue)));
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
+      expectedZenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
       expectedZenUnitArgs.testRuns = timesArgValue;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
@@ -374,7 +374,7 @@ Example ZenUnit Command Line Arguments:
       METALMOCK(ToUnsignedMock.CalledOnceWith(to_string(randomSeed)));
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
-      expectedZenUnitArgs.commandLine = Vector::Join(stringArgs, ' ');
+      expectedZenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
       expectedZenUnitArgs.randomTestOrdering = false;
       expectedZenUnitArgs.randomSeed = randomSeed;
       expectedZenUnitArgs.randomSeedSetByUser = true;
