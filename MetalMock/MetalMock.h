@@ -4445,12 +4445,14 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          const char* constOrEmptyString)
       {
          std::ostringstream builder;
-         if (strlen(virtualOrEmptyString) > 0)
+         const size_t virtualOrEmptyStringLength = strlen(virtualOrEmptyString);
+         if (virtualOrEmptyStringLength > 0)
          {
-            builder << virtualOrEmptyString << " ";
+            builder << virtualOrEmptyString << ' ';
          }
          builder << returnType << ' ' << *metalMockedClassName << "::" << unadornedFunctionSignature;
-         if (strlen(constOrEmptyString) > 0)
+         const size_t constOrEmptyStringLength = strlen(constOrEmptyString);
+         if (constOrEmptyStringLength > 0)
          {
             builder << ' ' << constOrEmptyString;
          }
@@ -4460,7 +4462,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       static std::string FunctionPointer(const char* returnType, const char* unadornedFunctionSignature)
       {
-         const std::string metalMockedFunctionPointerSignature = ZenUnit::String::Concat(returnType, " ", unadornedFunctionSignature);
+         const std::string metalMockedFunctionPointerSignature = ZenUnit::String::Concat(returnType, ' ', unadornedFunctionSignature);
          return metalMockedFunctionPointerSignature;
       }
    };
