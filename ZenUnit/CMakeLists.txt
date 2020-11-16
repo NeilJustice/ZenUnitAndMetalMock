@@ -9,12 +9,12 @@ add_library(ZenUnit "ZenUnit.h" "MetalMock.h")
 set_target_properties(ZenUnit PROPERTIES LINKER_LANGUAGE CXX)
 
 install(DIRECTORY .
-        DESTINATION include/ZenUnit
+        DESTINATION include/ZenUnit/ZenUnit
         FILES_MATCHING REGEX "ZenUnit.h"
         PATTERN REGEX "CMakeFiles|Debug|Release|RelWithDebInfo|MinSizeRel|ZenUnit.dir" EXCLUDE)
 
 install(DIRECTORY .
-        DESTINATION include/ZenUnit
+        DESTINATION include/ZenUnit/ZenUnit
         FILES_MATCHING REGEX "MetalMock.h"
         PATTERN REGEX "CMakeFiles|Debug|Release|RelWithDebInfo|MinSizeRel|ZenUnit.dir" EXCLUDE)
 
