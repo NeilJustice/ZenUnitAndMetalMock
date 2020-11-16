@@ -739,21 +739,9 @@ namespace ZenUnit
       static std::string Concat(Types&&... values)
       {
          std::ostringstream oss;
-         OStringStreamConcat(oss, std::forward<Types>(values)...);
-         const std::string ostringStreamConcatenatedValues = oss.str();
-         return ostringStreamConcatenatedValues;
-      }
-
-      template<typename T, typename... Types>
-      static void OStringStreamConcat(std::ostringstream& oss, const T& value, Types&&... values)
-      {
-         oss << value;
-         OStringStreamConcat(oss, std::forward<Types>(values)...);
-      }
-
-      template<typename... T>
-      static void OStringStreamConcat(std::ostringstream&)
-      {
+         (oss << ... << std::forward<Types>(values));
+         const std::string ostringstreamConcatenatedValues = oss.str();
+         return ostringstreamConcatenatedValues;
       }
    };
 
