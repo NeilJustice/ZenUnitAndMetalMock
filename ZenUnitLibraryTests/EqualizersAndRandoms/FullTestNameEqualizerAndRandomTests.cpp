@@ -13,7 +13,7 @@ namespace ZenUnit
       ZENUNIT_EQUALIZER_TEST_SETUP(FullTestName);
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FullTestName, testClassName, ZenUnit::Random<const char*>());
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FullTestName, testName, ZenUnit::Random<const char*>());
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FullTestName, testName, ZenUnit::Random<const char*>());
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FullTestName, arity, ZenUnit::Random<unsigned char>());
    }
 
    TEST(TestableRandomFullTestName_ReturnsFullTestNameWithAllRandomFields)
