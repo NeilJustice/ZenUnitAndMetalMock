@@ -1,4 +1,4 @@
-// C++ Unit Testing Framework ZenUnit v0.6.0
+// C++ Unit Testing Framework ZenUnit v0.7.0
 // https://github.com/NeilJustice/ZenUnitAndMetalMock
 // MIT License
 

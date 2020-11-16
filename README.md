@@ -303,7 +303,7 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, unordered_set, unsigned long long
 ### ZenUnit Command Line Usage
 
 ```
-C++ Unit Testing Framework ZenUnit v0.6.0
+C++ Unit Testing Framework ZenUnit v0.7.0
 https://github.com/NeilJustice/ZenUnitAndMetalMock
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
