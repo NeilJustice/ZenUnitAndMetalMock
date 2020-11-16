@@ -106,7 +106,7 @@ namespace ZenUnit
 
    TEST(ToString_Nullptr_ReturnsNullptrInBrackets)
    {
-      nullptr_t nullPointerType;
+      nullptr_t nullPointerType = nullptr;
       ARE_EQUAL("nullptr", ToStringer::ToString(nullPointerType));
       ARE_EQUAL("nullptr", ToStringer::ToString(nullptr));
    }
