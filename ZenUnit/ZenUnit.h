@@ -6842,6 +6842,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    //
 
    template<typename T>
+   T Random();
+
+   template<typename T>
    T RandomBetween(long long inclusiveMinValue, long long inclusiveMaxValue)
    {
       static std::default_random_engine defaultRandomEngine(ZenUnitRandomSeed::value);
@@ -6955,7 +6958,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<typename T>
    T RandomNon0()
    {
-      static_assert(!is_same_v<T, std::string>);
+      static_assert(!std::is_same_v<T, std::string>);
       const T randomT = Random<T>();
       static const T zeroT = static_cast<T>(0);
       if (randomT == zeroT)

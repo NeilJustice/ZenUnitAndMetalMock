@@ -39,7 +39,7 @@ namespace ZenUnit
 
    TEST(RandomFullTestName_DoesNotThrowException)
    {
-      const FullTestName fullTestName = ZenUnit::Random<FullTestName>();
+      ZenUnit::Random<FullTestName>();
    }
 
    RUN_TESTS(FullTestNameEqualizerAndRandomTests)

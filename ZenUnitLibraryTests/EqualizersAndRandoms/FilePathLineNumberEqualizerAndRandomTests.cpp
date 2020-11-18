@@ -34,7 +34,7 @@ namespace ZenUnit
 
    TEST(ZenUnitRandomFilePathLineNumber_DoesNotThrowException)
    {
-      const FilePathLineNumber randomFilePathLineNumber = ZenUnit::Random<FilePathLineNumber>();
+      ZenUnit::Random<FilePathLineNumber>();
    }
 
    RUN_TESTS(FilePathLineNumberEqualizerAndRandomTests)
