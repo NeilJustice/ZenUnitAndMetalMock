@@ -314,7 +314,8 @@ Usage: <ZenUnitTestsBinaryName> [Options...]
 Testing Utility:
 
 --pause-before
-   Wait for any key before running tests to allow for attaching a debugger or performance profiler.
+   Wait for any key before running tests
+   to allow for attaching a debugger or performance profiler.
 --pause-after
    Wait for any key after running tests.
 --always-exit-0
