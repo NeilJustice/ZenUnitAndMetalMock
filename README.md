@@ -202,7 +202,8 @@ namespace Utils
    class PredicateCounter
    {
    public:
-      virtual size_t CountWhere(const ContainerType<T>& elements, bool(*elementPredicate)(const T&)) const
+      virtual size_t CountWhere(
+         const ContainerType<T>& elements, bool(*elementPredicate)(const T&)) const
       {
          size_t numberOfMatchingElements = 0;
          for (const T& element : elements)
