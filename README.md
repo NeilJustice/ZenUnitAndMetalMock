@@ -259,7 +259,8 @@ TEST(CountWhere_ElementsAreEmpty_Returns0)
 {
    const ContainerType<T> emptyElements;
    //
-   const size_t numberOfMatchingElements = _predicateCounter.CountWhere(emptyElements, NeverMatchingPredicate);
+   const size_t numberOfMatchingElements =
+      _predicateCounter.CountWhere(emptyElements, NeverMatchingPredicate);
    //
    ARE_EQUAL(0, numberOfMatchingElements);
 }
@@ -268,7 +269,8 @@ TEST(CountWhere_ElementsAreSize2_ElementDoNotMatch_Returns0)
 {
    const ContainerType<T> elements{ ZenUnit::Random<T>(), ZenUnit::Random<T>() };
    //
-   const size_t numberOfMatchingElements = _predicateCounter.CountWhere(elements, NeverMatchingPredicate);
+   const size_t numberOfMatchingElements =
+      _predicateCounter.CountWhere(elements, NeverMatchingPredicate);
    //
    ARE_EQUAL(0, numberOfMatchingElements);
 }
@@ -277,7 +279,8 @@ TEST(CountWhere_ElementsAreSize2_BothElementsMatch_Returns2)
 {
    const ContainerType<T> elements{ ZenUnit::Random<T>(), ZenUnit::Random<T>() };
    //
-   const size_t numberOfMatchingElements = _predicateCounter.CountWhere(elements, AlwaysMatchingPredicate);
+   const size_t numberOfMatchingElements =
+      _predicateCounter.CountWhere(elements, AlwaysMatchingPredicate);
    //
    ARE_EQUAL(2, numberOfMatchingElements);
 }
