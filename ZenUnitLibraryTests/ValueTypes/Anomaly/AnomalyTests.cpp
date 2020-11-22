@@ -19,6 +19,8 @@ namespace ZenUnit
    AFACT(METALMOCKWrapped_ReturnsExpectedAnomaly)
    EVIDENCE
 
+   static_assert(is_base_of_v<exception, Anomaly>);
+
    const char* AssertionName = "ASSERTION_NAME";
    const char* Arg1Text = "Arg1Text";
    const string Expected = "Expected";
@@ -31,7 +33,7 @@ namespace ZenUnit
 
    TEST(DefaultConstructor_DoesNotSetAnyFieldsToNonDefaultValues)
    {
-      Anomaly defaultAnomaly;
+      const Anomaly defaultAnomaly;
       Anomaly exepctedDefaultAnomaly;
       exepctedDefaultAnomaly.assertExpression = string();
       exepctedDefaultAnomaly.expectedValueAsStringOrExpectedLine = string();
