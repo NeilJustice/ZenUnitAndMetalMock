@@ -5,8 +5,6 @@
 
 #include "ZenUnit/ZenUnit.h"
 #include "ZenUnit/MetalMock.h"
-
-namespace std {}
 using namespace std;
 
 // ZenUnitTestUtils

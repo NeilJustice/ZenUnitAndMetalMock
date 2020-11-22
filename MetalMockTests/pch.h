@@ -2,8 +2,6 @@
 #define MetalMockTests_PCH
 
 #include "ZenUnitLibraryTests/IfWindowsIgnoreTheseWarningGlobally.h"
-namespace std {}
-using namespace std;
 
 #if defined _WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -15,6 +13,7 @@ using namespace std;
 #include "ZenUnit/ZenUnit.h"
 #include "ZenUnit/MetalMock.h"
 using namespace ZenUnit;
+using namespace std;
 
 #include "MetalMockTests/MetalMock/T.h"
 
