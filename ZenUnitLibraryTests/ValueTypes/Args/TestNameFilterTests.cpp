@@ -21,10 +21,12 @@ namespace ZenUnit
 
    TEST(DefaultConstructor_SetsTestCaseNumberToUnsignedMaxValue)
    {
-      const TestNameFilter testNameFilter;
-      ARE_EQUAL("", testNameFilter.testClassNamePattern);
-      ARE_EQUAL("", testNameFilter.testNamePattern);
-      ARE_EQUAL(std::numeric_limits<size_t>::max(), testNameFilter.testCaseNumber);
+      const TestNameFilter defaultTestNameFilter;
+      TestNameFilter expectedDefaultTestNameFilter;
+      expectedDefaultTestNameFilter.testClassNamePattern = "";
+      expectedDefaultTestNameFilter.testNamePattern = "";
+      expectedDefaultTestNameFilter.testCaseNumber = numeric_limits<size_t>::max();
+      ARE_EQUAL(expectedDefaultTestNameFilter, defaultTestNameFilter);
    }
 
    TEST(ThreeArgumentConstructor_SetsFields)
@@ -33,11 +35,13 @@ namespace ZenUnit
       const string testNamePattern = ZenUnit::Random<string>();
       const size_t testCaseNumber = ZenUnit::Random<size_t>();
       //
-      TestNameFilter testNameFilter(testClassNamePattern, testNamePattern, testCaseNumber);
+      const TestNameFilter testNameFilter(testClassNamePattern, testNamePattern, testCaseNumber);
       //
-      ARE_EQUAL(testClassNamePattern, testNameFilter.testClassNamePattern);
-      ARE_EQUAL(testNamePattern, testNameFilter.testNamePattern);
-      ARE_EQUAL(testCaseNumber, testNameFilter.testCaseNumber);
+      TestNameFilter expectedTestNameFilter;
+      expectedTestNameFilter.testClassNamePattern = testClassNamePattern;
+      expectedTestNameFilter.testNamePattern = testNamePattern;
+      expectedTestNameFilter.testCaseNumber = testCaseNumber;
+      ARE_EQUAL(expectedTestNameFilter, testNameFilter);
    }
 
    TEST(MatchesTestClassName_ReturnsTheResultOfCallingFilterPatternMatchesStringWithTestClassName)
