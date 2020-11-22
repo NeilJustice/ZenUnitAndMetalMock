@@ -70,63 +70,6 @@ namespace ZenUnit
    {
    public:
       static const char* Number() { return "0.6.0"; }
-
-      static const std::string& CommandLineUsage()
-      {
-         static const std::string zenUnitCommandLineUsage = "C++ Unit Testing Framework ZenUnit v" + std::string(Number()) + R"(
-https://github.com/NeilJustice/ZenUnitAndMetalMock
-Usage: <ZenUnitTestsBinaryName> [Options...]
-
-Testing Utility:
-
---pause-before
-   Wait for any key before running tests to allow for attaching a debugger or performance profiler.
---pause-after
-   Wait for any key after running tests.
---always-exit-0
-   Always exit with code 0.
---help
-   Print this command line usage message.
---version
-   Print the ZenUnit version number.
-
-Testing Filtration:
-
---run=<TestClassName>[::TestName][/TestCaseNumber][,...]
-   Run only specified case-insensitive test classes, tests, and/or test case numbers.
-   Add a '*' character to the end of a test class name or test name to indicate name-starts-with.
- Example 1: --run=APITests
-   Run only test class APITests.
- Example 2: --run=APITests::FunctionUnderTest*
-   Run only tests in APITests that start with "FunctionUnderTest".
- Example 3: --run=APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue/3
-   Run only the third test case of the value-parameterized test named
-   APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue
---fail-fast
-   Call exit(1) if a test fails.
-
-Testing Rigorousness:
-
---test-runs=<N>
-   Repeat N times the running of all tests.
-   Specify -1 to repeat forever the running of all tests.
---random-test-ordering
-   Run test classes, tests, and value-parameterized test cases in a random order.
---random-seed=<32BitUnsignedInteger>
-   Sets the random seed which sets the test ordering for --random-test-ordering and
-   sets the sequence of values returned by the ZenUnit::Random<T>
-   family of random-value-generating functions.
-   The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
---exit-1-if-tests-skipped
-   After having run all tests, exit with code 1 if any tests were skipped.
-
-Example ZenUnit Command Line Arguments:
-
-./SafetyCriticalUnitTests --test-runs=5 --random-test-ordering --exit-1-if-tests-skipped
-./FinanciallyCriticalUnitTests --pause-before --random-test-ordering --random-seed=12345
-)";
-         return zenUnitCommandLineUsage;
-      }
    };
 }
 
@@ -1950,16 +1893,18 @@ namespace ZenUnit
       // Function Callers
       std::function<int(std::string_view)> _call_String_ToInt;
       std::function<unsigned(std::string_view)> _call_String_ToUnsigned;
-      // Constant Components
       std::unique_ptr<const OneArgMemberFunctionCaller<void, ArgsParser, ZenUnitArgs&>> _caller_SetRandomSeedIfNotSetByUser;
+      // Constant Components
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const TestNameFilterStringParser> _testNameFilterStringParser;
       std::unique_ptr<const Watch> _watch;
    public:
       ArgsParser() noexcept
+         // Function Callers
          : _call_String_ToInt(String::ToInt)
          , _call_String_ToUnsigned(String::ToUnsigned)
          , _caller_SetRandomSeedIfNotSetByUser(std::make_unique<OneArgMemberFunctionCaller<void, ArgsParser, ZenUnitArgs&>>())
+         // Constant Components
          , _console(std::make_unique<Console>())
          , _testNameFilterStringParser(std::make_unique<TestNameFilterStringParser>())
          , _watch(std::make_unique<Watch>())
@@ -1970,8 +1915,59 @@ namespace ZenUnit
 
       static const std::string& CommandLineUsage()
       {
-         const std::string& commandLineUsage = Version::CommandLineUsage();
-         return commandLineUsage;
+         static const std::string zenUnitCommandLineUsage = "C++ Unit Testing Framework ZenUnit v" + std::string(Version::Number()) + R"(
+https://github.com/NeilJustice/ZenUnitAndMetalMock
+Usage: <ZenUnitTestsBinaryName> [Options...]
+
+Testing Rigorousness:
+
+--test-runs=<N>
+   Repeat N times the running of all tests.
+   Specify -1 to repeat forever the running of all tests.
+--random-test-ordering
+   Run test classes, tests, and value-parameterized test cases in a random order.
+--random-seed=<32BitUnsignedInteger>
+   Sets the random seed which sets the test ordering for --random-test-ordering and
+   sets the sequence of values returned by the ZenUnit::Random<T>
+   family of random-value-generating functions.
+   The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
+--exit-1-if-tests-skipped
+   After having run all tests, exit with code 1 if any tests were skipped.
+
+Testing Filtration:
+
+--run=<TestClassName>[::TestName][/TestCaseNumber][,...]
+   Run only specified case-insensitive test classes, tests, and/or test case numbers.
+   Add a '*' character to the end of a test class name or test name to indicate name-starts-with.
+ Example 1: --run=APITests
+   Run only test class APITests.
+ Example 2: --run=APITests::FunctionUnderTest*
+   Run only tests in APITests that start with "FunctionUnderTest".
+ Example 3: --run=APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue/3
+   Run only the third test case of the value-parameterized test named
+   APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue
+--fail-fast
+   Call exit(1) if a test fails.
+
+Testing Utility:
+
+--pause-before
+   Wait for any key before running tests to allow for attaching a debugger or performance profiler.
+--pause-after
+   Wait for any key after running tests.
+--always-exit-0
+   Always exit with code 0.
+--help
+   Print this command line usage message.
+--version
+   Print the ZenUnit version number.
+
+Example ZenUnit command line arguments:
+
+./SafetyCriticalUnitTests --test-runs=5 --random-test-ordering --exit-1-if-tests-skipped
+./FinanciallyCriticalUnitTests --run=MarketDataDispatcherTests --fail-fast
+)";
+         return zenUnitCommandLineUsage;
       }
 
       virtual ZenUnitArgs Parse(const std::vector<std::string>& stringArgs) const

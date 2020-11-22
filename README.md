@@ -15,11 +15,11 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
 ##### ZenUnit.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/master/ZenUnit/ZenUnit.h)
 ##### MetalMock.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/master/MetalMock/MetalMock.h)
 
+   * [ZenUnit Command Line Usage](#zenunit-command-line-usage)
    * [How To Unit Test FizzBuzz With ZenUnit's Value-Parameterized Test Syntax](#how-to-unit-test-fizzbuzz-with-zenunits-value-parameterized-test-syntax)
       * [Console Output When Running ZenUnit Value-Parameterized Tests](#console-output-when-running-zenunit-value-parameterized-tests)
    * [How To Unit Test Templated Class PredicateCounter's CountWhere() Function With ZenUnit's Type-Parameterized Test Syntax](#how-to-unit-test-templated-class-predicatecounters-countwhere-function-with-zenunits-type-parameterized-test-syntax)
       * [Console Output When Running ZenUnit Type-Parameterized Tests](#console-output-when-running-zenunit-type-parameterized-tests)
-   * [ZenUnit Command Line Usage](#zenunit-command-line-usage)
    * [ZenUnit Assertions](#zenunit-assertions)
       * [Value Assertions](#value-assertions)
       * [Pointer Assertions](#pointer-assertions)
@@ -57,38 +57,94 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
    * [4 Windows Commands To Build And Run ZenUnit And MetalMock's Unit Tests Then Install ZenUnit.h And MetalMock.h](#4-windows-commands-to-build-and-run-zenunit-and-metalmocks-unit-tests-then-install-zenunith-and-metalmockh)
    * [Special Thanks](#special-thanks)
 
+### ZenUnit Command Line Usage
+
+```
+C++ Unit Testing Framework ZenUnit v0.7.0
+https://github.com/NeilJustice/ZenUnitAndMetalMock
+Usage: <ZenUnitTestsBinaryName> [Options...]
+
+Testing Rigorousness:
+
+--test-runs=<N>
+   Repeat N times the running of all tests.
+   Specify -1 to repeat forever the running of all tests.
+--random-test-ordering
+   Run test classes, tests, and value-parameterized test cases in a random order.
+--random-seed=<32BitUnsignedInteger>
+   Sets the random seed which sets the test ordering for --random-test-ordering and
+   sets the sequence of values returned by the ZenUnit::Random<T>
+   family of random-value-generating functions.
+   The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
+--exit-1-if-tests-skipped
+   After having run all tests, exit with code 1 if any tests were skipped.
+
+Testing Filtration:
+
+--run=<TestClassName>[::TestName][/TestCaseNumber][,...]
+   Run only specified case-insensitive test classes, tests, and/or test case numbers.
+   Add a '*' character to the end of a test class name or test name to indicate name-starts-with.
+ Example 1: --run=APITests
+   Run only test class APITests.
+ Example 2: --run=APITests::FunctionUnderTest*
+   Run only tests in APITests that start with "FunctionUnderTest".
+ Example 3: --run=APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue/3
+   Run only the third test case of the value-parameterized test named
+   APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue
+--fail-fast
+   Call exit(1) if a test fails.
+
+Testing Utility:
+
+--pause-before
+   Wait for any key before running tests to allow for attaching a debugger or performance profiler.
+--pause-after
+   Wait for any key after running tests.
+--always-exit-0
+   Always exit with code 0.
+--help
+   Print this command line usage message.
+--version
+   Print the ZenUnit version number.
+
+Example ZenUnit command line arguments:
+
+./SafetyCriticalUnitTests --test-runs=5 --random-test-ordering --exit-1-if-tests-skipped
+./FinanciallyCriticalUnitTests --run=MarketDataDispatcherTests --fail-fast
+```
+
 ### How To Unit Test FizzBuzz With ZenUnit's Value-Parameterized Test Syntax
 
 ```cpp
-// Single header ZenUnit.h
-#include "ZenUnit.h"
+// Single header
+#include "ZenUnit/ZenUnit.h"
 
 // FizzBuzz function to be unit tested with ZenUnit
 std::string FizzBuzz(int endNumber);
 
-// TESTS defines a ZenUnit test class and begins the FACTS section.
+// TESTS defines a ZenUnit test class and begins the FACTS section
 TESTS(FizzBuzzTests)
-// FACTS declares an N-by-N value-parameterized test, the signature feature of ZenUnit.
+// FACTS declares an N-by-N value-parameterized test, the signature syntatical feature of ZenUnit
 FACTS(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgumentException)
 FACTS(FizzBuzz_EndNumberIsGreaterThan0_ReturnsFizzBuzzSequence)
-// EVIDENCE concludes the declaration of facts section
-// and begins the presentation of evidence section - also known as the test class body.
+// EVIDENCE concludes the declaration of FACTS section and begins the presentation of EVIDENCE section
 EVIDENCE
 
-// In ZenUnit test names are by-design duplicated between the FACTS section and the EVIDENCE section.
+// In ZenUnit, test names are by design duplicated between the FACTS section and the EVIDENCE section.
 // This carefully-considered design decision is to maximize long-term test code readability
-// by making it easy for code reviewers to quickly confirm 
-// whether a test class tests a cohesive set of functionality using a consistent test naming convention
-// by simply reading the top part of a ZenUnit test class .cpp file.
+// by making it a breeze for code readers to quickly confirm
+// what a test class tests by simply reading the top part of a ZenUnit test class .cpp file.
 // In contrast, ZenUnit could have been designed to allow test names to be scattered throughout test files
-// for initial writeability convenience but at a cost of long-term code readability convenience.
-// Because code is read much more often than it is written, long-term code readability was chosen for ZenUnit.
+// for initial writeability convenience, but at a cost of long-term code readability convenience.
+// Because test code is read much more often than it is written,
+// especially safety-critical and financially-critical test code,
+// a design that maximizes long-term test code readability was chosen for ZenUnit.
 
 // TEST1X1 defines a 1-by-1 value-parameterized test
 // which processes its typesafe variadic arguments list 1-by-1.
 // This TEST1X1 defines 4 independent unit tests for FizzBuzz(),
 // each of which will run sequentially within separate instances of test class FizzBuzzTests.
-// Adding support for parallel test execution appears prominently on ZenUnit's Azure DevOps backlog.
+// Adding support for parallel test case execution appears prominently on ZenUnit's Azure DevOps backlog.
 TEST1X1(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgumentException,
    int invalidFizzBuzzEndNumber,
    std::numeric_limits<int>::min(),
@@ -101,8 +157,8 @@ TEST1X1(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgumentException,
    // *exactly* an expected exception what() text.
 
    // This double-exactness design of THROWS_EXCEPTION serves to maximizes mutation coverage,
-   // the next frontier in software quality metrics beyond code coverage,
-   // by rendering the THROWS_EXCEPTION assertion immune to these two mutation testing operators:
+   // the next frontier in software quality metrics beyond code coverage.
+   // Throw statements tested with THROWS_EXCEPTION are immune to these two mutation testing operators:
    // mutate-exception-type and mutate-exception-message.
 
    THROWS_EXCEPTION(FizzBuzz(invalidFizzBuzzEndNumber), std::invalid_argument,
@@ -175,7 +231,7 @@ std::string FizzBuzz(int endNumber)
    return fizzBuzzSequence;
 }
 
-// RUN_TESTS registers a ZenUnit test class to be run when ZenUnit::RunTests(argc, argv) is called.
+// RUN_TESTS registers a ZenUnit test class to be run when ZenUnit::RunTests(argc, argv) is called
 RUN_TESTS(FizzBuzzTests)
 
 int main(int argc, char* argv[])
@@ -193,7 +249,7 @@ int main(int argc, char* argv[])
 
 How might you confirm the correctness of this templated class PredicateCounter with its function CountWhere() for counting the number of elements in a container that match a predicate function?
 
-```
+```cpp
 namespace Utils
 {
    template<
@@ -224,8 +280,8 @@ namespace Utils
 
 Here is how the CountWhere() function's correctness can be confirmed across multiple `ContainerType` types and `T` types by using ZenUnit's type-parameterized test class syntax `TEMPLATE_TESTS`, `RUN_TEMPLATE_TESTS`, and `THEN_RUN_TEMPLATE_TESTS`:
 
-```
-#include "ZenUnit.h"
+```cpp
+#include "ZenUnit/ZenUnit.h"
 
 template<
    template<typename T>
@@ -303,63 +359,6 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, unordered_set, unsigned long long
 ### Console Output When Running ZenUnit Type-Parameterized Tests
 
 ![Console Output When Running ZenUnit Type-Parameterized Tests](Screenshots/ConsoleOutputWhenRunningZenUnitTypeParameterizedTests.png)
-
-### ZenUnit Command Line Usage
-
-```
-C++ Unit Testing Framework ZenUnit v0.7.0
-https://github.com/NeilJustice/ZenUnitAndMetalMock
-Usage: <ZenUnitTestsBinaryName> [Options...]
-
-Testing Utility:
-
---pause-before
-   Wait for any key before running tests
-   to allow for attaching a debugger or performance profiler.
---pause-after
-   Wait for any key after running tests.
---always-exit-0
-   Always exit with code 0.
---help
-   Print this command line usage message.
---version
-   Print the ZenUnit version number.
-
-Testing Filtration:
-
---run=<TestClassName>[::TestName][/TestCaseNumber][,...]
-   Run only specified case-insensitive test classes, tests, and/or test case numbers.
-   Add a '*' character to the end of a test class name or test name to indicate name-starts-with.
- Example 1: --run=APITests
-   Run only test class APITests.
- Example 2: --run=APITests::FunctionUnderTest*
-   Run only tests in APITests that start with "FunctionUnderTest".
- Example 3: --run=APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue/3
-   Run only the third test case of the value-parameterized test named
-   APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue
---fail-fast
-   Call exit(1) if a test fails.
-
-Testing Rigorousness:
-
---test-runs=<N>
-   Repeat N times the running of all tests.
-   Specify -1 to repeat forever the running of all tests.
---random-test-ordering
-   Run test classes, tests, and value-parameterized test cases in a random order.
---random-seed=<32BitUnsignedInteger>
-   Sets the random seed which sets the test ordering for --random-test-ordering and
-   sets the sequence of values returned by the ZenUnit::Random<T>
-   family of random-value-generating functions.
-   The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
---exit-1-if-tests-skipped
-   After having run all tests, exit with code 1 if any tests were skipped.
-
-Example ZenUnit Command Line Arguments:
-
-./SafetyCriticalUnitTests --test-runs=5 --random-test-ordering --exit-1-if-tests-skipped
-./FinanciallyCriticalUnitTests --pause-before --random-test-ordering --random-seed=12345
-```
 
 ## ZenUnit Assertions
 
@@ -690,7 +689,7 @@ Here is the ZenUnit console output from running the above ZenUnit Equalizer exam
 
 ### How To MetalMock Virtual Functions
 
-```
+```cpp
 // This is the contents of file MetalMockExamples/VirtualFunctionMockingTests.cpp
 
 #include "pch.h"
@@ -776,7 +775,7 @@ RUN_TESTS(ComponentATests)
 
 ### How To MetalMock Non-Virtual Functions
 
-```
+```cpp
 // This is the contents of file MetalMockExamples/NonVirtualFunctionMockingTests.cpp
 
 #include "pch.h"
@@ -879,7 +878,7 @@ RUN_TESTS(OrderSenderTests)
 
 ### How To MetalMock Static Functions
 
-```
+```cpp
 // This is the contents of file MetalMockExamples/StaticFunctionMockingTests.cpp
 
 #include "pch.h"
@@ -994,7 +993,7 @@ RUN_TESTS(StaticFunctionMockingExampleTests)
 
 ### How To MetalMock Free Functions
 
-```
+```cpp
 // This is the contents of file MetalMockExamples/FreeFunctionMockingTests.cpp
 
 #include "pch.h"
@@ -1160,7 +1159,7 @@ ZenUnit provides the following random-value-generating functions for maximizing 
 
 ### 6 Linux Commands To Build And Run ZenUnit And MetalMock's Unit Tests Then Install ZenUnit.h And MetalMock.h
 
-```
+```bash
 git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
 cd ZenUnitAndMetalMock && mkdir Debug && cd Debug
 CXX=clang++ cmake .. -GNinja -DCMAKE_BUILD_TYPE=Debug
@@ -1182,7 +1181,7 @@ cd ..
 
 ### 4 Windows Commands To Build And Run ZenUnit And MetalMock's Unit Tests Then Install ZenUnit.h And MetalMock.h
 
-```
+```bash
 git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
 cd ZenUnitAndMetalMock
 cmake . -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=C:\
