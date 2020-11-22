@@ -83,16 +83,10 @@ namespace ZenUnit
       "TestClassName::TestName//1",
       "TestClassName::TestName///1")
    {
-      const string expectedExceptionMessage = MakeExpectedInvalidArgumentMessage(invalidTestNameFilterString);
-      THROWS_EXCEPTION(const TestNameFilter testNameFilter = _testNameFilterStringParser.ParseTestNameFilterString(invalidTestNameFilterString),
-         invalid_argument, expectedExceptionMessage);
-   }
-
-   static string MakeExpectedInvalidArgumentMessage(const string& invalidNameFilterString)
-   {
-      const string expectedInvalidArgumentMessage = String::Concat("Invalid test name filter string: ", invalidNameFilterString,
+      const string expectedInvalidArgumentMessage = String::Concat("Invalid test name filter string: ", invalidTestNameFilterString,
          ". This is the test name filter string format: TestClassName[::TestName[/TestCaseNumber]]");
-      return expectedInvalidArgumentMessage;
+      THROWS_EXCEPTION(_testNameFilterStringParser.ParseTestNameFilterString(invalidTestNameFilterString),
+         invalid_argument, expectedInvalidArgumentMessage);
    }
 
    RUN_TESTS(TestNameFilterStringParserTests)
