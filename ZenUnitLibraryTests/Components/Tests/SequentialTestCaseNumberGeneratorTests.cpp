@@ -27,13 +27,13 @@ namespace ZenUnit
 
    TEST3X3(Initialize_SetsMaxTestCaseNumberAndCurrentTestCaseNumber,
       size_t numberOfTestCaseArgs, size_t N, size_t expectedMaxTestCaseNumber,
-      1, 1, 1,
-      2, 1, 2,
-      3, 1, 3,
+      1ull, 1ull, 1ull,
+      2ull, 1ull, 2ull,
+      3ull, 1ull, 3ull,
 
-      2, 2, 1,
-      4, 2, 2,
-      6, 2, 3)
+      2ull, 2ull, 1ull,
+      4ull, 2ull, 2ull,
+      6ull, 2ull, 3ull)
    {
       const ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
       //
@@ -44,9 +44,9 @@ namespace ZenUnit
 
    TEST2X2(NextTestCaseNumber_CurrentTestCaseNumberIsLessThanOrEqualToMaxTestCaseNumber_ReturnsCurrentTestCaseNumberThenIncrementsIt,
       size_t maxTestCaseNumber, const vector<size_t>& expectedSequenceOfReturnValues,
-      1, vector<size_t>{1, std::numeric_limits<size_t>::max(), std::numeric_limits<size_t>::max()},
-      2, vector<size_t>{1, 2, std::numeric_limits<size_t>::max(), std::numeric_limits<size_t>::max()},
-      3, vector<size_t>{1, 2, 3, std::numeric_limits<size_t>::max(), std::numeric_limits<size_t>::max()})
+      1ull, vector<size_t>{1, std::numeric_limits<size_t>::max(), std::numeric_limits<size_t>::max()},
+      2ull, vector<size_t>{1, 2, std::numeric_limits<size_t>::max(), std::numeric_limits<size_t>::max()},
+      3ull, vector<size_t>{1, 2, 3, std::numeric_limits<size_t>::max(), std::numeric_limits<size_t>::max()})
    {
       _sequentialTestCaseNumberGenerator._maxTestCaseNumber = maxTestCaseNumber;
       //

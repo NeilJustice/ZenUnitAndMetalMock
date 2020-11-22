@@ -35,7 +35,7 @@ namespace ZenUnit
    TEST(OStreamInsertionOperator_WritesExpected)
    {
       const string filePath = ZenUnit::Random<string>();
-      const unsigned lineNumber = ZenUnit::Random<long>();
+      const unsigned lineNumber = ZenUnit::Random<unsigned>();
       //
       const FilePathLineNumber filePathLineNumber(filePath.c_str(), lineNumber);
       //
@@ -43,7 +43,7 @@ namespace ZenUnit
       oss << filePathLineNumber;
       //
       const string result = oss.str();
-      const string expected = filePath + "(" + to_string(lineNumber) + ")";
+      const string expected = String::Concat(filePath, '(', lineNumber, ')');
       ARE_EQUAL(expected, result);
    }
 

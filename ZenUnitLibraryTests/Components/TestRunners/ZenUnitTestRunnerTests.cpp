@@ -114,17 +114,17 @@ namespace ZenUnit
    }
 
    TEST4X4(RunTests_ParsesArgs_RunsTestClassesTimesNumberOfTimes_Returns0IfAllTestRunsPassOtherwiseReturns1,
-      int testrunsArg, int firstTestRunExitCode, int secondTestRunExitCode, int expectedOverallExitCode,
+      int testRuns, int firstTestRunExitCode, int secondTestRunExitCode, int expectedOverallExitCode,
       1, 0, ZenUnit::Random<int>(), 0,
       2, 1, 0, 1,
       2, 0, 1, 1,
       2, 1, 1, 1)
    {
-      ZenUnitArgs parsedZenUnitArgs;
-      parsedZenUnitArgs.testNameFilters = { Random<TestNameFilter>(), Random<TestNameFilter>() };
-      parsedZenUnitArgs.pauseAfter = ZenUnit::Random<bool>();
-      parsedZenUnitArgs.testRuns = testrunsArg;
-      _argsParserMock->ParseMock.Return(parsedZenUnitArgs);
+      ZenUnitArgs zenUnitArgs;
+      zenUnitArgs.testNameFilters = ZenUnit::RandomNonEmptyVector<TestNameFilter>();
+      zenUnitArgs.pauseAfter = ZenUnit::Random<bool>();
+      zenUnitArgs.testRuns = testRuns;
+      _argsParserMock->ParseMock.Return(zenUnitArgs);
 
       _testClassRunnerRunnerMock->ApplyTestNameFiltersIfAnyMock.Expect();
 
@@ -140,11 +140,12 @@ namespace ZenUnit
       const int overallExitCode = _zenUnitTestRunner.RunTests(commandLineArgs);
       //
       METALMOCK(_argsParserMock->ParseMock.CalledOnceWith(commandLineArgs));
-      METALMOCK(_testClassRunnerRunnerMock->ApplyTestNameFiltersIfAnyMock.CalledOnceWith(parsedZenUnitArgs.testNameFilters));
+      METALMOCK(_testClassRunnerRunnerMock->ApplyTestNameFiltersIfAnyMock.CalledOnceWith(zenUnitArgs.testNameFilters));
       METALMOCK(_caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock->NonConstCallMock.CalledNTimesWith(
-         testrunsArg, &_zenUnitTestRunner, &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, parsedZenUnitArgs));
-      METALMOCK(_testRunResultMock->ResetStateExceptForSkipsMock.CalledNTimes(testrunsArg));
-      METALMOCK(_consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.CalledOnceWith(parsedZenUnitArgs.pauseAfter));
+         static_cast<size_t>(testRuns), &_zenUnitTestRunner,
+         &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, zenUnitArgs));
+      METALMOCK(_testRunResultMock->ResetStateExceptForSkipsMock.CalledNTimes(static_cast<size_t>(testRuns)));
+      METALMOCK(_consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.CalledOnceWith(zenUnitArgs.pauseAfter));
       ARE_EQUAL(expectedOverallExitCode, overallExitCode);
    }
 

@@ -4357,17 +4357,21 @@ Example ZenUnit command line arguments:
    {
       friend class TestClassRunnerTests;
    protected:
-      std::unique_ptr<const Console> _protected_console;
+      // Function Callers
       using TwoArgMemberAnyerType = TwoArgMemberAnyer<
          std::vector<TestNameFilter>,
          TestClassRunner,
          bool(TestClassRunner::*)(const TestNameFilter&, const char*) const,
          const char*>;
       std::unique_ptr<const TwoArgMemberAnyerType> _protected_twoArgMemberAnyer;
+      // Constant Components
+      std::unique_ptr<const Console> _protected_console;
    public:
       TestClassRunner() noexcept
-         : _protected_console(std::make_unique<Console>())
-         , _protected_twoArgMemberAnyer(std::make_unique<TwoArgMemberAnyerType>())
+         // Function Callers
+         : _protected_twoArgMemberAnyer(std::make_unique<TwoArgMemberAnyerType>())
+         // Constant Components
+         , _protected_console(std::make_unique<Console>())
       {
       }
 
@@ -4429,7 +4433,7 @@ Example ZenUnit command line arguments:
       std::unique_ptr<const Sorter<std::vector<std::unique_ptr<TestClassRunner>>>> _testClassRunnerSorter;
       std::unique_ptr<const Watch> _watch;
 
-      // Mutable Components
+      // Mutable Fields
       std::vector<std::unique_ptr<TestClassRunner>> _testClassRunners;
    public:
       TestClassRunnerRunner() noexcept
@@ -4443,18 +4447,10 @@ Example ZenUnit command line arguments:
 
       virtual ~TestClassRunnerRunner() = default;
 
-      virtual void AddTestClassRunner(std::unique_ptr<TestClassRunner> testClassRunner)
+      virtual size_t NumberOfTestCases() const
       {
-         _testClassRunners.emplace_back(std::move(testClassRunner));
-      }
-
-      virtual void ApplyTestNameFiltersIfAny(const std::vector<TestNameFilter>& testNameFilters)
-      {
-         if (!testNameFilters.empty())
-         {
-            _twoArgMemberForEacher->TwoArgMemberForEach(&_testClassRunners, this,
-               &TestClassRunnerRunner::ResetTestClassRunnerWithNoOpIfTestClassNameDoesNotMatchAnyTestNameFilter, testNameFilters);
-         }
+         const size_t numberOfTestCases = SumNumberOfTestCasesInAllTestClassRunners();
+         return numberOfTestCases;
       }
 
       virtual size_t NumberOfTestClassesToBeRun() const
@@ -4471,10 +4467,18 @@ Example ZenUnit command line arguments:
          return numberOfTestClassesToBeRun;
       }
 
-      virtual size_t NumberOfTestCases() const
+      virtual void AddTestClassRunner(std::unique_ptr<TestClassRunner> testClassRunner)
       {
-         const size_t numberOfTestCases = SumNumberOfTestCasesInAllTestClassRunners();
-         return numberOfTestCases;
+         _testClassRunners.emplace_back(std::move(testClassRunner));
+      }
+
+      virtual void ApplyTestNameFiltersIfAny(const std::vector<TestNameFilter>& testNameFilters)
+      {
+         if (!testNameFilters.empty())
+         {
+            _twoArgMemberForEacher->TwoArgMemberForEach(&_testClassRunners, this,
+               &TestClassRunnerRunner::ResetTestClassRunnerWithNoOpIfTestClassNameDoesNotMatchAnyTestNameFilter, testNameFilters);
+         }
       }
 
       virtual std::vector<TestClassResult> RunTestClasses(ZenUnitArgs& zenUnitArgs)
@@ -5427,6 +5431,17 @@ Example ZenUnit command line arguments:
       friend class SpecificTestClassRunnerTests;
    private:
       // Function Callers
+      std::function<const ZenUnitArgs& ()> _call_ZenUnitTestRunner_GetZenUnitArgs;
+
+      std::unique_ptr<const TwoArgMemberFunctionCaller<
+         bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>> _nonVoidTwoArgFunctionCaller;
+
+      using TwoArgTestAnyerType = TwoArgAnyer<
+         const std::vector<std::unique_ptr<Test>>,
+         bool(*)(const std::unique_ptr<Test>&,
+            const TestNameFilter&), const TestNameFilter&>;
+      std::unique_ptr<const TwoArgTestAnyerType> _twoArgTestAnyer;
+
       using TwoArgMemberForEacherType = TwoArgMemberForEacher<
          std::unique_ptr<Test>,
          SpecificTestClassRunner,
@@ -5434,21 +5449,10 @@ Example ZenUnit command line arguments:
          TestClassResult*>;
       std::unique_ptr<const TwoArgMemberForEacherType> _twoArgMemberForEacher;
 
-      std::unique_ptr<const ZeroArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>>> _voidZeroArgMemberFunctionCaller;
-
-      std::unique_ptr<const TwoArgMemberFunctionCaller<
-         bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>> _nonVoidTwoArgFunctionCaller;
-
       std::unique_ptr<const OneArgMemberFunctionCaller<
-         void, SpecificTestClassRunner<TestClassType>, const TestClassResult*>> _voidOneArgFunctionCaller;
+         void, SpecificTestClassRunner<TestClassType>, const TestClassResult*>> _voidOneArgMemberFunctionCaller;
 
-      using TwoArgTestAnyerType = TwoArgAnyer<
-         const std::vector<std::unique_ptr<Test>>,
-         bool(*)(const std::unique_ptr<Test>&,
-         const TestNameFilter&), const TestNameFilter&>;
-      std::unique_ptr<const TwoArgTestAnyerType> _twoArgTestAnyer;
-
-      std::function<const ZenUnitArgs&()> _call_ZenUnitTestRunner_GetZenUnitArgs;
+      std::unique_ptr<const ZeroArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>>> _voidZeroArgMemberFunctionCaller;
 
       // Mutable Fields
       const char* _testClassName;
@@ -5458,17 +5462,17 @@ Example ZenUnit command line arguments:
    public:
       explicit SpecificTestClassRunner(const char* testClassName)
          // Function Callers
-         : _twoArgMemberForEacher(std::make_unique<TwoArgMemberForEacherType>())
-         , _voidZeroArgMemberFunctionCaller(std::make_unique<ZeroArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>>>())
+         : _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnitTestRunner::GetZenUnitArgs)
          , _nonVoidTwoArgFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>>())
-         , _voidOneArgFunctionCaller(std::make_unique<OneArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>, const TestClassResult*>>())
          , _twoArgTestAnyer(std::make_unique<TwoArgTestAnyerType>())
-         , _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnitTestRunner::GetZenUnitArgs)
+         , _twoArgMemberForEacher(std::make_unique<TwoArgMemberForEacherType>())
+         , _voidOneArgMemberFunctionCaller(std::make_unique<OneArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>, const TestClassResult*>>())
+         , _voidZeroArgMemberFunctionCaller(std::make_unique<ZeroArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>>>())
          // Mutable Fields
          , _testClassName(testClassName)
          , _newableDeletableTest(testClassName)
-         , _tests(TestClassType::GetTests(testClassName))
       {
+         _tests = TestClassType::GetTests(testClassName);
       }
 
       const char* TestClassName() const override
@@ -5517,7 +5521,7 @@ Example ZenUnit command line arguments:
          {
             _voidZeroArgMemberFunctionCaller->NonConstCall(this, &SpecificTestClassRunner::DoRunTests);
          }
-         _voidOneArgFunctionCaller->ConstCall(this, &SpecificTestClassRunner::PrintTestClassResultLine, &_testClassResult);
+         _voidOneArgMemberFunctionCaller->ConstCall(this, &SpecificTestClassRunner::PrintTestClassResultLine, &_testClassResult);
          _protected_console->WriteNewLine();
          return std::move(_testClassResult);
       }
@@ -5840,14 +5844,11 @@ Example ZenUnit command line arguments:
       std::function<std::shared_ptr<ITestCaseNumberGenerator>(bool)> _call_ITestCaseNumberGeneratorFactoryNew;
       std::function<std::vector<std::string>(const char*)> _call_String_SplitOnNonQuotedCommas;
       std::function<const ZenUnitArgs& ()> _call_ZenUnitTestRunner_GetZenUnitArgs;
-
       using CallerOfTestNameFilterMatchesTestCaseType = ThreeArgAnyer<
          std::vector<TestNameFilter>, bool(*)(const TestNameFilter&, const FullTestName&, size_t), const FullTestName&, size_t>;
       std::unique_ptr<CallerOfTestNameFilterMatchesTestCaseType> _callerOfTestNameFilterMatchesTestCase;
-
       // Constant Components
       std::unique_ptr<const Console> _console;
-
       // Mutable Fields
       const char* const _testCaseArgsText;
       std::unique_ptr<TestClassType> _testClass;

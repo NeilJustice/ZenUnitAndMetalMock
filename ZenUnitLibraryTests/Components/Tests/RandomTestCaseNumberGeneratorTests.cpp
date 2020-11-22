@@ -20,13 +20,13 @@ namespace ZenUnit
 
    TEST3X3(Initialize_SetsRandomTestCaseNumbersVector,
       size_t numberOfTestCaseArgs, size_t N, const vector<size_t>& expectedRandomTestCaseNumbers,
-      1, 1, vector<size_t>{ 1 },
-      2, 1, vector<size_t>{ 1, 2 },
-      3, 1, vector<size_t>{ 1, 2, 3 },
+      1ull, 1ull, vector<size_t>{ 1 },
+      2ull, 1ull, vector<size_t>{ 1, 2 },
+      3ull, 1ull, vector<size_t>{ 1, 2, 3 },
 
-      2, 2, vector<size_t>{ 1 },
-      4, 2, vector<size_t>{ 1, 2 },
-      6, 2, vector<size_t>{ 1, 2, 3 })
+      2ull, 2ull, vector<size_t>{ 1 },
+      4ull, 2ull, vector<size_t>{ 1, 2 },
+      6ull, 2ull, vector<size_t>{ 1, 2, 3 })
    {
       const ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
       //

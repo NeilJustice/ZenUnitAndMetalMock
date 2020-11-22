@@ -17,12 +17,12 @@ namespace ZenUnit
    AFACT(MoveAssignmentOperator_MovesForEacherAndTestResults)
    AFACT(AddTestResults_AppendTestResultsToEndOfTestResultsVector)
    AFACT(NumberOfFailedTestCases_ReturnsNumberOfNonSuccessTestsInTestResultsVector)
-   AFACT(SumOfTestResultMicroseconds_EmptyTestResultsVector_Returns0)
-   AFACT(SumOfTestResultMicroseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMicroseconds)
    AFACT(PrintTestFailures_PrintsJustTestFailedToConsole)
    AFACT(PrintTestClassResultLine_0FailedTestCases_WritesOKInGreen)
    FACTS(PrintTestClassResultLine_1OrMoreFailedTests_WritesFailedInRed)
    AFACT(PrintTestResultIfFailure_CallsTestResultPrintIfFailure)
+   AFACT(SumOfTestResultMicroseconds_EmptyTestResultsVector_Returns0)
+   AFACT(SumOfTestResultMicroseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMicroseconds)
    EVIDENCE
 
    TestClassResult _testClassResult;
@@ -168,33 +168,9 @@ namespace ZenUnit
          &_testClassResult._testResults, TestClassResult::PrintTestResultIfFailure, &console, &testFailureNumberer));
    }
 
-   TEST(SumOfTestResultMicroseconds_EmptyTestResultsVector_Returns0)
-   {
-      IS_ZERO(_testClassResult._testResults.size());
-      //
-      const long long microseconds = _testClassResult.SumOfTestResultMicroseconds();
-      //
-      IS_ZERO(microseconds);
-   }
-
-   TEST(SumOfTestResultMicroseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMicroseconds)
-   {
-      TestResult testResultA;
-      testResultA.microseconds = ZenUnit::RandomBetween<long long>(0, 100);
-
-      TestResult testResultB;
-      testResultB.microseconds = ZenUnit::RandomBetween<long long>(0, 1000);
-
-      _testClassResult._testResults = { testResultA, testResultB };
-      //
-      const long long microseconds = _testClassResult.SumOfTestResultMicroseconds();
-      //
-      ARE_EQUAL(testResultA.microseconds + testResultB.microseconds, microseconds);
-   }
-
    TEST(PrintTestClassResultLine_0FailedTestCases_WritesOKInGreen)
    {
-      _testClassResultSelfMocked.NumberOfFailedTestCasesMock.Return(0);
+      _testClassResultSelfMocked.NumberOfFailedTestCasesMock.Return(0ull);
       const long long sumOfTestResultMicroseconds =
          _testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.ReturnRandom();
 
@@ -217,9 +193,9 @@ namespace ZenUnit
 
    TEST1X1(PrintTestClassResultLine_1OrMoreFailedTests_WritesFailedInRed,
       size_t numberOfFailedTestCases,
-      size_t(1),
-      size_t(2),
-      size_t(3))
+      1ull,
+      2ull,
+      3ull)
    {
       _testClassResultSelfMocked.NumberOfFailedTestCasesMock.Return(numberOfFailedTestCases);
       const long long microseconds = _testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.ReturnRandom();
@@ -248,6 +224,30 @@ namespace ZenUnit
       TestClassResult::PrintTestResultIfFailure(testResultMock, &console, &testFailureNumberer);
       //
       METALMOCK(testResultMock.PrintIfFailureMock.CalledOnceWith(&console, &testFailureNumberer));
+   }
+
+   TEST(SumOfTestResultMicroseconds_EmptyTestResultsVector_Returns0)
+   {
+      IS_ZERO(_testClassResult._testResults.size());
+      //
+      const long long microseconds = _testClassResult.SumOfTestResultMicroseconds();
+      //
+      IS_ZERO(microseconds);
+   }
+
+   TEST(SumOfTestResultMicroseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMicroseconds)
+   {
+      TestResult testResultA;
+      testResultA.microseconds = ZenUnit::RandomBetween<long long>(0, 100);
+
+      TestResult testResultB;
+      testResultB.microseconds = ZenUnit::RandomBetween<long long>(0, 1000);
+
+      _testClassResult._testResults = { testResultA, testResultB };
+      //
+      const long long microseconds = _testClassResult.SumOfTestResultMicroseconds();
+      //
+      ARE_EQUAL(testResultA.microseconds + testResultB.microseconds, microseconds);
    }
 
    RUN_TESTS(TestClassResultTests)

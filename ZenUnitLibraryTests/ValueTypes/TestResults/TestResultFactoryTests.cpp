@@ -12,14 +12,16 @@ namespace ZenUnit
    TestResultFactory _testResultFactory;
    const string testClassName = ZenUnit::Random<string>();
    const string testName = ZenUnit::Random<string>();
-   const FullTestName FullTestNameValue = FullTestName(testClassName.c_str(), testName.c_str(), ZenUnit::Random<char>());
+   FullTestName _fullTestNameValue;
    TestPhaseResult ConstructorTestPhaseResult;
    TestPhaseResult StartupTestPhaseResult;
    TestPhaseResult DestructorTestPhaseResult;
    TestPhaseResult TestBodyTestPhaseResult;
    TestPhaseResult CleanupTestPhaseResult;
+
    STARTUP
    {
+      _fullTestNameValue = FullTestName(testClassName.c_str(), testName.c_str(), ZenUnit::Random<unsigned char>());
       ConstructorTestPhaseResult.testPhase = TestPhase::Constructor;
       StartupTestPhaseResult.testPhase = TestPhase::Startup;
       TestBodyTestPhaseResult.testPhase = TestPhase::TestBody;
@@ -30,40 +32,40 @@ namespace ZenUnit
    TEST(MakeConstructorFail_ReturnsTestResultConstructorFail)
    {
       const TestResult constructorFailTestResult =
-         _testResultFactory.MakeConstructorFail(FullTestNameValue, ConstructorTestPhaseResult);
+         _testResultFactory.MakeConstructorFail(_fullTestNameValue, ConstructorTestPhaseResult);
       //
-      const TestResult expectedTestResult = TestResult::ConstructorFail(FullTestNameValue, ConstructorTestPhaseResult);
+      const TestResult expectedTestResult = TestResult::ConstructorFail(_fullTestNameValue, ConstructorTestPhaseResult);
       ARE_EQUAL(expectedTestResult, constructorFailTestResult);
    }
 
    TEST(MakeStartupFail_ReturnsTestResultStartupFail)
    {
       const TestResult startupFailTestResult = _testResultFactory.MakeStartupFail(
-         FullTestNameValue, ConstructorTestPhaseResult, StartupTestPhaseResult, DestructorTestPhaseResult);
+         _fullTestNameValue, ConstructorTestPhaseResult, StartupTestPhaseResult, DestructorTestPhaseResult);
       //
       const TestResult expectedTestResult = TestResult::StartupFail(
-         FullTestNameValue, ConstructorTestPhaseResult, StartupTestPhaseResult, DestructorTestPhaseResult);
+         _fullTestNameValue, ConstructorTestPhaseResult, StartupTestPhaseResult, DestructorTestPhaseResult);
       ARE_EQUAL(expectedTestResult, startupFailTestResult);
    }
 
    TEST(MakeConstructorDestructorSuccess_ReturnsTestResultConstructorDestructorSuccess)
    {
       const TestResult ctorDtorSuccessResult = _testResultFactory.MakeConstructorDestructorSuccess(
-         FullTestNameValue, ConstructorTestPhaseResult, DestructorTestPhaseResult);
+         _fullTestNameValue, ConstructorTestPhaseResult, DestructorTestPhaseResult);
       //
       const TestResult expectedTestResult = TestResult::ConstructorDestructorSuccess(
-         FullTestNameValue, ConstructorTestPhaseResult, DestructorTestPhaseResult);
+         _fullTestNameValue, ConstructorTestPhaseResult, DestructorTestPhaseResult);
       ARE_EQUAL(expectedTestResult, ctorDtorSuccessResult);
    }
 
    TEST(MakeFullTestResult_ReturnsTestResultSixArgCtor)
    {
       const TestResult testResult = _testResultFactory.MakeFullTestResult(
-         FullTestNameValue, ConstructorTestPhaseResult, StartupTestPhaseResult,
+         _fullTestNameValue, ConstructorTestPhaseResult, StartupTestPhaseResult,
          TestBodyTestPhaseResult, CleanupTestPhaseResult, DestructorTestPhaseResult);
       //
       const TestResult expectedTestResult(
-         FullTestNameValue, ConstructorTestPhaseResult, StartupTestPhaseResult,
+         _fullTestNameValue, ConstructorTestPhaseResult, StartupTestPhaseResult,
          TestBodyTestPhaseResult, CleanupTestPhaseResult, DestructorTestPhaseResult, ZenUnitTestRunner::GetZenUnitArgs);
       ARE_EQUAL(expectedTestResult, testResult);
    }

@@ -12,7 +12,7 @@
 namespace ZenUnit
 {
    TESTS(TestClassRunnerRunnerTests)
-   AFACT(Constructor_NewsComponents)
+   AFACT(DefaultConstructor_NewsComponents)
    AFACT(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
    AFACT(AddTestClassRunner_EmplacesBackTestClassRunner_MakesNumberOfTestClassesToBeRunReturnAnIncreasingNumberAsMoreNonNoOpTestClassRunnersAreAdded)
    AFACT(ApplyTestNameFiltersIfAny_TestNameFiltersAreEmpty_DoesNothing)
@@ -27,7 +27,7 @@ namespace ZenUnit
    EVIDENCE
 
    TestClassRunnerRunner _testClassRunnerRunner;
-   SorterMock<vector<unique_ptr<TestClassRunner>>>* _testClassRunnerSorterMock = nullptr;
+   // Function Callers
    TransformerMock<unique_ptr<TestClassRunner>, TestClassResult>* _transformerMock = nullptr;
    using TwoArgMemberAnyerMockType = TwoArgMemberAnyerMock<
       std::vector<TestNameFilter>,
@@ -41,26 +41,64 @@ namespace ZenUnit
       void(TestClassRunnerRunner::*)(std::unique_ptr<TestClassRunner>&, const std::vector<TestNameFilter>&),
       const std::vector<TestNameFilter>&>;
    TwoArgMemberForEacherMockType* _twoArgMemberForEacherMock = nullptr;
+
+   // Constant Components
+   SorterMock<vector<unique_ptr<TestClassRunner>>>* _testClassRunnerSorterMock = nullptr;
    WatchMock* _watchMock = nullptr;
 
    STARTUP
    {
-      _testClassRunnerRunner._twoArgMemberForEacher.reset(_twoArgMemberForEacherMock = new TwoArgMemberForEacherMockType);
-      _testClassRunnerRunner._twoArgMemberAnyer.reset(_twoArgMemberAnyerMock = new TwoArgMemberAnyerMockType);
-      _testClassRunnerRunner._testClassRunnerSorter.reset(_testClassRunnerSorterMock = new SorterMock<vector<unique_ptr<TestClassRunner>>>);
+      // Function Callers
       _testClassRunnerRunner._transformer.reset(_transformerMock = new TransformerMock<unique_ptr<TestClassRunner>, TestClassResult>);
+      _testClassRunnerRunner._twoArgMemberAnyer.reset(_twoArgMemberAnyerMock = new TwoArgMemberAnyerMockType);
+      _testClassRunnerRunner._twoArgMemberForEacher.reset(_twoArgMemberForEacherMock = new TwoArgMemberForEacherMockType);
+      // Constant Components
+      _testClassRunnerRunner._testClassRunnerSorter.reset(_testClassRunnerSorterMock = new SorterMock<vector<unique_ptr<TestClassRunner>>>);
       _testClassRunnerRunner._watch.reset(_watchMock = new WatchMock);
    }
 
-   TEST(Constructor_NewsComponents)
+   TEST(DefaultConstructor_NewsComponents)
    {
       TestClassRunnerRunner testClassRunnerRunner;
-      DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._testClassRunnerSorter);
+      // Function Callers
       DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._transformer);
       DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._twoArgMemberAnyer);
       DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._twoArgMemberForEacher);
+      // Constant Components
+      DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._testClassRunnerSorter);
       DELETE_TO_ASSERT_NEWED(testClassRunnerRunner._watch);
+      // Mutable Fields
       IS_EMPTY(testClassRunnerRunner._testClassRunners);
+   }
+
+   TEST(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
+   {
+      unique_ptr<TestClassRunnerMock> testClassRunner1Mock = make_unique<TestClassRunnerMock>();
+      TestClassRunnerMock* testClassRunner1MockPointer = testClassRunner1Mock.get();
+
+      unique_ptr<TestClassRunnerMock> testClassRunner2Mock = make_unique<TestClassRunnerMock>();
+      TestClassRunnerMock* testClassRunner2MockPointer = testClassRunner2Mock.get();
+
+      unique_ptr<TestClassRunnerMock> testClassRunner3Mock = make_unique<TestClassRunnerMock>();
+      TestClassRunnerMock* testClassRunner3MockPointer = testClassRunner3Mock.get();
+
+      const size_t numberOfTestCases1 = ZenUnit::RandomBetween<size_t>(0, 10);
+      const size_t numberOfTestCases2 = ZenUnit::RandomBetween<size_t>(0, 10);
+      const size_t numberOfTestCases3 = ZenUnit::RandomBetween<size_t>(0, 10);
+      testClassRunner1Mock->NumberOfTestCasesMock.Return(numberOfTestCases1);
+      testClassRunner2Mock->NumberOfTestCasesMock.Return(numberOfTestCases2);
+      testClassRunner3Mock->NumberOfTestCasesMock.Return(numberOfTestCases3);
+      _testClassRunnerRunner.AddTestClassRunner(std::move(testClassRunner1Mock));
+      _testClassRunnerRunner.AddTestClassRunner(std::move(testClassRunner2Mock));
+      _testClassRunnerRunner.AddTestClassRunner(std::move(testClassRunner3Mock));
+      //
+      const size_t totalNumberOfTestCases = _testClassRunnerRunner.NumberOfTestCases();
+      //
+      METALMOCK(testClassRunner1MockPointer->NumberOfTestCasesMock.CalledOnce());
+      METALMOCK(testClassRunner2MockPointer->NumberOfTestCasesMock.CalledOnce());
+      METALMOCK(testClassRunner3MockPointer->NumberOfTestCasesMock.CalledOnce());
+      const size_t expectedTotalNumberOfTestCases = numberOfTestCases1 + numberOfTestCases2 + numberOfTestCases3;
+      ARE_EQUAL(expectedTotalNumberOfTestCases, totalNumberOfTestCases);
    }
 
    TEST(AddTestClassRunner_EmplacesBackTestClassRunner_MakesNumberOfTestClassesToBeRunReturnAnIncreasingNumberAsMoreNonNoOpTestClassRunnersAreAdded)
@@ -153,36 +191,6 @@ namespace ZenUnit
          testNameFilters, &_testClassRunnerRunner, &TestClassRunnerRunner::TestNameFilterMatchesTestClass,
          testClassRunnerAddressBeforeBeingOverwrittenWithNoOpTestRunner));
       IS_TRUE(dynamic_cast<NoOpTestClassRunner*>(testClassRunner.get()) != nullptr);
-   }
-
-   TEST(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
-   {
-      unique_ptr<TestClassRunnerMock> testClassRunner1Mock = make_unique<TestClassRunnerMock>();
-      TestClassRunnerMock* testClassRunner1MockPointer = testClassRunner1Mock.get();
-
-      unique_ptr<TestClassRunnerMock> testClassRunner2Mock = make_unique<TestClassRunnerMock>();
-      TestClassRunnerMock* testClassRunner2MockPointer = testClassRunner2Mock.get();
-
-      unique_ptr<TestClassRunnerMock> testClassRunner3Mock = make_unique<TestClassRunnerMock>();
-      TestClassRunnerMock* testClassRunner3MockPointer = testClassRunner3Mock.get();
-
-      const int numberOfTestCases1 = ZenUnit::RandomBetween<int>(0, 10);
-      const int numberOfTestCases2 = ZenUnit::RandomBetween<int>(0, 10);
-      const int numberOfTestCases3 = ZenUnit::RandomBetween<int>(0, 10);
-      testClassRunner1Mock->NumberOfTestCasesMock.Return(numberOfTestCases1);
-      testClassRunner2Mock->NumberOfTestCasesMock.Return(numberOfTestCases2);
-      testClassRunner3Mock->NumberOfTestCasesMock.Return(numberOfTestCases3);
-      _testClassRunnerRunner.AddTestClassRunner(std::move(testClassRunner1Mock));
-      _testClassRunnerRunner.AddTestClassRunner(std::move(testClassRunner2Mock));
-      _testClassRunnerRunner.AddTestClassRunner(std::move(testClassRunner3Mock));
-      //
-      const size_t totalNumberOfTestCases = _testClassRunnerRunner.NumberOfTestCases();
-      //
-      METALMOCK(testClassRunner1MockPointer->NumberOfTestCasesMock.CalledOnce());
-      METALMOCK(testClassRunner2MockPointer->NumberOfTestCasesMock.CalledOnce());
-      METALMOCK(testClassRunner3MockPointer->NumberOfTestCasesMock.CalledOnce());
-      const int expectedTotalNumberOfTestCases = numberOfTestCases1 + numberOfTestCases2 + numberOfTestCases3;
-      ARE_EQUAL(expectedTotalNumberOfTestCases, totalNumberOfTestCases);
    }
 
    TEST(TestNameFilterMatchesTestClass_TestNameFilterDoesNotMatchTestClassName_ReturnsFalse)

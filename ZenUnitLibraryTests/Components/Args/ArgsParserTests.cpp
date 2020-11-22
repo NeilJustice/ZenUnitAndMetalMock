@@ -141,8 +141,8 @@ Example ZenUnit command line arguments:
 
    TEST1X1(Parse_ArgsSizeGreaterThanOrEqualTo13_PrintsTooManyArgumentsErrorMessageAndCommandLineUsageAndExits1,
       size_t numberOfStringArgs,
-      13,
-      14)
+      13ull,
+      14ull)
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
@@ -347,17 +347,19 @@ Example ZenUnit command line arguments:
    TEST(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
    {
       const string dateTimeNow = _watchMock->DateTimeNowMock.ReturnRandom();
+
       ExpectCallToSetRandomSeedIfNotSetByUser();
-      const unsigned timesArgValue = ToIntMock.ReturnRandom();
-      const vector<string> stringArgs{ _testProgramPath, "--test-runs=" + to_string(timesArgValue) };
+
+      const int testRuns = ToIntMock.ReturnRandom();
+      const vector<string> stringArgs{ _testProgramPath, "--test-runs=" + to_string(testRuns) };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
       //
-      METALMOCK(ToIntMock.CalledOnceWith(to_string(timesArgValue)));
+      METALMOCK(ToIntMock.CalledOnceWith(to_string(testRuns)));
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
-      expectedZenUnitArgs.testRuns = timesArgValue;
+      expectedZenUnitArgs.testRuns = testRuns;
       AssertCallToSetRandomSeedIfNotSetByUser(expectedZenUnitArgs);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }

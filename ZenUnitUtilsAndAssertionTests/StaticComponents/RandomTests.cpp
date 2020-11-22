@@ -156,7 +156,6 @@ namespace ZenUnit
 
    RUN_TESTS(RandomTests)
 
-   //
 
    template<typename KeyType, typename ValueType>
    TEMPLATE_TESTS(RandomPairTests, KeyType, ValueType)
@@ -173,7 +172,6 @@ namespace ZenUnit
    RUN_TEMPLATE_TESTS(RandomPairTests, int, int)
    THEN_RUN_TEMPLATE_TESTS(RandomPairTests, string, long long)
 
-   //
 
    template<typename T>
    TEMPLATE_TESTS(RandomVectorTests, T)
@@ -189,7 +187,6 @@ namespace ZenUnit
    RUN_TEMPLATE_TESTS(RandomVectorTests, int)
    THEN_RUN_TEMPLATE_TESTS(RandomVectorTests, string)
 
-   //
 
    template<typename T>
    TEMPLATE_TESTS(RandomVectorWithSizeTests, T)
@@ -198,9 +195,9 @@ namespace ZenUnit
 
    TEST1X1(RandomVectorWithSize_ReturnsAVectorWithSpecifiedSize,
       size_t size,
-      0,
-      1,
-      2)
+      0ull,
+      1ull,
+      2ull)
    {
       const vector<T> randomVectorWithSize = ZenUnit::RandomVectorWithSize<T>(size);
       ARE_EQUAL(size, randomVectorWithSize.size());
@@ -209,7 +206,6 @@ namespace ZenUnit
    RUN_TEMPLATE_TESTS(RandomVectorWithSizeTests, int)
    THEN_RUN_TEMPLATE_TESTS(RandomVectorWithSizeTests, string)
 
-   //
 
    template<typename T>
    TEMPLATE_TESTS(RandomNonEmptyVectorTests, T)
@@ -227,7 +223,6 @@ namespace ZenUnit
    RUN_TEMPLATE_TESTS(RandomNonEmptyVectorTests, int)
    THEN_RUN_TEMPLATE_TESTS(RandomNonEmptyVectorTests, string)
 
-   //
 
    template<typename KeyType, typename ValueType>
    TEMPLATE_TESTS(RandomMapTests, KeyType, ValueType)
@@ -243,7 +238,6 @@ namespace ZenUnit
    RUN_TEMPLATE_TESTS(RandomMapTests, int, int)
    THEN_RUN_TEMPLATE_TESTS(RandomMapTests, string, double)
 
-   //
 
    template<typename KeyType, typename ValueType>
    TEMPLATE_TESTS(RandomUnorderedMapTests, KeyType, ValueType)
@@ -259,7 +253,6 @@ namespace ZenUnit
    RUN_TEMPLATE_TESTS(RandomUnorderedMapTests, int, int)
    THEN_RUN_TEMPLATE_TESTS(RandomUnorderedMapTests, string, double)
 
-   //
 
    template<typename ElementType>
    TEMPLATE_TESTS(RandomSetTests, ElementType)
@@ -273,7 +266,6 @@ namespace ZenUnit
    RUN_TEMPLATE_TESTS(RandomSetTests, int)
    THEN_RUN_TEMPLATE_TESTS(RandomSetTests, string)
 
-   //
 
    template<typename ElementType>
    TEMPLATE_TESTS(RandomUnorderedSetTests, ElementType)

@@ -108,10 +108,10 @@ namespace ZenUnit
       bool testNameMatches, size_t testNameFilterTestCaseNumber, size_t testNXNTestCaseNumber, bool expectedReturnValue,
       false, ZenUnit::Random<size_t>(), ZenUnit::Random<size_t>(), false,
       true, std::numeric_limits<size_t>::max(), ZenUnit::Random<size_t>(), true,
-      true, 1, 1, true,
-      true, 2, 2, true,
-      true, 1, 2, false,
-      true, 2, 3, false)
+      true, 1ull, 1ull, true,
+      true, 2ull, 2ull, true,
+      true, 1ull, 2ull, false,
+      true, 2ull, 3ull, false)
    {
       _testNameFilterSelfMocked.FilterPatternMatchesStringMock.ReturnValues(true, testNameMatches);
       _testNameFilterSelfMocked.testClassNamePattern = ZenUnit::Random<string>();

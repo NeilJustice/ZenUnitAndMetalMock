@@ -76,8 +76,8 @@ namespace ZenUnit
       int relativeMicroseconds,
       TestOutcome expectedOverallOutcome,
       TestPhaseResult TestResult::* expectedResponsibleTestPhaseResultField,
-      TestOutcome::Success, TestOutcome::Success, 0, 0, TestOutcome::Success, nullptr,
-      TestOutcome::Success, TestOutcome::Success, 0, 1, TestOutcome::Success, nullptr,
+      TestOutcome::Success, TestOutcome::Success, 0u, 0, TestOutcome::Success, nullptr,
+      TestOutcome::Success, TestOutcome::Success, 0u, 1, TestOutcome::Success, nullptr,
       TestOutcome::Success, TestOutcome::Success, MaxTestMilliseconds, -1, TestOutcome::Success, nullptr,
       TestOutcome::Success, TestOutcome::Success, MaxTestMilliseconds, 0, TestOutcome::Success, nullptr,
 
@@ -123,7 +123,7 @@ namespace ZenUnit
          getArgsMockFunction);
       //
       if (expectedOverallOutcome == TestOutcome::Success ||
-         expectedOverallOutcome == TestOutcome::SuccessButPastDeadline)
+          expectedOverallOutcome == TestOutcome::SuccessButPastDeadline)
       {
          GetArgsMock.CalledOnce();
       }
@@ -385,9 +385,9 @@ namespace ZenUnit
    TEST2X2(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseNumberIfTestCaseNumberNotMaxValue,
       size_t testCaseNumber, bool expectConsoleWriteLine,
       numeric_limits<size_t>::max(), false,
-      1, true,
-      2, true,
-      3, true)
+      1ull, true,
+      2ull, true,
+      3ull, true)
    {
       if (expectConsoleWriteLine)
       {
@@ -399,7 +399,8 @@ namespace ZenUnit
       //
       if (expectConsoleWriteLine)
       {
-         METALMOCK(_consoleMock.WriteMock.CalledOnceWith(" test case " + to_string(testCaseNumber) + "/" + to_string(_testResult.totalTestCases)));
+         METALMOCK(_consoleMock.WriteMock.CalledOnceWith(
+            " test case " + to_string(testCaseNumber) + "/" + to_string(_testResult.totalTestCases)));
       }
    }
 

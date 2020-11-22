@@ -1,7 +1,6 @@
 #pragma once
 
 #if defined _WIN32
-#pragma warning(disable: 4365) // 'argument': conversion from 'int' to 'const std::basic_string_view<char,std::char_traits<char>>::size_type', signed / unsigned mismatch
 #pragma warning(disable: 4625) // copy constructor was implicitly defined as deleted
 #pragma warning(disable: 4626) // assignment operator was implicitly defined as deleted
 #pragma warning(disable: 4710) // function not inlined

@@ -44,7 +44,6 @@ namespace ZenUnit
    using CallerOfTestNameFilterMatchesTestCaseMockType = ThreeArgAnyerMock<
       std::vector<TestNameFilter>, bool(*)(const TestNameFilter&, const FullTestName&, size_t), const FullTestName&, size_t>;
    CallerOfTestNameFilterMatchesTestCaseMockType* _callerOfTestNameFilterMatchesTestCaseMock = nullptr;
-
    // Constant Components
    ConsoleMock* _consoleMock = nullptr;
 
@@ -68,32 +67,37 @@ namespace ZenUnit
       TestNXN<TestingTestClass, 2, int, int, int, int> test2X2(
          _testClassName.c_str(), _testName.c_str(), _testCaseArgsText.c_str(), 0, 0, 0, 0);
 
-      // Fields
-      DELETE_TO_ASSERT_NEWED(test2X2._console);
-      DELETE_TO_ASSERT_NEWED(test2X2._callerOfTestNameFilterMatchesTestCase);
-      STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetZenUnitArgs, test2X2._call_ZenUnitTestRunner_GetZenUnitArgs);
+      // Function Callers
       STD_FUNCTION_TARGETS(::exit, test2X2._call_exit);
       STD_FUNCTION_TARGETS(ITestCaseNumberGenerator::FactoryNew, test2X2._call_ITestCaseNumberGeneratorFactoryNew);
       STD_FUNCTION_TARGETS(String::SplitOnNonQuotedCommas, test2X2._call_String_SplitOnNonQuotedCommas);
+      STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetZenUnitArgs, test2X2._call_ZenUnitTestRunner_GetZenUnitArgs);
+      DELETE_TO_ASSERT_NEWED(test2X2._callerOfTestNameFilterMatchesTestCase);
+      // Constant Components
+      DELETE_TO_ASSERT_NEWED(test2X2._console);
+      // Mutable Fields
+      ARE_EQUAL(_testCaseArgsText, test2X2._testCaseArgsText);
       IS_NULLPTR(test2X2._testClass);
       ARE_EQUAL(1, test2X2._currentTestCaseNumber);
-      ARE_EQUAL(_testCaseArgsText, test2X2._testCaseArgsText);
-      const size_t expectedNumberOfTestCases = 2;
       IS_EMPTY(test2X2._testResults);
+      const size_t expectedNumberOfTestCases = 2;
       ARE_EQUAL(expectedNumberOfTestCases, test2X2._testResults.capacity());
 
       // Getters
       ARE_EQUAL(_testName, test2X2.Name());
-      ARE_EQUAL("TESTS(" + _testClassName + ")\nTEST2X2(" + _testName + ")", test2X2.FullName());
+      const string expectedFullName = String::Concat("TESTS(", _testClassName, ")\nTEST2X2(", _testName, ')');
+      ARE_EQUAL(expectedFullName, test2X2.FullName());
       ARE_EQUAL("(0)", test2X2.FilePathLineNumberString());
    }
 
    TEST(Constructor_StoresDecayedTypeCopiesOfTestCaseArguments)
    {
-      const TestNXN<TestingTestClass, 1, int> testNXN_1X1_1Arg(_testClassName.c_str(), _testName.c_str(), _testCaseArgsText.c_str(), 0);
+      const TestNXN<TestingTestClass, 1, int> testNXN_1X1_1Arg(
+         _testClassName.c_str(), _testName.c_str(), _testCaseArgsText.c_str(), 0);
       ARE_EQUAL(tuple<int>(0), testNXN_1X1_1Arg._protected_testCaseArgs);
 
-      const TestNXN<TestingTestClass, 1, int, int> testNXN_1X1_2Args(_testClassName.c_str(), _testName.c_str(), _testCaseArgsText.c_str(), 0, 0);
+      const TestNXN<TestingTestClass, 1, int, int> testNXN_1X1_2Args(
+         _testClassName.c_str(), _testName.c_str(), _testCaseArgsText.c_str(), 0, 0);
       const tuple<int, int> expectedTestCaseArgs1(0, 0);
       ARE_EQUAL(expectedTestCaseArgs1, testNXN_1X1_2Args._protected_testCaseArgs);
 
@@ -155,7 +159,7 @@ namespace ZenUnit
 
       shared_ptr<ITestCaseNumberGeneratorMock> testCaseNumberGeneratorMock = make_shared<ITestCaseNumberGeneratorMock>();
       testCaseNumberGeneratorMock->InitializeMock.Expect();
-      testCaseNumberGeneratorMock->NextTestCaseNumberMock.ReturnValues(1, 2, std::numeric_limits<size_t>::max());
+      testCaseNumberGeneratorMock->NextTestCaseNumberMock.ReturnValues(1ull, 2ull, std::numeric_limits<size_t>::max());
       test1X1SelfMocked.FactoryNewMock.Return(testCaseNumberGeneratorMock);
 
       METALMOCK_NONVOID0_STATIC(vector<string>, ZenUnit::String, SplitOnNonQuotedCommas, _SelfMocked)
@@ -222,7 +226,6 @@ namespace ZenUnit
    TEST(RunTestCaseIfNotFilteredOut_ShouldNotRunTestCase_DoesNotCallRunTestCase)
    {
       test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.ShouldRunTestCaseMock.Return(false);
-
       const size_t testCaseNumber = ZenUnit::Random<size_t>();
       const ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
       const vector<string> splitTestCaseArgs = ZenUnit::RandomVector<string>();
@@ -238,7 +241,6 @@ namespace ZenUnit
    {
       test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.ShouldRunTestCaseMock.Return(true);
       test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.RunTestCaseMock.Expect();
-
       const size_t testCaseNumber = ZenUnit::Random<size_t>();
       const ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
       const vector<string> splitTestCaseArgs = ZenUnit::RandomVector<string>();
@@ -356,7 +358,8 @@ namespace ZenUnit
       //
       _testNXN->Exit1IfNonExistentTestCaseNumberSpecified();
       //
-      const std::string expectedErrorMessage = "\nError: Non-existent test case number specified in --run filter. Exiting with code 1.";
+      const std::string expectedErrorMessage =
+         "\nError: Non-existent test case number specified in --run filter. Exiting with code 1.";
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedErrorMessage));
       METALMOCK(exitMock.CalledOnceWith(1));
    }
@@ -409,7 +412,8 @@ namespace ZenUnit
       const bool returnedTestNameMatchesTestCase =
          TestNXN<TestingTestClass, 1, int>::TestNameFilterMatchesTestCase(testNameFilterMock, fullTestName, testCaseNumber);
       //
-      METALMOCK(testNameFilterMock.MatchesTestCaseMock.CalledOnceWith(fullTestName.testClassName, fullTestName.testName, testCaseNumber));
+      METALMOCK(testNameFilterMock.MatchesTestCaseMock.CalledOnceWith(
+         fullTestName.testClassName, fullTestName.testName, testCaseNumber));
       ARE_EQUAL(testNameMatchesTestCase, returnedTestNameMatchesTestCase);
    }
 
@@ -440,7 +444,9 @@ namespace ZenUnit
       public:
          METALMOCK_VOID2(RunNXNTestCase, TestingTestClass*, size_t)
             TestNXN_RunNXNTestCaseMocked() noexcept
-            : Metal::Mock<TestNXN<TestingTestClass, 1, int>>("", "", "", 0) {}
+            : Metal::Mock<TestNXN<TestingTestClass, 1, int>>("", "", "", 0)
+         {
+         }
       } testNXN_RunNXNTestCaseMocked;
 
       testNXN_RunNXNTestCaseMocked._testClass = make_unique<TestingTestClass>();
@@ -482,9 +488,9 @@ namespace ZenUnit
 
    TEST3X3(PrintTestCaseNumberThenArgsThenArrow_WritesTestCaseNumberArrow,
       size_t testCaseNumber, size_t expectedTestCaseNumber, size_t expectedTestCaseArgsPrintingStartIndex,
-      1, 1, size_t(0),
-      2, 2, size_t(1),
-      3, 3, size_t(2))
+      1ull, 1ull, 0ull,
+      2ull, 2ull, 1ull,
+      3ull, 3ull, 2ull)
    {
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteMock.Expect();
