@@ -2,11 +2,12 @@
 #define ZenUnitUtilsAndAssertionTests_PCH
 
 #include "ZenUnitLibraryTests/IfWindowsIgnoreTheseWarningGlobally.h"
-namespace std {}
-using namespace std;
 
 #include "ZenUnit/ZenUnit.h"
 #include "ZenUnit/MetalMock.h"
+
+namespace std {}
+using namespace std;
 
 // ZenUnitTestUtils
 #include "ZenUnitTestUtils/IntializerConstructable.h"
