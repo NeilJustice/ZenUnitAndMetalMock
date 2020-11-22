@@ -91,7 +91,7 @@ namespace ZenUnit
    static string MakeExpectedInvalidArgumentMessage(const string& invalidNameFilterString)
    {
       const string expectedInvalidArgumentMessage = String::Concat("Invalid test name filter string: ", invalidNameFilterString,
-         + ". This is the test name filter string format: TestClassName[::TestName[/TestCaseNumber]]");
+         ". This is the test name filter string format: TestClassName[::TestName[/TestCaseNumber]]");
       return expectedInvalidArgumentMessage;
    }
 
