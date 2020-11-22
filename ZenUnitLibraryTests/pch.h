@@ -2,24 +2,6 @@
 #define ZenUnitLibraryTests_PCH
 
 #include "ZenUnitLibraryTests/IfWindowsIgnoreTheseWarningGlobally.h"
-#include <array>
-#include <chrono>
-#include <cstring>
-#include <deque>
-#include <exception>
-#include <functional>
-#include <iostream>
-#include <limits>
-#include <map>
-#include <memory>
-#include <regex>
-#include <set>
-#include <sstream>
-#include <string_view>
-#include <thread>
-#include <unordered_map>
-#include <vector>
-using namespace std;
 
 #if defined _WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -31,6 +13,9 @@ using namespace std;
 #include "ZenUnit/ZenUnit.h"
 #include "ZenUnit/MetalMock.h"
 using namespace ZenUnit;
+
+namespace std {}
+using namespace std;
 
 // ZenUnitTestUtils
 #include "ZenUnitTestUtils/DoublyPrintableUserType.h"
