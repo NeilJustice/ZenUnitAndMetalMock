@@ -6,6 +6,8 @@ namespace ZenUnit
    AFACT(EqualizerException_what_ReturnsEmptyString)
    EVIDENCE
 
+   static_assert(is_base_of_v<std::exception, EqualizerException>);
+
    TEST(EqualizerException_what_ReturnsEmptyString)
    {
       const EqualizerException equalizerException;
