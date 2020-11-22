@@ -69,7 +69,7 @@ namespace ZenUnit
    class Version
    {
    public:
-      static const char* Number() { return "0.6.0"; }
+      static const char* Number() { return "0.7.0"; }
    };
 }
 
