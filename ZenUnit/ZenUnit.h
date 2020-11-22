@@ -70,6 +70,7 @@ namespace ZenUnit
    {
    public:
       static const char* Number() { return "0.7.0"; }
+      Version() = delete;
    };
 }
 
