@@ -59,10 +59,10 @@ jobs:
           #        - brew install ninja llvm
 
 script:
-   - ./CloudJobs/travis_script.sh
+   - ./TravisScripts/travis_script.sh
 
 after_success:
-   - ./CloudJobs/travis_after_success.sh
+   - ./TravisScripts/travis_after_success.sh
 
 notifications:
   email: true
