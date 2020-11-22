@@ -1,4 +1,4 @@
-#include "ZenUnitLibraryTests/MSVCIgnoredWarnings.h"
+#include "ZenUnitLibraryTests/IfWindowsIgnoreTheseWarningGlobally.h"
 #include "ZenUnit.h"
 
 TESTS(Tests1) EVIDENCE RUN_TESTS(Tests1)

@@ -37,7 +37,7 @@ folder_source_group(EqualizersAndRandoms)
 folder_source_group_subfolder(EqualizersAndRandoms Equalizers)
 folder_source_group_subfolder(EqualizersAndRandoms Random)
 
-source_group("" FILES ZenUnitLibraryTestsMain.cpp MSVCIgnoredWarnings.h pch.h pch.cpp)
+source_group("" FILES ZenUnitLibraryTestsMain.cpp IfWindowsIgnoreTheseWarningGlobally.h pch.h pch.cpp)
 file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 
 add_executable(ZenUnitLibraryTests ${sourceFilePaths})

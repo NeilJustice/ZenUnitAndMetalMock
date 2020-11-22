@@ -1,7 +1,7 @@
 #ifndef MetalMockTests_PCH
 #define MetalMockTests_PCH
 
-#include "ZenUnitLibraryTests/MSVCIgnoredWarnings.h"
+#include "ZenUnitLibraryTests/IfWindowsIgnoreTheseWarningGlobally.h"
 namespace std {}
 using namespace std;
 

@@ -1,6 +1,6 @@
 #ifndef MetalMockExamples_PCH
 #define MetalMockExamples_PCH
-#include "ZenUnitLibraryTests/MSVCIgnoredWarnings.h"
+#include "ZenUnitLibraryTests/IfWindowsIgnoreTheseWarningGlobally.h"
 
 #if defined _WIN32
 #define WIN32_LEAN_AND_MEAN

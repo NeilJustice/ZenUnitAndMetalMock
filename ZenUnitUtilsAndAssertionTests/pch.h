@@ -1,7 +1,7 @@
 #ifndef ZenUnitUtilsAndAssertionTests_PCH
 #define ZenUnitUtilsAndAssertionTests_PCH
 
-#include "ZenUnitLibraryTests/MSVCIgnoredWarnings.h"
+#include "ZenUnitLibraryTests/IfWindowsIgnoreTheseWarningGlobally.h"
 namespace std {}
 using namespace std;
 

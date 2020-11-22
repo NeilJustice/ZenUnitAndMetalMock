@@ -1,7 +1,7 @@
 #ifndef ZenUnitLibraryTests_PCH
 #define ZenUnitLibraryTests_PCH
 
-#include "ZenUnitLibraryTests/MSVCIgnoredWarnings.h"
+#include "ZenUnitLibraryTests/IfWindowsIgnoreTheseWarningGlobally.h"
 #include <array>
 #include <chrono>
 #include <cstring>
