@@ -856,10 +856,10 @@ TEST(SendOrder_CallsNetworkSendWhichReturns123_Returns)
 
 TEST1X1(SendOrder_CallsNetworkSendWhichDoesNotReturn123_ThrowsRuntimeError,
    size_t sendReturnValue,
-   0,
-   122,
-   124,
-   1000)
+   0ull,
+   122ull,
+   124ull,
+   1000ull)
 {
    _orderSender._network.SendMock.Return(sendReturnValue);
    //
