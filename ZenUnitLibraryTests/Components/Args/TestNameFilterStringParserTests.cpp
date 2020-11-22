@@ -5,7 +5,7 @@
 namespace ZenUnit
 {
    TESTS(TestNameFilterStringParserTests)
-   AFACT(DefaultConstructor_NewsMemberFunctionTransformer_SetsStringToUnsignedFunction)
+   AFACT(DefaultConstructor_SetsStringToUnsignedFunction_NewsMemberFunctionTransformer)
    AFACT(ParseTestNameFilterStrings_TransformsTestNameFilterStringsIntoTestNameFilters)
    FACTS(ParseTestNameFilterString_JustTestClassName_ReturnsExpectedTestNameFilter)
    FACTS(ParseTestNameFilterString_TestClassNameColonColonTestName_ReturnsExpectedTestNameFilter)
@@ -24,11 +24,11 @@ namespace ZenUnit
       _testNameFilterStringParser._call_String_ToUnsigned = BIND_1ARG_METALMOCK_OBJECT(ToUnsignedMock);
    }
 
-   TEST(DefaultConstructor_NewsMemberFunctionTransformer_SetsStringToUnsignedFunction)
+   TEST(DefaultConstructor_SetsStringToUnsignedFunction_NewsMemberFunctionTransformer)
    {
       TestNameFilterStringParser testNameFilterStringParser;
-      DELETE_TO_ASSERT_NEWED(testNameFilterStringParser._memberFunctionTransformer);
       STD_FUNCTION_TARGETS(String::ToUnsigned, testNameFilterStringParser._call_String_ToUnsigned);
+      DELETE_TO_ASSERT_NEWED(testNameFilterStringParser._memberFunctionTransformer);
    }
 
    TEST(ParseTestNameFilterStrings_TransformsTestNameFilterStringsIntoTestNameFilters)

@@ -1753,12 +1753,14 @@ namespace ZenUnit
    {
       friend class TestNameFilterStringParserTests;
    private:
-      std::unique_ptr<MemberFunctionTransformer<TestNameFilterStringParser, std::string, TestNameFilter>> _memberFunctionTransformer;
       std::function<unsigned(std::string_view)> _call_String_ToUnsigned;
+      std::unique_ptr<const MemberFunctionTransformer<
+         TestNameFilterStringParser, std::string, TestNameFilter>> _memberFunctionTransformer;
    public:
       TestNameFilterStringParser() noexcept
-         : _memberFunctionTransformer(std::make_unique<MemberFunctionTransformer<TestNameFilterStringParser, std::string, TestNameFilter>>())
-         , _call_String_ToUnsigned(String::ToUnsigned)
+         : _call_String_ToUnsigned(String::ToUnsigned)
+         , _memberFunctionTransformer(std::make_unique<
+            MemberFunctionTransformer<TestNameFilterStringParser, std::string, TestNameFilter>>())
       {
       }
 
@@ -1774,11 +1776,13 @@ namespace ZenUnit
       TestNameFilter ParseTestNameFilterString(const std::string& testNameFilterString) const
       {
          TestNameFilter testNameFilter;
-         const std::vector<std::string> testClassNameAndTestNameSlashTestCaseNumber = String::SplitOnFirstStringDelimiter(testNameFilterString, "::");
+         const std::vector<std::string> testClassNameAndTestNameSlashTestCaseNumber =
+            String::SplitOnFirstStringDelimiter(testNameFilterString, "::");
          testNameFilter.testClassNamePattern = testClassNameAndTestNameSlashTestCaseNumber[0];
          if (testClassNameAndTestNameSlashTestCaseNumber.size() == 2)
          {
-            const std::vector<std::string> testNameAndTestCaseNumber = String::Split(testClassNameAndTestNameSlashTestCaseNumber[1], '/');
+            const std::vector<std::string> testNameAndTestCaseNumber =
+               String::Split(testClassNameAndTestNameSlashTestCaseNumber[1], '/');
             if (testNameAndTestCaseNumber.size() > 2)
             {
                ThrowInvalidArgumentDueToInvalidTestNameFilterString(testNameFilterString);
