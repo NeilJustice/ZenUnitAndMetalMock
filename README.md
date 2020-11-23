@@ -55,6 +55,8 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
    * [Windows Jenkins Jobs Which Build And Unit Test ZenUnit And MetalMock](#windows-jenkins-jobs-which-build-and-unit-test-zenunit-and-metalmock)
    * [6 Linux Commands To Build And Run ZenUnit And MetalMock's Unit Tests Then Install ZenUnit.h And MetalMock.h](#6-linux-commands-to-build-and-run-zenUnit-and-metalmocks-unit-tests-then-install-zenunith-and-metalmockh)
    * [4 Windows Commands To Build And Run ZenUnit And MetalMock's Unit Tests Then Install ZenUnit.h And MetalMock.h](#4-windows-commands-to-build-and-run-zenunit-and-metalmocks-unit-tests-then-install-zenunith-and-metalmockh)
+   * [ZenUnit Features Roadmap](#zenunit-features-roadmap)
+   * [MetalMock Features Roadmap](#metalmock-features-roadmap)
    * [Special Thanks](#special-thanks)
 
 ### ZenUnit Command Line Usage
@@ -1197,6 +1199,26 @@ cmake . -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=C:\
 # Copies MetalMock.h to C:\include\MetalMock\MetalMock.h
 cmake --build . --target install
 ```
+
+### ZenUnit Features Roadmap
+
+|Future ZenUnit Feature|Estimated Delivery|
+|----------------------|------------------|
+|IS_EMPTY_PATH|Q4 2020|
+|IS_EMPTY_STRING|Q4 2020|
+|Travis CI OSX Badge|Q4 2020|
+|Coverity Badge|Q1 2021|
+|SonarCloud Badge|Q1 2021|
+|SonarQube Linux And Windows Jenkins Job Screenshots|Q1 2021|
+|When an ARE_EQUAL(expectedString, actualString) assertion fails, print the first mismatching index|Q1 2021|
+|ARE_NEAR floating point assertion|Q1 2021|
+|--parallel for parallel running of tests and value-parameterized test cases|Q2 2021|
+
+### MetalMock Features Roadmap
+
+|Future MetalMock Feature|Estimated Delivery|
+|------------------------|------------------|
+|Ordered Function Call Assertions|Q1 2021|
 
 ### Special Thanks
 
