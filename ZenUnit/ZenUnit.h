@@ -2225,7 +2225,6 @@ Example ZenUnit command line arguments:
       }
    };
 
-#if defined __linux__ || defined __APPLE__ || defined _WIN64
    template<>
    class TwoTypeEqualizer<int, size_t>
    {
@@ -2239,7 +2238,6 @@ Example ZenUnit command line arguments:
          Equalizer<size_t>::AssertEqual(static_cast<size_t>(expectedInt), actualSizeT);
       }
    };
-#endif
 
    template<>
    class TwoTypeEqualizer<const char*, char*>
