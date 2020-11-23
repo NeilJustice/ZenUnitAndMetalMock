@@ -6678,35 +6678,35 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    public:
       static void Print(std::ostream& os, const std::vector<T, Allocator>& vec)
       {
+         std::ostringstream vectorAsStringBuilder;
          const std::string* typeName = Type::GetName<T>();
          const std::size_t vectorSize = vec.size();
-         os << "std::vector<" << *typeName << "> (size " << vectorSize << "):";
+         vectorAsStringBuilder << "std::vector<" << *typeName << "> (size " << vectorSize << "):";
          if (vectorSize == 0)
          {
-            os << R"(
+            vectorAsStringBuilder << R"(
 {
 })";
+            const std::string vectorAsString = vectorAsStringBuilder.str();
+            os << vectorAsString;
             return;
          }
-         os << R"(
+         vectorAsStringBuilder << R"(
 {
    )";
          for (std::size_t i = 0; i < vectorSize; ++i)
          {
-            if (i == 10)
-            {
-               os << "...elements beyond 10 elided for brevity...";
-               break;
-            }
             const T& element = vec[i];
             const std::string elementAsString = ToStringer::ToString(element);
-            os << elementAsString;
+            vectorAsStringBuilder << elementAsString;
             if (i < vectorSize - 1)
             {
-               os << ",\n   ";
+               vectorAsStringBuilder << ",\n   ";
             }
          }
-         os << "\n}";
+         vectorAsStringBuilder << "\n}";
+         const std::string vectorAsString = vectorAsStringBuilder.str();
+         os << vectorAsString;
       }
    };
 

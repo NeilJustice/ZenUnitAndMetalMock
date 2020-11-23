@@ -3,76 +3,76 @@
 namespace ZenUnit
 {
    template<typename T>
-   TEMPLATE_TESTS(IntegralVectorZenUnitPrinterTests, T)
-   AFACT(ZenUnitPrinter_Print_Empty_PrintsEmptyBrackets)
-   AFACT(ZenUnitPrinter_Print_EmptyAndNonConst_PrintsElements)
-   AFACT(ZenUnitPrinter_Print_OneElement_PrintsElement)
-   AFACT(ZenUnitPrinter_Print_TwoElements_PrintsElements)
-   AFACT(ZenUnitPrinter_Print_TenElements_PrintsAllTenElements)
-   AFACT(ZenUnitPrinter_Print_ElevenElements_PrintsFirstTenElements)
+   TEMPLATE_TESTS(VectorZenUnitPrinterTests, T)
+   AFACT(ZenUnitPrinterPrint_VectorIsEmpty_PrintsEmptyBrackets)
+   AFACT(ZenUnitPrinterPrint_VectorIsEmptyAndNonConst_PrintsElements)
+   AFACT(ZenUnitPrinterPrint_VectorHasOneElement_PrintsElement)
+   AFACT(ZenUnitPrinterPrint_VectorHasTwoElements_PrintsElements)
+   AFACT(ZenUnitPrinterPrint_VectorHasTenElements_PrintsAllTenElements)
+   AFACT(ZenUnitPrinterPrint_VectorHasElevenElements_PrintsAllElevenElements)
    EVIDENCE
 
    const string _expectedVectorTypePrefix = "std::vector<" + *Type::GetName<T>() + "> (size ";
    ostringstream _oss;
 
-   TEST(ZenUnitPrinter_Print_Empty_PrintsEmptyBrackets)
+   TEST(ZenUnitPrinterPrint_VectorIsEmpty_PrintsEmptyBrackets)
    {
-      const vector<T> v;
+      const vector<T> vec;
       //
-      ZenUnit::Printer<decltype(v)>::Print(_oss, v);
+      ZenUnit::Printer<decltype(vec)>::Print(_oss, vec);
       //
-      const string printString = _oss.str();
+      const string vectorAsString = _oss.str();
       ARE_EQUAL(_expectedVectorTypePrefix + "0):" + TestUtil::NewlineConcat("",
 "{",
-"}"), printString);
+"}"), vectorAsString);
    }
 
-   TEST(ZenUnitPrinter_Print_EmptyAndNonConst_PrintsElements)
+   TEST(ZenUnitPrinterPrint_VectorIsEmptyAndNonConst_PrintsElements)
    {
-      vector<T> v;
+      vector<T> vec;
       //
-      ZenUnit::Printer<decltype(v)>::Print(_oss, v);
+      ZenUnit::Printer<decltype(vec)>::Print(_oss, vec);
       //
-      const string printString = _oss.str();
+      const string vectorAsString = _oss.str();
       ARE_EQUAL(_expectedVectorTypePrefix + "0):" + TestUtil::NewlineConcat("",
 "{",
-"}"), printString);
+"}"), vectorAsString);
    }
 
-   TEST(ZenUnitPrinter_Print_OneElement_PrintsElement)
+   TEST(ZenUnitPrinterPrint_VectorHasOneElement_PrintsElement)
    {
-      const vector<T> v = { 1 };
+      const vector<T> vec = { 1 };
       //
-      ZenUnit::Printer<decltype(v)>::Print(_oss, v);
+      ZenUnit::Printer<decltype(vec)>::Print(_oss, vec);
       //
-      const string printString = _oss.str();
+      const string vectorAsString = _oss.str();
       ARE_EQUAL(_expectedVectorTypePrefix + "1):" + TestUtil::NewlineConcat("",
 "{",
 "   1",
-"}"), printString);
+"}"), vectorAsString);
    }
 
-   TEST(ZenUnitPrinter_Print_TwoElements_PrintsElements)
+   TEST(ZenUnitPrinterPrint_VectorHasTwoElements_PrintsElements)
    {
-      const vector<T> v = { 1, 2 };
+      const vector<T> vec = { 1, 2 };
       //
-      ZenUnit::Printer<decltype(v)>::Print(_oss, v);
+      ZenUnit::Printer<decltype(vec)>::Print(_oss, vec);
       //
-      const string printString = _oss.str();
+      const string vectorAsString = _oss.str();
       ARE_EQUAL(_expectedVectorTypePrefix + "2):" + TestUtil::NewlineConcat("",
 "{",
 "   1,",
 "   2",
-"}"), printString);
+"}"), vectorAsString);
    }
 
-   TEST(ZenUnitPrinter_Print_TenElements_PrintsAllTenElements)
+   TEST(ZenUnitPrinterPrint_VectorHasTenElements_PrintsAllTenElements)
    {
-      const vector<T> v = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+      const vector<T> vec = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
       //
-      ZenUnit::Printer<decltype(v)>::Print(_oss, v);
+      ZenUnit::Printer<decltype(vec)>::Print(_oss, vec);
       //
-      const string printString = _oss.str();
+      const string vectorAsString = _oss.str();
       ARE_EQUAL(_expectedVectorTypePrefix + "10):" + TestUtil::NewlineConcat("",
 "{",
 "   1,",
@@ -85,16 +85,16 @@ namespace ZenUnit
 "   8,",
 "   9,",
 "   10",
-"}"), printString);
+"}"), vectorAsString);
    }
 
-   TEST(ZenUnitPrinter_Print_ElevenElements_PrintsFirstTenElements)
+   TEST(ZenUnitPrinterPrint_VectorHasElevenElements_PrintsAllElevenElements)
    {
-      const vector<T> v = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+      const vector<T> vec = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
       //
-      ZenUnit::Printer<decltype(v)>::Print(_oss, v);
+      ZenUnit::Printer<decltype(vec)>::Print(_oss, vec);
       //
-      const string printString = _oss.str();
+      const string vectorAsString = _oss.str();
       ARE_EQUAL(_expectedVectorTypePrefix + "11):" + TestUtil::NewlineConcat("",
 "{",
 "   1,",
@@ -107,10 +107,10 @@ namespace ZenUnit
 "   8,",
 "   9,",
 "   10,",
-"   ...elements beyond 10 elided for brevity...",
-"}"), printString);
+"   11",
+"}"), vectorAsString);
    }
 
-   RUN_TEMPLATE_TESTS(IntegralVectorZenUnitPrinterTests, int)
-   THEN_RUN_TEMPLATE_TESTS(IntegralVectorZenUnitPrinterTests, unsigned long long)
+   RUN_TEMPLATE_TESTS(VectorZenUnitPrinterTests, int)
+   THEN_RUN_TEMPLATE_TESTS(VectorZenUnitPrinterTests, unsigned long long)
 }
