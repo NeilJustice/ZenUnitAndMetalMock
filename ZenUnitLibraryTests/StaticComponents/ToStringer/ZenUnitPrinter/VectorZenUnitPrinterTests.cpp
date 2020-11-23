@@ -5,7 +5,6 @@ namespace ZenUnit
    template<typename T>
    TEMPLATE_TESTS(VectorZenUnitPrinterTests, T)
    AFACT(ZenUnitPrinterPrint_VectorIsEmpty_PrintsEmptyBrackets)
-   AFACT(ZenUnitPrinterPrint_VectorIsEmptyAndNonConst_PrintsElements)
    AFACT(ZenUnitPrinterPrint_VectorHasOneElement_PrintsElement)
    AFACT(ZenUnitPrinterPrint_VectorHasElevenElements_PrintsAllElevenElements)
    EVIDENCE
@@ -23,19 +22,6 @@ namespace ZenUnit
       ARE_EQUAL(_expectedVectorTypePrefix + "0):" + TestUtil::NewlineConcat("",
 "{",
 "}"), vectorAsString);
-   }
-
-   TEST(ZenUnitPrinterPrint_VectorIsEmptyAndNonConst_PrintsElements)
-   {
-      vector<T> vec;
-      //
-      ZenUnit::Printer<decltype(vec)>::Print(_oss, vec);
-      //
-      const string vectorAsString = _oss.str();
-      const string expectedVectorAsString = _expectedVectorTypePrefix + "0):" + TestUtil::NewlineConcat("",
-"{",
-"}");
-      ARE_EQUAL(expectedVectorAsString, vectorAsString);
    }
 
    TEST(ZenUnitPrinterPrint_VectorHasOneElement_PrintsElement)
