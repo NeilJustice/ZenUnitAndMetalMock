@@ -5,8 +5,8 @@ include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${ZenUnitIncludeDirectory})
 
-source_group("" FILES ZenUnitCompileSpeedTesterMain.cpp)
 file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
+source_group("" FILES ${sourceFilePaths})
 
 add_executable(ZenUnitCompileSpeedTester ${sourceFilePaths})
 
@@ -14,6 +14,8 @@ target_link_libraries(ZenUnitCompileSpeedTester)
 if(UNIX)
    target_link_libraries(ZenUnitCompileSpeedTester stdc++fs)
 endif()
+
+ConfigurePlatformSpecificPrecompiledHeaders()
 
 if(UNIX)
    if(CodeCovMode)
