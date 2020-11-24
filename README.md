@@ -483,6 +483,11 @@ Here is the ZenUnit console output from running the above ZenUnit Equalizer exam
 
 ![Equalizer Example Console Output](Screenshots/Equalizers/EqualizerExampleConsoleOutput.png)
 
+In contrast, here is the ZenUnit console output from running `ZenUnitExamples.exe --run=DomainStructTests` when the `DomainStruct` ZenUnit Equalizer 
+is commented out and instead a `friend operator==(const DomainStruct& left, const DomainStruct& right` function is defined. Note how just `Expected: <DomainStruct>` and `Actual: <DomainStruct>` is printed instead of `field2` being printed as happens when a `ZenUnit::Equalizer<DomainStruct>` is defined.
+
+![Equality Operator Defined And ZenUnit Equalizer Not Defined](Screenshots/Equalizers/EqualityOperatorDefinedAndZenUnitEqualizerNotDefined.png)
+
 ### MetalMock Function-Mocking Macros
 
 #### Void Virtual Functions

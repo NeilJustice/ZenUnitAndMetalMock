@@ -5,6 +5,15 @@ struct DomainStruct
    int field1 = 0;
    std::string field2;
    std::vector<int> field3;
+
+   //bool friend operator==(const DomainStruct& left, const DomainStruct& right)
+   //{
+   //   const bool areEqual =
+   //      left.field1 == right.field1 &&
+   //      left.field2 == right.field2 &&
+   //      left.field3 == right.field3;
+   //   return areEqual;
+   //}
 };
 
 TESTS(DomainStructTests)
