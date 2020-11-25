@@ -20,9 +20,9 @@ namespace MetalMock
       _nonVoidThreeArgumentMetalMocker.reset(new NonVoidThreeArgumentMetalMocker<int, int, int, int>(_metalMockedFunctionSignature));
    }
 
-   int NonVoidThreeArgFunction(int firstArgument, int secondArgument, int thirdArgument)
+   int NonVoidThreeArgFunction(int arg1, int arg2, int arg3)
    {
-      _callInsteadFunctionArguments.emplace_back(firstArgument, secondArgument, thirdArgument);
+      _callInsteadFunctionArguments.emplace_back(arg1, arg2, arg3);
       return _callInsteadFunctionReturnValue;
    };
 
@@ -32,8 +32,7 @@ namespace MetalMock
       IS_FALSE(_nonVoidThreeArgumentMetalMocker->_callInsteadFunction);
       //
       _nonVoidThreeArgumentMetalMocker->CallInstead(
-         std::bind(&NonVoidThreeArgumentMetalMockerTests::NonVoidThreeArgFunction, this,
-            std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+         std::bind(&NonVoidThreeArgumentMetalMockerTests::NonVoidThreeArgFunction, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
       //
       IS_EMPTY(_callInsteadFunctionArguments);
       IS_TRUE(_nonVoidThreeArgumentMetalMocker->_wasExpected);
@@ -42,17 +41,16 @@ namespace MetalMock
    TEST(MetalMockItAndReturnValue_CallInsteadPreviousCalled_CallsBaseMetalMockIt_ReturnsResultOfCallingCallInsteadFunctionOnce)
    {
       _nonVoidThreeArgumentMetalMocker->CallInstead(
-         std::bind(&NonVoidThreeArgumentMetalMockerTests::NonVoidThreeArgFunction, this,
-            std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-      const int firstArgument = ZenUnit::Random<int>();
-      const int secondArgument = ZenUnit::Random<int>();
-      const int thirdArgument = ZenUnit::Random<int>();
+         std::bind(&NonVoidThreeArgumentMetalMockerTests::NonVoidThreeArgFunction, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+      const int arg1 = ZenUnit::Random<int>();
+      const int arg2 = ZenUnit::Random<int>();
+      const int arg3 = ZenUnit::Random<int>();
       //
-      const int returnValue = _nonVoidThreeArgumentMetalMocker->MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument);
+      const int returnValue = _nonVoidThreeArgumentMetalMocker->MetalMockItAndReturnValue(arg1, arg2, arg3);
       //
       vector<tuple<int, int, int>> expectedCallInsteadFunctionArguments =
       {
-         { firstArgument, secondArgument, thirdArgument }
+         { arg1, arg2, arg3 }
       };
       VECTORS_ARE_EQUAL(expectedCallInsteadFunctionArguments, _callInsteadFunctionArguments);
       ARE_EQUAL(_callInsteadFunctionReturnValue, returnValue);
@@ -62,13 +60,13 @@ namespace MetalMock
    {
       const int returnValue = ZenUnit::Random<int>();
       _nonVoidThreeArgumentMetalMocker->Return(returnValue);
-      const int firstArgument = ZenUnit::Random<int>();
-      const int secondArgument = ZenUnit::Random<int>();
-      const int thirdArgument = ZenUnit::Random<int>();
+      const int arg1 = ZenUnit::Random<int>();
+      const int arg2 = ZenUnit::Random<int>();
+      const int arg3 = ZenUnit::Random<int>();
       //
-      const int returnedReturnValue = _nonVoidThreeArgumentMetalMocker->MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument);
+      const int returnedReturnValue = _nonVoidThreeArgumentMetalMocker->MetalMockItAndReturnValue(arg1, arg2, arg3);
       //
-      _nonVoidThreeArgumentMetalMocker->CalledOnceWith(firstArgument, secondArgument, thirdArgument);
+      _nonVoidThreeArgumentMetalMocker->CalledOnceWith(arg1, arg2, arg3);
       ARE_EQUAL(returnValue, returnedReturnValue);
    }
 

@@ -51,9 +51,9 @@ namespace MetalMock
       _nonVoidOneArgumentMetalMocker.CallInstead(CallInsteadFunction);
       IS_TRUE(_nonVoidOneArgumentMetalMocker._wasExpected);
       STD_FUNCTION_TARGETS(CallInsteadFunction, _nonVoidOneArgumentMetalMocker._callInsteadFunction);
-      const int argument = ZenUnit::Random<int>();
+      const int arg1 = ZenUnit::Random<int>();
       //
-      const int returnValue = _nonVoidOneArgumentMetalMocker.MetalMockItAndReturnValue(argument);
+      const int returnValue = _nonVoidOneArgumentMetalMocker.MetalMockItAndReturnValue(arg1);
       //
       ARE_EQUAL(1, s_numberOfCallsToCallInsteadFunction);
       ARE_EQUAL(s_callInsteadReturnValue, returnValue);
