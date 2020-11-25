@@ -1227,7 +1227,7 @@ cmake --build . --target install
 
 ### Special Thanks
 
-* [Jason Turner, host of C++ Weekly, CppCast, and much more](https://github.com/lefticus)
+* [Jason Turner and Rob Irving, hosts of CppCast](https://cppcast.com/)
 * [Roy Osherove, author of The Art of Unit Testing, a book that early on influenced my thinking on unit testing and mocking](https://osherove.com/)
 * [Martin Moene, the author of lest and much more](https://github.com/martinmoene/lest)
 * [Viktor Kirilov and the many contributors to doctest](https://github.com/onqtam/doctest)
