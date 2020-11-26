@@ -29,6 +29,7 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
       * [Function Assertions](#function-assertions)
       * [Memory Allocation Assertions](#memory-allocation-assertions)
       * [The FAIL_TEST Assertion](#the-fail_test-assertion)
+      * [ZenUnit Equalizer Assertions](#zenunit-equalizer-assertions)
    * [ZenUnit Test-Defining Macros](#zenunit-test-defining-macros)
    * [How To Write A Custom ZenUnit::Equalizer\<T\> struct To Achieve Field-By-Field Assertion Granularity](#how-to-write-a-custom-zenunit-equalizer-struct-to-achieve-field-by-field-assertion-granularity)
    * [MetalMock Function-Mocking Macros](#metalmock-function-mocking-macros)
@@ -427,6 +428,12 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, unordered_set, unsigned long long
 |Assertion|Behavior|
 |---------|--------|
 |`FAIL_TEST(testFailureReason, messages...)`|Throws a `ZenUnit::Anomaly` which is caught by ZenUnit to end the current test and begin the next test.|
+
+#### ZenUnit Equalizer Assertions
+|Assertion|Behavior|
+|---------|--------|
+|`ZENUNIT_EQUALIZER_TEST_SETUP(typeName)`|Defines local variables `typeName expectedZenUnitEqualizerTestObject{};` and `typeName actualZenUnitEqualizerTestObject{};` and then calls `DOES_NOT_THROW(ARE_EQUAL(expectedZenUnitEqualizerTestObject, actualZenUnitEqualizerTestObject));`|
+|`ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(typeName, nonQuotedFieldName, randomNonDefaultFieldValue)`|Sets `expectedZenUnitEqualizerTestObject.nonQuotedFieldName = randomNonDefaultFieldValue` and then asserts that `ARE_EQUAL(expectedZenUnitEqualizerTestObject, actualZenUnitEqualizerTestObject)` throws a `ZenUnit::Anomaly` with `anomaly.what()` text satisfying assertion `IS_TRUE(String::Contains(anomaly.what(), fieldName)).`|
 
 ### ZenUnit Test-Defining Macros
 
