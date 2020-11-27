@@ -49,8 +49,6 @@ namespace fs = std::filesystem;
 #define FILELINE ZenUnit::FilePathLineNumber(ZenUnit::FilePathLineNumber::File(__FILE__), ZenUnit::FilePathLineNumber::Line(__LINE__))
 #define PMFTOKEN(pointerToMemberFunction) ZenUnit::PmfToken::Instantiate<decltype(pointerToMemberFunction), pointerToMemberFunction>()
 #define VRT(value) ZenUnit::VRText<decltype(value)>(value, #value)
-#define VRT_REMOVEREF(value) ZenUnit::VRText<typename std::remove_reference_t<decltype(value)>>(value, #value)
-#define VRT_REMOVECONSTREF(value) ZenUnit::VRText<typename std::remove_const_t<typename std::remove_reference_t<decltype(value)>>>(value, #value)
 
 #ifndef assert_true
 #define assert_true(predicate) ZenUnit::AssertTrue(predicate, #predicate, FILELINE, static_cast<const char*>(__func__))
@@ -227,7 +225,7 @@ namespace ZenUnit
    ZenUnit::PAIRS_ARE_EQUAL_Defined(VRT(expectedPair), VRT(actualPair), \
       FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that elements in expectedArray are equal to elements in actualArray, up to lengthToCompare number of elements.
+// Asserts that numberOfElementsToCompare elements are equal in two C-style arrays.
 #define ARRAYS_ARE_EQUAL(expectedArray, actualArray, numberOfElementsToCompare, ...) \
    ZenUnit::ARRAYS_ARE_EQUAL_Defined( \
       expectedArray, #expectedArray, \
@@ -235,12 +233,14 @@ namespace ZenUnit
       numberOfElementsToCompare, \
       FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that each element of std::array<T, Size> expectedStdArray is equal to each element of std::array<T, Size> actualStdArray.
+// Asserts that each element of two std::arrays are equal.
 #define STD_ARRAYS_ARE_EQUAL(expectedStdArray, actualStdArray, ...) \
-   ZenUnit::STD_ARRAYS_ARE_EQUAL_Defined(VRT_REMOVECONSTREF(expectedStdArray), VRT_REMOVECONSTREF(actualStdArray), \
+   ZenUnit::STD_ARRAYS_ARE_EQUAL_Defined( \
+      expectedStdArray, #expectedStdArray, \
+      actualStdArray, #actualStdArray, \
       FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that expectedElement is contained in collection.
+// Asserts that dataStructure contains expectedElement.
 #define CONTAINS_ELEMENT(expectedElement, dataStructure, ...) \
    ZenUnit::CONTAINS_ELEMENT_Defined(VRT(expectedElement), VRT(dataStructure), \
       FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
@@ -3232,26 +3232,26 @@ Example ZenUnit command line arguments:
       }
    }
 
-   template<typename T, std::size_t Size, typename... MessageTypes>
-   void STD_ARRAYS_ARE_EQUAL_ToStringAndRethrow(
-      const Anomaly& becauseAnomaly, VRText<std::array<T, Size>> expectedStdArrayVRT, VRText<std::array<T, Size>> actualStdArrayVRT,
+   template<typename StdArrayType, typename... MessageTypes>
+   void STD_ARRAYS_ARE_EQUAL_ThrowAnomaly(const Anomaly& becauseAnomaly,
+      const StdArrayType& expectedStdArray, const char* expectedStdArrayText,
+      const StdArrayType& actualStdArray, const char* actualStdArrayText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
-      const std::string expectedToString = ToStringer::ToString(expectedStdArrayVRT.value);
-      const std::string actualToString = ToStringer::ToString(actualStdArrayVRT.value);
-      const Anomaly anomaly("STD_ARRAYS_ARE_EQUAL", expectedStdArrayVRT.text, actualStdArrayVRT.text, "", messagesText,
-         becauseAnomaly, expectedToString, actualToString, ExpectedActualFormat::Fields,
+      const std::string expectedStdArrayAsString = ToStringer::ToString(expectedStdArray);
+      const std::string actualStdArrayAsString = ToStringer::ToString(actualStdArray);
+      const Anomaly anomaly("STD_ARRAYS_ARE_EQUAL", expectedStdArrayText, actualStdArrayText, "", messagesText,
+         becauseAnomaly, expectedStdArrayAsString, actualStdArrayAsString, ExpectedActualFormat::Fields,
          filePathLineNumber, std::forward<MessageTypes>(messages)...);
       throw anomaly;
    }
 
-   template<typename T, std::size_t Size, typename... MessageTypes>
+   template<typename StdArrayType, typename... MessageTypes>
    void STD_ARRAYS_ARE_EQUAL_Defined(
-      VRText<std::array<T, Size>> expectedStdArrayVRT, VRText<std::array<T, Size>> actualStdArrayVRT,
+      const StdArrayType& expectedStdArray, const char* expectedStdArrayText,
+      const StdArrayType& actualStdArray, const char* actualStdArrayText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
-      const std::array<T, Size>& expectedStdArray = expectedStdArrayVRT.value;
-      const std::array<T, Size>& actualStdArray = actualStdArrayVRT.value;
       const std::size_t expectedStdArraySize = expectedStdArray.size();
       constexpr size_t IEqualsSignLength = 2;
       constexpr size_t SizeTMaxValueLength = 21; // strlen("18446744073709551615")
@@ -3260,15 +3260,17 @@ Example ZenUnit command line arguments:
       {
          for (size_t i = 0; i < expectedStdArraySize; ++i)
          {
-            const T& ithExpectedElement = expectedStdArray[i];
-            const T& ithActualElement = actualStdArray[i];
+            const auto& ithExpectedElement = expectedStdArray[i];
+            const auto& ithActualElement = actualStdArray[i];
             WriteUnsignedLongLongToCharArray(i, indexMessage + IEqualsSignLength);
             ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage);
          }
       }
       catch (const Anomaly& becauseAnomaly)
       {
-         STD_ARRAYS_ARE_EQUAL_ToStringAndRethrow(becauseAnomaly, expectedStdArrayVRT, actualStdArrayVRT,
+         STD_ARRAYS_ARE_EQUAL_ThrowAnomaly(becauseAnomaly,
+            expectedStdArray, expectedStdArrayText,
+            actualStdArray, actualStdArrayText,
             filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
