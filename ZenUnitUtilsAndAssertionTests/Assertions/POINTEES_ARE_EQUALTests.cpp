@@ -3,17 +3,17 @@
 namespace ZenUnit
 {
    TESTS(POINTEES_ARE_EQUALTests)
-   AFACT(ExpectedPointerIsNullptr_ActualPointerIsNullptr_DoesNotThrowExceptionException)
+   AFACT(ExpectedPointerIsNullptr_ActualPointerIsNullptr_DoesNotThrowException)
    AFACT(ExpectedPointerIsNullptr_ActualPointerIsNotNullptr_ThrowsAnomaly)
    AFACT(ExpectedPointerIsNotNullptr_ActualPointerIsNullptr_ThrowsAnomaly)
    AFACT(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreNotEqual_ThrowsAnomaly__StringPointersTestCase)
    AFACT(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreNotEqual_ThrowsAnomaly__StringPointersTestCase_MessagesTestCase)
    AFACT(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreNotEqual_ThrowsAnomaly__UserTypesTestCase)
-   AFACT(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreEqual_DoesNotThrowExceptionException__StringPointersTestCase)
+   AFACT(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreEqual_DoesNotThrowException__StringPointersTestCase)
    AFACT(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreEqual_DoesNotThrowExceptionExceeption__UserTypePointersTestCase)
    EVIDENCE
 
-   TEST(ExpectedPointerIsNullptr_ActualPointerIsNullptr_DoesNotThrowExceptionException)
+   TEST(ExpectedPointerIsNullptr_ActualPointerIsNullptr_DoesNotThrowException)
    {
       const int* nullExpectedPointer = nullptr;
       const int* nullActualPointer = nullptr;
@@ -104,7 +104,7 @@ namespace ZenUnit
             "File.cpp(1)"));
    }
 
-   TEST(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreEqual_DoesNotThrowExceptionException__StringPointersTestCase)
+   TEST(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreEqual_DoesNotThrowException__StringPointersTestCase)
    {
       const string expectedPointee = ZenUnit::Random<string>();
       const string actualPointee = expectedPointee;

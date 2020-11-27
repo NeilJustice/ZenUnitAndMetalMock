@@ -4,7 +4,7 @@ namespace ZenUnit
 {
    template<typename T>
    TEMPLATE_TESTS(VECTORS_ARE_EQUALTests, T)
-   AFACT(VectorSizesAreEqualAndVectorElementsAreEqual_DoesNotThrowExceptionException)
+   AFACT(VectorSizesAreEqualAndVectorElementsAreEqual_DoesNotThrowException)
    AFACT(VectorSizesAreNotEqual_ThrowsAnomaly)
    AFACT(VectorSizesAreNotEqual_ThrowsAnomaly_MessagesTestCase)
    AFACT(VectorSizesAreEqual_ElementsAreNotEqualAtIndex0_ThrowsAnomaly__MessagesTestCase)
@@ -15,7 +15,7 @@ namespace ZenUnit
    const string _messageA = ZenUnit::Random<string>();
    const string _messageB = ZenUnit::Random<string>();
 
-   TEST(VectorSizesAreEqualAndVectorElementsAreEqual_DoesNotThrowExceptionException)
+   TEST(VectorSizesAreEqualAndVectorElementsAreEqual_DoesNotThrowException)
    {
       vector<T> expectedVector;;
       vector<T> actualVector;

@@ -6,8 +6,8 @@ namespace ZenUnit
    AFACT(LambdaCallThrowsException_ThrowsException)
    AFACT(LambdaCallThrowsException_ThrowsException__MessagesTestCase)
    AFACT(FunctionCallThrowsException_ThrowsAnomaly)
-   AFACT(LambdaCallDoesNotThrowException_DoesNotThrowExceptionException)
-   AFACT(FunctionCallDoesNotThrowException_DoesNotThrowExceptionException)
+   AFACT(LambdaCallDoesNotThrowException_DoesNotThrowException)
+   AFACT(FunctionCallDoesNotThrowException_DoesNotThrowException)
    EVIDENCE
 
    TEST(LambdaCallThrowsException_ThrowsException)
@@ -49,14 +49,14 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(LambdaCallDoesNotThrowException_DoesNotThrowExceptionException)
+   TEST(LambdaCallDoesNotThrowException_DoesNotThrowException)
    {
       DOES_NOT_THROW([]{}());
    }
 
    void FunctionThatDoesNotThrowAnException() {}
 
-   TEST(FunctionCallDoesNotThrowException_DoesNotThrowExceptionException)
+   TEST(FunctionCallDoesNotThrowException_DoesNotThrowException)
    {
       DOES_NOT_THROW(FunctionThatDoesNotThrowAnException());
    }

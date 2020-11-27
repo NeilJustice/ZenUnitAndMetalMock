@@ -4,13 +4,21 @@ namespace ZenUnit
 {
    template<typename T>
    TEMPLATE_TESTS(STD_ARRAYS_ARE_EQUALTests_Size0Arrays, T)
-   AFACT(TwoSize0Arrays_DoesNotThrowException)
+   AFACT(TwoSize0ConstArrays_DoesNotThrowException)
+   AFACT(TwoSize0NonConstArrays_DoesNotThrowException)
    EVIDENCE
 
-   TEST(TwoSize0Arrays_DoesNotThrowException)
+   TEST(TwoSize0ConstArrays_DoesNotThrowException)
    {
       const array<T, 0> expectedArray{};
       const array<T, 0> actualArray{};
+      STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray);
+   }
+
+   TEST(TwoSize0NonConstArrays_DoesNotThrowException)
+   {
+      array<T, 0> expectedArray{};
+      array<T, 0> actualArray{};
       STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray);
    }
 
@@ -20,12 +28,12 @@ namespace ZenUnit
 
    template<typename T>
    TEMPLATE_TESTS(STD_ARRAYS_ARE_EQUALTests_Size1Arrays, T)
-   AFACT(ElementsAreDefaultValues_DoesNotThrowExceptionException)
+   AFACT(ElementsAreDefaultValues_DoesNotThrowException)
    AFACT(ElementAreNonDefaultValuesAndAreNotEqual_ThrowsAnomaly)
-   AFACT(ElementAreNonDefaultValuesAndAreEqual_DoesNotThrowExceptionException)
+   AFACT(ElementsAreNonDefaultValuesAndBothAreEqual_DoesNotThrowException)
    EVIDENCE
 
-   TEST(ElementsAreDefaultValues_DoesNotThrowExceptionException)
+   TEST(ElementsAreDefaultValues_DoesNotThrowException)
    {
       const array<T, 1> expectedArray{};
       const array<T, 1> actualArray{};
@@ -36,8 +44,8 @@ namespace ZenUnit
    {
       const string TypeName = *Type::GetName<T>();
       const T randomElement = ZenUnit::Random<T>();
-      const array<T, 1> expectedArray = { { randomElement } };
-      const array<T, 1> actualArray = { { randomElement + T{1} } };
+      const array<T, 1> expectedArray{ { randomElement } };
+      const array<T, 1> actualArray{ { randomElement + T{1} } };
       //
 #if defined __linux__
       THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
@@ -75,11 +83,11 @@ namespace ZenUnit
    #endif
    }
 
-   TEST(ElementAreNonDefaultValuesAndAreEqual_DoesNotThrowExceptionException)
+   TEST(ElementsAreNonDefaultValuesAndBothAreEqual_DoesNotThrowException)
    {
       const T randomElement = ZenUnit::Random<T>();
-      const array<T, 1> expectedArray = { { randomElement } };
-      const array<T, 1> actualArray = { { randomElement } };
+      const array<T, 1> expectedArray{ { randomElement } };
+      const array<T, 1> actualArray{ { randomElement } };
       STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray);
    }
 
@@ -89,15 +97,15 @@ namespace ZenUnit
 
    template<typename T>
    TEMPLATE_TESTS(STD_ARRAYS_ARE_EQUALTests_Size2Arrays, T)
-   AFACT(ElementsAreDefaultsValues_DoesNotThrowExceptionException)
+   AFACT(ElementsAreDefaultsValues_DoesNotThrowException)
    AFACT(ElementsAreNotDefaultValuesAndAreNotEqualAtIndex0_ThrowsAnomaly)
    AFACT(ElementsAreNotDefaultValuesAndAreNotEqualAtIndex1_ThrowsAnomaly)
-   AFACT(ElementsAreNotDefaultValuesAndBothAreEqual_DoesNotThrowExceptionException)
+   AFACT(ElementsAreNotDefaultValuesAndBothAreEqual_DoesNotThrowException)
    EVIDENCE
 
    const string TypeName = *Type::GetName<T>();
 
-   TEST(ElementsAreDefaultsValues_DoesNotThrowExceptionException)
+   TEST(ElementsAreDefaultsValues_DoesNotThrowException)
    {
       const array<T, 2> expectedArray{};
       const array<T, 2> actualArray{};
@@ -108,8 +116,8 @@ namespace ZenUnit
    {
       const T randomElement1 = ZenUnit::Random<T>();
       const T randomElement2 = ZenUnit::Random<T>();
-      const array<T, 2> expectedArray = { { randomElement1, randomElement2 } };
-      const array<T, 2> actualArray = { { randomElement1 + T{1}, randomElement2 } };
+      const array<T, 2> expectedArray{ { randomElement1, randomElement2 } };
+      const array<T, 2> actualArray{ { randomElement1 + T{1}, randomElement2 } };
       //
 #if defined __linux__
       THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
@@ -151,8 +159,8 @@ namespace ZenUnit
    {
       const T randomElement1 = ZenUnit::Random<T>();
       const T randomElement2 = ZenUnit::Random<T>();
-      const array<T, 2> expectedArray = { { randomElement1, randomElement2 } };
-      const array<T, 2> actualArray = { { randomElement1, randomElement2 + T{1} } };
+      const array<T, 2> expectedArray{ { randomElement1, randomElement2 } };
+      const array<T, 2> actualArray{ { randomElement1, randomElement2 + T{1} } };
       //
 #if defined __linux__
       THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
@@ -190,7 +198,7 @@ namespace ZenUnit
    #endif
    }
 
-   TEST(ElementsAreNotDefaultValuesAndBothAreEqual_DoesNotThrowExceptionException)
+   TEST(ElementsAreNotDefaultValuesAndBothAreEqual_DoesNotThrowException)
    {
       const T randomElement1 = ZenUnit::Random<T>();
       const T randomElement2 = ZenUnit::Random<T>();

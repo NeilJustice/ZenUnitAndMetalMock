@@ -188,7 +188,7 @@ Example ZenUnit command line arguments:
       //
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
-      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("0.7.0", 0));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("0.7.1", 0));
    }
 
    TEST(Parse_AllArgumentsSpecifiedExpectForTestNameFilter_ReturnsZenUnitArgsWithAllFieldsSet)

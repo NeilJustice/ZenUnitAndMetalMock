@@ -2,11 +2,11 @@
 
 namespace ZenUnit
 {
-   TESTS(WriteUnsignedLongLongToCharactersTests)
-   FACTS(ULongLongToChars_WritesExpectedNumberToOutCharsPointer)
+   TESTS(WriteUnsignedLongLongToCharArrayTests)
+   FACTS(WriteUnsignedLongLongToCharArray_WritesExpectedNumberToOutCharsPointer)
    EVIDENCE
 
-   TEST2X2(ULongLongToChars_WritesExpectedNumberToOutCharsPointer,
+   TEST2X2(WriteUnsignedLongLongToCharArray_WritesExpectedNumberToOutCharsPointer,
       unsigned long long value, const char* expectedResultingOutChars,
       0ull, "0",
       1ull, "1",
@@ -31,10 +31,10 @@ namespace ZenUnit
    {
       char outChars[64] = {};
       //
-      ZenUnit::WriteUnsignedLongLongToCharacters(value, outChars);
+      ZenUnit::WriteUnsignedLongLongToCharArray(value, outChars);
       //
       ARE_EQUAL(expectedResultingOutChars, outChars);
    }
 
-   RUN_TESTS(WriteUnsignedLongLongToCharactersTests)
+   RUN_TESTS(WriteUnsignedLongLongToCharArrayTests)
 }

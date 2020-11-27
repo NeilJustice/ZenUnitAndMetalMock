@@ -4,14 +4,14 @@ namespace ZenUnit
 {
    template<typename T>
    TEMPLATE_TESTS(ARRAYS_ARE_EQUALTests, T)
-   AFACT(LengthToCompareIs0_DoesNotThrowException)
-   AFACT(LengthToCompareIs1_FirstElementsAreEqual_DoesNotThrowException)
-   AFACT(LengthToCompareIs1_FirstElementsAreNotEqual_ThrowsAnomaly)
-   AFACT(LengthToCompareIs2_FirstElementsAreEqual_SecondElementsAreEqual_DoesNotThrowException)
-   AFACT(LengthToCompareIs2_FirstElementsAreEqual_SecondElementsAreNotEqual_ThrowsAnomaly)
+   AFACT(NumberOfElementsToCompareIs0_DoesNotThrowException)
+   AFACT(NumberOfElementsToCompareIs1_FirstElementsAreEqual_DoesNotThrowException)
+   AFACT(NumberOfElementsToCompareIs1_FirstElementsAreNotEqual_ThrowsAnomaly)
+   AFACT(NumberOfElementsToCompareIs2_FirstElementsAreEqual_SecondElementsAreEqual_DoesNotThrowException)
+   AFACT(NumberOfElementsToCompareIs2_FirstElementsAreEqual_SecondElementsAreNotEqual_ThrowsAnomaly)
    EVIDENCE
 
-   TEST(LengthToCompareIs0_DoesNotThrowException)
+   TEST(NumberOfElementsToCompareIs0_DoesNotThrowException)
    {
       const T expectedArray[1] { ZenUnit::Random<T>() };
       const T actualArray[1] { ZenUnit::Random<T>() };
@@ -19,7 +19,7 @@ namespace ZenUnit
       ARRAYS_ARE_EQUAL(expectedArray, actualArray, 0);
    }
 
-   TEST(LengthToCompareIs1_FirstElementsAreEqual_DoesNotThrowException)
+   TEST(NumberOfElementsToCompareIs1_FirstElementsAreEqual_DoesNotThrowException)
    {
       const T expectedArray[1] { ZenUnit::Random<T>() };
       const T actualArray[1] { expectedArray[0] };
@@ -27,14 +27,14 @@ namespace ZenUnit
       ARRAYS_ARE_EQUAL(expectedArray, actualArray, 1);
    }
 
-   TEST(LengthToCompareIs1_FirstElementsAreNotEqual_ThrowsAnomaly)
+   TEST(NumberOfElementsToCompareIs1_FirstElementsAreNotEqual_ThrowsAnomaly)
    {
       const string typeName = *Type::GetName<T>();
       const T randomElement = ZenUnit::Random<T>();
       const T expectedArray[1] { randomElement };
       const T actualArray[1] { randomElement + T{1} };
       //
-      THROWS_EXCEPTION(ARRAYS_ARE_EQUAL(expectedArray, actualArray, 1), Anomaly, TestUtil::NewlineConcat("",
+      const string expectedExceptionMessage = TestUtil::NewlineConcat("",
          "  Failed: ARRAYS_ARE_EQUAL(expectedArray, actualArray, 1)",
          "Expected: " + typeName + " [1]",
          "  Actual: " + typeName + " [1]",
@@ -43,10 +43,12 @@ namespace ZenUnit
          "  Actual: " + ToStringer::ToString(actualArray[0]),
          " Message: \"i=0\"",
          "File.cpp(1)",
-         "File.cpp(1)"));
+         "File.cpp(1)");
+      THROWS_EXCEPTION(ARRAYS_ARE_EQUAL(expectedArray, actualArray, 1),
+         Anomaly, expectedExceptionMessage);
    }
 
-   TEST(LengthToCompareIs2_FirstElementsAreEqual_SecondElementsAreEqual_DoesNotThrowException)
+   TEST(NumberOfElementsToCompareIs2_FirstElementsAreEqual_SecondElementsAreEqual_DoesNotThrowException)
    {
       const T expectedArray[2] { ZenUnit::Random<T>(), ZenUnit::Random<T>() };
       const T actualArray[2] { expectedArray[0], expectedArray[1] };
@@ -54,7 +56,7 @@ namespace ZenUnit
       ARRAYS_ARE_EQUAL(expectedArray, actualArray, 2);
    }
 
-   TEST(LengthToCompareIs2_FirstElementsAreEqual_SecondElementsAreNotEqual_ThrowsAnomaly)
+   TEST(NumberOfElementsToCompareIs2_FirstElementsAreEqual_SecondElementsAreNotEqual_ThrowsAnomaly)
    {
       const string typeName = *Type::GetName<T>();
       const T randomElement0 = ZenUnit::Random<T>();
@@ -62,7 +64,7 @@ namespace ZenUnit
       const T expectedArray[2] { randomElement0, randomElement1 };
       const T actualArray[2] { expectedArray[0], expectedArray[1] + 1 };
       //
-      THROWS_EXCEPTION(ARRAYS_ARE_EQUAL(expectedArray, actualArray, 2), Anomaly, TestUtil::NewlineConcat("",
+      const string expectedExceptionMessage = TestUtil::NewlineConcat("",
          "  Failed: ARRAYS_ARE_EQUAL(expectedArray, actualArray, 2)",
          "Expected: " + typeName + " [2]",
          "  Actual: " + typeName + " [2]",
@@ -71,10 +73,28 @@ namespace ZenUnit
          "  Actual: " + ToStringer::ToString(actualArray[1]),
          " Message: \"i=1\"",
          "File.cpp(1)",
-         "File.cpp(1)"));
+         "File.cpp(1)");
+      THROWS_EXCEPTION(ARRAYS_ARE_EQUAL(expectedArray, actualArray, 2),
+         Anomaly, expectedExceptionMessage);
    }
 
    RUN_TEMPLATE_TESTS(ARRAYS_ARE_EQUALTests, int)
+   THEN_RUN_TEMPLATE_TESTS(ARRAYS_ARE_EQUALTests, char)
    THEN_RUN_TEMPLATE_TESTS(ARRAYS_ARE_EQUALTests, unsigned)
    THEN_RUN_TEMPLATE_TESTS(ARRAYS_ARE_EQUALTests, unsigned long long)
+
+
+   TESTS(NonConstCharARRAYS_ARE_EQUALTests)
+   AFACT(NonConstCharArraysAreEqual_Returns)
+   EVIDENCE
+
+   TEST(NonConstCharArraysAreEqual_Returns)
+   {
+      char expectedNonConstCharArray[2]{ ZenUnit::Random<char>(), ZenUnit::Random<char>() };
+      char actualNonConstCharArray[2]{ ZenUnit::Random<char>(), ZenUnit::Random<char>() };
+      //
+      ARRAYS_ARE_EQUAL(expectedNonConstCharArray, actualNonConstCharArray, 0);
+   }
+
+   RUN_TESTS(NonConstCharARRAYS_ARE_EQUALTests)
 }

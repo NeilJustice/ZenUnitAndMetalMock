@@ -10,7 +10,7 @@ namespace ZenUnit
    AFACT(CallThrowsExactExpectedExceptionType_WhatTextDoesNotMatchExactly_ThrowsAnomaly)
    AFACT(CallThrowsExactExpectedExceptionType_WhatTextMatchesExceptForCase_ThrowsAnomaly)
    AFACT(CallThrowsExactExpectedExceptionType_ActualWhatTextContainsExpectedWhatTextAsAnExactSubstringMatchButNotAnEntireStringMatch_ThrowsAnomaly)
-   AFACT(CallThrowsExactExpectedExceptionType_WhatTextMatchesExactly_DoesNotThrowExceptionException)
+   AFACT(CallThrowsExactExpectedExceptionType_WhatTextMatchesExactly_DoesNotThrowException)
    AFACT(NeverThrownType_whatReturnsNullptr_CodeCoverage)
    EVIDENCE
 
@@ -160,7 +160,7 @@ namespace ZenUnit
 //      }
    }
 
-   TEST(CallThrowsExactExpectedExceptionType_WhatTextMatchesExactly_DoesNotThrowExceptionException)
+   TEST(CallThrowsExactExpectedExceptionType_WhatTextMatchesExactly_DoesNotThrowException)
    {
       const string whatText = ZenUnit::Random<string>();
       THROWS_EXCEPTION([&]{ throw runtime_error(whatText); }(), runtime_error, whatText);
