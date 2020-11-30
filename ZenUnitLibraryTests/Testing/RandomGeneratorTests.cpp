@@ -45,6 +45,12 @@ namespace ZenUnit
       const size_t randomSizeT = _randomGenerator.SizeT();
       ARE_EQUAL(randomSizeT, randomSizeT);
 
+      const size_t randomSizeTBetween1And3 = _randomGenerator.SizeTBetween(1, 3);
+      IS_TRUE(randomSizeTBetween1And3 >= 1 && randomSizeTBetween1And3 <= 3);
+
+      const size_t randomSizeTBetween5And7 = _randomGenerator.SizeTBetween(5, 7);
+      IS_TRUE(randomSizeTBetween1And3 >= 5 && randomSizeTBetween1And3 <= 7);
+
       const float randomFloat = _randomGenerator.Float();
       ARE_EQUAL(randomFloat, randomFloat);
 

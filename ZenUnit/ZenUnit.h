@@ -7183,6 +7183,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          const char randomChar = Random<char>();
          return randomChar;
       }
+
       virtual unsigned char UnsignedChar() const
       {
          const unsigned char randomUnsignedChar = Random<unsigned char>();
@@ -7194,6 +7195,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          const short randomShort = Random<short>();
          return randomShort;
       }
+
       virtual unsigned short UnsignedShort() const
       {
          const unsigned short randomUnsignedShort = Random<unsigned short>();
@@ -7205,6 +7207,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          const int randomInt = Random<int>();
          return randomInt;
       }
+
       virtual unsigned UnsignedInt() const
       {
          const unsigned int randomUnsignedInt = Random<unsigned int>();
@@ -7233,6 +7236,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          const long randomLong = Random<long>();
          return randomLong;
       }
+
       virtual unsigned long UnsignedLong() const
       {
          const unsigned long randomUnsignedLong = Random<unsigned long>();
@@ -7244,14 +7248,23 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          const long long randomLongLong = Random<long long>();
          return randomLongLong;
       }
+
       virtual unsigned long long UnsignedLongLong() const
       {
          const unsigned long long randomUnsignedLongLong = Random<unsigned long long>();
          return randomUnsignedLongLong;
       }
+
       virtual size_t SizeT() const
       {
          const size_t randomSizeT = Random<size_t>();
+         return randomSizeT;
+      }
+
+      virtual size_t SizeTBetween(size_t inclusiveLowerBound, size_t inclusiveUpperBound) const
+      {
+         const size_t randomSizeT = RandomBetween<size_t>(
+            static_cast<long long>(inclusiveLowerBound), static_cast<long long>(inclusiveUpperBound));
          return randomSizeT;
       }
 
@@ -7260,6 +7273,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          const float randomFloat = Random<float>();
          return randomFloat;
       }
+
       virtual double Double() const
       {
          const double randomDouble = Random<double>();
@@ -7271,6 +7285,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          const char* const randomConstChraPointer = Random<const char*>();
          return randomConstChraPointer;
       }
+
       virtual std::string String() const
       {
          const std::string randomString = Random<std::string>();

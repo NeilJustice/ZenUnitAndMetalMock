@@ -4999,6 +4999,7 @@ namespace ZenUnit
       METALMOCK_NONVOID0_CONST(long long, LongLong)
       METALMOCK_NONVOID0_CONST(unsigned long long, UnsignedLongLong)
       METALMOCK_NONVOID0_CONST(size_t, SizeT)
+      METALMOCK_NONVOID2_CONST(size_t, SizeTBetween, size_t, size_t)
 
       METALMOCK_NONVOID0_CONST(float, Float)
       METALMOCK_NONVOID0_CONST(double, Double)
