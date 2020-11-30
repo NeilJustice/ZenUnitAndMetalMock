@@ -7295,6 +7295,12 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          return randomFilesystemPath;
       }
 
+      virtual std::vector<fs::path> FilesystemPathVector() const
+      {
+         const std::vector<fs::path> randomFilesystemPathVector = RandomVector<fs::path>();
+         return randomFilesystemPathVector;
+      }
+
       template<typename T>
       std::vector<T> Vector() const
       {
