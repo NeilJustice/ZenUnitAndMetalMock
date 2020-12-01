@@ -11,6 +11,7 @@ namespace ZenUnit
    AFACT(Random_Float_ReturnsRandomFloat)
    AFACT(Random_Double_ReturnsRandomDouble)
    AFACT(Random_ConstCharPointer_ReturnsRandomConstCharPointer1Through10)
+   AFACT(Random_ConstWCharTPointer_ReturnsRandomConstWCharTPointer1Through10)
    AFACT(Random_ErrorCode_ReturnsEitherGenericCategoryOrIostreamCategoryOrSystemCategoryErrorCode)
    AFACT(Random_String_ReturnsRandomStringThatBeginsWithRS)
    AFACT(Random_WideString_ReturnsRandomWideStringThatBeginsWithRWS)
@@ -85,6 +86,11 @@ namespace ZenUnit
    TEST(Random_ConstCharPointer_ReturnsRandomConstCharPointer1Through10)
    {
       Random<const char*>();
+   }
+
+   TEST(Random_ConstWCharTPointer_ReturnsRandomConstWCharTPointer1Through10)
+   {
+      Random<const wchar_t*>();
    }
 
    TEST(Random_ErrorCode_ReturnsEitherGenericCategoryOrIostreamCategoryOrSystemCategoryErrorCode)

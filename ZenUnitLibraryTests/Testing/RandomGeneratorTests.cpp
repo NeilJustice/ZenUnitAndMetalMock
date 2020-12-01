@@ -49,7 +49,7 @@ namespace ZenUnit
       IS_TRUE(randomSizeTBetween1And3 >= 1 && randomSizeTBetween1And3 <= 3);
 
       const size_t randomSizeTBetween5And7 = _randomGenerator.SizeTBetween(5, 7);
-      IS_TRUE(randomSizeTBetween1And3 >= 5 && randomSizeTBetween1And3 <= 7);
+      IS_TRUE(randomSizeTBetween5And7 >= 5 && randomSizeTBetween1And3 <= 7);
 
       const float randomFloat = _randomGenerator.Float();
       ARE_EQUAL(randomFloat, randomFloat);

@@ -7049,6 +7049,25 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<>
+   inline const wchar_t* Random<const wchar_t*>()
+   {
+      const int randomIntBetween1And10 = RandomBetween<int>(1, 10);
+      switch (randomIntBetween1And10)
+      {
+      case 1: return L"RandomWideConstCharPointer1";
+      case 2: return L"RandomWideConstCharPointer2";
+      case 3: return L"RandomWideConstCharPointer3";
+      case 4: return L"RandomWideConstCharPointer4";
+      case 5: return L"RandomWideConstCharPointer5";
+      case 6: return L"RandomWideConstCharPointer6";
+      case 7: return L"RandomWideConstCharPointer7";
+      case 8: return L"RandomWideConstCharPointer8";
+      case 9: return L"RandomWideConstCharPointer9";
+      default: assert_true(randomIntBetween1And10 == 10); return L"RandomWideConstCharPointer10";
+      }
+   }
+
+   template<>
    inline std::string Random<std::string>()
    {
       const int randomInt = RandomBetween<int>(0, 100000);
