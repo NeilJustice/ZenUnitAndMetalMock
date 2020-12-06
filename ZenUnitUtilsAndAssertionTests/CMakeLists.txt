@@ -30,6 +30,13 @@ if(UNIX)
    target_link_libraries(ZenUnitUtilsAndAssertionTests stdc++fs)
 endif()
 
+if(EXISTS ${GoogleBenchmarkIncludeDirectory})
+   target_link_libraries(ZenUnitUtilsAndAssertionTests ${GoogleBenchmarkLibraryPath})
+   if(WIN32)
+      target_link_libraries(ZenUnitUtilsAndAssertionTests shlwapi)
+   endif()
+endif()
+
 ConfigurePlatformSpecificPrecompiledHeaders()
 OnWindowsAddPostBuildStepToRunTests()
 
