@@ -108,6 +108,11 @@ namespace ZenUnit
    ZenUnit::IS_ZERO_Defined(VRT(value), \
       FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
+// Asserts that str.empty() is true.
+#define IS_EMPTY_STRING(value, ...) \
+   ZenUnit::IS_EMPTY_STRING_Defined(value, #value, \
+      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
 // Asserts that ZenUnit::Equalizer<T>::AssertEqual(T{}, value) does not throw a ZenUnit::Anomaly exception.
 #define IS_DEFAULT_VALUE(value, ...) \
    ZenUnit::IS_DEFAULT_VALUE_Defined(VRT(value), \
@@ -2864,6 +2869,27 @@ Example ZenUnit command line arguments:
       if (!valueIsDefaultValue)
       {
          IS_ZERO_ThrowAnomaly(valueVRT, defaultValue, filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
+      }
+   }
+
+   template<typename... MessageTypes>
+   void IS_EMPTY_STRING_ThrowAnomaly(const char* strText,
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
+   {
+      const std::string expectedField = "str.empty() == true";
+      const std::string actualField = "str.empty() == false";
+      const Anomaly anomaly("IS_EMPTY_STRING", strText, "", "", messagesText,
+         Anomaly::Default(), expectedField, actualField, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
+   }
+
+   template<typename... MessageTypes>
+   void IS_EMPTY_STRING_Defined(std::string_view str, const char* strText,
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
+   {
+      if (!str.empty())
+      {
+         IS_EMPTY_STRING_ThrowAnomaly(strText, filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
