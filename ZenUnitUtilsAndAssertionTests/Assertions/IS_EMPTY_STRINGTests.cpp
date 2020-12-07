@@ -25,8 +25,8 @@ namespace ZenUnit
       THROWS_EXCEPTION(IS_EMPTY_STRING("foo"),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_EMPTY_STRING(\"foo\")",
-"Expected: str.empty() == true",
-"  Actual: str.empty() == false",
+"Expected: str to be empty string",
+"  Actual: str is not empty string: \"foo\"",
 "File.cpp(1)"));
    }
 
@@ -37,8 +37,8 @@ namespace ZenUnit
       THROWS_EXCEPTION(IS_EMPTY_STRING(nonEmptyString, messageA, messageB),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_EMPTY_STRING(nonEmptyString, messageA, messageB)",
-"Expected: str.empty() == true",
-"  Actual: str.empty() == false",
+"Expected: str to be empty string",
+"  Actual: str is not empty string: \"bar\"",
 " Message: \"A\", \"B\"",
 "File.cpp(1)"));
    }

@@ -2872,24 +2872,30 @@ Example ZenUnit command line arguments:
       }
    }
 
-   template<typename... MessageTypes>
-   void IS_EMPTY_STRING_ThrowAnomaly(const char* strText,
+   template<typename StringType, typename... MessageTypes>
+   void IS_EMPTY_STRING_ThrowAnomaly(const StringType& str, const char* strText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
-      const std::string expectedField = "str.empty() == true";
-      const std::string actualField = "str.empty() == false";
+      static const std::string expectedField = "str to be empty string";
+      const std::string actualField = String::Concat("str is not empty string: \"", str, "\"");
       const Anomaly anomaly("IS_EMPTY_STRING", strText, "", "", messagesText,
          Anomaly::Default(), expectedField, actualField, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
       throw anomaly;
    }
 
-   template<typename... MessageTypes>
-   void IS_EMPTY_STRING_Defined(std::string_view str, const char* strText,
+   template<typename StringType, typename... MessageTypes>
+   void IS_EMPTY_STRING_Defined(const StringType& str, const char* strText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
-      if (!str.empty())
+      static const StringType emptyString{""};
+      try
       {
-         IS_EMPTY_STRING_ThrowAnomaly(strText, filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
+         ARE_EQUAL(emptyString, str);
+      }
+      catch (const Anomaly&)
+      {
+         IS_EMPTY_STRING_ThrowAnomaly(str, strText,
+            filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
