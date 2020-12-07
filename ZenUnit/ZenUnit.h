@@ -40,6 +40,12 @@ namespace fs = std::experimental::filesystem;
 namespace fs = std::filesystem;
 #endif
 
+#ifdef __linux__
+#define NOINLINE __attribute__((noinline))
+#elif _WIN32
+#define NOINLINE __declspec(noinline)
+#endif
+
 #define COMMA , // For those scenarios when parentheses are not enough disambiguation for the compiler
 #define DOTOKENJOIN(a, b) a##b
 #define TOKENJOIN(a, b) DOTOKENJOIN(a, b)
@@ -2339,7 +2345,7 @@ Example ZenUnit command line arguments:
    };
 
    template<typename ExpectedType, typename ActualType, typename ToleranceType, typename... MessageTypes>
-   void ARE_WITHIN_ThrowAnomaly(
+   NOINLINE void ARE_WITHIN_ThrowAnomaly(
       VRText<ExpectedType> expectedFloatingPointValueVRT,
       VRText<ActualType> actualFloatingPointValueVRT,
       VRText<ToleranceType> expectedAbsoluteMaxDifferenceVRT,
@@ -2425,7 +2431,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename ExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
-   void ARE_COPIES_ThrowAnomaly(VRText<ExpectedObjectType> expectedObjectVRT, VRText<ActualObjectType> actualObjectVRT,
+   NOINLINE void ARE_COPIES_ThrowAnomaly(VRText<ExpectedObjectType> expectedObjectVRT, VRText<ActualObjectType> actualObjectVRT,
       FilePathLineNumber filePathLineNumber, const Anomaly& becauseAnomaly, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string toStringedExpectedObject = ToStringer::ToString(expectedObjectVRT.value);
@@ -2462,7 +2468,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename ExpectedType, typename ActualType, typename... MessageTypes>
-   void ARE_EQUAL_ThrowAnomaly(VRText<ExpectedType> expectedValueVRT, VRText<ActualType> actualValueVRT,
+   NOINLINE void ARE_EQUAL_ThrowAnomaly(VRText<ExpectedType> expectedValueVRT, VRText<ActualType> actualValueVRT,
       FilePathLineNumber filePathLineNumber, const Anomaly& becauseAnomaly, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedValueAsString = ToStringer::ToString(expectedValueVRT.value);
@@ -2473,7 +2479,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename NotExpectedType, typename ActualType, typename... MessageTypes>
-   void ARE_NOT_EQUAL_ThrowAnomaly(VRText<NotExpectedType> notExpectedValueVRT, VRText<ActualType> actualValueVRT,
+   NOINLINE void ARE_NOT_EQUAL_ThrowAnomaly(VRText<NotExpectedType> notExpectedValueVRT, VRText<ActualType> actualValueVRT,
       FilePathLineNumber filePathLineNumber, const Anomaly& becauseAnomaly, const char* messagesText, MessageTypes&& ... messages)
    {
       const std::string notExpectedValueAsStringLine = "Not Expected: " + ToStringer::ToString(notExpectedValueVRT.value);
@@ -2484,7 +2490,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename NotExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
-   void ARE_NOT_SAME_ThrowAnomaly(const VRText<NotExpectedObjectType>& notExpectedObjectVRT, const VRText<ActualObjectType>& actualObjectVRT,
+   NOINLINE void ARE_NOT_SAME_ThrowAnomaly(const VRText<NotExpectedObjectType>& notExpectedObjectVRT, const VRText<ActualObjectType>& actualObjectVRT,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedValueAsString = "Not " + ToStringer::ToString(&notExpectedObjectVRT.value);
@@ -2505,7 +2511,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename ExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
-   void ARE_SAME_ThrowAnomaly(const VRText<ExpectedObjectType>& expectedObjectVRT, const VRText<ActualObjectType>& actualObjectVRT,
+   NOINLINE void ARE_SAME_ThrowAnomaly(const VRText<ExpectedObjectType>& expectedObjectVRT, const VRText<ActualObjectType>& actualObjectVRT,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedValueAsString = ToStringer::ToString(&expectedObjectVRT.value);
@@ -2544,7 +2550,7 @@ Example ZenUnit command line arguments:
    };
 
    template<typename... MessageTypes>
-   void ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED_ThrowAnomaly(const char* smartOrRawArrayPointerText,
+   NOINLINE void ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED_ThrowAnomaly(const char* smartOrRawArrayPointerText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const Anomaly anomaly("ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED", smartOrRawArrayPointerText, "", "", messagesText, Anomaly::Default(),
@@ -2564,7 +2570,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename ElementType, typename CollectionType, typename... MessageTypes>
-   void CONTAINS_ELEMENT_ThrowAnomaly(VRText<CollectionType> expectedElementVRT, VRText<ElementType> collectionVRT,
+   NOINLINE void CONTAINS_ELEMENT_ThrowAnomaly(VRText<CollectionType> expectedElementVRT, VRText<ElementType> collectionVRT,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string toStringedElement = ToStringer::ToString(expectedElementVRT.value);
@@ -2588,7 +2594,7 @@ Example ZenUnit command line arguments:
       }
    }
 
-   inline void ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_ThrowAnomalyBecauseEqualizerThrewUnexpectedAnomaly(
+   NOINLINE inline void ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_ThrowAnomalyBecauseEqualizerThrewUnexpectedAnomaly(
       const char* typeName,
       const char* fieldName,
       const char* arbitraryNonDefaultFieldValueText,
@@ -2601,7 +2607,7 @@ Example ZenUnit command line arguments:
       throw anomaly;
    }
 
-   inline void ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_ThrowAnomalyBecauseEqualizerDidNotThrowAnomaly(
+   NOINLINE inline void ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_ThrowAnomalyBecauseEqualizerDidNotThrowAnomaly(
       const char* typeName,
       const char* fieldName,
       const char* arbitraryNonDefaultFieldValueText,
@@ -2683,7 +2689,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename CollectionType, typename... MessageTypes>
-   void IS_EMPTY_ThrowAnomaly(VRText<CollectionType> collectionVRT,
+   NOINLINE void IS_EMPTY_ThrowAnomaly(VRText<CollectionType> collectionVRT,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const size_t size = collectionVRT.value.size();
@@ -2705,7 +2711,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename CollectionType, typename... MessageTypes>
-   void IS_NOT_EMPTY_ThrowAnomaly(VRText<CollectionType> collectionVRT,
+   NOINLINE void IS_NOT_EMPTY_ThrowAnomaly(VRText<CollectionType> collectionVRT,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedField = "empty() == false";
@@ -2726,7 +2732,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename... MessageTypes>
-   void IS_FALSE_ThrowAnomaly(const char* valueText,
+   NOINLINE void IS_FALSE_ThrowAnomaly(const char* valueText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const Anomaly anomaly("IS_FALSE", valueText, "", "", messagesText, Anomaly::Default(),
@@ -2745,7 +2751,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename... MessageTypes>
-   void IS_NOT_NULLPTR_ThrowAnomaly(const char* pointerText,
+   NOINLINE void IS_NOT_NULLPTR_ThrowAnomaly(const char* pointerText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const Anomaly anomaly("IS_NOT_NULLPTR", pointerText, "", "", messagesText, Anomaly::Default(),
@@ -2764,7 +2770,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename... MessageTypes>
-   void POINTEE_IS_EXACT_TYPE_ThrowAnomaly(
+   NOINLINE void POINTEE_IS_EXACT_TYPE_ThrowAnomaly(
       const std::type_info& expectedPolymorphicPointeeTypeInfo, std::string_view expectedPolymorphicPointeeText,
       std::string_view actualField, std::string_view actualPointeeText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
@@ -2806,7 +2812,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename PointerType, typename... MessageTypes>
-   void IS_NULLPTR_ThrowAnomaly(
+   NOINLINE void IS_NULLPTR_ThrowAnomaly(
       VRText<PointerType> pointerVRT,
       FilePathLineNumber filePathLineNumber,
       const char* messagesText,
@@ -2833,7 +2839,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename... MessageTypes>
-   void IS_TRUE_ThrowAnomaly(
+   NOINLINE void IS_TRUE_ThrowAnomaly(
       const char* valueText,
       FilePathLineNumber filePathLineNumber,
       const char* messagesText,
@@ -2845,7 +2851,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename ValueType, typename DefaultValueType, typename... MessageTypes>
-   void IS_ZERO_ThrowAnomaly(
+   NOINLINE void IS_ZERO_ThrowAnomaly(
       VRText<ValueType> valueVRT,
       const DefaultValueType& defaultValue,
       FilePathLineNumber filePathLineNumber,
@@ -2872,7 +2878,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename StringType, typename... MessageTypes>
-   void IS_EMPTY_STRING_ThrowAnomaly(const StringType& str, const char* strText,
+   NOINLINE void IS_EMPTY_STRING_ThrowAnomaly(const StringType& str, const char* strText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const char* const expectedField = "str to be empty string";
@@ -2899,7 +2905,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename ValueType, typename DefaultValueType, typename... MessageTypes>
-   void IS_DEFAULT_VALUE_ThrowAnomaly(VRText<ValueType> valueVRT, const DefaultValueType& defaultConstructedValue,
+   NOINLINE void IS_DEFAULT_VALUE_ThrowAnomaly(VRText<ValueType> valueVRT, const DefaultValueType& defaultConstructedValue,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&& ... messages)
    {
       const std::string expectedValueString = ToStringer::ToString(defaultConstructedValue);
@@ -2927,7 +2933,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename ValueType, typename... MessageTypes>
-   void IS_NOT_DEFAULT_VALUE_ThrowAnomaly(VRText<ValueType> valueVRT,
+   NOINLINE void IS_NOT_DEFAULT_VALUE_ThrowAnomaly(VRText<ValueType> valueVRT,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string actualValueString = ToStringer::ToString(valueVRT.value);
@@ -3011,7 +3017,7 @@ Example ZenUnit command line arguments:
    };
 
    template<typename... MessageTypes>
-   void MAPS_ARE_EQUAL_ThrowAnomaly(
+   NOINLINE void MAPS_ARE_EQUAL_ThrowAnomaly(
       const char* failedPrefixSpaces,
       const char* expectedMapText,
       const char* actualMapText,
@@ -3105,7 +3111,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename... MessageTypes>
-   void DOES_NOT_THROW_ThrowAnomaly(const std::exception& ex, const char* expressionText,
+   NOINLINE void DOES_NOT_THROW_ThrowAnomaly(const std::exception& ex, const char* expressionText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string failedLinePrefix = String::Concat("  Failed: DOES_NOT_THROW(", expressionText);
@@ -3223,7 +3229,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename ArrayType, typename... MessageTypes>
-   void ARRAYS_ARE_EQUAL_ThrowAnomaly(const Anomaly& becauseAnomaly,
+   NOINLINE void ARRAYS_ARE_EQUAL_ThrowAnomaly(const Anomaly& becauseAnomaly,
       const char* expectedArrayText, const char* actualArrayText, size_t numberOfElementsToCompare,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&& ... messages)
    {
@@ -3264,7 +3270,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename StdArrayType, typename... MessageTypes>
-   void STD_ARRAYS_ARE_EQUAL_ThrowAnomaly(const Anomaly& becauseAnomaly,
+   NOINLINE void STD_ARRAYS_ARE_EQUAL_ThrowAnomaly(const Anomaly& becauseAnomaly,
       const StdArrayType& expectedStdArray, const char* expectedStdArrayText,
       const StdArrayType& actualStdArray, const char* actualStdArrayText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
@@ -3325,7 +3331,7 @@ Example ZenUnit command line arguments:
    };
 
    template<typename... MessageTypes>
-   void DELETE_TO_ASSERT_NEWED_ThrowAnomaly(const char* smartOrRawPointerText,
+   NOINLINE void DELETE_TO_ASSERT_NEWED_ThrowAnomaly(const char* smartOrRawPointerText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const Anomaly anomaly("DELETE_TO_ASSERT_NEWED", smartOrRawPointerText, "", "", messagesText, Anomaly::Default(),
@@ -3345,7 +3351,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename ExpectedSetType, typename ActualSetType, typename... MessageTypes>
-   void SETS_ARE_EQUAL_ThrowAnomaly(
+   NOINLINE void SETS_ARE_EQUAL_ThrowAnomaly(
       const Anomaly& becauseAnomaly, VRText<ExpectedSetType> expectedSetVRT, VRText<ActualSetType> actualSetVRT,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
@@ -3428,7 +3434,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename T, typename... MessageTypes>
-   void POINTEES_EQUAL_ThrowAnomaly_ExpectedOrActualPointerIsNullptr(
+   NOINLINE void POINTEES_EQUAL_ThrowAnomaly_ExpectedOrActualPointerIsNullptr(
       VRText<T> expectedPointerVRT, VRText<T> actualPointerVRT, const char* expectedPointerOrActualPointer,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
@@ -3441,7 +3447,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename T, typename... MessageTypes>
-   void POINTEES_EQUAL_ThrowAnomaly(
+   NOINLINE void POINTEES_EQUAL_ThrowAnomaly(
       VRText<T> expectedPointerVRT, VRText<T> actualPointerVRT, const Anomaly& becauseAnomaly,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
@@ -3503,7 +3509,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename... MessageTypes>
-   void THROWS_EXCEPTION_ThrowAnomaly(
+   NOINLINE void THROWS_EXCEPTION_ThrowAnomaly(
       std::string_view expressionText,
       std::string_view expectedExactExceptionTypeText,
       std::string_view expectedWhatText,
@@ -3625,7 +3631,7 @@ Example ZenUnit command line arguments:
    template<
       template<typename...>
       class IndexableDataStructureType, typename T, typename Allocator, typename... MessageTypes>
-   void INDEXABLES_ARE_EQUAL_ThrowAnomaly(
+   NOINLINE void INDEXABLES_ARE_EQUAL_ThrowAnomaly(
       const char* indexablesAreEqualOrVectorsAreEqualMacroName, const Anomaly& becauseAnomaly,
       const IndexableDataStructureType<T, Allocator>& expectedIndexableDataStructure, const char* expectedIndexableDataStructureText,
       const IndexableDataStructureType<T, Allocator>& actualIndexableDataStructure, const char* actualIndexableDataStructureText,
