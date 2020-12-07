@@ -1216,23 +1216,23 @@ cmake --build . --target install
 
 ### ZenUnit Features Roadmap
 
-|Future ZenUnit Feature|Estimated Delivery|
-|----------------------|------------------|
-|IS_EMPTY_PATH|Q4 2020|
-|IS_EMPTY_STRING|Q4 2020|
-|Travis CI OSX Badge|Q4 2020|
-|Coverity Badge|Q1 2021|
-|SonarCloud Badge|Q1 2021|
-|SonarQube Linux And Windows Jenkins Job Screenshots|Q1 2021|
-|When an ARE_EQUAL(expectedString, actualString) assertion fails, print the first mismatching index|Q1 2021|
-|ARE_NEAR floating point assertion|Q1 2021|
-|--parallel for parallel running of tests and value-parameterized test cases|Q2 2021|
+|Future ZenUnit Feature|Estimated Delivery|Implementation Status|
+|----------------------|------------------|---------------------|
+|`IS_EMPTY_PATH(filesystemPath, messages...`)|Q4 2020|Implemented|
+|`IS_EMPTY_STRING(str, messages...)`|Q4 2020|Implemented|
+|Travis CI OSX badge for ZenUnit and MetalMock, Cloudundancy, FileRevisor, and FileArb|Q4 2020|In progress|
+|Coverity Badge|Q1 2021|Awaiting implementation|
+|SonarCloud Badge|Q1 2021|Awaiting implementation|
+|SonarQube Linux And Windows Jenkins Job Screenshots|Q1 2021|Awaiting implementation|
+|When an ARE_EQUAL(expectedString, actualString) assertion fails, print the first mismatching index|Q1 2021|Awaiting implementation|
+|ARE_NEAR floating point assertion|Q1 2021|Awaiting implementation|
+|--parallel for parallel running of tests and value-parameterized test cases|Q2 2021|Awaiting implementation|
 
 ### MetalMock Features Roadmap
 
-|Future MetalMock Feature|Estimated Delivery|
-|------------------------|------------------|
-|Ordered Function Call Assertions|Q1 2021|
+|Future MetalMock Feature|Estimated Delivery|Implementation Status|
+|------------------------|------------------|---------------------|
+|Ordered Function Call Assertions|Q1 2021|Awaiting implementation|
 
 ### Special Thanks
 
