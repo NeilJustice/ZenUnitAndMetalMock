@@ -45,7 +45,6 @@ namespace fs = std::filesystem;
 #define TOKENJOIN(a, b) DOTOKENJOIN(a, b)
 #define DOVATEXT(placeholder, ...) #__VA_ARGS__
 #define VATEXT(...) DOVATEXT("", __VA_ARGS__)
-#define VA_TEXT_ARGS(...) VATEXT(__VA_ARGS__), ##__VA_ARGS__
 #define FILELINE ZenUnit::FilePathLineNumber(ZenUnit::FilePathLineNumber::File(__FILE__), ZenUnit::FilePathLineNumber::Line(__LINE__))
 #define PMFTOKEN(pointerToMemberFunction) ZenUnit::PmfToken::Instantiate<decltype(pointerToMemberFunction), pointerToMemberFunction>()
 #define VRT(value) ZenUnit::VRText<decltype(value)>(value, #value)
