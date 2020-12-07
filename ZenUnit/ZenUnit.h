@@ -2882,7 +2882,9 @@ Example ZenUnit command line arguments:
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const char* const expectedField = "str to be empty string";
-      const std::string actualField = String::Concat("str is not empty string: \"", str, "\"");
+      std::ostringstream oss;
+      const std::string strAsStdString = ToStringer::ToString(str);
+      const std::string actualField = String::Concat("str is not empty string: ", strAsStdString);
       const Anomaly anomaly("IS_EMPTY_STRING", strText, "", "", messagesText,
          Anomaly::Default(), expectedField, actualField, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
       throw anomaly;
