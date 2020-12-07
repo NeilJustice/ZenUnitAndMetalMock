@@ -77,7 +77,7 @@ namespace ZenUnit
    TEST(FilesystemPathVector_ReturnsVectorOfRandomFilesystemPathsBetweenSize0And2)
    {
       const std::vector<fs::path> randomFilesystemPathVector = _randomGenerator.FilesystemPathVector();
-      IS_TRUE(randomFilesystemPathVector.size() <= 2);
+      IS_TRUE(randomFilesystemPathVector.size() <= 3);
    }
 
    enum TestEnum
