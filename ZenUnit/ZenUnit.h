@@ -118,6 +118,11 @@ namespace ZenUnit
    ZenUnit::IS_EMPTY_STRING_Defined(value, #value, \
       FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
 
+// Asserts that str.empty() is true.
+#define IS_EMPTY_PATH(stdFilesystemPath, ...) \
+   ZenUnit::IS_EMPTY_PATH_Defined(stdFilesystemPath, #stdFilesystemPath, \
+      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+
 // Asserts that ZenUnit::Equalizer<T>::AssertEqual(T{}, value) does not throw a ZenUnit::Anomaly exception.
 #define IS_DEFAULT_VALUE(value, ...) \
    ZenUnit::IS_DEFAULT_VALUE_Defined(VRT(value), \
@@ -2902,6 +2907,28 @@ Example ZenUnit command line arguments:
       catch (const Anomaly&)
       {
          IS_EMPTY_STRING_ThrowAnomaly(str, strText,
+            filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
+      }
+   }
+
+   template<typename... MessageTypes>
+   NOINLINE void IS_EMPTY_PATH_ThrowAnomaly(const std::filesystem::path& fsPath, const char* fsPathText,
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
+   {
+      const char* const expectedField = "fsPath == std::filesystem::path()";
+      const std::string actualField = String::Concat("fsPath != std::filesystem::path() (", fsPath, ")");
+      const Anomaly anomaly("IS_EMPTY_PATH", fsPathText, "", "", messagesText,
+         Anomaly::Default(), expectedField, actualField, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
+   }
+
+   template<typename... MessageTypes>
+   void IS_EMPTY_PATH_Defined(const std::filesystem::path& fsPath, const char* fsPathText,
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
+   {
+      if (fsPath != std::filesystem::path())
+      {
+         IS_EMPTY_PATH_ThrowAnomaly(fsPath, fsPathText,
             filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
