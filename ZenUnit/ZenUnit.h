@@ -726,7 +726,7 @@ namespace ZenUnit
       }
    };
 
-   inline void ThrowLogicError(const char* predicateText, FilePathLineNumber filePathLineNumber, const char* functionName)
+   NOINLINE inline void ThrowLogicError(const char* predicateText, FilePathLineNumber filePathLineNumber, const char* functionName)
    {
       const std::string assertTrueFailedErrorMessage = String::Concat(
          "assert_true(", predicateText, ") failed in ", functionName, "()\n", filePathLineNumber.filePath, "(", filePathLineNumber.lineNumber, ")");
