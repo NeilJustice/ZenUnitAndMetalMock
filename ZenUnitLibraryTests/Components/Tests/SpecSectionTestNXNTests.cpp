@@ -60,14 +60,14 @@ namespace ZenUnit
       const string testName = Random<string>();
       //
       const SpecSectionTestNXN<TestingTestClass_SpecSectionTestNXNTests> specifiedTestNXN(
-         testClassName.c_str(), testName.c_str(), PmfToken::Instantiate<decltype(
+         testClassName.c_str(), testName.c_str(), PmfToken::UniqueMemoryAddress<decltype(
             &TestingTestClass_SpecSectionTestNXNTests::TestFunction),
             &TestingTestClass_SpecSectionTestNXNTests::TestFunction>());
       //
       ARE_EQUAL(testName, specifiedTestNXN.Name());
       ARE_EQUAL("TESTS(" + testClassName + ")\nTEST(" + testName + ")", specifiedTestNXN.FullName());
       ARE_EQUAL("(0)", specifiedTestNXN.FilePathLineNumberString());
-      const PmfToken* const expectedTestNXNPmfToken = ZenUnit::PmfToken::Instantiate<
+      const PmfToken* const expectedTestNXNPmfToken = ZenUnit::PmfToken::UniqueMemoryAddress<
          decltype(&TestingTestClass_SpecSectionTestNXNTests::TestFunction),
          &TestingTestClass_SpecSectionTestNXNTests::TestFunction>();
       ARE_EQUAL(expectedTestNXNPmfToken, specifiedTestNXN._testNXNPmfToken);
@@ -75,8 +75,8 @@ namespace ZenUnit
 
    TEST1X1(NumberOfTestCases_GetsTestFromAddress_ReturnsTestNumberOfTestCases,
       size_t testNumberOfTestCases,
-      size_t(1),
-      size_t(2))
+      1ULL,
+      2ULL)
    {
       TestMock* testMock = new TestMock;
       testMock->NumberOfTestCasesMock.Return(testNumberOfTestCases);

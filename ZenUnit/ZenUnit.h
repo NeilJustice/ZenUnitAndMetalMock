@@ -46,7 +46,7 @@ namespace fs = std::filesystem;
 #define DOVATEXT(placeholder, ...) #__VA_ARGS__
 #define VATEXT(...) DOVATEXT("", __VA_ARGS__)
 #define FILELINE ZenUnit::FilePathLineNumber(ZenUnit::FilePathLineNumber::File(__FILE__), ZenUnit::FilePathLineNumber::Line(__LINE__))
-#define PMFTOKEN(pointerToMemberFunction) ZenUnit::PmfToken::Instantiate<decltype(pointerToMemberFunction), pointerToMemberFunction>()
+#define PMFTOKEN(pointerToMemberFunction) ZenUnit::PmfToken::UniqueMemoryAddress<decltype(pointerToMemberFunction), pointerToMemberFunction>()
 #define VRT(value) ZenUnit::VRText<decltype(value)>(value, #value)
 
 #ifndef assert_true
@@ -2875,7 +2875,7 @@ Example ZenUnit command line arguments:
    void IS_EMPTY_STRING_ThrowAnomaly(const StringType& str, const char* strText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
-      static const std::string expectedField = "str to be empty string";
+      const char* const expectedField = "str to be empty string";
       const std::string actualField = String::Concat("str is not empty string: \"", str, "\"");
       const Anomaly anomaly("IS_EMPTY_STRING", strText, "", "", messagesText,
          Anomaly::Default(), expectedField, actualField, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
@@ -5738,10 +5738,10 @@ Example ZenUnit command line arguments:
       PmfToken() noexcept = default;
 
       template<typename PmfType, PmfType>
-      static const PmfToken* Instantiate()
+      static const PmfToken* UniqueMemoryAddress()
       {
-         const static PmfToken pointerToMemberFunctionSpecificTemplateInstantiationObject{};
-         return &pointerToMemberFunctionSpecificTemplateInstantiationObject;
+         const static PmfToken uniqueMemoryAddressByWayOfTemplateInstantiation{};
+         return &uniqueMemoryAddressByWayOfTemplateInstantiation;
       }
    };
 
