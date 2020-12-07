@@ -5741,7 +5741,7 @@ Example ZenUnit command line arguments:
       template<typename PmfType, PmfType>
       static const PmfToken* Instantiate()
       {
-         const static PmfToken pointerToMemberFunctionSpecificTemplateInstantiationObject;
+         const static PmfToken pointerToMemberFunctionSpecificTemplateInstantiationObject{};
          return &pointerToMemberFunctionSpecificTemplateInstantiationObject;
       }
    };
