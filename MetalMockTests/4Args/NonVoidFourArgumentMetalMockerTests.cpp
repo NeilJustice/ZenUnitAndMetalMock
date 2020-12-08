@@ -4,7 +4,7 @@ namespace MetalMock
 {
    TESTS(NonVoidFourArgumentMetalMockerTests)
    AFACT(CallInstead_SetsWasExpectedToTrue_SetsCallInsteadFunction)
-   AFACT(MetalMockItAndReturnValue_CallInsteadPreviousCalled_CallsBaseMetalMockIt_ReturnsResultOfCallingCallInsteadFunctionOnce)
+   AFACT(MetalMockItAndReturnValue_CallInsteadPreviouslyCalled_CallsBaseMetalMockIt_ReturnsResultOfCallingCallInsteadFunctionOnce)
    AFACT(MetalMockItAndReturnValue_CallInsteadNotPreviouslyCalled_CallsBaseMetalMockIt_ReturnsResultOfCallingValueReturnerMetalMockNextReturnValue)
    EVIDENCE
 
@@ -38,7 +38,7 @@ namespace MetalMock
       IS_TRUE(_nonVoidFourArgumentMetalMocker->_wasExpected);
    }
 
-   TEST(MetalMockItAndReturnValue_CallInsteadPreviousCalled_CallsBaseMetalMockIt_ReturnsResultOfCallingCallInsteadFunctionOnce)
+   TEST(MetalMockItAndReturnValue_CallInsteadPreviouslyCalled_CallsBaseMetalMockIt_ReturnsResultOfCallingCallInsteadFunctionOnce)
    {
       _nonVoidFourArgumentMetalMocker->CallInstead(
          std::bind(&NonVoidFourArgumentMetalMockerTests::NonVoidFourArgFunction, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4));

@@ -5,8 +5,8 @@ namespace MetalMock
    TESTS(MetalMockExceptionThrowerTests)
    AFACT(ThrowExceptionWhenCalled_CalledTwice_ThrowsLogicError)
    AFACT(MetalMockThrowExceptionIfExceptionSet_ExpectAndThrowNotPreviouslyCalled_DoesNothing)
-   AFACT(MetalMockThrowExceptionIfExceptionSet_ExpectAndThrowPreviousCalled_ThrowsTheException_TestCaseRuntimeError)
-   AFACT(MetalMockThrowExceptionIfExceptionSet_ExpectAndThrowPreviousCalled_ThrowsTheException_TestCaseLogicError)
+   AFACT(MetalMockThrowExceptionIfExceptionSet_ExpectAndThrowPreviouslyCalled_ThrowsTheException_TestCaseRuntimeError)
+   AFACT(MetalMockThrowExceptionIfExceptionSet_ExpectAndThrowPreviouslyCalled_ThrowsTheException_TestCaseLogicError)
    EVIDENCE
 
    MetalMockExceptionThrower _metalMockExceptionThrower;
@@ -26,7 +26,7 @@ namespace MetalMock
       _metalMockExceptionThrower.MetalMockThrowExceptionIfExceptionSet();
    }
 
-   TEST(MetalMockThrowExceptionIfExceptionSet_ExpectAndThrowPreviousCalled_ThrowsTheException_TestCaseRuntimeError)
+   TEST(MetalMockThrowExceptionIfExceptionSet_ExpectAndThrowPreviouslyCalled_ThrowsTheException_TestCaseRuntimeError)
    {
       const string exceptionMessage = ZenUnit::Random<string>();
       //
@@ -36,7 +36,7 @@ namespace MetalMock
          runtime_error, exceptionMessage);
    }
 
-   TEST(MetalMockThrowExceptionIfExceptionSet_ExpectAndThrowPreviousCalled_ThrowsTheException_TestCaseLogicError)
+   TEST(MetalMockThrowExceptionIfExceptionSet_ExpectAndThrowPreviouslyCalled_ThrowsTheException_TestCaseLogicError)
    {
       const string exceptionMessage = ZenUnit::Random<string>();
       //
