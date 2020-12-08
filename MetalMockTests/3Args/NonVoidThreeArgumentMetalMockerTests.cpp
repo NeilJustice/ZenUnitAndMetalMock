@@ -17,7 +17,7 @@ namespace MetalMock
    STARTUP
    {
       _metalMockedFunctionSignature = ZenUnit::Random<string>();
-      _nonVoidThreeArgumentMetalMocker.reset(new NonVoidThreeArgumentMetalMocker<int, int, int, int>(_metalMockedFunctionSignature));
+      _nonVoidThreeArgumentMetalMocker = make_unique<NonVoidThreeArgumentMetalMocker<int, int, int, int>>(_metalMockedFunctionSignature);
    }
 
    int NonVoidThreeArgFunction(int arg1, int arg2, int arg3)
@@ -32,7 +32,7 @@ namespace MetalMock
       IS_FALSE(_nonVoidThreeArgumentMetalMocker->_callInsteadFunction);
       //
       _nonVoidThreeArgumentMetalMocker->CallInstead(
-         std::bind(&NonVoidThreeArgumentMetalMockerTests::NonVoidThreeArgFunction, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+         std::bind(&NonVoidThreeArgumentMetalMockerTests::NonVoidThreeArgFunction, this, placeholders::_1, placeholders::_2, placeholders::_3));
       //
       IS_EMPTY(_callInsteadFunctionArguments);
       IS_TRUE(_nonVoidThreeArgumentMetalMocker->_wasExpected);
@@ -41,7 +41,7 @@ namespace MetalMock
    TEST(MetalMockItAndReturnValue_CallInsteadPreviousCalled_CallsBaseMetalMockIt_ReturnsResultOfCallingCallInsteadFunctionOnce)
    {
       _nonVoidThreeArgumentMetalMocker->CallInstead(
-         std::bind(&NonVoidThreeArgumentMetalMockerTests::NonVoidThreeArgFunction, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+         std::bind(&NonVoidThreeArgumentMetalMockerTests::NonVoidThreeArgFunction, this, placeholders::_1, placeholders::_2, placeholders::_3));
       const int arg1 = ZenUnit::Random<int>();
       const int arg2 = ZenUnit::Random<int>();
       const int arg3 = ZenUnit::Random<int>();
