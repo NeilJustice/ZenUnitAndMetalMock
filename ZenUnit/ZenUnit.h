@@ -4775,7 +4775,7 @@ Example ZenUnit command line arguments:
          _skippedTestClassNamesAndSkipReasons.push_back(testClassNameAndSkipReason);
       }
 
-      virtual void SetTestClassResults(std::vector<TestClassResult>&& testClassResults)
+      virtual void SetTestClassResults(std::vector<TestClassResult> testClassResults)
       {
          _numberOfFailedTestCases = CalculateNumberOfFailedTestCases(testClassResults);
          _testClassResults = std::move(testClassResults);
