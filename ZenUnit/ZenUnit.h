@@ -51,8 +51,8 @@ namespace fs = std::filesystem;
 #define NOINLINE __declspec(noinline)
 #endif
 
-#ifndef assert_true
-#define assert_true(predicate) ZenUnit::AssertTrue(predicate, #predicate, FILELINE, static_cast<const char*>(__func__))
+#ifndef ZENUNIT_ASSERT
+#define ZENUNIT_ASSERT(predicate) ZenUnit::AssertTrue(predicate, #predicate, FILELINE, static_cast<const char*>(__func__))
 #endif
 
 namespace ZenUnit
@@ -727,18 +727,20 @@ namespace ZenUnit
       }
    };
 
-   NOINLINE inline void ThrowLogicError(const char* predicateText, FilePathLineNumber filePathLineNumber, const char* functionName)
+   NOINLINE inline void Exit1DueToZenUnitAssertHavingFailed(
+      const char* predicateText, FilePathLineNumber filePathLineNumber, const char* functionName) // LCOV_EXCL_LINE
    {
       const std::string assertTrueFailedErrorMessage = String::Concat(
-         "assert_true(", predicateText, ") failed in ", functionName, "()\n", filePathLineNumber.filePath, "(", filePathLineNumber.lineNumber, ")");
-      throw std::logic_error(assertTrueFailedErrorMessage);
+         "ZENUNIT_ASSERT(", predicateText, ") failed in ", functionName, "()\n", filePathLineNumber.filePath, "(", filePathLineNumber.lineNumber, ")");
+      std::cout << assertTrueFailedErrorMessage << '\n';
+      exit(1);
    }
 
    inline void AssertTrue(bool predicateResult, const char* predicateText, FilePathLineNumber filePathLineNumber, const char* functionName)
    {
       if (!predicateResult)
       {
-         ThrowLogicError(predicateText, filePathLineNumber, functionName);
+         Exit1DueToZenUnitAssertHavingFailed(predicateText, filePathLineNumber, functionName);
       }
    }
 
@@ -964,7 +966,7 @@ namespace ZenUnit
          const HANDLE stdOutHandle = _call_GetStdHandle(STD_OUTPUT_HANDLE);
          const WindowsColor windowsColor = ColorToWindowsColor(color);
          const BOOL didSetConsoleTextAttr = _call_SetConsoleTextAttribute(stdOutHandle, static_cast<WORD>(windowsColor));
-         assert_true(didSetConsoleTextAttr == TRUE);
+         ZENUNIT_ASSERT(didSetConsoleTextAttr == TRUE);
 #endif
       }
    private:
@@ -1219,7 +1221,7 @@ namespace ZenUnit
          int demangleReturnCode = -1;
          std::unique_ptr<char, void(*)(void*)> demangledTypeNameUniquePtr(
             abi::__cxa_demangle(mangledTypeName, nullptr, nullptr, &demangleReturnCode), std::free);
-         assert_true(demangleReturnCode == 0);
+         ZENUNIT_ASSERT(demangleReturnCode == 0);
          const std::string demangledTypeName(demangledTypeNameUniquePtr.get());
          return demangledTypeName;
       }
@@ -1570,7 +1572,7 @@ namespace ZenUnit
             }
             else
             {
-               assert_true(expectedActualFormat == ExpectedActualFormat::WholeLines);
+               ZENUNIT_ASSERT(expectedActualFormat == ExpectedActualFormat::WholeLines);
                whyBuilder <<
                   expectedValueAsStringOrExpectedLine << '\n' <<
                   actualValueAsStringOrActualLine << '\n';
@@ -1919,7 +1921,7 @@ namespace ZenUnit
          const __time64_t nowTimeT = std::chrono::system_clock::to_time_t(nowTimePoint);
          tm tmNow{};
          const errno_t localtimeResult = localtime_s(&tmNow, &nowTimeT);
-         assert_true(localtimeResult == 0);
+         ZENUNIT_ASSERT(localtimeResult == 0);
          return tmNow;
 #endif
       }
@@ -3127,7 +3129,7 @@ Example ZenUnit command line arguments:
          const bool mapContainsValue = containsKeyValue.second;
          if (!mapContainsValue)
          {
-            assert_true(containsKeyValue.first);
+            ZENUNIT_ASSERT(containsKeyValue.first);
             MAPS_ARE_EQUAL_ThrowAnomaly(" ", expectedMapText, actualMapText,
                MAPS_ARE_EQUAL_MakeWhyBody_KeysEqualValuesNotEqual(expectedKey, expectedValue, actualMap),
                filePathLineNumber, "", messagesText, std::forward<MessageTypes>(messages)...);
@@ -3827,7 +3829,7 @@ Example ZenUnit command line arguments:
          }
          case TestPhase::Cleanup:
          {
-            assert_true(testPhase == TestPhase::Cleanup);
+            ZENUNIT_ASSERT(testPhase == TestPhase::Cleanup);
             testPhaseSuffix = " in CLEANUP function";
             break;
          }
@@ -3916,9 +3918,9 @@ Example ZenUnit command line arguments:
          , totalTestCases(0)
          , _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
       {
-         assert_true(constructorTestPhaseResult.testOutcome == TestOutcome::Success);
-         assert_true(startupTestPhaseResult.testOutcome == TestOutcome::Success);
-         assert_true(destructorTestPhaseResult.testOutcome == TestOutcome::Success);
+         ZENUNIT_ASSERT(constructorTestPhaseResult.testOutcome == TestOutcome::Success);
+         ZENUNIT_ASSERT(startupTestPhaseResult.testOutcome == TestOutcome::Success);
+         ZENUNIT_ASSERT(destructorTestPhaseResult.testOutcome == TestOutcome::Success);
          microseconds =
             constructorTestPhaseResult.microseconds +
             startupTestPhaseResult.microseconds +
@@ -3947,11 +3949,11 @@ Example ZenUnit command line arguments:
          }
          else
          {
-            assert_true(constructorTestPhaseResult.testOutcome == TestOutcome::Success);
-            assert_true(startupTestPhaseResult.testOutcome == TestOutcome::Success);
-            assert_true(testBodyTestPhaseResult.testOutcome == TestOutcome::Success);
-            assert_true(cleanupTestPhaseResult.testOutcome == TestOutcome::Success);
-            assert_true(destructorTestPhaseResult.testOutcome == TestOutcome::Success);
+            ZENUNIT_ASSERT(constructorTestPhaseResult.testOutcome == TestOutcome::Success);
+            ZENUNIT_ASSERT(startupTestPhaseResult.testOutcome == TestOutcome::Success);
+            ZENUNIT_ASSERT(testBodyTestPhaseResult.testOutcome == TestOutcome::Success);
+            ZENUNIT_ASSERT(cleanupTestPhaseResult.testOutcome == TestOutcome::Success);
+            ZENUNIT_ASSERT(destructorTestPhaseResult.testOutcome == TestOutcome::Success);
             const ZenUnitArgs& zenUnitArgs = getZenUnitArgs();
             const unsigned maxtestmicroseconds = zenUnitArgs.maxTestMilliseconds * 1000;
             if (zenUnitArgs.maxTestMilliseconds == 0 || microseconds <= maxtestmicroseconds)
@@ -3986,8 +3988,8 @@ Example ZenUnit command line arguments:
          const TestPhaseResult& startupTestPhaseResult,
          const TestPhaseResult& destructorTestPhaseResult)
       {
-         assert_true(constructorTestPhaseResult.testOutcome == TestOutcome::Success);
-         assert_true(destructorTestPhaseResult.testOutcome == TestOutcome::Success);
+         ZENUNIT_ASSERT(constructorTestPhaseResult.testOutcome == TestOutcome::Success);
+         ZENUNIT_ASSERT(destructorTestPhaseResult.testOutcome == TestOutcome::Success);
          TestResult startupFail;
          startupFail.fullTestName = fullTestName;
          startupFail.testOutcome = startupTestPhaseResult.testOutcome;
@@ -4004,8 +4006,8 @@ Example ZenUnit command line arguments:
          const TestPhaseResult& constructorTestPhaseResult,
          const TestPhaseResult& destructorTestPhaseResult)
       {
-         assert_true(constructorTestPhaseResult.testOutcome == TestOutcome::Success);
-         assert_true(destructorTestPhaseResult.testOutcome == TestOutcome::Success);
+         ZENUNIT_ASSERT(constructorTestPhaseResult.testOutcome == TestOutcome::Success);
+         ZENUNIT_ASSERT(destructorTestPhaseResult.testOutcome == TestOutcome::Success);
          TestResult ctorDtorSuccess;
          ctorDtorSuccess.fullTestName = fullTestName;
          ctorDtorSuccess.testOutcome = TestOutcome::Success;
@@ -4281,7 +4283,7 @@ Example ZenUnit command line arguments:
       {
          char hostname[65]{};
          const int gethostnameResult = _call_gethostname(hostname, sizeof(hostname));
-         assert_true(gethostnameResult == 0);
+         ZENUNIT_ASSERT(gethostnameResult == 0);
          const std::string linuxMachineName(hostname);
          return linuxMachineName;
       }
@@ -4291,7 +4293,7 @@ Example ZenUnit command line arguments:
          CHAR computerNameChars[41]{};
          DWORD size = sizeof(computerNameChars);
          const BOOL didGetComputerName = _call_GetComputerNameA(computerNameChars, &size);
-         assert_true(didGetComputerName == TRUE);
+         ZENUNIT_ASSERT(didGetComputerName == TRUE);
          const std::string windowsMachineName(computerNameChars);
          return windowsMachineName;
       }
@@ -4303,7 +4305,7 @@ Example ZenUnit command line arguments:
          return "LinuxUserNamePlaceholder";
          //char usernameChars[_SC_LOGIN_NAME_MAX];
          //const int getloginReturnValue = getlogin_r(usernameChars, sizeof(usernameChars));
-         //assert_true(getloginReturnValue == 0);
+         //ZENUNIT_ASSERT(getloginReturnValue == 0);
          //const std::string username(usernameChars);
          //return username;
       }
@@ -4313,7 +4315,7 @@ Example ZenUnit command line arguments:
          CHAR windowsUserNameCharacters[257];
          DWORD size = sizeof(windowsUserNameCharacters);
          const BOOL didGetUserName = _call_GetUserNameA(windowsUserNameCharacters, &size);
-         assert_true(didGetUserName == TRUE);
+         ZENUNIT_ASSERT(didGetUserName == TRUE);
          const std::string windowsUserName(windowsUserNameCharacters);
          return windowsUserName;
       }
@@ -4792,7 +4794,7 @@ Example ZenUnit command line arguments:
          std::string_view testRunElapsedSeconds,
          const ZenUnitArgs& zenUnitArgs) const
       {
-         assert_true(_numberOfFailedTestCases <= totalNumberOfTestCases);
+         ZENUNIT_ASSERT(_numberOfFailedTestCases <= totalNumberOfTestCases);
          const Color greenOrRed = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
          if (totalNumberOfTestCases == 0)
          {
@@ -5074,7 +5076,7 @@ Example ZenUnit command line arguments:
          {
             const int testRunExitCode = _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines->NonConstCall(
                this, &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, _zenUnitArgs);
-            assert_true(testRunExitCode == 0 || testRunExitCode == 1);
+            ZENUNIT_ASSERT(testRunExitCode == 0 || testRunExitCode == 1);
             overallExitCode |= testRunExitCode;
             _testRunResult->ResetStateExceptForSkips();
          }
@@ -5655,7 +5657,7 @@ Example ZenUnit command line arguments:
          static const std::string TestClassIsNewableAndDeletableString = "TestClassIsNewableAndDeletable -> ";
          _protected_console->Write(TestClassIsNewableAndDeletableString);
          const std::vector<TestResult> newableDeletableTestResults = newableDeletableTest->RunTest();
-         assert_true(newableDeletableTestResults.size() == 1);
+         ZENUNIT_ASSERT(newableDeletableTestResults.size() == 1);
          outTestClassResult->AddTestResults(newableDeletableTestResults);
          const TestResult newableDeletableTestResult = newableDeletableTestResults[0];
          const bool testClassIsNewableAndDeletable = newableDeletableTestResult.testOutcome == TestOutcome::Success;
@@ -5737,7 +5739,7 @@ Example ZenUnit command line arguments:
 
       void NewTestClass() override
       {
-         assert_true(_testClass == nullptr);
+         ZENUNIT_ASSERT(_testClass == nullptr);
          _testClass = std::make_unique<TestClassType>();
       }
 
@@ -5837,7 +5839,7 @@ Example ZenUnit command line arguments:
       {
          const std::unique_ptr<Test>* const testPointer = TestClassType::GetTestPointerForTestNXNPmfToken(
             _testNXNPmfToken, Console::Instance(), ZenUnitTestRunner::Instance(), ExitCaller::Instance());
-         assert_true(testPointer != nullptr);
+         ZENUNIT_ASSERT(testPointer != nullptr);
          return testPointer;
       }
    };
@@ -5861,9 +5863,9 @@ Example ZenUnit command line arguments:
    public:
       void Initialize(size_t numberOfTestCaseArgs, size_t N, const ZenUnitArgs&) override
       {
-         assert_true(N >= 1);
-         assert_true(numberOfTestCaseArgs >= 1);
-         assert_true(N <= numberOfTestCaseArgs);
+         ZENUNIT_ASSERT(N >= 1);
+         ZENUNIT_ASSERT(numberOfTestCaseArgs >= 1);
+         ZENUNIT_ASSERT(N <= numberOfTestCaseArgs);
          _maxTestCaseNumber = numberOfTestCaseArgs / N;
       }
 
@@ -5873,7 +5875,7 @@ Example ZenUnit command line arguments:
          {
             return std::numeric_limits<size_t>::max();
          }
-         assert_true(_currentTestCaseNumber <= _maxTestCaseNumber);
+         ZENUNIT_ASSERT(_currentTestCaseNumber <= _maxTestCaseNumber);
          const size_t nextTestCaseNumber = _currentTestCaseNumber++;
          return nextTestCaseNumber;
       }
@@ -5893,8 +5895,8 @@ Example ZenUnit command line arguments:
    public:
       void Initialize(size_t numberOfTestCaseArgs, size_t N, const ZenUnitArgs& zenUnitArgs) override
       {
-         assert_true(N >= 1);
-         assert_true(numberOfTestCaseArgs >= 1 && numberOfTestCaseArgs >= N);
+         ZENUNIT_ASSERT(N >= 1);
+         ZENUNIT_ASSERT(numberOfTestCaseArgs >= 1 && numberOfTestCaseArgs >= N);
          const size_t numberOfTestCases = numberOfTestCaseArgs / N;
          _randomTestCaseNumbers.reserve(numberOfTestCases);
          for (size_t testCaseNumber = 1; testCaseNumber <= numberOfTestCases; ++testCaseNumber)
@@ -5911,7 +5913,7 @@ Example ZenUnit command line arguments:
          {
             return std::numeric_limits<size_t>::max();
          }
-         assert_true(_testCaseNumberIndex < _randomTestCaseNumbers.size());
+         ZENUNIT_ASSERT(_testCaseNumberIndex < _randomTestCaseNumbers.size());
          const size_t nextTestCaseNumber = _randomTestCaseNumbers[_testCaseNumberIndex];
          ++_testCaseNumberIndex;
          return nextTestCaseNumber;
@@ -6002,7 +6004,7 @@ Example ZenUnit command line arguments:
 
       std::vector<TestResult> RunTest() override
       {
-         assert_true(_currentTestCaseNumber == 1);
+         ZENUNIT_ASSERT(_currentTestCaseNumber == 1);
          const ZenUnitArgs& zenUnitArgs = _call_ZenUnitTestRunner_GetZenUnitArgs();
          const size_t numberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
          std::shared_ptr<ITestCaseNumberGenerator> const testCaseNumberGenerator(
@@ -6079,8 +6081,8 @@ Example ZenUnit command line arguments:
       static bool TestNameFilterMatchesTestCase(
          const TestNameFilter& testNameFilter, const FullTestName& fullTestName, size_t testCaseNumber)
       {
-         assert_true(testCaseNumber >= 1);
-         assert_true(testCaseNumber != std::numeric_limits<size_t>::max());
+         ZENUNIT_ASSERT(testCaseNumber >= 1);
+         ZENUNIT_ASSERT(testCaseNumber != std::numeric_limits<size_t>::max());
          const bool testNameFilterMatchesTestCase = testNameFilter.MatchesTestCase(
             fullTestName.testClassName, fullTestName.testName, testCaseNumber);
          return testNameFilterMatchesTestCase;
@@ -6582,7 +6584,7 @@ Example ZenUnit command line arguments:
             std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>&
                testNXNPmfTokenToTestPointer = GetTestNXNPmfTokenToTestMap();
             const bool didEmplaceTestNXNPointer = testNXNPmfTokenToTestPointer.emplace(pmfToken, newTestNXNPointer).second;
-            assert_true(didEmplaceTestNXNPointer);
+            ZENUNIT_ASSERT(didEmplaceTestNXNPointer);
          }
          return nullptr;
       }
@@ -7106,7 +7108,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       case 7: return "RandomConstCharPointer7";
       case 8: return "RandomConstCharPointer8";
       case 9: return "RandomConstCharPointer9";
-      default: assert_true(randomIntBetween1And10 == 10); return "RandomConstCharPointer10";
+      default: ZENUNIT_ASSERT(randomIntBetween1And10 == 10); return "RandomConstCharPointer10";
       }
    }
 
@@ -7125,7 +7127,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       case 7: return L"RandomWideConstCharPointer7";
       case 8: return L"RandomWideConstCharPointer8";
       case 9: return L"RandomWideConstCharPointer9";
-      default: assert_true(randomIntBetween1And10 == 10); return L"RandomWideConstCharPointer10";
+      default: ZENUNIT_ASSERT(randomIntBetween1And10 == 10); return L"RandomWideConstCharPointer10";
       }
    }
 
