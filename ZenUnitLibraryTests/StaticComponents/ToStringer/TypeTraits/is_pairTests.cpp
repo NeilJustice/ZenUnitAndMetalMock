@@ -11,14 +11,14 @@ namespace ZenUnit
    {
       IS_FALSE(is_pair<int>::value);
       IS_FALSE(is_pair<string>::value);
-      IS_FALSE(is_pair<tuple<int ZENUNIT_COMMA int>>::value);
+      IS_FALSE(is_pair<tuple<int COMMA int>>::value);
    }
 
    TEST(is_pair_TIsAPair_ValueIsTrue)
    {
-      IS_TRUE(is_pair<pair<int ZENUNIT_COMMA int>>::value);
-      IS_TRUE(is_pair<pair<int ZENUNIT_COMMA string>>::value);
-      IS_TRUE(is_pair<pair<double ZENUNIT_COMMA char>>::value);
+      IS_TRUE(is_pair<pair<int COMMA int>>::value);
+      IS_TRUE(is_pair<pair<int COMMA string>>::value);
+      IS_TRUE(is_pair<pair<double COMMA char>>::value);
    }
 
    RUN_TESTS(is_pairTests)

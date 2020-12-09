@@ -35,15 +35,14 @@ namespace fs = std::filesystem;
 #include <io.h> // _isatty()
 #endif
 
-#define ZENUNIT_COMMA , // For those scenarios when parentheses are not enough disambiguation for the compiler
+#define ZENUNIT_ASSERT(predicate) ZenUnit::AssertTrue(predicate, #predicate, ZENUNIT_FILELINE, static_cast<const char*>(__func__))
+#define ZENUNIT_FILELINE ZenUnit::FilePathLineNumber(ZenUnit::FilePathLineNumber::File(__FILE__), ZenUnit::FilePathLineNumber::Line(__LINE__))
 #define ZENUNIT_FUSE_IMPL(a, b) a##b
 #define ZENUNIT_FUSE(a, b) ZENUNIT_FUSE_IMPL(a, b)
+#define ZENUNIT_PMFTOKEN(pointerToMemberFunction) ZenUnit::PmfToken::UniqueMemoryAddress<decltype(pointerToMemberFunction), pointerToMemberFunction>()
 #define ZENUNIT_VA_ARGS_TEXT_IMPL(placeholder, ...) #__VA_ARGS__
 #define ZENUNIT_VA_ARGS_TEXT(...) ZENUNIT_VA_ARGS_TEXT_IMPL("", __VA_ARGS__)
-#define ZENUNIT_FILELINE ZenUnit::FilePathLineNumber(ZenUnit::FilePathLineNumber::File(__FILE__), ZenUnit::FilePathLineNumber::Line(__LINE__))
-#define ZENUNIT_PMFTOKEN(pointerToMemberFunction) ZenUnit::PmfToken::UniqueMemoryAddress<decltype(pointerToMemberFunction), pointerToMemberFunction>()
 #define ZENUNIT_VRTEXT(value) ZenUnit::VRText<decltype(value)>(value, #value)
-#define ZENUNIT_ASSERT(predicate) ZenUnit::AssertTrue(predicate, #predicate, ZENUNIT_FILELINE, static_cast<const char*>(__func__))
 
 // Instruction cache performance
 #ifdef __linux__
@@ -51,6 +50,26 @@ namespace fs = std::filesystem;
 #elif _WIN32
 #define NOINLINE __declspec(noinline)
 #endif
+
+// COMMA is for those times when parentheses are not enough parsing disambiguation for the compiler
+#define COMMA ,
+
+// Example ZenUnit COMMA usage:
+// IS_TRUE(has_ZenUnitPrinter<std::unordered_map<int COMMA int>>::value);
+
+// Example MetalMock COMMA usage:
+// class Component
+// {
+// public:
+//    virtual std::unordered_map<int, int> GetUnorderedMap(int, int, int) const { return {}; }
+//    virtual ~Widget() = default;
+// };
+//
+// class ComponentMock : public Metal::Mock<Component>
+// {
+// public:
+//    METALMOCK_NONVOID3_CONST(std::unordered_map<int COMMA int>, GetUnorderedMap, int, int, int)
+// };
 
 namespace ZenUnit
 {
