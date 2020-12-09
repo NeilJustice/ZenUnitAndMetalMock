@@ -2,6 +2,11 @@
 // https://github.com/NeilJustice/ZenUnitAndMetalMock
 // MIT License
 
+namespace ZenUnit
+{
+   inline const char* const VersionNumber = "v0.7.1";
+}
+
 #pragma once
 #include <array>
 #include <functional>
@@ -70,16 +75,6 @@ namespace fs = std::filesystem;
 // public:
 //    METALMOCK_NONVOID3_CONST(std::unordered_map<int COMMA int>, GetUnorderedMap, int, int, int)
 // };
-
-namespace ZenUnit
-{
-   class Version
-   {
-   public:
-      static const char* Number() { return "0.7.1"; }
-      Version() = delete;
-   };
-}
 
 //
 // Value Assertions
@@ -1972,7 +1967,7 @@ namespace ZenUnit
 
       static const std::string& CommandLineUsage()
       {
-         static const std::string zenUnitCommandLineUsage = "C++ Unit Testing Framework ZenUnit v" + std::string(Version::Number()) + R"(
+         static const std::string zenUnitCommandLineUsage = "C++ Unit Testing Framework ZenUnit v" + std::string(VersionNumber) + R"(
 https://github.com/NeilJustice/ZenUnitAndMetalMock
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
@@ -2070,7 +2065,7 @@ Example ZenUnit command line arguments:
             }
             else if (arg == "--version" || arg == "-version")
             {
-               _console->WriteLineAndExit(Version::Number(), 0);
+               _console->WriteLineAndExit(VersionNumber, 0);
             }
             else if (!String::Contains(arg, "="))
             {
@@ -4675,7 +4670,7 @@ Example ZenUnit command line arguments:
       virtual std::string PrintPreambleLinesAndGetStartDateTime(
          const ZenUnitArgs& zenUnitArgs, const TestClassRunnerRunner* testClassRunnerRunner) const
       {
-         const std::string zenUnitVersionLine = "[C++ Unit Testing Framework ZenUnit v" + std::string(Version::Number()) + "]";
+         const std::string zenUnitVersionLine = "[C++ Unit Testing Framework ZenUnit v" + std::string(VersionNumber) + "]";
          _console->WriteLineColor(zenUnitVersionLine, Color::Green);
 
          _console->WriteColor("[ZenUnit]", Color::Green);

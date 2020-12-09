@@ -29,7 +29,7 @@ namespace ZenUnit
    EVIDENCE
 
    const string _testProgramPath = Random<string>();
-   const string _expectedCommandLineUsage = "C++ Unit Testing Framework ZenUnit v" + std::string(Version::Number()) + R"(
+   const string _expectedCommandLineUsage = "C++ Unit Testing Framework ZenUnit v" + std::string(VersionNumber) + R"(
 https://github.com/NeilJustice/ZenUnitAndMetalMock
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
@@ -188,7 +188,7 @@ Example ZenUnit command line arguments:
       //
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
-      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("0.7.1", 0));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("v0.7.1", 0));
    }
 
    TEST(Parse_AllArgumentsSpecifiedExpectForTestNameFilter_ReturnsZenUnitArgsWithAllFieldsSet)
