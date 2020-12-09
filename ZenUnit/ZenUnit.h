@@ -18,31 +18,21 @@
 #include <cxxabi.h>
 #include <climits>
 #include <cxxabi.h>
+#include <iomanip>
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
 #include <memory>
 #include <string.h>
 #include <unistd.h>
 #elif defined _WIN32
+#include <filesystem>
+namespace fs = std::filesystem;
 #define WIN32_LEAN_AND_MEAN // ~40% faster Windows.h compile speed
 #define NOGDI // ~10% faster Windows.h compile speed
 #define NOMINMAX // Undefines Windows.h macros min and max
 #include "Windows.h" // SetConsoleTextAttribute()
 #include <conio.h> // _getch()
 #include <io.h> // _isatty()
-#endif
-
-#if defined __linux__
-#include <iomanip>
-#include <experimental/filesystem>
-namespace fs = std::experimental::filesystem;
-#elif defined _WIN32 || defined __APPLE__
-#include <filesystem>
-namespace fs = std::filesystem;
-#endif
-
-#ifdef __linux__
-#define NOINLINE __attribute__((noinline))
-#elif _WIN32
-#define NOINLINE __declspec(noinline)
 #endif
 
 #define COMMA , // For those scenarios when parentheses are not enough disambiguation for the compiler
@@ -53,6 +43,13 @@ namespace fs = std::filesystem;
 #define FILELINE ZenUnit::FilePathLineNumber(ZenUnit::FilePathLineNumber::File(__FILE__), ZenUnit::FilePathLineNumber::Line(__LINE__))
 #define PMFTOKEN(pointerToMemberFunction) ZenUnit::PmfToken::UniqueMemoryAddress<decltype(pointerToMemberFunction), pointerToMemberFunction>()
 #define VRT(value) ZenUnit::VRText<decltype(value)>(value, #value)
+
+// Instruction cache performance
+#ifdef __linux__
+#define NOINLINE __attribute__((noinline))
+#elif _WIN32
+#define NOINLINE __declspec(noinline)
+#endif
 
 #ifndef assert_true
 #define assert_true(predicate) ZenUnit::AssertTrue(predicate, #predicate, FILELINE, static_cast<const char*>(__func__))
