@@ -4122,15 +4122,16 @@ Example ZenUnit command line arguments:
       const Console*,
       TestFailureNumberer*>;
 
+   class RandomGenerator;
+
    class TestClassResult
    {
       friend class TestClassResultTests;
       friend class Equalizer<TestClassResult>;
       friend class TestClassResultEqualizerAndRandomTests;
+      friend TestClassResult TestableRandomTestClassResult(const RandomGenerator* randomGenerator);
    private:
       std::function<std::string(long long)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
-   public:
-      // public for testability in TestClassResultEqualizerAndRandom.cpp
       std::vector<TestResult> _testResults;
    public:
       TestClassResult() noexcept
