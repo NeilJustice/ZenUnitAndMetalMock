@@ -1214,34 +1214,35 @@ cmake . -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=C:\
 cmake --build . --target install
 ```
 
-### ZenUnit Features Roadmap
+### ZenUnit Roadmap
 
 |Future ZenUnit Feature|Estimated Delivery|Implementation Status|
 |----------------------|------------------|---------------------|
 |`IS_EMPTY_PATH(filesystemPath, messages...`)|Q4 2020|Implemented|
 |`IS_EMPTY_STRING(str, messages...)`|Q4 2020|Implemented|
 |Travis CI OSX badge for ZenUnit and MetalMock, Cloudundancy, FileRevisor, and FileArb|Q4 2020|In progress|
-|Coverity Badge|Q1 2021|Awaiting implementation|
 |SonarCloud Badge|Q1 2021|Awaiting implementation|
+|Coverity Badge|Q1 2021|Awaiting implementation|
 |SonarQube Linux And Windows Jenkins Job Screenshots|Q1 2021|Awaiting implementation|
-|When an ARE_EQUAL(expectedString, actualString) assertion fails, print the first mismatching index|Q1 2021|Awaiting implementation|
-|ARE_NEAR floating point assertion|Q1 2021|Awaiting implementation|
-|--parallel for parallel running of tests and value-parameterized test cases|Q2 2021|Awaiting implementation|
+|When an `ARE_EQUAL(expectedString, actualString)` assertion fails, print the first mismatching index|Q1 2021|Awaiting implementation|
+|`ARE_NEAR` floating point assertion|Q1 2021|Awaiting implementation|
+|`--parallel` for parallel running of tests and value-parameterized test cases|Q2 2021|Awaiting implementation|
 
-### MetalMock Features Roadmap
+### MetalMock Roadmap
 
 |Future MetalMock Feature|Estimated Delivery|Implementation Status|
 |------------------------|------------------|---------------------|
-|Ordered Function Call Assertions|Q1 2021|Awaiting implementation|
+|Ordered function call assertions|Q1 2021|Awaiting implementation|
 
 ### Special Thanks
 
-* [Jason Turner and Rob Irving, hosts of CppCast](https://cppcast.com/)
-* [Roy Osherove, author of The Art of Unit Testing, a book that early on influenced my thinking on unit testing and mocking](https://osherove.com/)
-* [Martin Moene, the author of lest and much more](https://github.com/martinmoene/lest)
+* [Jason Turner, host of C++ Weekly and co-host of CppCast](https://cppcast.com)
+* [Rob Irving, co-host of CppCast](https://cppcast.com)
+* [Martin Moene, author of lest and much more](https://github.com/martinmoene/lest)
 * [Viktor Kirilov and the many contributors to doctest](https://github.com/onqtam/doctest)
 * [Phil Nash, Martin Hořeňovský, and the many contributors to Catch2](https://github.com/catchorg/Catch2)
 * [Blair Conrad, Thomas Levesque, and the many contributors to FakeItEasy](https://github.com/FakeItEasy/FakeItEasy)
+* [Roy Osherove, author of The Art of Unit Testing, a book that early on influenced my thinking on unit testing and mocking](https://osherove.com/)
 * [The many authors of Typemock Isolator and Typemock Isolator++](https://www.typemock.com)
 * [The many authors of Google Test and Google Mock](https://github.com/google/googletest)
 * [My colleagues at Quantlab](https://www.quantlab.com)
