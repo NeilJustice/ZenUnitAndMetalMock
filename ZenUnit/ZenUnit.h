@@ -40,8 +40,8 @@ namespace fs = std::filesystem;
 #include <io.h> // _isatty()
 #endif
 
-#define ZENUNIT_ASSERT(predicate) ZenUnit::AssertTrue(predicate, #predicate, ZENUNIT_FILELINE, static_cast<const char*>(__func__))
 #define ZENUNIT_FILELINE ZenUnit::FilePathLineNumber(ZenUnit::FilePathLineNumber::File(__FILE__), ZenUnit::FilePathLineNumber::Line(__LINE__))
+#define ZENUNIT_ASSERT(predicate) ZenUnit::AssertTrue(predicate, #predicate, ZENUNIT_FILELINE, static_cast<const char*>(__func__))
 #define ZENUNIT_FUSE_IMPL(a, b) a##b
 #define ZENUNIT_FUSE(a, b) ZENUNIT_FUSE_IMPL(a, b)
 #define ZENUNIT_PMFTOKEN(pointerToMemberFunction) ZenUnit::PmfToken::UniqueMemoryAddress<decltype(pointerToMemberFunction), pointerToMemberFunction>()
