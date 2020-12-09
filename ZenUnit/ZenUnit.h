@@ -12,7 +12,6 @@
 #include <sstream>
 #include <typeindex>
 #include <unordered_set>
-using namespace std::literals::string_literals;
 
 #if defined __linux__ || defined __APPLE__
 #include <climits>
