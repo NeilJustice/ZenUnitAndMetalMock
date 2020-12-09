@@ -49,7 +49,7 @@ namespace fs = std::filesystem;
 #define ZENUNIT_VA_ARGS_TEXT(...) ZENUNIT_VA_ARGS_TEXT_IMPL("", __VA_ARGS__)
 #define ZENUNIT_VRTEXT(value) ZenUnit::VRText<decltype(value)>(value, #value)
 
-// Instruction cache performance
+// NOINLINE applied to error-handling functions boosts instruction cache performance on the hot path
 #ifdef __linux__
 #define NOINLINE __attribute__((noinline))
 #elif _WIN32
@@ -59,15 +59,15 @@ namespace fs = std::filesystem;
 // COMMA is for those times when parentheses are not enough parsing disambiguation for the compiler
 #define COMMA ,
 
-// Example ZenUnit COMMA usage:
+// Example COMMA usage in an argument to ZenUnit assertion IS_TRUE to "escape" std::unordered_map's comma:
 // IS_TRUE(has_ZenUnitPrinter<std::unordered_map<int COMMA int>>::value);
 
-// Example MetalMock COMMA usage:
+// Example COMMA usage when defining a MetalMock mock class to "escape" std::unordered_map's comma:
 // class Component
 // {
 // public:
 //    virtual std::unordered_map<int, int> GetUnorderedMap(int, int, int) const { return {}; }
-//    virtual ~Widget() = default;
+//    virtual ~Component() = default;
 // };
 //
 // class ComponentMock : public Metal::Mock<Component>
