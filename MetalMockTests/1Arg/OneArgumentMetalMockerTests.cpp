@@ -168,9 +168,9 @@ File.cpp(1))");
       size_t(1), 0, vector<OneArgumentFunctionCall<int>>{0}, false, ZenUnit::Random<size_t>(),
       size_t(1), 0, vector<OneArgumentFunctionCall<int>>{1}, true, size_t(0),
       size_t(1), 1, vector<OneArgumentFunctionCall<int>>{2}, true, size_t(0),
-      size_t(2), 1, vector<OneArgumentFunctionCall<int>>{1 COMMA 1}, false, ZenUnit::Random<size_t>(),
-      size_t(2), 1, vector<OneArgumentFunctionCall<int>>{2 COMMA 1}, true, size_t(0),
-      size_t(2), 1, vector<OneArgumentFunctionCall<int>>{1 COMMA 2}, true, size_t(1))
+      size_t(2), 1, vector<OneArgumentFunctionCall<int>>{1 ZENUNIT_COMMA 1}, false, ZenUnit::Random<size_t>(),
+      size_t(2), 1, vector<OneArgumentFunctionCall<int>>{2 ZENUNIT_COMMA 1}, true, size_t(0),
+      size_t(2), 1, vector<OneArgumentFunctionCall<int>>{1 ZENUNIT_COMMA 2}, true, size_t(1))
    {
       IS_FALSE(_metalMocker->_wasAsserted);
       //

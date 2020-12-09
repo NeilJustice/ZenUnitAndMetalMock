@@ -35,24 +35,21 @@ namespace fs = std::filesystem;
 #include <io.h> // _isatty()
 #endif
 
-#define COMMA , // For those scenarios when parentheses are not enough disambiguation for the compiler
-#define DOTOKENJOIN(a, b) a##b
-#define TOKENJOIN(a, b) DOTOKENJOIN(a, b)
-#define DOVATEXT(placeholder, ...) #__VA_ARGS__
-#define VATEXT(...) DOVATEXT("", __VA_ARGS__)
-#define FILELINE ZenUnit::FilePathLineNumber(ZenUnit::FilePathLineNumber::File(__FILE__), ZenUnit::FilePathLineNumber::Line(__LINE__))
-#define PMFTOKEN(pointerToMemberFunction) ZenUnit::PmfToken::UniqueMemoryAddress<decltype(pointerToMemberFunction), pointerToMemberFunction>()
-#define VRT(value) ZenUnit::VRText<decltype(value)>(value, #value)
+#define ZENUNIT_COMMA , // For those scenarios when parentheses are not enough disambiguation for the compiler
+#define ZENUNIT_FUSE_IMPL(a, b) a##b
+#define ZENUNIT_FUSE(a, b) ZENUNIT_FUSE_IMPL(a, b)
+#define ZENUNIT_VA_ARGS_TEXT_IMPL(placeholder, ...) #__VA_ARGS__
+#define ZENUNIT_VA_ARGS_TEXT(...) ZENUNIT_VA_ARGS_TEXT_IMPL("", __VA_ARGS__)
+#define ZENUNIT_FILELINE ZenUnit::FilePathLineNumber(ZenUnit::FilePathLineNumber::File(__FILE__), ZenUnit::FilePathLineNumber::Line(__LINE__))
+#define ZENUNIT_PMFTOKEN(pointerToMemberFunction) ZenUnit::PmfToken::UniqueMemoryAddress<decltype(pointerToMemberFunction), pointerToMemberFunction>()
+#define ZENUNIT_VRTEXT(value) ZenUnit::VRText<decltype(value)>(value, #value)
+#define ZENUNIT_ASSERT(predicate) ZenUnit::AssertTrue(predicate, #predicate, ZENUNIT_FILELINE, static_cast<const char*>(__func__))
 
 // Instruction cache performance
 #ifdef __linux__
 #define NOINLINE __attribute__((noinline))
 #elif _WIN32
 #define NOINLINE __declspec(noinline)
-#endif
-
-#ifndef ZENUNIT_ASSERT
-#define ZENUNIT_ASSERT(predicate) ZenUnit::AssertTrue(predicate, #predicate, FILELINE, static_cast<const char*>(__func__))
 #endif
 
 namespace ZenUnit
@@ -71,63 +68,63 @@ namespace ZenUnit
 
 // Asserts that expectedValue == actualValue or if defined calls ZenUnit::Equalizer<T>::AssertEqual(const T& expectedValue, const T& actualValue).
 #define ARE_EQUAL(expectedValue, actualValue, ...) \
-   ZenUnit::ARE_EQUAL_Defined(VRT(expectedValue), VRT(actualValue), \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::ARE_EQUAL_Defined(ZENUNIT_VRTEXT(expectedValue), ZENUNIT_VRTEXT(actualValue), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that !(expectedValue == actualValue) or if defined asserts that ZenUnit::Equalizer<T>::AssertEqual(const T& expectedValue, const T& actualValue) throws a ZenUnit::Anomaly.
 #define ARE_NOT_EQUAL(notExpectedValue, actualValue, ...) \
-   ZenUnit::ARE_NOT_EQUAL_Defined(VRT(notExpectedValue), VRT(actualValue), \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::ARE_NOT_EQUAL_Defined(ZENUNIT_VRTEXT(notExpectedValue), ZENUNIT_VRTEXT(actualValue), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // First asserts ARE_NOT_SAME(expectedObject, actualObject) then asserts ARE_EQUAL(expectedObject, actualObject).
 #define ARE_COPIES(expectedObject, actualObject, ...) \
-   ZenUnit::ARE_COPIES_Defined(VRT(expectedObject), VRT(actualObject), \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::ARE_COPIES_Defined(ZENUNIT_VRTEXT(expectedObject), ZENUNIT_VRTEXT(actualObject), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts &expectedObject == &actualObject.
 #define ARE_SAME(expectedObject, actualObject, ...) \
-   ARE_SAME_Defined(VRT(expectedObject), VRT(actualObject), \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ARE_SAME_Defined(ZENUNIT_VRTEXT(expectedObject), ZENUNIT_VRTEXT(actualObject), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts &notExpectedObject != &actualObject.
 #define ARE_NOT_SAME(notExpectedObject, actualObject, ...) \
-   ARE_NOT_SAME_Defined(VRT(notExpectedObject), VRT(actualObject), \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ARE_NOT_SAME_Defined(ZENUNIT_VRTEXT(notExpectedObject), ZENUNIT_VRTEXT(actualObject), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that value when converted to a bool is true.
 #define IS_TRUE(value, ...) \
    ZenUnit::IS_TRUE_Defined(value, #value, \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that value when converted to a bool is false.
 #define IS_FALSE(value, ...) \
    ZenUnit::IS_FALSE_Defined(value, #value, \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that value == 0 is true.
 #define IS_ZERO(value, ...) \
-   ZenUnit::IS_ZERO_Defined(VRT(value), \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::IS_ZERO_Defined(ZENUNIT_VRTEXT(value), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that str.empty() is true.
 #define IS_EMPTY_STRING(value, ...) \
    ZenUnit::IS_EMPTY_STRING_Defined(value, #value, \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that str.empty() is true.
 #define IS_EMPTY_PATH(stdFilesystemPath, ...) \
    ZenUnit::IS_EMPTY_PATH_Defined(stdFilesystemPath, #stdFilesystemPath, \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that ZenUnit::Equalizer<T>::AssertEqual(T{}, value) does not throw a ZenUnit::Anomaly exception.
 #define IS_DEFAULT_VALUE(value, ...) \
-   ZenUnit::IS_DEFAULT_VALUE_Defined(VRT(value), \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::IS_DEFAULT_VALUE_Defined(ZENUNIT_VRTEXT(value), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that ZenUnit::Equalizer<T>::AssertEqual(T{}, value) throws a ZenUnit::Anomaly exception.
 #define IS_NOT_DEFAULT_VALUE(value, ...) \
-   ZenUnit::IS_NOT_DEFAULT_VALUE_Defined(VRT(value), \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::IS_NOT_DEFAULT_VALUE_Defined(ZENUNIT_VRTEXT(value), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
 // Floating Point Assertions
@@ -135,8 +132,8 @@ namespace ZenUnit
 
 // Asserts that std::abs(expectedFloatingPointValue - actualFloatingPointValue) <= expectedTolerance.
 #define ARE_WITHIN(expectedFloatingPointValue, actualFloatingPointValue, expectedAbsoluteMaxDifference, ...) \
-   ZenUnit::ARE_WITHIN_Defined(VRT(expectedFloatingPointValue), VRT(actualFloatingPointValue), VRT(expectedAbsoluteMaxDifference), \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::ARE_WITHIN_Defined(ZENUNIT_VRTEXT(expectedFloatingPointValue), ZENUNIT_VRTEXT(actualFloatingPointValue), ZENUNIT_VRTEXT(expectedAbsoluteMaxDifference), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
 // Pointer Assertions
@@ -144,25 +141,25 @@ namespace ZenUnit
 
 // Asserts that (pointer == nullptr) is true.
 #define IS_NULLPTR(pointer, ...) \
-   ZenUnit::IS_NULLPTR_Defined(VRT(pointer), \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::IS_NULLPTR_Defined(ZENUNIT_VRTEXT(pointer), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that (pointer != nullptr) is true.
 #define IS_NOT_NULLPTR(pointer, ...) \
    ZenUnit::IS_NOT_NULLPTR_Defined(pointer != nullptr, #pointer, \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that typeid(expectedPointeeType) == typeid(*actualPointer). expectedPointeeType must be a polymorphic type.
 #define POINTEE_IS_EXACT_TYPE(expectedPolymorphicPointeeType, actualPointer, ...) \
    static_assert(std::is_polymorphic_v<expectedPolymorphicPointeeType>, \
       "ZenUnit assertion POINTEE_IS_EXACT_TYPE(expectedPolymorphicPointeeType, actualPointer, ...) requires that expectedPolymorphicPointeeType be a polymorphic type (a type that has one or more virtual functions)."); \
-   ZenUnit::POINTEE_IS_EXACT_TYPE_Defined(typeid(expectedPolymorphicPointeeType), #expectedPolymorphicPointeeType, VRT(actualPointer), \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::POINTEE_IS_EXACT_TYPE_Defined(typeid(expectedPolymorphicPointeeType), #expectedPolymorphicPointeeType, ZENUNIT_VRTEXT(actualPointer), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that *expectedPointer is equal to *actualPointer.
 #define POINTEES_ARE_EQUAL(expectedPointer, actualPointer, ...) \
-   ZenUnit::POINTEES_EQUAL_Defined(VRT(expectedPointer), VRT(actualPointer), \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::POINTEES_EQUAL_Defined(ZENUNIT_VRTEXT(expectedPointer), ZENUNIT_VRTEXT(actualPointer), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
 // Function Assertions
@@ -170,13 +167,13 @@ namespace ZenUnit
 
 // Asserts that a std::function targets expectedStdFunctionTarget.
 #define STD_FUNCTION_TARGETS(expectedStaticOrFreeFunction, stdFunction, ...) \
-   ZenUnit::STD_FUNCTION_TARGETS_Defined<decltype(expectedStaticOrFreeFunction)>(expectedStaticOrFreeFunction, #expectedStaticOrFreeFunction, VRT(stdFunction), \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::STD_FUNCTION_TARGETS_Defined<decltype(expectedStaticOrFreeFunction)>(expectedStaticOrFreeFunction, #expectedStaticOrFreeFunction, ZENUNIT_VRTEXT(stdFunction), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that a std::function targets static_cast<expectedFunctionOverloadAsAUsing>(expectedStaticOrFreeFunction).
 #define STD_FUNCTION_TARGETS_OVERLOAD(expectedFunctionOverloadAsAUsing, expectedStaticOrFreeFunction, stdFunction, ...) \
-   ZenUnit::STD_FUNCTION_TARGETS_OVERLOAD_Defined(static_cast<expectedFunctionOverloadAsAUsing>(expectedStaticOrFreeFunction), #expectedStaticOrFreeFunction, VRT(stdFunction), \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::STD_FUNCTION_TARGETS_OVERLOAD_Defined(static_cast<expectedFunctionOverloadAsAUsing>(expectedStaticOrFreeFunction), #expectedStaticOrFreeFunction, ZENUNIT_VRTEXT(stdFunction), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
 // Memory Allocation Assertions
@@ -185,12 +182,12 @@ namespace ZenUnit
 // Effectively asserts that smartOrRawPointer was operator newed by calling .reset() or operator delete on smartOrRawPointer.
 #define DELETE_TO_ASSERT_NEWED(smartOrRawPointer, ...) \
    ZenUnit::DELETE_TO_ASSERT_NEWED_Defined(smartOrRawPointer, #smartOrRawPointer, \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Effectively asserts that smartOrRawArrayPointer was array operator newed by calling .rest() or delete[] on smartOrRawArrayPointer.
 #define ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(smartOrRawArrayPointer, ...) \
    ZenUnit::ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED_Defined(smartOrRawArrayPointer, #smartOrRawArrayPointer, \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
 // Data Structure Assertions
@@ -198,43 +195,43 @@ namespace ZenUnit
 
 // Asserts that collection.size() is zero.
 #define IS_EMPTY(collection, ...) \
-   ZenUnit::IS_EMPTY_Defined(VRT(collection), \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::IS_EMPTY_Defined(ZENUNIT_VRTEXT(collection), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that collection.size() is not zero.
 #define IS_NOT_EMPTY(collection, ...) \
-   ZenUnit::IS_NOT_EMPTY_Defined(VRT(collection), \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::IS_NOT_EMPTY_Defined(ZENUNIT_VRTEXT(collection), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that two indexable data structures have equal sizes and equal elements according to ARE_EQUAL(expectedElement, actualElement) assertions.
 #define INDEXABLES_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure, ...) \
    ZenUnit::INDEXABLES_ARE_EQUAL_Defined("INDEXABLES_ARE_EQUAL", expectedIndexableDataStructure, #expectedIndexableDataStructure, actualIndexableDataStructure, #actualIndexableDataStructure, \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that two indexable data structures have equal sizes and, in any order, equal elements according to ARE_EQUAL(expectedElement, actualElement) assertions. Useful assertion for test code that calls nondeterministic parallel code.
 #define INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedElements, actualElements, ...) \
-   ZenUnit::INDEXABLES_ARE_EQUAL_IN_ANY_ORDER_Defined(VRT(expectedElements), VRT(actualElements), \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::INDEXABLES_ARE_EQUAL_IN_ANY_ORDER_Defined(ZENUNIT_VRTEXT(expectedElements), ZENUNIT_VRTEXT(actualElements), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that the elements of expectedVector are equal to the elements of actualVector.
 #define VECTORS_ARE_EQUAL(expectedVector, actualVector, ...) \
    ZenUnit::INDEXABLES_ARE_EQUAL_Defined("VECTORS_ARE_EQUAL", expectedVector, #expectedVector, actualVector, #actualVector, \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that the elements of expectedSet are equal to the elements of actualSet.
 #define SETS_ARE_EQUAL(expectedSet, actualSet, ...) \
-   ZenUnit::SETS_ARE_EQUAL_Defined(VRT(expectedSet), VRT(actualSet), \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::SETS_ARE_EQUAL_Defined(ZENUNIT_VRTEXT(expectedSet), ZENUNIT_VRTEXT(actualSet), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that the elements of expectedMap are equal to the elements of actualMap.
 #define MAPS_ARE_EQUAL(expectedMap, actualMap, ...) \
-   ZenUnit::MAPS_ARE_EQUAL_Defined(VRT(expectedMap), VRT(actualMap), \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::MAPS_ARE_EQUAL_Defined(ZENUNIT_VRTEXT(expectedMap), ZENUNIT_VRTEXT(actualMap), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that the first and second element of expectedPair is equal to the first and second element of actualPair.
 #define PAIRS_ARE_EQUAL(expectedPair, actualPair, ...) \
-   ZenUnit::PAIRS_ARE_EQUAL_Defined(VRT(expectedPair), VRT(actualPair), \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::PAIRS_ARE_EQUAL_Defined(ZENUNIT_VRTEXT(expectedPair), ZENUNIT_VRTEXT(actualPair), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that numberOfElementsToCompare elements are equal in two C-style arrays.
 #define ARRAYS_ARE_EQUAL(expectedArray, actualArray, numberOfElementsToCompare, ...) \
@@ -242,19 +239,19 @@ namespace ZenUnit
       expectedArray, #expectedArray, \
       actualArray, #actualArray, \
       numberOfElementsToCompare, \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that each element of two std::arrays are equal.
 #define STD_ARRAYS_ARE_EQUAL(expectedStdArray, actualStdArray, ...) \
    ZenUnit::STD_ARRAYS_ARE_EQUAL_Defined( \
       expectedStdArray, #expectedStdArray, \
       actualStdArray, #actualStdArray, \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that dataStructure contains expectedElement.
 #define CONTAINS_ELEMENT(expectedElement, dataStructure, ...) \
-   ZenUnit::CONTAINS_ELEMENT_Defined(VRT(expectedElement), VRT(dataStructure), \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::CONTAINS_ELEMENT_Defined(ZENUNIT_VRTEXT(expectedElement), ZENUNIT_VRTEXT(dataStructure), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
 // ZenUnit::Equalizer<T> Assertions
@@ -271,7 +268,7 @@ namespace ZenUnit
    ZenUnit::ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_Defined( \
       expectedZenUnitEqualizerTestObject, actualZenUnitEqualizerTestObject, \
       &typeName::nonQuotedFieldName, #typeName, #nonQuotedFieldName, \
-      randomNonDefaultFieldValue, #randomNonDefaultFieldValue, FILELINE)
+      randomNonDefaultFieldValue, #randomNonDefaultFieldValue, ZENUNIT_FILELINE)
 
 //
 // Test Assertions
@@ -279,8 +276,8 @@ namespace ZenUnit
 
 // Fails the current test with specified failure reason text.
 #define FAIL_TEST(failureReason, ...) \
-   ZenUnit::FAIL_TEST_Defined(VRT(failureReason), \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::FAIL_TEST_Defined(ZENUNIT_VRTEXT(failureReason), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
 // Exception Assertions
@@ -291,12 +288,12 @@ namespace ZenUnit
 #define THROWS_EXCEPTION(expression, expectedExactExceptionType, expectedExactWhatText, ...) \
    ZenUnit::THROWS_EXCEPTION_Defined<expectedExactExceptionType>([&]() { expression; }, #expression, \
       #expectedExactExceptionType, expectedExactWhatText, #expectedExactWhatText, \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Does nothing to implicitly assert that expression() does not throw an exception. Useful for emphasis to the reader of a unit test.
 #define DOES_NOT_THROW(expression, ...) \
    DOES_NOT_THROW_Defined([&]{ expression; }, #expression, \
-      FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
 // Test Class And Tess Defining Macros
@@ -334,7 +331,7 @@ namespace ZenUnit
 // Specifies an N-by-N value parameterized test. Define this test using TEXTNXN (where N is substituted with a number) in the EVIDENCE section.
 #define FACTS(HighQualityTestName) \
    tests.emplace_back(std::make_unique<ZenUnit::SpecSectionTestNXN<TestClassType>>( \
-      testClassName, #HighQualityTestName, PMFTOKEN(&TestClassType::HighQualityTestName)));
+      testClassName, #HighQualityTestName, ZENUNIT_PMFTOKEN(&TestClassType::HighQualityTestName)));
 
 #define DOSKIPTEST(HighQualityTestName, SkipReason) \
    ZenUnit::ZenUnitTestRunner::Instance()->SkipTest(testClassName, #HighQualityTestName, SkipReason);
@@ -358,7 +355,7 @@ namespace ZenUnit
 #define TEST(HighQualityTestName) void HighQualityTestName()
 
 #define REGISTER_TESTNXN_ARGS(HighQualityTestName, ...) \
-   PMFTOKEN(&TestClassType::HighQualityTestName), &TestClassType::HighQualityTestName, #HighQualityTestName, #__VA_ARGS__, __VA_ARGS__
+   ZENUNIT_PMFTOKEN(&TestClassType::HighQualityTestName), &TestClassType::HighQualityTestName, #HighQualityTestName, #__VA_ARGS__, __VA_ARGS__
 
 // Defines a 1-by-1 value-parameterized test.
 #define TEST1X1(HighQualityTestName, Arg1Type, ...) \
@@ -425,7 +422,7 @@ namespace ZenUnit
 #define DO_RUN_TEMPLATE_TESTS(HighQualityTestClassName, ...) \
    template<> const char* HighQualityTestClassName<__VA_ARGS__>::ZenUnit_testClassName = nullptr; \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::ZenUnit_allNXNTestsHaveBeenRegistered = false; \
-   std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassRegistrar_, HighQualityTestClassName), _Line), __LINE__) = \
+   std::nullptr_t ZENUNIT_FUSE(ZENUNIT_FUSE(ZENUNIT_FUSE(ZenUnit_TemplateTestClassRegistrar_, HighQualityTestClassName), _Line), __LINE__) = \
       ZenUnit::ZenUnitTestRunner::Instance()->AddTestClassRunner(new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName<__VA_ARGS__>>(#HighQualityTestClassName"<"#__VA_ARGS__">"));
 
 // Runs a templated test class. Specify __VA_ARGS__ with type names to be run. Example: RUN_TEMPLATE_TESTS(TestClassName, int, std::vector<int>).
@@ -439,7 +436,7 @@ namespace ZenUnit
 #define DO_SKIP_TEMPLATE_TESTS(HighQualityTestClassName, SkipReason, ...) \
    template<> const char* HighQualityTestClassName<__VA_ARGS__>::ZenUnit_testClassName = nullptr; \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::ZenUnit_allNXNTestsHaveBeenRegistered = false; \
-   std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassSkipper_, HighQualityTestClassName), _Line), __LINE__) = \
+   std::nullptr_t ZENUNIT_FUSE(ZENUNIT_FUSE(ZENUNIT_FUSE(ZenUnit_TemplateTestClassSkipper_, HighQualityTestClassName), _Line), __LINE__) = \
       ZenUnit::ZenUnitTestRunner::Instance()->SkipTestClass(#HighQualityTestClassName"<"#__VA_ARGS__">", SkipReason);
 
 // Skips a templated test class.

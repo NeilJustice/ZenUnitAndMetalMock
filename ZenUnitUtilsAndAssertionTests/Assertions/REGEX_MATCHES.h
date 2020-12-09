@@ -2,7 +2,7 @@
 #include <regex>
 
 #define REGEX_MATCHES(expectedPattern, str, ...) \
-   ZenUnit::REGEX_MATCHES_Defined(VRT(expectedPattern), VRT(str), FILELINE, VATEXT(__VA_ARGS__), ##__VA_ARGS__)
+   ZenUnit::REGEX_MATCHES_Defined(ZENUNIT_VRTEXT(expectedPattern), ZENUNIT_VRTEXT(str), ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 namespace ZenUnit
 {

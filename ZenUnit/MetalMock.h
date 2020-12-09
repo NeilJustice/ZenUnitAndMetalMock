@@ -46,7 +46,7 @@ try \
 } \
 catch (const ZenUnit::Anomaly& metalMockWrappedAnomaly) \
 { \
-   throw ZenUnit::Anomaly::METALMOCKWrapped("METALMOCK("#MetalMockAssertStatement")", metalMockWrappedAnomaly, FILELINE); \
+   throw ZenUnit::Anomaly::METALMOCKWrapped("METALMOCK("#MetalMockAssertStatement")", metalMockWrappedAnomaly, ZENUNIT_FILELINE); \
 }
 
 //
