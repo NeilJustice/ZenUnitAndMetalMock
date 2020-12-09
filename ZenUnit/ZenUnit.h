@@ -419,7 +419,7 @@ namespace ZenUnit
    const char* HighQualityTestClassName::ZenUnit_testClassName = nullptr; \
    bool HighQualityTestClassName::ZenUnit_allNXNTestsHaveBeenRegistered = false; \
    std::nullptr_t ZenUnit_TestClassRegistrar_##HighQualityTestClassName = \
-      ZenUnit::ZenUnitTestRunner::Instance()->AddTestClassRunner(std::make_unique<ZenUnit::SpecificTestClassRunner<HighQualityTestClassName>>(#HighQualityTestClassName));
+      ZenUnit::ZenUnitTestRunner::Instance()->AddTestClassRunner(new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName>(#HighQualityTestClassName));
 
 // Skips a test class.
 #define SKIP_TESTS(HighQualityTestClassName, SkipReason) }; \
@@ -430,7 +430,7 @@ namespace ZenUnit
    template<> const char* HighQualityTestClassName<__VA_ARGS__>::ZenUnit_testClassName = nullptr; \
    template<> bool HighQualityTestClassName<__VA_ARGS__>::ZenUnit_allNXNTestsHaveBeenRegistered = false; \
    std::nullptr_t TOKENJOIN(TOKENJOIN(TOKENJOIN(ZenUnit_TemplateTestClassRegistrar_, HighQualityTestClassName), _Line), __LINE__) = \
-      ZenUnit::ZenUnitTestRunner::Instance()->AddTestClassRunner(std::make_unique<ZenUnit::SpecificTestClassRunner<HighQualityTestClassName<__VA_ARGS__>>>(#HighQualityTestClassName"<"#__VA_ARGS__">"));
+      ZenUnit::ZenUnitTestRunner::Instance()->AddTestClassRunner(new ZenUnit::SpecificTestClassRunner<HighQualityTestClassName<__VA_ARGS__>>(#HighQualityTestClassName"<"#__VA_ARGS__">"));
 
 // Runs a templated test class. Specify __VA_ARGS__ with type names to be run. Example: RUN_TEMPLATE_TESTS(TestClassName, int, std::vector<int>).
 #define RUN_TEMPLATE_TESTS(HighQualityTestClassName, ...) \
@@ -4569,9 +4569,9 @@ Example ZenUnit command line arguments:
          return numberOfTestClassesToBeRun;
       }
 
-      virtual void AddTestClassRunner(std::unique_ptr<TestClassRunner> testClassRunner)
+      virtual void AddTestClassRunner(TestClassRunner* testClassRunner)
       {
-         _testClassRunners.emplace_back(std::move(testClassRunner));
+         _testClassRunners.emplace_back(testClassRunner);
       }
 
       virtual void ApplyTestNameFiltersIfAny(const std::vector<TestNameFilter>& testNameFilters)
@@ -5050,9 +5050,9 @@ Example ZenUnit command line arguments:
          return _zenUnitArgs;
       }
 
-      std::nullptr_t AddTestClassRunner(std::unique_ptr<TestClassRunner> testClassRunner)
+      std::nullptr_t AddTestClassRunner(TestClassRunner* testClassRunner)
       {
-         _testClassRunnerRunner->AddTestClassRunner(std::move(testClassRunner));
+         _testClassRunnerRunner->AddTestClassRunner(testClassRunner);
          return nullptr;
       }
 

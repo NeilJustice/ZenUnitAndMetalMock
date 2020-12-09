@@ -73,14 +73,9 @@ namespace ZenUnit
 
    TEST(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
    {
-      unique_ptr<TestClassRunnerMock> testClassRunner1Mock = make_unique<TestClassRunnerMock>();
-      TestClassRunnerMock* testClassRunner1MockPointer = testClassRunner1Mock.get();
-
-      unique_ptr<TestClassRunnerMock> testClassRunner2Mock = make_unique<TestClassRunnerMock>();
-      TestClassRunnerMock* testClassRunner2MockPointer = testClassRunner2Mock.get();
-
-      unique_ptr<TestClassRunnerMock> testClassRunner3Mock = make_unique<TestClassRunnerMock>();
-      TestClassRunnerMock* testClassRunner3MockPointer = testClassRunner3Mock.get();
+      TestClassRunnerMock* testClassRunner1Mock = new TestClassRunnerMock;
+      TestClassRunnerMock* testClassRunner2Mock = new TestClassRunnerMock;
+      TestClassRunnerMock* testClassRunner3Mock = new TestClassRunnerMock;
 
       const size_t numberOfTestCases1 = ZenUnit::RandomBetween<size_t>(0, 10);
       const size_t numberOfTestCases2 = ZenUnit::RandomBetween<size_t>(0, 10);
@@ -88,15 +83,15 @@ namespace ZenUnit
       testClassRunner1Mock->NumberOfTestCasesMock.Return(numberOfTestCases1);
       testClassRunner2Mock->NumberOfTestCasesMock.Return(numberOfTestCases2);
       testClassRunner3Mock->NumberOfTestCasesMock.Return(numberOfTestCases3);
-      _testClassRunnerRunner.AddTestClassRunner(std::move(testClassRunner1Mock));
-      _testClassRunnerRunner.AddTestClassRunner(std::move(testClassRunner2Mock));
-      _testClassRunnerRunner.AddTestClassRunner(std::move(testClassRunner3Mock));
+      _testClassRunnerRunner.AddTestClassRunner(testClassRunner1Mock);
+      _testClassRunnerRunner.AddTestClassRunner(testClassRunner2Mock);
+      _testClassRunnerRunner.AddTestClassRunner(testClassRunner3Mock);
       //
       const size_t totalNumberOfTestCases = _testClassRunnerRunner.NumberOfTestCases();
       //
-      METALMOCK(testClassRunner1MockPointer->NumberOfTestCasesMock.CalledOnce());
-      METALMOCK(testClassRunner2MockPointer->NumberOfTestCasesMock.CalledOnce());
-      METALMOCK(testClassRunner3MockPointer->NumberOfTestCasesMock.CalledOnce());
+      METALMOCK(testClassRunner1Mock->NumberOfTestCasesMock.CalledOnce());
+      METALMOCK(testClassRunner2Mock->NumberOfTestCasesMock.CalledOnce());
+      METALMOCK(testClassRunner3Mock->NumberOfTestCasesMock.CalledOnce());
       const size_t expectedTotalNumberOfTestCases = numberOfTestCases1 + numberOfTestCases2 + numberOfTestCases3;
       ARE_EQUAL(expectedTotalNumberOfTestCases, totalNumberOfTestCases);
    }
@@ -113,36 +108,33 @@ namespace ZenUnit
       };
 
       IS_ZERO(_testClassRunnerRunner.NumberOfTestClassesToBeRun());
-      unique_ptr<TestClassRunner> testingTestClassRunner1 = make_unique<TestingTestClassRunner>();
-      const TestClassRunner* const testingTestClassRunner1Pointer = testingTestClassRunner1.get();
+      TestClassRunner* const testingTestClassRunner1 = new TestingTestClassRunner;
       //
-      _testClassRunnerRunner.AddTestClassRunner(std::move(testingTestClassRunner1));
+      _testClassRunnerRunner.AddTestClassRunner(testingTestClassRunner1);
       //
       ARE_EQUAL(1, _testClassRunnerRunner._testClassRunners.size());
-      ARE_EQUAL(testingTestClassRunner1Pointer, _testClassRunnerRunner._testClassRunners[0].get());
+      ARE_EQUAL(testingTestClassRunner1, _testClassRunnerRunner._testClassRunners[0].get());
       ARE_EQUAL(1, _testClassRunnerRunner.NumberOfTestClassesToBeRun());
 
 
-      unique_ptr<NoOpTestClassRunner> noOpTestClassRunner = make_unique<NoOpTestClassRunner>();
-      const NoOpTestClassRunner* const noOpTestClassRunnerPointer = noOpTestClassRunner.get();
+      NoOpTestClassRunner* const noOpTestClassRunner = new NoOpTestClassRunner;
       //
-      _testClassRunnerRunner.AddTestClassRunner(std::move(noOpTestClassRunner));
+      _testClassRunnerRunner.AddTestClassRunner(noOpTestClassRunner);
       //
       ARE_EQUAL(2, _testClassRunnerRunner._testClassRunners.size());
-      ARE_EQUAL(testingTestClassRunner1Pointer, _testClassRunnerRunner._testClassRunners[0].get());
-      ARE_EQUAL(noOpTestClassRunnerPointer, _testClassRunnerRunner._testClassRunners[1].get());
+      ARE_EQUAL(testingTestClassRunner1, _testClassRunnerRunner._testClassRunners[0].get());
+      ARE_EQUAL(noOpTestClassRunner, _testClassRunnerRunner._testClassRunners[1].get());
       ARE_EQUAL(1, _testClassRunnerRunner.NumberOfTestClassesToBeRun());
 
 
-      unique_ptr<TestClassRunner> testingTestClassRunner2 = make_unique<TestingTestClassRunner>();
-      const TestClassRunner* const testingTestClassRunner2Pointer = testingTestClassRunner2.get();
+      TestClassRunner* const testingTestClassRunner2 = new TestingTestClassRunner;
       //
-      _testClassRunnerRunner.AddTestClassRunner(std::move(testingTestClassRunner2));
+      _testClassRunnerRunner.AddTestClassRunner(testingTestClassRunner2);
       //
       ARE_EQUAL(3, _testClassRunnerRunner._testClassRunners.size());
-      ARE_EQUAL(testingTestClassRunner1Pointer, _testClassRunnerRunner._testClassRunners[0].get());
-      ARE_EQUAL(noOpTestClassRunnerPointer, _testClassRunnerRunner._testClassRunners[1].get());
-      ARE_EQUAL(testingTestClassRunner2Pointer, _testClassRunnerRunner._testClassRunners[2].get());
+      ARE_EQUAL(testingTestClassRunner1, _testClassRunnerRunner._testClassRunners[0].get());
+      ARE_EQUAL(noOpTestClassRunner, _testClassRunnerRunner._testClassRunners[1].get());
+      ARE_EQUAL(testingTestClassRunner2, _testClassRunnerRunner._testClassRunners[2].get());
       ARE_EQUAL(2, _testClassRunnerRunner.NumberOfTestClassesToBeRun());
    }
 

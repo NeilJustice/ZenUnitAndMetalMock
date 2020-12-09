@@ -10,7 +10,7 @@ struct CustomException
 namespace MetalMock
 {
    TESTS(MetalMockerTests)
-   AFACT(Constructor_SetsFields)
+   AFACT(OneArgConstructor_SetsFields)
    AFACT(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue_runtime_error_testcase)
    AFACT(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue_CustomException_testcase)
    AFACT(MetalMockSetAsserted_SetsAssertedTrue_CallableTwice)
@@ -39,7 +39,7 @@ namespace MetalMock
       _metalMocker->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(GetZenUnitArgsMock);
    }
 
-   TEST(Constructor_SetsFields)
+   TEST(OneArgConstructor_SetsFields)
    {
       const MetalMocker<MetalMockExceptionThrower> metalMocker(MetalMockedFunctionSignature);
       //

@@ -1359,31 +1359,30 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
    {
       friend class MetalMockerTests;
    private:
+      // Function Pointers
       std::function<void(int)> _call_exit;
       std::function<const ZenUnit::ZenUnitArgs&()> _call_ZenUnitTestRunner_GetZenUnitArgs;
-      bool _metalMockExceptionIsInFlight;
+      // Mutable Fields
+      bool _metalMockExceptionIsInFlight = false;
    protected:
-      // Mockable template parameter instead of mockable unique_ptr for performance
+      // Mutable Components
+      // Mockable template parameter instead of mockable unique_ptr for performance reasons
       MockableExceptionThrowerType _exceptionThrower;
-      FunctionSequencingToken _functionSequencingToken;
+      // Constant Fields
       const std::string MetalMockedFunctionSignature;
-      bool _wasExpected;
-      bool _wasAsserted;
+      // Mutable Fields
+      FunctionSequencingToken _functionSequencingToken;
+      bool _wasExpected = false;
+      bool _wasAsserted = false;
    public:
       MetalMocker()
-         : _metalMockExceptionIsInFlight(false)
-         , _wasExpected(false)
-         , _wasAsserted(false)
       {
       }
 
       explicit MetalMocker(std::string metalMockedFunctionSignature)
          : _call_exit(::exit)
          , _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnit::ZenUnitTestRunner::GetZenUnitArgs)
-         , _metalMockExceptionIsInFlight(false)
          , MetalMockedFunctionSignature(std::move(metalMockedFunctionSignature))
-         , _wasExpected(false)
-         , _wasAsserted(false)
       {
       }
 
@@ -2346,8 +2345,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
       }
 
-      explicit OneArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
-         : MetalMocker<MockableExceptionThrowerType>(metalMockedFunctionSignature)
+      explicit OneArgumentMetalMocker(std::string metalMockedFunctionSignature)
+         : MetalMocker<MockableExceptionThrowerType>(std::move(metalMockedFunctionSignature))
       {
       }
 
@@ -2406,15 +2405,41 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    template<typename ArgType>
    class VoidOneArgumentMetalMocker : public OneArgumentMetalMocker<ArgType>
    {
+      friend class VoidOneArgumentMetalMockerTests;
+   private:
+      std::function<void(ArgType)> _callInsteadFunction;
    public:
-      explicit VoidOneArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
-         : OneArgumentMetalMocker<ArgType>(metalMockedFunctionSignature)
+      explicit VoidOneArgumentMetalMocker(std::string metalMockedFunctionSignature)
+         : OneArgumentMetalMocker<ArgType>(std::move(metalMockedFunctionSignature))
       {
+      }
+
+      virtual ~VoidOneArgumentMetalMocker()
+      {
+         if (_callInsteadFunction)
+         {
+            OneArgumentMetalMocker<ArgType>::_wasAsserted = true;
+         }
+      }
+
+      void CallInstead(const std::function<void(ArgType)>& callInsteadFunction)
+      {
+         _callInsteadFunction = callInsteadFunction;
+         OneArgumentMetalMocker<ArgType>::_wasExpected = true;
       }
 
       void Expect()
       {
          OneArgumentMetalMocker<ArgType>::_wasExpected = true;
+      }
+
+      void MetalMockIt(const ArgType& arg)
+      {
+         if (_callInsteadFunction)
+         {
+            _callInsteadFunction(arg);
+         }
+         OneArgumentMetalMocker<ArgType>::MetalMockIt(arg);
       }
    };
 

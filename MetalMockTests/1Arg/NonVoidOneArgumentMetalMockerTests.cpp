@@ -12,7 +12,7 @@ namespace MetalMock
    AFACT(ReturnRandom_SetWasExpectedToTrue_AddsToReturnValuesDeque)
    EVIDENCE
 
-   MetalMock::NonVoidOneArgumentMetalMocker<int, int> _nonVoidOneArgumentMetalMocker;
+   NonVoidOneArgumentMetalMocker<int, int> _nonVoidOneArgumentMetalMocker;
    static int s_numberOfCallsToCallInsteadFunction;
    static int s_callInsteadReturnValue;
 
@@ -24,9 +24,9 @@ namespace MetalMock
 
    TEST(DefaultConstructor_DoesNotThrowException_DoesNotSetCallInsteadFunction)
    {
-      MetalMock::NonVoidOneArgumentMetalMocker<int, int> nonVoidOneArgumentMetalMocker;
+      NonVoidOneArgumentMetalMocker<int, int> nonVoidOneArgumentMetalMocker;
       //
-      IS_FALSE(_nonVoidOneArgumentMetalMocker._wasExpected);
+      IS_FALSE(nonVoidOneArgumentMetalMocker._wasExpected);
       IS_FALSE(nonVoidOneArgumentMetalMocker._callInsteadFunction);
    }
 
@@ -34,9 +34,9 @@ namespace MetalMock
    {
       const string metalMockedFunctionSignature = ZenUnit::Random<string>();
       //
-      const MetalMock::NonVoidOneArgumentMetalMocker<int, int> nonVoidOneArgumentMetalMocker(metalMockedFunctionSignature);
+      const NonVoidOneArgumentMetalMocker<int, int> nonVoidOneArgumentMetalMocker(metalMockedFunctionSignature);
       //
-      IS_FALSE(_nonVoidOneArgumentMetalMocker._wasExpected);
+      IS_FALSE(nonVoidOneArgumentMetalMocker._wasExpected);
       IS_FALSE(nonVoidOneArgumentMetalMocker._callInsteadFunction);
    }
 
