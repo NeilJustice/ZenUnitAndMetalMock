@@ -1236,7 +1236,7 @@ cmake --build . --target install
 
 ### Special Thanks
 
-* [Jason Turner, host of C++ Weekly and co-host of CppCast](https://cppcast.com)
+* [Jason Turner, host of C++ Weekly and co-host of CppCast](https://www.youtube.com/user/lefticus1/videos)
 * [Rob Irving, co-host of CppCast](https://cppcast.com)
 * [Martin Moene, author of lest and much more](https://github.com/martinmoene/lest)
 * [Viktor Kirilov and the many contributors to doctest](https://github.com/onqtam/doctest)
