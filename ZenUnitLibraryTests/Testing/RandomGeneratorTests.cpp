@@ -8,7 +8,7 @@ namespace ZenUnit
    AFACT(Enum_ReturnsIntBetween0InclusiveAndEnumMaxValueExclusive)
    EVIDENCE
 
-   const RandomGenerator _randomGenerator;
+   RandomGenerator _randomGenerator;
 
    TEST(AllRandomGeneratorFunctions_ReturnsRandomValues)
    {
