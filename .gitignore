@@ -13,7 +13,6 @@ htmlcov/
 *.xml
 
 # Linux
-.vscode/
 covhtml/
 *.a
 *.dot

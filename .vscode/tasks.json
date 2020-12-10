@@ -11,10 +11,13 @@
          "options": {
             "cwd": "${workspaceRoot}/Debug"
          },
+         "problemMatcher": [
+            "$gcc"
+         ],
          "group": {
             "kind": "build",
             "isDefault": true
-         }
+         },
       },
       {
          "label": "Ninja Build Release",
@@ -25,7 +28,10 @@
          ],
          "options": {
             "cwd": "${workspaceRoot}/Release"
-         }
+         },
+         "problemMatcher": [
+            "$gcc"
+         ]
       },
       {
          "label": "Run All Debug Tests",
@@ -34,14 +40,14 @@
          "options": {
             "cwd": "${workspaceRoot}"
          },
-         "group": {
-            "kind": "test",
-            "isDefault": true
-         },
          "presentation": {
             "panel": "dedicated",
             "showReuseMessage": false,
             "clear": true
+         },
+         "group": {
+            "kind": "test",
+            "isDefault": true
          }
       },
       {
@@ -65,14 +71,10 @@
             "-std=c++17",
             "-g",
             "${file}",
-            "-I/usr/local/include/ZenUnit",
-            "-I/usr/local/include/MetalMock",
+            "-I${workspaceRoot}",
             "-o",
             "${fileDirname}/${fileBasenameNoExtension}"
          ],
-         "options": {
-            "cwd": "/bin"
-         },
          "problemMatcher": [
             "$gcc"
          ]
