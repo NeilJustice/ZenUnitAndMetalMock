@@ -1,3 +1,6 @@
+#!/bin/bash
+set -e
+
 ./Release/MetalMockTests/MetalMockTests
 ./Release/MetalMockExamples/MetalMockExamples
 ./Release/ZenUnitLibraryTests/ZenUnitLibraryTests
