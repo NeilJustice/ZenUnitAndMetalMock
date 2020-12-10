@@ -2921,7 +2921,7 @@ Example ZenUnit command line arguments:
    }
 
    template<typename... MessageTypes>
-   NOINLINE void IS_EMPTY_PATH_ThrowAnomaly(const std::filesystem::path& fsPath, const char* fsPathText,
+   NOINLINE void IS_EMPTY_PATH_ThrowAnomaly(const fs::path& fsPath, const char* fsPathText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const char* const expectedField = "fsPath == std::filesystem::path()";
@@ -2932,10 +2932,10 @@ Example ZenUnit command line arguments:
    }
 
    template<typename... MessageTypes>
-   void IS_EMPTY_PATH_Defined(const std::filesystem::path& fsPath, const char* fsPathText,
+   void IS_EMPTY_PATH_Defined(const fs::path& fsPath, const char* fsPathText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
-      if (fsPath != std::filesystem::path())
+      if (fsPath != fs::path())
       {
          IS_EMPTY_PATH_ThrowAnomaly(fsPath, fsPathText,
             filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
