@@ -38,7 +38,7 @@ endif()
 
 macro(ConfigurePlatformSpecificPrecompiledHeaders)
    if(UNIX OR APPLE)
-      if(ClangSanitizerMode_AddressAndUndefined)
+      if(ClangSanitizerMode_AddressAndUndefinedBehavior)
          set(SanitizerArgs "-fsanitize=address,undefined")
       elseif(ClangSanitizerMode_Thread)
          set(SanitizerArgs "-fsanitize=thread")

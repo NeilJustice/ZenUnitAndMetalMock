@@ -104,9 +104,9 @@ namespace ZenUnit
    TEST(AddTestClassRunner_EmplacesBackTestClassRunner_ReturnsNullptr)
    {
       _testClassRunnerRunnerMock->AddTestClassRunnerMock.Expect();
+      SpecificTestClassRunner<TestingTestClass> specificTestClassRunner(ZenUnit::Random<const char*>());
       //
-      const std::nullptr_t returnValue = _zenUnitTestRunner.AddTestClassRunner(
-         new SpecificTestClassRunner<TestingTestClass>("TestClassName"));
+      const std::nullptr_t returnValue = _zenUnitTestRunner.AddTestClassRunner(&specificTestClassRunner);
       //
       METALMOCK(_testClassRunnerRunnerMock->AddTestClassRunnerMock.CalledOnceWithAny());
       IS_NULLPTR(returnValue);
