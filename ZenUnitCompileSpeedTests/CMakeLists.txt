@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.2)
-project(ZenUnitCompileSpeedTester)
+project(ZenUnitCompileSpeedTests)
 include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 
 include_directories(${CMAKE_SOURCE_DIR})
@@ -8,17 +8,18 @@ include_directories(${ZenUnitIncludeDirectory})
 file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 source_group("" FILES ${sourceFilePaths})
 
-add_executable(ZenUnitCompileSpeedTester ${sourceFilePaths})
+add_executable(ZenUnitCompileSpeedTests ${sourceFilePaths})
 
-target_link_libraries(ZenUnitCompileSpeedTester)
+target_link_libraries(ZenUnitCompileSpeedTests)
 if(UNIX)
-   target_link_libraries(ZenUnitCompileSpeedTester stdc++fs)
+   target_link_libraries(ZenUnitCompileSpeedTests stdc++fs)
 endif()
 
 ConfigurePlatformSpecificPrecompiledHeaders()
 
 if(UNIX)
    if(CodeCovMode)
-     target_link_libraries(ZenUnitCompileSpeedTester CodeCovLibraryInterface)
+     target_link_libraries(ZenUnitCompileSpeedTests CodeCovLibraryInterface)
    endif()
 endif()
+

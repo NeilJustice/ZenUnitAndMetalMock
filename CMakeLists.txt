@@ -43,11 +43,11 @@ elseif(MSVC)
 endif()
 
 add_subdirectory(ZenUnit)
-add_subdirectory(ZenUnitUtilsAndAssertionTests)
+add_subdirectory(ZenUnitCompileSpeedTests)
 add_subdirectory(ZenUnitExamples)
 add_subdirectory(ZenUnitLibraryTests)
 add_subdirectory(ZenUnitTestUtils)
-add_subdirectory(ZenUnitCompileSpeedTester)
+add_subdirectory(ZenUnitUtilsAndAssertionTests)
 add_subdirectory(MetalMockExamples)
 add_subdirectory(MetalMockTests)
 
@@ -61,5 +61,6 @@ if(UNIX)
    add_custom_target(clang-tidy COMMAND
       find -name "*.cpp" -print0 | xargs -0 -n 1 -P ${numberOfThreads} -t clang-tidy -header-filter=.* -p ${CMAKE_BUILD_TYPE}
       WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} VERBATIM USES_TERMINAL)
-   add_dependencies(clang-tidy ZenUnitUtilsAndAssertionTestsPch ZenUnitExamplesPch ZenUnitLibraryTestsPch ZenUnitTestUtilsPch MetalMockTestsPch MetalMockExamplesPch)
+   add_dependencies(clang-tidy ZenUnitUtilsAndAssertionTestsPch ZenUnitCompileSpeedTestsPch ZenUnitExamplesPch ZenUnitLibraryTestsPch ZenUnitTestUtilsPch MetalMockTestsPch MetalMockExamplesPch)
 endif()
+
