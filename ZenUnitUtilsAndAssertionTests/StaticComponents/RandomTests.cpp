@@ -213,6 +213,21 @@ namespace ZenUnit
    THEN_RUN_TEMPLATE_TESTS(RandomVectorWithSizeTests, string)
 
 
+   template<typename T, size_t Size>
+   TEMPLATE_TESTS(RandomStdArrayTests, T, Size)
+   AFACT(RandomStdArray_ReturnsStdArrayWithAllRandomValues)
+   EVIDENCE
+
+   TEST(RandomStdArray_ReturnsStdArrayWithAllRandomValues)
+   {
+      const array<T, Size> randomStdArray = ZenUnit::RandomStdArray<T, Size>();
+      ARE_EQUAL(Size, randomStdArray.size());
+   }
+
+   RUN_TEMPLATE_TESTS(RandomStdArrayTests, int, 3)
+   THEN_RUN_TEMPLATE_TESTS(RandomStdArrayTests, unsigned long long, 5)
+
+
    template<typename T>
    TEMPLATE_TESTS(RandomNonEmptyVectorTests, T)
    AFACT(RandomNonEmptyVector_ReturnsAVectorWithSizeBetween1And3)

@@ -7012,6 +7012,14 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       return randomVectorWithSize;
    }
 
+   template<typename T, size_t Size>
+   std::array<T, Size> RandomStdArray()
+   {
+      std::array<T, Size> randomStdArray{};
+      std::generate_n(randomStdArray.begin(), Size, []() { return ZenUnit::Random<T>(); });
+      return randomStdArray;
+   }
+
    template<typename KeyType, typename ValueType>
    inline std::pair<KeyType, ValueType> RandomPair()
    {
@@ -7423,6 +7431,13 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          const std::vector<T> randomVectorOfTBetweenSize1And3 = RandomNonEmptyVector<T>();
          return randomVectorOfTBetweenSize1And3;
+      }
+
+      template<typename T, size_t Size>
+      std::array<T, Size> StdArray() const
+      {
+         const std::array<T, Size> randomStdArray = RandomStdArray<T, Size>();
+         return randomStdArray;
       }
 
       template<typename KeyType, typename ValueType>
