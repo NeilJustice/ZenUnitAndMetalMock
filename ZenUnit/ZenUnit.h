@@ -2323,6 +2323,20 @@ Example ZenUnit command line arguments:
    };
 
    template<>
+   class TwoTypeEqualizer<int, unsigned long long>
+   {
+   public:
+      static void AssertEqual(int expectedInt, unsigned long long actualUnsignedLongLong)
+      {
+         if (expectedInt < 0)
+         {
+            throw EqualizerException();
+         }
+         Equalizer<unsigned long long>::AssertEqual(static_cast<unsigned long long>(expectedInt), actualUnsignedLongLong);
+      }
+   };
+
+   template<>
    class TwoTypeEqualizer<const char*, char*>
    {
    public:
