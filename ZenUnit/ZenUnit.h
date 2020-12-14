@@ -4727,23 +4727,25 @@ Example ZenUnit command line arguments:
 
    class TestRunResult
    {
-      friend class TestRunResultTests;
       friend class Equalizer<TestRunResult>;
-      using MemberForEacherTestClassResultsType = MemberForEacher<std::vector<TestClassResult>,
-         TestRunResult, void(TestRunResult::*)(const TestClassResult&) const>;
-      using MemberForEacherSkippedTestsType = MemberForEacher<std::vector<std::string>,
-         TestRunResult, void(TestRunResult::*)(const std::string&) const>;
+      friend class TestRunResultEqualizerAndRandomTests;
+      friend class TestRunResultTests;
    private:
       // Constant Components
       std::unique_ptr<const Console> _console;
+
+      using MemberForEacherSkippedTestsType = MemberForEacher<std::vector<std::string>,
+         TestRunResult, void(TestRunResult::*)(const std::string&) const>;
       std::unique_ptr<const MemberForEacherSkippedTestsType> _memberForEacherSkippedTests;
+
+      using MemberForEacherTestClassResultsType = MemberForEacher<std::vector<TestClassResult>,
+         TestRunResult, void(TestRunResult::*)(const TestClassResult&) const>;
       std::unique_ptr<const MemberForEacherTestClassResultsType> _memberForEacherTestClassResults;
+
       std::unique_ptr<const ThreeArgForEacherType> _threeArgForEacher;
       std::unique_ptr<const Watch> _watch;
       // Mutable Components
       std::unique_ptr<TestFailureNumberer> _testFailureNumberer;
-   public:
-      // public fields for testability in TestRunResultEqualizerAndRandomTests.cpp
       // Mutable Fields
       size_t _numberOfFailedTestCases;
       std::vector<std::string> _skippedFullTestNamesAndSkipReasons;
