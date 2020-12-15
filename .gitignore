@@ -61,5 +61,5 @@ RelWithDebInfo/
 *.vcxproj
 *.vsp
 *.vspx
+debug.log
 install_manifest.txt
-
