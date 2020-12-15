@@ -1,12 +1,12 @@
 #pragma once
 
 template<typename ClassType>
-class VoidZeroArgMemberFunctionCallerMock : public Metal::Mock<ZeroArgMemberFunctionCaller<void, ClassType>>
+class VoidZeroArgMemberFunctionCallerMock : public Metal::Mock<ZenUnit::VoidZeroArgMemberFunctionCaller<ClassType>>
 {
 public:
-   using VoidZeroArgConstMemberFunctionType = void (ClassType::*)() const;
-   METALMOCK_VOID2_CONST(ConstCall, const ClassType*, VoidZeroArgConstMemberFunctionType)
+   using ConstMemberFunctionType = void(ClassType::*)() const;
+   METALMOCK_VOID2_CONST(CallConstMemberFunction, const ClassType*, ConstMemberFunctionType)
 
-   using VoidZeroArgNonConstMemberFunctionType = void (ClassType::*)();
-   METALMOCK_VOID2_CONST(NonConstCall, ClassType*, VoidZeroArgNonConstMemberFunctionType)
+   using NonConstMemberFunctionType = void(ClassType::*)();
+   METALMOCK_VOID2_CONST(CallNonConstMemberFunction, ClassType*, NonConstMemberFunctionType)
 };

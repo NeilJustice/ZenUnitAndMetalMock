@@ -1843,27 +1843,44 @@ namespace ZenUnit
       VectorUtils() = delete;
    };
 
-   template<typename ReturnType, typename ClassType, typename Arg1Type>
-   class OneArgMemberFunctionCaller
+   template<typename ClassType, typename Arg1Type>
+   class VoidOneArgMemberFunctionCaller
    {
    public:
-      virtual ReturnType ConstCall(
-         const ClassType* classPointer,
-         ReturnType(ClassType::*constMemberFunction)(Arg1Type) const,
-         Arg1Type arg1) const
+      virtual void CallConstMemberFunction(
+         const ClassType* classPointer, void(ClassType::*constMemberFunction)(Arg1Type) const, Arg1Type arg1) const
       {
-         return (classPointer->*constMemberFunction)(arg1);
+         (classPointer->*constMemberFunction)(arg1);
       }
 
-      virtual ReturnType NonConstCall(
-         ClassType* classPointer,
-         ReturnType(ClassType::*nonConstMemberFunction)(Arg1Type),
-         Arg1Type arg1) const
+      virtual void CallNonConstMemberFunction(
+         ClassType* classPointer, void(ClassType::*nonConstMemberFunction)(Arg1Type), Arg1Type arg1) const
       {
-         return (classPointer->*nonConstMemberFunction)(arg1);
+         (classPointer->*nonConstMemberFunction)(arg1);
       }
 
-      virtual ~OneArgMemberFunctionCaller() = default;
+      virtual ~VoidOneArgMemberFunctionCaller() = default;
+   };
+
+   template<typename ReturnType, typename ClassType, typename Arg1Type>
+   class NonVoidOneArgMemberFunctionCaller
+   {
+   public:
+      virtual ReturnType CallConstMemberFunction(
+         const ClassType* classPointer, ReturnType(ClassType::*constMemberFunction)(Arg1Type) const, Arg1Type arg1) const
+      {
+         ReturnType returnValue = (classPointer->*constMemberFunction)(arg1);
+         return returnValue;
+      }
+
+      virtual ReturnType CallNonConstMemberFunction(
+         ClassType* classPointer, ReturnType(ClassType::*nonConstMemberFunction)(Arg1Type), Arg1Type arg1) const
+      {
+         ReturnType returnValue = (classPointer->*nonConstMemberFunction)(arg1);
+         return returnValue;
+      }
+
+      virtual ~NonVoidOneArgMemberFunctionCaller() = default;
    };
 
    class Watch
@@ -1942,20 +1959,22 @@ namespace ZenUnit
    {
       friend class ArgsParserTests;
    private:
-      // Function Callers
+      // Function Pointers
       std::function<int(std::string_view)> _call_String_ToInt;
       std::function<unsigned(std::string_view)> _call_String_ToUnsigned;
-      std::unique_ptr<const OneArgMemberFunctionCaller<void, ArgsParser, ZenUnitArgs&>> _caller_SetRandomSeedIfNotSetByUser;
+      // Function Callers
+      std::unique_ptr<const VoidOneArgMemberFunctionCaller<ArgsParser, ZenUnitArgs&>> _caller_SetRandomSeedIfNotSetByUser;
       // Constant Components
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const TestNameFilterStringParser> _testNameFilterStringParser;
       std::unique_ptr<const Watch> _watch;
    public:
       ArgsParser() noexcept
-         // Function Callers
+         // Function Pointers
          : _call_String_ToInt(String::ToInt)
          , _call_String_ToUnsigned(String::ToUnsigned)
-         , _caller_SetRandomSeedIfNotSetByUser(std::make_unique<OneArgMemberFunctionCaller<void, ArgsParser, ZenUnitArgs&>>())
+         // Function Callers
+         , _caller_SetRandomSeedIfNotSetByUser(std::make_unique<VoidOneArgMemberFunctionCaller<ArgsParser, ZenUnitArgs&>>())
          // Constant Components
          , _console(std::make_unique<Console>())
          , _testNameFilterStringParser(std::make_unique<TestNameFilterStringParser>())
@@ -2108,7 +2127,7 @@ Example ZenUnit command line arguments:
             }
          }
          zenUnitArgs.startDateTime = _watch->DateTimeNow();
-         _caller_SetRandomSeedIfNotSetByUser->ConstCall(this, &ArgsParser::SetRandomSeedIfNotSetByUser, zenUnitArgs);
+         _caller_SetRandomSeedIfNotSetByUser->CallConstMemberFunction(this, &ArgsParser::SetRandomSeedIfNotSetByUser, zenUnitArgs);
          ZenUnitRandomSeed::value = zenUnitArgs.randomSeed;
          return zenUnitArgs;
       }
@@ -4241,6 +4260,9 @@ Example ZenUnit command line arguments:
       }
    };
 
+   static_assert(std::is_move_constructible_v<TestClassResult>);
+   static_assert(std::is_move_assignable_v<TestClassResult>);
+
    class Environmentalist
    {
       friend class EnvironmentalistTests;
@@ -4911,37 +4933,77 @@ Example ZenUnit command line arguments:
       }
    };
 
-   template<typename ReturnType, typename ClassType>
-   class ZeroArgMemberFunctionCaller
+   template<typename ClassType>
+   class VoidZeroArgMemberFunctionCaller
    {
    public:
-      virtual ~ZeroArgMemberFunctionCaller() = default;
-
-      virtual ReturnType ConstCall(const ClassType* classPointer, ReturnType (ClassType::*constMemberFunction)() const) const
+      virtual void CallConstMemberFunction(
+         const ClassType* constClassPointer, void(ClassType::*constMemberFunction)() const) const
       {
-         return (classPointer->*constMemberFunction)();
+         (constClassPointer->*constMemberFunction)();
       }
 
-      virtual ReturnType NonConstCall(ClassType* classPointer, ReturnType (ClassType::*nonConstMemberFunction)()) const
+      virtual void CallNonConstMemberFunction(
+         ClassType* nonConstClassPointer, void(ClassType::*nonConstMemberFunction)()) const
       {
-         return (classPointer->*nonConstMemberFunction)();
+         (nonConstClassPointer->*nonConstMemberFunction)();
       }
+
+      virtual ~VoidZeroArgMemberFunctionCaller() = default;
+   };
+
+   template<typename ReturnType, typename ClassType>
+   class NonVoidZeroArgMemberFunctionCaller
+   {
+   public:
+      virtual ReturnType CallConstMemberFunction(
+         const ClassType* constClassPointer, ReturnType(ClassType::*constMemberFunction)() const) const
+      {
+         ReturnType returnValue = (constClassPointer->*constMemberFunction)();
+         return returnValue;
+      }
+
+      virtual ReturnType CallNonConstMemberFunction(
+         ClassType* nonConstClassPointer, ReturnType(ClassType::*nonConstMemberFunction)()) const
+      {
+         ReturnType returnValue = (nonConstClassPointer->*nonConstMemberFunction)();
+         return returnValue;
+      }
+
+      virtual ~NonVoidZeroArgMemberFunctionCaller() = default;
+   };
+
+   template<typename ClassType, typename Arg1Type, typename Arg2Type>
+   class VoidTwoArgMemberFunctionCaller
+   {
+   public:
+      virtual void CallConstMemberFunction(
+         const ClassType* classPointer,
+         void(ClassType::*constMemberFunction)(Arg1Type, Arg2Type) const,
+         Arg1Type arg1,
+         Arg2Type arg2) const
+      {
+         (classPointer->*constMemberFunction)(arg1, arg2);
+      }
+
+      virtual ~VoidTwoArgMemberFunctionCaller() = default;
    };
 
    template<typename ReturnType, typename ClassType, typename Arg1Type, typename Arg2Type>
-   class TwoArgMemberFunctionCaller
+   class NonVoidTwoArgMemberFunctionCaller
    {
    public:
-      virtual ~TwoArgMemberFunctionCaller() = default;
-
-      virtual ReturnType ConstCall(
+      virtual ReturnType CallConstMemberFunction(
          const ClassType* classPointer,
          ReturnType(ClassType::*constMemberFunction)(Arg1Type, Arg2Type) const,
          Arg1Type arg1,
          Arg2Type arg2) const
       {
-         return (classPointer->*constMemberFunction)(arg1, arg2);
+         ReturnType returnValue = (classPointer->*constMemberFunction)(arg1, arg2);
+         return returnValue;
       }
+
+      virtual ~NonVoidTwoArgMemberFunctionCaller() = default;
    };
 
    class Stopwatch
@@ -5010,35 +5072,42 @@ Example ZenUnit command line arguments:
    {
       friend class ZenUnitTestRunnerTests;
    private:
+      // Function Callers
+      std::unique_ptr<const NonVoidOneArgMemberFunctionCaller<int, ZenUnitTestRunner, const ZenUnitArgs&>>
+         _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines;
+      std::unique_ptr<const VoidZeroArgMemberFunctionCaller<ZenUnitTestRunner>>
+         _caller_RunTestClasses;
+      std::unique_ptr<const NonVoidTwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>>
+         _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused;
       // Constant Components
+      std::unique_ptr<const ArgsParser> _argsParser;
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const PreamblePrinter> _preamblePrinter;
-      std::unique_ptr<const ArgsParser> _argsParser;
-      std::unique_ptr<const OneArgMemberFunctionCaller<int, ZenUnitTestRunner, const ZenUnitArgs&>>
-         _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines;
-      std::unique_ptr<const TwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>>
-         _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused;
-      std::unique_ptr<const ZeroArgMemberFunctionCaller<void, ZenUnitTestRunner>> _caller_RunTestClasses;
       // Mutable Components
-      std::unique_ptr<Stopwatch> _testRunStopwatch;
       std::unique_ptr<TestClassRunnerRunner> _testClassRunnerRunner;
       std::unique_ptr<TestRunResult> _testRunResult;
+      std::unique_ptr<Stopwatch> _testRunStopwatch;
       // Mutable Fields
       ZenUnitArgs _zenUnitArgs;
       bool _havePaused;
    public:
       ZenUnitTestRunner() noexcept
-         : _console(std::make_unique<Console>())
-         , _preamblePrinter(std::make_unique<PreamblePrinter>())
-         , _argsParser(std::make_unique<ArgsParser>())
-         , _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines(
-            std::make_unique<OneArgMemberFunctionCaller<int, ZenUnitTestRunner, const ZenUnitArgs&>>())
+         // Function Callers
+         : _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines(
+            std::make_unique<NonVoidOneArgMemberFunctionCaller<int, ZenUnitTestRunner, const ZenUnitArgs&>>())
+         , _caller_RunTestClasses(
+            std::make_unique<VoidZeroArgMemberFunctionCaller<ZenUnitTestRunner>>())
          , _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(
-            std::make_unique<TwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>>())
-         , _caller_RunTestClasses(std::make_unique<ZeroArgMemberFunctionCaller<void, ZenUnitTestRunner>>())
-         , _testRunStopwatch(std::make_unique<Stopwatch>())
+            std::make_unique<NonVoidTwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>>())
+         // Constant Components
+         , _argsParser(std::make_unique<ArgsParser>())
+         , _console(std::make_unique<Console>())
+         , _preamblePrinter(std::make_unique<PreamblePrinter>())
+         // Mutable Components
          , _testClassRunnerRunner(std::make_unique<TestClassRunnerRunner>())
          , _testRunResult(std::make_unique<TestRunResult>())
+         , _testRunStopwatch(std::make_unique<Stopwatch>())
+         // Mutable Fields
          , _havePaused(false)
       {
       }
@@ -5053,7 +5122,7 @@ Example ZenUnit command line arguments:
 
       static const ZenUnitArgs& GetZenUnitArgs()
       {
-         ZenUnitTestRunner* const zenUnitTestRunner = Instance();
+         const ZenUnitTestRunner* const zenUnitTestRunner = Instance();
          return zenUnitTestRunner->_zenUnitArgs;
       }
 
@@ -5088,7 +5157,7 @@ Example ZenUnit command line arguments:
          const int numberOfTestRuns = _zenUnitArgs.testRuns < 0 ? std::numeric_limits<int>::max() : _zenUnitArgs.testRuns;
          for (int testRunIndex = 0; testRunIndex < numberOfTestRuns; ++testRunIndex)
          {
-            const int testRunExitCode = _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines->NonConstCall(
+            const int testRunExitCode = _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines->CallNonConstMemberFunction(
                this, &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, _zenUnitArgs);
             ZENUNIT_ASSERT(testRunExitCode == 0 || testRunExitCode == 1);
             overallExitCode |= testRunExitCode;
@@ -5123,10 +5192,10 @@ Example ZenUnit command line arguments:
       {
          const std::string startDateTime =
             _preamblePrinter->PrintPreambleLinesAndGetStartDateTime(zenUnitArgs, _testClassRunnerRunner.get());
-         _havePaused = _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused->ConstCall(
+         _havePaused = _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused->CallConstMemberFunction(
             this, &ZenUnitTestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused, zenUnitArgs.pauseBefore, _havePaused);
          _testRunStopwatch->Start();
-         _caller_RunTestClasses->NonConstCall(this, &ZenUnitTestRunner::RunTestClasses);
+         _caller_RunTestClasses->CallNonConstMemberFunction(this, &ZenUnitTestRunner::RunTestClasses);
          _testRunResult->PrintTestFailuresAndSkips();
          const size_t numberOfTestCases = _testClassRunnerRunner->NumberOfTestCases();
          const std::string testRunElapsedSeconds = _testRunStopwatch->StopAndGetElapsedSeconds();
@@ -5150,7 +5219,7 @@ Example ZenUnit command line arguments:
    private:
       // Function Callers
       std::function<const ZenUnitArgs& ()> _call_ZenUnitTestRunner_GetZenUnitArgs;
-      std::unique_ptr<const TwoArgMemberFunctionCaller<void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>>
+      std::unique_ptr<const VoidTwoArgMemberFunctionCaller<TestPhaseRunner, TestOutcome, const ZenUnitArgs&>>
          _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess;
       // Constant Components
       std::unique_ptr<const Console> _console;
@@ -5163,7 +5232,7 @@ Example ZenUnit command line arguments:
          // Function Callers
          : _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnitTestRunner::GetZenUnitArgs)
          , _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess(std::make_unique<
-            TwoArgMemberFunctionCaller<void, TestPhaseRunner, TestOutcome, const ZenUnitArgs&>>())
+            VoidTwoArgMemberFunctionCaller<TestPhaseRunner, TestOutcome, const ZenUnitArgs&>>())
          // Constant Components
          , _console(std::make_unique<Console>())
          , _testPhaseTranslator(std::make_unique<TestPhaseTranslator>())
@@ -5474,7 +5543,7 @@ Example ZenUnit command line arguments:
          FailFastDueToDotDotDotException(zenUnitArgs, testPhase);
          return TestPhaseResult();
       }
-      _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess->ConstCall(
+      _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess->CallConstMemberFunction(
          this, &TestPhaseRunner::FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess,
          testPhaseResult.testOutcome, zenUnitArgs);
       return testPhaseResult;
@@ -5544,10 +5613,11 @@ Example ZenUnit command line arguments:
    {
       friend class SpecificTestClassRunnerTests;
    private:
-      // Function Callers
-      std::function<const ZenUnitArgs& ()> _call_ZenUnitTestRunner_GetZenUnitArgs;
+      // Function Pointers
+      std::function<const ZenUnitArgs&()> _call_ZenUnitTestRunner_GetZenUnitArgs;
 
-      std::unique_ptr<const TwoArgMemberFunctionCaller<
+      // Function Callers
+      std::unique_ptr<const NonVoidTwoArgMemberFunctionCaller<
          bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>> _nonVoidTwoArgFunctionCaller;
 
       using TwoArgTestAnyerType = TwoArgAnyer<
@@ -5563,10 +5633,11 @@ Example ZenUnit command line arguments:
          TestClassResult*>;
       std::unique_ptr<const TwoArgMemberForEacherType> _twoArgMemberForEacher;
 
-      std::unique_ptr<const OneArgMemberFunctionCaller<
-         void, SpecificTestClassRunner<TestClassType>, const TestClassResult*>> _voidOneArgMemberFunctionCaller;
+      std::unique_ptr<const VoidZeroArgMemberFunctionCaller<
+         SpecificTestClassRunner<TestClassType>>> _voidZeroArgMemberFunctionCaller;
 
-      std::unique_ptr<const ZeroArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>>> _voidZeroArgMemberFunctionCaller;
+      std::unique_ptr<const VoidOneArgMemberFunctionCaller<
+         SpecificTestClassRunner<TestClassType>, const TestClassResult*>> _voidOneArgMemberFunctionCaller;
 
       // Mutable Fields
       const char* _testClassName;
@@ -5575,13 +5646,17 @@ Example ZenUnit command line arguments:
       TestClassResult _testClassResult;
    public:
       explicit SpecificTestClassRunner(const char* testClassName)
-         // Function Callers
+         // Function Pointers
          : _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnitTestRunner::GetZenUnitArgs)
-         , _nonVoidTwoArgFunctionCaller(std::make_unique<TwoArgMemberFunctionCaller<bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>>())
+         // Function Callers
+         , _nonVoidTwoArgFunctionCaller(std::make_unique<
+            NonVoidTwoArgMemberFunctionCaller<bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>>())
          , _twoArgTestAnyer(std::make_unique<TwoArgTestAnyerType>())
          , _twoArgMemberForEacher(std::make_unique<TwoArgMemberForEacherType>())
-         , _voidOneArgMemberFunctionCaller(std::make_unique<OneArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>, const TestClassResult*>>())
-         , _voidZeroArgMemberFunctionCaller(std::make_unique<ZeroArgMemberFunctionCaller<void, SpecificTestClassRunner<TestClassType>>>())
+         , _voidZeroArgMemberFunctionCaller(std::make_unique<
+            VoidZeroArgMemberFunctionCaller<SpecificTestClassRunner<TestClassType>>>())
+         , _voidOneArgMemberFunctionCaller(std::make_unique<
+            VoidOneArgMemberFunctionCaller<SpecificTestClassRunner<TestClassType>, const TestClassResult*>>())
          // Mutable Fields
          , _testClassName(testClassName)
          , _newableDeletableTest(testClassName)
@@ -5626,16 +5701,17 @@ Example ZenUnit command line arguments:
 
       TestClassResult RunTests() override
       {
-         _voidZeroArgMemberFunctionCaller->ConstCall(
+         _voidZeroArgMemberFunctionCaller->CallConstMemberFunction(
             this, &SpecificTestClassRunner::PrintTestClassNameAndNumberOfNamedTests);
-         const bool testClassIsNewableAndDeletable = _nonVoidTwoArgFunctionCaller->ConstCall(
+         const bool testClassIsNewableAndDeletable = _nonVoidTwoArgFunctionCaller->CallConstMemberFunction(
             this, &SpecificTestClassRunner::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests,
             &_newableDeletableTest, &_testClassResult);
          if (testClassIsNewableAndDeletable)
          {
-            _voidZeroArgMemberFunctionCaller->NonConstCall(this, &SpecificTestClassRunner::DoRunTests);
+            _voidZeroArgMemberFunctionCaller->CallNonConstMemberFunction(this, &SpecificTestClassRunner::DoRunTests);
          }
-         _voidOneArgMemberFunctionCaller->ConstCall(this, &SpecificTestClassRunner::PrintTestClassResultLine, &_testClassResult);
+         _voidOneArgMemberFunctionCaller->CallConstMemberFunction(
+            this, &SpecificTestClassRunner::PrintTestClassResultLine, &_testClassResult);
          _protected_console->WriteNewLine();
          return std::move(_testClassResult);
       }
@@ -6503,7 +6579,8 @@ Example ZenUnit command line arguments:
       Test7X7(const char* testClassName, const char* testName,
          Test7X7MemberFunction test7X7MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
          : TestNXN<TestClassType, 7, TestCaseArgTypes...>(testClassName, testName,
-            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...), _test7X7MemberFunction(test7X7MemberFunction)
+            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
+         , _test7X7MemberFunction(test7X7MemberFunction)
       {
       }
 
@@ -6521,11 +6598,11 @@ Example ZenUnit command line arguments:
    private:
       const Test8X8MemberFunction _test8X8MemberFunction;
    public:
-      Test8X8(
-         const char* testClassName, const char* testName,
+      Test8X8(const char* testClassName, const char* testName,
          Test8X8MemberFunction test8X8MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
          : TestNXN<TestClassType, 8, TestCaseArgTypes...>(testClassName, testName,
-            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...), _test8X8MemberFunction(test8X8MemberFunction)
+            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
+         , _test8X8MemberFunction(test8X8MemberFunction)
       {
       }
 

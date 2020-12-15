@@ -83,19 +83,25 @@ Example ZenUnit command line arguments:
 )";
 
    ArgsParser _argsParser;
+   // Function Pointers
    METALMOCK_NONVOID1_STATIC(int, ZenUnit::String, ToInt, std::string_view)
    METALMOCK_NONVOID1_STATIC(unsigned, ZenUnit::String, ToUnsigned, std::string_view)
+   // Function Callers
    VoidOneArgMemberFunctionCallerMock<ArgsParser, ZenUnitArgs&>* _caller_SetRandomSeedIfNotSetByUserMock = nullptr;
+   // Constant Components
    ConsoleMock* _consoleMock = nullptr;
    TestNameFilterStringParserMock* _testNameFilterStringParserMock = nullptr;
    WatchMock* _watchMock = nullptr;
 
    STARTUP
    {
+      // Function Pointers
       _argsParser._call_String_ToInt = BIND_1ARG_METALMOCK_OBJECT(ToIntMock);
       _argsParser._call_String_ToUnsigned = BIND_1ARG_METALMOCK_OBJECT(ToUnsignedMock);
+      // Function Callers
       _argsParser._caller_SetRandomSeedIfNotSetByUser.reset(
          _caller_SetRandomSeedIfNotSetByUserMock = new VoidOneArgMemberFunctionCallerMock<ArgsParser, ZenUnitArgs&>);
+      // Constant Components
       _argsParser._console.reset(_consoleMock = new ConsoleMock);
       _argsParser._testNameFilterStringParser.reset(_testNameFilterStringParserMock = new TestNameFilterStringParserMock);
       _argsParser._watch.reset(_watchMock = new WatchMock);
@@ -104,9 +110,12 @@ Example ZenUnit command line arguments:
    TEST(DefaultConstructor_NewsComponents_SetsStringToUnsignedFunction)
    {
       ArgsParser argsParser;
+      // Function Pointers
       STD_FUNCTION_TARGETS(String::ToInt, argsParser._call_String_ToInt);
       STD_FUNCTION_TARGETS(String::ToUnsigned, argsParser._call_String_ToUnsigned);
+      // Function Callers
       DELETE_TO_ASSERT_NEWED(argsParser._caller_SetRandomSeedIfNotSetByUser);
+      // Constant Components
       DELETE_TO_ASSERT_NEWED(argsParser._console);
       DELETE_TO_ASSERT_NEWED(argsParser._testNameFilterStringParser);
       DELETE_TO_ASSERT_NEWED(argsParser._watch);
@@ -114,12 +123,12 @@ Example ZenUnit command line arguments:
 
    void ExpectCallToSetRandomSeedIfNotSetByUser()
    {
-      _caller_SetRandomSeedIfNotSetByUserMock->ConstCallMock.Expect();
+      _caller_SetRandomSeedIfNotSetByUserMock->CallConstMemberFunctionMock.Expect();
    }
 
    void AssertCallToSetRandomSeedIfNotSetByUser(ZenUnitArgs& expectedZenUnitArgsArg)
    {
-      METALMOCK(_caller_SetRandomSeedIfNotSetByUserMock->ConstCallMock.CalledOnceWith(
+      METALMOCK(_caller_SetRandomSeedIfNotSetByUserMock->CallConstMemberFunctionMock.CalledOnceWith(
          &_argsParser, &ArgsParser::SetRandomSeedIfNotSetByUser, expectedZenUnitArgsArg));
    }
 
@@ -195,7 +204,7 @@ Example ZenUnit command line arguments:
    {
       const int testruns = ToIntMock.ReturnRandom();
       const unsigned randomSeed = ToUnsignedMock.ReturnRandom();
-      _caller_SetRandomSeedIfNotSetByUserMock->ConstCallMock.Expect();
+      _caller_SetRandomSeedIfNotSetByUserMock->CallConstMemberFunctionMock.Expect();
       const string startDateTime = _watchMock->DateTimeNowMock.ReturnRandom();
       const vector<string> stringArgs
       {
@@ -233,7 +242,7 @@ Example ZenUnit command line arguments:
 
    TEST(Parse_DashDashRun_ReturnsZenUnitArgsWithExpectedTestNameFilters)
    {
-      _caller_SetRandomSeedIfNotSetByUserMock->ConstCallMock.Expect();
+      _caller_SetRandomSeedIfNotSetByUserMock->CallConstMemberFunctionMock.Expect();
 
       const vector<TestNameFilter> testNameFilters = { Random<TestNameFilter>() };
       _testNameFilterStringParserMock->ParseTestNameFilterStringsMock.Return(testNameFilters);

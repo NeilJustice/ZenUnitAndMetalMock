@@ -8,10 +8,11 @@
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestRunResultMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/PreamblePrinterMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/TestClassRunnerRunnerMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidZeroArgMemberFunctionCallerMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidOneArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/NonVoidOneArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/NonVoidTwoArgMemberFunctionCallerMock.h"
-#include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidOneArgMemberFunctionCallerMock.h"
-#include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidZeroArgMemberFunctionCallerMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/NonVoidZeroArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/StopwatchMock.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizerAndRandom.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestClassResultEqualizerAndRandom.h"
@@ -35,18 +36,17 @@ namespace ZenUnit
    EVIDENCE
 
    ZenUnitTestRunner _zenUnitTestRunner;
-   ConsoleMock* _consoleMock = nullptr;
-   PreamblePrinterMock* _preamblePrinterMock = nullptr;
-   ArgsParserMock* _argsParserMock = nullptr;
-
+   // Function Callers
    using NonVoidOneArgMemberFunctionCallerMockType = NonVoidOneArgMemberFunctionCallerMock<int, ZenUnitTestRunner, const ZenUnitArgs&>;
    NonVoidOneArgMemberFunctionCallerMockType* _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock = nullptr;
-
-   using NonVoidTwoArgMemberFunctionCallerMockType = NonVoidTwoArgMemberFunctionCallerMock<bool, ZenUnitTestRunner, bool, bool >;
-   NonVoidTwoArgMemberFunctionCallerMockType* _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPausedMock = nullptr;
-
    VoidZeroArgMemberFunctionCallerMock<ZenUnitTestRunner>* _caller_RunTestClassesMock = nullptr;
-
+   using NonVoidTwoArgMemberFunctionCallerMockType = NonVoidTwoArgMemberFunctionCallerMock<bool, ZenUnitTestRunner, bool, bool>;
+   NonVoidTwoArgMemberFunctionCallerMockType* _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPausedMock = nullptr;
+   // Constant Components
+   ArgsParserMock* _argsParserMock = nullptr;
+   ConsoleMock* _consoleMock = nullptr;
+   PreamblePrinterMock* _preamblePrinterMock = nullptr;
+   // Mutable Components
    TestClassRunnerRunnerMock* _testClassRunnerRunnerMock = nullptr;
    TestRunResultMock* _testRunResultMock = nullptr;
    StopwatchMock* _testRunStopwatchMock = nullptr;
@@ -62,30 +62,40 @@ namespace ZenUnit
 
    STARTUP
    {
+      // Function Callers
+      _zenUnitTestRunner._caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines.reset(
+         _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock = new NonVoidOneArgMemberFunctionCallerMockType);
+      _zenUnitTestRunner._caller_RunTestClasses.reset(
+         _caller_RunTestClassesMock = new VoidZeroArgMemberFunctionCallerMock<ZenUnitTestRunner>);
+      _zenUnitTestRunner._caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused.reset(
+         _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPausedMock = new NonVoidTwoArgMemberFunctionCallerMockType);
+      // Constant Components
+      _zenUnitTestRunner._argsParser.reset(_argsParserMock = new ArgsParserMock);
       _zenUnitTestRunner._console.reset(_consoleMock = new ConsoleMock);
       _zenUnitTestRunner._preamblePrinter.reset(_preamblePrinterMock = new PreamblePrinterMock);
-      _zenUnitTestRunner._argsParser.reset(_argsParserMock = new ArgsParserMock);
-      _zenUnitTestRunner._testRunResult.reset(_testRunResultMock = new TestRunResultMock);
-      _zenUnitTestRunner._caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines.reset(_caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock = new NonVoidOneArgMemberFunctionCallerMockType);
-      _zenUnitTestRunner._caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused.reset(_caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPausedMock = new NonVoidTwoArgMemberFunctionCallerMockType);
-      _zenUnitTestRunner._caller_RunTestClasses.reset(_caller_RunTestClassesMock = new VoidZeroArgMemberFunctionCallerMock<ZenUnitTestRunner>);
+      // Mutable Components
       _zenUnitTestRunner._testClassRunnerRunner.reset(_testClassRunnerRunnerMock = new TestClassRunnerRunnerMock);
+      _zenUnitTestRunner._testRunResult.reset(_testRunResultMock = new TestRunResultMock);
       _zenUnitTestRunner._testRunStopwatch.reset(_testRunStopwatchMock = new StopwatchMock);
    }
 
    TEST(DefaultConstructor_NewsComponents)
    {
       ZenUnitTestRunner zenUnitTestRunner;
+      // Function Callers
+      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines);
+      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_RunTestClasses);
+      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused);
+      // Constant Components
+      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._argsParser);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._console);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._preamblePrinter);
-      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._argsParser);
-      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines);
-      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused);
-      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_RunTestClasses);
+      // Mutable Components
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._testClassRunnerRunner);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._testRunResult);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._testRunStopwatch);
-      ARE_EQUAL(ZenUnitArgs(), zenUnitTestRunner._zenUnitArgs);
+      // Mutable Fields
+      IS_DEFAULT_VALUE(zenUnitTestRunner._zenUnitArgs);
       IS_FALSE(zenUnitTestRunner._havePaused);
    }
 
@@ -128,7 +138,7 @@ namespace ZenUnit
       _testClassRunnerRunnerMock->ApplyTestNameFiltersIfAnyMock.Expect();
 
       _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock->
-         NonConstCallMock.ReturnValues(firstTestRunExitCode, secondTestRunExitCode);
+         CallNonConstMemberFunctionMock.ReturnValues(firstTestRunExitCode, secondTestRunExitCode);
 
       _testRunResultMock->ResetStateExceptForSkipsMock.Expect();
 
@@ -140,7 +150,7 @@ namespace ZenUnit
       //
       METALMOCK(_argsParserMock->ParseMock.CalledOnceWith(commandLineArgs));
       METALMOCK(_testClassRunnerRunnerMock->ApplyTestNameFiltersIfAnyMock.CalledOnceWith(zenUnitArgs.testNameFilters));
-      METALMOCK(_caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock->NonConstCallMock.CalledNTimesWith(
+      METALMOCK(_caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock->CallNonConstMemberFunctionMock.CalledNTimesWith(
          static_cast<size_t>(testRuns), &_zenUnitTestRunner,
          &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, zenUnitArgs));
       METALMOCK(_testRunResultMock->ResetStateExceptForSkipsMock.CalledNTimes(static_cast<size_t>(testRuns)));
@@ -151,7 +161,7 @@ namespace ZenUnit
    TEST(PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines_RunsTestsAndPrintsResults_Returns0IfAllTestsPassedOtherwiseReturns1)
    {
       const bool waitForAnyKeyIfPauseModeReturnValue = ZenUnit::Random<bool>();
-      _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPausedMock->ConstCallMock.Return(waitForAnyKeyIfPauseModeReturnValue);
+      _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPausedMock->CallConstMemberFunctionMock.Return(waitForAnyKeyIfPauseModeReturnValue);
       const bool havePausedInitialValue = ZenUnit::Random<bool>();
       _zenUnitTestRunner._havePaused = havePausedInitialValue;
 
@@ -160,7 +170,7 @@ namespace ZenUnit
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.commandLine = Random<string>();
       const string startDateTime = _preamblePrinterMock->PrintPreambleLinesAndGetStartDateTimeMock.ReturnRandom();
-      _caller_RunTestClassesMock->NonConstCallMock.Expect();
+      _caller_RunTestClassesMock->CallNonConstMemberFunctionMock.Expect();
       _testRunResultMock->PrintTestFailuresAndSkipsMock.Expect();
       _testRunResultMock->PrintConclusionLinesMock.Expect();
 
@@ -173,14 +183,14 @@ namespace ZenUnit
       //
       const int exitCode = _zenUnitTestRunner.PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines(zenUnitArgs);
       //
-      METALMOCK(_caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPausedMock->ConstCallMock.CalledOnceWith(
+      METALMOCK(_caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPausedMock->CallConstMemberFunctionMock.CalledOnceWith(
          &_zenUnitTestRunner, &ZenUnitTestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused,
          zenUnitArgs.pauseBefore, havePausedInitialValue));
       ARE_EQUAL(waitForAnyKeyIfPauseModeReturnValue, _zenUnitTestRunner._havePaused);
       METALMOCK(_testRunStopwatchMock->StartMock.CalledOnce());
       METALMOCK(_preamblePrinterMock->PrintPreambleLinesAndGetStartDateTimeMock.CalledOnceWith(
          zenUnitArgs, _zenUnitTestRunner._testClassRunnerRunner.get()));
-      METALMOCK(_caller_RunTestClassesMock->NonConstCallMock.CalledOnceWith(&_zenUnitTestRunner, &ZenUnitTestRunner::RunTestClasses));
+      METALMOCK(_caller_RunTestClassesMock->CallNonConstMemberFunctionMock.CalledOnceWith(&_zenUnitTestRunner, &ZenUnitTestRunner::RunTestClasses));
       METALMOCK(_testRunResultMock->PrintTestFailuresAndSkipsMock.CalledOnce());
       METALMOCK(_testClassRunnerRunnerMock->NumberOfTestCasesMock.CalledOnce());
       METALMOCK(_testRunStopwatchMock->StopAndGetElapsedSecondsMock.CalledOnce());

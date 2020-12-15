@@ -5,9 +5,10 @@
 #include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestClassResultMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/MetalMock/TestMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/NonVoidZeroArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/NonVoidTwoArgMemberFunctionCallerMock.h"
-#include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidOneArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidZeroArgMemberFunctionCallerMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidOneArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/TwoArgAnyerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/TwoArgMemberAnyerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/TwoArgMemberForEacherMock.h"
@@ -44,16 +45,19 @@ namespace ZenUnit
 
    unique_ptr<SpecificTestClassRunner<TestingTestClass>> _specificTestClassRunner;
 
-   // Protected Function Callers
+   // Function Pointers
+   METALMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetZenUnitArgs)
+
+   // Function Callers
    using TwoArgMemberAnyerMockType = TwoArgMemberAnyerMock<
       std::vector<TestNameFilter>, TestClassRunner,
       bool(TestClassRunner::*)(const TestNameFilter&, const char*) const, const char*>;
    TwoArgMemberAnyerMockType* _protected_twoArgMemberAnyerMock = nullptr;
-   // Protected Constant Components
+
    ConsoleMock* _protected_consoleMock = nullptr;
-   // Function Callers
-   METALMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetZenUnitArgs)
-   NonVoidTwoArgMemberFunctionCallerMock<bool, SpecificTestClassRunner<TestingTestClass>, Test*, TestClassResult*>* _nonVoidTwoArgFunctionCallerMock = nullptr;
+
+   NonVoidTwoArgMemberFunctionCallerMock<bool, SpecificTestClassRunner<
+      TestingTestClass>, Test*, TestClassResult*>* _nonVoidTwoArgFunctionCallerMock = nullptr;
 
    using TwoArgTestAnyerMockType = TwoArgAnyerMock<
       const std::vector<std::unique_ptr<Test>>,
@@ -67,8 +71,8 @@ namespace ZenUnit
          const unique_ptr<Test>& test, TestClassResult*) const, TestClassResult*>;
    TwoArgMemberForEacherMockType* _twoArgMemberForEacherMock = nullptr;
 
-   VoidOneArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, const TestClassResult*>* _voidOneArgMemberFunctionCallerMock = nullptr;
    VoidZeroArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>>* _voidZeroArgMemberFunctionCallerMock = nullptr;
+   VoidOneArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, const TestClassResult*>* _voidOneArgMemberFunctionCallerMock = nullptr;
 
    const string _testClassName = ZenUnit::Random<string>();
 
@@ -79,13 +83,14 @@ namespace ZenUnit
       _specificTestClassRunner->_protected_twoArgMemberAnyer.reset(_protected_twoArgMemberAnyerMock = new TwoArgMemberAnyerMockType);
       // Protected Constant Components
       _specificTestClassRunner->_protected_console.reset(_protected_consoleMock = new ConsoleMock);
-      // Function Callers
+      // Function Pointers
       _specificTestClassRunner->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(GetZenUnitArgsMock);
+      // Function Callers
       _specificTestClassRunner->_nonVoidTwoArgFunctionCaller.reset(_nonVoidTwoArgFunctionCallerMock = new NonVoidTwoArgMemberFunctionCallerMock<bool, SpecificTestClassRunner<TestingTestClass>, Test*, TestClassResult*>);
       _specificTestClassRunner->_twoArgTestAnyer.reset(_twoArgTestAnyerMock = new TwoArgTestAnyerMockType);
       _specificTestClassRunner->_twoArgMemberForEacher.reset(_twoArgMemberForEacherMock = new TwoArgMemberForEacherMockType);
-      _specificTestClassRunner->_voidOneArgMemberFunctionCaller.reset(_voidOneArgMemberFunctionCallerMock = new VoidOneArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, const TestClassResult*>);
       _specificTestClassRunner->_voidZeroArgMemberFunctionCaller.reset(_voidZeroArgMemberFunctionCallerMock = new VoidZeroArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>>);
+      _specificTestClassRunner->_voidOneArgMemberFunctionCaller.reset(_voidOneArgMemberFunctionCallerMock = new VoidOneArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, const TestClassResult*>);
    }
 
    TEST(OneArgConstructor_NewsComponents_SetsTestClassName_SetsTestsVectorFromCallToTestClassTypeGetTests)
@@ -95,13 +100,14 @@ namespace ZenUnit
       DELETE_TO_ASSERT_NEWED(specificTestClassRunner._protected_twoArgMemberAnyer);
       // Protected Constant Components
       DELETE_TO_ASSERT_NEWED(specificTestClassRunner._protected_console);
-      // Function Callers
+      // Function Pointers
       STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetZenUnitArgs, specificTestClassRunner._call_ZenUnitTestRunner_GetZenUnitArgs);
+      // Function Callers
       DELETE_TO_ASSERT_NEWED(specificTestClassRunner._nonVoidTwoArgFunctionCaller);
       DELETE_TO_ASSERT_NEWED(specificTestClassRunner._twoArgTestAnyer);
       DELETE_TO_ASSERT_NEWED(specificTestClassRunner._twoArgMemberForEacher);
-      DELETE_TO_ASSERT_NEWED(specificTestClassRunner._voidOneArgMemberFunctionCaller);
       DELETE_TO_ASSERT_NEWED(specificTestClassRunner._voidZeroArgMemberFunctionCaller);
+      DELETE_TO_ASSERT_NEWED(specificTestClassRunner._voidOneArgMemberFunctionCaller);
 
       ARE_EQUAL(_testClassName.c_str(), specificTestClassRunner._testClassName);
       vector<unique_ptr<Test>> expectedTests;
@@ -184,29 +190,29 @@ namespace ZenUnit
       false, false,
       true, true)
    {
-      _voidZeroArgMemberFunctionCallerMock->ConstCallMock.Expect();
-      _nonVoidTwoArgFunctionCallerMock->ConstCallMock.Return(testClassTypeNewableAndDeletable);
+      _voidZeroArgMemberFunctionCallerMock->CallConstMemberFunctionMock.Expect();
+      _nonVoidTwoArgFunctionCallerMock->CallConstMemberFunctionMock.Return(testClassTypeNewableAndDeletable);
       if (expectDoRunTestsCall)
       {
-         _voidZeroArgMemberFunctionCallerMock->NonConstCallMock.Expect();
+         _voidZeroArgMemberFunctionCallerMock->CallNonConstMemberFunctionMock.Expect();
       }
-      _voidOneArgMemberFunctionCallerMock->ConstCallMock.Expect();
+      _voidOneArgMemberFunctionCallerMock->CallConstMemberFunctionMock.Expect();
       _protected_consoleMock->WriteNewLineMock.Expect();
       _specificTestClassRunner->_testClassResult = TestClassResult::TestingNonDefault();
       //
       const TestClassResult testClassResult = _specificTestClassRunner->RunTests();
       //
-      METALMOCK(_voidZeroArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
+      METALMOCK(_voidZeroArgMemberFunctionCallerMock->CallConstMemberFunctionMock.CalledOnceWith(
          _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::PrintTestClassNameAndNumberOfNamedTests));
-      METALMOCK(_nonVoidTwoArgFunctionCallerMock->ConstCallMock.CalledOnceWith(
+      METALMOCK(_nonVoidTwoArgFunctionCallerMock->CallConstMemberFunctionMock.CalledOnceWith(
          _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests,
          &_specificTestClassRunner->_newableDeletableTest, &_specificTestClassRunner->_testClassResult));
       if (expectDoRunTestsCall)
       {
-         METALMOCK(_voidZeroArgMemberFunctionCallerMock->NonConstCallMock.CalledOnceWith(
+         METALMOCK(_voidZeroArgMemberFunctionCallerMock->CallNonConstMemberFunctionMock.CalledOnceWith(
             _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::DoRunTests));
       }
-      METALMOCK(_voidOneArgMemberFunctionCallerMock->ConstCallMock.CalledOnceWith(
+      METALMOCK(_voidOneArgMemberFunctionCallerMock->CallConstMemberFunctionMock.CalledOnceWith(
          _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::PrintTestClassResultLine,
          &_specificTestClassRunner->_testClassResult));
       METALMOCK(_protected_consoleMock->WriteNewLineMock.CalledOnce());

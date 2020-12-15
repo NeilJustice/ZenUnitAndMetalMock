@@ -4,7 +4,7 @@ namespace ZenUnit
 {
    template<typename ReturnType, typename Arg1Type, typename Arg2Type>
    TEMPLATE_TESTS(NonVoidTwoArgMemberFunctionCallerTests, ReturnType, Arg1Type, Arg2Type)
-   AFACT(ConstCall_CallsConstNonVoidMemberFunctionOnce_ReturnsReturnValue)
+   AFACT(CallConstMemberFunction_CallsConstNonVoidMemberFunctionOnce_ReturnsReturnValue)
    EVIDENCE
 
    class Class
@@ -21,15 +21,15 @@ namespace ZenUnit
       }
    };
 
-   TEST(ConstCall_CallsConstNonVoidMemberFunctionOnce_ReturnsReturnValue)
+   TEST(CallConstMemberFunction_CallsConstNonVoidMemberFunctionOnce_ReturnsReturnValue)
    {
-      const TwoArgMemberFunctionCaller<ReturnType, Class, Arg1Type, Arg2Type> nonVoidTwoArgMemberFunctionCaller;
+      const NonVoidTwoArgMemberFunctionCaller<ReturnType, Class, Arg1Type, Arg2Type> nonVoidTwoArgMemberFunctionCaller{};
       const Class classInstance{};
 
       const Arg1Type arg1A = ZenUnit::Random<Arg1Type>();
       const Arg2Type arg2A = ZenUnit::Random<Arg2Type>();
       //
-      const ReturnType returnValueA = nonVoidTwoArgMemberFunctionCaller.ConstCall(&classInstance, &Class::ConstNonVoidFunction, arg1A, arg2A);
+      const ReturnType returnValueA = nonVoidTwoArgMemberFunctionCaller.CallConstMemberFunction(&classInstance, &Class::ConstNonVoidFunction, arg1A, arg2A);
       //
       const vector<pair<Arg1Type, Arg2Type>> expectedCallsA =
       {
@@ -42,7 +42,7 @@ namespace ZenUnit
       const Arg1Type arg1B = ZenUnit::Random<Arg1Type>();
       const Arg2Type arg2B = ZenUnit::Random<Arg2Type>();
       //
-      const ReturnType returnValueB = nonVoidTwoArgMemberFunctionCaller.ConstCall(&classInstance, &Class::ConstNonVoidFunction, arg1B, arg2B);
+      const ReturnType returnValueB = nonVoidTwoArgMemberFunctionCaller.CallConstMemberFunction(&classInstance, &Class::ConstNonVoidFunction, arg1B, arg2B);
       //
       const vector<pair<Arg1Type, Arg2Type>> expectedCallsB =
       {

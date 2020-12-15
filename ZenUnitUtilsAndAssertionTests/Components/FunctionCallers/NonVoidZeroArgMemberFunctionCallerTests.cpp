@@ -4,13 +4,14 @@ namespace ZenUnit
 {
    template<typename ReturnType>
    TEMPLATE_TESTS(NonVoidZeroArgMemberFunctionCallerTests, ReturnType)
-   AFACT(ConstCall_CallsConstMemberFunctionOnce)
-   AFACT(NonConstCall_CallsNonConstMemberFunctionOnce)
+   AFACT(CallConstMemberFunction_CallsConstMemberFunctionOnce)
+   AFACT(CallNonConstMemberFunction_CallsNonConstMemberFunctionOnce)
    EVIDENCE
 
-   struct C
+   class Class
    {
-      mutable unsigned numberOfCalls = 0;
+   public:
+      mutable size_t numberOfCalls = 0;
       ReturnType returnValue = ZenUnit::Random<ReturnType>();
 
       ReturnType ConstMemberZeroArgFunction() const
@@ -26,37 +27,41 @@ namespace ZenUnit
       }
    };
 
-   C c;
-   ZeroArgMemberFunctionCaller<ReturnType, C> nonVoidZeroArgMemberFunctionCaller;
+   Class _classInstance;
+   NonVoidZeroArgMemberFunctionCaller<ReturnType, Class> _nonVoidZeroArgMemberFunctionCaller;
 
-   TEST(ConstCall_CallsConstMemberFunctionOnce)
+   TEST(CallConstMemberFunction_CallsConstMemberFunctionOnce)
    {
-      IS_ZERO(c.numberOfCalls);
+      IS_ZERO(_classInstance.numberOfCalls);
       //
-      const ReturnType returnValueA = nonVoidZeroArgMemberFunctionCaller.ConstCall(&c, &C::ConstMemberZeroArgFunction);
+      const ReturnType returnValueA = _nonVoidZeroArgMemberFunctionCaller.CallConstMemberFunction(
+         &_classInstance, &Class::ConstMemberZeroArgFunction);
       //
-      ARE_EQUAL(1, c.numberOfCalls);
-      ARE_EQUAL(c.returnValue, returnValueA);
+      ARE_EQUAL(1, _classInstance.numberOfCalls);
+      ARE_EQUAL(_classInstance.returnValue, returnValueA);
       //
-      const ReturnType returnValueB = nonVoidZeroArgMemberFunctionCaller.ConstCall(&c, &C::ConstMemberZeroArgFunction);
+      const ReturnType returnValueB = _nonVoidZeroArgMemberFunctionCaller.CallConstMemberFunction(
+         &_classInstance, &Class::ConstMemberZeroArgFunction);
       //
-      ARE_EQUAL(2, c.numberOfCalls);
-      ARE_EQUAL(c.returnValue, returnValueB);
+      ARE_EQUAL(2, _classInstance.numberOfCalls);
+      ARE_EQUAL(_classInstance.returnValue, returnValueB);
    }
 
-   TEST(NonConstCall_CallsNonConstMemberFunctionOnce)
+   TEST(CallNonConstMemberFunction_CallsNonConstMemberFunctionOnce)
    {
-      IS_ZERO(c.numberOfCalls);
+      IS_ZERO(_classInstance.numberOfCalls);
       //
-      const ReturnType returnValueA = nonVoidZeroArgMemberFunctionCaller.NonConstCall(&c, &C::NonConstMemberZeroArgFunction);
+      const ReturnType returnValueA = _nonVoidZeroArgMemberFunctionCaller.
+         CallNonConstMemberFunction(&_classInstance, &Class::NonConstMemberZeroArgFunction);
       //
-      ARE_EQUAL(1, c.numberOfCalls);
-      ARE_EQUAL(c.returnValue, returnValueA);
+      ARE_EQUAL(1, _classInstance.numberOfCalls);
+      ARE_EQUAL(_classInstance.returnValue, returnValueA);
       //
-      const ReturnType returnValueB = nonVoidZeroArgMemberFunctionCaller.NonConstCall(&c, &C::NonConstMemberZeroArgFunction);
+      const ReturnType returnValueB = _nonVoidZeroArgMemberFunctionCaller.
+         CallNonConstMemberFunction(&_classInstance, &Class::NonConstMemberZeroArgFunction);
       //
-      ARE_EQUAL(2, c.numberOfCalls);
-      ARE_EQUAL(c.returnValue, returnValueB);
+      ARE_EQUAL(2, _classInstance.numberOfCalls);
+      ARE_EQUAL(_classInstance.returnValue, returnValueB);
    }
 
    RUN_TEMPLATE_TESTS(NonVoidZeroArgMemberFunctionCallerTests, int)

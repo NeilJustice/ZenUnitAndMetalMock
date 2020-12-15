@@ -4,8 +4,8 @@ namespace ZenUnit
 {
    template<typename ReturnType, typename Arg1Type>
    TEMPLATE_TESTS(NonVoidOneArgMemberFunctionCallerTests, ReturnType, Arg1Type)
-   AFACT(ConstCall_CallsConstMemberFunctionOnce_ReturnsReturnValue)
-   AFACT(NonConstCall_CallsNonConstMemberFunctionOnce_ReturnsReturnValue)
+   AFACT(CallConstMemberFunction_CallsConstMemberFunctionOnce_ReturnsReturnValue)
+   AFACT(CallNonConstMemberFunction_CallsNonConstMemberFunctionOnce_ReturnsReturnValue)
    EVIDENCE
 
    class Class
@@ -29,14 +29,14 @@ namespace ZenUnit
       }
    };
 
-   OneArgMemberFunctionCaller<ReturnType, Class, Arg1Type> _oneArgMemberFunctionCaller;
+   NonVoidOneArgMemberFunctionCaller<ReturnType, Class, Arg1Type> _nonVoidOneArgMemberFunctionCaller;
    Class _classInstance;
 
-   TEST(ConstCall_CallsConstMemberFunctionOnce_ReturnsReturnValue)
+   TEST(CallConstMemberFunction_CallsConstMemberFunctionOnce_ReturnsReturnValue)
    {
       const Arg1Type arg1 = ZenUnit::Random<Arg1Type>();
       //
-      const ReturnType returnValueA = _oneArgMemberFunctionCaller.ConstCall(
+      const ReturnType returnValueA = _nonVoidOneArgMemberFunctionCaller.CallConstMemberFunction(
          &_classInstance, &Class::NonVoidOneArgConstFunction, arg1);
       //
       const vector<Arg1Type> expectedCallsA =
@@ -49,7 +49,7 @@ namespace ZenUnit
 
       const Arg1Type arg2 = ZenUnit::Random<Arg1Type>();
       //
-      const ReturnType returnValueB = _oneArgMemberFunctionCaller.ConstCall(
+      const ReturnType returnValueB = _nonVoidOneArgMemberFunctionCaller.CallConstMemberFunction(
          &_classInstance, &Class::NonVoidOneArgConstFunction, arg2);
       //
       const vector<Arg1Type> expectedCallsB =
@@ -60,11 +60,11 @@ namespace ZenUnit
       ARE_EQUAL(_classInstance.returnValue, returnValueB);
    }
 
-   TEST(NonConstCall_CallsNonConstMemberFunctionOnce_ReturnsReturnValue)
+   TEST(CallNonConstMemberFunction_CallsNonConstMemberFunctionOnce_ReturnsReturnValue)
    {
       const Arg1Type arg1 = ZenUnit::Random<Arg1Type>();
       //
-      const ReturnType returnValueA = _oneArgMemberFunctionCaller.NonConstCall(
+      const ReturnType returnValueA = _nonVoidOneArgMemberFunctionCaller.CallNonConstMemberFunction(
          &_classInstance, &Class::NonVoidOneArgFunction, arg1);
       //
       const vector<Arg1Type> expectedCallsA =
@@ -77,8 +77,8 @@ namespace ZenUnit
 
       const Arg1Type arg2 = ZenUnit::Random<Arg1Type>();
       //
-      const ReturnType returnValueB = _oneArgMemberFunctionCaller.
-         NonConstCall(&_classInstance, &Class::NonVoidOneArgFunction, arg2);
+      const ReturnType returnValueB = _nonVoidOneArgMemberFunctionCaller.
+         CallNonConstMemberFunction(&_classInstance, &Class::NonVoidOneArgFunction, arg2);
       //
       const vector<Arg1Type> expectedCallsB =
       {

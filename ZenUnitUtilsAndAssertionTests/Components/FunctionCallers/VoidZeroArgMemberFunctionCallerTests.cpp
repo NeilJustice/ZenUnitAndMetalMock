@@ -3,12 +3,13 @@
 namespace ZenUnit
 {
    TESTS(VoidZeroArgMemberFunctionCallerTests)
-   AFACT(ConstCall_CallsConstMemberFunctionOnce)
-   AFACT(NonConstCall_CallsNonConstMemberFunctionOnce)
+   AFACT(CallConstMemberFunction_CallsConstMemberFunctionOnce)
+   AFACT(CallNonConstMemberFunction_CallsNonConstMemberFunctionOnce)
    EVIDENCE
 
-   struct C
+   class Class
    {
+   public:
       mutable unsigned numberOfCalls = 0;
 
       void ConstMemberZeroArgFunction() const
@@ -22,33 +23,33 @@ namespace ZenUnit
       }
    };
 
-   C c;
-   ZeroArgMemberFunctionCaller<void, C> voidZeroArgMemberFunctionCaller;
+   Class _classInstance;
+   VoidZeroArgMemberFunctionCaller<Class> _voidZeroArgMemberFunctionCaller;
 
-   TEST(ConstCall_CallsConstMemberFunctionOnce)
+   TEST(CallConstMemberFunction_CallsConstMemberFunctionOnce)
    {
-      IS_ZERO(c.numberOfCalls);
+      IS_ZERO(_classInstance.numberOfCalls);
       //
-      voidZeroArgMemberFunctionCaller.ConstCall(&c, &C::ConstMemberZeroArgFunction);
+      _voidZeroArgMemberFunctionCaller.CallConstMemberFunction(&_classInstance, &Class::ConstMemberZeroArgFunction);
       //
-      ARE_EQUAL(1, c.numberOfCalls);
+      ARE_EQUAL(1, _classInstance.numberOfCalls);
       //
-      voidZeroArgMemberFunctionCaller.ConstCall(&c, &C::ConstMemberZeroArgFunction);
+      _voidZeroArgMemberFunctionCaller.CallConstMemberFunction(&_classInstance, &Class::ConstMemberZeroArgFunction);
       //
-      ARE_EQUAL(2, c.numberOfCalls);
+      ARE_EQUAL(2, _classInstance.numberOfCalls);
    }
 
-   TEST(NonConstCall_CallsNonConstMemberFunctionOnce)
+   TEST(CallNonConstMemberFunction_CallsNonConstMemberFunctionOnce)
    {
-      IS_ZERO(c.numberOfCalls);
+      IS_ZERO(_classInstance.numberOfCalls);
       //
-      voidZeroArgMemberFunctionCaller.NonConstCall(&c, &C::NonConstMemberZeroArgFunction);
+      _voidZeroArgMemberFunctionCaller.CallNonConstMemberFunction(&_classInstance, &Class::NonConstMemberZeroArgFunction);
       //
-      ARE_EQUAL(1, c.numberOfCalls);
+      ARE_EQUAL(1, _classInstance.numberOfCalls);
       //
-      voidZeroArgMemberFunctionCaller.NonConstCall(&c, &C::NonConstMemberZeroArgFunction);
+      _voidZeroArgMemberFunctionCaller.CallNonConstMemberFunction(&_classInstance, &Class::NonConstMemberZeroArgFunction);
       //
-      ARE_EQUAL(2, c.numberOfCalls);
+      ARE_EQUAL(2, _classInstance.numberOfCalls);
    }
 
    RUN_TESTS(VoidZeroArgMemberFunctionCallerTests)
