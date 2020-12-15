@@ -166,7 +166,7 @@ namespace fs = std::filesystem;
 // Asserts that typeid(expectedPointeeType) == typeid(*actualPointer). expectedPointeeType must be a polymorphic type.
 #define POINTEE_IS_EXACT_TYPE(expectedPolymorphicPointeeType, actualPointer, ...) \
    static_assert(std::is_polymorphic_v<expectedPolymorphicPointeeType>, \
-      "ZenUnit assertion POINTEE_IS_EXACT_TYPE(expectedPolymorphicPointeeType, actualPointer, ...) requires that expectedPolymorphicPointeeType be a polymorphic type (a type that has one or more virtual functions)."); \
+      "ZenUnit assertion POINTEE_IS_EXACT_TYPE(expectedPolymorphicPointeeType, actualPointer, ...) requires expectedPolymorphicPointeeType to be a polymorphic type."); \
    ZenUnit::POINTEE_IS_EXACT_TYPE_Defined(typeid(expectedPolymorphicPointeeType), #expectedPolymorphicPointeeType, ZENUNIT_VRTEXT(actualPointer), \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
