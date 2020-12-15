@@ -80,7 +80,7 @@ namespace fs = std::filesystem;
 // Value Assertions
 //
 
-// Asserts that expectedValue == actualValue or if defined calls ZenUnit::Equalizer<T>::AssertEqual(const T& expectedValue, const T& actualValue).
+// Asserts that expectedValue == actualValue or if defined calls ZenUnit::Equalizer<T>::AssertEqual(const T& expectedValue, const T& actualValue). Calls strcmp or wcscmp instead of operator== if expectedValue and actualValue are const char* or const wchar_t*.
 #define ARE_EQUAL(expectedValue, actualValue, ...) \
    ZenUnit::ARE_EQUAL_Defined(ZENUNIT_VRTEXT(expectedValue), ZENUNIT_VRTEXT(actualValue), \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
@@ -90,19 +90,14 @@ namespace fs = std::filesystem;
    ZenUnit::ARE_NOT_EQUAL_Defined(ZENUNIT_VRTEXT(notExpectedValue), ZENUNIT_VRTEXT(actualValue), \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
+// Asserts that
+#define ENUM_EQUALS(expectedInteger, actualEnumClass, ...) \
+   ZenUnit::ENUM_EQUALS_Defined(expectedInteger, #expectedInteger, actualEnumClass, #actualEnumClass, \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
+
 // First asserts ARE_NOT_SAME(expectedObject, actualObject) then asserts ARE_EQUAL(expectedObject, actualObject).
 #define ARE_COPIES(expectedObject, actualObject, ...) \
    ZenUnit::ARE_COPIES_Defined(ZENUNIT_VRTEXT(expectedObject), ZENUNIT_VRTEXT(actualObject), \
-      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
-
-// Asserts &expectedObject == &actualObject.
-#define ARE_SAME(expectedObject, actualObject, ...) \
-   ARE_SAME_Defined(ZENUNIT_VRTEXT(expectedObject), ZENUNIT_VRTEXT(actualObject), \
-      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
-
-// Asserts &notExpectedObject != &actualObject.
-#define ARE_NOT_SAME(notExpectedObject, actualObject, ...) \
-   ARE_NOT_SAME_Defined(ZENUNIT_VRTEXT(notExpectedObject), ZENUNIT_VRTEXT(actualObject), \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that value when converted to a bool is true.
@@ -161,6 +156,16 @@ namespace fs = std::filesystem;
 // Asserts that (pointer != nullptr) is true.
 #define IS_NOT_NULLPTR(pointer, ...) \
    ZenUnit::IS_NOT_NULLPTR_Defined(pointer != nullptr, #pointer, \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Asserts &expectedObject == &actualObject.
+#define ARE_SAME(expectedObject, actualObject, ...) \
+   ARE_SAME_Defined(ZENUNIT_VRTEXT(expectedObject), ZENUNIT_VRTEXT(actualObject), \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Asserts &notExpectedObject != &actualObject.
+#define ARE_NOT_SAME(notExpectedObject, actualObject, ...) \
+   ARE_NOT_SAME_Defined(ZENUNIT_VRTEXT(notExpectedObject), ZENUNIT_VRTEXT(actualObject), \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that typeid(expectedPointeeType) == typeid(*actualPointer). expectedPointeeType must be a polymorphic type.
@@ -2461,6 +2466,34 @@ Example ZenUnit command line arguments:
       }
       ARE_NOT_EQUAL_ThrowAnomaly(notExpectedValueVRT, actualValueVRT, filePathLineNumber,
          Anomaly::Default(), messagesText, std::forward<MessageTypes>(messages)...);
+   }
+
+   template<typename EnumType, typename... MessageTypes>
+   NOINLINE void ENUM_EQUALS_ThrowAnomaly(
+      typename std::underlying_type<EnumType>::type expectedInteger, const char* expectedIntegerText,
+      EnumType actualEnumClass, const char* actualEnumClassText,
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
+   {
+      const std::string toStringedExpectedInteger = std::to_string(expectedInteger);
+      const std::string toStringedActualEnumClass = std::to_string(static_cast<typename std::underlying_type<EnumType>::type>(actualEnumClass));
+      const Anomaly anomaly("ENUM_EQUALS", expectedIntegerText, actualEnumClassText, "", messagesText, Anomaly::Default(),
+         toStringedExpectedInteger, toStringedActualEnumClass, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
+   }
+
+   template<typename EnumType, typename... MessageTypes>
+   void ENUM_EQUALS_Defined(
+      typename std::underlying_type<EnumType>::type expectedInteger, const char* expectedIntegerText,
+      EnumType actualEnumClass, const char* actualEnumClassText,
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
+   {
+      const typename std::underlying_type<EnumType>::type actualEnumClassAsUnderlyingType =
+         static_cast<typename std::underlying_type<EnumType>::type>(actualEnumClass);
+      if (actualEnumClassAsUnderlyingType != expectedInteger)
+      {
+         ENUM_EQUALS_ThrowAnomaly(expectedInteger, expectedIntegerText, actualEnumClass, actualEnumClassText,
+            filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
+      }
    }
 
    template<typename ExpectedObjectType, typename ActualObjectType, typename... MessageTypes>
