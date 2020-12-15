@@ -1,4 +1,4 @@
-# 🧪 ZenUnit &  MetalMock ⚗️
+# ?? ZenUnit &  MetalMock ??
 
 [![Standard](https://img.shields.io/badge/c%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B17) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -1220,12 +1220,16 @@ cmake --build . --target install
 |----------------------|------------------|---------------------|
 |`IS_EMPTY_PATH(filesystemPath, messages...`)|Q4 2020|Implemented|
 |`IS_EMPTY_STRING(str, messages...)`|Q4 2020|Implemented|
-|Travis CI OSX badge for ZenUnit and MetalMock, Cloudundancy, FileRevisor, and FileArb|Q4 2020|In progress|
+|`ENUM_EQUALS_INT(expectedInt, actualEnumClass)`|Q4 2020|In progress|
+|Travis CI OSX badge|Q4 2020|Awaiting implementation|
+|.clang-format file|Q4 2020|Awaiting implementation|
+|Refactor ZenUnit and MetalMock documentation into multiple pages from a single page|Q1 2021|Awaiting implementation|
+|SonarQube Linux And Windows Jenkins Job Screenshots|Q1 2021|Awaiting implementation|
 |SonarCloud Badge|Q1 2021|Awaiting implementation|
 |Coverity Badge|Q1 2021|Awaiting implementation|
-|SonarQube Linux And Windows Jenkins Job Screenshots|Q1 2021|Awaiting implementation|
-|When an `ARE_EQUAL(expectedString, actualString)` assertion fails, print the first mismatching index|Q1 2021|Awaiting implementation|
+|`TUPLES_ARE_EQUAL`|Q1 2021| Awaiting implementation|
 |`ARE_NEAR` floating point assertion|Q1 2021|Awaiting implementation|
+|When an `ARE_EQUAL(expectedString, actualString)` assertion fails, print the first mismatching index|Q1 2021|Awaiting implementation|
 |`--parallel` for parallel running of tests and value-parameterized test cases|Q2 2021|Awaiting implementation|
 
 ### MetalMock Roadmap
@@ -1240,7 +1244,7 @@ cmake --build . --target install
 * [Rob Irving, co-host of CppCast](https://cppcast.com)
 * [Martin Moene, author of lest and much more](https://github.com/martinmoene/lest)
 * [Viktor Kirilov and the many contributors to doctest](https://github.com/onqtam/doctest)
-* [Phil Nash, Martin Hořeňovský, and the many contributors to Catch2](https://github.com/catchorg/Catch2)
+* [Phil Nash, Martin Horenovský, and the many contributors to Catch2](https://github.com/catchorg/Catch2)
 * [Blair Conrad, Thomas Levesque, and the many contributors to FakeItEasy](https://github.com/FakeItEasy/FakeItEasy)
 * [Roy Osherove, author of The Art of Unit Testing, a book that early on influenced my thinking on unit testing and mocking](https://osherove.com/)
 * [The many authors of Typemock Isolator and Typemock Isolator++](https://www.typemock.com)
