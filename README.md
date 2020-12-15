@@ -1221,8 +1221,8 @@ cmake --build . --target install
 |----------------------|------------------|---------------------|
 |`IS_EMPTY_PATH(filesystemPath, messages...`)|Q4 2020|Implemented|
 |`IS_EMPTY_STRING(str, messages...)`|Q4 2020|Implemented|
-|`ENUM_EQUALS(expectedUnderlyingTypeInteger, actualEnumClass)`|Q4 2020|In progress|
-|Travis CI OSX badge|Q4 2020|Awaiting implementation|
+|`ENUM_EQUALS(expectedInteger, actualEnumClass)`|Q4 2020|Implemented|
+|Travis CI OSX badge|Q4 2020|In progress|
 |.clang-format file|Q4 2020|Awaiting implementation|
 |Refactor ZenUnit and MetalMock documentation into multiple pages from a single page|Q1 2021|Awaiting implementation|
 |SonarQube Linux And Windows Jenkins Job Screenshots|Q1 2021|Awaiting implementation|
