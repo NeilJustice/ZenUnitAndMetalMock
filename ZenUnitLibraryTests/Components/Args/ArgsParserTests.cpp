@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "ZenUnitLibraryTests/ValueTypes/Args/ExpectedCommandLineUsage.h"
 #include "ZenUnitLibraryTests/Components/Args/MetalMock/TestNameFilterStringParserMock.h"
 #include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizerAndRandom.h"
@@ -29,58 +30,6 @@ namespace ZenUnit
    EVIDENCE
 
    const string _testProgramPath = Random<string>();
-   const string _expectedCommandLineUsage = "C++ Unit Testing Framework ZenUnit v" + std::string(VersionNumber) + R"(
-https://github.com/NeilJustice/ZenUnitAndMetalMock
-Usage: <ZenUnitTestsBinaryName> [Options...]
-
-Testing Rigorousness:
-
---test-runs=<N>
-   Repeat N times the running of all tests.
-   Specify -1 to repeat forever the running of all tests.
---random-test-ordering
-   Run test classes, tests, and value-parameterized test cases in a random order.
---random-seed=<32BitUnsignedInteger>
-   Sets the random seed which sets the test ordering for --random-test-ordering and
-   sets the sequence of values returned by the ZenUnit::Random<T>
-   family of random-value-generating functions.
-   The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
---exit-1-if-tests-skipped
-   After having run all tests, exit with code 1 if any tests were skipped.
-
-Testing Filtration:
-
---run=<TestClassName>[::TestName][/TestCaseNumber][,...]
-   Run only specified case-insensitive test classes, tests, and/or test case numbers.
-   Add a '*' character to the end of a test class name or test name to indicate name-starts-with.
- Example 1: --run=APITests
-   Run only test class APITests.
- Example 2: --run=APITests::FunctionUnderTest*
-   Run only tests in APITests that start with "FunctionUnderTest".
- Example 3: --run=APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue/3
-   Run only the third test case of the value-parameterized test named
-   APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue
---fail-fast
-   Call exit(1) if a test fails.
-
-Testing Utility:
-
---pause-before
-   Wait for any key before running tests to allow for attaching a debugger or performance profiler.
---pause-after
-   Wait for any key after running tests.
---always-exit-0
-   Always exit with code 0.
---help
-   Print this command line usage message.
---version
-   Print the ZenUnit version number.
-
-Example ZenUnit command line arguments:
-
-./SafetyCriticalUnitTests --test-runs=5 --random-test-ordering --exit-1-if-tests-skipped
-./FinanciallyCriticalUnitTests --run=MarketDataDispatcherTests --fail-fast
-)";
 
    ArgsParser _argsParser;
    // Function Pointers
@@ -160,7 +109,7 @@ Example ZenUnit command line arguments:
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith("ZenUnit command line usage error: Too many arguments.\n"));
-      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedCommandLineUsage, 1));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedCommandLineUsage, 1));
    }
 
    TEST1X1(Parse_InvalidArgument_PrintsErrorMessageAndCommandLineUsageAndExits1,
@@ -177,7 +126,7 @@ Example ZenUnit command line arguments:
       //
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Invalid argument \"" + invalidArgument + "\"\n"));
-      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedCommandLineUsage, 1));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedCommandLineUsage, 1));
    }
 
    TEST(Parse_DashDashHelp_PrintsCommandLineUsageAndExits0)
@@ -187,7 +136,7 @@ Example ZenUnit command line arguments:
       //
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
-      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedCommandLineUsage, 0));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedCommandLineUsage, 0));
    }
 
    TEST(Parse_DashDashVersion_PrintsVersionAndExits0)
@@ -197,7 +146,7 @@ Example ZenUnit command line arguments:
       //
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
-      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("v0.7.1", 0));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("0.7.1", 0));
    }
 
    TEST(Parse_AllArgumentsSpecifiedExpectForTestNameFilter_ReturnsZenUnitArgsWithAllFieldsSet)
@@ -334,7 +283,7 @@ Example ZenUnit command line arguments:
       const string expectedErrorMessage =
          "ZenUnit command line usage error: " + string("String::Split(arg, '=') unexpectedly returned not 2 for arg = \"" + arg + "\"") + "\n";
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedErrorMessage));
-      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedCommandLineUsage, 1));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedCommandLineUsage, 1));
    }
 
    TEST(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndCommandLineUsageAndExits1)
@@ -350,7 +299,7 @@ Example ZenUnit command line arguments:
       METALMOCK(ToIntMock.CalledOnceWith("-1_for_example"));
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Invalid --name=value argument value: " + InvalidTimesArg + "\n"));
-      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedCommandLineUsage, 1));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedCommandLineUsage, 1));
    }
 
    TEST(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
@@ -397,14 +346,15 @@ Example ZenUnit command line arguments:
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
-      const string unrecognizedNameArg = "-" + ZenUnit::Random<string>() + "=" + ZenUnit::Random<string>();
+      const string unrecognizedNameArg = String::Concat('-', ZenUnit::Random<string>(), '=', ZenUnit::Random<string>());
       const vector<string> stringArgs{ _testProgramPath, unrecognizedNameArg };
       //
       THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
-      METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
-         "ZenUnit command line usage error: Unrecognized --name=value argument: " + unrecognizedNameArg + "\n"));
-      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(_expectedCommandLineUsage, 1));
+      const string expectedErrorMessage = String::Concat(
+         "ZenUnit command line usage error: Unrecognized --name=value argument: ", unrecognizedNameArg, '\n');
+      METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedErrorMessage));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedCommandLineUsage, 1));
    }
 
    TEST(SetRandomSeedIfNotSetByUser_RandomSeedSetByUser_DoesNothing)

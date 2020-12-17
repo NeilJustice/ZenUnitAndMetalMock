@@ -1,10 +1,18 @@
 #include "pch.h"
+#include "ZenUnitLibraryTests/ValueTypes/Args/ExpectedCommandLineUsage.h"
 
 namespace ZenUnit
 {
    TESTS(ZenUnitArgsTests)
+   AFACT(VersionNumber_IsExpectedString)
    AFACT(DefaultConstructor_SetsFieldsToDefaults)
+   AFACT(CommandLineUsage_IsExpectedString)
    EVIDENCE
+
+   TEST(VersionNumber_IsExpectedString)
+   {
+      ARE_EQUAL("0.7.1", ZenUnit::VersionNumber);
+   }
 
    TEST(DefaultConstructor_SetsFieldsToDefaults)
    {
@@ -23,6 +31,11 @@ namespace ZenUnit
       expectedDefaultZenUnitArgs.randomSeedSetByUser = false;
       expectedDefaultZenUnitArgs.maxTestMilliseconds = 0;
       ARE_EQUAL(expectedDefaultZenUnitArgs, defaultZenUnitArgs);
+   }
+
+   TEST(CommandLineUsage_IsExpectedString)
+   {
+      ARE_EQUAL(ExpectedCommandLineUsage, ZenUnitArgs::CommandLineUsage);
    }
 
    RUN_TESTS(ZenUnitArgsTests)
