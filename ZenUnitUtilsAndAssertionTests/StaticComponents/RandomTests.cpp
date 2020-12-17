@@ -9,6 +9,7 @@ namespace ZenUnit
    AFACT(Random_TIsAnUnorderedMap_ReturnsRandomUnorderedMap)
    AFACT(RandomNon0_ReturnsRandomValueBetweenMinAndMaxForThatTypeButNeverZero)
    AFACT(Random0OrGreater_ReturnsRandomIntegerBetween0AndTMaxValue)
+   AFACT(RandomNegative_ReturnsRandomINtegerBetweenTMinValueAndNegative1)
    AFACT(Random_Float_ReturnsRandomFloat)
    AFACT(Random_Double_ReturnsRandomDouble)
    AFACT(Random_ConstCharPointer_ReturnsRandomConstCharPointer1Through10)
@@ -81,6 +82,15 @@ namespace ZenUnit
 
       const long long randomLongLongBetween0AndGreater = Random0OrGreater<long long>();
       IS_TRUE(randomLongLongBetween0AndGreater >= 0);
+   }
+
+   TEST(RandomNegative_ReturnsRandomINtegerBetweenTMinValueAndNegative1)
+   {
+      const int randomIntBetweenMinValueAndNegative1 = RandomNegative<int>();
+      IS_TRUE(randomIntBetweenMinValueAndNegative1 <= -1);
+
+      const long long randomLongLongBetweenMinValueAndNegative1 = RandomNegative<long long>();
+      IS_TRUE(randomLongLongBetweenMinValueAndNegative1 <= -1);
    }
 
    TEST(Random_Float_ReturnsRandomFloat)

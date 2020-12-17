@@ -7213,6 +7213,14 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       return randomTBetween0AndMaxValue;
    }
 
+   template<typename T>
+   T RandomNegative()
+   {
+      constexpr T minTValue = std::numeric_limits<T>::min();
+      const T randomTBetweenMinValueAndNegative1 = RandomBetween<T>(minTValue, -1);
+      return randomTBetweenMinValueAndNegative1;
+   }
+
    template<>
    inline float Random<float>()
    {
