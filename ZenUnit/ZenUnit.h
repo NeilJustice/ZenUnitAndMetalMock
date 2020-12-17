@@ -2,12 +2,14 @@
 // https://github.com/NeilJustice/ZenUnitAndMetalMock
 // MIT License
 
+#ifndef ZENUNITDOTH
+#define ZENUNITDOTH
+
 namespace ZenUnit
 {
    inline const char* const VersionNumber = "v0.7.1";
 }
 
-#pragma once
 #include <array>
 #include <functional>
 #include <iostream>
@@ -17,7 +19,6 @@ namespace ZenUnit
 #include <sstream>
 #include <typeindex>
 #include <unordered_set>
-
 #if defined __linux__ || defined __APPLE__
 #include <climits>
 #include <cxxabi.h>
@@ -7593,3 +7594,5 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       return exitCode;
    }
 }
+
+#endif
