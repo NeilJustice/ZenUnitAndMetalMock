@@ -57,13 +57,14 @@ namespace fs = std::filesystem;
 #define NOINLINE __declspec(noinline)
 #endif
 
-// COMMA is for those times when parentheses are not enough parsing disambiguation for the compiler
+// COMMA is for those special occasions when parentheses are not enough parsing disambiguation for the compiler
 #define COMMA ,
 
-// Example COMMA usage in an argument to ZenUnit assertion IS_TRUE to "escape" std::unordered_map's comma:
-// IS_TRUE(has_ZenUnitPrinter<std::unordered_map<int COMMA int>>::value);
+// Example ZenUnit COMMA usage to "escape" std::unordered_map's comma within the IS_TRUE assertion:
+// IS_TRUE(ZenUnit::has_ZenUnitPrinter<std::unordered_map<int COMMA int>>::value);
 
-// Example COMMA usage when defining a MetalMock mock class to "escape" std::unordered_map's comma:
+// Example MetalMock COMMA usage to "escape" std::unordered_map's comma
+// within the MetalMock object defining macro METALMOCK_NONVOID3_CONST:
 // class Component
 // {
 // public:
