@@ -8,6 +8,7 @@ namespace ZenUnit
    AFACT(Random_TIsAPair_ReturnsRandomPair)
    AFACT(Random_TIsAnUnorderedMap_ReturnsRandomUnorderedMap)
    AFACT(RandomNon0_ReturnsRandomValueBetweenMinAndMaxForThatTypeButNeverZero)
+   AFACT(Random0OrGreater_ReturnsRandomIntegerBetween0AndTMaxValue)
    AFACT(Random_Float_ReturnsRandomFloat)
    AFACT(Random_Double_ReturnsRandomDouble)
    AFACT(Random_ConstCharPointer_ReturnsRandomConstCharPointer1Through10)
@@ -71,6 +72,15 @@ namespace ZenUnit
       RandomNon0<size_t>();
       enum EnumType {};
       RandomNon0<EnumType>();
+   }
+
+   TEST(Random0OrGreater_ReturnsRandomIntegerBetween0AndTMaxValue)
+   {
+      const int randomIntBetween0AndGreater = Random0OrGreater<int>();
+      IS_TRUE(randomIntBetween0AndGreater >= 0);
+
+      const long long randomLongLongBetween0AndGreater = Random0OrGreater<long long>();
+      IS_TRUE(randomLongLongBetween0AndGreater >= 0);
    }
 
    TEST(Random_Float_ReturnsRandomFloat)

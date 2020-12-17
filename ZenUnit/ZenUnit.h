@@ -7196,13 +7196,21 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    {
       static_assert(!std::is_same_v<T, std::string>);
       const T randomT = Random<T>();
-      static const T zeroT = static_cast<T>(0);
+      static const T zeroT = T(0);
       if (randomT == zeroT)
       {
-         static const T oneT = static_cast<T>(1);
+         static const T oneT = T(1);
          return oneT;
       }
       return randomT;
+   }
+
+   template<typename T>
+   T Random0OrGreater()
+   {
+      constexpr T maxTValue = std::numeric_limits<T>::max();
+      const T randomTBetween0AndMaxValue = RandomBetween<T>(0, maxTValue);
+      return randomTBetween0AndMaxValue;
    }
 
    template<>
