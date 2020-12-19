@@ -2270,16 +2270,16 @@ namespace ZenUnit
    };
 
    template<>
-   class TwoTypeEqualizer<int, size_t>
+   class TwoTypeEqualizer<int, unsigned long long>
    {
    public:
-      static void AssertEqual(int expectedInt, size_t actualSizeT)
+      static void AssertEqual(int expectedInt, unsigned long long actualUnsignedLongLong)
       {
          if (expectedInt < 0)
          {
             throw EqualizerException();
          }
-         Equalizer<size_t>::AssertEqual(static_cast<size_t>(expectedInt), actualSizeT);
+         Equalizer<unsigned long long>::AssertEqual(static_cast<unsigned long long>(expectedInt), actualUnsignedLongLong);
       }
    };
 
