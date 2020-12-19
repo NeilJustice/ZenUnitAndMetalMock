@@ -29,7 +29,7 @@ namespace ZenUnit
       std::numeric_limits<unsigned>::max(), "4294967295",
       std::numeric_limits<unsigned long long>::max(), "18446744073709551615")
    {
-      char outChars[64] = {};
+      char outChars[64]{};
       //
       ZenUnit::WriteUnsignedLongLongToCharArray(value, outChars);
       //

@@ -65,9 +65,10 @@ namespace ZenUnit
       ",", vector<string>{ "" },
       "1, 2, 3", vector<string>{"1", "2", "3"},
       "',', \",a,b,\",\n"
-"   \"1,',',3\" , 4", vector<string>{"','", "\",a,b,\"", "\"1,',',3\"", "4"})
+      "   \"1,',',3\" , 4", vector<string>{"','", "\",a,b,\"", "\"1,',',3\"", "4"})
    {
-      VECTORS_ARE_EQUAL(expectedReturnValue, String::SplitOnNonQuotedCommas(text));
+      const vector<string> splitText = String::SplitOnNonQuotedCommas(text);
+      VECTORS_ARE_EQUAL(expectedReturnValue, splitText);
    }
 
    TEST(ToInt_EmptyString_ThrowsInvalidArgument)

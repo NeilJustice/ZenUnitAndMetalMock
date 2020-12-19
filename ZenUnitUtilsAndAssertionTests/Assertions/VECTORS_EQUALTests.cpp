@@ -17,7 +17,7 @@ namespace ZenUnit
 
    TEST(VectorSizesAreEqualAndVectorElementsAreEqual_DoesNotThrowException)
    {
-      vector<T> expectedVector;;
+      vector<T> expectedVector;
       vector<T> actualVector;
 
       VECTORS_ARE_EQUAL(expectedVector, actualVector);

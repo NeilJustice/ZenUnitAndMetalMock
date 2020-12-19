@@ -12,8 +12,11 @@ namespace MetalMock
    {
       ConsoleMock consoleMock;
       consoleMock.WriteLineMock.Expect();
-      consoleMock.WriteLine("message");
-      METALMOCK(consoleMock.WriteLineMock.CalledOnceWith("message"));
+      const string message = ZenUnit::Random<string>();
+      //
+      consoleMock.WriteLine(message);
+      //
+      METALMOCK(consoleMock.WriteLineMock.CalledOnceWith(message));
    }
 
    TEST(METALMOCKWrappedAssertionThrows_RethrowsMETALMOCKWrappedAnomaly)
@@ -29,7 +32,9 @@ namespace MetalMock
 "  Actual: \"message\"\n"
 " Message: \"virtual void ZenUnit::Console::WriteLine(string_view) const\"\n"
 "File.cpp(1)";
-      THROWS_EXCEPTION(METALMOCK(consoleMock.WriteLineMock.CalledOnceWith(expectedMessage)), Anomaly, expectedWhat);
+      THROWS_EXCEPTION(
+         METALMOCK(consoleMock.WriteLineMock.CalledOnceWith(expectedMessage)),
+         Anomaly, expectedWhat);
    }
 
    RUN_TESTS(METALMOCKTests)

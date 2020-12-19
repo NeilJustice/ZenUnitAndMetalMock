@@ -38,11 +38,12 @@ namespace ZenUnit
    EVIDENCE
 
    unique_ptr<TestNXN<TestingTestClass, N, int>> _testNXN;
-   // Function Callers
+   // Function Pointers
    METALMOCK_VOID1_FREE(exit, int)
    METALMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetZenUnitArgs)
    using CallerOfTestNameFilterMatchesTestCaseMockType = ThreeArgAnyerMock<
       std::vector<TestNameFilter>, bool(*)(const TestNameFilter&, const FullTestName&, size_t), const FullTestName&, size_t>;
+   // Function Callers
    CallerOfTestNameFilterMatchesTestCaseMockType* _callerOfTestNameFilterMatchesTestCaseMock = nullptr;
    // Constant Components
    ConsoleMock* _consoleMock = nullptr;
@@ -54,9 +55,10 @@ namespace ZenUnit
    STARTUP
    {
       _testNXN = make_unique<TestNXN<TestingTestClass, N, int>>("", "", "", 0);
-      // Function Callers
+      // Function Pointers
       _testNXN->_call_exit = BIND_1ARG_METALMOCK_OBJECT(exitMock);
       _testNXN->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(GetZenUnitArgsMock);
+      // Function Callers
       _testNXN->_callerOfTestNameFilterMatchesTestCase.reset(_callerOfTestNameFilterMatchesTestCaseMock = new CallerOfTestNameFilterMatchesTestCaseMockType);
       // Constant Components
       _testNXN->_console.reset(_consoleMock = new ConsoleMock);
@@ -67,11 +69,12 @@ namespace ZenUnit
       TestNXN<TestingTestClass, 2, int, int, int, int> test2X2(
          _testClassName.c_str(), _testName.c_str(), _testCaseArgsText.c_str(), 0, 0, 0, 0);
 
-      // Function Callers
+      // Function Pointers
       STD_FUNCTION_TARGETS(::exit, test2X2._call_exit);
       STD_FUNCTION_TARGETS(ITestCaseNumberGenerator::FactoryNew, test2X2._call_ITestCaseNumberGeneratorFactoryNew);
       STD_FUNCTION_TARGETS(String::SplitOnNonQuotedCommas, test2X2._call_String_SplitOnNonQuotedCommas);
       STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetZenUnitArgs, test2X2._call_ZenUnitTestRunner_GetZenUnitArgs);
+      // Function Callers
       DELETE_TO_ASSERT_NEWED(test2X2._callerOfTestNameFilterMatchesTestCase);
       // Constant Components
       DELETE_TO_ASSERT_NEWED(test2X2._console);

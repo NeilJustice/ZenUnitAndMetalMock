@@ -71,9 +71,9 @@ namespace MetalMock
 
    TEST2X2(CalledOnce_SetsAssertedTrue_FunctionWasCalledOnce_DoesNotThrowException,
       size_t numberOfCalls, bool expectThrow,
-      size_t(0), true,
-      size_t(1), false,
-      size_t(2), true)
+      0ULL, true,
+      1ULL, false,
+      2ULL, true)
    {
       IS_FALSE(_zeroArgumentMetalMocker->_wasAsserted);
       //

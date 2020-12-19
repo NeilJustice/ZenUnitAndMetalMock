@@ -49,7 +49,7 @@ namespace ZenUnit
    TESTS(ARE_NOT_EQUALTests)
    AFACT(OneTypeEqualizerDefined_CallsIt)
    AFACT(TwoTypeEqualizerDefined_CallsIt)
-   AFACT(BothOneAndTwoTypeEqualizersDefined_CallsTheOneTypeEqualizer)
+   AFACT(BothOneAndTwoTypeEqualizersAreDefined_CallsTheOneTypeEqualizer)
    AFACT(Int32sAreNotEqual_DoesNotThrowException)
    AFACT(IntLiteralsAreEqual_ThrowsAnomaly)
    AFACT(IntVariablesAreEqual_ThrowsAnomaly__MessagesTestCase)
@@ -86,7 +86,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(BothOneAndTwoTypeEqualizersDefined_CallsTheOneTypeEqualizer)
+   TEST(BothOneAndTwoTypeEqualizersAreDefined_CallsTheOneTypeEqualizer)
    {
       const EqualizerBothOneAndTwoTypeTestStruct_AreNotEqualTests notExpected{}, actual{};
       THROWS_EXCEPTION(ARE_NOT_EQUAL(notExpected, actual), Anomaly, TestUtil::NewlineConcat("",

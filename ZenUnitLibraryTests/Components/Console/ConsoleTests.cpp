@@ -20,11 +20,14 @@ namespace ZenUnit
    EVIDENCE
 
    Console _console;
-   ConsoleColorerMock* _consoleColorerMock = nullptr;
-   const string _message = Random<string>();
-#if _WIN32
+   // Function Pointers
+#if defined _WIN32
    METALMOCK_NONVOID0_FREE(int, _getch)
 #endif
+   // Mutable Components
+   ConsoleColorerMock* _consoleColorerMock = nullptr;
+
+   const string _message = Random<string>();
 
    class ConsoleSelfMocked : public Metal::Mock<Console>
    {
@@ -39,7 +42,7 @@ namespace ZenUnit
    STARTUP
    {
       _console._consoleColorer.reset(_consoleColorerMock = new ConsoleColorerMock);
-#if _WIN32
+#if defined _WIN32
       _console._call_getch = BIND_0ARG_METALMOCK_OBJECT(_getchMock);
 #endif
    }
@@ -47,12 +50,14 @@ namespace ZenUnit
    TEST(Constructor_NewsConsoleColorer_SetsFunctionPointers)
    {
       Console console;
-      DELETE_TO_ASSERT_NEWED(console._consoleColorer);
+      // Function Pointers
       STD_FUNCTION_TARGETS(::exit, console._call_exit);
 #if defined _WIN32
-      STD_FUNCTION_TARGETS(::IsDebuggerPresent, console._call_IsDebuggerPresent);
       STD_FUNCTION_TARGETS(_getch, console._call_getch);
+      STD_FUNCTION_TARGETS(::IsDebuggerPresent, console._call_IsDebuggerPresent);
 #endif
+      // Mutable Components
+      DELETE_TO_ASSERT_NEWED(console._consoleColorer);
    }
 
    TEST(Write_CallsWriteColorWithWhite)

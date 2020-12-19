@@ -106,7 +106,7 @@ namespace ZenUnit
       _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
       const vector<string> stringArgs(numberOfStringArgs);
       //
-      THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS_EXCEPTION(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith("ZenUnit command line usage error: Too many arguments.\n"));
       METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedCommandLineUsage, 1));
@@ -122,7 +122,7 @@ namespace ZenUnit
       _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, invalidArgument };
       //
-      THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS_EXCEPTION(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Invalid argument \"" + invalidArgument + "\"\n"));
@@ -134,7 +134,7 @@ namespace ZenUnit
       _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, "--help" };
       //
-      THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS_EXCEPTION(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedCommandLineUsage, 0));
    }
@@ -144,7 +144,7 @@ namespace ZenUnit
       _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, "--version" };
       //
-      THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS_EXCEPTION(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("0.7.1", 0));
    }
@@ -278,7 +278,7 @@ namespace ZenUnit
       _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, arg };
       //
-      THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS_EXCEPTION(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       const string expectedErrorMessage =
          "ZenUnit command line usage error: " + string("String::Split(arg, '=') unexpectedly returned not 2 for arg = \"" + arg + "\"") + "\n";
@@ -294,7 +294,7 @@ namespace ZenUnit
       const string InvalidTimesArg = "--test-runs=-1_for_example";
       const vector<string> stringArgs { _testProgramPath, InvalidTimesArg };
       //
-      THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS_EXCEPTION(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       METALMOCK(ToIntMock.CalledOnceWith("-1_for_example"));
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
@@ -349,7 +349,7 @@ namespace ZenUnit
       const string unrecognizedNameArg = String::Concat('-', ZenUnit::Random<string>(), '=', ZenUnit::Random<string>());
       const vector<string> stringArgs{ _testProgramPath, unrecognizedNameArg };
       //
-      THROWS_EXCEPTION(const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS_EXCEPTION(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
       const string expectedErrorMessage = String::Concat(
          "ZenUnit command line usage error: Unrecognized --name=value argument: ", unrecognizedNameArg, '\n');

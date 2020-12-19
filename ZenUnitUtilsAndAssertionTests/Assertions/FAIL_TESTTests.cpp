@@ -3,24 +3,25 @@
 namespace ZenUnit
 {
    TESTS(FAIL_TESTTests)
-   AFACT(StringLiteralBecause_ThrowsAnomaly)
-   AFACT(StringVariableBecause_MessagesTestCase_ThrowsAnomaly)
+   AFACT(ThrowsAnomaly__StringLiteralTestFailureReasonTestCase)
+   AFACT(ThrowsAnomaly__StringVariableTestFailureReasonTestCase)
    EVIDENCE
 
-   TEST(StringLiteralBecause_ThrowsAnomaly)
+   TEST(ThrowsAnomaly__StringLiteralTestFailureReasonTestCase)
    {
-      THROWS_EXCEPTION(FAIL_TEST("Because"), Anomaly, TestUtil::NewlineConcat("",
-" Failed: FAIL_TEST(\"Because\")",
+      THROWS_EXCEPTION(FAIL_TEST("Test failure reason A"), Anomaly, TestUtil::NewlineConcat("",
+" Failed: FAIL_TEST(\"Test failure reason A\")",
+"Because: \"Test failure reason A\"",
 "File.cpp(1)"));
    }
 
-   TEST(StringVariableBecause_MessagesTestCase_ThrowsAnomaly)
+   TEST(ThrowsAnomaly__StringVariableTestFailureReasonTestCase)
    {
-      const string Because = "BecauseValue";
+      const string testFailureReason = "Test failure reason B";
       const string messageA = "A", messageB = "B";
-      THROWS_EXCEPTION(FAIL_TEST(Because, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
-" Failed: FAIL_TEST(Because, messageA, messageB)",
-"Because: \"BecauseValue\"",
+      THROWS_EXCEPTION(FAIL_TEST(testFailureReason, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+" Failed: FAIL_TEST(testFailureReason, messageA, messageB)",
+"Because: \"Test failure reason B\"",
 "Message: \"A\", \"B\"",
 "File.cpp(1)"));
    }

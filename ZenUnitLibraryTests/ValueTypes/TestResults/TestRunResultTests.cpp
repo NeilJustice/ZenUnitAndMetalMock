@@ -29,9 +29,7 @@ namespace ZenUnit
    EVIDENCE
 
    TestRunResult _testRunResult;
-   // Constant Components
-   const ConsoleMock* _consoleMock = nullptr;
-
+   // Function Callers
    using TypedefMemberForEacherSkippedTestsMock = MemberForEacherMock<vector<string>,
       TestRunResult, void(TestRunResult::*)(const string&) const>;
    TypedefMemberForEacherSkippedTestsMock* _memberForEacherSkippedTestsMock = nullptr;
@@ -39,19 +37,21 @@ namespace ZenUnit
    using TypedefMemberForEacherTestClassResultsMock = MemberForEacherMock<vector<TestClassResult>,
       TestRunResult, void(TestRunResult::*)(const TestClassResult&) const>;
    TypedefMemberForEacherTestClassResultsMock* _memberForEacherTestClassResultsMock = nullptr;
-
+   // Constant Components
+   const ConsoleMock* _consoleMock = nullptr;
    const WatchMock* _watchMock = nullptr;
    // Mutable Components
    TestFailureNumbererMock* _testFailureNumbererMock = nullptr;
 
    STARTUP
    {
-      // Constant Components
-      _testRunResult._console.reset(_consoleMock = new ConsoleMock);
+      // Function Callers
       _testRunResult._memberForEacherSkippedTests.reset(
          _memberForEacherSkippedTestsMock = new TypedefMemberForEacherSkippedTestsMock);
       _testRunResult._memberForEacherTestClassResults.reset(
          _memberForEacherTestClassResultsMock = new TypedefMemberForEacherTestClassResultsMock);
+      // Constant Components
+      _testRunResult._console.reset(_consoleMock = new ConsoleMock);
       _testRunResult._watch.reset(_watchMock = new WatchMock);
       // Mutable Components
       _testRunResult._testFailureNumberer.reset(_testFailureNumbererMock = new TestFailureNumbererMock);
@@ -60,15 +60,16 @@ namespace ZenUnit
    TEST(DefaultConstructor_NewsComponents_SetsFieldsToDefaultValues)
    {
       TestRunResult testRunResult;
-      // Constant Components
-      DELETE_TO_ASSERT_NEWED(testRunResult._console);
+      // Function Callers
       DELETE_TO_ASSERT_NEWED(testRunResult._memberForEacherSkippedTests);
       DELETE_TO_ASSERT_NEWED(testRunResult._memberForEacherTestClassResults);
       DELETE_TO_ASSERT_NEWED(testRunResult._threeArgForEacher);
+      // Constant Components
+      DELETE_TO_ASSERT_NEWED(testRunResult._console);
       DELETE_TO_ASSERT_NEWED(testRunResult._watch);
       // Mutable Components
       DELETE_TO_ASSERT_NEWED(testRunResult._testFailureNumberer);
-
+      // Mutable Fields
       IS_ZERO(testRunResult._numberOfFailedTestCases);
       IS_EMPTY(testRunResult._skippedFullTestNamesAndSkipReasons);
       IS_EMPTY(testRunResult._skippedTestClassNamesAndSkipReasons);

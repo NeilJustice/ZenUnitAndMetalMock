@@ -49,12 +49,12 @@ namespace ZenUnit
    TESTS(ARE_EQUALTests)
    AFACT(OneTypeEqualizerDefined_CallsIt)
    AFACT(TwoTypeEqualizerDefined_CallsIt)
-   AFACT(BothOneAndTwoTypeEqualizersDefined_CallsTheOneTypeEqualizer)
+   AFACT(BothOneAndTwoTypeEqualizersAreDefined_CallsTheOneTypeEqualizer)
    AFACT(Int32sAreEqual_DoesNotThrowException)
-   AFACT(IntLiteralsNotEqual_ThrowsAnomaly)
-   AFACT(IntVariablesNotEqual_ThrowsAnomaly_MessagesTestCase)
-   AFACT(StringsNotEqual_ThrowsWithStringsInQuotesToConfirmedToStringed)
-   AFACT(StringViewsNotEqual_ThrowsWithStringViewsInQuotesToConfirmedToStringed)
+   AFACT(IntLiteralsAreNotEqual_ThrowsAnomaly)
+   AFACT(IntVariablesAreNotEqual_ThrowsAnomaly__MessagesTestCase)
+   AFACT(StdStringsAreNotEqual_ThrowsAnomaly)
+   AFACT(StringViewsAreNotEqual_ThrowsAnomaly)
    AFACT(EqualizerBothOneAndTwoTypeTestStruct_CodeCoverage)
    EVIDENCE
 
@@ -86,7 +86,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(BothOneAndTwoTypeEqualizersDefined_CallsTheOneTypeEqualizer)
+   TEST(BothOneAndTwoTypeEqualizersAreDefined_CallsTheOneTypeEqualizer)
    {
       const EqualizerBothOneAndTwoTypeTestStruct_AreEqualTests expected{}, actual{};
       THROWS_EXCEPTION(ARE_EQUAL(expected, actual), Anomaly, TestUtil::NewlineConcat("",
@@ -111,7 +111,7 @@ namespace ZenUnit
       ARE_EQUAL(numeric_limits<int>::max(), numeric_limits<int>::max());
    }
 
-   TEST(IntLiteralsNotEqual_ThrowsAnomaly)
+   TEST(IntLiteralsAreNotEqual_ThrowsAnomaly)
    {
       THROWS_EXCEPTION(ARE_EQUAL(0, 1), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARE_EQUAL(0, 1)",
@@ -120,7 +120,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(IntVariablesNotEqual_ThrowsAnomaly_MessagesTestCase)
+   TEST(IntVariablesAreNotEqual_ThrowsAnomaly__MessagesTestCase)
    {
       const int expected = 0;
       const int actual = 1;
@@ -133,7 +133,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(StringsNotEqual_ThrowsWithStringsInQuotesToConfirmedToStringed)
+   TEST(StdStringsAreNotEqual_ThrowsAnomaly)
    {
       const string expected = "expected";
       const string actual = "actual";
@@ -144,7 +144,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(StringViewsNotEqual_ThrowsWithStringViewsInQuotesToConfirmedToStringed)
+   TEST(StringViewsAreNotEqual_ThrowsAnomaly)
    {
       const string_view expected = "expected";
       const string_view actual = "actual";
