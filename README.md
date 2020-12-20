@@ -230,7 +230,7 @@ std::string FizzBuzz(int endNumber)
          fizzBuzzSequenceBuilder << ' ';
       }
    }
-   const std::string fizzBuzzSequence(fizzBuzzSequenceBuilder.str());
+   std::string fizzBuzzSequence(fizzBuzzSequenceBuilder.str());
    return fizzBuzzSequence;
 }
 
