@@ -470,57 +470,57 @@ Example ZenUnit command line arguments:
 // Defines a non-value-parameterized test.
 #define TEST(testName) void testName()
 
-#define REGISTER_TESTNXN_ARGS(testName, ...) \
+#define REGISTER_TESTNXN(testName, ...) \
    ZENUNIT_PMFTOKEN(&TestClassType::testName), &TestClassType::testName, #testName, #__VA_ARGS__, __VA_ARGS__
 
 // Defines a 1-by-1 value-parameterized test.
 #define TEST1X1(TestName, arg1Type, ...) \
-   const std::nullptr_t ZenUnit_Test1X1Registrar_##TestName = TestClassType::RegisterTest1X1(REGISTER_TESTNXN_ARGS(TestName, __VA_ARGS__)); \
+   const std::nullptr_t ZenUnit_Test1X1Registrar_##TestName = TestClassType::RegisterTest1X1(REGISTER_TESTNXN(TestName, __VA_ARGS__)); \
    void TestName([[maybe_unused]] size_t zenUnitTestCase, arg1Type)
 
 // Defines a 2-by-2 value-parameterized test.
 #define TEST2X2(TestName, arg1Type, arg2Type, ...) \
-   const std::nullptr_t ZenUnit_Test2X2Registrar_##TestName = TestClassType::RegisterTest2X2(REGISTER_TESTNXN_ARGS(TestName, __VA_ARGS__)); \
+   const std::nullptr_t ZenUnit_Test2X2Registrar_##TestName = TestClassType::RegisterTest2X2(REGISTER_TESTNXN(TestName, __VA_ARGS__)); \
    void TestName([[maybe_unused]] size_t zenUnitTestCase, arg1Type, arg2Type)
 
 // Defines a 3-by-3 value-parameterized test.
 #define TEST3X3(TestName, arg1Type, arg2Type, arg3Type, ...) \
-   const std::nullptr_t ZenUnit_Test3X3Registrar_##TestName = TestClassType::RegisterTest3X3(REGISTER_TESTNXN_ARGS(TestName, __VA_ARGS__)); \
+   const std::nullptr_t ZenUnit_Test3X3Registrar_##TestName = TestClassType::RegisterTest3X3(REGISTER_TESTNXN(TestName, __VA_ARGS__)); \
    void TestName([[maybe_unused]] size_t zenUnitTestCase, arg1Type, arg2Type, arg3Type)
 
 // Defines a 4-by-4 value-parameterized test.
 #define TEST4X4(TestName, arg1Type, arg2Type, arg3Type, arg4Type, ...) \
-   const std::nullptr_t ZenUnit_Test4X4Registrar_##TestName = TestClassType::RegisterTest4X4(REGISTER_TESTNXN_ARGS(TestName, __VA_ARGS__)); \
+   const std::nullptr_t ZenUnit_Test4X4Registrar_##TestName = TestClassType::RegisterTest4X4(REGISTER_TESTNXN(TestName, __VA_ARGS__)); \
    void TestName([[maybe_unused]] size_t zenUnitTestCase, arg1Type, arg2Type, arg3Type, arg4Type)
 
 // Defines a 5-by-5 value-parameterized test.
 #define TEST5X5(TestName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, ...) \
-   const std::nullptr_t ZenUnit_Test5X5Registrar_##TestName = TestClassType::RegisterTest5X5(REGISTER_TESTNXN_ARGS(TestName, __VA_ARGS__)); \
+   const std::nullptr_t ZenUnit_Test5X5Registrar_##TestName = TestClassType::RegisterTest5X5(REGISTER_TESTNXN(TestName, __VA_ARGS__)); \
    void TestName([[maybe_unused]] size_t zenUnitTestCase, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type)
 
 // Defines a 6-by-6 value-parameterized test.
 #define TEST6X6(TestName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, ...) \
-   const std::nullptr_t ZenUnit_Test6X6Registrar_##TestName = TestClassType::RegisterTest6X6(REGISTER_TESTNXN_ARGS(TestName, __VA_ARGS__)); \
+   const std::nullptr_t ZenUnit_Test6X6Registrar_##TestName = TestClassType::RegisterTest6X6(REGISTER_TESTNXN(TestName, __VA_ARGS__)); \
    void TestName([[maybe_unused]] size_t zenUnitTestCase, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type)
 
 // Defines a 7-by-7 value-parameterized test.
 #define TEST7X7(TestName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, ...) \
-   const std::nullptr_t ZenUnit_Test7X7Registrar_##TestName = TestClassType::RegisterTest7X7(REGISTER_TESTNXN_ARGS(TestName, __VA_ARGS__)); \
+   const std::nullptr_t ZenUnit_Test7X7Registrar_##TestName = TestClassType::RegisterTest7X7(REGISTER_TESTNXN(TestName, __VA_ARGS__)); \
    void TestName([[maybe_unused]] size_t zenUnitTestCase, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type)
 
 // Defines a 8-by-8 value-parameterized test.
 #define TEST8X8(TestName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, ...) \
-   const std::nullptr_t ZenUnit_Test8X8Registrar_##TestName = TestClassType::RegisterTest8X8(REGISTER_TESTNXN_ARGS(TestName, __VA_ARGS__)); \
+   const std::nullptr_t ZenUnit_Test8X8Registrar_##TestName = TestClassType::RegisterTest8X8(REGISTER_TESTNXN(TestName, __VA_ARGS__)); \
    void TestName([[maybe_unused]] size_t zenUnitTestCase, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type)
 
 // Defines a 9-by-9 value-parameterized test.
 #define TEST9X9(TestName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, ...) \
-   const std::nullptr_t ZenUnit_Test9X9Registrar_##TestName = TestClassType::RegisterTest9X9(REGISTER_TESTNXN_ARGS(TestName, __VA_ARGS__)); \
+   const std::nullptr_t ZenUnit_Test9X9Registrar_##TestName = TestClassType::RegisterTest9X9(REGISTER_TESTNXN(TestName, __VA_ARGS__)); \
    void TestName([[maybe_unused]] size_t zenUnitTestCase, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type)
 
 // Defines a 10-by-10 value-parameterized test.
 #define TEST10X10(TestName, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type, ...) \
-   const std::nullptr_t ZenUnit_Test10X10Registrar_##TestName = TestClassType::RegisterTest10X10(REGISTER_TESTNXN_ARGS(TestName, __VA_ARGS__)); \
+   const std::nullptr_t ZenUnit_Test10X10Registrar_##TestName = TestClassType::RegisterTest10X10(REGISTER_TESTNXN(TestName, __VA_ARGS__)); \
    void TestName([[maybe_unused]] size_t zenUnitTestCase, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type, arg6Type, arg7Type, arg8Type, arg9Type, arg10Type)
 
 // Registers a test class to be run when ZenUnit::RunTests(int argc, char* argv[]) is called.
