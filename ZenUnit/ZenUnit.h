@@ -7001,6 +7001,30 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
    };
 
+   template<typename FirstType, typename SecondType>
+   class Equalizer<std::pair<FirstType, SecondType>>
+   {
+   public:
+      static void AssertEqual(
+         const std::pair<FirstType, SecondType>& expectedPair,
+         const std::pair<FirstType, SecondType>& actualPair)
+      {
+         PAIRS_ARE_EQUAL(expectedPair, actualPair);
+      }
+   };
+
+   template<typename T>
+   class Equalizer<std::vector<T>>
+   {
+   public:
+      static void AssertEqual(
+         const std::vector<T>& expectedVector,
+         const std::vector<T>& actualVector)
+      {
+         VECTORS_ARE_EQUAL(expectedVector, actualVector);
+      }
+   };
+
    template<
       typename KeyType,
       typename ValueType,
@@ -7031,16 +7055,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          const std::unordered_map<KeyType, ValueType, HasherType, KeyEqualityComparator, AllocatorType>& actualStdUnorderedMap)
       {
          MAPS_ARE_EQUAL(expectedStdUnorderedMap, actualStdUnorderedMap);
-      }
-   };
-
-   template<typename T>
-   class Equalizer<std::vector<T>>
-   {
-   public:
-      static void AssertEqual(const std::vector<T>& expectedVector, const std::vector<T>& actualVector)
-      {
-         VECTORS_ARE_EQUAL(expectedVector, actualVector);
       }
    };
 

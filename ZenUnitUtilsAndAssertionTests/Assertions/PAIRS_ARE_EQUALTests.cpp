@@ -3,17 +3,18 @@
 namespace ZenUnit
 {
    TESTS(PAIRS_ARE_EQUALTests)
-   AFACT(FirstValueIsEqual_SecondValueIsEqual_DoesNotThrowException)
-   AFACT(FirstValueIsEqual_SecondValueIsEqual_DoesNotThrowException__UserTypeTestCase)
+   AFACT(FirstAndSecondValuesAreEqual_DoesNotThrowException)
+   AFACT(FirstAndSecondValuesAreEqual_DoesNotThrowException__UserTypeTestCase)
    AFACT(FirstValueIsNotEqual_SecondValueIsEqual_ThrowsAnomaly)
    AFACT(FirstValueIsNotEqual_SecondValueIsEqual_ThrowsAnomaly__MessagesTestCase)
    AFACT(FirstValueIsEqual_SecondValueIsNotEqual_ThrowsAnomaly)
    AFACT(FirstValueIsNotEqual_SecondValueIsNotEqual_ThrowsAnomaly)
-   AFACT(FirstValueIsNotEqual_SecondValueIsEqual_ThrowsAnomaly_UserTypeTestCase)
+   AFACT(FirstValueIsNotEqual_SecondValueIsEqual_ThrowsAnomaly__UserTypeTestCase)
    AFACT(FirstValueIsEqual_SecondValueIsNotEqual_ThrowsAnomaly__UserTypeTestCase)
+   AFACT(MetalMockObjectWithPairOfOnlyZenUnitEqualizerUserTypes_CallsZenUnitEqualizerOnlyZenUnitEqualizerUserType)
    EVIDENCE
 
-   TEST(FirstValueIsEqual_SecondValueIsEqual_DoesNotThrowException)
+   TEST(FirstAndSecondValuesAreEqual_DoesNotThrowException)
    {
       const pair<int, int> constExpectedPair;
       const pair<int, int> constActualPair;
@@ -27,7 +28,7 @@ namespace ZenUnit
       PAIRS_ARE_EQUAL(nonConstActualPair, constExpectedPair);
    }
 
-   TEST(FirstValueIsEqual_SecondValueIsEqual_DoesNotThrowException__UserTypeTestCase)
+   TEST(FirstAndSecondValuesAreEqual_DoesNotThrowException__UserTypeTestCase)
    {
       const UserType value1 = ZenUnit::Random<UserType>();
       const UserType value2 = ZenUnit::Random<UserType>();
@@ -98,7 +99,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(FirstValueIsNotEqual_SecondValueIsEqual_ThrowsAnomaly_UserTypeTestCase)
+   TEST(FirstValueIsNotEqual_SecondValueIsEqual_ThrowsAnomaly__UserTypeTestCase)
    {
       const pair<UserType, UserType> expectedPair{1,0};
       const pair<UserType, UserType> actualPair{0,0};
@@ -126,6 +127,33 @@ namespace ZenUnit
 "  Actual: UserType@1",
 "File.cpp(1)",
 "File.cpp(1)"));
+   }
+
+   TEST(MetalMockObjectWithPairOfOnlyZenUnitEqualizerUserTypes_CallsZenUnitEqualizerOnlyZenUnitEqualizerUserType)
+   {
+      class Component
+      {
+      public:
+         virtual void FunctionThatTakesAPair(
+            const pair<OnlyZenUnitEqualizerUserType, OnlyZenUnitEqualizerUserType>&) const {}
+         virtual ~Component() = default;
+      };
+
+      class ComponentMock : public Metal::Mock<Component>
+      {
+      public:
+         METALMOCK_VOID1_CONST(FunctionThatTakesAPair,
+            const pair<OnlyZenUnitEqualizerUserType COMMA OnlyZenUnitEqualizerUserType>&)
+      };
+
+      ComponentMock componentMock;
+      componentMock.FunctionThatTakesAPairMock.Expect();
+      const pair<OnlyZenUnitEqualizerUserType, OnlyZenUnitEqualizerUserType> p = make_pair(
+         OnlyZenUnitEqualizerUserType{1}, OnlyZenUnitEqualizerUserType{2});
+      //
+      componentMock.FunctionThatTakesAPairMock.MetalMockIt(p);
+      //
+      METALMOCK(componentMock.FunctionThatTakesAPairMock.CalledOnceWith(p));
    }
 
    RUN_TESTS(PAIRS_ARE_EQUALTests)

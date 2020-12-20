@@ -6,9 +6,7 @@ namespace ZenUnit
 {
    TESTS(VectorEqualizerTests)
    AFACT(AssertEqual_IntVectors_CallsVECTORS_ARE_EQUAL)
-#if _WIN32
    AFACT(AssertEqual_StringVectors_CallsVECTORS_ARE_EQUAL)
-#endif
    AFACT(AssertEqual_UserTypeVectors_CallsVECTORS_ARE_EQUAL)
    EVIDENCE
 
@@ -16,10 +14,10 @@ namespace ZenUnit
    {
       vector<int> expectedIntVector;
       const vector<int> actualIntVector;
-      Equalizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector);
-      expectedIntVector.push_back(1);
-      THROWS_EXCEPTION(Equalizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: VECTORS_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure)",
+      DOES_NOT_THROW(Equalizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector));
+      expectedIntVector.emplace_back(1);
+      const string expectedExceptionMessage = TestUtil::NewlineConcat("",
+"  Failed: VECTORS_ARE_EQUAL(expectedVector, actualVector)",
 "Expected: std::vector<int> (size 1):",
 "{",
 "   1",
@@ -31,19 +29,20 @@ namespace ZenUnit
 "Expected: 1",
 "  Actual: 0",
 "File.cpp(1)",
-"File.cpp(1)"));
+"File.cpp(1)");
+      THROWS_EXCEPTION(Equalizer<vector<int>>::AssertEqual(expectedIntVector, actualIntVector),
+         Anomaly, expectedExceptionMessage);
    }
 
-#if _WIN32
    TEST(AssertEqual_StringVectors_CallsVECTORS_ARE_EQUAL)
    {
       vector<string> expectedStringVector;
       const vector<string> actualStringVector;
-      Equalizer<vector<string>>::AssertEqual(expectedStringVector, actualStringVector);
+      DOES_NOT_THROW(Equalizer<vector<string>>::AssertEqual(expectedStringVector, actualStringVector));
       expectedStringVector.emplace_back();
       THROWS_EXCEPTION(Equalizer<vector<string>>::AssertEqual(
          expectedStringVector COMMA actualStringVector), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: VECTORS_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure)",
+"  Failed: VECTORS_ARE_EQUAL(expectedVector, actualVector)",
 "Expected: std::vector<std::basic_string> (size 1):",
 "{",
 "   \"\"",
@@ -57,17 +56,16 @@ namespace ZenUnit
 "File.cpp(1)",
 "File.cpp(1)"));
    }
-#endif
 
    TEST(AssertEqual_UserTypeVectors_CallsVECTORS_ARE_EQUAL)
    {
       vector<UserType> expectedUserTypeVector;
       const vector<UserType> actualUserTypeVector;
-      Equalizer<vector<UserType>>::AssertEqual(expectedUserTypeVector, actualUserTypeVector);
+      DOES_NOT_THROW(Equalizer<vector<UserType>>::AssertEqual(expectedUserTypeVector, actualUserTypeVector));
       expectedUserTypeVector.emplace_back();
       THROWS_EXCEPTION(Equalizer<vector<UserType>>::AssertEqual(
          expectedUserTypeVector COMMA actualUserTypeVector), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: VECTORS_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure)",
+"  Failed: VECTORS_ARE_EQUAL(expectedVector, actualVector)",
 "Expected: std::vector<UserType> (size 1):",
 "{",
 "   UserType@0",
