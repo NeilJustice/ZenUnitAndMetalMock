@@ -14,6 +14,12 @@ namespace ZenUnit
    AFACT(PredicateThatThrowsIfCalled_CodeCoverage)
    EVIDENCE
 
+#ifdef __linux__
+   ThreeArgAnyerTests()
+   {
+   }
+#endif
+
    static vector<tuple<T, Arg2Type, Arg3Type>> s_predicateArgs;
 
    [[noreturn]]

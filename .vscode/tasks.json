@@ -17,7 +17,7 @@
          "group": {
             "kind": "build",
             "isDefault": true
-         },
+         }
       },
       {
          "label": "Ninja Build Release",
@@ -68,16 +68,51 @@
          "type": "shell",
          "command": "/usr/bin/clang++",
          "args": [
-            "-std=c++17",
+            "-std=c++2a",
             "-g",
             "${file}",
             "-I${workspaceRoot}",
+            "-I${workspaceRoot}/MetalMockExamples",
+            "-I${workspaceRoot}/MetalMockTests",
+            "-I${workspaceRoot}/ZenUnitCompileSpeedTests",
+            "-I${workspaceRoot}/ZenUnitExamples",
+            "-I${workspaceRoot}/ZenUnitLibraryTests",
+            "-I${workspaceRoot}/ZenUnitTestUtils",
+            "-I${workspaceRoot}/ZenUnitUtilsAndAssertionTests",
             "-o",
             "${fileDirname}/${fileBasenameNoExtension}"
          ],
          "problemMatcher": [
             "$gcc"
          ]
+      },
+      {
+         "label": "C/C++: clang build active file",
+         "type": "cppbuild",
+         "command": "/usr/bin/clang",
+         "args": [
+            "-std=c++2a",
+            "-g",
+            "${file}",
+            "-I${workspaceRoot}",
+            "-I${workspaceRoot}/MetalMockExamples",
+            "-I${workspaceRoot}/MetalMockTests",
+            "-I${workspaceRoot}/ZenUnitCompileSpeedTests",
+            "-I${workspaceRoot}/ZenUnitExamples",
+            "-I${workspaceRoot}/ZenUnitLibraryTests",
+            "-I${workspaceRoot}/ZenUnitTestUtils",
+            "-I${workspaceRoot}/ZenUnitUtilsAndAssertionTests",
+            "-o",
+            "${fileDirname}/${fileBasenameNoExtension}"
+         ],
+         "options": {
+            "cwd": "${workspaceFolder}"
+         },
+         "problemMatcher": [
+            "$gcc"
+         ],
+         "group": "build",
+         "detail": "compiler: /usr/bin/clang"
       }
    ]
 }

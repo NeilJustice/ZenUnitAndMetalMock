@@ -49,22 +49,22 @@ macro(ConfigurePlatformSpecificPrecompiledHeaders)
       if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
          if(CMAKE_BUILD_TYPE STREQUAL "Debug")
             add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER}
-               -std=c++17 -Wall -Wextra -Werror -pthread -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments -g
+               -std=c++2a -Wall -Wextra -Werror -pthread -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments -g
                ${SanitizerArgs} -I${CMAKE_SOURCE_DIR} -I${ZenUnitIncludeDirectory} -x c++-header ${PchDotHFilePath})
          elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
             add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER}
-               -std=c++17 -Wall -Wextra -Werror -pthread -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments -O2
+               -std=c++2a -Wall -Wextra -Werror -pthread -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments -O2
                ${SanitizerArgs} -I${CMAKE_SOURCE_DIR} -I${ZenUnitIncludeDirectory} -x c++-header ${PchDotHFilePath})
          endif()
          append(CMAKE_CXX_FLAGS "-include-pch ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h.gch")
       elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
          if(CMAKE_BUILD_TYPE STREQUAL "Debug")
             add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER}
-               -std=c++17 -Wall -Wextra -Werror -pthread -Wno-attributes -g
+               -std=c++2a -Wall -Wextra -Werror -pthread -Wno-attributes -g
                ${SanitizerArgs} -I${CMAKE_SOURCE_DIR} -I${ZenUnitIncludeDirectory} -x c++-header ${PchDotHFilePath})
          elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
             add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER}
-               -std=c++17 -Wall -Wextra -Werror -pthread -Wno-attributes -DNDEBUG -O2
+               -std=c++2a -Wall -Wextra -Werror -pthread -Wno-attributes -DNDEBUG -O2
                ${SanitizerArgs} -I${CMAKE_SOURCE_DIR} -I${ZenUnitIncludeDirectory} -x c++-header ${PchDotHFilePath})
          endif()
       endif()
