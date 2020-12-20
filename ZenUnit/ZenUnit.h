@@ -648,18 +648,18 @@ namespace ZenUnit
       FilePathLineNumber() noexcept : filePath(""), lineNumber(0) {}
       FilePathLineNumber(const char* filePath, unsigned lineNumber) noexcept : filePath(filePath == nullptr ? "" : filePath), lineNumber(lineNumber) {}
 
+      friend std::ostream& operator<<(std::ostream& os, const FilePathLineNumber& filePathLineNumber)
+      {
+         os << filePathLineNumber.filePath << '(' << filePathLineNumber.lineNumber << ')';
+         return os;
+      }
+
       std::string ToString() const
       {
          std::ostringstream oss;
          oss << *this;
          std::string filePathAndLineNumber = oss.str();
          return filePathAndLineNumber;
-      }
-
-      friend std::ostream& operator<<(std::ostream& os, const FilePathLineNumber& filePathLineNumber)
-      {
-         os << filePathLineNumber.filePath << '(' << filePathLineNumber.lineNumber << ')';
-         return os;
       }
 
       static const char* File(const char* fileMacroValue) noexcept { return ZenUnitSelfTestMode::value ? "File.cpp" : fileMacroValue; }
@@ -1217,25 +1217,25 @@ namespace ZenUnit
    // Custom Type Traits
    //
 
-   template<typename T> constexpr bool is_narrow_string_v = false;
-   template<> constexpr bool is_narrow_string_v<char*> = true;
-   template<> constexpr bool is_narrow_string_v<const char*> = true;
-   template<> constexpr bool is_narrow_string_v<std::string> = true;
-   template<> constexpr bool is_narrow_string_v<std::string_view> = true;
-   template<size_t N> constexpr bool is_narrow_string_v<char[N]> = true;
+   template<typename T> inline constexpr bool is_narrow_string_v = false;
+   template<> inline constexpr bool is_narrow_string_v<char*> = true;
+   template<> inline constexpr bool is_narrow_string_v<const char*> = true;
+   template<> inline constexpr bool is_narrow_string_v<std::string> = true;
+   template<> inline constexpr bool is_narrow_string_v<std::string_view> = true;
+   template<size_t N> inline constexpr bool is_narrow_string_v<char[N]> = true;
 
-   template<typename T> constexpr bool is_wide_string_v = false;
-   template<> constexpr bool is_wide_string_v<wchar_t*> = true;
-   template<> constexpr bool is_wide_string_v<const wchar_t*> = true;
-   template<> constexpr bool is_wide_string_v<std::wstring> = true;
-   template<> constexpr bool is_wide_string_v<std::wstring_view> = true;
-   template<size_t N> constexpr bool is_wide_string_v<wchar_t[N]> = true;
+   template<typename T> inline constexpr bool is_wide_string_v = false;
+   template<> inline constexpr bool is_wide_string_v<wchar_t*> = true;
+   template<> inline constexpr bool is_wide_string_v<const wchar_t*> = true;
+   template<> inline constexpr bool is_wide_string_v<std::wstring> = true;
+   template<> inline constexpr bool is_wide_string_v<std::wstring_view> = true;
+   template<size_t N> inline constexpr bool is_wide_string_v<wchar_t[N]> = true;
 
-   template<typename T> constexpr bool is_string_type_with_data_function_v = false;
-   template<> constexpr bool is_string_type_with_data_function_v<std::string> = true;
-   template<> constexpr bool is_string_type_with_data_function_v<std::string_view> = true;
-   template<> constexpr bool is_string_type_with_data_function_v<std::wstring> = true;
-   template<> constexpr bool is_string_type_with_data_function_v<std::wstring_view> = true;
+   template<typename T> inline constexpr bool is_string_type_with_data_function_v = false;
+   template<> inline constexpr bool is_string_type_with_data_function_v<std::string> = true;
+   template<> inline constexpr bool is_string_type_with_data_function_v<std::string_view> = true;
+   template<> inline constexpr bool is_string_type_with_data_function_v<std::wstring> = true;
+   template<> inline constexpr bool is_string_type_with_data_function_v<std::wstring_view> = true;
 
    template<typename T> constexpr bool is_vector_v = false;
    template<typename T> constexpr bool is_vector_v<std::vector<T>> = true;
@@ -2266,6 +2266,20 @@ namespace ZenUnit
             throw EqualizerException();
          }
          Equalizer<unsigned>::AssertEqual(static_cast<unsigned>(expectedInt), actualUnsigned);
+      }
+   };
+
+   template<>
+   class TwoTypeEqualizer<int, unsigned long>
+   {
+   public:
+      static void AssertEqual(int expectedInt, unsigned long actualUnsignedLong)
+      {
+         if (expectedInt < 0)
+         {
+            throw EqualizerException();
+         }
+         Equalizer<unsigned long>::AssertEqual(static_cast<unsigned long>(expectedInt), actualUnsignedLong);
       }
    };
 
