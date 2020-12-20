@@ -45,90 +45,90 @@ namespace ZenUnit
    struct TestingTestClass1X1 : public StartupAndCleanup
    {
       static vector<tuple<size_t, int>> s_calls;
-      void Test(size_t __testCase, int arg)
+      void Test(size_t zenUnitTestCase, int arg)
       {
-         s_calls.emplace_back(__testCase, arg);
+         s_calls.emplace_back(zenUnitTestCase, arg);
       }
    };
 
    struct TestingTestClass2X2 : public StartupAndCleanup
    {
       static vector<tuple<size_t, int, string>> s_calls;
-      void Test(size_t __testCase, int firstArgument, string secondArgument)
+      void Test(size_t zenUnitTestCase, int firstArgument, string secondArgument)
       {
-         s_calls.emplace_back(__testCase, firstArgument, secondArgument);
+         s_calls.emplace_back(zenUnitTestCase, firstArgument, secondArgument);
       }
    };
 
    struct TestingTestClass3X3 : public StartupAndCleanup
    {
       static vector<tuple<size_t, int, int, string>> s_calls;
-      void Test(size_t __testCase, int firstArgument, int secondArgument, string thirdArgument)
+      void Test(size_t zenUnitTestCase, int firstArgument, int secondArgument, string thirdArgument)
       {
-         s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument);
+         s_calls.emplace_back(zenUnitTestCase, firstArgument, secondArgument, thirdArgument);
       }
    };
 
    struct TestingTestClass4X4 : public StartupAndCleanup
    {
       static vector<tuple<size_t, int, int, int, string>> s_calls;
-      void Test(size_t __testCase, int firstArgument, int secondArgument, int thirdArgument, string fourthArgument)
+      void Test(size_t zenUnitTestCase, int firstArgument, int secondArgument, int thirdArgument, string fourthArgument)
       {
-         s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument, fourthArgument);
+         s_calls.emplace_back(zenUnitTestCase, firstArgument, secondArgument, thirdArgument, fourthArgument);
       }
    };
 
    struct TestingTestClass5X5 : public StartupAndCleanup
    {
       static vector<tuple<size_t, int, int, int, int, string>> s_calls;
-      void Test(size_t __testCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, string fifthArgument)
+      void Test(size_t zenUnitTestCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, string fifthArgument)
       {
-         s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument);
+         s_calls.emplace_back(zenUnitTestCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument);
       }
    };
 
    struct TestingTestClass6X6 : public StartupAndCleanup
    {
       static vector<tuple<size_t, int, int, int, int, int, string>> s_calls;
-      void Test(size_t __testCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, int fifthArgument, string sixthArgument)
+      void Test(size_t zenUnitTestCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, int fifthArgument, string sixthArgument)
       {
-         s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument);
+         s_calls.emplace_back(zenUnitTestCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument);
       }
    };
 
    struct TestingTestClass8X8 : public StartupAndCleanup
    {
       static vector<tuple<size_t, int, int, int, int, int, int, int, string>> s_calls;
-      void Test(size_t __testCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, int fifthArgument, int sixthArgument, int seventhArgument, string eigthArgument)
+      void Test(size_t zenUnitTestCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, int fifthArgument, int sixthArgument, int seventhArgument, string eigthArgument)
       {
-         s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument);
+         s_calls.emplace_back(zenUnitTestCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument);
       }
    };
 
    struct TestingTestClass7X7 : public StartupAndCleanup
    {
       static vector<tuple<size_t, int, int, int, int, int, int, string>> s_calls;
-      void Test(size_t __testCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, int fifthArgument, int sixthArgument, string seventhArgument)
+      void Test(size_t zenUnitTestCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, int fifthArgument, int sixthArgument, string seventhArgument)
       {
-         s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument);
+         s_calls.emplace_back(zenUnitTestCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument);
       }
    };
 
    struct TestingTestClass9X9 : public StartupAndCleanup
    {
       static vector<tuple<size_t, int, int, int, int, int, int, int, int, string>> s_calls;
-      void Test(size_t __testCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, int fifthArgument, int sixthArgument, int seventhArgument, int eigthArgument, string ninthArgument)
+      void Test(size_t zenUnitTestCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, int fifthArgument, int sixthArgument, int seventhArgument, int eigthArgument, string ninthArgument)
       {
-         s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument);
+         s_calls.emplace_back(zenUnitTestCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument);
       }
    };
 
    struct TestingTestClass10X10 : public StartupAndCleanup
    {
       static vector<tuple<size_t, int, int, int, int, int, int, int, int, int, string>> s_calls;
-      void Test(size_t __testCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, int fifthArgument, int sixthArgument, int seventhArgument, int eigthArgument, int ninthArgument, string tenthArgument)
+      void Test(size_t zenUnitTestCase, int firstArgument, int secondArgument, int thirdArgument, int fourthArgument, int fifthArgument, int sixthArgument, int seventhArgument, int eigthArgument, int ninthArgument, string tenthArgument)
       {
-         s_calls.emplace_back(__testCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument, tenthArgument);
+         s_calls.emplace_back(zenUnitTestCase, firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument, eigthArgument, ninthArgument, tenthArgument);
       }
    };
 
