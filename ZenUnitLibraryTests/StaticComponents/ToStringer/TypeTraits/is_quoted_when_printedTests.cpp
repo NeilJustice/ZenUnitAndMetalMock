@@ -2,7 +2,7 @@
 
 namespace ZenUnit
 {
-   TESTS(is_quoted_when_printed_vTests)
+   TESTS(is_quoted_when_printedTests)
    AFACT(is_quoted_when_printed_v_NarrowStringTypes_IsTrue)
    AFACT(is_quoted_when_printed_v_WideStringTypes_IsTrue)
    AFACT(is_quoted_when_printed_v_NonNarrowOrWideStringTypes_IsFalse)
@@ -65,5 +65,5 @@ namespace ZenUnit
       IS_FALSE(is_quoted_when_printed<NonPrintableUserType>::value);
    }
 
-   RUN_TESTS(is_quoted_when_printed_vTests)
+   RUN_TESTS(is_quoted_when_printedTests)
 }
