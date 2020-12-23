@@ -51,7 +51,8 @@ add_subdirectory(ZenUnitUtilsAndAssertionTests)
 add_subdirectory(MetalMockExamples)
 add_subdirectory(MetalMockTests)
 
-set(CMAKE_CONFIGURATION_TYPES "Debug;Release")
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release;RelWithDebInfo")
+
 # Allows for ZenUnit.h and MetalMock.h to be installed instantly without first having to build all the test projects
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY ON)
 
@@ -63,4 +64,3 @@ if(UNIX)
       WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} VERBATIM USES_TERMINAL)
    add_dependencies(clang-tidy ZenUnitUtilsAndAssertionTestsPch ZenUnitCompileSpeedTestsPch ZenUnitExamplesPch ZenUnitLibraryTestsPch ZenUnitTestUtilsPch MetalMockTestsPch MetalMockExamplesPch)
 endif()
-
