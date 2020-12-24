@@ -21,8 +21,10 @@ namespace ZenUnit
       ARE_EQUAL("std::map<TKey, TValue>", oss.str());
       oss = ostringstream();
 
+#ifdef _WIN32
       ZenUnit::Printer<map<TKey, TValue, CustomLessComparator<TKey>, CustomAllocator<pair<const TKey, TValue>>>>::Print(oss, {});
       ARE_EQUAL("std::map<TKey, TValue>", oss.str());
+#endif
    }
 
    TEST(Print_UnorderedMap_PrintsPlaceholder)
@@ -41,8 +43,10 @@ namespace ZenUnit
       ARE_EQUAL("std::unordered_map<TKey, TValue>", oss.str());
       oss = ostringstream();
 
+#ifdef _WIN32
       ZenUnit::Printer<unordered_map<TKey, TValue, CustomHasher<TKey>, CustomEqualityComparator<TKey>, CustomAllocator<pair<const TKey, TValue>>>>::Print(oss, {});
       ARE_EQUAL("std::unordered_map<TKey, TValue>", oss.str());
+#endif
    }
 
    RUN_TEMPLATE_TESTS(MapZenUnitPrinterTests, int, int)

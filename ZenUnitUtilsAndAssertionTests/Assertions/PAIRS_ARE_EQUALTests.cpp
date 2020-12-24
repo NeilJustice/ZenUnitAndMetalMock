@@ -134,22 +134,21 @@ namespace ZenUnit
       class Component
       {
       public:
-         virtual void FunctionThatTakesAPair(
-            const pair<OnlyZenUnitEqualizerUserType, OnlyZenUnitEqualizerUserType>&) const {}
+         virtual void FunctionThatTakesAPair(const pair<OnlyZenUnitEqualizerUserType, OnlyZenUnitEqualizerUserType>&) const {}
          virtual ~Component() = default;
       };
 
       class ComponentMock : public Metal::Mock<Component>
       {
       public:
-         METALMOCK_VOID1_CONST(FunctionThatTakesAPair,
-            const pair<OnlyZenUnitEqualizerUserType COMMA OnlyZenUnitEqualizerUserType>&)
+         using PairType = const pair<OnlyZenUnitEqualizerUserType COMMA OnlyZenUnitEqualizerUserType>&;
+         METALMOCK_VOID1_CONST(FunctionThatTakesAPair, PairType)
       };
 
       ComponentMock componentMock;
       componentMock.FunctionThatTakesAPairMock.Expect();
-      const pair<OnlyZenUnitEqualizerUserType, OnlyZenUnitEqualizerUserType> p = make_pair(
-         OnlyZenUnitEqualizerUserType{1}, OnlyZenUnitEqualizerUserType{2});
+      const pair<OnlyZenUnitEqualizerUserType, OnlyZenUnitEqualizerUserType> p =
+         make_pair(OnlyZenUnitEqualizerUserType{1}, OnlyZenUnitEqualizerUserType{2});
       //
       componentMock.FunctionThatTakesAPairMock.MetalMockIt(p);
       //
