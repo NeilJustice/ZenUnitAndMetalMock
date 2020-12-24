@@ -24,4 +24,4 @@ namespace ZenUnit
    {
       return TestableRandomFullTestName(ZenUnit::RandomGenerator::Instance());
    }
-};
+}
