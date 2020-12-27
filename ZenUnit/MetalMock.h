@@ -78,7 +78,7 @@ catch (const ZenUnit::Anomaly& metalMockWrappedAnomaly) \
 
 // Defines a MetalMock object named <NamespacedFreeFunctionName>Mock for mocking a namespaced free function with signature "void Namespace::NamespacedFreeFunctionName()".
 #define METALMOCK_VOID0_NAMESPACED_FREE(Namespace, NamespacedFreeFunctionName, ...) \
-   METALMOCK_VOID0_STATIC(Namespace, FreeFunctionName, __VA_ARGS__)
+   METALMOCK_VOID0_STATIC(Namespace, NamespacedFreeFunctionName, __VA_ARGS__)
 
 // Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "void ::FreeFunctionName()".
 #define METALMOCK_VOID0_FREE(GlobalFreeFunctionName) \

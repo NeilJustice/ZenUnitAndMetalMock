@@ -4,7 +4,7 @@
 namespace MetalMock
 {
    TESTS(ZeroArgumentMetalMockerTests)
-   AFACT(Constructor_SetsFields)
+   AFACT(OneArgConstructor_SetsFields)
    AFACT(ThrowExceptionWhenCalled_CallsExceptionThrowerThrow_SetsExpectedTrue)
    AFACT(MetalMockIt_ExpectedFalse_ThrowsUnexpectedCallException)
    AFACT(MetalMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsMetalMockThrowIfExceptionSet)
@@ -24,7 +24,7 @@ namespace MetalMock
       _zeroArgumentMetalMocker = make_unique<ZeroArgumentMetalMockerType>(_metalMockedFunctionSignature);
    }
 
-   TEST(Constructor_SetsFields)
+   TEST(OneArgConstructor_SetsFields)
    {
       const ZeroArgumentMetalMockerType zeroArgumentMetalMocker(_metalMockedFunctionSignature);
       //

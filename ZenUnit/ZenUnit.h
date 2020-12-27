@@ -7076,6 +7076,24 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       return randomValueT;
    }
 
+   template<typename EnumType>
+   EnumType RandomEnum(EnumType exclusiveMaxValue)
+   {
+      using UnderlyingType = typename std::underlying_type<EnumType>::type;
+      const long long inclusiveMaxValue = static_cast<long long>(exclusiveMaxValue) - 1LL;
+      const EnumType randomEnum = static_cast<EnumType>(RandomBetween<UnderlyingType>(0LL, inclusiveMaxValue));
+      return randomEnum;
+   }
+
+   template<typename EnumType>
+   EnumType RandomNon0Enum(EnumType exclusiveMaxValue)
+   {
+      using UnderlyingType = typename std::underlying_type<EnumType>::type;
+      const long long inclusiveMaxValue = static_cast<long long>(exclusiveMaxValue) - 1LL;
+      const EnumType randomNon0Enum = static_cast<EnumType>(RandomBetween<UnderlyingType>(1LL, inclusiveMaxValue));
+      return randomNon0Enum;
+   }
+
    inline unsigned long long RandomUnsignedLongLong()
    {
       static std::default_random_engine defaultRandomEngine(ZenUnitRandomSeed::value);
@@ -7154,7 +7172,12 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<typename T>
    T Random()
    {
-      if constexpr (is_vector_v<T>)
+      if constexpr (std::is_enum_v<T>)
+      {
+         const T randomEnum = RandomEnum(T::MaxValue);
+         return randomEnum;
+      }
+      else if constexpr (is_vector_v<T>)
       {
          std::vector<typename T::value_type> randomVector =
             RandomVector<typename T::value_type>();
@@ -7337,24 +7360,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       const int randomErrorCodeValue = Random<int>();
       std::error_code randomErrorCode(randomErrorCodeValue, *errorCategory);
       return randomErrorCode;
-   }
-
-   template<typename EnumType>
-   EnumType RandomEnum(EnumType exclusiveMaxValue)
-   {
-      using UnderlyingType = typename std::underlying_type<EnumType>::type;
-      const long long inclusiveMaxValue = static_cast<long long>(exclusiveMaxValue) - 1LL;
-      const EnumType randomEnum = static_cast<EnumType>(RandomBetween<UnderlyingType>(0LL, inclusiveMaxValue));
-      return randomEnum;
-   }
-
-   template<typename EnumType>
-   EnumType RandomNon0Enum(EnumType exclusiveMaxValue)
-   {
-      using UnderlyingType = typename std::underlying_type<EnumType>::type;
-      const long long inclusiveMaxValue = static_cast<long long>(exclusiveMaxValue) - 1LL;
-      const EnumType randomNon0Enum = static_cast<EnumType>(RandomBetween<UnderlyingType>(1LL, inclusiveMaxValue));
-      return randomNon0Enum;
    }
 
    template<typename KeyType, typename ValueType>

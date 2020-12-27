@@ -1,211 +1,214 @@
 #include "pch.h"
-#include "MetalMockTests/0Args/MetalMock0Tester.h"
+#include "MetalMockTests/0Args/MetalMock0ArgsTester.h"
 
-int NonVoid0Function() { return 0; }
+int GlobalNonVoid0FreeFunction() { return 0; }
 
 namespace MetalMock
 {
-   int NonVoid0Function() { return 0; }
+   int NamespacedNonVoid0FreeFunction() { return 0; }
 
-   struct NonVoid0StaticFunctions
+   class NonVoid0Functions
    {
-      static int NonVoid0Function() { return 0; }
-      static int StaticFunction() { return 0; }
-   };
-
-   struct NonVoid0Functions
-   {
-      virtual int Virtual() { return 0; }
-      virtual int VirtualConst() const { return 0; }
-      int NonVirtual() { return 0; }
-      int NonVirtualConst() const { return 0; }
+   public:
+      static int StaticNonVoid0Function() { return 0; }
+      virtual int VirtualFunction() { return 0; }
+      virtual int VirtualFunctionConst() const { return 0; }
+      int NonVirtualFunction() { return 0; }
+      int NonVirtualFunctionConst() const { return 0; }
       virtual ~NonVoid0Functions() = default;
    };
 
-   TESTS(MetalMockNonVoid0Tests_CodeCoverage)
-   AFACT(CodeCoverage)
-   EVIDENCE
-
-   TEST(CodeCoverage)
+   class NonVoid0FunctionsMock : public Metal::Mock<NonVoid0Functions>
    {
-      ::NonVoid0Function();
-      MetalMock::NonVoid0Function();
-
-      MetalMock::NonVoid0StaticFunctions::NonVoid0Function();
-      MetalMock::NonVoid0StaticFunctions::StaticFunction();
-
-      MetalMock::NonVoid0Functions nonVoid0Functions;
-      nonVoid0Functions.Virtual();
-      nonVoid0Functions.VirtualConst();
-      nonVoid0Functions.NonVirtual();
-      nonVoid0Functions.NonVirtualConst();
-   }
-
-   RUN_TESTS(MetalMockNonVoid0Tests_CodeCoverage)
-
-
-   struct NonVoid0FunctionsMock : public Metal::Mock<NonVoid0Functions>
-   {
-      METALMOCK_NONVOID0(int, Virtual)
-      METALMOCK_NONVOID0_CONST(int, VirtualConst)
-      METALMOCK_NONVOID0_NONVIRTUAL(int, NonVirtual)
-      METALMOCK_NONVOID0_NONVIRTUAL_CONST(int, NonVirtualConst)
+   public:
+      METALMOCK_NONVOID0(int, VirtualFunction)
+      METALMOCK_NONVOID0_CONST(int, VirtualFunctionConst)
+      METALMOCK_NONVOID0_NONVIRTUAL(int, NonVirtualFunction)
+      METALMOCK_NONVOID0_NONVIRTUAL_CONST(int, NonVirtualFunctionConst)
    };
 
    TESTS(MetalMockNonVoid0Tests)
-   // ZeroArgumentMetalMocker Tests
-   AFACT(FunctionNotCalled_CalledAsFollowsWithN0_ThrowsUnsupportedCalledZeroTimesException)
-   AFACT(FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows)
-   AFACT(MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException)
+   AFACT(OneHundredPercentCodeCoverage)
+   // MetalMock::ZeroArgumentMetalMocker Tests
+   AFACT(CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException)
+   AFACT(CalledOnce_CalledNTimes_MockedFunctionNotPreviouslyCalled_ThrowsAnomaly)
+   AFACT(MetalMockedFunction_ExpectNotPreviouslyCalled_ThrowsUnexpectedCallExceptionWhenCalled)
    AFACT(ThrowExceptionWhenCalled_MetalMockedFunctionIsThenCalled_ThrowsTheSpecifiedExceptionTypeWithExceptionMessage)
-   // Value Return Tests
-   AFACT(Return_CausesFunctionToReturnValue)
+   // MetalMock::ValueReturner Tests
+   AFACT(Return_CausesMetalMockedFunctionToReturnValue)
+   AFACT(ReturnRandom_CausesFunctionToReturnRandomValue)
    AFACT(ReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
    AFACT(ReturnValuesVector_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
    EVIDENCE
 
-   NonVoid0FunctionsMock _mock;
-   METALMOCK_NONVOID0_FREE(int, NonVoid0Function)
-   // METALMOCK_NONVOID0_NAMESPACED_FREE
-   METALMOCK_NONVOID0_STATIC(int, MetalMock, NonVoid0Function, _namespace)
-   METALMOCK_NONVOID0_STATIC(int, MetalMock::NonVoid0StaticFunctions, NonVoid0Function, _static)
-   METALMOCK_NONVOID0_STATIC(int, MetalMock::NonVoid0StaticFunctions, StaticFunction)
-   unique_ptr<MetalMock0Tester<
-   NonVoid0FunctionsMock,
-   decltype(NonVoid0FunctionMock),
-   decltype(NonVoid0FunctionMock_namespace),
-   decltype(NonVoid0FunctionMock_static),
-   decltype(StaticFunctionMock)>> _metalMock0Tester;
+   const string GlobalNonVoid0FreeFunctionSignature =
+      "int ::GlobalNonVoid0FreeFunction()";
+   const string NamespacedNonVoid0FreeFunctionSignature =
+      "int MetalMock::NamespacedNonVoid0FreeFunction()";
+   const string StaticNonVoid0FunctionSignature =
+      "int MetalMock::NonVoid0Functions::StaticNonVoid0Function()";
 
-   const string VirtualSignature =
-      "virtual int MetalMock::NonVoid0Functions::Virtual()";
-   const string VirtualConstSignature =
-      "virtual int MetalMock::NonVoid0Functions::VirtualConst() const";
-   const string NonVirtualSignature =
-      "int MetalMock::NonVoid0Functions::NonVirtual()";
+   const string VirtualFunctionSignature =
+      "virtual int MetalMock::NonVoid0Functions::VirtualFunction()";
+   const string VirtualFunctionConstSignature =
+      "virtual int MetalMock::NonVoid0Functions::VirtualFunctionConst() const";
+   const string NonVirtualFunctionSignature =
+      "int MetalMock::NonVoid0Functions::NonVirtualFunction()";
    const string NonVirtualConstSignature =
-      "int MetalMock::NonVoid0Functions::NonVirtualConst() const";
-   const string FreeSignature =
-      "int ::NonVoid0Function()";
-   const string NamespaceSignature =
-      "int MetalMock::NonVoid0Function()";
-   const string StaticNameClashSignature =
-      "int MetalMock::NonVoid0StaticFunctions::NonVoid0Function()";
-   const string StaticUniqueSignature =
-      "int MetalMock::NonVoid0StaticFunctions::StaticFunction()";
+      "int MetalMock::NonVoid0Functions::NonVirtualFunctionConst() const";
+
+   METALMOCK_NONVOID0_FREE(int, GlobalNonVoid0FreeFunction)
+   METALMOCK_NONVOID0_NAMESPACED_FREE(int, MetalMock, NamespacedNonVoid0FreeFunction)
+   METALMOCK_NONVOID0_STATIC(int, MetalMock::NonVoid0Functions, StaticNonVoid0Function)
+   NonVoid0FunctionsMock _metalMockObject;
+
+   using MetalMock0ArgsTesterType = MetalMock0ArgsTester<
+      decltype(GlobalNonVoid0FreeFunctionMock),
+      decltype(NamespacedNonVoid0FreeFunctionMock),
+      decltype(StaticNonVoid0FunctionMock),
+      NonVoid0FunctionsMock>;
+   unique_ptr<MetalMock0ArgsTesterType> _metalMock0ArgsTester;
 
    STARTUP
    {
-      _metalMock0Tester = make_unique<MetalMock0Tester<
-      NonVoid0FunctionsMock,
-      decltype(NonVoid0FunctionMock),
-      decltype(NonVoid0FunctionMock_namespace),
-      decltype(StaticFunctionMock),
-      decltype(NonVoid0FunctionMock_static)>>(
-      _mock,
-      VirtualSignature,
-      VirtualConstSignature,
-      NonVirtualSignature,
-      NonVirtualConstSignature,
-
-      NonVoid0FunctionMock,
-      FreeSignature,
-
-      NonVoid0FunctionMock_namespace,
-      NamespaceSignature,
-
-      StaticFunctionMock,
-      StaticUniqueSignature,
-
-      NonVoid0FunctionMock_static,
-      StaticNameClashSignature);
+      _metalMock0ArgsTester = make_unique<MetalMock0ArgsTesterType>(
+         GlobalNonVoid0FreeFunctionMock,
+         GlobalNonVoid0FreeFunctionSignature,
+         NamespacedNonVoid0FreeFunctionMock,
+         NamespacedNonVoid0FreeFunctionSignature,
+         StaticNonVoid0FunctionMock,
+         StaticNonVoid0FunctionSignature,
+         _metalMockObject,
+         VirtualFunctionSignature,
+         VirtualFunctionConstSignature,
+         NonVirtualFunctionSignature,
+         NonVirtualConstSignature);
    }
 
-   // ZeroArgumentMetalMocker Tests
-
-   TEST(FunctionNotCalled_CalledAsFollowsWithN0_ThrowsUnsupportedCalledZeroTimesException)
+   TEST(OneHundredPercentCodeCoverage)
    {
-      _metalMock0Tester->FunctionNotCalled_CalledAsFollowsWithN0_ThrowsUnsupportedCalledZeroTimesException();
+      ::GlobalNonVoid0FreeFunction();
+      MetalMock::NamespacedNonVoid0FreeFunction();
+      MetalMock::NonVoid0Functions::StaticNonVoid0Function();
+
+      MetalMock::NonVoid0Functions nonVoid0Functions;
+      nonVoid0Functions.VirtualFunction();
+      nonVoid0Functions.VirtualFunctionConst();
+      nonVoid0Functions.NonVirtualFunction();
+      nonVoid0Functions.NonVirtualFunctionConst();
    }
 
-   TEST(FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows)
+   // MetalMock::ZeroArgumentMetalMocker Tests
+
+   TEST(CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException)
    {
-      _metalMock0Tester->FunctionNotCalled_CalledOnceThrows_CalledNTimesThrows();
+      _metalMock0ArgsTester->CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException();
    }
 
-   TEST(MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException)
+   TEST(CalledOnce_CalledNTimes_MockedFunctionNotPreviouslyCalled_ThrowsAnomaly)
    {
-      _metalMock0Tester->MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException();
+      _metalMock0ArgsTester->CalledOnce_CalledNTimes_MockedFunctionNotPreviouslyCalled_ThrowsAnomaly();
+   }
+
+   TEST(MetalMockedFunction_ExpectNotPreviouslyCalled_ThrowsUnexpectedCallExceptionWhenCalled)
+   {
+      _metalMock0ArgsTester->MetalMockedFunction_ExpectNotPreviouslyCalled_ThrowsUnexpectedCallExceptionWhenCalled();
    }
 
    TEST(ThrowExceptionWhenCalled_MetalMockedFunctionIsThenCalled_ThrowsTheSpecifiedExceptionTypeWithExceptionMessage)
    {
-      _metalMock0Tester->ThrowExceptionWhenCalled_MetalMockedFunctionIsThenCalled_ThrowsTheSpecifiedExceptionTypeWithExceptionMessage();
+      _metalMock0ArgsTester->ThrowExceptionWhenCalled_MetalMockedFunctionIsThenCalled_ThrowsTheSpecifiedExceptionTypeWithExceptionMessage();
    }
 
-   // Value Return Tests
+   // MetalMock::ValueReturner Tests
 
-   TEST(Return_CausesFunctionToReturnValue)
+   TEST(Return_CausesMetalMockedFunctionToReturnValue)
    {
-      const auto test = [](auto& metalMockObject, auto metalMockedFunctionCall)
+      const auto metalmocktest = [](auto& metalMockObject, auto metalMockedFunctionCall)
       {
-         metalMockObject.Return(1);
-         ARE_EQUAL(1, metalMockedFunctionCall());
-         ARE_EQUAL(1, metalMockedFunctionCall());
+         const int returnValue = ZenUnit::Random<int>();
+         //
+         metalMockObject.Return(returnValue);
+         //
+         ARE_EQUAL(returnValue, metalMockedFunctionCall());
+         metalMockObject.CalledOnce();
+         ARE_EQUAL(returnValue, metalMockedFunctionCall());
          metalMockObject.CalledNTimes(2);
       };
-      test(_mock.VirtualMock, [&] { return _mock.Virtual(); });
-      test(_mock.VirtualConstMock, [&] { return _mock.VirtualConst(); });
-      test(_mock.NonVirtualMock, [&] { return _mock.NonVirtual(); });
-      test(_mock.NonVirtualConstMock, [&] { return _mock.NonVirtualConst(); });
+      metalmocktest(GlobalNonVoid0FreeFunctionMock, [&]{ return BIND_0ARG_METALMOCK_OBJECT(GlobalNonVoid0FreeFunctionMock)(); });
+      metalmocktest(NamespacedNonVoid0FreeFunctionMock, [&]{ return BIND_0ARG_METALMOCK_OBJECT(NamespacedNonVoid0FreeFunctionMock)(); });
+      metalmocktest(StaticNonVoid0FunctionMock, [&]{ return BIND_0ARG_METALMOCK_OBJECT(StaticNonVoid0FunctionMock)(); });
 
-      test(NonVoid0FunctionMock, [&] { return BIND_0ARG_METALMOCK_OBJECT(NonVoid0FunctionMock)(); });
-      test(NonVoid0FunctionMock_namespace, [&] { return BIND_0ARG_METALMOCK_OBJECT(NonVoid0FunctionMock_namespace)(); });
-      test(NonVoid0FunctionMock_static, [&] { return BIND_0ARG_METALMOCK_OBJECT(NonVoid0FunctionMock_static)(); });
-      test(StaticFunctionMock, [&] { return BIND_0ARG_METALMOCK_OBJECT(StaticFunctionMock)(); });
+      metalmocktest(_metalMockObject.VirtualFunctionMock, [&]{ return _metalMockObject.VirtualFunction(); });
+      metalmocktest(_metalMockObject.VirtualFunctionConstMock, [&]{ return _metalMockObject.VirtualFunctionConst(); });
+      metalmocktest(_metalMockObject.NonVirtualFunctionMock, [&]{ return _metalMockObject.NonVirtualFunction(); });
+      metalmocktest(_metalMockObject.NonVirtualFunctionConstMock, [&]{ return _metalMockObject.NonVirtualFunctionConst(); });
+   }
+
+   TEST(ReturnRandom_CausesFunctionToReturnRandomValue)
+   {
+      const auto metalmocktest = [](auto& metalMockObject, auto metalMockedFunctionCall)
+      {
+         const int randomReturnValue = metalMockObject.ReturnRandom();
+         //
+         ARE_EQUAL(randomReturnValue, metalMockedFunctionCall());
+         metalMockObject.CalledOnce();
+         ARE_EQUAL(randomReturnValue, metalMockedFunctionCall());
+         metalMockObject.CalledNTimes(2);
+      };
+      metalmocktest(GlobalNonVoid0FreeFunctionMock, [&] { return BIND_0ARG_METALMOCK_OBJECT(GlobalNonVoid0FreeFunctionMock)(); });
+      metalmocktest(NamespacedNonVoid0FreeFunctionMock, [&] { return BIND_0ARG_METALMOCK_OBJECT(NamespacedNonVoid0FreeFunctionMock)(); });
+      metalmocktest(StaticNonVoid0FunctionMock, [&] { return BIND_0ARG_METALMOCK_OBJECT(StaticNonVoid0FunctionMock)(); });
+
+      metalmocktest(_metalMockObject.VirtualFunctionMock, [&] { return _metalMockObject.VirtualFunction(); });
+      metalmocktest(_metalMockObject.VirtualFunctionConstMock, [&] { return _metalMockObject.VirtualFunctionConst(); });
+      metalmocktest(_metalMockObject.NonVirtualFunctionMock, [&] { return _metalMockObject.NonVirtualFunction(); });
+      metalmocktest(_metalMockObject.NonVirtualFunctionConstMock, [&] { return _metalMockObject.NonVirtualFunctionConst(); });
    }
 
    TEST(ReturnValues_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
    {
-      const auto test = [](auto& metalMockObject, auto metalMockedFunctionCall)
+      const auto metalmocktest = [](auto& metalMockObject, auto metalMockedFunctionCall)
       {
-         metalMockObject.ReturnValues(1, 2);
-         ARE_EQUAL(1, metalMockedFunctionCall());
-         ARE_EQUAL(2, metalMockedFunctionCall());
-         ARE_EQUAL(2, metalMockedFunctionCall());
+         const int firstReturnValue = ZenUnit::Random<int>();
+         const int secondReturnValue = ZenUnit::Random<int>();
+         metalMockObject.ReturnValues(firstReturnValue, secondReturnValue);
+         ARE_EQUAL(firstReturnValue, metalMockedFunctionCall());
+         ARE_EQUAL(secondReturnValue, metalMockedFunctionCall());
+         ARE_EQUAL(secondReturnValue, metalMockedFunctionCall());
          metalMockObject.CalledNTimes(3);
       };
-      test(_mock.VirtualMock, [&] { return _mock.Virtual(); });
-      test(_mock.VirtualConstMock, [&] { return _mock.VirtualConst(); });
-      test(_mock.NonVirtualMock, [&] { return _mock.NonVirtual(); });
-      test(_mock.NonVirtualConstMock, [&] { return _mock.NonVirtualConst(); });
+      metalmocktest(GlobalNonVoid0FreeFunctionMock, [&] { return BIND_0ARG_METALMOCK_OBJECT(GlobalNonVoid0FreeFunctionMock)(); });
+      metalmocktest(NamespacedNonVoid0FreeFunctionMock, [&] { return BIND_0ARG_METALMOCK_OBJECT(NamespacedNonVoid0FreeFunctionMock)(); });
+      metalmocktest(StaticNonVoid0FunctionMock, [&] { return BIND_0ARG_METALMOCK_OBJECT(StaticNonVoid0FunctionMock)(); });
 
-      test(NonVoid0FunctionMock, [&] { return BIND_0ARG_METALMOCK_OBJECT(NonVoid0FunctionMock)(); });
-      test(NonVoid0FunctionMock_namespace, [&] { return BIND_0ARG_METALMOCK_OBJECT(NonVoid0FunctionMock_namespace)(); });
-      test(NonVoid0FunctionMock_static, [&] { return BIND_0ARG_METALMOCK_OBJECT(NonVoid0FunctionMock_static)(); });
-      test(StaticFunctionMock, [&] { return BIND_0ARG_METALMOCK_OBJECT(StaticFunctionMock)(); });
+      metalmocktest(_metalMockObject.VirtualFunctionMock, [&] { return _metalMockObject.VirtualFunction(); });
+      metalmocktest(_metalMockObject.VirtualFunctionConstMock, [&] { return _metalMockObject.VirtualFunctionConst(); });
+      metalmocktest(_metalMockObject.NonVirtualFunctionMock, [&] { return _metalMockObject.NonVirtualFunction(); });
+      metalmocktest(_metalMockObject.NonVirtualFunctionConstMock, [&] { return _metalMockObject.NonVirtualFunctionConst(); });
    }
 
    TEST(ReturnValuesVector_CausesFunctionToReturnValuesInSequenceThenLastValueThereaftore)
    {
-      const auto test = [](auto& metalMockObject, auto metalMockedFunctionCall)
+      const auto metalmocktest = [](auto& metalMockObject, auto metalMockedFunctionCall)
       {
-         array<int, 2> values{ { 1, 2 } };
+         const int firstReturnValue = ZenUnit::Random<int>();
+         const int secondReturnValue = ZenUnit::Random<int>();
+         array<int, 2> values{ { firstReturnValue, secondReturnValue } };
          metalMockObject.ReturnValues(values);
-         ARE_EQUAL(1, metalMockedFunctionCall());
-         ARE_EQUAL(2, metalMockedFunctionCall());
-         ARE_EQUAL(2, metalMockedFunctionCall());
+         ARE_EQUAL(firstReturnValue, metalMockedFunctionCall());
+         ARE_EQUAL(secondReturnValue, metalMockedFunctionCall());
+         ARE_EQUAL(secondReturnValue, metalMockedFunctionCall());
          metalMockObject.CalledNTimes(3);
       };
-      test(_mock.VirtualMock, [&] { return _mock.Virtual(); });
-      test(_mock.VirtualConstMock, [&] { return _mock.VirtualConst(); });
-      test(_mock.NonVirtualMock, [&] { return _mock.NonVirtual(); });
-      test(_mock.NonVirtualConstMock, [&] { return _mock.NonVirtualConst(); });
+      metalmocktest(GlobalNonVoid0FreeFunctionMock, [&] { return BIND_0ARG_METALMOCK_OBJECT(GlobalNonVoid0FreeFunctionMock)(); });
+      metalmocktest(NamespacedNonVoid0FreeFunctionMock, [&] { return BIND_0ARG_METALMOCK_OBJECT(NamespacedNonVoid0FreeFunctionMock)(); });
+      metalmocktest(StaticNonVoid0FunctionMock, [&] { return BIND_0ARG_METALMOCK_OBJECT(StaticNonVoid0FunctionMock)(); });
 
-      test(NonVoid0FunctionMock, [&] { return BIND_0ARG_METALMOCK_OBJECT(NonVoid0FunctionMock)(); });
-      test(NonVoid0FunctionMock_namespace, [&] { return BIND_0ARG_METALMOCK_OBJECT(NonVoid0FunctionMock_namespace)(); });
-      test(NonVoid0FunctionMock_static, [&] { return BIND_0ARG_METALMOCK_OBJECT(NonVoid0FunctionMock_static)(); });
-      test(StaticFunctionMock, [&] { return BIND_0ARG_METALMOCK_OBJECT(StaticFunctionMock)(); });
+      metalmocktest(_metalMockObject.VirtualFunctionMock, [&] { return _metalMockObject.VirtualFunction(); });
+      metalmocktest(_metalMockObject.VirtualFunctionConstMock, [&] { return _metalMockObject.VirtualFunctionConst(); });
+      metalmocktest(_metalMockObject.NonVirtualFunctionMock, [&] { return _metalMockObject.NonVirtualFunction(); });
+      metalmocktest(_metalMockObject.NonVirtualFunctionConstMock, [&] { return _metalMockObject.NonVirtualFunctionConst(); });
    }
 
    RUN_TESTS(MetalMockNonVoid0Tests)

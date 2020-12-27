@@ -3,6 +3,8 @@
 namespace ZenUnit
 {
    TESTS(RandomTests)
+   AFACT(Random_Enum_ReturnsRandomEnumBetween0AndEnumMaxValue)
+   AFACT(RandomNon0_Enum_ReturnsRandomEnumBetween1AndEnumMaxValue)
    AFACT(Random_AllIntegerTypes_ReturnsRandomValueBetweenMinAndMaxForThatType)
    AFACT(Random_TIsAVector_ReturnsRandomVectorOfTWithSizeLessThanOrEqualTo3)
    AFACT(Random_TIsAPair_ReturnsRandomPair)
@@ -20,6 +22,53 @@ namespace ZenUnit
    AFACT(Random_WideString_ReturnsRandomWideStringThatBeginsWithRWS)
    AFACT(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
    EVIDENCE
+
+   TEST(Random_Enum_ReturnsRandomEnumBetween0AndEnumMaxValue)
+   {
+      enum class EnumType
+      {
+         ZeroValue,
+         OneValue,
+         TwoValue,
+         MaxValue
+      };
+      unordered_set<EnumType> randomEnumsReturned;
+      for (size_t i = 0; i < 100; ++i)
+      {
+         const EnumType randomEnum = Random<EnumType>();
+         randomEnumsReturned.insert(randomEnum);
+      }
+      const unordered_set<EnumType> expectedRandomEnumsReturned
+      {
+         EnumType::ZeroValue,
+         EnumType::OneValue,
+         EnumType::TwoValue
+      };
+      SETS_ARE_EQUAL(expectedRandomEnumsReturned, randomEnumsReturned);
+   }
+
+   TEST(RandomNon0_Enum_ReturnsRandomEnumBetween1AndEnumMaxValue)
+   {
+      enum class EnumType
+      {
+         ZeroValue,
+         OneValue,
+         TwoValue,
+         MaxValue
+      };
+      unordered_set<EnumType> randomEnumsReturned;
+      for (size_t i = 0; i < 100; ++i)
+      {
+         const EnumType randomNon0Enum = RandomNon0<EnumType>();
+         randomEnumsReturned.insert(randomNon0Enum);
+      }
+      const unordered_set<EnumType> expectedRandomEnumsReturned
+      {
+         EnumType::OneValue,
+         EnumType::TwoValue
+      };
+      SETS_ARE_EQUAL(expectedRandomEnumsReturned, randomEnumsReturned);
+   }
 
    TEST(Random_AllIntegerTypes_ReturnsRandomValueBetweenMinAndMaxForThatType)
    {
@@ -72,8 +121,6 @@ namespace ZenUnit
       RandomNon0<long long>();
       RandomNon0<unsigned long long>();
       RandomNon0<size_t>();
-      enum EnumType {};
-      RandomNon0<EnumType>();
    }
 
    TEST(Random0OrGreater_ReturnsRandomIntegerBetween0AndTMaxValue)
