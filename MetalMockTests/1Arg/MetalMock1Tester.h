@@ -155,21 +155,21 @@ namespace MetalMock
          const auto test = [](auto& metalMockObject, const string& expectedSignature)
          {
             THROWS_EXCEPTION(metalMockObject.CalledOnceWith(0), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfCalls, actualNumberOfCalls, this->MetalMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, actualNumberOfCalls, this->MetalMockedFunctionSignature)\n"
 "Expected: 1\n"
 "  Actual: 0\n"
 " Message: \"" + expectedSignature + "\"\n"
 "File.cpp(1)");
 
             THROWS_EXCEPTION(metalMockObject.CalledNTimesWith(1, 0), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfCalls, actualNumberOfCalls, this->MetalMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, actualNumberOfCalls, this->MetalMockedFunctionSignature)\n"
 "Expected: 1\n"
 "  Actual: 0\n"
 " Message: \"" + expectedSignature + "\"\n"
 "File.cpp(1)");
 
             THROWS_EXCEPTION(metalMockObject.CalledNTimesWith(2, 0), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfCalls, actualNumberOfCalls, this->MetalMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, actualNumberOfCalls, this->MetalMockedFunctionSignature)\n"
 "Expected: 2\n"
 "  Actual: 0\n"
 " Message: \"" + expectedSignature + "\"\n"
@@ -270,7 +270,7 @@ namespace MetalMock
                metalMockObject.MetalMockIt(0);
             }
             const string expectedWhat = String::Concat(R"(
-  Failed: ARE_EQUAL(expectedNumberOfCalls, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)
 Expected: 1
   Actual: )", numberOfCalls, R"(
  Message: ")", expectedSignature, R"("
@@ -364,7 +364,7 @@ File.cpp(1))");
                metalMockObject.MetalMockIt(0);
             }
             const string expectedWhat = String::Concat(R"(
-  Failed: ARE_EQUAL(expectedNumberOfCalls, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)
 Expected: )", n, R"(
   Actual: )", numberOfCalls, R"(
  Message: ")", expectedSignature, R"("

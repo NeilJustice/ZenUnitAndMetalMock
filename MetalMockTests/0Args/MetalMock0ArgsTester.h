@@ -74,21 +74,21 @@ namespace MetalMock
          auto metalmocktest = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
             THROWS_EXCEPTION(metalMockObject.CalledOnce(), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfCalls, actualNumberOfCalls, this->MetalMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->numberOfCallsToMetalMockedFunction, this->MetalMockedFunctionSignature)\n"
 "Expected: 1\n"
 "  Actual: 0\n"
 " Message: \"" + expectedFunctionSignature + "\"\n"
 "File.cpp(1)");
 
             THROWS_EXCEPTION(metalMockObject.CalledNTimes(1), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfCalls, actualNumberOfCalls, this->MetalMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->numberOfCallsToMetalMockedFunction, this->MetalMockedFunctionSignature)\n"
 "Expected: 1\n"
 "  Actual: 0\n"
 " Message: \"" + expectedFunctionSignature + "\"\n"
 "File.cpp(1)");
 
             THROWS_EXCEPTION(metalMockObject.CalledNTimes(2), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfCalls, actualNumberOfCalls, this->MetalMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->numberOfCallsToMetalMockedFunction, this->MetalMockedFunctionSignature)\n"
 "Expected: 2\n"
 "  Actual: 0\n"
 " Message: \"" + expectedFunctionSignature + "\"\n"

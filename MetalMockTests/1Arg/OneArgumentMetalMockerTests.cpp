@@ -99,7 +99,7 @@ namespace MetalMock
       if (expectCallCountThrow)
       {
          THROWS_EXCEPTION(_metalMocker->CalledOnceWith(expectedArgument), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfCalls, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)\n"
 "Expected: 1\n"
 "  Actual: " + to_string(numberOfCalls) + "\n"
 " Message: \"" + _metalMockedFunctionSignature + "\"\n"
@@ -132,7 +132,7 @@ namespace MetalMock
    }
 
    TEST3X3(CalledAsFollowsWith_SetsAssertedTrue_NDiffersFromActualCallCount_Throws,
-      size_t expectedNumberOfCalls, size_t numberOfCalls, bool expectThrow,
+      size_t expectedNumberOfCallsToMetalMockedFunction, size_t numberOfCalls, bool expectThrow,
       size_t(1), size_t(0), true,
       size_t(1), size_t(1), false,
       size_t(1), size_t(2), true,
@@ -147,23 +147,23 @@ namespace MetalMock
       if (expectThrow)
       {
          const string expectedWhat = String::Concat(R"(
-  Failed: ARE_EQUAL(expectedNumberOfCalls, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)
-Expected: )", expectedNumberOfCalls, R"(
+  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)
+Expected: )", expectedNumberOfCallsToMetalMockedFunction, R"(
   Actual: )", numberOfCalls, R"(
  Message: ")", _metalMockedFunctionSignature, R"("
 File.cpp(1))");
-         THROWS_EXCEPTION(_metalMocker->CalledNTimesWith(expectedNumberOfCalls, 0), Anomaly, expectedWhat);
+         THROWS_EXCEPTION(_metalMocker->CalledNTimesWith(expectedNumberOfCallsToMetalMockedFunction, 0), Anomaly, expectedWhat);
       }
       else
       {
-         _metalMocker->CalledNTimesWith(expectedNumberOfCalls, 0);
+         _metalMocker->CalledNTimesWith(expectedNumberOfCallsToMetalMockedFunction, 0);
       }
       //
       IS_TRUE(_metalMocker->_wasAsserted);
    }
 
    TEST5X5(CalledAsFollowsWith_SetsAssertedTrue_NEqualToNumberOfCalls_ThrowsIfArgsDoNotMatch,
-      size_t expectedNumberOfCalls, int expectedArgument, const vector<OneArgumentFunctionCall<int>>& actualArgs,
+      size_t expectedNumberOfCallsToMetalMockedFunction, int expectedArgument, const vector<OneArgumentFunctionCall<int>>& actualArgs,
       bool expectThrow, size_t expectedResponsibleCallIndex,
       size_t(1), 0, vector<OneArgumentFunctionCall<int>>{0}, false, ZenUnit::Random<size_t>(),
       size_t(1), 0, vector<OneArgumentFunctionCall<int>>{1}, true, size_t(0),
@@ -180,7 +180,7 @@ File.cpp(1))");
          const int actualArg = actualArgs[expectedResponsibleCallIndex].argument.value;
          const string expectedSignatureAndCallIndex =
             _metalMockedFunctionSignature + " at i=" + to_string(expectedResponsibleCallIndex);
-         THROWS_EXCEPTION(_metalMocker->CalledNTimesWith(expectedNumberOfCalls, expectedArgument), Anomaly, "\n"
+         THROWS_EXCEPTION(_metalMocker->CalledNTimesWith(expectedNumberOfCallsToMetalMockedFunction, expectedArgument), Anomaly, "\n"
 "  Failed: ARE_EQUAL(expectedArgument, metalMockedFunctionCallHistory[i].argument.value, metalMockedFunctionSignatureAndCallIndex)\n"
 "Expected: " + to_string(expectedArgument) + "\n"
 "  Actual: " + to_string(actualArg) + "\n"
@@ -189,7 +189,7 @@ File.cpp(1))");
       }
       else
       {
-         _metalMocker->CalledNTimesWith(expectedNumberOfCalls, expectedArgument);
+         _metalMocker->CalledNTimesWith(expectedNumberOfCallsToMetalMockedFunction, expectedArgument);
       }
       //
       IS_TRUE(_metalMocker->_wasAsserted);

@@ -117,11 +117,11 @@ namespace MetalMock
    }
 
    TEST1X1(MetalMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCallsGreaterThan0_DoesNotThrowException,
-      size_t expectedNumberOfCalls,
-      size_t(1),
-      size_t(2))
+      size_t expectedNumberOfCallsToMetalMockedFunction,
+      1ULL,
+      2ULL)
    {
-      DOES_NOT_THROW(_metalMocker->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCalls));
+      DOES_NOT_THROW(_metalMocker->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCallsToMetalMockedFunction));
    }
 
    TEST(MetalMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSize0_ThrowsUnsupportedCalledZeroTimesException)
@@ -132,8 +132,8 @@ namespace MetalMock
 
    TEST1X1(MetalMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSizeGreaterThan0_DoesNotThrowException,
       size_t expectedCallsSize,
-      size_t(1),
-      size_t(2))
+      1ULL,
+      2ULL)
    {
       DOES_NOT_THROW(_metalMocker->MetalMockThrowIfExpectedCallsSizeIsZero(expectedCallsSize));
    }
