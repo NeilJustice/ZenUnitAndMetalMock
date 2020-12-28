@@ -1718,21 +1718,11 @@ namespace ZenUnit
          FilePathLineNumber filePathLineNumber)
       {
          Anomaly anomaly;
-         anomaly.assertExpression = metalMockAssertExpression;
-         anomaly.expectedValueAsStringOrExpectedLine = metalMockWrappedAnomaly.expectedValueAsStringOrExpectedLine;
-         anomaly.actualValueAsStringOrActualLine = metalMockWrappedAnomaly.actualValueAsStringOrActualLine;
-         anomaly.message = metalMockWrappedAnomaly.message;
-         anomaly.filePathLineNumber = filePathLineNumber;
-         std::ostringstream whyBuilder;
-         whyBuilder << "\n"
-            "  Failed: " << metalMockAssertExpression << '\n';
-         whyBuilder <<
-            " Because: " << metalMockWrappedAnomaly.assertExpression << " failed\n"
-            "Expected: " << metalMockWrappedAnomaly.expectedValueAsStringOrExpectedLine << "\n"
-            "  Actual: " << metalMockWrappedAnomaly.actualValueAsStringOrActualLine << "\n"
-            " Message: " << metalMockWrappedAnomaly.message << '\n';
-         whyBuilder << filePathLineNumber;
-         anomaly.why = whyBuilder.str();
+         anomaly.why = String::Concat('\n',
+            "  Failed: ", metalMockAssertExpression, '\n',
+            " Because of this ZenUnit::Anomaly:",
+            metalMockWrappedAnomaly.why, '\n',
+            filePathLineNumber);
          return anomaly;
       }
 
