@@ -1,27 +1,31 @@
 #include "pch.h"
 
-// Function whose correctness is to be confirmed using ZenUnit
+// FizzBuzz function to be unit tested with ZenUnit
 std::string FizzBuzz(int endNumber);
 
-// TESTS defines a ZenUnit test class and begins the FACTS section.
+// TESTS defines a ZenUnit test class and begins the FACTS section
 TESTS(FizzBuzzTests)
-// FACTS declares an N-by-N value-parameterized test, the signature feature of ZenUnit.
+// FACTS declares an N-by-N value-parameterized test, the signature syntatical feature of ZenUnit
 FACTS(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgumentException)
 FACTS(FizzBuzz_EndNumberIsGreaterThan0_ReturnsFizzBuzzSequence)
-// EVIDENCE concludes the declaration of facts section
-// and begins the presentation of evidence section, also known as the test class body.
+// EVIDENCE concludes the declaration of FACTS section and begins the presentation of EVIDENCE section
 EVIDENCE
 
-// In ZenUnit test names are duplicated between the FACTS section and the EVIDENCE section
-// by way of a carefully-considered design decision to maximize long-term readability of safety-critical test code.
-// This design of test names always up top instead of scattered throughout potentially large test files
-// makes it a quick read to confirm that a test class tests
-// a cohesive set of functionality using a consistent test naming convention.
+// In ZenUnit, test names are by design duplicated between the FACTS section and the EVIDENCE section.
+// This carefully-considered design decision is to maximize long-term test code readability
+// by making it a breeze for code readers to quickly confirm
+// what a test class tests by simply reading the top part of a ZenUnit test class .cpp file.
+// In contrast, ZenUnit could have been designed to allow test names to be scattered throughout test files
+// for initial writeability convenience, but at a cost of long-term code readability convenience.
+// Because test code is read much more often than it is written,
+// especially safety-critical and financially-critical test code,
+// a design that maximizes long-term test code readability was chosen for ZenUnit.
 
 // TEST1X1 defines a 1-by-1 value-parameterized test
-// that processes its typesafe variadic arguments list 1-by-1.
+// which processes its typesafe variadic arguments list 1-by-1.
 // This TEST1X1 defines 4 independent unit tests for FizzBuzz(),
-// each of which will run within separate instances of test class FizzBuzzTests at ZenUnit run time.
+// each of which will run sequentially within separate instances of test class FizzBuzzTests.
+// Adding support for parallel test case execution appears prominently on ZenUnit's Azure DevOps backlog.
 TEST1X1(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgumentException,
    int invalidFizzBuzzEndNumber,
    std::numeric_limits<int>::min(),
@@ -29,20 +33,25 @@ TEST1X1(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgumentException,
    -1,
    0)
 {
-   // The ZenUnit THROWS_EXCEPTION assertion asserts that an expression throws *exactly* (not a derived class of)
-   // an expected exception type with *exactly* an expected exception what() text.
-   // This double-exactness design of THROWS_EXCEPTION works to maximize mutation coverage
-   // by rendering the THROWS_EXCEPTION assertion immune to these two code mutations:
-   // mutate-exception-type, mutate-exception-message.
-   THROWS_EXCEPTION(FizzBuzz(invalidFizzBuzzEndNumber), std::invalid_argument,
-      "Invalid FizzBuzz(int endNumber) argument: endNumber must be 1 or greater. endNumber="
-         + std::to_string(invalidFizzBuzzEndNumber));
+   // The ZenUnit THROWS_EXCEPTION assertion asserts that an expression throws
+   // *exactly* (not a derived class of) an expected exception type with
+   // *exactly* an expected exception what() text.
+
+   // This double-exactness design of THROWS_EXCEPTION serves to maximizes mutation coverage,
+   // the next frontier in software quality metrics beyond code coverage.
+   // Throw statements tested with THROWS_EXCEPTION are immune to these two mutation testing operators:
+   // mutate-exception-type and mutate-exception-message.
+
+   const std::string expectedExceptionMessage =
+      "Invalid FizzBuzz(int endNumber) argument: endNumber [" + std::to_string(invalidFizzBuzzEndNumber) + "] must be >= 1";
+   THROWS_EXCEPTION(FizzBuzz(invalidFizzBuzzEndNumber),
+      std::invalid_argument, expectedExceptionMessage);
 }
 
 // TEST2X2 defines a 2-by-2 value-parameterized test
-// that processes its typesafe variadic arguments list 2-by-2.
+// which processes its typesafe variadic arguments list 2-by-2.
 // This TEST2X2 defines 16 independent unit tests for FizzBuzz(),
-// each of which will run within separate instances of test class FizzBuzzTests at ZenUnit run time.
+// each of which will run sequentially within separate instances of test class FizzBuzzTests.
 TEST2X2(FizzBuzz_EndNumberIsGreaterThan0_ReturnsFizzBuzzSequence,
    int endNumber, std::string_view expectedFizzBuzzSequence,
    1, "1",
@@ -63,34 +72,37 @@ TEST2X2(FizzBuzz_EndNumberIsGreaterThan0_ReturnsFizzBuzzSequence,
    16, "1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz 16")
 {
    const std::string fizzBuzzSequence = FizzBuzz(endNumber);
-   // ZenUnit assertion names are declarative in language style (ARE_EQUAL, THROWS_EXCEPTION, etc)
-   // instead of procedural in language style (ASSERT_EQUAL, ASSERT_THROWS, etc)
-   // to give ZenUnit a test reading experience similar to reading a mythical executable specification document.
+   // ZenUnit assertion names are declarative in language style (ARE_EQUAL, THROWS_EXCEPTION, et al)
+   // instead of procedural in language style (ASSERT_EQUAL, ASSERT_THROWS, et al)
+   // to give ZenUnit a test reading experience akin to reading an executable specification document.
    ARE_EQUAL(expectedFizzBuzzSequence, fizzBuzzSequence);
 }
 
-// Function to be unit tested with ZenUnit
+// Function under test
 std::string FizzBuzz(int endNumber)
 {
    if (endNumber <= 0)
    {
-      throw std::invalid_argument(
-         "Invalid FizzBuzz(int endNumber) argument: endNumber must be 1 or greater. endNumber=" + std::to_string(endNumber));
+      const std::string exceptionMessage =
+         "Invalid FizzBuzz(int endNumber) argument: endNumber [" + std::to_string(endNumber) + "] must be >= 1";
+      throw std::invalid_argument(exceptionMessage);
    }
    std::ostringstream fizzBuzzSequenceBuilder;
    for (int i = 1; i <= endNumber; ++i)
    {
-      const bool divisibleBy3 = i % 3 == 0;
-      const bool divisibleBy5 = i % 5 == 0;
-      if (divisibleBy3)
+      if (i % 15 == 0)
+      {
+         fizzBuzzSequenceBuilder << "FizzBuzz";
+      }
+      else if (i % 3 == 0)
       {
          fizzBuzzSequenceBuilder << "Fizz";
       }
-      if (divisibleBy5)
+      else if (i % 5 == 0)
       {
          fizzBuzzSequenceBuilder << "Buzz";
       }
-      if (!divisibleBy3 && !divisibleBy5)
+      else
       {
          fizzBuzzSequenceBuilder << i;
       }
@@ -99,9 +111,9 @@ std::string FizzBuzz(int endNumber)
          fizzBuzzSequenceBuilder << ' ';
       }
    }
-   const std::string fizzBuzzSequence(fizzBuzzSequenceBuilder.str());
+   std::string fizzBuzzSequence(fizzBuzzSequenceBuilder.str());
    return fizzBuzzSequence;
 }
 
-// RUN_TESTS registers a ZenUnit test class to be run when ZenUnit::RunTests(argc, argv) is called.
+// RUN_TESTS registers a ZenUnit test class to be run when ZenUnit::RunTests(argc, argv) is called
 RUN_TESTS(FizzBuzzTests)

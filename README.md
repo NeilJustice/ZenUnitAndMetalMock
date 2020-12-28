@@ -164,9 +164,10 @@ TEST1X1(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgumentException,
    // Throw statements tested with THROWS_EXCEPTION are immune to these two mutation testing operators:
    // mutate-exception-type and mutate-exception-message.
 
-   THROWS_EXCEPTION(FizzBuzz(invalidFizzBuzzEndNumber), std::invalid_argument,
-      "Invalid FizzBuzz(int endNumber) argument: endNumber must be 1 or greater. endNumber="
-         + std::to_string(invalidFizzBuzzEndNumber));
+   const std::string expectedExceptionMessage =
+      "Invalid FizzBuzz(int endNumber) argument: endNumber [" + std::to_string(invalidFizzBuzzEndNumber) + "] must be >= 1";
+   THROWS_EXCEPTION(FizzBuzz(invalidFizzBuzzEndNumber),
+      std::invalid_argument, expectedExceptionMessage);
 }
 
 // TEST2X2 defines a 2-by-2 value-parameterized test
@@ -204,24 +205,26 @@ std::string FizzBuzz(int endNumber)
 {
    if (endNumber <= 0)
    {
-      throw std::invalid_argument(
-         "Invalid FizzBuzz(int endNumber) argument: endNumber must be 1 or greater. endNumber="
-         + std::to_string(endNumber));
+      const std::string exceptionMessage =
+         "Invalid FizzBuzz(int endNumber) argument: endNumber [" + std::to_string(endNumber) + "] must be >= 1";
+      throw std::invalid_argument(exceptionMessage);
    }
    std::ostringstream fizzBuzzSequenceBuilder;
    for (int i = 1; i <= endNumber; ++i)
    {
-      const bool divisibleBy3 = i % 3 == 0;
-      const bool divisibleBy5 = i % 5 == 0;
-      if (divisibleBy3)
+      if (i % 15 == 0)
+      {
+         fizzBuzzSequenceBuilder << "FizzBuzz";
+      }
+      else if (i % 3 == 0)
       {
          fizzBuzzSequenceBuilder << "Fizz";
       }
-      if (divisibleBy5)
+      else if (i % 5 == 0)
       {
          fizzBuzzSequenceBuilder << "Buzz";
       }
-      if (!divisibleBy3 && !divisibleBy5)
+      else
       {
          fizzBuzzSequenceBuilder << i;
       }
