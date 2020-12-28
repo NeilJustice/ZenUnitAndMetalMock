@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[])
 {
-   ZenUnitSelfTestMode::value = true;
+   ZenUnit::zenUnitMode.selfTestMode = true;
    const int exitCode = ZenUnit::RunTests(argc, argv);
    return exitCode;
 }

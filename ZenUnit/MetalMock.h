@@ -1111,6 +1111,21 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Typ
 
 namespace MetalMock
 {
+   inline std::atomic<unsigned long long> _atomicFunctionSequencingIndex;
+
+   struct FunctionSequencingToken
+   {
+      unsigned long long sequencingIndex;
+
+      FunctionSequencingToken() : sequencingIndex(_atomicFunctionSequencingIndex++) {}
+
+      FunctionSequencingToken Then(FunctionSequencingToken functionSequencingToken)
+      {
+         IS_TRUE(sequencingIndex < functionSequencingToken.sequencingIndex);
+         return functionSequencingToken;
+      }
+   };
+
    class UnexpectedCallException : public ZenUnit::MetalMockException
    {
    private:
@@ -1340,21 +1355,6 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
       }
    };
 
-   using MetalMockAtomicFunctionSequencingIndex = ZenUnit::SingleHeaderVariable<std::atomic<unsigned long long>>;
-
-   struct FunctionSequencingToken
-   {
-      unsigned long long sequencingIndex;
-
-      FunctionSequencingToken() : sequencingIndex(MetalMockAtomicFunctionSequencingIndex::value++) {}
-
-      FunctionSequencingToken Then(FunctionSequencingToken functionSequencingToken)
-      {
-         IS_TRUE(sequencingIndex < functionSequencingToken.sequencingIndex);
-         return functionSequencingToken;
-      }
-   };
-
    template<typename MockableExceptionThrowerType>
    class MetalMocker
    {
@@ -1403,7 +1403,7 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
    protected:
       void AssignAndIncrementFunctionSequenceIndex()
       {
-         _functionSequencingToken.sequencingIndex = MetalMockAtomicFunctionSequencingIndex::value++;
+         _functionSequencingToken.sequencingIndex = _atomicFunctionSequencingIndex++;
       }
 
       void MetalMockThrowExceptionIfExceptionSet()
