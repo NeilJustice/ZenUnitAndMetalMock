@@ -2,9 +2,9 @@
 
 struct NonDefaultConstructible
 {
-   int x;
-   NonDefaultConstructible(int x)
-      : x(x) {}
+   int field;
+   NonDefaultConstructible(int field)
+      : field(field) {}
 };
 
 namespace ZenUnit
@@ -15,7 +15,7 @@ namespace ZenUnit
    public:
       static void AssertEqual(const NonDefaultConstructible& expected, const NonDefaultConstructible& actual)
       {
-         ARE_EQUAL(expected.x, actual.x);
+         ARE_EQUAL(expected.field, actual.field);
       }
    };
 }
@@ -24,11 +24,11 @@ namespace MetalMock
 {
    TESTS(ValueReturnerTests)
    AFACT(DefaultConstructor_SetsMetalMockedFunctionSignature_SetsReturnValueIndexTo0)
-   AFACT(MetalMockNextReturnValue_DefaultConstructibleReturnType_NoReturnValuesSpecified_Throws)
-   AFACT(MetalMockNextReturnValue_DefaultConstructibleReturnType_ReturnValuesSpecified_ReturnsValuesThenLastValueThereafter)
-   AFACT(MetalMockNextReturnValue_NonDefaultConstructibleReturnType_NoReturnValuesSpecified_Throws)
-   AFACT(MetalMockNextReturnValue_NonDefaultConstructibleReturnType_ReturnValuesPreviouslySpecified_ReturnsValuesThenLastValueTherafter)
-   AFACT(MetalMockAddContainerReturnValues_ThrowsIfReturnValuesArgumentEmpty)
+   AFACT(MetalMockNextReturnValue_NoReturnValueWasPreviouslySpecified_ThrowsReturnValueMustBeSpecifiedException__DefaultConstructibleReturnType)
+   AFACT(MetalMockNextReturnValue_NoReturnValueWasPreviouslySpecified_ThrowsReturnValueMustBeSpecifiedException__NonDefaultConstructibleReturnType)
+   AFACT(MetalMockNextReturnValue_ReturnValuesSpecified_ReturnsValuesThenLastValueThereafter__DefaultConstructibleReturnType)
+   AFACT(MetalMockNextReturnValue_ReturnValuesSpecified_ReturnsValuesThenLastValueThereafter__NonDefaultConstructibleReturnType)
+   AFACT(MetalMockAddContainerReturnValues_ReturnValuesIsEmpty_ThrowsInvalidArgument)
    EVIDENCE
 
    string _metalMockedFunctionSignature;
@@ -40,14 +40,16 @@ namespace MetalMock
 
    TEST(DefaultConstructor_SetsMetalMockedFunctionSignature_SetsReturnValueIndexTo0)
    {
-      ValueReturner<int> valueReturner(_metalMockedFunctionSignature);
+      const string metalMockedFunctionSignature = ZenUnit::Random<string>();
       //
-      ARE_EQUAL(_metalMockedFunctionSignature, valueReturner._metalMockedFunctionSignature);
-      IS_ZERO(valueReturner._returnValueIndex);
+      const ValueReturner<int> valueReturner(metalMockedFunctionSignature);
+      //
+      ARE_EQUAL(metalMockedFunctionSignature, valueReturner._metalMockedFunctionSignature);
       IS_EMPTY(valueReturner._returnValues);
+      IS_ZERO(valueReturner._returnValueIndex);
    }
 
-   TEST(MetalMockNextReturnValue_DefaultConstructibleReturnType_NoReturnValuesSpecified_Throws)
+   TEST(MetalMockNextReturnValue_NoReturnValueWasPreviouslySpecified_ThrowsReturnValueMustBeSpecifiedException__DefaultConstructibleReturnType)
    {
       ValueReturner<int> valueReturnerInt(_metalMockedFunctionSignature);
       THROWS_EXCEPTION(valueReturnerInt.MetalMockNextReturnValue(), ReturnValueMustBeSpecifiedException,
@@ -58,17 +60,25 @@ namespace MetalMock
          ReturnValueMustBeSpecifiedException::MakeExceptionMessage(_metalMockedFunctionSignature));
    }
 
-   TEST(MetalMockNextReturnValue_DefaultConstructibleReturnType_ReturnValuesSpecified_ReturnsValuesThenLastValueThereafter)
+   TEST(MetalMockNextReturnValue_NoReturnValueWasPreviouslySpecified_ThrowsReturnValueMustBeSpecifiedException__NonDefaultConstructibleReturnType)
+   {
+      ValueReturner<NonDefaultConstructible> valueReturner(_metalMockedFunctionSignature);
+      THROWS_EXCEPTION(valueReturner.MetalMockNextReturnValue(), ReturnValueMustBeSpecifiedException,
+         ReturnValueMustBeSpecifiedException::MakeExceptionMessage(_metalMockedFunctionSignature));
+   }
+
+   TEST(MetalMockNextReturnValue_ReturnValuesSpecified_ReturnsValuesThenLastValueThereafter__DefaultConstructibleReturnType)
    {
       ValueReturner<int> valueReturner(_metalMockedFunctionSignature);
       valueReturner.MetalMockAddReturnValue(1);
       valueReturner.MetalMockAddReturnValues(2, 3);
       valueReturner.MetalMockAddContainerReturnValues(vector<int> { 4, 5 });
       valueReturner.MetalMockAddContainerReturnValues(array<int, 2>{{ 6, 7 }});
-      vector<int> lvalueVector{8};
-      valueReturner.MetalMockAddContainerReturnValues(lvalueVector);
-      array<int, 1> lvalueArray{{9}};
-      valueReturner.MetalMockAddContainerReturnValues(lvalueArray);
+      const vector<int> vectorOfReturnValues{8, 9};
+      valueReturner.MetalMockAddContainerReturnValues(vectorOfReturnValues);
+      const array<int, 1> arrayOfReturnValues{{10}};
+      valueReturner.MetalMockAddContainerReturnValues(arrayOfReturnValues);
+      //
       ARE_EQUAL(1, valueReturner.MetalMockNextReturnValue());
       ARE_EQUAL(2, valueReturner.MetalMockNextReturnValue());
       ARE_EQUAL(3, valueReturner.MetalMockNextReturnValue());
@@ -78,36 +88,44 @@ namespace MetalMock
       ARE_EQUAL(7, valueReturner.MetalMockNextReturnValue());
       ARE_EQUAL(8, valueReturner.MetalMockNextReturnValue());
       ARE_EQUAL(9, valueReturner.MetalMockNextReturnValue());
-      ARE_EQUAL(9, valueReturner.MetalMockNextReturnValue());
+      ARE_EQUAL(10, valueReturner.MetalMockNextReturnValue());
+      ARE_EQUAL(10, valueReturner.MetalMockNextReturnValue());
    }
 
-   TEST(MetalMockNextReturnValue_NonDefaultConstructibleReturnType_NoReturnValuesSpecified_Throws)
-   {
-      ValueReturner<NonDefaultConstructible> valueReturner(_metalMockedFunctionSignature);
-      THROWS_EXCEPTION(valueReturner.MetalMockNextReturnValue(), ReturnValueMustBeSpecifiedException,
-         ReturnValueMustBeSpecifiedException::MakeExceptionMessage(_metalMockedFunctionSignature));
-   }
-
-   TEST(MetalMockNextReturnValue_NonDefaultConstructibleReturnType_ReturnValuesPreviouslySpecified_ReturnsValuesThenLastValueTherafter)
+   TEST(MetalMockNextReturnValue_ReturnValuesSpecified_ReturnsValuesThenLastValueThereafter__NonDefaultConstructibleReturnType)
    {
       ValueReturner<NonDefaultConstructible> valueReturner(_metalMockedFunctionSignature);
       valueReturner.MetalMockAddReturnValue(NonDefaultConstructible(1));
       valueReturner.MetalMockAddReturnValues(NonDefaultConstructible(2), NonDefaultConstructible(3));
-      valueReturner.MetalMockAddContainerReturnValues(vector<NonDefaultConstructible> { NonDefaultConstructible(4), NonDefaultConstructible(5) });
+      valueReturner.MetalMockAddContainerReturnValues(
+         vector<NonDefaultConstructible> { NonDefaultConstructible(4), NonDefaultConstructible(5) });
+      valueReturner.MetalMockAddContainerReturnValues(
+         array<NonDefaultConstructible, 2>{ { NonDefaultConstructible(6), NonDefaultConstructible(7) }});
+      const vector<NonDefaultConstructible> vectorOfReturnValues = {NonDefaultConstructible(8), NonDefaultConstructible(9)};
+      valueReturner.MetalMockAddContainerReturnValues(vectorOfReturnValues);
+      const array<NonDefaultConstructible, 1> arrayOfReturnValues = {NonDefaultConstructible(10)};
+      valueReturner.MetalMockAddContainerReturnValues(arrayOfReturnValues);
       //
       ARE_EQUAL(NonDefaultConstructible(1), valueReturner.MetalMockNextReturnValue());
       ARE_EQUAL(NonDefaultConstructible(2), valueReturner.MetalMockNextReturnValue());
       ARE_EQUAL(NonDefaultConstructible(3), valueReturner.MetalMockNextReturnValue());
       ARE_EQUAL(NonDefaultConstructible(4), valueReturner.MetalMockNextReturnValue());
       ARE_EQUAL(NonDefaultConstructible(5), valueReturner.MetalMockNextReturnValue());
-      ARE_EQUAL(NonDefaultConstructible(5), valueReturner.MetalMockNextReturnValue());
+      ARE_EQUAL(NonDefaultConstructible(6), valueReturner.MetalMockNextReturnValue());
+      ARE_EQUAL(NonDefaultConstructible(7), valueReturner.MetalMockNextReturnValue());
+      ARE_EQUAL(NonDefaultConstructible(8), valueReturner.MetalMockNextReturnValue());
+      ARE_EQUAL(NonDefaultConstructible(9), valueReturner.MetalMockNextReturnValue());
+      ARE_EQUAL(NonDefaultConstructible(10), valueReturner.MetalMockNextReturnValue());
+      ARE_EQUAL(NonDefaultConstructible(10), valueReturner.MetalMockNextReturnValue());
    }
 
-   TEST(MetalMockAddContainerReturnValues_ThrowsIfReturnValuesArgumentEmpty)
+   TEST(MetalMockAddContainerReturnValues_ReturnValuesIsEmpty_ThrowsInvalidArgument)
    {
       ValueReturner<int> valueReturner(_metalMockedFunctionSignature);
-      const char* const ExpectedWhat = "MetalMock::ValueReturner::MetalMockAddContainerReturnValues(): Return values container cannot be empty.";
-      THROWS_EXCEPTION(valueReturner.MetalMockAddContainerReturnValues(vector<int>{}), invalid_argument, ExpectedWhat);
+      const char* const expectedExceptionMessage =
+         "MetalMock::ValueReturner::MetalMockAddContainerReturnValues(const ContainerType& returnValues): returnValues cannot be empty";
+      THROWS_EXCEPTION(valueReturner.MetalMockAddContainerReturnValues(vector<int>{}),
+         invalid_argument, expectedExceptionMessage);
    }
 
    RUN_TESTS(ValueReturnerTests)

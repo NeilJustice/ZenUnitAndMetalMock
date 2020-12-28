@@ -27,7 +27,7 @@ namespace MetalMock
       const string expectedMessage = "Message";
       const string expectedWhat = "\n"
 "  Failed: METALMOCK(consoleMock.WriteLineMock.CalledOnceWith(expectedMessage))\n"
-" Because: ARE_EQUAL(expectedArgument, metalMockedFunctionCallHistory[0].argument.value, this->MetalMockedFunctionSignature) failed\n"
+" Because: ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory[0].argument.value, this->MetalMockedFunctionSignature) failed\n"
 "Expected: \"Message\"\n"
 "  Actual: \"message\"\n"
 " Message: \"virtual void ZenUnit::Console::WriteLine(string_view) const\"\n"

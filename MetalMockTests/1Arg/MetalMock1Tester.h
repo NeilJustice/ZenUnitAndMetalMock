@@ -270,7 +270,7 @@ namespace MetalMock
                metalMockObject.MetalMockIt(0);
             }
             const string expectedWhat = String::Concat(R"(
-  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)
 Expected: 1
   Actual: )", numberOfCalls, R"(
  Message: ")", expectedSignature, R"("
@@ -297,7 +297,7 @@ File.cpp(1))");
             metalMockObject.MetalMockIt(10);
             //
             const string expectedWhat = String::Concat(R"(
-  Failed: ARE_EQUAL(expectedArgument, metalMockedFunctionCallHistory[0].argument.value, this->MetalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory[0].argument.value, this->MetalMockedFunctionSignature)
 Expected: 20
   Actual: 10
  Message: ")", expectedSignature, R"("
@@ -364,7 +364,7 @@ File.cpp(1))");
                metalMockObject.MetalMockIt(0);
             }
             const string expectedWhat = String::Concat(R"(
-  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)
 Expected: )", n, R"(
   Actual: )", numberOfCalls, R"(
  Message: ")", expectedSignature, R"("
@@ -402,7 +402,7 @@ File.cpp(1))");
             }
             //
             const string expectedWhat = String::Concat(R"(
-  Failed: ARE_EQUAL(expectedArgument, metalMockedFunctionCallHistory[i].argument.value, metalMockedFunctionSignatureAndCallIndex)
+  Failed: ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory[i].argument.value, metalMockedFunctionSignatureAndCallIndex)
 Expected: 10
   Actual: 20
  Message: ")", expectedSignature, " at i=", mismatchingCallIndex, R"("

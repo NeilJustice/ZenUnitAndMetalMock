@@ -1184,12 +1184,13 @@ namespace MetalMock
          return _what.c_str();
       }
 
-      static std::string MakeExceptionMessage(const std::string& metalMockedFunctionSignature)
+      static std::string MakeExceptionMessage(std::string_view metalMockedFunctionSignature)
       {
-         const std::string what = "For MetalMocked function \"" + metalMockedFunctionSignature + R"(":
+         const std::string exceptionMessage = ZenUnit::String::Concat(
+"For MetalMocked function \"", metalMockedFunctionSignature, R"(":
 MetalMocked functions with non-void return types must have their return value or values set explicitly by calling:
-[FunctionName]Mock.[Return|ReturnValues]())";
-         return what;
+[FunctionName]Mock.[Return|ReturnValues]())");
+         return exceptionMessage;
       }
    };
 
@@ -1294,7 +1295,7 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    private:
       const std::string _metalMockedFunctionSignature;
-      // std::deque here instead of std::vector due to the infamous implementation of std::vector<bool>
+      // std::deque of return values instead of std::vector due to the implementation of std::vector<bool>
       std::deque<DecayedFunctionReturnType> _returnValues;
       size_t _returnValueIndex;
    public:
@@ -1303,8 +1304,8 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
       {
       }
 
-      explicit ValueReturner(std::string metalMockedFunctionSignature)
-         : _metalMockedFunctionSignature(std::move(metalMockedFunctionSignature))
+      explicit ValueReturner(std::string_view metalMockedFunctionSignature)
+         : _metalMockedFunctionSignature(metalMockedFunctionSignature)
          , _returnValueIndex(0)
       {
       }
@@ -1327,19 +1328,37 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
       }
 
       template<typename ContainerType>
+      void MetalMockAddContainerReturnValues(const ContainerType& returnValues)
+      {
+         if (returnValues.empty())
+         {
+            throw std::invalid_argument(
+               "MetalMock::ValueReturner::MetalMockAddContainerReturnValues(const ContainerType& returnValues): returnValues cannot be empty");
+         }
+         for (const auto& returnValue : returnValues)
+         {
+            _returnValues.push_back(returnValue);
+         }
+      }
+
+      template<typename ContainerType>
       void MetalMockAddContainerReturnValues(ContainerType&& returnValues)
       {
          if (returnValues.empty())
          {
-            throw std::invalid_argument("MetalMock::ValueReturner::MetalMockAddContainerReturnValues(): Return values container cannot be empty.");
+            throw std::invalid_argument(
+               "MetalMock::ValueReturner::MetalMockAddContainerReturnValues(const ContainerType& returnValues): returnValues cannot be empty");
          }
-         _returnValues.insert(_returnValues.end(), returnValues.cbegin(), returnValues.cend());
+         for (auto& returnValue : returnValues)
+         {
+            _returnValues.emplace_back(std::move(returnValue));
+         }
       }
 
       DecayedFunctionReturnType MetalMockAddRandomReturnValue()
       {
          const DecayedFunctionReturnType randomReturnValue = ZenUnit::Random<DecayedFunctionReturnType>();
-         _returnValues.emplace_back(randomReturnValue);
+         _returnValues.push_back(randomReturnValue);
          return randomReturnValue;
       }
 
@@ -1380,10 +1399,12 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
       {
       }
 
-      explicit MetalMocker(std::string metalMockedFunctionSignature)
+      explicit MetalMocker(std::string_view metalMockedFunctionSignature)
+         // Function Pointers
          : _call_exit(::exit)
          , _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnit::ZenUnitTestRunner::GetZenUnitArgs)
-         , MetalMockedFunctionSignature(std::move(metalMockedFunctionSignature))
+         // Constant Fields
+         , MetalMockedFunctionSignature(metalMockedFunctionSignature)
       {
       }
 
@@ -2346,8 +2367,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
       }
 
-      explicit OneArgumentMetalMocker(std::string metalMockedFunctionSignature)
-         : MetalMocker<MockableExceptionThrowerType>(std::move(metalMockedFunctionSignature))
+      explicit OneArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
+         : MetalMocker<MockableExceptionThrowerType>(metalMockedFunctionSignature)
       {
       }
 
@@ -2362,8 +2383,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockSetAsserted();
          const size_t expectedNumberOfCallsToMetalMockedFunction = 1;
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedArgument, metalMockedFunctionCallHistory[0].argument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory[0].argument.value, this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
@@ -2371,7 +2392,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockSetAsserted();
          const size_t expectedNumberOfCallsToMetalMockedFunction = 1;
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
@@ -2379,12 +2400,12 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCallsToMetalMockedFunction);
          this->MetalMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCallsToMetalMockedFunction; ++i)
          {
             const std::string metalMockedFunctionSignatureAndCallIndex =
                ZenUnit::String::Concat(this->MetalMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedArgument, metalMockedFunctionCallHistory[i].argument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory[i].argument.value, metalMockedFunctionSignatureAndCallIndex);
          }
          return FunctionSequencingToken();
       }
@@ -2410,8 +2431,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    private:
       std::function<void(ArgType)> _callInsteadFunction;
    public:
-      explicit VoidOneArgumentMetalMocker(std::string metalMockedFunctionSignature)
-         : OneArgumentMetalMocker<ArgType>(std::move(metalMockedFunctionSignature))
+      explicit VoidOneArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
+         : OneArgumentMetalMocker<ArgType>(metalMockedFunctionSignature)
       {
       }
 
@@ -2592,9 +2613,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockSetAsserted();
          const size_t expectedNumberOfCallsToMetalMockedFunction = 1;
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedFirstArgument, metalMockedFunctionCallHistory[0].firstArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedSecondArgument, metalMockedFunctionCallHistory[0].secondArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].firstArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].secondArgument.value, this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
@@ -2605,13 +2626,13 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCallsToMetalMockedFunction);
          this->MetalMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCallsToMetalMockedFunction; ++i)
          {
             const std::string metalMockedFunctionSignatureAndCallIndex =
                ZenUnit::String::Concat(this->MetalMockedFunctionSignature, ", at i=", i);
-            ARE_EQUAL(expectedFirstArgument, metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSecondArgument, metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
          }
          return FunctionSequencingToken();
       }
@@ -3012,11 +3033,11 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockSetAsserted();
          const size_t expectedNumberOfCallsToMetalMockedFunction = 1;
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedFirstArgument, metalMockedFunctionCallHistory[0].firstArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedSecondArgument, metalMockedFunctionCallHistory[0].secondArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedThirdArgument, metalMockedFunctionCallHistory[0].thirdArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedFourthArgument, metalMockedFunctionCallHistory[0].fourthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].firstArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].secondArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[0].thirdArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[0].fourthArgument.value, this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
@@ -3029,14 +3050,14 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCallsToMetalMockedFunction);
          this->MetalMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCallsToMetalMockedFunction; ++i)
          {
             const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::Concat(this->MetalMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedFirstArgument, metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSecondArgument, metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedThirdArgument, metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedFourthArgument, metalMockedFunctionCallHistory[i].fourthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[i].fourthArgument.value, metalMockedFunctionSignatureAndCallIndex);
          }
          return FunctionSequencingToken();
       }
@@ -3215,12 +3236,12 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockSetAsserted();
          const size_t expectedNumberOfCallsToMetalMockedFunction = 1;
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedFirstArgument, metalMockedFunctionCallHistory[0].firstArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedSecondArgument, metalMockedFunctionCallHistory[0].secondArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedThirdArgument, metalMockedFunctionCallHistory[0].thirdArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedFourthArgument, metalMockedFunctionCallHistory[0].fourthArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedFifthArgument, metalMockedFunctionCallHistory[0].fifthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].firstArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].secondArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[0].thirdArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[0].fourthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[0].fifthArgument.value, this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
@@ -3234,15 +3255,15 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCallsToMetalMockedFunction);
          this->MetalMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCallsToMetalMockedFunction; ++i)
          {
             std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::Concat(this->MetalMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedFirstArgument, metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSecondArgument, metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedThirdArgument, metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedFourthArgument, metalMockedFunctionCallHistory[i].fourthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedFifthArgument, metalMockedFunctionCallHistory[i].fifthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[i].fourthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[i].fifthArgument.value, metalMockedFunctionSignatureAndCallIndex);
          }
          return FunctionSequencingToken();
       }
@@ -3424,13 +3445,13 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockSetAsserted();
          const size_t expectedNumberOfCallsToMetalMockedFunction = 1;
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedFirstArgument, metalMockedFunctionCallHistory[0].firstArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedSecondArgument, metalMockedFunctionCallHistory[0].secondArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedThirdArgument, metalMockedFunctionCallHistory[0].thirdArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedFourthArgument, metalMockedFunctionCallHistory[0].fourthArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedFifthArgument, metalMockedFunctionCallHistory[0].fifthArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedSixthArgument, metalMockedFunctionCallHistory[0].sixthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].firstArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].secondArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[0].thirdArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[0].fourthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[0].fifthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedSixthArgument, this->metalMockedFunctionCallHistory[0].sixthArgument.value, this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
@@ -3445,16 +3466,16 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCallsToMetalMockedFunction);
          this->MetalMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCallsToMetalMockedFunction; ++i)
          {
             const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::Concat(this->MetalMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedFirstArgument, metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSecondArgument, metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedThirdArgument, metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedFourthArgument, metalMockedFunctionCallHistory[i].fourthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedFifthArgument, metalMockedFunctionCallHistory[i].fifthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSixthArgument, metalMockedFunctionCallHistory[i].sixthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[i].fourthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[i].fifthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSixthArgument, this->metalMockedFunctionCallHistory[i].sixthArgument.value, metalMockedFunctionSignatureAndCallIndex);
          }
          return FunctionSequencingToken();
       }
@@ -3626,14 +3647,14 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockSetAsserted();
          const size_t expectedNumberOfCallsToMetalMockedFunction = 1;
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedFirstArgument, metalMockedFunctionCallHistory[0].firstArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedSecondArgument, metalMockedFunctionCallHistory[0].secondArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedThirdArgument, metalMockedFunctionCallHistory[0].thirdArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedFourthArgument, metalMockedFunctionCallHistory[0].fourthArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedFifthArgument, metalMockedFunctionCallHistory[0].fifthArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedSixthArgument, metalMockedFunctionCallHistory[0].sixthArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedSeventhArgument, metalMockedFunctionCallHistory[0].seventhArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].firstArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].secondArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[0].thirdArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[0].fourthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[0].fifthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedSixthArgument, this->metalMockedFunctionCallHistory[0].sixthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedSeventhArgument, this->metalMockedFunctionCallHistory[0].seventhArgument.value, this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
@@ -3649,17 +3670,17 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCallsToMetalMockedFunction);
          this->MetalMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCallsToMetalMockedFunction; ++i)
          {
             const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::Concat(this->MetalMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedFirstArgument, metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSecondArgument, metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedThirdArgument, metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedFourthArgument, metalMockedFunctionCallHistory[i].fourthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedFifthArgument, metalMockedFunctionCallHistory[i].fifthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSixthArgument, metalMockedFunctionCallHistory[i].sixthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSeventhArgument, metalMockedFunctionCallHistory[i].seventhArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[i].fourthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[i].fifthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSixthArgument, this->metalMockedFunctionCallHistory[i].sixthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSeventhArgument, this->metalMockedFunctionCallHistory[i].seventhArgument.value, metalMockedFunctionSignatureAndCallIndex);
          }
          return FunctionSequencingToken();
       }
@@ -3841,15 +3862,15 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockSetAsserted();
          const size_t expectedNumberOfCallsToMetalMockedFunction = 1;
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedFirstArgument, metalMockedFunctionCallHistory[0].firstArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedSecondArgument, metalMockedFunctionCallHistory[0].secondArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedThirdArgument, metalMockedFunctionCallHistory[0].thirdArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedFourthArgument, metalMockedFunctionCallHistory[0].fourthArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedFifthArgument, metalMockedFunctionCallHistory[0].fifthArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedSixthArgument, metalMockedFunctionCallHistory[0].sixthArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedSeventhArgument, metalMockedFunctionCallHistory[0].seventhArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedEigthArgument, metalMockedFunctionCallHistory[0].eigthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].firstArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].secondArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[0].thirdArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[0].fourthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[0].fifthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedSixthArgument, this->metalMockedFunctionCallHistory[0].sixthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedSeventhArgument, this->metalMockedFunctionCallHistory[0].seventhArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedEigthArgument, this->metalMockedFunctionCallHistory[0].eigthArgument.value, this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
@@ -3866,18 +3887,18 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCallsToMetalMockedFunction);
          this->MetalMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCallsToMetalMockedFunction; ++i)
          {
             const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::Concat(this->MetalMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedFirstArgument, metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSecondArgument, metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedThirdArgument, metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedFourthArgument, metalMockedFunctionCallHistory[i].fourthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedFifthArgument, metalMockedFunctionCallHistory[i].fifthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSixthArgument, metalMockedFunctionCallHistory[i].sixthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSeventhArgument, metalMockedFunctionCallHistory[i].seventhArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedEigthArgument, metalMockedFunctionCallHistory[i].eigthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[i].fourthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[i].fifthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSixthArgument, this->metalMockedFunctionCallHistory[i].sixthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSeventhArgument, this->metalMockedFunctionCallHistory[i].seventhArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedEigthArgument, this->metalMockedFunctionCallHistory[i].eigthArgument.value, metalMockedFunctionSignatureAndCallIndex);
          }
          return FunctionSequencingToken();
       }
@@ -4064,16 +4085,16 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockSetAsserted();
          const size_t expectedNumberOfCallsToMetalMockedFunction = 1;
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedFirstArgument, metalMockedFunctionCallHistory[0].firstArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedSecondArgument, metalMockedFunctionCallHistory[0].secondArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedThirdArgument, metalMockedFunctionCallHistory[0].thirdArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedFourthArgument, metalMockedFunctionCallHistory[0].fourthArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedFifthArgument, metalMockedFunctionCallHistory[0].fifthArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedSixthArgument, metalMockedFunctionCallHistory[0].sixthArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedSeventhArgument, metalMockedFunctionCallHistory[0].seventhArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedEigthArgument, metalMockedFunctionCallHistory[0].eigthArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedNinthArgument, metalMockedFunctionCallHistory[0].ninthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].firstArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].secondArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[0].thirdArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[0].fourthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[0].fifthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedSixthArgument, this->metalMockedFunctionCallHistory[0].sixthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedSeventhArgument, this->metalMockedFunctionCallHistory[0].seventhArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedEigthArgument, this->metalMockedFunctionCallHistory[0].eigthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedNinthArgument, this->metalMockedFunctionCallHistory[0].ninthArgument.value, this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
@@ -4091,19 +4112,19 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCallsToMetalMockedFunction);
          this->MetalMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCallsToMetalMockedFunction; ++i)
          {
             const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::Concat(this->MetalMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedFirstArgument, metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSecondArgument, metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedThirdArgument, metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedFourthArgument, metalMockedFunctionCallHistory[i].fourthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedFifthArgument, metalMockedFunctionCallHistory[i].fifthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSixthArgument, metalMockedFunctionCallHistory[i].sixthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSeventhArgument, metalMockedFunctionCallHistory[i].seventhArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedEigthArgument, metalMockedFunctionCallHistory[i].eigthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedNinthArgument, metalMockedFunctionCallHistory[i].ninthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[i].fourthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[i].fifthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSixthArgument, this->metalMockedFunctionCallHistory[i].sixthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSeventhArgument, this->metalMockedFunctionCallHistory[i].seventhArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedEigthArgument, this->metalMockedFunctionCallHistory[i].eigthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedNinthArgument, this->metalMockedFunctionCallHistory[i].ninthArgument.value, metalMockedFunctionSignatureAndCallIndex);
          }
          return FunctionSequencingToken();
       }
@@ -4303,17 +4324,17 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockSetAsserted();
          const size_t expectedNumberOfCallsToMetalMockedFunction = 1;
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedFirstArgument, metalMockedFunctionCallHistory[0].firstArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedSecondArgument, metalMockedFunctionCallHistory[0].secondArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedThirdArgument, metalMockedFunctionCallHistory[0].thirdArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedFourthArgument, metalMockedFunctionCallHistory[0].fourthArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedFifthArgument, metalMockedFunctionCallHistory[0].fifthArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedSixthArgument, metalMockedFunctionCallHistory[0].sixthArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedSeventhArgument, metalMockedFunctionCallHistory[0].seventhArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedEigthArgument, metalMockedFunctionCallHistory[0].eigthArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedNinthArgument, metalMockedFunctionCallHistory[0].ninthArgument.value, this->MetalMockedFunctionSignature);
-         ARE_EQUAL(expectedTenthArgument, metalMockedFunctionCallHistory[0].tenthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].firstArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].secondArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[0].thirdArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[0].fourthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[0].fifthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedSixthArgument, this->metalMockedFunctionCallHistory[0].sixthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedSeventhArgument, this->metalMockedFunctionCallHistory[0].seventhArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedEigthArgument, this->metalMockedFunctionCallHistory[0].eigthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedNinthArgument, this->metalMockedFunctionCallHistory[0].ninthArgument.value, this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedTenthArgument, this->metalMockedFunctionCallHistory[0].tenthArgument.value, this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
       }
 
@@ -4332,20 +4353,20 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCallsToMetalMockedFunction);
          this->MetalMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfCallsToMetalMockedFunction; ++i)
          {
             const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::Concat(this->MetalMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedFirstArgument, metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSecondArgument, metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedThirdArgument, metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedFourthArgument, metalMockedFunctionCallHistory[i].fourthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedFifthArgument, metalMockedFunctionCallHistory[i].fifthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSixthArgument, metalMockedFunctionCallHistory[i].sixthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSeventhArgument, metalMockedFunctionCallHistory[i].seventhArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedEigthArgument, metalMockedFunctionCallHistory[i].eigthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedNinthArgument, metalMockedFunctionCallHistory[i].ninthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedTenthArgument, metalMockedFunctionCallHistory[i].tenthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[i].fourthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[i].fifthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSixthArgument, this->metalMockedFunctionCallHistory[i].sixthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSeventhArgument, this->metalMockedFunctionCallHistory[i].seventhArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedEigthArgument, this->metalMockedFunctionCallHistory[i].eigthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedNinthArgument, this->metalMockedFunctionCallHistory[i].ninthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedTenthArgument, this->metalMockedFunctionCallHistory[i].tenthArgument.value, metalMockedFunctionSignatureAndCallIndex);
          }
          return FunctionSequencingToken();
       }

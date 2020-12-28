@@ -218,7 +218,7 @@ Argument2: )" + to_string(argument2);
          const int argument1 = ZenUnit::Random<int>();
          const int argument2 = ZenUnit::Random<int>();
          const string expectedExceptionMessage = R"(
-  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)
 Expected: 1
   Actual: 0
  Message: ")" + metalMockedFunctionSignature + R"("
@@ -286,7 +286,7 @@ File.cpp(1))";
          const int argument1 = ZenUnit::Random<int>();
          const int argument2 = ZenUnit::Random<int>();
          const string expectedExceptionMessage = R"(
-  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)
 Expected: )" + to_string(n) + R"(
   Actual: 0
  Message: ")" + metalMockedFunctionSignature + R"("

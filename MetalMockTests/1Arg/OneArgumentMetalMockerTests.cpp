@@ -99,7 +99,7 @@ namespace MetalMock
       if (expectCallCountThrow)
       {
          THROWS_EXCEPTION(_metalMocker->CalledOnceWith(expectedArgument), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)\n"
 "Expected: 1\n"
 "  Actual: " + to_string(numberOfCalls) + "\n"
 " Message: \"" + _metalMockedFunctionSignature + "\"\n"
@@ -110,7 +110,7 @@ namespace MetalMock
          if (expectArgEqualityThrow)
          {
             THROWS_EXCEPTION(_metalMocker->CalledOnceWith(expectedArgument), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedArgument, metalMockedFunctionCallHistory[0].argument.value, this->MetalMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory[0].argument.value, this->MetalMockedFunctionSignature)\n"
 "Expected: " + to_string(expectedArgument) + "\n"
 "  Actual: " + to_string(actualArg) + "\n"
 " Message: \"" + _metalMockedFunctionSignature + "\"\n"
@@ -147,7 +147,7 @@ namespace MetalMock
       if (expectThrow)
       {
          const string expectedWhat = String::Concat(R"(
-  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)
 Expected: )", expectedNumberOfCallsToMetalMockedFunction, R"(
   Actual: )", numberOfCalls, R"(
  Message: ")", _metalMockedFunctionSignature, R"("
@@ -181,7 +181,7 @@ File.cpp(1))");
          const string expectedSignatureAndCallIndex =
             _metalMockedFunctionSignature + " at i=" + to_string(expectedResponsibleCallIndex);
          THROWS_EXCEPTION(_metalMocker->CalledNTimesWith(expectedNumberOfCallsToMetalMockedFunction, expectedArgument), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedArgument, metalMockedFunctionCallHistory[i].argument.value, metalMockedFunctionSignatureAndCallIndex)\n"
+"  Failed: ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory[i].argument.value, metalMockedFunctionSignatureAndCallIndex)\n"
 "Expected: " + to_string(expectedArgument) + "\n"
 "  Actual: " + to_string(actualArg) + "\n"
 " Message: \"" + expectedSignatureAndCallIndex + "\"\n"

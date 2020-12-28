@@ -14,22 +14,23 @@ namespace ZenUnit
    FACTS(FullConstructor_FirstSecondThirdTest_MessagesPresentNotPresentTest)
    FACTS(FullConstructor_BecauseAnomalyNotPresent_SetsFields)
    FACTS(FullConstructor_BecauseAnomalyPresent_UnaffectedByExpectedActualFormat_SetsFields)
+   AFACT(METALMOCKWrapped_MetalMockWrappedAnomalyBecauseAnomalyIsDefault_ReturnsExpectedAnomaly)
+   AFACT(METALMOCKWrapped_MetalMockWrappedAnomalyBecauseAnomalyIsNotDefault_ReturnsExpectedAnomaly)
    AFACT(what_ReturnsWhyCStr)
-   AFACT(WriteLineWhy_CallsConsoleWriteLineWithWhy)
-   AFACT(METALMOCKWrapped_ReturnsExpectedAnomaly)
+   AFACT(WriteLineWhy_CallsConsoleWriteLineWithWhyText)
    EVIDENCE
 
    static_assert(is_base_of_v<exception, Anomaly>);
 
-   const char* AssertionName = "ASSERTION_NAME";
-   const char* Arg1Text = "Arg1Text";
-   const string Expected = "Expected";
-   const string Actual = "Actual";
-   const char* FilePath = "FilePath";
-   const unsigned LineNumber = 1;
-   const FilePathLineNumber FilePathLineNumberValue = FilePathLineNumber(FilePath, LineNumber);
-   const string StartOfFailedLine = "StartOfFailedLine";
-   const string WhyBody = "WhyBody";
+   const char* _assertionName = "ASSERTION_NAME";
+   const char* _arg1Text = "_arg1Text";
+   const string _expected = "Expected";
+   const string _actual = "Actual";
+   const char* _filePath = "FilePath";
+   const unsigned _lineNumber = 1;
+   const FilePathLineNumber _filePathLineNumberValue = FilePathLineNumber(_filePath, _lineNumber);
+   const string _startOfFailedLine = "StartOfFailedLine";
+   const string _whyBody = "WhyBody";
 
    TEST(DefaultConstructor_DoesNotSetAnyFieldsToNonDefaultValues)
    {
@@ -120,26 +121,26 @@ namespace ZenUnit
 
    TEST(WhyConstructor_EmptyMessagesTextAndEmptyMessages_SetsWhy_DoesNotSetMessage)
    {
-      const Anomaly anomaly(StartOfFailedLine, WhyBody, FilePathLineNumberValue, "", "");
+      const Anomaly anomaly(_startOfFailedLine, _whyBody, _filePathLineNumberValue, "", "");
       //
       Anomaly expectedAnomaly;
       expectedAnomaly.why = TestUtil::NewlineConcat("",
 "StartOfFailedLine)",
 "WhyBody",
-FilePathLineNumberValue);
-      expectedAnomaly.filePathLineNumber = FilePathLineNumberValue;
+_filePathLineNumberValue);
+      expectedAnomaly.filePathLineNumber = _filePathLineNumberValue;
       ARE_EQUAL(expectedAnomaly, anomaly);
    }
 
    TEST(WhyConstructor_EmptyMessagesTextAndEmptyMessages_EmptyWhyBody_SetsWhy_DoesNotSetMessage)
    {
-      const Anomaly anomaly(StartOfFailedLine, "", FilePathLineNumberValue, "", "");
+      const Anomaly anomaly(_startOfFailedLine, "", _filePathLineNumberValue, "", "");
       //
       Anomaly expectedAnomaly;
       expectedAnomaly.why = TestUtil::NewlineConcat("",
 "StartOfFailedLine)",
-FilePathLineNumberValue);
-      expectedAnomaly.filePathLineNumber = FilePathLineNumberValue;
+_filePathLineNumberValue);
+      expectedAnomaly.filePathLineNumber = _filePathLineNumberValue;
       ARE_EQUAL(expectedAnomaly, anomaly);
    }
 
@@ -147,7 +148,7 @@ FilePathLineNumberValue);
    {
       const string message = ZenUnit::Random<string>();
       //
-      const Anomaly anomaly(StartOfFailedLine, WhyBody, FilePathLineNumberValue, "", "Message", message);
+      const Anomaly anomaly(_startOfFailedLine, _whyBody, _filePathLineNumberValue, "", "Message", message);
       //
       Anomaly expectedAnomaly;
       expectedAnomaly.message = "\"" + message + "\"";
@@ -155,8 +156,8 @@ FilePathLineNumberValue);
 "StartOfFailedLine, Message)",
 "WhyBody",
 "Message: " + expectedAnomaly.message,
-FilePathLineNumberValue);
-      expectedAnomaly.filePathLineNumber = FilePathLineNumberValue;
+_filePathLineNumberValue);
+      expectedAnomaly.filePathLineNumber = _filePathLineNumberValue;
       ARE_EQUAL(expectedAnomaly, anomaly);
    }
 
@@ -170,8 +171,12 @@ FilePathLineNumberValue);
       const string messageB = "B";
       //
       const Anomaly anomaly(
-         StartOfFailedLine, WhyBody, FilePathLineNumberValue,
-         messagePrefixSpaces, "messageA, messageB", messageA, messageB);
+         _startOfFailedLine,
+         _whyBody,
+         _filePathLineNumberValue,
+         messagePrefixSpaces,
+         "messageA, messageB",
+         messageA, messageB);
       //
       Anomaly expectedAnomaly;
       expectedAnomaly.message = R"("A", "B")";
@@ -179,27 +184,27 @@ FilePathLineNumberValue);
 "StartOfFailedLine, messageA, messageB)\n",
 "WhyBody\n",
 string(messagePrefixSpaces) + "Message: " + expectedAnomaly.message + "\n",
-FilePathLineNumberValue);
-      expectedAnomaly.filePathLineNumber = FilePathLineNumberValue;
+_filePathLineNumberValue);
+      expectedAnomaly.filePathLineNumber = _filePathLineNumberValue;
       ARE_EQUAL(expectedAnomaly, anomaly);
    }
 
    TEST5X5(FullConstructor_FirstSecondThirdTest_MessagesPresentNotPresentTest,
       bool arg2TextPresent, bool arg3TextPresent, bool messagesTextAndMessagesPresent,
-      const string& expectedAssertExpression, const string& expectedWhy,
-      false, false, false, "ASSERTION_NAME(Arg1Text)", "\n"
+      string_view expectedAssertExpression, string_view expectedWhy,
+      false, false, false, "ASSERTION_NAME(_arg1Text)", "\n"
 "Expected: Expected\n"
 "  Actual: Actual\n"
 "FilePath(1)",
-      true, false, false, "ASSERTION_NAME(Arg1Text, Arg2Text)", "\n"
+      true, false, false, "ASSERTION_NAME(_arg1Text, Arg2Text)", "\n"
 "Expected: Expected\n"
 "  Actual: Actual\n"
 "FilePath(1)",
-      true, true, false, "ASSERTION_NAME(Arg1Text, Arg2Text, Arg3Text)", "\n"
+      true, true, false, "ASSERTION_NAME(_arg1Text, Arg2Text, Arg3Text)", "\n"
 "Expected: Expected\n"
 "  Actual: Actual\n"
 "FilePath(1)",
-      true, true, true, "ASSERTION_NAME(Arg1Text, Arg2Text, Arg3Text, userType0, userType1)", "\n"
+      true, true, true, "ASSERTION_NAME(_arg1Text, Arg2Text, Arg3Text, userType0, userType1)", "\n"
 "Expected: Expected\n"
 "  Actual: Actual\n"
 " Message: UserType@0, UserType@1\n"
@@ -214,88 +219,88 @@ FilePathLineNumberValue);
       if (messagesTextAndMessagesPresent)
       {
          anomaly = Anomaly(
-            AssertionName,
-            Arg1Text,
+            _assertionName,
+            _arg1Text,
             Arg2Text,
             Arg3Text,
             "userType0, userType1",
             Anomaly::Default(),
-            Expected,
-            Actual,
+            _expected,
+            _actual,
             ExpectedActualFormat::Fields,
-            FilePathLineNumberValue,
+            _filePathLineNumberValue,
             userType0,
             userType1);
       }
       else
       {
          anomaly = Anomaly(
-            AssertionName,
-            Arg1Text,
+            _assertionName,
+            _arg1Text,
             arg2TextPresent ? Arg2Text : "",
             arg3TextPresent ? Arg3Text : "",
             "",
             Anomaly::Default(),
-            Expected,
-            Actual,
+            _expected,
+            _actual,
             ExpectedActualFormat::Fields,
-            FilePathLineNumberValue);
+            _filePathLineNumberValue);
       }
       //
       Anomaly expectedAnomaly;
       expectedAnomaly.assertExpression = expectedAssertExpression;
-      expectedAnomaly.expectedValueAsStringOrExpectedLine = Expected;
-      expectedAnomaly.actualValueAsStringOrActualLine = Actual;
+      expectedAnomaly.expectedValueAsStringOrExpectedLine = _expected;
+      expectedAnomaly.actualValueAsStringOrActualLine = _actual;
       expectedAnomaly.message = messagesTextAndMessagesPresent ? "UserType@0, UserType@1" : "";
       string totalExpectedWhy = R"(
-  Failed: )" + expectedAssertExpression + expectedWhy;
+  Failed: )" + string(expectedAssertExpression) + string(expectedWhy);
       expectedAnomaly.why = totalExpectedWhy;
-      expectedAnomaly.filePathLineNumber = FilePathLineNumberValue;
+      expectedAnomaly.filePathLineNumber = _filePathLineNumberValue;
       ARE_EQUAL(expectedAnomaly, anomaly);
    }
 
    TEST2X2(FullConstructor_BecauseAnomalyNotPresent_SetsFields,
-      ExpectedActualFormat expectedActualFormat, const string& expectedWhy,
+      ExpectedActualFormat expectedActualFormat, string_view expectedWhy,
       ExpectedActualFormat::Fields, "\n"
-"  Failed: ASSERTION_NAME(Arg1Text)\n"
+"  Failed: ASSERTION_NAME(_arg1Text)\n"
 "Expected: Expected\n"
 "  Actual: Actual\n"
 "FilePath(1)",
       ExpectedActualFormat::WholeLines, "\n"
-"  Failed: ASSERTION_NAME(Arg1Text)\n"
+"  Failed: ASSERTION_NAME(_arg1Text)\n"
 "Expected\n"
 "Actual\n"
 "FilePath(1)")
    {
       const Anomaly anomaly(
-         AssertionName,
-         Arg1Text,
+         _assertionName,
+         _arg1Text,
          "",
          "",
          "",
          Anomaly::Default(),
-         Expected,
-         Actual,
+         _expected,
+         _actual,
          expectedActualFormat,
-         FilePathLineNumberValue);
+         _filePathLineNumberValue);
       //
       Anomaly expectedAnomaly;
-      expectedAnomaly.assertExpression = "ASSERTION_NAME(Arg1Text)";
-      expectedAnomaly.expectedValueAsStringOrExpectedLine = Expected;
-      expectedAnomaly.actualValueAsStringOrActualLine = Actual;
+      expectedAnomaly.assertExpression = "ASSERTION_NAME(_arg1Text)";
+      expectedAnomaly.expectedValueAsStringOrExpectedLine = _expected;
+      expectedAnomaly.actualValueAsStringOrActualLine = _actual;
       expectedAnomaly.message = "";
       expectedAnomaly.why = expectedWhy;
-      expectedAnomaly.filePathLineNumber = FilePathLineNumberValue;
+      expectedAnomaly.filePathLineNumber = _filePathLineNumberValue;
       ARE_EQUAL(expectedAnomaly, anomaly);
    }
 
    TEST3X3(FullConstructor_BecauseAnomalyPresent_UnaffectedByExpectedActualFormat_SetsFields,
-      const string& becauseMessage,
+      string_view becauseMessage,
       ExpectedActualFormat expectedActualFormat,
-      const string& expectedWhy,
+      string_view expectedWhy,
 
       "", ExpectedActualFormat::Fields, TestUtil::NewlineConcat("",
-"  Failed: ASSERTION_NAME(Arg1Text)",
+"  Failed: ASSERTION_NAME(_arg1Text)",
 "Expected: Expected",
 "  Actual: Actual",
 " Because: BecauseAssertExpression failed",
@@ -305,7 +310,7 @@ FilePathLineNumberValue);
 "FilePath(1)"),
 
       "", ExpectedActualFormat::WholeLines, TestUtil::NewlineConcat("",
-"  Failed: ASSERTION_NAME(Arg1Text)",
+"  Failed: ASSERTION_NAME(_arg1Text)",
 "Expected: Expected",
 "  Actual: Actual",
 " Because: BecauseAssertExpression failed",
@@ -315,7 +320,7 @@ FilePathLineNumberValue);
 "FilePath(1)"),
 
       "BecauseMessage", ExpectedActualFormat::Fields, TestUtil::NewlineConcat("",
-"  Failed: ASSERTION_NAME(Arg1Text)",
+"  Failed: ASSERTION_NAME(_arg1Text)",
 "Expected: Expected",
 "  Actual: Actual",
 " Because: BecauseAssertExpression failed",
@@ -326,7 +331,7 @@ FilePathLineNumberValue);
 "FilePath(1)"),
 
       "BecauseMessage", ExpectedActualFormat::WholeLines, TestUtil::NewlineConcat("",
-"  Failed: ASSERTION_NAME(Arg1Text)",
+"  Failed: ASSERTION_NAME(_arg1Text)",
 "Expected: Expected",
 "  Actual: Actual",
 " Because: BecauseAssertExpression failed",
@@ -344,36 +349,70 @@ FilePathLineNumberValue);
       becauseAnomaly.filePathLineNumber = FilePathLineNumber("BecauseFilePath", 123);
       //
       const Anomaly anomaly(
-         AssertionName,
-         Arg1Text,
+         _assertionName,
+         _arg1Text,
          "",
          "",
          "",
          becauseAnomaly,
-         Expected,
-         Actual,
+         _expected,
+         _actual,
          expectedActualFormat,
-         FilePathLineNumberValue);
+         _filePathLineNumberValue);
       //
       Anomaly expectedAnomaly;
-      expectedAnomaly.assertExpression = "ASSERTION_NAME(Arg1Text)";
-      expectedAnomaly.expectedValueAsStringOrExpectedLine = Expected;
-      expectedAnomaly.actualValueAsStringOrActualLine = Actual;
+      expectedAnomaly.assertExpression = "ASSERTION_NAME(_arg1Text)";
+      expectedAnomaly.expectedValueAsStringOrExpectedLine = _expected;
+      expectedAnomaly.actualValueAsStringOrActualLine = _actual;
       expectedAnomaly.message = "";
       expectedAnomaly.why = expectedWhy;
-      expectedAnomaly.filePathLineNumber = FilePathLineNumberValue;
+      expectedAnomaly.filePathLineNumber = _filePathLineNumberValue;
       ARE_EQUAL(expectedAnomaly, anomaly);
+   }
+
+   TEST(METALMOCKWrapped_MetalMockWrappedAnomalyBecauseAnomalyIsDefault_ReturnsExpectedAnomaly)
+   {
+      const string metalMockAssertExpression = "METALMOCK(metalMockObject.FunctionMock.CalledOnce())";
+      Anomaly metalMockWrappedAnomaly;
+      metalMockWrappedAnomaly.assertExpression = "ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory.firstArgument, this->MetalMockedFunctionSignature)";
+      metalMockWrappedAnomaly.expectedValueAsStringOrExpectedLine = "\"expected\"";
+      metalMockWrappedAnomaly.actualValueAsStringOrActualLine = "\"actual\"";
+      metalMockWrappedAnomaly.message = "\"virtual void ZenUnit::Console::WriteLine(const string&) const\"";
+      metalMockWrappedAnomaly.filePathLineNumber = ZenUnit::Random<FilePathLineNumber>();
+      //
+      const Anomaly anomaly = Anomaly::METALMOCKWrapped(
+         metalMockAssertExpression, metalMockWrappedAnomaly, _filePathLineNumberValue);
+      //
+      Anomaly expectedAnomaly;
+      expectedAnomaly.assertExpression = metalMockAssertExpression;
+      expectedAnomaly.expectedValueAsStringOrExpectedLine = metalMockWrappedAnomaly.expectedValueAsStringOrExpectedLine;
+      expectedAnomaly.actualValueAsStringOrActualLine = metalMockWrappedAnomaly.actualValueAsStringOrActualLine;
+      expectedAnomaly.message = metalMockWrappedAnomaly.message;
+      expectedAnomaly.why = R"(
+  Failed: METALMOCK(metalMockObject.FunctionMock.CalledOnce())
+ Because: ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory.firstArgument, this->MetalMockedFunctionSignature) failed
+Expected: "expected"
+  Actual: "actual"
+ Message: "virtual void ZenUnit::Console::WriteLine(const string&) const"
+FilePath(1))";
+      expectedAnomaly.filePathLineNumber = _filePathLineNumberValue;
+      ARE_EQUAL(expectedAnomaly, anomaly);
+   }
+
+   TEST(METALMOCKWrapped_MetalMockWrappedAnomalyBecauseAnomalyIsNotDefault_ReturnsExpectedAnomaly)
+   {
+
    }
 
    TEST(what_ReturnsWhyCStr)
    {
       Anomaly anomaly;
       ARE_EQUAL("", anomaly.what());
-      anomaly.why = "why";
+      anomaly.why = ZenUnit::Random<string>();
       ARE_EQUAL(anomaly.why.c_str(), anomaly.what());
    }
 
-   TEST(WriteLineWhy_CallsConsoleWriteLineWithWhy)
+   TEST(WriteLineWhy_CallsConsoleWriteLineWithWhyText)
    {
       Anomaly anomaly;
       anomaly.why = ZenUnit::Random<string>();
@@ -383,34 +422,6 @@ FilePathLineNumberValue);
       anomaly.WriteLineWhy(&consoleMock);
       //
       METALMOCK(consoleMock.WriteLineMock.CalledOnceWith(anomaly.why));
-   }
-
-   TEST(METALMOCKWrapped_ReturnsExpectedAnomaly)
-   {
-      const string MetalMockAssertExpression = "METALMOCK(metalMockObject.FunctionMock.CalledOnce())";
-      Anomaly metalMockWrappedAnomaly;
-      metalMockWrappedAnomaly.assertExpression = "ARE_EQUAL(expectedArgument, metalMockedFunctionCallHistory.firstArgument, this->MetalMockedFunctionSignature)";
-      metalMockWrappedAnomaly.expectedValueAsStringOrExpectedLine = "\"expected\"";
-      metalMockWrappedAnomaly.actualValueAsStringOrActualLine = "\"actual\"";
-      metalMockWrappedAnomaly.message = "\"virtual void ZenUnit::Console::WriteLine(const string&) const\"";
-      metalMockWrappedAnomaly.filePathLineNumber = FilePathLineNumber("BecauseFilePath", 20);
-      //
-      const Anomaly anomaly = Anomaly::METALMOCKWrapped(MetalMockAssertExpression, metalMockWrappedAnomaly, FilePathLineNumberValue);
-      //
-      Anomaly expectedAnomaly;
-      expectedAnomaly.assertExpression = MetalMockAssertExpression;
-      expectedAnomaly.expectedValueAsStringOrExpectedLine = metalMockWrappedAnomaly.expectedValueAsStringOrExpectedLine;
-      expectedAnomaly.actualValueAsStringOrActualLine = metalMockWrappedAnomaly.actualValueAsStringOrActualLine;
-      expectedAnomaly.message = metalMockWrappedAnomaly.message;
-      expectedAnomaly.why = R"(
-  Failed: METALMOCK(metalMockObject.FunctionMock.CalledOnce())
- Because: ARE_EQUAL(expectedArgument, metalMockedFunctionCallHistory.firstArgument, this->MetalMockedFunctionSignature) failed
-Expected: "expected"
-  Actual: "actual"
- Message: "virtual void ZenUnit::Console::WriteLine(const string&) const"
-FilePath(1))";
-      expectedAnomaly.filePathLineNumber = FilePathLineNumberValue;
-      ARE_EQUAL(expectedAnomaly, anomaly);
    }
 
    RUN_TESTS(AnomalyTests)

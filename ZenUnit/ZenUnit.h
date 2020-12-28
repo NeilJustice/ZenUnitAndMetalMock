@@ -1712,42 +1712,6 @@ namespace ZenUnit
          throw anomaly;
       }
 
-      const char* what() const noexcept override
-      {
-         return why.c_str();
-      }
-
-      virtual void WriteLineWhy(const Console* console) const
-      {
-         console->WriteLine(why);
-      }
-
-      static std::string MakeAssertExpression(
-         std::string_view assertionName,
-         std::string_view arg1Text,
-         std::string_view arg2Text,
-         std::string_view arg3Text,
-         std::string_view messagesText)
-      {
-         std::ostringstream assertExpressionBuilder;
-         assertExpressionBuilder << assertionName << "(" << arg1Text;
-         if (arg2Text.length() > 0)
-         {
-            assertExpressionBuilder << ", " << arg2Text;
-         }
-         if (arg3Text.length() > 0)
-         {
-            assertExpressionBuilder << ", " << arg3Text;
-         }
-         if (messagesText.length() > 0)
-         {
-            assertExpressionBuilder << ", " << messagesText;
-         }
-         assertExpressionBuilder << ")";
-         std::string assertExpression = assertExpressionBuilder.str();
-         return assertExpression;
-      }
-
       static Anomaly METALMOCKWrapped(
          std::string_view metalMockAssertExpression,
          const Anomaly& metalMockWrappedAnomaly,
@@ -1772,10 +1736,47 @@ namespace ZenUnit
          return anomaly;
       }
 
+      const char* what() const noexcept override
+      {
+         return why.c_str();
+      }
+
+      virtual void WriteLineWhy(const Console* console) const
+      {
+         console->WriteLine(why);
+      }
+
       static const Anomaly& Default() noexcept
       {
          static const Anomaly defaultAnomaly;
          return defaultAnomaly;
+      }
+
+   private:
+      static std::string MakeAssertExpression(
+         std::string_view assertionName,
+         std::string_view arg1Text,
+         std::string_view arg2Text,
+         std::string_view arg3Text,
+         std::string_view messagesText)
+      {
+         std::ostringstream assertExpressionBuilder;
+         assertExpressionBuilder << assertionName << "(" << arg1Text;
+         if (arg2Text.length() > 0)
+         {
+            assertExpressionBuilder << ", " << arg2Text;
+         }
+         if (arg3Text.length() > 0)
+         {
+            assertExpressionBuilder << ", " << arg3Text;
+         }
+         if (messagesText.length() > 0)
+         {
+            assertExpressionBuilder << ", " << messagesText;
+         }
+         assertExpressionBuilder << ")";
+         std::string assertExpression = assertExpressionBuilder.str();
+         return assertExpression;
       }
    };
 
