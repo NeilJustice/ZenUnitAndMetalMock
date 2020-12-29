@@ -1071,43 +1071,43 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Typ
 
 // std::binds a 1-argument MetalMock object
 #define BIND_1ARG_METALMOCK_OBJECT(FunctionNameMock) \
-   std::bind_front(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock)
+   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock, std::placeholders::_1)
 
 // std::binds a 2-argument MetalMock object
 #define BIND_2ARG_METALMOCK_OBJECT(FunctionNameMock) \
-   std::bind_front(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock)
+   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock, std::placeholders::_1, std::placeholders::_2)
 
 // std::binds a 3-argument MetalMock object
 #define BIND_3ARG_METALMOCK_OBJECT(FunctionNameMock) \
-   std::bind_front(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock)
+   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
 
 // std::binds a 4-argument MetalMock object
 #define BIND_4ARG_METALMOCK_OBJECT(FunctionNameMock) \
-   std::bind_front(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock)
+   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)
 
 // std::binds a 5-argument MetalMock object
 #define BIND_5ARG_METALMOCK_OBJECT(FunctionNameMock) \
-   std::bind_front(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock)
+   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5)
 
 // std::binds a 6-argument MetalMock object
 #define BIND_6ARG_METALMOCK_OBJECT(FunctionNameMock) \
-   std::bind_front(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock)
+   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6)
 
 // std::binds a 7-argument MetalMock object
 #define BIND_7ARG_METALMOCK_OBJECT(FunctionNameMock) \
-   std::bind_front(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock)
+   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7)
 
 // std::binds an 8-argument MetalMock object
 #define BIND_8ARG_METALMOCK_OBJECT(FunctionNameMock) \
-   std::bind_front(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock)
+   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8)
 
 // std::binds a 9-argument MetalMock object
 #define BIND_9ARG_METALMOCK_OBJECT(FunctionNameMock) \
-   std::bind_front(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock)
+   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8, std::placeholders::_9)
 
 // std::binds a 10-argument MetalMock object
 #define BIND_10ARG_METALMOCK_OBJECT(FunctionNameMock) \
-   std::bind_front(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock)
+   std::bind(&decltype(FunctionNameMock)::MetalMockItFunctionPointer, &FunctionNameMock, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8, std::placeholders::_9, std::placeholders::_10)
 
 namespace MetalMock
 {
