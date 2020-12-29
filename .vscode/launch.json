@@ -3,22 +3,12 @@
    "configurations":
    [
       {
-         "name": "LLDB Debug ZenUnitUtilsAndAssertionTests",
-         "type": "lldb",
-         "request": "launch",
-         "preLaunchTask": "Ninja Build Debug",
-         "cwd": "${workspaceRoot}",
-         "program": "Debug/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests",
-         "args": [ "" ]
-      },
-      {
          "name": "GDB Debug ZenUnitUtilsAndAssertionTests",
          "type": "cppdbg",
          "request": "launch",
          "preLaunchTask": "Ninja Build Debug",
          "cwd": "${workspaceRoot}",
          "program": "Debug/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests",
-         "args": [ "" ],
          "linux": { "MIMode": "gdb" }
       }
    ]
