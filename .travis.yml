@@ -1,12 +1,16 @@
 os: linux
-dist: bionic
+virt: lxd
+dist: focal
+group: edge
+arch: arm64-graviton2
 language: cpp
 cache: ccache
+sudo: false
 
 git:
   depth: false
 
-jobs:
+matrix:
   include:
     - os: linux
       compiler: clang
@@ -28,41 +32,39 @@ jobs:
 
     - os: linux
       compiler: gcc
-      env: CMAKE_BUILD_TYPE=Debug COMPILER=g++-9 CODE_COV_MODE=OFF
+      env: CMAKE_BUILD_TYPE=Debug COMPILER=g++ CODE_COV_MODE=OFF
       addons:
         apt:
           update: true
           sources: [ 'ubuntu-toolchain-r-test' ]
-          packages: [ 'ninja-build', 'g++-9' ]
+          packages: [ 'ninja-build' ]
 
     - os: linux
       compiler: gcc
-      env: CMAKE_BUILD_TYPE=Release COMPILER=g++-9 CODE_COV_MODE=ON
+      env: CMAKE_BUILD_TYPE=Release COMPILER=g++ CODE_COV_MODE=ON
       addons:
         apt:
           update: true
           sources: [ 'ubuntu-toolchain-r-test' ]
-          packages: [ 'ninja-build', 'g++-9', 'lcov' ]
+          packages: [ 'ninja-build' ]
 
-    #- os: osx
-    #      osx_image: xcode10
-    #      compiler: clang
-    #      env: CMAKE_BUILD_TYPE=Debug COMPILER=clang++
-    #      before_install:
-    #        - brew install ninja llvm
+    - os: osx
+      osx_image: xcode12.2
+      compiler: clang
+      env: CMAKE_BUILD_TYPE=Debug COMPILER=clang++ CODE_COV_MODE=OFF
+      before_install:
+         - brew install ninja
 
-    #    - os: osx
-    #      osx_image: xcode10
-    #      compiler: clang
-    #      env: CMAKE_BUILD_TYPE=Release COMPILER=clang++
-    #      before_install:
-    #        - brew install ninja llvm
+    - os: osx
+      osx_image: xcode12.2
+      compiler: clang
+      env: CMAKE_BUILD_TYPE=Release COMPILER=clang++ CODE_COV_MODE=OFF
+      before_install:
+      - brew install ninja
 
-script:
-   - ./TravisScripts/travis_script.sh
-
-after_success:
-   - ./TravisScripts/travis_after_success.sh
+install: ./TravisScripts/travis_install_latest_lcov_if_code_cov_mode.sh
+script: ./TravisScripts/travis_script.sh
+after_success: ./TravisScripts/travis_after_success.sh
 
 notifications:
   email: true
