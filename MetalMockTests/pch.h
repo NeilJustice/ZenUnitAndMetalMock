@@ -15,6 +15,11 @@
 using namespace ZenUnit;
 using namespace std;
 
+// MetalMockTests
+#include "MetalMockTests/MetalMock/MetalMockTestUtil.h"
 #include "MetalMockTests/MetalMock/T.h"
+
+// ZenUnitTestUtils
+#include "ZenUnitTestUtils/TestUtil.h"
 
 #endif

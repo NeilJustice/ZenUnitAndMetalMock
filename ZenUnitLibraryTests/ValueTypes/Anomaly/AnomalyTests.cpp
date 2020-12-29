@@ -382,7 +382,7 @@ _filePathLineNumber);
       Anomaly expectedAnomaly;
       expectedAnomaly.why = String::Concat('\n',
          "  Failed: ", metalMockAssertExpression, '\n',
-         " Because of this ZenUnit::Anomaly:",
+         "Because of this ZenUnit::Anomaly:",
          metalMockWrappedAnomaly.why, '\n',
          _filePathLineNumber);
       ARE_EQUAL(expectedAnomaly, anomaly);

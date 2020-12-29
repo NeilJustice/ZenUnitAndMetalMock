@@ -1,5 +1,4 @@
 #pragma once
-#include "MetalMockTests/MetalMock/MetalMockTestUtil.h"
 
 namespace MetalMock
 {

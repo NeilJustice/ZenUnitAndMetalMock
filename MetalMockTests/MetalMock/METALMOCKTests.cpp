@@ -25,13 +25,16 @@ namespace MetalMock
       consoleMock.WriteLineMock.Expect();
       consoleMock.WriteLine("message");
       const string expectedMessage = "Message";
-      const string expectedWhat = "\n"
-"  Failed: METALMOCK(consoleMock.WriteLineMock.CalledOnceWith(expectedMessage))\n"
-" Because: ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory[0].argument.value, this->MetalMockedFunctionSignature) failed\n"
-"Expected: \"Message\"\n"
-"  Actual: \"message\"\n"
-" Message: \"virtual void ZenUnit::Console::WriteLine(string_view) const\"\n"
-"File.cpp(1)";
+
+      const string expectedWhat = TestUtil::NewlineConcat("",
+"  Failed: METALMOCK(consoleMock.WriteLineMock.CalledOnceWith(expectedMessage))",
+"Because of this ZenUnit::Anomaly:",
+"  Failed: ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory[0].argument.value, this->MetalMockedFunctionSignature)",
+"Expected: \"Message\"",
+"  Actual: \"message\"",
+" Message: \"virtual void ZenUnit::Console::WriteLine(string_view) const\"",
+"File.cpp(1)",
+"File.cpp(1)");
       THROWS_EXCEPTION(
          METALMOCK(consoleMock.WriteLineMock.CalledOnceWith(expectedMessage)),
          Anomaly, expectedWhat);

@@ -1720,7 +1720,7 @@ namespace ZenUnit
          Anomaly anomaly;
          anomaly.why = String::Concat('\n',
             "  Failed: ", metalMockAssertExpression, '\n',
-            " Because of this ZenUnit::Anomaly:",
+            "Because of this ZenUnit::Anomaly:",
             metalMockWrappedAnomaly.why, '\n',
             filePathLineNumber);
          return anomaly;
