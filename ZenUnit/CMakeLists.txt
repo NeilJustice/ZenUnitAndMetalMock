@@ -3,8 +3,10 @@ project(ZenUnit)
 
 source_group("" FILES ZenUnit.h MetalMock.h)
 
-# Adds a fake static library for single-header ZenUnit.h so that ZenUnit appears as a Visual Studio project
-add_library(ZenUnit "ZenUnit.h" "MetalMock.h")
+# Adds a fake static library project for ZenUnit.h and MetalMock.h to appear as a Visual Studio project
+if(MSVC)
+   add_library(ZenUnit "ZenUnit.h" "MetalMock.h")
+endif()
 
 set_target_properties(ZenUnit PROPERTIES LINKER_LANGUAGE CXX)
 
