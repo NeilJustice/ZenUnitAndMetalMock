@@ -849,7 +849,7 @@ namespace ZenUnit
       const std::string assertTrueFailedErrorMessage = String::Concat(
          "ZENUNIT_ASSERT(", predicateText, ") failed in ", functionName, "()\n", filePathLineNumber.filePath, "(", filePathLineNumber.lineNumber, ")");
       std::cout << assertTrueFailedErrorMessage << '\n';
-      _exit(1);
+      exit(1);
    }
 
    inline void AssertTrue(
