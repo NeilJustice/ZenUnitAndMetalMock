@@ -34,7 +34,7 @@ add_executable(MetalMockTests ${sourceFilePaths})
 
 target_link_libraries(MetalMockTests ZenUnitTestUtils)
 
-if(UNIX)
+if(UNIX AND NOT APPLE)
    target_link_libraries(MetalMockTests stdc++fs)
 endif()
 
@@ -48,7 +48,7 @@ endif()
 ConfigurePlatformSpecificPrecompiledHeaders()
 OnWindowsAddPostBuildStepToRunTests()
 
-if(UNIX)
+if(UNIX AND NOT APPLE)
    if(CodeCovMode)
      target_link_libraries(MetalMockTests CodeCovLibraryInterface)
    endif()

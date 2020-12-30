@@ -1,12 +1,19 @@
 os: linux
-dist: bionic
+virt: lxd
+dist: focal
+group: edge
+arch: amd64
 language: cpp
-cache: ccache
+cache:
+   ccache: true
+   directories:
+      - $HOME/Library/Caches/Homebrew
+sudo: false
 
 git:
   depth: false
 
-jobs:
+matrix:
   include:
     - os: linux
       compiler: clang
@@ -14,7 +21,8 @@ jobs:
       addons:
         apt:
           update: true
-          sources: [ 'ubuntu-toolchain-r-test' ]
+          sources:
+             - sourceline: 'ppa:ubuntu-toolchain-r/test'
           packages: [ 'ninja-build', 'clang-9', 'libstdc++-9-dev' ]
 
     - os: linux
@@ -23,46 +31,45 @@ jobs:
       addons:
         apt:
           update: true
-          sources: [ 'ubuntu-toolchain-r-test' ]
+          sources:
+             - sourceline: 'ppa:ubuntu-toolchain-r/test'
           packages: [ 'ninja-build', 'clang-9', 'libstdc++-9-dev' ]
 
     - os: linux
       compiler: gcc
-      env: CMAKE_BUILD_TYPE=Debug COMPILER=g++-9 CODE_COV_MODE=OFF
+      env: CMAKE_BUILD_TYPE=Debug COMPILER=g++ CODE_COV_MODE=OFF
       addons:
         apt:
           update: true
-          sources: [ 'ubuntu-toolchain-r-test' ]
-          packages: [ 'ninja-build', 'g++-9' ]
+          sources:
+             - sourceline: 'ppa:ubuntu-toolchain-r/test'
+          packages: [ 'ninja-build' ]
 
     - os: linux
       compiler: gcc
-      env: CMAKE_BUILD_TYPE=Release COMPILER=g++-9 CODE_COV_MODE=ON
+      env: CMAKE_BUILD_TYPE=Release COMPILER=g++ CODE_COV_MODE=ON
       addons:
         apt:
           update: true
-          sources: [ 'ubuntu-toolchain-r-test' ]
-          packages: [ 'ninja-build', 'g++-9', 'lcov' ]
+          sources:
+             - sourceline: 'ppa:ubuntu-toolchain-r/test'
+          packages: [ 'ninja-build' ]
 
-    #- os: osx
-    #      osx_image: xcode10
-    #      compiler: clang
-    #      env: CMAKE_BUILD_TYPE=Debug COMPILER=clang++
-    #      before_install:
-    #        - brew install ninja llvm
+    - os: osx
+      osx_image: xcode12.2
+      compiler: clang
+      env: CMAKE_BUILD_TYPE=Debug COMPILER=clang++ CODE_COV_MODE=OFF
+      before_install:
+         - brew install ninja
 
-    #    - os: osx
-    #      osx_image: xcode10
-    #      compiler: clang
-    #      env: CMAKE_BUILD_TYPE=Release COMPILER=clang++
-    #      before_install:
-    #        - brew install ninja llvm
+    - os: osx
+      osx_image: xcode12.2
+      compiler: clang
+      env: CMAKE_BUILD_TYPE=Release COMPILER=clang++ CODE_COV_MODE=OFF
+      before_install:
+      - brew install ninja
 
-script:
-   - ./TravisScripts/travis_script.sh
-
-after_success:
-   - ./TravisScripts/travis_after_success.sh
+script: ./travis_script.sh
 
 notifications:
   email: true

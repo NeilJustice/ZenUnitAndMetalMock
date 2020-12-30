@@ -10,14 +10,14 @@ source_group("" FILES ${sourceFilePaths})
 
 add_executable(MetalMockExamples ${sourceFilePaths})
 
-if(UNIX)
+if(UNIX AND NOT APPLE)
    target_link_libraries(MetalMockExamples stdc++fs)
 endif()
 
 ConfigurePlatformSpecificPrecompiledHeaders()
 OnWindowsAddPostBuildStepToRunTests()
 
-if(UNIX)
+if(UNIX AND NOT APPLE)
    if(CodeCovMode)
      target_link_libraries(MetalMockExamples CodeCovLibraryInterface)
    endif()

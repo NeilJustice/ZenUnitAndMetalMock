@@ -16,8 +16,8 @@ namespace ZenUnit
       IS_EMPTY_STRING(constString);
       string nonConstString;
       IS_EMPTY_STRING(nonConstString);
-      string_view stringView = constString;
-      IS_EMPTY_STRING(stringView);
+      //string_view stringView = constString;
+      //IS_EMPTY_STRING(stringView);
    }
 
    TEST(StringIsNotEmpty_ThrowsAnomaly)

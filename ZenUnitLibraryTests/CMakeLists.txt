@@ -43,7 +43,7 @@ file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 add_executable(ZenUnitLibraryTests ${sourceFilePaths})
 target_link_libraries(ZenUnitLibraryTests ZenUnitTestUtils)
 
-if(UNIX)
+if(UNIX AND NOT APPLE)
    target_link_libraries(ZenUnitLibraryTests stdc++fs)
 endif()
 
@@ -57,7 +57,7 @@ endif()
 ConfigurePlatformSpecificPrecompiledHeaders()
 OnWindowsAddPostBuildStepToRunTests()
 
-if(UNIX)
+if(UNIX AND NOT APPLE)
    if(CodeCovMode)
      target_link_libraries(ZenUnitLibraryTests CodeCovLibraryInterface)
    endif()

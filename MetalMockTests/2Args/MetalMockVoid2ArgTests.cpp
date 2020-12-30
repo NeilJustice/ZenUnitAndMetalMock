@@ -243,7 +243,7 @@ File.cpp(1))";
          const int argument1 = ZenUnit::Random<int>();
          const int argument2 = ZenUnit::Random<int>();
          string spaceIfLinux;
-#ifdef __linux__
+#if defined __linux__ || defined __APPLE__
          spaceIfLinux = " ";
 #endif
          const string expectedExceptionMessage = R"(

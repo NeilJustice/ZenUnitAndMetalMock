@@ -41,7 +41,7 @@ namespace ZenUnit
       DOES_NOT_THROW(Equalizer<vector<string>>::AssertEqual(expectedStringVector, actualStringVector));
       expectedStringVector.emplace_back();
 
-#ifdef __linux__
+#if defined __linux__ || defined __APPLE__
 
 THROWS_EXCEPTION(Equalizer<vector<string>>::AssertEqual(
          expectedStringVector COMMA actualStringVector), Anomaly, TestUtil::NewlineConcat("",

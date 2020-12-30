@@ -11,13 +11,13 @@ source_group("" FILES ${sourceFilePaths})
 add_executable(ZenUnitCompileSpeedTests ${sourceFilePaths})
 
 target_link_libraries(ZenUnitCompileSpeedTests)
-if(UNIX)
+if(UNIX AND NOT APPLE)
    target_link_libraries(ZenUnitCompileSpeedTests stdc++fs)
 endif()
 
 ConfigurePlatformSpecificPrecompiledHeaders()
 
-if(UNIX)
+if(UNIX AND NOT APPLE)
    if(CodeCovMode)
      target_link_libraries(ZenUnitCompileSpeedTests CodeCovLibraryInterface)
    endif()
