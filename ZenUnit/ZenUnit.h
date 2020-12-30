@@ -19,6 +19,7 @@ namespace ZenUnit
 #include <set>
 #include <sstream>
 #include <typeindex>
+#include <unordered_map>
 #include <unordered_set>
 
 #if defined __linux__
