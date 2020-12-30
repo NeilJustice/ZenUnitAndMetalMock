@@ -27,7 +27,7 @@ namespace ZenUnit
    } _environmentalistSelfMocked;
 
    Environmentalist _environmentalist;
-   METALMOCK_NONVOID0_FREE(fs::path, current_path)
+   METALMOCK_NONVOID0_FREE(std::filesystem::path, current_path)
 #if defined __linux__ || defined __APPLE__
    METALMOCK_NONVOID2_FREE(int, gethostname, char*, size_t)
 #elif defined _WIN32
@@ -58,7 +58,7 @@ namespace ZenUnit
 
    TEST(GetCurrentDirectoryPath_ReturnsCurrentDirectoryPath)
    {
-      const fs::path currentDirectoryPath = current_pathMock.ReturnRandom();
+      const std::filesystem::path currentDirectoryPath = current_pathMock.ReturnRandom();
       //
       const string returnedCurrentDirectoryPath = _environmentalist.GetCurrentDirectoryPath();
       //

@@ -11,6 +11,7 @@ namespace ZenUnit
 }
 
 #include <array>
+#include <filesystem>
 #include <functional>
 #include <iostream>
 #include <map>
@@ -19,21 +20,20 @@ namespace ZenUnit
 #include <sstream>
 #include <typeindex>
 #include <unordered_set>
+
 #if defined __linux__
 #include <climits>
 #include <cxxabi.h>
 #include <climits>
 #include <cxxabi.h>
 #include <iomanip>
-#include <experimental/filesystem>
-namespace fs = std::experimental::filesystem;
 #include <memory>
 #include <string.h>
 #include <unistd.h>
 #include <utility>
-#elif defined _WIN32 || defined __APPLE__
-#include <filesystem>
-namespace fs = std::filesystem;
+#endif
+
+#if defined _WIN32
 #define WIN32_LEAN_AND_MEAN // ~40% faster Windows.h compile speed
 #define NOGDI // ~10% faster Windows.h compile speed
 #define NOMINMAX // Undefines Windows.h macros min and max
@@ -1478,7 +1478,7 @@ namespace ZenUnit
          const std::wstring quotedWideString(oss.str());
 
          // Hack wstring-to-string implementation
-         std::string quotedNarrowString = fs::path(quotedWideString).string();
+         std::string quotedNarrowString = std::filesystem::path(quotedWideString).string();
 
          // The below proper wstring-to-string implementation would require Windows includers of ZenUnit.h
          // to inconveniently have to define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING.
@@ -3002,7 +3002,7 @@ namespace ZenUnit
    }
 
    template<typename... MessageTypes>
-   NOINLINE void IS_EMPTY_PATH_ThrowAnomaly(const fs::path& fsPath, const char* fsPathText,
+   NOINLINE void IS_EMPTY_PATH_ThrowAnomaly(const std::filesystem::path& fsPath, const char* fsPathText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const char* const expectedField = "fsPath == std::filesystem::path()";
@@ -3014,10 +3014,10 @@ namespace ZenUnit
    }
 
    template<typename... MessageTypes>
-   void IS_EMPTY_PATH_Defined(const fs::path& fsPath, const char* fsPathText,
+   void IS_EMPTY_PATH_Defined(const std::filesystem::path& fsPath, const char* fsPathText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
-      if (fsPath != fs::path())
+      if (fsPath != std::filesystem::path())
       {
          IS_EMPTY_PATH_ThrowAnomaly(fsPath, fsPathText,
             filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
@@ -4249,7 +4249,7 @@ namespace ZenUnit
    {
       friend class EnvironmentalistTests;
    private:
-      std::function<fs::path()> _call_filesystem_current_path;
+      std::function<std::filesystem::path()> _call_filesystem_current_path;
 #if defined __linux__ || defined __APPLE__
       std::function<int(char*, size_t)> _call_gethostname;
 #elif defined _WIN32
@@ -4258,7 +4258,7 @@ namespace ZenUnit
 #endif
    public:
       Environmentalist() noexcept
-         : _call_filesystem_current_path(static_cast<fs::path(*)()>(fs::current_path))
+         : _call_filesystem_current_path(static_cast<std::filesystem::path(*)()>(std::filesystem::current_path))
 #if defined __linux__ || defined __APPLE__
          , _call_gethostname(::gethostname)
 #elif defined _WIN32
@@ -7402,7 +7402,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<>
-   inline fs::path Random<fs::path>()
+   inline std::filesystem::path Random<std::filesystem::path>()
    {
       std::ostringstream randomPathStringBuilder;
       const int numberOfSubfolders = RandomBetween<int>(0, 2);
@@ -7414,7 +7414,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       const std::string randomFolderName = Random<std::string>();
       randomPathStringBuilder << randomFolderName;
       std::string randomPathAsString = randomPathStringBuilder.str();
-      fs::path randomPath(std::move(randomPathAsString));
+      std::filesystem::path randomPath(std::move(randomPathAsString));
       return randomPath;
    }
 
@@ -7583,15 +7583,15 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          return randomErrorCode;
       }
 
-      virtual fs::path FilesystemPath() const
+      virtual std::filesystem::path FilesystemPath() const
       {
-         fs::path randomFilesystemPath = Random<fs::path>();
+         std::filesystem::path randomFilesystemPath = Random<std::filesystem::path>();
          return randomFilesystemPath;
       }
 
-      virtual std::vector<fs::path> FilesystemPathVector() const
+      virtual std::vector<std::filesystem::path> FilesystemPathVector() const
       {
-         std::vector<fs::path> randomFilesystemPathVector = RandomVector<fs::path>();
+         std::vector<std::filesystem::path> randomFilesystemPathVector = RandomVector<std::filesystem::path>();
          return randomFilesystemPathVector;
       }
 

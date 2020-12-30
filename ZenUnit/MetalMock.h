@@ -5079,8 +5079,8 @@ namespace ZenUnit
 
       METALMOCK_NONVOID0_CONST(std::error_code, ErrorCode)
 
-      METALMOCK_NONVOID0_CONST(fs::path, FilesystemPath)
-      METALMOCK_NONVOID0_CONST(std::vector<fs::path>, FilesystemPathVector)
+      METALMOCK_NONVOID0_CONST(std::filesystem::path, FilesystemPath)
+      METALMOCK_NONVOID0_CONST(std::vector<std::filesystem::path>, FilesystemPathVector)
    };
 
    template<typename KeyType, typename ValueType>

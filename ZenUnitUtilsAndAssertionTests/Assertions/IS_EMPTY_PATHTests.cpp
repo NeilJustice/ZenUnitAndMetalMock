@@ -11,14 +11,14 @@ namespace ZenUnit
    TEST(PathIsEmpty_DoesNotThrowException)
    {
       IS_EMPTY_PATH("");
-      IS_EMPTY_PATH(fs::path());
+      IS_EMPTY_PATH(std::filesystem::path());
    }
 
    TEST(StringIsNotEmpty_ThrowsAnomaly)
    {
-      THROWS_EXCEPTION(IS_EMPTY_PATH(fs::path("foo/bar")),
+      THROWS_EXCEPTION(IS_EMPTY_PATH(std::filesystem::path("foo/bar")),
          Anomaly, TestUtil::NewlineConcat("",
-"  Failed: IS_EMPTY_PATH(fs::path(\"foo/bar\"))",
+"  Failed: IS_EMPTY_PATH(std::filesystem::path(\"foo/bar\"))",
 "Expected: fsPath == std::filesystem::path()",
 "  Actual: fsPath != std::filesystem::path() (\"foo/bar\")",
 "File.cpp(1)"));
@@ -27,7 +27,7 @@ namespace ZenUnit
    TEST(StringIsNotEmpty_ThrowsAnomaly__MessagesTestCase)
    {
       const string messageA = "A", messageB = "B";
-      const fs::path fsPath("foo");
+      const std::filesystem::path fsPath("foo");
       THROWS_EXCEPTION(IS_EMPTY_PATH(fsPath, messageA, messageB),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_EMPTY_PATH(fsPath, messageA, messageB)",

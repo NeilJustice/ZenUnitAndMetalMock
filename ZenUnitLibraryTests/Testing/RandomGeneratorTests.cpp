@@ -69,10 +69,10 @@ namespace ZenUnit
       const error_code randomErrorCode = _randomGenerator.ErrorCode();
       ARE_EQUAL(randomErrorCode, randomErrorCode);
 
-      const fs::path randomFilesystemPath = _randomGenerator.FilesystemPath();
+      const std::filesystem::path randomFilesystemPath = _randomGenerator.FilesystemPath();
       ARE_EQUAL(randomFilesystemPath, randomFilesystemPath);
 
-      const std::vector<fs::path> randomFilesystemPathVector = _randomGenerator.FilesystemPathVector();
+      const std::vector<std::filesystem::path> randomFilesystemPathVector = _randomGenerator.FilesystemPathVector();
       IS_TRUE(randomFilesystemPathVector.size() <= 3);
 
       const vector<int> randomVectorOfTBetweenSize0And3 = _randomGenerator.Vector<int>();
