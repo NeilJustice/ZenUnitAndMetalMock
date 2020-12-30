@@ -2,8 +2,7 @@
 
 namespace ZenUnit
 {
-   template<
-      template<typename...>
+   template<template<typename...>
    class MapType, typename KeyType, typename ValueType>
    TEMPLATE_TESTS(MapTests, MapType, KeyType, ValueType)
    AFACT(InsertKeyAndValueWithoutOverwritingKey_KeyAlreadyInMap_ThrowsInvalidArgument)

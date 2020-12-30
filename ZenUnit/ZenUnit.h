@@ -7107,7 +7107,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    inline unsigned long long RandomUnsignedLongLong()
    {
       static std::default_random_engine defaultRandomEngine(zenUnitMode.randomSeed);
-      const unsigned long long maximumUnsignedLongLong = std::numeric_limits<unsigned long long>::max();
+      constexpr unsigned long long maximumUnsignedLongLong = std::numeric_limits<unsigned long long>::max();
       std::uniform_int_distribution<unsigned long long> distribution(0, maximumUnsignedLongLong);
       const unsigned long long randomUnsignedLongLong = distribution(defaultRandomEngine);
       return randomUnsignedLongLong;
@@ -7139,30 +7139,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename T>
-   std::vector<T> RandomVector()
-   {
-      const std::size_t randomVectorSize = RandomBetween<size_t>(0, 3);
-      std::vector<T> randomVector(randomVectorSize);
-      for (size_t i = 0; i < randomVectorSize; ++i)
-      {
-         randomVector[i] = Random<T>();
-      }
-      return randomVector;
-   }
-
-   template<typename T>
-   std::vector<T> RandomNonEmptyVector()
-   {
-      const std::size_t randomNonEmptyVectorSize = RandomBetween<size_t>(1, 3);
-      std::vector<T> randomNonEmptyVector(randomNonEmptyVectorSize);
-      for (size_t i = 0; i < randomNonEmptyVectorSize; ++i)
-      {
-         randomNonEmptyVector[i] = Random<T>();
-      }
-      return randomNonEmptyVector;
-   }
-
-   template<typename T>
    std::vector<T> RandomVectorWithSize(size_t size)
    {
       std::vector<T> randomVectorWithSize(size);
@@ -7171,6 +7147,20 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          randomVectorWithSize[i] = Random<T>();
       }
       return randomVectorWithSize;
+   }
+
+   template<typename T>
+   std::vector<T> RandomVector()
+   {
+      const std::size_t randomVectorSize = RandomBetween<size_t>(0, 3);
+      return RandomVectorWithSize<T>(randomVectorSize);
+   }
+
+   template<typename T>
+   std::vector<T> RandomNonEmptyVector()
+   {
+      const std::size_t randomVectorSize = RandomBetween<size_t>(1, 3);
+      return RandomVectorWithSize<T>(randomVectorSize);
    }
 
    template<typename T, size_t Size>
@@ -7182,11 +7172,10 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename KeyType, typename ValueType>
-   std::map<KeyType, ValueType> RandomMap()
+   std::map<KeyType, ValueType> RandomMapWithSize(size_t size)
    {
-      const std::size_t randomMapSize = RandomBetween<size_t>(0, 3);
       std::map<KeyType, ValueType> randomMap;
-      for (size_t i = 0; i < randomMapSize; ++i)
+      for (size_t i = 0; i < size; ++i)
       {
          KeyType randomKey = Random<KeyType>();
          ValueType randomValue = Random<ValueType>();
@@ -7196,11 +7185,24 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename KeyType, typename ValueType>
-   std::unordered_map<KeyType, ValueType> RandomUnorderedMap()
+   std::map<KeyType, ValueType> RandomMap()
    {
-      const std::size_t randomUnorderedMapSize = RandomBetween<size_t>(0, 3);
+      const std::size_t randomMapSize = RandomBetween<size_t>(0, 3);
+      return RandomMapWithSize<KeyType, ValueType>(randomMapSize);
+   }
+
+   template<typename KeyType, typename ValueType>
+   std::map<KeyType, ValueType> RandomNonEmptyMap()
+   {
+      const std::size_t randomMapSize = RandomBetween<size_t>(1, 3);
+      return RandomMapWithSize<KeyType, ValueType>(randomMapSize);
+   }
+
+   template<typename KeyType, typename ValueType>
+   std::unordered_map<KeyType, ValueType> RandomUnorderedMapWithSize(size_t size)
+   {
       std::unordered_map<KeyType, ValueType> randomUnorderedMap;
-      for (size_t i = 0; i < randomUnorderedMapSize; ++i)
+      for (size_t i = 0; i < size; ++i)
       {
          KeyType randomKey = Random<KeyType>();
          ValueType randomValue = Random<ValueType>();
@@ -7209,43 +7211,72 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       return randomUnorderedMap;
    }
 
+   template<typename KeyType, typename ValueType>
+   std::unordered_map<KeyType, ValueType> RandomUnorderedMap()
+   {
+      const std::size_t randomUnorderedMapSize = RandomBetween<size_t>(0, 3);
+      return RandomUnorderedMapWithSize<KeyType, ValueType>(randomUnorderedMapSize);
+   }
+
+   template<typename KeyType, typename ValueType>
+   std::unordered_map<KeyType, ValueType> RandomNonEmptyUnorderedMap()
+   {
+      const std::size_t randomUnorderedMapSize = RandomBetween<size_t>(1, 3);
+      return RandomUnorderedMapWithSize<KeyType, ValueType>(randomUnorderedMapSize);
+   }
+
+   template<typename ElementType>
+   std::set<ElementType> RandomSetWithSize(size_t size)
+   {
+      std::set<ElementType> randomOrderedSet;
+      for (size_t i = 0; i < size; ++i)
+      {
+         ElementType randomElement = Random<ElementType>();
+         randomOrderedSet.emplace(std::move(randomElement));
+      }
+      return randomOrderedSet;
+   }
+
    template<typename ElementType>
    std::set<ElementType> RandomSet()
    {
-      const std::size_t randomSetSize = RandomBetween<size_t>(0, 3);
-      std::set<ElementType> randomSet;
-      for (size_t i = 0; i < randomSetSize; ++i)
+      const std::size_t randomOrderedSetSize = RandomBetween<size_t>(0, 3);
+      std::set<ElementType> randomOrderedSet = RandomSetWithSize<ElementType>(randomOrderedSetSize);
+      return randomOrderedSet;
+   }
+
+   template<typename ElementType>
+   std::set<ElementType> RandomNonEmptySet()
+   {
+      const std::size_t randomNonEmptyOrderedSetSize = RandomBetween<size_t>(1, 3);
+      std::set<ElementType> randomNonEmptyOrderedSet = RandomSetWithSize<ElementType>(randomNonEmptyOrderedSetSize);
+      return randomNonEmptyOrderedSet;
+   }
+
+   template<typename ElementType>
+   std::unordered_set<ElementType> RandomUnorderedSetWithSize(size_t size)
+   {
+      std::unordered_set<ElementType> randomNonEmptyUnorderedSet;
+      for (size_t i = 0; i < size; ++i)
       {
          ElementType randomElement = Random<ElementType>();
-         randomSet.emplace(std::move(randomElement));
+         randomNonEmptyUnorderedSet.emplace(std::move(randomElement));
       }
-      return randomSet;
+      return randomNonEmptyUnorderedSet;
    }
 
    template<typename ElementType>
    std::unordered_set<ElementType> RandomUnorderedSet()
    {
       const std::size_t randomUnorderedSetSize = RandomBetween<size_t>(0, 3);
-      std::unordered_set<ElementType> randomUnorderedSet;
-      for (size_t i = 0; i < randomUnorderedSetSize; ++i)
-      {
-         ElementType randomElement = Random<ElementType>();
-         randomUnorderedSet.emplace(std::move(randomElement));
-      }
-      return randomUnorderedSet;
+      return RandomUnorderedSetWithSize<ElementType>(randomUnorderedSetSize);
    }
 
    template<typename ElementType>
    std::unordered_set<ElementType> RandomNonEmptyUnorderedSet()
    {
-      const std::size_t randomUnorderedSetSize = RandomBetween<size_t>(1, 3);
-      std::unordered_set<ElementType> randomNonEmptyUnorderedSet;
-      for (size_t i = 0; i < randomUnorderedSetSize; ++i)
-      {
-         ElementType randomElement = Random<ElementType>();
-         randomNonEmptyUnorderedSet.emplace(std::move(randomElement));
-      }
-      return randomNonEmptyUnorderedSet;
+      const std::size_t randomNonEmptyUnorderedSetSize = RandomBetween<size_t>(1, 3);
+      return RandomUnorderedSetWithSize<ElementType>(randomNonEmptyUnorderedSetSize);
    }
 
    template<typename T>
