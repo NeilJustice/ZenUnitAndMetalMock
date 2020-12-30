@@ -1357,7 +1357,7 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
 
       DecayedFunctionReturnType MetalMockAddRandomReturnValue()
       {
-         const DecayedFunctionReturnType randomReturnValue = ZenUnit::Random<DecayedFunctionReturnType>();
+         DecayedFunctionReturnType randomReturnValue = ZenUnit::Random<DecayedFunctionReturnType>();
          _returnValues.push_back(randomReturnValue);
          return randomReturnValue;
       }
