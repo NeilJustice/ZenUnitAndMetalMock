@@ -19,7 +19,7 @@ namespace ZenUnit
 #include <sstream>
 #include <typeindex>
 #include <unordered_set>
-#if defined __linux__ || defined __APPLE__
+#if defined __linux__
 #include <climits>
 #include <cxxabi.h>
 #include <climits>
@@ -31,7 +31,7 @@ namespace fs = std::experimental::filesystem;
 #include <string.h>
 #include <unistd.h>
 #include <utility>
-#elif defined _WIN32
+#elif defined _WIN32 || defined __APPLE__
 #include <filesystem>
 namespace fs = std::filesystem;
 #define WIN32_LEAN_AND_MEAN // ~40% faster Windows.h compile speed
