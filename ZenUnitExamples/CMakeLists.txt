@@ -17,14 +17,14 @@ source_group("" FILES
 file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 
 add_executable(ZenUnitExamples ${sourceFilePaths})
-if(UNIX)
+if(UNIX AND NOT APPLE)
    target_link_libraries(ZenUnitExamples stdc++fs)
 endif()
 
 ConfigurePlatformSpecificPrecompiledHeaders()
 OnWindowsAddPostBuildStepToRunTests()
 
-if(UNIX)
+if(UNIX AND NOT APPLE)
    if(CodeCovMode)
      target_link_libraries(ZenUnitExamples CodeCovLibraryInterface)
    endif()

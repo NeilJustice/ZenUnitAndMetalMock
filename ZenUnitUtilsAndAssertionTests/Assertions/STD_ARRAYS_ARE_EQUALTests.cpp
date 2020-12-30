@@ -47,7 +47,7 @@ namespace ZenUnit
       const array<T, 1> expectedArray{ { randomElement } };
       const array<T, 1> actualArray{ { randomElement + T{1} } };
       //
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
       THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray)",
 "Expected: <std::array<" + TypeName + ", 1ul>>",
@@ -119,7 +119,7 @@ namespace ZenUnit
       const array<T, 2> expectedArray{ { randomElement1, randomElement2 } };
       const array<T, 2> actualArray{ { randomElement1 + T{1}, randomElement2 } };
       //
-#if defined __linux__
+#if defined __linux__ || defined __APPLE____linux__
       THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray)",
 "Expected: <std::array<" + TypeName + ", 2ul>>",
@@ -162,7 +162,7 @@ namespace ZenUnit
       const array<T, 2> expectedArray{ { randomElement1, randomElement2 } };
       const array<T, 2> actualArray{ { randomElement1, randomElement2 + T{1} } };
       //
-#if defined __linux__
+#if defined __linux__ || defined __APPLE____linux__
       THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray)",
 "Expected: <std::array<" + TypeName + ", 2ul>>",

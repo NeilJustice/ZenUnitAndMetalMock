@@ -25,7 +25,7 @@ namespace ZenUnit
    TEST(GetName_NonClassNonStructType_ReturnsTypeName)
    {
       ARE_EQUAL("int", *Type::GetName(1));
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
       ARE_EQUAL("decltype(nullptr)", *Type::GetName(nullptr));
       ARE_EQUAL("char [1]", *Type::GetName(""));
       ARE_EQUAL("char [2]", *Type::GetName("a"));
@@ -86,7 +86,7 @@ namespace ZenUnit
    TEST(GetNameT_NonClassNonStructType_ReturnsTypeName)
    {
       ARE_EQUAL("int", *Type::GetName<int>());
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
       ARE_EQUAL("decltype(nullptr)", *Type::GetName<nullptr_t>());
       ARE_EQUAL("char [1]", *Type::GetName<decltype("")>());
       ARE_EQUAL("char [2]", *Type::GetName<decltype("a")>());

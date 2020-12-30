@@ -54,7 +54,7 @@ set(CMAKE_CONFIGURATION_TYPES "Debug;Release;RelWithDebInfo")
 # Allows for ZenUnit.h and MetalMock.h to be installed instantly without first having to build all the test projects
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY ON)
 
-if(UNIX)
+if(UNIX AND NOT APPLE)
    include(ProcessorCount)
    ProcessorCount(numberOfThreads)
    add_custom_target(clang-tidy COMMAND

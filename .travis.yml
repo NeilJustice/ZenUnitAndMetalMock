@@ -2,9 +2,12 @@ os: linux
 virt: lxd
 dist: focal
 group: edge
-arch: arm64-graviton2
+arch: amd64
 language: cpp
-cache: ccache
+cache:
+   ccache: true
+   directories:
+      - $HOME/Library/Caches/Homebrew
 sudo: false
 
 git:
@@ -18,7 +21,8 @@ matrix:
       addons:
         apt:
           update: true
-          sources: [ 'ubuntu-toolchain-r-test' ]
+          sources:
+             - sourceline: 'ppa:ubuntu-toolchain-r/test'
           packages: [ 'ninja-build', 'clang-9', 'libstdc++-9-dev' ]
 
     - os: linux
@@ -27,7 +31,8 @@ matrix:
       addons:
         apt:
           update: true
-          sources: [ 'ubuntu-toolchain-r-test' ]
+          sources:
+             - sourceline: 'ppa:ubuntu-toolchain-r/test'
           packages: [ 'ninja-build', 'clang-9', 'libstdc++-9-dev' ]
 
     - os: linux
@@ -36,7 +41,8 @@ matrix:
       addons:
         apt:
           update: true
-          sources: [ 'ubuntu-toolchain-r-test' ]
+          sources:
+             - sourceline: 'ppa:ubuntu-toolchain-r/test'
           packages: [ 'ninja-build' ]
 
     - os: linux
@@ -45,7 +51,8 @@ matrix:
       addons:
         apt:
           update: true
-          sources: [ 'ubuntu-toolchain-r-test' ]
+          sources:
+             - sourceline: 'ppa:ubuntu-toolchain-r/test'
           packages: [ 'ninja-build' ]
 
     - os: osx
@@ -62,9 +69,7 @@ matrix:
       before_install:
       - brew install ninja
 
-install: ./TravisScripts/travis_install_latest_lcov_if_code_cov_mode.sh
-script: ./TravisScripts/travis_script.sh
-after_success: ./TravisScripts/travis_after_success.sh
+script: ./travis_script.sh
 
 notifications:
   email: true
