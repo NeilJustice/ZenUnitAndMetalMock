@@ -1233,15 +1233,19 @@ namespace ZenUnit
    template<> inline constexpr bool is_string_type_with_data_function_v<std::wstring> = true;
    template<> inline constexpr bool is_string_type_with_data_function_v<std::wstring_view> = true;
 
-   template<typename T> constexpr bool is_vector_v = false;
-   template<typename T> constexpr bool is_vector_v<std::vector<T>> = true;
-
    template<typename T> constexpr bool is_pair_v = false;
    template<typename T1, typename T2> constexpr bool is_pair_v<std::pair<T1, T2>> = true;
+
+   template<typename T> constexpr bool is_vector_v = false;
+   template<typename T> constexpr bool is_vector_v<std::vector<T>> = true;
 
    template<typename T> constexpr bool is_unordered_map_v = false;
    template<typename KeyType, typename ValueType>
    constexpr bool is_unordered_map_v<std::unordered_map<KeyType, ValueType>> = true;
+
+   template<typename T> constexpr bool is_unordered_set_v = false;
+   template<typename KeyType>
+   constexpr bool is_unordered_set_v<std::unordered_set<KeyType>> = true;
 
    template<typename T>
    class has_to_string
@@ -7056,10 +7060,57 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    T RandomBetween(long long inclusiveMinValue, long long inclusiveMaxValue)
    {
       static std::default_random_engine defaultRandomEngine(zenUnitMode.randomSeed);
-      std::uniform_int_distribution<long long> distribution(inclusiveMinValue, inclusiveMaxValue);
-      const long long randomValueLongLong = distribution(defaultRandomEngine);
-      const T randomValueT = static_cast<T>(randomValueLongLong);
-      return randomValueT;
+      std::uniform_int_distribution<long long> uniformIntDistribution(inclusiveMinValue, inclusiveMaxValue);
+      const long long randomIntegerBetweenInclusiveAndExclusiveAsLongLong = uniformIntDistribution(defaultRandomEngine);
+      const T randomIntegerBetweenInclusiveAndExclusiveAsT = static_cast<T>(randomIntegerBetweenInclusiveAndExclusiveAsLongLong);
+      return randomIntegerBetweenInclusiveAndExclusiveAsT;
+   }
+
+   template<typename T>
+   T RandomNon0()
+   {
+      static_assert(!std::is_same_v<T, std::string>);
+      const T randomNon0Integer = Random<T>();
+      static const T zeroT = T{0};
+      if (randomNon0Integer == zeroT)
+      {
+         static const T oneT = T{1};
+         return oneT;
+      }
+      return randomNon0Integer;
+   }
+
+   template<typename T>
+   T Random0OrGreater()
+   {
+      constexpr T maxTValue = std::numeric_limits<T>::max();
+      const T randomIntegerBetween0AndMaxValue = RandomBetween<T>(0, maxTValue);
+      return randomIntegerBetween0AndMaxValue;
+   }
+
+   template<typename T>
+   T Random1OrGreater()
+   {
+      constexpr T maxTValue = std::numeric_limits<T>::max();
+      const T randomIntegerBetween1AndMaxValue = RandomBetween<T>(1, maxTValue);
+      return randomIntegerBetween1AndMaxValue;
+   }
+
+   template<typename T>
+   T RandomNegative()
+   {
+      constexpr T minTValue = std::numeric_limits<T>::min();
+      const T randomIntegerBetweenMinValueAndNegative1 = RandomBetween<T>(minTValue, -1);
+      return randomIntegerBetweenMinValueAndNegative1;
+   }
+
+   inline unsigned long long RandomUnsignedLongLong()
+   {
+      static std::default_random_engine defaultRandomEngine(zenUnitMode.randomSeed);
+      const unsigned long long maximumUnsignedLongLong = std::numeric_limits<unsigned long long>::max();
+      std::uniform_int_distribution<unsigned long long> distribution(0, maximumUnsignedLongLong);
+      const unsigned long long randomUnsignedLongLong = distribution(defaultRandomEngine);
+      return randomUnsignedLongLong;
    }
 
    template<typename EnumType>
@@ -7080,13 +7131,11 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       return randomNon0Enum;
    }
 
-   inline unsigned long long RandomUnsignedLongLong()
+   template<typename KeyType, typename ValueType>
+   inline std::pair<KeyType, ValueType> RandomPair()
    {
-      static std::default_random_engine defaultRandomEngine(zenUnitMode.randomSeed);
-      constexpr unsigned long long maximumUnsignedLongLong = std::numeric_limits<unsigned long long>::max();
-      std::uniform_int_distribution<unsigned long long> distribution(0, maximumUnsignedLongLong);
-      const unsigned long long randomUnsignedLongLong = distribution(defaultRandomEngine);
-      return randomUnsignedLongLong;
+      std::pair<KeyType, ValueType> randomPair = std::make_pair(Random<KeyType>(), Random<ValueType>());
+      return randomPair;
    }
 
    template<typename T>
@@ -7133,12 +7182,17 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename KeyType, typename ValueType>
-   inline std::pair<KeyType, ValueType> RandomPair()
+   std::map<KeyType, ValueType> RandomMap()
    {
-      const KeyType randomKey = Random<KeyType>();
-      const ValueType randomValue = Random<ValueType>();
-      std::pair<KeyType, ValueType> randomPair(randomKey, randomValue);
-      return randomPair;
+      const std::size_t randomMapSize = RandomBetween<size_t>(0, 3);
+      std::map<KeyType, ValueType> randomMap;
+      for (size_t i = 0; i < randomMapSize; ++i)
+      {
+         KeyType randomKey = Random<KeyType>();
+         ValueType randomValue = Random<ValueType>();
+         randomMap.emplace(std::move(randomKey), std::move(randomValue));
+      }
+      return randomMap;
    }
 
    template<typename KeyType, typename ValueType>
@@ -7148,11 +7202,50 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       std::unordered_map<KeyType, ValueType> randomUnorderedMap;
       for (size_t i = 0; i < randomUnorderedMapSize; ++i)
       {
-         const KeyType randomKey = Random<KeyType>();
-         const ValueType randomValue = Random<ValueType>();
-         randomUnorderedMap[randomKey] = randomValue;
+         KeyType randomKey = Random<KeyType>();
+         ValueType randomValue = Random<ValueType>();
+         randomUnorderedMap.emplace(std::move(randomKey), std::move(randomValue));
       }
       return randomUnorderedMap;
+   }
+
+   template<typename ElementType>
+   std::set<ElementType> RandomSet()
+   {
+      const std::size_t randomSetSize = RandomBetween<size_t>(0, 3);
+      std::set<ElementType> randomSet;
+      for (size_t i = 0; i < randomSetSize; ++i)
+      {
+         ElementType randomElement = Random<ElementType>();
+         randomSet.emplace(std::move(randomElement));
+      }
+      return randomSet;
+   }
+
+   template<typename ElementType>
+   std::unordered_set<ElementType> RandomUnorderedSet()
+   {
+      const std::size_t randomUnorderedSetSize = RandomBetween<size_t>(0, 3);
+      std::unordered_set<ElementType> randomUnorderedSet;
+      for (size_t i = 0; i < randomUnorderedSetSize; ++i)
+      {
+         ElementType randomElement = Random<ElementType>();
+         randomUnorderedSet.emplace(std::move(randomElement));
+      }
+      return randomUnorderedSet;
+   }
+
+   template<typename ElementType>
+   std::unordered_set<ElementType> RandomNonEmptyUnorderedSet()
+   {
+      const std::size_t randomUnorderedSetSize = RandomBetween<size_t>(1, 3);
+      std::unordered_set<ElementType> randomNonEmptyUnorderedSet;
+      for (size_t i = 0; i < randomUnorderedSetSize; ++i)
+      {
+         ElementType randomElement = Random<ElementType>();
+         randomNonEmptyUnorderedSet.emplace(std::move(randomElement));
+      }
+      return randomNonEmptyUnorderedSet;
    }
 
    template<typename T>
@@ -7163,23 +7256,29 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          const T randomEnum = RandomEnum(T::MaxValue);
          return randomEnum;
       }
-      else if constexpr (is_vector_v<T>)
-      {
-         std::vector<typename T::value_type> randomVector =
-            RandomVector<typename T::value_type>();
-         return randomVector;
-      }
       else if constexpr (is_pair_v<T>)
       {
          std::pair<typename T::first_type, typename T::second_type> randomPair =
             RandomPair<typename T::first_type, typename T::second_type>();
          return randomPair;
       }
+      else if constexpr (is_vector_v<T>)
+      {
+         std::vector<typename T::value_type> randomVector =
+            RandomVector<typename T::value_type>();
+         return randomVector;
+      }
       else if constexpr (is_unordered_map_v<T>)
       {
          std::unordered_map<typename T::key_type, typename T::mapped_type> randomUnorderedMap =
             RandomUnorderedMap<typename T::key_type, typename T::mapped_type>();
          return randomUnorderedMap;
+      }
+      else if constexpr (is_unordered_set_v<T>)
+      {
+         std::unordered_set<typename T::key_type> randomUnorderedSet =
+            RandomUnorderedSet<typename T::key_type>();
+         return randomUnorderedSet;
       }
       else if constexpr (std::is_same_v<T, unsigned long long>)
       {
@@ -7190,47 +7289,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          constexpr T minTValue = std::numeric_limits<T>::min();
          constexpr T maxTValue = std::numeric_limits<T>::max();
-         const T randomInteger = RandomBetween<T>(minTValue, maxTValue);
-         return randomInteger;
+         const T randomIntegerBetweenMinAndMaxValue = RandomBetween<T>(minTValue, maxTValue);
+         return randomIntegerBetweenMinAndMaxValue;
       }
-   }
-
-   template<typename T>
-   T RandomNon0()
-   {
-      static_assert(!std::is_same_v<T, std::string>);
-      const T randomT = Random<T>();
-      static const T zeroT = T(0);
-      if (randomT == zeroT)
-      {
-         static const T oneT = T(1);
-         return oneT;
-      }
-      return randomT;
-   }
-
-   template<typename T>
-   T Random0OrGreater()
-   {
-      constexpr T maxTValue = std::numeric_limits<T>::max();
-      const T randomTBetween0AndMaxValue = RandomBetween<T>(0, maxTValue);
-      return randomTBetween0AndMaxValue;
-   }
-
-   template<typename T>
-   T Random1OrGreater()
-   {
-      constexpr T maxTValue = std::numeric_limits<T>::max();
-      const T randomTBetween1AndMaxValue = RandomBetween<T>(1, maxTValue);
-      return randomTBetween1AndMaxValue;
-   }
-
-   template<typename T>
-   T RandomNegative()
-   {
-      constexpr T minTValue = std::numeric_limits<T>::min();
-      const T randomTBetweenMinValueAndNegative1 = RandomBetween<T>(minTValue, -1);
-      return randomTBetweenMinValueAndNegative1;
    }
 
    template<>
@@ -7321,8 +7382,8 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
       const std::string randomFolderName = Random<std::string>();
       randomPathStringBuilder << randomFolderName;
-      const std::string randomPathString = randomPathStringBuilder.str();
-      fs::path randomPath(randomPathString);
+      std::string randomPathAsString = randomPathStringBuilder.str();
+      fs::path randomPath(std::move(randomPathAsString));
       return randomPath;
    }
 
@@ -7346,46 +7407,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       const int randomErrorCodeValue = Random<int>();
       std::error_code randomErrorCode(randomErrorCodeValue, *errorCategory);
       return randomErrorCode;
-   }
-
-   template<typename KeyType, typename ValueType>
-   std::map<KeyType, ValueType> RandomMap()
-   {
-      const std::size_t randomMapSize = RandomBetween<size_t>(0, 3);
-      std::map<KeyType, ValueType> randomMap;
-      for (size_t i = 0; i < randomMapSize; ++i)
-      {
-         const KeyType randomKey = Random<KeyType>();
-         const ValueType randomValue = Random<ValueType>();
-         randomMap[randomKey] = randomValue;
-      }
-      return randomMap;
-   }
-
-   template<typename ElementType>
-   std::set<ElementType> RandomSet()
-   {
-      const std::size_t randomSetSize = RandomBetween<size_t>(0, 3);
-      std::set<ElementType> randomSet;
-      for (size_t i = 0; i < randomSetSize; ++i)
-      {
-         const ElementType randomElement = Random<ElementType>();
-         randomSet.insert(randomElement);
-      }
-      return randomSet;
-   }
-
-   template<typename ElementType>
-   std::unordered_set<ElementType> RandomUnorderedSet()
-   {
-      const std::size_t randomUnorderedSetSize = RandomBetween<size_t>(0, 3);
-      std::unordered_set<ElementType> randomUnorderedSet;
-      for (size_t i = 0; i < randomUnorderedSetSize; ++i)
-      {
-         const ElementType randomElement = Random<ElementType>();
-         randomUnorderedSet.insert(randomElement);
-      }
-      return randomUnorderedSet;
    }
 
    class RandomGenerator

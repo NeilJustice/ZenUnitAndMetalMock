@@ -6,9 +6,10 @@ namespace ZenUnit
    AFACT(Random_Enum_ReturnsRandomEnumBetween0AndEnumMaxValue)
    AFACT(RandomNon0_Enum_ReturnsRandomEnumBetween1AndEnumMaxValue)
    AFACT(Random_AllIntegerTypes_ReturnsRandomValueBetweenMinAndMaxForThatType)
-   AFACT(Random_TIsAVector_ReturnsRandomVectorOfTWithSizeLessThanOrEqualTo3)
    AFACT(Random_TIsAPair_ReturnsRandomPair)
+   AFACT(Random_TIsAVector_ReturnsRandomVectorOfTWithSizeLessThanOrEqualTo3)
    AFACT(Random_TIsAnUnorderedMap_ReturnsRandomUnorderedMap)
+   AFACT(Random_TIsAnUnorderedSet_ReturnsRandomUnorderedSet)
    AFACT(RandomNon0_ReturnsRandomValueBetweenMinAndMaxForThatTypeButNeverZero)
    AFACT(Random0OrGreater_ReturnsRandomIntegerBetween0AndTMaxValue)
    AFACT(Random1OrGreater_ReturnsRandomIntegerBetween1AndTMaxValue)
@@ -83,15 +84,6 @@ namespace ZenUnit
       Random<size_t>();
    }
 
-   TEST(Random_TIsAVector_ReturnsRandomVectorOfTWithSizeLessThanOrEqualTo3)
-   {
-      const vector<int> randomIntVector = Random<vector<int>>();
-      IS_TRUE(randomIntVector.size() <= 3);
-
-      const vector<string> randomStringVector = Random<vector<string>>();
-      IS_TRUE(randomStringVector.size() <= 3);
-   }
-
    TEST(Random_TIsAPair_ReturnsRandomPair)
    {
       [[maybe_unused]]
@@ -101,6 +93,15 @@ namespace ZenUnit
       const pair<double, char> randomDoubleCharPair = Random<pair<double, char>>();
    }
 
+   TEST(Random_TIsAVector_ReturnsRandomVectorOfTWithSizeLessThanOrEqualTo3)
+   {
+      const vector<int> randomIntVector = Random<vector<int>>();
+      IS_TRUE(randomIntVector.size() <= 3);
+
+      const vector<string> randomStringVector = Random<vector<string>>();
+      IS_TRUE(randomStringVector.size() <= 3);
+   }
+
    TEST(Random_TIsAnUnorderedMap_ReturnsRandomUnorderedMap)
    {
       [[maybe_unused]]
@@ -108,6 +109,15 @@ namespace ZenUnit
 
       [[maybe_unused]]
       const unordered_map<string, double> stringDoubleUnorderedMap = Random<unordered_map<string, double>>();
+   }
+
+   TEST(Random_TIsAnUnorderedSet_ReturnsRandomUnorderedSet)
+   {
+      [[maybe_unused]]
+      const unordered_set<int> unorderedIntSet = Random<unordered_set<int>>();
+
+      [[maybe_unused]]
+      const unordered_set<string> unorderedStringSet = Random<unordered_set<string>>();
    }
 
    TEST(RandomNon0_ReturnsRandomValueBetweenMinAndMaxForThatTypeButNeverZero)
@@ -244,14 +254,12 @@ namespace ZenUnit
    TEMPLATE_TESTS(RandomPairTests, KeyType, ValueType)
    AFACT(RandomPair_ReturnsPairWithRandomKeyAndRandomValue)
    EVIDENCE
-
    TEST(RandomPair_ReturnsPairWithRandomKeyAndRandomValue)
    {
       const pair<KeyType, ValueType> randomPair = ZenUnit::RandomPair<KeyType, ValueType>();
       IS_NOT_DEFAULT_VALUE(randomPair.first);
       IS_NOT_DEFAULT_VALUE(randomPair.second);
    }
-
    RUN_TEMPLATE_TESTS(RandomPairTests, int, int)
    THEN_RUN_TEMPLATE_TESTS(RandomPairTests, string, long long)
 
@@ -260,13 +268,11 @@ namespace ZenUnit
    TEMPLATE_TESTS(RandomVectorTests, T)
    AFACT(RandomVector_ReturnsAVectorWithSizeBetween0And2)
    EVIDENCE
-
    TEST(RandomVector_ReturnsAVectorWithSizeBetween0And2)
    {
       const vector<T> randomVector = ZenUnit::RandomVector<T>();
       IS_TRUE(randomVector.size() >= 0 && randomVector.size() <= 3);
    }
-
    RUN_TEMPLATE_TESTS(RandomVectorTests, int)
    THEN_RUN_TEMPLATE_TESTS(RandomVectorTests, string)
 
@@ -275,7 +281,6 @@ namespace ZenUnit
    TEMPLATE_TESTS(RandomVectorWithSizeTests, T)
    FACTS(RandomVectorWithSize_ReturnsAVectorWithSpecifiedSize)
    EVIDENCE
-
    TEST1X1(RandomVectorWithSize_ReturnsAVectorWithSpecifiedSize,
       size_t size,
       0ull,
@@ -285,7 +290,6 @@ namespace ZenUnit
       const vector<T> randomVectorWithSize = ZenUnit::RandomVectorWithSize<T>(size);
       ARE_EQUAL(size, randomVectorWithSize.size());
    }
-
    RUN_TEMPLATE_TESTS(RandomVectorWithSizeTests, int)
    THEN_RUN_TEMPLATE_TESTS(RandomVectorWithSizeTests, string)
 
@@ -294,13 +298,11 @@ namespace ZenUnit
    TEMPLATE_TESTS(RandomStdArrayTests, T, Size)
    AFACT(RandomStdArray_ReturnsStdArrayWithAllRandomValues)
    EVIDENCE
-
    TEST(RandomStdArray_ReturnsStdArrayWithAllRandomValues)
    {
       const array<T, Size> randomStdArray = ZenUnit::RandomStdArray<T, Size>();
       ARE_EQUAL(Size, randomStdArray.size());
    }
-
    RUN_TEMPLATE_TESTS(RandomStdArrayTests, int, 3)
    THEN_RUN_TEMPLATE_TESTS(RandomStdArrayTests, unsigned long long, 5)
 
@@ -309,7 +311,6 @@ namespace ZenUnit
    TEMPLATE_TESTS(RandomNonEmptyVectorTests, T)
    AFACT(RandomNonEmptyVector_ReturnsAVectorWithSizeBetween1And3)
    EVIDENCE
-
    TEST(RandomNonEmptyVector_ReturnsAVectorWithSizeBetween1And3)
    {
       const vector<T> randomNonEmptyVector = ZenUnit::RandomNonEmptyVector<T>();
@@ -317,7 +318,6 @@ namespace ZenUnit
               randomNonEmptyVector.size() == 2 ||
               randomNonEmptyVector.size() == 3);
    }
-
    RUN_TEMPLATE_TESTS(RandomNonEmptyVectorTests, int)
    THEN_RUN_TEMPLATE_TESTS(RandomNonEmptyVectorTests, string)
 
@@ -326,13 +326,11 @@ namespace ZenUnit
    TEMPLATE_TESTS(RandomMapTests, KeyType, ValueType)
    AFACT(RandomMap_ReturnsAMapWithSizeBetween0And2WithRandomElements)
    EVIDENCE
-
    TEST(RandomMap_ReturnsAMapWithSizeBetween0And2WithRandomElements)
    {
       const map<KeyType, ValueType> randomOrderedMap = ZenUnit::RandomMap<KeyType, ValueType>();
       IS_TRUE(randomOrderedMap.size() >= 0 && randomOrderedMap.size() <= 3);
    }
-
    RUN_TEMPLATE_TESTS(RandomMapTests, int, int)
    THEN_RUN_TEMPLATE_TESTS(RandomMapTests, string, double)
 
@@ -341,13 +339,11 @@ namespace ZenUnit
    TEMPLATE_TESTS(RandomUnorderedMapTests, KeyType, ValueType)
    AFACT(RandomUnorderedMap_ReturnsAnUnorderedMapWithSizeBetween0And3)
    EVIDENCE
-
    TEST(RandomUnorderedMap_ReturnsAnUnorderedMapWithSizeBetween0And3)
    {
       const unordered_map<KeyType, ValueType> randomUnorderedMap = ZenUnit::RandomUnorderedMap<KeyType, ValueType>();
       IS_TRUE(randomUnorderedMap.size() >= 0 && randomUnorderedMap.size() <= 3);
    }
-
    RUN_TEMPLATE_TESTS(RandomUnorderedMapTests, int, int)
    THEN_RUN_TEMPLATE_TESTS(RandomUnorderedMapTests, string, double)
 
@@ -369,13 +365,11 @@ namespace ZenUnit
    TEMPLATE_TESTS(RandomUnorderedSetTests, ElementType)
    AFACT(RandomUnorderedSet_ReturnsAnUnorderedSetWithSizeBetween0And3)
    EVIDENCE
-
    TEST(RandomUnorderedSet_ReturnsAnUnorderedSetWithSizeBetween0And3)
    {
       const unordered_set<ElementType> randomUnorderedSet = ZenUnit::RandomUnorderedSet<ElementType>();
       IS_TRUE(randomUnorderedSet.size() >= 0 && randomUnorderedSet.size() <= 3);
    }
-
    RUN_TEMPLATE_TESTS(RandomUnorderedSetTests, int)
    THEN_RUN_TEMPLATE_TESTS(RandomUnorderedSetTests, string)
 }
