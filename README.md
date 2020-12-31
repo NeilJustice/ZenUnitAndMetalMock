@@ -8,7 +8,7 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
 
 |Build|Build Status|
 |----------|------------|
-|Travis CI Linux Clang 7.0.0 and GCC 7.5.0 Debug and Release|[![Build Status](https://travis-ci.com/NeilJustice/ZenUnitAndMetalMock.svg?branch=main)](https://travis-ci.com/NeilJustice/ZenUnitAndMetalMock)|
+|Travis CI Linux Clang 9.0.1, Linux GCC 9.3.0, and macOS AppleClang 12.0.0 Debug and Release|[![Build Status](https://travis-ci.com/NeilJustice/ZenUnitAndMetalMock.svg?branch=main)](https://travis-ci.com/NeilJustice/ZenUnitAndMetalMock)|
 |AppVeyor Windows Visual Studio 2019 x64 Debug and Release|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndMetalMock"><img src="https://ci.appveyor.com/api/projects/status/9m1224h38bk4lxn7?svg=true"/></a>|
 |Code Coverage For The Travis CI GCC 7.5.0 Release Build|[![codecov](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock/branch/master/graph/badge.svg)](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock)|
 
@@ -1245,26 +1245,21 @@ cmake --build . --target install
 
 |Future ZenUnit Feature|Estimated Delivery|Implementation Status|
 |----------------------|------------------|---------------------|
-|`IS_EMPTY_PATH(filesystemPath, messages...`)|Q4 2020|Implemented|
-|`IS_EMPTY_STRING(str, messages...)`|Q4 2020|Implemented|
-|`ENUM_EQUALS(expectedInteger, actualEnumClass)`|Q4 2020|Implemented|
-|Travis CI OSX badge|Q4 2020|In progress|
-|.clang-format file|Q4 2020|Awaiting implementation|
-|Refactor ZenUnit and MetalMock documentation into multiple pages from a single page|Q1 2021|Awaiting implementation|
-|`main` and `dev` branch Travis CI and AppVeyor builds|Q1 2021|Awaiting implementation|
-|`TUPLES_ARE_EQUAL`|Q1 2021| Awaiting implementation|
-|SonarQube Jenkins pipelines on Linux And Windows with pipeline screenshots added to this readme file|Q1 2021|Awaiting implementation|
-|SonarCloud Badge|Q1 2021|Awaiting implementation|
-|Coverity Badge|Q1 2021|Awaiting implementation|
-|`ARE_NEAR` floating point assertion|Q1 2021|Awaiting implementation|
-|When an `ARE_EQUAL(expectedString, actualString)` assertion fails, print the first mismatching index|Q2 2021|Awaiting implementation|
+|Refactor ZenUnit and MetalMock documentation into multiple pages from a single page|January 2021|In progress|
+|GitHub Actions build|January 2021|Awaiting implementation|
+|SonarQube Jenkins pipelines on Linux And Windows with pipeline screenshots added to this readme file|January 2021|Awaiting implementation|
+|`TUPLES_ARE_EQUAL`|January 2021| Awaiting implementation|
+|`main` and `dev` branches|February 2021|Awaiting implementation|
+|SonarCloud Badge|February 2021|Awaiting implementation|
+|Coverity Badge|February 2021|Awaiting implementation|
+|`ARE_NEAR` floating point assertion|February 2021|Awaiting implementation|
 |`--parallel` for parallel running of tests and value-parameterized test cases|Q2 2021|Awaiting implementation|
 
 ### MetalMock Roadmap
 
 |Future MetalMock Feature|Estimated Delivery|Implementation Status|
 |------------------------|------------------|---------------------|
-|Ordered function call assertions because the ordering of function calls is of course extremely important to program correctness|Q1 2021|Awaiting implementation|
+|Ordered function call assertions because the ordering of function calls is of course extremely important to program correctness|January 2021|Awaiting implementation|
 
 ### Special Thanks
 
