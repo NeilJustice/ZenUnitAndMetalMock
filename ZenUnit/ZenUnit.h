@@ -22,7 +22,7 @@ namespace ZenUnit
 #include <unordered_map>
 #include <unordered_set>
 
-#if defined __linux__
+#if defined __linux__ || defined __APPLE__
 #include <climits>
 #include <cxxabi.h>
 #include <climits>
