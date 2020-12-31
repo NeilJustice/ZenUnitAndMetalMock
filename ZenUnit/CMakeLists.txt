@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
 project(ZenUnit)
 
-add_library(ZenUnit INTERFACE ZenUnit.h MetalMock.h)
-set_target_properties(ZenUnit PROPERTIES LINKER_LANGUAGE CXX)
+add_library(ZenUnit INTERFACE)
 
 install(DIRECTORY .
         DESTINATION include/ZenUnit/ZenUnit
