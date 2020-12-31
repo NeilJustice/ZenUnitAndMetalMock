@@ -47,7 +47,7 @@ namespace ZenUnit
       const array<T, 1> expectedArray{ { randomElement } };
       const array<T, 1> actualArray{ { randomElement + T{1} } };
       //
-#if defined __linux__ || defined __APPLE__
+#if defined __linux__
       THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray)",
 "Expected: <std::array<" + TypeName + ", 1ul>>",
