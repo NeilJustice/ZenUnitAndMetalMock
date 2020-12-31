@@ -26,7 +26,12 @@ mkdir build && cd build
 cmake -GNinja .. -Werror=dev -DCMAKE_CXX_COMPILER="$COMPILER" -DCMAKE_BUILD_TYPE="$CMAKE_BUILD_TYPE" -DCodeCovMode="$CODE_COV_MODE"
 curl https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/main/ZenUnit/ZenUnit.h --create-dirs -o "$TRAVIS_BUILD_DIR/ZenUnit/ZenUnit.h"
 curl https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/main/ZenUnit/MetalMock.h --create-dirs -o "$TRAVIS_BUILD_DIR/ZenUnit/MetalMock.h"
-ninja -v
+if [ "$TRAVIS_COMPILER" = "gcc" ]; then
+   # Travis GCC runs out of memory when ninja is run with full parallelism
+   ninja -v -j3
+else
+   ninja -v
+fi
 ./MetalMockTests/MetalMockTests --test-runs=3 --random-test-ordering
 ./MetalMockExamples/MetalMockExamples --test-runs=3 --random-test-ordering
 ./ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests --test-runs=3 --random-test-ordering
