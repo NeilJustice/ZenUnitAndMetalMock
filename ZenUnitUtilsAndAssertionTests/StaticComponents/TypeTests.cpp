@@ -25,7 +25,7 @@ namespace ZenUnit
    TEST(GetName_NonClassNonStructType_ReturnsTypeName)
    {
       ARE_EQUAL("int", *Type::GetName(1));
-#if defined __linux__ || defined __APPLE__
+#if defined __linux__
       ARE_EQUAL("decltype(nullptr)", *Type::GetName(nullptr));
       ARE_EQUAL("char [1]", *Type::GetName(""));
       ARE_EQUAL("char [2]", *Type::GetName("a"));
@@ -42,12 +42,7 @@ namespace ZenUnit
       ARE_EQUAL("char const [1]", *Type::GetName(""));
       ARE_EQUAL("char const [2]", *Type::GetName("a"));
       const char* const ccp = "hello";
-#endif
-
-#if defined _WIN64
       ARE_EQUAL("char const * __ptr64", *Type::GetName(ccp));
-#elif defined _WIN32
-      ARE_EQUAL("char const *", *Type::GetName(ccp));
 #endif
    }
 
@@ -86,7 +81,7 @@ namespace ZenUnit
    TEST(GetNameT_NonClassNonStructType_ReturnsTypeName)
    {
       ARE_EQUAL("int", *Type::GetName<int>());
-#if defined __linux__ || defined __APPLE__
+#if defined __linux__
       ARE_EQUAL("decltype(nullptr)", *Type::GetName<nullptr_t>());
       ARE_EQUAL("char [1]", *Type::GetName<decltype("")>());
       ARE_EQUAL("char [2]", *Type::GetName<decltype("a")>());
@@ -100,12 +95,7 @@ namespace ZenUnit
       ARE_EQUAL("std::nullptr_t", *Type::GetName<nullptr_t>());
       ARE_EQUAL("char const [1]", *Type::GetName<decltype("")>());
       ARE_EQUAL("char const [2]", *Type::GetName<decltype("a")>());
-#endif
-
-#if defined _WIN64
       ARE_EQUAL("char const * __ptr64", *Type::GetName<const char*>());
-#elif defined _WIN32
-      ARE_EQUAL("char const *", *Type::GetName<const char*>());
 #endif
    }
 
@@ -114,10 +104,10 @@ namespace ZenUnit
       ARE_EQUAL("ZenUnit::TypeTests::TemplateClass<ZenUnit::TypeTests::C>", *Type::GetName<TemplateClass<C>>());
       ARE_EQUAL("ZenUnit::TypeTests::TemplateClass<ZenUnit::TypeTests::S>", *Type::GetName<TemplateClass<S>>());
       ARE_EQUAL("ZenUnit::TypeTests::C", *Type::GetName<C>());
-   #if _WIN32
+#if _WIN32
       ARE_EQUAL("std::basic_string", *Type::GetName<string>());
       ARE_EQUAL("std::basic_ostream<char,std::char_traits<char> >", *Type::GetName<decltype(cout)>());
-   #endif
+#endif
    }
 
    TEST(GetNameT_StructType_ReturnsTypeNameMinusStructSpace)
@@ -131,15 +121,15 @@ namespace ZenUnit
       {
          throw logic_error("message");
       }
-   #if defined _WIN32
-   #pragma warning(push)
-   // Disable unreference local variable because MSVC does not count decltype(localVariable) as referencing localVariable
-   #pragma warning(disable: 4101)
-   #endif
+#if defined _WIN32
+#pragma warning(push)
+// Disable unreference local variable because MSVC does not count decltype(localVariable) as referencing localVariable
+#pragma warning(disable: 4101)
+#endif
       catch (const exception& ex)
-   #if defined _WIN32
-   #pragma warning(pop)
-   #endif
+#if defined _WIN32
+#pragma warning(pop)
+#endif
       {
          ARE_EQUAL("std::exception", *Type::GetName<decltype(ex)>());
       }
