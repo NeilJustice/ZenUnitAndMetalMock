@@ -41,9 +41,9 @@ namespace ZenUnit
       DOES_NOT_THROW(Equalizer<vector<string>>::AssertEqual(expectedStringVector, actualStringVector));
       expectedStringVector.emplace_back();
 
-#if defined __linux__ || defined __APPLE__
+#if defined __linux__
 
-THROWS_EXCEPTION(Equalizer<vector<string>>::AssertEqual(
+      THROWS_EXCEPTION(Equalizer<vector<string>>::AssertEqual(
          expectedStringVector COMMA actualStringVector), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: VECTORS_ARE_EQUAL(expectedVector, actualVector)",
 "Expected: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >> (size 1):",
@@ -51,6 +51,24 @@ THROWS_EXCEPTION(Equalizer<vector<string>>::AssertEqual(
 "   \"\"",
 "}",
 "  Actual: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >> (size 0):",
+"{",
+"}",
+" Because: ARE_EQUAL(expectedIndexableDataStructure.size(), actualIndexableDataStructure.size()) failed",
+"Expected: 1",
+"  Actual: 0",
+"File.cpp(1)",
+"File.cpp(1)"));
+
+#elif defined __APPLE__
+
+      THROWS_EXCEPTION(Equalizer<vector<string>>::AssertEqual(
+         expectedStringVector COMMA actualStringVector), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: VECTORS_ARE_EQUAL(expectedVector, actualVector)",
+"Expected: std::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >> (size 1):",
+"{",
+"   \"\"",
+"}",
+"  Actual: std::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >> (size 0):",
 "{",
 "}",
 " Because: ARE_EQUAL(expectedIndexableDataStructure.size(), actualIndexableDataStructure.size()) failed",
