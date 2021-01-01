@@ -7058,13 +7058,33 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    T Random();
 
    template<typename T>
-   T RandomBetween(long long inclusiveMinValue, long long inclusiveMaxValue)
+   T RandomBetween(long long inclusiveLowerBound, long long inclusiveUpperBound)
    {
       static std::default_random_engine defaultRandomEngine(zenUnitMode.randomSeed);
-      std::uniform_int_distribution<long long> uniformIntDistribution(inclusiveMinValue, inclusiveMaxValue);
+      std::uniform_int_distribution<long long> uniformIntDistribution(inclusiveLowerBound, inclusiveUpperBound);
       const long long randomIntegerBetweenInclusiveAndExclusiveAsLongLong = uniformIntDistribution(defaultRandomEngine);
       const T randomIntegerBetweenInclusiveAndExclusiveAsT = static_cast<T>(randomIntegerBetweenInclusiveAndExclusiveAsLongLong);
       return randomIntegerBetweenInclusiveAndExclusiveAsT;
+   }
+
+   template<typename T>
+   T RandomGreaterThanOrEqualTo(T inclusiveLowerBound)
+   {
+      static std::default_random_engine defaultRandomEngine(zenUnitMode.randomSeed);
+      constexpr T maxTValue = std::numeric_limits<T>::max();
+      std::uniform_int_distribution<T> uniformTDistribution(inclusiveLowerBound, maxTValue);
+      const T randomIntegerGreaterThanOrEqualToInclusiveLowerBound = uniformTDistribution(defaultRandomEngine);
+      return randomIntegerGreaterThanOrEqualToInclusiveLowerBound;
+   }
+
+   template<typename T>
+   T RandomLessThanOrEqualTo(T inclusiveUpperBound)
+   {
+      static std::default_random_engine defaultRandomEngine(zenUnitMode.randomSeed);
+      constexpr T minTValue = std::numeric_limits<T>::min();
+      std::uniform_int_distribution<T> uniformTDistribution(minTValue, inclusiveUpperBound);
+      const T randomIntegerLessThanOrEqualToInclusiveUpperBound = uniformTDistribution(defaultRandomEngine);
+      return randomIntegerLessThanOrEqualToInclusiveUpperBound;
    }
 
    template<typename T>
