@@ -38,10 +38,8 @@ Expected: nullptr
   Actual: )";
 #if defined __linux__ || defined __APPLE__
       expectedWhat += "0x123\n";
-#elif defined _WIN64
-      expectedWhat += "0x0000000000000123\n";
 #elif defined _WIN32
-      expectedWhat += "0x00000123\n";
+      expectedWhat += "0x0000000000000123\n";
 #endif
       expectedWhat += " Message: \"A\", \"B\"\n";
       expectedWhat += "File.cpp(1)";
@@ -68,10 +66,8 @@ Expected: nullptr
   Actual: )";
 #if defined __linux__ || defined __APPLE__
       expectedWhat += "0x1234567890123";
-#elif defined _WIN64
-      expectedWhat += "0x0001234567890123";
 #elif defined _WIN32
-      expectedWhat += "0x67890123";
+      expectedWhat += "0x0001234567890123";
 #endif
       expectedWhat += "\nFile.cpp(1)";
       THROWS_EXCEPTION(IS_NULLPTR(nonNullUniquePointer),
@@ -88,10 +84,8 @@ Expected: nullptr
   Actual: )";
 #if defined __linux__ || defined __APPLE__
       expectedWhat += "0x1234567890123";
-#elif defined _WIN64
-      expectedWhat += "0x0001234567890123";
 #elif defined _WIN32
-      expectedWhat += "0x67890123";
+      expectedWhat += "0x0001234567890123";
 #endif
       expectedWhat += "\nFile.cpp(1)";
       THROWS_EXCEPTION(IS_NULLPTR(nonNullSharedPointer),

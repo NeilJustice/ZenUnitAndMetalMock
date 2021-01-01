@@ -37,10 +37,8 @@ namespace ZenUnit
          string expectedPattern;
 #if defined __linux__ || defined __APPLE__
          expectedPattern = "1";
-#elif defined _WIN64
-         expectedPattern = "0x\\w{16}";
 #elif defined _WIN32
-         expectedPattern = "0x\\w{8}";
+         expectedPattern = "0x\\w{16}";
 #endif
          REGEX_MATCHES(TestUtil::NewlineConcat("",
 "  Failed: STD_FUNCTION_TARGETS\\(FunctionA, emptyStdFunction, messageA, messageB\\)",
@@ -68,10 +66,8 @@ namespace ZenUnit
          string expectedPattern;
 #if defined __linux__ || defined __APPLE__
          expectedPattern = "1";
-#elif defined _WIN64
-         expectedPattern = "0x\\w{16}";
 #elif defined _WIN32
-         expectedPattern = "0x\\w{8}";
+         expectedPattern = "0x\\w{16}";
 #endif
          REGEX_MATCHES(TestUtil::NewlineConcat("",
 "  Failed: STD_FUNCTION_TARGETS\\(FunctionB, stdFunctionA\\)",
@@ -88,7 +84,9 @@ namespace ZenUnit
    TEST(FunctionPointsToFunctionWithSameSignatureButDifferentFunctionThanExpected_ThrowsAnomaly)
    {
       const function<void()> stdFunctionA(FunctionA);
+
 #if defined __linux__ || defined __APPLE__
+
       THROWS_EXCEPTION(STD_FUNCTION_TARGETS(FunctionC, stdFunctionA), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: STD_FUNCTION_TARGETS(FunctionC, stdFunctionA)",
 "Expected: 1",
@@ -98,6 +96,7 @@ namespace ZenUnit
 "  Actual: 1",
 "File.cpp(1)",
 "File.cpp(1)"));
+
 #elif defined _WIN32
       try
       {
@@ -106,7 +105,6 @@ namespace ZenUnit
       }
       catch (const Anomaly& anomaly)
       {
-#if defined _WIN64
          REGEX_MATCHES(TestUtil::NewlineConcat("",
 "  Failed: STD_FUNCTION_TARGETS\\(FunctionC, stdFunctionA\\)",
 "Expected: 0x\\w{16}",
@@ -116,19 +114,9 @@ namespace ZenUnit
 "  Actual: 0x\\w{16}",
 "File.cpp\\(1\\)",
 "File.cpp\\(1\\)"), anomaly.why);
-#elif defined _WIN32
-         REGEX_MATCHES(TestUtil::NewlineConcat("",
-"  Failed: STD_FUNCTION_TARGETS\\(FunctionC, stdFunctionA\\)",
-"Expected: 0x\\w{8}",
-"  Actual: <non-empty std::function>",
-" Because: ARE_EQUAL\\(expectedStdFunctionTarget, \\*stdFunction\\.template target<ExpectedStdFunctionTargetType\\*>\\(\\)\\) failed",
-"Expected: 0x\\w{8}",
-"  Actual: 0x\\w{8}",
-"File.cpp\\(1\\)",
-"File.cpp\\(1\\)"), anomaly.why);
-#endif
       }
-   #endif
+
+#endif
    }
 
    TEST(FunctionPointsToSameFunctionAsExpected_DoesNotThrowException)

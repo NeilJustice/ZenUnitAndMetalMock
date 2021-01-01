@@ -2,7 +2,7 @@
 
 namespace ZenUnit
 {
-   #if defined(_WIN64)
+   #if defined(_WIN32)
       #if defined _DEBUG
          static_assert(sizeof(Anomaly) == 280);
       #elif NDEBUG
@@ -10,7 +10,7 @@ namespace ZenUnit
       #endif
    #endif
 
-   #if defined(_WIN64)
+   #if defined(_WIN32)
       #if defined _DEBUG
          static_assert(sizeof(AnomalyOrException) == 40);
       #elif NDEBUG
@@ -18,7 +18,7 @@ namespace ZenUnit
       #endif
    #endif
 
-   #if defined(_WIN64)
+   #if defined(_WIN32)
       #if defined _DEBUG
          static_assert(sizeof(FilePathLineNumber) == 16);
       #elif NDEBUG
@@ -26,7 +26,7 @@ namespace ZenUnit
       #endif
    #endif
 
-   #if defined(_WIN64)
+   #if defined(_WIN32)
       #if defined _DEBUG
          static_assert(sizeof(FullTestName) == 24);
       #elif NDEBUG
@@ -34,7 +34,7 @@ namespace ZenUnit
       #endif
    #endif
 
-   #if defined(_WIN64)
+   #if defined(_WIN32)
       #if defined _DEBUG
          static_assert(sizeof(Test) == 64);
       #elif NDEBUG
@@ -42,7 +42,7 @@ namespace ZenUnit
       #endif
    #endif
 
-   #if defined(_WIN64)
+   #if defined(_WIN32)
       #if defined _DEBUG
          static_assert(sizeof(TestClassResult) == 104);
       #elif NDEBUG
@@ -50,7 +50,7 @@ namespace ZenUnit
       #endif
    #endif
 
-   #if defined(_WIN64)
+   #if defined(_WIN32)
       #if defined _DEBUG
          static_assert(sizeof(TestNameFilter) == 96);
       #elif NDEBUG
@@ -58,7 +58,7 @@ namespace ZenUnit
       #endif
    #endif
 
-   #if defined(_WIN64)
+   #if defined(_WIN32)
       #if defined _DEBUG
          static_assert(sizeof(TestPhaseResult) == 32);
       #elif NDEBUG
@@ -66,7 +66,7 @@ namespace ZenUnit
       #endif
    #endif
 
-   #if defined(_WIN64)
+   #if defined(_WIN32)
       #if defined _DEBUG
          static_assert(sizeof(TestResult) == 288);
       #elif NDEBUG
@@ -74,7 +74,7 @@ namespace ZenUnit
       #endif
    #endif
 
-   #if defined(_WIN64)
+   #if defined(_WIN32)
       #if defined _DEBUG
          static_assert(sizeof(ZenUnitArgs) == 144);
       #elif NDEBUG

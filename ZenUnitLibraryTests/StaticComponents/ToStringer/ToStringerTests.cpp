@@ -143,7 +143,7 @@ namespace ZenUnit
       ARE_EQUAL("0xffffffffffffffff", ToStringer::ToString(intPointerMaxAsBinary));
       const int* intPointerMid = reinterpret_cast<const int*>(0x1111111111111111);
       ARE_EQUAL("0x1111111111111111", ToStringer::ToString(intPointerMid));
-#elif defined _WIN64
+#elif defined _WIN32
       const int* const intPointer1 = reinterpret_cast<const int*>(0x1);
       ARE_EQUAL("0x0000000000000001", ToStringer::ToString(intPointer1));
       const int* const intPointerFF = reinterpret_cast<const int*>(0xFF);
@@ -154,18 +154,7 @@ namespace ZenUnit
       ARE_EQUAL("0xFFFFFFFFFFFFFFFF", ToStringer::ToString(intPointerMaxAsBinary));
       const int* intPointerMid = reinterpret_cast<const int*>(0x1111111111111111);
       ARE_EQUAL("0x1111111111111111", ToStringer::ToString(intPointerMid));
-#elif defined _WIN32
-      const int* const intPointer1 = reinterpret_cast<const int*>(0x1);
-      ARE_EQUAL("0x00000001", ToStringer::ToString(intPointer1));
-      const int* const intPointerFF = reinterpret_cast<const int*>(0xFF);
-      ARE_EQUAL("0x000000FF", ToStringer::ToString(intPointerFF));
-      const int* const intPointerMaxAsHex = reinterpret_cast<const int*>(0xFFFFFFFFFFFFFFFF);
-      ARE_EQUAL("0xFFFFFFFF", ToStringer::ToString(intPointerMaxAsHex));
-      const int* intPointerMaxAsBinary = reinterpret_cast<const int*>(0b1111111111111111111111111111111111111111111111111111111111111111);
-      ARE_EQUAL("0xFFFFFFFF", ToStringer::ToString(intPointerMaxAsBinary));
-      const int* intPointerMid = reinterpret_cast<const int*>(0x1111111111111111);
-      ARE_EQUAL("0x11111111", ToStringer::ToString(intPointerMid));
-   #endif
+#endif
    }
 
    TEST(ToString_UniquePtr_ReturnsPointeeAddress)
@@ -210,10 +199,8 @@ namespace ZenUnit
    {
 #if defined __linux__ || defined __APPLE__
       return R"(0x\w+)";
-#elif defined _WIN64
-      return R"(0x\w\w\w\w\w\w\w\w\w\w\w\w\w\w\w\w)";
 #elif defined _WIN32
-      return R"(0x\w\w\w\w\w\w\w\w)";
+      return R"(0x\w\w\w\w\w\w\w\w\w\w\w\w\w\w\w\w)";
 #endif
    }
 
@@ -341,10 +328,8 @@ namespace ZenUnit
       ARE_EQUAL("(\"hello1\", \"hello2\")", ToStringer::ToString(pair<string, string>("hello1", "hello2")));
 #if defined __linux__ || defined __APPLE__
       ARE_EQUAL("(0x1, 5)", ToStringer::ToString(pair<int*, int>(reinterpret_cast<int*>(0x1), 5)));
-#elif defined _WIN64
-      ARE_EQUAL("(0x0000000000000001, 5)", ToStringer::ToString(pair<int*, int>(reinterpret_cast<int*>(0x1), 5)));
 #elif defined _WIN32
-      ARE_EQUAL("(0x00000001, 5)", ToStringer::ToString(pair<int*, int>(reinterpret_cast<int*>(0x1), 5)));
+      ARE_EQUAL("(0x0000000000000001, 5)", ToStringer::ToString(pair<int*, int>(reinterpret_cast<int*>(0x1), 5)));
 #endif
    }
 
