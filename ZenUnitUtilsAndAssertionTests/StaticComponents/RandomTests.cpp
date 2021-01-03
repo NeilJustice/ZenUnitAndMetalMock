@@ -19,8 +19,8 @@ namespace ZenUnit
    AFACT(Random_ConstCharPointer_ReturnsRandomConstCharPointer1Through10)
    AFACT(Random_ConstWCharTPointer_ReturnsRandomConstWCharTPointer1Through10)
    AFACT(Random_ErrorCode_ReturnsEitherGenericCategoryOrIostreamCategoryOrSystemCategoryErrorCode)
-   AFACT(Random_String_ReturnsRandomStringThatBeginsWithRS)
-   AFACT(Random_WideString_ReturnsRandomWideStringThatBeginsWithRWS)
+   AFACT(Random_String_ReturnsRandomString1Through10)
+   AFACT(Random_WideString_ReturnsRandomWideString1Through10)
    AFACT(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
    EVIDENCE
 
@@ -172,12 +172,54 @@ namespace ZenUnit
 
    TEST(Random_ConstCharPointer_ReturnsRandomConstCharPointer1Through10)
    {
-      Random<const char*>();
+      unordered_set<const char*> randomConstCharPointers;
+      //
+      for (size_t i = 0; i < 300; ++i)
+      {
+         const char* const randonConstCharPointer = Random<const char*>();
+         randomConstCharPointers.insert(randonConstCharPointer);
+      }
+      //
+      const unordered_set<const char*> expectedRandomConstCharPointers =
+      {
+         "RandomConstCharPointer1",
+         "RandomConstCharPointer2",
+         "RandomConstCharPointer3",
+         "RandomConstCharPointer4",
+         "RandomConstCharPointer5",
+         "RandomConstCharPointer6",
+         "RandomConstCharPointer7",
+         "RandomConstCharPointer8",
+         "RandomConstCharPointer9",
+         "RandomConstCharPointer10"
+      };
+      SETS_ARE_EQUAL(expectedRandomConstCharPointers, randomConstCharPointers);
    }
 
    TEST(Random_ConstWCharTPointer_ReturnsRandomConstWCharTPointer1Through10)
    {
-      Random<const wchar_t*>();
+      unordered_set<const wchar_t*> randomWideConstCharPointers;
+      //
+      for (size_t i = 0; i < 300; ++i)
+      {
+         const wchar_t* const randomWideConstCharPointer = Random<const wchar_t*>();
+         randomWideConstCharPointers.insert(randomWideConstCharPointer);
+      }
+      //
+      const unordered_set<const wchar_t*> expectedRandomWideConstCharPointers =
+      {
+         L"RandomWideConstCharPointer1",
+         L"RandomWideConstCharPointer2",
+         L"RandomWideConstCharPointer3",
+         L"RandomWideConstCharPointer4",
+         L"RandomWideConstCharPointer5",
+         L"RandomWideConstCharPointer6",
+         L"RandomWideConstCharPointer7",
+         L"RandomWideConstCharPointer8",
+         L"RandomWideConstCharPointer9",
+         L"RandomWideConstCharPointer10"
+      };
+      SETS_ARE_EQUAL(expectedRandomWideConstCharPointers, randomWideConstCharPointers);
    }
 
    TEST(Random_ErrorCode_ReturnsEitherGenericCategoryOrIostreamCategoryOrSystemCategoryErrorCode)
@@ -189,16 +231,56 @@ namespace ZenUnit
       }
    }
 
-   TEST(Random_String_ReturnsRandomStringThatBeginsWithRS)
+   TEST(Random_String_ReturnsRandomString1Through10)
    {
-      const string randomString = Random<string>();
-      IS_TRUE(randomString.find("RS") != string::npos);
+      unordered_set<string> randomStrings;
+      //
+      for (size_t i = 0; i < 300; ++i)
+      {
+         const string randomString = Random<string>();
+         randomStrings.insert(randomString);
+      }
+      //
+      const unordered_set<string> expectedRandomStrings =
+      {
+         "RandomString1",
+         "RandomString2",
+         "RandomString3",
+         "RandomString4",
+         "RandomString5",
+         "RandomString6",
+         "RandomString7",
+         "RandomString8",
+         "RandomString9",
+         "RandomString10"
+      };
+      SETS_ARE_EQUAL(expectedRandomStrings, randomStrings);
    }
 
-   TEST(Random_WideString_ReturnsRandomWideStringThatBeginsWithRWS)
+   TEST(Random_WideString_ReturnsRandomWideString1Through10)
    {
-      const wstring randomWideString = Random<wstring>();
-      IS_TRUE(randomWideString.find(L"RWS") != string::npos);
+      unordered_set<wstring> randomStrings;
+      //
+      for (size_t i = 0; i < 300; ++i)
+      {
+         const wstring randomString = Random<wstring>();
+         randomStrings.insert(randomString);
+      }
+      //
+      const unordered_set<wstring> expectedRandomStrings =
+      {
+         L"RandomWString1",
+         L"RandomWString2",
+         L"RandomWString3",
+         L"RandomWString4",
+         L"RandomWString5",
+         L"RandomWString6",
+         L"RandomWString7",
+         L"RandomWString8",
+         L"RandomWString9",
+         L"RandomWString10"
+      };
+      SETS_ARE_EQUAL(expectedRandomStrings, randomStrings);
    }
 
    TEST(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)

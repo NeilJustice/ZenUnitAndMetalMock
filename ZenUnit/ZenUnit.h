@@ -7195,13 +7195,20 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<typename KeyType, typename ValueType>
    std::map<KeyType, ValueType> RandomMapWithSize(size_t size)
    {
+      size_t numberOfIterations = size;
       std::map<KeyType, ValueType> randomMap;
-      for (size_t i = 0; i < size; ++i)
+      for (size_t i = 0; i < numberOfIterations; ++i)
       {
-         KeyType randomKey = Random<KeyType>();
-         ValueType randomValue = Random<ValueType>();
-         randomMap.emplace(std::move(randomKey), std::move(randomValue));
+         KeyType randomKey = ZenUnit::Random<KeyType>();
+         ValueType randomValue = ZenUnit::Random<ValueType>();
+         const auto emplaceResult = randomMap.emplace(std::move(randomKey), std::move(randomValue));
+         const bool didEmplaceNewKeyIntoMap = emplaceResult.second;
+         if (!didEmplaceNewKeyIntoMap)
+         {
+            ++numberOfIterations;
+         }
       }
+      ZENUNIT_ASSERT(randomMap.size() == size);
       return randomMap;
    }
 
@@ -7222,13 +7229,20 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<typename KeyType, typename ValueType>
    std::unordered_map<KeyType, ValueType> RandomUnorderedMapWithSize(size_t size)
    {
+      size_t numberOfIterations = size;
       std::unordered_map<KeyType, ValueType> randomUnorderedMap;
-      for (size_t i = 0; i < size; ++i)
+      for (size_t i = 0; i < numberOfIterations; ++i)
       {
-         KeyType randomKey = Random<KeyType>();
-         ValueType randomValue = Random<ValueType>();
-         randomUnorderedMap.emplace(std::move(randomKey), std::move(randomValue));
+         KeyType randomKey = ZenUnit::Random<KeyType>();
+         ValueType randomValue = ZenUnit::Random<ValueType>();
+         const auto emplaceResult = randomUnorderedMap.emplace(std::move(randomKey), std::move(randomValue));
+         const bool didEmplaceNewKeyIntoMap = emplaceResult.second;
+         if (!didEmplaceNewKeyIntoMap)
+         {
+            ++numberOfIterations;
+         }
       }
+      ZENUNIT_ASSERT(randomUnorderedMap.size() == size);
       return randomUnorderedMap;
    }
 
@@ -7249,11 +7263,17 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<typename ElementType>
    std::set<ElementType> RandomSetWithSize(size_t size)
    {
+      size_t numberOfIterations = size;
       std::set<ElementType> randomOrderedSet;
-      for (size_t i = 0; i < size; ++i)
+      for (size_t i = 0; i < numberOfIterations; ++i)
       {
          ElementType randomElement = Random<ElementType>();
-         randomOrderedSet.emplace(std::move(randomElement));
+         const auto emplaceResult = randomOrderedSet.emplace(std::move(randomElement));
+         const bool didEmplaceNewElementIntoMap = emplaceResult.second;
+         if (!didEmplaceNewElementIntoMap)
+         {
+            ++numberOfIterations;
+         }
       }
       return randomOrderedSet;
    }
@@ -7277,11 +7297,17 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<typename ElementType>
    std::unordered_set<ElementType> RandomUnorderedSetWithSize(size_t size)
    {
+      size_t numberOfIterations = size;
       std::unordered_set<ElementType> randomNonEmptyUnorderedSet;
-      for (size_t i = 0; i < size; ++i)
+      for (size_t i = 0; i < numberOfIterations; ++i)
       {
          ElementType randomElement = Random<ElementType>();
-         randomNonEmptyUnorderedSet.emplace(std::move(randomElement));
+         const auto emplaceResult = randomNonEmptyUnorderedSet.emplace(std::move(randomElement));
+         const bool didEmplaceNewElementIntoMap = emplaceResult.second;
+         if (!didEmplaceNewElementIntoMap)
+         {
+            ++numberOfIterations;
+         }
       }
       return randomNonEmptyUnorderedSet;
    }
@@ -7409,17 +7435,39 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<>
    inline std::string Random<std::string>()
    {
-      const int randomInt = RandomBetween<int>(0, 100000);
-      std::string randomString = "RS" + std::to_string(randomInt);
-      return randomString;
+      const int randomIntBetween1And10 = RandomBetween<int>(1, 10);
+      switch (randomIntBetween1And10)
+      {
+      case 1: return "RandomString1";
+      case 2: return "RandomString2";
+      case 3: return "RandomString3";
+      case 4: return "RandomString4";
+      case 5: return "RandomString5";
+      case 6: return "RandomString6";
+      case 7: return "RandomString7";
+      case 8: return "RandomString8";
+      case 9: return "RandomString9";
+      default: ZENUNIT_ASSERT(randomIntBetween1And10 == 10); return "RandomString10";
+      }
    }
 
    template<>
    inline std::wstring Random<std::wstring>()
    {
-      const int randomInt = RandomBetween<int>(0, 100000);
-      std::wstring randomWideString = L"RWS" + std::to_wstring(randomInt);
-      return randomWideString;
+      const int randomIntBetween1And10 = RandomBetween<int>(1, 10);
+      switch (randomIntBetween1And10)
+      {
+      case 1: return L"RandomWString1";
+      case 2: return L"RandomWString2";
+      case 3: return L"RandomWString3";
+      case 4: return L"RandomWString4";
+      case 5: return L"RandomWString5";
+      case 6: return L"RandomWString6";
+      case 7: return L"RandomWString7";
+      case 8: return L"RandomWString8";
+      case 9: return L"RandomWString9";
+      default: ZENUNIT_ASSERT(randomIntBetween1And10 == 10); return L"RandomWString10";
+      }
    }
 
    template<>

@@ -49,7 +49,7 @@ namespace ZenUnit
    TEST(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreNotEqual_ThrowsAnomaly__StringPointersTestCase)
    {
       const string expectedPointee = ZenUnit::Random<string>();
-      const string actualPointee = ZenUnit::Random<string>();
+      const string actualPointee = ZenUnit::Random<string>() + ZenUnit::Random<string>();
       const string* const expectedPointer = &expectedPointee;
       const string* const actualPointer = &actualPointee;
       THROWS_EXCEPTION(POINTEES_ARE_EQUAL(expectedPointer, actualPointer),
@@ -67,7 +67,7 @@ namespace ZenUnit
    TEST(ExpectedPointerIsNotNull_ActualPointerIsNotNull_PointeesAreNotEqual_ThrowsAnomaly__StringPointersTestCase_MessagesTestCase)
    {
       const string expectedPointee = ZenUnit::Random<string>();
-      const string actualPointee = ZenUnit::Random<string>();
+      const string actualPointee = ZenUnit::Random<string>() + ZenUnit::Random<string>();
       const string* const expectedPointer = &expectedPointee;
       const string* const actualPointer = &actualPointee;
       const string messageA = ZenUnit::Random<string>();

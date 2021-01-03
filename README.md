@@ -1162,9 +1162,12 @@ ZenUnit provides the following random-value-generating functions for maximizing 
 |`ZenUnit::Random<float>()`|Returns a random float between `std::numeric_limits<float>::min()` and `std::numeric_limits<float>::max()` selected from a `std::uniform_real_distribution<float>`.|
 |`ZenUnit::Random<double>()`|Returns a random double between `std::numeric_limits<double>::min()` and `std::numeric_limits<double>::max()` selected from a `std::uniform_real_distribution<double>`.|
 
-|Random String-Generating Function|Behavior|
+|Random String-Generating Functions|Behavior|
 |----------------------------------|--------|
-|`ZenUnit::Random<std::string>()`|Returns `"RS" + std::to_string(ZenUnit::RandomBetween<int>(0, 100000))`.|
+|`ZenUnit::Random<const char*>()`|Returns `"RandomConstCharPointer1"` with 10% probability, `"RandomConstCharPointer2"` with 10% probability, ..., `"RandomConstCharPointer10"` with 10% probability.|
+|`ZenUnit::Random<const wchar_t*>()`|Returns `L"RandomWideConstCharPointer1"` with 10% probability, `L"RandomWideConstCharPointer2"` with 10% probability, ..., `L"RandomWideConstCharPointer10"` with 10% probability.|
+|`ZenUnit::Random<std::string>()`|Returns `"RandomString1"` with 10% probability, `"RandomString2"` with 10% probability, ..., `"RandomString10"` with 10% probability.|
+|`ZenUnit::Random<std::wstring>()`|Returns `L"RandomWString1"` with 10% probability, `L"RandomWString2"` with 10% probability, ..., `L"RandomWString10"` with 10% probability.|
 
 |Random Pair-Generating Function|Behavior|
 |--------------------------------|--------|
@@ -1247,10 +1250,10 @@ cmake --build . --target install
 
 |Future ZenUnit Feature|Estimated Delivery|Implementation Status|
 |----------------------|------------------|---------------------|
+|`TUPLES_ARE_EQUAL`|January 2021|In progress|
 |Refactor ZenUnit and MetalMock documentation into multiple pages from a single page|January 2021|In progress|
 |GitHub Actions build|January 2021|Awaiting implementation|
 |SonarQube Jenkins pipelines on Linux And Windows with pipeline screenshots added to this readme file|January 2021|Awaiting implementation|
-|`TUPLES_ARE_EQUAL`|January 2021| Awaiting implementation|
 |`main` and `dev` branches|February 2021|Awaiting implementation|
 |SonarCloud Badge|February 2021|Awaiting implementation|
 |Coverity Badge|February 2021|Awaiting implementation|
