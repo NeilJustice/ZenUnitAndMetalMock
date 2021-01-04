@@ -3357,35 +3357,6 @@ namespace ZenUnit
       };
    }
 
-   template<typename... TupleTypes>
-   void TUPLES_ARE_EQUAL_AssertTuplesEqual(
-      const std::tuple<TupleTypes...>& expectedTuple,
-      const std::tuple<TupleTypes...>& actualTuple)
-   {
-      CallBinaryFunctionOnEachPairOfTupleElements(expectedTuple, actualTuple,
-         [](const auto& expectedTupleElement, const auto& actualTupleElement)
-         {
-            ARE_EQUAL(expectedTupleElement, actualTupleElement);
-         }, GenerateIndexSequence<sizeof...(TupleTypes)>());
-   }
-
-   template<typename ExpectedTupleType, typename ActualTupleType, typename... MessageTypes>
-   void TUPLES_ARE_EQUAL_Defined(
-      const ExpectedTupleType& expectedTuple, const char* expectedTupleText,
-      const ActualTupleType& actualTuple, const char* actualTupleText,
-      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
-   {
-      try
-      {
-         TUPLES_ARE_EQUAL_AssertTuplesEqual(expectedTuple, actualTuple);
-      }
-      catch (const Anomaly& anomaly)
-      {
-         TUPLES_ARE_EQUAL_ToStringAndRethrow(anomaly, expectedTuple, expectedTupleText, actualTuple, actualTupleText,
-            filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
-      }
-   }
-
    inline void WriteUnsignedLongLongToCharArray(unsigned long long value, char* outChars) noexcept
    {
       char* writingPointer = outChars;
@@ -3404,6 +3375,40 @@ namespace ZenUnit
       *writingPointer-- = '\0';
       *pointerToTerminatingZero = lastCharacter;
       std::reverse(outChars, outChars + numberOfCharactersWritten);
+   }
+
+   template<typename... TupleTypes>
+   void TUPLES_ARE_EQUAL_AssertTuplesEqual(
+      const std::tuple<TupleTypes...>& expectedTuple,
+      const std::tuple<TupleTypes...>& actualTuple)
+   {
+      constexpr size_t Length_TupleIndexSpaceEqualsSignSpace = 26; // strlen("mismatching tuple index = ")
+      constexpr size_t Length_SizeTMaxValue = 21; // strlen("18446744073709551615")
+      char tupleIndexMessage[Length_TupleIndexSpaceEqualsSignSpace + Length_SizeTMaxValue]{ "mismatching tuple index = " };
+      size_t tupleIndex = 0;
+      CallBinaryFunctionOnEachPairOfTupleElements(expectedTuple, actualTuple,
+         [&tupleIndexMessage, &tupleIndex](const auto& expectedTupleElement, const auto& actualTupleElement)
+         {
+            WriteUnsignedLongLongToCharArray(tupleIndex++, tupleIndexMessage + Length_TupleIndexSpaceEqualsSignSpace);
+            ARE_EQUAL(expectedTupleElement, actualTupleElement, tupleIndexMessage);
+         }, GenerateIndexSequence<sizeof...(TupleTypes)>());
+   }
+
+   template<typename ExpectedTupleType, typename ActualTupleType, typename... MessageTypes>
+   void TUPLES_ARE_EQUAL_Defined(
+      const ExpectedTupleType& expectedTuple, const char* expectedTupleText,
+      const ActualTupleType& actualTuple, const char* actualTupleText,
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
+   {
+      try
+      {
+         TUPLES_ARE_EQUAL_AssertTuplesEqual(expectedTuple, actualTuple);
+      }
+      catch (const Anomaly& anomaly)
+      {
+         TUPLES_ARE_EQUAL_ToStringAndRethrow(anomaly, expectedTuple, expectedTupleText, actualTuple, actualTupleText,
+            filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
+      }
    }
 
    template<typename ContainerType, typename... MessageTypes>

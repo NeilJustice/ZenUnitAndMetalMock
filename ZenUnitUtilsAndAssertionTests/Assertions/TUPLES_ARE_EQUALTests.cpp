@@ -47,9 +47,10 @@ namespace ZenUnit
 "  Failed: TUPLES_ARE_EQUAL(expectedTuple, actualTuple)",
 "Expected: (1, 0)",
 "  Actual: (0, 0)",
-" Because: ARE_EQUAL(expectedTupleElement, actualTupleElement) failed",
+" Because: ARE_EQUAL(expectedTupleElement, actualTupleElement, tupleIndexMessage) failed",
 "Expected: 1",
 "  Actual: 0",
+" Message: \"mismatching tuple index = 0\"",
 "File.cpp(1)",
 "File.cpp(1)"));
    }
@@ -64,9 +65,10 @@ namespace ZenUnit
 "  Failed: TUPLES_ARE_EQUAL(expectedTuple, actualTuple, messageA, messageB)",
 "Expected: (1, 0, \"a\")",
 "  Actual: (0, 0, \"b\")",
-" Because: ARE_EQUAL(expectedTupleElement, actualTupleElement) failed",
+" Because: ARE_EQUAL(expectedTupleElement, actualTupleElement, tupleIndexMessage) failed",
 "Expected: 1",
 "  Actual: 0",
+" Message: \"mismatching tuple index = 0\"",
 " Message: \"A\", \"B\"",
 "File.cpp(1)",
 "File.cpp(1)"));
@@ -81,9 +83,10 @@ namespace ZenUnit
 "  Failed: TUPLES_ARE_EQUAL(expectedTuple, actualTuple)",
 "Expected: (1, 1)",
 "  Actual: (0, 0)",
-" Because: ARE_EQUAL(expectedTupleElement, actualTupleElement) failed",
+" Because: ARE_EQUAL(expectedTupleElement, actualTupleElement, tupleIndexMessage) failed",
 "Expected: 1",
 "  Actual: 0",
+" Message: \"mismatching tuple index = 0\"",
 "File.cpp(1)",
 "File.cpp(1)"));
    }
@@ -97,9 +100,10 @@ namespace ZenUnit
 "  Failed: TUPLES_ARE_EQUAL(expectedTuple, actualTuple)",
 "Expected: (1, 1)",
 "  Actual: (1, 0)",
-" Because: ARE_EQUAL(expectedTupleElement, actualTupleElement) failed",
+" Because: ARE_EQUAL(expectedTupleElement, actualTupleElement, tupleIndexMessage) failed",
 "Expected: 1",
 "  Actual: 0",
+" Message: \"mismatching tuple index = 1\"",
 "File.cpp(1)",
 "File.cpp(1)"));
    }
@@ -113,9 +117,10 @@ namespace ZenUnit
 "  Failed: TUPLES_ARE_EQUAL(expectedTuple, actualTuple)",
 "Expected: (UserType@1, UserType@0)",
 "  Actual: (UserType@0, UserType@0)",
-" Because: ARE_EQUAL(expectedTupleElement, actualTupleElement) failed",
+" Because: ARE_EQUAL(expectedTupleElement, actualTupleElement, tupleIndexMessage) failed",
 "Expected: UserType@1",
 "  Actual: UserType@0",
+" Message: \"mismatching tuple index = 0\"",
 "File.cpp(1)",
 "File.cpp(1)"));
    }
@@ -129,9 +134,10 @@ namespace ZenUnit
 "  Failed: TUPLES_ARE_EQUAL(expectedTuple, actualTuple)",
 "Expected: (UserType@0, UserType@0)",
 "  Actual: (UserType@0, UserType@1)",
-" Because: ARE_EQUAL(expectedTupleElement, actualTupleElement) failed",
+" Because: ARE_EQUAL(expectedTupleElement, actualTupleElement, tupleIndexMessage) failed",
 "Expected: UserType@0",
 "  Actual: UserType@1",
+" Message: \"mismatching tuple index = 1\"",
 "File.cpp(1)",
 "File.cpp(1)"));
    }
