@@ -1395,6 +1395,24 @@ namespace ZenUnit
    template<size_t... Indices>
    struct GenerateIndexSequence<0, Indices...> : IndexSequence<Indices...> {};
 
+   template<typename TupleType, typename FunctionType, size_t... Indices>
+   static void CallFunctionOnEachConstTupleElement(const TupleType& constTuple, FunctionType&& func, IndexSequence<Indices...>)
+   {
+      const auto automaticFunctionEvaluator =
+      {
+         (std::forward<FunctionType>(func)(std::get<Indices>(constTuple)), 0)...
+      };
+   }
+
+   template<typename TupleType, typename FunctionType, size_t... Indices>
+   static void CallFunctionOnEachMutableTupleElement(TupleType& mutableTuple, FunctionType&& func, IndexSequence<Indices...>)
+   {
+      const auto automaticFunctionEvaluator =
+      {
+         (std::forward<FunctionType>(func)(std::ref(std::get<Indices>(mutableTuple))), 0)...
+      };
+   }
+
    class ToStringer
    {
    public:
@@ -1538,22 +1556,13 @@ namespace ZenUnit
          return toStringedPair;
       }
 
-      template<typename TupleType, typename FunctionType, size_t... Indices>
-      static void CallFunctionOnEachTupleElement(const TupleType& t, FunctionType&& func, IndexSequence<Indices...>)
-      {
-         const auto automaticFunctionEvaluator =
-         {
-            (std::forward<FunctionType>(func)(std::get<Indices>(t)), 0)...
-         };
-      }
-
       template<typename... TupleTypes>
       static std::string ToString(const std::tuple<TupleTypes...>& t)
       {
          std::ostringstream oss;
          oss << '(';
          size_t tupleIndex = 0;
-         CallFunctionOnEachTupleElement(
+         CallFunctionOnEachConstTupleElement(
             t, [&oss, &tupleIndex](const auto& tupleElement)
             {
                const std::string elementAsString = ToString(tupleElement);
@@ -7273,6 +7282,18 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    {
       std::pair<KeyType, ValueType> randomPair = std::make_pair(Random<KeyType>(), Random<ValueType>());
       return randomPair;
+   }
+
+   template<typename... TupleTypes>
+   inline std::tuple<TupleTypes...> RandomTuple()
+   {
+      std::tuple<TupleTypes...> randomTuple;
+      CallFunctionOnEachMutableTupleElement(randomTuple, [](auto tupleElementReferenceWrapper)
+      {
+         tupleElementReferenceWrapper.get() = ZenUnit::Random<
+            std::remove_reference_t<decltype(tupleElementReferenceWrapper.get())>>();
+      }, GenerateIndexSequence<sizeof...(TupleTypes)>());
+      return randomTuple;
    }
 
    template<typename T>

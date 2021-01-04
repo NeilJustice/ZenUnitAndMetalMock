@@ -31,4 +31,25 @@ namespace ZenUnit
 
    RUN_TEMPLATE_TESTS(RandomStdArrayTests, int, 3)
    THEN_RUN_TEMPLATE_TESTS(RandomStdArrayTests, unsigned long long, 5)
+
+
+   TESTS(RandomTupleTests)
+   AFACT(RandomTuple_ReturnsTupleWithRandomElements__IntTestCase)
+   AFACT(RandomTuple_ReturnsTupleWithRandomElements__StringSizeTTestCase)
+   EVIDENCE
+
+   TEST(RandomTuple_ReturnsTupleWithRandomElements__IntTestCase)
+   {
+      const tuple<int> randomTuple = ZenUnit::RandomTuple<int>();
+      IS_NOT_DEFAULT_VALUE(get<0>(randomTuple));
+   }
+
+   TEST(RandomTuple_ReturnsTupleWithRandomElements__StringSizeTTestCase)
+   {
+      const tuple<string, size_t> randomTuple = ZenUnit::RandomTuple<string, size_t>();
+      IS_NOT_DEFAULT_VALUE(get<0>(randomTuple));
+      IS_NOT_DEFAULT_VALUE(get<1>(randomTuple));
+   }
+
+   RUN_TESTS(RandomTupleTests)
 }
