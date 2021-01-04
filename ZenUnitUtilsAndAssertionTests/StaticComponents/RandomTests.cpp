@@ -20,6 +20,7 @@ namespace ZenUnit
    AFACT(Random_Double_ReturnsRandomDouble)
    AFACT(Random_ConstCharPointer_ReturnsRandomConstCharPointer1Through10)
    AFACT(Random_ConstWCharTPointer_ReturnsRandomConstWCharTPointer1Through10)
+   AFACT(Random_FilesystemPath_ReturnsFilesystemPathWithBetween0And2Subfolders)
    AFACT(Random_ErrorCode_ReturnsEitherGenericCategoryOrIostreamCategoryOrSystemCategoryErrorCode)
    AFACT(Random_String_ReturnsRandomString1Through10)
    AFACT(Random_WideString_ReturnsRandomWideString1Through10)
@@ -281,6 +282,15 @@ namespace ZenUnit
          L"RandomWideConstCharPointer10"
       };
       SETS_ARE_EQUAL(expectedRandomWideConstCharPointers, randomWideConstCharPointers);
+   }
+
+   TEST(Random_FilesystemPath_ReturnsFilesystemPathWithBetween0And2Subfolders)
+   {
+      // 30 iterations for code coverage of the for-loop and hasFileExtension if-statement
+      for (size_t i = 0; i < 30; ++i)
+      {
+         Random<std::filesystem::path>();
+      }
    }
 
    TEST(Random_ErrorCode_ReturnsEitherGenericCategoryOrIostreamCategoryOrSystemCategoryErrorCode)

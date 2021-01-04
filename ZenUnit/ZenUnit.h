@@ -7627,8 +7627,13 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          const std::string randomSubfolderName = Random<std::string>();
          randomPathStringBuilder << randomSubfolderName << "/";
       }
-      const std::string randomFolderName = Random<std::string>();
-      randomPathStringBuilder << randomFolderName;
+      const std::string randomLeafFileOrFolderName = Random<std::string>();
+      randomPathStringBuilder << randomLeafFileOrFolderName;
+      const bool hasFileExtension = ZenUnit::Random<bool>();
+      if (hasFileExtension)
+      {
+         randomPathStringBuilder << ".ext";
+      }
       std::string randomPathAsString = randomPathStringBuilder.str();
       std::filesystem::path randomPath(std::move(randomPathAsString));
       return randomPath;
