@@ -2742,15 +2742,15 @@ namespace ZenUnit
    }
 
    template<typename ExpectedType, typename ActualType, typename FieldMemberPointerType, typename FieldType>
-      void ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_Defined(
-         ExpectedType& expectedZenUnitEqualizerTestObject,
-         ActualType& actualZenUnitEqualizerTestObject,
-         FieldMemberPointerType fieldMemberPointer,
-         const char* typeName,
-         const char* fieldName,
-         const FieldType& randomNonDefaultFieldValue,
-         const char* randomNonDefaultFieldValueText,
-         FilePathLineNumber filePathLineNumber)
+   void ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_Defined(
+      ExpectedType& expectedZenUnitEqualizerTestObject,
+      ActualType& actualZenUnitEqualizerTestObject,
+      FieldMemberPointerType fieldMemberPointer,
+      const char* typeName,
+      const char* fieldName,
+      const FieldType& randomNonDefaultFieldValue,
+      const char* randomNonDefaultFieldValueText,
+      FilePathLineNumber filePathLineNumber)
    {
       (expectedZenUnitEqualizerTestObject.*fieldMemberPointer) = randomNonDefaultFieldValue;
       try
@@ -3236,7 +3236,7 @@ namespace ZenUnit
       return whyBody;
    }
 
-   inline std::string MAPS_ARE_EQUAL_MakeWhyBody_SizesNotEqual(size_t expectedMapSize, size_t actualMapSize)
+   NOINLINE inline std::string MAPS_ARE_EQUAL_MakeWhyBody_SizesNotEqual(size_t expectedMapSize, size_t actualMapSize)
    {
       std::string whyBody = String::Concat(
          " Because: ARE_EQUAL(expectedMap.size(), actualMap.size()) failed\n",
@@ -5389,7 +5389,7 @@ namespace ZenUnit
          _console->WriteLineAndExit("  ExitCode: " + std::to_string(exitCode), exitCode);
       }
    private:
-      void FailFastDueToAnomalyOrExceptionThrownFromTestClassConstructorOrStartupOrCleanup(
+      NOINLINE void FailFastDueToAnomalyOrExceptionThrownFromTestClassConstructorOrStartupOrCleanup(
          const char* anomalyOrException, const ZenUnitArgs& zenUnitArgs) const;
 
       template<typename ExceptionType>
@@ -5586,7 +5586,7 @@ namespace ZenUnit
       }
    };
 
-   inline void TestPhaseRunner::FailFastDueToAnomalyOrExceptionThrownFromTestClassConstructorOrStartupOrCleanup(
+   NOINLINE inline void TestPhaseRunner::FailFastDueToAnomalyOrExceptionThrownFromTestClassConstructorOrStartupOrCleanup(
       const char* anomalyOrException, const ZenUnitArgs& zenUnitArgs) const
    {
       const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
